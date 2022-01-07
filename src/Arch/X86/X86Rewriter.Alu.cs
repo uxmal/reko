@@ -1126,7 +1126,7 @@ namespace Reko.Arch.X86
             m.Assign(orw.StackAccess(sp, dataWidth), rhs);
         }
 
-        private void RewriteRotation(string operation, bool useCarry, bool left)
+        private void RewriteRotation(IntrinsicProcedure operation, bool useCarry, bool left)
         {
             Identifier? t;
             Expression sh;
@@ -1144,13 +1144,15 @@ namespace Reko.Arch.X86
             t = binder.CreateTemporary(PrimitiveType.Bool);
             m.Assign(t, m.Ne0(m.And(SrcOp(0), sh)));
             Expression p;
+            var src0 = SrcOp(0);
+            var src1 = SrcOp(1);
             if (useCarry)
             {
-                p = host.Intrinsic(operation, false, instrCur.Operands[0].Width, SrcOp(0), SrcOp(1), binder.EnsureFlagGroup(Registers.C));
+                p = m.Fn(operation, src0, src1, binder.EnsureFlagGroup(Registers.C));
             }
             else
             {
-                p = host.Intrinsic(operation, false, instrCur.Operands[0].Width, SrcOp(0), SrcOp(1));
+                p = m.Fn(operation, src0, src1);
             }
             m.Assign(SrcOp(0), p);
             m.Assign(binder.EnsureFlagGroup(Registers.C), t);
@@ -1161,7 +1163,8 @@ namespace Reko.Arch.X86
             var src1 = SrcOp(1);
             var src2 = SrcOp(2);
             var dst = SrcOp(0);
-            m.Assign(dst, host.Intrinsic(IntrinsicProcedure.Ror, false, dst.DataType, src1, src2));
+            var rotation = Core.Intrinsics.CommonOps.Ror.MakeInstance(src1.DataType, src2.DataType);
+            m.Assign(dst, m.Fn(rotation, src1, src2));
         }
 
         private void RewriteSet(ConditionCode cc)

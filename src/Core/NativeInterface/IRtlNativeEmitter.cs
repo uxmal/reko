@@ -70,7 +70,7 @@ namespace Reko.Core.NativeInterface
         [PreserveSig] HExpr Not(HExpr a);
         [PreserveSig] HExpr Or(HExpr a, HExpr b);
         [PreserveSig] HExpr Ror(HExpr a, HExpr b);
-        [PreserveSig] HExpr Rrc(HExpr a, HExpr b);
+        [PreserveSig] HExpr Rrc(HExpr a, HExpr b, HExpr c);
         [PreserveSig] HExpr Sar(HExpr a, HExpr b);
         [PreserveSig] HExpr SDiv(HExpr a, HExpr b);
         [PreserveSig] HExpr Shl(HExpr a, HExpr b);

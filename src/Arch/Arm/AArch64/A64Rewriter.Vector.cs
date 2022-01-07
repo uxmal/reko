@@ -20,6 +20,7 @@
 
 using Reko.Core;
 using Reko.Core.Expressions;
+using Reko.Core.Intrinsics;
 using Reko.Core.Machine;
 using Reko.Core.Types;
 using System;
@@ -295,7 +296,7 @@ namespace Reko.Arch.Arm.AArch64
             if (rHi == rLo) // ROR
             {
                 var op = binder.EnsureRegister(rHi);
-                m.Assign(opDst, host.Intrinsic(IntrinsicProcedure.Ror, false, opDst.DataType, op, lsb));
+                m.Assign(opDst, m.Fn(CommonOps.Ror, op, lsb));
             }
             else
             {

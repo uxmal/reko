@@ -20,6 +20,7 @@
 
 using Reko.Core;
 using Reko.Core.Expressions;
+using Reko.Core.Intrinsics;
 using Reko.Core.Machine;
 using Reko.Core.Memory;
 using Reko.Core.Rtl;
@@ -889,7 +890,7 @@ namespace Reko.Arch.Avr.Avr32
         {
             var src = RewriteOp(0);
             var c = binder.EnsureFlagGroup(C);
-            var dst = RewriteOpDst(0, host.Intrinsic(IntrinsicProcedure.RolC, false, PrimitiveType.Word32, src, m.Int32(1), c));
+            var dst = RewriteOpDst(0, m.Fn(CommonOps.RolC, src, m.Int32(1), c));
             EmitCc(NZC, dst);
         }
 
@@ -897,7 +898,7 @@ namespace Reko.Arch.Avr.Avr32
         {
             var src = RewriteOp(0);
             var c = binder.EnsureFlagGroup(C);
-            var dst = RewriteOpDst(0, host.Intrinsic(IntrinsicProcedure.RorC, false, PrimitiveType.Word32, src, m.Int32(1), c));
+            var dst = RewriteOpDst(0, m.Fn(CommonOps.RorC, src, m.Int32(1), c));
             EmitCc(NZC, dst);
         }
 

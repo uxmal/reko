@@ -20,6 +20,7 @@
 
 using Reko.Core;
 using Reko.Core.Expressions;
+using Reko.Core.Intrinsics;
 using Reko.Core.Machine;
 using Reko.Core.Memory;
 using Reko.Core.Pascal;
@@ -116,8 +117,8 @@ namespace Reko.Arch.H8
                 case Mnemonic.nop: RewriteNop(); break;
                 case Mnemonic.not: RewriteUnaryLogical(instr, m.Comp); break;
                 case Mnemonic.or: RewriteLogical(instr, m.Or); break;
-                case Mnemonic.rotxl: RewriteRotationX(instr, IntrinsicProcedure.RolC); break;
-                case Mnemonic.rotxr: RewriteRotationX(instr, IntrinsicProcedure.RorC); break;
+                case Mnemonic.rotxl: RewriteRotationX(instr, CommonOps.RolC); break;
+                case Mnemonic.rotxr: RewriteRotationX(instr, CommonOps.RorC); break;
                 case Mnemonic.rts: RewriteRts(); break;
                 case Mnemonic.shal: RewriteShift(instr, m.Shl); break;
                 case Mnemonic.shar: RewriteShift(instr, m.Sar); break;
@@ -359,12 +360,11 @@ namespace Reko.Arch.H8
             m.Nop();
         }
 
-        private void RewriteRotationX(H8Instruction instr, string intrinsicName)
+        private void RewriteRotationX(H8Instruction instr, IntrinsicProcedure intrinsic)
         {
             var src = OpSrc(instr.Operands[0]);
             var c = binder.EnsureFlagGroup(C);
-            m.Assign(src, host.Intrinsic(intrinsicName, false, src.DataType,
-                src, Constant.Int32(1), c));
+            m.Assign(src, m.Fn(intrinsic, src, Constant.Int32(1), c));
             EmitCond(NZC, src);
             m.Assign(binder.EnsureFlagGroup(V), Constant.False());
         }

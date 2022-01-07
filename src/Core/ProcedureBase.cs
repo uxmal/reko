@@ -70,7 +70,13 @@ namespace Reko.Core
         /// If this is a generic procedure _and_ it's concrete (i.e. instantiated
         /// with data types), return true.
         /// </summary>
-        public bool IsConcreteGeneric => this.isConcrete && this.genericArguments.Length > 0;
+        public bool IsConcreteGeneric => this.isConcrete && this.IsGeneric;
+
+        /// <summary>
+        /// This property is true if there is at least one generic argument 
+        /// to the procedure.
+        /// </summary>
+        public bool IsGeneric => this.genericArguments.Length > 0;
 
         /// <summary>
         /// The name of the procedure.
@@ -94,7 +100,7 @@ namespace Reko.Core
         {
             var sw = new StringWriter();
             sw.Write(Name);
-            if (this.genericArguments.Length > 0)
+            if (this.IsGeneric)
             {
                 var fm = new TextFormatter(sw);
                 var tw = new TypeReferenceFormatter(fm);
@@ -110,7 +116,7 @@ namespace Reko.Core
             return sw.ToString();
         }
 
-        public FunctionType MakeConcreteSignature(DataType[] concreteTypes)
+        protected FunctionType MakeConcreteSignature(DataType[] concreteTypes)
         {
             var sig = this.Signature;
             if (sig is null)

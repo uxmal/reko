@@ -20,6 +20,7 @@
 
 using Reko.Core;
 using Reko.Core.Expressions;
+using Reko.Core.Intrinsics;
 using Reko.Core.Machine;
 using Reko.Core.Operators;
 using Reko.Core.Rtl;
@@ -582,7 +583,7 @@ namespace Reko.Arch.Mips
             var arg1 = RewriteOperand(instr.Operands[1]);
             var arg2 = RewriteOperand(instr.Operands[2]);
             var dst = RewriteOperand(instr.Operands[0]);
-            m.Assign(dst, host.Intrinsic(IntrinsicProcedure.Ror, false, dst.DataType, arg1, arg2));
+            m.Assign(dst, m.Fn(CommonOps.Ror, arg1, arg2));
         }
 
         private void RewriteRotx(MipsInstruction instr)

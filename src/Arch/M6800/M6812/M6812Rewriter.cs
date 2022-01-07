@@ -20,6 +20,7 @@
 
 using Reko.Core;
 using Reko.Core.Expressions;
+using Reko.Core.Intrinsics;
 using Reko.Core.Machine;
 using Reko.Core.Memory;
 using Reko.Core.Rtl;
@@ -338,14 +339,14 @@ namespace Reko.Arch.M6800.M6812
         private Expression Rol(Expression a, Expression b)
         {
             var C = binder.EnsureFlagGroup(Registers.C);
-            var intrinsic = host.Intrinsic(IntrinsicProcedure.RolC, false, a.DataType, a, b, C);
+            var intrinsic = m.Fn(CommonOps.RolC, a, b, C);
             return intrinsic;
         }
 
         private Expression Ror(Expression a, Expression b)
         {
             var C = binder.EnsureFlagGroup(Registers.C);
-            var intrinsic = host.Intrinsic(IntrinsicProcedure.RorC, false, a.DataType, a, b, C);
+            var intrinsic = m.Fn(CommonOps.RorC, a, b, C);
             return intrinsic;
         }
 

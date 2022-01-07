@@ -20,6 +20,7 @@
 
 using Reko.Core;
 using Reko.Core.Expressions;
+using Reko.Core.Intrinsics;
 using Reko.Core.Machine;
 using Reko.Core.Memory;
 using Reko.Core.Rtl;
@@ -439,7 +440,7 @@ namespace Reko.Arch.Arc
 
         private Expression Ror(Expression a, Expression b)
         {
-            return host.Intrinsic(IntrinsicProcedure.Ror, false, a.DataType, a, b);
+            return m.Fn(CommonOps.Ror, a, b);
         }
 
         private Expression Rsub(Expression a, Expression b)

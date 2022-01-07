@@ -52,10 +52,6 @@ namespace Reko.Core
         /// Well-known operations that many processors support but most high- or 
         /// medium level languages do not support.
         /// </summary>
-        public const string Ror = "__ror";      // binary: Rotate right
-        public const string Rol = "__rol";      // binary: Rotate left
-        public const string RorC = "__rcr";     // ternary: rotate right, passing in the contents of a processor flag (not necessarily the Carry flag)
-        public const string RolC = "__rcl";     // ternary: rotate left, passing in the contents of a processor flag
         public const string Syscall = "__syscall";  // Invokes a system call.
 
         // MIPS-style unaligned memory accesses
@@ -199,7 +195,6 @@ namespace Reko.Core
                 {
                     h = (h * 5) ^ obj.Item1.GetHashCode();
                 }
-                Console.WriteLine("Hash of {0} is {1}", obj, h);
                 return h;
             }
         }

@@ -25,6 +25,7 @@ using System.Diagnostics;
 using System.Linq;
 using Reko.Core;
 using Reko.Core.Expressions;
+using Reko.Core.Intrinsics;
 using Reko.Core.Machine;
 using Reko.Core.Memory;
 using Reko.Core.Operators;
@@ -553,7 +554,7 @@ namespace Reko.Arch.zSeries
 
         private Expression Rol(Expression left, Expression right)
         {
-            return host.Intrinsic(IntrinsicProcedure.Rol, false, left.DataType, left, right);
+            return m.Fn(CommonOps.Rol, left, right);
         }
 
         private Identifier Seq(PrimitiveType dt, int iopHi, int iopLo)

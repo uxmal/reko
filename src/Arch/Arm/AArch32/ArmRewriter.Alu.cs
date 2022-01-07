@@ -18,6 +18,7 @@
 
 using Reko.Core;
 using Reko.Core.Expressions;
+using Reko.Core.Intrinsics;
 using Reko.Core.Machine;
 using Reko.Core.Rtl;
 using Reko.Core.Types;
@@ -540,13 +541,13 @@ namespace Reko.Arch.Arm.AArch32
 
         private Expression Ror(Expression left, Expression right)
         {
-            var intrinsic = host.Intrinsic(IntrinsicProcedure.Ror, false, left.DataType, left, right);
+            var intrinsic = m.Fn(CommonOps.Ror, left, right);
             return intrinsic;
         }
 
         private Expression Rrx(Expression left, Expression right)
         {
-            var intrinsic = host.Intrinsic(IntrinsicProcedure.RorC, false, left.DataType, left, right, C());
+            var intrinsic = m.Fn(CommonOps.RorC, left, right, C());
             return intrinsic;
         }
 

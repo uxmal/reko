@@ -21,6 +21,7 @@
 using Reko.Core;
 using Reko.Core.Code;
 using Reko.Core.Expressions;
+using Reko.Core.Intrinsics;
 using Reko.Core.Lib;
 using Reko.Core.Operators;
 using Reko.Core.Services;
@@ -162,34 +163,35 @@ namespace Reko.Evaluation
             if (appl.Procedure is ProcedureConstant pc &&
                 pc.Procedure is IntrinsicProcedure intrinsic)
             {
-                switch (intrinsic.Name)
+                if (intrinsic.Name == CommonOps.RolC.Name)
                 {
-                case IntrinsicProcedure.RolC:
                     if (IsSingleBitRotationWithClearCarryIn(args))
                     {
                         return (new BinaryExpression(Operator.Shl, appl.DataType, args[0], args[1]), true);
                     }
-                    break;
-                case IntrinsicProcedure.RorC:
+                }
+                else if (intrinsic.Name == CommonOps.RorC.Name)
+                {
                     if (IsSingleBitRotationWithClearCarryIn(args))
                     {
                         return (new BinaryExpression(Operator.Shr, appl.DataType, args[0], args[1]), true);
                     }
-                    break;
-                case IntrinsicProcedure.Rol:
+                }
+                else if (intrinsic.Name == CommonOps.Rol.Name)
+                {
                     var rol = CombineRotations(intrinsic.Name, appl, args);
                     if (rol != null)
                     {
                         return (rol, true);
                     }
-                    break;
-                case IntrinsicProcedure.Ror:
+                }
+                else if (intrinsic.Name == CommonOps.Ror.Name)
+                {
                     var ror = CombineRotations(intrinsic.Name, appl, args);
                     if (ror != null)
                     {
                         return (ror, true);
                     }
-                    break;
                 }
             }
             var (proc, procChanged) = appl.Procedure.Accept(this);

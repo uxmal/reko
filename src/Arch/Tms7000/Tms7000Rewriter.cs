@@ -20,6 +20,7 @@
 
 using Reko.Core;
 using Reko.Core.Expressions;
+using Reko.Core.Intrinsics;
 using Reko.Core.Machine;
 using Reko.Core.Memory;
 using Reko.Core.Rtl;
@@ -112,10 +113,10 @@ namespace Reko.Arch.Tms7000
                 case Mnemonic.push: RewritePush(); break;
                 case Mnemonic.reti: RewriteReti(); break;
                 case Mnemonic.rets: RewriteRets(); break;
-                case Mnemonic.rl: RewriteRotate(IntrinsicProcedure.Rol); break;
-                case Mnemonic.rlc: RewriteRotateC(IntrinsicProcedure.RolC); break;
-                case Mnemonic.rr: RewriteRotate(IntrinsicProcedure.Ror); break;
-                case Mnemonic.rrc: RewriteRotateC(IntrinsicProcedure.RorC); break;
+                case Mnemonic.rl: RewriteRotate(CommonOps.Rol); break;
+                case Mnemonic.rlc: RewriteRotateC(CommonOps.RolC); break;
+                case Mnemonic.rr: RewriteRotate(CommonOps.Ror); break;
+                case Mnemonic.rrc: RewriteRotateC(CommonOps.RorC); break;
                 case Mnemonic.sbb: RewriteAdcSbb(m.ISub); break;
                 case Mnemonic.setc: RewriteSetc(); break;
                 case Mnemonic.sta: RewriteSta(); break;
@@ -449,23 +450,19 @@ namespace Reko.Arch.Tms7000
             m.Return(2, 0);
         }
 
-        private void RewriteRotate(string rot)
+        private void RewriteRotate(IntrinsicProcedure rot)
         {
             var op = Operand(instr.Operands[0]);
-            var C = binder.EnsureFlagGroup(arch.GetFlagGroup(arch.st, (uint)FlagM.CF));
-            m.Assign(
-                op,
-                host.Intrinsic(rot, false, op.DataType, op));
+            var C = binder.EnsureFlagGroup(arch.GetFlagGroup(arch.st, (uint) FlagM.CF));
+            m.Assign(op, m.Fn(rot, op, m.Byte(1)));
             m.Assign(C, m.Cond(op));
         }
 
-        private void RewriteRotateC(string rot)
+        private void RewriteRotateC(IntrinsicProcedure rot)
         {
             var op = Operand(instr.Operands[0]);
             var C = binder.EnsureFlagGroup(arch.GetFlagGroup(arch.st, (uint)FlagM.CF));
-            m.Assign(
-                op,
-                host.Intrinsic(rot, false, op.DataType, op, C));
+            m.Assign(op, m.Fn(rot, op, m.Byte(1), C));
             m.Assign(C, m.Cond(op));
         }
 

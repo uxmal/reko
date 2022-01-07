@@ -20,6 +20,7 @@
 
 using Reko.Core;
 using Reko.Core.Expressions;
+using Reko.Core.Intrinsics;
 using Reko.Core.Rtl;
 using Reko.Core.Types;
 using System;
@@ -497,7 +498,7 @@ namespace Reko.Arch.PowerPC
             }
             else if (mb == 0x00)
             {
-                m.Assign(rd, host.Intrinsic(IntrinsicProcedure.Rol, false, rd.DataType, rs, Constant.Byte((byte) sh)));
+                m.Assign(rd, m.Fn(CommonOps.Rol, rs, Constant.Byte((byte) sh)));
             }
             else
             {
@@ -628,11 +629,7 @@ namespace Reko.Arch.PowerPC
             else if (me == 63)
             {
                 // rotldi: The mask is 0b111.....111, so we have a full rotation
-                m.Assign(rd, host.Intrinsic(
-                    IntrinsicProcedure.Rol,
-                    false, 
-                    PrimitiveType.Word64,
-                    rs, Constant.Byte(sh)));
+                m.Assign(rd, m.Fn(CommonOps.Rol, rs, Constant.Byte(sh)));
             }
             else if (me != 0 && sh > 0)
             {
@@ -770,9 +767,9 @@ namespace Reko.Arch.PowerPC
             else if (mb == 0 && me == 31)
             {
                 if (sh < 16)
-                    m.Assign(rd, host.Intrinsic(IntrinsicProcedure.Rol, false, PrimitiveType.Word32, rs, Constant.Byte(sh)));
+                    m.Assign(rd, m.Fn(CommonOps.Rol, rs, Constant.Byte(sh)));
                 else
-                    m.Assign(rd, host.Intrinsic(IntrinsicProcedure.Ror, false, PrimitiveType.Word32, rs, Constant.Byte((byte)(32 - sh))));
+                    m.Assign(rd, m.Fn(CommonOps.Ror, Constant.Byte((byte)(32 - sh))));
             }
             else if (me == 31)
             {
@@ -839,7 +836,7 @@ namespace Reko.Arch.PowerPC
             var sh = RewriteOperand(instr.Operands[2]);
             byte mb = ((Constant)RewriteOperand(instr.Operands[3])).ToByte();
             byte me = ((Constant)RewriteOperand(instr.Operands[4])).ToByte();
-            var rol = host.Intrinsic(IntrinsicProcedure.Rol, false, rd.DataType, rs, sh );
+            var rol = m.Fn(CommonOps.Rol, rs, sh);
             if (mb == 0 && me == 31)
             {
                 m.Assign(rd, rol);

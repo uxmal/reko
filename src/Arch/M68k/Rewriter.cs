@@ -30,6 +30,7 @@ using System.Collections.Generic;
 using System.Text;
 using Reko.Core.Services;
 using Reko.Core.Memory;
+using Reko.Core.Intrinsics;
 
 namespace Reko.Arch.M68k
 {
@@ -269,10 +270,10 @@ VS Overflow Set 1001 V
                 case Mnemonic.pload: RewritePload(); break;
                 case Mnemonic.ptest: RewritePtest(); break;
                 case Mnemonic.reset: RewriteReset(); break;
-                case Mnemonic.rol: RewriteRotation(IntrinsicProcedure.Rol); break;
-                case Mnemonic.ror: RewriteRotation(IntrinsicProcedure.Ror);  break;
-                case Mnemonic.roxl: RewriteRotationX(IntrinsicProcedure.RolC);  break;
-                case Mnemonic.roxr: RewriteRotationX(IntrinsicProcedure.RorC);  break;
+                case Mnemonic.rol: RewriteRotation(CommonOps.Rol); break;
+                case Mnemonic.ror: RewriteRotation(CommonOps.Ror);  break;
+                case Mnemonic.roxl: RewriteRotationX(CommonOps.RolC);  break;
+                case Mnemonic.roxr: RewriteRotationX(CommonOps.RorC);  break;
                 case Mnemonic.rtd: RewriteRtd(); break;
                 case Mnemonic.rte: RewriteRte(); break;
                 case Mnemonic.rtm: RewriteRtm(); break;

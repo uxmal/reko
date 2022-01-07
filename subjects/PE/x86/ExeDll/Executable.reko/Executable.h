@@ -2607,11 +2607,11 @@ T_544: (in signature of __ror @ 00000000 : void)
   Class: Eq_543
   DataType: (ptr32 Eq_543)
   OrigDataType: 
-T_545: (in  @ 0040150E : word32)
+T_545: (in p1 @ 0040150E : word32)
   Class: Eq_545
   DataType: ui32
   OrigDataType: 
-T_546: (in  @ 0040150E : byte)
+T_546: (in p2 @ 0040150E : byte)
   Class: Eq_546
   DataType: byte
   OrigDataType: 

@@ -21,6 +21,7 @@
 using Reko.Arch.Z80;
 using Reko.Core;
 using Reko.Core.Expressions;
+using Reko.Core.Intrinsics;
 using Reko.Core.Types;
 using Reko.UnitTests.Mocks;
 using System.Collections.Generic;
@@ -43,7 +44,6 @@ namespace Reko.UnitTests.Fragments
             var Z = Frame.EnsureFlagGroup(Architecture.GetFlagGroup("Z"));
             var SZC = Frame.EnsureFlagGroup(Architecture.GetFlagGroup("SZC"));
             var SZP = Frame.EnsureFlagGroup(Architecture.GetFlagGroup("SZP"));
-            var rorc = new IntrinsicProcedure(IntrinsicProcedure.RorC, false, PrimitiveType.Byte, 3);
             Assign(sp, Frame.FramePointer);
             Label("m1Loop");
             Assign(a, h);
@@ -54,7 +54,7 @@ namespace Reko.UnitTests.Fragments
             Assign(C, Cond(a));
             Assign(h, a);
             Assign(a, l);
-            Assign(a, Fn(rorc, a, Constant.Byte(1), C));
+            Assign(a, Fn(CommonOps.RorC, a, Constant.Byte(1), C));
             Assign(C, Cond(a));
             Assign(l, a);
             Assign(c, ISub(c, 1));

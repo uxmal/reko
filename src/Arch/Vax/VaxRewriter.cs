@@ -332,7 +332,7 @@ namespace Reko.Arch.Vax
 
                 case Mnemonic.rei: RewriteRei(); break;
                 case Mnemonic.ret: RewriteRet(); break;
-                case Mnemonic.rotl: RewriteAlu3(PrimitiveType.Word32, Rotl, NZ00); break;
+                case Mnemonic.rotl: RewriteAlu3(PrimitiveType.Word32, RewriteRotl, NZ00); break;
                 case Mnemonic.rsb: RewriteRsb(); break;
 
                 case Mnemonic.sbwc: RewriteSbwc(); break;

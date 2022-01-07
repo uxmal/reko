@@ -543,6 +543,15 @@ namespace Reko.Core.Expressions
         /// <returns>A function application</returns>
         public Application Fn(IntrinsicProcedure intrinsic, params Expression[] args)
         {
+            if (intrinsic.IsGeneric && !intrinsic.IsConcreteGeneric)
+            {
+                var types = new DataType[args.Length];
+                for (int i = 0; i < types.Length; ++i)
+                {
+                    types[i] = args[i].DataType;
+                }
+                intrinsic = intrinsic.MakeInstance(types);
+            }
             return new Application(new ProcedureConstant(PrimitiveType.Ptr32, intrinsic), intrinsic.ReturnType, args);
         }
 

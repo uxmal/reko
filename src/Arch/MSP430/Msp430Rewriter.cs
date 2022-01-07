@@ -30,6 +30,7 @@ using Reko.Core.Expressions;
 using Reko.Core.Types;
 using Reko.Core.Services;
 using Reko.Core.Memory;
+using Reko.Core.Intrinsics;
 
 namespace Reko.Arch.Msp430
 {
@@ -481,14 +482,12 @@ namespace Reko.Arch.Msp430
             var src = RewriteOp(instr.Operands[0]);
             var dst = RewriteDst(
                 instr.Operands[0],
-                src, 
-                (a, b) => host.Intrinsic(
-                    IntrinsicProcedure.RorC, 
-                    false,
-                    a.DataType, 
-                    a, 
+                src,
+                (a, b) => m.Fn(
+                    CommonOps.RorC,
+                    a,
                     m.Byte(1),
-                    binder.EnsureFlagGroup(this.arch.GetFlagGroup(Registers.sr, (uint) FlagM.CF))));
+                    binder.EnsureFlagGroup(Registers.C)));
             EmitCc(dst, Registers.NZC);
             Assign(Registers.V, Constant.False());
         }

@@ -20,6 +20,7 @@
 
 using Reko.Core;
 using Reko.Core.Expressions;
+using Reko.Core.Intrinsics;
 using Reko.Core.Machine;
 using Reko.Core.Memory;
 using Reko.Core.Operators;
@@ -107,14 +108,14 @@ namespace Reko.Arch.Z80
                 case Mnemonic.jp: RewriteJp(); break;
                 case Mnemonic.jr: RewriteJr(); break;
                 case Mnemonic.ld: RewriteLd(); break;
-                case Mnemonic.rl: RewriteRotation(IntrinsicProcedure.RolC, true); break;
-                case Mnemonic.rla: RewriteRotation(IntrinsicProcedure.RolC, true); break;
-                case Mnemonic.rlc: RewriteRotation(IntrinsicProcedure.Rol, false); break;
-                case Mnemonic.rlca: RewriteRotation(IntrinsicProcedure.Rol, false); break;
-                case Mnemonic.rr: RewriteRotation(IntrinsicProcedure.RorC, true); break;
-                case Mnemonic.rra: RewriteRotation(IntrinsicProcedure.RorC, true); break;
-                case Mnemonic.rrc: RewriteRotation(IntrinsicProcedure.Ror, true); break;
-                case Mnemonic.rrca: RewriteRotation(IntrinsicProcedure.Ror, true); break;
+                case Mnemonic.rl: RewriteRotation(CommonOps.RolC, true); break;
+                case Mnemonic.rla: RewriteRotation(CommonOps.RolC, true); break;
+                case Mnemonic.rlc: RewriteRotation(CommonOps.Rol, false); break;
+                case Mnemonic.rlca: RewriteRotation(CommonOps.Rol, false); break;
+                case Mnemonic.rr: RewriteRotation(CommonOps.RorC, true); break;
+                case Mnemonic.rra: RewriteRotation(CommonOps.RorC, true); break;
+                case Mnemonic.rrc: RewriteRotation(CommonOps.Ror, false); break;
+                case Mnemonic.rrca: RewriteRotation(CommonOps.Ror, false); break;
                 case Mnemonic.ldd: RewriteBlockInstruction(m.ISub, false); break;
                 case Mnemonic.lddr: RewriteBlockInstruction(m.ISub, true); break;
                 case Mnemonic.ldi: RewriteBlockInstruction(m.IAdd, false); break;
@@ -218,7 +219,7 @@ namespace Reko.Arch.Z80
             AssignCond(Registers.SZPC, dst);
         }
 
-        private void RewriteRotation(string pseudoOp, bool useCarry)
+        private void RewriteRotation(IntrinsicProcedure pseudoOp, bool useCarry)
         {
             Expression reg;
             if (dasm.Current.Operands.Length > 0)
@@ -234,11 +235,11 @@ namespace Reko.Arch.Z80
             Expression src;
             if (useCarry)
             {
-                src = host.Intrinsic(pseudoOp, false, reg.DataType, reg, one, C);
+                src = m.Fn(pseudoOp, reg, one, C);
             }
-            else 
+            else
             {
-                src = host.Intrinsic(pseudoOp, false, reg.DataType, reg, one);
+                src = m.Fn(pseudoOp, reg, one);
             }
             m.Assign(reg, src);
             m.Assign(C, m.Cond(reg));

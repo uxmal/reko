@@ -44,9 +44,6 @@ namespace Reko.Core.Memory
 			this.Bytes = bytes;
 		}
 
-        [Obsolete("EndAddress is not safe to use when a memory area reaches the maximum allowable address. Use the Length property instead.")]
-        public Address EndAddress { get { return BaseAddress + Length; } }  // Address of the first byte beyond image.
-        
         /// <summary>
         /// The contents of the memory area.
         /// </summary>

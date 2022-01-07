@@ -20,6 +20,7 @@
 
 using Reko.Core;
 using Reko.Core.Expressions;
+using Reko.Core.Intrinsics;
 using Reko.Core.Machine;
 using Reko.Core.Memory;
 using Reko.Core.Rtl;
@@ -120,8 +121,8 @@ namespace Reko.Arch.Mos6502
                 case Mnemonic.php: Push(AllFlags()); break;
                 case Mnemonic.pla: Pull(Registers.a); break;
                 case Mnemonic.plp: Plp(); break;
-                case Mnemonic.rol: Rotate(IntrinsicProcedure.Rol); break;
-                case Mnemonic.ror: Rotate(IntrinsicProcedure.Ror); break;
+                case Mnemonic.rol: Rotate(CommonOps.Rol); break;
+                case Mnemonic.ror: Rotate(CommonOps.Ror); break;
                 case Mnemonic.rti: Rti(); break;
                 case Mnemonic.rts: Rts(); break;
                 case Mnemonic.sbc: Sbc(); break;
@@ -345,11 +346,11 @@ namespace Reko.Arch.Mos6502
             m.Assign(s, m.IAddS(s, 1));
         }
 
-        private void Rotate(string rot)
+        private void Rotate(IntrinsicProcedure rot)
         {
             var c = FlagGroupStorage(FlagM.NF | FlagM.ZF | FlagM.CF);
             var arg = RewriteOperand(instrCur.Operands[0]);
-            m.Assign(arg, host.Intrinsic(rot, false, arg.DataType, arg, Constant.Byte(1)));
+            m.Assign(arg, m.Fn(rot, arg, Constant.Byte(1)));
             m.Assign(c, m.Cond(arg));
         }
 

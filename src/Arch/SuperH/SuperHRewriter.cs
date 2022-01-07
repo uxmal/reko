@@ -32,6 +32,7 @@ using Reko.Core.Machine;
 using Reko.Core.Types;
 using Reko.Core.Services;
 using Reko.Core.Memory;
+using Reko.Core.Intrinsics;
 
 namespace Reko.Arch.SuperH
 {
@@ -154,10 +155,10 @@ namespace Reko.Arch.SuperH
                 case Mnemonic.nop: m.Nop(); break;
                 case Mnemonic.ocbi: RewriteOcbi(); break;
                 case Mnemonic.or: RewriteBinOp(m.Or, u => (byte)u); break;
-                case Mnemonic.rotcl: RewriteRotc(IntrinsicProcedure.RolC); break;
-                case Mnemonic.rotcr: RewriteRotc(IntrinsicProcedure.RorC); break;
-                case Mnemonic.rotl: RewriteRot(IntrinsicProcedure.Rol); break;
-                case Mnemonic.rotr: RewriteRot(IntrinsicProcedure.Ror); break;
+                case Mnemonic.rotcl: RewriteRotc(CommonOps.RolC); break;
+                case Mnemonic.rotcr: RewriteRotc(CommonOps.RorC); break;
+                case Mnemonic.rotl: RewriteRot(CommonOps.Rol); break;
+                case Mnemonic.rotr: RewriteRot(CommonOps.Ror); break;
                 case Mnemonic.rts: RewriteRts(); break;
                 case Mnemonic.sett: RewriteClrtSet(Registers.T, Constant.True()); break;
                 case Mnemonic.shad: RewriteShd(m.Shl, m.Sar); break;
@@ -616,17 +617,17 @@ namespace Reko.Arch.SuperH
             m.SideEffect(intrinsic);
         }
 
-        private void RewriteRot(string intrinsic)
+        private void RewriteRot(IntrinsicProcedure intrinsic)
         {
             var op1 = SrcOp(instr.Operands[0]);
-            m.Assign(op1, host.Intrinsic(intrinsic, false, op1.DataType, op1, m.Int32(1)));
+            m.Assign(op1, m.Fn(intrinsic, op1, m.Int32(1)));
         }
 
-        private void RewriteRotc(string intrinsic)
+        private void RewriteRotc(IntrinsicProcedure intrinsic)
         {
             var t = binder.EnsureFlagGroup(Registers.T);
             var op1 = SrcOp(instr.Operands[0]);
-            m.Assign(op1, host.Intrinsic(intrinsic, false, op1.DataType, op1, m.Int32(1), t));
+            m.Assign(op1, m.Fn(intrinsic, op1, m.Int32(1), t));
         }
 
         private void RewriteRts()

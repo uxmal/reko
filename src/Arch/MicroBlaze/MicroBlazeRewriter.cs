@@ -24,6 +24,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using Reko.Core;
 using Reko.Core.Expressions;
+using Reko.Core.Intrinsics;
 using Reko.Core.Machine;
 using Reko.Core.Memory;
 using Reko.Core.Rtl;
@@ -245,7 +246,7 @@ namespace Reko.Arch.MicroBlaze
         private Expression RorC(Expression a, Expression shift)
         {
             var cy = binder.EnsureFlagGroup(Registers.C);
-            var rorc = host.Intrinsic(IntrinsicProcedure.RorC, false, a.DataType, a, shift, cy);
+            var rorc = m.Fn(CommonOps.RorC, a, shift, cy);
             return rorc;
         }
 

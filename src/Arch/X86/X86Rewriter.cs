@@ -34,6 +34,7 @@ using System.Diagnostics;
 using System.Linq;
 using Reko.Core.Services;
 using Reko.Core.Memory;
+using Reko.Core.Intrinsics;
 
 namespace Reko.Arch.X86
 {
@@ -534,11 +535,11 @@ namespace Reko.Arch.X86
                 case Mnemonic.pusha: RewritePusha(); break;
                 case Mnemonic.pushf: RewritePushf(); break;
                 case Mnemonic.pxor: case Mnemonic.vpxor: RewritePxor(); break;
-                case Mnemonic.rcl: RewriteRotation(IntrinsicProcedure.RolC, true, true); break;
+                case Mnemonic.rcl: RewriteRotation(CommonOps.RolC, true, true); break;
                 case Mnemonic.rcpps: RewritePackedUnaryop("__rcpps", PrimitiveType.Real32); break;
-                case Mnemonic.rcr: RewriteRotation(IntrinsicProcedure.RorC, true, false); break;
-                case Mnemonic.rol: RewriteRotation(IntrinsicProcedure.Rol, false, true); break;
-                case Mnemonic.ror: RewriteRotation(IntrinsicProcedure.Ror, false, false); break;
+                case Mnemonic.rcr: RewriteRotation(CommonOps.RorC, true, false); break;
+                case Mnemonic.rol: RewriteRotation(CommonOps.Rol, false, true); break;
+                case Mnemonic.ror: RewriteRotation(CommonOps.Ror, false, false); break;
                 case Mnemonic.rorx: RewriteRorx(); break;
                 case Mnemonic.rdmsr: RewriteRdmsr(); break;
                 case Mnemonic.rdpmc: RewriteRdpmc(); break;

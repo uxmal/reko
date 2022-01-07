@@ -20,6 +20,7 @@
 
 using Reko.Core;
 using Reko.Core.Expressions;
+using Reko.Core.Intrinsics;
 using Reko.Core.Machine;
 using Reko.Core.Memory;
 using Reko.Core.Rtl;
@@ -320,28 +321,28 @@ namespace Reko.Arch.Sanyo
         private void RewriteRol()
         {
             var acc = binder.EnsureRegister(Registers.ACC);
-            m.Assign(acc, host.Intrinsic(IntrinsicProcedure.Rol, false, acc.DataType, acc, m.Int8(1)));
+            m.Assign(acc, m.Fn(CommonOps.Rol, acc, m.Int8(1)));
         }
 
         private void RewriteRolc()
         {
             var acc = binder.EnsureRegister(Registers.ACC);
             var c = binder.EnsureFlagGroup(C);
-            m.Assign(acc, host.Intrinsic(IntrinsicProcedure.RolC, false, acc.DataType, acc, m.Int8(1), c));
+            m.Assign(acc, m.Fn(CommonOps.RolC, acc, m.Int8(1), c));
             m.Assign(c, m.Cond(acc));
         }
 
         private void RewriteRor()
         {
             var acc = binder.EnsureRegister(Registers.ACC);
-            m.Assign(acc, host.Intrinsic(IntrinsicProcedure.Ror, false, acc.DataType, acc, m.Int8(1)));
+            m.Assign(acc, m.Fn(CommonOps.Ror, acc, m.Int8(1)));
         }
 
         private void RewriteRorc()
         {
             var acc = binder.EnsureRegister(Registers.ACC);
             var c = binder.EnsureFlagGroup(C);
-            m.Assign(acc, host.Intrinsic(IntrinsicProcedure.RorC, false, acc.DataType, acc, m.Int8(1), c));
+            m.Assign(acc, m.Fn(CommonOps.RorC, acc, m.Int8(1), c));
             m.Assign(c, m.Cond(acc));
         }
 

@@ -20,10 +20,10 @@ Eq_62: (fn ui64 (ui64, byte))
 	T_62 (in __rol @ 1400011BA : ptr64)
 	T_63 (in signature of __rol @ 00000000 : void)
 Eq_71: (fn ui64 (ui64, byte))
-	T_71 (in __ror @ 1400011C8 : ptr64)
+	T_71 (in __ror @ 1400011C8 : ptr32)
 	T_72 (in signature of __ror @ 00000000 : void)
-	T_582 (in __ror @ 1400016B4 : ptr64)
-	T_742 (in __ror @ 140001827 : ptr64)
+	T_582 (in __ror @ 1400016B4 : ptr32)
+	T_742 (in __ror @ 140001827 : ptr32)
 Eq_77: (fn word64 (ui64, word64))
 	T_77 (in fn000000014000147C @ 1400011CC : ptr64)
 	T_78 (in signature of fn000000014000147C @ 14000147C : void)
@@ -724,19 +724,19 @@ T_70: (in (word16) rcx_8 != 0<16> @ 00000000 : bool)
   Class: Eq_70
   DataType: bool
   OrigDataType: bool
-T_71: (in __ror @ 1400011C8 : ptr64)
+T_71: (in __ror @ 1400011C8 : ptr32)
   Class: Eq_71
-  DataType: (ptr64 Eq_71)
-  OrigDataType: (ptr64 (fn T_76 (T_61, T_75)))
+  DataType: (ptr32 Eq_71)
+  OrigDataType: (ptr32 (fn T_76 (T_61, T_75)))
 T_72: (in signature of __ror @ 00000000 : void)
   Class: Eq_71
-  DataType: (ptr64 Eq_71)
+  DataType: (ptr32 Eq_71)
   OrigDataType: 
-T_73: (in  @ 1400011C8 : word64)
+T_73: (in p1 @ 1400011C8 : word64)
   Class: Eq_61
   DataType: ui64
   OrigDataType: 
-T_74: (in  @ 1400011C8 : byte)
+T_74: (in p2 @ 1400011C8 : byte)
   Class: Eq_74
   DataType: byte
   OrigDataType: 
@@ -2768,10 +2768,10 @@ T_581: (in CONVERT(SLICE(rdx_49, word32, 0) & 0x3F<32>, word32, uint64) @ 140001
   Class: Eq_577
   DataType: uint64
   OrigDataType: uint64
-T_582: (in __ror @ 1400016B4 : ptr64)
+T_582: (in __ror @ 1400016B4 : ptr32)
   Class: Eq_71
-  DataType: (ptr64 Eq_71)
-  OrigDataType: (ptr64 (fn T_588 (T_583, T_587)))
+  DataType: (ptr32 Eq_71)
+  OrigDataType: (ptr32 (fn T_588 (T_583, T_587)))
 T_583: (in 0xFFFFFFFFFFFFFFFF<64> @ 1400016B4 : word64)
   Class: Eq_61
   DataType: ui64
@@ -3408,10 +3408,10 @@ T_741: (in Mem5[0x0000000140003000<p64>:word64] @ 14000180A : word64)
   Class: Eq_5
   DataType: ui64
   OrigDataType: word64
-T_742: (in __ror @ 140001827 : ptr64)
+T_742: (in __ror @ 140001827 : ptr32)
   Class: Eq_71
-  DataType: (ptr64 Eq_71)
-  OrigDataType: (ptr64 (fn T_750 (T_745, T_749)))
+  DataType: (ptr32 Eq_71)
+  OrigDataType: (ptr32 (fn T_750 (T_745, T_749)))
 T_743: (in 00000001400035C0 @ 140001827 : ptr64)
   Class: Eq_743
   DataType: (ptr64 Eq_590)

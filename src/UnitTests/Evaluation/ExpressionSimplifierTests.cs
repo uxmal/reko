@@ -24,6 +24,7 @@ using Reko.Analysis;
 using Reko.Core;
 using Reko.Core.Code;
 using Reko.Core.Expressions;
+using Reko.Core.Intrinsics;
 using Reko.Core.Operators;
 using Reko.Core.Types;
 using Reko.Evaluation;
@@ -47,7 +48,7 @@ namespace Reko.UnitTests.Evaluation
         public void Setup()
         {
             m = new ProcedureBuilder();
-            this.rolc_8 = new IntrinsicProcedure(IntrinsicProcedure.RolC, false, PrimitiveType.Byte, 3);
+            this.rolc_8 = CommonOps.RolC.MakeInstance(PrimitiveType.Word32, PrimitiveType.Byte, PrimitiveType.Bool);
             arch = new Mock<IProcessorArchitecture>();
         }
 
@@ -648,11 +649,7 @@ namespace Reko.UnitTests.Evaluation
             Given_ExpressionSimplifier();
             var r0 = new RegisterStorage("r0", 0, 0, PrimitiveType.Word32);
             var r1 = new RegisterStorage("r1", 0, 0, PrimitiveType.Word32);
-            var sigRol = FunctionType.Func(
-                new Identifier("", r0.DataType, r0),
-                new Identifier("value", r0.DataType, r0),
-                new Identifier("sh", r0.DataType, r1));
-            var rol = new IntrinsicProcedure(IntrinsicProcedure.Rol, false, sigRol);
+            var rol = CommonOps.Rol.MakeInstance(r0.DataType, r1.DataType);
             var (exp, _) = m.Fn(rol, m.Fn(rol, foo, m.Word32(1)), m.Word32(1)).Accept(simplifier);
             Assert.AreEqual("__rol(foo_1, 2<32>)", exp.ToString());
         }
@@ -663,11 +660,7 @@ namespace Reko.UnitTests.Evaluation
             Given_ExpressionSimplifier();
             var r0 = new RegisterStorage("r0", 0, 0, PrimitiveType.Word32);
             var r1 = new RegisterStorage("r1", 0, 0, PrimitiveType.Word32);
-            var sigRol = FunctionType.Func(
-                new Identifier("", r0.DataType, r0),
-                new Identifier("value", r0.DataType, r0),
-                new Identifier("sh", r0.DataType, r1));
-            var ror = new IntrinsicProcedure(IntrinsicProcedure.Ror, false, sigRol);
+            var ror = CommonOps.Ror.MakeInstance(r0.DataType, r1.DataType);
             var (expr, _) = m.Fn(ror, m.Fn(ror, foo, m.Word32(2)), m.Word32(1)).Accept(simplifier);
             Assert.AreEqual("__ror(foo_1, 3<32>)", expr.ToString());
         }

@@ -32,6 +32,7 @@ using System.Diagnostics;
 using Reko.Core.Lib;
 using Reko.Core.Services;
 using Reko.Core.Memory;
+using Reko.Core.Intrinsics;
 
 namespace Reko.Arch.Avr
 {
@@ -530,7 +531,7 @@ namespace Reko.Arch.Avr
         {
             var c = binder.EnsureFlagGroup(arch.C);
             var reg = RewriteOp(0);
-            m.Assign(reg, host.Intrinsic(IntrinsicProcedure.RorC, false, PrimitiveType.Byte, reg, m.Int32(1), c));
+            m.Assign(reg, m.Fn(CommonOps.RorC, reg, m.Int32(1), c));
             EmitFlags(reg, CmpFlags);
         }
 

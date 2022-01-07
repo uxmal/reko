@@ -28,6 +28,7 @@ using Reko.Core.Expressions;
 using Reko.Core.Rtl;
 using System.Threading;
 using Reko.Core.Types;
+using Reko.Core.Intrinsics;
 
 namespace Reko.Core.NativeInterface
 {
@@ -268,14 +269,17 @@ namespace Reko.Core.NativeInterface
         {
             var aa = GetExpression(a);
             var bb = GetExpression(b);
-            return MapToHandle(host.Intrinsic(IntrinsicProcedure.Ror, false, PrimitiveType.Word32, aa, bb));
+            var ror = CommonOps.Ror.MakeInstance(aa.DataType, bb.DataType);
+            return MapToHandle(m.Fn(ror, aa, bb));
         }
 
-        public HExpr Rrc(HExpr a, HExpr b)
+        public HExpr Rrc(HExpr a, HExpr b, HExpr c)
         {
             var aa = GetExpression(a);
             var bb = GetExpression(b);
-            return MapToHandle(host.Intrinsic(IntrinsicProcedure.Ror, false, PrimitiveType.Word32, aa, bb));
+            var cc = GetExpression(c);
+            var rorc = CommonOps.RorC.MakeInstance(aa.DataType, bb.DataType, cc.DataType);
+            return MapToHandle(m.Fn(CommonOps.RorC, aa, bb, cc));
         }
 
         public HExpr Sar(HExpr a, HExpr b)

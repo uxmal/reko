@@ -20,6 +20,7 @@
 
 using Reko.Core;
 using Reko.Core.Expressions;
+using Reko.Core.Intrinsics;
 using Reko.Core.Machine;
 using Reko.Core.Operators;
 using Reko.Core.Rtl;
@@ -154,7 +155,7 @@ namespace Reko.Arch.Arm.AArch64
                 case Mnemonic.asr: right = m.Sar(right, amt); break;
                 case Mnemonic.lsl: right = m.Shl(right, amt); break;
                 case Mnemonic.lsr: right = m.Shr(right, amt); break;
-                case Mnemonic.ror: right = host.Intrinsic(IntrinsicProcedure.Ror, false, right.DataType, right, amt); break;
+                case Mnemonic.ror: right = m.Fn(CommonOps.Ror, right, amt); break;
                 case Mnemonic.sxtb: right = MaybeShift(SignExtend(toBitSize, PrimitiveType.SByte, right), amt); break;
                 case Mnemonic.sxth: right = MaybeShift(SignExtend(toBitSize, PrimitiveType.Int16, right), amt); break;
                 case Mnemonic.sxtw: right = MaybeShift(SignExtend(toBitSize, PrimitiveType.Int32, right), amt); break;
@@ -645,7 +646,7 @@ namespace Reko.Arch.Arm.AArch64
 
         private void RewriteRor()
         {
-            RewriteBinary((a, b) => host.Intrinsic(IntrinsicProcedure.Ror, false, a.DataType, a, b));
+            RewriteBinary((a, b) => m.Fn(CommonOps.Ror, a, b));
         }
 
         private void RewriteSbfiz()

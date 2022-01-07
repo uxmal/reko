@@ -22,6 +22,7 @@ using Reko.Core;
 using Reko.Core.Code;
 using Reko.Core.Diagnostics;
 using Reko.Core.Expressions;
+using Reko.Core.Intrinsics;
 using Reko.Core.Operators;
 using Reko.Core.Services;
 using Reko.Core.Types;
@@ -317,11 +318,11 @@ namespace Reko.Analysis
             {
                 if (pc.Procedure is IntrinsicProcedure pseudo)
                 {
-                    if (pseudo.Name == IntrinsicProcedure.RorC)
+                    if (pseudo.Name == CommonOps.RorC.Name)
                     {
                         return TransformRorC(app, a);
                     }
-                    else if (pseudo.Name == IntrinsicProcedure.RolC)
+                    else if (pseudo.Name == CommonOps.RolC.Name)
                     {
                         return TransformRolC(app, a);
                     }

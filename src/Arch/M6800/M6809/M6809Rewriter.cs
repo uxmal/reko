@@ -20,6 +20,7 @@
 
 using Reko.Core;
 using Reko.Core.Expressions;
+using Reko.Core.Intrinsics;
 using Reko.Core.Machine;
 using Reko.Core.Memory;
 using Reko.Core.Rtl;
@@ -267,12 +268,12 @@ namespace Reko.Arch.M6800.M6809
 
         private Expression Rol1(Expression e)
         {
-            return host.Intrinsic(IntrinsicProcedure.Rol, false, e.DataType, e, Constant.Byte(1));
+            return m.Fn(CommonOps.Rol, e, Constant.Byte(1));
         }
 
         private Expression Ror1(Expression e)
         {
-            return host.Intrinsic(IntrinsicProcedure.Ror, false, e.DataType, e, Constant.Byte(1));
+            return m.Fn(CommonOps.Ror, e, Constant.Byte(1));
         }
 
         private Expression Sbc(Expression a, Expression b)

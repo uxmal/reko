@@ -20,6 +20,7 @@
 
 using Reko.Core;
 using Reko.Core.Expressions;
+using Reko.Core.Intrinsics;
 using Reko.Core.Machine;
 using Reko.Core.Memory;
 using Reko.Core.Rtl;
@@ -114,10 +115,10 @@ namespace Reko.Arch.Tlcs.Tlcs90
                 case Mnemonic.res: RewriteSetRes(false); break;
                 case Mnemonic.ret: RewriteRet(); break;
                 case Mnemonic.reti: RewriteReti(); break;
-                case Mnemonic.rl: RewriteRotation(IntrinsicProcedure.RolC, true); break;
-                case Mnemonic.rlc: RewriteRotation(IntrinsicProcedure.Rol, false); break;
-                case Mnemonic.rr: RewriteRotation(IntrinsicProcedure.RorC, true); break;
-                case Mnemonic.rrc: RewriteRotation(IntrinsicProcedure.Ror, false); break;
+                case Mnemonic.rl: RewriteRotation(CommonOps.RolC, true); break;
+                case Mnemonic.rlc: RewriteRotation(CommonOps.Ror, false); break;
+                case Mnemonic.rr: RewriteRotation(CommonOps.RorC, true); break;
+                case Mnemonic.rrc: RewriteRotation(CommonOps.Ror, false); break;
                 case Mnemonic.sbc: RewriteAdcSbc(m.ISub, "**-**V1*"); break;
                 case Mnemonic.scf: RewriteScf(); break;
                 case Mnemonic.set: RewriteSetRes(true); break;

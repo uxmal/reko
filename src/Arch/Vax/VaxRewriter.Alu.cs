@@ -20,6 +20,7 @@
 
 using Reko.Core;
 using Reko.Core.Expressions;
+using Reko.Core.Intrinsics;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
@@ -92,13 +93,9 @@ namespace Reko.Arch.Vax
             NZ00(dst);
         }
 
-        private Expression Rotl(Expression a, Expression b)
+        private Expression RewriteRotl(Expression a, Expression b)
         {
-            return host.Intrinsic(
-                IntrinsicProcedure.Rol,
-                false,
-                a.DataType,
-                a, b);
+            return m.Fn(CommonOps.Rol, a, b);
         }
 
         private void RewriteP4(string op)

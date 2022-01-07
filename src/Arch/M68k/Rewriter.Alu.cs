@@ -44,20 +44,20 @@ namespace Reko.Arch.M68k
             AllConditions(opDst);
         }
 
-        public void RewriteRotation(string procName)
+        public void RewriteRotation(IntrinsicProcedure rotation)
         {
             Expression? opDst;
             if (instr.Operands.Length == 2)
             {
                 var opSrc = orw.RewriteSrc(instr.Operands[0], instr.Address);
                 opDst = orw.RewriteDst(instr.Operands[1], instr.Address, opSrc, (s, d) =>
-                    host.Intrinsic(procName, false, instr.DataWidth!, d, s));
+                    m.Fn(rotation, d, s));
             }
             else
             {
                 opDst = orw.RewriteDst(instr.Operands[0], instr.Address,
                     Constant.Byte(1), (s, d) =>
-                        host.Intrinsic(procName, false, PrimitiveType.Word32, d, s));
+                        m.Fn(rotation, d, s));
             }
             if (opDst == null)
             {
@@ -70,22 +70,22 @@ namespace Reko.Arch.M68k
             m.Assign(binder.EnsureFlagGroup(Registers.V), Constant.False());
         }
 
-        public void RewriteRotationX(string procName)
+        public void RewriteRotationX(IntrinsicProcedure rotation)
         {
             Expression? opDst;
             if (instr.Operands.Length == 2)
             {
                 var opSrc = orw.RewriteSrc(instr.Operands[0], instr.Address);
                 opDst = orw.RewriteDst(instr.Operands[1], instr.Address, opSrc, (s, d) =>
-                    host.Intrinsic(procName, false, instr.DataWidth!, d, s, binder.EnsureFlagGroup(Registers.X)));
+                    m.Fn(rotation, d, s, binder.EnsureFlagGroup(Registers.X)));
             }
             else
             {
                 opDst = orw.RewriteDst(instr.Operands[0], instr.Address,
                     Constant.Byte(1), (s, d) =>
-                        host.Intrinsic(procName, false, PrimitiveType.Word32, d, s, binder.EnsureFlagGroup(Registers.X)));
+                        m.Fn(rotation, d, s, binder.EnsureFlagGroup(Registers.X)));
             }
-            if (opDst == null)
+            if (opDst is null)
             {
                 EmitInvalid();
                 return;

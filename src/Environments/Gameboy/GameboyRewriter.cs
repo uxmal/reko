@@ -1,5 +1,6 @@
 using Reko.Core;
 using Reko.Core.Expressions;
+using Reko.Core.Intrinsics;
 using Reko.Core.Machine;
 using Reko.Core.Memory;
 using Reko.Core.Rtl;
@@ -536,7 +537,7 @@ namespace Reko.Environments.Gameboy
         {
             var exp = Op(0);
             var cy = binder.EnsureFlagGroup(Registers.C);
-            m.Assign(exp, host.Intrinsic(IntrinsicProcedure.RolC, false, exp.DataType, exp, m.Byte(1), cy));
+            m.Assign(exp, m.Fn(CommonOps.RolC, exp, m.Byte(1), cy));
             Emit_Z00C(m.Cond(exp));
         }
 
@@ -544,7 +545,7 @@ namespace Reko.Environments.Gameboy
         {
             var exp = binder.EnsureRegister(Registers.a);
             var cy = binder.EnsureFlagGroup(Registers.C);
-            m.Assign(exp, host.Intrinsic(IntrinsicProcedure.RolC, false, exp.DataType, exp, m.Byte(1), cy));
+            m.Assign(exp, m.Fn(CommonOps.RolC, exp, m.Byte(1), cy));
             Emit_000C(m.Cond(exp));
         }
 
@@ -552,14 +553,14 @@ namespace Reko.Environments.Gameboy
         {
             var exp = Op(0);
             var cy = binder.EnsureFlagGroup(Registers.C);
-            m.Assign(exp, host.Intrinsic(IntrinsicProcedure.Rol, false, exp.DataType, exp, m.Byte(1), cy));
+            m.Assign(exp, m.Fn(CommonOps.RolC, exp, m.Byte(1), cy));
             Emit_Z00C(m.Cond(exp));
         }
 
         private void Rewrite_rlca()
         {
             var exp = binder.EnsureRegister(Registers.a);
-            m.Assign(exp, host.Intrinsic(IntrinsicProcedure.Rol, false, exp.DataType, exp, m.Byte(1)));
+            m.Assign(exp, m.Fn(CommonOps.Rol, exp, m.Byte(1)));
             Emit_000C(m.Cond(exp));
         }
 
@@ -567,7 +568,7 @@ namespace Reko.Environments.Gameboy
         {
             var exp = Op(0);
             var cy = binder.EnsureFlagGroup(Registers.C);
-            m.Assign(exp, host.Intrinsic(IntrinsicProcedure.RorC, false, exp.DataType, exp, m.Byte(1), cy));
+            m.Assign(exp, m.Fn(CommonOps.RorC, exp, m.Byte(1), cy));
             Emit_Z00C(m.Cond(exp));
         }
 
@@ -575,21 +576,21 @@ namespace Reko.Environments.Gameboy
         {
             var exp = binder.EnsureRegister(Registers.a);
             var cy = binder.EnsureFlagGroup(Registers.C);
-            m.Assign(exp, host.Intrinsic(IntrinsicProcedure.RorC, false, exp.DataType, exp, m.Byte(1), cy));
+            m.Assign(exp, m.Fn(CommonOps.RorC, exp, m.Byte(1), cy));
             Emit_000C(m.Cond(exp));
         }
 
         private void Rewrite_rrc()
         {
             var exp = Op(0);
-            m.Assign(exp, host.Intrinsic(IntrinsicProcedure.Ror, false, exp.DataType, exp, m.Byte(1)));
+            m.Assign(exp, m.Fn(CommonOps.Ror, exp, m.Byte(1)));
             Emit_Z00C(exp);
         }
 
         private void Rewrite_rrca()
         {
             var exp = binder.EnsureRegister(Registers.a);
-            m.Assign(exp, host.Intrinsic(IntrinsicProcedure.Ror, false, exp.DataType, exp, m.Byte(1)));
+            m.Assign(exp, m.Fn(CommonOps.Ror, exp, m.Byte(1)));
             Emit_000C(m.Cond(exp));
         }
 

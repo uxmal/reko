@@ -20,6 +20,7 @@
 
 using Reko.Core;
 using Reko.Core.Expressions;
+using Reko.Core.Intrinsics;
 using Reko.Core.Lib;
 using Reko.Core.Machine;
 using Reko.Core.Memory;
@@ -122,11 +123,11 @@ namespace Reko.Arch.Rl78
                 case Mnemonic.push: RewritePush(); break;
                 case Mnemonic.ret: RewriteRet(); break;
                 case Mnemonic.reti: RewriteRet(); break;
-                case Mnemonic.rol: RewriteRotate(IntrinsicProcedure.Rol); break;
-                case Mnemonic.rolc: RewriteRotateC(IntrinsicProcedure.RolC); break;
-                case Mnemonic.rolwc: RewriteRotateC(IntrinsicProcedure.RolC); break;
-                case Mnemonic.ror: RewriteRotate(IntrinsicProcedure.Ror); break;
-                case Mnemonic.rorc: RewriteRotateC(IntrinsicProcedure.RorC); break;
+                case Mnemonic.rol: RewriteRotate(CommonOps.Rol); break;
+                case Mnemonic.rolc: RewriteRotateC(CommonOps.RolC); break;
+                case Mnemonic.rolwc: RewriteRotateC(CommonOps.RolC); break;
+                case Mnemonic.ror: RewriteRotate(CommonOps.Ror); break;
+                case Mnemonic.rorc: RewriteRotateC(CommonOps.RorC); break;
                 case Mnemonic.sar: RewriteShift(m.Sar); break;
                 case Mnemonic.sarw: RewriteShiftw(m.Sar); break;
                 case Mnemonic.sel: RewriteSel(); break;
@@ -471,27 +472,23 @@ namespace Reko.Arch.Rl78
             m.Return(4, 0);
         }
 
-        private void RewriteRotate(string intrinsic)
+        private void RewriteRotate(IntrinsicProcedure intrinsic)
         {
             var src = RewriteSrc(instr.Operands[0]);
             var dst = RewriteDst(instr.Operands[0], src, (a, b) =>
-                host.Intrinsic(
+                m.Fn(
                     intrinsic,
-                    false,
-                    b.DataType,
                     b,
                     RewriteSrc(instr.Operands[1])));
             EmitCond(dst, C());
         }
 
-        private void RewriteRotateC(string intrinsic)
+        private void RewriteRotateC(IntrinsicProcedure intrinsic)
         {
             var src = RewriteSrc(instr.Operands[0]);
             var dst = RewriteDst(instr.Operands[0], src, (a, b) =>
-                host.Intrinsic(
+                m.Fn(
                     intrinsic,
-                    false,
-                    b.DataType,
                     b,
                     RewriteSrc(instr.Operands[1]),
                     C()));

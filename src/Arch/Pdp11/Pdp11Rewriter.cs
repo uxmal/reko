@@ -20,6 +20,7 @@
 
 using Reko.Core;
 using Reko.Core.Expressions;
+using Reko.Core.Intrinsics;
 using Reko.Core.Machine;
 using Reko.Core.Rtl;
 using Reko.Core.Types;
@@ -133,10 +134,10 @@ namespace Reko.Arch.Pdp11
                 case Mnemonic.negb: RewriteNeg(); break;
                 case Mnemonic.nop: m.Nop(); break;
                 case Mnemonic.reset: RewriteReset(); break;
-                case Mnemonic.rol: RewriteRotate(IntrinsicProcedure.RolC, 0x8000); break;
-                case Mnemonic.rolb: RewriteRotate(IntrinsicProcedure.RolC, 0x80); break;
-                case Mnemonic.ror: RewriteRotate(IntrinsicProcedure.RorC, 0x1); break;
-                case Mnemonic.rorb: RewriteRotate(IntrinsicProcedure.RorC, 0x1); break;
+                case Mnemonic.rol: RewriteRotate(CommonOps.RolC, 0x8000); break;
+                case Mnemonic.rolb: RewriteRotate(CommonOps.RolC, 0x80); break;
+                case Mnemonic.ror: RewriteRotate(CommonOps.RorC, 0x1); break;
+                case Mnemonic.rorb: RewriteRotate(CommonOps.RorC, 0x1); break;
                 case Mnemonic.rti: RewriteRti(); break;
                 case Mnemonic.rts: RewriteRts(); break;
                 case Mnemonic.rtt: RewriteRtt(); break;

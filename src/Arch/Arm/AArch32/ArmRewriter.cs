@@ -20,6 +20,7 @@
 
 using Reko.Core;
 using Reko.Core.Expressions;
+using Reko.Core.Intrinsics;
 using Reko.Core.Machine;
 using Reko.Core.Memory;
 using Reko.Core.Rtl;
@@ -787,11 +788,11 @@ namespace Reko.Arch.Arm.AArch32
                                 ea = m.IAdd(ea, m.Sar(ireg, Constant.Int32(mop.Shift)));
                                 break;
                             case Mnemonic.ror:
-                                var ix = host.Intrinsic(IntrinsicProcedure.Ror, false, ireg.DataType, ireg, Constant.Int32(mop.Shift));
+                                var ix = m.Fn(CommonOps.Ror, ireg, Constant.Int32(mop.Shift));
                                 ea = m.IAdd(ea, ix);
                                 break;
                             case Mnemonic.rrx:
-                                var rrx = host.Intrinsic(IntrinsicProcedure.RorC, false, ireg.DataType, ireg, Constant.Int32(mop.Shift), C());
+                                var rrx = m.Fn(CommonOps.RorC, ireg, Constant.Int32(mop.Shift), C());
                                 ea = m.IAdd(ea, rrx);
                                 break;
                             }
@@ -909,9 +910,8 @@ namespace Reko.Arch.Arm.AArch32
             case Mnemonic.asr: return m.Sar(exp, sh);
             case Mnemonic.lsl: return m.Shl(exp, sh);
             case Mnemonic.lsr: return m.Sar(exp, sh);
-            case Mnemonic.ror: return host.Intrinsic(IntrinsicProcedure.Ror, false, exp.DataType, exp, sh);
-            case Mnemonic.rrx:
-                return host.Intrinsic(IntrinsicProcedure.RorC, false, exp.DataType, exp, sh, C());
+            case Mnemonic.ror: return m.Fn(CommonOps.Ror, exp, sh);
+            case Mnemonic.rrx: return m.Fn(CommonOps.RorC, exp, sh, C());
             default: return exp;
             }
         }
