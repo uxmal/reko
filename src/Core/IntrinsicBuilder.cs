@@ -23,6 +23,7 @@ using Reko.Core.Serialization;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace Reko.Core
@@ -42,6 +43,9 @@ namespace Reko.Core
         private readonly bool hasSideEffect;
         private readonly ProcedureCharacteristics characteristics;
         private readonly List<Identifier> parameters;
+        private Func<Constant[], Constant>? applyConstants;
+        private DataType[]? genericTypes;
+        private Dictionary<string, DataType>? genericTypeDictionary;
 
         public IntrinsicBuilder(string intrinsicName, bool hasSideEffect) : this(intrinsicName, hasSideEffect, DefaultProcedureCharacteristics.Instance)
         {
@@ -55,6 +59,28 @@ namespace Reko.Core
             this.parameters = new List<Identifier>();
         }
 
+        /// <summary>
+        /// Add an evaluator function to the intrinsic.
+        /// </summary>
+        public IntrinsicBuilder ApplyConstants(Func<Constant[], Constant> fn)
+        {
+            this.applyConstants = fn;
+            return this;
+        }
+
+        public IntrinsicBuilder GenericTypes(params string [] typenames)
+        {
+            genericTypeDictionary = new Dictionary<string, DataType>();
+            var types = new List<DataType>();
+            foreach (var typename in typenames)
+            {
+                DataType dt = new TypeReference(typename, null!);
+                genericTypeDictionary.Add(typename, dt);
+            }
+            this.genericTypes = types.ToArray();
+            return this;
+        }
+
         public IntrinsicBuilder Param(DataType dt)
         {
             var param = new Identifier($"p{parameters.Count + 1}", dt, null!);
@@ -62,19 +88,47 @@ namespace Reko.Core
             return this;
         }
 
+        public IntrinsicBuilder Param(string genericType)
+        {
+            return Param(GetGenericArgument(genericType));
+        }
+
+        private DataType GetGenericArgument(string genericType)
+        {
+            if (genericTypeDictionary is null)
+                throw new InvalidOperationException("No generic types were specified.");
+            if (!genericTypeDictionary.TryGetValue(genericType, out var dt))
+                throw new InvalidOperationException($"Unknown generic type '{genericType}'.");
+            return dt;
+        }
+
         public IntrinsicProcedure Void()
         {
             var signature = FunctionType.Action(parameters.ToArray());
-            return new IntrinsicProcedure(intrinsicName, hasSideEffect, signature);
+            return MakeIntrinsic(signature);
         }
 
         public IntrinsicProcedure Returns(DataType dt)
         {
             var signature = FunctionType.Func(
                 new Identifier("", dt, null!));
+            return MakeIntrinsic(signature);
+        }
+
+        public IntrinsicProcedure Returns(string genericType)
+        {
+            var signature = FunctionType.Func(
+                new Identifier("",  GetGenericArgument(genericType), null!));
+            return MakeIntrinsic(signature);
+        }
+
+        private IntrinsicProcedure MakeIntrinsic(FunctionType signature)
+        {
             var proc = new IntrinsicProcedure(intrinsicName, hasSideEffect, signature);
             proc.Characteristics = characteristics;
+            proc.ApplyConstants = this.applyConstants;
             return proc;
         }
+
     }
 }

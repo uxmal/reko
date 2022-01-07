@@ -1162,7 +1162,7 @@ namespace Reko.Core.Output
                     InnerFormatter.Write(os.OriginalIdentifier.Storage.Kind);
                     InnerFormatter.Write(" out ");
                 }
-                else
+                else if (arg.Storage is not null)
                 {
                     InnerFormatter.Write(arg.Storage.Kind);
                     InnerFormatter.Write(" ");

@@ -645,22 +645,7 @@ namespace Reko.Arch.X86
             }
         }
 
-        public Expression Intrinsic(IntrinsicProcedure intrinsic, DataType retType, params Expression[] args)
-        {
-            if (args.Length != intrinsic.Arity)
-                throw new ArgumentOutOfRangeException(
-                    string.Format("Intrinsic {0} expected {1} arguments, but was passed {2}.",
-                    intrinsic.Name,
-                    intrinsic.Arity,
-                    args.Length));
-
-            return m.Fn(new ProcedureConstant(arch.PointerType, intrinsic), retType, args);
-        }
-
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return GetEnumerator();
-        }
+        IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
         [Flags]
         public enum CopyFlags

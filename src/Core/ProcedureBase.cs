@@ -24,6 +24,7 @@ using Reko.Core.Output;
 using System;
 using System.ComponentModel;
 using System.IO;
+using Reko.Core.Expressions;
 
 namespace Reko.Core
 {
@@ -33,12 +34,43 @@ namespace Reko.Core
 	[DefaultProperty("Name")]
 	public abstract class ProcedureBase
 	{
+        private readonly DataType[] genericArguments;
+        private readonly bool isConcrete;
+
 		public ProcedureBase(string name, bool hasSideEffect)
 		{
 			this.name = name;
+            this.genericArguments = Array.Empty<DataType>();
             this.HasSideEffect = hasSideEffect;
 			this.Characteristics = DefaultProcedureCharacteristics.Instance;
 		}
+
+        public ProcedureBase(
+            string name, 
+            DataType[] genericArguments,
+            bool isConcrete,
+            bool hasSideEffect)
+        {
+            this.name = name;
+            this.genericArguments = genericArguments;
+            this.isConcrete = isConcrete;
+            this.HasSideEffect = hasSideEffect;
+            this.Characteristics = DefaultProcedureCharacteristics.Instance;
+        }
+
+        /// <summary>
+        /// If this is a member function of a class or struct, this property
+        /// will be a reference to the enclosing type.
+        /// </summary>
+        //$TODO: all the infrastructure for class loading remains to be
+        // implemented; for now we just store the class name.
+        public SerializedType? EnclosingType { get; set; }
+
+        /// <summary>
+        /// If this is a generic procedure _and_ it's concrete (i.e. instantiated
+        /// with data types), return true.
+        /// </summary>
+        public bool IsConcreteGeneric => this.isConcrete && this.genericArguments.Length > 0;
 
         /// <summary>
         /// The name of the procedure.
@@ -58,19 +90,82 @@ namespace Reko.Core
         /// </summary>
         public bool HasSideEffect { get; }
 
-        /// <summary>
-        /// If this is a member function of a class or struct, this property
-        /// will be a reference to the enclosing type.
-        /// </summary>
-        //$TODO: all the infrastructure for class loading remains to be
-        // implemented; for now we just store the class name.
-        public SerializedType? EnclosingType { get; set; }
+        private string DecorateGenericName()
+        {
+            var sw = new StringWriter();
+            sw.Write(Name);
+            if (this.genericArguments.Length > 0)
+            {
+                var fm = new TextFormatter(sw);
+                var tw = new TypeReferenceFormatter(fm);
+                var sep = '<';
+                foreach (var arg in this.genericArguments)
+                {
+                    sw.Write(sep);
+                    sep = ',';
+                    tw.WriteTypeReference(arg);
+                }
+                sw.Write('>');
+            }
+            return sw.ToString();
+        }
+
+        public FunctionType MakeConcreteSignature(DataType[] concreteTypes)
+        {
+            var sig = this.Signature;
+            if (sig is null)
+                throw new InvalidOperationException("Cannot make a null concrete signature.");
+            if (!sig.ParametersValid)
+                throw new InvalidOperationException("Signature is not valid.");
+            if (genericArguments.Length == 0)
+                throw new InvalidOperationException($"{Name} is not generic.");
+            if (concreteTypes.Length != genericArguments.Length)
+                throw new InvalidOperationException("Mismatched number of concrete types.");
+            var parameters = new Identifier[sig.Parameters!.Length];
+            for (int i = 0; i < sig.Parameters.Length; ++i)
+            {
+                var param = sig.Parameters[i];
+                if (TryGetGenericArgument(param.DataType, out int index))
+                {
+                    param = new Identifier(param.Name, concreteTypes[index], param.Storage);
+                }
+                parameters[i] = param;
+            }
+            if (sig.HasVoidReturn)
+            {
+                return FunctionType.Action(parameters);
+            }
+            else
+            {
+                var ret = sig.ReturnValue;
+                if (TryGetGenericArgument(ret.DataType, out int index))
+                {
+                    ret = new Identifier(ret.Name, concreteTypes[index], ret.Storage);
+                }
+                return FunctionType.Func(ret, parameters);
+            }
+        }
+
+        private bool TryGetGenericArgument(DataType dt, out int index)
+        {
+            for (int i = 0; i < genericArguments.Length; ++i)
+            {
+                if (dt == genericArguments[i])
+                {
+                    index = i;
+                    return true;
+                }
+            }
+            index = -1;
+            return false;
+        }
 
         public override string ToString()
         {
             StringWriter sw = new StringWriter();
-            Signature.Emit(this.Name, FunctionType.EmitFlags.ArgumentKind, new TextFormatter(sw));
+            var name = DecorateGenericName();
+            Signature.Emit(name, FunctionType.EmitFlags.ArgumentKind, new TextFormatter(sw));
             return sw.ToString();
         }
-	}
+    }
 }
