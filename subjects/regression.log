@@ -1001,6 +1001,9 @@ Evaluating d:\dev\uxmal\reko\master\subjects\scripting\py_func_names.py
 10000028: warning: Expected sizes of arrays to have been determined by now
 100007E0: warning: Expected sizes of arrays to have been determined by now
 
+=== PE\x86-64\array\reko_array
+reko_array.dll: warning: Win32 X86-64 main procedure finder not implemented yet.
+
 === Elf\x86-64\retpoline\retpoline_stripped
 000000000040042C: warning: Unable to resolve imported reference __gmon_start__.
 000000000040042D: warning: Unable to resolve imported reference __gmon_start__.
@@ -2228,4 +2231,4 @@ Signature of 'Microsoft Visual C++ 8' detected.
 0040120B: warning: Unable to determine the upper bound of an indirect call or jump; there may be more than 2 entries.
 004011A5: warning: Unable to determine the upper bound of an indirect call or jump; there may be more than 2 entries.
 
-Decompiled 81 binaries in 48.29 seconds.
+Decompiled 82 binaries in 51.23 seconds.
