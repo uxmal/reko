@@ -346,8 +346,8 @@ Eq_539: (union "Eq_539" (byte u0) (word16 u1) ((ptr32 Eq_5735) u2))
 	T_748 (in SEQ(SLICE(d1_133, word16, 16), SLICE(__swap(SEQ(d2_152 % (uint16) d1_133, v32_155)), word16, 0)) @ 00001542 : uipr32)
 	T_750 (in SEQ(SLICE(d0_148, word16, 16), v32_155) @ 00001542 : uipr32)
 	T_758 (in SEQ(SLICE(d0_132, word16, 16), v16_141) @ 00001532 : uipr32)
-	T_764 (in  @ 0000154E : word32)
-	T_765 (in  @ 0000154E : word32)
+	T_764 (in p1 @ 0000154E : word32)
+	T_765 (in p2 @ 0000154E : word32)
 	T_766 (in 8<32> @ 0000154E : word32)
 	T_767 (in __rol(d1_20, 8<32>) @ 0000154E : word32)
 	T_768 (in 8<32> @ 00001550 : uipr32)
@@ -5065,11 +5065,11 @@ T_763: (in signature of __rol @ 00000000 : void)
   Class: Eq_762
   DataType: (ptr32 Eq_762)
   OrigDataType: 
-T_764: (in  @ 0000154E : word32)
+T_764: (in p1 @ 0000154E : word32)
   Class: Eq_539
   DataType: Eq_539
   OrigDataType: 
-T_765: (in  @ 0000154E : word32)
+T_765: (in p2 @ 0000154E : word32)
   Class: Eq_539
   DataType: Eq_539
   OrigDataType: 

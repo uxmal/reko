@@ -1133,9 +1133,9 @@ Eq_3637: (fn byte (ui8, bool, byte))
 	T_3638 (in signature of __bst @ 00000000 : void)
 	T_3832 (in __bst @ 000090FE : ptr16)
 Eq_3658: (fn uint8 (byte, int32, bool))
-	T_3658 (in __rcr @ 0000904A : ptr16)
+	T_3658 (in __rcr @ 0000904A : ptr32)
 	T_3659 (in signature of __rcr @ 00000000 : void)
-	T_3849 (in __rcr @ 00009104 : ptr16)
+	T_3849 (in __rcr @ 00009104 : ptr32)
 Eq_3682: (fn word32 (word16, Eq_8, ptr32, Eq_8, Eq_8, ptr32, Eq_8, Eq_8))
 	T_3682 (in fn8BB0 @ 00009070 : ptr16)
 	T_3683 (in signature of fn8BB0 @ 00008BB0 : void)
@@ -15898,23 +15898,23 @@ T_3657: (in r2h_232 >> 1<i32> @ 00000000 : byte)
   Class: Eq_3657
   DataType: int8
   OrigDataType: int8
-T_3658: (in __rcr @ 0000904A : ptr16)
+T_3658: (in __rcr @ 0000904A : ptr32)
   Class: Eq_3658
-  DataType: (ptr16 Eq_3658)
-  OrigDataType: (ptr16 (fn T_3668 (T_3663, T_3664, T_3667)))
+  DataType: (ptr32 Eq_3658)
+  OrigDataType: (ptr32 (fn T_3668 (T_3663, T_3664, T_3667)))
 T_3659: (in signature of __rcr @ 00000000 : void)
   Class: Eq_3658
-  DataType: (ptr16 Eq_3658)
+  DataType: (ptr32 Eq_3658)
   OrigDataType: 
-T_3660: (in  @ 0000904A : byte)
+T_3660: (in p1 @ 0000904A : byte)
   Class: Eq_3660
   DataType: byte
   OrigDataType: 
-T_3661: (in  @ 0000904A : int32)
+T_3661: (in p2 @ 0000904A : int32)
   Class: Eq_3661
   DataType: int32
   OrigDataType: 
-T_3662: (in  @ 0000904A : bool)
+T_3662: (in p3 @ 0000904A : bool)
   Class: Eq_3662
   DataType: bool
   OrigDataType: 
@@ -16662,10 +16662,10 @@ T_3848: (in r2h_427 >> 1<i32> @ 00000000 : byte)
   Class: Eq_3848
   DataType: int8
   OrigDataType: int8
-T_3849: (in __rcr @ 00009104 : ptr16)
+T_3849: (in __rcr @ 00009104 : ptr32)
   Class: Eq_3658
-  DataType: (ptr16 Eq_3658)
-  OrigDataType: (ptr16 (fn T_3855 (T_3850, T_3851, T_3854)))
+  DataType: (ptr32 Eq_3658)
+  OrigDataType: (ptr32 (fn T_3855 (T_3850, T_3851, T_3854)))
 T_3850: (in SLICE(r2_426, byte, 0) @ 00009104 : byte)
   Class: Eq_3660
   DataType: byte

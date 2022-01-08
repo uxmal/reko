@@ -431,8 +431,8 @@ Eq_584: (union "Eq_584" (byte u0) (word16 u1) ((ptr32 Eq_5805) u2))
 	T_2460 (in fn00002558(dwArg04, dwArg08, dwArg10, out d1_318, out d2_319) @ 00002478 : word32)
 	T_2461 (in 0<i32> @ 00002550 : int32)
 	T_2464 (in d6_30 @ 000024B8 : Eq_584)
-	T_2467 (in  @ 000024B8 : word32)
-	T_2468 (in  @ 000024B8 : word32)
+	T_2467 (in p1 @ 000024B8 : word32)
+	T_2468 (in p2 @ 000024B8 : word32)
 	T_2469 (in 8<32> @ 000024B8 : word32)
 	T_2470 (in __rol(dwArg0C, 8<32>) @ 000024B8 : word32)
 	T_2493 (in 8<32> @ 000024C0 : word32)
@@ -11849,11 +11849,11 @@ T_2466: (in signature of __rol @ 00000000 : void)
   Class: Eq_2465
   DataType: (ptr32 Eq_2465)
   OrigDataType: 
-T_2467: (in  @ 000024B8 : word32)
+T_2467: (in p1 @ 000024B8 : word32)
   Class: Eq_584
   DataType: Eq_584
   OrigDataType: 
-T_2468: (in  @ 000024B8 : word32)
+T_2468: (in p2 @ 000024B8 : word32)
   Class: Eq_584
   DataType: Eq_584
   OrigDataType: 

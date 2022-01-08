@@ -17,7 +17,7 @@ Eq_35: (fn word64 (ui64, word64))
 	T_36 (in signature of fn00000001400011B0 @ 1400011B0 : void)
 	T_1306 (in fn00000001400011B0 @ 140001EF0 : ptr64)
 Eq_62: (fn ui64 (ui64, byte))
-	T_62 (in __rol @ 1400011BA : ptr64)
+	T_62 (in __rol @ 1400011BA : ptr32)
 	T_63 (in signature of __rol @ 00000000 : void)
 Eq_71: (fn ui64 (ui64, byte))
 	T_71 (in __ror @ 1400011C8 : ptr32)
@@ -688,19 +688,19 @@ T_61: (in rcx_8 @ 1400011BA : ui64)
   Class: Eq_61
   DataType: ui64
   OrigDataType: word64
-T_62: (in __rol @ 1400011BA : ptr64)
+T_62: (in __rol @ 1400011BA : ptr32)
   Class: Eq_62
-  DataType: (ptr64 Eq_62)
-  OrigDataType: (ptr64 (fn T_67 (T_37, T_66)))
+  DataType: (ptr32 Eq_62)
+  OrigDataType: (ptr32 (fn T_67 (T_37, T_66)))
 T_63: (in signature of __rol @ 00000000 : void)
   Class: Eq_62
-  DataType: (ptr64 Eq_62)
+  DataType: (ptr32 Eq_62)
   OrigDataType: 
-T_64: (in  @ 1400011BA : word64)
+T_64: (in p1 @ 1400011BA : word64)
   Class: Eq_5
   DataType: ui64
   OrigDataType: 
-T_65: (in  @ 1400011BA : byte)
+T_65: (in p2 @ 1400011BA : byte)
   Class: Eq_65
   DataType: byte
   OrigDataType: 

@@ -444,8 +444,8 @@ Eq_621: (union "Eq_621" (byte u0) (word16 u1) ((ptr32 Eq_5817) u2))
 	T_2471 (in fn00002534(dwArg04, dwArg08, dwArg10, out d1_318, out d2_319) @ 00002454 : word32)
 	T_2472 (in 0<i32> @ 0000252C : int32)
 	T_2475 (in d6_30 @ 00002494 : Eq_621)
-	T_2478 (in  @ 00002494 : word32)
-	T_2479 (in  @ 00002494 : word32)
+	T_2478 (in p1 @ 00002494 : word32)
+	T_2479 (in p2 @ 00002494 : word32)
 	T_2480 (in 8<32> @ 00002494 : word32)
 	T_2481 (in __rol(dwArg0C, 8<32>) @ 00002494 : word32)
 	T_2504 (in 8<32> @ 0000249C : word32)
@@ -11916,11 +11916,11 @@ T_2477: (in signature of __rol @ 00000000 : void)
   Class: Eq_2476
   DataType: (ptr32 Eq_2476)
   OrigDataType: 
-T_2478: (in  @ 00002494 : word32)
+T_2478: (in p1 @ 00002494 : word32)
   Class: Eq_621
   DataType: Eq_621
   OrigDataType: 
-T_2479: (in  @ 00002494 : word32)
+T_2479: (in p2 @ 00002494 : word32)
   Class: Eq_621
   DataType: Eq_621
   OrigDataType: 

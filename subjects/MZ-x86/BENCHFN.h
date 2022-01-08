@@ -1778,7 +1778,7 @@ Eq_3710: (struct "Eq_3710" 0001 (0 cu8 b0000) (1 byte b0001))
 Eq_3716: (struct "Eq_3716" 0001 (0 cu8 b0000) (1 byte b0001))
 	T_3716 (in si_132 + 0<16> @ 00009A35 : word16)
 Eq_3725: (fn ui8 (ui8, byte))
-	T_3725 (in __rol @ 00009A52 : segptr32)
+	T_3725 (in __rol @ 00009A52 : ptr32)
 	T_3726 (in signature of __rol @ 00000000 : void)
 Eq_3734: (union "Eq_3734" (bool u0) ((ptr16 Eq_4599) u1) ((memptr Eq_3 Eq_4600) u2) (Eq_4601 u3))
 	T_3734 (in (ch_158 & 0x80<8>) != 0<8> @ 00000000 : bool)
@@ -17084,7 +17084,7 @@ T_3724: (in dl_148 + al_375 @ 00000000 : byte)
   Class: Eq_3548
   DataType: cu8
   OrigDataType: cu8
-T_3725: (in __rol @ 00009A52 : segptr32)
+T_3725: (in __rol @ 00009A52 : ptr32)
   Class: Eq_3725
   DataType: (ptr32 Eq_3725)
   OrigDataType: (ptr32 (fn T_3730 (T_3679, T_3729)))
@@ -17092,11 +17092,11 @@ T_3726: (in signature of __rol @ 00000000 : void)
   Class: Eq_3725
   DataType: (ptr32 Eq_3725)
   OrigDataType: 
-T_3727: (in  @ 00009A52 : byte)
+T_3727: (in p1 @ 00009A52 : byte)
   Class: Eq_3679
   DataType: ui8
   OrigDataType: 
-T_3728: (in  @ 00009A52 : byte)
+T_3728: (in p2 @ 00009A52 : byte)
   Class: Eq_3728
   DataType: byte
   OrigDataType: 

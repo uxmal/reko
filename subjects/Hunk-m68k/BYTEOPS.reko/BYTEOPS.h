@@ -10537,11 +10537,11 @@ T_2446: (in signature of __rol @ 00000000 : void)
   Class: Eq_2445
   DataType: (ptr32 Eq_2445)
   OrigDataType: 
-T_2447: (in  @ 0000245C : word32)
+T_2447: (in p1 @ 0000245C : word32)
   Class: Eq_576
   DataType: (ptr32 word32)
   OrigDataType: 
-T_2448: (in  @ 0000245C : word32)
+T_2448: (in p2 @ 0000245C : word32)
   Class: Eq_576
   DataType: (ptr32 word32)
   OrigDataType: 
