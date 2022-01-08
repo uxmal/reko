@@ -287,8 +287,8 @@ void fn0040165E()
 	{
 		GetSystemTimeAsFileTime(fp - 0x10);
 		ui32 v14_n = GetCurrentThreadId() ^ GetCurrentProcessId();
-		QueryPerformanceCounter(fp - 0x18);
-		ui32 ecx_n = dwLoc14 ^ dwLoc18 ^ v14_n ^ fp - 0x08;
+		QueryPerformanceCounter(&tLoc18);
+		ui32 ecx_n = tLoc18.dw0004 ^ tLoc18 ^ v14_n ^ fp - 0x08;
 		if (ecx_n == 0xBB40E64E)
 			ecx_n = ~0x44BF19B0;
 		else if ((ecx_n & 0xFFFF0000) == 0x00)

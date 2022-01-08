@@ -476,8 +476,8 @@ l00401686:
 l00401693:
 	GetSystemTimeAsFileTime(fp - 0x10<32>)
 	word32 v14_43 = GetCurrentThreadId() ^ GetCurrentProcessId()
-	QueryPerformanceCounter(fp - 0x18<32>)
-	word32 ecx_55 = dwLoc14 ^ dwLoc18 ^ v14_43 ^ fp - 8<32>
+	QueryPerformanceCounter(&tLoc18)
+	word32 ecx_55 = Mem48[&tLoc18 + 4<i32>:word32] ^ Mem48[&tLoc18:word32] ^ v14_43 ^ fp - 8<32>
 	branch ecx_55 != 0xBB40E64E<32> l004016DB
 l004016DB:
 	branch (ecx_55 & 0xFFFF0000<32>) != 0<32> l004016EB

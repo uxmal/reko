@@ -491,6 +491,16 @@ namespace Reko.Analysis
                 vp.Transform();
                 DumpWatchedProcedure("cce", "After CCE", ssa);
 
+                var efif = new EscapedFrameIntervalsFinder(
+                    program, ssa, eventListener);
+                var escapedFrameIntervals = efif.Find();
+                if (escapedFrameIntervals.Count > 0)
+                {
+                    var csvt = new ComplexStackVariableTransformer(
+                        ssa, escapedFrameIntervals, eventListener);
+                    csvt.Transform();
+                }
+
                 // Now compute SSA for the stack-based variables as well. That is:
                 // mem[fp - 30] becomes wLoc30, while 
                 // mem[fp + 30] becomes wArg30.

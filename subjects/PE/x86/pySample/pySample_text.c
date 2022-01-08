@@ -7,7 +7,7 @@
 // 10001000: Register (ptr32 Eq_n) fn10001000(Stack (ptr32 Eq_n) ptrArg04, Stack (ptr32 Eq_n) ptrArg08)
 PyObject * fn10001000(PyObject * ptrArg04, PyObject * ptrArg08)
 {
-	PyObject * eax_n = PyArg_ParseTuple(ptrArg08, "ii:sum", fp - 0x04, fp - 0x08);
+	PyObject * eax_n = PyArg_ParseTuple(ptrArg08, "ii:sum", &dwLoc04, &dwLoc08);
 	if (eax_n != null)
 		return Py_BuildValue("i", dwLoc04 + dwLoc08);
 	return eax_n;
@@ -16,7 +16,7 @@ PyObject * fn10001000(PyObject * ptrArg04, PyObject * ptrArg08)
 // 10001050: Register (ptr32 Eq_n) fn10001050(Stack (ptr32 Eq_n) ptrArg04, Stack (ptr32 Eq_n) ptrArg08)
 PyObject * fn10001050(PyObject * ptrArg04, PyObject * ptrArg08)
 {
-	PyObject * eax_n = PyArg_ParseTuple(ptrArg08, "ii:dif", fp - 0x08, fp - 0x04);
+	PyObject * eax_n = PyArg_ParseTuple(ptrArg08, "ii:dif", &dwLoc08, &dwLoc04);
 	if (eax_n != null)
 		return Py_BuildValue("i", dwLoc08 - dwLoc04);
 	return eax_n;
@@ -25,7 +25,7 @@ PyObject * fn10001050(PyObject * ptrArg04, PyObject * ptrArg08)
 // 100010A0: Register (ptr32 Eq_n) fn100010A0(Stack (ptr32 Eq_n) ptrArg04, Stack (ptr32 Eq_n) ptrArg08)
 PyObject * fn100010A0(PyObject * ptrArg04, PyObject * ptrArg08)
 {
-	PyObject * eax_n = PyArg_ParseTuple(ptrArg08, "ii:div", fp - 0x08, fp - 0x04);
+	PyObject * eax_n = PyArg_ParseTuple(ptrArg08, "ii:div", &dwLoc08, &dwLoc04);
 	if (eax_n != null)
 		return Py_BuildValue("i", (int32) ((int64) dwLoc08 /32 dwLoc04));
 	return eax_n;
@@ -34,7 +34,7 @@ PyObject * fn100010A0(PyObject * ptrArg04, PyObject * ptrArg08)
 // 100010F0: Register (ptr32 Eq_n) fn100010F0(Stack (ptr32 Eq_n) ptrArg04, Stack (ptr32 Eq_n) ptrArg08)
 PyObject * fn100010F0(PyObject * ptrArg04, PyObject * ptrArg08)
 {
-	PyObject * eax_n = PyArg_ParseTuple(ptrArg08, "ff:fdiv", fp - 0x08, fp - 0x04);
+	PyObject * eax_n = PyArg_ParseTuple(ptrArg08, "ff:fdiv", &rLoc08, &rLoc04);
 	if (eax_n != null)
 		return Py_BuildValue("f", (real64) rLoc08 / (real64) rLoc04);
 	return eax_n;
@@ -372,8 +372,8 @@ void fn10001864()
 	{
 		GetSystemTimeAsFileTime(fp - 0x0C);
 		ui32 esi_n = GetCurrentProcessId() ^ GetCurrentThreadId() ^ GetTickCount();
-		QueryPerformanceCounter(fp - 0x14);
-		ui32 esi_n = esi_n ^ (dwLoc10 ^ dwLoc14);
+		QueryPerformanceCounter(&tLoc14);
+		ui32 esi_n = esi_n ^ (tLoc14.dw0004 ^ tLoc14);
 		if (esi_n == 0xBB40E64E)
 			esi_n = ~0x44BF19B0;
 		else if ((esi_n & 0xFFFF0000) == 0x00)

@@ -676,7 +676,7 @@ namespace Reko.Core.Expressions
         /// <returns>A memory access expression.</returns>
         public MemoryAccess Mem(DataType dt, Expression ea)
         {
-            return new MemoryAccess(MemoryIdentifier.GlobalMemory, ea, dt);
+            return Mem(MemoryIdentifier.GlobalMemory, dt, ea);
         }
 
         /// <summary>

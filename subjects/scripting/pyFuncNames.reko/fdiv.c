@@ -7,7 +7,7 @@
 // 100010F0: Register (ptr32 Eq_n) fdiv_wrapper(Stack (ptr32 Eq_n) ptrArg04, Stack (ptr32 Eq_n) ptrArg08)
 PyObject * fdiv_wrapper(PyObject * ptrArg04, PyObject * ptrArg08)
 {
-	PyObject * eax_n = PyArg_ParseTuple(ptrArg08, "ff:fdiv", fp - 0x08, fp - 0x04);
+	PyObject * eax_n = PyArg_ParseTuple(ptrArg08, "ff:fdiv", &rLoc08, &rLoc04);
 	if (eax_n != null)
 		return Py_BuildValue("f", (real64) rLoc08 / (real64) rLoc04);
 	return eax_n;
