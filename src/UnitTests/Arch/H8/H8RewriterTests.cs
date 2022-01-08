@@ -224,7 +224,7 @@ namespace Reko.UnitTests.Arch.H8
             Given_HexString("1202");
             AssertCode(     // rotxl.b	r2h
                 "0|L--|8000(2): 3 instructions",
-                "1|L--|r2h = __rcl(r2h, 1<i32>, C)",
+                "1|L--|r2h = __rcl<byte,int32,bool>(r2h, 1<i32>, C)",
                 "2|L--|NZC = cond(r2h)",
                 "3|L--|V = false");
         }
@@ -235,7 +235,7 @@ namespace Reko.UnitTests.Arch.H8
             Given_HexString("130A");
             AssertCode(     // rotxr.b	r2l
                 "0|L--|8000(2): 3 instructions",
-                "1|L--|r2l = __rcr(r2l, 1<i32>, C)",
+                "1|L--|r2l = __rcr<byte,int32,bool>(r2l, 1<i32>, C)",
                 "2|L--|NZC = cond(r2l)",
                 "3|L--|V = false");
         }

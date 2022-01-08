@@ -1184,7 +1184,7 @@ namespace Reko.UnitTests.Arch.X86
             AssertCode(
                 "0|L--|10000000(3): 3 instructions",
                 "1|L--|v2 = (al & 1<8> << 8<8> - 0xC0<8>) != 0<8>", 
-                "2|L--|al = __rol(al, 0xC0<8>)",
+                "2|L--|al = __rol<byte,byte>(al, 0xC0<8>)",
                 "3|L--|C = v2");
         }
 
@@ -1194,7 +1194,7 @@ namespace Reko.UnitTests.Arch.X86
             Run64bitTest("C443FBF0D602");
             AssertCode(     // rorx	r10,r14,2h
                 "0|L--|0000000140000000(6): 1 instructions",
-                "1|L--|r10 = __ror(r14, 2<8>)");
+                "1|L--|r10 = __ror<word64,byte>(r14, 2<8>)");
         }
 
         [Test]

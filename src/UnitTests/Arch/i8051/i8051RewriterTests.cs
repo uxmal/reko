@@ -389,7 +389,7 @@ namespace Reko.UnitTests.Arch.i8051
             Given_Bytes(0x23); // rl\tA
             AssertCode(
                 "0|L--|0000(1): 1 instructions",
-                "1|L--|A = __rol(A, 1<8>)");
+                "1|L--|A = __rol<byte,byte>(A, 1<8>)");
         }
 
         [Test]

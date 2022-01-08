@@ -61,10 +61,10 @@ word64 fn00000001400011B0(ui64 rcx, word64 qwArg00)
 {
 	if (rcx != g_qw40003000)
 		return fn000000014000147C(rcx, qwArg00);
-	ui64 rcx_n = __rol(rcx, 0x10);
+	ui64 rcx_n = __rol<word64,byte>(rcx, 0x10);
 	if ((word16) rcx_n == 0x00)
 		return rax;
-	rcx = __ror(rcx_n, 0x10);
+	rcx = __ror<word64,byte>(rcx_n, 0x10);
 	return fn000000014000147C(rcx, qwArg00);
 }
 
@@ -372,7 +372,7 @@ byte fn000000014000164C(up32 ecx, word64 r8, union Eq_n & r8Out)
 		{
 			ui64 rdx_n = g_qw40003000;
 			uint64 rax_n = (uint64) ((word32) rdx_n & 0x3F);
-			r8_n = __ror(~0x00, 0x40 - (byte) ((word32) rax_n)) ^ rdx_n;
+			r8_n = __ror<word64,byte>(~0x00, 0x40 - (byte) ((word32) rax_n)) ^ rdx_n;
 			g_t400035C0 = SEQ(r8_n, r8_n);
 			g_t400035D0 = r8_n;
 			g_ow400035D8 = SEQ(r8_n, r8_n);
@@ -466,7 +466,7 @@ Eq_n fn0000000140001804(Eq_n rcx)
 {
 	word32 eax_n;
 	ui64 rdx_n = g_qw40003000;
-	if (__ror(rdx_n ^ g_t400035C0, (byte) (word32) rdx_n & 0x3F) == ~0x00)
+	if (__ror<word64,byte>(rdx_n ^ g_t400035C0, (byte) (word32) rdx_n & 0x3F) == ~0x00)
 	{
 		word64 rax_n;
 		crt_atexit();

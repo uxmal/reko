@@ -147,9 +147,9 @@ word16 fn1483-0CA0(byte * es_di, struct Eq_n * ss_bp, byte al, byte ah, struct E
 	ds->*bx_n += (byte) dx_n;
 	byte bl_n = bl_n + ah_n;
 	struct Eq_n Eq_n::* bx_n = SEQ(bh_n, bl_n);
-	Mem107[ds:bx_n - 0x56 + di:byte] = __rol(Mem96[ds:bx_n - 0x56 + di:byte], 226);
+	Mem107[ds:bx_n - 0x56 + di:byte] = __rol<byte,byte>(Mem96[ds:bx_n - 0x56 + di:byte], 226);
 	Eq_n v19_n = (ss_bp->w007B & 0x02) != 0x00;
-	ss_bp->w007B = __ror(ss_bp->w007B, 0x01);
+	ss_bp->w007B = __ror<word16,byte>(ss_bp->w007B, 0x01);
 	(ds->*bx_n).t0000 = (Eq_n) ((byte) v19_n + ((byte) ((ds->*bx_n).t0000).t0000 + bl_n));
 	byte bl_n = bl_n & (ds->*bx_n).t0000;
 	*es_di = (byte) ax_n - 0xAC;
@@ -191,7 +191,7 @@ word16 Eq_n::* fn1483-0CED(word16 * es_di, struct Eq_n * ss_bp, word16 ax, ui16 
 	}
 	else
 	{
-		Mem28[ds:bx_n + si_n:byte] = __rcr(Mem15[ds:bx_n + si_n:byte], 0xAC, C_n);
+		Mem28[ds:bx_n + si_n:byte] = __rcr<byte,byte,bool>(Mem15[ds:bx_n + si_n:byte], 0xAC, C_n);
 		struct Eq_n * es_n;
 		word16 Eq_n::* di_n = fn1483-0CFC(&(ds->*(di + 1)), ss_bp, al_n, ah_n, wArg00, dx, bl_n + 0x01, bh_n, si_n, fs, psegArg02, wArg06, wArg10, out es_n);
 		esOut = es_n;
@@ -480,7 +480,7 @@ l1483_nDBF:
 			ss->ptr0B01 = es;
 			byte cl_n = (byte) cx_n;
 			ds_n->b8C00 += cl_n;
-			(ss->*bp_n).w8CC3 = __ror((ss->*bp_n).w8CC3, cl_n);
+			(ss->*bp_n).w8CC3 = __ror<word16,byte>((ss->*bp_n).w8CC3, cl_n);
 			return;
 		}
 		Mem423[ss:bp_n + si_n:word16] = -Mem412[ss:bp_n + si_n:word16];
@@ -659,7 +659,7 @@ Eq_n fn1483-1BB9(Eq_n ax, ui16 cx, mp16 dx, Eq_n bx, Eq_n bp, Eq_n si, Eq_n di, 
 				es->*di_n = (byte) ax_n;
 				Eq_n v37_n = (word16) bx_n + ds->*((word16) bx_n + ((word16) di_n + 1));
 				ds->*((word16) bx_n + ((word16) di_n + 1)) = v37_n;
-				ds->*((word16) di_n + 1) = __rcl(ds->*((word16) di_n + 1), (byte) cx_n, SLICE(cond(v37_n), bool, 1));
+				ds->*((word16) di_n + 1) = __rcl<byte,byte,bool>(ds->*((word16) di_n + 1), (byte) cx_n, SLICE(cond(v37_n), bool, 1));
 				word16 ax_n = ax_n - 60602 - (word16) SCZO_n;
 				sp_n = sp_n + 16;
 				di = (word16) di_n + 1;

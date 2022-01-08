@@ -2040,7 +2040,7 @@ ui20 memcpy(ui20 sr, Eq_n r13, Eq_n r14, Eq_n r15)
 				} while (r14_n != 0x00);
 			}
 			sr &= ~0x01;
-			Eq_n r14_n = __rcr(r11_n, 0x01, C_n);
+			Eq_n r14_n = __rcr<word20,byte,bool>(r11_n, 0x01, C_n);
 			while (r14_n != 0x00)
 			{
 				*r13_n = *r12_n;
@@ -2080,7 +2080,7 @@ ui20 memcpy(ui20 sr, Eq_n r13, Eq_n r14, Eq_n r15)
 				} while (r14_n != 0x00);
 			}
 			sr &= ~0x01;
-			Eq_n r14_n = __rcr(r11_n, 0x01, C_n);
+			Eq_n r14_n = __rcr<word20,byte,bool>(r11_n, 0x01, C_n);
 			while (r14_n != 0x00)
 			{
 				r12_n -= 0x02;
@@ -2135,7 +2135,7 @@ ui20 memset(ui20 sr, Eq_n r13, Eq_n r14, Eq_n r15)
 			} while (r12_n != 0x00);
 		}
 		sr &= ~0x01;
-		Eq_n r12_n = __rcr(r13, 0x01, C_n);
+		Eq_n r12_n = __rcr<word20,byte,bool>(r13, 0x01, C_n);
 		do
 		{
 			*r14_n = r11_n;
@@ -2192,7 +2192,7 @@ Eq_n fn00005B04(Eq_n r10, Eq_n r11, Eq_n r12, Eq_n r13)
 	word20 r14_n;
 	word20 r15_n;
 	Eq_n r12_n;
-	Eq_n r8_n = __rcr(r8_n, 0x01, fn00005B4E(r8_n, r10, r11, r12, r13, out r8_n, out r12_n, out r13_n, out r14_n, out r15_n));
+	Eq_n r8_n = __rcr<word20,byte,bool>(r8_n, 0x01, fn00005B4E(r8_n, r10, r11, r12, r13, out r8_n, out r12_n, out r13_n, out r14_n, out r15_n));
 	if ((r8_n & 0x04) != 0x00)
 		r12_n = (r12_n ^ ~0x00) + 0x01;
 	if ((r8_n & 0x08) != 0x00)
@@ -2218,7 +2218,7 @@ bool fn00005B4E(Eq_n r8, Eq_n r10, Eq_n r11, Eq_n r12, Eq_n r13, union Eq_n & r8
 		bool C_n = (bool) cond(r9_n);
 		if (r9_n == 0x00)
 			break;
-		r8 = __rcr(r8_n, 0x01, C_n);
+		r8 = __rcr<word20,byte,bool>(r8_n, 0x01, C_n);
 		r14_n = r14_n *20 0x02 + (word20) (r8 < 0x00);
 		r15_n = r15_n *20 0x02 + (word20) (r14_n < 0x00);
 		if (r15_n < r11 && (r15_n != r11 || r14_n < r10))

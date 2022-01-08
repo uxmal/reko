@@ -116,6 +116,15 @@ namespace Reko.Core
             return sw.ToString();
         }
 
+        /// <summary>
+        /// Returns an array of <see cref="DataType"/> objects that represent the 
+        /// type arguments of a generic procedure. 
+        /// </summary>
+        /// <returns>An array of <see cref="DataType"/> objects. If the procedure
+        /// is not generic, an empty array is returned.
+        /// </returns>
+        public DataType[] GetGenericArguments() => this.genericArguments;
+
         protected FunctionType MakeConcreteSignature(DataType[] concreteTypes)
         {
             var sig = this.Signature;

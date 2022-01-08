@@ -1285,15 +1285,15 @@ word32 * fn000023F8(word32 * dwArg04, word32 * dwArg08, word32 * dwArg0C, word32
 		if (dwArg04 - dwArg0C >= 0x00)
 		{
 			int32 d4_n = 24;
-			word32 * d6_n = __rol(dwArg0C, (word32 *) 0x08);
+			word32 * d6_n = __rol<word32,word32>(dwArg0C, (word32 *) 0x08);
 			if ((byte) d6_n == 0x00)
 			{
 				d4_n = 16;
-				d6_n = __rol(d6_n, (word32 *) 0x08);
+				d6_n = __rol<word32,word32>(d6_n, (word32 *) 0x08);
 				if ((byte) d6_n == 0x00)
 				{
 					d4_n = 8;
-					d6_n = __rol(d6_n, (word32 *) 0x08);
+					d6_n = __rol<word32,word32>(d6_n, (word32 *) 0x08);
 					if ((byte) d6_n == 0x00)
 					{
 						d4_n = 0;
@@ -1509,15 +1509,15 @@ word32 * fn00002648(word32 * dwArg04, word32 * dwArg08, word32 * dwArg0C, word32
 	else if (dwArg04 - dwArg0C >= 0x00)
 	{
 		int32 d4_n = 24;
-		word32 * d6_n = __rol(dwArg0C, (word32 *) 0x08);
+		word32 * d6_n = __rol<word32,word32>(dwArg0C, (word32 *) 0x08);
 		if ((byte) d6_n == 0x00)
 		{
 			d4_n = 16;
-			d6_n = __rol(d6_n, (word32 *) 0x08);
+			d6_n = __rol<word32,word32>(d6_n, (word32 *) 0x08);
 			if ((byte) d6_n == 0x00)
 			{
 				d4_n = 8;
-				d6_n = __rol(d6_n, (word32 *) 0x08);
+				d6_n = __rol<word32,word32>(d6_n, (word32 *) 0x08);
 				if ((byte) d6_n == 0x00)
 				{
 					d4_n = 0;
@@ -1667,22 +1667,22 @@ word32 * fn00002AFA(word32 * d0, word32 * d1, word32 * d2, word32 & d1Out)
 		word32 * d3_n = (word32 *) 16;
 		if ((word16) d1_n < 0x80)
 		{
-			d1_n = __rol(d1_n, (word32 *) 0x08);
+			d1_n = __rol<word32,word32>(d1_n, (word32 *) 0x08);
 			d3_n = (word32 *) 0x08;
 		}
 		if ((word16) d1_n < 0x0800)
 		{
-			d1_n = __rol(d1_n, (word32 *) 0x04);
+			d1_n = __rol<word32,word32>(d1_n, (word32 *) 0x04);
 			d3_n = SEQ(SLICE(d3_n, word16, 16), (word16) d3_n - 0x04);
 		}
 		if ((word16) d1_n < 0x2000)
 		{
-			d1_n = __rol(d1_n, (word32 *) 0x02);
+			d1_n = __rol<word32,word32>(d1_n, (word32 *) 0x02);
 			d3_n = SEQ(SLICE(d3_n, word16, 16), (word16) d3_n - 0x02);
 		}
 		if ((word16) d1_n >= 0x00)
 		{
-			d1_n = __rol(d1_n, (word32 *) 0x01);
+			d1_n = __rol<word32,word32>(d1_n, (word32 *) 0x01);
 			d3_n = SEQ(SLICE(d3_n, word16, 16), (word16) d3_n - 0x01);
 		}
 		uint32 d0_n = d0 >> d3_n;
@@ -1700,7 +1700,7 @@ word32 * fn00002AFA(word32 * d0, word32 * d1, word32 * d2, word32 & d1Out)
 				;
 			while (d0_n >= null);
 		}
-		d1Out = __swap(__rol(d0_n, __swap(d3_n)));
+		d1Out = __swap(__rol<word32,word32>(d0_n, __swap(d3_n)));
 		return (uint32) (word16) d3_n;
 	}
 	else

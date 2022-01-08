@@ -20503,9 +20503,9 @@ l0000F30C:
 	word32 r7_227 = SLICE(r10_r7_362, word32, 0)
 	branch Test(EQ,SLICE(r11_236, bool, 20)) l0000F33A
 l0000F332:
-	r10_232 = __rcl(r10_232, 1<i32>, SLICE(cond(r7_227 << 1<i32>), bool, 0))
+	r10_232 = __rcl<word32,int32,bool>(r10_232, 1<i32>, SLICE(cond(r7_227 << 1<i32>), bool, 0))
 	r7_227 = r7_227 << 1<i32>
-	r11_236 = __rcl(r11_236, 1<i32>, SLICE(cond(r10_232), bool, 0))
+	r11_236 = __rcl<word32,int32,bool>(r11_236, 1<i32>, SLICE(cond(r10_232), bool, 0))
 	r12_218 = r12_217 - 0x3FF<32>
 l0000F33A:
 	word64 r11_r10_494
@@ -20866,8 +20866,8 @@ l0000F6B4:
 	word32 r11_161 = (r11_47 | 0x100000<u32>) + r9_142 + CONVERT(r10_154 <u 0<32>, bool, word32)
 	branch Test(EQ,SLICE(r11_161, bool, 21)) l0000F726
 l0000F726:
-	r10_154 = __rcr(r10_154, 1<i32>, SLICE(cond(r11_161 >>u 1<i32>), bool, 0))
-	lr_126 = __rcr(lr_126 | lr_126 << 1<8>, 1<i32>, SLICE(cond(r10_154), bool, 0))
+	r10_154 = __rcr<word32,int32,bool>(r10_154, 1<i32>, SLICE(cond(r11_161 >>u 1<i32>), bool, 0))
+	lr_126 = __rcr<word32,int32,bool>(lr_126 | lr_126 << 1<8>, 1<i32>, SLICE(cond(r10_154), bool, 0))
 	r7_181 = r7_181 + 1<32>
 	branch r7_181 != 0x7FE<32> l0000F742
 l0000F736_1:
@@ -21123,7 +21123,7 @@ l0000F8BE:
 	r10_185 = 0<32>
 	r11_73 = 0xFFE00000<32>
 l0000F8DE:
-	r11Out = __rcr(r11_73, 1<i32>, SLICE(cond(r12 << 1<i32>), bool, 0))
+	r11Out = __rcr<word32,int32,bool>(r11_73, 1<i32>, SLICE(cond(r12 << 1<i32>), bool, 0))
 	lrOut = lr
 	return r10_185
 l0000F848:
@@ -21161,8 +21161,8 @@ l0000F896:
 l0000F898_1:
 	r11_112 = r11_112 + 1<32>
 l0000F89C:
-	r11_147 = __rcr(r11_112, 1<i32>, SLICE(cond(__rcl(r12, 1<i32>, C_125)), bool, 0))
-	r10_151 = __rcr(r10_113, 1<i32>, SLICE(cond(r11_147), bool, 0))
+	r11_147 = __rcr<word32,int32,bool>(r11_112, 1<i32>, SLICE(cond(__rcl<word32,int32,bool>(r12, 1<i32>, C_125)), bool, 0))
+	r10_151 = __rcr<word32,int32,bool>(r10_113, 1<i32>, SLICE(cond(r11_147), bool, 0))
 l0000F852:
 	r11_147 = 0<32>
 	r10_151 = 0<32>
@@ -21245,7 +21245,7 @@ l0000F972_1:
 	return false
 l0000F926:
 	bool C_52 = SLICE(cond(r10), bool, 0)
-	word32 r12_41 = __rcl(r12_7, 1<i32>, SLICE(cond(r9 << 1<i32>), bool, 0))
+	word32 r12_41 = __rcl<word32,int32,bool>(r12_7, 1<i32>, SLICE(cond(r9 << 1<i32>), bool, 0))
 	word32 lr_131 = 0xFFE00000<32>
 	bool Z_163 = SLICE(cond((r11 << 1<i32>) - 0xFFE00000<32> - C_52), bool, 1)
 	branch (r11 << 1<i32>) - 0xFFE00000<32> >u C_52 l0000F968
@@ -21346,7 +21346,7 @@ l0000F9CC_1:
 	return true
 l0000F980:
 	bool C_52 = SLICE(cond(r10), bool, 0)
-	word32 r12_41 = __rcl(r12_7, 1<i32>, SLICE(cond(r9 << 1<i32>), bool, 0))
+	word32 r12_41 = __rcl<word32,int32,bool>(r12_7, 1<i32>, SLICE(cond(r9 << 1<i32>), bool, 0))
 	word32 lr_131 = 0xFFE00000<32>
 	bool Z_163 = SLICE(cond((r11 << 1<i32>) - 0xFFE00000<32> - C_52), bool, 1)
 	branch (r11 << 1<i32>) - 0xFFE00000<32> >u C_52 l0000F9C2
@@ -21742,7 +21742,7 @@ l0000FB80:
 	r11_368 = r11_32 >>u 4<i32>
 l0000FB70:
 	r2_357 = r2_357 << 1<i32>
-	r3_361 = __rcl(r3_361, 1<i32>, SLICE(cond(r2_357 << 1<i32>), bool, 0))
+	r3_361 = __rcl<word32,int32,bool>(r3_361, 1<i32>, SLICE(cond(r2_357 << 1<i32>), bool, 0))
 	r7_241 = r7_240 + 0x3FE<32>
 	r10_367 = r10_29 >>u 3<i32> | r11_32 << 0x1D<8>
 	r11_368 = r11_32 >>u 3<i32>
@@ -21857,7 +21857,7 @@ l0000FE50:
 l0000FE52:
 	branch r11 << 1<i32> <u 0xFF000000<32> l0000FE4A
 l0000FE4A:
-	return __rcr(r12_15, 1<i32>, SLICE(cond(r8_5 << 1<i32>), bool, 0))
+	return __rcr<word32,int32,bool>(r12_15, 1<i32>, SLICE(cond(r8_5 << 1<i32>), bool, 0))
 l0000FE5C:
 	return 0xFFFFFFFF<32>
 l0000FE50_1:
@@ -22258,7 +22258,7 @@ l00010184:
 l0001019A_1:
 	r9_100 = 0x80<32>
 l0001019E:
-	r12_16 = __rcr(r12_27 + r9_100 >>u 7<32>, 1<i32>, SLICE(cond(0<32>), bool, 0))
+	r12_16 = __rcr<word32,int32,bool>(r12_27 + r9_100 >>u 7<32>, 1<i32>, SLICE(cond(0<32>), bool, 0))
 l000101A8:
 	r12Out = r12_16
 	return r9_100

@@ -447,22 +447,22 @@ Eq_n fn0000151E(Eq_n d0, Eq_n d1, Eq_n d2, union Eq_n & d1Out)
 		Eq_n d3_n = 16;
 		if ((word16) d1_n < 0x80)
 		{
-			d1_n = __rol(d1_n, 0x08);
+			d1_n = __rol<word32,word32>(d1_n, 0x08);
 			d3_n.u0 = 0x08;
 		}
 		if ((word16) d1_n < 0x0800)
 		{
-			d1_n = __rol(d1_n, 0x04);
+			d1_n = __rol<word32,word32>(d1_n, 0x04);
 			d3_n = SEQ(SLICE(d3_n, word16, 16), (word16) d3_n - 0x04);
 		}
 		if ((word16) d1_n < 0x2000)
 		{
-			d1_n = __rol(d1_n, 0x02);
+			d1_n = __rol<word32,word32>(d1_n, 0x02);
 			d3_n = SEQ(SLICE(d3_n, word16, 16), (word16) d3_n - 0x02);
 		}
 		if ((word16) d1_n >= 0x00)
 		{
-			d1_n = __rol(d1_n, 0x01);
+			d1_n = __rol<word32,word32>(d1_n, 0x01);
 			d3_n = SEQ(SLICE(d3_n, word16, 16), (word16) d3_n - 0x01);
 		}
 		uint32 d0_n = d0 >> d3_n;
@@ -480,7 +480,7 @@ Eq_n fn0000151E(Eq_n d0, Eq_n d1, Eq_n d2, union Eq_n & d1Out)
 				;
 			while (d0_n >= 0x00);
 		}
-		d1Out = __swap(__rol(d0_n, __swap(d3_n)));
+		d1Out = __swap(__rol<word32,word32>(d0_n, __swap(d3_n)));
 		return (uint32) (word16) d3_n;
 	}
 	else
@@ -1465,15 +1465,15 @@ Eq_n fn00002560(Eq_n dwArg04, Eq_n dwArg08, Eq_n dwArg0C, Eq_n dwArg10, union Eq
 		if (dwArg04 - dwArg0C >= 0x00)
 		{
 			int32 d4_n = 24;
-			Eq_n d6_n = __rol(dwArg0C, 0x08);
+			Eq_n d6_n = __rol<word32,word32>(dwArg0C, 0x08);
 			if ((byte) d6_n == 0x00)
 			{
 				d4_n = 16;
-				d6_n = __rol(d6_n, 0x08);
+				d6_n = __rol<word32,word32>(d6_n, 0x08);
 				if ((byte) d6_n == 0x00)
 				{
 					d4_n = 8;
-					d6_n = __rol(d6_n, 0x08);
+					d6_n = __rol<word32,word32>(d6_n, 0x08);
 					if ((byte) d6_n == 0x00)
 					{
 						d4_n = 0;
@@ -1689,15 +1689,15 @@ Eq_n fn000027B0(Eq_n dwArg04, Eq_n dwArg08, Eq_n dwArg0C, Eq_n dwArg10)
 	else if (dwArg04 - dwArg0C >= 0x00)
 	{
 		int32 d4_n = 24;
-		Eq_n d6_n = __rol(dwArg0C, 0x08);
+		Eq_n d6_n = __rol<word32,word32>(dwArg0C, 0x08);
 		if ((byte) d6_n == 0x00)
 		{
 			d4_n = 16;
-			d6_n = __rol(d6_n, 0x08);
+			d6_n = __rol<word32,word32>(d6_n, 0x08);
 			if ((byte) d6_n == 0x00)
 			{
 				d4_n = 8;
-				d6_n = __rol(d6_n, 0x08);
+				d6_n = __rol<word32,word32>(d6_n, 0x08);
 				if ((byte) d6_n == 0x00)
 				{
 					d4_n = 0;

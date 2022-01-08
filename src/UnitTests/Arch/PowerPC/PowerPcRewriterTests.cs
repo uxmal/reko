@@ -1008,7 +1008,7 @@ namespace Reko.UnitTests.Arch.PowerPC
             Given_PowerPcBe64();
             AssertCode(0x798CCFE6,              // rldicr	r12,r12,39,3F
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|r12 = __rol(r12, 0x39<8>)");
+                "1|L--|r12 = __rol<word64,byte>(r12, 0x39<8>)");
         }
 
         [Test]
@@ -1094,7 +1094,7 @@ namespace Reko.UnitTests.Arch.PowerPC
         {
             AssertCode(0x5c00c03e, //"rlwnm\tr0,r0,r24,00,1F");
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|r0 = __rol(r0, r24)");
+                "1|L--|r0 = __rol<word32,word32>(r0, r24)");
         }
 
         [Test]

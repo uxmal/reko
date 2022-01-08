@@ -7527,7 +7527,7 @@ l0800_45BA:
 	branch di_27 <u wArg06 l0800_457D
 l0800_45C3:
 	wLoc0C_132 = wLoc0C_132 + 1<16>
-	dwLoc0A_214 = SEQ(wLoc08_151 >>u 1<16>, __rcr(wLoc0A_154, 1<8>, SLICE(cond(wLoc08_151 >>u 1<16>), bool, 1))) (alias)
+	dwLoc0A_214 = SEQ(wLoc08_151 >>u 1<16>, __rcr<word16,byte,bool>(wLoc0A_154, 1<8>, SLICE(cond(wLoc08_151 >>u 1<16>), bool, 1))) (alias)
 l0800_45DC:
 	return
 fn0800_4550_exit:
@@ -7551,7 +7551,7 @@ l0800_462A:
 	bx_11 = bx_11 - 1<16>
 	branch bx_11 != 0<16> l0800_45F7
 l0800_45F7:
-	word16 ax_30 = __rcl(wLoc04_67, 1<8>, SLICE(cond(wLoc06_68 << 1<16>), bool, 1))
+	word16 ax_30 = __rcl<word16,byte,bool>(wLoc04_67, 1<8>, SLICE(cond(wLoc06_68 << 1<16>), bool, 1))
 	wLoc06_68 = wLoc06_68 << 1<16>
 	branch (wArg02 & 1<16>) == 0<16> l0800_461A
 l0800_4612:
@@ -7559,7 +7559,7 @@ l0800_4612:
 l0800_461A:
 	wLoc04_67 = ax_30
 	wArg04 = wArg04 >>u 1<16>
-	wArg02 = __rcr(wArg02, 1<8>, SLICE(cond(wArg04 >>u 1<16>), bool, 1))
+	wArg02 = __rcr<word16,byte,bool>(wArg02, 1<8>, SLICE(cond(wArg04 >>u 1<16>), bool, 1))
 l0800_4631:
 	dxOut = wLoc04_67
 	return wLoc06_68
@@ -9524,7 +9524,7 @@ l0800_5CAD:
 	di_125 = di_125 | wLoc08_165
 l0800_5CB0:
 	word16 ax_133 = Mem118[ds:0x29FD<16>:word16]
-	word16 dx_139 = __rcr(Mem118[ds:0x29FB<16>:word16], 1<8>, SLICE(cond(ax_133 >>u 1<16>), bool, 1))
+	word16 dx_139 = __rcr<word16,byte,bool>(Mem118[ds:0x29FB<16>:word16], 1<8>, SLICE(cond(ax_133 >>u 1<16>), bool, 1))
 	Mem140[ds:0x29FD<16>:word16] = ax_133 >>u 1<16>
 	Mem141[ds:0x29FB<16>:word16] = dx_139
 	Mem148[ds:0x2E45<16>:word16] = Mem145[ds:0x2E45<16>:word16] - 1<16>
@@ -9566,7 +9566,7 @@ l0800_5D0D:
 	si_16 = si_16 + 1<16>
 l0800_5D0E:
 	word16 dx_63 = Mem51[ds:0x29FB<16>:word16]
-	Mem70[ds:0x29FD<16>:word16] = __rcl(Mem51[ds:0x29FD<16>:word16], 1<8>, SLICE(cond(dx_63 << 1<16>), bool, 1))
+	Mem70[ds:0x29FD<16>:word16] = __rcl<word16,byte,bool>(Mem51[ds:0x29FD<16>:word16], 1<8>, SLICE(cond(dx_63 << 1<16>), bool, 1))
 	Mem71[ds:0x29FB<16>:word16] = dx_63 << 1<16>
 	Mem73[ds:0x2E45<16>:word16] = Mem71[ds:0x2E45<16>:word16] - 1<16>
 	di_15 = di_20 - 1<16>
@@ -13736,10 +13736,10 @@ l0800_8C19:
 	word32 dx_ax_275 = dx_ax_283
 l0800_8C23:
 	ui32 v28_201 = dx_ax_275 << 1<8>
-	si_107 = __rcl(si_107, 1<8>, (SLICE(dx_ax_275, word16, 16) & 0x8000<16>) != 0<16>)
+	si_107 = __rcl<word16,byte,bool>(si_107, 1<8>, (SLICE(dx_ax_275, word16, 16) & 0x8000<16>) != 0<16>)
 	ax_100 = SLICE(v28_201, word16, 0)
 	dx_105 = SLICE(v28_201, word16, 16)
-	di_111 = __rcl(di_111, 1<8>, (si_107 & 0x8000<16>) != 0<16>)
+	di_111 = __rcl<word16,byte,bool>(di_111, 1<8>, (si_107 & 0x8000<16>) != 0<16>)
 	branch di_111 <u cx_83 l0800_8C3A
 l0800_8C2F:
 	branch di_111 >u cx_83 l0800_8C35
@@ -14532,7 +14532,7 @@ l0800_9305:
 	Mem430 = PHI((Mem207, l0800_9303), (Mem432, l0800_9305))
 	di_426 = PHI((di_1049, l0800_9303), (di_427, l0800_9305))
 	ch_422 = PHI((ch_1060, l0800_9303), (ch_424, l0800_9305))
-	ch_424 = __rol(ch_422, 1<8>)
+	ch_424 = __rol<byte,byte>(ch_422, 1<8>)
 	di_427 = di_426 + ((ch_422 & 0x80<8>) != 0<8>)
 	Mem432[ss:fp - 0x2C<16> + di_427:byte] = Mem430[ss:fp - 0x2C<16> + di_427:byte] | ch_424
 	al_436 = al_435 - 1<8>

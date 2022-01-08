@@ -316,7 +316,7 @@ namespace Reko.UnitTests.Arch.Tms7000
             Given_Bytes(0xBE);
             AssertCode(
                  "0|L--|0100(1): 2 instructions",
-                 "1|L--|a = __rol(a, 1<8>)",
+                 "1|L--|a = __rol<byte,byte>(a, 1<8>)",
                  "2|L--|C = cond(a)");
         }
 
@@ -326,7 +326,7 @@ namespace Reko.UnitTests.Arch.Tms7000
             Given_Bytes(0xBF);
             AssertCode(
                  "0|L--|0100(1): 2 instructions",
-                 "1|L--|a = __rcl(a, 1<8>, C)",
+                 "1|L--|a = __rcl<byte,byte,bool>(a, 1<8>, C)",
                  "2|L--|C = cond(a)");
         }
 

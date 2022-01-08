@@ -2144,7 +2144,7 @@ l0800_nAD3:
 							dl_n += al_n;
 							do
 							{
-								ch_n = __rol(ch_n, 0x01);
+								ch_n = __rol<byte,byte>(ch_n, 0x01);
 								di += (ch_n & 0x80) != 0x00;
 								Mem390[ss:fp - 0x22 + di:byte] = Mem388[ss:fp - 0x22 + di:byte] | ch_n;
 								--al_n;

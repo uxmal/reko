@@ -503,6 +503,19 @@ namespace Reko.Core.Output
 		public virtual void VisitProcedureConstant(ProcedureConstant pc)
 		{
 			InnerFormatter.WriteHyperlink(pc.Procedure.Name, pc.Procedure);
+            var genArgs = pc.Procedure.GetGenericArguments();
+            if (genArgs.Length > 0)
+            {
+                var sep = '<';
+                var tf = new TypeReferenceFormatter(InnerFormatter);
+                foreach (var arg in genArgs)
+                {
+                    InnerFormatter.Write(sep);
+                    sep = ',';
+                    tf.WriteTypeReference(arg);
+                }
+                InnerFormatter.Write('>');
+            }
 		}
 
 		public void VisitTestCondition(TestCondition tc)

@@ -200,7 +200,7 @@ namespace Reko.UnitTests.Arch.Mips
             Given_HexString("0480CCC8");
             AssertCode(     // rotr     r0,r4,0000000C
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|r0 = __ror(r4, 0xC<32>)");
+                "1|L--|r0 = __ror<word32,word32>(r4, 0xC<32>)");
         }
 
         [Test]

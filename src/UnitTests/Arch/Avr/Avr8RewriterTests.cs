@@ -223,7 +223,7 @@ namespace Reko.UnitTests.Arch.Avr
             Given_UInt16s(0x9407); // "ror\tr0"
             AssertCode(
                 "0|L--|0100(2): 2 instructions",
-                "1|L--|r0 = __rcr(r0, 1<i32>, C)",
+                "1|L--|r0 = __rcr<byte,int32,bool>(r0, 1<i32>, C)",
                 "2|L--|HSVNZC = cond(r0)");
         }
 

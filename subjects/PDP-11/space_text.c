@@ -521,8 +521,8 @@ void fn0472(Eq_n r1, <anonymous> ** wArg10)
 		<anonymous> ** r0_n = &t0000.w0018;
 		while (true)
 		{
-			r1_n = __rcl(r1_n, 1, C_n);
-			<anonymous> ** r0_n = __rcl(r0_n, 1, (r1_n & 0x8000) != 0x00);
+			r1_n = __rcl<word16,int16,bool>(r1_n, 1, C_n);
+			<anonymous> ** r0_n = __rcl<word16,int16,bool>(r0_n, 1, (r1_n & 0x8000) != 0x00);
 			do
 				;
 			while (TTYOUT((char) r0_n));
@@ -538,7 +538,7 @@ void fn0472(Eq_n r1, <anonymous> ** wArg10)
 					while (TTYOUT(')'));
 					goto l04F2;
 				}
-				r0_n = __rcl(r0_n, 1, C_n);
+				r0_n = __rcl<word16,int16,bool>(r0_n, 1, C_n);
 				C_n = (r0_n & 0x80) != 0x00;
 				r0_n = r0_n;
 			} while ((r0_n & 0x80) != 0x00);
@@ -628,7 +628,7 @@ void fn054C(Eq_n r0, struct Eq_n * r3)
 	bool C_n = true;
 	do
 	{
-		<anonymous> ** v16_n = __rcl(wLoc02_n, 1, C_n);
+		<anonymous> ** v16_n = __rcl<word16,int16,bool>(wLoc02_n, 1, C_n);
 		wLoc02_n = v16_n;
 		C_n = (wLoc02_n & 0x8000) != 0x00;
 		--r2_n;
@@ -661,16 +661,16 @@ void fn0608(<anonymous> * wArg00, <anonymous> ** wArg02)
 	bool C_n = false;
 	while (true)
 	{
-		r1_n = __rcl(r1_n, 1, C_n);
+		r1_n = __rcl<word16,int16,bool>(r1_n, 1, C_n);
 		C_n = (r1_n & 0x8000) != 0x00;
 		if ((r1_n & 0x8000) != 0x00)
 			break;
 		--r2_n;
 	}
 	<anonymous> ** r1_n = __swab(SEQ(SLICE(r1_n, byte, 8), 0x00) | r2_n);
-	wArg00_n = __rcr(r1_n, 1, (wLoc04 << 1 & 0x01) != 0x00);
+	wArg00_n = __rcr<word16,int16,bool>(r1_n, 1, (wLoc04 << 1 & 0x01) != 0x00);
 	wLoc02 >>= 1;
-	wArg02 = SEQ(__rcr(bArg03_n, 1, (r1_n & 0x01) != 0x00), bArg02_n);
+	wArg02 = SEQ(__rcr<byte,int16,bool>(bArg03_n, 1, (r1_n & 0x01) != 0x00), bArg02_n);
 l065C:
 	r4_n->ptr002A();
 }
@@ -694,7 +694,7 @@ void fn0670(<anonymous> ** r5, <anonymous> * wArg00, cui16 wArg02, <anonymous> *
 	ui32 v46_n = r0_r1_n << 0x01;
 	<anonymous> ** r1_n = (word16) v46_n;
 	<anonymous> ** r0_n = SLICE(v46_n, word16, 16);
-	<anonymous> ** r5_n = __rcl(r5, 1, (SLICE(r0_r1_n, word16, 16) & 0x8000) != 0x00);
+	<anonymous> ** r5_n = __rcl<word16,int16,bool>(r5, 1, (SLICE(r0_r1_n, word16, 16) & 0x8000) != 0x00);
 	if (r0_n == null)
 	{
 l06B2:
@@ -728,11 +728,11 @@ l06B0:
 		}
 	}
 	cui16 r4_n = SEQ(SLICE(r4_n, byte, 8), 0x00);
-	<anonymous> ** r4_n = __rcr(r4_n + 0x7F01, 1, (r5_n & 0x01) != 0x00);
-	<anonymous> ** r2_n = __rcr(r2_n, 1, (r4_n + 0x7F01 & 0x01) != 0x00);
+	<anonymous> ** r4_n = __rcr<word16,int16,bool>(r4_n + 0x7F01, 1, (r5_n & 0x01) != 0x00);
+	<anonymous> ** r2_n = __rcr<word16,int16,bool>(r2_n, 1, (r4_n + 0x7F01 & 0x01) != 0x00);
 	<anonymous> ** r3_n = __swab(r3_n);
 	cu16 r2_n = SEQ(SLICE(__swab(r2_n), byte, 8), 0x00) | r3_n;
-	<anonymous> ** r3_n = __rcr(SEQ(SLICE(r3_n, byte, 8), 0x00), 1, (r2_n & 0x01) != 0x00);
+	<anonymous> ** r3_n = __rcr<word16,int16,bool>(SEQ(SLICE(r3_n, byte, 8), 0x00), 1, (r2_n & 0x01) != 0x00);
 	<anonymous> ** r1_n = __swab(r1_n);
 	<anonymous> ** r2_n = r2_n >> 1;
 	<anonymous> ** r0_n = SEQ(SLICE(__swab(r0_n), byte, 8), 0x00) | r1_n;
@@ -747,7 +747,7 @@ l06B0:
 		bool C_n = (bool) cond(r1_n);
 		if (r1_n == null)
 			break;
-		r0_n = __rcl(r0_n, 1, C_n);
+		r0_n = __rcl<word16,int16,bool>(r0_n, 1, C_n);
 		r0_n = r0_n;
 		if ((r0_n & 0x8000) == 0x00)
 		{
@@ -755,7 +755,7 @@ l06B0:
 			r2_n = (<anonymous> **) ((char *) r2_n + (word16) (r3_n < null) + r4_n);
 		}
 	}
-	<anonymous> ** r0_n = __rcl(r0_n, 1, C_n);
+	<anonymous> ** r0_n = __rcl<word16,int16,bool>(r0_n, 1, C_n);
 	if ((r0_n & 0x8000) == 0x00)
 	{
 l0700:
@@ -775,14 +775,14 @@ l0700:
 	if (r2_n < null)
 	{
 l0724:
-		r3_n = __swab(SEQ(SLICE(__rcl(r3_n, 1, C_n), byte, 8), 0x00) | r2_n) + __rcl(r1_n, 1, (r3_n & 0x80) != 0x00);
+		r3_n = __swab(SEQ(SLICE(__rcl<word16,int16,bool>(r3_n, 1, C_n), byte, 8), 0x00) | r2_n) + __rcl<word16,int16,bool>(r1_n, 1, (r3_n & 0x80) != 0x00);
 		r2_n = __swab(SEQ(SLICE(r2_n, byte, 8), 0x00)) + r4_n + CONVERT(r3_n <u 0x00, bool, word16);
 l0738:
 		r4_n->ptr002A();
 		return;
 	}
 	r3_n <<= 1;
-	r2_n = __rcl(r2_n, 1, (r3_n & 0x8000) != 0x00);
+	r2_n = __rcl<word16,int16,bool>(r2_n, 1, (r3_n & 0x8000) != 0x00);
 	if ((r4_n & 0x7F80) != 0x00)
 	{
 		r4_n = (r4_n & 0x7F80) - 0x80;
@@ -822,7 +822,7 @@ void fn0754(<anonymous> * wArg00, <anonymous> ** wArg02, <anonymous> ** wArg04, 
 		__syscall(0x898C);
 		goto l080C;
 	}
-	<anonymous> ** v23_n = __rcl(wArg02, 1, C_n);
+	<anonymous> ** v23_n = __rcl<word16,int16,bool>(wArg02, 1, C_n);
 	wArg02 = v23_n;
 	if (wArg06 << 1 != 0x00)
 	{
@@ -841,9 +841,9 @@ void fn0754(<anonymous> * wArg00, <anonymous> ** wArg02, <anonymous> ** wArg04, 
 			}
 l078E:
 			ui32 r4_r3_n;
-			<anonymous> ** r4_n = __rcr(r4_n, 1, true);
-			wArg04 = __rcr(wArg04, 1, (r4_n & 0x01) != 0x00);
-			<anonymous> ** r5_n = __rcr(r5_n, 1, (r2_n + 0x7F01 & 0x01) != 0x00);
+			<anonymous> ** r4_n = __rcr<word16,int16,bool>(r4_n, 1, true);
+			wArg04 = __rcr<word16,int16,bool>(wArg04, 1, (r4_n & 0x01) != 0x00);
+			<anonymous> ** r5_n = __rcr<word16,int16,bool>(r5_n, 1, (r2_n + 0x7F01 & 0x01) != 0x00);
 			<anonymous> ** r0_n = &t0000.w0036 + 101;
 			cup16 v33_n = r5_n - r4_n;
 			if (v33_n > 0x00)
@@ -900,7 +900,7 @@ l07B6:
 							bool C_n = true;
 							do
 							{
-								r0_n = __rcl(r0_n, 1, C_n);
+								r0_n = __rcl<word16,int16,bool>(r0_n, 1, C_n);
 								C_n = (r0_n & 0x8000) != 0x00;
 								r0_n = r0_n;
 							} while ((r0_n & 0x8000) != 0x00);
@@ -914,7 +914,7 @@ l07C6:
 					C_n = true;
 					r4_r3_n = SEQ(r4_n - (word16) (r3_n < 0x00) - r5_n, r3_n);
 l07CE:
-					r0_n = __rcl(r0_n, 1, C_n);
+					r0_n = __rcl<word16,int16,bool>(r0_n, 1, C_n);
 					r4_r3_n = r4_r3_n;
 					r0_n = r0_n;
 				} while ((r0_n & 0x8000) != 0x00);
@@ -1009,8 +1009,8 @@ void fn0AAE(struct Eq_n * r5)
 	word16 v9_n = r4_n->w0002;
 	cui16 v11_n = r4_n->w0000;
 	int16 r0_n;
-	<anonymous> ** r3_n = __rcr(null, 1, (bool) cond(v11_n << 1));
-	<anonymous> ** r0_n = __rcr(v11_n << 1, 1, true);
+	<anonymous> ** r3_n = __rcr<word16,int16,bool>(null, 1, (bool) cond(v11_n << 1));
+	<anonymous> ** r0_n = __rcr<word16,int16,bool>(v11_n << 1, 1, true);
 	<anonymous> ** r2_n = SEQ(SLICE(r0_n, byte, 8), 0x00);
 	cui16 r0_n = r0_n & ~r2_n;
 	<anonymous> ** r2_n = __swab(r2_n);
@@ -1333,7 +1333,7 @@ void fn0C4A(ci16 r0, <anonymous> ** r1, word16 wArg00, cui16 wArg02, <anonymous>
 	{
 		if (wArg02 << 1 <= 0x00)
 			r1 = -r1;
-		r1 = __rcl(r1 >> 1, 1, (r1 & 0x01) != 0x00);
+		r1 = __rcl<word16,int16,bool>(r1 >> 1, 1, (r1 & 0x01) != 0x00);
 		if (OVERFLOW(r1))
 		{
 			wArg04();
@@ -1566,7 +1566,7 @@ void fn0F48(struct Eq_n * r5)
 		cui16 r1_n = *v15_n;
 		if (r1_n != 0x00)
 		{
-			word16 r0_n = __rcl(r0_n, 1, (bool) cond(r1_n << 1)) + Mem0[v13_n + 0x00:word16];
+			word16 r0_n = __rcl<word16,int16,bool>(r0_n, 1, (bool) cond(r1_n << 1)) + Mem0[v13_n + 0x00:word16];
 			uint16 r1_n = (r1_n << 1) + *v15_n;
 			ci16 r0_n = r0_n + (word16) (r1_n < 0x00) + *v15_n;
 			r0_r1_n = SEQ(r0_n, r1_n);
@@ -2101,7 +2101,7 @@ void fn14A8(Eq_n r2, uint16 r5)
 			bool C_n = true;
 			do
 			{
-				r0_n = __rcl(r0_n, 1, C_n);
+				r0_n = __rcl<word16,int16,bool>(r0_n, 1, C_n);
 				C_n = (r0_n & 0x8000) != 0x00;
 				--r1_n;
 			} while (r1_n > 0x00);
@@ -3813,7 +3813,7 @@ l473C:
 				r0->w0000 |= 0x0800;
 				return;
 			}
-			r0_n = __rcr(r0_n, 1, C_n);
+			r0_n = __rcr<word16,int16,bool>(r0_n, 1, C_n);
 			C_n = (r0_n & 0x01) != 0x00;
 			r0_n = r0_n;
 		} while ((r0_n & 0x01) != 0x00);
@@ -3822,7 +3822,7 @@ l473C:
 		bool C_n = true;
 		do
 		{
-			r0_n = __rcl(r0_n, 1, C_n);
+			r0_n = __rcl<word16,int16,bool>(r0_n, 1, C_n);
 			C_n = (r0_n & 0x8000) != 0x00;
 			--r1_n;
 		} while (r1_n != 0x00);

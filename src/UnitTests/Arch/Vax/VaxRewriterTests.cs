@@ -1746,7 +1746,7 @@ namespace Reko.UnitTests.Arch.Vax
             Given_Bytes(0x9C, 0x03, 0x52, 0x64);	// rotl	
             AssertCode(
                 "0|L--|00010000(4): 5 instructions",
-                "1|L--|v4 = __rol(r2, 3<8>)",
+                "1|L--|v4 = __rol<word32,byte>(r2, 3<8>)",
                 "2|L--|Mem0[r4:word32] = v4",
                 "3|L--|ZN = cond(v4)",
                 "4|L--|C = false",

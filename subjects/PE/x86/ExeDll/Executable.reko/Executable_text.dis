@@ -339,7 +339,7 @@ l004014C0:
 l004014C9:
 	branch dwArg04 != 0<32> l004014F3
 l004014F3:
-	word32 eax_76 = __ror(0xFFFFFFFF<32>, 0x20<8> - (Mem11[0x00403004<p32>:byte] & 0x1F<8>)) ^ Mem68[0x00403004<p32>:word32]
+	word32 eax_76 = __ror<word32,byte>(0xFFFFFFFF<32>, 0x20<8> - (Mem11[0x00403004<p32>:byte] & 0x1F<8>)) ^ Mem68[0x00403004<p32>:word32]
 	Mem83[0x0040333C<p32>:word32] = eax_76
 	Mem87[0x00403340<p32>:word32] = eax_76
 	Mem91[0x00403344<p32>:word32] = eax_76
@@ -473,7 +473,7 @@ fn00401613_entry:
 l00401613:
 	word32 eax_23
 	word32 eax_8 = Mem6[0x00403004<p32>:word32]
-	branch __ror(eax_8 ^ Mem6[0x0040333C<p32>:word32], SLICE(eax_8, byte, 0) & 0x1F<8>) != 0xFFFFFFFF<32> l00401637
+	branch __ror<word32,byte>(eax_8 ^ Mem6[0x0040333C<p32>:word32], SLICE(eax_8, byte, 0) & 0x1F<8>) != 0xFFFFFFFF<32> l00401637
 l00401637:
 	call register_onexit_function (retsize: 4;)
 		uses: Stack +0004:0x40333C<32>,Stack +0014:dwArg04

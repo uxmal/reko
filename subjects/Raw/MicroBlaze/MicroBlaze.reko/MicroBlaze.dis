@@ -14858,15 +14858,15 @@ l0000DB9C_ds_t:
 	r3_103 = r25_14
 l0000DB9C_ds_f:
 l0000DBA0:
-	word32 r7_67 = __rcr(r25_14, 1<i32>, cond(r25_14 >>u 24<i32>))
-	word32 r7_69 = __rcr(r7_67, 1<i32>, cond(r7_67))
-	word32 r7_71 = __rcr(r7_69, 1<i32>, cond(r7_69))
-	word32 r7_73 = __rcr(r7_71, 1<i32>, cond(r7_71))
-	word32 r7_75 = __rcr(r7_73, 1<i32>, cond(r7_73))
-	word32 r7_77 = __rcr(r7_75, 1<i32>, cond(r7_75))
-	word32 r7_79 = __rcr(r7_77, 1<i32>, cond(r7_77))
-	word32 r7_81 = __rcr(r7_79, 1<i32>, cond(r7_79))
-	word32 r7_83 = __rcr(r7_81, 1<i32>, cond(r7_81))
+	word32 r7_67 = __rcr<word32,int32,bool>(r25_14, 1<i32>, cond(r25_14 >>u 24<i32>))
+	word32 r7_69 = __rcr<word32,int32,bool>(r7_67, 1<i32>, cond(r7_67))
+	word32 r7_71 = __rcr<word32,int32,bool>(r7_69, 1<i32>, cond(r7_69))
+	word32 r7_73 = __rcr<word32,int32,bool>(r7_71, 1<i32>, cond(r7_71))
+	word32 r7_75 = __rcr<word32,int32,bool>(r7_73, 1<i32>, cond(r7_73))
+	word32 r7_77 = __rcr<word32,int32,bool>(r7_75, 1<i32>, cond(r7_75))
+	word32 r7_79 = __rcr<word32,int32,bool>(r7_77, 1<i32>, cond(r7_77))
+	word32 r7_81 = __rcr<word32,int32,bool>(r7_79, 1<i32>, cond(r7_79))
+	word32 r7_83 = __rcr<word32,int32,bool>(r7_81, 1<i32>, cond(r7_81))
 	r7_138 = r7_83 & 0xFF000000<32>
 	r3_103 = (r25_14 >>u 24<i32>) + (r7_83 & 0xFF000000<32>) + (r25_14 >>u 8<i32> & 0xFFFFFF00<32>) + (r25_14 * 0x100<32> & 0xFF0000<32>)
 l0000DC90:
@@ -19599,15 +19599,15 @@ word32 fn000156B4(word32 r5, word32 r6, word32 r7)
 fn000156B4_entry:
 l000156B4:
 	word32 r4_1020
-	word32 r9_36 = __rcr(r5, 1<i32>, cond(r5 >>u 24<i32>))
-	word32 r9_38 = __rcr(r9_36, 1<i32>, cond(r9_36))
-	word32 r9_40 = __rcr(r9_38, 1<i32>, cond(r9_38))
-	word32 r9_42 = __rcr(r9_40, 1<i32>, cond(r9_40))
-	word32 r9_44 = __rcr(r9_42, 1<i32>, cond(r9_42))
-	word32 r9_46 = __rcr(r9_44, 1<i32>, cond(r9_44))
-	word32 r9_48 = __rcr(r9_46, 1<i32>, cond(r9_46))
-	word32 r9_50 = __rcr(r9_48, 1<i32>, cond(r9_48))
-	word32 r3_68 = (r5 >>u 24<i32>) + (__rcr(r9_50, 1<i32>, cond(r9_50)) & 0xFF000000<32>) + (r5 >>u 8<i32> & 0xFFFFFF00<32>) + (r5 * 0x100<32> & 0xFF0000<32>)
+	word32 r9_36 = __rcr<word32,int32,bool>(r5, 1<i32>, cond(r5 >>u 24<i32>))
+	word32 r9_38 = __rcr<word32,int32,bool>(r9_36, 1<i32>, cond(r9_36))
+	word32 r9_40 = __rcr<word32,int32,bool>(r9_38, 1<i32>, cond(r9_38))
+	word32 r9_42 = __rcr<word32,int32,bool>(r9_40, 1<i32>, cond(r9_40))
+	word32 r9_44 = __rcr<word32,int32,bool>(r9_42, 1<i32>, cond(r9_42))
+	word32 r9_46 = __rcr<word32,int32,bool>(r9_44, 1<i32>, cond(r9_44))
+	word32 r9_48 = __rcr<word32,int32,bool>(r9_46, 1<i32>, cond(r9_46))
+	word32 r9_50 = __rcr<word32,int32,bool>(r9_48, 1<i32>, cond(r9_48))
+	word32 r3_68 = (r5 >>u 24<i32>) + (__rcr<word32,int32,bool>(r9_50, 1<i32>, cond(r9_50)) & 0xFF000000<32>) + (r5 >>u 8<i32> & 0xFFFFFF00<32>) + (r5 * 0x100<32> & 0xFF0000<32>)
 	branch Test(EQ,r7) l000157A8_ds_t
 l000157A8_ds_t:
 	r4_1020 = ~r3_68
@@ -19750,15 +19750,15 @@ l00016CB4:
 	r4_1020 = Mem0[(r4_1254 >>u 24<i32> ^ CONVERT(Mem0[r6_1159 + 2<i32>:byte], byte, word32)) * 4<32> + 0xFFFFC5D0<32>:word32] ^ r4_1254 * 0x100<32>
 l00015884:
 	word32 r3_1297 = ~r4_1020
-	word32 r7_1338 = __rcr(r3_1297, 1<i32>, cond(r3_1297 >>u 8<i32>))
-	word32 r7_1340 = __rcr(r7_1338, 1<i32>, cond(r7_1338))
-	word32 r7_1342 = __rcr(r7_1340, 1<i32>, cond(r7_1340))
-	word32 r7_1344 = __rcr(r7_1342, 1<i32>, cond(r7_1342))
-	word32 r7_1346 = __rcr(r7_1344, 1<i32>, cond(r7_1344))
-	word32 r7_1348 = __rcr(r7_1346, 1<i32>, cond(r7_1346))
-	word32 r7_1350 = __rcr(r7_1348, 1<i32>, cond(r7_1348))
-	word32 r7_1352 = __rcr(r7_1350, 1<i32>, cond(r7_1350))
-	return (r3_1297 >>u 24<i32>) + (__rcr(r7_1352, 1<i32>, cond(r7_1352)) & 0xFF000000<32>) + (r3_1297 >>u 8<i32> & 0xFFFFFF00<32>) + (r3_1297 * 0x100<32> & 0xFF0000<32>)
+	word32 r7_1338 = __rcr<word32,int32,bool>(r3_1297, 1<i32>, cond(r3_1297 >>u 8<i32>))
+	word32 r7_1340 = __rcr<word32,int32,bool>(r7_1338, 1<i32>, cond(r7_1338))
+	word32 r7_1342 = __rcr<word32,int32,bool>(r7_1340, 1<i32>, cond(r7_1340))
+	word32 r7_1344 = __rcr<word32,int32,bool>(r7_1342, 1<i32>, cond(r7_1342))
+	word32 r7_1346 = __rcr<word32,int32,bool>(r7_1344, 1<i32>, cond(r7_1344))
+	word32 r7_1348 = __rcr<word32,int32,bool>(r7_1346, 1<i32>, cond(r7_1346))
+	word32 r7_1350 = __rcr<word32,int32,bool>(r7_1348, 1<i32>, cond(r7_1348))
+	word32 r7_1352 = __rcr<word32,int32,bool>(r7_1350, 1<i32>, cond(r7_1350))
+	return (r3_1297 >>u 24<i32>) + (__rcr<word32,int32,bool>(r7_1352, 1<i32>, cond(r7_1352)) & 0xFF000000<32>) + (r3_1297 >>u 8<i32> & 0xFFFFFF00<32>) + (r3_1297 * 0x100<32> & 0xFF0000<32>)
 fn000156B4_exit:
 
 

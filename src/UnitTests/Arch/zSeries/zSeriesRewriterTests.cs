@@ -2263,7 +2263,7 @@ namespace Reko.UnitTests.Arch.zSeries
             Given_HexString("EB220020001C");
             AssertCode(     // rllg	r2,r2,00000020
                 "0|L--|00100000(6): 2 instructions",
-                "1|L--|r2 = __rol(r2, 32<i32>)",
+                "1|L--|r2 = __rol<word64,int32>(r2, 32<i32>)",
                 "2|L--|CC = cond(r2)");
         }
 

@@ -651,7 +651,7 @@ namespace Reko.UnitTests.Evaluation
             var r1 = new RegisterStorage("r1", 0, 0, PrimitiveType.Word32);
             var rol = CommonOps.Rol.MakeInstance(r0.DataType, r1.DataType);
             var (exp, _) = m.Fn(rol, m.Fn(rol, foo, m.Word32(1)), m.Word32(1)).Accept(simplifier);
-            Assert.AreEqual("__rol(foo_1, 2<32>)", exp.ToString());
+            Assert.AreEqual("__rol<word32,word32>(foo_1, 2<32>)", exp.ToString());
         }
 
         [Test]
@@ -662,7 +662,7 @@ namespace Reko.UnitTests.Evaluation
             var r1 = new RegisterStorage("r1", 0, 0, PrimitiveType.Word32);
             var ror = CommonOps.Ror.MakeInstance(r0.DataType, r1.DataType);
             var (expr, _) = m.Fn(ror, m.Fn(ror, foo, m.Word32(2)), m.Word32(1)).Accept(simplifier);
-            Assert.AreEqual("__ror(foo_1, 3<32>)", expr.ToString());
+            Assert.AreEqual("__ror<word32,word32>(foo_1, 3<32>)", expr.ToString());
         }
 
         [Test]

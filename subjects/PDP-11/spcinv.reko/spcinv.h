@@ -579,11 +579,11 @@ Eq_836: (fn ui16 ())
 	T_1408 (in fn0A94 @ 00000930 : ptr16)
 	T_1689 (in fn0A94 @ 000009BA : ptr16)
 Eq_840: (fn ui16 (ui16, int16, bool))
-	T_840 (in __rcl @ 000005FC : ptr32)
+	T_840 (in __rcl<word16,int16,bool> @ 000005FC : ptr32)
 	T_841 (in signature of __rcl @ 00000000 : void)
-	T_845 (in __rcl @ 000005FC : ptr32)
-	T_1333 (in __rcl @ 000008FA : ptr32)
-	T_1334 (in __rcl @ 000008FA : ptr32)
+	T_845 (in __rcl<word16,int16,bool> @ 000005FC : ptr32)
+	T_1333 (in __rcl<word16,int16,bool> @ 000008FA : ptr32)
+	T_1334 (in __rcl<word16,int16,bool> @ 000008FA : ptr32)
 Eq_864: (union "Eq_864" (int16 u0) (cup16 u1))
 	T_864 (in v26_53 @ 00000604 : Eq_864)
 	T_867 (in Mem17[pc + 0x90A<16>:word16] @ 00000604 : word16)
@@ -4086,7 +4086,7 @@ T_839: (in r3_49 @ 000005FC : ui16)
   Class: Eq_839
   DataType: ui16
   OrigDataType: ui16
-T_840: (in __rcl @ 000005FC : ptr32)
+T_840: (in __rcl<word16,int16,bool> @ 000005FC : ptr32)
   Class: Eq_840
   DataType: (ptr32 Eq_840)
   OrigDataType: (ptr32 (fn T_858 (T_852, T_853, T_857)))
@@ -4106,7 +4106,7 @@ T_844: (in p3 @ 000005FC : bool)
   Class: Eq_844
   DataType: bool
   OrigDataType: 
-T_845: (in __rcl @ 000005FC : ptr32)
+T_845: (in __rcl<word16,int16,bool> @ 000005FC : ptr32)
   Class: Eq_840
   DataType: (ptr32 Eq_840)
   OrigDataType: (ptr32 (fn T_852 (T_846, T_847, T_851)))
@@ -4134,7 +4134,7 @@ T_851: (in SLICE(cond(r0_34 << 1<i16>), bool, 0) @ 000005FC : bool)
   Class: Eq_844
   DataType: bool
   OrigDataType: bool
-T_852: (in __rcl(0<16>, 1<i16>, (bool) cond(r0_34 << 1<i16>)) @ 000005FC : word16)
+T_852: (in __rcl<word16,int16,bool>(0<16>, 1<i16>, (bool) cond(r0_34 << 1<i16>)) @ 000005FC : word16)
   Class: Eq_839
   DataType: ui16
   OrigDataType: word16
@@ -4158,7 +4158,7 @@ T_857: (in SLICE(cond(r0_34 << 2<i16>), bool, 0) @ 000005FC : bool)
   Class: Eq_844
   DataType: bool
   OrigDataType: bool
-T_858: (in __rcl(__rcl(0<16>, 1<i16>, (bool) cond(r0_34 << 1<i16>)), 1<i16>, (bool) cond(r0_34 << 2<i16>)) @ 000005FC : word16)
+T_858: (in __rcl<word16,int16,bool>(__rcl<word16,int16,bool>(0<16>, 1<i16>, (bool) cond(r0_34 << 1<i16>)), 1<i16>, (bool) cond(r0_34 << 2<i16>)) @ 000005FC : word16)
   Class: Eq_839
   DataType: ui16
   OrigDataType: word16
@@ -6058,11 +6058,11 @@ T_1332: (in r1_380 @ 000008FA : ui16)
   Class: Eq_839
   DataType: ui16
   OrigDataType: ui16
-T_1333: (in __rcl @ 000008FA : ptr32)
+T_1333: (in __rcl<word16,int16,bool> @ 000008FA : ptr32)
   Class: Eq_840
   DataType: (ptr32 Eq_840)
   OrigDataType: (ptr32 (fn T_1347 (T_1341, T_1342, T_1346)))
-T_1334: (in __rcl @ 000008FA : ptr32)
+T_1334: (in __rcl<word16,int16,bool> @ 000008FA : ptr32)
   Class: Eq_840
   DataType: (ptr32 Eq_840)
   OrigDataType: (ptr32 (fn T_1341 (T_1335, T_1336, T_1340)))
@@ -6090,7 +6090,7 @@ T_1340: (in SLICE(cond(r0_366 << 1<i16>), bool, 0) @ 000008FA : bool)
   Class: Eq_844
   DataType: bool
   OrigDataType: bool
-T_1341: (in __rcl(SLICE(v113_453, word16, 16), 1<i16>, (bool) cond(r0_366 << 1<i16>)) @ 000008FA : word16)
+T_1341: (in __rcl<word16,int16,bool>(SLICE(v113_453, word16, 16), 1<i16>, (bool) cond(r0_366 << 1<i16>)) @ 000008FA : word16)
   Class: Eq_839
   DataType: ui16
   OrigDataType: word16
@@ -6114,7 +6114,7 @@ T_1346: (in SLICE(cond(r0_366 << 2<i16>), bool, 0) @ 000008FA : bool)
   Class: Eq_844
   DataType: bool
   OrigDataType: bool
-T_1347: (in __rcl(__rcl(SLICE(v113_453, word16, 16), 1<i16>, (bool) cond(r0_366 << 1<i16>)), 1<i16>, (bool) cond(r0_366 << 2<i16>)) @ 000008FA : word16)
+T_1347: (in __rcl<word16,int16,bool>(__rcl<word16,int16,bool>(SLICE(v113_453, word16, 16), 1<i16>, (bool) cond(r0_366 << 1<i16>)), 1<i16>, (bool) cond(r0_366 << 2<i16>)) @ 000008FA : word16)
   Class: Eq_839
   DataType: ui16
   OrigDataType: word16

@@ -526,7 +526,7 @@ namespace Reko.UnitTests.Arch.Rl78
             Given_HexString("61 EE");	// rolwc	ax,0x01
             AssertCode(
                 "0|L--|00001000(2): 2 instructions",
-                "1|L--|ax = __rcl(ax, 1<8>, C)",
+                "1|L--|ax = __rcl<word16,byte,bool>(ax, 1<8>, C)",
                 "2|L--|C = cond(ax)");
         }
 
@@ -601,7 +601,7 @@ namespace Reko.UnitTests.Arch.Rl78
             Given_HexString("61 DC");	// rolc	a,0x01
             AssertCode(
                 "0|L--|00001000(2): 2 instructions",
-                "1|L--|a = __rcl(a, 1<8>, C)",
+                "1|L--|a = __rcl<byte,byte,bool>(a, 1<8>, C)",
                 "2|L--|C = cond(a)");
         }
 
@@ -611,7 +611,7 @@ namespace Reko.UnitTests.Arch.Rl78
             Given_HexString("61 FB");   // rorc a,0x01
             AssertCode(
                 "0|L--|00001000(2): 2 instructions",
-                "1|L--|a = __rcr(a, 1<8>, C)",
+                "1|L--|a = __rcr<byte,byte,bool>(a, 1<8>, C)",
                 "2|L--|C = cond(a)");
         }
 
@@ -639,7 +639,7 @@ namespace Reko.UnitTests.Arch.Rl78
             Given_HexString("61 EB");	// rol	a,0x01
             AssertCode(
                 "0|L--|00001000(2): 2 instructions",
-                "1|L--|a = __rol(a, 1<8>)",
+                "1|L--|a = __rol<byte,byte>(a, 1<8>)",
                 "2|L--|C = cond(a)");
         }
 

@@ -29,7 +29,7 @@ l0C00_0000:
 	eax = eax << 1<32>
 	SCZO = cond(eax)
 	v7 = (edx & 1<32> << 0x20<8> - 1<8>) != 0<32>
-	edx = __rcl(edx, 1<8>, C)
+	edx = __rcl<word32,byte,bool>(edx, 1<8>, C)
 	C = v7
 	return
 	// succ:  fn0C00_0000_exit

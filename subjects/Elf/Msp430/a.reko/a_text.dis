@@ -2637,7 +2637,7 @@ l00005A24:
 	branch r14_41 != 0<20> l00005A24
 l00005A30:
 	sr = sr & 0xFFFE<16>
-	word20 r14_73 = __rcr(r11_12, 1<8>, C_70)
+	word20 r14_73 = __rcr<word20,byte,bool>(r11_12, 1<8>, C_70)
 	branch r14_73 == 0<20> l00005A46
 l00005A3A:
 	r12_23 = r12_23 - 2<16>
@@ -2679,7 +2679,7 @@ l000059C4:
 	branch r14_122 != 0<20> l000059C4
 l000059D0:
 	sr = sr & 0xFFFE<16>
-	word20 r14_152 = __rcr(r11_12, 1<8>, C_149)
+	word20 r14_152 = __rcr<word20,byte,bool>(r11_12, 1<8>, C_149)
 	branch r14_152 == 0<20> l000059E4
 l000059DA:
 	Mem160[r13_13:word16] = Mem156[r12_130:word16]
@@ -2735,7 +2735,7 @@ l00005AA4:
 	branch r12_34 != 0<20> l00005AA4
 l00005AAE:
 	sr = sr & 0xFFFE<16>
-	word20 r12_57 = __rcr(r13, 1<8>, C_54)
+	word20 r12_57 = __rcr<word20,byte,bool>(r13, 1<8>, C_54)
 l00005AB4:
 	Mem62[r14_121:word16] = r11_119
 	r14_121 = r14_121 + 2<16>
@@ -2815,7 +2815,7 @@ l00005B26:
 	word20 r14_115
 	word20 r15_116
 	word20 r12_44
-	word20 r8_54 = __rcr(r8_48, 1<8>, fn00005B4E(r8_18, r10, r11, r12, r13, out r8_48, out r12_44, out r13_114, out r14_115, out r15_116))
+	word20 r8_54 = __rcr<word20,byte,bool>(r8_48, 1<8>, fn00005B4E(r8_18, r10, r11, r12, r13, out r8_48, out r12_44, out r13_114, out r14_115, out r15_116))
 	branch (r8_54 & 4<16>) == 0<20> l00005B40
 l00005B30:
 	r12_44 = (r12_44 ^ 0xFFFF<16>) + 1<16>
@@ -2851,7 +2851,7 @@ l00005B6C:
 	bool C_22 = SLICE(cond(r9_18), bool, 0)
 	branch r9_18 != 0<20> l00005B58
 l00005B58:
-	r8 = __rcr(r8_17, 1<8>, C_22)
+	r8 = __rcr<word20,byte,bool>(r8_17, 1<8>, C_22)
 	r14_25 = r14_25 * 2<20> + CONVERT(r8 <u 0<20>, bool, word20)
 	r15_29 = r15_29 * 2<20> + CONVERT(r14_25 <u 0<20>, bool, word20)
 	branch r15_29 >=u r11 l00005B6C

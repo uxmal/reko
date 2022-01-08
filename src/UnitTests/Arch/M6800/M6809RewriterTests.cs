@@ -516,7 +516,7 @@ namespace Reko.UnitTests.Arch.M6800
             Given_HexString("59"); // rol	b
             AssertCode(
                 "0|L--|0100(1): 2 instructions",
-                "1|L--|b = __rol(b, 1<8>)",
+                "1|L--|b = __rol<byte,byte>(b, 1<8>)",
                 "2|L--|NZVC = cond(b)");
         }
 
@@ -526,7 +526,7 @@ namespace Reko.UnitTests.Arch.M6800
             Given_HexString("0630"); // ror	>$30
             AssertCode(
                 "0|L--|0100(2): 3 instructions",
-                "1|L--|v3 = __ror(Mem0[dp + 0x30<16>:byte], 1<8>)",
+                "1|L--|v3 = __ror<byte,byte>(Mem0[dp + 0x30<16>:byte], 1<8>)",
                 "2|L--|Mem0[dp + 0x30<16>:byte] = v3",
                 "3|L--|NZC = cond(v3)");
         }

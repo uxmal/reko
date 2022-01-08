@@ -1157,7 +1157,7 @@ namespace Reko.UnitTests.Arch.Arc
             Given_HexString("28430200"); // ror	r0,r0,r8
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|r0 = __ror(r0, r8)");
+                "1|L--|r0 = __ror<word32,word32>(r0, r8)");
         }
 
         [Test]

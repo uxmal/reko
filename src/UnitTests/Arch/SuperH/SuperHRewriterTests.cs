@@ -806,7 +806,7 @@ namespace Reko.UnitTests.Arch.Tlcs
             Given_HexString("2440");	// invalid
             AssertCode(
                 "0|L--|00100000(2): 1 instructions",
-                "1|L--|r0 = __rcl(r0, 1<i32>, T)");
+                "1|L--|r0 = __rcl<word32,int32,bool>(r0, 1<i32>, T)");
         }
 
         [Test]
@@ -842,7 +842,7 @@ namespace Reko.UnitTests.Arch.Tlcs
             Given_HexString("0540");	// invalid
             AssertCode(
                 "0|L--|00100000(2): 1 instructions",
-                "1|L--|r0 = __ror(r0, 1<i32>)");
+                "1|L--|r0 = __ror<word32,int32>(r0, 1<i32>)");
         }
 
         [Test]

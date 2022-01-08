@@ -71,7 +71,7 @@ Eq_n fn03E6(Eq_n c)
 {
 	g_t1659 = c;
 	byte a_n;
-	if (__rcr(a_n, 0x01, fn03BB(g_t1659, out a_n)) >= 0x00)
+	if (__rcr<byte,byte,bool>(a_n, 0x01, fn03BB(g_t1659, out a_n)) >= 0x00)
 		return g_t1659;
 	return (word16) g_t1659 + 95;
 }
@@ -364,7 +364,7 @@ void fn063E(byte b, Eq_n c, byte d, Eq_n e)
 			g_b167B = 0x01;
 			++g_b167C;
 		}
-		if (__rcr(g_b167B, 0x01, C_n) < 0x00)
+		if (__rcr<byte,byte,bool>(g_b167B, 0x01, C_n) < 0x00)
 		{
 			Eq_n hl_n = g_t1678;
 			Eq_n a_n = *hl_n;
@@ -473,7 +473,7 @@ void fn075C(byte b, Eq_n c, byte d, Eq_n e)
 void fn07B3(cu8 b)
 {
 	cu8 b = SLICE(bc, byte, 8);
-	if (__rcr(g_b14F9, 0x01, C) < 0x00)
+	if (__rcr<byte,byte,bool>(g_b14F9, 0x01, C) < 0x00)
 	{
 		word16 bc_n;
 		fn056B(SEQ(b, 0x0D), out bc_n);
@@ -533,29 +533,29 @@ byte fn082F(byte f, byte b, Eq_n c, byte e, word16 wArg02, word16 wArg04)
 	g_b168F = 0x00;
 	g_b1690 = 0x00;
 	g_b1691 = 0x00;
-	byte a_n = __rol(g_b168D, 0x01);
-	if (__rcr(a_n, 0x01, cond(a_n)) < 0x00)
+	byte a_n = __rol<byte,byte>(g_b168D, 0x01);
+	if (__rcr<byte,byte,bool>(a_n, 0x01, cond(a_n)) < 0x00)
 		g_b1690 = 0x01;
 	else
 	{
-		byte a_n = __rol(g_b168D, 0x02);
-		if (__rcr(a_n, 0x01, cond(a_n)) < 0x00)
+		byte a_n = __rol<byte,byte>(g_b168D, 0x02);
+		if (__rcr<byte,byte,bool>(a_n, 0x01, cond(a_n)) < 0x00)
 			g_b1691 = 0x01;
 		else
 		{
-			byte a_n = __rol(g_b168D, 0x03);
-			if (__rcr(a_n, 0x01, cond(a_n)) < 0x00)
+			byte a_n = __rol<byte,byte>(g_b168D, 0x03);
+			if (__rcr<byte,byte,bool>(a_n, 0x01, cond(a_n)) < 0x00)
 				g_b168F = 0x01;
 		}
 	}
-	byte a_n = __rol(g_b168D, 0x04);
-	if (__rcr(a_n, 0x01, cond(a_n)) < 0x00)
+	byte a_n = __rol<byte,byte>(g_b168D, 0x04);
+	if (__rcr<byte,byte,bool>(a_n, 0x01, cond(a_n)) < 0x00)
 		g_b168E = 0x01;
 	g_b168D += 0x0F;
 	Eq_n hl_n = g_t1687;
 	Eq_n hl_n = g_t1689;
 	word16 af_n;
-	cu8 a_n = __rcr(~SLICE(af_n, byte, 8), 0x01, fn0990(f, SLICE(hl_n, byte, 8), (byte) hl_n, SLICE(hl_n, byte, 8), (byte) hl_n, out af_n));
+	cu8 a_n = __rcr<byte,byte,bool>(~SLICE(af_n, byte, 8), 0x01, fn0990(f, SLICE(hl_n, byte, 8), (byte) hl_n, SLICE(hl_n, byte, 8), (byte) hl_n, out af_n));
 	byte f_n = (byte) af_n;
 	Eq_n C_n = cond(a_n);
 	if (a_n < 0x00)
@@ -563,15 +563,15 @@ byte fn082F(byte f, byte b, Eq_n c, byte e, word16 wArg02, word16 wArg04)
 		Eq_n hl_n = g_t1687;
 		C_n = fn061B(0x02, 0x4C, SLICE(hl_n, byte, 8), (byte) hl_n);
 	}
-	cu8 a_n = __rcr(g_b1690, 0x01, C_n);
+	cu8 a_n = __rcr<byte,byte,bool>(g_b1690, 0x01, C_n);
 	Eq_n C_n = cond(a_n);
 	if (a_n >= 0x00)
 	{
-		cu8 a_n = __rcr(g_b1691, 0x01, C_n);
+		cu8 a_n = __rcr<byte,byte,bool>(g_b1691, 0x01, C_n);
 		Eq_n C_n = cond(a_n);
 		if (a_n >= 0x00)
 		{
-			if (__rcr(g_b168F, 0x01, C_n) >= 0x00)
+			if (__rcr<byte,byte,bool>(g_b168F, 0x01, C_n) >= 0x00)
 			{
 				fn0920();
 				return f_n;
@@ -897,7 +897,7 @@ void fn0D6F()
 void fn0D84()
 {
 	byte a_n;
-	if (__rcr(a_n, 0x01, fn0D64(out a_n)) < 0x00)
+	if (__rcr<byte,byte,bool>(a_n, 0x01, fn0D64(out a_n)) < 0x00)
 		fn075C(0x00, 0x02, 0x00, 0x00);
 	Eq_n hl_n = g_t1521;
 	*((word16) hl_n + 9) |= 0x01;
@@ -931,7 +931,7 @@ void fn0E63(byte c)
 		if (g_b16A6 == *((word16) g_t1521 + 2))
 		{
 			byte a_n;
-			if (__rcr(a_n, 0x01, fn0EAB(out a_n)) < 0x00)
+			if (__rcr<byte,byte,bool>(a_n, 0x01, fn0EAB(out a_n)) < 0x00)
 				return;
 		}
 		Eq_n hl_n = g_t1521;

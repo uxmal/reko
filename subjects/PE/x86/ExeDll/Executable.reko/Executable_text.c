@@ -263,7 +263,7 @@ void fn004014AD(word32 ebx, Eq_n edi, Eq_n dwArg04)
 		}
 		else
 		{
-			ui32 eax_n = __ror(~0x00, 0x20 - (g_t403004 & 0x1F)) ^ g_t403004;
+			ui32 eax_n = __ror<word32,byte>(~0x00, 0x20 - (g_t403004 & 0x1F)) ^ g_t403004;
 			g_dw40333C = eax_n;
 			g_dw403340 = eax_n;
 			g_dw403344 = eax_n;
@@ -356,7 +356,7 @@ ui32 fn00401613(ui32 dwArg04)
 {
 	word32 eax_n;
 	Eq_n eax_n = g_t403004;
-	if (__ror(eax_n ^ g_dw40333C, (byte) eax_n & 0x1F) == ~0x00)
+	if (__ror<word32,byte>(eax_n ^ g_dw40333C, (byte) eax_n & 0x1F) == ~0x00)
 		crt_atexit();
 	else
 		register_onexit_function();

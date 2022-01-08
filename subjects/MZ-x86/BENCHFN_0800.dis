@@ -2512,7 +2512,7 @@ l0800_1A4B:
 l0800_1A50:
 	dl_148 = dl_148 + al_375
 l0800_1A52:
-	ch_158 = __rol(ch_158, 1<8>)
+	ch_158 = __rol<byte,byte>(ch_158, 1<8>)
 	di = di + ((ch_158 & 0x80<8>) != 0<8>)
 	Mem390[ss:fp - 0x22<16> + di:byte] = Mem388[ss:fp - 0x22<16> + di:byte] | ch_158
 	al_375 = al_375 - 1<8>

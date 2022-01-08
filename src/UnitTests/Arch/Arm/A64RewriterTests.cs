@@ -186,7 +186,7 @@ namespace Reko.UnitTests.Arch.Arm
             Given_HexString("4F67DCEA");
             AssertCode(     // ands	x15,x26,x28,ror #&19
                 "0|L--|0000000000100000(4): 4 instructions",
-                "1|L--|x15 = x26 & __ror(x28, 25<i32>)",
+                "1|L--|x15 = x26 & __ror<word64,int32>(x28, 25<i32>)",
                 "2|L--|NZ = cond(x15)",
                 "3|L--|C = false",
                 "4|L--|V = false");
@@ -247,7 +247,7 @@ namespace Reko.UnitTests.Arch.Arm
             Given_HexString("E3E4EDEA");
             AssertCode(     // bics	x3,x7,x13,ror #&39
                 "0|L--|0000000000100000(4): 4 instructions",
-                "1|L--|x3 = x7 & ~__ror(x13, 57<i32>)",
+                "1|L--|x3 = x7 & ~__ror<word64,int32>(x13, 57<i32>)",
                 "2|L--|NZ = cond(x3)",
                 "3|L--|C = false",
                 "4|L--|V = false");
@@ -1306,7 +1306,7 @@ namespace Reko.UnitTests.Arch.Arm
             Given_HexString("2B91D6AA");
             AssertCode(     // orr	x11,x9,x22,ror #&24
                 "0|L--|0000000000100000(4): 1 instructions",
-                "1|L--|x11 = x9 | __ror(x22, 36<i32>)");
+                "1|L--|x11 = x9 | __ror<word64,int32>(x22, 36<i32>)");
         }
 
         [Test]
@@ -1351,7 +1351,7 @@ namespace Reko.UnitTests.Arch.Arm
             Given_HexString("B715EACA");
             AssertCode(     // eon	x23,x13,x10,ror #5
                 "0|L--|0000000000100000(4): 1 instructions",
-                "1|L--|x23 = x13 ^ ~__ror(x10, 5<i32>)");
+                "1|L--|x23 = x13 ^ ~__ror<word64,int32>(x10, 5<i32>)");
         }
 
         [Test]
@@ -1369,7 +1369,7 @@ namespace Reko.UnitTests.Arch.Arm
             Given_HexString("A640C54A");
             AssertCode(     // eor	w6,w5,w5,ror #&10
                 "0|L--|0000000000100000(4): 1 instructions",
-                "1|L--|w6 = w5 ^ __ror(w5, 16<i32>)");
+                "1|L--|w6 = w5 ^ __ror<word32,int32>(w5, 16<i32>)");
         }
 
         [Test]
@@ -1426,7 +1426,7 @@ namespace Reko.UnitTests.Arch.Arm
             Given_HexString("410CC193");
             AssertCode(     // extr	x1,x2,x1,#3
                 "0|L--|0000000000100000(4): 1 instructions",
-                "1|L--|x1 = __ror(x2, 3<i32>)");
+                "1|L--|x1 = __ror<word64,int32>(x2, 3<i32>)");
         }
 
         [Test]
@@ -1444,7 +1444,7 @@ namespace Reko.UnitTests.Arch.Arm
             Given_HexString("C2C5CCCB");
             AssertCode(     // sub	x2,x14,x12,ror #&31
                 "0|L--|0000000000100000(4): 1 instructions",
-                "1|L--|x2 = x14 - __ror(x12, 49<i32>)");
+                "1|L--|x2 = x14 - __ror<word64,int32>(x12, 49<i32>)");
         }
 
         [Test]
@@ -2188,7 +2188,7 @@ namespace Reko.UnitTests.Arch.Arm
             Given_Instruction(0x1AC92D09);	// rorv	w9,w8,w9
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|w9 = __ror(w8, w9)");
+                "1|L--|w9 = __ror<word32,word32>(w8, w9)");
         }
 
         [Test]

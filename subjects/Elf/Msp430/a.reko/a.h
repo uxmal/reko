@@ -16,26 +16,26 @@ Eq_3: (union "Eq_3" (uint20 u0) (byte u1) (word16 u2))
 	T_3415 (in r8_426 @ 00005682 : Eq_3)
 	T_3421 (in r8 @ 00005682 : Eq_3)
 	T_3699 (in r14_152 @ 000059D4 : Eq_3)
-	T_3706 (in __rcr(r11_12, 1<8>, C_149) @ 000059D4 : word20)
+	T_3706 (in __rcr<word20,byte,bool>(r11_12, 1<8>, C_149) @ 000059D4 : word20)
 	T_3707 (in 0<20> @ 000059D8 : word20)
 	T_3753 (in r14_152 + 0xFFFF<16> @ 000059E0 : word20)
 	T_3754 (in 0<20> @ 000059E2 : word20)
 	T_3772 (in r14_73 @ 00005A34 : Eq_3)
-	T_3775 (in __rcr(r11_12, 1<8>, C_70) @ 00005A34 : word20)
+	T_3775 (in __rcr<word20,byte,bool>(r11_12, 1<8>, C_70) @ 00005A34 : word20)
 	T_3776 (in 0<20> @ 00005A38 : word20)
 	T_3820 (in r14_73 + 0xFFFF<16> @ 00005A42 : word20)
 	T_3821 (in 0<20> @ 00005A44 : word20)
 	T_3869 (in r12_57 @ 00005AB2 : Eq_3)
-	T_3872 (in __rcr(r13, 1<8>, C_54) @ 00005AB2 : word20)
+	T_3872 (in __rcr<word20,byte,bool>(r13, 1<8>, C_54) @ 00005AB2 : word20)
 	T_3896 (in r12_57 + 0xFFFF<16> @ 00005ABA : word20)
 	T_3897 (in 0<20> @ 00005ABC : word20)
 	T_3935 (in r8_18 @ 00005B04 : Eq_3)
 	T_3936 (in 0<16> @ 00005B04 : word16)
 	T_3956 (in r8_18 | 4<16> @ 00000000 : word20)
 	T_3962 (in r8_54 @ 00005B2A : Eq_3)
-	T_3972 (in __rcr(r8_48, 1<8>, fn00005B4E(r8_18, r10, r11, r12, r13, out r8_48, out r12_44, out r13_114, out r14_115, out r15_116)) @ 00005B2A : word20)
+	T_3972 (in __rcr<word20,byte,bool>(r8_48, 1<8>, fn00005B4E(r8_18, r10, r11, r12, r13, out r8_48, out r12_44, out r13_114, out r14_115, out r15_116)) @ 00005B2A : word20)
 	T_3988 (in r8_18 | 8<16> @ 00000000 : word20)
-	T_4032 (in __rcr(r8_17, 1<8>, C_22) @ 00005B58 : word20)
+	T_4032 (in __rcr<word20,byte,bool>(r8_17, 1<8>, C_22) @ 00005B58 : word20)
 	T_4035 (in 0<20> @ 00005B5A : word20)
 Eq_37: (fn void (ui20, Eq_3))
 	T_37 (in main @ 00004036 : word16)
@@ -1897,12 +1897,12 @@ Eq_3690: (union "Eq_3690" (ui20 u0) (word16 u1))
 Eq_3697: (union "Eq_3697" (ui20 u0) (word16 u1))
 	T_3697 (in 0xFFFE<16> @ 000059D2 : word16)
 Eq_3700: (fn Eq_3 (Eq_1629, byte, bool))
-	T_3700 (in __rcr @ 000059D4 : ptr32)
+	T_3700 (in __rcr<word20,byte,bool> @ 000059D4 : ptr32)
 	T_3701 (in signature of __rcr @ 00000000 : void)
-	T_3773 (in __rcr @ 00005A34 : ptr32)
-	T_3870 (in __rcr @ 00005AB2 : ptr32)
-	T_3963 (in __rcr @ 00005B2A : ptr32)
-	T_4030 (in __rcr @ 00005B58 : ptr32)
+	T_3773 (in __rcr<word20,byte,bool> @ 00005A34 : ptr32)
+	T_3870 (in __rcr<word20,byte,bool> @ 00005AB2 : ptr32)
+	T_3963 (in __rcr<word20,byte,bool> @ 00005B2A : ptr32)
+	T_4030 (in __rcr<word20,byte,bool> @ 00005B58 : ptr32)
 Eq_3711: (union "Eq_3711" (ui20 u0) (word16 u1))
 	T_3711 (in 1<16> @ 000059BA : word16)
 Eq_3718: (union "Eq_3718" (ui20 u0) (word16 u1))
@@ -16905,7 +16905,7 @@ T_3699: (in r14_152 @ 000059D4 : Eq_3)
   Class: Eq_3
   DataType: Eq_3
   OrigDataType: word24
-T_3700: (in __rcr @ 000059D4 : ptr32)
+T_3700: (in __rcr<word20,byte,bool> @ 000059D4 : ptr32)
   Class: Eq_3700
   DataType: (ptr32 Eq_3700)
   OrigDataType: (ptr32 (fn T_3706 (T_3666, T_3705, T_3689)))
@@ -16929,7 +16929,7 @@ T_3705: (in 1<8> @ 000059D4 : byte)
   Class: Eq_3703
   DataType: byte
   OrigDataType: byte
-T_3706: (in __rcr(r11_12, 1<8>, C_149) @ 000059D4 : word20)
+T_3706: (in __rcr<word20,byte,bool>(r11_12, 1<8>, C_149) @ 000059D4 : word20)
   Class: Eq_3
   DataType: Eq_3
   OrigDataType: word20
@@ -17197,7 +17197,7 @@ T_3772: (in r14_73 @ 00005A34 : Eq_3)
   Class: Eq_3
   DataType: Eq_3
   OrigDataType: word24
-T_3773: (in __rcr @ 00005A34 : ptr32)
+T_3773: (in __rcr<word20,byte,bool> @ 00005A34 : ptr32)
   Class: Eq_3700
   DataType: (ptr32 Eq_3700)
   OrigDataType: (ptr32 (fn T_3775 (T_3666, T_3774, T_3679)))
@@ -17205,7 +17205,7 @@ T_3774: (in 1<8> @ 00005A34 : byte)
   Class: Eq_3703
   DataType: byte
   OrigDataType: byte
-T_3775: (in __rcr(r11_12, 1<8>, C_70) @ 00005A34 : word20)
+T_3775: (in __rcr<word20,byte,bool>(r11_12, 1<8>, C_70) @ 00005A34 : word20)
   Class: Eq_3
   DataType: Eq_3
   OrigDataType: word20
@@ -17585,7 +17585,7 @@ T_3869: (in r12_57 @ 00005AB2 : Eq_3)
   Class: Eq_3
   DataType: Eq_3
   OrigDataType: word24
-T_3870: (in __rcr @ 00005AB2 : ptr32)
+T_3870: (in __rcr<word20,byte,bool> @ 00005AB2 : ptr32)
   Class: Eq_3700
   DataType: (ptr32 Eq_3700)
   OrigDataType: (ptr32 (fn T_3872 (T_1629, T_3871, T_3856)))
@@ -17593,7 +17593,7 @@ T_3871: (in 1<8> @ 00005AB2 : byte)
   Class: Eq_3703
   DataType: byte
   OrigDataType: byte
-T_3872: (in __rcr(r13, 1<8>, C_54) @ 00005AB2 : word20)
+T_3872: (in __rcr<word20,byte,bool>(r13, 1<8>, C_54) @ 00005AB2 : word20)
   Class: Eq_3
   DataType: Eq_3
   OrigDataType: word20
@@ -17957,7 +17957,7 @@ T_3962: (in r8_54 @ 00005B2A : Eq_3)
   Class: Eq_3
   DataType: Eq_3
   OrigDataType: ui20
-T_3963: (in __rcr @ 00005B2A : ptr32)
+T_3963: (in __rcr<word20,byte,bool> @ 00005B2A : ptr32)
   Class: Eq_3700
   DataType: (ptr32 Eq_3700)
   OrigDataType: (ptr32 (fn T_3972 (T_3957, T_3964, T_3971)))
@@ -17993,7 +17993,7 @@ T_3971: (in fn00005B4E(r8_18, r10, r11, r12, r13, out r8_48, out r12_44, out r13
   Class: Eq_3437
   DataType: bool
   OrigDataType: bool
-T_3972: (in __rcr(r8_48, 1<8>, fn00005B4E(r8_18, r10, r11, r12, r13, out r8_48, out r12_44, out r13_114, out r14_115, out r15_116)) @ 00005B2A : word20)
+T_3972: (in __rcr<word20,byte,bool>(r8_48, 1<8>, fn00005B4E(r8_18, r10, r11, r12, r13, out r8_48, out r12_44, out r13_114, out r14_115, out r15_116)) @ 00005B2A : word20)
   Class: Eq_3
   DataType: Eq_3
   OrigDataType: word20
@@ -18225,7 +18225,7 @@ T_4029: (in r9_18 != 0<20> @ 00000000 : bool)
   Class: Eq_4029
   DataType: bool
   OrigDataType: bool
-T_4030: (in __rcr @ 00005B58 : ptr32)
+T_4030: (in __rcr<word20,byte,bool> @ 00005B58 : ptr32)
   Class: Eq_3700
   DataType: (ptr32 Eq_3700)
   OrigDataType: (ptr32 (fn T_4032 (T_4018, T_4031, T_4025)))
@@ -18233,7 +18233,7 @@ T_4031: (in 1<8> @ 00005B58 : byte)
   Class: Eq_3703
   DataType: byte
   OrigDataType: byte
-T_4032: (in __rcr(r8_17, 1<8>, C_22) @ 00005B58 : word20)
+T_4032: (in __rcr<word20,byte,bool>(r8_17, 1<8>, C_22) @ 00005B58 : word20)
   Class: Eq_3
   DataType: Eq_3
   OrigDataType: word20

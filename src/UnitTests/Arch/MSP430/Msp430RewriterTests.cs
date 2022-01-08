@@ -315,7 +315,7 @@ namespace Reko.UnitTests.Arch.Msp430
             Given_Bytes(0x04, 0x10);	// rrc.w	pc
             AssertCode(
                 "0|L--|0100(2): 3 instructions",
-                "1|L--|r4 = __rcr(r4, 1<8>, C)",
+                "1|L--|r4 = __rcr<word20,byte,bool>(r4, 1<8>, C)",
                 "2|L--|NZC = cond(r4)",
                 "3|L--|V = false");
         }

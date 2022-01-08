@@ -1444,15 +1444,15 @@ l0000244E:
 	branch dwArg04 - dwArg0C >=u 0<32> l00002458
 l00002458:
 	word32 d4_29 = 24<i32>
-	word32 d6_30 = __rol(dwArg0C, 8<32>)
+	word32 d6_30 = __rol<word32,word32>(dwArg0C, 8<32>)
 	branch SLICE(d6_30, byte, 0) != 0<8> l00002476
 l00002462:
 	d4_29 = 16<i32>
-	d6_30 = __rol(d6_30, 8<32>)
+	d6_30 = __rol<word32,word32>(d6_30, 8<32>)
 	branch SLICE(d6_30, byte, 0) != 0<8> l00002476
 l0000246A:
 	d4_29 = 8<i32>
-	d6_30 = __rol(d6_30, 8<32>)
+	d6_30 = __rol<word32,word32>(d6_30, 8<32>)
 	branch SLICE(d6_30, byte, 0) != 0<8> l00002476
 l00002472:
 	d4_29 = 0<i32>
@@ -1656,15 +1656,15 @@ l0000269A:
 	branch dwArg04 - dwArg0C <u 0<32> l00002754
 l000026A0:
 	word32 d4_32 = 24<i32>
-	word32 d6_33 = __rol(dwArg0C, 8<32>)
+	word32 d6_33 = __rol<word32,word32>(dwArg0C, 8<32>)
 	branch SLICE(d6_33, byte, 0) != 0<8> l000026BE
 l000026AA:
 	d4_32 = 16<i32>
-	d6_33 = __rol(d6_33, 8<32>)
+	d6_33 = __rol<word32,word32>(d6_33, 8<32>)
 	branch SLICE(d6_33, byte, 0) != 0<8> l000026BE
 l000026B2:
 	d4_32 = 8<i32>
-	d6_33 = __rol(d6_33, 8<32>)
+	d6_33 = __rol<word32,word32>(d6_33, 8<32>)
 	branch SLICE(d6_33, byte, 0) != 0<8> l000026BE
 l000026BA:
 	d4_32 = 0<i32>
@@ -1848,22 +1848,22 @@ l00002B20:
 	word32 d3_16 = 16<i32>
 	branch SLICE(d1_20, word16, 0) >=u 0x80<16> l00002B2E
 l00002B2A:
-	d1_20 = __rol(d1_20, 8<32>)
+	d1_20 = __rol<word32,word32>(d1_20, 8<32>)
 	d3_16 = 8<32>
 l00002B2E:
 	branch SLICE(d1_20, word16, 0) >=u 0x800<16> l00002B38
 l00002B34:
-	d1_20 = __rol(d1_20, 4<32>)
+	d1_20 = __rol<word32,word32>(d1_20, 4<32>)
 	d3_16 = SEQ(SLICE(d3_16, word16, 16), SLICE(d3_16, word16, 0) - 4<16>)
 l00002B38:
 	branch SLICE(d1_20, word16, 0) >=u 0x2000<16> l00002B42
 l00002B3E:
-	d1_20 = __rol(d1_20, 2<32>)
+	d1_20 = __rol<word32,word32>(d1_20, 2<32>)
 	d3_16 = SEQ(SLICE(d3_16, word16, 16), SLICE(d3_16, word16, 0) - 2<16>)
 l00002B42:
 	branch SLICE(d1_20, word16, 0) < 0<16> l00002B4A
 l00002B46:
-	d1_20 = __rol(d1_20, 1<32>)
+	d1_20 = __rol<word32,word32>(d1_20, 1<32>)
 	d3_16 = SEQ(SLICE(d3_16, word16, 16), SLICE(d3_16, word16, 0) - 1<16>)
 l00002B4A:
 	word32 d0_69 = d0 >>u d3_16
@@ -1880,7 +1880,7 @@ l00002B66:
 l00002B6A:
 	branch d0_106 >=u 0<32> l00002B6A
 l00002B6C:
-	d1Out = __swap(__rol(d0_106, __swap(d3_100)))
+	d1Out = __swap(__rol<word32,word32>(d0_106, __swap(d3_100)))
 	return CONVERT(SLICE(d3_100, word16, 0), word16, uint32)
 l00002B02:
 	word32 d0_132 = __swap(d0)

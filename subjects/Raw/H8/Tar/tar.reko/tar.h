@@ -1133,9 +1133,9 @@ Eq_3637: (fn byte (ui8, bool, byte))
 	T_3638 (in signature of __bst @ 00000000 : void)
 	T_3832 (in __bst @ 000090FE : ptr16)
 Eq_3658: (fn uint8 (byte, int32, bool))
-	T_3658 (in __rcr @ 0000904A : ptr32)
+	T_3658 (in __rcr<byte,int32,bool> @ 0000904A : ptr32)
 	T_3659 (in signature of __rcr @ 00000000 : void)
-	T_3849 (in __rcr @ 00009104 : ptr32)
+	T_3849 (in __rcr<byte,int32,bool> @ 00009104 : ptr32)
 Eq_3682: (fn word32 (word16, Eq_8, ptr32, Eq_8, Eq_8, ptr32, Eq_8, Eq_8))
 	T_3682 (in fn8BB0 @ 00009070 : ptr16)
 	T_3683 (in signature of fn8BB0 @ 00008BB0 : void)
@@ -15898,7 +15898,7 @@ T_3657: (in r2h_232 >> 1<i32> @ 00000000 : byte)
   Class: Eq_3657
   DataType: int8
   OrigDataType: int8
-T_3658: (in __rcr @ 0000904A : ptr32)
+T_3658: (in __rcr<byte,int32,bool> @ 0000904A : ptr32)
   Class: Eq_3658
   DataType: (ptr32 Eq_3658)
   OrigDataType: (ptr32 (fn T_3668 (T_3663, T_3664, T_3667)))
@@ -15938,11 +15938,11 @@ T_3667: (in SLICE(cond(r2h_232 >> 1<i32>), bool, 0) @ 0000904A : bool)
   Class: Eq_3662
   DataType: bool
   OrigDataType: bool
-T_3668: (in __rcr((byte) r2_231, 1<i32>, (bool) cond(r2h_232 >> 1<i32>)) @ 0000904A : byte)
+T_3668: (in __rcr<byte,int32,bool>((byte) r2_231, 1<i32>, (bool) cond(r2h_232 >> 1<i32>)) @ 0000904A : byte)
   Class: Eq_3668
   DataType: uint8
   OrigDataType: uint8
-T_3669: (in SEQ(r2h_232 >> 1<i32>, __rcr((byte) r2_231, 1<i32>, (bool) cond(r2h_232 >> 1<i32>))) @ 0000904A : word16)
+T_3669: (in SEQ(r2h_232 >> 1<i32>, __rcr<byte,int32,bool>((byte) r2_231, 1<i32>, (bool) cond(r2h_232 >> 1<i32>))) @ 0000904A : word16)
   Class: Eq_2278
   DataType: int16
   OrigDataType: int16
@@ -16662,7 +16662,7 @@ T_3848: (in r2h_427 >> 1<i32> @ 00000000 : byte)
   Class: Eq_3848
   DataType: int8
   OrigDataType: int8
-T_3849: (in __rcr @ 00009104 : ptr32)
+T_3849: (in __rcr<byte,int32,bool> @ 00009104 : ptr32)
   Class: Eq_3658
   DataType: (ptr32 Eq_3658)
   OrigDataType: (ptr32 (fn T_3855 (T_3850, T_3851, T_3854)))
@@ -16686,11 +16686,11 @@ T_3854: (in SLICE(cond(r2h_427 >> 1<i32>), bool, 0) @ 00009104 : bool)
   Class: Eq_3662
   DataType: bool
   OrigDataType: bool
-T_3855: (in __rcr((byte) r2_426, 1<i32>, (bool) cond(r2h_427 >> 1<i32>)) @ 00009104 : byte)
+T_3855: (in __rcr<byte,int32,bool>((byte) r2_426, 1<i32>, (bool) cond(r2h_427 >> 1<i32>)) @ 00009104 : byte)
   Class: Eq_3668
   DataType: uint8
   OrigDataType: uint8
-T_3856: (in SEQ(r2h_427 >> 1<i32>, __rcr((byte) r2_426, 1<i32>, (bool) cond(r2h_427 >> 1<i32>))) @ 00009104 : word16)
+T_3856: (in SEQ(r2h_427 >> 1<i32>, __rcr<byte,int32,bool>((byte) r2_426, 1<i32>, (bool) cond(r2h_427 >> 1<i32>))) @ 00009104 : word16)
   Class: Eq_2278
   DataType: int16
   OrigDataType: int16

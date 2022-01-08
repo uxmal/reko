@@ -423,7 +423,7 @@ bool fn05D4(Eq_n r0, Eq_n r3, byte * r4, Eq_n r5, struct Eq_n * pc, union Eq_n &
 		Eq_n r5_n;
 		fn0A7C(fn0AB6(r0, r4, r5, out r4_n, out r5_n), r4_n, r5_n, out r4_n, out r5_n);
 		ui16 r0_n = fn0A94();
-		ui16 r3_n = __rcl(__rcl(0x00, 1, (bool) cond(r0_n << 1)), 1, (bool) cond(r0_n << 2));
+		ui16 r3_n = __rcl<word16,int16,bool>(__rcl<word16,int16,bool>(0x00, 1, (bool) cond(r0_n << 1)), 1, (bool) cond(r0_n << 2));
 		Eq_n r0_n = g_a0F2A[r3_n];
 		Eq_n v26_n = pc->t090A >> 1;
 		pc->t090A = v26_n;
@@ -745,7 +745,7 @@ l08B2:
 						}
 						ui32 v113_n = (uint32) r0_n << 0x01;
 						cui16 r0_n = (word16) v113_n;
-						ui16 r1_n = __rcl(__rcl(SLICE(v113_n, word16, 16), 1, (bool) cond(r0_n << 1)), 1, (bool) cond(r0_n << 2));
+						ui16 r1_n = __rcl<word16,int16,bool>(__rcl<word16,int16,bool>(SLICE(v113_n, word16, 16), 1, (bool) cond(r0_n << 1)), 1, (bool) cond(r0_n << 2));
 						r1_n = r1_n << 1;
 					} while (g_a0DC4[r1_n * 0x02] <= 0x00);
 					r0_n.u0 = 0x0DB8;

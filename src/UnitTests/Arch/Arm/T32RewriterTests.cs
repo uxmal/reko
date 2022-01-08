@@ -6025,7 +6025,7 @@ namespace Reko.UnitTests.Arch.Arm
             Given_HexString("E041");	// rors r0, r4
             AssertCode(
                 "0|L--|00100000(2): 2 instructions",
-                "1|L--|r0 = __ror(r0, r4)",
+                "1|L--|r0 = __ror<word32,word32>(r0, r4)",
                 "2|L--|NZC = cond(r0)");
         }
 
@@ -6163,7 +6163,7 @@ namespace Reko.UnitTests.Arch.Arm
             Given_HexString("7CEB3646");	// sbcs.w r6, ip, r16, ror #16
             AssertCode(
                 "0|L--|00100000(4): 2 instructions",
-                "1|L--|r6 = ip - __ror(r6, 0x10<u32>) - C",
+                "1|L--|r6 = ip - __ror<word32,uint32>(r6, 0x10<u32>) - C",
                 "2|L--|NZCV = cond(r6)");
         }
 
@@ -7989,7 +7989,7 @@ namespace Reko.UnitTests.Arch.Arm
             Given_HexString("54EB3200"); // adcs.w\tr0,r4,r2,rrx
             AssertCode(
                  "0|L--|00100000(4): 2 instructions",
-                 "1|L--|r0 = r4 + __rcr(r2, 1<u32>, C) + C");
+                 "1|L--|r0 = r4 + __rcr<word32,uint32,bool>(r2, 1<u32>, C) + C");
         }
 
         [Test]

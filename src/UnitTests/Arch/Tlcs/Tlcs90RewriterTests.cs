@@ -188,7 +188,7 @@ namespace Reko.UnitTests.Arch.Tlcs
             Given_HexString("A1");  // rrc
             AssertCode(
                 "0|L--|0100(1): 4 instructions",
-                "1|L--|a = __ror(a, 1<8>)",
+                "1|L--|a = __ror<byte,byte>(a, 1<8>)",
                 "2|L--|H = false",
                 "3|L--|N = false",
                 "4|L--|SZXC = cond(a)");
@@ -201,7 +201,7 @@ namespace Reko.UnitTests.Arch.Tlcs
             AssertCode(
                 "0|L--|0100(2): 6 instructions",
                 "1|L--|v3 = Mem0[bc:byte]",
-                "2|L--|v5 = __ror(v3, 1<8>)",
+                "2|L--|v5 = __ror<byte,byte>(v3, 1<8>)",
                 "3|L--|Mem0[bc:byte] = v5",
                 "4|L--|H = false",
                 "5|L--|N = false",
@@ -526,7 +526,7 @@ namespace Reko.UnitTests.Arch.Tlcs
             Given_HexString("F8A2");	// rl	b
             AssertCode(
                 "0|L--|0100(2): 4 instructions",
-                "1|L--|b = __rcl(b, 1<8>, C)",
+                "1|L--|b = __rcl<byte,byte,bool>(b, 1<8>, C)",
                 "2|L--|H = false",
                 "3|L--|N = false",
                 "4|L--|SZXC = cond(b)");
@@ -539,7 +539,7 @@ namespace Reko.UnitTests.Arch.Tlcs
             AssertCode(
                 "0|L--|0100(2): 6 instructions",
                 "1|L--|v3 = Mem0[ix:byte]",
-                "2|L--|v5 = __rcl(v3, 1<8>, C)",
+                "2|L--|v5 = __rcl<byte,byte,bool>(v3, 1<8>, C)",
                 "3|L--|Mem0[ix:byte] = v5",
                 "4|L--|H = false",
                 "5|L--|N = false",
@@ -552,7 +552,7 @@ namespace Reko.UnitTests.Arch.Tlcs
             Given_HexString("A2");	// rl
             AssertCode(
                 "0|L--|0100(1): 4 instructions",
-                "1|L--|a = __rcl(a, 1<8>, C)",
+                "1|L--|a = __rcl<byte,byte,bool>(a, 1<8>, C)",
                 "2|L--|H = false",
                 "3|L--|N = false",
                 "4|L--|SZXC = cond(a)");
@@ -588,7 +588,7 @@ namespace Reko.UnitTests.Arch.Tlcs
             Given_HexString("FDA3");	// rr	l
             AssertCode(
                 "0|L--|0100(2): 4 instructions",
-                "1|L--|l = __rcr(l, 1<8>, C)",
+                "1|L--|l = __rcr<byte,byte,bool>(l, 1<8>, C)",
                 "2|L--|H = false",
                 "3|L--|N = false",
                 "4|L--|SZXC = cond(l)");
@@ -600,7 +600,7 @@ namespace Reko.UnitTests.Arch.Tlcs
             Given_HexString("A3");	// rr
             AssertCode(
                 "0|L--|0100(1): 4 instructions",
-                "1|L--|a = __rcr(a, 1<8>, C)",
+                "1|L--|a = __rcr<byte,byte,bool>(a, 1<8>, C)",
                 "2|L--|H = false",
                 "3|L--|N = false",
                 "4|L--|SZXC = cond(a)");
