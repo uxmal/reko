@@ -828,12 +828,20 @@ HExpr ArmRewriter::MaybeShiftOperand(HExpr exp, const cs_arm_op & op)
 	case ARM_SFT_LSL: return m.Shl(exp, m.Int32(op.shift.value));
 	case ARM_SFT_LSR: return m.Shr(exp, m.Int32(op.shift.value));
 	case ARM_SFT_ROR: return m.Ror(exp, m.Int32(op.shift.value));
-	case ARM_SFT_RRX: return m.Rrc(exp, m.Int32(op.shift.value));
+	case ARM_SFT_RRX:
+	{
+		auto c = host->EnsureFlagGroup(ARM_REG_CPSR, (int)FlagM::CF, "C", BaseType::Bool);
+		return m.Rrc(exp, m.Int32(op.shift.value), c);
+	}
 	case ARM_SFT_ASR_REG: return m.Sar(exp, Reg(op.shift.value));
 	case ARM_SFT_LSL_REG: return m.Shl(exp, Reg(op.shift.value));
 	case ARM_SFT_LSR_REG: return m.Shr(exp, Reg(op.shift.value));
 	case ARM_SFT_ROR_REG: return m.Ror(exp, Reg(op.shift.value));
-	case ARM_SFT_RRX_REG: return m.Rrc(exp, Reg(op.shift.value));
+	case ARM_SFT_RRX_REG:
+	{
+		auto c = host->EnsureFlagGroup(ARM_REG_CPSR, (int)FlagM::CF, "C", BaseType::Bool);
+		return m.Rrc(exp, Reg(op.shift.value), c);
+	}
 	default: return exp;
 	}
 }
