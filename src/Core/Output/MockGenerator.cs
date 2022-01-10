@@ -134,7 +134,7 @@ namespace Reko.Core.Output
         public void WriteClass(Procedure proc)
         {
             WriteClassPrologue(proc);
-            WriteIdentifierDeclarations(CollectLocalIdentifiers(proc));
+            WriteIdentifierDeclarations(proc, CollectLocalIdentifiers(proc));
             WriteCode(proc);
             WriteClassEpilogue();
         }
@@ -142,7 +142,7 @@ namespace Reko.Core.Output
         public void WriteMethod(Procedure proc)
         {
             WriteMethodPrologue(proc);
-            WriteIdentifierDeclarations(CollectLocalIdentifiers(proc));
+            WriteIdentifierDeclarations(proc, CollectLocalIdentifiers(proc));
             WriteCode(proc);
             WriteMethodEpilogue();
         }
@@ -158,16 +158,24 @@ namespace Reko.Core.Output
             }
         }
 
-        private void WriteIdentifierDeclarations(IEnumerable<Identifier> identifiers)
+        private void WriteIdentifierDeclarations(Procedure proc, IEnumerable<Identifier> identifiers)
         {
             foreach (Identifier id in identifiers)
             {
                 if (id is MemoryIdentifier)
                     continue;
                 writer.Write("Identifier {0} = ", id.Name);
-                Method("Local");
-                id.DataType.Accept(this);
-                writer.WriteLine(", \"{0}\");", id.Name);
+                if (id == proc.Frame.FramePointer)
+                {
+                    writer.Write("m.Frame.FramePointer");
+                }
+                else
+                {
+                    Method("Local");
+                    id.DataType.Accept(this);
+                    writer.Write(", \"{0}\")", id.Name);
+                }
+                writer.WriteLine(";");
             }
         }
         
@@ -471,8 +479,15 @@ namespace Reko.Core.Output
             }
             else if (c.DataType==PrimitiveType.Int32)
             {
-                Method("Constant.Int32");
+                Method("Int32");
+                var v = c.ToInt32();
+                if (v < 0)
+                    writer.Write("-{0})", -v);
+                else
+                    writer.Write("{0})", v);
+                return;
             }
+
             else if (c.DataType == PrimitiveType.Word16)
             {
                 Method("Word16");

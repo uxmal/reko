@@ -245,7 +245,7 @@ namespace Reko.UnitTests.Core.Output
 "    Identifier i = Local(PrimitiveType.Int32, \"i\");" + nl + 
 "    " + nl + 
 "    Label(\"l1\");" + nl + 
-"    BranchIf(Eq(i, Constant.Int32(0x0)), \"skip\");" + nl + 
+"    BranchIf(Eq(i, Int32(0)), \"skip\");" + nl + 
 "    " + nl + 
 "    Label(\"fade\");" + nl + 
 "    MStore(Word32(0x123456), i);" + nl + 
@@ -383,6 +383,25 @@ namespace Reko.UnitTests.Core.Output
     
     m.Label(""l1"");
     m.MStore(m.Word32(0x123400), m.Seq(m.Byte(0x1), m.Byte(0x2), m.Word16(0x304)));
+});
+
+");
+        }
+
+        [Test]
+        public void Mg_NegativeInt32()
+        {
+            CompileMethodTest(m =>
+            {
+                var fp = m.Frame.FramePointer;
+                m.MStore(m.IAdd(fp, 32), Constant.Int32(-12));
+            });
+            VerifyTest(@"RunTest(m =>
+{
+    Identifier fp = m.Frame.FramePointer;
+    
+    m.Label(""l1"");
+    m.MStore(m.IAdd(fp, m.Word32(0x20)), m.Int32(-12));
 });
 
 ");
