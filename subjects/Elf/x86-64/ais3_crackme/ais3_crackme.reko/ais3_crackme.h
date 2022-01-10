@@ -4,7 +4,22 @@
 
 /*
 // Equivalence classes ////////////
-Eq_1: (struct "Globals" (4003F6 code t4003F6) (400406 code t400406) (4005C5 Eq_16 t4005C5) (400620 Eq_19 t400620) (4006B0 Eq_20 t4006B0) (4006C8 (str char) str4006C8) (4006F0 (str char) str4006F0) (400718 (str char) str400718) (600DF8 (arr (ptr64 code)) a600DF8) (600E08 word64 qw600E08) (600FE0 (ptr64 code) __gmon_start___GOT) (601000 (ptr64 code) puts_GOT) (601008 (ptr64 code) __libc_start_main_GOT) (601020 (arr byte) a601020) (601038 byte b601038))
+Eq_1: (struct "Globals"
+		(4003F6 code t4003F6)
+		(400406 code t400406)
+		(4005C5 Eq_16 t4005C5)
+		(400620 Eq_19 t400620)
+		(4006B0 Eq_20 t4006B0)
+		(4006C8 (str char) str4006C8)
+		(4006F0 (str char) str4006F0)
+		(400718 (str char) str400718)
+		(600DF8 (arr (ptr64 code)) a600DF8)
+		(600E08 word64 qw600E08)
+		(600FE0 (ptr64 code) __gmon_start___GOT)
+		(601000 (ptr64 code) puts_GOT)
+		(601008 (ptr64 code) __libc_start_main_GOT)
+		(601020 (arr byte) a601020)
+		(601038 byte b601038))
 	globals_t (in globals @ 00000000 : (ptr64 (struct "Globals")))
 Eq_2: (fn void ())
 	T_2 (in call_gmon_start @ 004003CC : ptr64)

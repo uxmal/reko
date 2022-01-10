@@ -4,7 +4,26 @@
 
 /*
 // Equivalence classes ////////////
-Eq_1: (struct "Globals" (5D6 code t05D6) (5E6 code t05E6) (5F6 code t05F6) (606 code t0606) (898 (fn int32 (int32, (ptr64 (ptr64 char)), (ptr64 (ptr64 char)))) t0898) (A70 (fn void ()) t0A70) (AE0 (fn void ()) t0AE0) (B00 uint64 double_size.21529) (200DE8 (arr (ptr64 code)) a200DE8) (200FD8 (ptr64 code) _ITM_deregisterTMCloneTable_GOT) (200FE0 (ptr64 code) __libc_start_main_GOT) (200FE8 (ptr64 code) __gmon_start___GOT) (200FF0 (ptr64 code) _ITM_registerTMCloneTable_GOT) (200FF8 (ptr64 code) __cxa_finalize_GOT) (201018 (ptr64 code) free_GOT) (201020 (ptr64 code) printf_GOT) (201028 (ptr64 code) malloc_GOT) (201030 (ptr64 code) posix_memalign_GOT) (201048 byte b201048))
+Eq_1: (struct "Globals"
+		(5D6 code t05D6)
+		(5E6 code t05E6)
+		(5F6 code t05F6)
+		(606 code t0606)
+		(898 (fn int32 (int32, (ptr64 (ptr64 char)), (ptr64 (ptr64 char)))) t0898)
+		(A70 (fn void ()) t0A70)
+		(AE0 (fn void ()) t0AE0)
+		(B00 uint64 double_size.21529)
+		(200DE8 (arr (ptr64 code)) a200DE8)
+		(200FD8 (ptr64 code) _ITM_deregisterTMCloneTable_GOT)
+		(200FE0 (ptr64 code) __libc_start_main_GOT)
+		(200FE8 (ptr64 code) __gmon_start___GOT)
+		(200FF0 (ptr64 code) _ITM_registerTMCloneTable_GOT)
+		(200FF8 (ptr64 code) __cxa_finalize_GOT)
+		(201018 (ptr64 code) free_GOT)
+		(201020 (ptr64 code) printf_GOT)
+		(201028 (ptr64 code) malloc_GOT)
+		(201030 (ptr64 code) posix_memalign_GOT)
+		(201048 byte b201048))
 	globals_t (in globals @ 00000000 : (ptr64 (struct "Globals")))
 Eq_7: (fn void ())
 	T_7 (in rdx @ 000005B0 : (ptr64 Eq_7))

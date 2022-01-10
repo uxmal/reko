@@ -4,7 +4,15 @@
 
 /*
 // Equivalence classes ////////////
-Eq_1: (struct "Globals" (10CB8 Eq_2 t10CB8) (10CF4 word32 _lib_version) (10CF8 (str char) str10CF8) (10D00 (str char) str10D00) (20E3C ptr32 environ) (20E58 ui32 dw20E58) (20E5C word32 __fnonstd_used) (20E60 ptr32 ___Argv))
+Eq_1: (struct "Globals"
+		(10CB8 Eq_2 t10CB8)
+		(10CF4 word32 _lib_version)
+		(10CF8 (str char) str10CF8)
+		(10D00 (str char) str10D00)
+		(20E3C ptr32 environ)
+		(20E58 ui32 dw20E58)
+		(20E5C word32 __fnonstd_used)
+		(20E60 ptr32 ___Argv))
 	globals_t (in globals @ 00000000 : (ptr32 (struct "Globals")))
 Eq_2: (fn void ())
 	T_2 (in g1 @ 00000000 : (ptr32 Eq_2))

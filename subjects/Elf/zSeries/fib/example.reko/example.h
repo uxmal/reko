@@ -4,7 +4,23 @@
 
 /*
 // Equivalence classes ////////////
-Eq_1: (struct "Globals" (5CE code t05CE) (5EE code t05EE) (70E code t070E) (8C8 int64 qw08C8) (8D0 byte b08D0) (8D8 ci8 b08D8) (1E08 (ptr64 code) ptr1E08) (1E18 ci8 b1E18) (2018 (ptr64 code) ptr2018) (2020 (ptr64 code) ptr2020) (2028 byte b2028) (2030 (ptr64 code) ptr2030) (2038 (ptr64 code) ptr2038) (2048 (ptr64 code) ptr2048) (2050 (ptr64 code) ptr2050) (2068 byte b2068))
+Eq_1: (struct "Globals"
+		(5CE code t05CE)
+		(5EE code t05EE)
+		(70E code t070E)
+		(8C8 int64 qw08C8)
+		(8D0 byte b08D0)
+		(8D8 ci8 b08D8)
+		(1E08 (ptr64 code) ptr1E08)
+		(1E18 ci8 b1E18)
+		(2018 (ptr64 code) ptr2018)
+		(2020 (ptr64 code) ptr2020)
+		(2028 byte b2028)
+		(2030 (ptr64 code) ptr2030)
+		(2038 (ptr64 code) ptr2038)
+		(2048 (ptr64 code) ptr2048)
+		(2050 (ptr64 code) ptr2050)
+		(2068 byte b2068))
 	globals_t (in globals @ 00000000 : (ptr64 (struct "Globals")))
 Eq_14: (struct "Eq_14" (110 (ptr64 code) ptr0110))
 	T_14 (in r15_33 @ 0000056A : (ptr64 Eq_14))

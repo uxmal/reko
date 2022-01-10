@@ -4,7 +4,19 @@
 
 /*
 // Equivalence classes ////////////
-Eq_1: (struct "Globals" (1 byte b0001) (C0 cu8 b00C0) (C1 cu8 b00C1) (C2 cu8 b00C2) (C3 cu8 b00C3) (C4 cu8 b00C4) (C5 cu8 b00C5) (C6 cu8 b00C6) (C7 byte b00C7) (C8 byte b00C8) (C9 byte b00C9) (CA byte b00CA))
+Eq_1: (struct "Globals"
+		(1 byte b0001)
+		(C0 cu8 b00C0)
+		(C1 cu8 b00C1)
+		(C2 cu8 b00C2)
+		(C3 cu8 b00C3)
+		(C4 cu8 b00C4)
+		(C5 cu8 b00C5)
+		(C6 cu8 b00C6)
+		(C7 byte b00C7)
+		(C8 byte b00C8)
+		(C9 byte b00C9)
+		(CA byte b00CA))
 	globals_t (in globals @ 00000000 : (ptr32 (struct "Globals")))
 Eq_7: (fn void (cu8, Eq_10, word24))
 	T_7 (in fn00000E @ 00000144 : ptr32)

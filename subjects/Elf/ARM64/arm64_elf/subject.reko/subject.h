@@ -4,7 +4,17 @@
 
 /*
 // Equivalence classes ////////////
-Eq_1: (struct "Globals" (FC0 Eq_9 t0FC0) (16B8 Eq_12 t16B8) (1738 Eq_13 t1738) (1FC20 (ptr64 void) ptr1FC20) (1FF98 (ptr64 Eq_13) ptr1FF98) (1FFA0 (ptr64 code) ptr1FFA0) (1FFD0 word64 qw1FFD0) (1FFD8 (ptr64 (ptr64 void)) ptr1FFD8) (1FFE0 (ptr64 Eq_12) ptr1FFE0) (1FFE8 (ptr64 Eq_9) ptr1FFE8))
+Eq_1: (struct "Globals"
+		(FC0 Eq_9 t0FC0)
+		(16B8 Eq_12 t16B8)
+		(1738 Eq_13 t1738)
+		(1FC20 (ptr64 void) ptr1FC20)
+		(1FF98 (ptr64 Eq_13) ptr1FF98)
+		(1FFA0 (ptr64 code) ptr1FFA0)
+		(1FFD0 word64 qw1FFD0)
+		(1FFD8 (ptr64 (ptr64 void)) ptr1FFD8)
+		(1FFE0 (ptr64 Eq_12) ptr1FFE0)
+		(1FFE8 (ptr64 Eq_9) ptr1FFE8))
 	globals_t (in globals @ 00000000 : (ptr64 (struct "Globals")))
 Eq_2: (fn void ())
 	T_2 (in fn0000000000001498 @ 00000D90 : ptr64)

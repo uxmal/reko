@@ -28,9 +28,9 @@ namespace Reko.Core.Output
     /// </summary>
 	public class IndentingTextWriter
 	{
-		private TextWriter writer;
-		private bool useTabs;
-		private int tabWidth;
+		private readonly TextWriter writer;
+		private readonly bool useTabs;
+		private readonly int tabWidth;
 		private int tabStops;
 		private string prefix;
 		private bool writePrefix;

@@ -356,6 +356,11 @@ namespace Reko.Core.Output
                 Method("MStore");
                 access.EffectiveAddress.Accept(this);
             }
+            else if (store.Dst is Identifier id)
+            {
+                Method("Store");
+                id.Accept(this);
+            }
             else
                 throw new NotSupportedException(store.ToString());
             writer.Write(", ");

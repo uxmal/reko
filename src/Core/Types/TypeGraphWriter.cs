@@ -32,6 +32,10 @@ namespace Reko.Core.Types
     /// </summary>
     public class TypeGraphWriter : IDataTypeVisitor<Formatter>
     {
+        // Structs with more than this number of fields are considered 'large'
+        // for the purpose of rendering.
+        private const int SmallCompositeType = 6;
+
         private HashSet<DataType>? visited;
         private Formatter writer;
         private bool reference;
@@ -241,11 +245,27 @@ namespace Reko.Core.Types
             if (!visited.Contains(str) && (!reference || str.Name == null))
             {
                 visited.Add(str);
-                foreach (StructureField f in str.Fields)
+                if (str.Fields.Count > SmallCompositeType)
                 {
-                    writer.Write(" ({0:X} ", f.Offset);
-                    f.DataType.Accept(this);
-                    writer.Write(" {0})", f.Name);
+                    writer.Indentation += 4;
+                    foreach (StructureField f in str.Fields)
+                    {
+                        writer.WriteLine();
+                        writer.Indent();
+                        writer.Write("({0:X} ", f.Offset);
+                        f.DataType.Accept(this);
+                        writer.Write(" {0})", f.Name);
+                    }
+                    writer.Indentation -= 4;
+                }
+                else
+                {
+                    foreach (StructureField f in str.Fields)
+                    {
+                        writer.Write(" ({0:X} ", f.Offset);
+                        f.DataType.Accept(this);
+                        writer.Write(" {0})", f.Name);
+                    }
                 }
             }
             writer.Write(")");
@@ -281,16 +301,30 @@ namespace Reko.Core.Types
             {
                 writer.Write(" \"{0}\"", ut.Name);
             }
-            int i = 0;
             if (!visited.Contains(ut) && (!reference || ut.Name == null))
             {
                 visited.Add(ut);
-                foreach (UnionAlternative alt in ut.Alternatives.Values)
+                if (ut.Alternatives.Count > SmallCompositeType)
                 {
-                    writer.Write(" (");
-                    alt.DataType.Accept(this);
-                    writer.Write(" {0})", alt.Name);
-                    ++i;
+                    writer.Indentation += 4;
+                    foreach (UnionAlternative alt in ut.Alternatives.Values)
+                    {
+                        writer.WriteLine();
+                        writer.Indent();
+                        writer.Write("(");
+                        alt.DataType.Accept(this);
+                        writer.Write(" {0})", alt.Name);
+                    }
+                    writer.Indentation -= 4;
+                }
+                else
+                {
+                    foreach (UnionAlternative alt in ut.Alternatives.Values)
+                    {
+                        writer.Write(" (");
+                        alt.DataType.Accept(this);
+                        writer.Write(" {0})", alt.Name);
+                    }
                 }
             }
             writer.Write(")");
