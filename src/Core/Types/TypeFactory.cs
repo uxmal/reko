@@ -69,7 +69,7 @@ namespace Reko.Core.Types
 			return PrimitiveType.Create(dom, bitSize);
 		}
 
-        public DataType CreateStructureType()
+        public StructureType CreateStructureType()
         {
             return new StructureType();
         }

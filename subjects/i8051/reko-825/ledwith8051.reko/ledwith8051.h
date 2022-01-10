@@ -27,7 +27,7 @@ globals_t: (in globals @ 00000000 : (ptr16 (struct "Globals")))
 T_2: (in __data @ 00000000 : (ptr16 Eq_2))
   Class: Eq_2
   DataType: (ptr16 Eq_2)
-  OrigDataType: (ptr16 (segment (0 (arr T_47 128) a0000)))
+  OrigDataType: (ptr16 (segment (0 T_48 t0000)))
 T_3: (in R0_10 @ 0000002C : Eq_3)
   Class: Eq_3
   DataType: Eq_3
@@ -208,6 +208,10 @@ T_47:
   Class: Eq_47
   DataType: byte
   OrigDataType: (struct 0001 (0 T_8 t0000))
+T_48:
+  Class: Eq_48
+  DataType: (arr byte 128)
+  OrigDataType: (arr T_47 128)
 */
 typedef struct Globals {
 } Eq_1;

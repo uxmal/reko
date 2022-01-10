@@ -136,9 +136,9 @@ Eq_538: (fn word32 ())
 Eq_557: (fn word32 ((ptr32 byte)))
 	T_557 (in fn000013AC @ 000013A0 : ptr32)
 	T_558 (in signature of fn000013AC @ 000013AC : void)
-Eq_576: (struct "Eq_576" 0004 (0 byte b0000))
-	T_576
-	T_579
+Eq_577: (struct "Eq_577" 0004 (0 byte b0000))
+	T_577
+	T_581
 // Type Variables ////////////
 globals_t: (in globals @ 00000000 : (ptr32 (struct "Globals")))
   Class: Eq_1
@@ -699,7 +699,7 @@ T_139: (in d0_240 @ 000010BA : ui32)
 T_140: (in 16<i32> @ 000010BA : int32)
   Class: Eq_140
   DataType: (ptr32 (arr ui32))
-  OrigDataType: (ptr32 (struct (0 (arr T_575) a0000)))
+  OrigDataType: (ptr32 (struct (0 T_576 t0000)))
 T_141: (in 4<32> @ 000010BA : ui32)
   Class: Eq_141
   DataType: ui32
@@ -731,7 +731,7 @@ T_147: (in Mem176[d0_110 + 8<i32>:word32] @ 000010C0 : word32)
 T_148: (in a0_248 @ 000010CC : (arr byte))
   Class: Eq_148
   DataType: (ptr32 (arr byte))
-  OrigDataType: (ptr32 (struct (0 (arr T_577) a0000)))
+  OrigDataType: (ptr32 (struct (0 T_580 t0000)))
 T_149: (in 2<32> @ 000010CC : word32)
   Class: Eq_149
   DataType: word32
@@ -754,8 +754,8 @@ T_153: (in 0<8> @ 000010CE : byte)
   OrigDataType: byte
 T_154: (in 0<32> @ 000010CE : word32)
   Class: Eq_154
-  DataType: (ptr32 (arr Eq_576))
-  OrigDataType: (ptr32 (struct (0 (arr T_576) a0000)))
+  DataType: (ptr32 (arr Eq_577))
+  OrigDataType: (ptr32 (struct (0 T_578 t0000)))
 T_155: (in 4<32> @ 000010CE : ui32)
   Class: Eq_155
   DataType: ui32
@@ -1479,7 +1479,7 @@ T_334: (in d0_216 @ 000011EA : word32)
 T_335: (in 8<i32> @ 000011EA : int32)
   Class: Eq_335
   DataType: (ptr32 (arr word32))
-  OrigDataType: (ptr32 (struct (0 (arr T_580) a0000)))
+  OrigDataType: (ptr32 (struct (0 T_584 t0000)))
 T_336: (in 4<32> @ 000011EA : ui32)
   Class: Eq_336
   DataType: ui32
@@ -2119,7 +2119,7 @@ T_494: (in d2_16 + 1<32> @ 00000000 : word32)
 T_495: (in 00001404 @ 000012F4 : ptr32)
   Class: Eq_495
   DataType: (ptr32 (arr word32))
-  OrigDataType: (ptr32 (struct (0 (arr T_581) a0000)))
+  OrigDataType: (ptr32 (struct (0 T_586 t0000)))
 T_496: (in 4<32> @ 000012F4 : ui32)
   Class: Eq_496
   DataType: ui32
@@ -2143,7 +2143,7 @@ T_500: (in ((word32[]) 0x1404<u32>)[d2_16] != 0<32> @ 00000000 : bool)
 T_501: (in 00001404 @ 00001302 : ptr32)
   Class: Eq_501
   DataType: (ptr32 (arr (ptr32 code)))
-  OrigDataType: (ptr32 (struct (0 (arr T_582) a0000)))
+  OrigDataType: (ptr32 (struct (0 T_588 t0000)))
 T_502: (in 4<32> @ 00001302 : ui32)
   Class: Eq_502
   DataType: ui32
@@ -2442,32 +2442,56 @@ T_575:
   OrigDataType: (struct 0004 (0 T_143 t0000))
 T_576:
   Class: Eq_576
-  DataType: Eq_576
-  OrigDataType: (struct 0004 (0 T_157 t0000))
+  DataType: (arr ui32)
+  OrigDataType: (arr T_575)
 T_577:
   Class: Eq_577
-  DataType: byte
-  OrigDataType: (struct 0001 (0 T_160 t0000))
+  DataType: Eq_577
+  OrigDataType: (struct 0004 (0 T_157 t0000))
 T_578:
   Class: Eq_578
-  DataType: (arr byte)
+  DataType: (arr Eq_577)
   OrigDataType: (arr T_577)
 T_579:
-  Class: Eq_576
-  DataType: Eq_576
-  OrigDataType: (struct 0004 (0 T_157 t0000))
+  Class: Eq_579
+  DataType: byte
+  OrigDataType: (struct 0001 (0 T_160 t0000))
 T_580:
   Class: Eq_580
+  DataType: (arr byte)
+  OrigDataType: (arr T_579)
+T_581:
+  Class: Eq_577
+  DataType: Eq_577
+  OrigDataType: (struct 0004 (0 T_157 t0000))
+T_582:
+  Class: Eq_578
+  DataType: (arr Eq_577)
+  OrigDataType: (arr T_581)
+T_583:
+  Class: Eq_583
   DataType: word32
   OrigDataType: (struct 0004 (0 T_338 t0000))
-T_581:
-  Class: Eq_581
+T_584:
+  Class: Eq_584
+  DataType: (arr word32)
+  OrigDataType: (arr T_583)
+T_585:
+  Class: Eq_585
   DataType: word32
   OrigDataType: (struct 0004 (0 T_498 t0000))
-T_582:
-  Class: Eq_582
+T_586:
+  Class: Eq_586
+  DataType: (arr word32)
+  OrigDataType: (arr T_585)
+T_587:
+  Class: Eq_587
   DataType: (ptr32 code)
   OrigDataType: (struct 0004 (0 T_504 t0000))
+T_588:
+  Class: Eq_588
+  DataType: (arr (ptr32 code))
+  OrigDataType: (arr T_587)
 */
 typedef struct Globals {
 	struct Eq_115 * ptr0000;	// 0
@@ -2591,7 +2615,7 @@ typedef word32 (Eq_538)();
 
 typedef word32 (Eq_557)(byte *);
 
-typedef struct Eq_576 {	// size: 4 4
+typedef struct Eq_577 {	// size: 4 4
 	byte b0000;	// 0
-} Eq_576;
+} Eq_577;
 

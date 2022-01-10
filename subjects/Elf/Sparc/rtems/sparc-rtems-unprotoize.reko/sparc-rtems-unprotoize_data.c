@@ -9,7 +9,9 @@ Eq_n g_t27ED0 = // 00027ED0
 		0x00
 	};
 word32 errors = 0x00; // 00027F20
-word32 compiler_file_name = 0x00017098; // 00027F24
+Eq_n compiler_file_name[] = // 00027F24
+	{
+	};
 word32 version_flag = 0x00; // 00027F28
 word32 quiet_flag = 0x00; // 00027F2C
 word32 nochange_flag = 0x00; // 00027F30

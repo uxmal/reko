@@ -50,7 +50,7 @@ T_5: (in 0x140<32> : word32)
 T_6: (in pa + 0x140<32> : word32)
   Class: Eq_6
   DataType: (ptr32 (arr byte))
-  OrigDataType: (ptr32 (struct (0 (arr T_10) a0000)))
+  OrigDataType: (ptr32 (struct (0 T_11 t0000)))
 T_7: (in i : int32)
   Class: Eq_7
   DataType: int32

@@ -4,7 +4,7 @@
 
 /*
 // Equivalence classes ////////////
-Eq_1: (struct "Globals" (FFFF8000 (struct "Eq_4" 0001 (0 Eq_911 t0000) (1 byte b0001) (2 byte b0002) (3 word16 w0003) (5 word16 w0005) (6 word16 w0006) (7 word16 w0007) (8 word16 w0008) (9 word16 w0009) (A word16 w000A)) tFFFF8000) (FFFF800C (struct "Eq_4" 0001) tFFFF800C) (FFFF801B (struct "Eq_4" 0001) tFFFF801B) (FFFF8030 (arr Eq_906) aFFFF8030) (FFFF8054 real48 rFFFF8054) (FFFF805D (union "Eq_250" (int32 u0) (real32 u1)) uFFFF805D) (FFFF8060 (arr Eq_907) aFFFF8060) (FFFF8061 real48 rFFFF8061) (FFFF806A word16 wFFFF806A) (FFFF806C word16 wFFFF806C) (FFFF806E (struct "Eq_4" 0001) tFFFF806E) (1 (arr Eq_908 15) a0001) (2 (arr Eq_910 15) a0002) (7 Eq_4 t0007) (A Eq_4 t000A) (579 real48 r0579) (57C real48 r057C) (57F real48 r057F) (8000 Eq_4 t8000) (800C Eq_4 t800C) (801B Eq_4 t801B) (8030 (arr Eq_906) a8030) (8054 real48 r8054) (8057 real48 r8057) (805D Eq_250 t805D) (805F word16 w805F) (8060 (arr Eq_907) a8060) (8061 real48 r8061) (8064 real48 r8064) (806A word16 w806A) (806C word16 w806C) (806E Eq_4 t806E) (8A40 ci16 w8A40) (9A41 cui16 w9A41))
+Eq_1: (struct "Globals" (FFFF8000 (struct "Eq_4" 0001 (0 Eq_916 t0000) (1 byte b0001) (2 byte b0002) (3 word16 w0003) (5 word16 w0005) (6 word16 w0006) (7 word16 w0007) (8 word16 w0008) (9 word16 w0009) (A word16 w000A)) tFFFF8000) (FFFF800C (struct "Eq_4" 0001) tFFFF800C) (FFFF801B (struct "Eq_4" 0001) tFFFF801B) (FFFF8030 (arr Eq_906) aFFFF8030) (FFFF8054 real48 rFFFF8054) (FFFF805D (union "Eq_250" (int32 u0) (real32 u1)) uFFFF805D) (FFFF8060 (arr Eq_908) aFFFF8060) (FFFF8061 real48 rFFFF8061) (FFFF806A word16 wFFFF806A) (FFFF806C word16 wFFFF806C) (FFFF806E (struct "Eq_4" 0001) tFFFF806E) (1 (arr Eq_910 15) a0001) (2 (arr Eq_914 15) a0002) (7 Eq_4 t0007) (A Eq_4 t000A) (579 real48 r0579) (57C real48 r057C) (57F real48 r057F) (8000 Eq_4 t8000) (800C Eq_4 t800C) (801B Eq_4 t801B) (8030 (arr Eq_906) a8030) (8054 real48 r8054) (8057 real48 r8057) (805D Eq_250 t805D) (805F word16 w805F) (8060 (arr Eq_908) a8060) (8061 real48 r8061) (8064 real48 r8064) (806A word16 w806A) (806C word16 w806C) (806E Eq_4 t806E) (8A40 ci16 w8A40) (9A41 cui16 w9A41))
 	globals_t (in globals @ 00000000 : (ptr16 (struct "Globals")))
 Eq_2: (fn void ((ptr16 Eq_4), ptr16))
 	T_2 (in __mov @ 00000106 : ptr16)
@@ -12,7 +12,7 @@ Eq_2: (fn void ((ptr16 Eq_4), ptr16))
 	T_9 (in __mov @ 0000010D : ptr16)
 	T_13 (in __mov @ 00000114 : ptr16)
 	T_733 (in __mov @ 0000044D : ptr16)
-Eq_4: (struct "Eq_4" 0001 (0 Eq_911 t0000) (1 byte b0001) (2 byte b0002) (3 word16 w0003) (5 word16 w0005) (6 word16 w0006) (7 word16 w0007) (8 word16 w0008) (9 word16 w0009) (A word16 w000A))
+Eq_4: (struct "Eq_4" 0001 (0 Eq_916 t0000) (1 byte b0001) (2 byte b0002) (3 word16 w0003) (5 word16 w0005) (6 word16 w0006) (7 word16 w0007) (8 word16 w0008) (9 word16 w0009) (A word16 w000A))
 	T_4 (in  @ 00000106 : ptr16)
 	T_6 (in 0x8000<p16> @ 00000106 : ptr16)
 	T_10 (in 0x800C<p16> @ 0000010D : ptr16)
@@ -54,7 +54,7 @@ Eq_56: (fn cui16 (word16, word16))
 Eq_74: (fn word16 ((ptr16 Eq_34)))
 	T_74 (in fn0115 @ 00000135 : ptr16)
 	T_75 (in signature of fn0115 @ 00000115 : void)
-Eq_84: (struct "Eq_84" 0001 (1 (ptr32 Eq_912) ptr0001) (2 word16 w0002))
+Eq_84: (struct "Eq_84" 0001 (1 (ptr32 Eq_917) ptr0001) (2 word16 w0002))
 	T_84 (in gp14_46 @ 00000150 : (ptr16 Eq_84))
 	T_87 (in fp - 2<16> @ 00000000 : word16)
 	T_117 (in fn0245((word32) gp5_gp6_gp7_36, gp7_37, gp7_37) @ 00000160 : word16)
@@ -268,17 +268,17 @@ Eq_901: (fn (ptr16 byte) (word32, (ptr16 Eq_4)))
 	T_902 (in signature of fn0426 @ 00000426 : void)
 Eq_906: (struct "Eq_906" 0003 (0 real48 r0000))
 	T_906
-Eq_907: (struct "Eq_907" 0003 (0 real48 r0000))
-	T_907
-Eq_908: (struct "Eq_908" 0001 (0 (ptr32 Eq_101) ptr0000))
+Eq_908: (struct "Eq_908" 0003 (0 real48 r0000))
 	T_908
-	T_909
-Eq_910: (struct "Eq_910" 0001 (0 ci16 w0000))
+Eq_910: (struct "Eq_910" 0001 (0 (ptr32 Eq_101) ptr0000))
 	T_910
-Eq_911: (union "Eq_911" (byte u0) (word16 u1))
-	T_911
-Eq_912: (struct "Eq_912" (8090 real48 r8090))
 	T_912
+Eq_914: (struct "Eq_914" 0001 (0 ci16 w0000))
+	T_914
+Eq_916: (union "Eq_916" (byte u0) (word16 u1))
+	T_916
+Eq_917: (struct "Eq_917" (8090 real48 r8090))
+	T_917
 // Type Variables ////////////
 globals_t: (in globals @ 00000000 : (ptr16 (struct "Globals")))
   Class: Eq_1
@@ -655,7 +655,7 @@ T_93: (in gp5_gp6_gp7_14 @ 00000155 : real48)
 T_94: (in 0x8030<16> @ 00000155 : word16)
   Class: Eq_94
   DataType: (ptr16 (arr Eq_906))
-  OrigDataType: (ptr16 (struct (0 (arr T_906) a0000)))
+  OrigDataType: (ptr16 (struct (0 T_907 t0000)))
 T_95: (in gp9_6 * 3<16> @ 00000000 : word16)
   Class: Eq_95
   DataType: ui16
@@ -670,8 +670,8 @@ T_97: (in gp2_gp3_gp4_15 @ 00000157 : real48)
   OrigDataType: real48
 T_98: (in 0x8060<16> @ 00000157 : word16)
   Class: Eq_98
-  DataType: (ptr16 (arr Eq_907))
-  OrigDataType: (ptr16 (struct (0 (arr T_907) a0000)))
+  DataType: (ptr16 (arr Eq_908))
+  OrigDataType: (ptr16 (struct (0 T_909 t0000)))
 T_99: (in gp9_6 * 3<16> @ 00000000 : word16)
   Class: Eq_99
   DataType: ui16
@@ -1694,7 +1694,7 @@ T_353: (in gp0 + 0<16> @ 000003C3 : word16)
   OrigDataType: word16
 T_354: (in Mem45[gp0 + 0<16>:word16] @ 000003C3 : word16)
   Class: Eq_351
-  DataType: Eq_911
+  DataType: Eq_916
   OrigDataType: word16
 T_355: (in 0x2020<16> @ 000003C5 : word16)
   Class: Eq_355
@@ -3018,7 +3018,7 @@ T_684: (in gp11 + 0<16> @ 00000458 : word16)
   OrigDataType: word16
 T_685: (in Mem49[gp11 + 0<16>:word16] @ 00000458 : word16)
   Class: Eq_659
-  DataType: Eq_911
+  DataType: Eq_916
   OrigDataType: word16
 T_686: (in gp2_179 @ 0000045A : int16)
   Class: Eq_686
@@ -3310,7 +3310,7 @@ T_757: (in gp11 + 0<16> @ 0000048D : word16)
   OrigDataType: (ptr16 word16)
 T_758: (in Mem124[gp11 + 0<16>:word16] @ 0000048D : word16)
   Class: Eq_755
-  DataType: Eq_911
+  DataType: Eq_916
   OrigDataType: word16
 T_759: (in 0x2E<8> @ 00000491 : byte)
   Class: Eq_759
@@ -3906,27 +3906,47 @@ T_906:
   OrigDataType: (struct 0003 (0 T_96 t0000))
 T_907:
   Class: Eq_907
-  DataType: Eq_907
-  OrigDataType: (struct 0003 (0 T_100 t0000))
+  DataType: (arr Eq_906)
+  OrigDataType: (arr T_906)
 T_908:
   Class: Eq_908
   DataType: Eq_908
-  OrigDataType: (struct 0001 (0 T_104 t0000))
+  OrigDataType: (struct 0003 (0 T_100 t0000))
 T_909:
-  Class: Eq_908
-  DataType: Eq_908
-  OrigDataType: (struct 0001 (0 T_122 t0000))
+  Class: Eq_909
+  DataType: (arr Eq_908)
+  OrigDataType: (arr T_908)
 T_910:
   Class: Eq_910
   DataType: Eq_910
-  OrigDataType: (struct 0001 (0 T_129 t0000))
+  OrigDataType: (struct 0001 (0 T_104 t0000))
 T_911:
   Class: Eq_911
-  DataType: Eq_911
-  OrigDataType: 
+  DataType: (arr Eq_910 15)
+  OrigDataType: (arr T_910 15)
 T_912:
-  Class: Eq_912
-  DataType: Eq_912
+  Class: Eq_910
+  DataType: Eq_910
+  OrigDataType: (struct 0001 (0 T_122 t0000))
+T_913:
+  Class: Eq_911
+  DataType: (arr Eq_910 15)
+  OrigDataType: (arr T_912 15)
+T_914:
+  Class: Eq_914
+  DataType: Eq_914
+  OrigDataType: (struct 0001 (0 T_129 t0000))
+T_915:
+  Class: Eq_915
+  DataType: (arr Eq_914 15)
+  OrigDataType: (arr T_914 15)
+T_916:
+  Class: Eq_916
+  DataType: Eq_916
+  OrigDataType: 
+T_917:
+  Class: Eq_917
+  DataType: Eq_917
   OrigDataType: 
 */
 typedef struct Eq_4;
@@ -3940,13 +3960,13 @@ union Eq_250 {
 	Eq_906 aFFFF8030[];	// FFFF8030
 	real48 rFFFF8054;	// FFFF8054
 	union Eq_250 uFFFF805D;	// FFFF805D
-	Eq_907 aFFFF8060[];	// FFFF8060
+	Eq_908 aFFFF8060[];	// FFFF8060
 	real48 rFFFF8061;	// FFFF8061
 	word16 wFFFF806A;	// FFFF806A
 	word16 wFFFF806C;	// FFFF806C
 	struct Eq_4 tFFFF806E;	// FFFF806E
-	Eq_908 a0001[15];	// 1
-	Eq_910 a0002[15];	// 2
+	Eq_910 a0001[15];	// 1
+	Eq_914 a0002[15];	// 2
 	Eq_4 t0007;	// 7
 	Eq_4 t000A;	// A
 	real48 r0579;	// 579
@@ -3960,7 +3980,7 @@ union Eq_250 {
 	real48 r8057;	// 8057
 	Eq_250 t805D;	// 805D
 	word16 w805F;	// 805F
-	Eq_907 a8060[];	// 8060
+	Eq_908 a8060[];	// 8060
 	real48 r8061;	// 8061
 	real48 r8064;	// 8064
 	word16 w806A;	// 806A
@@ -3973,7 +3993,7 @@ union Eq_250 {
 typedef void (Eq_2)(Eq_4 *, ptr16);
 
 typedef struct Eq_4 {	// size: 1 1
-	Eq_911 t0000;	// 0
+	Eq_916 t0000;	// 0
 	byte b0001;	// 1
 	byte b0002;	// 2
 	word16 w0003;	// 3
@@ -4002,7 +4022,7 @@ typedef cui16 (Eq_56)(word16, word16);
 typedef word16 (Eq_74)(Eq_34 *);
 
 typedef struct Eq_84 {	// size: 1 1
-	struct Eq_912 * ptr0001;	// 1
+	struct Eq_917 * ptr0001;	// 1
 	word16 w0002;	// 2
 } Eq_84;
 
@@ -4188,24 +4208,24 @@ typedef struct Eq_906 {	// size: 3 3
 	real48 r0000;	// 0
 } Eq_906;
 
-typedef struct Eq_907 {	// size: 3 3
+typedef struct Eq_908 {	// size: 3 3
 	real48 r0000;	// 0
-} Eq_907;
-
-typedef struct Eq_908 {	// size: 1 1
-	struct Eq_101 * ptr0000;	// 0
 } Eq_908;
 
 typedef struct Eq_910 {	// size: 1 1
-	ci16 w0000;	// 0
+	struct Eq_101 * ptr0000;	// 0
 } Eq_910;
 
-typedef union Eq_911 {
+typedef struct Eq_914 {	// size: 1 1
+	ci16 w0000;	// 0
+} Eq_914;
+
+typedef union Eq_916 {
 	byte u0;
 	word16 u1;
-} Eq_911;
+} Eq_916;
 
-typedef struct Eq_912 {
+typedef struct Eq_917 {
 	real48 r8090;	// 8090
-} Eq_912;
+} Eq_917;
 

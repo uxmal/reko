@@ -138,7 +138,7 @@ T_24: (in 0x2C<16> @ 00401166 : word16)
 T_25: (in Mem0[fs:0x2C<16>:word32] @ 00401166 : word32)
   Class: Eq_25
   DataType: (ptr32 (arr word32))
-  OrigDataType: (ptr32 (struct (0 (arr T_107) a0000)))
+  OrigDataType: (ptr32 (struct (0 T_108 t0000)))
 T_26: (in 0040208B @ 00401166 : ptr32)
   Class: Eq_26
   DataType: (ptr32 uint32)
@@ -467,6 +467,10 @@ T_107:
   Class: Eq_107
   DataType: word32
   OrigDataType: (struct 0004 (0 T_30 t0000))
+T_108:
+  Class: Eq_108
+  DataType: (arr word32)
+  OrigDataType: (arr T_107)
 */
 typedef struct Globals {
 	uint32 dw40208B;	// 40208B

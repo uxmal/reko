@@ -1278,7 +1278,7 @@ T_280: (in _init(out r10_20) @ 00008664 : word32)
 T_281: (in r1_30 @ 00008670 : (arr (ptr32 code)))
   Class: Eq_281
   DataType: (ptr32 (arr (ptr32 code)))
-  OrigDataType: (ptr32 (struct (0 (arr T_345) a0000)))
+  OrigDataType: (ptr32 (struct (0 T_346 t0000)))
 T_282: (in 000086A8 @ 00008670 : ptr32)
   Class: Eq_282
   DataType: (ptr32 int32)
@@ -1366,7 +1366,7 @@ T_302: (in 0x86C8<u32> + g_dw8700 @ 00000000 : word32)
 T_303: (in r1_16 @ 000086C4 : (arr (ptr32 code)))
   Class: Eq_303
   DataType: (ptr32 (arr (ptr32 code)))
-  OrigDataType: (ptr32 (struct (0 (arr T_346) a0000)))
+  OrigDataType: (ptr32 (struct (0 T_348 t0000)))
 T_304: (in 00008704 @ 000086C4 : ptr32)
   Class: Eq_304
   DataType: (ptr32 int32)
@@ -1537,8 +1537,16 @@ T_345:
   OrigDataType: (struct 0004 (0 T_297 t0000))
 T_346:
   Class: Eq_346
+  DataType: (arr (ptr32 code))
+  OrigDataType: (arr T_345)
+T_347:
+  Class: Eq_347
   DataType: (ptr32 code)
   OrigDataType: (struct 0004 (0 T_324 t0000))
+T_348:
+  Class: Eq_348
+  DataType: (arr (ptr32 code))
+  OrigDataType: (arr T_347)
 */
 typedef struct Globals {
 	<anonymous> t0001;	// 1

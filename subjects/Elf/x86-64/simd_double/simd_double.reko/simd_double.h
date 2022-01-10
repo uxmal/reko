@@ -649,7 +649,7 @@ T_132: (in _mm_malloc(0x20<u64>, 0x2000<64>) @ 000008D1 : word64)
 T_133: (in rax_42 @ 000008EA : (arr real64))
   Class: Eq_104
   DataType: (ptr64 (arr real64))
-  OrigDataType: (ptr64 (struct (0 (arr T_275) a0000)))
+  OrigDataType: (ptr64 (struct (0 T_276 t0000)))
 T_134: (in _mm_malloc @ 000008EA : ptr64)
   Class: Eq_123
   DataType: (ptr64 Eq_123)
@@ -1181,7 +1181,7 @@ T_265: (in 0<u64> @ 00000AA6 : uint64)
 T_266: (in 0000000000200DE8 @ 00000AB9 : ptr64)
   Class: Eq_266
   DataType: (ptr64 (arr (ptr64 code)))
-  OrigDataType: (ptr64 (struct (0 (arr T_277) a0000)))
+  OrigDataType: (ptr64 (struct (0 T_280 t0000)))
 T_267: (in 8<64> @ 00000AB9 : word64)
   Class: Eq_267
   DataType: ui64
@@ -1219,13 +1219,25 @@ T_275:
   DataType: real64
   OrigDataType: (struct 0008 (0 T_219 t0000))
 T_276:
+  Class: Eq_276
+  DataType: (arr real64)
+  OrigDataType: (arr T_275)
+T_277:
   Class: Eq_275
   DataType: real64
   OrigDataType: (struct 0008 (0 T_237 t0000))
-T_277:
-  Class: Eq_277
+T_278:
+  Class: Eq_276
+  DataType: (arr real64)
+  OrigDataType: (arr T_277)
+T_279:
+  Class: Eq_279
   DataType: (ptr64 code)
   OrigDataType: (struct 0008 (0 T_269 t0000))
+T_280:
+  Class: Eq_280
+  DataType: (arr (ptr64 code))
+  OrigDataType: (arr T_279)
 */
 typedef Eq_1Eq_1Eq_1struct Globals {
 	<anonymous> t05D6;	// 5D6

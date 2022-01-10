@@ -1301,7 +1301,7 @@ word32 * fn000023F8(word32 * dwArg04, word32 * dwArg08, word32 * dwArg0C, word32
 					}
 				}
 			}
-			int32 d4_n = SEQ(SLICE(d4_n, word24, 8), ((&g_t2BC4)[(int32) ((word16) d6_n & 0xFF)].a0000 + (byte) d4_n).a0000.a0000.a0000.a0000.a0000.a0000.a0000.a0000.a0000.a0000.a0000.a0000.a0000.a0000.a0000.a0000.a0000.a0000.a0000);
+			int32 d4_n = SEQ(SLICE(d4_n, word24, 8), (byte) d4_n + g_a2BC4[(int32) ((word16) d6_n & 0xFF)]);
 			int32 d5_n = 32 - d4_n;
 			if (d5_n != 0x00)
 			{
@@ -1525,7 +1525,7 @@ word32 * fn00002648(word32 * dwArg04, word32 * dwArg08, word32 * dwArg0C, word32
 				}
 			}
 		}
-		int32 d4_n = SEQ(SLICE(d4_n, word24, 8), ((&g_t2BC4)[(int32) ((word16) d6_n & 0xFF)].a0000 + (byte) d4_n).a0000.a0000.a0000.a0000.a0000.a0000.a0000.a0000.a0000.a0000.a0000.a0000.a0000.a0000.a0000.a0000.a0000.a0000.a0000);
+		int32 d4_n = SEQ(SLICE(d4_n, word24, 8), (byte) d4_n + g_a2BC4[(int32) ((word16) d6_n & 0xFF)]);
 		int32 d5_n = 32 - d4_n;
 		if (d5_n == 0x00)
 		{
@@ -1736,9 +1736,6 @@ ptr32 g_ptr2BB4 = 0x06060606; // 00002BB4
 int32 g_dw2BB8 = 0x06060606; // 00002BB8
 struct Eq_n * g_ptr2BBC = &g_t6060606; // 00002BBC
 struct Eq_n * g_ptr2BC0 = &g_t6060606; // 00002BC0
-Eq_n g_t2BC4 = // 00002BC4
+byte g_a2BC4[] = // 00002BC4
 	{
-		
-		{
-		},
 	};

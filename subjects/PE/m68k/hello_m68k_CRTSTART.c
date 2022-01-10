@@ -19,14 +19,14 @@ void fn000021F0(struct Eq_n * a5)
 			{
 				if (d0_n == 0x46535953)
 				{
-					Mem51[a5 + -0x06A8 + d1_n:byte] = Mem30[a5 + -0x06A8 + d1_n:byte] | 0x01;
+					a5->aFFFFF958[d1_n] |= 0x01;
 					struct Eq_n * a0_n = *a1_n->ptr0008;
 					a5->aFFFFF998[d1_n] = SEQ(SLICE(a0_n, word16, 16), a0_n->w0002);
 				}
 			}
 			else
 			{
-				Mem41[a5 + -0x06A8 + d1_n:byte] = Mem30[a5 + -0x06A8 + d1_n:byte] | 0x41;
+				a5->aFFFFF958[d1_n] |= 0x41;
 				a5->aFFFFF998[d1_n] = a1_n;
 			}
 			++a1_n;

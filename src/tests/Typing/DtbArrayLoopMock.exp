@@ -42,6 +42,8 @@ Eq_10: int32
 	T_10 (in 4<32> : word32)
 Eq_12: (struct 0004 (0 T_9 t0000))
 	T_12
+Eq_13: (arr T_12 1024)
+	T_13
 // Type Variables ////////////
 globals_t: (in globals : (ptr32 (struct "Globals")))
   Class: Eq_1
@@ -91,3 +93,7 @@ T_12:
   Class: Eq_12
   DataType: (struct 0004 (0 T_9 t0000))
   OrigDataType: (struct 0004 (0 T_9 t0000))
+T_13:
+  Class: Eq_13
+  DataType: (arr T_12 1024)
+  OrigDataType: (arr T_12 1024)

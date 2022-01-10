@@ -195,7 +195,7 @@ T_37: (in Mem13[0x80002726<p32>:word32] @ 800000FA : word32)
 T_38: (in a2_18 @ 800000F4 : (arr (ptr32 code)))
   Class: Eq_38
   DataType: (ptr32 (arr (ptr32 code)))
-  OrigDataType: (ptr32 (struct (0 (arr T_239) a0000)))
+  OrigDataType: (ptr32 (struct (0 T_240 t0000)))
 T_39: (in 80002714 @ 800000F4 : ptr32)
   Class: Eq_38
   DataType: (ptr32 (arr (ptr32 code)))
@@ -1000,6 +1000,10 @@ T_239:
   Class: Eq_239
   DataType: (ptr32 code)
   OrigDataType: (struct 0004 (0 T_59 t0000))
+T_240:
+  Class: Eq_240
+  DataType: (arr (ptr32 code))
+  OrigDataType: (arr T_239)
 */
 typedef struct Globals {
 	<anonymous> * ptr8000270C;	// 8000270C

@@ -9,11 +9,6 @@ Eq_1: (struct "Globals" (121D5000 (arr byte) a121D5000))
 Eq_13: (fn void ((ptr64 (arr byte))))
 	T_13 (in reko_array_byref @ 2121D104E : ptr64)
 	T_14 (in signature of reko_array_byref @ 2121D1000 : void)
-Eq_21: (struct "Eq_21" 0001 (0 (arr Eq_21) a0000))
-	T_21 (in SLICE(dwLoc0C_39, byte, 0) @ 2121D1079 : byte)
-	T_27 (in Mem27[fp - 0x38<64> + CONVERT(dwLoc0C_39, word32, int64):byte] @ 2121D1079 : byte)
-	T_32
-	T_33
 // Type Variables ////////////
 globals_t: (in globals @ 00000000 : (ptr64 (struct "Globals")))
   Class: Eq_1
@@ -22,7 +17,7 @@ globals_t: (in globals @ 00000000 : (ptr64 (struct "Globals")))
 T_2: (in rcx @ 00000000 : (arr byte))
   Class: Eq_2
   DataType: (ptr64 (arr byte))
-  OrigDataType: (ptr64 (struct (0 (arr T_30) a0000)))
+  OrigDataType: (ptr64 (struct (0 T_31 t0000)))
 T_3: (in dwLoc0C_38 @ 2121D100C : int32)
   Class: Eq_3
   DataType: int32
@@ -97,7 +92,7 @@ T_20: (in dwLoc0C_39 <= 0x1F<32> @ 00000000 : bool)
   OrigDataType: bool
 T_21: (in SLICE(dwLoc0C_39, byte, 0) @ 2121D1079 : byte)
   Class: Eq_21
-  DataType: Eq_21
+  DataType: byte
   OrigDataType: byte
 T_22: (in fp @ 2121D1079 : ptr64)
   Class: Eq_22
@@ -107,21 +102,21 @@ T_23: (in 0x38<64> @ 2121D1079 : word64)
   Class: Eq_23
   DataType: ui64
   OrigDataType: ui64
-T_24: (in fp - 0x38<64> @ 00000000 : (arr Eq_21))
+T_24: (in fp - 0x38<64> @ 00000000 : (arr byte))
   Class: Eq_24
-  DataType: (ptr64 (arr Eq_21))
-  OrigDataType: (ptr64 (struct (0 (arr T_32) a0000)))
+  DataType: (ptr64 (arr byte))
+  OrigDataType: (ptr64 (struct (0 T_33 t0000)))
 T_25: (in CONVERT(dwLoc0C_39, word32, int64) @ 2121D1079 : int64)
   Class: Eq_25
   DataType: int64
   OrigDataType: int64
 T_26: (in fp - 0x38<64> + CONVERT(dwLoc0C_39, word32, int64) @ 2121D1079 : word64)
   Class: Eq_26
-  DataType: (ptr64 Eq_21)
+  DataType: (ptr64 byte)
   OrigDataType: (ptr64 (struct (0 T_27 t0000)))
 T_27: (in Mem27[fp - 0x38<64> + CONVERT(dwLoc0C_39, word32, int64):byte] @ 2121D1079 : byte)
   Class: Eq_21
-  DataType: Eq_21
+  DataType: byte
   OrigDataType: byte
 T_28: (in 1<32> @ 2121D107D : word32)
   Class: Eq_28
@@ -140,21 +135,17 @@ T_31:
   DataType: (arr byte)
   OrigDataType: (arr T_30)
 T_32:
-  Class: Eq_21
-  DataType: Eq_21
+  Class: Eq_32
+  DataType: byte
   OrigDataType: (struct 0001 (0 T_27 t0000))
 T_33:
-  Class: Eq_21
-  DataType: Eq_21
-  OrigDataType: (arr Eq_21)
+  Class: Eq_33
+  DataType: (arr byte)
+  OrigDataType: (arr T_32)
 */
 typedef struct Globals {
 	byte a121D5000[];	// 121D5000
 } Eq_1;
 
 typedef void (Eq_13)(byte *[]);
-
-typedef struct Eq_21 {	// size: 1 1
-	Eq_21 a0000[];	// 0
-} Eq_21;
 
