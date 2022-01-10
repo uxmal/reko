@@ -98,7 +98,7 @@ T_18: (in 0xA<16> : word16)
 T_19: (in bx + 0xA<16> : word16)
   Class: Eq_19
   DataType: (memptr (ptr16 Eq_4) byte)
-  OrigDataType: (memptr T_4 (struct (0 (arr T_22) a0000)))
+  OrigDataType: (memptr T_4 (struct (0 T_23 t0000)))
 T_20: (in bx + 0xA<16> + si : word16)
   Class: Eq_20
   DataType: (memptr (ptr16 Eq_4) byte)

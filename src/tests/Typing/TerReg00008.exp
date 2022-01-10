@@ -111,7 +111,7 @@ T_12: (in 0xFFFF<16> : word16)
 T_13: (in 0x5CE1<16> : selector)
   Class: Eq_13
   DataType: (ptr16 Eq_13)
-  OrigDataType: (ptr16 (segment (0 (arr T_27) a0000)))
+  OrigDataType: (ptr16 (segment (0 T_28 t0000)))
 T_14: (in 0<16> : word16)
   Class: Eq_14
   DataType: word16
@@ -168,3 +168,7 @@ T_27:
   Class: Eq_27
   DataType: Eq_27
   OrigDataType: (struct 0026 (0 T_16 t0000))
+T_28:
+  Class: Eq_28
+  DataType: (arr Eq_27)
+  OrigDataType: (arr T_27)

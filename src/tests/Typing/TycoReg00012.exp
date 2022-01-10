@@ -111,8 +111,8 @@ T_8: (in cx : word16)
   OrigDataType: word16
 T_9: (in ds : selector)
   Class: Eq_5
-  DataType: (ptr16 (segment (5388 (arr T_67) a5388)))
-  OrigDataType: (ptr16 (segment (5388 (arr T_67) a5388)))
+  DataType: (ptr16 (segment (5388 T_68 t5388)))
+  OrigDataType: (ptr16 (segment (5388 T_68 t5388)))
 T_10: (in fn0C00_0007(cx, ds) : void)
   Class: Eq_10
   DataType: void
@@ -131,8 +131,8 @@ T_13: (in bx : word16)
   OrigDataType: int16
 T_14: (in ds : selector)
   Class: Eq_5
-  DataType: (ptr16 (segment (5388 (arr T_68) a5388) (53B8 T_39 t53B8) (53BA T_4 t53BA)))
-  OrigDataType: (ptr16 (segment (5388 (arr T_68) a5388) (53B8 T_39 t53B8) (53BA T_4 t53BA)))
+  DataType: (ptr16 (segment (5388 T_70 t5388) (53B8 T_39 t53B8) (53BA T_4 t53BA)))
+  OrigDataType: (ptr16 (segment (5388 T_70 t5388) (53B8 T_39 t53B8) (53BA T_4 t53BA)))
 T_15: (in fn0C00_001D(bx, ds) : void)
   Class: Eq_15
   DataType: void
@@ -275,12 +275,12 @@ T_49: (in 0x4400<16> : word16)
   OrigDataType: word16
 T_50: (in 0x5388<16> : word16)
   Class: Eq_50
-  DataType: (memptr T_14 T_68)
-  OrigDataType: (memptr T_14 T_68)
+  DataType: (memptr T_14 T_70)
+  OrigDataType: (memptr T_14 T_70)
 T_51: (in SEQ(ds, 0x5388<16>) : segptr32)
   Class: Eq_51
-  DataType: (ptr32 T_68)
-  OrigDataType: (ptr32 T_68)
+  DataType: (ptr32 T_70)
+  OrigDataType: (ptr32 T_70)
 T_52: (in 2<16> : word16)
   Class: Eq_52
   DataType: ui16
@@ -347,5 +347,13 @@ T_67:
   OrigDataType: (struct 0002 (0 T_26 t0000))
 T_68:
   Class: Eq_68
+  DataType: (arr T_67)
+  OrigDataType: (arr T_67)
+T_69:
+  Class: Eq_69
   DataType: (struct 0002 (0 T_54 t0000))
   OrigDataType: (struct 0002 (0 T_54 t0000))
+T_70:
+  Class: Eq_70
+  DataType: (arr T_69)
+  OrigDataType: (arr T_69)

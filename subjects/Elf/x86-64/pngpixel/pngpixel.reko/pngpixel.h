@@ -4,7 +4,7 @@
 
 /*
 // Equivalence classes ////////////
-Eq_1: (struct "Globals" (1 (arr Eq_675) a0001) (400B26 code t400B26) (400B36 code t400B36) (400B46 code t400B46) (400B56 code t400B56) (400B66 code t400B66) (400B76 code t400B76) (400B86 code t400B86) (400B96 code t400B96) (400BA6 code t400BA6) (400BB6 code t400BB6) (400BC6 code t400BC6) (400BD6 code t400BD6) (400BE6 code t400BE6) (400BF6 code t400BF6) (400C06 code t400C06) (400C16 code t400C16) (400C26 code t400C26) (400C36 code t400C36) (400C46 code t400C46) (400C56 code t400C56) (400C66 code t400C66) (400C76 code t400C76) (400C86 code t400C86) (400C96 code t400C96) (400CA6 code t400CA6) (400CB6 code t400CB6) (4012F9 Eq_19 t4012F9) (401780 Eq_22 t401780) (4017F0 Eq_23 t4017F0) (401808 (str char) str401808) (4018B0 (str char) str4018B0) (4018B9 (str char) str4018B9) (4018D3 (str char) str4018D3) (4018EA (str char) str4018EA) (401906 (str char) str401906) (401914 (str char) str401914) (401926 (str char) str401926) (401958 (arr Eq_673) a401958) (401990 (str char) str401990) (4019B6 (str char) str4019B6) (4019E8 void v4019E8) (401A18 void v401A18) (401A48 (str char) str401A48) (401A70 void v401A70) (601E00 (arr (ptr64 code)) a601E00) (601E10 word64 qw601E10) (601FF8 (ptr64 code) __gmon_start___GOT) (602018 (ptr64 code) puts_GOT) (602020 (ptr64 code) png_get_bit_depth_GOT) (602028 (ptr64 code) __stack_chk_fail_GOT) (602030 (ptr64 code) png_error_GOT) (602038 (ptr64 code) png_start_read_image_GOT) (602040 (ptr64 code) printf_GOT) (602048 (ptr64 code) png_get_tRNS_GOT) (602050 (ptr64 code) png_destroy_read_struct_GOT) (602058 (ptr64 code) png_free_GOT) (602060 (ptr64 code) png_get_color_type_GOT) (602068 (ptr64 code) __libc_start_main_GOT) (602070 (ptr64 code) png_create_read_struct_GOT) (602078 (ptr64 code) png_get_rowbytes_GOT) (602080 (ptr64 code) fprintf_GOT) (602088 (ptr64 code) png_read_row_GOT) (602090 (ptr64 code) png_read_info_GOT) (602098 (ptr64 code) png_malloc_GOT) (6020A0 (ptr64 code) atol_GOT) (6020A8 (ptr64 code) fopen_GOT) (6020B0 (ptr64 code) png_get_IHDR_GOT) (6020B8 (ptr64 code) png_destroy_info_struct_GOT) (6020C0 (ptr64 code) exit_GOT) (6020C8 (ptr64 code) fwrite_GOT) (6020D0 (ptr64 code) png_init_io_GOT) (6020D8 (ptr64 code) png_create_info_struct_GOT) (6020E0 (ptr64 code) png_get_PLTE_GOT) (602100 (ptr64 Eq_95) stderr) (602108 byte b602108))
+Eq_1: (struct "Globals" (1 (arr Eq_677) a0001) (400B26 code t400B26) (400B36 code t400B36) (400B46 code t400B46) (400B56 code t400B56) (400B66 code t400B66) (400B76 code t400B76) (400B86 code t400B86) (400B96 code t400B96) (400BA6 code t400BA6) (400BB6 code t400BB6) (400BC6 code t400BC6) (400BD6 code t400BD6) (400BE6 code t400BE6) (400BF6 code t400BF6) (400C06 code t400C06) (400C16 code t400C16) (400C26 code t400C26) (400C36 code t400C36) (400C46 code t400C46) (400C56 code t400C56) (400C66 code t400C66) (400C76 code t400C76) (400C86 code t400C86) (400C96 code t400C96) (400CA6 code t400CA6) (400CB6 code t400CB6) (4012F9 Eq_19 t4012F9) (401780 Eq_22 t401780) (4017F0 Eq_23 t4017F0) (401808 (str char) str401808) (4018B0 (str char) str4018B0) (4018B9 (str char) str4018B9) (4018D3 (str char) str4018D3) (4018EA (str char) str4018EA) (401906 (str char) str401906) (401914 (str char) str401914) (401926 (str char) str401926) (401958 (arr Eq_673) a401958) (401990 (str char) str401990) (4019B6 (str char) str4019B6) (4019E8 void v4019E8) (401A18 void v401A18) (401A48 (str char) str401A48) (401A70 void v401A70) (601E00 (arr (ptr64 code)) a601E00) (601E10 word64 qw601E10) (601FF8 (ptr64 code) __gmon_start___GOT) (602018 (ptr64 code) puts_GOT) (602020 (ptr64 code) png_get_bit_depth_GOT) (602028 (ptr64 code) __stack_chk_fail_GOT) (602030 (ptr64 code) png_error_GOT) (602038 (ptr64 code) png_start_read_image_GOT) (602040 (ptr64 code) printf_GOT) (602048 (ptr64 code) png_get_tRNS_GOT) (602050 (ptr64 code) png_destroy_read_struct_GOT) (602058 (ptr64 code) png_free_GOT) (602060 (ptr64 code) png_get_color_type_GOT) (602068 (ptr64 code) __libc_start_main_GOT) (602070 (ptr64 code) png_create_read_struct_GOT) (602078 (ptr64 code) png_get_rowbytes_GOT) (602080 (ptr64 code) fprintf_GOT) (602088 (ptr64 code) png_read_row_GOT) (602090 (ptr64 code) png_read_info_GOT) (602098 (ptr64 code) png_malloc_GOT) (6020A0 (ptr64 code) atol_GOT) (6020A8 (ptr64 code) fopen_GOT) (6020B0 (ptr64 code) png_get_IHDR_GOT) (6020B8 (ptr64 code) png_destroy_info_struct_GOT) (6020C0 (ptr64 code) exit_GOT) (6020C8 (ptr64 code) fwrite_GOT) (6020D0 (ptr64 code) png_init_io_GOT) (6020D8 (ptr64 code) png_create_info_struct_GOT) (6020E0 (ptr64 code) png_get_PLTE_GOT) (602100 (ptr64 Eq_95) stderr) (602108 byte b602108))
 	globals_t (in globals @ 00000000 : (ptr64 (struct "Globals")))
 Eq_8: (fn void ())
 	T_8 (in rdx @ 00400AF8 : (ptr64 Eq_8))
@@ -158,18 +158,18 @@ Eq_662: (union "Eq_662" (int64 u0) (uint64 u1))
 	T_670 (in rbp_31 >> 3<64> @ 00000000 : word64)
 Eq_673: (struct "Eq_673" 0008 (0 word32 dw0000))
 	T_673
-Eq_674: (struct "Eq_674" 0003 (0 byte b0000))
-	T_674
-Eq_675: (struct "Eq_675" 0003 (0 byte b0000) (1 byte b0001))
+Eq_675: (struct "Eq_675" 0003 (0 byte b0000))
 	T_675
-Eq_676: (struct "Eq_676" 0003 (1 byte b0001))
-	T_676
-Eq_678: (struct "Eq_678" 0003 (0 byte b0000))
-	T_678
-Eq_679: (struct "Eq_679" 0003 (0 byte b0000))
+Eq_677: (struct "Eq_677" 0003 (0 byte b0000) (1 byte b0001))
+	T_677
+Eq_679: (struct "Eq_679" 0003 (1 byte b0001))
 	T_679
-Eq_680: (struct "Eq_680" 0003 (0 byte b0000))
-	T_680
+Eq_683: (struct "Eq_683" 0003 (0 byte b0000))
+	T_683
+Eq_685: (struct "Eq_685" 0003 (0 byte b0000))
+	T_685
+Eq_687: (struct "Eq_687" 0003 (0 byte b0000))
+	T_687
 // Type Variables ////////////
 globals_t: (in globals @ 00000000 : (ptr64 (struct "Globals")))
   Class: Eq_1
@@ -942,7 +942,7 @@ T_192: (in signature of png_error @ 00000000 : void)
 T_193: (in 0x401958<64> @ 00400F56 : word64)
   Class: Eq_193
   DataType: (ptr64 (arr Eq_673))
-  OrigDataType: (ptr64 (struct (0 (arr T_673) a0000)))
+  OrigDataType: (ptr64 (struct (0 T_674 t0000)))
 T_194: (in CONVERT(eax_67, word32, uint64) @ 00400F56 : uint64)
   Class: Eq_194
   DataType: uint64
@@ -1405,8 +1405,8 @@ T_308: (in 0x4018D3<u64> @ 00401130 : uint64)
   OrigDataType: (ptr64 char)
 T_309: (in 0<64> @ 00401130 : word64)
   Class: Eq_309
-  DataType: (ptr64 (arr Eq_674))
-  OrigDataType: (ptr64 (struct (0 (arr T_674) a0000)))
+  DataType: (ptr64 (arr Eq_675))
+  OrigDataType: (ptr64 (struct (0 T_676 t0000)))
 T_310: (in CONVERT(eax_275, word32, uint64) @ 00401130 : uint64)
   Class: Eq_310
   DataType: uint64
@@ -1429,8 +1429,8 @@ T_314: (in CONVERT(0<64>[CONVERT(eax_275, word32, uint64) * 3<64>], byte, int32)
   OrigDataType: int32
 T_315: (in 1<64> @ 00401130 : word64)
   Class: Eq_315
-  DataType: (ptr64 (arr Eq_675))
-  OrigDataType: (ptr64 (struct (0 (arr T_675) a0000)))
+  DataType: (ptr64 (arr Eq_677))
+  OrigDataType: (ptr64 (struct (0 T_678 t0000)))
 T_316: (in CONVERT(eax_275, word32, uint64) @ 00401130 : uint64)
   Class: Eq_316
   DataType: uint64
@@ -1453,8 +1453,8 @@ T_320: (in CONVERT(1<64>[CONVERT(eax_275, word32, uint64) * 3<64>], byte, int32)
   OrigDataType: int32
 T_321: (in 2<64> @ 00401130 : word64)
   Class: Eq_321
-  DataType: (ptr64 (arr Eq_676))
-  OrigDataType: (ptr64 (struct (0 (arr T_676) a0000)))
+  DataType: (ptr64 (arr Eq_679))
+  OrigDataType: (ptr64 (struct (0 T_680 t0000)))
 T_322: (in CONVERT(eax_275, word32, uint64) @ 00401130 : uint64)
   Class: Eq_322
   DataType: uint64
@@ -1475,7 +1475,7 @@ T_326: (in CONVERT(2<64>[CONVERT(eax_275, word32, uint64) * 3<64>], byte, int32)
   Class: Eq_307
   DataType: int32
   OrigDataType: int32
-T_327: (in printf("INDEXED %u = %d %d %d\n", eax_275, (int32) null[(uint64) eax_275].b0000, (int32) ((Eq_675[]) 1<64>)[(uint64) eax_275].b0000, (int32) ((Eq_676[]) 2<64>)[(uint64) eax_275]) @ 00401130 : int32)
+T_327: (in printf("INDEXED %u = %d %d %d\n", eax_275, (int32) null[(uint64) eax_275].b0000, (int32) ((Eq_677[]) 1<64>)[(uint64) eax_275].b0000, (int32) ((Eq_679[]) 2<64>)[(uint64) eax_275]) @ 00401130 : int32)
   Class: Eq_327
   DataType: int32
   OrigDataType: int32
@@ -1510,7 +1510,7 @@ T_334: (in CONVERT(eax_275, word32, uint64) @ 0040105E : uint64)
 T_335: (in 0<64> @ 0040105E : word64)
   Class: Eq_335
   DataType: (ptr64 (arr byte))
-  OrigDataType: (ptr64 (struct (0 (arr T_677) a0000)))
+  OrigDataType: (ptr64 (struct (0 T_682 t0000)))
 T_336: (in CONVERT(eax_275, word32, uint64) + 0<64> @ 0040105E : word64)
   Class: Eq_336
   DataType: uint64
@@ -1557,8 +1557,8 @@ T_346: (in 0x4018B9<u64> @ 004010CA : uint64)
   OrigDataType: (ptr64 char)
 T_347: (in 0<64> @ 004010CA : word64)
   Class: Eq_347
-  DataType: (ptr64 (arr Eq_678))
-  OrigDataType: (ptr64 (struct (0 (arr T_678) a0000)))
+  DataType: (ptr64 (arr Eq_683))
+  OrigDataType: (ptr64 (struct (0 T_684 t0000)))
 T_348: (in CONVERT(eax_275, word32, uint64) @ 004010CA : uint64)
   Class: Eq_348
   DataType: uint64
@@ -1581,8 +1581,8 @@ T_352: (in CONVERT(0<64>[CONVERT(eax_275, word32, uint64) * 3<64>], byte, int32)
   OrigDataType: int32
 T_353: (in 1<64> @ 004010CA : word64)
   Class: Eq_353
-  DataType: (ptr64 (arr Eq_679))
-  OrigDataType: (ptr64 (struct (0 (arr T_679) a0000)))
+  DataType: (ptr64 (arr Eq_685))
+  OrigDataType: (ptr64 (struct (0 T_686 t0000)))
 T_354: (in CONVERT(eax_275, word32, uint64) @ 004010CA : uint64)
   Class: Eq_354
   DataType: uint64
@@ -1605,8 +1605,8 @@ T_358: (in CONVERT(1<64>[CONVERT(eax_275, word32, uint64) * 3<64>], byte, int32)
   OrigDataType: int32
 T_359: (in 2<64> @ 004010CA : word64)
   Class: Eq_359
-  DataType: (ptr64 (arr Eq_680))
-  OrigDataType: (ptr64 (struct (0 (arr T_680) a0000)))
+  DataType: (ptr64 (arr Eq_687))
+  OrigDataType: (ptr64 (struct (0 T_688 t0000)))
 T_360: (in CONVERT(eax_275, word32, uint64) @ 004010CA : uint64)
   Class: Eq_360
   DataType: uint64
@@ -1627,7 +1627,7 @@ T_364: (in CONVERT(2<64>[CONVERT(eax_275, word32, uint64) * 3<64>], byte, int32)
   Class: Eq_344
   DataType: int32
   OrigDataType: int32
-T_365: (in printf("INDEXED %u = %d %d %d %d\n", eax_275, (int32) null[(uint64) eax_275].b0000, (int32) ((Eq_679[]) 1<64>)[(uint64) eax_275].b0000, (int32) ((Eq_680[]) 2<64>)[(uint64) eax_275].b0000, esi_463) @ 004010CA : int32)
+T_365: (in printf("INDEXED %u = %d %d %d %d\n", eax_275, (int32) null[(uint64) eax_275].b0000, (int32) ((Eq_685[]) 1<64>)[(uint64) eax_275].b0000, (int32) ((Eq_687[]) 2<64>)[(uint64) eax_275].b0000, esi_463) @ 004010CA : int32)
   Class: Eq_365
   DataType: int32
   OrigDataType: int32
@@ -2826,7 +2826,7 @@ T_663: (in 0<u64> @ 004017B6 : uint64)
 T_664: (in 0000000000601E00 @ 004017C9 : ptr64)
   Class: Eq_664
   DataType: (ptr64 (arr (ptr64 code)))
-  OrigDataType: (ptr64 (struct (0 (arr T_681) a0000)))
+  OrigDataType: (ptr64 (struct (0 T_690 t0000)))
 T_665: (in 8<64> @ 004017C9 : word64)
   Class: Eq_665
   DataType: ui64
@@ -2865,39 +2865,75 @@ T_673:
   OrigDataType: (struct 0008 (0 T_197 t0000))
 T_674:
   Class: Eq_674
-  DataType: Eq_674
-  OrigDataType: (struct 0003 (0 T_313 t0000))
+  DataType: (arr Eq_673)
+  OrigDataType: (arr T_673)
 T_675:
   Class: Eq_675
   DataType: Eq_675
-  OrigDataType: (struct 0003 (0 T_319 t0000))
+  OrigDataType: (struct 0003 (0 T_313 t0000))
 T_676:
   Class: Eq_676
-  DataType: Eq_676
-  OrigDataType: (struct 0003 (0 T_325 t0000))
+  DataType: (arr Eq_675)
+  OrigDataType: (arr T_675)
 T_677:
   Class: Eq_677
-  DataType: byte
-  OrigDataType: (struct 0001 (0 T_337 t0000))
+  DataType: Eq_677
+  OrigDataType: (struct 0003 (0 T_319 t0000))
 T_678:
   Class: Eq_678
-  DataType: Eq_678
-  OrigDataType: (struct 0003 (0 T_351 t0000))
+  DataType: (arr Eq_677)
+  OrigDataType: (arr T_677)
 T_679:
   Class: Eq_679
   DataType: Eq_679
-  OrigDataType: (struct 0003 (0 T_357 t0000))
+  OrigDataType: (struct 0003 (0 T_325 t0000))
 T_680:
   Class: Eq_680
-  DataType: Eq_680
-  OrigDataType: (struct 0003 (0 T_363 t0000))
+  DataType: (arr Eq_679)
+  OrigDataType: (arr T_679)
 T_681:
   Class: Eq_681
+  DataType: byte
+  OrigDataType: (struct 0001 (0 T_337 t0000))
+T_682:
+  Class: Eq_682
+  DataType: (arr byte)
+  OrigDataType: (arr T_681)
+T_683:
+  Class: Eq_683
+  DataType: Eq_683
+  OrigDataType: (struct 0003 (0 T_351 t0000))
+T_684:
+  Class: Eq_684
+  DataType: (arr Eq_683)
+  OrigDataType: (arr T_683)
+T_685:
+  Class: Eq_685
+  DataType: Eq_685
+  OrigDataType: (struct 0003 (0 T_357 t0000))
+T_686:
+  Class: Eq_686
+  DataType: (arr Eq_685)
+  OrigDataType: (arr T_685)
+T_687:
+  Class: Eq_687
+  DataType: Eq_687
+  OrigDataType: (struct 0003 (0 T_363 t0000))
+T_688:
+  Class: Eq_688
+  DataType: (arr Eq_687)
+  OrigDataType: (arr T_687)
+T_689:
+  Class: Eq_689
   DataType: (ptr64 code)
   OrigDataType: (struct 0008 (0 T_667 t0000))
+T_690:
+  Class: Eq_690
+  DataType: (arr (ptr64 code))
+  OrigDataType: (arr T_689)
 */
 typedef struct Globals {
-	Eq_675 a0001[];	// 1
+	Eq_677 a0001[];	// 1
 	<anonymous> t400B26;	// 400B26
 	<anonymous> t400B36;	// 400B36
 	<anonymous> t400B46;	// 400B46
@@ -3084,28 +3120,28 @@ typedef struct Eq_673 {	// size: 8 8
 	word32 dw0000;	// 0
 } Eq_673;
 
-typedef struct Eq_674 {	// size: 3 3
-	byte b0000;	// 0
-} Eq_674;
-
 typedef struct Eq_675 {	// size: 3 3
 	byte b0000;	// 0
-	byte b0001;	// 1
 } Eq_675;
 
-typedef struct Eq_676 {	// size: 3 3
-	byte b0001;	// 1
-} Eq_676;
-
-typedef struct Eq_678 {	// size: 3 3
+typedef struct Eq_677 {	// size: 3 3
 	byte b0000;	// 0
-} Eq_678;
+	byte b0001;	// 1
+} Eq_677;
 
 typedef struct Eq_679 {	// size: 3 3
-	byte b0000;	// 0
+	byte b0001;	// 1
 } Eq_679;
 
-typedef struct Eq_680 {	// size: 3 3
+typedef struct Eq_683 {	// size: 3 3
 	byte b0000;	// 0
-} Eq_680;
+} Eq_683;
+
+typedef struct Eq_685 {	// size: 3 3
+	byte b0000;	// 0
+} Eq_685;
+
+typedef struct Eq_687 {	// size: 3 3
+	byte b0000;	// 0
+} Eq_687;
 

@@ -108,7 +108,7 @@ T_24: (in 4<i32> @ 0000C054 : int32)
 T_25: (in a0 + 4<i32> @ 0000C054 : word32)
   Class: Eq_25
   DataType: (ptr32 (arr byte))
-  OrigDataType: (ptr32 (struct (0 (arr T_74) a0000)))
+  OrigDataType: (ptr32 (struct (0 T_75 t0000)))
 T_26: (in a0 + 4<i32> + a4_56 @ 0000C054 : word32)
   Class: Eq_26
   DataType: (ptr32 byte)

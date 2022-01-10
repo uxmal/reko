@@ -13,8 +13,8 @@ Eq_1: (struct "Globals")
 	globals_t (in globals : (ptr32 (struct "Globals")))
 Eq_13: (struct 0008 (0 word32 dw0000) (4 word32 dw0004))
 	T_13
-Eq_14: (struct 0008 (4 word32 dw0004))
-	T_14
+Eq_15: (struct 0008 (4 word32 dw0004))
+	T_15
 // Type Variables ////////////
 globals_t: (in globals : (ptr32 (struct "Globals")))
   Class: Eq_1
@@ -23,7 +23,7 @@ globals_t: (in globals : (ptr32 (struct "Globals")))
 T_2: (in p : word32)
   Class: Eq_2
   DataType: (ptr32 (arr Eq_13))
-  OrigDataType: (ptr32 (struct (0 (arr T_13) a0000) (4 (arr T_14) a0004)))
+  OrigDataType: (ptr32 (struct (0 T_14 t0000) (4 T_16 t0004)))
 T_3: (in i : word32)
   Class: Eq_3
   DataType: ui32
@@ -50,8 +50,8 @@ T_8: (in 4<i32> : int32)
   OrigDataType: int32
 T_9: (in p + 4<i32> : ptr32)
   Class: Eq_9
-  DataType: (ptr32 Eq_14)
-  OrigDataType: (ptr32 T_14)
+  DataType: (ptr32 (arr Eq_15))
+  OrigDataType: (ptr32 T_16)
 T_10: (in 8<32> : word32)
   Class: Eq_10
   DataType: ui32
@@ -70,5 +70,13 @@ T_13:
   OrigDataType: (struct 0008 (0 T_6 t0000))
 T_14:
   Class: Eq_14
-  DataType: Eq_14
+  DataType: (arr Eq_13)
+  OrigDataType: (arr T_13)
+T_15:
+  Class: Eq_15
+  DataType: Eq_15
   OrigDataType: (struct 0008 (0 T_12 t0000))
+T_16:
+  Class: Eq_16
+  DataType: (arr Eq_15)
+  OrigDataType: (arr T_15)

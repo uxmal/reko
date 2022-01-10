@@ -14,11 +14,11 @@ Eq_1: (ptr32 (struct "Globals"))
 	globals_t (in globals : (ptr32 (struct "Globals")))
 Eq_2: (ptr16 (segment))
 	T_2 (in 0x2700<16> : selector)
-Eq_3: (ptr16 (segment (2040 (arr T_11) a2040)))
+Eq_3: (ptr16 (segment (2040 T_12 t2040)))
 	T_3 (in ds : selector)
-Eq_4: (memptr T_3 T_11)
+Eq_4: (memptr T_3 T_12)
 	T_4 (in 0x2040<16> : word16)
-Eq_5: (ptr32 T_11)
+Eq_5: (ptr32 T_12)
 	T_5 (in SEQ(ds, 0x2040<16>) : ptr32)
 Eq_6: ui16
 	T_6 (in di : word16)
@@ -32,6 +32,8 @@ Eq_10: (ptr32 code)
 	T_10 (in SEQ(0x2700<16>, SEQ(ds, 0x2040<16>)[di * 2<16>]) : ptr32)
 Eq_11: (struct 0002 (0 T_9 t0000))
 	T_11
+Eq_12: (arr T_11)
+	T_12
 // Type Variables ////////////
 globals_t: (in globals : (ptr32 (struct "Globals")))
   Class: Eq_1
@@ -43,16 +45,16 @@ T_2: (in 0x2700<16> : selector)
   OrigDataType: (ptr16 (segment))
 T_3: (in ds : selector)
   Class: Eq_3
-  DataType: (ptr16 (segment (2040 (arr T_11) a2040)))
-  OrigDataType: (ptr16 (segment (2040 (arr T_11) a2040)))
+  DataType: (ptr16 (segment (2040 T_12 t2040)))
+  OrigDataType: (ptr16 (segment (2040 T_12 t2040)))
 T_4: (in 0x2040<16> : word16)
   Class: Eq_4
-  DataType: (memptr T_3 T_11)
-  OrigDataType: (memptr T_3 T_11)
+  DataType: (memptr T_3 T_12)
+  OrigDataType: (memptr T_3 T_12)
 T_5: (in SEQ(ds, 0x2040<16>) : ptr32)
   Class: Eq_5
-  DataType: (ptr32 T_11)
-  OrigDataType: (ptr32 T_11)
+  DataType: (ptr32 T_12)
+  OrigDataType: (ptr32 T_12)
 T_6: (in di : word16)
   Class: Eq_6
   DataType: ui16
@@ -77,3 +79,7 @@ T_11:
   Class: Eq_11
   DataType: (struct 0002 (0 T_9 t0000))
   OrigDataType: (struct 0002 (0 T_9 t0000))
+T_12:
+  Class: Eq_12
+  DataType: (arr T_11)
+  OrigDataType: (arr T_11)

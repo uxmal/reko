@@ -29,7 +29,7 @@ globals_t: (in globals : (ptr32 (struct "Globals")))
 T_2: (in dwArg04 : (arr int16))
   Class: Eq_2
   DataType: (ptr32 (arr int16))
-  OrigDataType: (ptr32 (struct (0 (arr T_10) a0000)))
+  OrigDataType: (ptr32 (struct (0 T_11 t0000)))
 T_3: (in dwArg08 : ui32)
   Class: Eq_3
   DataType: ui32
@@ -62,3 +62,7 @@ T_10:
   Class: Eq_10
   DataType: int16
   OrigDataType: (struct 0002 (0 T_6 t0000))
+T_11:
+  Class: Eq_11
+  DataType: (arr int16)
+  OrigDataType: (arr T_10)

@@ -10712,6 +10712,10 @@ T_2550:
   Class: Eq_2550
   DataType: byte
   OrigDataType: (struct 0001 (0 T_2452 t0000))
+T_2551:
+  Class: Eq_2551
+  DataType: (arr byte)
+  OrigDataType: (arr T_2550)
 */
 typedef struct Globals {
 	byte b0000;	// 0

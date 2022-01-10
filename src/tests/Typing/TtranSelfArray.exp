@@ -25,7 +25,7 @@ globals_t: (in globals : (ptr32 (struct "Globals")))
 T_2: (in a4 : word32)
   Class: Eq_2
   DataType: (ptr32 Eq_2)
-  OrigDataType: (ptr32 (struct (0 (arr T_7) a0000)))
+  OrigDataType: (ptr32 (struct (0 T_8 t0000)))
 T_3: (in d0 : word32)
   Class: Eq_3
   DataType: ui32
@@ -46,3 +46,7 @@ T_7:
   Class: Eq_7
   DataType: Eq_7
   OrigDataType: (struct 0004 (0 T_6 t0000))
+T_8:
+  Class: Eq_8
+  DataType: (arr Eq_7)
+  OrigDataType: (arr T_7)

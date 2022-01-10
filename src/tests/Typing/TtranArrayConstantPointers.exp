@@ -25,7 +25,7 @@ T_2: (in 0x123456<32> : word32)
 T_3: (in a : word32)
   Class: Eq_2
   DataType: (ptr32 (arr Eq_9))
-  OrigDataType: (ptr32 (struct (0 (arr T_9) a0000)))
+  OrigDataType: (ptr32 (struct (0 T_10 t0000)))
 T_4: (in 42<i32> : int32)
   Class: Eq_4
   DataType: int32
@@ -50,3 +50,7 @@ T_9:
   Class: Eq_9
   DataType: Eq_9
   OrigDataType: (struct 0008 (0 T_8 t0000))
+T_10:
+  Class: Eq_10
+  DataType: (arr Eq_9)
+  OrigDataType: (arr T_9)

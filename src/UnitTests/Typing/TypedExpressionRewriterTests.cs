@@ -1401,5 +1401,55 @@ test_exit:
                 m.MStore(ptr, m.Convert(n, PrimitiveType.Int16, PrimitiveType.Real32));
             }, sExp);
         }
+
+        [Test]
+        public void TerDerivedArray()
+        {
+            var sExp =
+            #region Expected
+@"// Before ///////
+// test
+// Return size: 0
+define test
+test_entry:
+	// succ:  l1
+l1:
+	Mem0[a5 + -2696<i32> + d3 * 4<i32>:word32] = 0<32>
+	d0_1 = Mem0[a5 + -2696<i32> + d3 * 4<i32>:word32]
+	Mem0[a2 + 8<i32>:word32] = d0_1
+	return
+	// succ:  test_exit
+test_exit:
+
+// After ///////
+// test
+// Return size: 0
+define test
+test_entry:
+	// succ:  l1
+l1:
+	a5->aFFFFF578[d3] = 0<32>
+	d0_1 = a5->aFFFFF578[d3]
+	a2->dw0008 = d0_1
+	return
+	// succ:  test_exit
+test_exit:
+
+";
+            #endregion
+
+            RunStringTest(m =>
+            {
+                Identifier a2 = m.Local(PrimitiveType.Word32, "a2");
+                Identifier a5 = m.Local(PrimitiveType.Word32, "a5");
+                Identifier d0_1 = m.Local(PrimitiveType.Word32, "d0_1");
+                Identifier d3 = m.Local(PrimitiveType.Word32, "d3");
+
+                m.MStore(m.IAdd(m.IAdd(a5, m.Int32(-2696)), m.IMul(d3, m.Int32(4))), m.Word32(0x0));
+                m.Assign(d0_1, m.Mem32(m.IAdd(m.IAdd(a5, m.Int32(-2696)), m.IMul(d3, m.Int32(4)))));
+                m.MStore(m.IAdd(a2, m.Int32(8)), d0_1);
+                m.Return();
+            }, sExp);
+        }
     }
 }

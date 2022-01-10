@@ -416,7 +416,7 @@ T_90: (in rbp_31 >> 3<64> == 0<64> @ 00000000 : bool)
 T_91: (in 0000000000600E10 @ 00400599 : ptr64)
   Class: Eq_91
   DataType: (ptr64 (arr (ptr64 code)))
-  OrigDataType: (ptr64 (struct (0 (arr T_99) a0000)))
+  OrigDataType: (ptr64 (struct (0 T_100 t0000)))
 T_92: (in 8<64> @ 00400599 : word64)
   Class: Eq_92
   DataType: ui64
@@ -449,6 +449,10 @@ T_99:
   Class: Eq_99
   DataType: (ptr64 code)
   OrigDataType: (struct 0008 (0 T_94 t0000))
+T_100:
+  Class: Eq_100
+  DataType: (arr (ptr64 code))
+  OrigDataType: (arr T_99)
 */
 typedef struct Globals {
 	<anonymous> t400416;	// 400416

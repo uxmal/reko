@@ -401,12 +401,18 @@ namespace Reko.Core.Types
             }
 
 			ArrayType? arrA = a as ArrayType;
-			ArrayType? arrB = b as ArrayType;
+			ArrayType? arrB = b.ResolveAs<ArrayType>();
 			if (arrA != null && arrB != null)
 			{
 				return UnifyArrays(arrA, arrB);
 			}
-			if (arrA != null && arrA.ElementType.Size >= b.Size)
+            arrA = a.ResolveAs<ArrayType>();
+            arrB = a as ArrayType;
+            if (arrA != null && arrB != null)
+            {
+                return UnifyArrays(arrA, arrB);
+            }
+            if (arrA != null && arrA.ElementType.Size >= b.Size)
 			{
 				arrA.ElementType = Unify(arrA.ElementType, b)!;
 				return arrA;

@@ -182,9 +182,9 @@ namespace Reko.Typing
                     stride = c.ToInt32();
                 }
             }
-            var tvElement = ArrayField(null, arr, arr.DataType.BitSize, offset, stride, 0, acc.TypeVariable!);
+            var tvArray = ArrayField(null, arr, arr.DataType.BitSize, offset, stride, 0, acc.TypeVariable!);
 
-            MeetDataType(acc.Array, factory.CreatePointer(tvElement, acc.Array.DataType.BitSize));
+            MeetDataType(acc.Array, factory.CreatePointer(tvArray, acc.Array.DataType.BitSize));
             acc.Array.Accept(this, acc.Array.TypeVariable!);
             acc.Index.Accept(this, acc.Index.TypeVariable!);
             return false;
@@ -202,15 +202,26 @@ namespace Reko.Typing
         /// <param name="length"></param>
         /// <param name="tvField"></param>
         /// <returns>A type variable for the array type of the field.</returns>
-        private TypeVariable ArrayField(Expression? expBase, Expression expStruct, int structPtrBitSize, int offset, int elementSize, int length, TypeVariable tvField)
+        private TypeVariable ArrayField(
+            Expression? expBase, 
+            Expression expStruct,
+            int structPtrBitSize, 
+            int offset, 
+            int elementSize, 
+            int length, 
+            TypeVariable tvField)
         {
             var dtElement = factory.CreateStructureType(null, elementSize);
             dtElement.Fields.Add(0, tvField);
             var tvElement = store.CreateTypeVariable(factory);
             tvElement.DataType = dtElement;
             tvElement.OriginalDataType = dtElement;
-            StructField(expBase, expStruct, offset, factory.CreateArrayType(tvElement, length), structPtrBitSize);
-            return tvElement;
+
+            var tvArray = store.CreateTypeVariable(factory);
+            tvArray.DataType = tvArray.OriginalDataType =
+                factory.CreateArrayType(tvElement, length);
+            StructField(expBase, expStruct, offset, tvArray, structPtrBitSize);
+            return tvArray;
         }
 
         /// <summary>
@@ -548,8 +559,8 @@ namespace Reko.Typing
 
                     // Now treat c as an array pointer.
                     var cbElement = tvAccess.DataType.Size;
-                    var tvElement = ArrayField(basePointer, c, c.DataType.BitSize, 0, cbElement, 0, tvAccess);
-                    StructField(basePointer, c, 0, tvElement, eaBitSize);
+                    var tvArray = ArrayField(basePointer, c, c.DataType.BitSize, 0, cbElement, 0, tvAccess);
+                    StructField(basePointer, c, 0, tvArray, eaBitSize);
                     return false;
                 }
                 else if (p is Cast cast && cast.Expression.DataType.BitSize < cast.DataType.BitSize)
@@ -557,8 +568,8 @@ namespace Reko.Typing
                     p.Accept(this, p.TypeVariable!);
 
                     var cbElement = tvAccess.DataType.Size;
-                    var tvElement = ArrayField(basePointer, c, c.DataType.BitSize, 0, cbElement, 0, tvAccess);
-                    StructField(basePointer, c, 0, tvElement, eaBitSize);
+                    var tvArray = ArrayField(basePointer, c, c.DataType.BitSize, 0, cbElement, 0, tvAccess);
+                    StructField(basePointer, c, 0, tvArray, eaBitSize);
                     return false;
                 }
                 else
@@ -619,19 +630,13 @@ namespace Reko.Typing
 
         private void VisitPossibleArrayAccess(Expression? basePointer, TypeVariable tvAccess, Expression left, Expression right, Expression globals, int eaBitSize)
         {
-
             // First do the array index.
             right.Accept(this, right.TypeVariable!);
 
             var cbElement = tvAccess.DataType.Size;
-            var tvElement = ArrayField(basePointer, left, left.DataType.BitSize, 0, cbElement, 0, tvAccess);
-            var dtArray = factory.CreateArrayType(tvElement, 0);
+            var tvArray = ArrayField(basePointer, left, left.DataType.BitSize, 0, cbElement, 0, tvAccess);
 
-            var tvArray = store.CreateTypeVariable(factory);
-            tvArray.DataType = dtArray;
-            tvArray.OriginalDataType = dtArray;
-
-            StructField(basePointer, left, 0, dtArray, eaBitSize);
+            StructField(basePointer, left, 0, tvArray, eaBitSize);
 
             if (!(left is Identifier))
             {

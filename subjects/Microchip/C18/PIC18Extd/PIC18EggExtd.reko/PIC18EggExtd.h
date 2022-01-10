@@ -62,7 +62,7 @@ T_3: (in 000148 @ 00000144 : ptr32)
 T_4: (in Stack @ 00000144 : (arr Eq_214))
   Class: Eq_4
   DataType: (ptr32 (arr Eq_214))
-  OrigDataType: (ptr32 (struct (0 (arr T_214) a0000)))
+  OrigDataType: (ptr32 (struct (0 T_215 t0000)))
 T_5: (in 1<8> @ 00000144 : byte)
   Class: Eq_5
   DataType: byte
@@ -903,6 +903,10 @@ T_214:
   Class: Eq_214
   DataType: Eq_214
   OrigDataType: (struct 0001 (0 T_6 t0000))
+T_215:
+  Class: Eq_215
+  DataType: (arr Eq_214)
+  OrigDataType: (arr T_214)
 */
 typedef struct Globals {
 	byte b0001;	// 1

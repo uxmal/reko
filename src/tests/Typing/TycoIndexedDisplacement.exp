@@ -40,8 +40,8 @@ T_7: (in 0xA<16> : word16)
   OrigDataType: int16
 T_8: (in bx + 0xA<16> : word16)
   Class: Eq_8
-  DataType: (memptr T_2 (struct (0 (arr T_12) a0000)))
-  OrigDataType: (memptr T_2 (struct (0 (arr T_12) a0000)))
+  DataType: (memptr T_2 (struct (0 T_13 t0000)))
+  OrigDataType: (memptr T_2 (struct (0 T_13 t0000)))
 T_9: (in si : int16)
   Class: Eq_9
   DataType: int16

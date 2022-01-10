@@ -63,7 +63,7 @@ Eq_74: (fn (ptr32 Eq_73) (word32, Eq_77, Eq_77, Eq_79, ui32))
 	T_74 (in fn00401980 @ 00401166 : ptr32)
 	T_75 (in signature of fn00401980 @ 00401980 : void)
 	T_601 (in fn00401980 @ 0040154B : ptr32)
-Eq_77: (union "Eq_77" (byte u0) ((ptr32 Eq_1209) u1))
+Eq_77: (union "Eq_77" (byte u0) ((ptr32 Eq_1210) u1))
 	T_77 (in esi @ 00401166 : Eq_77)
 	T_78 (in edi @ 00401166 : Eq_77)
 	T_81 (in esi @ 00401166 : word32)
@@ -428,8 +428,8 @@ Eq_1037: (fn void (word32, word32, (ptr32 word32), (ptr32 word32), (ptr32 word32
 Eq_1122: (fn word64 (word32))
 	T_1122 (in __xgetbv @ 00401B5C : ptr32)
 	T_1123 (in signature of __xgetbv @ 00000000 : void)
-Eq_1209: (struct "Eq_1209" (0 Eq_77 t0000))
-	T_1209
+Eq_1210: (struct "Eq_1210" (0 Eq_77 t0000))
+	T_1210
 // Type Variables ////////////
 globals_t: (in globals @ 00000000 : (ptr32 (struct "Globals")))
   Class: Eq_1
@@ -5265,7 +5265,11 @@ T_1208:
   OrigDataType: (struct 0004 (0 T_959 t0000))
 T_1209:
   Class: Eq_1209
-  DataType: Eq_1209
+  DataType: (arr word32 1)
+  OrigDataType: (arr T_1208 1)
+T_1210:
+  Class: Eq_1210
+  DataType: Eq_1210
   OrigDataType: 
 */
 typedef Eq_1struct _EXCEPTION_POINTERS;
@@ -5435,7 +5439,7 @@ typedef Eq_73 * (Eq_74)(word32, Eq_77, Eq_77, Eq_79, ui32);
 
 typedef union Eq_77 {
 	byte u0;
-	struct Eq_1209 * u1;
+	struct Eq_1210 * u1;
 } Eq_77;
 
 typedef union Eq_79 {
@@ -5686,7 +5690,7 @@ typedef void (Eq_1037)(word32, word32, word32 *, word32 *, word32 *, word32 *);
 
 typedef word64 (Eq_1122)(word32);
 
-typedef struct Eq_1209 {
+typedef struct Eq_1210 {
 	Eq_77 t0000;	// 0
-} Eq_1209;
+} Eq_1210;
 
