@@ -24,12 +24,8 @@ using Reko.Core.Machine;
 using Reko.Core.Memory;
 using Reko.Core.Rtl;
 using Reko.Core.Types;
-using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Reko.ImageLoaders.WebAssembly
 {
@@ -38,10 +34,9 @@ namespace Reko.ImageLoaders.WebAssembly
         private readonly WasmArchitecture arch;
         private readonly IEnumerator<WasmInstruction> dasm;
         private readonly IStorageBinder binder;
-#nullable disable
+        private readonly List<RtlInstruction> instrs;
+        private readonly RtlEmitter m;
         private WasmInstruction instr;
-        private RtlEmitter m;
-#nullable enable
         private InstrClass iclass;
 
         public WasmRewriter(WasmArchitecture arch, EndianImageReader rdr, IStorageBinder binder)
@@ -49,6 +44,9 @@ namespace Reko.ImageLoaders.WebAssembly
             this.arch = arch;
             this.dasm = new WasmDisassembler(arch, rdr).GetEnumerator();
             this.binder = binder;
+            this.instr = default!;
+            this.instrs = new List<RtlInstruction>();
+            m = new RtlEmitter(instrs);
         }
 
         public IEnumerator<RtlInstructionCluster> GetEnumerator()
@@ -57,25 +55,18 @@ namespace Reko.ImageLoaders.WebAssembly
             {
                 this.instr = dasm.Current;
                 this.iclass = InstrClass.Linear;
-                var instrs = new List<RtlInstruction>();
-                m = new RtlEmitter(instrs);
                 switch (instr.Mnemonic)
                 {
                 case Mnemonic.i32_const: Const(PrimitiveType.Word32); break;
                 case Mnemonic.f32_const: Const(PrimitiveType.Real32); break;
                 default: m.Invalid(); break;
                 }
-                yield return new RtlInstructionCluster(instr.Address, instr.Length, instrs.ToArray())
-                {
-                    Class = this.iclass
-                };
+                yield return m.MakeCluster(instr.Address, instr.Length, this.iclass);
+                instrs.Clear();
             }
         }
 
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return GetEnumerator();
-        }
+        IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
         private void Push(Expression exp)
         {

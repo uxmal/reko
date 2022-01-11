@@ -21,19 +21,11 @@
 // http://hitmen.c02.at/files/yapspd/psp_doc/chap26.html - PSP ELF
 
 using Reko.Core;
-using Reko.Core.Configuration;
 using Reko.Core.Diagnostics;
 using Reko.Core.Loading;
 using Reko.Core.Memory;
-using Reko.Core.Services;
-using Reko.Core.Types;
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.IO;
-using System.Linq;
-using System.Text;
 
 namespace Reko.ImageLoaders.Elf
 {

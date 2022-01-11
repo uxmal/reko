@@ -19,16 +19,12 @@
 #endregion
 
 using Reko.Core;
-using Reko.Core.Machine;
 using Reko.Core.Rtl;
+using Reko.Core.Types;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Text;
-using Reko.Core.Lib;
-using Reko.Core.Types;
 
 namespace Reko.Scanning
 {

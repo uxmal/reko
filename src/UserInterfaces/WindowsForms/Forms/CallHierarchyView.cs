@@ -28,7 +28,6 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Reko.Gui;
-using System.Collections;
 using Reko.UserInterfaces.WindowsForms.Controls;
 using Reko.Gui.Controls;
 using Reko.Gui.Forms;

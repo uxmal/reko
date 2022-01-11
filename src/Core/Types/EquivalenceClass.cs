@@ -31,7 +31,8 @@ namespace Reko.Core.Types
 	/// </summary>
 	public class EquivalenceClass : DataType
 	{
-		private TypeVariableSet types = new TypeVariableSet();
+        private readonly SortedSet<TypeVariable> types = new SortedSet<TypeVariable>(
+            Comparer<TypeVariable>.Create((a, b) => a.Number - b.Number));
 
 		public EquivalenceClass(TypeVariable rep) : this(rep, null)
 		{
@@ -140,7 +141,7 @@ namespace Reko.Core.Types
         /// it ruins the efficiency of the disjoint-set data structure. Consider moving this
         /// to TypeStore.
         /// </remarks>
-		public TypeVariableSet ClassMembers
+		public ISet<TypeVariable> ClassMembers
 		{
 			get { return types; }
 		}

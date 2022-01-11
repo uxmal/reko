@@ -18,16 +18,13 @@
  */
 #endregion
 
+using NUnit.Framework;
 using Reko.Core;
 using Reko.Core.Expressions;
-using Reko.Core.Types;
-using NUnit.Framework;
-using System;
-using System.Collections;
 
 namespace Reko.UnitTests.Core
 {
-	[TestFixture]
+    [TestFixture]
 	public class RelocationDictionaryTests
 	{
 		[Test]

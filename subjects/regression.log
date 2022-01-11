@@ -260,7 +260,7 @@ Warning: Checksum error in line 8.
    at Reko.Core.Output.GlobalDataWriter.VisitUnion(UnionType ut) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 430
    at Reko.Core.Types.UnionType.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\UnionType.cs:line 81
    at Reko.Core.Output.GlobalDataWriter.VisitEquivalenceClass(EquivalenceClass eq) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 245
-   at Reko.Core.Types.EquivalenceClass.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\EquivalenceClass.cs:line 54
+   at Reko.Core.Types.EquivalenceClass.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\EquivalenceClass.cs:line 55
    at Reko.Core.Output.GlobalDataWriter.VisitStructure(StructureType str) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 381
    at Reko.Core.Types.StructureType.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\StructureType.cs:line 59
    at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(Address address, DataType dataType, String name) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 146
@@ -273,7 +273,7 @@ Warning: Checksum error in line 8.
    at Reko.Core.Output.GlobalDataWriter.VisitUnion(UnionType ut) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 430
    at Reko.Core.Types.UnionType.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\UnionType.cs:line 81
    at Reko.Core.Output.GlobalDataWriter.VisitEquivalenceClass(EquivalenceClass eq) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 245
-   at Reko.Core.Types.EquivalenceClass.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\EquivalenceClass.cs:line 54
+   at Reko.Core.Types.EquivalenceClass.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\EquivalenceClass.cs:line 55
    at Reko.Core.Output.GlobalDataWriter.VisitStructure(StructureType str) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 381
    at Reko.Core.Types.StructureType.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\StructureType.cs:line 59
    at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(Address address, DataType dataType, String name) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 146
@@ -286,7 +286,7 @@ Warning: Checksum error in line 8.
    at Reko.Core.Output.GlobalDataWriter.VisitUnion(UnionType ut) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 430
    at Reko.Core.Types.UnionType.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\UnionType.cs:line 81
    at Reko.Core.Output.GlobalDataWriter.VisitEquivalenceClass(EquivalenceClass eq) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 245
-   at Reko.Core.Types.EquivalenceClass.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\EquivalenceClass.cs:line 54
+   at Reko.Core.Types.EquivalenceClass.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\EquivalenceClass.cs:line 55
    at Reko.Core.Output.GlobalDataWriter.VisitStructure(StructureType str) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 381
    at Reko.Core.Types.StructureType.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\StructureType.cs:line 59
    at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(Address address, DataType dataType, String name) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 146
@@ -329,7 +329,7 @@ Warning: Checksum error in line 8.
    at Reko.Core.Output.GlobalDataWriter.VisitUnion(UnionType ut) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 430
    at Reko.Core.Types.UnionType.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\UnionType.cs:line 81
    at Reko.Core.Output.GlobalDataWriter.VisitEquivalenceClass(EquivalenceClass eq) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 245
-   at Reko.Core.Types.EquivalenceClass.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\EquivalenceClass.cs:line 54
+   at Reko.Core.Types.EquivalenceClass.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\EquivalenceClass.cs:line 55
    at Reko.Core.Output.GlobalDataWriter.VisitStructure(StructureType str) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 381
    at Reko.Core.Types.StructureType.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\StructureType.cs:line 59
    at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(Address address, DataType dataType, String name) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 146
@@ -363,7 +363,7 @@ Warning: Checksum error in line 8.
    at Reko.Core.Output.GlobalDataWriter.VisitUnion(UnionType ut) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 430
    at Reko.Core.Types.UnionType.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\UnionType.cs:line 81
    at Reko.Core.Output.GlobalDataWriter.VisitEquivalenceClass(EquivalenceClass eq) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 245
-   at Reko.Core.Types.EquivalenceClass.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\EquivalenceClass.cs:line 54
+   at Reko.Core.Types.EquivalenceClass.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\EquivalenceClass.cs:line 55
    at Reko.Core.Output.GlobalDataWriter.VisitStructure(StructureType str) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 381
    at Reko.Core.Types.StructureType.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\StructureType.cs:line 59
    at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(Address address, DataType dataType, String name) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 146
@@ -376,7 +376,7 @@ Warning: Checksum error in line 8.
    at Reko.Core.Output.GlobalDataWriter.VisitUnion(UnionType ut) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 430
    at Reko.Core.Types.UnionType.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\UnionType.cs:line 81
    at Reko.Core.Output.GlobalDataWriter.VisitEquivalenceClass(EquivalenceClass eq) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 245
-   at Reko.Core.Types.EquivalenceClass.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\EquivalenceClass.cs:line 54
+   at Reko.Core.Types.EquivalenceClass.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\EquivalenceClass.cs:line 55
    at Reko.Core.Output.GlobalDataWriter.VisitStructure(StructureType str) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 381
    at Reko.Core.Types.StructureType.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\StructureType.cs:line 59
    at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(Address address, DataType dataType, String name) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 146
@@ -389,7 +389,7 @@ Warning: Checksum error in line 8.
    at Reko.Core.Output.GlobalDataWriter.VisitUnion(UnionType ut) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 430
    at Reko.Core.Types.UnionType.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\UnionType.cs:line 81
    at Reko.Core.Output.GlobalDataWriter.VisitEquivalenceClass(EquivalenceClass eq) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 245
-   at Reko.Core.Types.EquivalenceClass.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\EquivalenceClass.cs:line 54
+   at Reko.Core.Types.EquivalenceClass.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\EquivalenceClass.cs:line 55
    at Reko.Core.Output.GlobalDataWriter.VisitStructure(StructureType str) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 381
    at Reko.Core.Types.StructureType.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\StructureType.cs:line 59
    at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(Address address, DataType dataType, String name) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 146
@@ -432,7 +432,7 @@ Warning: Checksum error in line 8.
    at Reko.Core.Output.GlobalDataWriter.VisitUnion(UnionType ut) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 430
    at Reko.Core.Types.UnionType.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\UnionType.cs:line 81
    at Reko.Core.Output.GlobalDataWriter.VisitEquivalenceClass(EquivalenceClass eq) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 245
-   at Reko.Core.Types.EquivalenceClass.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\EquivalenceClass.cs:line 54
+   at Reko.Core.Types.EquivalenceClass.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\EquivalenceClass.cs:line 55
    at Reko.Core.Output.GlobalDataWriter.VisitStructure(StructureType str) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 381
    at Reko.Core.Types.StructureType.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\StructureType.cs:line 59
    at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(Address address, DataType dataType, String name) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 146
@@ -706,20 +706,20 @@ fn0000EE14: error: An internal error occurred while building the expressions of 
     The given key 'l0000EE2C' was not present in the dictionary.
        at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
    at Reko.Core.Lib.DominatorGraph`1.BuildDominanceFrontiers(DirectedGraph`1 graph, Dictionary`2 idoms) in d:\dev\uxmal\reko\master\src\Core\Lib\DominatorGraph.cs:line 192
-   at Reko.Core.Lib.DominatorGraph`1..ctor(DirectedGraph`1 graph, T entryNode) in d:\dev\uxmal\reko\master\src\Core\Lib\DominatorGraph.cs:line 45
+   at Reko.Core.Lib.DominatorGraph`1..ctor(DirectedGraph`1 graph, T entryNode) in d:\dev\uxmal\reko\master\src\Core\Lib\DominatorGraph.cs:line 46
    at Reko.Analysis.DataFlowAnalysis.BuildExpressionTrees() in d:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 398
 fn0000CE88: error: An internal error occurred while building the expressions of fn0000CE88
     The given key 'l0000CEAC' was not present in the dictionary.
        at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
    at Reko.Core.Lib.DominatorGraph`1.BuildDominanceFrontiers(DirectedGraph`1 graph, Dictionary`2 idoms) in d:\dev\uxmal\reko\master\src\Core\Lib\DominatorGraph.cs:line 192
-   at Reko.Core.Lib.DominatorGraph`1..ctor(DirectedGraph`1 graph, T entryNode) in d:\dev\uxmal\reko\master\src\Core\Lib\DominatorGraph.cs:line 45
+   at Reko.Core.Lib.DominatorGraph`1..ctor(DirectedGraph`1 graph, T entryNode) in d:\dev\uxmal\reko\master\src\Core\Lib\DominatorGraph.cs:line 46
    at Reko.Analysis.DataFlowAnalysis.BuildExpressionTrees() in d:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 398
 l0000CEAC: warning: Phi functions will be ignored by type analysis. This may be caused by a failure in a previous stage of the decompilation.
 fn0000CE88: error: An error occurred while rewriting procedure to high-level language.
     The given key 'l0000CEAC' was not present in the dictionary.
        at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
    at Reko.Core.Lib.DominatorGraph`1.BuildDominanceFrontiers(DirectedGraph`1 graph, Dictionary`2 idoms) in d:\dev\uxmal\reko\master\src\Core\Lib\DominatorGraph.cs:line 192
-   at Reko.Core.Lib.DominatorGraph`1..ctor(DirectedGraph`1 graph, T entryNode) in d:\dev\uxmal\reko\master\src\Core\Lib\DominatorGraph.cs:line 45
+   at Reko.Core.Lib.DominatorGraph`1..ctor(DirectedGraph`1 graph, T entryNode) in d:\dev\uxmal\reko\master\src\Core\Lib\DominatorGraph.cs:line 46
    at Reko.Structure.StructureAnalysis.Execute() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 144
    at Reko.Structure.StructureAnalysis.Structure() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 81
    at Reko.Decompiler.StructureProgram() in d:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 535
@@ -727,7 +727,7 @@ fn0000EE14: error: An error occurred while rewriting procedure to high-level lan
     The given key 'l0000EE2C' was not present in the dictionary.
        at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
    at Reko.Core.Lib.DominatorGraph`1.BuildDominanceFrontiers(DirectedGraph`1 graph, Dictionary`2 idoms) in d:\dev\uxmal\reko\master\src\Core\Lib\DominatorGraph.cs:line 192
-   at Reko.Core.Lib.DominatorGraph`1..ctor(DirectedGraph`1 graph, T entryNode) in d:\dev\uxmal\reko\master\src\Core\Lib\DominatorGraph.cs:line 45
+   at Reko.Core.Lib.DominatorGraph`1..ctor(DirectedGraph`1 graph, T entryNode) in d:\dev\uxmal\reko\master\src\Core\Lib\DominatorGraph.cs:line 46
    at Reko.Structure.StructureAnalysis.Execute() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 144
    at Reko.Structure.StructureAnalysis.Structure() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 81
    at Reko.Decompiler.StructureProgram() in d:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 535
@@ -1158,7 +1158,9 @@ Evaluating d:\dev\uxmal\reko\master\subjects\scripting\segmented.py
     Specified argument was out of the range of valid values. (Parameter 'bitSize')
        at Reko.Core.Types.PrimitiveType.CreateWord(Int32 bitSize) in d:\dev\uxmal\reko\master\src\Core\Types\PrimitiveType.cs:line 159
    at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in d:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 130
+   at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 59
    at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in d:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 97
+   at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 59
    at Reko.Typing.TypeCollector.VisitDeclaration(Declaration decl) in d:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 226
    at Reko.Core.Code.Declaration.Accept(InstructionVisitor v) in d:\dev\uxmal\reko\master\src\Core\Code\Declaration.cs:line 49
    at Reko.Typing.TypeCollector.CollectTypes() in d:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 75
@@ -1268,11 +1270,11 @@ test.exe: warning: Win32 MIPS main procedure finder not supported.
    at Reko.Core.Output.GlobalDataWriter.VisitUnion(UnionType ut) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 430
    at Reko.Core.Types.UnionType.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\UnionType.cs:line 81
    at Reko.Core.Output.GlobalDataWriter.VisitEquivalenceClass(EquivalenceClass eq) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 245
-   at Reko.Core.Types.EquivalenceClass.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\EquivalenceClass.cs:line 54
+   at Reko.Core.Types.EquivalenceClass.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\EquivalenceClass.cs:line 55
    at Reko.Core.Output.GlobalDataWriter.VisitStructure(StructureType str) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 381
    at Reko.Core.Types.StructureType.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\StructureType.cs:line 59
    at Reko.Core.Output.GlobalDataWriter.VisitEquivalenceClass(EquivalenceClass eq) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 245
-   at Reko.Core.Types.EquivalenceClass.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\EquivalenceClass.cs:line 54
+   at Reko.Core.Types.EquivalenceClass.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\EquivalenceClass.cs:line 55
    at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(Address address, DataType dataType, String name) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 146
 000A: error: Failed to write global variable g_t000A.
     Reading data type byte not implemented yet.
@@ -1283,11 +1285,11 @@ test.exe: warning: Win32 MIPS main procedure finder not supported.
    at Reko.Core.Output.GlobalDataWriter.VisitUnion(UnionType ut) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 430
    at Reko.Core.Types.UnionType.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\UnionType.cs:line 81
    at Reko.Core.Output.GlobalDataWriter.VisitEquivalenceClass(EquivalenceClass eq) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 245
-   at Reko.Core.Types.EquivalenceClass.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\EquivalenceClass.cs:line 54
+   at Reko.Core.Types.EquivalenceClass.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\EquivalenceClass.cs:line 55
    at Reko.Core.Output.GlobalDataWriter.VisitStructure(StructureType str) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 381
    at Reko.Core.Types.StructureType.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\StructureType.cs:line 59
    at Reko.Core.Output.GlobalDataWriter.VisitEquivalenceClass(EquivalenceClass eq) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 245
-   at Reko.Core.Types.EquivalenceClass.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\EquivalenceClass.cs:line 54
+   at Reko.Core.Types.EquivalenceClass.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\EquivalenceClass.cs:line 55
    at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(Address address, DataType dataType, String name) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 146
 05AB: error: Failed to write global variable g_r05AB.
     Reading data type real48 not implemented yet.
@@ -1326,7 +1328,7 @@ test.exe: warning: Win32 MIPS main procedure finder not supported.
    at Reko.Core.Output.GlobalDataWriter.VisitUnion(UnionType ut) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 430
    at Reko.Core.Types.UnionType.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\UnionType.cs:line 81
    at Reko.Core.Output.GlobalDataWriter.VisitEquivalenceClass(EquivalenceClass eq) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 245
-   at Reko.Core.Types.EquivalenceClass.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\EquivalenceClass.cs:line 54
+   at Reko.Core.Types.EquivalenceClass.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\EquivalenceClass.cs:line 55
    at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(Address address, DataType dataType, String name) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 146
 060D: error: Failed to write global variable g_t060D.
     Reading data type int48 not implemented yet.
@@ -1337,7 +1339,7 @@ test.exe: warning: Win32 MIPS main procedure finder not supported.
    at Reko.Core.Output.GlobalDataWriter.VisitUnion(UnionType ut) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 430
    at Reko.Core.Types.UnionType.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\UnionType.cs:line 81
    at Reko.Core.Output.GlobalDataWriter.VisitEquivalenceClass(EquivalenceClass eq) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 245
-   at Reko.Core.Types.EquivalenceClass.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\EquivalenceClass.cs:line 54
+   at Reko.Core.Types.EquivalenceClass.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\EquivalenceClass.cs:line 55
    at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(Address address, DataType dataType, String name) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 146
 0610: error: Failed to write global variable g_r0610.
     Reading data type real48 not implemented yet.
@@ -1355,7 +1357,7 @@ test.exe: warning: Win32 MIPS main procedure finder not supported.
    at Reko.Core.Output.GlobalDataWriter.VisitUnion(UnionType ut) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 430
    at Reko.Core.Types.UnionType.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\UnionType.cs:line 81
    at Reko.Core.Output.GlobalDataWriter.VisitEquivalenceClass(EquivalenceClass eq) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 245
-   at Reko.Core.Types.EquivalenceClass.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\EquivalenceClass.cs:line 54
+   at Reko.Core.Types.EquivalenceClass.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\EquivalenceClass.cs:line 55
    at Reko.Core.Output.GlobalDataWriter.VisitStructure(StructureType str) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 381
    at Reko.Core.Types.StructureType.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\StructureType.cs:line 59
    at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(Address address, DataType dataType, String name) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 146
@@ -1431,7 +1433,7 @@ test.exe: warning: Win32 MIPS main procedure finder not supported.
    at Reko.Core.Output.GlobalDataWriter.VisitUnion(UnionType ut) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 430
    at Reko.Core.Types.UnionType.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\UnionType.cs:line 81
    at Reko.Core.Output.GlobalDataWriter.VisitEquivalenceClass(EquivalenceClass eq) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 245
-   at Reko.Core.Types.EquivalenceClass.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\EquivalenceClass.cs:line 54
+   at Reko.Core.Types.EquivalenceClass.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\EquivalenceClass.cs:line 55
    at Reko.Core.Output.GlobalDataWriter.VisitStructure(StructureType str) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 381
    at Reko.Core.Types.StructureType.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\StructureType.cs:line 59
    at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(Address address, DataType dataType, String name) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 146
@@ -1486,7 +1488,7 @@ test.exe: warning: Win32 MIPS main procedure finder not supported.
    at Reko.Core.Output.GlobalDataWriter.VisitUnion(UnionType ut) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 430
    at Reko.Core.Types.UnionType.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\UnionType.cs:line 81
    at Reko.Core.Output.GlobalDataWriter.VisitEquivalenceClass(EquivalenceClass eq) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 245
-   at Reko.Core.Types.EquivalenceClass.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\EquivalenceClass.cs:line 54
+   at Reko.Core.Types.EquivalenceClass.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\EquivalenceClass.cs:line 55
    at Reko.Core.Output.GlobalDataWriter.VisitStructure(StructureType str) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 381
    at Reko.Core.Types.StructureType.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\StructureType.cs:line 59
    at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(Address address, DataType dataType, String name) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 146
@@ -1499,11 +1501,11 @@ test.exe: warning: Win32 MIPS main procedure finder not supported.
    at Reko.Core.Output.GlobalDataWriter.VisitUnion(UnionType ut) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 430
    at Reko.Core.Types.UnionType.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\UnionType.cs:line 81
    at Reko.Core.Output.GlobalDataWriter.VisitEquivalenceClass(EquivalenceClass eq) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 245
-   at Reko.Core.Types.EquivalenceClass.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\EquivalenceClass.cs:line 54
+   at Reko.Core.Types.EquivalenceClass.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\EquivalenceClass.cs:line 55
    at Reko.Core.Output.GlobalDataWriter.VisitStructure(StructureType str) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 381
    at Reko.Core.Types.StructureType.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\StructureType.cs:line 59
    at Reko.Core.Output.GlobalDataWriter.VisitEquivalenceClass(EquivalenceClass eq) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 245
-   at Reko.Core.Types.EquivalenceClass.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\EquivalenceClass.cs:line 54
+   at Reko.Core.Types.EquivalenceClass.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\EquivalenceClass.cs:line 55
    at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(Address address, DataType dataType, String name) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 146
 000A: error: Failed to write global variable g_t000A.
     Reading data type byte not implemented yet.
@@ -1514,11 +1516,11 @@ test.exe: warning: Win32 MIPS main procedure finder not supported.
    at Reko.Core.Output.GlobalDataWriter.VisitUnion(UnionType ut) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 430
    at Reko.Core.Types.UnionType.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\UnionType.cs:line 81
    at Reko.Core.Output.GlobalDataWriter.VisitEquivalenceClass(EquivalenceClass eq) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 245
-   at Reko.Core.Types.EquivalenceClass.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\EquivalenceClass.cs:line 54
+   at Reko.Core.Types.EquivalenceClass.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\EquivalenceClass.cs:line 55
    at Reko.Core.Output.GlobalDataWriter.VisitStructure(StructureType str) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 381
    at Reko.Core.Types.StructureType.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\StructureType.cs:line 59
    at Reko.Core.Output.GlobalDataWriter.VisitEquivalenceClass(EquivalenceClass eq) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 245
-   at Reko.Core.Types.EquivalenceClass.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\EquivalenceClass.cs:line 54
+   at Reko.Core.Types.EquivalenceClass.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\EquivalenceClass.cs:line 55
    at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(Address address, DataType dataType, String name) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 146
 05AB: error: Failed to write global variable g_r05AB.
     Reading data type real48 not implemented yet.
@@ -1557,7 +1559,7 @@ test.exe: warning: Win32 MIPS main procedure finder not supported.
    at Reko.Core.Output.GlobalDataWriter.VisitUnion(UnionType ut) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 430
    at Reko.Core.Types.UnionType.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\UnionType.cs:line 81
    at Reko.Core.Output.GlobalDataWriter.VisitEquivalenceClass(EquivalenceClass eq) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 245
-   at Reko.Core.Types.EquivalenceClass.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\EquivalenceClass.cs:line 54
+   at Reko.Core.Types.EquivalenceClass.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\EquivalenceClass.cs:line 55
    at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(Address address, DataType dataType, String name) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 146
 060D: error: Failed to write global variable g_t060D.
     Reading data type int48 not implemented yet.
@@ -1568,7 +1570,7 @@ test.exe: warning: Win32 MIPS main procedure finder not supported.
    at Reko.Core.Output.GlobalDataWriter.VisitUnion(UnionType ut) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 430
    at Reko.Core.Types.UnionType.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\UnionType.cs:line 81
    at Reko.Core.Output.GlobalDataWriter.VisitEquivalenceClass(EquivalenceClass eq) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 245
-   at Reko.Core.Types.EquivalenceClass.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\EquivalenceClass.cs:line 54
+   at Reko.Core.Types.EquivalenceClass.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\EquivalenceClass.cs:line 55
    at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(Address address, DataType dataType, String name) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 146
 0610: error: Failed to write global variable g_r0610.
     Reading data type real48 not implemented yet.
@@ -1586,7 +1588,7 @@ test.exe: warning: Win32 MIPS main procedure finder not supported.
    at Reko.Core.Output.GlobalDataWriter.VisitUnion(UnionType ut) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 430
    at Reko.Core.Types.UnionType.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\UnionType.cs:line 81
    at Reko.Core.Output.GlobalDataWriter.VisitEquivalenceClass(EquivalenceClass eq) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 245
-   at Reko.Core.Types.EquivalenceClass.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\EquivalenceClass.cs:line 54
+   at Reko.Core.Types.EquivalenceClass.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\EquivalenceClass.cs:line 55
    at Reko.Core.Output.GlobalDataWriter.VisitStructure(StructureType str) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 381
    at Reko.Core.Types.StructureType.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\StructureType.cs:line 59
    at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(Address address, DataType dataType, String name) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 146
@@ -1662,7 +1664,7 @@ test.exe: warning: Win32 MIPS main procedure finder not supported.
    at Reko.Core.Output.GlobalDataWriter.VisitUnion(UnionType ut) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 430
    at Reko.Core.Types.UnionType.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\UnionType.cs:line 81
    at Reko.Core.Output.GlobalDataWriter.VisitEquivalenceClass(EquivalenceClass eq) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 245
-   at Reko.Core.Types.EquivalenceClass.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\EquivalenceClass.cs:line 54
+   at Reko.Core.Types.EquivalenceClass.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\EquivalenceClass.cs:line 55
    at Reko.Core.Output.GlobalDataWriter.VisitStructure(StructureType str) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 381
    at Reko.Core.Types.StructureType.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\StructureType.cs:line 59
    at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(Address address, DataType dataType, String name) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 146
@@ -1717,7 +1719,7 @@ test.exe: warning: Win32 MIPS main procedure finder not supported.
    at Reko.Core.Output.GlobalDataWriter.VisitUnion(UnionType ut) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 430
    at Reko.Core.Types.UnionType.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\UnionType.cs:line 81
    at Reko.Core.Output.GlobalDataWriter.VisitEquivalenceClass(EquivalenceClass eq) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 245
-   at Reko.Core.Types.EquivalenceClass.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\EquivalenceClass.cs:line 54
+   at Reko.Core.Types.EquivalenceClass.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\EquivalenceClass.cs:line 55
    at Reko.Core.Output.GlobalDataWriter.VisitStructure(StructureType str) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 381
    at Reko.Core.Types.StructureType.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\StructureType.cs:line 59
    at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(Address address, DataType dataType, String name) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 146
@@ -2229,4 +2231,4 @@ Signature of 'Microsoft Visual C++ 8' detected.
 0040120B: warning: Unable to determine the upper bound of an indirect call or jump; there may be more than 2 entries.
 004011A5: warning: Unable to determine the upper bound of an indirect call or jump; there may be more than 2 entries.
 
-Decompiled 82 binaries in 55.09 seconds.
+Decompiled 82 binaries in 48.68 seconds.

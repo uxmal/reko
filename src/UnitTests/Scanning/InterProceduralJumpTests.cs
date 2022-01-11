@@ -18,18 +18,11 @@
  */
 #endregion
 
-using Reko;
+using NUnit.Framework;
 using Reko.Core;
 using Reko.Core.Expressions;
-using Reko.Core.Rtl;
 using Reko.Core.Types;
 using Reko.UnitTests.Mocks;
-using NUnit.Framework;
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace Reko.UnitTests.Scanning
 {

@@ -22,7 +22,6 @@ using Reko.Core.Types;
 using Reko.Typing;
 using NUnit.Framework;
 using System;
-using System.Collections;
 
 namespace Reko.UnitTests.Typing
 {

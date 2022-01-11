@@ -18,22 +18,20 @@
  */
 #endregion
 
-using Reko.Core.Configuration;
-using Reko.Core;
-using Reko.ImageLoaders.MzExe;
-using NUnit.Framework;
 using Moq;
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.ComponentModel.Design;
-using System.Linq;
-using System.Text;
+using NUnit.Framework;
+using Reko.Core;
+using Reko.Core.Configuration;
+using Reko.Core.Memory;
+using Reko.Core.Services;
 using Reko.Core.Types;
 using Reko.Environments.Windows;
+using Reko.ImageLoaders.MzExe;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.Diagnostics;
-using Reko.Core.Services;
-using Reko.Core.Memory;
+using System.Text;
 
 namespace Reko.UnitTests.ImageLoaders.MzExe
 {

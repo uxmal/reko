@@ -18,19 +18,15 @@
  */
 #endregion
 
+using Moq;
+using NUnit.Framework;
+using Reko.Core;
 using Reko.Core.CLanguage;
 using Reko.Core.Serialization;
 using Reko.Core.Types;
-using NUnit.Framework;
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using Reko.UnitTests.Mocks;
-using Reko.Core;
+using System.Collections.Generic;
 using System.ComponentModel.Design;
-using Moq;
 
 namespace Reko.UnitTests.Core.CLanguage
 {

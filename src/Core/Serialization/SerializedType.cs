@@ -20,14 +20,12 @@
 
 using Reko.Core.Types;
 using System;
-using System.Diagnostics;
-using System.Linq;
-using System.Collections;
 using System.Collections.Generic;
-using System.Xml.Serialization;
-using System.Reflection;
 using System.ComponentModel;
+using System.Linq;
+using System.Reflection;
 using System.Text;
+using System.Xml.Serialization;
 
 namespace Reko.Core.Serialization
 {

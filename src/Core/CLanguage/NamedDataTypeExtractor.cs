@@ -18,14 +18,11 @@
  */
 #endregion
 
-using Reko.Core.Types;
 using Reko.Core.Serialization;
+using Reko.Core.Types;
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
-using System.Text;
 
 namespace Reko.Core.CLanguage
 {
