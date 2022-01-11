@@ -668,7 +668,7 @@ T_132: (in _mm_malloc(0x20<u64>, 0x2000<64>) @ 000008D1 : word64)
 T_133: (in rax_42 @ 000008EA : (arr real64))
   Class: Eq_104
   DataType: (ptr64 (arr real64))
-  OrigDataType: (ptr64 (struct (0 T_276 t0000)))
+  OrigDataType: (ptr64 (struct (0 (arr T_275) a0000)))
 T_134: (in _mm_malloc @ 000008EA : ptr64)
   Class: Eq_123
   DataType: (ptr64 Eq_123)
@@ -1200,7 +1200,7 @@ T_265: (in 0<u64> @ 00000AA6 : uint64)
 T_266: (in 0000000000200DE8 @ 00000AB9 : ptr64)
   Class: Eq_266
   DataType: (ptr64 (arr (ptr64 code)))
-  OrigDataType: (ptr64 (struct (0 T_280 t0000)))
+  OrigDataType: (ptr64 (struct (0 (arr T_279) a0000)))
 T_267: (in 8<64> @ 00000AB9 : word64)
   Class: Eq_267
   DataType: ui64
@@ -1246,7 +1246,7 @@ T_277:
   DataType: real64
   OrigDataType: (struct 0008 (0 T_237 t0000))
 T_278:
-  Class: Eq_276
+  Class: Eq_278
   DataType: (arr real64)
   OrigDataType: (arr T_277)
 T_279:

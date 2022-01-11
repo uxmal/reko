@@ -1092,7 +1092,8 @@ namespace Reko.Core.Expressions
         }
 
         /// <summary>
-        /// Generates a signed integer multiplication.
+        /// Generates a signed integer multiplication where the product type
+        /// differs from the type of the multiplicand and the multiplier.
         /// </summary>
         /// <param name="dtProduct">Data type of product.</param>
         /// <param name="left">Multiplicand.</param>

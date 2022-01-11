@@ -425,7 +425,7 @@ namespace Reko.UnitTests.Typing
             {
                 Identifier a = m.Local32("a");
                 Identifier i = m.Local32("i");
-                m.Assign(a, 0x00123456);		// array pointer
+                m.Assign(a, 0x00123456);    // array pointer
                 m.MStore(m.IAdd(a, m.IMul(i, 8)), m.Int32(42));
             });
             RunTest(pp.BuildProgram(), "Typing/TtranArrayConstantPointers.txt");
@@ -638,6 +638,82 @@ namespace Reko.UnitTests.Typing
                 m.Return();
             });
             RunTest(pp.BuildProgram(), $"Typing/{nameof(TtranArrayAssignment)}.txt");
+        }
+
+        [Test]
+        public void TtranPassARefToFunction()
+        {
+            var sExp =
+@"// main
+// Return size: 0
+define main
+main_entry:
+	// succ:  l1
+l1:
+	r1 = Mem0[r0 + 0<32>:word32]
+	r1 = r0[r1 * 4<32>]
+main_exit:
+
+// Equivalence classes ////////////
+Eq_1: (struct ""Globals"")
+	globals_t (in globals : (ptr32 (struct ""Globals"")))
+// Type Variables ////////////
+globals_t: (in globals : (ptr32 (struct ""Globals"")))
+  Class: Eq_1
+  DataType: (ptr32 Eq_1)
+  OrigDataType: (ptr32 (struct ""Globals""))
+T_2: (in r0 : word32)
+  Class: Eq_2
+  DataType: (ptr32 (arr ui32))
+  OrigDataType: (ptr32 (struct (0 (arr T_5) a0000)))
+T_3: (in 0<32> : word32)
+  Class: Eq_3
+  DataType: word32
+  OrigDataType: word32
+T_4: (in r0 + 0<32> : word32)
+  Class: Eq_4
+  DataType: word32
+  OrigDataType: word32
+T_5: (in Mem0[r0 + 0<32>:word32] : word32)
+  Class: Eq_5
+  DataType: ui32
+  OrigDataType: word32
+T_6: (in r1 : word32)
+  Class: Eq_5
+  DataType: ui32
+  OrigDataType: ui32
+T_7: (in 4<32> : word32)
+  Class: Eq_7
+  DataType: ui32
+  OrigDataType: ui32
+T_8: (in r1 * 4<32> : word32)
+  Class: Eq_8
+  DataType: ui32
+  OrigDataType: ui32
+T_9: (in r0[r1 * 4<32>] : word32)
+  Class: Eq_5
+  DataType: ui32
+  OrigDataType: word32
+T_10:
+  Class: Eq_5
+  DataType: ui32
+  OrigDataType: (struct 0004 (0 ui32 dw0000))
+T_11:
+  Class: Eq_11
+  DataType: (arr ui32)
+  OrigDataType: (arr T_10)
+";
+            var pb = new ProgramBuilder();
+            pb.Add("main", m =>
+            {
+                var r0 = m.Register("r0");
+                var r1 = m.Register("r1");
+                var r2 = m.Register("r2");
+                var r3 = m.Register("r3");
+                m.Assign(r1, m.Mem32(m.IAdd(r0, 0)));
+                m.Assign(r1, m.Mem32(m.IAdd(r0, m.IMul(r1, 4))));
+            });
+            RunStringTest(sExp, pb.BuildProgram());
         }
     }
 }

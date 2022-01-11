@@ -734,7 +734,7 @@ T_139: (in d0_240 @ 000010BA : ui32)
 T_140: (in 16<i32> @ 000010BA : int32)
   Class: Eq_140
   DataType: (ptr32 (arr ui32))
-  OrigDataType: (ptr32 (struct (0 T_576 t0000)))
+  OrigDataType: (ptr32 (struct (0 (arr T_575) a0000)))
 T_141: (in 4<32> @ 000010BA : ui32)
   Class: Eq_141
   DataType: ui32
@@ -766,7 +766,7 @@ T_147: (in Mem176[d0_110 + 8<i32>:word32] @ 000010C0 : word32)
 T_148: (in a0_248 @ 000010CC : (arr byte))
   Class: Eq_148
   DataType: (ptr32 (arr byte))
-  OrigDataType: (ptr32 (struct (0 T_580 t0000)))
+  OrigDataType: (ptr32 (struct (0 (arr T_579) a0000)))
 T_149: (in 2<32> @ 000010CC : word32)
   Class: Eq_149
   DataType: word32
@@ -790,7 +790,7 @@ T_153: (in 0<8> @ 000010CE : byte)
 T_154: (in 0<32> @ 000010CE : word32)
   Class: Eq_154
   DataType: (ptr32 (arr Eq_577))
-  OrigDataType: (ptr32 (struct (0 T_578 t0000)))
+  OrigDataType: (ptr32 (struct (0 (arr T_577) a0000)))
 T_155: (in 4<32> @ 000010CE : ui32)
   Class: Eq_155
   DataType: ui32
@@ -1514,7 +1514,7 @@ T_334: (in d0_216 @ 000011EA : word32)
 T_335: (in 8<i32> @ 000011EA : int32)
   Class: Eq_335
   DataType: (ptr32 (arr word32))
-  OrigDataType: (ptr32 (struct (0 T_584 t0000)))
+  OrigDataType: (ptr32 (struct (0 (arr T_583) a0000)))
 T_336: (in 4<32> @ 000011EA : ui32)
   Class: Eq_336
   DataType: ui32
@@ -2154,7 +2154,7 @@ T_494: (in d2_16 + 1<32> @ 00000000 : word32)
 T_495: (in 00001404 @ 000012F4 : ptr32)
   Class: Eq_495
   DataType: (ptr32 (arr word32))
-  OrigDataType: (ptr32 (struct (0 T_586 t0000)))
+  OrigDataType: (ptr32 (struct (0 (arr T_585) a0000)))
 T_496: (in 4<32> @ 000012F4 : ui32)
   Class: Eq_496
   DataType: ui32
@@ -2178,7 +2178,7 @@ T_500: (in ((word32[]) 0x1404<u32>)[d2_16] != 0<32> @ 00000000 : bool)
 T_501: (in 00001404 @ 00001302 : ptr32)
   Class: Eq_501
   DataType: (ptr32 (arr (ptr32 code)))
-  OrigDataType: (ptr32 (struct (0 T_588 t0000)))
+  OrigDataType: (ptr32 (struct (0 (arr T_587) a0000)))
 T_502: (in 4<32> @ 00001302 : ui32)
   Class: Eq_502
   DataType: ui32
@@ -2500,7 +2500,7 @@ T_581:
   DataType: Eq_577
   OrigDataType: (struct 0004 (0 T_157 t0000))
 T_582:
-  Class: Eq_578
+  Class: Eq_582
   DataType: (arr Eq_577)
   OrigDataType: (arr T_581)
 T_583:

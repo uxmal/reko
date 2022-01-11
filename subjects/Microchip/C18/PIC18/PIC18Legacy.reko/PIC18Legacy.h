@@ -96,7 +96,7 @@ T_8: (in 00014A @ 00000146 : ptr32)
 T_9: (in Data21 @ 00000146 : (arr Eq_224))
   Class: Eq_9
   DataType: (ptr8 (arr Eq_224))
-  OrigDataType: (ptr8 (struct (0 T_225 t0000)))
+  OrigDataType: (ptr8 (struct (0 (arr T_224) a0000)))
 T_10: (in 1<8> @ 00000146 : byte)
   Class: Eq_10
   DataType: byte

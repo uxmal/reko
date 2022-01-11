@@ -625,7 +625,7 @@ T_137: (in 0<u64> @ 00400746 : uint64)
 T_138: (in 0000000000600E10 @ 00400759 : ptr64)
   Class: Eq_138
   DataType: (ptr64 (arr (ptr64 code)))
-  OrigDataType: (ptr64 (struct (0 T_147 t0000)))
+  OrigDataType: (ptr64 (struct (0 (arr T_146) a0000)))
 T_139: (in 8<64> @ 00400759 : word64)
   Class: Eq_139
   DataType: ui64

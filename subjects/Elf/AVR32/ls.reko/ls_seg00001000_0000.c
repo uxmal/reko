@@ -14557,11 +14557,8 @@ void fn0000C2D4()
 		;
 }
 
-Eq_n g_tC2E0 = // 0000C2E0
+int8 g_aC2E0[] = // 0000C2E0
 	{
-		
-		{
-		},
 	};
 // 0000C2E2: void fn0000C2E2(Register word32 r1, Register word32 r2, Register word32 r3, Register word32 r4, Register word32 r5, Register (ptr32 Eq_n) r6, Register word32 r7, Register word32 r9, Register word32 pc)
 void fn0000C2E2(word32 r1, word32 r2, word32 r3, word32 r4, word32 r5, struct Eq_n * r6, word32 r7, word32 r9, word32 pc)

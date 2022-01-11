@@ -219,7 +219,8 @@ namespace Reko.UnitTests.Typing
 			Assert.IsFalse(Object.ReferenceEquals(ptr, dt), "Should be different");
 		}
 
-		// Ensures that if a named but sizeless structure is unified with an unnamed one, the resulting structure keeps the name.
+		// Ensures that if a named but sizeless structure is unified with an unnamed one,
+        // the resulting structure keeps the name.
 		[Test]
 		public void UnifyStructNamedStruct()
 		{

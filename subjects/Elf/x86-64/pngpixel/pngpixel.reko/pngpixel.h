@@ -1018,7 +1018,7 @@ T_192: (in signature of png_error @ 00000000 : void)
 T_193: (in 0x401958<64> @ 00400F56 : word64)
   Class: Eq_193
   DataType: (ptr64 (arr Eq_673))
-  OrigDataType: (ptr64 (struct (0 T_674 t0000)))
+  OrigDataType: (ptr64 (struct (0 (arr T_673) a0000)))
 T_194: (in CONVERT(eax_67, word32, uint64) @ 00400F56 : uint64)
   Class: Eq_194
   DataType: uint64
@@ -1482,7 +1482,7 @@ T_308: (in 0x4018D3<u64> @ 00401130 : uint64)
 T_309: (in 0<64> @ 00401130 : word64)
   Class: Eq_309
   DataType: (ptr64 (arr Eq_675))
-  OrigDataType: (ptr64 (struct (0 T_676 t0000)))
+  OrigDataType: (ptr64 (struct (0 (arr T_675) a0000)))
 T_310: (in CONVERT(eax_275, word32, uint64) @ 00401130 : uint64)
   Class: Eq_310
   DataType: uint64
@@ -1506,7 +1506,7 @@ T_314: (in CONVERT(0<64>[CONVERT(eax_275, word32, uint64) * 3<64>], byte, int32)
 T_315: (in 1<64> @ 00401130 : word64)
   Class: Eq_315
   DataType: (ptr64 (arr Eq_677))
-  OrigDataType: (ptr64 (struct (0 T_678 t0000)))
+  OrigDataType: (ptr64 (struct (0 (arr T_677) a0000)))
 T_316: (in CONVERT(eax_275, word32, uint64) @ 00401130 : uint64)
   Class: Eq_316
   DataType: uint64
@@ -1530,7 +1530,7 @@ T_320: (in CONVERT(1<64>[CONVERT(eax_275, word32, uint64) * 3<64>], byte, int32)
 T_321: (in 2<64> @ 00401130 : word64)
   Class: Eq_321
   DataType: (ptr64 (arr Eq_679))
-  OrigDataType: (ptr64 (struct (0 T_680 t0000)))
+  OrigDataType: (ptr64 (struct (0 (arr T_679) a0000)))
 T_322: (in CONVERT(eax_275, word32, uint64) @ 00401130 : uint64)
   Class: Eq_322
   DataType: uint64
@@ -1586,7 +1586,7 @@ T_334: (in CONVERT(eax_275, word32, uint64) @ 0040105E : uint64)
 T_335: (in 0<64> @ 0040105E : word64)
   Class: Eq_335
   DataType: (ptr64 (arr byte))
-  OrigDataType: (ptr64 (struct (0 T_682 t0000)))
+  OrigDataType: (ptr64 (struct (0 (arr T_681) a0000)))
 T_336: (in CONVERT(eax_275, word32, uint64) + 0<64> @ 0040105E : word64)
   Class: Eq_336
   DataType: uint64
@@ -1634,7 +1634,7 @@ T_346: (in 0x4018B9<u64> @ 004010CA : uint64)
 T_347: (in 0<64> @ 004010CA : word64)
   Class: Eq_347
   DataType: (ptr64 (arr Eq_683))
-  OrigDataType: (ptr64 (struct (0 T_684 t0000)))
+  OrigDataType: (ptr64 (struct (0 (arr T_683) a0000)))
 T_348: (in CONVERT(eax_275, word32, uint64) @ 004010CA : uint64)
   Class: Eq_348
   DataType: uint64
@@ -1658,7 +1658,7 @@ T_352: (in CONVERT(0<64>[CONVERT(eax_275, word32, uint64) * 3<64>], byte, int32)
 T_353: (in 1<64> @ 004010CA : word64)
   Class: Eq_353
   DataType: (ptr64 (arr Eq_685))
-  OrigDataType: (ptr64 (struct (0 T_686 t0000)))
+  OrigDataType: (ptr64 (struct (0 (arr T_685) a0000)))
 T_354: (in CONVERT(eax_275, word32, uint64) @ 004010CA : uint64)
   Class: Eq_354
   DataType: uint64
@@ -1682,7 +1682,7 @@ T_358: (in CONVERT(1<64>[CONVERT(eax_275, word32, uint64) * 3<64>], byte, int32)
 T_359: (in 2<64> @ 004010CA : word64)
   Class: Eq_359
   DataType: (ptr64 (arr Eq_687))
-  OrigDataType: (ptr64 (struct (0 T_688 t0000)))
+  OrigDataType: (ptr64 (struct (0 (arr T_687) a0000)))
 T_360: (in CONVERT(eax_275, word32, uint64) @ 004010CA : uint64)
   Class: Eq_360
   DataType: uint64
@@ -2902,7 +2902,7 @@ T_663: (in 0<u64> @ 004017B6 : uint64)
 T_664: (in 0000000000601E00 @ 004017C9 : ptr64)
   Class: Eq_664
   DataType: (ptr64 (arr (ptr64 code)))
-  OrigDataType: (ptr64 (struct (0 T_690 t0000)))
+  OrigDataType: (ptr64 (struct (0 (arr T_689) a0000)))
 T_665: (in 8<64> @ 004017C9 : word64)
   Class: Eq_665
   DataType: ui64

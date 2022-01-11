@@ -4,7 +4,20 @@
 
 /*
 // Equivalence classes ////////////
-Eq_1: (struct "Globals" (400416 code t400416) (400426 code t400426) (400436 code t400436) (40053D Eq_19 t40053D) (400550 Eq_22 t400550) (4005C0 Eq_23 t4005C0) (600E10 (arr (ptr64 code)) a600E10) (600E20 word64 qw600E20) (600FF8 (ptr64 code) __gmon_start___GOT) (601018 (ptr64 code) putchar_GOT) (601020 (ptr64 code) __libc_start_main_GOT) (601028 (ptr64 code) __gmon_start___GOT) (601040 byte b601040))
+Eq_1: (struct "Globals"
+		(400416 code t400416)
+		(400426 code t400426)
+		(400436 code t400436)
+		(40053D Eq_19 t40053D)
+		(400550 Eq_22 t400550)
+		(4005C0 Eq_23 t4005C0)
+		(600E10 (arr (ptr64 code)) a600E10)
+		(600E20 word64 qw600E20)
+		(600FF8 (ptr64 code) __gmon_start___GOT)
+		(601018 (ptr64 code) putchar_GOT)
+		(601020 (ptr64 code) __libc_start_main_GOT)
+		(601028 (ptr64 code) __gmon_start___GOT)
+		(601040 byte b601040))
 	globals_t (in globals @ 00000000 : (ptr64 (struct "Globals")))
 Eq_8: (fn void ())
 	T_8 (in rdx @ 004003F0 : (ptr64 Eq_8))
@@ -416,7 +429,7 @@ T_90: (in rbp_31 >> 3<64> == 0<64> @ 00000000 : bool)
 T_91: (in 0000000000600E10 @ 00400599 : ptr64)
   Class: Eq_91
   DataType: (ptr64 (arr (ptr64 code)))
-  OrigDataType: (ptr64 (struct (0 T_100 t0000)))
+  OrigDataType: (ptr64 (struct (0 (arr T_99) a0000)))
 T_92: (in 8<64> @ 00400599 : word64)
   Class: Eq_92
   DataType: ui64

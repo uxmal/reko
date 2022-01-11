@@ -1426,7 +1426,7 @@ T_139: (in *r1_442 - r0_92 != 0<16> @ 00000000 : bool)
 T_140: (in 0x2CC<16> @ 000002C2 : word16)
   Class: Eq_140
   DataType: (ptr16 (arr (ptr16 code)))
-  OrigDataType: (ptr16 (struct (0 T_2198 t0000)))
+  OrigDataType: (ptr16 (struct (0 (arr T_2197) a0000)))
 T_141: (in 0x2C7<16> @ 000002C2 : word16)
   Class: Eq_141
   DataType: ui16
@@ -4306,7 +4306,7 @@ T_859: (in r0_51 @ 00000600 : Eq_61)
 T_860: (in 0xF2A<16> @ 00000600 : word16)
   Class: Eq_860
   DataType: (ptr16 (arr Eq_2213))
-  OrigDataType: (ptr16 (struct (0 T_2214 t0000)))
+  OrigDataType: (ptr16 (struct (0 (arr T_2213) a0000)))
 T_861: (in 2<16> @ 00000600 : ui16)
   Class: Eq_861
   DataType: ui16
@@ -6266,7 +6266,7 @@ T_1349: (in r1_380 << 1<i16> @ 00000000 : word16)
 T_1350: (in 0xDC4<16> @ 00000902 : word16)
   Class: Eq_1350
   DataType: (ptr16 (arr ci16))
-  OrigDataType: (ptr16 (struct (0 T_2252 t0000)))
+  OrigDataType: (ptr16 (struct (0 (arr T_2251) a0000)))
 T_1351: (in 2<16> @ 00000902 : ui16)
   Class: Eq_1351
   DataType: ui16
@@ -9605,7 +9605,7 @@ T_2182: (in CONVERT(Mem7[r0 + 0<16>:byte], byte, int16) @ 00000DA0 : int16)
 T_2183: (in 0xEE0<16> @ 00000DA0 : word16)
   Class: Eq_2183
   DataType: (ptr16 (arr byte))
-  OrigDataType: (ptr16 (struct (0 T_2282 t0000)))
+  OrigDataType: (ptr16 (struct (0 (arr T_2281) a0000)))
 T_2184: (in CONVERT(Mem7[r0 + 0<16>:byte], byte, int16) + 0xEE0<16> @ 00000DA0 : word16)
   Class: Eq_2184
   DataType: int16
@@ -9687,7 +9687,7 @@ T_2203:
   DataType: Eq_2201
   OrigDataType: (struct 0002 (0 T_608 t0000))
 T_2204:
-  Class: Eq_2202
+  Class: Eq_2204
   DataType: (arr Eq_2201 6)
   OrigDataType: (arr T_2203 6)
 T_2205:
@@ -9695,7 +9695,7 @@ T_2205:
   DataType: Eq_2201
   OrigDataType: (struct 0002 (0 T_654 t0000))
 T_2206:
-  Class: Eq_2202
+  Class: Eq_2206
   DataType: (arr Eq_2201 6)
   OrigDataType: (arr T_2205 6)
 T_2207:
@@ -9703,7 +9703,7 @@ T_2207:
   DataType: Eq_2199
   OrigDataType: (struct 0002 (0 T_728 t0000))
 T_2208:
-  Class: Eq_2200
+  Class: Eq_2208
   DataType: (arr Eq_2199 6)
   OrigDataType: (arr T_2207 6)
 T_2209:
@@ -9711,7 +9711,7 @@ T_2209:
   DataType: Eq_2201
   OrigDataType: (struct 0002 (0 T_748 t0000))
 T_2210:
-  Class: Eq_2202
+  Class: Eq_2210
   DataType: (arr Eq_2201 6)
   OrigDataType: (arr T_2209 6)
 T_2211:
@@ -9759,7 +9759,7 @@ T_2221:
   DataType: byte
   OrigDataType: (struct 0001 (0 T_932 t0000))
 T_2222:
-  Class: Eq_2218
+  Class: Eq_2222
   DataType: (arr byte)
   OrigDataType: (arr T_2221)
 T_2223:
@@ -9767,7 +9767,7 @@ T_2223:
   DataType: Eq_2219
   OrigDataType: (struct 0001 (0 T_948 t0000))
 T_2224:
-  Class: Eq_2220
+  Class: Eq_2224
   DataType: (arr Eq_2219)
   OrigDataType: (arr T_2223)
 T_2225:
@@ -9791,7 +9791,7 @@ T_2229:
   DataType: Eq_2225
   OrigDataType: (struct 0001 (0 T_1027 t0000))
 T_2230:
-  Class: Eq_2226
+  Class: Eq_2230
   DataType: (arr Eq_2225)
   OrigDataType: (arr T_2229)
 T_2231:
@@ -9799,7 +9799,7 @@ T_2231:
   DataType: byte
   OrigDataType: (struct 0001 (0 T_1053 t0000))
 T_2232:
-  Class: Eq_2218
+  Class: Eq_2232
   DataType: (arr byte)
   OrigDataType: (arr T_2231)
 T_2233:
@@ -9807,7 +9807,7 @@ T_2233:
   DataType: ci8
   OrigDataType: (struct 0001 (0 T_1057 t0000))
 T_2234:
-  Class: Eq_2216
+  Class: Eq_2234
   DataType: (arr ci8)
   OrigDataType: (arr T_2233)
 T_2235:
@@ -9815,7 +9815,7 @@ T_2235:
   DataType: ci8
   OrigDataType: (struct 0001 (0 T_1062 t0000))
 T_2236:
-  Class: Eq_2216
+  Class: Eq_2236
   DataType: (arr ci8)
   OrigDataType: (arr T_2235)
 T_2237:
@@ -9823,7 +9823,7 @@ T_2237:
   DataType: ci8
   OrigDataType: (struct 0001 (0 T_1078 t0000))
 T_2238:
-  Class: Eq_2216
+  Class: Eq_2238
   DataType: (arr ci8)
   OrigDataType: (arr T_2237)
 T_2239:
@@ -9831,7 +9831,7 @@ T_2239:
   DataType: ci8
   OrigDataType: (struct 0001 (0 T_1083 t0000))
 T_2240:
-  Class: Eq_2216
+  Class: Eq_2240
   DataType: (arr ci8)
   OrigDataType: (arr T_2239)
 T_2241:
@@ -9839,7 +9839,7 @@ T_2241:
   DataType: byte
   OrigDataType: (struct 0001 (0 T_1097 t0000))
 T_2242:
-  Class: Eq_2218
+  Class: Eq_2242
   DataType: (arr byte)
   OrigDataType: (arr T_2241)
 T_2243:
@@ -9847,7 +9847,7 @@ T_2243:
   DataType: byte
   OrigDataType: (struct 0001 (0 T_1102 t0000))
 T_2244:
-  Class: Eq_2218
+  Class: Eq_2244
   DataType: (arr byte)
   OrigDataType: (arr T_2243)
 T_2245:
@@ -9855,7 +9855,7 @@ T_2245:
   DataType: Eq_2219
   OrigDataType: (struct 0001 (0 T_1115 t0000))
 T_2246:
-  Class: Eq_2220
+  Class: Eq_2246
   DataType: (arr Eq_2219)
   OrigDataType: (arr T_2245)
 T_2247:
@@ -9863,7 +9863,7 @@ T_2247:
   DataType: Eq_2219
   OrigDataType: (struct 0001 (0 T_1122 t0000))
 T_2248:
-  Class: Eq_2220
+  Class: Eq_2248
   DataType: (arr Eq_2219)
   OrigDataType: (arr T_2247)
 T_2249:
@@ -9871,7 +9871,7 @@ T_2249:
   DataType: Eq_2219
   OrigDataType: (struct 0001 (0 T_1315 t0000))
 T_2250:
-  Class: Eq_2220
+  Class: Eq_2250
   DataType: (arr Eq_2219)
   OrigDataType: (arr T_2249)
 T_2251:
@@ -9887,7 +9887,7 @@ T_2253:
   DataType: Eq_2219
   OrigDataType: (struct 0001 (0 T_1387 t0000))
 T_2254:
-  Class: Eq_2220
+  Class: Eq_2254
   DataType: (arr Eq_2219)
   OrigDataType: (arr T_2253)
 T_2255:
@@ -9895,7 +9895,7 @@ T_2255:
   DataType: byte
   OrigDataType: (struct 0001 (0 T_1393 t0000))
 T_2256:
-  Class: Eq_2218
+  Class: Eq_2256
   DataType: (arr byte)
   OrigDataType: (arr T_2255)
 T_2257:
@@ -9903,7 +9903,7 @@ T_2257:
   DataType: ci8
   OrigDataType: (struct 0001 (0 T_1397 t0000))
 T_2258:
-  Class: Eq_2216
+  Class: Eq_2258
   DataType: (arr ci8)
   OrigDataType: (arr T_2257)
 T_2259:
@@ -9911,7 +9911,7 @@ T_2259:
   DataType: ci8
   OrigDataType: (struct 0001 (0 T_1402 t0000))
 T_2260:
-  Class: Eq_2216
+  Class: Eq_2260
   DataType: (arr ci8)
   OrigDataType: (arr T_2259)
 T_2261:
@@ -9919,7 +9919,7 @@ T_2261:
   DataType: ci8
   OrigDataType: (struct 0001 (0 T_1407 t0000))
 T_2262:
-  Class: Eq_2216
+  Class: Eq_2262
   DataType: (arr ci8)
   OrigDataType: (arr T_2261)
 T_2263:
@@ -9927,8 +9927,8 @@ T_2263:
   DataType: Eq_2201
   OrigDataType: (struct 0002 (0 T_2052 t0000))
 T_2264:
-  Class: Eq_2202
-  DataType: (arr Eq_2201 6)
+  Class: Eq_2264
+  DataType: (arr Eq_2201)
   OrigDataType: (arr T_2263)
 T_2265:
   Class: Eq_2265
@@ -9989,9 +9989,9 @@ T_2278:
 T_2279:
   Class: Eq_2219
   DataType: Eq_2219
-  OrigDataType: (struct 0002 (0 T_2104 t0000))
+  OrigDataType: (struct 0002 (0 word16 w0000))
 T_2280:
-  Class: Eq_2220
+  Class: Eq_2280
   DataType: (arr Eq_2219)
   OrigDataType: (arr T_2279)
 T_2281:

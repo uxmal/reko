@@ -20877,7 +20877,7 @@ T_4842:
   DataType: Eq_4840
   OrigDataType: (struct 0004 (0 T_4421 t0000))
 T_4843:
-  Class: Eq_4841
+  Class: Eq_4843
   DataType: (arr Eq_4840)
   OrigDataType: (arr T_4842)
 T_4844:

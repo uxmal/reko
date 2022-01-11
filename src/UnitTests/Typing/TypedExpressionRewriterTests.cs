@@ -1451,5 +1451,45 @@ test_exit:
                 m.Return();
             }, sExp);
         }
+
+        [Test]
+        public void TerPassARefToFunction()
+        {
+            var sExp =
+@"// Before ///////
+// main
+// Return size: 0
+define main
+main_entry:
+	// succ:  l1
+l1:
+	r1 = Mem0[r0 + 0<32>:word32]
+	r1 = Mem0[r0 + r1 * 4<32>:word32]
+main_exit:
+
+// After ///////
+// main
+// Return size: 0
+define main
+main_entry:
+	// succ:  l1
+l1:
+	r1 = r0[0<i32>]
+	r1 = r0[r1]
+main_exit:
+
+";
+            var pb = new ProgramBuilder();
+            pb.Add("main", m =>
+            {
+                var r0 = m.Register("r0");
+                var r1 = m.Register("r1");
+                var r2 = m.Register("r2");
+                var r3 = m.Register("r3");
+                m.Assign(r1, m.Mem32(m.IAdd(r0, 0)));
+                m.Assign(r1, m.Mem32(m.IAdd(r0, m.IMul(r1, 4))));
+            });
+            RunStringTest(pb.BuildProgram(), sExp);
+        }
     }
 }

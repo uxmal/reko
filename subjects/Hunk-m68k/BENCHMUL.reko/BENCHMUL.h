@@ -2789,7 +2789,7 @@ T_139: (in d0_240 @ 000010BA : ui32)
 T_140: (in 16<i32> @ 000010BA : int32)
   Class: Eq_140
   DataType: (ptr32 (arr ui32))
-  OrigDataType: (ptr32 (struct (0 T_6287 t0000)))
+  OrigDataType: (ptr32 (struct (0 (arr T_6286) a0000)))
 T_141: (in 4<32> @ 000010BA : ui32)
   Class: Eq_141
   DataType: ui32
@@ -2821,7 +2821,7 @@ T_147: (in Mem176[d0_110 + 8<i32>:word32] @ 000010C0 : word32)
 T_148: (in a0_248 @ 000010CC : (arr byte))
   Class: Eq_148
   DataType: (ptr32 (arr byte))
-  OrigDataType: (ptr32 (struct (0 T_6291 t0000)))
+  OrigDataType: (ptr32 (struct (0 (arr T_6290) a0000)))
 T_149: (in 2<32> @ 000010CC : word32)
   Class: Eq_149
   DataType: word32
@@ -2845,7 +2845,7 @@ T_153: (in 0<8> @ 000010CE : byte)
 T_154: (in 0<32> @ 000010CE : word32)
   Class: Eq_154
   DataType: (ptr32 (arr Eq_6288))
-  OrigDataType: (ptr32 (struct (0 T_6289 t0000)))
+  OrigDataType: (ptr32 (struct (0 (arr T_6288) a0000)))
 T_155: (in 4<32> @ 000010CE : ui32)
   Class: Eq_155
   DataType: ui32
@@ -3569,7 +3569,7 @@ T_334: (in d0_216 @ 000011EA : word32)
 T_335: (in 8<i32> @ 000011EA : int32)
   Class: Eq_335
   DataType: (ptr32 (arr word32))
-  OrigDataType: (ptr32 (struct (0 T_6295 t0000)))
+  OrigDataType: (ptr32 (struct (0 (arr T_6294) a0000)))
 T_336: (in 4<32> @ 000011EA : ui32)
   Class: Eq_336
   DataType: ui32
@@ -4221,7 +4221,7 @@ T_497: (in d2_16 + 1<32> @ 00000000 : word32)
 T_498: (in 00004240 @ 000012F4 : ptr32)
   Class: Eq_498
   DataType: (ptr32 (arr word32))
-  OrigDataType: (ptr32 (struct (0 T_6297 t0000)))
+  OrigDataType: (ptr32 (struct (0 (arr T_6296) a0000)))
 T_499: (in 4<32> @ 000012F4 : ui32)
   Class: Eq_499
   DataType: ui32
@@ -4245,7 +4245,7 @@ T_503: (in ((word32[]) 0x4240<u32>)[d2_16] != 0<32> @ 00000000 : bool)
 T_504: (in 00004240 @ 00001302 : ptr32)
   Class: Eq_504
   DataType: (ptr32 (arr (ptr32 code)))
-  OrigDataType: (ptr32 (struct (0 T_6299 t0000)))
+  OrigDataType: (ptr32 (struct (0 (arr T_6298) a0000)))
 T_505: (in 4<32> @ 00001302 : ui32)
   Class: Eq_505
   DataType: ui32
@@ -7173,7 +7173,7 @@ T_1235: (in a3_1203 @ 00001748 : (ptr32 byte))
 T_1236: (in fp @ 00001748 : ptr32)
   Class: Eq_1236
   DataType: (ptr32 Eq_1236)
-  OrigDataType: (ptr32 (struct (FFFFFFFA T_6301 tFFFFFFFA)))
+  OrigDataType: (ptr32 (struct (FFFFFFFA (arr T_6300) aFFFFFFFA)))
 T_1237: (in -36<i32> @ 00001748 : int32)
   Class: Eq_1237
   DataType: int32
@@ -9333,7 +9333,7 @@ T_1775: (in -6<i32> @ 00001EFC : int32)
 T_1776: (in fp + -6<i32> @ 00001EFC : word32)
   Class: Eq_1776
   DataType: (ptr32 (arr byte))
-  OrigDataType: (ptr32 (struct (0 T_6301 t0000)))
+  OrigDataType: (ptr32 (struct (0 (arr T_6300) a0000)))
 T_1777: (in fp + -6<i32> + d2_1482 @ 00001EFC : word32)
   Class: Eq_1777
   DataType: (ptr32 byte)
@@ -9852,8 +9852,8 @@ T_1905: (in -6<i32> @ 00001F8A : int32)
   OrigDataType: int32
 T_1906: (in fp + -6<i32> @ 00001F8A : word32)
   Class: Eq_1906
-  DataType: (ptr32 (arr byte))
-  OrigDataType: (ptr32 (arr T_6300))
+  DataType: (ptr32 (arr (arr byte)))
+  OrigDataType: (ptr32 (arr (struct (0 (arr byte) a0000))))
 T_1907: (in fp + -6<i32> + d2_1601 @ 00001F8A : word32)
   Class: Eq_1907
   DataType: (ptr32 byte)
@@ -10864,8 +10864,8 @@ T_2158: (in -6<i32> @ 00001C26 : int32)
   OrigDataType: int32
 T_2159: (in fp + -6<i32> @ 00001C26 : word32)
   Class: Eq_2159
-  DataType: (ptr32 (arr byte))
-  OrigDataType: (ptr32 (arr T_6300))
+  DataType: (ptr32 (arr (arr byte)))
+  OrigDataType: (ptr32 (arr (struct (0 (arr byte) a0000))))
 T_2160: (in fp + -6<i32> + d7_1002 @ 00001C26 : word32)
   Class: Eq_2160
   DataType: (ptr32 byte)
@@ -10896,8 +10896,8 @@ T_2166: (in -6<i32> @ 00001C2E : int32)
   OrigDataType: int32
 T_2167: (in fp + -6<i32> @ 00001C2E : word32)
   Class: Eq_2167
-  DataType: (ptr32 (arr byte))
-  OrigDataType: (ptr32 (arr T_6300))
+  DataType: (ptr32 (arr (arr byte)))
+  OrigDataType: (ptr32 (arr (struct (0 (arr byte) a0000))))
 T_2168: (in fp + -6<i32> + d7_999 @ 00001C2E : word32)
   Class: Eq_2168
   DataType: (ptr32 byte)
@@ -14293,7 +14293,7 @@ T_3015: (in SLICE(d4_29, byte, 0) @ 00002740 : byte)
 T_3016: (in 00004134 @ 00002740 : ptr32)
   Class: Eq_3016
   DataType: (ptr32 (arr byte))
-  OrigDataType: (ptr32 (struct (0 T_6305 t0000)))
+  OrigDataType: (ptr32 (struct (0 (arr T_6304) a0000)))
 T_3017: (in SLICE(d6_30, word16, 0) @ 00002740 : word16)
   Class: Eq_3017
   DataType: cui16
@@ -16769,7 +16769,7 @@ T_3634: (in SLICE(d4_32, byte, 0) @ 00002A80 : byte)
 T_3635: (in 00004134 @ 00002A80 : ptr32)
   Class: Eq_3635
   DataType: (ptr32 (arr byte))
-  OrigDataType: (ptr32 (struct (0 T_6307 t0000)))
+  OrigDataType: (ptr32 (struct (0 (arr T_6306) a0000)))
 T_3636: (in SLICE(d6_33, word16, 0) @ 00002A80 : word16)
   Class: Eq_3636
   DataType: cui16
@@ -17805,7 +17805,7 @@ T_3893: (in d0_63 @ 00003D9E : uint32)
 T_3894: (in 00002B15 @ 00003D9E : ptr32)
   Class: Eq_3894
   DataType: (ptr32 (arr byte))
-  OrigDataType: (ptr32 (struct (0 T_6309 t0000)))
+  OrigDataType: (ptr32 (struct (0 (arr T_6308) a0000)))
 T_3895: (in SLICE(d0, word24, 8) @ 00003D9E : word24)
   Class: Eq_3895
   DataType: ui24
@@ -17885,7 +17885,7 @@ T_3913: (in d0_275 @ 00002ED6 : uint32)
 T_3914: (in 00002B15 @ 00002ED6 : ptr32)
   Class: Eq_3914
   DataType: (ptr32 (arr byte))
-  OrigDataType: (ptr32 (struct (0 T_6311 t0000)))
+  OrigDataType: (ptr32 (struct (0 (arr T_6310) a0000)))
 T_3915: (in 0<32> @ 00002ED6 : word32)
   Class: Eq_3915
   DataType: word32
@@ -17985,7 +17985,7 @@ T_3938: (in d0_291 @ 00002EF0 : uint32)
 T_3939: (in 00002B15 @ 00002EF0 : ptr32)
   Class: Eq_3939
   DataType: (ptr32 (arr byte))
-  OrigDataType: (ptr32 (struct (0 T_6313 t0000)))
+  OrigDataType: (ptr32 (struct (0 (arr T_6312) a0000)))
 T_3940: (in 0<32> @ 00002EF0 : word32)
   Class: Eq_3940
   DataType: word32
@@ -18173,7 +18173,7 @@ T_3985: (in d0_339 @ 00002F32 : uint32)
 T_3986: (in 00002B15 @ 00002F32 : ptr32)
   Class: Eq_3986
   DataType: (ptr32 (arr byte))
-  OrigDataType: (ptr32 (struct (0 T_6315 t0000)))
+  OrigDataType: (ptr32 (struct (0 (arr T_6314) a0000)))
 T_3987: (in 0<32> @ 00002F32 : word32)
   Class: Eq_3987
   DataType: word32
@@ -18981,7 +18981,7 @@ T_4187: (in d0_570 @ 00003062 : uint32)
 T_4188: (in 00002B15 @ 00003062 : ptr32)
   Class: Eq_4188
   DataType: (ptr32 (arr byte))
-  OrigDataType: (ptr32 (struct (0 T_6317 t0000)))
+  OrigDataType: (ptr32 (struct (0 (arr T_6316) a0000)))
 T_4189: (in SLICE(d0_521, word24, 8) @ 00003062 : word24)
   Class: Eq_4189
   DataType: ui24
@@ -19269,7 +19269,7 @@ T_4259: (in d0_227 @ 00003DF6 : uint32)
 T_4260: (in 00002B15 @ 00003DF6 : ptr32)
   Class: Eq_4260
   DataType: (ptr32 (arr byte))
-  OrigDataType: (ptr32 (struct (0 T_6319 t0000)))
+  OrigDataType: (ptr32 (struct (0 (arr T_6318) a0000)))
 T_4261: (in SLICE(d0_178, word24, 8) @ 00003DF6 : word24)
   Class: Eq_4261
   DataType: ui24
@@ -20133,7 +20133,7 @@ T_4475: (in d0_1699 @ 0000340C : uint32)
 T_4476: (in 00002B15 @ 0000340C : ptr32)
   Class: Eq_4476
   DataType: (ptr32 (arr byte))
-  OrigDataType: (ptr32 (struct (0 T_6321 t0000)))
+  OrigDataType: (ptr32 (struct (0 (arr T_6320) a0000)))
 T_4477: (in SLICE(d0, word24, 8) @ 0000340C : word24)
   Class: Eq_4477
   DataType: ui24
@@ -20545,7 +20545,7 @@ T_4578: (in d0_1802 @ 0000347A : uint32)
 T_4579: (in 00002B15 @ 0000347A : ptr32)
   Class: Eq_4579
   DataType: (ptr32 (arr byte))
-  OrigDataType: (ptr32 (struct (0 T_6323 t0000)))
+  OrigDataType: (ptr32 (struct (0 (arr T_6322) a0000)))
 T_4580: (in SLICE(d0, word24, 8) @ 0000347A : word24)
   Class: Eq_4580
   DataType: ui24
@@ -21061,7 +21061,7 @@ T_4707: (in d0_2030 @ 00003796 : uint32)
 T_4708: (in 00002B15 @ 00003796 : ptr32)
   Class: Eq_4708
   DataType: (ptr32 (arr byte))
-  OrigDataType: (ptr32 (struct (0 T_6325 t0000)))
+  OrigDataType: (ptr32 (struct (0 (arr T_6324) a0000)))
 T_4709: (in SLICE(d0, word24, 8) @ 00003796 : word24)
   Class: Eq_4709
   DataType: ui24
@@ -21337,7 +21337,7 @@ T_4776: (in  @ 000036C8 : word16)
 T_4777: (in 00002B15 @ 000036C8 : ptr32)
   Class: Eq_4777
   DataType: (ptr32 (arr byte))
-  OrigDataType: (ptr32 (struct (0 T_6327 t0000)))
+  OrigDataType: (ptr32 (struct (0 (arr T_6326) a0000)))
 T_4778: (in SLICE(d0_2124, int16, 0) @ 000036C8 : int16)
   Class: Eq_4778
   DataType: int16
@@ -21713,7 +21713,7 @@ T_4870: (in d0_2226 @ 0000373A : uint32)
 T_4871: (in 00002B15 @ 0000373A : ptr32)
   Class: Eq_4871
   DataType: (ptr32 (arr byte))
-  OrigDataType: (ptr32 (struct (0 T_6329 t0000)))
+  OrigDataType: (ptr32 (struct (0 (arr T_6328) a0000)))
 T_4872: (in SLICE(d0_2167, word24, 8) @ 0000373A : word24)
   Class: Eq_4872
   DataType: ui24
@@ -22241,7 +22241,7 @@ T_5002: (in d0_2045 @ 000037B2 : uint32)
 T_5003: (in 00002B15 @ 000037B2 : ptr32)
   Class: Eq_5003
   DataType: (ptr32 (arr byte))
-  OrigDataType: (ptr32 (struct (0 T_6331 t0000)))
+  OrigDataType: (ptr32 (struct (0 (arr T_6330) a0000)))
 T_5004: (in SLICE(d5_1007, byte, 0) @ 000037B2 : byte)
   Class: Eq_5004
   DataType: byte
@@ -22553,7 +22553,7 @@ T_5080: (in __btst @ 0000383A : ptr32)
 T_5081: (in 00002B15 @ 0000383A : ptr32)
   Class: Eq_5081
   DataType: (ptr32 (arr byte))
-  OrigDataType: (ptr32 (struct (0 T_6333 t0000)))
+  OrigDataType: (ptr32 (struct (0 (arr T_6332) a0000)))
 T_5082: (in SLICE(d0_2416, int16, 0) @ 0000383A : int16)
   Class: Eq_5082
   DataType: int16
@@ -22785,7 +22785,7 @@ T_5138: (in d0_2513 @ 000038AE : uint32)
 T_5139: (in 00002B15 @ 000038AE : ptr32)
   Class: Eq_5139
   DataType: (ptr32 (arr byte))
-  OrigDataType: (ptr32 (struct (0 T_6335 t0000)))
+  OrigDataType: (ptr32 (struct (0 (arr T_6334) a0000)))
 T_5140: (in SLICE(d0_2457, word24, 8) @ 000038AE : word24)
   Class: Eq_5140
   DataType: ui24
@@ -22893,7 +22893,7 @@ T_5165: (in d0_2646 @ 00003942 : uint32)
 T_5166: (in 00002B15 @ 00003942 : ptr32)
   Class: Eq_5166
   DataType: (ptr32 (arr byte))
-  OrigDataType: (ptr32 (struct (0 T_6337 t0000)))
+  OrigDataType: (ptr32 (struct (0 (arr T_6336) a0000)))
 T_5167: (in SLICE(d0, word24, 8) @ 00003942 : word24)
   Class: Eq_5167
   DataType: ui24
@@ -23053,7 +23053,7 @@ T_5205: (in d0_2702 @ 00003978 : uint32)
 T_5206: (in 00002B15 @ 00003978 : ptr32)
   Class: Eq_5206
   DataType: (ptr32 (arr byte))
-  OrigDataType: (ptr32 (struct (0 T_6339 t0000)))
+  OrigDataType: (ptr32 (struct (0 (arr T_6338) a0000)))
 T_5207: (in SLICE(d5_1007, byte, 0) @ 00003978 : byte)
   Class: Eq_5207
   DataType: byte
@@ -23205,7 +23205,7 @@ T_5243: (in d0_2791 + d0_2837 + (word32) (d2_2844 < 0<32>) @ 00000000 : word32)
 T_5244: (in 00002B15 @ 00003A76 : ptr32)
   Class: Eq_5244
   DataType: (ptr32 (arr byte))
-  OrigDataType: (ptr32 (struct (0 T_6341 t0000)))
+  OrigDataType: (ptr32 (struct (0 (arr T_6340) a0000)))
 T_5245: (in SLICE(d0_2837, word24, 8) @ 00003A76 : word24)
   Class: Eq_5245
   DataType: ui24
@@ -23317,7 +23317,7 @@ T_5271: (in d2_2854 + d0_2892 + (word32) (d2_2899 < 0<32>) @ 00000000 : word32)
 T_5272: (in 00002B15 @ 00003AC8 : ptr32)
   Class: Eq_5272
   DataType: (ptr32 (arr byte))
-  OrigDataType: (ptr32 (struct (0 T_6343 t0000)))
+  OrigDataType: (ptr32 (struct (0 (arr T_6342) a0000)))
 T_5273: (in SLICE(d0_2892, word24, 8) @ 00003AC8 : word24)
   Class: Eq_5273
   DataType: ui24
@@ -23565,7 +23565,7 @@ T_5333: (in d0_3035 @ 00003B4E : uint32)
 T_5334: (in 00002B15 @ 00003B4E : ptr32)
   Class: Eq_5334
   DataType: (ptr32 (arr byte))
-  OrigDataType: (ptr32 (struct (0 T_6345 t0000)))
+  OrigDataType: (ptr32 (struct (0 (arr T_6344) a0000)))
 T_5335: (in SLICE(d0_2988, word24, 8) @ 00003B4E : word24)
   Class: Eq_5335
   DataType: ui24
@@ -23725,7 +23725,7 @@ T_5373: (in d0_3057 @ 00003B72 : uint32)
 T_5374: (in 00002B15 @ 00003B72 : ptr32)
   Class: Eq_5374
   DataType: (ptr32 (arr byte))
-  OrigDataType: (ptr32 (struct (0 T_6347 t0000)))
+  OrigDataType: (ptr32 (struct (0 (arr T_6346) a0000)))
 T_5375: (in SLICE(d1, byte, 0) @ 00003B72 : byte)
   Class: Eq_5375
   DataType: byte
@@ -23849,7 +23849,7 @@ T_5404: (in fn00003EB0(d4_2409, dwLoc38_4048 >> 31<i32>, dwLoc38_4048, dwLoc4C_3
 T_5405: (in 00002B15 @ 00003A24 : ptr32)
   Class: Eq_5405
   DataType: (ptr32 (arr byte))
-  OrigDataType: (ptr32 (struct (0 T_6349 t0000)))
+  OrigDataType: (ptr32 (struct (0 (arr T_6348) a0000)))
 T_5406: (in dwLoc38_4048 >> 31<i32> @ 00000000 : word32)
   Class: Eq_5406
   DataType: int32
@@ -27399,7 +27399,7 @@ T_6292:
   DataType: Eq_6288
   OrigDataType: (struct 0004 (0 T_157 t0000))
 T_6293:
-  Class: Eq_6289
+  Class: Eq_6293
   DataType: (arr Eq_6288)
   OrigDataType: (arr T_6292)
 T_6294:
@@ -27439,7 +27439,7 @@ T_6302:
   DataType: byte
   OrigDataType: (struct 0001 (0 T_1908 t0000))
 T_6303:
-  Class: Eq_6301
+  Class: Eq_6303
   DataType: (arr byte)
   OrigDataType: (arr T_6302)
 T_6304:
@@ -27455,7 +27455,7 @@ T_6306:
   DataType: byte
   OrigDataType: (struct 0001 (0 T_3641 t0000))
 T_6307:
-  Class: Eq_6305
+  Class: Eq_6307
   DataType: (arr byte)
   OrigDataType: (arr T_6306)
 T_6308:
@@ -27471,7 +27471,7 @@ T_6310:
   DataType: byte
   OrigDataType: (struct 0001 (0 T_3920 t0000))
 T_6311:
-  Class: Eq_6309
+  Class: Eq_6311
   DataType: (arr byte)
   OrigDataType: (arr T_6310)
 T_6312:
@@ -27479,7 +27479,7 @@ T_6312:
   DataType: byte
   OrigDataType: (struct 0001 (0 T_3945 t0000))
 T_6313:
-  Class: Eq_6309
+  Class: Eq_6313
   DataType: (arr byte)
   OrigDataType: (arr T_6312)
 T_6314:
@@ -27487,7 +27487,7 @@ T_6314:
   DataType: byte
   OrigDataType: (struct 0001 (0 T_3992 t0000))
 T_6315:
-  Class: Eq_6309
+  Class: Eq_6315
   DataType: (arr byte)
   OrigDataType: (arr T_6314)
 T_6316:
@@ -27495,7 +27495,7 @@ T_6316:
   DataType: byte
   OrigDataType: (struct 0001 (0 T_4195 t0000))
 T_6317:
-  Class: Eq_6309
+  Class: Eq_6317
   DataType: (arr byte)
   OrigDataType: (arr T_6316)
 T_6318:
@@ -27503,7 +27503,7 @@ T_6318:
   DataType: byte
   OrigDataType: (struct 0001 (0 T_4267 t0000))
 T_6319:
-  Class: Eq_6309
+  Class: Eq_6319
   DataType: (arr byte)
   OrigDataType: (arr T_6318)
 T_6320:
@@ -27511,7 +27511,7 @@ T_6320:
   DataType: byte
   OrigDataType: (struct 0001 (0 T_4483 t0000))
 T_6321:
-  Class: Eq_6309
+  Class: Eq_6321
   DataType: (arr byte)
   OrigDataType: (arr T_6320)
 T_6322:
@@ -27519,7 +27519,7 @@ T_6322:
   DataType: byte
   OrigDataType: (struct 0001 (0 T_4586 t0000))
 T_6323:
-  Class: Eq_6309
+  Class: Eq_6323
   DataType: (arr byte)
   OrigDataType: (arr T_6322)
 T_6324:
@@ -27527,7 +27527,7 @@ T_6324:
   DataType: byte
   OrigDataType: (struct 0001 (0 T_4715 t0000))
 T_6325:
-  Class: Eq_6309
+  Class: Eq_6325
   DataType: (arr byte)
   OrigDataType: (arr T_6324)
 T_6326:
@@ -27535,7 +27535,7 @@ T_6326:
   DataType: byte
   OrigDataType: (struct 0001 (0 T_4783 t0000))
 T_6327:
-  Class: Eq_6309
+  Class: Eq_6327
   DataType: (arr byte)
   OrigDataType: (arr T_6326)
 T_6328:
@@ -27543,7 +27543,7 @@ T_6328:
   DataType: byte
   OrigDataType: (struct 0001 (0 T_4878 t0000))
 T_6329:
-  Class: Eq_6309
+  Class: Eq_6329
   DataType: (arr byte)
   OrigDataType: (arr T_6328)
 T_6330:
@@ -27551,7 +27551,7 @@ T_6330:
   DataType: byte
   OrigDataType: (struct 0001 (0 T_5009 t0000))
 T_6331:
-  Class: Eq_6309
+  Class: Eq_6331
   DataType: (arr byte)
   OrigDataType: (arr T_6330)
 T_6332:
@@ -27559,7 +27559,7 @@ T_6332:
   DataType: byte
   OrigDataType: (struct 0001 (0 T_5087 t0000))
 T_6333:
-  Class: Eq_6309
+  Class: Eq_6333
   DataType: (arr byte)
   OrigDataType: (arr T_6332)
 T_6334:
@@ -27567,7 +27567,7 @@ T_6334:
   DataType: byte
   OrigDataType: (struct 0001 (0 T_5146 t0000))
 T_6335:
-  Class: Eq_6309
+  Class: Eq_6335
   DataType: (arr byte)
   OrigDataType: (arr T_6334)
 T_6336:
@@ -27575,7 +27575,7 @@ T_6336:
   DataType: byte
   OrigDataType: (struct 0001 (0 T_5173 t0000))
 T_6337:
-  Class: Eq_6309
+  Class: Eq_6337
   DataType: (arr byte)
   OrigDataType: (arr T_6336)
 T_6338:
@@ -27583,7 +27583,7 @@ T_6338:
   DataType: byte
   OrigDataType: (struct 0001 (0 T_5212 t0000))
 T_6339:
-  Class: Eq_6309
+  Class: Eq_6339
   DataType: (arr byte)
   OrigDataType: (arr T_6338)
 T_6340:
@@ -27591,7 +27591,7 @@ T_6340:
   DataType: byte
   OrigDataType: (struct 0001 (0 T_5251 t0000))
 T_6341:
-  Class: Eq_6309
+  Class: Eq_6341
   DataType: (arr byte)
   OrigDataType: (arr T_6340)
 T_6342:
@@ -27599,7 +27599,7 @@ T_6342:
   DataType: byte
   OrigDataType: (struct 0001 (0 T_5279 t0000))
 T_6343:
-  Class: Eq_6309
+  Class: Eq_6343
   DataType: (arr byte)
   OrigDataType: (arr T_6342)
 T_6344:
@@ -27607,7 +27607,7 @@ T_6344:
   DataType: byte
   OrigDataType: (struct 0001 (0 T_5341 t0000))
 T_6345:
-  Class: Eq_6309
+  Class: Eq_6345
   DataType: (arr byte)
   OrigDataType: (arr T_6344)
 T_6346:
@@ -27615,7 +27615,7 @@ T_6346:
   DataType: byte
   OrigDataType: (struct 0001 (0 T_5380 t0000))
 T_6347:
-  Class: Eq_6309
+  Class: Eq_6347
   DataType: (arr byte)
   OrigDataType: (arr T_6346)
 T_6348:
@@ -27623,7 +27623,7 @@ T_6348:
   DataType: byte
   OrigDataType: (struct 0001 (0 T_5413 t0000))
 T_6349:
-  Class: Eq_6309
+  Class: Eq_6349
   DataType: (arr byte)
   OrigDataType: (arr T_6348)
 T_6350:

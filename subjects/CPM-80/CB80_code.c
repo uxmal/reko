@@ -301,18 +301,18 @@ bool fn05EF(Eq_n bc, union Eq_n & bOut)
 	Eq_n c = (byte) bc;
 	g_b1670 = b;
 	g_t166F = c;
-	g_t1671.t0000 = 0x01;
+	g_b1671 = 0x01;
 	Eq_n bc_n = bc;
 	do
 	{
-		Eq_n a_n = *g_t166F;
+		cu8 a_n = *g_t166F;
 		byte b_n = SLICE(bc_n, byte, 8);
-		bool C_n = (bool) cond(a_n - g_t1671.t0000);
-		if (a_n < g_t1671.t0000)
+		bool C_n = (bool) cond(a_n - g_b1671);
+		if (a_n < g_b1671)
 			break;
-		C_n = fn056B(SEQ(b_n, *((word16) g_t166F + (uint16) g_t1671.t0000)), out bc_n);
-		g_t1671.t0000 = (byte) g_t1671.t0000 + 1;
-	} while (g_t1671.t0000 != 0x00);
+		C_n = fn056B(SEQ(b_n, *((word16) g_t166F + (uint16) g_b1671)), out bc_n);
+		++g_b1671;
+	} while (g_b1671 != 0x00);
 	bOut.u1 = <invalid>;
 	return C_n;
 }
@@ -344,7 +344,7 @@ void fn063E(byte b, Eq_n c, byte d, Eq_n e)
 	g_b1677 = b;
 	g_t1676 = c;
 	g_b167B = 0x00;
-	*g_t1678 = 0x00;
+	g_t1678->u0 = 0x00;
 	g_b167A = 0x00;
 	while (g_b167A <= 0x03)
 	{
@@ -367,9 +367,9 @@ void fn063E(byte b, Eq_n c, byte d, Eq_n e)
 		if (__rcr<byte,byte,bool>(g_b167B, 0x01, C_n) < 0x00)
 		{
 			Eq_n hl_n = g_t1678;
-			Eq_n a_n = *hl_n;
-			hl_n->u0 = (byte) a_n.t0000 + 1;
-			((word16) g_t1678 + (uint16) ((byte) a_n.t0000 + 1))->u0 = g_b167C;
+			byte a_n = *hl_n;
+			hl_n->u0 = a_n + 0x01;
+			((word16) g_t1678 + (uint16) (a_n + 0x01))->u0 = g_b167C;
 		}
 		++g_b167A;
 		if (g_b167A == 0x00)
@@ -377,9 +377,9 @@ void fn063E(byte b, Eq_n c, byte d, Eq_n e)
 	}
 	Eq_n hl_n = g_t1678;
 	Eq_n hl_n = g_t1676;
-	Eq_n a_n = *hl_n;
-	hl_n->u0 = (byte) a_n.t0000 + 1;
-	((word16) g_t1678 + (uint16) ((byte) a_n.t0000 + 1))->u0 = (byte) hl_n + 0x30;
+	byte a_n = *hl_n;
+	hl_n->u0 = a_n + 0x01;
+	((word16) g_t1678 + (uint16) (a_n + 0x01))->u0 = (byte) hl_n + 0x30;
 }
 
 // 06CE: Register byte fn06CE(Register byte b, Register Eq_n c)
@@ -576,22 +576,22 @@ byte fn082F(byte f, byte b, Eq_n c, byte e, word16 wArg02, word16 wArg04)
 				fn0920();
 				return f_n;
 			}
-			else if (g_t1520.t0000 == 0x00)
+			else if (g_b1520 == 0x00)
 			{
-				*g_t168B = g_t151F.t0000;
+				*g_t168B = g_b151F;
 				fn0920();
 				return f_n;
 			}
 			else
 			{
-				*g_t168B = g_t1520.t0000;
+				*g_t168B = g_b1520;
 				fn0920();
 				return f_n;
 			}
 		}
-		else if (g_t151E.t0000 == 0x00)
+		else if (g_b151E == 0x00)
 		{
-			*g_t168B = g_t151F.t0000;
+			*g_t168B = g_b151F;
 			fn08FD();
 			return f_n;
 		}
@@ -605,10 +605,10 @@ byte fn082F(byte f, byte b, Eq_n c, byte e, word16 wArg02, word16 wArg04)
 	{
 		if (*g_t168B == 0x00)
 		{
-			if (g_t151D.t0000 == 0x00)
-				*g_t168B = g_t151F.t0000;
+			if (g_b151D == 0x00)
+				*g_t168B = g_b151F;
 			else
-				*g_t168B = g_t151D.t0000;
+				*g_t168B = g_b151D;
 		}
 		fn0920();
 		return f_n;
@@ -620,7 +620,7 @@ byte fn082F(byte f, byte b, Eq_n c, byte e, word16 wArg02, word16 wArg04)
 //      fn082F
 void fn08EC()
 {
-	*g_t168B = g_t151E.t0000;
+	*g_t168B = g_b151E;
 	fn08FD();
 }
 
@@ -1005,7 +1005,7 @@ void fn100A(word16 af)
 		else if (g_b16A8 == 0x43)
 		{
 			word16 af_n = fn12D8();
-			g_t151D.t0000 = SLICE(af_n, byte, 8);
+			g_b151D = SLICE(af_n, byte, 8);
 			f_n = (byte) af_n;
 		}
 		else if (g_b16A8 == 0x44)
@@ -1033,7 +1033,7 @@ void fn100A(word16 af)
 		else if (g_b16A8 == 0x52)
 		{
 			word16 af_n = fn12D8();
-			g_t1520.t0000 = SLICE(af_n, byte, 8);
+			g_b1520 = SLICE(af_n, byte, 8);
 			f_n = (byte) af_n;
 		}
 		else if (g_b16A8 == 0x53)
@@ -1053,7 +1053,7 @@ void fn100A(word16 af)
 		else if (g_b16A8 == 88)
 		{
 			word16 af_n = fn12D8();
-			g_t151E.t0000 = SLICE(af_n, byte, 8);
+			g_b151E = SLICE(af_n, byte, 8);
 			f_n = (byte) af_n;
 		}
 		else
@@ -1278,34 +1278,10 @@ Eq_n g_t14FE = // 14FE
 		0x01
 	};
 cu8 g_b14FF = 0x00; // 14FF
-Eq_n g_t151D = // 151D
-	{
-		
-		{
-			0x00
-		},
-	};
-Eq_n g_t151E = // 151E
-	{
-		
-		{
-			0x00
-		},
-	};
-Eq_n g_t151F = // 151F
-	{
-		
-		{
-			0x00
-		},
-	};
-Eq_n g_t1520 = // 1520
-	{
-		
-		{
-			0x00
-		},
-	};
+cu8 g_b151D = 0x00; // 151D
+cu8 g_b151E = 0x00; // 151E
+cu8 g_b151F = 0x00; // 151F
+cu8 g_b1520 = 0x00; // 1520
 Eq_n g_t1521 = // 1521
 	{
 		0x00
@@ -1392,13 +1368,7 @@ Eq_n g_t166F = // 166F
 		0x1A
 	};
 byte g_b1670 = 0x1A; // 1670
-Eq_n g_t1671 = // 1671
-	{
-		
-		{
-			0x1A
-		},
-	};
+cu8 g_b1671 = 0x1A; // 1671
 Eq_n g_t1672 = // 1672
 	{
 		0x1A

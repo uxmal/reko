@@ -57,7 +57,11 @@ Error: Unable to load metadata file libc.so.xml.
        at Reko.Environments.SysV.ArchSpecific.Msp430CallingConvention.Generate(ICallingConventionEmitter ccr, DataType dtRet, DataType dtThis, List`1 dtParams) in d:\dev\uxmal\reko\master\src\Environments\SysV\ArchSpecific\Msp430CallingConvention.cs:line 712
    at Reko.Core.Serialization.ProcedureSerializer.Deserialize(SerializedSignature ss, Frame frame) in d:\dev\uxmal\reko\master\src\Core\Serialization\ProcedureSerializer.cs:line 175
    at Reko.Core.TypeLibraryDeserializer.LoadProcedure(Procedure_v1 sp) in d:\dev\uxmal\reko\master\src\Core\TypeLibraryDeserializer.cs:line 127
+0200: warning: Expected sizes of arrays to have been determined by now
+021C: warning: Expected sizes of arrays to have been determined by now
 0226: warning: Expected sizes of arrays to have been determined by now
+0200: warning: Expected sizes of arrays to have been determined by now
+021C: warning: Expected sizes of arrays to have been determined by now
 0226: warning: Expected sizes of arrays to have been determined by now
 
 === Elf\x86-64\ais3_crackme\ais3_crackme
@@ -117,9 +121,11 @@ l0800_17AE: warning: Non-integral switch expression
 00012590: warning: Expected sizes of arrays to have been determined by now
 00012B68: warning: Expected sizes of arrays to have been determined by now
 00012BA4: warning: Expected sizes of arrays to have been determined by now
+00012E16: warning: Expected sizes of arrays to have been determined by now
 0001300E: warning: Expected sizes of arrays to have been determined by now
 000137E8: warning: Expected sizes of arrays to have been determined by now
 00013974: warning: Expected sizes of arrays to have been determined by now
+00013984: warning: Expected sizes of arrays to have been determined by now
 00003CA8: warning: Expected sizes of arrays to have been determined by now
 000100B8: warning: Expected sizes of arrays to have been determined by now
 00012478: warning: Expected sizes of arrays to have been determined by now
@@ -128,9 +134,11 @@ l0800_17AE: warning: Non-integral switch expression
 00012590: warning: Expected sizes of arrays to have been determined by now
 00012B68: warning: Expected sizes of arrays to have been determined by now
 00012BA4: warning: Expected sizes of arrays to have been determined by now
+00012E16: warning: Expected sizes of arrays to have been determined by now
 0001300E: warning: Expected sizes of arrays to have been determined by now
 000137E8: warning: Expected sizes of arrays to have been determined by now
 00013974: warning: Expected sizes of arrays to have been determined by now
+00013984: warning: Expected sizes of arrays to have been determined by now
 
 === Hunk-m68k\BYTEOPS
 00002BC4: warning: Expected sizes of arrays to have been determined by now
@@ -140,18 +148,6 @@ l0800_17AE: warning: Non-integral switch expression
 020A: warning: Call target address 172D is invalid.
 0224: warning: Call target address 177D is invalid.
 0105: warning: Call target address 1729 is invalid.
-151D: warning: Expected sizes of arrays to have been determined by now
-151E: warning: Expected sizes of arrays to have been determined by now
-151F: warning: Expected sizes of arrays to have been determined by now
-1520: warning: Expected sizes of arrays to have been determined by now
-1521: warning: Expected sizes of arrays to have been determined by now
-1671: warning: Expected sizes of arrays to have been determined by now
-151D: warning: Expected sizes of arrays to have been determined by now
-151E: warning: Expected sizes of arrays to have been determined by now
-151F: warning: Expected sizes of arrays to have been determined by now
-1520: warning: Expected sizes of arrays to have been determined by now
-1521: warning: Expected sizes of arrays to have been determined by now
-1671: warning: Expected sizes of arrays to have been determined by now
 
 === regressions\reko-367\code
 
@@ -593,16 +589,23 @@ Signature of 'Microsoft Visual C++ 8' detected.
 0000000000412C60: warning: Expected sizes of arrays to have been determined by now
 0000000000412D00: warning: Expected sizes of arrays to have been determined by now
 0000000000412EC0: warning: Expected sizes of arrays to have been determined by now
+0000000000412F00: warning: Expected sizes of arrays to have been determined by now
 0000000000412F50: warning: Expected sizes of arrays to have been determined by now
+0000000000412F80: warning: Expected sizes of arrays to have been determined by now
 0000000000412FB0: warning: Expected sizes of arrays to have been determined by now
+0000000000412FE0: warning: Expected sizes of arrays to have been determined by now
 0000000000413010: warning: Expected sizes of arrays to have been determined by now
+0000000000413040: warning: Expected sizes of arrays to have been determined by now
 00000000004135E0: warning: Expected sizes of arrays to have been determined by now
 00000000004136B0: warning: Expected sizes of arrays to have been determined by now
+00000000004136C0: warning: Expected sizes of arrays to have been determined by now
 0000000000413700: warning: Expected sizes of arrays to have been determined by now
 0000000000415F50: warning: Expected sizes of arrays to have been determined by now
+0000000000415F60: warning: Expected sizes of arrays to have been determined by now
 0000000000415F78: warning: Expected sizes of arrays to have been determined by now
 0000000000416068: warning: Expected sizes of arrays to have been determined by now
 0000000000416460: warning: Expected sizes of arrays to have been determined by now
+0000000000416480: warning: Expected sizes of arrays to have been determined by now
 00000000004164E8: warning: Expected sizes of arrays to have been determined by now
 0000000000416C18: warning: Expected sizes of arrays to have been determined by now
 0000000000416E38: warning: Expected sizes of arrays to have been determined by now
@@ -612,16 +615,23 @@ Signature of 'Microsoft Visual C++ 8' detected.
 0000000000412C60: warning: Expected sizes of arrays to have been determined by now
 0000000000412D00: warning: Expected sizes of arrays to have been determined by now
 0000000000412EC0: warning: Expected sizes of arrays to have been determined by now
+0000000000412F00: warning: Expected sizes of arrays to have been determined by now
 0000000000412F50: warning: Expected sizes of arrays to have been determined by now
+0000000000412F80: warning: Expected sizes of arrays to have been determined by now
 0000000000412FB0: warning: Expected sizes of arrays to have been determined by now
+0000000000412FE0: warning: Expected sizes of arrays to have been determined by now
 0000000000413010: warning: Expected sizes of arrays to have been determined by now
+0000000000413040: warning: Expected sizes of arrays to have been determined by now
 00000000004135E0: warning: Expected sizes of arrays to have been determined by now
 00000000004136B0: warning: Expected sizes of arrays to have been determined by now
+00000000004136C0: warning: Expected sizes of arrays to have been determined by now
 0000000000413700: warning: Expected sizes of arrays to have been determined by now
 0000000000415F50: warning: Expected sizes of arrays to have been determined by now
+0000000000415F60: warning: Expected sizes of arrays to have been determined by now
 0000000000415F78: warning: Expected sizes of arrays to have been determined by now
 0000000000416068: warning: Expected sizes of arrays to have been determined by now
 0000000000416460: warning: Expected sizes of arrays to have been determined by now
+0000000000416480: warning: Expected sizes of arrays to have been determined by now
 00000000004164E8: warning: Expected sizes of arrays to have been determined by now
 0000000000416C18: warning: Expected sizes of arrays to have been determined by now
 0000000000416E38: warning: Expected sizes of arrays to have been determined by now
@@ -839,7 +849,6 @@ Warning: Recursion too deep in PtrPrimitiveReplacer
 Warning: Recursion too deep in PtrPrimitiveReplacer
 Warning: Recursion too deep in PtrPrimitiveReplacer
 l0040478C: warning: Non-integral switch expression
-00411FF3: warning: Expected sizes of arrays to have been determined by now
 00412060: warning: Expected sizes of arrays to have been determined by now
 00412170: warning: Expected sizes of arrays to have been determined by now
 004122D0: warning: Expected sizes of arrays to have been determined by now
@@ -858,7 +867,6 @@ l0040478C: warning: Non-integral switch expression
 00431498: warning: Expected sizes of arrays to have been determined by now
 00432550: warning: Expected sizes of arrays to have been determined by now
 00452340: warning: Expected sizes of arrays to have been determined by now
-00411FF3: warning: Expected sizes of arrays to have been determined by now
 00412060: warning: Expected sizes of arrays to have been determined by now
 00412170: warning: Expected sizes of arrays to have been determined by now
 004122D0: warning: Expected sizes of arrays to have been determined by now
@@ -1018,7 +1026,7 @@ reko_array.dll: warning: Win32 X86-64 main procedure finder not implemented yet.
 
 *** Elf\ARM\angr-685\RTOSDemo
 0000951A: error: An error occurred while processing the statement Mem21[r3_14 + 0<32>:word32] = Mem19[r3_14 - r4_11:word32].
-    Not handling (ptr32 (struct (0 T_7370 t0000))) and (ptr32 (struct (0 T_9454 t0000))) yet.
+    Not handling (ptr32 (struct (0 T_7370 t0000))) and (ptr32 (struct (0 (arr T_9453) a0000))) yet.
        at Reko.Typing.ExpressionTypeDescender.PushMinuendDataType(DataType dtDiff, DataType dtSub) in d:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 414
    at Reko.Typing.ExpressionTypeDescender.VisitBinaryExpression(BinaryExpression binExp, TypeVariable tv) in d:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 266
    at Reko.Core.Expressions.BinaryExpression.Accept[T,C](ExpressionVisitor`2 v, C context) in d:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 54
@@ -1169,10 +1177,8 @@ safe_read: error: An error occurred while rewriting procedure to high-level lang
    at Reko.Structure.StructureAnalysis.Structure() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 79
    at Reko.Decompiler.StructureProgram() in d:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 535
 00017540: warning: Expected sizes of arrays to have been determined by now
-00027F24: warning: Expected sizes of arrays to have been determined by now
 0002B411: warning: Expected sizes of arrays to have been determined by now
 00017540: warning: Expected sizes of arrays to have been determined by now
-00027F24: warning: Expected sizes of arrays to have been determined by now
 0002B411: warning: Expected sizes of arrays to have been determined by now
 
 === PDP-11\spcinv
@@ -2229,4 +2235,4 @@ Signature of 'Microsoft Visual C++ 8' detected.
 0040120B: warning: Unable to determine the upper bound of an indirect call or jump; there may be more than 2 entries.
 004011A5: warning: Unable to determine the upper bound of an indirect call or jump; there may be more than 2 entries.
 
-Decompiled 82 binaries in 48.68 seconds.
+Decompiled 82 binaries in 45.89 seconds.

@@ -12796,7 +12796,7 @@ l0800_nFCB:
 							al_n = (ss->*fp).b0002;
 							if (ax_n < 0x00)
 							{
-								fn0800-93A6(&(ss->*(ss->*(fp - 2)).a0000).t0000, out di_n);
+								fn0800-93A6(&(ss->*(ss->*(fp - 2)).a0000), out di_n);
 								diOut = di_n;
 								return dx_n;
 							}
@@ -12829,7 +12829,7 @@ l0800_nFCB:
 					{
 						if (((int16) bLoc03_n & 0x01) == 0x00)
 						{
-							di_n = fn0800-8FAB(&(ss->*(ss->*(fp - 2)).a0000).t0000, ds, out es_n);
+							di_n = fn0800-8FAB(&(ss->*(ss->*(fp - 2)).a0000), ds, out es_n);
 							fn0800_A2D4(ds);
 						}
 						else
@@ -12839,13 +12839,13 @@ l0800_nFCB:
 					fn0800_A2D8(ds);
 					if (wLoc0A < 0x00)
 					{
-						fn0800-93A6(&(ss->*(ss->*(fp - 2)).a0000).t0000, out di_n);
+						fn0800-93A6(&(ss->*(ss->*(fp - 2)).a0000), out di_n);
 						diOut = di_n;
 						return dx_n;
 					}
 					else
 					{
-						fn0800-93BE(&(ss->*(ss->*(fp - 2)).a0000).t0000, out di_n);
+						fn0800-93BE(&(ss->*(ss->*(fp - 2)).a0000), out di_n);
 						diOut = di_n;
 						return dx_n;
 					}
@@ -12923,7 +12923,7 @@ l0800_nD2:
 							wArg0A_n = si_n;
 							si_n = v64_n;
 							if ((bLoc03_n & 0x01) == 0x00)
-								di_n = fn0800-8FAB(&(ss->*(ss->*(fp - 2)).a0000).t0000, ds, out es_n);
+								di_n = fn0800-8FAB(&(ss->*(ss->*(fp - 2)).a0000), ds, out es_n);
 							while (true)
 							{
 								dx_n = ϕ(dx_n, dx_n, dx_n, dx_n);
@@ -12943,20 +12943,20 @@ l0800_nD2:
 								{
 									if (si_n + 0x01 >= v64_n)
 									{
-										fn0800-93A6(&(ss->*(ss->*(fp - 2)).a0000).t0000, out di_n);
+										fn0800-93A6(&(ss->*(ss->*(fp - 2)).a0000), out di_n);
 										diOut = di_n;
 										return dx_n;
 									}
 									if ((bLoc03_n & 0x01) != 0x00)
 									{
-										fn0800-93A6(&(ss->*(ss->*(fp - 2)).a0000).t0000, out di_n);
+										fn0800-93A6(&(ss->*(ss->*(fp - 2)).a0000), out di_n);
 										diOut = di_n;
 										return dx_n;
 									}
 									else
 									{
 										es_n->*di_n = 0x00;
-										fn0800-93A6(&(ss->*(ss->*(fp - 2)).a0000).t0000, out di_n);
+										fn0800-93A6(&(ss->*(ss->*(fp - 2)).a0000), out di_n);
 										diOut = di_n;
 										return dx_n;
 									}
@@ -13020,7 +13020,7 @@ l0800_nE:
 							} while (al_n != 0x00);
 						}
 					}
-					fn0800-93BE(&(ss->*(ss->*(fp - 2)).a0000).t0000, out di_n);
+					fn0800-93BE(&(ss->*(ss->*(fp - 2)).a0000), out di_n);
 					diOut = di_n;
 					return dx_n;
 				case 0x11:
@@ -13064,13 +13064,13 @@ l0800_n:
 					}
 					if (wLoc0A < 0x00)
 					{
-						fn0800-93A6(&(ss->*(ss->*(fp - 2)).a0000).t0000, out di_n);
+						fn0800-93A6(&(ss->*(ss->*(fp - 2)).a0000), out di_n);
 						diOut = di_n;
 						return dx_n;
 					}
 					else
 					{
-						fn0800-93BE(&(ss->*(ss->*(fp - 2)).a0000).t0000, out di_n);
+						fn0800-93BE(&(ss->*(ss->*(fp - 2)).a0000), out di_n);
 						diOut = di_n;
 						return dx_n;
 					}

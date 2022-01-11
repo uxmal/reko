@@ -709,7 +709,7 @@ T_93: (in gp5_gp6_gp7_14 @ 00000155 : real48)
 T_94: (in 0x8030<16> @ 00000155 : word16)
   Class: Eq_94
   DataType: (ptr16 (arr Eq_906))
-  OrigDataType: (ptr16 (struct (0 T_907 t0000)))
+  OrigDataType: (ptr16 (struct (0 (arr T_906) a0000)))
 T_95: (in gp9_6 * 3<16> @ 00000000 : word16)
   Class: Eq_95
   DataType: ui16
@@ -725,7 +725,7 @@ T_97: (in gp2_gp3_gp4_15 @ 00000157 : real48)
 T_98: (in 0x8060<16> @ 00000157 : word16)
   Class: Eq_98
   DataType: (ptr16 (arr Eq_908))
-  OrigDataType: (ptr16 (struct (0 T_909 t0000)))
+  OrigDataType: (ptr16 (struct (0 (arr T_908) a0000)))
 T_99: (in gp9_6 * 3<16> @ 00000000 : word16)
   Class: Eq_99
   DataType: ui16
@@ -3990,7 +3990,7 @@ T_912:
   DataType: Eq_910
   OrigDataType: (struct 0001 (0 T_122 t0000))
 T_913:
-  Class: Eq_911
+  Class: Eq_913
   DataType: (arr Eq_910 15)
   OrigDataType: (arr T_912 15)
 T_914:

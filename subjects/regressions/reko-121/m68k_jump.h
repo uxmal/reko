@@ -16,7 +16,7 @@ globals_t: (in globals @ 00000000 : (ptr32 (struct "Globals")))
 T_2: (in a0 @ 00000000 : (ptr32 Eq_2))
   Class: Eq_2
   DataType: (ptr32 Eq_2)
-  OrigDataType: (ptr32 (struct (0 T_6 t0000) (4 T_75 t0004)))
+  OrigDataType: (ptr32 (struct (0 T_6 t0000) (4 (arr T_74) a0004)))
 T_3: (in a1 @ 00000000 : (ptr32 word32))
   Class: Eq_3
   DataType: (ptr32 word32)
@@ -108,7 +108,7 @@ T_24: (in 4<i32> @ 0000C054 : int32)
 T_25: (in a0 + 4<i32> @ 0000C054 : word32)
   Class: Eq_25
   DataType: (ptr32 (arr byte))
-  OrigDataType: (ptr32 (struct (0 T_75 t0000)))
+  OrigDataType: (ptr32 (struct (0 (arr T_74) a0000)))
 T_26: (in a0 + 4<i32> + a4_56 @ 0000C054 : word32)
   Class: Eq_26
   DataType: (ptr32 byte)

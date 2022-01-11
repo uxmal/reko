@@ -17,7 +17,7 @@ globals_t: (in globals @ 00000000 : (ptr64 (struct "Globals")))
 T_2: (in rcx @ 00000000 : (arr byte))
   Class: Eq_2
   DataType: (ptr64 (arr byte))
-  OrigDataType: (ptr64 (struct (0 T_31 t0000)))
+  OrigDataType: (ptr64 (struct (0 (arr T_30) a0000)))
 T_3: (in dwLoc0C_38 @ 2121D100C : int32)
   Class: Eq_3
   DataType: int32
@@ -105,7 +105,7 @@ T_23: (in 0x38<64> @ 2121D1079 : word64)
 T_24: (in fp - 0x38<64> @ 00000000 : (arr byte))
   Class: Eq_24
   DataType: (ptr64 (arr byte))
-  OrigDataType: (ptr64 (struct (0 T_33 t0000)))
+  OrigDataType: (ptr64 (struct (0 (arr T_32) a0000)))
 T_25: (in CONVERT(dwLoc0C_39, word32, int64) @ 2121D1079 : int64)
   Class: Eq_25
   DataType: int64

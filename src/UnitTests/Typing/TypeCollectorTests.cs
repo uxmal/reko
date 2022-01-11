@@ -60,6 +60,16 @@ namespace Reko.UnitTests.Typing
             return program;
         }
 
+        private void Then_GlobalFieldsAre(Program program, params string[] sExpected)
+        {
+            var fields = ((StructureType) ((Pointer) program.Globals.TypeVariable.OriginalDataType).Pointee).Fields.ToArray();
+            var c = Math.Min(fields.Length, sExpected.Length);
+            for (int i = 0; i < fields.Length; ++i)
+            {
+                Assert.AreEqual(sExpected[i], fields[i].ToString(), $"Field {i} mismatch");
+            }
+            Assert.AreEqual(fields.Length, sExpected.Length, "Field count mismatch");
+        }
 
         protected override void RunTest(Program program, string outputFile)
         {
@@ -127,7 +137,12 @@ namespace Reko.UnitTests.Typing
 
             program.TypeStore.BuildEquivalenceClassDataTypes(program.TypeFactory);
             DumpProgAndStore(program, sw);
-            Assert.AreEqual(expectedOutput, sw.ToString());
+            var sActual = sw.ToString();
+            if (expectedOutput != sActual)
+            {
+                Console.WriteLine(sActual);
+                Assert.AreEqual(expectedOutput, sw.ToString());
+            }
         }
 
         private TypeCollector Given_TypeCollector(Program program)
@@ -425,17 +440,6 @@ namespace Reko.UnitTests.Typing
             tyco.CollectImageSymbols();
 
             Then_GlobalFieldsAre(program, "123400: a_data: T_2");
-        }
-
-        private void Then_GlobalFieldsAre(Program program, params string [] sExpected)
-        {
-            var fields = ((StructureType) ((Pointer) program.Globals.TypeVariable.OriginalDataType).Pointee).Fields.ToArray();
-            var c = Math.Min(fields.Length, sExpected.Length);
-            for (int i = 0; i < fields.Length; ++i)
-            {
-                Assert.AreEqual(sExpected[i], fields[i].ToString(), $"Field {i} mismatch");
-            }
-            Assert.AreEqual(fields.Length, sExpected.Length, "Field count mismatch");
         }
     }
 }

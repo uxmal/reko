@@ -146,12 +146,12 @@ word16 fn1483-0CA0(byte * es_di, struct Eq_n * ss_bp, byte al, byte ah, struct E
 	int16 dx_n = ds->*((word32) si + 5950) *s16 0x0C62;
 	ds->*bx_n += (byte) dx_n;
 	byte bl_n = bl_n + ah_n;
-	struct Eq_n Eq_n::* bx_n = SEQ(bh_n, bl_n);
+	byte Eq_n::* bx_n = SEQ(bh_n, bl_n);
 	Mem107[ds:bx_n - 0x56 + di:byte] = __rol<byte,byte>(Mem96[ds:bx_n - 0x56 + di:byte], 226);
 	Eq_n v19_n = (ss_bp->w007B & 0x02) != 0x00;
 	ss_bp->w007B = __ror<word16,byte>(ss_bp->w007B, 0x01);
-	(ds->*bx_n).t0000 = (Eq_n) ((byte) v19_n + ((byte) ((ds->*bx_n).t0000).t0000 + bl_n));
-	byte bl_n = bl_n & (ds->*bx_n).t0000;
+	ds->*bx_n = (byte) v19_n + (ds->*bx_n + bl_n);
+	byte bl_n = bl_n & ds->*bx_n;
 	*es_di = (byte) ax_n - 0xAC;
 	word16 Eq_n::* bx_n = SEQ(bh_n, bl_n);
 	ds->*bx_n = bx_n + ds->*bx_n;

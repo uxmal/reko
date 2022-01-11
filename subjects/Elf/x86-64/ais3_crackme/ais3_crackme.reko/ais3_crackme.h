@@ -342,7 +342,7 @@ T_66: (in eax @ 00400518 : word32)
 T_67: (in rdi @ 00400518 : (arr byte))
   Class: Eq_67
   DataType: (ptr64 (arr byte))
-  OrigDataType: (ptr64 (struct (0 T_163 t0000)))
+  OrigDataType: (ptr64 (struct (0 (arr T_162) a0000)))
 T_68: (in dwLoc0C_130 @ 00400528 : word32)
   Class: Eq_68
   DataType: word32
@@ -406,7 +406,7 @@ T_82: (in CONVERT(dwLoc0C_130, word32, int64) @ 00400594 : int64)
 T_83: (in 0x601020<64> @ 00400594 : word64)
   Class: Eq_83
   DataType: (ptr64 (arr byte))
-  OrigDataType: (ptr64 (struct (0 T_167 t0000)))
+  OrigDataType: (ptr64 (struct (0 (arr T_166) a0000)))
 T_84: (in CONVERT(dwLoc0C_130, word32, int64) + 0x601020<64> @ 00400594 : word64)
   Class: Eq_84
   DataType: int64
@@ -690,7 +690,7 @@ T_153: (in 0<u64> @ 0040066A : uint64)
 T_154: (in 0000000000600DF8 @ 00400679 : ptr64)
   Class: Eq_154
   DataType: (ptr64 (arr (ptr64 code)))
-  OrigDataType: (ptr64 (struct (0 T_169 t0000)))
+  OrigDataType: (ptr64 (struct (0 (arr T_168) a0000)))
 T_155: (in 8<64> @ 00400679 : word64)
   Class: Eq_155
   DataType: ui64
@@ -732,7 +732,7 @@ T_164:
   DataType: byte
   OrigDataType: (struct 0001 (0 T_80 t0000))
 T_165:
-  Class: Eq_163
+  Class: Eq_165
   DataType: (arr byte)
   OrigDataType: (arr T_164)
 T_166:

@@ -27,7 +27,7 @@ Eq_1: (struct "Globals"
 		(160 cui16 w0160)
 		(162 word16 w0162)
 		(172 word16 w0172)
-		(200 Eq_178 t0200)
+		(200 (arr Eq_178) a0200)
 		(202 (ptr20 Eq_638) pxCurrentTCB)
 		(204 word16 uxTasksDeleted)
 		(206 word16 uxCurrentNumberOfTasks)
@@ -41,7 +41,7 @@ Eq_1: (struct "Globals"
 		(216 Eq_2800 xNextFreeByte)
 		(218 word16 usCriticalNesting)
 		(21A word16 total_len)
-		(21C Eq_356 xRxedChars)
+		(21C (arr Eq_356) xRxedChars)
 		(21E Eq_356 xCharsForTx)
 		(220 word16 sTHREEmpty)
 		(222 cup16 w0222)
@@ -290,14 +290,14 @@ Eq_176: (fn void (Eq_178))
 	T_176 (in uart_putchar_isr_mode @ 00004188 : word16)
 	T_177 (in signature of uart_putchar_isr_mode @ 0000439C : void)
 	T_183 (in uart_putchar_isr_mode @ 0000419E : word16)
-Eq_178: (union "Eq_178" (byte u0) (word20 u1) ((arr byte) u2))
+Eq_178: (union "Eq_178" (byte u0) (word20 u1))
 	T_178 (in r15 @ 00004188 : Eq_178)
 	T_179 (in 0<8> @ 00004188 : byte)
 	T_184 (in 1<8> @ 0000419E : byte)
 	T_455 (in Mem4[0x0200<p16>:byte] @ 0000439C : byte)
 	T_465 (in Mem5[0x0200<p16>:byte] @ 000043B0 : byte)
 	T_466 (in 0<8> @ 000043B0 : byte)
-	T_4076
+	T_4075
 Eq_190: (fn void (ui20))
 	T_190 (in vTaskStartScheduler @ 00004200 : word16)
 	T_191 (in signature of vTaskStartScheduler @ 00004702 : void)
@@ -498,7 +498,7 @@ Eq_346: (union "Eq_346" (byte u0) (word20 u1))
 	T_349 (in Mem23[fp + 6<32>:byte] @ 000042F0 : byte)
 	T_361 (in r15 @ 000042FE : Eq_346)
 	T_1929 (in 0<20> @ 00004CD0 : word20)
-Eq_356: (union "Eq_356" (word16 u0) ((ptr20 Eq_4090) u1) ((arr byte) u2))
+Eq_356: (union "Eq_356" (byte u0) (word16 u1) ((ptr20 Eq_4090) u2))
 	T_356 (in r15_52 @ 000042FE : Eq_356)
 	T_368 (in Mem58[0x021C<p16>:word16] @ 00004302 : word16)
 	T_369 (in r15_62 @ 0000430A : Eq_356)
@@ -522,7 +522,7 @@ Eq_356: (union "Eq_356" (word16 u0) ((ptr20 Eq_4090) u1) ((arr byte) u2))
 	T_2579 (in 1<16> @ 0000503E : word16)
 	T_4067
 	T_4068
-	T_4078
+	T_4077
 Eq_358: (fn ui20 (ui20, Eq_346, Eq_362))
 	T_358 (in xQueueCreate @ 000042FE : word16)
 	T_359 (in signature of xQueueCreate @ 00004CC4 : void)
@@ -4065,7 +4065,7 @@ T_466: (in 0<8> @ 000043B0 : byte)
   Class: Eq_178
   DataType: byte
   OrigDataType: byte
-T_467: (in g_t0200 != 0<8> @ 00000000 : bool)
+T_467: (in g_a0200[0<i32>] != 0<8> @ 00000000 : bool)
   Class: Eq_467
   DataType: bool
   OrigDataType: bool
@@ -4197,7 +4197,7 @@ T_499: (in out r15_12 @ 000043EC : word16)
   Class: Eq_496
   DataType: Eq_496
   OrigDataType: (union (ptr16 u1) (word20 u0))
-T_500: (in xQueueReceive(sr, r14, r15, xRxedChars, out r15_12) @ 000043EC : word20)
+T_500: (in xQueueReceive(sr, r14, r15, xRxedChars[0<i32>], out r15_12) @ 000043EC : word20)
   Class: Eq_2
   DataType: ui20
   OrigDataType: word20
@@ -4549,7 +4549,7 @@ T_585: (in out r15_27 @ 00004468 : word16)
   Class: Eq_575
   DataType: Eq_575
   OrigDataType: (union (ptr16 u1) (word20 u0))
-T_586: (in xQueueSendFromISR(sr, 0<16>, fp - 0xA<32>, xRxedChars, out r15_27) @ 00004468 : word20)
+T_586: (in xQueueSendFromISR(sr, 0<16>, fp - 0xA<32>, xRxedChars[0<i32>], out r15_27) @ 00004468 : word20)
   Class: Eq_2
   DataType: ui20
   OrigDataType: word20
@@ -8832,7 +8832,7 @@ T_1646: (in uxSchedulerSuspended != 0<16> @ 00000000 : bool)
 T_1647: (in 546<i16> @ 00004B2E : int16)
   Class: Eq_1647
   DataType: (ptr16 (arr Eq_4079))
-  OrigDataType: (ptr16 (struct (0 T_4080 t0000)))
+  OrigDataType: (ptr16 (struct (0 (arr T_4079) a0000)))
 T_1648: (in 020C @ 00004B2E : ptr16)
   Class: Eq_1648
   DataType: (ptr16 Eq_629)
@@ -9040,7 +9040,7 @@ T_1698: (in Mem19[0x020C<p16>:word16] @ 00004B30 : word16)
 T_1699: (in 546<i16> @ 00004B44 : int16)
   Class: Eq_1699
   DataType: (ptr16 (arr Eq_4081))
-  OrigDataType: (ptr16 (struct (0 T_4082 t0000)))
+  OrigDataType: (ptr16 (struct (0 (arr T_4081) a0000)))
 T_1700: (in 020C @ 00004B44 : ptr16)
   Class: Eq_1700
   DataType: (ptr16 Eq_629)
@@ -9072,7 +9072,7 @@ T_1706: (in (&g_w0222)[uxTopReadyPriority *16 0x10<20>] == 0<16> @ 00000000 : bo
 T_1707: (in 550<i16> @ 00004BCC : int16)
   Class: Eq_1707
   DataType: (ptr16 (arr Eq_4083))
-  OrigDataType: (ptr16 (struct (0 T_4084 t0000)))
+  OrigDataType: (ptr16 (struct (0 (arr T_4083) a0000)))
 T_1708: (in 020C @ 00004BCC : ptr16)
   Class: Eq_1708
   DataType: (ptr16 Eq_629)
@@ -9108,7 +9108,7 @@ T_1715: (in Mem48[550<i16>[Mem48[0x020C<p16>:word16] *16 0x10<20>] + 2<i16>:word
 T_1716: (in 550<i16> @ 00004BCC : int16)
   Class: Eq_1716
   DataType: (ptr16 (arr Eq_4085))
-  OrigDataType: (ptr16 (struct (0 T_4086 t0000)))
+  OrigDataType: (ptr16 (struct (0 (arr T_4085) a0000)))
 T_1717: (in 020C @ 00004BCC : ptr16)
   Class: Eq_1717
   DataType: (ptr16 Eq_629)
@@ -9132,7 +9132,7 @@ T_1721: (in 550<i16>[Mem48[0x020C<p16>:word16] *16 0x10<20>] @ 00004BCC : word16
 T_1722: (in 550<i16> @ 00004BA8 : int16)
   Class: Eq_1722
   DataType: (ptr16 (arr Eq_4087))
-  OrigDataType: (ptr16 (struct (0 T_4088 t0000)))
+  OrigDataType: (ptr16 (struct (0 (arr T_4087) a0000)))
 T_1723: (in 020C @ 00004BA8 : ptr16)
   Class: Eq_1723
   DataType: (ptr16 Eq_629)
@@ -18572,21 +18572,21 @@ T_4074:
   DataType: (arr byte)
   OrigDataType: (arr T_4073)
 T_4075:
-  Class: Eq_4075
-  DataType: byte
-  OrigDataType: (struct 0001 (0 T_24 t0000))
-T_4076:
   Class: Eq_178
   DataType: Eq_178
-  OrigDataType: (arr byte)
+  OrigDataType: (struct 0001 (0 byte b0000))
+T_4076:
+  Class: Eq_4076
+  DataType: (arr Eq_178)
+  OrigDataType: (arr T_4075)
 T_4077:
-  Class: Eq_4077
-  DataType: byte
-  OrigDataType: (struct 0001 (0 T_33 t0000))
-T_4078:
   Class: Eq_356
   DataType: Eq_356
-  OrigDataType: (arr byte)
+  OrigDataType: (struct 0001 (0 byte b0000))
+T_4078:
+  Class: Eq_4078
+  DataType: (arr Eq_356)
+  OrigDataType: (arr T_4077)
 T_4079:
   Class: Eq_4079
   DataType: Eq_4079
@@ -18815,7 +18815,7 @@ typedef struct Globals {
 	cui16 w0160;	// 160
 	word16 w0162;	// 162
 	word16 w0172;	// 172
-	Eq_178 t0200;	// 200
+	Eq_178 a0200[];	// 200
 	struct Eq_638 * pxCurrentTCB;	// 202
 	word16 uxTasksDeleted;	// 204
 	word16 uxCurrentNumberOfTasks;	// 206
@@ -18829,7 +18829,7 @@ typedef struct Globals {
 	Eq_2800 xNextFreeByte;	// 216
 	word16 usCriticalNesting;	// 218
 	word16 total_len;	// 21A
-	Eq_356 xRxedChars;	// 21C
+	Eq_356 xRxedChars[];	// 21C
 	Eq_356 xCharsForTx;	// 21E
 	word16 sTHREEmpty;	// 220
 	cup16 w0222;	// 222
@@ -18953,7 +18953,6 @@ typedef void (Eq_176)(Eq_178);
 typedef union Eq_178 {
 	byte u0;
 	word20 u1;
-	byte u2[];
 } Eq_178;
 
 typedef void (Eq_190)(ui20);
@@ -19086,9 +19085,9 @@ typedef union Eq_346 {
 } Eq_346;
 
 typedef union Eq_356 {
-	word16 u0;
-	struct Eq_4090 * u1;
-	byte u2[];
+	byte u0;
+	word16 u1;
+	struct Eq_4090 * u2;
 } Eq_356;
 
 typedef ui20 (Eq_358)(ui20, Eq_346, Eq_362);

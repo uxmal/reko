@@ -17,7 +17,7 @@ Eq_n g_t28140 = // 00028140
 		null
 	};
 char * g_ptr28150 = null; // 00028150
-union Eq_n * g_ptr28160 = null; // 00028160
+Eq_n (* g_ptr28160)[] = null; // 00028160
 Eq_n g_t28180 = // 00028180
 	{
 		0x00

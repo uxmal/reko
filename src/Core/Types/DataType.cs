@@ -90,7 +90,9 @@ namespace Reko.Core.Types
             TypeVariable? tv = dt as TypeVariable;
             while (tv != null)
             {
-                dt = tv.Class!.DataType ?? tv.DataType;
+                if (tv.Class is null)
+                    return null;
+                dt = tv.Class.DataType ?? tv.DataType;
                 tv = dt as TypeVariable;
             }     
             EquivalenceClass? eq = dt as EquivalenceClass;

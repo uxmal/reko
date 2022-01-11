@@ -71,7 +71,7 @@ T_11: (in rax_22 + 0<64> : word64)
 T_12: (in Mem0[rax_22 + 0<64>:word64] : word64)
   Class: Eq_12
   DataType: (ptr64 (arr word32))
-  OrigDataType: (ptr64 (struct (0 T_30 t0000)))
+  OrigDataType: (ptr64 (struct (0 (arr T_29) a0000)))
 T_13: (in rsi : word64)
   Class: Eq_13
   DataType: ptr64
@@ -111,7 +111,7 @@ T_21: (in CONVERT(Mem0[rax_22 + 0<64>:word64][CONVERT(CONVERT(Mem0[rsi + rbx_18:
 T_22: (in rdi : word64)
   Class: Eq_22
   DataType: (ptr64 (arr byte))
-  OrigDataType: (ptr64 (struct (0 T_32 t0000)))
+  OrigDataType: (ptr64 (struct (0 (arr T_31) a0000)))
 T_23: (in rdi + rbx_18 : word64)
   Class: Eq_23
   DataType: (ptr64 byte)

@@ -925,7 +925,7 @@ T_202: (in 0<u64> @ 000012B3 : uint64)
 T_203: (in 0000000000003DD8 @ 000012C1 : ptr64)
   Class: Eq_203
   DataType: (ptr64 (arr (ptr64 code)))
-  OrigDataType: (ptr64 (struct (0 T_212 t0000)))
+  OrigDataType: (ptr64 (struct (0 (arr T_211) a0000)))
 T_204: (in 8<64> @ 000012C1 : word64)
   Class: Eq_204
   DataType: ui64

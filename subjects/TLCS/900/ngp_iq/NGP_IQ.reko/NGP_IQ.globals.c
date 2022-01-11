@@ -9,7 +9,7 @@ byte g_b6DA0; // 00006DA0
 byte g_b6F83; // 00006F83
 byte g_b6F86; // 00006F86
 byte g_b6F91; // 00006F91
-byte g_a7000[];
+Eq_n g_a7000[];
 byte g_b8002; // 00008002
 byte g_b8003; // 00008003
 byte g_b8004; // 00008004

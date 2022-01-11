@@ -407,7 +407,7 @@ namespace Reko.Core.Types
 				return UnifyArrays(arrA, arrB);
 			}
             arrA = a.ResolveAs<ArrayType>();
-            arrB = a as ArrayType;
+            arrB = b as ArrayType;
             if (arrA != null && arrB != null)
             {
                 return UnifyArrays(arrA, arrB);
@@ -477,7 +477,7 @@ namespace Reko.Core.Types
             StructureField? f = str.Fields.AtOffset(0);
             if (f != null)
             {
-                f.DataType = Unify(a, f.DataType)!;
+                f.DataType = UnifyFieldTypes(a, f.DataType)!;
             }
             else
             {
@@ -620,7 +620,7 @@ namespace Reko.Core.Types
 				}
 				else
 				{
-                    var fieldType = Unify(fa.DataType, fb.DataType)!;
+                    var fieldType = UnifyFieldTypes(fa.DataType, fb.DataType);
                     if (!TryMakeFieldName(fa, fb, out string fieldName))
                         throw new NotSupportedException(
                             string.Format(
@@ -652,6 +652,27 @@ namespace Reko.Core.Types
             mem.ForceStructure = a.ForceStructure | b.ForceStructure;
 			return mem;
 		}
+
+        private DataType UnifyFieldTypes(DataType fa, DataType fb)
+        {
+            var afa = fa?.ResolveAs<ArrayType>();
+            var afb = fb?.ResolveAs<ArrayType>();
+            if (afa is not null && afb is not null)
+            {
+                return UnifyArrays(afa, afb)!;
+            }
+            if (afa is not null)
+            {
+                var dt = Unify(afa.ElementType, fb)!;
+                return factory.CreateArrayType(dt, afa.Length);
+            }
+            if (afb is not null)
+            {
+                var dt = Unify(afb.ElementType, fa)!;
+                return factory.CreateArrayType(dt, afb.Length);
+            }
+            return Unify(fa, fb)!;
+        }
 
         private bool TryMakeFieldName(StructureField fa, StructureField fb, out string name)
         {

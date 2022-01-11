@@ -2175,7 +2175,7 @@ void fn0000C1FE(struct Eq_n * r2, struct Eq_n * r3, ptr32 * pc)
 		ui32 r6_n;
 		struct Eq_n * r11_n;
 		(*pc + 2)();
-		r11_n->aFFFFF08F[r6_n].dw0000 = atomic_fetch_add(r11_n->aFFFFF08F[0].dw0000, r2_n->w50E97FFE);
+		r11_n->aFFFFF08F[r6_n * 2 / 4].u0 = atomic_fetch_add(r11_n->aFFFFF08F[0], r2_n->w50E97FFE);
 	}
 	else
 	{
@@ -2249,7 +2249,7 @@ struct Eq_n * fn0000C6FA(struct Eq_n * r6, struct Eq_n * r7, struct Eq_n * r8, s
 			ptr32 r4_n;
 			word32 r1_n;
 			(*pc_n + 2)();
-			*r0_n->ptr5003 = (union Eq_n *) __ashift(0x04, r2_n->t50E87FFE);
+			*r0_n->ptr5003 = (union Eq_n *) __ashift(0x04, r2_n->ptr50E87FFE);
 			ptr32 fp_n = fp_n->ptr000C;
 			struct Eq_n * ap_n = fp_n->ptr0008;
 			r2Out = r2_n;

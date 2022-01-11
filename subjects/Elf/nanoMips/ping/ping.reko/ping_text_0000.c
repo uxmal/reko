@@ -7322,10 +7322,10 @@ l0040558C:
 			r7_n = *((word32) r9_n + 1);
 			goto l0040558C;
 		}
-		if ((&g_t432550)[(r17_n + 0x08) / 4] == 0x00)
+		if (g_a432550[r17_n + 0x08] == 0x00)
 			goto l004052C2;
 		__sync(0x00);
-		(&g_t432550)[(r17_n + 0x08) / 4] = 0x00;
+		g_a432550[r17_n + 0x08] = 0x00;
 		__sync(0x00);
 		if (*((word32) r30_n + 4) == 0x00)
 			goto l004052C2;
@@ -8956,7 +8956,7 @@ Eq_n getnameinfo(Eq_n r4, Eq_n r5, Eq_n r6, Eq_n r7, Eq_n r10, Eq_n r21, union E
 			{
 				uint32 r5_n = (word32) ((word32) r4 + 8 + r6_n);
 				word32 r5_n = CONVERT(Mem106[0x00412E1C<p32> + (r5_n >>u 0x04):byte], byte, word32);
-				r7_n->b0000 = (byte) (&g_t412E1C)[r5_n & 0x0F];
+				r7_n->b0000 = g_a412E1C[r5_n & 0x0F];
 				r7_n->b0002 = (byte) r5_n;
 				r7_n->b0001 = 0x2E;
 				++r7_n;
@@ -9953,12 +9953,12 @@ ptr32 __isspace(ptr32 r4, ptr32 & r7Out)
 //      __lookup_name
 struct Eq_n * scopeof(struct Eq_n * r4)
 {
-	word32 r6_n = (word32) r4->t0000;
+	word32 r6_n = (word32) r4->a0000[0];
 	if (r6_n == 0xFF)
 		return (word32) r4[1] & 0x0F;
 	if (r6_n != 0xFE || ((word32) r4[1] & 0xC0) != 0x80)
 	{
-		if (r4->t0000 != 0x00 || (r4[4] != 0x00 || (r4[8] != 0x00 || ((word32) r4[0x0C] != 0x00 || ((word32) r4[0x0D] != 0x00 || ((word32) r4[0x0E] != 0x00 || (word32) r4[0x0F] != 0x01))))))
+		if (r4->a0000[0] != 0x00 || (r4[4] != 0x00 || (r4[8] != 0x00 || ((word32) r4[0x0C] != 0x00 || ((word32) r4[0x0D] != 0x00 || ((word32) r4[0x0E] != 0x00 || (word32) r4[0x0F] != 0x01))))))
 		{
 			if (r6_n != 0xFE)
 			{
@@ -15351,13 +15351,13 @@ word32 sift(struct Eq_n * r4, Eq_n r5, Eq_n r7, word32 r8[], ptr32 & r4Out, ptr3
 		r4_n = r16_n;
 		if (r16_n < null)
 		{
-			(fp - 0x0104)[r18_n].t0000 = r19_n;
+			(&(fp - 0x0104)[r18_n].a0000)[0] = (byte) r19_n;
 			r17_n = (char *) r4 - 2;
 			r16_n = r19_n;
 		}
 		else
 		{
-			(fp - 0x0104)[r18_n].t0000 = r16_n;
+			(&(fp - 0x0104)[r18_n].a0000)[0] = (byte) r16_n;
 			r17_n = (char *) r4 - 1;
 		}
 		++r18_n;
@@ -15459,7 +15459,7 @@ l00409DE2:
 	else
 	{
 l00409DA8:
-		(fp - 0x0114)[r20_n].t0000 = r16_n;
+		(&(fp - 0x0114)[r20_n].a0000)[0] = (byte) r16_n;
 		up32 r4_n = pntz(fp - 0x011C);
 		r19_n = 0x00;
 		++r20_n;
@@ -21115,7 +21115,7 @@ l0040CC78:
 									uint32 r6_n = (word32) r18_n->b000C;
 									if (!__bit(0x27 >> (r6_n & 0x0F), 0x00) && (!__bit(0x0406 >> (r6_n >> 0x04), 0x00) && (word32) r18_n->w000E != 0x00))
 									{
-										if (strcmp(r5, Mem23[r18_n + 0x00:word32] + r21_n) == 0x00)
+										if (strcmp(r5, r21_n + (r18_n->a0000)[0] / 16) == 0x00)
 										{
 											if (r30_n == null)
 												return r17_n + r18_n->dw0004;

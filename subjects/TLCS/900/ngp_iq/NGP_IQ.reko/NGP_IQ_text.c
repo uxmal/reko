@@ -70,7 +70,7 @@ void fn00200089()
 	}
 	fn002004F2(a_n);
 	word32 xhl_n;
-	(*(byte (*)[]) 0x7000)();
+	(*(union Eq_n *) 0x7000)();
 	word16 xhl_16_16_n = SLICE(xhl_n, word16, 16);
 	fn00200532(SEQ(xhl_16_16_n, 3334));
 	if (!fn00200532(SEQ(xhl_16_16_n, 3333)))
@@ -92,7 +92,7 @@ void fn00200089()
 	}
 	fn002004F2(a_n);
 	word32 xhl_n;
-	(*(byte (*)[]) 0x7000)();
+	(*(union Eq_n *) 0x7000)();
 	word16 xhl_16_16_n = SLICE(xhl_n, word16, 16);
 	fn00200532(SEQ(xhl_16_16_n, 3338));
 	if (!fn00200532(SEQ(xhl_16_16_n, 3337)))
@@ -114,7 +114,7 @@ void fn00200089()
 	}
 	fn002004F2(a_n);
 	word32 xhl_n;
-	(*(byte (*)[]) 0x7000)();
+	(*(union Eq_n *) 0x7000)();
 	word16 xhl_16_16_n = SLICE(xhl_n, word16, 16);
 	fn00200532(SEQ(xhl_16_16_n, 0x0D0E));
 	if (!fn00200532(SEQ(xhl_16_16_n, 0x0D0D)))

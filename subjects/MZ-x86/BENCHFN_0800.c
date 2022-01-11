@@ -1977,7 +1977,7 @@ l0800_n:
 							__scanpop(ds);
 						else
 						{
-							di = fn0800-1708(&(ss->*(ss->*(fp - 2)).a0000).t0000, ds, out es);
+							di = fn0800-1708(&(ss->*(ss->*(fp - 2)).a0000), ds, out es);
 							__scanrslt(ds);
 						}
 						goto l0800_n;
@@ -1985,14 +1985,14 @@ l0800_n:
 					__scanpop(ds);
 					if (wLoc26 < 0x00)
 					{
-						ptr16 bp_n = fn0800-1AEB(&(ss->*(ss->*(fp - 2)).a0000).t0000);
+						ptr16 bp_n = fn0800-1AEB(&(ss->*(ss->*(fp - 2)).a0000));
 						bxOut = bx_n << 0x01;
 						bpOut = bp_n;
 						return dx;
 					}
 					else
 					{
-						ptr16 bp_n = fn0800-1AFF(&(ss->*(ss->*(fp - 2)).a0000).t0000);
+						ptr16 bp_n = fn0800-1AFF(&(ss->*(ss->*(fp - 2)).a0000));
 						bxOut = bx_n << 0x01;
 						bpOut = bp_n;
 						return dx;
@@ -2055,7 +2055,7 @@ l0800_nA23:
 							wArg08 = si_n;
 							ci16 si_n = v61_n;
 							if ((bLoc2B_n & 0x01) == 0x00)
-								di = fn0800-1708(&(ss->*(ss->*(fp - 2)).a0000).t0000, ds, out es_n);
+								di = fn0800-1708(&(ss->*(ss->*(fp - 2)).a0000), ds, out es_n);
 							while (true)
 							{
 								word16 dx_n;
@@ -2074,14 +2074,14 @@ l0800_nA23:
 								{
 									if (si_n + 0x01 >= v61_n)
 									{
-										ptr16 bp_n = fn0800-1AEB(&(ss->*(ss->*(fp - 2)).a0000).t0000);
+										ptr16 bp_n = fn0800-1AEB(&(ss->*(ss->*(fp - 2)).a0000));
 										bxOut = bx_n;
 										bpOut = bp_n;
 										return dx_n;
 									}
 									if ((bLoc2B_n & 0x01) != 0x00)
 									{
-										ptr16 bp_n = fn0800-1AEB(&(ss->*(ss->*(fp - 2)).a0000).t0000);
+										ptr16 bp_n = fn0800-1AEB(&(ss->*(ss->*(fp - 2)).a0000));
 										bxOut = bx_n;
 										bpOut = bp_n;
 										return dx_n;
@@ -2089,7 +2089,7 @@ l0800_nA23:
 									else
 									{
 										es->*di = 0x00;
-										ptr16 bp_n = fn0800-1AEB(&(ss->*(ss->*(fp - 2)).a0000).t0000);
+										ptr16 bp_n = fn0800-1AEB(&(ss->*(ss->*(fp - 2)).a0000));
 										bxOut = bx_n;
 										bpOut = bp_n;
 										return dx_n;
@@ -2151,7 +2151,7 @@ l0800_nAD3:
 							} while (al_n != 0x00);
 						}
 					}
-					ptr16 bp_n = fn0800-1AFF(&(ss->*(ss->*(fp - 2)).a0000).t0000);
+					ptr16 bp_n = fn0800-1AFF(&(ss->*(ss->*(fp - 2)).a0000));
 					bxOut = bx_n << 0x01;
 					bpOut = bp_n;
 					return dx_n;

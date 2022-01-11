@@ -4,7 +4,48 @@
 
 /*
 // Equivalence classes ////////////
-Eq_1: (struct "Globals" (4004 byte b4004) (6DA0 byte b6DA0) (6F83 byte b6F83) (6F86 byte b6F86) (6F91 byte b6F91) (7000 (arr byte) a7000) (8002 byte b8002) (8003 byte b8003) (8004 byte b8004) (8005 byte b8005) (8118 byte b8118) (8300 (arr word16) a8300) (83E0 byte b83E0) (83E1 byte b83E1) (9000 (arr byte) a9000) (9800 (arr byte) a9800) (A000 (arr word16) aA000) (A400 (arr word16) aA400) (200040 word32 dw200040) (2000FD byte b2000FD) (200122 byte b200122) (200147 byte b200147) (200165 byte b200165) (20017F byte b20017F) (2001D2 byte b2001D2) (2001E8 byte b2001E8) (2001FD byte b2001FD) (200217 byte b200217) (200231 byte b200231) (200284 byte b200284) (20029A byte b20029A) (2002AF byte b2002AF) (2002CB byte b2002CB) (2002E5 byte b2002E5) (200338 byte b200338) (20034E byte b20034E) (200363 (arr byte) a200363) (200492 (arr byte) a200492) (2004B5 (arr byte) a2004B5) (20061D (arr word16) a20061D) (200ABD (arr word16) a200ABD))
+Eq_1: (struct "Globals"
+		(4004 byte b4004)
+		(6DA0 byte b6DA0)
+		(6F83 byte b6F83)
+		(6F86 byte b6F86)
+		(6F91 byte b6F91)
+		(7000 (arr Eq_171) a7000)
+		(8002 byte b8002)
+		(8003 byte b8003)
+		(8004 byte b8004)
+		(8005 byte b8005)
+		(8118 byte b8118)
+		(8300 (arr word16) a8300)
+		(83E0 byte b83E0)
+		(83E1 byte b83E1)
+		(9000 (arr byte) a9000)
+		(9800 (arr byte) a9800)
+		(A000 (arr word16) aA000)
+		(A400 (arr word16) aA400)
+		(200040 word32 dw200040)
+		(2000FD byte b2000FD)
+		(200122 byte b200122)
+		(200147 byte b200147)
+		(200165 byte b200165)
+		(20017F byte b20017F)
+		(2001D2 byte b2001D2)
+		(2001E8 byte b2001E8)
+		(2001FD byte b2001FD)
+		(200217 byte b200217)
+		(200231 byte b200231)
+		(200284 byte b200284)
+		(20029A byte b20029A)
+		(2002AF byte b2002AF)
+		(2002CB byte b2002CB)
+		(2002E5 byte b2002E5)
+		(200338 byte b200338)
+		(20034E byte b20034E)
+		(200363 (arr byte) a200363)
+		(200492 (arr byte) a200492)
+		(2004B5 (arr byte) a2004B5)
+		(20061D (arr word16) a20061D)
+		(200ABD (arr word16) a200ABD))
 	globals_t (in globals @ 00000000 : (ptr32 (struct "Globals")))
 Eq_2: (fn void ())
 	T_2 (in fn0020060C @ 00200089 : ptr32)
@@ -39,6 +80,13 @@ Eq_165: (fn void (byte))
 	T_166 (in signature of fn002004F2 @ 002004F2 : void)
 	T_232 (in fn002004F2 @ 00200258 : ptr32)
 	T_295 (in fn002004F2 @ 0020030C : ptr32)
+Eq_171: (union "Eq_171" (byte u0) ((ptr32 code) u1))
+	T_171 (in Mem156[0x7000<32>:word32] @ 002001AF : word32)
+	T_236 (in Mem284[0x7000<32>:word32] @ 00200261 : word32)
+	T_299 (in Mem408[0x7000<32>:word32] @ 00200315 : word32)
+	T_487
+	T_491
+	T_495
 Eq_174: (fn bool (word32))
 	T_174 (in fn00200532 @ 002001BA : ptr32)
 	T_175 (in signature of fn00200532 @ 00200532 : void)
@@ -739,11 +787,11 @@ T_169: (in xhl_188 @ 002001AF : word32)
   OrigDataType: word32
 T_170: (in 0x7000<32> @ 002001AF : word32)
   Class: Eq_170
-  DataType: (ptr32 (arr byte))
+  DataType: (ptr32 Eq_171)
   OrigDataType: (ptr32 (struct (0 T_171 t0000)))
 T_171: (in Mem156[0x7000<32>:word32] @ 002001AF : word32)
   Class: Eq_171
-  DataType: (arr byte)
+  DataType: Eq_171
   OrigDataType: (ptr32 code)
 T_172: (in xhl_16_16_196 @ 002001AF : word16)
   Class: Eq_172
@@ -999,11 +1047,11 @@ T_234: (in xhl_313 @ 00200261 : word32)
   OrigDataType: word32
 T_235: (in 0x7000<32> @ 00200261 : word32)
   Class: Eq_235
-  DataType: (ptr32 (arr byte))
+  DataType: (ptr32 Eq_171)
   OrigDataType: (ptr32 (struct (0 T_236 t0000)))
 T_236: (in Mem284[0x7000<32>:word32] @ 00200261 : word32)
   Class: Eq_171
-  DataType: (arr byte)
+  DataType: Eq_171
   OrigDataType: (ptr32 code)
 T_237: (in xhl_16_16_320 @ 00200261 : word16)
   Class: Eq_237
@@ -1251,11 +1299,11 @@ T_297: (in xhl_437 @ 00200315 : word32)
   OrigDataType: word32
 T_298: (in 0x7000<32> @ 00200315 : word32)
   Class: Eq_298
-  DataType: (ptr32 (arr byte))
+  DataType: (ptr32 Eq_171)
   OrigDataType: (ptr32 (struct (0 T_299 t0000)))
 T_299: (in Mem408[0x7000<32>:word32] @ 00200315 : word32)
   Class: Eq_171
-  DataType: (arr byte)
+  DataType: Eq_171
   OrigDataType: (ptr32 code)
 T_300: (in xhl_16_16_444 @ 00200315 : word16)
   Class: Eq_300
@@ -2006,12 +2054,12 @@ T_486:
   DataType: (arr byte)
   OrigDataType: (arr T_485)
 T_487:
-  Class: Eq_487
-  DataType: byte
+  Class: Eq_171
+  DataType: Eq_171
   OrigDataType: (struct 0001 (0 T_156 t0000))
 T_488:
-  Class: Eq_171
-  DataType: (arr byte)
+  Class: Eq_488
+  DataType: (arr Eq_171)
   OrigDataType: (arr T_487)
 T_489:
   Class: Eq_489
@@ -2022,12 +2070,12 @@ T_490:
   DataType: (arr byte)
   OrigDataType: (arr T_489)
 T_491:
-  Class: Eq_487
-  DataType: byte
+  Class: Eq_171
+  DataType: Eq_171
   OrigDataType: (struct 0001 (0 T_223 t0000))
 T_492:
-  Class: Eq_171
-  DataType: (arr byte)
+  Class: Eq_492
+  DataType: (arr Eq_171)
   OrigDataType: (arr T_491)
 T_493:
   Class: Eq_493
@@ -2038,12 +2086,12 @@ T_494:
   DataType: (arr byte)
   OrigDataType: (arr T_493)
 T_495:
-  Class: Eq_487
-  DataType: byte
+  Class: Eq_171
+  DataType: Eq_171
   OrigDataType: (struct 0001 (0 T_286 t0000))
 T_496:
-  Class: Eq_171
-  DataType: (arr byte)
+  Class: Eq_496
+  DataType: (arr Eq_171)
   OrigDataType: (arr T_495)
 T_497:
   Class: Eq_497
@@ -2068,7 +2116,7 @@ typedef struct Globals {
 	byte b6F83;	// 6F83
 	byte b6F86;	// 6F86
 	byte b6F91;	// 6F91
-	byte a7000[];	// 7000
+	Eq_171 a7000[];	// 7000
 	byte b8002;	// 8002
 	byte b8003;	// 8003
 	byte b8004;	// 8004
@@ -2115,6 +2163,11 @@ typedef void (Eq_79)(byte);
 typedef word32 (Eq_113)(bui8, byte, byte *);
 
 typedef void (Eq_165)(byte);
+
+typedef union Eq_171 {
+	byte u0;
+	<anonymous> * u1;
+} Eq_171;
 
 typedef bool (Eq_174)(word32);
 

@@ -1233,7 +1233,7 @@ l00000000004036F0:
 												}
 											}
 										}
-										else if (eax_n == 0x00 || *((char *) (&rax_n->t0014) + (uint64) ((int8) (rax_n->t0014 == 0x2E))) == 0x00)
+										else if (eax_n == 0x00 || (rax_n->a0014)[(uint64) ((int8) ((rax_n->a0014)[0] == 0x2E))] == 0x00)
 											goto l0000000000403770;
 									}
 									Eq_n r15_n = g_t61B100;
@@ -6931,7 +6931,7 @@ l000000000040D9A8:
 					rsi_n = r14_n;
 					rax_n = rbx_n;
 					r12_n.u0 = (uint64) r12b_n;
-					if (r15_n > r14_n && *r15_n != 0x00)
+					if (r15_n > r14_n && Mem419[r15_n + 0x00:byte] != 0x00)
 					{
 						do
 							rax_n = (word64) rax_n.u0 + 1;
