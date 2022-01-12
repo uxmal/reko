@@ -169,9 +169,5 @@ namespace Reko.ImageLoaders.Dol
 			};
 			return program;
 		}
-
-		public override RelocationResults Relocate(Program program, Address addrLoad) {
-			throw new NotImplementedException();
-		}
 	}
 }

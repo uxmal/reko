@@ -189,18 +189,6 @@ namespace Reko.Loading
             program.Location = imageLocation;
             if (program.NeedsScanning)
             {
-                if (imgLoader is ProgramImageLoader piLoader)
-                {
-                    var relocations = piLoader.Relocate(program, addrLoad);
-                    foreach (var sym in relocations.Symbols.Values)
-                    {
-                        program.ImageSymbols[sym.Address!] = sym;
-                    }
-                    foreach (var ep in relocations.EntryPoints)
-                    {
-                        program.EntryPoints[ep.Address!] = ep;
-                    }
-                }
                 if (program.Architecture != null)
                 {
                     program.Architecture.PostprocessProgram(program);

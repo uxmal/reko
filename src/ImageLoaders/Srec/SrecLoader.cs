@@ -136,10 +136,5 @@ namespace Reko.ImageLoaders.Srec
         {
             return (data.Position == addrNext - addrSegmentCur);
         }
-
-        public override RelocationResults Relocate(Program program, Address addrLoad)
-        {
-            throw new NotImplementedException();
-        }
     }
 }

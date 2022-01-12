@@ -42,26 +42,24 @@ namespace Reko.Environments.RT11
             addrLoad ??= PreferredBaseAddress;
             var arch = new Pdp11Architecture(Services, "pdp11", new Dictionary<string, object>());
 
-            return new Program(
+            var program = new Program(
                 new SegmentMap(addrLoad,
                 new ImageSegment(".text",
                         new ByteMemoryArea(addrLoad, RawImage),
                         AccessMode.ReadWriteExecute)),
                 arch,
                 new RT11Platform(Services, arch));
+            Relocate(program, addrLoad);
+            return program;
         }
 
-        public override RelocationResults Relocate(Program program, Address addrLoad)
+        public void Relocate(Program program, Address addrLoad)
         {
             var header = CreateSavHeader(program.Architecture);
             var uaddrEntry = ByteMemoryArea.ReadLeUInt16(RawImage, 0x20);
             var entry = ImageSymbol.Procedure(program.Architecture, Address.Ptr16(uaddrEntry));
-            return new RelocationResults(
-                new List<ImageSymbol> { entry },
-                new SortedList<Address, ImageSymbol>
-                {
-                    { header.Address, header }
-                });
+            program.EntryPoints[entry.Address] = entry;
+            program.ImageSymbols[header.Address] = header;
         }
 
         // SAV definition from 

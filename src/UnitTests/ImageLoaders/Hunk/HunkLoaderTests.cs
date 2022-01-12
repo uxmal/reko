@@ -30,6 +30,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
 using System.IO;
+using System.Linq;
 
 namespace Reko.UnitTests.ImageLoaders.Hunk
 {
@@ -104,10 +105,8 @@ namespace Reko.UnitTests.ImageLoaders.Hunk
                 HunkType.HUNK_END);
             var ldr = new HunkLoader(sc, ImageLocation.FromUri("file:foo.bar"), bytes);
             var program = ldr.LoadProgram(Address.Ptr32(0x00010000));
-            var rlImg = ldr.Relocate(program, Address.Ptr32(0x00010000));
-            Assert.AreEqual(1, rlImg.EntryPoints.Count);
-            Assert.AreEqual(0x00010000ul, rlImg.EntryPoints[0].Address.ToLinear());
-
+            Assert.AreEqual(1, program.EntryPoints.Count);
+            Assert.AreEqual(0x00010000ul, program.EntryPoints.Values.First().Address.ToLinear());
         }
     }
 }

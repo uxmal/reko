@@ -135,7 +135,7 @@ namespace Reko.ImageLoaders.MzExe
         public SortedList<Address, ImageSymbol> ImageSymbols { get; private set; }
         public SegmentMap SegmentMap { get; private set; }
 
-		private void AddExportedEntryPoints(Address addrLoad, SegmentMap imageMap, List<ImageSymbol> entryPoints)
+		private void AddExportedEntryPoints(Address addrLoad, SegmentMap imageMap, IDictionary<Address, ImageSymbol> entryPoints)
 		{
 			EndianImageReader rdr = imgLoaded.CreateLeReader(rvaExportTable);
 			uint characteristics = rdr.ReadLeUInt32();
@@ -162,7 +162,7 @@ namespace Reko.ImageLoaders.MzExe
                     ep.Ordinal = baseOrdinal + i;
                     ImageSymbols[ep.Address] = ep;
                     trace.Verbose("  {0,-8} {1} {2}", ep.Ordinal, ep.Address, ep.Name!);
-					entryPoints.Add(ep);
+					entryPoints[ep.Address] = ep;
 				}
 			}
 		}
@@ -304,7 +304,7 @@ namespace Reko.ImageLoaders.MzExe
                 imgLoaded = LoadSectionBytes(addrLoad, sectionList);
                 AddSectionsToImageMap(addrLoad, SegmentMap);
             }
-            this.program = new Program(SegmentMap, arch, platform);
+            this.program = new Program(SegmentMap, arch, platform, ImageSymbols, new());
             this.importReferences = program.ImportReferences;
 
             var rsrcLoader = new ResourceLoader(this.imgLoaded, rvaResources);
@@ -313,6 +313,7 @@ namespace Reko.ImageLoaders.MzExe
             {
                 program.Resources.AddRange(items);
             }
+            Relocate(program, addrLoad);
             return program;
         }
 
@@ -531,7 +532,7 @@ namespace Reko.ImageLoaders.MzExe
         private const ushort IMAGE_REL_ARM_SECTION         = 0x000E; // Section table index
         private const ushort IMAGE_REL_ARM_SECREL = 0x000F; // Offset within section
 
-        public override RelocationResults Relocate(Program program, Address addrLoad)
+        public void Relocate(Program program, Address addrLoad)
 		{
             relocator = CreateRelocator(machine, program);
             var relocations = imgLoaded.Relocations;
@@ -549,15 +550,14 @@ namespace Reko.ImageLoaders.MzExe
                     addrEp,
                     platform);
             ImageSymbols[entrySym.Address] = entrySym;
-            var entryPoints = new List<ImageSymbol> { entrySym };
+            program.EntryPoints[entrySym.Address] = entrySym;
             ReadExceptionRecords(addrLoad, rvaExceptionTable, sizeExceptionTable, ImageSymbols);
             if (rvaExportTable != 0)
             {
-                AddExportedEntryPoints(addrLoad, SegmentMap, entryPoints);
+                AddExportedEntryPoints(addrLoad, SegmentMap, program.EntryPoints);
             }
             ReadImportDescriptors(addrLoad);
             ReadDeferredLoadDescriptors(addrLoad);
-            return new RelocationResults(entryPoints, ImageSymbols);
 		}
 
         /// <summary>
@@ -968,7 +968,7 @@ void applyRelX86(uint8_t* Off, uint16_t Type, Defined* Sym,
                 var impRef =
                     innerLoader.CreateImportReference(dllName, rvaName, addrThunk);
 
-                importReferences.Add(addrThunk, impRef);
+                importReferences[addrThunk] = impRef;
             }
             rdr.ReadLeInt32();
             rdr.ReadLeInt32();

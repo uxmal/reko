@@ -75,23 +75,14 @@ namespace Reko.Environments.MacOS.Classic
                 this.rsrcFork = new ResourceFork(platform, bytes);
                 this.mem = new ByteMemoryArea(addrLoad, bytes);
                 this.segmentMap = new SegmentMap(addrLoad);
-                return new Program(this.segmentMap, arch, platform);
+                var program = new Program(this.segmentMap, arch, platform);
+                rsrcFork.Dump();
+                rsrcFork.AddResourcesToImageMap(addrLoad, mem, program);
+                return program;
             }
             else throw new BadImageFormatException("Unable to find a resource fork.");
         }
 
-        public override RelocationResults Relocate(Program program, Address addrLoad)
-        {
-            var entryPoints = new List<ImageSymbol>();
-            var symbols = new SortedList<Address, ImageSymbol>();
-
-            if (rsrcFork != null)
-            {
-                rsrcFork.Dump();
-                rsrcFork.AddResourcesToImageMap(addrLoad, mem, segmentMap, entryPoints, symbols);
-            }
-            return new RelocationResults(entryPoints, symbols);
-        }
 
         [Endian(Endianness.BigEndian)]
         [StructLayout(LayoutKind.Sequential, Pack = 1)]

@@ -218,6 +218,9 @@ namespace Reko.ImageLoaders.TekHex
                 Platform = platform,
                 EntryPoints = entryPoints.ToSortedList(e => e.Address!)
             };
+
+            MakeSymbols(program.Architecture, program);
+
             return program;
         }
 
@@ -249,25 +252,24 @@ namespace Reko.ImageLoaders.TekHex
             return new SegmentMap(baseAddr, segs.ToArray());
         }
 
-        private SortedList<Address, ImageSymbol> MakeSymbols(IProcessorArchitecture arch)
+        private void MakeSymbols(IProcessorArchitecture arch, Program program)
         {
-            return this.symbols.Select(s =>
+            foreach (var s in this.symbols)
             {
                 var addr = Address.Create(arch.PointerType, s.value);
-                return s.type switch
+                var imgSym = s.type switch
                 {
                     SymbolType.GLOBAL_CODE_ADDRESS =>
                         ImageSymbol.Procedure(arch, addr, s.name),
+                    SymbolType.GLOBAL_DATA_ADDRESS =>
+                        null, 
+                        //$Introducing the following causes regressions
+                        // ImageSymbol.DataObject(arch, addr, s.name),
                     _ => throw new NotSupportedException($"Unsupported symbol type '{s.type}.")
                 };
-            }).ToSortedList(s => s.Address!);
-        }
-
-        public override RelocationResults Relocate(Program program, Address addrLoad)
-        {
-            return new RelocationResults(
-                entryPoints,
-                MakeSymbols(program.Architecture));
+                if (imgSym is not null) 
+                    program.ImageSymbols[addr] = imgSym;
+            }
         }
 
         public void Dump()

@@ -68,11 +68,6 @@ namespace Reko.Environments.Snes
             return false;
         }
 
-        public override RelocationResults Relocate(Program program, Address addrLoad)
-        {
-            throw new NotImplementedException();
-        }
-
         public override Program LoadProgram(Address? addrLoad)
         {
             var romdata = RawImage;

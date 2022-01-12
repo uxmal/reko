@@ -91,7 +91,33 @@ namespace Reko.ImageLoaders.MzExe
             this.segmentMap = new SegmentMap(
                 addrPsp,
                 psp);
-            return new Program(segmentMap, arch, platform);
+            var program = new Program(segmentMap, arch, platform);
+
+            this.Relocate(program, addrLoad);
+
+            Address addrStart = Address.SegPtr((ushort) (ExeLoader.e_cs + addrLoad.Selector.Value), ExeLoader.e_ip);
+            var ep = CreateEntryPointSymbol(addrLoad, addrStart, addrStackTop);
+            program.EntryPoints[ep.Address] = ep;
+            var sym = platform.FindMainProcedure(program, addrStart);
+            if (sym is not null)
+            {
+                program.ImageSymbols[sym.Address] = sym;
+                ep.NoDecompile = true;
+            }
+
+            try
+            {
+                LoadDebugSymbols(program.ImageSymbols, addrLoad);
+            }
+            catch (Exception ex)
+            {
+                var listener = Services.RequireService<DecompilerEventListener>();
+                listener.Error(
+                    new NullCodeLocation(ImageLocation.FilesystemPath),
+                    ex,
+                    "Detected debug symbols but failed to load them.");
+            }
+            return program;
         }
 
         /// <summary>
@@ -132,7 +158,7 @@ namespace Reko.ImageLoaders.MzExe
                     AccessMode.ReadWriteExecute);
         }
 
-        public override RelocationResults Relocate(Program program, Address addrLoad)
+        public void Relocate(Program program, Address addrLoad)
 		{
 			SegmentMap imageMap = segmentMap;
             EndianImageReader rdr = new LeImageReader(ExeLoader.RawImage, ExeLoader.e_lfaRelocations);
@@ -184,31 +210,6 @@ namespace Reko.ImageLoaders.MzExe
                 imgLoaded,
                 AccessMode.ReadWriteExecute));
             DumpSegments(imageMap);
-
-            var ep = CreateEntryPointSymbol(addrLoad, addrStart, addrStackTop);
-            var sym = platform.FindMainProcedure(program, addrStart);
-            var results = new RelocationResults(
-                new List<ImageSymbol> { ep },
-                new SortedList<Address, ImageSymbol> { { ep.Address, ep } });
-            if (sym != null)
-            {
-                results.Symbols[sym.Address] = sym;
-                ep.NoDecompile = true;
-            }
-
-			try
-			{
-				LoadDebugSymbols(results.Symbols, addrLoad);
-			}
-			catch (Exception ex)
-			{
-                var listener = Services.RequireService<DecompilerEventListener>();
-                listener.Error(
-                    new NullCodeLocation(ImageLocation.FilesystemPath),
-                    ex,
-                    "Detected debug symbols but failed to load them.");
-			}
-            return results;
 		}
 
         private ImageSymbol CreateEntryPointSymbol(Address addrLoad, Address addrStart, Address addrStackTop)

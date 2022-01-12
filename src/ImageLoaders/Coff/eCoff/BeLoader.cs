@@ -65,7 +65,14 @@ namespace Reko.ImageLoaders.Coff.eCoff
             var arch = LoadArchitecture(header.f_magic);
             var platform = new DefaultPlatform(Services, arch);
             var segmap = new SegmentMap(imgSegments);
-            return new Program(segmap, arch, platform);
+            var program = new Program(segmap, arch, platform);
+            if (this.opthdr.HasValue)
+            {
+                var addrEntry = Address.Ptr32(opthdr.Value.entry);   //$64
+                var ep = ImageSymbol.Procedure(program.Architecture, addrEntry, "_start");
+                program.EntryPoints.Add(ep.Address, ep);
+            }
+            return program;
         }
 
         private ImageSegment LoadImageSegment(in scnhdr scnhdr)
@@ -136,20 +143,6 @@ namespace Reko.ImageLoaders.Coff.eCoff
             if (arch is null)
                 throw new InvalidOperationException($"Unable to load the '{sArch}' architecture.");
             return arch;
-        }
-
-        public override RelocationResults Relocate(Program program, Address addrLoad)
-        {
-            var entryPoints = new List<ImageSymbol>();
-            if (this.opthdr.HasValue)
-            {
-                var addrEntry = Address.Ptr32(opthdr.Value.entry);   //$64
-                var ep = ImageSymbol.Procedure(program.Architecture, addrEntry, "_start");
-                entryPoints.Add(ep);
-            }
-            return new RelocationResults(
-                entryPoints,
-                new SortedList<Address, ImageSymbol>());
         }
     }
 }

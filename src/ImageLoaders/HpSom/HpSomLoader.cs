@@ -202,13 +202,6 @@ namespace Reko.ImageLoaders.HpSom
             }
         }
 
-        public override RelocationResults Relocate(Program program, Address addrLoad)
-        {
-            return new RelocationResults(
-                new List<ImageSymbol>(),
-                new SortedList<Address, ImageSymbol>());
-        }
-
         private (List<ImageSymbol>, List<ImageSymbol>) ReadDynamicLibraryInfo(
             SOM_Exec_aux_hdr exeAuxHdr,
             IProcessorArchitecture arch)

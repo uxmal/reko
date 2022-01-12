@@ -53,7 +53,9 @@ namespace Reko.Environments.SegaGenesis
 
             var segmentMap = CreateSegmentMap(mem, platform);
 
-            return new Program(segmentMap, arch, platform);
+            var program = new Program(segmentMap, arch, platform);
+            Relocate(program, addrLoad!);
+            return program;
         }
 
         private SegmentMap CreateSegmentMap(ByteMemoryArea bmem, IPlatform platform)
@@ -67,19 +69,16 @@ namespace Reko.Environments.SegaGenesis
             return segmentMap;
         }
 
-        public override RelocationResults Relocate(Program program, Address addrLoad)
+        public void Relocate(Program program, Address addrLoad)
         {
             // Get the Reset address from offset $0004 of the interrupt vector.
             var addrReset = Address.Ptr32(ByteMemoryArea.ReadBeUInt32(RawImage, 4));
-            var syms = new SortedList<Address, ImageSymbol>();
-            var eps = new List<ImageSymbol>();
             if (program.SegmentMap.IsValidAddress(addrReset))
             {
                 var sym = ImageSymbol.Procedure(program.Architecture, addrReset, "Reset", state: program.Architecture.CreateProcessorState());
-                syms.Add(sym.Address!, sym);
-                eps.Add(sym);
+                program.ImageSymbols.Add(sym.Address, sym);
+                program.EntryPoints.Add(sym.Address, sym);
             }
-            return new RelocationResults(eps, syms);
         }
     }
 }

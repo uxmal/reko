@@ -73,7 +73,7 @@ namespace Reko.ImageLoaders.Coff
             return new Program(map, arch, platform);
         }
 
-        public override RelocationResults Relocate(Program program, Address addrLoad)
+        public void Relocate(Program program, Address addrLoad)
         {
             var (entries, symbols) = LoadLoaderSection(program.Architecture);
             symbols ??= new List<ImageSymbol>();
@@ -84,7 +84,14 @@ namespace Reko.ImageLoaders.Coff
             var ep = LoadProgramEntryPoint(program, symDict);
             if (ep != null)
                 entries.Add(ep);
-            return new RelocationResults(entries, symDict);
+            foreach (var e in entries)
+            {
+                program.EntryPoints[e.Address] = e;
+            }
+            foreach (var s in symDict)
+            {
+                program.ImageSymbols[s.Key] = s.Value;
+            }
         }
 
         private ImageSymbol? LoadProgramEntryPoint(Program program, SortedList<Address, ImageSymbol> symbols)

@@ -72,11 +72,6 @@ namespace Reko.Loading
             return program;
         }
 
-        public override RelocationResults Relocate(Program program, Address addrLoad)
-        {
-            return new RelocationResults(EntryPoints, new SortedList<Address, ImageSymbol>());
-        }
-
         public SegmentMap CreatePlatformSegmentMap(IPlatform platform, Address loadAddr, byte[] rawBytes)
         {
             var segmentMap = platform.CreateAbsoluteMemoryMap() ?? new SegmentMap(loadAddr);

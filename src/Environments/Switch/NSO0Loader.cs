@@ -180,13 +180,6 @@ namespace Reko.Environments.Switch
                 ;
             return Encoding.UTF8.GetString(bytes, offset, i - offset);
         }
-
-        public override RelocationResults Relocate(Program program, Address addrLoad)
-        {
-            return new RelocationResults(
-                new List<ImageSymbol>(),
-                new SortedList<Address, ImageSymbol>());
-        }
     }
 
     [Endian(Endianness.LittleEndian)]

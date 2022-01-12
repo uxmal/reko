@@ -85,20 +85,38 @@ namespace Reko.Core
             this.NeedsTypeReconstruction = true;
         }
 
-        public Program(SegmentMap segmentMap, IProcessorArchitecture arch, IPlatform platform) : this()
+        public Program(
+            SegmentMap segmentMap,
+            IProcessorArchitecture arch, 
+            IPlatform platform) : this()
         {
             this.SegmentMap = segmentMap;
             this.ImageMap = segmentMap.CreateImageMap();
             this.Architecture = arch;
             this.Platform = platform;
         }
+
+        public Program(
+            SegmentMap segmentMap,
+            IProcessorArchitecture arch, 
+            IPlatform platform,
+            SortedList<Address, ImageSymbol> symbols,
+            SortedList<Address, ImageSymbol> entryPoints) : this()
+        {
+            this.SegmentMap = segmentMap;
+            this.ImageMap = segmentMap.CreateImageMap();
+            this.Architecture = arch;
+            this.Platform = platform;
+            this.ImageSymbols = symbols;
+            this.EntryPoints = entryPoints;
+        }
+
 #nullable enable
 
-
-        /// <summary>
-        /// The program's file name and extension, but not its path.
-        /// </summary>
-        public string Name { get; set; }
+    /// <summary>
+    /// The program's file name and extension, but not its path.
+    /// </summary>
+    public string Name { get; set; }
 
         /// <summary>
         /// The default processor architecture to use for decompilation.

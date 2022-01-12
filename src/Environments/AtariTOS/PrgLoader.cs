@@ -73,11 +73,12 @@ namespace Reko.Environments.AtariTOS
 
             PerformRelocations(mem, rdr);
 
-
             var map = new SegmentMap(
                 addrLoad,
                 text, data, bss);
-            return new Program(map, arch, platform);
+            var program = new Program(map, arch, platform);
+            program.EntryPoints[addrLoad] = ImageSymbol.Location(program.Architecture, addrLoad);
+            return program;
         }
 
         private bool TryLoadHeader(BeImageReader rdr, out PrgHeader hdr)
@@ -90,13 +91,6 @@ namespace Reko.Environments.AtariTOS
             }
             hdr = h;
             return true;
-        }
-
-        public override RelocationResults Relocate(Program program, Address addrLoad)
-        {
-            return new RelocationResults(
-                new List<ImageSymbol> { ImageSymbol.Location(program.Architecture, addrLoad) },
-                new SortedList<Address, ImageSymbol>());
         }
 
         bool PerformRelocations(MemoryArea mem, ImageReader rdr)

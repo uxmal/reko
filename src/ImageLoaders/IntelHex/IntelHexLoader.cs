@@ -248,19 +248,6 @@ namespace Reko.ImageLoaders.IntelHex
             }
             return addr;
         }
-
-        /// <summary>
-        /// Performs fix-ups of the loaded image, adding findings to the supplied collections.
-        /// Nothing actual can be done with Intel HEX binary files.
-        /// </summary>
-        /// <param name="program">The program.</param>
-        /// <param name="addrLoad">The address at which the program image is loaded.</param>
-        /// <returns>
-        /// The <see cref="RelocationResults"/>.
-        /// </returns>
-        public override RelocationResults Relocate(Program program, Address addrLoad)
-            => new RelocationResults(new List<ImageSymbol>(), new SortedList<Address, ImageSymbol>());
-
         #endregion
 
     }

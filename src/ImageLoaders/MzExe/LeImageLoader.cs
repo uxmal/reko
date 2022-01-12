@@ -474,14 +474,6 @@ namespace Reko.ImageLoaders.MzExe
             return new Program(segments, arch, platform);
         }
 
-        public override RelocationResults Relocate(Program program, Address addrLoad)
-        {
-            //$TODO: actual relocation!
-            var entryPoints = new List<ImageSymbol>();
-            var symbols = new SortedList<Address, ImageSymbol>();
-            return new RelocationResults(entryPoints, symbols);
-        }
-
         void LoadModuleTable()
         {
             var rdr = new LeImageReader(RawImage, lfaNew+ hdr.import_module_table_off);

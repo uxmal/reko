@@ -71,10 +71,5 @@ namespace Reko.Environments.MorphOS
         {
             throw new NotImplementedException();
         }
-
-        public override RelocationResults Relocate(Program program, Address addrLoad)
-        {
-            return elfLdr.Relocate(program, addrLoad);
-        }
     }
 }

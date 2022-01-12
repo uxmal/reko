@@ -22,7 +22,9 @@ using Moq;
 using NUnit.Framework;
 using Reko.Core;
 using Reko.Core.Configuration;
+using Reko.Core.Memory;
 using Reko.Core.Services;
+using Reko.Core.Types;
 using Reko.Environments.SysV;
 using Reko.ImageLoaders.Elf;
 using System;
@@ -347,6 +349,15 @@ namespace Reko.UnitTests.ImageLoaders.Elf
             base.Setup();
             this.arch = new Mock<IProcessorArchitecture>();
             arch.Setup(a => a.Name).Returns("FakeArchLe");
+            arch.Setup(a => a.PointerType).Returns(PrimitiveType.Ptr32);
+            arch.Setup(a => a.CreateImageReader(
+                It.IsAny<MemoryArea>(),
+                It.IsAny<Address>())).
+                Returns(new Func<MemoryArea, Address, EndianImageReader>((m, a) => m.CreateLeReader(a)));
+            arch.Setup(a => a.CreateImageWriter(
+                It.IsAny<MemoryArea>(),
+                It.IsAny<Address>())).
+                Returns(new Func<MemoryArea, Address, ImageWriter>((m, a) => m.CreateLeWriter(a)));
             this.arch32be = new Mock<IProcessorArchitecture>();
             arch.Setup(a => a.Name).Returns("FakeArchBe");
             this.tlSvc = new Mock<ITypeLibraryLoaderService>(); 

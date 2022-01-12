@@ -501,7 +501,8 @@ namespace Reko.UnitTests.ImageLoaders.MzExe
             Assert.AreEqual("msvcrt.dll!free", program.ImportReferences[Address.Ptr32(0x0010202E)].ToString());
             Assert.AreEqual("msvcrt.dll!realloc", program.ImportReferences[Address.Ptr32(0x00102032)].ToString());
             var sExp =
-@"00102000 0004 Data word32
+@"00101000 0000 Procedure (fn void ())
+00102000 0004 Data word32
 00102004 0004 Data word32
 00102008 0004 Data word32
 0010202A 0004 Data (ptr32 code)

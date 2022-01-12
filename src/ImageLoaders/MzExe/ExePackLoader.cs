@@ -147,10 +147,9 @@ namespace Reko.ImageLoaders.MzExe
                     "code",
                     imgU,
                     AccessMode.ReadWriteExecute));
-            return new Program(
-                segmentMap,
-                arch,
-                platform);
+            var program = new Program(segmentMap, arch, platform);
+            Relocate(program, addr!);
+            return program;
         }
 
         public override Address PreferredBaseAddress
@@ -159,7 +158,7 @@ namespace Reko.ImageLoaders.MzExe
             set { throw new NotImplementedException(); }
         }
 
-        public override RelocationResults Relocate(Program program, Address addrLoad)
+        public void Relocate(Program program, Address addrLoad)
         {
             EndianImageReader rdr = new LeImageReader(RawImage, hdrOffset + relocationsOffset);
             ushort segCode = (ushort)(addrLoad.Selector!.Value + (ExeImageLoader.CbPsp >> 4));
@@ -195,10 +194,10 @@ namespace Reko.ImageLoaders.MzExe
             state.SetRegister(Registers.cs, Constant.Word16(cs));
             state.SetRegister(Registers.ss, Constant.Word16(ss));
             state.SetRegister(Registers.bx, Constant.Word16(0));
+
             var ep = ImageSymbol.Procedure(arch, Address.SegPtr(cs, ip), state: state);
-            var entryPoints = new List<ImageSymbol> { ep };
-            var imageSymbols = entryPoints.ToSortedList(e => e.Address, e => e);
-            return new RelocationResults(entryPoints, imageSymbols);
+            program.EntryPoints[ep.Address] = ep;
+            program.ImageSymbols[ep.Address] = ep;
         }
 
         private static byte[] signature = 

@@ -30,8 +30,6 @@ namespace Reko.Environments.RT11
 {
     public class LdaFileLoader : ProgramImageLoader
     {
-        private Address? addrEntry;
-
         public LdaFileLoader(IServiceProvider services, ImageLocation imageUri, byte[] imgRaw) : base(services, imageUri, imgRaw)
         {
             PreferredBaseAddress = Address.Ptr16(0);
@@ -56,18 +54,9 @@ namespace Reko.Environments.RT11
                 Platform = platform,
                 SegmentMap = segmentMap,
             };
-            this.addrEntry = Address.Ptr16(uAddrStart);
+            var addrEntry = Address.Ptr16(uAddrStart);
+            program.EntryPoints[addrEntry] = ImageSymbol.Procedure(program.Architecture, addrEntry);
             return program;
-        }
-
-        public override RelocationResults Relocate(Program program, Address addrLoad)
-        {
-            return new RelocationResults(
-                new List<ImageSymbol>
-                {
-                    ImageSymbol.Procedure(program.Architecture, addrEntry!),
-                },
-                new SortedList<Address, ImageSymbol>());
         }
 
         public (ushort, SegmentMap?) ReadDataBlocks(LeImageReader rdr)

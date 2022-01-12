@@ -78,11 +78,15 @@ namespace Reko.ImageLoaders.Coff
 
         public override Program LoadProgram(Address? addrLoad)
         {
+            Program program;
             if ((header.f_flags & IMAGE_FILE_EXECUTABLE_IMAGE) == 0)
             {
-                return LinkObjectFile();
+                program  = LinkObjectFile();
             }
-            throw new NotImplementedException();
+            else
+                throw new NotImplementedException();
+            var syms = ReadSymbols();   //$TODO: do something with the symbols?
+            return program;
         }
 
         private Program LinkObjectFile()
@@ -188,15 +192,6 @@ namespace Reko.ImageLoaders.Coff
                 coffSections.Add((name,hdr));
             }
             return (arch, fileHeader, coffSections);
-        }
-
-
-        public override RelocationResults Relocate(Program program, Address addrLoad)
-        {
-            var syms = ReadSymbols();
-            return new RelocationResults(
-                new List<ImageSymbol>(),
-                new SortedList<Address, ImageSymbol>());
         }
 
         private List<CoffSymbol> ReadSymbols()

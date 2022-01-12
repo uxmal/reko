@@ -99,17 +99,11 @@ namespace Reko.ImageLoaders.MzExe
 
 		// Fix up the relocations.
 
-		public override RelocationResults Relocate(Program program, Address addrLoad)
+		public void Relocate(Program program, Address addrLoad)
 		{
             // Seed the scanner with the start location.
 
-            var sym = ImageSymbol.Procedure(
-                program.Architecture,
-                Address.SegPtr((ushort)(lzCs + addrLoad.Selector!), lzIp),
-                state: arch.CreateProcessorState());
-            
-            var imageSymbols = new SortedList<Address, ImageSymbol> { { sym.Address, sym } };
-            List<ImageSymbol> entryPoints = new List<ImageSymbol>() { sym };
+           
 			if (isLz91)
 			{
 				Relocate91(RawImage, addrLoad.Selector!.Value, imgLoaded);
@@ -118,7 +112,6 @@ namespace Reko.ImageLoaders.MzExe
 			{
 				Relocate90(RawImage, addrLoad.Selector!.Value, imgLoaded);
 			}
-            return new RelocationResults(entryPoints, imageSymbols);
 		}
 
 		// for LZEXE ver 0.90 
@@ -199,10 +192,18 @@ namespace Reko.ImageLoaders.MzExe
         public override Program LoadProgram(Address? addrLoad)
 		{
 			Unpack(RawImage, addrLoad ?? PreferredBaseAddress );
-            return new Program(segmentMap, arch, platform);
-		}
+            var program = new Program(segmentMap, arch, platform);
+            var sym = ImageSymbol.Procedure(
+                program.Architecture,
+                Address.SegPtr((ushort) (lzCs + addrLoad!.Selector!), lzIp),
+                state: arch.CreateProcessorState());
+            program.ImageSymbols[sym.Address] = sym;
+            program.EntryPoints[sym.Address] = sym;
+            return program;
 
-		public override Address PreferredBaseAddress
+        }
+
+        public override Address PreferredBaseAddress
 		{
 			get { return Address.SegPtr(0x0800, 0); }
             set { throw new NotImplementedException(); }

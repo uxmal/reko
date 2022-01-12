@@ -150,12 +150,6 @@ namespace Reko.ImageLoaders.MzExe
             }
         }
 
-        public override RelocationResults Relocate(Program program, Address addrLoad)
-        {
-            var entryPoints = new List<ImageSymbol>();
-            var symbols = new SortedList<Address, ImageSymbol>();
-            return new RelocationResults(entryPoints, symbols);
-        }
 
         [Endian(Endianness.LittleEndian)]
         [StructLayout(LayoutKind.Sequential, Pack = 2)]

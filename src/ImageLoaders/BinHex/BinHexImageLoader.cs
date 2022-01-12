@@ -74,7 +74,7 @@ namespace Reko.ImageLoaders.BinHex
                     arch,
                     platform);
             }
-            Relocate(program, addrLoad, bmem, rsrcFork);
+            rsrcFork.AddResourcesToImageMap(addrLoad, bmem, program);
             return program;
         }
 
@@ -89,17 +89,6 @@ namespace Reko.ImageLoaders.BinHex
             }
             ReadUInt16BE(stm);      // CRC
             return fork;
-        }
-
-        public static void Relocate(Program program, Address addrLoad, ByteMemoryArea bmem, ResourceFork rsrcFork)
-        {
-            var entryPoints = new List<ImageSymbol>();
-            var symbols = new SortedList<Address, ImageSymbol>();
-            if (rsrcFork != null)
-            {
-                rsrcFork.Dump();
-                rsrcFork.AddResourcesToImageMap(addrLoad, bmem, program.SegmentMap, entryPoints, symbols);
-            }
         }
 
         public BinHexHeader LoadBinHexHeader(IEnumerator<byte> stm)

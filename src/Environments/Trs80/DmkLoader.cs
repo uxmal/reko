@@ -69,12 +69,20 @@ namespace Reko.Environments.Trs80
             var arch = cfgSvc.GetArchitecture("z80")!;
             var platform = cfgSvc.GetEnvironment("trs80").Load(Services, arch);
             var segmentMap = CreateMemoryMap(platform, mem);
-            return new Program
+
+            //        return new RelocationResults(
+            //new List<ImageSymbol> {
+            //                
+            //},
+            //BuildSymbols(program));
+            var program = new Program
             {
                 Architecture = arch,
                 Platform = platform,
-                SegmentMap = segmentMap,
+                SegmentMap = segmentMap
             };
+            program.ImageSymbols.Add(addrLoad, ImageSymbol.Procedure(program.Architecture, addrLoad));
+            return program;
         }
 
         private SegmentMap CreateMemoryMap(IPlatform platform, ByteMemoryArea bmem)
@@ -179,15 +187,6 @@ namespace Reko.Environments.Trs80
                 this.m_mixedDensity = true;
             }
             return true;
-        }
-
-        public override RelocationResults Relocate(Program program, Address addrLoad)
-        {
-            return new RelocationResults(
-                new List<ImageSymbol> {
-                    ImageSymbol.Procedure(program.Architecture, addrLoad)
-                },
-                BuildSymbols(program));
         }
 
         private SortedList<Address, ImageSymbol> BuildSymbols(Program program)

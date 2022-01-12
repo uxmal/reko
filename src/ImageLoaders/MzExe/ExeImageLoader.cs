@@ -213,11 +213,6 @@ namespace Reko.ImageLoaders.MzExe
 			e_lfaRelocations = rdr.ReadLeUInt16();
 			e_ovno = rdr.ReadLeUInt16();
 		}
-
-        public override RelocationResults Relocate(Program program, Address addrLoad)
-		{
-			return GetDeferredLoader().Relocate(program, addrLoad);
-		}
 	}
 }
 /*

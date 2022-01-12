@@ -4,16 +4,16 @@
 
 #include "hello.h"
 
-// 0100: void fn0100()
-void fn0100()
+// 0100: void hello()
+void hello()
 {
-	fn0105(&g_t0111);
+	puts(&g_t0111);
 }
 
-// 0105: void fn0105(Register (ptr16 Eq_n) gp0)
+// 0105: void puts(Register (ptr16 Eq_n) gp0)
 // Called from:
-//      fn0100
-void fn0105(struct Eq_n * gp0)
+//      hello
+void puts(struct Eq_n * gp0)
 {
 	struct Eq_n * gp1_n = gp0;
 	while (true)
@@ -21,15 +21,15 @@ void fn0105(struct Eq_n * gp0)
 		word16 gp0_n = gp1_n->w0000;
 		if (gp0_n == 0x00)
 			break;
-		fn010E(gp0_n);
+		putchar(gp0_n);
 		++gp1_n;
 	}
 }
 
-// 010E: void fn010E(Register word16 gp0)
+// 010E: void putchar(Register word16 gp0)
 // Called from:
-//      fn0105
-void fn010E(word16 gp0)
+//      puts
+void putchar(word16 gp0)
 {
 	__console_output(gp0);
 }

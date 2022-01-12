@@ -121,15 +121,10 @@ struct exec {
                 new ImageSegment("data", data, AccessMode.ReadWrite),
                 new ImageSegment("bss", bss, AccessMode.ReadWrite));
             var platform = cfgSvc.GetEnvironment("unicos").Load(Services, arch);
-            return new Program(segs, arch, platform);
-        }
- 
-        public override RelocationResults Relocate(Program program, Address addrLoad)
-        {
+            var program = new Program(segs, arch, platform);
             var entry = ImageSymbol.Procedure(program.Architecture, Address.Ptr32((uint) a_entry), "_start");
-            return new RelocationResults(
-                new List<ImageSymbol> { entry },
-                new SortedList<Address, ImageSymbol>());
+            program.EntryPoints[entry.Address] = entry;
+            return program;
         }
 
         private IProcessorArchitecture CreateArchitecture(IConfigurationService cfgSvc, MachineType machineType)

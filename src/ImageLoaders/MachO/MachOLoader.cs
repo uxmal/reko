@@ -73,6 +73,18 @@ namespace Reko.ImageLoaders.MachO
             parser = CreateParser();
             var (hdr, specific) = parser.ParseHeader(addrLoad);
             this.program = parser.ParseLoadCommands(hdr, specific.Architecture, addrLoad);
+
+            CollectSymbolStubs(parser, machoSymbols, imageSymbols);
+            var imgSymbols = new SortedList<Address, ImageSymbol>();
+            foreach (var de in imageSymbols)
+            {
+                if (program.SegmentMap.IsValidAddress(de.Key))
+                    program.ImageSymbols.Add(de.Key, de.Value);
+            }
+            foreach (var ep in entryPoints)
+            {
+                program.EntryPoints[ep.Address] = ep;
+            }
             return this.program;
         }
 
@@ -88,20 +100,6 @@ namespace Reko.ImageLoaders.MachO
             case MH_MAGIC_64_LE: return new Loader64(this, new LeImageReader(new ByteMemoryArea(Address.Ptr32(0), RawImage), 0));
             }
             throw new BadImageFormatException("Invalid Mach-O header.");
-        }
-
-        public override RelocationResults Relocate(Program program, Address addrLoad)
-        {
-            if (parser is null)
-                throw new InvalidOperationException();
-            CollectSymbolStubs(parser!, machoSymbols, imageSymbols);
-            var imgSymbols = new SortedList<Address, ImageSymbol>();
-            foreach (var de in imageSymbols)
-            {
-                if (program.SegmentMap.IsValidAddress(de.Key))
-                    imgSymbols.Add(de.Key, de.Value);
-            }
-            return new RelocationResults(entryPoints, imgSymbols);
         }
 
         /// <summary>

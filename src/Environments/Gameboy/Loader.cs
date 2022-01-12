@@ -56,18 +56,9 @@ namespace Reko.Environments.Gameboy
             var imageSegment = new ImageSegment("ROM", mem, AccessMode.ReadExecute);
             var segmentMap = new SegmentMap(imageSegment);
             var program = new Program(segmentMap, arch, platform);
-            return program;
-        }
-
-        public override RelocationResults Relocate(Program program, Address addrLoad)
-        {
             var start = ImageSymbol.Procedure(program.Architecture, Address.Ptr16(0x100), "Rom_init");
-            return new RelocationResults(
-                new List<ImageSymbol> { start },
-                new SortedList<Address, ImageSymbol>
-                {
-                    { start.Address, start }
-                });
+            program.EntryPoints[start.Address] = start;
+            return program;
         }
     }
 }

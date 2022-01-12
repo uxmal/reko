@@ -66,16 +66,9 @@ namespace Reko.Environments.NeoGeo
             var env = cfgSvc.GetEnvironment("neo-geo-pocket");
             var platform = env.Load(Services, arch);
             
-            return new Program(segmap, arch, platform);
-        }
-
-        public override RelocationResults Relocate(Program program, Address addrLoad)
-        {
-            return new RelocationResults(
-                new List<ImageSymbol> {
-                    ImageSymbol.Procedure(program.Architecture, entryPoint)
-                },
-                new SortedList<Address, ImageSymbol>());
+            var program = new Program(segmap, arch, platform);
+            program.EntryPoints[entryPoint] = ImageSymbol.Procedure(program.Architecture, entryPoint);
+            return program;
         }
     }
 }

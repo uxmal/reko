@@ -72,13 +72,6 @@ namespace Reko.Core.Loading
         }
 
         /// <summary>
-        /// Performs fix-ups of the loaded image, adding findings to the supplied collections.
-        /// </summary>
-        /// <param name="addrLoad">The address at which the program image is loaded.</param>
-        /// <returns></returns>
-        public abstract RelocationResults Relocate(Program program, Address addrLoad);
-
-        /// <summary>
         /// Express the fact that memory at address <paramref name="addr"/> was relocated
         /// to segment <paramref>seg</paramref>.
         /// </summary>

@@ -54,13 +54,6 @@ namespace Reko.ImageLoaders.Coff
             return new Program(map, arch, platform);
         }
 
-        public override RelocationResults Relocate(Program program, Address addrLoad)
-        {
-            return new RelocationResults(
-                new List<ImageSymbol>(),
-                new SortedList<Address, ImageSymbol>());
-        }
-
         [StructLayout(LayoutKind.Sequential, Pack = 1)]
 	    [Endian(Endianness.BigEndian)]
         private struct FileHeader64

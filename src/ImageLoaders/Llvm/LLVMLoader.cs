@@ -61,10 +61,5 @@ namespace Reko.ImageLoaders.LLVM
             program.NeedsTypeReconstruction = false;
             return program; 
         }
-
-        public override RelocationResults Relocate(Program program, Address addrLoad)
-        {
-            return new RelocationResults(new List<ImageSymbol>(), new SortedList<Address, ImageSymbol>());
-        }
     }
 }

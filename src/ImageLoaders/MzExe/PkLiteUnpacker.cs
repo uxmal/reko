@@ -214,10 +214,16 @@ l01C8:
 			imgU = new ByteMemoryArea(addrLoad!, abU);
             segmentMap = new SegmentMap(imgU.BaseAddress,
                 new ImageSegment("image", imgU, AccessMode.ReadWriteExecute));
-			return new Program(segmentMap, arch, platform);
-		}
+			var program = new Program(segmentMap, arch, platform);
+            var state = Relocate(program, addrLoad!);
 
-		public uint CopyDictionaryWord(byte [] abU, int offset, int bytes, BitStream stm, uint dst)
+            var sym = ImageSymbol.Procedure(arch, Address.SegPtr(pklCs, pklIp), state: state);
+            program.EntryPoints[sym.Address] = sym;
+            program.ImageSymbols[sym.Address] = sym;
+            return program;
+        }
+
+        public uint CopyDictionaryWord(byte [] abU, int offset, int bytes, BitStream stm, uint dst)
 		{
 			offset |= stm.GetByte();
 			var src = dst - offset;
@@ -240,7 +246,7 @@ l01C8:
             set { throw new NotImplementedException(); }
         }
 
-        public override RelocationResults Relocate(Program program, Address addrLoad)
+        public ProcessorState Relocate(Program program, Address addrLoad)
 		{
             var relocations = imgU.Relocations;
 			ushort segCode = (ushort) (addrLoad.Selector!.Value + (PspSize >> 4));
@@ -280,11 +286,7 @@ l01C8:
 			state.SetRegister(Registers.sp, Constant.Word16(pklSp));
 			state.SetRegister(Registers.si, Constant.Word16(0));
 			state.SetRegister(Registers.di, Constant.Word16(0));
-
-            var sym = ImageSymbol.Procedure(arch, Address.SegPtr(pklCs, pklIp), state: state);
-            return new RelocationResults(
-                new List<ImageSymbol> { sym },
-                new SortedList<Address, ImageSymbol> { { sym.Address, sym } });
+            return state;
 		}
 
 

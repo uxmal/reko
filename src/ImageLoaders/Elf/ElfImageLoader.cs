@@ -80,9 +80,10 @@ namespace Reko.ImageLoaders.Elf
             innerLoader.Sections.AddRange(innerLoader.LoadSectionHeaders());
             innerLoader.LoadSymbolsFromSections();
             //innerLoader.Dump();           // This spews a lot into the unit test output.
+            Program program;
             if (cHeaders > 0)
             {
-                return innerLoader.LoadImage(platform, RawImage);
+                program = innerLoader.LoadImage(platform, RawImage);
             }
             else
             {
@@ -95,14 +96,10 @@ namespace Reko.ImageLoaders.Elf
                 // The file we're loading is an object file, and needs to be 
                 // linked before we can load it.
                 var linker = innerLoader.CreateLinker();
-                return linker.LinkObject(platform, addrLoad, RawImage);
+                program = linker.LinkObject(platform, addrLoad, RawImage);
             }
-        }
-
-        public override RelocationResults Relocate(Program program, Address addrLoad)
-        {
-            var reloc = innerLoader!.Relocate(program, addrLoad);
-            return reloc;
+            innerLoader!.Relocate(program, addrLoad!);
+            return program;
         }
 
         public void LoadElfIdentification()

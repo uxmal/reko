@@ -785,7 +785,7 @@ namespace Reko.ImageLoaders.Elf
             return Encoding.ASCII.GetString(bytes, (int) fileOffset, u - (int) fileOffset);
         }
 
-        public RelocationResults Relocate(Program program, Address addrLoad)
+        public void Relocate(Program program, Address addrLoad)
         {
             var symbols = CreateSymbolDictionaries(IsExecutableFile);
             var relocator = CreateRelocator(this.machine, symbols);
@@ -804,8 +804,14 @@ namespace Reko.ImageLoaders.Elf
                     EnsureEntryPoint(entryPoints, symbols, addrMain);
                 }
             }
-            entryPoints = entryPoints.Select(relocator.AdjustImageSymbol).ToList();
-            return new RelocationResults(entryPoints, symbols);
+            foreach (var ep in entryPoints.Select(relocator.AdjustImageSymbol))
+            {
+                program.EntryPoints[ep.Address] = ep;
+            }
+            foreach (var symbol in symbols)
+            {
+                program.ImageSymbols[symbol.Key] = symbol.Value;
+            }
         }
 
         /// <summary>

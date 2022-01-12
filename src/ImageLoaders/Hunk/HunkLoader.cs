@@ -74,13 +74,18 @@ namespace Reko.ImageLoaders.Hunk
             var platform = cfgSvc.GetEnvironment("amigaOS").Load(Services, arch);
             var imageMap = platform.CreateAbsoluteMemoryMap();
             var mem = new ByteMemoryArea(addrLoad, RelocateBytes(addrLoad));
-            return new Program(
+            var program = new Program(
                 new SegmentMap(
                     mem.BaseAddress,
                     new ImageSegment(
                         "code", mem, AccessMode.ReadWriteExecute)),
                 arch,
                 platform);
+
+            var sym = ImageSymbol.Procedure(program.Architecture, addrLoad, state: arch.CreateProcessorState());
+            program.ImageSymbols[sym.Address] = sym;
+            program.EntryPoints[sym.Address] = sym;
+            return program;
         }
 
         public bool BuildLoadSegments()
@@ -630,18 +635,6 @@ layout.add_range(arg_mem)
 print "args: %s (%d)" % (arg_text, arg_len)
 print arg_mem
 */
-
-        public override RelocationResults Relocate(Program program, Address addrLoad)
-        {
-            var sym = ImageSymbol.Procedure(program.Architecture, addrLoad, state: arch.CreateProcessorState());
-            var entries = new List<ImageSymbol>
-            {
-                //$TODO: what are the registers on entry?
-            };
-            return new RelocationResults(
-                new List<ImageSymbol> { sym },
-                new SortedList<Address, ImageSymbol> { { sym.Address, sym } });
-        }
 
         private byte[] RelocateBytes(Address addrLoad)
         {

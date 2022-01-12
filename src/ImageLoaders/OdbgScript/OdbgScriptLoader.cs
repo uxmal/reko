@@ -25,6 +25,7 @@ using Reko.Core.Services;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using rulong = System.UInt64;
 
 #pragma warning disable IDE1006 // Naming Styles
@@ -75,21 +76,23 @@ namespace Reko.ImageLoaders.OdbgScript
             // the packed entry point.
             var origLdr = this.originalImageLoader;
             var program = origLdr.LoadProgram(origLdr.PreferredBaseAddress);
-            var rr = origLdr.Relocate(program, origLdr.PreferredBaseAddress);
             this.ImageMap = program.SegmentMap;
             this.Architecture = program.Architecture;
+            var ep = program.EntryPoints.Values.First();
 
+            program.ImageSymbols.Clear();
+            program.EntryPoints.Clear();
             var envEmu = program.Platform.CreateEmulator(program.SegmentMap, program.ImportReferences);
             var emu = program.Architecture.CreateEmulator(program.SegmentMap, envEmu);
             this.debugger = new Debugger(program.Architecture, emu);
             this.scriptInterpreter = new OllyLangInterpreter(Services, program.Architecture);
             this.scriptInterpreter.Host = new OdbgScriptHost(this, program);
             this.scriptInterpreter.Debugger = this.debugger;
-            emu.InstructionPointer = rr.EntryPoints[0].Address;
+            emu.InstructionPointer = ep.Address;
             emu.BeforeStart += emu_BeforeStart;
             emu.ExceptionRaised += emu_ExceptionRaised;
 
-            var stackSeg = envEmu.InitializeStack(emu, rr.EntryPoints[0].ProcessorState!);
+            var stackSeg = envEmu.InitializeStack(emu, ep.ProcessorState!);
             scriptInterpreter.Script = LoadScript(scriptInterpreter.Host, Argument!);
             emu.Start();
             envEmu.TearDownStack(stackSeg);
@@ -98,25 +101,18 @@ namespace Reko.ImageLoaders.OdbgScript
             {
                 program.InterceptedCalls.Add(ic.Key, ic.Value);
             }
+            if (OriginalEntryPoint != null)
+            {
+                var sym = ImageSymbol.Procedure(program.Architecture, OriginalEntryPoint, state: Architecture.CreateProcessorState());
+                program.ImageSymbols[sym.Address] = sym;
+                program.EntryPoints[sym.Address] = sym;
+            }
             return program;
         }
 
         public override ImageSegment? AddSegmentReference(Address addr, ushort seg)
         {
             return originalImageLoader.AddSegmentReference(addr, seg);
-        }
-
-        public override RelocationResults Relocate(Program program, Address addrLoad)
-        {
-            var eps = new List<ImageSymbol>();
-            var syms = new SortedList<Address, ImageSymbol>();
-            if (OriginalEntryPoint != null)
-            {
-                var sym = ImageSymbol.Procedure(program.Architecture, OriginalEntryPoint, state:Architecture.CreateProcessorState());
-                syms.Add(sym.Address, sym);
-                eps.Add(sym);
-            }
-            return new RelocationResults(eps, syms);
         }
 
         public virtual OllyScript LoadScript(IOdbgScriptHost host, string scriptFilename)

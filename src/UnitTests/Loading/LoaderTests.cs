@@ -164,11 +164,6 @@ namespace Reko.UnitTests.Loading
             {
                 return new Program();
             }
-
-            public override RelocationResults Relocate(Program program, Address addrLoad)
-            {
-                return new RelocationResults(new List<ImageSymbol>(), new SortedList<Address, ImageSymbol>());
-            }
         }
 
         private void Given_ImageLoader()
@@ -206,11 +201,6 @@ namespace Reko.UnitTests.Loading
             }
 
             public override Program LoadProgram(Address addrLoad)
-            {
-                throw new NotImplementedException();
-            }
-
-            public override RelocationResults Relocate(Program program, Address addrLoad)
             {
                 throw new NotImplementedException();
             }

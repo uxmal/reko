@@ -181,10 +181,10 @@ namespace Reko.WindowsItp
             var peLdr = new PeImageLoader(sc, ImageLocation.FromUri("file:foo.exe"), abImage, lfanew.Value);
             var addr = peLdr.PreferredBaseAddress;
             var program = peLdr.LoadProgram(addr);
-            var rr = peLdr.Relocate(program, addr);
+            peLdr.Relocate(program, addr);
             var win32 = new Win32Emulator(program.SegmentMap, program.Platform, program.ImportReferences);
             var emu = program.Architecture.CreateEmulator(program.SegmentMap, win32);
-            emu.InstructionPointer = rr.EntryPoints[0].Address;
+            emu.InstructionPointer = program.EntryPoints.Values.First().Address;
             emu.ExceptionRaised += delegate { throw new Exception(); };
             emu.WriteRegister(Registers.esp, (uint)peLdr.PreferredBaseAddress.ToLinear() + 0x0FFC);
             emu.Start();
@@ -204,7 +204,6 @@ namespace Reko.WindowsItp
             ldr.Argument = @"D:\dev\jkl\dec\halsten\decompiler_paq\upx\upx_ultimate.txt";
             var addr = ldr.PreferredBaseAddress;
             var program = ldr.LoadProgram(addr);
-            ldr.Relocate(program, addr);
         }
 
         private void assumeRegistesToolStripMenuItem_Click(object sender, EventArgs e)

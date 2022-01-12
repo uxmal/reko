@@ -129,11 +129,5 @@ namespace Reko.ImageLoaders.Pef
             return platform;
 
         }
-
-        public override RelocationResults Relocate(Program program, Address addrLoad)
-        {
-            //$TODO
-            return new RelocationResults(new List<ImageSymbol>(), new SortedList<Address, ImageSymbol>());
-        }
     }
 }

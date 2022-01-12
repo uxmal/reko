@@ -285,18 +285,20 @@ namespace Reko.ImageLoaders.MzExe
             {
                 program.ImportReferences.Add(impRef.Item1, impRef.Item2);
             }
-            return program;
-        }
 
-        public override RelocationResults Relocate(Program program, Address addrLoad)
-        {
             if (addrEntry != null)
             {
                 entryPoints.Add(ImageSymbol.Procedure(program.Architecture, addrEntry));
             }
-            return new RelocationResults(
-                entryPoints.Where(e => e != null && e.Type != SymbolType.Data).ToList()!,
-                imageSymbols);
+            foreach (var ep in entryPoints.Where(e => e != null && e.Type != SymbolType.Data))
+            {
+                program.EntryPoints.Add(ep!.Address, ep);
+            }
+            foreach (var sym in imageSymbols)
+            {
+                program.ImageSymbols[sym.Key] = sym.Value;
+            }
+            return program;
         }
 
         private Dictionary<int,string> LoadNonresidentNames(uint offNonResidentNameTable, Dictionary<int,string> dict)

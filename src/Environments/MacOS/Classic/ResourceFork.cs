@@ -288,9 +288,7 @@ namespace Reko.Environments.MacOS.Classic
         public void AddResourcesToImageMap(
             Address addrLoad, 
             ByteMemoryArea mem,
-            SegmentMap segmentMap, 
-            List<ImageSymbol> entryPoints,
-            SortedList<Address, ImageSymbol> symbols)
+            Program program)
         {
             JumpTable? jt = null;
             var codeSegs = new Dictionary<int, ImageSegment>();
@@ -312,7 +310,7 @@ namespace Reko.Environments.MacOS.Classic
                     var uAddr = (uSegOffset + bytesToSkip) & ~1u;
                     Address addrSegment = addrLoad + uAddr;    //$TODO pad to 16-byte boundary?
                     var memSeg = new ByteMemoryArea(addrSegment, abSegment);
-                    var segment = segmentMap.AddSegment(new ImageSegment(
+                    var segment = program.SegmentMap.AddSegment(new ImageSegment(
                         ResourceDescriptiveName(type, rsrc),
                         memSeg,
                         AccessMode.Read));
@@ -320,31 +318,31 @@ namespace Reko.Environments.MacOS.Classic
                     {
                         if (rsrc.ResourceID == 0)
                         {
-                            jt = ProcessJumpTable(memSeg, symbols);
+                            jt = ProcessJumpTable(memSeg, program.ImageSymbols);
                         }
                         else
                         {
-                            AddCodeSegment(symbols, codeSegs, rsrc, memSeg, segment);
+                            AddCodeSegment(program.ImageSymbols, codeSegs, rsrc, memSeg, segment);
                         }
                     }
                     if (type.Name == "INIT")
                     {
-                        AddCodeSegment(symbols, codeSegs, rsrc, memSeg, segment);
+                        AddCodeSegment(program.ImageSymbols, codeSegs, rsrc, memSeg, segment);
                         var symInit = ImageSymbol.Procedure(arch, segment.Address, $"Init_{segment.Address}");
-                        entryPoints.Add(symInit);
+                        program.EntryPoints.Add(symInit.Address, symInit);
                     }
                     else if (type.Name == "cdev")
                     {
-                        AddCodeSegment(symbols, codeSegs, rsrc, memSeg, segment);
+                        AddCodeSegment(program.ImageSymbols, codeSegs, rsrc, memSeg, segment);
                         var symInit = ImageSymbol.Procedure(arch, segment.Address, $"CDev_{segment.Address}");
-                        entryPoints.Add(symInit);
+                        program.EntryPoints.Add(symInit.Address, symInit);
                     }
                     else if (type.Name == "DRVR")
                     {
-                        AddCodeSegment(symbols, codeSegs, rsrc, memSeg, segment);
+                        AddCodeSegment(program.ImageSymbols, codeSegs, rsrc, memSeg, segment);
                         var symInit = ImageSymbol.Procedure(arch, segment.Address, $"Drvr_{segment.Address}");
-                        entryPoints.Add(symInit);
-                        AddDriverMethods(symbols, memSeg);
+                        program.EntryPoints.Add(symInit.Address, symInit);
+                        AddDriverMethods(program.ImageSymbols, memSeg);
                     }
                 }
             }
@@ -353,14 +351,14 @@ namespace Reko.Environments.MacOS.Classic
             if (jt != null)
             {
                 // Find an address beyond all known segments.
-                var addr = segmentMap.Segments.Values.Max(s => s.Address + s.Size).Align(0x10);
-                var a5world = LoadA5World(jt, addr, codeSegs, symbols);
+                var addr = program.SegmentMap.Segments.Values.Max(s => s.Address + s.Size).Align(0x10);
+                var a5world = LoadA5World(jt, addr, codeSegs, program.ImageSymbols);
                 platform.A5World = a5world;
                 platform.A5Offset = jt.BelowA5Size;
-                segmentMap.AddSegment(a5world);
+                program.SegmentMap.AddSegment(a5world);
 
                 // Find first (and only!) segment containing the name %A5Init.
-                var a5dataSegment = segmentMap.Segments.Values.SingleOrDefault(SegmentNamedA5Init);
+                var a5dataSegment = program.SegmentMap.Segments.Values.SingleOrDefault(SegmentNamedA5Init);
                 if (a5dataSegment == null)
                     return;
 
