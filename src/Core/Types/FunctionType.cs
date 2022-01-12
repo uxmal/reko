@@ -162,7 +162,17 @@ namespace Reko.Core.Types
         /// <remarks>
         /// This low level detail is commonly implicit in ABI's.
         /// </remarks>
-        public int ReturnAddressOnStack { get; set; }
+        public int ReturnAddressOnStack
+        {
+            get { return z; }
+            set
+            {
+                if (value == 8)
+                    _ = value; //$DEBUG
+                z = value;
+            }
+        }
+        int z;
 
         /// <summary>
         /// Number of slots by which the FPU stack grows or shrinks after the

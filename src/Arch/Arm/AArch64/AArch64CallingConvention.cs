@@ -127,7 +127,7 @@ namespace Reko.Arch.Arm.AArch64
                     else
                         throw new NotImplementedException();
                 }
-                else if(dtRet != null)
+                else if (dtRet != null)
                 {
                     if (dtRet.Size <= 8)
                     {

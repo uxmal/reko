@@ -59,6 +59,8 @@ namespace Reko.Arch.Arm
             StackRegister = Registers.sp;
         }
 
+        public override int ReturnAddressOnStack => 0;
+
 #if NATIVE
         private void GetRegistersFromNative()
         {

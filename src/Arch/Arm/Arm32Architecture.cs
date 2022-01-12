@@ -140,6 +140,8 @@ namespace Reko.Arch.Arm
 #endif
         }
 
+        public override int ReturnAddressOnStack => 0;
+
         public override IEqualityComparer<MachineInstruction>? CreateInstructionComparer(Normalize norm)
         {
             return null;

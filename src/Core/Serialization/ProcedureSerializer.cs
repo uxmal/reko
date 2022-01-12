@@ -67,7 +67,7 @@ namespace Reko.Core.Serialization
             if (ssig.ReturnAddressOnStack != 0)
                 sig.ReturnAddressOnStack = ssig.ReturnAddressOnStack;
             else
-                sig.ReturnAddressOnStack = Architecture.PointerType.Size;   //$BUG: x86 real mode?
+                sig.ReturnAddressOnStack = Architecture.ReturnAddressOnStack;   //$BUG: x86 real mode?
         }
 
         public Identifier CreateId(string name, DataType type, Storage storage)
@@ -89,7 +89,7 @@ namespace Reko.Core.Serialization
         /// <returns></returns>
         public FunctionType? Deserialize(SerializedSignature? ss, Frame frame)
         {
-            if (ss == null)
+            if (ss is null)
                 return null;
             // If there is no explict return address size,
             // use the architecture's default return address size.
@@ -161,7 +161,7 @@ namespace Reko.Core.Serialization
                 // parameters
 
                 var cc = platform.GetCallingConvention(ss.Convention);
-                if (cc == null)
+                if (cc is null)
                 {
                     // It was impossible to determine a calling convention,
                     // so we don't know how to decode this signature accurately.
