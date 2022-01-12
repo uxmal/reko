@@ -9,7 +9,7 @@ void fn0000000000001460(word64 x0, word32 dwArg00)
 fn0000000000001460_exit:
 fn0000000000001460_entry:
 l0000000000001460:
-	x0_17 = CONVERT(__libc_start_main(Mem0[0x000000000001FFE8<p64>:word64], SLICE(qwArg00, int32, 0), fp + 8<64>, Mem0[0x000000000001FFE0<p64>:word64], Mem0[0x000000000001FF98<p64>:word64], x0, fp), int32, uint64)
+	__libc_start_main(Mem0[0x000000000001FFE8<p64>:word64], SLICE(qwArg00, int32, 0), fp + 8<64>, Mem0[0x000000000001FFE0<p64>:word64], Mem0[0x000000000001FF98<p64>:word64], x0, fp)
 	abort()
 
 
@@ -69,7 +69,7 @@ l0000000000001740:
 l0000000000001750:
 	x2_11 = Mem0[x1_6:word64]
 l0000000000001754:
-	x0_12 = CONVERT(__cxa_atexit(x0, 0<64>, x2_11), int32, uint64)
+	__cxa_atexit(x0, 0<64>, x2_11)
 	return
 fn0000000000001740_exit:
 

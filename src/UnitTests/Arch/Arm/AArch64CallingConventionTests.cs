@@ -20,6 +20,7 @@
 
 using NUnit.Framework;
 using Reko.Arch.Arm;
+using Reko.Arch.Arm.AArch64;
 using Reko.Core;
 using Reko.Core.Types;
 using Reko.Environments.SysV.ArchSpecific;
@@ -30,7 +31,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Reko.UnitTests.Environments.SysV.ArchSpecific
+namespace Reko.UnitTests.Arch.Arm
 {
     [TestFixture]
     public class Arm64CallingConventionTests
@@ -38,7 +39,7 @@ namespace Reko.UnitTests.Environments.SysV.ArchSpecific
         private static readonly PrimitiveType i32 = PrimitiveType.Int32;
 
         private Arm64Architecture arch;
-        private Arm64CallingConvention cc;
+        private AArch64CallingConvention cc;
         private CallingConventionEmitter ccr;
 
         public Arm64CallingConventionTests()
@@ -49,7 +50,7 @@ namespace Reko.UnitTests.Environments.SysV.ArchSpecific
         [SetUp]
         public void Setup()
         {
-            this.cc = new Arm64CallingConvention(arch);
+            this.cc = new AArch64CallingConvention(arch);
             this.ccr = new CallingConventionEmitter();
         }
 

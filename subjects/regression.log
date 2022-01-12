@@ -151,7 +151,7 @@ l0800_17AE: warning: Non-integral switch expression
 
 === regressions\reko-367\code
 
-=== MachO\const
+=== MachO\amd64\const
 
 === PE\x86\demo_upx\Demo
 Signature of 'UPX -> www.upx.sourceforge.net' detected.
@@ -690,6 +690,188 @@ fn0B06: warning: Structure analysis stopped making progress, quitting. Please re
 
 === regressions\reko-121\m68k_jump
 
+*** MachO\amd64\MachO-OSX-x64-ls
+000000010000488F: warning: Unable to resolve imported reference __stderrp.
+0000000100004951: warning: Unable to resolve imported reference _DefaultRuneLocale.
+0000000100004DB4: warning: Unable to resolve imported reference __maskrune.
+0000000100004DB4: warning: Unable to resolve imported reference __maskrune.
+0000000100004EC2: warning: Unable to resolve imported reference memchr.
+0000000100004EC2: warning: Unable to resolve imported reference memchr.
+0000000100002B88: warning: Unable to resolve imported reference optind.
+0000000100004F2E: warning: Unable to resolve imported reference tgetent.
+0000000100004F2E: warning: Unable to resolve imported reference tgetent.
+0000000100004F34: warning: Unable to resolve imported reference tgetstr.
+0000000100004F34: warning: Unable to resolve imported reference tgetstr.
+0000000100004F34: warning: Unable to resolve imported reference tgetstr.
+0000000100004F34: warning: Unable to resolve imported reference tgetstr.
+0000000100004F34: warning: Unable to resolve imported reference tgetstr.
+0000000100004F34: warning: Unable to resolve imported reference tgetstr.
+0000000100004F34: warning: Unable to resolve imported reference tgetstr.
+0000000100004DC6: warning: Unable to resolve imported reference __tolower.
+0000000100004DC6: warning: Unable to resolve imported reference __tolower.
+000000010000339B: warning: Unable to resolve imported reference __stderrp.
+000000010000333B: warning: Unable to resolve imported reference __stderrp.
+0000000100004E08: warning: Unable to resolve imported reference compat_mode.
+0000000100004E08: warning: Unable to resolve imported reference compat_mode.
+0000000100004E08: warning: Unable to resolve imported reference compat_mode.
+0000000100004E50: warning: Unable to resolve imported reference getbsize.
+0000000100004E50: warning: Unable to resolve imported reference getbsize.
+0000000100004E08: warning: Unable to resolve imported reference compat_mode.
+0000000100004E08: warning: Unable to resolve imported reference compat_mode.
+0000000100004E3E: warning: Unable to resolve imported reference fts_open$INODE64.
+0000000100004E3E: warning: Unable to resolve imported reference fts_open$INODE64.
+0000000100004E32: warning: Unable to resolve imported reference fts_children$INODE64.
+0000000100004E32: warning: Unable to resolve imported reference fts_children$INODE64.
+0000000100001B6C: warning: Unable to resolve imported reference __stack_chk_guard.
+0000000100002322: warning: Unable to resolve imported reference __stack_chk_guard.
+0000000100004E0E: warning: Unable to resolve imported reference err.
+0000000100004E0E: warning: Unable to resolve imported reference err.
+0000000100004EFE: warning: Unable to resolve imported reference sscanf.
+0000000100004EFE: warning: Unable to resolve imported reference sscanf.
+0000000100004F58: warning: Unable to resolve imported reference warnx.
+0000000100004F58: warning: Unable to resolve imported reference warnx.
+0000000100004BB7: warning: Unable to resolve imported reference _DefaultRuneLocale.
+0000000100004DB4: warning: Unable to resolve imported reference __maskrune.
+0000000100004F4C: warning: Unable to resolve imported reference user_from_uid.
+0000000100004F4C: warning: Unable to resolve imported reference user_from_uid.
+0000000100004E80: warning: Unable to resolve imported reference group_from_gid.
+0000000100004E80: warning: Unable to resolve imported reference group_from_gid.
+0000000100004E1A: warning: Unable to resolve imported reference fflagstostr.
+0000000100004E1A: warning: Unable to resolve imported reference fflagstostr.
+0000000100004E0E: warning: Unable to resolve imported reference err.
+0000000100004E0E: warning: Unable to resolve imported reference err.
+0000000100004E44: warning: Unable to resolve imported reference fts_read$INODE64.
+0000000100004E44: warning: Unable to resolve imported reference fts_read$INODE64.
+0000000100004F58: warning: Unable to resolve imported reference warnx.
+0000000100004F58: warning: Unable to resolve imported reference warnx.
+0000000100004E08: warning: Unable to resolve imported reference compat_mode.
+0000000100004E44: warning: Unable to resolve imported reference fts_read$INODE64.
+0000000100004E32: warning: Unable to resolve imported reference fts_children$INODE64.
+0000000100004E08: warning: Unable to resolve imported reference compat_mode.
+0000000100004E4A: warning: Unable to resolve imported reference fts_set$INODE64.
+0000000100004E4A: warning: Unable to resolve imported reference fts_set$INODE64.
+0000000100004DAE: warning: Unable to resolve imported reference __error.
+0000000100004DAE: warning: Unable to resolve imported reference __error.
+0000000100004E38: warning: Unable to resolve imported reference fts_close$INODE64.
+0000000100004E38: warning: Unable to resolve imported reference fts_close$INODE64.
+0000000100004DAE: warning: Unable to resolve imported reference __error.
+0000000100004DAE: warning: Unable to resolve imported reference __error.
+0000000100004E0E: warning: Unable to resolve imported reference err.
+0000000100004E08: warning: Unable to resolve imported reference compat_mode.
+0000000100004E38: warning: Unable to resolve imported reference fts_close$INODE64.
+0000000100004E08: warning: Unable to resolve imported reference compat_mode.
+0000000100004E08: warning: Unable to resolve imported reference compat_mode.
+0000000100004EE6: warning: Unable to resolve imported reference setenv.
+0000000100004EE6: warning: Unable to resolve imported reference setenv.
+0000000100004F52: warning: Unable to resolve imported reference warn.
+0000000100004F52: warning: Unable to resolve imported reference warn.
+0000000100004F46: warning: Unable to resolve imported reference tputs.
+0000000100004F46: warning: Unable to resolve imported reference tputs.
+0000000100004F3A: warning: Unable to resolve imported reference tgoto.
+0000000100004F3A: warning: Unable to resolve imported reference tgoto.
+0000000100004F28: warning: Unable to resolve imported reference strmode.
+0000000100004F28: warning: Unable to resolve imported reference strmode.
+0000000100004EB6: warning: Unable to resolve imported reference mbr_uuid_to_string.
+0000000100004EB6: warning: Unable to resolve imported reference mbr_uuid_to_string.
+0000000100004EB0: warning: Unable to resolve imported reference mbr_uuid_to_id.
+0000000100004EB0: warning: Unable to resolve imported reference mbr_uuid_to_id.
+0000000100004E9E: warning: Unable to resolve imported reference listxattr.
+0000000100004E9E: warning: Unable to resolve imported reference listxattr.
+0000000100004E98: warning: Unable to resolve imported reference kill.
+0000000100004E98: warning: Unable to resolve imported reference kill.
+0000000100004E86: warning: Unable to resolve imported reference humanize_number.
+0000000100004E86: warning: Unable to resolve imported reference humanize_number.
+0000000100004E7A: warning: Unable to resolve imported reference getxattr.
+0000000100004E7A: warning: Unable to resolve imported reference getxattr.
+0000000100004DF6: warning: Unable to resolve imported reference acl_get_qualifier.
+0000000100004DF6: warning: Unable to resolve imported reference acl_get_qualifier.
+0000000100004DF0: warning: Unable to resolve imported reference acl_get_permset.
+0000000100004DF0: warning: Unable to resolve imported reference acl_get_permset.
+0000000100004DEA: warning: Unable to resolve imported reference acl_get_perm_np.
+0000000100004DEA: warning: Unable to resolve imported reference acl_get_perm_np.
+0000000100004DE4: warning: Unable to resolve imported reference acl_get_link_np.
+0000000100004DE4: warning: Unable to resolve imported reference acl_get_link_np.
+0000000100004DDE: warning: Unable to resolve imported reference acl_get_flagset_np.
+0000000100004DDE: warning: Unable to resolve imported reference acl_get_flagset_np.
+0000000100004DD8: warning: Unable to resolve imported reference acl_get_flag_np.
+0000000100004DD8: warning: Unable to resolve imported reference acl_get_flag_np.
+0000000100004DCC: warning: Unable to resolve imported reference acl_free.
+0000000100004DCC: warning: Unable to resolve imported reference acl_free.
+0000000100003AB3: warning: Unable to resolve imported reference __stack_chk_guard.
+0000000100003AB4: warning: Unable to resolve imported reference __stack_chk_guard.
+0000000100003BC3: warning: Unable to resolve imported reference __stdoutp.
+0000000100003BC4: warning: Unable to resolve imported reference __stdoutp.
+0000000100003BD5: warning: Unable to resolve imported reference __stack_chk_guard.
+0000000100003BD6: warning: Unable to resolve imported reference __stack_chk_guard.
+0000000100003C07: warning: Unable to resolve imported reference __stack_chk_guard.
+0000000100003C08: warning: Unable to resolve imported reference __stack_chk_guard.
+00000001000041FD: warning: Unable to resolve imported reference __stderrp.
+00000001000041FE: warning: Unable to resolve imported reference __stderrp.
+0000000100004504: warning: Unable to resolve imported reference __stderrp.
+0000000100004505: warning: Unable to resolve imported reference __stderrp.
+0000000100004506: warning: Unable to resolve imported reference __stderrp.
+00000001000046DB: warning: Unable to resolve imported reference __stack_chk_guard.
+00000001000046DC: warning: Unable to resolve imported reference __stack_chk_guard.
+00000001000047F4: warning: Unable to resolve imported reference _DefaultRuneLocale.
+00000001000047F5: warning: Unable to resolve imported reference _DefaultRuneLocale.
+0000000100004D01: warning: Unable to resolve imported reference _DefaultRuneLocale.
+0000000100004D02: warning: Unable to resolve imported reference _DefaultRuneLocale.
+0000000100004F46: warning: Unable to resolve imported reference tputs.
+0000000100004F3A: warning: Unable to resolve imported reference tgoto.
+0000000100004F46: warning: Unable to resolve imported reference tputs.
+0000000100004F3A: warning: Unable to resolve imported reference tgoto.
+0000000100004F46: warning: Unable to resolve imported reference tputs.
+0000000100004D01: warning: Unable to resolve imported reference _DefaultRuneLocale.
+0000000100004DB4: warning: Unable to resolve imported reference __maskrune.
+00000001000047F4: warning: Unable to resolve imported reference _DefaultRuneLocale.
+0000000100004DB4: warning: Unable to resolve imported reference __maskrune.
+0000000100004F46: warning: Unable to resolve imported reference tputs.
+0000000100004F46: warning: Unable to resolve imported reference tputs.
+0000000100003AB3: warning: Unable to resolve imported reference __stack_chk_guard.
+0000000100004E08: warning: Unable to resolve imported reference compat_mode.
+0000000100003BC3: warning: Unable to resolve imported reference __stdoutp.
+0000000100003BD5: warning: Unable to resolve imported reference __stack_chk_guard.
+0000000100003C07: warning: Unable to resolve imported reference __stack_chk_guard.
+00000001000046DB: warning: Unable to resolve imported reference __stack_chk_guard.
+0000000100004E0E: warning: Unable to resolve imported reference err.
+0000000100004F28: warning: Unable to resolve imported reference strmode.
+0000000100004DE4: warning: Unable to resolve imported reference acl_get_link_np.
+0000000100004DCC: warning: Unable to resolve imported reference acl_free.
+0000000100004E9E: warning: Unable to resolve imported reference listxattr.
+0000000100004E86: warning: Unable to resolve imported reference humanize_number.
+0000000100004F46: warning: Unable to resolve imported reference tputs.
+0000000100004F46: warning: Unable to resolve imported reference tputs.
+0000000100004E9E: warning: Unable to resolve imported reference listxattr.
+0000000100004E7A: warning: Unable to resolve imported reference getxattr.
+0000000100004DAE: warning: Unable to resolve imported reference __error.
+00000001000041FD: warning: Unable to resolve imported reference __stderrp.
+0000000100004DCC: warning: Unable to resolve imported reference acl_free.
+0000000100004DDE: warning: Unable to resolve imported reference acl_get_flagset_np.
+0000000100004DF0: warning: Unable to resolve imported reference acl_get_permset.
+0000000100004DF6: warning: Unable to resolve imported reference acl_get_qualifier.
+0000000100004EB0: warning: Unable to resolve imported reference mbr_uuid_to_id.
+0000000100004DCC: warning: Unable to resolve imported reference acl_free.
+0000000100004DD8: warning: Unable to resolve imported reference acl_get_flag_np.
+0000000100004DEA: warning: Unable to resolve imported reference acl_get_perm_np.
+0000000100004EB6: warning: Unable to resolve imported reference mbr_uuid_to_string.
+0000000100004505: warning: Unable to resolve imported reference __stderrp.
+0000000100004DD8: warning: Unable to resolve imported reference acl_get_flag_np.
+fn0000000100003AA8: error: An internal error occurred while building the expressions of fn0000000100003AA8
+    The given key 'l0000000100004703' was not present in the dictionary.
+       at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
+   at Reko.Core.Lib.DominatorGraph`1.BuildDominanceFrontiers(DirectedGraph`1 graph, Dictionary`2 idoms) in d:\dev\uxmal\reko\master\src\Core\Lib\DominatorGraph.cs:line 192
+   at Reko.Core.Lib.DominatorGraph`1..ctor(DirectedGraph`1 graph, T entryNode) in d:\dev\uxmal\reko\master\src\Core\Lib\DominatorGraph.cs:line 45
+   at Reko.Analysis.DataFlowAnalysis.BuildExpressionTrees() in d:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 398
+l0000000100003AE7: warning: Phi functions will be ignored by type analysis. This may be caused by a failure in a previous stage of the decompilation.
+fn0000000100003AA8: error: An error occurred while rewriting procedure to high-level language.
+    The given key 'l0000000100004703' was not present in the dictionary.
+       at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
+   at Reko.Core.Lib.DominatorGraph`1.BuildDominanceFrontiers(DirectedGraph`1 graph, Dictionary`2 idoms) in d:\dev\uxmal\reko\master\src\Core\Lib\DominatorGraph.cs:line 192
+   at Reko.Core.Lib.DominatorGraph`1..ctor(DirectedGraph`1 graph, T entryNode) in d:\dev\uxmal\reko\master\src\Core\Lib\DominatorGraph.cs:line 45
+   at Reko.Structure.StructureAnalysis.Execute() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 144
+   at Reko.Structure.StructureAnalysis.Structure() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 81
+   at Reko.Decompiler.StructureProgram() in d:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 535
+
 === Hunk-m68k\MATRIXMU
 
 === Hunk-m68k\MAX
@@ -957,8 +1139,9 @@ l0800_8FD8: warning: Phi functions will be ignored by type analysis. This may be
 0800:9A95: error: An error occurred while processing the statement word16 di_321 = di_309 - (fp - 0x48<16>).
     Not handling (memptr T_33955 (struct (0 T_34640 t0000))) and (memptr T_3 <unknown>) yet.
        at Reko.Typing.ExpressionTypeDescender.PushMinuendDataType(DataType dtDiff, DataType dtSub) in d:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 420
-   at Reko.Typing.ExpressionTypeDescender.VisitBinaryExpression(BinaryExpression binExp, TypeVariable tv) in d:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 363
-   at Reko.Typing.TypeCollector.VisitDeclaration(Declaration decl) in d:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 239
+   at Reko.Typing.ExpressionTypeDescender.VisitBinaryExpression(BinaryExpression binExp, TypeVariable tv) in d:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 266
+   at Reko.Core.Expressions.BinaryExpression.Accept[T,C](ExpressionVisitor`2 v, C context) in d:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 54
+   at Reko.Typing.TypeCollector.VisitDeclaration(Declaration decl) in d:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 228
    at Reko.Typing.TypeCollector.CollectTypes() in d:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 75
 
 === scripting\pyFuncNames
@@ -2235,4 +2418,4 @@ Signature of 'Microsoft Visual C++ 8' detected.
 0040120B: warning: Unable to determine the upper bound of an indirect call or jump; there may be more than 2 entries.
 004011A5: warning: Unable to determine the upper bound of an indirect call or jump; there may be more than 2 entries.
 
-Decompiled 82 binaries in 45.89 seconds.
+Decompiled 83 binaries in 53.41 seconds.

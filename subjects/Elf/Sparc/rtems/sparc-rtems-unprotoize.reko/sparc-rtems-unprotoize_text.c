@@ -2054,7 +2054,7 @@ int8 * other_variable_style_function(int8 * o0, ptr32 & i1Out, ptr32 & i6Out)
 // 00013914: void edit_fn_declaration(Register (ptr32 Eq_n) o0)
 void edit_fn_declaration(struct Eq_n * o0)
 {
-	o0_n = (uint32) strlen(o0->ptr0010->t0004);
+	strlen(o0->ptr0010->t0004);
 	save_pointers();
 	if (setjmp(&g_t2B240) != 0x00)
 	{
@@ -3685,7 +3685,7 @@ l00016398:
 									o0_n = (int32) *i2_n;
 l00016388:
 									if (o0_n != 0x3A)
-										o0_n = (uint32) strlen(g_t2B2C0);
+										strlen(g_t2B2C0);
 									goto l00016978;
 								}
 								if (i5_n == 0x00)

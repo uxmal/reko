@@ -20,15 +20,23 @@
 
 using Reko.Core;
 using Reko.Core.CLanguage;
+using Reko.Core.Rtl;
+using Reko.Environments.MacOS.OSX.ArchSpecific;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Reko.Environments.MacOS.OSX
 {
     public class MacOSXPlatform : Platform
     {
+        private readonly HashSet<RegisterStorage> trashedRegisters;
+        private readonly ArchSpecificHandler archHandler;
+
         public MacOSXPlatform(IServiceProvider services, IProcessorArchitecture arch) : base(services, arch, "macOsX")
         {
+            trashedRegisters = GenerateTrashedRegisters(arch);
+            archHandler = ArchSpecificHandler.Create(arch);
         }
 
         public override string DefaultCallingConvention
@@ -38,7 +46,7 @@ namespace Reko.Environments.MacOS.OSX
 
         public override HashSet<RegisterStorage> CreateTrashedRegisters()
         {
-            throw new NotImplementedException();
+            return trashedRegisters;
         }
 
         public override SystemService FindService(int vector, ProcessorState? state, SegmentMap? segmentMap)
@@ -48,17 +56,85 @@ namespace Reko.Environments.MacOS.OSX
 
         public override int GetBitSizeFromCBasicType(CBasicType cb)
         {
+            //$REVIEW: it seems this sort of data should be in the reko.config file.
+            switch (cb)
+            {
+            case CBasicType.Bool: return 8;
+            case CBasicType.Char: return 8;
+            case CBasicType.WChar_t: return 16;
+            case CBasicType.Short: return 16;
+            case CBasicType.Int: return 32;
+            case CBasicType.Long: return 64;
+            case CBasicType.LongLong: return 64;
+            case CBasicType.Float: return 32;
+            case CBasicType.Double: return 64;
+            case CBasicType.LongDouble:
+                if (Architecture.Name.StartsWith("x86") &&
+                    Architecture.WordWidth.BitSize == 32)
+                    return 80;
+                else
+                    return 64;      //$REVIEW: should this be 128?
+            case CBasicType.Int64: return 64;
+            default: throw new NotImplementedException(string.Format("C basic type {0} not supported.", cb));
+            }
+        }
+
+        public override CallingConvention? GetCallingConvention(string? ccName)
+        {
+            return this.archHandler.GetCallingConvention(ccName);
+        }
+
+        public override ExternalProcedure? LookupProcedureByName(string? moduleName, string procName)
+        {
+            //$REVIEW: looks a lot like Win32library, perhaps push to parent class?
+            EnsureTypeLibraries(PlatformIdentifier);
+            var sig = Metadata.Lookup(procName);
+            if (sig is null)
+                return null;
+            var proc = new ExternalProcedure(procName, sig);
+            var characteristics = CharacteristicsLibs.Select(cl => cl.Lookup(procName))
+                .Where(c => c is not null)
+                .FirstOrDefault();
+            if (characteristics is not null)
+                proc.Characteristics = characteristics;
+            return proc;
+        }
+
+        public override ProcedureBase? GetTrampolineDestination(Address addrInstr, IEnumerable<RtlInstruction> instrs, IRewriterHost host)
+        {
+            var target = archHandler.GetTrampolineDestination(addrInstr, instrs, host);
+            if (target is Address addrTarget)
+            {
+                var arch = this.Architecture;
+                ProcedureBase? proc = host.GetImportedProcedure(arch, addrTarget, addrInstr);
+                if (proc != null)
+                    return proc;
+                return host.GetInterceptedCall(arch, addrTarget);
+            }
+            else
+                return null;
+        }
+
+        private HashSet<RegisterStorage> GenerateTrashedRegisters(IProcessorArchitecture arch)
+        {
+            switch (arch.Name)
+            {
+            case "arm-64":
+                // ARM64 ABI defines registers r19-r29 and SP as callee-save.
+                return Enumerable.Range(0, 32)
+                    .Where(n => n < 19 || n == 30)
+                    .Select(n => arch.GetRegister(n + StorageDomain.Register, new BitRange(0, 64))!)
+                    .ToHashSet();
+            case "x86-protected-64":
+                return new[] {
+                    "rax","rcx","rdx","rsp","rsi","rdi","r8","r9","r10","r11"
+                }
+                .Select(s => arch.GetRegister(s)!)
+                .ToHashSet();
+
+            }
             throw new NotImplementedException();
         }
 
-        public override CallingConvention GetCallingConvention(string? ccName)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override ExternalProcedure LookupProcedureByName(string? moduleName, string procName)
-        {
-            throw new NotImplementedException();
-        }
     }
 }

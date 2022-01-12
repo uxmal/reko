@@ -3604,7 +3604,7 @@ l0040697C:
 	call gmtime (retsize: 0;)
 		uses: r2:fp + -40<i32>,r25:r25_92,r3:r3_98,r4:fp + -40<i32>,r5:r5_30,r6:r6_95,r7:r7_33,Stack +0018:0x10008860<32>,Stack +0044:dwLoc24,Stack +0068:r4
 		defs: r2:r2_43
-	r2_57 = CONVERT(strftime(fp + -72<i32>, SLICE(28<i32>, size_t, 0), 0x40A74C<32>, r2_43), size_t, uint32)
+	strftime(fp + -72<i32>, SLICE(28<i32>, size_t, 0), 0x40A74C<32>, r2_43)
 	fprintf(r4, 0x40A760<32>, 0<32>)
 	fflush(r4)
 	Mem106[Mem75[0x10000878<32>:word32] + 2084<i32>:word32] = Mem75[Mem75[0x10000878<32>:word32] + 2084<i32>:word32] + 1<i32>

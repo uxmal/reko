@@ -8,7 +8,7 @@ Eq_n g_t0FC0 = ??/* Unexpected function type (fn int32 (int32, (ptr64 (ptr64 cha
 // 0000000000001460: void fn0000000000001460(Register (ptr64 Eq_n) x0, Stack word32 dwArg00)
 void fn0000000000001460(void (* x0)(), word32 dwArg00)
 {
-	x0_n = (uint64) __libc_start_main(g_ptr1FFE8, (int32) qwArg00, (char *) fp + 8, g_ptr1FFE0, g_ptr1FF98, x0, fp);
+	__libc_start_main(g_ptr1FFE8, (int32) qwArg00, (char *) fp + 8, g_ptr1FFE0, g_ptr1FF98, x0, fp);
 	abort();
 }
 
@@ -42,6 +42,6 @@ void fn0000000000001740(void (* x0)(void * x0))
 	void ** x1_n = g_ptr1FFD8;
 	if (x1_n != null)
 		x2_n = (void *) *x1_n;
-	x0_n = (uint64) __cxa_atexit(x0, null, x2_n);
+	__cxa_atexit(x0, null, x2_n);
 }
 

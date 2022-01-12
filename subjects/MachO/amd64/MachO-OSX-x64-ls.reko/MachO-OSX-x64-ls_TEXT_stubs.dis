@@ -1,0 +1,1188 @@
+void __error()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// Called from:
+//      fn00000001000023B0
+//      fn0000000100003AA8
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved: rsp
+__error_entry:
+l0000000100004DAE:
+	call __error (retsize: 0;)
+	return
+__error_exit:
+
+
+void __maskrune()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// Called from:
+//      fn000000010000356F
+//      fn0000000100004715
+//      fn000000010000488B
+//      fn0000000100004AFA
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved: rsp
+__maskrune_entry:
+l0000000100004DB4:
+	call __maskrune (retsize: 0;)
+	return
+__maskrune_exit:
+
+
+void __snprintf_chk(word64 rcx, word32 edx, word64 rsi, word64 rdi, word64 r8)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// Called from:
+//      fn0000000100003AA8
+// MayUse:  r8:[0..63] rcx:[0..63] rdi:[0..63] rdx:[0..31] rsi:[0..63]
+// LiveOut:
+// Trashed: eax
+// Preserved: rsp
+__snprintf_chk_entry:
+l0000000100004DBA:
+	__snprintf_chk(rdi, rsi, SLICE(rdx, int32, 0), rcx, r8, 0<32>)
+	return
+__snprintf_chk_exit:
+
+
+void __stack_chk_fail()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// Called from:
+//      fn0000000100001B4A
+//      fn0000000100003AA8
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
+__stack_chk_fail_exit:
+__stack_chk_fail_entry:
+l0000000100004DC0:
+	__stack_chk_fail()
+
+
+void __tolower()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// Called from:
+//      fn000000010000328E
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved: rsp
+__tolower_entry:
+l0000000100004DC6:
+	call __tolower (retsize: 0;)
+	return
+__tolower_exit:
+
+
+void acl_free()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// Called from:
+//      fn0000000100003AA8
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved: rsp
+acl_free_entry:
+l0000000100004DCC:
+	call acl_free (retsize: 0;)
+	return
+acl_free_exit:
+
+
+word32 acl_get_entry(word64 rdx, word32 esi, word64 rdi)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// Called from:
+//      fn0000000100003AA8
+// MayUse:  rdi:[0..63] rdx:[0..63] rsi:[0..31]
+// LiveOut: eax
+// Trashed: eax
+// Preserved: rsp
+acl_get_entry_entry:
+l0000000100004DD2:
+	return acl_get_entry(rdi, SLICE(rsi, int32, 0), rdx)
+acl_get_entry_exit:
+
+
+void acl_get_flag_np()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// Called from:
+//      fn0000000100003AA8
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved: rsp
+acl_get_flag_np_entry:
+l0000000100004DD8:
+	call acl_get_flag_np (retsize: 0;)
+	return
+acl_get_flag_np_exit:
+
+
+void acl_get_flagset_np()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// Called from:
+//      fn0000000100003AA8
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved: rsp
+acl_get_flagset_np_entry:
+l0000000100004DDE:
+	call acl_get_flagset_np (retsize: 0;)
+	return
+acl_get_flagset_np_exit:
+
+
+void acl_get_link_np()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// Called from:
+//      fn0000000100003AA8
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved: rsp
+acl_get_link_np_entry:
+l0000000100004DE4:
+	call acl_get_link_np (retsize: 0;)
+	return
+acl_get_link_np_exit:
+
+
+void acl_get_perm_np()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// Called from:
+//      fn0000000100003AA8
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved: rsp
+acl_get_perm_np_entry:
+l0000000100004DEA:
+	call acl_get_perm_np (retsize: 0;)
+	return
+acl_get_perm_np_exit:
+
+
+void acl_get_permset()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// Called from:
+//      fn0000000100003AA8
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved: rsp
+acl_get_permset_entry:
+l0000000100004DF0:
+	call acl_get_permset (retsize: 0;)
+	return
+acl_get_permset_exit:
+
+
+void acl_get_qualifier()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// Called from:
+//      fn0000000100003AA8
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved: rsp
+acl_get_qualifier_entry:
+l0000000100004DF6:
+	call acl_get_qualifier (retsize: 0;)
+	return
+acl_get_qualifier_exit:
+
+
+word32 acl_get_tag_type(word64 rsi, word32 edi)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// Called from:
+//      fn0000000100003AA8
+// MayUse:  rdi:[0..31] rsi:[0..63]
+// LiveOut: eax
+// Trashed: eax
+// Preserved: rsp
+acl_get_tag_type_entry:
+l0000000100004DFC:
+	return acl_get_tag_type(SLICE(rdi, acl_entry_t, 0), rsi)
+acl_get_tag_type_exit:
+
+
+word32 atoi(word64 rdi)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// Called from:
+//      fn00000001000026A0
+// MayUse:  rdi:[0..63]
+// LiveOut: eax
+// Trashed: eax
+// Preserved: rsp
+atoi_entry:
+l0000000100004E02:
+	return atoi(rdi)
+atoi_exit:
+
+
+void compat_mode()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// Called from:
+//      fn00000001000023B0
+//      fn00000001000026A0
+//      fn0000000100003AA8
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved: rsp
+compat_mode_entry:
+l0000000100004E08:
+	call compat_mode (retsize: 0;)
+	return
+compat_mode_exit:
+
+
+void err()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// Called from:
+//      fn0000000100001B4A
+//      fn00000001000023B0
+//      fn0000000100003AA8
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved: rsp
+err_entry:
+l0000000100004E0E:
+	call err (retsize: 0;)
+	return
+err_exit:
+
+
+void exit(word32 edi)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// Called from:
+//      fn0000000100001778
+//      fn00000001000026A0
+//      fn000000010000488B
+// MayUse:  rdi:[0..31]
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
+exit_exit:
+exit_entry:
+l0000000100004E14:
+	exit(SLICE(rdi, int32, 0))
+
+
+void fflagstostr()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// Called from:
+//      fn0000000100001B4A
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved: rsp
+fflagstostr_entry:
+l0000000100004E1A:
+	call fflagstostr (retsize: 0;)
+	return
+fflagstostr_exit:
+
+
+void fprintf(word64 rsi, word64 rdi)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// Called from:
+//      fn000000010000328E
+//      fn0000000100003AA8
+// MayUse:  rdi:[0..63] rsi:[0..63]
+// LiveOut:
+// Trashed: eax
+// Preserved: rsp
+fprintf_entry:
+l0000000100004E20:
+	fprintf(rdi, rsi, 0<32>)
+	return
+fprintf_exit:
+
+
+void fputs(word64 rsi, word64 rdi)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// Called from:
+//      fn000000010000328E
+//      fn0000000100003AA8
+//      fn000000010000488B
+// MayUse:  rdi:[0..63] rsi:[0..63]
+// LiveOut:
+// Trashed: eax
+// Preserved: rsp
+fputs_entry:
+l0000000100004E26:
+	fputs(rdi, rsi)
+	return
+fputs_exit:
+
+
+void free(word64 rdi)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// Called from:
+//      fn0000000100001B4A
+//      fn0000000100003AA8
+// MayUse:  rdi:[0..63]
+// LiveOut:
+// Trashed:
+// Preserved: rsp
+free_entry:
+l0000000100004E2C:
+	free(rdi)
+	return
+free_exit:
+
+
+void fts_children$INODE64()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// Called from:
+//      fn00000001000023B0
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved: rsp
+fts_children$INODE64_entry:
+l0000000100004E32:
+	call fts_children$INODE64 (retsize: 0;)
+	return
+fts_children$INODE64_exit:
+
+
+void fts_close$INODE64()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// Called from:
+//      fn00000001000023B0
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved: rsp
+fts_close$INODE64_entry:
+l0000000100004E38:
+	call fts_close$INODE64 (retsize: 0;)
+	return
+fts_close$INODE64_exit:
+
+
+void fts_open$INODE64()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// Called from:
+//      fn00000001000023B0
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved: rsp
+fts_open$INODE64_entry:
+l0000000100004E3E:
+	call fts_open$INODE64 (retsize: 0;)
+	return
+fts_open$INODE64_exit:
+
+
+void fts_read$INODE64()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// Called from:
+//      fn00000001000023B0
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved: rsp
+fts_read$INODE64_entry:
+l0000000100004E44:
+	call fts_read$INODE64 (retsize: 0;)
+	return
+fts_read$INODE64_exit:
+
+
+void fts_set$INODE64()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// Called from:
+//      fn00000001000023B0
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved: rsp
+fts_set$INODE64_entry:
+l0000000100004E4A:
+	call fts_set$INODE64 (retsize: 0;)
+	return
+fts_set$INODE64_exit:
+
+
+void getbsize()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// Called from:
+//      fn00000001000026A0
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved: rsp
+getbsize_entry:
+l0000000100004E50:
+	call getbsize (retsize: 0;)
+	return
+getbsize_exit:
+
+
+word64 getenv(word64 rdi)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// Called from:
+//      fn0000000100001B4A
+//      fn00000001000026A0
+// MayUse:  rdi:[0..63]
+// LiveOut: rax
+// Trashed: rax
+// Preserved: rsp
+getenv_entry:
+l0000000100004E56:
+	return getenv(rdi)
+getenv_exit:
+
+
+word64 getgrgid(word32 edi)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// Called from:
+//      fn0000000100003AA8
+// MayUse:  rdi:[0..31]
+// LiveOut: rax
+// Trashed: rax
+// Preserved: rsp
+getgrgid_entry:
+l0000000100004E5C:
+	return getgrgid(SLICE(rdi, gid_t, 0))
+getgrgid_exit:
+
+
+word32 getopt(word64 rdx, word64 rsi, word32 edi)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// Called from:
+//      fn00000001000026A0
+// MayUse:  rdi:[0..31] rdx:[0..63] rsi:[0..63]
+// LiveOut: eax
+// Trashed: eax
+// Preserved: rsp
+getopt_entry:
+l0000000100004E62:
+	return getopt(SLICE(rdi, int32, 0), rsi, rdx)
+getopt_exit:
+
+
+void getpid()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed: eax
+// Preserved: rsp
+getpid_entry:
+l0000000100004E68:
+	getpid()
+	return
+getpid_exit:
+
+
+word64 getpwuid(word32 edi)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// Called from:
+//      fn0000000100003AA8
+// MayUse:  rdi:[0..31]
+// LiveOut: rax
+// Trashed: rax
+// Preserved: rsp
+getpwuid_entry:
+l0000000100004E6E:
+	return getpwuid(SLICE(rdi, uid_t, 0))
+getpwuid_exit:
+
+
+word32 getuid()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// Called from:
+//      fn00000001000026A0
+// MayUse: 
+// LiveOut: eax
+// Trashed: eax
+// Preserved: rsp
+getuid_entry:
+l0000000100004E74:
+	return getuid()
+getuid_exit:
+
+
+void getxattr()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// Called from:
+//      fn0000000100003AA8
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved: rsp
+getxattr_entry:
+l0000000100004E7A:
+	call getxattr (retsize: 0;)
+	return
+getxattr_exit:
+
+
+void group_from_gid()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// Called from:
+//      fn0000000100001B4A
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved: rsp
+group_from_gid_entry:
+l0000000100004E80:
+	call group_from_gid (retsize: 0;)
+	return
+group_from_gid_exit:
+
+
+void humanize_number()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// Called from:
+//      fn0000000100003786
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved: rsp
+humanize_number_entry:
+l0000000100004E86:
+	call humanize_number (retsize: 0;)
+	return
+humanize_number_exit:
+
+
+word32 ioctl(word32 esi, word32 edi)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// Called from:
+//      fn00000001000026A0
+// MayUse:  rdi:[0..31] rsi:[0..31]
+// LiveOut: eax
+// Trashed: eax
+// Preserved: rsp
+ioctl_entry:
+l0000000100004E8C:
+	return ioctl(SLICE(rdi, int32, 0), SLICE(rsi, uint32, 0), 0<32>)
+ioctl_exit:
+
+
+word32 isatty(word32 edi)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// Called from:
+//      fn00000001000026A0
+// MayUse:  rdi:[0..31]
+// LiveOut: eax
+// Trashed: eax
+// Preserved: rsp
+isatty_entry:
+l0000000100004E92:
+	return isatty(SLICE(rdi, int32, 0))
+isatty_exit:
+
+
+void kill()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved: rsp
+kill_entry:
+l0000000100004E98:
+	call kill (retsize: 0;)
+	return
+kill_exit:
+
+
+void listxattr()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// Called from:
+//      fn0000000100003AA8
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved: rsp
+listxattr_entry:
+l0000000100004E9E:
+	call listxattr (retsize: 0;)
+	return
+listxattr_exit:
+
+
+word64 localtime(word32 edi)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// Called from:
+//      fn0000000100003AA8
+// MayUse:  rdi:[0..31]
+// LiveOut: rax
+// Trashed: rax
+// Preserved: rsp
+localtime_entry:
+l0000000100004EA4:
+	return localtime(SLICE(rdi, time_t, 0))
+localtime_exit:
+
+
+word64 malloc(word64 rdi)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// Called from:
+//      fn0000000100001B4A
+//      fn0000000100003AA8
+// MayUse:  rdi:[0..63]
+// LiveOut: rax
+// Trashed: rax
+// Preserved: rsp
+malloc_entry:
+l0000000100004EAA:
+	return malloc(rdi)
+malloc_exit:
+
+
+void mbr_uuid_to_id()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// Called from:
+//      fn0000000100003AA8
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved: rsp
+mbr_uuid_to_id_entry:
+l0000000100004EB0:
+	call mbr_uuid_to_id (retsize: 0;)
+	return
+mbr_uuid_to_id_exit:
+
+
+void mbr_uuid_to_string()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// Called from:
+//      fn0000000100003AA8
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved: rsp
+mbr_uuid_to_string_entry:
+l0000000100004EB6:
+	call mbr_uuid_to_string (retsize: 0;)
+	return
+mbr_uuid_to_string_exit:
+
+
+word64 mbrtowc(word64 rcx, word64 rdx, word64 rsi, word64 rdi)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// Called from:
+//      fn000000010000356F
+//      fn0000000100004715
+//      fn000000010000488B
+//      fn0000000100004AFA
+// MayUse:  rcx:[0..63] rdi:[0..63] rdx:[0..63] rsi:[0..63]
+// LiveOut: rax
+// Trashed: rax
+// Preserved: rsp
+mbrtowc_entry:
+l0000000100004EBC:
+	return mbrtowc(rdi, rsi, rdx, rcx)
+mbrtowc_exit:
+
+
+void memchr()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// Called from:
+//      fn000000010000488B
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved: rsp
+memchr_entry:
+l0000000100004EC2:
+	call memchr (retsize: 0;)
+	return
+memchr_exit:
+
+
+word64 nl_langinfo(word32 edi)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// Called from:
+//      fn0000000100003AA8
+// MayUse:  rdi:[0..31]
+// LiveOut: rax
+// Trashed: rax
+// Preserved: rsp
+nl_langinfo_entry:
+l0000000100004EC8:
+	return nl_langinfo(SLICE(rdi, nl_item, 0))
+nl_langinfo_exit:
+
+
+word32 printf(word64 rdi)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// Called from:
+//      fn00000001000023B0
+//      fn00000001000035A9
+//      fn0000000100003786
+//      fn0000000100003AA8
+//      fn0000000100004715
+// MayUse:  rdi:[0..63]
+// LiveOut: eax
+// Trashed: eax
+// Preserved: rsp
+printf_entry:
+l0000000100004ECE:
+	return printf(rdi, 0<32>)
+printf_exit:
+
+
+word32 putchar(word32 edi)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// Called from:
+//      fn0000000100003201
+//      fn000000010000356F
+//      fn0000000100003AA8
+//      fn0000000100004715
+//      fn000000010000488B
+// MayUse:  rdi:[0..31]
+// LiveOut: eax
+// Trashed: eax
+// Preserved: rsp
+putchar_entry:
+l0000000100004ED4:
+	return putchar(SLICE(rdi, int32, 0))
+putchar_exit:
+
+
+word64 readlink(word64 rdx, word64 rsi, word64 rdi)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// Called from:
+//      fn0000000100003AA8
+// MayUse:  rdi:[0..63] rdx:[0..63] rsi:[0..63]
+// LiveOut: rax
+// Trashed: rax
+// Preserved: rsp
+readlink_entry:
+l0000000100004EDA:
+	return readlink(rdi, rsi, rdx)
+readlink_exit:
+
+
+void realloc(word64 rsi, word64 rdi)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  rdi:[0..63] rsi:[0..63]
+// LiveOut:
+// Trashed: rax
+// Preserved: rsp
+realloc_entry:
+l0000000100004EE0:
+	realloc(rdi, rsi)
+	return
+realloc_exit:
+
+
+void setenv()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// Called from:
+//      fn00000001000026A0
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved: rsp
+setenv_entry:
+l0000000100004EE6:
+	call setenv (retsize: 0;)
+	return
+setenv_exit:
+
+
+void setlocale(word64 rsi, word32 edi)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// Called from:
+//      fn00000001000026A0
+// MayUse:  rdi:[0..31] rsi:[0..63]
+// LiveOut:
+// Trashed: rax
+// Preserved: rsp
+setlocale_entry:
+l0000000100004EEC:
+	setlocale(SLICE(rdi, int32, 0), rsi)
+	return
+setlocale_exit:
+
+
+void signal(word64 rsi, word32 edi)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// Called from:
+//      fn00000001000026A0
+// MayUse:  rdi:[0..31] rsi:[0..63]
+// LiveOut:
+// Trashed: rax
+// Preserved: rsp
+signal_entry:
+l0000000100004EF2:
+	signal(SLICE(rdi, int32, 0), rsi)
+	return
+signal_exit:
+
+
+word32 snprintf(word64 rdx, word64 rsi, word64 rdi)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// Called from:
+//      fn0000000100001B4A
+//      fn0000000100003AA8
+// MayUse:  rdi:[0..63] rdx:[0..63] rsi:[0..63]
+// LiveOut: eax
+// Trashed: eax
+// Preserved: rsp
+snprintf_entry:
+l0000000100004EF8:
+	return snprintf(rdi, rsi, rdx, 0<32>)
+snprintf_exit:
+
+
+void sscanf()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// Called from:
+//      fn0000000100001B4A
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved: rsp
+sscanf_entry:
+l0000000100004EFE:
+	call sscanf (retsize: 0;)
+	return
+sscanf_exit:
+
+
+void strcoll(word64 rsi, word64 rdi)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  rdi:[0..63] rsi:[0..63]
+// LiveOut:
+// Trashed: eax
+// Preserved: rsp
+strcoll_entry:
+l0000000100004F04:
+	strcoll(rdi, rsi)
+	return
+strcoll_exit:
+
+
+void strcpy(word64 rsi, word64 rdi)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// Called from:
+//      fn0000000100001B4A
+// MayUse:  rdi:[0..63] rsi:[0..63]
+// LiveOut:
+// Trashed: rax
+// Preserved: rsp
+strcpy_entry:
+l0000000100004F0A:
+	strcpy(rdi, rsi)
+	return
+strcpy_exit:
+
+
+word64 strdup(word64 rdi)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// Called from:
+//      fn0000000100001B4A
+// MayUse:  rdi:[0..63]
+// LiveOut: rax
+// Trashed: rax
+// Preserved: rsp
+strdup_entry:
+l0000000100004F10:
+	return strdup(rdi)
+strdup_exit:
+
+
+word64 strerror(word32 edi)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// Called from:
+//      fn0000000100001B4A
+//      fn00000001000023B0
+//      fn0000000100003AA8
+// MayUse:  rdi:[0..31]
+// LiveOut: rax
+// Trashed: rax
+// Preserved: rsp
+strerror_entry:
+l0000000100004F16:
+	return strerror(SLICE(rdi, int32, 0))
+strerror_exit:
+
+
+void strftime(word64 rcx, word64 rdx, word64 rsi, word64 rdi)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// Called from:
+//      fn0000000100003AA8
+// MayUse:  rcx:[0..63] rdi:[0..63] rdx:[0..63] rsi:[0..63]
+// LiveOut:
+// Trashed: rax
+// Preserved: rsp
+strftime_entry:
+l0000000100004F1C:
+	strftime(rdi, rsi, rdx, rcx)
+	return
+strftime_exit:
+
+
+word64 strlen(word64 rdi)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// Called from:
+//      fn0000000100001B4A
+//      fn000000010000328E
+//      fn0000000100003AA8
+//      fn000000010000488B
+// MayUse:  rdi:[0..63]
+// LiveOut: rax
+// Trashed: rax
+// Preserved: rsp
+strlen_entry:
+l0000000100004F22:
+	return strlen(rdi)
+strlen_exit:
+
+
+void strmode()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// Called from:
+//      fn0000000100003AA8
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved: rsp
+strmode_entry:
+l0000000100004F28:
+	call strmode (retsize: 0;)
+	return
+strmode_exit:
+
+
+void tgetent()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// Called from:
+//      fn00000001000026A0
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved: rsp
+tgetent_entry:
+l0000000100004F2E:
+	call tgetent (retsize: 0;)
+	return
+tgetent_exit:
+
+
+void tgetstr()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// Called from:
+//      fn00000001000026A0
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved: rsp
+tgetstr_entry:
+l0000000100004F34:
+	call tgetstr (retsize: 0;)
+	return
+tgetstr_exit:
+
+
+void tgoto()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// Called from:
+//      fn00000001000033F4
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved: rsp
+tgoto_entry:
+l0000000100004F3A:
+	call tgoto (retsize: 0;)
+	return
+tgoto_exit:
+
+
+word32 time(word64 rdi)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// Called from:
+//      fn0000000100003AA8
+// MayUse:  rdi:[0..63]
+// LiveOut: eax
+// Trashed: eax
+// Preserved: rsp
+time_entry:
+l0000000100004F40:
+	return time(rdi)
+time_exit:
+
+
+void tputs()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// Called from:
+//      fn00000001000033F4
+//      fn00000001000035A9
+//      fn0000000100003AA8
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved: rsp
+tputs_entry:
+l0000000100004F46:
+	call tputs (retsize: 0;)
+	return
+tputs_exit:
+
+
+void user_from_uid()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// Called from:
+//      fn0000000100001B4A
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved: rsp
+user_from_uid_entry:
+l0000000100004F4C:
+	call user_from_uid (retsize: 0;)
+	return
+user_from_uid_exit:
+
+
+void warn()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved: rsp
+warn_entry:
+l0000000100004F52:
+	call warn (retsize: 0;)
+	return
+warn_exit:
+
+
+void warnx()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// Called from:
+//      fn0000000100001B4A
+//      fn00000001000023B0
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved: rsp
+warnx_entry:
+l0000000100004F58:
+	call warnx (retsize: 0;)
+	return
+warnx_exit:
+
+
+word32 wcwidth(word16 di)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// Called from:
+//      fn000000010000356F
+//      fn0000000100004715
+//      fn000000010000488B
+// MayUse:  rdi:[0..15]
+// LiveOut: eax
+// Trashed: eax
+// Preserved: rsp
+wcwidth_entry:
+l0000000100004F5E:
+	return wcwidth(SLICE(rdi, wchar_t, 0))
+wcwidth_exit:
+
+
+void write(word64 rdx, word64 rsi, word32 edi)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  rdi:[0..31] rdx:[0..63] rsi:[0..63]
+// LiveOut:
+// Trashed: rax
+// Preserved: rsp
+write_entry:
+l0000000100004F64:
+	write(SLICE(rdi, int32, 0), rsi, rdx)
+	return
+write_exit:
+
+

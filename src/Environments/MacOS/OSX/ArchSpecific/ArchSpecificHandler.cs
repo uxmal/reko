@@ -19,39 +19,29 @@
 #endregion
 
 using Reko.Core;
-using Reko.Core.Types;
+using Reko.Core.Expressions;
+using Reko.Core.Rtl;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace Reko.Environments.Windows
+namespace Reko.Environments.MacOS.OSX.ArchSpecific
 {
-    public class AArch64CallingConvention : CallingConvention
+    public abstract class ArchSpecificHandler
     {
-        private IProcessorArchitecture arch;
-
-        public AArch64CallingConvention(IProcessorArchitecture arch)
+        public static ArchSpecificHandler Create(IProcessorArchitecture arch)
         {
-            this.arch = arch;
+            switch (arch.Name)
+            {
+            case "arm-64":
+                return new AArch64Handler(arch);
+            case "x86-protected-64":
+                return new X86_64Handler(arch);
+            }
+            throw new NotSupportedException($"A MacOS X handler for the {arch.Description} has not been implemented yet.");
         }
 
-        public void Generate(ICallingConventionEmitter ccr, DataType? dtRet, DataType? dtThis, List<DataType> dtParams)
-        {
-            //$TODO: make this happen
-        }
+        public abstract Expression? GetTrampolineDestination(Address addrInstr, IEnumerable<RtlInstruction> instrs, IRewriterHost host);
 
-        public bool IsArgument(Storage stg)
-        {
-            //$TODO: make this correct
-            return stg is RegisterStorage;
-        }
-
-        public bool IsOutArgument(Storage stg)
-        {
-            //$TODO: make this correct
-            return false;
-        }
+        public abstract CallingConvention? GetCallingConvention(string? ccName);
     }
 }

@@ -149,6 +149,11 @@ namespace Reko.Arch.Arm
             return new A64Rewriter(this, rdr, state, binder, host);
         }
 
+        public override Core.CallingConvention? GetCallingConvention(string? name)
+        {
+            return new AArch64.AArch64CallingConvention(this);
+        }
+
         public override SortedList<string, int> GetMnemonicNames()
         {
             return new SortedList<string, int>();

@@ -1,16 +1,16 @@
-void _f(word32 eax)
+void f(word32 eax)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse:  eax:[0..31]
 // LiveOut:
 // Trashed: SCZO eax ebp esp
 // Preserved:
-_f_entry:
+f_entry:
 	byte al_5 = SLICE(eax, byte, 0)
 l00000004:
 	Mem7[eax:byte] = Mem0[eax:byte] + al_5
 	Mem9[eax:byte] = Mem7[eax:byte] + al_5
 	return
-_f_exit:
+f_exit:
 
 

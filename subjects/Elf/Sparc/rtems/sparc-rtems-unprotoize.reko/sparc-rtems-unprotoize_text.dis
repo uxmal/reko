@@ -2570,7 +2570,7 @@ void edit_fn_declaration(word32 o0)
 // Preserved:
 edit_fn_declaration_entry:
 l00013914:
-	o0_25 = CONVERT(strlen(Mem20[Mem20[o0 + 16<i32>:word32] + 4<i32>:word32]), size_t, uint32)
+	strlen(Mem20[Mem20[o0 + 16<i32>:word32] + 4<i32>:word32])
 	save_pointers()
 	branch setjmp(0x2B240<32>) == 0<32> l00013974
 l00013974:
@@ -4912,7 +4912,7 @@ l00016388:
 	branch o0_1041 == 0x3A<32> l00016390_ds_t
 l00016390_ds_t:
 l00016394:
-	o0_1314 = CONVERT(strlen(Mem1312[0x2B2C0<32>:word32]), size_t, uint32)
+	strlen(Mem1312[0x2B2C0<32>:word32])
 l0001633C_ds_f:
 l00016340:
 	fprintf(0x2B640<32>, 0x179C0<32>, Mem1270[i1_156:word32], Mem1270[(o2_1268 + 1<32> << 2<32>) + i1_156 + -4<i32>:word32])

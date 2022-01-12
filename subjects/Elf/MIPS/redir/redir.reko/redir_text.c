@@ -2305,7 +2305,7 @@ void log_string(FILE * r4, word32 r5, word32 r7, word32 ra)
 	Eq_n r5_n = (char *) <invalid>;
 	struct tm * r2_n;
 	gmtime();
-	r2_n = (uint32) strftime(fp + -72, (size_t) 28, "%Y-%m-%d %H:%M:%S", r2_n);
+	strftime(fp + -72, (size_t) 28, "%Y-%m-%d %H:%M:%S", r2_n);
 	fprintf(r4, "%s:%s.%03d:%s\n", 0x00);
 	fflush(r4);
 	++g_ptr10000878->dw0824;

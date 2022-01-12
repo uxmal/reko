@@ -39,14 +39,14 @@ void fn0000000000015180(word64 ra, struct Eq_n * gp, char * a0, char ** a1, word
 			}
 			if (false)
 			{
-				a0_n = (uint64) __printf_chk(1, "ipcalc %s\n", 0x00);
+				__printf_chk(1, "ipcalc %s\n", 0x00);
 				goto l00000000000153DC;
 			}
 			if (false && false)
 			{
 				if ((int64) gp->dwFFFFF814 != 0x00)
 					goto l00000000000153D8;
-				a0_n = (uint64) fwrite(&g_v119D8, (size_t) 1, (size_t) 46, gp->ptrFFFFF880);
+				fwrite(&g_v119D8, (size_t) 1, (size_t) 46, gp->ptrFFFFF880);
 				goto l00000000000153DC;
 			}
 			word64 a6_n;
@@ -87,7 +87,7 @@ l00000000000153CC:
 				if (false)
 				{
 					if ((int64) gp->dwFFFFF814 == 0x00)
-						a0_n = (uint64) fwrite(&g_v11A08, (size_t) 1, (size_t) 37, gp->ptrFFFFF880);
+						fwrite(&g_v11A08, (size_t) 1, (size_t) 37, gp->ptrFFFFF880);
 					goto l00000000000153D8;
 				}
 				if (false)
@@ -121,7 +121,7 @@ l00000000000153CC:
 l0000000000015964:
 				if ((int64) gp->dwFFFFF814 != 0x00)
 					goto l00000000000153D8;
-				a0_n = (uint64) __fprintf_chk(gp->ptrFFFFF880, 1, "ipcalc: could not resolve %s\n", 0x00);
+				__fprintf_chk(gp->ptrFFFFF880, 1, "ipcalc: could not resolve %s\n", 0x00);
 				goto l00000000000153DC;
 			}
 l0000000000015458:
@@ -132,7 +132,7 @@ l0000000000015458:
 					goto l0000000000015510;
 				if ((int64) gp->dwFFFFF814 != 0x00)
 					goto l00000000000153D8;
-				a0_n = (uint64) fwrite(&g_v11A30, (size_t) 1, (size_t) 28, gp->ptrFFFFF880);
+				fwrite(&g_v11A30, (size_t) 1, (size_t) 28, gp->ptrFFFFF880);
 				fn0000000000015FCC(gp, 1);
 				goto l00000000000153DC;
 			}
@@ -149,7 +149,7 @@ l0000000000015458:
 l0000000000015CB0:
 				if ((int64) gp->dwFFFFF814 != 0x00)
 					goto l00000000000153D8;
-				a0_n = (uint64) __fprintf_chk(gp->ptrFFFFF880, 1, "ipcalc: cannot generate network with prefix: %u\n", 0x00);
+				__fprintf_chk(gp->ptrFFFFF880, 1, "ipcalc: cannot generate network with prefix: %u\n", 0x00);
 				goto l00000000000153DC;
 			}
 			if (false)
@@ -195,7 +195,7 @@ l00000000000155D8:
 l000000000001553C:
 				if ((int64) gp->dwFFFFF814 != 0x00)
 					goto l00000000000153D8;
-				a0_n = (uint64) __fprintf_chk(gp->ptrFFFFF880, 1, "ipcalc: unexpected argument: %s\n", 0x00);
+				__fprintf_chk(gp->ptrFFFFF880, 1, "ipcalc: unexpected argument: %s\n", 0x00);
 				fn0000000000015FCC(gp, 1);
 				goto l00000000000153DC;
 			}
@@ -217,7 +217,7 @@ l00000000000155E4:
 				{
 					a0_n = gp->ptrFFFFF880;
 l0000000000015B8C:
-					a0_n = (uint64) __fprintf_chk(a0_n, 1, "ipcalc: bad %s prefix: %s\n", 0x00);
+					__fprintf_chk(a0_n, 1, "ipcalc: bad %s prefix: %s\n", 0x00);
 				}
 				goto l00000000000153D8;
 			}
@@ -244,57 +244,57 @@ l00000000000153D8:
 			if ((s0_n & 8) == 0x00)
 			{
 				if ((s0_n & 0x0080) != 0x00)
-					a0_n = (uint64) __printf_chk(1, "NETMASK=%s\n", 0x00);
+					__printf_chk(1, "NETMASK=%s\n", 0x00);
 				if ((s0_n & 0x0200) != 0x00)
-					a0_n = (uint64) __printf_chk(1, "PREFIX=%u\n", 0x00);
+					__printf_chk(1, "PREFIX=%u\n", 0x00);
 				if ((s0_n & 64) != 0x00 && (int64) dwLoc01A4_n == 0x00)
-					a0_n = (uint64) __printf_chk(1, "BROADCAST=%s\n", 0x00);
+					__printf_chk(1, "BROADCAST=%s\n", 0x00);
 				if ((s0_n & 0x0100) != 0x00)
-					a0_n = (uint64) __printf_chk(1, "NETWORK=%s\n", 0x00);
+					__printf_chk(1, "NETWORK=%s\n", 0x00);
 				if (s0_n << 0x2E < 0x00)
-					a0_n = (uint64) __printf_chk(1, "REVERSEDNS=%s\n", 0x00);
+					__printf_chk(1, "REVERSEDNS=%s\n", 0x00);
 				if ((s0_n & 0x0400) != 0x00 && qwLocE0 != null)
-					a0_n = (uint64) __printf_chk(1, "MINADDR=%s\n", 0x00);
+					__printf_chk(1, "MINADDR=%s\n", 0x00);
 				if (s0_n << 0x34 < 0x00 && qwLocD8 != null)
-					a0_n = (uint64) __printf_chk(1, "MAXADDR=%s\n", 0x00);
+					__printf_chk(1, "MAXADDR=%s\n", 0x00);
 				if (s0_n << 0x32 < 0x00 && qwLocD0 != null)
 				{
 					if (strchr(qwLocD0, ' ') != null)
-						a0_n = (uint64) __printf_chk(1, "ADDRSPACE=\"%s\"\n", 0x00);
+						__printf_chk(1, "ADDRSPACE=\"%s\"\n", 0x00);
 					else
-						a0_n = (uint64) __printf_chk(1, "ADDRSPACE=%s\n", 0x00);
+						__printf_chk(1, "ADDRSPACE=%s\n", 0x00);
 				}
 				if (s0_n << 0x33 < 0x00)
 				{
 					if (strchr(fp + -296, ' ') != null)
-						a0_n = (uint64) __printf_chk(1, "ADDRESSES=\"%s\"\n", 0x00);
+						__printf_chk(1, "ADDRESSES=\"%s\"\n", 0x00);
 					else
-						a0_n = (uint64) __printf_chk(1, "ADDRESSES=%s\n", 0x00);
+						__printf_chk(1, "ADDRESSES=%s\n", 0x00);
 				}
 				if ((s0_n & 1) != 0x00 && qwLoc0150 != 0x00)
-					a0_n = (uint64) __printf_chk(1, "HOSTNAME=%s\n", 0x00);
+					__printf_chk(1, "HOSTNAME=%s\n", 0x00);
 				if ((s0_n & 2) != 0x00)
-					a0_n = (uint64) __printf_chk(1, "ADDRESS=%s\n", 0x00);
+					__printf_chk(1, "ADDRESS=%s\n", 0x00);
 				if ((s0_n & 0xC000) == 0xC000)
 				{
 					if (qwLoc0140 != null)
-						a0_n = (uint64) __printf_chk(1, "COUNTRYCODE=%s\n", 0x00);
+						__printf_chk(1, "COUNTRYCODE=%s\n", 0x00);
 					if (qwLoc0148 != null)
 					{
 						if (strchr(qwLoc0148, ' ') != null)
-							a0_n = (uint64) __printf_chk(1, "COUNTRY=\"%s\"\n", 0x00);
+							__printf_chk(1, "COUNTRY=\"%s\"\n", 0x00);
 						else
-							a0_n = (uint64) __printf_chk(1, "COUNTRY=%s\n", 0x00);
+							__printf_chk(1, "COUNTRY=%s\n", 0x00);
 					}
 					if (qwLoc0138 != null)
 					{
 						if (strchr(qwLoc0138, ' ') != null)
-							a0_n = (uint64) __printf_chk(1, "CITY=\"%s\"\n", 0x00);
+							__printf_chk(1, "CITY=\"%s\"\n", 0x00);
 						else
-							a0_n = (uint64) __printf_chk(1, "CITY=%s\n", 0x00);
+							__printf_chk(1, "CITY=%s\n", 0x00);
 					}
 					if (qwLoc0130 != null)
-						a0_n = (uint64) __printf_chk(1, "COORDINATES=\"%s\"\n", 0x00);
+						__printf_chk(1, "COORDINATES=\"%s\"\n", 0x00);
 				}
 				goto l00000000000153DC;
 			}
@@ -402,7 +402,7 @@ l00000000000158C8:
 				goto l00000000000157BC;
 			}
 l00000000000156FC:
-			a0_n = (uint64) putchar(0x0A);
+			putchar(0x0A);
 			if (qwLocD0 != null)
 				gp = fn000000000001654C(ra, gp, s0_n, 0x00012000, 0x00011B98, 0x00011B88, qwLocD0, a4_n, a5_n, a6_n, a7, s2_n, s3_n, out a4_n, out a5_n, out a6_n, out a7);
 			if (qwLocC8 != null)
@@ -448,7 +448,7 @@ l00000000000153DC:
 					}
 				}
 			}
-			a0_n = (uint64) putchar(0x0A);
+			putchar(0x0A);
 			if (qwLoc0140 != null)
 				gp = fn000000000001654C(ra, gp, s0_n, 0x00012000, 0x00011B98, 0x00011BF0, qwLoc0140, a4_n, a5_n, a6_n, a7, s2_n, s3_n, out a4_n, out a5_n, out a6_n, out a7);
 			if (qwLoc0148 != null)
@@ -477,7 +477,7 @@ l00000000000153DC:
 // 0000000000015EB8: void fn0000000000015EB8(Register (ptr64 Eq_n) a0, Stack word32 dwArg00)
 void fn0000000000015EB8(void (* a0)(), word32 dwArg00)
 {
-	a0_n = (uint64) __libc_start_main(&g_t15180, (int32) qwArg00, (word64) fp + 8, &g_t182E8, &g_t18378, a0, fp & -16);
+	__libc_start_main(&g_t15180, (int32) qwArg00, (word64) fp + 8, &g_t182E8, &g_t18378, a0, fp & -16);
 }
 
 // 0000000000015EF0: void fn0000000000015EF0()
@@ -533,50 +533,50 @@ void fn0000000000015FCC(struct Eq_n * gp, int64 a0)
 	FILE * a3_n = gp->ptrFFFFF880;
 	if (a0 != 0x00)
 	{
-		a0_n = (uint64) fwrite(&g_v10BE0, (size_t) 1, (size_t) 26, a3_n);
-		a0_n = (uint64) fwrite(&g_v10C00, (size_t) 1, (size_t) 54, gp->ptrFFFFF880);
-		a0_n = (uint64) fwrite(&g_v10C38, (size_t) 1, (size_t) 77, gp->ptrFFFFF880);
-		a0_n = (uint64) fwrite(&g_v10C88, (size_t) 1, (size_t) 62, gp->ptrFFFFF880);
-		a0_n = (uint64) fwrite(&g_v10CC8, (size_t) 1, (size_t) 79, gp->ptrFFFFF880);
-		a0_n = (uint64) fwrite(&g_v10D18, (size_t) 1, (size_t) 79, gp->ptrFFFFF880);
-		a0_n = (uint64) fwrite(&g_v10D68, (size_t) 1, (size_t) 42, gp->ptrFFFFF880);
-		a0_n = (uint64) fwrite(&g_v10D98, (size_t) 1, (size_t) 76, gp->ptrFFFFF880);
-		a0_n = (uint64) fwrite(&g_v10DE8, (size_t) 1, (size_t) 77, gp->ptrFFFFF880);
-		a0_n = (uint64) fwrite(&g_v10E38, (size_t) 1, (size_t) 77, gp->ptrFFFFF880);
+		fwrite(&g_v10BE0, (size_t) 1, (size_t) 26, a3_n);
+		fwrite(&g_v10C00, (size_t) 1, (size_t) 54, gp->ptrFFFFF880);
+		fwrite(&g_v10C38, (size_t) 1, (size_t) 77, gp->ptrFFFFF880);
+		fwrite(&g_v10C88, (size_t) 1, (size_t) 62, gp->ptrFFFFF880);
+		fwrite(&g_v10CC8, (size_t) 1, (size_t) 79, gp->ptrFFFFF880);
+		fwrite(&g_v10D18, (size_t) 1, (size_t) 79, gp->ptrFFFFF880);
+		fwrite(&g_v10D68, (size_t) 1, (size_t) 42, gp->ptrFFFFF880);
+		fwrite(&g_v10D98, (size_t) 1, (size_t) 76, gp->ptrFFFFF880);
+		fwrite(&g_v10DE8, (size_t) 1, (size_t) 77, gp->ptrFFFFF880);
+		fwrite(&g_v10E38, (size_t) 1, (size_t) 77, gp->ptrFFFFF880);
 		fputc();
-		a0_n = (uint64) fwrite(&g_v10E88, (size_t) 1, (size_t) 23, gp->ptrFFFFF880);
-		a0_n = (uint64) fwrite(&g_v10EA0, (size_t) 1, (size_t) 71, gp->ptrFFFFF880);
-		a0_n = (uint64) fwrite(&g_v10EE8, (size_t) 1, (size_t) 57, gp->ptrFFFFF880);
-		a0_n = (uint64) fwrite(&g_v10F28, (size_t) 1, (size_t) 58, gp->ptrFFFFF880);
-		a0_n = (uint64) fwrite(&g_v10F68, (size_t) 1, (size_t) 57, gp->ptrFFFFF880);
-		a0_n = (uint64) fwrite(&g_v10FA8, (size_t) 1, (size_t) 77, gp->ptrFFFFF880);
-		a0_n = (uint64) fwrite(&g_v10FF8, (size_t) 1, (size_t) 77, gp->ptrFFFFF880);
-		a0_n = (uint64) fwrite(&g_v11048, (size_t) 1, (size_t) 77, gp->ptrFFFFF880);
-		a0_n = (uint64) fwrite(&g_v11098, (size_t) 1, (size_t) 46, gp->ptrFFFFF880);
-		a0_n = (uint64) fwrite(&g_v110C8, (size_t) 1, (size_t) 72, gp->ptrFFFFF880);
-		a0_n = (uint64) fwrite(&g_v11118, (size_t) 1, (size_t) 45, gp->ptrFFFFF880);
-		a0_n = (uint64) fwrite(&g_v11148, (size_t) 1, (size_t) 67, gp->ptrFFFFF880);
-		a0_n = (uint64) fwrite(&g_v11190, (size_t) 1, (size_t) 64, gp->ptrFFFFF880);
-		a0_n = (uint64) fwrite(&g_v111D8, (size_t) 1, (size_t) 72, gp->ptrFFFFF880);
-		a0_n = (uint64) fwrite(&g_v11228, (size_t) 1, (size_t) 46, gp->ptrFFFFF880);
+		fwrite(&g_v10E88, (size_t) 1, (size_t) 23, gp->ptrFFFFF880);
+		fwrite(&g_v10EA0, (size_t) 1, (size_t) 71, gp->ptrFFFFF880);
+		fwrite(&g_v10EE8, (size_t) 1, (size_t) 57, gp->ptrFFFFF880);
+		fwrite(&g_v10F28, (size_t) 1, (size_t) 58, gp->ptrFFFFF880);
+		fwrite(&g_v10F68, (size_t) 1, (size_t) 57, gp->ptrFFFFF880);
+		fwrite(&g_v10FA8, (size_t) 1, (size_t) 77, gp->ptrFFFFF880);
+		fwrite(&g_v10FF8, (size_t) 1, (size_t) 77, gp->ptrFFFFF880);
+		fwrite(&g_v11048, (size_t) 1, (size_t) 77, gp->ptrFFFFF880);
+		fwrite(&g_v11098, (size_t) 1, (size_t) 46, gp->ptrFFFFF880);
+		fwrite(&g_v110C8, (size_t) 1, (size_t) 72, gp->ptrFFFFF880);
+		fwrite(&g_v11118, (size_t) 1, (size_t) 45, gp->ptrFFFFF880);
+		fwrite(&g_v11148, (size_t) 1, (size_t) 67, gp->ptrFFFFF880);
+		fwrite(&g_v11190, (size_t) 1, (size_t) 64, gp->ptrFFFFF880);
+		fwrite(&g_v111D8, (size_t) 1, (size_t) 72, gp->ptrFFFFF880);
+		fwrite(&g_v11228, (size_t) 1, (size_t) 46, gp->ptrFFFFF880);
 		fputc();
-		a0_n = (uint64) fwrite(&g_v11258, (size_t) 1, (size_t) 0x0F, gp->ptrFFFFF880);
-		a0_n = (uint64) fwrite(&g_v11268, (size_t) 1, (size_t) 87, gp->ptrFFFFF880);
-		a0_n = (uint64) fwrite(&g_v112C0, (size_t) 1, (size_t) 60, gp->ptrFFFFF880);
-		a0_n = (uint64) fwrite(&g_v11300, (size_t) 1, (size_t) 0x0044, gp->ptrFFFFF880);
-		a0_n = (uint64) fwrite(&g_v11348, (size_t) 1, (size_t) 58, gp->ptrFFFFF880);
-		a0_n = (uint64) fwrite(&g_v11388, (size_t) 1, (size_t) 57, gp->ptrFFFFF880);
-		a0_n = (uint64) fwrite(&g_v113C8, (size_t) 1, (size_t) 62, gp->ptrFFFFF880);
+		fwrite(&g_v11258, (size_t) 1, (size_t) 0x0F, gp->ptrFFFFF880);
+		fwrite(&g_v11268, (size_t) 1, (size_t) 87, gp->ptrFFFFF880);
+		fwrite(&g_v112C0, (size_t) 1, (size_t) 60, gp->ptrFFFFF880);
+		fwrite(&g_v11300, (size_t) 1, (size_t) 0x0044, gp->ptrFFFFF880);
+		fwrite(&g_v11348, (size_t) 1, (size_t) 58, gp->ptrFFFFF880);
+		fwrite(&g_v11388, (size_t) 1, (size_t) 57, gp->ptrFFFFF880);
+		fwrite(&g_v113C8, (size_t) 1, (size_t) 62, gp->ptrFFFFF880);
 	}
 	else
 	{
-		a0_n = (uint64) fwrite(&g_v11408, (size_t) 1, (size_t) 77, a3_n);
-		a0_n = (uint64) fwrite(&g_v11458, (size_t) 1, (size_t) 62, gp->ptrFFFFF880);
-		a0_n = (uint64) fwrite(&g_v11498, (size_t) 1, (size_t) 65, gp->ptrFFFFF880);
-		a0_n = (uint64) fwrite(&g_v114E0, (size_t) 1, (size_t) 76, gp->ptrFFFFF880);
-		a0_n = (uint64) fwrite(&g_v11530, (size_t) 1, (size_t) 65, gp->ptrFFFFF880);
-		a0_n = (uint64) fwrite(&g_v11578, (size_t) 1, (size_t) 41, gp->ptrFFFFF880);
-		a0_n = (uint64) fwrite(&g_v115A8, (size_t) 1, (size_t) 30, gp->ptrFFFFF880);
+		fwrite(&g_v11408, (size_t) 1, (size_t) 77, a3_n);
+		fwrite(&g_v11458, (size_t) 1, (size_t) 62, gp->ptrFFFFF880);
+		fwrite(&g_v11498, (size_t) 1, (size_t) 65, gp->ptrFFFFF880);
+		fwrite(&g_v114E0, (size_t) 1, (size_t) 76, gp->ptrFFFFF880);
+		fwrite(&g_v11530, (size_t) 1, (size_t) 65, gp->ptrFFFFF880);
+		fwrite(&g_v11578, (size_t) 1, (size_t) 41, gp->ptrFFFFF880);
+		fwrite(&g_v115A8, (size_t) 1, (size_t) 30, gp->ptrFFFFF880);
 	}
 }
 
@@ -586,14 +586,14 @@ void fn0000000000015FCC(struct Eq_n * gp, int64 a0)
 char * fn00000000000163B0(struct Eq_n * gp)
 {
 	Eq_n a5_n = gp->tFFFFF870;
+	__sprintf_chk(fp + -232, 1, (size_t) 0x0080, "%.2x", 0x00);
 	int64 s0_n = 1;
-	a0_n = (uint64) __sprintf_chk(fp + -232, 1, (size_t) 0x0080, "%.2x", 0x00);
 	struct Eq_n * s1_n = fp + -0x00E6;
 	if (true)
 	{
 		do
 		{
-			a0_n = (uint64) __sprintf_chk(s1_n, 1, (size_t) 0x0080, "%.2x", 0x00);
+			__sprintf_chk(s1_n, 1, (size_t) 0x0080, "%.2x", 0x00);
 			struct Eq_n * a4_n = s1_n + 1;
 			if ((s0_n & 1) != 0x00)
 			{
@@ -627,7 +627,7 @@ void * fn00000000000164D0(void * a0, Eq_n a1)
 	if (a0_n >= 0x00)
 	{
 		uint64 a0_n = (uint64) read((int32) a0_n, a0, (size_t) (word64) (word32) a1);
-		a0_n = (uint64) close((int32) a0_n);
+		close((int32) a0_n);
 		a0_n = (int64) (0x00 - (word32) ((int64) ((word32) (a0_n - a1)) != 0x00));
 	}
 	else
@@ -650,12 +650,12 @@ struct Eq_n * fn000000000001654C(word64 ra, struct Eq_n * gp, Eq_n s0, word64 s1
 	__vasprintf_chk();
 	if (a0_n >= 0x00)
 	{
-		a0_n = (uint64) fputs(s2_n, gp_n->ptrFFFFF888);
+		fputs(s2_n, gp_n->ptrFFFFF888);
 		if ((int64) gp_n->dwFFFFF810 != 0x00)
-			a0_n = (uint64) fputs(s3_n, gp_n->ptrFFFFF888);
-		a0_n = (uint64) fputs(null, gp_n->ptrFFFFF888);
+			fputs(s3_n, gp_n->ptrFFFFF888);
+		fputs(null, gp_n->ptrFFFFF888);
 		if ((int64) gp_n->dwFFFFF810 != 0x00)
-			a0_n = (uint64) fwrite(&g_v115E0, (size_t) 1, (size_t) 4, gp_n->ptrFFFFF888);
+			fwrite(&g_v115E0, (size_t) 1, (size_t) 4, gp_n->ptrFFFFF888);
 		free(null);
 	}
 	Eq_n a5_n = gp_n->tFFFFF870;
@@ -1036,7 +1036,7 @@ char * fn0000000000016D74(word64 ra, struct Eq_n * gp, char * a0, char * a1, str
 	{
 		if ((int64) gp->dwFFFFF814 != 0x00)
 			goto l0000000000016E20;
-		a0_n = (uint64) __fprintf_chk(gp->ptrFFFFF880, 1, "ipcalc: bad IPv4 address: %s\n", 0x00);
+		__fprintf_chk(gp->ptrFFFFF880, 1, "ipcalc: bad IPv4 address: %s\n", 0x00);
 		a0_n = (char *) -1;
 l0000000000016E24:
 		if (a5_n != gp->tFFFFF870)
@@ -1075,7 +1075,7 @@ l0000000000016E24:
 		{
 			if ((int64) gp->dwFFFFF814 == 0x00)
 			{
-				a0_n = (uint64) __fprintf_chk(gp->ptrFFFFF880, 1, "ipcalc: bad IPv4 prefix %d\n", 0x00);
+				__fprintf_chk(gp->ptrFFFFF880, 1, "ipcalc: bad IPv4 prefix %d\n", 0x00);
 				a0_n = (char *) -1;
 				goto l0000000000016E24;
 			}
@@ -1176,7 +1176,7 @@ l0000000000016E24:
 				if (inet_ntop(2, fp + -400, fp + -0x0188, 47) != null)
 				{
 					a2->ptr00B0 = __strdup(fp + -0x0188);
-					a0_n = (uint64) __snprintf_chk(&a2->b0060, (size_t) 64, 1, (size_t) 64, "%u", 0x00);
+					__snprintf_chk(&a2->b0060, (size_t) 64, 1, (size_t) 64, "%u", 0x00);
 					goto l000000000001717C;
 				}
 				goto l0000000000017074;
@@ -1184,7 +1184,7 @@ l0000000000016E24:
 l00000000000172E8:
 			a0_n = gp->ptrFFFFF880;
 l00000000000172C4:
-			a0_n = (uint64) __fprintf_chk(a0_n, 1, "Memory allocation failure line %d\n", 0x00);
+			__fprintf_chk(a0_n, 1, "Memory allocation failure line %d\n", 0x00);
 			abort();
 		}
 		if (inet_ntop(2, fp + -408, fp + -0x0188, 16) == null)
@@ -1212,7 +1212,7 @@ l000000000001718C:
 				goto l000000000001718C;
 			if ((int64) gp->dwFFFFF814 == 0x00)
 			{
-				a0_n = (uint64) __sprintf_chk(fp + -344, 1, (size_t) 0x00FA, "ipcalc: cannot find hostname for %s", 0x00);
+				__sprintf_chk(fp + -344, 1, (size_t) 0x00FA, "ipcalc: cannot find hostname for %s", 0x00);
 				herror(fp + -344);
 				a0_n = (char *) -1;
 				goto l0000000000016E24;
@@ -1224,7 +1224,7 @@ l0000000000016E20:
 	}
 l0000000000017074:
 	if ((int64) gp->dwFFFFF814 == 0x00)
-		a0_n = (uint64) fwrite(&g_v117F8, (size_t) 1, (size_t) 43, gp->ptrFFFFF880);
+		fwrite(&g_v117F8, (size_t) 1, (size_t) 43, gp->ptrFFFFF880);
 	goto l0000000000016E20;
 }
 
@@ -1338,7 +1338,7 @@ char * fn00000000000175BC(word64 ra, struct Eq_n * gp, char * s1, char * a0, cha
 	{
 		if ((int64) gp->dwFFFFF814 != 0x00)
 			goto l0000000000017770;
-		a0_n = (uint64) __fprintf_chk(gp->ptrFFFFF880, 1, "ipcalc: bad IPv6 address: %s\n", 0x00);
+		__fprintf_chk(gp->ptrFFFFF880, 1, "ipcalc: bad IPv6 address: %s\n", 0x00);
 		a0_n = (char *) -1;
 		goto l0000000000017774;
 	}
@@ -1349,7 +1349,7 @@ char * fn00000000000175BC(word64 ra, struct Eq_n * gp, char * s1, char * a0, cha
 l0000000000017768:
 		if ((int64) gp->dwFFFFF814 != 0x00)
 			goto l0000000000017770;
-		a0_n = (uint64) fwrite(&g_v117F8, (size_t) 1, (size_t) 43, gp->ptrFFFFF880);
+		fwrite(&g_v117F8, (size_t) 1, (size_t) 43, gp->ptrFFFFF880);
 		a0_n = (char *) -1;
 		goto l0000000000017774;
 	}
@@ -1406,7 +1406,7 @@ l0000000000017768:
 						if ((int64) (0x80 - (word32) s2_n) == 0x0080)
 							goto l0000000000017740;
 l0000000000017740:
-						a0_n = (uint64) snprintf(&a2->b0060, (size_t) 64, "%s", 0x00);
+						snprintf(&a2->b0060, (size_t) 64, "%s", 0x00);
 						if (a3 << 0x31 < 0x00)
 							gp = fn0000000000017D10(ra, gp, s1, fp + -408, &a2->qw0038 + 1, &a2->qw0038 + 2, &a2->qw0038 + 3, &a2->qw0038 + 4, a3, fp + -0x0188, out s0_n, out s3_n, out s6_n);
 						if ((s6_n & 1) == 0x00)
@@ -1421,7 +1421,7 @@ l0000000000017760:
 							goto l0000000000017760;
 						if ((int64) gp->dwFFFFF814 == 0x00)
 						{
-							a0_n = (uint64) __sprintf_chk(s3_n, 1, (size_t) 0x00FA, "ipcalc: cannot find hostname for %s", 0x00);
+							__sprintf_chk(s3_n, 1, (size_t) 0x00FA, "ipcalc: cannot find hostname for %s", 0x00);
 							herror(s3_n);
 						}
 l0000000000017770:
@@ -1433,14 +1433,14 @@ l0000000000017770:
 			}
 			if ((int64) gp->dwFFFFF814 != 0x00)
 				goto l0000000000017770;
-			a0_n = (uint64) __fprintf_chk(gp->ptrFFFFF880, 1, "ipcalc: error converting IPv6 prefix: %d\n", 0x00);
+			__fprintf_chk(gp->ptrFFFFF880, 1, "ipcalc: error converting IPv6 prefix: %d\n", 0x00);
 			a0_n = (char *) -1;
 		}
 		else
 		{
 			if ((int64) gp->dwFFFFF814 != 0x00)
 				goto l0000000000017770;
-			a0_n = (uint64) __fprintf_chk(gp->ptrFFFFF880, 1, "ipcalc: bad IPv6 prefix: %d\n", 0x00);
+			__fprintf_chk(gp->ptrFFFFF880, 1, "ipcalc: bad IPv6 prefix: %d\n", 0x00);
 			a0_n = (char *) -1;
 		}
 l0000000000017774:
@@ -1510,7 +1510,7 @@ int64 fn0000000000017924(struct Eq_n * gp, FILE & a1Out, union Eq_n & a2Out, uni
 			}
 			else
 			{
-				a0_n = (uint64) __snprintf_chk(&gp->tFFFFFCE0, (size_t) 0x0100, 1, (size_t) 0x0100, "ipcalc: could not open %s\n", 0x00);
+				__snprintf_chk(&gp->tFFFFFCE0, (size_t) 0x0100, 1, (size_t) 0x0100, "ipcalc: could not open %s\n", 0x00);
 				gp->dw0818 = ~0x00;
 				a3.u0 = 0x0100;
 				a4.u0 = 76376;
@@ -1530,7 +1530,7 @@ l0000000000017970:
 	if ((int64) gp->dwFFFFF814 == 0x00 && (word64) gp->tFFFFFCE0 != 0x00)
 	{
 		a1 = gp->ptrFFFFF880;
-		a0_n = (uint64) fputs(&gp->tFFFFFCE0, a1);
+		fputs(&gp->tFFFFFCE0, a1);
 	}
 	s0_n = (int64) gp->dwFFFFF818;
 	goto l0000000000017970;
@@ -1710,9 +1710,9 @@ struct Eq_n * fn0000000000017B40(word64 ra, struct Eq_n * gp, int64 a0, ptr64 a1
 				*s1_n = (char **) __strdup(a0_n);
 			if ((word64) (a0_n->r0034 == 0.0F) == 0x00)
 			{
+				__asprintf_chk(s4_n, 1, "%f,%f", 0x00);
 				a2_n = 76672;
 				a1_n = 1;
-				a0_n = (uint64) __asprintf_chk(s4_n, 1, "%f,%f", 0x00);
 			}
 		}
 		struct Eq_n * s6_n;
@@ -1913,9 +1913,9 @@ struct Eq_n * fn0000000000017D10(word64 ra, struct Eq_n * gp, char * s1, ptr64 a
 				*s2_n = (char **) __strdup(a0_n);
 			if ((word64) (a0_n->r0034 == 0.0F) == 0x00)
 			{
+				__asprintf_chk(s5_n, 1, "%f,%f", 0x00);
 				a2_n = 76672;
 				a1_n = 1;
-				a0_n = (uint64) __asprintf_chk(s5_n, 1, "%f,%f", 0x00);
 			}
 		}
 		void * s0_n;

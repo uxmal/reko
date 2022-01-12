@@ -101,7 +101,8 @@ namespace Reko.Environments.SysV.ArchSpecific
             case "arm":
                 return new Arm32CallingConvention(arch);
             case "arm-64":
-                return new Arm64CallingConvention(arch);
+                // Documentation states to use the architecture-defined ABI.
+                return arch.GetCallingConvention("")!;
             case "m68k":
                 return new M68kCallingConvention(arch);
             case "avr8":

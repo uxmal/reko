@@ -20,7 +20,10 @@
 
 using Reko.Core;
 using Reko.Core.Configuration;
+using Reko.Core.Diagnostics;
+using Reko.Core.Memory;
 using Reko.Core.Types;
+using Reko.ImageLoaders.MachO.Arch;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -28,8 +31,6 @@ using System.Text;
 
 namespace Reko.ImageLoaders.MachO
 {
-    using Reko.Core.Memory;
-    using Reko.ImageLoaders.MachO.Arch;
     using static Reko.ImageLoaders.MachO.Parser.Command;
     using static Reko.ImageLoaders.MachO.SectionFlags;
 
@@ -192,7 +193,7 @@ namespace Reko.ImageLoaders.MachO
                         "Unable to read Mach-O command ({0:X}).",
                         rdr.Offset));
                 }
-                Debug.Print("{0,2}: Read MachO load command 0x{1:X} {2} of size {3}.", i, cmd, (Command) cmd, cmdsize);
+                MachOLoader.trace.Inform("{0,2}: Read MachO load command 0x{1:X} {2} of size {3}.", i, cmd, (Command) cmd, cmdsize);
 
                 switch ((Command) (cmd & ~(uint) LC_REQ_DYLD))
                 {
@@ -200,6 +201,8 @@ namespace Reko.ImageLoaders.MachO
                     ParseSegmentCommand32(imageMap);
                     break;
                 case LC_SEGMENT_64:
+                    //$REVIEW: are there any other platforms using 64-bit machO? iOS?
+                    platformName = "macOsX";
                     ParseSegmentCommand64(imageMap);
                     break;
                 case LC_SYMTAB:
@@ -556,6 +559,26 @@ namespace Reko.ImageLoaders.MachO
                 */
         }
 
+        protected static string AdjustSymbolName(string name)
+        {
+            //$REVIEW: macho symbols seem to have '_' prefixes. Remove these if present.
+            // Root cause of github issue #1130
+            if (!string.IsNullOrEmpty(name) && name[0] == '_')
+                name = name.Substring(1);
+            return name;
+        }
+
+        protected MachOSymbol? GetSymbol(int i, List<uint> indirects)
+        {
+            var indsym = indirects[i];
+            if (indsym < ldr.machoSymbols.Count)
+            {
+                return ldr.machoSymbols[(int)indsym];
+            }
+            else
+                return null;
+        }
+
         public abstract (MachOSymbol?, Address?) ReadSymbol(byte[] strBytes, EndianImageReader syms, uint i);
 
         void ParseDysymtabCommand(IProcessorArchitecture arch)
@@ -724,17 +747,20 @@ namespace Reko.ImageLoaders.MachO
             int i = (int) tableIndex;
             while (rdr.TryReadUInt32(out uint uImport))
             {
-                var msym = ldr.machoSymbols[(int) indirects[i]];
-                Debug.Print("      {0}: {1:X8} {2}", addr, uImport, msym.Name);
-                var addrImport = Address.Ptr32(uImport);
-                var ptr = new Pointer(new CodeType(), arch.PointerType.BitSize);
-                var impSymbol = ImageSymbol.DataObject(
-                    arch,
-                    addr,
-                    "__imp__" + msym.Name,
-                    ptr);
-                ldr.imageSymbols[addr] = impSymbol;
-                ldr.program!.ImportReferences.Add(addr, new NamedImportReference(addrImport, "", msym.Name, SymbolType.ExternalProcedure));
+                var msym = GetSymbol(i, indirects);
+                if (msym is not null)
+                {
+                    Debug.Print("      {0}: {1:X8} {2}", addr, uImport, msym.Name);
+                    var addrImport = Address.Ptr32(uImport);
+                    var ptr = new Pointer(new CodeType(), arch.PointerType.BitSize);
+                    var impSymbol = ImageSymbol.DataObject(
+                        arch,
+                        addr,
+                        "__imp__" + msym.Name,
+                        ptr);
+                    ldr.imageSymbols[addr] = impSymbol;
+                    ldr.program!.ImportReferences.Add(addr, new NamedImportReference(addrImport, "", msym.Name, SymbolType.ExternalProcedure));
+                }
                 addr = rdr.Address;
                 ++i;
             }
@@ -749,8 +775,9 @@ namespace Reko.ImageLoaders.MachO
                 syms.TryReadUInt32(out uint n_value))
             {
                 var str = GetAsciizString(strBytes, (int) n_strx);
+                str = Parser.AdjustSymbolName(str);
                 var secName = n_sect < ldr.sections.Count ? ldr.sections[n_sect].Name : n_sect.ToString();
-                Debug.Print("      {0,2}: {2,-8} {3}({4}) {5:X4} {6:X8} {7}",
+                MachOLoader.trace.Verbose("      {0,2}: {2,-8} {3}({4}) {5:X4} {6:X8} {7}",
                     i, n_strx, (Stab) n_type, secName,
                     n_sect, n_desc, n_value, str);
                 var msym = new MachOSymbol(str, n_type, n_sect, n_desc, n_value);
@@ -832,12 +859,9 @@ namespace Reko.ImageLoaders.MachO
             int i = (int) tableIndex;
             while (rdr.TryReadUInt64(out ulong uImport))
             {
-                var indsym = (int) indirects[i];
-                if (indsym < 0 || indsym >= indirects.Count)
-                    continue;
-                if (indsym < ldr.machoSymbols.Count)
+                var msym = GetSymbol(i, indirects);
+                if (msym is not null)
                 {
-                    var msym = ldr.machoSymbols[indsym];
                     Debug.Print("      {0}: {1:X8} {2}", addr, uImport, msym.Name);
                     var addrImport = Address.Ptr64(uImport);
                     var ptr = new Pointer(new CodeType(), arch.PointerType.BitSize);
@@ -863,9 +887,10 @@ namespace Reko.ImageLoaders.MachO
                 syms.TryReadUInt64(out ulong n_value))
             {
                 var str = GetAsciizString(strBytes, (int) n_strx);
+                str = Parser.AdjustSymbolName(str);
                 var secName = n_sect < ldr.sections.Count ? ldr.sections[n_sect].Name : n_sect.ToString();
 
-                Debug.Print("      {0,2}: {2,-8} {3}({4}) {5:X4} {6:X16} {7}",
+                MachOLoader.trace.Verbose("      {0,2}: {2,-8} {3}({4}) {5:X4} {6:X16} {7}",
                     i, n_strx, (Stab) n_type, secName,
                     n_sect, n_desc, n_value, str);
                 var msym = new MachOSymbol(str, n_type, n_sect, n_desc, n_value);

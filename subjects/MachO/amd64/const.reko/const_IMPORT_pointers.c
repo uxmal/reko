@@ -4,4 +4,4 @@
 
 #include "const.h"
 
-<anonymous> * __imp___f = null; // 00000013
+<anonymous> * __imp__f = null; // 00000013

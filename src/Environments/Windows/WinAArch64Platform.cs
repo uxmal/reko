@@ -18,15 +18,13 @@
  */
 #endregion
 
+using Reko.Arch.Arm.AArch64;
 using Reko.Core;
 using Reko.Core.CLanguage;
 using Reko.Core.Services;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Reko.Environments.Windows
 {

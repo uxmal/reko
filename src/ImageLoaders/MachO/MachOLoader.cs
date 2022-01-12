@@ -19,18 +19,13 @@
 #endregion
 
 using Reko.Core;
-using Reko.Core.Configuration;
 using Reko.Core.Diagnostics;
 using Reko.Core.Loading;
 using Reko.Core.Memory;
-using Reko.Core.Types;
-using Reko.ImageLoaders.MachO.Arch;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Reflection;
-using System.Text;
 
 namespace Reko.ImageLoaders.MachO
 {
@@ -114,7 +109,10 @@ namespace Reko.ImageLoaders.MachO
         /// </summary>
         /// <param name="machoSymbols"></param>
         /// <param name="imageSymbols"></param>
-        private void CollectSymbolStubs(Parser parser, List<MachOSymbol> machoSymbols, SortedList<Address, ImageSymbol> imageSymbols)
+        private void CollectSymbolStubs(
+            Parser parser,
+            List<MachOSymbol> machoSymbols,
+            SortedList<Address, ImageSymbol> imageSymbols)
         {
             var msec = this.sections.FirstOrDefault(s => (s.Flags & SectionFlags.SECTION_TYPE) == SectionFlags.S_SYMBOL_STUBS);
             if (msec == null)

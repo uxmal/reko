@@ -18,31 +18,29 @@
  */
 #endregion
 
-using System;
 using Reko.Core;
-using Reko.Core.Serialization;
 using Reko.Core.Types;
+using System;
 using System.Collections.Generic;
-using Reko.Core.Expressions;
 using System.Linq;
-using System.Runtime.CompilerServices;
 
-namespace Reko.Environments.SysV.ArchSpecific
+namespace Reko.Arch.Arm.AArch64
 {
-    public class Arm64CallingConvention : CallingConvention
+    // https://docs.microsoft.com/en-us/cpp/build/arm64-windows-abi-conventions?view=msvc-170
+    // Seems identical to the official ARM 64 ABI.
+    public class AArch64CallingConvention : CallingConvention
     {
         private IProcessorArchitecture arch;
         private RegisterStorage[] argRegs;
         private RegisterStorage[] floatRegs;
 
-        public Arm64CallingConvention(IProcessorArchitecture arch)
+        public AArch64CallingConvention(IProcessorArchitecture arch)
         {
             this.arch = arch;
             argRegs = new[] { "x0", "x1", "x2", "x3", "x4", "x5", "x6", "x7" }
                 .Select(r => arch.GetRegister(r)!).ToArray();
             floatRegs = new[] { "q0", "q1", "q2", "q3", "q4", "q5", "q6", "q7" }
                 .Select(r => arch.GetRegister(r)!).ToArray();
-
         }
 
         public void Generate(ICallingConventionEmitter ccr, DataType? dtRet, DataType? dtThis, List<DataType> dtParams)
