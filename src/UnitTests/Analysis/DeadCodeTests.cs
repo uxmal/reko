@@ -269,5 +269,23 @@ return
 ";
             AssertProcedureCode(sExp);
         }
+
+        [Test]
+        public void DeadConversion()
+        {
+            var dead = m.Reg32("dead");
+            var intrinsic = new IntrinsicProcedure("sideffector", true, PrimitiveType.Int32, 0);
+            m.Assign(dead, m.Convert(m.Fn(intrinsic), PrimitiveType.Int32, PrimitiveType.Int64));
+            m.Return();
+
+            EliminateDeadCode();
+
+            var sExp =
+@"
+sideffector()
+return
+";
+            AssertProcedureCode(sExp);
+        }
     }
 }

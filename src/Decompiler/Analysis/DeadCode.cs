@@ -85,6 +85,7 @@ namespace Reko.Analysis
                 switch (exp)
                 {
                 case Application app: return app;
+                case Conversion convert: return ContainedApplication(convert.Expression);
                 case Cast cast: return ContainedApplication(cast.Expression);
                 case Slice slice: return ContainedApplication(slice.Expression);
                 case UnaryExpression u: return ContainedApplication(u.Expression);
