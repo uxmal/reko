@@ -27,10 +27,18 @@ namespace Reko.Core.Memory
 {
     public class Word64BeReader : Word64ImageReader, EndianImageReader
     {
-        public Word64BeReader(Word64MemoryArea mem, long offset =0) : base(mem, offset)
+        public Word64BeReader(Word64MemoryArea mem, long offset = 0) : base(mem, offset)
         {
         }
 
+        public Word64BeReader(Word64MemoryArea mem, Address addr) : base(mem, addr)
+        {
+        }
+
+        public Word64BeReader(Word64MemoryArea mem, Address addr, long cUnits) : base(mem, addr, cUnits)
+        {
+        }
+        
         public EndianImageReader Clone()
         {
             return new Word64BeReader(mem, Offset);

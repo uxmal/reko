@@ -1,7 +1,7 @@
 ;;; Segment .data (00000200)
 _putchar_isr_mode		; 0200
 	db	0x01
-00000201    00                                            .             
+00000201    00                                            .              
 pxCurrentTCB		; 0202
 	dw	0x0000
 uxTasksDeleted		; 0204

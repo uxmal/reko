@@ -13,7 +13,7 @@ _start proc
 	push	ip
 	bl	$00008324
 	bl	$00008314
-00008360 B0 86 00 00 5C 85 00 00 54 86 00 00             ....\...T...   
+00008360 B0 86 00 00 5C 85 00 00 54 86 00 00             ....\...T...    
 
 ;; call_gmon_start: 0000836C
 ;;   Called from:
@@ -30,7 +30,7 @@ call_gmon_start proc
 l00008388:
 	mov	lr,pc
 	mov	pc,r3
-00008390 00 84 BD E8 C8 84 00 00 14 00 00 00             ............   
+00008390 00 84 BD E8 C8 84 00 00 14 00 00 00             ............    
 
 ;; __do_global_dtors_aux: 0000839C
 ;;   Called from:
@@ -56,13 +56,13 @@ l000083C4:
 	mov	lr,pc
 	mov	pc,r2
 000083D8                         00 30 94 E5 00 20 93 E5         .0... ..
-000083E0 00 00 52 E3 F6 FF FF 1A                         ..R.....       
+000083E0 00 00 52 E3 F6 FF FF 1A                         ..R.....        
 
 l000083E8:
 	mov	r3,#1
 	strb	r3,[r5]
 	pop	{r4-r5,pc}
-000083F4             70 08 01 00 64 07 01 00                 p...d...   
+000083F4             70 08 01 00 64 07 01 00                 p...d...    
 
 ;; call___do_global_dtors_aux: 000083FC
 call___do_global_dtors_aux proc
@@ -85,7 +85,7 @@ l00008414:
 
 l00008420:
 	b	$00000000
-00008424             44 08 01 00 00 00 00 00                 D.......   
+00008424             44 08 01 00 00 00 00 00                 D.......    
 
 ;; call_frame_dummy: 0000842C
 call_frame_dummy proc
@@ -369,12 +369,12 @@ l000086E0:
 	mov	lr,pc
 	ldr	pc,[r5,r4,lsl #2]
 000086EC                                     00 00 54 E3             ..T.
-000086F0 01 40 44 E2 FA FF FF 1A                         .@D.....       
+000086F0 01 40 44 E2 FA FF FF 1A                         .@D.....        
 
 l000086F8:
 	pop	{r4-r5,r10,lr}
 	b	$0000874C
-00008700 80 81 00 00 20 00 00 00 24 00 00 00             .... ...$...   
+00008700 80 81 00 00 20 00 00 00 24 00 00 00             .... ...$...    
 
 ;; __do_global_ctors_aux: 0000870C
 ;;   Called from:
@@ -392,7 +392,7 @@ l00008724:
 	mov	lr,pc
 	mov	pc,r3
 00008730 04 30 34 E5 01 00 73 E3 FA FF FF 1A 10 80 BD E8 .04...s.........
-00008740 38 08 01 00                                     8...           
+00008740 38 08 01 00                                     8...            
 
 ;; call___do_global_ctors_aux: 00008744
 call___do_global_ctors_aux proc

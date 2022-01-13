@@ -1,6 +1,6 @@
 ;;; Segment .got (10000870)
 10000870 00 00 00 00 80 00 00 00 10 00 00 00 00 40 00 00 .............@..
-10000880 00 41 00 00 00 00 00 00 00 00 00 00             .A..........   
+10000880 00 41 00 00 00 00 00 00 00 00 00 00             .A..........    
 free_GOT		; 1000088C
 	dd	0x00400600
 strpbrk_GOT		; 10000890
@@ -11,7 +11,7 @@ client_check_activ_GOT		; 10000898
 	dd	0x00403840
 close_GOT		; 1000089C
 	dd	0x004005E0
-100008A0 10 00 0A AC                                     ....           
+100008A0 10 00 0A AC                                     ....            
 __register_frame_info_GOT		; 100008A4
 	dd	0x0811F260
 slist_destroy_GOT		; 100008A8
@@ -26,7 +26,7 @@ strchr_GOT		; 100008B8
 	dd	0x004005D0
 client_close_GOT		; 100008BC
 	dd	0x004036BC
-100008C0 10 00 00 14                                     ....           
+100008C0 10 00 00 14                                     ....            
 toupper_GOT		; 100008C4
 	dd	0x004005C0
 __uClibc_start_main_GOT		; 100008C8
@@ -51,7 +51,7 @@ request_add_lines_GOT		; 100008EC
 	dd	0x004048DC
 exit_GOT		; 100008F0
 	dd	0x00400570
-100008F4             10 00 00 18                             ....       
+100008F4             10 00 00 18                             ....        
 __errno_location_GOT		; 100008F8
 	dd	0x00400560
 100008FC                                     10 00 08 10             ....
@@ -64,14 +64,14 @@ clist_new_GOT		; 10000908
 1000090C                                     10 00 00 20             ... 
 strsep_GOT		; 10000910
 	dd	0x00400530
-10000914             00 00 01 C4                             ....       
+10000914             00 00 01 C4                             ....        
 clist_add_GOT		; 10000918
 	dd	0x00403CBC
 strcspn_GOT		; 1000091C
 	dd	0x00400520
 _fini_GOT		; 10000920
 	dd	0x00409CB0
-10000924             00 40 A8 C0                             .@..       
+10000924             00 40 A8 C0                             .@..        
 clist_close_all_GOT		; 10000928
 	dd	0x00404070
 clist_destroy_all_GOT		; 1000092C
@@ -151,7 +151,7 @@ strcat_GOT		; 100009C0
 	dd	0x00400410
 fprintf_GOT		; 100009C4
 	dd	0x00400400
-100009C8                         10 00 07 E0                     ....   
+100009C8                         10 00 07 E0                     ....    
 slist_new_GOT		; 100009CC
 	dd	0x00407150
 client_copy_request_GOT		; 100009D0
@@ -194,10 +194,10 @@ select_GOT		; 10000A18
 	dd	0x00400380
 socket_GOT		; 10000A1C
 	dd	0x00400370
-10000A20 10 00 0A A8                                     ....           
+10000A20 10 00 0A A8                                     ....            
 handle_log_rotate_GOT		; 10000A24
 	dd	0x0040083C
-10000A28                         10 00 00 1C                     ....   
+10000A28                         10 00 00 1C                     ....    
 strtoul_GOT		; 10000A2C
 	dd	0x00400360
 vsnprintf_GOT		; 10000A30
@@ -208,7 +208,7 @@ request_make_url_GOT		; 10000A38
 	dd	0x004046C4
 tolower_GOT		; 10000A3C
 	dd	0x00400330
-10000A40 10 00 00 24                                     ...$           
+10000A40 10 00 00 24                                     ...$            
 clist_remove_GOT		; 10000A44
 	dd	0x00403DBC
 memcpy_GOT		; 10000A48
@@ -223,7 +223,7 @@ client_prepare_connect_GOT		; 10000A58
 	dd	0x00402028
 properties_parse_command_line_GOT		; 10000A5C
 	dd	0x00405CD0
-10000A60 10 00 00 10                                     ....           
+10000A60 10 00 00 10                                     ....            
 __make_fp_GOT		; 10000A64
 	dd	0x00409630
 __make_dp_GOT		; 10000A68

@@ -457,7 +457,7 @@ l8000060E:
 	fmove.d	(a7)+,fp0
 	unlk	a6
 	rts
-80000622       4E 71                                       Nq           
+80000622       4E 71                                       Nq            
 
 ;; __do_global_ctors_aux: 80000624
 __do_global_ctors_aux proc

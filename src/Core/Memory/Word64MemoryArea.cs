@@ -19,13 +19,15 @@
 #endregion
 
 using Reko.Core.Expressions;
+using Reko.Core.Output;
 using Reko.Core.Types;
 
 namespace Reko.Core.Memory
 {
     public class Word64MemoryArea : MemoryArea
     {
-        public Word64MemoryArea(Address addr, ulong[] words) : base(addr, words.Length, 64)
+        public Word64MemoryArea(Address addr, ulong[] words) :
+            base(addr, words.Length, 64, new MemoryFormatter(PrimitiveType.Word64, 2, 8))
         {
             this.Words = words;
         }
@@ -34,7 +36,12 @@ namespace Reko.Core.Memory
 
         public override EndianImageReader CreateBeReader(Address addr)
         {
-            return new Word64BeReader(this);
+            return new Word64BeReader(this, addr);
+        }
+
+        public override EndianImageReader CreateBeReader(Address addr, long cUnits)
+        {
+            return new Word64BeReader(this, addr, cUnits);
         }
 
         public override EndianImageReader CreateBeReader(long offset)
@@ -58,6 +65,11 @@ namespace Reko.Core.Memory
         }
 
         public override EndianImageReader CreateLeReader(Address addr)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public override EndianImageReader CreateLeReader(Address addr, long cUnits)
         {
             throw new System.NotImplementedException();
         }

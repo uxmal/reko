@@ -30,7 +30,7 @@ l0000402C:
 l00004036:
 	br.w	414C
 0000403A                               30 40 3E 40 00 13           0@>@..
-00004040 0A 0D 5B 25 64 5D 20 00                         ..[%d] .       
+00004040 0A 0D 5B 25 64 5D 20 00                         ..[%d] .        
 
 ;; task_idle: 4048
 task_idle proc
@@ -87,7 +87,7 @@ l40A0:
 	mov.w	sp,r15
 	call	461A
 	jmp	40A0
-40B8                         21 53 30 41                     !S0A   
+40B8                         21 53 30 41                     !S0A    
 
 ;; task_2: 40BC
 task_2 proc
@@ -104,7 +104,7 @@ l40C6:
 	call	461A
 	jmp	40C6
 40DE                                           21 53               !S
-40E0 30 41                                           0A             
+40E0 30 41                                           0A              
 
 ;; task_3: 40E2
 task_3 proc
@@ -124,7 +124,7 @@ l40EC:
 4110 00 46 65 62 20 32 30 20 32 30 30 36 00 0A 0A 4D .Feb 20 2006...M
 4120 53 50 34 33 30 46 31 34 38 20 46 72 65 65 52 54 SP430F148 FreeRT
 4130 4F 53 20 64 65 6D 6F 20 70 72 6F 67 72 61 6D 2E OS demo program.
-4140 20 28 25 73 20 25 73 29 0A 0A 00 00              (%s %s)....   
+4140 20 28 25 73 20 25 73 29 0A 0A 00 00              (%s %s)....    
 
 ;; main: 414C
 ;;   Called from:
@@ -904,7 +904,7 @@ l46F8:
 	mov.w	@sp+,r11
 	ret.w
 46FC                                     49 44 4C 45             IDLE
-4700 00 00                                           ..             
+4700 00 00                                           ..              
 
 ;; vTaskStartScheduler: 4702
 ;;   Called from:
@@ -1341,7 +1341,7 @@ prvIdleTask proc
 l49B6:
 	call	523A
 	jmp	49AC
-49BC                                     30 41                   0A 
+49BC                                     30 41                   0A  
 
 ;; prvInitialiseTCBVariables: 49BE
 ;;   Called from:
@@ -2541,7 +2541,7 @@ xPortStartScheduler proc
 	mov.w	@sp+,r5
 	mov.w	@sp+,r4
 	reti
-00005234             1F 43 30 41                             .C0A       
+00005234             1F 43 30 41                             .C0A        
 
 ;; vPortEndScheduler: 5238
 ;;   Called from:

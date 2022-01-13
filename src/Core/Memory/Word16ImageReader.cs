@@ -155,6 +155,7 @@ namespace Reko.Core.Memory
                 bytes.Add((byte)(w >> 8));
                 bytes.Add((byte) w);
             }
+            Offset = iEnd;
             return bytes.ToArray();
         }
 

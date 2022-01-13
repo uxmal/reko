@@ -38,6 +38,11 @@ namespace Reko.Core.Memory
         {
         }
 
+        public Word16BeImageReader(Word16MemoryArea mem, Address addr, long cUnits)
+            : base(mem, addr - mem.BaseAddress, (addr - mem.BaseAddress) + cUnits)
+        {
+        }
+
         public Word16BeImageReader(Word16MemoryArea mem, long offset, long endOffset) 
             : base(mem, offset, endOffset)
         {

@@ -48,6 +48,16 @@ namespace Reko.Core
         public abstract EndianImageReader CreateImageReader(MemoryArea mem, Address addr);
 
         /// <summary>
+        /// Creates an <see cref="EndianImageReader" /> with the preferred
+        /// endianness of the processor, limited to the specified number of units.
+        /// </summary>
+        /// <param name="memoryArea">Memory area to read</param>
+        /// <param name="addr">Address at which to start</param>
+        /// <param name="cbBytes">Number of memory units after which stop reading.</param>
+        /// <returns>An <seealso cref="EndianImageReader"/> of the appropriate endianness</returns>
+        public abstract EndianImageReader CreateImageReader(MemoryArea memoryArea, Address addr, long cbUnits);
+
+        /// <summary>
         /// Creates an <see cref="EndianImageReader" /> with the preferred 
         /// endianness of the processor, limited to the specified offset
         /// range.
@@ -151,6 +161,11 @@ namespace Reko.Core
                 return mem.CreateLeReader(addr);
             }
 
+            public override EndianImageReader CreateImageReader(MemoryArea mem, Address addr, long cUnits)
+            {
+                return mem.CreateLeReader(addr, cUnits);
+            }
+
             public override EndianImageReader CreateImageReader(MemoryArea mem, long offsetBegin, long offsetEnd)
             {
                 return mem.CreateLeReader(offsetBegin, offsetEnd);
@@ -216,6 +231,11 @@ namespace Reko.Core
             public override EndianImageReader CreateImageReader(MemoryArea mem, Address addr)
             {
                 return mem.CreateBeReader(addr);
+            }
+
+            public override EndianImageReader CreateImageReader(MemoryArea mem, Address addr, long cUnits)
+            {
+                return mem.CreateBeReader(addr, cUnits);
             }
 
             public override EndianImageReader CreateImageReader(MemoryArea mem, long offsetBegin, long offsetEnd)

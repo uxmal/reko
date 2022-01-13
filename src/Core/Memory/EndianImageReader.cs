@@ -50,7 +50,7 @@ namespace Reko.Core.Memory
         ulong ReadUInt64();
 
         bool TryPeekUInt32(int offset, out uint value);
-        bool TryPeekUInt64(int offset, out ulong  value);
+        bool TryPeekUInt64(int offset, out ulong value);
         bool TryRead(PrimitiveType dataType, out Constant value);
         bool TryReadInt16(out short value);
         bool TryReadInt32(out int value);
@@ -67,6 +67,7 @@ namespace Reko.Core.Memory
 	public abstract class EndianByteImageReader : ByteImageReader, EndianImageReader
 	{
 		protected EndianByteImageReader(ByteMemoryArea img, Address addr) : base(img, addr) { }
+		protected EndianByteImageReader(ByteMemoryArea img, Address addr, long cUnits) : base(img, addr, cUnits) { }
 		protected EndianByteImageReader(ByteMemoryArea img, long offsetBegin, long offsetEnd) : base(img, offsetBegin, offsetEnd) { }
 		protected EndianByteImageReader(ByteMemoryArea img, Address addrBegin, Address addrEnd) : base(img, addrBegin, addrEnd) { }
 		protected EndianByteImageReader(ByteMemoryArea img, long off) : base(img, off) { }
@@ -195,6 +196,7 @@ namespace Reko.Core.Memory
         public LeImageReader(byte[] bytes, long offset = 0) : base(bytes, offset) { }
 		public LeImageReader(ByteMemoryArea image, long offset) : base(image, offset) { }
 		public LeImageReader(ByteMemoryArea image, Address addr) : base(image, addr) { }
+		public LeImageReader(ByteMemoryArea image, Address addr, long cUnits) : base(image, addr, cUnits) { }
 		public LeImageReader(ByteMemoryArea image, long offsetBegin, long offsetEnd) : base(image, offsetBegin, offsetEnd) { }
 		public LeImageReader(ByteMemoryArea image, Address addrBegin, Address addrEnd) : base(image, addrBegin, addrEnd) { }
         public LeImageReader(byte[] bytes) : this(bytes, 0) { }
@@ -237,8 +239,7 @@ namespace Reko.Core.Memory
 		public override uint ReadUInt32(int offset) { return PeekLeUInt32(offset); }
 		public override ulong ReadUInt64(int offset) { return PeekLeUInt64(offset); }
 
-		public override bool TryRead(PrimitiveType dataType, out Constant c) { return TryReadLe(dataType, out c); }
-
+		public override bool TryRead(PrimitiveType dataType, out Constant c) => TryReadLe(dataType, out c);
 	}
 
 	/// <summary>
@@ -250,7 +251,8 @@ namespace Reko.Core.Memory
         public BeImageReader(byte[] bytes, long offset) : base(bytes, offset) { }
 		public BeImageReader(ByteMemoryArea image, long offset) : base(image, offset) { }
 		public BeImageReader(ByteMemoryArea image, Address addr) : base(image, addr) { }
-		public BeImageReader(ByteMemoryArea image, long offsetBegin, long offsetEnd) : base(image, offsetBegin, offsetEnd) { }
+		public BeImageReader(ByteMemoryArea image, Address addr, long cUnits) : base(image, addr, cUnits) { }
+        public BeImageReader(ByteMemoryArea image, long offsetBegin, long offsetEnd) : base(image, offsetBegin, offsetEnd) { }
 		public BeImageReader(ByteMemoryArea image, Address addrBegin, Address addrEnd) : base(image, addrBegin, addrEnd) { }
         public BeImageReader(byte[] bytes) : this(bytes, 0) { }
 

@@ -32,7 +32,7 @@ namespace Reko.Core.Output
     /// Dumps low-level information about a binary.
     /// </summary>
 	public class Dumper
-	{
+    {
         private readonly Program program;
 
         public Dumper(Program program)
@@ -157,7 +157,7 @@ namespace Reko.Core.Output
 
         public void DumpData(SegmentMap map, IProcessorArchitecture arch, AddressRange range, Formatter stm)
         {
-            DumpData(map, arch, range.Begin, (long) (range.End - range.Begin), stm);
+            DumpData(map, arch, range.Begin, range.End - range.Begin, stm);
         }
 
         public void DumpData(SegmentMap map, IProcessorArchitecture arch, Address address, long cbBytes, Formatter stm)
@@ -168,87 +168,105 @@ namespace Reko.Core.Output
         }
 
         public void DumpData(
-            IProcessorArchitecture arch, 
-            MemoryArea mem, 
-            Address address, 
-            long cbBytes, 
+            IProcessorArchitecture arch,
+            MemoryArea mem,
+            Address address,
+            long cUnits,
             Formatter stm)
         {
-            const int BytesPerLine = 16;
-            var linAddr = address.ToLinear();
-            ulong cSkip = linAddr - BytesPerLine * (linAddr / BytesPerLine);
-            byte[]? prevLine = null;
-            bool showEllipsis = true;
-            cbBytes = Math.Min(cbBytes, mem.Length - (address - mem.BaseAddress));
-            if (cbBytes <= 0)
+            long offset = address - mem.BaseAddress;
+            if (offset < 0 || cUnits <= 0)
                 return;
-			var rdr = arch.CreateImageReader(mem, address);
-			while (cbBytes > 0)
-            {
-				StringBuilder sb = new StringBuilder(0x12);
-                var bytes = new List<byte>();
-                var sbBytes = new StringBuilder();
-				try 
-				{
-					sbBytes.AppendFormat("{0} ", rdr.Address);
-					for (int i = 0; i < BytesPerLine; ++i)
-					{
-						if (cbBytes > 0 && cSkip == 0)
-						{
-							byte b = rdr.ReadByte();
-                            bytes.Add(b);
-							sbBytes.AppendFormat("{0:X2} ", b);
-							sb.Append(0x20 <= b && b < 0x7F
-								? (char) b
-								: '.');
-							--cbBytes;
-						}
-						else
-						{
-							sbBytes.Append("   ");
-							if (cSkip > 0)
-								sb.Append(' ');
-							--cSkip;
-						}
-					}
-                    var ab = bytes.ToArray();
-                    if (!HaveSameZeroBytes(prevLine, ab))
-                    {
-                        stm.Write(sbBytes.ToString());
-                        stm.WriteLine(sb.ToString());
-                        showEllipsis = true;
-                    }
-                    else
-                    {
-                        if (showEllipsis)
-                        {
-                            stm.WriteLine("; ...");
-                            showEllipsis = false;
-                        }
-                    }
-                    prevLine = ab;
-                } 
-				catch
-				{
-					stm.WriteLine();
-					stm.WriteLine(";;; ...end of image");
-					return;
-				}
-			}
-		}
+			var rdr = arch.CreateImageReader(mem, address, cUnits);
+            var memfmt = mem.Formatter;
+            var output = new MemoryFormatterOutput(stm);
 
-        private bool HaveSameZeroBytes(byte[]? prevLine, byte[] ab)
-        {
-            if (prevLine == null)
-                return false;
-            if (prevLine.Length != ab.Length)
-                return false;
-            for (int i = 0; i < ab.Length;++i)
+            //try
             {
-                if (prevLine[i] != ab[i] || ab[i] != 0)
-                    return false;
+                memfmt.RenderMemory(rdr, program.TextEncoding, output);
             }
-            return true;
+            //catch
+            //{
+            //    stm.WriteLine();
+            //    stm.WriteLine(";;; ...end of image");
+            //}
+        }
+
+        private class MemoryFormatterOutput : IMemoryFormatterOutput
+        {
+            private readonly Formatter stm;
+            private readonly StringBuilder sb = new StringBuilder(0x12);
+            private readonly StringBuilder sbHex = new StringBuilder();
+            private byte[]? prevLine = null;
+            private bool showEllipsis = true;
+
+            public MemoryFormatterOutput(Formatter stm)
+            {
+                this.stm = stm;
+            }
+
+            public void BeginLine()
+            {
+            }
+
+            public void RenderAddress(Address addr)
+            {
+                sbHex.AppendFormat("{0}", addr);
+            }
+
+            public void RenderFillerSpan(int nCells)
+            {
+                for (int i = 0; i < nCells; ++i)
+                    sbHex.Append(' ');
+            }
+
+            public void RenderUnit(string sUnit)
+            {
+                sbHex.Append(' ');
+                sbHex.Append(sUnit);
+            }
+
+            public void RenderUnitsAsText(int prePadding, string sBytes, int postPadding)
+            {
+                sb.Append(' ', prePadding + 1);
+                sb.Append(sBytes);
+                sb.Append(' ', postPadding);
+            }
+
+            public void EndLine(byte [] bytes)
+            {
+                if (!HaveSameZeroBytes(prevLine, bytes))
+                {
+                    stm.Write(sbHex.ToString());
+                    stm.WriteLine(sb.ToString());
+                    showEllipsis = true;
+                }
+                else
+                {
+                    if (showEllipsis)
+                    {
+                        stm.WriteLine("; ...");
+                        showEllipsis = false;
+                    }
+                }
+                prevLine = bytes;
+                sbHex.Clear();
+                sb.Clear();
+            }
+
+            private bool HaveSameZeroBytes(byte[]? prevLine, byte[] ab)
+            {
+                if (prevLine == null)
+                    return false;
+                if (prevLine.Length != ab.Length)
+                    return false;
+                for (int i = 0; i < ab.Length; ++i)
+                {
+                    if (prevLine[i] != ab[i] || ab[i] != 0)
+                        return false;
+                }
+                return true;
+            }
         }
 
         public void DumpAssembler(

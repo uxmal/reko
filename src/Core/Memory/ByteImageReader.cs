@@ -55,6 +55,19 @@ namespace Reko.Core.Memory
             this.bytes = mem.Bytes;
         }
 
+        protected ByteImageReader(ByteMemoryArea mem, Address addr, long cUnits)
+        {
+            this.mem = mem ?? throw new ArgumentNullException(nameof(mem));
+            this.addrStart = addr ?? throw new ArgumentNullException(nameof(addr));
+            long o = addr - mem.BaseAddress;
+            if (o >= mem.Length)
+                throw new ArgumentOutOfRangeException(nameof(addr), $"Address {addr} is outside of image.");
+            this.offStart = o;
+            this.offEnd = Math.Min(o + cUnits, mem.Bytes.Length);
+            this.off = offStart;
+            this.bytes = mem.Bytes;
+        }
+
         protected ByteImageReader(ByteMemoryArea mem, Address addrBegin, Address addrEnd)
         {
             this.mem = mem ?? throw new ArgumentNullException(nameof(mem));
@@ -115,8 +128,8 @@ namespace Reko.Core.Memory
             that.addrStart = this.addrStart;
             return that;
         }
-    
-    public BinaryReader CreateBinaryReader()
+
+        public BinaryReader CreateBinaryReader()
         {
             return new BinaryReader(new MemoryStream(Bytes));
         }
@@ -193,13 +206,19 @@ namespace Reko.Core.Memory
         /// <returns>The read value as a <see cref="Constant"/>.</returns>
         public bool TryReadLe(DataType dataType, out Constant c)
         {
+            var size = dataType.Size;
+            if (size + off > offEnd)
+            {
+                c = default!;
+                return false;
+            }
             bool ret;
             if (mem is null)
                 ret = ByteMemoryArea.TryReadLe(bytes, Offset, dataType, out c);
             else
                 ret = mem.TryReadLe(off, dataType, out c);
             if (ret)
-                off += (uint) dataType.Size;
+                off += size;
             return ret;
         }
 
@@ -210,9 +229,15 @@ namespace Reko.Core.Memory
         /// <returns>The read value as a <see cref="Constant"/>.</returns>
         public bool TryReadBe(DataType dataType, out Constant c)
         {
+            var size = dataType.Size;
+            if (size + off > offEnd)
+            {
+                c = default!;
+                return false;
+            }
             bool ret = mem!.TryReadBe(off, dataType, out c);
             if (ret)
-                off += (uint) dataType.Size;
+                off += size;
             return ret;
         }
 

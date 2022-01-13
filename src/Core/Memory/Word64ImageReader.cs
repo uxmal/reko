@@ -37,6 +37,16 @@ namespace Reko.Core.Memory
         {
         }
 
+        public Word64ImageReader(Word64MemoryArea mem, Address addr)
+            : this(mem, addr - mem.BaseAddress, mem.Words.Length)
+        {
+        }
+
+        public Word64ImageReader(Word64MemoryArea mem, Address addr, long cUnits)
+            : this(mem, addr - mem.BaseAddress, (addr - mem.BaseAddress) + cUnits)
+        {
+        }
+
         public Word64ImageReader(Word64MemoryArea mem, long beginOffset, long endOffset)
         {
             this.mem = mem;

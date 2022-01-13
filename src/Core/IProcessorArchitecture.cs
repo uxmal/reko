@@ -94,6 +94,16 @@ namespace Reko.Core
         EndianImageReader CreateImageReader(MemoryArea memoryArea, Address addr);
 
         /// <summary>
+        /// Creates an <see cref="EndianImageReader" /> with the preferred
+        /// endianness of the processor, limited to the specified number of units.
+        /// </summary>
+        /// <param name="memoryArea">Memory area to read</param>
+        /// <param name="addr">Address at which to start</param>
+        /// <param name="cbBytes">Number of memory units after which stop reading.</param>
+        /// <returns>An <seealso cref="EndianImageReader"/> of the appropriate endianness</returns>
+        EndianImageReader CreateImageReader(MemoryArea memoryArea, Address addr, long cbUnits);
+
+        /// <summary>
         /// Creates an <see cref="EndianImageReader" /> with the preferred 
         /// endianness of the processor, limited to the specified offset
         /// range.
@@ -464,6 +474,7 @@ namespace Reko.Core
         public abstract IEnumerable<MachineInstruction> CreateDisassembler(EndianImageReader imageReader);
         public Frame CreateFrame() { return new Frame(FramePointerType); }
         public EndianImageReader CreateImageReader(MemoryArea mem, Address addr) => this.Endianness.CreateImageReader(mem, addr);
+        public EndianImageReader CreateImageReader(MemoryArea mem, Address addr, long cbUnits) => this.Endianness.CreateImageReader(mem, addr, cbUnits);
         public EndianImageReader CreateImageReader(MemoryArea mem, long offsetBegin, long offsetEnd) => Endianness.CreateImageReader(mem, offsetBegin, offsetEnd);
         public EndianImageReader CreateImageReader(MemoryArea mem, long off) => Endianness.CreateImageReader(mem, off);
         public ImageWriter CreateImageWriter() => Endianness.CreateImageWriter();

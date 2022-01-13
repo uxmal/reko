@@ -19,6 +19,7 @@
 #endregion
 
 using Reko.Core.Expressions;
+using Reko.Core.Output;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
@@ -32,7 +33,7 @@ namespace Reko.Core.Memory
     public class Word16MemoryArea : MemoryArea
     {
         public Word16MemoryArea(Address addrBase, ushort[] words)
-            : base(addrBase, words.Length, 16)
+            : base(addrBase, words.Length, 16, new MemoryFormatter(PrimitiveType.Word16, 8, 2))
         {
             this.Words = words;
         }
@@ -43,18 +44,20 @@ namespace Reko.Core.Memory
         public ushort[] Words { get; }
 
         public override EndianImageReader CreateBeReader(Address addr) => new Word16BeImageReader(this, addr);
+        public override EndianImageReader CreateBeReader(Address addr, long cUnits) => new Word16BeImageReader(this, addr, cUnits);
         public override EndianImageReader CreateBeReader(long offset) => new Word16BeImageReader(this, offset);
         public override EndianImageReader CreateBeReader(long beginOffset, long endOffset) => new Word16BeImageReader(this, beginOffset, endOffset);
         public override BeImageWriter CreateBeWriter(Address addr) => throw new NotImplementedException();
         public override BeImageWriter CreateBeWriter(long offset) => throw new NotImplementedException();
 
+        //$TODO: none of the architectures that use 16-bit memory units are little-endian.
         public override EndianImageReader CreateLeReader(Address addr) => throw new NotImplementedException();
+        public override EndianImageReader CreateLeReader(Address addr, long cUnits) => throw new NotImplementedException();
 
         public override EndianImageReader CreateLeReader(long offset) => throw new NotImplementedException();
         public override EndianImageReader CreateLeReader(long beginOffset, long endOffset) => throw new NotImplementedException();
         public override LeImageWriter CreateLeWriter(Address addr) => throw new NotImplementedException();
         public override LeImageWriter CreateLeWriter(long offset) => throw new NotImplementedException();
-
 
         public uint ReadBeUInt32(long offset)
         {

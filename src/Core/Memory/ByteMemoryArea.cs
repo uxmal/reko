@@ -21,6 +21,7 @@
 using Reko.Core.Expressions;
 using Reko.Core.Lib;
 using Reko.Core.Memory;
+using Reko.Core.Output;
 using Reko.Core.Types;
 using System;
 using System.Diagnostics;
@@ -39,7 +40,7 @@ namespace Reko.Core.Memory
 	public class ByteMemoryArea : MemoryArea
 	{
 		public ByteMemoryArea(Address addrBase, byte [] bytes)
-            : base(addrBase, bytes.Length, 8)
+            : base(addrBase, bytes.Length, 8, new MemoryFormatter(PrimitiveType.Byte, 16, 1))
 		{
 			this.Bytes = bytes;
 		}
@@ -73,6 +74,11 @@ namespace Reko.Core.Memory
             return new BeImageReader(this, addr);
         }
 
+        public override EndianImageReader CreateBeReader(Address addr, long cUnits)
+        {
+            return new BeImageReader(this, addr, cUnits);
+        }
+
         public override EndianImageReader CreateBeReader(long offset)
         {
             return new BeImageReader(this, offset);
@@ -98,6 +104,11 @@ namespace Reko.Core.Memory
             return new LeImageReader(this, addr);
         }
 
+        public override EndianImageReader CreateLeReader(Address addr, long cUnits)
+        {
+            return new LeImageReader(this, addr, cUnits);
+        }
+
         public override EndianImageReader CreateLeReader(long offset)
         {
             return new LeImageReader(this, offset);
@@ -117,6 +128,7 @@ namespace Reko.Core.Memory
         {
             return new LeImageWriter(this, offset);
         }
+
 
         /// <summary>
         /// Adds the delta to the ushort at the given offset.
@@ -207,7 +219,8 @@ namespace Reko.Core.Memory
         public override bool TryReadLe(long imageOffset, DataType type, out Constant c)
         {
             var rc = ReadRelocation(imageOffset);
-            if (rc != null && rc.DataType.Size == type.Size)
+            int size = type.Size;
+            if (rc != null && rc.DataType.Size == size)
             {
                 c = rc;
                 return true;

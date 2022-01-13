@@ -66,6 +66,12 @@ namespace Reko.UnitTests.Core.Output
                 It.IsNotNull<ByteMemoryArea>(),
                 It.IsNotNull<Address>()))
                 .Returns((ByteMemoryArea m, Address a) => new LeImageReader(m, a));
+            arch.Setup(a => a.CreateImageReader(
+                It.IsNotNull<ByteMemoryArea>(),
+                It.IsAny<Address>(),
+                It.IsAny<long>()))
+                .Returns((ByteMemoryArea m, Address a, long b) => new LeImageReader(m, a, b));
+
         }
 
         private void Given_Disassembly(params Mnemonic[] operations)
@@ -221,7 +227,7 @@ __foo@8 proc
             string sExp =
             #region Expected
 @";;; Segment .text (00010000)
-00010000 00 01 02 03                                     ....           
+00010000 00 01 02 03                                     ....            
 l00010004	dd	0x07060504
 00010008                         08 09 0A 0B 0C 0D 0E 0F         ........
 00010010 10 11 12 13 14 15 16 17 18 19 1A 1B 1C 1D 1E 1F ................
@@ -265,7 +271,7 @@ l00010004	dd	0x07060504
             string sExp =
             #region Expected
 @";;; Segment .text (00010000)
-00010000 00 01 02 03                                     ....           
+00010000 00 01 02 03                                     ....            
 l00010004		db	0x04
 	db	0x05	; padding
 	dw	0x0706
@@ -283,9 +289,10 @@ l00010004		db	0x04
             Given_32bit_Program_Zeros(110);
             arch.Setup(a => a.CreateImageReader(
                 It.IsAny<ByteMemoryArea>(),
-                It.IsAny<Address>()))
+                It.IsAny<Address>(),
+                It.IsAny<long>()))
                 .Returns(
-                    (ByteMemoryArea m, Address a) => new LeImageReader(m, a));
+                    (ByteMemoryArea m, Address a, long b) => new LeImageReader(m, a, b));
 
             var addr = program.ImageMap.BaseAddress + 8;
             var item = new ImageMapItem(addr, 90);
@@ -297,11 +304,11 @@ l00010004		db	0x04
             var sExp =
             #region Expected
 @";;; Segment .text (00010000)
-00010000 00 00 00 00 00 00 00 00                         ........       
+00010000 00 00 00 00 00 00 00 00                         ........        
 00010008                         00 00 00 00 00 00 00 00         ........
 00010010 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
 ; ...
-00010060 00 00 00 00 00 00 00 00 00 00 00 00 00 00       .............. 
+00010060 00 00 00 00 00 00 00 00 00 00 00 00 00 00       ..............  
 ";
             #endregion
             AssertOutput(sExp, sw);
@@ -417,7 +424,110 @@ fn00010020 proc
 ";
             #endregion
             AssertOutput(sExp, sw);
+        }
 
+        [Test]
+        public void Dumper_AlmostFullSpan()
+        {
+            Given_32bit_Program_Zeros(110);
+            arch.Setup(a => a.CreateImageReader(
+                It.IsAny<ByteMemoryArea>(),
+                It.IsAny<Address>(),
+                It.IsAny<long>()))
+                .Returns(
+                    (ByteMemoryArea m, Address a, long b) => new LeImageReader(m, a, b));
+
+            var dmp = new Dumper(program);
+            var sw = new StringWriter();
+            dmp.DumpData(
+                program.SegmentMap,
+                program.Architecture,
+                program.ImageMap.BaseAddress + 1,
+                14,
+                new TextFormatter(sw));
+
+            var sExp =
+            #region Expected
+@"00010001    00 00 00 00 00 00 00 00 00 00 00 00 00 00     .............. 
+";
+            #endregion
+            AssertOutput(sExp, sw);
+        }
+
+        [Test]
+        public void Dumper_Word16_Units()
+        {
+            program = new Program();
+            var arch = new Mock<IProcessorArchitecture>();
+            arch.Setup(a => a.CreateImageReader(
+                It.IsAny<ByteMemoryArea>(),
+                It.IsAny<Address>(),
+                It.IsAny<long>()))
+                .Returns(
+                    (ByteMemoryArea m, Address a, long b) => new LeImageReader(m, a, b));
+
+            var mem = new ByteMemoryArea(Address.Ptr32(0x0001_0000), new byte[]
+            {
+                0x00, 0x00, 0x01, 0x02,  0x03, 0x04, 0x05, 0x06,
+                0x07, 0x08, 0xFF, 0xFF,  0x48, 0x69, 0x42, 0x49,
+                0x00, 0x00, 0x01, 0x02,  0x03, 0x04, 0x05, 0x06,
+                0x07, 0x08, 0xFF, 0xFF,  0x48, 0x69, 0x42, 0x41
+            });
+            mem.Formatter = new MemoryFormatter(PrimitiveType.Word16, 16, 1);
+            var dmp = new Dumper(program);
+            var sw = new StringWriter();
+            dmp.DumpData(
+                arch.Object,
+                mem,
+                mem.BaseAddress + 2,
+                0x2C,
+                new TextFormatter(sw));
+
+            var sExp =
+            #region Expected
+@"00010002      0201 0403 0605 0807 FFFF 6948 4942   ..........HiBI
+00010010 0000 0201 0403 0605 0807 FFFF 6948 4142 ............HiBA
+";
+            #endregion
+            AssertOutput(sExp, sw);
+        }
+
+
+        [Test]
+        public void Dumper_Word16MemoryArea()
+        {
+            program = new Program();
+            var arch = new Mock<IProcessorArchitecture>();
+            arch.Setup(a => a.CreateImageReader(
+                It.IsAny<MemoryArea>(),
+                It.IsAny<Address>(),
+                It.IsAny<long>()))
+                .Returns(
+                    (MemoryArea m, Address a, long b) => m.CreateBeReader(a, b));
+
+            var mem = new Word16MemoryArea(Address.Ptr16(0x1000), new ushort[]
+            {
+                0x0000, 0x0102,  0x0304, 0x0506,
+                0x0708, 0xFFFF,  0x4869, 0x4249,
+                0x0000, 0x0102,  0x0304, 0x0506,
+                0x0708, 0xFFFF,  0x4869, 0x4241
+            });
+            var dmp = new Dumper(program);
+            var sw = new StringWriter();
+            dmp.DumpData(
+                arch.Object,
+                mem,
+                mem.BaseAddress + 1,
+                0x0D,
+                new TextFormatter(sw));
+
+            var sExp =
+            #region Expected
+@"1001      0102 0304 0506 0708 FFFF 4869 4249   ..........HiBI
+1008 0000 0102 0304 0506 0708 FFFF           ............    
+";
+            #endregion
+            AssertOutput(sExp, sw);
         }
     }
 }

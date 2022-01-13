@@ -19,6 +19,7 @@
 #endregion
 
 using Reko.Core.Expressions;
+using Reko.Core.Output;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
@@ -38,12 +39,13 @@ namespace Reko.Core.Memory
     /// </remarks>
     public abstract class MemoryArea
     {
-        protected MemoryArea(Address addrBase, int length, int cellBitSize)
+        protected MemoryArea(Address addrBase, int length, int cellBitSize, MemoryFormatter formatter)
         {
             this.BaseAddress = addrBase;
             this.Length = length;
             this.CellBitSize = cellBitSize;
             this.Relocations = new RelocationDictionary();
+            this.Formatter = formatter;
         }
 
         /// <summary>
@@ -61,10 +63,17 @@ namespace Reko.Core.Memory
         /// </summary>
         public long Length { get; }
 
+        /// <summary>
+        /// Formatter to use when rendering this memory area.
+        /// </summary>
+        public MemoryFormatter Formatter { get; set; }
+
+
         public RelocationDictionary Relocations { get; private set; }
 
 
         public abstract EndianImageReader CreateBeReader(Address addr);
+        public abstract EndianImageReader CreateBeReader(Address addr, long cUnits);
         public abstract EndianImageReader CreateBeReader(long offset);
         public abstract EndianImageReader CreateBeReader(long offsetBegin, long offsetEnd);
         public abstract BeImageWriter CreateBeWriter(Address addr);
@@ -72,6 +81,7 @@ namespace Reko.Core.Memory
 
 
         public abstract EndianImageReader CreateLeReader(Address addr);
+        public abstract EndianImageReader CreateLeReader(Address addr, long cUnits);
         public abstract EndianImageReader CreateLeReader(long offset);
         public abstract EndianImageReader CreateLeReader(long offsetBegin, long offsetEnd);
         public abstract LeImageWriter CreateLeWriter(Address addr);

@@ -115,7 +115,7 @@ xNextFreeByte		; 200007F0
 	dd	0x00000000
 ucOutputValue		; 200007F4
 	db	0x00
-200007F5                00 00 00                              ...       
+200007F5                00 00 00                              ...        
 xFlashQueue		; 200007F8
 	dd	0x00000000
 pxCurrentCoRoutine		; 200007FC

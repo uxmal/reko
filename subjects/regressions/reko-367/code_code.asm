@@ -23,7 +23,7 @@ fn80000000 proc
 80000100 4E 71 4E 71 4E 71 4E 71 4E 71 4E 71 4E 71 4E 71 NqNqNqNqNqNqNqNq
 80000110 4E 71 4E 71 4E 71 4E 71 4E 71 4E 71 4E 71 4E 71 NqNqNqNqNqNqNqNq
 80000120 4E 71 4E 71 4E 71 4E 71 4E 71 4E 71 4E 71 4E 71 NqNqNqNqNqNqNqNq
-80000130 4E 71                                           Nq             
+80000130 4E 71                                           Nq              
 
 ;; fn80000132: 80000132
 ;;   Called from:

@@ -359,7 +359,7 @@
 00002660 00 00 07 29 00 00 00 00 00 01 52 40 00 00 04 29 ...)......R@...)
 00002670 00 00 00 00 00 01 52 44 00 00 01 29 00 00 00 00 ......RD...)....
 00002680 EB CD 40 40 48 26 1E 26 C0 48 D7 03 FF FE D6 96 ..@@H&.&.H......
-00002690 C3 4C E0 A0 73 BF E3 CD 80 40 00 00             .L..s....@..   
+00002690 C3 4C E0 A0 73 BF E3 CD 80 40 00 00             .L..s....@..    
 
 ;; _start: 0000269C
 _start proc
@@ -411,7 +411,7 @@ l000026EA:
 	mov	r9,00000001
 	st.b	r8[0],r9
 	popm	r4-r7,pc
-000026F4             FF FE D6 D4                             ....       
+000026F4             FF FE D6 D4                             ....        
 
 ;; fn000026F8: 000026F8
 fn000026F8 proc
@@ -433,7 +433,7 @@ l00002710:
 
 l00002712:
 	popm	r4-r7,pc
-00002714             FF FE D7 0C                             ....       
+00002714             FF FE D7 0C                             ....        
 
 ;; fn00002718: 00002718
 ;;   Called from:
@@ -495,7 +495,7 @@ l0000275C:
 000027A0 5F 0C D8 02 D4 21 48 56 1E 26 6C 29 72 08 58 08 _....!HV.&l)r.X.
 000027B0 C0 21 93 0C D8 22 D7 03 FF FE D7 B8 D4 21 48 66 .!...".......!Hf
 000027C0 1E 26 6C 29 72 08 58 08 C0 41 72 18 2F F8 93 18 .&l)r.X..Ar./...
-000027D0 D8 22 D7 03 FF FE D7 D0                         ."......       
+000027D0 D8 22 D7 03 FF FE D7 D0                         ."......        
 
 ;; fn000027D8: 000027D8
 ;;   Called from:
@@ -524,7 +524,7 @@ l000027F0:
 
 l000027F4:
 	popm	r4-r7,pc
-000027F6                   D7 03 FF FE D7 EC                   ......   
+000027F6                   D7 03 FF FE D7 EC                   ......    
 
 ;; fn000027FC: 000027FC
 fn000027FC proc
@@ -550,7 +550,7 @@ l00002818:
 
 l0000281E:
 	popm	r0-r3,r4-r7,pc
-00002820 FF FE D8 10                                     ....           
+00002820 FF FE D8 10                                     ....            
 
 ;; fn00002824: 00002824
 fn00002824 proc
@@ -576,7 +576,7 @@ l00002840:
 
 l00002846:
 	popm	r0-r3,r4-r7,pc
-00002848                         FF FE D8 38                     ...8   
+00002848                         FF FE D8 38                     ...8    
 
 ;; fn0000284C: 0000284C
 fn0000284C proc
@@ -602,7 +602,7 @@ l00002868:
 
 l0000286E:
 	popm	r0-r3,r4-r7,pc
-00002870 FF FE D8 60                                     ...`           
+00002870 FF FE D8 60                                     ...`            
 
 ;; fn00002874: 00002874
 fn00002874 proc
@@ -665,7 +665,7 @@ fn0000289E proc
 00002A10 1E 26 6C 6A C4 5F D8 22 FF FE DA 20 D4 21 48 56 .&lj._."... .!HV
 00002A20 1E 26 16 98 FE CA F0 38 18 9B 10 9C C3 9F D8 22 .&.....8......."
 00002A30 FF FE DA 30 D4 21 48 56 1E 26 16 98 6C 6A 18 9B ...0.!HV.&..lj..
-00002A40 10 9C C2 EF D8 22 D7 03 FF FE DA 48             .....".....H   
+00002A40 10 9C C2 EF D8 22 D7 03 FF FE DA 48             .....".....H    
 
 ;; fn00002A4C: 00002A4C
 ;;   Called from:
@@ -863,7 +863,7 @@ l00002B40:
 	st.w	--sp,r8
 	mcall	r6[104]
 	rjmp	00002CB2
-00002B54             FF FE DB 44                             ...D       
+00002B54             FF FE DB 44                             ...D        
 
 l00002B58:
 	ld.w	r12,r6[1300]
@@ -1031,7 +1031,7 @@ l00002CE2:
 	st.w	r9[-4],r8
 	st.w	r9[64],r8
 	popm	r4-r7,pc
-00002D04             FF FE DC D0                             ....       
+00002D04             FF FE DC D0                             ....        
 
 ;; fn00002D08: 00002D08
 fn00002D08 proc
@@ -1046,7 +1046,7 @@ fn00002D08 proc
 	mov	r12,r5
 	mcall	r6[12]
 	popm	r4-r7,pc
-00002D24             FF FE DD 1C                             ....       
+00002D24             FF FE DD 1C                             ....        
 
 ;; fn00002D28: 00002D28
 fn00002D28 proc
@@ -1055,7 +1055,7 @@ fn00002D28 proc
 	rsub	r6,pc
 	mcall	r6[12]
 	popm	r4-r7,pc
-00002D34             FF FE DD 3C                             ...<       
+00002D34             FF FE DD 3C                             ...<        
 
 ;; fn00002D38: 00002D38
 ;;   Called from:
@@ -1137,7 +1137,7 @@ l00002DA8:
 l00002DAC:
 	popm	r4-r7,pc
 00002DAE                                           D7 03               ..
-00002DB0 FF FE DD 4C                                     ...L           
+00002DB0 FF FE DD 4C                                     ...L            
 
 ;; fn00002DB4: 00002DB4
 ;;   Called from:
@@ -1257,7 +1257,7 @@ l00002E6C:
 
 l00002E72:
 	popm	r0-r3,r4-r7,pc
-00002E74             FF FE DE 04                             ....       
+00002E74             FF FE DE 04                             ....        
 
 ;; fn00002E78: 00002E78
 fn00002E78 proc
@@ -1495,7 +1495,7 @@ l00002FC0:
 l00002FCE:
 	add	r8,lr,r10<<3
 	rjmp	00003014
-00002FD4             FF FE DE 8C                             ....       
+00002FD4             FF FE DE 8C                             ....        
 
 l00002FD8:
 	mov	r8,00000030
@@ -1635,7 +1635,7 @@ fn00003094 proc
 	st.w	r8[80],r12
 	st.w	r12[4],r9
 	popm	r4-r7,pc
-000030B0 FF FE E0 A8                                     ....           
+000030B0 FF FE E0 A8                                     ....            
 
 ;; fn000030B4: 000030B4
 ;;   Called from:
@@ -1657,7 +1657,7 @@ l000030C8:
 	mul	r12,r11,r12
 	rcall	0000B95C
 	popm	r4-r7,pc
-000030D2       D7 03 FF FE E0 C8                           ......       
+000030D2       D7 03 FF FE E0 C8                           ......        
 
 ;; fn000030D8: 000030D8
 ;;   Called from:
@@ -1752,7 +1752,7 @@ l00003152:
 	st.b	r5[8],r3
 	st.w	r5[12],r9
 	popm	r0-r3,r4-r7,pc
-00003164             FF FE E1 34                             ...4       
+00003164             FF FE E1 34                             ...4        
 
 ;; fn00003168: 00003168
 ;;   Called from:
@@ -1781,7 +1781,7 @@ fn00003168 proc
 	rcall	000027D8
 	sub	sp,FFFFFFFC
 	popm	r0-r3,r4-r7,pc
-00003194             FF FE E1 7C                             ...|       
+00003194             FF FE E1 7C                             ...|        
 
 ;; fn00003198: 00003198
 ;;   Called from:
@@ -1878,7 +1878,7 @@ l00003224:
 	rcall	0000B904
 	popm	r4-r7,pc
 0000322E                                           D7 03               ..
-00003230 FF FE E2 24                                     ...$           
+00003230 FF FE E2 24                                     ...$            
 
 ;; fn00003234: 00003234
 fn00003234 proc
@@ -1960,7 +1960,7 @@ l000032EC:
 l00003302:
 	sub	sp,FFFFFFF4
 	popm	r4-r7,pc
-00003306                   D7 03 FF FE E2 E6                   ......   
+00003306                   D7 03 FF FE E2 E6                   ......    
 
 ;; fn0000330C: 0000330C
 ;;   Called from:
@@ -1988,7 +1988,7 @@ l0000332A:
 	mov	r11,r7
 	rcall	000032D0
 	popm	r4-r7,pc
-00003330 FF FE E3 20                                     ...            
+00003330 FF FE E3 20                                     ...             
 
 ;; fn00003334: 00003334
 ;;   Called from:
@@ -2636,7 +2636,7 @@ l00003794:
 l000037A2:
 	mov	r12,00000000
 	rjmp	000037AE
-000037A6                   D7 03                               ..       
+000037A6                   D7 03                               ..        
 
 l000037A8:
 	mov	r12,r5
@@ -2828,7 +2828,7 @@ l000038F4:
 	mov	r11,r1
 	sub	sp,FFFFFD50
 	popm	r0-r3,r4-r7,pc
-00003902       D7 03                                       ..           
+00003902       D7 03                                       ..            
 
 ;; fn00003904: 00003904
 ;;   Called from:
@@ -2866,7 +2866,7 @@ l0000392E:
 	mov	r11,r7
 	rcall	00003198
 	popm	r4-r7,pc
-00003938                         FF FE E9 18                     ....   
+00003938                         FF FE E9 18                     ....    
 
 ;; fn0000393C: 0000393C
 ;;   Called from:
@@ -2955,7 +2955,7 @@ l000039E4:
 	popm	r4-r7,pc
 000039E6                   D7 03 FF FE E9 50 D4 31 48 76       .....P.1Hv
 000039F0 1E 26 18 93 16 95 F0 16 00 07 30 08 99 08 0A 9B .&........0.....
-00003A00 06 9C F0 16 00 7D D8 32 FF FE EA 00             .....}.2....   
+00003A00 06 9C F0 16 00 7D D8 32 FF FE EA 00             .....}.2....    
 
 ;; fn00003A0C: 00003A0C
 fn00003A0C proc
@@ -2969,7 +2969,7 @@ fn00003A0C proc
 00003A1C                                     FF FE EA 20             ... 
 00003A20 D4 21 48 46 1E 26 16 98 18 9B 10 9C CF 0F D8 22 .!HF.&........."
 00003A30 FF FE EA 34 D4 21 48 36 1E 26 CE 9F D8 22 D7 03 ...4.!H6.&..."..
-00003A40 FF FE EA 48                                     ...H           
+00003A40 FF FE EA 48                                     ...H            
 
 ;; fn00003A44: 00003A44
 ;;   Called from:
@@ -3116,7 +3116,7 @@ l00003B18:
 
 l00003B24:
 	rjmp	00003AB8
-00003B26                   D7 03 FF FE EA 58                   .....X   
+00003B26                   D7 03 FF FE EA 58                   .....X    
 
 ;; fn00003B2C: 00003B2C
 ;;   Called from:
@@ -3182,7 +3182,7 @@ l00003B74:
 l00003B82:
 	rcall	00003B2C
 	popm	r4-r7,pc
-00003B86                   D7 03 FF FE EB 74                   .....t   
+00003B86                   D7 03 FF FE EB 74                   .....t    
 
 ;; fn00003B8C: 00003B8C
 ;;   Called from:
@@ -3197,7 +3197,7 @@ fn00003B8C proc
 	sub	r12,r5,FFFFFFF8
 	rcall	00003B2C
 	popm	r4-r7,pc
-00003BA0 FF FE EB A0                                     ....           
+00003BA0 FF FE EB A0                                     ....            
 
 ;; fn00003BA4: 00003BA4
 ;;   Called from:
@@ -3323,7 +3323,7 @@ l00003BC4:
 00004150 F3 57 D8 22 FF FE F1 30 D4 21 48 C6 1E 26 77 A8 .W."...0.!H..&w.
 00004160 79 AA 58 98 5F 09 58 38 5F 08 12 48 58 3A C0 30 y.X._.X8_..HX:.0
 00004170 58 9A C0 41 58 08 C0 51 DC 2A 58 08 C0 20 DA 2A X..AX..Q.*X.. .*
-00004180 6C 6A FE B0 F3 3D D8 22 FF FE F1 6C             lj...=."...l   
+00004180 6C 6A FE B0 F3 3D D8 22 FF FE F1 6C             lj...=."...l    
 
 ;; fn0000418C: 0000418C
 ;;   Called from:
@@ -3725,7 +3725,7 @@ l0000444C:
 	mov	r12,r5
 	sub	sp,FFFFFD70
 	popm	r0-r3,r4-r7,pc
-00004454             FF FE F3 8C                             ....       
+00004454             FF FE F3 8C                             ....        
 
 ;; fn00004458: 00004458
 ;;   Called from:
@@ -4145,7 +4145,7 @@ l000046F4:
 	mov	r3,r12
 	add	r2,r1,r12
 	rjmp	00004724
-00004708                         FF FE F6 08                     ....   
+00004708                         FF FE F6 08                     ....    
 
 l0000470C:
 	ld.w	r10,r5[0]
@@ -4495,7 +4495,7 @@ l0000495C:
 	mov	r12,r3
 	sub	sp,FFFFFD74
 	popm	r0-r3,r4-r7,pc
-00004964             FF FE F8 7C                             ...|       
+00004964             FF FE F8 7C                             ...|        
 
 ;; fn00004968: 00004968
 ;;   Called from:
@@ -5177,7 +5177,7 @@ l00004E14:
 l00004E20:
 	ld.w	r12,r6[140]
 	rjmp	00004EBE
-00004E26                   D7 03                               ..       
+00004E26                   D7 03                               ..        
 
 l00004E28:
 	ld.w	r8,r7[24]
@@ -5313,7 +5313,7 @@ l00004F1E:
 l00004F40:
 	mov	r12,00000000
 	rjmp	00004F5C
-00004F44             FF 0F 3D 54                             ..=T       
+00004F44             FF 0F 3D 54                             ..=T        
 
 l00004F48:
 	ld.d	r9:r8,r5[488]
@@ -5453,7 +5453,7 @@ l0000502C:
 l0000505E:
 	ld.w	r11,r7[-20]
 	rjmp	00005066
-00005062       D7 03                                       ..           
+00005062       D7 03                                       ..            
 
 l00005064:
 	ld.w	r11,r7[24]
@@ -5558,7 +5558,7 @@ l0000510A:
 l00005114:
 	sub	sp,FFFFEB0C
 	popm	r0-r3,r4-r7,pc
-0000511A                               D7 03                       ..   
+0000511A                               D7 03                       ..    
 
 ;; fn0000511C: 0000511C
 fn0000511C proc
@@ -5653,7 +5653,7 @@ l000051BC:
 	mcall	r6[232]
 	sub	sp,FFFFFFFC
 	br	0000556E
-000051E2       D7 03 FF FF 01 34                           .....4       
+000051E2       D7 03 FF FF 01 34                           .....4        
 
 l000051E8:
 	ld.w	r8,r7[556]
@@ -5868,7 +5868,7 @@ l0000535A:
 	st.b	r9++,r8
 	st.w	r11[16],r9
 	rjmp	0000536A
-00005362       D7 03                                       ..           
+00005362       D7 03                                       ..            
 
 l00005364:
 	mov	r12,0000000A
@@ -6424,7 +6424,7 @@ l0000556E:
 00006690 00 00 00 01 00 00 00 02 00 00 00 0D 00 00 00 03 ................
 000066A0 00 00 00 0F 00 00 00 1D 00 00 00 1B 00 00 00 1A ................
 000066B0 00 00 00 18 00 00 00 19 64 65 76 5F 69 6E 6F 5F ........dev_ino_
-000066C0 70 6F 70 00 6D 61 69 6E 00 00 D7 03             pop.main....   
+000066C0 70 6F 70 00 6D 61 69 6E 00 00 D7 03             pop.main....    
 
 ;; fn000066CC: 000066CC
 ;;   Called from:
@@ -6519,7 +6519,7 @@ l00006752:
 	mov	r12,r3
 	popm	r0-r3,r4-r7,pc
 00006756                   D7 03 FF FF 16 E4 7F FF FF FF       ..........
-00006760 3F FF FF FF 7F FF FF FE                         ?.......       
+00006760 3F FF FF FF 7F FF FF FE                         ?.......        
 
 ;; fn00006768: 00006768
 ;;   Called from:
@@ -6607,7 +6607,7 @@ l000067CC:
 l000067D4:
 	mov	r12,r5
 	popm	r4-r7,pc
-000067D8                         FF FF 17 7C                     ...|   
+000067D8                         FF FF 17 7C                     ...|    
 
 ;; fn000067DC: 000067DC
 ;;   Called from:
@@ -6644,7 +6644,7 @@ l00006808:
 l0000680C:
 	mov	r12,r7
 	popm	r4-r7,pc
-00006810 FF FF 17 F0                                     ....           
+00006810 FF FF 17 F0                                     ....            
 
 ;; fn00006814: 00006814
 ;;   Called from:
@@ -6920,7 +6920,7 @@ l00006990:
 	lddsp	r12,sp[8]
 	sub	sp,FFFFFFEC
 	popm	r0-r3,r4-r7,pc
-00006996                   D7 03                               ..       
+00006996                   D7 03                               ..        
 
 ;; fn00006998: 00006998
 ;;   Called from:
@@ -7095,7 +7095,7 @@ l00006A9E:
 	mov	r12,r4
 	sub	sp,FFFFFFF4
 	popm	r0-r3,r4-r7,pc
-00006AA4             FF FF 19 AE                             ....       
+00006AA4             FF FF 19 AE                             ....        
 
 ;; fn00006AA8: 00006AA8
 ;;   Called from:
@@ -7117,7 +7117,7 @@ fn00006AA8 proc
 	mov	r12,r3
 	rcall	00006998
 	popm	r0-r3,r4-r7,pc
-00006AC0 FF FF 1A BC                                     ....           
+00006AC0 FF FF 1A BC                                     ....            
 
 ;; fn00006AC4: 00006AC4
 fn00006AC4 proc
@@ -7166,7 +7166,7 @@ l00006B14:
 00006B20 D4 21 48 E6 1E 26 EC FC 03 88 EC F8 03 84 1A D8 .!H..&..........
 00006B30 F0 16 00 16 EC F8 03 80 EC FC 03 7C 1A D8 EC F8 ...........|....
 00006B40 03 78 1A D8 F0 16 00 16 6C A8 EC FC 03 74 70 0B .x......l....tp.
-00006B50 F0 16 00 05 2F DD D8 22 FF FF 1B 34             ..../.."...4   
+00006B50 F0 16 00 05 2F DD D8 22 FF FF 1B 34             ..../.."...4    
 
 ;; fn00006B5C: 00006B5C
 ;;   Called from:
@@ -7235,7 +7235,7 @@ l00006BAA:
 l00006BD2:
 	sub	r8,pc,FFFFFFF6
 	add	pc,r8,r4<<2
-00006BDA                               D7 03                       ..   
+00006BDA                               D7 03                       ..    
 
 l00006BDC:
 	br	00006C04
@@ -7324,7 +7324,7 @@ l00006C56:
 	rcall	0000B818
 	sub	sp,FFFFFFF8
 	popm	r4-r7,pc
-00006C60 FF FF 1B 72                                     ...r           
+00006C60 FF FF 1B 72                                     ...r            
 
 ;; fn00006C64: 00006C64
 fn00006C64 proc
@@ -7340,7 +7340,7 @@ fn00006C64 proc
 00006C78                         FF FF 1C 7A 43 6F 70 79         ...zCopy
 00006C80 72 69 67 68 74 20 25 73 20 25 64 20 46 72 65 65 right %s %d Free
 00006C90 20 53 6F 66 74 77 61 72 65 20 46 6F 75 6E 64 61  Software Founda
-00006CA0 74 69 6F 6E 2C 20 49 6E 63 2E 00 00             tion, Inc...   
+00006CA0 74 69 6F 6E 2C 20 49 6E 63 2E 00 00             tion, Inc...    
 
 ;; fn00006CAC: 00006CAC
 ;;   Called from:
@@ -7378,7 +7378,7 @@ l00006CD0:
 00006CE0 FF FF 1C E4 D4 31 48 B6 1E 26 18 92 12 93 16 95 .....1H..&......
 00006CF0 14 97 C0 68 F0 16 00 2A 2F C5 58 0C C0 80 6A 04 ...h...*/.X...j.
 00006D00 0E 9B 06 9A 04 9C 06 07 58 04 CF 51 08 9C D8 32 ........X..Q...2
-00006D10 FF FF 1C F8                                     ....           
+00006D10 FF FF 1C F8                                     ....            
 
 ;; fn00006D14: 00006D14
 ;;   Called from:
@@ -7456,7 +7456,7 @@ l00006D90:
 	mov	r12,0000000A
 	mcall	r6[52]
 	popm	r0-r3,r4-r7,pc
-00006D98                         FF FF 1D 28                     ...(   
+00006D98                         FF FF 1D 28                     ...(    
 
 ;; fn00006D9C: 00006D9C
 ;;   Called from:
@@ -7488,7 +7488,7 @@ l00006DB6:
 	mcall	r6[68]
 	sub	sp,FFFFFFF8
 	popm	r0-r3,r4-r7,pc
-00006DD8                         FF FF 1D B0                     ....   
+00006DD8                         FF FF 1D B0                     ....    
 
 ;; fn00006DDC: 00006DDC
 ;;   Called from:
@@ -7573,7 +7573,7 @@ l00006E50:
 	mov	r12,r5
 	sub	sp,FFFFFFF4
 	popm	r0-r3,r4-r7,pc
-00006E56                   D7 03 FF FF 1D F2                   ......   
+00006E56                   D7 03 FF FF 1D F2                   ......    
 
 ;; fn00006E5C: 00006E5C
 fn00006E5C proc
@@ -7607,7 +7607,7 @@ l00006E7A:
 
 l00006E8E:
 	popm	r0-r3,r4-r7,pc
-00006E90 FF FF 1E 70                                     ...p           
+00006E90 FF FF 1E 70                                     ...p            
 
 ;; fn00006E94: 00006E94
 ;;   Called from:
@@ -7664,7 +7664,7 @@ l00006EC6:
 l00006ECC:
 	popm	r4-r7,pc
 00006ECE                                           D7 03               ..
-00006ED0 FF FF 1E A8                                     ....           
+00006ED0 FF FF 1E A8                                     ....            
 
 ;; fn00006ED4: 00006ED4
 ;;   Called from:
@@ -7711,7 +7711,7 @@ l00006EFA:
 00006FC0 2F ED C1 28 F0 16 00 07 1A D7 EC FA 03 14 78 0B /..(..........x.
 00006FD0 0A 9C F0 16 00 11 2F FD C0 78 EC F8 00 94 70 0C ....../..x....p.
 00006FE0 E0 A0 2E A4 C0 60 EC F8 00 C0 70 0C F0 16 00 68 .....`....p....h
-00006FF0 D8 22 D7 03 FF FF 1F 84                         ."......       
+00006FF0 D8 22 D7 03 FF FF 1F 84                         ."......        
 
 ;; fn00006FF8: 00006FF8
 ;;   Called from:
@@ -8010,7 +8010,7 @@ l000071CA:
 	mov	r12,r2
 	sub	sp,FFFFFFFC
 	popm	r0-r3,r4-r7,pc
-000071D0 FF FF 21 56                                     ..!V           
+000071D0 FF FF 21 56                                     ..!V            
 
 ;; fn000071D4: 000071D4
 ;;   Called from:
@@ -8027,7 +8027,7 @@ l000071DE:
 
 l000071E2:
 	popm	r4-r7,pc
-000071E4             FF FF 21 E8                             ..!.       
+000071E4             FF FF 21 E8                             ..!.        
 
 ;; fn000071E8: 000071E8
 ;;   Called from:
@@ -8149,7 +8149,7 @@ l00007288:
 l0000728C:
 	mov	r12,r4
 	popm	r0-r3,r4-r7,pc
-00007290 FF FF 21 FC                                     ..!.           
+00007290 FF FF 21 FC                                     ..!.            
 
 ;; fn00007294: 00007294
 ;;   Called from:
@@ -8283,7 +8283,7 @@ l0000734C:
 l00007350:
 	mov	r12,r4
 	popm	r0-r3,r4-r7,pc
-00007354             FF FF 22 A8                             ..".       
+00007354             FF FF 22 A8                             ..".        
 
 ;; fn00007358: 00007358
 ;;   Called from:
@@ -8493,7 +8493,7 @@ l000074C4:
 	ld.w	r9,r7[-8]
 	rjmp	000074E2
 000074CA                               D7 03 FF FF 23 70           ....#p
-000074D0 3F FF FF FF                                     ?...           
+000074D0 3F FF FF FF                                     ?...            
 
 l000074D4:
 	ld.w	r9,r7[-32]
@@ -9092,7 +9092,7 @@ l000078AA:
 	mov	r2,r12
 	rjmp	000078D2
 000078AE                                           D7 03               ..
-000078B0 FF FF 27 6C                                     ..'l           
+000078B0 FF FF 27 6C                                     ..'l            
 
 l000078B4:
 	cp.w	r5,00000000
@@ -10299,7 +10299,7 @@ l0000803A:
 l00008044:
 	st.w	r7[-4],r8
 	rjmp	00007F8A
-0000804A                               D7 03                       ..   
+0000804A                               D7 03                       ..    
 
 l0000804C:
 	ld.w	r9,r7[-24]
@@ -10457,7 +10457,7 @@ l0000813A:
 	ld.w	sp,r7[-28]
 	sub	sp,FFFFFFE0
 	popm	r0-r3,r4-r7,pc
-00008142       D7 03                                       ..           
+00008142       D7 03                                       ..            
 
 ;; fn00008144: 00008144
 ;;   Called from:
@@ -10682,7 +10682,7 @@ l000082A0:
 	ld.ub	r7,r5++
 	mov	r3,r5
 	rjmp	000082EC
-000082A6                   D7 03 FF FF 31 5C                   ....1\   
+000082A6                   D7 03 FF FF 31 5C                   ....1\    
 
 l000082AC:
 	ld.ub	r9,r3[0]
@@ -11673,7 +11673,7 @@ l000088FC:
 	mov	r12,r3
 	mcall	r6[12]
 	rjmp	0000892E
-00008904             FF FF 37 D8 3F FF FF FF                 ..7.?...   
+00008904             FF FF 37 D8 3F FF FF FF                 ..7.?...    
 
 l0000890C:
 	ld.w	r5,r7[-16]
@@ -11695,7 +11695,7 @@ l0000892E:
 	popm	r0-r3,r4-r7,pc
 00008936                   D7 03 65 78 74 5F 77 6D 61 74       ..ext_wmat
 00008940 63 68 00 00 65 78 74 5F 6D 61 74 63 68 00 00 00 ch..ext_match...
-00008950 67 6E 75 5F 66 6E 6D 61 74 63 68 00             gnu_fnmatch.   
+00008950 67 6E 75 5F 66 6E 6D 61 74 63 68 00             gnu_fnmatch.    
 
 ;; fn0000895C: 0000895C
 ;;   Called from:
@@ -11725,7 +11725,7 @@ l00008970:
 l00008984:
 	sub	sp,FFFFFFF8
 	popm	r4-r7,pc
-00008988                         FF FF 39 72                     ..9r   
+00008988                         FF FF 39 72                     ..9r    
 
 ;; fn0000898C: 0000898C
 ;;   Called from:
@@ -11769,7 +11769,7 @@ fn0000898C proc
 00008A30 E1 C4 00 0F E9 C8 00 0F FA E8 00 20 F4 E9 00 20 ........... ... 
 00008A40 40 A8 95 A8 2F 5D D8 32 FF FF 3A 02 D4 21 48 76 @.../].2..:..!Hv
 00008A50 1E 26 F0 16 00 66 EC FB 00 D8 EC F8 01 70 76 09 .&...f.......pv.
-00008A60 10 39 C0 21 97 0C D8 22 FF FF 3A 60             .9.!..."..:`   
+00008A60 10 39 C0 21 97 0C D8 22 FF FF 3A 60             .9.!..."..:`    
 
 ;; fn00008A6C: 00008A6C
 ;;   Called from:
@@ -11791,7 +11791,7 @@ l00008A84:
 
 l00008A86:
 	popm	r4-r7,pc
-00008A88                         FF FF 3A 80                     ..:.   
+00008A88                         FF FF 3A 80                     ..:.    
 
 ;; fn00008A8C: 00008A8C
 ;;   Called from:
@@ -11821,7 +11821,7 @@ l00008AA8:
 
 l00008AB4:
 	popm	r4-r7,pc
-00008AB6                   D7 03 FF FF 3A A0                   ....:.   
+00008AB6                   D7 03 FF FF 3A A0                   ....:.    
 
 ;; fn00008ABC: 00008ABC
 fn00008ABC proc
@@ -11968,7 +11968,7 @@ l00008C40:
 00008C70 C0 C8 58 08 C0 30 6E 0C 5D 18 30 08 8F 08 6E 19 ..X..0n.].0...n.
 00008C80 68 98 8F 18 89 97 12 97 68 88 58 07 CF 31 58 08 h.......h.X..1X.
 00008C90 C0 30 6A 0C 5D 18 8B 17 8B 07 2F 85 68 18 10 35 .0j.]...../.h..5
-00008CA0 CE 43 30 08 89 48 89 38 D8 22                   .C0..H.8."     
+00008CA0 CE 43 30 08 89 48 89 38 D8 22                   .C0..H.8."      
 
 ;; fn00008CAA: 00008CAA
 ;;   Called from:
@@ -12077,7 +12077,7 @@ l00008D26:
 00008DC0 6E 18 EA 0C 00 3B 10 3B C0 33 F0 16 00 13 76 08 n....;.;.3....v.
 00008DD0 58 08 C0 E0 16 95 C0 A8 6E 78 6A 0B 08 9C 5D 18 X.......nxj...].
 00008DE0 5C 5C C0 30 6A 0C D8 22 6A 15 58 05 CF 61 D8 2A \\.0j.."j.X..a.*
-00008DF0 FF FF 3D C0                                     ..=.           
+00008DF0 FF FF 3D C0                                     ..=.            
 
 ;; fn00008DF4: 00008DF4
 ;;   Called from:
@@ -12101,7 +12101,7 @@ l00008E08:
 	mov	r12,00000008
 	mcall	r6[32]
 	popm	r4-r7,pc
-00008E10 FF FF 3E 08                                     ..>.           
+00008E10 FF FF 3E 08                                     ..>.            
 
 ;; fn00008E14: 00008E14
 fn00008E14 proc
@@ -12193,7 +12193,7 @@ l00008E76:
 	mov	r12,r7
 	mcall	r6[12]
 	popm	r4-r7,pc
-00008E84             FF FF 3E 28                             ..>(       
+00008E84             FF FF 3E 28                             ..>(        
 
 ;; fn00008E88: 00008E88
 ;;   Called from:
@@ -12332,7 +12332,7 @@ l00008F58:
 	mov	r12,r3
 	popm	r0-r3,r4-r7,pc
 00008F5C                                     FF FF 3E 9C             ..>.
-00008F60 4F 80 00 00 1F FF FF FF                         O.......       
+00008F60 4F 80 00 00 1F FF FF FF                         O.......        
 
 ;; fn00008F68: 00008F68
 ;;   Called from:
@@ -12470,7 +12470,7 @@ fn00008FF2 proc
 
 l00009014:
 	popm	r0-r3,r4-r7,pc,r12=0
-00009016                   D7 03 FF FF 3F 7C                   ....?|   
+00009016                   D7 03 FF FF 3F 7C                   ....?|    
 
 ;; fn0000901C: 0000901C
 fn0000901C proc
@@ -12693,7 +12693,7 @@ l00009196:
 00009210 1A D7 F0 16 00 1A 1A D5 EC FB 02 F4 02 9C F0 16 ................
 00009220 00 1A 2F AD D8 32 D7 03 FF FF 41 B8 40 59 00 00 ../..2....A.@Y..
 00009230 00 00 00 00 00 00 00 00 3F 80 00 00 3F 4C CC CD ........?...?L..
-00009240 3F B4 FD F4 00 00 00 00                         ?.......       
+00009240 3F B4 FD F4 00 00 00 00                         ?.......        
 
 ;; fn00009248: 00009248
 ;;   Called from:
@@ -12755,7 +12755,7 @@ l000092A2:
 	mov	r11,r5
 	popm	r0-r3,r4-r7,pc
 000092A8                         FF FF 42 5C 43 F0 00 00         ..B\C...
-000092B0 00 00 00 00                                     ....           
+000092B0 00 00 00 00                                     ....            
 
 ;; fn000092B4: 000092B4
 ;;   Called from:
@@ -12778,7 +12778,7 @@ l000092CC:
 	mov	r10,00000400
 	mov	r11,00000000
 	popm	r4-r7,pc
-000092D4             FF FF 42 C8                             ..B.       
+000092D4             FF FF 42 C8                             ..B.        
 
 ;; fn000092D8: 000092D8
 fn000092D8 proc
@@ -12913,7 +12913,7 @@ l000093A8:
 l000093B0:
 	sub	sp,FFFFFFFC
 	popm	r0-r3,r4-r7,pc
-000093B4             FF FF 42 EE                             ..B.       
+000093B4             FF FF 42 EE                             ..B.        
 
 ;; fn000093B8: 000093B8
 ;;   Called from:
@@ -13069,7 +13069,7 @@ l0000950A:
 	or	r8,r11,r10
 	srne	r4
 	rjmp	00009526
-00009512       D7 03 FF FF 43 CE                           ....C.       
+00009512       D7 03 FF FF 43 CE                           ....C.        
 
 l00009518:
 	cp.w	r0,r10
@@ -13742,7 +13742,7 @@ l000099A6:
 00009A20 00 6A 18 94 0A 9C F0 16 00 04 2F 7C E0 A0 0F 98 .j......../|....
 00009A30 0A 9B 18 97 2F 8C F0 16 00 20 6D BA 58 04 C0 80 ..../.... m.X...
 00009A40 68 28 74 09 0E 9C 8F 08 8F 19 95 07 D8 22 74 18 h(t.........."t.
-00009A50 08 9C 95 17 8F 18 D8 22 FF FF 49 DC             ......."..I.   
+00009A50 08 9C 95 17 8F 18 D8 22 FF FF 49 DC             ......."..I.    
 
 ;; fn00009A5C: 00009A5C
 ;;   Called from:
@@ -13822,7 +13822,7 @@ l00009AC0:
 00009B20 00 73 18 94 0A 9C F0 16 00 04 2F 7C E0 A0 0F 18 .s......../|....
 00009B30 0A 9B 18 97 2F 8C F0 16 00 20 6D BA 58 04 C0 80 ..../.... m.X...
 00009B40 68 28 74 29 0E 9C 8F 08 8F 19 95 27 D8 22 74 38 h(t).......'."t8
-00009B50 08 9C 95 37 8F 18 D8 22 FF FF 4A DC             ...7..."..J.   
+00009B50 08 9C 95 37 8F 18 D8 22 FF FF 4A DC             ...7..."..J.    
 
 ;; fn00009B5C: 00009B5C
 ;;   Called from:
@@ -13893,7 +13893,7 @@ l00009BAE:
 
 l00009BC0:
 	popm	r4-r7,pc
-00009BC2       D7 03 FF FF 4B 70                           ....Kp       
+00009BC2       D7 03 FF FF 4B 70                           ....Kp        
 
 ;; fn00009BC8: 00009BC8
 ;;   Called from:
@@ -14140,7 +14140,7 @@ l00009D5C:
 l00009D62:
 	sub	sp,FFFFFFE8
 	popm	r0-r3,r4-r7,pc
-00009D66                   D7 03 FF FF 4C 56                   ....LV   
+00009D66                   D7 03 FF FF 4C 56                   ....LV    
 
 ;; fn00009D6C: 00009D6C
 ;;   Called from:
@@ -14167,7 +14167,7 @@ fn00009D80 proc
 	mov	r11,00000006
 	rcall	0000A7C8
 	popm	r4-r7,pc
-00009D90 FF FF 4D 94                                     ..M.           
+00009D90 FF FF 4D 94                                     ..M.            
 
 ;; fn00009D94: 00009D94
 fn00009D94 proc
@@ -14178,7 +14178,7 @@ fn00009D94 proc
 	mov	r12,00000000
 	rcall	00009D80
 	popm	r4-r7,pc
-00009DA2       D7 03 FF FF 4D A8                           ....M.       
+00009DA2       D7 03 FF FF 4D A8                           ....M.        
 
 ;; fn00009DA8: 00009DA8
 fn00009DA8 proc
@@ -14206,7 +14206,7 @@ fn00009DC0 proc
 l00009DCE:
 	st.w	r12[0],r11
 	popm	r4-r7,pc
-00009DD2       D7 03 FF FF 4D D4                           ....M.       
+00009DD2       D7 03 FF FF 4D D4                           ....M.        
 
 ;; fn00009DD8: 00009DD8
 ;;   Called from:
@@ -14270,7 +14270,7 @@ fn00009E30 proc
 00009EA0 6D 78 6A 1C F0 C7 FF D8 0E 3C C0 90 F0 16 00 03 mxj......<......
 00009EB0 EC F9 00 D4 E0 68 01 00 93 27 93 18 EC F4 00 D4 .....h...'......
 00009EC0 E8 C7 FF FC 0E 35 C0 50 0A 9C F0 16 00 03 89 07 .....5.P........
-00009ED0 30 18 87 08 D8 32 D7 03 FF FF 4E 8C             0....2....N.   
+00009ED0 30 18 87 08 D8 32 D7 03 FF FF 4E 8C             0....2....N.    
 
 ;; fn00009EDC: 00009EDC
 ;;   Called from:
@@ -14282,7 +14282,7 @@ fn00009EDC proc
 	rsub	r6,pc
 	rcall	0000B95C
 	popm	r4-r7,pc
-00009EE8                         FF FF 4E F0                     ..N.   
+00009EE8                         FF FF 4E F0                     ..N.    
 
 ;; fn00009EEC: 00009EEC
 ;;   Called from:
@@ -14317,7 +14317,7 @@ fn00009EEC proc
 l00009F1C:
 	sub	r8,pc,FFFFFFF4
 	add	pc,r8,lr<<2
-00009F24             D7 03 D7 03                             ....       
+00009F24             D7 03 D7 03                             ....        
 
 l00009F28:
 	br	0000A02C
@@ -14474,7 +14474,7 @@ l0000A002:
 	stdsp	sp[36],r3
 	stdsp	sp[40],r2
 	rjmp	0000A036
-0000A010 FF FF 4F 02                                     ..O.           
+0000A010 FF FF 4F 02                                     ..O.            
 
 l0000A014:
 	mov	r3,00000001
@@ -15051,7 +15051,7 @@ l0000A3B4:
 	bfextu	r8,r8,+00000006,+00000001
 	stdsp	sp[44],r8
 	rjmp	0000A49A
-0000A3C8                         38 00 51 C1                     8.Q.   
+0000A3C8                         38 00 51 C1                     8.Q.    
 
 l0000A3CC:
 	mov	r8,00000000
@@ -15578,7 +15578,7 @@ l0000A6F4:
 	st.w	r9[0],r8
 	sub	sp,FFFFFFEC
 	popm	r0-r3,r4-r7,pc
-0000A700 FF FF 56 2A 1F FF FF FF                         ..V*....       
+0000A700 FF FF 56 2A 1F FF FF FF                         ..V*....        
 
 ;; fn0000A708: 0000A708
 ;;   Called from:
@@ -15613,7 +15613,7 @@ fn0000A708 proc
 	popm	r0-r3,r4-r7,pc
 0000A74E                                           D7 03               ..
 0000A750 FF FF 57 1E D4 21 48 36 1E 26 33 AA CD 6F D8 22 ..W..!H6.&3..o."
-0000A760 FF FF 57 68                                     ..Wh           
+0000A760 FF FF 57 68                                     ..Wh            
 
 ;; fn0000A764: 0000A764
 ;;   Called from:
@@ -15626,7 +15626,7 @@ fn0000A764 proc
 	mov	r11,FFFFFFFF
 	rcall	0000A708
 	popm	r4-r7,pc
-0000A772       D7 03 FF FF 57 78                           ....Wx       
+0000A772       D7 03 FF FF 57 78                           ....Wx        
 
 ;; fn0000A778: 0000A778
 ;;   Called from:
@@ -15640,7 +15640,7 @@ fn0000A778 proc
 	mov	r11,0000003A
 	rcall	0000A764
 	popm	r4-r7,pc
-0000A784             FF FF 57 8C                             ..W.       
+0000A784             FF FF 57 8C                             ..W.        
 
 ;; fn0000A788: 0000A788
 fn0000A788 proc
@@ -15663,7 +15663,7 @@ fn0000A788 proc
 	popm	r0-r3,r4-r7,pc
 0000A7AC                                     FF FF 57 9E             ..W.
 0000A7B0 D4 21 48 56 1E 26 14 99 16 9A 18 9B 30 0C CE 5F .!HV.&......0.._
-0000A7C0 D8 22 D7 03 FF FF 57 C4                         ."....W.       
+0000A7C0 D8 22 D7 03 FF FF 57 C4                         ."....W.        
 
 ;; fn0000A7C8: 0000A7C8
 ;;   Called from:
@@ -15688,7 +15688,7 @@ fn0000A7C8 proc
 	popm	r0-r3,r4-r7,pc
 0000A7EA                               D7 03 FF FF 57 DE           ....W.
 0000A7F0 D4 21 48 46 1E 26 16 9A 18 9B 30 0C CE 6F D8 22 .!HF.&....0..o."
-0000A800 FF FF 58 04                                     ..X.           
+0000A800 FF FF 58 04                                     ..X.            
 
 ;; fn0000A804: 0000A804
 fn0000A804 proc
@@ -15699,7 +15699,7 @@ fn0000A804 proc
 	rcall	0000A614
 	popm	r4-r7,pc
 0000A810 FF FF 58 18 D4 21 48 46 1E 26 16 9A 18 9B 30 0C ..X..!HF.&....0.
-0000A820 CF 2F D8 22 FF FF 58 28                         ./."..X(       
+0000A820 CF 2F D8 22 FF FF 58 28                         ./."..X(        
 
 ;; fn0000A828: 0000A828
 ;;   Called from:
@@ -15712,7 +15712,7 @@ fn0000A828 proc
 	mov	r10,FFFFFFFF
 	rcall	0000A614
 	popm	r4-r7,pc
-0000A836                   D7 03 FF FF 58 3C                   ....X<   
+0000A836                   D7 03 FF FF 58 3C                   ....X<    
 
 ;; fn0000A83C: 0000A83C
 fn0000A83C proc
@@ -15786,7 +15786,7 @@ l0000A8BE:
 	sub	sp,FFFFFFF0
 	popm	r0-r3,r4-r7,pc
 0000A8C4             FF FF 58 66 D4 21 48 46 1E 26 14 99     ..Xf.!HF.&..
-0000A8D0 30 0A CB FF D8 22 D7 03 FF FF 58 DC             0...."....X.   
+0000A8D0 30 0A CB FF D8 22 D7 03 FF FF 58 DC             0...."....X.    
 
 ;; fn0000A8DC: 0000A8DC
 ;;   Called from:
@@ -15846,7 +15846,7 @@ l0000A93A:
 	popm	r0-r3,r4-r7,pc
 0000A942       D7 03 FF FF 59 34 00 00 00 00 00 00 00 01   ....Y4........
 0000A950 00 00 00 02 00 00 00 03 00 00 00 04 00 00 00 05 ................
-0000A960 00 00 00 06 00 00 00 07                         ........       
+0000A960 00 00 00 06 00 00 00 07                         ........        
 
 ;; fn0000A968: 0000A968
 ;;   Called from:
@@ -15878,7 +15878,7 @@ l0000A986:
 l0000A990:
 	mov	r12,lr
 	popm	r4-r7,pc
-0000A994             FF FF 59 7C                             ..Y|       
+0000A994             FF FF 59 7C                             ..Y|        
 
 ;; fn0000A998: 0000A998
 ;;   Called from:
@@ -15912,7 +15912,7 @@ l0000A9B8:
 l0000A9C2:
 	mov	r12,lr
 	popm	r4-r7,pc
-0000A9C6                   D7 03 FF FF 59 AC                   ....Y.   
+0000A9C6                   D7 03 FF FF 59 AC                   ....Y.    
 
 ;; fn0000A9CC: 0000A9CC
 ;;   Called from:
@@ -16130,7 +16130,7 @@ l0000AB04:
 l0000AB0C:
 	mov	r4,00000000
 	rjmp	0000AB24
-0000AB10 FF FF 59 F6 0C CC CC CC 7F FF FF FF             ..Y.........   
+0000AB10 FF FF 59 F6 0C CC CC CC 7F FF FF FF             ..Y.........    
 
 l0000AB1C:
 	lddsp	r2,sp[48]
@@ -16148,7 +16148,7 @@ l0000AB24:
 l0000AB32:
 	sub	r8,pc,FFFFFFF6
 	add	pc,r8,r0<<2
-0000AB3A                               D7 03                       ..   
+0000AB3A                               D7 03                       ..    
 
 l0000AB3C:
 	br	0000B700
@@ -17047,7 +17047,7 @@ l0000B00E:
 	add	r11,r5
 	stdsp	sp[44],r11
 	rjmp	0000B168
-0000B016                   D7 03                               ..       
+0000B016                   D7 03                               ..        
 
 l0000B018:
 	sub	r8,sp,FFFFFB7E
@@ -18016,7 +18016,7 @@ l0000B67C:
 	sub	r8,pc,FFFFFFF0
 	lsr	r11,r12,0000001F
 	add	pc,r8,r5<<2
-0000B688                         D7 03 D7 03                     ....   
+0000B688                         D7 03 D7 03                     ....    
 
 l0000B68C:
 	br	0000B69C
@@ -18222,7 +18222,7 @@ fn0000B7B2 proc
 	rcall	0000A9DE
 	sub	sp,FFFFFFF8
 	popm	r4-r7,pc
-0000B7D0 FF FF 67 C6                                     ..g.           
+0000B7D0 FF FF 67 C6                                     ..g.            
 
 ;; fn0000B7D4: 0000B7D4
 ;;   Called from:
@@ -18268,7 +18268,7 @@ l0000B7E6:
 l0000B80E:
 	mov	r12,r7
 	popm	r4-r7,pc
-0000B812       D7 03 FF FF 67 E8                           ....g.       
+0000B812       D7 03 FF FF 67 E8                           ....g.        
 
 ;; fn0000B818: 0000B818
 ;;   Called from:
@@ -18337,7 +18337,7 @@ l0000B880:
 l0000B882:
 	sub	sp,FFFFF82C
 	popm	r0-r3,r4-r7,pc
-0000B888                         FF FF 68 30                     ..h0   
+0000B888                         FF FF 68 30                     ..h0    
 
 ;; fn0000B88C: 0000B88C
 ;;   Called from:
@@ -18396,7 +18396,7 @@ l0000B8DE:
 	popm	r4-r7,pc
 0000B8E6                   D7 03 FF FF 68 A0 D4 21 48 56       ....h..!HV
 0000B8F0 1E 26 E0 A0 09 FF C0 31 FE B0 D9 DA D8 22 D7 03 .&.....1....."..
-0000B900 FF FF 69 00                                     ..i.           
+0000B900 FF FF 69 00                                     ..i.            
 
 ;; fn0000B904: 0000B904
 ;;   Called from:
@@ -18423,7 +18423,7 @@ l0000B91A:
 0000B920 D4 21 48 D6 1E 26 16 9A 76 09 58 0C C0 51 58 09 .!H..&..v.X..QX.
 0000B930 C0 D1 34 09 C0 B8 48 98 10 39 E0 88 00 04 FE B0 ..4...H..9......
 0000B940 D9 B7 F2 C8 FF FF A1 98 10 09 12 9B 95 09 CD BF ................
-0000B950 D8 22 D7 03 FF FF 69 34 AA AA AA A9             ."....i4....   
+0000B950 D8 22 D7 03 FF FF 69 34 AA AA AA A9             ."....i4....    
 
 ;; fn0000B95C: 0000B95C
 ;;   Called from:
@@ -18453,7 +18453,7 @@ l0000B96E:
 
 l0000B972:
 	popm	r4-r7,pc
-0000B974             FF FF 69 70                             ..ip       
+0000B974             FF FF 69 70                             ..ip        
 
 ;; fn0000B978: 0000B978
 ;;   Called from:
@@ -18471,7 +18471,7 @@ fn0000B978 proc
 	mov	r11,r3
 	mcall	r6[36]
 	popm	r0-r3,r4-r7,pc
-0000B990 FF FF 69 8C                                     ..i.           
+0000B990 FF FF 69 8C                                     ..i.            
 
 ;; fn0000B994: 0000B994
 ;;   Called from:
@@ -18492,7 +18492,7 @@ fn0000B994 proc
 	popm	r4-r7,pc
 0000B9AA                               D7 03 FF FF 69 A8           ....i.
 0000B9B0 D4 21 48 56 1E 26 18 95 CD 2F 0A 9A 30 0B F0 16 .!HV.&.../..0...
-0000B9C0 00 0B D8 22 FF FF 69 C4                         ..."..i.       
+0000B9C0 00 0B D8 22 FF FF 69 C4                         ..."..i.        
 
 ;; fn0000B9C8: 0000B9C8
 fn0000B9C8 proc
@@ -18621,7 +18621,7 @@ l0000BA7A:
 l0000BA84:
 	mov	r12,r5
 	popm	r0-r3,r4-r7,pc
-0000BA88                         FF FF 6A 7A                     ..jz   
+0000BA88                         FF FF 6A 7A                     ..jz    
 
 ;; fn0000BA8C: 0000BA8C
 fn0000BA8C proc
@@ -18778,7 +18778,7 @@ l0000BB8C:
 	mov	r11,00000400
 	mov	r5,00000003
 	rjmp	0000BB9E
-0000BB94             FF FF 6A A2                             ..j.       
+0000BB94             FF FF 6A A2                             ..j.        
 
 l0000BB98:
 	mov	r11,00000400
@@ -18953,7 +18953,7 @@ l0000BC7E:
 	sub	sp,FFFFFFF8
 	popm	r0-r3,r4-r7,pc
 0000BC84             78 73 74 72 74 6F 75 6C 00 00 D7 03     xstrtoul....
-0000BC90 E0 4C 00 7F 5F 8C 5E FC                         .L.._.^.       
+0000BC90 E0 4C 00 7F 5F 8C 5E FC                         .L.._.^.        
 
 ;; fn0000BC98: 0000BC98
 ;;   Called from:
@@ -18985,7 +18985,7 @@ fn0000BCB0 proc
 	ret	r12
 0000BCBA                               58 9C 5F 08 E0 4C           X._..L
 0000BCC0 00 20 5F 0C 10 4C 5E FC 18 98 E0 18 FF E0 5F 08 . _..L^......._.
-0000BCD0 E0 4C 00 7F 5F 0C F1 EC 10 0C 5E FC             .L.._.....^.   
+0000BCD0 E0 4C 00 7F 5F 0C F1 EC 10 0C 5E FC             .L.._.....^.    
 
 ;; fn0000BCDC: 0000BCDC
 ;;   Called from:
@@ -19011,7 +19011,7 @@ fn0000BCDC proc
 0000BD50 00 30 58 98 E0 8B 00 03 5E FF A5 DC F8 C8 00 41 .0X.....^......A
 0000BD60 58 58 5F 8C 5E FC F8 C9 00 41 F8 C8 FF E0 59 99 XX_.^....A....Y.
 0000BD70 5E BC 5E 88 F8 C9 00 61 F8 C8 00 20 59 99 5E BC ^.^....a... Y.^.
-0000BD80 5E 88                                           ^.             
+0000BD80 5E 88                                           ^.              
 
 ;; fn0000BD82: 0000BD82
 ;;   Called from:
@@ -19021,7 +19021,7 @@ fn0000BD82 proc
 	sbr	r8,+00000003
 	st.h	r12[0],r8
 	ret	r12
-0000BD8A                               D7 03                       ..   
+0000BD8A                               D7 03                       ..    
 
 ;; fn0000BD8C: 0000BD8C
 ;;   Called from:
@@ -19184,7 +19184,7 @@ l0000BE90:
 
 l0000BE94:
 	rjmp	0000BF32
-0000BE96                   D7 03 FF FF 6D A2                   ....m.   
+0000BE96                   D7 03 FF FF 6D A2                   ....m.    
 
 l0000BE9C:
 	mov	r11,r7
@@ -19333,7 +19333,7 @@ l0000BF9E:
 l0000BFB2:
 	sub	sp,FFFFFF90
 	popm	r0-r3,r4-r7,pc
-0000BFB6                   D7 03                               ..       
+0000BFB6                   D7 03                               ..        
 
 ;; fn0000BFB8: 0000BFB8
 ;;   Called from:
@@ -19451,7 +19451,7 @@ l0000C044:
 	mcall	r6[24]
 	sreq	r12
 	popm	r0-r3,r4-r7,pc
-0000C054             FF FF 6F CC                             ..o.       
+0000C054             FF FF 6F CC                             ..o.        
 
 ;; fn0000C058: 0000C058
 ;;   Called from:
@@ -19813,7 +19813,7 @@ l0000C2DA:
 
 l0000C2DE:
 	popm	r0-r3,r4-r7,r12,pc,r12=1
-0000C2E0 00 01                                           ..             
+0000C2E0 00 01                                           ..              
 
 ;; fn0000C2E2: 0000C2E2
 fn0000C2E2 proc
@@ -19874,7 +19874,7 @@ fn0000C2E2 proc
 0000C630 00 00 00 00 00 00 00 00 00 00 00 80 00 00 00 00 ................
 0000C640 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
 ; ...
-0000C670 00 00 1C 00 00 00 1C 00 00 00                   ..........     
+0000C670 00 00 1C 00 00 00 1C 00 00 00                   ..........      
 
 ;; fn0000C67A: 0000C67A
 ;;   Called from:
@@ -20172,7 +20172,7 @@ l0000CA5C:
 
 l0000CA60:
 	popm	r4-r7,pc
-0000CA62       D7 03 FF FF 7A 64                           ....zd       
+0000CA62       D7 03 FF FF 7A 64                           ....zd        
 
 ;; fn0000CA68: 0000CA68
 ;;   Called from:
@@ -20210,7 +20210,7 @@ l0000CA9A:
 	add	r9,r10,r9
 	st.d	r7[0],r9:r8
 	popm	r0-r3,r4-r7,pc
-0000CAB2       D7 03 FF FF 7A 7C                           ....z|       
+0000CAB2       D7 03 FF FF 7A 7C                           ....z|        
 
 ;; fn0000CAB8: 0000CAB8
 ;;   Called from:
@@ -20402,7 +20402,7 @@ l0000CBE8:
 	mov	r11,00000400
 	mov	r5,00000003
 	rjmp	0000CBFA
-0000CBF0 FF FF 7A F6                                     ..z.           
+0000CBF0 FF FF 7A F6                                     ..z.            
 
 l0000CBF4:
 	mov	r11,00000400
@@ -20614,7 +20614,7 @@ l0000CD1A:
 l0000CD20:
 	mov	r12,r9
 	popm	r4-r7,pc
-0000CD24             FF FF 7D 04                             ..}.       
+0000CD24             FF FF 7D 04                             ..}.        
 
 ;; fn0000CD28: 0000CD28
 fn0000CD28 proc
@@ -20669,7 +20669,7 @@ l0000CD6E:
 l0000CD70:
 	mov	r12,r8
 	popm	r0-r3,r4-r7,pc
-0000CD74             FF FF 7D 3C                             ..}<       
+0000CD74             FF FF 7D 3C                             ..}<        
 
 ;; fn0000CD78: 0000CD78
 ;;   Called from:
@@ -20799,7 +20799,7 @@ l0000CE6E:
 	mov	r12,lr
 	popm	r4-r7,pc
 0000CE72       D7 03 FF FF 7E 24 80 00 00 01 80 00 00 00   ....~$........
-0000CE80 7F FF FF FD 7F FF FF FF                         ........       
+0000CE80 7F FF FF FD 7F FF FF FF                         ........        
 
 ;; fn0000CE88: 0000CE88
 ;;   Called from:
@@ -21255,7 +21255,7 @@ l0000D1A4:
 l0000D1B0:
 	sub	sp,FFFFFF50
 	popm	r0-r3,r4-r7,pc
-0000D1B4             10 0D C4 00                             ....       
+0000D1B4             10 0D C4 00                             ....        
 
 ;; fn0000D1B8: 0000D1B8
 ;;   Called from:
@@ -21272,7 +21272,7 @@ fn0000D1B8 proc
 0000D1D0 00 00 00 1F 00 3B 00 5A 00 78 00 97 00 B5 00 D4 .....;.Z.x......
 0000D1E0 00 F3 01 11 01 30 01 4E 01 6D 00 00 00 1F 00 3C .....0.N.m.....<
 0000D1F0 00 5B 00 79 00 98 00 B6 00 D5 00 F4 01 12 01 31 .[.y...........1
-0000D200 01 4F 01 6E                                     .O.n           
+0000D200 01 4F 01 6E                                     .O.n            
 
 ;; fn0000D204: 0000D204
 ;;   Called from:
@@ -21471,7 +21471,7 @@ l0000D384:
 	mcall	r6[32]
 	rjmp	0000D3A0
 0000D38E                                           D7 03               ..
-0000D390 FF FF 82 3A                                     ...:           
+0000D390 FF FF 82 3A                                     ...:            
 
 l0000D394:
 	ld.w	r11,r7[-736]
@@ -21637,7 +21637,7 @@ l0000D4B2:
 l0000D4CA:
 	sub	r8,pc,FFFFFFF6
 	add	pc,r8,r9<<2
-0000D4D2       D7 03                                       ..           
+0000D4D2       D7 03                                       ..            
 
 l0000D4D4:
 	br	0000D4E8
@@ -21825,7 +21825,7 @@ l0000D62A:
 l0000D634:
 	mov	r9,FFFFFFFF
 	rjmp	0000D644
-0000D638                         19 99 99 99                     ....   
+0000D638                         19 99 99 99                     ....    
 
 l0000D63C:
 	add	r8,r1,r1<<2
@@ -22115,7 +22115,7 @@ l0000D852:
 	rjmp	0000D88E
 0000D856                   D7 03 80 00 00 00 3F E0 00 00       ......?...
 0000D860 00 00 00 00 3F F0 00 00 00 00 00 00 3F B0 00 00 ....?.......?...
-0000D870 00 00 00 00 40 30 00 00 00 00 00 00             ....@0......   
+0000D870 00 00 00 00 40 30 00 00 00 00 00 00             ....@0......    
 
 l0000D87C:
 	ld.d	r9:r8,pc[-16]
@@ -22422,7 +22422,7 @@ l0000DAB2:
 	st.d	r7[-756],r11:r10
 	rjmp	0000DAE4
 0000DAC4             80 00 00 00 3F E0 00 00 00 00 00 00     ....?.......
-0000DAD0 3F F0 00 00 00 00 00 00                         ?.......       
+0000DAD0 3F F0 00 00 00 00 00 00                         ?.......        
 
 l0000DAD8:
 	mov	r10,00000000
@@ -23211,7 +23211,7 @@ l0000E060:
 	ld.w	r11,r7[-8]
 	ld.w	r12,r10[0]
 	add	pc,r8,r9<<2
-0000E072       D7 03                                       ..           
+0000E072       D7 03                                       ..            
 
 l0000E074:
 	br	0000E0B8
@@ -23390,7 +23390,7 @@ l0000E1AE:
 	st.w	--sp,r8
 	st.d	--sp,r5:r4
 	rjmp	0000E282
-0000E1B8                         7F FF FF FF                     ....   
+0000E1B8                         7F FF FF FF                     ....    
 
 l0000E1BC:
 	add	r8,r12,r12<<1
@@ -23892,7 +23892,7 @@ l0000E54E:
 	ld.w	r12,r7[-736]
 	mcall	r6[32]
 	rjmp	0000E568
-0000E558                         7F FF FF FF                     ....   
+0000E558                         7F FF FF FF                     ....    
 
 l0000E55C:
 	ld.w	r11,r7[-736]
@@ -24228,7 +24228,7 @@ l0000E7EE:
 	rjmp	0000E84E
 0000E806                   D7 03 FF FF 96 9C 3F F0 00 00       ......?...
 0000E810 00 00 00 00 40 00 00 00 00 00 00 00 3F E0 00 00 ....@.......?...
-0000E820 00 00 00 00                                     ....           
+0000E820 00 00 00 00                                     ....            
 
 l0000E824:
 	ld.d	r9:r8,r3[0]
@@ -24265,7 +24265,7 @@ l0000E858:
 	mov	r11,r5
 	sub	sp,FFFFFBE4
 	popm	r0-r3,r4-r7,pc
-0000E866                   D7 03                               ..       
+0000E866                   D7 03                               ..        
 
 ;; fn0000E868: 0000E868
 ;;   Called from:
@@ -24437,7 +24437,7 @@ l0000E9D2:
 	rjmp	0000EA32
 0000E9EA                               D7 03 FF FF 98 80           ......
 0000E9F0 3F F0 00 00 00 00 00 00 40 00 00 00 00 00 00 00 ?.......@.......
-0000EA00 3F E0 00 00 00 00 00 00                         ?.......       
+0000EA00 3F E0 00 00 00 00 00 00                         ?.......        
 
 l0000EA08:
 	ld.d	r9:r8,r3[0]
@@ -24474,7 +24474,7 @@ l0000EA3C:
 	mov	r11,r5
 	sub	sp,FFFFFBE4
 	popm	r0-r3,r4-r7,pc
-0000EA4A                               D7 03                       ..   
+0000EA4A                               D7 03                       ..    
 
 ;; fn0000EA4C: 0000EA4C
 ;;   Called from:
@@ -24634,7 +24634,7 @@ l0000EB26:
 	popm	r4-r7,pc,r12=0
 0000EB28                         FF FF 9A 60 00 00 00 28         ...`...(
 0000EB30 00 00 00 4E 00 00 00 55 00 00 00 4C 00 00 00 4C ...N...U...L...L
-0000EB40 00 00 00 29 00 00 00 00                         ...)....       
+0000EB40 00 00 00 29 00 00 00 00                         ...)....        
 
 ;; fn0000EB48: 0000EB48
 ;;   Called from:
@@ -24829,7 +24829,7 @@ l0000EC86:
 	sbr	r8,+00000005
 	rjmp	0000EC2E
 0000EC8C                                     FF FF 9B 5E             ...^
-0000EC90 19 99 99 99                                     ....           
+0000EC90 19 99 99 99                                     ....            
 
 l0000EC94:
 	mov	r8,0000002A
@@ -25090,7 +25090,7 @@ l0000EE4A:
 	mov	r12,r7
 	mov	r10,00000000
 	rjmp	0000EE74
-0000EE50 19 99 99 99 15 55 55 55                         .....UUU       
+0000EE50 19 99 99 99 15 55 55 55                         .....UUU        
 
 l0000EE58:
 	lddpc	r8,pc[340]
@@ -25304,7 +25304,7 @@ l0000EFA8:
 	sub	r10,FFFFFFF0
 	rjmp	0000EF68
 0000EFAC                                     19 99 99 99             ....
-0000EFB0 15 55 55 55                                     .UUU           
+0000EFB0 15 55 55 55                                     .UUU            
 
 l0000EFB4:
 	mov	r8,0000007A
@@ -25777,7 +25777,7 @@ l0000F268:
 	sub	sp,FFFFFFE8
 	popm	r0-r3,r4-r7,pc
 0000F26E                                           D7 03               ..
-0000F270 15 55 55 55 05 D1 74 5D                         .UUU..t]       
+0000F270 15 55 55 55 05 D1 74 5D                         .UUU..t]        
 
 ;; fn0000F278: 0000F278
 ;;   Called from:
@@ -26287,7 +26287,7 @@ l0000F5F0:
 	mov	r11,00000000
 	mov	r7,00000000
 	rjmp	0000F552
-0000F608                         E3 CD 80 E0                     ....   
+0000F608                         E3 CD 80 E0                     ....    
 
 l0000F60C:
 	satu	r6,+00000006
@@ -26522,7 +26522,7 @@ l0000F786:
 	neg	r11
 	ret	r11
 0000F78A                               A1 79 F5 B8 00 00           .y....
-0000F790 5E FC                                           ^.             
+0000F790 5E FC                                           ^.              
 
 ;; fn0000F792: 0000F792
 ;;   Called from:
@@ -26584,7 +26584,7 @@ l0000F7EA:
 	neg	r10
 	scr	r11
 	ret	r11
-0000F7F2       A1 79 F5 B8 00 00 5E FC                     .y....^.     
+0000F7F2       A1 79 F5 B8 00 00 5E FC                     .y....^.      
 
 ;; __avr32_u32_to_f64: 0000F7FA
 ;;   Called from:
@@ -26745,7 +26745,7 @@ l0000F8DE:
 	lsl	r12,+00000001
 	ror	r11
 	popm	pc
-0000F8E4             A1 79 F5 B8 00 00 5E FC                 .y....^.   
+0000F8E4             A1 79 F5 B8 00 00 5E FC                 .y....^.    
 
 ;; __avr32_f64_cmp_eq: 0000F8EC
 ;;   Called from:
@@ -26781,7 +26781,7 @@ l0000F902:
 
 l0000F912:
 	ret	sp
-0000F914             A1 79 F5 B8 00 00 5E FC                 .y....^.   
+0000F914             A1 79 F5 B8 00 00 5E FC                 .y....^.    
 
 ;; __avr32_f64_cmp_ge: 0000F91C
 ;;   Called from:
@@ -27061,7 +27061,7 @@ l0000FA44:
 l0000FA4A:
 	ret	r12
 0000FA4C                                     A1 79 F5 B8             .y..
-0000FA50 00 00 5E FC                                     ..^.           
+0000FA50 00 00 5E FC                                     ..^.            
 
 ;; __avr32_f64_div: 0000FA54
 ;;   Called from:
@@ -27573,7 +27573,7 @@ l0000FE8E:
 	cp.w	r10,r6
 	rjmp	0000FE28
 0000FEBC                                     A1 79 F5 B8             .y..
-0000FEC0 00 00 5E FC                                     ..^.           
+0000FEC0 00 00 5E FC                                     ..^.            
 
 l0000FEC4:
 	eorh	r11,8000
@@ -27687,7 +27687,7 @@ l0000FF88:
 	lsl	r8,r8,r11
 	or	r9,r8
 	rjmp	0000FF40
-0000FF96                   D7 03                               ..       
+0000FF96                   D7 03                               ..        
 
 l0000FF98:
 	eorh	r11,8000
@@ -28002,7 +28002,7 @@ l0001019E:
 l000101A8:
 	ret	r12
 000101AA                               A1 79 F5 B8 00 00           .y....
-000101B0 5E FC                                           ^.             
+000101B0 5E FC                                           ^.              
 
 ;; fn000101B2: 000101B2
 ;;   Called from:
@@ -28053,7 +28053,7 @@ fn000101CC proc
 	rcall	0000F650
 	popm	r0-r3,r4-r7,pc
 000101FC                                     FF FF B1 E0             ....
-00010200 41 F0 00 00 00 00 00 00                         A.......       
+00010200 41 F0 00 00 00 00 00 00                         A.......        
 
 ;; __avr32_sdiv64: 00010208
 ;;   Called from:
@@ -29452,7 +29452,7 @@ l00010CF2:
 	ld.d	r11:r10,r7[-20]
 	sub	sp,FFFFFFEC
 	popm	r0-r3,r4-r7,pc
-00010CFA                               D7 03                       ..   
+00010CFA                               D7 03                       ..    
 
 ;; fn00010CFC: 00010CFC
 ;;   Called from:
@@ -29488,7 +29488,7 @@ l00010D2A:
 l00010D30:
 	sub	sp,FFFFFFC8
 	popm	r4-r7,pc
-00010D34             FF FF BD 12                             ....       
+00010D34             FF FF BD 12                             ....        
 
 ;; fn00010D38: 00010D38
 ;;   Called from:
@@ -30326,4 +30326,4 @@ l00010E2A:
 00013A50 47 42 4B 00 45 55 43 2D 54 57 00 00 42 49 47 35 GBK.EUC-TW..BIG5
 00013A60 00 00 00 00 45 55 43 2D 4B 52 00 00 43 50 39 34 ....EUC-KR..CP94
 00013A70 39 00 00 00 4A 4F 48 41 42 00 00 00 25 2B 64 00 9...JOHAB...%+d.
-00013A80 28 4E 55 4C 4C 29 00 00                         (NULL)..       
+00013A80 28 4E 55 4C 4C 29 00 00                         (NULL)..        

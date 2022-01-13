@@ -30,5 +30,5 @@ l010D:
 fn010E proc
 	co	gp0
 	urs	gp15
-
-;;; ...end of image
+0111      0048 0065 006C 006C 006F 0021 000A   .H.e.l.l.o.!..
+0118 0000                                    ..              

@@ -4,7 +4,7 @@
 00000020 00 00 00 00 00 00 00 00 00 00 00 00 15 17 00 00 ................
 00000030 00 00 00 00 00 00 00 00 89 16 00 00 E5 16 00 00 ................
 00000040 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
-00000050 00 00 00 00 09 81 00 00                         ........       
+00000050 00 00 00 00 09 81 00 00                         ........        
 
 ;; prvUnlockQueue: 00000058
 ;;   Called from:
@@ -377,7 +377,7 @@ D1DC           	bne	$00000256
 l0000029C:
 E7E3           	b	$00000266
 0000029E                                           00 BF               ..
-000002A0 04 ED 00 E0                                     ....           
+000002A0 04 ED 00 E0                                     ....            
 
 ;; xQueuePeekFromISR: 000002A4
 ;;   Called from:
@@ -584,7 +584,7 @@ l0000041C:
 F000 FF5A     	bl	$000012D4
 6060           	str	r0,[r4,#&4]
 E7D1           	b	$000003C8
-00000424             04 ED 00 E0                             ....       
+00000424             04 ED 00 E0                             ....        
 
 ;; uxQueueMessagesWaiting: 00000428
 ;;   Called from:
@@ -597,7 +597,7 @@ F008 F8A4     	bl	$00008578
 F008 F8BD     	bl	$000085B0
 4620           	mov	r0,r4
 BD10           	pop	{r4,pc}
-0000043A                               00 BF                       ..   
+0000043A                               00 BF                       ..    
 
 ;; uxQueueSpacesAvailable: 0000043C
 ;;   Called from:
@@ -612,7 +612,7 @@ F008 F89A     	bl	$00008578
 F008 F8B1     	bl	$000085B0
 4620           	mov	r0,r4
 BD38           	pop	{r3-r5,pc}
-00000452       00 BF                                       ..           
+00000452       00 BF                                       ..            
 
 ;; vQueueDelete: 00000454
 ;;   Called from:
@@ -685,7 +685,7 @@ l000004BC:
 2001           	mov	r0,#1
 6038           	str	r0,[r7]
 E7DC           	b	$0000047C
-000004C2       00 BF                                       ..           
+000004C2       00 BF                                       ..            
 
 ;; xQueueGiveFromISR: 000004C4
 xQueueGiveFromISR proc
@@ -804,7 +804,7 @@ l0000058A:
 2001           	mov	r0,#1
 F8C8 0000     	str	r0,[r8]
 E7D7           	b	$00000542
-00000592       00 BF                                       ..           
+00000592       00 BF                                       ..            
 
 ;; xQueueIsQueueEmptyFromISR: 00000594
 xQueueIsQueueEmptyFromISR proc
@@ -978,7 +978,7 @@ F007 FE18     	bl	$000082D0
 F007 FF86     	bl	$000085B0
 2001           	mov	r0,#1
 BD70           	pop	{r4-r6,pc}
-000006A8                         04 ED 00 E0                     ....   
+000006A8                         04 ED 00 E0                     ....    
 
 ;; xQueueGenericCreate: 000006AC
 ;;   Called from:
@@ -1114,7 +1114,7 @@ l00000790:
 
 l00000792:
 E8BD 8FF8     	pop.w	{r3-fp,pc}
-00000796                   00 BF                               ..       
+00000796                   00 BF                               ..        
 
 ;; prvAddNewTaskToReadyList: 00000798
 ;;   Called from:
@@ -1210,7 +1210,7 @@ F8C4 806C     	str	r8,[r4,#&6C]
 6CE8           	ldr	r0,[r5,#&4C]
 6727           	str	r7,[r4,#&70]
 E7B3           	b	$000007BA
-00000852       00 BF C4 00 00 20 04 ED 00 E0               ..... ....   
+00000852       00 BF C4 00 00 20 04 ED 00 E0               ..... ....    
 
 ;; prvAddCurrentTaskToDelayedList.isra.0: 0000085C
 ;;   Called from:
@@ -1265,7 +1265,7 @@ l000008A2:
 E8BD 4070     	pop.w	{r4-r6,lr}
 3124           	adds	r1,#&24
 F007 BD2E     	b	$0000830C
-000008B0 C4 00 00 20                                     ...            
+000008B0 C4 00 00 20                                     ...             
 
 ;; xTaskCreate: 000008B4
 ;;   Called from:
@@ -1322,7 +1322,7 @@ l0000090E:
 F000 FF36     	bl	$00001780
 F04F 30FF     	mov	r0,#&FFFFFFFF
 E7F1           	b	$000008FE
-0000091A                               00 BF                       ..   
+0000091A                               00 BF                       ..    
 
 ;; xTaskCreateRestricted: 0000091C
 ;;   Called from:
@@ -1429,7 +1429,7 @@ F8C4 3080     	str	r3,[r4,#&80]
 B002           	add	sp,#8
 E8BD 4010     	pop.w	{r4,lr}
 F000 BCE8     	b	$000013B0
-000009E0 C4 00 00 20 7C A2 00 00 2D 85 00 00             ... |...-...   
+000009E0 C4 00 00 20 7C A2 00 00 2D 85 00 00             ... |...-...    
 
 ;; vTaskEndScheduler: 000009EC
 vTaskEndScheduler proc
@@ -1441,7 +1441,7 @@ F3BF 8F4F     	dsb	sy
 4B02           	ldr	r3,[00000A08]                           ; [pc,#&8]
 675A           	str	r2,[r3,#&74]
 F000 BDA5     	b	$00001550
-00000A06                   00 BF C4 00 00 20                   .....    
+00000A06                   00 BF C4 00 00 20                   .....     
 
 ;; vTaskSuspendAll: 00000A0C
 ;;   Called from:
@@ -1468,14 +1468,14 @@ xTaskGetTickCount proc
 4B01           	ldr	r3,[00000A28]                           ; [pc,#&4]
 F8D3 0080     	ldr	r0,[r3,#&80]
 4770           	bx	lr
-00000A28                         C4 00 00 20                     ...    
+00000A28                         C4 00 00 20                     ...     
 
 ;; xTaskGetTickCountFromISR: 00000A2C
 xTaskGetTickCountFromISR proc
 4B01           	ldr	r3,[00000A34]                           ; [pc,#&4]
 F8D3 0080     	ldr	r0,[r3,#&80]
 4770           	bx	lr
-00000A34             C4 00 00 20                             ...        
+00000A34             C4 00 00 20                             ...         
 
 ;; uxTaskGetNumberOfTasks: 00000A38
 ;;   Called from:
@@ -1485,7 +1485,7 @@ uxTaskGetNumberOfTasks proc
 6818           	ldr	r0,[r3]
 4770           	bx	lr
 00000A3E                                           00 BF               ..
-00000A40 C4 00 00 20                                     ...            
+00000A40 C4 00 00 20                                     ...             
 
 ;; pcTaskGetName: 00000A44
 ;;   Called from:
@@ -1502,7 +1502,7 @@ l00000A4A:
 6858           	ldr	r0,[r3,#&4]
 3054           	adds	r0,#&54
 4770           	bx	lr
-00000A52       00 BF C4 00 00 20                           .....        
+00000A52       00 BF C4 00 00 20                           .....         
 
 ;; xTaskGenericNotify: 00000A58
 ;;   Called from:
@@ -1602,7 +1602,7 @@ E7C6           	b	$00000A8C
 l00000AFE:
 2400           	mov	r4,#0
 E7C7           	b	$00000A92
-00000B02       00 BF C4 00 00 20 04 ED 00 E0               ..... ....   
+00000B02       00 BF C4 00 00 20 04 ED 00 E0               ..... ....    
 
 ;; xTaskGenericNotifyFromISR: 00000B0C
 xTaskGenericNotifyFromISR proc
@@ -1717,7 +1717,7 @@ l00000BC8:
 F8C6 0090     	str	r0,[r6,#&90]
 E7C0           	b	$00000B50
 00000BCE                                           00 BF               ..
-00000BD0 C4 00 00 20                                     ...            
+00000BD0 C4 00 00 20                                     ...             
 
 ;; xTaskNotifyWait: 00000BD4
 ;;   Called from:
@@ -1920,7 +1920,7 @@ F04F 5280     	mov	r2,#&10000000
 F3BF 8F4F     	dsb	sy
 F3BF 8F6F     	isb	sy
 E7DC           	b	$00000D1C
-00000D62       00 BF C4 00 00 20 04 ED 00 E0               ..... ....   
+00000D62       00 BF C4 00 00 20 04 ED 00 E0               ..... ....    
 
 ;; xTaskIncrementTick: 00000D6C
 ;;   Called from:
@@ -2057,7 +2057,7 @@ E7A9           	b	$00000DB2
 l00000E5E:
 F8C4 3084     	str	r3,[r4,#&84]
 E7D7           	b	$00000E14
-00000E64             C4 00 00 20 CC 00 00 20                 ... ...    
+00000E64             C4 00 00 20 CC 00 00 20                 ... ...     
 
 ;; xTaskResumeAll: 00000E6C
 ;;   Called from:
@@ -2190,7 +2190,7 @@ l00000F32:
 6A5B           	ldr	r3,[r3,#&24]
 F8C4 3084     	str	r3,[r4,#&84]
 E7D4           	b	$00000EEA
-00000F40 C4 00 00 20 04 ED 00 E0                         ... ....       
+00000F40 C4 00 00 20 04 ED 00 E0                         ... ....        
 
 ;; vTaskDelay: 00000F48
 ;;   Called from:
@@ -2271,7 +2271,7 @@ D0EA           	beq	$00000FA6
 
 l00000FD0:
 BD10           	pop	{r4,pc}
-00000FD2       00 BF C4 00 00 20 04 ED 00 E0               ..... ....   
+00000FD2       00 BF C4 00 00 20 04 ED 00 E0               ..... ....    
 
 ;; vTaskPlaceOnEventList: 00000FDC
 ;;   Called from:
@@ -2287,7 +2287,7 @@ F007 F991     	bl	$0000830C
 4620           	mov	r0,r4
 E8BD 4010     	pop.w	{r4,lr}
 E434           	b	$0000085C
-00000FF2       00 BF C4 00 00 20                           .....        
+00000FF2       00 BF C4 00 00 20                           .....         
 
 ;; vTaskPlaceOnUnorderedEventList: 00000FF8
 ;;   Called from:
@@ -2306,7 +2306,7 @@ F007 F970     	bl	$000082F0
 4620           	mov	r0,r4
 E8BD 4038     	pop.w	{r3-r5,lr}
 E421           	b	$0000085C
-00001018                         C4 00 00 20                     ...    
+00001018                         C4 00 00 20                     ...     
 
 ;; xTaskRemoveFromEventList: 0000101C
 ;;   Called from:
@@ -2402,7 +2402,7 @@ l000010CA:
 F8C4 5090     	str	r5,[r4,#&90]
 2000           	mov	r0,#0
 BDF8           	pop	{r3-r7,pc}
-000010D2       00 BF C4 00 00 20                           .....        
+000010D2       00 BF C4 00 00 20                           .....         
 
 ;; vTaskSwitchContext: 000010D8
 ;;   Called from:
@@ -2459,7 +2459,7 @@ uxTaskResetEventItemValue proc
 F1C3 0302     	rsb	r3,r3,#2
 6393           	str	r3,[r2,#&38]
 4770           	bx	lr
-00001134             C4 00 00 20                             ...        
+00001134             C4 00 00 20                             ...         
 
 ;; xTaskGetCurrentTaskHandle: 00001138
 ;;   Called from:
@@ -2470,7 +2470,7 @@ xTaskGetCurrentTaskHandle proc
 6858           	ldr	r0,[r3,#&4]
 4770           	bx	lr
 0000113E                                           00 BF               ..
-00001140 C4 00 00 20                                     ...            
+00001140 C4 00 00 20                                     ...             
 
 ;; vTaskSetTimeOutState: 00001144
 ;;   Called from:
@@ -2483,7 +2483,7 @@ F8D3 2094     	ldr	r2,[r3,#&94]
 F8D3 3080     	ldr	r3,[r3,#&80]
 E880 000C     	stm	r0,{r2-r3}
 4770           	bx	lr
-00001154             C4 00 00 20                             ...        
+00001154             C4 00 00 20                             ...         
 
 ;; xTaskCheckForTimeOut: 00001158
 ;;   Called from:
@@ -2530,7 +2530,7 @@ l0000119C:
 F007 FA07     	bl	$000085B0
 4628           	mov	r0,r5
 BD70           	pop	{r4-r6,pc}
-000011A6                   00 BF C4 00 00 20                   .....    
+000011A6                   00 BF C4 00 00 20                   .....     
 
 ;; vTaskMissedYield: 000011AC
 ;;   Called from:
@@ -2541,7 +2541,7 @@ vTaskMissedYield proc
 4B02           	ldr	r3,[000011B8]                           ; [pc,#&8]
 F8C3 2090     	str	r2,[r3,#&90]
 4770           	bx	lr
-000011B6                   00 BF C4 00 00 20                   .....    
+000011B6                   00 BF C4 00 00 20                   .....     
 
 ;; vTaskPriorityInherit: 000011BC
 ;;   Called from:
@@ -2698,7 +2698,7 @@ l000012C8:
 2000           	mov	r0,#0
 4770           	bx	lr
 000012CC                                     C4 00 00 20             ... 
-000012D0 CC 00 00 20                                     ...            
+000012D0 CC 00 00 20                                     ...             
 
 ;; pvTaskIncrementMutexHeldCount: 000012D4
 ;;   Called from:
@@ -2742,7 +2742,7 @@ F380 8811     	msr	cpsr,r0
 F06F 0E02     	mvn	lr,#2
 4770           	bx	lr
 0000132C                                     AF F3 00 80             ....
-00001330 C8 00 00 20                                     ...            
+00001330 C8 00 00 20                                     ...             
 
 ;; prvSVCHandler: 00001334
 ;;   Called from:
@@ -2783,7 +2783,7 @@ F04F 5280     	mov	r2,#&10000000
 F3BF 8F4F     	dsb	sy
 F3BF 8F6F     	isb	sy
 4770           	bx	lr
-00001372       00 BF 1C ED 00 E0 04 ED 00 E0               ..........   
+00001372       00 BF 1C ED 00 E0 04 ED 00 E0               ..........    
 
 ;; pxPortInitialiseStack: 0000137C
 ;;   Called from:
@@ -3018,7 +3018,7 @@ E7D1           	b	$0000148A
 ;;     00000A02 (in vTaskEndScheduler)
 vPortEndScheduler proc
 4770           	bx	lr
-00001552       00 BF                                       ..           
+00001552       00 BF                                       ..            
 
 ;; vPortStoreTaskMPUSettings: 00001554
 ;;   Called from:
@@ -3221,7 +3221,7 @@ l0000165C:
 E7D3           	b	$00001608
 00001660 01 00 07 03 3F 00 07 03 00 00 00 20 00 20 00 20 ....?...... . . 
 00001670 00 00 00 20 00 02 00 20 01 00 07 01 3F 00 07 01 ... ... ....?...
-00001680 09 00 07 03 09 00 07 01                         ........       
+00001680 09 00 07 03 09 00 07 01                         ........        
 
 ;; xPortPendSVHandler: 00001688
 xPortPendSVHandler proc
@@ -3249,7 +3249,7 @@ F383 8814     	msr	cpsr,r3
 F380 8809     	msr	cpsr,r0
 4770           	bx	lr
 000016D6                   00 BF AF F3 00 80 AF F3 00 80       ..........
-000016E0 C8 00 00 20                                     ...            
+000016E0 C8 00 00 20                                     ...             
 
 ;; xPortSysTickHandler: 000016E4
 xPortSysTickHandler proc
@@ -3271,7 +3271,7 @@ l00001708:
 F384 8811     	msr	cpsr,r4
 BD10           	pop	{r4,pc}
 0000170E                                           00 BF               ..
-00001710 04 ED 00 E0                                     ....           
+00001710 04 ED 00 E0                                     ....            
 
 ;; vPortSVCHandler: 00001714
 vPortSVCHandler proc
@@ -3282,7 +3282,7 @@ F3EF 8008     	mrseq	r0,cpsr
 l0000171E:
 F3EF 8009     	mrs	r0,cpsr
 E607           	b	$00001334
-00001724             08 ED 00 E0 9C ED 00 E0                 ........   
+00001724             08 ED 00 E0 9C ED 00 E0                 ........    
 
 ;; pvPortMalloc: 0000172C
 ;;   Called from:
@@ -3347,7 +3347,7 @@ E7E3           	b	$00001744
 ;;     00008CCC (in MPU_vPortFree)
 vPortFree proc
 4770           	bx	lr
-00001782       00 BF                                       ..           
+00001782       00 BF                                       ..            
 
 ;; vPortInitialiseBlocks: 00001784
 ;;   Called from:
@@ -3358,7 +3358,7 @@ vPortInitialiseBlocks proc
 F8C3 25C0     	str	r2,[r3,#&5C0]
 4770           	bx	lr
 0000178E                                           00 BF               ..
-00001790 30 02 00 20                                     0..            
+00001790 30 02 00 20                                     0..             
 
 ;; xPortGetFreeHeapSize: 00001794
 ;;   Called from:
@@ -3369,7 +3369,7 @@ F8D3 05C0     	ldr	r0,[r3,#&5C0]
 F5C0 60B6     	rsb	r0,r0,#&5B0
 3004           	adds	r0,#4
 4770           	bx	lr
-000017A2       00 BF 30 02 00 20                           ..0..        
+000017A2       00 BF 30 02 00 20                           ..0..         
 
 ;; xEventGroupCreate: 000017A8
 ;;   Called from:
@@ -3389,7 +3389,7 @@ F006 FD89     	bl	$000082D0
 l000017BE:
 4620           	mov	r0,r4
 BD10           	pop	{r4,pc}
-000017C2       00 BF                                       ..           
+000017C2       00 BF                                       ..            
 
 ;; xEventGroupWaitBits: 000017C4
 ;;   Called from:
@@ -3496,7 +3496,7 @@ D1F6           	bne	$0000185C
 
 l0000186E:
 E7EF           	b	$00001850
-00001870 04 ED 00 E0                                     ....           
+00001870 04 ED 00 E0                                     ....            
 
 ;; xEventGroupClearBits: 00001874
 ;;   Called from:
@@ -3585,7 +3585,7 @@ BDF8           	pop	{r3-r7,pc}
 l000018F0:
 F04F 37FF     	mov	r7,#&FFFFFFFF
 E7F6           	b	$000018E4
-000018F6                   00 BF                               ..       
+000018F6                   00 BF                               ..        
 
 ;; xEventGroupSync: 000018F8
 ;;   Called from:
@@ -3662,7 +3662,7 @@ l00001978:
 F006 FE19     	bl	$000085B0
 F024 447F     	bic	r4,r4,#&FF000000
 E7E9           	b	$00001958
-00001984             04 ED 00 E0                             ....       
+00001984             04 ED 00 E0                             ....        
 
 ;; xEventGroupGetBitsFromISR: 00001988
 xEventGroupGetBitsFromISR proc
