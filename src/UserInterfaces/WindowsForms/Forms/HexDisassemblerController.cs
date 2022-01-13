@@ -20,6 +20,7 @@
 
 using Reko.Core;
 using Reko.Core.Configuration;
+using Reko.Core.Output;
 using Reko.Gui;
 using Reko.Gui.Services;
 using System;

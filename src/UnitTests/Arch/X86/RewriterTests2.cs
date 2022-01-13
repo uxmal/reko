@@ -24,7 +24,7 @@ using Reko.Core.Output;
 
 namespace Reko.UnitTests.Arch.X86
 {
-	[TestFixture]
+    [TestFixture]
 	public class RewriterTests2 : RewriterTestBase
 	{
 		public RewriterTests2()

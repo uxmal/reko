@@ -24,13 +24,9 @@ using Reko.Core.Memory;
 using Reko.Core.Output;
 using Reko.Core.Types;
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace Reko.UnitTests.Core
+namespace Reko.UnitTests.Core.Output
 {
     [TestFixture]
     public class TypedDataDumperTests

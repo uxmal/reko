@@ -18,23 +18,19 @@
  */
 #endregion
 
-using Reko.Core.Lib;
 using Reko.Core.Machine;
 using Reko.Core.Memory;
-using Reko.Core.Output;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.IO;
 using System.Linq;
 using System.Text;
 
-namespace Reko.Core
+namespace Reko.Core.Output
 {
-	/// <summary>
-	/// Dumps low-level information about a binary.
-	/// </summary>
+    /// <summary>
+    /// Dumps low-level information about a binary.
+    /// </summary>
 	public class Dumper
 	{
         private readonly Program program;

@@ -18,24 +18,23 @@
  */
 #endregion
 
-using Reko.Core;
-using Reko.Core.Expressions;
-using Reko.Core.Types;
+using NUnit.Framework;
 using Reko.Arch.X86;
 using Reko.Arch.X86.Assembler;
-using NUnit.Framework;
+using Reko.Core;
+using Reko.Core.Memory;
+using Reko.Core.Output;
+using Reko.Core.Services;
+using Reko.Core.Types;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
 using System.IO;
 using System.Linq;
 using System.Text;
-using Reko.Core.Services;
-using Reko.Core.Output;
-using Reko.Core.Memory;
 
 namespace Reko.UnitTests.Arch.X86.Assembler
 {
-	public class AssemblerBase
+    public class AssemblerBase
 	{
 		protected IntelArchitecture arch;
 		protected X86TextAssembler asm;

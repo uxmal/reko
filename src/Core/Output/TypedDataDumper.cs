@@ -18,13 +18,12 @@
  */
 #endregion
 
-using System;
-using Reko.Core.Output;
-using Reko.Core.Types;
-using System.Diagnostics;
 using Reko.Core.Memory;
+using Reko.Core.Types;
+using System;
+using System.Diagnostics;
 
-namespace Reko.Core
+namespace Reko.Core.Output
 {
     public class TypedDataDumper : IDataTypeVisitor
     {

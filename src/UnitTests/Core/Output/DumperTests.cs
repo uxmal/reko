@@ -23,19 +23,15 @@ using NUnit.Framework;
 using Reko.Core;
 using Reko.Core.Code;
 using Reko.Core.Expressions;
-using Reko.Core.Machine;
 using Reko.Core.Memory;
 using Reko.Core.Output;
 using Reko.Core.Types;
 using Reko.UnitTests.Mocks;
-using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Text;
 
-namespace Reko.UnitTests.Core
+namespace Reko.UnitTests.Core.Output
 {
     [TestFixture]
     public class DumperTests
