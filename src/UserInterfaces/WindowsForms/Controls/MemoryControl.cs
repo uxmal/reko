@@ -20,6 +20,7 @@
 
 using Reko.Core;
 using Reko.Core.Memory;
+using Reko.Core.Output;
 using Reko.Core.Types;
 using Reko.Gui;
 using Reko.Gui.Services;
@@ -54,7 +55,7 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
         private uint wordSize;
         private uint cbRow;
         private IProcessorArchitecture arch;
-        private ByteMemoryArea mem;
+        private MemoryArea mem;
         private SegmentMap segmentMap;
         private ImageMap imageMap;
         private Encoding encoding;
@@ -415,8 +416,8 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
 
         private void ChangeMemoryArea(ImageSegment seg)
         {
-            mem = seg.MemoryArea as ByteMemoryArea;   //$TODO only byte granularity.
-            if (mem != null)
+            mem = seg.MemoryArea;
+            if (mem is not null)
             {
                 this.addrMin = Address.Max(mem.BaseAddress, seg.Address);
                 this.memSize = Math.Min((ulong) mem.Length, seg.Size);
@@ -631,15 +632,15 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
                 if (ctrl.addrTopVisible.ToLinear() >= laEnd)
                     return null;
                 EndianImageReader rdr = ctrl.arch.CreateImageReader(ctrl.mem, ctrl.addrTopVisible);
-                Rectangle rc = ctrl.ClientRectangle;
+                Rectangle rcClient = ctrl.ClientRectangle;
+                Rectangle rc = rcClient;
                 Size cell = ctrl.CellSize;
                 rc.Height = cell.Height;
 
                 ulong laSegEnd = 0;
                 while (rc.Top < ctrl.Height && (laEnd == 0 || rdr.Address.ToLinear() < laEnd))
                 {
-                    ImageSegment seg;
-                    if (ctrl.SegmentMap.TryFindSegment(ctrl.addrTopVisible, out seg))
+                    if (ctrl.SegmentMap.TryFindSegment(ctrl.addrTopVisible, out ImageSegment seg))
                     {
                         if (rdr.Address.ToLinear() >= laSegEnd)
                         {
@@ -647,10 +648,18 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
                             rdr = ctrl.arch.CreateImageReader(ctrl.mem, seg.Address + (rdr.Address - seg.Address));
                         }
                     }
-                    Address addr = PaintLine(g, rc, rdr, ptAddr, render);
-                    if (addr != null)
+                    var formatter = ctrl.mem.Formatter;
+                    var linePainter = new LinePainter(this, g, rc, ptAddr, render);
+                    var addr = linePainter.Paint(formatter, rdr, ctrl.Encoding);
+                    if (!render && addr != null)
                         return addr;
                     rc.Offset(0, ctrl.CellSize.Height);
+                }
+                var dyLeft = rcClient.Bottom - rc.Top;
+                if (dyLeft > 0)
+                {
+                    var theme = GetBrushTheme(null, false);
+                    g.FillRectangle(theme.Background, rcClient.X, rc.Top, rcClient.Width, dyLeft);
                 }
                 return null;
             }
@@ -672,139 +681,143 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
             /// Paints a line of the memory control, starting with the address. 
             /// </summary>
             /// <remarks>
-            /// The strategy is to find any items present at the current address, and try
-            /// to paint as many adjacent items as possible.
-            /// </remarks>
-            /// <param name="g"></param>
-            /// <param name="rc"></param>
-            /// <param name="rdr"></param>
-            private Address PaintLine(Graphics g, Rectangle rc, EndianImageReader rdr, Point ptAddr, bool render)
+
+            private class LinePainter : IMemoryFormatterOutput
             {
-                StringBuilder sxbCode = new StringBuilder(" ");
-                var abCode = new List<byte>();
+                private MemoryControlPainter mcp;
+                private Graphics g;
+                private Rectangle rc;
+                private readonly Point ptAddr;
+                private readonly bool render;
+                private Address addrHit;
 
-                // Draw the address part.
-
-                rc.X = 0;
-                string s = string.Format("{0}", rdr.Address);
-                int cx = (int)g.MeasureString(s + "X", ctrl.Font, rc.Width, StringFormat.GenericTypographic).Width;
-                if (!render && new Rectangle(rc.X, rc.Y, cx, rc.Height).Contains(ctrl.ptDown))
+                public LinePainter(MemoryControlPainter mcp, Graphics g, Rectangle rc, Point ptAddr, bool render)
                 {
-                    return rdr.Address;
+                    this.mcp = mcp;
+                    this.g = g;
+                    this.rc = rc;
+                    this.ptAddr = ptAddr;
+                    this.render = render;
                 }
-                else
+
+                public Address Paint(MemoryFormatter fmt, EndianImageReader rdr, Encoding enc)
                 {
-                    g.FillRectangle(this.defaultTheme.Background, rc.X, rc.Y, cx, rc.Height);
-                    g.DrawString(s, ctrl.Font, defaultTheme.Foreground, rc.X, rc.Y, StringFormat.GenericTypographic);
+                    fmt.RenderLine(rdr, enc, this);
+                    return addrHit;
                 }
-                cx -= cellSize.Width / 2;
-                rc = new Rectangle(cx, rc.Top, rc.Width - cx, rc.Height);
 
-                uint rowBytesLeft = ctrl.cbRow;
-                ulong linearSelected = ctrl.addrSelected != null ? ctrl.addrSelected.ToLinear() : ~0UL;
-                ulong linearAnchor = ctrl.addrAnchor != null ? ctrl.addrAnchor.ToLinear() : ~0UL;
-                ulong linearBeginSelection = Math.Min(linearSelected, linearAnchor);
-                ulong linearEndSelection = Math.Max(linearSelected, linearAnchor);
-
-                do
+                public void BeginLine()
                 {
-                    Address addr = rdr.Address;
-                    ulong linear = addr.ToLinear();
+                    rc.X = 0;
+                    addrHit = null;
+                }
 
-                    ImageMapItem item;
-                    ulong cbIn = 0;
-                    if (ctrl.ImageMap.TryFindItem(addr, out item))
+                public void EndLine(byte[] bytes)
+                {
+                }
+
+                public void RenderAddress(Address addr)
+                {
+                    if (addrHit != null)
+                        return;
+                    string s = string.Format("{0}", addr);
+                    int cx = (int) g.MeasureString(s + "X", mcp.ctrl.Font, rc.Width, StringFormat.GenericTypographic).Width;
+                    if (!render && new Rectangle(rc.X, rc.Y, cx, rc.Height).Contains(mcp.ctrl.ptDown))
                     {
-                        cbIn = (linear - item.Address.ToLinear());            // # of bytes 'inside' the block we are.
+                        this.addrHit = addr;
+                        return;
                     }
-                    uint cbToDraw = 16; // item.Size - cbIn;
+                    g.FillRectangle(mcp.defaultTheme.Background, rc.X, rc.Y, cx, rc.Height);
+                    g.DrawString(s, mcp.ctrl.Font, mcp.defaultTheme.Foreground, rc.X, rc.Y, StringFormat.GenericTypographic);
+                    cx -= mcp.cellSize.Width / 2;
+                    rc = new Rectangle(cx, rc.Top, rc.Width - cx, rc.Height);
+                }
 
-                    // See if the chunk goes off the edge of the line. If so, clip it.
-                    if (cbToDraw > rowBytesLeft)
-                        cbToDraw = rowBytesLeft;
+                public void RenderFillerSpan(int nCells)
+                {
+                    if (addrHit != null)
+                        return;
+                    int cx = mcp.cellSize.Width * nCells * 3;
+                    if (cx <= 0)
+                        return;
+                    var rcFiller = new Rectangle(
+                        rc.Left,
+                        rc.Top,
+                        cx,
+                        rc.Height);
+                    var theme = mcp.GetBrushTheme(null, false);
+                    g.FillRectangle(theme.Background, rcFiller);
+                    rc = new Rectangle(rc.X + rcFiller.Width, rc.Y, rc.Width - rcFiller.Width, rc.Height);
+                }
 
-                    // Now paint the bytes in this span.
+                public void RenderUnit(Address addUnit, string s)
+                {
+                    if (addrHit != null)
+                        return;
 
-                    for (int i = 0; i < cbToDraw; ++i)
+                    int cx = mcp.cellSize.Width * (s.Length + 1);
+                    var rcUnit = new Rectangle(
+                        rc.Left,
+                        rc.Top,
+                        cx,
+                        rc.Height);
+                    if (!render && rcUnit.Contains(ptAddr))
                     {
-                        Address addrByte = rdr.Address;
-                        ctrl.ImageMap.TryFindItem(addrByte, out item);
-                        bool isSelected = linearBeginSelection <= addrByte.ToLinear() && addrByte.ToLinear() <= linearEndSelection;
-                        bool isCursor = addrByte.ToLinear() == linearSelected;
-                        if (rdr.IsValid)
-                        {
-                            byte b = rdr.ReadByte();
-                            s = string.Format("{0:X2}", b);
-                            abCode.Add(b);
-                        }
-                        else
-                        {
-                            s = "  ";
-                            abCode.Add(0x20);   //$BUG: encoding? What about Ebcdic?
-                            rdr.Offset += 1;
-                        }
-
-                        cx = cellSize.Width * 3;
-                        Rectangle rcByte = new Rectangle(
-                            rc.Left,
-                            rc.Top,
-                            cx,
-                            rc.Height);
-
-                        if (!render && rcByte.Contains(ptAddr))
-                            return addrByte;
-
-                        var theme = GetBrushTheme(item, isSelected);
-                        g.FillRectangle(theme.Background, rc.Left, rc.Top, cx, rc.Height);
-                        if (!isSelected &&
-                            theme.StartMarker != null && 
-                            item != null &&
-                            addrByte.ToLinear() == item.Address.ToLinear())
-                        {
-                            var pts = new Point[]
-                            {
-                                rc.Location,
-                                rc.Location,
-                                rc.Location,
-                            };
-                            pts[1].Offset(4, 0);
-                            pts[2].Offset(0, 4);
-                            g.FillClosedCurve(theme.StartMarker, pts);
-                        }
-                        g.DrawString(s, ctrl.Font, theme.Foreground, rc.Left + cellSize.Width / 2, rc.Top, StringFormat.GenericTypographic);
-                        if (isCursor)
-                        {
-                            ControlPaint.DrawFocusRectangle(g, rc);
-                        }
-                        rc = new Rectangle(rc.X + cx, rc.Y, rc.Width - cx, rc.Height);
+                        this.addrHit = addUnit;
+                        return;
                     }
-                    rowBytesLeft -= cbToDraw;
-                } while (rowBytesLeft > 0);
 
-                if (render)
-                {
-                    g.FillRectangle(this.defaultTheme.Background, rc);
-                    sxbCode.Append(RenderCode(abCode.ToArray()));
-                    g.DrawString(sxbCode.ToString(), ctrl.Font, this.defaultTheme.Foreground, rc.X + cellSize.Width, rc.Top, StringFormat.GenericTypographic);
-                }
-                return null;
-            }
+                    ulong linearSelected = mcp.ctrl.addrSelected != null ? mcp.ctrl.addrSelected.ToLinear() : ~0UL;
+                    ulong linearAnchor = mcp.ctrl.addrAnchor != null ? mcp.ctrl.addrAnchor.ToLinear() : ~0UL;
+                    ulong linearBeginSelection = Math.Min(linearSelected, linearAnchor);
+                    ulong linearEndSelection = Math.Max(linearSelected, linearAnchor);
 
-            private string RenderCode(byte[] bytes)
-            {
-                var chars = this.ctrl.encoding.GetChars(bytes);
-                for (int i = 0; i < chars.Length; ++i)
-                {
-                    char ch = chars[i];
-                    if (char.IsControl(ch))
-                        chars[i] = '.';
+                    mcp.ctrl.ImageMap.TryFindItem(addUnit, out var item);
+                    bool isSelected = linearBeginSelection <= addUnit.ToLinear() && addUnit.ToLinear() <= linearEndSelection;
+                    bool isCursor = addUnit.ToLinear() == linearSelected;
+
+                    var theme = mcp.GetBrushTheme(item, isSelected);
+                    g.FillRectangle(theme.Background, rc.Left, rc.Top, cx, rc.Height);
+                    if (!isSelected &&
+                        theme.StartMarker != null &&
+                        item != null &&
+                        addUnit.ToLinear() == item.Address.ToLinear())
+                    {
+                        var pts = new Point[]
+                        {
+                            rc.Location,
+                            rc.Location,
+                            rc.Location,
+                        };
+                        pts[1].Offset(4, 0);
+                        pts[2].Offset(0, 4);
+                        g.FillClosedCurve(theme.StartMarker, pts);
+                    }
+                    g.DrawString(s, mcp.ctrl.Font, theme.Foreground, rc.Left + mcp.cellSize.Width / 2, rc.Top, StringFormat.GenericTypographic);
+                    if (isCursor)
+                    {
+                        ControlPaint.DrawFocusRectangle(g, rc);
+                    }
+                    rc = new Rectangle(rc.X + cx, rc.Y, rc.Width - cx, rc.Height);
                 }
-                return new string(chars);
+
+                public void RenderUnitsAsText(int prePadding, string sBytes, int postPadding)
+                {
+                    if (render)
+                    {
+                        var sb = new StringBuilder();
+                        sb.Append(' ', prePadding);
+                        sb.Append(sBytes);
+                        sb.Append(' ', postPadding);
+                        g.FillRectangle(mcp.defaultTheme.Background, rc);
+                        g.DrawString(sb.ToString(), mcp.ctrl.Font, mcp.defaultTheme.Foreground, rc.X + mcp.cellSize.Width, rc.Top, StringFormat.GenericTypographic);
+                    }
+                }
             }
 
             private BrushTheme GetBrushTheme(ImageMapItem item, bool selected)
             {
-                if (item == null)
+                if (item is null)
                     return defaultTheme;
                 if (selected)
                     return selectTheme;
