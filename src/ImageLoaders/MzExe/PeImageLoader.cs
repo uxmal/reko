@@ -18,23 +18,20 @@
  */
 #endregion
 
-using Reko.Arch.X86;
 using Reko.Core;
+using Reko.Core.Configuration;
+using Reko.Core.Diagnostics;
+using Reko.Core.Loading;
+using Reko.Core.Memory;
+using Reko.Core.Serialization;
 using Reko.Core.Services;
-using Reko.Environments.Windows;
+using Reko.Core.Types;
+using Reko.ImageLoaders.MzExe.Pe;
 using System;
-using System.IO;
-using System.Linq;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using System.Text;
-using Reko.Core.Configuration;
-using Reko.Core.Types;
-using Reko.Core.Serialization;
-using Reko.ImageLoaders.MzExe.Pe;
-using Reko.Core.Memory;
-using Reko.Core.Loading;
-using Reko.Core.Diagnostics;
 
 namespace Reko.ImageLoaders.MzExe
 {
@@ -44,7 +41,7 @@ namespace Reko.ImageLoaders.MzExe
     /// </summary>
 	public class PeImageLoader : ProgramImageLoader
 	{
-        internal static TraceSwitch trace = new TraceSwitch(nameof(PeImageLoader), "Traces the progress of loading PE binary images") { Level = TraceLevel.Verbose };
+        internal static readonly TraceSwitch trace = new TraceSwitch(nameof(PeImageLoader), "Traces the progress of loading PE binary images") { Level = TraceLevel.Warning };
 
         private const ushort MACHINE_x86_64 = (ushort) 0x8664u;
 		private const ushort MACHINE_m68k = (ushort)0x0268;
@@ -204,7 +201,7 @@ namespace Reko.ImageLoaders.MzExe
             case MACHINE_POWERPC: arch = "ppc-le-32"; break;
             case MACHINE_POWERPC_BE: arch = "ppc-be-32"; break;
             case MACHINE_XBOX360: arch = "ppc-be-64"; break;
-			default: throw new ArgumentException(string.Format("Unsupported machine type 0x{0:X4} in PE header.", peMachineType));
+			default: throw new NotSupportedException($"Unsupported machine type 0x{peMachineType:X4} in PE header.");
 			}
             return cfgSvc.GetArchitecture(arch)!;
 		}
@@ -269,7 +266,7 @@ namespace Reko.ImageLoaders.MzExe
             case MACHINE_POWERPC_BE: return new PowerPcRelocator(Services, program);    //$REVIEW do we need a big-endian version of this?
             case MACHINE_XBOX360: return new PowerPcRelocator(Services, program);       //$REVIEW do we need a big-endian version of this?
 
-            default: throw new ArgumentException(string.Format("Unsupported machine type 0x:{0:X4} in PE hader.", peMachineType));
+            default: throw new NotSupportedException($"Unsupported machine type 0x:{peMachineType:X4} in PE header.");
             }
         }
 
@@ -302,9 +299,12 @@ namespace Reko.ImageLoaders.MzExe
             {
                 sectionList = LoadSections(addrLoad, rvaSectionTable, sections);
                 imgLoaded = LoadSectionBytes(addrLoad, sectionList);
-                AddSectionsToImageMap(addrLoad, SegmentMap);
+                AddSectionsToSegmentMap(addrLoad, SegmentMap);
             }
-            this.program = new Program(SegmentMap, arch, platform, ImageSymbols, new());
+            this.program = new Program(SegmentMap, arch, platform, ImageSymbols, new())
+            {
+                Name = this.ImageLocation.GetFilename()
+            };
             this.importReferences = program.ImportReferences;
 
             var rsrcLoader = new ResourceLoader(this.imgLoaded, rvaResources);
@@ -573,8 +573,8 @@ namespace Reko.ImageLoaders.MzExe
             if (s != null)
                 return s;
 
-            string? name = null;
-            SerializedSignature? ssig = null;
+            string? name;
+            SerializedSignature? ssig;
 
             static Argument_v1 Arg(string? n, string t) => new Argument_v1
             {
@@ -614,7 +614,7 @@ namespace Reko.ImageLoaders.MzExe
             return entrySymbol;
         }
 
-        public void AddSectionsToImageMap(Address addrLoad, SegmentMap imageMap)
+        public void AddSectionsToSegmentMap(Address addrLoad, SegmentMap segmentMap)
         {
             foreach (Section s in sectionList)
             {
@@ -627,7 +627,7 @@ namespace Reko.ImageLoaders.MzExe
                 {
                     acc |= AccessMode.Execute;
                 }
-                var seg = SegmentMap.AddSegment(new ImageSegment(
+                var seg = segmentMap.AddSegment(new ImageSegment(
                     s.Name!,
                     addrLoad + s.VirtualAddress,
                     imgLoaded,
@@ -784,7 +784,7 @@ void applyRelX86(uint8_t* Off, uint16_t Type, Defined* Sym,
             if (rva == 0)
                 return null;
 			EndianImageReader rdr = imgLoaded.CreateLeReader(rva);
-			List<byte> bytes = new List<byte>();
+			var bytes = new List<byte>();
 			byte b;
 			while ((b = rdr.ReadByte()) != 0)
 			{
@@ -998,12 +998,12 @@ void applyRelX86(uint8_t* Off, uint16_t Type, Defined* Sym,
 
 		private static Section ReadSection(EndianImageReader rdr)
 		{
-			Section sec = new Section();
+			var sec = new Section();
 			sec.Name = ReadSectionName(rdr);
 			sec.VirtualSize = rdr.ReadLeUInt32();
 			sec.VirtualAddress = rdr.ReadLeUInt32();
 
-			if (sec.Name == null) {
+			if (sec.Name is null) {
 				sec.Name = ".reko_" + sec.VirtualAddress.ToString("x16");
 			}
 
@@ -1085,7 +1085,6 @@ void applyRelX86(uint8_t* Off, uint16_t Type, Defined* Sym,
             SortedList<Address, ImageSymbol> symbols)
         {
             var rvaTableEnd = rvaExceptionTable + sizeExceptionTable; 
-            var functionStarts = new List<Address>();
             if (rvaExceptionTable == 0 || sizeExceptionTable == 0)
                 return;
             var rdr = new LeImageReader(this.imgLoaded.Bytes, rvaExceptionTable);

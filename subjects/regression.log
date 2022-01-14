@@ -234,20 +234,6 @@ Warning: Checksum error in line 5.
 Warning: Checksum error in line 6.
 Warning: Checksum error in line 7.
 Warning: Checksum error in line 8.
-0579: error: Failed to write global variable g_r0579.
-    Reading data type real48 not implemented yet.
-       at Reko.Core.Memory.Word16ImageReader.TryReadBe(DataType dataType, Constant& value) in d:\dev\uxmal\reko\master\src\Core\Memory\Word16ImageReader.cs:line 247
-   at Reko.Core.Memory.Word16BeImageReader.TryRead(PrimitiveType dataType, Constant& value) in d:\dev\uxmal\reko\master\src\Core\Memory\Word16BeImageReader.cs:line 82
-   at Reko.Core.Output.GlobalDataWriter.VisitPrimitive(PrimitiveType pt) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 273
-   at Reko.Core.Types.PrimitiveType.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\PrimitiveType.cs:line 100
-   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(Address address, DataType dataType, String name) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 146
-057C: error: Failed to write global variable g_r057C.
-    Reading data type real48 not implemented yet.
-       at Reko.Core.Memory.Word16ImageReader.TryReadBe(DataType dataType, Constant& value) in d:\dev\uxmal\reko\master\src\Core\Memory\Word16ImageReader.cs:line 247
-   at Reko.Core.Memory.Word16BeImageReader.TryRead(PrimitiveType dataType, Constant& value) in d:\dev\uxmal\reko\master\src\Core\Memory\Word16BeImageReader.cs:line 82
-   at Reko.Core.Output.GlobalDataWriter.VisitPrimitive(PrimitiveType pt) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 273
-   at Reko.Core.Types.PrimitiveType.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\PrimitiveType.cs:line 100
-   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(Address address, DataType dataType, String name) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 146
 057F: error: Failed to write global variable g_r057F.
     Reading data type real48 not implemented yet.
        at Reko.Core.Memory.Word16ImageReader.TryReadBe(DataType dataType, Constant& value) in d:\dev\uxmal\reko\master\src\Core\Memory\Word16ImageReader.cs:line 247
@@ -267,6 +253,27 @@ Warning: Checksum error in line 8.
    at Reko.Core.Types.EquivalenceClass.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\EquivalenceClass.cs:line 55
    at Reko.Core.Output.GlobalDataWriter.VisitStructure(StructureType str) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 381
    at Reko.Core.Types.StructureType.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\StructureType.cs:line 59
+   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(Address address, DataType dataType, String name) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 146
+8003: error: Failed to write global variable g_rFFFF8003.
+    Reading data type real48 not implemented yet.
+       at Reko.Core.Memory.Word16ImageReader.TryReadBe(DataType dataType, Constant& value) in d:\dev\uxmal\reko\master\src\Core\Memory\Word16ImageReader.cs:line 247
+   at Reko.Core.Memory.Word16BeImageReader.TryRead(PrimitiveType dataType, Constant& value) in d:\dev\uxmal\reko\master\src\Core\Memory\Word16BeImageReader.cs:line 82
+   at Reko.Core.Output.GlobalDataWriter.VisitPrimitive(PrimitiveType pt) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 273
+   at Reko.Core.Types.PrimitiveType.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\PrimitiveType.cs:line 100
+   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(Address address, DataType dataType, String name) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 146
+8006: error: Failed to write global variable g_r8006.
+    Reading data type real48 not implemented yet.
+       at Reko.Core.Memory.Word16ImageReader.TryReadBe(DataType dataType, Constant& value) in d:\dev\uxmal\reko\master\src\Core\Memory\Word16ImageReader.cs:line 247
+   at Reko.Core.Memory.Word16BeImageReader.TryRead(PrimitiveType dataType, Constant& value) in d:\dev\uxmal\reko\master\src\Core\Memory\Word16BeImageReader.cs:line 82
+   at Reko.Core.Output.GlobalDataWriter.VisitPrimitive(PrimitiveType pt) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 273
+   at Reko.Core.Types.PrimitiveType.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\PrimitiveType.cs:line 100
+   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(Address address, DataType dataType, String name) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 146
+8009: error: Failed to write global variable g_rFFFF8009.
+    Reading data type real48 not implemented yet.
+       at Reko.Core.Memory.Word16ImageReader.TryReadBe(DataType dataType, Constant& value) in d:\dev\uxmal\reko\master\src\Core\Memory\Word16ImageReader.cs:line 247
+   at Reko.Core.Memory.Word16BeImageReader.TryRead(PrimitiveType dataType, Constant& value) in d:\dev\uxmal\reko\master\src\Core\Memory\Word16BeImageReader.cs:line 82
+   at Reko.Core.Output.GlobalDataWriter.VisitPrimitive(PrimitiveType pt) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 273
+   at Reko.Core.Types.PrimitiveType.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\PrimitiveType.cs:line 100
    at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(Address address, DataType dataType, String name) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 146
 800C: error: Failed to write global variable g_tFFFF800C.
     Reading data type byte not implemented yet.
@@ -294,15 +301,71 @@ Warning: Checksum error in line 8.
    at Reko.Core.Output.GlobalDataWriter.VisitStructure(StructureType str) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 381
    at Reko.Core.Types.StructureType.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\StructureType.cs:line 59
    at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(Address address, DataType dataType, String name) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 146
-8030: warning: Expected sizes of arrays to have been determined by now
-8054: error: Failed to write global variable g_rFFFF8054.
+801E: error: Failed to write global variable g_rFFFF801E.
     Reading data type real48 not implemented yet.
        at Reko.Core.Memory.Word16ImageReader.TryReadBe(DataType dataType, Constant& value) in d:\dev\uxmal\reko\master\src\Core\Memory\Word16ImageReader.cs:line 247
    at Reko.Core.Memory.Word16BeImageReader.TryRead(PrimitiveType dataType, Constant& value) in d:\dev\uxmal\reko\master\src\Core\Memory\Word16BeImageReader.cs:line 82
    at Reko.Core.Output.GlobalDataWriter.VisitPrimitive(PrimitiveType pt) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 273
    at Reko.Core.Types.PrimitiveType.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\PrimitiveType.cs:line 100
    at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(Address address, DataType dataType, String name) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 146
-8057: error: Failed to write global variable g_r8057.
+8021: error: Failed to write global variable g_r8021.
+    Reading data type real48 not implemented yet.
+       at Reko.Core.Memory.Word16ImageReader.TryReadBe(DataType dataType, Constant& value) in d:\dev\uxmal\reko\master\src\Core\Memory\Word16ImageReader.cs:line 247
+   at Reko.Core.Memory.Word16BeImageReader.TryRead(PrimitiveType dataType, Constant& value) in d:\dev\uxmal\reko\master\src\Core\Memory\Word16BeImageReader.cs:line 82
+   at Reko.Core.Output.GlobalDataWriter.VisitPrimitive(PrimitiveType pt) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 273
+   at Reko.Core.Types.PrimitiveType.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\PrimitiveType.cs:line 100
+   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(Address address, DataType dataType, String name) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 146
+8024: error: Failed to write global variable g_rFFFF8024.
+    Reading data type real48 not implemented yet.
+       at Reko.Core.Memory.Word16ImageReader.TryReadBe(DataType dataType, Constant& value) in d:\dev\uxmal\reko\master\src\Core\Memory\Word16ImageReader.cs:line 247
+   at Reko.Core.Memory.Word16BeImageReader.TryRead(PrimitiveType dataType, Constant& value) in d:\dev\uxmal\reko\master\src\Core\Memory\Word16BeImageReader.cs:line 82
+   at Reko.Core.Output.GlobalDataWriter.VisitPrimitive(PrimitiveType pt) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 273
+   at Reko.Core.Types.PrimitiveType.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\PrimitiveType.cs:line 100
+   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(Address address, DataType dataType, String name) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 146
+8027: error: Failed to write global variable g_r8027.
+    Reading data type real48 not implemented yet.
+       at Reko.Core.Memory.Word16ImageReader.TryReadBe(DataType dataType, Constant& value) in d:\dev\uxmal\reko\master\src\Core\Memory\Word16ImageReader.cs:line 247
+   at Reko.Core.Memory.Word16BeImageReader.TryRead(PrimitiveType dataType, Constant& value) in d:\dev\uxmal\reko\master\src\Core\Memory\Word16BeImageReader.cs:line 82
+   at Reko.Core.Output.GlobalDataWriter.VisitPrimitive(PrimitiveType pt) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 273
+   at Reko.Core.Types.PrimitiveType.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\PrimitiveType.cs:line 100
+   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(Address address, DataType dataType, String name) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 146
+802A: error: Failed to write global variable g_rFFFF802A.
+    Reading data type real48 not implemented yet.
+       at Reko.Core.Memory.Word16ImageReader.TryReadBe(DataType dataType, Constant& value) in d:\dev\uxmal\reko\master\src\Core\Memory\Word16ImageReader.cs:line 247
+   at Reko.Core.Memory.Word16BeImageReader.TryRead(PrimitiveType dataType, Constant& value) in d:\dev\uxmal\reko\master\src\Core\Memory\Word16BeImageReader.cs:line 82
+   at Reko.Core.Output.GlobalDataWriter.VisitPrimitive(PrimitiveType pt) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 273
+   at Reko.Core.Types.PrimitiveType.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\PrimitiveType.cs:line 100
+   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(Address address, DataType dataType, String name) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 146
+802D: error: Failed to write global variable g_r802D.
+    Reading data type real48 not implemented yet.
+       at Reko.Core.Memory.Word16ImageReader.TryReadBe(DataType dataType, Constant& value) in d:\dev\uxmal\reko\master\src\Core\Memory\Word16ImageReader.cs:line 247
+   at Reko.Core.Memory.Word16BeImageReader.TryRead(PrimitiveType dataType, Constant& value) in d:\dev\uxmal\reko\master\src\Core\Memory\Word16BeImageReader.cs:line 82
+   at Reko.Core.Output.GlobalDataWriter.VisitPrimitive(PrimitiveType pt) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 273
+   at Reko.Core.Types.PrimitiveType.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\PrimitiveType.cs:line 100
+   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(Address address, DataType dataType, String name) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 146
+8030: warning: Expected sizes of arrays to have been determined by now
+8051: error: Failed to write global variable g_rFFFF8051.
+    Reading data type real48 not implemented yet.
+       at Reko.Core.Memory.Word16ImageReader.TryReadBe(DataType dataType, Constant& value) in d:\dev\uxmal\reko\master\src\Core\Memory\Word16ImageReader.cs:line 247
+   at Reko.Core.Memory.Word16BeImageReader.TryRead(PrimitiveType dataType, Constant& value) in d:\dev\uxmal\reko\master\src\Core\Memory\Word16BeImageReader.cs:line 82
+   at Reko.Core.Output.GlobalDataWriter.VisitPrimitive(PrimitiveType pt) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 273
+   at Reko.Core.Types.PrimitiveType.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\PrimitiveType.cs:line 100
+   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(Address address, DataType dataType, String name) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 146
+8054: error: Failed to write global variable g_r8054.
+    Reading data type real48 not implemented yet.
+       at Reko.Core.Memory.Word16ImageReader.TryReadBe(DataType dataType, Constant& value) in d:\dev\uxmal\reko\master\src\Core\Memory\Word16ImageReader.cs:line 247
+   at Reko.Core.Memory.Word16BeImageReader.TryRead(PrimitiveType dataType, Constant& value) in d:\dev\uxmal\reko\master\src\Core\Memory\Word16BeImageReader.cs:line 82
+   at Reko.Core.Output.GlobalDataWriter.VisitPrimitive(PrimitiveType pt) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 273
+   at Reko.Core.Types.PrimitiveType.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\PrimitiveType.cs:line 100
+   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(Address address, DataType dataType, String name) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 146
+8057: error: Failed to write global variable g_rFFFF8057.
+    Reading data type real48 not implemented yet.
+       at Reko.Core.Memory.Word16ImageReader.TryReadBe(DataType dataType, Constant& value) in d:\dev\uxmal\reko\master\src\Core\Memory\Word16ImageReader.cs:line 247
+   at Reko.Core.Memory.Word16BeImageReader.TryRead(PrimitiveType dataType, Constant& value) in d:\dev\uxmal\reko\master\src\Core\Memory\Word16BeImageReader.cs:line 82
+   at Reko.Core.Output.GlobalDataWriter.VisitPrimitive(PrimitiveType pt) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 273
+   at Reko.Core.Types.PrimitiveType.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\PrimitiveType.cs:line 100
+   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(Address address, DataType dataType, String name) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 146
+805A: error: Failed to write global variable g_r805A.
     Reading data type real48 not implemented yet.
        at Reko.Core.Memory.Word16ImageReader.TryReadBe(DataType dataType, Constant& value) in d:\dev\uxmal\reko\master\src\Core\Memory\Word16ImageReader.cs:line 247
    at Reko.Core.Memory.Word16BeImageReader.TryRead(PrimitiveType dataType, Constant& value) in d:\dev\uxmal\reko\master\src\Core\Memory\Word16BeImageReader.cs:line 82
@@ -317,34 +380,14 @@ Warning: Checksum error in line 8.
    at Reko.Core.Output.GlobalDataWriter.VisitPrimitive(PrimitiveType pt) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 273
    at Reko.Core.Types.PrimitiveType.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\PrimitiveType.cs:line 100
    at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(Address address, DataType dataType, String name) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 146
-8064: error: Failed to write global variable g_r8064.
+8064: error: Failed to write global variable g_rFFFF8064.
     Reading data type real48 not implemented yet.
        at Reko.Core.Memory.Word16ImageReader.TryReadBe(DataType dataType, Constant& value) in d:\dev\uxmal\reko\master\src\Core\Memory\Word16ImageReader.cs:line 247
    at Reko.Core.Memory.Word16BeImageReader.TryRead(PrimitiveType dataType, Constant& value) in d:\dev\uxmal\reko\master\src\Core\Memory\Word16BeImageReader.cs:line 82
    at Reko.Core.Output.GlobalDataWriter.VisitPrimitive(PrimitiveType pt) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 273
    at Reko.Core.Types.PrimitiveType.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\PrimitiveType.cs:line 100
    at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(Address address, DataType dataType, String name) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 146
-806E: error: Failed to write global variable g_tFFFF806E.
-    Reading data type byte not implemented yet.
-       at Reko.Core.Memory.Word16ImageReader.TryReadBe(DataType dataType, Constant& value) in d:\dev\uxmal\reko\master\src\Core\Memory\Word16ImageReader.cs:line 247
-   at Reko.Core.Memory.Word16BeImageReader.TryRead(PrimitiveType dataType, Constant& value) in d:\dev\uxmal\reko\master\src\Core\Memory\Word16BeImageReader.cs:line 82
-   at Reko.Core.Output.GlobalDataWriter.VisitPrimitive(PrimitiveType pt) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 273
-   at Reko.Core.Types.PrimitiveType.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\PrimitiveType.cs:line 100
-   at Reko.Core.Output.GlobalDataWriter.VisitUnion(UnionType ut) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 430
-   at Reko.Core.Types.UnionType.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\UnionType.cs:line 81
-   at Reko.Core.Output.GlobalDataWriter.VisitEquivalenceClass(EquivalenceClass eq) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 245
-   at Reko.Core.Types.EquivalenceClass.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\EquivalenceClass.cs:line 55
-   at Reko.Core.Output.GlobalDataWriter.VisitStructure(StructureType str) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 381
-   at Reko.Core.Types.StructureType.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\StructureType.cs:line 59
-   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(Address address, DataType dataType, String name) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 146
-0579: error: Failed to write global variable g_r0579.
-    Reading data type real48 not implemented yet.
-       at Reko.Core.Memory.Word16ImageReader.TryReadBe(DataType dataType, Constant& value) in d:\dev\uxmal\reko\master\src\Core\Memory\Word16ImageReader.cs:line 247
-   at Reko.Core.Memory.Word16BeImageReader.TryRead(PrimitiveType dataType, Constant& value) in d:\dev\uxmal\reko\master\src\Core\Memory\Word16BeImageReader.cs:line 82
-   at Reko.Core.Output.GlobalDataWriter.VisitPrimitive(PrimitiveType pt) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 273
-   at Reko.Core.Types.PrimitiveType.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\PrimitiveType.cs:line 100
-   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(Address address, DataType dataType, String name) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 146
-057C: error: Failed to write global variable g_r057C.
+8067: error: Failed to write global variable g_r8067.
     Reading data type real48 not implemented yet.
        at Reko.Core.Memory.Word16ImageReader.TryReadBe(DataType dataType, Constant& value) in d:\dev\uxmal\reko\master\src\Core\Memory\Word16ImageReader.cs:line 247
    at Reko.Core.Memory.Word16BeImageReader.TryRead(PrimitiveType dataType, Constant& value) in d:\dev\uxmal\reko\master\src\Core\Memory\Word16BeImageReader.cs:line 82
@@ -370,6 +413,27 @@ Warning: Checksum error in line 8.
    at Reko.Core.Types.EquivalenceClass.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\EquivalenceClass.cs:line 55
    at Reko.Core.Output.GlobalDataWriter.VisitStructure(StructureType str) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 381
    at Reko.Core.Types.StructureType.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\StructureType.cs:line 59
+   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(Address address, DataType dataType, String name) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 146
+8003: error: Failed to write global variable g_rFFFF8003.
+    Reading data type real48 not implemented yet.
+       at Reko.Core.Memory.Word16ImageReader.TryReadBe(DataType dataType, Constant& value) in d:\dev\uxmal\reko\master\src\Core\Memory\Word16ImageReader.cs:line 247
+   at Reko.Core.Memory.Word16BeImageReader.TryRead(PrimitiveType dataType, Constant& value) in d:\dev\uxmal\reko\master\src\Core\Memory\Word16BeImageReader.cs:line 82
+   at Reko.Core.Output.GlobalDataWriter.VisitPrimitive(PrimitiveType pt) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 273
+   at Reko.Core.Types.PrimitiveType.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\PrimitiveType.cs:line 100
+   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(Address address, DataType dataType, String name) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 146
+8006: error: Failed to write global variable g_r8006.
+    Reading data type real48 not implemented yet.
+       at Reko.Core.Memory.Word16ImageReader.TryReadBe(DataType dataType, Constant& value) in d:\dev\uxmal\reko\master\src\Core\Memory\Word16ImageReader.cs:line 247
+   at Reko.Core.Memory.Word16BeImageReader.TryRead(PrimitiveType dataType, Constant& value) in d:\dev\uxmal\reko\master\src\Core\Memory\Word16BeImageReader.cs:line 82
+   at Reko.Core.Output.GlobalDataWriter.VisitPrimitive(PrimitiveType pt) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 273
+   at Reko.Core.Types.PrimitiveType.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\PrimitiveType.cs:line 100
+   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(Address address, DataType dataType, String name) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 146
+8009: error: Failed to write global variable g_rFFFF8009.
+    Reading data type real48 not implemented yet.
+       at Reko.Core.Memory.Word16ImageReader.TryReadBe(DataType dataType, Constant& value) in d:\dev\uxmal\reko\master\src\Core\Memory\Word16ImageReader.cs:line 247
+   at Reko.Core.Memory.Word16BeImageReader.TryRead(PrimitiveType dataType, Constant& value) in d:\dev\uxmal\reko\master\src\Core\Memory\Word16BeImageReader.cs:line 82
+   at Reko.Core.Output.GlobalDataWriter.VisitPrimitive(PrimitiveType pt) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 273
+   at Reko.Core.Types.PrimitiveType.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\PrimitiveType.cs:line 100
    at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(Address address, DataType dataType, String name) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 146
 800C: error: Failed to write global variable g_tFFFF800C.
     Reading data type byte not implemented yet.
@@ -397,15 +461,71 @@ Warning: Checksum error in line 8.
    at Reko.Core.Output.GlobalDataWriter.VisitStructure(StructureType str) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 381
    at Reko.Core.Types.StructureType.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\StructureType.cs:line 59
    at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(Address address, DataType dataType, String name) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 146
-8030: warning: Expected sizes of arrays to have been determined by now
-8054: error: Failed to write global variable g_rFFFF8054.
+801E: error: Failed to write global variable g_rFFFF801E.
     Reading data type real48 not implemented yet.
        at Reko.Core.Memory.Word16ImageReader.TryReadBe(DataType dataType, Constant& value) in d:\dev\uxmal\reko\master\src\Core\Memory\Word16ImageReader.cs:line 247
    at Reko.Core.Memory.Word16BeImageReader.TryRead(PrimitiveType dataType, Constant& value) in d:\dev\uxmal\reko\master\src\Core\Memory\Word16BeImageReader.cs:line 82
    at Reko.Core.Output.GlobalDataWriter.VisitPrimitive(PrimitiveType pt) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 273
    at Reko.Core.Types.PrimitiveType.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\PrimitiveType.cs:line 100
    at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(Address address, DataType dataType, String name) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 146
-8057: error: Failed to write global variable g_r8057.
+8021: error: Failed to write global variable g_r8021.
+    Reading data type real48 not implemented yet.
+       at Reko.Core.Memory.Word16ImageReader.TryReadBe(DataType dataType, Constant& value) in d:\dev\uxmal\reko\master\src\Core\Memory\Word16ImageReader.cs:line 247
+   at Reko.Core.Memory.Word16BeImageReader.TryRead(PrimitiveType dataType, Constant& value) in d:\dev\uxmal\reko\master\src\Core\Memory\Word16BeImageReader.cs:line 82
+   at Reko.Core.Output.GlobalDataWriter.VisitPrimitive(PrimitiveType pt) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 273
+   at Reko.Core.Types.PrimitiveType.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\PrimitiveType.cs:line 100
+   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(Address address, DataType dataType, String name) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 146
+8024: error: Failed to write global variable g_rFFFF8024.
+    Reading data type real48 not implemented yet.
+       at Reko.Core.Memory.Word16ImageReader.TryReadBe(DataType dataType, Constant& value) in d:\dev\uxmal\reko\master\src\Core\Memory\Word16ImageReader.cs:line 247
+   at Reko.Core.Memory.Word16BeImageReader.TryRead(PrimitiveType dataType, Constant& value) in d:\dev\uxmal\reko\master\src\Core\Memory\Word16BeImageReader.cs:line 82
+   at Reko.Core.Output.GlobalDataWriter.VisitPrimitive(PrimitiveType pt) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 273
+   at Reko.Core.Types.PrimitiveType.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\PrimitiveType.cs:line 100
+   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(Address address, DataType dataType, String name) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 146
+8027: error: Failed to write global variable g_r8027.
+    Reading data type real48 not implemented yet.
+       at Reko.Core.Memory.Word16ImageReader.TryReadBe(DataType dataType, Constant& value) in d:\dev\uxmal\reko\master\src\Core\Memory\Word16ImageReader.cs:line 247
+   at Reko.Core.Memory.Word16BeImageReader.TryRead(PrimitiveType dataType, Constant& value) in d:\dev\uxmal\reko\master\src\Core\Memory\Word16BeImageReader.cs:line 82
+   at Reko.Core.Output.GlobalDataWriter.VisitPrimitive(PrimitiveType pt) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 273
+   at Reko.Core.Types.PrimitiveType.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\PrimitiveType.cs:line 100
+   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(Address address, DataType dataType, String name) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 146
+802A: error: Failed to write global variable g_rFFFF802A.
+    Reading data type real48 not implemented yet.
+       at Reko.Core.Memory.Word16ImageReader.TryReadBe(DataType dataType, Constant& value) in d:\dev\uxmal\reko\master\src\Core\Memory\Word16ImageReader.cs:line 247
+   at Reko.Core.Memory.Word16BeImageReader.TryRead(PrimitiveType dataType, Constant& value) in d:\dev\uxmal\reko\master\src\Core\Memory\Word16BeImageReader.cs:line 82
+   at Reko.Core.Output.GlobalDataWriter.VisitPrimitive(PrimitiveType pt) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 273
+   at Reko.Core.Types.PrimitiveType.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\PrimitiveType.cs:line 100
+   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(Address address, DataType dataType, String name) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 146
+802D: error: Failed to write global variable g_r802D.
+    Reading data type real48 not implemented yet.
+       at Reko.Core.Memory.Word16ImageReader.TryReadBe(DataType dataType, Constant& value) in d:\dev\uxmal\reko\master\src\Core\Memory\Word16ImageReader.cs:line 247
+   at Reko.Core.Memory.Word16BeImageReader.TryRead(PrimitiveType dataType, Constant& value) in d:\dev\uxmal\reko\master\src\Core\Memory\Word16BeImageReader.cs:line 82
+   at Reko.Core.Output.GlobalDataWriter.VisitPrimitive(PrimitiveType pt) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 273
+   at Reko.Core.Types.PrimitiveType.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\PrimitiveType.cs:line 100
+   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(Address address, DataType dataType, String name) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 146
+8030: warning: Expected sizes of arrays to have been determined by now
+8051: error: Failed to write global variable g_rFFFF8051.
+    Reading data type real48 not implemented yet.
+       at Reko.Core.Memory.Word16ImageReader.TryReadBe(DataType dataType, Constant& value) in d:\dev\uxmal\reko\master\src\Core\Memory\Word16ImageReader.cs:line 247
+   at Reko.Core.Memory.Word16BeImageReader.TryRead(PrimitiveType dataType, Constant& value) in d:\dev\uxmal\reko\master\src\Core\Memory\Word16BeImageReader.cs:line 82
+   at Reko.Core.Output.GlobalDataWriter.VisitPrimitive(PrimitiveType pt) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 273
+   at Reko.Core.Types.PrimitiveType.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\PrimitiveType.cs:line 100
+   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(Address address, DataType dataType, String name) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 146
+8054: error: Failed to write global variable g_r8054.
+    Reading data type real48 not implemented yet.
+       at Reko.Core.Memory.Word16ImageReader.TryReadBe(DataType dataType, Constant& value) in d:\dev\uxmal\reko\master\src\Core\Memory\Word16ImageReader.cs:line 247
+   at Reko.Core.Memory.Word16BeImageReader.TryRead(PrimitiveType dataType, Constant& value) in d:\dev\uxmal\reko\master\src\Core\Memory\Word16BeImageReader.cs:line 82
+   at Reko.Core.Output.GlobalDataWriter.VisitPrimitive(PrimitiveType pt) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 273
+   at Reko.Core.Types.PrimitiveType.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\PrimitiveType.cs:line 100
+   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(Address address, DataType dataType, String name) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 146
+8057: error: Failed to write global variable g_rFFFF8057.
+    Reading data type real48 not implemented yet.
+       at Reko.Core.Memory.Word16ImageReader.TryReadBe(DataType dataType, Constant& value) in d:\dev\uxmal\reko\master\src\Core\Memory\Word16ImageReader.cs:line 247
+   at Reko.Core.Memory.Word16BeImageReader.TryRead(PrimitiveType dataType, Constant& value) in d:\dev\uxmal\reko\master\src\Core\Memory\Word16BeImageReader.cs:line 82
+   at Reko.Core.Output.GlobalDataWriter.VisitPrimitive(PrimitiveType pt) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 273
+   at Reko.Core.Types.PrimitiveType.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\PrimitiveType.cs:line 100
+   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(Address address, DataType dataType, String name) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 146
+805A: error: Failed to write global variable g_r805A.
     Reading data type real48 not implemented yet.
        at Reko.Core.Memory.Word16ImageReader.TryReadBe(DataType dataType, Constant& value) in d:\dev\uxmal\reko\master\src\Core\Memory\Word16ImageReader.cs:line 247
    at Reko.Core.Memory.Word16BeImageReader.TryRead(PrimitiveType dataType, Constant& value) in d:\dev\uxmal\reko\master\src\Core\Memory\Word16BeImageReader.cs:line 82
@@ -420,25 +540,19 @@ Warning: Checksum error in line 8.
    at Reko.Core.Output.GlobalDataWriter.VisitPrimitive(PrimitiveType pt) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 273
    at Reko.Core.Types.PrimitiveType.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\PrimitiveType.cs:line 100
    at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(Address address, DataType dataType, String name) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 146
-8064: error: Failed to write global variable g_r8064.
+8064: error: Failed to write global variable g_rFFFF8064.
     Reading data type real48 not implemented yet.
        at Reko.Core.Memory.Word16ImageReader.TryReadBe(DataType dataType, Constant& value) in d:\dev\uxmal\reko\master\src\Core\Memory\Word16ImageReader.cs:line 247
    at Reko.Core.Memory.Word16BeImageReader.TryRead(PrimitiveType dataType, Constant& value) in d:\dev\uxmal\reko\master\src\Core\Memory\Word16BeImageReader.cs:line 82
    at Reko.Core.Output.GlobalDataWriter.VisitPrimitive(PrimitiveType pt) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 273
    at Reko.Core.Types.PrimitiveType.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\PrimitiveType.cs:line 100
    at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(Address address, DataType dataType, String name) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 146
-806E: error: Failed to write global variable g_tFFFF806E.
-    Reading data type byte not implemented yet.
+8067: error: Failed to write global variable g_r8067.
+    Reading data type real48 not implemented yet.
        at Reko.Core.Memory.Word16ImageReader.TryReadBe(DataType dataType, Constant& value) in d:\dev\uxmal\reko\master\src\Core\Memory\Word16ImageReader.cs:line 247
    at Reko.Core.Memory.Word16BeImageReader.TryRead(PrimitiveType dataType, Constant& value) in d:\dev\uxmal\reko\master\src\Core\Memory\Word16BeImageReader.cs:line 82
    at Reko.Core.Output.GlobalDataWriter.VisitPrimitive(PrimitiveType pt) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 273
    at Reko.Core.Types.PrimitiveType.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\PrimitiveType.cs:line 100
-   at Reko.Core.Output.GlobalDataWriter.VisitUnion(UnionType ut) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 430
-   at Reko.Core.Types.UnionType.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\UnionType.cs:line 81
-   at Reko.Core.Output.GlobalDataWriter.VisitEquivalenceClass(EquivalenceClass eq) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 245
-   at Reko.Core.Types.EquivalenceClass.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\EquivalenceClass.cs:line 55
-   at Reko.Core.Output.GlobalDataWriter.VisitStructure(StructureType str) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 381
-   at Reko.Core.Types.StructureType.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\StructureType.cs:line 59
    at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(Address address, DataType dataType, String name) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 146
 
 === Hunk-m68k\FIBO
@@ -1459,36 +1573,6 @@ test.exe: warning: Win32 MIPS main procedure finder not supported.
 === TLCS\90\TLCS-90
 
 *** Raw\1750A\trigtst
-0007: error: Failed to write global variable g_t0007.
-    Reading data type byte not implemented yet.
-       at Reko.Core.Memory.Word16ImageReader.TryReadBe(DataType dataType, Constant& value) in d:\dev\uxmal\reko\master\src\Core\Memory\Word16ImageReader.cs:line 247
-   at Reko.Core.Memory.Word16BeImageReader.TryRead(PrimitiveType dataType, Constant& value) in d:\dev\uxmal\reko\master\src\Core\Memory\Word16BeImageReader.cs:line 82
-   at Reko.Core.Output.GlobalDataWriter.VisitPrimitive(PrimitiveType pt) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 273
-   at Reko.Core.Types.PrimitiveType.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\PrimitiveType.cs:line 100
-   at Reko.Core.Output.GlobalDataWriter.VisitUnion(UnionType ut) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 430
-   at Reko.Core.Types.UnionType.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\UnionType.cs:line 81
-   at Reko.Core.Output.GlobalDataWriter.VisitEquivalenceClass(EquivalenceClass eq) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 245
-   at Reko.Core.Types.EquivalenceClass.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\EquivalenceClass.cs:line 55
-   at Reko.Core.Output.GlobalDataWriter.VisitStructure(StructureType str) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 381
-   at Reko.Core.Types.StructureType.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\StructureType.cs:line 59
-   at Reko.Core.Output.GlobalDataWriter.VisitEquivalenceClass(EquivalenceClass eq) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 245
-   at Reko.Core.Types.EquivalenceClass.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\EquivalenceClass.cs:line 55
-   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(Address address, DataType dataType, String name) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 146
-000A: error: Failed to write global variable g_t000A.
-    Reading data type byte not implemented yet.
-       at Reko.Core.Memory.Word16ImageReader.TryReadBe(DataType dataType, Constant& value) in d:\dev\uxmal\reko\master\src\Core\Memory\Word16ImageReader.cs:line 247
-   at Reko.Core.Memory.Word16BeImageReader.TryRead(PrimitiveType dataType, Constant& value) in d:\dev\uxmal\reko\master\src\Core\Memory\Word16BeImageReader.cs:line 82
-   at Reko.Core.Output.GlobalDataWriter.VisitPrimitive(PrimitiveType pt) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 273
-   at Reko.Core.Types.PrimitiveType.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\PrimitiveType.cs:line 100
-   at Reko.Core.Output.GlobalDataWriter.VisitUnion(UnionType ut) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 430
-   at Reko.Core.Types.UnionType.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\UnionType.cs:line 81
-   at Reko.Core.Output.GlobalDataWriter.VisitEquivalenceClass(EquivalenceClass eq) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 245
-   at Reko.Core.Types.EquivalenceClass.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\EquivalenceClass.cs:line 55
-   at Reko.Core.Output.GlobalDataWriter.VisitStructure(StructureType str) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 381
-   at Reko.Core.Types.StructureType.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\StructureType.cs:line 59
-   at Reko.Core.Output.GlobalDataWriter.VisitEquivalenceClass(EquivalenceClass eq) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 245
-   at Reko.Core.Types.EquivalenceClass.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\EquivalenceClass.cs:line 55
-   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(Address address, DataType dataType, String name) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 146
 05AB: error: Failed to write global variable g_r05AB.
     Reading data type real48 not implemented yet.
        at Reko.Core.Memory.Word16ImageReader.TryReadBe(DataType dataType, Constant& value) in d:\dev\uxmal\reko\master\src\Core\Memory\Word16ImageReader.cs:line 247
@@ -1516,28 +1600,6 @@ test.exe: warning: Win32 MIPS main procedure finder not supported.
    at Reko.Core.Memory.Word16BeImageReader.TryRead(PrimitiveType dataType, Constant& value) in d:\dev\uxmal\reko\master\src\Core\Memory\Word16BeImageReader.cs:line 82
    at Reko.Core.Output.GlobalDataWriter.VisitPrimitive(PrimitiveType pt) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 273
    at Reko.Core.Types.PrimitiveType.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\PrimitiveType.cs:line 100
-   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(Address address, DataType dataType, String name) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 146
-060A: error: Failed to write global variable g_t060A.
-    Reading data type int48 not implemented yet.
-       at Reko.Core.Memory.Word16ImageReader.TryReadBe(DataType dataType, Constant& value) in d:\dev\uxmal\reko\master\src\Core\Memory\Word16ImageReader.cs:line 247
-   at Reko.Core.Memory.Word16BeImageReader.TryRead(PrimitiveType dataType, Constant& value) in d:\dev\uxmal\reko\master\src\Core\Memory\Word16BeImageReader.cs:line 82
-   at Reko.Core.Output.GlobalDataWriter.VisitPrimitive(PrimitiveType pt) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 273
-   at Reko.Core.Types.PrimitiveType.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\PrimitiveType.cs:line 100
-   at Reko.Core.Output.GlobalDataWriter.VisitUnion(UnionType ut) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 430
-   at Reko.Core.Types.UnionType.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\UnionType.cs:line 81
-   at Reko.Core.Output.GlobalDataWriter.VisitEquivalenceClass(EquivalenceClass eq) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 245
-   at Reko.Core.Types.EquivalenceClass.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\EquivalenceClass.cs:line 55
-   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(Address address, DataType dataType, String name) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 146
-060D: error: Failed to write global variable g_t060D.
-    Reading data type int48 not implemented yet.
-       at Reko.Core.Memory.Word16ImageReader.TryReadBe(DataType dataType, Constant& value) in d:\dev\uxmal\reko\master\src\Core\Memory\Word16ImageReader.cs:line 247
-   at Reko.Core.Memory.Word16BeImageReader.TryRead(PrimitiveType dataType, Constant& value) in d:\dev\uxmal\reko\master\src\Core\Memory\Word16BeImageReader.cs:line 82
-   at Reko.Core.Output.GlobalDataWriter.VisitPrimitive(PrimitiveType pt) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 273
-   at Reko.Core.Types.PrimitiveType.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\PrimitiveType.cs:line 100
-   at Reko.Core.Output.GlobalDataWriter.VisitUnion(UnionType ut) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 430
-   at Reko.Core.Types.UnionType.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\UnionType.cs:line 81
-   at Reko.Core.Output.GlobalDataWriter.VisitEquivalenceClass(EquivalenceClass eq) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 245
-   at Reko.Core.Types.EquivalenceClass.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\EquivalenceClass.cs:line 55
    at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(Address address, DataType dataType, String name) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 146
 0610: error: Failed to write global variable g_r0610.
     Reading data type real48 not implemented yet.
@@ -1635,21 +1697,28 @@ test.exe: warning: Win32 MIPS main procedure finder not supported.
    at Reko.Core.Output.GlobalDataWriter.VisitStructure(StructureType str) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 381
    at Reko.Core.Types.StructureType.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\StructureType.cs:line 59
    at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(Address address, DataType dataType, String name) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 146
-8122: error: Failed to write global variable g_rFFFF8122.
+811F: error: Failed to write global variable g_rFFFF811F.
     Reading data type real48 not implemented yet.
        at Reko.Core.Memory.Word16ImageReader.TryReadBe(DataType dataType, Constant& value) in d:\dev\uxmal\reko\master\src\Core\Memory\Word16ImageReader.cs:line 247
    at Reko.Core.Memory.Word16BeImageReader.TryRead(PrimitiveType dataType, Constant& value) in d:\dev\uxmal\reko\master\src\Core\Memory\Word16BeImageReader.cs:line 82
    at Reko.Core.Output.GlobalDataWriter.VisitPrimitive(PrimitiveType pt) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 273
    at Reko.Core.Types.PrimitiveType.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\PrimitiveType.cs:line 100
    at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(Address address, DataType dataType, String name) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 146
-8125: error: Failed to write global variable g_r8125.
+8122: error: Failed to write global variable g_r8122.
     Reading data type real48 not implemented yet.
        at Reko.Core.Memory.Word16ImageReader.TryReadBe(DataType dataType, Constant& value) in d:\dev\uxmal\reko\master\src\Core\Memory\Word16ImageReader.cs:line 247
    at Reko.Core.Memory.Word16BeImageReader.TryRead(PrimitiveType dataType, Constant& value) in d:\dev\uxmal\reko\master\src\Core\Memory\Word16BeImageReader.cs:line 82
    at Reko.Core.Output.GlobalDataWriter.VisitPrimitive(PrimitiveType pt) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 273
    at Reko.Core.Types.PrimitiveType.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\PrimitiveType.cs:line 100
    at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(Address address, DataType dataType, String name) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 146
-8128: error: Failed to write global variable g_rFFFF8128.
+8125: error: Failed to write global variable g_rFFFF8125.
+    Reading data type real48 not implemented yet.
+       at Reko.Core.Memory.Word16ImageReader.TryReadBe(DataType dataType, Constant& value) in d:\dev\uxmal\reko\master\src\Core\Memory\Word16ImageReader.cs:line 247
+   at Reko.Core.Memory.Word16BeImageReader.TryRead(PrimitiveType dataType, Constant& value) in d:\dev\uxmal\reko\master\src\Core\Memory\Word16BeImageReader.cs:line 82
+   at Reko.Core.Output.GlobalDataWriter.VisitPrimitive(PrimitiveType pt) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 273
+   at Reko.Core.Types.PrimitiveType.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\PrimitiveType.cs:line 100
+   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(Address address, DataType dataType, String name) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 146
+8128: error: Failed to write global variable g_r8128.
     Reading data type real48 not implemented yet.
        at Reko.Core.Memory.Word16ImageReader.TryReadBe(DataType dataType, Constant& value) in d:\dev\uxmal\reko\master\src\Core\Memory\Word16ImageReader.cs:line 247
    at Reko.Core.Memory.Word16BeImageReader.TryRead(PrimitiveType dataType, Constant& value) in d:\dev\uxmal\reko\master\src\Core\Memory\Word16BeImageReader.cs:line 82
@@ -1663,14 +1732,14 @@ test.exe: warning: Win32 MIPS main procedure finder not supported.
    at Reko.Core.Output.GlobalDataWriter.VisitPrimitive(PrimitiveType pt) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 273
    at Reko.Core.Types.PrimitiveType.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\PrimitiveType.cs:line 100
    at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(Address address, DataType dataType, String name) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 146
-8132: error: Failed to write global variable g_r8132.
+8132: error: Failed to write global variable g_rFFFF8132.
     Reading data type real48 not implemented yet.
        at Reko.Core.Memory.Word16ImageReader.TryReadBe(DataType dataType, Constant& value) in d:\dev\uxmal\reko\master\src\Core\Memory\Word16ImageReader.cs:line 247
    at Reko.Core.Memory.Word16BeImageReader.TryRead(PrimitiveType dataType, Constant& value) in d:\dev\uxmal\reko\master\src\Core\Memory\Word16BeImageReader.cs:line 82
    at Reko.Core.Output.GlobalDataWriter.VisitPrimitive(PrimitiveType pt) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 273
    at Reko.Core.Types.PrimitiveType.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\PrimitiveType.cs:line 100
    at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(Address address, DataType dataType, String name) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 146
-8135: error: Failed to write global variable g_rFFFF8135.
+8135: error: Failed to write global variable g_r8135.
     Reading data type real48 not implemented yet.
        at Reko.Core.Memory.Word16ImageReader.TryReadBe(DataType dataType, Constant& value) in d:\dev\uxmal\reko\master\src\Core\Memory\Word16ImageReader.cs:line 247
    at Reko.Core.Memory.Word16BeImageReader.TryRead(PrimitiveType dataType, Constant& value) in d:\dev\uxmal\reko\master\src\Core\Memory\Word16BeImageReader.cs:line 82
@@ -1690,36 +1759,6 @@ test.exe: warning: Win32 MIPS main procedure finder not supported.
    at Reko.Core.Output.GlobalDataWriter.VisitStructure(StructureType str) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 381
    at Reko.Core.Types.StructureType.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\StructureType.cs:line 59
    at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(Address address, DataType dataType, String name) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 146
-0007: error: Failed to write global variable g_t0007.
-    Reading data type byte not implemented yet.
-       at Reko.Core.Memory.Word16ImageReader.TryReadBe(DataType dataType, Constant& value) in d:\dev\uxmal\reko\master\src\Core\Memory\Word16ImageReader.cs:line 247
-   at Reko.Core.Memory.Word16BeImageReader.TryRead(PrimitiveType dataType, Constant& value) in d:\dev\uxmal\reko\master\src\Core\Memory\Word16BeImageReader.cs:line 82
-   at Reko.Core.Output.GlobalDataWriter.VisitPrimitive(PrimitiveType pt) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 273
-   at Reko.Core.Types.PrimitiveType.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\PrimitiveType.cs:line 100
-   at Reko.Core.Output.GlobalDataWriter.VisitUnion(UnionType ut) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 430
-   at Reko.Core.Types.UnionType.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\UnionType.cs:line 81
-   at Reko.Core.Output.GlobalDataWriter.VisitEquivalenceClass(EquivalenceClass eq) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 245
-   at Reko.Core.Types.EquivalenceClass.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\EquivalenceClass.cs:line 55
-   at Reko.Core.Output.GlobalDataWriter.VisitStructure(StructureType str) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 381
-   at Reko.Core.Types.StructureType.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\StructureType.cs:line 59
-   at Reko.Core.Output.GlobalDataWriter.VisitEquivalenceClass(EquivalenceClass eq) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 245
-   at Reko.Core.Types.EquivalenceClass.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\EquivalenceClass.cs:line 55
-   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(Address address, DataType dataType, String name) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 146
-000A: error: Failed to write global variable g_t000A.
-    Reading data type byte not implemented yet.
-       at Reko.Core.Memory.Word16ImageReader.TryReadBe(DataType dataType, Constant& value) in d:\dev\uxmal\reko\master\src\Core\Memory\Word16ImageReader.cs:line 247
-   at Reko.Core.Memory.Word16BeImageReader.TryRead(PrimitiveType dataType, Constant& value) in d:\dev\uxmal\reko\master\src\Core\Memory\Word16BeImageReader.cs:line 82
-   at Reko.Core.Output.GlobalDataWriter.VisitPrimitive(PrimitiveType pt) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 273
-   at Reko.Core.Types.PrimitiveType.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\PrimitiveType.cs:line 100
-   at Reko.Core.Output.GlobalDataWriter.VisitUnion(UnionType ut) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 430
-   at Reko.Core.Types.UnionType.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\UnionType.cs:line 81
-   at Reko.Core.Output.GlobalDataWriter.VisitEquivalenceClass(EquivalenceClass eq) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 245
-   at Reko.Core.Types.EquivalenceClass.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\EquivalenceClass.cs:line 55
-   at Reko.Core.Output.GlobalDataWriter.VisitStructure(StructureType str) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 381
-   at Reko.Core.Types.StructureType.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\StructureType.cs:line 59
-   at Reko.Core.Output.GlobalDataWriter.VisitEquivalenceClass(EquivalenceClass eq) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 245
-   at Reko.Core.Types.EquivalenceClass.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\EquivalenceClass.cs:line 55
-   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(Address address, DataType dataType, String name) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 146
 05AB: error: Failed to write global variable g_r05AB.
     Reading data type real48 not implemented yet.
        at Reko.Core.Memory.Word16ImageReader.TryReadBe(DataType dataType, Constant& value) in d:\dev\uxmal\reko\master\src\Core\Memory\Word16ImageReader.cs:line 247
@@ -1747,28 +1786,6 @@ test.exe: warning: Win32 MIPS main procedure finder not supported.
    at Reko.Core.Memory.Word16BeImageReader.TryRead(PrimitiveType dataType, Constant& value) in d:\dev\uxmal\reko\master\src\Core\Memory\Word16BeImageReader.cs:line 82
    at Reko.Core.Output.GlobalDataWriter.VisitPrimitive(PrimitiveType pt) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 273
    at Reko.Core.Types.PrimitiveType.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\PrimitiveType.cs:line 100
-   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(Address address, DataType dataType, String name) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 146
-060A: error: Failed to write global variable g_t060A.
-    Reading data type int48 not implemented yet.
-       at Reko.Core.Memory.Word16ImageReader.TryReadBe(DataType dataType, Constant& value) in d:\dev\uxmal\reko\master\src\Core\Memory\Word16ImageReader.cs:line 247
-   at Reko.Core.Memory.Word16BeImageReader.TryRead(PrimitiveType dataType, Constant& value) in d:\dev\uxmal\reko\master\src\Core\Memory\Word16BeImageReader.cs:line 82
-   at Reko.Core.Output.GlobalDataWriter.VisitPrimitive(PrimitiveType pt) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 273
-   at Reko.Core.Types.PrimitiveType.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\PrimitiveType.cs:line 100
-   at Reko.Core.Output.GlobalDataWriter.VisitUnion(UnionType ut) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 430
-   at Reko.Core.Types.UnionType.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\UnionType.cs:line 81
-   at Reko.Core.Output.GlobalDataWriter.VisitEquivalenceClass(EquivalenceClass eq) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 245
-   at Reko.Core.Types.EquivalenceClass.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\EquivalenceClass.cs:line 55
-   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(Address address, DataType dataType, String name) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 146
-060D: error: Failed to write global variable g_t060D.
-    Reading data type int48 not implemented yet.
-       at Reko.Core.Memory.Word16ImageReader.TryReadBe(DataType dataType, Constant& value) in d:\dev\uxmal\reko\master\src\Core\Memory\Word16ImageReader.cs:line 247
-   at Reko.Core.Memory.Word16BeImageReader.TryRead(PrimitiveType dataType, Constant& value) in d:\dev\uxmal\reko\master\src\Core\Memory\Word16BeImageReader.cs:line 82
-   at Reko.Core.Output.GlobalDataWriter.VisitPrimitive(PrimitiveType pt) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 273
-   at Reko.Core.Types.PrimitiveType.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\PrimitiveType.cs:line 100
-   at Reko.Core.Output.GlobalDataWriter.VisitUnion(UnionType ut) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 430
-   at Reko.Core.Types.UnionType.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\UnionType.cs:line 81
-   at Reko.Core.Output.GlobalDataWriter.VisitEquivalenceClass(EquivalenceClass eq) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 245
-   at Reko.Core.Types.EquivalenceClass.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\EquivalenceClass.cs:line 55
    at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(Address address, DataType dataType, String name) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 146
 0610: error: Failed to write global variable g_r0610.
     Reading data type real48 not implemented yet.
@@ -1866,21 +1883,28 @@ test.exe: warning: Win32 MIPS main procedure finder not supported.
    at Reko.Core.Output.GlobalDataWriter.VisitStructure(StructureType str) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 381
    at Reko.Core.Types.StructureType.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\StructureType.cs:line 59
    at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(Address address, DataType dataType, String name) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 146
-8122: error: Failed to write global variable g_rFFFF8122.
+811F: error: Failed to write global variable g_rFFFF811F.
     Reading data type real48 not implemented yet.
        at Reko.Core.Memory.Word16ImageReader.TryReadBe(DataType dataType, Constant& value) in d:\dev\uxmal\reko\master\src\Core\Memory\Word16ImageReader.cs:line 247
    at Reko.Core.Memory.Word16BeImageReader.TryRead(PrimitiveType dataType, Constant& value) in d:\dev\uxmal\reko\master\src\Core\Memory\Word16BeImageReader.cs:line 82
    at Reko.Core.Output.GlobalDataWriter.VisitPrimitive(PrimitiveType pt) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 273
    at Reko.Core.Types.PrimitiveType.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\PrimitiveType.cs:line 100
    at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(Address address, DataType dataType, String name) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 146
-8125: error: Failed to write global variable g_r8125.
+8122: error: Failed to write global variable g_r8122.
     Reading data type real48 not implemented yet.
        at Reko.Core.Memory.Word16ImageReader.TryReadBe(DataType dataType, Constant& value) in d:\dev\uxmal\reko\master\src\Core\Memory\Word16ImageReader.cs:line 247
    at Reko.Core.Memory.Word16BeImageReader.TryRead(PrimitiveType dataType, Constant& value) in d:\dev\uxmal\reko\master\src\Core\Memory\Word16BeImageReader.cs:line 82
    at Reko.Core.Output.GlobalDataWriter.VisitPrimitive(PrimitiveType pt) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 273
    at Reko.Core.Types.PrimitiveType.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\PrimitiveType.cs:line 100
    at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(Address address, DataType dataType, String name) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 146
-8128: error: Failed to write global variable g_rFFFF8128.
+8125: error: Failed to write global variable g_rFFFF8125.
+    Reading data type real48 not implemented yet.
+       at Reko.Core.Memory.Word16ImageReader.TryReadBe(DataType dataType, Constant& value) in d:\dev\uxmal\reko\master\src\Core\Memory\Word16ImageReader.cs:line 247
+   at Reko.Core.Memory.Word16BeImageReader.TryRead(PrimitiveType dataType, Constant& value) in d:\dev\uxmal\reko\master\src\Core\Memory\Word16BeImageReader.cs:line 82
+   at Reko.Core.Output.GlobalDataWriter.VisitPrimitive(PrimitiveType pt) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 273
+   at Reko.Core.Types.PrimitiveType.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\PrimitiveType.cs:line 100
+   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(Address address, DataType dataType, String name) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 146
+8128: error: Failed to write global variable g_r8128.
     Reading data type real48 not implemented yet.
        at Reko.Core.Memory.Word16ImageReader.TryReadBe(DataType dataType, Constant& value) in d:\dev\uxmal\reko\master\src\Core\Memory\Word16ImageReader.cs:line 247
    at Reko.Core.Memory.Word16BeImageReader.TryRead(PrimitiveType dataType, Constant& value) in d:\dev\uxmal\reko\master\src\Core\Memory\Word16BeImageReader.cs:line 82
@@ -1894,14 +1918,14 @@ test.exe: warning: Win32 MIPS main procedure finder not supported.
    at Reko.Core.Output.GlobalDataWriter.VisitPrimitive(PrimitiveType pt) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 273
    at Reko.Core.Types.PrimitiveType.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\PrimitiveType.cs:line 100
    at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(Address address, DataType dataType, String name) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 146
-8132: error: Failed to write global variable g_r8132.
+8132: error: Failed to write global variable g_rFFFF8132.
     Reading data type real48 not implemented yet.
        at Reko.Core.Memory.Word16ImageReader.TryReadBe(DataType dataType, Constant& value) in d:\dev\uxmal\reko\master\src\Core\Memory\Word16ImageReader.cs:line 247
    at Reko.Core.Memory.Word16BeImageReader.TryRead(PrimitiveType dataType, Constant& value) in d:\dev\uxmal\reko\master\src\Core\Memory\Word16BeImageReader.cs:line 82
    at Reko.Core.Output.GlobalDataWriter.VisitPrimitive(PrimitiveType pt) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 273
    at Reko.Core.Types.PrimitiveType.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\PrimitiveType.cs:line 100
    at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(Address address, DataType dataType, String name) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 146
-8135: error: Failed to write global variable g_rFFFF8135.
+8135: error: Failed to write global variable g_r8135.
     Reading data type real48 not implemented yet.
        at Reko.Core.Memory.Word16ImageReader.TryReadBe(DataType dataType, Constant& value) in d:\dev\uxmal\reko\master\src\Core\Memory\Word16ImageReader.cs:line 247
    at Reko.Core.Memory.Word16BeImageReader.TryRead(PrimitiveType dataType, Constant& value) in d:\dev\uxmal\reko\master\src\Core\Memory\Word16BeImageReader.cs:line 82
@@ -2429,4 +2453,4 @@ Signature of 'Microsoft Visual C++ 8' detected.
 0040120B: warning: Unable to determine the upper bound of an indirect call or jump; there may be more than 2 entries.
 004011A5: warning: Unable to determine the upper bound of an indirect call or jump; there may be more than 2 entries.
 
-Decompiled 83 binaries in 50.27 seconds.
+Decompiled 83 binaries in 61.87 seconds.
