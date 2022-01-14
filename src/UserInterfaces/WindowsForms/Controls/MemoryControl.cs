@@ -631,7 +631,8 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
                 ulong laEnd = ctrl.addrMin.ToLinear() + ctrl.memSize;
                 if (ctrl.addrTopVisible.ToLinear() >= laEnd)
                     return null;
-                EndianImageReader rdr = ctrl.arch.CreateImageReader(ctrl.mem, ctrl.addrTopVisible);
+                var addrStart = Address.Max(ctrl.addrTopVisible, ctrl.mem.BaseAddress);
+                EndianImageReader rdr = ctrl.arch.CreateImageReader(ctrl.mem, addrStart);
                 Rectangle rcClient = ctrl.ClientRectangle;
                 Rectangle rc = rcClient;
                 Size cell = ctrl.CellSize;
@@ -722,7 +723,8 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
                         return;
                     string s = string.Format("{0}", addr);
                     int cx = (int) g.MeasureString(s + "X", mcp.ctrl.Font, rc.Width, StringFormat.GenericTypographic).Width;
-                    if (!render && new Rectangle(rc.X, rc.Y, cx, rc.Height).Contains(mcp.ctrl.ptDown))
+                    this.rc = new Rectangle(rc.X, rc.Y, cx, rc.Height);
+                    if (!render && rc.Contains(mcp.ctrl.ptDown))
                     {
                         this.addrHit = addr;
                         return;
@@ -737,7 +739,7 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
                 {
                     if (addrHit != null)
                         return;
-                    int cx = mcp.cellSize.Width * nCells * 3;
+                    int cx = mcp.cellSize.Width * nCells;
                     if (cx <= 0)
                         return;
                     var rcFiller = new Rectangle(
@@ -805,6 +807,7 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
                 {
                     if (render)
                     {
+                        rc = new Rectangle(rc.Left, rc.Top, mcp.ctrl.Width - rc.Left, rc.Height);
                         var sb = new StringBuilder();
                         sb.Append(' ', prePadding);
                         sb.Append(sBytes);
