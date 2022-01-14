@@ -23,10 +23,28 @@ using System.Text;
 
 namespace Reko.Core.Output
 {
+    /// <summary>
+    /// Interface implemented for output devices used in conjunction with
+    /// the <see cref="MemoryFormatter"/>.
+    /// </summary>
     public interface IMemoryFormatterOutput
     {
+        /// <summary>
+        /// Signals the beginning of a line to be rendered.
+        /// </summary>
         void BeginLine();
+
+        /// <summary>
+        /// Requests an address to be rendered.
+        /// </summary>
+        /// <param name="addr"></param>
         void RenderAddress(Address addr);
+
+        /// <summary>
+        /// Requests blank space corresponding to <paramref name="nCells"/> 
+        /// letters or digits to be rendered.
+        /// </summary>
+        /// <param name="nCells"></param>
         void RenderFillerSpan(int nCells);
 
         /// <summary>
@@ -41,6 +59,10 @@ namespace Reko.Core.Output
         /// <param name="sBytes"></param>
         void RenderUnitsAsText(int prePadding, string sBytes, int postPadding);
 
+        /// <summary>
+        /// Signals the end of the line.
+        /// </summary>
+        /// <param name="bytes">The bytes rendered in this line.</param>
         void EndLine(byte[] bytes);
     }
 }
