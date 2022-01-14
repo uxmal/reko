@@ -3,16 +3,16 @@ void fn0100()
 
 // MayUse: 
 // LiveOut:
-// Trashed: CPZN gp0 gp1 gp14 gp2 gp3 gp4 gp5 gp6
+// Trashed: CPZN gp0 gp1 gp14 gp2 gp3 gp4
 // Preserved: gp15
 fn0100_entry:
 l0100:
 	__mov(0x8000<p16>, 0x050B<p16>)
 	__mov(0x800C<p16>, 0x0517<p16>)
 	__mov(0x801B<p16>, 0x0526<p16>)
-l011A_thunk_fn011B:
-	word16 gp14_36
-	fn011B(0<16>, 0<16>, 0x801B<16>, 1<16>, fp, out gp14_36)
+l0114_thunk_reverse:
+	word16 gp14_29
+	reverse(0x801B<16>, out gp14_29)
 	return
 fn0100_exit:
 

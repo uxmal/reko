@@ -534,9 +534,9 @@ namespace Reko.UnitTests.Arch.MilStd1750
         [Test]
         public void MS1750Rw_jc()
         {
-            Given_HexString("7020");
+            Given_HexString("70200120");
             AssertCode(     // jc	0140
-                "0|T--|0100(1): 1 instructions",
+                "0|T--|0100(2): 1 instructions",
                 "1|T--|if (Test(EQ,Z)) branch 0120");
         }
 

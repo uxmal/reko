@@ -9,6 +9,9 @@ struct Eq_n g_tFFFF8000 = // 8000
 		
 		{
 			;
+real48 g_rFFFF8003 = ;
+real48 g_r8006 = ;
+real48 g_rFFFF8009 = ;
 struct Eq_n g_tFFFF800C = // 800C
 			{
 				
@@ -19,25 +22,33 @@ struct Eq_n g_tFFFF801B = // 801B
 						
 						{
 							;
+real48 g_rFFFF801E = ;
+real48 g_r8021 = ;
+real48 g_rFFFF8024 = ;
+real48 g_r8027 = ;
+real48 g_rFFFF802A = ;
+real48 g_r802D = ;
 Eq_n g_aFFFF8030[] = // 8030
 							{
 							};
-real48 g_rFFFF8054 = ;
-real48 g_r8057 = ;
-union Eq_n g_uFFFF805D = // 805D
-							{
-								0x00
-							};
+real48 g_rFFFF8051 = ;
+real48 g_r8054 = ;
+real48 g_rFFFF8057 = ;
+real48 g_r805A = ;
+word32 g_dwFFFF805D = 0x00; // 805D
 word16 g_w805F = 0x00; // 805F
 Eq_n g_aFFFF8060[] = // 8060
 							{
 							};
 real48 g_rFFFF8061 = ;
-real48 g_r8064 = ;
-word16 g_wFFFF806A = 0x00; // 806A
+real48 g_rFFFF8064 = ;
+real48 g_r8067 = ;
+word32 g_dwFFFF806A = 0x00; // 806A
 word16 g_wFFFF806C = 0x00; // 806C
 struct Eq_n g_tFFFF806E = // 806E
 							{
-								
-								{
-									;
+								0x00,
+								0x00,
+								0x00,
+								0x00,
+							};

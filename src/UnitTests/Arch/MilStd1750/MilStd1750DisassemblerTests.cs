@@ -340,7 +340,7 @@ namespace Reko.UnitTests.Arch.MilStd1750
         [Test]
         public void MS1750Dis_jc()
         {
-            AssertCode("jc\t#2,0120", "7020");
+            AssertCode("jc\t#2,0120", "70200120");
         }
 
         [Test]

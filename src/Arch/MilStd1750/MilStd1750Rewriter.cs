@@ -632,37 +632,56 @@ namespace Reko.Arch.MilStd1750
         private void RewriteJc()
         {
             var c = Imm(0);
-            var target = Addr(1);
+            Expression test;
+            var eTarget = Op(1);
+            if (instr.Operands.Length == 3)
+            {
+                var op2 = Op(2);
+                if (eTarget.IsZero)
+                    eTarget = op2;
+                else 
+                    eTarget = m.IAdd(Op(2), eTarget);
+            }
             switch (c.ToUInt32())
             {
             case 0:
                 m.Nop();
-                break;
+                return;
             case 1:
-                m.Branch(m.Test(ConditionCode.LT, binder.EnsureFlagGroup(N)), target);
+                test = m.Test(ConditionCode.LT, binder.EnsureFlagGroup(N));
                 break;
             case 2:
-                m.Branch(m.Test(ConditionCode.EQ, binder.EnsureFlagGroup(Z)), target);
+                test = m.Test(ConditionCode.EQ, binder.EnsureFlagGroup(Z));
                 break;
             case 3:
-                m.Branch(m.Test(ConditionCode.LT, binder.EnsureFlagGroup(ZN)), target);
+                test = m.Test(ConditionCode.LT, binder.EnsureFlagGroup(ZN));
                 break;
             case 4:
-                m.Branch(m.Test(ConditionCode.GT, binder.EnsureFlagGroup(P)), target);
+                test = m.Test(ConditionCode.GT, binder.EnsureFlagGroup(P));
                 break;
             case 5:
-                m.Branch(m.Test(ConditionCode.NE, binder.EnsureFlagGroup(PZN)), target);
+                test = m.Test(ConditionCode.NE, binder.EnsureFlagGroup(PZN));
                 break;
             case 6:
-                m.Branch(m.Test(ConditionCode.GE, binder.EnsureFlagGroup(PZ)), target);
+                test = m.Test(ConditionCode.GE, binder.EnsureFlagGroup(PZ));
                 break;
             case 7:
             case 0xF:
-                m.Goto(target);
-                break;
+                m.Goto(eTarget);
+                return;
             default:
                 EmitUnitTest(this.instr, $"C = 0x{c.ToUInt32():X2}");
-                break;
+                return;
+            }
+            if (eTarget is Address target)
+            {
+                m.Branch(test, target);
+            }
+            else
+            {
+                var skip = instr.Address + instr.Length;
+                m.Branch(test.Invert(), skip);
+                m.Goto(eTarget);
             }
         }
 

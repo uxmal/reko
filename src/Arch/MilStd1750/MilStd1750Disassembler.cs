@@ -612,7 +612,7 @@ namespace Reko.Arch.MilStd1750
                 Instr(Mnemonic.dscr, Ra,Rb),
 
                 // 70
-                Instr(Mnemonic.jc, InstrClass.ConditionalTransfer, N,ICR),
+                Instr(Mnemonic.jc, InstrClass.ConditionalTransfer, N,Ax),
                 Instr(Mnemonic.jci, _("jci")),
                 Instr(Mnemonic.js, InstrClass.Transfer|InstrClass.Call, Ra,Ax),
                 Instr(Mnemonic.soj, InstrClass.ConditionalTransfer, Ra,Ax),

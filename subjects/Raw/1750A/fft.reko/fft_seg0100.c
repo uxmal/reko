@@ -11,6 +11,6 @@ void fn0100()
 	__mov(&g_tFFFF800C, 1303);
 	__mov(&g_tFFFF801B, 1318);
 	word16 gp14_n;
-	fn011B(0x00, 0x00, 0x801B, 0x01, fp, out gp14_n);
+	reverse(0x801B, out gp14_n);
 }
 
