@@ -26,15 +26,14 @@ namespace Reko.Core.Output
     public interface IMemoryFormatterOutput
     {
         void BeginLine();
-
         void RenderAddress(Address addr);
         void RenderFillerSpan(int nCells);
 
         /// <summary>
-        /// Render a memory unit, with a margin first
-        /// </summary>
+        /// Render a memory unit corresponding to the address <paramref name="addr"/>.
+        /// <param name="addr"></param>
         /// <param name="sUnit"></param>
-        void RenderUnit(string sUnit);
+        void RenderUnit(Address addr, string sUnit);
 
         /// <summary>
         /// Attempt to render the units as text, with a margin first.

@@ -21,11 +21,14 @@
 using Reko.Core;
 using Reko.Core.Lib;
 using Reko.Core.Machine;
+using Reko.Core.Memory;
+using Reko.Core.Output;
 using Reko.Gui.Services;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
-using System.Linq;
+using System.Text;
 
 namespace Reko.UserInterfaces.WindowsForms.Controls
 {
@@ -56,7 +59,7 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
             program.SegmentMap.TryFindSegment(curPos.Address, out var seg);
             program.ImageMap.TryFindItem(curPos.Address, out var item);
 
-            SpanGenerator sp = CreateSpanifier(item, curPos);
+            SpanGenerator sp = CreateSpanifier(item, seg.MemoryArea, curPos);
             while (count != 0 && seg != null && item != null)
             {
                 if (TryReadComment(out var commentLine))
@@ -72,7 +75,7 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
                         curPos.Address, out item)
                         && curPos.Address < item.EndAddress;
                     if (memValid)
-                        sp = CreateSpanifier(item, curPos);
+                        sp = CreateSpanifier(item, seg.MemoryArea, curPos);
                 }
                 memValid &= seg.MemoryArea.IsValidAddress(curPos.Address);
 
@@ -110,7 +113,7 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
                             break;
                         }
                     }
-                    sp = CreateSpanifier(item, curPos);
+                    sp = CreateSpanifier(item, seg.MemoryArea, curPos);
                 }
             }
             curPos = SanitizePosition(curPos);
@@ -120,6 +123,7 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
 
         private SpanGenerator CreateSpanifier(
             ImageMapItem item,
+            MemoryArea mem,
             ModelPosition pos)
         {
             SpanGenerator sp;
@@ -129,7 +133,7 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
             }
             else
             {
-                sp = new MemSpanifyer(program, item, pos);
+                sp = new MemSpanifyer(program, mem, item, pos);
             }
             return sp;
         }
@@ -196,80 +200,37 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
             }
         }
 
-        private class MemSpanifyer : SpanGenerator
+        private class MemSpanifyer : SpanGenerator, IMemoryFormatterOutput
         {
-            private Program program;
+            private readonly Program program;
+            private readonly MemoryArea mem;
+            private readonly ImageMapItem item;
+            private readonly List<TextSpan> line;
             private ModelPosition position;
-            public ImageMapItem item;
 
             public MemSpanifyer(
                 Program program,
+                MemoryArea mem,
                 ImageMapItem item,
                 ModelPosition pos)
             {
                 this.program = program;
+                this.mem = mem;
                 this.item = item;
                 this.position = pos;
+                this.line = new List<TextSpan>();
             }
 
             public override (ModelPosition, LineSpan)? GenerateSpan()
             {
+                Debug.Assert(line.Count == 0);
                 var addr = this.position.Address;
-                var line = new List<TextSpan>
-                {
-                    new AddressSpan(addr.ToString(), addr, UiStyles.MemoryWindow)
-                };
-
-                var addrStart = Align(addr, BytesPerLine);
-                var addrEnd = Address.Min(addrStart + BytesPerLine, item.Address + item.Size);
-                var linStart = addrStart.ToLinear();
-                var linEnd = addrEnd.ToLinear();
-                var cbFiller = addr.ToLinear() - linStart;
-                var cbBytes = linEnd - addr.ToLinear();
-                var cbPadding = BytesPerLine - (cbFiller + cbBytes);
-
-                var abCode = new List<byte>();
-
-                // Do any filler first
-
-                if (cbFiller > 0)
-                {
-                    line.Add(new MemoryTextSpan(new string(' ', 3 * (int)cbFiller), UiStyles.MemoryWindow));
-                }
-
                 var rdr = program.CreateImageReader(program.Architecture, addr);
-                while (rdr.Address.ToLinear() < linEnd)
-                {
-                    if (rdr.IsValid)
-                    {
-                        var addr1 = rdr.Address;
-                        byte b = rdr.ReadByte();
-                        line.Add(new MemoryTextSpan(addr1, string.Format(" {0:X2}", b), UiStyles.MemoryWindow));
-                        //$BUG: should use platform.Encoding
-                        abCode.Add(b);
-                    }
-                    else
-                    {
-                        cbPadding = linEnd - rdr.Address.ToLinear();
-                        addrEnd = rdr.Address;
-                        break;
-                    }
-                }
-
-                // Do any padding after.
-
-                if (cbPadding > 0)
-                {
-                    line.Add(new MemoryTextSpan(new string(' ', 3 * (int)cbPadding), UiStyles.MemoryWindow));
-                }
-
-                // Now display the code bytes.
-                string sBytes = RenderBytesAsText(abCode.ToArray());
-                line.Add(new MemoryTextSpan(" ", UiStyles.MemoryWindow));
-                line.Add(new MemoryTextSpan(sBytes, UiStyles.MemoryWindow));
-
+                mem.Formatter.RenderLine(rdr, program.TextEncoding, this);
                 var memLine = new LineSpan(position, line.ToArray());
-                this.position = Pos(addrEnd);
+                line.Clear();
+
+                this.position = Pos(rdr.Address);
                 if (rdr.Address >= item.EndAddress)
                 {
                     DecorateLastLine(memLine);
@@ -277,17 +238,37 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
                 return (position, memLine);
             }
 
-            private string RenderBytesAsText(byte[] abCode)
+            public void BeginLine()
             {
-                var chars = program.TextEncoding.GetChars(abCode.ToArray());
-                for (int i = 0; i < chars.Length; ++i)
-                {
-                    char ch = chars[i];
-                    if (char.IsControl(ch) || char.IsSurrogate(ch) || (0xE000 <= ch && ch <= 0xE0FF))
-                        chars[i] = '.';
-                }
+            }
 
-                return new string(chars);
+            public void RenderAddress(Address addr)
+            {
+                line.Add(new AddressSpan(addr.ToString(), addr, UiStyles.MemoryWindow));
+            }
+
+            public void RenderUnit(Address addr, string sUnit)
+            {
+                line.Add(new MemoryTextSpan(" ", UiStyles.MemoryWindow));
+                line.Add(new MemoryTextSpan(addr, sUnit, UiStyles.MemoryWindow));
+            }
+
+            public void RenderFillerSpan(int cCells)
+            {
+                line.Add(new MemoryTextSpan(new string(' ', cCells), UiStyles.MemoryWindow));
+            }
+
+            public void RenderUnitsAsText(int prePadding, string sBytes, int postPadding)
+            {
+                var sbText = new StringBuilder();
+                sbText.Append(' ', prePadding + 1);
+                sbText.Append(sBytes);
+                sbText.Append(' ', postPadding);
+                line.Add(new MemoryTextSpan(sbText.ToString(), UiStyles.MemoryWindow));
+            }
+
+            public void EndLine(byte[] bytes)
+            {
             }
         }
 

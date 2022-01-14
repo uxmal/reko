@@ -220,7 +220,7 @@ namespace Reko.Core.Output
                     sbHex.Append(' ');
             }
 
-            public void RenderUnit(string sUnit)
+            public void RenderUnit(Address addr, string sUnit)
             {
                 sbHex.Append(' ');
                 sbHex.Append(sUnit);

@@ -66,10 +66,11 @@ namespace Reko.Core.Output
             int postPaddingUnits = 0;
             while (moreData && rdr.Offset < offsetEndLine)
             {
+                addr = rdr.Address;
                 moreData = rdr.TryRead(dtUnit, out var c);
                 if (moreData)
                 {
-                    output.RenderUnit(string.Format(unitFormat, c.GetValue()));
+                    output.RenderUnit(addr, string.Format(unitFormat, c.GetValue()));
                 }
                 else
                 {
