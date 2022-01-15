@@ -151,6 +151,8 @@ namespace Reko.Arch.Arm.AArch64
                 (0b11_000_0010_0000_000u, sys.Reg64("TTBR0_EL1")),
                 (0b11_101_0010_0000_000u, sys.Reg64("TTBR0_EL12")),
                 (0b11_100_0010_0000_000u, sys.Reg64("TTBR0_EL2")),
+
+                (0b11_011_0100_0100_001u, fpsr)
             }.ToDictionary(sr => sr.Item1, sr => sr.Item2);
 
             ByName = GpRegs64

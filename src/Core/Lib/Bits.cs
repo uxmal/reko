@@ -151,8 +151,8 @@ namespace Reko.Core.Lib
         {
             var mask = Bits.Mask(0, wordSize);
             u &= mask;
-            u = (u << (wordSize - s)) | (u >> s);
-            return u & mask;
+            ulong uNew = (u << (wordSize - s)) | (u >> s);
+            return uNew & mask;
         }
 
         public static int CountLeadingZeros(int wordSize, ulong x)

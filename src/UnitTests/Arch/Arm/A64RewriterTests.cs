@@ -40,7 +40,7 @@ namespace Reko.UnitTests.Arch.Arm
         private void Given_Instruction(params string[] bitStrings)
         {
             var bytes = bitStrings.Select(bits => base.BitStringToUInt32(bits))
-                .SelectMany(u => new byte[] { (byte)u, (byte)(u >> 8), (byte)(u >> 16), (byte)(u >> 24) })
+                .SelectMany(u => new byte[] { (byte) u, (byte) (u >> 8), (byte) (u >> 16), (byte) (u >> 24) })
                 .ToArray();
             base.Given_MemoryArea(new ByteMemoryArea(Address.Ptr32(0x00100000), bytes));
         }
@@ -48,7 +48,7 @@ namespace Reko.UnitTests.Arch.Arm
         private void Given_Instruction(params uint[] words)
         {
             var bytes = words
-                .SelectMany(u => new byte[] { (byte)u, (byte)(u >> 8), (byte)(u >> 16), (byte)(u >> 24) })
+                .SelectMany(u => new byte[] { (byte) u, (byte) (u >> 8), (byte) (u >> 16), (byte) (u >> 24) })
                 .ToArray();
             Given_MemoryArea(new ByteMemoryArea(Address.Ptr32(0x00100000), bytes));
         }
@@ -1772,7 +1772,7 @@ namespace Reko.UnitTests.Arch.Arm
 
 
 
-        
+
 
 
         [Test]
@@ -2027,9 +2027,9 @@ namespace Reko.UnitTests.Arch.Arm
 
 
 
- 
 
-   
+
+
 
         [Test]
         public void AArch64Rw_fmov_vector_hiword()
@@ -4336,6 +4336,15 @@ namespace Reko.UnitTests.Arch.Arm
                 "1|L--|v2 = d31",
                 "2|L--|v3 = d17",
                 "3|L--|d17 = __zip2_i8(v2, v3)");
+        }
+
+        [Test]
+        public void AArch64Rw_and_imm()
+        {
+            Given_HexString("84F86492");
+            AssertCode(     // and\tx4,x4,#&FFFFFFFFF7FFFFFF
+                "0|L--|0000000000100000(4): 1 instructions",
+                "1|L--|x4 = x4 & 0xFFFFFFFFF7FFFFFF<64>");
         }
     }
 }

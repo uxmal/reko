@@ -87,11 +87,11 @@ namespace Reko.Arch.Arm.AArch64
                 }
                 else
                 {
-                    int v = imm.Value.ToInt32();
+                    long v = imm.Value.ToInt64();
                     if (0 <= v && v <= 9)
-                        renderer.WriteFormat($"#{imm.Value.ToInt32()}");
+                        renderer.WriteFormat($"#{v}");
                     else
-                        renderer.WriteFormat($"#&{imm.Value.ToUInt32():X}");
+                        renderer.WriteFormat($"#&{imm.Value.ToUInt64():X}");
                 }
                 renderer.EndOperand();
                 break;

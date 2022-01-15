@@ -98,5 +98,11 @@ namespace Reko.UnitTests.Core.Lib
             Assert.AreEqual("1234567800000000", Bits.RotateL64(0x12345678_00000000u, 0).ToString("X16"));
             Assert.AreEqual("4567800000000123", Bits.RotateL64(0x12345678_00000000u, 12).ToString("X16"));
         }
+
+        [Test]
+        public void Bits_RorateR_32()
+        {
+            Assert.AreEqual("00000000FF0000FF", Bits.RotateR(32, 0xFFFF, 8).ToString("X16"));
+        }
     }
 }

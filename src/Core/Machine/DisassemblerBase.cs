@@ -46,7 +46,7 @@ namespace Reko.Core.Machine
             for (; ; )
             {
                 TInstr? instr = DisassembleInstruction();
-                if (instr == null)
+                if (instr is null)
                     break;
                 yield return instr;
             }

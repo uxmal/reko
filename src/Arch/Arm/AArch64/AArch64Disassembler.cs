@@ -156,10 +156,12 @@ namespace Reko.Arch.Arm.AArch64
         {
             static int HighestSetBit(uint u)
             {
-               return 31 - (int)Bits.CountLeadingZeros(32, u);
-            }
+                if (u == 0)
+                    return 0;
 
-  
+                int n = 1 << (31 - (int) Bits.CountLeadingZeros(32, u));
+                return n;
+            }
             // Extract the N, imms, and immr fields.
             uint N = (val >> 12) & 1;
             uint immr = (val >> 6) & 0x3f;
@@ -167,12 +169,12 @@ namespace Reko.Arch.Arm.AArch64
 
             // Compute log2 of element size
             // 2^len must be in range [2, M]
-            int len = HighestSetBit((N << 6)|(~imms & 0x3F));
+            int len = HighestSetBit((N << 6) | (~imms & 0x3F));
             if (len < 1)
                 return null;
 
             // Determine S, R and S - R parameters
-            uint levels = (uint)Bits.Mask(0, len);
+            uint levels = (uint) len - 1;
 
             // For logical immediates an all-ones value of S is reserved
             // since it would generate a useless all-ones result (many times)
@@ -182,10 +184,9 @@ namespace Reko.Arch.Arm.AArch64
             uint S = (imms & levels);
             uint R = (immr & levels);
 
-            int esize = 1 << len;
-            uint welem = (uint)Bits.Mask(0, (int)S + 1);
-
-            var wmask = ReplicatePattern(Bits.RotateR(esize, welem, (int) R), esize);
+            ulong welem = (Bits.Mask(0, (int) S + 1) & Bits.Mask(0, len));
+            var ror = Bits.RotateR(len, welem, (int) R);
+            var wmask = ReplicatePattern(ror, len);
             return wmask;
         }
 
@@ -994,7 +995,7 @@ namespace Reko.Arch.Arm.AArch64
             return (u, d) =>
             {
                 var imm = d.DecodeLogicalImmediate(u >> offset, dt.BitSize);
-                if (imm == null)
+                if (imm is null)
                     return false;
                 var op = new ImmediateOperand(Constant.Create(dt, imm.Value));
                 d.state.ops.Add(op);

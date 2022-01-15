@@ -94,7 +94,7 @@ namespace Reko.UnitTests.Arch.Arm
         public void AArch64Dis_and_Xn_imm()
         {
             var instr = DisassembleWord(0x920F3041);
-            Assert.AreEqual("and\tx1,x2,#&3FFE0000", instr.ToString());
+            Assert.AreEqual("and\tx1,x2,#&3FFE00003FFE0000", instr.ToString());
         }
 
         [Test]
@@ -107,9 +107,8 @@ namespace Reko.UnitTests.Arch.Arm
         public void AArch64Dis_ands_Xn_imm()
         {
             var instr = DisassembleBits("111 100100 0 010101 010101 00100 00111");
-            Assert.AreEqual("ands\tx7,x4,#&FFFFF801", instr.ToString());
+            Assert.AreEqual("ands\tx7,x4,#&FFFFF801FFFFF801", instr.ToString());
         }
-
 
         [Test]
         public void AArch64Rw_adcs_64()
@@ -204,14 +203,14 @@ namespace Reko.UnitTests.Arch.Arm
         public void AArch64Dis_bic_vector_imm16()
         {
             //$TODO: fix constant
-            AssertCode("bic\tv17.4h,#&B000B00,lsl #8", "71B5002F");
-            AssertCode("bic\tv17.8h,#&B000B00,lsl #8", "71B5006F");
+            AssertCode("bic\tv17.4h,#&B000B000B000B00,lsl #8", "71B5002F");
+            AssertCode("bic\tv17.8h,#&B000B000B000B00,lsl #8", "71B5006F");
         }
 
         [Test]
         public void AArch64Dis_bic_vector_imm32()
         {
-            AssertCode("bic\tv10.2s,#&4D0000,lsl #&10", "AA55022F");
+            AssertCode("bic\tv10.2s,#&4D0000004D0000,lsl #&10", "AA55022F");
         }
 
         [Test]
@@ -1204,7 +1203,7 @@ namespace Reko.UnitTests.Arch.Arm
         [Test]
         public void AArch64Dis_orr_vector_imm32()
         {
-            AssertCode("orr\tv11.4s,#&D50000,lsl #&10", "AB56064F");
+            AssertCode("orr\tv11.4s,#&D5000000D50000,lsl #&10", "AB56064F");
         }
 
 
@@ -2339,14 +2338,14 @@ namespace Reko.UnitTests.Arch.Arm
         [Test]
         public void AArch64Dis_mvni_ones()
         {
-            AssertCode("mvni\tv13.4s,#&A1,msl #&10", "2DD4056F");
+            AssertCode("mvni\tv13.4s,#&A1000000A1,msl #&10", "2DD4056F");
         }
 
         [Test]
         public void AArch64Dis_mvni_vector_16imm()
         {
-            //$TODO: simplify consttant to 0062
-            AssertCode("mvni\tv13.8h,#&620062", "4D84036F");
+            //$TODO: simplify constant to 0062
+            AssertCode("mvni\tv13.8h,#&62006200620062", "4D84036F");
         }
 
         [Test]
@@ -2738,26 +2737,25 @@ namespace Reko.UnitTests.Arch.Arm
         [Test]
         public void AArch64Dis_movi_vs()
         {
-            Given_Instruction(0x0F020508);
-            Expect_Code("movi\tv8.2s,#&48");
+            AssertCode("movi\tv8.2s,#&4800000048", "0805020F");
         }
 
         [Test]
         public void AArch64Dis_movi_vs_v2()
         {
-            AssertCode("movi\tv1.4s,#4", "8104004F");
+            AssertCode("movi\tv1.4s,#&400000004", "8104004F");
         }
 
         [Test]
         public void AArch64Dis_movi_vb()
         {
-            AssertCode("movi\tv2.16b,#&E0E0E0E0", "02E4074F");
+            AssertCode("movi\tv2.16b,#&E0E0E0E0E0E0E0E0", "02E4074F");
         }
 
         [Test]
         public void AArch64Dis_movi_vs_shift()
         {
-            AssertCode("movi\tv1.2s,#&800000,lsl #&10", "0144040F");
+            AssertCode("movi\tv1.2s,#&80000000800000,lsl #&10", "0144040F");
         }
 
         [Test]
@@ -3109,7 +3107,11 @@ namespace Reko.UnitTests.Arch.Arm
             AssertCode("zip2\tv10.16b,v30.16b,v11.16b", "CA7B0B4E");
         }
 
-
+        [Test]
+        public void AArch64Dis_bic()
+        {
+            AssertCode("and\tx4,x4,#&FFFFFFFFF7FFFFFF", "84F86492");
+        }
  
 
         /*
