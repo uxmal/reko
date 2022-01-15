@@ -355,7 +355,7 @@ l0000042D:
 	Mem103[gp11 + 9<16>:word16] = gp2_96 | 0x3030<16>
 l00000432:
 	word32 gp2_gp3_121 = CONVERT(SEQ(gp12_gp13_311, gp14_116), real48, int32)
-	Mem137[gp11:word16] = SEQ(Mem135[gp11 + 1<16>:byte], SLICE(SLICE(gp2_gp3_121, word16, 0), byte, 0) + 0x30<8>)
+	Mem137[gp11:word16] = SEQ(Mem135[gp11 + 1<16>:byte], SLICE(gp2_gp3_121, byte, 0) + 0x30<8>)
 	Mem142[gp11 + 1<16>:word16] = SEQ(0x2E<8>, Mem137[gp11 + 1<16>:byte])
 	word16 gp7_104 = 0<16>
 	real48 gp12_gp13_gp14_130 = SEQ(gp12_gp13_311, gp14_116) - CONVERT(gp2_gp3_121, word32, real48)

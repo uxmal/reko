@@ -506,7 +506,7 @@ l0458:
 		else
 			gp11[6] = (struct Eq_n) (gp2_n | 0x3030);
 		int32 gp2_gp3_n = (int32) SEQ(gp12_gp13_n, gp14_n);
-		gp11->t0000.u1 = SEQ(gp11[1], (byte) (word16) gp2_gp3_n + 0x30);
+		gp11->t0000.u1 = SEQ(gp11[1], (byte) gp2_gp3_n + 0x30);
 		gp11[1] = (struct Eq_n) SEQ(0x2E, gp11[1]);
 		cui16 gp7_n = 0x00;
 		real48 gp12_gp13_gp14_n = SEQ(gp12_gp13_n, gp14_n) - (real48) gp2_gp3_n;

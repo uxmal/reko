@@ -319,7 +319,7 @@ word32 fn00001390(int32 d2)
 	word32 * d0_n = (uint32) ((byte) d2_n - v11_n);
 	uint32 d1_n = (uint32) v11_n;
 	d4_n = __swap(d0_n) *32 (word16) d1_n;
-	uint8 v32_n = (byte) d0_n * (byte) ((word16) d1_n);
+	uint8 v32_n = (byte) d0_n * (byte) d1_n;
 	word32 * d2_n = SEQ(SLICE(v8_n, word24, 7), v32_n);
 	fn00002A88(d2_n, (uint32) (byte) fn00002AC8(d2_n, (uint32) v11_n, (uint32) v32_n), (uint32) v32_n);
 	return fn0000143C((uint32) (v32_n << 0x05), &g_b142C);

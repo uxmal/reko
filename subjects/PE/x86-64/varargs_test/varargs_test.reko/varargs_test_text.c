@@ -372,7 +372,7 @@ byte fn000000014000164C(up32 ecx, word64 r8, union Eq_n & r8Out)
 		{
 			ui64 rdx_n = g_qw40003000;
 			uint64 rax_n = (uint64) ((word32) rdx_n & 0x3F);
-			r8_n = __ror<word64,byte>(~0x00, 0x40 - (byte) ((word32) rax_n)) ^ rdx_n;
+			r8_n = __ror<word64,byte>(~0x00, 0x40 - (byte) rax_n) ^ rdx_n;
 			g_t400035C0 = SEQ(r8_n, r8_n);
 			g_t400035D0 = r8_n;
 			g_ow400035D8 = SEQ(r8_n, r8_n);
@@ -466,7 +466,7 @@ Eq_n fn0000000140001804(Eq_n rcx)
 {
 	word32 eax_n;
 	ui64 rdx_n = g_qw40003000;
-	if (__ror<word64,byte>(rdx_n ^ g_t400035C0, (byte) (word32) rdx_n & 0x3F) == ~0x00)
+	if (__ror<word64,byte>(rdx_n ^ g_t400035C0, (byte) rdx_n & 0x3F) == ~0x00)
 	{
 		word64 rax_n;
 		crt_atexit();
@@ -765,7 +765,7 @@ l0000000140001CE9:
 		if (!__bt(0x00, 0x1B) && !__bt(0x00, 0x1C))
 		{
 			word64 edx_eax_n = __xgetbv(0x00);
-			if ((((byte) SLICE(edx_eax_n, word32, 32) << 0x20 | (byte) ((word32) edx_eax_n)) & 0x06) == 0x06)
+			if ((((byte) SLICE(edx_eax_n, word32, 32) << 0x20 | (byte) edx_eax_n) & 0x06) == 0x06)
 			{
 				ui32 eax_n = g_dw4000301C | 0x08;
 				g_dw40003018 = 0x03;

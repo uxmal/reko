@@ -918,5 +918,18 @@ namespace Reko.UnitTests.Evaluation
             Assert.AreEqual("0<128>", result.ToString());
             Assert.IsTrue(changed);
         }
+
+        [Test]
+        public void Exs_Sliced_Slices()
+        {
+            Given_ExpressionSimplifier();
+            var exp = m.Slice(m.Slice(
+                m.Slice(m.Fn("test"), PrimitiveType.Word64, 0),
+                    PrimitiveType.Word32, 0),
+                    PrimitiveType.Byte, 0);
+            var (result, changed) = exp.Accept(simplifier);
+            Assert.AreEqual("SLICE(test(), byte, 0)", result.ToString());
+            Assert.IsTrue(changed);
+        }
     }
 }

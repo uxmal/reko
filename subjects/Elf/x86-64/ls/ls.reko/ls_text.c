@@ -1441,7 +1441,7 @@ byte fn00000000004049E0(Eq_n rcx, byte dl, char ** rsi, Eq_n rdi, union Eq_n & e
 			while (true)
 			{
 				uint64 rax_n = (uint64) *r8_n;
-				if ((byte) (word32) rax_n > 55)
+				if ((byte) rax_n > 55)
 					break;
 				r11_n.u0 = (uint64) ((word32) rax_n - 0x30 + (word32) r11_n * 0x08);
 				++r8_n;
@@ -1457,7 +1457,7 @@ byte fn00000000004049E0(Eq_n rcx, byte dl, char ** rsi, Eq_n rdi, union Eq_n & e
 				uint64 rax_n = (uint64) *r8_n;
 				eax_n = (word32) rax_n;
 				al_n = (byte) rax_n;
-				if ((byte) (word32) rax_n > 0x7E)
+				if ((byte) rax_n > 0x7E)
 					goto l0000000000404A2E;
 				goto l0000000000404AA0;
 			}
@@ -1531,7 +1531,7 @@ l0000000000404A70:
 					uint64 rax_n = (uint64) *r8_n;
 					eax_n = (word32) rax_n;
 					al_n = (byte) rax_n;
-					if ((byte) (word32) rax_n > 0x7E || (byte) ((word32) rax_n) < 0x40)
+					if ((byte) rax_n > 0x7E || (byte) rax_n < 0x40)
 					{
 l0000000000404A2E:
 						if (al_n != 0x3F)
@@ -1945,10 +1945,10 @@ l0000000000405440:
 				ci8 al_n = (byte) rax_n;
 				if (al_n <= 0x3F)
 				{
-					if (al_n < 0x25 && (byte) ((word32) rax_n) > 0x23)
+					if (al_n < 0x25 && (byte) rax_n > 0x23)
 						goto l0000000000405460;
 				}
-				else if (al_n < 0x41 || al_n > 0x5F && ((byte) ((word32) rax_n) > 0x7E || (byte) ((word32) rax_n) < 0x61))
+				else if (al_n < 0x41 || al_n > 0x5F && ((byte) rax_n > 0x7E || (byte) rax_n < 0x61))
 				{
 l0000000000405460:
 					do
@@ -2221,7 +2221,7 @@ int8 fn0000000000405D00(word64 rcx, word32 edx, uint64 rsi, byte dil)
 {
 	word32 edx = (word32) rdx;
 	uint64 rax_n = (uint64) fn0000000000405C20((word32) rcx, edx, (word32) rsi, dil);
-	byte bl_n = (byte) (word32) rax_n;
+	byte bl_n = (byte) rax_n;
 	if ((byte) rax_n != 0x00)
 	{
 		FILE * rdi_n = stdout;
@@ -2665,7 +2665,7 @@ l00000000004066C0:
 				else
 				{
 					rax = fn0000000000404CD0(0x04);
-					r14b_n = (byte) (word32) rax;
+					r14b_n = (byte) rax;
 				}
 l00000000004066FF:
 				Eq_n rbp_n;
@@ -5439,7 +5439,7 @@ l000000000040C530:
 			{
 				uint64 rdx_n = SLICE(r10_n *128 ~0x3333333333333332, word64, 64);
 				--r12_n;
-				*r12_n = (byte) (word32) r10_n - ((byte) ((word32) (rdx_n >> 0x03)) + (byte) ((word32) (rdx_n >> 0x03)) * 0x04) * 0x02 + 0x30;
+				*r12_n = (byte) r10_n - ((byte) (rdx_n >> 0x03) + (byte) (rdx_n >> 0x03) * 0x04) * 0x02 + 0x30;
 				r10_n = rdx_n >> 0x03;
 			} while (rdx_n >> 0x03 != 0x00);
 l000000000040C237:
@@ -5891,7 +5891,7 @@ void fn000000000040CCD0(Eq_n rsi, int64 rdi)
 		{
 			int64 rdx_n = (SLICE(rdi *s128 0x6666666666666667, word64, 64) >> 0x02) - (rdi >> 0x3F);
 			--rcx_n;
-			rcx_n->b0000 = (byte) (word32) rdx_n * 0x0A + 0x30 - (byte) ((word32) rdi);
+			rcx_n->b0000 = (byte) rdx_n * 0x0A + 0x30 - (byte) rdi;
 			rdi = rdx_n;
 		} while (rdx_n != 0x00);
 		rcx_n->bFFFFFFFF = 0x2D;
@@ -5902,7 +5902,7 @@ void fn000000000040CCD0(Eq_n rsi, int64 rdi)
 		{
 			int64 rdx_n = (SLICE(rdi *s128 0x6666666666666667, word64, 64) >> 0x02) - (rdi >> 0x3F);
 			--rcx_n;
-			rcx_n->b0000 = (byte) (word32) rdi - (byte) ((word32) rdx_n) * 0x0A + 0x30;
+			rcx_n->b0000 = (byte) rdi - (byte) rdx_n * 0x0A + 0x30;
 			rdi = rdx_n;
 		} while (rdx_n != 0x00);
 	}
@@ -5922,7 +5922,7 @@ byte * fn000000000040CD70(Eq_n rsi, Eq_n rdi)
 	{
 		uint64 rdx_n = SLICE(rdi *128 ~0x3333333333333332, word64, 64);
 		--rcx_n;
-		*rcx_n = (byte) (word32) rdi - ((byte) ((word32) (rdx_n >> 0x03)) + (byte) ((word32) (rdx_n >> 0x03)) * 0x04) * 0x02 + 0x30;
+		*rcx_n = (byte) rdi - ((byte) (rdx_n >> 0x03) + (byte) (rdx_n >> 0x03) * 0x04) * 0x02 + 0x30;
 		rdi = rdx_n >> 0x03;
 	} while (rdx_n >> 0x03 != 0x00);
 	return rcx_n;

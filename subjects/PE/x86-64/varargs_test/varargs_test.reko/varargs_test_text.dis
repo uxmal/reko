@@ -508,7 +508,7 @@ l000000014000166D:
 l0000000140001698:
 	word64 rdx_49 = Mem7[0x0000000140003000<p64>:word64]
 	word64 rax_60 = CONVERT(SLICE(rdx_49, word32, 0) & 0x3F<32>, word32, uint64)
-	r8_102 = __ror<word64,byte>(0xFFFFFFFFFFFFFFFF<64>, 0x40<8> - SLICE(SLICE(rax_60, word32, 0), byte, 0)) ^ rdx_49
+	r8_102 = __ror<word64,byte>(0xFFFFFFFFFFFFFFFF<64>, 0x40<8> - SLICE(rax_60, byte, 0)) ^ rdx_49
 	Mem78[0x00000001400035C0<p64>:word128] = SEQ(r8_102, r8_102)
 	Mem83[0x00000001400035D0<p64>:real64] = r8_102
 	Mem85[0x00000001400035D8<p64>:word128] = SEQ(r8_102, r8_102)
@@ -655,7 +655,7 @@ fn0000000140001804_entry:
 l0000000140001804:
 	word32 eax_35
 	word64 rdx_7 = Mem5[0x0000000140003000<p64>:word64]
-	branch __ror<word64,byte>(rdx_7 ^ Mem5[0x00000001400035C0<p64>:word64], SLICE(SLICE(rdx_7, word32, 0), byte, 0) & 0x3F<8>) != 0xFFFFFFFFFFFFFFFF<64> l0000000140001833
+	branch __ror<word64,byte>(rdx_7 ^ Mem5[0x00000001400035C0<p64>:word64], SLICE(rdx_7, byte, 0) & 0x3F<8>) != 0xFFFFFFFFFFFFFFFF<64> l0000000140001833
 l0000000140001833:
 	word64 rax_26
 	call register_onexit_function (retsize: 8;)
@@ -1131,7 +1131,7 @@ l0000000140001D5D:
 	branch __bt(0<32>, 0x1C<8>) l0000000140001DB0
 l0000000140001D64:
 	word64 edx_eax_193 = __xgetbv(0<32>)
-	branch ((SLICE(SLICE(edx_eax_193, word32, 32), byte, 0) << 0x20<8> | SLICE(SLICE(edx_eax_193, word32, 0), byte, 0)) & 6<8>) != 6<8> l0000000140001DB0
+	branch ((SLICE(SLICE(edx_eax_193, word32, 32), byte, 0) << 0x20<8> | SLICE(edx_eax_193, byte, 0)) & 6<8>) != 6<8> l0000000140001DB0
 l0000000140001D7E:
 	word32 eax_222 = Mem208[0x000000014000301C<p64>:word32] | 8<32>
 	Mem219[0x0000000140003018<p64>:word32] = 3<32>

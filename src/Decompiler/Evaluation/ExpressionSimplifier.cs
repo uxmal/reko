@@ -241,9 +241,9 @@ namespace Reko.Evaluation
         {
             Debug.Assert(args.Length == 3);
             return args[1] is Constant sh &&
-                                    sh.ToInt32() == 1 &&
-                                    args[2] is Constant c &&
-                                    c.IsIntegerZero;
+                sh.ToInt32() == 1 &&
+                args[2] is Constant c &&
+                c.IsIntegerZero;
         }
 
         public virtual (Expression, bool) VisitArrayAccess(ArrayAccess acc)
@@ -263,7 +263,7 @@ namespace Reko.Evaluation
                 var bitPosition = cIndex.ToInt32() * acc.DataType.BitSize;
                 if (IsSequence(ctx, a, out var seq))
                 {
-                    var eNew = SliceExpression(seq, acc.DataType, bitPosition);
+                    var eNew = SliceSequence(seq, acc.DataType, bitPosition);
                     if (eNew is not null)
                     {
                         ctx.RemoveExpressionUse(a);
@@ -1225,7 +1225,6 @@ namespace Reko.Evaluation
             return mul;
         }
 
-
         private Slice? AsSlice(Expression? e)
         {
             if (e is Identifier id)
@@ -1403,7 +1402,7 @@ namespace Reko.Evaluation
             }
             if (IsSequence(ctx, slice.Expression, out var seq))
             {
-                var eNew = SliceExpression(seq, slice.DataType, slice.Offset);
+                var eNew = SliceSequence(seq, slice.DataType, slice.Offset);
                 if (eNew is not null)
                 {
                     ctx.RemoveExpressionUse(slice);
@@ -1411,10 +1410,14 @@ namespace Reko.Evaluation
                     return (eNew, true);
                 }
             }
+            
             if (sliceConvert.Match(slice))
             {
                 return (sliceConvert.Transform(), true);
             }
+            var innerSlice = SlicedSlice(slice);
+            if (innerSlice is not null)
+                return (innerSlice, true);
             if (e is Identifier id &&
                 ctx.GetDefiningExpression(id) is MkSequence seq2)
             {
@@ -1440,6 +1443,21 @@ namespace Reko.Evaluation
                 }
             }
             return (slice, changed);
+        }
+
+        private Slice? SlicedSlice(Slice outerSlice)
+        {
+            if (outerSlice.Expression is Slice innerSlice &&
+                outerSlice.Offset == 0 &&
+                innerSlice.DataType.BitSize >= outerSlice.DataType.BitSize &&
+                innerSlice.Offset == 0)
+            {
+                return m.Slice(innerSlice.Expression, outerSlice.DataType, 0);
+            }
+            else
+            {
+                return null;
+            }
         }
 
         private static bool CanBeSliced(Slice slice, BinaryExpression bin)
@@ -1511,7 +1529,7 @@ namespace Reko.Evaluation
             return s != null;
         }
 
-        public static Expression? SliceExpression(MkSequence seq, DataType dtSlice, int sliceOffset)
+        public static Expression? SliceSequence(MkSequence seq, DataType dtSlice, int sliceOffset)
         {
             var bitsUsed = dtSlice.BitSize;
             int bitoffset = 0;
