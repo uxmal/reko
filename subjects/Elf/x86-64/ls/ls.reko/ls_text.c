@@ -5329,23 +5329,29 @@ l000000000040C12D:
 			if (r9d_n != 0x00)
 			{
 				Eq_n rsi_n = (uint64) v22_n;
+				uint64 rdi_n = rdi_n;
 				if (r10_n >= rsi_n)
 				{
 					ebx_n = 0x00;
 					do
 					{
-						uint32 edx_n = (uint32) (0x00 % v22_n);
-						Eq_n rax_n = (uint64) ((uint128) r10_n /u rsi_n);
-						Eq_n eax_n = (uint32) (0x00 /u v22_n);
+						uint128 rdx_rax_n = (uint128) r10_n;
+						uint64 rdx_n = (uint64) (rdx_rax_n % rsi_n);
+						uint64 edx_eax_n = (uint64) ((word32) rdi_n + ((word32) rdx_n + (word32) rdx_n * 0x04) * 0x02);
+						uint32 eax_n = (uint32) (edx_eax_n /u v22_n);
+						uint32 edx_n = (uint32) (edx_eax_n % v22_n);
+						Eq_n rax_n = (uint64) (rdx_rax_n /u rsi_n);
+						uint64 rdi_n = (uint64) eax_n;
 						Eq_n r14d_n = (ecx_n >> 0x01) + edx_n * 0x02;
 						r10_n = rax_n;
-						edi_n = eax_n;
+						edi_n = (word32) rdi_n;
 						word32 ecx_n = ecx_n + r14d_n;
 						if (v22_n <= r14d_n)
 							ecx_n = ~(0x00 - (word32) (v22_n < ecx_n)) + 0x03;
 						else
 							ecx_n = (word32) (ecx_n != 0x00);
 						++ebx_n;
+						rdi_n = rdi_n;
 						if (rsi_n > rax_n)
 						{
 							if (rax_n > 0x09)
@@ -5378,7 +5384,7 @@ l000000000040C4DB:
 							}
 							else
 							{
-								edi_n = (word32) eax_n.u1 + 1;
+								edi_n = eax_n + 0x01;
 								if (eax_n != ~0x08)
 									goto l000000000040C4DB;
 								r10_n = (word64) rax_n.u1 + 1;
@@ -5614,7 +5620,7 @@ l000000000040BE7D:
 		Eq_n rax_n = strlen(rsi);
 		r15_n = rax_n;
 		r14_n = r11_n + 0x01;
-		if (rax_n >u (r11_n + 0x02) + CONVERT(CONVERT((edx & 0x20) == 0x00, bool, int8), int8, uint64) || (bLocC8_n & 0x08) != 0x00 && Mem961[(rsi - 0x01) + rax_n:byte] == 0x30)
+		if (rax_n >u (r11_n + 0x02) + CONVERT(CONVERT((edx & 0x20) == 0x00, bool, int8), int8, uint64) || (bLocC8_n & 0x08) != 0x00 && Mem962[(rsi - 0x01) + rax_n:byte] == 0x30)
 		{
 			Eq_n rLoc1_n = rLoc2_n * (real64) 10.0F;
 			if ((edx & 0x03) != 0x01 && (real64) g_r415F90 > rLoc1_n)

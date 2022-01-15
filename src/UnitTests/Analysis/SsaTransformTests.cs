@@ -99,6 +99,11 @@ namespace Reko.UnitTests.Analysis
             Given_Architecture(new X86ArchitectureFlat32(sc, "x86-protected-32", new Dictionary<string, object>()));
         }
 
+        private void Given_X86_64_Architecture()
+        {
+            Given_Architecture(new X86ArchitectureFlat64(sc, "x86-protected-64", new Dictionary<string, object>()));
+        }
+
         private void Given_BigEndianArchitecture()
         {
             var arch = new Mock<IProcessorArchitecture>();
@@ -4722,6 +4727,7 @@ SsaSequenceAliasing_exit:
         }
 
         [Test]
+        [Category(Categories.UnitTests)]
         public void SsaOutArguments_Mem()
         {
             var sExp =
@@ -4742,6 +4748,48 @@ SsaOutArguments_Mem_exit:
                 var intrinsic = new IntrinsicProcedure("_test", true, r1.DataType, 2);
                 var arg = m.Mem32(r2);
                 m.Assign(r1, m.Fn(intrinsic, arg, m.Out(arg.DataType, arg)));
+            });
+
+            When_RunSsaTransform();
+
+            AssertProcedureCode(sExp);
+        }
+
+        [Test]
+        [Category(Categories.UnitTests)]
+        public void SsaGithub1131()
+        {
+            var sExp =
+            #region Expected
+@"SsaGithub1131_entry:
+	def eax
+l1:
+	rax_2 = CONVERT(eax, word32, uint64)
+	eax_6 = SLICE(rax_2, word32, 0) (alias)
+	edx_3 = 0<32>
+	rdx_4 = CONVERT(edx_3, word32, uint64)
+	edx_5 = SLICE(rdx_4, word32, 0) (alias)
+	edx_eax_7 = SEQ(edx_5, eax_6) (alias)
+	v6_8 = edx_eax_7
+SsaGithub1131_exit:
+";
+            #endregion
+
+            Given_X86_64_Architecture();
+
+            Given_Procedure(nameof(SsaGithub1131), m =>
+            {
+                var rdx = m.Frame.EnsureRegister(Registers.rdx);
+                var rax = m.Frame.EnsureRegister(Registers.rax);
+                var eax = m.Frame.EnsureRegister(Registers.eax);
+                var edx = m.Frame.EnsureRegister(Registers.edx);
+                var tmp = m.Frame.CreateTemporary(PrimitiveType.Word64);
+                var edx_eax = m.Frame.EnsureSequence(PrimitiveType.Word64, Registers.edx, Registers.eax);
+
+                m.Assign(rax, m.Convert(eax, PrimitiveType.Word32, PrimitiveType.UInt64));
+                m.Assign(edx, m.Xor(edx, edx));
+                m.Assign(rdx, m.Convert(edx, PrimitiveType.Word32, PrimitiveType.UInt64));
+                m.Assign(tmp, edx_eax);
             });
 
             When_RunSsaTransform();

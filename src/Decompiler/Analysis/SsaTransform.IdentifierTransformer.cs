@@ -1041,7 +1041,8 @@ namespace Reko.Analysis
                     sids[0].DefStatement!.Instruction is AliasAssignment aassHead &&
                     sids[1].DefStatement!.Instruction is AliasAssignment aassTail)
                 {
-                    if (aassHead.Src is Slice eHead && aassTail.Src is Slice eTail)
+                    if (aassHead.Src is Slice eHead && aassTail.Src is Slice eTail &&
+                        eHead.Expression == eTail.Expression)
                     {
                         return ssaIds[(Identifier) eHead.Expression];
                     }
