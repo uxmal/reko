@@ -29,7 +29,7 @@ using System.ComponentModel.Design;
 namespace Reko.UnitTests.Arch.Arm
 {
     [TestFixture]
-    [Category(Categories.Capstone)]
+    [Category(Categories.UnitTests)]
     public class T32DisassemblerTests : ArmTestBase
     {
         private IEnumerator<MachineInstruction> dasm;
@@ -203,6 +203,33 @@ namespace Reko.UnitTests.Arch.Arm
             Expect_Code("moveq\tr0,r6");
             Expect_Code("movne\tr1,r6");
             Expect_Code("mov\tr2,r6");
+        }
+
+        [Test]
+        public void ThumbDis_it_invalid_branch()
+        {
+            Given_Instructions(0xBF18, 0x4630, 0xD1FE);
+            Expect_Code("it\tne");
+            Expect_Code("movne\tr0,r6");
+            Expect_Code("Invalid");
+        }
+
+        [Test]
+        public void ThumbDis_it_invalid_jump()
+        {
+            Given_Instructions(0xBF18, 0xF1FE, 0x4242, 0x4630);
+            Expect_Code("it\tne");
+            Expect_Code("Invalid");
+            Expect_Code("mov\tr0,r6");
+        }
+
+        [Test]
+        public void ThumbDis_it_valid_jump()
+        {
+            Given_Instructions(0xBF18, 0x4630, 0xF1FE);
+            Expect_Code("it\tne");
+            Expect_Code("movne\tr0,r6");
+            Expect_Code("Invalid");
         }
 
         [Test]
@@ -914,6 +941,13 @@ namespace Reko.UnitTests.Arch.Arm
         {
             Given_Instructions(0xEA9C, 0x0F00);
             Expect_Code("teqs.w\tip,r0");
+        }
+
+        [Test]
+        public void ThumbDis_tst()
+        {
+            Given_Instructions(0x420C);
+            Expect_Code("tst\tr4,r1");
         }
 
         [Test]

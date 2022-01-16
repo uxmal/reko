@@ -922,7 +922,7 @@ void vTaskEndScheduler(ptr32 cpsr)
 }
 
 struct Eq_n * g_ptr0A08 = &g_t200000C4; // 00000A08
-// 00000A0C: FlagGroup bool vTaskSuspendAll()
+// 00000A0C: void vTaskSuspendAll()
 // Called from:
 //      xQueueGenericSend
 //      xQueueGenericReceive
@@ -932,12 +932,10 @@ struct Eq_n * g_ptr0A08 = &g_t200000C4; // 00000A08
 //      xEventGroupSync
 //      vEventGroupDelete
 //      MPU_vTaskSuspendAll
-bool vTaskSuspendAll()
+void vTaskSuspendAll()
 {
 	struct Eq_n * r2_n = g_ptr0A1C;
-	word32 r3_n = r2_n->dw008C;
-	r2_n->dw008C = r3_n + 0x01;
-	return SLICE(cond(r3_n + 0x01), bool, 1);
+	++r2_n->dw008C;
 }
 
 struct Eq_n * g_ptr0A1C = &g_t200000C4; // 00000A1C
@@ -2229,13 +2227,11 @@ void xEventGroupCreate(ptr32 cpsr)
 //      MPU_xEventGroupWaitBits
 void xEventGroupWaitBits(ui32 * r0, ui32 r1, word32 r2, word32 r3, ptr32 cpsr, up32 dwArg00)
 {
-	bool C_n = vTaskSuspendAll();
-	ui32 r5_n = r1;
+	vTaskSuspendAll();
 	ui32 r4_n = *r0;
 	if (r3 == 0x00)
 	{
-		r4_n = r4_n + r1 + (word32) C_n;
-		if (r4_n != 0x00)
+		if ((r4_n & r1) != 0x00)
 		{
 l000017DC:
 			if (r2 != 0x00)
@@ -2261,18 +2257,17 @@ l000017E8:
 	}
 	if (uxTaskResetEventItemValue() << 6 < 0x00)
 		return;
-	bool C_n = vPortEnterCritical(cpsr);
+	vPortEnterCritical(cpsr);
 	ui32 r4_n = *r0;
 	if (r3 == 0x00)
 	{
-		r5_n = r1 + r4_n + (word32) C_n;
-		if (r5_n == 0x00)
+		if ((r1 & r4_n) == 0x00)
 			goto l0000185C;
 	}
 	else if ((r1 & ~r4_n) != 0x00)
 		goto l0000185C;
 	if (r2 != 0x00)
-		*r0 = r4_n & ~r5_n;
+		*r0 = r4_n & ~r1;
 l0000185C:
 	vPortExitCritical(cpsr);
 }
@@ -2307,15 +2302,13 @@ void xEventGroupSetBits(struct Eq_n * r0, ui32 r1, ptr32 cpsr)
 		{
 			ui32 r3_n = r0_n->dw0000;
 			struct Eq_n * r4_n = r0_n->ptr0004;
-			ui32 r2_n = r3_n & 0x00FFFFFF;
 			if ((r3_n & 0x04000000) == 0x00)
 			{
-				r2_n = (r3_n & 0x00FFFFFF) + r1_n + (word32) ((r3_n & 0x04000000) < 0x00);
-				if (r2_n != 0x00)
+				if ((r3_n & 0x00FFFFFF & r1_n) != 0x00)
 				{
 l000018B2:
 					if (r3_n << 7 < 0x00)
-						r7_n |= r2_n;
+						r7_n |= r3_n & 0x00FFFFFF;
 					xTaskRemoveFromUnorderedEventList(r0_n, r1_n | 0x02000000);
 					r1_n = r0->dw0000;
 				}

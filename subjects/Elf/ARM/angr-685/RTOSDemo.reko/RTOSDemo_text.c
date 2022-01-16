@@ -627,7 +627,7 @@ word32 xPortRaisePrivilege(ptr32 cpsr)
 	return 0x01;
 }
 
-// 00008578: FlagGroup bool vPortEnterCritical(Register ptr32 cpsr)
+// 00008578: void vPortEnterCritical(Register ptr32 cpsr)
 // Called from:
 //      prvUnlockQueue
 //      xQueueGenericSend
@@ -648,7 +648,7 @@ word32 xPortRaisePrivilege(ptr32 cpsr)
 //      vEventGroupClearBitsCallback
 //      xQueueCRSend
 //      xTaskNotifyStateClear
-bool vPortEnterCritical(ptr32 cpsr)
+void vPortEnterCritical(ptr32 cpsr)
 {
 	ui32 r0_n = xPortRaisePrivilege(cpsr);
 	__msr(cpsr, 191);
@@ -656,10 +656,8 @@ bool vPortEnterCritical(ptr32 cpsr)
 	__dsb_sy();
 	word32 * r2_n = g_ptr85AC;
 	++*r2_n;
-	bool C_n = SLICE(cond(r0_n - 0x01), bool, 1);
 	if (r0_n != 0x01)
 		__msr(cpsr, __mrs(cpsr) | 0x01);
-	return C_n;
 }
 
 word32 * g_ptr85AC = &g_dw200000BC; // 000085AC
@@ -738,10 +736,10 @@ void vParTestToggleLED(up32 r0, ptr32 cpsr)
 	MPU_vTaskSuspendAll(cpsr);
 	if (r0 <= 0x07)
 	{
-		byte * r3_n = g_ptr866C;
 		ui32 r0_n = 0x01 << r0;
-		uint32 r2_n = (uint32) (byte) r0_n + (word32) (*r3_n) + (word32) (r0 < 0x07);
-		if (r2_n == 0x00)
+		byte * r3_n = g_ptr866C;
+		uint32 r2_n = (uint32) (byte) r0_n;
+		if ((r2_n & (word32) (*r3_n)) == 0x00)
 			*r3_n = (byte) r2_n | *r3_n;
 		else
 			*r3_n &= (byte) ~r0_n;
@@ -1564,8 +1562,8 @@ void GPIODirModeSet(struct Eq_n * r0, ui32 r1, ui32 r2)
 void GPIODirModeGet(struct Eq_n * r0, word32 r1)
 {
 	uint32 r1_n = (uint32) (0x01 << (byte) r1);
-	word32 r2_n = r0->dw0420;
-	up32 r4_n = r0->dw0400 + r1_n + (word32) C;
+	ui32 r2_n = r0->dw0420;
+	(r0->dw0400 & r1_n) != 0x00;
 }
 
 // 0000915C: void GPIOIntTypeSet(Register (ptr32 Eq_n) r0, Register ui32 r1, Register ui32 r2)
@@ -1589,10 +1587,9 @@ void GPIOIntTypeSet(struct Eq_n * r0, ui32 r1, ui32 r2)
 void GPIOIntTypeGet(struct Eq_n * r0, word32 r1)
 {
 	uint32 r1_n = (uint32) (0x01 << (byte) r1);
-	word32 r3_n = r0->dw0404;
-	up32 r2_n = r0->dw0408 + r1_n + (word32) C;
-	word32 r0_n = r0->dw040C;
-	up32 r3_n = r3_n + r1_n + (word32) (r2_n < 0x00);
+	ui32 r3_n = r0->dw0404;
+	ui32 r0_n = r0->dw040C;
+	(r0->dw0408 & r1_n) == 0x00;
 }
 
 // 000091C8: void GPIOPadConfigSet(Register (ptr32 Eq_n) r0, Register ui32 r1, Register ui32 r2, Register ui32 r3)
@@ -1642,24 +1639,20 @@ void GPIOPadConfigSet(struct Eq_n * r0, ui32 r1, ui32 r2, ui32 r3)
 void GPIOPadConfigGet(struct Eq_n * r0, word32 r1, word32 * r2, word32 * r3)
 {
 	uint32 r1_n = (uint32) (0x01 << (byte) r1);
-	word32 r4_n = r0->dw0504;
-	up32 r5_n = r0->dw0500 + r1_n + (word32) C;
-	word32 r5_n = r0->dw0508;
-	up32 r4_n = r4_n + r1_n + (word32) (r5_n < 0x00);
-	word32 r4_n = r0->dw0518;
-	up32 r5_n = r5_n + r1_n + (word32) (r4_n < 0x00);
+	ui32 r4_n = r0->dw0504;
+	ui32 r5_n = r0->dw0508;
+	(r0->dw0500 & r1_n) == 0x00;
+	ui32 r4_n = r0->dw0518;
 	*r2 = 0x00;
 	word32 r5_n = 0x00;
-	word32 r4_n = r0->dw0510;
-	uint32 r1_n = r1_n + r0->dw050C;
-	word32 r6_n = r0->dw0514;
-	if (r1_n != 0x00)
+	ui32 r2_n = r0->dw050C;
+	ui32 r4_n = r0->dw0510;
+	ui32 r6_n = r0->dw0514;
+	if ((r1_n & r2_n) != 0x00)
 		r5_n = 0x01;
-	word32 r2_n = r0->dw051C;
-	if (r1_n == 0x00)
+	ui32 r2_n = r0->dw051C;
+	if ((r1_n & r2_n) == 0x00)
 		r5_n = 0x00;
-	uint32 r1_n = r1_n + r4_n + (word32) (r1_n < 0x00);
-	uint32 r1_n = r1_n + r6_n + (word32) (r1_n < 0x00);
 	*r3 = r5_n;
 }
 
@@ -2426,20 +2419,20 @@ void SysCtlFlashSizeGet()
 {
 }
 
-// 00009B0C: void SysCtlPinPresent(Register word32 r0)
-void SysCtlPinPresent(word32 r0)
+// 00009B0C: void SysCtlPinPresent(Register ui32 r0)
+void SysCtlPinPresent(ui32 r0)
 {
-	*g_ptr9B1C + r0 + (word32) C == 0x00;
+	(*g_ptr9B1C & r0) == 0x00;
 }
 
-word32 * g_ptr9B1C = &g_dw400FE018; // 00009B1C
+ui32 * g_ptr9B1C = &g_dw400FE018; // 00009B1C
 // 00009B20: void SysCtlPeripheralPresent(Register uint32 r0)
 void SysCtlPeripheralPresent(uint32 r0)
 {
-	(r0 & 0x0FFFFFFF) + *g_ptr9B38[r0 >> 28] + (word32) (r0 >> 28 < 0x00) == 0x00;
+	(r0 & 0x0FFFFFFF & *g_ptr9B38[r0 >> 28]) == 0x00;
 }
 
-word32 * (* g_ptr9B38)[] = &g_aA554; // 00009B38
+ui32 * (* g_ptr9B38)[] = &g_aA554; // 00009B38
 // 00009B3C: void SysCtlPeripheralReset(Register uint32 r0)
 void SysCtlPeripheralReset(uint32 r0)
 {
@@ -3196,6 +3189,6 @@ Eq_n g_tA2FC = // 0000A2FC
 		0x00,
 		177,
 	};
-word32 * g_aA554[] = // 0000A554
+ui32 * g_aA554[] = // 0000A554
 	{
 	};

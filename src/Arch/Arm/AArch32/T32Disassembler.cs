@@ -77,7 +77,7 @@ namespace Reko.Arch.Arm.AArch32
             instr.InstructionClass |= instr.Condition != ArmCondition.AL ? InstrClass.Conditional : 0;
             instr.Address = addr;
             instr.Length = (int) (rdr.Address - addr);
-            if ((itState & 0x1F) == 0x10)
+            if (IsLastItInstruction())
             {
                 // No more IT bits, reset condition back to normal.
                 itCondition = ArmCondition.AL;
@@ -91,6 +91,11 @@ namespace Reko.Arch.Arm.AArch32
                 itState <<= 1;
             }
             return instr;
+        }
+
+        private bool IsLastItInstruction()
+        {
+            return (itState & 0x1F) == 0x10;
         }
 
         private class DasmState
@@ -107,11 +112,6 @@ namespace Reko.Arch.Arm.AArch32
             public ArmVectorData vectorData = ArmVectorData.INVALID;
             public bool useQ = false;
             public uint vectorShiftAmt = 0;
-
-            internal void Invalid()
-            {
-                throw new NotImplementedException();
-            }
 
             public AArch32Instruction MakeInstruction()
             {
@@ -891,7 +891,6 @@ namespace Reko.Arch.Arm.AArch32
         /// <param name="pos1"></param>
         /// <param name="pos2"></param>
         /// <returns></returns>
-
         private static Mutator<T32Disassembler> S_pair(int pos1, int pos2)
         {
             var fields = new[]
@@ -910,7 +909,6 @@ namespace Reko.Arch.Arm.AArch32
             };
         }
 
-
         private static Mutator<T32Disassembler> D(int pos, int size)
         {
             var field = new Bitfield(pos, size);
@@ -921,8 +919,6 @@ namespace Reko.Arch.Arm.AArch32
                 return true;
             };
         }
-
-
 
         private static Mutator<T32Disassembler> Dlist(int nRegs, int incr)
         {
@@ -1906,6 +1902,23 @@ namespace Reko.Arch.Arm.AArch32
             return true;
         }
 
+        /// <summary>
+        /// Fail if the current instruction is inside an IT block.
+        /// </summary>
+        private static bool noIt(uint uInstr, T32Disassembler dasm)
+        {
+            return dasm.itState == 0;
+        }
+
+        /// <summary>
+        /// Fail if the current instruction is inside an IT block,
+        /// and isn't the last instruction.
+        /// </summary>
+        private static bool noItUnlessLast(uint uInstr, T32Disassembler dasm)
+        {
+            return dasm.itState == 0 || dasm.IsLastItInstruction();
+        }
+
         private static Mutator<T32Disassembler> nyi(string message)
         {
             return (u, d) =>
@@ -1981,7 +1994,7 @@ namespace Reko.Arch.Arm.AArch32
                 dec16bit,
                 dec16bit,
                 Mask(11, 2,
-                    Instr(Mnemonic.b, PcRelative(1, Bf((0, 11)))),
+                    Instr(Mnemonic.b, noItUnlessLast, PcRelative(1, Bf((0, 11)))),
                     dec32bit,
                     dec32bit,
                     dec32bit)
@@ -2028,27 +2041,27 @@ namespace Reko.Arch.Arm.AArch32
             var decMisc16Bit = CreateMisc16bitDecoder();
             var decLdmStm = new LdmStmDecoder16();
             var decCondBranch = Mask(8, 4, "CondBranch",
-                Instr(Mnemonic.b, c8,PcRelative(1, Bf((0, 8)))),
-                Instr(Mnemonic.b, c8, PcRelative(1, Bf((0, 8)))),
-                Instr(Mnemonic.b, c8, PcRelative(1, Bf((0, 8)))),
-                Instr(Mnemonic.b, c8, PcRelative(1, Bf((0, 8)))),
+                Instr(Mnemonic.b, noIt, c8, PcRelative(1, Bf((0, 8)))),
+                Instr(Mnemonic.b, noIt, c8, PcRelative(1, Bf((0, 8)))),
+                Instr(Mnemonic.b, noIt, c8, PcRelative(1, Bf((0, 8)))),
+                Instr(Mnemonic.b, noIt, c8, PcRelative(1, Bf((0, 8)))),
 
-                Instr(Mnemonic.b, c8, PcRelative(1, Bf((0, 8)))),
-                Instr(Mnemonic.b, c8, PcRelative(1, Bf((0, 8)))),
-                Instr(Mnemonic.b, c8, PcRelative(1, Bf((0, 8)))),
-                Instr(Mnemonic.b, c8, PcRelative(1, Bf((0, 8)))),
+                Instr(Mnemonic.b, noIt, c8, PcRelative(1, Bf((0, 8)))),
+                Instr(Mnemonic.b, noIt, c8, PcRelative(1, Bf((0, 8)))),
+                Instr(Mnemonic.b, noIt, c8, PcRelative(1, Bf((0, 8)))),
+                Instr(Mnemonic.b, noIt, c8, PcRelative(1, Bf((0, 8)))),
 
-                Instr(Mnemonic.b, c8, PcRelative(1, Bf((0, 8)))),
-                Instr(Mnemonic.b, c8, PcRelative(1, Bf((0, 8)))),
-                Instr(Mnemonic.b, c8, PcRelative(1, Bf((0, 8)))),
-                Instr(Mnemonic.b, c8, PcRelative(1, Bf((0, 8)))),
+                Instr(Mnemonic.b, noIt, c8, PcRelative(1, Bf((0, 8)))),
+                Instr(Mnemonic.b, noIt, c8, PcRelative(1, Bf((0, 8)))),
+                Instr(Mnemonic.b, noIt, c8, PcRelative(1, Bf((0, 8)))),
+                Instr(Mnemonic.b, noIt, c8, PcRelative(1, Bf((0, 8)))),
 
-                Instr(Mnemonic.b, c8, PcRelative(1, Bf((0, 8)))),
-                Instr(Mnemonic.b, c8, PcRelative(1, Bf((0, 8)))),
+                Instr(Mnemonic.b, noIt, c8, PcRelative(1, Bf((0, 8)))),
+                Instr(Mnemonic.b, noIt, c8, PcRelative(1, Bf((0, 8)))),
                 Instr(Mnemonic.udf, Imm(0,8)),
-                Instr(Mnemonic.svc, InstrClass.Transfer | InstrClass.Call, Imm(0, 8)));
+                Instr(Mnemonic.svc, InstrClass.Transfer | InstrClass.Call, noIt, Imm(0, 8)));
 
-            return Mask(13, 3,
+            return Mask(13, 3, "  16-bit",
                 decAlu,
                 decAlu,
                 Mask(10, 3,
@@ -2058,8 +2071,8 @@ namespace Reko.Arch.Arm.AArch32
                         decDataHiRegisters,
                         decDataHiRegisters,
                         Mask(7,1,
-                            Instr(Mnemonic.bx, InstrClass.Transfer, R3, useLr),
-                            Instr(Mnemonic.blx, InstrClass.Transfer|InstrClass.Call, R3))),
+                            Instr(Mnemonic.bx, InstrClass.Transfer, noItUnlessLast, R3, useLr),
+                            Instr(Mnemonic.blx, InstrClass.Transfer|InstrClass.Call, noItUnlessLast, R3))),
                     LdrLiteral,
                     LdrLiteral,
 
@@ -2132,7 +2145,7 @@ namespace Reko.Arch.Arm.AArch32
 
         private static Decoder CreateDataLowRegisters()
         {
-            return Mask(6, 4,
+            return Mask(6, 4, "  Data processing (two low registers)",
                 Instr(Mnemonic.and, ufit, r0, r3),
                 Instr(Mnemonic.eor, ufit, r0, r3),
                 Instr(Mnemonic.lsl, ufit, r0, r3),
@@ -2143,7 +2156,7 @@ namespace Reko.Arch.Arm.AArch32
                 Instr(Mnemonic.sbc, ufit, r0, r3),
                 Instr(Mnemonic.ror, ufit, r0, r3),
 
-                Instr(Mnemonic.adc, ufit, r0, r3),
+                Instr(Mnemonic.tst, r0, r3),
                 Instr(Mnemonic.rsb, ufit, r0, r3),
                 Instr(Mnemonic.cmp, uf, r0, r3),
                 Instr(Mnemonic.cmn, uf, r0, r3),
@@ -4123,8 +4136,8 @@ namespace Reko.Arch.Arm.AArch32
 
         private static Decoder CreateBranchesMiscControl()
         {
-            var branch_T3_variant = Instr(Mnemonic.b, PcRelative(1, Bf((26,1),(11,1),(13,1),(16,6),(0,11))));
-            var branch_T4_variant = Instr(Mnemonic.b, B_T4);
+            var branch_T3_variant = Instr(Mnemonic.b, noItUnlessLast, PcRelative(1, Bf((26,1),(11,1),(13,1),(16,6),(0,11))));
+            var branch_T4_variant = Instr(Mnemonic.b, noItUnlessLast, B_T4);
             var branch = Nyi("Branch");
 
             var MiscellaneousSystem = Mask(4, 4,

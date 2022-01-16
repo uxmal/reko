@@ -1073,7 +1073,7 @@ l0000863C:
 FA02 F004     	lsl	r0,r2,r4
 7819           	ldrb	r1,[r3]
 B2C2           	uxtb	r2,r0
-420A           	adcs	r2,r1
+420A           	tst	r2,r1
 D10A           	bne	$00008662
 
 l0000864C:
@@ -2668,12 +2668,12 @@ FA03 F101     	lsl	r1,r3,r1
 F8D0 4400     	ldr	r4,[r0,#&400]
 B2C9           	uxtb	r1,r1
 F8D0 2420     	ldr	r2,[r0,#&420]
-420C           	adcs	r4,r1
+420C           	tst	r4,r1
 BF08           	it	eq
 2300           	moveq	r3,#0
 
 l0000914C:
-420A           	adcs	r2,r1
+420A           	tst	r2,r1
 BF14           	ite	ne
 2002           	movne	r0,#2
 
@@ -2719,20 +2719,20 @@ F8D0 2408     	ldr	r2,[r0,#&408]
 FA03 F101     	lsl	r1,r3,r1
 B2C9           	uxtb	r1,r1
 F8D0 3404     	ldr	r3,[r0,#&404]
-420A           	adcs	r2,r1
+420A           	tst	r2,r1
 F8D0 040C     	ldr	r0,[r0,#&40C]
 BF14           	ite	ne
 2201           	movne	r2,#1
 
 l000091AE:
 2200           	mov	r2,#0
-420B           	adcs	r3,r1
+420B           	tst	r3,r1
 BF14           	ite	ne
 2302           	movne	r3,#2
 
 l000091B6:
 2300           	mov	r3,#0
-4208           	adcs	r0,r1
+4208           	tst	r0,r1
 BF14           	ite	ne
 2004           	movne	r0,#4
 
@@ -2828,27 +2828,27 @@ F8D0 5500     	ldr	r5,[r0,#&500]
 FA04 F101     	lsl	r1,r4,r1
 B2C9           	uxtb	r1,r1
 F8D0 4504     	ldr	r4,[r0,#&504]
-420D           	adcs	r5,r1
+420D           	tst	r5,r1
 F8D0 5508     	ldr	r5,[r0,#&508]
 BF14           	ite	ne
 2701           	movne	r7,#1
 
 l00009278:
 2700           	mov	r7,#0
-420C           	adcs	r4,r1
+420C           	tst	r4,r1
 F8D0 4518     	ldr	r4,[r0,#&518]
 BF14           	ite	ne
 2602           	movne	r6,#2
 
 l00009284:
 2600           	mov	r6,#0
-420D           	adcs	r5,r1
+420D           	tst	r5,r1
 BF14           	ite	ne
 2504           	movne	r5,#4
 
 l0000928C:
 2500           	mov	r5,#0
-420C           	adcs	r4,r1
+420C           	tst	r4,r1
 BF14           	ite	ne
 2408           	movne	r4,#8
 
@@ -2860,7 +2860,7 @@ l00009294:
 6014           	str	r4,[r2]
 F8D0 250C     	ldr	r2,[r0,#&50C]
 F8D0 4510     	ldr	r4,[r0,#&510]
-4211           	adcs	r1,r2
+4211           	tst	r1,r2
 F8D0 6514     	ldr	r6,[r0,#&514]
 BF18           	it	ne
 2501           	movne	r5,#1
@@ -2871,19 +2871,19 @@ BF08           	it	eq
 2500           	moveq	r5,#0
 
 l000092B8:
-4221           	adcs	r1,r4
+4221           	tst	r1,r4
 BF14           	ite	ne
 2402           	movne	r4,#2
 
 l000092BE:
 2400           	mov	r4,#0
-4231           	adcs	r1,r6
+4231           	tst	r1,r6
 BF14           	ite	ne
 2004           	movne	r0,#4
 
 l000092C6:
 2000           	mov	r0,#0
-4211           	adcs	r1,r2
+4211           	tst	r1,r2
 BF14           	ite	ne
 2208           	movne	r2,#8
 
@@ -4137,7 +4137,7 @@ F500 6000     	add	r0,r0,#&800
 SysCtlPinPresent proc
 4B03           	ldr	r3,[00009B1C]                           ; [pc,#&C]
 681B           	ldr	r3,[r3]
-4203           	adcs	r3,r0
+4203           	tst	r3,r0
 BF14           	ite	ne
 2001           	movne	r0,#1
 
@@ -4153,7 +4153,7 @@ SysCtlPeripheralPresent proc
 F853 3022     	ldr.w	r3,[r3,r2,lsl #2]
 F020 4070     	bic	r0,r0,#&F0000000
 681B           	ldr	r3,[r3]
-4218           	adcs	r0,r3
+4218           	tst	r0,r3
 BF14           	ite	ne
 2001           	movne	r0,#1
 
