@@ -215,7 +215,7 @@ namespace Reko.Analysis
         /// <returns></returns>
         private bool IsCopyWithOptionalCast(Identifier grf, Statement stm)
         {
-            if (!(stm.Instruction is Assignment ass))
+            if (stm.Instruction is not Assignment ass)
                 return false;
             return ass.Src switch
             {

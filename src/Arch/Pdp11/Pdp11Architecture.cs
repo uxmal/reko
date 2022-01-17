@@ -102,7 +102,7 @@ namespace Reko.Arch.Pdp11
             Endianness = EndianServices.Little;
             InstructionBitSize = 16;
             StackRegister = Registers.sp;
-            //CarryFlagMask  = { get { throw new NotImplementedException(); } }
+            CarryFlagMask = Registers.C.FlagGroupBits;
             FramePointerType = PrimitiveType.Ptr16;
             PointerType = PrimitiveType.Ptr16;
             WordWidth = PrimitiveType.Word16;

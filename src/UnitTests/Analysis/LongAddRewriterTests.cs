@@ -508,5 +508,32 @@ namespace Reko.UnitTests.Analysis
             });
             ssa.Validate(s => Assert.Fail(s));
         }
+
+        [Test(Description = "PDP-11 had a single operand ADC instruction")]
+        public void Larw_Pdp11LongAdd()
+        {
+            var sExp =
+            #region Expected
+@"l1:
+	dx_ax_11 = SEQ(dx, ax)
+	bx_cx_12 = SEQ(bx, cx)
+	dx_ax_13 = dx_ax_11 + bx_cx_12
+	ax_3 = SLICE(dx_ax_13, word16, 0) (alias)
+	dx_10 = SLICE(dx_ax_13, word16, 16) (alias)
+	SCZ_4 = cond(ax_3)
+	C_6 = SLICE(SCZ_4, bool, 2) (alias)
+	dx_7 = dx + C_6
+	SCZ_8 = cond(dx_7)";
+            #endregion
+            RunTest(sExp, m =>
+            {
+                m.Assign(ax, m.IAdd(ax, cx));
+                m.Assign(SCZ, m.Cond(ax));
+                m.Assign(dx, m.IAdd(dx, CF));
+                m.Assign(SCZ, m.Cond(dx));
+                m.Assign(dx, m.IAdd(dx, bx));
+                this.block = m.Block;
+            });
+        }
     }
 }

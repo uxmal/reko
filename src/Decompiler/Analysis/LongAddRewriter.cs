@@ -327,7 +327,7 @@ namespace Reko.Analysis
                     asc.Statement = use;
                     return asc;
                 }
-                if (!(use.Instruction is Assignment ass))
+                if (use.Instruction is not Assignment ass)
                     continue;
                 if (ass.Src is Slice)
                 {
@@ -488,13 +488,17 @@ namespace Reko.Analysis
                 var op = addPattern.CapturedOperators("op");
                 if (op is null || !IsIAddOrISub(op))
                     return null;
+                var dst = addPattern.CapturedExpressions("dst")!;
                 var left = addPattern.CapturedExpressions("left")!;
+                AddSubCandidate? pdp11dst = IsPdp11StyleAdcSbc(op, dst, left);
+                if (pdp11dst is not null)
+                    return pdp11dst;
                 return new AddSubCandidate(
                     op,
                     left,
                     Constant.Zero(left.DataType))
                 {
-                    Dst = addPattern.CapturedExpressions("dst")!,
+                    Dst = dst,
                     Statement = stm
                 };
             }
@@ -502,6 +506,46 @@ namespace Reko.Analysis
             {
                 return null;
             }
+        }
+
+        /// <summary>
+        /// Checks to see if this is a PDP-11 style long add.
+        /// </summary>
+        /// <param name="op">IAdd or ISub</param>
+        /// <param name="dst">Possible intermediate step</param>
+        /// <param name="left">intermediate addend.</param>
+        /// <returns></returns>
+        /// <remarks>
+        /// The PDP-11 long add sequence looks like this:
+        ///     add r1,r2
+        ///     adc r3
+        ///     add r3,r4
+        /// On entry we 
+        /// </remarks>
+        private AddSubCandidate? IsPdp11StyleAdcSbc(Operator op, Expression dst, Expression left)
+        {
+            if (dst is not Identifier idIntermediate)
+                return null;
+            var uses = ssa.Identifiers[idIntermediate].Uses;
+            foreach (var use in uses)
+            {
+                if (addPattern.Match(use.Instruction))
+                {
+                    var dstFinal = addPattern.CapturedExpressions("dst");
+                    var opFinal = addPattern.CapturedOperators("op");
+                    var leftFinal = addPattern.CapturedExpressions("left");
+                    var rightFinal = addPattern.CapturedExpressions("right")!;
+                    if (leftFinal == idIntermediate && op == opFinal)
+                    {
+                        return new AddSubCandidate(op, left, rightFinal)
+                        {
+                            Dst = dstFinal,
+                            Statement = use
+                        };
+                    }
+                }
+            }
+            return null;
         }
 
         public AddSubCandidate? MatchAddSub(Statement stm)
