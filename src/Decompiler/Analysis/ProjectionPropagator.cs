@@ -128,12 +128,12 @@ namespace Reko.Analysis
             public override Expression VisitSegmentedAccess(SegmentedAccess access)
             {
                 Expression? e = base.VisitSegmentedAccess(access);
-                if (!(e is SegmentedAccess accessNew))
+                if (e is not SegmentedAccess accessNew)
                     return e;
 
-                if (!(accessNew.BasePointer is Identifier idSeg))
+                if (accessNew.BasePointer is not Identifier idSeg)
                     return e;
-                if (sac.AssociatedIdentifier(idSeg) == null)
+                if (sac.AssociatedIdentifier(idSeg) is null)
                     return e;
                 var sidSeg = ssa.Identifiers[idSeg];
                 if (accessNew.EffectiveAddress is Identifier idEa)

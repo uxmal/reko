@@ -621,7 +621,7 @@ void fn1483_1777(byte al, byte bl, byte bh, word16 si, selector ds)
 fn1483_1777_exit:
 fn1483_1777_entry:
 l1483_1777:
-	fn1483_467E(SEQ(ds, SEQ(bh, bl - al - CONVERT(C, bool, byte))), al, si)
+	fn1483_467E(SEQ(ds, bh, bl - al - CONVERT(C, bool, byte)), al, si)
 
 
 byte fn1483_1B91(byte al, word16 cx, word16 bx, word16 di, selector ds, selector psegArg00)
@@ -831,7 +831,7 @@ l1483_1B7F:
 	sp_115 = sp_207 + 4<i16>
 	di = v34_213
 	C = false
-	ax = SEQ(SLICE(SLICE(SEQ(SEQ(0xAF<8>, cl_185), al_193) - 0xA587D9<24>, word16, 8), byte, 8), __inb(dx) - 0xF8<8> & 0xA<8>) (alias)
+	ax = SEQ(SLICE(SLICE(SEQ(0xAF<8>, cl_185, al_193) - 0xA587D9<24>, word16, 8), byte, 8), __inb(dx) - 0xF8<8> & 0xA<8>) (alias)
 
 
 void fn1483_1C50(byte ah, word16 dx)

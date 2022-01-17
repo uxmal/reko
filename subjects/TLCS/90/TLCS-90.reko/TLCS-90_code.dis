@@ -134,7 +134,7 @@ word16 fn03B2(byte a, byte b, byte c, word16 de, word16 hl, word16 ix, word16 wA
 fn03B2_entry:
 	word16 hl_313 = hl
 l03B2:
-	uint32 v77 = SEQ(SEQ(hl_313, b), c) >>u 1<8>
+	uint32 v77 = SEQ(hl_313, b, c) >>u 1<8>
 	uint24 v74 = SLICE(v77, word24, 8)
 	hl_313 = SLICE(v74, word16, 8)
 	byte h_4 = SLICE(hl_313, byte, 8)
@@ -262,7 +262,7 @@ l0514:
 	byte a_128 = 5<8>
 	word16 hl_371 = Mem117[ix - 24<i16>:word16]
 l057C:
-	uint32 v127 = SEQ(SEQ(hl_371, b_121), c_119) >>u 1<8>
+	uint32 v127 = SEQ(hl_371, b_121, c_119) >>u 1<8>
 	uint24 v124 = SLICE(v127, word24, 8)
 	hl_371 = SLICE(v124, word16, 8)
 	byte h_130 = SLICE(hl_371, byte, 8)
@@ -356,7 +356,7 @@ l060E:
 	byte a_61 = 5<8>
 	word16 hl_300 = Mem50[ix - 32<i16>:word16]
 l0650:
-	uint32 v74 = SEQ(SEQ(hl_300, b_54), c_52) >>u 1<8>
+	uint32 v74 = SEQ(hl_300, b_54, c_52) >>u 1<8>
 	uint24 v71 = SLICE(v74, word24, 8)
 	hl_300 = SLICE(v71, word16, 8)
 	byte h_63 = SLICE(hl_300, byte, 8)
@@ -605,7 +605,7 @@ void fn0C9D(byte a, byte b, byte c, word16 de, word16 hl, word16 ix, word16 wArg
 fn0C9D_entry:
 	word16 hl_148 = hl
 l0C9D:
-	uint32 v52 = SEQ(SEQ(hl_148, b), c) >>u 1<8>
+	uint32 v52 = SEQ(hl_148, b, c) >>u 1<8>
 	uint24 v49 = SLICE(v52, word24, 8)
 	hl_148 = SLICE(v49, word16, 8)
 	byte h_4 = SLICE(hl_148, byte, 8)
@@ -707,7 +707,7 @@ l0D09:
 	byte a_110 = 5<8>
 	word16 hl_354 = Mem99[ix - 32<i16>:word16]
 l0D71:
-	uint32 v86 = SEQ(SEQ(hl_354, b_103), c_101) >>u 1<8>
+	uint32 v86 = SEQ(hl_354, b_103, c_101) >>u 1<8>
 	uint24 v83 = SLICE(v86, word24, 8)
 	hl_354 = SLICE(v83, word16, 8)
 	byte h_112 = SLICE(hl_354, byte, 8)

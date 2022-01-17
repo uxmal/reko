@@ -533,7 +533,7 @@ void fn1483-1104(byte al, byte dl, struct Eq_n Eq_n::* bx, struct Eq_n Eq_n::* b
 // 1483:1777: void fn1483-1777(Register byte al, Register byte bl, Register byte bh, Register Eq_n si, Register (ptr16 Eq_n) ds)
 void fn1483-1777(byte al, byte bl, byte bh, Eq_n si, struct Eq_n * ds)
 {
-	fn1483-467E(SEQ(bh, bl - al - (byte) C), al, si);
+	fn1483-467E(SEQ(ds, bh, bl - al - (byte) C), al, si);
 }
 
 // 1483:1B91: FlagGroup byte fn1483-1B91(Register Eq_n al, Register word16 cx, Register Eq_n bx, Register Eq_n di, Register Eq_n ds, Stack Eq_n psegArg00)
@@ -718,7 +718,7 @@ Eq_n fn1483-1BB9(Eq_n ax, ui16 cx, mp16 dx, Eq_n bx, Eq_n bp, Eq_n si, Eq_n di, 
 		sp_n = sp_n + 4;
 		di = v34_n;
 		C = false;
-		ax = SEQ(SLICE(SLICE(SEQ(SEQ(~0x50, cl_n), al_n) - 10848217, word16, 8), byte, 8), __inb(dx) - ~0x07 & 0x0A);
+		ax = SEQ(SLICE(SLICE(SEQ(~0x50, cl_n, al_n) - 10848217, word16, 8), byte, 8), __inb(dx) - ~0x07 & 0x0A);
 	}
 }
 

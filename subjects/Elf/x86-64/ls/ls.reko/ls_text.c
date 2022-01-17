@@ -1465,7 +1465,7 @@ l0000000000404AE0:
 			uint64 rax_n = (uint64) *r8_n;
 			uint64 rcx_n = (uint64) ((word32) rax_n - 0x30);
 			Eq_n r11d_n = r11_n;
-			r11_n = SEQ(SEQ(r11_32_32_n, SLICE(r11_n, word24, 8)), (byte) r11_n);
+			r11_n = SEQ(r11_32_32_n, r11_n);
 			while ((byte) rcx_n <= 0x36)
 			{
 				ui64 r14_n = 0x01 << (byte) rcx_n;
@@ -1483,7 +1483,7 @@ l0000000000404AE0:
 					}
 					else
 					{
-						r11_n = SEQ(SEQ(r11_32_32_n, r11d_24_8_n), r11b_n);
+						r11_n = SEQ(r11_32_32_n, r11d_24_8_n, r11b_n);
 						if ((r14d_n & 0x03FF) == 0x00)
 							break;
 						r11_n.u0 = (uint64) ((word32) rax_n - 0x30 + (r11d_n << 0x04));
@@ -4113,7 +4113,7 @@ Eq_n fn0000000000409E50(Eq_n rcx, Eq_n rdx, Eq_n rsi[], Eq_n rdi)
 					uint64 rcx_n = (uint64) bLoc41_n;
 					word32 rcx_32_32_n = SLICE(rcx_n, word32, 32);
 					if (memcmp((word64) rdx + qwLoc50_n *s rcx, rbp_n, rcx) != 0x00)
-						rcx_n = SEQ(SEQ(rcx_32_32_n, 0x00), 0x01);
+						rcx_n = SEQ(rcx_32_32_n, 0x00, 0x01);
 					bLoc41_n = (byte) rcx_n;
 				}
 				else
@@ -7534,7 +7534,7 @@ l000000000040EE52:
 									goto l000000000040EE98;
 								if (r12_n != 0x00)
 								{
-									uint64 r9_n = SEQ(SEQ(r9_32_32_n, r9d_24_8_n), r9b_n);
+									uint64 r9_n = SEQ(r9_32_32_n, r9d_24_8_n, r9b_n);
 									if (rax_n > rcx_n)
 									{
 										Eq_n rbp_n = (int64) ebp_n - rcx_n;

@@ -961,6 +961,10 @@ namespace Reko.Evaluation
                 changed |= eChanged;
                 return eNew;
             }).ToArray();
+            (newSeq, changed) = FlattenNestedSequences(newSeq, changed);
+
+            // SEQ(SEQ(a, b), c) = SEQ(a, b, c)
+
             if (newSeq.Length == 2)
             {
                 // Special case for the frequent case of segment:offset or 
@@ -1019,6 +1023,26 @@ namespace Reko.Evaluation
             if (slices != null)
                 return (slices, true);
             return (new MkSequence(seq.DataType, newSeq), changed);
+        }
+
+        private (Expression[] newSeq, bool changed) FlattenNestedSequences(
+            Expression[] sequence,
+            bool changed)
+        {
+            var result = new List<Expression>();
+            foreach (var exp in sequence)
+            {
+                if (exp is MkSequence seq)
+                {
+                    result.AddRange(seq.Expressions);
+                    changed = true;
+                }
+                else
+                {
+                    result.Add(exp);
+                }
+            }
+            return (result.ToArray(), changed);
         }
 
         /// <summary>

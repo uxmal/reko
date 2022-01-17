@@ -1256,7 +1256,7 @@ l0000000000404AE0:
 	word64 rax_59 = CONVERT(Mem131[r8_124:byte], byte, uint64)
 	word64 rcx_576 = CONVERT(SLICE(rax_59, word32, 0) - 0x30<32>, word32, uint64)
 	word32 r11d_373 = r11_127
-	r11_127 = SEQ(SEQ(r11_32_32_510, SLICE(r11_127, word24, 8)), SLICE(r11_127, byte, 0)) (alias)
+	r11_127 = SEQ(r11_32_32_510, r11_127) (alias)
 	branch SLICE(rcx_576, byte, 0) >u 0x36<8> l0000000000404A65
 l0000000000404AF0:
 	word64 r14_68 = 1<u64> << SLICE(rcx_576, byte, 0)
@@ -1280,7 +1280,7 @@ l0000000000404AD0:
 	r8_124 = r8_124 + 1<64>
 	r11_32_32_510 = SLICE(r11_127, word32, 32) (alias)
 l0000000000404B04:
-	r11_127 = SEQ(SEQ(r11_32_32_510, r11d_24_8_517), r11b_106) (alias)
+	r11_127 = SEQ(r11_32_32_510, r11d_24_8_517, r11b_106) (alias)
 	branch (r14d_69 & 0x3FF<32>) == 0<32> l0000000000404A65
 l0000000000404A65:
 	Mem113[r9_110:byte] = SLICE(r11_127, byte, 0)
@@ -4166,7 +4166,7 @@ l0000000000409EAE:
 	word32 rcx_32_32_239 = SLICE(rcx_278, word32, 32)
 	branch memcmp(qwLoc50_164 *s rcx + rdx, rbp_113, rcx) == 0<32> l0000000000409ED4
 l0000000000409ED1_1:
-	rcx_278 = SEQ(SEQ(rcx_32_32_239, 0<24>), 1<8>) (alias)
+	rcx_278 = SEQ(rcx_32_32_239, 0<24>, 1<8>) (alias)
 l0000000000409ED4:
 	bLoc41_165 = SLICE(rcx_278, byte, 0)
 l0000000000409ED8:
@@ -7984,7 +7984,7 @@ l000000000040EE98:
 l000000000040F0F9:
 	branch r12_19 == 0<64> l000000000040F16E
 l000000000040F0FE:
-	word64 r9_1104 = SEQ(SEQ(r9_32_32_994, r9d_24_8_1006), r9b_385)
+	word64 r9_1104 = SEQ(r9_32_32_994, r9d_24_8_1006, r9b_385)
 	branch rax_266 <=u rcx_231 l000000000040F144
 l000000000040F103:
 	word64 rbp_344 = CONVERT(ebp_241, word32, int64) - rcx_231

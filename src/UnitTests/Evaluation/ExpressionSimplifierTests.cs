@@ -86,8 +86,8 @@ namespace Reko.UnitTests.Evaluation
         private SsaIdentifierCollection BuildSsaIdentifiers()
         {
             var mrFoo = new RegisterStorage("foo", 1, 0, PrimitiveType.Word32);
-            var mrFoo64 = new RegisterStorage("foo64", 1, 0, PrimitiveType.Word64);
-            var mrBar = new RegisterStorage("bar", 2, 1, PrimitiveType.Word32);
+            var mrFoo64 = new RegisterStorage("foo64", 2, 0, PrimitiveType.Word64);
+            var mrBar = new RegisterStorage("bar", 3, 0, PrimitiveType.Word32);
             foo = new Identifier(mrFoo.Name, mrFoo.DataType, mrFoo);
             foo64 = new Identifier(mrFoo64.Name, mrFoo64.DataType, mrFoo64);
 
@@ -96,6 +96,12 @@ namespace Reko.UnitTests.Evaluation
             foo = coll.Add(foo, new Statement(0, new Assignment(foo, src), null), src, false).Identifier;
             foo64 = coll.Add(foo64, new Statement(0, new Assignment(foo64, Constant.Word64(1)), null), src, false).Identifier;
             return coll;
+        }
+
+        private Identifier Given_Tmp(string name, DataType dt)
+        {
+            var tmp = m.Procedure.Frame.CreateTemporary(name, dt);
+            return ssaIds.Add(tmp, new Statement(0, new DefInstruction(tmp), null), null, false).Identifier;
         }
 
         private Identifier Given_Tmp(string name, Expression defExpr)
@@ -960,6 +966,24 @@ namespace Reko.UnitTests.Evaluation
             var (result, changed) = exp.Accept(simplifier);
 
             Assert.AreEqual("-foo_1", result.ToString());
+            Assert.IsTrue(changed);
+        }
+
+        [Test]
+        public void Exs_Nested_Sequences()
+        {
+            Given_ExpressionSimplifier();
+            Given_LittleEndianArchitecture();
+            var a = Given_Tmp("a", PrimitiveType.Word16);
+            var b = Given_Tmp("b", PrimitiveType.Word16);
+            var c = Given_Tmp("c", PrimitiveType.Word32);
+            var exp = m.Seq(
+                m.Seq(a, b),
+                c);
+
+            var (result, changed) = exp.Accept(simplifier);
+
+            Assert.AreEqual("SEQ(a_3, b_4, c_5)", result.ToString());
             Assert.IsTrue(changed);
         }
     }

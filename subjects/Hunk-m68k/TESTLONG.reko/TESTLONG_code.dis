@@ -713,7 +713,7 @@ l00001808:
 	wLoc34_2130 = SLICE(v187_817, word16, 16) (alias)
 	dwLoc38_2103 = Mem818[d0_812:word32]
 l0000185E:
-	word32 d1_838 = SEQ(SEQ(wLoc34_2130, SLICE(wLoc32_2108, byte, 8)), SLICE(wLoc32_2108, byte, 0))
+	word32 d1_838 = SEQ(wLoc34_2130, wLoc32_2108)
 	branch d4_367 != 0x68<32> l0000187A
 l00001866:
 	d1_838 = CONVERT(wLoc32_2108, word16, uint32)
@@ -1572,7 +1572,7 @@ l0000256C:
 	word32 d5_181 = SLICE(d5_d6_361, word32, 32)
 	branch d5_181 >=u 0<32> l000025C4
 l000025AE:
-	ui64 d5_d6_364 = CONVERT(d6_178, word32, uint64) + SEQ(d5_181, SEQ(SLICE(__swap(d7_13), word16, 16), 0<16>))
+	ui64 d5_d6_364 = CONVERT(d6_178, word32, uint64) + SEQ(d5_181, SLICE(__swap(d7_13), word16, 16), 0<16>)
 	d1_104 = d1_104 - 1<32>
 	d6_178 = SLICE(d5_d6_364, word32, 0) (alias)
 	d5_181 = SLICE(d5_d6_364, word32, 32) + __swap(SEQ(SLICE(d7_13, word16, 16), 0<16>))
@@ -1601,7 +1601,7 @@ l000025CA:
 	word32 d6_267 = __swap(d6_178)
 	bLoc26_376 = true
 	dwLoc24 = SEQ(SLICE(d1_104, word16, 0), wLoc22_456) (alias)
-	d5_d6_567 = SEQ(SEQ(SLICE(d5_266, word16, 16), SLICE(d6_267, word16, 0)), SEQ(SLICE(d6_267, word16, 16), 0<16>)) (alias)
+	d5_d6_567 = SEQ(SLICE(d5_266, word16, 16), SLICE(d6_267, word16, 0), SLICE(d6_267, word16, 16), 0<16>) (alias)
 l00002568:
 	d1_104 = d1_104 - 1<32>
 l000024EA:

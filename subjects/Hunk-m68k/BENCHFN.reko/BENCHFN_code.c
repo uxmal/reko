@@ -677,7 +677,7 @@ l0000170E:
 							wLoc34_n = SLICE(v204_n, word16, 16);
 							dwLoc38_n = 0x00;
 						}
-						uint32 d1_n = SEQ(SEQ(wLoc34_n, SLICE(wLoc32_n, byte, 8)), (byte) wLoc32_n);
+						uint32 d1_n = SEQ(wLoc34_n, wLoc32_n);
 						if (d4_n == 0x68)
 						{
 							d1_n = (uint32) wLoc32_n;
@@ -1473,7 +1473,7 @@ l0000254E:
 					Eq_n d5_n = SLICE(d5_d6_n, word32, 32);
 					if (d5_n < 0x00)
 					{
-						uint64 d5_d6_n = (uint64) d6_n + SEQ(d5_n, SEQ(SLICE(__swap(d7_n), word16, 16), 0x00));
+						uint64 d5_d6_n = (uint64) d6_n + SEQ(d5_n, SLICE(__swap(d7_n), word16, 16), 0x00);
 						--d1_n;
 						d6_n = (word32) d5_d6_n;
 						d5_n = (word32) __swap(SEQ(SLICE(d7_n, word16, 16), 0x00)) + SLICE(d5_d6_n, word32, 32);
@@ -1484,7 +1484,7 @@ l0000254E:
 					Eq_n d6_n = __swap(d6_n);
 					bLoc26_n.u0 = true;
 					dwLoc24 = SEQ((word16) d1_n, wLoc22_n);
-					d5_d6_n = SEQ(SEQ(SLICE(d5_n, word16, 16), (word16) d6_n), SEQ(SLICE(d6_n, word16, 16), 0x00));
+					d5_d6_n = SEQ(SLICE(d5_n, word16, 16), (word16) d6_n, SLICE(d6_n, word16, 16), 0x00);
 				}
 				Eq_n d6_n = __swap(SEQ(SLICE(d6_n, word16, 16), (word16) d5_n));
 				d0 = SEQ(SLICE(dwLoc24, word16, 16), (word16) d1_n);
