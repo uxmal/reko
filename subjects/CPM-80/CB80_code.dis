@@ -1662,9 +1662,9 @@ byte fn1353(byte a, word16 de, ptr16 & lOut)
 // Preserved: sp
 fn1353_entry:
 l1353:
-	ui16 a_a_19 = Mem0[de:ui16] - CONVERT(a, byte, uint16)
-	lOut = SLICE(a_a_19, byte, 0)
-	return SLICE(a_a_19, byte, 8)
+	ui16 a_a_20 = Mem0[de:ui16] - CONVERT(a, byte, uint16)
+	lOut = SLICE(a_a_20, byte, 0)
+	return SLICE(a_a_20, byte, 8)
 fn1353_exit:
 
 

@@ -553,7 +553,8 @@ Eq_n ___sbrk(struct Eq_n * ds, uint32 dwArg02)
 	Eq_n ax_n;
 	ui32 dx_ax_n = dwArg02 + (uint32) ds->t009E;
 	Eq_n ax_n = (word16) dx_ax_n;
-	if (SLICE(dx_ax_n, word16, 16) + (word16) (ax_n < 0x0100) == 0x00 && (word16) ax_n.u0 + 0x0100 < fp - 2)
+	Eq_n cx_n = (word16) dx_ax_n + 0x0100;
+	if (SLICE(dx_ax_n + 0x0100, word16, 16) == 0x00 && cx_n < fp - 2)
 	{
 		Eq_n v13_n = ds->t009E;
 		ds->t009E = ax_n;
@@ -2659,11 +2660,10 @@ l0800_nD0F:
 								si_n = (word16) ax_si_n;
 								di_n = ax_n;
 							} while (SLICE(dx_ax_n, byte, 16) + SLICE(dx_ax_n, byte, 24) + (byte) (ax_n < 0x00) == 0x00);
-							byte al_n = bLoc07_n + ~0x00;
-							bool C_n = SLICE(cond(al_n), bool, 1);
-							dx_n = SLICE(cond(C_n + ~0x00), bool, 1) + 0x7FFF;
+							Eq_n ah_al_n = (uint16) bLoc07_n + ~0x00;
+							dx_n = SLICE(cond(SLICE(ah_al_n, byte, 8)), bool, 1) + 0x7FFF;
 							wLoc04_n.u0 = 0x02;
-							ax_n = SEQ(C_n + ~0x00, al_n);
+							ax_n = ah_al_n;
 l0800_nD1F:
 							ds->*wArg0C += wLoc06_n;
 							ds->*wArg0E = wLoc04_n;
@@ -2684,7 +2684,7 @@ l0800_nCBE:
 						(ss->*sp_n).tFFFFFFFE = wArg06;
 						word16 v40_n = wLoc06_n + 0x01;
 						word16 sp_n;
-						uint16 ax_n;
+						word16 ax_n;
 						SEQ(0x0800, wArg02)();
 						wLoc06_n = v40_n;
 						sp_n = sp_n + 2;

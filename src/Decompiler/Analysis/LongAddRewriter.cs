@@ -342,11 +342,10 @@ namespace Reko.Analysis
 
         public bool IsCarryFlag(Expression? exp)
         {
-            if (!(exp is Identifier cf))
-                return false;
-            if (!(cf.Storage is FlagGroupStorage grf))
-                return false;
-            return (arch.CarryFlagMask & grf.FlagGroupBits) != 0;
+            return 
+                exp is Identifier cf &&
+                cf.Storage is FlagGroupStorage grf &&
+                (arch.CarryFlagMask & grf.FlagGroupBits) != 0;
         }
 
         /// <summary>

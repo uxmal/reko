@@ -38,6 +38,7 @@ namespace Reko.Arch.Msp430
         public Msp430Architecture(IServiceProvider services, string archId, Dictionary<string, object> options)
             : base(services, archId, options)
         {
+            this.CarryFlagMask = (uint) FlagM.CF;
             this.InstructionBitSize = 16;
             this.StackRegister = Registers.sp;
             this.WordWidth = PrimitiveType.Word16;

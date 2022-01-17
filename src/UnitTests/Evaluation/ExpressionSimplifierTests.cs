@@ -39,6 +39,7 @@ namespace Reko.UnitTests.Evaluation
     {
         private ExpressionSimplifier simplifier;
         private Identifier foo;
+        private Identifier foo64;
         private ProcedureBuilder m;
         private IntrinsicProcedure rolc_8;
         private Mock<IProcessorArchitecture> arch;
@@ -85,12 +86,15 @@ namespace Reko.UnitTests.Evaluation
         private SsaIdentifierCollection BuildSsaIdentifiers()
         {
             var mrFoo = new RegisterStorage("foo", 1, 0, PrimitiveType.Word32);
+            var mrFoo64 = new RegisterStorage("foo64", 1, 0, PrimitiveType.Word64);
             var mrBar = new RegisterStorage("bar", 2, 1, PrimitiveType.Word32);
             foo = new Identifier(mrFoo.Name, mrFoo.DataType, mrFoo);
+            foo64 = new Identifier(mrFoo64.Name, mrFoo64.DataType, mrFoo64);
 
             var coll = new SsaIdentifierCollection();
             var src = Constant.Word32(1);
             foo = coll.Add(foo, new Statement(0, new Assignment(foo, src), null), src, false).Identifier;
+            foo64 = coll.Add(foo64, new Statement(0, new Assignment(foo64, Constant.Word64(1)), null), src, false).Identifier;
             return coll;
         }
 
@@ -929,6 +933,33 @@ namespace Reko.UnitTests.Evaluation
                     PrimitiveType.Byte, 0);
             var (result, changed) = exp.Accept(simplifier);
             Assert.AreEqual("SLICE(test(), byte, 0)", result.ToString());
+            Assert.IsTrue(changed);
+        }
+
+        [Test]
+        public void Exs_Sequence_Ands()
+        {
+            Given_ExpressionSimplifier();
+            Given_LittleEndianArchitecture();
+
+            var exp = m.Seq(
+                m.And(m.Mem32(m.Word32(0x00123404)), m.Mem32(m.Word32(0x00123504))),
+                m.And(m.Mem32(m.Word32(0x00123400)), m.Mem32(m.Word32(0x00123500))));
+            var (result, changed) = exp.Accept(simplifier);
+
+            Assert.AreEqual("Mem0[0x123400<32>:word64] & Mem0[0x123500<32>:word64]", result.ToString());
+            Assert.IsTrue(changed);
+        }
+
+        [Test]
+        public void Exs_Twos_complement_identity()
+        {
+            Given_ExpressionSimplifier();
+
+            var exp = m.IAdd(m.Comp(foo), 1);
+            var (result, changed) = exp.Accept(simplifier);
+
+            Assert.AreEqual("-foo_1", result.ToString());
             Assert.IsTrue(changed);
         }
     }

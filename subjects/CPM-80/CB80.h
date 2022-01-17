@@ -506,7 +506,7 @@ Eq_841: (union "Eq_841" (byte u0) (ptr16 u1))
 	T_841 (in lOut @ 0000079E : Eq_841)
 	T_844 (in out l_86 @ 0000079E : ptr16)
 	T_2133 (in out l_89 @ 00000E82 : ptr16)
-	T_2721 (in SLICE(a_a_19, byte, 0) @ 0000135D : byte)
+	T_2721 (in SLICE(a_a_20, byte, 0) @ 0000135D : byte)
 Eq_918: (fn void (word16))
 	T_918 (in fn0745 @ 000007F2 : ptr16)
 	T_919 (in signature of fn0745 @ 00000745 : void)
@@ -11690,7 +11690,7 @@ T_2714: (in SLICE(cond(SLICE(a_a_21, byte, 8)), bool, 0) @ 00001352 : bool)
   Class: Eq_2701
   DataType: bool
   OrigDataType: bool
-T_2715: (in a_a_19 @ 0000135B : ui16)
+T_2715: (in a_a_20 @ 0000135B : ui16)
   Class: Eq_2715
   DataType: ui16
   OrigDataType: ui16
@@ -11714,11 +11714,11 @@ T_2720: (in *de - (uint16) a @ 00000000 : ui16)
   Class: Eq_2715
   DataType: ui16
   OrigDataType: ui16
-T_2721: (in SLICE(a_a_19, byte, 0) @ 0000135D : byte)
+T_2721: (in SLICE(a_a_20, byte, 0) @ 0000135D : byte)
   Class: Eq_841
   DataType: Eq_841
   OrigDataType: byte
-T_2722: (in SLICE(a_a_19, byte, 8) @ 0000135D : byte)
+T_2722: (in SLICE(a_a_20, byte, 8) @ 0000135D : byte)
   Class: Eq_839
   DataType: byte
   OrigDataType: byte

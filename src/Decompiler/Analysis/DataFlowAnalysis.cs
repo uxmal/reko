@@ -34,15 +34,17 @@ using System.Linq;
 
 namespace Reko.Analysis
 {
-	/// <summary>
-	/// We are keenly interested in discovering the register linkage 
-	/// between procedures, i.e. what registers are used by a called 
-	/// procedure, and what modified registers are used by a calling 
-	/// procedure. Once these registers have been discovered, we can
-	/// separate the procedures from each other and proceed with the
-	/// decompilation.
-	/// </summary>
-	public class DataFlowAnalysis
+    /// <summary>
+    /// We are keenly interested in discovering the register linkage 
+    /// between procedures, i.e. what registers are used by a called 
+    /// procedure, and what modified registers are used by a calling 
+    /// procedure. Once these registers have been discovered, we can
+    /// separate the procedures from each other and proceed with the
+    /// decompilation.
+    /// </summary>
+    // https://patterns.eecs.berkeley.edu/?page_id=609
+    //    Examples of Task graphs.
+    public class DataFlowAnalysis
 	{
 		private readonly Program program;
         private readonly IServiceProvider services;
@@ -463,6 +465,11 @@ namespace Reko.Analysis
                 var fuser = new UnalignedMemoryAccessFuser(ssa);
                 fuser.Transform();
 
+                // Fuse additions and subtractions that are linked by the carry flag.
+                var larw = new LongAddRewriter(ssa, eventListener);
+                larw.Transform();
+                DumpWatchedProcedure("larw", "After long add rewriter", ssa);
+
                 // After value propagation expressions like (x86) 
                 // mem[esp_42+4] will have been converted to mem[fp - 30]. 
                 // We also hope that procedure constants
@@ -472,12 +479,13 @@ namespace Reko.Analysis
                 vp.Transform();
                 DumpWatchedProcedure("vp", "After first VP", ssa);
 
-                // Fuse additions and subtractions that are linked by the carry flag.
-                var larw = new LongAddRewriter(ssa, eventListener);
+                // Value propagation may uncover more opportunities.
+                larw = new LongAddRewriter(ssa, eventListener);
                 larw.Transform();
-                DumpWatchedProcedure("larw", "After long add rewriter", ssa);
+                DumpWatchedProcedure("larw2", "After second long add rewriter", ssa);
 
-                // Propagate condition codes and registers. 
+                // Eliminate condition codes by discovering uses of ccodes
+                // and replacing them with higher-level constructs.
                 var cce = new ConditionCodeEliminator(program, ssa, eventListener);
                 cce.Transform();
                 vp.Transform();

@@ -417,6 +417,18 @@ namespace Reko.Evaluation
                         return (e, true);
                     }
                 }
+                if (binExp.Operator == Operator.IAdd)
+                {
+                    if (!cRight.IsReal && cRight.ToUInt64() == 1)
+                    {
+                        if (left is UnaryExpression u &&
+                            u.Operator == Operator.Comp)
+                        {
+                            var (e, _) = m.Neg(u.Expression).Accept(this);
+                            return (e, true);
+                        }
+                    }
+                }
             }
 
             //$REVIEW: this is evaluation! Shouldn't the be done by the evaluator?
@@ -586,7 +598,6 @@ namespace Reko.Evaluation
             {
                 return (logicalNotFromBorrow.Transform(), true);
             }
-
             return (binExp, changed);
         }
 
@@ -630,10 +641,7 @@ namespace Reko.Evaluation
 
         private bool IsNonFloatConstant(Constant? cRight)
         {
-            return 
-                cRight != null &&
-                cRight.DataType is PrimitiveType pt &&
-                pt.Domain != Domain.Real;
+            return cRight != null && !cRight.DataType.IsReal;
         }
 
         private Expression? ShiftLeftShiftRight(BinaryExpression bin, Constant? cRight)
@@ -998,7 +1006,9 @@ namespace Reko.Evaluation
             var mul = FuseSequenceOfSlicedMultiplications(seq.DataType, newSeq);
             if (mul is not null)
                 return (mul, true);
-
+            var log = FuseLogicalOperations(seq.DataType, newSeq);
+            if (log is not null)
+                return (log, true);
             var neg = SignExtendedNegation(seq);
             if (neg is not null)
                 return (neg, true);
@@ -1239,6 +1249,39 @@ namespace Reko.Evaluation
             {
                 return e as Slice;
             }
+        }
+
+        public Expression? FuseLogicalOperations(DataType dt, Expression[] exps)
+        {
+            var bins = new BinaryExpression[exps.Length];
+            BinaryOperator? opPrev = null;
+            for (int i = 0; i < exps.Length; ++i)
+            {
+                if (exps[i] is BinaryExpression bin)
+                {
+                    var op = bin.Operator;
+                    if ((op == Operator.And || op == Operator.Or || op == Operator.Xor) &&
+                        (opPrev is null || opPrev == op))
+                    {
+                        bins[i] = bin;
+                        opPrev = (BinaryOperator)op;
+                    }
+                    else
+                        return null;
+                }
+                else
+                    return null;
+            }
+            var lefts = new Expression[bins.Length];
+            var rights = new Expression[bins.Length];
+            for (int i = 0; i < bins.Length; ++i)
+            {
+                lefts[i] = bins[i].Left;
+                rights[i] = bins[i].Right;
+            }
+            var (left, _) = new MkSequence(dt, lefts).Accept(this);
+            var (right, _) = new MkSequence(dt, rights).Accept(this);
+            return new BinaryExpression(opPrev!, dt, left, right);
         }
 
         public virtual (Expression, bool) VisitOutArgument(OutArgument outArg)

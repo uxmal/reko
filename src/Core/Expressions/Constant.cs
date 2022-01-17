@@ -306,7 +306,7 @@ namespace Reko.Core.Expressions
 		{
 			get 
 			{
-                if (!(DataType is PrimitiveType p) || p.Domain == Domain.Real)
+                if (DataType is not PrimitiveType p || p.Domain == Domain.Real)
                     return false;
                 return ToInt64() == 0;
 			}
