@@ -2478,7 +2478,7 @@ l000000000040622B:
 		dl_n = (byte) (edx_n >> 0x10);
 	if ((edx_n & 0x8080) == 0x00)
 		rax_n = (word32 *) ((char *) rax_n + 2);
-	rdx_n = (uint64) ((word32) rax_n - 0x03 - (word32) (dl_n * 0x02 < 0x00) - ebx_n);
+	rdx_n = (uint64) ((word32) SLICE(dl_n + SEQ(0x03, dl_n), word64, 8) - ebx_n);
 	goto l000000000040622B;
 }
 
@@ -2904,7 +2904,7 @@ l0000000000406BF7:
 					al_n = (byte) (eax_n >> 0x10);
 				if ((eax_n & 0x8080) != 0x00)
 					rbp_n = rdx_n;
-				rbp_n = rbp_n - 0x03 - (word64) (al_n * 0x02 < 0x00);
+				rbp_n = SLICE(SEQ(rbp_n, al_n) + SEQ(0x03, al_n), word64, 8);
 			}
 			if (g_b61B144 == 0x00)
 			{
@@ -8251,30 +8251,30 @@ l0000000000411AC9:
 						{
 							uint64 rcx_n = (uint64) *rdx_n;
 							uint64 rax_n = (uint64) ((word32) rcx_n + ~0x01010100 & ~((word32) rcx_n) & 0x80808080);
-							rdx_n = (word64) rdx_n + 4;
+							++rdx_n;
 							uint32 eax_n = (word32) rax_n;
-							bui8 al_n = (byte) rax_n;
+							uint8 al_n = (byte) rax_n;
 						} while (eax_n == 0x00);
 						word32 * r10_n = fp - 0x78;
 						if ((eax_n & 0x8080) == 0x00)
 							al_n = (byte) (eax_n >> 0x10);
 						if ((eax_n & 0x8080) == 0x00)
-							rdx_n += 0x02;
-						int64 rdx_n = rdx_n - 0x03 - (word64) (al_n * 0x02 < 0x00) - (fp - (char *) 0xB8);
+							rdx_n = (word32 *) ((char *) rdx_n + 2);
+						ui64 rdx_n = SLICE(al_n + SEQ(0x03, al_n), word64, 8) - (fp - (char *) 0xB8);
 						do
 						{
 							uint64 rcx_n = (uint64) *r10_n;
 							uint64 rax_n = (uint64) ((word32) rcx_n + ~0x01010100 & ~((word32) rcx_n) & 0x80808080);
 							++r10_n;
 							uint32 eax_n = (word32) rax_n;
-							bui8 al_n = (byte) rax_n;
+							uint8 al_n = (byte) rax_n;
 						} while (eax_n == 0x00);
 						if ((eax_n & 0x8080) == 0x00)
 							al_n = (byte) (eax_n >> 0x10);
 						if ((eax_n & 0x8080) == 0x00)
 							r10_n = (word32 *) ((char *) r10_n + 2);
 						Eq_n r13_n;
-						Eq_n r10_n = r10_n - 0x03 - (word64) (al_n * 0x02 < 0x00) - (fp - 0x78);
+						Eq_n r10_n = SLICE(al_n + SEQ(0x03, al_n), word64, 8) - (fp - (char *) 0x78);
 						word64 rax_n = (word64) r10_n + rdx_n;
 						if (qwLocD0_n == 0x00)
 						{

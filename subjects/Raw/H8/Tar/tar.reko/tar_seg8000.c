@@ -30,8 +30,8 @@ word32 fn8032(word16 er1_16_n, word16 er2_16_n, word16 er3_16_n, ui16 r4, ui16 r
 		r3_n = r3_n;
 		do
 		{
-			r3_n = SEQ(r3h_n, r3l_n + 0x0C);
-			*SEQ(er2_16_n, r3_n + 40514) = 0x00;
+			r3_n += 0x0C;
+			*SEQ(er2_16_n, r3_n + 0x00) = 0x00;
 			int16 r1_n = sp_n->w0000;
 			sp_n->w0000 = r1_n + 0x01;
 			er1_16_n = SLICE(SEQ(er1_16_n, r1_n) + 0x01, word16, 16);

@@ -523,7 +523,8 @@ namespace Reko.UnitTests.Analysis
 	SCZ_4 = cond(ax_3)
 	C_6 = SLICE(SCZ_4, bool, 2) (alias)
 	dx_7 = dx + C_6
-	SCZ_8 = cond(dx_7)";
+	SCZ_8 = cond(dx_7)"
+;
             #endregion
             RunTest(sExp, m =>
             {

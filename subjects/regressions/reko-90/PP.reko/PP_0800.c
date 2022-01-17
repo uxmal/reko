@@ -9702,8 +9702,7 @@ word16 fn0800-6AD4(Eq_n ds, union Eq_n & dxOut, union Eq_n & dsOut)
 				{
 					uint16 wLoc0A_n = (word16) dwLoc0A_n;
 					ui16 v28_n = SLICE(dwLoc0A_n - 0x01, word16, 16);
-					Eq_n ax_n = wLoc0A_n | SLICE(dwLoc0A_n, word16, 16);
-					if (ax_n == 0x00)
+					if ((wLoc0A_n | SLICE(dwLoc0A_n, word16, 16)) == 0x00)
 						break;
 					Eq_n ds_n;
 					Eq_n dx_n;
