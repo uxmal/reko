@@ -126,6 +126,21 @@ namespace Reko.Arch.Sparc
         internal static readonly Mutator<SparcDisassembler> rfsr = r(a => a.Registers.fsr);
         internal static readonly Mutator<SparcDisassembler> ry = r(a => a.Registers.y);
 
+        // Register in a register pair
+        private static Mutator<SparcDisassembler> rp(int pos)
+        {
+            return (wInstr, dasm) =>
+            {
+                var ireg = (wInstr >> pos) & 0x1F;
+                if ((ireg & 1) != 0)
+                    return false;   // odd numbered registers are not allowed.
+                var reg = dasm.arch.Registers.GetRegister(ireg);
+                dasm.ops.Add(new RegisterOperand(reg));
+                return true;
+            };
+        }
+        internal static readonly Mutator<SparcDisassembler> rp25 = rp(25);
+
         // FPU register
         private static Mutator<SparcDisassembler> f(int pos)
         {

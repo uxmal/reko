@@ -5225,7 +5225,7 @@ word32 mkstemps(word32 o0, word32 o1)
 // Preserved: g2 g3 l0 l1 l2 l3 l4 l5 o2 o3 o4 o5 o7 sp
 mkstemps_entry:
 l00016C40:
-	word32 i0_428
+	word32 i0_432
 	word32 o0_21 = CONVERT(strlen(o0), size_t, uint32)
 	branch o0_21 - (o1 + 6<32>) < 0<32> l00016C5C_ds_t
 l00016C5C_ds_t:
@@ -5237,152 +5237,156 @@ l00016C80_ds_t:
 l00016C94:
 	gettimeofday(fp + 0xFFFFFFE8<32>, 0<32>)
 	word32 o0_42 = getpid()
-	word32 o1_50 = dwLoc14 >> 0x1F<32> << 0x10<32>
-	word32 o5_404 = dwLoc14 << 0x10<32> ^ dwLoc18 ^ o0_42
-	word32 o4_402 = (dwLoc14 >>u 0x10<32> | o1_50) ^ dwLoc18 >> 0x1F<32> ^ o0_42 >> 0x1F<32>
-	Mem71[0x2B400<32>:word64] = Mem0[0x2B400<32>:word64] + o4_402 + CONVERT(o1_50 + o5_404 <u 0<32>, bool, word32)
-	word32 l1_412 = dwLoc18
-	word32 o7_407 = 0x2B400<32>
-	word32 l4_414 = 0x2B400<32>
+	word64 o0_o1_57 = Mem0[0x2B400<32>:word64]
+	word32 o5_408 = dwLoc14 << 0x10<32> ^ dwLoc18 ^ o0_42
+	word32 o1_62 = SLICE(o0_o1_57, word32, 0) + o5_408
+	word32 o4_406 = (dwLoc14 >>u 0x10<32> | (dwLoc14 >> 0x1F<32>) << 0x10<32>) ^ dwLoc18 >> 0x1F<32> ^ o0_42 >> 0x1F<32>
+	Mem74[0x2B400<32>:word64] = SEQ(SLICE(o0_o1_57, word32, 32) + o4_406 + CONVERT(o1_62 <u 0<32>, bool, word32), o1_62)
+	word32 o7_411 = 0x2B400<32>
+	word32 l4_418 = 0x2B400<32>
 l00016D0C:
-	word32 l0_74 = Mem73[l4_414:word64]
-	word32 i1_87
-	word32 o1_88
-	word32 o4_94
-	word32 o5_96
-	word32 o7_99
-	word32 l1_104
-	word32 l0_105
-	word32 l2_108
+	word64 l0_l1_77 = Mem76[l4_418:word64]
+	word32 l0_80 = SLICE(l0_l1_77, word32, 32)
+	word32 l1_82 = SLICE(l0_l1_77, word32, 0)
+	word32 i1_91
+	word32 o1_92
+	word32 o4_98
+	word32 o5_100
+	word32 o7_103
+	word32 l1_108
+	word32 l0_109
+	word32 l2_112
 	call __urem64 (retsize: 0;)
-		uses: g2:g2_411,g3:g3_410,l0:l0_74,l1:l1_412,l2:l2_416,l3:l3_409,l4:l4_414,l5:l5_415,o0:l0_74,o1:l1_78,o2:0<32>,o3:0x3E<32>,o4:o4_80,o5:o5_81,o7:o7_82,Stack +FFFFFFE8:dwLoc18,Stack +FFFFFFEC:dwLoc14
-		defs: i1:i1_87,l0:l0_105,l1:l1_104,l2:l2_108,o1:o1_88,o4:o4_94,o5:o5_96,o7:o7_99
-	Mem111[i1_87:byte] = Mem73[l2_108 + o1_88:byte]
-	word32 o0_118
-	word32 o1_120
-	word32 o4_126
-	word32 o5_128
-	word32 o7_131
+		uses: g2:g2_415,g3:g3_414,l0:l0_80,l1:l1_82,l2:l2_420,l3:l3_413,l4:l4_418,l5:l5_419,o0:l0_80,o1:l1_82,o2:0<32>,o3:0x3E<32>,o4:o4_84,o5:o5_85,o7:o7_86,Stack +FFFFFFE8:dwLoc18,Stack +FFFFFFEC:dwLoc14
+		defs: i1:i1_91,l0:l0_109,l1:l1_108,l2:l2_112,o1:o1_92,o4:o4_98,o5:o5_100,o7:o7_103
+	Mem115[i1_91:byte] = Mem76[l2_112 + o1_92:byte]
+	word32 o0_122
+	word32 o1_124
+	word32 o4_130
+	word32 o5_132
+	word32 o7_135
 	call __udiv64 (retsize: 0;)
-		uses: g2:g2_411,g3:g3_410,l0:l0_413,l1:l1_412,l2:l2_416,l3:l3_409,l4:l4_414,l5:l5_415,o0:l0_105,o1:l1_104,o2:0<32>,o3:0x3E<32>,o4:o4_94,o5:o5_96,o7:o7_99,Stack +FFFFFFE8:dwLoc18,Stack +FFFFFFEC:dwLoc14
-		defs: o0:o0_118,o1:o1_120,o4:o4_126,o5:o5_128,o7:o7_131
-	word32 i1_149
-	word32 o1_150
-	word32 o4_156
-	word32 o5_158
-	word32 o7_161
-	word32 l1_166
-	word32 l0_167
-	word32 l2_170
+		uses: g2:g2_415,g3:g3_414,l0:l0_417,l1:l1_416,l2:l2_420,l3:l3_413,l4:l4_418,l5:l5_419,o0:l0_109,o1:l1_108,o2:0<32>,o3:0x3E<32>,o4:o4_98,o5:o5_100,o7:o7_103,Stack +FFFFFFE8:dwLoc18,Stack +FFFFFFEC:dwLoc14
+		defs: o0:o0_122,o1:o1_124,o4:o4_130,o5:o5_132,o7:o7_135
+	word32 i1_153
+	word32 o1_154
+	word32 o4_160
+	word32 o5_162
+	word32 o7_165
+	word32 l1_170
+	word32 l0_171
+	word32 l2_174
 	call __urem64 (retsize: 0;)
-		uses: g2:g2_411,g3:g3_410,l0:o0_118,l1:o1_120,l2:l2_416,l3:l3_409,l4:l4_414,l5:l5_415,o0:o0_118,o1:o1_120,o2:0<32>,o3:0x3E<32>,o4:o4_126,o5:o5_128,o7:o7_131,Stack +FFFFFFE8:dwLoc18,Stack +FFFFFFEC:dwLoc14
-		defs: i1:i1_149,l0:l0_167,l1:l1_166,l2:l2_170,o1:o1_150,o4:o4_156,o5:o5_158,o7:o7_161
-	Mem173[i1_149 + 1<i32>:byte] = Mem111[l2_170 + o1_150:byte]
-	word32 o0_180
-	word32 o1_182
-	word32 o4_188
-	word32 o5_190
-	word32 o7_193
+		uses: g2:g2_415,g3:g3_414,l0:o0_122,l1:o1_124,l2:l2_420,l3:l3_413,l4:l4_418,l5:l5_419,o0:o0_122,o1:o1_124,o2:0<32>,o3:0x3E<32>,o4:o4_130,o5:o5_132,o7:o7_135,Stack +FFFFFFE8:dwLoc18,Stack +FFFFFFEC:dwLoc14
+		defs: i1:i1_153,l0:l0_171,l1:l1_170,l2:l2_174,o1:o1_154,o4:o4_160,o5:o5_162,o7:o7_165
+	Mem177[i1_153 + 1<i32>:byte] = Mem115[l2_174 + o1_154:byte]
+	word32 o0_184
+	word32 o1_186
+	word32 o4_192
+	word32 o5_194
+	word32 o7_197
 	call __udiv64 (retsize: 0;)
-		uses: g2:g2_411,g3:g3_410,l0:l0_413,l1:l1_412,l2:l2_416,l3:l3_409,l4:l4_414,l5:l5_415,o0:l0_167,o1:l1_166,o2:0<32>,o3:0x3E<32>,o4:o4_156,o5:o5_158,o7:o7_161,Stack +FFFFFFE8:dwLoc18,Stack +FFFFFFEC:dwLoc14
-		defs: o0:o0_180,o1:o1_182,o4:o4_188,o5:o5_190,o7:o7_193
-	word32 i1_211
-	word32 o1_212
-	word32 o4_218
-	word32 o5_220
-	word32 o7_223
-	word32 l1_228
-	word32 l0_229
-	word32 l2_232
+		uses: g2:g2_415,g3:g3_414,l0:l0_417,l1:l1_416,l2:l2_420,l3:l3_413,l4:l4_418,l5:l5_419,o0:l0_171,o1:l1_170,o2:0<32>,o3:0x3E<32>,o4:o4_160,o5:o5_162,o7:o7_165,Stack +FFFFFFE8:dwLoc18,Stack +FFFFFFEC:dwLoc14
+		defs: o0:o0_184,o1:o1_186,o4:o4_192,o5:o5_194,o7:o7_197
+	word32 i1_215
+	word32 o1_216
+	word32 o4_222
+	word32 o5_224
+	word32 o7_227
+	word32 l1_232
+	word32 l0_233
+	word32 l2_236
 	call __urem64 (retsize: 0;)
-		uses: g2:g2_411,g3:g3_410,l0:o0_180,l1:o1_182,l2:l2_416,l3:l3_409,l4:l4_414,l5:l5_415,o0:o0_180,o1:o1_182,o2:0<32>,o3:0x3E<32>,o4:o4_188,o5:o5_190,o7:o7_193,Stack +FFFFFFE8:dwLoc18,Stack +FFFFFFEC:dwLoc14
-		defs: i1:i1_211,l0:l0_229,l1:l1_228,l2:l2_232,o1:o1_212,o4:o4_218,o5:o5_220,o7:o7_223
-	Mem235[i1_211 + 2<i32>:byte] = Mem173[l2_232 + o1_212:byte]
-	word32 o0_242
-	word32 o1_244
-	word32 o4_250
-	word32 o5_252
-	word32 o7_255
+		uses: g2:g2_415,g3:g3_414,l0:o0_184,l1:o1_186,l2:l2_420,l3:l3_413,l4:l4_418,l5:l5_419,o0:o0_184,o1:o1_186,o2:0<32>,o3:0x3E<32>,o4:o4_192,o5:o5_194,o7:o7_197,Stack +FFFFFFE8:dwLoc18,Stack +FFFFFFEC:dwLoc14
+		defs: i1:i1_215,l0:l0_233,l1:l1_232,l2:l2_236,o1:o1_216,o4:o4_222,o5:o5_224,o7:o7_227
+	Mem239[i1_215 + 2<i32>:byte] = Mem177[l2_236 + o1_216:byte]
+	word32 o0_246
+	word32 o1_248
+	word32 o4_254
+	word32 o5_256
+	word32 o7_259
 	call __udiv64 (retsize: 0;)
-		uses: g2:g2_411,g3:g3_410,l0:l0_413,l1:l1_412,l2:l2_416,l3:l3_409,l4:l4_414,l5:l5_415,o0:l0_229,o1:l1_228,o2:0<32>,o3:0x3E<32>,o4:o4_218,o5:o5_220,o7:o7_223,Stack +FFFFFFE8:dwLoc18,Stack +FFFFFFEC:dwLoc14
-		defs: o0:o0_242,o1:o1_244,o4:o4_250,o5:o5_252,o7:o7_255
-	word32 i1_273
-	word32 o1_274
-	word32 o4_280
-	word32 o5_282
-	word32 o7_285
-	word32 l1_290
-	word32 l0_291
-	word32 l2_294
+		uses: g2:g2_415,g3:g3_414,l0:l0_417,l1:l1_416,l2:l2_420,l3:l3_413,l4:l4_418,l5:l5_419,o0:l0_233,o1:l1_232,o2:0<32>,o3:0x3E<32>,o4:o4_222,o5:o5_224,o7:o7_227,Stack +FFFFFFE8:dwLoc18,Stack +FFFFFFEC:dwLoc14
+		defs: o0:o0_246,o1:o1_248,o4:o4_254,o5:o5_256,o7:o7_259
+	word32 i1_277
+	word32 o1_278
+	word32 o4_284
+	word32 o5_286
+	word32 o7_289
+	word32 l1_294
+	word32 l0_295
+	word32 l2_298
 	call __urem64 (retsize: 0;)
-		uses: g2:g2_411,g3:g3_410,l0:o0_242,l1:o1_244,l2:l2_416,l3:l3_409,l4:l4_414,l5:l5_415,o0:o0_242,o1:o1_244,o2:0<32>,o3:0x3E<32>,o4:o4_250,o5:o5_252,o7:o7_255,Stack +FFFFFFE8:dwLoc18,Stack +FFFFFFEC:dwLoc14
-		defs: i1:i1_273,l0:l0_291,l1:l1_290,l2:l2_294,o1:o1_274,o4:o4_280,o5:o5_282,o7:o7_285
-	Mem297[i1_273 + 3<i32>:byte] = Mem235[l2_294 + o1_274:byte]
-	word32 o0_304
-	word32 o1_306
-	word32 o4_312
-	word32 o5_314
-	word32 o7_317
+		uses: g2:g2_415,g3:g3_414,l0:o0_246,l1:o1_248,l2:l2_420,l3:l3_413,l4:l4_418,l5:l5_419,o0:o0_246,o1:o1_248,o2:0<32>,o3:0x3E<32>,o4:o4_254,o5:o5_256,o7:o7_259,Stack +FFFFFFE8:dwLoc18,Stack +FFFFFFEC:dwLoc14
+		defs: i1:i1_277,l0:l0_295,l1:l1_294,l2:l2_298,o1:o1_278,o4:o4_284,o5:o5_286,o7:o7_289
+	Mem301[i1_277 + 3<i32>:byte] = Mem239[l2_298 + o1_278:byte]
+	word32 o0_308
+	word32 o1_310
+	word32 o4_316
+	word32 o5_318
+	word32 o7_321
 	call __udiv64 (retsize: 0;)
-		uses: g2:g2_411,g3:g3_410,l0:l0_413,l1:l1_412,l2:l2_416,l3:l3_409,l4:l4_414,l5:l5_415,o0:l0_291,o1:l1_290,o2:0<32>,o3:0x3E<32>,o4:o4_280,o5:o5_282,o7:o7_285,Stack +FFFFFFE8:dwLoc18,Stack +FFFFFFEC:dwLoc14
-		defs: o0:o0_304,o1:o1_306,o4:o4_312,o5:o5_314,o7:o7_317
-	word32 i1_335
-	word32 o1_336
-	word32 o4_342
-	word32 o5_344
-	word32 o7_347
-	word32 l1_352
-	word32 l0_353
-	word32 l2_356
+		uses: g2:g2_415,g3:g3_414,l0:l0_417,l1:l1_416,l2:l2_420,l3:l3_413,l4:l4_418,l5:l5_419,o0:l0_295,o1:l1_294,o2:0<32>,o3:0x3E<32>,o4:o4_284,o5:o5_286,o7:o7_289,Stack +FFFFFFE8:dwLoc18,Stack +FFFFFFEC:dwLoc14
+		defs: o0:o0_308,o1:o1_310,o4:o4_316,o5:o5_318,o7:o7_321
+	word32 i1_339
+	word32 o1_340
+	word32 o4_346
+	word32 o5_348
+	word32 o7_351
+	word32 l1_356
+	word32 l0_357
+	word32 l2_360
 	call __urem64 (retsize: 0;)
-		uses: g2:g2_411,g3:g3_410,l0:o0_304,l1:o1_306,l2:l2_416,l3:l3_409,l4:l4_414,l5:l5_415,o0:o0_304,o1:o1_306,o2:0<32>,o3:0x3E<32>,o4:o4_312,o5:o5_314,o7:o7_317,Stack +FFFFFFE8:dwLoc18,Stack +FFFFFFEC:dwLoc14
-		defs: i1:i1_335,l0:l0_353,l1:l1_352,l2:l2_356,o1:o1_336,o4:o4_342,o5:o5_344,o7:o7_347
-	Mem359[i1_335 + 4<i32>:byte] = Mem297[l2_356 + o1_336:byte]
-	word32 o0_366
-	word32 o1_368
-	word32 o4_374
-	word32 o5_376
-	word32 o7_379
+		uses: g2:g2_415,g3:g3_414,l0:o0_308,l1:o1_310,l2:l2_420,l3:l3_413,l4:l4_418,l5:l5_419,o0:o0_308,o1:o1_310,o2:0<32>,o3:0x3E<32>,o4:o4_316,o5:o5_318,o7:o7_321,Stack +FFFFFFE8:dwLoc18,Stack +FFFFFFEC:dwLoc14
+		defs: i1:i1_339,l0:l0_357,l1:l1_356,l2:l2_360,o1:o1_340,o4:o4_346,o5:o5_348,o7:o7_351
+	Mem363[i1_339 + 4<i32>:byte] = Mem301[l2_360 + o1_340:byte]
+	word32 o0_370
+	word32 o1_372
+	word32 o4_378
+	word32 o5_380
+	word32 o7_383
 	call __udiv64 (retsize: 0;)
-		uses: g2:g2_411,g3:g3_410,l0:l0_413,l1:l1_412,l2:l2_416,l3:l3_409,l4:l4_414,l5:l5_415,o0:l0_353,o1:l1_352,o2:0<32>,o3:0x3E<32>,o4:o4_342,o5:o5_344,o7:o7_347,Stack +FFFFFFE8:dwLoc18,Stack +FFFFFFEC:dwLoc14
-		defs: o0:o0_366,o1:o1_368,o4:o4_374,o5:o5_376,o7:o7_379
-	word32 i0_393
-	word32 i1_395
-	word32 o1_396
-	word32 o3_400
-	word32 l3_409
-	word32 g3_410
-	word32 g2_411
-	word32 l0_413
-	word32 l5_415
-	word32 l2_416
+		uses: g2:g2_415,g3:g3_414,l0:l0_417,l1:l1_416,l2:l2_420,l3:l3_413,l4:l4_418,l5:l5_419,o0:l0_357,o1:l1_356,o2:0<32>,o3:0x3E<32>,o4:o4_346,o5:o5_348,o7:o7_351,Stack +FFFFFFE8:dwLoc18,Stack +FFFFFFEC:dwLoc14
+		defs: o0:o0_370,o1:o1_372,o4:o4_378,o5:o5_380,o7:o7_383
+	word32 i0_397
+	word32 i1_399
+	word32 o1_400
+	word32 l3_413
+	word32 g3_414
+	word32 g2_415
+	word32 l1_416
+	word32 l0_417
+	word32 l5_419
+	word32 l2_420
 	call __urem64 (retsize: 0;)
-		uses: g2:g2_411,g3:g3_410,l0:l0_413,l1:l1_412,l2:l2_416,l3:l3_409,l4:l4_414,l5:l5_415,o0:o0_366,o1:o1_368,o2:0<32>,o3:0x3E<32>,o4:o4_374,o5:o5_376,o7:o7_379,Stack +FFFFFFE8:dwLoc18,Stack +FFFFFFEC:dwLoc14
-		defs: g2:g2_411,g3:g3_410,i0:i0_393,i1:i1_395,l0:l0_413,l1:l1_412,l2:l2_416,l3:l3_409,l4:l4_414,l5:l5_415,o1:o1_396,o3:o3_400,o4:o4_402,o5:o5_404,o7:o7_407
-	Mem419[i1_395 + 5<i32>:byte] = Mem359[l2_416 + o1_396:byte]
-	word32 o0_423 = open(i0_393, 0x502<32>)
-	branch o0_423 >= 0<32> l00016E2C_ds_t
+		uses: g2:g2_415,g3:g3_414,l0:l0_417,l1:l1_416,l2:l2_420,l3:l3_413,l4:l4_418,l5:l5_419,o0:o0_370,o1:o1_372,o2:0<32>,o3:0x3E<32>,o4:o4_378,o5:o5_380,o7:o7_383,Stack +FFFFFFE8:dwLoc18,Stack +FFFFFFEC:dwLoc14
+		defs: g2:g2_415,g3:g3_414,i0:i0_397,i1:i1_399,l0:l0_417,l1:l1_416,l2:l2_420,l3:l3_413,l4:l4_418,l5:l5_419,o1:o1_400,o4:o4_406,o5:o5_408,o7:o7_411
+	Mem423[i1_399 + 5<i32>:byte] = Mem363[l2_420 + o1_400:byte]
+	word32 o0_427 = open(i0_397, 0x502<32>)
+	branch o0_427 >= 0<32> l00016E2C_ds_t
 l00016E2C_ds_t:
 l00016C8C:
-	i0_428 = o0_423
+	i0_432 = o0_427
 l00016E2C_ds_f:
-	word32 o2_429 = Mem419[l4_414:word64]
+	word64 o2_o3_433 = Mem423[l4_418:word64]
+	word32 o3_436 = SLICE(o2_o3_433, word32, 0)
+	word32 o2_440 = SLICE(o2_o3_433, word32, 32)
 l00016E30:
-	word32 o2_436 = o2_429 + CONVERT(o3_400 <u 0x1E61<32>, bool, word32)
-	branch l3_409 + 1<32> - l5_415 <= 0<32> l00016E50_ds_t
+	word32 o2_442 = o2_440 + CONVERT(o3_436 <u 0x1E61<32>, bool, word32)
+	branch l3_413 + 1<32> - l5_419 <= 0<32> l00016E50_ds_t
 l00016E50_ds_t:
-	Mem441[l4_414:word64] = o2_436
+	Mem448[l4_418:word64] = SEQ(o2_442, o3_436 + 0x1E61<32>)
 l00016E50_ds_f:
-	Mem442[l4_414:word64] = o2_436
+	Mem450[l4_418:word64] = SEQ(o2_442, o3_436 + 0x1E61<32>)
 l00016E54:
-	Mem443[i0_393:byte] = 0<8>
+	Mem451[i0_397:byte] = 0<8>
 l00016E58:
-	i0_428 = 0xFFFFFFFF<32>
+	i0_432 = 0xFFFFFFFF<32>
 l00016C80_ds_f:
 l00016C84:
-	i0_428 = 0xFFFFFFFF<32>
+	i0_432 = 0xFFFFFFFF<32>
 l00016E5C:
-	return i0_428
+	return i0_432
 mkstemps_exit:
 
 

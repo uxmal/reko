@@ -232,6 +232,12 @@ namespace Reko.UnitTests.Arch.Sparc
         }
 
         [Test]
+        public void SparcDis_ldd_odd_dst_reg()
+        {
+            AssertInstruction(0xD21BE000, "illegal");
+        }
+
+        [Test]
         public void SparcDis_sss()
         {
             AssertInstruction(0xC12D0000, "stfsr\t%fsr,[%l4+%g0]");

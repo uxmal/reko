@@ -493,10 +493,10 @@ namespace Reko.UnitTests.Arch.Sparc
         [Test]
         public void SparcRw_ldd()
         {
-            Given_UInt32s(0xd01be000); // ldd\t[%o7+0],%o0
+            Given_UInt32s(0xD01BE000); // ldd\t[%o7+0],%o0
             AssertCode(
                "0|L--|00100000(4): 1 instructions",
-               "1|L--|o0 = Mem0[o7:word64]");
+               "1|L--|o0_o1 = Mem0[o7:word64]");
         }
 
         [Test]

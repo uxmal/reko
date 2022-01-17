@@ -71,6 +71,22 @@ namespace Reko.Arch.Sparc
             throw new NotImplementedException();
         }
 
+        private void RewriteLdd()
+        {
+            var size = PrimitiveType.Word64;
+            var rDstHi = ((RegisterOperand) instrCur.Operands[1]).Register;
+            var rDstLo = arch.Registers.GetRegister((uint)rDstHi.Number + 1);
+            var dst = binder.EnsureSequence(size, rDstHi, rDstLo);
+            var src = RewriteMemOp(instrCur.Operands[0], size)!;
+            //$TODO: what about sparc64? Instruction is deprecated there...
+            if (size.Size < dst.DataType.Size)
+            {
+                size = PrimitiveType.Create(size.Domain, dst.DataType.BitSize);
+                src = m.Convert(src, src.DataType, size);
+            }
+            m.Assign(dst, src);
+        }
+
         private void RewriteLdstub()
         {
             var mem = (MemoryAccess)RewriteOp(0)!;
@@ -176,6 +192,22 @@ namespace Reko.Arch.Sparc
                 var src = (ImmediateOperand)instrCur.Operands[0];
                 m.Assign(dst, Constant.Word32(src.Value.ToUInt32() << 10));
             }
+        }
+
+        private void RewriteStd()
+        {
+            var size = PrimitiveType.Word64;
+            var rSrcHi = ((RegisterOperand) instrCur.Operands[0]).Register;
+            var rSrcLo = arch.Registers.GetRegister((uint) rSrcHi.Number + 1);
+            Expression src = binder.EnsureSequence(size, rSrcHi, rSrcLo);
+            //$TODO: sparc64 deprecates this instruction.
+
+            var dst = RewriteMemOp(instrCur.Operands[1], size);
+            if (size.Size < src.DataType.Size)
+            {
+                src = m.Slice(size, src, 0);
+            }
+            m.Assign(dst, src);
         }
 
         private void RewriteStore(PrimitiveType size)

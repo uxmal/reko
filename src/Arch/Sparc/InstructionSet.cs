@@ -481,13 +481,13 @@ namespace Reko.Arch.Sparc
                     Instr(Mnemonic.ld, Mw,r25)),
                 Instr(Mnemonic.ldub, Mb,r25),
                 Instr(Mnemonic.lduh, Mh,r25),
-                Instr(Mnemonic.ldd, Md,r25),
+                Instr(Mnemonic.ldd, Md,rp25),
                 Instr64(
                     Instr(Mnemonic.stw, r25,Mw),
                     Instr(Mnemonic.st, r25,Mw)),
                 Instr(Mnemonic.stb, r25,Mb),
                 Instr(Mnemonic.sth, r25,Mh),
-                Instr(Mnemonic.std, r25,Md),
+                Instr(Mnemonic.std, rp25,Md),
 
                 Instr64(
                     Instr(Mnemonic.ldsw, Msw,r25),

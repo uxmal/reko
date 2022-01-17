@@ -173,7 +173,7 @@ namespace Reko.Arch.Sparc
                 case Mnemonic.ld: RewriteLoad(PrimitiveType.Word32); break;
                 case Mnemonic.lddf: RewriteLoad(PrimitiveType.Real64); break;
                 case Mnemonic.ldf: RewriteLoad(PrimitiveType.Real32); break;
-                case Mnemonic.ldd: RewriteLoad(PrimitiveType.Word64); break;
+                case Mnemonic.ldd: RewriteLdd(); break;
                 case Mnemonic.ldsb: RewriteLoad(PrimitiveType.SByte); break;
                 case Mnemonic.ldsh: RewriteLoad(PrimitiveType.Int16); break;
                 case Mnemonic.ldsw: RewriteLoad(PrimitiveType.Int32); break;
@@ -206,7 +206,7 @@ namespace Reko.Arch.Sparc
                 case Mnemonic.srlx: RewriteAlu(m.Shr, false); break;
                 case Mnemonic.st: RewriteStore(PrimitiveType.Word32); break;
                 case Mnemonic.stb: RewriteStore(PrimitiveType.Byte); break;
-                case Mnemonic.std: RewriteStore(PrimitiveType.Word64); break;
+                case Mnemonic.std: RewriteStd(); break;
                 case Mnemonic.stdf: RewriteStore(PrimitiveType.Real64); break;
                 case Mnemonic.stf: RewriteStore(PrimitiveType.Real32); break;
                 case Mnemonic.sth: RewriteStore(PrimitiveType.Word16); break;

@@ -4190,16 +4190,18 @@ Eq_n mkstemps(Eq_n o0, Eq_n o1)
 		{
 			gettimeofday(fp + ~0x17, null);
 			Eq_n o0_n = getpid();
-			ui32 o1_n = dwLoc14 >> 0x1F << 0x10;
+			word64 o0_o1_n = g_qw2B400;
 			ui32 o5_n = dwLoc14 << 0x10 ^ dwLoc18 ^ o0_n;
-			Eq_n o4_n = (dwLoc14 >> 0x10 | o1_n) ^ dwLoc18 >> 0x1F ^ o0_n >> 0x1F;
-			g_qw2B400 = (word32) o4_n + g_qw2B400 + (word32) (o1_n + o5_n < 0x00);
-			int32 l1_n = dwLoc18;
+			up32 o1_n = (word32) o0_o1_n + o5_n;
+			ui32 o4_n = (dwLoc14 >> 0x10 | (dwLoc14 >> 0x1F) << 0x10) ^ dwLoc18 >> 0x1F ^ o0_n >> 0x1F;
+			g_qw2B400 = SEQ(SLICE(o0_o1_n, word32, 32) + o4_n + (word32) (o1_n < 0x00), o1_n);
 			word32 o7_n = 0x0002B400;
-			union Eq_n * l4_n = &g_qw2B400;
+			word64 * l4_n = &g_qw2B400;
 			while (true)
 			{
-				Eq_n l0_n = *l4_n;
+				word64 l0_l1_n = *l4_n;
+				word32 l0_n = SLICE(l0_l1_n, word32, 32);
+				word32 l1_n = (word32) l0_l1_n;
 				byte * i1_n;
 				int32 o1_n;
 				word32 o4_n;
@@ -4283,10 +4285,10 @@ Eq_n mkstemps(Eq_n o0, Eq_n o1)
 				Eq_n i0_n;
 				struct Eq_n * i1_n;
 				int32 o1_n;
-				up32 o3_n;
 				word32 l3_n;
 				word32 g3_n;
 				word32 g2_n;
+				word32 l1_n;
 				word32 l0_n;
 				int32 l5_n;
 				ptr32 l2_n;
@@ -4295,15 +4297,17 @@ Eq_n mkstemps(Eq_n o0, Eq_n o1)
 				Eq_n o0_n = open(i0_n, 0x0502);
 				if (o0_n >= 0x00)
 					break;
-				Eq_n o2_n = *l4_n;
-				Eq_n o2_n = (word32) o2_n + (word32) (o3_n < 7777);
+				word64 o2_o3_n = *l4_n;
+				up32 o3_n = (word32) o2_o3_n;
+				word32 o2_n = SLICE(o2_o3_n, word32, 32);
+				word32 o2_n = o2_n + (word32) (o3_n < 7777);
 				if (l3_n + 0x01 - l5_n > 0x00)
 				{
-					*l4_n = (union Eq_n *) o2_n;
+					*l4_n = SEQ(o2_n, o3_n + 7777);
 					i0_n->u0 = 0x00;
 					goto l00016E58;
 				}
-				*l4_n = (union Eq_n *) o2_n;
+				*l4_n = SEQ(o2_n, o3_n + 7777);
 			}
 			i0_n = o0_n;
 		}
