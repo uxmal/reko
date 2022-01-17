@@ -44,7 +44,7 @@ namespace Reko.Arch.M68k
             FramePointerType = PrimitiveType.Ptr32;
             PointerType = PrimitiveType.Ptr32;
             WordWidth = PrimitiveType.Word32;
-            CarryFlagMask = (uint)FlagM.CF;
+            CarryFlagMask = (uint)FlagM.XF;     // The X flag is used for long adds on the m68k.
             StackRegister = Registers.a7;
         }
 
