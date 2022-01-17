@@ -60,6 +60,8 @@ namespace Reko.Core.Expressions
         public override bool IsMaxUnsigned => false;    //$TODO: consider implementing this.
 
         public override bool IsIntegerZero => this.Value.IsZero;
+        
+        public override bool IsIntegerOne => this.Value.IsOne;
 
         public override bool IsZero => this.Value.IsZero;
 

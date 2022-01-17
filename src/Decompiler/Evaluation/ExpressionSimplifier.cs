@@ -419,7 +419,7 @@ namespace Reko.Evaluation
                 }
                 if (binExp.Operator == Operator.IAdd)
                 {
-                    if (!cRight.IsReal && cRight.ToUInt64() == 1)
+                    if (!cRight.IsReal && cRight.IsIntegerOne)
                     {
                         if (left is UnaryExpression u &&
                             u.Operator == Operator.Comp)

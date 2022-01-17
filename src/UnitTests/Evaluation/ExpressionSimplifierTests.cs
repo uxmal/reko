@@ -565,7 +565,7 @@ namespace Reko.UnitTests.Evaluation
             Given_ExpressionSimplifier();
             var tmp = Given_Tmp("tmp", m.Mem16(m.Word32(0x00123400)));
             var (expr, _) = m.Xor(tmp, Constant.Word16(0xFFFF)).Accept(simplifier);
-            Assert.AreEqual("~tmp_2", expr.ToString());
+            Assert.AreEqual("~tmp_3", expr.ToString());
         }
 
         [Test]
@@ -677,7 +677,7 @@ namespace Reko.UnitTests.Evaluation
             var t2 = Given_Tmp("t2", m.Shr(t1, 4));
             ssaIds[foo].Uses.Add(ssaIds[t1].DefStatement);
             var (expr, _) = m.Shl(t2, 4).Accept(simplifier);
-            Assert.AreEqual("__align(t1_2, 16<i32>)", expr.ToString());
+            Assert.AreEqual("__align(t1_3, 16<i32>)", expr.ToString());
         }
 
         [Test]
@@ -688,7 +688,7 @@ namespace Reko.UnitTests.Evaluation
             var t2 = Given_Tmp("t2", m.IMul(t1, 4));
             ssaIds[foo].Uses.Add(ssaIds[t1].DefStatement);
             var (expr, _) = m.Mem32(m.IAdd(t2, 24)).Accept(simplifier);
-            Assert.AreEqual("Mem0[t1_2 * 4<32> + 0x18<32>:word32]", expr.ToString());
+            Assert.AreEqual("Mem0[t1_3 * 4<32> + 0x18<32>:word32]", expr.ToString());
         }
 
         [Test]
@@ -699,7 +699,7 @@ namespace Reko.UnitTests.Evaluation
             var t2 = Given_Tmp("t2", m.Shl(t1, 3));
             ssaIds[foo].Uses.Add(ssaIds[t1].DefStatement);
             var (expr, _) = m.Mem32(m.IAdd(Constant.Word32(0x00123456), t2)).Accept(simplifier);
-            Assert.AreEqual("Mem0[(t1_2 << 3<8>) + 0x123456<32>:word32]", expr.ToString());
+            Assert.AreEqual("Mem0[(t1_3 << 3<8>) + 0x123456<32>:word32]", expr.ToString());
         }
 
         [Test]
@@ -754,7 +754,7 @@ namespace Reko.UnitTests.Evaluation
             var t2 = Given_Tmp("t2", m.Mem32(m.Word32(0x00123404)));
             var expr = m.Slice(m.Seq(t1, t2), PrimitiveType.Word16, 0);
             var (result, _) = expr.Accept(simplifier);
-            Assert.AreEqual("SLICE(t2_3, word16, 0)", result.ToString());
+            Assert.AreEqual("SLICE(t2_4, word16, 0)", result.ToString());
         }
 
         [Test]

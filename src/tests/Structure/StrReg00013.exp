@@ -110,9 +110,9 @@ l0C00_00F8:
 l0C00_0128:
 	fn0C00_027D()
 	word32 eax_135 = CONVERT(Mem132[ds_122:0x5418<16>:word16], word16, int32)
-	ui64 v28_v27_272 = Mem132[ds_122:0x6FF0<16>:ui64] - eax_135 *s64 0xF000<32>
-	Mem140[ds_122:0x6FF0<16>:word32] = SLICE(v28_v27_272, word32, 0)
-	Mem145[ds_122:0x6FF4<16>:word32] = SLICE(v28_v27_272, word32, 32)
+	ui64 v28_v27_273 = Mem132[ds_122:0x6FF0<16>:ui64] - eax_135 *s64 0xF000<32>
+	Mem140[ds_122:0x6FF0<16>:word32] = SLICE(v28_v27_273, word32, 0)
+	Mem145[ds_122:0x6FF4<16>:word32] = SLICE(v28_v27_273, word32, 32)
 	ax_130 = SLICE(eax_135, word16, 0) *s 0xF000<16> (alias)
 	// succ:  l0C00_0144
 l0C00_0144:
@@ -174,8 +174,8 @@ l0C00_01B7:
 	Mem179[ds_122:0x5404<16>:word16] = 0<16>
 	word16 dx_181 = Mem179[ds_122:0x541A<16>:word16]
 	Mem187[ds_122:0x541A<16>:word16] = ax_130
-	ui32 bx_ax_274 = SEQ(v29_178, ax_130) - CONVERT(dx_181, word16, uint32)
-	Mem200[ds_122:0x5408<16>:word16] = SLICE(SEQ(SLICE(SLICE(bx_ax_274, word16, 16), byte, 0), SLICE(SLICE(bx_ax_274, word16, 0), byte, 8)) *u32 0x3865<16>, word16, 16)
+	ui32 bx_ax_275 = SEQ(v29_178, ax_130) - CONVERT(dx_181, word16, uint32)
+	Mem200[ds_122:0x5408<16>:word16] = SLICE(SEQ(SLICE(SLICE(bx_ax_275, word16, 16), byte, 0), SLICE(SLICE(bx_ax_275, word16, 0), byte, 8)) *u32 0x3865<16>, word16, 16)
 	branch Mem200[ds_122:Mem200[ds_122:0x5A02<16>:word16] + 0x94<16>:word16] != 0<16> l0C00_01FA
 	// succ:  l0C00_01EC l0C00_01FA
 l0C00_01EC:
@@ -312,9 +312,9 @@ void fn0C00_0000(selector ds)
 		{
 			fn0C00_027D();
 			word32 eax_135 = CONVERT(Mem132[ds_122:0x5418<16>:word16], word16, int32);
-			ui64 v28_v27_272 = Mem132[ds_122:0x6FF0<16>:ui64] - eax_135 *s64 0xF000<32>;
-			Mem140[ds_122:0x6FF0<16>:word32] = SLICE(v28_v27_272, word32, 0);
-			Mem145[ds_122:0x6FF4<16>:word32] = SLICE(v28_v27_272, word32, 32);
+			ui64 v28_v27_273 = Mem132[ds_122:0x6FF0<16>:ui64] - eax_135 *s64 0xF000<32>;
+			Mem140[ds_122:0x6FF0<16>:word32] = SLICE(v28_v27_273, word32, 0);
+			Mem145[ds_122:0x6FF4<16>:word32] = SLICE(v28_v27_273, word32, 32);
 			ax_130 = SLICE(eax_135, word16, 0) *s 0xF000<16>;
 		}
 		fn0C00_0265();
@@ -356,8 +356,8 @@ void fn0C00_0000(selector ds)
 			Mem179[ds_122:0x5404<16>:word16] = 0<16>;
 			word16 dx_181 = Mem179[ds_122:0x541A<16>:word16];
 			Mem187[ds_122:0x541A<16>:word16] = ax_130;
-			ui32 bx_ax_274 = SEQ(v29_178, ax_130) - CONVERT(dx_181, word16, uint32);
-			Mem200[ds_122:0x5408<16>:word16] = SLICE(SEQ(SLICE(SLICE(bx_ax_274, word16, 16), byte, 0), SLICE(SLICE(bx_ax_274, word16, 0), byte, 8)) *u32 0x3865<16>, word16, 16);
+			ui32 bx_ax_275 = SEQ(v29_178, ax_130) - CONVERT(dx_181, word16, uint32);
+			Mem200[ds_122:0x5408<16>:word16] = SLICE(SEQ(SLICE(SLICE(bx_ax_275, word16, 16), byte, 0), SLICE(SLICE(bx_ax_275, word16, 0), byte, 8)) *u32 0x3865<16>, word16, 16);
 			if (Mem200[ds_122:Mem200[ds_122:0x5A02<16>:word16] + 0x94<16>:word16] != 0<16> || Mem200[ds_122:Mem200[ds_122:0x5BD8<16>:word16] + 0x94<16>:word16] != 0<16>)
 				Mem212[ds_122:0x5408<16>:word16] = 0<16>;
 			if ((Mem214[ds_122:0x919E<16>:word16] & 0x2FF<16>) == 0<16>)

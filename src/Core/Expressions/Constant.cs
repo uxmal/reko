@@ -312,7 +312,22 @@ namespace Reko.Core.Expressions
 			}
 		}
 
-        public abstract bool IsMaxUnsigned { get; }
+        public virtual bool IsIntegerOne
+        {
+            get
+            {
+                return !DataType.IsReal && ToInt64() == 1;
+            }
+        }
+
+        public virtual bool IsMaxUnsigned
+        {
+            get
+            {
+                var mask = Bits.Mask(0, DataType.BitSize);
+                return (this.ToUInt64() & mask) == mask;
+            }
+        } 
 
 		public virtual bool IsNegative
 		{
@@ -455,7 +470,7 @@ namespace Reko.Core.Expressions
 
         public static Constant Bool(bool f)
         {
-            return f ? True() : False();
+            return new ConstantBool(PrimitiveType.Bool, f);
         }
 
         public static Constant SByte(sbyte p)
@@ -610,8 +625,6 @@ namespace Reko.Core.Expressions
             return new ConstantBool(DataType, !value);
         }
 
-        public override bool IsMaxUnsigned => value;
-
         public override bool ToBoolean()
         {
             return value;
@@ -685,8 +698,6 @@ namespace Reko.Core.Expressions
             return value.GetHashCode();
         }
 
-        public override bool IsMaxUnsigned => value == -1;
-        
         public override byte ToByte()
         {
             return (byte)value;
@@ -754,8 +765,6 @@ namespace Reko.Core.Expressions
         {
             return value.GetHashCode();
         }
-
-        public override bool IsMaxUnsigned => value == 0xFFFF;
 
         public override byte ToByte()
         {
@@ -827,8 +836,6 @@ namespace Reko.Core.Expressions
             return value.GetHashCode();
         }
 
-        public override bool IsMaxUnsigned => value == 0xFF;
-
         public override byte ToByte()
         {
             return value;
@@ -897,8 +904,6 @@ namespace Reko.Core.Expressions
         {
             return value.GetHashCode();
         }
-
-        public override bool IsMaxUnsigned => value == (short)-1;
 
         public override byte ToByte()
         {
@@ -969,8 +974,6 @@ namespace Reko.Core.Expressions
             return value.GetHashCode();
         }
 
-        public override bool IsMaxUnsigned => value == 0xFFFFu;
-
         public override byte ToByte()
         {
             return (byte)value;
@@ -1039,8 +1042,6 @@ namespace Reko.Core.Expressions
         {
             return value.GetHashCode();
         }
-
-        public override bool IsMaxUnsigned => value == -1;
 
         public override byte ToByte()
         {
@@ -1111,8 +1112,6 @@ namespace Reko.Core.Expressions
         {
             return value.GetHashCode();
         }
-
-        public override bool IsMaxUnsigned => value == ~0u;
 
         public override byte ToByte()
         {
@@ -1185,8 +1184,6 @@ namespace Reko.Core.Expressions
             return value.GetHashCode();
         }
 
-        public override bool IsMaxUnsigned => value == -1L;
-
         public override byte ToByte()
         {
             return (byte)value;
@@ -1256,8 +1253,6 @@ namespace Reko.Core.Expressions
             return value.GetHashCode();
         }
 
-        public override bool IsMaxUnsigned => value == ~0UL;
-
         public override Constant Negate()
         {
             return new ConstantUInt64(this.DataType, ~value + 1);
@@ -1321,6 +1316,11 @@ namespace Reko.Core.Expressions
             // Unsupported floating point constant sizes cannot be represented yet.
             return InvalidConstant.Create(dt);
         }
+
+        public override bool IsIntegerOne => false;
+
+        public override sealed bool IsMaxUnsigned => false;
+
     }
 
     public class ConstantReal16 : ConstantReal
@@ -1363,8 +1363,6 @@ namespace Reko.Core.Expressions
         {
             return value.GetHashCode();
         }
-
-        public override bool IsMaxUnsigned => false;
 
         public override bool IsValid => !Float16.IsNaN(value);
 
@@ -1489,8 +1487,6 @@ namespace Reko.Core.Expressions
             return value.GetHashCode();
         }
 
-        public override bool IsMaxUnsigned => false;
-
         public override bool IsValid => !float.IsNaN(value);
 
         public override Constant Negate()
@@ -1577,9 +1573,6 @@ namespace Reko.Core.Expressions
             return value.GetHashCode();
         }
 
-        public override bool IsMaxUnsigned => false;
-
-
         public override Constant Negate()
         {
             return new ConstantReal80(DataType, -value);
@@ -1660,8 +1653,6 @@ namespace Reko.Core.Expressions
             var mask = Bits.Mask(0, dt.BitSize);
             return Constant.Create(dt, bits >> offset);
         }
-
-        public override bool IsMaxUnsigned => false;
 
         public override bool IsValid => !double.IsNaN(value);
 
@@ -1747,12 +1738,13 @@ namespace Reko.Core.Expressions
             return str.GetHashCode();
         }
 
-        public override bool IsMaxUnsigned => false;
+        public override bool IsIntegerOne => false;
 
         public override Constant Negate()
         {
             throw new NotSupportedException("Cannot negate a string value.");
         }
+
         public override byte ToByte()
         {
             throw new InvalidCastException();

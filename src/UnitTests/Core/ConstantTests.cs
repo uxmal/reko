@@ -33,7 +33,9 @@ namespace Reko.UnitTests.Core
 	[TestFixture]
 	public class ConstantTests
 	{
-		[Test]
+        private static readonly PrimitiveType word20 = PrimitiveType.CreateWord(20);
+        
+        [Test]
 		public void ConNegate()
 		{
 			using (FileUnitTester fut = new FileUnitTester("Core/ConNegate.txt"))
@@ -160,6 +162,7 @@ namespace Reko.UnitTests.Core
         [Test]
         public void ConIsMaxUnsigned()
         {
+            Assert.IsTrue(Constant.True().IsMaxUnsigned);
             Assert.IsTrue(Constant.SByte(-1).IsMaxUnsigned);
             Assert.IsTrue(Constant.Byte(0xFF).IsMaxUnsigned);
             Assert.IsTrue(Constant.Int16(-1).IsMaxUnsigned);
@@ -170,7 +173,7 @@ namespace Reko.UnitTests.Core
             Assert.IsTrue(Constant.UInt32(~0u).IsMaxUnsigned);
             Assert.IsTrue(Constant.Int64(-1L).IsMaxUnsigned);
             Assert.IsTrue(Constant.UInt64(~0UL).IsMaxUnsigned);
+            Assert.IsTrue(Constant.Create(word20, 0xF_FFFF).IsMaxUnsigned);
         }
-
     }
 }

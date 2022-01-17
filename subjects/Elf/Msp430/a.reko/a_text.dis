@@ -2821,7 +2821,7 @@ l00005B04:
 	word20 r8_18 = 0<16>
 	branch (r13 & 0x8000<16>) == 0<20> l00005B16
 l00005B0C:
-	r12 = (SLICE(r13_r12, word20, 0) ^ 0xFFFFF<20>) + 1<20> (alias)
+	r12 = -SLICE(r13_r12, word20, 0) (alias)
 	r13 = SLICE((r13_r12 ^ 0xFFFFFFFF<32>) + 1<40>, word20, 20) (alias)
 	r8_18 = r8_18 | 4<16>
 l00005B16:
@@ -2829,7 +2829,7 @@ l00005B16:
 	branch (r11 & 0x8000<16>) == 0<20> l00005B26
 l00005B1C:
 	r8_18 = r8_18 | 8<16>
-	r11_r10_126 = SEQ(SLICE((r11_r10 ^ 0xFFFFFFFF<32>) + 1<40>, word20, 20), (SLICE(r11_r10, word20, 0) ^ 0xFFFFF<20>) + 1<20>) (alias)
+	r11_r10_126 = SEQ(SLICE((r11_r10 ^ 0xFFFFFFFF<32>) + 1<40>, word20, 20), -SLICE(r11_r10, word20, 0)) (alias)
 l00005B26:
 	ui40 r13_r12_131 = <invalid>
 	word20 r12_108 = SLICE(r13_r12_131, word20, 0)
@@ -2840,7 +2840,7 @@ l00005B26:
 	word20 r8_55 = __rcr<word20,byte,bool>(r8_49, 1<8>, fn00005B4E(r11_r10_126, r8_18, r12, r13, out r8_49, out r12_132, out r13_133, out r14_134))
 	branch (r8_55 & 4<16>) == 0<20> l00005B40
 l00005B30:
-	r12_108 = (SLICE(r13_r12_131, word20, 0) ^ 0xFFFFF<20>) + 1<20> (alias)
+	r12_108 = -SLICE(r13_r12_131, word20, 0) (alias)
 l00005B40:
 	branch (r8_55 & 8<16>) == 0<20> l00005B4C
 l00005B44:

@@ -2216,7 +2216,7 @@ Eq_n fn00005B04(Eq_n r11_r10, ui40 r13_r12)
 	Eq_n r8_n = 0x00;
 	if ((r13 & 0x8000) != 0x00)
 	{
-		r12 = ((word20) r13_r12 ^ ~0x00) + 0x01;
+		r12 = -(word20) r13_r12;
 		r13 = SLICE((r13_r12 ^ ~0x00) + 0x01, word20, 20);
 		r8_n |= 0x04;
 	}
@@ -2224,7 +2224,7 @@ Eq_n fn00005B04(Eq_n r11_r10, ui40 r13_r12)
 	if ((r11 & 0x8000) != 0x00)
 	{
 		r8_n |= 0x08;
-		r11_r10_n = SEQ(SLICE((r11_r10 ^ ~0x00) + 0x01, word20, 20), ((word20) r11_r10 ^ ~0x00) + 0x01);
+		r11_r10_n = SEQ(SLICE((r11_r10 ^ ~0x00) + 0x01, word20, 20), -(word20) r11_r10);
 	}
 	ui40 r13_r12_n = <invalid>;
 	Eq_n r12_n = (word20) r13_r12_n;
@@ -2234,7 +2234,7 @@ Eq_n fn00005B04(Eq_n r11_r10, ui40 r13_r12)
 	word20 r12_n;
 	Eq_n r8_n = __rcr<word20,byte,bool>(r8_n, 0x01, fn00005B4E(r11_r10_n, r8_n, r12, r13, out r8_n, out r12_n, out r13_n, out r14_n));
 	if ((r8_n & 0x04) != 0x00)
-		r12_n = ((word20) r13_r12_n ^ ~0x00) + 0x01;
+		r12_n = -(word20) r13_r12_n;
 	if ((r8_n & 0x08) != 0x00)
 		r12_n = (r12_n ^ ~0x00) + 0x01;
 	return r12_n;
