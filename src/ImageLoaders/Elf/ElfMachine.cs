@@ -213,8 +213,21 @@ namespace Reko.ImageLoaders.Elf
         EM_AMDGPU = 224,         // AMD GPU architecture
         EM_RISCV = 243,          // RISC-V
         EM_LANAI = 244,          // Lanai 32-bit processor
-        EM_BPF = 247,            // Linux BPF -- in-kernel virtual machine
-        EM_VE = 251,             // NEC SX-Aurora VE
+        EM_CEVA = 245,           // CEVA Processor Architecture Family
+        EM_CEVA_X2 = 246,        // CEVA X2 Processor Family
+        EM_BPF = 247,            // Linux BPF – in-kernel virtual machine.
+        EM_GRAPHCORE_IPU = 248,  // Graphcore Intelligent Processing Unit
+        EM_IMG1 = 249,           // Imagination Technologies
+        EM_NFP = 250,            // Netronome Flow Processor.
+        EM_VE = 251,             // NEC SX-Aurora Vector Engine
+        EM_CSKY = 252,           // C-SKY processor family.
+        EM_ARC_COMPACT3_64  = 253, // Synopsys ARCv2.3 64-bit
+        EM_MCS6502 = 254,        // MOS Technology MCS 6502 processor
+        EM_ARC_COMPACT3 = 255,   // Synopsys ARCv2.3 32-bit
+        EM_KVX = 256,            // Kalray VLIW core of the MPPA processor family
+        EM_65816 = 257,          // WDC 65816/65C816
+        EM_LOONGARCH = 258,      // LoongArch
+        EM_KF32 = 259,           // ChipON KungFu32
 
         EM_NANOMIPS = 249,       //$REVIEW: a guess?
         EM_MORPHOS_PPC = 8692,   //$REVIEW: a guess?
