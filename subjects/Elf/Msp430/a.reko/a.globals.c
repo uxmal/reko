@@ -21,8 +21,8 @@ word16 g_w0120; // 0120
 Eq_n g_t0130;
 Eq_n g_t0134;
 Eq_n g_t0138;
-word16 g_w013A; // 013A
-word16 g_w013C; // 013C
+Eq_n g_t013A;
+Eq_n g_t013C;
 cui16 g_w0160; // 0160
 word16 g_w0162; // 0162
 word16 g_w0172; // 0172

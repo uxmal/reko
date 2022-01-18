@@ -365,7 +365,7 @@ namespace Reko.UnitTests.Decompiler.Analysis
         public void CrwRegisterArgument()
         {
             flow.BitsUsed.Add(Registers.eax, new BitRange(0, 32));
-            crw.EnsureSignature(ssa, proc.Frame, flow);
+            crw.EnsureSignature(ssa, flow);
             Assert.AreEqual("void foo(Register word32 eax)", proc.Signature.ToString(proc.Name));
         }
 
@@ -377,7 +377,7 @@ namespace Reko.UnitTests.Decompiler.Analysis
             Given_ExitBlockStatement(new Identifier("ebx", PrimitiveType.Word32, Registers.ebx));
             flow.BitsLiveOut.Add(Registers.eax, BitRange.Empty);        // becomes the return value.
             flow.BitsLiveOut.Add(Registers.ebx, BitRange.Empty);
-            crw.EnsureSignature(ssa, proc.Frame, flow);
+            crw.EnsureSignature(ssa, flow);
             Assert.AreEqual("Register word32 foo(Register out ptr32 ebxOut)", proc.Signature.ToString(proc.Name));
         }
 
@@ -386,7 +386,7 @@ namespace Reko.UnitTests.Decompiler.Analysis
         public void CrwFpuArgument()
         {
             flow.BitsUsed.Add(new FpuStackStorage(0, PrimitiveType.Real80), new BitRange(0, 80));
-            crw.EnsureSignature(ssa, proc.Frame, flow);
+            crw.EnsureSignature(ssa, flow);
             Assert.AreEqual("void foo(FpuStack real80 rArg0)", proc.Signature.ToString(proc.Name));
         }
 
@@ -399,7 +399,7 @@ namespace Reko.UnitTests.Decompiler.Analysis
             flow.BitsLiveOut.Add(new FpuStackStorage(0, PrimitiveType.Real80), BitRange.Empty);
             flow.BitsLiveOut.Add(new FpuStackStorage(1, PrimitiveType.Real80), BitRange.Empty);
 
-            crw.EnsureSignature(ssa, proc.Frame, flow);
+            crw.EnsureSignature(ssa, flow);
             Assert.AreEqual("Register word32 foo(FpuStack real80 rArg0, FpuStack out ptr32 rArg0Out, FpuStack out ptr32 rArg1Out)", proc.Signature.ToString(proc.Name));
         }
 
@@ -408,7 +408,7 @@ namespace Reko.UnitTests.Decompiler.Analysis
         {
             var arg = proc.Frame.EnsureStackArgument(4, PrimitiveType.Word32);
             flow.BitsUsed[arg.Storage] = new BitRange(0, 16);
-            crw.EnsureSignature(ssa, proc.Frame, flow);
+            crw.EnsureSignature(ssa, flow);
             Assert.AreEqual("void foo(Stack word16 wArg04)", proc.Signature.ToString(proc.Name));
         }
 
@@ -1032,7 +1032,7 @@ main_exit:
         {
             flow.BitsUsed.Add(new SequenceStorage(Registers.edx, Registers.eax), new BitRange(0, 64));
             var crw = new CallRewriter(program.Platform, new ProgramDataFlow(), eventListener);
-            var sig = crw.MakeSignature(new SsaState(proc), proc.Frame, flow);
+            var sig = crw.MakeSignature(new SsaState(proc), flow);
             Assert.AreEqual("(fn void (word64))", sig.ToString());
         }
 

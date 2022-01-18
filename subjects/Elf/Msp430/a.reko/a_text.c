@@ -122,9 +122,7 @@ Eq_n msp430_compute_modulator_bits(ui40 r13_r12, Eq_n r15_r14)
 	Eq_n r15 = SLICE(r15_r14, word20, 20);
 	union Eq_n * v16_n = fp->ptr0002;
 	Eq_n r12_n = fn00005B04(r15_r14, r13_r12);
-	fn00005ADC(r14, r15, r12_n, 0x00);
-	ui40 r15_r14_n = <invalid>;
-	Eq_n r9_r8_n = r15_r14_n - r13_r12;
+	Eq_n r9_r8_n = fn00005ADC(r14, r15, r12_n, 0x00) - r13_r12;
 	if (v16_n != null)
 		*v16_n = (union Eq_n *) r12_n;
 	Eq_n r7_n = 0x00;
@@ -227,7 +225,7 @@ ui20 putchar(ui20 sr, Eq_n r15, union Eq_n & r11Out)
 	}
 	else
 		sr = x_putchar(sr, 100, r11_n, out r15_n);
-	r11Out.u0 = <invalid>;
+	r11Out.u1 = <invalid>;
 	return sr;
 }
 
@@ -1862,11 +1860,11 @@ l564A:
 						if (SLICE(dwLoc1C_n - (uint40) wLoc14_n, word20, 20) < 0x00)
 							bLoc16_n = 0x01;
 						Eq_n r4_n;
-						Eq_n r14_n;
 						Eq_n r8_n;
-						word20 r13_n;
-						word20 r12_n;
-						fn00005B4E((uint40) wLoc14_n, r8, wLoc1C_n, wLoc1A_n, out r8_n, out r12_n, out r13_n, out r14_n);
+						ui40 r15_r14_n;
+						ui40 r13_r12_n;
+						fn00005B4E((uint40) wLoc14_n, r8, wLoc1C_n, wLoc1A_n, out r13_r12_n, out r15_r14_n, out r8_n);
+						Eq_n r14_n = <invalid>;
 						if (r14_n >= 0x0A)
 							r4_n = (word24) r14_n + 48;
 						else
@@ -1877,10 +1875,11 @@ l564A:
 						}
 						wLoc20_n = (word16) wLoc20_n + 0x0000FFFF;
 						*wLoc20_n = r4_n;
-						word20 r12_n;
-						word20 r13_n;
-						word20 r14_n;
-						fn00005B4E((uint40) wLoc14_n, r8_n, wLoc1C_n, wLoc1A_n, out r8, out r12_n, out r13_n, out r14_n);
+						ui40 r13_r12_n;
+						ui40 r15_r14_n;
+						fn00005B4E((uint40) wLoc14_n, r8_n, wLoc1C_n, wLoc1A_n, out r13_r12_n, out r15_r14_n, out r8);
+						Eq_n r13_n = <invalid>;
+						Eq_n r12_n = <invalid>;
 						dwLoc1C_n = SEQ(r13_n, r12_n);
 						wLoc20_n = wLoc20_n;
 					} while (bLoc16_n != 0x00);
@@ -2191,18 +2190,20 @@ ui20 memset(ui20 sr, Eq_n r13, Eq_n r14, Eq_n r15)
 	return sr;
 }
 
-// 00005ADC: void fn00005ADC(Register Eq_n r10, Register Eq_n r11, Register Eq_n r12, Register Eq_n r13)
+// 00005ADC: Sequence ui40 fn00005ADC(Register Eq_n r10, Register Eq_n r11, Register Eq_n r12, Register Eq_n r13)
 // Called from:
 //      msp430_compute_modulator_bits
-void fn00005ADC(Eq_n r10, Eq_n r11, Eq_n r12, Eq_n r13)
+ui40 fn00005ADC(Eq_n r10, Eq_n r11, Eq_n r12, Eq_n r13)
 {
 	*(union Eq_n *) 0x0130 = r12;
 	*(union Eq_n *) 0x0138 = r10;
 	*(union Eq_n *) 0x0134 = r12;
-	*(word16 *) 0x013A = *(word16 *) 0x013C;
+	Eq_n r14_n = *(union Eq_n *) 0x013A;
+	*(union Eq_n *) 0x013A = *(union Eq_n *) 0x013C;
 	*(union Eq_n *) 0x0138 = r11;
 	*(union Eq_n *) 0x0134 = r13;
 	*(union Eq_n *) 0x0138 = r10;
+	return SEQ(*(union Eq_n *) 0x013A, r14_n);
 }
 
 // 00005B04: Register Eq_n fn00005B04(Sequence Eq_n r11_r10, Sequence ui40 r13_r12)
@@ -2226,13 +2227,11 @@ Eq_n fn00005B04(Eq_n r11_r10, ui40 r13_r12)
 		r8_n |= 0x08;
 		r11_r10_n = SEQ(SLICE((r11_r10 ^ ~0x00) + 0x01, word20, 20), -(word20) r11_r10);
 	}
-	ui40 r13_r12_n = <invalid>;
 	Eq_n r12_n = (word20) r13_r12_n;
 	Eq_n r8_n;
-	word20 r14_n;
-	word20 r13_n;
-	word20 r12_n;
-	Eq_n r8_n = __rcr<word20,byte,bool>(r8_n, 0x01, fn00005B4E(r11_r10_n, r8_n, r12, r13, out r8_n, out r12_n, out r13_n, out r14_n));
+	ui40 r15_r14_n;
+	ui40 r13_r12_n;
+	Eq_n r8_n = __rcr<word20,byte,bool>(r8_n, 0x01, fn00005B4E(r11_r10_n, r8_n, r12, r13, out r13_r12_n, out r15_r14_n, out r8_n));
 	if ((r8_n & 0x04) != 0x00)
 		r12_n = -(word20) r13_r12_n;
 	if ((r8_n & 0x08) != 0x00)
@@ -2240,16 +2239,16 @@ Eq_n fn00005B04(Eq_n r11_r10, ui40 r13_r12)
 	return r12_n;
 }
 
-// 00005B4E: FlagGroup bool fn00005B4E(Sequence Eq_n r11_r10, Register Eq_n r8, Register Eq_n r12, Register Eq_n r13, Register out Eq_n r8Out, Register out Eq_n r12Out, Register out Eq_n r13Out, Register out Eq_n r14Out)
+// 00005B4E: FlagGroup bool fn00005B4E(Sequence Eq_n r11_r10, Register Eq_n r8, Register Eq_n r12, Register Eq_n r13, Sequence out Eq_n r13_r12Out, Sequence out Eq_n r15_r14Out, Register out Eq_n r8Out)
 // Called from:
 //      vuprintf
 //      fn00005B04
-bool fn00005B4E(Eq_n r11_r10, Eq_n r8, Eq_n r12, Eq_n r13, union Eq_n & r8Out, union Eq_n & r12Out, union Eq_n & r13Out, union Eq_n & r14Out)
+bool fn00005B4E(Eq_n r11_r10, Eq_n r8, Eq_n r12, Eq_n r13, union Eq_n & r13_r12Out, union Eq_n & r15_r14Out, union Eq_n & r8Out)
 {
 	uint20 r11 = SLICE(r11_r10, word20, 20);
-	Eq_n r10 = (word20) r11_r10;
+	uint20 r10 = (word20) r11_r10;
 	uint20 r15_n = 0x00;
-	Eq_n r14_n = 0x00;
+	uint20 r14_n = 0x00;
 	Eq_n r9_n = 33;
 	while (true)
 	{
@@ -2261,7 +2260,7 @@ bool fn00005B4E(Eq_n r11_r10, Eq_n r8, Eq_n r12, Eq_n r13, union Eq_n & r8Out, u
 		if (r9_n == 0x00)
 			break;
 		r8 = __rcr<word20,byte,bool>(r8_n, 0x01, C_n);
-		r14_n = r14_n *20 0x02 + (word20) (r8 < 0x00);
+		r14_n = r14_n * 0x02 + (word20) (r8 < 0x00);
 		r15_n = r15_n * 0x02 + (word20) (r14_n < 0x00);
 		if (r15_n < r11 && (r15_n != r11 || r14_n < r10))
 		{
@@ -2270,10 +2269,9 @@ bool fn00005B4E(Eq_n r11_r10, Eq_n r8, Eq_n r12, Eq_n r13, union Eq_n & r8Out, u
 			r15_n = SLICE(r15_r14_n, word20, 20);
 		}
 	}
+	r13_r12Out.u1 = <invalid>;
+	r15_r14Out.u1 = <invalid>;
 	r8Out = r8_n;
-	r12Out = r12;
-	r13Out = r13;
-	r14Out = r14_n;
 	return C_n;
 }
 

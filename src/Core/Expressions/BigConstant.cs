@@ -38,8 +38,7 @@ namespace Reko.Core.Expressions
 
         public static BigConstant CreateUnsigned(DataType dt, BigInteger value)
         {
-            var mask = BigInteger.One << dt.BitSize;
-            --mask;
+            var mask = (BigInteger.One << dt.BitSize) - 1;
             return new BigConstant(dt, value & mask);
         }
 

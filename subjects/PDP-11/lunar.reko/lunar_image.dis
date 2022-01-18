@@ -120,15 +120,17 @@ l03A8:
 	return
 l0306:
 	word16 r3_63
-	word16 r2_25
-	word16 r3_26
-	fn114A(Mem0[0x0064<p16>:word16], 0x2904<16>, out r2_25, out r3_26)
+	ui32 r2_r3_171
+	fn114A(Mem0[0x0064<p16>:word16], 0x2904<16>, out r2_r3_171)
+	word16 r3_26 = <invalid>
+	word16 r2_25 = <invalid>
 	word16 r3_35
 	fn126C(0x64<16>, r2_25, r3_26, out r3_35)
 	Mem40[0x0066<p16>:word16] = r3_35
-	word16 r2_45
-	word16 r3_46
-	fn114A(Mem40[0x006E<p16>:word16], r3_35, out r2_45, out r3_46)
+	ui32 r2_r3_172
+	fn114A(Mem40[0x006E<p16>:word16], r3_35, out r2_r3_172)
+	word16 r3_46 = <invalid>
+	word16 r2_45 = <invalid>
 	word16 r3_55
 	fn126C(0x5DC<16>, r2_45, r3_46, out r3_55)
 	word16 r3_60 = r3_55 - Mem40[0x0068<p16>:word16]
@@ -149,9 +151,10 @@ l0358:
 	word16 r3_92
 	fn126C(0xA<16>, 0<16>, r3_63, out r3_92)
 	Mem99[0x006A<p16>:word16] = r3_92 + 0x37DC<16>
-	word16 r2_104
-	word16 r3_105
-	fn114A(Mem99[0x0066<p16>:word16], 0x3ED7<16>, out r2_104, out r3_105)
+	ui32 r2_r3_173
+	fn114A(Mem99[0x0066<p16>:word16], 0x3ED7<16>, out r2_r3_173)
+	word16 r3_105 = <invalid>
+	word16 r2_104 = <invalid>
 	word16 r3_116
 	fn126C(r4, r2_104, r3_105, out r3_116)
 	Mem121[0x004E<p16>:word16] = r3_116
@@ -265,9 +268,10 @@ l0488:
 l048E:
 	r1_14 = -r1_14
 l0490:
-	word16 r2_15
-	word16 r3_16
-	fn114A(Mem0[0x006E<p16>:word16], r1_14, out r2_15, out r3_16)
+	ui32 r2_r3_209
+	fn114A(Mem0[0x006E<p16>:word16], r1_14, out r2_r3_209)
+	word16 r3_16 = <invalid>
+	word16 r2_15 = <invalid>
 	word16 r3_25
 	fn126C(0xBB8<16>, r2_15, r3_16, out r3_25)
 	branch Mem0[0x0050<p16>:word16] > 0<16> l04A8
@@ -281,10 +285,8 @@ l04A8:
 l04BA:
 	r1_50 = -r3_42
 l04BC:
-	word16 r3_210
-	word16 r2_209
-	fn114A(Mem49[0x006E<p16>:word16], r1_50, out r2_209, out r3_210)
-	ui32 r2_r3_207 = <invalid>
+	ui32 r2_r3_207
+	fn114A(Mem49[0x006E<p16>:word16], r1_50, out r2_r3_207)
 	ui32 r2_r3_194 = r2_r3_207 + CONVERT(Mem49[0x0056<p16>:word16], word16, uint32)
 	word16 r3_74
 	word16 r2_73 = fn126C(0x258<16>, SLICE(r2_r3_194, word16, 16), SLICE(r2_r3_194, word16, 0), out r3_74)
@@ -299,9 +301,10 @@ l04D8:
 l04E6:
 	r1_101 = -r1_101
 l04E8:
-	word16 r2_108
-	word16 r3_109
-	fn114A(Mem96[0x006E<p16>:word16], r1_101, out r2_108, out r3_109)
+	ui32 r2_r3_210
+	fn114A(Mem96[0x006E<p16>:word16], r1_101, out r2_r3_210)
+	word16 r3_109 = <invalid>
+	word16 r2_108 = <invalid>
 	word16 r3_118
 	fn126C(0xBB8<16>, r2_108, r3_109, out r3_118)
 	branch Mem96[0x0052<p16>:word16] > 0<16> l0500
@@ -315,10 +318,8 @@ l0500:
 l0512:
 	r1_144 = -r3_135
 l0514:
-	word16 r2_211
-	word16 r3_212
-	fn114A(Mem143[0x006E<p16>:word16], r1_144, out r2_211, out r3_212)
-	ui32 r2_r3_208 = <invalid>
+	ui32 r2_r3_208
+	fn114A(Mem143[0x006E<p16>:word16], r1_144, out r2_r3_208)
 	ui32 r2_r3_196 = r2_r3_208 + CONVERT(Mem143[0x005A<p16>:word16], word16, uint32)
 	word16 r3_168
 	word16 r2_167 = fn126C(0x258<16>, SLICE(r2_r3_196, word16, 16), SLICE(r2_r3_196, word16, 0), out r3_168)
@@ -354,10 +355,8 @@ l053A:
 l0550:
 	r1_12 = -r5_4
 l0552:
-	word16 r2_354
-	word16 r3_355
-	fn114A(r0_7, r1_12, out r2_354, out r3_355)
-	ui32 r2_r3_353 = <invalid>
+	ui32 r2_r3_353
+	fn114A(r0_7, r1_12, out r2_r3_353)
 	ui32 r2_r3_351 = r2_r3_353 + CONVERT(Mem5[0x0048<p16>:word16], word16, uint32)
 	word16 r3_30
 	word16 r2_29 = fn126C(0x3C<16>, SLICE(r2_r3_351, word16, 16), SLICE(r2_r3_351, word16, 0), out r3_30)
@@ -593,9 +592,10 @@ l0A4C:
 	r1_55 = -r1_55
 l0A4E:
 	word16 r0_63 = Mem37[0x34B6<p16>:word16] - Mem37[0x007A<p16>:word16]
-	word16 r2_69
-	word16 r3_70
-	fn114A(r0_63, r1_55, out r2_69, out r3_70)
+	ui32 r2_r3_166
+	fn114A(r0_63, r1_55, out r2_r3_166)
+	word16 r3_70 = <invalid>
+	word16 r2_69 = <invalid>
 	word16 r3_79
 	fn126C(Mem37[0x004C<p16>:word16], r2_69, r3_70, out r3_79)
 	word16 r4_84 = r0_63 + r3_79
@@ -612,9 +612,9 @@ l0B00_in_fn0A0A:
 	return
 l0A82:
 	word16 r4_114 = 0x96<16> - r4_84
-	word16 r3_120
-	word16 r2_166
-	fn114A(r4_114, Mem103[0x0064<p16>:word16], out r2_166, out r3_120)
+	ui32 r2_r3_167
+	fn114A(r4_114, Mem103[0x0064<p16>:word16], out r2_r3_167)
+	word16 r3_120 = <invalid>
 l0A92_thunk_fn0A94:
 	fn0A94(r3_120 >> 3<i16>, r4_114, 0x35D2<16>)
 	return
@@ -1244,7 +1244,7 @@ l1090:
 	fn0242(0x26D8<16>, r5 + 6<16>)
 
 
-bool fn114A(word16 r0, word16 r1, ptr16 & r2Out, ptr16 & r3Out)
+bool fn114A(word16 r0, word16 r1, ptr16 & r2_r3Out)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
@@ -1254,14 +1254,13 @@ bool fn114A(word16 r0, word16 r1, ptr16 & r2Out, ptr16 & r3Out)
 //      fn0A0A
 //      fn123A
 // MayUse:  r0:[0..15] r1:[0..15]
-// LiveOut: C r2 r3
+// LiveOut: C r2:r3
 // Trashed: NZVC r2 r3
 // Preserved: r1 sp
 fn114A_entry:
 l114A:
 	word16 r2_13
 	word16 v10_6 = r0 - r1
-	word16 r3_3 = 0<16>
 	bool C_20 = SLICE(cond(v10_6), bool, 0)
 	branch v10_6 >=u 0<16> l115A
 l115A:
@@ -1430,28 +1429,19 @@ l1196:
 l122A:
 	r2_r3_382 = r2_r3_382 + CONVERT(r1, word16, uint32)
 l122E:
-	ui32 v90_429 = r2_r3_382 << 1<8>
 	word16 r2_338 = SLICE(r2_r3_382, word16, 16)
-	word16 r3_336 = SLICE(v90_429, word16, 0)
-	word16 r2_341 = SLICE(v90_429, word16, 16)
+	ui32 v90_429 = r2_r3_382 << 1<8>
 	bool C_342 = (r2_338 & 0x8000<16>) != 0<16>
 	branch (r2_338 & 0x8000<16>) != 0<16> l1238
 l1234:
-	ui32 r2_r3_384 = v90_429 + CONVERT(r1, word16, uint32)
-	r2_341 = SLICE(r2_r3_384, word16, 16) (alias)
-	r3_336 = SLICE(r2_r3_384, word16, 0) (alias)
-	C_342 = SLICE(cond(r2_341), bool, 0) (alias)
+	C_342 = SLICE(cond(SLICE(v90_429 + CONVERT(r1, word16, uint32), word16, 16)), bool, 0) (alias)
 l1238:
-	r2Out = r2_341
-	r3Out = r3_336
+	r2_r3Out = <invalid>
 	return C_342
 l119A:
-	r2_13 = 0<16>
 	C_20 = false
-	r3_3 = r1
 l119E:
-	r2Out = r2_13
-	r3Out = r3_3
+	r2_r3Out = <invalid>
 	return C_20
 fn114A_exit:
 
@@ -1477,18 +1467,20 @@ l123E:
 	r0 = -r0
 	branch r1 > 0<16> l1252
 l1252:
-	word16 r2_28
-	word16 r3_29
-	r2Out = -(r2_28 + CONVERT(fn114A(r0, r1, out r2_28, out r3_29), bool, word16))
+	word16 r2_28 = <invalid>
+	ui32 r2_r3_66
+	r2Out = -(r2_28 + CONVERT(fn114A(r0, r1, out r2_r3_66), bool, word16))
+	word16 r3_29 = <invalid>
 	r3Out = -r3_29
 	return r0
 l1244:
 	r1 = -r1
 l1246:
-	word16 r2_43
-	word16 r3_44
-	fn114A(r0, r1, out r2_43, out r3_44)
+	ui32 r2_r3_67
+	fn114A(r0, r1, out r2_r3_67)
+	word16 r2_43 = <invalid>
 	r2Out = r2_43
+	word16 r3_44 = <invalid>
 	r3Out = r3_44
 	return r0
 fn123A_exit:

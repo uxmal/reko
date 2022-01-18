@@ -19,8 +19,6 @@
 #endregion
 
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Reko.Core.Loading
 {
@@ -66,9 +64,7 @@ namespace Reko.Core.Loading
         public virtual Program LoadProgram(Address addrLoad, IProcessorArchitecture arch, IPlatform platform)
         {
             throw new NotSupportedException(
-                string.Format(
-                    "Image loader {0} doesn't support overriding the processor architecture or platform.",
-                    GetType().FullName));
+                $"Image loader {GetType().FullName} doesn't support overriding the processor architecture or platform.");
         }
 
         /// <summary>

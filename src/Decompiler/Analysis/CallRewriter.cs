@@ -30,12 +30,12 @@ using System.Linq;
 
 namespace Reko.Analysis
 {
-	/// <summary>
-	/// Rewrites a program, based on summary live-in and live-out
+    /// <summary>
+    /// Rewrites a program, based on summary live-in and live-out
     /// information, so that all CALL codes are converted into procedure 
     /// calls, with the appropriate parameter lists.
-	/// </summary>
-	public class CallRewriter
+    /// </summary>
+    public class CallRewriter
 	{
 		private readonly ProgramDataFlow mpprocflow;
         private readonly DecompilerEventListener listener;
@@ -46,20 +46,6 @@ namespace Reko.Analysis
             this.platform = platform;
 			this.mpprocflow = mpprocflow;
             this.listener = listener;
-        }
-
-        private void AdjustLiveIn(Procedure proc, ProcedureFlow flow)
-        {
-            var liveDefStms = proc.EntryBlock.Statements
-                .Select(s => s.Instruction)
-                .OfType<DefInstruction>()
-                .Select(d => d.Identifier.Storage);
-            var dead = flow.BitsUsed.Keys
-                .Except(liveDefStms).ToList();
-            foreach (var dd in dead)
-            {
-                flow.BitsUsed.Remove(dd);
-            }
         }
 
 		public static void Rewrite(
@@ -76,7 +62,7 @@ namespace Reko.Analysis
                 var proc = sst.SsaState.Procedure;
 				ProcedureFlow flow = crw.mpprocflow[proc];
                 flow.Dump(proc.Architecture);
-				crw.EnsureSignature(sst.SsaState, proc.Frame, flow);
+				crw.EnsureSignature(sst.SsaState, flow);
 			}
 
 			foreach (SsaTransform sst in ssts)
@@ -94,13 +80,13 @@ namespace Reko.Analysis
         /// modified in the exit block, and ensures that all the registers
         /// accessed by the procedure are in the procedure Frame.
         /// </summary>
-        public void EnsureSignature(SsaState ssa, IStorageBinder frame, ProcedureFlow flow)
+        public void EnsureSignature(SsaState ssa, ProcedureFlow flow)
         {
             var proc = ssa.Procedure;
             // If we already have a signature, we don't need to do this work.
             if (!proc.Signature.ParametersValid)
             {
-                var sig = MakeSignature(ssa, frame, flow);
+                var sig = MakeSignature(ssa, flow);
                 flow.Signature = sig;
                 proc.Signature = sig;
             }
@@ -110,18 +96,24 @@ namespace Reko.Analysis
         /// Make a function signature based on the procedure flow <paramref name="flow"/>.
         /// </summary>
         /// <returns>A valid function signature.</returns>
-        public FunctionType MakeSignature(SsaState ssa, IStorageBinder frame, ProcedureFlow flow)
+        public FunctionType MakeSignature(SsaState ssa, ProcedureFlow flow)
         {
-            var allLiveOut = flow.BitsLiveOut;
-			var sb = new SignatureBuilder(frame, platform.Architecture);
+            var sb = new SignatureBuilder(ssa.Procedure.Frame, ssa.Procedure.Architecture);
+            ProcessInputStorages(ssa, flow, sb);
+            ProcessOutputStorages(ssa, flow, sb);
+            var sig = sb.BuildSignature();
+            return sig;
+        }
 
-            var liveOutFlagGroups = flow.grfLiveOut.Select(de => platform.Architecture.GetFlagGroup(de.Key, de.Value)!);
-            AddModifiedFlags(frame, liveOutFlagGroups, sb);
-
+        void ProcessInputStorages(SsaState ssa, ProcedureFlow flow, SignatureBuilder sb)
+        {
+            var frame = ssa.Procedure.Frame;
             var mayUseSeqs = flow.BitsUsed.Keys.OfType<SequenceStorage>().ToHashSet();
-            var seqRegs = mayUseSeqs.SelectMany(s => s.Elements).Distinct().ToHashSet();
+            var seqRegs = SequenceRegisters(flow.BitsUsed);
 
-            //$BUG: should be sorted by ABI register order.
+            //$TODO: inputs should be sorted by ABI register order, even if they are sequences.
+            //$BUG: should be sorted by ABI register order. Need a new method
+            // IPlatform.CreateAbiRegisterCollator().
             foreach (var seq in mayUseSeqs.OrderBy(r => r.Name))
             {
                 sb.AddSequenceArgument(seq);
@@ -134,67 +126,129 @@ namespace Reko.Analysis
                 })
                 .Select(MakeRegisterParameter)
                 .ToDictionary(de => de.Item1, de => de.Item2);
-            
-            //$BUG: should be sorted by ABI register order. Need a new method
-            // IPlatform.CreateAbiRegisterCollator().
-			foreach (var reg in mayUseRegs.OrderBy(r => r.Key.Number))
-			{
-				if (!IsSubRegisterOfRegisters(reg.Key, mayUseRegs) &&
-                    !seqRegs.Contains(reg.Key))
-				{
-					sb.AddRegisterArgument(reg.Key);
-				}
-			}
 
-			foreach (var id in GetSortedStackArguments((Frame)frame, flow.BitsUsed))
-			{
+            foreach (var (reg, _) in mayUseRegs.OrderBy(r => r.Key.Number))
+            {
+                if (!IsSubRegisterOfRegisters(reg, mayUseRegs) &&
+                    !seqRegs.Contains(reg))
+                {
+                    sb.AddRegisterArgument(reg);
+                }
+            }
+
+            foreach (var id in GetSortedStackArguments(frame, flow.BitsUsed))
+            {
                 sb.AddInParam(id.Item2);
-			}
+            }
 
             foreach (var oFpu in flow.BitsUsed
                 .Where(f => f.Key is FpuStackStorage)
                 .OrderBy(r => ((FpuStackStorage) r.Key).FpuStackOffset))
-			{
-                var fpu = (FpuStackStorage)oFpu.Key;
+            {
+                var fpu = (FpuStackStorage) oFpu.Key;
                 var id = frame.EnsureFpuStackVariable(fpu.FpuStackOffset, fpu.DataType);
                 sb.AddFpuStackArgument(fpu.FpuStackOffset, id);
-			}
+            }
+        }
 
-            var liveOut = allLiveOut
-                .Select(de => (Key:de.Key as RegisterStorage, de.Value))
-                .Where(de =>
+        void ProcessOutputStorages(SsaState ssa, ProcedureFlow flow, SignatureBuilder sb)
+        {
+            var frame = ssa.Procedure.Frame;
+            var arch = ssa.Procedure.Architecture;
+
+            var allLiveOut = flow.BitsLiveOut;
+            var seqRegisters = SequenceRegisters(allLiveOut);
+            RemoveSequenceOverlaps(allLiveOut);
+
+            //$REVIEW: consider moving these into ProcedureFlow.
+            var regsLiveOut = new Dictionary<RegisterStorage, BitRange>();
+            var seqLiveOut = new Dictionary<SequenceStorage, BitRange>();
+            var grfLiveOut = flow.grfLiveOut.Select(de => arch.GetFlagGroup(de.Key, de.Value)!);
+            var fpuLiveOut = new Dictionary<FpuStackStorage, BitRange>();
+            foreach (var de in allLiveOut)
+            {
+                switch (de.Key)
                 {
-                    return de.Key is not null 
-                        && !platform.IsImplicitArgumentRegister(de.Key);
-                })
-                .Select(MakeRegisterParameter)
-                .ToDictionary(de => de.Item1, de => de.Item2);
+                case RegisterStorage reg:
+                    if (!seqRegisters.Contains(reg) &&
+                        !platform.IsImplicitArgumentRegister(reg))
+                    {
+                        var (rega, regb) = MakeRegisterParameter((reg, de.Value));
+                        regsLiveOut[rega] = regb;
+                    }
+                    break;
+                case SequenceStorage seq:
+                    seqLiveOut[seq] = de.Value;
+                    break;
+                case FpuStackStorage fpu:
+                    fpuLiveOut[fpu] = de.Value;
+                    break;
+                }
+            }
 
+            // Prefer emitting in this order: [flags, sequences, registers, fpu args]
             // Sort the names in a stable way to avoid regression tests failing.
-            foreach (var r in liveOut.OrderBy(r => r.Key.Number).ThenBy(r => r.Key.BitAddress))
-			{
-				if (!IsSubRegisterOfRegisters(r.Key, liveOut))
-				{
-                    var regOut = sb.AddOutParam(frame.EnsureRegister(r.Key));
-                    if (regOut.Storage is OutArgumentStorage && 
+
+            foreach (var grf in grfLiveOut.OrderBy(g => g.Name))
+            {
+                sb.AddOutParam(frame.EnsureFlagGroup(grf));
+            }
+
+            foreach (var seq in seqLiveOut.OrderBy(r => r.Key.Name))
+            {
+                sb.AddOutParam(frame.EnsureSequence(seq.Key.DataType, seq.Key.Elements));
+            }
+
+            foreach (var reg in regsLiveOut.OrderBy(r => r.Key.Number).ThenBy(r => r.Key.BitAddress))
+            {
+                if (!IsSubRegisterOfRegisters(reg.Key, regsLiveOut))
+                {
+                    var regOut = sb.AddOutParam(frame.EnsureRegister(reg.Key));
+                    if (regOut.Storage is OutArgumentStorage &&
                         !ssa.Identifiers.TryGetValue(regOut, out var sidOut))
                     {
                         // Ensure there are SSA identifiers for 'out' registers.
                         ssa.Identifiers.Add(regOut, null, null, false);
                     }
-				}
-			}
-
+                }
+            }
             foreach (var fpu in allLiveOut.Keys.OfType<FpuStackStorage>().OrderBy(r => r.FpuStackOffset))
             {
                 sb.AddOutParam(frame.EnsureFpuStackVariable(fpu.FpuStackOffset, fpu.DataType));
-			}
-
-            var sig = sb.BuildSignature();
-            return sig;
+            }
         }
 
-        private (RegisterStorage, BitRange) MakeRegisterParameter((RegisterStorage?, BitRange) de)
+        /// <summary>
+        /// This method finds registers that are already present in one or 
+        /// more sequences, and removes them.
+        /// </summary>
+        /// <param name="liveOut"></param>
+        /// <returns></returns>
+        private Dictionary<Storage, BitRange> RemoveSequenceOverlaps(
+            Dictionary<Storage, BitRange> liveOut)
+        {
+            var regsInSequences = SequenceRegisters(liveOut);
+            foreach (var reg in regsInSequences)
+            {
+                liveOut.Remove(reg);
+            }
+            return liveOut;
+        }
+
+        /// <summary>
+        /// Collects all registers that are part of sequences.
+        /// </summary>
+        private static HashSet<RegisterStorage> SequenceRegisters(Dictionary<Storage, BitRange> liveOut)
+        {
+            return liveOut.Keys
+                .OfType<SequenceStorage>()
+                .SelectMany(s => s.Elements)
+                .OfType<RegisterStorage>()
+                .ToHashSet();
+        }
+
+        private (RegisterStorage, BitRange) MakeRegisterParameter(
+            (RegisterStorage?, BitRange) de)
         {
             var (reg, range) = de;
             var offsetWithinDomain = (int)reg!.BitAddress;
@@ -259,37 +313,6 @@ namespace Reko.Analysis
             return sig;
         }
 
-        private void AddModifiedFlags(IStorageBinder frame, IEnumerable<Storage> allLiveOut, SignatureBuilder sb)
-        {
-            foreach (var grf in allLiveOut
-                .OfType<FlagGroupStorage>()
-                .OrderBy(g => g.Name))
-            {
-                sb.AddOutParam(frame.EnsureFlagGroup(grf));
-            }
-        }
-
-		public SortedList<int, Identifier> GetSortedArguments(Frame f, Type type, int startOffset)
-		{
-			SortedList<int, Identifier> arguments = new SortedList<int,Identifier>();
-			foreach (Identifier id in f.Identifiers)
-			{
-				if (id.Storage.GetType() == type)
-				{
-					int externalOffset = f.ExternalOffset(id);		//$REFACTOR: do this with BindToExternalFrame.
-					if (externalOffset >= startOffset)
-					{
-                        if (!arguments.TryGetValue(externalOffset, out var vOld) ||
-                            vOld.DataType.BitSize < id.DataType.BitSize)
-                        {
-                            arguments[externalOffset] = id;
-                        }
-					}
-				}
-			}
-			return arguments;
-		}
-
         /// <summary>
         /// Returns a list of all stack arguments accessed, indexed by their offsets
         /// as seen by a caller. I.e. the first argument is at offset 0, &c.
@@ -310,11 +333,6 @@ namespace Reko.Analysis
 
         }
 
-        public SortedList<int, Identifier> GetSortedFpuStackArguments(Frame frame, int d)
-		{
-			return GetSortedArguments(frame, typeof (FpuStackStorage), d);
-		}
-
 		/// <summary>
 		/// Returns true if the register is a strict subregister of one of the registers in the bitset.
 		/// </summary>
@@ -323,9 +341,12 @@ namespace Reko.Analysis
 		/// <returns></returns>
 		private bool IsSubRegisterOfRegisters(RegisterStorage rr, Dictionary<RegisterStorage, BitRange> regs)
 		{
-			foreach (var r2 in regs.Keys)
+            //$TODO: move to sanitizer method RemoveSequenceOverlaps,
+            // and call it RemoveStorageOverlaps
+            foreach (var r2 in regs.Keys)
 			{
-				if (rr.IsSubRegisterOf(r2))
+				if (r2 is RegisterStorage rWide &&
+                    rr.IsSubRegisterOf(rWide))
 					return true;
 			}
 			return false;
@@ -367,13 +388,12 @@ namespace Reko.Analysis
             {
                 var procCallee = callee.Procedure;
                 var sigCallee = procCallee.Signature;
-                var fn = new ProcedureConstant(platform.PointerType, procCallee);
-                if (sigCallee == null || !sigCallee.ParametersValid)
+                if (sigCallee is null || !sigCallee.ParametersValid)
                     return false;
+                var fn = new ProcedureConstant(platform.PointerType, procCallee);
                 ApplicationBuilder ab = CreateApplicationBuilder(ssaCaller, stm, call, fn);
                 ssaCaller.RemoveUses(stm);
                 var instr = ab.CreateInstruction(sigCallee, procCallee.Characteristics);
-                var instrOld = stm.Instruction;
                 stm.Instruction = instr;
                 var ssam = new SsaMutator(ssaCaller);
                 ssam.AdjustSsa(stm, call);
@@ -398,6 +418,28 @@ namespace Reko.Analysis
             }
         }
 
+        private static void InsertAliasStatements(
+            SsaState ssa,
+            Statement stmCall,
+            MkSequence seq,
+            SsaIdentifier sidWide)
+        {
+            int i = stmCall.Block.Statements.IndexOf(stmCall);
+            Debug.Assert(i >= 0);
+            int bitOffset = seq.DataType.BitSize;
+            foreach (Identifier id in seq.Expressions)
+            {
+                bitOffset -= seq.Expressions[0].DataType.BitSize;
+                var sid = ssa.Identifiers[id];
+                var slice = new Slice(id.DataType, sidWide.Identifier, bitOffset);
+                var ass = new Assignment(id, slice);
+                var stm = stmCall.Block.Statements.Insert(i, stmCall.LinearAddress, ass);
+                sid.DefStatement = stm;
+                sid.DefExpression = slice;
+                sidWide.Uses.Add(stm);
+            }
+        }
+
         /// <summary>
         // Statements of the form:
         //		call	<ssaCaller-operand>
@@ -411,13 +453,14 @@ namespace Reko.Analysis
         public int RewriteCalls(SsaState ssaCaller)
         {
             int unConverted = 0;
-            foreach (Statement stm in ssaCaller.Procedure.Statements.ToList())
+            var calls = ssaCaller.Procedure.Statements
+                .Where(s => s.Instruction is CallInstruction)
+                .Select(s => (s, (CallInstruction) s.Instruction))
+                .ToArray();
+            foreach (var (stm, ci) in calls)
             {
-                if (stm.Instruction is CallInstruction ci)
-                {
-                    if (!RewriteCall(ssaCaller, stm, ci))
-                        ++unConverted;
-                }
+                if (!RewriteCall(ssaCaller, stm, ci))
+                    ++unConverted;
             }
             return unConverted;
         }
@@ -435,71 +478,83 @@ namespace Reko.Analysis
 
             var reachingBlocks = ssa.PredecessorPhiIdentifiers(ssa.Procedure.ExitBlock);
             var sig = ssa.Procedure.Signature;
-            foreach (var reachingBlock in reachingBlocks)
+            foreach (var (block, bindings) in reachingBlocks)
             {
-                var block = reachingBlock.Key;
-                var idRet = sig.ReturnValue;
-                if (idRet != null && !(idRet.DataType is VoidType))
-                {
-                    var idStg = reachingBlock.Value
-                        .Where(cb => cb.Storage.Covers(idRet.Storage))
-                        .FirstOrDefault();
-                    SetReturnExpression(ssa, block, idRet, idStg);
-                }
                 int insertPos = block.Statements.FindIndex(s => s.Instruction is ReturnInstruction);
                 Debug.Assert(insertPos >= 0);
-                foreach (var p in sig.Parameters.Where(p => p.Storage is OutArgumentStorage))
+                var stm = block.Statements[insertPos];
+                var idRet = sig.ReturnValue;
+                if (idRet != null && idRet.DataType is not VoidType)
                 {
-                    var outStg = (OutArgumentStorage)p.Storage;
-                    var idStg = reachingBlock.Value
-                        .Where(cb => cb.Storage == outStg.OriginalIdentifier.Storage)
-                        .FirstOrDefault();
-                    InsertOutArgumentAssignment(
-                        ssa,
-                        p,
-                        idStg?.Expression ?? InvalidConstant.Create(p.DataType),
-                        block,
-                        insertPos);
-                    ++insertPos;
-                }
-            }
-        }
-
-        private void SetReturnExpression(
-            SsaState ssa,
-            Block block,
-            Identifier idRet,
-            CallBinding idStg)
-        {
-            var e = idStg?.Expression ?? InvalidConstant.Create(idRet.DataType);
-            for (int i = block.Statements.Count-1; i >=0; --i)
-            {
-                var stm = block.Statements[i];
-                if (stm.Instruction is ReturnInstruction ret)
-                {
-                    if (idStg != null && idRet.DataType.BitSize < e.DataType.BitSize)
+                    Expression e;
+                    if (idRet.Storage is SequenceStorage seq)
                     {
-                        int offset = idStg!.Storage.OffsetOf(idRet.Storage);
-                        e = new Slice(idRet.DataType, e, offset);
+                        e = MakeReturnSequence(bindings, seq, idRet);
                     }
-                    ret.Expression = e;
+                    else
+                    {
+                        e = this.MakeReturnExpression(bindings, idRet.Storage, idRet);
+                    }
+                    stm.Instruction = new ReturnInstruction(e);
                     ssa.AddUses(stm);
                 }
+                foreach (var param in sig.Parameters!)
+                {
+                    if (param.Storage is OutArgumentStorage outStg)
+                    {
+                        Store store = MakeOutParameterStore(bindings, outStg, param);
+                        var stmIns = block.Statements.Insert(insertPos, stm.LinearAddress, store);
+                        ssa.AddUses(stmIns);
+                        ++insertPos;
+                    }
+                }
             }
         }
 
-        private void InsertOutArgumentAssignment(
-            SsaState ssa,
-            Identifier parameter,
-            Expression e,
-            Block block,
-            int insertPos)
+        private Expression MakeReturnExpression(
+            CallBinding [] bindings,
+            Storage reg,
+            Identifier idRet)
         {
-            var iAddr = block.Statements[insertPos].LinearAddress;
-            var stm = block.Statements.Insert(
-                insertPos, iAddr, 
-                new Store(parameter, e));
-            ssa.AddUses(stm);
+            var idStg = bindings
+                .Where(cb => cb.Storage.Covers(reg))
+                .FirstOrDefault();
+
+            var e = idStg?.Expression ?? InvalidConstant.Create(idRet.DataType);
+
+            if (idStg != null && idRet.DataType.BitSize < e.DataType.BitSize)
+            {
+                int offset = idStg!.Storage.OffsetOf(idRet.Storage);
+                e = new Slice(idRet.DataType, e, offset);
+            }
+            return e;
+        }
+
+        private Expression MakeReturnSequence(
+            CallBinding[] bindings,
+            SequenceStorage seq,
+            Identifier idRet)
+        {
+            var elements = seq.Elements.Select(e => (bindings
+                .Where(b => b.Storage == e)
+                .Select(b => b.Expression)
+                .FirstOrDefault() ?? InvalidConstant.Create(e.DataType)))
+                .ToArray();
+            return new MkSequence(idRet.DataType, elements);
+        }
+
+        private Store MakeOutParameterStore(
+            CallBinding[] bindings,
+            OutArgumentStorage outStg,
+            Identifier param)
+        {
+            var idStg = bindings
+                .Where(cb => cb.Storage == outStg.OriginalIdentifier.Storage)
+                .FirstOrDefault();
+            var store = new Store(
+                param,
+                idStg?.Expression ?? InvalidConstant.Create(param.DataType));
+            return store;
         }
     }
 }

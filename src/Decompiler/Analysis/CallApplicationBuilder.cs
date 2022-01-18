@@ -19,38 +19,40 @@
 #endregion
 
 using Reko.Core;
+using Reko.Core.Code;
+using Reko.Core.Expressions;
+using Reko.Core.Operators;
+using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using Reko.Core.Expressions;
-using Reko.Core.Types;
-using Reko.Core.Code;
-using Reko.Core.Operators;
 
 namespace Reko.Analysis
 {
+    using BindingDictionary = Dictionary<Storage, CallBinding>;
+
     /// <summary>
-    /// Builds an application from a call instruction.
+    /// Builds an application from a call instruction, ussing a <see cref="SsaState"/> instance.
     /// </summary>
-    public class CallApplicationBuilder : ApplicationBuilder, StorageVisitor<Expression?>
+    /// <remarks>
+    /// </remarks>
+    public class CallApplicationBuilder : ApplicationBuilder, StorageVisitor<Expression?, (BindingDictionary map, ApplicationBindingType bindUses)>
     {
         private readonly SsaState ssaCaller;
         private readonly Statement stmCall;
+        private readonly SsaMutator mutator;
         private readonly IProcessorArchitecture arch;
         private readonly int stackDepthOnEntry;
         private readonly Dictionary<Storage, CallBinding> defs;
         private readonly Dictionary<Storage, CallBinding> uses;
-        private Dictionary<Storage, CallBinding>? map; //$TODO: to make this non-nullable, change
-                                                       // to StorageVisitor<Expression, Dictionary<Storage, CallBinding>
         private readonly MemIdentifierFinder midFinder;
-        private bool bindUses;
-        private bool guessStackArgs;
+        private readonly bool guessStackArgs;
 
         public CallApplicationBuilder(SsaState ssaCaller, Statement stmCall, CallInstruction call, Expression callee, bool guessStackArgs) : base(call.CallSite, callee)
         {
             this.ssaCaller = ssaCaller;
             this.stmCall = stmCall;
+            this.mutator = new SsaMutator(ssaCaller);
             this.arch = ssaCaller.Procedure.Architecture;
             this.defs = call.Definitions.ToDictionary(d => d.Storage);
             this.uses = call.Uses.ToDictionary(u => u.Storage);
@@ -61,67 +63,47 @@ namespace Reko.Analysis
 
         public override Expression? Bind(Identifier id)
         {
-            return WithUses(id.Storage);
+            return id.Storage.Accept(this, (uses, ApplicationBindingType.In));
         }
 
         public override OutArgument BindOutArg(Identifier id)
         {
-            var exp = WithDefinitions(id.Storage);
+            var exp = id.Storage.Accept(this, (defs, ApplicationBindingType.Out));
             return new OutArgument(arch.FramePointerType, exp!);
         }
 
         public override Expression? BindReturnValue(Identifier id)
         {
-            return WithDefinitions(id.Storage);
+            return id.Storage.Accept(this, (defs, ApplicationBindingType.Return));
         }
 
-        private Expression? WithUses(Storage stg)
+        public Expression? VisitFlagGroupStorage(FlagGroupStorage grf, (BindingDictionary map, ApplicationBindingType bindUses) ctx)
         {
-            this.bindUses = true;
-            return With(uses, stg);
-        }
-
-        private Expression? WithDefinitions(Storage stg)
-        {
-            this.bindUses = false;
-            return With(defs, stg);
-        }
-
-        private Expression? With(Dictionary<Storage, CallBinding> map, Storage stg)
-        {
-            this.map = map;
-            var exp = stg.Accept(this);
-            this.map = null;
-            return exp;
-        }
-
-        public Expression? VisitFlagGroupStorage(FlagGroupStorage grf)
-        {
-            if (!map!.TryGetValue(grf, out var cb))
+            if (!ctx.map.TryGetValue(grf, out var cb))
                 return null;
             else
                 return cb.Expression;
         }
 
-        public Expression? VisitFpuStackStorage(FpuStackStorage fpu)
+        public Expression? VisitFpuStackStorage(FpuStackStorage fpu, (BindingDictionary map, ApplicationBindingType bindUses) ctx)
         {
-            foreach (var de in this.map
-              .Where(d => d.Value.Storage is FpuStackStorage))
+            foreach (var de in ctx.map.Values
+              .Where(d => d.Storage is FpuStackStorage))
             {
-                if (((FpuStackStorage) de.Value.Storage).FpuStackOffset == fpu.FpuStackOffset)
-                    return de.Value.Expression;
+                if (((FpuStackStorage) de.Storage).FpuStackOffset == fpu.FpuStackOffset)
+                    return de.Expression;
             }
-            if (!bindUses)
+            if (ctx.bindUses != ApplicationBindingType.In)
                 return null;
-            throw new NotImplementedException(string.Format("Offsets not matching? SP({0})", fpu.FpuStackOffset));
+            throw new NotImplementedException($"Offsets not matching? SP({fpu.FpuStackOffset}).");
         }
 
-        public Expression VisitMemoryStorage(MemoryStorage global)
+        public Expression VisitMemoryStorage(MemoryStorage global, (BindingDictionary map, ApplicationBindingType bindUses) ctx)
         {
             throw new NotImplementedException();
         }
 
-        public Expression VisitOutArgumentStorage(OutArgumentStorage arg)
+        public Expression VisitOutArgumentStorage(OutArgumentStorage arg, (BindingDictionary map, ApplicationBindingType bindUses) ctx)
         {
             if (defs.TryGetValue(arg.OriginalIdentifier.Storage, out var binding))
             {
@@ -136,53 +118,79 @@ namespace Reko.Analysis
             }
         }
 
-        public Expression? VisitRegisterStorage(RegisterStorage reg)
+        public Expression? VisitRegisterStorage(RegisterStorage reg, (BindingDictionary map, ApplicationBindingType bindUses) ctx)
         {
             // If the architecture has no subregisters, this test will
             // be true.
-            if (map!.TryGetValue(reg, out CallBinding cb))
+            if (ctx.map.TryGetValue(reg, out CallBinding cb))
                 return cb.Expression;
             // If the architecture has subregisters, we need a more
             // expensive test.
             //$TODO: perhaps this can be done with another level of lookup, 
             // eg by using a Dictionary<StorageDomain<Dictionary<Storage, CallBinding>>
-            foreach (var de in map)
+            foreach (var de in ctx.map)
             {
                 if (reg.OverlapsWith(de.Value.Storage))
                 {
                     return de.Value.Expression;
                 }
             }
-            if (bindUses)
+            if (ctx.bindUses == ApplicationBindingType.In)
                 return EnsureRegister(reg);
             return null;
         }
 
-        public Expression VisitSequenceStorage(SequenceStorage seq)
+        public Expression VisitSequenceStorage(SequenceStorage seq, (BindingDictionary map, ApplicationBindingType bindUses) ctx)
         {
-            if (map!.TryGetValue(seq, out var binding))
+            if (ctx.map.TryGetValue(seq, out var binding))
             {
                 return binding.Expression;
             }
-            var exps = seq.Elements
-                .Select(stg => stg.Accept(this))
-                .ToArray();
-            return new MkSequence(seq.DataType, exps!);
+            if (ctx.bindUses == ApplicationBindingType.In)
+            {
+                var exps = seq.Elements
+                    .Select(stg => stg.Accept(this, ctx) ?? InvalidConstant.Create(stg.DataType))
+                    .ToArray();
+                return new MkSequence(seq.DataType, exps);
+            }
+            else
+            {
+                // No available identifier, so synthesize one.
+                var idSeq = ssaCaller.Procedure.Frame.EnsureSequence(seq.DataType, seq.Elements);
+                var sidSeq = ssaCaller.Identifiers.Add(idSeq, this.stmCall, null, true);
+                int bitOffset = seq.DataType.BitSize;
+                foreach (var stg in seq.Elements)
+                {
+                    bitOffset -= (int) stg.BitSize;
+                    if (ctx.map.TryGetValue(stg, out var b))
+                    {
+                        var idAlias = (Identifier) b.Expression;
+                        var slice = new Slice(b.Expression.DataType, sidSeq.Identifier, bitOffset);
+                        var ass = new AliasAssignment(idAlias, slice);
+                        var stmAlias = mutator.InsertStatementAfter(ass, stmCall);
+                        var sidAlias = ssaCaller.Identifiers[idAlias];
+                        sidSeq.Uses.Add(stmAlias);
+                        sidAlias.DefStatement = stmAlias;
+                    }
+                }
+                return sidSeq.Identifier;
+            }
         }
 
-        public Expression VisitStackArgumentStorage(StackArgumentStorage stack)
+        public Expression VisitStackArgumentStorage(StackArgumentStorage stack, (BindingDictionary map, ApplicationBindingType bindUses) ctx)
         {
             int localOff = stack.StackOffset - stackDepthOnEntry;
-            foreach (var de in this.map
+            foreach (var de in ctx.map
                 .Where(d => d.Value.Storage is StackStorage))
             {
                 if (((StackStorage) de.Value.Storage).StackOffset == localOff)
                     return de.Value.Expression;
             }
+
             // Attempt to inject a Mem[sp_xx + offset] expression if possible.
             if (guessStackArgs &&
                 sigCallee != null &&
-                this.map!.TryGetValue(arch.StackRegister, out var stackBinding) &&
+                ctx.map.TryGetValue(arch.StackRegister, out var stackBinding) &&
                 this.TryFindMemBeforeCall(out var memId))
             {
                 var sp_ssa = stackBinding.Expression;
@@ -216,12 +224,12 @@ namespace Reko.Analysis
             return false;
         }
 
-        public Expression VisitStackLocalStorage(StackLocalStorage local)
+        public Expression VisitStackLocalStorage(StackLocalStorage local, (BindingDictionary map, ApplicationBindingType bindUses) ctx)
         {
             throw new NotImplementedException();
         }
 
-        public Expression VisitTemporaryStorage(TemporaryStorage temp)
+        public Expression VisitTemporaryStorage(TemporaryStorage temp, (BindingDictionary map, ApplicationBindingType bindUses) ctx)
         {
             throw new NotImplementedException();
         }
@@ -314,5 +322,12 @@ Please report this issue at https://github.com/uxmal/reko";
                 base.VisitSegmentedAccess(access);
             }
         }
+    }
+
+    public enum ApplicationBindingType
+    {
+        In,         // Binding is an input parameter
+        Return,     // Binding is a returned value
+        Out,        // Binding is an out parameter
     }
 }

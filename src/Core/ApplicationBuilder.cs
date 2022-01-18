@@ -90,12 +90,10 @@ namespace Reko.Core
                 expOut = BindReturnValue(sigCallee.ReturnValue);
                 dtOut = sigCallee.ReturnValue.DataType;
             }
-            var actuals = BindArguments(parameters, sigCallee.IsVariadic, chr);
-            Expression appl = new Application(
-                callee,
-                dtOut,
-                actuals.ToArray());
+            var actuals = BindArguments(parameters, sigCallee.IsVariadic, chr).ToArray();
+            Expression appl = new Application(callee, dtOut, actuals);
 
+            //$TODO: refactor to 'switch' statement.
             if (expOut == null)
             {
                 return new SideEffect(appl);
@@ -113,6 +111,21 @@ namespace Reko.Core
                     appl = new MkSequence(expOut.DataType, unused, appl);
                 }
                 return new Assignment(idOut, appl);
+            }
+            else if (expOut is MkSequence seq)
+            {
+                //int bitOffset = seq.DataType.BitSize;
+                //foreach (var e in seq.Expressions)
+                //{
+                //    var elemSize = e.DataType.BitSize;
+                //    bitOffset -= elemSize;
+                //    if (e is Identifier idElement)
+                //    {
+                //        var slice = new Slice(idElement.DataType, appl, bitOffset);
+                //        return new Assignment(idElement, slice);
+                //    }
+                //}
+                return new Store(seq, appl);
             }
             else
             {

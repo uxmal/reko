@@ -74,9 +74,7 @@ l0152:
 	real48 gp2_gp3_gp4_15 = Mem13[gp9_6 * 3<16> + 0x8060<16>:real48]
 	Mem47[gp14_46 + 1<16>:word32] = SEQ(gp8_11, gp9_6)
 	real48 gp5_gp6_gp7_36 = gp5_gp6_gp7_14 * gp5_gp6_gp7_14 + gp2_gp3_gp4_15 * gp2_gp3_gp4_15
-	gp14_46 = sqrt(SLICE(gp5_gp6_gp7_36, word32, 0), SLICE(gp5_gp6_gp7_36, word16, 0))
-	real48 gp0_gp1_gp2_80 = <invalid>
-	Mem66[Mem47[gp14_46 + 1<16>:word16] + 0x8090<16>:real48] = gp0_gp1_gp2_80
+	Mem66[Mem47[gp14_46 + 1<16>:word16] + 0x8090<16>:real48] = sqrt(SLICE(gp5_gp6_gp7_36, word32, 0), SLICE(gp5_gp6_gp7_36, word16, 0), out gp14_46)
 	word16 gp9_67 = Mem66[gp14_46 + 2<16>:word16]
 	gp9_6 = gp9_67 + 1<16>
 	branch gp9_67 <= 0xE<16> l0152
@@ -106,13 +104,10 @@ l0181:
 l0187:
 	real48 gp3_gp4_gp5_49 = CONVERT(SEQ(Mem32[gp14_220 + 3<16>:word16], gp4) >> 0x10<16>, word32, real48) * Mem32[0x8003<p16>:real48] / Mem32[gp14_220 + 0xA<16>:real48]
 	Mem59[gp14_220 + 0xD<16>:real48] = gp3_gp4_gp5_49
-	word16 gp14_62 = cos(SLICE(gp3_gp4_gp5_49, word32, 0), SLICE(gp3_gp4_gp5_49, word16, 0))
-	real48 gp0_gp1_gp2_283 = <invalid>
-	Mem75[gp14_62 + 4<16>:real48] = gp0_gp1_gp2_283
+	word16 gp14_62
+	Mem75[gp14_62 + 4<16>:real48] = cos(SLICE(gp3_gp4_gp5_49, word32, 0), SLICE(gp3_gp4_gp5_49, word16, 0), out gp14_62)
 	real48 gp3_gp4_gp5_76 = Mem75[gp14_62 + 0xD<16>:real48]
-	gp3 = sin(SLICE(gp3_gp4_gp5_76, word32, 0), SLICE(gp3_gp4_gp5_76, word16, 0), out gp4, out gp14_220)
-	real48 gp0_gp1_gp2_284 = <invalid>
-	Mem103[gp14_220 + 7<16>:real48] = gp0_gp1_gp2_284
+	Mem103[gp14_220 + 7<16>:real48] = sin(SLICE(gp3_gp4_gp5_76, word32, 0), SLICE(gp3_gp4_gp5_76, word16, 0), out gp3, out gp4, out gp14_220)
 	word16 gp0_104 = Mem103[gp14_220 + 3<16>:word16]
 	branch gp0_104 >= 0x10<16> l01DC
 l01A4:
@@ -207,44 +202,61 @@ l0236:
 frex_exit:
 
 
-word16 sqrt(word32 gp0_gp1, word16 gp2)
+real48 sqrt(word32 gp0_gp1, word16 gp2, ptr16 & gp14Out)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
 //      compute_output
 //      asin
 // MayUse:  gp2:[0..15] Sequence gp0:gp1:[0..31]
-// LiveOut: gp14
+// LiveOut: gp0:gp1:gp2 gp14
 // Trashed: CPZN gp0 gp1 gp10 gp14 gp2 gp3 gp4 gp5 gp6 gp7 gp8 gp9
 // Preserved: gp15
 sqrt_entry:
+	word16 gp0 = SLICE(gp0_gp1, word16, 16)
 	word16 gp1 = SLICE(gp0_gp1, word16, 0)
 l0245:
+	word16 gp2_115
+	word16 gp1_114
+	word16 gp0_113
 	branch gp0_gp1 < 0<32> l026D
 l026D:
+	real48 gp0_gp1_gp2_17 = Mem0[0x8018<p16>:real48]
+	gp0_113 = SLICE(gp0_gp1_gp2_17, word16, 32) (alias)
+	gp1_114 = SLICE(gp0_gp1_gp2_17, word16, 16) (alias)
+	gp2_115 = SLICE(gp0_gp1_gp2_17, word16, 0) (alias)
 l024C:
-	frex(gp1, 1<16>)
+	word16 gp1_25 = frex(gp1, 1<16>)
+	real48 gp2_gp3_gp4_62 = Mem0[0x8012<p16>:real48] - Mem0[0x800F<p16>:real48] / (SEQ(gp0, gp1_25, gp2) + Mem0[0x800C<p16>:real48])
+	real48 gp2_gp3_gp4_83 = (gp2_gp3_gp4_62 + SEQ(gp0, gp1_25, gp2) / gp2_gp3_gp4_62) * Mem0[0x8015<p16>:real48]
+	real48 gp2_gp3_gp4_100 = (gp2_gp3_gp4_83 + SEQ(gp0, gp1_25, gp2) / gp2_gp3_gp4_83) * Mem0[0x8015<p16>:real48]
+	real48 gp0_gp1_gp2_112 = SEQ(SLICE(gp2_gp3_gp4_100, word32, 0), SLICE(gp2_gp3_gp4_100, word16, 0)) * rLoc02
+	gp0_113 = SLICE(gp0_gp1_gp2_112, word16, 32) (alias)
+	gp1_114 = SLICE(gp0_gp1_gp2_112, word16, 16) (alias)
+	gp2_115 = SLICE(gp0_gp1_gp2_112, word16, 0) (alias)
 l026F:
-	return fp - 3<16>
+	gp14Out = fp - 3<16>
+	return SEQ(gp0_113, gp1_114, gp2_115)
 sqrt_exit:
 
 
-word16 auxasin(real48 gp0_gp1_gp2, ptr16 & gp14Out)
+word32 auxasin(real48 gp0_gp1_gp2, ptr16 & gp2Out, ptr16 & gp14Out)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
 //      asin
 // MayUse:  Sequence gp0:gp1:gp2:[0..47]
-// LiveOut: gp14 gp2
+// LiveOut: gp0:gp1 gp14 gp2
 // Trashed: CPZN gp0 gp1 gp10 gp11 gp12 gp13 gp14 gp2 gp3 gp4 gp5 gp6 gp7 gp8 gp9
 // Preserved: gp15
 auxasin_entry:
 l0273:
 	real48 gp5_gp6_gp7_16 = gp0_gp1_gp2 * gp0_gp1_gp2
 	word16 gp7_17 = SLICE(gp5_gp6_gp7_16, word16, 0)
-	word16 gp2_84 = SLICE(gp0_gp1_gp2 * ((SEQ(SLICE(gp5_gp6_gp7_16, word32, 0), gp7_17) * Mem9[0x801B<p16>:real48]) / ((SEQ(SLICE(gp5_gp6_gp7_16, word32, 0), gp7_17) + Mem9[0x801E<p16>:real48]) + Mem9[0x8024<p16>:real48] / (gp5_gp6_gp7_16 + Mem9[0x8021<p16>:real48])) + Mem9[0x8027<p16>:real48]), word16, 0)
+	real48 gp0_gp1_gp2_76 = gp0_gp1_gp2 * ((SEQ(SLICE(gp5_gp6_gp7_16, word32, 0), gp7_17) * Mem9[0x801B<p16>:real48]) / ((SEQ(SLICE(gp5_gp6_gp7_16, word32, 0), gp7_17) + Mem9[0x801E<p16>:real48]) + Mem9[0x8024<p16>:real48] / (gp5_gp6_gp7_16 + Mem9[0x8021<p16>:real48])) + Mem9[0x8027<p16>:real48])
+	gp2Out = SLICE(gp0_gp1_gp2_76, word16, 0)
 	gp14Out = fp - 3<16>
-	return gp2_84
+	return SLICE(gp0_gp1_gp2_76, word32, 16)
 auxasin_exit:
 
 
@@ -277,11 +289,12 @@ l02B2:
 l02BE:
 	real48 gp2_gp3_gp4_83 = Mem74[0x802D<p16>:real48] - gp5_gp6_gp7_266
 	real48 gp0_gp1_gp2_95 = SEQ(SLICE(gp2_gp3_gp4_83, word32, 0), SLICE(gp2_gp3_gp4_83, word16, 0)) * Mem74[0x8030<p16>:real48]
-	sqrt(SLICE(gp0_gp1_gp2_95, word32, 0), SLICE(gp0_gp1_gp2_95, word16, 0))
-	real48 gp0_gp1_gp2_269 = <invalid>
-	auxasin(gp0_gp1_gp2_269, out gp14_124)
+	word16 gp14_274
+	word16 gp2_276
+	auxasin(sqrt(SLICE(gp0_gp1_gp2_95, word32, 0), SLICE(gp0_gp1_gp2_95, word16, 0), out gp14_274), out gp2_276, out gp14_124)
 l02B6:
-	auxasin(gp5_gp6_gp7_266, out gp14_124)
+	word16 gp2_278
+	auxasin(gp5_gp6_gp7_266, out gp2_278, out gp14_124)
 l02D2:
 	branch Mem74[gp14_124 + 1<16>:word16] == 0<16> l02DB
 l02D6:
@@ -365,13 +378,13 @@ l0328:
 sincos_exit:
 
 
-word16 sin(word32 gp0_gp1, word16 gp2, ptr16 & gp4Out, ptr16 & gp14Out)
+word48 sin(word32 gp0_gp1, word16 gp2, ptr16 & gp3Out, ptr16 & gp4Out, ptr16 & gp14Out)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
 //      fft
 // MayUse:  gp2:[0..15] Sequence gp0:gp1:[0..31]
-// LiveOut: gp14 gp3 gp4
+// LiveOut: gp0:gp1:gp2 gp14 gp3 gp4
 // Trashed: CPZN gp0 gp1 gp10 gp14 gp15 gp2 gp3 gp4 gp5 gp6 gp7 gp8 gp9
 // Preserved:
 sin_entry:
@@ -403,20 +416,21 @@ l039B:
 	word16 gp2_101
 	word16 gp3_102
 	word16 gp4_103
-	sincos(gp2_gp3_124, gp1_80, gp4_56, out gp1_99, out gp2_101, out gp3_102, out gp4_103, out gp14_100)
+	word16 gp0_98 = sincos(gp2_gp3_124, gp1_80, gp4_56, out gp1_99, out gp2_101, out gp3_102, out gp4_103, out gp14_100)
+	gp3Out = gp3_102
 	gp4Out = gp4_103
 	gp14Out = gp14_100
-	return gp3_102
+	return SEQ(gp0_98, gp1_99, gp2_101)
 sin_exit:
 
 
-word16 cos(word32 gp0_gp1, word16 gp2)
+word48 cos(word32 gp0_gp1, word16 gp2, ptr16 & gp14Out)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
 //      fft
 // MayUse:  gp2:[0..15] Sequence gp0:gp1:[0..31]
-// LiveOut: gp14
+// LiveOut: gp0:gp1:gp2 gp14
 // Trashed: CPZN gp0 gp1 gp14 gp15 gp2 gp3 gp4 gp5 gp6 gp7
 // Preserved:
 cos_entry:
@@ -441,10 +455,11 @@ l03B8:
 	word16 gp1_81
 	word16 gp14_82
 	word16 gp2_83
-	word16 gp3_104
-	word16 gp4_105
-	sincos(gp2_gp3_103, SLICE(gp0_gp1_102, word16, 0) + Mem0[0x806C<p16>:word16], gp4_51, out gp1_81, out gp2_83, out gp3_104, out gp4_105, out gp14_82)
-	return gp14_82
+	word16 gp3_105
+	word16 gp4_106
+	word16 gp0_80 = sincos(gp2_gp3_103, SLICE(gp0_gp1_102, word16, 0) + Mem0[0x806C<p16>:word16], gp4_51, out gp1_81, out gp2_83, out gp3_105, out gp4_106, out gp14_82)
+	gp14Out = gp14_82
+	return SEQ(gp0_80, gp1_81, gp2_83)
 cos_exit:
 
 

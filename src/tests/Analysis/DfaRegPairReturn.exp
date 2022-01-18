@@ -1,0 +1,36 @@
+// void fn0C00_0000()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// MayUse:  cs:[0..15]
+// LiveOut:
+// Trashed: SCZO ax ds dx Top
+// Preserved: sp
+// fn0C00_0000
+// Return size: 0
+void fn0C00_0000()
+fn0C00_0000_entry:
+	// succ:  l0C00_0000
+l0C00_0000:
+	Mem12[cs:0x2C<16>:word16] = SLICE(fn0C00_001B(cs), word16, 0)
+	ui32 dx_ax_29 = fn0C00_001B(cs)
+	Mem20[cs:0x28<16>:word16] = SLICE(dx_ax_29, word16, 0) + 3<16>
+	Mem21[cs:0x2A<16>:word16] = SLICE(dx_ax_29 + 3<32>, word16, 16)
+	return
+	// succ:  fn0C00_0000_exit
+fn0C00_0000_exit:
+
+// Sequence ui32 fn0C00_001B(Register selector ds)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// MayUse:  ds:[0..15]
+// LiveOut: dx:ax
+// Trashed: ax dx Top
+// Preserved: sp
+// fn0C00_001B
+// Return size: 0
+ui32 fn0C00_001B(selector ds)
+fn0C00_001B_entry:
+	// succ:  l0C00_001B
+l0C00_001B:
+	return Mem0[ds:0x24<16>:ui32]
+	// succ:  fn0C00_001B_exit
+fn0C00_001B_exit:
+

@@ -43,10 +43,10 @@ namespace Reko.Analysis
 			}
 		}
 
-        public Identifier Identifier1 { get; private set; }
-        public Identifier Identifier2 { get; private set; }
+        public Identifier Identifier1 { get; }
+        public Identifier Identifier2 { get; }
 
-		public override bool Equals(object obj)
+		public override bool Equals(object? obj)
 		{
             return
                 obj is Interference i &&

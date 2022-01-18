@@ -1920,7 +1920,11 @@ l0800_n:
 					break;
 				case 0x06:
 					if ((bLoc2B_n & 0x01) == 0x00)
-						di = fn0800-1708(fp - 2, ds, out es);
+					{
+						struct Eq_n * es_di_n = fn0800-1708(fp - 2, ds);
+						di = (word16) es_di_n;
+						es = SLICE(es_di_n, selector, 16);
+					}
 					Eq_n si_n = wLoc24_n;
 					if (wLoc24_n < 0x00)
 						si_n.u0 = 0x01;
@@ -1968,7 +1972,9 @@ l0800_n:
 							__scanpop(ds);
 						else
 						{
-							di = fn0800-1708(&(ss->*(ss->*(fp - 2)).a0000), ds, out es);
+							struct Eq_n * es_di_n = fn0800-1708(&(ss->*(ss->*(fp - 2)).a0000), ds);
+							di = (word16) es_di_n;
+							es = SLICE(es_di_n, selector, 16);
 							__scanrslt(ds);
 						}
 						goto l0800_n;
@@ -2046,7 +2052,11 @@ l0800_nA23:
 							wArg08 = si_n;
 							ci16 si_n = v61_n;
 							if ((bLoc2B_n & 0x01) == 0x00)
-								di = fn0800-1708(&(ss->*(ss->*(fp - 2)).a0000), ds, out es_n);
+							{
+								struct Eq_n * es_di_n = fn0800-1708(&(ss->*(ss->*(fp - 2)).a0000), ds);
+								di = (word16) es_di_n;
+								es_n = SLICE(es_di_n, selector, 16);
+							}
 							while (true)
 							{
 								word16 dx_n;
@@ -2163,9 +2173,7 @@ l0800_n:
 						if ((bLoc2B_n & 0x01) == 0x00)
 						{
 l0800_nE:
-							struct Eq_n * es_n;
-							fn0800-1708(fp - 2, ds, out es_n);
-							struct Eq_n * es_di_n = (struct Eq_n *) <invalid>;
+							struct Eq_n * es_di_n = fn0800-1708(fp - 2, ds);
 							es_di_n->w0000 = ax_n;
 							word16 di_n = (word16) es_di_n;
 							es = SLICE(es_di_n, selector, 16);
@@ -2276,25 +2284,23 @@ l0800_n:
 	return dx_n;
 }
 
-// 0800:1708: Register Eq_n fn0800-1708(Sequence (ptr32 Eq_n) ss_bp, Register Eq_n ds, Register out Eq_n esOut)
+// 0800:1708: Sequence Eq_n fn0800-1708(Sequence (ptr32 Eq_n) ss_bp, Register Eq_n ds)
 // Called from:
 //      __scanner
-Eq_n fn0800-1708(struct Eq_n * ss_bp, Eq_n ds, union Eq_n & esOut)
+Eq_n fn0800-1708(struct Eq_n * ss_bp, Eq_n ds)
 {
 	union Eq_n Eq_n::* di_n = ss_bp->ptr000C;
 	if ((ss_bp->bFFFFFFD7 & 0x20) == 0x00)
 	{
 		Eq_n di_n = ds->*di_n;
 		ss_bp->ptr000C = (union Eq_n Eq_n::*) ((char *) ss_bp->ptr000C + 2);
-		esOut = ds;
-		return di_n;
+		return SEQ(ds, di_n);
 	}
 	else
 	{
 		Eq_n es_di_n = ds->*di_n;
 		ss_bp->ptr000C = (union Eq_n Eq_n::*) ((char *) ss_bp->ptr000C + 4);
-		esOut = SLICE(es_di_n, selector, 16);
-		return (word16) es_di_n;
+		return es_di_n;
 	}
 }
 

@@ -159,9 +159,7 @@ msp430_compute_modulator_bits_entry:
 l0000420E:
 	word16 v16_39 = Mem26[fp + 2<32>:word16]
 	word20 r12_45 = fn00005B04(r15_r14, r13_r12)
-	fn00005ADC(r14, r15, r12_45, 0<16>)
-	ui40 r15_r14_295 = <invalid>
-	ui40 r9_r8_209 = r15_r14_295 - r13_r12
+	ui40 r9_r8_209 = fn00005ADC(r14, r15, r12_45, 0<16>) - r13_r12
 	branch v16_39 == 0<16> l00004274
 l0000426C:
 	Mem86[v16_39:word16] = r12_45
@@ -2349,11 +2347,11 @@ l566E:
 	bLoc16_1110 = 1<8>
 l5672:
 	word20 r4_436
-	word20 r14_425
 	word20 r8_427
-	word20 r13_2358
-	word20 r12_2357
-	fn00005B4E(CONVERT(wLoc14_1671, word16, uint40), r8, wLoc1C_1111, wLoc1A_1112, out r8_427, out r12_2357, out r13_2358, out r14_425)
+	ui40 r15_r14_2358
+	ui40 r13_r12_2357
+	fn00005B4E(CONVERT(wLoc14_1671, word16, uint40), r8, wLoc1C_1111, wLoc1A_1112, out r13_r12_2357, out r15_r14_2358, out r8_427)
+	word20 r14_425 = <invalid>
 	branch r14_425 <u 0xA<16> l56EE
 l56EE:
 	r4_436 = r14_425 + 0x57<16>
@@ -2363,14 +2361,15 @@ l56F8:
 l568E:
 	r4_436 = r14_425 + 0x30<16>
 l5692:
-	wLoc20_1086 = wLoc20_2360 + 0xFFFF<16>
+	wLoc20_1086 = wLoc20_2361 + 0xFFFF<16>
 	Mem455[wLoc20_1086:byte] = r4_436
-	word20 r12_466
-	word20 r13_467
-	word20 r14_2359
-	fn00005B4E(CONVERT(wLoc14_1671, word16, uint40), r8_427, wLoc1C_1111, wLoc1A_1112, out r8, out r12_466, out r13_467, out r14_2359)
+	ui40 r13_r12_2359
+	ui40 r15_r14_2360
+	fn00005B4E(CONVERT(wLoc14_1671, word16, uint40), r8_427, wLoc1C_1111, wLoc1A_1112, out r13_r12_2359, out r15_r14_2360, out r8)
+	word20 r13_467 = <invalid>
+	word20 r12_466 = <invalid>
 	dwLoc1C_2318 = SEQ(r13_467, r12_466) (alias)
-	wLoc20_2360 = wLoc20_1086
+	wLoc20_2361 = wLoc20_1086
 	branch bLoc16_1110 != 0<8> l5658
 l56C0:
 	dwLoc1C_2321 = SEQ(r13_467, r12_466) (alias)
@@ -2382,8 +2381,8 @@ l56D8:
 	dwLoc1C_2321 = SEQ(r13_467, r12_466) (alias)
 	branch r4_436 == 0x30<16> l56C6
 l56DE:
-	Mem498[wLoc20_2360 + 0xFFFE<16>:byte] = 0x30<16>
-	wLoc20_1086 = SEQ(SLICE(wLoc20_2360 + 0xFFFE<16>, byte, 8), SLICE(wLoc20_2360, byte, 0) + 0xFE<8>) (alias)
+	Mem498[wLoc20_2361 + 0xFFFE<16>:byte] = 0x30<16>
+	wLoc20_1086 = SEQ(SLICE(wLoc20_2361 + 0xFFFE<16>, byte, 8), SLICE(wLoc20_2361, byte, 0) + 0xFE<8>) (alias)
 	dwLoc1C_2321 = SEQ(r13_467, r12_466) (alias)
 l56C6:
 	r9_296 = fp - 0x4C<32> - SLICE(wLoc20_1086, byte, 0) + 0x28<16>
@@ -2782,13 +2781,13 @@ l00005ACE:
 memset_exit:
 
 
-void fn00005ADC(word20 r10, word20 r11, word20 r12, word20 r13)
+ui40 fn00005ADC(word20 r10, word20 r11, word20 r12, word20 r13)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
 //      msp430_compute_modulator_bits
 // MayUse:  r10:[0..19] r11:[0..19] r12:[0..19] r13:[0..19]
-// LiveOut:
+// LiveOut: r15:r14
 // Trashed: r14 r15
 // Preserved: sp
 fn00005ADC_entry:
@@ -2796,11 +2795,12 @@ l00005ADC:
 	Mem4[0x0130<p16>:word16] = r12
 	Mem6[0x0138<p16>:word16] = r10
 	Mem7[0x0134<p16>:word16] = r12
+	word20 r14_9 = Mem7[0x013A<p16>:word16]
 	Mem11[0x013A<p16>:word16] = Mem7[0x013C<p16>:word16]
 	Mem13[0x0138<p16>:word16] = r11
 	Mem15[0x0134<p16>:word16] = r13
 	Mem16[0x0138<p16>:word16] = r10
-	return
+	return SEQ(Mem16[0x013A<p16>:word16], r14_9)
 fn00005ADC_exit:
 
 
@@ -2831,13 +2831,11 @@ l00005B1C:
 	r8_18 = r8_18 | 8<16>
 	r11_r10_126 = SEQ(SLICE((r11_r10 ^ 0xFFFFFFFF<32>) + 1<40>, word20, 20), -SLICE(r11_r10, word20, 0)) (alias)
 l00005B26:
-	ui40 r13_r12_131 = <invalid>
 	word20 r12_108 = SLICE(r13_r12_131, word20, 0)
 	word20 r8_49
-	word20 r14_134
-	word20 r13_133
-	word20 r12_132
-	word20 r8_55 = __rcr<word20,byte,bool>(r8_49, 1<8>, fn00005B4E(r11_r10_126, r8_18, r12, r13, out r8_49, out r12_132, out r13_133, out r14_134))
+	ui40 r15_r14_132
+	ui40 r13_r12_131
+	word20 r8_55 = __rcr<word20,byte,bool>(r8_49, 1<8>, fn00005B4E(r11_r10_126, r8_18, r12, r13, out r13_r12_131, out r15_r14_132, out r8_49))
 	branch (r8_55 & 4<16>) == 0<20> l00005B40
 l00005B30:
 	r12_108 = -SLICE(r13_r12_131, word20, 0) (alias)
@@ -2850,14 +2848,14 @@ l00005B4C:
 fn00005B04_exit:
 
 
-bool fn00005B4E(ui40 r11_r10, word20 r8, word20 r12, word20 r13, ptr16 & r8Out, ptr16 & r12Out, ptr16 & r13Out, ptr16 & r14Out)
+bool fn00005B4E(ui40 r11_r10, word20 r8, word20 r12, word20 r13, ptr16 & r13_r12Out, ptr16 & r15_r14Out, ptr16 & r8Out)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
 //      vuprintf
 //      fn00005B04
 // MayUse:  r12:[0..19] r13:[0..19] r8:[0..19] Sequence r11:r10:[0..39]
-// LiveOut: C r12 r13 r14 r8
+// LiveOut: C r13:r12 r15:r14 r8
 // Trashed: VNZC r12 r13 r14 r15 r8 r9
 // Preserved: sp
 fn00005B4E_entry:
@@ -2888,10 +2886,9 @@ l00005B68:
 	r14_25 = SLICE(r15_r14_61, word20, 0) (alias)
 	r15_29 = SLICE(r15_r14_61, word20, 20) (alias)
 l00005B76:
+	r13_r12Out = <invalid>
+	r15_r14Out = <invalid>
 	r8Out = r8_17
-	r12Out = r12
-	r13Out = r13
-	r14Out = r14_25
 	return C_22
 fn00005B4E_exit:
 

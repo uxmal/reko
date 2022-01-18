@@ -100,7 +100,7 @@ namespace Reko.Analysis
             var pt = e.Accept(asc).ResolveAs<Pointer>();
             if (pt == null)
                 return false;
-            if (!(pt.Pointee is FunctionType ft))
+            if (pt.Pointee is not FunctionType ft)
                 return false;
             RewriteCall(stm, call, ft);
             return true;

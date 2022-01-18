@@ -172,10 +172,12 @@ namespace Reko.Analysis
         {
             var registerDomains = new Dictionary<StorageDomain, KeyValuePair<Storage, BitRange>>();
             var fpuStorages = new Dictionary<Storage, BitRange>();
+            var seqStorages = new Dictionary<Storage, BitRange>();
             foreach (var item in items)
             {
-                if (item.Key is RegisterStorage reg)
+                switch (item.Key)
                 {
+                case RegisterStorage reg:
                     if (!registerDomains.TryGetValue(reg.Domain, out var widestRange))
                     {
                         widestRange = new KeyValuePair<Storage, BitRange>(reg, item.Value);
@@ -191,13 +193,19 @@ namespace Reko.Analysis
                             registerDomains[reg.Domain] = widestRange;
                         }
                     }
-                }
-                else if (item.Key is FpuStackStorage fpu)
-                {
+                    break;
+                case FpuStackStorage fpu:
                     fpuStorages[fpu] = new BitRange(0, (int)fpu.BitSize);
+                    break;
+                case SequenceStorage seq:
+                    seqStorages[seq] = item.Value;
+                    break;
                 }
             }
-            return registerDomains.Select(r => r.Value).Concat(fpuStorages)
+            return registerDomains
+                .Select(r => r.Value)
+                .Concat(fpuStorages)
+                .Concat(seqStorages)
                 .ToDictionary(k => k.Key, v => v.Value);
         }
 

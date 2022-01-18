@@ -18,10 +18,6 @@
  */
 #endregion
 
-using Reko.Core.NativeInterface;
-using Reko.Core.Machine;
-using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Text;
 
@@ -31,7 +27,7 @@ namespace Reko.Core.Rtl
     /// RtlInstructions are the low-level register-transfer instructions
     /// emitted by the Instruction rewriters. They exist briefly while 
     /// the binary program is being scanned, and are then converted to
-    /// IL code (see Reko.Core.Code).
+    /// IL code (<see cref="Reko.Core.Code.Instruction" />).
     /// </summary>
     public abstract class RtlInstruction
     {
@@ -52,7 +48,7 @@ namespace Reko.Core.Rtl
 
         public override string ToString()
         {
-            StringWriter sw = new StringWriter();
+            var sw = new StringWriter();
             Write(sw);
             return sw.ToString();
         }

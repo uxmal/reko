@@ -586,7 +586,8 @@ namespace Reko.Analysis
         public void DumpWatchedProcedure(string phase, string caption, Procedure proc)
         {
             if (program.User.DebugTraceProcedures.Contains(proc.Name) ||
-                proc.Name == "usb_device_info")
+                proc.Name == "usb_device_info"||
+                false)
             {
                 Debug.Print("// {0}: {1} ==================", proc.Name, caption);
                 //MockGenerator.DumpMethod(proc);

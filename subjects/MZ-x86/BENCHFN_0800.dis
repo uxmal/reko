@@ -2407,12 +2407,14 @@ l0800_1A3A:
 	dx = SEQ(dh_1416, dl_148) (alias)
 	branch al_131 == 0x5D<8> l0800_1A63
 l0800_1A63:
-	word16 v61_185 = wLoc24_1513 & 0x7FFF<16>
+	word16 v61_185 = wLoc24_1515 & 0x7FFF<16>
 	wArg08 = si_132
 	word16 si_188 = v61_185
 	branch (bLoc2B_1048 & 1<8>) != 0<8> l0800_1A77
 l0800_1A74:
-	di = fn0800_1708(SEQ(ss, fp - 2<i16>), ds, out es_123)
+	segptr32 es_di_1513 = fn0800_1708(SEQ(ss, fp - 2<i16>), ds)
+	di = SLICE(es_di_1513, word16, 0) (alias)
+	es_123 = SLICE(es_di_1513, selector, 16) (alias)
 l0800_1A77:
 	word16 dx_336
 	word16 bx_335
@@ -2547,7 +2549,9 @@ l0800_1969_thunk_fn0800_1AFF:
 l0800_192C:
 	branch (bLoc2B_1041 & 1<8>) == 0<8> l0800_1935
 l0800_1935:
-	di = fn0800_1708(SEQ(ss, fp - 2<i16>), ds, out es)
+	segptr32 es_di_1514 = fn0800_1708(SEQ(ss, fp - 2<i16>), ds)
+	di = SLICE(es_di_1514, word16, 0) (alias)
+	es = SLICE(es_di_1514, selector, 16) (alias)
 	branch (bLoc2B_1041 & 4<8>) == 0<8> l0800_1946
 l0800_1946:
 	branch (bLoc2B_1041 & 8<8>) == 0<8> l0800_1951
@@ -2568,7 +2572,7 @@ l0800_1844:
 l0800_184A:
 	bLoc2B_1041 = bLoc2B_1041 | 4<8>
 l0800_184E:
-	ax_112 = __scantol(ds, wArg02, wArg04, wArg06, si_111, wLoc24_1513 & 0x7FFF<16>, fp - 0x28<16>, fp - 0x26<16>, out dx, out bx, out di, out es)
+	ax_112 = __scantol(ds, wArg02, wArg04, wArg06, si_111, wLoc24_1515 & 0x7FFF<16>, fp - 0x28<16>, fp - 0x26<16>, out dx, out bx, out di, out es)
 	branch wLoc26 <= 0<16> l0800_188D
 l0800_188D:
 	branch wLoc26 < 0<16> l0800_1892
@@ -2588,9 +2592,7 @@ l0800_1875:
 	branch (bLoc2B_1041 & 1<8>) != 0<8> l0800_188A
 l0800_187B:
 l0800_187E:
-	selector es_1512
-	fn0800_1708(SEQ(ss, fp - 2<i16>), ds, out es_1512)
-	segptr32 es_di_1509 = <invalid>
+	segptr32 es_di_1509 = fn0800_1708(SEQ(ss, fp - 2<i16>), ds)
 	Mem618[es_di_1509:word16] = ax_112
 	word16 di_611 = SLICE(es_di_1509, word16, 0)
 	es = SLICE(es_di_1509, selector, 16) (alias)
@@ -2604,16 +2606,18 @@ l0800_188A:
 l0800_19C8:
 	branch (bLoc2B_1041 & 1<8>) != 0<8> l0800_19D1
 l0800_19CE:
-	di = fn0800_1708(SEQ(ss, fp - 2<i16>), ds, out es)
+	segptr32 es_di_1512 = fn0800_1708(SEQ(ss, fp - 2<i16>), ds)
+	di = SLICE(es_di_1512, word16, 0) (alias)
+	es = SLICE(es_di_1512, selector, 16) (alias)
 l0800_19D1:
-	word16 si_643 = wLoc24_1513
-	branch wLoc24_1513 >= 0<16> l0800_19DB
+	word16 si_643 = wLoc24_1515
+	branch wLoc24_1515 >= 0<16> l0800_19DB
 l0800_19D8:
 	si_643 = 1<16>
 l0800_19DB:
 	word16 dx_670
 	word16 bx_669
-	branch wLoc24_1513 == 0<16> l0800_19F7
+	branch wLoc24_1515 == 0<16> l0800_19F7
 l0800_19DD:
 	word16 v49_653 = wLoc28_1037 + 1<16>
 	word16 ax_667
@@ -2645,11 +2649,11 @@ l0800_19FD:
 l0800_1A00:
 l0800_17EF:
 	wLoc24_1040 = ax_58 - 0x30<16>
-	wLoc24_1513 = wLoc24_1040
-	branch wLoc24_1513 < 0<16> l0800_1794
+	wLoc24_1515 = wLoc24_1040
+	branch wLoc24_1515 < 0<16> l0800_1794
 l0800_17F9:
-	dx = SLICE(wLoc24_1513 *u32 0xA<16>, word16, 16) (alias)
-	wLoc24_1040 = ax_58 - 0x30<16> + wLoc24_1513 *u 0xA<16>
+	dx = SLICE(wLoc24_1515 *u32 0xA<16>, word16, 16) (alias)
+	wLoc24_1040 = ax_58 - 0x30<16> + wLoc24_1515 *u 0xA<16>
 l0800_17E9:
 	bLoc2B_1041 = bLoc2B_1041 | 1<8>
 l0800_17E3:
@@ -2738,13 +2742,13 @@ l0800_1764_thunk_fn0800_1AEB:
 __scanner_exit:
 
 
-word16 fn0800_1708(segptr32 ss_bp, selector ds, ptr16 & esOut)
+ptr32 fn0800_1708(segptr32 ss_bp, selector ds)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
 //      __scanner
 // MayUse:  ds:[0..15] Sequence ss:bp:[0..31]
-// LiveOut: di es
+// LiveOut: es:di
 // Trashed: SCZO di es Top
 // Preserved: sp
 fn0800_1708_entry:
@@ -2754,13 +2758,11 @@ l0800_1708:
 l0800_1718:
 	word16 di_12 = Mem0[ds:di_7:word16]
 	Mem18[ss_bp + 0xC<16>:word16] = Mem14[ss_bp + 0xC<16>:word16] + 2<16>
-	esOut = ds
-	return di_12
+	return SEQ(ds, di_12)
 l0800_1711:
 	ptr32 es_di_20 = Mem0[ds:di_7:segptr32]
 	Mem22[ss_bp + 0xC<16>:word16] = Mem0[ss_bp + 0xC<16>:word16] + 4<16>
-	esOut = SLICE(es_di_20, selector, 16)
-	return SLICE(es_di_20, word16, 0)
+	return es_di_20
 fn0800_1708_exit:
 
 

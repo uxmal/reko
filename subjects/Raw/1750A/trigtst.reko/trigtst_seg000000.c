@@ -21,109 +21,124 @@ void fn0111()
 {
 	fn04B9(&g_tFFFF8000);
 	real48 gp0_gp1_gp2_n = g_rFFFF80CE;
-	word32 gp0_gp1_n = <invalid>;
-	fn04AE(gp0_gp1_n, fn01E6((word32) gp0_gp1_gp2_n, (word16) gp0_gp1_gp2_n));
+	word16 gp2_n;
+	fn04AE(fn01E6((word32) gp0_gp1_gp2_n, (word16) gp0_gp1_gp2_n, out gp2_n), gp2_n);
 	fn045A(0x0A);
 	fn04B9(&g_tFFFF800D);
 	real48 gp0_gp1_gp2_n = *((char *) &g_rFFFF80CE + 3);
-	word32 gp0_gp1_n = <invalid>;
-	fn04AE(gp0_gp1_n, fn01E6((word32) gp0_gp1_gp2_n, (word16) gp0_gp1_gp2_n));
+	word16 gp2_n;
+	fn04AE(fn01E6((word32) gp0_gp1_gp2_n, (word16) gp0_gp1_gp2_n, out gp2_n), gp2_n);
 	fn045A(0x0A);
 	fn04B9(&g_tFFFF801A);
 	real48 gp0_gp1_gp2_n = g_rFFFF80D4;
-	word32 gp0_gp1_n = <invalid>;
-	fn04AE(gp0_gp1_n, fn01E6((word32) gp0_gp1_gp2_n, (word16) gp0_gp1_gp2_n));
+	word16 gp2_n;
+	fn04AE(fn01E6((word32) gp0_gp1_gp2_n, (word16) gp0_gp1_gp2_n, out gp2_n), gp2_n);
 	fn045A(0x0A);
 	fn04B9(&g_tFFFF8027);
 	real48 gp0_gp1_gp2_n = *((char *) &g_rFFFF80D4 + 3);
-	word32 gp0_gp1_n = <invalid>;
-	fn04AE(gp0_gp1_n, fn01E6((word32) gp0_gp1_gp2_n, (word16) gp0_gp1_gp2_n));
+	word16 gp2_n;
+	fn04AE(fn01E6((word32) gp0_gp1_gp2_n, (word16) gp0_gp1_gp2_n, out gp2_n), gp2_n);
 	fn045A(0x0A);
 	fn04B9(&g_tFFFF8036);
 	real48 gp0_gp1_gp2_n = g_rFFFF80DA;
-	word32 gp0_gp1_n = <invalid>;
-	fn04AE(gp0_gp1_n, fn032A((word32) gp0_gp1_gp2_n, (word16) gp0_gp1_gp2_n));
+	word16 gp2_n;
+	fn04AE(fn032A((word32) gp0_gp1_gp2_n, (word16) gp0_gp1_gp2_n, out gp2_n), gp2_n);
 	fn045A(0x0A);
 	fn04B9(&g_tFFFF8042);
 	real48 gp0_gp1_gp2_n = *((char *) &g_rFFFF80DA + 3);
-	word32 gp0_gp1_n = <invalid>;
-	fn04AE(gp0_gp1_n, fn032A((word32) gp0_gp1_gp2_n, (word16) gp0_gp1_gp2_n));
+	word16 gp2_n;
+	fn04AE(fn032A((word32) gp0_gp1_gp2_n, (word16) gp0_gp1_gp2_n, out gp2_n), gp2_n);
 	fn045A(0x0A);
 	fn04B9(&g_tFFFF804F);
 	real48 gp0_gp1_gp2_n = g_rFFFF80E0;
-	word32 gp0_gp1_n = <invalid>;
-	fn04AE(gp0_gp1_n, fn032A((word32) gp0_gp1_gp2_n, (word16) gp0_gp1_gp2_n));
+	word16 gp2_n;
+	fn04AE(fn032A((word32) gp0_gp1_gp2_n, (word16) gp0_gp1_gp2_n, out gp2_n), gp2_n);
 	fn045A(0x0A);
 	fn04B9(&g_tFFFF805C);
 	real48 gp0_gp1_gp2_n = *((char *) &g_rFFFF80E0 + 3);
-	word32 gp0_gp1_n = <invalid>;
-	fn04AE(gp0_gp1_n, fn032A((word32) gp0_gp1_gp2_n, (word16) gp0_gp1_gp2_n));
+	word16 gp2_n;
+	fn04AE(fn032A((word32) gp0_gp1_gp2_n, (word16) gp0_gp1_gp2_n, out gp2_n), gp2_n);
 	fn045A(0x0A);
 	fn04B9(&g_tFFFF806B);
 	real48 gp0_gp1_gp2_n = g_rFFFF80E6;
-	word32 gp0_gp1_n = <invalid>;
-	fn04AE(gp0_gp1_n, fn032A((word32) gp0_gp1_gp2_n, (word16) gp0_gp1_gp2_n));
+	word16 gp2_n;
+	fn04AE(fn032A((word32) gp0_gp1_gp2_n, (word16) gp0_gp1_gp2_n, out gp2_n), gp2_n);
 	fn045A(0x0A);
 	fn04B9(&g_tFFFF8076);
 	real48 gp0_gp1_gp2_n = g_rFFFF80CE;
-	word32 gp0_gp1_n = <invalid>;
-	fn04AE(gp0_gp1_n, fn032A((word32) gp0_gp1_gp2_n, (word16) gp0_gp1_gp2_n));
+	word16 gp2_n;
+	fn04AE(fn032A((word32) gp0_gp1_gp2_n, (word16) gp0_gp1_gp2_n, out gp2_n), gp2_n);
 	fn045A(0x0A);
 	fn04B9(&g_tFFFF8082);
 	real48 gp0_gp1_gp2_n = g_rFFFF80DA;
-	word32 gp0_gp1_n = <invalid>;
-	fn04AE(gp0_gp1_n, fn034E((word32) gp0_gp1_gp2_n, (word16) gp0_gp1_gp2_n));
+	word16 gp2_n;
+	fn04AE(fn034E((word32) gp0_gp1_gp2_n, (word16) gp0_gp1_gp2_n, out gp2_n), gp2_n);
 	fn045A(0x0A);
 	fn04B9(&g_tFFFF808E);
 	real48 gp0_gp1_gp2_n = *((char *) &g_rFFFF80DA + 3);
-	word32 gp0_gp1_n = <invalid>;
-	fn04AE(gp0_gp1_n, fn034E((word32) gp0_gp1_gp2_n, (word16) gp0_gp1_gp2_n));
+	word16 gp2_n;
+	fn04AE(fn034E((word32) gp0_gp1_gp2_n, (word16) gp0_gp1_gp2_n, out gp2_n), gp2_n);
 	fn045A(0x0A);
 	fn04B9(&g_tFFFF809B);
 	real48 gp0_gp1_gp2_n = g_rFFFF80E0;
-	word32 gp0_gp1_n = <invalid>;
-	fn04AE(gp0_gp1_n, fn034E((word32) gp0_gp1_gp2_n, (word16) gp0_gp1_gp2_n));
+	word16 gp2_n;
+	fn04AE(fn034E((word32) gp0_gp1_gp2_n, (word16) gp0_gp1_gp2_n, out gp2_n), gp2_n);
 	fn045A(0x0A);
 	fn04B9(&g_tFFFF80A8);
 	real48 gp0_gp1_gp2_n = *((char *) &g_rFFFF80E0 + 3);
-	word32 gp0_gp1_n = <invalid>;
-	fn04AE(gp0_gp1_n, fn034E((word32) gp0_gp1_gp2_n, (word16) gp0_gp1_gp2_n));
+	word16 gp2_n;
+	fn04AE(fn034E((word32) gp0_gp1_gp2_n, (word16) gp0_gp1_gp2_n, out gp2_n), gp2_n);
 	fn045A(0x0A);
 	fn04B9(&g_tFFFF80B7);
 	real48 gp0_gp1_gp2_n = g_rFFFF80E6;
-	word32 gp0_gp1_n = <invalid>;
-	fn04AE(gp0_gp1_n, fn034E((word32) gp0_gp1_gp2_n, (word16) gp0_gp1_gp2_n));
+	word16 gp2_n;
+	fn04AE(fn034E((word32) gp0_gp1_gp2_n, (word16) gp0_gp1_gp2_n, out gp2_n), gp2_n);
 	fn045A(0x0A);
 	fn04B9(&g_tFFFF80C2);
 	real48 gp0_gp1_gp2_n = g_rFFFF80CE;
-	word32 gp0_gp1_n = <invalid>;
-	fn04AE(gp0_gp1_n, fn034E((word32) gp0_gp1_gp2_n, (word16) gp0_gp1_gp2_n));
+	word16 gp2_n;
+	fn04AE(fn034E((word32) gp0_gp1_gp2_n, (word16) gp0_gp1_gp2_n, out gp2_n), gp2_n);
 	fn045A(0x0A);
 }
 
-// 01E6: Register word16 fn01E6(Sequence word32 gp0_gp1, Register word16 gp2)
+// 01E6: Sequence word32 fn01E6(Sequence word32 gp0_gp1, Register ptr16 gp2, Register out ptr16 gp2Out)
 // Called from:
 //      fn0111
-word16 fn01E6(word32 gp0_gp1, word16 gp2)
+word32 fn01E6(word32 gp0_gp1, ptr16 gp2, ptr16 & gp2Out)
 {
 	word16 gp0 = SLICE(gp0_gp1, word16, 16);
 	int16 gp1 = (word16) gp0_gp1;
 	real48 gp0_gp1_gp2_n = SEQ(gp0_gp1, gp2);
-	if (gp0_gp1_gp2_n == g_r05AB)
-		return gp2;
-	if (gp0_gp1_gp2_n < g_r05AB)
-		__bpt();
-	Eq_n gp6_n = __xbr(gp1);
-	real48 gp0_gp1_gp2_n = SEQ(gp0, gp1 & 0xFF00, gp2) * g_r05AE + g_r05B1;
-	real48 gp0_gp1_gp2_n = gp0_gp1_gp2_n + SEQ(gp0, gp1 & 0xFF00, gp2) / gp0_gp1_gp2_n;
-	real48 gp0_gp1_gp2_n = SEQ(SLICE(gp0_gp1_gp2_n, word16, 32), SLICE(gp0_gp1_gp2_n, word16, 16) & 0xFF00 | 0xFE, 0xFE) + SEQ(gp0, gp1 & 0xFF00, gp2) / gp0_gp1_gp2_n;
-	real48 gp0_gp1_gp2_n = gp0_gp1_gp2_n + SEQ(gp0, gp1 & 0xFF00, gp2) / gp0_gp1_gp2_n;
-	word16 gp0_n = SLICE(gp0_gp1_gp2_n, word16, 32);
-	word16 gp2_n = (word16) gp0_gp1_gp2_n;
-	cui16 gp1_n = SLICE(gp0_gp1_gp2_n, word16, 16) & 0xFF00 | 0xFF;
-	if (Test(NE,(gp6_n >> 0x08 & 0x8000) == 0x00))
-		gp2_n = (word16) (SEQ(gp0_n, gp1_n, gp2_n) * g_r05B4);
-	return gp2_n;
+	if (gp0_gp1_gp2_n != g_r05AB)
+	{
+		if (gp0_gp1_gp2_n < g_r05AB)
+			__bpt();
+		Eq_n gp6_n = __xbr(gp1);
+		real48 gp0_gp1_gp2_n = SEQ(gp0, gp1 & 0xFF00, gp2) * g_r05AE + g_r05B1;
+		real48 gp0_gp1_gp2_n = gp0_gp1_gp2_n + SEQ(gp0, gp1 & 0xFF00, gp2) / gp0_gp1_gp2_n;
+		real48 gp0_gp1_gp2_n = SEQ(SLICE(gp0_gp1_gp2_n, word16, 32), SLICE(gp0_gp1_gp2_n, word16, 16) & 0xFF00 | 0xFE, 0xFE) + SEQ(gp0, gp1 & 0xFF00, gp2) / gp0_gp1_gp2_n;
+		real48 gp0_gp1_gp2_n = gp0_gp1_gp2_n + SEQ(gp0, gp1 & 0xFF00, gp2) / gp0_gp1_gp2_n;
+		Eq_n gp6_n = gp6_n >> 0x08;
+		word16 gp0_n = SLICE(gp0_gp1_gp2_n, word16, 32);
+		ptr16 gp2_n = (word16) gp0_gp1_gp2_n;
+		int16 gp1_n = SLICE(gp0_gp1_gp2_n, word16, 16) & 0xFF00 | 0xFF;
+		if (Test(NE,(gp6_n >> 0x08 & 0x8000) == 0x00))
+		{
+			real48 gp0_gp1_gp2_n = SEQ(gp0_n, gp1_n, gp2_n) * g_r05B4;
+			gp1_n = SLICE(gp0_gp1_gp2_n, word16, 16);
+			gp0_n = SLICE(gp0_gp1_gp2_n, word16, 32);
+			gp2_n = (word16) gp0_gp1_gp2_n;
+			gp6_n = (gp6_n >> 0x08) + 0x01;
+		}
+		cui16 gp1_n = gp1_n & 0xFF00 | (__xbr(gp1_n) >> 0x08) + gp6_n /16 0x02 & 0xFF;
+		gp2Out = gp2_n;
+		return SEQ(gp0_n, gp1_n);
+	}
+	else
+	{
+		gp2Out = gp2;
+		return gp0_gp1;
+	}
 }
 
 // 02BF: Register word16 fn02BF(Sequence Eq_n gp2_gp3, Register ci16 gp1, Register word16 gp4, Register out ptr16 gp1Out, Register out ptr16 gp2Out, Register out ptr16 gp14Out)
@@ -161,10 +176,10 @@ word16 fn02BF(Eq_n gp2_gp3, ci16 gp1, word16 gp4, ptr16 & gp1Out, ptr16 & gp2Out
 	}
 }
 
-// 032A: Register word16 fn032A(Sequence int32 gp0_gp1, Register word16 gp2)
+// 032A: Sequence int32 fn032A(Sequence int32 gp0_gp1, Register word16 gp2, Register out ptr16 gp2Out)
 // Called from:
 //      fn0111
-word16 fn032A(int32 gp0_gp1, word16 gp2)
+int32 fn032A(int32 gp0_gp1, word16 gp2, ptr16 & gp2Out)
 {
 	real48 gp5_gp6_gp7_n = SEQ(gp0_gp1, gp2);
 	if (gp0_gp1 < 0x00)
@@ -186,17 +201,18 @@ word16 fn032A(int32 gp0_gp1, word16 gp2)
 	ci16 gp1_n = (word16) gp0_gp1_n;
 	if (gp0_gp1 < 0x00)
 		gp1_n = *((char *) &g_dwFFFF812B + 2) + (word16) gp0_gp1_n /16 33085;
-	word16 gp14_n;
 	word16 gp1_n;
-	word16 gp2_n;
-	fn02BF(gp2_gp3_n, gp1_n, gp4_n, out gp1_n, out gp2_n, out gp14_n);
-	return gp2_n;
+	ptr16 gp2_n;
+	word16 gp14_n;
+	word16 gp0_n = fn02BF(gp2_gp3_n, gp1_n, gp4_n, out gp1_n, out gp2_n, out gp14_n);
+	gp2Out = gp2_n;
+	return SEQ(gp0_n, gp1_n);
 }
 
-// 034E: Register word16 fn034E(Sequence int32 gp0_gp1, Register word16 gp2)
+// 034E: Sequence int32 fn034E(Sequence int32 gp0_gp1, Register word16 gp2, Register out ptr16 gp2Out)
 // Called from:
 //      fn0111
-word16 fn034E(int32 gp0_gp1, word16 gp2)
+int32 fn034E(int32 gp0_gp1, word16 gp2, ptr16 & gp2Out)
 {
 	real48 gp5_gp6_gp7_n = SEQ(gp0_gp1, gp2);
 	if (gp0_gp1 < 0x00)
@@ -216,10 +232,11 @@ word16 fn034E(int32 gp0_gp1, word16 gp2)
 		gp0_gp1_n += g_dwFFFF8138;
 	}
 	word16 gp1_n;
-	word16 gp2_n;
+	ptr16 gp2_n;
 	word16 gp14_n;
-	fn02BF(gp2_gp3_n, (word16) gp0_gp1_n + g_wFFFF813A, gp4_n, out gp1_n, out gp2_n, out gp14_n);
-	return gp2_n;
+	word16 gp0_n = fn02BF(gp2_gp3_n, (word16) gp0_gp1_n + g_wFFFF813A, gp4_n, out gp1_n, out gp2_n, out gp14_n);
+	gp2Out = gp2_n;
+	return SEQ(gp0_n, gp1_n);
 }
 
 // 03E0: Register (ptr16 Eq_n) fn03E0(Sequence word32 gp1_gp2, Register (ptr16 Eq_n) gp0, Register word16 gp3, Register out ptr16 gp14Out)

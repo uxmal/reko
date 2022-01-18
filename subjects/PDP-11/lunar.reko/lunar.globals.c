@@ -4,7 +4,7 @@
 
 #include "lunar.h"
 
-ci16 * g_ptr3FFC; // 3FFC
+Eq_n g_t3FFC;
 word16 g_wF400; // F400
 word16 g_wF402; // F402
 ci8 g_bFB8C; // FB8C

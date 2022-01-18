@@ -17,6 +17,10 @@ struct Eq_n g_tFFFF800C = // 800C
 				
 				{
 					;
+real48 g_rFFFF800F = 0.0; // 800F
+real48 g_rFFFF8012 = 0.0; // 8012
+real48 g_r8015 = 0.0; // 8015
+real48 g_rFFFF8018 = 0.0; // 8018
 struct Eq_n g_tFFFF801B = // 801B
 					{
 						

@@ -33,8 +33,8 @@ namespace Reko.Services
     public class TestGenerationService : ITestGenerationService
     {
         private readonly IServiceProvider services;
-        private readonly object decoderLock = new object();
-        private readonly object rewriterLock = new object();
+        private readonly object decoderLock = new ();
+        private readonly object rewriterLock = new ();
         private readonly Dictionary<string, HashSet<byte[]>> emittedDecoderTests;
         private readonly Dictionary<string, HashSet<string>> emittedRewriterTests;
 
@@ -62,7 +62,7 @@ namespace Reko.Services
                     return;
                 this.emittedDecoderTests[filename].Add(instrBytes);
             }
-            hexizer = hexizer ?? Hexizer;
+            hexizer ??= Hexizer;
             var test = GenerateDecoderUnitTest(testPrefix, addrStart, hexizer(instrBytes), message);
             AttemptToAppendText(fsSvc, decoderLock, filename, test);
         }
@@ -108,14 +108,14 @@ namespace Reko.Services
         {
             var fsSvc = services.RequireService<IFileSystemService>();
             var outDir = GetOutputDirectory(fsSvc);
-            if (outDir == null)
+            if (outDir is null)
                 return;
             var filename = Path.Combine(outDir, Path.ChangeExtension(testPrefix, ".tests"));
             EnsureRewriterFile(fsSvc, filename);
             if (this.emittedRewriterTests[filename].Contains(mnemonic))
                 return;
             emittedRewriterTests[filename].Add(mnemonic);
-            hexizer = hexizer ?? Hexizer;
+            hexizer ??= Hexizer;
             var test = GenerateRewriterUnitTest(testPrefix, instr, mnemonic, rdr, message, hexizer);
             AttemptToAppendText(fsSvc, rewriterLock, filename, test);
         }
@@ -287,9 +287,14 @@ namespace Reko.Services
             var dir = GetOutputDirectory(fsSvc);
             var absFileName = Path.Combine(dir, fileName);
             using var w = fsSvc.CreateStreamWriter(absFileName, true, Encoding.UTF8);
-            w.WriteLine(testCaption);
-            proc.Write(false, w);
-            w.WriteLine();
+            ReportProcedure(testCaption, proc, w);
+        }
+
+        public static void ReportProcedure(string testCaption, Procedure proc, TextWriter writer)
+        {
+            writer.WriteLine(testCaption);
+            proc.Write(false, writer);
+            writer.WriteLine();
         }
 
         private class InstrBytesComparer : IEqualityComparer<byte[]>
