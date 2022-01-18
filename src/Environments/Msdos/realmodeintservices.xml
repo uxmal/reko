@@ -256,6 +256,42 @@
 	  </return>
 	</signature>
   </service>
+  
+  <service name="disk_read_sectors_into_memory">
+    <syscallinfo>
+      <vector>13</vector>
+      <regvalue reg="ah">02</regvalue>
+    </syscallinfo>
+	<signature>
+	  <return>
+		<reg>ax</reg>
+	  </return>
+      <arg name="sectors">
+        <prim domain="UnsignedInt" size="1" />
+        <reg>al</reg>
+      </arg>
+      <arg name="sector_cyl">
+        <prim domain="UnsignedInt" size="2" />
+        <reg>cx</reg>
+      </arg>
+      <arg name="head_number">
+        <prim domain="UnsignedInt" size="1" />
+        <reg>dh</reg>
+      </arg> 
+      <arg name="head_number">
+        <prim domain="UnsignedInt" size="1" />
+        <reg>dl</reg>
+      </arg> 
+      <arg name="data_buffer">
+        <segptr><prim size="1" /></segptr>
+		<seq><reg>es</reg><reg>bx</reg></seq>
+      </arg>
+      <return><flag>C</flag></return>
+	  <arg out="true"><reg>ah</reg></arg>
+	  <arg out="true"><reg>al</reg></arg>
+	</signature>
+  </service>
+
   <service name="bios_get_system_configuration">
 	<syscallinfo>
 	  <vector>15</vector>
@@ -265,8 +301,8 @@
 	  <return>
 		<flag>C</flag>
 	  </return>
-	  <arg out="true">
-		<reg>ah</reg>
+	  <arg>
+		<reg>al</reg>
 	  </arg>
 	  <arg out="true">
 		<reg>es</reg>
