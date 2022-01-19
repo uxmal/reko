@@ -103,7 +103,7 @@ namespace Reko.UnitTests.Arch.M68k.Assembler
         [Ignore("Branches proving a little hairy here.")]
         public void M68kta_Max()
         {
-            RunTest("Fragments/m68k/MAX.asm", "M68k/M68kta_Max.txt", Address.Ptr32(0x04000000));
+            RunTest("Fragments/m68k/MAX.asm", "Arch/M68k/M68kta_Max.txt", Address.Ptr32(0x04000000));
         }
 
         [Test]
@@ -116,7 +116,7 @@ lupe
     bne     lupe
     rts
 ";
-            RunFragment(txt, "M68k/M68kta_BackJump.txt", Address.Ptr32(0x00010000));
+            RunFragment(txt, "Arch/M68k/M68kta_BackJump.txt", Address.Ptr32(0x00010000));
         }
 
         [Test]
@@ -130,7 +130,7 @@ lupe
 return
     rts
 ";
-            RunFragment(txt, "M68k/M68kta_FwdJump.txt", Address.Ptr32(0x00010000));
+            RunFragment(txt, "Arch/M68k/M68kta_FwdJump.txt", Address.Ptr32(0x00010000));
         }
 
         [Test]
@@ -147,7 +147,7 @@ mutate
     addq.l  #2,d0
     rts
 ";
-            RunFragment(txt, "M68k/M68kta_Jsr.txt", Address.Ptr32(0x00010000));
+            RunFragment(txt, "Arch/M68k/M68kta_Jsr.txt", Address.Ptr32(0x00010000));
         }
     }
 }

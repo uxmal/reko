@@ -22,11 +22,9 @@ using Reko.Core;
 using Reko.Core.Configuration;
 using Reko.Core.Loading;
 using Reko.Core.Memory;
-using Reko.Core.Pascal;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
-using System.Runtime.InteropServices;
 using System.Text;
 using static Reko.ImageLoaders.Xbe.Structures;
 

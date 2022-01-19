@@ -19,7 +19,7 @@
 #endregion
 
 using Reko.Core;
-using Reko.Core.CLanguage;
+using Reko.Core.Hll.C;
 using Reko.Core.Rtl;
 using Reko.Core.Services;
 using System;

@@ -137,7 +137,7 @@ hello	proc
 hello	endp
 ");
             var segment = program.SegmentMap.Segments.Values.First();
-			using (FileUnitTester fut = new FileUnitTester("Intel/AsFragment.txt"))
+			using (FileUnitTester fut = new FileUnitTester("Arch/X86/AsFragment.txt"))
 			{
 				var arch = new X86ArchitectureReal(sc, "x86-real-16", new Dictionary<string, object>());
 				var d = new Dumper(program);
@@ -246,7 +246,7 @@ foo		endp
             {
 			    program = asm.Assemble(Address.SegPtr(0xBAC, 0), rdr);
             }
-			using (FileUnitTester fut = new FileUnitTester("Intel/AsCarryInstructions.txt"))
+			using (FileUnitTester fut = new FileUnitTester("Arch/X86/AsCarryInstructions.txt"))
 			{
 				Dumper dump = new Dumper(program);
                 var arch = program.Architecture;
@@ -289,43 +289,43 @@ foo		endp
 		[Test]
 		public void AsJa()
 		{
-			RunTest("Fragments/switch.asm", "Intel/AsJa.txt");
+			RunTest("Fragments/switch.asm", "Arch/X86/AsJa.txt");
 		}
 
 		[Test]
 		public void AsLargeOffset()
 		{
-			RunTest("Fragments/largeoffset.asm", "Intel/AsLargeOffset.txt");
+			RunTest("Fragments/largeoffset.asm", "Arch/X86/AsLargeOffset.txt");
 		}
 
 		[Test]
 		public void AsMultiplication()
 		{
-			RunTest("Fragments/multiplication.asm", "Intel/AsMultiplication.txt");
+			RunTest("Fragments/multiplication.asm", "Arch/X86/AsMultiplication.txt");
 		}
 
 		[Test]
 		public void AsLoop()
 		{
-			RunTest("Fragments/loopne.asm", "Intel/AsLoop.txt");
+			RunTest("Fragments/loopne.asm", "Arch/X86/AsLoop.txt");
 		}
 
 		[Test]
 		public void AsLogical()
 		{
-			RunTest("Fragments/logical.asm", "Intel/AsLogical.txt");
+			RunTest("Fragments/logical.asm", "Arch/X86/AsLogical.txt");
 		}
 
 		[Test]
 		public void AsTest()
 		{
-			RunTest("Fragments/test.asm", "Intel/AsTest.txt");
+			RunTest("Fragments/test.asm", "Arch/X86/AsTest.txt");
 		}
 
 		[Test]
 		public void AsEquate()
 		{
-			RunTest("Fragments/equate.asm", "Intel/AsEquate.txt");
+			RunTest("Fragments/equate.asm", "Arch/X86/AsEquate.txt");
 		}
 
 		[Test]
@@ -373,7 +373,7 @@ foo		endp
         [Test]
         public void AsIntraSegmentFarCall()
         {
-            RunTest("Fragments/multiple/intrasegmentfarcall.asm", "Intel/AsIntraSegmentFarCall.txt");
+            RunTest("Fragments/multiple/intrasegmentfarcall.asm", "Arch/X86/AsIntraSegmentFarCall.txt");
         }
 
 		private void RunTest(string sourceFile, string outputFile)

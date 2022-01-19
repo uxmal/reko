@@ -53,7 +53,7 @@ namespace Reko.UnitTests.Gui
             var host = new Mock<IDecompiledFileService>();
             sc.AddService<IDecompiledFileService>(host.Object);
 
-            var d = new Decompiler(new Project(), sc);
+            var d = new Reko.Decompiler(new Project(), sc);
             bool decompilerChangedEventFired = true;
             svc.DecompilerChanged += delegate(object o, EventArgs e)
             {
@@ -96,7 +96,7 @@ namespace Reko.UnitTests.Gui
             platform.Setup(p => p.CreateMetadata()).Returns(new TypeLibrary());
             platform.Setup(p => p.Architecture).Returns(arch.Object);
 
-            var dec = new Decompiler(project, sc);
+            var dec = new Reko.Decompiler(project, sc);
             svc.Decompiler = dec;
 
             Assert.IsNotNull(svc.Decompiler.Project);

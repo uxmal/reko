@@ -357,7 +357,7 @@ movzx	ax,byte ptr [bp+4h]
         [Test]
         public void X86Dis_FpuInstructions()
         {
-            using (FileUnitTester fut = new FileUnitTester("Intel/DisFpuInstructions.txt"))
+            using (FileUnitTester fut = new FileUnitTester("Arch/X86/DisFpuInstructions.txt"))
             {
                 var arch = new X86ArchitectureReal(sc, "x86-real-16", new Dictionary<string, object>());
                 X86TextAssembler asm = new X86TextAssembler(arch);

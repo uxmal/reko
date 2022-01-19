@@ -22,7 +22,7 @@ using System;
 using System.Collections.Generic;
 using Reko.Core;
 using Reko.Core.Analysis;
-using Reko.Core.CLanguage;
+using Reko.Core.Hll.C;
 using Reko.Core.Types;
 
 namespace Reko.Libraries.Python

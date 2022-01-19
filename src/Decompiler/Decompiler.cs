@@ -19,8 +19,6 @@
 
 using Reko.Analysis;
 using Reko.Core;
-using Reko.Core.Assemblers;
-using Reko.Core.Loading;
 using Reko.Core.Lib;
 using Reko.Core.Output;
 using Reko.Core.Scripts;
@@ -32,16 +30,15 @@ using Reko.Structure;
 using Reko.Typing;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.Design;
 using System.IO;
 using System.Linq;
 
 namespace Reko
 {
-	/// <summary>
-	/// The main driver class for decompilation of binaries. 
-	/// </summary>
-	public class Decompiler : IDecompiler
+    /// <summary>
+    /// The main driver class for decompilation of binaries. 
+    /// </summary>
+    public class Decompiler : IDecompiler
 	{
 		private readonly IDecompiledFileService host;
 		private IScanner? scanner;

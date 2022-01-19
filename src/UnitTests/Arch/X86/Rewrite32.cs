@@ -74,80 +74,80 @@ namespace Reko.UnitTests.Arch.X86
 		[Test]
 		public void RwAutoArray32()
 		{
-			RunTest("Fragments/autoarray32.asm", "Intel/RwAutoArray32.txt");
+			RunTest("Fragments/autoarray32.asm", "Arch/X86/RwAutoArray32.txt");
 		}
 
 		[Test]
         [Category(Categories.IntegrationTests)]
 		public void RwMallocFree()
 		{
-			RunTest("Fragments/import32/mallocfree.asm", "Intel/RwMallocFree.txt");
+			RunTest("Fragments/import32/mallocfree.asm", "Arch/X86/RwMallocFree.txt");
 		}
 
 		[Test]
         [Category(Categories.IntegrationTests)]
 		public void RwFrame32()
 		{
-			RunTest("Fragments/multiple/frame32.asm", "Intel/RwFrame32.txt");
+			RunTest("Fragments/multiple/frame32.asm", "Arch/X86/RwFrame32.txt");
 		}
 
 		[Test]
         [Category(Categories.IntegrationTests)]
         public void RwFtol()
 		{
-			RunTest("Fragments/import32/ftol.asm", "Intel/RwFtol.txt");
+			RunTest("Fragments/import32/ftol.asm", "Arch/X86/RwFtol.txt");
 		}
 
 		[Test]
         [Category(Categories.IntegrationTests)]
 		public void RwGlobalHandle()
 		{
-			RunTest("Fragments/import32/GlobalHandle.asm", "Intel/RwGlobalHandle.txt");
+			RunTest("Fragments/import32/GlobalHandle.asm", "Arch/X86/RwGlobalHandle.txt");
 		}
 
 		[Test]
         [Category(Categories.IntegrationTests)]
 		public void RwLoopMalloc()
 		{
-			RunTest("Fragments/import32/loopmalloc.asm", "Intel/RwLoopMalloc.txt");
+			RunTest("Fragments/import32/loopmalloc.asm", "Arch/X86/RwLoopMalloc.txt");
 		}
 
 		[Test]
         [Category(Categories.IntegrationTests)]
 		public void RwLoopGetDC()
 		{
-			RunTest("Fragments/import32/loop_GetDC.asm", "Intel/RwLoopGetDC.txt");
+			RunTest("Fragments/import32/loop_GetDC.asm", "Arch/X86/RwLoopGetDC.txt");
 		}
 
 		[Test]
         [Category(Categories.IntegrationTests)]
         public void RwReg00004()
 		{
-			RunTest("Fragments/regressions/r00004.asm", "Intel/RwReg00004.txt");
+			RunTest("Fragments/regressions/r00004.asm", "Arch/X86/RwReg00004.txt");
 		}
 
 		[Test]
 		public void RwReg00006()
 		{
-			RunTest("Fragments/regressions/r00006.asm", "Intel/RwReg00006.txt");
+			RunTest("Fragments/regressions/r00006.asm", "Arch/X86/RwReg00006.txt");
 		}
 
 		[Test]
 		public void RwSwitch32()
 		{
-			RunTest("Fragments/switch32.asm", "Intel/RwSwitch32.txt");
+			RunTest("Fragments/switch32.asm", "Arch/X86/RwSwitch32.txt");
 		}
 
         [Test]
         public void RwSwitchReg00001()
         {
-            RunTest("Fragments/switch_reg00001.asm", "Intel/RwSwitchReg00001.txt");
+            RunTest("Fragments/switch_reg00001.asm", "Arch/X86/RwSwitchReg00001.txt");
         }
 
         [Test]
         public void RwNotFoundImport()
         {
-            RunTest("Fragments/import32/not_found_import.asm", "Intel/RwNotFoundImport.txt");
+            RunTest("Fragments/import32/not_found_import.asm", "Arch/X86/RwNotFoundImport.txt");
             Assert.AreEqual(
                 "WarningDiagnostic - 10000014 - Unable to guess parameters of msvcrt!_not_found_import.",
                 eventListener.LastDiagnostic);

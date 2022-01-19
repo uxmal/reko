@@ -20,7 +20,7 @@
 
 using Reko.Core;
 using Reko.Core.Analysis;
-using Reko.Core.CLanguage;
+using Reko.Core.Hll.C;
 using Reko.Core.Services;
 using Reko.Core.Types;
 using System;

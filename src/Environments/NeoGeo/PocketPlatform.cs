@@ -20,7 +20,7 @@
 
 using Reko.Arch.Tlcs;
 using Reko.Core;
-using Reko.Core.CLanguage;
+using Reko.Core.Hll.C;
 using Reko.Core.Rtl;
 using System;
 using System.Collections.Generic;

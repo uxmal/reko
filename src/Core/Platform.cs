@@ -18,7 +18,7 @@
  */
 #endregion
 
-using Reko.Core.CLanguage;
+using Reko.Core.Hll.C;
 using Reko.Core.Configuration;
 using Reko.Core.Emulation;
 using Reko.Core.Expressions;

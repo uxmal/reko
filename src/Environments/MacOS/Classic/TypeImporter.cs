@@ -21,13 +21,13 @@
 using System;
 using System.Collections.Generic;
 using Reko.Core;
-using Reko.Core.Pascal;
+using Reko.Core.Hll.Pascal;
 using Reko.Core.Serialization;
 using System.Linq;
 using Reko.Core.Expressions;
 using Reko.Core.Types;
 using System.Diagnostics;
-using TypeSizer = Reko.Core.CLanguage.TypeSizer;
+using TypeSizer = Reko.Core.Hll.C.TypeSizer;
 
 namespace Reko.Environments.MacOS.Classic
 {
@@ -57,14 +57,14 @@ namespace Reko.Environments.MacOS.Classic
             this.pascalTypes = null!;
         }
 
-        public SerializedType VisitArrayType(Core.Pascal.Array array)
+        public SerializedType VisitArrayType(Core.Hll.Pascal.Array array)
         {
             var dt = array.ElementType.Accept(this);
             foreach (var dim in array.Dimensions)
             {
                 if (dim.Low is Id loId && pascalTypes.TryGetValue(loId.Name, out PascalType dtLo))
                 {
-                    if (dtLo is Core.Pascal.EnumType et)
+                    if (dtLo is Core.Hll.Pascal.EnumType et)
                     {
                         dt = new ArrayType_v1
                         {
@@ -199,7 +199,7 @@ namespace Reko.Environments.MacOS.Classic
             throw new NotImplementedException();
         }
 
-        public SerializedType VisitEnumType(Core.Pascal.EnumType enumType)
+        public SerializedType VisitEnumType(Core.Hll.Pascal.EnumType enumType)
         {
             return new SerializedEnumType
             {
@@ -209,7 +209,7 @@ namespace Reko.Environments.MacOS.Classic
             };
         }
 
-        public SerializedType VisitFile(Core.Pascal.File file)
+        public SerializedType VisitFile(Core.Hll.Pascal.File file)
         {
             return new PrimitiveType_v1
             {
@@ -242,7 +242,7 @@ namespace Reko.Environments.MacOS.Classic
             };
         }
 
-        public SerializedType VisitPointerType(Core.Pascal.Pointer pointer)
+        public SerializedType VisitPointerType(Core.Hll.Pascal.Pointer pointer)
         {
             var dt = pointer.pointee.Accept(this);
             return new PointerType_v1 { DataType = dt, PointerSize = 4 };
@@ -322,7 +322,7 @@ namespace Reko.Environments.MacOS.Classic
             };
         }
 
-        private IEnumerable<StructField_v1> VisitFields(List<Core.Pascal.Field> fields)
+        private IEnumerable<StructField_v1> VisitFields(List<Core.Hll.Pascal.Field> fields)
         {
             var result = new List<StructField_v1>();
             foreach (var recfield in fields)
@@ -377,7 +377,7 @@ namespace Reko.Environments.MacOS.Classic
             throw new NotImplementedException();
         }
 
-        public SerializedType VisitStringType(Core.Pascal.StringType strType)
+        public SerializedType VisitStringType(Core.Hll.Pascal.StringType strType)
         {
             return new StringType_v2
             {
@@ -393,7 +393,7 @@ namespace Reko.Environments.MacOS.Classic
             return typedef;
         }
 
-        public SerializedType VisitTypeReference(Core.Pascal.TypeReference typeref)
+        public SerializedType VisitTypeReference(Core.Hll.Pascal.TypeReference typeref)
         {
             return new TypeReference_v1(typeref.TypeName);
         }

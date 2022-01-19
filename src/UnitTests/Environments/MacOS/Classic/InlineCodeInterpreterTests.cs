@@ -20,7 +20,7 @@
 
 using NUnit.Framework;
 using Reko.Core.Expressions;
-using Reko.Core.Pascal;
+using Reko.Core.Hll.Pascal;
 using Reko.Core.Serialization;
 using Reko.Core.Types;
 using Reko.Environments.MacOS.Classic;

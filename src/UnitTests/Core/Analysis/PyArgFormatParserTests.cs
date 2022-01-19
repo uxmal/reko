@@ -21,7 +21,7 @@
 using Moq;
 using NUnit.Framework;
 using Reko.Core;
-using Reko.Core.CLanguage;
+using Reko.Core.Hll.C;
 using Reko.Core.Types;
 using Reko.Libraries.Python;
 

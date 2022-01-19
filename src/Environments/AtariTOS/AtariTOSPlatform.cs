@@ -25,7 +25,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Reko.Core.CLanguage;
+using Reko.Core.Hll.C;
 using Reko.Core.Serialization;
 using Reko.Core.Types;
 using Reko.Core.Emulation;

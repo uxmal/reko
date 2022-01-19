@@ -23,7 +23,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Reko.Core;
 using Reko.Core.Analysis;
-using Reko.Core.CLanguage;
+using Reko.Core.Hll.C;
 using Reko.Core.Code;
 using Reko.Core.Expressions;
 using Reko.Core.Serialization;
