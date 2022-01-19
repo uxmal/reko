@@ -5,11 +5,7 @@ using Reko.Core.Serialization.Json;
 using Reko.Core.Types;
 using Reko.UnitTests.Mocks;
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Reko.UnitTests.Core.Serialization.Json
 {
