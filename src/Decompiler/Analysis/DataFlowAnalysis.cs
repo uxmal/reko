@@ -19,9 +19,9 @@
 #endregion
 
 using Reko.Core;
-using Reko.Core.CLanguage;
 using Reko.Core.Code;
 using Reko.Core.Expressions;
+using Reko.Core.Hll.C;
 using Reko.Core.Lib;
 using Reko.Core.Output;
 using Reko.Core.Services;

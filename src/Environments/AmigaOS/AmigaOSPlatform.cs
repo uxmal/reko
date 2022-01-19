@@ -20,9 +20,9 @@
 
 using Reko.Arch.M68k;
 using Reko.Core;
-using Reko.Core.CLanguage;
 using Reko.Core.Configuration;
 using Reko.Core.Expressions;
+using Reko.Core.Hll.C;
 using Reko.Core.Operators;
 using Reko.Core.Rtl;
 using Reko.Core.Serialization;

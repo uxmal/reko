@@ -19,21 +19,20 @@
 #endregion
 
 using Reko.Core.Expressions;
+using Reko.Core.Hll.C;
+using Reko.Core.Lib;
+using Reko.Core.Loading;
 using Reko.Core.Machine;
-using Reko.Core.Types;
+using Reko.Core.Memory;
+using Reko.Core.Output;
 using Reko.Core.Serialization;
-using Reko.Core.CLanguage;
+using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Text;
-using System.Text.RegularExpressions;
-using Reko.Core.Lib;
-using Reko.Core.Output;
-using Reko.Core.Memory;
-using Reko.Core.Loading;
 
 namespace Reko.Core
 {

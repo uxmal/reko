@@ -85,7 +85,7 @@ namespace Reko.UnitTests.Gui.Forms
             uiSvc = AddService<IDecompilerShellUiService>();
             memSvc = AddService<ILowLevelViewService>();
 
-            decSvc.Decompiler = new Decompiler(project, sc);
+            decSvc.Decompiler = new Reko.Decompiler(project, sc);
 
             interactor = new ScannedPageInteractor(sc);
         }

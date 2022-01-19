@@ -21,14 +21,12 @@
 using Reko.Arch.M68k;
 using Reko.Core;
 using Reko.Core.Expressions;
-using Reko.Core.Pascal;
+using Reko.Core.Hll.Pascal;
 using Reko.Core.Serialization;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Reko.Environments.MacOS.Classic
 {

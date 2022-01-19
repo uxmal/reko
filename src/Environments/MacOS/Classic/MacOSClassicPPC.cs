@@ -20,7 +20,7 @@
 
 using Reko.Arch.PowerPC;
 using Reko.Core;
-using Reko.Core.CLanguage;
+using Reko.Core.Hll.C;
 using System;
 using System.Collections.Generic;
 using System.Linq;

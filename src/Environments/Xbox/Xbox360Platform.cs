@@ -20,7 +20,7 @@
 
 using Reko.Arch.PowerPC;
 using Reko.Core;
-using Reko.Core.CLanguage;
+using Reko.Core.Hll.C;
 using Reko.Core.Expressions;
 using Reko.Core.Rtl;
 using Reko.Core.Types;

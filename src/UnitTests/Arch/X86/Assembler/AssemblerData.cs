@@ -148,133 +148,133 @@ foo		endp
 		[Test]
 		public void AsAutoArray32()
 		{
-			RunTest("Fragments/autoarray32.asm", "Intel/AsAutoArray32.txt", Address.Ptr32(0x04000000));
+			RunTest("Fragments/autoarray32.asm", "Arch/X86/AsAutoArray32.txt", Address.Ptr32(0x04000000));
 		}
 
 		[Test]
 		public void AsFpuTest()
 		{
-			RunTest("Fragments/fpuops.asm", "Intel/AsFpuTest.txt", Address.SegPtr(0xC00, 0));
+			RunTest("Fragments/fpuops.asm", "Arch/X86/AsFpuTest.txt", Address.SegPtr(0xC00, 0));
 		}
 
 		[Test]
 		public void AsFpuReversibles()
 		{
-			RunTest("Fragments/fpureversibles.asm", "Intel/AsFpuReversibles.txt", Address.SegPtr(0xC00, 0));
+			RunTest("Fragments/fpureversibles.asm", "Arch/X86/AsFpuReversibles.txt", Address.SegPtr(0xC00, 0));
 		}
 
 		[Test]
 		public void AsFrame32()
 		{
-			RunTest("Fragments/multiple/frame32.asm", "Intel/AsFrame32.txt", Address.Ptr32(0x10000000));
+			RunTest("Fragments/multiple/frame32.asm", "Arch/X86/AsFrame32.txt", Address.Ptr32(0x10000000));
 		}
 
 		[Test]
 		public void AsSwitch32()
 		{
-			RunTest("Fragments/switch32.asm", "Intel/AsSwitch32.txt", Address.Ptr32(0x10000000));
+			RunTest("Fragments/switch32.asm", "Arch/X86/AsSwitch32.txt", Address.Ptr32(0x10000000));
 		}
 
 		[Test]
 		public void AsMem32()
 		{
-			RunTest("Fragments/mem32operations.asm", "Intel/AsMem32.txt", Address.Ptr32(0x20000000));
+			RunTest("Fragments/mem32operations.asm", "Arch/X86/AsMem32.txt", Address.Ptr32(0x20000000));
 		}
 
 		[Test]
 		public void AsVoidFunctions()
 		{
-			RunTest("Fragments/multiple/voidfunctions.asm", "Intel/AsVoidFunctions.txt", Address.SegPtr(0xC00, 0));
+			RunTest("Fragments/multiple/voidfunctions.asm", "Arch/X86/AsVoidFunctions.txt", Address.SegPtr(0xC00, 0));
 		}
 
 		[Test]
 		public void AsCallVector()
 		{
-			RunTest("Fragments/multiple/calltables.asm", "Intel/AsCallVector.txt", Address.SegPtr(0xB00, 0));
+			RunTest("Fragments/multiple/calltables.asm", "Arch/X86/AsCallVector.txt", Address.SegPtr(0xB00, 0));
 		}
 
 		[Test]
 		public void AsEnterLeave()
 		{
-			RunTest("Fragments/enterleave.asm", "Intel/AsEnterLeave.txt", Address.SegPtr(0xB00, 0));
+			RunTest("Fragments/enterleave.asm", "Arch/X86/AsEnterLeave.txt", Address.SegPtr(0xB00, 0));
 		}
 
 		[Test]
 		public void AsFpuArgs()
 		{
-			RunTest("Fragments/multiple/fpuArgs.asm", "Intel/AsFpuArgs.txt", Address.SegPtr(0xB00, 0));
+			RunTest("Fragments/multiple/fpuArgs.asm", "Arch/X86/AsFpuArgs.txt", Address.SegPtr(0xB00, 0));
 		}
 
 		[Test]
 		public void AsFpuComps()
 		{
-			RunTest("Fragments/fpucomps.asm", "Intel/AsFpuComps.txt", Address.SegPtr(0xB00, 0));
+			RunTest("Fragments/fpucomps.asm", "Arch/X86/AsFpuComps.txt", Address.SegPtr(0xB00, 0));
 		}
 
 		[Test]
 		public void AsReg00003()
 		{
-			RunTest("Fragments/regressions/r00003.asm", "Intel/AsReg00003.txt", Address.SegPtr(0xB00, 0));
+			RunTest("Fragments/regressions/r00003.asm", "Arch/X86/AsReg00003.txt", Address.SegPtr(0xB00, 0));
 		}
 
 		[Test]
 		public void AsReg00004()
 		{
-			RunTest("Fragments/regressions/r00004.asm", "Intel/AsReg00004.txt", Address.Ptr32(0x10000000));
+			RunTest("Fragments/regressions/r00004.asm", "Arch/X86/AsReg00004.txt", Address.Ptr32(0x10000000));
 		}
 
 		[Test]
 		public void AsReg00005()
 		{
-			RunTest("Fragments/regressions/r00005.asm", "Intel/AsReg00005.txt", Address.SegPtr(0x0B00, 0x0000));
+			RunTest("Fragments/regressions/r00005.asm", "Arch/X86/AsReg00005.txt", Address.SegPtr(0x0B00, 0x0000));
 		}
 
 		[Test]
 		public void AsReg00006()
 		{
-			RunTest("Fragments/regressions/r00006.asm", "Intel/AsReg00006.txt", Address.Ptr32(0x100048B0));
+			RunTest("Fragments/regressions/r00006.asm", "Arch/X86/AsReg00006.txt", Address.Ptr32(0x100048B0));
 		}
 
 		[Test]
 		public void AsPopNoPop()
 		{
-			RunTest("Fragments/multiple/popnopop.asm", "Intel/AsPopNoPop.txt", Address.SegPtr(0xB00, 0));
+			RunTest("Fragments/multiple/popnopop.asm", "Arch/X86/AsPopNoPop.txt", Address.SegPtr(0xB00, 0));
 		}
 
 		[Test]
 		public void AsPseudoprocs()
 		{
-			RunTest("Fragments/pseudoprocs.asm", "Intel/AsPseudoprocs.txt", Address.SegPtr(0xB00, 0));
+			RunTest("Fragments/pseudoprocs.asm", "Arch/X86/AsPseudoprocs.txt", Address.SegPtr(0xB00, 0));
 		}
 
 		[Test]
 		public void AsMemPreserve()
 		{
-			RunTest("Fragments/multiple/mempreserve.asm", "Intel/AsMemPreserve.txt", Address.SegPtr(0x0C00, 0));
+			RunTest("Fragments/multiple/mempreserve.asm", "Arch/X86/AsMemPreserve.txt", Address.SegPtr(0x0C00, 0));
 		}
 
 		[Test]
 		public void AsStackPointerMessing()
 		{
-			RunTest("Fragments/multiple/stackpointermessing.asm", "Intel/AsStackPointerMessing.txt", Address.SegPtr(0xB00, 0));
+			RunTest("Fragments/multiple/stackpointermessing.asm", "Arch/X86/AsStackPointerMessing.txt", Address.SegPtr(0xB00, 0));
 		}
 
 		[Test]
 		public void AsStringInstructions()
 		{
-			RunTest("Fragments/stringinstr.asm", "Intel/AsStringInstructions.txt", Address.SegPtr(0xB00, 0));
+			RunTest("Fragments/stringinstr.asm", "Arch/X86/AsStringInstructions.txt", Address.SegPtr(0xB00, 0));
 		}
 
 		[Test]
 		public void AsTestCondition()
 		{
-			RunTest("Fragments/setcc.asm", "Intel/AsTestCondition.txt", Address.SegPtr(0xB00, 0));
+			RunTest("Fragments/setcc.asm", "Arch/X86/AsTestCondition.txt", Address.SegPtr(0xB00, 0));
 		}
 
 		[Test]
 		public void AsLivenessAfterCall()
 		{
-			RunTest("Fragments/multiple/livenessaftercall.asm", "Intel/AsLivenessAfterCall.txt", Address.SegPtr(0xB00, 0));
+			RunTest("Fragments/multiple/livenessaftercall.asm", "Arch/X86/AsLivenessAfterCall.txt", Address.SegPtr(0xB00, 0));
 		}
 	}
 }

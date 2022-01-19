@@ -47,7 +47,7 @@ namespace Reko.UnitTests.Arch.X86
 		public void X86Rw_Switch()
 		{
 			DoRewriteFile("Fragments/switch.asm");
-			using (FileUnitTester fut = new FileUnitTester("Intel/RwSwitch.txt"))
+			using (FileUnitTester fut = new FileUnitTester("Arch/X86/RwSwitch.txt"))
 			{
 				program.Procedures.Values[0].Write(false, fut.TextWriter);
 			}
@@ -67,7 +67,7 @@ namespace Reko.UnitTests.Arch.X86
 	div cx
 	ret
 ");
-			using (FileUnitTester fut = new FileUnitTester("Intel/RwDivideTests.txt"))
+			using (FileUnitTester fut = new FileUnitTester("Arch/X86/RwDivideTests.txt"))
 			{
 				proc.Write(false, fut.TextWriter);
 				fut.AssertFilesEqual();
@@ -78,7 +78,7 @@ namespace Reko.UnitTests.Arch.X86
 		public void X86Rw_MemOperations()
 		{
 			DoRewriteFile("Fragments/memoperations.asm");
-			using (FileUnitTester fut = new FileUnitTester("Intel/RwMemOperations.txt"))
+			using (FileUnitTester fut = new FileUnitTester("Arch/X86/RwMemOperations.txt"))
 			{
 				program.Procedures.Values[0].Write(false, fut.TextWriter);
 				fut.AssertFilesEqual();
@@ -89,7 +89,7 @@ namespace Reko.UnitTests.Arch.X86
 		public void X86Rw_CallTable()
 		{
 			DoRewriteFile("Fragments/multiple/calltables.asm");
-			using (FileUnitTester fut = new FileUnitTester("Intel/RwCallTable.txt"))
+			using (FileUnitTester fut = new FileUnitTester("Arch/X86/RwCallTable.txt"))
 			{
 				Dumper dump = new Dumper(program);
 				dump.Dump(new TextFormatter(fut.TextWriter));
@@ -103,85 +103,85 @@ namespace Reko.UnitTests.Arch.X86
 		[Test]
 		public void X86Rw_StackVariables()
 		{
-			RunTest("Fragments/stackvars.asm", "Intel/RwStackVariables.txt");
+			RunTest("Fragments/stackvars.asm", "Arch/X86/RwStackVariables.txt");
 		}
 
 		[Test]
 		public void X86Rw_Duff()
 		{
-			RunTest("Fragments/duffs_device.asm", "Intel/RwDuff.txt");
+			RunTest("Fragments/duffs_device.asm", "Arch/X86/RwDuff.txt");
 		}
 
 		[Test]
 		public void X86Rw_Factorial()
 		{
-			RunTest("Fragments/factorial.asm", "Intel/RwFactorial.txt");
+			RunTest("Fragments/factorial.asm", "Arch/X86/RwFactorial.txt");
 		}
 
 		[Test]
 		public void X86Rw_Loopne()
 		{
-			RunTest("Fragments/loopne.asm", "Intel/RwLoopne.txt");
+			RunTest("Fragments/loopne.asm", "Arch/X86/RwLoopne.txt");
 		}
 
 		[Test]
 		public void X86Rw_InterprocedureJump()
 		{
-			RunTest("Fragments/multiple/jumpintoproc.asm", "Intel/RwInterprocedureJump.txt");
+			RunTest("Fragments/multiple/jumpintoproc.asm", "Arch/X86/RwInterprocedureJump.txt");
 		}
 
 		[Test]
 		public void X86Rw_PopNoPop()
 		{
-			RunTest("Fragments/multiple/popnopop.asm", "Intel/RwPopNoPop.txt");
+			RunTest("Fragments/multiple/popnopop.asm", "Arch/X86/RwPopNoPop.txt");
 		}
 
 		[Test]
 		public void X86Rw_Multiplication()
 		{
-			RunTest("Fragments/multiplication.asm", "Intel/RwMultiplication.txt");
+			RunTest("Fragments/multiplication.asm", "Arch/X86/RwMultiplication.txt");
 		}
 
 		[Test]
 		public void X86Rw_StackPointerMessing()
 		{
-			RunTest("Fragments/multiple/stackpointermessing.asm", "Intel/RwStackPointerMessing.txt");
+			RunTest("Fragments/multiple/stackpointermessing.asm", "Arch/X86/RwStackPointerMessing.txt");
 		}
 
 		[Test]
 		public void X86Rw_StringInstructions()
 		{
-			RunTest("Fragments/stringinstr.asm", "Intel/RwStringInstructions.txt");
+			RunTest("Fragments/stringinstr.asm", "Arch/X86/RwStringInstructions.txt");
 		}
 
 		[Test]
 		public void X86Rw_TestCondition()
 		{
-			RunTest("Fragments/setcc.asm", "Intel/RwTestCondition.txt");
+			RunTest("Fragments/setcc.asm", "Arch/X86/RwTestCondition.txt");
 		}
 
 		[Test]
 		public void X86Rw_CopyFile()
 		{
-			RunTest("Fragments/copy_file.asm", "Intel/RwCopyFile.txt");
+			RunTest("Fragments/copy_file.asm", "Arch/X86/RwCopyFile.txt");
 		}
 
 		[Test]
 		public void X86Rw_ReadFile()
 		{
-			RunTest("Fragments/multiple/read_file.asm", "Intel/RwReadFile.txt");
+			RunTest("Fragments/multiple/read_file.asm", "Arch/X86/RwReadFile.txt");
 		}
 
 		[Test]
 		public void X86Rw_ProcIsolation()
 		{
-			RunTest("Fragments/multiple/procisolation.asm", "Intel/RwProcIsolation.txt");
+			RunTest("Fragments/multiple/procisolation.asm", "Arch/X86/RwProcIsolation.txt");
 		}
 
         [Test]
         public void X86Rw_IntraSegmentFarCall()
         {
-            RunTest("Fragments/multiple/intrasegmentfarcall.asm", "Intel/RwIntraSegmentFarCall.txt");
+            RunTest("Fragments/multiple/intrasegmentfarcall.asm", "Arch/X86/RwIntraSegmentFarCall.txt");
         }
 	}
 }

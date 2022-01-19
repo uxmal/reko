@@ -32,7 +32,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Reko.UnitTests.Analysis
+namespace Reko.UnitTests.Decompiler.Analysis
 {
     [TestFixture]
     public class JsonProjectSerializerTests

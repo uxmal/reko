@@ -54,7 +54,7 @@ namespace Reko.Analysis
     /// </summary>
     public class ProjectionPropagator : InstructionTransformer
     {
-        private static readonly TraceSwitch trace = new TraceSwitch("ProjectionPropagator", "Traces projection propagator") { Level = TraceLevel.Verbose };
+        private static readonly TraceSwitch trace = new TraceSwitch(nameof(ProjectionPropagator), "Traces projection propagator") { Level = TraceLevel.Verbose };
 
         private readonly SegmentedAccessClassifier sac;
         private readonly SsaState ssa;
@@ -337,14 +337,14 @@ namespace Reko.Analysis
                     sid.Uses.Remove(this.Statement);
                 }
                 var totalSliceSize = slices.Sum(s => s.DataType.BitSize);
-                var totalSliceOffset = slices[slices.Length - 1].Offset;
+                var totalSliceOffset = slices[^1].Offset;
                 var expWide = slices[0].Expression;
                 var ua = new InstructionUseAdder(this.Statement, ssa.Identifiers);
                 expWide.Accept(ua);
                 if (expWide is Identifier idWide)
                 {
                     if ((int) idWide.Storage.BitAddress == totalSliceOffset &&
-                    (int) idWide.Storage.BitSize == totalSliceSize)
+                        (int) idWide.Storage.BitSize == totalSliceSize)
                     {
                         return idWide;
                     }

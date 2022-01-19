@@ -19,7 +19,7 @@
 #endregion
 
 using Reko.Core;
-using Reko.Core.CLanguage;
+using Reko.Core.Hll.C;
 using Reko.Core.Emulation;
 using Reko.Core.Expressions;
 using Reko.Core.Memory;

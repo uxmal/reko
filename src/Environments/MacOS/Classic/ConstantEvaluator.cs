@@ -19,14 +19,11 @@
 #endregion
 
 using Reko.Core.Expressions;
+using Reko.Core.Hll.Pascal;
 using Reko.Core.Operators;
-using Reko.Core.Pascal;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Reko.Environments.MacOS.Classic
 {
@@ -41,7 +38,7 @@ namespace Reko.Environments.MacOS.Classic
             this.evaluated = evaluated;
         }
 
-        public Constant VisitArrayType(Core.Pascal.Array array)
+        public Constant VisitArrayType(Core.Hll.Pascal.Array array)
         {
             throw new NotImplementedException();
         }
@@ -84,12 +81,12 @@ namespace Reko.Environments.MacOS.Classic
             throw new NotImplementedException();
         }
 
-        public Constant VisitEnumType(Core.Pascal.EnumType enumType)
+        public Constant VisitEnumType(Core.Hll.Pascal.EnumType enumType)
         {
             throw new NotImplementedException();
         }
 
-        public Constant VisitFile(Core.Pascal.File file)
+        public Constant VisitFile(Core.Hll.Pascal.File file)
         {
             throw new NotImplementedException();
         }
@@ -129,12 +126,12 @@ namespace Reko.Environments.MacOS.Classic
         {
             return Constant.Create(PrimitiveType.Int64, number.Value);
         }
-        public Constant VisitPointerType(Core.Pascal.Pointer pointer)
+        public Constant VisitPointerType(Core.Hll.Pascal.Pointer pointer)
         {
             throw new NotImplementedException();
         }
 
-        public Constant VisitObject(Core.Pascal.ObjectType pointer)
+        public Constant VisitObject(Core.Hll.Pascal.ObjectType pointer)
         {
             throw new NotImplementedException();
         }
@@ -169,7 +166,7 @@ namespace Reko.Environments.MacOS.Classic
             return Constant.String(str.String, Core.Types.StringType.LengthPrefixedStringType(PrimitiveType.Char, PrimitiveType.Byte));
         }
 
-        public Constant VisitStringType(Core.Pascal.StringType strType)
+        public Constant VisitStringType(Core.Hll.Pascal.StringType strType)
         {
             throw new NotImplementedException();
         }
@@ -179,7 +176,7 @@ namespace Reko.Environments.MacOS.Classic
             throw new NotImplementedException();
         }
 
-        public Constant VisitTypeReference(Core.Pascal.TypeReference typeref)
+        public Constant VisitTypeReference(Core.Hll.Pascal.TypeReference typeref)
         {
             throw new NotImplementedException();
         }

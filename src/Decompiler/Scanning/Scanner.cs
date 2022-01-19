@@ -19,7 +19,7 @@
 #endregion
 
 using Reko.Core;
-using UserSignatureBuilder = Reko.Core.CLanguage.UserSignatureBuilder;
+using UserSignatureBuilder = Reko.Core.Hll.C.UserSignatureBuilder;
 using Reko.Core.Code;
 using Reko.Core.Configuration;
 using Reko.Core.Expressions;

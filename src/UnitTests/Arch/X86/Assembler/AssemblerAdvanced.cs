@@ -31,31 +31,31 @@ namespace Reko.UnitTests.Arch.X86.Assembler
 		[Test]
 		public void AsAlloca()
 		{
-			RunTest("Fragments/multiple/alloca.asm", "Intel/AsAlloca.txt", Address.SegPtr(0x0B00, 0x100)); 
+			RunTest("Fragments/multiple/alloca.asm", "Arch/X86/AsAlloca.txt", Address.SegPtr(0x0B00, 0x100)); 
 		}
 
 		[Test]
 		public void AsImports()
 		{
-			RunTest("Fragments/import32/mallocfree.asm", "Intel/AsImports.txt", Address.Ptr32(0x10000000)); 
+			RunTest("Fragments/import32/mallocfree.asm", "Arch/X86/AsImports.txt", Address.Ptr32(0x10000000)); 
 		}
 
 		[Test]
 		public void AsLoopMalloc()
 		{
-			RunTest("Fragments/import32/loopmalloc.asm", "Intel/AsLoopMalloc.txt", Address.Ptr32(0x10000000)); 
+			RunTest("Fragments/import32/loopmalloc.asm", "Arch/X86/AsLoopMalloc.txt", Address.Ptr32(0x10000000)); 
 		}
 
 		[Test]
 		public void AsDuff()
 		{
-			RunTest("Fragments/duffs_device.asm", "Intel/AsDuff.txt", Address.SegPtr(0x0C00, 0x0100)); 
+			RunTest("Fragments/duffs_device.asm", "Arch/X86/AsDuff.txt", Address.SegPtr(0x0C00, 0x0100)); 
 		}
 
 		[Test]
 		public void AsMscOutput()
 		{
-			RunTest("Fragments/msc_output.asm", "Intel/AsMscOutput.txt", Address.Ptr32(0x10000100)); 
+			RunTest("Fragments/msc_output.asm", "Arch/X86/AsMscOutput.txt", Address.Ptr32(0x10000100)); 
 		}
 	}
 }

@@ -34,8 +34,8 @@ namespace Reko.Analysis
     /// </summary>
     public class SsaMutator
     {
-        private SsaState ssa;
-        private ExpressionEmitter m;
+        private readonly SsaState ssa;
+        private readonly ExpressionEmitter m;
 
         public SsaMutator(SsaState ssa)
         {
@@ -44,7 +44,7 @@ namespace Reko.Analysis
         }
 
         /// <summary>
-        /// Generates a "by-pass" of a register around a Call instruction.
+        /// Generates a "by-pass" of a register around a <see cref="CallInstruction"/>.
         /// </summary>
         /// <remarks>
         /// If we know that a particular register is incremented/decremented
@@ -64,9 +64,6 @@ namespace Reko.Analysis
         ///     uses: SP_42, [other registers]
         ///     defs: [other registers]
         /// SP_94 = SP_42 + 2
-        /// //$TODO: this really belongs in a CallRewriter type class,
-        /// but because the `master` and the `analysis-development` branches
-        /// are out of sync, we put it in this class instead.
         /// </remarks>
         /// <param name="stm">The Statement containing the CallInstruction.</param>
         /// <param name="call">The CallInstruction.</param>
@@ -82,17 +79,16 @@ namespace Reko.Analysis
             var defRegBinding = call.Definitions.Where(
                 u => u.Storage == register)
                 .FirstOrDefault();
-            if (defRegBinding == null)
+            if (defRegBinding is null)
                 return;
-            var defRegId = defRegBinding.Expression as Identifier;
-            if (defRegId == null)
+            if (defRegBinding.Expression is not Identifier defRegId)
                 return;
             var usedRegExp = call.Uses
                 .Where(u => u.Storage == register)
                 .Select(u => u.Expression)
                 .FirstOrDefault();
 
-            if (usedRegExp == null)
+            if (usedRegExp is null)
                 return;
             var src = m.AddSubSignedInt(usedRegExp, delta);
             // Generate a statement that adjusts the register according to
@@ -122,17 +118,22 @@ namespace Reko.Analysis
         }
 
         /// <summary>
-        /// Inserts an assignment statement into a <see cref="Block" /> after the statement <paramref name="stmAfter"/>.
+        /// Inserts an assignment statement into a <see cref="Block" /> after
+        /// the statement <paramref name="stmAfter"/>.
         /// </summary>
         /// <remarks>
-        /// The method generates an <see cref="SsaIdentifier"/> from the the supplied identifier <paramref name="dst"/>,
-        /// creates an <see cref="Assignment"/> from the source expression <paramref name="src"/> to the new SSA Identifier, 
-        /// and inserts the resulting Assignment after the statement <paramref name="stmAfter"/>.
+        /// The method generates an <see cref="SsaIdentifier"/> from the the
+        /// supplied identifier <paramref name="dst"/>, creates an <see cref="Assignment"/>
+        /// from the source expression <paramref name="src"/> to the new SSA
+        /// Identifier, and inserts the resulting Assignment after the
+        /// statement <paramref name="stmAfter"/>.
         /// </remarks>
         /// <param name="instr"><see cref="Instruction"/> to insert.</param>
-        /// <param name="stmAfter">The <see cref="Statement"/> after which to insert the 
-        /// instruction.</param>
-        /// <returns>The <see cref="SsaIdentifier"/> of the newly inserted assignment.</returns>
+        /// <param name="stmAfter">The <see cref="Statement"/> after which to
+        /// insert the instruction.</param>
+        /// <returns>The <see cref="SsaIdentifier"/> of the newly inserted
+        /// assignment.
+        /// </returns>
         public SsaIdentifier InsertAssignmentAfter(Identifier dst, Expression src, Statement stmAfter)
         {
             var stmts = stmAfter.Block.Statements;
@@ -145,17 +146,21 @@ namespace Reko.Analysis
         }
 
         /// <summary>
-        /// Inserts an assignment <see cref="Block" /> before the statement <paramref name="stmBefore"/>.
+        /// Inserts an assignment <see cref="Block" /> before the statement
+        /// <paramref name="stmBefore"/>.
         /// </summary>
         /// <remarks>
-        /// The method generates an <see cref="SsaIdentifier"/> from the the supplied identifier <paramref name="dst"/>,
-        /// creates an <see cref="Assignment"/> from the source expression <paramref name="src"/> to the new SSA Identifier, 
-        /// and inserts the resulting Assignment before the given statement <paramref name="stmBefore"/>.
+        /// The method generates an <see cref="SsaIdentifier"/> from the the
+        /// supplied identifier <paramref name="dst"/>, creates an <see cref="Assignment"/>
+        /// from the source expression<paramref name="src"/> to the new SSA
+        /// Identifier, and inserts the resulting Assignment before the given
+        /// statement <paramref name="stmBefore"/>.
         /// </remarks>
         /// <param name="instr"><see cref="Instruction"/> to insert.</param>
-        /// <param name="stmBefore">The <see cref="Statement"/> before which to insert the 
-        /// instruction.</param>
-        /// <returns>The <see cref="SsaIdentifier"/> of the newly inserted assignment.</returns>
+        /// <param name="stmBefore">The <see cref="Statement"/> before which
+        /// to insert the instruction.</param>
+        /// <returns>The <see cref="SsaIdentifier"/> of the newly inserted
+        /// assignment.</returns>
         public SsaIdentifier InsertAssignmentBefore(Identifier dst, Expression src, Statement stmBefore)
         {
             var stmts = stmBefore.Block.Statements;
@@ -168,15 +173,15 @@ namespace Reko.Analysis
         }
 
         /// <summary>
-        /// After CallInstruction to Application rewriting some identifiers
-        /// defined in CallInstruction can become undefined. Create
-        /// '<id> = Constant.Invalid' instruction for each of undefined
-        /// identifier to avoid losing information about their place of
-        /// definition. Normally these instruction should be eliminated as
-        /// 'dead' code. If they are not then it means that there are uses of
-        /// <id> after call. So signanture of Application is incorrect.
-        /// Assignment to 'Constant.Invalid' is good way to draw attention of
-        /// user and developer.
+        /// After rewriting <see cref="CallInstruction"/>s to <see cref="Application"/>s,
+        /// some identifiers defined in CallInstruction can become undefined.
+        /// This method creates an '<id> = Constant.Invalid' instruction for
+        /// each of undefined identifiers to avoid losing information about
+        /// their place of definition. Normally these instruction should be
+        /// eliminated as'dead' code. If they are not then it means that there
+        /// are uses of <id> after the call. This implies the signanture of 
+        /// the Application is incorrect. An assignment to an <see cref="InvalidConstant"/>
+        /// is good way to draw attention of user and developer.
         /// </summary>
         public void DefineUninitializedIdentifiers(
             Statement stm,
@@ -211,6 +216,13 @@ namespace Reko.Analysis
             DefineUninitializedIdentifiers(stm, call);
         }
 
+        /// <summary>
+        /// Given the SSA identifier <paramref name="sid"/>, replaces its 
+        /// definition with the assignment <paramref name="ass"/>.
+        /// </summary>
+        /// <param name="sid">SSA identifier whose definition is to be
+        /// replaced.</param>
+        /// <param name="ass">The new definition.</param>
         public void ReplaceAssigment(SsaIdentifier sid, Assignment ass)
         {
             var stm = sid.DefStatement!;

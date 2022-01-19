@@ -199,7 +199,7 @@ join:
 		{
 			DoRewriteFile("Fragments/small_loop.asm");
 			Procedure proc = program.Procedures.Values[0];
-			using (FileUnitTester fut = new FileUnitTester("Intel/RwDeadConditionals.txt"))
+			using (FileUnitTester fut = new FileUnitTester("Arch/X86/RwDeadConditionals.txt"))
 			{
 				proc.Write(true, fut.TextWriter);
 				fut.AssertFilesEqual();
@@ -212,7 +212,7 @@ join:
 		{
 			DoRewriteFile("Fragments/pseudoprocs.asm");
 			Procedure proc = program.Procedures.Values[0];
-			using (FileUnitTester fut = new FileUnitTester("Intel/RwPseudoProcs.txt"))
+			using (FileUnitTester fut = new FileUnitTester("Arch/X86/RwPseudoProcs.txt"))
 			{
 				proc.Write(true, fut.TextWriter);
 				fut.AssertFilesEqual();
@@ -222,67 +222,67 @@ join:
 		[Test]
 		public void RwAddSubCarries()
 		{
-			RunTest("Fragments/addsubcarries.asm", "Intel/RwAddSubCarries.txt");
+			RunTest("Fragments/addsubcarries.asm", "Arch/X86/RwAddSubCarries.txt");
 		}
 
 		[Test]
 		public void RwLongAddSub()
 		{
-			RunTest("Fragments/longaddsub.asm", "Intel/RwLongAddSub.txt");
+			RunTest("Fragments/longaddsub.asm", "Arch/X86/RwLongAddSub.txt");
 		}
 
 		[Test]
 		public void RwEnterLeave()
 		{
-			RunTest("Fragments/enterleave.asm", "Intel/RwEnterLeave.txt");
+			RunTest("Fragments/enterleave.asm", "Arch/X86/RwEnterLeave.txt");
 		}
 
 		[Test]
 		public void RwReg00003()
 		{
-			RunTest("Fragments/regressions/r00003.asm", "Intel/RwReg00003.txt");
+			RunTest("Fragments/regressions/r00003.asm", "Arch/X86/RwReg00003.txt");
 		}
 
 		[Test]
 		public void RwReg00005()
 		{
-			RunTest("Fragments/regressions/r00005.asm", "Intel/RwReg00005.txt");
+			RunTest("Fragments/regressions/r00005.asm", "Arch/X86/RwReg00005.txt");
 		}
 
 		[Test]
 		public void RwSequenceShifts()
 		{
-			RunTest("Fragments/sequenceshift.asm", "Intel/RwSequenceShifts.txt");
+			RunTest("Fragments/sequenceshift.asm", "Arch/X86/RwSequenceShifts.txt");
 		}
 
 		[Test]
 		public void RwLogical()
 		{
-			RunTest("Fragments/logical.asm", "Intel/RwLogical.txt");
+			RunTest("Fragments/logical.asm", "Arch/X86/RwLogical.txt");
 		}
 
 		[Test]
 		public void RwNegsNots()
 		{
-			RunTest("Fragments/negsnots.asm", "Intel/RwNegsNots.txt");
+			RunTest("Fragments/negsnots.asm", "Arch/X86/RwNegsNots.txt");
 		}
 
 		[Test]
 		public void RwFpuArgs()
 		{
-			RunTest("Fragments/multiple/fpuArgs.asm", "Intel/RwFpuArgs.txt");
+			RunTest("Fragments/multiple/fpuArgs.asm", "Arch/X86/RwFpuArgs.txt");
 		}
 
 		[Test]
 		public void RwFpuOps()
 		{
-			RunTest("Fragments/fpuops.asm", "Intel/RwFpuOps.txt");
+			RunTest("Fragments/fpuops.asm", "Arch/X86/RwFpuOps.txt");
 		}
 
 		[Test]
 		public void RwFpuReversibles()
 		{
-			RunTest("Fragments/fpureversibles.asm", "Intel/RwFpuReversibles.txt");
+			RunTest("Fragments/fpureversibles.asm", "Arch/X86/RwFpuReversibles.txt");
 		}
 
 		private void RunTest(string sourceFile, string outputFile)
@@ -302,13 +302,13 @@ join:
         [Test]
         public void RwEvenOdd()
         {
-            RunTest("Fragments/multiple/even_odd.asm", "Intel/RwEvenOdd.txt");
+            RunTest("Fragments/multiple/even_odd.asm", "Arch/X86/RwEvenOdd.txt");
         }
 
         [Test]
         public void RwPushPop()
         {
-            RunTest("Fragments/pushpop.asm", "Intel/RwPushPop.txt");
+            RunTest("Fragments/pushpop.asm", "Arch/X86/RwPushPop.txt");
         }
 	}
 }
