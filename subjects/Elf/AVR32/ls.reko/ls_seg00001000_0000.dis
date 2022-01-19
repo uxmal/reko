@@ -10532,7 +10532,7 @@ l00009800:
 	r8_910 = CONVERT(SLICE(r8_906, byte, 0), byte, word32)
 l000097C8:
 	word64 r11_r10_1116 = (Mem886[sp_1018 + 0x2C<32>:word32] & 1<32>) + r4_180
-	r8_910 = CONVERT(CONVERT((SLICE(r11_r10_1116, word32, 32) | SLICE(r11_r10_1116, word32, 0)) != 0<32>, bool, word32) + r3_364 > 5<32>, bool, word32)
+	r8_910 = CONVERT(CONVERT(r11_r10_1116 != 0<32>, bool, word32) + r3_364 > 5<32>, bool, word32)
 l00009802:
 	branch r8_910 == 0<32> l0000985E
 l00009806:

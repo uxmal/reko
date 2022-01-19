@@ -555,6 +555,9 @@ namespace Reko.Evaluation
                     return (new BinaryExpression(binExp.Operator, PrimitiveType.Bool, binLeft.Left, c), true);
                 }
             }
+            var dwordIdiom = UnfoldDwordIdiom(binExp);
+            if (dwordIdiom is not null)
+                return (dwordIdiom, true);
 
             // (rel C non-C) => (trans(rel) non-C C)
             if (constOnLeft.Match(binExp))
@@ -599,6 +602,63 @@ namespace Reko.Evaluation
                 return (logicalNotFromBorrow.Transform(), true);
             }
             return (binExp, changed);
+        }
+
+        /// <summary>
+        /// Real mode x86 has an idiom for comparing dx:ax with zero:
+        ///     or dx,ax
+        /// which sets the Z flag if both ax and dx are zero.
+        /// This gets translated by the x86 rewriter, and stages of
+        /// the data flow analysis to:
+        ///     SLICE(dx_ax, 16) | SLICE(dx_ax, 0) == 0
+        /// We "unfold" this to
+        ///     dx_ax == 0
+        /// </summary>
+        private Expression? UnfoldDwordIdiom(BinaryExpression binExp)
+        {
+            (BinaryExpression?,Slice?,Slice?) MatchOr(Expression left, Expression right)
+            {
+                if (right is Constant cRight && cRight.IsIntegerZero &&
+                    left is BinaryExpression binLeft &&
+                    binLeft.Operator == Operator.Or)
+                {
+                    var leftSlice = AsSlice(binLeft.Left);
+                    var rightSlice = AsSlice(binLeft.Right);
+                    if (leftSlice is not null && rightSlice is not null)
+                    {
+                        return (binLeft, leftSlice, rightSlice);
+                    }
+                }
+                return (null, null, null);
+            }
+
+            if (binExp.Operator != Operator.Eq && binExp.Operator != Operator.Ne)
+                return null;
+            var (or, left, right) = MatchOr(binExp.Left, binExp.Right);
+            if (or is null)
+            {
+                (or, left, right) = MatchOr(binExp.Right, binExp.Left);
+                if (or is null)
+                    return null;
+            }
+            var leftSize = left!.DataType.BitSize;
+            var rightSize = right!.DataType.BitSize;
+
+            if (left.Expression == right.Expression &&
+                leftSize + rightSize == left.Expression.DataType.BitSize && 
+                (left.Offset == right.DataType.BitSize ||
+                 right.Offset == left.DataType.BitSize))
+            {
+                return new BinaryExpression(
+                    binExp.Operator,
+                    binExp.DataType,
+                    left.Expression,
+                    binExp.Right);
+            }
+            else
+            {
+                return null;
+            }
         }
 
         private (Expression, bool) PreVisitBinaryExpression(BinaryExpression binExp)
