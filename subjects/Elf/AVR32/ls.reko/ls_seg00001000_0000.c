@@ -9126,7 +9126,7 @@ l000097C2:
 							if (sp_n->dw0024 == 0x01)
 							{
 								Eq_n r11_r10_n = (bool) r4_n.u0 + (sp_n->t002C & 0x01);
-								r8_n = (word32) ((word32) ((SLICE(r11_r10_n, word32, 32) | (word32) r11_r10_n) != 0x00) + r3_n > 0x05);
+								r8_n = (word32) ((word32) (r11_r10_n != 0x00) + r3_n > 0x05);
 							}
 							else
 							{

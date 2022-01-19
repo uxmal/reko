@@ -986,5 +986,21 @@ namespace Reko.UnitTests.Decompiler.Evaluation
             Assert.AreEqual("SEQ(a_3, b_4, c_5)", result.ToString());
             Assert.IsTrue(changed);
         }
+
+        [Test]
+        public void Exs_Folded_Or()
+        {
+            Given_ExpressionSimplifier();
+
+            var dx_ax = Given_Tmp("dx_ax", PrimitiveType.Word32);
+            var exp = m.Eq0(
+                m.Seq(
+                    m.Slice(dx_ax, PrimitiveType.Word16, 16),
+                    m.Slice(dx_ax, PrimitiveType.Word16, 0)));
+            var (result, changed) = exp.Accept(simplifier);
+
+            Assert.AreEqual("dx_ax_3 == 0<32>", result.ToString());
+            Assert.IsTrue(changed);
+        }
     }
 }
