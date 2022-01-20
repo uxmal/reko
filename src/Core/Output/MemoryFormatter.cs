@@ -47,7 +47,6 @@ namespace Reko.Core.Output
         private readonly uint chunksPerLine;
         private readonly string chunkFormat;
         private readonly int unitsPerChunk;
-        private readonly Constant[] chunksRead;
 
         /// <summary>
         /// Create a formatter that will render data in chunks with the
@@ -74,7 +73,6 @@ namespace Reko.Core.Output
             this.chunksPerLine = (uint)chunksPerLine;
             this.chunkFormat = "{0:" + $"X{chunksize * 2}" + "}";
             this.unitsPerChunk = unitsPerChunk;
-            this.chunksRead = new Constant[chunksPerLine];
         }
 
         /// <summary>
@@ -104,6 +102,7 @@ namespace Reko.Core.Output
         /// are emitted.</param>
         public bool RenderLine(EndianImageReader rdr, Encoding enc, IMemoryFormatterOutput output)
         {
+            Constant[] chunksRead = new Constant[chunksPerLine];
             output.BeginLine();
             var offStart = rdr.Offset;
             var addr = rdr.Address;

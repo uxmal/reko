@@ -14,6 +14,7 @@
     <Configurations>Debug;Release</Configurations>
   </PropertyGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Arch\Pdp10\Pdp10.csproj" />
     <ProjectReference Include="..\Gui\Gui.csproj" />
   </ItemGroup>
   <ItemGroup>

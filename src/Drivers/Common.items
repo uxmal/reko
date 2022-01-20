@@ -146,6 +146,7 @@ by the PreBuild.targets file.
     <Architectures Include="$(SolutionDir)Arch\MSP430\bin\$(StandardOutputDir)\Reko.Arch.Msp430.*" />
     <Architectures Include="$(SolutionDir)Arch\OpenRISC\bin\$(StandardOutputDir)\Reko.Arch.OpenRISC.*" />
     <Architectures Include="$(SolutionDir)Arch\PaRisc\bin\$(StandardOutputDir)\\Reko.Arch.PaRisc.*" />
+    <Architectures Include="$(SolutionDir)Arch\Pdp10\bin\$(StandardOutputDir)\Reko.Arch.Pdp10.*" />
     <Architectures Include="$(SolutionDir)Arch\Pdp11\bin\$(StandardOutputDir)\Reko.Arch.Pdp11.*" />
     <Architectures Include="$(SolutionDir)Arch\PowerPC\bin\$(StandardOutputDir)\Reko.Arch.PowerPC.*" />
     <Architectures Include="$(SolutionDir)Arch\Qualcomm\bin\$(StandardOutputDir)\Reko.Arch.Qualcomm.*" />

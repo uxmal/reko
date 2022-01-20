@@ -40,6 +40,7 @@
         <var id="var.Msp430.TargetPath" >$SolutionDir$/Arch/MSP430/$TargetDir$/Reko.Arch.Msp430.dll</var>
         <var id="var.OpenRISC.TargetPath" >$SolutionDir$/Arch/OpenRISC/$TargetDir$/Reko.Arch.OpenRISC.dll</var>
         <var id="var.PaRisc.TargetPath" >$SolutionDir$/Arch/PaRisc/$TargetDir$/Reko.Arch.PaRisc.dll</var>
+        <var id="var.Pdp10.TargetPath" >$SolutionDir$/Arch/Pdp10/$TargetDir$/Reko.Arch.Pdp10.dll</var>
         <var id="var.Pdp11.TargetPath" >$SolutionDir$/Arch/Pdp11/$TargetDir$/Reko.Arch.Pdp11.dll</var>
         <var id="var.PowerPC.Design.TargetPath" >$SolutionDir$/Arch/PowerPC.Design/$TargetFwkWindowsDir$/Reko.Arch.PowerPC.Design.dll</var>
         <var id="var.PowerPC.TargetPath" >$SolutionDir$/Arch/PowerPC/$TargetDir$/Reko.Arch.PowerPC.dll</var>
@@ -279,6 +280,7 @@
         <File Source="$(var.Msp430.TargetPath)" nuget_target="f:" />
         <File Source="$(var.OpenRISC.TargetPath)" nuget_target="f:" />
         <File Source="$(var.PaRisc.TargetPath)" nuget_target="f:" />
+        <File Source="$(var.Pdp10.TargetPath)" nuget_target="f:" />
         <File Source="$(var.Pdp11.TargetPath)" nuget_target="f:" />
         <File Source="$(var.PowerPC.TargetPath)" nuget_target="f:" />
         <File Source="$(var.PowerPC.Design.TargetPath)" />
