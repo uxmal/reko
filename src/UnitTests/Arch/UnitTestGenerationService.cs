@@ -49,6 +49,12 @@ namespace Reko.UnitTests.Arch
             Console.WriteLine(test);
         }
 
+        public void ReportMissingDecoder(string testPrefix, Address addrStart, string message, string opcodeAsText)
+        {
+            var test = TestGenerationService.GenerateDecoderUnitTest(testPrefix, addrStart, message, opcodeAsText);
+            Console.WriteLine(test);
+        }
+
         public void ReportMissingRewriter(string testPrefix, MachineInstruction instr, string mnemonic, EndianImageReader rdr, string message, Func<byte[], string> hexizer)
         {
             var test = TestGenerationService.GenerateRewriterUnitTest(testPrefix, instr, mnemonic, rdr, message, hexizer ?? Hexizer);

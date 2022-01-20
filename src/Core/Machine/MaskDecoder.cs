@@ -82,6 +82,14 @@ namespace Reko.Core.Machine
             this.tag = tag;
         }
 
+        public WideMaskDecoder(Bitfield bitfield, string tag, params WideDecoder<TDasm, TMnemonic, TInstr>[] decoders)
+        {
+            this.bitfield = bitfield;
+            Debug.Assert(decoders.Length == (1 << bitfield.Length), $"Inconsistent number of decoders {decoders.Length} (bitPos {bitfield.Position} bitSize{bitfield.Length:X})");
+            this.decoders = decoders;
+            this.tag = tag;
+        }
+
         public override TInstr Decode(ulong wInstr, TDasm dasm)
         {
             TraceDecoder(wInstr);

@@ -32,6 +32,7 @@ using System.Threading.Tasks;
 namespace Reko.UnitTests.Arch.Pdp10
 {
     [TestFixture]
+    [Category(Categories.UnitTests)]
     public class Word36MemoryAreaTests
     {
         private class TestOutputDevice : IMemoryFormatterOutput
@@ -100,8 +101,8 @@ namespace Reko.UnitTests.Arch.Pdp10
 
             var sExp =
             #region Expected
-@"11064 019540948591 008841329004 026913286760 028427433203 Hello world! This is
-11070 008706027881 031206697411 019749421056 000000000000  7-bit ASCII!.......
+@"011064 019540948591 008841329004 026913286760 028427433203 Hello world! This is
+011070 008706027881 031206697411 019749421056 000000000000  7-bit ASCII!.......
 ";
             #endregion
 

@@ -67,6 +67,25 @@ namespace Reko.Services
             AttemptToAppendText(fsSvc, decoderLock, filename, test);
         }
 
+        public void ReportMissingDecoder(string testPrefix, Address addrStart, string message, string opcodeAsText)
+        {
+            var fsSvc = services.RequireService<IFileSystemService>();
+            var outDir = GetOutputDirectory(fsSvc);
+            if (outDir == null)
+                return;
+            var filename = Path.Combine(outDir, Path.ChangeExtension(testPrefix, ".tests"));
+            EnsureDecoderFile(fsSvc, filename);
+            var instrBytes = Encoding.ASCII.GetBytes(opcodeAsText);
+            lock (decoderLock)
+            {
+                if (this.emittedDecoderTests[filename].Contains(instrBytes))
+                    return;
+                this.emittedDecoderTests[filename].Add(instrBytes);
+            }
+            var test = GenerateDecoderUnitTest(testPrefix, addrStart, opcodeAsText, message);
+            AttemptToAppendText(fsSvc, decoderLock, filename, test);
+        }
+
         private void AttemptToAppendText(IFileSystemService fsSvc, object lockObject, string filename, string text)
         {
             //$PERF: a better approach would be to queue up these requests for a worker to dispatch,

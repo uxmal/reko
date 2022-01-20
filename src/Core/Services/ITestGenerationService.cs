@@ -53,6 +53,17 @@ namespace Reko.Core.Services
         void ReportMissingDecoder(string testPrefix, Address addrStart, EndianImageReader rdr, string message, Func<byte[], string>? hexize = null);
 
         /// <summary>
+        /// This method is called when an incomplete disassembler can't decode an instruction.
+        /// </summary>
+        /// <param name="testPrefix">Prefix to use in the generated unit test.</param>
+        /// <param name="addrStart">Address at which the undecoded byte sequence started.</param>
+        /// <param name="message">Optional message that will be emitted as a comment.</param>
+        /// <param name="opcodeAsText">The raw value of the opcode as text. The disassembler is
+        /// responsible for generating this string such that it can be interpreted unanbiguously
+        /// as input data for the disassembler unit test class.</param>
+        void ReportMissingDecoder(string testPrefix, Address addrStart, string message, string opcodeAsText);
+
+        /// <summary>
         /// This method is called when an incomplete rewriter fails to rewrite a valid machine 
         /// instruction.
         /// </summary>

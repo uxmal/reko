@@ -72,7 +72,7 @@ namespace Reko.Arch.Pdp10
 
         public override string ToString()
         {
-            return Convert.ToString((uint) Offset, 8);
+            return Convert.ToString((uint) Offset, 8).PadLeft(6, '0');
         }
     }
 }

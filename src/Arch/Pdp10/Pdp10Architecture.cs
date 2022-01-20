@@ -45,22 +45,6 @@ namespace Reko.Arch.Pdp10
             this.WordWidth = Word36;
         }
 
-        public static ulong Ascii7(string ascii)
-        {
-            if (ascii.Length > 5)
-                throw new ArgumentException("No more than 5 ASCII characters can be packed into a 36-bit word.");
-            byte[] bytes = new byte[5];
-            Encoding.ASCII.GetBytes(ascii, bytes);
-            int shift = 36 - 8;
-            ulong value = 0;
-            foreach (byte b in bytes)
-            {
-                value |= (ulong) b << shift;
-                shift -= 7;
-            }
-            return value;
-        }
-
         public override int ReturnAddressOnStack => 1;
         public static PrimitiveType Word36 { get; } = PrimitiveType.CreateWord(36);
         public static PrimitiveType Ptr18 { get; } = PrimitiveType.Create(Domain.Pointer, 36);
@@ -68,7 +52,7 @@ namespace Reko.Arch.Pdp10
 
         public override IEnumerable<MachineInstruction> CreateDisassembler(EndianImageReader imageReader)
         {
-            throw new NotImplementedException();
+            return new Disassembler.Pdp10Disassembler(this, (Word36BeImageReader) imageReader);
         }
 
         public override IEqualityComparer<MachineInstruction>? CreateInstructionComparer(Normalize norm)
@@ -83,7 +67,7 @@ namespace Reko.Arch.Pdp10
 
         public override ProcessorState CreateProcessorState()
         {
-            throw new NotImplementedException();
+            return new DefaultProcessorState(this);
         }
 
         public override IEnumerable<RtlInstructionCluster> CreateRewriter(EndianImageReader rdr, ProcessorState state, IStorageBinder binder, IRewriterHost host)
@@ -149,6 +133,36 @@ namespace Reko.Arch.Pdp10
         public override bool TryParseAddress(string? txtAddr, out Address addr)
         {
             throw new NotImplementedException();
+        }
+
+        public static ulong OctalStringToWord(string octalWord)
+        {
+            int c = Math.Min(octalWord.Length, 12);
+            ulong word = 0;
+            for (int i = 0; i < c; ++i)
+            {
+                var digit = (uint)(octalWord[i] - '0');
+                if (digit > 7)
+                    break;
+                word = (word << 3) | digit;
+            }
+            return word;
+        }
+
+        public static ulong Ascii7(string ascii)
+        {
+            if (ascii.Length > 5)
+                throw new ArgumentException("No more than 5 ASCII characters can be packed into a 36-bit word.");
+            byte[] bytes = new byte[5];
+            Encoding.ASCII.GetBytes(ascii, bytes);
+            int shift = 36 - 8;
+            ulong value = 0;
+            foreach (byte b in bytes)
+            {
+                value |= (ulong) b << shift;
+                shift -= 7;
+            }
+            return value;
         }
     }
 }
