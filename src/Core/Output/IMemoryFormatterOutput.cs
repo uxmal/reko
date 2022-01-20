@@ -17,6 +17,7 @@
  * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
  */
 #endregion
+using Reko.Core.Expressions;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -62,7 +63,7 @@ namespace Reko.Core.Output
         /// <summary>
         /// Signals the end of the line.
         /// </summary>
-        /// <param name="bytes">The bytes rendered in this line.</param>
-        void EndLine(byte[] bytes);
+        /// <param name="units">The units rendered in this line.</param>
+        void EndLine(Constant[] units);
     }
 }

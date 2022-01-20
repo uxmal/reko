@@ -18,6 +18,7 @@
  */
 #endregion
 
+using Reko.Core.Expressions;
 using Reko.Core.Memory;
 using Reko.Core.Types;
 using System;
@@ -41,11 +42,12 @@ namespace Reko.Core.Output
     /// </remarks>
     public class MemoryFormatter
     {
-        private readonly PrimitiveType dtUnit;
+        private readonly PrimitiveType dtChunk;
         private readonly int chunksize;
-        private readonly uint unitsPerLine;
-        private readonly string unitFormat;
-        private readonly int bytesPerUnit;
+        private readonly uint chunksPerLine;
+        private readonly string chunkFormat;
+        private readonly int unitsPerChunk;
+        private readonly Constant[] chunksRead;
 
         /// <summary>
         /// Create a formatter that will render data in chunks with the
@@ -60,15 +62,19 @@ namespace Reko.Core.Output
         /// </remarks>
         /// <param name="dtChunk">Datatype representing the size of the chunks
         /// to render.</param>
-        /// <param name="unitsPerLine">Address units per line. </param>
-        /// <param name="bytesPerUnit"></param>
-        public MemoryFormatter(PrimitiveType dtChunk, int unitsPerLine, int bytesPerUnit)
+        /// <param name="chunksPerLine">Number of chunks per line. </param>
+        /// <param name="unitsPerChunk">Number of units per chunk.</param>
+        public MemoryFormatter(
+            PrimitiveType dtChunk,
+            int chunksPerLine,
+            int unitsPerChunk)
         {
-            this.dtUnit = dtChunk;
+            this.dtChunk = dtChunk;
             this.chunksize = dtChunk.Size;
-            this.unitsPerLine = (uint)unitsPerLine;
-            this.unitFormat = "{0:" + $"X{chunksize * 2}" + "}";
-            this.bytesPerUnit = bytesPerUnit;
+            this.chunksPerLine = (uint)chunksPerLine;
+            this.chunkFormat = "{0:" + $"X{chunksize * 2}" + "}";
+            this.unitsPerChunk = unitsPerChunk;
+            this.chunksRead = new Constant[chunksPerLine];
         }
 
         /// <summary>
@@ -103,21 +109,23 @@ namespace Reko.Core.Output
             var addr = rdr.Address;
             output.RenderAddress(addr);
 
-            var addrStart = Align(addr, unitsPerLine);
+            var addrStart = Align(addr, chunksPerLine);
             var prePaddingUnits = (int) (addr - addrStart);
-            var offsetEndLine = (rdr.Offset - prePaddingUnits) + unitsPerLine;
+            var offsetEndLine = (rdr.Offset - prePaddingUnits) + chunksPerLine;
 
             output.RenderFillerSpan(PaddingCells(prePaddingUnits));
 
             bool moreData = true;
             int postPaddingUnits = 0;
+            int iUnit = prePaddingUnits;
             while (moreData && rdr.Offset < offsetEndLine)
             {
                 addr = rdr.Address;
-                moreData = rdr.TryRead(dtUnit, out var c);
+                moreData = rdr.TryRead(dtChunk, out var c);
                 if (moreData)
                 {
-                    output.RenderUnit(addr, string.Format(unitFormat, c.GetValue()));
+                    DoRenderUnit(addr, c, output);
+                    chunksRead[iUnit++] = c;
                 }
                 else
                 {
@@ -127,27 +135,36 @@ namespace Reko.Core.Output
 
             output.RenderFillerSpan(PaddingCells(postPaddingUnits));
 
-            var cb = rdr.Offset - offStart;
+            var offSaved = rdr.Offset;
+            var cb = offSaved - offStart;
             rdr.Offset = offStart;
-            var bytes = rdr.ReadBytes((int) cb);
+            var sBytes = DoRenderAsText(rdr, (int)cb, enc);
+            rdr.Offset = offSaved;
+            output.RenderUnitsAsText(prePaddingUnits * this.unitsPerChunk, sBytes, postPaddingUnits * this.unitsPerChunk);
 
-            string sBytes = RenderAsText(enc, bytes);
-            output.RenderUnitsAsText(prePaddingUnits * this.bytesPerUnit, sBytes, postPaddingUnits * this.bytesPerUnit);
-
-            output.EndLine(bytes);
+            output.EndLine(chunksRead);
 
             return moreData && rdr.IsValid;
         }
 
+        protected virtual void DoRenderUnit(Address addr, Expressions.Constant c, IMemoryFormatterOutput output)
+        {
+            output.RenderUnit(addr, string.Format(chunkFormat, c.GetValue()));
+        }
+
         private int PaddingCells(int addressDifference)
         {
-            var bytes = (addressDifference * bytesPerUnit);
+            var bytes = (addressDifference * unitsPerChunk);
             return (1 + 2 * chunksize) * (bytes / chunksize);
         }
 
-        private string RenderAsText(Encoding enc, byte[] abCode)
+        protected virtual string DoRenderAsText(
+            ImageReader rdr, 
+            int cUnits,
+            Encoding enc)
         {
-            var chars = enc.GetChars(abCode);
+            var bytes = rdr.ReadBytes(cUnits);
+            var chars = enc.GetChars(bytes);
             for (int i = 0; i < chars.Length; ++i)
             {
                 char ch = chars[i];

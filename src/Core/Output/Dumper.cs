@@ -18,6 +18,7 @@
  */
 #endregion
 
+using Reko.Core.Expressions;
 using Reko.Core.Machine;
 using Reko.Core.Memory;
 using Reko.Core.Types;
@@ -197,7 +198,7 @@ namespace Reko.Core.Output
             private readonly Formatter stm;
             private readonly StringBuilder sb = new StringBuilder(0x12);
             private readonly StringBuilder sbHex = new StringBuilder();
-            private byte[]? prevLine = null;
+            private Constant[]? prevLine = null;
             private bool showEllipsis = true;
 
             public MemoryFormatterOutput(Formatter stm)
@@ -233,9 +234,9 @@ namespace Reko.Core.Output
                 sb.Append(' ', postPadding);
             }
 
-            public void EndLine(byte [] bytes)
+            public void EndLine(Constant [] chunks)
             {
-                if (!HaveSameZeroBytes(prevLine, bytes))
+                if (!HaveSameZeroBytes(prevLine, chunks))
                 {
                     stm.Write(sbHex.ToString());
                     stm.WriteLine(sb.ToString());
@@ -249,20 +250,24 @@ namespace Reko.Core.Output
                         showEllipsis = false;
                     }
                 }
-                prevLine = bytes;
+                prevLine = chunks;
                 sbHex.Clear();
                 sb.Clear();
             }
 
-            private bool HaveSameZeroBytes(byte[]? prevLine, byte[] ab)
+            private bool HaveSameZeroBytes(Constant[]? prevLine, Constant[] line)
             {
                 if (prevLine == null)
                     return false;
-                if (prevLine.Length != ab.Length)
+                if (prevLine.Length != line.Length)
                     return false;
-                for (int i = 0; i < ab.Length; ++i)
+                for (int i = 0; i < line.Length; ++i)
                 {
-                    if (prevLine[i] != ab[i] || ab[i] != 0)
+                    var prev = prevLine[i];
+                    var cur = line[i];
+                    if (prev is null || cur is null)
+                        return false;
+                    if (prev.ToUInt64() != cur.ToUInt64() || cur.ToUInt64() != 0)
                         return false;
                 }
                 return true;

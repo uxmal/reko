@@ -19,6 +19,7 @@
 #endregion
 
 using Reko.Core;
+using Reko.Core.Expressions;
 using Reko.Core.Lib;
 using Reko.Core.Machine;
 using Reko.Core.Memory;
@@ -267,7 +268,7 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
                 line.Add(new MemoryTextSpan(sbText.ToString(), UiStyles.MemoryWindow));
             }
 
-            public void EndLine(byte[] bytes)
+            public void EndLine(Constant[] bytes)
             {
             }
         }

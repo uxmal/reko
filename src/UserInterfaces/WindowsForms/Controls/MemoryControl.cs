@@ -19,6 +19,7 @@
 #endregion
 
 using Reko.Core;
+using Reko.Core.Expressions;
 using Reko.Core.Memory;
 using Reko.Core.Output;
 using Reko.Core.Types;
@@ -713,7 +714,7 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
                     addrHit = null;
                 }
 
-                public void EndLine(byte[] bytes)
+                public void EndLine(Constant[] bytes)
                 {
                 }
 
