@@ -132,8 +132,25 @@ namespace Reko.Arch.Pdp10
 
         public override bool TryParseAddress(string? txtAddr, out Address addr)
         {
-            throw new NotImplementedException();
-        }
+            if (txtAddr is null)
+            {
+                addr = default!;
+                return false;
+            }
+            uint uAddr = 0;
+            foreach (var c in txtAddr)
+            {
+                var u = (uint) (c - '0');
+                if (u > 8)
+                {
+                    addr = default!;
+                    return false;
+                }
+                uAddr = (uAddr << 3) | u;
+            }
+            addr = new Address18(uAddr);
+            return true;
+        } 
 
         public static ulong OctalStringToWord(string octalWord)
         {

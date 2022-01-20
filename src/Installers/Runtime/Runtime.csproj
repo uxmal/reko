@@ -27,4 +27,8 @@
     <Message Importance="high" Text="Updating nuspec &quot;$(NuspecFile)&quot;..." />
     <MSBuild Projects="$(ProjectDir)..\..\BuildTargets\BuildTargets.csproj" Properties="Configuration=$(Configuration);Platform=$(Platform)" Targets="update_runtime_nuspec" />
   </Target>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Arch\Pdp10\Pdp10.csproj" />
+  </ItemGroup>
 </Project>

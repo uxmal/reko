@@ -86,6 +86,7 @@
       <var id="var.NeoGeo.TargetPath" >$SolutionDir$/Environments/NeoGeo/$TargetDir$/Reko.Environments.NeoGeo.dll</var>
       <var id="var.OS2.ProjectDir" >$SolutionDir$/Environments/OS2/</var>
       <var id="var.OS2.TargetPath" >$SolutionDir$/Environments/OS2/$TargetDir$/Reko.Environments.OS2.dll</var>
+      <var id="var.Pdp10Env.TargetPath" >$SolutionDir$/Environments/Pdp10Env/$TargetDir$/Reko.Environments.Pdp10Env.dll</var>
       <var id="var.Ps3.TargetPath" >$SolutionDir$/Environments/Ps3/$TargetDir$/Reko.Environments.Ps3.dll</var>
       <var id="var.RT11.ProjectDir" >$SolutionDir$/Environments/RT11/</var>
       <var id="var.RT11.TargetPath" >$SolutionDir$/Environments/RT11/$TargetDir$/Reko.Environments.RT11.dll</var>
@@ -204,6 +205,7 @@
       <File Source="$(var.Msdos.Design.TargetPath)" />
       <File Source="$(var.NeoGeo.TargetPath)" nuget_target="f:" />
       <File Source="$(var.OS2.TargetPath)" nuget_target="f:" />
+      <File Source="$(var.Pdp10Env.TargetPath)" nuget_target="f:" />
       <File Source="$(var.Ps3.TargetPath)" nuget_target="f:" />
       <File Source="$(var.RiscOS.TargetPath)" nuget_target="f:" />
       <File Source="$(var.RT11.TargetPath)" nuget_target="f:" />

@@ -79,6 +79,14 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
             return (PlatformDefinition)((ListOption)Platforms.SelectedValue).Value;
         }
 
+        public RawFileDefinition GetSelectedRawFile()
+        {
+            var option = RawFileTypes.SelectedValue;
+            if (option is null)
+                return null;
+            return ((ListOption) option).Value as RawFileDefinition;
+        }
+
         public void SetPropertyGrid(Dictionary<string, object> architectureOptions, List<PropertyOption> options)
         {
             if (architectureOptions != null && options != null)
@@ -88,6 +96,20 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
             else
             {
                 PropertyGrid.SelectedObject = null;
+            }
+        }
+
+        public void SetSelectedArchitecture(string archMoniker)
+        {
+            int c = Architectures.Items.Count;
+            for (int i = 0; i < c; ++i)
+            {
+                var item = (ArchitectureDefinition) ((ListOption) Architectures.Items[i]).Value;
+                if (archMoniker == item.Name)
+                {
+                    Architectures.SelectedIndex = i;
+                    return;
+                }
             }
         }
 

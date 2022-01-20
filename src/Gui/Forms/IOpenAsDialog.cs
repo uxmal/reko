@@ -48,7 +48,10 @@ namespace Reko.Gui.Forms
         ArchitectureDefinition GetSelectedArchitecture();
         ModelDefinition GetSelectedArchitectureModel();
         PlatformDefinition GetSelectedEnvironment();
+
+        RawFileDefinition GetSelectedRawFile();
         void SetPropertyGrid(Dictionary<string, object> architectureOptions, List<PropertyOption> options);
         LoadDetails GetLoadDetails();
+        void SetSelectedArchitecture(string archMoniker);
     }
 }

@@ -77,6 +77,7 @@ by the PreBuild.targets file.
     <ProjectReference Include="$(SolutionDir)Environments\Msdos\Msdos.csproj" />
     <ProjectReference Include="$(SolutionDir)Environments\NeoGeo\NeoGeo.csproj" />
     <ProjectReference Include="$(SolutionDir)Environments\OS2\OS2.csproj" />
+    <ProjectReference Include="$(SolutionDir)Environments\Pdp10Env\Pdp10Env.csproj" />
     <ProjectReference Include="$(SolutionDir)Environments\Ps3\Ps3.csproj" />
     <ProjectReference Include="$(SolutionDir)Environments\RiscOS\RiscOS.csproj" />
     <ProjectReference Include="$(SolutionDir)Environments\RT11\RT11.csproj" />
@@ -331,6 +332,7 @@ by the PreBuild.targets file.
     <Environments Include="$(SolutionDir)Environments\Msdos\bin\$(StandardOutputDir)\Reko.Environments.Msdos.*" />
     <Environments Include="$(SolutionDir)Environments\NeoGeo\bin\$(StandardOutputDir)\Reko.Environments.NeoGeo.*" />
     <Environments Include="$(SolutionDir)Environments\OS2\16\bin\$(StandardOutputDir)\Reko.Environments.OS2.*" />
+    <Environments Include="$(SolutionDir)Environments\Pdp10Env\bin\$(StandardOutputDir)\Reko.Environments.Pdp10Env.*" />
     <Environments Include="$(SolutionDir)Environments\Ps3\bin\$(StandardOutputDir)\Reko.Environments.Ps3.*" />
     <Environments Include="$(SolutionDir)Environments\RiscOS\bin\$(StandardOutputDir)\Reko.Environments.RiscOS.*" />
     <Environments Include="$(SolutionDir)Environments\RT11\bin\$(StandardOutputDir)\Reko.Environments.RT11.*" />

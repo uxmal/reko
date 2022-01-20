@@ -57,7 +57,6 @@ namespace Reko.Arch.Pdp10.Disassembler
             this.addr = rdr.Address;
             if (!rdr.TryReadBeUInt36(out ulong uInstr))
                 return null;
-            var op = Convert.ToString((long) uInstr, 8);
             this.opc = opcField.Read(uInstr);
             this.ac = acField.Read(uInstr);
             this.ind = Bits.IsBitSet(uInstr, 35 - 13);

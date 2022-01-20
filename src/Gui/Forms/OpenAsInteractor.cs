@@ -57,8 +57,8 @@ namespace Reko.Gui.Forms
         private void dlg_Load(object sender, EventArgs e)
         {
             var dcCfg = dlg.Services.RequireService<IConfigurationService>();
-            PopulateRawFiles(dcCfg);
             PopulateArchitectures(dcCfg);
+            PopulateRawFiles(dcCfg);
             PopulatePlatforms(dcCfg);
             dlg.AddressTextBox.Text = "0";
             EnableControls();
@@ -66,11 +66,11 @@ namespace Reko.Gui.Forms
 
         private void EnableControls()
         {
-            var rawfile = ((ListOption)dlg.RawFileTypes.SelectedValue).Value as RawFileDefinition;
-            var arch = ((ListOption)dlg.Architectures.SelectedValue)?.Value as string;
+            var rawfile = dlg.GetSelectedRawFile();
+            var arch = ((ListOption) dlg.Architectures.SelectedValue)?.Value as string;
             var unknownRawFileFormat = rawfile == null;
             bool platformRequired = unknownRawFileFormat;
-            bool archRequired= unknownRawFileFormat;
+            bool archRequired = unknownRawFileFormat;
             bool addrRequired = unknownRawFileFormat;
             if (!unknownRawFileFormat)
             {
@@ -154,7 +154,14 @@ namespace Reko.Gui.Forms
 
         private void RawFileTypes_TextChanged(object sender, EventArgs e)
         {
-            EnableControls();
+            try
+            {
+                OnRawFileChanged();
+                EnableControls();
+            } catch
+            {
+
+            }
         }
 
         private void Architectures_TextChanged(object sender, EventArgs e)
@@ -180,6 +187,21 @@ namespace Reko.Gui.Forms
         {
             OnArchitectureModelChanged();
             EnableControls();
+        }
+
+        private void OnRawFileChanged()
+        {
+            var rawFile = dlg.GetSelectedRawFile();
+            if (string.IsNullOrEmpty(rawFile.Architecture))
+                return;
+            
+            var dcCfg = dlg.Services.RequireService<IConfigurationService>();
+            var arch = dcCfg.GetArchitectures()
+                .Where(a => a.Name == rawFile.Architecture)
+                .FirstOrDefault();
+            if (arch is null)
+                return;
+            dlg.SetSelectedArchitecture(arch.Name);
         }
 
         private void OnArchitectureChanged()
