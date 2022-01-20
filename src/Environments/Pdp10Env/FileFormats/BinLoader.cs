@@ -23,6 +23,7 @@ using Reko.Core;
 using Reko.Core.Loading;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Text;
 
 namespace Reko.Environments.Pdp10Env.FileFormats
@@ -30,8 +31,6 @@ namespace Reko.Environments.Pdp10Env.FileFormats
     public class BinLoader : ProgramImageLoader
     {
         private const ulong WordMask = (1ul << 36) - 1;
-
-        private uint? lastByte;
 
         public BinLoader(IServiceProvider services, ImageLocation imgLocation, byte[] imgRaw)
             : base(services, imgLocation, imgRaw)
@@ -78,31 +77,19 @@ namespace Reko.Environments.Pdp10Env.FileFormats
                 return ~0ul;
 
             ulong word;
-            if (lastByte.HasValue)
-            {
-                word =
-                   (ulong) lastByte.Value << 32 |
-                   (ulong) ReadByte(ref f) << 24 |
-                   (ulong) ReadByte(ref f) << 16 |
-                   (ulong) ReadByte(ref f) << 8 |
-                   (ulong) ReadByte(ref f) << 0;
-                lastByte = null;
-            }
-            else
-            {
-                word = ((ulong) ReadByte(ref f) << 28);
-                if (f >= base.RawImage.Length)
-                    return ~0ul;
-                word |= ((ulong) ReadByte(ref f) << 20) |
-                        ((ulong) ReadByte(ref f) << 12) |
-                        ((ulong) ReadByte(ref f) << 4);
-                uint @byte = ReadByte(ref f);
-                word |= @byte >> 4;
-                lastByte = @byte & 0x0F;
-            }
+
+            word = ((ulong) ReadByte(ref f) << 28);
+            if (f >= base.RawImage.Length)
+                return ~0ul;
+            word |= ((ulong) ReadByte(ref f) << 20) |
+                    ((ulong) ReadByte(ref f) << 12) |
+                    ((ulong) ReadByte(ref f) << 4);
+            uint @byte = ReadByte(ref f);
+            word |= @byte >> 4;
 
             if (word > WordMask)
                 throw new BadImageFormatException("Error in 36/8 format.");
+            Debug.Print(":{0}", Convert.ToString((long) word, 8));
             return word;
         }
     }
