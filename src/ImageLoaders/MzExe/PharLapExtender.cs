@@ -72,7 +72,9 @@ namespace Reko.ImageLoaders.MzExe
             if ((fileHeader.flags & FlagImagePacked) != 0)
             {
                 UnpackImage(fileHeader, image);
-            } else {
+            }
+            else
+            {
                 LoadImage(fileHeader, image);
             }
             
@@ -101,10 +103,11 @@ namespace Reko.ImageLoaders.MzExe
                 w.WriteByte(aByte);
             }
         }
-            /// <summary>
-            /// Unpacks the packed raw image into <paramref name="image" />.
-            /// </summary>
-            private void UnpackImage(FileHeader fileHeader, ByteMemoryArea image)
+
+        /// <summary>
+        /// Unpacks the packed raw image into <paramref name="image" />.
+        /// </summary>
+        private void UnpackImage(FileHeader fileHeader, ByteMemoryArea image)
         {
             var w = new LeImageWriter(image.Bytes);
             //
