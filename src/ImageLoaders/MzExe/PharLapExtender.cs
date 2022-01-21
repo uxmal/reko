@@ -73,6 +73,11 @@ namespace Reko.ImageLoaders.MzExe
             {
                 UnpackImage(fileHeader, image);
             }
+            else
+            {
+                LoadImage(fileHeader, image);
+            }
+            
             var loadseg = new ImageSegment("DOSX_PROG", image, AccessMode.ReadWriteExecute);
             this.segmentMap = new SegmentMap(addrLoad);
             var seg = this.segmentMap.AddSegment(loadseg);
@@ -83,6 +88,20 @@ namespace Reko.ImageLoaders.MzExe
                 "_start");
             this.program.EntryPoints.Add(ep.Address, ep);
             return program;
+        }
+
+        /// <summary>
+        /// Loads unpacked phar lap exp image into <paramref name="image" />.
+        /// </summary>
+        private void LoadImage(FileHeader fileHeader, ByteMemoryArea image)
+        {
+            var w = new LeImageWriter(image.Bytes);
+            var rdr = new LeImageReader(RawImage, FileHeaderOffset + fileHeader.offset_load_image);
+            while (w.Position < fileHeader.memory_requirements)
+            {
+                byte aByte = rdr.ReadByte();
+                w.WriteByte(aByte);
+            }
         }
 
         /// <summary>
