@@ -23,22 +23,25 @@ using Reko.Core;
 using Reko.Core.Loading;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Text;
 
 namespace Reko.Environments.Pdp10Env.FileFormats
 {
     /// <summary>
-    /// This class read a format where two 36-bit words have been packed together as a 
-    /// 72-bit chunk, which can be read as a sequence of 9 bytes.
+    /// This class reads 36-bit words encoded in the ANSI/ASCII format.
+    ///
+    /// A 36-bit word AAAAAAABBBBBBBCCCCCCCDDDDDDDEEEEEEEF is stored as five
+    /// octets.  X means written as zero, ignored when read.
+    ///
+    /// XAAAAAAA
+    /// XBBBBBBB
+    /// XCCCCCCC
+    /// XDDDDDDD
+    /// FEEEEEEE
     /// </summary>
-    public class BinLoader : ProgramImageLoader
+    public class AsciiLoader : ProgramImageLoader
     {
-        private const ulong WordMask = (1ul << 36) - 1;
-
-        private uint? leftover;
-
-        public BinLoader(IServiceProvider services, ImageLocation imgLocation, byte[] imgRaw)
+        public AsciiLoader(IServiceProvider services, ImageLocation imgLocation, byte[] imgRaw)
             : base(services, imgLocation, imgRaw)
         {
         }
@@ -56,7 +59,7 @@ namespace Reko.Environments.Pdp10Env.FileFormats
         {
             var words = new List<ulong>();
             int f = 0;
-            for (;;)
+            for (; ; )
             {
                 var word = ReadWord(ref f);
                 if (word == ~0ul)
@@ -71,41 +74,28 @@ namespace Reko.Environments.Pdp10Env.FileFormats
 
         private uint ReadByte(ref int f)
         {
-            if (f >= base.RawImage.Length)
+            if (f >= RawImage.Length)
                 return 0;
-            return base.RawImage[f++];
+            return RawImage[f++];
         }
 
         private ulong ReadWord(ref int f)
         {
-            if (f >= base.RawImage.Length)
+            ulong word = 0;
+            ulong x;
+
+            if (f >= RawImage.Length)
                 return ~0ul;
 
-            ulong word;
-            if (leftover.HasValue)
-            {
-                word = 
-                   (ulong) leftover.Value << 32 |
-                   (ulong) ReadByte(ref f) << 24 |
-                   (ulong) ReadByte(ref f) << 16 |
-                   (ulong) ReadByte(ref f) << 8 |
-                   (ulong) ReadByte(ref f) << 0;
-                leftover = null;
-            }
-            else
-            {
-                word = ((ulong) ReadByte(ref f) << 28);
-                if (f >= base.RawImage.Length)
-                    return ~0ul;
-                word |= 
-                    ((ulong) ReadByte(ref f) << 20) |
-                    ((ulong) ReadByte(ref f) << 12) |
-                    ((ulong) ReadByte(ref f) << 4);
-                uint @byte = ReadByte(ref f);
-                word |= @byte >> 4;
-            }
-            if (word > WordMask)
-                throw new BadImageFormatException("Error in 36/8 format.");
+            x = ReadByte(ref f); word += (x & 0x7F) << 29;
+            if (f >= RawImage.Length)
+                return ~0ul;
+            x = ReadByte(ref f); word += (x & 0x7F) << 22;
+            x = ReadByte(ref f); word += (x & 0x7F) << 15;
+            x = ReadByte(ref f); word += (x & 0x7F) << 8;
+            x = ReadByte(ref f); word += (x & 0x7F) << 1;
+            word += (x & 0x80) >> 7;
+
             return word;
         }
     }
