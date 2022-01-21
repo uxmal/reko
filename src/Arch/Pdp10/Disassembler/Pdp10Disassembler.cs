@@ -19,6 +19,7 @@
 #endregion
 
 using Reko.Core;
+using Reko.Core.Expressions;
 using Reko.Core.Lib;
 using Reko.Core.Machine;
 using Reko.Core.Services;
@@ -32,6 +33,8 @@ namespace Reko.Arch.Pdp10.Disassembler
     public partial class Pdp10Disassembler : DisassemblerBase<Pdp10Instruction, Mnemonic>
     {
         private static readonly Decoder rootDecoder;
+        private const int IndirectBit = 35 - 13;
+        private const ulong LowWordMask = (1ul << 18) - 1ul;
 
         private readonly Pdp10Architecture arch;
         private readonly Word36BeImageReader rdr;
@@ -59,7 +62,7 @@ namespace Reko.Arch.Pdp10.Disassembler
                 return null;
             this.opc = opcField.Read(uInstr);
             this.ac = acField.Read(uInstr);
-            this.ind = Bits.IsBitSet(uInstr, 35 - 13);
+            this.ind = Bits.IsBitSet(uInstr, IndirectBit);
             this.idx = idxField.Read(uInstr);
             this.imm = immField.Read(uInstr);
             this.uInstr = uInstr;
@@ -139,6 +142,26 @@ namespace Reko.Arch.Pdp10.Disassembler
             }
             dasm.NotYetImplemented("Indexed J");
             return false;
+        }
+
+        /// <summary>
+        /// Interpret E as a zero-extended immediate value.
+        /// </summary>
+        private static bool Imm(ulong uInstr, Pdp10Disassembler dasm)
+        {
+            var imm = Constant.Create(Pdp10Architecture.Word36, uInstr & LowWordMask);
+            dasm.ops.Add(new ImmediateOperand(imm));
+            return true;
+        }
+
+        /// <summary>
+        /// Immediate value stored in the AC field.
+        /// </summary>
+        private static bool ImmAc(ulong uInstr, Pdp10Disassembler dasm)
+        {
+            var imm = acField.Read(uInstr);
+            dasm.ops.Add(ImmediateOperand.Byte((byte)imm));
+            return true;
         }
 
         static Pdp10Disassembler()

@@ -52,9 +52,29 @@ namespace Reko.UnitTests.Arch.Pdp10
         }
 
         [Test]
+        public void Pdp10Dis_addi()
+        {
+            AssertCode("addi\t12,60", "271500000060");
+        }
+
+        [Test]
+        public void Pdp10Dis_jfcl()
+        {
+            AssertCode("jfcl", "255000000000");
+        }
+
+        [Test]
+        public void Pdp10Dis_movei()
+        {
+            AssertCode("movei\t7,1", "201340000001");
+        }
+
+        [Test]
         public void Pdp10Dis_sojge()
         {
             AssertCode("sojge\t4,000147", "365200000147");
         }
+
+        
     }
 }

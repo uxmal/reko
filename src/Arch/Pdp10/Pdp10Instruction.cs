@@ -52,6 +52,11 @@ namespace Reko.Arch.Pdp10
                     renderer.WriteString(reg.Register.Name);
                 }
                 return;
+            case ImmediateOperand imm:
+                var value = (long) imm.Value.ToUInt64();
+                var sImm = Convert.ToString(value, 8);
+                renderer.WriteString(sImm);
+                return;
             }
             base.RenderOperand(operand, renderer, options);
         }

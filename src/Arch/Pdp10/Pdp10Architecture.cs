@@ -125,6 +125,14 @@ namespace Reko.Arch.Pdp10
             throw new NotImplementedException();
         }
 
+        public override string RenderInstructionOpcode(MachineInstruction instr, EndianImageReader rdr)
+        {
+            var reader = (Word36BeImageReader) rdr;
+            if (!reader.TryReadBeUInt36(out ulong uInstr))
+                return "";
+            return Convert.ToString((long) uInstr, 8).PadLeft(12, '0');
+        }
+
         public override bool TryGetRegister(string name, out RegisterStorage reg)
         {
             throw new NotImplementedException();
