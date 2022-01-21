@@ -21,6 +21,7 @@
 using Reko.Arch.Pdp10;
 using Reko.Core;
 using Reko.Core.Loading;
+using Reko.Core.Services;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -66,10 +67,26 @@ namespace Reko.Environments.Pdp10Env.FileFormats
                     break;
                 words.Add(word);
             }
+
+            if (this.ImageLocation.EndsWith(".dmp"))
+            {
+                var listener = Services.RequireService<DecompilerEventListener>();
+                listener.Info("Treating .dmp as a PDP-10 dump file");
+                addrLoad = new Address18((uint)Pdp10Architecture.OctalStringToWord("74"));
+            }
             var mem = new Word36MemoryArea(addrLoad, words.ToArray());
             var seg = new ImageSegment("core", mem, AccessMode.ReadWriteExecute);
             var map = new SegmentMap(seg);
-            return new Program(map, arch, platform);
+            var program = new Program(map, arch, platform);
+
+            /// Start address is at address 0o120 (0x50)
+            if (arch.TryRead(mem, new Address18(0x50), Pdp10Architecture.Word36, out var start))
+            {
+                var uStart = (uint) (start.ToUInt64() & ((1ul << 18) - 1));
+                var addrStart = new Address18(uStart);
+                program.EntryPoints.Add(addrStart, ImageSymbol.Procedure(arch, addrStart, "_start"));
+            }
+            return program;
         }
 
         private uint ReadByte(ref int f)

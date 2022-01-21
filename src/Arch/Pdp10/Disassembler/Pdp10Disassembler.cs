@@ -117,7 +117,7 @@ namespace Reko.Arch.Pdp10.Disassembler
         private static readonly Bitfield acField = bf(9, 4);
         private static readonly Bitfield idxField = bf(14, 4);
         private static readonly Bitfield immField = bf(18, 18);
-
+        private static readonly Bitfield deviceField = bf(3, 7);
 
         /// <summary>
         /// A reference to the 'ac' accumulator field.
@@ -130,18 +130,65 @@ namespace Reko.Arch.Pdp10.Disassembler
         }
 
         /// <summary>
+        /// Adds an accumulator opernand only if the 'ac' field
+        /// is non-zero.
+        /// </summary>
+        private static bool ACnot0(ulong u, Pdp10Disassembler dasm)
+        {
+            if (dasm.ac != 0)
+            {
+                var reg = Registers.Accumulators[dasm.ac];
+                dasm.ops.Add(new RegisterOperand(reg));
+            }
+            return true;
+        }
+
+        /// <summary>
+        /// Interpret E as an effective address. Note that PDP-10
+        /// maps the accumulators in the address space, so this
+        /// "memory operand" may actally refer to a register.
+        /// </summary>
+        private static bool E(ulong u, Pdp10Disassembler dasm)
+        {
+            MemoryOperand mem;
+            if (dasm.idx != 0)
+            {
+                var idx = Registers.Accumulators[dasm.idx];
+                mem = new MemoryOperand(idx, dasm.imm, dasm.ind);
+            }
+            else
+            {
+                mem = new MemoryOperand(dasm.imm, dasm.ind);
+            }
+            dasm.ops.Add(mem);
+            return true;
+        }
+
+        /// <summary>
         /// Interpret E as a jump or call target.
         /// </summary>
         private static bool J(ulong u, Pdp10Disassembler dasm)
         {
+            MachineOperand op;
             if (dasm.idx == 0)
             {
-                var addr = new Address18(dasm.imm);
-                dasm.ops.Add(AddressOperand.Create(addr));
-                return true;
+                if (dasm.ind)
+                {
+                    op = new MemoryOperand(dasm.imm, true);
+                }
+                else
+                {
+                    var addr = new Address18(dasm.imm);
+                    op = AddressOperand.Create(addr);
+                }
             }
-            dasm.NotYetImplemented("Indexed J");
-            return false;
+            else 
+            {
+                var idx = Registers.Accumulators[dasm.idx];
+                op = new MemoryOperand(idx, dasm.imm, dasm.ind);
+            }
+            dasm.ops.Add(op);
+            return true;
         }
 
         /// <summary>
@@ -149,8 +196,36 @@ namespace Reko.Arch.Pdp10.Disassembler
         /// </summary>
         private static bool Imm(ulong uInstr, Pdp10Disassembler dasm)
         {
-            var imm = Constant.Create(Pdp10Architecture.Word36, uInstr & LowWordMask);
-            dasm.ops.Add(new ImmediateOperand(imm));
+            MachineOperand op;
+            if (dasm.ind)
+            {
+                if (dasm.idx == 0)
+                {
+                    op = new MemoryOperand(dasm.imm, dasm.ind);
+                }
+                else
+                {
+                    var idx = Registers.Accumulators[dasm.idx];
+                    op = new MemoryOperand(idx, dasm.imm, dasm.ind);
+                }
+            }
+            else
+            {
+                var imm = Constant.Create(Pdp10Architecture.Word36, uInstr & LowWordMask);
+                op = new ImmediateOperand(imm);
+            }
+            dasm.ops.Add(op);
+            return true;
+        }
+
+        /// <summary>
+        /// Retrieve device ID as an immediate value.
+        /// </summary>
+        private static bool D(ulong uInstr, Pdp10Disassembler dasm)
+        {
+            var imm = Constant.Create(Pdp10Architecture.Word36, deviceField.Read(uInstr)); ;
+            var op = new ImmediateOperand(imm);
+            dasm.ops.Add(op);
             return true;
         }
 

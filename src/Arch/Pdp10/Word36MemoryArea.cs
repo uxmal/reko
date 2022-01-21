@@ -59,21 +59,9 @@ namespace Reko.Arch.Pdp10
         public override LeImageWriter CreateLeWriter(Address addr) => throw new NotImplementedException();
         public override LeImageWriter CreateLeWriter(long offset) => throw new NotImplementedException();
 
-        public uint ReadBeUInt32(long offset)
-        {
-            var hi = (uint) Words[offset];
-            var lo = (uint) Words[offset + 1];
-            return (hi << 16) | lo;
-        }
+        public uint ReadBeUInt32(long offset) => throw new NotSupportedException();
 
-        public ulong ReadBeUInt64(long offset)
-        {
-            var w0 = (ulong) Words[offset];
-            var w1 = (ulong) Words[offset + 1];
-            var w2 = (ulong) Words[offset + 2];
-            var w3 = (ulong) Words[offset + 3];
-            return (w0 << 48) | (w1 << 32) | (w2 << 16) | w3;
-        }
+        public ulong ReadBeUInt64(long offset) => throw new NotSupportedException();
 
 
         public override string ToString()
@@ -89,7 +77,15 @@ namespace Reko.Arch.Pdp10
 
         public override bool TryReadBe(long imageOffset, DataType type, out Constant c)
         {
-            throw new NotImplementedException();
+            if (type.BitSize != 36)
+                throw new NotImplementedException();
+            if (0 <= imageOffset && imageOffset < Words.Length)
+            {
+                c = Constant.Create(Pdp10Architecture.Word36, Words[imageOffset]);
+                return true;
+            }
+            c = default!;
+            return false;
         }
 
         public override bool TryReadBeUInt16(long off, out ushort retvalue)

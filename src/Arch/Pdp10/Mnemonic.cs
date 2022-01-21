@@ -483,5 +483,13 @@ namespace Reko.Arch.Pdp10
         xorb,
         xori,
         xorm,
+        portal,
+        xjrstf,
+        halt,
+        jrstf,
+        xjen,
+        xpcw,
+        sfm,
+        jen,
     }
 }
