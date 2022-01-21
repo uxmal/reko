@@ -36,7 +36,7 @@ namespace Reko.Arch.Pdp10
 
         protected override void DoRenderUnit(Address addr, Constant c, IMemoryFormatterOutput output)
         {
-            var sUnit = Convert.ToString((ulong) c.GetValue()).PadLeft(12, '0');
+            var sUnit = Convert.ToString((long)(ulong) c.GetValue(), 8).PadLeft(12, '0');
             output.RenderUnit(addr, sUnit);
         }
 
