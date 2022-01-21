@@ -86,7 +86,10 @@ namespace Reko.Arch.Pdp10
         public bool TryReadInt32(out int value) => throw new NotSupportedException();
         public bool TryReadInt64(out long value) => throw new NotSupportedException();
         public bool TryReadUInt16(out ushort value) => throw new NotSupportedException();
-        public bool TryReadUInt32(out uint value) => throw new NotSupportedException();
+        public bool TryReadUInt32(out uint value) {
+            value = 0;
+            return false;
+        }
         public bool TryReadUInt64(out ulong value) => throw new NotSupportedException();
     }
 }

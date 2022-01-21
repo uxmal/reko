@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Reko.Arch.Pdp10.Disassembler
+namespace Reko.Arch.Pdp10
 {
     public static class Registers
     {

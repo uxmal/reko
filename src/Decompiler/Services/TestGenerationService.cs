@@ -98,7 +98,13 @@ namespace Reko.Services
 
         private static string Hexizer(byte[] bytes) => string.Join("", bytes.Select(b => b.ToString("X2")));
 
-        public void ReportMissingRewriter(string testPrefix, MachineInstruction instr, string mnemonic, EndianImageReader rdr, string message, Func<byte[], string>? hexizer = null)
+        public void ReportMissingRewriter(
+            string testPrefix,
+            MachineInstruction instr,
+            string mnemonic,
+            EndianImageReader rdr,
+            string message,
+            Func<byte[], string>? hexizer = null)
         {
             var fsSvc = services.RequireService<IFileSystemService>();
             var outDir = GetOutputDirectory(fsSvc);
@@ -111,6 +117,27 @@ namespace Reko.Services
             emittedRewriterTests[filename].Add(mnemonic);
             hexizer = hexizer ?? Hexizer;
             var test = GenerateRewriterUnitTest(testPrefix, instr, mnemonic, rdr, message, hexizer);
+            AttemptToAppendText(fsSvc, rewriterLock, filename, test);
+        }
+
+        public void ReportMissingRewriter(
+            string testPrefix,
+            MachineInstruction instr,
+            string mnemonic,
+            EndianImageReader rdr,
+            string message,
+            string opcodeAsText)
+        {
+            var fsSvc = services.RequireService<IFileSystemService>();
+            var outDir = GetOutputDirectory(fsSvc);
+            if (outDir == null)
+                return;
+            var filename = Path.Combine(outDir, Path.ChangeExtension(testPrefix, ".tests"));
+            EnsureRewriterFile(fsSvc, filename);
+            if (this.emittedRewriterTests[filename].Contains(mnemonic))
+                return;
+            emittedRewriterTests[filename].Add(mnemonic);
+            var test = GenerateRewriterUnitTest(testPrefix, instr, mnemonic, rdr, message, opcodeAsText);
             AttemptToAppendText(fsSvc, rewriterLock, filename, test);
         }
 
@@ -156,11 +183,16 @@ namespace Reko.Services
             hexizer ??= Hexizer;
             byte[] bytes = ReadInstructionBytes(instr.Address!, rdr);
             var hexbytes = hexizer(bytes);
+            return GenerateRewriterUnitTest(testPrefix, instr, mnemonic, rdr, message, hexbytes);
+        }
+
+        public static string GenerateRewriterUnitTest(string testPrefix, MachineInstruction instr, string mnemonic, EndianImageReader rdr, string message, string hexbytes)
+        { 
             var sb = new StringWriter();
 
             if (!string.IsNullOrEmpty(message))
             {
-                sb.WriteLine($"        // {0}", message);
+                sb.WriteLine("        // {0}", message);
             }
             sb.WriteLine("        [Test]");
             sb.WriteLine("        public void {0}_{1}()", testPrefix, mnemonic);

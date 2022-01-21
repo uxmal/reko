@@ -61,6 +61,13 @@ namespace Reko.UnitTests.Arch
             Console.WriteLine(test);
         }
 
+        public void ReportMissingRewriter(string testPrefix, MachineInstruction instr, string mnemonic, EndianImageReader rdr, string message, string opcodeAsText)
+        {
+            var test = TestGenerationService.GenerateRewriterUnitTest(testPrefix, instr, mnemonic, rdr, message, opcodeAsText);
+            Console.WriteLine(test);
+        }
+
+
         private static string Hexizer(byte[] bytes)
         {
             return string.Join("",bytes.Select(b => $"{b:X2}"));

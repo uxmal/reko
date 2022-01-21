@@ -77,6 +77,21 @@ namespace Reko.Core.Services
         void ReportMissingRewriter(string testPrefix, MachineInstruction instr, string mnemonic, EndianImageReader rdr, string message, Func<byte[], string>? hexize = null);
 
         /// <summary>
+        /// This method is called when an incomplete rewriter fails to rewrite a valid machine 
+        /// instruction.
+        /// </summary>
+        /// <param name="testPrefix">Prefix to use in the generated unit test.</param>
+        /// <param name="instr">The <see cref="MachineInstruction"/> that didn't get rewritten.</param>
+        /// <param name="mnemonic">The mnemonic of the <see cref="MachineInstruction"/> that didn't get rewritten.</param>
+        /// <param name="rdr">Image reader positioned after the end of the machine instruction.</param>
+        /// <param name="message">Optional message that will be emitted as a comment.</param>
+        /// <param name="opcodeAsText">The raw value of the opcode as text. The disassembler is
+        /// responsible for generating this string such that it can be interpreted unanbiguously
+        /// as input data for the disassembler unit test class.</param>
+        void ReportMissingRewriter(string testPrefix, MachineInstruction instr, string mnemonic, EndianImageReader rdr, string message, string opcodeAsText);
+
+
+        /// <summary>
         /// Remove files starting with the given <paramref name="filePrefix"/> from the output directory.
         /// </summary>
         /// <param name="filePrefix"></param>

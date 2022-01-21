@@ -18,6 +18,7 @@
  */
 #endregion
 
+using Reko.Arch.Pdp10.Rewriter;
 using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Machine;
@@ -41,7 +42,7 @@ namespace Reko.Arch.Pdp10
             this.InstructionBitSize = 36;
             this.MemoryGranularity = 36;
             this.PointerType = Ptr18;
-            this.StackRegister = null!; //$TODO
+            this.StackRegister = Registers.Accumulators[15];
             this.WordWidth = Word36;
         }
 
@@ -72,7 +73,7 @@ namespace Reko.Arch.Pdp10
 
         public override IEnumerable<RtlInstructionCluster> CreateRewriter(EndianImageReader rdr, ProcessorState state, IStorageBinder binder, IRewriterHost host)
         {
-            throw new NotImplementedException();
+            return new Pdp10Rewriter(this, (Word36BeImageReader)rdr, state, binder, host);
         }
 
         public override FlagGroupStorage? GetFlagGroup(RegisterStorage flagRegister, uint grf)
