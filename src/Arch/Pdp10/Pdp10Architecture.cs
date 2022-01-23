@@ -21,12 +21,14 @@
 using Reko.Arch.Pdp10.Rewriter;
 using Reko.Core;
 using Reko.Core.Expressions;
+using Reko.Core.Lib;
 using Reko.Core.Machine;
 using Reko.Core.Memory;
 using Reko.Core.Rtl;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace Reko.Arch.Pdp10
@@ -47,6 +49,7 @@ namespace Reko.Arch.Pdp10
         }
 
         public override int ReturnAddressOnStack => 1;
+        public static PrimitiveType Word18 { get; } = PrimitiveType.CreateWord(18);
         public static PrimitiveType Word36 { get; } = PrimitiveType.CreateWord(36);
         public static PrimitiveType Ptr18 { get; } = PrimitiveType.Create(Domain.Pointer, 36);
 
@@ -78,7 +81,10 @@ namespace Reko.Arch.Pdp10
 
         public override FlagGroupStorage? GetFlagGroup(RegisterStorage flagRegister, uint grf)
         {
-            throw new NotImplementedException();
+            var dt = Bits.IsSingleBitSet(grf) ? PrimitiveType.Bool : PrimitiveType.Word32;
+            var flagregister = Registers.Psw;
+            var fl = new FlagGroupStorage(flagregister, grf, GrfToString(flagRegister, "", grf), dt);
+            return fl;
         }
 
         public override FlagGroupStorage? GetFlagGroup(string name)
@@ -103,7 +109,7 @@ namespace Reko.Arch.Pdp10
 
         public override RegisterStorage? GetRegister(StorageDomain domain, BitRange range)
         {
-            throw new NotImplementedException();
+            return Registers.Accumulators[(int) domain];
         }
 
         public override RegisterStorage[] GetRegisters()
@@ -111,14 +117,30 @@ namespace Reko.Arch.Pdp10
             throw new NotImplementedException();
         }
 
+        public override IEnumerable<FlagGroupStorage> GetSubFlags(FlagGroupStorage flags)
+        {
+            uint grf = flags.FlagGroupBits;
+            if ((grf & (uint)FlagM.C0) != 0) yield return Registers.C0;
+            if ((grf & (uint)FlagM.C1) != 0) yield return Registers.C1;
+            if ((grf & (uint)FlagM.V) != 0) yield return Registers.V;
+            if ((grf & (uint)FlagM.T) != 0) yield return Registers.T;
+            if ((grf & (uint)FlagM.ND) != 0) yield return Registers.ND;
+        }
+
         public override string GrfToString(RegisterStorage flagRegister, string prefix, uint grf)
         {
-            throw new NotImplementedException();
+            var s = new StringBuilder();
+            if ((grf & (uint) FlagM.C0) != 0) s.Append("C0");
+            if ((grf & (uint) FlagM.C1) != 0) s.Append("C1");
+            if ((grf & (uint) FlagM.V)  != 0) s.Append("V");
+            if ((grf & (uint) FlagM.T) != 0) s.Append("T");
+            if ((grf & (uint) FlagM.ND) != 0) s.Append("ND");
+            return s.ToString();
         }
 
         public override Address MakeAddressFromConstant(Constant c, bool codeAlign)
         {
-            throw new NotImplementedException();
+            return new Address18((uint)c.ToUInt64());
         }
 
         public override Address? ReadCodeAddress(int size, EndianImageReader rdr, ProcessorState? state)
@@ -136,7 +158,17 @@ namespace Reko.Arch.Pdp10
 
         public override bool TryGetRegister(string name, out RegisterStorage reg)
         {
-            throw new NotImplementedException();
+            var r = Registers.Accumulators.FirstOrDefault(r => r.Name == name);
+            if (r is not null)
+            {
+                reg = r;
+                return true;
+            }
+            else
+            {
+                reg = default!;
+                return false;
+            }
         }
 
         public override bool TryParseAddress(string? txtAddr, out Address addr)

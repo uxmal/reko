@@ -133,7 +133,7 @@ namespace Reko.Core.Output
             {
                 if (!rdr!.TryRead(PrimitiveType.Create(Domain.Pointer, ptr.BitSize), out var c))
                     return 0;
-                addr = Address.FromConstant(c);
+                addr = program.Platform.MakeAddressFromConstant(c, false)!;
                 if (visited.Contains(addr))
                     return 0;
                 // Don't chase unmapped pointers

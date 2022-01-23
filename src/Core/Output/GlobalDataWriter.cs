@@ -319,9 +319,9 @@ namespace Reko.Core.Output
         {
             if (!rdr!.TryRead(PrimitiveType.Create(Domain.Pointer, ptr.BitSize), out var c))
                 return codeFormatter;
-            var addr = Address.FromConstant(c);
+            var addr = program.Platform.MakeAddressFromConstant(c, false);
             // Check if it is pointer to function
-            if (program.Procedures.TryGetValue(addr, out Procedure proc))
+            if (addr is not null && program.Procedures.TryGetValue(addr, out Procedure proc))
             {
                 codeFormatter.InnerFormatter.WriteHyperlink(proc.Name, proc);
                 return codeFormatter;

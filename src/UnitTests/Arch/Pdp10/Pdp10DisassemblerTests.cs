@@ -144,6 +144,12 @@ namespace Reko.UnitTests.Arch.Pdp10
         }
 
         [Test]
+        public void Pdp10Dis_jra()
+        {
+            AssertCode("jra\t4,1(4)", "267204000001");
+        }
+
+        [Test]
         public void Pdp10Dis_jrst()
         {
             AssertCode("jrst\t007423", "254000007423");
@@ -153,6 +159,18 @@ namespace Reko.UnitTests.Arch.Pdp10
         public void Pdp10Dis_jrst_indirect()
         {
             AssertCode("jrst\t@176(3)", "254023000176");
+        }
+
+        [Test]
+        public void Pdp10Dis_jsp()
+        {
+            AssertCode("jsp\t12,004673", "265500004673");
+        }
+
+        [Test]
+        public void Pdp10Dis_jsr()
+        {
+            AssertCode("jsr\t017527", "264040017527");
         }
 
         [Test]
@@ -219,6 +237,12 @@ namespace Reko.UnitTests.Arch.Pdp10
         public void Pdp10Dis_setzm()
         {
             AssertCode("setzm\t3051(7)", "402007003051");
+        }
+
+        [Test]
+        public void Pdp10Dis_skiple()
+        {
+            AssertCode("skiple\t5,67671", "333240067671");
         }
 
         [Test]

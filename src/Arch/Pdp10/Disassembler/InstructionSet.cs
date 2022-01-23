@@ -86,7 +86,7 @@ namespace Reko.Arch.Pdp10.Disassembler
                     Instr(Mnemonic.jrstf, InstrClass.Transfer, J),
                     invalid,
 
-                    Instr(Mnemonic.halt, InstrClass.Terminates),
+                    Instr(Mnemonic.halt, InstrClass.Terminates, J),
                     Instr(Mnemonic.xjrstf, InstrClass.Transfer, J),
                     Instr(Mnemonic.xjen, InstrClass.Transfer, J),
                     Instr(Mnemonic.xpcw, InstrClass.Transfer, J),
@@ -298,12 +298,12 @@ namespace Reko.Arch.Pdp10.Disassembler
 
                     Instr(Mnemonic.pushj, InstrClass.Transfer|InstrClass.Call, AC,J),
                     Instr(Mnemonic.push, AC,E),
-                    Instr(Mnemonic.pop, AC),
+                    Instr(Mnemonic.pop, AC,E),
                     Instr(Mnemonic.popj, InstrClass.Transfer|InstrClass.Return, AC,E),
-                    Nyi(Mnemonic.jsr),
-                    Nyi(Mnemonic.jsp),
-                    Nyi(Mnemonic.jsa),
-                    Nyi(Mnemonic.jra),
+                    Instr(Mnemonic.jsr, InstrClass.Transfer, J),
+                    Instr(Mnemonic.jsp, InstrClass.Transfer, AC, J),
+                    Instr(Mnemonic.jsa, AC,E),
+                    Instr(Mnemonic.jra, AC,J),
 
                     Instr(Mnemonic.addi, AC, E),
                     Instr(Mnemonic.addi, AC, E),
@@ -315,14 +315,14 @@ namespace Reko.Arch.Pdp10.Disassembler
                     Instr(Mnemonic.subb, AC, E));
 
                 var opcodes3 = Mask(bf(3, 6), "  Hop, skip, and jump", // codes 3_0 do not skip or jump
-                    Instr(Mnemonic.cai, ACnot0, Imm),
-                    Instr(Mnemonic.cail, InstrClass.ConditionalTransfer, ACnot0, Imm),
-                    Instr(Mnemonic.caie, InstrClass.ConditionalTransfer, ACnot0, Imm),
-                    Instr(Mnemonic.caile, InstrClass.ConditionalTransfer, ACnot0, Imm),
-                    Instr(Mnemonic.caia, InstrClass.Transfer, ACnot0, Imm),
-                    Instr(Mnemonic.caige, InstrClass.ConditionalTransfer, ACnot0, Imm),
-                    Instr(Mnemonic.cain, InstrClass.ConditionalTransfer, ACnot0, Imm),
-                    Instr(Mnemonic.caig, InstrClass.ConditionalTransfer, ACnot0, Imm),
+                    Instr(Mnemonic.cai, ACnot0, E),
+                    Instr(Mnemonic.cail, InstrClass.ConditionalTransfer, AC, E),
+                    Instr(Mnemonic.caie, InstrClass.ConditionalTransfer, AC, E),
+                    Instr(Mnemonic.caile, InstrClass.ConditionalTransfer, AC, E),
+                    Instr(Mnemonic.caia, InstrClass.Transfer, AC, E),
+                    Instr(Mnemonic.caige, InstrClass.ConditionalTransfer, AC, E),
+                    Instr(Mnemonic.cain, InstrClass.ConditionalTransfer, AC, E),
+                    Instr(Mnemonic.caig, InstrClass.ConditionalTransfer, AC, E),
 
                     Instr(Mnemonic.cam, ACnot0, E),
                     Instr(Mnemonic.caml, InstrClass.ConditionalTransfer, ACnot0, E),

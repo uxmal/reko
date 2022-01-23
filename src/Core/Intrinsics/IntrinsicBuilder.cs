@@ -119,7 +119,8 @@ namespace Reko.Core.Intrinsics
         public IntrinsicProcedure Returns(DataType dt)
         {
             var signature = FunctionType.Func(
-                new Identifier("", dt, null!));
+                new Identifier("", dt, null!),
+                parameters.ToArray());
             return MakeIntrinsic(signature);
         }
 

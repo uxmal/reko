@@ -30,12 +30,39 @@ namespace Reko.Arch.Pdp10.Rewriter
     {
         private void RewriteJrst()
         {
-            if (instr.Operands[0] is AddressOperand addr)
+            m.Goto(RewriteEa(0));
+        }
+
+        private void RewriteJsp()
+        {
+            var ac = Ac();
+            m.Assign(ac, instr.Address + 1);
+            m.Goto(RewriteEa(1));
+        }
+
+        private void RewriteJsr()
+        {
+            var targetaddress = AccessEa(0);
+            m.Assign(targetaddress, this.instr.Address + 1);
+            if (targetaddress is Address a)
             {
-                m.Goto(addr.Address);
-                return;
+                m.Goto(a + 1);
             }
-            EmitUnitTest();
+            else
+            {
+                m.Goto(m.IAdd(RewriteEa(0), 1));
+            }
+        }
+
+        private void RewritePushj()
+        {
+            var target = RewriteEa(1);
+            m.Call(target, 1);
+        }
+
+        private void RewritePopj()
+        {
+            m.Return(1, 0);
         }
     }
 }

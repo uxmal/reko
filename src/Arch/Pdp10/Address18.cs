@@ -36,7 +36,7 @@ namespace Reko.Arch.Pdp10
 
         public override Expression CloneExpression()
         {
-            throw new NotImplementedException();
+            return new Address18((uint)Offset);
         }
 
         public override string GenerateName(string prefix, string suffix)

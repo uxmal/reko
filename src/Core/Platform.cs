@@ -201,7 +201,7 @@ namespace Reko.Core
         /// <param name="c">The <see cref="Constant"/> to convert.</param>
         /// <param name="codeAlign">If true, ensures that the resulting <see cref="Address"/> is correctly
         /// aligned for code addresses.</param>
-        /// <returns>An <see cref="Address"/> if the platform support the conversion, or null if not.
+        /// <returns>An <see cref="Address"/> if the platform supports the conversion, or null if not.
         /// </returns>
         Address? MakeAddressFromConstant(Constant c, bool codeAlign);
 

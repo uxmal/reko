@@ -265,7 +265,7 @@ namespace Reko.Typing
                 // Null pointer.
                 if (c!.IsZero)
                 {
-                    var np = Address.Create(ptr, 0);
+                    var np = program.Platform.MakeAddressFromConstant(c, false)!;
                     np.TypeVariable = c.TypeVariable;
                     np.DataType = c.DataType;
                     return np;

@@ -18,6 +18,7 @@
  */
 #endregion
 
+using Reko.Arch.Pdp10;
 using Reko.Core;
 using Reko.Core.Hll.C;
 using System;
@@ -35,7 +36,7 @@ namespace Reko.Environments.Pdp10Env
 
         public override HashSet<RegisterStorage> CreateTrashedRegisters()
         {
-            throw new NotImplementedException();
+            return new HashSet<RegisterStorage>();
         }
 
         public override SystemService? FindService(int vector, ProcessorState? state, SegmentMap? segmentMap)
@@ -56,6 +57,11 @@ namespace Reko.Environments.Pdp10Env
         public override ExternalProcedure? LookupProcedureByName(string? moduleName, string procName)
         {
             throw new NotImplementedException();
+        }
+
+        public override Address MakeAddressFromLinear(ulong uAddr, bool codeAlign)
+        {
+            return new Address18((uint) uAddr);
         }
     }
 }
