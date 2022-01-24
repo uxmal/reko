@@ -24,7 +24,7 @@ using System.Collections.Generic;
 namespace Reko.Core
 {
 	/// <summary>
-	/// A WorkList contains a queue of items to be processed. 
+	/// A WorkList contains a queue of items to be processed.
 	/// </summary>
 	public class WorkList<T>
 	{

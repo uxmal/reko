@@ -29,31 +29,22 @@ namespace Reko.Core.Absyn
 	/// </summary>
 	public class AbsynIf : AbsynStatement
 	{
-        private List<AbsynStatement> then;
-        private List<AbsynStatement> @else;
+        public AbsynIf(Expression e, List<AbsynStatement> then) : this(e, then, new List<AbsynStatement>())
+        {
+        }
+
+        public AbsynIf(Expression e, List<AbsynStatement> then, List<AbsynStatement> els)
+        {
+            this.Condition = e;
+            this.Then = then;
+            this.Else = els;
+        }
 
         public Expression Condition { get; set; }
 
-        public List<AbsynStatement> Then
-        {
-            get { return then; }
-        }
+        public List<AbsynStatement> Then { get; private set;  }
 
-        public List<AbsynStatement> Else
-        {
-            get { return @else; }
-        }
-
-        public AbsynIf(Expression e, List<AbsynStatement> then) : this(e, then, new List<AbsynStatement>())
-		{
-		}
-
-		public AbsynIf(Expression e, List<AbsynStatement> then, List<AbsynStatement> els)
-		{
-			this.Condition = e;
-			this.then = then;
-			this.@else = els;
-		}
+        public List<AbsynStatement> Else { get; private set; }
 
 		public override void Accept(IAbsynVisitor v)
 		{
@@ -67,9 +58,9 @@ namespace Reko.Core.Absyn
 
         public void InvertCondition()
         {
-            List<AbsynStatement> t = then;
-            then = @else;
-            @else = t;
+            List<AbsynStatement> t = Then;
+            Then = Else;
+            Else = t;
             Condition = Condition.Invert();
         }
     }

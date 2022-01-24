@@ -123,8 +123,8 @@ namespace Reko.Core.Output
             }
             else
             {
-            formatter.Terminate(";");
-        }
+                formatter.Terminate(";");
+            }
         }
 
         public void WriteGlobalVariable(Address address, DataType dataType, string name)

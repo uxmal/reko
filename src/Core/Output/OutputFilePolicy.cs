@@ -54,7 +54,8 @@ namespace Reko.Core.Output
         /// <summary>
         /// Returns a placement mapping for rendering low-level items.
         /// </summary>
-        /// <param name="fileExtension">File extension to use on the files in the mapping.</param>
+        /// <param name="fileExtension">File extension to use on the files in
+        /// the mapping.</param>
         /// <returns></returns>
         public abstract Dictionary<string, Dictionary<ImageSegment, List<ImageMapItem>>> GetItemPlacements(
             string fileExtension);
@@ -93,8 +94,9 @@ namespace Reko.Core.Output
         }
 
         /// <summary>
-        /// Given an addressable object <paramref name="addressable"/> with its filename <paramref name="filename" /> and
-        /// address <paramref name="addr"/>, create a placement for it in the <paramref name="result"/> dictionary.
+        /// Given an addressable object <paramref name="addressable"/> with
+        /// its filename <paramref name="filename" /> and address <paramref name="addr"/>,
+        /// create a placement for it in the <paramref name="result"/> dictionary.
         /// </summary>
         /// <param name="addressable"></param>
         /// <param name="filename"></param>

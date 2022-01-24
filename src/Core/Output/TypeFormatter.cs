@@ -32,9 +32,9 @@ namespace Reko.Core.Output
 	/// </summary>
 	public class TypeFormatter : IDataTypeVisitor<Formatter>
 	{
-        private Formatter writer;
+        private readonly Formatter writer;
+		private readonly Dictionary<DataType,object> visited;
 		private string? name;
-		private Dictionary<DataType,object> visited;
 		private Mode mode;
 
 		private readonly object Declared = 1;

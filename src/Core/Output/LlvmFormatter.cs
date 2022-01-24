@@ -20,17 +20,14 @@
 
 using Reko.Core.Code;
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Reko.Core.Output
 {
     public class LlvmFormatter : InstructionVisitor
     {
-        private TextWriter w;
+        private readonly TextWriter w;
 
         public LlvmFormatter(TextWriter writer)
         {

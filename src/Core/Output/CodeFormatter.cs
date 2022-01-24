@@ -24,20 +24,18 @@ using Reko.Core.Expressions;
 using Reko.Core.Operators;
 using Reko.Core.Types;
 using System;
-using System.IO;
-using System.Linq;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
-using System.Text;
+using System.Linq;
 using System.Numerics;
 
 namespace Reko.Core.Output
 {
-	/// <summary>
-	/// Formats intermediate-level instructions or abstract syntax statements.
-	/// </summary>
-	public class CodeFormatter : InstructionVisitor, IAbsynVisitor, IExpressionVisitor
+    /// <summary>
+    /// Formats intermediate-level instructions or abstract syntax statements.
+    /// </summary>
+    public class CodeFormatter : InstructionVisitor, IAbsynVisitor, IExpressionVisitor
 	{
         private enum Assoc { None, Left, Right };
 
@@ -174,7 +172,7 @@ namespace Reko.Core.Output
                     s = string.Format("0x{0}<p{1}>", s, addr.DataType.BitSize);
             }
                 InnerFormatter.Write(s);
-        }
+            }
         }
 
 		public void VisitApplication(Application appl)

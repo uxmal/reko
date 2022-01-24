@@ -98,7 +98,7 @@ namespace Reko.Core.Output
         {
             if (t is Pointer p)
             {
-                if (!(t is ArrayType || t is FunctionType))
+                if (t is not ArrayType && t is not FunctionType)
                     Formatter.Write(' ');
             }
             else
@@ -209,7 +209,7 @@ namespace Reko.Core.Output
                 wantSpace = true;
                 return;
             }
-            else if (t is PrimitiveType) {
+            else if (t is PrimitiveType pt) {
                 //case tree_code.VOID_TYPE:
                 //case tree_code.BOOLEAN_TYPE:
                 //case tree_code.CHAR_TYPE:
@@ -219,15 +219,15 @@ namespace Reko.Core.Output
                 //    t = TYPE_NAME(t);
                 //else
                 //    t = c_common_type_for_mode(TYPE_MODE(t), TREE_UNSIGNED(t));
-                WritePrimitiveTypeName((PrimitiveType)t);
+                WritePrimitiveTypeName(pt);
                 //if (declaration && !string.IsNullOrEmpty(declaredName))
                 //    fmt.Write(' ');
                 wantSpace = true;
                 return;
             }
-            else if (t is VoidType)
+            else if (t is VoidType vt)
             {
-                WriteVoidType((VoidType)t);
+                WriteVoidType(vt);
                 wantSpace = true;
                 return;
             }

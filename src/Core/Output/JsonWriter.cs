@@ -31,8 +31,8 @@ namespace Reko.Core.Output
         private const int ARR = 2;
         private const int PROP = 3;
 
-        private PrettyPrinter pp;
-        private Stack<int> state;
+        private readonly PrettyPrinter pp;
+        private readonly Stack<int> state;
 
         public JsonWriter(TextWriter w)
         {

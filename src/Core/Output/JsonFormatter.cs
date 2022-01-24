@@ -30,7 +30,7 @@ namespace Reko.Core.Output
 {
     public class JsonFormatter : InstructionVisitor
     {
-        private JsonWriter w;
+        private readonly JsonWriter w;
 
         public JsonFormatter(TextWriter w)
         {

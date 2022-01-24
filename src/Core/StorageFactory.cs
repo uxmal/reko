@@ -45,8 +45,8 @@ namespace Reko.Core
         /// <summary>
         /// Create a single register.
         /// </summary>
-        /// <param name="format">Format string used to generate the register name. Use {0} to 
-        /// inject the current register number.
+        /// <param name="format">Format string used to generate the register
+        /// name. Use {0} to inject the current register number.
         /// </param>
         /// <param name="size">
         /// A <see cref="PrimitiveType"/> describing the size of the register.
