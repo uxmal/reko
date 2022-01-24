@@ -130,7 +130,7 @@ namespace Reko.Arch.Pdp10.Disassembler
         }
 
         /// <summary>
-        /// Adds an accumulator opernand only if the 'ac' field
+        /// Adds an accumulator operand only if the 'ac' field
         /// is non-zero.
         /// </summary>
         private static bool ACnot0(ulong u, Pdp10Disassembler dasm)
