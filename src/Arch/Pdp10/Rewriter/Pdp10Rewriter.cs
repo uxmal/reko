@@ -24,15 +24,12 @@ using Reko.Core.Expressions;
 using Reko.Core.Intrinsics;
 using Reko.Core.Lib;
 using Reko.Core.Machine;
-using Reko.Core.Memory;
 using Reko.Core.Rtl;
 using Reko.Core.Services;
 using Reko.Core.Types;
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Text;
 
 namespace Reko.Arch.Pdp10.Rewriter
 {
@@ -82,9 +79,12 @@ namespace Reko.Arch.Pdp10.Rewriter
                     m.Invalid();
                     break;
                 case Mnemonic.addi: RewriteAddiSubi(m.IAdd); break;
+                case Mnemonic.addm: RewriteAddm(); break;
+                case Mnemonic.and: RewriteAnd(); break;
                 case Mnemonic.aobjn: RewriteAobjn(); break;
                 case Mnemonic.aoja: RewriteAoja(); break;
                 case Mnemonic.aos: RewriteAos(); break;
+                case Mnemonic.ash: RewriteAsh(); break;
                 case Mnemonic.blki: RewriteBlki(); break;
                 case Mnemonic.blko: RewriteBlko(); break;
                 case Mnemonic.blt: RewriteBlt(); break;
@@ -96,6 +96,7 @@ namespace Reko.Arch.Pdp10.Rewriter
                 case Mnemonic.cain: RewriteCai(m.Ne); break;
                 case Mnemonic.came: RewriteCam(m.Eq); break;
                 case Mnemonic.camg: RewriteCam(m.Gt); break;
+                case Mnemonic.caml: RewriteCam(m.Lt); break;
                 case Mnemonic.camle: RewriteCam(m.Le); break;
                 case Mnemonic.camn: RewriteCam(m.Ne); break;
                 case Mnemonic.calli: RewriteCalli(); break;
@@ -106,18 +107,29 @@ namespace Reko.Arch.Pdp10.Rewriter
                 case Mnemonic.eqvm: RewriteEqvm(); break;
                 case Mnemonic.halt: RewriteHalt(); break;
                 case Mnemonic.hll: RewriteHll(); break;
+                case Mnemonic.hllm: RewriteHllm(); break;
+                case Mnemonic.hllz: RewriteHllz(); break;
+                case Mnemonic.hllzm: RewriteHllzm(); break;
+                case Mnemonic.hlr: RewriteHlr(); break;
+                case Mnemonic.hlrz: RewriteHlrz(); break;
+                case Mnemonic.hrli: RewriteHrli(); break;
+                case Mnemonic.hrr: RewriteHrr(); break;
+                case Mnemonic.hrrm: RewriteHrrm(); break;
                 case Mnemonic.hrrz: RewriteHrrz(); break;
                 case Mnemonic.hrrzm: RewriteHrrzm(); break;
                 case Mnemonic.ibp: RewriteIbp(); break;
                 case Mnemonic.idpb: RewriteIdpb(); break;
                 case Mnemonic.idiv: RewriteIdiv(); break;
                 case Mnemonic.idivi: RewriteIdivi(); break;
+                case Mnemonic.ildb: RewriteIldb(); break;
                 case Mnemonic.imul: RewriteImul(); break;
                 case Mnemonic.imuli: RewriteImuli(); break;
                 case Mnemonic.initi: RewriteIniti(); break;
                 case Mnemonic.jrst: RewriteJrst(); break;
                 case Mnemonic.jsp: RewriteJsp(); break;
                 case Mnemonic.jsr: RewriteJsr(); break;
+                case Mnemonic.jumpe: RewriteJump(m.Eq0); break;
+                case Mnemonic.jumpl: RewriteJump(m.Lt0); break;
                 case Mnemonic.ldb: RewriteLdb(); break;
                 case Mnemonic.lookup: RewriteLookup(); break;
                 case Mnemonic.lsh: RewriteLsh(); break;
@@ -140,6 +152,7 @@ namespace Reko.Arch.Pdp10.Rewriter
                 case Mnemonic.popj: RewritePopj(); break;
                 case Mnemonic.push: RewritePush(); break;
                 case Mnemonic.pushj: RewritePushj(); break;
+                case Mnemonic.rename: RewriteRename(); break;
                 case Mnemonic.setmm: RewriteSetmm(); break; 
                 case Mnemonic.seto:
                 case Mnemonic.setoi: RewriteSeto(); break;
@@ -151,14 +164,21 @@ namespace Reko.Arch.Pdp10.Rewriter
                 case Mnemonic.skipg: RewriteSkip(m.Gt0); break;
                 case Mnemonic.skipge: RewriteSkip(m.Ge0); break;
                 case Mnemonic.skipn: RewriteSkip(m.Ne0); break;
+                case Mnemonic.soja: RewriteSoja(); break;
                 case Mnemonic.sojl: RewriteSoj(m.Lt0); break;
+                case Mnemonic.sos: RewriteSos(); break;
                 case Mnemonic.subi: RewriteAddiSubi(m.ISub); break;
                 case Mnemonic.tlc: RewriteTlc(); break;
                 case Mnemonic.tlne: RewriteTln(m.Eq0); break;
                 case Mnemonic.tlnn: RewriteTln(m.Ne0); break;
+                case Mnemonic.tlo: RewriteTlo(); break;
+                case Mnemonic.tlza: RewriteTlza(); break;
                 case Mnemonic.tro: RewriteTro(); break;
+                case Mnemonic.troa: RewriteTroa(); break;
                 case Mnemonic.trne: RewriteTrn(m.Eq0); break;
                 case Mnemonic.trnn: RewriteTrn(m.Ne0); break;
+                case Mnemonic.trz: RewriteTrz(); break;
+                case Mnemonic.trze: RewriteTrz(m.Eq0); break;
                 case Mnemonic.trzn: RewriteTrz(m.Ne0); break;
                 case Mnemonic.ttcall: RewriteTtcall(); break;
                 case Mnemonic.xct: RewriteXct(); break;
@@ -253,7 +273,7 @@ namespace Reko.Arch.Pdp10.Rewriter
             return m.Mem(word36, addr);
         }
 
-        private Expression RewriteEa(int iOp)
+        private Expression RewriteEa(int iOp, int lsh = 0)
         {
             switch (instr.Operands[iOp])
             {
@@ -261,7 +281,7 @@ namespace Reko.Arch.Pdp10.Rewriter
                 Expression value;
                 if (ea.Index is null)
                 {
-                    value = Constant.Create(word36, ea.Offset);
+                    value = Constant.Create(word36, (ulong) ea.Offset << lsh);
                 }
                 else
                 {
@@ -335,10 +355,12 @@ namespace Reko.Arch.Pdp10.Rewriter
         private static readonly IntrinsicProcedure ldbIntrinsic;
         private static readonly IntrinsicProcedure ibpIntrinsic;
         private static readonly IntrinsicProcedure idpbIntrinsic;
+        private static readonly IntrinsicProcedure ildbIntrinsic;
         private static readonly IntrinsicProcedure initiIntrinsic;
         private static readonly IntrinsicProcedure lookupIntrinsic;
         private static readonly IntrinsicProcedure lshIntrinsic;
         private static readonly IntrinsicProcedure luuoIntrinsic;
+        private static readonly IntrinsicProcedure renameIntrinsic;
         private static readonly IntrinsicProcedure ttcallIntrinsic;
         private static readonly IntrinsicProcedure xctIntrinsic;
 
@@ -394,6 +416,10 @@ namespace Reko.Arch.Pdp10.Rewriter
                 .Param(word36)
                 .Param(word36)
                 .Void();
+            ildbIntrinsic = new IntrinsicBuilder("pdp10_inc_byte_ptr_and_load", true)
+                .Param(ptr36)
+                .Returns(word36);
+
             ldbIntrinsic = new IntrinsicBuilder("pdp10_load_byte", false)
                 .Param(word36)
                 .Returns(ptr36);
@@ -407,6 +433,10 @@ namespace Reko.Arch.Pdp10.Rewriter
                 .Returns(word36);
             luuoIntrinsic = new IntrinsicBuilder("pdp10_luuo", true)
                 .Param(word36)
+                .Param(word36)
+                .Param(word36)
+                .Void();
+            renameIntrinsic = new IntrinsicBuilder("pdp10_rename", true)
                 .Param(word36)
                 .Param(word36)
                 .Void();

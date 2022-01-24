@@ -86,6 +86,12 @@ namespace Reko.Arch.Pdp10.Rewriter
             m.Assign(AccessEa(1), m.Fn(idpbIntrinsic, AccessEa(1), Ac()));
         }
 
+
+        private void RewriteIldb()
+        {
+            m.Assign(Ac(), m.Fn(ildbIntrinsic, RewriteEa(1)));
+        }
+
         private void RewriteIniti()
         {
             m.SideEffect(m.Fn(initiIntrinsic, Ac(), AccessEa(1)));
@@ -104,6 +110,11 @@ namespace Reko.Arch.Pdp10.Rewriter
         private void RewriteLuuo(int n)
         {
             m.SideEffect(m.Fn(luuoIntrinsic, Constant.Create(word36, n), Ac(), AccessEa(1)));
+        }
+
+        private void RewriteRename()
+        {
+            m.SideEffect(m.Fn(renameIntrinsic, Ac(), AccessEa(1)));
         }
 
         private void RewriteTtcall()

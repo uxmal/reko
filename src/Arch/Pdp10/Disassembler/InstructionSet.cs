@@ -24,6 +24,8 @@ using Reko.Core.Machine;
 
 // Converted by hand from https://www.inwap.com/pdp10/opcodes.html
 
+// Instruction set differences http://pdp10.nocrew.org/cpu/processors.html
+
 namespace Reko.Arch.Pdp10.Disassembler
 {
     using Decoder = WideDecoder<Pdp10Disassembler, Mnemonic, Pdp10Instruction>;
@@ -107,62 +109,77 @@ namespace Reko.Arch.Pdp10.Disassembler
                     Instr(Mnemonic.luuo01, AC, E),
                     Instr(Mnemonic.luuo02, AC, E),
                     Instr(Mnemonic.luuo03, AC, E),
+
                     Instr(Mnemonic.luuo04, AC, E),
                     Instr(Mnemonic.luuo05, AC, E),
                     Instr(Mnemonic.luuo06, AC, E),
                     Instr(Mnemonic.luuo07, AC, E),
+                    // 0o10
                     Instr(Mnemonic.luuo10, AC, E),
                     Instr(Mnemonic.luuo11, AC, E),
                     Instr(Mnemonic.luuo12, AC, E),
                     Instr(Mnemonic.luuo13, AC, E),
+
                     Instr(Mnemonic.luuo14, AC, E),
                     Instr(Mnemonic.luuo15, AC, E),
                     Instr(Mnemonic.luuo16, AC, E),
                     Instr(Mnemonic.luuo17, AC, E),
+                    // 0o20
                     Instr(Mnemonic.luuo20, AC, E),
                     Instr(Mnemonic.luuo21, AC, E),
                     Instr(Mnemonic.luuo22, AC, E),
                     Instr(Mnemonic.luuo23, AC, E),
+
                     Instr(Mnemonic.luuo24, AC, E),
                     Instr(Mnemonic.luuo25, AC, E),
                     Instr(Mnemonic.luuo26, AC, E),
                     Instr(Mnemonic.luuo27, AC, E),
+                    // 0o30
                     Instr(Mnemonic.luuo30, AC, E),
                     Instr(Mnemonic.luuo31, AC, E),
                     Instr(Mnemonic.luuo32, AC, E),
                     Instr(Mnemonic.luuo33, AC, E),
+
                     Instr(Mnemonic.luuo34, AC, E),
                     Instr(Mnemonic.luuo35, AC, E),
                     Instr(Mnemonic.luuo36, AC, E),
                     Instr(Mnemonic.luuo37, AC, E),
+                    // 0o40
                     Instr(Mnemonic.call, AC, E),
                     Instr(Mnemonic.initi, AC, E),
                     Instr(Mnemonic.muuo42, AC, E),
                     Instr(Mnemonic.muuo43, AC, E),
+                    
                     Instr(Mnemonic.muuo44, AC, E),
                     Instr(Mnemonic.muuo45, AC, E),
                     Instr(Mnemonic.muuo46, AC, E),
                     Instr(Mnemonic.calli, AC, E),
+                    // 0o50
                     Instr(Mnemonic.open, AC, E),
                     Instr(Mnemonic.ttcall, AC, E),
                     Instr(Mnemonic.muuo52, AC, E),
                     Instr(Mnemonic.muuo53, AC, E),
+                    
                     Instr(Mnemonic.muuo54, AC, E),
                     Instr(Mnemonic.rename, AC, E),
                     Instr(Mnemonic.@in, AC, E),
                     Instr(Mnemonic.@out, AC, E),
+                    // 0o60
                     Instr(Mnemonic.setsts, AC, E),
                     Instr(Mnemonic.stato, AC, E),
                     Instr(Mnemonic.status, AC, E),
                     Instr(Mnemonic.getsts, AC, E),
+
                     Instr(Mnemonic.inbuf, AC, E),
                     Instr(Mnemonic.outbuf, AC, E),
                     Instr(Mnemonic.input, AC, E),
                     Instr(Mnemonic.output, AC, E),
+                    // 0o70
                     Instr(Mnemonic.close, AC, E),
                     Instr(Mnemonic.releas, AC, E),
                     Instr(Mnemonic.mtape, AC, E),
                     Instr(Mnemonic.ugetf, AC, E),
+
                     Instr(Mnemonic.useti, AC, E),
                     Instr(Mnemonic.useto, AC, E),
                     Instr(Mnemonic.lookup, AC, E),

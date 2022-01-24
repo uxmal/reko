@@ -26,6 +26,7 @@ using System.Collections.Generic;
 
 namespace Reko.Environments.Pdp10Env
 {
+    // WAITS syscalls https://www.saildart.org/UUO.ME[S,DOC%5D
     public class Pdp10Platform : Platform
     {
         public Pdp10Platform(IServiceProvider services, IProcessorArchitecture arch) : base(services, arch, "pdp10")

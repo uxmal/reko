@@ -1,3 +1,4 @@
+using Reko.Arch.Pdp10.Disassembler;
 using Reko.Core;
 using Reko.Core.Expressions;
 using System;
@@ -14,6 +15,22 @@ namespace Reko.Arch.Pdp10.Rewriter
             var dst = Ac();
             m.Assign(dst, fn(dst, src));
             m.Assign(binder.EnsureFlagGroup(C0C1VT), m.Cond(dst));
+        }
+
+        private void RewriteAddm()
+        {
+            var src = Ac();
+            var tmp = binder.CreateTemporary(src.DataType);
+            m.Assign(tmp, m.IAdd(AccessEa(1), src));
+            m.Assign(AccessEa(1), tmp);
+            m.Assign(binder.EnsureFlagGroup(C0C1VT), m.Cond(tmp));
+        }
+
+        private void RewriteAnd()
+        {
+            var src = AccessEa(1);
+            var dst = Ac();
+            m.Assign(dst, m.And(dst, src));
         }
 
         private void RewriteAobjn()
@@ -48,6 +65,31 @@ namespace Reko.Arch.Pdp10.Rewriter
             m.Assign(AccessEa(cop - 1), tmp);
         }
 
+        private void RewriteAsh()
+        {
+            var sh = RewriteEa(1);
+            var dst = Ac();
+            Expression src;
+            if (sh is Constant c)
+            {
+                // Force to signed
+                var lSh = c.ToUInt32();
+                if (lSh < 36)
+                {
+                    src = m.Shl(dst, (int) lSh);
+                }
+                else
+                {
+                    var rSh = (0 - lSh) & ((1u << 18) - 1u);
+                    src = m.Sar(dst, (int) rSh);
+                }
+            }
+            else
+            {
+                src = m.Fn(lshIntrinsic, dst, sh);
+            }
+            m.Assign(dst, src);
+        }
         private void RewriteCai(Func<Expression, Expression, Expression> fn)
         {
             var src = RewriteEa(1);
@@ -79,20 +121,104 @@ namespace Reko.Arch.Pdp10.Rewriter
             m.Assign(dst, m.Dpb(dst, tmp, 18));
         }
 
+        private void RewriteHllm()
+        {
+            var src = Ac();
+            var tmp = binder.CreateTemporary(word18);
+            var tmp2 = binder.CreateTemporary(word36);
+            m.Assign(tmp, m.Slice(src, tmp.DataType, 0));
+            m.Assign(tmp2, AccessEa(1));
+            m.Assign(AccessEa(1), m.Dpb(tmp2, tmp, 0));
+        }
+
+        private void RewriteHllz()
+        {
+            var src = AccessEa(1);
+            var dst = Ac();
+            var tmp = binder.CreateTemporary(word18);
+            m.Assign(tmp, m.Slice(src, tmp.DataType, 18));
+            m.Assign(dst, m.Shl(m.Convert(tmp, tmp.DataType, word36), 18));
+        }
+
+        private void RewriteHllzm()
+        {
+            var src = Ac();
+            var dst = AccessEa(1);
+            var tmp = binder.CreateTemporary(word18);
+            m.Assign(tmp, m.Slice(src, tmp.DataType, 18));
+            m.Assign(dst, m.Shl(m.Convert(tmp, tmp.DataType, word36), 18));
+        }
+
+        private void RewriteHlr()
+        {
+            var src = AccessEa(1);
+            var dst = Ac();
+            var tmp = binder.CreateTemporary(word18);
+            m.Assign(tmp, m.Slice(src, word18, 18));
+            m.Assign(dst, m.Dpb(dst, tmp, 18));
+        }
+
+        private void RewriteHlrz()
+        {
+            var src = AccessEa(1);
+            var dst = Ac();
+            var tmp = binder.CreateTemporary(word18);
+            m.Assign(tmp, m.Slice(src, tmp.DataType, 18));
+            m.Assign(dst, m.Convert(tmp, word18, word36));
+        }
+
+        private void RewriteHrli()
+        {
+            var src = RewriteEa(1);
+            var dst = Ac();
+            var tmp = binder.CreateTemporary(word18);
+            m.Assign(tmp, m.Slice(src, word18, 0));
+            m.Assign(dst, m.Dpb(dst, tmp, 18));
+        }
+
+        private void RewriteHrri()
+        {
+            var src = RewriteEa(1);
+            var dst = Ac();
+            var tmp = binder.CreateTemporary(word18);
+            m.Assign(tmp, m.Slice(src, word18, 0));
+            m.Assign(dst, m.Dpb(dst, tmp, 18));
+        }
+
+        private void RewriteHrr()
+        {
+            var src = AccessEa(1);
+            var dst = Ac();
+            var tmp = binder.CreateTemporary(word18);
+            m.Assign(tmp, m.Slice(src, tmp.DataType, 0));
+            m.Assign(dst, m.Dpb(dst, tmp, 0));
+        }
+
+        private void RewriteHrrm()
+        {
+            var src = Ac();
+            var tmp = binder.CreateTemporary(word18);
+            var tmp2 = binder.CreateTemporary(word36);
+            m.Assign(tmp, m.Slice(src, tmp.DataType, 0));
+            m.Assign(tmp2, AccessEa(1));
+            m.Assign(AccessEa(1), m.Dpb(tmp2, tmp, 0));
+        }
+
         private void RewriteHrrz()
+        {
+            var src = AccessEa(1);
+            var dst = Ac();
+            var tmp = binder.CreateTemporary(word18);
+            m.Assign(tmp, m.Slice(src, tmp.DataType, 0));
+            m.Assign(dst, m.Convert(tmp, tmp.DataType, word36));
+        }
+
+        private void RewriteHrrzm()
         {
             var src = Ac();
             var tmp = binder.CreateTemporary(word18);
             m.Assign(tmp, m.Slice(src, tmp.DataType, 0));
             m.Assign(AccessEa(1), m.Convert(tmp, tmp.DataType, word36));
-        }
-
-        private void RewriteHrrzm()
-        {
-            var src = AccessEa(1);
-            var tmp = binder.CreateTemporary(word18);
-            m.Assign(tmp, m.Slice(src, tmp.DataType, 0));
-            m.Assign(Ac(), m.Convert(tmp, tmp.DataType, word36));
         }
 
         private void RewriteIdiv()
@@ -303,13 +429,44 @@ namespace Reko.Arch.Pdp10.Rewriter
             var ac = Ac();
             m.Assign(ac, m.ISub(ac, 1));
             var cc = binder.EnsureFlagGroup(C0C1VT);
-            m.Assign(cc, ac);
+            m.Assign(cc, m.Cond(ac));
             Branch(fn(ac), RewriteEa(1));
+        }
+
+        private void RewriteSoja()
+        {
+            var ac = Ac();
+            m.Assign(ac, m.ISub(ac, 1));
+            var cc = binder.EnsureFlagGroup(C0C1VT);
+            m.Assign(cc, ac);
+            m.Goto(RewriteEa(1));
+        }
+
+        private void RewriteSos()
+        {
+            var tmp = binder.CreateTemporary(word36);
+            var cop = instr.Operands.Length;
+            m.Assign(tmp, m.ISub(AccessEa(cop - 1), 1));
+            if (cop == 2)
+            {
+                m.Assign(Ac(), tmp);
+            }
+            m.Assign(AccessEa(cop - 1), tmp);
+            m.Assign(binder.EnsureFlagGroup(C0C1VT), m.Cond(tmp));
         }
 
         private void RewriteTlc()
         {
+            var mask = RewriteEa(1, 18);
+            var ac = Ac();
+            m.Assign(ac, m.Xor(ac, mask));
+        }
 
+        private void RewriteTlo()
+        {
+            var mask = RewriteEa(1, 18);
+            var ac = Ac();
+            m.Assign(ac, m.Or(ac, mask));
         }
 
         private void RewriteTln(Func<Expression, Expression> fn)
@@ -319,6 +476,13 @@ namespace Reko.Arch.Pdp10.Rewriter
             SkipIf(fn(m.And(m.Shr(dst, 18), src)));
         }
 
+        private void RewriteTlza()
+        {
+            var mask = RewriteEa(1, 18);
+            var ac = Ac();
+            m.Assign(ac, m.And(ac, m.Comp(mask)));
+            Skip();
+        }
 
         private void RewriteTrn(Func<Expression, Expression> fn)
         {
@@ -332,6 +496,21 @@ namespace Reko.Arch.Pdp10.Rewriter
             var mask = RewriteEa(1);
             var dst = Ac();
             m.Assign(dst, m.Or(dst, mask));
+        }
+
+        private void RewriteTroa()
+        {
+            var mask = RewriteEa(1);
+            var dst = Ac();
+            m.Assign(dst, m.Or(dst, mask));
+            Skip();
+        }
+
+        private void RewriteTrz()
+        {
+            var mask = RewriteEa(1);
+            var ac = Ac();
+            m.Assign(ac, m.And(ac, m.Comp(mask)));
         }
 
         private void RewriteTrz(Func<Expression,Expression> fn)

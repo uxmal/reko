@@ -19,6 +19,7 @@
 #endregion
 
 using Reko.Core;
+using Reko.Core.Expressions;
 using Reko.Core.Machine;
 using System;
 using System.Collections.Generic;
@@ -52,6 +53,11 @@ namespace Reko.Arch.Pdp10.Rewriter
             {
                 m.Goto(m.IAdd(RewriteEa(0), 1));
             }
+        }
+
+        private void RewriteJump(Func<Expression, Expression> fn)
+        {
+            Branch(fn(Ac()), RewriteEa(1));
         }
 
         private void RewritePushj()

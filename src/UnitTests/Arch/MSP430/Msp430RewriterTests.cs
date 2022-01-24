@@ -18,17 +18,10 @@
  */
 #endregion
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Reko.Core;
-using Reko.Arch.Msp430;
 using NUnit.Framework;
-using Reko.Core.Rtl;
-using System.ComponentModel.Design;
-using Reko.Core.Memory;
+using Reko.Arch.Msp430;
+using Reko.Core;
+using System.Collections.Generic;
 
 namespace Reko.UnitTests.Arch.Msp430
 {
