@@ -73,6 +73,7 @@ namespace Reko.Environments.SysV.ArchSpecific
                     iReg += 2;
                 }
             }
+            ccr.CallerCleanup(4);
         }
 
         public bool IsArgument(Storage stg)
