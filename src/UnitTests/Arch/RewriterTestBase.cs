@@ -113,7 +113,7 @@ namespace Reko.UnitTests.Arch
                     ++i;
                 }
             }
-            Assert.AreEqual(expected.Length, i, "Expected " + expected.Length + " instructions.");
+            Assert.AreEqual(expected.Length, i, $"Expected {expected.Length} RTL instructions.");
             Assert.IsFalse(rewriter.MoveNext(), "More instructions were emitted than were expected.");
         }
     }

@@ -44,14 +44,39 @@ namespace Reko.Arch.Pdp10.Rewriter
             m.SideEffect(m.Fn(bltIntrinsic, Ac(), AccessEa(1)));
         }
 
+        private void RewriteCall()
+        {
+            m.SideEffect(m.Fn(callIntrinsic, Ac(), AccessEa(1)));
+        }
+
         private void RewriteCalli()
         {
             m.SideEffect(m.Fn(calliIntrinsic, Ac(), AccessEa(1)));
         }
 
+        private void RewriteClose()
+        {
+            m.SideEffect(m.Fn(closeIntrinsic, Ac(), AccessEa(1)));
+        }
+
         private void RewriteConi()
         {
             m.SideEffect(m.Fn(coniIntrinsic, Imm(0), AccessEa(1)));
+        }
+
+        private void RewriteCono()
+        {
+            m.SideEffect(m.Fn(conoIntrinsic, Imm(0), AccessEa(1)));
+        }
+
+        private void RewriteConso()
+        {
+            m.SideEffect(m.Fn(consoIntrinsic, Imm(0), AccessEa(1)));
+        }
+
+        private void RewriteConsz()
+        {
+            m.SideEffect(m.Fn(conszIntrinsic, Imm(0), AccessEa(1)));
         }
 
         private void RewriteDatai()
@@ -86,15 +111,24 @@ namespace Reko.Arch.Pdp10.Rewriter
             m.Assign(AccessEa(1), m.Fn(idpbIntrinsic, AccessEa(1), Ac()));
         }
 
-
         private void RewriteIldb()
         {
             m.Assign(Ac(), m.Fn(ildbIntrinsic, RewriteEa(1)));
         }
 
+        private void RewriteInbuf()
+        {
+            m.SideEffect(m.Fn(inbufIntrinsic, Ac(), AccessEa(1)));
+        }
+
         private void RewriteIniti()
         {
             m.SideEffect(m.Fn(initiIntrinsic, Ac(), AccessEa(1)));
+        }
+
+        private void RewriteJsys()
+        {
+            m.SideEffect(m.Fn(jsysIntrinsic, Ac(), AccessEa(1)));
         }
 
         private void RewriteLdb()
@@ -112,14 +146,29 @@ namespace Reko.Arch.Pdp10.Rewriter
             m.SideEffect(m.Fn(luuoIntrinsic, Constant.Create(word36, n), Ac(), AccessEa(1)));
         }
 
+        private void RewriteMuuo(int n)
+        {
+            m.SideEffect(m.Fn(muuoIntrinsic, Constant.Create(word36, n), Ac(), AccessEa(1)));
+        }
+
         private void RewriteRename()
         {
             m.SideEffect(m.Fn(renameIntrinsic, Ac(), AccessEa(1)));
         }
 
+        private void RewriteSetsts()
+        {
+            m.SideEffect(m.Fn(setstsIntrinsic, Ac(), AccessEa(1)));
+        }
+
         private void RewriteTtcall()
         {
             m.SideEffect(m.Fn(ttcallIntrinsic, Ac(), AccessEa(1)));
+        }
+
+        private void RewriteUjen()
+        {
+            m.SideEffect(m.Fn(ujenIntrinsic, Ac(), AccessEa(1)));
         }
 
         private void RewriteXct()

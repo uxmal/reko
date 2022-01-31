@@ -332,7 +332,7 @@ namespace Reko.Arch.Pdp10.Disassembler
                     Instr(Mnemonic.subb, AC, E));
 
                 var opcodes3 = Mask(bf(3, 6), "  Hop, skip, and jump", // codes 3_0 do not skip or jump
-                    Instr(Mnemonic.cai, ACnot0, E),
+                    Instr(Mnemonic.cai, InstrClass.Linear | InstrClass.Padding, ACnot0, E),
                     Instr(Mnemonic.cail, InstrClass.ConditionalTransfer, AC, E),
                     Instr(Mnemonic.caie, InstrClass.ConditionalTransfer, AC, E),
                     Instr(Mnemonic.caile, InstrClass.ConditionalTransfer, AC, E),
@@ -341,7 +341,7 @@ namespace Reko.Arch.Pdp10.Disassembler
                     Instr(Mnemonic.cain, InstrClass.ConditionalTransfer, AC, E),
                     Instr(Mnemonic.caig, InstrClass.ConditionalTransfer, AC, E),
 
-                    Instr(Mnemonic.cam, ACnot0, E),
+                    Instr(Mnemonic.cam, InstrClass.Linear|InstrClass.Padding, ACnot0, E),
                     Instr(Mnemonic.caml, InstrClass.ConditionalTransfer, ACnot0, E),
                     Instr(Mnemonic.came, InstrClass.ConditionalTransfer, ACnot0, E),
                     Instr(Mnemonic.camle, InstrClass.ConditionalTransfer, ACnot0, E),
@@ -405,7 +405,7 @@ namespace Reko.Arch.Pdp10.Disassembler
                     Instr(Mnemonic.sosg, InstrClass.ConditionalTransfer, ACnot0, E));
 
                 var opcodes4 = Mask(bf(3, 6), "  two-argument logical operations",
-                    Instr(Mnemonic.setz, E),
+                    Instr(Mnemonic.setz, AC),
                     Instr(Mnemonic.setzi, AC, E),
                     Instr(Mnemonic.setzm, E),
                     Instr(Mnemonic.setzb, AC, E),
