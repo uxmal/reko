@@ -218,7 +218,7 @@
       <File Source="$(var.SysV.ProjectDir)lp32.xml" nuget_target="c:" />
       <File Source="$(var.SysV.ProjectDir)lp64.xml" nuget_target="c:" />
       <File Source="$(var.SysV.ProjectDir)libc.so.xml" nuget_target="c:" />
-      <File Source="$(var.SysV.ProjectDir)linux-syscalls-i386.xml" nuget_target="c:" />
+      <File Source="$(var.SysV.ProjectDir)linux-syscalls-i386.inc" nuget_target="c:" />
       <File Source="$(var.SysV.ProjectDir)opengl.xml" nuget_target="c:" />
       <File Source="$(var.SysV.ProjectDir)Xlib.xml" nuget_target="c:" />
       <File Source="$(var.SysV.ProjectDir)sysvcharacteristics.xml" nuget_target="c:" />

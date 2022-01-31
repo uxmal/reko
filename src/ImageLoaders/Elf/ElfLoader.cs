@@ -397,6 +397,7 @@ namespace Reko.ImageLoaders.Elf
         {
             string envName;
             var cfgSvc = Services.RequireService<IConfigurationService>();
+            var options = new Dictionary<string, object>();
             switch (osAbi)
             {
             case ELFOSABI_NONE: // Unspecified ABI
@@ -408,13 +409,15 @@ namespace Reko.ImageLoaders.Elf
                 envName = "elf-cell-lv2";
                 break;
             case ELFOSABI_LINUX:
-                envName = "linux";      //$TODO: create a linux platform
+                envName = "elf-neutral";
+                options["osabi"] = "linux";
                 break;
             default:
                 throw new NotSupportedException(string.Format("Unsupported ELF ABI 0x{0:X2}.", osAbi));
             }
             var env = cfgSvc.GetEnvironment(envName);
             this.platform = env.Load(Services, arch);
+            this.platform.LoadUserOptions(options);
             return platform;
         }
 

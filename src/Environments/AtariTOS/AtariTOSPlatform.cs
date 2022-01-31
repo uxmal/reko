@@ -63,8 +63,6 @@ namespace Reko.Environments.AtariTOS
 
         public override SystemService? FindService(int vector, ProcessorState? state, SegmentMap? segmentMap)
         {
-            if (Metadata == null)
-            { }
             EnsureTypeLibraries(PlatformIdentifier);
             foreach (var module in this.Metadata!.Modules.Values)
             {

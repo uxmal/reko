@@ -67,7 +67,7 @@ namespace Reko.Core.Services
                 byte[] bytes = fsSvc.ReadAllBytes(libFileName);
                 var libraryLocation = ImageLocation.FromUri(libFileName);
                 MetadataLoader? loader = CreateLoader(tlElement, libraryLocation, bytes);
-                if (loader == null)
+                if (loader is null)
                     return libDst;
                 var lib = loader.Load(platform, tlElement.Module, libDst);
                 return lib;
@@ -97,7 +97,7 @@ namespace Reko.Core.Services
                     var svc = services.RequireService<IPluginLoaderService>();
                     loaderType = svc.GetType(ldrElement.TypeName);
                 }
-                if (loaderType == null)
+                if (loaderType is null)
                 {
                     listener.Warn(
                         "Metadata loader type '{0}' is unknown.", 

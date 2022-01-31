@@ -520,7 +520,7 @@ IGNORE tab + cr + lf
             int typeDeclsSeen = 0;
             var list = new List<DeclSpec>();
             var ds = Parse_DeclSpecifier();
-            if (ds == null)
+            if (ds is null)
                 return null;
             list.Add(ds);
             bool inTypeDef = (ds is StorageClassSpec scspec && scspec.Type == CTokenType.Typedef);

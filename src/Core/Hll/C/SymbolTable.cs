@@ -160,6 +160,11 @@ namespace Reko.Core.Hll.C
 
         private ProcedureBase_v1 MakeProcedure(string name, SerializedSignature sSig, List<CAttribute>? attributes)
         {
+            var attrChar = attributes?.Find(a =>
+                a.Name.Components.Length == 2 &&
+                a.Name.Components[0] == "reko" &&
+                a.Name.Components[1] == "characteristics");
+            var c = MakeCharacteristics(attrChar);
             var attrService = attributes?.Find(a =>
                 a.Name.Components.Length == 2 && 
                 a.Name.Components[0] == "reko" &&
@@ -167,6 +172,7 @@ namespace Reko.Core.Hll.C
             if (attrService != null)
             {
                 var sService = MakeService(name, sSig, attrService);
+                sService.Characteristics = c;
                 return sService;
             }
             else
@@ -188,6 +194,7 @@ namespace Reko.Core.Hll.C
                     Name = name,
                     Signature = sSig,
                     Address = addr,
+                    Characteristics = c,
                 };
             }
         }
@@ -202,6 +209,14 @@ namespace Reko.Core.Hll.C
                 Name = name,
                 SyscallInfo = syscall,
             };
+        }
+
+        private ProcedureCharacteristics? MakeCharacteristics(CAttribute? attrCharacteristics)
+        {
+            if (attrCharacteristics is null)
+                return null;
+            var cp = new CharacteristicsParser(attrCharacteristics);
+            return cp.Parse();
         }
     }
 }

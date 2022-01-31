@@ -67,7 +67,7 @@ namespace Reko.Core.Serialization
             var loader = new TypeLibraryDeserializer(platform, true, library);
 			var sser = new ProcedureSerializer(platform, loader, "stdapi");
             svc.Signature = sser.Deserialize(Signature, platform.Architecture.CreateFrame());
-			svc.Characteristics = Characteristics != null ? Characteristics : DefaultProcedureCharacteristics.Instance;
+			svc.Characteristics = Characteristics ?? DefaultProcedureCharacteristics.Instance;
 			return svc;
 		}
     }

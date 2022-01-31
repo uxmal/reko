@@ -90,7 +90,7 @@ namespace Reko.Core.Serialization
                 Terminates == false &&
                 Allocator == false &&
                 ArraySize == null &&
-                VarargsParserClass == null &&
+                string.IsNullOrEmpty(VarargsParserClass) &&
                 ReturnAddressAdjustment == 0;
         }
     }

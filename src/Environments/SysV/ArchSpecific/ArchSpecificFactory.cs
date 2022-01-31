@@ -34,6 +34,7 @@ namespace Reko.Environments.SysV.ArchSpecific
         private readonly IProcessorArchitecture arch;
         private CallingConvention ccX86;
         private CallingConvention ccRiscV;
+        private CallingConvention cci386KernelAbi;
 
         public ArchSpecificFactory(IServiceProvider services, IProcessorArchitecture arch)
         {
@@ -41,6 +42,7 @@ namespace Reko.Environments.SysV.ArchSpecific
             this.arch = arch;
             this.ccX86 = null!;
             this.ccRiscV = null!;
+            this.cci386KernelAbi = default!;
         }
 
         public Func<IProcessorArchitecture, Address, IEnumerable<RtlInstruction>, IRewriterHost, Expression?> CreateTrampolineDestinationFinder(IProcessorArchitecture arch)
@@ -62,7 +64,7 @@ namespace Reko.Environments.SysV.ArchSpecific
             }
         } 
  
-        public CallingConvention CreateCallingConverion(IProcessorArchitecture arch)
+        public CallingConvention CreateCallingConverion(IProcessorArchitecture arch, string? name)
         {
             switch (arch.Name)
             {
@@ -81,6 +83,15 @@ namespace Reko.Environments.SysV.ArchSpecific
             case "sparc64":
                 return new SparcCallingConvention(arch);
             case "x86-protected-32":
+                if (name == "i386kernel")
+                {
+                    if (this.cci386KernelAbi is null)
+                    {
+                        cci386KernelAbi = new i386KernelCallingConvention(arch);
+                    }
+                    return cci386KernelAbi;
+                }
+
                 if (this.ccX86 == null)
                 {
                     var svc = services.RequireService<IPluginLoaderService>();

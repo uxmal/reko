@@ -59,7 +59,7 @@ namespace Reko.Environments.SysV
         public override CallingConvention GetCallingConvention(string? ccName)
         {
             var Architecture = this.Architecture;
-            return archSpecificFactory.CreateCallingConverion(Architecture);
+            return archSpecificFactory.CreateCallingConverion(Architecture, ccName);
         }
 
         public override HashSet<RegisterStorage> CreateTrashedRegisters()
@@ -69,6 +69,15 @@ namespace Reko.Environments.SysV
 
         public override SystemService? FindService(int vector, ProcessorState? state, SegmentMap? segmentMap)
         {
+            foreach (var module in base.Metadata.Modules.Values)
+            {
+                if (module.ServicesByVector.TryGetValue(vector, out var svcs))
+                {
+                    return svcs.FirstOrDefault(s => 
+                        s.SyscallInfo is not null && 
+                        s.SyscallInfo.Matches(vector, state));
+                }
+            }
             return null;
         }
 
@@ -157,6 +166,15 @@ namespace Reko.Environments.SysV
             return reg.IsSystemRegister;
         }
 
+        public override void LoadUserOptions(Dictionary<string, object> options)
+        {
+            if (options.TryGetValue("osabi", out var oOsAbi) &&
+                oOsAbi is string osAbi &&
+                string.Compare(osAbi, "linux", StringComparison.OrdinalIgnoreCase) == 0)
+            {
+            }
+            base.LoadUserOptions(options);
+        }
         private RegisterStorage[] LoadTrashedRegisters()
         {
             if (Services != null)
