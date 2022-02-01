@@ -139,10 +139,10 @@ namespace Reko.Core.Types
             if (cache.TryGetValue((dom, bitSize), out var shared))
                 return shared;
             var p = new PrimitiveType(dom, bitSize, false, name ?? GenerateName(dom, bitSize));
-            return Cache(p, p.Name);
+            return Cache(p);
         }
 
-        private static PrimitiveType Cache(PrimitiveType p, string? name)
+        private static PrimitiveType Cache(PrimitiveType p)
         {
             if (!cache.TryGetValue((p.Domain, p.BitSize), out var shared))
             {
@@ -177,7 +177,7 @@ namespace Reko.Core.Types
                 dom = Domain.Integer | Domain.Pointer;
             }
 			ptWord = new PrimitiveType(dom, bitSize, true, name);
-            Cache(ptWord, name);
+            Cache(ptWord);
             mpBitsizeToWord[bitSize] = ptWord;
             return ptWord;
 		}

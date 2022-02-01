@@ -381,16 +381,16 @@ void fn04B9(struct Eq_n * gp0)
 	}
 }
 
-real48 g_r05AB = ;
-real48 g_r05AE = ;
-real48 g_r05B1 = ;
-real48 g_r05B4 = ;
+real48 g_r05AB = 0.0; // 05AB
+real48 g_r05AE = 0.590159880790452; // 05AE
+real48 g_r05B1 = 0.4173099999998158; // 05B1
+real48 g_r05B4 = 0.7071066619791964; // 05B4
 Eq_n g_t060A = // 060A
 	{
-		0x50000004
+		10.0F
 	};
 Eq_n g_t060D = // 060D
 	{
-		0x40000001
+		1.0F
 	};
-real48 g_r0610 = ;
+real48 g_r0610 = -1.0; // 0610

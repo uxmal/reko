@@ -172,7 +172,7 @@ namespace Reko.Arch.MilStd1750
                 var n = ConstantReal.Create(rawBits.DataType, Real48ToIEEE(rawBits.ToUInt64()));
                 return n;
             }
-            throw new NotSupportedException($"Floating point bit size {rawBits.DataType.BitSize} is not supported.");
+            throw new NotSupportedException($"Floating point bit size {rawBits.DataType.BitSize} is not supported on MIL-STD-1750A.");
         }
 
         public static double Real32ToIEEE(uint rawBits32)
@@ -207,6 +207,32 @@ namespace Reko.Arch.MilStd1750
         public override bool TryParseAddress(string? txtAddr, out Address addr)
         {
             return Address.TryParse16(txtAddr, out addr);
+        }
+
+        public override bool TryRead(EndianImageReader rdr, PrimitiveType dt, out Constant value)
+        {
+            if (dt.Domain == Domain.Real)
+            {
+                if (dt.BitSize == 32)
+                {
+                    if (rdr.TryReadBeUInt32(out uint uValue))
+                    {
+                        value = ConstantReal.Create(dt, Real32ToIEEE(uValue));
+                        return true;
+                    }
+                }
+                if (dt.BitSize == 48)
+                {
+                    if (rdr.TryReadBeUInt32(out uint uHiwords) &&
+                        rdr.TryReadBeUInt16(out ushort uLoword))
+                    {
+                        ulong uValue = ((ulong) uHiwords << 16) | uLoword;
+                        value = ConstantReal.Create(dt, Real48ToIEEE(uValue));
+                        return true;
+                    }
+                }
+            }
+            return base.TryRead(rdr, dt, out value);
         }
 
         static MilStd1750Architecture()

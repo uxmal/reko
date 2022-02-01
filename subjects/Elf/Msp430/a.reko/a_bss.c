@@ -30,5 +30,5 @@ word16 g_w0296 = 0x00; // 0296
 struct Eq_n * g_ptr0298 = null; // 0298
 Eq_n __write_char = // 09B2
 	{
-		?? /* Can't read address 09B2 */ 
+		?? /* Can't read word20 at address 09B2 */ 
 	};

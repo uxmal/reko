@@ -153,7 +153,7 @@ namespace Reko.Core
 
         /// <summary>
         /// Reads a value from memory, respecting the processor's endianness. Use this
-        /// instead of ImageWriter when random access of memory is requored.
+        /// instead of <see cref="ImageReader"/> when random access of memory is requored.
         /// </summary>
         /// <param name="mem">Memory area to read from</param>
         /// <param name="addr">Address to read from</param>
@@ -161,6 +161,16 @@ namespace Reko.Core
         /// <param name="value">The value read from memory, if successful.</param>
         /// <returns>True if the read succeeded, false if the address was out of range.</returns>
         bool TryRead(MemoryArea mem, Address addr, PrimitiveType dt, out Constant value);
+
+        /// <summary>
+        /// Reads a value from memory and interpret the resulting bits in a way appropriate
+        /// for the processor and the given <see cref="PrimitiveType"/>.
+        /// </summary>
+        /// <param name="rdr"><see cref="EndianImageReader"/> from which to read.</param>
+        /// <param name="dt">The <see cref="PrimitiveType"/> of the data to be read.</param>
+        /// <param name="value">Variable receiving the read value, if reading was possible.</param>
+        /// <returns>True if reading was possible.</returns>
+        bool TryRead(EndianImageReader rdr, PrimitiveType dt, out Constant value);
 
         /// <summary>
         /// Optionally creates a comparer that compares instructions for equality. 
@@ -480,7 +490,7 @@ namespace Reko.Core
         public ImageWriter CreateImageWriter() => Endianness.CreateImageWriter();
         public ImageWriter CreateImageWriter(MemoryArea mem, Address addr) => Endianness.CreateImageWriter(mem, addr);
         public bool TryRead(MemoryArea mem, Address addr, PrimitiveType dt, out Constant value) => Endianness.TryRead(mem, addr, dt, out value);
-
+        public virtual bool TryRead(EndianImageReader rdr, PrimitiveType dt, out Constant value) => rdr.TryRead(dt, out value);
         public abstract IEqualityComparer<MachineInstruction>? CreateInstructionComparer(Normalize norm);
         public abstract ProcessorState CreateProcessorState();
         public abstract IEnumerable<Address> CreatePointerScanner(SegmentMap map, EndianImageReader rdr, IEnumerable<Address> knownAddresses, PointerScannerFlags flags);

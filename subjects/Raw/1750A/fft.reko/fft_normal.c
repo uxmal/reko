@@ -628,10 +628,10 @@ void pr_efp_num(word32 gp0_gp1, word16 gp2)
 
 Eq_n g_t0579 = // 0579
 	{
-		0x50000004
+		10.0F
 	};
 Eq_n g_t057C = // 057C
 	{
-		0x40000001
+		1.0F
 	};
-real48 g_r057F = ;
+real48 g_r057F = -1.0; // 057F

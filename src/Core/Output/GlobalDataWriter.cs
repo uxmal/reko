@@ -44,7 +44,7 @@ namespace Reko.Core.Output
         private readonly bool showAddressInComment;
         private Queue<StructureField> queue;
         private StructureType globals;
-        private EndianImageReader? rdr;
+        private EndianImageReader rdr;
         private int recursionGuard;     //$REVIEW: remove this once deep recursion bugs have been flushed out.
 
         public GlobalDataWriter(Program program, Formatter formatter, bool chasePointers, bool showAddressInComment, IServiceProvider services)
@@ -71,6 +71,7 @@ namespace Reko.Core.Output
                 this.globals = new StructureType();
             }
             this.queue = new Queue<StructureField>(globals.Fields);
+            this.rdr = default!;
         }
 
         public void Write()
@@ -192,7 +193,7 @@ namespace Reko.Core.Output
             {
                 var dc = services.RequireService<DecompilerEventListener>();
                 dc.Warn(
-                    dc.CreateAddressNavigator(program, rdr!.Address),
+                    dc.CreateAddressNavigator(program, rdr.Address),
                     "Expected sizes of arrays to have been determined by now");
             }
             var fmt = codeFormatter.InnerFormatter;
@@ -265,18 +266,19 @@ namespace Reko.Core.Output
         {
             if (IsLargeBlob(pt))
             {
-                var bytes = rdr!.ReadBytes(pt.Size);
+                var bytes = rdr.ReadBytes(pt.Size);
                 FormatRawBytes(bytes);
             }
             else
             {
-                if (rdr!.TryRead(pt, out var cValue))
+                if (program.Platform.Architecture.TryRead(rdr, pt, out var cValue))
                 {
                     cValue.Accept(codeFormatter);
+                    return codeFormatter;
                 }
                 else
                 {
-                    codeFormatter.InnerFormatter.Write("?? /* Can't read address {0} */ ", rdr.Address);
+                    codeFormatter.InnerFormatter.Write("?? /* Can't read {0} at address {1} */ ", pt, rdr.Address);
                 }
             }
             return codeFormatter;
@@ -317,7 +319,7 @@ namespace Reko.Core.Output
 
         public CodeFormatter VisitPointer(Pointer ptr)
         {
-            if (!rdr!.TryRead(PrimitiveType.Create(Domain.Pointer, ptr.BitSize), out var c))
+            if (!rdr.TryRead(PrimitiveType.Create(Domain.Pointer, ptr.BitSize), out var c))
                 return codeFormatter;
             var addr = program.Platform.MakeAddressFromConstant(c, false);
             // Check if it is pointer to function
@@ -365,7 +367,7 @@ namespace Reko.Core.Output
 
         public CodeFormatter VisitString(StringType str)
         {
-            var offset = rdr!.Offset;
+            var offset = rdr.Offset;
             var s = rdr.ReadCString(str.ElementType, program.TextEncoding);
             //$TODO: appropriate prefix for UTF16-encoded strings.
             codeFormatter.VisitConstant(s);
@@ -385,7 +387,7 @@ namespace Reko.Core.Output
             fmt.Terminate();
             fmt.Indentation += fmt.TabSize;
 
-            var structOffset = rdr!.Offset;
+            var structOffset = rdr.Offset;
             for (int i = 0; i < str.Fields.Count; ++i)
             {
                 fmt.Indent();
