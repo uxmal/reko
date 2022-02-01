@@ -18,15 +18,11 @@
  */
 #endregion
 
-using Reko.Core.Lib;
 using Reko.Core.Services;
-using Reko.Core.Types;
-using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Text;
 
 namespace Reko.Core.Output
 {

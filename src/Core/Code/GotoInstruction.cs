@@ -31,7 +31,9 @@ namespace Reko.Core.Code
         /// <summary>
         /// Use this constructor to create an unconditional transfer instruction.
         /// </summary>
-        /// <param name="target">The destination, either as a linear address or as an expression.</param>
+        /// <param name="target">The destination, either as a linear address
+        /// or as an expression.
+        /// </param>
         public GotoInstruction(Expression target)
         {
             this.Target = target;

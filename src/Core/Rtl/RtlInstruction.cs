@@ -43,9 +43,10 @@ namespace Reko.Core.Rtl
         public abstract T Accept<T>(RtlInstructionVisitor<T> visitor);
 
         /// <summary>
-        /// If true, the next statement needs a label. This is required in cases where the original machine code 
-        /// maps to many RtlInstructions, some of which are branches (see the X86 REP instruction for a particularly
-        /// hideous example).
+        /// If true, the next statement needs a label. This is required in
+        /// cases where the original machine code maps to many RtlInstructions,
+        /// some of which are branches (see the X86 REP instruction for a
+        /// particularly hideous example).
         /// </summary>
         public bool NextStatementRequiresLabel { get; set; }
 

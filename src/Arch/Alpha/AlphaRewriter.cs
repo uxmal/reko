@@ -29,8 +29,6 @@ using Reko.Core.Types;
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
 
 namespace Reko.Arch.Alpha
 {

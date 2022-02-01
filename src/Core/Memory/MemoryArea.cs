@@ -28,14 +28,17 @@ using System.Text;
 namespace Reko.Core.Memory
 {
     /// <summary>
-    /// This class abstracts the notion of a memory area, consisting of a number of addressable
-    /// memory cells at a particular address. Note that the memory cells can be of any size;
-    /// they are not restricted to being 8-bit bytes. 
+    /// This class abstracts the notion of a memory area, consisting of a
+    /// number of addressable memory cells at a particular address. Note that
+    /// the memory cells can be of any size; they are not restricted to being
+    /// 8-bit bytes. 
     /// </summary>
     /// <remarks>
-    /// Most modern CPU architectures are byte-addressable, and should use <see cref="ByteMemoryArea"/>.
-    /// However, other architectures (like PDP-10, Cray, MIL-SPEC-1750) are word-addressable, and 
-    /// need other implementations of <see cref="MemoryArea"/> for their specific word-sizes.
+    /// Most modern CPU architectures are byte-addressable, and should use
+    /// <see cref="ByteMemoryArea"/>. However, other architectures (like
+    /// PDP-10, Cray, MIL-SPEC-1750) are word-addressable, and need other
+    /// implementations of <see cref="MemoryArea"/> for their specific word-
+    /// sizes.
     /// </remarks>
     public abstract class MemoryArea
     {

@@ -18,15 +18,29 @@
  */
 #endregion
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
 namespace Reko.Core.Machine
 {
+    /// <summary>
+    /// A mutator mutates the internal state of the disassembler specified by
+    /// the generic type <typeparamref name="TDasm"/>.
+    /// </summary>
+    /// <typeparam name="TDasm">Type of the disassembler whose state the 
+    /// mutator mutates.</typeparam>
+    /// <param name="uInstr">Instruction opcode, up to 32 bits long.</param>
+    /// <param name="dasm">Disassembler instance.</param>
+    /// <returns>True if the mutator executed without errors, false if the
+    /// instruction is invalid in some way..</returns>
     public delegate bool Mutator<TDasm>(uint uInstr, TDasm dasm);
 
+    /// <summary>
+    /// A mutator mutates the internal state of the disassembler specified by
+    /// the generic type <typeparamref name="TDasm"/>.
+    /// </summary>
+    /// <typeparam name="TDasm">Type of the disassembler whose state the 
+    /// mutator mutates.</typeparam>
+    /// <param name="uInstr">Instruction opcode, 33-64 bits long.</param>
+    /// <param name="dasm">Disassembler instance.</param>
+    /// <returns>True if the mutator executed without errors, false if the
+    /// instruction is invalid in some way..</returns>
     public delegate bool WideMutator<TDasm>(ulong uInstr, TDasm dasm);
 }

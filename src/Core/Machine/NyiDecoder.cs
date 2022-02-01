@@ -18,14 +18,14 @@
  */
 #endregion
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
 namespace Reko.Core.Machine
 {
+    /// <summary>
+    /// Special subclass of <see cref="Decoder"/>, used during implementation
+    /// for decoders that haven't been implemented yet. When the <see cref="Decode(uint, TDasm)"/>
+    /// method is called, the <see cref="DisassemblerBase{TInstr, TMnemonic}.NotYetImplemented(string)"/>
+    /// hook method is called. 
+    /// </summary>
     public class NyiDecoder<TDasm, TMnemonic, TInstr> : Decoder<TDasm, TMnemonic, TInstr>
         where TInstr : MachineInstruction
         where TMnemonic : struct

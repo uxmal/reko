@@ -20,9 +20,7 @@
 
 using Reko.Core.Operators;
 using Reko.Core.Types;
-using System;
 using System.Collections.Generic;
-using System.IO;
 
 namespace Reko.Core.Expressions
 {

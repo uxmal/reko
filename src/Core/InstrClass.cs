@@ -27,8 +27,9 @@ using System.Text;
 namespace Reko.Core
 {
     /// <summary>
-    /// Classifies an instruction based on general execution properties. The properties can be used
-    /// by tools without knowing the exact details of a specific instruction set.
+    /// Classifies an instruction based on general execution properties. The
+    /// properties can be used by tools without knowing the exact details of a
+    /// specific instruction set.
     /// </summary>
     [Flags]
     [NativeInterop]

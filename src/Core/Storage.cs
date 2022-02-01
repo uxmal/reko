@@ -113,7 +113,7 @@ namespace Reko.Core
 
         public override string ToString()
         {
-            StringWriter w = new StringWriter();
+            var w = new StringWriter();
             Write(w);
             return w.ToString();
         }
@@ -200,21 +200,21 @@ namespace Reko.Core
 
         public override bool Covers(Storage sThat)
         {
-            if (!(sThat is FlagGroupStorage that) || this.FlagRegister != that.FlagRegister)
+            if (sThat is not FlagGroupStorage that || this.FlagRegister != that.FlagRegister)
                 return false;
             return (this.FlagGroupBits | that.FlagGroupBits) == this.FlagGroupBits;
         }
 
         public override bool Equals(object obj)
         {
-            if (!(obj is FlagGroupStorage that))
+            if (obj is not FlagGroupStorage that)
                 return false;
             return this.FlagGroupBits == that.FlagGroupBits;
         }
 
         public override bool Exceeds(Storage sThat)
         {
-            if (!(sThat is FlagGroupStorage that) || this.FlagRegister != that.FlagRegister)
+            if (sThat is not FlagGroupStorage that || this.FlagRegister != that.FlagRegister)
                 return false;
             return (this.FlagGroupBits & ~that.FlagGroupBits) != 0;
         }
@@ -237,14 +237,14 @@ namespace Reko.Core
 
         public override int OffsetOf(Storage stgSub)
         {
-            if (!(stgSub is FlagGroupStorage f))
+            if (stgSub is not FlagGroupStorage f)
                 return -1;
             return ((f.FlagGroupBits & FlagGroupBits) != 0) ? 0 : -1;
         }
 
         public override bool OverlapsWith(Storage sThat)
         {
-            if (!(sThat is FlagGroupStorage that) || this.FlagRegister != that.FlagRegister)
+            if (sThat is not FlagGroupStorage that || this.FlagRegister != that.FlagRegister)
                 return false;
             return (this.FlagGroupBits & that.FlagGroupBits) != 0;
         }
@@ -310,7 +310,7 @@ namespace Reko.Core
 
         public override bool Equals(object obj)
         {
-            if (!(obj is FpuStackStorage that))
+            if (obj is not FpuStackStorage that)
                 return false;
             return this.FpuStackOffset == that.FpuStackOffset;
         }
@@ -327,7 +327,7 @@ namespace Reko.Core
 
         public override int OffsetOf(Storage stgSub)
         {
-            if (!(stgSub is FpuStackStorage that))
+            if (stgSub is not FpuStackStorage that)
                 return -1;
             if (that.FpuStackOffset != this.FpuStackOffset)
                 return -1;
@@ -437,7 +437,7 @@ namespace Reko.Core
 
         public override bool Equals(object obj)
         {
-            if (!(obj is OutArgumentStorage that))
+            if (obj is not OutArgumentStorage that)
                 return false;
             return this.OriginalIdentifier.Equals(that.OriginalIdentifier);
         }
@@ -558,21 +558,21 @@ namespace Reko.Core
 
         public override bool Covers(Storage other)
         {
-            if (!(other is RegisterStorage that) || that.Domain != this.Domain)
+            if (other is not RegisterStorage that || that.Domain != this.Domain)
                 return false;
             return (this.BitMask | that.BitMask) == this.BitMask;
         }
 
         public override bool Exceeds(Storage sThat)
         {
-            if (!(sThat is RegisterStorage that) || that.Domain != this.Domain)
+            if (sThat is not RegisterStorage that || that.Domain != this.Domain)
                 return false;
             return (this.BitMask & ~that.BitMask) != 0;
         }
 
         public override bool Equals(object obj)
         {
-            if (!(obj is RegisterStorage that))
+            if (obj is not RegisterStorage that)
                 return false;
             return this.Domain == that.Domain &&
                 this.BitAddress == that.BitAddress &&
@@ -606,7 +606,7 @@ namespace Reko.Core
 
         public override int OffsetOf(Storage stgSub)
         {
-            if (!(stgSub is RegisterStorage that))
+            if (stgSub is not RegisterStorage that)
                 return -1;
             if (!this.OverlapsWith(that))
                 return -1;
@@ -615,7 +615,7 @@ namespace Reko.Core
 
         public override bool OverlapsWith(Storage sThat)
         {
-            if (!(sThat is RegisterStorage that) || this.Domain != that.Domain)
+            if (sThat is not RegisterStorage that || this.Domain != that.Domain)
                 return false;
             var thisStart = this.BitAddress;
             var thisEnd = this.BitAddress + this.BitSize;
@@ -717,9 +717,9 @@ namespace Reko.Core
             return false;
         }
 
-        public override bool Equals(object obj)
+        public override bool Equals(object? obj)
         {
-            if (!(obj is SequenceStorage that))
+            if (obj is not SequenceStorage that)
                 return false;
             if (this.Elements.Length != that.Elements.Length)
                 return false;
@@ -814,7 +814,7 @@ namespace Reko.Core
 
         public override bool OverlapsWith(Storage other)
         {
-            if (!(other is StackStorage that))
+            if (other is not StackStorage that)
                 return false;
             var thisStart = this.StackOffset * DataType.BitsPerByte;
             var thisEnd = thisStart + (int)this.BitSize;
@@ -825,7 +825,7 @@ namespace Reko.Core
 
         public override bool Covers(Storage other)
         {
-            if (!(other is StackStorage that))
+            if (other is not StackStorage that)
                 return false;
             var thisStart = this.StackOffset * DataType.BitsPerByte;
             var thisEnd = thisStart + (int)this.BitSize;
@@ -854,7 +854,7 @@ namespace Reko.Core
 
         public override bool Equals(object obj)
         {
-            if (!(obj is StackArgumentStorage that))
+            if (obj is not StackArgumentStorage that)
                 return false;
             return this.StackOffset == that.StackOffset;
         }
@@ -866,7 +866,7 @@ namespace Reko.Core
 
         public override int OffsetOf(Storage stgSub)
         {
-            if (!(stgSub is StackArgumentStorage that))
+            if (stgSub is not StackArgumentStorage that)
                 return -1;
             if (that.StackOffset >= this.StackOffset && that.StackOffset + that.DataType.Size <= StackOffset + DataType.Size)
                 return (that.StackOffset - this.StackOffset) * DataType.BitsPerByte;
@@ -903,7 +903,7 @@ namespace Reko.Core
 
         public override bool Equals(object obj)
         {
-            if (!(obj is StackLocalStorage that))
+            if (obj is not StackLocalStorage that)
                 return false;
             return this.StackOffset == that.StackOffset;
         }
@@ -915,9 +915,10 @@ namespace Reko.Core
 
         public override int OffsetOf(Storage stgSub)
         {
-            if (!(stgSub is StackLocalStorage that))
+            if (stgSub is not StackLocalStorage that)
                 return -1;
-            if (that.StackOffset >= this.StackOffset && that.StackOffset + that.DataType.Size <= this.StackOffset + DataType.Size)
+            if (that.StackOffset >= this.StackOffset &&
+                that.StackOffset + that.DataType.Size <= this.StackOffset + DataType.Size)
                 return (that.StackOffset - this.StackOffset) * DataType.BitsPerByte;
             return -1;
         }

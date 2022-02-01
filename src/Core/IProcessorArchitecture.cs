@@ -403,7 +403,7 @@ namespace Reko.Core
     }
 
     /// <summary>
-    /// Abstract base class from which most IProcessorArchitecture 
+    /// Abstract base class from which most <see cref="IProcessorArchitecture"/>.
     /// implementations derive.
     /// </summary>
     [Designer("Reko.Gui.Design.ArchitectureDesigner,Reko.Gui")]

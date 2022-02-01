@@ -21,8 +21,6 @@
 using Reko.Core.Expressions;
 using Reko.Core.Memory;
 using Reko.Core.Types;
-using System;
-using System.Collections.Generic;
 using System.Text;
 
 namespace Reko.Core.Output

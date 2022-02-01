@@ -124,9 +124,13 @@ namespace Reko
             eventListener.ShowStatus("Interprocedural analysis complete.");
         }
 
-        public void DumpAssembler(Program program, string filename, Dictionary<ImageSegment, List<ImageMapItem>> segmentItems, Formatter wr)
+        public void DumpAssembler(
+            Program program, 
+            string filename, 
+            Dictionary<ImageSegment, List<ImageMapItem>> segmentItems,
+            Formatter wr)
         {
-            if (wr == null || program.Architecture == null)
+            if (wr is null || program.Architecture is null)
                 return;
             try
             {
@@ -155,16 +159,14 @@ namespace Reko
                     {
                         ProcedureFlow flow = dfa.ProgramDataFlow[proc];
                         TextFormatter f = new TextFormatter(output);
-                        var signature = (flow.Signature is not null)
-                            ? flow.Signature
-                            : proc.Signature;
+                        var signature = flow.Signature ?? proc.Signature;
                         signature.Emit(proc.Name, FunctionType.EmitFlags.LowLevelInfo, f);
                         output.WriteLine();
                         WriteProcedureCallers(program, proc, output);
                         flow.Emit(proc.Architecture, output);
                         foreach (Block block in new DfsIterator<Block>(proc.ControlGraph).PostOrder().Reverse())
                         {
-                            if (block == null)
+                            if (block is null)
                                 continue;
                             block.Write(output);
                         }
@@ -229,7 +231,12 @@ namespace Reko
             }
         }
 
-        private bool WriteResource(ProgramResource? resource, IFileSystemService fsSvc, string outputDir, string ResourceType, ProgramResourceGroup pr)
+        private bool WriteResource(
+            ProgramResource? resource,
+            IFileSystemService fsSvc,
+            string outputDir,
+            string resourceType,
+            ProgramResourceGroup pr)
         {
             if (resource is ProgramResourceGroup grp)
             {
@@ -469,7 +476,7 @@ namespace Reko
                 eventListener.ShowStatus("Writing .asm and .dis files.");
                 host.WriteDisassembly(program, (n, items, w) => DumpAssembler(program, n, items, w));
                 host.WriteIntermediateCode(program, (n, procs, w) => EmitProgram(program, procs, null, n, w));
-                // Use the following for debugging.
+                // Uncomment the following for debugging.
                 // WriteSccs(program);
             }
         }

@@ -17,10 +17,8 @@
  * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
  */
 #endregion
+
 using Reko.Core.Expressions;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Reko.Core.Output
 {

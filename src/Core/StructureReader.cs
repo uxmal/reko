@@ -18,20 +18,15 @@
  */
 #endregion
 
+using Reko.Core.Memory;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Diagnostics;
-using System.Text;
+using System.IO;
 using System.Reflection;
 using System.Runtime.InteropServices;
-using Reko.Core.Types;
-using System.IO;
-using Reko.Core.Memory;
 
 namespace Reko.Core
 {
-	public class StructureMemberAttribute : Attribute
+    public class StructureMemberAttribute : Attribute
     {
 		/// <summary>
 		/// </summary>
@@ -40,8 +35,7 @@ namespace Reko.Core
 			this.MemberType = memberType;
 		}
 
-        public Type MemberType { get; private set; }
-
+        public Type MemberType { get; }
     }
 
     public static class BinaryReaderStructureReader

@@ -19,15 +19,14 @@
 #endregion
 
 using Reko.Core.Lib;
-using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Reko.Core.Machine
 {
+    /// <summary>
+    /// This class decodes an machine instruction by observing a bitfield of the
+    /// opcode, and dispatching to one of 2^N sub-decoders.
+    /// </summary>
     public class MaskDecoder<TDasm, TMnemonic, TInstr> : Decoder<TDasm, TMnemonic, TInstr>
         where TDasm : DisassemblerBase<TInstr, TMnemonic>
         where TMnemonic : struct

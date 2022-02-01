@@ -44,19 +44,19 @@ namespace Reko.Core.Code
         }
 
         public Expression Callee { get; set; }
-        public CallSite CallSite { get; private set; }
+        public CallSite CallSite { get; }
 
         /// <summary>
         /// Set of expressions that reach the call site. These need to be 
         /// reconciled  with the storages actually used by the callee, if these are 
         /// known.
         /// </summary>
-        public HashSet<CallBinding> Uses { get; private set; }
+        public HashSet<CallBinding> Uses { get; }
 
         /// <summary>
         /// Set of expressions that the called function defines.
         /// </summary> 
-        public HashSet<CallBinding> Definitions { get; private set; }
+        public HashSet<CallBinding> Definitions { get; }
 
         public override bool IsControlFlow { get { return false; } }
 

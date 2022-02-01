@@ -87,8 +87,8 @@ namespace Reko.Core.Types
         public bool ForceStructure { get; set; }
         
         /// <summary>
-        /// If true, the structure is an Intel-style segment. In particular, segments must never be converted to 
-        /// primitive types.
+        /// If true, the structure is an Intel-style segment. In particular,
+        /// segments must never be converted to primitive types.
         /// </summary>
         public bool IsSegment { get ; set; }
         public bool IsEmpty { get { return Size == 0 && Fields.Count == 0; } }
