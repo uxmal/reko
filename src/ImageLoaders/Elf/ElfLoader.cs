@@ -310,6 +310,8 @@ namespace Reko.ImageLoaders.Elf
         {
             if (!isExecutable && sym.SectionIndex > 0 && sym.SectionIndex >= Sections.Count)
                 return null;
+            if (sym.SectionIndex == ElfSection.SHN_ABS)
+                return null;
             SymbolType? st = GetSymbolType(sym);
             if (st == null || st.Value == SymbolType.Unknown)
                 return null;
