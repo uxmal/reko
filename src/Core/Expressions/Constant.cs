@@ -159,6 +159,22 @@ namespace Reko.Core.Expressions
             }
         }
 
+        public static Constant Replicate(DataType dt, Constant valueToReplicate)
+        {
+            if (dt.BitSize > 64)
+                return BigConstant.Replicate(dt, valueToReplicate);
+            var n = valueToReplicate.ToUInt64();
+            int bits = valueToReplicate.DataType.BitSize;
+            int times = dt.BitSize / bits;
+
+            ulong result = 0;
+            for (int i = 0; i < times; ++i)
+            {
+                result = (result << bits) | n;
+            }
+            return Create(dt, result);
+        }
+
         public override T Accept<T, C>(ExpressionVisitor<T, C> v, C context)
         {
             return v.VisitConstant(this, context);

@@ -419,7 +419,7 @@ namespace Reko.Arch.Arm.AArch64
             if (instr.Operands.Length == 2 && instr.Operands[1] is ImmediateOperand immOp)
             {
                 var reg = RewriteOp(0);
-                var c = BigConstant.Replicate(reg.DataType, immOp.Value);
+                var c = Constant.Replicate(reg.DataType, immOp.Value);
 
                 // fn Vector,immediate
                 m.Assign(reg, fn(reg, c));

@@ -42,7 +42,7 @@ namespace Reko.Core.Expressions
             return new BigConstant(dt, value & mask);
         }
 
-        public static BigConstant Replicate(DataType dt, Constant valueToReplicate)
+        public static new BigConstant Replicate(DataType dt, Constant valueToReplicate)
         {
             var n = valueToReplicate.ToBigInteger();
             int bits = valueToReplicate.DataType.BitSize;

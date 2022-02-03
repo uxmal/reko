@@ -60,7 +60,7 @@ namespace Reko.Core.Operators
 	{
 		public override Constant ApplyConstant(Constant c)
 		{
-			return Constant.Create(c.DataType, ~c.ToInt64());
+            return c.Complement();
 		}
 
 		public override string ToString()
