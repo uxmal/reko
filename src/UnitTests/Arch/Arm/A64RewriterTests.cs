@@ -259,7 +259,7 @@ namespace Reko.UnitTests.Arch.Arm
             Given_HexString("FE94052F");
             AssertCode(     // bic	v30.4h,#&A700A7
                 "0|L--|0000000000100000(4): 1 instructions",
-                "1|L--|d30 = d30 & ~0x0A700A700A700A7<64>");
+                "1|L--|d30 = d30 & ~0xA700A700A700A7<64>");
         }
 
         [Test]
@@ -2587,7 +2587,7 @@ namespace Reko.UnitTests.Arch.Arm
             Given_HexString("4195060F");
             AssertCode(     // orr	v1.4h,#&CA00CA
                 "0|L--|0000000000100000(4): 1 instructions",
-                "1|L--|d1 = d1 | 0x0CA00CA00CA00CA<64>");
+                "1|L--|d1 = d1 | 0xCA00CA00CA00CA<64>");
         }
 
         [Test]
@@ -2596,7 +2596,7 @@ namespace Reko.UnitTests.Arch.Arm
             Given_HexString("41B5060F");
             AssertCode(     // orr	v1.4h,#&CA00CA,lsl #8
                 "0|L--|0000000000100000(4): 1 instructions",
-                "1|L--|d1 = d1 | 0x0CA00CA00CA00CA00<64>");
+                "1|L--|d1 = d1 | 0xCA00CA00CA00CA00<64>");
         }
 
         [Test]
