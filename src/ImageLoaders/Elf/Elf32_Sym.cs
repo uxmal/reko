@@ -112,5 +112,6 @@ namespace Reko.ImageLoaders.Elf
                         // STB_GLOBAL with same name found. Do
                         // not force extraction of defining object from
                         // archive file. Value is 0 if undefined
+        STB_GNU_UNIQUE = 10 // GNU extension. Variant of STB_GLOBAL for template static data
     }
 }
