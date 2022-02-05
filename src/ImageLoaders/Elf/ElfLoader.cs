@@ -643,7 +643,8 @@ namespace Reko.ImageLoaders.Elf
                 ElfSymbolBinding.STB_GLOBAL => "glbl",
                 ElfSymbolBinding.STB_LOCAL => "locl",
                 ElfSymbolBinding.STB_WEAK => "weak",
-                _ => binding.ToString("X4")
+                ElfSymbolBinding.STB_GNU_UNIQUE => "uniq",
+                _ => ((int)binding).ToString("X4")
             };
         }
 
