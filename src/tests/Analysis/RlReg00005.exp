@@ -50,7 +50,7 @@ l0C00_001B:
 l0C00_001D:
 	ah_32 = Mem0[ds:di_30 + 1<16>:byte]
 	ax_34 = SEQ(ah_32, 0<8>) (alias)
-	cx_35 = __bsr(ax_34)
+	cx_35 = __bsr<word16>(ax_34)
 	cx_36 = cx_35 - 8<16>
 	bx_38 = di_30 - 0x7E03<16>
 	return

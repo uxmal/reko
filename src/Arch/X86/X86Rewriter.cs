@@ -20,21 +20,18 @@
 
 using Reko.Core;
 using Reko.Core.Expressions;
-using Reko.Core.Rtl;
+using Reko.Core.Intrinsics;
 using Reko.Core.Lib;
 using Reko.Core.Machine;
-using Reko.Core.Operators;
+using Reko.Core.Memory;
+using Reko.Core.Rtl;
+using Reko.Core.Services;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
-using System.Text;
 using IEnumerable = System.Collections.IEnumerable;
 using IEnumerator = System.Collections.IEnumerator;
-using System.Diagnostics;
-using System.Linq;
-using Reko.Core.Services;
-using Reko.Core.Memory;
-using Reko.Core.Intrinsics;
+using ProcedureCharacteristics = Reko.Core.Serialization.ProcedureCharacteristics;
 
 namespace Reko.Arch.X86
 {
@@ -51,12 +48,11 @@ namespace Reko.Arch.X86
         private readonly LookaheadEnumerator<X86Instruction> dasm;
         private readonly RtlEmitter m;
         private readonly List<RtlInstruction> rtlInstructions;
-        private OperandRewriter orw;
+        private readonly OperandRewriter orw;
         private X86Instruction instrCur;
         private InstrClass iclass;
         private int len;
 
-#nullable disable
         public X86Rewriter(
             IntelArchitecture arch,
             IRewriterHost host,
@@ -72,8 +68,9 @@ namespace Reko.Arch.X86
             this.dasm = new LookaheadEnumerator<X86Instruction>(arch.CreateDisassemblerImpl(rdr));
             this.rtlInstructions = new List<RtlInstruction>();
             this.m = new RtlEmitter(rtlInstructions);
+            this.orw = arch.ProcessorMode.CreateOperandRewriter(arch, m, binder, host);
+            this.instrCur = default!;
         }
-#nullable enable
 
         /// <summary>
         /// Iterator that yields one RtlIntructionCluster for each x86 instruction.
@@ -86,7 +83,6 @@ namespace Reko.Arch.X86
                 instrCur = dasm.Current;
                 var addr = instrCur.Address;
                 this.iclass = instrCur.InstructionClass;
-                orw = arch.ProcessorMode.CreateOperandRewriter(arch, m, binder, host);
                 switch (instrCur.Mnemonic)
                 {
                 default:
@@ -108,18 +104,18 @@ namespace Reko.Arch.X86
                 case Mnemonic.vaddss: RewriteScalarBinop(m.FAdd, PrimitiveType.Real32, true); break;
                 case Mnemonic.addsd: RewriteScalarBinop(m.FAdd, PrimitiveType.Real64, false); break;
                 case Mnemonic.vaddsd: RewriteScalarBinop(m.FAdd, PrimitiveType.Real64, true); break;
-                case Mnemonic.addps: RewritePackedBinop(false, "__addps", PrimitiveType.Real32); break;
-                case Mnemonic.addpd: RewritePackedBinop(false, "__addpd", PrimitiveType.Real64); break;
+                case Mnemonic.addps: RewritePackedBinop(false, addp_intrinsic, PrimitiveType.Real32); break;
+                case Mnemonic.addpd: RewritePackedBinop(false, addp_intrinsic, PrimitiveType.Real64); break;
                 case Mnemonic.adox: RewriteAdcx(Registers.O); break;
                 case Mnemonic.aesenc: RewriteAesenc(false); break;
                 case Mnemonic.vaesenc: RewriteAesenc(true); break;
                 case Mnemonic.aesimc: RewriteAesimc(); break;
                 case Mnemonic.and: RewriteLogical(m.And); break;
                 case Mnemonic.andn: RewriteLogical((a, b) => m.And(b, m.Comp(a))); break;
-                case Mnemonic.andnpd: RewriteAndnp_("__andnpd"); break;
-                case Mnemonic.andnps: RewriteAndnp_("__andnps"); break;
-                case Mnemonic.andpd: RewritePackedBinop(false, "__andpd", PrimitiveType.Real64); break;
-                case Mnemonic.andps: RewritePackedBinop(false, "__andps", PrimitiveType.Real32); break;
+                case Mnemonic.andnpd: RewriteAndnp_(andnpd_intrinsic); break;
+                case Mnemonic.andnps: RewriteAndnp_(andnps_intrinsic); break;
+                case Mnemonic.andpd: RewritePackedBinop(false, andp_intrinsic, PrimitiveType.Real64); break;
+                case Mnemonic.andps: RewritePackedBinop(false, andp_intrinsic, PrimitiveType.Real32); break;
                 case Mnemonic.arpl: RewriteArpl(); break;
                 case Mnemonic.bextr: RewriteBextr(); break;
                 case Mnemonic.blsi: RewriteBlsi(); break;
@@ -161,12 +157,12 @@ namespace Reko.Arch.X86
                 case Mnemonic.cmovs: RewriteConditionalMove(ConditionCode.SG, instrCur.Operands[0], instrCur.Operands[1]); break;
                 case Mnemonic.cmovz: RewriteConditionalMove(ConditionCode.EQ, instrCur.Operands[0], instrCur.Operands[1]); break;
                 case Mnemonic.cmpxchg: RewriteCmpxchg(); break;
-                case Mnemonic.cmpxchg8b: RewriteCmpxchgNb("__cmpxchg8b", Registers.edx, Registers.eax, Registers.ecx, Registers.ebx); break;
-                case Mnemonic.cmpxchg16b: RewriteCmpxchgNb("__cmpxchg16b", Registers.rdx, Registers.rax, Registers.rcx, Registers.rbx); break;
+                case Mnemonic.cmpxchg8b: RewriteCmpxchgNb(cmpxchgN_intrinsic, Registers.edx, Registers.eax, Registers.ecx, Registers.ebx); break;
+                case Mnemonic.cmpxchg16b: RewriteCmpxchgNb(cmpxchgN_intrinsic, Registers.rdx, Registers.rax, Registers.rcx, Registers.rbx); break;
                 case Mnemonic.cmp: RewriteCmp(); break;
                 case Mnemonic.cmps: RewriteStringInstruction(); break;
-                case Mnemonic.cmppd: RewriteCmpp(false, "__cmppd", PrimitiveType.Real64); break;
-                case Mnemonic.cmpps: RewriteCmpp(false, "__cmpps", PrimitiveType.Real32); break;
+                case Mnemonic.cmppd: RewriteCmpp(false, cmpp_intrinsic, PrimitiveType.Real64); break;
+                case Mnemonic.cmpps: RewriteCmpp(false, cmpp_intrinsic, PrimitiveType.Real32); break;
                 case Mnemonic.cmpsb: RewriteStringInstruction(); break;
                 case Mnemonic.cmpsd:
                 case Mnemonic.vcmpsd: RewriteCmpsd(PrimitiveType.Real64); break;
@@ -175,14 +171,14 @@ namespace Reko.Arch.X86
                 case Mnemonic.comisd: RewriteComis(PrimitiveType.Real64); break;
                 case Mnemonic.comiss: RewriteComis(PrimitiveType.Real32); break;
                 case Mnemonic.cpuid: RewriteCpuid(); break;
-                case Mnemonic.cvtdq2ps: RewriteCvtps2pi("__cvtdq2ps", PrimitiveType.Int64, PrimitiveType.Real32); break;
-                case Mnemonic.cvtdq2pd: RewriteCvtps2pi("__cvtdq2pd", PrimitiveType.Int32, PrimitiveType.Real64); break;
-                case Mnemonic.cvtpd2dq: RewriteCvtps2pi("__cvtpd2dq", PrimitiveType.Real64, PrimitiveType.Int32); break;
-                case Mnemonic.cvtpd2ps: RewriteCvtps2pi("__cvtpd2ps", PrimitiveType.Real64, PrimitiveType.Real32); break;
+                case Mnemonic.cvtdq2ps: RewriteCvtps2pi(cvtdq2ps_intrinsic, PrimitiveType.Int64, PrimitiveType.Real32); break;
+                case Mnemonic.cvtdq2pd: RewriteCvtps2pi(cvtdq2pd_intrinsic, PrimitiveType.Int32, PrimitiveType.Real64); break;
+                case Mnemonic.cvtpd2dq: RewriteCvtps2pi(cvtpd2dq_intrinsic, PrimitiveType.Real64, PrimitiveType.Int32); break;
+                case Mnemonic.cvtpd2ps: RewriteCvtps2pi(cvtpd2ps_intrinsic, PrimitiveType.Real64, PrimitiveType.Real32); break;
                 case Mnemonic.cvtpi2ps: RewriteCvtPackedToReal(PrimitiveType.Real32); break;
-                case Mnemonic.cvtps2dq: RewriteCvtps2pi("__cvtps2dq", PrimitiveType.Real32, PrimitiveType.Int32); break;
-                case Mnemonic.cvtps2pi: RewriteCvtps2pi("__cvtps2pi", PrimitiveType.Real32, PrimitiveType.Int32); break;
-                case Mnemonic.cvtps2pd: RewriteCvtps2pi("__cvtps2pd", PrimitiveType.Real32, PrimitiveType.Real64); break;
+                case Mnemonic.cvtps2dq: RewriteCvtps2pi(cvtps2dq_intrinsic, PrimitiveType.Real32, PrimitiveType.Int32); break;
+                case Mnemonic.cvtps2pi: RewriteCvtps2pi(cvtps2pi_intrinsic, PrimitiveType.Real32, PrimitiveType.Int32); break;
+                case Mnemonic.cvtps2pd: RewriteCvtps2pi(cvtps2pd_intrinsic, PrimitiveType.Real32, PrimitiveType.Real64); break;
                 case Mnemonic.cvtsd2si: RewriteCvts2si(PrimitiveType.Real64); break;
                 case Mnemonic.cvtsd2ss: RewriteCvtToReal(PrimitiveType.Real64, PrimitiveType.Real32); break;
                 case Mnemonic.cvtsi2ss:
@@ -193,17 +189,17 @@ namespace Reko.Arch.X86
                 case Mnemonic.cvtss2si: RewriteCvts2si(PrimitiveType.Real32); break;
                 case Mnemonic.cvttsd2si: RewriteCvtts2si(PrimitiveType.Real64); break;
                 case Mnemonic.cvttss2si: RewriteCvtts2si(PrimitiveType.Real32); break;
-                case Mnemonic.cvttpd2dq: RewriteCvttps2pi("__cvttpd2dq", PrimitiveType.Real64, PrimitiveType.Int32); break;
-                case Mnemonic.cvttps2dq: RewriteCvttps2pi("__cvttps2dq", PrimitiveType.Real32, PrimitiveType.Int32); break;
+                case Mnemonic.cvttpd2dq: RewriteCvttps2pi(cvttpd2dq_intrinsic, PrimitiveType.Real64, PrimitiveType.Int32); break;
+                case Mnemonic.cvttps2dq: RewriteCvttps2pi(cvttps2dq_intrinsic, PrimitiveType.Real32, PrimitiveType.Int32); break;
                 case Mnemonic.cvttps2pi: RewriteCvttps2pi(); break;
                 case Mnemonic.cwd: RewriteCwd(); break;
                 case Mnemonic.cwde: RewriteCwde(); break;
-                case Mnemonic.daa: EmitDaaDas("__daa"); break;
-                case Mnemonic.das: EmitDaaDas("__das"); break;
+                case Mnemonic.daa: EmitDaaDas(daa_intrinsic); break;
+                case Mnemonic.das: EmitDaaDas(das_intrinsic); break;
                 case Mnemonic.dec: RewriteIncDec(-1); break;
                 case Mnemonic.div: RewriteDivide(m.UDiv, Domain.UnsignedInt); break;
-                case Mnemonic.divpd: RewritePackedBinop(false, "__divpd", PrimitiveType.Real64); break;
-                case Mnemonic.divps: RewritePackedBinop(false, "__divps", PrimitiveType.Real32); break;
+                case Mnemonic.divpd: RewritePackedBinop(false, divp_intrinsic, PrimitiveType.Real64); break;
+                case Mnemonic.divps: RewritePackedBinop(false, divp_intrinsic, PrimitiveType.Real32); break;
                 case Mnemonic.divsd: RewriteScalarBinop(m.FDiv, PrimitiveType.Real64, false); break;
                 case Mnemonic.vdivsd: RewriteScalarBinop(m.FDiv, PrimitiveType.Real64, true); break;
                 case Mnemonic.divss: RewriteScalarBinop(m.FDiv, PrimitiveType.Real32, false); break;
@@ -233,7 +229,7 @@ namespace Reko.Arch.X86
                 case Mnemonic.fcomip: RewriteFcomi(true); break;
                 case Mnemonic.fcomp: RewriteFcom(1); break;
                 case Mnemonic.fcompp: RewriteFcom(2); break;
-                case Mnemonic.fcos: RewriteFUnary("cos", true); break;
+                case Mnemonic.fcos: RewriteFUnary(cos_intrinsic); break;
                 case Mnemonic.fdecstp: RewriteFdecstp(); break;
                 case Mnemonic.fdiv: EmitCommonFpuInstruction(m.FDiv, false, false); break;
                 case Mnemonic.fdivp: EmitCommonFpuInstruction(m.FDiv, false, true); break;
@@ -276,13 +272,13 @@ namespace Reko.Arch.X86
                 case Mnemonic.fprem: RewriteFprem(); break;
                 case Mnemonic.fprem1: RewriteFprem1(); break;
                 case Mnemonic.fptan: RewriteFptan(); break;
-                case Mnemonic.frndint: RewriteFUnary("__rndint", true); break;
+                case Mnemonic.frndint: RewriteFUnary(rndint_intrinsic); break;
                 case Mnemonic.frstor: RewriteFrstor(); break;
                 case Mnemonic.fsave: RewriteFsave(); break;
                 case Mnemonic.fscale: RewriteFscale(); break;
-                case Mnemonic.fsin: RewriteFUnary("sin", true); break;
+                case Mnemonic.fsin: RewriteFUnary(sin_intrinsic); break;
                 case Mnemonic.fsincos: RewriteFsincos(); break;
-                case Mnemonic.fsqrt: RewriteFUnary("sqrt", true); break;
+                case Mnemonic.fsqrt: RewriteFUnary(sqrt_intrinsic); break;
                 case Mnemonic.fst: RewriteFst(false); break;
                 case Mnemonic.fstenv: RewriteFstenv(); break;
                 case Mnemonic.fstcw: RewriterFstcw(); break;
@@ -351,9 +347,9 @@ namespace Reko.Arch.X86
                 case Mnemonic.lfence: RewriteLfence(); break;
                 case Mnemonic.lfs: RewriteLxs(Registers.fs); break;
                 case Mnemonic.lgs: RewriteLxs(Registers.gs); break;
-                case Mnemonic.lgdt: RewriteLxdt("__lgdt"); break;
-                case Mnemonic.lidt: RewriteLxdt("__lidt"); break;
-                case Mnemonic.lldt: RewriteLxdt("__lldt"); break;
+                case Mnemonic.lgdt: RewriteLxdt(lgdt_intrinsic); break;
+                case Mnemonic.lidt: RewriteLxdt(lidt_intrinsic); break;
+                case Mnemonic.lldt: RewriteLxdt(lldt_intrinsic); break;
                 case Mnemonic.lmsw: RewriteLmsw(); break;
                 case Mnemonic.@lock: RewriteLock(); break;
                 case Mnemonic.lods: RewriteStringInstruction(); break;
@@ -364,24 +360,24 @@ namespace Reko.Arch.X86
                 case Mnemonic.lsl: RewriteLsl(); break;
                 case Mnemonic.lss: RewriteLxs(Registers.ss); break;
                 case Mnemonic.ltr: RewriteLtr(); break;
-                case Mnemonic.lzcnt: RewriteLeadingTrailingZeros("__lzcnt"); break;
-                case Mnemonic.maskmovdqu: RewriteMaskmov(false, "__maskmovdqu"); break;
-                case Mnemonic.maskmovq: RewriteMaskmov(false, "__maskmovq"); break;
-                case Mnemonic.maxpd: RewritePackedBinop(false, "__maxpd", PrimitiveType.Real64); break;
-                case Mnemonic.maxps: RewritePackedBinop(false, "__maxps", PrimitiveType.Real32); break;
-                case Mnemonic.maxsd: RewriteMaxMinsd("max", PrimitiveType.Real64, false); break;
-                case Mnemonic.vmaxsd: RewriteMaxMinsd("max", PrimitiveType.Real64, true); break;
-                case Mnemonic.maxss: RewriteMaxMinsd("fmax", PrimitiveType.Real32, false); break;
-                case Mnemonic.vmaxss: RewriteMaxMinsd("fmax", PrimitiveType.Real32, true); break;
+                case Mnemonic.lzcnt: RewriteLeadingTrailingZeros(lzcnt_intrinsic); break;
+                case Mnemonic.maskmovdqu: RewriteMaskmov(false, maskmovdqu_intrinsic); break;
+                case Mnemonic.maskmovq: RewriteMaskmov(false, maskmovq_intrinsic); break;
+                case Mnemonic.maxpd: RewritePackedBinop(false, maxp_intrinsic, PrimitiveType.Real64); break;
+                case Mnemonic.maxps: RewritePackedBinop(false, maxp_intrinsic, PrimitiveType.Real32); break;
+                case Mnemonic.maxsd: RewriteMaxMinsd(max_intrinsic, PrimitiveType.Real64, false); break;
+                case Mnemonic.vmaxsd: RewriteMaxMinsd(max_intrinsic, PrimitiveType.Real64, true); break;
+                case Mnemonic.maxss: RewriteMaxMinsd(fmax_intrinsic, PrimitiveType.Real32, false); break;
+                case Mnemonic.vmaxss: RewriteMaxMinsd(fmax_intrinsic, PrimitiveType.Real32, true); break;
                 case Mnemonic.mfence: RewriteMfence(); break;
-                case Mnemonic.minpd: RewritePackedBinop(false, "__minpd", PrimitiveType.Real64); break;
-                case Mnemonic.vminpd: RewritePackedBinop(true, "__minpd", PrimitiveType.Real64); break;
-                case Mnemonic.minps: RewritePackedBinop(false, "__minps", PrimitiveType.Real32); break;
-                case Mnemonic.vminps: RewritePackedBinop(true, "__minps", PrimitiveType.Real32); break;
-                case Mnemonic.minsd: RewriteMaxMinsd("min", PrimitiveType.Real64, false); break;
-                case Mnemonic.vminsd: RewriteMaxMinsd("min", PrimitiveType.Real64, true); break;
-                case Mnemonic.minss: RewriteMaxMinsd("fmin", PrimitiveType.Real32, false); break;
-                case Mnemonic.vminss: RewriteMaxMinsd("fmin", PrimitiveType.Real32, true); break;
+                case Mnemonic.minpd: RewritePackedBinop(false, minp_intrinsic, PrimitiveType.Real64); break;
+                case Mnemonic.vminpd: RewritePackedBinop(true, minp_intrinsic, PrimitiveType.Real64); break;
+                case Mnemonic.minps: RewritePackedBinop(false, minp_intrinsic, PrimitiveType.Real32); break;
+                case Mnemonic.vminps: RewritePackedBinop(true, minp_intrinsic, PrimitiveType.Real32); break;
+                case Mnemonic.minsd: RewriteMaxMinsd(min_intrinsic, PrimitiveType.Real64, false); break;
+                case Mnemonic.vminsd: RewriteMaxMinsd(min_intrinsic, PrimitiveType.Real64, true); break;
+                case Mnemonic.minss: RewriteMaxMinsd(fmin_intrinsic, PrimitiveType.Real32, false); break;
+                case Mnemonic.vminss: RewriteMaxMinsd(fmin_intrinsic, PrimitiveType.Real32, true); break;
                 case Mnemonic.mov: RewriteMov(); break;
                 case Mnemonic.movapd:
                 case Mnemonic.movaps:
@@ -396,13 +392,13 @@ namespace Reko.Arch.X86
                 case Mnemonic.movdqu:
                 case Mnemonic.vmovdqu:
                     RewriteMov(); break;
-                case Mnemonic.movhpd: RewritePackedUnaryop("__movhpd", PrimitiveType.Real64, PrimitiveType.Real64); break;
-                case Mnemonic.movhps: RewritePackedUnaryop("__movhps", PrimitiveType.Real32, PrimitiveType.Real64); break;
-                case Mnemonic.movlpd: RewritePackedUnaryop("__movlpd", PrimitiveType.Real64, PrimitiveType.Real64); break;
-                case Mnemonic.movlps: RewritePackedUnaryop("__movlps", PrimitiveType.Real32, PrimitiveType.Real64); break;
+                case Mnemonic.movhpd: RewritePackedUnaryop(movhp_intrinsic, PrimitiveType.Real64, PrimitiveType.Real64); break;
+                case Mnemonic.movhps: RewritePackedUnaryop(movhp_intrinsic, PrimitiveType.Real32, PrimitiveType.Real64); break;
+                case Mnemonic.movlpd: RewritePackedUnaryop(movlp_intrinsic, PrimitiveType.Real64, PrimitiveType.Real64); break;
+                case Mnemonic.movlps: RewritePackedUnaryop(movlp_intrinsic, PrimitiveType.Real32, PrimitiveType.Real64); break;
                 case Mnemonic.movlhps: RewriteMovlhps(); break;
-                case Mnemonic.movmskpd: RewriteMovmsk(false, "__movmskpd", PrimitiveType.Real64); break;
-                case Mnemonic.movmskps: RewriteMovmsk(false, "__movmskps", PrimitiveType.Real32); break;
+                case Mnemonic.movmskpd: RewriteMovmsk(false, movmskpd_intrinsic, PrimitiveType.Real64); break;
+                case Mnemonic.movmskps: RewriteMovmsk(false, movmskps_intrinsic, PrimitiveType.Real32); break;
                 case Mnemonic.movnti: RewriteMov(); break;
                 case Mnemonic.movntps: RewriteMov(); break;
                 case Mnemonic.movntq: RewriteMov(); break;
@@ -420,8 +416,8 @@ namespace Reko.Arch.X86
                 case Mnemonic.movupd: RewriteMov(); break;
                 case Mnemonic.movzx: RewriteMovzx(); break;
                 case Mnemonic.mul: RewriteMultiply(m.UMul, Domain.UnsignedInt); break;
-                case Mnemonic.mulpd: RewritePackedBinop(false, "__mulpd", PrimitiveType.Real64); break;
-                case Mnemonic.mulps: RewritePackedBinop(false, "__mulps", PrimitiveType.Real32); break;
+                case Mnemonic.mulpd: RewritePackedBinop(false, mulp_intrinsic, PrimitiveType.Real64); break;
+                case Mnemonic.mulps: RewritePackedBinop(false, mulp_intrinsic, PrimitiveType.Real32); break;
                 case Mnemonic.mulsd: RewriteScalarBinop(m.FMul, PrimitiveType.Real64, false); break;
                 case Mnemonic.vmulsd: RewriteScalarBinop(m.FMul, PrimitiveType.Real64, true); break;
                 case Mnemonic.mulss: RewriteScalarBinop(m.FMul, PrimitiveType.Real32, false); break;
@@ -431,101 +427,102 @@ namespace Reko.Arch.X86
                 case Mnemonic.nop: m.Nop(); break;
                 case Mnemonic.not: RewriteNot(); break;
                 case Mnemonic.or: RewriteLogical(m.Or); break;
-                case Mnemonic.orpd: RewritePackedBinop(false, "__orpd", PrimitiveType.Real64); break;
-                case Mnemonic.orps: RewritePackedBinop(false, "__orps", PrimitiveType.Real32); break;
+                case Mnemonic.orpd: RewritePackedBinop(false, orp_intrinsic, PrimitiveType.Real64); break;
+                case Mnemonic.orps: RewritePackedBinop(false, orp_intrinsic, PrimitiveType.Real32); break;
                 case Mnemonic.@out: RewriteOut(); break;
                 case Mnemonic.@outs: RewriteStringInstruction(); break;
                 case Mnemonic.@outsb: RewriteStringInstruction(); break;
-                case Mnemonic.packsswb: RewritePackedBinop(false, "__packsswb", PrimitiveType.Int16, new ArrayType(PrimitiveType.Int8, 0)); break;
-                case Mnemonic.packssdw: RewritePackedBinop(false, "__packssdw", PrimitiveType.Int32, new ArrayType(PrimitiveType.Int16, 0)); break;
-                case Mnemonic.packuswb: RewritePackedBinop(false, "__packuswb", PrimitiveType.UInt16, new ArrayType(PrimitiveType.UInt8, 0)); break;
-                case Mnemonic.paddb: RewritePackedBinop(false, "__paddb", PrimitiveType.Byte); break;
-                case Mnemonic.paddd: RewritePackedBinop(false, "__paddd", PrimitiveType.Word32); break;
-                case Mnemonic.paddq: RewritePackedBinop(false, "__paddq", PrimitiveType.Word64); break;
-                case Mnemonic.vpaddq: RewritePackedBinop(true, "__paddq", PrimitiveType.Word64); break;
-                case Mnemonic.paddsw: RewritePackedBinop(false, "__paddsw", PrimitiveType.Word16); break;
-                case Mnemonic.paddsb: RewritePackedBinop(false, "__paddsb", PrimitiveType.SByte); break;
-                case Mnemonic.paddusb: RewritePackedBinop(false, "__paddusb", PrimitiveType.Byte); break;
-                case Mnemonic.paddusw: RewritePackedBinop(false, "__paddsw", PrimitiveType.Word16); break;
-                case Mnemonic.paddw: RewritePackedBinop(false, "__paddw", PrimitiveType.Word16); break;
-                case Mnemonic.pand:  RewritePackedLogical(false, "__pand"); break;
-                case Mnemonic.vpand: RewritePackedLogical(true, "__pand"); break;
-                case Mnemonic.pandn: RewritePackedLogical(false, "__pandn"); break;
-                case Mnemonic.vpandn: RewritePackedLogical(true, "__pandn"); break;
+                case Mnemonic.packsswb: RewritePackedBinop(false, packss_intrinsic, PrimitiveType.Int16, PrimitiveType.Int8); break;
+                case Mnemonic.packssdw: RewritePackedBinop(false, packss_intrinsic, PrimitiveType.Int32, PrimitiveType.Int16); break;
+                case Mnemonic.packuswb: RewritePackedBinop(false, packus_intrinsic, PrimitiveType.UInt16,PrimitiveType.UInt8); break;
+                case Mnemonic.paddb: RewritePackedBinop(false, padd_intrinsic, PrimitiveType.Byte); break;
+                case Mnemonic.paddd: RewritePackedBinop(false, padd_intrinsic, PrimitiveType.Word32); break;
+                case Mnemonic.paddq: RewritePackedBinop(false, padd_intrinsic, PrimitiveType.Word64); break;
+                case Mnemonic.vpaddq: RewritePackedBinop(true, padd_intrinsic, PrimitiveType.Word64); break;
+                case Mnemonic.paddsw: RewritePackedBinop(false, padds_intrinsic, PrimitiveType.Int16); break;
+                case Mnemonic.paddsb: RewritePackedBinop(false, padds_intrinsic, PrimitiveType.SByte); break;
+                case Mnemonic.paddusb: RewritePackedBinop(false, paddus_intrinsic, PrimitiveType.Byte); break;
+                case Mnemonic.paddusw: RewritePackedBinop(false, paddus_intrinsic, PrimitiveType.UInt16); break;
+                case Mnemonic.paddw: RewritePackedBinop(false, padd_intrinsic, PrimitiveType.Word16); break;
+                case Mnemonic.pand: RewritePackedLogical(false, pand_intrinsic); break;
+                case Mnemonic.vpand: RewritePackedLogical(true, pand_intrinsic); break;
+                case Mnemonic.pandn: RewritePackedLogical(false, pandn_intrinsic); break;
+                case Mnemonic.vpandn: RewritePackedLogical(true, pandn_intrinsic); break;
                 case Mnemonic.pause: RewritePause(); break;
                 case Mnemonic.palignr: RewritePalignr(); break;
-                case Mnemonic.pavgb: RewritePavg("__pavgb", PrimitiveType.Byte); break;
-                case Mnemonic.pavgw: RewritePavg("__pavgw", PrimitiveType.Byte); break;
-                case Mnemonic.vpbroadcastb: RewritePbroadcast(true, "__pbroadcastb", PrimitiveType.Byte); break;
-                case Mnemonic.pcmpeqb: case Mnemonic.vpcmpeqb: RewritePcmp("__pcmpeqb", PrimitiveType.Byte); break;
-                case Mnemonic.pcmpeqd: RewritePcmp("__pcmpeqd", PrimitiveType.Word32); break;
-                case Mnemonic.pcmpeqw: RewritePcmp("__pcmpeqw", PrimitiveType.Word16); break;
-                case Mnemonic.pcmpgtb: RewritePcmp("__pcmpgtb", PrimitiveType.Byte); break;
-                case Mnemonic.pcmpgtd: RewritePcmp("__pcmpgtd", PrimitiveType.Word32); break;
-                case Mnemonic.pcmpgtw: RewritePcmp("__pcmpgtw", PrimitiveType.Word16); break;
+                case Mnemonic.pavgb: RewritePavg(pavg_intrinsic, PrimitiveType.Byte); break;
+                case Mnemonic.pavgw: RewritePavg(pavg_intrinsic, PrimitiveType.Byte); break;
+                case Mnemonic.vpbroadcastb: RewritePbroadcast(true, pbroadcast_intrinsic, PrimitiveType.Byte); break;
+                case Mnemonic.pcmpeqb: case Mnemonic.vpcmpeqb: RewritePcmp(pcmpeq_intrinsic, PrimitiveType.Byte); break;
+                case Mnemonic.pcmpeqd: RewritePcmp(pcmpeq_intrinsic, PrimitiveType.Word32); break;
+                case Mnemonic.pcmpeqw: RewritePcmp(pcmpeq_intrinsic, PrimitiveType.Word16); break;
+                case Mnemonic.pcmpgtb: RewritePcmp(pcmpgt_intrinsic, PrimitiveType.Byte); break;
+                case Mnemonic.pcmpgtd: RewritePcmp(pcmpgt_intrinsic, PrimitiveType.Word32); break;
+                case Mnemonic.pcmpgtw: RewritePcmp(pcmpgt_intrinsic, PrimitiveType.Word16); break;
                 case Mnemonic.pdep: RewritePdep(); break;
                 case Mnemonic.pext: RewritePext(); break;
                 case Mnemonic.pextrw: case Mnemonic.vextrw:  RewritePextrw(); break;
-                case Mnemonic.pinsrd: RewritePinsr(false, "__pinsrd", PrimitiveType.Word32); break;
-                case Mnemonic.vpinsrd: RewritePinsr(true, "__pinsrd", PrimitiveType.Word32); break;
-                case Mnemonic.pinsrw: RewritePinsr(false, "__pinsrw", PrimitiveType.Word16); break;
-                case Mnemonic.vpinsrw: RewritePinsr(true, "__pinsrw", PrimitiveType.Word16); break;
-                case Mnemonic.vpmaddubsw: RewritePmaddUbSw(true, "__pmaddubsw"); break;
-                case Mnemonic.pmaddwd: RewritePackedBinop(false, "__pmaddwd", PrimitiveType.Word16, new ArrayType(PrimitiveType.Word32, 0)); break;
-                case Mnemonic.pmaxsw: RewritePackedBinop(false, "__pmaxsw", PrimitiveType.Int16); break;
-                case Mnemonic.pmaxub: case Mnemonic.vpmaxub: RewritePackedBinop(false, "__pmaxub", PrimitiveType.UInt8); break;
-                case Mnemonic.pminsw: RewritePackedBinop(false, "__pminsw", PrimitiveType.Int16); break;
-                case Mnemonic.pminub: RewritePackedBinop(false, "__pminub", PrimitiveType.UInt8); break;
-                case Mnemonic.pmovmskb: RewriteMovmsk(false, "__pmovmskb", PrimitiveType.Byte); break;
-                case Mnemonic.vpmovmskb: RewriteMovmsk(true, "__pmovmskb", PrimitiveType.Byte); break;
-                case Mnemonic.pmulhuw: RewritePackedBinop(false, "__pmulhuw", PrimitiveType.UInt16, new ArrayType(PrimitiveType.UInt16, 8)); break;
-                case Mnemonic.pmulhw: RewritePackedBinop(false, "__pmulhw", PrimitiveType.Int16, new ArrayType(PrimitiveType.Int16, 8)); break;
-                case Mnemonic.pmullw: RewritePackedBinop(false, "__pmullw", PrimitiveType.Int16, new ArrayType(PrimitiveType.Int16, 8)); break;
-                case Mnemonic.vpmullw: RewritePackedBinop(true, "__pmullw", PrimitiveType.Int16, new ArrayType(PrimitiveType.Int16, 8)); break;
-                case Mnemonic.pmuludq: RewritePackedBinop(false, "__pmuludq", PrimitiveType.UInt32, new ArrayType(PrimitiveType.UInt64, 0)); break;
-                case Mnemonic.prefetchw: RewritePrefetch("__prefetchw"); break;
-                case Mnemonic.psadbw: RewritePackedBinop(false, "__psadbw", PrimitiveType.Byte, PrimitiveType.Word16); break;
-                case Mnemonic.pshufb: RewritePackedTernaryop(false, "__pshufb", PrimitiveType.Byte); break;
-                case Mnemonic.pshuflw: RewritePackedTernaryop(false, "__pshuflw", PrimitiveType.Byte); break;
-                case Mnemonic.pslld: RewritePackedShift("__pslld", PrimitiveType.Word32); break;
-                case Mnemonic.vpslld: RewritePackedShift("__pslld", PrimitiveType.Word32); break;
-                case Mnemonic.psllq: RewritePackedShift("__psllq", PrimitiveType.Word64); break;
-                case Mnemonic.vpsllq: RewritePackedShift("__psllq", PrimitiveType.Word64); break;
-                case Mnemonic.psllw: RewritePackedShift("__psllw", PrimitiveType.Word16); break;
-                case Mnemonic.vpsllw: RewritePackedShift("__psllw", PrimitiveType.Word16); break;
-                case Mnemonic.psrad: RewritePackedShift("__psrad", PrimitiveType.Int32); break;
-                case Mnemonic.vpsrad: RewritePackedShift("__psrad", PrimitiveType.Int32); break;
-                case Mnemonic.psraw: RewritePackedShift("__psraw", PrimitiveType.Int16); break;
-                case Mnemonic.vpsraw: RewritePackedShift("__psraw", PrimitiveType.Int16); break;
-                case Mnemonic.psrld: RewritePackedShift("__psrld", PrimitiveType.Word32); break;
-                case Mnemonic.vpsrld: RewritePackedShift("__psrld", PrimitiveType.Word32); break;
+                case Mnemonic.pinsrd: RewritePinsr(false, pinsr_intrinsic, PrimitiveType.Word32); break;
+                case Mnemonic.vpinsrd: RewritePinsr(true, pinsr_intrinsic, PrimitiveType.Word32); break;
+                case Mnemonic.pinsrw: RewritePinsr(false, pinsr_intrinsic, PrimitiveType.Word16); break;
+                case Mnemonic.vpinsrw: RewritePinsr(true, pinsr_intrinsic, PrimitiveType.Word16); break;
+                case Mnemonic.vpmaddubsw: RewritePmaddUbSw(true, pmaddubsw_intrinsic); break;
+                case Mnemonic.pmaddwd: RewritePackedBinop(false, pmaddwd_intrinsic, PrimitiveType.Word16, PrimitiveType.Word32); break;
+                case Mnemonic.pmaxsw: RewritePackedBinop(false, pmaxs_intrinsic, PrimitiveType.Int16); break;
+                case Mnemonic.pmaxub: RewritePackedBinop(false, pmaxu_intrinsic, PrimitiveType.UInt8); break;
+                case Mnemonic.vpmaxub: RewritePackedBinop(true, pmaxu_intrinsic, PrimitiveType.UInt8); break;
+                case Mnemonic.pminsw: RewritePackedBinop(false, pmins_intrinsic, PrimitiveType.Int16); break;
+                case Mnemonic.pminub: RewritePackedBinop(false, pminu_intrinsic, PrimitiveType.UInt8); break;
+                case Mnemonic.pmovmskb: RewriteMovmsk(false, pmovmskb_intrinsic, PrimitiveType.Byte); break;
+                case Mnemonic.vpmovmskb: RewriteMovmsk(true, pmovmskb_intrinsic, PrimitiveType.Byte); break;
+                case Mnemonic.pmulhuw: RewritePackedBinop(false, pmulhu_intrinsic, PrimitiveType.UInt16, PrimitiveType.UInt16); break;
+                case Mnemonic.pmulhw: RewritePackedBinop(false, pmulh_intrinsic, PrimitiveType.Int16, PrimitiveType.Int16); break;
+                case Mnemonic.pmullw: RewritePackedBinop(false, pmull_intrinsic, PrimitiveType.Int16, PrimitiveType.Int16); break;
+                case Mnemonic.vpmullw: RewritePackedBinop(true, pmull_intrinsic, PrimitiveType.Int16, PrimitiveType.Int16); break;
+                case Mnemonic.pmuludq: RewritePackedBinop(false, pmulu_intrinsic, PrimitiveType.UInt32, PrimitiveType.UInt64); break;
+                case Mnemonic.prefetchnta: RewritePrefetch(prefetchnta_intrinsic); break;
+                case Mnemonic.prefetcht0: RewritePrefetch(prefetcht0_intrinsic); break;
+                case Mnemonic.prefetcht1: RewritePrefetch(prefetcht1_intrinsic); break;
+                case Mnemonic.prefetcht2: RewritePrefetch(prefetcht2_intrinsic); break;
+                case Mnemonic.prefetchw: RewritePrefetch(prefetchw_intrinsic); break;
+                case Mnemonic.psadbw: RewritePackedBinop(false, psadbw_intrinsic, PrimitiveType.Byte, PrimitiveType.Word16); break;
+                case Mnemonic.pshufb: RewritePackedTernaryop(false, pshufb_intrinsic, PrimitiveType.Byte); break;
+                case Mnemonic.pshuflw: RewritePackedTernaryop(false, pshuflw_intrinsic, PrimitiveType.Byte); break;
+                case Mnemonic.pslld: RewritePackedShift(psll_intrinsic, PrimitiveType.Word32); break;
+                case Mnemonic.vpslld: RewritePackedShift(psll_intrinsic, PrimitiveType.Word32); break;
+                case Mnemonic.psllq: RewritePackedShift(psll_intrinsic, PrimitiveType.Word64); break;
+                case Mnemonic.vpsllq: RewritePackedShift(psll_intrinsic, PrimitiveType.Word64); break;
+                case Mnemonic.psllw: RewritePackedShift(psll_intrinsic, PrimitiveType.Word16); break;
+                case Mnemonic.vpsllw: RewritePackedShift(psll_intrinsic, PrimitiveType.Word16); break;
+                case Mnemonic.psrad: RewritePackedShift(psra_intrinsic, PrimitiveType.Int32); break;
+                case Mnemonic.vpsrad: RewritePackedShift(psra_intrinsic, PrimitiveType.Int32); break;
+                case Mnemonic.psraw: RewritePackedShift(psra_intrinsic, PrimitiveType.Int16); break;
+                case Mnemonic.vpsraw: RewritePackedShift(psra_intrinsic, PrimitiveType.Int16); break;
+                case Mnemonic.psrld: RewritePackedShift(psrl_intrinsic, PrimitiveType.Word32); break;
+                case Mnemonic.vpsrld: RewritePackedShift(psrl_intrinsic, PrimitiveType.Word32); break;
                 case Mnemonic.psrldq: RewritePsrldq(false); break;
-                case Mnemonic.psrlq: RewritePackedBinop(false, "__psrlq", PrimitiveType.Word64); break;
-                case Mnemonic.vpsrlq: RewritePackedBinop(true, "__psrlq", PrimitiveType.Word64); break;
-                case Mnemonic.psrlw: RewritePackedShift("__psrlw", PrimitiveType.Word32); break;
-                case Mnemonic.vpsrlw: RewritePackedShift("__psrlw", PrimitiveType.Word32); break;
+                case Mnemonic.psrlq: RewritePackedShift(psrl_intrinsic, PrimitiveType.Word64); break;
+                case Mnemonic.vpsrlq: RewritePackedShift(psrl_intrinsic, PrimitiveType.Word64); break;
+                case Mnemonic.psrlw: RewritePackedShift(psrl_intrinsic, PrimitiveType.Word16); break;
+                case Mnemonic.vpsrlw: RewritePackedShift(psrl_intrinsic, PrimitiveType.Word16); break;
                 case Mnemonic.pop: RewritePop(); break;
                 case Mnemonic.popa: RewritePopa(); break;
                 case Mnemonic.popf: RewritePopf(); break;
                 case Mnemonic.popcnt: RewritePopcnt(); break;
                 case Mnemonic.por:
                 case Mnemonic.vpor: RewritePor(); break;
-                case Mnemonic.prefetchnta: RewritePrefetch("__prefetchnta"); break;
-                case Mnemonic.prefetcht0: RewritePrefetch("__prefetcht0"); break;
-                case Mnemonic.prefetcht1: RewritePrefetch("__prefetcht1"); break;
-                case Mnemonic.prefetcht2: RewritePrefetch("__prefetcht2"); break;
-                case Mnemonic.pshufd: RewritePshuf("__pshufd", PrimitiveType.Word32); break;
-                case Mnemonic.pshufw: RewritePshuf("__pshufw", PrimitiveType.Word16); break;
-                case Mnemonic.psubb: RewritePackedBinop(false, "__psubb", PrimitiveType.Byte); break;
-                case Mnemonic.psubd: RewritePackedBinop(false, "__psubd", PrimitiveType.Word32); break;
-                case Mnemonic.vpsubd: RewritePackedBinop(true, "__psubd", PrimitiveType.Word32); break;
-                case Mnemonic.psubq: RewritePackedBinop(false, "__psubq", PrimitiveType.Word64); break;
-                case Mnemonic.psubsb: RewritePackedBinop(false, "__psubsb", PrimitiveType.SByte); break;
-                case Mnemonic.psubsw: RewritePackedBinop(false, "__psubsw", PrimitiveType.Word16); break;
-                case Mnemonic.vpsubsw: RewritePackedBinop(true, "__psubsw", PrimitiveType.Word16); break;
-                case Mnemonic.psubusb: RewritePackedBinop(false, "__psubusb", PrimitiveType.UInt8); break;
-                case Mnemonic.psubusw: RewritePackedBinop(false, "__psubusw", PrimitiveType.UInt16); break;
-                case Mnemonic.psubw: RewritePackedBinop(false, "__psubw", PrimitiveType.Word16); break;
+                case Mnemonic.pshufd: RewritePshuf(pshuf_intrinsic, PrimitiveType.Word32); break;
+                case Mnemonic.pshufw: RewritePshuf(pshuf_intrinsic, PrimitiveType.Word16); break;
+                case Mnemonic.psubb: RewritePackedBinop(false, psub_intrinsic, PrimitiveType.Byte); break;
+                case Mnemonic.psubd: RewritePackedBinop(false, psub_intrinsic, PrimitiveType.Word32); break;
+                case Mnemonic.vpsubd: RewritePackedBinop(true, psub_intrinsic, PrimitiveType.Word32); break;
+                case Mnemonic.psubq: RewritePackedBinop(false, psub_intrinsic, PrimitiveType.Word64); break;
+                case Mnemonic.psubsb: RewritePackedBinop(false, psubs_intrinsic, PrimitiveType.SByte); break;
+                case Mnemonic.psubsw: RewritePackedBinop(false, psubs_intrinsic, PrimitiveType.Int16); break;
+                case Mnemonic.vpsubsw: RewritePackedBinop(true, psubs_intrinsic, PrimitiveType.Int16); break;
+                case Mnemonic.psubusb: RewritePackedBinop(false, psubus_intrinsic, PrimitiveType.UInt8); break;
+                case Mnemonic.psubusw: RewritePackedBinop(false, psubus_intrinsic, PrimitiveType.UInt16); break;
+                case Mnemonic.psubw: RewritePackedBinop(false, psub_intrinsic, PrimitiveType.Word16); break;
                 case Mnemonic.punpckhbw: RewritePunpckhbw(); break;
                 case Mnemonic.punpckhdq: RewritePunpckhdq(); break;
                 case Mnemonic.punpckhwd: RewritePunpckhwd(); break;
@@ -539,7 +536,7 @@ namespace Reko.Arch.X86
                 case Mnemonic.pxor: RewritePxor(false); break;
                 case Mnemonic.vpxor: RewritePxor(true); break;
                 case Mnemonic.rcl: RewriteRotation(CommonOps.RolC, true, true); break;
-                case Mnemonic.rcpps: RewritePackedUnaryop("__rcpps", PrimitiveType.Real32); break;
+                case Mnemonic.rcpps: RewritePackedUnaryop(rcpp_intrinsic, PrimitiveType.Real32); break;
                 case Mnemonic.rcr: RewriteRotation(CommonOps.RorC, true, false); break;
                 case Mnemonic.rol: RewriteRotation(CommonOps.Rol, false, true); break;
                 case Mnemonic.ror: RewriteRotation(CommonOps.Ror, false, false); break;
@@ -555,7 +552,7 @@ namespace Reko.Arch.X86
                 case Mnemonic.vroundsd: RewriteRoundsx(true, PrimitiveType.Real64); break;
                 case Mnemonic.vroundss: RewriteRoundsx(true, PrimitiveType.Real32); break;
                 case Mnemonic.rsm: RewriteRsm(); break;
-                case Mnemonic.rsqrtps: RewritePackedUnaryop("__rsqrtps", PrimitiveType.Real32); break;
+                case Mnemonic.rsqrtps: RewritePackedUnaryop(rsqrtp_intrinsic, PrimitiveType.Real32); break;
                 case Mnemonic.sahf: m.Assign(binder.EnsureFlagGroup(X86Instruction.DefCc(instrCur.Mnemonic)!), orw.AluRegister(Registers.ah)); break;
                 case Mnemonic.sar: RewriteBinOp(m.Sar); break;
                 case Mnemonic.sarx: RewriteBinOp(m.Sar); break;
@@ -579,23 +576,23 @@ namespace Reko.Arch.X86
                 case Mnemonic.sets: RewriteSet(ConditionCode.SG); break;
                 case Mnemonic.setz: RewriteSet(ConditionCode.EQ); break;
                 case Mnemonic.sfence: RewriteSfence(); break;
-                case Mnemonic.sgdt: RewriteSxdt("__sgdt"); break;
+                case Mnemonic.sgdt: RewriteSxdt(sgdt_intrinsic); break;
                 case Mnemonic.sha1msg2: RewriteSha1msg2(); break;
                 case Mnemonic.shl: RewriteBinOp(m.Shl); break;
                 case Mnemonic.shlx: RewriteBinOp(m.Shl); break;
-                case Mnemonic.shld: RewriteShxd("__shld"); break;
+                case Mnemonic.shld: RewriteShxd(shld_intrinsic); break;
                 case Mnemonic.shr: RewriteBinOp(m.Shr); break;
                 case Mnemonic.shrx: RewriteBinOp(m.Shr); break;
-                case Mnemonic.shrd: RewriteShxd("__shrd"); break;
-                case Mnemonic.sidt: RewriteSxdt("__sidt"); break;
-                case Mnemonic.shufps: RewritePackedTernaryop(false, "__shufps", PrimitiveType.Real32); break;
-                case Mnemonic.vshufps: RewritePackedTernaryop(true, "__shufps", PrimitiveType.Real32); break;
-                case Mnemonic.sldt: RewriteSxdt("__sldt"); break;
+                case Mnemonic.shrd: RewriteShxd(shrd_intrinsic); break;
+                case Mnemonic.sidt: RewriteSxdt(sidt_intrinsic); break;
+                case Mnemonic.shufps: RewritePackedTernaryop(false, shufp_intrinsic, PrimitiveType.Real32); break;
+                case Mnemonic.vshufps: RewritePackedTernaryop(true, shufp_intrinsic, PrimitiveType.Real32); break;
+                case Mnemonic.sldt: RewriteSxdt(sldt_intrinsic); break;
                 case Mnemonic.smsw: RewriteSmsw(); break;
-                case Mnemonic.sqrtpd: RewritePackedUnaryop("__sqrtpd", PrimitiveType.Real64); break;
-                case Mnemonic.sqrtps: RewritePackedUnaryop("__sqrtps", PrimitiveType.Real32); break;
-                case Mnemonic.sqrtsd: RewriteSqrtsd("__sqrt", PrimitiveType.Real64); break;
-                case Mnemonic.sqrtss: RewriteSqrtsd("__fsqrt", PrimitiveType.Real32); break;
+                case Mnemonic.sqrtpd: RewritePackedUnaryop(sqrtp_intrinsic, PrimitiveType.Real64); break;
+                case Mnemonic.sqrtps: RewritePackedUnaryop(sqrtp_intrinsic, PrimitiveType.Real32); break;
+                case Mnemonic.sqrtsd: RewriteSqrtsd(sqrt_intrinsic, PrimitiveType.Real64); break;
+                case Mnemonic.sqrtss: RewriteSqrtsd(fsqrt_intrinsic, PrimitiveType.Real32); break;
                 case Mnemonic.stc: RewriteSetFlag(Registers.C, Constant.True()); break;
                 case Mnemonic.std: RewriteSetFlag(Registers.D, Constant.True()); break;
                 case Mnemonic.sti: RewriteSti(); break;
@@ -607,8 +604,8 @@ namespace Reko.Arch.X86
                 case Mnemonic.vsubsd: RewriteScalarBinop(m.FSub, PrimitiveType.Real64, true); break;
                 case Mnemonic.subss: RewriteScalarBinop(m.FSub, PrimitiveType.Real32, false); break;
                 case Mnemonic.vsubss: RewriteScalarBinop(m.FSub, PrimitiveType.Real32, true); break;
-                case Mnemonic.subpd: RewritePackedBinop(false, "__subpd", PrimitiveType.Real64); break;
-                case Mnemonic.subps: RewritePackedBinop(false, "__subps", PrimitiveType.Real32); break;
+                case Mnemonic.subpd: RewritePackedBinop(false, subp_intrinsic, PrimitiveType.Real64); break;
+                case Mnemonic.subps: RewritePackedBinop(false, subp_intrinsic, PrimitiveType.Real32); break;
                 case Mnemonic.syscall: RewriteSyscall(); break;
                 case Mnemonic.sysenter: RewriteSysenter(); break;
                 case Mnemonic.sysexit: RewriteSysexit(); break;
@@ -619,12 +616,12 @@ namespace Reko.Arch.X86
                 case Mnemonic.ud0: iclass = InstrClass.Invalid; m.Invalid(); break;
                 case Mnemonic.ud1: iclass = InstrClass.Invalid; m.Invalid(); break;
                 case Mnemonic.ud2: iclass = InstrClass.Invalid; m.Invalid(); break;
-                case Mnemonic.unpcklpd: RewritePackedBinop(false, "__unpcklpd", PrimitiveType.Real64); break;
-                case Mnemonic.unpcklps: RewritePackedBinop(false, "__unpcklps", PrimitiveType.Real32); break;
-                case Mnemonic.verr: RewriteVerrw("__verify_readable"); break;
-                case Mnemonic.verw: RewriteVerrw("__verify_writeable"); break;
+                case Mnemonic.unpcklpd: RewritePackedBinop(false, unpcklp_intrinsic, PrimitiveType.Real64); break;
+                case Mnemonic.unpcklps: RewritePackedBinop(false, unpcklp_intrinsic, PrimitiveType.Real32); break;
+                case Mnemonic.verr: RewriteVerrw(verr_intrinsic); break;
+                case Mnemonic.verw: RewriteVerrw(verw_intrinsic); break;
                 case Mnemonic.test: RewriteTest(); break;
-                case Mnemonic.tzcnt: RewriteLeadingTrailingZeros("__tzcnt"); break;
+                case Mnemonic.tzcnt: RewriteLeadingTrailingZeros(tzcnt_intrinsic); break;
                 case Mnemonic.wait: RewriteWait(); break;
                 case Mnemonic.wbinvd: RewriteWbinvd(); break;
                 case Mnemonic.wrmsr: RewriteWrsmr(); break;
@@ -636,13 +633,13 @@ namespace Reko.Arch.X86
                 case Mnemonic.xsaveopt: RewriteXsaveopt(); break;
                 case Mnemonic.xlat: RewriteXlat(); break;
                 case Mnemonic.xor: RewriteLogical(m.Xor); break;
-                case Mnemonic.xorpd: RewriteXorp(false, "__xorpd", PrimitiveType.Word64); break;
-                case Mnemonic.vxorpd: RewriteXorp(true, "__xorpd", PrimitiveType.Word64); break;
-                case Mnemonic.xorps: RewriteXorp(false, "__xorps", PrimitiveType.Word32); break;
-                case Mnemonic.vxorps: RewriteXorp(true, "__xorps", PrimitiveType.Word32); break;
+                case Mnemonic.xorpd: RewriteXorp(false, xorp_intrinsic, PrimitiveType.Word64); break;
+                case Mnemonic.vxorpd: RewriteXorp(true, xorp_intrinsic, PrimitiveType.Word64); break;
+                case Mnemonic.xorps: RewriteXorp(false, xorp_intrinsic, PrimitiveType.Word32); break;
+                case Mnemonic.vxorps: RewriteXorp(true, xorp_intrinsic, PrimitiveType.Word32); break;
                 case Mnemonic.vzeroupper: RewriteVZeroUpper(); break;
-                case Mnemonic.BOR_exp: RewriteFUnary("exp", true); break;
-                case Mnemonic.BOR_ln: RewriteFUnary("log", true); break;
+                case Mnemonic.BOR_exp: RewriteFUnary(exp_intrinsic); break;
+                case Mnemonic.BOR_ln: RewriteFUnary(log_intrinsic); break;
                 }
                 var len = (int)(dasm.Current.Address - addr) + dasm.Current.Length;
                 yield return m.MakeCluster(addr, len, iclass);
@@ -773,12 +770,749 @@ namespace Reko.Arch.X86
 
         static X86Rewriter()
         {
-            var ib =
-            rdrandIntrinsic = new IntrinsicBuilder("__rdrand", false)
+            var word16 = PrimitiveType.Word16;
+            var word32 = PrimitiveType.Word32;
+            var word64 = PrimitiveType.Word64;
+
+            aaa_intrinsic = new IntrinsicBuilder("__aaa", false)
+                .Param(PrimitiveType.Byte)
+                .Param(PrimitiveType.Byte)
+                .OutParam(PrimitiveType.Byte)
+                .OutParam(PrimitiveType.Byte)
+                .Returns(PrimitiveType.Bool);
+            aad_intrinsic = new IntrinsicBuilder("__aad", false)
+                .Param(PrimitiveType.Word16)
+                .Returns(PrimitiveType.Word16);
+            aam_intrinsic = new IntrinsicBuilder("__aam", false)
+                .Param(PrimitiveType.Byte)
+                .Returns(PrimitiveType.Word16);
+            aas_intrinsic = new IntrinsicBuilder("__aas", false)
+                .Param(PrimitiveType.Byte)
+                .Param(PrimitiveType.Byte)
+                .OutParam(PrimitiveType.Byte)
+                .OutParam(PrimitiveType.Byte)
+                .Returns(PrimitiveType.Bool);
+            andnpd_intrinsic = GenericBinaryIntrinsic("__andnpd");
+            andnps_intrinsic = GenericBinaryIntrinsic("__andnps");
+            andp_intrinsic = GenericBinaryIntrinsic("__andp");
+            arpl_intrinsic = new IntrinsicBuilder("__arpl", true)
+                .Param(PrimitiveType.Word16)
+                .Param(PrimitiveType.Word16)
+                .OutParam(PrimitiveType.Word16)
+                .Returns(PrimitiveType.Bool);
+            atan2_intrinsic = new IntrinsicBuilder("__atan2", false)
+                .Param(PrimitiveType.Real64)
+                .Param(PrimitiveType.Real64)
+                .Returns(PrimitiveType.Real64);
+            bound_intrinsic = new IntrinsicBuilder("__bound", true)
+                .GenericTypes("T")
+                .Params("T", "T")
+                .Void();
+            bextr_intrinsic = new IntrinsicBuilder("__bextr", false)
+                .GenericTypes("T")
+                .Params("T", "T")
+                .Returns("T");
+            blsi_intrinsic = new IntrinsicBuilder("__blsi", false)
+                .GenericTypes("T")
+                .Param("T")
+                .Returns("T");
+            blsmsk_intrinsic = new IntrinsicBuilder("__blsmsk", false)
+                .GenericTypes("T")
+                .Param("T")
+                .Returns("T");
+            blsr_intrinsic = new IntrinsicBuilder("__blsr", false)
+                .GenericTypes("T")
+                .Param("T")
+                .Returns("T");
+            bsf_intrinsic = new IntrinsicBuilder("__bsf", false)
+                .GenericTypes("T")
+                .Param("T")
+                .Returns("T");
+            bsr_intrinsic = new IntrinsicBuilder("__bsr", false)
+                .GenericTypes("T")
+                .Param("T")
+                .Returns("T");
+            bt_intrinsic = new IntrinsicBuilder("__bt", false)
+                .GenericTypes("T")
+                .Param("T")
+                .Param("T")
+                .Returns(PrimitiveType.Bool);
+            btc_intrinsic = new IntrinsicBuilder("__btc", false)
+                .GenericTypes("T")
+                .Param("T")
+                .Param("T")
+                .OutParam("T")
+                .Returns(PrimitiveType.Bool);
+            btr_intrinsic = new IntrinsicBuilder("__btr", false)
+                .GenericTypes("T")
+                .Param("T")
+                .Param("T")
+                .OutParam("T")
+                .Returns(PrimitiveType.Bool);
+            bts_intrinsic = new IntrinsicBuilder("__bts", false)
+                .GenericTypes("T")
+                .Param("T")
+                .Param("T")
+                .OutParam("T")
+                .Returns(PrimitiveType.Bool);
+            bswap_intrinsic = new IntrinsicBuilder("__bswap", false)
+                .GenericTypes("T")
+                .Param("T")
+                .Returns("T");
+            bzhi_intrinsic = new IntrinsicBuilder("__bzhi", false)
+                .GenericTypes("T")
+                .Param("T")
+                .Param("T")
+                .Returns("T");
+
+            cli_intrinsic = new IntrinsicBuilder("__cli", true)
+                .Void();
+            cmpp_intrinsic = new IntrinsicBuilder("__cmpp", false)
+                .GenericTypes("TSrc", "TDst")
+                .Param("TSrc")
+                .Param("TSrc")
+                .Param(PrimitiveType.Byte)
+                .Returns("TDst");
+            cmpxchg_intrinsic = new IntrinsicBuilder("__cmpxchg", true)
+                .GenericTypes("T")
+                .Param("T")
+                .Param("T")
+                .Param("T")
+                .OutParam("T")
+                .Returns(PrimitiveType.Bool);
+            cmpxchgN_intrinsic = new IntrinsicBuilder("__cmpxchg", true)
+                .GenericTypes("T")
+                .Param("T")
+                .Param("T")
+                .Param("T")
+                .OutParam("T")
+                .Returns(PrimitiveType.Bool);
+            cos_intrinsic = new IntrinsicBuilder("cos", false)      //$REVIEW math.h
+                .Param(PrimitiveType.Real64)
+                .Returns(PrimitiveType.Real64);
+            cpuid_intrinsic = new IntrinsicBuilder("__cpuid", true)
+                .Param(word32).Param(word32)
+                .OutParam(word32).OutParam(word32).OutParam(word32).OutParam(word32)
+                .Void();
+            cvtdq2ps_intrinsic = GenericConversionIntrinsic("__cvtdq2ps");
+            cvtdq2pd_intrinsic = GenericConversionIntrinsic("__cvtdq2pd");
+            cvtpd2dq_intrinsic = GenericConversionIntrinsic("__cvtpd2dq");
+            cvtpd2ps_intrinsic = GenericConversionIntrinsic("__cvtpd2ps");
+            cvtps2dq_intrinsic = GenericConversionIntrinsic("__cvtps2dq");
+            cvtps2pi_intrinsic = GenericConversionIntrinsic("__cvtps2pi");
+            cvtps2pd_intrinsic = GenericConversionIntrinsic("__cvtps2pd");
+            cvttpd2dq_intrinsic = GenericConversionIntrinsic("__cvttpd2dq");
+            cvttps2dq_intrinsic = GenericConversionIntrinsic("__cvttps2dq");
+
+            daa_intrinsic = new IntrinsicBuilder("__daa", false)
+                .Param(PrimitiveType.Byte)
+                .OutParam(PrimitiveType.Byte)
+                .Returns(PrimitiveType.Bool);
+            das_intrinsic = new IntrinsicBuilder("__das", false)
+                .Param(PrimitiveType.Byte)
+                .OutParam(PrimitiveType.Byte)
+                .Returns(PrimitiveType.Bool);
+
+            emms_intrinsic = new IntrinsicBuilder("__emms", true)
+                .Void();
+            exp_intrinsic = UnaryIntrinsic("exp", PrimitiveType.Real64);
+            exponent_intrinsic = UnaryIntrinsic("__exponent", PrimitiveType.Real64);
+
+            fabs_intrinsic = new IntrinsicBuilder("fabs", false)     //$REVIEW: math.h
+                .Param(PrimitiveType.Real64)
+                .Returns(PrimitiveType.Real64);
+            fbld_intrinsic = new IntrinsicBuilder("__fbld", false)
+                .Param(PrimitiveType.Real64)
+                .Returns(PrimitiveType.Real64);
+            fclex_intrinsic = new IntrinsicBuilder("__fclex", true)
+                .Void();
+            femms_intrinsic = new IntrinsicBuilder("__femms", true)
+                .Void();
+            ffree_intrinsic = new IntrinsicBuilder("__ffree", true)
+                .Param(PrimitiveType.Real64)
+                .Void();
+            fldcw_intrinsic = new IntrinsicBuilder("__fldcw", true)
+                .Param(PrimitiveType.Real64)
+                .Void();
+            fldenv_intrinsic = new IntrinsicBuilder("__fldenv", true)
+                .Param(new UnknownType())
+                .Void();
+            fmax_intrinsic = BinaryIntrinsic("fmax", PrimitiveType.Real64);
+            fmin_intrinsic = BinaryIntrinsic("fmin", PrimitiveType.Real64);
+            fninit_intrinsic = new IntrinsicBuilder("__fninit", true)
+                .Void();
+            fprem_incomplete_intrinsic = new IntrinsicBuilder("__fprem_incomplete", false)
+                .Param(PrimitiveType.Real64)
+                .Returns(PrimitiveType.Bool);
+            fprem_x87_intrinsic = BinaryIntrinsic("__fprem_x87", PrimitiveType.Real64);
+            frstor_intrinsic = new IntrinsicBuilder("__frstor", true)
+                .Param(new UnknownType())
+                .Void();
+            fsave_intrinsic = new IntrinsicBuilder("__fsave", true)
+                .Param(new UnknownType())
+                .Void();
+            fsqrt_intrinsic = UnaryIntrinsic("fsqrt", PrimitiveType.Real64);    //$REVIEW: math.h
+            scalbn_intrinsic = BinaryIntrinsic("scalbn", PrimitiveType.Real64);
+            fstcw_intrinsic = new IntrinsicBuilder("__fstcw", true)
+                .Returns(word16);
+            fstenv_intrinsic = new IntrinsicBuilder("__fstenv", true)
+                .Param(new UnknownType())
+                .Void();
+            fxrstor_intrinsic = new IntrinsicBuilder("__fxrstor", true)
+                .Void();
+            fxsave_intrinsic = new IntrinsicBuilder("__fxsave", true)
+                .Void();
+
+            hlt_intrinsic = new IntrinsicBuilder("__hlt", true, new ProcedureCharacteristics
+            {
+                Terminates = true,
+            })
+                .Void();
+
+            in_intrinsic = new IntrinsicBuilder("__in", true)
+                .GenericTypes("T")
+                .Param(PrimitiveType.UInt16)
+                .Returns("T");
+            invd_intrinsic = new IntrinsicBuilder("__invd", true)
+                .Void();
+            invldpg_intrinsic = new IntrinsicBuilder("__invldpg", true)
+                .GenericTypes("T")
+                .Param("T")
+                .Void();
+
+            jmpe_intrinsic = new IntrinsicBuilder("__jmpe", true)
+                .Void();
+
+            lfence_intrinsic = new IntrinsicBuilder("__lfence", true)
+                .Void();
+            lock_intrinsic = new IntrinsicBuilder("__lock", true)
+                .Void();
+            lg2_intrinsic = UnaryIntrinsic("lg2", PrimitiveType.Real64);
+            lgdt_intrinsic = new IntrinsicBuilder("__lgdt", true)
+                .GenericTypes("T")
+                .Param("T")
+                .Void();
+            lidt_intrinsic = new IntrinsicBuilder("__lidt", true)
+                .GenericTypes("T")
+                .Param("T")
+                .Void();
+            lldt_intrinsic = new IntrinsicBuilder("__lldt", true)
+                .GenericTypes("T")
+                .Param("T")
+                .Void();
+            log_intrinsic = UnaryIntrinsic("log", PrimitiveType.Real64);        //$REVIEW:math.h
+            ltr_intrinsic = new IntrinsicBuilder("__load_task_register", true)
+                .Param(word16)
+                .Void();
+            lzcnt_intrinsic = new IntrinsicBuilder("__lzcnt", false)
+                .GenericTypes("T")
+                .Param("T")
+                .Returns("T");
+
+            maskmovdqu_intrinsic = GenericBinaryIntrinsic("__maskmovdqu");
+            maskmovq_intrinsic = GenericBinaryIntrinsic("__maskmovq");
+            mfence_intrinsic = new IntrinsicBuilder("__mfence", true)
+                .Void();
+            movmskb_intrinsic = new IntrinsicBuilder("__movmskb", false)
+                .GenericTypes("T")
+                .Param("T")
+                .Returns(PrimitiveType.Byte);
+            movmskpd_intrinsic = new IntrinsicBuilder("__movmskpd", false)
+                .GenericTypes("T")
+                .Param("T")
+                .Returns(PrimitiveType.Byte);
+            movmskps_intrinsic = new IntrinsicBuilder("__movmskps", false)
+                .GenericTypes("T")
+                .Param("T")
+                .Returns(PrimitiveType.Byte);
+
+            max_intrinsic = new IntrinsicBuilder("max", false)
+                .Param(PrimitiveType.Real64)
+                .Param(PrimitiveType.Real64)
+                .Returns(PrimitiveType.Real64);
+            min_intrinsic = new IntrinsicBuilder("min", false)
+                .Param(PrimitiveType.Real64)
+                .Param(PrimitiveType.Real64)
+                .Returns(PrimitiveType.Real64);
+            movbe_intrinsic = new IntrinsicBuilder("__movbe", true)
+                .GenericTypes("T")
+                .Param("T")
+                .Returns("T");
+
+            out_intrinsic = new IntrinsicBuilder("__out", true)
+                .GenericTypes("T")
+                .Param(PrimitiveType.UInt16)
+                .Param("T")
+                .Void();
+
+            palignr_intrinsic = new IntrinsicBuilder("__palignr", false)
+                .GenericTypes("T")
+                .Param("T")
+                .Param("T")
+                .Param(PrimitiveType.Byte)
+                .Returns("T");
+            pand_intrinsic = GenericBinaryIntrinsic("__pand");  //$TODO: SIMD these.
+            pandn_intrinsic = GenericBinaryIntrinsic("__pandn");
+            pause_intrinsic = new IntrinsicBuilder("__pause", true)
+                .Void();
+            pavg_intrinsic = new IntrinsicBuilder("__pavg", false)
+                .GenericTypes("T")
+                .Param("T")
+                .Param("T")
+                .Returns("T");
+            pbroadcast_intrinsic = GenericConversionIntrinsic("__pbroadcast");
+            pcmpeq_intrinsic = GenericBinaryIntrinsic("__pcmpeq");
+            pcmpgt_intrinsic = GenericBinaryIntrinsic("__pcmpgt");
+            pdep_intrinsic = new IntrinsicBuilder("__pdep", false)
+                .GenericTypes("T")
+                .Param("T")
+                .Param("T")
+                .Returns("T");
+            pext_intrinsic = new IntrinsicBuilder("__pext", false)
+                .GenericTypes("T")
+                .Param("T")
+                .Param("T")
+                .Returns("T");
+            pextrw_intrinsic = new IntrinsicBuilder("__pextrw", false)
+                .GenericTypes("T")
+                .Param("T")
+                .Param(PrimitiveType.Byte)
+                .Returns(word16);
+            pinsr_intrinsic = new IntrinsicBuilder("__pinsr", false)
+                .GenericTypes("TArray", "TElem")
+                .Param("TArray")
+                .Param("TArray")
+                .Param(PrimitiveType.Byte)
+                .Returns("TArray");
+            pmaddubsw_intrinsic = new IntrinsicBuilder("__pmaddubsw", false)
+                .GenericTypes("TSrc1", "TSrc2", "TDst")
+                .Param("TSrc1")
+                .Param("TSrc2")
+                .Returns("TSrc2");
+            pmovmskb_intrinsic = new IntrinsicBuilder("__pmovmskb", false)
+                .GenericTypes("T")
+                .Param("T")
+                .Returns(PrimitiveType.Byte);
+            popcnt_intrinsic = new IntrinsicBuilder("__popcnt", false)  //$REVIEW: well-known intrinsic?
+                .GenericTypes("TSrc", "TDst")
+                .Param("TSrc")
+                .Returns("TDst");
+            pow_intrinsic = new IntrinsicBuilder("pow", false)  //$REVIEW: math.h
+                .Param(PrimitiveType.Real64)
+                .Param(PrimitiveType.Real64)
+                .Returns(PrimitiveType.Real64);
+            prefetchnta_intrinsic = new IntrinsicBuilder("__prefetchnta", true)
+                .GenericTypes("T")
+                .Param("T")
+                .Void();
+            prefetcht0_intrinsic = new IntrinsicBuilder("__prefetcht0", true)
+                .GenericTypes("T")
+                .Param("T")
+                .Void();
+            prefetcht1_intrinsic = new IntrinsicBuilder("__prefetcht1", true)
+                .GenericTypes("T")
+                .Param("T")
+                .Void();
+            prefetcht2_intrinsic = new IntrinsicBuilder("__prefetcht2", true)
+                .GenericTypes("T")
+                .Param("T")
+                .Void();
+            prefetchw_intrinsic = new IntrinsicBuilder("__prefetchw", true)
+                .GenericTypes("T")
+                .Param("T")
+                .Void();
+
+            psadbw_intrinsic = new IntrinsicBuilder("__psadbw", false)
+                .GenericTypes("TSrc", "TDst")
+                .Param("TSrc")
+                .Param("TSrc")
+                .Returns("TDst");
+            pshuf_intrinsic = GenericTernaryIntrinsic("__pshuf");
+            psll_intrinsic = new IntrinsicBuilder("__psll", false)
+                .GenericTypes("T")
+                .Param("T")
+                .Param(PrimitiveType.Byte)
+                .Returns("T");
+            psra_intrinsic = new IntrinsicBuilder("__psra", false)
+                .GenericTypes("T")
+                .Param("T")
+                .Param(PrimitiveType.Byte)
+                .Returns("T");
+            psrl_intrinsic = new IntrinsicBuilder("__psrl", false)
+                .GenericTypes("T")
+                .Param("T")
+                .Param(PrimitiveType.Byte)
+                .Returns("T");
+
+            rdmsr_intrinsic = new IntrinsicBuilder("__rdmsr", true)
+                .Param(word32)
+                .Returns(PrimitiveType.Word64);
+            rdpmc_intrinsic = new IntrinsicBuilder("__rdpmc", true)
+                .Param(word32)
+                .Returns(PrimitiveType.Word64);
+            rdrand_intrinsic = new IntrinsicBuilder("__rdrand", true)
                 .Param(PrimitiveType.Word32)
+                .Returns(PrimitiveType.Bool);
+            rdtsc_intrinsic = new IntrinsicBuilder("__rdtsc", true)
+                .Param(word64)
+                .Returns(word64);
+
+            sfence_intrinsic = new IntrinsicBuilder("__sfence", true)
+                .Void();
+            sgdt_intrinsic = new IntrinsicBuilder("__sgdt", true)
+                .GenericTypes("T")
+                .Returns("T");
+            shld_intrinsic = new IntrinsicBuilder("__shld", false)
+                .GenericTypes("T")
+                .Param("T")
+                .Param("T")
+                .Param(PrimitiveType.Byte)
+                .Returns("T");
+            shrd_intrinsic = new IntrinsicBuilder("__shrd", false)
+                .GenericTypes("T")
+                .Param("T")
+                .Param("T")
+                .Param(PrimitiveType.Byte)
+                .Returns("T");
+            sidt_intrinsic = new IntrinsicBuilder("__sidt", true)
+                .GenericTypes("T")
+                .Void();
+            significand_intrinsic = UnaryIntrinsic("__significand", PrimitiveType.Real64);
+            sin_intrinsic = UnaryIntrinsic("sin", PrimitiveType.Real64);      //$REVIEW math.h
+            sldt_intrinsic = new IntrinsicBuilder("__sldt", true)
+                .GenericTypes("T")
+                .Void();
+            smsw_intrinsic = new IntrinsicBuilder("__smsw", true)
+                .GenericTypes("T")
+                .Returns("T");
+            sqrt_intrinsic = UnaryIntrinsic("sqrt", PrimitiveType.Real64);
+            sti_intrinsic = new IntrinsicBuilder("__sti", true)
+                .Void();
+            str_intrinsic = new IntrinsicBuilder("__store_task_register", true)
+                .Returns(PrimitiveType.SegmentSelector);
+            syscall_intrinsic = new IntrinsicBuilder("__syscall", true)
+                .Void();
+            sysenter_intrinsic = new IntrinsicBuilder("__sysenter", true)
+                .Void();
+            sysexit_intrinsic = new IntrinsicBuilder("__sysexit", true)
+                .Void();
+            sysret_intrinsic = new IntrinsicBuilder("__sysret", true)
+                .Void();
+
+            verr_intrinsic = new IntrinsicBuilder("__verify_readable", true)
+                .Param(PrimitiveType.SegmentSelector)
+                .Returns(PrimitiveType.Bool);
+            verw_intrinsic = new IntrinsicBuilder("__verify_writeable", true)
+                .Param(PrimitiveType.SegmentSelector)
+                .Returns(PrimitiveType.Bool);
+            vmread_intrinsic = new IntrinsicBuilder("__vmread", true)
+                .GenericTypes("TAddr", "TValue")
+                .Param("TAddr")
+                .Returns("TValue");
+            vmwrite_intrinsic = new IntrinsicBuilder("__vmwrite", true)
+                .GenericTypes("TAddr", "TValue")
+                .Param("TAddr")
+                .Param("TValue")
+                .Void();
+
+            wait_intrinsic = new IntrinsicBuilder("__wait", true)
+                .Void();
+            wbinvd_intrinsic = new IntrinsicBuilder("__wbinvd", true)
+                .Void();
+            wrmsr_intrinsic = new IntrinsicBuilder("__wrmsr", true)
+                .Param(word32)
+                .Param(word64)
+                .Void();
+
+            xabort_intrinsic = new IntrinsicBuilder("__xabort", true, new ProcedureCharacteristics
+            {
+                Terminates = true
+            })
+                .Param(PrimitiveType.Byte)
+                 .Void();
+            xadd_intrinsic = new IntrinsicBuilder("__xadd", true)
+                .GenericTypes("T")
+                .Param("T")
+                .Param("T")
+                .Returns("T");
+            xgetbv_intrinsic = new IntrinsicBuilder("__xgetbv", true)
+                .Param(word32)
+                .Returns(word64);
+            xsetbv_intrinsic = new IntrinsicBuilder("__xsetbv", true)
+                .Param(PrimitiveType.Word32)
+                .Param(PrimitiveType.Word64)
+                .Void();
+
+            alignStack_intrinsic = new IntrinsicBuilder("__align_stack", true)
+                .GenericTypes("T")
+                .Param("T")
+                .Void();
+            isunordered_intrinsic = new IntrinsicBuilder("isunordered", false)  //$REVIEW Should be src\core\intrinsics
+                .GenericTypes("T")
+                .Param("T")
                 .Returns(PrimitiveType.Bool);
         }
 
-        private static readonly IntrinsicProcedure rdrandIntrinsic;
+        private static IntrinsicProcedure BinaryIntrinsic(string intrinsicName, PrimitiveType dt)
+        {
+            return new IntrinsicBuilder(intrinsicName, false).Param(dt).Param(dt).Returns(dt);
+    }
+
+        private static IntrinsicProcedure UnaryIntrinsic(string intrinsicName, PrimitiveType dt)
+        {
+            return new IntrinsicBuilder(intrinsicName, false).Param(dt).Returns(dt);
+        }
+
+        private static IntrinsicProcedure GenericUnaryIntrinsic(string name)
+        {
+            return new IntrinsicBuilder(name, false)
+                .GenericTypes("T")
+                .Param("T")
+                .Returns("T");
+        }
+
+        private static IntrinsicProcedure GenericBinaryIntrinsic(string name)
+        {
+            return new IntrinsicBuilder(name, false)
+                .GenericTypes("T")
+                .Param("T")
+                .Param("T")
+                .Returns("T");
+        }
+
+        private static IntrinsicProcedure GenericTernaryIntrinsic(string name)
+        {
+            return new IntrinsicBuilder(name, false)
+                .GenericTypes("T")
+                .Param("T")
+                .Param("T")
+                .Param("T")
+                .Returns("T");
+        }
+
+        private static IntrinsicProcedure GenericBinaryIntrinsic_DifferentTypes(string name)
+        {
+            return new IntrinsicBuilder(name, false)
+                .GenericTypes("TSrc", "TDst")
+                .Param("TSrc")
+                .Param("TSrc")
+                .Returns("TDst");
+        }
+
+
+        private static IntrinsicProcedure GenericConversionIntrinsic(string name)
+        {
+            return new IntrinsicBuilder(name, false)
+                .GenericTypes("TSrc", "TDst")
+                .Param("TSrc")
+                .Returns("TDst");
+        }
+
+
+        private static readonly IntrinsicProcedure aaa_intrinsic;
+        private static readonly IntrinsicProcedure aad_intrinsic;
+        private static readonly IntrinsicProcedure aam_intrinsic;
+        private static readonly IntrinsicProcedure aas_intrinsic;
+        private static readonly IntrinsicProcedure addp_intrinsic = GenericBinaryIntrinsic("__addp");
+        private static readonly IntrinsicProcedure aesenc_intrinsic = BinaryIntrinsic("__aesenc", PrimitiveType.Word128);
+        private static readonly IntrinsicProcedure aesimc_intrinsic = UnaryIntrinsic("__aesimc", PrimitiveType.Word128);
+        private static readonly IntrinsicProcedure andnpd_intrinsic;
+        private static readonly IntrinsicProcedure andnps_intrinsic;
+        private static readonly IntrinsicProcedure andp_intrinsic;
+        private static readonly IntrinsicProcedure arpl_intrinsic;
+        private static readonly IntrinsicProcedure atan2_intrinsic;
+        private static readonly IntrinsicProcedure bextr_intrinsic;
+        private static readonly IntrinsicProcedure blsi_intrinsic;
+        private static readonly IntrinsicProcedure blsmsk_intrinsic;
+        private static readonly IntrinsicProcedure blsr_intrinsic;
+        private static readonly IntrinsicProcedure bound_intrinsic;
+        private static readonly IntrinsicProcedure bsf_intrinsic;
+        private static readonly IntrinsicProcedure bsr_intrinsic;
+        private static readonly IntrinsicProcedure bswap_intrinsic;
+        private static readonly IntrinsicProcedure bt_intrinsic;
+        private static readonly IntrinsicProcedure btc_intrinsic;
+        private static readonly IntrinsicProcedure btr_intrinsic;
+        private static readonly IntrinsicProcedure bts_intrinsic;
+        private static readonly IntrinsicProcedure bzhi_intrinsic;
+        private static readonly IntrinsicProcedure ceil_intrinsic = UnaryIntrinsic("ceil", PrimitiveType.Real64);
+        private static readonly IntrinsicProcedure ceilf_intrinsic = UnaryIntrinsic("ceilf", PrimitiveType.Real32);
+        private static readonly IntrinsicProcedure cli_intrinsic;
+        private static readonly IntrinsicProcedure cmpp_intrinsic;
+        private static readonly IntrinsicProcedure cmpxchg_intrinsic;
+        private static readonly IntrinsicProcedure cmpxchgN_intrinsic;
+        private static readonly IntrinsicProcedure cos_intrinsic;
+        private static readonly IntrinsicProcedure cpuid_intrinsic;
+        private static readonly IntrinsicProcedure cvtdq2ps_intrinsic;
+        private static readonly IntrinsicProcedure cvtdq2pd_intrinsic;
+        private static readonly IntrinsicProcedure cvtpd2dq_intrinsic;
+        private static readonly IntrinsicProcedure cvtpd2ps_intrinsic;
+        private static readonly IntrinsicProcedure cvtps2dq_intrinsic;
+        private static readonly IntrinsicProcedure cvtps2pi_intrinsic;
+        private static readonly IntrinsicProcedure cvtps2pd_intrinsic;
+        private static readonly IntrinsicProcedure cvttpd2dq_intrinsic;
+        private static readonly IntrinsicProcedure cvttps2dq_intrinsic;
+        private static readonly IntrinsicProcedure daa_intrinsic;
+        private static readonly IntrinsicProcedure das_intrinsic;
+        private static readonly IntrinsicProcedure divp_intrinsic = GenericBinaryIntrinsic("__divp");
+        private static readonly IntrinsicProcedure emms_intrinsic;
+        private static readonly IntrinsicProcedure exp_intrinsic;
+        private static readonly IntrinsicProcedure exponent_intrinsic;
+        private static readonly IntrinsicProcedure fabs_intrinsic;
+        private static readonly IntrinsicProcedure fbld_intrinsic;
+        private static readonly IntrinsicProcedure fclex_intrinsic;
+        private static readonly IntrinsicProcedure femms_intrinsic;
+        private static readonly IntrinsicProcedure ffree_intrinsic;
+        private static readonly IntrinsicProcedure fldcw_intrinsic;
+        private static readonly IntrinsicProcedure fldenv_intrinsic;
+        private static readonly IntrinsicProcedure floor_intrinsic = UnaryIntrinsic("floor", PrimitiveType.Real64);
+        private static readonly IntrinsicProcedure floorf_intrinsic = UnaryIntrinsic("floorf", PrimitiveType.Real32);
+        private static readonly IntrinsicProcedure fmax_intrinsic;
+        private static readonly IntrinsicProcedure fmin_intrinsic;
+        private static readonly IntrinsicProcedure fninit_intrinsic;
+        private static readonly IntrinsicProcedure fprem_incomplete_intrinsic;
+        private static readonly IntrinsicProcedure fprem_x87_intrinsic;
+        private static readonly IntrinsicProcedure frstor_intrinsic;
+        private static readonly IntrinsicProcedure fsave_intrinsic;
+        private static readonly IntrinsicProcedure fsqrt_intrinsic;
+        private static readonly IntrinsicProcedure fstcw_intrinsic;
+        private static readonly IntrinsicProcedure fstenv_intrinsic;
+        private static readonly IntrinsicProcedure fxrstor_intrinsic;
+        private static readonly IntrinsicProcedure fxsave_intrinsic;
+        private static readonly IntrinsicProcedure hlt_intrinsic;
+        private static readonly IntrinsicProcedure in_intrinsic;
+        private static readonly IntrinsicProcedure invd_intrinsic;
+        private static readonly IntrinsicProcedure invldpg_intrinsic;
+        private static readonly IntrinsicProcedure jmpe_intrinsic;
+        private static readonly IntrinsicProcedure lg2_intrinsic;
+        private static readonly IntrinsicProcedure lgdt_intrinsic;
+        private static readonly IntrinsicProcedure lidt_intrinsic;
+        private static readonly IntrinsicProcedure lldt_intrinsic;
+        private static readonly IntrinsicProcedure lock_intrinsic;
+        private static readonly IntrinsicProcedure log_intrinsic;
+        private static readonly IntrinsicProcedure lfence_intrinsic;
+        private static readonly IntrinsicProcedure ltr_intrinsic;
+        private static readonly IntrinsicProcedure lzcnt_intrinsic;
+        private static readonly IntrinsicProcedure maskmovdqu_intrinsic;
+        private static readonly IntrinsicProcedure maskmovq_intrinsic;
+        private static readonly IntrinsicProcedure max_intrinsic;
+        private static readonly IntrinsicProcedure maxp_intrinsic = GenericBinaryIntrinsic("__maxp");
+        private static readonly IntrinsicProcedure mfence_intrinsic;
+        private static readonly IntrinsicProcedure min_intrinsic;
+        private static readonly IntrinsicProcedure minp_intrinsic = GenericBinaryIntrinsic("__minp");
+        private static readonly IntrinsicProcedure movbe_intrinsic;
+        private static readonly IntrinsicProcedure movhp_intrinsic = GenericConversionIntrinsic("__movhp");
+        private static readonly IntrinsicProcedure movlp_intrinsic = GenericConversionIntrinsic("__movlp");
+        private static readonly IntrinsicProcedure movmskb_intrinsic;
+        private static readonly IntrinsicProcedure movmskpd_intrinsic;
+        private static readonly IntrinsicProcedure movmskps_intrinsic;
+        private static readonly IntrinsicProcedure mulp_intrinsic = GenericBinaryIntrinsic("__mulp");
+        private static readonly IntrinsicProcedure orp_intrinsic = GenericBinaryIntrinsic("__orp");
+        private static readonly IntrinsicProcedure out_intrinsic;
+        private static readonly IntrinsicProcedure palignr_intrinsic;
+        private static readonly IntrinsicProcedure packss_intrinsic = GenericBinaryIntrinsic_DifferentTypes("__packss");
+        private static readonly IntrinsicProcedure packus_intrinsic = GenericBinaryIntrinsic_DifferentTypes("__packus");
+        private static readonly IntrinsicProcedure padd_intrinsic = GenericBinaryIntrinsic("__padd");
+        private static readonly IntrinsicProcedure padds_intrinsic = GenericBinaryIntrinsic("__padds");
+        private static readonly IntrinsicProcedure paddus_intrinsic = GenericBinaryIntrinsic("__paddus");
+        private static readonly IntrinsicProcedure paddwd_intrinsic = GenericBinaryIntrinsic_DifferentTypes("__paddwd");
+        private static readonly IntrinsicProcedure pand_intrinsic;
+        private static readonly IntrinsicProcedure pandn_intrinsic;
+        private static readonly IntrinsicProcedure pause_intrinsic;
+        private static readonly IntrinsicProcedure pavg_intrinsic;
+        private static readonly IntrinsicProcedure pbroadcast_intrinsic;
+        private static readonly IntrinsicProcedure pcmpeq_intrinsic;
+        private static readonly IntrinsicProcedure pcmpgt_intrinsic;
+        private static readonly IntrinsicProcedure pdep_intrinsic;
+        private static readonly IntrinsicProcedure pext_intrinsic;
+        private static readonly IntrinsicProcedure pextrw_intrinsic;
+        private static readonly IntrinsicProcedure pinsr_intrinsic;
+        private static readonly IntrinsicProcedure pmaddubsw_intrinsic;
+        private static readonly IntrinsicProcedure pmaddwd_intrinsic = GenericBinaryIntrinsic_DifferentTypes("__pmaddwd");
+        private static readonly IntrinsicProcedure pmaxu_intrinsic = GenericBinaryIntrinsic("__pmaxu");
+        private static readonly IntrinsicProcedure pmaxs_intrinsic = GenericBinaryIntrinsic("__pmaxs");
+        private static readonly IntrinsicProcedure pminu_intrinsic = GenericBinaryIntrinsic("__pminu");
+        private static readonly IntrinsicProcedure pmins_intrinsic = GenericBinaryIntrinsic("__pmins");
+        private static readonly IntrinsicProcedure pmovmskb_intrinsic;
+        private static readonly IntrinsicProcedure pmulh_intrinsic = GenericBinaryIntrinsic_DifferentTypes("__pmulh");
+        private static readonly IntrinsicProcedure pmulhu_intrinsic = GenericBinaryIntrinsic_DifferentTypes("__pmulhu");
+        private static readonly IntrinsicProcedure pmull_intrinsic = GenericBinaryIntrinsic_DifferentTypes("__pmull");
+        private static readonly IntrinsicProcedure pmulu_intrinsic = GenericBinaryIntrinsic_DifferentTypes("__pmulu");
+        private static readonly IntrinsicProcedure popcnt_intrinsic;
+        private static readonly IntrinsicProcedure pow_intrinsic;
+        private static readonly IntrinsicProcedure prefetchnta_intrinsic;
+        private static readonly IntrinsicProcedure prefetcht0_intrinsic;
+        private static readonly IntrinsicProcedure prefetcht1_intrinsic;
+        private static readonly IntrinsicProcedure prefetcht2_intrinsic;
+        private static readonly IntrinsicProcedure prefetchw_intrinsic;
+        private static readonly IntrinsicProcedure psadbw_intrinsic;
+        private static readonly IntrinsicProcedure pshuf_intrinsic;
+        private static readonly IntrinsicProcedure pshufb_intrinsic = GenericTernaryIntrinsic("__pshufb");
+        private static readonly IntrinsicProcedure pshuflw_intrinsic = GenericTernaryIntrinsic("__pshuflw");
+        private static readonly IntrinsicProcedure psll_intrinsic;
+        private static readonly IntrinsicProcedure psra_intrinsic;
+        private static readonly IntrinsicProcedure psrl_intrinsic;
+        private static readonly IntrinsicProcedure psub_intrinsic = GenericBinaryIntrinsic("__psub");
+        private static readonly IntrinsicProcedure psubs_intrinsic = GenericBinaryIntrinsic("__psubs");
+        private static readonly IntrinsicProcedure psubus_intrinsic = GenericBinaryIntrinsic("__psubus");
+        private static readonly IntrinsicProcedure punpckhbw_intrinsic = GenericBinaryIntrinsic("__punpckhbw");
+        private static readonly IntrinsicProcedure punpckhdq_intrinsic = GenericBinaryIntrinsic("__punpckhdq");
+        private static readonly IntrinsicProcedure punpckhwd_intrinsic = GenericBinaryIntrinsic("__punpckhwd");
+        private static readonly IntrinsicProcedure punpcklbw_intrinsic = GenericBinaryIntrinsic("__punpcklbw");
+        private static readonly IntrinsicProcedure punpckldq_intrinsic = GenericBinaryIntrinsic("__punpckldq");
+        private static readonly IntrinsicProcedure punpcklqdq_intrinsic = GenericBinaryIntrinsic("__punpcklqdq");
+        private static readonly IntrinsicProcedure punpcklwd_intrinsic = GenericBinaryIntrinsic("__punpcklwd");
+        private static readonly IntrinsicProcedure pxor_intrinsic = GenericBinaryIntrinsic("__pxor");
+
+        private static readonly IntrinsicProcedure rdmsr_intrinsic;
+        private static readonly IntrinsicProcedure rcpp_intrinsic = GenericUnaryIntrinsic("__rcpp");
+        private static readonly IntrinsicProcedure rdpmc_intrinsic;
+        private static readonly IntrinsicProcedure rdrand_intrinsic;
+        private static readonly IntrinsicProcedure rdtsc_intrinsic;
+        private static readonly IntrinsicProcedure rndint_intrinsic = UnaryIntrinsic("__rndint", PrimitiveType.Real64);
+        private static readonly IntrinsicProcedure round_intrinsic = UnaryIntrinsic("round", PrimitiveType.Real64);
+        private static readonly IntrinsicProcedure roundf_intrinsic = UnaryIntrinsic("roundf", PrimitiveType.Real32);
+        private static readonly IntrinsicProcedure rsqrtp_intrinsic = GenericUnaryIntrinsic("__rsqrtp");
+        private static readonly IntrinsicProcedure scalbn_intrinsic;
+        private static readonly IntrinsicProcedure sfence_intrinsic;
+        private static readonly IntrinsicProcedure sgdt_intrinsic;
+        private static readonly IntrinsicProcedure sha1msg2_intrinsic = BinaryIntrinsic("__sha1msg2", PrimitiveType.Word128);
+        private static readonly IntrinsicProcedure shld_intrinsic;
+        private static readonly IntrinsicProcedure shrd_intrinsic;
+        private static readonly IntrinsicProcedure shufp_intrinsic = GenericTernaryIntrinsic("__shufp");
+        private static readonly IntrinsicProcedure significand_intrinsic;
+        private static readonly IntrinsicProcedure sidt_intrinsic;
+        private static readonly IntrinsicProcedure sin_intrinsic;
+        private static readonly IntrinsicProcedure sldt_intrinsic;
+        private static readonly IntrinsicProcedure smsw_intrinsic;
+        private static readonly IntrinsicProcedure sqrt_intrinsic;
+        private static readonly IntrinsicProcedure sqrtp_intrinsic = GenericUnaryIntrinsic("__sqrtp");
+        private static readonly IntrinsicProcedure sti_intrinsic;
+        private static readonly IntrinsicProcedure str_intrinsic;
+        private static readonly IntrinsicProcedure subp_intrinsic = GenericBinaryIntrinsic("__subp");
+        private static readonly IntrinsicProcedure syscall_intrinsic;
+        private static readonly IntrinsicProcedure sysenter_intrinsic;
+        private static readonly IntrinsicProcedure sysexit_intrinsic;
+        private static readonly IntrinsicProcedure sysret_intrinsic;
+        private static readonly IntrinsicProcedure tan_intrinsic = UnaryIntrinsic("tan", PrimitiveType.Real64);        //$REVIEW: math.h
+        private static readonly IntrinsicProcedure trunc_intrinsic = BinaryIntrinsic("trunc", PrimitiveType.Real64);    //$REVIEW: math.h
+        private static readonly IntrinsicProcedure truncf_intrinsic = BinaryIntrinsic("truncf", PrimitiveType.Real32);
+        private static readonly IntrinsicProcedure tzcnt_intrinsic = GenericUnaryIntrinsic("__tzcnt");
+        private static readonly IntrinsicProcedure unpckhp_intrinsic = GenericBinaryIntrinsic("__unpckhp");
+        private static readonly IntrinsicProcedure unpcklp_intrinsic = GenericBinaryIntrinsic("__unpcklp");
+        private static readonly IntrinsicProcedure verr_intrinsic;
+        private static readonly IntrinsicProcedure verw_intrinsic;
+        private static readonly IntrinsicProcedure vmread_intrinsic;
+        private static readonly IntrinsicProcedure vmwrite_intrinsic;
+        private static readonly IntrinsicProcedure wait_intrinsic;
+        private static readonly IntrinsicProcedure wbinvd_intrinsic;
+        private static readonly IntrinsicProcedure wrmsr_intrinsic;
+        private static readonly IntrinsicProcedure xabort_intrinsic;
+        private static readonly IntrinsicProcedure xadd_intrinsic;
+        private static readonly IntrinsicProcedure xgetbv_intrinsic;
+        private static readonly IntrinsicProcedure xorp_intrinsic = GenericBinaryIntrinsic("__xorp");
+        private static readonly IntrinsicProcedure xsetbv_intrinsic;
+
+        private static readonly IntrinsicProcedure alignStack_intrinsic;
+        private static readonly IntrinsicProcedure isunordered_intrinsic;
     }
 }

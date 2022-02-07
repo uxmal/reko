@@ -403,7 +403,7 @@ Eq_482: (fn void ())
 	T_482 (in __lock @ 00401464 : ptr32)
 	T_483 (in signature of __lock @ 00000000 : void)
 Eq_486: (fn bool (word32, ptr32, word32, word32))
-	T_486 (in __cmpxchg @ 00401465 : ptr32)
+	T_486 (in __cmpxchg<word32> @ 00401465 : ptr32)
 	T_487 (in signature of __cmpxchg @ 00000000 : void)
 Eq_505: (fn void (word32))
 	T_505 (in fn004019FE @ 00401484 : ptr32)
@@ -2485,7 +2485,7 @@ T_485: (in eax_25 @ 00401465 : ptr32)
   Class: Eq_110
   DataType: ptr32
   OrigDataType: word32
-T_486: (in __cmpxchg @ 00401465 : ptr32)
+T_486: (in __cmpxchg<word32> @ 00401465 : ptr32)
   Class: Eq_486
   DataType: (ptr32 Eq_486)
   OrigDataType: (ptr32 (fn T_496 (T_493, T_473, T_494, T_495)))
@@ -2493,19 +2493,19 @@ T_487: (in signature of __cmpxchg @ 00000000 : void)
   Class: Eq_486
   DataType: (ptr32 Eq_486)
   OrigDataType: 
-T_488: (in  @ 00401465 : word32)
+T_488: (in p1 @ 00401465 : word32)
   Class: Eq_488
   DataType: word32
   OrigDataType: 
-T_489: (in  @ 00401465 : word32)
+T_489: (in p2 @ 00401465 : word32)
   Class: Eq_110
   DataType: ptr32
   OrigDataType: 
-T_490: (in  @ 00401465 : word32)
+T_490: (in p3 @ 00401465 : word32)
   Class: Eq_490
   DataType: word32
   OrigDataType: 
-T_491: (in  @ 00401465 : word32)
+T_491: (in p4 @ 00401465 : word32)
   Class: Eq_491
   DataType: word32
   OrigDataType: 
@@ -2525,7 +2525,7 @@ T_495: (in out eax_25 @ 00401465 : word32)
   Class: Eq_491
   DataType: word32
   OrigDataType: word32
-T_496: (in __cmpxchg(g_dw403338, edx_19, 0<32>, out eax_25) @ 00401465 : bool)
+T_496: (in __cmpxchg<word32>(g_dw403338, edx_19, 0<32>, out eax_25) @ 00401465 : bool)
   Class: Eq_496
   DataType: bool
   OrigDataType: bool
@@ -4697,27 +4697,27 @@ T_1038: (in signature of __cpuid @ 00000000 : void)
   Class: Eq_1037
   DataType: (ptr32 Eq_1037)
   OrigDataType: 
-T_1039: (in  @ 00401A3F : word32)
+T_1039: (in p1 @ 00401A3F : word32)
   Class: Eq_1039
   DataType: word32
   OrigDataType: 
-T_1040: (in  @ 00401A3F : word32)
+T_1040: (in p2 @ 00401A3F : word32)
   Class: Eq_1040
   DataType: word32
   OrigDataType: 
-T_1041: (in  @ 00401A3F : ptr32)
+T_1041: (in p3 @ 00401A3F : word32)
   Class: Eq_1041
   DataType: (ptr32 word32)
   OrigDataType: 
-T_1042: (in  @ 00401A3F : ptr32)
+T_1042: (in p4 @ 00401A3F : word32)
   Class: Eq_1042
   DataType: (ptr32 word32)
   OrigDataType: 
-T_1043: (in  @ 00401A3F : ptr32)
+T_1043: (in p5 @ 00401A3F : word32)
   Class: Eq_1043
   DataType: (ptr32 word32)
   OrigDataType: 
-T_1044: (in  @ 00401A3F : ptr32)
+T_1044: (in p6 @ 00401A3F : word32)
   Class: Eq_1044
   DataType: (ptr32 word32)
   OrigDataType: 
@@ -5037,7 +5037,7 @@ T_1123: (in signature of __xgetbv @ 00000000 : void)
   Class: Eq_1122
   DataType: (ptr32 Eq_1122)
   OrigDataType: 
-T_1124: (in  @ 00401B5C : word32)
+T_1124: (in p1 @ 00401B5C : word32)
   Class: Eq_1124
   DataType: word32
   OrigDataType: 

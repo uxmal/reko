@@ -28,7 +28,7 @@ fn0C00_0000_entry:
 	// succ:  l0C00_0000
 l0C00_0000:
 	si = bp + 0xC<16>
-	__outb(dx, al)
+	__out<byte>(dx, al)
 	v8 = (bx & 1<16> << 1<8>) != 0<16>
 	bx = __ror<word16,byte>(bx, 1<8>)
 	C = v8
@@ -37,16 +37,16 @@ l0C00_0000:
 	C = v11
 	dx = dx + 1<16>
 	SZO = cond(dx)
-	al = __inb(dx)
+	al = __in<byte>(dx)
 	Mem0[es:di:byte] = al
 	di = di + 1<i16>
-	C = __bt(Mem0[ds:0x3000<16>:word16], ax)
-	C = __bt(cx, ax)
-	C = __bt(cx, 2<8>)
+	C = __bt<word16>(Mem0[ds:0x3000<16>:word16], ax)
+	C = __bt<word16>(cx, ax)
+	C = __bt<word16>(cx, 2<8>)
 	Z = Mem0[ds:si:word16] == 0<16>
-	cx = __bsr(Mem0[ds:si:word16])
+	cx = __bsr<word16>(Mem0[ds:si:word16])
 	Z = ax == 0<16>
-	cx = __bsr(ax)
+	cx = __bsr<word16>(ax)
 	return
 	// succ:  fn0C00_0000_exit
 fn0C00_0000_exit:

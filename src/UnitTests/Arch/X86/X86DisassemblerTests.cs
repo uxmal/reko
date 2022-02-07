@@ -2208,7 +2208,7 @@ movzx	ax,byte ptr [bp+4h]
         public void X86Dis_sldt()
         {
             var instr = Disassemble64(0x26, 0x0f, 0x00, 0x41, 0x83);
-            Assert.AreEqual("sldt\tword ptr es:[rcx-7Dh]", instr.ToString());
+            Assert.AreEqual("sldt\tes:[rcx-7Dh]", instr.ToString());
         }
 
         [Test]

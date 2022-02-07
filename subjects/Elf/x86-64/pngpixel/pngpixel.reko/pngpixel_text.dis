@@ -9,7 +9,7 @@ void _start(word64 rdx, word32 dwArg00)
 _start_exit:
 _start_entry:
 l0000000000400CD0:
-	__align(fp + 8<i64>)
+	__align_stack<word64>(fp + 8<i64>)
 	__libc_start_main(0x4012F9<64>, SLICE(qwArg00, int32, 0), fp + 8<i64>, 0x401780<64>, 0x4017F0<64>, rdx, fp)
 	__hlt()
 

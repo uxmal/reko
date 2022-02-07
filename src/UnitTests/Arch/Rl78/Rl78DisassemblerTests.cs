@@ -21,20 +21,16 @@
 using NUnit.Framework;
 using Reko.Arch.Rl78;
 using Reko.Core;
-using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Reko.UnitTests.Arch.Rl78
 {
     [TestFixture]
     public class Rl78DisassemblerTests : DisassemblerTestBase<Rl78Instruction>
     {
-        private Rl78Architecture arch;
-        private Address addr;
+        private readonly Rl78Architecture arch;
+        private readonly Address addr;
 
         public Rl78DisassemblerTests()
         {

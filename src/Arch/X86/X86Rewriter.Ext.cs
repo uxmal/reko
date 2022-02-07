@@ -34,7 +34,7 @@ namespace Reko.Arch.X86
         {
             var dst = SrcOp(0);
             var src = SrcOp(1);
-            m.Assign(dst, host.Intrinsic("__aesimc", true, dst.DataType, src));
+            m.Assign(dst, m.Fn(aesimc_intrinsic, src));
         }
 
         public void RewriteClts()
@@ -45,7 +45,7 @@ namespace Reko.Arch.X86
 
         public void RewriteEmms()
         {
-            m.SideEffect(host.Intrinsic("__emms", true, VoidType.Instance));
+            m.SideEffect(m.Fn(emms_intrinsic));
         }
 
         private void RewriteGetsec()
@@ -59,15 +59,13 @@ namespace Reko.Arch.X86
 
         private void RewriteInvd()
         {
-            m.SideEffect(host.Intrinsic("__invd", true, VoidType.Instance));
+            m.SideEffect(m.Fn(invd_intrinsic));
         }
 
         private void RewriteInvlpg()
         {
             var op = SrcOp(0);
-            m.SideEffect(host.Intrinsic("__invlpg", true, VoidType.Instance,
-                op));
-
+            m.SideEffect(m.Fn(invldpg_intrinsic.MakeInstance(arch.PointerType), op));
         }
 
         private void RewriteLar()
@@ -100,34 +98,25 @@ namespace Reko.Arch.X86
                     SrcOp(1)));
         }
 
-        private void RewriteLxdt(string intrinsicName)
+        private void RewriteLxdt(IntrinsicProcedure intrinsic)
         {
-            m.SideEffect(
-                host.Intrinsic(
-                    intrinsicName,
-                    true,
-                    VoidType.Instance,
-                    SrcOp(0)));
+            m.SideEffect(m.Fn(intrinsic, SrcOp(0)));
         }
 
-        private void RewriteSxdt(string intrinsicName)
+        private void RewriteSxdt(IntrinsicProcedure intrinsic)
         {
-            m.Assign(
-                SrcOp(0),
-                host.Intrinsic(
-                    intrinsicName,
-                    true,
-                    instrCur.Operands[0].Width));
+            var dst = SrcOp(0);
+            m.Assign(dst, m.Fn(intrinsic.MakeInstance(dst.DataType)));
         }
 
         public void RewriteLfence()
         {
-            m.SideEffect(host.Intrinsic("__lfence", true, VoidType.Instance));
+            m.SideEffect(m.Fn(lfence_intrinsic));
         }
 
         public void RewriteMfence()
         {
-            m.SideEffect(host.Intrinsic("__mfence", true, VoidType.Instance));
+            m.SideEffect(m.Fn(mfence_intrinsic));
         }
 
         private void RewriteMovdq()
@@ -149,19 +138,19 @@ namespace Reko.Arch.X86
 
         public void RewritePause()
         {
-            m.SideEffect(host.Intrinsic("__pause", true, VoidType.Instance));
+            m.SideEffect(m.Fn(pause_intrinsic));
         }
 
-        public void RewritePrefetch(string name)
+        public void RewritePrefetch(IntrinsicProcedure intrinsic)
         {
-            m.SideEffect(host.Intrinsic(name, true, VoidType.Instance, SrcOp(0)));
+            m.SideEffect(m.Fn(intrinsic.MakeInstance(arch.PointerType), SrcOp(0)));
         }
 
         private void RewriteRdrand()
         {
             var arg = SrcOp(0);
             var ret = binder.EnsureFlagGroup(Registers.C);
-            m.Assign(ret, m.Fn(rdrandIntrinsic, m.Out(arg.DataType, arg)));
+            m.Assign(ret, m.Fn(rdrand_intrinsic, m.Out(arg.DataType, arg)));
             m.Assign(binder.EnsureFlagGroup(Registers.S), 0);
             m.Assign(binder.EnsureFlagGroup(Registers.Z), 0);
             m.Assign(binder.EnsureFlagGroup(Registers.O), 0);
@@ -171,45 +160,48 @@ namespace Reko.Arch.X86
         private void RewriteSmsw()
         {
             var dst = SrcOp(0);
-            m.Assign(dst, host.Intrinsic("__smsw", true, dst.DataType));
+            m.Assign(dst, m.Fn(smsw_intrinsic.MakeInstance(dst.DataType)));
         }
 
         public void RewriteSfence()
         {
-            m.SideEffect(host.Intrinsic("__sfence", true, VoidType.Instance));
+            m.SideEffect(m.Fn(sfence_intrinsic));
         }
 
-        public void RewriteVmread()
+        private void RewriteVmread()
         {
+            var src1 = SrcOp(1);
+            var dst = SrcOp(0);
             m.Assign(
-                SrcOp(0),
-                host.Intrinsic("__vmread", true, instrCur.Operands[0].Width, SrcOp(1)));
+                dst,
+                m.Fn(vmread_intrinsic.MakeInstance(src1.DataType, dst.DataType), src1));
         }
 
-        public void RewriteVmwrite()
+        private void RewriteVmwrite()
         {
-            m.SideEffect(host.Intrinsic("__vmwrite", true, VoidType.Instance,
-                SrcOp(0),
-                SrcOp(1)));
+            var src0 = SrcOp(0);
+            var src1 = SrcOp(1);
+            m.SideEffect(
+                m.Fn(vmwrite_intrinsic.MakeInstance(src0.DataType, src1.DataType),
+                src0,
+                src1));
         }
-
 
         private void RewriteWbinvd()
         {
-            m.SideEffect(host.Intrinsic("__wbinvd", true, VoidType.Instance));
+            m.SideEffect(m.Fn(wbinvd_intrinsic));
         }
 
         public void RewriteWrsmr()
         {
             var edx_eax = binder.EnsureSequence(PrimitiveType.Word64, Registers.edx, Registers.eax);
             var ecx = binder.EnsureRegister(Registers.ecx);
-            m.SideEffect(host.Intrinsic("__wrmsr", true, VoidType.Instance, ecx, edx_eax));
+            m.SideEffect(m.Fn(wrmsr_intrinsic, ecx, edx_eax));
         }
 
         private void RewriteXsaveopt()
         {
             m.SideEffect(host.Intrinsic("__xsaveopt", true, VoidType.Instance, m.AddrOf(arch.PointerType, SrcOp(0))));
         }
-
     }
 }

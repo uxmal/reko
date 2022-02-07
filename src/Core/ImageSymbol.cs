@@ -35,7 +35,8 @@ namespace Reko.Core
     /// <remarks>
     /// This information is derived purely from what the image loader can 
     /// garner from an input binary file. Any user-provided information must
-    /// be specified separately in <see cref="Reko.Core.UserData"/> and will then override this information.
+    /// be specified separately in <see cref="Reko.Core.UserData"/> and will
+    /// then override this information.
     /// </remarks>
     public class ImageSymbol
     {

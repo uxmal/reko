@@ -201,7 +201,7 @@ namespace Reko.Core
         /// <see cref="ExternalProcedure"/>. Otherwise, returns null.
         /// </returns>
         /// <remarks>
-        /// This is useful for platforms that have ROMs with system procedures att well-defined addresses.
+        /// This is useful for platforms that have ROMs with system procedures at well-defined addresses.
         /// </remarks>
         ExternalProcedure? LookupProcedureByAddress(Address address);
 

@@ -267,7 +267,7 @@ l0040144B:
 l00401460:
 	__lock()
 	word32 eax_25
-	__cmpxchg(Mem17[0x00403338<p32>:word32], edx_19, 0<32>, out eax_25)
+	__cmpxchg<word32>(Mem17[0x00403338<p32>:word32], edx_19, 0<32>, out eax_25)
 	branch eax_25 != 0<32> l0040145C
 l0040145C:
 	branch edx_19 == eax_25 l00401470

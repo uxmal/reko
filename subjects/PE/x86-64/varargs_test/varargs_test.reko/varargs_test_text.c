@@ -303,7 +303,7 @@ void fn00000001400015C4(struct Eq_n * gs)
 		{
 			__lock();
 			word64 rax_n;
-			if (!__cmpxchg(g_qw400035B8, rcx_n, 0x00, out rax_n))
+			if (!__cmpxchg<word64>(g_qw400035B8, rcx_n, 0x00, out rax_n))
 				goto l00000001400015F2;
 		} while (rcx_n != rax_n);
 	}
@@ -734,7 +734,7 @@ l0000000140001CDE:
 		if (true)
 		{
 			ebx_n = 0x00010001;
-			if (!__bt(0x100010001, 0xFFFCF9B0))
+			if (!__bt<word64>(0x100010001, 0xFFFCF9B0))
 				goto l0000000140001CDE;
 		}
 	}
@@ -755,14 +755,14 @@ l0000000140001CE9:
 	{
 		__cpuid(0x07, 0x00, &0x07, &ebx_n, &0x00, &edx_n);
 		bLoc20_n = (byte) ebx_n;
-		if (!__bt(ebx_n, 0x09))
+		if (!__bt<word32>(ebx_n, 0x09))
 			g_dw40003614 = r8d_n | 0x02;
 	}
-	if (!__bt(0x00, 0x14))
+	if (!__bt<word32>(0x00, 0x14))
 	{
 		g_dw40003018 = 0x02;
 		g_dw4000301C = 0x06;
-		if (!__bt(0x00, 0x1B) && !__bt(0x00, 0x1C))
+		if (!__bt<word32>(0x00, 0x1B) && !__bt<word32>(0x00, 0x1C))
 		{
 			word64 edx_eax_n = __xgetbv(0x00);
 			if ((((byte) SLICE(edx_eax_n, word32, 32) << 0x20 | (byte) edx_eax_n) & 0x06) == 0x06)

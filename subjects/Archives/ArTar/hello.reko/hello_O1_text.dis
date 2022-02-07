@@ -9,7 +9,7 @@ void _start(word64 rdx, word32 dwArg00)
 _start_exit:
 _start_entry:
 l0000000000001080:
-	__align(fp + 8<i64>)
+	__align_stack<word64>(fp + 8<i64>)
 	__libc_start_main(0x00000000000011E0<p64>, SLICE(qwArg00, int32, 0), fp + 8<i64>, 0x0000000000001280<p64>, 0x00000000000012E0<p64>, rdx, fp)
 	__hlt()
 
@@ -123,7 +123,7 @@ word128 lib_rsqrt(word128 xmm0)
 
 // Called from:
 //      main
-// MayUse:  xmm0:[0..127]
+// MayUse:  xmm0:[0..31]
 // LiveOut: xmm0
 // Trashed: SCZOP Top xmm0 xmm1
 // Preserved: rsp
@@ -134,7 +134,7 @@ l00000000000011C3:
 	sqrtf(SLICE(xmm0, real32, 0))
 	return SEQ(0<96>, Mem0[0x000000000000207C<p64>:real32] / sqrtf(SLICE(xmm0, real32, 0)))
 l00000000000011AF:
-	return SEQ(0<96>, Mem0[0x000000000000207C<p64>:real32] / __fsqrt(xmm0))
+	return SEQ(0<96>, Mem0[0x000000000000207C<p64>:real32] /32 fsqrt(SLICE(xmm0, real32, 0)))
 lib_rsqrt_exit:
 
 

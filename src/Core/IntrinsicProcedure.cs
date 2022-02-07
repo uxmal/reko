@@ -136,6 +136,14 @@ namespace Reko.Core
 			set { throw new InvalidOperationException("Changing the signature of an IntrinsicProcedure is not allowed."); }
 		}
 
+        /// <summary>
+        /// Makes a concrete instance of this <see cref="IntrinsicProcedure"/> instance, using
+        /// the provided <paramref name="concreteTypes" />.
+        /// </summary>
+        /// <param name="concreteTypes">Concrete </param>
+        /// <returns>A newly minted or previously cached concrete instance.
+        /// </returns>
+
         public IntrinsicProcedure MakeInstance(params DataType[] concreteTypes)
         {
             if (this.IsConcreteGeneric)
