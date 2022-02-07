@@ -83,7 +83,6 @@ namespace Reko.UnitTests.Arch.Mos6502
             Assert.AreEqual(0xC0, emu.ReadRegister(Registers.p));
         }
 
-
         [Test]
         public void Emu6502_asl_acc()
         {

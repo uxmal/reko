@@ -92,10 +92,8 @@ namespace Reko.Arch.X86
             m.Assign(
                 FpuRegister(0),
                 m.FSub(
-                    host.Intrinsic(
-                        "pow",
-                        false,
-                        PrimitiveType.Real64, 
+                    m.Fn(
+                        pow_intrinsic,
                         Constant.Real64(2.0),
                         FpuRegister(0)),
                     Constant.Real64(1.0)));
@@ -103,14 +101,14 @@ namespace Reko.Arch.X86
 
         private void RewriteFabs()
         {
-            m.Assign(FpuRegister(0), host.Intrinsic("fabs", false, PrimitiveType.Real64, FpuRegister(0)));
+            m.Assign(FpuRegister(0), m.Fn(fabs_intrinsic, FpuRegister(0)));
         }
 
         private void RewriteFbld()
         {
             GrowFpuStack(1);
             m.Assign(FpuRegister(0),
-                host.Intrinsic("__fbld", false, PrimitiveType.Real64, SrcOp(0)));
+                m.Fn(fbld_intrinsic, SrcOp(0)));
         }
 
         private void RewriteFbstp()
@@ -130,7 +128,7 @@ namespace Reko.Arch.X86
 
         private void RewriteFclex()
         {
-            m.SideEffect(host.Intrinsic("__fclex", true, VoidType.Instance));
+            m.SideEffect(m.Fn(fclex_intrinsic));
         }
 
         private void RewriteFcmov(FlagGroupStorage flag, ConditionCode cc)
@@ -169,19 +167,18 @@ namespace Reko.Arch.X86
 
         private void RewriteFfree(bool pop)
         {
-            m.SideEffect(
-                host.Intrinsic("__ffree", true, VoidType.Instance, SrcOp(0)));
+            m.SideEffect(m.Fn(ffree_intrinsic, SrcOp(0)));
             if (pop)
             {
                 ShrinkFpuStack(1);
             }
         }
 
-        private void RewriteFUnary(string name, bool hasSideEffect)
+        private void RewriteFUnary(IntrinsicProcedure unaryIntrinsic)
         {
             m.Assign(
                 orw.FpuRegister(0),
-                host.Intrinsic(name, hasSideEffect, PrimitiveType.Real64, orw.FpuRegister(0)));
+                m.Fn(unaryIntrinsic, orw.FpuRegister(0)));
         }
 
         private void RewriteFicom(bool pop)
@@ -228,7 +225,7 @@ namespace Reko.Arch.X86
             var dtSrc = PrimitiveType.Create(Domain.SignedInt, instrCur.Operands[0].Width.BitSize);
             instrCur.Operands[0].Width = dtSrc;
             var fpuReg = orw.FpuRegister(0);
-            var trunc = host.Intrinsic("trunc", false, fpuReg.DataType, fpuReg);
+            var trunc = m.Fn(trunc_intrinsic, fpuReg);
             m.Assign(SrcOp(0), m.Convert(trunc, trunc.DataType, dtSrc));
             if (pop)
                 ShrinkFpuStack(1);
@@ -270,34 +267,24 @@ namespace Reko.Arch.X86
 
         private void RewriteFldcw()
         {
-            m.SideEffect(host.Intrinsic(
-                "__fldcw",
-                true,
-                VoidType.Instance,
-                SrcOp(0)));
+            m.SideEffect(m.Fn(fldcw_intrinsic, SrcOp(0)));
         }
 
         private void RewriteFldenv()
         {
-            m.SideEffect(host.Intrinsic(
-                "__fldenv",
-                true,
-                VoidType.Instance,
-                SrcOp(0)));
+            m.SideEffect(m.Fn(fldenv_intrinsic, SrcOp(0)));
         }
 
         private void RewriteFninit()
         {
-            var intrinsic = host.Intrinsic("__fninit", true, VoidType.Instance);
+            var intrinsic = m.Fn(fninit_intrinsic);
             m.SideEffect(intrinsic);
         }
 
         private void RewriteFstenv()
         {
-            m.SideEffect(host.Intrinsic(
-                "__fstenv",
-                true,
-                VoidType.Instance,
+            m.SideEffect(m.Fn(
+                fstenv_intrinsic,
                 SrcOp(0)));
         }
 
@@ -305,7 +292,7 @@ namespace Reko.Arch.X86
         {
             Expression op1 = FpuRegister(1);
             Expression op2 = FpuRegister(0);
-            m.Assign(FpuRegister(1), host.Intrinsic("atan2", false, PrimitiveType.Real64, op1, op2));
+            m.Assign(FpuRegister(1), m.Fn(atan2_intrinsic, op1, op2));
             ShrinkFpuStack(1);
         }
 
@@ -313,8 +300,8 @@ namespace Reko.Arch.X86
         {
             Expression src = FpuRegister(1);
             Expression dst = FpuRegister(0);
-            m.Assign(dst, host.Intrinsic("__fprem_x87", false, dst.DataType, dst, src));
-            m.Assign(binder.EnsureFlagGroup(Registers.C2), host.Intrinsic("__fprem_incomplete", false, PrimitiveType.Bool, FpuRegister(0)));
+            m.Assign(dst, m.Fn(fprem_x87_intrinsic, dst, src));
+            m.Assign(binder.EnsureFlagGroup(Registers.C2), m.Fn(fprem_incomplete_intrinsic, FpuRegister(0)));
         }
 
         private void RewriteFprem1()
@@ -322,13 +309,13 @@ namespace Reko.Arch.X86
             Expression src = FpuRegister(1);
             Expression dst = FpuRegister(0);
             m.Assign(dst, m.Mod(dst, src));
-            m.Assign(binder.EnsureFlagGroup(Registers.C2), host.Intrinsic("__fprem_incomplete", false, PrimitiveType.Bool, FpuRegister(0)));
+            m.Assign(binder.EnsureFlagGroup(Registers.C2), m.Fn(fprem_incomplete_intrinsic, FpuRegister(0)));
         }
 
         private void RewriteFptan()
         {
             Expression op1 = FpuRegister(0);
-            m.Assign(FpuRegister(0), host.Intrinsic("tan", false, PrimitiveType.Real64, op1));
+            m.Assign(FpuRegister(0), m.Fn(tan_intrinsic, op1));
             GrowFpuStack(1);
             m.Assign(FpuRegister(0), Constant.Real64(1.0));
         }
@@ -339,8 +326,8 @@ namespace Reko.Arch.X86
             m.Assign(itmp, FpuRegister(0));
 
             GrowFpuStack(1);
-            m.Assign(FpuRegister(1), host.Intrinsic("cos", false, PrimitiveType.Real64, itmp));
-            m.Assign(FpuRegister(0), host.Intrinsic("sin", false, PrimitiveType.Real64, itmp));
+            m.Assign(FpuRegister(1), m.Fn(cos_intrinsic, itmp));
+            m.Assign(FpuRegister(0), m.Fn(sin_intrinsic, itmp));
         }
 
         private void RewriteFst(bool pop)
@@ -363,26 +350,22 @@ namespace Reko.Arch.X86
         {
 			m.Assign(
                 SrcOp(0),
-                host.Intrinsic("__fstcw",  true, PrimitiveType.UInt16));
+                m.Fn(fstcw_intrinsic));
         }
 
         private void RewriteFrstor()
         {
             m.SideEffect(
-                host.Intrinsic(
-                    "__frstor",
-                    true,
-                    VoidType.Instance,
+                m.Fn(
+                    frstor_intrinsic,
                     SrcOp(0)));
         }
 
         private void RewriteFsave()
         {
             m.SideEffect(
-                host.Intrinsic(
-                    "__fsave", 
-                    true,
-                    VoidType.Instance, 
+                m.Fn(
+                    fsave_intrinsic, 
                     SrcOp(0)));
         }
 
@@ -390,7 +373,7 @@ namespace Reko.Arch.X86
         {
             m.Assign(
                 FpuRegister(0),
-                host.Intrinsic("scalbn", true, PrimitiveType.Real64, FpuRegister(0), FpuRegister(1)));
+                m.Fn(scalbn_intrinsic, FpuRegister(0), FpuRegister(1)));
         }
 
         // 8087 status register bits:
@@ -695,12 +678,12 @@ namespace Reko.Arch.X86
 
         private void RewriteFxrstor()
         {
-            m.SideEffect(host.Intrinsic("__fxrstor", true, VoidType.Instance));
+            m.SideEffect(m.Fn(fxrstor_intrinsic));
         }
 
         private void RewriteFxsave()
         {
-            m.SideEffect(host.Intrinsic("__fxsave", true, VoidType.Instance));
+            m.SideEffect(m.Fn(fxsave_intrinsic));
         }
 
         private void RewriteFxtract()
@@ -709,8 +692,8 @@ namespace Reko.Arch.X86
             var tmp = binder.CreateTemporary(fp.DataType);
             m.Assign(tmp, fp);
             GrowFpuStack(1);
-            m.Assign(this.FpuRegister(1), host.Intrinsic("__exponent", false, fp.DataType, tmp));
-            m.Assign(this.FpuRegister(0), host.Intrinsic("__significand", false, fp.DataType, tmp));
+            m.Assign(this.FpuRegister(1), m.Fn(exponent_intrinsic, tmp));
+            m.Assign(this.FpuRegister(0), m.Fn(significand_intrinsic, tmp));
         }
 
         private void RewriteFyl2x()
@@ -720,7 +703,7 @@ namespace Reko.Arch.X86
             var op2 = FpuRegister(1);
             m.Assign(op2, 
                 m.FMul(op2, 
-                      host.Intrinsic("lg2", true, PrimitiveType.Real64, op1)));
+                      m.Fn(lg2_intrinsic, op1)));
             m.Assign(
                 orw.AluRegister(Registers.FPUF),
                 m.Cond(op2));
@@ -735,10 +718,8 @@ namespace Reko.Arch.X86
             m.Assign(op2,
                 m.FMul(
                     op2,
-                    host.Intrinsic(
-                        "lg2",
-                        true,
-                        PrimitiveType.Real64,
+                    m.Fn(
+                        lg2_intrinsic,
                         m.FAdd(op1, Constant.Real64(1.0)))));
             m.Assign(
                 orw.AluRegister(Registers.FPUF),
@@ -748,7 +729,7 @@ namespace Reko.Arch.X86
 
         private void RewriteWait()
         {
-            m.SideEffect(host.Intrinsic("__wait", true, VoidType.Instance));
+            m.SideEffect(m.Fn(wait_intrinsic));
         }
 
         private Expression FpuRegister(int reg)
@@ -767,7 +748,17 @@ namespace Reko.Arch.X86
         public Expression MaybeSlice(DataType type, Expression e)
         {
             if (type.BitSize < e.DataType.BitSize)
-                return m.Slice(type, e, 0);
+            {
+                if (e is MemoryAccess mem)
+                {
+                    mem.DataType = type;
+                    return mem;
+                }
+                else
+                {
+                    return m.Slice(type, e, 0);
+                }
+            }
             else
                 return e;
         }

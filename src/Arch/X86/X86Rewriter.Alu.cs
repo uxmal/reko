@@ -41,11 +41,11 @@ namespace Reko.Arch.X86
         {
             m.Assign(
                 binder.EnsureFlagGroup(Registers.C),
-                host.Intrinsic("__aaa", false, PrimitiveType.Bool,
+                m.Fn(aaa_intrinsic,
                     orw.AluRegister(Registers.al),
                     orw.AluRegister(Registers.ah),
-                            orw.AddrOf(orw.AluRegister(Registers.al)),
-                            orw.AddrOf(orw.AluRegister(Registers.ah))));
+                    orw.AddrOf(orw.AluRegister(Registers.al)),
+                    orw.AddrOf(orw.AluRegister(Registers.ah))));
         }
 
         private void RewriteAad()
@@ -53,27 +53,25 @@ namespace Reko.Arch.X86
             //$TODO: support for multiple register return values.
             m.Assign(
                 orw.AluRegister(Registers.ax),
-                host.Intrinsic("__aad", false, PrimitiveType.Word16,
-                    orw.AluRegister(Registers.ax)));
+                m.Fn(aad_intrinsic, orw.AluRegister(Registers.ax)));
         }
 
         private void RewriteAam()
         {
             m.Assign(
                 orw.AluRegister(Registers.ax),
-                host.Intrinsic("__aam", false, PrimitiveType.Word16,
-                    orw.AluRegister(Registers.al)));
+                m.Fn(aam_intrinsic, orw.AluRegister(Registers.al)));
         }
 
         private void RewriteAas()
         {
             m.Assign(
                 binder.EnsureFlagGroup(Registers.C),
-                host.Intrinsic("__aas", false, PrimitiveType.Bool,
+                m.Fn(aas_intrinsic,
                     orw.AluRegister(Registers.al),
                     orw.AluRegister(Registers.ah),
-                            orw.AddrOf(orw.AluRegister(Registers.al)),
-                            orw.AddrOf(orw.AluRegister(Registers.ah))));
+                    orw.AddrOf(orw.AluRegister(Registers.al)),
+                    orw.AddrOf(orw.AluRegister(Registers.ah))));
         }
 
         public void RewriteAdcSbb(Func<Expression, Expression, Expression> opr)
@@ -105,21 +103,6 @@ namespace Reko.Arch.X86
             m.Assign(cy, m.Cond(dst));
         }
 
-        private void RewriteCli()
-        {
-            m.SideEffect(host.Intrinsic("__cli", true, VoidType.Instance));
-        }
-
-        private void RewriteHlt()
-        {
-            var c = new ProcedureCharacteristics
-            {
-                Terminates = true,
-            };
-            var intrinsic = host.Intrinsic("__hlt", true, c, VoidType.Instance);
-            m.SideEffect(intrinsic, InstrClass.Terminates);
-        }
-
         /// <summary>
         /// Doesn't handle the x86 idiom add ... adc => long add (and 
         /// sub ..sbc => long sub)
@@ -142,26 +125,19 @@ namespace Reko.Arch.X86
         {
             m.Assign(
                 binder.EnsureFlagGroup(Registers.Z),
-                host.Intrinsic("__arpl", true, PrimitiveType.Bool, 
+                m.Fn(arpl_intrinsic,
                     SrcOp(0),
                     SrcOp(1),
                     orw.AddrOf(SrcOp(0))));
         }
 
-        private void RewriteBound()
-        {
-            m.SideEffect(
-                host.Intrinsic("__bound", true, VoidType.Instance,
-                    SrcOp(0),
-                    SrcOp(1)));
-        }
-
         private void RewriteBextr()
         {
+            //$REVIEW Is this "slice" in disguise?
             var src1 = SrcOp(1);
             var src2 = SrcOp(2);
             var dst = SrcOp(0);
-            m.Assign(dst, host.Intrinsic("__bextr", false, dst.DataType, src1, src2));
+            m.Assign(dst, m.Fn(bextr_intrinsic.MakeInstance(src1.DataType), src1, src2));
             m.Assign(binder.EnsureFlagGroup(Registers.Z), m.Eq0(dst));
         }
 
@@ -169,7 +145,7 @@ namespace Reko.Arch.X86
         {
             var src = SrcOp(1);
             var dst = SrcOp(0);
-            m.Assign(dst, host.Intrinsic("__blsi", false, dst.DataType, src));
+            m.Assign(dst, m.Fn(blsi_intrinsic.MakeInstance(src.DataType), src));
             m.Assign(binder.EnsureFlagGroup(Registers.Z), m.Eq0(dst));
             m.Assign(binder.EnsureFlagGroup(Registers.S), m.Le0(dst));
             m.Assign(binder.EnsureFlagGroup(Registers.C), m.Eq0(src));
@@ -179,7 +155,7 @@ namespace Reko.Arch.X86
         {
             var src = SrcOp(1);
             var dst = SrcOp(0);
-            m.Assign(dst, host.Intrinsic("__blsmsk", false, dst.DataType, src));
+            m.Assign(dst, m.Fn(blsmsk_intrinsic.MakeInstance(src.DataType), src));
             m.Assign(binder.EnsureFlagGroup(Registers.Z), m.Eq0(dst));
             m.Assign(binder.EnsureFlagGroup(Registers.S), m.Le0(dst));
             m.Assign(binder.EnsureFlagGroup(Registers.C), m.Eq0(src));
@@ -188,10 +164,17 @@ namespace Reko.Arch.X86
         {
             var src = SrcOp(1);
             var dst = SrcOp(0);
-            m.Assign(dst, host.Intrinsic("__blsr", false, dst.DataType, src));
+            m.Assign(dst, m.Fn(blsr_intrinsic.MakeInstance(src.DataType), src));
             m.Assign(binder.EnsureFlagGroup(Registers.Z), m.Eq0(dst));
             m.Assign(binder.EnsureFlagGroup(Registers.S), m.Le0(dst));
             m.Assign(binder.EnsureFlagGroup(Registers.C), m.Eq0(src));
+        }
+
+        private void RewriteBound()
+        {
+            var src0 = SrcOp(0);
+            var src1 = SrcOp(1);
+            m.SideEffect(m.Fn(bound_intrinsic.MakeInstance(src1.DataType), src0, src1));
         }
 
         private void RewriteBzhi()
@@ -199,46 +182,24 @@ namespace Reko.Arch.X86
             var src1 = SrcOp(1);
             var src2 = SrcOp(2);
             var dst = SrcOp(0);
-            m.Assign(dst, host.Intrinsic("__bzhi", false, dst.DataType, src1, src2));
+            m.Assign(dst, m.Fn(bzhi_intrinsic.MakeInstance(src1.DataType), src1, src2));
+        }
+
+        private void RewriteCli()
+        {
+            m.SideEffect(m.Fn(cli_intrinsic));
         }
 
         private void RewriteCpuid()
         {
             m.SideEffect(
-                host.Intrinsic("__cpuid", true, VoidType.Instance,
+                m.Fn(cpuid_intrinsic,
                     orw.AluRegister(Registers.eax),
                     orw.AluRegister(Registers.ecx),
                     orw.AddrOf(orw.AluRegister(Registers.eax)),
                     orw.AddrOf(orw.AluRegister(Registers.ebx)),
                     orw.AddrOf(orw.AluRegister(Registers.ecx)),
                     orw.AddrOf(orw.AluRegister(Registers.edx))));
-        }
-
-        private void RewriteXgetbv()
-        {
-            Identifier edx_eax = binder.EnsureSequence(
-                PrimitiveType.Word64,
-                Registers.edx,
-                Registers.eax);
-            m.Assign(edx_eax,
-                host.Intrinsic("__xgetbv", 
-                true,
-                edx_eax.DataType,
-                orw.AluRegister(Registers.ecx)));
-        }
-
-        private void RewriteXsetbv()
-        {
-            var edx_eax = binder.EnsureSequence(
-                PrimitiveType.Word64,
-                Registers.edx,
-                Registers.eax);
-            m.SideEffect(
-                host.Intrinsic("__xsetbv",
-                    true,
-                    VoidType.Instance,
-                    orw.AluRegister(Registers.ecx),
-                    edx_eax));
         }
 
         private void RewriteRdmsr()
@@ -248,13 +209,7 @@ namespace Reko.Arch.X86
                 Registers.edx,
                 Registers.eax);
             var ecx = binder.EnsureRegister(Registers.ecx);
-            m.Assign(
-                edx_eax,
-                host.Intrinsic(
-                    "__rdmsr",
-                    true,
-                    edx_eax.DataType,
-                    ecx));
+            m.Assign(edx_eax, m.Fn(rdmsr_intrinsic, ecx));
         }
 
         private void RewriteRdpmc()
@@ -264,11 +219,7 @@ namespace Reko.Arch.X86
                 Registers.edx,
                 Registers.eax);
             var ecx = binder.EnsureRegister(Registers.ecx);
-            m.Assign(edx_eax,
-                host.Intrinsic("__rdpmc",
-                true,
-                edx_eax.DataType,
-                ecx));
+            m.Assign(edx_eax, m.Fn(rdpmc_intrinsic, ecx));
         }
 
         private void RewriteRdtsc()
@@ -277,8 +228,7 @@ namespace Reko.Arch.X86
                 PrimitiveType.Word64,
                 Registers.edx,
                 Registers.eax);
-            m.Assign(edx_eax,
-                host.Intrinsic("__rdtsc", true, edx_eax.DataType));
+            m.Assign(edx_eax, m.Fn(rdtsc_intrinsic));
         }
 
         public void RewriteBinOp(Func<Expression,Expression,Expression> opr)
@@ -301,64 +251,59 @@ namespace Reko.Arch.X86
         {
             Expression src = SrcOp(1);
             m.Assign(binder.EnsureFlagGroup(Registers.Z), m.Eq0(src));
-            m.Assign(SrcOp(0), host.Intrinsic("__bsf", false, instrCur.Operands[0].Width, src));
+            m.Assign(SrcOp(0), m.Fn(bsf_intrinsic.MakeInstance(src.DataType), src));
         }
 
         private void RewriteBsr()
         {
             Expression src = SrcOp(1);
             m.Assign(binder.EnsureFlagGroup(Registers.Z), m.Eq0(src));
-            m.Assign(SrcOp(0), host.Intrinsic("__bsr", false, instrCur.Operands[0].Width, src));
-        }
-
-        private void RewriteBt()
-        {
-		    m.Assign(
-                binder.EnsureFlagGroup(Registers.C),
-                host.Intrinsic("__bt", false, PrimitiveType.Bool, SrcOp(0), SrcOp(1)));
-        }
-
-        private void RewriteBtc()
-        {
-            m.Assign(
-                binder.EnsureFlagGroup(Registers.C),
-                host.Intrinsic(
-                    "__btc",
-                    false,
-                    PrimitiveType.Bool,
-                    SrcOp(0),
-                    SrcOp(1),
-                    m.Out(instrCur.Operands[0].Width, SrcOp(0))));
-        }
-
-        private void RewriteBtr()
-        {
-            m.Assign(
-                binder.EnsureFlagGroup(Registers.C),             // lhs
-                host.Intrinsic(
-                        "__btr", false, PrimitiveType.Bool,      // rhs
-                        SrcOp(0),
-                        SrcOp(1),
-                        m.Out(instrCur.Operands[0].Width, SrcOp(0))));
-        }
-
-        private void RewriteBts()
-        {
-            m.Assign(
-                binder.EnsureFlagGroup(Registers.C),    // lhs
-                host.Intrinsic(
-                        "__bts",
-                        false, 
-                        PrimitiveType.Bool,             // rhs
-                        SrcOp(0),
-                        SrcOp(1),
-                        m.Out(instrCur.Operands[0].Width, SrcOp(0))));
+            m.Assign(SrcOp(0), m.Fn(bsr_intrinsic.MakeInstance(src.DataType), src));
         }
 
         public void RewriteBswap()
         {
-            Identifier reg = orw.AluRegister(((RegisterOperand)instrCur.Operands[0]).Register);
-            m.Assign(reg, host.Intrinsic("__bswap", false, (PrimitiveType)reg.DataType, reg));
+            Identifier reg = orw.AluRegister(((RegisterOperand) instrCur.Operands[0]).Register);
+            m.Assign(reg, m.Fn(bswap_intrinsic.MakeInstance(reg.DataType), reg));
+        }
+
+        private void RewriteBt()
+        {
+            var src0 = SrcOp(0);
+            var src1 = SrcOp(1);
+            m.Assign(
+                binder.EnsureFlagGroup(Registers.C),
+                m.Fn(bt_intrinsic.MakeInstance(src0.DataType), src0, src1));
+        }
+
+        private void RewriteBtc()
+        {
+            var src0 = SrcOp(0);
+            var src1 = SrcOp(1);
+            m.Assign(
+                binder.EnsureFlagGroup(Registers.C),
+                m.Fn(btc_intrinsic.MakeInstance(src0.DataType), src0, src1,
+                    m.Out(src0.DataType, src0)));
+        }
+
+        private void RewriteBtr()
+        {
+            var src0 = SrcOp(0);
+            var src1 = SrcOp(1);
+            m.Assign(
+                binder.EnsureFlagGroup(Registers.C),             // lhs
+                m.Fn(btr_intrinsic.MakeInstance(src0.DataType), src0, src1,
+                    m.Out(src0.DataType, src0)));
+        }
+
+        private void RewriteBts()
+        {
+            var src0 = SrcOp(0);
+            var src1 = SrcOp(1);
+            m.Assign(
+                binder.EnsureFlagGroup(Registers.C),    // lhs
+                m.Fn(bts_intrinsic.MakeInstance(src0.DataType), src0, src1, 
+                        m.Out(src0.DataType, src0)));
         }
 
         public void RewriteCbw()
@@ -415,12 +360,11 @@ namespace Reko.Arch.X86
                 m.Convert(orw.AluRegister(Registers.ax), PrimitiveType.Int16, PrimitiveType.Int32));
         }
 
-
         public void EmitBinOp(Func<Expression,Expression,Expression> binOp, MachineOperand dst, DataType dtDst, Expression left, Expression right, CopyFlags flags)
         {
             if (right is Constant c)
             {
-                if (c.DataType.BitSize  < left.DataType.BitSize)
+                if (c.DataType.BitSize < left.DataType.BitSize)
                 {
                     right = m.Const(left.DataType, c.ToInt64());
                 }
@@ -472,15 +416,13 @@ namespace Reko.Arch.X86
             var Z = binder.EnsureFlagGroup(Registers.Z);
             m.Assign(
                 Z,
-                host.Intrinsic(
-                    "__cmpxchg",
-                    true,
-                    PrimitiveType.Bool,
+                m.Fn(
+                    cmpxchg_intrinsic.MakeInstance(op1.DataType),
                     op1, op2, acc, m.Out(instrCur.dataWidth, acc)));
         }
 
         private void RewriteCmpxchgNb(
-            string intrinsicName,
+            IntrinsicProcedure intrinsic,
             RegisterStorage edx,
             RegisterStorage eax,
             RegisterStorage ecx,
@@ -494,19 +436,15 @@ namespace Reko.Arch.X86
             var Z = binder.EnsureFlagGroup(Registers.Z);
             m.Assign(
                 Z,
-                host.Intrinsic(
-                    intrinsicName,
-                    true,
-                    Z.DataType,
+                m.Fn(
+                    intrinsic.MakeInstance(op1.DataType),
                     op1, op2, acc, m.Out(instrCur.dataWidth, op1)));
         }
 
-        private void EmitDaaDas(string fnName)
+        private void EmitDaaDas(IntrinsicProcedure intrinsic)
         {
-            m.Assign(binder.EnsureFlagGroup(Registers.C), host.Intrinsic(
-                fnName,
-                false,
-                PrimitiveType.Bool,
+            m.Assign(binder.EnsureFlagGroup(Registers.C), m.Fn(
+                intrinsic,
                 orw.AluRegister(Registers.al),
                 orw.AddrOf(orw.AluRegister(Registers.al))));
         }
@@ -514,7 +452,7 @@ namespace Reko.Arch.X86
         private void RewriteDivide(Func<Expression, Expression, Expression> op, Domain domain)
         {
             if (instrCur.Operands.Length != 1)
-                throw new ArgumentOutOfRangeException("Intel DIV/IDIV instructions only take one operand");
+                throw new ArgumentOutOfRangeException("X86 DIV/IDIV instructions only take one operand.");
             Identifier regDividend;
             Identifier regQuotient;
             Identifier regRemainder;
@@ -601,8 +539,7 @@ namespace Reko.Arch.X86
 
         private void RewriteLock()
         {
-            m.SideEffect(
-                host.Intrinsic("__lock", true, VoidType.Instance));
+            m.SideEffect(m.Fn(lock_intrinsic));
         }
 
         private void RewriteLogical(Func<Expression,Expression,Expression> op)
@@ -613,7 +550,7 @@ namespace Reko.Arch.X86
                     r.Register == arch.StackRegister &&
                     instrCur.Operands[1] is ImmediateOperand)
                 {
-                    m.SideEffect(host.Intrinsic("__align", true, VoidType.Instance, SrcOp(0)));
+                    m.SideEffect(m.Fn(alignStack_intrinsic.MakeInstance(r.Width), SrcOp(0)));
                     return;
                 }
             }
@@ -716,10 +653,10 @@ namespace Reko.Arch.X86
 
         private void RewriteIn()
         {
-            var ppName = "__in" + IntelSizeSuffix(instrCur.Operands[0].Width.Size);
+            var dst = SrcOp(0);
             m.Assign(
-                SrcOp(0),
-                host.Intrinsic(ppName, true, instrCur.Operands[0].Width, SrcOp(1)));
+                dst,
+                m.Fn(in_intrinsic.MakeInstance(dst.DataType), SrcOp(1)));
         }
 
         private string IntelSizeSuffix(int size)
@@ -794,11 +731,12 @@ namespace Reko.Arch.X86
                 orw.Transform(instrCur, mem, segptr));
         }
 
-        private void RewriteLeadingTrailingZeros(string fnName)
+        private void RewriteLeadingTrailingZeros(IntrinsicProcedure intrinsic)
         {
             var src = SrcOp(1);
             var dst = SrcOp(0);
-            m.Assign(dst, host.Intrinsic(fnName, false, PrimitiveType.Create(Domain.SignedInt, dst.DataType.BitSize), src));
+            m.Assign(dst, m.Fn(intrinsic.MakeInstance(src.DataType), src));
+            m.Assign(binder.EnsureFlagGroup(Registers.Z), m.Eq0(dst));
         }
 
         private void RewriteMov()
@@ -819,7 +757,7 @@ namespace Reko.Arch.X86
         {
             var src = SrcOp(1, instrCur.Operands[0].Width);
             var dst = SrcOp(0);
-            src = host.Intrinsic($"__movbe_{src.DataType.BitSize}", true, dst.DataType, src);
+            src = m.Fn(movbe_intrinsic.MakeInstance(dst.DataType), src);
             EmitCopy(instrCur.Operands[0], src, 0);
         }
 
@@ -996,11 +934,7 @@ namespace Reko.Arch.X86
             var port = SrcOp(0);
             var val = SrcOp(1);
             var suffix = NamingPolicy.Instance.Types.ShortPrefix(instrCur.Operands[1].Width);
-            var intrinsic = host.Intrinsic(
-                "__out" + suffix,
-                true,
-                VoidType.Instance,
-                port, val);
+            var intrinsic = m.Fn(out_intrinsic.MakeInstance(val.DataType), port, val); 
             m.SideEffect(intrinsic);
         }
 
@@ -1009,7 +943,7 @@ namespace Reko.Arch.X86
             var src1 = SrcOp(1);
             var src2 = SrcOp(2);
             var dst = SrcOp(0);
-            m.Assign(dst, host.Intrinsic("__pdep", true, dst.DataType, src1, src2));
+            m.Assign(dst, m.Fn(pdep_intrinsic.MakeInstance(dst.DataType), src1, src2));
         }
 
         private void RewritePext()
@@ -1017,9 +951,8 @@ namespace Reko.Arch.X86
             var src1 = SrcOp(1);
             var src2 = SrcOp(2);
             var dst = SrcOp(0);
-            m.Assign(dst, host.Intrinsic("__pext", true, dst.DataType, src1, src2));
+            m.Assign(dst, m.Fn(pext_intrinsic.MakeInstance(dst.DataType), src1, src2));
         }
-
 
         private void RewritePop()
         {
@@ -1097,7 +1030,7 @@ namespace Reko.Arch.X86
             }
             var dst = (Identifier) SrcOp(0);
             var dt = PrimitiveType.Create(Domain.SignedInt, dst.DataType.BitSize);
-            AssignToRegister(dst, host.Intrinsic("__popcnt", false, dt, src));
+            AssignToRegister(dst, m.Fn(popcnt_intrinsic.MakeInstance(src.DataType, dt), src));
             m.Assign(binder.EnsureFlagGroup(Registers.Z), m.Eq0(src));
         }
 
@@ -1183,12 +1116,12 @@ namespace Reko.Arch.X86
             m.Assign(id, value);
         }
 
-        private void RewriteShxd(string name)
+        private void RewriteShxd(IntrinsicProcedure intrinsic)
         {
             var arg1 = SrcOp(0);
             var arg2 = SrcOp(1);
             var arg3 = SrcOp(2);
-            m.Assign(arg1, host.Intrinsic(name, false, arg1.DataType, arg1, arg2, arg3));
+            m.Assign(arg1, m.Fn(intrinsic.MakeInstance(arg1.DataType), arg1, arg2, arg3));
         }
 
         public MemoryAccess MemDi()
@@ -1292,14 +1225,14 @@ namespace Reko.Arch.X86
             case Mnemonic.ins:
             case Mnemonic.insb:
                 regDX = binder.EnsureRegister(Registers.dx);
-                m.Assign(MemDi(), host.Intrinsic("__in", true, instrCur.dataWidth, regDX));
+                m.Assign(MemDi(), m.Fn(in_intrinsic.MakeInstance(instrCur.dataWidth), regDX));
                 incDi = true;
                 break;
             case Mnemonic.outs:
             case Mnemonic.outsb:
                 regDX = binder.EnsureRegister(Registers.dx);
                 var suffix = NamingPolicy.Instance.Types.ShortPrefix(RegAl.DataType); 
-                m.SideEffect(host.Intrinsic("__out" + suffix, true, VoidType.Instance, regDX, RegAl));
+                m.SideEffect(m.Fn(out_intrinsic.MakeInstance(RegAl.DataType), regDX, RegAl));
                 incSi = true;
                 break;
             case Mnemonic.scas:
@@ -1362,7 +1295,7 @@ namespace Reko.Arch.X86
 
         private void RewriteSti()
         {
-            m.SideEffect(host.Intrinsic("__sti", true, VoidType.Instance));
+            m.SideEffect(m.Fn(sti_intrinsic));
         }
 
         private void RewriteTest()
@@ -1386,8 +1319,18 @@ namespace Reko.Arch.X86
             var src = SrcOp(1);
             m.Assign(
                 dst,
-                host.Intrinsic("__xadd", true, instrCur.Operands[0].Width, dst, src));
+                m.Fn(xadd_intrinsic.MakeInstance(src.DataType), dst, src));
             EmitCcInstr(dst, X86Instruction.DefCc(instrCur.Mnemonic));
+        }
+
+        private void RewriteXgetbv()
+        {
+            Identifier edx_eax = binder.EnsureSequence(
+                PrimitiveType.Word64,
+                Registers.edx,
+                Registers.eax);
+            m.Assign(edx_eax,
+                m.Fn(xgetbv_intrinsic, orw.AluRegister(Registers.ecx)));
         }
 
         private void RewriteXlat()
@@ -1403,6 +1346,16 @@ namespace Reko.Arch.X86
                         bx,
                         m.Convert(al, PrimitiveType.UInt8, offsetType))));
         }
+
+        private void RewriteXsetbv()
+        {
+            var edx_eax = binder.EnsureSequence(
+                PrimitiveType.Word64,
+                Registers.edx,
+                Registers.eax);
+            m.SideEffect(m.Fn(orw.AluRegister(Registers.ecx),edx_eax));
+        }
+
 
         private Identifier StackPointer()
         {

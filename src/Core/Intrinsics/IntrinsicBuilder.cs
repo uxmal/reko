@@ -68,6 +68,11 @@ namespace Reko.Core.Intrinsics
             return this;
         }
 
+        /// <summary>
+        /// Define some types as generic.
+        /// </summary>
+        /// <param name="typenames">Names of the generic types.</param>
+        /// <returns></returns>
         public IntrinsicBuilder GenericTypes(params string [] typenames)
         {
             genericTypeDictionary = new Dictionary<string, DataType>();
@@ -80,6 +85,18 @@ namespace Reko.Core.Intrinsics
             }
             this.genericTypes = types.ToArray();
             return this;
+        }
+
+        public IntrinsicBuilder OutParam(DataType dt)
+        {
+            var param = new Identifier($"p{parameters.Count + 1}", dt, null!);
+            parameters.Add(param);
+            return this;
+        }
+
+        public IntrinsicBuilder OutParam(string genericType)
+        {
+            return OutParam(GetGenericArgument(genericType));
         }
 
         public IntrinsicBuilder Param(DataType dt)
@@ -110,6 +127,11 @@ namespace Reko.Core.Intrinsics
             return dt;
         }
 
+        /// <summary>
+        /// Completes a declaration of an <see cref="IntrinsicProcedure"/> by stating
+        /// that it returns no value, i.e. is used for its side effects only.
+        /// </summary>
+        /// <returns>Instance of <see cref="IntrinsicProcedure"/> ready to be used.</returns>
         public IntrinsicProcedure Void()
         {
             var signature = FunctionType.Action(parameters.ToArray());
@@ -147,6 +169,5 @@ namespace Reko.Core.Intrinsics
             proc.ApplyConstants = this.applyConstants;
             return proc;
         }
-
     }
 }

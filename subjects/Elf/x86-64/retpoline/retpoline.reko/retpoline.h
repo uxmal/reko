@@ -23,8 +23,8 @@ Eq_7: (fn void ())
 	T_7 (in rdx @ 00400438 : (ptr64 Eq_7))
 	T_23 (in rtld_fini @ 004004A4 : (ptr64 (fn void ())))
 Eq_9: (fn void (ptr64))
-	T_9 (in __align @ 00400489 : ptr64)
-	T_10 (in signature of __align @ 00000000 : void)
+	T_9 (in __align_stack<word64> @ 00400489 : ptr32)
+	T_10 (in signature of __align_stack @ 00000000 : void)
 Eq_16: (fn int32 ((ptr64 Eq_18), int32, (ptr64 (ptr64 char)), (ptr64 Eq_21), (ptr64 Eq_22), (ptr64 Eq_7), (ptr64 void)))
 	T_16 (in __libc_start_main @ 004004A4 : ptr64)
 	T_17 (in signature of __libc_start_main @ 00000000 : void)
@@ -38,7 +38,7 @@ Eq_22: (fn void ())
 	T_22 (in fini @ 004004A4 : (ptr64 (fn void ())))
 	T_30 (in 0x400780<64> @ 004004A4 : word64)
 Eq_32: (fn void ())
-	T_32 (in __hlt @ 004004AA : ptr64)
+	T_32 (in __hlt @ 004004AA : ptr32)
 	T_33 (in signature of __hlt @ 00000000 : void)
 Eq_45: (fn void ())
 	T_45 (in deregister_tm_clones @ 0040052D : ptr64)
@@ -59,7 +59,7 @@ Eq_114: (fn void ())
 	T_114 (in fn0000000000400700 @ 004006F0 : ptr64)
 	T_115 (in signature of fn0000000000400700 @ 00400700 : void)
 Eq_117: (fn void ())
-	T_117 (in __pause @ 004006F5 : ptr64)
+	T_117 (in __pause @ 004006F5 : ptr32)
 	T_118 (in signature of __pause @ 00000000 : void)
 Eq_125: (fn void ())
 	T_125 (in _init @ 0040073C : ptr64)
@@ -106,15 +106,15 @@ T_8: (in dwArg00 @ 00400438 : word32)
   Class: Eq_8
   DataType: word32
   OrigDataType: word32
-T_9: (in __align @ 00400489 : ptr64)
+T_9: (in __align_stack<word64> @ 00400489 : ptr32)
   Class: Eq_9
-  DataType: (ptr64 Eq_9)
-  OrigDataType: (ptr64 (fn T_15 (T_14)))
-T_10: (in signature of __align @ 00000000 : void)
+  DataType: (ptr32 Eq_9)
+  OrigDataType: (ptr32 (fn T_15 (T_14)))
+T_10: (in signature of __align_stack @ 00000000 : void)
   Class: Eq_9
-  DataType: (ptr64 Eq_9)
+  DataType: (ptr32 Eq_9)
   OrigDataType: 
-T_11: (in  @ 00400489 : word64)
+T_11: (in p1 @ 00400489 : word64)
   Class: Eq_11
   DataType: ptr64
   OrigDataType: 
@@ -130,7 +130,7 @@ T_14: (in fp + 8<i64> @ 00400489 : word64)
   Class: Eq_11
   DataType: ptr64
   OrigDataType: ptr64
-T_15: (in __align((char *) fp + 8<i32>) @ 00400489 : void)
+T_15: (in __align_stack<word64>((char *) fp + 8<i32>) @ 00400489 : void)
   Class: Eq_15
   DataType: void
   OrigDataType: void
@@ -198,13 +198,13 @@ T_31: (in __libc_start_main(&g_t400660, (int32) qwArg00, (char *) fp + 8<i32>, &
   Class: Eq_31
   DataType: int32
   OrigDataType: int32
-T_32: (in __hlt @ 004004AA : ptr64)
+T_32: (in __hlt @ 004004AA : ptr32)
   Class: Eq_32
-  DataType: (ptr64 Eq_32)
-  OrigDataType: (ptr64 (fn T_34 ()))
+  DataType: (ptr32 Eq_32)
+  OrigDataType: (ptr32 (fn T_34 ()))
 T_33: (in signature of __hlt @ 00000000 : void)
   Class: Eq_32
-  DataType: (ptr64 Eq_32)
+  DataType: (ptr32 Eq_32)
   OrigDataType: 
 T_34: (in __hlt() @ 004004AA : void)
   Class: Eq_34
@@ -538,13 +538,13 @@ T_116: (in fn0000000000400700() @ 004006F0 : void)
   Class: Eq_116
   DataType: void
   OrigDataType: void
-T_117: (in __pause @ 004006F5 : ptr64)
+T_117: (in __pause @ 004006F5 : ptr32)
   Class: Eq_117
-  DataType: (ptr64 Eq_117)
-  OrigDataType: (ptr64 (fn T_119 ()))
+  DataType: (ptr32 Eq_117)
+  OrigDataType: (ptr32 (fn T_119 ()))
 T_118: (in signature of __pause @ 00000000 : void)
   Class: Eq_117
-  DataType: (ptr64 Eq_117)
+  DataType: (ptr32 Eq_117)
   OrigDataType: 
 T_119: (in __pause() @ 004006F5 : void)
   Class: Eq_119

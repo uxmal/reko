@@ -29,9 +29,9 @@ Eq_7: (fn void ())
 	T_7 (in rdx @ 000005B0 : (ptr64 Eq_7))
 	T_23 (in rtld_fini @ 00000644 : (ptr64 (fn void ())))
 Eq_9: (fn void (ptr64))
-	T_9 (in __align @ 00000629 : ptr64)
-	T_10 (in signature of __align @ 00000000 : void)
-	T_110 (in __align @ 000007AD : ptr64)
+	T_9 (in __align_stack<word64> @ 00000629 : ptr32)
+	T_10 (in signature of __align_stack @ 00000000 : void)
+	T_110 (in __align_stack<word64> @ 000007AD : ptr32)
 Eq_16: (fn int32 ((ptr64 Eq_18), int32, (ptr64 (ptr64 char)), (ptr64 Eq_21), (ptr64 Eq_22), (ptr64 Eq_7), (ptr64 void)))
 	T_16 (in __libc_start_main @ 00000644 : ptr64)
 	T_17 (in signature of __libc_start_main @ 00000000 : void)
@@ -45,7 +45,7 @@ Eq_22: (fn void ())
 	T_22 (in fini @ 00000644 : (ptr64 (fn void ())))
 	T_30 (in 0000000000000AE0 @ 00000644 : ptr64)
 Eq_32: (fn void ())
-	T_32 (in __hlt @ 0000064A : ptr64)
+	T_32 (in __hlt @ 0000064A : ptr32)
 	T_33 (in signature of __hlt @ 00000000 : void)
 Eq_43: (union "Eq_43" (int64 u0) (ptr64 u1))
 	T_43 (in 0000000000201048 @ 0000069F : ptr64)
@@ -80,9 +80,9 @@ Eq_121: (union "Eq_121" (word128 u0) ((arr word64 2) u1))
 	T_167 (in SEQ(SLICE(xmm0, word64, 64), CONVERT(qwLoc10_205, word64, real64)) @ 0000091A : word128)
 	T_200 (in SEQ(0<64>, v19_108 + v19_108) @ 0000098B : word128)
 	T_204 (in SEQ(SLICE(xmm0, word64, 64), CONVERT(qwLoc18_211 + 1<64>, word64, real64)) @ 00000973 : word128)
-	T_213 (in  @ 000009BF : (arr word64 2))
-	T_214 (in  @ 000009BF : (arr word64 2))
-	T_215 (in __xorpd(xmm0, xmm0) @ 000009BF : (arr word64 2))
+	T_213 (in p1 @ 000009BF : (arr word64 2))
+	T_214 (in p2 @ 000009BF : (arr word64 2))
+	T_215 (in __xorp<word64[2]>(xmm0, xmm0) @ 000009BF : (arr word64 2))
 Eq_123: (fn (ptr64 (arr real64)) (uint64, Eq_82))
 	T_123 (in _mm_malloc @ 000008B8 : ptr64)
 	T_124 (in signature of _mm_malloc @ 0000072A : void)
@@ -111,8 +111,8 @@ Eq_202: (union "Eq_202" (int64 u0) (uint64 u1))
 Eq_209: (union "Eq_209" (int64 u0) (uint64 u1))
 	T_209 (in 1<64> @ 00000993 : word64)
 Eq_211: (fn Eq_121 (Eq_121, Eq_121))
-	T_211 (in __xorpd @ 000009BF : ptr64)
-	T_212 (in signature of __xorpd @ 00000000 : void)
+	T_211 (in __xorp<word64[2]> @ 000009BF : ptr32)
+	T_212 (in signature of __xorp @ 00000000 : void)
 Eq_222: (fn void (word64))
 	T_222 (in vec_add @ 000009E9 : ptr64)
 	T_223 (in signature of vec_add @ 000007A8 : void)
@@ -169,15 +169,15 @@ T_8: (in dwArg00 @ 000005B0 : word32)
   Class: Eq_8
   DataType: word32
   OrigDataType: word32
-T_9: (in __align @ 00000629 : ptr64)
+T_9: (in __align_stack<word64> @ 00000629 : ptr32)
   Class: Eq_9
-  DataType: (ptr64 Eq_9)
-  OrigDataType: (ptr64 (fn T_15 (T_14)))
-T_10: (in signature of __align @ 00000000 : void)
+  DataType: (ptr32 Eq_9)
+  OrigDataType: (ptr32 (fn T_15 (T_14)))
+T_10: (in signature of __align_stack @ 00000000 : void)
   Class: Eq_9
-  DataType: (ptr64 Eq_9)
+  DataType: (ptr32 Eq_9)
   OrigDataType: 
-T_11: (in  @ 00000629 : word64)
+T_11: (in p1 @ 00000629 : word64)
   Class: Eq_11
   DataType: ptr64
   OrigDataType: 
@@ -193,7 +193,7 @@ T_14: (in fp + 8<i64> @ 00000629 : word64)
   Class: Eq_11
   DataType: ptr64
   OrigDataType: ptr64
-T_15: (in __align((char *) fp + 8<i32>) @ 00000629 : void)
+T_15: (in __align_stack<word64>((char *) fp + 8<i32>) @ 00000629 : void)
   Class: Eq_15
   DataType: void
   OrigDataType: void
@@ -261,13 +261,13 @@ T_31: (in __libc_start_main(&g_t0898, (int32) qwArg00, (char *) fp + 8<i32>, &g_
   Class: Eq_31
   DataType: int32
   OrigDataType: int32
-T_32: (in __hlt @ 0000064A : ptr64)
+T_32: (in __hlt @ 0000064A : ptr32)
   Class: Eq_32
-  DataType: (ptr64 Eq_32)
-  OrigDataType: (ptr64 (fn T_34 ()))
+  DataType: (ptr32 Eq_32)
+  OrigDataType: (ptr32 (fn T_34 ()))
 T_33: (in signature of __hlt @ 00000000 : void)
   Class: Eq_32
-  DataType: (ptr64 Eq_32)
+  DataType: (ptr32 Eq_32)
   OrigDataType: 
 T_34: (in __hlt() @ 0000064A : void)
   Class: Eq_34
@@ -573,15 +573,15 @@ T_109: (in rdi @ 000007A7 : word64)
   Class: Eq_109
   DataType: word64
   OrigDataType: word64
-T_110: (in __align @ 000007AD : ptr64)
+T_110: (in __align_stack<word64> @ 000007AD : ptr32)
   Class: Eq_9
-  DataType: (ptr64 Eq_9)
-  OrigDataType: (ptr64 (fn T_112 (T_111)))
+  DataType: (ptr32 Eq_9)
+  OrigDataType: (ptr32 (fn T_112 (T_111)))
 T_111: (in fp @ 000007AD : ptr64)
   Class: Eq_11
   DataType: ptr64
   OrigDataType: ptr64
-T_112: (in __align(fp) @ 000007AD : void)
+T_112: (in __align_stack<word64>(fp) @ 000007AD : void)
   Class: Eq_15
   DataType: void
   OrigDataType: void
@@ -977,23 +977,23 @@ T_210: (in qwLoc18_211 + 1<64> @ 00000993 : word64)
   Class: Eq_150
   DataType: Eq_150
   OrigDataType: (union (int64 u1) (uint64 u0))
-T_211: (in __xorpd @ 000009BF : ptr64)
+T_211: (in __xorp<word64[2]> @ 000009BF : ptr32)
   Class: Eq_211
-  DataType: (ptr64 Eq_211)
-  OrigDataType: (ptr64 (fn T_215 (T_121, T_121)))
-T_212: (in signature of __xorpd @ 00000000 : void)
+  DataType: (ptr32 Eq_211)
+  OrigDataType: (ptr32 (fn T_215 (T_121, T_121)))
+T_212: (in signature of __xorp @ 00000000 : void)
   Class: Eq_211
-  DataType: (ptr64 Eq_211)
+  DataType: (ptr32 Eq_211)
   OrigDataType: 
-T_213: (in  @ 000009BF : (arr word64 2))
+T_213: (in p1 @ 000009BF : (arr word64 2))
   Class: Eq_121
   DataType: Eq_121
   OrigDataType: 
-T_214: (in  @ 000009BF : (arr word64 2))
+T_214: (in p2 @ 000009BF : (arr word64 2))
   Class: Eq_121
   DataType: Eq_121
   OrigDataType: 
-T_215: (in __xorpd(xmm0, xmm0) @ 000009BF : (arr word64 2))
+T_215: (in __xorp<word64[2]>(xmm0, xmm0) @ 000009BF : (arr word64 2))
   Class: Eq_121
   DataType: Eq_121
   OrigDataType: (arr word64 2)

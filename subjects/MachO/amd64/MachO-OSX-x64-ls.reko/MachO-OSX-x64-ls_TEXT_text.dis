@@ -9,7 +9,7 @@ void fn0000000100001778(word32 dwArg04)
 fn0000000100001778_exit:
 fn0000000100001778_entry:
 l0000000100001778:
-	__align(fp - 4<i64>)
+	__align_stack<word64>(fp - 4<i64>)
 	word32 edi_8 = SLICE(qwArg04, word32, 0)
 	word64 rcx_19 = CONVERT(edi_8 + 1<32> << 3<32>, word32, uint64) + (fp + 0xC<64>)
 l000000010000179D:

@@ -91,7 +91,7 @@ namespace Reko.Arch.X86
 
                 // 0F 00
                 Grp6[0] = MemReg(
-                        Instr(Mnemonic.sldt, InstrClass.Linear | InstrClass.Privileged, Ew),
+                        Instr(Mnemonic.sldt, InstrClass.Linear | InstrClass.Privileged, Ms),
                         Instr(Mnemonic.sldt, InstrClass.Linear | InstrClass.Privileged, Rv));
                 Grp6[1] = MemReg(
                         Instr(Mnemonic.str, InstrClass.Linear | InstrClass.Privileged, Ew),

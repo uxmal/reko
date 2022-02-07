@@ -141,8 +141,8 @@ Eq_1: (struct "Globals"
 		(6680 int64 qw6680))
 	globals_t (in globals @ 00000000 : (ptr64 (struct "Globals")))
 Eq_3: (fn void (ptr64))
-	T_3 (in __align @ 10000177D : ptr64)
-	T_4 (in signature of __align @ 00000000 : void)
+	T_3 (in __align_stack<word64> @ 10000177D : ptr32)
+	T_4 (in signature of __align_stack @ 00000000 : void)
 Eq_29: (fn void ((ptr64 (ptr64 char)), int32))
 	T_29 (in fn00000001000026A0 @ 1000017A7 : ptr64)
 	T_30 (in signature of fn00000001000026A0 @ 1000026A0 : void)
@@ -1291,15 +1291,15 @@ T_2: (in dwArg04 @ 00000000 : word32)
   Class: Eq_2
   DataType: word32
   OrigDataType: word32
-T_3: (in __align @ 10000177D : ptr64)
+T_3: (in __align_stack<word64> @ 10000177D : ptr32)
   Class: Eq_3
-  DataType: (ptr64 Eq_3)
-  OrigDataType: (ptr64 (fn T_9 (T_8)))
-T_4: (in signature of __align @ 00000000 : void)
+  DataType: (ptr32 Eq_3)
+  OrigDataType: (ptr32 (fn T_9 (T_8)))
+T_4: (in signature of __align_stack @ 00000000 : void)
   Class: Eq_3
-  DataType: (ptr64 Eq_3)
+  DataType: (ptr32 Eq_3)
   OrigDataType: 
-T_5: (in  @ 10000177D : word64)
+T_5: (in p1 @ 10000177D : word64)
   Class: Eq_5
   DataType: ptr64
   OrigDataType: 
@@ -1315,7 +1315,7 @@ T_8: (in fp - 4<i64> @ 00000000 : word64)
   Class: Eq_5
   DataType: ptr64
   OrigDataType: ptr64
-T_9: (in __align(fp - 4<i64>) @ 10000177D : void)
+T_9: (in __align_stack<word64>(fp - 4<i64>) @ 10000177D : void)
   Class: Eq_9
   DataType: void
   OrigDataType: void

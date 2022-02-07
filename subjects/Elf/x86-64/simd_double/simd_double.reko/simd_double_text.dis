@@ -9,7 +9,7 @@ void _start(word64 rdx, word32 dwArg00)
 _start_exit:
 _start_entry:
 l0000000000000620:
-	__align(fp + 8<i64>)
+	__align_stack<word64>(fp + 8<i64>)
 	__libc_start_main(0x0000000000000898<p64>, SLICE(qwArg00, int32, 0), fp + 8<i64>, 0x0000000000000A70<p64>, 0x0000000000000AE0<p64>, rdx, fp)
 	__hlt()
 
@@ -164,7 +164,7 @@ void vec_add(word64 rdi)
 // Preserved: rbp rsp
 vec_add_entry:
 l00000000000007A8:
-	__align(fp)
+	__align_stack<word64>(fp)
 	word64 rax_31 = CONVERT(CONVERT(rdi, word64, uint128) /u Mem23[0x0000000000000B00<p64>:word64], word64, uint64)
 l0000000000000881:
 	branch rax_31 >u 0<64> l0000000000000820
@@ -222,7 +222,7 @@ l00000000000009A2:
 l00000000000009CC:
 	branch qwLoc20_217 <u 0x400<64> l00000000000009AC
 l00000000000009AC:
-	xmm0 = __xorpd(xmm0, xmm0)
+	xmm0 = __xorp<word64[2]>(xmm0, xmm0)
 	Mem136[rax_42 + qwLoc20_217 * 8<64>:real64] = SLICE(xmm0, real64, 0)
 	qwLoc20_217 = qwLoc20_217 + 1<64>
 l00000000000009D6:

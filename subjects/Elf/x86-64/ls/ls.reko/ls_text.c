@@ -1405,7 +1405,7 @@ l00000000004043BB:
 // 0000000000404890: void fn0000000000404890(Register (ptr64 Eq_n) rdx, Stack word32 dwArg00)
 void fn0000000000404890(void (* rdx)(), word32 dwArg00)
 {
-	__align((char *) fp + 8);
+	__align_stack<word64>((char *) fp + 8);
 	__libc_start_main(&g_t4028C0, (int32) qwArg00, (char *) fp + 8, &g_t411E60, &g_t411ED0, rdx, fp);
 	__hlt();
 }
@@ -5579,7 +5579,7 @@ l000000000040BE7D:
 				Eq_n rLoc2_n = (real64) g_t415F0C;
 				if (rLoc1_n < rLoc2_n)
 				{
-					uint16 wLoc82_n = __fstcw();
+					Eq_n wLoc82_n = __fstcw();
 					uint64 rax_n = (uint64) wLoc82_n;
 					__fldcw(SEQ(SLICE(rax_n, byte, 8) | 0x0C, (byte) rax_n));
 					__fldcw(wLoc82_n);
@@ -5588,7 +5588,7 @@ l000000000040BE7D:
 				}
 				else
 				{
-					uint16 wLoc82_n = __fstcw();
+					Eq_n wLoc82_n = __fstcw();
 					uint64 rax_n = (uint64) wLoc82_n;
 					__fldcw(SEQ(SLICE(rax_n, byte, 8) | 0x0C, (byte) rax_n));
 					__fldcw(wLoc82_n);
@@ -5630,7 +5630,7 @@ l000000000040BE7D:
 				Eq_n rLoc2_n = (real64) g_t415F0C;
 				if (rLoc1_n < rLoc2_n)
 				{
-					uint16 wLoc82_n = __fstcw();
+					Eq_n wLoc82_n = __fstcw();
 					uint64 rax_n = (uint64) wLoc82_n;
 					__fldcw(SEQ(SLICE(rax_n, byte, 8) | 0x0C, (byte) rax_n));
 					__fldcw(wLoc82_n);
@@ -5639,7 +5639,7 @@ l000000000040BE7D:
 				}
 				else
 				{
-					uint16 wLoc82_n = __fstcw();
+					Eq_n wLoc82_n = __fstcw();
 					uint64 rax_n = (uint64) wLoc82_n;
 					__fldcw(SEQ(SLICE(rax_n, byte, 8) | 0x0C, (byte) rax_n));
 					__fldcw(wLoc82_n);
@@ -5672,7 +5672,7 @@ l000000000040BE7D:
 			Eq_n rLoc2_n = (real64) g_t415F0C;
 			if (rLoc1_n < rLoc2_n)
 			{
-				uint16 wLoc82_n = __fstcw();
+				Eq_n wLoc82_n = __fstcw();
 				uint64 rax_n = (uint64) wLoc82_n;
 				__fldcw(SEQ(SLICE(rax_n, byte, 8) | 0x0C, (byte) rax_n));
 				__fldcw(wLoc82_n);
@@ -5681,7 +5681,7 @@ l000000000040BE7D:
 			}
 			else
 			{
-				uint16 wLoc82_n = __fstcw();
+				Eq_n wLoc82_n = __fstcw();
 				uint64 rax_n = (uint64) wLoc82_n;
 				__fldcw(SEQ(SLICE(rax_n, byte, 8) | 0x0C, (byte) rax_n));
 				__fldcw(wLoc82_n);

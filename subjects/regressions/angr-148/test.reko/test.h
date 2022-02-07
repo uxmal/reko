@@ -23,8 +23,8 @@ Eq_8: (fn void ())
 	T_8 (in rdx @ 004003F0 : (ptr64 Eq_8))
 	T_24 (in rtld_fini @ 00400464 : (ptr64 (fn void ())))
 Eq_10: (fn void (ptr64))
-	T_10 (in __align @ 00400449 : ptr64)
-	T_11 (in signature of __align @ 00000000 : void)
+	T_10 (in __align_stack<word64> @ 00400449 : ptr32)
+	T_11 (in signature of __align_stack @ 00000000 : void)
 Eq_17: (fn int32 ((ptr64 Eq_19), int32, (ptr64 (ptr64 char)), (ptr64 Eq_22), (ptr64 Eq_23), (ptr64 Eq_8), (ptr64 void)))
 	T_17 (in __libc_start_main @ 00400464 : ptr64)
 	T_18 (in signature of __libc_start_main @ 00000000 : void)
@@ -38,7 +38,7 @@ Eq_23: (fn void ())
 	T_23 (in fini @ 00400464 : (ptr64 (fn void ())))
 	T_31 (in 0x4005C0<64> @ 00400464 : word64)
 Eq_33: (fn void ())
-	T_33 (in __hlt @ 00400469 : ptr64)
+	T_33 (in __hlt @ 00400469 : ptr32)
 	T_34 (in signature of __hlt @ 00000000 : void)
 Eq_46: (fn void ())
 	T_46 (in deregister_tm_clones @ 004004ED : ptr64)
@@ -102,15 +102,15 @@ T_9: (in dwArg00 @ 004003F0 : word32)
   Class: Eq_9
   DataType: word32
   OrigDataType: word32
-T_10: (in __align @ 00400449 : ptr64)
+T_10: (in __align_stack<word64> @ 00400449 : ptr32)
   Class: Eq_10
-  DataType: (ptr64 Eq_10)
-  OrigDataType: (ptr64 (fn T_16 (T_15)))
-T_11: (in signature of __align @ 00000000 : void)
+  DataType: (ptr32 Eq_10)
+  OrigDataType: (ptr32 (fn T_16 (T_15)))
+T_11: (in signature of __align_stack @ 00000000 : void)
   Class: Eq_10
-  DataType: (ptr64 Eq_10)
+  DataType: (ptr32 Eq_10)
   OrigDataType: 
-T_12: (in  @ 00400449 : word64)
+T_12: (in p1 @ 00400449 : word64)
   Class: Eq_12
   DataType: ptr64
   OrigDataType: 
@@ -126,7 +126,7 @@ T_15: (in fp + 8<i64> @ 00400449 : word64)
   Class: Eq_12
   DataType: ptr64
   OrigDataType: ptr64
-T_16: (in __align((char *) fp + 8<i32>) @ 00400449 : void)
+T_16: (in __align_stack<word64>((char *) fp + 8<i32>) @ 00400449 : void)
   Class: Eq_16
   DataType: void
   OrigDataType: void
@@ -194,13 +194,13 @@ T_32: (in __libc_start_main(&g_t40053D, (int32) qwArg00, (char *) fp + 8<i32>, &
   Class: Eq_32
   DataType: int32
   OrigDataType: int32
-T_33: (in __hlt @ 00400469 : ptr64)
+T_33: (in __hlt @ 00400469 : ptr32)
   Class: Eq_33
-  DataType: (ptr64 Eq_33)
-  OrigDataType: (ptr64 (fn T_35 ()))
+  DataType: (ptr32 Eq_33)
+  OrigDataType: (ptr32 (fn T_35 ()))
 T_34: (in signature of __hlt @ 00000000 : void)
   Class: Eq_33
-  DataType: (ptr64 Eq_33)
+  DataType: (ptr32 Eq_33)
   OrigDataType: 
 T_35: (in __hlt() @ 00400469 : void)
   Class: Eq_35

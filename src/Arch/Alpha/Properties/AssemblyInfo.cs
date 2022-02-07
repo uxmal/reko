@@ -7,7 +7,7 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("Alpha AXP architecture")]
-[assembly: AssemblyDescription("Reko decompuler support for the Alpha AXP Architecture")]
+[assembly: AssemblyDescription("Reko decompiler support for the Alpha AXP Architecture")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany(AssemblyMetadata.Company)]
 [assembly: AssemblyProduct(AssemblyMetadata.Product)]

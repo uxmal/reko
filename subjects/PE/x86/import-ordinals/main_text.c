@@ -212,7 +212,7 @@ byte fn0040143A(ptr32 & edxOut)
 		{
 			__lock();
 			ptr32 eax_n;
-			__cmpxchg(g_dw403338, edx_n, 0x00, out eax_n);
+			__cmpxchg<word32>(g_dw403338, edx_n, 0x00, out eax_n);
 			if (eax_n == 0x00)
 			{
 				edxOut = edx_n;

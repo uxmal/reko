@@ -7,7 +7,7 @@
 // 0000000100001778: void fn0000000100001778(Stack word32 dwArg04)
 void fn0000000100001778(word32 dwArg04)
 {
-	__align(fp - 4);
+	__align_stack<word64>(fp - 4);
 	int32 edi_n = (word32) qwArg04;
 	word64 * rcx_n = (uint64) (edi_n + 0x01 << 0x03) + (fp + 0x0C);
 	while (*rcx_n != 0x00)

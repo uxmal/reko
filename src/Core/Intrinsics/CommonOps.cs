@@ -30,21 +30,24 @@ namespace Reko.Core.Intrinsics
     /// </summary>
     public static class CommonOps
     {
-        public static IntrinsicProcedure Rol = new IntrinsicBuilder("__rol", false)
+        public static readonly IntrinsicProcedure Rol = new IntrinsicBuilder("__rol", false)
             .GenericTypes("TData", "TCount")
             .Param("TData").Param("TCount")
             .Returns("TData");
-        public static IntrinsicProcedure RolC = new IntrinsicBuilder("__rcl", false)
+        public static readonly IntrinsicProcedure RolC = new IntrinsicBuilder("__rcl", false)
             .GenericTypes("TData", "TCount", "TCy")
             .Param("TData").Param("TCount").Param("TCy")
             .Returns("TData");
-        public static IntrinsicProcedure Ror = new IntrinsicBuilder("__ror", false)
+        public static readonly IntrinsicProcedure Ror = new IntrinsicBuilder("__ror", false)
             .GenericTypes("TData", "TCount")
             .Param("TData").Param("TCount")
             .Returns("TData");
-        public static IntrinsicProcedure RorC = new IntrinsicBuilder("__rcr", false)
+        public static readonly IntrinsicProcedure RorC = new IntrinsicBuilder("__rcr", false)
             .GenericTypes("TData", "TCount", "TCy")
             .Param("TData").Param("TCount").Param("TCy")
             .Returns("TData");
+        public static readonly IntrinsicProcedure Syscall = new IntrinsicBuilder("__syscall", true)
+            .Param(PrimitiveType.Word32)
+            .Void();
     }
 }
