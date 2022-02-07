@@ -55,7 +55,7 @@ namespace Reko.Arch.Alpha
             RewriteBin(fn);
             var dst = Rewrite(instr.Operands[2]);
             m.BranchInMiddleOfInstruction(
-                m.Not(host.Intrinsic("OV", false, PrimitiveType.Bool, dst)),
+                m.Not(m.Fn(ov_intrinsic, dst)),
                 instr.Address + instr.Length, 
                 InstrClass.ConditionalTransfer);
             var ch = new ProcedureCharacteristics { Terminates = true };
@@ -64,22 +64,22 @@ namespace Reko.Arch.Alpha
                 InstrClass.Transfer|InstrClass.Call);
         }
 
-        private void RewriteInstrinsic(string instrinic, bool hasSideEffect)
+        private void RewriteInstrinsic(IntrinsicProcedure instrinic)
         {
             var op1 = Rewrite(instr.Operands[0]);
             var op2 = Rewrite(instr.Operands[1]);
             var dst = Rewrite(instr.Operands[2]);
             if (dst.IsZero)
             {
-                m.SideEffect(host.Intrinsic(instrinic, hasSideEffect, dst.DataType, op1, op2));
+                m.SideEffect(m.Fn(instrinic.MakeInstance(dst.DataType), op1, op2));
             }
             else
             {
-                m.Assign(dst, host.Intrinsic(instrinic, hasSideEffect, dst.DataType, op1, op2));
+                m.Assign(dst, m.Fn(instrinic.MakeInstance(dst.DataType), op1, op2));
             }
         }
 
-        private void RewriteLoadInstrinsic(string intrinsic, bool hasSideEffect, DataType dt)
+        private void RewriteLoadInstrinsic(IntrinsicProcedure intrinsic, DataType dt)
         {
             var op1 = Rewrite(instr.Operands[0]);
             var op2 = Rewrite(instr.Operands[1]);
@@ -87,20 +87,21 @@ namespace Reko.Arch.Alpha
             if (op1.IsZero)
             {
                 // Discarding the result == side effect
-                m.SideEffect(host.Intrinsic(intrinsic, hasSideEffect, dt, op2));
+                m.SideEffect(m.Fn(intrinsic.MakeInstance(dt, op1.DataType), op2));
             }
             else
             {
-                m.Assign(op1, host.Intrinsic(intrinsic, hasSideEffect, dt, op2));
+                m.Assign(op1, m.Fn(intrinsic.MakeInstance(dt, op1.DataType), op2));
             }
         }
 
-        private void RewriteStoreInstrinsic(string intrinsic, DataType dt)
+        private void RewriteStoreInstrinsic(IntrinsicProcedure intrinsic, DataType dt)
         {
             var op1 = Rewrite(instr.Operands[0]);
             var op2 = Rewrite(instr.Operands[1]);
             op2.DataType = dt;
-            m.SideEffect(host.Intrinsic(intrinsic, true, dt, op2, op1));
+            var ptr = new Pointer(dt, arch.PointerType.BitSize);
+            m.SideEffect(m.Fn(intrinsic.MakeInstance(dt, ptr), op2, op1));
         }
 
         private void RewriteLd(PrimitiveType dtSrc, PrimitiveType dtDst)
@@ -158,8 +159,7 @@ namespace Reko.Arch.Alpha
 
         private void RewriteTrapb()
         {
-            m.SideEffect(
-                host.Intrinsic("__trap_barrier", true, VoidType.Instance),
+            m.SideEffect(m.Fn(trap_barrier_intrinsic),
                 InstrClass.Transfer|InstrClass.Call);
         }
 
@@ -249,6 +249,13 @@ namespace Reko.Arch.Alpha
             if (sh.IsZero)
                 return a;
             return m.Shl(a, sh);
+        }
+
+        private Expression sra(Expression a, Expression sh)
+        {
+            if (a.IsZero || sh.IsZero)
+                return a;
+            return m.Sar(a, sh);
         }
 
         private Expression srl(Expression a, Expression sh)

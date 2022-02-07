@@ -36,5 +36,11 @@ namespace Reko.Arch.Alpha
                 host.Intrinsic("__halt", true, c, VoidType.Instance), 
                 InstrClass.Terminates);
         }
+
+        private void RewriteImplver()
+        {
+            var dst = Rewrite(instr.Operands[0]);
+            m.Assign(dst, m.Fn(implver_intrinsic.MakeInstance(dst.DataType)));
+        }
     }
 }

@@ -20,6 +20,7 @@
 
 using Reko.Core;
 using Reko.Core.Expressions;
+using Reko.Core.Intrinsics;
 using Reko.Core.Machine;
 using Reko.Core.Memory;
 using Reko.Core.Rtl;
@@ -199,7 +200,7 @@ namespace Reko.Arch.Blackfin
 
         private void RewriteCli()
         {
-            m.SideEffect(host.Intrinsic("__cli", true, VoidType.Instance));
+            m.SideEffect(m.Fn(cli_intrinsic));
         }
 
         private void RewriteJump()
@@ -260,5 +261,8 @@ namespace Reko.Arch.Blackfin
             var dst = Reg(0);
             m.Assign(dst, binop(src1, src2));
         }
+
+        private static readonly IntrinsicProcedure cli_intrinsic = new IntrinsicBuilder("__cli", true)
+            .Void();
     }
 }

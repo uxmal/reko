@@ -213,7 +213,7 @@ namespace Reko.UnitTests.Arch.Arc
             Given_HexString("27108000"); // bclr	r0,r7,r0
             AssertCode(
                 "0|L--|00100000(4): 2 instructions",
-                "1|L--|r0 = __bclr(r7, r0)",
+                "1|L--|r0 = __bclr<word32>(r7, r0)",
                 "2|L--|ZN = cond(r0)");
         }
 
@@ -223,7 +223,7 @@ namespace Reko.UnitTests.Arch.Arc
             Given_HexString("B9A1"); // bclr_s	r1,r1,00000001
             AssertCode(
                 "0|L--|00100000(2): 1 instructions",
-                "1|L--|r1 = __bclr(r1, 1<32>)");
+                "1|L--|r1 = __bclr<word32>(r1, 1<32>)");
         }
 
         [Test]
@@ -251,7 +251,7 @@ namespace Reko.UnitTests.Arch.Arc
             Given_HexString("204F07C1"); // bset	r1,r0,0000001F
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|r1 = __bset(r0, 0x1F<32>)");
+                "1|L--|r1 = __bset<word32>(r0, 0x1F<32>)");
         }
 
         [Test]
@@ -260,7 +260,7 @@ namespace Reko.UnitTests.Arch.Arc
             Given_HexString("B982"); // bset_s	r1,r1,00000002
             AssertCode(
                 "0|L--|00100000(2): 1 instructions",
-                "1|L--|r1 = __bset(r1, 2<32>)");
+                "1|L--|r1 = __bset<word32>(r1, 2<32>)");
         }
 
         [Test]
@@ -269,7 +269,7 @@ namespace Reko.UnitTests.Arch.Arc
             Given_HexString("261190C0"); // btst	r14,r3
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|ZN = cond(__btst(r14, r3))");
+                "1|L--|ZN = cond(__btst<word32>(r14, r3))");
         }
 
         [Test]
@@ -278,7 +278,7 @@ namespace Reko.UnitTests.Arch.Arc
             Given_HexString("B8E0"); // btst_s	r0,00000000
             AssertCode(
                 "0|L--|00100000(2): 1 instructions",
-                "1|L--|ZN = cond(__btst(r0, 0<32>))");
+                "1|L--|ZN = cond(__btst<word32>(r0, 0<32>))");
         }
 
         [Test]
@@ -287,7 +287,7 @@ namespace Reko.UnitTests.Arch.Arc
             Given_HexString("25922053"); // bxor	r21,r21,+000004C1
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|r21 = __bxor(r21, 1217<i32>)");
+                "1|L--|r21 = __bxor<word32>(r21, 1217<i32>)");
         }
 
         [Test]

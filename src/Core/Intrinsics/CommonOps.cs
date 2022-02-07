@@ -55,6 +55,11 @@ namespace Reko.Core.Intrinsics
         // Byte manipulations
         public static readonly IntrinsicProcedure ReverseBytes = IntrinsicBuilder.GenericUnary("__reverse_bytes");
 
+        // Integer math
+        public static readonly IntrinsicProcedure Abs = IntrinsicBuilder.GenericUnary("abs"); //$REVIEW: math.h
+        public static readonly IntrinsicProcedure Max = IntrinsicBuilder.GenericUnary("max"); //$REVIEW: math.h
+        public static readonly IntrinsicProcedure Min = IntrinsicBuilder.GenericUnary("min"); //$REVIEW: math.h
+
         // Rotations
         public static readonly IntrinsicProcedure Rol = new IntrinsicBuilder("__rol", false)
             .GenericTypes("TData", "TCount")

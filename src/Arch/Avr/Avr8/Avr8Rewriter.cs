@@ -219,11 +219,11 @@ namespace Reko.Arch.Avr.Avr8
             }
             else if (read)
             {
-                m.Assign(reg, host.Intrinsic("__in", true, PrimitiveType.Byte, Constant.Byte(port)));
+                m.Assign(reg, m.Fn(in_intrinsic, Constant.Byte(port)));
             }
             else
             {
-                m.SideEffect(host.Intrinsic("__out", true, VoidType.Instance, Constant.Byte(port), reg));
+                m.SideEffect(m.Fn(out_intrinsic, Constant.Byte(port), reg));
             }
         }
 
@@ -378,7 +378,7 @@ namespace Reko.Arch.Avr.Avr8
 
         private void RewriteCli()
         {
-            m.SideEffect(host.Intrinsic("__cli", true, VoidType.Instance));
+            m.SideEffect(m.Fn(cli_intrinsic));
         }
 
         private void RewriteCp()
@@ -429,7 +429,7 @@ namespace Reko.Arch.Avr.Avr8
         private void RewriteDes()
         {
             var h = binder.EnsureFlagGroup(Registers.H);
-            m.SideEffect(host.Intrinsic("__des", true, VoidType.Instance, RewriteOp(0), h));
+            m.SideEffect(m.Fn(des_intrinsic, RewriteOp(0), h));
         }
 
         private void RewriteElpm()
@@ -580,8 +580,8 @@ namespace Reko.Arch.Avr.Avr8
 
         private void RewriteSbis()
         {
-            var io = host.Intrinsic("__in", true, PrimitiveType.Byte, RewriteOp(0));
-            var bis = host.Intrinsic("__bit_set", false, PrimitiveType.Bool, io, RewriteOp(1));
+            var io = m.Fn(in_intrinsic, RewriteOp(0));
+            var bis = m.Fn(bit_set_intrinsic, io, RewriteOp(1));
             if (!dasm.MoveNext())
             {
                 m.Invalid();
@@ -595,7 +595,7 @@ namespace Reko.Arch.Avr.Avr8
 
         private void RewriteSei()
         {
-            m.SideEffect(host.Intrinsic("__sei", true, VoidType.Instance));
+            m.SideEffect(m.Fn(sei_intrinsic));
         }
 
         private void RewriteSetBit(FlagGroupStorage grf, bool value)
@@ -617,12 +617,44 @@ namespace Reko.Arch.Avr.Avr8
         private void RewriteSwap()
         {
             var reg = RewriteOp(0);
-            m.Assign(reg, host.Intrinsic("__swap", false, PrimitiveType.Byte, reg));
+            m.Assign(reg, m.Fn(swap_intrinsic, reg));
         }
 
+        static Avr8Rewriter()
+        {
+            bit_set_intrinsic = new IntrinsicBuilder("__bit_set", false)
+                .Param(PrimitiveType.Byte)
+                .Param(PrimitiveType.Byte)
+                .Returns(PrimitiveType.Bool);
+
+            cli_intrinsic = new IntrinsicBuilder("__cli", true)
+                .Void();
+            des_intrinsic = new IntrinsicBuilder("__des", true)
+                .Param(PrimitiveType.Byte)
+                .Param(PrimitiveType.Byte)
+                .Void();
+            in_intrinsic = new IntrinsicBuilder("__in", true)
+                .Param(PrimitiveType.Byte)
+                .Returns(PrimitiveType.Byte);
+            out_intrinsic = new IntrinsicBuilder("__out", true)
+                .Param(PrimitiveType.Byte)
+                .Param(PrimitiveType.Byte)
+                .Void();
+            sei_intrinsic = new IntrinsicBuilder("__sei", true)
+                .Void();
+        }
         private static readonly IntrinsicProcedure elpmIntrinsic = new IntrinsicBuilder("__extended_load_program_memory", true)
             .Param(PrimitiveType.Byte)
             .Param(PrimitiveType.Ptr16)
             .Returns(PrimitiveType.Byte);
+    }
+
+        private static readonly IntrinsicProcedure bit_set_intrinsic;
+        private static readonly IntrinsicProcedure cli_intrinsic;
+        private static readonly IntrinsicProcedure des_intrinsic;
+        private static readonly IntrinsicProcedure in_intrinsic;
+        private static readonly IntrinsicProcedure out_intrinsic;
+        private static readonly IntrinsicProcedure sei_intrinsic;
+        private static readonly IntrinsicProcedure swap_intrinsic = IntrinsicBuilder.Unary("__swap_nybbles", PrimitiveType.Byte);
     }
 }

@@ -26,6 +26,7 @@ using System.Linq;
 using System.Text;
 using Reko.Core;
 using Reko.Core.Expressions;
+using Reko.Core.Intrinsics;
 using Reko.Core.Lib;
 using Reko.Core.Machine;
 using Reko.Core.Memory;
@@ -87,8 +88,8 @@ namespace Reko.Arch.Cray.Ymp
                 case Mnemonic.jsz: RewriteJxx(Registers.SRegs[0], m.Eq0); break;
                 case Mnemonic.r: RewriteR(); break;
                 case Mnemonic._and: Rewrite3(m.And); break;
-                case Mnemonic._clz: RewriteIntrinsic("__clz", false); break;
-                case Mnemonic._popcnt: RewriteIntrinsic("__popcnt", false); break;
+                case Mnemonic._clz: RewriteIntrinsic(clz_intrinsic); break;
+                case Mnemonic._popcnt: RewriteIntrinsic(popcnt_intrinsic); break;
                 case Mnemonic._fmul: Rewrite3(m.FMul); break;
                 case Mnemonic._iadd: Rewrite3(m.IAdd); break;
                 case Mnemonic._isub: Rewrite3(m.ISub); break;
@@ -106,13 +107,13 @@ namespace Reko.Arch.Cray.Ymp
             }
         }
 
-        private void RewriteIntrinsic(string intrinsicName, bool hasSideEffect)
+        private void RewriteIntrinsic(IntrinsicProcedure intrinsic)
         {
             var dst = Op(0);
             var args = Enumerable.Range(1, instrCur.Operands.Length - 1)
                 .Select(i => Op(i))
                 .ToArray();
-            m.Assign(dst, host.Intrinsic(intrinsicName, hasSideEffect, dst.DataType, args));
+            m.Assign(dst, m.Fn(intrinsic, args));
         }
 
         IEnumerator IEnumerable.GetEnumerator()
@@ -239,5 +240,12 @@ namespace Reko.Arch.Cray.Ymp
             }
             m.Assign(m.Mem(src.DataType, ea), src);
         }
+
+        static readonly IntrinsicProcedure clz_intrinsic = new IntrinsicBuilder("__clz", false)
+            .Param(PrimitiveType.Word64)
+            .Returns(PrimitiveType.Int32);
+        static readonly IntrinsicProcedure popcnt_intrinsic = new IntrinsicBuilder("__popcnt", false)
+            .Param(PrimitiveType.Word64)
+            .Returns(PrimitiveType.Int32);
     }
 }

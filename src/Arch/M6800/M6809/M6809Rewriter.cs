@@ -391,7 +391,7 @@ namespace Reko.Arch.M6800.M6809
         }
 
         private void RewriteBinaryTest(
-            Storage reg,
+            Storage? reg,
             Func<Expression, Expression, Expression> fn,
             Action<Expression> genFlags)
         {
@@ -542,7 +542,7 @@ namespace Reko.Arch.M6800.M6809
         private void RewriteDaa()
         {
             var a = binder.EnsureRegister(Registers.A);
-            m.Assign(a, host.Intrinsic("__daa", false, PrimitiveType.Byte, a));
+            m.Assign(a, m.Fn(daa_intrinsic, a));
             NZ_C(a);
         }
 
@@ -666,7 +666,7 @@ namespace Reko.Arch.M6800.M6809
 
         private void RewriteSync()
         {
-            m.SideEffect(host.Intrinsic("__sync", true, VoidType.Instance));
+            m.SideEffect(m.Fn(sync_intrinsic));
         }
 
         private void RewriteTfr()
@@ -684,8 +684,12 @@ namespace Reko.Arch.M6800.M6809
             }
             else
             {
-                RewriteBinaryTest(null!, Tst, NZ0_);
+                RewriteBinaryTest(null, Tst, NZ0_);
             }
         }
+
+        static readonly IntrinsicProcedure daa_intrinsic = IntrinsicBuilder.Unary("__daa", PrimitiveType.Byte);
+        static readonly IntrinsicProcedure sync_intrinsic = new IntrinsicBuilder("__sync", true)
+            .Void();
     }
 }

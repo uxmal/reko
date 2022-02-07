@@ -20,6 +20,7 @@
 
 using Reko.Core;
 using Reko.Core.Expressions;
+using Reko.Core.Intrinsics;
 using Reko.Core.Machine;
 using Reko.Core.Memory;
 using Reko.Core.Operators;
@@ -103,7 +104,7 @@ namespace Reko.Arch.Alpha
                 case Mnemonic.cmovge: RewriteCmov(m.Ge0); break;
                 case Mnemonic.cmovlbc: RewriteCmov(lbc); break;
                 case Mnemonic.cmovlbs: RewriteCmov(lbs); break;
-                case Mnemonic.cmpbge: RewriteInstrinsic("__cmpbge", false); break;
+                case Mnemonic.cmpbge: RewriteInstrinsic(cmpbge_intrinsic); break;
                 case Mnemonic.cmpeq: RewriteCmp(m.Eq); break;
                 case Mnemonic.cmple: RewriteCmp(m.Le); break;
                 case Mnemonic.cmplt: RewriteCmp(m.Lt); break;
@@ -112,9 +113,9 @@ namespace Reko.Arch.Alpha
                 case Mnemonic.cmptlt: RewriteCmpt(m.Lt); break;
                 case Mnemonic.cmpule: RewriteCmp(m.Ule); break;
                 case Mnemonic.cmpult: RewriteCmp(m.Ult); break;
-                case Mnemonic.cpys: RewriteCpys("__cpys"); break;
-                case Mnemonic.cpyse: RewriteCpys("__cpyse"); break;
-                case Mnemonic.cpysn: RewriteCpys("__cpysn"); break;
+                case Mnemonic.cpys: RewriteCpys(cpys_intrinsic); break;
+                case Mnemonic.cpyse: RewriteCpys(cpyse_intrinsic); break;
+                case Mnemonic.cpysn: RewriteCpys(cpysn_intrinsic); break;
                 case Mnemonic.cvtlq: RewriteCvt(PrimitiveType.Int32, PrimitiveType.Int64); break;
                 case Mnemonic.cvtql: RewriteCvt(PrimitiveType.Int64, PrimitiveType.Int32); break;
                 case Mnemonic.cvtqs: RewriteCvt(PrimitiveType.Int64, PrimitiveType.Real32); break;
@@ -123,13 +124,13 @@ namespace Reko.Arch.Alpha
                 case Mnemonic.cvtts: RewriteCvt(PrimitiveType.Real64, PrimitiveType.Real32); break;
                 case Mnemonic.divs: RewriteFpuOp(m.FDiv); break;
                 case Mnemonic.divt: RewriteFpuOp(m.FDiv); break;
-                case Mnemonic.extbl: RewriteInstrinsic("__extbl", true); break;
-                case Mnemonic.extlh: RewriteInstrinsic("__extlh", true); break;
-                case Mnemonic.extll: RewriteInstrinsic("__extll", true); break;
-                case Mnemonic.extqh: RewriteInstrinsic("__extqh", true); break;
-                case Mnemonic.extql: RewriteInstrinsic("__extql", true); break;
-                case Mnemonic.extwh: RewriteInstrinsic("__extwh", true); break;
-                case Mnemonic.extwl: RewriteInstrinsic("__extwl", true); break;
+                case Mnemonic.extbl: RewriteInstrinsic(extbl_intrinsic); break;
+                case Mnemonic.extlh: RewriteInstrinsic(extlh_intrinsic); break;
+                case Mnemonic.extll: RewriteInstrinsic(extll_intrinsic); break;
+                case Mnemonic.extqh: RewriteInstrinsic(extqh_intrinsic); break;
+                case Mnemonic.extql: RewriteInstrinsic(extql_intrinsic); break;
+                case Mnemonic.extwh: RewriteInstrinsic(extwh_intrinsic); break;
+                case Mnemonic.extwl: RewriteInstrinsic(extwl_intrinsic); break;
                 case Mnemonic.fbeq: RewriteFBranch(Operator.Feq); break;
                 case Mnemonic.fbge: RewriteFBranch(Operator.Fge); break;
                 case Mnemonic.fbgt: RewriteFBranch(Operator.Fgt); break;
@@ -141,13 +142,13 @@ namespace Reko.Arch.Alpha
                 case Mnemonic.fcmovlt: RewriteFCmov(Operator.Flt); break;
                 case Mnemonic.fcmovne: RewriteFCmov(Operator.Fne); break;
                 case Mnemonic.halt: RewriteHalt(); break;
-                case Mnemonic.implver: RewriteInstrinsic("__implver", true); break;
-                case Mnemonic.insbl: RewriteInstrinsic("__insbl", true); break;
-                case Mnemonic.inslh: RewriteInstrinsic("__inslh", true); break;
-                case Mnemonic.insll: RewriteInstrinsic("__insll", true); break;
-                case Mnemonic.insqh: RewriteInstrinsic("__insqh", true); break;
-                case Mnemonic.insql: RewriteInstrinsic("__insql", true); break;
-                case Mnemonic.inswl: RewriteInstrinsic("__inswl", true); break;
+                case Mnemonic.implver: RewriteImplver(); break;
+                case Mnemonic.insbl: RewriteInstrinsic(insbl_intrinsic); break;
+                case Mnemonic.inslh: RewriteInstrinsic(inslh_intrinsic); break;
+                case Mnemonic.insll: RewriteInstrinsic(insll_intrinsic); break;
+                case Mnemonic.insqh: RewriteInstrinsic(insqh_intrinsic); break;
+                case Mnemonic.insql: RewriteInstrinsic(insql_intrinsic); break;
+                case Mnemonic.inswl: RewriteInstrinsic(inswl_intrinsic); break;
                 case Mnemonic.jmp: RewriteJmp(); break;
                 case Mnemonic.jsr: RewriteJmp(); break;
                 case Mnemonic.jsr_coroutine: RewriteJmp(); break;
@@ -157,19 +158,19 @@ namespace Reko.Arch.Alpha
                 case Mnemonic.ldf: RewriteLd(PrimitiveType.Real32, PrimitiveType.Real64); break;
                 case Mnemonic.ldg: RewriteLd(PrimitiveType.Real64, PrimitiveType.Real64); break;
                 case Mnemonic.ldl: RewriteLd(PrimitiveType.Int32, PrimitiveType.Word64); break;
-                case Mnemonic.ldl_l: RewriteLoadInstrinsic("__ldl_l", true, PrimitiveType.Word32); break;
-                case Mnemonic.ldq_l: RewriteLoadInstrinsic("__ldq_l", true, PrimitiveType.Word64); break;
+                case Mnemonic.ldl_l: RewriteLoadInstrinsic(load_locked_intrinsic, PrimitiveType.Word32); break;
+                case Mnemonic.ldq_l: RewriteLoadInstrinsic(load_locked_intrinsic, PrimitiveType.Word64); break;
                 case Mnemonic.ldq: RewriteLd(PrimitiveType.Word64, PrimitiveType.Word64); break;
                 case Mnemonic.ldq_u: RewriteLd(PrimitiveType.Word64, PrimitiveType.Word64); break;
                 case Mnemonic.lds: RewriteLd(PrimitiveType.Real32, PrimitiveType.Real64); break;
                 case Mnemonic.ldt: RewriteLd(PrimitiveType.Real64, PrimitiveType.Real64); break;
                 case Mnemonic.ldwu: RewriteLd(PrimitiveType.UInt16, PrimitiveType.Word64); break;
-                case Mnemonic.mskbl: RewriteInstrinsic("__mskbl", true); break;
-                case Mnemonic.msklh: RewriteInstrinsic("__msklh", true); break;
-                case Mnemonic.mskll: RewriteInstrinsic("__mskll", true); break;
-                case Mnemonic.mskqh: RewriteInstrinsic("__mskqh", true); break;
-                case Mnemonic.mskql: RewriteInstrinsic("__mskql", true); break;
-                case Mnemonic.mskwl: RewriteInstrinsic("__mskwl", true); break;
+                case Mnemonic.mskbl: RewriteInstrinsic(mskbl_intrinsic); break;
+                case Mnemonic.msklh: RewriteInstrinsic(msklh_intrinsic); break;
+                case Mnemonic.mskll: RewriteInstrinsic(mskll_intrinsic); break;
+                case Mnemonic.mskqh: RewriteInstrinsic(mskqh_intrinsic); break;
+                case Mnemonic.mskql: RewriteInstrinsic(mskql_intrinsic); break;
+                case Mnemonic.mskwl: RewriteInstrinsic(mskwl_intrinsic); break;
                 case Mnemonic.mull: RewriteBin(mull); break;
                 case Mnemonic.mulq: RewriteBin(mulq); break;
                 case Mnemonic.muls: RewriteFpuOp(m.FMul); break;
@@ -186,14 +187,14 @@ namespace Reko.Arch.Alpha
                 case Mnemonic.s8subl: RewriteBin(s8subl); break;
                 case Mnemonic.s8subq: RewriteBin(s8subq); break;
                 case Mnemonic.sll: RewriteBin(sll); break;
-                case Mnemonic.src: RewriteInstrinsic("__src", true); break;
+                case Mnemonic.sra: RewriteBin(sra); break;
                 case Mnemonic.srl: RewriteBin(srl); break;
                 case Mnemonic.stb: RewriteSt(PrimitiveType.Byte); break;
                 case Mnemonic.stf: RewriteSt(PrimitiveType.Real64, PrimitiveType.Real32); break;
                 case Mnemonic.stl: RewriteSt(PrimitiveType.Word32); break;
-                case Mnemonic.stl_c: RewriteStoreInstrinsic("__stl_c", PrimitiveType.Word32); break;
-                case Mnemonic.stq_c: RewriteStoreInstrinsic("__stq_c", PrimitiveType.Word64); break;
-                case Mnemonic.stq_u: RewriteStoreInstrinsic("__stq_u", PrimitiveType.Word64); break;
+                case Mnemonic.stl_c: RewriteStoreInstrinsic(store_conditional_intrinsic, PrimitiveType.Word32); break;
+                case Mnemonic.stq_c: RewriteStoreInstrinsic(store_conditional_intrinsic, PrimitiveType.Word64); break;
+                case Mnemonic.stq_u: RewriteStoreInstrinsic(store_unaligned_intrinsic, PrimitiveType.Word64); break;
                 case Mnemonic.stg: RewriteSt(PrimitiveType.Real64); break;
                 case Mnemonic.stw: RewriteSt(PrimitiveType.Word16); break;
                 case Mnemonic.sts: RewriteSt(PrimitiveType.Real32); break;
@@ -210,8 +211,8 @@ namespace Reko.Arch.Alpha
                 case Mnemonic.trapb: RewriteTrapb(); break;
                 case Mnemonic.umulh: RewriteBin(umulh); break;
                 case Mnemonic.xor: RewriteBin(xor); break;
-                case Mnemonic.zap: RewriteInstrinsic("__zap", true); break;
-                case Mnemonic.zapnot: RewriteInstrinsic("__zapnot", true); break;
+                case Mnemonic.zap: RewriteInstrinsic(zap_intrinsic); break;
+                case Mnemonic.zapnot: RewriteInstrinsic(zapnot_intrinsic); break;
                 }
                 yield return m.MakeCluster(instr.Address, instr.Length, iclass);
             }
@@ -278,5 +279,67 @@ namespace Reko.Arch.Alpha
             }
             throw new NotImplementedException(string.Format("{0} ({1})", op, op.GetType().Name));
         }
+
+        static AlphaRewriter()
+        {
+            implver_intrinsic = new IntrinsicBuilder("__implver", true)
+                .GenericTypes("T")
+                .Returns("T");
+            load_locked_intrinsic = new IntrinsicBuilder("__load_locked", true)
+                .GenericTypes("TPtr", "TValue")
+                .Param("TPtr")
+                .Returns("TValue");
+            ov_intrinsic = new IntrinsicBuilder("OV", false)
+                .GenericTypes("T")
+                .Param("T")
+                .Returns(PrimitiveType.Bool);
+            store_conditional_intrinsic = new IntrinsicBuilder("__store_conditional", true)
+                .GenericTypes("TPtr", "TValue")
+                .Param("TPtr")
+                .Param("TValue")
+                .Void();
+            store_unaligned_intrinsic = new IntrinsicBuilder("__store_conditional", true)
+                .GenericTypes("TPtr", "TValue")
+                .Param("TPtr")
+                .Param("TValue")
+                .Void();
+            trap_barrier_intrinsic = new IntrinsicBuilder("__trap_barrier", true)
+                .Void(); 
+        }
+
+        private static readonly IntrinsicProcedure cpys_intrinsic = IntrinsicBuilder.GenericBinary("__cpys");
+        private static readonly IntrinsicProcedure cpyse_intrinsic = IntrinsicBuilder.GenericBinary("__cpyse");
+        private static readonly IntrinsicProcedure cpysn_intrinsic = IntrinsicBuilder.GenericBinary("__cpysn");
+        private static readonly IntrinsicProcedure cmpbge_intrinsic = IntrinsicBuilder.GenericBinary("__cmpbge");
+        private static readonly IntrinsicProcedure extbl_intrinsic = IntrinsicBuilder.GenericBinary("__extbl");
+        private static readonly IntrinsicProcedure extlh_intrinsic = IntrinsicBuilder.GenericBinary("__extlh");
+        private static readonly IntrinsicProcedure extll_intrinsic = IntrinsicBuilder.GenericBinary("__extll");
+        private static readonly IntrinsicProcedure extqh_intrinsic = IntrinsicBuilder.GenericBinary("__extqh");
+        private static readonly IntrinsicProcedure extql_intrinsic = IntrinsicBuilder.GenericBinary("__extql");
+        private static readonly IntrinsicProcedure extwh_intrinsic = IntrinsicBuilder.GenericBinary("__extwh");
+        private static readonly IntrinsicProcedure extwl_intrinsic = IntrinsicBuilder.GenericBinary("__extwl");
+        private static readonly IntrinsicProcedure implver_intrinsic;
+        private static readonly IntrinsicProcedure insbl_intrinsic = IntrinsicBuilder.GenericBinary("__insbl");
+        private static readonly IntrinsicProcedure inslh_intrinsic = IntrinsicBuilder.GenericBinary("__inslh");
+        private static readonly IntrinsicProcedure insll_intrinsic = IntrinsicBuilder.GenericBinary("__insll");
+        private static readonly IntrinsicProcedure insqh_intrinsic = IntrinsicBuilder.GenericBinary("__insqh");
+        private static readonly IntrinsicProcedure insql_intrinsic = IntrinsicBuilder.GenericBinary("__insql");
+        private static readonly IntrinsicProcedure inswl_intrinsic = IntrinsicBuilder.GenericBinary("__inswl");
+        private static readonly IntrinsicProcedure load_locked_intrinsic;
+        private static readonly IntrinsicProcedure mskbl_intrinsic = IntrinsicBuilder.GenericBinary("__mskbl");
+        private static readonly IntrinsicProcedure msklh_intrinsic = IntrinsicBuilder.GenericBinary("__msklh");
+        private static readonly IntrinsicProcedure mskll_intrinsic = IntrinsicBuilder.GenericBinary("__mskll");
+        private static readonly IntrinsicProcedure mskqh_intrinsic = IntrinsicBuilder.GenericBinary("__mskqh");
+        private static readonly IntrinsicProcedure mskql_intrinsic = IntrinsicBuilder.GenericBinary("__mskql");
+        private static readonly IntrinsicProcedure mskwl_intrinsic = IntrinsicBuilder.GenericBinary("__mskwl");
+        private static readonly IntrinsicProcedure store_conditional_intrinsic;
+        private static readonly IntrinsicProcedure store_unaligned_intrinsic;
+
+
+
+        private static readonly IntrinsicProcedure ov_intrinsic;
+        private static readonly IntrinsicProcedure trap_barrier_intrinsic;
+        private static readonly IntrinsicProcedure zap_intrinsic = IntrinsicBuilder.GenericBinary("__zap");
+        private static readonly IntrinsicProcedure zapnot_intrinsic = IntrinsicBuilder.GenericBinary("__zapnot");
     }
 }

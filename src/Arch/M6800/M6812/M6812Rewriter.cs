@@ -144,10 +144,10 @@ namespace Reko.Arch.M6800.M6812
                 case Mnemonic.ediv: RewriteEdiv(m.UDiv, m.Remainder); break;
                 case Mnemonic.edivs: RewriteEdiv(m.SDiv, m.Remainder); break;
                 case Mnemonic.emacs: RewriteEmacs(); break;
-                case Mnemonic.emaxd: RewriteEmaxmind("__umax"); break;
-                case Mnemonic.emaxm: RewriteEmaxminm("__umax"); break;
-                case Mnemonic.emind: RewriteEmaxmind("__umin"); break;
-                case Mnemonic.eminm: RewriteEmaxminm("__umin"); break;
+                case Mnemonic.emaxd: RewriteEmaxmind(CommonOps.Max); break;
+                case Mnemonic.emaxm: RewriteEmaxminm(CommonOps.Max); break;
+                case Mnemonic.emind: RewriteEmaxmind(CommonOps.Min); break;
+                case Mnemonic.eminm: RewriteEmaxminm(CommonOps.Min); break;
                 case Mnemonic.emul: RewriteEmul(m.UMul); break;
                 case Mnemonic.emuls: RewriteEmul(m.SMul); break;
                 case Mnemonic.eora: RewriteLogical(Registers.a, m.Xor); break;
@@ -198,11 +198,11 @@ namespace Reko.Arch.M6800.M6812
                 case Mnemonic.lsra: RewriteShift(Registers.a, m.Shr); break;
                 case Mnemonic.lsrb: RewriteShift(Registers.b, m.Shr); break;
                 case Mnemonic.lsrd: RewriteShift(Registers.d, m.Shr); break;
-                case Mnemonic.maxa: RewriteMaxmina("__umax_b"); break;
-                case Mnemonic.maxm: RewriteMaxminm("__umax_b"); break;
+                case Mnemonic.maxa: RewriteMaxmina(CommonOps.Max); break;
+                case Mnemonic.maxm: RewriteMaxminm(CommonOps.Max); break;
                 case Mnemonic.mem: RewriteMem(); break;
-                case Mnemonic.mina: RewriteMaxmina("__umin_b"); break;
-                case Mnemonic.minm: RewriteMaxminm("__umin_b"); break;
+                case Mnemonic.mina: RewriteMaxmina(CommonOps.Min); break;
+                case Mnemonic.minm: RewriteMaxminm(CommonOps.Min); break;
                 case Mnemonic.mul: RewriteMul(); break;
                 case Mnemonic.neg: RewriteNeg(); break;
                 case Mnemonic.nega: RewriteNeg(Registers.a); break;
@@ -464,8 +464,7 @@ namespace Reko.Arch.M6800.M6812
 
         private void RewriteBgnd()
         {
-            var intrinsic = host.Intrinsic("__bgnd", true, VoidType.Instance);
-            m.SideEffect(intrinsic);
+            m.SideEffect(m.Fn(bgnd_intrinsic));
         }
 
         private void RewriteBit(RegisterStorage reg)
@@ -582,7 +581,7 @@ namespace Reko.Arch.M6800.M6812
         private void RewriteDaa()
         {
             var a = binder.EnsureRegister(Registers.a);
-            var intrinsic = host.Intrinsic("__daa", false, PrimitiveType.Byte, a, m.Out(a.DataType, a));
+            var intrinsic = m.Fn(daa_intrinsic, a, m.Out(a.DataType, a));
             NZVC(a);
         }
 
@@ -620,20 +619,20 @@ namespace Reko.Arch.M6800.M6812
             NZVC(tmp);
         }
 
-        private void RewriteEmaxmind(string fnname)
+        private void RewriteEmaxmind(IntrinsicProcedure intrinsic)
         {
             var d = binder.EnsureRegister(Registers.d);
             var mem = RewriteOp(instr.Operands[0]);
-            m.Assign(d, host.Intrinsic(fnname, false, PrimitiveType.UInt16, d, mem));
+            m.Assign(d, m.Fn(intrinsic.MakeInstance(PrimitiveType.UInt16), d, mem));
             NZVC(d);
         }
 
-        private void RewriteEmaxminm(string fnname)
+        private void RewriteEmaxminm(IntrinsicProcedure intrinsic)
         {
             var d = binder.EnsureRegister(Registers.d);
             var mem = RewriteOp(instr.Operands[0]);
             var tmp = binder.CreateTemporary(mem.DataType);
-            m.Assign(tmp, host.Intrinsic(fnname, false, PrimitiveType.UInt16, d, mem));
+            m.Assign(tmp, m.Fn(intrinsic.MakeInstance(PrimitiveType.UInt16), d, mem));
             m.Assign(mem, tmp);
             NZVC(tmp);
         }
@@ -652,8 +651,12 @@ namespace Reko.Arch.M6800.M6812
             var b = binder.EnsureRegister(Registers.b);
             var d = binder.EnsureRegister(Registers.d);
             var mem = RewriteMemoryOperand((MemoryOperand)instr.Operands[0]);
-            m.Assign(d, host.Intrinsic("__etbl", true, PrimitiveType.Word16,
-                mem.EffectiveAddress, b));
+            m.Assign(d, m.Fn(
+                tbl_intrinsic.MakeInstance(
+                    new Pointer(PrimitiveType.Word16, 2),
+                    PrimitiveType.Word16),
+                mem.EffectiveAddress,
+                b));
             NZ_C(d);
         }
 
@@ -748,11 +751,11 @@ namespace Reko.Arch.M6800.M6812
             NZ0_(left);
         }
 
-        private void RewriteMaxmina(string fnname)
+        private void RewriteMaxmina(IntrinsicProcedure intrinsic)
         {
             var a = binder.EnsureRegister(Registers.a);
             var mem = RewriteOp(instr.Operands[0]);
-            m.Assign(a, host.Intrinsic(fnname, true, PrimitiveType.Byte, a, mem));
+            m.Assign(a, m.Fn(intrinsic.MakeInstance(PrimitiveType.Byte), a, mem));
             NZVC(a);
         }
 
@@ -761,19 +764,19 @@ namespace Reko.Arch.M6800.M6812
             var a = binder.EnsureRegister(Registers.a);
             var x = binder.EnsureRegister(Registers.x);
             var y = binder.EnsureRegister(Registers.y);
-            var intrinsic = host.Intrinsic("__membership", true, VoidType.Instance,
+            var intrinsic = m.Fn(membership_intrinsic,
                 a, x, y,
                 m.Out(x.DataType, x),
                 m.Out(y.DataType, y));
             m.SideEffect(intrinsic);
         }
 
-        private void RewriteMaxminm(string fnname)
+        private void RewriteMaxminm(IntrinsicProcedure intrinsic)
         {
             var a = binder.EnsureRegister(Registers.a);
             var mem = RewriteOp(instr.Operands[0]);
             var tmp = binder.CreateTemporary(mem.DataType);
-            m.Assign(tmp, host.Intrinsic(fnname, false, PrimitiveType.Byte, a, mem));
+            m.Assign(tmp, m.Fn(intrinsic.MakeInstance(PrimitiveType.Byte), a, mem));
             m.Assign(mem, tmp);
             NZVC(tmp);
         }
@@ -867,7 +870,7 @@ namespace Reko.Arch.M6800.M6812
 
         private void RewriteStop()
         {
-            var intrinsic = host.Intrinsic("__stop", true, VoidType.Instance);
+            var intrinsic = m.Fn(stop_intrinsic);
             m.SideEffect(intrinsic);
         }
 
@@ -881,7 +884,7 @@ namespace Reko.Arch.M6800.M6812
 
         private void RewriteSwi()
         {
-            var intrinsic = host.Intrinsic("__swi", true, VoidType.Instance);
+            var intrinsic = m.Fn(swi_intrinsic);
             m.SideEffect(intrinsic);
         }
         private void RewriteTab()
@@ -916,8 +919,7 @@ namespace Reko.Arch.M6800.M6812
 
         private void RewriteTrap()
         {
-            var intrinsic = host.Intrinsic("__swi", true, VoidType.Instance);
-            m.SideEffect(intrinsic);
+            m.SideEffect(m.Fn(swi_intrinsic));
         }
 
         private void RewriteTst(RegisterStorage reg)
@@ -934,8 +936,7 @@ namespace Reko.Arch.M6800.M6812
 
         private void RewriteWai()
         {
-            var intrinsic = host.Intrinsic("__wai", true, VoidType.Instance);
-            m.SideEffect(intrinsic);
+            m.SideEffect(m.Fn(wai_intrinsic));
         }
 
         private void RewriteWav()
@@ -943,13 +944,44 @@ namespace Reko.Arch.M6800.M6812
             var b = binder.EnsureRegister(Registers.b);
             var x = binder.EnsureRegister(Registers.x);
             var y = binder.EnsureRegister(Registers.y);
-            var intrinsic = host.Intrinsic("__wav",
-                true,
-                VoidType.Instance,
+            var intrinsic = m.Fn(wav_intrinsic,
                 b, x, y,
                 m.Out(b.DataType, b), m.Out(x.DataType, x), m.Out(y.DataType, y));
             m.SideEffect(intrinsic);
             AssignFlag(Registers.Z, true);
         }
+
+        static readonly IntrinsicProcedure daa_intrinsic = new IntrinsicBuilder("__daa", false)
+            .Param(PrimitiveType.Byte)
+            .OutParam(PrimitiveType.Byte)
+            .Returns(PrimitiveType.Byte);
+        static readonly IntrinsicProcedure bgnd_intrinsic = new IntrinsicBuilder("__bgnd", true)
+            .Void();
+        static readonly IntrinsicProcedure membership_intrinsic = new IntrinsicBuilder("__membership", true)
+            .Param(PrimitiveType.Byte)
+            .Param(PrimitiveType.Byte)
+            .Param(PrimitiveType.Byte)
+            .OutParam(PrimitiveType.Byte)
+            .OutParam(PrimitiveType.Byte)
+            .Void();
+        static readonly IntrinsicProcedure tbl_intrinsic = new IntrinsicBuilder("__table_interpolate", false)
+            .GenericTypes("TTable", "TEntry")
+            .Param("TTable")
+            .Param(PrimitiveType.Byte)
+            .Returns("TEntry");
+        static readonly IntrinsicProcedure swi_intrinsic = new IntrinsicBuilder("__swi", true)
+            .Void();
+        static readonly IntrinsicProcedure stop_intrinsic = new IntrinsicBuilder("__stop", true)
+            .Void();
+        static readonly IntrinsicProcedure wai_intrinsic = new IntrinsicBuilder("__wai", true)
+            .Void();
+        static readonly IntrinsicProcedure wav_intrinsic = new IntrinsicBuilder("__wav", true)
+            .Param(PrimitiveType.Byte)
+            .Param(PrimitiveType.Byte)
+            .Param(PrimitiveType.Byte)
+            .OutParam(PrimitiveType.Byte)
+            .OutParam(PrimitiveType.Byte)
+            .OutParam(PrimitiveType.Byte)
+            .Void();
     }
 }

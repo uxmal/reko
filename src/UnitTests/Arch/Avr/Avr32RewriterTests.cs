@@ -56,7 +56,7 @@ namespace Reko.UnitTests.Arch.Avr
             AssertCode(
                 "0|L--|00100000(2): 3 instructions",
                 "1|L--|v2 = r11",
-                "2|L--|r11 = abs(v2)",
+                "2|L--|r11 = abs<int32>(v2)",
                 "3|L--|Z = r11 == 0<32>");
         }
 
@@ -405,7 +405,7 @@ namespace Reko.UnitTests.Arch.Avr
             Given_HexString("EE080C47");
             AssertCode(     // max	r7,r7,r8
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|r7 = max(r7, r8)");
+                "1|L--|r7 = max<int32>(r7, r8)");
         }
 
         [Test]
@@ -423,7 +423,7 @@ namespace Reko.UnitTests.Arch.Avr
             Given_HexString("F4080D48");
             AssertCode(     // min	r8,r10,r8
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|r8 = min(r10, r8)");
+                "1|L--|r8 = min<int32>(r10, r8)");
         }
 
         [Test]
@@ -673,7 +673,7 @@ namespace Reko.UnitTests.Arch.Avr
             Given_Instruction("F2D00000");	// satsub.w	r0,r9
             AssertCode(
                 "0|L--|00100000(4): 3 instructions",
-                "1|L--|r0 = __satsub_w(r0, r9)",
+                "1|L--|r0 = __satsub<int32>(r0, r9)",
                 "2|L--|VNZC = cond(r0)",
                 "3|L--|Q = cond(r0)");
         }

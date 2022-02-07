@@ -302,7 +302,7 @@ namespace Reko.UnitTests.Arch.Avr
             Given_UInt16s(0x9402); // "swap\tr0"
             AssertCode(
                 "0|L--|0100(2): 1 instructions",
-                "1|L--|r0 = __swap(r0)");
+                "1|L--|r0 = __swap_nybbles(r0)");
         }
 
         [Test]

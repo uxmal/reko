@@ -20,6 +20,7 @@
 
 using Reko.Core;
 using Reko.Core.Expressions;
+using Reko.Core.Intrinsics;
 using Reko.Core.Machine;
 using Reko.Core.Memory;
 using Reko.Core.Rtl;
@@ -289,27 +290,27 @@ namespace Reko.Arch.Altera.Nios2
 
         private void RewriteFlushd()
         {
-            m.SideEffect(host.Intrinsic("__flushd", true, VoidType.Instance, m.AddrOf(PrimitiveType.Ptr32, Mem(0, PrimitiveType.Word32))));
+            m.SideEffect(m.Fn(flushd_intrinsic, m.AddrOf(PrimitiveType.Ptr32, Mem(0, PrimitiveType.Word32))));
         }
 
         private void RewriteFlushi()
         {
-            m.SideEffect(host.Intrinsic("__flushi", true, VoidType.Instance, m.AddrOf(PrimitiveType.Ptr32, Mem(0, PrimitiveType.Word32))));
+            m.SideEffect(m.Fn(flushi_intrinsic, m.AddrOf(PrimitiveType.Ptr32, Mem(0, PrimitiveType.Word32))));
         }
 
         private void RewriteFlushp()
         {
-            m.SideEffect(host.Intrinsic("__flushp", true, VoidType.Instance));
+            m.SideEffect(m.Fn(flushp_intrinsic));
         }
 
         private void RewriteInitd()
         {
-            m.SideEffect(host.Intrinsic("__initd", true, VoidType.Instance, m.AddrOf(PrimitiveType.Ptr32, Mem(0, PrimitiveType.Word32))));
+            m.SideEffect(m.Fn(initd_intrinsic, m.AddrOf(PrimitiveType.Ptr32, Mem(0, PrimitiveType.Word32))));
         }
 
         private void RewriteIniti()
         {
-            m.SideEffect(host.Intrinsic("__initi", true, VoidType.Instance, Reg0(0)));
+            m.SideEffect(m.Fn(initi_intrinsic, Reg0(0)));
         }
 
         private void RewriteJump(Expression dst)
@@ -476,7 +477,36 @@ namespace Reko.Arch.Altera.Nios2
 
         private void RewriteWrctl()
         {
-            m.SideEffect(host.Intrinsic("__wrctl", true, VoidType.Instance, Reg0(0), Reg0(1)));
+            m.SideEffect(m.Fn(wrctl_intrinsic, Reg0(0), Reg0(1)));
         }
+
+        static Nios2Rewriter()
+        {
+            flushd_intrinsic = new IntrinsicBuilder("__flushd", true)
+                .Param(PrimitiveType.Ptr32)
+                .Void();
+            flushi_intrinsic = new IntrinsicBuilder("__flushi", true)
+                .Param(PrimitiveType.Ptr32)
+                .Void();
+            flushp_intrinsic = new IntrinsicBuilder("__flushp", true)
+                .Void();
+            initd_intrinsic = new IntrinsicBuilder("__initd", true)
+                .Param(PrimitiveType.Ptr32)
+                .Void();
+            initi_intrinsic = new IntrinsicBuilder("__initi", true)
+                .Param(PrimitiveType.Ptr32)
+                .Void();
+            wrctl_intrinsic = new IntrinsicBuilder("__wrctl", true)
+                .Param(PrimitiveType.Word32)
+                .Param(PrimitiveType.Word32)
+                .Void();
+        }
+
+        private static readonly IntrinsicProcedure flushd_intrinsic;
+        private static readonly IntrinsicProcedure flushi_intrinsic;
+        private static readonly IntrinsicProcedure flushp_intrinsic;
+        private static readonly IntrinsicProcedure initd_intrinsic;
+        private static readonly IntrinsicProcedure initi_intrinsic;
+        private static readonly IntrinsicProcedure wrctl_intrinsic;
     }
 }

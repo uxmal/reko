@@ -73,9 +73,9 @@ namespace Reko.UnitTests.Arch.C166
             Given_HexString("FED6");
             AssertCode(     // bclr	TFR:15
                 "0|L--|0100(2): 6 instructions",
-                "1|L--|N = __bit(TFR, 15<i16>)",
+                "1|L--|N = __bit<word16,int16>(TFR, 15<i16>)",
                 "2|L--|Z = ~N",
-                "3|L--|TFR = __bit_clear(TFR, 15<i16>)",
+                "3|L--|TFR = __bit_clear<word16,int16>(TFR, 15<i16>)",
                 "4|L--|E = false",
                 "5|L--|V = false",
                 "6|L--|C = false");
@@ -87,9 +87,9 @@ namespace Reko.UnitTests.Arch.C166
             Given_HexString("DFE2");
             AssertCode(     // bset	P3:13
                 "0|L--|0100(2): 6 instructions",
-                "1|L--|N = __bit(P3, 13<i16>)",
+                "1|L--|N = __bit<word16,int16>(P3, 13<i16>)",
                 "2|L--|Z = ~N",
-                "3|L--|P3 = __bit_set(P3, 13<i16>)",
+                "3|L--|P3 = __bit_set<word16,int16>(P3, 13<i16>)",
                 "4|L--|E = false",
                 "5|L--|V = false",
                 "6|L--|C = false");
@@ -183,7 +183,7 @@ namespace Reko.UnitTests.Arch.C166
             Given_HexString("9AB7FE70");
             AssertCode(     // jnb	S0RIC:7,011C
                 "0|T--|0100(4): 1 instructions",
-                "1|T--|if (!__bit(S0RIC, 7<i16>)) branch 0100");
+                "1|T--|if (!__bit<word16,int16>(S0RIC, 7<i16>)) branch 0100");
         }
 
         [Test]

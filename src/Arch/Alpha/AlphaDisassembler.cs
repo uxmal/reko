@@ -452,7 +452,7 @@ namespace Reko.Arch.Alpha
                 { 0x36, new RegDecoder(Mnemonic.extql) },
                 { 0x39, new RegDecoder(Mnemonic.sll) },
                 { 0x3B, new RegDecoder(Mnemonic.insql) },
-                { 0x3C, new RegDecoder(Mnemonic.src) },
+                { 0x3C, new RegDecoder(Mnemonic.sra) },
                 { 0x52, new RegDecoder(Mnemonic.mskwh) },
                 { 0x57, new RegDecoder(Mnemonic.inswh) },
                 { 0x5A, new RegDecoder(Mnemonic.extwh) },

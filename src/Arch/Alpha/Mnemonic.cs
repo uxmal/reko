@@ -113,7 +113,7 @@ namespace Reko.Arch.Alpha
         s8subl,
         s8subq,
         sll,
-        src,
+        sra,
         srl,
         stb,
         stf,

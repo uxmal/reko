@@ -155,8 +155,8 @@ namespace Reko.Arch.Avr.Avr32
                 case Mnemonic.rol: RewriteRol(); break;
                 case Mnemonic.ror: RewriteRor(); break;
                 case Mnemonic.rsub: RewriteRsub(); break;
-                case Mnemonic.sats: RewriteSat("__sats", PrimitiveType.Int32); break;
-                case Mnemonic.satu: RewriteSat("__satu", PrimitiveType.UInt32); break;
+                case Mnemonic.sats: RewriteSat(sat_intrinsic, PrimitiveType.Int32); break;
+                case Mnemonic.satu: RewriteSat(sat_intrinsic, PrimitiveType.UInt32); break;
                 case Mnemonic.satsub_w: RewriteSatsubW(); break;
                 case Mnemonic.sbc: RewriteSbc(); break;
                 case Mnemonic.sbr: RewriteSbr(); break;
@@ -336,7 +336,7 @@ namespace Reko.Arch.Avr.Avr32
             var i32 = PrimitiveType.Int32;
             var tmp = binder.CreateTemporary(i32);
             m.Assign(tmp, RewriteOp(0));
-            var src = host.Intrinsic("abs", false, i32, tmp);
+            var src = m.Fn(CommonOps.Abs.MakeInstance(i32), tmp);
             var dst = RewriteOpDst(0, src);
             m.Assign(binder.EnsureFlagGroup(Z), m.Eq0(dst));
         }
@@ -499,7 +499,7 @@ namespace Reko.Arch.Avr.Avr32
             var reg = RewriteOp(0);
             var bit = ((ImmediateOperand) instr.Operands[1]).Value;
             var c = binder.EnsureFlagGroup(C);
-            var src = host.Intrinsic("__setbit", false, PrimitiveType.Word32, reg, bit, c);
+            var src = m.Fn(setbit_intrinsic, reg, bit, c);
             RewriteOpDst(0, src);
         }
 
@@ -537,7 +537,7 @@ namespace Reko.Arch.Avr.Avr32
         private void RewriteClz()
         {
             var src = RewriteOp(1);
-            var dst = RewriteOpDst(0, host.Intrinsic("__clz", false, PrimitiveType.Int32, src));
+            var dst = RewriteOpDst(0, m.Fn(clz_intrinsic, src));
             m.Assign(binder.EnsureFlagGroup(Z), m.Eq0(dst));
             m.Assign(binder.EnsureFlagGroup(C), m.Eq(dst, 32));
         }
@@ -693,21 +693,19 @@ namespace Reko.Arch.Avr.Avr32
             m.Assign(dst, m.IAdd(dst, fn(left, right)));
         }
 
-        //$TODO: ensure signedness
         private void RewriteMax()
         {
             var left = RewriteOp(1);
             var right = RewriteOp(2);
-            var src = host.Intrinsic("max", false, PrimitiveType.Int32, left, right);
+            var src = m.Fn(CommonOps.Max.MakeInstance(PrimitiveType.Int32), left, right);
             RewriteOpDst(0, src);
         }
         
-        //$TODO: ensure signedness
         private void RewriteMin()
         {
             var left = RewriteOp(1);
             var right = RewriteOp(2);
-            var src = host.Intrinsic("min", false, PrimitiveType.Int32, left, right);
+            var src = m.Fn(CommonOps.Min.MakeInstance(PrimitiveType.Int32), left, right);
             RewriteOpDst(0, src);
         }
 
@@ -926,12 +924,12 @@ namespace Reko.Arch.Avr.Avr32
             EmitCc(VNZC, dst);
         }
 
-        private void RewriteSat(string intrinsicName, PrimitiveType dt)
+        private void RewriteSat(IntrinsicProcedure intrinsic, PrimitiveType dt)
         {
             var left = RewriteOp(0);
             var right = RewriteOp(1);
             var dst = binder.EnsureRegister(((RegisterImmediateOperand) instr.Operands[0]).Register);
-            m.Assign(dst, host.Intrinsic(intrinsicName, false, dt, left, right));
+            m.Assign(dst, m.Fn(intrinsic.MakeInstance(dt), left, right));
             EmitCc(Q, dst);
         }
 
@@ -939,7 +937,7 @@ namespace Reko.Arch.Avr.Avr32
         {
             var left = RewriteOp(0);
             var right = RewriteOp(1);
-            var src = host.Intrinsic("__satsub_w", false, PrimitiveType.Int32, left, right);
+            var src = m.Fn(satsub_intrinsic.MakeInstance(PrimitiveType.Int32), left, right);
             var dst = RewriteOpDst(0, src);
             EmitCc(VNZC, dst);
             EmitCc(Q, dst);
@@ -1018,7 +1016,7 @@ namespace Reko.Arch.Avr.Avr32
             var ea = ((MemoryAccess) RewriteOp(0)).EffectiveAddress;
             var tmp = binder.CreateTemporary(PrimitiveType.Ptr32);
             m.Assign(tmp, ea);
-            m.Assign(binder.EnsureFlagGroup(Z), host.Intrinsic("__stcond", true, PrimitiveType.Bool, tmp, src));
+            m.Assign(binder.EnsureFlagGroup(Z), m.Fn(stcond_intrinsic, tmp, src));
         }
 
         private void RewriteStdsp()
@@ -1122,6 +1120,27 @@ namespace Reko.Arch.Avr.Avr32
             VNZ = new FlagGroupStorage(Registers.sr, (uint)(FlagM.VF | FlagM.NF | FlagM.ZF), nameof(VNZ), PrimitiveType.Byte);
             VNZC = new FlagGroupStorage(Registers.sr, (uint)(FlagM.VF | FlagM.NF | FlagM.ZF | FlagM.CF), nameof(VNZC), PrimitiveType.Byte);
             ZC = new FlagGroupStorage(Registers.sr, (uint)(FlagM.ZF | FlagM.CF), nameof(ZC), PrimitiveType.Byte);
+
+            clz_intrinsic = new IntrinsicBuilder("__clz", false)
+                .Param(PrimitiveType.Word32)
+                .Returns(PrimitiveType.Int32);
+            setbit_intrinsic = new IntrinsicBuilder("__setbit", false)
+                .Param(PrimitiveType.Word32)
+                .Param(PrimitiveType.Word32)
+                .Param(PrimitiveType.Bool)
+                .Returns(PrimitiveType.Word32);
+
+            stcond_intrinsic = new IntrinsicBuilder("__stcond", true)
+                .Param(PrimitiveType.Ptr32)
+                .Param(PrimitiveType.Word32)
+                .Returns(PrimitiveType.Bool);
         }
+
+        private static readonly IntrinsicProcedure clz_intrinsic;
+        private static readonly IntrinsicProcedure sat_intrinsic = IntrinsicBuilder.GenericBinary("__sat");
+        private static readonly IntrinsicProcedure satsub_intrinsic = IntrinsicBuilder.GenericBinary("__satsub");
+        private static readonly IntrinsicProcedure setbit_intrinsic;
+        private static readonly IntrinsicProcedure stcond_intrinsic;
+
     }
 }

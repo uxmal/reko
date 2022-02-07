@@ -20,6 +20,7 @@
 
 using Reko.Core;
 using Reko.Core.Expressions;
+using Reko.Core.Intrinsics;
 using Reko.Core.Machine;
 using Reko.Core.Memory;
 using Reko.Core.Rtl;
@@ -266,9 +267,9 @@ namespace Reko.Arch.C166
         private void RewriteBclr()
         {
             var (bit, reg) = BitOp(0);
-            EmitCc(Registers.N, host.Intrinsic("__bit", false, PrimitiveType.Bool, reg, bit));
+            EmitCc(Registers.N, m.Fn(bit_intrinsic, reg, bit));
             EmitCc(Registers.Z, m.Comp(binder.EnsureFlagGroup(Registers.N)));
-            m.Assign(reg, host.Intrinsic("__bit_clear", false, reg.DataType, reg, bit));
+            m.Assign(reg, m.Fn(bit_clear_intrinsic, reg, bit));
             EmitCc(Registers.E, Constant.False());
             EmitCc(Registers.V, Constant.False());
             EmitCc(Registers.C, Constant.False());
@@ -277,9 +278,9 @@ namespace Reko.Arch.C166
         private void RewriteBset()
         {
             var (bit, reg) = BitOp(0);
-            EmitCc(Registers.N, host.Intrinsic("__bit", false, PrimitiveType.Bool, reg, bit));
+            EmitCc(Registers.N, m.Fn(bit_intrinsic, reg, bit));
             EmitCc(Registers.Z, m.Comp(binder.EnsureFlagGroup(Registers.N)));
-            m.Assign(reg, host.Intrinsic("__bit_set", false, reg.DataType, reg, bit));
+            m.Assign(reg, m.Fn(bit_set_intrinsic, reg, bit));
             EmitCc(Registers.E, Constant.False());
             EmitCc(Registers.V, Constant.False());
             EmitCc(Registers.C, Constant.False());
@@ -314,12 +315,12 @@ namespace Reko.Arch.C166
 
         private void RewriteDiswdt()
         {
-            m.SideEffect(host.Intrinsic("__disable_watchdog_timer", true, VoidType.Instance));
+            m.SideEffect(m.Fn(disable_watchdog_timer_intrinsic));
         }
 
         private void RewriteEinit()
         {
-            m.SideEffect(host.Intrinsic("__end_of_initialization", true, VoidType.Instance));
+            m.SideEffect(m.Fn(end_of_initialization_intrinsic));
         }
 
         private void RewriteJmpa()
@@ -364,7 +365,7 @@ namespace Reko.Arch.C166
         {
             var (bit, exp) = BitOp(0);
             var addr = ((AddressOperand) instr.Operands[1]).Address;
-            m.Branch(m.Not(host.Intrinsic("__bit", false, PrimitiveType.Bool, exp, bit)), addr);
+            m.Branch(m.Not(m.Fn(bit_intrinsic, exp, bit)), addr);
         }
 
         private void RewriteLogical(Func<Expression,Expression,Expression> fn)
@@ -406,5 +407,34 @@ namespace Reko.Arch.C166
             m.Assign(psw, m.Mem16(m.IAddS(sp, 2)));
             m.Return(2, 2);
         }
+
+        static C166Rewriter()
+        {
+            bit_intrinsic = new IntrinsicBuilder("__bit", false)
+                .GenericTypes("TValue", "TBit")
+                .Param("TValue")
+                .Param("TBit")
+                .Returns(PrimitiveType.Bool);
+            bit_clear_intrinsic = new IntrinsicBuilder("__bit_clear", false)
+                .GenericTypes("TValue", "TBit")
+                .Param("TValue")
+                .Param("TBit")
+                .Returns("TValue");
+            bit_set_intrinsic = new IntrinsicBuilder("__bit_set", false)
+                .GenericTypes("TValue", "TBit")
+                .Param("TValue")
+                .Param("TBit")
+                .Returns("TValue");
+            disable_watchdog_timer_intrinsic = new IntrinsicBuilder("__disable_watchdog_timer", true)
+                .Void();
+            end_of_initialization_intrinsic = new IntrinsicBuilder("__end_of_initialization", true)
+                .Void();
+        }
+
+        private static readonly IntrinsicProcedure bit_intrinsic;
+        private static readonly IntrinsicProcedure bit_clear_intrinsic;
+        private static readonly IntrinsicProcedure bit_set_intrinsic;
+        private static readonly IntrinsicProcedure disable_watchdog_timer_intrinsic;
+        private static readonly IntrinsicProcedure end_of_initialization_intrinsic;
     }
 }

@@ -35,7 +35,7 @@ namespace Reko.Arch.Alpha
     {
         private const int FpuZeroRegister = 63;
 
-        private void RewriteCpys(string intrinsic)
+        private void RewriteCpys(IntrinsicProcedure intrinsic)
         {
             var r1 = ((RegisterStorage)instr.Operands[0]).Number;
             var r2 = ((RegisterStorage)instr.Operands[1]).Number;
@@ -50,7 +50,23 @@ namespace Reko.Arch.Alpha
             }
             else
             {
-                RewriteInstrinsic(intrinsic, true);
+                RewriteFloatInstrinsic(intrinsic);
+            }
+        }
+
+        private void RewriteFloatInstrinsic(IntrinsicProcedure instrinic)
+        {
+            var op1 = Rewrite(instr.Operands[0]);
+            var op2 = Rewrite(instr.Operands[1]);
+            var dst = Rewrite(instr.Operands[2]);
+            var dt = PrimitiveType.Create(Domain.Real, dst.DataType.BitSize);
+            if (dst.IsZero)
+            {
+                m.SideEffect(m.Fn(instrinic.MakeInstance(dt), op1, op2));
+            }
+            else
+            {
+                m.Assign(dst, m.Fn(instrinic.MakeInstance(dt), op1, op2));
             }
         }
 

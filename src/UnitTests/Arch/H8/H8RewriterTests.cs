@@ -169,7 +169,7 @@ namespace Reko.UnitTests.Arch.H8
             Given_HexString("7771");
             AssertCode(     // bld	#0x07,r1h
                 "0|L--|8000(2): 1 instructions",
-                "1|L--|C = __btst(r1h, 7<8>)");
+                "1|L--|C = __btst<byte,byte>(r1h, 7<8>)");
         }
 
         [Test]
@@ -196,7 +196,7 @@ namespace Reko.UnitTests.Arch.H8
             Given_HexString("700C");
             AssertCode(     // bset	#0x00,r4l
                 "0|L--|8000(2): 1 instructions",
-                "1|L--|r4l = __bst(r4l, true, 0<8>)");
+                "1|L--|r4l = __bset<byte,byte>(r4l, true, 0<8>)");
         }
 
         [Test]
@@ -205,7 +205,7 @@ namespace Reko.UnitTests.Arch.H8
             Given_HexString("670A");
             AssertCode(     // bst	#0x00,r2l
                 "0|L--|8000(2): 1 instructions",
-                "1|L--|r2l = __bst(r2l, C, 0<8>)");
+                "1|L--|r2l = __bset<byte,byte>(r2l, C, 0<8>)");
         }
 
         [Test]
@@ -214,7 +214,7 @@ namespace Reko.UnitTests.Arch.H8
             Given_HexString("7308");
             AssertCode(     // btst	#0x00,r0l
                 "0|L--|8000(2): 1 instructions",
-                "1|L--|Z = __btst(r0l, 0<8>)");
+                "1|L--|Z = __btst<byte,byte>(r0l, 0<8>)");
         }
 
         [Test]

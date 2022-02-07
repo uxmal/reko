@@ -390,7 +390,7 @@ namespace Reko.Arch.H8
         {
             var pos = OpSrc(instr.Operands[0]);
             var dst = OpSrc(instr.Operands[1]);
-            m.Assign(dst, host.Intrinsic("__bst", false, dst.DataType, dst, value, pos));
+            m.Assign(dst, m.Fn(bset_intrinsic.MakeInstance(dst.DataType, pos.DataType), dst, value, pos));
         }
 
         private void RewriteBtst(H8Instruction instr, FlagGroupStorage flag)
@@ -398,7 +398,7 @@ namespace Reko.Arch.H8
             var right = OpSrc(instr.Operands[0]);
             var left = OpSrc(instr.Operands[1]);
             var dst = binder.EnsureFlagGroup(flag);
-            m.Assign(dst, host.Intrinsic("__btst", false, dst.DataType, left, right));
+            m.Assign(dst, m.Fn(btst_intrinsic.MakeInstance(left.DataType, right.DataType), left, right));
         }
 
         private void RewriteLogical(H8Instruction instr, Func<Expression,Expression, Expression> fn)
@@ -519,5 +519,17 @@ namespace Reko.Arch.H8
             EmitCond(NZ, src);
             m.Assign(binder.EnsureFlagGroup(V), Constant.False());
         }
+
+        private static readonly IntrinsicProcedure bset_intrinsic = new IntrinsicBuilder("__bset", false)
+            .GenericTypes("TValue", "TPos")
+            .Param("TValue")
+            .Param(PrimitiveType.Bool)
+            .Param("TPos")
+            .Returns("TValue");
+        private static readonly IntrinsicProcedure btst_intrinsic = new IntrinsicBuilder("__btst", false)
+            .GenericTypes("TValue", "TPos")
+            .Param("TValue")
+            .Param("TPos")
+            .Returns("TValue");
     }
 }

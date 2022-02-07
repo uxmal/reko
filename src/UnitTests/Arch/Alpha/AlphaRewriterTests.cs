@@ -181,7 +181,7 @@ namespace Reko.UnitTests.Arch.Mips
             Given_HexString("2A76404A");	// zapnot	r18,03,r10
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|r10 = __zapnot(r18, 3<8>)");
+                "1|L--|r10 = __zapnot<word64>(r18, 3<8>)");
         }
 
         [Test]
@@ -298,7 +298,7 @@ namespace Reko.UnitTests.Arch.Mips
             Given_HexString("D852604A");	// extwl	r19,02,r24
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|r24 = __extwl(r19, 2<8>)");
+                "1|L--|r24 = __extwl<word64>(r19, 2<8>)");
         }
 
         [Test]
@@ -316,16 +316,16 @@ namespace Reko.UnitTests.Arch.Mips
             Given_HexString("78D5004B");	// insll	r24,06,r24
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|r24 = __insll(r24, 6<8>)");
+                "1|L--|r24 = __insll<word64>(r24, 6<8>)");
         }
 
         [Test]
-        public void AlphaRw_src()
+        public void AlphaRw_sra()
         {
             Given_HexString("9117664A");	// src	r19,30,r17
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|r17 = __src(r19, 0x30<8>)");
+                "1|L--|r17 = r19 >> 0x30<8>");
         }
 
         [Test]
@@ -480,7 +480,7 @@ namespace Reko.UnitTests.Arch.Mips
             Given_HexString("CD004048");	// extbl	r2,r0,r13
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|r13 = __extbl(r2, r0)");
+                "1|L--|r13 = __extbl<word64>(r2, r0)");
         }
 
         [Test]
@@ -516,7 +516,7 @@ namespace Reko.UnitTests.Arch.Mips
             Given_HexString("65016649");	// insbl	r11,r16,r5
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|r5 = __insbl(r11, r16)");
+                "1|L--|r5 = __insbl<word64>(r11, r16)");
         }
 
         [Test]
@@ -525,7 +525,7 @@ namespace Reko.UnitTests.Arch.Mips
             Given_HexString("44008648");	// mskbl	r4,r16,r4
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|r4 = __mskbl(r4, r16)");
+                "1|L--|r4 = __mskbl<word64>(r4, r16)");
         }
 
         [Test]
@@ -552,7 +552,7 @@ namespace Reko.UnitTests.Arch.Mips
             Given_HexString("460FC748");	// extqh	r6,r24,r6
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|r6 = __extqh(r6, r24)");
+                "1|L--|r6 = __extqh<word64>(r6, r24)");
         }
 
         [Test]
@@ -571,7 +571,7 @@ namespace Reko.UnitTests.Arch.Mips
             Given_HexString("C504A448");	// extll	r5,r0,r5
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|r5 = __extll(r5, r0)");
+                "1|L--|r5 = __extll<word64>(r5, r0)");
         }
 
         [Test]
@@ -580,7 +580,7 @@ namespace Reko.UnitTests.Arch.Mips
             Given_HexString("460DC448");	// extlh	r6,r0,r6
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|r6 = __extlh(r6, r0)");
+                "1|L--|r6 = __extlh<word64>(r6, r0)");
         }
 
         [Test]
@@ -589,7 +589,7 @@ namespace Reko.UnitTests.Arch.Mips
             Given_HexString("6F736548");	// inswl	r3,2B,r15
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|r15 = __inswl(r3, 0x2B<8>)");
+                "1|L--|r15 = __inswl<word64>(r3, 0x2B<8>)");
         }
 
         [Test]
@@ -643,7 +643,7 @@ namespace Reko.UnitTests.Arch.Mips
             Given_HexString("69726D3D");	// stq_u	r11,7269(r13)
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|__stq_u(Mem0[r13 + 0x7269<64>:word64], r11)");
+                "1|L--|__store_conditional<word64,word64 *>(Mem0[r13 + 0x7269<64>:word64], r11)");
         }
 
         [Test]
@@ -652,7 +652,7 @@ namespace Reko.UnitTests.Arch.Mips
             Given_HexString("000080BF");	// stq_c	r28,0(r0)
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|__stq_c(Mem0[r0:word64], r28)");
+                "1|L--|__store_conditional<word64,word64 *>(Mem0[r0:word64], r28)");
         }
 
         [Test]
@@ -724,7 +724,7 @@ namespace Reko.UnitTests.Arch.Mips
             Given_HexString("F2913FBA");	// stl_c	r17,-6E0E(zero)
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|__stl_c(Mem0[0xFFFFFFFFFFFF91F2<64>:word32], r17)");
+                "1|L--|__store_conditional<word32,word32 *>(Mem0[0xFFFFFFFFFFFF91F2<64>:word32], r17)");
         }
 
         [Test]
@@ -769,7 +769,7 @@ namespace Reko.UnitTests.Arch.Mips
             Given_HexString("2C6BBFA8");	// ldl_l	r5,6B2C(zero)
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|r5 = __ldl_l(Mem0[0x6B2C<64>:word32])");
+                "1|L--|r5 = __load_locked<word32,word64>(Mem0[0x6B2C<64>:word32])");
         }
 
         [Test]
@@ -797,7 +797,7 @@ namespace Reko.UnitTests.Arch.Mips
             Given_HexString("D70ADFAC");	// ldq_l	r6,AD7(zero)
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|r6 = __ldq_l(Mem0[0xAD7<64>:word64])");  //$LIT should be p64
+                "1|L--|r6 = __load_locked<word64,word64>(Mem0[0xAD7<64>:word64])");  //$LIT should be p64
         }
 
         [Test]
@@ -807,7 +807,7 @@ namespace Reko.UnitTests.Arch.Mips
             AssertCode(
                 "0|L--|00100000(4): 3 instructions",
                 "1|L--|r6 = r0 + r9",
-                "2|T--|if (!OV(r6)) branch 00100004",
+                "2|T--|if (!OV<word64>(r6)) branch 00100004",
                 "3|T--|__trap_overflow()");
         }
 
@@ -823,10 +823,10 @@ namespace Reko.UnitTests.Arch.Mips
         [Test]
         public void AlphaRw_implver()
         {
-            Given_HexString("9F4DDB47");	// implver	r30,r26,zero
+            Given_HexString("9F4DDB47");	// implver r30
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|__implver(r30, r26)");
+                "1|L--|r30 = __implver<word64>()");
         }
 
         [Test]
@@ -835,7 +835,7 @@ namespace Reko.UnitTests.Arch.Mips
             Given_HexString("4B4E984B");	// mskqh	r28,r2,r11
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|r11 = __mskqh(r28, r2)");
+                "1|L--|r11 = __mskqh<word64>(r28, r2)");
         }
 
         [Test]
@@ -853,17 +853,18 @@ namespace Reko.UnitTests.Arch.Mips
             Given_HexString("F1510440");	// cmpbge	r0,22,r17
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|r17 = __cmpbge(r0, 0x22<8>)");
+                "1|L--|r17 = __cmpbge<word64>(r0, 0x22<8>)");
         }
 
         [Test]
         public void AlphaRw_subq_v()
         {
+            //$BUG: this is horrible and needs to be fixed.
             Given_HexString("2B7D0240");	// subq_v	r0,13,r11
             AssertCode(
                 "0|L--|00100000(4): 3 instructions",
                 "1|L--|r11 = r0 - 0x13<8>",     //$LIT extend
-                "2|T--|if (!OV(r11)) branch 00100004",
+                "2|T--|if (!OV<word64>(r11)) branch 00100004",
                 "3|T--|__trap_overflow()");
         }
 
@@ -874,7 +875,7 @@ namespace Reko.UnitTests.Arch.Mips
             AssertCode(
                 "0|L--|00100000(4): 3 instructions",
                 "1|L--|r27 = CONVERT(SLICE(r0 - r5, int32, 0), int32, word64)",
-                "2|T--|if (!OV(r27)) branch 00100004",
+                "2|T--|if (!OV<word64>(r27)) branch 00100004",
                 "3|T--|__trap_overflow()");
         }
 
@@ -885,7 +886,7 @@ namespace Reko.UnitTests.Arch.Mips
             AssertCode(
                 "0|L--|00100000(4): 3 instructions",
                 "1|L--|r4 = CONVERT(SLICE(r3 + 0x4D<8>, int32, 0), int32, int64)",    //$LIT: extend
-                "2|T--|if (!OV(r4)) branch 00100004",
+                "2|T--|if (!OV<word64>(r4)) branch 00100004",
                 "3|T--|__trap_overflow()");
         }
 
@@ -904,7 +905,7 @@ namespace Reko.UnitTests.Arch.Mips
             Given_HexString("5B069B4B");	// mskql	r28,r24,r27
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|r27 = __mskql(r28, r24)");
+                "1|L--|r27 = __mskql<word64>(r28, r24)");
         }
 
         [Test]
@@ -932,7 +933,7 @@ namespace Reko.UnitTests.Arch.Mips
             Given_HexString("48020749");	// mskwl	r8,r24,r8
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|r8 = __mskwl(r8, r24)");
+                "1|L--|r8 = __mskwl<word64>(r8, r24)");
         }
 
         [Test]
@@ -941,7 +942,7 @@ namespace Reko.UnitTests.Arch.Mips
             Given_HexString("DC06924B");	// extql	r28,r16,r28
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|r28 = __extql(r28, r16)");
+                "1|L--|r28 = __extql<word64>(r28, r16)");
         }
 
         [Test]
@@ -950,7 +951,7 @@ namespace Reko.UnitTests.Arch.Mips
             Given_HexString("42044448");	// mskll	r2,r0,r2
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|r2 = __mskll(r2, r0)");
+                "1|L--|r2 = __mskll<word64>(r2, r0)");
         }
 
         [Test]
@@ -959,7 +960,7 @@ namespace Reko.UnitTests.Arch.Mips
             Given_HexString("460BC448");	// extwh	r6,r0,r6
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|r6 = __extwh(r6, r0)");
+                "1|L--|r6 = __extwh<word64>(r6, r0)");
         }
 
         [Test]
@@ -1015,7 +1016,7 @@ namespace Reko.UnitTests.Arch.Mips
             Given_HexString("560CD74A");	// msklh	r22,r24,r22
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|r22 = __msklh(r22, r24)");
+                "1|L--|r22 = __msklh<word64>(r22, r24)");
         }
 
         [Test]
@@ -1024,7 +1025,7 @@ namespace Reko.UnitTests.Arch.Mips
             Given_HexString("7C07604B");	// insql	r27,r0,r28
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|r28 = __insql(r27, r0)");
+                "1|L--|r28 = __insql<word64>(r27, r0)");
         }
 
         [Test]
@@ -1169,7 +1170,7 @@ namespace Reko.UnitTests.Arch.Mips
             Given_HexString("4004305C");	// cpyse	f1,f16,f0
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|f0 = __cpyse(f1, f16)");
+                "1|L--|f0 = __cpyse<real64>(f1, f16)");
         }
 
         [Test]
@@ -1197,7 +1198,7 @@ namespace Reko.UnitTests.Arch.Mips
             Given_HexString("3604D65E");	// cpysn	f22,f22,f22
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|f22 = __cpysn(f22, f22)");
+                "1|L--|f22 = __cpysn<real64>(f22, f22)");
         }
     }
 }

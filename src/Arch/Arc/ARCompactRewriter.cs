@@ -121,7 +121,7 @@ namespace Reko.Arch.Arc
                 case Mnemonic.add3:
                 case Mnemonic.add3_s:
                     RewriteAluOp(Add3, Registers.ZNCV); break;
-                case Mnemonic.addsdw: RewriteAddSubsdw("__addsdw"); break;
+                case Mnemonic.addsdw: RewriteAddSubsdw(addsdw_intrinsic); break;
                 case Mnemonic.and:
                 case Mnemonic.and_s:
                     RewriteAluOp(m.And, Registers.ZN); break;
@@ -295,7 +295,7 @@ namespace Reko.Arch.Arc
                 case Mnemonic.sub1: RewriteAluOp(Sub1, Registers.ZNCV); break;
                 case Mnemonic.sub2: RewriteAluOp(Sub2, Registers.ZNCV); break;
                 case Mnemonic.sub3: RewriteAluOp(Sub3, Registers.ZNCV); break;
-                case Mnemonic.subsdw: RewriteAddSubsdw("__subsdw"); break;
+                case Mnemonic.subsdw: RewriteAddSubsdw(subsdw_intrinsic); break;
                 case Mnemonic.trap_s:
                 case Mnemonic.trap0:
                     RewriteTrap();
@@ -398,44 +398,44 @@ namespace Reko.Arch.Arc
             return m.ISub(a, m.Shl(b, 3));
         }
 
-        private Expression Bclr(Expression a, Expression b)
-        {
-            return host.Intrinsic("__bclr", false, a.DataType, a, b);
-        }
-
         private Expression AndNot(Expression a, Expression b)
         {
             return m.And(a, m.Comp(b));
         }
 
+        private Expression Bclr(Expression a, Expression b)
+        {
+            return m.Fn(bclr_intrinsic.MakeInstance(a.DataType), a, b);
+        }
+
         private Expression Bset(Expression a, Expression b)
         {
-            return host.Intrinsic("__bset", false, a.DataType, a, b);
+            return m.Fn(bset_intrinsic.MakeInstance(a.DataType), a, b);
         }
 
         private Expression Bmsk(Expression a, Expression b)
         {
-            return host.Intrinsic("__bitmask", false, a.DataType, a, b);
+            return m.Fn(bitmask_intrinsic, a, b);
         }
 
         private Expression Btst(Expression a, Expression b)
         {
-            return host.Intrinsic("__btst", false, a.DataType, a, b);
+            return m.Fn(btst_intrinsic.MakeInstance(a.DataType), a, b);
         }
 
         private Expression Bxor(Expression a, Expression b)
         {
-            return host.Intrinsic("__bxor", false, a.DataType, a, b);
+            return m.Fn(bxor_intrinsic.MakeInstance(a.DataType), a, b);
         }
 
         private Expression Max(Expression a, Expression b)
         {
-            return host.Intrinsic("max", false, PrimitiveType.Int32, a, b);
+            return m.Fn(max_intrinsic, a, b);
         }
 
         private Expression Min(Expression a, Expression b)
         {
-            return host.Intrinsic("min", false, PrimitiveType.Int32, a, b);
+            return m.Fn(min_intrinsic, a, b);
         }
 
         private Expression Ror(Expression a, Expression b)
@@ -507,7 +507,7 @@ namespace Reko.Arch.Arc
         private Expression TestSaturation(bool isSaturated)
         {
             var flags = binder.EnsureFlagGroup(Registers.S);
-            var test = host.Intrinsic("__saturated", false, PrimitiveType.Bool, flags);
+            var test = m.Fn(saturated_intrinsic, flags);
             if (isSaturated)
             {
                 return test;
@@ -573,7 +573,7 @@ namespace Reko.Arch.Arc
 
         // Instruction rewriters //////////////////////////
 
-        private void RewriteAddSubsdw(string fnName)
+        private void RewriteAddSubsdw(IntrinsicProcedure intrinsic)
         {
             var dt = new ArrayType(PrimitiveType.Int16, 2);
             var tmp1 = binder.CreateTemporary(dt);
@@ -581,7 +581,7 @@ namespace Reko.Arch.Arc
             m.Assign(tmp1, Operand(1));
             m.Assign(tmp2, Operand(2));
             var dst = Operand(0);
-            m.Assign(dst, host.Intrinsic(fnName, true, dt, tmp1, tmp2));
+            m.Assign(dst, m.Fn(intrinsic, tmp1, tmp2));
             var flagReg = binder.EnsureFlagGroup(Registers.ZNV);
             var satReg = binder.EnsureFlagGroup(Registers.S);
 
@@ -633,7 +633,7 @@ namespace Reko.Arch.Arc
         {
             var op1 = Operand(0);
             var op2 = Operand(1);
-            Expression cond = host.Intrinsic("__bit", false, PrimitiveType.Bool, op1, op2);
+            Expression cond = m.Fn(bit_intrinsic, op1, op2);
             if (!branchIfTrue)
             {
                 cond = cond.Invert();
@@ -656,7 +656,7 @@ namespace Reko.Arch.Arc
 
         private void RewriteBrk()
         {
-            m.SideEffect(host.Intrinsic("__brk", true, VoidType.Instance), instr.InstructionClass);
+            m.SideEffect(m.Fn(brk_intrinsic), instr.InstructionClass);
         }
 
         private void RewriteCondInstr(Func<Expression, Expression, Expression> fn, FlagGroupStorage grf)
@@ -673,7 +673,7 @@ namespace Reko.Arch.Arc
             var src1 = Operand(1);
             var src2 = Operand(2);
             var dst = Operand(0);
-            m.Assign(dst, host.Intrinsic("__divaw", false, dst.DataType, src1, src2));
+            m.Assign(dst, m.Fn(divaw_intrinsic, src1, src2));
         }
 
         private void RewriteExt(PrimitiveType dtSlice, PrimitiveType dtExt)
@@ -686,7 +686,7 @@ namespace Reko.Arch.Arc
         private void RewriteFlag()
         {
             var src = Operand(0);
-            m.SideEffect(host.Intrinsic("__flag", false, VoidType.Instance, src));
+            m.SideEffect(m.Fn(flag_intrinsic, src));
         }
 
         private void RewriteJ(ArcCondition cond)
@@ -774,7 +774,7 @@ namespace Reko.Arch.Arc
         {
             var dst = Operand(0);
             var src = (uint) ((MemoryOperand) instr.Operands[1]).Offset;
-            m.Assign(dst, host.Intrinsic("__load_aux_reg", false, PrimitiveType.Word32, m.Word32(src)));
+            m.Assign(dst, m.Fn(load_aux_reg_intrinsic, m.Word32(src)));
         }
 
         private void RewriteMov()
@@ -837,7 +837,7 @@ namespace Reko.Arch.Arc
         {
             var src = Operand(0);
             var dst = (uint) ((MemoryOperand) instr.Operands[1]).Offset;
-            m.SideEffect(host.Intrinsic("__store_aux_reg", true, VoidType.Instance, m.Word32(dst), src));
+            m.SideEffect(m.Fn(store_aux_reg_intrinsic, m.Word32(dst), src));
         }
 
         private void RewriteStore(PrimitiveType dt)
@@ -877,7 +877,63 @@ namespace Reko.Arch.Arc
 
         private void RewriteTrap()
         {
-            m.SideEffect(host.Intrinsic(IntrinsicProcedure.Syscall, true, VoidType.Instance), instr.InstructionClass);
+            m.SideEffect(m.Fn(CommonOps.Syscall), instr.InstructionClass);
         }
+
+        static ARCompactRewriter()
+        {
+            var aint16 = new ArrayType(PrimitiveType.Int16, 2);
+            addsdw_intrinsic = IntrinsicBuilder.Binary("__addsdw", aint16);
+            bit_intrinsic = new IntrinsicBuilder("__bit", false)
+                .Param(PrimitiveType.Word32)
+                .Param(PrimitiveType.Word32)
+                .Returns(PrimitiveType.Bool);
+            bitmask_intrinsic = new IntrinsicBuilder("__bitmask", false)
+                .Param(PrimitiveType.Word32)
+                .Param(PrimitiveType.Word32)
+                .Returns(PrimitiveType.Word32);
+            divaw_intrinsic = IntrinsicBuilder.Binary("__divaw", aint16);
+            flag_intrinsic = new IntrinsicBuilder("__flag", true)
+                .Param(PrimitiveType.Word32)
+                .Returns(PrimitiveType.Bool);
+            load_aux_reg_intrinsic = new IntrinsicBuilder("__load_aux_reg", true)
+                .Param(PrimitiveType.Word32)
+                .Param(PrimitiveType.Word32)
+                .Returns(PrimitiveType.Word32);
+            max_intrinsic = new IntrinsicBuilder("max", false)
+                .Param(PrimitiveType.Int32)
+                .Param(PrimitiveType.Int32)
+                .Returns(PrimitiveType.Int32);
+            min_intrinsic = new IntrinsicBuilder("min", false)
+                .Param(PrimitiveType.Int32)
+                .Param(PrimitiveType.Int32)
+                .Returns(PrimitiveType.Int32);
+            saturated_intrinsic = new IntrinsicBuilder("__saturated", false)
+                .Param(PrimitiveType.Bool)
+                .Returns(PrimitiveType.Bool);
+            store_aux_reg_intrinsic = new IntrinsicBuilder("__store_aux_reg", true)
+                .Param(PrimitiveType.Word32)
+                .Param(PrimitiveType.Word32)
+                .Void();
+            subsdw_intrinsic = IntrinsicBuilder.Binary("__subsdw", aint16);
+        }
+
+        private static readonly IntrinsicProcedure addsdw_intrinsic;
+        private static readonly IntrinsicProcedure bclr_intrinsic = IntrinsicBuilder.GenericBinary("__bclr");
+        private static readonly IntrinsicProcedure bit_intrinsic;
+        private static readonly IntrinsicProcedure bitmask_intrinsic;
+        private static readonly IntrinsicProcedure brk_intrinsic = new IntrinsicBuilder("__brk", true).Void();
+        private static readonly IntrinsicProcedure bset_intrinsic = IntrinsicBuilder.GenericBinary("__bset");
+        private static readonly IntrinsicProcedure btst_intrinsic = IntrinsicBuilder.GenericBinary("__btst");
+        private static readonly IntrinsicProcedure bxor_intrinsic = IntrinsicBuilder.GenericBinary("__bxor");
+        private static readonly IntrinsicProcedure divaw_intrinsic;
+        private static readonly IntrinsicProcedure flag_intrinsic;
+        private static readonly IntrinsicProcedure load_aux_reg_intrinsic;
+        private static readonly IntrinsicProcedure max_intrinsic;
+        private static readonly IntrinsicProcedure min_intrinsic;
+        private static readonly IntrinsicProcedure saturated_intrinsic;
+        private static readonly IntrinsicProcedure store_aux_reg_intrinsic;
+        private static readonly IntrinsicProcedure subsdw_intrinsic;
+
     }
 }
