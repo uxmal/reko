@@ -184,6 +184,8 @@ namespace Reko.Environments.Windows
             }
             else
             {
+                var oldAccess = seg.Access;
+                seg.Access = MapProtectionToAccess(newProtect);
                 // RWX = 0x70
                 WriteLeUInt32(Address.Ptr32(pOldProtect), 0x70);
                 emulator.WriteRegister(Registers.eax, 1u);
@@ -191,13 +193,14 @@ namespace Reko.Environments.Windows
             emulator.WriteRegister(Registers.esp, esp + 20);
         }
 
+        const uint PAGE_READONLY = 0x02;
+        const uint PAGE_EXECUTE = 0x10;
+        const uint PAGE_EXECUTE_READ = 0x20;
+        const uint PAGE_EXECUTE_READWRITE = 0x40;
+        const uint PAGE_READWRITE = 0x04;
+
         private uint MapProtectionToWin32(AccessMode access)
         {
-            const uint PAGE_EXECUTE = 0x10;
-            const uint PAGE_READONLY = 0x02;
-            const uint PAGE_EXECUTE_READWRITE = 0x40;
-            const uint PAGE_READWRITE = 0x04;
-
             if (access == AccessMode.Read)
                 return PAGE_READONLY;
             if (access == AccessMode.ReadExecute)
@@ -207,6 +210,21 @@ namespace Reko.Environments.Windows
             if (access == AccessMode.ReadWrite)
                 return PAGE_READWRITE;
             throw new NotImplementedException($"Unimplemented protection {access}.");
+        }
+
+        private AccessMode MapProtectionToAccess(uint protection)
+        {
+            if (protection == PAGE_READONLY)
+                return AccessMode.Read;
+            if (protection == (PAGE_EXECUTE | PAGE_EXECUTE_READ | PAGE_EXECUTE_READWRITE))
+                return AccessMode.ReadWriteExecute;
+            if (protection == PAGE_EXECUTE)
+                return AccessMode.Execute;
+            if (protection == PAGE_EXECUTE_READ)
+                return AccessMode.ReadExecute;
+            if (protection == PAGE_READWRITE)
+                return AccessMode.ReadWrite;
+            throw new NotImplementedException($"Unimplemented protection 0x{protection:X}.");
         }
 
         void NYI(IProcessorEmulator emulator)

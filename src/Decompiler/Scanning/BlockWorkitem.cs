@@ -539,7 +539,7 @@ namespace Reko.Scanning
             FunctionType? sig;
             ProcedureCharacteristics? chr = null;
             Address? addr = CallTargetAsAddress(call);
-            if (!(addr is null))
+            if (addr is not null)
             {
                 // Some image loaders generate import symbols at addresses
                 // outside of the program image. 

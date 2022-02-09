@@ -108,7 +108,7 @@ namespace Reko.Loading
             // making Reko unable to load certain EXE files (due to the endless wait times)
             // EnsureSuffixArray(filename + ".sufa-raw.ubj", image);
             var signature = Signatures.Where(s => Matches(s, loader.RawImage, entryPointOffset)).FirstOrDefault();
-            if (signature == null || signature.Name == null)
+            if (signature is null || signature.Name is null)
                 return loader;
             listener.Info("Signature of '{0}' detected.", signature.Name);
             var le = Services.RequireService<IConfigurationService>().GetImageLoader(signature.Name);  //$REVIEW: all of themn?

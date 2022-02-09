@@ -342,13 +342,14 @@ namespace Reko.ImageLoaders.MzExe
 			EndianImageReader rdr = new LeImageReader(RawImage, rvaSectionTable);
 
             Section? minSection = null;
+            trace.Inform("          Name        Raw data Raw size VAddress Ld size  Flags");
 			for (int i = 0; i != sections; ++i)
 			{
 				Section section = ReadSection(rdr);
 				sectionMap.Add(section);
 				if (minSection == null || section.VirtualAddress < minSection.VirtualAddress)
 					minSection = section;
-                Debug.Print("  Section: {0,10} {1:X8} {2:X8} {3:X8} {4:X8}", section.Name, section.OffsetRawData, section.SizeRawData, section.VirtualAddress, section.VirtualSize);
+                trace.Inform("  Section: {0,-10} {1:X8} {2:X8} {3:X8} {4:X8} {5:X8}", section.Name ?? "(null)", section.OffsetRawData, section.SizeRawData, section.VirtualAddress, section.VirtualSize, section.Flags);
 			}
 
             // Map the area between addrLoad and the lowest section.
@@ -1045,7 +1046,7 @@ void applyRelX86(uint8_t* Off, uint16_t Type, Defined* Sym,
 		private const uint SectionFlagsInitialized = 0x00000040;
 		private const uint SectionFlagsDiscardable = 0x02000000;
 		private const uint SectionFlagsWriteable =   0x80000000;
-		private const uint SectionFlagsExecutable =  0x00000020;
+		private const uint SectionFlagsExecutable =  0x20000020;
 
         public class Section
 		{
