@@ -74,10 +74,13 @@ namespace Reko.Arch.Arm.AArch32
             DataType srcType;
             switch (instr.vector_data)
             {
+            case ArmVectorData.F32S16: dstType = PrimitiveType.Real32; srcType = PrimitiveType.Int16; break;
             case ArmVectorData.F32S32: dstType = PrimitiveType.Real32; srcType = PrimitiveType.Int32; break;
             case ArmVectorData.F32U32: dstType = PrimitiveType.Real32; srcType = PrimitiveType.UInt32; break;
+            case ArmVectorData.F64S16: dstType = PrimitiveType.Real64; srcType = PrimitiveType.Int16; break;
             case ArmVectorData.F64S32: dstType = PrimitiveType.Real64; srcType = PrimitiveType.Int32; break;
             case ArmVectorData.F64F32: dstType = PrimitiveType.Real64; srcType = PrimitiveType.Real32; break;
+            case ArmVectorData.F64U32: dstType = PrimitiveType.Real64; srcType = PrimitiveType.UInt32; break;
             default: NotImplementedYet(); return;
             }
             if (dst.DataType.BitSize == dstType.BitSize && src.DataType.BitSize == srcType.BitSize)
@@ -99,15 +102,17 @@ namespace Reko.Arch.Arm.AArch32
         {
             var src = Operand(Src1());
             var dst = Operand(Dst(), PrimitiveType.Word32, true);
+            DataType srcType;
             DataType dstType;
             switch (instr.vector_data)
             {
-            case ArmVectorData.S32F32: dstType = PrimitiveType.Int32; break;
-            case ArmVectorData.U32F32: dstType = PrimitiveType.UInt32; break;
+            case ArmVectorData.S32F32: srcType = PrimitiveType.Real32; dstType = PrimitiveType.Int32; break;
+            case ArmVectorData.U32F32: srcType = PrimitiveType.Real32; dstType = PrimitiveType.UInt32; break;
+            case ArmVectorData.U32F64: srcType = PrimitiveType.Real64; dstType = PrimitiveType.UInt32; break;
             default: NotImplementedYet(); return;
             }
             src = host.Intrinsic("trunc", true, src.DataType, src);
-            m.Assign(dst, m.Convert(src, src.DataType, dstType));
+            m.Assign(dst, m.Convert(src, srcType, dstType));
         }
 
         private void RewriteVext()

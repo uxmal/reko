@@ -468,7 +468,7 @@ means
             Given_UInt32s(0xE0912394);
             AssertCode(
                 "0|L--|00100000(4): 2 instructions",
-                "1|L--|r1_r2 = r3 *u r4",
+                "1|L--|r1_r2 = r3 *u64 r4",
                 "2|L--|NZCV = cond(r1_r2)");
         }
 
@@ -540,6 +540,15 @@ means
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
                 "1|L--|__cps_id()");
+        }
+
+        [Test]
+        public void ArmRw_smull()
+        {
+            Given_UInt32s(0xE0CE3C9E);  // smull r3,lr,lr,ip
+            AssertCode(
+           "0|L--|00100000(4): 1 instructions",
+           "1|L--|lr_r3 = ip *s64 lr");
         }
 
         [Test]
@@ -1763,7 +1772,16 @@ means
             Given_UInt32s(0xEEFD9AE9);
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|s19 = CONVERT(trunc(s19), word32, int32)");
+                "1|L--|s19 = CONVERT(trunc(s19), real32, int32)");
+        }
+
+        [Test]
+        public void ArmRw_vcvtr_u32_f64()
+        {
+            Given_UInt32s(0xEEFC6BC7);  // vcvtr.u32.f64	s13,d7
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|s13 = CONVERT(trunc(d7), real64, uint32)");
         }
 
         [Test]
@@ -1772,7 +1790,7 @@ means
             Given_HexString("C52ABCEE");
             AssertCode(     // vcvtr.u32.f32	s4,s10
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|s4 = CONVERT(trunc(s10), word32, uint32)");
+                "1|L--|s4 = CONVERT(trunc(s10), real32, uint32)");
         }
 
         [Test]
@@ -2088,5 +2106,16 @@ means
                 "0|L--|00100000(4): 1 instructions",
                 "1|L--|d18 = __vbic_i16(d18, 0x7F007F007F007F00<64>)");
         }
+
+        [Test]
+        public void ArmRw_vcvt_scalar()
+        {
+            Given_UInt32s(0xEEB86B45);  // vcvt.f64.u32	d6,s10
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|d6 = CONVERT(s10, uint32, real64)");
+        }
+
+
     }
 }

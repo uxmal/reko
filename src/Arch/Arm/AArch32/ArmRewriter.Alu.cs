@@ -633,7 +633,9 @@ namespace Reko.Arch.Arm.AArch32
             var opDst = binder.EnsureSequence(dtResult, regHi, regLo);
             var opSrc1 = this.Operand(Src3());
             var opSrc2 = this.Operand(Src2());
-            m.Assign(opDst, op(opSrc1, opSrc2));
+            var result = op(opSrc1, opSrc2);
+            result.DataType = dtResult;
+            m.Assign(opDst, result);
             if (instr.SetFlags)
             {
                 m.Assign(NZCV(), m.Cond(opDst));
