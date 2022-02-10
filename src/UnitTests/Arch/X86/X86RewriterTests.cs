@@ -1974,12 +1974,21 @@ namespace Reko.UnitTests.Arch.X86
         [Test]
         public void X86rw_xorps()
         {
-            Run64bitTest(0x0F, 0x57, 0xC0); // xorps\txmm0,xmm0
+            Run64bitTest("0F57C3"); // xorps\txmm0,xmm3
             AssertCode(
                 "0|L--|0000000140000000(3): 3 instructions",
-                "1|L--|v3 = xmm0",
-                "2|L--|v4 = xmm0",
-                "3|L--|xmm0 = __xorps(v3, v4)");
+                "1|L--|v4 = xmm0",
+                "2|L--|v5 = xmm3",
+                "3|L--|xmm0 = __xorps(v4, v5)");
+        }
+
+        [Test]
+        public void X86rw_xorps_same_register()
+        {
+            Run64bitTest("0F57C0"); // xorps\txmm0,xmm0
+            AssertCode(
+                "0|L--|0000000140000000(3): 1 instructions",
+                "1|L--|xmm0 = 0<128>");
         }
 
         [Test]
@@ -2174,10 +2183,8 @@ namespace Reko.UnitTests.Arch.X86
         {
             Run64bitTest(0xC5, 0xF9, 0x57, 0xC0);   // vxorpd xmm0,xmm0,xmm0
             AssertCode(
-                "0|L--|0000000140000000(4): 3 instructions",
-                "1|L--|v3 = xmm0",
-                "2|L--|v4 = xmm0",
-                "3|L--|xmm0 = __xorpd(v3, v4)");
+                "0|L--|0000000140000000(4): 1 instructions",
+                "1|L--|xmm0 = 0<128>");
         }
 
         [Test]
@@ -3478,11 +3485,10 @@ namespace Reko.UnitTests.Arch.X86
                 "1|L--|__wrmsr(ecx, edx_eax)");
         }
 
-
         [Test]
-        public void X86Rw_vpxor()
+        public void X86Rw_pxor()
         {
-            Run32bitTest(0x66, 0x0F, 0xEF, 0xC0);	// vpxor	xmm0,xmm0
+            Run32bitTest(0x66, 0x0F, 0xEF, 0xC0);	// pxor	xmm0,xmm0
             AssertCode(
                 "0|L--|10000000(4): 1 instructions",
                 "1|L--|xmm0 = 0<128>");
@@ -4581,6 +4587,24 @@ namespace Reko.UnitTests.Arch.X86
                 "0|L--|0000000140000000(5): 2 instructions",
                 "1|L--|v3 = xmm5",
                 "2|L--|xmm5 = __psllw(v3, 8<8>)");
+        }
+
+        [Test]
+        public void X86Rw_vpxor()
+        {
+            Run64bitTest("C501EFC0");
+            AssertCode(     // vpxor xmm8,xmm15,xmm0
+                "0|L--|0000000140000000(4): 1 instructions",
+                "1|L--|xmm8 = __pxor(xmm15, xmm0)");
+        }
+
+        [Test]
+        public void X86Rw_vpxor_same_register()
+        {
+            Run64bitTest("C579EFC0");
+            AssertCode(     // vpxor xmm8,xmm0,xmm0
+                "0|L--|0000000140000000(4): 1 instructions",
+                "1|L--|xmm8 = 0<128>");
         }
 
         [Test]

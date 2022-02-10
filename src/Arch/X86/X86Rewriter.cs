@@ -448,8 +448,10 @@ namespace Reko.Arch.X86
                 case Mnemonic.paddusb: RewritePackedBinop(false, "__paddusb", PrimitiveType.Byte); break;
                 case Mnemonic.paddusw: RewritePackedBinop(false, "__paddsw", PrimitiveType.Word16); break;
                 case Mnemonic.paddw: RewritePackedBinop(false, "__paddw", PrimitiveType.Word16); break;
-                case Mnemonic.pand: case Mnemonic.vpand: RewritePackedLogical("__pand"); break;
-                case Mnemonic.pandn: case Mnemonic.vpandn: RewritePackedLogical("__pandn"); break;
+                case Mnemonic.pand:  RewritePackedLogical(false, "__pand"); break;
+                case Mnemonic.vpand: RewritePackedLogical(true, "__pand"); break;
+                case Mnemonic.pandn: RewritePackedLogical(false, "__pandn"); break;
+                case Mnemonic.vpandn: RewritePackedLogical(true, "__pandn"); break;
                 case Mnemonic.pause: RewritePause(); break;
                 case Mnemonic.palignr: RewritePalignr(); break;
                 case Mnemonic.pavgb: RewritePavg("__pavgb", PrimitiveType.Byte); break;
@@ -534,7 +536,8 @@ namespace Reko.Arch.X86
                 case Mnemonic.push: RewritePush(); break;
                 case Mnemonic.pusha: RewritePusha(); break;
                 case Mnemonic.pushf: RewritePushf(); break;
-                case Mnemonic.pxor: case Mnemonic.vpxor: RewritePxor(); break;
+                case Mnemonic.pxor: RewritePxor(false); break;
+                case Mnemonic.vpxor: RewritePxor(true); break;
                 case Mnemonic.rcl: RewriteRotation(CommonOps.RolC, true, true); break;
                 case Mnemonic.rcpps: RewritePackedUnaryop("__rcpps", PrimitiveType.Real32); break;
                 case Mnemonic.rcr: RewriteRotation(CommonOps.RorC, true, false); break;
@@ -633,9 +636,10 @@ namespace Reko.Arch.X86
                 case Mnemonic.xsaveopt: RewriteXsaveopt(); break;
                 case Mnemonic.xlat: RewriteXlat(); break;
                 case Mnemonic.xor: RewriteLogical(m.Xor); break;
-                case Mnemonic.xorpd: RewritePackedBinop(false, "__xorpd", PrimitiveType.Word64); break;
-                case Mnemonic.vxorpd: RewritePackedBinop(true, "__xorpd", PrimitiveType.Word64); break;
-                case Mnemonic.xorps: RewritePackedBinop(false, "__xorps", PrimitiveType.Word32); break;
+                case Mnemonic.xorpd: RewriteXorp(false, "__xorpd", PrimitiveType.Word64); break;
+                case Mnemonic.vxorpd: RewriteXorp(true, "__xorpd", PrimitiveType.Word64); break;
+                case Mnemonic.xorps: RewriteXorp(false, "__xorps", PrimitiveType.Word32); break;
+                case Mnemonic.vxorps: RewriteXorp(true, "__xorps", PrimitiveType.Word32); break;
                 case Mnemonic.vzeroupper: RewriteVZeroUpper(); break;
                 case Mnemonic.BOR_exp: RewriteFUnary("exp", true); break;
                 case Mnemonic.BOR_ln: RewriteFUnary("log", true); break;
@@ -725,6 +729,24 @@ namespace Reko.Arch.X86
                 }
             }
             m.Assign(dst, src);
+        }
+
+        private bool HasSameRegisterOperands(bool isVex)
+        {
+            if (isVex)
+            {
+                return
+                    instrCur.Operands[1] is RegisterOperand reg1 &&
+                    instrCur.Operands[2] is RegisterOperand reg2 &&
+                    reg1.Register == reg2.Register;
+            }
+            else
+            {
+                return
+                    instrCur.Operands[0] is RegisterOperand reg1 &&
+                    instrCur.Operands[1] is RegisterOperand reg2 &&
+                    reg1.Register == reg2.Register;
+            }
         }
 
         private Expression SrcOp(MachineOperand opSrc)

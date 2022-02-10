@@ -95,8 +95,8 @@ void vec_add(word64 rdi)
 		;
 }
 
-// 0000000000000898: void main(Register Eq_n xmm0)
-void main(Eq_n xmm0)
+// 0000000000000898: void main()
+void main()
 {
 	real64 rax_n[] = _mm_malloc(0x20, 0x2000);
 	real64 rax_n[] = _mm_malloc(0x20, 0x2000);
@@ -110,8 +110,8 @@ void main(Eq_n xmm0)
 			xmm0 = SEQ(SLICE(xmm0, word64, 64), (real64) qwLoc10_n);
 		else
 		{
-			real64 v26_n = (real64) (qwLoc10_n >> 0x01 | (uint64) (eax_n & 0x01));
-			xmm0 = SEQ(0x00, v26_n + v26_n);
+			real64 v24_n = (real64) (qwLoc10_n >> 0x01 | (uint64) (eax_n & 0x01));
+			xmm0 = SEQ(0x00, v24_n + v24_n);
 		}
 		*rcx_n = (real64) xmm0;
 		qwLoc10_n = (word64) qwLoc10_n + 1;
@@ -133,10 +133,7 @@ void main(Eq_n xmm0)
 	}
 	uint64 qwLoc20_n;
 	for (qwLoc20_n = 0x00; qwLoc20_n < 0x0400; ++qwLoc20_n)
-	{
-		xmm0 = __xorpd(xmm0, xmm0);
-		rax_n[qwLoc20_n] = (real64) xmm0;
-	}
+		rax_n[qwLoc20_n] = 0.0;
 	vec_add(0x0400);
 	uint64 qwLoc28_n;
 	for (qwLoc28_n = 0x00; qwLoc28_n < 0x0400; ++qwLoc28_n)

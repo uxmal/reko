@@ -1404,6 +1404,17 @@ namespace Reko.Arch.X86
                         m.Convert(al, PrimitiveType.UInt8, offsetType))));
         }
 
+        private void RewriteXorp(bool isVex, string fnName, PrimitiveType dtElem)
+        {
+            if (HasSameRegisterOperands(isVex))
+            { // selfie!
+                var dst = SrcOp(0);
+                m.Assign(dst, Constant.Zero(dst.DataType));
+                return;
+            }
+            RewritePackedBinop(isVex, fnName, dtElem);
+        }
+
         private Identifier StackPointer()
         {
             return binder.EnsureRegister(arch.ProcessorMode.StackRegister);

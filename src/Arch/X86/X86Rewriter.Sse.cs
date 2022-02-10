@@ -338,11 +338,12 @@ namespace Reko.Arch.X86
                 host.Intrinsic(fnName, false, dst.DataType, dst, src1, src2));
         }
 
-        private void RewritePackedLogical(string intrinsicName)
+        private void RewritePackedLogical(bool isVex, string intrinsicName)
         {
             var dst = this.SrcOp(0);
-            var src = this.SrcOp(1);
-            m.Assign(dst, host.Intrinsic(intrinsicName, false, dst.DataType, dst, src));
+            var src1 = this.SrcOp(isVex ? 1 : 0);
+            var src2 = this.SrcOp(isVex ? 2 : 1);
+            m.Assign(dst, host.Intrinsic(intrinsicName, false, dst.DataType, src1, src2));
         }
 
         private void RewritePor()
@@ -692,18 +693,15 @@ namespace Reko.Arch.X86
             VexAssign(isVex, dst, tmp);
         }
 
-        public void RewritePxor()
+        public void RewritePxor(bool isVex)
         {
-            if (instrCur.Operands[0] is RegisterOperand rdst &&
-                instrCur.Operands[1] is RegisterOperand rsrc &&
-                rdst.Register.Number == rsrc.Register.Number)
+            var dst = this.SrcOp(0);
+            if (HasSameRegisterOperands(isVex))
             { // selfie!
-                m.Assign(orw.AluRegister(rdst), Constant.Zero(rdst.Width));
+                m.Assign(dst, Constant.Zero(dst.DataType));
                 return;
             }
-            var dst = this.SrcOp(0);
-            var src = this.SrcOp(1);
-            m.Assign(dst, host.Intrinsic("__pxor", false, dst.DataType, dst, src));
+            RewritePackedLogical(isVex, "__pxor");
         }
 
         private void RewriteUnpckhps()
