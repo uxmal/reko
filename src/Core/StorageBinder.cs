@@ -121,6 +121,11 @@ namespace Reko.Core
             return id;
         }
 
+        public Identifier EnsureSequence(SequenceStorage sequence)
+        {
+            return EnsureSequence(sequence.DataType, sequence.Elements);
+        }
+
         public Identifier EnsureSequence(DataType dataType, params Storage [] elements)
         {
             var stg = new SequenceStorage(elements);

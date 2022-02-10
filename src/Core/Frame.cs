@@ -19,53 +19,50 @@
 #endregion
 
 using Reko.Core.Expressions;
-using Reko.Core.Machine;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Text;
 
 namespace Reko.Core
 {
-	/// <summary>
-	/// Contains the non-global locations accessed by the code inside a procedure. 
-	/// </summary>
-	/// <remarks>
-	/// Variables accessed by the procedure can live in many places: registers, stack, and temporaries.
-	/// <para>
-	/// The frame layout is particularly interesting. On the Intel x86 architecture in real mode we have the following:
-	/// </para>
-	/// <code>
-	///   Layout             offset value
-	/// +-----------------+
-	/// | arg3            |   6
-	/// +-----------------+
-	/// | arg2            |   4
-	/// +-----------------+
-	/// | arg1            |   2
-	/// +-----------------+
-	/// | return address  |	  0
-	/// +-----------------+
-	/// | frame pointer   |   -2
-	/// +-----------------+
-	/// | local1          |   -4
-	/// +-----------------+
-	/// | local2          |   -6
-	/// 
-	/// etc.
-	/// </code>
-	/// <para>Note that variables that are stack arguments use offsets based on the state of stack
-	/// _after_ the return address was pushed. The return address, if passed on the stack, is always
+    /// <summary>
+    /// Contains the non-global locations accessed by the code inside a procedure. 
+    /// </summary>
+    /// <remarks>
+    /// Variables accessed by the procedure can live in many places: registers, stack, and temporaries.
+    /// <para>
+    /// The frame layout is particularly interesting. On the Intel x86 architecture in real mode we have the following:
+    /// </para>
+    /// <code>
+    ///   Layout             offset value
+    /// +-----------------+
+    /// | arg3            |   6
+    /// +-----------------+
+    /// | arg2            |   4
+    /// +-----------------+
+    /// | arg1            |   2
+    /// +-----------------+
+    /// | return address  |	  0
+    /// +-----------------+
+    /// | frame pointer   |   -2
+    /// +-----------------+
+    /// | local1          |   -4
+    /// +-----------------+
+    /// | local2          |   -6
+    /// 
+    /// etc.
+    /// </code>
+    /// <para>Note that variables that are stack arguments use offsets based on the state of stack
+    /// _after_ the return address was pushed. The return address, if passed on the stack, is always
     /// considered to be at offset 0.</para>
-	/// <para>In addition, support has to be provided for architectures that have separate FPU stacks.</para>
-	/// </remarks>
-	public class Frame : IStorageBinder
+    /// <para>In addition, support has to be provided for architectures that have separate FPU stacks.</para>
+    /// </remarks>
+    public class Frame : IStorageBinder
 	{
-		private List<Identifier> identifiers;	// Identifiers for each access.
-        private NamingPolicy namingPolicy;
+		private readonly List<Identifier> identifiers;	// Identifiers for each access.
+        private readonly NamingPolicy namingPolicy;
 		
         /// <summary>
         /// Creates a Frame instance for maintaining the local variables and arguments.
@@ -124,10 +121,7 @@ namespace Reko.Core
             case FlagGroupStorage grf:
                 return EnsureFlagGroup(grf);
             case SequenceStorage seq:
-                return EnsureSequence(
-                    seq.DataType,
-                    seq.Name,
-                    seq.Elements);
+                return EnsureSequence(seq);
             case FpuStackStorage fp:
                 return EnsureFpuStackVariable(fp.FpuStackOffset, fp.DataType);
             case StackStorage st:
@@ -148,7 +142,7 @@ namespace Reko.Core
 		public Identifier CreateTemporary(DataType dt)
 		{
             string name = "v" + identifiers.Count;
-			Identifier id = new Identifier(name, dt,
+			var id = new Identifier(name, dt,
                 new TemporaryStorage(name, identifiers.Count, dt));
 			identifiers.Add(id);
 			return id;
@@ -156,7 +150,7 @@ namespace Reko.Core
 
 		public Identifier CreateTemporary(string name, DataType dt)
 		{
-            Identifier id = new Identifier(name, dt, 
+            var id = new Identifier(name, dt, 
                 new TemporaryStorage(name, identifiers.Count, dt));
 			identifiers.Add(id);
 			return id;
@@ -167,7 +161,7 @@ namespace Reko.Core
             if (grfMask == 0)
                 throw new ArgumentException("Argument must be non-zero.", nameof(grfMask));
 			Identifier? id = FindFlagGroup(freg, grfMask);
-			if (id == null)
+			if (id is null)
 			{
 				id = Identifier.Create(new FlagGroupStorage(freg, grfMask, name, dt));
 				identifiers.Add(id);
@@ -180,7 +174,7 @@ namespace Reko.Core
             if (grf.FlagGroupBits == 0)
                 throw new ArgumentException("Argument must have non-zero flag group bits.", nameof(grf));
             var id = FindFlagGroup(grf.FlagRegister, grf.FlagGroupBits);
-            if (id == null)
+            if (id is null)
             {
                 id = Identifier.Create(new FlagGroupStorage(grf.FlagRegister, grf.FlagGroupBits, grf.Name, grf.DataType));
                 identifiers.Add(id);
@@ -191,7 +185,7 @@ namespace Reko.Core
 		public Identifier EnsureFpuStackVariable(int depth, DataType type)
 		{
 			Identifier? id = FindFpuStackVariable(depth);
-			if (id == null)
+			if (id is null)
 			{
 				string name = string.Format("{0}{1}", (depth < 0 ? "rLoc" : "rArg"), Math.Abs(depth));
 				id = new Identifier(name, type, new FpuStackStorage(depth, type));
@@ -210,7 +204,7 @@ namespace Reko.Core
 		public Identifier EnsureRegister(RegisterStorage reg)
 		{
 			Identifier? id = FindRegister(reg);
-			if (id == null)
+			if (id is null)
 			{
                 id = Identifier.Create(reg);
 				identifiers.Add(id);
@@ -221,7 +215,7 @@ namespace Reko.Core
 		public Identifier EnsureOutArgument(Identifier idOrig, DataType outArgumentPointer)
 		{
 			Identifier? idOut = FindOutArgument(idOrig);
-			if (idOut == null)
+			if (idOut is null)
 			{
 				idOut = new Identifier(idOrig.Name + "Out", outArgumentPointer, new OutArgumentStorage(idOrig));
 				identifiers.Add(idOut);
@@ -229,10 +223,21 @@ namespace Reko.Core
 			return idOut;
 		}
 
+        public Identifier EnsureSequence(SequenceStorage sequence)
+        {
+            var idSeq = FindSequence(sequence.Elements);
+            if (idSeq is null)
+            {
+                idSeq = new Identifier(sequence.Name, sequence.Width, sequence);
+                identifiers.Add(idSeq);
+            }
+            return idSeq;
+        }
+
 		public Identifier EnsureSequence(DataType dt, params Storage [] elements)
         {
 			Identifier? idSeq = FindSequence(elements);
-			if (idSeq == null)
+			if (idSeq is null)
 			{
 				idSeq = CreateSequence(dt, elements);
 			}

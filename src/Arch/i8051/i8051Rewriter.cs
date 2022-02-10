@@ -447,8 +447,8 @@ namespace Reko.Arch.i8051
                     e = m.Not(e);
                 }
                 return e;
-            case SequenceOperand seq:
-                return binder.EnsureSequence(seq.Sequence.DataType, seq.Sequence.Name, seq.Sequence.Elements);
+            case SequenceStorage seq:
+                return binder.EnsureSequence(seq);
             default:
                 throw new NotImplementedException($"Not implemented {op.GetType().Name}.");
             }

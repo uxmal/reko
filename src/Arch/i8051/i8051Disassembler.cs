@@ -181,7 +181,7 @@ namespace Reko.Arch.i8051
         // DPTR register pair
         private static bool p(uint uInstr, i8051Disassembler dasm)
         {
-            dasm.ops.Add(new SequenceOperand(Registers.DPTR));
+            dasm.ops.Add(Registers.DPTR);
             return true;
         }
 
@@ -228,10 +228,10 @@ namespace Reko.Arch.i8051
         // AB register pair
         private static bool AB(uint uInstr, i8051Disassembler dasm)
         {
-            dasm.ops.Add(new SequenceOperand(Registers.AB));
+            dasm.ops.Add(Registers.AB);
             return true;
         }
-        
+
         #endregion
 
         private RegisterStorage Reg(int r)

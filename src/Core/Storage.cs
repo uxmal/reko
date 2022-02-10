@@ -671,7 +671,7 @@ namespace Reko.Core
             return this.BitMask.CompareTo(that.BitMask);
         }
 
-        DataType MachineOperand.Width
+        public DataType Width
         {
             get => this.DataType;
             set => throw new NotSupportedException();
@@ -695,7 +695,7 @@ namespace Reko.Core
             Render(renderer, options);
     }
 
-    public class SequenceStorage : Storage
+    public class SequenceStorage : Storage, MachineOperand
     {
         public SequenceStorage(params Storage[] elements) : this(
             PrimitiveType.CreateWord(elements.Sum(e => (int)e.BitSize)), 
@@ -716,6 +716,12 @@ namespace Reko.Core
         }
 
         public Storage[] Elements { get; }
+
+        public DataType Width
+        {
+            get => this.DataType;
+            set => throw new NotSupportedException();
+        }
 
         public override T Accept<T>(StorageVisitor<T> visitor)
         {
@@ -804,9 +810,23 @@ namespace Reko.Core
             return false;
         }
 
+        public void Render(MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
+        {
+            renderer.BeginOperand();
+            renderer.WriteString(this.Name);
+            renderer.EndOperand();
+        }
+
         public override SerializedKind Serialize()
         {
             return new SerializedSequence(this);
+        }
+
+        string MachineOperand.ToString(MachineInstructionRendererOptions options)
+        {
+            var sr = new StringRenderer();
+            Render(sr, options);
+            return sr.ToString();
         }
 
         public override void Write(TextWriter writer)
