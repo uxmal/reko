@@ -78,9 +78,9 @@ namespace Reko.Arch.Pdp11
 
     public class Pdp11Architecture : ProcessorArchitecture
     {
-        private RegisterStorage[] regs;
-        private RegisterStorage[] fpuRegs;
-        private FlagGroupStorage[] flagRegs;
+        private readonly RegisterStorage[] regs;
+        private readonly RegisterStorage[] fpuRegs;
+        private readonly FlagGroupStorage[] flagRegs;
 
         public Pdp11Architecture(IServiceProvider services, string archId, Dictionary<string, object> options)
             : base(services, archId, options)

@@ -26,7 +26,8 @@ using System.Text;
 namespace Reko.Core
 {
     /// <summary>
-    /// Represents a semi-open bit range within a register as two shorts.
+    /// Represents a semi-open bit range within a <see cref="Storage"/> as 
+    /// two numbers.
     /// </summary>
     public struct BitRange : IComparable<BitRange>
     {
@@ -41,12 +42,12 @@ namespace Reko.Core
         /// <summary>
         /// Inclusive lower endpoint of the range.
         /// </summary>
-        public short Lsb { get; private set; }
+        public short Lsb { get; }
 
         /// <summary>
         /// Inclusive upper endpoint of the range.
         /// </summary>
-        public short Msb { get; private set; }
+        public short Msb { get; }
 
 
         public ulong BitMask()

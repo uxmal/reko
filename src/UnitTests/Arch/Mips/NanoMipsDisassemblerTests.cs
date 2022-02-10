@@ -26,16 +26,13 @@ using Reko.Core.Memory;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Reko.UnitTests.Arch.Mips
 {
     [TestFixture]
     public class NanoMipsDisassemblerTests : DisassemblerTestBase<MipsInstruction>
     {
-        private MipsProcessorArchitecture arch; 
+        private readonly MipsProcessorArchitecture arch; 
         private MipsInstruction instr;
 
         public NanoMipsDisassemblerTests()
@@ -55,7 +52,7 @@ namespace Reko.UnitTests.Arch.Mips
 
         private void AssertCode(string expectedAsm, string hexInstr)
         {
-            this.instr = DisassembleHexBytes(hexInstr);
+            var instr = DisassembleHexBytes(hexInstr);
             Assert.AreEqual(expectedAsm, instr.ToString());
         }
 

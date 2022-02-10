@@ -97,7 +97,7 @@ namespace Reko.Core.Emulation
 
         /// <summary>
         /// The inner loop of the emulator, which emulates instructions until
-        /// the <see cref="IsRunning"/> property is true.
+        /// the <see cref="IsRunning"/> property is false.
         /// </summary>
         protected abstract void Run();
 

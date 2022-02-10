@@ -92,9 +92,9 @@ namespace Reko.Core
             set { Succ[1] = value; }
         }
 
-        public List<Block> Pred { get; private set; }
+        public List<Block> Pred { get; }
         public List<Block> Succ { get; private set; }
-        public StatementList Statements { get; private set; }
+        public StatementList Statements { get; }
 
 		public static void Coalesce(Block block, Block next)
 		{
