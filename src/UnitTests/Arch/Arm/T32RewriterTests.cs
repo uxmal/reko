@@ -6053,7 +6053,7 @@ namespace Reko.UnitTests.Arch.Arm
             Given_HexString("A2FB0030");	// umull r3, r0, r2, r0
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|r0_r3 = r0 *u r2");
+                "1|L--|r0_r3 = r0 *u64 r2");
         }
 
         [Test]
@@ -6702,7 +6702,7 @@ namespace Reko.UnitTests.Arch.Arm
             Given_HexString("8AFB0028");	// smull r2, r8, r10, r0
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|r8_r2 = r0 *s r10");
+                "1|L--|r8_r2 = r0 *s64 r10");
         }
 
         [Test]
