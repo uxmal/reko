@@ -38,14 +38,14 @@ namespace Reko.Environments.SysV
     {
         private RegisterStorage[] trashedRegs;
         private readonly ArchSpecificFactory archSpecificFactory;
-        private readonly CallingConvention defaultCc;
+        private readonly CallingConvention? defaultCc;
 
         public SysVPlatform(IServiceProvider services, IProcessorArchitecture arch)
             : base(services, arch, "elf-neutral")
         {
             this.trashedRegs = LoadTrashedRegisters();
             archSpecificFactory = new ArchSpecificFactory(services, arch);
-            this.defaultCc = archSpecificFactory.CreateCallingConverion(arch, "");
+            this.defaultCc = archSpecificFactory.CreateCallingConvention(arch, "");
         }
 
         public override string DefaultCallingConvention => "";
@@ -60,7 +60,10 @@ namespace Reko.Environments.SysV
 
         public override CallingConvention GetCallingConvention(string? ccName)
         {
-            return archSpecificFactory.CreateCallingConverion(this.Architecture, ccName);
+            var cc = archSpecificFactory.CreateCallingConvention(this.Architecture, ccName);
+            if (cc is null)
+                throw new NotImplementedException($"ELF calling convention for {Architecture.Description} not implemented yet.");
+            return cc;
         }
 
         public override HashSet<RegisterStorage> CreateTrashedRegisters()
@@ -169,6 +172,8 @@ namespace Reko.Environments.SysV
 
         public override bool IsPossibleArgumentRegister(RegisterStorage reg)
         {
+            if (defaultCc is null)
+                return false;
             return defaultCc.IsArgument(reg);
         }
 

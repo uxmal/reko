@@ -52,7 +52,7 @@ namespace Reko.UnitTests.Arch.Mips
 
         private void AssertCode(string expectedAsm, string hexInstr)
         {
-            var instr = DisassembleHexBytes(hexInstr);
+            this.instr = DisassembleHexBytes(hexInstr);
             Assert.AreEqual(expectedAsm, instr.ToString());
         }
 

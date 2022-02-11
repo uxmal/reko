@@ -51,8 +51,7 @@ namespace Reko.UnitTests.Environments.SysV
             this.cfgSvc = new Mock<IConfigurationService>();
             sc.AddService<IConfigurationService>(cfgSvc.Object);
             sc.AddService<ITypeLibraryLoaderService>(tlSvc.Object);
-
-        }
+         }
 
         [Test]
         public void SysV_TerminatingFunction()

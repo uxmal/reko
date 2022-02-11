@@ -64,7 +64,7 @@ namespace Reko.Environments.SysV.ArchSpecific
             }
         } 
  
-        public CallingConvention CreateCallingConverion(IProcessorArchitecture arch, string? name)
+        public CallingConvention? CreateCallingConvention(IProcessorArchitecture arch, string? name)
         {
             switch (arch.Name)
             {
@@ -94,6 +94,8 @@ namespace Reko.Environments.SysV.ArchSpecific
 
                 if (this.ccX86 == null)
                 {
+                    if (services is null)
+                        return null;
                     var svc = services.RequireService<IPluginLoaderService>();
                     var t = svc.GetType("Reko.Arch.X86.X86CallingConvention,Reko.Arch.X86");
                     this.ccX86 = (CallingConvention)Activator.CreateInstance(
@@ -147,7 +149,7 @@ namespace Reko.Environments.SysV.ArchSpecific
             case "nios2":
                 return new Nios2CallingConvention(arch);
             default:
-                throw new NotImplementedException(string.Format("ELF calling convention for {0} not implemented yet.", arch.Description));
+                return null;
             }
         }
     }
