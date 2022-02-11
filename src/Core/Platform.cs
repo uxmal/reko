@@ -407,8 +407,7 @@ namespace Reko.Core
             var tlSvc = Services.RequireService<ITypeLibraryLoaderService>();
 
             foreach (var tl in envCfg.TypeLibraries
-                .Where(t => t.Architecture == null ||
-                            t.Architecture.Contains(Architecture.Name))
+                .Where(t => t.MatchArchitecture(Architecture.Name))
                 .OfType<TypeLibraryDefinition>())
             {
                 Metadata = tlSvc.LoadMetadataIntoLibrary(this, tl, Metadata); 

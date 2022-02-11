@@ -35,5 +35,13 @@ namespace Reko.Core.Configuration
         public string? Module { get; set; }
 
         public string? Loader { get; set; }
+
+        public bool MatchArchitecture(string archName)
+        {
+            if (Architecture is null)
+                return true;
+            var archs = Architecture.Split(',');
+            return archs.Contains(archName);
+        }
     }
 }
