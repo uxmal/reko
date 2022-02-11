@@ -38,12 +38,14 @@ namespace Reko.Environments.SysV
     {
         private RegisterStorage[] trashedRegs;
         private readonly ArchSpecificFactory archSpecificFactory;
+        private readonly CallingConvention defaultCc;
 
         public SysVPlatform(IServiceProvider services, IProcessorArchitecture arch)
             : base(services, arch, "elf-neutral")
         {
             this.trashedRegs = LoadTrashedRegisters();
             archSpecificFactory = new ArchSpecificFactory(services, arch);
+            this.defaultCc = archSpecificFactory.CreateCallingConverion(arch, "");
         }
 
         public override string DefaultCallingConvention => "";
@@ -58,8 +60,7 @@ namespace Reko.Environments.SysV
 
         public override CallingConvention GetCallingConvention(string? ccName)
         {
-            var Architecture = this.Architecture;
-            return archSpecificFactory.CreateCallingConverion(Architecture, ccName);
+            return archSpecificFactory.CreateCallingConverion(this.Architecture, ccName);
         }
 
         public override HashSet<RegisterStorage> CreateTrashedRegisters()
@@ -164,6 +165,11 @@ namespace Reko.Environments.SysV
             if (base.IsImplicitArgumentRegister(reg))
                 return true;
             return reg.IsSystemRegister;
+        }
+
+        public override bool IsPossibleArgumentRegister(RegisterStorage reg)
+        {
+            return defaultCc.IsArgument(reg);
         }
 
         public override void LoadUserOptions(Dictionary<string, object> options)

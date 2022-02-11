@@ -171,6 +171,11 @@ namespace Reko.ImageLoaders.LLVM
             throw new NotImplementedException();
         }
 
+        public bool IsPossibleArgumentRegister(RegisterStorage reg)
+        {
+            return false;
+        }
+
         public void LoadUserOptions(Dictionary<string, object> options)
         {
             throw new NotImplementedException();

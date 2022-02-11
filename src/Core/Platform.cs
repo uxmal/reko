@@ -176,6 +176,21 @@ namespace Reko.Core
         /// </remarks>
         bool IsImplicitArgumentRegister(RegisterStorage reg);
 
+        /// <summary>
+        /// Returns true if a register _could_ be used as an explicit argument
+        /// to a procedure. 
+        /// </summary>
+        /// <param name="reg">Register to be tested.</param>
+        /// <returns>True if the register _could_ be used as an argument,
+        /// otherwise false.</returns>
+        /// <remarks>
+        /// This method is used for heuristic determination of procedure 
+        /// arguments (read "guessing"). Some platforms have multiple possible
+        /// calling conventions, so we can't restrict ourselves to the
+        /// "standard" calling convention of the platform.
+        /// </remarks>
+        bool IsPossibleArgumentRegister(RegisterStorage reg);
+
         void LoadUserOptions(Dictionary<string, object> options);
         
         /// <summary>
@@ -489,6 +504,11 @@ namespace Reko.Core
         public virtual bool IsImplicitArgumentRegister(RegisterStorage reg)
         {
             return reg == Architecture.StackRegister;
+        }
+
+        public virtual bool IsPossibleArgumentRegister(RegisterStorage reg)
+        {
+            return false;
         }
 
         public virtual Address? MakeAddressFromConstant(Constant c, bool codeAlign)

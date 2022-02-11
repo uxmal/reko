@@ -37,13 +37,19 @@ namespace Reko.Environments.Windows
 	{
         private static readonly HashSet<RegisterStorage> implicitRegs = new HashSet<RegisterStorage>()
         {
-                Registers.cs,
-                Registers.ss,
-                Registers.sp,
-                Registers.esp,
-                Registers.fs,
-                Registers.gs,
-                Registers.Top,
+            Registers.cs,
+            Registers.ss,
+            Registers.sp,
+            Registers.esp,
+            Registers.fs,
+            Registers.gs,
+            Registers.Top,
+        };
+
+        private static readonly HashSet<RegisterStorage> possibleFastcallArgRegs = new()
+        {
+            Registers.ecx,
+            Registers.edx,
         };
 
         private readonly Dictionary<int, SystemService> services;
@@ -110,6 +116,11 @@ namespace Reko.Environments.Windows
         public override bool IsImplicitArgumentRegister(RegisterStorage reg)
         {
             return implicitRegs.Contains(reg);
+        }
+
+        public override bool IsPossibleArgumentRegister(RegisterStorage reg)
+        {
+            return possibleFastcallArgRegs.Contains(reg);
         }
 
         public override HashSet<RegisterStorage> CreateTrashedRegisters()

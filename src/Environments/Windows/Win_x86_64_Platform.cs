@@ -37,6 +37,13 @@ namespace Reko.Environments.Windows
     {
         private readonly SystemService int29svc;
         private readonly SystemService int3svc;
+        private static readonly HashSet<int> possibleAbiArgRegs = new()
+        {
+            Registers.rcx.Number,
+            Registers.rdx.Number,
+            Registers.r8.Number,
+            Registers.r9.Number
+        };
 
         public Win_x86_64_Platform(IServiceProvider sp, IProcessorArchitecture arch)
             : base(sp, arch, "win64")
@@ -87,6 +94,11 @@ namespace Reko.Environments.Windows
             return 
                 reg.Number == Registers.rsp.Number ||
                 reg.Number == Registers.Top.Number;
+        }
+
+        public override bool IsPossibleArgumentRegister(RegisterStorage reg)
+        {
+            return possibleAbiArgRegs.Contains(reg.Number);
         }
 
         public override HashSet<RegisterStorage> CreateTrashedRegisters()
