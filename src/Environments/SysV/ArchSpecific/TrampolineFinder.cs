@@ -42,7 +42,10 @@ namespace Reko.Environments.SysV.ArchSpecific
             var dst = Arm32_variant1(arch, host, stubInstrs);
             if (dst is not null)
                 return dst;
-            return Arm32_variant2(arch, host, stubInstrs);
+            dst = Arm32_variant2(arch, host, stubInstrs);
+            if (dst is not null)
+                return dst;
+            return null;
         }
 
         /// <summary>
@@ -57,7 +60,7 @@ namespace Reko.Environments.SysV.ArchSpecific
         /// <returns></returns>
         private static Expression? Arm32_variant1(IProcessorArchitecture arch, IRewriterHost host, RtlInstruction[] stubInstrs)
         {
-            if (stubInstrs.Length != 3)
+            if (stubInstrs.Length < 3)
                 return null;
             Constant offset;
             if (stubInstrs[0] is RtlAssignment ass &&
@@ -102,7 +105,7 @@ namespace Reko.Environments.SysV.ArchSpecific
 
         private static Expression? Arm32_variant2(IProcessorArchitecture arch, IRewriterHost host, RtlInstruction[] stubInstrs)
         {
-            if (stubInstrs.Length != 4)
+            if (stubInstrs.Length < 4)
                 return null;
             Address addr;
             // ip = 0x00010A9C<p32> + 0<32>
