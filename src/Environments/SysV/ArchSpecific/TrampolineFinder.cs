@@ -37,10 +37,28 @@ namespace Reko.Environments.SysV.ArchSpecific
         /// </summary>
         public static Expression? Arm32(IProcessorArchitecture arch, Address addrInstr, IEnumerable<RtlInstruction> instrs, IRewriterHost host)
         {
-            var stubInstrs = instrs.Take(3).ToArray();
+            var stubInstrs = instrs.Take(4).ToArray();
+
+            var dst = Arm32_variant1(arch, host, stubInstrs);
+            if (dst is not null)
+                return dst;
+            return Arm32_variant2(arch, host, stubInstrs);
+        }
+
+        /// <summary>
+        /// Finds the destination of an ARM PLT stub of the following type:
+        ///     ldr rx,[addr1]
+        ///     add ry,addr2,rx
+        ///     ldr pc,[ry]
+        /// </summary>
+        /// <param name="arch"></param>
+        /// <param name="host"></param>
+        /// <param name="stubInstrs"></param>
+        /// <returns></returns>
+        private static Expression? Arm32_variant1(IProcessorArchitecture arch, IRewriterHost host, RtlInstruction[] stubInstrs)
+        {
             if (stubInstrs.Length != 3)
                 return null;
-
             Constant offset;
             if (stubInstrs[0] is RtlAssignment ass &&
                 ass.Src is MemoryAccess mem &&
@@ -70,6 +88,72 @@ namespace Reko.Environments.SysV.ArchSpecific
                 return addr;
             }
             else return null;
+        }
+
+        /// <summary>
+        /// Finds the destination of an ARM PLT stub of the following type:
+        /// add ip,pc,#0
+        /// add ip, ip,#&64000
+        /// ldr pc,[ip,#&7E0]!
+        /// </summary>
+        /// <param name="arch"></param>
+        /// <param name="host"></param>
+        /// <param name="stubInstrs"></param>
+
+        private static Expression? Arm32_variant2(IProcessorArchitecture arch, IRewriterHost host, RtlInstruction[] stubInstrs)
+        {
+            if (stubInstrs.Length != 4)
+                return null;
+            Address addr;
+            // ip = 0x00010A9C<p32> + 0<32>
+            if (stubInstrs[0] is RtlAssignment ass &&
+                ass.Dst is Identifier dst &&
+                ass.Src is BinaryExpression bin &&
+                bin.Operator is IAddOperator &&
+                bin.Left is Address addrPc &&
+                bin.Right is Constant pcOffset)
+            {
+                addr = addrPc + pcOffset.ToInt32();
+            }
+            else
+                return null;
+
+            // ip = ip + 0x64000<32>
+            if (stubInstrs[1] is RtlAssignment ass1 &&
+                ass1.Dst == dst &&
+                ass1.Src is BinaryExpression bin1 &&
+                bin1.Operator is IAddOperator &&
+                bin1.Left == dst &&
+                bin1.Right is Constant offset1)
+            {
+                addr = addr + offset1.ToInt32();
+            }
+            else
+                return null;
+
+            // ip = ip + 1864<i32>
+            if (stubInstrs[2] is RtlAssignment ass2 &&
+                ass2.Dst == dst &&
+                ass2.Src is BinaryExpression bin2 &&
+                bin2.Operator is IAddOperator &&
+                bin2.Left == dst &&
+                bin2.Right is Constant offset2)
+            {
+                addr = addr + offset2.ToInt32();
+            }
+            else
+                return null;
+
+            // goto Mem0[ip: word32]
+            if (stubInstrs[3] is RtlGoto g &&
+                g.Target is MemoryAccess mem &&
+                mem.EffectiveAddress == dst &&
+                mem.DataType is PrimitiveType dt &&
+                dt.BitSize == 32)
+            {
+                return addr;
+            }
+            return null;
         }
 
         public static Expression? AArch64(IProcessorArchitecture arch, Address addrInstr, IEnumerable<RtlInstruction> instrs, IRewriterHost host)

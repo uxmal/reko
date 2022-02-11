@@ -564,11 +564,11 @@ namespace Reko.Scanning
             if (Program.InterceptedCalls.TryGetValue(addr, out ep))
                 return ep;
             var trampoline = GetTrampoline(arch, addr);
-            if (trampoline != null)
+            if (trampoline is not null)
                 return trampoline;
 
             var imp = GetImportedProcedure(arch, addr, addr);
-            if (imp != null)
+            if (imp is not null)
                 return imp;
             Procedure proc = Program.EnsureProcedure(arch, addr, procedureName);
             if (visitedProcs.Contains(proc))
