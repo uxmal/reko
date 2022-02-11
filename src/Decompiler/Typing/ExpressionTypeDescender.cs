@@ -112,7 +112,7 @@ namespace Reko.Typing
         private void BindActualTypesToFormalTypes(Application appl)
         {
             var sig = ExtractSignature(appl.Procedure);
-            if (sig == null)
+            if (sig == null || !sig.ParametersValid)
                 return;
             var parameters = sig.Parameters!;
             if (!sig.IsVariadic && appl.Arguments.Length != parameters.Length)

@@ -234,7 +234,7 @@ namespace Reko.UnitTests.Environments.Windows
 
             var type = win32.DataTypeFromImportName("??_7Scope@@6B@");
 
-            Assert.IsNull(type.Item2);
+            Assert.IsNull(type.Value.Item2);
         }
     }
 }

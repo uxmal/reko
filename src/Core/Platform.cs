@@ -234,7 +234,7 @@ namespace Reko.Core
         bool TryParseAddress(string? sAddress, out Address addr);
         Dictionary<string, object>? SaveUserOptions();
         ProcedureBase_v1? SignatureFromName(string importName);
-        Tuple<string, SerializedType, SerializedType>? DataTypeFromImportName(string importName);
+        (string, SerializedType, SerializedType)? DataTypeFromImportName(string importName);
 
         /// <summary>
         /// Write one or more metadata files for the loaded program.
@@ -562,7 +562,7 @@ namespace Reko.Core
             return null;
         }
 
-        public virtual Tuple<string, SerializedType, SerializedType>? DataTypeFromImportName(string importName)
+        public virtual (string, SerializedType, SerializedType)? DataTypeFromImportName(string importName)
         {
             return null;
         }

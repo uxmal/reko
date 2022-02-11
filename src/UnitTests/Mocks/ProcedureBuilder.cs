@@ -181,6 +181,19 @@ namespace Reko.UnitTests.Mocks
             return Emit(ci);
         }
 
+        public Statement Call(
+            ProcedureBase callee,
+            int retSizeOnStack,
+            IEnumerable<(Storage stg, Expression e)> uses,
+            IEnumerable<(Storage stg, Identifier e)> definitions)
+        {
+            var tmp = new ProcedureConstant(PrimitiveType.Ptr32, callee);
+            var ci = new CallInstruction(tmp, new CallSite(retSizeOnStack, 0));
+            ci.Uses.UnionWith(uses.Select(u => new CallBinding(u.stg, u.e)));
+            ci.Definitions.UnionWith(definitions.Select(d => new CallBinding(d.stg, d.e)));
+            return Emit(ci);
+        }
+
 
         public void Compare(string flags, Expression a, Expression b)
         {

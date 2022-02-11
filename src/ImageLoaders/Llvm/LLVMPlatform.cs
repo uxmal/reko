@@ -31,12 +31,11 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 
-
 namespace Reko.ImageLoaders.LLVM
 {
     public class LLVMPlatform : IPlatform
     {
-        private IServiceProvider services;
+        private readonly IServiceProvider services;
 
 #nullable disable
         public LLVMPlatform(IServiceProvider services)
@@ -116,7 +115,7 @@ namespace Reko.ImageLoaders.LLVM
             throw new NotImplementedException();
         }
 
-        public Tuple<string, SerializedType, SerializedType> DataTypeFromImportName(string importName)
+        public (string, SerializedType, SerializedType)? DataTypeFromImportName(string importName)
         {
             throw new NotImplementedException();
         }
