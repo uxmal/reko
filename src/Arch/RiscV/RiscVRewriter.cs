@@ -18,18 +18,17 @@
  */
 #endregion
 
-using System.Collections.Generic;
 using Reko.Core;
-using Reko.Core.Rtl;
-using System.Collections;
 using Reko.Core.Expressions;
+using Reko.Core.Intrinsics;
 using Reko.Core.Machine;
-using System;
-using Reko.Core.Types;
-using System.Diagnostics;
-using System.Linq;
-using Reko.Core.Services;
 using Reko.Core.Memory;
+using Reko.Core.Rtl;
+using Reko.Core.Services;
+using Reko.Core.Types;
+using System;
+using System.Collections;
+using System.Collections.Generic;
 
 namespace Reko.Arch.RiscV
 {
@@ -135,12 +134,12 @@ namespace Reko.Arch.RiscV
                 case Mnemonic.c_sw: RewriteStore(PrimitiveType.Word32); break;
                 case Mnemonic.c_swsp: RewriteSxsp(PrimitiveType.Word32); break;
                 case Mnemonic.c_xor: RewriteCompressedBinOp(m.Xor); break;
-                case Mnemonic.csrrc: RewriteCsr("__csrrc"); break;
-                case Mnemonic.csrrci: RewriteCsr("__csrrc"); break;
-                case Mnemonic.csrrs: RewriteCsr("__csrrs"); break;
-                case Mnemonic.csrrsi: RewriteCsr("__csrrs"); break;
-                case Mnemonic.csrrw: RewriteCsr("__csrrw"); break;
-                case Mnemonic.csrrwi: RewriteCsr("__csrrw"); break;
+                case Mnemonic.csrrc: RewriteCsr(csrrc_intrinsic); break;
+                case Mnemonic.csrrci: RewriteCsr(csrrc_intrinsic); break;
+                case Mnemonic.csrrs: RewriteCsr(csrrs_intrinsic); break;
+                case Mnemonic.csrrsi: RewriteCsr(csrrs_intrinsic); break;
+                case Mnemonic.csrrw: RewriteCsr(csrrw_intrinsic); break;
+                case Mnemonic.csrrwi: RewriteCsr(csrrw_intrinsic); break;
                 case Mnemonic.divuw: RewriteBinOp(m.UDiv, PrimitiveType.Word32); break;
                 case Mnemonic.divw: RewriteBinOp(m.SDiv, PrimitiveType.Word32); break;
                 case Mnemonic.ebreak: RewriteEbreak(); break;
@@ -204,7 +203,7 @@ namespace Reko.Arch.RiscV
                 case Mnemonic.lw: RewriteLoad(PrimitiveType.Int32, arch.NaturalSignedInteger); break;
                 case Mnemonic.lwu: RewriteLoad(PrimitiveType.UInt32, arch.WordWidth); break;
                 case Mnemonic.mulw: RewriteBinOp(m.IMul, PrimitiveType.Word32); break;
-                case Mnemonic.mret: RewriteRet("__mret"); break;
+                case Mnemonic.mret: RewriteRet(mret_intrinsic); break;
                 case Mnemonic.or: RewriteOr(); break;
                 case Mnemonic.ori: RewriteOr(); break;
                     //$TODO: Reko has no unsigned modulus operator
@@ -231,7 +230,7 @@ namespace Reko.Arch.RiscV
                 case Mnemonic.srlw: RewriteShiftw(m.Shr); break;
                 case Mnemonic.sub: RewriteSub(); break;
                 case Mnemonic.subw: RewriteSubw(); break;
-                case Mnemonic.uret: RewriteRet("__uret"); break;
+                case Mnemonic.uret: RewriteRet(uret_intrinsic); break;
                 case Mnemonic.wfi: RewriteWfi(); break;
                 case Mnemonic.xor: RewriteXor(); break;
                 case Mnemonic.xori: RewriteXor(); break;
@@ -309,5 +308,17 @@ namespace Reko.Arch.RiscV
             var testGenSvc = arch.Services.GetService<ITestGenerationService>();
             testGenSvc?.ReportMissingRewriter("RiscV_rw", instr, instr.Mnemonic.ToString(), rdr, "");
         }
+
+        static readonly IntrinsicProcedure csrrc_intrinsic = IntrinsicBuilder.GenericBinary("__csrrc");
+        static readonly IntrinsicProcedure csrrs_intrinsic = IntrinsicBuilder.GenericBinary("__csrrs");
+        static readonly IntrinsicProcedure csrrw_intrinsic = IntrinsicBuilder.GenericBinary("__csrrw");
+        static readonly IntrinsicProcedure ebreak_intrinsic = new IntrinsicBuilder("__ebreak", true)
+            .Void();
+        static readonly IntrinsicProcedure mret_intrinsic = new IntrinsicBuilder("__mret", true)
+            .Void();
+        static readonly IntrinsicProcedure uret_intrinsic = new IntrinsicBuilder("__uret", true)
+            .Void();
+        static readonly IntrinsicProcedure wait_for_interrupt_intrinsic = new IntrinsicBuilder("__wait_for_interrupt", true)
+            .Void();
     }
 }

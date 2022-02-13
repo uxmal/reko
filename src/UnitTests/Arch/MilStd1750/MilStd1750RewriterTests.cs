@@ -215,7 +215,7 @@ namespace Reko.UnitTests.Arch.MilStd1750
             Given_HexString("A543");
             AssertCode(     // dabs	gp4,gp3
                 "0|L--|0100(1): 2 instructions",
-                "1|L--|gp4_gp5 = abs(gp3_gp4)",
+                "1|L--|gp4_gp5 = abs<int32>(gp3_gp4)",
                 "2|L--|PZN = cond(gp4_gp5)");
         }
 
@@ -308,7 +308,7 @@ namespace Reko.UnitTests.Arch.MilStd1750
             Given_HexString("6E6F");
             AssertCode(     // dsar	gp6,gp15
                 "0|L--|0100(1): 2 instructions",
-                "1|L--|gp6_gp7 = __shift_arithmetic(gp6_gp7, gp15)",
+                "1|L--|gp6_gp7 = __shift_arithmetic<word32,word16>(gp6_gp7, gp15)",
                 "2|L--|PZN = cond(gp6_gp7)");
         }
 
@@ -741,7 +741,7 @@ namespace Reko.UnitTests.Arch.MilStd1750
             Given_HexString("6B21");
             AssertCode(     // sar	gp2,gp1
                 "0|L--|0100(1): 2 instructions",
-                "1|L--|gp2 = __shift_arithmetic(gp2, gp1)",
+                "1|L--|gp2 = __shift_arithmetic<word16,word16>(gp2, gp1)",
                 "2|L--|PZN = cond(gp2)");
         }
 
@@ -818,7 +818,7 @@ namespace Reko.UnitTests.Arch.MilStd1750
             Given_HexString("6A52");
             AssertCode(     // slr	gp5,gp2
                 "0|L--|0100(1): 2 instructions",
-                "1|L--|gp5 = __shift_logical(gp5, gp2)",
+                "1|L--|gp5 = __shift_logical<word16,word16>(gp5, gp2)",
                 "2|L--|PZN = cond(gp5)");
         }
 

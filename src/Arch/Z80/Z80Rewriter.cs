@@ -103,7 +103,7 @@ namespace Reko.Arch.Z80
                 case Mnemonic.ini: RewriteIn(m.IAdd, false); break;
                 case Mnemonic.inir: RewriteIn(m.IAdd, true); break;
                 case Mnemonic.im:
-                    m.SideEffect(host.Intrinsic("__im", true, VoidType.Instance, RewriteOp(instr.Operands[0])));
+                    m.SideEffect(m.Fn(im_intrinsic, RewriteOp(instr.Operands[0])));
                     break;
                 case Mnemonic.inc: RewriteInc(); break;
                 case Mnemonic.jp: RewriteJp(); break;
@@ -131,12 +131,12 @@ namespace Reko.Arch.Z80
                 case Mnemonic.outi: RewriteOutInstruction(1, false); break;
                 case Mnemonic.pop: RewritePop(); break;
                 case Mnemonic.push: RewritePush(); break;
-                case Mnemonic.res: RewriteResSet("__res"); break;
+                case Mnemonic.res: RewriteResSet(res_intrinsic); break;
                 case Mnemonic.ret: RewriteRet(); break;
                 case Mnemonic.rst: RewriteRst(); break;
                 case Mnemonic.sbc: RewriteSbc(); break;
                 case Mnemonic.scf: RewriteScf(); break;
-                case Mnemonic.set: RewriteResSet("__set"); break;
+                case Mnemonic.set: RewriteResSet(set_intrinsic); break;
                 case Mnemonic.sla: RewriteShift(m.Shl); break;
                 case Mnemonic.sra: RewriteShift(m.Sar); break;
                 case Mnemonic.srl: RewriteShift(m.Shr); break;
@@ -373,7 +373,7 @@ namespace Reko.Arch.Z80
             var a = binder.EnsureRegister(Registers.a);
             m.Assign(
                 a,
-                host.Intrinsic("__daa", false, PrimitiveType.Byte, a));
+                m.Fn(daa_intrinsic, a));
             AssignCond(Registers.SZPC, a);
         }
 
@@ -395,12 +395,12 @@ namespace Reko.Arch.Z80
 
         private void RewriteDi()
         {
-            m.SideEffect(host.Intrinsic("__di", true, VoidType.Instance));
+            m.SideEffect(m.Fn(di_intrinsic));
         }
 
         private void RewriteEi()
         {
-            m.SideEffect(host.Intrinsic("__ei", true, VoidType.Instance));
+            m.SideEffect(m.Fn(ei_intrinsic));
         }
 
         private void RewriteEx()
@@ -544,7 +544,7 @@ namespace Reko.Arch.Z80
         {
             var dst = RewriteOp(dasm.Current.Operands[0]);
             var src = RewriteOp(dasm.Current.Operands[1]);
-            m.Assign(dst, host.Intrinsic("__in", true, PrimitiveType.Byte, src));
+            m.Assign(dst, m.Fn(in_intrinsic, src));
         }
 
         private void RewriteIn(Func<Expression,Expression,Expression> incDec, bool repeat)
@@ -555,7 +555,7 @@ namespace Reko.Arch.Z80
             var Z = binder.EnsureFlagGroup(arch.GetFlagGroup("Z"));
             m.Assign(
                 m.Mem8(hl),
-                host.Intrinsic("__in", true, PrimitiveType.Byte, c));
+                m.Fn(in_intrinsic, c));
             m.Assign(hl, incDec(hl, m.Int16(1)));
             m.Assign(b, m.ISub(b, 1));
             m.Assign(Z, m.Cond(b));
@@ -569,7 +569,7 @@ namespace Reko.Arch.Z80
         {
             var dst = RewriteOp(dasm.Current.Operands[0]);
             var src = RewriteOp(dasm.Current.Operands[1]);
-            m.SideEffect(host.Intrinsic("__out", true, PrimitiveType.Byte, dst, src));
+            m.SideEffect(m.Fn(out_intrinsic, dst, src));
         }
 
         private void RewriteOutInstruction(int increment, bool repeat)
@@ -578,7 +578,7 @@ namespace Reko.Arch.Z80
             var c = binder.EnsureRegister(Registers.c);
             var tmp = binder.CreateTemporary(PrimitiveType.Byte);
             m.Assign(tmp, m.Mem8(hl));
-            m.SideEffect(host.Intrinsic("__out", true, VoidType.Instance, c, tmp));
+            m.SideEffect(m.Fn(out_intrinsic, c, tmp));
             m.Assign(hl, m.AddSubSignedInt(hl, increment));
             if (repeat)
             {
@@ -608,10 +608,10 @@ namespace Reko.Arch.Z80
         {
             var bit = RewriteOp(dasm.Current.Operands[0]);
             var op = RewriteOp(dasm.Current.Operands[1]);
-            AssignCond(Registers.Z, host.Intrinsic("__bit", false, PrimitiveType.Bool, op, bit));
+            AssignCond(Registers.Z, m.Fn(bit_intrinsic, op, bit));
         }
 
-        private void RewriteResSet(string pseudocode)
+        private void RewriteResSet(IntrinsicProcedure intrinsic)
         {
             var bit = RewriteOp(dasm.Current.Operands[0]);
             var op = RewriteOp(dasm.Current.Operands[1]);
@@ -620,7 +620,7 @@ namespace Reko.Arch.Z80
                 dst = binder.CreateTemporary(op.DataType);
             else
                 dst = op;
-            m.Assign(dst, host.Intrinsic(pseudocode, true, dst.DataType, op, bit));
+            m.Assign(dst, m.Fn(intrinsic, op, bit));
             if (dst != op)
             {
                 m.Assign(op, dst);
@@ -655,5 +655,35 @@ namespace Reko.Arch.Z80
             m.Assign(reg, op(reg, sh));
             AssignCond(Registers.SZPC, reg);
         }
+
+        private static readonly IntrinsicProcedure bit_intrinsic = new IntrinsicBuilder("__bit", false)
+            .Param(PrimitiveType.Byte)
+            .Param(PrimitiveType.Byte)
+            .Returns(PrimitiveType.Bool);
+        private static readonly IntrinsicProcedure daa_intrinsic = new IntrinsicBuilder("__daa", false)
+            .Param(PrimitiveType.Byte)
+            .Returns(PrimitiveType.Byte);
+        private static readonly IntrinsicProcedure di_intrinsic = new IntrinsicBuilder("__di", true)
+            .Void();
+        private static readonly IntrinsicProcedure ei_intrinsic = new IntrinsicBuilder("__ei", true)
+            .Void();
+        private static readonly IntrinsicProcedure im_intrinsic = new IntrinsicBuilder("__im", true)
+            .Param(PrimitiveType.Byte)
+            .Void();
+        private static readonly IntrinsicProcedure in_intrinsic = new IntrinsicBuilder("__in", true)
+            .Param(PrimitiveType.Byte)
+            .Returns(PrimitiveType.Byte);
+        private static readonly IntrinsicProcedure out_intrinsic = new IntrinsicBuilder("__out", true)
+            .Param(PrimitiveType.Byte)
+            .Param(PrimitiveType.Byte)
+            .Void();
+        private static readonly IntrinsicProcedure res_intrinsic = new IntrinsicBuilder("__res", false)
+            .Param(PrimitiveType.Byte)
+            .Param(PrimitiveType.Byte)
+            .Returns(PrimitiveType.Byte);
+        private static readonly IntrinsicProcedure set_intrinsic = new IntrinsicBuilder("__set", false)
+            .Param(PrimitiveType.Byte)
+            .Param(PrimitiveType.Byte)
+            .Returns(PrimitiveType.Byte);
     }
 }

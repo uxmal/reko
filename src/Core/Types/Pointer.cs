@@ -31,10 +31,20 @@ namespace Reko.Core.Types
 	{
 		private readonly int bitSize;
 
+        /// <summary>
+        /// Creates a pointer type. The pointer points to a <see cref="DataType"/> 
+        /// <paramref name="pointee"/>. The pointer itself has the bit size <see cref="bitSize"/>.
+        /// </summary>
+        /// <param name="pointee"></param>
+        /// <param name="bitSize">The size of the pointer in bits. The special value 0 means
+        /// "this pointer has an unknown size". This is used in generic intrinsic signatures
+        /// only, and should not occur during type reference.
+        /// </param>
+        /// <exception cref="ArgumentOutOfRangeException"></exception>
 		public Pointer(DataType pointee, int bitSize)
             : base(Domain.Pointer)
 		{
-            if (bitSize <= 0)
+            if (bitSize < 0)
                 throw new ArgumentOutOfRangeException("bitSize", "Invalid pointer size.");
             this.Pointee = pointee;
 			this.bitSize = bitSize;

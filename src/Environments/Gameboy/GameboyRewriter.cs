@@ -345,7 +345,7 @@ namespace Reko.Environments.Gameboy
             var bit = Op(0);
             var exp = Op(1);
             var z = binder.EnsureFlagGroup(Registers.Z);
-            m.Assign(z, host.Intrinsic("__test_bit", false, PrimitiveType.Bool, exp, bit));
+            m.Assign(z, m.Fn(test_bit_intrinsic, exp, bit));
             Emit__01_();
         }
 
@@ -385,7 +385,7 @@ namespace Reko.Environments.Gameboy
         private void Rewrite_daa()
         {
             var a = binder.EnsureRegister(Registers.a);
-            m.Assign(a, host.Intrinsic("__decimal_adjust", false, a.DataType, a));
+            m.Assign(a, m.Fn(decimal_adjust_intrinsic, a));
             Emit_Z_0C(a);
         }
 
@@ -401,17 +401,17 @@ namespace Reko.Environments.Gameboy
 
         private void Rewrite_di()
         {
-            m.SideEffect(host.Intrinsic("__disable_interrupts", true, VoidType.Instance));
+            m.SideEffect(m.Fn(disable_interrupts_intrinsic));
         }
 
         private void Rewrite_ei()
         {
-            m.SideEffect(host.Intrinsic("__enable_interrupts", true, VoidType.Instance));
+            m.SideEffect(m.Fn(enable_interrupts_intrinsic));
         }
 
         private void Rewrite_halt()
         {
-            m.SideEffect(host.Intrinsic("__halt", true, VoidType.Instance));
+            m.SideEffect(m.Fn(halt_intrinsic));
         }
 
         private void Rewrite_inc()
@@ -514,7 +514,7 @@ namespace Reko.Environments.Gameboy
         {
             var bit = Op(0);
             var exp = Op(1);
-            m.Assign(exp, host.Intrinsic("__reset_bit", false, exp.DataType, exp, bit));
+            m.Assign(exp, m.Fn(reset_bit_intrinsic, exp, bit));
         }
 
         private void Rewrite_ret()
@@ -630,7 +630,7 @@ namespace Reko.Environments.Gameboy
         {
             var bit = Op(0);
             var exp = Op(1);
-            m.Assign(exp, host.Intrinsic("__set_bit", false, exp.DataType, exp, bit));
+            m.Assign(exp, m.Fn(set_bit_intrinsic, exp, bit));
         }
 
         private void Rewrite_sla()
@@ -674,7 +674,7 @@ namespace Reko.Environments.Gameboy
         private void Rewrite_swap()
         {
             var exp = Op(0);
-            m.Assign(exp, host.Intrinsic("__swap_nybbles", false, exp.DataType, exp));
+            m.Assign(exp, m.Fn(swap_nybbles_intrinsic, exp));
             Emit_Z000(m.Cond(exp));
         }
 
@@ -685,5 +685,29 @@ namespace Reko.Environments.Gameboy
             AssignDst(a, m.Xor(a, b));
             Emit_Z000(m.Cond(a));
         }
+
+        private readonly static IntrinsicProcedure decimal_adjust_intrinsic = IntrinsicBuilder.Unary("__decimal_adjust", PrimitiveType.Byte);
+        private readonly static IntrinsicProcedure disable_interrupts_intrinsic = new IntrinsicBuilder("__disable_interrupts", true)
+            .Void();
+        private readonly static IntrinsicProcedure enable_interrupts_intrinsic = new IntrinsicBuilder("__enable_interrupts", true)
+            .Void();
+        private readonly static IntrinsicProcedure halt_intrinsic = new IntrinsicBuilder("__halt", true, new ProcedureCharacteristics
+            {
+                Terminates = true
+            })
+            .Void();
+        private readonly static IntrinsicProcedure reset_bit_intrinsic = new IntrinsicBuilder("__reset_bit", false)
+            .Param(PrimitiveType.Byte)
+            .Param(PrimitiveType.Byte)
+            .Returns(PrimitiveType.Bool);
+        private readonly static IntrinsicProcedure set_bit_intrinsic = new IntrinsicBuilder("__set_bit", false)
+            .Param(PrimitiveType.Byte)
+            .Param(PrimitiveType.Byte)
+            .Returns(PrimitiveType.Bool);
+        private readonly static IntrinsicProcedure swap_nybbles_intrinsic = IntrinsicBuilder.Unary("__swap_nybbles", PrimitiveType.Byte);
+        private readonly static IntrinsicProcedure test_bit_intrinsic = new IntrinsicBuilder("__test_bit", false)
+            .Param(PrimitiveType.Byte)
+            .Param(PrimitiveType.Byte)
+            .Returns(PrimitiveType.Bool);
     }
 }

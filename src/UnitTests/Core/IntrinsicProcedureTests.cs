@@ -81,5 +81,28 @@ namespace Reko.UnitTests.Core
             Assert.AreSame(instance1, instance2, "Expected the instances to be identical");
         }
 
+        [Test]
+        public void Intrinsic_MakeGenericPointer()
+        {
+            var args = new DataType[] { t };
+            var sig = FunctionType.Func(
+                new Identifier("", new Pointer(t, 0), null!),   // generic ptr
+                new Identifier("arg1", t, null!));
+            var generic = new IntrinsicProcedure("PtrOf", args, false, false, sig);
+            var instance = generic.MakeInstance(64, PrimitiveType.Int64);
+            Assert.AreEqual("(ptr64 int64) PtrOf<int64>(int64 arg1)", instance.ToString());
+        }
+
+        [Test]
+        public void Intrinsic_MakeGenericPointer_with_no_size()
+        {
+            var args = new DataType[] { t };
+            var sig = FunctionType.Func(
+                new Identifier("", new Pointer(t, 0), null!),   // generic ptr
+                new Identifier("arg1", t, null!));
+            var generic = new IntrinsicProcedure("PtrOf", args, false, false, sig);
+            Assert.Throws<InvalidOperationException>(()
+                => generic.MakeInstance(PrimitiveType.Int64)); // no ptr size specified.
+        }
     }
 }

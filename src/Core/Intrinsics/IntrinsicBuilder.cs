@@ -133,6 +133,25 @@ namespace Reko.Core.Intrinsics
             return Param(new Pointer(GetGenericArgument(genericType), 0));
         }
 
+        public IntrinsicBuilder Params(params string [] genericTypes)
+        {
+            // The '0' size below indicates that we don't know the size of the pointer.
+            // When IntrinsicProcedure.MakeInstance is called, the pointer
+            // size of the architecture is resolved.
+            return Param(new Pointer(dt, 0));
+        }
+
+        /// <summary>
+        /// Creates a parameter of type "pointer to <paramref name="genericType" />.
+        /// </summary>
+        public IntrinsicBuilder PtrParam(string genericType)
+        {
+            // The '0' size below indicates that we don't know the size of the pointer.
+            // When IntrinsicProcedure.MakeInstance is called, the pointer
+            // size of the architecture is resolved.
+            return Param(new Pointer(GetGenericArgument(genericType), 0));
+        }
+
         public IntrinsicBuilder Params(params string[] genericTypes)
         {
             foreach (var type in genericTypes)

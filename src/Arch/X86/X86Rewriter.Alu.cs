@@ -1368,7 +1368,7 @@ namespace Reko.Arch.X86
                 PrimitiveType.Word64,
                 Registers.edx,
                 Registers.eax);
-            m.SideEffect(m.Fn(orw.AluRegister(Registers.ecx),edx_eax));
+            m.SideEffect(m.Fn(xsetbv_intrinsic, orw.AluRegister(Registers.ecx),edx_eax));
         }
 
 

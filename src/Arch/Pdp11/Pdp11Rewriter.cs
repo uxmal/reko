@@ -23,6 +23,7 @@ using Reko.Core.Expressions;
 using Reko.Core.Intrinsics;
 using Reko.Core.Machine;
 using Reko.Core.Rtl;
+using Reko.Core.Serialization;
 using Reko.Core.Types;
 using System;
 using System.Collections;
@@ -601,5 +602,40 @@ namespace Reko.Arch.Pdp11
             iclass = InstrClass.Invalid;
             m.Invalid();
         }
+
+        static readonly IntrinsicProcedure bpt_intrinsic = new IntrinsicBuilder("__bpt", true)
+            .Returns(PrimitiveType.Byte);
+        static readonly IntrinsicProcedure halt_intrinsic = new IntrinsicBuilder("__halt", true, new ProcedureCharacteristics
+            {
+                Terminates = true,
+            })
+            .Void();
+        static readonly IntrinsicProcedure mfpd_intrinsic = new IntrinsicBuilder("__mfpd", true)
+            .Param(PrimitiveType.Word16)
+            .Returns(PrimitiveType.Word16);
+        static readonly IntrinsicProcedure mfpi_intrinsic = new IntrinsicBuilder("__mfpi", true)
+            .Param(PrimitiveType.Word16)
+            .Returns(PrimitiveType.Word16);
+        static readonly IntrinsicProcedure mtpi_intrinsic = new IntrinsicBuilder("__mtpi", true)
+            .Param(PrimitiveType.Word16)
+            .Param(PrimitiveType.Word16)
+            .Void();
+        static readonly IntrinsicProcedure reset_intrinsic = new IntrinsicBuilder("__reset", true, new ProcedureCharacteristics
+            {
+                Terminates = true,
+            })
+            .Void();
+        static readonly IntrinsicProcedure shift_intrinsic = new IntrinsicBuilder("__shift", false)
+            .GenericTypes("TValue", "TShift")
+            .Param("TValue")
+            .Param("TShift")
+            .Returns("TValue");
+        static readonly IntrinsicProcedure stexp_intrinsic = new IntrinsicBuilder("__stexp", true)
+            .GenericTypes("T")
+            .Param("T")
+            .Returns(PrimitiveType.Int16);
+        static readonly IntrinsicProcedure swab_intrinsic = IntrinsicBuilder.Unary("__swab", PrimitiveType.Word16);
+        static readonly IntrinsicProcedure wait_intrinsic = new IntrinsicBuilder("__wait", true)
+            .Void();
     }
 }

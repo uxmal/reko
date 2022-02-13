@@ -86,7 +86,7 @@ namespace Reko.Arch.M68k
                 instr.Address + instr.Length,
                 InstrClass.ConditionalTransfer);
             m.SideEffect(
-                m.Fn(CommonOps.Syscall, m.Byte(6)));
+                m.Fn(CommonOps.Syscall_1, m.Byte(6)));
         }
 
         private void RewriteChk2()
@@ -104,7 +104,7 @@ namespace Reko.Arch.M68k
                     instr.Address + instr.Length,
                     InstrClass.ConditionalTransfer);
                 m.SideEffect(
-                    m.Fn(CommonOps.Syscall, m.Byte(6)),
+                    m.Fn(CommonOps.Syscall_1, m.Byte(6)),
                     InstrClass.Linear);
             }
             else
@@ -168,7 +168,7 @@ namespace Reko.Arch.M68k
             if (this.instr.Operands.Length > 0)
             {
                 // Used to model A-line and F-line instructions.
-                m.SideEffect(m.Fn(CommonOps.Syscall, RewriteSrcOperand(this.instr.Operands[0])));
+                m.SideEffect(m.Fn(CommonOps.Syscall_1, RewriteSrcOperand(this.instr.Operands[0])));
                 iclass = InstrClass.Call | InstrClass.Transfer;
             }
             else
@@ -212,7 +212,7 @@ namespace Reko.Arch.M68k
         private void RewriteTrap()
         {
             var vector = orw.RewriteSrc(instr.Operands[0], instr.Address);
-            m.SideEffect(m.Fn(CommonOps.Syscall, vector));
+            m.SideEffect(m.Fn(CommonOps.Syscall_1, vector));
         }
 
         private void RewriteTrapCc(ConditionCode cc, FlagGroupStorage? flags)
@@ -231,11 +231,17 @@ namespace Reko.Arch.M68k
                     InstrClass.ConditionalTransfer);
             }
             var args = new List<Expression> { Constant.UInt16(7) };
+            Expression call;
             if (instr.Operands.Length > 0)
             {
                 args.Add(orw.RewriteSrc(instr.Operands[0], instr.Address));
+                call = m.Fn(CommonOps.Syscall_2, args.ToArray());
             }
-            m.SideEffect(m.Fn(CommonOps.Syscall, args.ToArray()));
+            else
+            {
+                call = m.Fn(CommonOps.Syscall_1, args.ToArray());
+            }
+            m.SideEffect(call);
         }
     }
 }

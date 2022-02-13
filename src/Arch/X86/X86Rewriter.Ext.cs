@@ -40,7 +40,7 @@ namespace Reko.Arch.X86
         public void RewriteClts()
         {
             var cr0 = binder.EnsureRegister(arch.GetControlRegister(0)!);
-            m.Assign(cr0, host.Intrinsic("__clts", true, cr0.DataType, cr0));
+            m.Assign(cr0, m.Fn(clts_intrinsic, cr0));
         }
 
         public void RewriteEmms()
@@ -54,7 +54,7 @@ namespace Reko.Arch.X86
             // depends on EAX.
             var arg = binder.EnsureRegister(Registers.eax);
             var result = binder.EnsureSequence(PrimitiveType.Word64, Registers.edx, Registers.ebx);
-            m.Assign(result, host.Intrinsic("__getsec", true, result.DataType, arg));
+            m.Assign(result, m.Fn(getsec_intrinsic, arg));
         }
 
         private void RewriteInvd()
@@ -72,11 +72,9 @@ namespace Reko.Arch.X86
         {
             m.Assign(
                 SrcOp(0),
-                host.Intrinsic(
-                    "__lar",
-                    true,
-                    instrCur.Operands[0].Width,
-                    SrcOp(1)));
+                m.Fn(
+                    lar_intrinsic.MakeInstance(arch.PointerType.BitSize, instrCur.Operands[0].Width),
+                    m.AddrOf(arch.PointerType, SrcOp(1))));
             m.Assign(
                 binder.EnsureFlagGroup(Registers.Z),
                 Constant.True());
@@ -84,17 +82,15 @@ namespace Reko.Arch.X86
 
         private void RewriteLmsw()
         {
-            m.SideEffect(host.Intrinsic("__lmsw", true, VoidType.Instance, SrcOp(0)));
+            m.SideEffect(m.Fn(lmsw_intrinsic, SrcOp(0)));
         }
 
         private void RewriteLsl()
         {
             m.Assign(
                 SrcOp(0),
-                host.Intrinsic(
-                    "__lsl",
-                    true,
-                    instrCur.Operands[0].Width,
+                m.Fn(
+                    lsl_intrinsic.MakeInstance(instrCur.Operands[0].Width),
                     SrcOp(1)));
         }
 
@@ -201,7 +197,8 @@ namespace Reko.Arch.X86
 
         private void RewriteXsaveopt()
         {
-            m.SideEffect(host.Intrinsic("__xsaveopt", true, VoidType.Instance, m.AddrOf(arch.PointerType, SrcOp(0))));
+            var edx_eax = binder.EnsureSequence(PrimitiveType.Word64, Registers.edx, Registers.eax);
+            m.SideEffect(m.Fn(xsaveopt_intrinsic, edx_eax, m.AddrOf(arch.PointerType, SrcOp(0))));
         }
     }
 }

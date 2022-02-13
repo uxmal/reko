@@ -29,6 +29,7 @@ using System.Linq;
 using System.Text;
 using Reko.Core;
 using Reko.Core.Rtl;
+using Reko.Core.Intrinsics;
 
 namespace Reko.Arch.M68k
 {
@@ -147,7 +148,11 @@ namespace Reko.Arch.M68k
             var opDst = orw.RewriteSrc(instr.Operands[1], instr.Address);
             m.Assign(
                 binder.EnsureFlagGroup(Registers.Z),
-                m.Fn(intrinsic, opDst, opSrc, m.Out(PrimitiveType.Ptr32, opDst)));
+                m.Fn(
+                    intrinsic.MakeInstance(opSrc.DataType),
+                    opDst,
+                    opSrc,
+                    m.Out(PrimitiveType.Ptr32, opDst)));
         }
 
         public void RewriteBfchg()
@@ -321,12 +326,15 @@ namespace Reko.Arch.M68k
 
         private void RewriteCas()
         {
+            var src0 = orw.RewriteSrc(instr.Operands[0], instr.Address);
+            var src1 = orw.RewriteSrc(instr.Operands[1], instr.Address);
+            var src2 = orw.RewriteSrc(instr.Operands[2], instr.Address);
             m.Assign(
                 binder.EnsureFlagGroup(Registers.CVZN),
-                host.Intrinsic("atomic_compare_exchange_weak", true, PrimitiveType.Bool,
-                    m.AddrOf(PrimitiveType.Ptr32, orw.RewriteSrc(instr.Operands[2], instr.Address)),
-                    orw.RewriteSrc(instr.Operands[1], instr.Address),
-                    orw.RewriteSrc(instr.Operands[0], instr.Address)));
+                m.Fn(AtomicOps.atomic_compare_exchange_weak.MakeInstance(32, src1.DataType),
+                    m.AddrOf(PrimitiveType.Ptr32, src2),
+                    src1,
+                    src0));
         }
 
         private void RewriteClr()

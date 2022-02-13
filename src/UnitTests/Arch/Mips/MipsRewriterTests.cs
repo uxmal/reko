@@ -18,19 +18,16 @@
  */
 #endregion
 
+using NUnit.Framework;
 using Reko.Arch.Mips;
 using Reko.Core;
+using Reko.Core.Machine;
+using Reko.Core.Memory;
 using Reko.Core.Rtl;
-using NUnit.Framework;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Reko.Core.Types;
-using Reko.Core.Machine;
-using Reko.Core.Configuration;
 using System.ComponentModel.Design;
-using Reko.Core.Memory;
+using System.Linq;
 
 namespace Reko.UnitTests.Arch.Mips
 {
@@ -71,7 +68,7 @@ namespace Reko.UnitTests.Arch.Mips
         protected override IEnumerable<RtlInstructionCluster> GetRtlStream(MemoryArea mem, IStorageBinder binder, IRewriterHost host)
         {
             var dasm = mkDasm(arch.CreateImageReader(mem, 0)).Cast<MipsInstruction>();
-            return new MipsRewriter(arch, null, dasm, binder, host);
+            return new MipsRewriter(arch, arch.Intrinsics, null, dasm, binder, host);
         }
 
         [Test]
@@ -617,7 +614,7 @@ namespace Reko.UnitTests.Arch.Mips
             AssertCode(0x46200049, // trunc.l.d $f1,$f0
             "0|L--|00100000(4): 2 instructions",
             "1|L--|v2 = f0",
-                "2|L--|f1 = CONVERT(trunc(v2), real64, int64)");
+                "2|L--|f1 = CONVERT(trunc<real64>(v2), real64, int64)");
         }
 
         [Test]
@@ -982,7 +979,7 @@ namespace Reko.UnitTests.Arch.Mips
             Given_HexString("C904B812");   // bbeqzc	r8,00000017,00100016
             AssertCode(
                 "0|T--|00100000(4): 1 instructions",
-                "1|T--|if (__bit(r8, 0x17<32>)) branch 00100016");
+                "1|T--|if (__bit<word32,word32>(r8, 0x17<32>)) branch 00100016");
         }
 
         [Test]
@@ -1015,7 +1012,6 @@ namespace Reko.UnitTests.Arch.Mips
                 "1|T--|if (r7 == 4<32>) branch 000FFDDE");
         }
 
-
         [Test]
         public void MipsRw_ins()
         {
@@ -1023,7 +1019,7 @@ namespace Reko.UnitTests.Arch.Mips
             Given_HexString("8100E5D7");   // ins	r8,r0,00000007,00000001
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|r8 = __ins(r8, 0<32>, 7<32>, 1<32>)");
+                "1|L--|r8 = __ins<word32,word32>(r8, 0<32>, 7<32>, 1<32>)");
         }
 
         [Test]
@@ -1063,7 +1059,7 @@ namespace Reko.UnitTests.Arch.Mips
             Given_HexString("C9349820");   // bbnezc	r9,00000013,0804851A
             AssertCode(
                 "0|T--|00100000(4): 1 instructions",
-                "1|T--|if (!__bit(r9, 0x13<32>)) branch 00100024");
+                "1|T--|if (!__bit<word32,word32>(r9, 0x13<32>)) branch 00100024");
         }
 
         [Test]

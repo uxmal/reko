@@ -2314,7 +2314,7 @@ namespace Reko.UnitTests.Arch.X86
             Run32bitTest("0F06");    // clts
             AssertCode(
                 "0|S--|10000000(2): 1 instructions",
-                "1|L--|cr0 = __clts(cr0)");
+                "1|L--|cr0 = __clts<word32>(cr0)");
         }
 
         [Test]
@@ -2579,7 +2579,7 @@ namespace Reko.UnitTests.Arch.X86
             Run32bitTest("0F024242");    // lar\teax,word ptr [edx+42]
             AssertCode(
                 "0|S--|10000000(4): 2 instructions",
-                "1|L--|eax = __lar(Mem0[edx + 66<i32>:word16])",
+                "1|L--|eax = __lar<word32>(&Mem0[edx + 66<i32>:word16])",
                 "2|L--|Z = true");
         }
 
@@ -2589,7 +2589,7 @@ namespace Reko.UnitTests.Arch.X86
             Run32bitTest("0F034242");    // lsl\teax,word ptr [edx+42]
             AssertCode(
                 "0|S--|10000000(4): 1 instructions",
-                "1|L--|eax = __lsl(Mem0[edx + 66<i32>:word16])");
+                "1|L--|eax = __load_segment_limit<word32>(Mem0[edx + 66<i32>:word16])");
         }
 
         [Test]
@@ -3973,7 +3973,7 @@ namespace Reko.UnitTests.Arch.X86
             Run32bitTest("0F01F0");	// lmsw	ax
             AssertCode(
                 "0|S--|10000000(3): 1 instructions",
-                "1|L--|__lmsw(ax)");
+                "1|L--|__load_machine_status_word(ax)");
         }
 
         [Test]
@@ -4651,7 +4651,7 @@ namespace Reko.UnitTests.Arch.X86
             Run32bitTest("0FAE74D8BE");
             AssertCode(     // xsaveopt dword ptr [eax+ebx*8-42h]
                 "0|L--|10000000(5): 1 instructions",
-                "1|L--|__xsaveopt(&Mem0[eax - 66<i32> + ebx * 8<32>:word32])");
+                "1|L--|__xsaveopt(edx_eax, &Mem0[eax - 66<i32> + ebx * 8<32>:word32])");
         }
 
         [Test]

@@ -19,6 +19,7 @@
 #endregion
 
 using Reko.Core;
+using Reko.Core.Intrinsics;
 using Reko.Core.Machine;
 using Reko.Core.Serialization;
 using Reko.Core.Types;
@@ -33,21 +34,19 @@ namespace Reko.Arch.Xtensa
     {
         private void RewriteBreak()
         {
-            m.SideEffect(host.Intrinsic(
-                "__break",
-                true,
-                VoidType.Instance,
+            m.SideEffect(m.Fn(
+                break_intrinsic,
                 RewriteOp(instr.Operands[0]),
                 RewriteOp(instr.Operands[1])));
         }
 
-        private void RewriteCacheFn(string fnName)
+        private void RewriteCacheFn(IntrinsicProcedure intrinsic)
         {
             var ptr = RewriteOp(instr.Operands[0]);
             var off = RewriteOp(instr.Operands[1]);
             var location = m.IAdd(ptr, off);
             location.DataType = PrimitiveType.Ptr32;
-            m.SideEffect(host.Intrinsic(fnName, true, VoidType.Instance, location));
+            m.SideEffect(m.Fn(intrinsic, location));
         }
 
         private void RewriteIll()
@@ -66,11 +65,7 @@ namespace Reko.Arch.Xtensa
                 RewriteOp(instr.Operands[2]));
             ptr.DataType = PrimitiveType.Ptr32;
             var dst = RewriteOp(instr.Operands[0]);
-            m.Assign(dst, host.Intrinsic(
-                "__l32ai",
-                true,
-                PrimitiveType.Word32,
-                ptr));
+            m.Assign(dst, m.Fn(l32ai_intrinsic, ptr));
         }
 
         private void RewriteL32e()
@@ -79,10 +74,8 @@ namespace Reko.Arch.Xtensa
             var offset = ((ImmediateOperand)dasm.Current.Operands[2]).Value;
             m.Assign(
                 dst,
-                host.Intrinsic(
-                    "__l32e",
-                    true,
-                    PrimitiveType.Word32,
+                m.Fn(
+                    l32e_intrinsic,
                     m.IAdd(
                         RewriteOp(dasm.Current.Operands[1]),
                         offset)));
@@ -92,12 +85,18 @@ namespace Reko.Arch.Xtensa
         {
             var src = RewriteOp(instr.Operands[1]);
             var dst = RewriteOp(instr.Operands[0]);
-            m.Assign(dst, host.Intrinsic("__rer", true, PrimitiveType.Word32, src));
+            m.Assign(dst, m.Fn(rer_intrinsic, src));
+        }
+
+        private void RewriteRotw()
+        {
+            var src = RewriteOp(instr.Operands[0]);
+            m.SideEffect(m.Fn(rotw_intrinsic, src));
         }
 
         private void RewriteRsync()
         {
-            m.SideEffect(host.Intrinsic("__rsync", true, VoidType.Instance));
+            m.SideEffect(m.Fn(rsync_intrinsic));
         }
 
         private void RewriteS32c1i()
@@ -108,10 +107,8 @@ namespace Reko.Arch.Xtensa
             ea.DataType = new Pointer(PrimitiveType.Word32, 32);
             var scomp = binder.EnsureRegister(Registers.SCOMPARE1);
             var dst = RewriteOp(instr.Operands[0]);
-            m.Assign(dst, host.Intrinsic(
-                "__s32c1i",
-                true,
-                PrimitiveType.Word32,
+            m.Assign(dst, m.Fn(
+                s32c1i_intrinsic,
                 ea,
                 scomp));
         }
@@ -121,10 +118,8 @@ namespace Reko.Arch.Xtensa
             var src = RewriteOp(this.instr.Operands[0]);
             var offset = ((ImmediateOperand)dasm.Current.Operands[2]).Value;
             m.SideEffect(
-                host.Intrinsic(
-                    "__s32e",
-                    true,
-                    VoidType.Instance,
+                m.Fn(
+                    s32e_intrinsic,
                     m.IAdd(
                         RewriteOp(dasm.Current.Operands[1]),
                         offset),
@@ -133,14 +128,14 @@ namespace Reko.Arch.Xtensa
 
         private void RewriteSyscall()
         {
-            m.SideEffect(host.Intrinsic("__syscall", true, VoidType.Instance));
+            m.SideEffect(m.Fn(CommonOps.Syscall_0));
         }
 
         private void RewriteWer()
         {
             var dst = RewriteOp(dasm.Current.Operands[1]);
             var src = RewriteOp(dasm.Current.Operands[0]);
-            m.SideEffect(host.Intrinsic("__wer", true, VoidType.Instance, dst, src));
+            m.SideEffect(m.Fn(wer_intrinsic, dst, src));
         }
 
         private void RewriteWsr()
@@ -154,7 +149,7 @@ namespace Reko.Arch.Xtensa
         {
             var src = RewriteOp(dasm.Current.Operands[1]);
             var dst = RewriteOp(dasm.Current.Operands[0]);
-            m.Assign(dst, host.Intrinsic("__xsr", true, PrimitiveType.Word32, dst, src));
+            m.Assign(dst, m.Fn(xsr_intrinsic, dst, src));
         }
     }
 }

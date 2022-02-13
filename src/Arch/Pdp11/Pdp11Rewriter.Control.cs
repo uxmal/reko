@@ -20,6 +20,7 @@
 
 using Reko.Core;
 using Reko.Core.Expressions;
+using Reko.Core.Intrinsics;
 using Reko.Core.Machine;
 using Reko.Core.Rtl;
 using Reko.Core.Serialization;
@@ -37,7 +38,7 @@ namespace Reko.Arch.Pdp11
         {
             this.iclass = InstrClass.Call | InstrClass.Transfer;
             var grf = binder.EnsureFlagGroup(Registers.NZVC);
-            m.Assign(grf, host.Intrinsic("__bpt", true, PrimitiveType.Byte)); 
+            m.Assign(grf, m.Fn(bpt_intrinsic));
         }
 
         private void RewriteBr()
@@ -60,24 +61,20 @@ namespace Reko.Arch.Pdp11
             this.iclass = InstrClass.Transfer;
             var imm = ((ImmediateOperand)instr.Operands[0]).Value.ToByte();
             var svc = m.Word16((ushort)(0x8800 | imm));
-            m.SideEffect(host.Intrinsic(IntrinsicProcedure.Syscall, true, VoidType.Instance, svc));
+            m.SideEffect(m.Fn(CommonOps.Syscall_1, svc));
         }
 
         private void RewriteHalt()
         {
             iclass = InstrClass.Terminates;
-            var c = new ProcedureCharacteristics
-            {
-                Terminates = true,
-            };
-            m.SideEffect(host.Intrinsic("__halt", true, c, VoidType.Instance));
+            m.SideEffect(m.Fn(halt_intrinsic));
         }
 
         private void RewriteIot()
         {
             this.iclass = InstrClass.Call | InstrClass.Transfer;
             var grf = binder.EnsureFlagGroup(arch.GetFlagGroup(Registers.psw, (uint)(FlagM.NF | FlagM.ZF | FlagM.VF | FlagM.CF)));
-            m.Assign(grf, host.Intrinsic("__bpt", true, PrimitiveType.Byte));
+            m.Assign(grf, m.Fn(bpt_intrinsic));
         }
 
         private void RewriteJmp()
@@ -141,7 +138,7 @@ namespace Reko.Arch.Pdp11
 
         private void RewriteReset()
         {
-            m.SideEffect(host.Intrinsic("__reset", true, VoidType.Instance), InstrClass.Terminates);
+            m.SideEffect(m.Fn(reset_intrinsic), InstrClass.Terminates);
         }
 
         private void RewriteRti()
@@ -194,12 +191,12 @@ namespace Reko.Arch.Pdp11
             this.iclass = InstrClass.Transfer;
             var imm = ((ImmediateOperand)instr.Operands[0]).Value.ToByte();
             var svc = m.Word16((ushort)(0x8900 | imm));
-            m.SideEffect(host.Intrinsic(IntrinsicProcedure.Syscall, true, VoidType.Instance, svc));
+            m.SideEffect(m.Fn(CommonOps.Syscall_1, svc));
         }
 
         private void RewriteWait()
         {
-            m.SideEffect(host.Intrinsic("__wait", true, VoidType.Instance));
+            m.SideEffect(m.Fn(wait_intrinsic));
         }
     }
 }

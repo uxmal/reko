@@ -59,7 +59,7 @@ namespace Reko.Arch.PaRisc
             {
                 bitNumber = RewriteOp(1);
             }
-            var test = host.Intrinsic("__is_bit_set", false, PrimitiveType.Bool, reg, bitNumber);
+            var test = m.Fn(is_bit_set_intrinsic, reg, bitNumber);
             MaybeBranchAndAnnul(2, RewriteBbCondition, test);
         }
 
@@ -101,7 +101,7 @@ namespace Reko.Arch.PaRisc
 
         private void RewriteBreak()
         {
-            m.SideEffect(host.Intrinsic("__break", false, VoidType.Instance));
+            m.SideEffect(m.Fn(break_intrinsic));
         }
 
         private void RewriteBe(bool link)
@@ -243,9 +243,9 @@ namespace Reko.Arch.PaRisc
             MaybeBranchAndAnnul(2, RewriteCondition, src);
         }
 
-        private void RewriteRfi(string intrinsic)
+        private void RewriteRfi(IntrinsicProcedure intrinsic)
         {
-            m.SideEffect(host.Intrinsic(intrinsic, true, VoidType.Instance));
+            m.SideEffect(m.Fn(intrinsic));
             m.Return(0, 0);
         }
     }

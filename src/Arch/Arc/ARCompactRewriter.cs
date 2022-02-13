@@ -877,7 +877,7 @@ namespace Reko.Arch.Arc
 
         private void RewriteTrap()
         {
-            m.SideEffect(m.Fn(CommonOps.Syscall), instr.InstructionClass);
+            m.SideEffect(m.Fn(CommonOps.Syscall_0), instr.InstructionClass);
         }
 
         static ARCompactRewriter()
@@ -897,7 +897,6 @@ namespace Reko.Arch.Arc
                 .Param(PrimitiveType.Word32)
                 .Returns(PrimitiveType.Bool);
             load_aux_reg_intrinsic = new IntrinsicBuilder("__load_aux_reg", true)
-                .Param(PrimitiveType.Word32)
                 .Param(PrimitiveType.Word32)
                 .Returns(PrimitiveType.Word32);
             max_intrinsic = new IntrinsicBuilder("max", false)

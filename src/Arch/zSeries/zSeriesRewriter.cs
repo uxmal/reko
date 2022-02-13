@@ -18,20 +18,17 @@
  */
 #endregion
 
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
 using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Intrinsics;
 using Reko.Core.Machine;
 using Reko.Core.Memory;
-using Reko.Core.Operators;
 using Reko.Core.Rtl;
 using Reko.Core.Services;
 using Reko.Core.Types;
+using System;
+using System.Collections;
+using System.Collections.Generic;
 
 namespace Reko.Arch.zSeries
 {
@@ -45,27 +42,39 @@ namespace Reko.Arch.zSeries
         private static readonly PrimitiveType ExtendedHexFloat = PrimitiveType.Real128;
 
         private readonly zSeriesArchitecture arch;
+        private readonly zSeriesIntrinsics intrinsics;
         private readonly ProcessorState state;
         private readonly IStorageBinder binder;
         private readonly IRewriterHost host;
         private readonly EndianImageReader rdr;
         private readonly IEnumerator<zSeriesInstruction> dasm;
+        private readonly List<RtlInstruction> instrs;
+        private readonly RtlEmitter m;
         private readonly ExpressionValueComparer cmp;
+        private readonly int ptrSize;
         private zSeriesInstruction instr;
-        private RtlEmitter m;
         private InstrClass iclass;
 
-        public zSeriesRewriter(zSeriesArchitecture arch, EndianImageReader rdr, ProcessorState state, IStorageBinder binder, IRewriterHost host)
+        public zSeriesRewriter(
+            zSeriesArchitecture arch,
+            zSeriesIntrinsics intrinsics,
+            EndianImageReader rdr,
+            ProcessorState state,
+            IStorageBinder binder,
+            IRewriterHost host)
         {
             this.arch = arch;
+            this.intrinsics = intrinsics;
             this.rdr = rdr;
             this.state = state;
             this.binder = binder;
             this.host = host;
             this.dasm = new zSeriesDisassembler(arch, rdr).GetEnumerator();
             this.cmp = new ExpressionValueComparer();
+            this.instrs = new List<RtlInstruction>();
+            this.m = new RtlEmitter(instrs);
+            this.ptrSize = arch.PointerType.BitSize;
             this.instr = null!;
-            this.m = null!;
         }
 
         public IEnumerator<RtlInstructionCluster> GetEnumerator()
@@ -75,7 +84,6 @@ namespace Reko.Arch.zSeries
                 this.instr = dasm.Current;
                 this.iclass = instr.InstructionClass;
                 var instrs = new List<RtlInstruction>();
-                this.m = new RtlEmitter(instrs);
                 switch (instr.Mnemonic)
                 {
                 default:
@@ -252,10 +260,10 @@ namespace Reko.Arch.zSeries
                 case Mnemonic.locgrnhe: RewriteLocr(PrimitiveType.Word64, ConditionCode.ULE); break;
                 case Mnemonic.locgrnl: RewriteLocr(PrimitiveType.Word64, ConditionCode.GE); break;
                 case Mnemonic.locgrnle: RewriteLocr(PrimitiveType.Word64, ConditionCode.GT); break;
-                case Mnemonic.lpdr: RewriteLpr("fabs", LongHexFloat); break;
-                case Mnemonic.lper: RewriteLpr("fabsf", ShortHexFloat); break;
-                case Mnemonic.lpgr: RewriteLpr("abs", PrimitiveType.Int64); break;
-                case Mnemonic.lpr: RewriteLpr("abs", PrimitiveType.Int32); break;
+                case Mnemonic.lpdr: RewriteUnary(intrinsics.fabs, LongHexFloat); break;
+                case Mnemonic.lper: RewriteUnary(FpOps.FAbs32, ShortHexFloat); break;
+                case Mnemonic.lpgr: RewriteUnary(CommonOps.Abs, PrimitiveType.Int64); break;
+                case Mnemonic.lpr: RewriteUnary(CommonOps.Abs, PrimitiveType.Int32); break;
                 case Mnemonic.lr: RewriteLr(PrimitiveType.Word32, PrimitiveType.Word32); break;
                 case Mnemonic.lra: RewriteLra(); break;
                 case Mnemonic.lrl: RewriteL(PrimitiveType.Word32); break;
@@ -297,8 +305,8 @@ namespace Reko.Arch.zSeries
                 case Mnemonic.ogr: RewriteLogicR(PrimitiveType.Word64, m.Or); break;
                 case Mnemonic.oi: RewriteOi(); break;
                 case Mnemonic.or: RewriteLogicR(PrimitiveType.Word32, m.Or); break;
-                case Mnemonic.risbg: RewriteRisbg("__risbg"); break;
-                case Mnemonic.risbgn: RewriteRisbg("__risbgn"); break;
+                case Mnemonic.risbg: RewriteRisbg(intrinsics.risbg); break;
+                case Mnemonic.risbgn: RewriteRisbg(intrinsics.risbgn); break;
                 case Mnemonic.rllg: RewriteShift3(PrimitiveType.Word64, Rol); break;
                 case Mnemonic.s: RewriteS(PrimitiveType.Int32); break;
                 case Mnemonic.sh: RewriteAluH(m.ISub, PrimitiveType.Int32, PrimitiveType.Int16); break;
@@ -345,23 +353,23 @@ namespace Reko.Arch.zSeries
                 case Mnemonic.sxr: RewriteFpuRegPair(m.FSub, ExtendedHexFloat); break;
                 case Mnemonic.ts: RewriteTs(); break;
 
-                case Mnemonic.vavg: RewriteVectorInstruction3Elem("__vavg_{0}", false); break;
-                case Mnemonic.verim: RewriteVectorInstruction4Elem("__verim_{0}", false); break;
-                case Mnemonic.vfa: RewriteVectorInstruction3Elem("__vfa"); break;
-                case Mnemonic.vfd: RewriteVectorInstruction3Elem("__vfd"); break;
-                case Mnemonic.vfs: RewriteVectorInstruction3Elem("__vfs"); break;
-                case Mnemonic.vll: RewriteVectorInstruction("__vll"); break;
-                case Mnemonic.vmao: RewriteVectorInstruction4Elem("__vmao_{0}", false); break;
-                case Mnemonic.vmah: RewriteVectorInstruction4Elem("__vmah_{0}", true); break;
-                case Mnemonic.vmrh: RewriteVectorInstruction3Elem("__vmrh_{0}"); break;
-                case Mnemonic.vmrl: RewriteVectorInstruction3Elem("__vmrl_{0}"); break;
-                case Mnemonic.vmxl: RewriteVectorInstruction3Elem("__vmx_{0}"); break;
-                case Mnemonic.vpk: RewriteVectorInstruction3Elem("__vpk_{0}", shrink:true); break;
-                case Mnemonic.vpkls: RewriteVectorInstruction3Elem("__vpkls_{0}"); break;
-                case Mnemonic.vn: RewriteVectorInstruction("__vn"); break;
-                case Mnemonic.vslb: RewriteVectorInstruction("__vslb"); break;
-                case Mnemonic.vsel: RewriteVectorInstruction("__vsel"); break;
-                case Mnemonic.vx: RewriteVectorInstruction("__vx"); break;
+                case Mnemonic.vavg: RewriteVectorInstruction3Elem(intrinsics.vavg, false); break;
+                case Mnemonic.verim: RewriteVectorInstruction4Elem(intrinsics.verim, false); break;
+                case Mnemonic.vfa: RewriteVectorInstruction3Elem(intrinsics.vfa); break;
+                case Mnemonic.vfd: RewriteVectorInstruction3Elem(intrinsics.vfd); break;
+                case Mnemonic.vfs: RewriteVectorInstruction3Elem(intrinsics.vfs); break;
+                case Mnemonic.vll: RewriteVectorInstruction(intrinsics.vll); break;
+                case Mnemonic.vmao: RewriteVectorInstruction4Elem(intrinsics.vmao, false); break;
+                case Mnemonic.vmah: RewriteVectorInstruction4Elem(intrinsics.vmah, true); break;
+                case Mnemonic.vmrh: RewriteVectorInstruction3Elem(intrinsics.vmrh); break;
+                case Mnemonic.vmrl: RewriteVectorInstruction3Elem(intrinsics.vmrl); break;
+                case Mnemonic.vmxl: RewriteVectorInstruction3Elem(intrinsics.vmx); break;
+                case Mnemonic.vpk: RewriteVectorInstruction3Elem(intrinsics.vpk, false); break;
+                case Mnemonic.vpkls: RewriteVectorInstruction3Elem(intrinsics.vpkls); break;
+                case Mnemonic.vn: RewriteVectorInstruction(intrinsics.vn); break;
+                case Mnemonic.vslb: RewriteVectorInstruction(intrinsics.vslb); break;
+                case Mnemonic.vsel: RewriteVectorInstruction(intrinsics.vsel); break;
+                case Mnemonic.vx: RewriteVectorInstruction(intrinsics.vx); break;
 
                 case Mnemonic.x: RewriteXor2(PrimitiveType.Word32); break;
                 case Mnemonic.xgr: RewriteLogicR(PrimitiveType.Word64, m.Xor); break;
@@ -369,6 +377,7 @@ namespace Reko.Arch.zSeries
                 case Mnemonic.xc: RewriteXc(); break;
                 }
                 yield return m.MakeCluster(instr.Address, instr.Length, iclass);
+                instrs.Clear();
             }
         }
 

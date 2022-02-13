@@ -137,10 +137,11 @@ namespace Reko.Core
         /// Makes a concrete instance of this <see cref="IntrinsicProcedure"/> instance, using
         /// the provided <paramref name="concreteTypes" />.
         /// </summary>
+        /// <param name="ptrSizeparams">The size of a pointer in the current architecture.</param>
         /// <param name="concreteTypes">Concrete </param>
         /// <returns>A newly minted or previously cached concrete instance.
         /// </returns>
-        public IntrinsicProcedure MakeInstance(params DataType[] concreteTypes)
+        public IntrinsicProcedure MakeInstance(int ptrSize, params DataType[] concreteTypes)
         {
             if (this.IsConcreteGeneric)
                 throw new InvalidOperationException($"The intrinsic {this} is already a concrete instance.");
@@ -148,7 +149,7 @@ namespace Reko.Core
             IntrinsicProcedure? instance;
             while (!instanceCache.TryGetValue(key, out instance))
             {
-                var sig = base.MakeConcreteSignature(concreteTypes);
+            var sig = base.MakeConcreteSignature(ptrSize, concreteTypes);
                 instance = new IntrinsicProcedure(this.Name, concreteTypes, true, this.HasSideEffect, sig)
                 {
                     Characteristics = this.Characteristics,
@@ -159,6 +160,9 @@ namespace Reko.Core
             }
             return instance;
         }
+
+        public IntrinsicProcedure MakeInstance(params DataType[] concreteTypes)
+            => MakeInstance(0, concreteTypes);
 
 		public override string ToString()
 		{

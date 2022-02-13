@@ -360,7 +360,7 @@ namespace Reko.UnitTests.Arch.Xtensa
             Given_HexString("F03B53");    // max	a3,a11,a15
             AssertCode(
                 "0|L--|00010000(3): 1 instructions",
-                "1|L--|a3 = max(a11, a15)");
+                "1|L--|a3 = max<int32>(a11, a15)");
         }
 
         [Test]
@@ -369,7 +369,7 @@ namespace Reko.UnitTests.Arch.Xtensa
             Given_HexString("001673");    // maxu	a1,a6,a0
             AssertCode(
                 "0|L--|00010000(3): 1 instructions",
-                "1|L--|a1 = __maxu(a6, a0)");
+                "1|L--|a1 = max<uint32>(a6, a0)");
         }
 
         [Test]
@@ -591,14 +591,8 @@ namespace Reko.UnitTests.Arch.Xtensa
             Given_UInt32s(0xAABC20);
             AssertCode(
                 "0|L--|00010000(3): 1 instructions",
-                "1|L--|a11 = __floor(f12, 4.0F)");
+                "1|L--|a11 = __floor_s(f12, 4.0F)");
         }
-
-
-
-
-
-
 
         [Test]
         public void Xtrw_and()
@@ -1199,7 +1193,7 @@ namespace Reko.UnitTests.Arch.Xtensa
             Given_HexString("208940");    // rotw	-06
             AssertCode(
                 "0|L--|00010000(3): 1 instructions",
-                "1|L--|__rotw(-6<i8>)");
+                "1|L--|__rotate_window(-6<i8>)");
         }
 
         [Test]
@@ -1485,7 +1479,7 @@ namespace Reko.UnitTests.Arch.Xtensa
             Given_HexString("941677");    // mul.aa.hh	a6,a9
             AssertCode(
                 "0|L--|00010000(3): 1 instructions",
-                "1|L--|ACCHI_ACCLO = __mul_hh(a6, a9)");
+                "1|L--|ACCHI_ACCLO = __mul_hh<word32,int40>(a6, a9)");
         }
 
         [Test]
@@ -1494,7 +1488,7 @@ namespace Reko.UnitTests.Arch.Xtensa
             Given_HexString("040C75");    // mul.aa.hl	a12,a0
             AssertCode(
                 "0|L--|00010000(3): 1 instructions",
-                "1|L--|ACCHI_ACCLO = __mul_hl(a12, a0)");
+                "1|L--|ACCHI_ACCLO = __mul_hl<word32,int40>(a12, a0)");
         }
 
         [Test]
@@ -1503,7 +1497,7 @@ namespace Reko.UnitTests.Arch.Xtensa
             Given_HexString("147074");    // mul.aa.ll	a0,a1
             AssertCode(
                 "0|L--|00010000(3): 1 instructions",
-                "1|L--|ACCHI_ACCLO = __mul_ll(a0, a1)");
+                "1|L--|ACCHI_ACCLO = __mul_ll<word32,int40>(a0, a1)");
         }
 
         [Test]
@@ -1512,7 +1506,7 @@ namespace Reko.UnitTests.Arch.Xtensa
             Given_HexString("F43A37");    // mul.ad.hh	a10,mr3
             AssertCode(
                 "0|L--|00010000(3): 1 instructions",
-                "1|L--|ACCHI_ACCLO = __mul_hh(a10, mr3)");
+                "1|L--|ACCHI_ACCLO = __mul_hh<word32,int40>(a10, mr3)");
         }
 
         [Test]
@@ -1521,7 +1515,7 @@ namespace Reko.UnitTests.Arch.Xtensa
             Given_HexString("240C35");    // mul.ad.hl	a12,mr2
             AssertCode(
                 "0|L--|00010000(3): 1 instructions",
-                "1|L--|ACCHI_ACCLO = __mul_hl(a12, mr2)");
+                "1|L--|ACCHI_ACCLO = __mul_hl<word32,int40>(a12, mr2)");
         }
 
         [Test]
@@ -1530,7 +1524,7 @@ namespace Reko.UnitTests.Arch.Xtensa
             Given_HexString("149C34");    // mul.ad.ll	a12,mr2
             AssertCode(
                 "0|L--|00010000(3): 1 instructions",
-                "1|L--|ACCHI_ACCLO = __mul_ll(a12, mr2)");
+                "1|L--|ACCHI_ACCLO = __mul_ll<word32,int40>(a12, mr2)");
         }
 
         [Test]
@@ -1539,7 +1533,7 @@ namespace Reko.UnitTests.Arch.Xtensa
             Given_HexString("147067");    // mul.da.hh	mr1,a1
             AssertCode(
                 "0|L--|00010000(3): 1 instructions",
-                "1|L--|ACCHI_ACCLO = __mul_hh(mr1, a1)");
+                "1|L--|ACCHI_ACCLO = __mul_hh<word32,int40>(mr1, a1)");
         }
 
         [Test]
@@ -1548,7 +1542,7 @@ namespace Reko.UnitTests.Arch.Xtensa
             Given_HexString("044565");    // mul.da.hl	mr1,a0
             AssertCode(
                 "0|L--|00010000(3): 1 instructions",
-                "1|L--|ACCHI_ACCLO = __mul_hl(mr1, a0)");
+                "1|L--|ACCHI_ACCLO = __mul_hl<word32,int40>(mr1, a0)");
         }
 
         [Test]
@@ -1557,7 +1551,7 @@ namespace Reko.UnitTests.Arch.Xtensa
             Given_HexString("D42066");    // mul.da.lh	mr0,a13
             AssertCode(
                 "0|L--|00010000(3): 1 instructions",
-                "1|L--|ACCHI_ACCLO = __mul_lh(mr0, a13)");
+                "1|L--|ACCHI_ACCLO = __mul_lh<word32,int40>(mr0, a13)");
         }
 
         [Test]
@@ -1566,7 +1560,7 @@ namespace Reko.UnitTests.Arch.Xtensa
             Given_HexString("E43764");    // mul.da.ll	mr0,a14
             AssertCode(
                 "0|L--|00010000(3): 1 instructions",
-                "1|L--|ACCHI_ACCLO = __mul_ll(mr0, a14)");
+                "1|L--|ACCHI_ACCLO = __mul_ll<word32,int40>(mr0, a14)");
         }
 
         [Test]
@@ -1575,7 +1569,7 @@ namespace Reko.UnitTests.Arch.Xtensa
             Given_HexString("940027");    // mul.dd.hh	mr0,mr2
             AssertCode(
                 "0|L--|00010000(3): 1 instructions",
-                "1|L--|ACCHI_ACCLO = __mul_hh(mr0, mr2)");
+                "1|L--|ACCHI_ACCLO = __mul_hh<word32,int40>(mr0, mr2)");
         }
 
         [Test]
@@ -1584,7 +1578,7 @@ namespace Reko.UnitTests.Arch.Xtensa
             Given_HexString("F48725");    // mul.dd.hl	mr0,mr3
             AssertCode(
                 "0|L--|00010000(3): 1 instructions",
-                "1|L--|ACCHI_ACCLO = __mul_hl(mr0, mr3)");
+                "1|L--|ACCHI_ACCLO = __mul_hl<word32,int40>(mr0, mr3)");
         }
 
         [Test]
@@ -1593,7 +1587,7 @@ namespace Reko.UnitTests.Arch.Xtensa
             Given_HexString("A40B26");    // mul.dd.lh	mr0,mr2
             AssertCode(
                 "0|L--|00010000(3): 1 instructions",
-                "1|L--|ACCHI_ACCLO = __mul_lh(mr0, mr2)");
+                "1|L--|ACCHI_ACCLO = __mul_lh<word32,int40>(mr0, mr2)");
         }
 
         [Test]
@@ -1602,7 +1596,7 @@ namespace Reko.UnitTests.Arch.Xtensa
             Given_HexString("04B924");    // mul.dd.ll	mr0,mr2
             AssertCode(
                 "0|L--|00010000(3): 1 instructions",
-                "1|L--|ACCHI_ACCLO = __mul_ll(mr0, mr2)");
+                "1|L--|ACCHI_ACCLO = __mul_ll<word32,int40>(mr0, mr2)");
         }
 
         [Test]
@@ -1623,7 +1617,7 @@ namespace Reko.UnitTests.Arch.Xtensa
             Given_HexString("248079");    // mula.aa.hl	a0,a2
             AssertCode(
                 "0|L--|00010000(3): 1 instructions",
-                "1|L--|ACCHI_ACCLO = ACCHI_ACCLO + __mul_hl(a0, a2)");
+                "1|L--|ACCHI_ACCLO = ACCHI_ACCLO + __mul_hl<word32,int40>(a0, a2)");
         }
 
         [Test]
@@ -1632,7 +1626,7 @@ namespace Reko.UnitTests.Arch.Xtensa
             Given_HexString("74307A");    // mula.aa.lh	a0,a7
             AssertCode(
                 "0|L--|00010000(3): 1 instructions",
-                "1|L--|ACCHI_ACCLO = ACCHI_ACCLO + __mul_lh(a0, a7)");
+                "1|L--|ACCHI_ACCLO = ACCHI_ACCLO + __mul_lh<word32,int40>(a0, a7)");
         }
 
         [Test]
@@ -1641,7 +1635,7 @@ namespace Reko.UnitTests.Arch.Xtensa
             Given_HexString("04053B");    // mula.ad.hh	a5,mr2
             AssertCode(
                 "0|L--|00010000(3): 1 instructions",
-                "1|L--|ACCHI_ACCLO = ACCHI_ACCLO + __mul_hh(a5, mr2)");
+                "1|L--|ACCHI_ACCLO = ACCHI_ACCLO + __mul_hh<word32,int40>(a5, mr2)");
         }
 
         [Test]
@@ -1650,7 +1644,7 @@ namespace Reko.UnitTests.Arch.Xtensa
             Given_HexString("344139");    // mula.ad.hl	a1,mr2
             AssertCode(
                 "0|L--|00010000(3): 1 instructions",
-                "1|L--|ACCHI_ACCLO = ACCHI_ACCLO + __mul_hl(a1, mr2)");
+                "1|L--|ACCHI_ACCLO = ACCHI_ACCLO + __mul_hl<word32,int40>(a1, mr2)");
         }
 
         [Test]
@@ -1659,7 +1653,7 @@ namespace Reko.UnitTests.Arch.Xtensa
             Given_HexString("A4FD3A");    // mula.ad.lh	a13,mr2
             AssertCode(
                 "0|L--|00010000(3): 1 instructions",
-                "1|L--|ACCHI_ACCLO = ACCHI_ACCLO + __mul_lh(a13, mr2)");
+                "1|L--|ACCHI_ACCLO = ACCHI_ACCLO + __mul_lh<word32,int40>(a13, mr2)");
         }
 
         [Test]
@@ -1668,7 +1662,7 @@ namespace Reko.UnitTests.Arch.Xtensa
             Given_HexString("F43738");    // mula.ad.ll	a7,mr3
             AssertCode(
                 "0|L--|00010000(3): 1 instructions",
-                "1|L--|ACCHI_ACCLO = ACCHI_ACCLO + __mul_ll(a7, mr3)");
+                "1|L--|ACCHI_ACCLO = ACCHI_ACCLO + __mul_ll<word32,int40>(a7, mr3)");
         }
 
         [Test]
@@ -1678,7 +1672,7 @@ namespace Reko.UnitTests.Arch.Xtensa
             AssertCode(
                 "0|L--|00010000(3): 3 instructions",
                 "1|L--|a5 = a5 + 4<i32>",
-                "2|L--|ACCHI_ACCLO = ACCHI_ACCLO + __mul_hh(mr0, a0)",
+                "2|L--|ACCHI_ACCLO = ACCHI_ACCLO + __mul_hh<word32,int40>(mr0, a0)",
                 "3|L--|mr0 = Mem0[a5:word32]");
         }
 
@@ -1689,7 +1683,7 @@ namespace Reko.UnitTests.Arch.Xtensa
             AssertCode(
                 "0|L--|00010000(3): 3 instructions",
                 "1|L--|a5 = a5 - 4<i32>",
-                "2|L--|ACCHI_ACCLO = ACCHI_ACCLO + __mul_hl(mr1, a0)");
+                "2|L--|ACCHI_ACCLO = ACCHI_ACCLO + __mul_hl<word32,int40>(mr1, a0)");
         }
 
         [Test]
@@ -1699,7 +1693,7 @@ namespace Reko.UnitTests.Arch.Xtensa
             AssertCode(
                 "0|L--|00010000(3): 3 instructions",
                 "1|L--|a1 = a1 + 4<i32>",
-                "2|L--|ACCHI_ACCLO = ACCHI_ACCLO + __mul_hl(mr0, a2)",
+                "2|L--|ACCHI_ACCLO = ACCHI_ACCLO + __mul_hl<word32,int40>(mr0, a2)",
                 "3|L--|mr0 = Mem0[a1:word32]");
         }
 
@@ -1710,7 +1704,7 @@ namespace Reko.UnitTests.Arch.Xtensa
             AssertCode(
                 "0|L--|00010000(3): 3 instructions",
                 "1|L--|a1 = a1 - 4<i32>",
-                "2|L--|ACCHI_ACCLO = ACCHI_ACCLO + __mul_lh(mr0, a0)",
+                "2|L--|ACCHI_ACCLO = ACCHI_ACCLO + __mul_lh<word32,int40>(mr0, a0)",
                 "3|L--|mr0 = Mem0[a1:word32]");
         }
 
@@ -1721,7 +1715,7 @@ namespace Reko.UnitTests.Arch.Xtensa
             AssertCode(
                 "0|L--|00010000(3): 3 instructions",
                 "1|L--|a12 = a12 + 4<i32>",
-                "2|L--|ACCHI_ACCLO = ACCHI_ACCLO + __mul_lh(mr0, a0)",
+                "2|L--|ACCHI_ACCLO = ACCHI_ACCLO + __mul_lh<word32,int40>(mr0, a0)",
                 "3|L--|mr0 = Mem0[a12:word32]");
         }
 
@@ -1732,7 +1726,7 @@ namespace Reko.UnitTests.Arch.Xtensa
             AssertCode(
                 "0|L--|00010000(3): 3 instructions",
                 "1|L--|a1 = a1 - 4<i32>",
-                "2|L--|ACCHI_ACCLO = ACCHI_ACCLO + __mul_ll(mr1, a15)",
+                "2|L--|ACCHI_ACCLO = ACCHI_ACCLO + __mul_ll<word32,int40>(mr1, a15)",
                 "3|L--|mr1 = Mem0[a1:word32]");
         }
 
@@ -1743,7 +1737,7 @@ namespace Reko.UnitTests.Arch.Xtensa
             AssertCode(
                 "0|L--|00010000(3): 3 instructions",
                 "1|L--|a12 = a12 + 4<i32>",
-                "2|L--|ACCHI_ACCLO = ACCHI_ACCLO + __mul_ll(mr0, a0)",
+                "2|L--|ACCHI_ACCLO = ACCHI_ACCLO + __mul_ll<word32,int40>(mr0, a0)",
                 "3|L--|mr0 = Mem0[a12:word32]");
         }
 
@@ -1754,7 +1748,7 @@ namespace Reko.UnitTests.Arch.Xtensa
             AssertCode(
                 "0|L--|00010000(3): 3 instructions",
                 "1|L--|a15 = a15 - 4<i32>",
-                "2|L--|ACCHI_ACCLO = ACCHI_ACCLO + __mul_hh(mr1, a6)",
+                "2|L--|ACCHI_ACCLO = ACCHI_ACCLO + __mul_hh<word32,int40>(mr1, a6)",
                 "3|L--|mr3 = Mem0[a15:word32]");
         }
 
@@ -1765,7 +1759,7 @@ namespace Reko.UnitTests.Arch.Xtensa
             AssertCode(
                 "0|L--|00010000(3): 3 instructions",
                 "1|L--|a5 = a5 - 4<i32>",
-                "2|L--|ACCHI_ACCLO = ACCHI_ACCLO + __mul_ll(mr0, a4)");
+                "2|L--|ACCHI_ACCLO = ACCHI_ACCLO + __mul_ll<word32,int40>(mr0, a4)");
         }
 
         [Test]
@@ -1774,7 +1768,7 @@ namespace Reko.UnitTests.Arch.Xtensa
             Given_HexString("14407F");    // muls.aa.hh	a0,a1
             AssertCode(
                 "0|L--|00010000(3): 1 instructions",
-                "1|L--|ACCHI_ACCLO = ACCHI_ACCLO - __mul_hh(a0, a1)");
+                "1|L--|ACCHI_ACCLO = ACCHI_ACCLO - __mul_hh<word32,int40>(a0, a1)");
         }
 
         [Test]
@@ -1783,7 +1777,7 @@ namespace Reko.UnitTests.Arch.Xtensa
             Given_HexString("14047C");    // muls.aa.ll	a4,a1
             AssertCode(
                 "0|L--|00010000(3): 1 instructions",
-                "1|L--|ACCHI_ACCLO = ACCHI_ACCLO - __mul_ll(a4, a1)");
+                "1|L--|ACCHI_ACCLO = ACCHI_ACCLO - __mul_ll<word32,int40>(a4, a1)");
         }
 
         [Test]
@@ -1792,7 +1786,7 @@ namespace Reko.UnitTests.Arch.Xtensa
             Given_HexString("2070B2");    // mulsh	a7,a0,a2
             AssertCode(
                 "0|L--|00010000(3): 1 instructions",
-                "1|L--|a7 = __mulsh(a0, a2)");
+                "1|L--|a7 = __mulsh<word32,int32>(a0, a2)");
         }
 
         [Test]
@@ -1801,7 +1795,7 @@ namespace Reko.UnitTests.Arch.Xtensa
             Given_HexString("2000A2");    // muluh	a0,a0,a2
             AssertCode(
                 "0|L--|00010000(3): 1 instructions",
-                "1|L--|a0 = __muluh(a0, a2)");
+                "1|L--|a0 = __muluh<word32,uint32>(a0, a2)");
         }
 
         [Test]
@@ -1964,7 +1958,7 @@ namespace Reko.UnitTests.Arch.Xtensa
             Given_HexString("F41673");    // umul.aa.hh	a6,a15
             AssertCode(
                 "0|L--|00010000(3): 1 instructions",
-                "1|L--|ACCHI_ACCLO = __umul_hh(a6, a15)");
+                "1|L--|ACCHI_ACCLO = __umul_hh<word32,uint40>(a6, a15)");
         }
 
         [Test]
@@ -1973,7 +1967,7 @@ namespace Reko.UnitTests.Arch.Xtensa
             Given_HexString("040171");    // umul.aa.hl	a1,a0
             AssertCode(
                 "0|L--|00010000(3): 1 instructions",
-                "1|L--|ACCHI_ACCLO = __umul_hl(a1, a0)");
+                "1|L--|ACCHI_ACCLO = __umul_hl<word32,uint40>(a1, a0)");
         }
 
         [Test]
@@ -1982,7 +1976,7 @@ namespace Reko.UnitTests.Arch.Xtensa
             Given_HexString("440172");    // umul.aa.lh	a1,a4
             AssertCode(
                 "0|L--|00010000(3): 1 instructions",
-                "1|L--|ACCHI_ACCLO = __umul_lh(a1, a4)");
+                "1|L--|ACCHI_ACCLO = __umul_lh<word32,uint40>(a1, a4)");
         }
         
         [Test]
@@ -1991,7 +1985,7 @@ namespace Reko.UnitTests.Arch.Xtensa
             Given_HexString("744170");    // umul.aa.ll	a1,a7
             AssertCode(
                 "0|L--|00010000(3): 1 instructions",
-                "1|L--|ACCHI_ACCLO = __umul_ll(a1, a7)");
+                "1|L--|ACCHI_ACCLO = __umul_ll<word32,uint40>(a1, a7)");
         }
 
         [Test]

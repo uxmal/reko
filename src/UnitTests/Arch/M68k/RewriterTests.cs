@@ -661,7 +661,7 @@ namespace Reko.UnitTests.Arch.M68k
             Given_UInt16s(0x08C3, 0x0001);
             AssertCode(     // bset #$0001,d3
                 "0|L--|00010000(4): 1 instructions",
-                "1|L--|Z = __bset(d3, 1<16>, out d3)");
+                "1|L--|Z = __bset<word16>(d3, 1<16>, out d3)");
         }
 
         [Test]
@@ -1048,7 +1048,7 @@ namespace Reko.UnitTests.Arch.M68k
             Given_UInt16s(0x08e8, 0x0001, 0x0010); //                 bset #1,%a0@(1)
             AssertCode(
                 "0|L--|00010000(6): 1 instructions",
-                "1|L--|Z = __bset(Mem0[a0 + 16<i32>:byte], 1<16>, out Mem0[a0 + 16<i32>:byte])");
+                "1|L--|Z = __bset<word16>(Mem0[a0 + 16<i32>:byte], 1<16>, out Mem0[a0 + 16<i32>:byte])");
             //.data:00000006 08 a8 00 00 00 10                bclr #0,%a0@(16)
         }
 
@@ -1058,7 +1058,7 @@ namespace Reko.UnitTests.Arch.M68k
             Given_UInt16s(0x01F0, 0x01C0);
             AssertCode(
                 "0|L--|00010000(4): 1 instructions",
-                "1|L--|Z = __bset(Mem0[null:byte], d0, out Mem0[null:byte])");
+                "1|L--|Z = __bset<word32>(Mem0[null:byte], d0, out Mem0[null:byte])");
         }
 
         [Test]
@@ -1067,7 +1067,7 @@ namespace Reko.UnitTests.Arch.M68k
             Given_UInt16s(0x08F1, 0x9708, 0xF1CC);
             AssertCode(
                 "0|L--|00010000(6): 1 instructions",
-                "1|L--|Z = __bset(Mem0[null:byte], 0x9708<16>, out Mem0[null:byte])");
+                "1|L--|Z = __bset<word16>(Mem0[null:byte], 0x9708<16>, out Mem0[null:byte])");
         }
 
         [Test]
@@ -1076,7 +1076,7 @@ namespace Reko.UnitTests.Arch.M68k
             Given_UInt16s(0x08A8, 0x0001, 0x0010); //                 bclr #1,%a0@(1)
             AssertCode(
                 "0|L--|00010000(6): 1 instructions",
-                "1|L--|Z = __bclr(Mem0[a0 + 16<i32>:byte], 1<8>, out Mem0[a0 + 16<i32>:byte])");
+                "1|L--|Z = __bclr<byte>(Mem0[a0 + 16<i32>:byte], 1<8>, out Mem0[a0 + 16<i32>:byte])");
             //.data:00000006 08 a8 00 00 00 10                bclr #0,%a0@(16)
         }
 
@@ -1244,7 +1244,7 @@ namespace Reko.UnitTests.Arch.M68k
             Given_HexString("F2380D18");
             AssertCode(     // fabs.x	fp3,fp2
                 "0|L--|00010000(4): 1 instructions",
-                "1|L--|fp2 = fabs(CONVERT(fp3, real96, real80))");
+                "1|L--|fp2 = __fabs<real80>(CONVERT(fp3, real96, real80))");
         }
 
         [Test]
@@ -1253,7 +1253,7 @@ namespace Reko.UnitTests.Arch.M68k
             Given_HexString("F20A071E");
             AssertCode(     // fgetexp.x	fp1,fp6
                 "0|L--|00010000(4): 1 instructions",
-                "1|L--|fp6 = fgetexp(CONVERT(fp1, real96, real80))");
+                "1|L--|fp6 = fgetexp<real80>(CONVERT(fp1, real96, real80))");
         }
 
         [Test]
@@ -1262,7 +1262,7 @@ namespace Reko.UnitTests.Arch.M68k
             Given_HexString("F2061614");
             AssertCode(     // flogn.x	fp5,fp4
                 "0|L--|00010000(4): 1 instructions",
-                "1|L--|fp4 = log(CONVERT(fp5, real96, real80))");
+                "1|L--|fp4 = log<real80>(CONVERT(fp5, real96, real80))");
         }
 
         [Test]
@@ -1271,7 +1271,7 @@ namespace Reko.UnitTests.Arch.M68k
             Given_HexString("F2250C15");
             AssertCode(     // flog10.x	fp3,fp0
                 "0|L--|00010000(4): 1 instructions",
-                "1|L--|fp0 = log10(CONVERT(fp3, real96, real80))");
+                "1|L--|fp0 = log10<real80>(CONVERT(fp3, real96, real80))");
         }
 
         [Test]
@@ -1280,7 +1280,7 @@ namespace Reko.UnitTests.Arch.M68k
             Given_HexString("F2120D16");
             AssertCode(     // flog2.x	fp3,fp2
                 "0|L--|00010000(4): 1 instructions",
-                "1|L--|fp2 = log2(CONVERT(fp3, real96, real80))");
+                "1|L--|fp2 = log2<real80>(CONVERT(fp3, real96, real80))");
         }
 
         [Test]
@@ -1289,7 +1289,7 @@ namespace Reko.UnitTests.Arch.M68k
             Given_HexString("F2270001");
             AssertCode(     // fint.x	fp0,fp0
                 "0|L--|00010000(4): 1 instructions",
-                "1|L--|fp0 = trunc(CONVERT(fp0, real96, real80))");
+                "1|L--|fp0 = trunc<real80>(CONVERT(fp0, real96, real80))");
         }
 
         [Test]
@@ -1340,7 +1340,7 @@ namespace Reko.UnitTests.Arch.M68k
             Given_HexString("F2250E1C");
             AssertCode(     // facos.x	fp3,fp4
                 "0|L--|00010000(4): 1 instructions",
-                "1|L--|fp4 = acos(CONVERT(fp3, real96, real80))");
+                "1|L--|fp4 = acos<real80>(CONVERT(fp3, real96, real80))");
         }
 
         [Test]
@@ -1349,7 +1349,7 @@ namespace Reko.UnitTests.Arch.M68k
             Given_HexString("F21D000A");
             AssertCode(     // fatan.x	fp0,fp0
                 "0|L--|00010000(4): 1 instructions",
-                "1|L--|fp0 = atan(CONVERT(fp0, real96, real80))");
+                "1|L--|fp0 = atan<real80>(CONVERT(fp0, real96, real80))");
         }
 
         [Test]
@@ -1358,7 +1358,7 @@ namespace Reko.UnitTests.Arch.M68k
             Given_HexString("F21B010D");
             AssertCode(     // fatanh.x	fp0,fp2
                 "0|L--|00010000(4): 1 instructions",
-                "1|L--|fp2 = atanh(CONVERT(fp0, real96, real80))");
+                "1|L--|fp2 = atanh<real80>(CONVERT(fp0, real96, real80))");
         }
 
         [Test]
@@ -1439,7 +1439,7 @@ namespace Reko.UnitTests.Arch.M68k
             Given_HexString("F225001D");
             AssertCode(     // fcos.x	fp0,fp0
                 "0|L--|00010000(4): 1 instructions",
-                "1|L--|fp0 = cos(CONVERT(fp0, real96, real80))");
+                "1|L--|fp0 = cos<real80>(CONVERT(fp0, real96, real80))");
         }
 
         [Test]
@@ -1448,7 +1448,7 @@ namespace Reko.UnitTests.Arch.M68k
             Given_HexString("F203171F");
             AssertCode(     // fgetman.x	fp5,fp6
                 "0|L--|00010000(4): 1 instructions",
-                "1|L--|fp6 = fgetman(CONVERT(fp5, real96, real80))");
+                "1|L--|fp6 = fgetman<real80>(CONVERT(fp5, real96, real80))");
         }
 
         [Test]
@@ -1488,7 +1488,7 @@ namespace Reko.UnitTests.Arch.M68k
             Given_HexString("F21D0D8E");
             AssertCode(     // fsin.x	fp3,fp3
                 "0|L--|00010000(4): 1 instructions",
-                "1|L--|fp3 = fsin(CONVERT(fp3, real96, real80))");
+                "1|L--|fp3 = sin<real80>(CONVERT(fp3, real96, real80))");
         }
 
         [Test]
@@ -1497,7 +1497,7 @@ namespace Reko.UnitTests.Arch.M68k
             Given_HexString("F2140009");
             AssertCode(     // ftanh1.x	fp0,fp0
                 "0|L--|00010000(4): 1 instructions",
-                "1|L--|fp0 = tanh(CONVERT(fp0, real96, real80))");
+                "1|L--|fp0 = tanh<real80>(CONVERT(fp0, real96, real80))");
         }
 
         [Test]
@@ -1548,7 +1548,7 @@ namespace Reko.UnitTests.Arch.M68k
             Given_UInt16s(0x0949, 0x0010);        // movep.w $10(a1), d4
             AssertCode(
                 "0|L--|00010000(4): 1 instructions",
-                "1|L--|__movep_l(Mem0[a1 + 16<i32>:word32], d4)");
+                "1|L--|__movep<word32>(Mem0[a1 + 16<i32>:word32], d4)");
         }
 
         [Test]
@@ -1568,7 +1568,7 @@ namespace Reko.UnitTests.Arch.M68k
             Given_UInt16s(0x0ED3, 0x0102);        // cas.w d2,d1,(a3)
             AssertCode(
                 "0|L--|00010000(4): 1 instructions",
-                "1|L--|CVZN = atomic_compare_exchange_weak(&Mem0[a3:word16], SLICE(d1, word16, 0), SLICE(d2, word16, 0))");
+                "1|L--|CVZN = atomic_compare_exchange_weak<word16>(&Mem0[a3:word16], SLICE(d1, word16, 0), SLICE(d2, word16, 0))");
         }
 
         [Test]
@@ -1679,7 +1679,7 @@ namespace Reko.UnitTests.Arch.M68k
             Given_UInt16s(0x484B);    // bkpt#$03
             AssertCode(
                "0|---|00010000(2): 1 instructions",
-               "1|L--|__bkpt(3<8>)");
+               "1|L--|__bkpt<byte>(3<8>)");
         }
 
         [Test]

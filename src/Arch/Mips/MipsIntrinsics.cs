@@ -62,6 +62,7 @@ namespace Reko.Arch.Mips
             ins = new IntrinsicBuilder("__ins", false)
                 .GenericTypes("TValue", "TPos")
                 .Param("TValue")
+                .Param("TValue")
                 .Param("TPos")
                 .Param("TPos")
                 .Returns("TValue");

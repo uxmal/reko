@@ -254,7 +254,7 @@ namespace Reko.UnitTests.Arch.PaRisc
             Given_HexString("C7D6C012");
             AssertCode(     // bb,>=,n	r22,0000001E,0000232C
                 "0|T--|00100000(4): 1 instructions",
-                "1|T--|if (!__is_bit_set(r22, 30<i32>)) branch 00100010");
+                "1|T--|if (!__is_bit_set<word64,int32>(r22, 30<i32>)) branch 00100010");
         }
 
         [Test]
@@ -317,7 +317,7 @@ namespace Reko.UnitTests.Arch.PaRisc
             Given_HexString("08200440");
             AssertCode(     // ds	r0,r1,r0
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|r0 = __division_step(0<64>, r1)");
+                "1|L--|r0 = __division_step<word64>(0<64>, r1)");
         }
 
         [Test]
@@ -832,7 +832,7 @@ namespace Reko.UnitTests.Arch.PaRisc
             Given_HexString("14008000");	// diag	+00008000
             AssertCode(
                 "0|S--|00100000(4): 1 instructions",
-                "1|L--|__diag(32768<i32>)");
+                "1|L--|__diag<int32>(32768<i32>)");
         }
 
         [Test]
@@ -861,7 +861,7 @@ namespace Reko.UnitTests.Arch.PaRisc
             Given_HexString("00003870");	// mtsm	r0
             AssertCode(
                 "0|S--|00100000(4): 1 instructions",
-                "1|L--|__mtsm(0<64>)");
+                "1|L--|__mtsm<word64>(0<64>)");
         }
 
         [Test]

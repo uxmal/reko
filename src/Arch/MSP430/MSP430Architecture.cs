@@ -43,8 +43,8 @@ namespace Reko.Arch.Msp430
             this.InstructionBitSize = 16;
             this.StackRegister = Registers.sp;
             this.WordWidth = PrimitiveType.Word16;
-            this.PointerType = PrimitiveType.Word16;
-            this.FramePointerType = PrimitiveType.Word16;
+            this.PointerType = PrimitiveType.Ptr16;
+            this.FramePointerType = PrimitiveType.Ptr16;
             this.Endianness = EndianServices.Little;
         }
 

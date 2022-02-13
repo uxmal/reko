@@ -514,7 +514,7 @@ namespace Reko.UnitTests.Arch.Pdp11
         }
 
         [Test]
-        public void Pdp11Rw_Swab()
+        public void Pdp11Rw_swab()
         {
             Given_UInt16s(0x00C3);      // swab r3
             AssertCode(
@@ -586,7 +586,7 @@ namespace Reko.UnitTests.Arch.Pdp11
             Given_UInt16s(0xFA4A);      // stexp ac3,@(a2)
             AssertCode(
                 "0|L--|0200(2): 5 instructions",
-                "1|L--|v4 = __stexp(ac2)",
+                "1|L--|v4 = __stexp<real64>(ac2)",
                 "2|L--|Mem0[r2:int16] = v4",
                 "3|L--|NZ = cond(v4)",
                 "4|L--|C = false",

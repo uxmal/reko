@@ -47,7 +47,7 @@ namespace Reko.UnitTests.Arch.Mips
         {
             var rdr = arch.CreateImageReader(mem, mem.BaseAddress);
             var dasm = new NanoMipsDisassembler(arch, rdr);
-            var rewriter = new MipsRewriter(arch, rdr, dasm, binder, host);
+            var rewriter = new MipsRewriter(arch, arch.Intrinsics, rdr, dasm, binder, host);
             return rewriter;
         }
 

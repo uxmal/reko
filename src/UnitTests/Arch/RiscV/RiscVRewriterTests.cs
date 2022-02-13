@@ -828,7 +828,7 @@ namespace Reko.UnitTests.Arch.RiscV
             Given_HexString("73B00230");
             AssertCode(     // csrrc	zero,mstatus,zero
                 "0|L--|0000000000010000(4): 1 instructions",
-                "1|L--|__csrrc(mstatus, 0<64>)");
+                "1|L--|__csrrc<word64>(mstatus, 0<64>)");
         }
 
         [Test]
@@ -837,7 +837,7 @@ namespace Reko.UnitTests.Arch.RiscV
             Given_HexString("F3770430");
             AssertCode(     // csrrci	a5,mstatus,00000008
                 "0|L--|0000000000010000(4): 1 instructions",
-                "1|L--|a5 = __csrrc(mstatus, 8<64>)");
+                "1|L--|a5 = __csrrc<word64>(mstatus, 8<64>)");
         }
 
         [Test]
@@ -846,7 +846,7 @@ namespace Reko.UnitTests.Arch.RiscV
             Given_HexString("73292000");
             AssertCode(     // csrrs	s2,frm,sp
                 "0|L--|0000000000010000(4): 1 instructions",
-                "1|L--|s2 = __csrrs(frm, sp)");
+                "1|L--|s2 = __csrrs<word64>(frm, sp)");
         }
 
         [Test]
@@ -855,7 +855,7 @@ namespace Reko.UnitTests.Arch.RiscV
             Given_HexString("73600430");
             AssertCode(     // csrrsi	zero,mstatus,00000008
                 "0|L--|0000000000010000(4): 1 instructions",
-                "1|L--|__csrrs(mstatus, 8<64>)");
+                "1|L--|__csrrs<word64>(mstatus, 8<64>)");
         }
 
         [Test]
@@ -864,7 +864,7 @@ namespace Reko.UnitTests.Arch.RiscV
             Given_HexString("73900930");
             AssertCode(     // csrrw	zero,mstatus,zero
                 "0|L--|0000000000010000(4): 1 instructions",
-                "1|L--|__csrrw(mstatus, 0<64>)");
+                "1|L--|__csrrw<word64>(mstatus, 0<64>)");
         }
 
         [Test]
@@ -873,7 +873,7 @@ namespace Reko.UnitTests.Arch.RiscV
             Given_HexString("73D02334");
             AssertCode(     // csrrwi	zero,mcause,00000007
                 "0|L--|0000000000010000(4): 1 instructions",
-                "1|L--|__csrrw(mcause, 7<64>)");
+                "1|L--|__csrrw<word64>(mcause, 7<64>)");
         }
 
         [Test]

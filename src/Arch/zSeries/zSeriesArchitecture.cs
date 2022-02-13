@@ -34,12 +34,15 @@ namespace Reko.Arch.zSeries
 
     public class zSeriesArchitecture : ProcessorArchitecture
     {
+        private readonly zSeriesIntrinsics intrinsics;
+
         public zSeriesArchitecture(IServiceProvider services, string archId, Dictionary<string, object> options)
             : base(services, archId, options)
         {
             this.Endianness = EndianServices.Big;
             this.InstructionBitSize = 16;
             SetOptionDependentProperties();
+            this.intrinsics = new zSeriesIntrinsics(this);
         }
 
         // zSeries uses a link register
@@ -67,7 +70,7 @@ namespace Reko.Arch.zSeries
 
         public override IEnumerable<RtlInstructionCluster> CreateRewriter(EndianImageReader rdr, ProcessorState state, IStorageBinder binder, IRewriterHost host)
         {
-            return new zSeriesRewriter(this, rdr, state, binder, host);
+            return new zSeriesRewriter(this, this.intrinsics, rdr, state, binder, host);
         }
 
         public override FlagGroupStorage GetFlagGroup(RegisterStorage flagRegister, uint grf)
@@ -154,7 +157,7 @@ namespace Reko.Arch.zSeries
         private bool Is64Bit()
         {
             return
-                !Options.TryGetValue("WordSize", out var oWordSize) ||
+                !Options.TryGetValue(ProcessorOption.WordSize, out var oWordSize) ||
                 int.TryParse(oWordSize.ToString(), out var wordSize) &&
                 wordSize == 64;
         }

@@ -867,6 +867,10 @@ namespace Reko.Arch.X86
 
             cli_intrinsic = new IntrinsicBuilder("__cli", true)
                 .Void();
+            clts_intrinsic = new IntrinsicBuilder("__clts", true)
+                .GenericTypes("T")
+                .Param("T")
+                .Returns("T");
             cmpp_intrinsic = new IntrinsicBuilder("__cmpp", false)
                 .GenericTypes("TSrc", "TDst")
                 .Param("TSrc")
@@ -963,6 +967,10 @@ namespace Reko.Arch.X86
             fxsave_intrinsic = new IntrinsicBuilder("__fxsave", true)
                 .Void();
 
+            getsec_intrinsic = new IntrinsicBuilder("__getsec", true)
+                .Param(word32)
+                .Returns(word64);
+
             hlt_intrinsic = new IntrinsicBuilder("__hlt", true, new ProcedureCharacteristics
             {
                 Terminates = true,
@@ -983,6 +991,10 @@ namespace Reko.Arch.X86
             jmpe_intrinsic = new IntrinsicBuilder("__jmpe", true)
                 .Void();
 
+            lar_intrinsic = new IntrinsicBuilder("__lar", true)
+                .GenericTypes("T")
+                .PtrParam("T")
+                .Returns("T");
             lfence_intrinsic = new IntrinsicBuilder("__lfence", true)
                 .Void();
             lock_intrinsic = new IntrinsicBuilder("__lock", true)
@@ -1000,7 +1012,14 @@ namespace Reko.Arch.X86
                 .GenericTypes("T")
                 .Param("T")
                 .Void();
+            lmsw_intrinsic = new IntrinsicBuilder("__load_machine_status_word", true)
+                .Param(word16)
+                .Void();
             log_intrinsic = UnaryIntrinsic("log", PrimitiveType.Real64);        //$REVIEW:math.h
+            lsl_intrinsic = new IntrinsicBuilder("__load_segment_limit", true)
+                .GenericTypes("T")
+                .Param(word16)
+                .Returns("T");
             ltr_intrinsic = new IntrinsicBuilder("__load_task_register", true)
                 .Param(word16)
                 .Void();
@@ -1241,6 +1260,10 @@ namespace Reko.Arch.X86
                 .Param(PrimitiveType.Word32)
                 .Param(PrimitiveType.Word64)
                 .Void();
+            xsaveopt_intrinsic = new IntrinsicBuilder("__xsaveopt", true)
+                .Param(PrimitiveType.Word64)
+                .PtrParam(PrimitiveType.Byte)
+                .Void();
 
             alignStack_intrinsic = new IntrinsicBuilder("__align_stack", true)
                 .GenericTypes("T")
@@ -1336,6 +1359,7 @@ namespace Reko.Arch.X86
         private static readonly IntrinsicProcedure ceil_intrinsic = UnaryIntrinsic("ceil", PrimitiveType.Real64);
         private static readonly IntrinsicProcedure ceilf_intrinsic = UnaryIntrinsic("ceilf", PrimitiveType.Real32);
         private static readonly IntrinsicProcedure cli_intrinsic;
+        private static readonly IntrinsicProcedure clts_intrinsic;
         private static readonly IntrinsicProcedure cmpp_intrinsic;
         private static readonly IntrinsicProcedure cmpxchg_intrinsic;
         private static readonly IntrinsicProcedure cmpxchgN_intrinsic;
@@ -1377,6 +1401,7 @@ namespace Reko.Arch.X86
         private static readonly IntrinsicProcedure fstenv_intrinsic;
         private static readonly IntrinsicProcedure fxrstor_intrinsic;
         private static readonly IntrinsicProcedure fxsave_intrinsic;
+        private static readonly IntrinsicProcedure getsec_intrinsic;
         private static readonly IntrinsicProcedure hlt_intrinsic;
         private static readonly IntrinsicProcedure in_intrinsic;
         private static readonly IntrinsicProcedure invd_intrinsic;
@@ -1386,8 +1411,11 @@ namespace Reko.Arch.X86
         private static readonly IntrinsicProcedure lgdt_intrinsic;
         private static readonly IntrinsicProcedure lidt_intrinsic;
         private static readonly IntrinsicProcedure lldt_intrinsic;
+        private static readonly IntrinsicProcedure lmsw_intrinsic;
         private static readonly IntrinsicProcedure lock_intrinsic;
         private static readonly IntrinsicProcedure log_intrinsic;
+        private static readonly IntrinsicProcedure lsl_intrinsic;
+        private static readonly IntrinsicProcedure lar_intrinsic;
         private static readonly IntrinsicProcedure lfence_intrinsic;
         private static readonly IntrinsicProcedure ltr_intrinsic;
         private static readonly IntrinsicProcedure lzcnt_intrinsic;
@@ -1510,6 +1538,7 @@ namespace Reko.Arch.X86
         private static readonly IntrinsicProcedure xgetbv_intrinsic;
         private static readonly IntrinsicProcedure xorp_intrinsic = GenericBinaryIntrinsic("__xorp");
         private static readonly IntrinsicProcedure xsetbv_intrinsic;
+        private static readonly IntrinsicProcedure xsaveopt_intrinsic;
 
         private static readonly IntrinsicProcedure alignStack_intrinsic;
         private static readonly IntrinsicProcedure isunordered_intrinsic;

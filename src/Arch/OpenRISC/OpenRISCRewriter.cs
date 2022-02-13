@@ -25,6 +25,7 @@ using System.Diagnostics;
 using System.Text;
 using Reko.Core;
 using Reko.Core.Expressions;
+using Reko.Core.Intrinsics;
 using Reko.Core.Machine;
 using Reko.Core.Memory;
 using Reko.Core.Rtl;
@@ -320,7 +321,7 @@ namespace Reko.Arch.OpenRISC
 
         private void RewriteCsync()
         {
-            m.SideEffect(host.Intrinsic("__csync", true, VoidType.Instance));
+            m.SideEffect(m.Fn(csync_intrinsic));
         }
 
         private void RewriteJ()
@@ -366,10 +367,7 @@ namespace Reko.Arch.OpenRISC
             var dst = Reg(instrCur.Operands[0]);
             var mem = Mem(instrCur.Operands[1]);
             var ea = mem.EffectiveAddress;
-            var fnType = new FunctionType(
-                new Identifier("", PrimitiveType.Word32, null!),
-                new Identifier("ea", new Pointer(PrimitiveType.Word32, 32), null!));
-            var e = host.CallIntrinsic("__atomic_load_w32", true, fnType, ea);
+            Expression e = m.Fn(atomic_load_w32_intrinsic, ea);
             if (mem.DataType.BitSize < dtDst.BitSize)
             {
                 e = m.Convert(e, e.DataType, dtDst);
@@ -381,7 +379,7 @@ namespace Reko.Arch.OpenRISC
         {
             var dst = Reg(instrCur.Operands[0]);
             var spr = Spr(instrCur.Operands[2]);
-            m.Assign(dst, host.Intrinsic("__mfspr", true, PrimitiveType.Word32, spr));
+            m.Assign(dst, m.Fn(mfspr_intrinsic, spr));
         }
 
         private void RewriteMaci()
@@ -420,19 +418,19 @@ namespace Reko.Arch.OpenRISC
 
         private void RewriteMsync()
         {
-            m.SideEffect(host.Intrinsic("__msync", true, VoidType.Instance));
+            m.SideEffect(m.Fn(msync_intrinsic));
         }
 
         private void RewriteMtspr()
         {
             var src = Reg(instrCur.Operands[1]);
             var spr = Spr(instrCur.Operands[2]);
-            m.SideEffect(host.Intrinsic("__mtspr", true, VoidType.Instance, spr, src));
+            m.SideEffect(m.Fn(mtspr_intrinsic, spr, src));
         }
 
         private void RewritePsync()
         {
-            m.SideEffect(host.Intrinsic("__psync", true, VoidType.Instance));
+            m.SideEffect(m.Fn(psync_intrinsic));
         }
 
         private void RewriteRfe()
@@ -470,7 +468,26 @@ namespace Reko.Arch.OpenRISC
         private void RewriteSys()
         {
             var vector = Imm(instrCur.Operands[0]);
-            m.SideEffect(host.Intrinsic(IntrinsicProcedure.Syscall, true, VoidType.Instance, vector));
+            m.SideEffect(m.Fn(CommonOps.Syscall_1, vector));
         }
+
+        static readonly IntrinsicProcedure atomic_load_w32_intrinsic = new IntrinsicBuilder("__atomic_load_w32", true)
+            .Param(new Pointer(PrimitiveType.Word32, 32))
+            .Returns(PrimitiveType.Word32);
+        static readonly IntrinsicProcedure csync_intrinsic = new IntrinsicBuilder("__csync", true)
+            .Void();
+        static readonly IntrinsicProcedure mfspr_intrinsic = new IntrinsicBuilder("__mfspr", true)
+            .Param(PrimitiveType.Word32)
+            .Returns(PrimitiveType.Word32);
+        static readonly IntrinsicProcedure msync_intrinsic = new IntrinsicBuilder("__msync", true)
+            .Void();
+        static readonly IntrinsicProcedure psync_intrinsic = new IntrinsicBuilder("__psync", true)
+            .Void();
+        static readonly IntrinsicProcedure mtspr_intrinsic = new IntrinsicBuilder("__mtspr", true)
+            .Param(PrimitiveType.Word32)
+            .Param(PrimitiveType.Word32)
+            .Void();
+
+
     }
 }

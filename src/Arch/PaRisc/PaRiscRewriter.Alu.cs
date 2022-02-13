@@ -83,7 +83,7 @@ namespace Reko.Arch.PaRisc
                 {
                     m.BranchInMiddleOfInstruction(c.Invert(), instr.Address + 4, InstrClass.ConditionalTransfer);
                 }
-                m.SideEffect(host.Intrinsic("__trap", true, VoidType.Instance));
+                m.SideEffect(m.Fn(trap_intrinsic));
             }
             else
             {
@@ -122,7 +122,7 @@ namespace Reko.Arch.PaRisc
             }
             else
             {
-                m.Assign(dst, m.Fn(depwIntrinsic, ins, pos));
+                m.Assign(dst, m.Fn(depw_intrinsic, ins, pos));
                 m.Assign(d, m.Dpb(d, dst, 0));
             }
             MaybeSkipNextInstruction(instr.InstructionClass, false, dst);
@@ -158,7 +158,7 @@ namespace Reko.Arch.PaRisc
             var src1 = RewriteOp(0);
             var src2 = RewriteOp(1);
             var dst = binder.EnsureIdentifier((RegisterStorage)instr.Operands[2]);
-            m.Assign(dst, host.Intrinsic("__division_step", false, dst.DataType, src1, src2));
+            m.Assign(dst, m.Fn(division_step_intrinsic.MakeInstance(dst.DataType), src1, src2));
         }
 
         private void RewriteExtrw()

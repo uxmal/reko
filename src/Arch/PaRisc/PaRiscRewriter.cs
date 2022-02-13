@@ -42,7 +42,6 @@ namespace Reko.Arch.PaRisc
         private readonly IEnumerator<PaRiscInstruction> dasm;
         private readonly RtlEmitter m;
         private readonly List<RtlInstruction> instrs;
-        private static readonly IntrinsicProcedure depwIntrinsic;
         private PaRiscInstruction instr;
         private InstrClass iclass;
 
@@ -122,8 +121,8 @@ namespace Reko.Arch.PaRisc
                 case Mnemonic.mtsm: RewriteMtsm(); break;
                 case Mnemonic.mtsp: RewriteMtsp(); break;
                 case Mnemonic.or: RewriteOr(); break;
-                case Mnemonic.rfi: RewriteRfi("__rfi"); break;
-                case Mnemonic.rfi_r: RewriteRfi("__rfi_r"); break;
+                case Mnemonic.rfi: RewriteRfi(rfi_intrinsic); break;
+                case Mnemonic.rfi_r: RewriteRfi(rfi_r_intrinsic); break;
                 case Mnemonic.shladd: RewriteShladd(); break;
                 case Mnemonic.shrpd: RewriteShrp(PrimitiveType.Word64, PrimitiveType.Word128); break;
                 case Mnemonic.shrpw: RewriteShrp(PrimitiveType.Word32, PrimitiveType.Word64); break;
@@ -320,11 +319,37 @@ namespace Reko.Arch.PaRisc
 
         static PaRiscRewriter()
         {
-            depwIntrinsic = new IntrinsicBuilder("__depw", false)
+            depw_intrinsic = new IntrinsicBuilder("__depw", false)
                 .Param(PrimitiveType.Word64)
                 .Param(PrimitiveType.Int32)
                 .Param(PrimitiveType.Int32)
                 .Returns(PrimitiveType.Word32);
         }
+
+        private static readonly IntrinsicProcedure break_intrinsic = new IntrinsicBuilder("__break", true)
+            .Void();
+        private static readonly IntrinsicProcedure depw_intrinsic;
+        private static readonly IntrinsicProcedure diag_intrinsic = new IntrinsicBuilder("__diag", true)
+            .GenericTypes("T")
+            .Param("T")
+            .Void();
+        private static readonly IntrinsicProcedure division_step_intrinsic = IntrinsicBuilder.GenericBinary("__division_step");
+        private static readonly IntrinsicProcedure fid_intrinsic = new IntrinsicBuilder("__fid", true)
+            .Void();
+        private static readonly IntrinsicProcedure is_bit_set_intrinsic = new IntrinsicBuilder("__is_bit_set", false)
+            .GenericTypes("TValue", "TPos")
+            .Param("TValue")
+            .Param("TPos")
+            .Returns(PrimitiveType.Bool);
+        private static readonly IntrinsicProcedure mtsm_intrinsic = new IntrinsicBuilder("__mtsm", true)
+            .GenericTypes("T")
+            .Param("T")
+            .Void();
+        private static readonly IntrinsicProcedure rfi_intrinsic = new IntrinsicBuilder("__rfi", true)
+            .Void();
+        private static readonly IntrinsicProcedure rfi_r_intrinsic = new IntrinsicBuilder("__rfi_r", true)
+            .Void();
+        private static readonly IntrinsicProcedure trap_intrinsic = new IntrinsicBuilder("__trap", true)
+            .Void();
     }
 }

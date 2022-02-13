@@ -85,7 +85,7 @@ namespace Reko.Arch.Pdp11
             }
             else
             {
-                m.Assign(dst, host.Intrinsic("__shift", false, dst.DataType, dst, sh));
+                m.Assign(dst, m.Fn(shift_intrinsic, dst, sh));
             }
             SetFlags(dst, Registers.NVC);
         }
@@ -210,7 +210,7 @@ namespace Reko.Arch.Pdp11
             }
             var tmp = binder.CreateTemporary(PrimitiveType.Word16);
             var sp = binder.EnsureRegister(arch.StackRegister);
-            m.Assign(tmp, host.Intrinsic("__mfpd", true, tmp.DataType, src));
+            m.Assign(tmp, m.Fn(mfpd_intrinsic, src));
             m.Assign(sp, m.ISub(sp, 2));
             m.Assign(m.Mem16(sp), tmp);
             SetFlags(tmp, Registers.NZ);
@@ -228,7 +228,7 @@ namespace Reko.Arch.Pdp11
             }
             var tmp = binder.CreateTemporary(PrimitiveType.Word16);
             var sp = binder.EnsureRegister(arch.StackRegister);
-            m.Assign(tmp, host.Intrinsic("__mfpi", true, tmp.DataType, src));
+            m.Assign(tmp, m.Fn(mfpi_intrinsic, src));
             m.Assign(sp, m.ISub(sp, 2));
             m.Assign(m.Mem16(sp), tmp);
             SetFlags(tmp, Registers.NZ);
@@ -248,7 +248,7 @@ namespace Reko.Arch.Pdp11
             var sp = binder.EnsureRegister(arch.StackRegister);
             m.Assign(tmp, m.Mem16(sp));
             m.Assign(sp, m.ISub(sp, 2));
-            m.SideEffect(host.Intrinsic("__mtpi", true, tmp.DataType, src, tmp));
+            m.SideEffect(m.Fn(mtpi_intrinsic, src, tmp));
             SetFlags(tmp, Registers.NZ);
             SetFalse(Registers.V);
         }
@@ -330,7 +330,7 @@ namespace Reko.Arch.Pdp11
             else
             {
                 fn = (a, b) =>
-                    host.Intrinsic("__shift", false, instr.DataWidth!, a, b);
+                    m.Fn(shift_intrinsic.MakeInstance(instr.DataWidth!), a, b);
             }
             var dst = RewriteDst(instr.Operands[1], src, fn);
             SetFlags(dst, Registers.NZVC);
@@ -347,7 +347,7 @@ namespace Reko.Arch.Pdp11
         {
             var src = RewriteSrc(instr.Operands[0]);
             var dst = RewriteDst(instr.Operands[1], src, e =>
-                host.Intrinsic("__stexp", true, PrimitiveType.Int16, e));
+                m.Fn(stexp_intrinsic, e));
             SetFlags(dst, Registers.NZ);
             SetFalse(Registers.C);
             SetFalse(Registers.V);
@@ -365,7 +365,7 @@ namespace Reko.Arch.Pdp11
         private void RewriteSwab()
         {
             var src = RewriteSrc(instr.Operands[0]);
-            var dst = RewriteDst(instr.Operands[0], src, e => host.Intrinsic("__swab", false, PrimitiveType.Word16, e));
+            var dst = RewriteDst(instr.Operands[0], src, e => m.Fn(swab_intrinsic, e));
             if (dst == null)
             {
                 m.Invalid();

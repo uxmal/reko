@@ -34,7 +34,7 @@ namespace Reko.Arch.PaRisc
         private void RewriteDiag()
         {
             var src = RewriteOp(0);
-            m.SideEffect(host.Intrinsic("__diag", true, VoidType.Instance, src));
+            m.SideEffect(m.Fn(diag_intrinsic.MakeInstance(src.DataType), src));
         }
 
         private void RewriteMfctl()
@@ -74,7 +74,7 @@ namespace Reko.Arch.PaRisc
         private void RewriteMtsm()
         {
             var src = RewriteOp(0);
-            m.SideEffect(host.Intrinsic("__mtsm", true, VoidType.Instance, src));
+            m.SideEffect(m.Fn(mtsm_intrinsic.MakeInstance(src.DataType), src));
         }
 
         private void RewriteMtsp()

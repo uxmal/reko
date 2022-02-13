@@ -174,7 +174,7 @@ namespace Reko.Arch.Mips
             var src = RewriteOperand0(instr.Operands[1]);
             var pos = RewriteOperand(instr.Operands[2]);
             var size = RewriteOperand(instr.Operands[3]);
-            m.Assign(dst, m.Fn(intrinsics.ins, src, pos, size));
+            m.Assign(dst, m.Fn(intrinsics.ins.MakeInstance(src.DataType, pos.DataType), dst, src, pos, size));
         }
 
         private void RewriteLoad(MipsInstruction instr, PrimitiveType dtSmall, PrimitiveType? dtSmall64 = null)

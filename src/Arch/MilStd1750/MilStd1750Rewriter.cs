@@ -329,7 +329,7 @@ namespace Reko.Arch.MilStd1750
 
         private void RewriteBex()
         {
-            m.SideEffect(m.Fn(CommonOps.Syscall, Op(0)));
+            m.SideEffect(m.Fn(CommonOps.Syscall_1, Op(0)));
         }
 
         private void RewriteBif()
@@ -589,7 +589,7 @@ namespace Reko.Arch.MilStd1750
         {
             var src = DReg(1);
             var dst = DReg(0);
-            m.Assign(dst, m.Fn(FpOps.FAbsGeneric.MakeInstance(PrimitiveType.Real32), src));
+            m.Assign(dst, m.Fn(FpOps.FAbs32, src));
             AssignFlags(PZN, m.Cond(dst));
         }
 

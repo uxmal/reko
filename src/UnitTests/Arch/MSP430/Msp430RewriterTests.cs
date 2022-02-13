@@ -322,7 +322,7 @@ namespace Reko.UnitTests.Arch.Msp430
                 "1|L--|v3 = Mem0[r4:word16]",
                 "2|L--|r4 = r4 + 2<i16>",
                 "3|L--|v4 = Mem0[0x4140<p16>:word16]",
-                "4|L--|v4 = __dadd(v4, v3)",
+                "4|L--|v4 = __dadd<word16>(v4, v3, C)",
                 "5|L--|Mem0[0x4140<p16>:word16] = v4",
                 "6|L--|NZC = cond(v4)");
         }

@@ -1,5 +1,5 @@
 #region License
-/*
+/* 
  * Copyright (C) 1999-2022 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
@@ -21,31 +21,20 @@
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
-namespace Reko.Arch.zSeries
+namespace Reko.Core.Intrinsics
 {
-    public partial class zSeriesRewriter
+    public class AtomicOps
     {
-        private void RewriteCvb(PrimitiveType dt) {
-            Assign(Reg(0), m.Fn(
-                intrinsics.cvb.MakeInstance(dt), 
-                m.AddrOf(arch.PointerType,
-                    m.Mem8(EffectiveAddress(1)))));
-        }
-
-        private void RewriteCvd(PrimitiveType dt)
-        {
-            m.SideEffect(m.Fn(
-                intrinsics.cvd.MakeInstance(ptrSize, dt),
-                Reg(0, dt),
-                m.AddrOf(arch.PointerType,
-                    m.Mem8(EffectiveAddress(1)))));
-        }
-
-        private void RewriteSrp()
-        {
-
-        }
+        //$TODO: standard header file
+        public static readonly IntrinsicProcedure atomic_compare_exchange_weak = new IntrinsicBuilder("atomic_compare_exchange_weak", true)
+            .GenericTypes("T")
+            .PtrParam("T")
+            .Param("T")
+            .Param("T")
+            .Returns(PrimitiveType.Bool);
     }
 }

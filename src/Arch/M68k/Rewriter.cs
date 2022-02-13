@@ -232,7 +232,7 @@ VS Overflow Set 1001 V
                 case Mnemonic.fmul: RewriteFBinOp((s, d) => m.FMul(d,s)); break;
                 case Mnemonic.fneg: RewriteFUnaryOp(m.Neg); break;
                 case Mnemonic.frem: RewriteFUnaryIntrinsic(FpOps.FRemGeneric); break;
-                case Mnemonic.fsabs: RewriteFUnaryIntrinsic(FpOps.FAbsGeneric); break;
+                case Mnemonic.fsabs: RewriteFUnaryIntrinsic(fsabs_instrinic); break;
                 case Mnemonic.fsin: RewriteFUnaryIntrinsic(FpOps.SinGeneric); break;
                 case Mnemonic.fsincos: RewriteFSinCos(); break;
                 case Mnemonic.fsqrt: RewriteFsqrt(); break;
@@ -406,11 +406,13 @@ VS Overflow Set 1001 V
             .Param("T")
             .Param("T")
             .Returns(PrimitiveType.Bool);
+        static readonly IntrinsicProcedure fabs_intrinsic = IntrinsicBuilder.GenericUnary("__fabs");
         static readonly IntrinsicProcedure fgetexp_intrinsic = IntrinsicBuilder.GenericUnary("fgetexp");
         static readonly IntrinsicProcedure fgetman_intrinsic = IntrinsicBuilder.GenericUnary("fgetman");
         static readonly IntrinsicProcedure fmovecr_intrinic = new IntrinsicBuilder("__fmovecr", true)
             .Param(PrimitiveType.Word32)
             .Returns(PrimitiveType.Real64);
+        static readonly IntrinsicProcedure fsabs_instrinic = IntrinsicBuilder.GenericUnary("__fsabs");
 
         static readonly IntrinsicProcedure is_nan_intrinsic = new IntrinsicBuilder("__is_nan", false)
             .GenericTypes("T")

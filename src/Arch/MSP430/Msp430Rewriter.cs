@@ -131,7 +131,8 @@ namespace Reko.Arch.Msp430
 
         private Expression Dadd(Expression a, Expression b)
         {
-            return host.Intrinsic("__dadd", true, a.DataType, a, b);
+            var cy = binder.EnsureFlagGroup(Registers.C);
+            return m.Fn(dadd_intrinsic.MakeInstance(b.DataType), a, b, cy);
         }
 
         private Expression RewriteOp(MachineOperand op, DataType? dt = null)
@@ -197,7 +198,7 @@ namespace Reko.Arch.Msp430
                 var ev = fn(dst, src);
                 if (dst.Storage == Registers.sp && ev is Constant)
                 {
-                    m.SideEffect(host.Intrinsic("__set_stackpointer", true, VoidType.Instance, src));
+                    m.SideEffect(m.Fn(set_stackpointer_intrinsic, src));
                 }
                 else
                 {
@@ -248,7 +249,7 @@ namespace Reko.Arch.Msp430
                 var dst = binder.EnsureRegister(rop);
                 if (dst.Storage == Registers.sp && src is Constant)
                 {
-                    m.SideEffect(host.Intrinsic("__set_stackpointer", true, VoidType.Instance, src));
+                    m.SideEffect(m.Fn(set_stackpointer_intrinsic, src));
                 }
                 else
                 {
@@ -517,11 +518,7 @@ namespace Reko.Arch.Msp430
             var src = RewriteOp(instr.Operands[0], PrimitiveType.Word16);
             RewriteMovDst(
                 instr.Operands[0],
-                host.Intrinsic(
-                    "__swpb",
-                    false,
-                    PrimitiveType.Word16,
-                    src));
+                m.Fn(swpb_intrinsic, src));
         }
 
         private void RewriteSxt()
@@ -547,5 +544,18 @@ namespace Reko.Arch.Msp430
             var testGenSvc = arch.Services.GetService<ITestGenerationService>();
             testGenSvc?.ReportMissingRewriter("Msp430Rw", instr, instr.Mnemonic.ToString(), rdr, "");
         }
+
+        static readonly IntrinsicProcedure dadd_intrinsic = new IntrinsicBuilder("__dadd", false)
+            .GenericTypes("T")
+            .Param("T")
+            .Param("T")
+            .Param(PrimitiveType.Bool)
+            .Returns("T");
+        static readonly IntrinsicProcedure set_stackpointer_intrinsic = new IntrinsicBuilder("__set_stackpointer", true)
+            .Param(PrimitiveType.Ptr16)
+            .Void();
+        static readonly IntrinsicProcedure swpb_intrinsic = new IntrinsicBuilder("__swpb", false)
+            .Param(PrimitiveType.Word16)
+            .Returns(PrimitiveType.Word16);
     }
 }

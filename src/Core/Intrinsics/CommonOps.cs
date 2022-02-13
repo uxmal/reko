@@ -57,8 +57,8 @@ namespace Reko.Core.Intrinsics
 
         // Integer math
         public static readonly IntrinsicProcedure Abs = IntrinsicBuilder.GenericUnary("abs"); //$REVIEW: math.h
-        public static readonly IntrinsicProcedure Max = IntrinsicBuilder.GenericUnary("max"); //$REVIEW: math.h
-        public static readonly IntrinsicProcedure Min = IntrinsicBuilder.GenericUnary("min"); //$REVIEW: math.h
+        public static readonly IntrinsicProcedure Max = IntrinsicBuilder.GenericBinary("max"); //$REVIEW: math.h
+        public static readonly IntrinsicProcedure Min = IntrinsicBuilder.GenericBinary("min"); //$REVIEW: math.h
 
         // Rotations
         public static readonly IntrinsicProcedure Rol = new IntrinsicBuilder("__rol", false)
@@ -86,6 +86,18 @@ namespace Reko.Core.Intrinsics
 
         // System calls.
         public static readonly IntrinsicProcedure Syscall = new IntrinsicBuilder("__syscall", true)
+
+        // __syscall overloads
+        // For system calls with no arguments.
+        public static readonly IntrinsicProcedure Syscall_0 = new IntrinsicBuilder("__syscall", true)
+            .Void();
+        // For system calls with one argument.
+        public static readonly IntrinsicProcedure Syscall_1 = new IntrinsicBuilder("__syscall", true)
+            .Param(PrimitiveType.Word32)
+            .Void();
+        // For system calls with two arguments.
+        public static readonly IntrinsicProcedure Syscall_2 = new IntrinsicBuilder("__syscall", true)
+            .Param(PrimitiveType.Word32)
             .Param(PrimitiveType.Word32)
             .Void();
     }

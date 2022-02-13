@@ -20,6 +20,7 @@
 
 using Reko.Core;
 using Reko.Core.Expressions;
+using Reko.Core.Intrinsics;
 using Reko.Core.Machine;
 using Reko.Core.Rtl;
 using Reko.Core.Types;
@@ -254,7 +255,7 @@ namespace Reko.Arch.zSeries
         private void RewriteSvc()
         {
             var svcNo = ((ImmediateOperand) instr.Operands[0]).Value;
-            m.SideEffect(host.Intrinsic(IntrinsicProcedure.Syscall, true, VoidType.Instance, svcNo));
+            m.SideEffect(m.Fn(CommonOps.Syscall_1, svcNo));
         }
 
         private void RewriteUnconditionalBranch()

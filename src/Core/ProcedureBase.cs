@@ -125,7 +125,7 @@ namespace Reko.Core
         /// </returns>
         public DataType[] GetGenericArguments() => this.genericArguments;
 
-        protected FunctionType MakeConcreteSignature(DataType[] concreteTypes)
+        protected FunctionType MakeConcreteSignature(int ptrSize, DataType[] concreteTypes)
         {
             var sig = this.Signature;
             if (sig is null)
@@ -135,14 +135,18 @@ namespace Reko.Core
             if (genericArguments.Length == 0)
                 throw new InvalidOperationException($"{Name} is not generic.");
             if (concreteTypes.Length != genericArguments.Length)
-                throw new InvalidOperationException($"Mismatched number of concrete types for {Name}; expected {genericArguments.Length} but saw {concreteTypes.Length}");
+                throw new InvalidOperationException(
+                    $"Mismatched number of concrete types for {Name}; expected {genericArguments.Length} but had {concreteTypes.Length}.");
             var parameters = new Identifier[sig.Parameters!.Length];
             for (int i = 0; i < sig.Parameters.Length; ++i)
             {
                 var param = sig.Parameters[i];
                 if (TryGetGenericArgument(param.DataType, out int index))
                 {
-                    param = new Identifier(param.Name, concreteTypes[index], param.Storage);
+                    param = new Identifier(
+                        param.Name,
+                        ResolvePointer(param.DataType, concreteTypes[index], ptrSize),
+                        param.Storage);
                 }
                 parameters[i] = param;
             }
@@ -155,9 +159,30 @@ namespace Reko.Core
                 var ret = sig.ReturnValue;
                 if (TryGetGenericArgument(ret.DataType, out int index))
                 {
-                    ret = new Identifier(ret.Name, concreteTypes[index], ret.Storage);
+                    ret = new Identifier(
+                        ret.Name,
+                        ResolvePointer(ret.DataType, concreteTypes[index], ptrSize),
+                        ret.Storage);
                 }
                 return FunctionType.Func(ret, parameters);
+            }
+        }
+
+        /// <summary>
+        /// Resolves any 0-sized pointers, which are used to indicate pointers
+        /// of unknown size.
+        /// </summary>
+        private DataType ResolvePointer(DataType dtGeneric, DataType dtConcrete, int ptrSize)
+        {
+            if (dtGeneric is Pointer ptr && ptr.BitSize == 0)
+            {
+                if (ptrSize == 0)
+                    throw new InvalidOperationException("Non-zero pointer size has not been specified.");
+                return new Pointer(dtConcrete, ptrSize);
+            }
+            else
+            {
+                return dtConcrete;
             }
         }
 
@@ -165,7 +190,8 @@ namespace Reko.Core
         {
             for (int i = 0; i < genericArguments.Length; ++i)
             {
-                if (dt == genericArguments[i])
+                if (dt == genericArguments[i] ||
+                    (dt is Pointer ptr && ptr.Pointee == genericArguments[i]))
                 {
                     index = i;
                     return true;

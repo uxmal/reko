@@ -157,10 +157,9 @@ namespace Reko.Arch.X86
             m.SideEffect(m.Fn(hlt_intrinsic), InstrClass.Terminates);
         }
 
-
         private void RewriteInt()
         {
-            m.SideEffect(m.Fn(CommonOps.Syscall, SrcOp(0)));
+            m.SideEffect(m.Fn(CommonOps.Syscall_1, SrcOp(0)));
             iclass |= InstrClass.Call | InstrClass.Transfer;
         }
 
@@ -178,7 +177,7 @@ namespace Reko.Arch.X86
                 m.Test(ConditionCode.NO, binder.EnsureFlagGroup(Registers.O)),
                 instrCur.Address + instrCur.Length,
                 InstrClass.ConditionalTransfer);
-            m.SideEffect(m.Fn(CommonOps.Syscall, Constant.Byte(4)));
+            m.SideEffect(m.Fn(CommonOps.Syscall_1, Constant.Byte(4)));
         }
 
         private void RewriteJcxz(RegisterStorage cx)

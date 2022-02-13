@@ -42,7 +42,7 @@ namespace Reko.Arch.M68k
             //$TODO: #include <math.h>
             var src = orw.RewriteSrc(instr.Operands[0], instr.Address);
             var dst = orw.RewriteDst(instr.Operands[1], instr.Address, src, (s, d) =>
-                m.Fn(FpOps.FAbsGeneric.MakeInstance(s.DataType), s));
+                m.Fn(fabs_intrinsic.MakeInstance(s.DataType), s));
         }
 
         private void RewriteFbcc(ConditionCode cc)
