@@ -89,25 +89,25 @@ namespace Reko.Arch.Mips
             m.Assign(opDst, opSrc);
         }
 
-        private void RewriteCache(MipsInstruction instr, string intrinsic)
+        private void RewriteCache(MipsInstruction instr, IntrinsicProcedure intrinsic)
         {
             var op1 = RewriteOperand(instr.Operands[0]);
             var opMem = m.AddrOf(arch.PointerType, RewriteOperand(instr.Operands[1]));
-            m.SideEffect(host.Intrinsic(intrinsic, true, VoidType.Instance, op1,  opMem), iclass);
+            m.SideEffect(m.Fn(intrinsic, op1, opMem), iclass);
         }
 
         private void RewriteClo(MipsInstruction instr)
         {
             var opDst = RewriteOperand0(instr.Operands[0]);
             var opSrc = RewriteOperand0(instr.Operands[1]);
-            m.Assign(opDst, host.Intrinsic("__clo", false, PrimitiveType.Int32, opSrc));
+            m.Assign(opDst, m.Fn(intrinsics.clo, opSrc));
         }
 
         private void RewriteClz(MipsInstruction instr)
         {
             var opDst = RewriteOperand0(instr.Operands[0]);
             var opSrc = RewriteOperand0(instr.Operands[1]);
-            m.Assign(opDst, host.Intrinsic("__clz", false, PrimitiveType.Int32, opSrc));
+            m.Assign(opDst, m.Fn(intrinsics.clz, opSrc));
         }
 
         private void RewriteDshiftC(MipsInstruction instr, Func<Expression,Expression,Expression> fn, int offset)
@@ -165,7 +165,7 @@ namespace Reko.Arch.Mips
             var src = RewriteOperand(instr.Operands[1]);
             var pos = RewriteOperand(instr.Operands[2]);
             var size = RewriteOperand(instr.Operands[3]);
-            m.Assign(dst, host.Intrinsic("__ext", true, dst.DataType, src, pos, size));
+            m.Assign(dst, m.Fn(intrinsics.ext, src, pos, size));
         }
 
         private void RewriteIns(MipsInstruction instr)
@@ -174,7 +174,7 @@ namespace Reko.Arch.Mips
             var src = RewriteOperand0(instr.Operands[1]);
             var pos = RewriteOperand(instr.Operands[2]);
             var size = RewriteOperand(instr.Operands[3]);
-            m.Assign(dst, host.Intrinsic("__ins", true, dst.DataType, dst, src, pos, size));
+            m.Assign(dst, m.Fn(intrinsics.ins, src, pos, size));
         }
 
         private void RewriteLoad(MipsInstruction instr, PrimitiveType dtSmall, PrimitiveType? dtSmall64 = null)
@@ -344,8 +344,6 @@ namespace Reko.Arch.Mips
             var idIndex = binder.EnsureRegister(idx.Index);
             m.Assign(opDst, m.Mem32(m.IAdd(idBase, m.IMul(idIndex, 4))));
         }
-
-
 
         private void RewriteLx(MipsInstruction instr, PrimitiveType dt, int scale)
         {

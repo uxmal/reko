@@ -20,6 +20,7 @@
 
 using Reko.Core;
 using Reko.Core.Expressions;
+using Reko.Core.Intrinsics;
 using Reko.Core.Machine;
 using Reko.Core.Memory;
 using Reko.Core.Rtl;
@@ -52,6 +53,7 @@ namespace Reko.Arch.Mips
         private string? instructionSetEncoding;
         private readonly Dictionary<string, RegisterStorage> mpNameToReg;
         private Decoder<MipsDisassembler, Mnemonic, MipsInstruction>? rootDecoder;
+        private MipsIntrinsics? intrinsics;
 
         public MipsProcessorArchitecture(IServiceProvider services, string archId, EndianServices endianness, PrimitiveType wordSize, PrimitiveType ptrSize, Dictionary<string, object> options) 
             : base(services, archId, options)
@@ -123,10 +125,13 @@ namespace Reko.Arch.Mips
 
         public override IEnumerable<RtlInstructionCluster> CreateRewriter(EndianImageReader rdr, ProcessorState state, IStorageBinder binder, IRewriterHost host)
         {
+            if (this.intrinsics is null)
+                intrinsics = new MipsIntrinsics(this);
             if (instructionSetEncoding == "mips16e")
             {
                 return new Mips16eRewriter(
                     this,
+                    intrinsics,
                     rdr,
                     CreateDisassemblerInternal(rdr),
                     binder, 
@@ -136,6 +141,7 @@ namespace Reko.Arch.Mips
             {
                 return new MipsRewriter(
                     this,
+                    intrinsics,
                     rdr,
                     CreateDisassemblerInternal(rdr),
                     binder,
@@ -226,6 +232,7 @@ namespace Reko.Arch.Mips
                 }
             }
             this.rootDecoder = null;
+            this.intrinsics = null;
         }
 
         public override Address? ReadCodeAddress(int size, EndianImageReader rdr, ProcessorState? state)

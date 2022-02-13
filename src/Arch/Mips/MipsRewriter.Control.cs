@@ -84,7 +84,11 @@ namespace Reko.Arch.Mips
             var reg = RewriteOperand0(instr.Operands[0]);
             var bit = RewriteOperand(instr.Operands[1]);
             var addr = (Address) RewriteOperand0(instr.Operands[2]);
-            var test = condOp(host.Intrinsic("__bit", false, PrimitiveType.Bool, reg, bit));
+            var test = condOp(m.Fn(
+                intrinsics.bit_intrinsic.MakeInstance(
+                    reg.DataType,
+                    bit.DataType),
+                reg, bit));
             m.Branch(test, addr, instr.InstructionClass);
         }
 

@@ -20,6 +20,7 @@
 
 using Reko.Core;
 using Reko.Core.Expressions;
+using Reko.Core.Intrinsics;
 using Reko.Core.Machine;
 using Reko.Core.Memory;
 using Reko.Core.Rtl;
@@ -328,17 +329,17 @@ namespace Reko.Arch.MilStd1750
 
         private void RewriteBex()
         {
-            m.SideEffect(host.Intrinsic(IntrinsicProcedure.Syscall, true, VoidType.Instance, Op(0)));
+            m.SideEffect(m.Fn(CommonOps.Syscall, Op(0)));
         }
 
         private void RewriteBif()
         {
-            m.SideEffect(host.Intrinsic("__bif", true, VoidType.Instance, Op(0)));
+            m.SideEffect(m.Fn(bif_intrinsic, Op(0)));
         }
 
         private void RewriteBpt()
         {
-            m.SideEffect(host.Intrinsic("__bpt", true, VoidType.Instance));
+            m.SideEffect(m.Fn(bpt_intrinsic));
         }
 
         private void RewriteBr()
@@ -399,7 +400,7 @@ namespace Reko.Arch.MilStd1750
         {
             var src = DReg(1);
             var dst = DReg(0);
-            m.Assign(dst, host.Intrinsic("abs", false, PrimitiveType.Int32, src));
+            m.Assign(dst, m.Fn(CommonOps.Abs.MakeInstance(PrimitiveType.Int32), src));
             AssignFlags(PZN, m.Cond(dst));
         }
 
@@ -491,9 +492,14 @@ namespace Reko.Arch.MilStd1750
         {
             var src = Reg(1);
             var dst = DReg(0);
-            m.Assign(dst, host.Intrinsic("__shift_arithmetic", false, dst.DataType, dst, src));
+            m.Assign(dst, m.Fn(
+                shift_arithmetic_intrinsic.MakeInstance(
+                    dst.DataType,
+                    src.DataType),
+                dst, src));
             AssignFlags(PZN, m.Cond(dst));
         }
+
         private void RewriteDsra()
         {
             var dst = DReg(0);
@@ -583,7 +589,7 @@ namespace Reko.Arch.MilStd1750
         {
             var src = DReg(1);
             var dst = DReg(0);
-            m.Assign(dst, host.Intrinsic("fabsf", false, PrimitiveType.Real32, src));
+            m.Assign(dst, m.Fn(FpOps.FAbsGeneric.MakeInstance(PrimitiveType.Real32), src));
             AssignFlags(PZN, m.Cond(dst));
         }
 
@@ -777,7 +783,7 @@ namespace Reko.Arch.MilStd1750
             var tmpB = binder.CreateTemporary(PrimitiveType.Ptr16);
             m.Assign(tmpA, ra);
             m.Assign(tmpB, rb);
-            m.SideEffect(host.Intrinsic("__mov", false, VoidType.Instance, tmpA, tmpB));
+            m.SideEffect(m.Fn(mov_intrinsic, tmpA, tmpB));
         }
 
         private void RewriteMisn()
@@ -874,7 +880,10 @@ namespace Reko.Arch.MilStd1750
         {
             var src = Reg(1);
             var dst = Reg(0);
-            m.Assign(dst, host.Intrinsic("__shift_arithmetic", false, dst.DataType, dst, src));
+            m.Assign(dst, m.Fn(shift_arithmetic_intrinsic.MakeInstance(
+                dst.DataType,
+                src.DataType),
+                dst, src));
             AssignFlags(PZN, m.Cond(dst));
         }
 
@@ -923,7 +932,7 @@ namespace Reko.Arch.MilStd1750
         {
             var src = Reg(1);
             var dst = Reg(0);
-            m.Assign(dst, host.Intrinsic("__shift_logical", false, dst.DataType, dst, src));
+            m.Assign(dst, m.Fn(shift_logical_intrinsic, dst, src));
             AssignFlags(PZN, m.Cond(dst));
         }
 
@@ -1006,7 +1015,7 @@ namespace Reko.Arch.MilStd1750
         private void RewriteXbr()
         {
             var dst = Reg(0);
-            m.Assign(dst, host.Intrinsic("__xbr", false, PrimitiveType.Word32, dst));
+            m.Assign(dst, m.Fn(xbr_intrinsic, dst));
             AssignFlags(PZN, m.Cond(dst));
         }
 
@@ -1020,5 +1029,34 @@ namespace Reko.Arch.MilStd1750
             m.Assign(ra, tmp);
             AssignFlags(PZN, m.Cond(ra));
         }
+
+        static readonly IntrinsicProcedure bif_intrinsic = new IntrinsicBuilder("__bif", true)
+            .Param(PrimitiveType.Word16)
+            .Void();
+        static readonly IntrinsicProcedure bpt_intrinsic = new IntrinsicBuilder("__bpt", true)
+            .Void();
+        static readonly IntrinsicProcedure console_output_intrinsic = new IntrinsicBuilder("__console_output", true)
+            .Param(PrimitiveType.Word16)
+            .Void();
+        static readonly IntrinsicProcedure mov_intrinsic = new IntrinsicBuilder("__mov", true)
+            .Param(PrimitiveType.Ptr16)
+            .Param(PrimitiveType.Ptr16)
+            .Void();
+        static readonly IntrinsicProcedure shift_arithmetic_intrinsic = new IntrinsicBuilder("__shift_arithmetic", true)
+            .GenericTypes("TValue", "TShift")
+            .Param("TValue")
+            .Param("TShift")
+            .Returns("TValue");
+        static readonly IntrinsicProcedure shift_logical_intrinsic = new IntrinsicBuilder("__shift_logical", true)
+            .GenericTypes("TValue", "TShift")
+            .Param("TValue")
+            .Param("TShift")
+            .Returns("TValue");
+        static readonly IntrinsicProcedure xbr_intrinsic = new IntrinsicBuilder("__xbr", true)
+            .Param(PrimitiveType.Word16)
+            .Returns(PrimitiveType.Word32);
+        static readonly IntrinsicProcedure xio_unknown_intrinsic = new IntrinsicBuilder("__xio_unknown", true)
+            .Param(PrimitiveType.Word16)
+            .Void();
     }
 }

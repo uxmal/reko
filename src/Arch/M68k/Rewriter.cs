@@ -110,7 +110,7 @@ LS Low or Same 0011 C V Z
 VC Overflow Clear 1000 V
 VS Overflow Set 1001 V
  */
-                case Mnemonic.bclr: RewriteBclrBset("__bclr"); break;
+                case Mnemonic.bclr: RewriteBclrBset(bclr_intrinsic); break;
                 case Mnemonic.bcc: RewriteBcc(ConditionCode.UGE, Registers.C); break;
                 case Mnemonic.bcs: RewriteBcc(ConditionCode.ULT, Registers.C); break;
                 case Mnemonic.beq: RewriteBcc(ConditionCode.EQ, Registers.Z); break;
@@ -129,7 +129,7 @@ VS Overflow Set 1001 V
                 case Mnemonic.bfchg: RewriteBfchg(); break;
                 case Mnemonic.bkpt: RewriteBkpt(); break;
                 case Mnemonic.bra: RewriteBra(); break;
-                case Mnemonic.bset: RewriteBclrBset("__bset"); break;
+                case Mnemonic.bset: RewriteBclrBset(bset_intrinsic); break;
                 case Mnemonic.bsr: RewriteBsr(); break;
                 case Mnemonic.btst: RewriteBtst(); break;
                 case Mnemonic.callm: RewriteCallm(); break;
@@ -173,10 +173,10 @@ VS Overflow Set 1001 V
                 case Mnemonic.extb: RewriteExtb(); break;
                 case Mnemonic.fabs: RewriteFabs(); break;
                 case Mnemonic.fadd: RewriteFBinOp((s, d) => m.FAdd(d, s)); break;
-                case Mnemonic.facos: RewriteFUnaryIntrinsic("acos"); break;
+                case Mnemonic.facos: RewriteFUnaryIntrinsic(FpOps.AcosGeneric); break;
                 //$REVIEW: the following don't respect NaN, but NaN typically doesn't exist in HLLs.
-                case Mnemonic.fatan: RewriteFUnaryIntrinsic("atan"); break;
-                case Mnemonic.fatanh: RewriteFUnaryIntrinsic("atanh"); break;
+                case Mnemonic.fatan: RewriteFUnaryIntrinsic(FpOps.AtanGeneric); break;
+                case Mnemonic.fatanh: RewriteFUnaryIntrinsic(FpOps.AtanhGeneric); break;
                 case Mnemonic.fbf: m.Nop(); break;
                 case Mnemonic.fblt: RewriteFbcc(ConditionCode.LT); break;
                 case Mnemonic.fbgl: RewriteFbcc(ConditionCode.NE); break;
@@ -209,36 +209,36 @@ VS Overflow Set 1001 V
                 case Mnemonic.fbule: RewriteFbcc(ConditionCode.LE); break;
                 case Mnemonic.fbult: RewriteFbcc(ConditionCode.LT); break;
                 case Mnemonic.fbun: RewriteFbcc(ConditionCode.IS_NAN); break;
-                case Mnemonic.fasin: RewriteFasin(); break;
+                case Mnemonic.fasin: RewriteFUnaryIntrinsic(FpOps.AsinGeneric); break;
                 case Mnemonic.fintrz: RewriteFintrz(); break;
                 case Mnemonic.fcmp: RewriteFcmp(); break;
-                case Mnemonic.fcos: RewriteFUnaryIntrinsic("cos"); break;
-                case Mnemonic.fcosh: RewriteFUnaryIntrinsic("cosh"); break;
+                case Mnemonic.fcos: RewriteFUnaryIntrinsic(FpOps.CosGeneric); break;
+                case Mnemonic.fcosh: RewriteFUnaryIntrinsic(FpOps.CoshGeneric); break;
                 case Mnemonic.fdiv: RewriteFBinOp((s, d) => m.FDiv(d, s)); break;
-                case Mnemonic.fdsqrt: RewriteFUnaryIntrinsic("sqrt"); break;
-                case Mnemonic.fetox: RewriteFUnaryIntrinsic("exp"); break;
-                case Mnemonic.fetoxm1: RewriteFUnaryIntrinsic("exp", e => m.FSub(e, Constant.Real64(1.0))); break;
-                case Mnemonic.fgetexp: RewriteFUnaryIntrinsic("fgetexp"); break;
-                case Mnemonic.fgetman: RewriteFUnaryIntrinsic("fgetman"); break;
-                case Mnemonic.fint: RewriteFUnaryIntrinsic("trunc"); break;
-                case Mnemonic.flog10: RewriteFUnaryIntrinsic("log10"); break;
-                case Mnemonic.flog2: RewriteFUnaryIntrinsic("log2"); break;
-                case Mnemonic.flogn: RewriteFUnaryIntrinsic("log"); break;
-                case Mnemonic.flognp1: RewriteFUnaryIntrinsic(e => m.FAdd(e, Constant.Real64(1.0)), "log"); break;
-                case Mnemonic.fmod: RewriteFBinIntrinsic("fmod"); break;
+                case Mnemonic.fdsqrt: RewriteFUnaryIntrinsic(FpOps.SqrtGeneric); break;
+                case Mnemonic.fetox: RewriteFUnaryIntrinsic(FpOps.ExpGeneric); break;
+                case Mnemonic.fetoxm1: RewriteFUnaryIntrinsic(FpOps.ExpGeneric, e => m.FSub(e, Constant.Real64(1.0))); break;
+                case Mnemonic.fgetexp: RewriteFUnaryIntrinsic(fgetexp_intrinsic); break;
+                case Mnemonic.fgetman: RewriteFUnaryIntrinsic(fgetman_intrinsic); break;
+                case Mnemonic.fint: RewriteFUnaryIntrinsic(FpOps.TruncGeneric); break;
+                case Mnemonic.flog10: RewriteFUnaryIntrinsic(FpOps.Log10Generic); break;
+                case Mnemonic.flog2: RewriteFUnaryIntrinsic(FpOps.Log2Generic); break;
+                case Mnemonic.flogn: RewriteFUnaryIntrinsic(FpOps.LogGeneric); break;
+                case Mnemonic.flognp1: RewriteFUnaryIntrinsic(e => m.FAdd(e, Constant.Real64(1.0)), FpOps.LogGeneric); break;
+                case Mnemonic.fmod: RewriteFBinIntrinsic(FpOps.FModGeneric); break;
                 case Mnemonic.fmove: RewriteFmove(); break;
                 case Mnemonic.fmovecr: RewriteFmovecr(); break;
                 case Mnemonic.fmovem: RewriteMovem(i => Registers.GetRegister(i+Registers.fp0.Number)); break;
                 case Mnemonic.fmul: RewriteFBinOp((s, d) => m.FMul(d,s)); break;
                 case Mnemonic.fneg: RewriteFUnaryOp(m.Neg); break;
-                case Mnemonic.frem: RewriteFUnaryIntrinsic("frem"); break;
-                case Mnemonic.fsabs: RewriteFUnaryIntrinsic("fabsf"); break;
-                case Mnemonic.fsin: RewriteFUnaryIntrinsic("fsin"); break;
+                case Mnemonic.frem: RewriteFUnaryIntrinsic(FpOps.FRemGeneric); break;
+                case Mnemonic.fsabs: RewriteFUnaryIntrinsic(FpOps.FAbsGeneric); break;
+                case Mnemonic.fsin: RewriteFUnaryIntrinsic(FpOps.SinGeneric); break;
                 case Mnemonic.fsincos: RewriteFSinCos(); break;
                 case Mnemonic.fsqrt: RewriteFsqrt(); break;
                 case Mnemonic.fsub: RewriteFBinOp((s, d) => m.FSub(d, s)); break;
-                case Mnemonic.ftan: RewriteFtan(); break;
-                case Mnemonic.ftanh1: RewriteFUnaryIntrinsic("tanh"); break;
+                case Mnemonic.ftan: RewriteFUnaryIntrinsic(FpOps.TanGeneric); break;
+                case Mnemonic.ftanh1: RewriteFUnaryIntrinsic(FpOps.TanhGeneric); break;
                 case Mnemonic.jmp: RewriteJmp(); break;
                 case Mnemonic.jsr: RewriteJsr(); break;
                 case Mnemonic.lea: RewriteLea(); break;
@@ -384,5 +384,59 @@ VS Overflow Set 1001 V
                 //{ 0x3F, 1e4096 } }  ,
             };
         }
+
+        static readonly IntrinsicProcedure bclr_intrinsic = new IntrinsicBuilder("__bclr", false)
+            .GenericTypes("T")
+            .Param("T")
+            .Param("T")
+            .OutParam("T")
+            .Returns(PrimitiveType.Bool);
+        static readonly IntrinsicProcedure bkpt_intrinsic = new IntrinsicBuilder("__bkpt", true)
+            .GenericTypes("T")
+            .Param("T")
+            .Void();
+        static readonly IntrinsicProcedure bset_intrinsic = new IntrinsicBuilder("__bset", false)
+            .GenericTypes("T")
+            .Param("T")
+            .Param("T")
+            .OutParam("T")
+            .Returns(PrimitiveType.Bool);
+        static readonly IntrinsicProcedure btst_intrinsic = new IntrinsicBuilder("__btst", false)
+            .GenericTypes("T")
+            .Param("T")
+            .Param("T")
+            .Returns(PrimitiveType.Bool);
+        static readonly IntrinsicProcedure fgetexp_intrinsic = IntrinsicBuilder.GenericUnary("fgetexp");
+        static readonly IntrinsicProcedure fgetman_intrinsic = IntrinsicBuilder.GenericUnary("fgetman");
+        static readonly IntrinsicProcedure fmovecr_intrinic = new IntrinsicBuilder("__fmovecr", true)
+            .Param(PrimitiveType.Word32)
+            .Returns(PrimitiveType.Real64);
+
+        static readonly IntrinsicProcedure is_nan_intrinsic = new IntrinsicBuilder("__is_nan", false)
+            .GenericTypes("T")
+            .Param("T")
+            .Returns(PrimitiveType.Bool);
+        static readonly IntrinsicProcedure movep_intrinsic = new IntrinsicBuilder("__movep", true)
+            .GenericTypes("T")
+            .Param("T")
+            .Param("T")
+            .Void();
+        static readonly IntrinsicProcedure moves_intrinsic = new IntrinsicBuilder("__moves", true)
+            .Param(PrimitiveType.Word32)
+            .Returns(PrimitiveType.Word32);
+
+        static readonly IntrinsicProcedure pack_intrinsic = new IntrinsicBuilder("__pack", false)
+            .Param(PrimitiveType.UInt16)
+            .Param(PrimitiveType.UInt16)
+            .Returns(PrimitiveType.Byte);
+        static readonly IntrinsicProcedure reset_intrinsic = new IntrinsicBuilder("__reset", true)
+            .Void();
+        static readonly IntrinsicProcedure stop_intrinsic = new IntrinsicBuilder("__stop", true)
+            .Void();
+        static readonly IntrinsicProcedure swap_intrinsic = IntrinsicBuilder.Unary("__swap", PrimitiveType.Word32);
+        static readonly IntrinsicProcedure unpk_intrinsic = new IntrinsicBuilder("__unpk", false)
+            .Param(PrimitiveType.UInt16)
+            .Param(PrimitiveType.UInt16)
+            .Returns(PrimitiveType.Byte);
     }
 }

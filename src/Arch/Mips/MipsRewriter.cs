@@ -38,6 +38,7 @@ namespace Reko.Arch.Mips
     public partial class MipsRewriter : IEnumerable<RtlInstructionCluster>
     {
         private readonly EndianImageReader rdr;
+        private readonly MipsIntrinsics intrinsics;
         private readonly IEnumerator<MipsInstruction> dasm;
         private readonly IStorageBinder binder;
         private readonly MipsProcessorArchitecture arch;
@@ -47,9 +48,16 @@ namespace Reko.Arch.Mips
         private readonly List<RtlInstruction> rtlInstructions;
         private InstrClass iclass;
 
-        public MipsRewriter(MipsProcessorArchitecture arch, EndianImageReader rdr, IEnumerable<MipsInstruction> instrs, IStorageBinder binder, IRewriterHost host)
+        public MipsRewriter(
+            MipsProcessorArchitecture arch,
+            MipsIntrinsics intrinsics,
+            EndianImageReader rdr,
+            IEnumerable<MipsInstruction> instrs,
+            IStorageBinder binder,
+            IRewriterHost host)
         {
             this.arch = arch;
+            this.intrinsics = intrinsics;
             this.binder = binder;
             this.rdr = rdr;
             this.dasm = instrs.GetEnumerator();
@@ -126,7 +134,7 @@ namespace Reko.Arch.Mips
                 case Mnemonic.c_lt_s: RewriteFpuCmpD(instr, Operator.Flt); break;
                 case Mnemonic.c_eq_d: RewriteFpuCmpD(instr, Operator.Feq); break;
                 case Mnemonic.c_eq_s: RewriteFpuCmpD(instr, Operator.Feq); break;
-                case Mnemonic.cache: RewriteCache(instr, "__cache"); break;
+                case Mnemonic.cache: RewriteCache(instr, intrinsics.cache_intrinsic); break;
                 case Mnemonic.cfc1: RewriteCfc1(instr); break;
                 case Mnemonic.ctc1: RewriteCtc1(instr); break;
                 case Mnemonic.clo: RewriteClo(instr); break;
@@ -278,7 +286,7 @@ namespace Reko.Arch.Mips
                 case Mnemonic.tltu: RewriteTrap(instr, m.Ult); break;
                 case Mnemonic.tne: RewriteTrap(instr, m.Ne); break;
                 case Mnemonic.tnei: RewriteTrapi(instr, m.Ne); break;
-                case Mnemonic.trunc_l_d: RewriteTrunc(instr, "trunc", PrimitiveType.Real64, PrimitiveType.Int64); break;
+                case Mnemonic.trunc_l_d: RewriteTrunc(instr, intrinsics.trunc_intrinsic, PrimitiveType.Real64, PrimitiveType.Int64); break;
                 case Mnemonic.wait: RewriteWait(instr); break;
                 case Mnemonic.wsbh: RewriteWsbh(instr); break;
                 case Mnemonic.xor:
@@ -306,7 +314,7 @@ namespace Reko.Arch.Mips
                 case Mnemonic.bnec: RewriteBranch(instr, m.Ne, false); break;
                 case Mnemonic.bneiuc: RewriteBranchImm(instr, m.Ne, false); break;
                 case Mnemonic.bnezc: RewriteBranch0(instr, m.Ne, false); break;
-                case Mnemonic.cachee: RewriteCache(instr, "__cache_EVA"); break;
+                case Mnemonic.cachee: RewriteCache(instr, intrinsics.cache_EVA_intrinsic); break;
                 case Mnemonic.ext: RewriteExt(instr); break;
                 case Mnemonic.ins: RewriteIns(instr); break;
                 case Mnemonic.jalrc: RewriteJalr(instr); break;

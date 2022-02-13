@@ -36,7 +36,7 @@ namespace Reko.Arch.M68k
         {
             iclass = InstrClass.Invalid;
             var src = this.orw.RewriteSrc(instr.Operands[0], instr.Address);
-            m.SideEffect(host.Intrinsic("__bkpt", true, VoidType.Instance, src));
+            m.SideEffect(m.Fn(bkpt_intrinsic, src));
         }
         
         private void RewriteCinva()
@@ -53,7 +53,7 @@ namespace Reko.Arch.M68k
         private void RewriteCinvl()
         {
             var src = (MemoryAccess) this.orw.RewriteSrc(instr.Operands[1], instr.Address);
-            m.SideEffect(host.Intrinsic($"__invalidate_cache_line_{instr.Operands[0]}", true, VoidType.Instance, src.EffectiveAddress));
+            m.SideEffect(host.Intrinsic($"@@@__invalidate_cache_line_{instr.Operands[0]}", true, VoidType.Instance, src.EffectiveAddress));
         }
 
         private void RewriteMovec()
@@ -67,7 +67,7 @@ namespace Reko.Arch.M68k
         {
             var src = this.orw.RewriteSrc(instr.Operands[0], instr.Address);
             var dst = orw.RewriteDst(instr.Operands[1], instr.Address, instr.DataWidth!, src, (s, d) =>
-                host.Intrinsic("__moves", true, VoidType.Instance, s));
+                m.Fn(moves_intrinsic, s));
         }
 
         private void RewritePload()
@@ -92,7 +92,7 @@ namespace Reko.Arch.M68k
 
         private void RewriteReset()
         {
-            m.SideEffect(host.Intrinsic("__reset", true, VoidType.Instance));
+            m.SideEffect(m.Fn(reset_intrinsic));
         }
 
         private void RewriteRte()

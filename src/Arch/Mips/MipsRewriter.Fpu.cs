@@ -186,14 +186,14 @@ namespace Reko.Arch.Mips
             m.Assign(RewriteOperand0(instr.Operands[1]), RewriteOperand0(instr.Operands[0]));
         }
 
-        private void RewriteTrunc(MipsInstruction instr, string fn, PrimitiveType dtSrc, PrimitiveType dtDst)
+        private void RewriteTrunc(MipsInstruction instr, IntrinsicProcedure intrinsic, PrimitiveType dtSrc, PrimitiveType dtDst)
         {
             var tmp = binder.CreateTemporary(dtSrc);
             m.Assign(tmp, RewriteOperand(instr.Operands[1]));
-            var intrinsic = host.Intrinsic(fn, false, dtSrc, tmp);
+            var fn = m.Fn(intrinsic.MakeInstance(dtSrc), tmp);
             m.Assign(
                 RewriteOperand(instr.Operands[0]),
-                m.Convert(intrinsic, intrinsic.DataType, dtDst));
+                m.Convert(fn, fn.DataType, dtDst));
         }
     }
 }

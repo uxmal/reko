@@ -37,10 +37,8 @@ namespace Reko.Arch.Mips
         private void RewriteBreak(MipsInstruction instr)
         {
             m.SideEffect(
-                host.Intrinsic(
-                    "__break",
-                    true,
-                    VoidType.Instance,
+                m.Fn(
+                    intrinsics.break_intrinsic,
                     this.RewriteOperand0(instr.Operands[0])));
         }
 

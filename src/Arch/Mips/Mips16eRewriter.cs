@@ -40,6 +40,7 @@ Architecture */
     public class Mips16eRewriter : IEnumerable<RtlInstructionCluster>
     {
         private readonly MipsProcessorArchitecture arch;
+        private readonly MipsIntrinsics intrinsics;
         private readonly EndianImageReader rdr;
         private readonly IEnumerator<MipsInstruction> dasm;
         private readonly IStorageBinder binder;
@@ -49,12 +50,14 @@ Architecture */
 
         public Mips16eRewriter(
             MipsProcessorArchitecture arch,
+            MipsIntrinsics intrinsics,
             EndianImageReader rdr,
             IEnumerable<MipsInstruction> instrs,
             IStorageBinder binder,
             IRewriterHost host)
         {
             this.arch = arch;
+            this.intrinsics = intrinsics;
             this.rdr = rdr;
             this.dasm = instrs.GetEnumerator();
             this.binder = binder;
