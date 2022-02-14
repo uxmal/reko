@@ -286,7 +286,7 @@ l00011588:
 l000115A0:
 	word32 r5_31
 	call msize (retsize: 0;)
-		uses: r4:r8_10,r5:r5_31
+		uses: r4:r8_10,r5:r5_31,Stack +002C:dwLoc0C
 		defs: r5:r5_31
 	sp_3 = fp + 0xFFFFFFCC<32>
 l000115B0:

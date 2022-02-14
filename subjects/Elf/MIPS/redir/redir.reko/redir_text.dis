@@ -1358,8 +1358,9 @@ void main(word32 r4, word32 r5, word32 r16, word32 ra)
 
 // MayUse:  r16:[0..31] r4:[0..31] r5:[0..31] ra:[0..31]
 // LiveOut:
-// Trashed: r1 r2 r25 r28 r3 r30 r4 r5 r6 r7 sp
-// Preserved: r16
+// Trashed:
+// Preserved:
+// Terminates process
 main_exit:
 main_entry:
 l004008D0:

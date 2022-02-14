@@ -6379,8 +6379,8 @@ l00007BFA:
 	{
 		word32 r9_n = sp_n->dw0000;
 		sp_n->dwFFFFFFFC = (word32) r1_n;
-		word32 r7_n;
 		word32 r2_n;
+		word32 r7_n;
 		r0_n = fn00007358(r0_n, r1_n, r2, r3, r4_n, r5_n, r6_n, r7_n, r0_n, r9_n, r4_n, r5_n, r7_n, lr, out r1_n, out r2_n, out r3, out r4_n, out r5_n, out r6_n, out r7_n, out r9, out r10, out r11, out r12_n, out lr);
 		if (r12_n != ~0x00)
 			goto l00007D50;
@@ -6398,11 +6398,11 @@ l00007BFA:
 		if (*r2_n == 0x28 && Test(EQ,SLICE(r1_n, bool, 5)))
 		{
 			Eq_n r12_n;
-			word32 r1_n;
-			word32 r3_n;
-			word32 r4_n;
-			word32 r6_n;
 			word32 lr_n;
+			word32 r6_n;
+			word32 r1_n;
+			word32 r4_n;
+			word32 r3_n;
 			word32 r2_n;
 			fn000071E8(r0_n, r1_n, r2_n, r2_n, lr, out r1_n, out r2_n, out r3_n, out r4_n, out r6_n, out r9, out r12_n, out lr_n);
 			if (r12_n == r2_n)
@@ -6481,10 +6481,10 @@ l0000795A:
 				goto l00007D40;
 			word32 r4_n;
 			word32 r12_n;
-			word32 r0_n;
 			word32 r1_n;
-			word32 r6_n;
 			word32 r9_n;
+			word32 r6_n;
+			word32 r0_n;
 			fn00007754(r2_n, r3_n, r5_n, r9, r10, r4_n, r7_n, out r0_n, out r1_n, out r2_n, out r3_n, out r4_n, out r5_n, out r6_n, out r7_n, out r9_n, out r10, out r11, out r12_n, out lr);
 			r4_n = r4_n + 0x04;
 			r9.u0 = 0x00;
@@ -6513,14 +6513,14 @@ l00007D44:
 				r11 = r4_n;
 				r4_n = r4_n;
 			} while (*r4_n != 0x2F);
+			word32 r0_n;
+			word32 r1_n;
+			word32 r2_n;
+			word32 r3_n;
+			word32 r4_n;
 			word32 r6_n;
 			word32 r7_n;
 			word32 r5_n;
-			word32 r4_n;
-			word32 r0_n;
-			word32 r3_n;
-			word32 r2_n;
-			word32 r1_n;
 			fn00007754(r2_n, r3_n, r1_n, SLICE(r1_n, bool, 2), r9, r4_n, r2_n, out r0_n, out r1_n, out r2_n, out r3_n, out r4_n, out r5_n, out r6_n, out r7_n, out r9, out r10, out r11, out r12_n, out lr);
 			goto l000079B6;
 		}
@@ -7435,11 +7435,11 @@ l000087A8:
 		if ((byte) r9 == 0x28 && Test(EQ,SLICE(r1_n, bool, 5)))
 		{
 			struct Eq_n * r12_n;
-			word32 r2_n;
-			word32 r3_n;
-			word32 r4_n;
-			word32 r6_n;
 			word32 lr_n;
+			word32 r6_n;
+			word32 r4_n;
+			word32 r3_n;
+			word32 r2_n;
 			word32 r1_n;
 			fn00007294(r0_n, r1_n, r2, r3_n, lr, out r1_n, out r2_n, out r3_n, out r4_n, out r6_n, out r9, out r10, out r12_n, out lr_n);
 			if (r12_n == r3_n)
@@ -7556,14 +7556,14 @@ l000087AC:
 				r9 = (word32) *r4_n;
 				r11 = r4_n;
 			} while ((byte) r9 != 0x2F);
-			word32 r5_n;
-			word32 r6_n;
-			word32 r7_n;
-			word32 r4_n;
-			word32 r3_n;
-			word32 r2_n;
-			word32 r1_n;
 			word32 r0_n;
+			word32 r1_n;
+			word32 r2_n;
+			word32 r3_n;
+			word32 r5_n;
+			word32 r4_n;
+			word32 r7_n;
+			word32 r6_n;
 			fn00008144(r2_n, r1_n, SLICE(r1_n, bool, 2), sp_n->t0004, r4_n, r3_n, out r0_n, out r1_n, out r2_n, out r3_n, out r4_n, out r5_n, out r6_n, out r7_n, out r8_n, out r9, out r10, out r11, out r12_n, out lr);
 			goto l000083DC;
 		}
@@ -9072,6 +9072,8 @@ l0000969A:
 					uint64 r11_r10_n = fn000107C0(dwArg28, 0x00, (word32) qwArg2C_n, SLICE(qwArg2C_n, word32, 32), out r8_n, out r9_n, out lr_n);
 					Eq_n r5_n = (r4_n >> 0x01) + (r3_n << 0x01);
 					uint32 r2_n = r3_n /u dwArg28;
+					Eq_n r11_n = SLICE(r11_r10_n, word32, 32);
+					up32 r10_n = (word32) r11_r10_n;
 					r7_n = dwArg28;
 					qwArg2C_n = r11_r10_n;
 					word32 r8_n = r5_n + r4_n;
@@ -9103,7 +9105,7 @@ l0000969A:
 					if (r2_n == 0x09)
 					{
 						qwArg2C_n = r11_r10_n + 0x01;
-						if (SLICE(r11_r10_n + 0x01, word32, 32) == (bool) cond((word32) r11_r10_n - 0x09))
+						if (SLICE(r11_r10_n + 0x01, word32, 32) == (bool) cond(r10_n - 0x09))
 						{
 							r5_n = dwArg38;
 							goto l000097C0;
@@ -9360,12 +9362,12 @@ Eq_n fn000095B2(Eq_n r4, Eq_n r5, Eq_n dwArg28, ptr32 & r3Out, ptr32 & r4Out, pt
 Eq_n fn000095D6(Eq_n r0, Eq_n r1, Eq_n r2, Eq_n r5, struct Eq_n * r6, word32 r7, Eq_n r8, Eq_n r9, Eq_n r10, Eq_n r11, struct Eq_n * pc, Eq_n dwArg14, Eq_n dwArg20, Eq_n dwArg24, int32 dwArg34, Eq_n dwArg38, Eq_n dwArg40, Eq_n dwArg48, ptr32 & r3Out, ptr32 & r4Out, union Eq_n & r5Out, ptr32 & r10Out, ptr32 & r11Out, ptr32 & r12Out, ptr32 & lrOut)
 {
 	word64 r11_r10_n = __avr32_f64_mul(r8, r9, r10, r11);
-	word32 lr_n;
 	word32 r12_n;
+	word32 lr_n;
 	if (__avr32_f64_cmp_ge((word32) r11_r10_n, SLICE(r11_r10_n, word32, 32), r0, r1, out r12_n, out lr_n) || dwArg34 > 0x07)
 	{
-		word32 r9_n;
 		word32 r8_n;
+		word32 r9_n;
 		ui64 r11_r10_n = __avr32_f64_div(r2, r10, r5, r0, r1, out r8_n, out r9_n);
 		Eq_n r10_n = (word32) r11_r10_n;
 		word32 r8_n;
@@ -9908,11 +9910,11 @@ Eq_n fn00009C40(Eq_n r0, Eq_n r1, Eq_n r2, <anonymous> * r9, word32 * r10, uint3
 	uint32 r4_n;
 	ptr32 lr_n;
 	word32 * r5_n;
-	word32 r2_n;
-	word32 r5_n;
 	word32 r6_n;
 	word32 r10_n;
+	word32 r2_n;
 	word32 r1_n;
+	word32 r5_n;
 	word32 r3_n[];
 	struct Eq_n * r6_n;
 	word32 lr_n;
@@ -11670,11 +11672,11 @@ l0000ADB8:
 							Eq_n sp_n = sp_n - 4;
 							*sp_n = *((word32) sp_n + 16);
 							*((word32) sp_n - 4) = *((word32) sp_n + 24);
+							word32 r1_n;
 							word32 r3_n;
 							word32 r12_n;
-							word32 lr_n;
-							word32 r1_n;
 							word32 r2_n;
+							word32 lr_n;
 							fn0000A9DE(r8, out r1_n, out r2_n, out r3_n, out r12_n, out lr_n);
 							Eq_n r2_n = *((word32) sp_n + 32);
 							lr = (byte *) *((word32) sp_n + 48);
@@ -11701,11 +11703,11 @@ l0000ADB8:
 								Eq_n sp_n = sp_n - 4;
 								*sp_n = *((word32) sp_n + 16);
 								*((word32) sp_n - 4) = *((word32) sp_n + 24);
-								word32 r2_n;
-								word32 r12_n;
 								word32 lr_n;
 								word32 r3_n;
+								word32 r12_n;
 								word32 r1_n;
+								word32 r2_n;
 								fn0000A9DE(r8, out r1_n, out r2_n, out r3_n, out r12_n, out lr_n);
 								r7 += r5_n;
 								sp_n = sp_n + 0x04;
