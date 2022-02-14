@@ -8,7 +8,7 @@
 <anonymous> * __libc_csu_init_GOT = __libc_csu_init; // 00010A9C
 <anonymous> * __libc_csu_fini_GOT = __libc_csu_fini; // 00010AA0
 int32 g_dw10AA4 = 68228; // 00010AA4
-word32 g_dw10AAC = 68332; // 00010AAC
+word32 * g_ptr10AAC = &g_dw10AEC; // 00010AAC
 int32 g_dw10AB0 = 68204; // 00010AB0
 <anonymous> * _init_GOT = _init; // 00010AB8
 <anonymous> ** g_ptr10ABC = &g_ptr10A60; // 00010ABC

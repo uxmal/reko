@@ -1995,7 +1995,7 @@ l9B66:
 	word16 r1_14
 	word16 r6_19
 	byte r2l_58
-	Mem39[0x9E90<p16>:word16] = fn9E18(Mem0[0x9E90<p16>:word16], Mem0[0x9E92<p16>:word16], 1<16>, 0xDCD<16>, r4, r5, r6, wLoc02, out r1_14, out r2l_58, out r6_19) + CONVERT(SLICE(cond(SLICE(r1_14 + 1<16>, byte, 8)), bool, 0), bool, uint16)
+	Mem39[0x9E90<p16>:word16] = fn9E18(r4, r5, r6, wLoc02, out r1_14, out r2l_58, out r6_19) + CONVERT(SLICE(cond(SLICE(r1_14 + 1<16>, byte, 8)), bool, 0), bool, uint16)
 	Mem41[0x9E92<p16>:word16] = r1_14 + 1<16>
 	word16 r0_42 = Mem41[0x9E92<p16>:word16]
 	r6Out = r6_19
@@ -2458,22 +2458,18 @@ l9E08:
 fn9E08_exit:
 
 
-word16 fn9E18(word16 r0, word16 r1, word16 r2, word16 r3, word16 r4, word16 r5, word16 r6, word16 wArg00, ptr32 & r1Out, ptr32 & r2lOut, ptr32 & r6Out)
+word16 fn9E18(word16 r4, word16 r5, word16 r6, word16 wArg00, ptr32 & r1Out, ptr32 & r2lOut, ptr32 & r6Out)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
 //      fn9B66
-// MayUse:  r0:[0..15] r1:[0..15] r2:[0..15] r3:[0..15] r4:[0..15] r5:[0..15] r6:[0..15] Stack +0000:[0..15]
+// MayUse:  r4:[0..15] r5:[0..15] r6:[0..15] Stack +0000:[0..15]
 // LiveOut: r0 r1 r2l r6
 // Trashed: NZV r0 r1 r2l r3l r4 r5 r6
 // Preserved: sp
 fn9E18_entry:
 l9E18:
-	word16 r5_24
-	word16 r6_25
-	call fn0054 (retsize: 2;)
-		uses: r0:r0,r1:r1,r2:r2,r3:r2,r4:r3,r5:r0,r6:r1,Stack +0002:r6,Stack +0004:r5,Stack +0006:r4,Stack +0008:wArg00
-		defs: r5:r5_24,r6:r6_25
+	fn0054(r6, r5, r4)
 	r1Out = r6_25
 	r2lOut = <invalid>
 	r6Out = wArg00

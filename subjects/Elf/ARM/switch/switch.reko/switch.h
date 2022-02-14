@@ -54,6 +54,8 @@ Eq_24: (fn void ())
 Eq_36: (fn void ())
 	T_36 (in abort @ 0000835C : ptr32)
 	T_37 (in signature of abort @ 00000000 : void)
+Eq_101: (fn void ())
+	T_101 (in fn00000000 @ 00008420 : ptr32)
 Eq_104: (union "Eq_104" (int32 u0) (uint32 u1))
 	T_104 (in fp @ 00008430 : Eq_104)
 	T_105 (in r0 @ 00008430 : Eq_104)
@@ -576,18 +578,18 @@ T_100: (in g_dw8428 != 0<32> @ 00000000 : bool)
   Class: Eq_100
   DataType: bool
   OrigDataType: bool
-T_101: (in pc_13 @ 00008420 : word32)
+T_101: (in fn00000000 @ 00008420 : ptr32)
   Class: Eq_101
-  DataType: word32
-  OrigDataType: word32
-T_102: (in fn00000000 @ 00008420 : ptr32)
+  DataType: (ptr32 Eq_101)
+  OrigDataType: (ptr32 (fn T_103 ()))
+T_102: (in signature of fn00000000 @ 00000000 : void)
   Class: Eq_102
-  DataType: (ptr32 code)
-  OrigDataType: (ptr32 code)
-T_103: (in signature of fn00000000 @ 00000000 : void)
-  Class: Eq_103
-  DataType: Eq_103
+  DataType: Eq_102
   OrigDataType: 
+T_103: (in fn00000000() @ 00008420 : void)
+  Class: Eq_103
+  DataType: void
+  OrigDataType: void
 T_104: (in fp @ 00008430 : Eq_104)
   Class: Eq_104
   DataType: Eq_104
@@ -1610,6 +1612,8 @@ typedef int32 (Eq_21)(int32 r0, char * * r1, char * * r2);
 typedef void (Eq_24)();
 
 typedef void (Eq_36)();
+
+typedef void (Eq_101)();
 
 typedef union Eq_104 {
 	int32 u0;

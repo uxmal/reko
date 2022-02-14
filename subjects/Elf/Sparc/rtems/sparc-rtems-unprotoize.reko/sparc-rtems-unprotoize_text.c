@@ -53,10 +53,7 @@ void __do_global_dtors_aux(word32 o3, word32 o4, word32 o5, word32 o7)
 	if (l7_n->dw001C == 0x00)
 		*l7_n->ptr0008 = 0x01;
 	else
-	{
-		word32 l0_n;
-		__deregister_frame_info();
-	}
+		__deregister_frame_info(l7_n->dw000C, 0x0C);
 }
 
 // 000115CC: void fini_dummy()
@@ -64,15 +61,15 @@ void fini_dummy()
 {
 }
 
-// 000115D8: void frame_dummy(Register word32 o3, Register word32 o4, Register word32 o5, Register word32 o7)
+// 000115D8: void frame_dummy(Register word32 o7)
 // Called from:
 //      _init
-void frame_dummy(word32 o3, word32 o4, word32 o5, word32 o7)
+void frame_dummy(word32 o7)
 {
 	struct Eq_n * l7_n = fn0001150C(o7, 0x0001659C);
 	if (l7_n->dw0018 == 0x00)
 		return;
-	__register_frame_info();
+	__register_frame_info(l7_n->dw000C, 0x0C, l7_n->dw0010, 0x00, 0x10);
 }
 
 // 00011620: void init_dummy()

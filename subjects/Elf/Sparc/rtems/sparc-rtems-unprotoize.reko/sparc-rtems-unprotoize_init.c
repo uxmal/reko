@@ -9,7 +9,7 @@
 //      _start
 word32 _init(word32 o3, word32 o4, word32 o5, word32 o7)
 {
-	frame_dummy(o3, o4, o5, o7);
+	frame_dummy(o7);
 	return __do_global_ctors_aux(o3, o4, o5, o7);
 }
 

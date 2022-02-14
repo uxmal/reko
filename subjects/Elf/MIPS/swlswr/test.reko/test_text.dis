@@ -90,11 +90,7 @@ l00000730_ds_t:
 l00000730_ds_f:
 	word32 r2_24 = Mem19[0x10AAC<32>:word32]
 l00000734:
-	word32 r25_27
-	word32 r3_30
-	call __cxa_finalize (retsize: 0;)
-		uses: r25:r25_27,r3:r3_30,r4:Mem19[r2_24:word32]
-		defs: r25:r25_27,r3:r3_30
+	__cxa_finalize(Mem19[r2_24:word32])
 l00000744:
 	word32 r2_40 = Mem19[0x10AF4<32>:word32]
 	word32 r16_42 = (Mem19[0x10AB0<32>:word32] - 0x10A68<32> >> 2<8>) + -1<i32>

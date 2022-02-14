@@ -1893,7 +1893,7 @@ byte fn9B66(int16 r4, word16 r5, word16 r6, union Eq_n & r6Out)
 	word16 r1_n;
 	Eq_n r6_n;
 	byte r2l_n;
-	*(ui16 *) 0x9E90 = fn9E18(*(ui16 *) 0x9E90, *(ui16 *) 0x9E92, 0x01, 3533, r4, r5, r6, wLoc02, out r1_n, out r2l_n, out r6_n) + (uint16) ((bool) cond(SLICE(r1_n + 0x01, byte, 8)));
+	*(ui16 *) 0x9E90 = fn9E18(r4, r5, r6, wLoc02, out r1_n, out r2l_n, out r6_n) + (uint16) ((bool) cond(SLICE(r1_n + 0x01, byte, 8)));
 	*(ui16 *) 0x9E92 = r1_n + 0x01;
 	ui16 r0_n = *(ui16 *) 0x9E92;
 	r6Out = r6_n;
@@ -2217,14 +2217,12 @@ word16 fn9E08(byte r0h, bu8 r1h, bu8 r1l)
 	return SEQ(SLICE(r0_n, byte, 8) + SLICE(r0, byte, 8) * r1h + r1h * r0h_n, (byte) r0_n);
 }
 
-// 9E18: Register ui16 fn9E18(Register ui16 r0, Register ui16 r1, Register word16 r2, Register word16 r3, Register int16 r4, Register word16 r5, Register word16 r6, Stack Eq_n wArg00, Register out Eq_n r1Out, Register out Eq_n r2lOut, Register out Eq_n r6Out)
+// 9E18: Register word16 fn9E18(Register int16 r4, Register word16 r5, Register word16 r6, Stack Eq_n wArg00, Register out Eq_n r1Out, Register out Eq_n r2lOut, Register out Eq_n r6Out)
 // Called from:
 //      fn9B66
-ui16 fn9E18(ui16 r0, ui16 r1, word16 r2, word16 r3, int16 r4, word16 r5, word16 r6, Eq_n wArg00, union Eq_n & r1Out, union Eq_n & r2lOut, union Eq_n & r6Out)
+word16 fn9E18(int16 r4, word16 r5, word16 r6, Eq_n wArg00, union Eq_n & r1Out, union Eq_n & r2lOut, union Eq_n & r6Out)
 {
-	ui16 r5_n;
-	Eq_n r6_n;
-	fn0054();
+	fn0054(r6, r5, r4);
 	r1Out = r6_n;
 	r2lOut.u0 = <invalid>;
 	r6Out = wArg00;

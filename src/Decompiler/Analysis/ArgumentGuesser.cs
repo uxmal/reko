@@ -33,6 +33,12 @@ using System.Text;
 
 namespace Reko.Analysis
 {
+    /// <summary>
+    /// Guesses the arguments to otherwise opaque calls by walking backwards
+    /// from the call site and detect assignments which likely are intended
+    /// to be the arguments of the call. This is a best effort transformation
+    /// and may introduce errors, so use with caution.
+    /// </summary>
     public class ArgumentGuesser
     {
         private static readonly TraceSwitch trace = new TraceSwitch(nameof(ArgumentGuesser), "Trace ArgumentGuesser")
@@ -70,30 +76,40 @@ namespace Reko.Analysis
                         !extProc.Signature.ParametersValid)
                     {
                         trace.Verbose("ArgGuess: {0:X}: call to {1}", stm.LinearAddress, extProc);
-                        var gargs = GuessArguments(call, block, i - 1);
+                        var gargs = GuessArguments(stm, call, block, i - 1);
                         if (gargs is not null)
                         {
                             ReplaceCallWithApplication(stm, call, pc, gargs.Value);
+                            trace.Verbose("  rewritten as: {0}", stm);
                         }
                     }
                 }
             }
         }
 
-        private GuessedArguments? GuessArguments(CallInstruction call, Block block, int i)
+        private GuessedArguments? GuessArguments(Statement stmCall, CallInstruction call, Block block, int i)
         {
             var regWrites = new HashSet<SsaIdentifier>();
+            var stackIds = new HashSet<SsaIdentifier>();
             var stackStores = new Dictionary<int, StackSlot>();
             var baseReg = DetermineBaseRegister(call);
             for (; i >= 0; --i)
             {
+                if (eventListener.IsCanceled())
+                    return null;
                 var stm = block.Statements[i];
                 switch (stm.Instruction)
                 {
                 case Assignment ass:
-                    var sid = AssignmentToArgumentRegister(ass.Dst);
-                    if (sid is not null && sid.Uses.Count == 0)
+                    var sid = AssignmentToArgumentRegister(stmCall, ass.Dst);
+                    if (sid is not null) {
                         regWrites.Add(sid);
+                    }
+                    sid = AssignmentToStackLocal(stmCall, ass.Dst);
+                    if (sid is not null)
+                    {
+                        stackIds.Add(sid);
+                    }
                     break;
                 case Store store:
                     if (baseReg is not null)
@@ -104,12 +120,15 @@ namespace Reko.Analysis
                     }
                     break;
                 case SideEffect _:
-                    return new GuessedArguments(regWrites, stackStores);
+                    return new GuessedArguments(regWrites, stackIds, stackStores);
+                case CallInstruction _:
+                case PhiAssignment _:
+                    return null;
                 default:
                     throw new NotImplementedException($"GuessArgument: {stm.Instruction.GetType()}");
                 }
             }
-            return new GuessedArguments(regWrites, stackStores);
+            return new GuessedArguments(regWrites, stackIds, stackStores);
         }
 
         private Identifier? DetermineBaseRegister(CallInstruction call)
@@ -136,7 +155,8 @@ namespace Reko.Analysis
             var (id, stackOffset) = StackOffset(mem.EffectiveAddress, stg);
             if (id is not null)
                 return (mem, stackOffset);
-            throw new NotImplementedException();
+            else
+                return (null, 0);
         }
 
         private (Identifier?, int) StackOffset(Expression e, Storage stg)
@@ -155,11 +175,50 @@ namespace Reko.Analysis
                     return (sp, -(int) c.ToInt64());
                 }
             }
+            if (e is Identifier id &&
+                id.Storage == stg)
+            {
+                return (id, 0);
+            }
             return (null, 0);
         }
 
-        private SsaIdentifier? AssignmentToArgumentRegister(Identifier dst)
+        private SsaIdentifier? AssignmentToStackLocal(Statement stmCall, Identifier dst)
         {
+            if (dst.Storage is StackLocalStorage stk)
+            {
+                var sid = ssa.Identifiers[dst];
+                if (sid.Uses.Count == 0)
+                {
+                    // A stack variable that is never used is a strong hint
+                    // that its assignment was intended as an argument to the callee.
+                    return sid;
+                }
+                if (sid.Uses.Count == 1 && sid.Uses[0] == stmCall)
+                {
+                    return sid;
+                }
+            }
+            return null;
+        }
+
+        private SsaIdentifier? AssignmentToArgumentRegister(Statement stmCall, Identifier dst)
+        {
+            if (dst.Storage is RegisterStorage reg &&
+                platform.IsPossibleArgumentRegister(reg))
+            {
+                var sid = ssa.Identifiers[dst];
+                if (sid.Uses.Count == 0)
+                {
+                    // An argument register with no uses is a strong hint that
+                    // its assignment was intended as an argument to the callee.
+                    return sid;
+                }
+                if (sid.Uses.Count == 1 && sid.Uses[0] == stmCall)
+                {
+                    return sid;
+                }
+            }
             return null;
         }
 
@@ -172,6 +231,15 @@ namespace Reko.Analysis
             var args = new List<Expression>();
             var arch = ssa.Procedure.Architecture;
             var binder = ssa.Procedure.Frame;
+            //$TODO: sort by ABI order.
+            foreach (var argreg in gargs.Registers.OrderBy(r => r.Identifier.Name))
+            {
+                args.Add(argreg.Identifier);
+            }
+            foreach (var stkarg in gargs.StackIds.OrderBy(s => ((StackStorage)s.Identifier.Storage).StackOffset))
+            {
+                args.Add(stkarg.Identifier);
+            }
             foreach (var stackslot in gargs.StackSlots.Values.OrderBy(s => s.Offset))
             {
                 ssa.RemoveUses(stackslot.stm);
@@ -208,21 +276,26 @@ namespace Reko.Analysis
         private struct GuessedArguments
         {
             public GuessedArguments(
-                HashSet<SsaIdentifier> registers,
+                HashSet<SsaIdentifier> registerIds,
+                HashSet<SsaIdentifier> stackIds,
                 Dictionary<int, StackSlot>  stackSlots)
             {
-                this.Registers = registers;
+                this.Registers = registerIds;
+                this.StackIds = stackIds;
                 this.StackSlots = stackSlots;
             }
 
             public HashSet<SsaIdentifier> Registers { get; }
+            public HashSet<SsaIdentifier> StackIds{ get; }
             public Dictionary<int, StackSlot> StackSlots { get; }
 
             public void Deconstruct(
                 out HashSet<SsaIdentifier> registers,
+                out HashSet<SsaIdentifier> stackIds,
                 out Dictionary<int, StackSlot> stackSlots)
             {
                 registers = this.Registers;
+                stackIds = this.StackIds;
                 stackSlots = this.StackSlots;
             }
         }

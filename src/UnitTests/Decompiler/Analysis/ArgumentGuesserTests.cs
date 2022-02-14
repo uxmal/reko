@@ -41,6 +41,9 @@ namespace Reko.UnitTests.Decompiler.Analysis
         private FakeArchitecture arch;
         private Mock<IPlatform> platform;
         private Identifier fp;
+        private RegisterStorage reg1;
+        private RegisterStorage reg2;
+        private RegisterStorage reg3;
 
         public ArgumentGuesserTests()
         {
@@ -51,8 +54,13 @@ namespace Reko.UnitTests.Decompiler.Analysis
         public void Setup()
         {
             this.arch = new FakeArchitecture(new ServiceContainer());
+            this.reg1 = arch.GetRegister(1);
+            this.reg2 = arch.GetRegister(2);
+            this.reg3 = arch.GetRegister(3);
             this.platform = new Mock<IPlatform>();
             platform.Setup(p => p.Architecture).Returns(arch);
+            platform.Setup(p => p.IsPossibleArgumentRegister(reg1)).Returns(true);
+            platform.Setup(p => p.IsPossibleArgumentRegister(reg2)).Returns(true);
         }
 
         private void Given_FramePointer(SsaProcedureBuilder m)
@@ -130,6 +138,41 @@ return
                 m.Call(externalProc, 4,
                     new[] { (esp.Storage, (Expression) m.ISub(fp, 8)) },
                     new[] { (esp.Storage, esp_3) });
+                m.Return();
+            });
+        }
+
+        [Test]
+        public void Argg_TwoStackArgument_UsingRegisters()
+        {
+            var sExpected =
+            #region Expected
+@"
+esp = fp
+r2_2 = 0x68<32>
+r1_1 = 0x65<32>
+r3_3 = 0x65<32>
+external_proc(r1_1, r2_2)
+return
+";
+            #endregion
+
+            RunTest(sExpected, m =>
+            {
+                Given_FramePointer(m);
+                var esp = m.Reg("esp", m.Architecture.StackRegister);
+                var r1_1 = m.Reg("r1_1", reg1);
+                var r2_2 = m.Reg("r2_2", reg2);
+                var r3_3 = m.Reg("r3_3", reg3);
+                var esp_4 = m.Reg("esp_4", m.Architecture.StackRegister);
+
+                m.Assign(esp, fp);
+                m.Assign(r2_2, m.Word32(0x68));
+                m.Assign(r1_1, m.Word32(0x65));
+                m.Assign(r3_3, m.Word32(0x65)); // not an arg.
+                m.Call(externalProc, 4,
+                    new[] { (esp.Storage, (Expression) m.ISub(esp, 8)) },
+                    new[] { (esp.Storage, esp_4) });
                 m.Return();
             });
         }

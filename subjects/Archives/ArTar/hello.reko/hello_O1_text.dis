@@ -31,7 +31,7 @@ l00000000000010C3:
 l00000000000010D8:
 	return
 l00000000000010CF:
-	call _ITM_deregisterTMCloneTable (retsize: 0;)
+	_ITM_deregisterTMCloneTable()
 	return
 deregister_tm_clones_exit:
 
@@ -54,7 +54,7 @@ l0000000000001104:
 l0000000000001118:
 	return
 l0000000000001110:
-	call _ITM_registerTMCloneTable (retsize: 0;)
+	_ITM_registerTMCloneTable()
 	return
 register_tm_clones_exit:
 
@@ -74,10 +74,7 @@ l0000000000001158:
 l000000000000112D:
 	branch __cxa_finalize == 0<64> l0000000000001147
 l000000000000113B:
-	word64 rax_27
-	call __cxa_finalize (retsize: 8;)
-		uses: rax:rax_27,rdi:Mem9[0x0000000000004040<p64>:word64]
-		defs: rax:rax_27
+	__cxa_finalize(Mem9[0x0000000000004040<p64>:word64])
 l0000000000001147:
 	deregister_tm_clones()
 	Mem22[0x0000000000004048<p64>:byte] = 1<8>

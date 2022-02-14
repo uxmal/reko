@@ -10,7 +10,7 @@ void __error()
 // Preserved: rsp
 __error_entry:
 l0000000100004DAE:
-	call __error (retsize: 0;)
+	__error()
 	return
 __error_exit:
 
@@ -29,7 +29,7 @@ void __maskrune()
 // Preserved: rsp
 __maskrune_entry:
 l0000000100004DB4:
-	call __maskrune (retsize: 0;)
+	__maskrune()
 	return
 __maskrune_exit:
 
@@ -78,7 +78,7 @@ void __tolower()
 // Preserved: rsp
 __tolower_entry:
 l0000000100004DC6:
-	call __tolower (retsize: 0;)
+	__tolower()
 	return
 __tolower_exit:
 
@@ -94,7 +94,7 @@ void acl_free()
 // Preserved: rsp
 acl_free_entry:
 l0000000100004DCC:
-	call acl_free (retsize: 0;)
+	acl_free()
 	return
 acl_free_exit:
 
@@ -125,7 +125,7 @@ void acl_get_flag_np()
 // Preserved: rsp
 acl_get_flag_np_entry:
 l0000000100004DD8:
-	call acl_get_flag_np (retsize: 0;)
+	acl_get_flag_np()
 	return
 acl_get_flag_np_exit:
 
@@ -141,7 +141,7 @@ void acl_get_flagset_np()
 // Preserved: rsp
 acl_get_flagset_np_entry:
 l0000000100004DDE:
-	call acl_get_flagset_np (retsize: 0;)
+	acl_get_flagset_np()
 	return
 acl_get_flagset_np_exit:
 
@@ -157,7 +157,7 @@ void acl_get_link_np()
 // Preserved: rsp
 acl_get_link_np_entry:
 l0000000100004DE4:
-	call acl_get_link_np (retsize: 0;)
+	acl_get_link_np()
 	return
 acl_get_link_np_exit:
 
@@ -173,7 +173,7 @@ void acl_get_perm_np()
 // Preserved: rsp
 acl_get_perm_np_entry:
 l0000000100004DEA:
-	call acl_get_perm_np (retsize: 0;)
+	acl_get_perm_np()
 	return
 acl_get_perm_np_exit:
 
@@ -189,7 +189,7 @@ void acl_get_permset()
 // Preserved: rsp
 acl_get_permset_entry:
 l0000000100004DF0:
-	call acl_get_permset (retsize: 0;)
+	acl_get_permset()
 	return
 acl_get_permset_exit:
 
@@ -205,7 +205,7 @@ void acl_get_qualifier()
 // Preserved: rsp
 acl_get_qualifier_entry:
 l0000000100004DF6:
-	call acl_get_qualifier (retsize: 0;)
+	acl_get_qualifier()
 	return
 acl_get_qualifier_exit:
 
@@ -253,7 +253,7 @@ void compat_mode()
 // Preserved: rsp
 compat_mode_entry:
 l0000000100004E08:
-	call compat_mode (retsize: 0;)
+	compat_mode()
 	return
 compat_mode_exit:
 
@@ -271,7 +271,7 @@ void err()
 // Preserved: rsp
 err_entry:
 l0000000100004E0E:
-	call err (retsize: 0;)
+	err()
 	return
 err_exit:
 
@@ -305,7 +305,7 @@ void fflagstostr()
 // Preserved: rsp
 fflagstostr_entry:
 l0000000100004E1A:
-	call fflagstostr (retsize: 0;)
+	fflagstostr()
 	return
 fflagstostr_exit:
 
@@ -373,7 +373,7 @@ void fts_children$INODE64()
 // Preserved: rsp
 fts_children$INODE64_entry:
 l0000000100004E32:
-	call fts_children$INODE64 (retsize: 0;)
+	fts_children$INODE64()
 	return
 fts_children$INODE64_exit:
 
@@ -389,7 +389,7 @@ void fts_close$INODE64()
 // Preserved: rsp
 fts_close$INODE64_entry:
 l0000000100004E38:
-	call fts_close$INODE64 (retsize: 0;)
+	fts_close$INODE64()
 	return
 fts_close$INODE64_exit:
 
@@ -405,7 +405,7 @@ void fts_open$INODE64()
 // Preserved: rsp
 fts_open$INODE64_entry:
 l0000000100004E3E:
-	call fts_open$INODE64 (retsize: 0;)
+	fts_open$INODE64()
 	return
 fts_open$INODE64_exit:
 
@@ -421,7 +421,7 @@ void fts_read$INODE64()
 // Preserved: rsp
 fts_read$INODE64_entry:
 l0000000100004E44:
-	call fts_read$INODE64 (retsize: 0;)
+	fts_read$INODE64()
 	return
 fts_read$INODE64_exit:
 
@@ -437,7 +437,7 @@ void fts_set$INODE64()
 // Preserved: rsp
 fts_set$INODE64_entry:
 l0000000100004E4A:
-	call fts_set$INODE64 (retsize: 0;)
+	fts_set$INODE64()
 	return
 fts_set$INODE64_exit:
 
@@ -453,7 +453,7 @@ void getbsize()
 // Preserved: rsp
 getbsize_entry:
 l0000000100004E50:
-	call getbsize (retsize: 0;)
+	getbsize()
 	return
 getbsize_exit:
 
@@ -559,7 +559,7 @@ void getxattr()
 // Preserved: rsp
 getxattr_entry:
 l0000000100004E7A:
-	call getxattr (retsize: 0;)
+	getxattr()
 	return
 getxattr_exit:
 
@@ -575,7 +575,7 @@ void group_from_gid()
 // Preserved: rsp
 group_from_gid_entry:
 l0000000100004E80:
-	call group_from_gid (retsize: 0;)
+	group_from_gid()
 	return
 group_from_gid_exit:
 
@@ -591,7 +591,7 @@ void humanize_number()
 // Preserved: rsp
 humanize_number_entry:
 l0000000100004E86:
-	call humanize_number (retsize: 0;)
+	humanize_number()
 	return
 humanize_number_exit:
 
@@ -635,7 +635,7 @@ void kill()
 // Preserved: rsp
 kill_entry:
 l0000000100004E98:
-	call kill (retsize: 0;)
+	kill()
 	return
 kill_exit:
 
@@ -651,7 +651,7 @@ void listxattr()
 // Preserved: rsp
 listxattr_entry:
 l0000000100004E9E:
-	call listxattr (retsize: 0;)
+	listxattr()
 	return
 listxattr_exit:
 
@@ -698,7 +698,7 @@ void mbr_uuid_to_id()
 // Preserved: rsp
 mbr_uuid_to_id_entry:
 l0000000100004EB0:
-	call mbr_uuid_to_id (retsize: 0;)
+	mbr_uuid_to_id()
 	return
 mbr_uuid_to_id_exit:
 
@@ -714,7 +714,7 @@ void mbr_uuid_to_string()
 // Preserved: rsp
 mbr_uuid_to_string_entry:
 l0000000100004EB6:
-	call mbr_uuid_to_string (retsize: 0;)
+	mbr_uuid_to_string()
 	return
 mbr_uuid_to_string_exit:
 
@@ -748,7 +748,7 @@ void memchr()
 // Preserved: rsp
 memchr_entry:
 l0000000100004EC2:
-	call memchr (retsize: 0;)
+	memchr()
 	return
 memchr_exit:
 
@@ -846,7 +846,7 @@ void setenv()
 // Preserved: rsp
 setenv_entry:
 l0000000100004EE6:
-	call setenv (retsize: 0;)
+	setenv()
 	return
 setenv_exit:
 
@@ -910,7 +910,7 @@ void sscanf()
 // Preserved: rsp
 sscanf_entry:
 l0000000100004EFE:
-	call sscanf (retsize: 0;)
+	sscanf()
 	return
 sscanf_exit:
 
@@ -1022,7 +1022,7 @@ void strmode()
 // Preserved: rsp
 strmode_entry:
 l0000000100004F28:
-	call strmode (retsize: 0;)
+	strmode()
 	return
 strmode_exit:
 
@@ -1038,7 +1038,7 @@ void tgetent()
 // Preserved: rsp
 tgetent_entry:
 l0000000100004F2E:
-	call tgetent (retsize: 0;)
+	tgetent()
 	return
 tgetent_exit:
 
@@ -1054,7 +1054,7 @@ void tgetstr()
 // Preserved: rsp
 tgetstr_entry:
 l0000000100004F34:
-	call tgetstr (retsize: 0;)
+	tgetstr()
 	return
 tgetstr_exit:
 
@@ -1070,7 +1070,7 @@ void tgoto()
 // Preserved: rsp
 tgoto_entry:
 l0000000100004F3A:
-	call tgoto (retsize: 0;)
+	tgoto()
 	return
 tgoto_exit:
 
@@ -1103,7 +1103,7 @@ void tputs()
 // Preserved: rsp
 tputs_entry:
 l0000000100004F46:
-	call tputs (retsize: 0;)
+	tputs()
 	return
 tputs_exit:
 
@@ -1119,7 +1119,7 @@ void user_from_uid()
 // Preserved: rsp
 user_from_uid_entry:
 l0000000100004F4C:
-	call user_from_uid (retsize: 0;)
+	user_from_uid()
 	return
 user_from_uid_exit:
 
@@ -1133,7 +1133,7 @@ void warn()
 // Preserved: rsp
 warn_entry:
 l0000000100004F52:
-	call warn (retsize: 0;)
+	warn()
 	return
 warn_exit:
 
@@ -1150,7 +1150,7 @@ void warnx()
 // Preserved: rsp
 warnx_entry:
 l0000000100004F58:
-	call warnx (retsize: 0;)
+	warnx()
 	return
 warnx_exit:
 

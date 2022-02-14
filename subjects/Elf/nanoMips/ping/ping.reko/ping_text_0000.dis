@@ -366,8 +366,7 @@ l004008CC:
 	deregister_tm_clones()
 	branch null == 0<32> l004008DE
 l004008D8:
-	call fn00000000 (retsize: 0;)
-		uses: r4:0x00413590<p32>
+	fn00000000(0x00413590<p32>)
 l004008DE:
 	Mem23[0x7C0<32>:byte] = 1<8>
 l004008E4:
@@ -386,17 +385,13 @@ frame_dummy_entry:
 l004008E6:
 	branch null == 0<32> l004008FA
 l004008F0:
-	call fn00000000 (retsize: 0;)
-		uses: r4:0x00413590<p32>,r5:0x004303C4<p32>
-		defs: r5:r5_11
+	fn00000000(0x00413590<p32>, 0x004303C4<p32>)
 l004008FA:
 	branch Mem5[0x0042FFFC<p32>:word32] != 0<32> l0040090A
 l0040090A:
 	branch null == 0<32> l00400902
 l00400912:
-	call fn00000000 (retsize: 0;)
-		uses: r5:r5_22
-		defs: r5:r5_22
+	fn00000000()
 l00400902:
 l00400906_thunk_register_tm_clones:
 	register_tm_clones(r5)

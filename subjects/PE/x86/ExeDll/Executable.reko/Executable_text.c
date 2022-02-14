@@ -31,9 +31,7 @@ ptr32 fn00401050()
 //      fn00401000
 void fn00401060(word32 dwArg04)
 {
-	struct Eq_n * esp_n;
-	word32 eax_n;
-	_acrt_iob_func();
+	_acrt_iob_func(0x01);
 	esp_n->ptr0000 = fp + 0x08;
 	esp_n->dwFFFFFFFC = 0x00;
 	esp_n->dwFFFFFFF8 = dwArg04;
@@ -95,13 +93,13 @@ l00401177:
 		struct Eq_n * esp_n = esp_n - 4;
 		esp_n->t0000 = ebp_n->tFFFFFFDC;
 		fn004015CE(esp_n->t0000);
-		ptr32 esp_n = (char *) &esp_n->t0000 + 4;
+		struct Eq_n * esp_n = (char *) &esp_n->t0000 + 4;
 		Eq_n eax_n = fn00401768();
 		Eq_n edi_n = 0x00;
 		if (*eax_n != 0x00)
 		{
 			esp_n->t0000 = eax_n;
-			esp_n = (char *) &esp_n->t0000 + 4;
+			esp_n = (struct Eq_n *) ((char *) &esp_n->t0000 + 4);
 			<anonymous> ** esi_n;
 			if (fn00401544(ebx_n, eax_n, 0x00, out edx_n, out ebx_n, out ebp_n, out esi_n, out edi_n) != 0x00)
 			{
@@ -116,15 +114,11 @@ l00401177:
 		Eq_n eax_n = fn0040176E();
 		if (*eax_n != edi_n)
 		{
-			union Eq_n * esp_n = esp_n - 4;
-			*esp_n = (union Eq_n *) eax_n;
-			union Eq_n * esi_n;
+			esp_n->tFFFFFFFC = eax_n;
+			word32 * esi_n;
 			word32 edi_n;
 			if (fn00401544(ebx_n, eax_n, edi_n, out edx_n, out ebx_n, out ebp_n, out esi_n, out edi_n) != 0x00)
-			{
-				*esp_n = *esi_n;
-				register_thread_local_exe_atexit_callback();
-			}
+				register_thread_local_exe_atexit_callback(*esi_n);
 		}
 		word32 * eax_n;
 		word32 edx_n;
@@ -134,7 +128,6 @@ l00401177:
 		_p___argc();
 		struct Eq_n * esp_n;
 		Eq_n eax_n;
-		word32 edx_n;
 		get_initial_narrow_environment();
 		esp_n->tFFFFFFFC = eax_n;
 		esp_n->dwFFFFFFF8 = *eax_n;
@@ -250,16 +243,9 @@ void fn004014AD(word32 ebx, Eq_n edi, Eq_n dwArg04)
 	{
 		if (fn00401B98() != 0x00 && dwArg04 == 0x00)
 		{
-			word32 * esp_n;
-			word32 eax_n;
-			word32 edx_n;
-			initialize_onexit_table();
+			initialize_onexit_table(0x0040333C);
 			if (eax_n == 0x00)
-			{
-				*esp_n = 0x00403348;
-				word32 edx_n;
-				initialize_onexit_table();
-			}
+				initialize_onexit_table(0x00403348);
 		}
 		else
 		{
@@ -276,11 +262,11 @@ void fn004014AD(word32 ebx, Eq_n edi, Eq_n dwArg04)
 	{
 		fn00401774(0x05);
 		int3();
-		word32 esi_n;
 		word32 edi_n;
-		word32 ebx_n;
 		word32 ebp_n;
+		word32 esi_n;
 		word32 edx_n;
+		word32 ebx_n;
 		fn00401544(ebx, dwArg04, edi, out edx_n, out ebx_n, out ebp_n, out esi_n, out edi_n);
 	}
 }
@@ -354,12 +340,12 @@ void fn004015EB(Eq_n bArg08)
 //      fn0040164E
 ui32 fn00401613(ui32 dwArg04)
 {
-	word32 eax_n;
 	Eq_n eax_n = g_t403004;
 	if (__ror<word32,byte>(eax_n ^ g_dw40333C, (byte) eax_n & 0x1F) == ~0x00)
 		crt_atexit();
 	else
-		register_onexit_function();
+		register_onexit_function(0x0040333C);
+	word32 eax_n;
 	return ~(0x00 - (word32) (eax_n != 0x00)) & dwArg04;
 }
 
@@ -416,8 +402,7 @@ void fn0040170C()
 // 00401718: void fn00401718()
 void fn00401718()
 {
-	word32 eax_n;
-	controlfp_s();
+	controlfp_s(0x00, 0x00010000, 0x00030000);
 	if (eax_n == 0x00)
 		return;
 	fn00401774(0x07);

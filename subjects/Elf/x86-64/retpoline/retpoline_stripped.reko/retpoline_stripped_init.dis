@@ -9,7 +9,7 @@ fn0000000000400428_entry:
 l0000000000400428:
 	branch __gmon_start__ == 0<64> l000000000040043A
 l0000000000400438:
-	call __gmon_start__ (retsize: 8;)
+	__gmon_start__()
 l000000000040043A:
 	return
 fn0000000000400428_exit:

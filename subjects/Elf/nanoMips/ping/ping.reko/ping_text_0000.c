@@ -293,7 +293,7 @@ void __do_global_dtors_aux()
 	{
 		deregister_tm_clones();
 		if (0x00 != 0x00)
-			fn00000000();
+			fn00000000(4273552);
 		*(byte *) 0x07C0 = 0x01;
 	}
 }
@@ -302,7 +302,7 @@ void __do_global_dtors_aux()
 void frame_dummy(word32 r5)
 {
 	if (0x00 != 0x00)
-		fn00000000();
+		fn00000000(4273552, 0x004303C4);
 	if (g_dw42FFFC != 0x00 && 0x00 != 0x00)
 		fn00000000();
 	register_tm_clones(r5);

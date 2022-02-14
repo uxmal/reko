@@ -527,6 +527,11 @@ namespace Reko.Analysis
                 sst.Transform();
                 DumpWatchedProcedure("vp2", "After VP2", ssa);
 
+                // Guess arguments to functions whose signatures we don't know.
+                var argGuesser = new ArgumentGuesser(program.Platform, ssa, eventListener);
+                argGuesser.Transform();
+                DumpWatchedProcedure("argg", "After argument guessing", ssa);
+
                 return sst;
             }
             catch (Exception ex)

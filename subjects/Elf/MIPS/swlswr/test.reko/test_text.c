@@ -53,10 +53,8 @@ void __do_global_dtors_aux()
 	{
 		if (__cxa_finalize != 0x00)
 		{
-			word32 r2_n = g_dw10AAC;
-			word32 r25_n;
-			word32 r3_n;
-			__cxa_finalize();
+			word32 * r2_n = g_ptr10AAC;
+			__cxa_finalize(*r2_n);
 		}
 		Eq_n r2_n = dtor_idx.6258;
 		Eq_n r16_n = (g_dw10AB0 - 68200 >> 0x02) + -1;

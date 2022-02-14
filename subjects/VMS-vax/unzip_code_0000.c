@@ -1410,8 +1410,6 @@ void fn0000A8D6(word32 r0, word32 r6, word32 r7, struct Eq_n * r9, struct Eq_n *
 	if (r0_n > (word16 *) 118)
 	{
 		vax_subp4(0x00, 0x31, *r0_n, 0x00);
-		word32 r7_n;
-		word32 r6_n;
 		fn40009A48();
 	}
 	else
@@ -1469,19 +1467,11 @@ struct Eq_n * fn0000AA6A(struct Eq_n * r8, struct Eq_n * r10, struct Eq_n * r11,
 						word32 r2_n;
 						if (r3_n->ptr0004 != fn0000CFBA((char *) (&r3_n->ptr0004) + 4, r2_n - 0x04, fp, out r2_n, out r3_n, out r6, out ap, out fp))
 						{
-							sp_n->dwFFFFFFFC = (struct Eq_n *) 0x01;
-							sp_n->dwFFFFFFF8 = (char *) &r11->ptr0365 + 46;
-							sp_n->dwFFFFFFF4 = (char *) r10 + 1515;
-							struct Eq_n * sp_n;
-							struct Eq_n * r10_n;
-							word32 r8_n;
-							word32 r0_n;
-							fn00000003();
+							fn00000003((char *) r10 + 1515, (char *) &r11->ptr0365 + 46, 0x01);
 							sp_n->dwFFFFFFFC = r0_n;
 							sp_n->dwFFFFFFF8 = (char *) r10_n + 1515;
 							sp_n->ptrFFFFFFF4 = r10_n;
 							ptr32 r2_n = r10_n->ptrC839;
-							word32 r2_n;
 							word32 r9_n;
 							word32 r5_n;
 							word32 r4_n;
@@ -1624,21 +1614,11 @@ struct Eq_n * fn0000AA6A(struct Eq_n * r8, struct Eq_n * r10, struct Eq_n * r11,
 					}
 					else if (r4_n != r11->ptr0365)
 					{
-						struct Eq_n * sp_n = sp_n - 0x04;
-						sp_n->dw0000 = 0x01;
-						sp_n->ptrFFFFFFFC = (word32 *) &r3->ptr0004;
-						sp_n->ptrFFFFFFF8 = (char *) &r11->ptr0365 + 5;
-						sp_n->ptrFFFFFFF4 = (char *) r10 + 1515;
-						struct Eq_n * sp_n;
-						struct Eq_n * r10_n;
-						word32 r8_n;
-						word32 r0_n;
-						fn00000003();
+						fn00000003((char *) r10 + 1515, (char *) &r11->ptr0365 + 5, &r3->ptr0004, 0x01);
 						sp_n->dwFFFFFFFC = r0_n;
 						sp_n->dwFFFFFFF8 = (char *) r10_n + 1515;
 						sp_n->ptrFFFFFFF4 = r10_n;
 						ptr32 r2_n = r10_n->ptrC839;
-						word32 r2_n;
 						word32 r9_n;
 						word32 r5_n;
 						word32 r4_n;
@@ -4533,17 +4513,6 @@ void fn000100C2(struct Eq_n * r2, ptr32 r7, ptr32 r11, struct Eq_n * ap)
 				}
 				if (r1_n > 0x00)
 				{
-					word32 r11_n;
-					word32 r8_n;
-					word32 r2_n;
-					word32 r7_n;
-					word32 r3_n;
-					word32 r5_n;
-					word32 fp_n;
-					word32 r1_n;
-					word32 r4_n;
-					word32 r6_n;
-					word32 r10_n;
 					fn4000E3D8();
 					return;
 				}
@@ -4934,12 +4903,6 @@ word32 fn00010676(real32 ** r4, ptr32 r7, struct Eq_n * ap, struct Eq_n * fp, pt
 	{
 		**r4 = 0.5F + 36.0F;
 		__halt();
-		ptr32 ap_n;
-		ptr32 r3_n;
-		word32 r0_n;
-		ptr32 r7_n;
-		ptr32 r4_n;
-		ptr32 fp_n;
 		fn4000E3D8();
 		r3Out = r3_n;
 		r4Out = r4_n;

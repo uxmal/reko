@@ -8,8 +8,7 @@ void fn0000000000015180(word64 ra, word64 gp, word64 a0, word64 a1, word64 a7, w
 fn0000000000015180_entry:
 l0000000000015180:
 	word64 a5_7 = Mem5[gp + -1936<i64>:word64]
-	word64 s3_1001 = a0
-	word32 dwLoc01A4_1573 = 0<32>
+	word32 dwLoc01A4_1480 = 0<32>
 	word64 s0_126 = 0<i64>
 l0000000000015200:
 	word64 a0_60 = CONVERT(getopt_long(SLICE(a0, int32, 0), a1, 0x119A8<64>, 0x108E0<64>, 0<i64>), int32, uint64)
@@ -41,7 +40,7 @@ l000000000001537C:
 l0000000000015384:
 	branch true l00000000000153B4
 l00000000000153B4:
-	word64 a6_1010
+	word64 a6_1006
 	word64 a4_467
 	word64 a0_464
 	word64 a5_336
@@ -49,24 +48,24 @@ l00000000000153B4:
 	word64 a0_335
 	word64 a5_256
 	word64 s2_121
-	word64 qwLoc0188_2013
+	word64 qwLoc0188_1920
 	branch true l0000000000015924
 l0000000000015924:
-	word64 a2_3411
-	word64 a1_3410
-	word64 a3_3412
-	word64 a4_3413
-	branch fn0000000000017924(gp, out a1_3410, out a2_3411, out a3_3412, out a4_3413, out a6_1010) != 0<64> l0000000000015458
+	word64 a2_3318
+	word64 a1_3317
+	word64 a3_3319
+	word64 a4_3320
+	branch fn0000000000017924(gp, out a1_3317, out a2_3318, out a3_3319, out a4_3320, out a6_1006) != 0<64> l0000000000015458
 l0000000000015930:
 	branch true l0000000000015458
 l0000000000015940:
 l00000000000153BC:
 	s2_121 = 2<i64>
-	word64 a2_3415
-	word64 a3_3416
-	word64 a4_3417
-	word64 a1_3414
-	branch fn0000000000017924(gp, out a1_3414, out a2_3415, out a3_3416, out a4_3417, out a6_1010) == 0<64> l0000000000015434
+	word64 a2_3322
+	word64 a3_3323
+	word64 a4_3324
+	word64 a1_3321
+	branch fn0000000000017924(gp, out a1_3321, out a2_3322, out a3_3323, out a4_3324, out a6_1006) == 0<64> l0000000000015434
 l0000000000015434:
 	branch true l00000000000153CC
 l0000000000015444:
@@ -114,7 +113,7 @@ l0000000000015C7C:
 l0000000000015C84:
 	branch inet_ntop(2<i32>, fp + -424<i64>, fp + -184<i64>, 64<i32>) != 0<64> l00000000000154DC
 l0000000000015498:
-	qwLoc0188_2013 = SEQ(nLoc0187, SLICE(qwLoc0190, byte, 0) & 1<8> | 0xFC<8>) (alias)
+	qwLoc0188_1920 = SEQ(nLoc0187, SLICE(qwLoc0190, byte, 0) & 1<8> | 0xFC<8>) (alias)
 	branch fn00000000000164D0(fp + -391<i64>, 15<i64>) < 0<64> l0000000000015CB0
 l00000000000154BC:
 	branch inet_ntop(10<i32>, fp + -392<i64>, fp + -184<i64>, 64<i32>) == 0<64> l0000000000015CB0
@@ -152,7 +151,7 @@ l00000000000159A4:
 l0000000000015518:
 	branch strchr(s1_139, ':') == 0<64> l00000000000155D8
 l0000000000015530:
-	dwLoc01A4_1573 = 1<32>
+	dwLoc01A4_1480 = 1<32>
 	branch s4_327 == 0<64> l0000000000015BEC
 l0000000000015BEC:
 	a0_335 = strchr(s1_139, '/')
@@ -196,14 +195,14 @@ l0000000000015B6C:
 	branch CONVERT(Mem410[gp + -2028<i64>:int32], int32, int64) != 0<64> l00000000000153D8
 l0000000000015B74:
 	a0_174 = Mem410[gp + -1920<i64>:word64]
-	branch CONVERT(dwLoc01A4_1573, word32, int64) != 0<64> l0000000000015CD8
+	branch CONVERT(dwLoc01A4_1480, word32, int64) != 0<64> l0000000000015CD8
 l0000000000015CD8:
 l0000000000015B80:
 l0000000000015B88:
 l0000000000015B8C:
 	__fprintf_chk(a0_174, 1<i32>, 0x11A70<64>, 0<32>)
 l00000000000155FC:
-	branch CONVERT(dwLoc01A4_1573, word32, int64) == 0<64> l00000000000159B0
+	branch CONVERT(dwLoc01A4_1480, word32, int64) == 0<64> l00000000000159B0
 l00000000000159B0:
 	a0_464 = fn0000000000016D74(ra, gp, s1_139, a5_336, fp + -392<i64>, s0_126, out a4_467)
 l0000000000015604:
@@ -232,7 +231,7 @@ l0000000000015D48:
 l00000000000159D8:
 	branch (s0_126 & 64<i64>) == 0<64> l00000000000159FC
 l00000000000159E0:
-	branch CONVERT(dwLoc01A4_1573, word32, int64) != 0<64> l00000000000159FC
+	branch CONVERT(dwLoc01A4_1480, word32, int64) != 0<64> l00000000000159FC
 l00000000000159E8:
 	__printf_chk(1<i32>, 0x11C48<64>, 0<32>)
 l00000000000159FC:
@@ -310,160 +309,153 @@ l0000000000015B50:
 l0000000000015B58:
 	__printf_chk(1<i32>, 0x11D48<64>, 0<32>)
 l000000000001564C:
-	word64 a4_1006
-	word64 s0_1038
-	word64 a5_1021
+	word64 a4_1004
+	word64 a5_1005
+	word64 s0_847
 	word64 a5_680
-	word64 s4_771
-	word64 s2_1034 = CONVERT(dwLocE8, int32, int64)
-	branch CONVERT(dwLoc01A4_1573, word32, int64) != 0<64> l000000000001590C
+	word64 s4_747
+	word64 s2_679 = CONVERT(dwLocE8, int32, int64)
+	branch CONVERT(dwLoc01A4_1480, word32, int64) != 0<64> l000000000001590C
 l000000000001590C:
 	a5_680 = 128<i64>
-	branch s2_1034 != 128<i64> l0000000000015660
+	branch s2_679 != 128<i64> l0000000000015660
 l0000000000015658:
 	a5_680 = 32<i64>
-	branch s2_1034 == 32<i64> l0000000000015914
+	branch s2_679 == 32<i64> l0000000000015914
 l0000000000015914:
 	branch qwLoc0180 == 0<64> l0000000000015DDC
 l0000000000015DDC:
-	word64 a5_3422
-	gp = fn000000000001654C(ra, gp, s0_126, 0x12000<64>, 0x11B08<64>, 0x11B10<64>, qwLoc0188_2013, a4_467, a5_680, a6_1010, a7, 0x12000<64>, a0, out a4_1006, out a5_3422, out a6_1010, out a7)
+	word64 a5_3329
+	gp = fn000000000001654C(gp, qwLoc0188_1920, a4_467, a5_680, a6_1006, a7, out a4_1004, out a5_3329, out a6_1006, out a7)
 l000000000001591C:
-	s4_771 = 1<i64>
+	s4_747 = 1<i64>
 l0000000000015660:
 	branch true l0000000000015860
 l0000000000015860:
-	s3_1001 = qwLoc0188_2013
-	branch CONVERT(strcmp(qwLoc0168, qwLoc0188_2013), int32, uint64) == 0<64> l0000000000015664
+	branch CONVERT(strcmp(qwLoc0168, qwLoc0188_1920), int32, uint64) == 0<64> l0000000000015664
 l0000000000015874:
-	s4_771 = 0<i64>
+	s4_747 = 0<i64>
 	branch qwLoc0180 == 0<64> l0000000000015E14
 l0000000000015E14:
-	word64 a4_3421
-	gp = fn000000000001654C(ra, gp, s0_126, 0x12000<64>, 0x11B08<64>, 0x11B10<64>, qwLoc0188_2013, a4_467, a5_680, a6_1010, a7, 0x12000<64>, qwLoc0188_2013, out a4_3421, out a5_680, out a6_1010, out a7)
-	s2_1034 = CONVERT(dwLocE8, int32, int64)
+	word64 a4_3328
+	gp = fn000000000001654C(gp, qwLoc0188_1920, a4_467, a5_680, a6_1006, a7, out a4_3328, out a5_680, out a6_1006, out a7)
+	s2_679 = CONVERT(dwLocE8, int32, int64)
 l0000000000015880:
-	word64 a4_839
-	word64 a5_840
-	word64 a6_841
-	word64 a7_842
-	gp = fn000000000001654C(ra, fn000000000001654C(ra, gp, s0_126, 0x12000<64>, 0x11B08<64>, 0x11AF8<64>, qwLoc0180, a4_467, a5_680, a6_1010, a7, 0x12000<64>, s3_1001, out a4_839, out a5_840, out a6_841, out a7_842), s0_126, 0x12000<64>, 0x11B08<64>, 0x11B10<64>, qwLoc0188_2013, a4_839, a5_840, a6_841, a7_842, 0x12000<64>, s3_1001, out a4_1006, out a5_680, out a6_1010, out a7)
-	branch s4_771 == 0<64> l0000000000015E74
+	word64 a4_810
+	word64 a5_811
+	word64 a6_812
+	word64 a7_813
+	gp = fn000000000001654C(fn000000000001654C(gp, qwLoc0180, a4_467, a5_680, a6_1006, a7, out a4_810, out a5_811, out a6_812, out a7_813), qwLoc0188_1920, a4_810, a5_811, a6_812, a7_813, out a4_1004, out a5_680, out a6_1006, out a7)
+	branch s4_747 == 0<64> l0000000000015E74
 l0000000000015E74:
-	s2_1034 = CONVERT(dwLocE8, int32, int64)
+	s2_679 = CONVERT(dwLocE8, int32, int64)
 l00000000000158B8:
-	a5_1021 = 65544<i64>
-	s0_1038 = s0_126 & 65544<i64>
-	branch s0_1038 == 65544<i64> l0000000000015E64
+	a5_1005 = 65544<i64>
+	branch (s0_126 & 65544<i64>) == 65544<i64> l0000000000015E64
 l0000000000015E64:
-	s0_1038 = 1<i64>
+	s0_847 = 1<i64>
 	branch qwLoc0170 != 0<64> l0000000000015C2C
 l0000000000015E70:
 l0000000000015664:
 l0000000000015668:
-	s3_1001 = 0x12000<64>
 	branch qwLoc0178 == 0<64> l0000000000015690
 l0000000000015674:
-	word64 a4_3419
-	gp = fn000000000001654C(ra, gp, s0_126, 0x12000<64>, 0x11B08<64>, 0x11B28<64>, qwLoc0178, s2_1034, a5_680, a6_1010, a7, s2_1034, 0x12000<64>, out a4_3419, out a5_680, out a6_1010, out a7)
-	s2_1034 = CONVERT(dwLocE8, int32, int64)
+	word64 a4_3326
+	gp = fn000000000001654C(gp, qwLoc0178, s2_679, a5_680, a6_1006, a7, out a4_3326, out a5_680, out a6_1006, out a7)
+	s2_679 = CONVERT(dwLocE8, int32, int64)
 l0000000000015690:
-	word64 a5_936
-	word64 a6_937
-	word64 a7_938
-	word64 a5_954
-	word64 a4_3418
-	gp = fn000000000001654C(ra, fn000000000001654C(ra, gp, s0_126, 0x12000<64>, 0x11B08<64>, 0x11B38<64>, qwLoc0168, s2_1034, a5_680, a6_1010, a7, s2_1034, 0x12000<64>, out a4_3418, out a5_936, out a6_937, out a7_938), s0_126, 0x12000<64>, 0x11B08<64>, 0x11B58<64>, qwLoc0158, CONVERT(dwLocE8, int32, int64), a5_936, a6_937, a7_938, s2_1034, 0x12000<64>, out a4_1006, out a5_954, out a6_1010, out a7)
+	word64 a5_904
+	word64 a6_905
+	word64 a7_906
+	word64 a5_922
+	word64 a4_3325
+	gp = fn000000000001654C(fn000000000001654C(gp, qwLoc0168, s2_679, a5_680, a6_1006, a7, out a4_3325, out a5_904, out a6_905, out a7_906), qwLoc0158, CONVERT(dwLocE8, int32, int64), a5_904, a6_905, a7_906, out a4_1004, out a5_922, out a6_1006, out a7)
 	branch qwLoc0160 == 0<64> l00000000000156EC
 l00000000000156D4:
-	s2_1034 = 0x12000<64>
-	word64 a5_3420
-	gp = fn000000000001654C(ra, gp, s0_126, 0x12000<64>, 0x11B08<64>, 0x11B68<64>, qwLoc0160, a4_1006, a5_954, a6_1010, a7, 0x12000<64>, 0x12000<64>, out a4_1006, out a5_3420, out a6_1010, out a7)
+	word64 a5_3327
+	gp = fn000000000001654C(gp, qwLoc0160, a4_1004, a5_922, a6_1006, a7, out a4_1004, out a5_3327, out a6_1006, out a7)
 l00000000000156EC:
-	a5_1021 = 65544<i64>
-	s0_1038 = s0_126 & 65544<i64>
-	branch s0_1038 == 65544<i64> l0000000000015C1C
+	a5_1005 = 65544<i64>
+	branch (s0_126 & 65544<i64>) == 65544<i64> l0000000000015C1C
 l0000000000015C1C:
 	branch qwLoc0170 == 0<64> l00000000000156FC
 l0000000000015C24:
-	s0_1038 = 0<i64>
+	s0_847 = 0<i64>
 l0000000000015C2C:
-	s2_1034 = 0x12000<64>
-	gp = fn000000000001654C(ra, gp, s0_1038, 0x12000<64>, 0x11B08<64>, 0x11B78<64>, qwLoc0170, a4_1006, 65544<i64>, a6_1010, a7, 0x12000<64>, s3_1001, out a4_1006, out a5_1021, out a6_1010, out a7)
-	branch s0_1038 != 0<64> l00000000000158C8
+	gp = fn000000000001654C(gp, qwLoc0170, a4_1004, 65544<i64>, a6_1006, a7, out a4_1004, out a5_1005, out a6_1006, out a7)
+	branch s0_847 != 0<64> l00000000000158C8
 l00000000000158C8:
-	s2_1034 = 0x12000<64>
 	branch qwLocD0 == 0<64> l00000000000158E8
 l00000000000158D0:
-	gp = fn000000000001654C(ra, gp, s0_1038, 0x12000<64>, 0x11B98<64>, 0x11B88<64>, qwLocD0, a4_1006, a5_1021, a6_1010, a7, 0x12000<64>, s3_1001, out a4_1006, out a5_1021, out a6_1010, out a7)
+	gp = fn000000000001654C(gp, qwLocD0, a4_1004, a5_1005, a6_1006, a7, out a4_1004, out a5_1005, out a6_1006, out a7)
 l00000000000158E8:
 	branch qwLocC8 == 0<64> l00000000000157BC
 l00000000000158F0:
-	word64 a5_3423
-	gp = fn000000000001654C(ra, gp, s0_1038, 0x12000<64>, 0x11B98<64>, 0x11BA0<64>, qwLocC8, a4_1006, a5_1021, a6_1010, a7, 0x12000<64>, s3_1001, out a4_1006, out a5_3423, out a6_1010, out a7)
+	word64 a5_3330
+	gp = fn000000000001654C(gp, qwLocC8, a4_1004, a5_1005, a6_1006, a7, out a4_1004, out a5_3330, out a6_1006, out a7)
 l0000000000015C44:
 l00000000000156FC:
 	putchar(10<i32>)
 	branch qwLocD0 == 0<64> l0000000000015728
 l000000000001570C:
-	gp = fn000000000001654C(ra, gp, s0_1038, 0x12000<64>, 0x11B98<64>, 0x11B88<64>, qwLocD0, a4_1006, a5_1021, a6_1010, a7, s2_1034, s3_1001, out a4_1006, out a5_1021, out a6_1010, out a7)
+	gp = fn000000000001654C(gp, qwLocD0, a4_1004, a5_1005, a6_1006, a7, out a4_1004, out a5_1005, out a6_1006, out a7)
 l0000000000015728:
 	branch qwLocC8 == 0<64> l000000000001574C
 l0000000000015730:
-	gp = fn000000000001654C(ra, gp, s0_1038, 0x12000<64>, 0x11B98<64>, 0x11BA0<64>, qwLocC8, a4_1006, a5_1021, a6_1010, a7, s2_1034, s3_1001, out a4_1006, out a5_1021, out a6_1010, out a7)
+	gp = fn000000000001654C(gp, qwLocC8, a4_1004, a5_1005, a6_1006, a7, out a4_1004, out a5_1005, out a6_1006, out a7)
 l000000000001574C:
 	branch qwLocE0 == 0<64> l000000000001576C
 l0000000000015754:
-	gp = fn000000000001654C(ra, gp, s0_1038, 0x12000<64>, 0x11B08<64>, 0x11BB0<64>, qwLocE0, a4_1006, a5_1021, a6_1010, a7, s2_1034, s3_1001, out a4_1006, out a5_1021, out a6_1010, out a7)
+	gp = fn000000000001654C(gp, qwLocE0, a4_1004, a5_1005, a6_1006, a7, out a4_1004, out a5_1005, out a6_1006, out a7)
 l000000000001576C:
 	branch qwLocD8 == 0<64> l000000000001578C
 l0000000000015774:
-	word64 a5_3424
-	gp = fn000000000001654C(ra, gp, s0_1038, 0x12000<64>, 0x11B08<64>, 0x11BC0<64>, qwLocD8, a4_1006, a5_1021, a6_1010, a7, s2_1034, s3_1001, out a4_1006, out a5_3424, out a6_1010, out a7)
+	word64 a5_3331
+	gp = fn000000000001654C(gp, qwLocD8, a4_1004, a5_1005, a6_1006, a7, out a4_1004, out a5_3331, out a6_1006, out a7)
 l000000000001578C:
-	word64 a5_1210 = CONVERT(dwLoc01A4_1573, word32, int64)
-	branch a5_1210 == 0<64> l00000000000157A0
+	word64 a5_1150 = CONVERT(dwLoc01A4_1480, word32, int64)
+	branch a5_1150 == 0<64> l00000000000157A0
 l0000000000015794:
-	a5_1210 = CONVERT(dwLocE8, int32, int64)
-	a4_1006 = 111<i64>
-	branch a5_1210 <=u 111<i64> l0000000000015E3C
+	a5_1150 = CONVERT(dwLocE8, int32, int64)
+	a4_1004 = 111<i64>
+	branch a5_1150 <=u 111<i64> l0000000000015E3C
 l0000000000015E3C:
-	word64 a5_3426
-	gp = fn000000000001654C(ra, gp, s0_1038, 0x12000<64>, 0x11B08<64>, 0x11BE0<64>, CONVERT(0x80<32> - SLICE(a5_1210, word32, 0), word32, int64), fp + -296<i64>, a5_1210, a6_1010, a7, s2_1034, s3_1001, out a4_1006, out a5_3426, out a6_1010, out a7)
+	word64 a5_3333
+	gp = fn000000000001654C(gp, CONVERT(0x80<32> - SLICE(a5_1150, word32, 0), word32, int64), fp + -296<i64>, a5_1150, a6_1006, a7, out a4_1004, out a5_3333, out a6_1006, out a7)
 l00000000000157A0:
-	word64 a5_3425
-	gp = fn000000000001654C(ra, gp, s0_1038, 0x12000<64>, 0x11B08<64>, 0x11BE0<64>, fp + -296<i64>, a4_1006, a5_1210, a6_1010, a7, s2_1034, s3_1001, out a4_1006, out a5_3425, out a6_1010, out a7)
+	word64 a5_3332
+	gp = fn000000000001654C(gp, fp + -296<i64>, a4_1004, a5_1150, a6_1006, a7, out a4_1004, out a5_3332, out a6_1006, out a7)
 l00000000000157BC:
-	word64 a5_1272 = qwLoc0148
+	word64 a5_1204 = qwLoc0148
 	branch qwLoc0148 == 0<64> l0000000000015C08
 l0000000000015C08:
-	a5_1272 = qwLoc0138
+	a5_1204 = qwLoc0138
 	branch qwLoc0138 != 0<64> l00000000000157C4
 l0000000000015C10:
-	a5_1272 = qwLoc0130
+	a5_1204 = qwLoc0130
 	branch qwLoc0130 != 0<64> l00000000000157C4
 l0000000000015C18:
 l00000000000157C4:
 	putchar(10<i32>)
 	branch qwLoc0140 == 0<64> l00000000000157F0
 l00000000000157D4:
-	gp = fn000000000001654C(ra, gp, s0_1038, 0x12000<64>, 0x11B98<64>, 0x11BF0<64>, qwLoc0140, a4_1006, a5_1272, a6_1010, a7, s2_1034, s3_1001, out a4_1006, out a5_1272, out a6_1010, out a7)
+	gp = fn000000000001654C(gp, qwLoc0140, a4_1004, a5_1204, a6_1006, a7, out a4_1004, out a5_1204, out a6_1006, out a7)
 l00000000000157F0:
 	branch qwLoc0148 == 0<64> l0000000000015814
 l00000000000157F8:
-	gp = fn000000000001654C(ra, gp, s0_1038, 0x12000<64>, 0x11B98<64>, 0x11C00<64>, qwLoc0148, a4_1006, a5_1272, a6_1010, a7, s2_1034, s3_1001, out a4_1006, out a5_1272, out a6_1010, out a7)
+	gp = fn000000000001654C(gp, qwLoc0148, a4_1004, a5_1204, a6_1006, a7, out a4_1004, out a5_1204, out a6_1006, out a7)
 l0000000000015814:
 	branch qwLoc0138 == 0<64> l0000000000015838
 l000000000001581C:
-	gp = fn000000000001654C(ra, gp, s0_1038, 0x12000<64>, 0x11B98<64>, 0x11C10<64>, qwLoc0138, a4_1006, a5_1272, a6_1010, a7, s2_1034, s3_1001, out a4_1006, out a5_1272, out a6_1010, out a7)
+	gp = fn000000000001654C(gp, qwLoc0138, a4_1004, a5_1204, a6_1006, a7, out a4_1004, out a5_1204, out a6_1006, out a7)
 l0000000000015838:
 	branch qwLoc0130 == 0<64> l00000000000153DC
 l0000000000015840:
-	word64 a4_3427
-	word64 a5_3428
-	word64 a7_3430
-	word64 a6_3429
-	gp = fn000000000001654C(ra, gp, s0_1038, 0x12000<64>, 0x11B98<64>, 0x11C18<64>, qwLoc0130, a4_1006, a5_1272, a6_1010, a7, s2_1034, s3_1001, out a4_3427, out a5_3428, out a6_3429, out a7_3430)
+	word64 a4_3334
+	word64 a5_3335
+	word64 a7_3337
+	word64 a6_3336
+	gp = fn000000000001654C(gp, qwLoc0130, a4_1004, a5_1204, a6_1006, a7, out a4_3334, out a5_3335, out a6_3336, out a7_3337)
 l00000000000153D0:
 	branch CONVERT(Mem94[gp + -2028<i64>:int32], int32, int64) == 0<64> l000000000001556C
 l000000000001556C:
@@ -474,7 +466,7 @@ l00000000000153D8:
 l0000000000015394:
 	fwrite(0x119D8<64>, SLICE(1<i64>, size_t, 0), SLICE(46<i64>, size_t, 0), Mem88[gp + -1920<i64>:word64])
 l00000000000153DC:
-	branch a5_7 != Mem1429[gp + -1936<i64>:word64] l0000000000015E8C
+	branch a5_7 != Mem1336[gp + -1936<i64>:word64] l0000000000015E8C
 l0000000000015E8C:
 	__stack_chk_fail()
 l00000000000153EC:
@@ -482,14 +474,14 @@ l00000000000153EC:
 l0000000000015224:
 	branch a0_60 >u 118<i64> l0000000000015200
 l000000000001522C:
-	word64 a5_1528 = CONVERT(Mem50[(a0_60 << 0x20<u32> >>u 0x1E<u32>) + 0x102A0<64>:int32], int32, int64)
-	word64 a6_1554
-	word64 t1_1555
-	word64 t3_1556
-	word64 a7_1557
-	call a5_1528 (retsize: 0;)
-		uses: a0:a0_60,a1:a1,a4:0x102A0<64>,a5:a5_1528,a6:a6_1554,a7:a7_1557,gp:gp,ra:ra,s0:0<i64>,s1:0x108E0<64>,s10:0<i64>,s11:s11,s2:a1,s3:a0,s4:0x12000<64>,s5:s5,s6:0<i64>,s7:1<i64>,s8:0x1000<64>,s9:0<i64>,Stack +0030:qwLoc0190,Stack +0039:nLoc0187,Stack +0040:qwLoc0180,Stack +0048:qwLoc0178,Stack +0050:qwLoc0170,Stack +0058:qwLoc0168,Stack +0060:qwLoc0160,Stack +0068:qwLoc0158,Stack +0070:qwLoc0150,Stack +0078:qwLoc0148,Stack +0080:qwLoc0140,Stack +0088:qwLoc0138,Stack +0090:qwLoc0130,Stack +00D8:dwLocE8,Stack +00E0:qwLocE0,Stack +00E8:qwLocD8,Stack +00F0:qwLocD0,Stack +00F8:qwLocC8,Stack +0101:nLocBF,t1:t1_1555,t3:t3_1556
-		defs: a6:a6_1554,a7:a7_1557,t1:t1_1555,t3:t3_1556
+	word64 a5_1435 = CONVERT(Mem50[(a0_60 << 0x20<u32> >>u 0x1E<u32>) + 0x102A0<64>:int32], int32, int64)
+	word64 a6_1461
+	word64 t1_1462
+	word64 t3_1463
+	word64 a7_1464
+	call a5_1435 (retsize: 0;)
+		uses: a0:a0_60,a1:a1,a4:0x102A0<64>,a5:a5_1435,a6:a6_1461,a7:a7_1464,gp:gp,ra:ra,s0:0<i64>,s1:0x108E0<64>,s10:0<i64>,s11:s11,s2:a1,s3:a0,s4:0x12000<64>,s5:s5,s6:0<i64>,s7:1<i64>,s8:0x1000<64>,s9:0<i64>,Stack +0030:qwLoc0190,Stack +0039:nLoc0187,Stack +0040:qwLoc0180,Stack +0048:qwLoc0178,Stack +0050:qwLoc0170,Stack +0058:qwLoc0168,Stack +0060:qwLoc0160,Stack +0068:qwLoc0158,Stack +0070:qwLoc0150,Stack +0078:qwLoc0148,Stack +0080:qwLoc0140,Stack +0088:qwLoc0138,Stack +0090:qwLoc0130,Stack +00D8:dwLocE8,Stack +00E0:qwLocE0,Stack +00E8:qwLocD8,Stack +00F0:qwLocD0,Stack +00F8:qwLocC8,Stack +0101:nLocBF,t1:t1_1462,t3:t3_1463
+		defs: a6:a6_1461,a7:a7_1464,t1:t1_1462,t3:t3_1463
 	return
 fn0000000000015180_exit:
 
@@ -731,27 +723,19 @@ l000000000001652C:
 fn00000000000164D0_exit:
 
 
-word64 fn000000000001654C(word64 ra, word64 gp, word64 s0, word64 s1, word64 a0, word64 a1, word64 a3, word64 a4, word64 a5, word64 a6, word64 a7, word64 s2, word64 s3, ptr64 & a4Out, ptr64 & a5Out, ptr64 & a6Out, ptr64 & a7Out)
+word64 fn000000000001654C(word64 gp, word64 a3, word64 a4, word64 a5, word64 a6, word64 a7, ptr64 & a4Out, ptr64 & a5Out, ptr64 & a6Out, ptr64 & a7Out)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
 //      fn0000000000015180
-// MayUse:  a0:[0..63] a1:[0..63] a3:[0..63] a4:[0..63] a5:[0..63] a6:[0..63] a7:[0..63] gp:[0..63] ra:[0..63] s0:[0..63] s1:[0..63] s2:[0..63] s3:[0..63]
+// MayUse:  a3:[0..63] a4:[0..63] a5:[0..63] a6:[0..63] a7:[0..63] gp:[0..63]
 // LiveOut: a4 a5 a6 a7 gp
 // Trashed: a0 a1 a2 a3 a4 a5 a6 a7 gp t1 t3
 // Preserved: ra s0 s1 s2 s3 sp
 fn000000000001654C_entry:
 l000000000001654C:
 	word64 t3_7 = Mem5[gp + -1936<i64>:word64]
-	word64 gp_40
-	word64 s2_42
-	word64 s3_43
-	word64 a0_45
-	word64 a6_51
-	word64 a7_52
-	call __vasprintf_chk (retsize: 0;)
-		uses: a0:fp + -112<i64>,a1:1<i64>,a3:fp + -40<i64>,a4:a4,a5:a5,a6:a6,a7:a7,gp:gp,ra:ra,s0:s0,s1:s1,s2:a1,s3:a0,Stack +0008:fp + -40<i64>,Stack +0010:0<64>,Stack +0018:t3_7,Stack +0028:s3,Stack +0030:s2,Stack +0038:s1,Stack +0040:s0,Stack +0048:ra,Stack +0058:a3,Stack +0060:a4,Stack +0068:a5,Stack +0070:a6,Stack +0078:a7,t1:fp + -40<i64>,t3:t3_7
-		defs: a0:a0_45,a6:a6_51,a7:a7_52,gp:gp_40,s2:s2_42,s3:s3_43
+	__vasprintf_chk(fp + -112<i64>, 1<i64>, fp + -40<i64>, fp + -40<i64>, a3, a4, a5, a6, a7)
 	branch a0_45 < 0<64> l00000000000165D8
 l00000000000165A8:
 	fputs(s2_42, Mem36[gp_40 + -1912<i64>:word64])

@@ -39,10 +39,7 @@ void __do_global_dtors_aux()
 	if (g_b201048 != 0x00)
 		return;
 	if (__cxa_finalize != 0x00)
-	{
-		word64 rax_n;
-		__cxa_finalize();
-	}
+		__cxa_finalize(g_qw201040);
 	deregister_tm_clones();
 	g_b201048 = 0x01;
 }

@@ -68,7 +68,6 @@ void frame_dummy()
 		return;
 	if (g_dw8428 == 0x00)
 		return;
-	word32 pc_n;
 	fn00000000();
 }
 

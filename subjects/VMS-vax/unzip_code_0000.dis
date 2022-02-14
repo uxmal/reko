@@ -2024,11 +2024,7 @@ l0000A9C2:
 	branch r0_224 > 0x76<32> l0000A9DE
 l0000A9DE:
 	vax_subp4(0<16>, 0x31<8>, Mem223[r0_224:word16], 0<8>)
-	word32 r7_240
-	word32 r6_241
-	call fn40009A48 (retsize: 0;)
-		uses: fp:fp_222,r0:r0_224 + 2<32>,r6:r6_241,r7:r7_240,r9:r9_232
-		defs: r6:r6_241,r7:r7_240
+	fn40009A48()
 	return
 l0000A9C6_1:
 	word32 r7_251
@@ -2090,30 +2086,18 @@ l0000AC10:
 l0000AC38:
 	branch r4_45 != Mem42[r11 + 869<i32>:word32] l0000AC42
 l0000AC42:
-	word32 sp_70 = sp_111 - 4<32>
-	Mem71[sp_70:word32] = 1<32>
-	Mem73[sp_70 - 4<32>:word32] = r3 + 4<i32>
-	Mem76[sp_70 - 8<32>:word32] = r11 + 874<i32>
-	Mem80[sp_70 - 0xC<32>:word32] = r10 + 1515<i32>
-	word32 sp_85
-	word32 r10_86
-	word32 r8_87
-	word32 r0_88
-	call fn00000003 (retsize: 4;)
-		uses: ap:ap_116,fp:fp_115,r1:r1_692,r10:r10_78,r11:r11_117,r2:r2_118,r3:r3_119,r4:r4_124,r5:r5_123,r6:r6_120,r7:r7_122,r8:r8_84,r9:r9_121
-		defs: r0:r0_88,r10:r10_86,r8:r8_87,sp:sp_85
+	fn00000003(r10 + 1515<i32>, r11 + 874<i32>, r3 + 4<i32>, 1<32>)
 	Mem101[sp_85 - 4<32>:word32] = r0_88
 	Mem104[sp_85 - 8<32>:word32] = r10_86 + 1515<i32>
 	Mem106[sp_85 - 0xC<32>:word32] = r10_86
 	word32 r2_107 = Mem106[r10_86 + 0xC839<32>:word32]
-	word32 r2_118
 	word32 r9_121
 	word32 r5_123
 	word32 r4_124
 	word32 r1_692
 	call r2_107 + 2<i32> (retsize: 4;)
 		uses: ap:ap_116,fp:fp_115,r1:r1_692,r10:r10_86,r11:r11_117,r2:r2_107,r3:r3_119,r4:r4_124,r5:r5_123,r6:r6_120,r7:r7_122,r8:r8_87,r9:r9_121
-		defs: ap:ap_116,fp:fp_115,r1:r1_692,r10:r10_112,r11:r11_117,r2:r2_118,r3:r3_119,r4:r4_124,r5:r5_123,r6:r6_120,r7:r7_122,r8:r8_113,r9:r9_121,sp:sp_111
+		defs: ap:ap_116,fp:fp_115,r1:r1_692,r10:r10_112,r11:r11_117,r3:r3_119,r4:r4_124,r5:r5_123,r6:r6_120,r7:r7_122,r8:r8_113,r9:r9_121,sp:sp_111
 	fp = fp_115
 	r11 = r11_117
 	ap = ap_116
@@ -2221,31 +2205,21 @@ l0000AC74:
 	sp_111 = <invalid>
 	r3 = r3_436
 	word32 r3_436
-	word32 r2_823
-	branch Mem426[r3_436 + 4<i32>:word32] == fn0000CFBA(r3_415 + 8<i32>, r2_416 - 4<32>, fp, out r2_823, out r3_436, out r6, out ap, out fp) l0000ACC6
+	word32 r2_830
+	branch Mem426[r3_436 + 4<i32>:word32] == fn0000CFBA(r3_415 + 8<i32>, r2_416 - 4<32>, fp, out r2_830, out r3_436, out r6, out ap, out fp) l0000ACC6
 l0000ACA1:
-	Mem449[sp_111 - 4<32>:word32] = 1<32>
-	Mem452[sp_111 - 8<32>:word32] = r11 + 915<i32>
-	Mem455[sp_111 - 0xC<32>:word32] = r10 + 1515<i32>
-	word32 sp_459
-	word32 r10_460
-	word32 r8_461
-	word32 r0_462
-	call fn00000003 (retsize: 4;)
-		uses: ap:0<32>,fp:fp_490,r1:r1_500,r10:r10_78,r11:r11_492,r2:r2_493,r3:r3_494,r4:r4_499,r5:r5_498,r6:r6_495,r7:r7_497,r8:r8_84,r9:r9_496
-		defs: r0:r0_462,r10:r10_460,r8:r8_461,sp:sp_459
+	fn00000003(r10 + 1515<i32>, r11 + 915<i32>, 1<32>)
 	Mem476[sp_459 - 4<32>:word32] = r0_462
 	Mem479[sp_459 - 8<32>:word32] = r10_460 + 1515<i32>
 	Mem481[sp_459 - 0xC<32>:word32] = r10_460
 	word32 r2_482 = Mem481[r10_460 + 0xC839<32>:word32]
-	word32 r2_493
 	word32 r9_496
 	word32 r5_498
 	word32 r4_499
 	word32 r1_500
 	call r2_482 + 2<i32> (retsize: 4;)
 		uses: ap:0<32>,fp:fp_490,r1:r1_500,r10:r10_460,r11:r11_492,r2:r2_482,r3:r3_494,r4:r4_499,r5:r5_498,r6:r6_495,r7:r7_497,r8:r8_461,r9:r9_496
-		defs: fp:fp_490,r1:r1_500,r10:r10_487,r11:r11_492,r2:r2_493,r3:r3_494,r4:r4_499,r5:r5_498,r6:r6_495,r7:r7_497,r8:r8_488,r9:r9_496,sp:sp_486
+		defs: fp:fp_490,r1:r1_500,r10:r10_487,r11:r11_492,r3:r3_494,r4:r4_499,r5:r5_498,r6:r6_495,r7:r7_497,r8:r8_488,r9:r9_496,sp:sp_486
 	Mem504[sp_111 + 4<i32>:word32] = 0<32>
 	ap = 0<32>
 	r6 = r6_495
@@ -5679,20 +5653,7 @@ l00010190:
 l000101A1:
 	branch r1_64 >u 0<32> l000101A7
 l000101A7:
-	word32 r11_78
-	word32 r8_80
-	word32 r2_81
-	word32 r7_82
-	word32 r3_83
-	word32 r5_84
-	word32 fp_85
-	word32 r1_86
-	word32 r4_87
-	word32 r6_88
-	word32 r10_752
-	call fn4000E3D8 (retsize: 0;)
-		uses: ap:ap_45,fp:fp_85,r1:r1_86,r10:r10_752,r11:r11_78,r2:r2_81,r3:r3_83,r4:r4_87,r5:r5_84,r6:r6_88,r7:r7_82,r8:r8_80
-		defs: fp:fp_85,r1:r1_86,r10:r10_752,r11:r11_78,r2:r2_81,r3:r3_83,r4:r4_87,r5:r5_84,r6:r6_88,r7:r7_82,r8:r8_80
+	fn4000E3D8()
 	return
 l000101A3:
 l000101B0:
@@ -6207,15 +6168,7 @@ l00010676:
 l000106FB:
 	Mem65[Mem57[r4:word32]:real32] = 0.5F + 36.0F
 	__halt()
-	word32 ap_75
-	word32 r3_76
-	word32 r0_77
-	word32 r7_78
-	word32 r4_80
-	word32 fp_81
-	call fn4000E3D8 (retsize: 0;)
-		uses: ap:ap_35,fp:fp_36,r2:r2_39,r4:r4 + 4<32>,r7:r7_30
-		defs: ap:ap_75,fp:fp_81,r0:r0_77,r3:r3_76,r4:r4_80,r7:r7_78
+	fn4000E3D8()
 	r3Out = r3_76
 	r4Out = r4_80
 	r7Out = r7_78
