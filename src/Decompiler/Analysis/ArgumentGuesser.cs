@@ -126,7 +126,8 @@ namespace Reko.Analysis
                 case PhiAssignment _:
                     return new GuessedArguments(regWrites, stackIds, stackStores);
                 default:
-                    throw new NotImplementedException($"GuessArgument: {stm.Instruction.GetType()}");
+                    trace.Warn("ArgumentGuesser.GuessArgument: unhandled instruction type: {0}", stm.Instruction.GetType());
+                    return new GuessedArguments(regWrites, stackIds, stackStores);
                 }
             }
             return new GuessedArguments(regWrites, stackIds, stackStores);
@@ -278,6 +279,7 @@ namespace Reko.Analysis
                     var idTmp = binder.CreateTemporary(stackslot.Dst.DataType);
                     var sidTmp = ssa.Identifiers.Add(idTmp, stackslot.stm, stackslot.src, false);
                     stackslot.stm.Instruction = new Assignment(sidTmp.Identifier, stackslot.src);
+                    ssa.AddUses(stackslot.stm, stackslot.src);
                     args.Add(sidTmp.Identifier);
                 }
             }
@@ -295,7 +297,6 @@ namespace Reko.Analysis
             ssa.RemoveUses(stmCall);
             ssa.ReplaceDefinitions(stmCall, null);
             stmCall.Instruction = newInstr;
-            var ssam = new SsaMutator(this.ssa);
             ssa.AddDefinitions(stmCall);
             ssa.AddUses(stmCall);
         }

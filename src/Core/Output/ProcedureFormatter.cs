@@ -106,13 +106,7 @@ namespace Reko.Core.Output
             }
             foreach (var stm in block.Statements)
             {
-                if (stm.Instruction is not null)
-                    stm.Instruction.Accept(writer);
-                else
-                {
-                    writer.WriteNull();
-                    formatter.InnerFormatter.WriteLine();
-                }
+                stm.Instruction.Accept(writer);
             }
         }
 
