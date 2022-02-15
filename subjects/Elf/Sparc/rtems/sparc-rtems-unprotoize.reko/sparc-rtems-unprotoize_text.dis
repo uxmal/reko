@@ -5234,68 +5234,26 @@ l00016C94:
 	gettimeofday(fp + 0xFFFFFFE8<32>, 0<32>)
 	word32 o0_42 = getpid()
 	word64 o0_o1_57 = Mem0[0x2B400<32>:word64]
-	word32 o5_408 = dwLoc14 << 0x10<32> ^ dwLoc18 ^ o0_42
-	word32 o1_62 = SLICE(o0_o1_57, word32, 0) + o5_408
-	word32 o4_406 = (dwLoc14 >>u 0x10<32> | (dwLoc14 >> 0x1F<32>) << 0x10<32>) ^ dwLoc18 >> 0x1F<32> ^ o0_42 >> 0x1F<32>
-	Mem74[0x2B400<32>:word64] = SEQ(SLICE(o0_o1_57, word32, 32) + o4_406 + CONVERT(o1_62 <u 0<32>, bool, word32), o1_62)
-	word32 o7_411 = 0x2B400<32>
-	word32 l4_418 = 0x2B400<32>
+	word32 o1_62 = SLICE(o0_o1_57, word32, 0) + ((dwLoc14 << 0x10<32> ^ dwLoc18) ^ o0_42)
+	Mem74[0x2B400<32>:word64] = SEQ(SLICE(o0_o1_57, word32, 32) + (((dwLoc14 >>u 0x10<32> | (dwLoc14 >> 0x1F<32>) << 0x10<32>) ^ dwLoc18 >> 0x1F<32>) ^ o0_42 >> 0x1F<32>) + CONVERT(o1_62 <u 0<32>, bool, word32), o1_62)
+	word32 l4_70 = 0x2B400<32>
 l00016D0C:
-	word64 l0_l1_77 = Mem76[l4_418:word64]
-	word32 l0_80 = SLICE(l0_l1_77, word32, 32)
-	word32 l1_82 = SLICE(l0_l1_77, word32, 0)
-	word32 i1_91
-	word32 o1_92
-	word32 l2_112
-	call __urem64 (retsize: 0;)
-		uses: g2:g2_415,g3:g3_414,l0:l0_80,l1:l1_82,l2:l2_420,l3:l3_413,l4:l4_418,l5:l5_419,o0:l0_80,o1:l1_82,o2:0<32>,o3:0x3E<32>,o4:o4_84,o5:o5_85,o7:o7_86,Stack +FFFFFFE8:dwLoc18,Stack +FFFFFFEC:dwLoc14
-		defs: i1:i1_91,l2:l2_112,o1:o1_92
+	word64 l0_l1_77 = Mem76[l4_70:word64]
+	__urem64(SLICE(l0_l1_77, word32, 32), SLICE(l0_l1_77, word32, 0), 0<32>, 0x3E<32>)
 	Mem115[i1_91:byte] = Mem76[l2_112 + o1_92:byte]
-	word32 o0_122 = __udiv64()
-	word32 i1_153
-	word32 o1_154
-	word32 l2_174
-	call __urem64 (retsize: 0;)
-		uses: g2:g2_415,g3:g3_414,l0:o0_122,l1:o1_124,l2:l2_420,l3:l3_413,l4:l4_418,l5:l5_419,o0:o0_122,o1:o1_124,o2:0<32>,o3:0x3E<32>,o4:o4_130,o5:o5_132,o7:o7_135,Stack +FFFFFFE8:dwLoc18,Stack +FFFFFFEC:dwLoc14
-		defs: i1:i1_153,l2:l2_174,o1:o1_154
+	__udiv64(l0_109, l1_108, 0<32>, 0x3E<32>)
+	__urem64(0<32>, 0x3E<32>)
 	Mem177[i1_153 + 1<i32>:byte] = Mem115[l2_174 + o1_154:byte]
-	word32 o0_184 = __udiv64()
-	word32 i1_215
-	word32 o1_216
-	word32 l2_236
-	call __urem64 (retsize: 0;)
-		uses: g2:g2_415,g3:g3_414,l0:o0_184,l1:o1_186,l2:l2_420,l3:l3_413,l4:l4_418,l5:l5_419,o0:o0_184,o1:o1_186,o2:0<32>,o3:0x3E<32>,o4:o4_192,o5:o5_194,o7:o7_197,Stack +FFFFFFE8:dwLoc18,Stack +FFFFFFEC:dwLoc14
-		defs: i1:i1_215,l2:l2_236,o1:o1_216
+	__udiv64(l0_171, l1_170, 0<32>, 0x3E<32>)
+	__urem64(0<32>, 0x3E<32>)
 	Mem239[i1_215 + 2<i32>:byte] = Mem177[l2_236 + o1_216:byte]
-	word32 o0_246 = __udiv64()
-	word32 i1_277
-	word32 o1_278
-	word32 l2_298
-	call __urem64 (retsize: 0;)
-		uses: g2:g2_415,g3:g3_414,l0:o0_246,l1:o1_248,l2:l2_420,l3:l3_413,l4:l4_418,l5:l5_419,o0:o0_246,o1:o1_248,o2:0<32>,o3:0x3E<32>,o4:o4_254,o5:o5_256,o7:o7_259,Stack +FFFFFFE8:dwLoc18,Stack +FFFFFFEC:dwLoc14
-		defs: i1:i1_277,l2:l2_298,o1:o1_278
+	__udiv64(l0_233, l1_232, 0<32>, 0x3E<32>)
+	__urem64(0<32>, 0x3E<32>)
 	Mem301[i1_277 + 3<i32>:byte] = Mem239[l2_298 + o1_278:byte]
-	word32 o0_308 = __udiv64()
-	word32 i1_339
-	word32 o1_340
-	word32 l2_360
-	call __urem64 (retsize: 0;)
-		uses: g2:g2_415,g3:g3_414,l0:o0_308,l1:o1_310,l2:l2_420,l3:l3_413,l4:l4_418,l5:l5_419,o0:o0_308,o1:o1_310,o2:0<32>,o3:0x3E<32>,o4:o4_316,o5:o5_318,o7:o7_321,Stack +FFFFFFE8:dwLoc18,Stack +FFFFFFEC:dwLoc14
-		defs: i1:i1_339,l2:l2_360,o1:o1_340
+	__udiv64(l0_295, l1_294, 0<32>, 0x3E<32>)
+	__urem64(0<32>, 0x3E<32>)
 	Mem363[i1_339 + 4<i32>:byte] = Mem301[l2_360 + o1_340:byte]
-	word32 i0_397
-	word32 i1_399
-	word32 o1_400
-	word32 l3_413
-	word32 g3_414
-	word32 g2_415
-	word32 l1_416
-	word32 l0_417
-	word32 l5_419
-	word32 l2_420
-	call __urem64 (retsize: 0;)
-		uses: g2:g2_415,g3:g3_414,l0:l0_417,l1:l1_416,l2:l2_420,l3:l3_413,l4:l4_418,l5:l5_419,o0:__udiv64(),o1:o1_372,o2:0<32>,o3:0x3E<32>,o4:o4_378,o5:o5_380,o7:o7_383,Stack +FFFFFFE8:dwLoc18,Stack +FFFFFFEC:dwLoc14
-		defs: g2:g2_415,g3:g3_414,i0:i0_397,i1:i1_399,l0:l0_417,l1:l1_416,l2:l2_420,l3:l3_413,l4:l4_418,l5:l5_419,o1:o1_400,o4:o4_406,o5:o5_408,o7:o7_411
+	__urem64(__udiv64(l0_357, l1_356, 0<32>, 0x3E<32>), 0<32>, 0x3E<32>)
 	Mem423[i1_399 + 5<i32>:byte] = Mem363[l2_420 + o1_400:byte]
 	word32 o0_427 = open(i0_397, 0x502<32>)
 	branch o0_427 >= 0<32> l00016E2C_ds_t
@@ -5311,6 +5269,7 @@ l00016E30:
 	branch l3_413 + 1<32> - l5_419 <= 0<32> l00016E50_ds_t
 l00016E50_ds_t:
 	Mem448[l4_418:word64] = SEQ(o2_442, o3_436 + 0x1E61<32>)
+	l4_70 = l4_418
 l00016E50_ds_f:
 	Mem450[l4_418:word64] = SEQ(o2_442, o3_436 + 0x1E61<32>)
 l00016E54:

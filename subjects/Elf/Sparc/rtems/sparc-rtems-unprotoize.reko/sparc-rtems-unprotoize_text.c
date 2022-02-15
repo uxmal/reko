@@ -4188,57 +4188,27 @@ Eq_n mkstemps(Eq_n o0, Eq_n o1)
 			gettimeofday(fp + ~0x17, null);
 			Eq_n o0_n = getpid();
 			word64 o0_o1_n = g_qw2B400;
-			ui32 o5_n = dwLoc14 << 0x10 ^ dwLoc18 ^ o0_n;
-			up32 o1_n = (word32) o0_o1_n + o5_n;
-			ui32 o4_n = (dwLoc14 >> 0x10 | (dwLoc14 >> 0x1F) << 0x10) ^ dwLoc18 >> 0x1F ^ o0_n >> 0x1F;
-			g_qw2B400 = SEQ(SLICE(o0_o1_n, word32, 32) + o4_n + (word32) (o1_n < 0x00), o1_n);
-			word32 o7_n = 0x0002B400;
+			up32 o1_n = (word32) o0_o1_n + ((dwLoc14 << 0x10 ^ dwLoc18) ^ o0_n);
+			g_qw2B400 = SEQ(SLICE(o0_o1_n, word32, 32) + (((dwLoc14 >> 0x10 | (dwLoc14 >> 0x1F) << 0x10) ^ dwLoc18 >> 0x1F) ^ o0_n >> 0x1F) + (word32) (o1_n < 0x00), o1_n);
 			word64 * l4_n = &g_qw2B400;
 			while (true)
 			{
 				word64 l0_l1_n = *l4_n;
-				word32 l0_n = SLICE(l0_l1_n, word32, 32);
-				word32 l1_n = (word32) l0_l1_n;
-				byte * i1_n;
-				int32 o1_n;
-				ptr32 l2_n;
-				__urem64();
+				__urem64(SLICE(l0_l1_n, word32, 32), (word32) l0_l1_n, 0x00, 0x3E);
 				*i1_n = (byte) (l2_n + o1_n);
-				word32 o0_n = __udiv64();
-				struct Eq_n * i1_n;
-				int32 o1_n;
-				ptr32 l2_n;
-				__urem64();
+				__udiv64(l0_n, l1_n, 0x00, 0x3E);
+				__urem64(0x00, 0x3E);
 				i1_n->b0001 = (byte) (l2_n + o1_n);
-				word32 o0_n = __udiv64();
-				struct Eq_n * i1_n;
-				int32 o1_n;
-				ptr32 l2_n;
-				__urem64();
+				__udiv64(l0_n, l1_n, 0x00, 0x3E);
+				__urem64(0x00, 0x3E);
 				i1_n->b0002 = (byte) (l2_n + o1_n);
-				word32 o0_n = __udiv64();
-				struct Eq_n * i1_n;
-				int32 o1_n;
-				ptr32 l2_n;
-				__urem64();
+				__udiv64(l0_n, l1_n, 0x00, 0x3E);
+				__urem64(0x00, 0x3E);
 				i1_n->b0003 = (byte) (l2_n + o1_n);
-				word32 o0_n = __udiv64();
-				struct Eq_n * i1_n;
-				int32 o1_n;
-				ptr32 l2_n;
-				__urem64();
+				__udiv64(l0_n, l1_n, 0x00, 0x3E);
+				__urem64(0x00, 0x3E);
 				i1_n->b0004 = (byte) (l2_n + o1_n);
-				Eq_n i0_n;
-				struct Eq_n * i1_n;
-				int32 o1_n;
-				word32 l3_n;
-				word32 g3_n;
-				word32 g2_n;
-				word32 l1_n;
-				word32 l0_n;
-				int32 l5_n;
-				ptr32 l2_n;
-				__urem64();
+				__urem64(__udiv64(l0_n, l1_n, 0x00, 0x3E), 0x00, 0x3E);
 				i1_n->b0005 = (byte) (l2_n + o1_n);
 				Eq_n o0_n = open(i0_n, 0x0502);
 				if (o0_n >= 0x00)
@@ -4254,6 +4224,7 @@ Eq_n mkstemps(Eq_n o0, Eq_n o1)
 					goto l00016E58;
 				}
 				*l4_n = SEQ(o2_n, o3_n + 7777);
+				l4_n = l4_n;
 			}
 			i0_n = o0_n;
 		}

@@ -51,9 +51,7 @@ l00401060:
 	Mem27[esp_14 - 8<i32>:word32] = dwArg04
 	Mem29[esp_14 - 12<i32>:word32] = eax_16
 	word32 eax_30 = fn00401050()
-	Mem33[esp_14 - 16<i32>:word32] = Mem29[eax_30 + 4<32>:word32]
-	Mem36[esp_14 - 20<i32>:word32] = Mem33[eax_30:word32]
-	_stdio_common_vfprintf()
+	_stdio_common_vfprintf(Mem33[eax_30:word32], Mem29[eax_30 + 4<32>:word32])
 	return
 fn00401060_exit:
 
@@ -740,10 +738,7 @@ l00401931:
 	branch Mem16[esi_10:word32] == 0<32> l00401940
 l00401937:
 	fn00401976()
-	word32 ecx_28
-	call fn00000000 (retsize: 4;)
-		uses: ecx:ecx_28
-		defs: ecx:ecx_28
+	fn00000000()
 l00401940:
 	esi_10 = esi_10 + 4<32>
 	branch esi_10 <u 0x004024C8<p32> l00401931

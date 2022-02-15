@@ -130,7 +130,7 @@ void print_pixel(uint32 ecx, word64 rdx, word64 rsi, word64 rdi, struct Eq_n * f
 			break;
 		case 0x03:
 			uint32 eax_n = component(eax_n, 0x00, ecx, rdx, 0x01);
-			png_get_PLTE();
+			png_get_PLTE(fp - 0x50, rdi, fp - 0x40, rsi, 0x00, eax_n, 0x00);
 			if (((word32) rax_n & 0x08) != 0x00 && (false && false))
 			{
 				if (((word32) png_get_tRNS(0x00, fp - 0x4C, rdi, fp - 0x38, rsi, 0x00, 0x00) & 0x10) != 0x00 && (false && false))
@@ -209,11 +209,7 @@ void main(struct Eq_n * rsi, word32 edi, struct Eq_n * fs)
 			}
 			else
 				dwLoc6C = 0x01;
-			word64 rsi_n;
-			word64 rcx_n;
-			word64 r9_n;
-			word64 r8_n;
-			png_start_read_image();
+			png_start_read_image(rax_n);
 			int32 dwLoc68_n;
 			for (dwLoc68_n = 0x00; dwLoc68_n < dwLoc6C; ++dwLoc68_n)
 			{
@@ -279,7 +275,7 @@ l000000000040167F:
 			png_free(rax_n, rax_n, rax_n, 0x00);
 			png_destroy_info_struct(rax_n, fp - 0x38, fp - 0x38);
 l00000000004016DE:
-			png_destroy_read_struct();
+			png_destroy_read_struct(fp - 0x40, 0x00, 0x00);
 l000000000040175D:
 			if ((rax_n ^ fs->qw0028) == 0x00)
 				return;

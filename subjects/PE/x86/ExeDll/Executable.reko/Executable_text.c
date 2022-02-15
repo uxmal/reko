@@ -37,9 +37,7 @@ void fn00401060(word32 dwArg04)
 	esp_n->dwFFFFFFF8 = dwArg04;
 	esp_n->dwFFFFFFF4 = eax_n;
 	struct Eq_n * eax_n = fn00401050();
-	esp_n->dwFFFFFFF0 = eax_n->dw0004;
-	esp_n->dwFFFFFFEC = eax_n->dw0000;
-	_stdio_common_vfprintf();
+	_stdio_common_vfprintf(eax_n->dw0000, eax_n->dw0004);
 }
 
 // 004012CE: Register Eq_n Win32CrtStartup()
@@ -488,7 +486,6 @@ void fn00401920()
 			if (*esi_n != 0x00)
 			{
 				fn00401976();
-				word32 ecx_n;
 				fn00000000();
 			}
 			++esi_n;

@@ -23,9 +23,7 @@ void fn00401010(word32 dwArg04)
 	esp_n->dwFFFFFFF8 = dwArg04;
 	esp_n->dwFFFFFFF4 = eax_n;
 	struct Eq_n * eax_n = fn00401000();
-	esp_n->dwFFFFFFF0 = eax_n->dw0004;
-	esp_n->dwFFFFFFEC = eax_n->dw0000;
-	_stdio_common_vfprintf();
+	_stdio_common_vfprintf(eax_n->dw0000, eax_n->dw0004);
 }
 
 // 00401040: Register word32 fn00401040(Register word32 ecx)

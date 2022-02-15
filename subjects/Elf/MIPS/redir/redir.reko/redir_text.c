@@ -634,7 +634,7 @@ void main(int32 r4, Eq_n r5[], word32 r16, word32 ra)
 	*g_ptr10000A28 = g_ptr10000A40->dw0684 << 0x0A;
 	*g_ptr1000090C = (int32) g_ptr10000A40->t05EC;
 	open_log("a", ra);
-	__xpg_basename();
+	__xpg_basename(r5[0].ptr0000);
 	*g_ptr10000A28 >= 0x00;
 	word32 r6_n;
 	word32 r5_n;
@@ -1961,7 +1961,7 @@ void properties_load(Eq_n r4, Eq_n r5, word32 ra)
 			char * r2_n = strchr(r2_n, '#');
 			if (r2_n != null)
 				*r2_n = 0x00;
-			char * r2_n = r2_n + strspn();
+			char * r2_n = r2_n + strspn(r2_n, 0x00410000, 0x0040A640);
 			if ((word32) *r2_n != 0x00)
 			{
 				char * r2_n = r2_n + strcspn(r2_n, 0x00410000, 0x0040A644, r2_n);
@@ -2067,7 +2067,7 @@ Eq_n properties_parse_command_line[](int32 r4, Eq_n r5[], word32 r16, word32 ra)
 					r28_n->ptrFFFF8064();
 					r28_n = (struct Eq_n *) 0x10008860;
 					r5_n = r5_n;
-					if (r2_n == toupper())
+					if (r2_n == toupper((word32) (((g_ptr10000A40 + ((dwLoc24_n * 0x14 - dwLoc24_n << 0x03) + 8) / 0x0696)->a0004))[0].ptr0000))
 						goto l00406004;
 					r5_n = r5_n;
 				}

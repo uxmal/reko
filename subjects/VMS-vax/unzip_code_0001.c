@@ -85,11 +85,7 @@ void fn000117AA(struct Eq_n * r2)
 			struct Eq_n * r2_n;
 			word32 ap_n;
 			r2_n->dwC68E = fn0000E276(ap_n, fp_n, out r2_n, out ap_n, out fp_n);
-			struct Eq_n * sp_n = (struct Eq_n *) <invalid>;
-			sp_n->dwFFFFFFFC = fp_n + -6;
-			struct Eq_n * r2_n;
-			word32 r0_n;
-			fn00000002();
+			fn00000002(fp_n + -6);
 			r2_n->wC692 = (word16) r0_n;
 			r2_n->dw0080 = r2_n->dwC68A + r2_n->dwC68E;
 		}
@@ -2486,30 +2482,17 @@ l00013C9E:
 							word32 r6_n;
 							word32 fp_n;
 							word32 r4_n;
-							ptr32 r9_n;
+							word32 r9_n;
 							word32 r10_n;
 							(r2_n + 2)();
 							if ((uint32) sp_n->w002A >= 0x04)
 							{
-								r9_n = g_ptr192D0;
 								sp_n->ptr002C = g_ptr192D8;
 								sp_n->ptr0018 = g_ptr192BC;
 								sp_n->ptr0014 = g_ptr192C4;
 								do
 								{
-									sp_n->dwFFFFFFFC = r7_n;
-									struct Eq_n * sp_n;
-									word32 ap_n;
-									word32 r5_n;
-									word32 r6_n;
-									word32 r0_n;
-									word32 fp_n;
-									word32 r4_n;
-									word32 r9_n;
-									word32 r10_n;
-									word32 r8_n;
-									word32 r7_n;
-									fn00000002();
+									fn00000002(r7_n);
 									sp_n->w0012 = (word16) r0_n;
 									sp_n->dwFFFFFFFC = r7_n + 2;
 									word32 r0_n;

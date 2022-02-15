@@ -63,8 +63,6 @@ namespace Reko.Analysis
 
         public void Transform()
         {
-            if (ssa.Procedure.Name == "frame_dummy")
-                ssa.ToString(); //$DEBUG
             foreach (var block in ssa.Procedure.ControlGraph.Blocks)
             {
                 for (int i = 0; i < block.Statements.Count; ++i)
@@ -126,7 +124,7 @@ namespace Reko.Analysis
                     return new GuessedArguments(regWrites, stackIds, stackStores);
                 case CallInstruction _:
                 case PhiAssignment _:
-                    return null;
+                    return new GuessedArguments(regWrites, stackIds, stackStores);
                 default:
                     throw new NotImplementedException($"GuessArgument: {stm.Instruction.GetType()}");
                 }

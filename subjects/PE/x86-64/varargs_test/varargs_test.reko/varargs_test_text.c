@@ -4,14 +4,14 @@
 
 #include "varargs_test.h"
 
-// 0000000140001000: Register word32 fn0000000140001000(Register word64 rbx, Register word64 rsi, Register word64 rdi)
+// 0000000140001000: Register word32 fn0000000140001000()
 // Called from:
 //      Win32CrtStartup
-word32 fn0000000140001000(word64 rbx, word64 rsi, word64 rdi)
+word32 fn0000000140001000()
 {
 	ui64 rax_n = g_qw40003000 ^ fp - 200;
-	fn0000000140001140(rbx, rsi, rdi);
-	fn00000001400010D0(rbx, rsi, rdi);
+	fn0000000140001140(0x140002210);
+	fn00000001400010D0(0x140002228);
 	return fn00000001400011B0(rax_n ^ fp - 200, qwLocD0);
 }
 
@@ -24,14 +24,12 @@ ptr64 fn00000001400010C0()
 	return 0x140003628;
 }
 
-// 00000001400010D0: void fn00000001400010D0(Register word64 rbx, Register word64 rsi, Register word64 rdi)
+// 00000001400010D0: void fn00000001400010D0(Register ptr64 rcx)
 // Called from:
 //      fn0000000140001000
-void fn00000001400010D0(word64 rbx, word64 rsi, word64 rdi)
+void fn00000001400010D0(ptr64 rcx)
 {
-	_acrt_iob_func(0x00, 0x00, 0x00, rdi, rsi, rbx);
-	fn00000001400010C0();
-	_stdio_common_vfscanf();
+	_stdio_common_vfscanf(rcx, 0x00, 0x00, 0x00, *fn00000001400010C0(), _acrt_iob_func(0x00, 0x00, 0x00), fp + 0x10);
 }
 
 // 0000000140001130: Register ptr64 fn0000000140001130()
@@ -43,14 +41,12 @@ ptr64 fn0000000140001130()
 	return 0x140003620;
 }
 
-// 0000000140001140: void fn0000000140001140(Register word64 rbx, Register word64 rsi, Register word64 rdi)
+// 0000000140001140: void fn0000000140001140(Register ptr64 rcx)
 // Called from:
 //      fn0000000140001000
-void fn0000000140001140(word64 rbx, word64 rsi, word64 rdi)
+void fn0000000140001140(ptr64 rcx)
 {
-	_acrt_iob_func(0x01, 0x01, rdi, rsi, rbx);
-	fn0000000140001130();
-	_stdio_common_vfprintf();
+	_stdio_common_vfprintf(rcx, 0x00, 0x00, 0x00, *fn0000000140001130(), _acrt_iob_func(0x01, 0x01), fp + 0x10);
 }
 
 // 00000001400011B0: Register word32 fn00000001400011B0(Register ui64 rcx, Stack word64 qwArg00)
@@ -68,18 +64,18 @@ word32 fn00000001400011B0(ui64 rcx, word64 qwArg00)
 	return fn000000014000147C(rcx, qwArg00);
 }
 
-// 00000001400011D4: void fn00000001400011D4(Register word64 rbx, Stack word64 qwArg08, Stack word64 qwArg20)
-void fn00000001400011D4(word64 rbx, word64 qwArg08, word64 qwArg20)
+// 00000001400011D4: void fn00000001400011D4(Stack word64 qwArg08)
+void fn00000001400011D4(word64 qwArg08)
 {
-	set_app_type(0x01, 0x01, rbx);
+	set_app_type(0x01, 0x01);
 	_set_fmode(fn0000000140001920());
 	*__p__commode() = fn0000000140001ABC();
 	if (fn000000014000164C(0x01) != 0x00)
 	{
 		fn0000000140001B5C();
 		fn0000000140001854(0x140001BA8);
-		fn0000000140001918();
-		if ((word32) configure_narrow_argv() == 0x00)
+		word32 eax_n = fn0000000140001918();
+		if ((word32) configure_narrow_argv(eax_n, (uint64) eax_n) == 0x00)
 		{
 			fn0000000140001928();
 			if (fn0000000140001958() != 0x00)
@@ -87,7 +83,7 @@ void fn00000001400011D4(word64 rbx, word64 qwArg08, word64 qwArg20)
 			fn0000000140001DD0();
 			fn0000000140001DD0();
 			word32 eax_n = fn0000000140001ABC();
-			configthreadlocale();
+			configthreadlocale(eax_n, (uint64) eax_n);
 			if (fn0000000140001938() != 0x00)
 				initialize_narrow_environment();
 			fn0000000140001ABC();
@@ -119,14 +115,14 @@ void fn0000000140001290()
 void fn00000001400012A0()
 {
 	fn0000000140001B14();
-	fn0000000140001ABC();
-	set_new_mode();
+	word32 eax_n = fn0000000140001ABC();
+	set_new_mode(eax_n, (uint64) eax_n);
 }
 
-// 00000001400012BC: Register word32 fn00000001400012BC(Register (ptr64 (ptr64 code)) rax, Register word64 rsi)
+// 00000001400012BC: Register word32 fn00000001400012BC(Register (ptr64 (ptr64 code)) rax)
 // Called from:
 //      Win32CrtStartup
-word32 fn00000001400012BC(<anonymous> ** rax, word64 rsi)
+word32 fn00000001400012BC(<anonymous> ** rax)
 {
 	word56 rsi_56_8_n = SLICE(rsi, word56, 8);
 	byte al = (byte) rax;
@@ -184,10 +180,10 @@ word32 fn00000001400012BC(<anonymous> ** rax, word64 rsi)
 	fn000000014000196C();
 	if (*rax_n != null && (byte) fn0000000140001718(rax_n) != 0x00)
 		register_thread_local_exe_atexit_callback(*rax_n);
-	word64 rax_n = _p___argv();
-	word64 rax_n = _p___argc();
+	_p___argv();
+	_p___argc();
 	get_initial_narrow_environment();
-	uint64 rax_n = (uint64) fn0000000140001000(rax_n, rsi_n, rax_n);
+	uint64 rax_n = (uint64) fn0000000140001000();
 	fn0000000140001AC0();
 	int32 ebx_n = (word32) rax_n;
 	if ((byte) rax_n != 0x00)
@@ -206,7 +202,7 @@ word32 fn00000001400012BC(<anonymous> ** rax, word64 rsi)
 Eq_n Win32CrtStartup()
 {
 	<anonymous> ** rax_n = fn000000014000186C(qwLoc18);
-	return fn00000001400012BC(rax_n, rsi);
+	return fn00000001400012BC(rax_n);
 }
 
 // 0000000140001448: void fn0000000140001448(Register (ptr64 Eq_n) rcx)
@@ -465,11 +461,12 @@ word64 fn000000014000186C(word64 qwArg18)
 	return rax_n;
 }
 
-// 0000000140001918: void fn0000000140001918()
+// 0000000140001918: Register word32 fn0000000140001918()
 // Called from:
 //      fn00000001400011D4
-void fn0000000140001918()
+word32 fn0000000140001918()
 {
+	return 0x01;
 }
 
 // 0000000140001920: Register word32 fn0000000140001920()
@@ -620,7 +617,6 @@ void fn0000000140001B5C()
 		if (*rbx_n != 0x00)
 		{
 			fn0000000140001BF4();
-			word64 rcx_n;
 			fn0000000000000000();
 		}
 	}
@@ -635,7 +631,6 @@ void fn0000000140001BA8()
 		if (*rbx_n != 0x00)
 		{
 			fn0000000140001BF4();
-			word64 rcx_n;
 			fn0000000000000000();
 		}
 	}
@@ -776,10 +771,10 @@ void fn0000000140001F10(<anonymous> * rax)
 	rax();
 }
 
-// 0000000140001F12: void fn0000000140001F12(Register (ptr64 (ptr64 word32)) rcx, Register word64 rbp)
-void fn0000000140001F12(word32 ** rcx, word64 rbp)
+// 0000000140001F12: void fn0000000140001F12(Register (ptr64 (ptr64 word32)) rcx)
+void fn0000000140001F12(word32 ** rcx)
 {
-	seh_filter_exe((uint64) **rcx, rcx, rbp);
+	seh_filter_exe((uint64) **rcx, rcx);
 }
 
 // 0000000140001F30: void fn0000000140001F30()

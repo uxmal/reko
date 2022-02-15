@@ -1390,7 +1390,7 @@ l00400B20:
 	Mem203[Mem198[0x10000A28<32>:word32]:word32] = Mem198[Mem198[0x10000A40<32>:word32] + 0x684<32>:word32] << 0xA<8>
 	Mem207[Mem203[0x1000090C<32>:word32]:word32] = Mem203[Mem203[0x10000A40<32>:word32] + 0x5EC<32>:word32]
 	open_log(0x409E4C<32>, ra)
-	__xpg_basename()
+	__xpg_basename(Mem207[r5:word32])
 	branch Mem257[Mem257[0x10000A28<32>:word32]:word32] >= 0<32> l00400C88
 l00400C78:
 l00400C88:
@@ -3147,7 +3147,7 @@ l004057C4:
 l004057F4:
 	Mem192[r2_184:byte] = 0<8>
 l00405800:
-	word32 r2_212 = r2_151 + strspn()
+	word32 r2_212 = r2_151 + strspn(r2_151, 0x410000<32>, 0x40A640<32>)
 	branch CONVERT(Mem213[r2_212:int8], int8, word32) != 0<32> l00405858
 l00405858:
 	word32 r2_232 = r2_212 + strcspn(r2_212, 0x410000<32>, 0x40A644<32>, r2_212)
@@ -3286,7 +3286,7 @@ l00405F80:
 		defs: r2:r2_206
 	r28_125 = 0x10008860<32>
 	r5_168 = r5_227
-	branch r2_206 == toupper() l00406004
+	branch r2_206 == toupper(CONVERT(Mem116[(Mem116[0x10000A40<32>:word32] + ((dwLoc24_383 * 0x14<32> - dwLoc24_383 << 3<8>) + 8<i32>)) + 4<32>:int8], int8, word32)) l00406004
 l00406004:
 	dwLoc20_382 = 1<i32>
 	word32 r2_247 = Mem235[Mem235[r28_125 - 0x7E20<32>:word32] + ((dwLoc24_383 * 0x14<32> - dwLoc24_383 << 3<8>) + 8<i32>):word32]

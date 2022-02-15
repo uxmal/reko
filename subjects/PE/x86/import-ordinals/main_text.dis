@@ -30,9 +30,7 @@ l00401010:
 	Mem27[esp_14 - 8<i32>:word32] = dwArg04
 	Mem29[esp_14 - 12<i32>:word32] = eax_16
 	word32 eax_30 = fn00401000()
-	Mem33[esp_14 - 16<i32>:word32] = Mem29[eax_30 + 4<32>:word32]
-	Mem36[esp_14 - 20<i32>:word32] = Mem33[eax_30:word32]
-	_stdio_common_vfprintf()
+	_stdio_common_vfprintf(Mem33[eax_30:word32], Mem29[eax_30 + 4<32>:word32])
 	return
 fn00401010_exit:
 

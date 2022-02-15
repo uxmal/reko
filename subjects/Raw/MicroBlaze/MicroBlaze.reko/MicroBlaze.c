@@ -222,10 +222,10 @@ void fn00000320()
 {
 }
 
-// 00000378: Register Eq_n fn00000378(Register Eq_n r0, Register Eq_n r5, Register Eq_n r6, Register Eq_n r9, Register Eq_n r10, Register Eq_n r27, Register Eq_n r28, Register out ptr32 r4Out, Register out ptr32 r19Out)
+// 00000378: Register Eq_n fn00000378(Register Eq_n r0, Register Eq_n r5, Register Eq_n r6, Register Eq_n r9, Register Eq_n r10, Register out ptr32 r4Out, Register out ptr32 r19Out)
 // Called from:
 //      fn00000378
-Eq_n fn00000378(Eq_n r0, Eq_n r5, Eq_n r6, Eq_n r9, Eq_n r10, Eq_n r27, Eq_n r28, ptr32 & r4Out, ptr32 & r19Out)
+Eq_n fn00000378(Eq_n r0, Eq_n r5, Eq_n r6, Eq_n r9, Eq_n r10, ptr32 & r4Out, ptr32 & r19Out)
 {
 	Eq_n r23_n = r6;
 	Eq_n r22_n = 0x4000;
@@ -236,7 +236,7 @@ Eq_n fn00000378(Eq_n r0, Eq_n r5, Eq_n r6, Eq_n r9, Eq_n r10, Eq_n r27, Eq_n r28
 		struct Eq_n * r4_n;
 		Eq_n r6_n;
 		Eq_n r7_n;
-		Eq_n r3_n = fn000023C8(r0, r5, fp - 0x4018, 0x4000, r27, r28, out r4_n, out r6_n, out r7_n);
+		Eq_n r3_n = fn000023C8(r0, r5, fp - 0x4018, 0x4000, out r4_n, out r6_n, out r7_n);
 		if (Test(LT,r3_n))
 		{
 			word32 r20_n;
@@ -304,8 +304,8 @@ Eq_n fn00000378(Eq_n r0, Eq_n r5, Eq_n r6, Eq_n r9, Eq_n r10, Eq_n r27, Eq_n r28
 			*((word32) r1_n - 0x0428) = r15_n;
 			*((word32) r1_n - 8) = r21_n;
 			ui32 r10_n;
-			word32 r4_n;
 			word32 r9_n;
+			word32 r4_n;
 			Eq_n r3_n = fn00008CC4(r3_n, r5_n, r6_n, r7_n, r8_n, out r4_n, out r9_n, out r10_n);
 			if (0x03FF - ((word32) r3_n + 3) < 0x00)
 			{
@@ -364,9 +364,7 @@ Eq_n fn00000378(Eq_n r0, Eq_n r5, Eq_n r6, Eq_n r9, Eq_n r10, Eq_n r27, Eq_n r28
 					ptr32 r4_n;
 					word32 r9_n;
 					word32 r10_n;
-					word32 r27_n;
-					word32 r28_n;
-					fn00009178(fn00000284(r0_n, r4_n, r21_n, r3_n, r10_n, out r4_n, out r19_n), r4_n, r19_n, out r3_n, out r4_n, out r9_n, out r10_n, out r27_n, out r28_n);
+					fn00009178(fn00000284(r0_n, r4_n, r21_n, r3_n, r10_n, out r4_n, out r19_n), r4_n, r19_n, out r3_n, out r4_n, out r9_n, out r10_n);
 					r4Out = r4_n;
 					r19Out = r22;
 					return r3_n;
@@ -483,12 +481,10 @@ l00000610:
 				Eq_n r19_n;
 				Eq_n r4_n;
 				Eq_n r10_n;
-				Eq_n r27_n;
-				Eq_n r28_n;
 				Eq_n r3_n;
 				ptr32 r4_n;
 				Eq_n r9_n;
-				Eq_n r0_n = fn00009178(fn00000378(r0_n, r3_n, r3_n, r9_n, r10_n, r27_n, r28_n, out r4_n, out r19_n), r4_n, r19_n, out r3_n, out r4_n, out r9_n, out r10_n, out r27_n, out r28_n);
+				Eq_n r0_n = fn00009178(fn00000378(r0_n, r3_n, r3_n, r9_n, r10_n, out r4_n, out r19_n), r4_n, r19_n, out r3_n, out r4_n, out r9_n, out r10_n);
 				r4Out = r4_n;
 				r19Out = r21;
 				return r3_n;
@@ -744,18 +740,17 @@ l000008E4:
 									ptr32 r7_n;
 									Eq_n r8_n;
 									Eq_n r9_n;
-									word32 r28_n;
-									word32 r27_n;
-									word32 r21_n;
 									word32 r22_n;
-									word32 r24_n;
+									word32 r23_n;
 									word32 r25_n;
 									word32 r26_n;
-									word32 r23_n;
-									word32 r6_n;
+									word32 r27_n;
+									word32 r24_n;
+									word32 r21_n;
 									word32 r4_n;
 									word32 r5_n;
-									Eq_n r0_n = fn00009120(r3_n, r23_n, r22_n, r9_n, r10_n, r19_n, r21_n, out r3_n, out r4_n, out r5_n, out r6_n, out r7_n, out r8_n, out r9_n, out r10_n, out r11_n, out r19_n, out r21_n, out r22_n, out r23_n, out r24_n, out r25_n, out r26_n, out r27_n, out r28_n);
+									word32 r6_n;
+									Eq_n r0_n = fn00009120(r3_n, r23_n, r22_n, r9_n, r10_n, r19_n, r21_n, out r3_n, out r4_n, out r5_n, out r6_n, out r7_n, out r8_n, out r9_n, out r10_n, out r11_n, out r19_n, out r21_n, out r22_n, out r23_n, out r24_n, out r25_n, out r26_n, out r27_n);
 									*((word32) r19_n + 48) = r3_n;
 									Eq_n r4_n = ~r3_n;
 									if (Test(NE,r4_n))
@@ -834,7 +829,6 @@ l000008E4:
 						Eq_n r9_n;
 						word32 r25_n;
 						word32 r26_n;
-						word32 r28_n;
 						word32 r27_n;
 						word32 r24_n;
 						word32 r4_n;
@@ -842,7 +836,7 @@ l000008E4:
 						word32 r22_n;
 						word32 r23_n;
 						word32 r5_n;
-						Eq_n r0_n = fn00009120(r3_n, r23_n, r22_n, r9_n, r10_n, r19_n, r21_n, out r3_n, out r4_n, out r5_n, out r6_n, out r7_n, out r8_n, out r9_n, out r10_n, out r11_n, out r19_n, out r21_n, out r22_n, out r23_n, out r24_n, out r25_n, out r26_n, out r27_n, out r28_n);
+						Eq_n r0_n = fn00009120(r3_n, r23_n, r22_n, r9_n, r10_n, r19_n, r21_n, out r3_n, out r4_n, out r5_n, out r6_n, out r7_n, out r8_n, out r9_n, out r10_n, out r11_n, out r19_n, out r21_n, out r22_n, out r23_n, out r24_n, out r25_n, out r26_n, out r27_n);
 						((word32) r19_n + 0x0C)->u0 = 31153;
 						*r19_n = r21_n;
 						ptr32 r19_n;
@@ -1106,24 +1100,22 @@ l00001AD8:
 	goto l00001AD8;
 }
 
-// 00001BBC: Register Eq_n fn00001BBC(Register Eq_n r0, Register Eq_n r5, Register Eq_n r19, Register Eq_n r27, Register Eq_n r28, Register out Eq_n r4Out, Register out Eq_n r6Out, Register out Eq_n r7Out)
+// 00001BBC: Register Eq_n fn00001BBC(Register Eq_n r0, Register Eq_n r5, Register out Eq_n r4Out, Register out Eq_n r6Out, Register out Eq_n r7Out)
 // Called from:
 //      fn00002274
 //      fn000023C8
-Eq_n fn00001BBC(Eq_n r0, Eq_n r5, Eq_n r19, Eq_n r27, Eq_n r28, union Eq_n & r4Out, union Eq_n & r6Out, union Eq_n & r7Out)
+Eq_n fn00001BBC(Eq_n r0, Eq_n r5, union Eq_n & r4Out, union Eq_n & r6Out, union Eq_n & r7Out)
 {
 	Eq_n r21_n = r5;
 	int32 r22_n = 0x00;
 	Eq_n r26_n = 0x01;
 	Eq_n r25_n = *((word32) r5 + 100);
-	ptr32 r24_n = (word32) r5 + 84;
 	Eq_n r23_n = 0x00;
 	do
 	{
 		Eq_n r4_n;
 		Eq_n r3_n;
 		Eq_n r6_n;
-		Eq_n r0_n;
 		if (Test(EQ,*((word32) r21_n + 88)))
 		{
 			r6_n = r23_n;
@@ -1145,8 +1137,7 @@ Eq_n fn00001BBC(Eq_n r0, Eq_n r5, Eq_n r19, Eq_n r27, Eq_n r28, union Eq_n & r4O
 			Eq_n r19_n = *((word32) r21_n + 52);
 			if (Test(EQ,r19_n))
 			{
-				r28 = *((word32) r21_n + 32);
-				r27 = *((word32) r21_n + 24);
+				Eq_n r27_n = *((word32) r21_n + 24);
 				do
 				{
 					fn000190F0();
@@ -1169,15 +1160,15 @@ Eq_n fn00001BBC(Eq_n r0, Eq_n r5, Eq_n r19, Eq_n r27, Eq_n r28, union Eq_n & r4O
 						}
 					}
 					r19_n += r3_n;
-				} while (r19_n - r27 < 0x00);
-				r19 = r19_n + Mem128[r21_n + 88:word32];
+				} while (r19_n - r27_n < 0x00);
+				word32 r19_n = r19_n + Mem128[r21_n + 88:word32];
 				*((word32) r21_n + 84) = *((word32) r21_n + 32);
-				if (Test(NE,r19))
+				if (Test(NE,r19_n))
 				{
-					*((word32) r21_n + 88) = r19;
+					*((word32) r21_n + 88) = r19_n;
 					goto l00001C0C;
 				}
-				*((word32) r21_n + 88) = r19;
+				*((word32) r21_n + 88) = r19_n;
 			}
 			word32 r4_n;
 			word32 r5_n;
@@ -1191,13 +1182,11 @@ Eq_n fn00001BBC(Eq_n r0, Eq_n r5, Eq_n r19, Eq_n r27, Eq_n r28, union Eq_n & r4O
 			goto l00001D94;
 		}
 l00001C0C:
-		word32 r3_n;
-		word32 r18_n;
 		fnFFFFCC80();
 		if (Test(EQ,r3_n + 0x02 & ~0x04))
 		{
 			word32 r5_n;
-			fn00001A68(r0_n, r21_n, ~0x01, ~0x6397, out r4_n, out r5_n, out r6_n);
+			fn00001A68(r0, r21_n, ~0x01, ~0x6397, out r4_n, out r5_n, out r6_n);
 			r7.u0 = ~0x6397;
 			r3_n.u0 = ~0x00;
 			goto l00001D94;
@@ -1205,7 +1194,7 @@ l00001C0C:
 		if (Test(EQ,r3_n ^ ~0x03))
 		{
 			word32 r5_n;
-			fn00001A68(r0_n, r21_n, ~0x03, ~0x636F, out r4_n, out r5_n, out r6_n);
+			fn00001A68(r0, r21_n, ~0x03, ~0x636F, out r4_n, out r5_n, out r6_n);
 			r7.u0 = ~0x636F;
 			r3_n.u0 = ~0x00;
 			goto l00001D94;
@@ -1217,7 +1206,7 @@ l00001C0C:
 			if (Test(EQ,r7))
 				r7.u0 = ~0x63E3;
 			word32 r5_n;
-			fn00001A68(r0_n, r21_n, ~0x02, r7, out r4_n, out r5_n, out r6_n);
+			fn00001A68(r0, r21_n, ~0x02, r7, out r4_n, out r5_n, out r6_n);
 			r3_n.u0 = ~0x00;
 			goto l00001D94;
 		}
@@ -1230,20 +1219,19 @@ l00001C0C:
 			r4_n = r3_n ^ 0x01;
 			if (Test(EQ,r3_n ^ 0x01))
 			{
-				*((word32) r21_n + 44) = r0_n;
+				*((word32) r21_n + 44) = r0;
 				r3_n.u0 = 0x00;
 			}
 			else
 				r3_n = r5_n;
 			goto l00001D94;
 		}
-		r0 = r0_n;
 	} while (Test(NE,r3_n ^ 0x01));
 	Eq_n r3_n = *((word32) r21_n + 96);
 	Eq_n r5_n = r25_n - r5_n;
 	*r21_n = r5_n;
 	*((word32) r21_n + 4) = r3_n - r5_n;
-	*((word32) r21_n + 44) = r0_n;
+	*((word32) r21_n + 44) = r0;
 	r3_n.u0 = 0x00;
 l00001D94:
 	r4Out = r4_n;
@@ -1439,11 +1427,11 @@ l00001EE4:
 	}
 }
 
-// 00002274: Register word32 fn00002274(Register Eq_n r0, Register Eq_n r5, Register Eq_n r27, Register Eq_n r28, Register out Eq_n r4Out, Register out ptr32 r6Out, Register out Eq_n r7Out)
+// 00002274: Register word32 fn00002274(Register Eq_n r0, Register Eq_n r5, Register out Eq_n r4Out, Register out ptr32 r6Out, Register out Eq_n r7Out)
 // Called from:
 //      fn000023C8
 //      fn00003674
-word32 fn00002274(Eq_n r0, Eq_n r5, Eq_n r27, Eq_n r28, union Eq_n & r4Out, ptr32 & r6Out, union Eq_n & r7Out)
+word32 fn00002274(Eq_n r0, Eq_n r5, union Eq_n & r4Out, ptr32 & r6Out, union Eq_n & r7Out)
 {
 	do
 	{
@@ -1511,7 +1499,7 @@ l000023A0:
 			Eq_n r3_n = *((word32) r5 + 24);
 			*((word32) r5 + 96) = *((word32) r5 + 36);
 			*((word32) r5 + 100) = r3_n * 0x02;
-			if (Test(EQ,~fn00001BBC(r0, r5, r5, r27, r28, out r4_n, out r6, out r7)))
+			if (Test(EQ,~fn00001BBC(r0, r5, out r4_n, out r6, out r7)))
 			{
 				r3_n = ~0x00;
 				goto l000022CC;
@@ -1532,10 +1520,10 @@ l000022CC:
 	return r3_n;
 }
 
-// 000023C8: Register word32 fn000023C8(Register Eq_n r0, Register Eq_n r5, Register Eq_n r6, Register Eq_n r7, Register Eq_n r27, Register Eq_n r28, Register out Eq_n r4Out, Register out Eq_n r6Out, Register out Eq_n r7Out)
+// 000023C8: Register word32 fn000023C8(Register Eq_n r0, Register Eq_n r5, Register Eq_n r6, Register Eq_n r7, Register out Eq_n r4Out, Register out Eq_n r6Out, Register out Eq_n r7Out)
 // Called from:
 //      fn00000378
-word32 fn000023C8(Eq_n r0, Eq_n r5, Eq_n r6, Eq_n r7, Eq_n r27, Eq_n r28, union Eq_n & r4Out, union Eq_n & r6Out, union Eq_n & r7Out)
+word32 fn000023C8(Eq_n r0, Eq_n r5, Eq_n r6, Eq_n r7, union Eq_n & r4Out, union Eq_n & r6Out, union Eq_n & r7Out)
 {
 	if (Test(EQ,r5))
 	{
@@ -1618,7 +1606,7 @@ word32 fn000023C8(Eq_n r0, Eq_n r5, Eq_n r6, Eq_n r7, Eq_n r27, Eq_n r28, union 
 				}
 				if (Test(NE,*((word32) r5 + 52)) && Test(EQ,*((word32) r5 + 88)))
 					break;
-				if (Test(EQ,~fn00002274(r0, r5, r27, r28, out r4, out r6, out r7)))
+				if (Test(EQ,~fn00002274(r0, r5, out r4, out r6, out r7)))
 					goto l000025B0;
 				r21_n = *r5;
 			}
@@ -1639,7 +1627,7 @@ l000024D0:
 			r6 = *((word32) r5 + 4);
 			fn00018C34();
 			Eq_n r3_n = *r5 - r21_n;
-			Mem200[r5 + 4:word32] = Mem189[r5 + 4:word32] + r21_n;
+			Mem188[r5 + 4:word32] = Mem177[r5 + 4:word32] + r21_n;
 			*r5 = r3_n;
 			r7 = r21_n;
 			r22_n -= r21_n;
@@ -1682,21 +1670,21 @@ l0000265C:
 		{
 			do
 			{
-				r28 = r24_n + r21_n;
-				r27 = r22_n - r21_n;
-				r6 = r28;
-				if (0x00 - r27 < 0x00)
+				word32 r28_n = r24_n + r21_n;
+				Eq_n r27_n = r22_n - r21_n;
+				r6 = r28_n;
+				if (0x00 - r27_n < 0x00)
 					r7.u0 = 0x00;
 				else
-					r7 = r27;
+					r7 = r27_n;
 				fn000190F0();
 				if (Test(LE,r3_n ^ 0x01))
 				{
 					int32 r21_n = (byte) r21_n.u0 + (r3_n ^ 0x01);
 					if (Test(NE,r3_n ^ 0x01))
 					{
-						word32 r4_n;
 						word32 r5_n;
+						word32 r4_n;
 						fn00001A68(r0, r5, ~0x00, ~0x63B3, out r4_n, out r5_n, out r6);
 						r7.u0 = ~0x63B3;
 						r4 = *((word32) r5 + 76);
@@ -1706,8 +1694,8 @@ l0000265C:
 					{
 						r21_n = r21_n - (r3_n ^ 0x01);
 						*((word32) r5 + 52) = r26_n;
-						r24_n = r28;
-						r22_n = r27;
+						r24_n = r28_n;
+						r22_n = r27_n;
 						goto l00002524;
 					}
 				}
@@ -1721,7 +1709,7 @@ l00002594:
 		*((word32) r5 + 100) = r22_n;
 		*((word32) r5 + 96) = r24_n;
 		word32 r4_n;
-		if (Test(NE,~fn00001BBC(r0, r5, r5, r27, r28, out r4_n, out r6, out r7)))
+		if (Test(NE,~fn00001BBC(r0, r5, out r4_n, out r6, out r7)))
 		{
 			r21_n = *r5;
 			*r5 = r0;
@@ -1745,16 +1733,16 @@ l00002658:
 		r3_n = 0x00;
 		goto l00002658;
 	}
-	if (Test(EQ,~fn00002274(r0, r5, r27, r28, out r4, out r6, out r7)))
+	if (Test(EQ,~fn00002274(r0, r5, out r4, out r6, out r7)))
 		goto l000025B0;
 	goto l00002538;
 }
 
-// 00003674: Register Eq_n fn00003674(Register Eq_n r0, Register Eq_n r3, Register Eq_n r4, Register Eq_n r5, Register Eq_n r6, Register Eq_n r19, Register Eq_n r22, Register Eq_n r23, Register Eq_n r26, Register Eq_n r27, Register Eq_n r28, Register out ptr32 r22Out)
+// 00003674: Register Eq_n fn00003674(Register Eq_n r0, Register Eq_n r3, Register Eq_n r4, Register Eq_n r5, Register Eq_n r6, Register Eq_n r19, Register Eq_n r22, Register Eq_n r23, Register Eq_n r26, Register out ptr32 r22Out)
 // Called from:
 //      fn00008008
 //      fn00008234
-Eq_n fn00003674(Eq_n r0, Eq_n r3, Eq_n r4, Eq_n r5, Eq_n r6, Eq_n r19, Eq_n r22, Eq_n r23, Eq_n r26, Eq_n r27, Eq_n r28, ptr32 & r22Out)
+Eq_n fn00003674(Eq_n r0, Eq_n r3, Eq_n r4, Eq_n r5, Eq_n r6, Eq_n r19, Eq_n r22, Eq_n r23, Eq_n r26, ptr32 & r22Out)
 {
 	Eq_n r4_n;
 	if (Test(NE,r3))
@@ -1816,12 +1804,12 @@ Eq_n fn00003674(Eq_n r0, Eq_n r3, Eq_n r4, Eq_n r5, Eq_n r6, Eq_n r19, Eq_n r22,
 				Eq_n r4_n;
 				word32 r7_n;
 				word32 r6_n;
-			} while (Test(NE,~fn00002274(r0, r19, r27, r28, out r4_n, out r6_n, out r7_n)));
+			} while (Test(NE,~fn00002274(r0, r19, out r4_n, out r6_n, out r7_n)));
+			word32 r24_n;
+			word32 r23_n;
+			word32 r21_n;
 			Eq_n r19_n;
 			ptr32 r22_n;
-			word32 r23_n;
-			word32 r24_n;
-			word32 r21_n;
 			fn00003720(r0, r4_n, r19, 0x00, r23, r6, r26, out r19_n, out r21_n, out r22_n, out r23_n, out r24_n);
 			r22Out = r22_n;
 			return r19_n;
@@ -1831,9 +1819,9 @@ Eq_n fn00003674(Eq_n r0, Eq_n r3, Eq_n r4, Eq_n r5, Eq_n r6, Eq_n r19, Eq_n r22,
 l0000367C:
 	if (Test(EQ,r23))
 	{
+		word32 r23_n;
 		word32 r24_n;
 		word32 r21_n;
-		word32 r23_n;
 		Eq_n r19_n;
 		ptr32 r22_n;
 		fn00003720(r0, r4, r19, r22, r23, r6, r26, out r19_n, out r21_n, out r22_n, out r23_n, out r24_n);
@@ -1844,8 +1832,8 @@ l0000367C:
 	{
 		r4_n = *r19;
 l00003688:
-		word32 r23_n;
 		word32 r24_n;
+		word32 r23_n;
 		word32 r21_n;
 		Eq_n r19_n;
 		ptr32 r22_n;
@@ -1889,10 +1877,10 @@ Eq_n fn00003720(Eq_n r0, Eq_n r4, Eq_n r19, Eq_n r22, Eq_n r23, Eq_n r25, Eq_n r
 		ui32 r3_n = r26 ^ r25;
 		if (Test(EQ,r4))
 		{
-			word32 r6_n;
 			word32 r7_n;
 			word32 r4_n;
-			fn00002274(r0, r5, r27, r28, out r4_n, out r6_n, out r7_n);
+			word32 r6_n;
+			fn00002274(r0, r5, out r4_n, out r6_n, out r7_n);
 			if (Test(EQ,~r3_n))
 				goto l00003790;
 			r3_n = 0x00;
@@ -2201,11 +2189,10 @@ l00003B7C:
 				word32 r8_n;
 				word32 r7_n;
 				word32 r5_n;
-				word32 r28_n;
 				word32 r27_n;
 				word32 r10_n;
 				word32 r9_n;
-				fn00008E80(r24_n, r6_n, r8, r9, r10, r21_n, out r3_n, out r4, out r5_n, out r6_n, out r7_n, out r8_n, out r9_n, out r10_n, out r19_n, out r21_n, out r22_n, out r23_n, out r24_n, out r25_n, out r26_n, out r27_n, out r28_n);
+				fn00008E80(r24_n, r6_n, r8, r9, r10, r21_n, out r3_n, out r4, out r5_n, out r6_n, out r7_n, out r8_n, out r9_n, out r10_n, out r19_n, out r21_n, out r22_n, out r23_n, out r24_n, out r25_n, out r26_n, out r27_n);
 				if (Test(EQ,r3_n ^ ~0x01))
 				{
 					word32 r6_n;
@@ -2453,11 +2440,10 @@ l00003DAC:
 							word32 r23_n;
 							word32 r10_n;
 							word32 r24_n;
-							word32 r28_n;
 							word32 r27_n;
 							word32 r26_n;
 							word32 r25_n;
-							fn00008E80(r5, r6, r8, r9, r10, r21, out r3_n, out r4_n, out r5_n, out r6_n, out r7_n, out r8_n, out r9_n, out r10_n, out r19_n, out r21_n, out r22_n, out r23_n, out r24_n, out r25_n, out r26_n, out r27_n, out r28_n);
+							fn00008E80(r5, r6, r8, r9, r10, r21, out r3_n, out r4_n, out r5_n, out r6_n, out r7_n, out r8_n, out r9_n, out r10_n, out r19_n, out r21_n, out r22_n, out r23_n, out r24_n, out r25_n, out r26_n, out r27_n);
 							if (Test(NE,r3_n ^ ~0x01))
 								goto l00003DBC;
 l00003E90:
@@ -2499,24 +2485,23 @@ l00003E6C:
 						*((word32) r19 + 96) = r3_n;
 						*((word32) r19 + 100) = r26_n;
 						*((word32) r19 + 4) = r3_n;
-						word32 r26_n;
-						word32 r24_n;
+						word32 r27_n;
 						word32 r25_n;
-						word32 r5_n;
-						word32 r9_n;
-						word32 r19_n;
-						word32 r4_n;
+						word32 r26_n;
 						word32 r3_n;
-						word32 r7_n;
-						word32 r8_n;
 						word32 r6_n;
 						word32 r10_n;
-						word32 r28_n;
-						word32 r27_n;
+						word32 r21_n;
+						word32 r5_n;
+						word32 r4_n;
+						word32 r8_n;
+						word32 r9_n;
+						word32 r7_n;
+						word32 r19_n;
+						word32 r24_n;
 						word32 r23_n;
 						word32 r22_n;
-						word32 r21_n;
-						fn00008E80(r5, r6, r8, r9, r10, r21, out r3_n, out r4_n, out r5_n, out r6_n, out r7_n, out r8_n, out r9_n, out r10_n, out r19_n, out r21_n, out r22_n, out r23_n, out r24_n, out r25_n, out r26_n, out r27_n, out r28_n);
+						fn00008E80(r5, r6, r8, r9, r10, r21, out r3_n, out r4_n, out r5_n, out r6_n, out r7_n, out r8_n, out r9_n, out r10_n, out r19_n, out r21_n, out r22_n, out r23_n, out r24_n, out r25_n, out r26_n, out r27_n);
 						if (Test(EQ,r3_n ^ ~0x01))
 							goto l00003E90;
 l00003DBC:
@@ -2680,13 +2665,12 @@ l00004080:
 					r6_n = r25_n;
 l000040D0:
 					word32 r3_n;
-					word32 r28_n;
-					word32 r27_n;
-					word32 r5_n;
-					word32 r26_n;
 					word32 r6_n;
+					word32 r27_n;
 					word32 r7_n;
-					r0 = fn00008E80(r24_n, r6_n, r8, r9, r10, r21_n, out r3_n, out r4, out r5_n, out r6_n, out r7_n, out r8, out r9, out r10, out r19_n, out r21_n, out r22_n, out r23_n, out r24_n, out r25_n, out r26_n, out r27_n, out r28_n);
+					word32 r26_n;
+					word32 r5_n;
+					r0 = fn00008E80(r24_n, r6_n, r8, r9, r10, r21_n, out r3_n, out r4, out r5_n, out r6_n, out r7_n, out r8, out r9, out r10, out r19_n, out r21_n, out r22_n, out r23_n, out r24_n, out r25_n, out r26_n, out r27_n);
 					r3_n = r3_n ^ ~0x01;
 					if (Test(EQ,r3_n ^ ~0x01))
 						goto l0000419C;
@@ -2736,12 +2720,11 @@ l00004178:
 			*((word32) r19_n + 4) = r3_n;
 			word32 r3_n;
 			word32 r27_n;
-			word32 r28_n;
 			word32 r26_n;
 			word32 r7_n;
 			word32 r6_n;
 			word32 r5_n;
-			r0 = fn00008E80(r24_n, r25_n, r8, r9, r10, r21_n, out r3_n, out r4, out r5_n, out r6_n, out r7_n, out r8, out r9, out r10, out r19_n, out r21_n, out r22_n, out r23_n, out r24_n, out r25_n, out r26_n, out r27_n, out r28_n);
+			r0 = fn00008E80(r24_n, r25_n, r8, r9, r10, r21_n, out r3_n, out r4, out r5_n, out r6_n, out r7_n, out r8, out r9, out r10, out r19_n, out r21_n, out r22_n, out r23_n, out r24_n, out r25_n, out r26_n, out r27_n);
 			r3_n = r3_n ^ ~0x01;
 			if (Test(EQ,r3_n ^ ~0x01))
 			{
@@ -2958,7 +2941,6 @@ l00005460:
 						}
 						word32 r27_n;
 						word32 r3_n;
-						word32 r28_n;
 						word32 r23_n;
 						word32 r6_n;
 						word32 r8_n;
@@ -2967,7 +2949,7 @@ l00005460:
 						word32 r10_n;
 						word32 r4_n;
 						word32 r5_n;
-						r0 = fn00008E80(r24_n, r26_n, r8, r9, r10, r21, out r3_n, out r4_n, out r5_n, out r6_n, out r7_n, out r8_n, out r9_n, out r10_n, out r19_n, out r21_n, out r22_n, out r23_n, out r24_n, out r25_n, out r26_n, out r27_n, out r28_n);
+						r0 = fn00008E80(r24_n, r26_n, r8, r9, r10, r21, out r3_n, out r4_n, out r5_n, out r6_n, out r7_n, out r8_n, out r9_n, out r10_n, out r19_n, out r21_n, out r22_n, out r23_n, out r24_n, out r25_n, out r26_n, out r27_n);
 						if (Test(EQ,r3_n ^ ~0x01))
 						{
 							word32 r5_n;
@@ -3053,7 +3035,6 @@ l00005584:
 l000055BC:
 							Eq_n r22_n;
 							word32 r25_n;
-							Eq_n r28_n;
 							word32 r3_n;
 							word32 r4_n;
 							word32 r7_n;
@@ -3061,7 +3042,7 @@ l000055BC:
 							word32 r27_n;
 							word32 r5_n;
 							word32 r6_n;
-							r0 = fn00008E80(r21_n, r6_n, r8, r9, r10, r21_n, out r3_n, out r4_n, out r5_n, out r6_n, out r7_n, out r8, out r9, out r10, out r19_n, out r21_n, out r22_n, out r23_n, out r24_n, out r25_n, out r26_n, out r27_n, out r28_n);
+							r0 = fn00008E80(r21_n, r6_n, r8, r9, r10, r21_n, out r3_n, out r4_n, out r5_n, out r6_n, out r7_n, out r8, out r9, out r10, out r19_n, out r21_n, out r22_n, out r23_n, out r24_n, out r25_n, out r26_n, out r27_n);
 							r1_n.u0 = <invalid>;
 							if (Test(EQ,r3_n ^ ~0x01))
 							{
@@ -3075,7 +3056,7 @@ l000055BC:
 							Eq_n r4_n = *((word32) r19_n + 100);
 							if (Test(EQ,r4_n ^ r25_n))
 							{
-								r0 = fn00008234(r0, r21_n, r22_n, r23_n, r28_n, out r22_n);
+								r0 = fn00008234(r0, r21_n, r22_n, r23_n, out r22_n);
 								r3_n = *((word32) r19_n + 24);
 								goto l0000565C;
 							}
@@ -4014,11 +3995,11 @@ l0000669C:
 	goto l00006680;
 }
 
-// 00006DB4: Register word32 fn00006DB4(Register out ptr32 r21Out, Register out ptr32 r22Out, Register out ptr32 r23Out, Register out ptr32 r24Out, Register out ptr32 r25Out, Register out ptr32 r26Out, Register out ptr32 r27Out, Register out ptr32 r28Out, Register out ptr32 r31Out)
+// 00006DB4: Register word32 fn00006DB4(Register out ptr32 r21Out, Register out ptr32 r22Out, Register out ptr32 r23Out, Register out ptr32 r24Out, Register out ptr32 r25Out, Register out ptr32 r26Out, Register out ptr32 r27Out, Register out ptr32 r31Out)
 // Called from:
 //      fn00007044
 //      fn000070A4
-word32 fn00006DB4(ptr32 & r21Out, ptr32 & r22Out, ptr32 & r23Out, ptr32 & r24Out, ptr32 & r25Out, ptr32 & r26Out, ptr32 & r27Out, ptr32 & r28Out, ptr32 & r31Out)
+word32 fn00006DB4(ptr32 & r21Out, ptr32 & r22Out, ptr32 & r23Out, ptr32 & r24Out, ptr32 & r25Out, ptr32 & r26Out, ptr32 & r27Out, ptr32 & r31Out)
 {
 	r21Out = dwArg24;
 	r22Out = dwArg28;
@@ -4027,18 +4008,17 @@ word32 fn00006DB4(ptr32 & r21Out, ptr32 & r22Out, ptr32 & r23Out, ptr32 & r24Out
 	r25Out = dwArg34;
 	r26Out = dwArg38;
 	r27Out = dwArg3C;
-	r28Out = dwArg40;
 	r31Out = dwArg4C;
 	return dwArg1C;
 }
 
-// 00007044: Register uint32 fn00007044(Register Eq_n r19, Register Eq_n r21, Register Eq_n r22, Register Eq_n r23, Register out Eq_n r4Out, Register out Eq_n r6Out, Register out (ptr32 Eq_n) r19Out, Register out (ptr32 Eq_n) r21Out, Register out (ptr32 Eq_n) r22Out, Register out (ptr32 Eq_n) r23Out, Register out ptr32 r24Out, Register out Eq_n r25Out, Register out (ptr32 Eq_n) r26Out, Register out ptr32 r27Out, Register out ptr32 r28Out, Register out ptr32 r31Out)
+// 00007044: Register uint32 fn00007044(Register Eq_n r19, Register Eq_n r21, Register Eq_n r22, Register Eq_n r23, Register out Eq_n r4Out, Register out Eq_n r6Out, Register out (ptr32 Eq_n) r19Out, Register out (ptr32 Eq_n) r21Out, Register out (ptr32 Eq_n) r22Out, Register out (ptr32 Eq_n) r23Out, Register out ptr32 r24Out, Register out Eq_n r25Out, Register out (ptr32 Eq_n) r26Out, Register out ptr32 r27Out, Register out ptr32 r31Out)
 // Called from:
 //      fn00008008
 //      fn00008234
 //      fn00008E80
 //      fn0000D008
-uint32 fn00007044(Eq_n r19, Eq_n r21, Eq_n r22, Eq_n r23, union Eq_n & r4Out, union Eq_n & r6Out, struct Eq_n & r19Out, struct Eq_n & r21Out, struct Eq_n & r22Out, struct Eq_n & r23Out, ptr32 & r24Out, union Eq_n & r25Out, struct Eq_n & r26Out, ptr32 & r27Out, ptr32 & r28Out, ptr32 & r31Out)
+uint32 fn00007044(Eq_n r19, Eq_n r21, Eq_n r22, Eq_n r23, union Eq_n & r4Out, union Eq_n & r6Out, struct Eq_n & r19Out, struct Eq_n & r21Out, struct Eq_n & r22Out, struct Eq_n & r23Out, ptr32 & r24Out, union Eq_n & r25Out, struct Eq_n & r26Out, ptr32 & r27Out, ptr32 & r31Out)
 {
 	fn00018C34();
 	Eq_n r6_n = *((word32) r23 + 16);
@@ -4067,9 +4047,8 @@ uint32 fn00007044(Eq_n r19, Eq_n r21, Eq_n r22, Eq_n r23, union Eq_n & r4Out, un
 	Eq_n r25_n;
 	struct Eq_n * r26_n;
 	ptr32 r27_n;
-	ptr32 r28_n;
 	ptr32 r31_n;
-	struct Eq_n * r19_n = fn00006DB4(out r21_n, out r22_n, out r23_n, out r24_n, out r25_n, out r26_n, out r27_n, out r28_n, out r31_n);
+	struct Eq_n * r19_n = fn00006DB4(out r21_n, out r22_n, out r23_n, out r24_n, out r25_n, out r26_n, out r27_n, out r31_n);
 	r4Out = r4_n;
 	r6Out = r6_n;
 	r19Out = r19_n;
@@ -4080,7 +4059,6 @@ uint32 fn00007044(Eq_n r19, Eq_n r21, Eq_n r22, Eq_n r23, union Eq_n & r4Out, un
 	r25Out = r25_n;
 	r26Out = r26_n;
 	r27Out = r27_n;
-	r28Out = r28_n;
 	r31Out = r31_n;
 	return r4_n >> 31;
 }
@@ -4097,9 +4075,8 @@ word32 fn000070A4()
 	word32 r25_n;
 	word32 r26_n;
 	word32 r27_n;
-	word32 r28_n;
 	word32 r31_n;
-	fn00006DB4(out r21_n, out r22_n, out r23_n, out r24_n, out r25_n, out r26_n, out r27_n, out r28_n, out r31_n);
+	fn00006DB4(out r21_n, out r22_n, out r23_n, out r24_n, out r25_n, out r26_n, out r27_n, out r31_n);
 	return r22_n;
 }
 
@@ -4273,25 +4250,24 @@ l0000819C:
 	word32 r25_n;
 	word32 r26_n;
 	word32 r27_n;
-	word32 r28_n;
 	word32 r31_n;
-	fn00007044(r19, r21, r22, r23, out r4_n, out r6_n, out r19_n, out r21_n, out r22_n, out r23_n, out r24_n, out r25_n, out r26_n, out r27_n, out r28_n, out r31_n);
+	fn00007044(r19, r21, r22, r23, out r4_n, out r6_n, out r19_n, out r21_n, out r22_n, out r23_n, out r24_n, out r25_n, out r26_n, out r27_n, out r31_n);
 	r3_n.u0 = 0x39;
 l000081B8:
 	*((word32) r5 + 48) = r3_n;
 	*((word32) r21 + 40) = r0;
 	word32 r22_n;
-	fn00003674(r0, r3, r4, r5, r6, r19, r22, r23, r26, r27, r28, out r22_n);
+	fn00003674(r0, r3, r4, r5, r6, r19, r22, r23, r26, out r22_n);
 	r4Out = r4_n;
 	r8Out = r8;
 	r21Out = (struct Eq_n *) <invalid>;
 	return 0x00;
 }
 
-// 00008234: Register Eq_n fn00008234(Register Eq_n r0, Register Eq_n r5, Register Eq_n r22, Register Eq_n r23, Register Eq_n r28, Register out Eq_n r22Out)
+// 00008234: Register Eq_n fn00008234(Register Eq_n r0, Register Eq_n r5, Register Eq_n r22, Register Eq_n r23, Register out Eq_n r22Out)
 // Called from:
 //      fn00005538
-Eq_n fn00008234(Eq_n r0, Eq_n r5, Eq_n r22, Eq_n r23, Eq_n r28, union Eq_n & r22Out)
+Eq_n fn00008234(Eq_n r0, Eq_n r5, Eq_n r22, Eq_n r23, union Eq_n & r22Out)
 {
 	if (Test(EQ,r5) || (Test(EQ,*((word32) r5 + 32)) || Test(EQ,*((word32) r5 + 36))))
 	{
@@ -4317,7 +4293,6 @@ l00008278:
 		if (Test(NE,(-r4_n | r4_n) >> 31))
 			goto l00008278;
 	}
-	Eq_n r27_n;
 	Eq_n r4_n;
 	Eq_n r26_n;
 	Eq_n r22_n;
@@ -4351,6 +4326,7 @@ l000083CC:
 			word32 r30_n;
 			word32 r29_n;
 			word32 r28_n;
+			word32 r27_n;
 			word32 r25_n;
 			word32 r24_n;
 			r0 = fn00005318(r0, 0x00, 0x00, 0x00, out r3_n, out r4_n, out r6_n, out r19_n, out r21_n, out r22_n, out r23_n, out r24_n, out r25_n, out r26_n, out r27_n, out r28_n, out r29_n, out r30_n);
@@ -4359,7 +4335,7 @@ l000083E4:
 			*((word32) r19_n + 48) = r3_n;
 			*((word32) r21_n + 40) = r0;
 			Eq_n r22_n;
-			struct Eq_n * r19_n = fn00003674(r0, r3_n, r4_n, r5_n, r6_n, r19_n, r22_n, r23_n, r26_n, r27_n, r28, out r22_n)->ptr001C;
+			struct Eq_n * r19_n = fn00003674(r0, r3_n, r4_n, r5_n, r6_n, r19_n, r22_n, r23_n, r26_n, out r22_n)->ptr001C;
 			word32 r3_n = r19_n->dw004C;
 			word16 r8_n[] = r19_n->ptr0044;
 			r19_n->dw003C = r19_n->dw002C * 0x02;
@@ -4398,8 +4374,9 @@ l000083E4:
 	((word32) r21_n + 4)->u0 = 0x39;
 	word32 r25_n;
 	word32 r31_n;
+	word32 r27_n;
 	word32 r24_n;
-	r3_n = fn00007044(r5, r21_n, r22, r23, out r4_n, out r6_n, out r19_n, out r21_n, out r22_n, out r23_n, out r24_n, out r25_n, out r26_n, out r27_n, out r28, out r31_n);
+	r3_n = fn00007044(r5, r21_n, r22, r23, out r4_n, out r6_n, out r19_n, out r21_n, out r22_n, out r23_n, out r24_n, out r25_n, out r26_n, out r27_n, out r31_n);
 	r5_n = r21_n;
 	goto l000083E4;
 }
@@ -5211,7 +5188,7 @@ Eq_n fn00008E5C(Eq_n r3, Eq_n r5, Eq_n r6, Eq_n r7, Eq_n r8, ptr32 & r4Out)
 	return r3_n;
 }
 
-// 00008E80: Register Eq_n fn00008E80(Register Eq_n r5, Register Eq_n r6, Register Eq_n r8, Register Eq_n r9, Register Eq_n r10, Register Eq_n r21, Register out ptr32 r3Out, Register out Eq_n r4Out, Register out Eq_n r5Out, Register out Eq_n r6Out, Register out Eq_n r7Out, Register out Eq_n r8Out, Register out Eq_n r9Out, Register out Eq_n r10Out, Register out (ptr32 Eq_n) r19Out, Register out Eq_n r21Out, Register out Eq_n r22Out, Register out Eq_n r23Out, Register out ptr32 r24Out, Register out Eq_n r25Out, Register out ptr32 r26Out, Register out ptr32 r27Out, Register out ptr32 r28Out)
+// 00008E80: Register Eq_n fn00008E80(Register Eq_n r5, Register Eq_n r6, Register Eq_n r8, Register Eq_n r9, Register Eq_n r10, Register Eq_n r21, Register out ptr32 r3Out, Register out Eq_n r4Out, Register out Eq_n r5Out, Register out Eq_n r6Out, Register out Eq_n r7Out, Register out Eq_n r8Out, Register out Eq_n r9Out, Register out Eq_n r10Out, Register out (ptr32 Eq_n) r19Out, Register out Eq_n r21Out, Register out Eq_n r22Out, Register out Eq_n r23Out, Register out ptr32 r24Out, Register out Eq_n r25Out, Register out ptr32 r26Out, Register out ptr32 r27Out)
 // Called from:
 //      fn00003AA4
 //      fn00003C74
@@ -5219,7 +5196,7 @@ Eq_n fn00008E5C(Eq_n r3, Eq_n r5, Eq_n r6, Eq_n r7, Eq_n r8, ptr32 & r4Out)
 //      fn00005318
 //      fn00005538
 //      fn0000AFBC
-Eq_n fn00008E80(Eq_n r5, Eq_n r6, Eq_n r8, Eq_n r9, Eq_n r10, Eq_n r21, ptr32 & r3Out, union Eq_n & r4Out, union Eq_n & r5Out, union Eq_n & r6Out, union Eq_n & r7Out, union Eq_n & r8Out, union Eq_n & r9Out, union Eq_n & r10Out, struct Eq_n & r19Out, union Eq_n & r21Out, union Eq_n & r22Out, union Eq_n & r23Out, ptr32 & r24Out, union Eq_n & r25Out, ptr32 & r26Out, ptr32 & r27Out, ptr32 & r28Out)
+Eq_n fn00008E80(Eq_n r5, Eq_n r6, Eq_n r8, Eq_n r9, Eq_n r10, Eq_n r21, ptr32 & r3Out, union Eq_n & r4Out, union Eq_n & r5Out, union Eq_n & r6Out, union Eq_n & r7Out, union Eq_n & r8Out, union Eq_n & r9Out, union Eq_n & r10Out, struct Eq_n & r19Out, union Eq_n & r21Out, union Eq_n & r22Out, union Eq_n & r23Out, ptr32 & r24Out, union Eq_n & r25Out, ptr32 & r26Out, ptr32 & r27Out)
 {
 	if (Test(EQ,r5) || (Test(EQ,*((word32) r5 + 32)) || Test(EQ,*((word32) r5 + 36))))
 	{
@@ -5239,7 +5216,6 @@ Eq_n fn00008E80(Eq_n r5, Eq_n r6, Eq_n r8, Eq_n r9, Eq_n r10, Eq_n r21, ptr32 & 
 		r25Out = r25;
 		r26Out = r26;
 		r27Out = r27;
-		r28Out = r28;
 		return r0;
 	}
 	Eq_n r19_n = *((word32) r5 + 28);
@@ -5254,7 +5230,6 @@ Eq_n fn00008E80(Eq_n r5, Eq_n r6, Eq_n r8, Eq_n r9, Eq_n r10, Eq_n r21, ptr32 & 
 		Eq_n r25_n;
 		ptr32 r26_n;
 		ptr32 r27_n;
-		ptr32 r28_n;
 		ptr32 r3_n;
 		Eq_n r4_n;
 		Eq_n r5_n;
@@ -5263,7 +5238,7 @@ Eq_n fn00008E80(Eq_n r5, Eq_n r6, Eq_n r8, Eq_n r9, Eq_n r10, Eq_n r21, ptr32 & 
 		Eq_n r8_n;
 		Eq_n r9_n;
 		word32 r11_n;
-		Eq_n r0_n = fn00009120(~0x01, r5, r8, r9, r10, r19_n, r21, out r3_n, out r4_n, out r5_n, out r6_n, out r7_n, out r8_n, out r9_n, out r10_n, out r11_n, out r19_n, out r21_n, out r22_n, out r23_n, out r24_n, out r25_n, out r26_n, out r27_n, out r28_n);
+		Eq_n r0_n = fn00009120(~0x01, r5, r8, r9, r10, r19_n, r21, out r3_n, out r4_n, out r5_n, out r6_n, out r7_n, out r8_n, out r9_n, out r10_n, out r11_n, out r19_n, out r21_n, out r22_n, out r23_n, out r24_n, out r25_n, out r26_n, out r27_n);
 		r3Out = r3_n;
 		r4Out = r4_n;
 		r5Out = r5_n;
@@ -5280,11 +5255,11 @@ Eq_n fn00008E80(Eq_n r5, Eq_n r6, Eq_n r8, Eq_n r9, Eq_n r10, Eq_n r21, ptr32 & 
 		r25Out = r25_n;
 		r26Out = r26_n;
 		r27Out = r27_n;
-		r28Out = r28_n;
 		return r0_n;
 	}
 	if (Test(NE,r5 ^ *r19_n))
 	{
+		word32 r11_n;
 		Eq_n r10_n;
 		struct Eq_n * r19_n;
 		Eq_n r21_n;
@@ -5294,7 +5269,6 @@ Eq_n fn00008E80(Eq_n r5, Eq_n r6, Eq_n r8, Eq_n r9, Eq_n r10, Eq_n r21, ptr32 & 
 		Eq_n r25_n;
 		ptr32 r26_n;
 		ptr32 r27_n;
-		ptr32 r28_n;
 		ptr32 r3_n;
 		Eq_n r4_n;
 		Eq_n r5_n;
@@ -5302,8 +5276,7 @@ Eq_n fn00008E80(Eq_n r5, Eq_n r6, Eq_n r8, Eq_n r9, Eq_n r10, Eq_n r21, ptr32 & 
 		Eq_n r7_n;
 		Eq_n r8_n;
 		Eq_n r9_n;
-		word32 r11_n;
-		Eq_n r0_n = fn00009120(~0x01, r5, r8, r9, r10, r19_n, r21, out r3_n, out r4_n, out r5_n, out r6_n, out r7_n, out r8_n, out r9_n, out r10_n, out r11_n, out r19_n, out r21_n, out r22_n, out r23_n, out r24_n, out r25_n, out r26_n, out r27_n, out r28_n);
+		Eq_n r0_n = fn00009120(~0x01, r5, r8, r9, r10, r19_n, r21, out r3_n, out r4_n, out r5_n, out r6_n, out r7_n, out r8_n, out r9_n, out r10_n, out r11_n, out r19_n, out r21_n, out r22_n, out r23_n, out r24_n, out r25_n, out r26_n, out r27_n);
 		r3Out = r3_n;
 		r4Out = r4_n;
 		r5Out = r5_n;
@@ -5320,7 +5293,6 @@ Eq_n fn00008E80(Eq_n r5, Eq_n r6, Eq_n r8, Eq_n r9, Eq_n r10, Eq_n r21, ptr32 & 
 		r25Out = r25_n;
 		r26Out = r26_n;
 		r27Out = r27_n;
-		r28Out = r28_n;
 		return r0_n;
 	}
 	Eq_n r8_n = *((word32) r19_n + 4);
@@ -5339,7 +5311,6 @@ Eq_n fn00008E80(Eq_n r5, Eq_n r6, Eq_n r8, Eq_n r9, Eq_n r10, Eq_n r21, ptr32 & 
 			Eq_n r25_n;
 			ptr32 r26_n;
 			ptr32 r27_n;
-			ptr32 r28_n;
 			ptr32 r3_n;
 			Eq_n r4_n;
 			Eq_n r5_n;
@@ -5348,7 +5319,7 @@ Eq_n fn00008E80(Eq_n r5, Eq_n r6, Eq_n r8, Eq_n r9, Eq_n r10, Eq_n r21, ptr32 & 
 			Eq_n r8_n;
 			Eq_n r9_n;
 			word32 r11_n;
-			Eq_n r0_n = fn00009120(~0x01, r5, r8_n, r8_n ^ 666, r10_n, r19_n, r21, out r3_n, out r4_n, out r5_n, out r6_n, out r7_n, out r8_n, out r9_n, out r10_n, out r11_n, out r19_n, out r21_n, out r22_n, out r23_n, out r24_n, out r25_n, out r26_n, out r27_n, out r28_n);
+			Eq_n r0_n = fn00009120(~0x01, r5, r8_n, r8_n ^ 666, r10_n, r19_n, r21, out r3_n, out r4_n, out r5_n, out r6_n, out r7_n, out r8_n, out r9_n, out r10_n, out r11_n, out r19_n, out r21_n, out r22_n, out r23_n, out r24_n, out r25_n, out r26_n, out r27_n);
 			r3Out = r3_n;
 			r4Out = r4_n;
 			r5Out = r5_n;
@@ -5365,7 +5336,6 @@ Eq_n fn00008E80(Eq_n r5, Eq_n r6, Eq_n r8, Eq_n r9, Eq_n r10, Eq_n r21, ptr32 & 
 			r25Out = r25_n;
 			r26Out = r26_n;
 			r27Out = r27_n;
-			r28Out = r28_n;
 			return r0_n;
 		}
 	}
@@ -5380,7 +5350,6 @@ Eq_n fn00008E80(Eq_n r5, Eq_n r6, Eq_n r8, Eq_n r9, Eq_n r10, Eq_n r21, ptr32 & 
 		Eq_n r25_n;
 		ptr32 r26_n;
 		ptr32 r27_n;
-		ptr32 r28_n;
 		ptr32 r3_n;
 		Eq_n r4_n;
 		Eq_n r5_n;
@@ -5389,7 +5358,7 @@ Eq_n fn00008E80(Eq_n r5, Eq_n r6, Eq_n r8, Eq_n r9, Eq_n r10, Eq_n r21, ptr32 & 
 		Eq_n r8_n;
 		Eq_n r9_n;
 		word32 r11_n;
-		Eq_n r0_n = fn00009120(~0x01, r5, r8_n, r8_n ^ 666, r10_n, r19_n, r21, out r3_n, out r4_n, out r5_n, out r6_n, out r7_n, out r8_n, out r9_n, out r10_n, out r11_n, out r19_n, out r21_n, out r22_n, out r23_n, out r24_n, out r25_n, out r26_n, out r27_n, out r28_n);
+		Eq_n r0_n = fn00009120(~0x01, r5, r8_n, r8_n ^ 666, r10_n, r19_n, r21, out r3_n, out r4_n, out r5_n, out r6_n, out r7_n, out r8_n, out r9_n, out r10_n, out r11_n, out r19_n, out r21_n, out r22_n, out r23_n, out r24_n, out r25_n, out r26_n, out r27_n);
 		r3Out = r3_n;
 		r4Out = r4_n;
 		r5Out = r5_n;
@@ -5406,7 +5375,6 @@ Eq_n fn00008E80(Eq_n r5, Eq_n r6, Eq_n r8, Eq_n r9, Eq_n r10, Eq_n r21, ptr32 & 
 		r25Out = r25_n;
 		r26Out = r26_n;
 		r27Out = r27_n;
-		r28Out = r28_n;
 		return r0_n;
 	}
 	if (Test(EQ,*((word32) r5 + 0x0C)))
@@ -5422,7 +5390,6 @@ l0000AC38:
 		Eq_n r25_n;
 		ptr32 r26_n;
 		ptr32 r27_n;
-		ptr32 r28_n;
 		ptr32 r3_n;
 		Eq_n r4_n;
 		Eq_n r5_n;
@@ -5431,7 +5398,7 @@ l0000AC38:
 		Eq_n r8_n;
 		Eq_n r9_n;
 		word32 r11_n;
-		Eq_n r0_n = fn00009120(~0x01, r5, r8_n, r8_n ^ 666, r10_n, r19_n, r21, out r3_n, out r4_n, out r5_n, out r6_n, out r7_n, out r8_n, out r9_n, out r10_n, out r11_n, out r19_n, out r21_n, out r22_n, out r23_n, out r24_n, out r25_n, out r26_n, out r27_n, out r28_n);
+		Eq_n r0_n = fn00009120(~0x01, r5, r8_n, r8_n ^ 666, r10_n, r19_n, r21, out r3_n, out r4_n, out r5_n, out r6_n, out r7_n, out r8_n, out r9_n, out r10_n, out r11_n, out r19_n, out r21_n, out r22_n, out r23_n, out r24_n, out r25_n, out r26_n, out r27_n);
 		r3Out = r3_n;
 		r4Out = r4_n;
 		r5Out = r5_n;
@@ -5448,7 +5415,6 @@ l0000AC38:
 		r25Out = r25_n;
 		r26Out = r26_n;
 		r27Out = r27_n;
-		r28Out = r28_n;
 		return r0_n;
 	}
 	Eq_n r7_n = *((word32) r5 + 4);
@@ -5470,7 +5436,6 @@ l0000AC38:
 		Eq_n r25_n;
 		ptr32 r26_n;
 		ptr32 r27_n;
-		ptr32 r28_n;
 		ptr32 r3_n;
 		Eq_n r4_n;
 		Eq_n r5_n;
@@ -5479,7 +5444,7 @@ l0000AC38:
 		Eq_n r8_n;
 		Eq_n r9_n;
 		word32 r11_n;
-		Eq_n r0_n = fn00009120(~0x04, r5, r8_n, r8_n ^ 666, r4_n >> 31, r19_n, r21, out r3_n, out r4_n, out r5_n, out r6_n, out r7_n, out r8_n, out r9_n, out r10_n, out r11_n, out r19_n, out r21_n, out r22_n, out r23_n, out r24_n, out r25_n, out r26_n, out r27_n, out r28_n);
+		Eq_n r0_n = fn00009120(~0x04, r5, r8_n, r8_n ^ 666, r4_n >> 31, r19_n, r21, out r3_n, out r4_n, out r5_n, out r6_n, out r7_n, out r8_n, out r9_n, out r10_n, out r11_n, out r19_n, out r21_n, out r22_n, out r23_n, out r24_n, out r25_n, out r26_n, out r27_n);
 		r3Out = r3_n;
 		r4Out = r4_n;
 		r5Out = r5_n;
@@ -5496,7 +5461,6 @@ l0000AC38:
 		r25Out = r25_n;
 		r26Out = r26_n;
 		r27Out = r27_n;
-		r28Out = r28_n;
 		return r0_n;
 	}
 	Eq_n r3_n = *((word32) r19_n + 20);
@@ -5518,7 +5482,6 @@ l0000AC38:
 				Eq_n r25_n;
 				ptr32 r26_n;
 				ptr32 r27_n;
-				ptr32 r28_n;
 				ptr32 r3_n;
 				Eq_n r4_n;
 				Eq_n r5_n;
@@ -5526,7 +5489,7 @@ l0000AC38:
 				Eq_n r7_n;
 				Eq_n r8_n;
 				Eq_n r9_n;
-				Eq_n r0_n = fn00009120(r6 ^ 0x05, r5, r8_n, r8_n ^ 666, r4_n >> 31, r19_n, r5, out r3_n, out r4_n, out r5_n, out r6_n, out r7_n, out r8_n, out r9_n, out r10_n, out r11_n, out r19_n, out r21_n, out r22_n, out r23_n, out r24_n, out r25_n, out r26_n, out r27_n, out r28_n);
+				Eq_n r0_n = fn00009120(r6 ^ 0x05, r5, r8_n, r8_n ^ 666, r4_n >> 31, r19_n, r5, out r3_n, out r4_n, out r5_n, out r6_n, out r7_n, out r8_n, out r9_n, out r10_n, out r11_n, out r19_n, out r21_n, out r22_n, out r23_n, out r24_n, out r25_n, out r26_n, out r27_n);
 				r3Out = r3_n;
 				r4Out = r4_n;
 				r5Out = r5_n;
@@ -5543,7 +5506,6 @@ l0000AC38:
 				r25Out = r25_n;
 				r26Out = r26_n;
 				r27Out = r27_n;
-				r28Out = r28_n;
 				return r0_n;
 			}
 			else
@@ -5557,7 +5519,6 @@ l0000AC38:
 				Eq_n r25_n;
 				ptr32 r26_n;
 				ptr32 r27_n;
-				ptr32 r28_n;
 				ptr32 r3_n;
 				Eq_n r4_n;
 				Eq_n r5_n;
@@ -5566,7 +5527,7 @@ l0000AC38:
 				Eq_n r8_n;
 				Eq_n r9_n;
 				word32 r11_n;
-				Eq_n r0_n = fn00009120(r6 ^ 0x05, r5, r8_n, r8_n ^ 666, r4_n >> 31, r19_n, r5, out r3_n, out r4_n, out r5_n, out r6_n, out r7_n, out r8_n, out r9_n, out r10_n, out r11_n, out r19_n, out r21_n, out r22_n, out r23_n, out r24_n, out r25_n, out r26_n, out r27_n, out r28_n);
+				Eq_n r0_n = fn00009120(r6 ^ 0x05, r5, r8_n, r8_n ^ 666, r4_n >> 31, r19_n, r5, out r3_n, out r4_n, out r5_n, out r6_n, out r7_n, out r8_n, out r9_n, out r10_n, out r11_n, out r19_n, out r21_n, out r22_n, out r23_n, out r24_n, out r25_n, out r26_n, out r27_n);
 				r3Out = r3_n;
 				r4Out = r4_n;
 				r5Out = r5_n;
@@ -5583,7 +5544,6 @@ l0000AC38:
 				r25Out = r25_n;
 				r26Out = r26_n;
 				r27Out = r27_n;
-				r28Out = r28_n;
 				return r0_n;
 			}
 		}
@@ -5606,7 +5566,6 @@ l0000AC38:
 				Eq_n r25_n;
 				ptr32 r26_n;
 				ptr32 r27_n;
-				ptr32 r28_n;
 				ptr32 r3_n;
 				Eq_n r4_n;
 				Eq_n r5_n;
@@ -5614,7 +5573,7 @@ l0000AC38:
 				Eq_n r7_n;
 				Eq_n r8_n;
 				Eq_n r9_n;
-				Eq_n r0_n = fn00009120(r4_n * 0x02, r5_n, r8_n, r8_n ^ 666, r4_n >> 31, r19_n, r5, out r3_n, out r4_n, out r5_n, out r6_n, out r7_n, out r8_n, out r9_n, out r10_n, out r11_n, out r19_n, out r21_n, out r22_n, out r23_n, out r24_n, out r25_n, out r26_n, out r27_n, out r28_n);
+				Eq_n r0_n = fn00009120(r4_n * 0x02, r5_n, r8_n, r8_n ^ 666, r4_n >> 31, r19_n, r5, out r3_n, out r4_n, out r5_n, out r6_n, out r7_n, out r8_n, out r9_n, out r10_n, out r11_n, out r19_n, out r21_n, out r22_n, out r23_n, out r24_n, out r25_n, out r26_n, out r27_n);
 				r3Out = r3_n;
 				r4Out = r4_n;
 				r5Out = r5_n;
@@ -5631,7 +5590,6 @@ l0000AC38:
 				r25Out = r25_n;
 				r26Out = r26_n;
 				r27Out = r27_n;
-				r28Out = r28_n;
 				return r0_n;
 			}
 			else
@@ -5646,7 +5604,6 @@ l0000AC38:
 				Eq_n r25_n;
 				ptr32 r26_n;
 				ptr32 r27_n;
-				ptr32 r28_n;
 				ptr32 r3_n;
 				Eq_n r4_n;
 				Eq_n r5_n;
@@ -5654,7 +5611,7 @@ l0000AC38:
 				Eq_n r7_n;
 				Eq_n r8_n;
 				Eq_n r9_n;
-				Eq_n r0_n = fn00009120(r4_n * 0x02, r5_n, r8_n, r8_n ^ 666, r4_n >> 31, r19_n, r5, out r3_n, out r4_n, out r5_n, out r6_n, out r7_n, out r8_n, out r9_n, out r10_n, out r11_n, out r19_n, out r21_n, out r22_n, out r23_n, out r24_n, out r25_n, out r26_n, out r27_n, out r28_n);
+				Eq_n r0_n = fn00009120(r4_n * 0x02, r5_n, r8_n, r8_n ^ 666, r4_n >> 31, r19_n, r5, out r3_n, out r4_n, out r5_n, out r6_n, out r7_n, out r8_n, out r9_n, out r10_n, out r11_n, out r19_n, out r21_n, out r22_n, out r23_n, out r24_n, out r25_n, out r26_n, out r27_n);
 				r3Out = r3_n;
 				r4Out = r4_n;
 				r5Out = r5_n;
@@ -5671,27 +5628,26 @@ l0000AC38:
 				r25Out = r25_n;
 				r26Out = r26_n;
 				r27Out = r27_n;
-				r28Out = r28_n;
 				return r0_n;
 			}
 		}
 	}
-	word32 r6_n;
-	word32 r22_n;
 	word32 r7_n;
+	word32 r6_n;
 	word32 r23_n;
+	word32 r22_n;
 	word32 r24_n;
 	word32 r25_n;
 	word32 r26_n;
-	word32 r28_n;
 	word32 r27_n;
-	word32 r30_n;
 	word32 r29_n;
+	word32 r28_n;
+	word32 r31_n;
+	word32 r30_n;
 	Eq_n r19_n;
 	Eq_n r21_n;
 	Eq_n r4_n;
 	Eq_n r8_n;
-	word32 r31_n;
 	Eq_n r9_n;
 	Eq_n r5_n;
 	Eq_n r10_n;
@@ -5736,7 +5692,6 @@ l0000976C:
 					Eq_n r25_n;
 					ptr32 r26_n;
 					ptr32 r27_n;
-					ptr32 r28_n;
 					ptr32 r3_n;
 					Eq_n r4_n;
 					Eq_n r5_n;
@@ -5744,7 +5699,7 @@ l0000976C:
 					Eq_n r7_n;
 					Eq_n r8_n;
 					Eq_n r9_n;
-					Eq_n r0_n = fn00009120(r3_n, r5_n, r8_n, r8_n ^ 666, r10_n, r19_n, r21_n, out r3_n, out r4_n, out r5_n, out r6_n, out r7_n, out r8_n, out r9_n, out r10_n, out r11_n, out r19_n, out r21_n, out r22_n, out r23_n, out r24_n, out r25_n, out r26_n, out r27_n, out r28_n);
+					Eq_n r0_n = fn00009120(r3_n, r5_n, r8_n, r8_n ^ 666, r10_n, r19_n, r21_n, out r3_n, out r4_n, out r5_n, out r6_n, out r7_n, out r8_n, out r9_n, out r10_n, out r11_n, out r19_n, out r21_n, out r22_n, out r23_n, out r24_n, out r25_n, out r26_n, out r27_n);
 					r3Out = r3_n;
 					r4Out = r4_n;
 					r5Out = r5_n;
@@ -5761,7 +5716,6 @@ l0000976C:
 					r25Out = r25_n;
 					r26Out = r26_n;
 					r27Out = r27_n;
-					r28Out = r28_n;
 					return r0_n;
 				}
 				else
@@ -5775,7 +5729,6 @@ l0000976C:
 					Eq_n r25_n;
 					ptr32 r26_n;
 					ptr32 r27_n;
-					ptr32 r28_n;
 					ptr32 r3_n;
 					Eq_n r4_n;
 					Eq_n r5_n;
@@ -5784,7 +5737,7 @@ l0000976C:
 					Eq_n r8_n;
 					Eq_n r9_n;
 					word32 r11_n;
-					Eq_n r0_n = fn00009120(r3_n, r5_n, r8_n, r8_n ^ 666, r10_n, r19_n, r21_n, out r3_n, out r4_n, out r5_n, out r6_n, out r7_n, out r8_n, out r9_n, out r10_n, out r11_n, out r19_n, out r21_n, out r22_n, out r23_n, out r24_n, out r25_n, out r26_n, out r27_n, out r28_n);
+					Eq_n r0_n = fn00009120(r3_n, r5_n, r8_n, r8_n ^ 666, r10_n, r19_n, r21_n, out r3_n, out r4_n, out r5_n, out r6_n, out r7_n, out r8_n, out r9_n, out r10_n, out r11_n, out r19_n, out r21_n, out r22_n, out r23_n, out r24_n, out r25_n, out r26_n, out r27_n);
 					r3Out = r3_n;
 					r4Out = r4_n;
 					r5Out = r5_n;
@@ -5801,7 +5754,6 @@ l0000976C:
 					r25Out = r25_n;
 					r26Out = r26_n;
 					r27Out = r27_n;
-					r28Out = r28_n;
 					return r0_n;
 				}
 			}
@@ -5817,7 +5769,6 @@ l00009824:
 			Eq_n r25_n;
 			ptr32 r26_n;
 			ptr32 r27_n;
-			ptr32 r28_n;
 			ptr32 r3_n;
 			Eq_n r4_n;
 			Eq_n r5_n;
@@ -5826,7 +5777,7 @@ l00009824:
 			Eq_n r8_n;
 			Eq_n r9_n;
 			word32 r11_n;
-			Eq_n r0_n = fn00009120(r3_n, r5_n, r8_n, r9_n, r10_n, r19_n, r21_n, out r3_n, out r4_n, out r5_n, out r6_n, out r7_n, out r8_n, out r9_n, out r10_n, out r11_n, out r19_n, out r21_n, out r22_n, out r23_n, out r24_n, out r25_n, out r26_n, out r27_n, out r28_n);
+			Eq_n r0_n = fn00009120(r3_n, r5_n, r8_n, r9_n, r10_n, r19_n, r21_n, out r3_n, out r4_n, out r5_n, out r6_n, out r7_n, out r8_n, out r9_n, out r10_n, out r11_n, out r19_n, out r21_n, out r22_n, out r23_n, out r24_n, out r25_n, out r26_n, out r27_n);
 			r3Out = r3_n;
 			r4Out = r4_n;
 			r5Out = r5_n;
@@ -5843,7 +5794,6 @@ l00009824:
 			r25Out = r25_n;
 			r26Out = r26_n;
 			r27Out = r27_n;
-			r28Out = r28_n;
 			return r0_n;
 		}
 		*((word32) r19_n + 20) = r22_n;
@@ -5853,11 +5803,11 @@ l00009824:
 	goto l00009824;
 }
 
-// 00009120: Register word32 fn00009120(Register Eq_n r3, Register Eq_n r5, Register Eq_n r8, Register Eq_n r9, Register Eq_n r10, Register Eq_n r19, Register Eq_n r21, Register out ptr32 r3Out, Register out ptr32 r4Out, Register out ptr32 r5Out, Register out ptr32 r6Out, Register out ptr32 r7Out, Register out ptr32 r8Out, Register out ptr32 r9Out, Register out ptr32 r10Out, Register out ptr32 r11Out, Register out ptr32 r19Out, Register out ptr32 r21Out, Register out ptr32 r22Out, Register out ptr32 r23Out, Register out ptr32 r24Out, Register out ptr32 r25Out, Register out ptr32 r26Out, Register out ptr32 r27Out, Register out ptr32 r28Out)
+// 00009120: Register word32 fn00009120(Register Eq_n r3, Register Eq_n r5, Register Eq_n r8, Register Eq_n r9, Register Eq_n r10, Register Eq_n r19, Register Eq_n r21, Register out ptr32 r3Out, Register out ptr32 r4Out, Register out ptr32 r5Out, Register out ptr32 r6Out, Register out ptr32 r7Out, Register out ptr32 r8Out, Register out ptr32 r9Out, Register out ptr32 r10Out, Register out ptr32 r11Out, Register out ptr32 r19Out, Register out ptr32 r21Out, Register out ptr32 r22Out, Register out ptr32 r23Out, Register out ptr32 r24Out, Register out ptr32 r25Out, Register out ptr32 r26Out, Register out ptr32 r27Out)
 // Called from:
 //      fn00000770
 //      fn00008E80
-word32 fn00009120(Eq_n r3, Eq_n r5, Eq_n r8, Eq_n r9, Eq_n r10, Eq_n r19, Eq_n r21, ptr32 & r3Out, ptr32 & r4Out, ptr32 & r5Out, ptr32 & r6Out, ptr32 & r7Out, ptr32 & r8Out, ptr32 & r9Out, ptr32 & r10Out, ptr32 & r11Out, ptr32 & r19Out, ptr32 & r21Out, ptr32 & r22Out, ptr32 & r23Out, ptr32 & r24Out, ptr32 & r25Out, ptr32 & r26Out, ptr32 & r27Out, ptr32 & r28Out)
+word32 fn00009120(Eq_n r3, Eq_n r5, Eq_n r8, Eq_n r9, Eq_n r10, Eq_n r19, Eq_n r21, ptr32 & r3Out, ptr32 & r4Out, ptr32 & r5Out, ptr32 & r6Out, ptr32 & r7Out, ptr32 & r8Out, ptr32 & r9Out, ptr32 & r10Out, ptr32 & r11Out, ptr32 & r19Out, ptr32 & r21Out, ptr32 & r22Out, ptr32 & r23Out, ptr32 & r24Out, ptr32 & r25Out, ptr32 & r26Out, ptr32 & r27Out)
 {
 	Eq_n r3_n = (word32) r3 - 9;
 	if ((word32) r3 - 9 >= r5)
@@ -5875,7 +5825,6 @@ word32 fn00009120(Eq_n r3, Eq_n r5, Eq_n r8, Eq_n r9, Eq_n r10, Eq_n r19, Eq_n r
 			ptr32 r25_n;
 			ptr32 r26_n;
 			ptr32 r27_n;
-			ptr32 r28_n;
 			ptr32 r3_n;
 			ptr32 r4_n;
 			ptr32 r5_n;
@@ -5883,7 +5832,7 @@ word32 fn00009120(Eq_n r3, Eq_n r5, Eq_n r8, Eq_n r9, Eq_n r10, Eq_n r19, Eq_n r
 			ptr32 r7_n;
 			ptr32 r8_n;
 			ptr32 r9_n;
-			word32 r0_n = fn00009B8C(~0x04, r19, out r3_n, out r4_n, out r5_n, out r6_n, out r7_n, out r8_n, out r9_n, out r10_n, out r11_n, out r19_n, out r21_n, out r22_n, out r23_n, out r24_n, out r25_n, out r26_n, out r27_n, out r28_n);
+			word32 r0_n = fn00009B8C(~0x04, r19, out r3_n, out r4_n, out r5_n, out r6_n, out r7_n, out r8_n, out r9_n, out r10_n, out r11_n, out r19_n, out r21_n, out r22_n, out r23_n, out r24_n, out r25_n, out r26_n, out r27_n);
 			r3Out = r3_n;
 			r4Out = r4_n;
 			r5Out = r5_n;
@@ -5901,7 +5850,6 @@ word32 fn00009120(Eq_n r3, Eq_n r5, Eq_n r8, Eq_n r9, Eq_n r10, Eq_n r19, Eq_n r
 			r25Out = r25_n;
 			r26Out = r26_n;
 			r27Out = r27_n;
-			r28Out = r28_n;
 			return r0_n;
 		}
 		r3_n.u0 = ~0x04;
@@ -5921,7 +5869,6 @@ word32 fn00009120(Eq_n r3, Eq_n r5, Eq_n r8, Eq_n r9, Eq_n r10, Eq_n r19, Eq_n r
 			ptr32 r25_n;
 			ptr32 r26_n;
 			ptr32 r27_n;
-			ptr32 r28_n;
 			ptr32 r3_n;
 			ptr32 r4_n;
 			ptr32 r5_n;
@@ -5929,7 +5876,7 @@ word32 fn00009120(Eq_n r3, Eq_n r5, Eq_n r8, Eq_n r9, Eq_n r10, Eq_n r19, Eq_n r
 			ptr32 r7_n;
 			ptr32 r8_n;
 			ptr32 r9_n;
-			word32 r0_n = fn00009B8C(~0x04, r19, out r3_n, out r4_n, out r5_n, out r6_n, out r7_n, out r8_n, out r9_n, out r10_n, out r11_n, out r19_n, out r21_n, out r22_n, out r23_n, out r24_n, out r25_n, out r26_n, out r27_n, out r28_n);
+			word32 r0_n = fn00009B8C(~0x04, r19, out r3_n, out r4_n, out r5_n, out r6_n, out r7_n, out r8_n, out r9_n, out r10_n, out r11_n, out r19_n, out r21_n, out r22_n, out r23_n, out r24_n, out r25_n, out r26_n, out r27_n);
 			r3Out = r3_n;
 			r4Out = r4_n;
 			r5Out = r5_n;
@@ -5947,7 +5894,6 @@ word32 fn00009120(Eq_n r3, Eq_n r5, Eq_n r8, Eq_n r9, Eq_n r10, Eq_n r19, Eq_n r
 			r25Out = r25_n;
 			r26Out = r26_n;
 			r27Out = r27_n;
-			r28Out = r28_n;
 			return r0_n;
 		}
 		else
@@ -5962,7 +5908,6 @@ word32 fn00009120(Eq_n r3, Eq_n r5, Eq_n r8, Eq_n r9, Eq_n r10, Eq_n r19, Eq_n r
 			ptr32 r25_n;
 			ptr32 r26_n;
 			ptr32 r27_n;
-			ptr32 r28_n;
 			ptr32 r3_n;
 			ptr32 r4_n;
 			ptr32 r5_n;
@@ -5970,7 +5915,7 @@ word32 fn00009120(Eq_n r3, Eq_n r5, Eq_n r8, Eq_n r9, Eq_n r10, Eq_n r19, Eq_n r
 			ptr32 r7_n;
 			ptr32 r8_n;
 			ptr32 r9_n;
-			word32 r0_n = fn00009B8C(r3_n, r19, out r3_n, out r4_n, out r5_n, out r6_n, out r7_n, out r8_n, out r9_n, out r10_n, out r11_n, out r19_n, out r21_n, out r22_n, out r23_n, out r24_n, out r25_n, out r26_n, out r27_n, out r28_n);
+			word32 r0_n = fn00009B8C(r3_n, r19, out r3_n, out r4_n, out r5_n, out r6_n, out r7_n, out r8_n, out r9_n, out r10_n, out r11_n, out r19_n, out r21_n, out r22_n, out r23_n, out r24_n, out r25_n, out r26_n, out r27_n);
 			r3Out = r3_n;
 			r4Out = r4_n;
 			r5Out = r5_n;
@@ -5988,7 +5933,6 @@ word32 fn00009120(Eq_n r3, Eq_n r5, Eq_n r8, Eq_n r9, Eq_n r10, Eq_n r19, Eq_n r
 			r25Out = r25_n;
 			r26Out = r26_n;
 			r27Out = r27_n;
-			r28Out = r28_n;
 			return r0_n;
 		}
 	}
@@ -6004,7 +5948,6 @@ word32 fn00009120(Eq_n r3, Eq_n r5, Eq_n r8, Eq_n r9, Eq_n r10, Eq_n r19, Eq_n r
 		ptr32 r25_n;
 		ptr32 r26_n;
 		ptr32 r27_n;
-		ptr32 r28_n;
 		ptr32 r3_n;
 		ptr32 r4_n;
 		ptr32 r5_n;
@@ -6012,7 +5955,7 @@ word32 fn00009120(Eq_n r3, Eq_n r5, Eq_n r8, Eq_n r9, Eq_n r10, Eq_n r19, Eq_n r
 		ptr32 r7_n;
 		ptr32 r8_n;
 		ptr32 r9_n;
-		word32 r0_n = fn00009B8C(0x01, r19, out r3_n, out r4_n, out r5_n, out r6_n, out r7_n, out r8_n, out r9_n, out r10_n, out r11_n, out r19_n, out r21_n, out r22_n, out r23_n, out r24_n, out r25_n, out r26_n, out r27_n, out r28_n);
+		word32 r0_n = fn00009B8C(0x01, r19, out r3_n, out r4_n, out r5_n, out r6_n, out r7_n, out r8_n, out r9_n, out r10_n, out r11_n, out r19_n, out r21_n, out r22_n, out r23_n, out r24_n, out r25_n, out r26_n, out r27_n);
 		r3Out = r3_n;
 		r4Out = r4_n;
 		r5Out = r5_n;
@@ -6030,7 +5973,6 @@ word32 fn00009120(Eq_n r3, Eq_n r5, Eq_n r8, Eq_n r9, Eq_n r10, Eq_n r19, Eq_n r
 		r25Out = r25_n;
 		r26Out = r26_n;
 		r27Out = r27_n;
-		r28Out = r28_n;
 		return r0_n;
 	}
 	else if (*((word32) r19 + 0x0088) <= 0x01)
@@ -6045,7 +5987,6 @@ word32 fn00009120(Eq_n r3, Eq_n r5, Eq_n r8, Eq_n r9, Eq_n r10, Eq_n r19, Eq_n r
 		ptr32 r25_n;
 		ptr32 r26_n;
 		ptr32 r27_n;
-		ptr32 r28_n;
 		ptr32 r3_n;
 		ptr32 r4_n;
 		ptr32 r5_n;
@@ -6053,7 +5994,7 @@ word32 fn00009120(Eq_n r3, Eq_n r5, Eq_n r8, Eq_n r9, Eq_n r10, Eq_n r19, Eq_n r
 		ptr32 r7_n;
 		ptr32 r8_n;
 		ptr32 r9_n;
-		word32 r0_n = fn00009B8C(0x01, r19, out r3_n, out r4_n, out r5_n, out r6_n, out r7_n, out r8_n, out r9_n, out r10_n, out r11_n, out r19_n, out r21_n, out r22_n, out r23_n, out r24_n, out r25_n, out r26_n, out r27_n, out r28_n);
+		word32 r0_n = fn00009B8C(0x01, r19, out r3_n, out r4_n, out r5_n, out r6_n, out r7_n, out r8_n, out r9_n, out r10_n, out r11_n, out r19_n, out r21_n, out r22_n, out r23_n, out r24_n, out r25_n, out r26_n, out r27_n);
 		r3Out = r3_n;
 		r4Out = r4_n;
 		r5Out = r5_n;
@@ -6071,7 +6012,6 @@ word32 fn00009120(Eq_n r3, Eq_n r5, Eq_n r8, Eq_n r9, Eq_n r10, Eq_n r19, Eq_n r
 		r25Out = r25_n;
 		r26Out = r26_n;
 		r27Out = r27_n;
-		r28Out = r28_n;
 		return r0_n;
 	}
 	else
@@ -6086,7 +6026,6 @@ word32 fn00009120(Eq_n r3, Eq_n r5, Eq_n r8, Eq_n r9, Eq_n r10, Eq_n r19, Eq_n r
 		ptr32 r25_n;
 		ptr32 r26_n;
 		ptr32 r27_n;
-		ptr32 r28_n;
 		ptr32 r3_n;
 		ptr32 r4_n;
 		ptr32 r5_n;
@@ -6094,7 +6033,7 @@ word32 fn00009120(Eq_n r3, Eq_n r5, Eq_n r8, Eq_n r9, Eq_n r10, Eq_n r19, Eq_n r
 		ptr32 r7_n;
 		ptr32 r8_n;
 		ptr32 r9_n;
-		word32 r0_n = fn00009B8C(0x01, r19, out r3_n, out r4_n, out r5_n, out r6_n, out r7_n, out r8_n, out r9_n, out r10_n, out r11_n, out r19_n, out r21_n, out r22_n, out r23_n, out r24_n, out r25_n, out r26_n, out r27_n, out r28_n);
+		word32 r0_n = fn00009B8C(0x01, r19, out r3_n, out r4_n, out r5_n, out r6_n, out r7_n, out r8_n, out r9_n, out r10_n, out r11_n, out r19_n, out r21_n, out r22_n, out r23_n, out r24_n, out r25_n, out r26_n, out r27_n);
 		r3Out = r3_n;
 		r4Out = r4_n;
 		r5Out = r5_n;
@@ -6112,21 +6051,18 @@ word32 fn00009120(Eq_n r3, Eq_n r5, Eq_n r8, Eq_n r9, Eq_n r10, Eq_n r19, Eq_n r
 		r25Out = r25_n;
 		r26Out = r26_n;
 		r27Out = r27_n;
-		r28Out = r28_n;
 		return r0_n;
 	}
 }
 
-// 00009178: Register word32 fn00009178(Register Eq_n r3, Register Eq_n r4, Register Eq_n r19, Register out ptr32 r3Out, Register out ptr32 r4Out, Register out ptr32 r9Out, Register out ptr32 r10Out, Register out ptr32 r27Out, Register out ptr32 r28Out)
+// 00009178: Register word32 fn00009178(Register Eq_n r3, Register Eq_n r4, Register Eq_n r19, Register out ptr32 r3Out, Register out ptr32 r4Out, Register out ptr32 r9Out, Register out ptr32 r10Out)
 // Called from:
 //      fn00000378
-word32 fn00009178(Eq_n r3, Eq_n r4, Eq_n r19, ptr32 & r3Out, ptr32 & r4Out, ptr32 & r9Out, ptr32 & r10Out, ptr32 & r27Out, ptr32 & r28Out)
+word32 fn00009178(Eq_n r3, Eq_n r4, Eq_n r19, ptr32 & r3Out, ptr32 & r4Out, ptr32 & r9Out, ptr32 & r10Out)
 {
 	if (r3 >= r4)
 	{
 		ptr32 r10_n;
-		ptr32 r27_n;
-		ptr32 r28_n;
 		ptr32 r3_n;
 		ptr32 r4_n;
 		ptr32 r9_n;
@@ -6142,20 +6078,17 @@ word32 fn00009178(Eq_n r3, Eq_n r4, Eq_n r19, ptr32 & r3Out, ptr32 & r4Out, ptr3
 		word32 r24_n;
 		word32 r25_n;
 		word32 r26_n;
-		word32 r0_n = fn00009B8C(r3, r19, out r3_n, out r4_n, out r5_n, out r6_n, out r7_n, out r8_n, out r9_n, out r10_n, out r11_n, out r19_n, out r21_n, out r22_n, out r23_n, out r24_n, out r25_n, out r26_n, out r27_n, out r28_n);
+		word32 r27_n;
+		word32 r0_n = fn00009B8C(r3, r19, out r3_n, out r4_n, out r5_n, out r6_n, out r7_n, out r8_n, out r9_n, out r10_n, out r11_n, out r19_n, out r21_n, out r22_n, out r23_n, out r24_n, out r25_n, out r26_n, out r27_n);
 		r3Out = r3_n;
 		r4Out = r4_n;
 		r9Out = r9_n;
 		r10Out = r10_n;
-		r27Out = r27_n;
-		r28Out = r28_n;
 		return r0_n;
 	}
 	else
 	{
 		ptr32 r10_n;
-		ptr32 r27_n;
-		ptr32 r28_n;
 		ptr32 r3_n;
 		ptr32 r4_n;
 		ptr32 r9_n;
@@ -6171,22 +6104,21 @@ word32 fn00009178(Eq_n r3, Eq_n r4, Eq_n r19, ptr32 & r3Out, ptr32 & r4Out, ptr3
 		word32 r24_n;
 		word32 r25_n;
 		word32 r26_n;
-		word32 r0_n = fn00009184(out r3_n, out r4_n, out r5_n, out r6_n, out r7_n, out r8_n, out r9_n, out r10_n, out r11_n, out r19_n, out r21_n, out r22_n, out r23_n, out r24_n, out r25_n, out r26_n, out r27_n, out r28_n);
+		word32 r27_n;
+		word32 r0_n = fn00009184(out r3_n, out r4_n, out r5_n, out r6_n, out r7_n, out r8_n, out r9_n, out r10_n, out r11_n, out r19_n, out r21_n, out r22_n, out r23_n, out r24_n, out r25_n, out r26_n, out r27_n);
 		r3Out = r3_n;
 		r4Out = r4_n;
 		r9Out = r9_n;
 		r10Out = r10_n;
-		r27Out = r27_n;
-		r28Out = r28_n;
 		return r0_n;
 	}
 }
 
-// 00009184: Register word32 fn00009184(Register out ptr32 r3Out, Register out ptr32 r4Out, Register out ptr32 r5Out, Register out ptr32 r6Out, Register out ptr32 r7Out, Register out ptr32 r8Out, Register out ptr32 r9Out, Register out ptr32 r10Out, Register out ptr32 r11Out, Register out ptr32 r19Out, Register out ptr32 r21Out, Register out ptr32 r22Out, Register out ptr32 r23Out, Register out ptr32 r24Out, Register out ptr32 r25Out, Register out ptr32 r26Out, Register out ptr32 r27Out, Register out ptr32 r28Out)
+// 00009184: Register word32 fn00009184(Register out ptr32 r3Out, Register out ptr32 r4Out, Register out ptr32 r5Out, Register out ptr32 r6Out, Register out ptr32 r7Out, Register out ptr32 r8Out, Register out ptr32 r9Out, Register out ptr32 r10Out, Register out ptr32 r11Out, Register out ptr32 r19Out, Register out ptr32 r21Out, Register out ptr32 r22Out, Register out ptr32 r23Out, Register out ptr32 r24Out, Register out ptr32 r25Out, Register out ptr32 r26Out, Register out ptr32 r27Out)
 // Called from:
 //      fn00009178
 //      fn00009B8C
-word32 fn00009184(ptr32 & r3Out, ptr32 & r4Out, ptr32 & r5Out, ptr32 & r6Out, ptr32 & r7Out, ptr32 & r8Out, ptr32 & r9Out, ptr32 & r10Out, ptr32 & r11Out, ptr32 & r19Out, ptr32 & r21Out, ptr32 & r22Out, ptr32 & r23Out, ptr32 & r24Out, ptr32 & r25Out, ptr32 & r26Out, ptr32 & r27Out, ptr32 & r28Out)
+word32 fn00009184(ptr32 & r3Out, ptr32 & r4Out, ptr32 & r5Out, ptr32 & r6Out, ptr32 & r7Out, ptr32 & r8Out, ptr32 & r9Out, ptr32 & r10Out, ptr32 & r11Out, ptr32 & r19Out, ptr32 & r21Out, ptr32 & r22Out, ptr32 & r23Out, ptr32 & r24Out, ptr32 & r25Out, ptr32 & r26Out, ptr32 & r27Out)
 {
 	ptr32 r19_n;
 	ptr32 r3_n;
@@ -6202,11 +6134,10 @@ word32 fn00009184(ptr32 & r3Out, ptr32 & r4Out, ptr32 & r5Out, ptr32 & r6Out, pt
 	ptr32 r24_n;
 	ptr32 r26_n;
 	ptr32 r27_n;
-	ptr32 r28_n;
 	ptr32 r9_n;
 	ptr32 r10_n;
 	ptr32 r11_n;
-	word32 r0_n = fn00009B8C(r3, r19, out r3_n, out r4_n, out r5_n, out r6_n, out r7_n, out r8_n, out r9_n, out r10_n, out r11_n, out r19_n, out r21_n, out r22_n, out r23_n, out r24_n, out r25_n, out r26_n, out r27_n, out r28_n);
+	word32 r0_n = fn00009B8C(r3, r19, out r3_n, out r4_n, out r5_n, out r6_n, out r7_n, out r8_n, out r9_n, out r10_n, out r11_n, out r19_n, out r21_n, out r22_n, out r23_n, out r24_n, out r25_n, out r26_n, out r27_n);
 	r3Out = r3_n;
 	r4Out = r4_n;
 	r5Out = r5_n;
@@ -6224,7 +6155,6 @@ word32 fn00009184(ptr32 & r3Out, ptr32 & r4Out, ptr32 & r5Out, ptr32 & r6Out, pt
 	r25Out = r25_n;
 	r26Out = r26_n;
 	r27Out = r27_n;
-	r28Out = r28_n;
 	return r0_n;
 }
 
@@ -6540,6 +6470,7 @@ void fn00009B74(Eq_n r0, Eq_n r8, Eq_n r19, Eq_n r21, Eq_n r22, Eq_n r23, Eq_n r
 	if (Test(NE,*((word32) r19 + 20)))
 	{
 		((word32) r19 + 40)->u0 = ~0x00;
+		word32 r25_n;
 		word32 r24_n;
 		word32 r23_n;
 		word32 r22_n;
@@ -6547,7 +6478,6 @@ void fn00009B74(Eq_n r0, Eq_n r8, Eq_n r19, Eq_n r21, Eq_n r22, Eq_n r23, Eq_n r
 		word32 r19_n;
 		word32 r8_n;
 		word32 r7_n;
-		word32 r25_n;
 		word32 r26_n;
 		word32 r27_n;
 		word32 r28_n;
@@ -6563,9 +6493,8 @@ void fn00009B74(Eq_n r0, Eq_n r8, Eq_n r19, Eq_n r21, Eq_n r22, Eq_n r23, Eq_n r
 			word32 r27_n;
 			word32 r4_n;
 			word32 r6_n;
-			word32 r28_n;
 			word32 r31_n;
-			Eq_n r3_n = fn00007044(r19, r21, r22, r23, out r4_n, out r6_n, out r19, out r21, out r22_n, out r23, out r24, out r25_n, out r26, out r27_n, out r28_n, out r31_n);
+			Eq_n r3_n = fn00007044(r19, r21, r22, r23, out r4_n, out r6_n, out r19, out r21, out r22_n, out r23, out r24, out r25_n, out r26, out r27_n, out r31_n);
 			Eq_n r4_n = *((word32) r19 + 20);
 			Eq_n r5_n = *((word32) r19 + 8);
 			*((word32) r21 + 48) = r3_n;
@@ -6669,25 +6598,25 @@ void fn00009B74(Eq_n r0, Eq_n r8, Eq_n r19, Eq_n r21, Eq_n r22, Eq_n r23, Eq_n r
 			Mem144[r3_n + r4_n:byte] = 0x03;
 			Eq_n r25_n = *((word32) r21 + 28);
 			((word32) r19 + 4)->u0 = 113;
-			word32 r30_n;
 			word32 r31_n;
-			word32 r29_n;
-			word32 r26_n;
+			word32 r30_n;
 			word32 r27_n;
 			word32 r28_n;
-			word32 r23_n;
+			word32 r29_n;
 			word32 r24_n;
 			word32 r25_n;
-			word32 r22_n;
-			word32 r10_n;
+			word32 r26_n;
+			word32 r23_n;
 			word32 r19_n;
 			word32 r21_n;
-			word32 r7_n;
+			word32 r22_n;
 			word32 r8_n;
 			word32 r9_n;
+			word32 r10_n;
+			word32 r7_n;
 			word32 r6_n;
-			word32 r5_n;
 			word32 r4_n;
+			word32 r5_n;
 			fn00003990(r0, r3, r19, r23, out r4_n, out r5_n, out r6_n, out r7_n, out r8_n, out r9_n, out r10_n, out r19_n, out r21_n, out r22_n, out r23_n, out r24_n, out r25_n, out r26_n, out r27_n, out r28_n, out r29_n, out r30_n, out r31_n);
 			Eq_n r3_n = *((word32) r25_n + 20);
 			r22 = *((word32) r21 + 16);
@@ -6695,8 +6624,8 @@ void fn00009B74(Eq_n r0, Eq_n r8, Eq_n r19, Eq_n r21, Eq_n r22, Eq_n r23, Eq_n r
 				r22 = r3_n;
 			if (Test(NE,r22))
 			{
-				word32 r9_n;
 				word32 r10_n;
+				word32 r9_n;
 				word32 r4_n;
 				fn00008C34(r3_n, r4_n, *((word32) r21 + 0x0C), *((word32) r25_n + 16), r22, r8_n, out r4_n, out r9_n, out r10_n);
 				Eq_n r6_n = *((word32) r25_n + 16);
@@ -6751,12 +6680,12 @@ void fn00009B74(Eq_n r0, Eq_n r8, Eq_n r19, Eq_n r21, Eq_n r22, Eq_n r23, Eq_n r
 	}
 }
 
-// 00009B8C: Register word32 fn00009B8C(Register Eq_n r3, Register Eq_n r19, Register out ptr32 r3Out, Register out ptr32 r4Out, Register out ptr32 r5Out, Register out ptr32 r6Out, Register out ptr32 r7Out, Register out ptr32 r8Out, Register out ptr32 r9Out, Register out ptr32 r10Out, Register out ptr32 r11Out, Register out ptr32 r19Out, Register out ptr32 r21Out, Register out ptr32 r22Out, Register out ptr32 r23Out, Register out ptr32 r24Out, Register out ptr32 r25Out, Register out ptr32 r26Out, Register out ptr32 r27Out, Register out ptr32 r28Out)
+// 00009B8C: Register word32 fn00009B8C(Register Eq_n r3, Register Eq_n r19, Register out ptr32 r3Out, Register out ptr32 r4Out, Register out ptr32 r5Out, Register out ptr32 r6Out, Register out ptr32 r7Out, Register out ptr32 r8Out, Register out ptr32 r9Out, Register out ptr32 r10Out, Register out ptr32 r11Out, Register out ptr32 r19Out, Register out ptr32 r21Out, Register out ptr32 r22Out, Register out ptr32 r23Out, Register out ptr32 r24Out, Register out ptr32 r25Out, Register out ptr32 r26Out, Register out ptr32 r27Out)
 // Called from:
 //      fn00009120
 //      fn00009178
 //      fn00009184
-word32 fn00009B8C(Eq_n r3, Eq_n r19, ptr32 & r3Out, ptr32 & r4Out, ptr32 & r5Out, ptr32 & r6Out, ptr32 & r7Out, ptr32 & r8Out, ptr32 & r9Out, ptr32 & r10Out, ptr32 & r11Out, ptr32 & r19Out, ptr32 & r21Out, ptr32 & r22Out, ptr32 & r23Out, ptr32 & r24Out, ptr32 & r25Out, ptr32 & r26Out, ptr32 & r27Out, ptr32 & r28Out)
+word32 fn00009B8C(Eq_n r3, Eq_n r19, ptr32 & r3Out, ptr32 & r4Out, ptr32 & r5Out, ptr32 & r6Out, ptr32 & r7Out, ptr32 & r8Out, ptr32 & r9Out, ptr32 & r10Out, ptr32 & r11Out, ptr32 & r19Out, ptr32 & r21Out, ptr32 & r22Out, ptr32 & r23Out, ptr32 & r24Out, ptr32 & r25Out, ptr32 & r26Out, ptr32 & r27Out)
 {
 	Eq_n r4_n = *((word32) r19 + 0x0084);
 	if (r3 >= r4_n)
@@ -6775,11 +6704,10 @@ word32 fn00009B8C(Eq_n r3, Eq_n r19, ptr32 & r3Out, ptr32 & r4Out, ptr32 & r5Out
 		ptr32 r24_n;
 		ptr32 r26_n;
 		ptr32 r27_n;
-		ptr32 r28_n;
 		ptr32 r9_n;
 		ptr32 r10_n;
 		ptr32 r11_n;
-		word32 r0_n = fn00009184(out r3_n, out r4_n, out r5_n, out r6_n, out r7_n, out r8_n, out r9_n, out r10_n, out r11_n, out r19_n, out r21_n, out r22_n, out r23_n, out r24_n, out r25_n, out r26_n, out r27_n, out r28_n);
+		word32 r0_n = fn00009184(out r3_n, out r4_n, out r5_n, out r6_n, out r7_n, out r8_n, out r9_n, out r10_n, out r11_n, out r19_n, out r21_n, out r22_n, out r23_n, out r24_n, out r25_n, out r26_n, out r27_n);
 		r3Out = r3_n;
 		r4Out = r4_n;
 		r5Out = r5_n;
@@ -6797,7 +6725,6 @@ word32 fn00009B8C(Eq_n r3, Eq_n r19, ptr32 & r3Out, ptr32 & r4Out, ptr32 & r5Out
 		r25Out = r25_n;
 		r26Out = r26_n;
 		r27Out = r27_n;
-		r28Out = r28_n;
 		return r0_n;
 	}
 	else if (r4_n <= 0x05)
@@ -6816,11 +6743,10 @@ word32 fn00009B8C(Eq_n r3, Eq_n r19, ptr32 & r3Out, ptr32 & r4Out, ptr32 & r5Out
 		ptr32 r24_n;
 		ptr32 r26_n;
 		ptr32 r27_n;
-		ptr32 r28_n;
 		ptr32 r9_n;
 		ptr32 r10_n;
 		ptr32 r11_n;
-		word32 r0_n = fn00009184(out r3_n, out r4_n, out r5_n, out r6_n, out r7_n, out r8_n, out r9_n, out r10_n, out r11_n, out r19_n, out r21_n, out r22_n, out r23_n, out r24_n, out r25_n, out r26_n, out r27_n, out r28_n);
+		word32 r0_n = fn00009184(out r3_n, out r4_n, out r5_n, out r6_n, out r7_n, out r8_n, out r9_n, out r10_n, out r11_n, out r19_n, out r21_n, out r22_n, out r23_n, out r24_n, out r25_n, out r26_n, out r27_n);
 		r3Out = r3_n;
 		r4Out = r4_n;
 		r5Out = r5_n;
@@ -6838,7 +6764,6 @@ word32 fn00009B8C(Eq_n r3, Eq_n r19, ptr32 & r3Out, ptr32 & r4Out, ptr32 & r5Out
 		r25Out = r25_n;
 		r26Out = r26_n;
 		r27Out = r27_n;
-		r28Out = r28_n;
 		return r0_n;
 	}
 	else if (Test(EQ,r4_n ^ 0x06))
@@ -6857,11 +6782,10 @@ word32 fn00009B8C(Eq_n r3, Eq_n r19, ptr32 & r3Out, ptr32 & r4Out, ptr32 & r5Out
 		ptr32 r24_n;
 		ptr32 r26_n;
 		ptr32 r27_n;
-		ptr32 r28_n;
 		ptr32 r9_n;
 		ptr32 r10_n;
 		ptr32 r11_n;
-		word32 r0_n = fn00009184(out r3_n, out r4_n, out r5_n, out r6_n, out r7_n, out r8_n, out r9_n, out r10_n, out r11_n, out r19_n, out r21_n, out r22_n, out r23_n, out r24_n, out r25_n, out r26_n, out r27_n, out r28_n);
+		word32 r0_n = fn00009184(out r3_n, out r4_n, out r5_n, out r6_n, out r7_n, out r8_n, out r9_n, out r10_n, out r11_n, out r19_n, out r21_n, out r22_n, out r23_n, out r24_n, out r25_n, out r26_n, out r27_n);
 		r3Out = r3_n;
 		r4Out = r4_n;
 		r5Out = r5_n;
@@ -6879,7 +6803,6 @@ word32 fn00009B8C(Eq_n r3, Eq_n r19, ptr32 & r3Out, ptr32 & r4Out, ptr32 & r5Out
 		r25Out = r25_n;
 		r26Out = r26_n;
 		r27Out = r27_n;
-		r28Out = r28_n;
 		return r0_n;
 	}
 	else
@@ -6898,11 +6821,10 @@ word32 fn00009B8C(Eq_n r3, Eq_n r19, ptr32 & r3Out, ptr32 & r4Out, ptr32 & r5Out
 		ptr32 r24_n;
 		ptr32 r26_n;
 		ptr32 r27_n;
-		ptr32 r28_n;
 		ptr32 r9_n;
 		ptr32 r10_n;
 		ptr32 r11_n;
-		word32 r0_n = fn00009184(out r3_n, out r4_n, out r5_n, out r6_n, out r7_n, out r8_n, out r9_n, out r10_n, out r11_n, out r19_n, out r21_n, out r22_n, out r23_n, out r24_n, out r25_n, out r26_n, out r27_n, out r28_n);
+		word32 r0_n = fn00009184(out r3_n, out r4_n, out r5_n, out r6_n, out r7_n, out r8_n, out r9_n, out r10_n, out r11_n, out r19_n, out r21_n, out r22_n, out r23_n, out r24_n, out r25_n, out r26_n, out r27_n);
 		r3Out = r3_n;
 		r4Out = r4_n;
 		r5Out = r5_n;
@@ -6920,7 +6842,6 @@ word32 fn00009B8C(Eq_n r3, Eq_n r19, ptr32 & r3Out, ptr32 & r4Out, ptr32 & r5Out
 		r25Out = r25_n;
 		r26Out = r26_n;
 		r27Out = r27_n;
-		r28Out = r28_n;
 		return r0_n;
 	}
 }
@@ -6994,10 +6915,9 @@ void fn0000A774(Eq_n r0, Eq_n r8, Eq_n r19, Eq_n r21, Eq_n r22, Eq_n r23, Eq_n r
 		word32 r6_n;
 		word32 r25_n;
 		word32 r27_n;
-		word32 r28_n;
-		word32 r4_n;
 		word32 r31_n;
-		Eq_n r3_n = fn00007044(r19, r21, r22, r23, out r4_n, out r6_n, out r19_n, out r21, out r22, out r23_n, out r24, out r25_n, out r26, out r27_n, out r28_n, out r31_n);
+		word32 r4_n;
+		Eq_n r3_n = fn00007044(r19, r21, r22, r23, out r4_n, out r6_n, out r19_n, out r21, out r22, out r23_n, out r24, out r25_n, out r26, out r27_n, out r31_n);
 		r4_n = *((word32) r19_n + 28);
 		*((word32) r21 + 48) = r3_n;
 	}
@@ -7040,9 +6960,8 @@ void fn0000A774(Eq_n r0, Eq_n r8, Eq_n r19, Eq_n r21, Eq_n r22, Eq_n r23, Eq_n r
 						word32 r6_n;
 						word32 r25_n;
 						word32 r27_n;
-						word32 r28_n;
 						word32 r31_n;
-						*((word32) r21_n + 48) = fn00007044(r19_n, r21, r22_n, r23_n, out r4_n, out r6_n, out r19_n, out r21_n, out r22_n, out r23_n, out r24, out r25_n, out r26, out r27_n, out r28_n, out r31_n);
+						*((word32) r21_n + 48) = fn00007044(r19_n, r21, r22_n, r23_n, out r4_n, out r6_n, out r19_n, out r21_n, out r22_n, out r23_n, out r24, out r25_n, out r26, out r27_n, out r31_n);
 						r21 = r21_n;
 					}
 				}
@@ -7120,9 +7039,9 @@ void fn0000A774(Eq_n r0, Eq_n r8, Eq_n r19, Eq_n r21, Eq_n r22, Eq_n r23, Eq_n r
 		r22 = (word32) r25_n + r22_n;
 		r5_n = *((word32) r19_n + 8);
 l0000A0C8:
-		word32 r9_n;
-		word32 r10_n;
 		word32 r4_n;
+		word32 r10_n;
+		word32 r9_n;
 		fn00008C34(r3_n, r4_n, r5_n + r25_n, r3_n + r6_n, r26, r8, out r4_n, out r9_n, out r10_n);
 		r4_n = *((word32) r19_n + 28);
 		Eq_n r5_n = *((word32) r4_n + 44);
@@ -7132,13 +7051,12 @@ l0000A0C8:
 			*((word32) r19_n + 20) = r7_n;
 			if (r25_n - r7_n < 0x00)
 			{
-				word32 r31_n;
-				word32 r28_n;
 				word32 r4_n;
-				word32 r25_n;
-				word32 r27_n;
 				word32 r6_n;
-				Eq_n r3_n = fn00007044(r19_n, r21, r22, r23_n, out r4_n, out r6_n, out r19_n, out r21, out r22, out r23_n, out r24, out r25_n, out r26, out r27_n, out r28_n, out r31_n);
+				word32 r27_n;
+				word32 r31_n;
+				word32 r25_n;
+				Eq_n r3_n = fn00007044(r19_n, r21, r22, r23_n, out r4_n, out r6_n, out r19_n, out r21, out r22, out r23_n, out r24, out r25_n, out r26, out r27_n, out r31_n);
 				r4_n = *((word32) r19_n + 28);
 				*((word32) r21 + 48) = r3_n;
 			}
@@ -7160,35 +7078,34 @@ l0000A178:
 			r4_n = *((word32) r4_n + 44);
 			if (Test(LT,-r4_n | r4_n) && r6_n - r7_n < 0x00)
 			{
-				word32 r6_n;
 				word32 r22_n;
-				word32 r27_n;
-				word32 r28_n;
-				word32 r31_n;
 				word32 r26_n;
-				*((word32) r21_n + 48) = fn00007044(r19_n, r21, r22, r23_n, out r4_n, out r6_n, out r19_n, out r21_n, out r22_n, out r23_n, out r24, out r25_n, out r26_n, out r27_n, out r28_n, out r31_n);
+				word32 r27_n;
+				word32 r6_n;
+				word32 r31_n;
+				*((word32) r21_n + 48) = fn00007044(r19_n, r21, r22, r23_n, out r4_n, out r6_n, out r19_n, out r21_n, out r22_n, out r23_n, out r24, out r25_n, out r26_n, out r27_n, out r31_n);
 				r21 = r21_n;
 			}
 			r26 = *((word32) r21 + 28);
+			word32 r9_n;
+			word32 r23_n;
+			word32 r24_n;
+			word32 r7_n;
+			word32 r22_n;
+			word32 r8_n;
+			word32 r4_n;
+			word32 r5_n;
 			word32 r6_n;
 			word32 r19_n;
 			word32 r21_n;
-			word32 r4_n;
 			word32 r10_n;
-			word32 r5_n;
-			word32 r8_n;
-			word32 r9_n;
-			word32 r7_n;
-			word32 r24_n;
-			word32 r22_n;
-			word32 r23_n;
 			word32 r27_n;
-			word32 r28_n;
-			word32 r30_n;
-			word32 r29_n;
-			word32 r31_n;
 			word32 r25_n;
 			word32 r26_n;
+			word32 r30_n;
+			word32 r31_n;
+			word32 r28_n;
+			word32 r29_n;
 			fn00003990(r0, r3, r19, r23, out r4_n, out r5_n, out r6_n, out r7_n, out r8_n, out r9_n, out r10_n, out r19_n, out r21_n, out r22_n, out r23_n, out r24_n, out r25_n, out r26_n, out r27_n, out r28_n, out r29_n, out r30_n, out r31_n);
 			Eq_n r3_n = *((word32) r26 + 20);
 			r22 = *((word32) r21 + 16);
@@ -7196,8 +7113,8 @@ l0000A178:
 				r22 = r3_n;
 			if (Test(NE,r22))
 			{
-				word32 r4_n;
 				word32 r9_n;
+				word32 r4_n;
 				word32 r10_n;
 				fn00008C34(r3_n, r4_n, *((word32) r21 + 0x0C), *((word32) r26 + 16), r22, r8, out r4_n, out r9_n, out r10_n);
 				Eq_n r6_n = *((word32) r26 + 16);
@@ -7243,13 +7160,12 @@ l0000A178:
 		r4_n = *((word32) r19_n + 28);
 		if (Test(NE,*((word32) r4_n + 44)) && r6_n - *((word32) r19_n + 20) < 0x00)
 		{
-			word32 r28_n;
-			word32 r31_n;
 			word32 r4_n;
 			word32 r6_n;
-			word32 r25_n;
 			word32 r27_n;
-			Eq_n r3_n = fn00007044(r19_n, r21, r22, r23_n, out r4_n, out r6_n, out r19_n, out r21, out r22, out r23_n, out r24, out r25_n, out r26, out r27_n, out r28_n, out r31_n);
+			word32 r31_n;
+			word32 r25_n;
+			Eq_n r3_n = fn00007044(r19_n, r21, r22, r23_n, out r4_n, out r6_n, out r19_n, out r21, out r22, out r23_n, out r24, out r25_n, out r26, out r27_n, out r31_n);
 			r4_n = *((word32) r19_n + 28);
 			*((word32) r21 + 48) = r3_n;
 		}
@@ -7293,25 +7209,25 @@ l0000A2B0:
 l0000A528:
 			r25_n = *((word32) r21 + 28);
 			((word32) r19_n + 4)->u0 = 113;
-			word32 r4_n;
-			word32 r10_n;
-			word32 r27_n;
-			word32 r31_n;
-			word32 r30_n;
-			word32 r25_n;
-			word32 r5_n;
+			word32 r19_n;
+			word32 r7_n;
+			word32 r26_n;
 			word32 r6_n;
 			word32 r21_n;
+			word32 r5_n;
 			word32 r22_n;
-			word32 r23_n;
-			word32 r28_n;
-			word32 r24_n;
-			word32 r7_n;
+			word32 r4_n;
 			word32 r8_n;
-			word32 r19_n;
 			word32 r9_n;
+			word32 r10_n;
+			word32 r28_n;
 			word32 r29_n;
-			word32 r26_n;
+			word32 r30_n;
+			word32 r31_n;
+			word32 r23_n;
+			word32 r24_n;
+			word32 r27_n;
+			word32 r25_n;
 			fn00003990(r0, r3, r19, r23, out r4_n, out r5_n, out r6_n, out r7_n, out r8_n, out r9_n, out r10_n, out r19_n, out r21_n, out r22_n, out r23_n, out r24_n, out r25_n, out r26_n, out r27_n, out r28_n, out r29_n, out r30_n, out r31_n);
 			r4_n.u0 = 113;
 			Eq_n r3_n = *((word32) r25_n + 20);
@@ -7321,8 +7237,8 @@ l0000A528:
 			if (Test(NE,r22))
 			{
 				word32 r10_n;
-				word32 r9_n;
 				word32 r4_n;
+				word32 r9_n;
 				fn00008C34(r3_n, 113, *((word32) r21 + 0x0C), *((word32) r25_n + 16), r22, r8, out r4_n, out r9_n, out r10_n);
 				Eq_n r6_n = *((word32) r25_n + 16);
 				Eq_n r5_n = *((word32) r21 + 20);
@@ -7414,10 +7330,10 @@ l0000A528:
 									{
 										if (Test(EQ,r23_n))
 										{
-											word32 r7_n;
-											word32 r8_n;
-											word32 r19_n;
 											word32 r21_n;
+											word32 r19_n;
+											word32 r8_n;
+											word32 r7_n;
 											word32 r22_n;
 											word32 r23_n;
 											word32 r24_n;
@@ -7437,8 +7353,8 @@ l0000A528:
 												r6_n = Mem1228[r19_n + 56:word32] + r3_n;
 											else
 												r6_n = r24;
-											word32 r23_n;
 											word32 r24_n;
+											word32 r23_n;
 											Eq_n r19_n;
 											Eq_n r21_n;
 											Eq_n r25_n;
@@ -7448,24 +7364,24 @@ l0000A528:
 											Eq_n r24_n = *((word32) r23_n + 28);
 											*((word32) r19_n + 92) = *((word32) r19_n + 0x006C);
 											word32 r31_n;
-											word32 r25_n;
+											word32 r30_n;
+											word32 r29_n;
+											word32 r28_n;
 											word32 r26_n;
 											word32 r27_n;
-											word32 r29_n;
-											word32 r30_n;
-											word32 r28_n;
-											word32 r24_n;
+											word32 r25_n;
 											word32 r23_n;
-											word32 r22_n;
+											word32 r24_n;
 											word32 r21_n;
-											word32 r10_n;
+											word32 r22_n;
 											word32 r19_n;
 											word32 r9_n;
-											word32 r7_n;
-											word32 r8_n;
+											word32 r10_n;
+											word32 r4_n;
 											word32 r5_n;
 											word32 r6_n;
-											word32 r4_n;
+											word32 r7_n;
+											word32 r8_n;
 											fn00003990(r0, r3, r19, r23, out r4_n, out r5_n, out r6_n, out r7_n, out r8_n, out r9_n, out r10_n, out r19_n, out r21_n, out r22_n, out r23_n, out r24_n, out r25_n, out r26_n, out r27_n, out r28_n, out r29_n, out r30_n, out r31_n);
 											Eq_n r3_n = *((word32) r24_n + 20);
 											Eq_n r22_n = *((word32) r23_n + 16);
@@ -7473,9 +7389,9 @@ l0000A528:
 												r22_n = r3_n;
 											if (Test(NE,r22_n))
 											{
-												word32 r10_n;
-												word32 r9_n;
 												word32 r4_n;
+												word32 r9_n;
+												word32 r10_n;
 												fn00008C34(r3_n, r4_n, *((word32) r23_n + 0x0C), *((word32) r24_n + 16), r22_n, 0x01, out r4_n, out r9_n, out r10_n);
 												Eq_n r6_n = *((word32) r24_n + 16);
 												Eq_n r5_n = *((word32) r23_n + 20);
@@ -7499,34 +7415,34 @@ l0000A528:
 											if (Test(NE,*((word32) *r19_n + 16)))
 											{
 												((word32) r19_n + 4)->u0 = 666;
+												word32 r27_n;
+												word32 r28_n;
+												word32 r26_n;
 												word32 r25_n;
 												word32 r24_n;
 												word32 r23_n;
+												word32 r21_n;
 												word32 r22_n;
 												word32 r19_n;
-												word32 r21_n;
-												word32 r8_n;
 												word32 r7_n;
-												word32 r26_n;
-												word32 r27_n;
-												word32 r28_n;
+												word32 r8_n;
 												fn00009408(r0, 666, r4_n, 0x01, r19_n, r21_n, r22_n, r23_n, r24_n, r25_n, r26_n, out r7_n, out r8_n, out r19_n, out r21_n, out r22_n, out r23_n, out r24_n, out r25_n, out r26_n, out r27_n, out r28_n);
 												return;
 											}
 											else
 											{
 												((word32) r19_n + 4)->u0 = 666;
-												word32 r28_n;
 												word32 r27_n;
+												word32 r28_n;
 												word32 r25_n;
 												word32 r26_n;
 												word32 r24_n;
-												word32 r22_n;
 												word32 r23_n;
-												word32 r19_n;
 												word32 r21_n;
-												word32 r7_n;
+												word32 r22_n;
 												word32 r8_n;
+												word32 r19_n;
+												word32 r7_n;
 												fn00009408(r0, 666, r4_n, 0x01, r19_n, r21_n, r22_n, r23_n, r24_n, r25_n, r26_n, out r7_n, out r8_n, out r19_n, out r21_n, out r22_n, out r23_n, out r24_n, out r25_n, out r26_n, out r27_n, out r28_n);
 												return;
 											}
@@ -7537,17 +7453,17 @@ l0000A528:
 											if (Test(EQ,*((word32) r19_n + 5792)))
 											{
 												Eq_n r3_n = r23_n ^ 0x01;
-												word32 r24_n;
+												word32 r28_n;
+												word32 r27_n;
 												word32 r25_n;
 												word32 r26_n;
-												word32 r27_n;
-												word32 r28_n;
-												word32 r23_n;
+												word32 r24_n;
 												word32 r22_n;
+												word32 r23_n;
 												word32 r21_n;
+												word32 r8_n;
 												word32 r19_n;
 												word32 r7_n;
-												word32 r8_n;
 												fn00009408(r0, r3_n, r4_n, r8, r19_n, r21, r22_n, r23_n, r24, r25_n, r26, out r7_n, out r8_n, out r19_n, out r21_n, out r22_n, out r23_n, out r24_n, out r25_n, out r26_n, out r27_n, out r28_n);
 												return;
 											}
@@ -7569,22 +7485,22 @@ l0000A528:
 												word32 r31_n;
 												word32 r29_n;
 												word32 r30_n;
-												word32 r26_n;
 												word32 r27_n;
 												word32 r28_n;
 												word32 r25_n;
-												word32 r24_n;
+												word32 r26_n;
 												word32 r22_n;
 												word32 r23_n;
-												word32 r19_n;
+												word32 r24_n;
 												word32 r21_n;
-												word32 r9_n;
+												word32 r19_n;
 												word32 r10_n;
-												word32 r6_n;
-												word32 r7_n;
+												word32 r9_n;
 												word32 r8_n;
-												word32 r5_n;
+												word32 r7_n;
 												word32 r4_n;
+												word32 r6_n;
+												word32 r5_n;
 												fn00003990(r0, r3, r19, r23, out r4_n, out r5_n, out r6_n, out r7_n, out r8_n, out r9_n, out r10_n, out r19_n, out r21_n, out r22_n, out r23_n, out r24_n, out r25_n, out r26_n, out r27_n, out r28_n, out r29_n, out r30_n, out r31_n);
 												Eq_n r3_n = *((word32) r26_n + 20);
 												r22_n = *((word32) r25_n + 16);
@@ -7592,9 +7508,9 @@ l0000A528:
 													r22_n = r3_n;
 												if (Test(NE,r22_n))
 												{
+													word32 r9_n;
 													word32 r10_n;
 													word32 r4_n;
-													word32 r9_n;
 													fn00008C34(r3_n, r4_n, *((word32) r25_n + 0x0C), *((word32) r26_n + 16), r22_n, 0x00, out r4_n, out r9_n, out r10_n);
 													Eq_n r6_n = *((word32) r26_n + 16);
 													Eq_n r5_n = *((word32) r25_n + 20);
@@ -7617,17 +7533,17 @@ l00009DE0:
 												Eq_n r3_n = *((word32) *r19_n + 16);
 												uint32 r4_n = -r3_n | r3_n;
 												Eq_n r4_n = r4_n >> 31 & ~0x02;
-												word32 r27_n;
 												word32 r28_n;
-												word32 r26_n;
-												word32 r24_n;
 												word32 r25_n;
-												word32 r21_n;
-												word32 r23_n;
+												word32 r27_n;
+												word32 r26_n;
 												word32 r22_n;
-												word32 r7_n;
-												word32 r19_n;
+												word32 r24_n;
+												word32 r23_n;
 												word32 r8_n;
+												word32 r21_n;
+												word32 r19_n;
+												word32 r7_n;
 												fn00009408(r0, r4_n >> 31, r4_n, 0x00, r19_n, r21_n, r22_n, r23_n, r24_n, r25_n, r26_n, out r7_n, out r8_n, out r19_n, out r21_n, out r22_n, out r23_n, out r24_n, out r25_n, out r26_n, out r27_n, out r28_n);
 												return;
 											}
@@ -7765,15 +7681,15 @@ l0000A7A8:
 								if (Test(EQ,r23_n))
 								{
 									word32 r28_n;
-									word32 r27_n;
-									word32 r24_n;
 									word32 r26_n;
+									word32 r27_n;
 									word32 r25_n;
-									word32 r23_n;
-									word32 r21_n;
 									word32 r22_n;
-									word32 r8_n;
+									word32 r23_n;
+									word32 r24_n;
+									word32 r21_n;
 									word32 r19_n;
+									word32 r8_n;
 									word32 r7_n;
 									fn00009408(r0, r3_n, r4_n, r8, r19_n, r21, ~0x5327, r23_n, r24, r25_n, r26_n, out r7_n, out r8_n, out r19_n, out r21_n, out r22_n, out r23_n, out r24_n, out r25_n, out r26_n, out r27_n, out r28_n);
 									return;
@@ -7786,17 +7702,17 @@ l0000A7A8:
 										if (Test(EQ,*((word32) r19_n + 5792)))
 										{
 											Eq_n r3_n = r23_n ^ 0x01;
-											word32 r27_n;
 											word32 r28_n;
+											word32 r27_n;
 											word32 r25_n;
 											word32 r26_n;
 											word32 r23_n;
 											word32 r24_n;
-											word32 r21_n;
 											word32 r22_n;
 											word32 r19_n;
-											word32 r7_n;
+											word32 r21_n;
 											word32 r8_n;
+											word32 r7_n;
 											fn00009408(r0, r3_n, r4_n, r8, r19_n, r21, ~0x5327, r23_n, r24, r25_n, r26_n, out r7_n, out r8_n, out r19_n, out r21_n, out r22_n, out r23_n, out r24_n, out r25_n, out r26_n, out r27_n, out r28_n);
 											return;
 										}
@@ -7811,19 +7727,19 @@ l0000A7A8:
 											r25_n = *r19_n;
 											r26_n = *((word32) r25_n + 28);
 											*((word32) r19_n + 92) = *((word32) r19_n + 0x006C);
-											word32 r29_n;
 											word32 r31_n;
 											word32 r30_n;
+											word32 r29_n;
 											word32 r28_n;
 											word32 r27_n;
 											word32 r26_n;
-											word32 r25_n;
 											word32 r24_n;
-											word32 r23_n;
+											word32 r25_n;
 											word32 r22_n;
+											word32 r23_n;
 											word32 r21_n;
-											word32 r19_n;
 											word32 r10_n;
+											word32 r19_n;
 											word32 r8_n;
 											word32 r9_n;
 											word32 r6_n;
@@ -7837,9 +7753,9 @@ l0000A7A8:
 												r22_n = r3_n;
 											if (Test(NE,r22_n))
 											{
-												word32 r4_n;
 												word32 r10_n;
 												word32 r9_n;
+												word32 r4_n;
 												fn00008C34(r3_n, r4_n, *((word32) r25_n + 0x0C), *((word32) r26_n + 16), r22_n, 0x00, out r4_n, out r9_n, out r10_n);
 												Eq_n r6_n = *((word32) r26_n + 16);
 												Eq_n r5_n = *((word32) r25_n + 20);
@@ -7879,8 +7795,8 @@ l0000A7A8:
 									Eq_n r4_n = *((word32) r19_n + 0x006C);
 									Eq_n r24_n = *((word32) r23_n + 28);
 									*((word32) r19_n + 92) = r4_n;
-									word32 r30_n;
 									word32 r31_n;
+									word32 r30_n;
 									word32 r29_n;
 									word32 r28_n;
 									word32 r27_n;
@@ -7893,10 +7809,10 @@ l0000A7A8:
 									word32 r19_n;
 									word32 r10_n;
 									word32 r9_n;
-									word32 r8_n;
 									word32 r7_n;
-									word32 r6_n;
+									word32 r8_n;
 									word32 r5_n;
+									word32 r6_n;
 									word32 r4_n;
 									fn00003990(r0, r3, r19, r23, out r4_n, out r5_n, out r6_n, out r7_n, out r8_n, out r9_n, out r10_n, out r19_n, out r21_n, out r22_n, out r23_n, out r24_n, out r25_n, out r26_n, out r27_n, out r28_n, out r29_n, out r30_n, out r31_n);
 									Eq_n r3_n = *((word32) r24_n + 20);
@@ -7905,8 +7821,8 @@ l0000A7A8:
 										r22_n = r3_n;
 									if (Test(NE,r22_n))
 									{
-										word32 r9_n;
 										word32 r10_n;
+										word32 r9_n;
 										word32 r4_n;
 										fn00008C34(r3_n, r4_n, *((word32) r23_n + 0x0C), *((word32) r24_n + 16), r22_n, 0x01, out r4_n, out r9_n, out r10_n);
 										Eq_n r6_n = *((word32) r24_n + 16);
@@ -7930,13 +7846,13 @@ l0000A7A8:
 									if (Test(NE,r3_n))
 									{
 										((word32) r19_n + 4)->u0 = 666;
-										word32 r26_n;
-										word32 r27_n;
 										word32 r28_n;
+										word32 r27_n;
 										word32 r25_n;
+										word32 r26_n;
 										word32 r24_n;
-										word32 r23_n;
 										word32 r22_n;
+										word32 r23_n;
 										word32 r21_n;
 										word32 r19_n;
 										word32 r7_n;
@@ -7947,16 +7863,16 @@ l0000A7A8:
 									else
 									{
 										((word32) r19_n + 4)->u0 = 666;
-										word32 r28_n;
 										word32 r26_n;
 										word32 r27_n;
-										word32 r8_n;
+										word32 r28_n;
+										word32 r23_n;
+										word32 r24_n;
+										word32 r25_n;
+										word32 r22_n;
 										word32 r19_n;
 										word32 r21_n;
-										word32 r25_n;
-										word32 r24_n;
-										word32 r22_n;
-										word32 r23_n;
+										word32 r8_n;
 										word32 r7_n;
 										fn00009408(r0, 666, 666, 0x01, r19_n, r21_n, r22_n, r23_n, r24_n, r25_n, r26_n, out r7_n, out r8_n, out r19_n, out r21_n, out r22_n, out r23_n, out r24_n, out r25_n, out r26_n, out r27_n, out r28_n);
 										return;
@@ -8101,22 +8017,22 @@ l0000A7D4:
 							word32 r31_n;
 							word32 r30_n;
 							word32 r29_n;
-							word32 r28_n;
 							word32 r27_n;
-							word32 r26_n;
+							word32 r28_n;
 							word32 r25_n;
+							word32 r26_n;
 							word32 r24_n;
-							word32 r23_n;
 							word32 r22_n;
+							word32 r23_n;
 							word32 r19_n;
 							word32 r21_n;
 							word32 r9_n;
 							word32 r10_n;
 							word32 r8_n;
-							word32 r6_n;
 							word32 r7_n;
-							word32 r4_n;
+							word32 r6_n;
 							word32 r5_n;
+							word32 r4_n;
 							fn00003990(r0, r3, r19, r23, out r4_n, out r5_n, out r6_n, out r7_n, out r8_n, out r9_n, out r10_n, out r19_n, out r21_n, out r22_n, out r23_n, out r24_n, out r25_n, out r26_n, out r27_n, out r28_n, out r29_n, out r30_n, out r31_n);
 							r8.u0 = 0x00;
 							Eq_n r3_n = *((word32) r30_n + 20);
@@ -8150,8 +8066,8 @@ l0000A7D4:
 							r3_n = *((word32) *r19_n + 16);
 						} while (Test(NE,r3_n));
 						Eq_n r3_n = *((word32) r21 + 16);
-						word32 r27_n;
 						word32 r28_n;
+						word32 r27_n;
 						word32 r26_n;
 						word32 r25_n;
 						word32 r24_n;
@@ -8182,8 +8098,8 @@ l0000A7D4:
 					if (Test(NE,r3_n))
 					{
 						((word32) r19_n + 4)->u0 = 666;
-						word32 r27_n;
 						word32 r28_n;
+						word32 r27_n;
 						word32 r26_n;
 						word32 r25_n;
 						word32 r24_n;
@@ -8206,11 +8122,11 @@ l0000A7D4:
 						word32 r25_n;
 						word32 r24_n;
 						word32 r23_n;
-						word32 r22_n;
 						word32 r21_n;
-						word32 r19_n;
 						word32 r8_n;
+						word32 r19_n;
 						word32 r7_n;
+						word32 r22_n;
 						fn00009408(r0, r3_n, 666, r8, r19_n, r21, r22, r23_n, r24, r25_n, r26, out r7_n, out r8_n, out r19_n, out r21_n, out r22_n, out r23_n, out r24_n, out r25_n, out r26_n, out r27_n, out r28_n);
 						return;
 					}
@@ -8218,17 +8134,17 @@ l0000A7D4:
 				else
 				{
 					Eq_n r4_n = r3_n & ~0x02;
-					word32 r28_n;
-					word32 r27_n;
-					word32 r8_n;
-					word32 r25_n;
-					word32 r23_n;
-					word32 r24_n;
 					word32 r22_n;
 					word32 r19_n;
-					word32 r7_n;
-					word32 r26_n;
+					word32 r8_n;
+					word32 r23_n;
+					word32 r24_n;
 					word32 r21_n;
+					word32 r26_n;
+					word32 r7_n;
+					word32 r27_n;
+					word32 r25_n;
+					word32 r28_n;
 					fn00009408(r0, r3_n, r4_n, r8, r19_n, r21, r22, r23_n, r24, r25_n, r26, out r7_n, out r8_n, out r19_n, out r21_n, out r22_n, out r23_n, out r24_n, out r25_n, out r26_n, out r27_n, out r28_n);
 					return;
 				}
@@ -8246,25 +8162,25 @@ l0000A418:
 				if (r4_n - ((word32) r3_n + 2) < 0x00)
 				{
 					r25_n = *((word32) r21 + 28);
-					word32 r21_n;
-					word32 r19_n;
-					word32 r31_n;
-					word32 r24_n;
-					word32 r4_n;
-					word32 r5_n;
-					word32 r6_n;
 					word32 r8_n;
-					word32 r9_n;
 					word32 r7_n;
-					word32 r25_n;
-					word32 r23_n;
-					word32 r26_n;
+					word32 r5_n;
+					word32 r4_n;
 					word32 r27_n;
-					word32 r22_n;
-					word32 r28_n;
-					word32 r10_n;
-					word32 r29_n;
+					word32 r26_n;
+					word32 r6_n;
 					word32 r30_n;
+					word32 r10_n;
+					word32 r19_n;
+					word32 r21_n;
+					word32 r23_n;
+					word32 r24_n;
+					word32 r22_n;
+					word32 r31_n;
+					word32 r29_n;
+					word32 r28_n;
+					word32 r9_n;
+					word32 r25_n;
 					fn00003990(r0, r3, r19, r23, out r4_n, out r5_n, out r6_n, out r7_n, out r8_n, out r9_n, out r10_n, out r19_n, out r21_n, out r22_n, out r23_n, out r24_n, out r25_n, out r26_n, out r27_n, out r28_n, out r29_n, out r30_n, out r31_n);
 					Eq_n r3_n = *((word32) r25_n + 20);
 					r22 = *((word32) r21 + 16);
@@ -8299,16 +8215,16 @@ l0000A418:
 					{
 l0000A5BC:
 						((word32) r19_n + 40)->u0 = ~0x00;
+						word32 r21_n;
+						word32 r19_n;
+						word32 r7_n;
+						word32 r8_n;
+						word32 r28_n;
 						word32 r26_n;
+						word32 r27_n;
+						word32 r25_n;
 						word32 r24_n;
 						word32 r23_n;
-						word32 r21_n;
-						word32 r8_n;
-						word32 r19_n;
-						word32 r27_n;
-						word32 r7_n;
-						word32 r28_n;
-						word32 r25_n;
 						word32 r22_n;
 						fn00009408(r0, 0x00, r4_n, r8, r19_n, r21, r22, r23_n, r24, r25_n, r26, out r7_n, out r8_n, out r19_n, out r21_n, out r22_n, out r23_n, out r24_n, out r25_n, out r26_n, out r27_n, out r28_n);
 						return;
@@ -8323,25 +8239,23 @@ l0000A5BC:
 				Eq_n r4_n = *((word32) r19_n + 8);
 				*((word32) r19_n + 20) = (word32) r3_n + 1;
 				Mem813[r3_n + r4_n:byte] = SLICE(r9_n >>u 8, byte, 0);
-				word32 r25_n;
 				word32 r22_n;
-				word32 r6_n;
-				word32 r4_n;
+				word32 r25_n;
 				word32 r27_n;
-				word32 r28_n;
+				word32 r4_n;
+				word32 r6_n;
 				word32 r31_n;
-				*((word32) r21 + 48) = fn00007044(r19_n, r21, r22, r23_n, out r4_n, out r6_n, out r19_n, out r21, out r22_n, out r23_n, out r24, out r25_n, out r26, out r27_n, out r28_n, out r31_n);
+				*((word32) r21 + 48) = fn00007044(r19_n, r21, r22, r23_n, out r4_n, out r6_n, out r19_n, out r21, out r22_n, out r23_n, out r24, out r25_n, out r26, out r27_n, out r31_n);
 				r8 = r9_n >> 8;
 			}
 			goto l0000A528;
 		}
-		word32 r28_n;
-		word32 r27_n;
-		word32 r6_n;
 		word32 r4_n;
+		word32 r6_n;
 		word32 r25_n;
+		word32 r27_n;
 		word32 r31_n;
-		Eq_n r3_n = fn00007044(r19_n, r21, r22, r23_n, out r4_n, out r6_n, out r19_n, out r21, out r22, out r23_n, out r24, out r25_n, out r26, out r27_n, out r28_n, out r31_n);
+		Eq_n r3_n = fn00007044(r19_n, r21, r22, r23_n, out r4_n, out r6_n, out r19_n, out r21, out r22, out r23_n, out r24, out r25_n, out r26, out r27_n, out r31_n);
 		r4_n = *((word32) r19_n + 28);
 		*((word32) r21 + 48) = r3_n;
 		goto l0000A410;
@@ -8350,35 +8264,34 @@ l0000A5BC:
 	r4_n = *((word32) r4_n + 44);
 	if (Test(LT,-r4_n | r4_n) && r6_n - r7_n < 0x00)
 	{
-		word32 r6_n;
-		word32 r22_n;
-		word32 r28_n;
-		word32 r31_n;
 		word32 r26_n;
 		word32 r27_n;
-		*((word32) r21_n + 48) = fn00007044(r19_n, r21, r22, r23_n, out r4_n, out r6_n, out r19_n, out r21_n, out r22_n, out r23_n, out r24, out r25_n, out r26_n, out r27_n, out r28_n, out r31_n);
+		word32 r6_n;
+		word32 r31_n;
+		word32 r22_n;
+		*((word32) r21_n + 48) = fn00007044(r19_n, r21, r22, r23_n, out r4_n, out r6_n, out r19_n, out r21_n, out r22_n, out r23_n, out r24, out r25_n, out r26_n, out r27_n, out r31_n);
 		r21 = r21_n;
 	}
 	r26 = *((word32) r21 + 28);
+	word32 r23_n;
+	word32 r24_n;
+	word32 r30_n;
+	word32 r22_n;
+	word32 r27_n;
+	word32 r25_n;
+	word32 r19_n;
+	word32 r21_n;
+	word32 r4_n;
+	word32 r7_n;
+	word32 r8_n;
 	word32 r9_n;
 	word32 r10_n;
-	word32 r25_n;
+	word32 r5_n;
+	word32 r6_n;
 	word32 r29_n;
 	word32 r28_n;
-	word32 r27_n;
-	word32 r8_n;
-	word32 r22_n;
-	word32 r19_n;
-	word32 r6_n;
-	word32 r7_n;
-	word32 r4_n;
-	word32 r5_n;
-	word32 r30_n;
-	word32 r24_n;
-	word32 r23_n;
-	word32 r21_n;
-	word32 r31_n;
 	word32 r26_n;
+	word32 r31_n;
 	fn00003990(r0, r3, r19, r23, out r4_n, out r5_n, out r6_n, out r7_n, out r8_n, out r9_n, out r10_n, out r19_n, out r21_n, out r22_n, out r23_n, out r24_n, out r25_n, out r26_n, out r27_n, out r28_n, out r29_n, out r30_n, out r31_n);
 	Eq_n r3_n = *((word32) r26 + 20);
 	r22 = *((word32) r21 + 16);
@@ -8386,9 +8299,9 @@ l0000A5BC:
 		r22 = r3_n;
 	if (Test(NE,r22))
 	{
-		word32 r4_n;
-		word32 r9_n;
 		word32 r10_n;
+		word32 r9_n;
+		word32 r4_n;
 		fn00008C34(r3_n, r4_n, *((word32) r21 + 0x0C), *((word32) r26 + 16), r22, r8, out r4_n, out r9_n, out r10_n);
 		Eq_n r6_n = *((word32) r26 + 16);
 		Eq_n r5_n = *((word32) r21 + 20);
@@ -8529,8 +8442,8 @@ l0000B1A0:
 							ptr32 r23_n;
 							Eq_n r4_n;
 							Eq_n r6_n;
-							word32 r18_n;
 							word32 r8_n;
+							word32 r18_n;
 							fn0000B298(r0, r5_n, r7_n, r8_n, r19_n, r22_n, r23_n, out r4_n, out r6_n, out r8_n, out r18_n, out r19_n, out r21_n, out r22_n, out r23_n);
 							r4Out = r4_n;
 							r6Out = r6_n;
@@ -8569,6 +8482,7 @@ l0000B1A0:
 								if (Test(EQ,r3_n ^ 0x01))
 								{
 									Eq_n r7_n = ((word32) r8_n - 1) * 0x02;
+									word32 r18_n;
 									word32 r8_n;
 									struct Eq_n * r19_n;
 									ptr32 r21_n;
@@ -8576,7 +8490,6 @@ l0000B1A0:
 									ptr32 r23_n;
 									Eq_n r4_n;
 									Eq_n r6_n;
-									word32 r18_n;
 									fn0000B298(r0, r5_n, r7_n, r8_n, r19_n, r22_n, r23_n, out r4_n, out r6_n, out r8_n, out r18_n, out r19_n, out r21_n, out r22_n, out r23_n);
 									r4Out = r4_n;
 									r6Out = r6_n;
@@ -8595,8 +8508,8 @@ l0000B1A0:
 									ptr32 r23_n;
 									Eq_n r4_n;
 									Eq_n r6_n;
-									word32 r18_n;
 									word32 r8_n;
+									word32 r18_n;
 									fn0000B1D0(r0, r5_n, r6_n, r7_n, r8_n, r19_n, r22_n, r23_n, out r4_n, out r6_n, out r8_n, out r18_n, out r19_n, out r21_n, out r22_n, out r23_n);
 									r4Out = r4_n;
 									r6Out = r6_n;
@@ -8613,13 +8526,12 @@ l0000B1A0:
 				word32 r25_n;
 				word32 r24_n;
 				word32 r27_n;
-				word32 r28_n;
 				word32 r26_n;
 				struct Eq_n * r21_n;
 				word32 r3_n;
 				Eq_n r9_n;
 				Eq_n r10_n;
-				r0 = fn00008E80(r5, 0x05, r8_n, r9_n, r10_n, r5, out r3_n, out r4, out r5_n, out r6, out r7_n, out r8_n, out r9_n, out r10_n, out r19_n, out r21_n, out r22_n, out r23_n, out r24_n, out r25_n, out r26_n, out r27_n, out r28_n);
+				r0 = fn00008E80(r5, 0x05, r8_n, r9_n, r10_n, r5, out r3_n, out r4, out r5_n, out r6, out r7_n, out r8_n, out r9_n, out r10_n, out r19_n, out r21_n, out r22_n, out r23_n, out r24_n, out r25_n, out r26_n, out r27_n);
 				if (Test(NE,r3_n ^ ~0x01) && Test(NE,r21_n->t0010))
 				{
 					r6_n = *((word32) r19_n + 0x0084);
@@ -11546,8 +11458,8 @@ Eq_n fn0000D1CC(Eq_n r0, Eq_n r3, Eq_n r4, Eq_n r5, Eq_n r7, Eq_n r8, Eq_n r19, 
 	}
 	else
 	{
-		word32 r10_n;
 		word32 r4_n;
+		word32 r10_n;
 		fn00008C34(r3, r4, r5, r28 - r7, r7, r8, out r4_n, out r9_n, out r10_n);
 		Eq_n r3_n = *((word32) r19 + 44);
 		*((word32) r19 + 52) = r0;
@@ -11576,10 +11488,9 @@ Eq_n fn0000D1CC(Eq_n r0, Eq_n r3, Eq_n r4, Eq_n r5, Eq_n r7, Eq_n r8, Eq_n r19, 
 				word32 r24_n;
 				word32 r19_n;
 				word32 r25_n;
-				word32 r28_n;
 				word32 r4_n;
 				word32 r6_n;
-				r3_n = fn00007044(r19, r21_n, r22, r23, out r4_n, out r6_n, out r19_n, out r21_n, out r22, out r23, out r24_n, out r25_n, out r26_n, out r27, out r28_n, out r31);
+				r3_n = fn00007044(r19, r21_n, r22, r23, out r4_n, out r6_n, out r19_n, out r21_n, out r22, out r23, out r24_n, out r25_n, out r26_n, out r27, out r31);
 				*((word32) r22 + 28) = r3_n;
 			}
 			else
@@ -13204,13 +13115,12 @@ Eq_n fn0000DB74(Eq_n r19, Eq_n r21, Eq_n r22, Eq_n r23, struct Eq_n & r4Out, uni
 	Eq_n r25_n;
 	word32 r26_n;
 	word32 r27_n;
-	word32 r28_n;
 	struct Eq_n * r31_n;
 	word32 r4_n;
 	word32 r24_n;
 	word32 r6_n;
 	ptr32 r21_n;
-	Eq_n r3_n = fn00007044(r19, r21, r22, r23, out r4_n, out r6_n, out r19_n, out r21_n, out r22_n, out r23_n, out r24_n, out r25_n, out r26_n, out r27_n, out r28_n, out r31_n);
+	Eq_n r3_n = fn00007044(r19, r21, r22, r23, out r4_n, out r6_n, out r19_n, out r21_n, out r22_n, out r23_n, out r24_n, out r25_n, out r26_n, out r27_n, out r31_n);
 	struct Eq_n * r4_n = r22_n->ptr000C;
 	r22_n->t001C = r3_n;
 	r23_n->t0030 = r3_n;

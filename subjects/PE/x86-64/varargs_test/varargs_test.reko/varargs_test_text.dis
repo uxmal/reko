@@ -1,17 +1,17 @@
-word32 fn0000000140001000(word64 rbx, word64 rsi, word64 rdi)
+word32 fn0000000140001000()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
 //      Win32CrtStartup
-// MayUse:  rbx:[0..63] rdi:[0..63] rsi:[0..63]
+// MayUse: 
 // LiveOut: rax
 // Trashed: SCZO r8 r9 rax rcx rdx xmm0
 // Preserved: rsp
 fn0000000140001000_entry:
 l0000000140001000:
 	word64 rax_6 = Mem0[0x0000000140003000<p64>:word64] ^ fp - 0xC8<64>
-	fn0000000140001140(rbx, rsi, rdi)
-	fn00000001400010D0(rbx, rsi, rdi)
+	fn0000000140001140(0x0000000140002210<p64>)
+	fn00000001400010D0(0x0000000140002228<p64>)
 	return fn00000001400011B0(rax_6 ^ fp - 0xC8<64>, qwLocD0)
 fn0000000140001000_exit:
 
@@ -32,20 +32,18 @@ l00000001400010C0:
 fn00000001400010C0_exit:
 
 
-void fn00000001400010D0(word64 rbx, word64 rsi, word64 rdi)
+void fn00000001400010D0(word64 rcx)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
 //      fn0000000140001000
-// MayUse:  rbx:[0..63] rdi:[0..63] rsi:[0..63]
+// MayUse:  rcx:[0..63]
 // LiveOut:
 // Trashed: SCZO r8 r9 rax rcx rdx
 // Preserved: rbx rdi rsi rsp
 fn00000001400010D0_entry:
 l00000001400010D0:
-	_acrt_iob_func(0<32>, 0<32>, 0<u64>, rdi, rsi, rbx)
-	fn00000001400010C0()
-	_stdio_common_vfscanf()
+	_stdio_common_vfscanf(rcx, 0<u64>, 0<32>, 0<32>, Mem41[fn00000001400010C0():word64], _acrt_iob_func(0<32>, 0<32>, 0<u64>), fp + 0x10<64>)
 	return
 fn00000001400010D0_exit:
 
@@ -66,20 +64,18 @@ l0000000140001130:
 fn0000000140001130_exit:
 
 
-void fn0000000140001140(word64 rbx, word64 rsi, word64 rdi)
+void fn0000000140001140(word64 rcx)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
 //      fn0000000140001000
-// MayUse:  rbx:[0..63] rdi:[0..63] rsi:[0..63]
+// MayUse:  rcx:[0..63]
 // LiveOut:
 // Trashed: SCZO r8 r9 rax rcx rdx
 // Preserved: rbx rdi rsi rsp
 fn0000000140001140_entry:
 l0000000140001140:
-	_acrt_iob_func(1<32>, 1<u64>, rdi, rsi, rbx)
-	fn0000000140001130()
-	_stdio_common_vfprintf()
+	_stdio_common_vfprintf(rcx, 0<u64>, 0<32>, 0<32>, Mem39[fn0000000140001130():word64], _acrt_iob_func(1<32>, 1<u64>), fp + 0x10<64>)
 	return
 fn0000000140001140_exit:
 
@@ -110,16 +106,16 @@ l00000001400011C6:
 fn00000001400011B0_exit:
 
 
-void fn00000001400011D4(word64 rbx, word64 qwArg08, word64 qwArg20)
+void fn00000001400011D4(word64 qwArg08)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  rbx:[0..63] Stack +0008:[0..63] Stack +0020:[0..63]
+// MayUse:  Stack +0008:[0..63]
 // LiveOut:
 // Trashed: SCZO r8 r9 rax rbp rbx rcx rdx xmm0 xmm1
 // Preserved: rsp
 fn00000001400011D4_entry:
 l00000001400011D4:
-	set_app_type(1<32>, 1<u64>, rbx)
+	set_app_type(1<32>, 1<u64>)
 	_set_fmode(fn0000000140001920())
 	Mem28[__p__commode():word32] = fn0000000140001ABC()
 	branch fn000000014000164C(1<32>) == 0<8> l0000000140001279
@@ -130,8 +126,8 @@ l0000000140001279:
 l000000014000120D:
 	fn0000000140001B5C()
 	fn0000000140001854(0x0000000140001BA8<p64>)
-	fn0000000140001918()
-	branch SLICE(configure_narrow_argv(), word32, 0) != 0<32> l0000000140001284
+	word32 eax_72 = fn0000000140001918()
+	branch SLICE(configure_narrow_argv(eax_72, CONVERT(eax_72, word32, uint64)), word32, 0) != 0<32> l0000000140001284
 l0000000140001284:
 	word64 rcx_198
 	fn0000000140001974(7<32>, qwArg08, out rcx_198)
@@ -149,8 +145,7 @@ l0000000140001248:
 	fn0000000140001DD0()
 	fn0000000140001DD0()
 	word32 eax_119 = fn0000000140001ABC()
-	call configthreadlocale (retsize: 8;)
-		uses: eax:eax_119,rcx:CONVERT(eax_119, word32, uint64),Stack +0010:qwArg08,Stack +0028:qwArg20
+	configthreadlocale(eax_119, CONVERT(eax_119, word32, uint64))
 	branch fn0000000140001938() == 0<8> l000000014000126C
 l0000000140001267:
 	initialize_narrow_environment()
@@ -186,18 +181,18 @@ void fn00000001400012A0()
 fn00000001400012A0_entry:
 l00000001400012A0:
 	fn0000000140001B14()
-	fn0000000140001ABC()
-	set_new_mode()
+	word32 eax_12 = fn0000000140001ABC()
+	set_new_mode(eax_12, CONVERT(eax_12, word32, uint64))
 	return
 fn00000001400012A0_exit:
 
 
-word32 fn00000001400012BC(word64 rax, word64 rsi)
+word32 fn00000001400012BC(word64 rax)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
 //      Win32CrtStartup
-// MayUse:  rax:[0..63] rsi:[8..63]
+// MayUse:  rax:[0..63]
 // LiveOut: rax
 // Trashed: SCZO r8 r9 rax rcx rdx xmm0
 // Preserved: rbx rdi rsi rsp
@@ -261,10 +256,10 @@ l00000001400013A3:
 l00000001400013AF:
 	register_thread_local_exe_atexit_callback(Mem83[rax_124:word64])
 l00000001400013B7:
-	word64 rax_170 = _p___argv()
-	word64 rax_179 = _p___argc()
+	_p___argv()
+	_p___argc()
 	get_initial_narrow_environment()
-	word64 rax_200 = CONVERT(fn0000000140001000(rax_179, rsi_111, rax_170), word32, uint64)
+	word64 rax_200 = CONVERT(fn0000000140001000(), word32, uint64)
 	fn0000000140001AC0()
 	word32 ebx_233 = SLICE(rax_200, word32, 0)
 	branch SLICE(rax_200, byte, 0) != 0<8> l00000001400013EB
@@ -287,7 +282,7 @@ fn00000001400012BC_exit:
 DWORD Win32CrtStartup()
 // stackDelta: 8; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  rsi:[0..63]
+// MayUse: 
 // LiveOut: eax
 // Trashed: eax
 // Preserved:
@@ -295,7 +290,7 @@ Win32CrtStartup_entry:
 l0000000140001434:
 	word64 rax_6 = fn000000014000186C(qwLoc18)
 l0000000140001441_thunk_fn00000001400012BC:
-	return fn00000001400012BC(rax_6, rsi)
+	return fn00000001400012BC(rax_6)
 Win32CrtStartup_exit:
 
 
@@ -658,18 +653,18 @@ l0000000140001903:
 fn000000014000186C_exit:
 
 
-void fn0000000140001918()
+word32 fn0000000140001918()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
 //      fn00000001400011D4
 // MayUse: 
-// LiveOut:
+// LiveOut: rax
 // Trashed: rax
 // Preserved: rsp
 fn0000000140001918_entry:
 l0000000140001918:
-	return
+	return 1<32>
 fn0000000140001918_exit:
 
 
@@ -935,10 +930,7 @@ l0000000140001B7B:
 	branch Mem9[rbx_12:word64] == 0<64> l0000000140001B8D
 l0000000140001B83:
 	fn0000000140001BF4()
-	word64 rcx_25
-	call fn0000000000000000 (retsize: 8;)
-		uses: rcx:rcx_25
-		defs: rcx:rcx_25
+	fn0000000000000000()
 l0000000140001B8D:
 	rbx_12 = rbx_12 + 8<64>
 l0000000140001B96:
@@ -962,10 +954,7 @@ l0000000140001BC7:
 	branch Mem9[rbx_12:word64] == 0<64> l0000000140001BD9
 l0000000140001BCF:
 	fn0000000140001BF4()
-	word64 rcx_25
-	call fn0000000000000000 (retsize: 8;)
-		uses: rcx:rcx_25
-		defs: rcx:rcx_25
+	fn0000000000000000()
 l0000000140001BD9:
 	rbx_12 = rbx_12 + 8<64>
 l0000000140001BE2:
@@ -1167,16 +1156,16 @@ l0000000140001F10:
 fn0000000140001F10_exit:
 
 
-void fn0000000140001F12(word64 rcx, word64 rbp)
+void fn0000000140001F12(word64 rcx)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  rbp:[0..63] rcx:[0..63]
+// MayUse:  rcx:[0..63]
 // LiveOut:
 // Trashed: SCZO rax rcx rdx
 // Preserved: rbp rsp
 fn0000000140001F12_entry:
 l0000000140001F12:
-	seh_filter_exe(CONVERT(Mem5[Mem5[rcx:word64]:word32], word32, uint64), rcx, rbp)
+	seh_filter_exe(CONVERT(Mem5[Mem5[rcx:word64]:word32], word32, uint64), rcx)
 	return
 fn0000000140001F12_exit:
 
