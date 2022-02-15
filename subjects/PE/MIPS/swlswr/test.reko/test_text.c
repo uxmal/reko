@@ -35,14 +35,14 @@ Eq_n fn000110E8()
 	return r2_n;
 }
 
-// 0001116C: void fn0001116C(Register (ptr32 Eq_n) r2, Register (ptr32 (ptr32 word32)) r4, Register word32 r30, Register word32 ra)
-void fn0001116C(struct Eq_n * r2, word32 ** r4, word32 r30, word32 ra)
+// 0001116C: void fn0001116C(Register (ptr32 Eq_n) r2, Register (ptr32 (ptr32 word32)) r4)
+void fn0001116C(struct Eq_n * r2, word32 ** r4)
 {
 	r2->ptrFFFFFFEC = r4;
 	r2->ptrFFFFFFF0 = r2->ptrFFFFFFEC;
 	r2->dwFFFFFFF4 = **r2->ptrFFFFFFEC;
 	r2->dwFFFFFFE8 = r2->dwFFFFFFF4;
-	XcptFilter(r30, ra);
+	XcptFilter();
 }
 
 // 000111C4: void fn000111C4()

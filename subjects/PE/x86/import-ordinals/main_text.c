@@ -28,12 +28,12 @@ void fn00401010(word32 dwArg04)
 	_stdio_common_vfprintf();
 }
 
-// 00401040: Register word32 fn00401040(Register word32 ecx, Register (ptr32 Eq_n) ebp)
+// 00401040: Register word32 fn00401040(Register word32 ecx)
 // Called from:
 //      Win32CrtStartup
-word32 fn00401040(word32 ecx, struct Eq_n * ebp)
+word32 fn00401040(word32 ecx)
 {
-	driver.dll!Ordinal_n(fp - 0x08, ecx, ebp);
+	driver.dll!Ordinal_n(fp - 0x08, ecx);
 	driver.dll!Ordinal_n(fp - 0x08, 0x03);
 	driver.dll!Ordinal_n(fp - 0x08, 0x01);
 	driver.dll!Ordinal_n(fp - 0x08, 0x05);
@@ -128,7 +128,7 @@ l00401172:
 		esp_n->tFFFFFFFC = get_initial_narrow_environment();
 		esp_n->dwFFFFFFF8 = *eax_n;
 		esp_n->dwFFFFFFF4 = *eax_n;
-		Eq_n eax_n = fn00401040(ecx_n, ebp_n);
+		Eq_n eax_n = fn00401040(ecx_n);
 		byte bl_n = (byte) ebx_n;
 		struct Eq_n * esp_n = esp_n;
 		if (fn0040188B() == 0x00)

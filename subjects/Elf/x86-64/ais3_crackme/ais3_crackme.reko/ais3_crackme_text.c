@@ -51,14 +51,14 @@ void __do_global_dtors_aux()
 	}
 }
 
-// 00000000004004F0: void frame_dummy(Register word64 rbp)
-void frame_dummy(word64 rbp)
+// 00000000004004F0: void frame_dummy()
+void frame_dummy()
 {
 	if (g_qw600E08 == 0x00 || true)
 		register_tm_clones();
 	else
 	{
-		fn0000000000000000(0x00600E08, rbp);
+		fn0000000000000000(0x00600E08);
 		register_tm_clones();
 	}
 }

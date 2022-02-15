@@ -224,5 +224,37 @@ return
             });
         }
 
+        [Test]
+        public void Argg_AvoidNonParameterCapture()
+        {
+            var sExpected =
+            #region Expected
+@"
+def r3
+loc_1 = r3
+external_proc()
+r3_3 = r3
+return
+";
+            #endregion
+
+            RunTest(sExpected, m =>
+            {
+                var r3 = m.Reg("r3", reg3);
+                var loc_1 = m.Local32("loc_1", -4);
+                var r1_2 = m.Reg("r3_2", reg1);
+                var r3_3 = m.Reg("r3_3", reg3);
+                var esp = m.Reg("esp", m.Architecture.StackRegister);
+
+                m.AddDefToEntryBlock(r3);
+                m.Assign(loc_1, r3);
+                m.Call(externalProc, 4,
+                    new[] { (esp.Storage, (Expression) m.ISub(esp, 8)) },
+                    new[] { (r1_2.Storage, r1_2) });
+                m.Assign(r3_3, r3);
+                m.Return();
+            });
+        }
+
     }
 }

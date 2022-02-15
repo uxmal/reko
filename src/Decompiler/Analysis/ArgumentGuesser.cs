@@ -63,7 +63,7 @@ namespace Reko.Analysis
 
         public void Transform()
         {
-            if (ssa.Procedure.Name == "fn0040110B")
+            if (ssa.Procedure.Name == "frame_dummy")
                 ssa.ToString(); //$DEBUG
             foreach (var block in ssa.Procedure.ControlGraph.Blocks)
             {
@@ -108,7 +108,7 @@ namespace Reko.Analysis
                     if (sid is not null) {
                         regWrites.Add(sid);
                     }
-                    sid = AssignmentToStackLocal(stmCall, ass.Dst);
+                    sid = AssignmentToStackLocal(stmCall, ass);
                     if (sid is not null)
                     {
                         stackIds.Add(sid);
@@ -186,20 +186,33 @@ namespace Reko.Analysis
             return (null, 0);
         }
 
-        private SsaIdentifier? AssignmentToStackLocal(Statement stmCall, Identifier dst)
+        private SsaIdentifier? AssignmentToStackLocal(Statement stmCall, Assignment ass)
         {
-            if (dst.Storage is StackLocalStorage stk)
+            if (ass.Dst.Storage is StackLocalStorage)
             {
-                var sid = ssa.Identifiers[dst];
-                if (sid.Uses.Count == 0)
+                var sid = ssa.Identifiers[ass.Dst];
+                if (sid.Uses.Count == 0 ||
+                    (sid.Uses.Count == 1 && sid.Uses[0] == stmCall))
                 {
                     // A stack variable that is never used is a strong hint
                     // that its assignment was intended as an argument to the callee.
-                    return sid;
-                }
-                if (sid.Uses.Count == 1 && sid.Uses[0] == stmCall)
-                {
-                    return sid;
+                    // However, we may be seeing the capture of a register that is callee
+                    // save. Eg. the following x86 code:
+                    //  push ebp
+                    //  call ext_proc
+                    // The ebp is not part of any x86 calling convention so it shouldn't
+                    // be used as an argument register.
+                    if (ass.Src is not Identifier idSrc)
+                    {
+                        return sid;
+                    }
+                    var sidSrc = ssa.Identifiers[idSrc];
+                    if (sidSrc.DefStatement?.Instruction is not DefInstruction ||
+                        idSrc.Storage is not RegisterStorage reg ||
+                        platform.IsPossibleArgumentRegister(reg))
+                    {
+                        return sid;
+                    }
                 }
             }
             return null;

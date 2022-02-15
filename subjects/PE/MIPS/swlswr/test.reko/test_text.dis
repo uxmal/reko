@@ -51,10 +51,10 @@ l00011154:
 fn000110E8_exit:
 
 
-void fn0001116C(word32 r2, word32 r4, word32 r30, word32 ra)
+void fn0001116C(word32 r2, word32 r4)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  r2:[0..31] r30:[0..31] r4:[0..31] ra:[0..31]
+// MayUse:  r2:[0..31] r4:[0..31]
 // LiveOut:
 // Trashed: r2 r30 r4 r5 r8 ra sp
 // Preserved:
@@ -64,7 +64,7 @@ l0001116C:
 	Mem13[r2 + 0xFFFFFFF0<32>:word32] = Mem11[r2 + 0xFFFFFFEC<32>:word32]
 	Mem17[r2 + 0xFFFFFFF4<32>:word32] = Mem13[Mem13[Mem13[r2 + 0xFFFFFFEC<32>:word32]:word32]:word32]
 	Mem19[r2 + 0xFFFFFFE8<32>:word32] = Mem17[r2 + 0xFFFFFFF4<32>:word32]
-	XcptFilter(r30, ra)
+	XcptFilter()
 	return
 fn0001116C_exit:
 
