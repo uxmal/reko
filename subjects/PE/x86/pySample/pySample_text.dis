@@ -241,8 +241,7 @@ l100013C7:
 l100013CC:
 	branch Mem29[0x100020CC<p32>:word32] == 0<32> l100013DD
 l100013D5:
-	fn00000000(ebx_113, edx)
-	Mem74[ebp_13 - 0x1C<32>:word32] = eax_69
+	Mem74[ebp_13 - 0x1C<32>:word32] = fn00000000(ebx_113, edx)
 l100013DD:
 	branch Mem76[ebp_13 - 0x1C<32>:word32] == 0<32> l1000147A
 l100013E7:
@@ -300,8 +299,7 @@ l10001446:
 l1000144C:
 	branch Mem218[0x100020CC<p32>:word32] == 0<32> l1000147A
 l10001455:
-	fn00000000(ebx_198, esi_200, edi_201)
-	Mem247[ebp_13 - 0x1C<32>:word32] = eax_244
+	Mem247[ebp_13 - 0x1C<32>:word32] = fn00000000(ebx_198, esi_200, edi_201)
 l100013BB:
 	Mem248[ebp_13 - 0x1C<32>:word32] = 0<32>
 l1000147A:

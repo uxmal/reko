@@ -181,10 +181,7 @@ Eq_n fn10001388(Eq_n ecx, Eq_n edx, Eq_n (* ebx)(LONG *, Eq_n, Eq_n), ptr32 esi,
 	if (edx == 0x01 || edx == 0x02)
 	{
 		if (g_dw100020CC != 0x00)
-		{
-			fn00000000(ebx_n, edx);
-			ebp_n->tFFFFFFE4 = eax_n;
-		}
+			ebp_n->tFFFFFFE4 = fn00000000(ebx_n, edx);
 		if (ebp_n->tFFFFFFE4 == 0x00)
 		{
 l1000147A:
@@ -240,10 +237,7 @@ l1000147A:
 		if (eax_n == 0x00)
 			ebp_n->tFFFFFFE4 &= eax_n;
 		if (ebp_n->tFFFFFFE4 != 0x00 && g_dw100020CC != 0x00)
-		{
-			fn00000000(ebx_n, esi_n, edi_n);
-			ebp_n->tFFFFFFE4 = eax_n;
-		}
+			ebp_n->tFFFFFFE4 = fn00000000(ebx_n, esi_n, edi_n);
 	}
 	goto l1000147A;
 }
@@ -290,10 +284,8 @@ Eq_n fn100015CF(Eq_n (* ebx)(LONG *, Eq_n, Eq_n), ptr32 esi, word32 edi)
 		ebp_n->tFFFFFFE0 = _decode_pointer(esp_n->ptrFFFFFFFC);
 		Eq_n v16_n = ebp_n->t0008;
 		ebp_n->tFFFFFFDC = __dllonexit(esp_n->tFFFFFFF0, esp_n->ptrFFFFFFF4, esp_n->ptrFFFFFFF8);
-		encode_pointer(ecx_n, ebp_n->tFFFFFFE4, v16_n, ebp_n - 0x1C, ebp_n - 0x20, v15_n, v14_n);
-		g_ptr100033B4 = eax_n;
-		encode_pointer(ebp_n->tFFFFFFE0);
-		g_ptr100033B0 = eax_n;
+		g_ptr100033B4 = encode_pointer(ecx_n, ebp_n->tFFFFFFE4, v16_n, ebp_n - 0x1C, ebp_n - 0x20, v15_n, v14_n);
+		g_ptr100033B0 = encode_pointer(ebp_n->tFFFFFFE0);
 		ebp_n->dwFFFFFFFC = ~0x01;
 		fn10001665();
 		esp_n = esp_n + 0x1C;

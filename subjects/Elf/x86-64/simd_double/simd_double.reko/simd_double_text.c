@@ -56,16 +56,13 @@ void frame_dummy()
 void * _mm_malloc(uint64 rsi, Eq_n rdi)
 {
 	void * rax_n;
-	uint64 qwLoc28_n = rsi;
 	if (rsi == 0x01)
 		rax_n = malloc(rdi);
 	else
 	{
 		if (rsi == 0x02 || rsi == 0x04)
-			qwLoc28_n = 0x08;
-		word64 rax_n;
-		posix_memalign();
-		if ((word32) rax_n == 0x00)
+			;
+		if ((word32) posix_memalign() == 0x00)
 			rax_n = qwLoc10;
 		else
 			rax_n = null;

@@ -37,15 +37,11 @@ fn0040110B_entry:
 l0040110B:
 	branch Mem0[0x0040208B<p32>:word32] <u 0<32> l0040113C
 l00401114:
-	word32 eax_11
-	call __CRTL_TLS_GetValue (retsize: 4;)
-		uses: eax:eax_11,Stack +0004:Mem0[0x0040208B<p32>:word32]
-		defs: eax:eax_11
+	word32 eax_11 = __CRTL_TLS_GetValue(Mem0[0x0040208B<p32>:word32])
 	branch eax_11 == 0<32> l0040113C
 l00401123:
-	word32 eax_22 = GetProcessHeap()
-	call __CRTL_TLS_ExitThread (retsize: 4;)
-		uses: eax:HeapFree(eax_22, 8<32>, eax_11),Stack +0000:8<32>,Stack +0004:Mem24[0x0040208B<p32>:word32],Stack +FFFFFFFC:eax_22
+	HeapFree(GetProcessHeap(), 8<32>, eax_11)
+	__CRTL_TLS_ExitThread(Mem24[0x0040208B<p32>:word32])
 l0040113C:
 	return
 fn0040110B_exit:

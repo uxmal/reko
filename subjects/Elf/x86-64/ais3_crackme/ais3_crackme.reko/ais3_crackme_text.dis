@@ -27,7 +27,7 @@ call_gmon_start_entry:
 l000000000040043C:
 	branch __gmon_start__ == 0<64> l000000000040044E
 l000000000040044C:
-	call __gmon_start__ (retsize: 8;)
+	__gmon_start__()
 l000000000040044E:
 	return
 call_gmon_start_exit:
@@ -97,10 +97,10 @@ l00000000004004EA:
 __do_global_dtors_aux_exit:
 
 
-void frame_dummy()
+void frame_dummy(word64 rbp)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse: 
+// MayUse:  rbp:[0..63]
 // LiveOut:
 // Trashed: SCZO rax rdi rdx rsi Top
 // Preserved: rbp rsp
@@ -114,8 +114,7 @@ l0000000000400518_thunk_register_tm_clones:
 	register_tm_clones()
 	return
 l0000000000400504:
-	call fn0000000000000000 (retsize: 8;)
-		uses: rdi:0x600E08<u64>
+	fn0000000000000000(0x600E08<u64>, rbp)
 l0000000000400510_thunk_register_tm_clones:
 	register_tm_clones()
 	return

@@ -20,12 +20,11 @@ void fn0040110B()
 {
 	if (g_dw40208B >= 0x00)
 	{
-		word32 eax_n;
-		__CRTL_TLS_GetValue();
-		if (eax_n != 0x00)
+		Eq_n eax_n = __CRTL_TLS_GetValue(g_dw40208B);
+		if (eax_n != null)
 		{
-			Eq_n eax_n = GetProcessHeap();
-			__CRTL_TLS_ExitThread();
+			HeapFree(GetProcessHeap(), 0x08, eax_n);
+			__CRTL_TLS_ExitThread(g_dw40208B);
 		}
 	}
 }

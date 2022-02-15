@@ -78,10 +78,10 @@ l00000000004004FA:
 __do_global_dtors_aux_exit:
 
 
-void frame_dummy()
+void frame_dummy(word64 rbp)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse: 
+// MayUse:  rbp:[0..63]
 // LiveOut:
 // Trashed: SCZO rax rdi rdx rsi Top
 // Preserved: rbp rsp
@@ -95,8 +95,7 @@ l0000000000400528_thunk_register_tm_clones:
 	register_tm_clones()
 	return
 l0000000000400514:
-	call fn0000000000000000 (retsize: 8;)
-		uses: rdi:0x600E20<u64>
+	fn0000000000000000(0x600E20<u64>, rbp)
 l0000000000400520_thunk_register_tm_clones:
 	register_tm_clones()
 	return

@@ -222,6 +222,22 @@ namespace Reko.Core
 
         Address MakeAddressFromLinear(ulong uAddr, bool codeAlign);
 
+
+        /// <summary>
+        /// Given a sequence of <see cref="Storage"/>s, determine whether one
+        /// or more of the storages could contstitute a return value from a
+        /// procedure call.
+        /// </summary>
+        /// <param name="storages">A sequence of storages that are live 
+        /// out from a call site.</param>
+        /// <returns>A <see cref="Storage"/> representing the returned value,
+        /// if the give <paramref name="storages"/> comply with the
+        /// return value registers of the platform ABI. The returned value 
+        /// can either be a <see cref="RegisterStorage"/> or a <see cref="SequenceStorage"/>
+        /// if "long" values are allowed on the platform.
+        /// </returns>
+        Storage? PossibleReturnValue(IEnumerable<Storage> storages);
+
         /// <summary>
         /// Given an indirect call, attempt to resolve it into an address.
         /// </summary>
@@ -577,6 +593,11 @@ namespace Reko.Core
         public abstract ExternalProcedure? LookupProcedureByName(string? moduleName, string procName);
 
         public virtual ExternalProcedure? LookupProcedureByOrdinal(string moduleName, int ordinal)
+        {
+            return null;
+        }
+
+        public virtual Storage? PossibleReturnValue(IEnumerable<Storage> storages)
         {
             return null;
         }

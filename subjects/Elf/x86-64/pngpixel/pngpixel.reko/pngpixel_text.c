@@ -42,12 +42,12 @@ void __do_global_dtors_aux()
 	}
 }
 
-// 0000000000400DA0: void frame_dummy()
-void frame_dummy()
+// 0000000000400DA0: void frame_dummy(Register word64 rbp)
+void frame_dummy(word64 rbp)
 {
 	if (g_qw601E10 != 0x00 && false)
 	{
-		fn0000000000000000();
+		fn0000000000000000(rbp);
 		register_tm_clones();
 	}
 	else
@@ -106,21 +106,14 @@ l0000000000400EC1:
 	}
 }
 
-// 0000000000400EE9: void print_pixel(Register uint32 ecx, Register word64 rdx, Register word64 rsi, Register word64 rdi, Register (ptr32 Eq_n) fs)
+// 0000000000400EE9: void print_pixel(Register uint32 ecx, Register word64 rdx, Register word64 rbx, Register ptr64 rbp, Register word64 rsi, Register word64 rdi, Register word64 r12, Register word64 r13, Register (ptr32 Eq_n) fs)
 // Called from:
 //      main
-void print_pixel(uint32 ecx, word64 rdx, word64 rsi, word64 rdi, struct Eq_n * fs)
+void print_pixel(uint32 ecx, word64 rdx, word64 rbx, ptr64 rbp, word64 rsi, word64 rdi, word64 r12, word64 r13, struct Eq_n * fs)
 {
 	word64 rax_n = fs->qw0028;
-	word64 rcx_n;
-	word64 rax_n;
-	png_get_bit_depth();
-	Eq_n eax_n = (word32) (byte) rax_n;
-	word64 rdx_n;
-	word64 rcx_n;
-	word64 rax_n;
-	png_get_color_type();
-	word32 ecx_n = (word32) rcx_n;
+	Eq_n eax_n = (word32) (byte) png_get_bit_depth(rdi, rsi, rsi, ecx, rdx, rsi, rdi, rax_n, rbx, r12, r13, rbp);
+	png_get_color_type(rdi, rsi, rsi, eax_n);
 	up32 eax_n = (word32) (byte) rax_n;
 	if (eax_n <= 0x06)
 	{
@@ -137,13 +130,10 @@ void print_pixel(uint32 ecx, word64 rdx, word64 rsi, word64 rdi, struct Eq_n * f
 			break;
 		case 0x03:
 			uint32 eax_n = component(eax_n, 0x00, ecx, rdx, 0x01);
-			word64 rax_n;
 			png_get_PLTE();
 			if (((word32) rax_n & 0x08) != 0x00 && (false && false))
 			{
-				word64 rax_n;
-				png_get_tRNS();
-				if (((word32) rax_n & 0x10) != 0x00 && (false && false))
+				if (((word32) png_get_tRNS(0x00, fp - 0x4C, rdi, fp - 0x38, rsi, 0x00, 0x00) & 0x10) != 0x00 && (false && false))
 				{
 					int32 esi_n;
 					if (eax_n < 0x00)
@@ -169,15 +159,15 @@ void print_pixel(uint32 ecx, word64 rdx, word64 rsi, word64 rdi, struct Eq_n * f
 	else
 	{
 l00000000004012C9:
-		png_error();
+		png_error(rdi, 4200760);
 	}
 	if ((rax_n ^ fs->qw0028) == 0x00)
 		return;
 	__stack_chk_fail();
 }
 
-// 00000000004012F9: void main(Register (ptr64 Eq_n) rsi, Register word32 edi, Register (ptr32 Eq_n) fs)
-void main(struct Eq_n * rsi, word32 edi, struct Eq_n * fs)
+// 00000000004012F9: void main(Register word64 rbx, Register (ptr64 Eq_n) rsi, Register word32 edi, Register word64 r12, Register word64 r13, Register (ptr32 Eq_n) fs)
+void main(word64 rbx, struct Eq_n * rsi, word32 edi, word64 r12, word64 r13, struct Eq_n * fs)
 {
 	word64 rax_n = fs->qw0028;
 	if (edi != 0x04)
@@ -195,51 +185,31 @@ void main(struct Eq_n * rsi, word32 edi, struct Eq_n * fs)
 		fprintf(stderr, "pngpixel: %s: could not open file\n", rsi->ptr0018);
 		goto l000000000040175D;
 	}
-	word64 rsi_n;
-	word64 rax_n;
-	word64 r9_n;
-	word64 r8_n;
-	png_create_read_struct();
+	word64 rax_n = png_create_read_struct(0x00, 0x00401993, 0x00, 0x00);
 	if (rax_n == 0x00)
 	{
 		fwrite(&g_v401A18, 0x01, 0x2E, stderr);
 		goto l000000000040175D;
 	}
-	word64 rax_n;
-	word64 rcx_n;
-	word64 r9_n;
-	word64 r8_n;
-	png_create_info_struct();
+	word64 rax_n = png_create_info_struct(rax_n);
 	if (rax_n != 0x00)
 	{
-		png_init_io();
-		png_read_info();
-		word64 rax_n;
-		png_get_rowbytes();
-		word64 rax_n;
-		png_malloc();
-		word64 rax_n;
-		word64 rcx_n;
-		word64 r9_n;
-		word64 r8_n;
-		word64 rsi_n;
-		png_get_IHDR();
-		if ((word32) rax_n != 0x00)
+		png_init_io(rax_n, rax_n, rax_n);
+		png_read_info(rax_n, rax_n, rax_n);
+		word64 rax_n = png_get_rowbytes(rax_n, rax_n, rax_n);
+		word64 rax_n = png_malloc(rax_n, rax_n, rax_n);
+		if ((word32) png_get_IHDR(fp - 0x80, fp - 0x7C, fp - 0x84, fp - 0x70, fp - 116, fp - 0x78, rax_n, fp - 0x88, rax_n, fp - 0x78, fp - 116, fp - 0x70, rax_n, rax_n) != 0x00)
 		{
 			if (dwLoc78 != 0x00)
 			{
 				if (dwLoc78 != 0x01)
-				{
-					word64 rcx_n;
-					word64 r9_n;
-					word64 r8_n;
-					png_error();
-				}
+					png_error(rax_n, 0x0040199A);
 				else
 					dwLoc6C = 0x07;
 			}
 			else
 				dwLoc6C = 0x01;
+			word64 rsi_n;
 			word64 rcx_n;
 			word64 r9_n;
 			word64 r8_n;
@@ -287,9 +257,7 @@ void main(struct Eq_n * rsi, word32 edi, struct Eq_n * fs)
 				for (dwLoc54_n = dwLoc64_n; dwLoc54_n < dwLoc84; dwLoc54_n += dwLoc5C_n)
 				{
 					puts("png_read_row");
-					word64 r9_n;
-					word64 r8_n;
-					png_read_row();
+					png_read_row(rax_n, 4200886, rax_n, 0x00, rax_n);
 					if ((uint64) dwLoc54_n == rax_n)
 					{
 						uint32 dwLoc50_n;
@@ -298,7 +266,7 @@ void main(struct Eq_n * rsi, word32 edi, struct Eq_n * fs)
 						{
 							if ((uint64) dwLoc50_n == rax_n)
 							{
-								print_pixel(dwLoc4C_n, rax_n, rax_n, rax_n, fs);
+								print_pixel(dwLoc4C_n, rax_n, rbx, fp - 8, rax_n, rax_n, r12, r13, fs);
 								goto l000000000040167F;
 							}
 							++dwLoc4C_n;
@@ -308,25 +276,16 @@ void main(struct Eq_n * rsi, word32 edi, struct Eq_n * fs)
 l000000000040166F:
 			}
 l000000000040167F:
-			png_free();
-			word64 rcx_n;
-			word64 r9_n;
-			word64 r8_n;
-			png_destroy_info_struct();
+			png_free(rax_n, rax_n, rax_n, 0x00);
+			png_destroy_info_struct(rax_n, fp - 0x38, fp - 0x38);
 l00000000004016DE:
-			word64 rcx_n;
-			word64 r9_n;
-			word64 r8_n;
 			png_destroy_read_struct();
 l000000000040175D:
 			if ((rax_n ^ fs->qw0028) == 0x00)
 				return;
 			__stack_chk_fail();
 		}
-		word64 rcx_n;
-		word64 r9_n;
-		word64 r8_n;
-		png_error();
+		png_error(rax_n, 4200899);
 	}
 	fwrite(&g_v4019E8, 0x01, 44, stderr);
 	goto l00000000004016DE;

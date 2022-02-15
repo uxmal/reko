@@ -61,6 +61,7 @@ namespace Reko.UnitTests.Decompiler.Analysis
             platform.Setup(p => p.Architecture).Returns(arch);
             platform.Setup(p => p.IsPossibleArgumentRegister(reg1)).Returns(true);
             platform.Setup(p => p.IsPossibleArgumentRegister(reg2)).Returns(true);
+            platform.Setup(p => p.PossibleReturnValue(new[] { reg1 })).Returns(reg1);
         }
 
         private void Given_FramePointer(SsaProcedureBuilder m)
@@ -176,5 +177,52 @@ return
                 m.Return();
             });
         }
+
+        [Test]
+        public void Argg_ReturnValue_used()
+        {
+            var sExpected =
+            #region Expected
+@"
+r1_1 = external_proc()
+Mem2[0x123400<32>:word32] = r1_1
+return
+";
+            #endregion
+
+            RunTest(sExpected, m =>
+            {
+                var r1_1 = m.Reg("r1_1", reg1);
+                var esp = m.Reg("esp", m.Architecture.StackRegister);
+                m.Call(externalProc, 4,
+                    new[] { (esp.Storage, (Expression) m.ISub(esp, 8)) },
+                    new[] { (r1_1.Storage, r1_1) });
+                m.MStore(m.Word32(0x00123400), r1_1);
+                m.Return();
+            });
+        }
+
+        [Test]
+        public void Argg_ReturnValue_not_used()
+        {
+            var sExpected =
+            #region Expected
+@"
+external_proc()
+return
+";
+            #endregion
+
+            RunTest(sExpected, m =>
+            {
+                var r1_1 = m.Reg("r1_1", reg1);
+                var esp = m.Reg("esp", m.Architecture.StackRegister);
+                m.Call(externalProc, 4,
+                    new[] { (esp.Storage, (Expression) m.ISub(esp, 8)) },
+                    new[] { (r1_1.Storage, r1_1) });
+                m.Return();
+            });
+        }
+
     }
 }

@@ -63,6 +63,8 @@ namespace Reko.Analysis
 
         public void Transform()
         {
+            if (ssa.Procedure.Name == "fn0040110B")
+                ssa.ToString(); //$DEBUG
             foreach (var block in ssa.Procedure.ControlGraph.Blocks)
             {
                 for (int i = 0; i < block.Statements.Count; ++i)
@@ -77,9 +79,10 @@ namespace Reko.Analysis
                     {
                         trace.Verbose("ArgGuess: {0:X}: call to {1}", stm.LinearAddress, extProc);
                         var gargs = GuessArguments(stm, call, block, i - 1);
-                        if (gargs is not null)
+                        var gret = GuessReturnValue(stm, call);
+                        if (gargs is not null || gret is not null)
                         {
-                            ReplaceCallWithApplication(stm, call, pc, gargs.Value);
+                            ReplaceCallWithApplication(stm, call, pc, gargs, gret);
                             trace.Verbose("  rewritten as: {0}", stm);
                         }
                     }
@@ -222,39 +225,78 @@ namespace Reko.Analysis
             return null;
         }
 
+        private Storage? GuessReturnValue(Statement stm, CallInstruction call)
+        {
+            var usedDefs = new HashSet<Storage>();
+            foreach (var def in call.Definitions)
+            {
+                if (def.Expression is Identifier id && 
+                    ssa.Identifiers[id].Uses.Count > 0)
+                {
+                    usedDefs.Add(def.Storage);
+                }
+            }
+            return platform.PossibleReturnValue(usedDefs);
+        }
+
         private void ReplaceCallWithApplication(
             Statement stmCall, 
             CallInstruction call,
             ProcedureConstant pc,
-            GuessedArguments gargs)
+            GuessedArguments? gargs,
+            Storage? gret)
         {
             var args = new List<Expression>();
             var arch = ssa.Procedure.Architecture;
             var binder = ssa.Procedure.Frame;
-            //$TODO: sort by ABI order.
-            foreach (var argreg in gargs.Registers.OrderBy(r => r.Identifier.Name))
+            if (gargs.HasValue)
             {
-                args.Add(argreg.Identifier);
+                //$TODO: sort by ABI order.
+                foreach (var argreg in gargs.Value.Registers.OrderBy(r => r.Identifier.Name))
+                {
+                    args.Add(argreg.Identifier);
+                }
+                foreach (var stkarg in gargs.Value.StackIds.OrderBy(s => ((StackStorage) s.Identifier.Storage).StackOffset))
+                {
+                    args.Add(stkarg.Identifier);
+                }
+                foreach (var stackslot in gargs.Value.StackSlots.Values.OrderBy(s => s.Offset))
+                {
+                    ssa.RemoveUses(stackslot.stm);
+                    ssa.Identifiers[stackslot.Dst.MemoryId].DefStatement = null;
+                    var idTmp = binder.CreateTemporary(stackslot.Dst.DataType);
+                    var sidTmp = ssa.Identifiers.Add(idTmp, stackslot.stm, stackslot.src, false);
+                    stackslot.stm.Instruction = new Assignment(sidTmp.Identifier, stackslot.src);
+                    args.Add(sidTmp.Identifier);
+                }
             }
-            foreach (var stkarg in gargs.StackIds.OrderBy(s => ((StackStorage)s.Identifier.Storage).StackOffset))
+            var application = new Application(pc, VoidType.Instance, args.ToArray());
+            Instruction newInstr;
+            if (gret is not null)
             {
-                args.Add(stkarg.Identifier);
+                var idRet = MatchingReturnIdentifier(call, gret);
+                newInstr = new Assignment(idRet, application);
             }
-            foreach (var stackslot in gargs.StackSlots.Values.OrderBy(s => s.Offset))
+            else
             {
-                ssa.RemoveUses(stackslot.stm);
-                ssa.Identifiers[stackslot.Dst.MemoryId].DefStatement = null;
-                var idTmp = binder.CreateTemporary(stackslot.Dst.DataType);
-                var sidTmp = ssa.Identifiers.Add(idTmp, stackslot.stm, stackslot.src, false);
-                stackslot.stm.Instruction = new Assignment(sidTmp.Identifier, stackslot.src);
-                args.Add(sidTmp.Identifier);
+                newInstr = new SideEffect(application);
             }
             ssa.RemoveUses(stmCall);
             ssa.ReplaceDefinitions(stmCall, null);
-            stmCall.Instruction = new SideEffect(new Application(pc, VoidType.Instance, args.ToArray()));
+            stmCall.Instruction = newInstr;
             var ssam = new SsaMutator(this.ssa);
             ssa.AddDefinitions(stmCall);
             ssa.AddUses(stmCall);
+        }
+
+        private Identifier MatchingReturnIdentifier(CallInstruction call, Storage gret)
+        {
+            foreach (var def in call.Definitions)
+            {
+                if (def.Storage == gret)
+                    return (Identifier) def.Expression;
+            }
+            throw new NotImplementedException();
         }
 
         private class StackSlot

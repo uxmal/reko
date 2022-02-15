@@ -210,6 +210,11 @@ namespace Reko.ImageLoaders.LLVM
             throw new NotImplementedException();
         }
 
+        public Storage? PossibleReturnValue(IEnumerable<Storage> liveOutStorages)
+        {
+            return null;
+        }
+
         public Expression ResolveImportByName(string? moduleName, string globalName)
         {
             throw new NotImplementedException();

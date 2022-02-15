@@ -11,7 +11,7 @@ _init_entry:
 l00000000004003E0:
 	branch __gmon_start__ == 0<64> l00000000004003F5
 l00000000004003F0:
-	call __gmon_start__ (retsize: 8;)
+	__gmon_start__()
 l00000000004003F5:
 	return
 _init_exit:

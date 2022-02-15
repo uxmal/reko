@@ -109,20 +109,14 @@ word64 _mm_malloc(word64 rsi, word64 rdi)
 _mm_malloc_entry:
 l000000000000072A:
 	word64 rax_43
-	word64 qwLoc28_55 = rsi
 	branch rsi != 1<64> l000000000000074F
 l000000000000074F:
 	branch rsi == 2<64> l000000000000075D
 l0000000000000756:
 	branch rsi != 4<64> l0000000000000765
 l000000000000075D:
-	qwLoc28_55 = 8<64>
 l0000000000000765:
-	word64 rax_34
-	call posix_memalign (retsize: 8;)
-		uses: rax:fp - 0x10<64>,rcx:qwLoc28_59,rdi:fp - 0x10<64>,rdx:rdi,rsi:qwLoc28_59,Stack +0020:qwLoc10
-		defs: rax:rax_34
-	branch SLICE(rax_34, word32, 0) != 0<32> l0000000000000786
+	branch SLICE(posix_memalign(), word32, 0) != 0<32> l0000000000000786
 l0000000000000786:
 	rax_43 = 0<u64>
 l0000000000000780:

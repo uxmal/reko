@@ -123,6 +123,14 @@ namespace Reko.Environments.Windows
             return possibleFastcallArgRegs.Contains(reg);
         }
 
+        public override Storage? PossibleReturnValue(IEnumerable<Storage> storages)
+        {
+            var eax = storages.FirstOrDefault(
+                s => s is RegisterStorage r &&
+                     r.Number == Registers.eax.Number);
+            return eax;
+        }
+
         public override HashSet<RegisterStorage> CreateTrashedRegisters()
         {
             // Win32 preserves, ebx, esi, edi.
