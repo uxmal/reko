@@ -156,7 +156,7 @@ namespace Reko.Environments.SysV.ArchSpecific
 
         public bool IsOutArgument(Storage stg)
         {
-            return iret == stg && fret == stg;
+            return iret == stg || fret == stg;
         }
     }
 }

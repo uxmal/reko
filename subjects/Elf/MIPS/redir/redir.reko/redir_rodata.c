@@ -6,6 +6,7 @@
 
 char g_str409E44[] = "w"; // 00409E44
 char g_str409E48[] = "%d\n"; // 00409E48
+char g_str409E4C[] = "a"; // 00409E4C
 char g_str409F94[] = "CONNECT %s:%d HTTP/1.1\r\nHost: %s:%d\r\n\r\n"; // 00409F94
 char g_str409FBC[] = "host: "; // 00409FBC
 Eq_n g_t409FE0 = // 00409FE0

@@ -1367,8 +1367,7 @@ l004008D0:
 	properties_parse_command_line(r4, r5, r16, ra)
 	branch Mem25[Mem25[0x10000A40<32>:word32] + 0x4BC<32>:word32] == 0<32> l00400A54
 l004009BC:
-	fork()
-	branch r2_77 == 0<32> l00400A00
+	branch fork() == 0<32> l00400A00
 l00400A00:
 	close(0<32>)
 	close(1<i32>)
@@ -1390,10 +1389,8 @@ l00400B20:
 	Mem198[Mem194[0x100008A0<32>:word32]:word32] = Mem194[0x10000A40<32>:word32] + 925<i32>
 	Mem203[Mem198[0x10000A28<32>:word32]:word32] = Mem198[Mem198[0x10000A40<32>:word32] + 0x684<32>:word32] << 0xA<8>
 	Mem207[Mem203[0x1000090C<32>:word32]:word32] = Mem203[Mem203[0x10000A40<32>:word32] + 0x5EC<32>:word32]
-	word32 r25_228
-	call __xpg_basename (retsize: 0;)
-		uses: r2:r5,r25:r25_228,r4:Mem207[r5:word32],r5:open_log(0x409E4C<32>, ra)
-		defs: r25:r25_228
+	open_log(0x409E4C<32>, ra)
+	__xpg_basename()
 	branch Mem257[Mem257[0x10000A28<32>:word32]:word32] >= 0<32> l00400C88
 l00400C78:
 l00400C88:
@@ -1503,8 +1500,7 @@ l00401340:
 	dwLoc0158_1311 = Mem668[dwLoc0158_1311 + 0x17B8<32>:word32]
 l004010F0:
 l00401358:
-	select(dwLoc0160_1284 + 1<i32>, fp + -304<i32>, 0<32>, 0<32>, 0<32>)
-	branch r2_720 >= 0<32> l00401454
+	branch select(dwLoc0160_1284 + 1<i32>, fp + -304<i32>, 0<32>, 0<32>, 0<32>) >= 0<32> l00401454
 l00401454:
 	r28_1010 = 0x10008860<32>
 	word32 dwLoc0150_1341 = Mem684[r2_325 + 8<32>:word32]
@@ -2095,8 +2091,7 @@ l00402E44:
 	word32 r6_23 = <invalid>
 	word32 r5_22 = <invalid>
 	word32 r4_19 = <invalid>
-	recv(0<32>, r4_19, Mem28[r4:word32], r5_22, r4 + 8<i32>, r6_23, 1744<i32>, r7_24, 16384<i32>, 0x10008860<32>)
-	Mem47[r4 + 0x7D8<32>:word32] = r2_39
+	Mem47[r4 + 0x7D8<32>:word32] = recv(0<32>, r4_19, Mem28[r4:word32], r5_22, r4 + 8<i32>, r6_23, 1744<i32>, r7_24, 16384<i32>, 0x10008860<32>)
 	return
 client_read_request_exit:
 
@@ -2118,7 +2113,7 @@ l00402EF8:
 	word32 r25_110 = <invalid>
 	branch Mem29[r4 + 0xFAC<32>:word32] > 0<32> l00402F68
 l00402F68:
-	send(Mem29[r4 + 4<32>:word32], Mem29[r4 + 0xFB0<32>:word32], r4, Mem29[r4 + 0xFAC<32>:word32], 0<32>)
+	word32 r2_42 = send(Mem29[r4 + 4<32>:word32], Mem29[r4 + 0xFB0<32>:word32], r4, Mem29[r4 + 0xFAC<32>:word32], 0<32>)
 	branch r2_42 != Mem48[r4 + 0xFAC<32>:word32] l00402FDC
 l00402FDC:
 	Mem57[r4 + 0xFB0<32>:word32] = Mem48[r4 + 0xFB0<32>:word32] + r2_42
@@ -2192,7 +2187,7 @@ l00403220:
 	word32 r5_25 = <invalid>
 	word32 r6_24 = <invalid>
 	word32 r4_21 = <invalid>
-	send(0<32>, r4_21, Mem30[r4:word32], r5_25, Mem30[r4 + 0x1788<32>:word32], r6_24, r4, Mem30[r4 + 0x178C<32>:word32], r7_26, 0<32>)
+	word32 r2_41 = send(0<32>, r4_21, Mem30[r4:word32], r5_25, Mem30[r4 + 0x1788<32>:word32], r6_24, r4, Mem30[r4 + 0x178C<32>:word32], r7_26, 0<32>)
 	branch r2_41 != Mem47[r4 + 0x178C<32>:word32] l004032BC
 l004032BC:
 	Mem56[r4 + 0x1788<32>:word32] = Mem47[r4 + 0x1788<32>:word32] + r2_41
@@ -2851,8 +2846,7 @@ word32 get_method(word32 r4, ptr32 & r5Out)
 // Preserved: r30 ra sp
 get_method_entry:
 l00404B34:
-	strsep(fp + 4<i32>, 0x410000<32>, 0x40A464<32>, 0x10008860<32>)
-	strncpy(r4, r2_26, 256<i32>)
+	strncpy(r4, strsep(fp + 4<i32>, 0x410000<32>, 0x40A464<32>, 0x10008860<32>), 256<i32>)
 	word32 r5_36 = <invalid>
 	r5Out = r5_36
 	return r5
@@ -2870,8 +2864,7 @@ word32 get_uri(word32 r4)
 // Preserved: r30 ra sp
 get_uri_entry:
 l00404BC8:
-	strsep(fp + 4<i32>, 0x410000<32>, 0x40A464<32>, 0x10008860<32>)
-	strncpy(r4, r2_26, 256<i32>)
+	strncpy(r4, strsep(fp + 4<i32>, 0x410000<32>, 0x40A464<32>, 0x10008860<32>), 256<i32>)
 	return r5
 get_uri_exit:
 
@@ -2887,8 +2880,7 @@ void get_version(word32 r4)
 // Preserved: r30 ra sp
 get_version_entry:
 l00404C5C:
-	strsep(fp + 4<i32>, 0x410000<32>, 0x40A468<32>, 0x10008860<32>)
-	strncpy(r4, r2_26, 256<i32>)
+	strncpy(r4, strsep(fp + 4<i32>, 0x410000<32>, 0x40A468<32>, 0x10008860<32>), 256<i32>)
 	return
 get_version_exit:
 
@@ -3155,23 +3147,15 @@ l004057C4:
 l004057F4:
 	Mem192[r2_184:byte] = 0<8>
 l00405800:
-	word32 r25_202
-	word32 r2_205
-	call strspn (retsize: 0;)
-		uses: r25:r25_202,r4:r2_151,r5:0x40A640<32>
-		defs: r2:r2_205,r25:r25_202
-	word32 r2_212 = r2_151 + r2_205
+	word32 r2_212 = r2_151 + strspn()
 	branch CONVERT(Mem213[r2_212:int8], int8, word32) != 0<32> l00405858
 l00405858:
-	strcspn(r2_212, 0x410000<32>, 0x40A644<32>, r2_212)
-	word32 r2_232 = r2_212 + r2_225
+	word32 r2_232 = r2_212 + strcspn(r2_212, 0x410000<32>, 0x40A644<32>, r2_212)
 	word32 r2_242 = strchr(r2_232, '=')
 	branch r2_242 != 0<32> l00405920
 l00405920:
-	strspn(r2_242 + 1<i32>, 0x410000<32>, 0x40A640<32>, r2_242 + 1<i32>)
-	word32 r2_266 = r2_242 + 1<i32> + r2_259
-	strcspn(r2_266, 0x410000<32>, 0x40A640<32>, r2_266, r2_266)
-	Mem287[r2_266 + r2_277:byte] = 0<8>
+	word32 r2_266 = r2_242 + 1<i32> + strspn(r2_242 + 1<i32>, 0x410000<32>, 0x40A640<32>, r2_242 + 1<i32>)
+	Mem287[r2_266 + strcspn(r2_266, 0x410000<32>, 0x40A640<32>, r2_266, r2_266):byte] = 0<8>
 	Mem289[r2_232:byte] = 0<8>
 	word32 dwLoc2C_567 = 0<32>
 	word32 dwLoc014C_568 = 0<32>
@@ -3296,21 +3280,13 @@ l00405F40:
 	branch Mem116[Mem116[r28_125 - 0x7E20<32>:word32] + ((dwLoc24_383 * 0x14<32> - dwLoc24_383 << 3<8>) + 8<i32>):word32] != 2<i32> l004061C8
 l00405F80:
 	word32 r2_199 = CONVERT(bLoc1C_368, byte, word32)
-	word32 r5_205
 	word32 r2_206
 	call Mem116[r28_125 - 0x7F9C<32>:word32] (retsize: 0;)
 		uses: r2:r2_199,r4:r2_199,r5:r5_202,r6:r6_230,r7:r7_231
-		defs: r2:r2_206,r5:r5_205
-	word32 r2_222 = CONVERT(Mem116[Mem116[0x10000A40<32>:word32] + ((dwLoc24_383 * 0x14<32> - dwLoc24_383 << 3<8>) + 8<i32>) + 4<32>:int8], int8, word32)
-	word32 r25_225
-	word32 r2_228
-	word32 r6_230
-	word32 r7_231
-	call toupper (retsize: 0;)
-		uses: r2:r2_222,r25:r25_225,r3:dwLoc24_384,r4:r2_222,r5:r5_205,r6:r6_230,r7:r7_231
-		defs: r2:r2_228,r25:r25_225,r5:r5_227,r6:r6_230,r7:r7_231
+		defs: r2:r2_206
 	r28_125 = 0x10008860<32>
-	branch r2_206 == r2_228 l00406004
+	r5_168 = r5_227
+	branch r2_206 == toupper() l00406004
 l00406004:
 	dwLoc20_382 = 1<i32>
 	word32 r2_247 = Mem235[Mem235[r28_125 - 0x7E20<32>:word32] + ((dwLoc24_383 * 0x14<32> - dwLoc24_383 << 3<8>) + 8<i32>):word32]
@@ -3342,6 +3318,7 @@ l00406150:
 	dwLoc28_364 = dwLoc28_364 + -1<i32>
 l00406084:
 l00405FFC:
+	r5_168 = r5_227
 l004061C8:
 	dwLoc24_383 = dwLoc24_383 + 1<i32>
 l00405E64:
@@ -3437,9 +3414,9 @@ print_log_entry:
 l00406610:
 	branch CONVERT(Mem22[Mem22[0x100008F4<32>:word32]:word32] < r4, bool, word32) != 0<32> l004066D4
 l00406664:
-	vsnprintf(fp + -1048<i32>, 1023<i32>, r5, fp + 8<i32>, fp + 8<i32>)
+	word32 r2_40 = vsnprintf(fp + -1048<i32>, 1023<i32>, r5, fp + 8<i32>, fp + 8<i32>)
 	call 0x40697C<32> (retsize: 0;)
-		uses: r2:fp + -1048<i32>,r25:0x40697C<32>,r4:Mem43[Mem43[0x10000A20<32>:word32]:word32],r5:r4,r6:r2_40,r7:fp + -1048<i32>,Stack +0420:r2_40
+		uses: r2:fp + -1048<i32>,r25:0x40697C<32>,r4:Mem43[Mem43[0x10000A20<32>:word32]:word32],r5:r4,r6:r2_40,r7:fp + -1048<i32>,Stack +0018:fp + 8<i32>,Stack +0420:r2_40
 		defs: r25:r25_52,r4:r4_56,r5:r5_53,r6:r6_54,r7:r7_55
 l004066D4:
 	r5Out = r5
@@ -3450,38 +3427,36 @@ l004066D4:
 print_log_exit:
 
 
-word32 open_log(word32 r4, word32 ra)
+void open_log(word32 r4, word32 ra)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
 //      main
 //      log_rotate
 // MayUse:  r4:[0..31] ra:[0..31]
-// LiveOut: r5
+// LiveOut:
 // Trashed: r1 r2 r25 r28 r3 r4 r5 r6
 // Preserved: r30 ra sp
 open_log_entry:
 l004066E8:
-	word32 r5_41
 	branch CONVERT(Mem15[Mem15[Mem15[0x100008A0<32>:word32]:word32]:int8], int8, word32) == 0<32> l004067EC
 l0040672C:
 	branch CONVERT(Mem15[Mem15[Mem15[0x100008A0<32>:word32]:word32]:int8], int8, word32) == 45<i32> l004067EC
 l004067EC:
 	Mem28[Mem15[0x10000A20<32>:word32]:word32] = Mem15[Mem15[0x10000914<32>:word32]:word32]
 	strcpy(Mem28[Mem28[0x100008A0<32>:word32]:word32], 0x40A73C<32>)
-	r5_41 = <invalid>
 l0040674C:
 	Mem56[Mem15[0x10000A20<32>:word32]:word32] = fopen(Mem15[Mem15[0x100008A0<32>:word32]:word32], r4)
-	r5_41 = <invalid>
 	branch Mem56[Mem56[0x10000A20<32>:word32]:word32] != 0<32> l00406834
 l00406798:
 	Mem62[Mem56[0x10000A20<32>:word32]:word32] = Mem56[Mem56[0x10000914<32>:word32]:word32]
-	word32 r6_99
-	word32 r7_100
-	word32 r25_101
-	print_log(0<32>, 0x40A704<32>, out r5_41, out r6_99, out r7_100, out r25_101)
+	word32 r5_99
+	word32 r6_100
+	word32 r7_101
+	word32 r25_102
+	print_log(0<32>, 0x40A704<32>, out r5_99, out r6_100, out r7_101, out r25_102)
 l00406834:
-	return r5_41
+	return
 open_log_exit:
 
 
@@ -3529,8 +3504,7 @@ l0040697C:
 	word32 r6_31 = <invalid>
 	word32 r5_30 = <invalid>
 	word32 r4_29 = <invalid>
-	gmtime(fp + -40<i32>, r4_29, fp + -40<i32>, 0<32>, r5_30, r6_31, r7_33, 0x10008860<32>)
-	strftime(fp + -72<i32>, SLICE(28<i32>, size_t, 0), 0x40A74C<32>, r2_43)
+	strftime(fp + -72<i32>, SLICE(28<i32>, size_t, 0), 0x40A74C<32>, gmtime(fp + -40<i32>, r4_29, fp + -40<i32>, 0<32>, r5_30, r6_31, r7_33, 0x10008860<32>))
 	fprintf(r4, 0x40A760<32>, 0<32>)
 	fflush(r4)
 	Mem106[Mem75[0x10000878<32>:word32] + 2084<i32>:word32] = Mem75[Mem75[0x10000878<32>:word32] + 2084<i32>:word32] + 1<i32>
@@ -3583,8 +3557,7 @@ l00406C7C:
 	word32 r6_56 = <invalid>
 	word32 r5_55 = <invalid>
 	word32 r4_54 = <invalid>
-	inet_addr(r4_54, r4, r5_55, r6_56, r7_57)
-	Mem79[r2_29 + 0xC<32>:word32] = r2_74
+	Mem79[r2_29 + 0xC<32>:word32] = inet_addr(r4_54, r4, r5_55, r6_56, r7_57)
 	r2_114 = r2_29
 l00406C48_ds_f:
 l00406C4C:
@@ -3617,8 +3590,7 @@ l00406D4C:
 l00406E40:
 	branch bind(r2_26, r4 + 8<i32>, 16<i32>) >= 0<32> l00406F0C
 l00406F0C:
-	listen(r2_26, Mem30[r4 + 4<32>:word32])
-	branch r2_54 >= 0<32> l00406FCC
+	branch listen(r2_26, Mem30[r4 + 4<32>:word32]) >= 0<32> l00406FCC
 l00406FCC:
 	Mem60[r4:word32] = r2_26
 	r2_110 = 1<i32>
