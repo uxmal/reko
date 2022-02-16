@@ -1089,18 +1089,15 @@ l0C92:
 	return
 l0C8F:
 l0105:
-	call fn1729 (retsize: 0;)
-		uses: f:f_147
+	fn1729()
 	return
 l0C84:
 l0224:
-	call fn177D (retsize: 0;)
-		uses: f:f_147
+	fn177D()
 	return
 l0C79:
 l020A:
-	call fn172D (retsize: 0;)
-		uses: f:f_147
+	fn172D()
 	return
 fn0BE4_exit:
 

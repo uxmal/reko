@@ -197,6 +197,14 @@ namespace Reko.Environments.Windows
                 return null;
         }
 
+        public override Storage? PossibleReturnValue(IEnumerable<Storage> storages)
+        {
+            var rax = storages.FirstOrDefault(
+                s => s is RegisterStorage r &&
+                     r.Number == Registers.rax.Number);
+            return rax;
+        }
+
         public override ProcedureBase_v1? SignatureFromName(string fnName)
         {
             return SignatureGuesser.SignatureFromName(fnName, this);

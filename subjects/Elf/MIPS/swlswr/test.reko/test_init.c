@@ -17,9 +17,6 @@ void _init()
 		(r25_n + 0x0970)();
 	}
 	else
-	{
-		word32 r25_n;
 		__gmon_start__();
-	}
 }
 

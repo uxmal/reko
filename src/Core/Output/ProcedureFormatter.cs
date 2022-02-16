@@ -105,7 +105,9 @@ namespace Reko.Core.Output
                 writer.InnerFormatter.WriteLine();
             }
             foreach (var stm in block.Statements)
+            {
                 stm.Instruction.Accept(writer);
+            }
         }
 
         private void WriteGoto(string label)

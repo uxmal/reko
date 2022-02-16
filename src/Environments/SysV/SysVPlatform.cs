@@ -219,6 +219,15 @@ namespace Reko.Environments.SysV
             return proc;
         }
 
+        public override Storage? PossibleReturnValue(IEnumerable<Storage> storages)
+        {
+            if (defaultCc is null)
+                return null;
+            var retStorage = storages.FirstOrDefault(
+                s => defaultCc.IsOutArgument(s));
+            return retStorage;
+        }
+
         public override ProcedureBase_v1? SignatureFromName(string fnName)
         {
             StructField_v1? field;

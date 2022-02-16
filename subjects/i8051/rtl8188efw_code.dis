@@ -1,7 +1,7 @@
-void fn0000(byte R1, selector __data)
+void fn0000(selector __data)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  __data:[0..15] R1:[0..7]
+// MayUse:  __data:[0..15]
 // LiveOut:
 // Trashed: CAOP A DPH DPL R1 R7 SFR12C
 // Preserved: SP
@@ -10,18 +10,12 @@ l0000:
 l0788:
 l077A:
 	Mem8[__data:0x001D<p16>:byte] = 0<8>
-	byte A_12 = Mem8[__data:0x80F0<16>:byte]
 l0791:
-	byte R1_21
-	selector __data_23
-	call fn4EF3 (retsize: 2;)
-		uses: __data:__data,A:Mem8[__data:0x80EF<16>:byte] + A_12,DPH:0x80<8>,DPL:0xEF<8>,R1:R1 + 1<8>,R7:A_12
-		defs: __data:__data_23,R1:R1_21
+	fn4EF3()
 	Mem32[__data_23:0x157<16>:byte] = 5<8>
 	branch (Mem32[__data_23:0x80EA<16>:byte] >>u 2<8> & 1<8>) != 0<8> l07AA
 l07A7:
-	call fn4AC0 (retsize: 2;)
-		uses: __data:__data_23,R1:R1_21
+	fn4AC0()
 l07AA:
 	return
 fn0000_exit:

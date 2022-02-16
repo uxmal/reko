@@ -61,8 +61,8 @@ S_47: orig: S
 Top_48: orig: Top
 Z_49: orig: Z
 Z_50: orig: Z
-sp_51: orig: sp
-Top_52: orig: Top
+Top_51: orig: Top
+sp_53: orig: sp
 // fn0C00_000F
 // Return size: 0
 word16 fn0C00_000F(word16 wArg02)

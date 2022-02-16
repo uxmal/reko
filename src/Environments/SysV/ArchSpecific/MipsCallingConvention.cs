@@ -134,8 +134,7 @@ namespace Reko.Environments.SysV.ArchSpecific
         public void SetReturnRegister(ICallingConventionEmitter ccr, DataType dt)
         {
             int bitSize = dt.BitSize;
-            var prim = dt as PrimitiveType;
-            if (prim != null && prim.Domain == Domain.Real)
+            if (dt is PrimitiveType prim && prim.Domain == Domain.Real)
             {
                 ccr.RegReturn(fret);
             }
@@ -157,7 +156,7 @@ namespace Reko.Environments.SysV.ArchSpecific
 
         public bool IsOutArgument(Storage stg)
         {
-            return iret == stg && fret == stg;
+            return iret == stg || fret == stg;
         }
     }
 }

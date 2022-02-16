@@ -35,14 +35,13 @@ Eq_n fn000110E8()
 	return r2_n;
 }
 
-// 0001116C: void fn0001116C(Register (ptr32 Eq_n) r2, Register (ptr32 (ptr32 word32)) r4, Stack word32 dwArg00)
-void fn0001116C(struct Eq_n * r2, word32 ** r4, word32 dwArg00)
+// 0001116C: void fn0001116C(Register (ptr32 Eq_n) r2, Register (ptr32 (ptr32 word32)) r4)
+void fn0001116C(struct Eq_n * r2, word32 ** r4)
 {
 	r2->ptrFFFFFFEC = r4;
 	r2->ptrFFFFFFF0 = r2->ptrFFFFFFEC;
 	r2->dwFFFFFFF4 = **r2->ptrFFFFFFEC;
-	word32 r8_n = r2->dwFFFFFFF4;
-	r2->dwFFFFFFE8 = r8_n;
+	r2->dwFFFFFFE8 = r2->dwFFFFFFF4;
 	XcptFilter();
 }
 
@@ -56,7 +55,6 @@ void fn000111C4()
 		g_dw13034 = ~r8_n;
 	else
 	{
-		uint32 r2_n;
 		COREDLL.dll!Ordinal_n();
 		ui32 r8_n = r2_n >> 0x10 ^ r2_n & 0xFFFF;
 		ui32 dwLoc0C_n = r8_n;
@@ -175,7 +173,6 @@ word32 fn0001152C()
 	{
 		if (r8_n != null)
 		{
-			word32 r5_n;
 			msize();
 			sp_n = fp + ~0x33;
 		}

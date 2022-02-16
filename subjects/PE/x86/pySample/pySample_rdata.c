@@ -42,7 +42,7 @@
 Eq_n g_t10002098 = null; // 10002098
 Eq_n g_t1000209C = null; // 1000209C
 Eq_n g_t100020A0 = null; // 100020A0
-word32 g_dw100020A8 = 0x00; // 100020A8
+Eq_n g_t100020A8 = null; // 100020A8
 word32 g_dw100020CC = 0x00; // 100020CC
 char g_str100020E0[] = "fdiv(a, b) = a / b"; // 100020E0
 char g_str100020F4[] = "fdiv"; // 100020F4

@@ -13,10 +13,7 @@ l80000080:
 l80000096:
 	branch null == 0<32> l800000AA
 l800000A0:
-	word32 a0_26
-	call fn00000000 (retsize: 4;)
-		uses: a0:a0_26,a6:fp - 4<32>,Stack +0004:0x80002724<p32>
-		defs: a0:a0_26
+	fn00000000(0x80002724<p32>)
 l800000AA:
 	return
 deregister_tm_clones_exit:
@@ -43,10 +40,7 @@ l800000C6:
 l800000CA:
 	branch null == 0<32> l800000E0
 l800000D4:
-	word32 a0_36
-	call fn00000000 (retsize: 4;)
-		uses: a0:a0_36,a6:fp - 4<32>,Stack +0004:0x80002724<p32>,Stack +0008:d0_18
-		defs: a0:a0_36
+	fn00000000(0x80002724<p32>, d0_18)
 l800000E0:
 	return
 register_tm_clones_exit:
@@ -62,7 +56,6 @@ void __do_global_dtors_aux()
 __do_global_dtors_aux_entry:
 l800000E4:
 	word32 a6_35 = fp - 4<32>
-	word32 a7_11 = fp - 0xC<32>
 	branch Mem13[0x80002724<p32>:byte] != 0<8> l8000014C
 l800000F4:
 	word32 d0_19 = Mem13[0x80002726<p32>:word32]
@@ -76,20 +69,14 @@ l80000114:
 	word32 d1_91
 	call Mem31[a2_18 + d0_29 * 4<i32>:word32] (retsize: 4;)
 		uses: a0:a0_43,a2:a2_33,a6:a6_35,d0:d0_29,d1:d1_91,d2:d2_36
-		defs: a0:a0_43,a2:a2_40,a6:a6_39,a7:a7_38,d1:d1_91,d2:d2_41
+		defs: a0:a0_43,a2:a2_40,a6:a6_39,d1:d1_91,d2:d2_41
 	d0_19 = Mem31[0x80002726<p32>:word32]
 	branch d2_23 - d0_19 >u 0<32> l80000114
 l8000012C:
 	deregister_tm_clones()
 	branch null == 0<32> l80000144
 l8000013A:
-	Mem64[a7_11 - 4<i32>:word32] = 0x8000065C<p32>
-	word32 d0_72
-	word32 a0_73
-	word32 d1_74
-	call fn00000000 (retsize: 4;)
-		uses: a0:a0_73,a2:a2_66,a6:a6_65,d0:d0_72,d1:d1_74,d2:d2_67
-		defs: a0:a0_73,d0:d0_72,d1:d1_74
+	fn00000000(0x8000065C<p32>)
 l80000144:
 	Mem77[0x80002724<p32>:byte] = 1<8>
 l8000014C:
@@ -119,26 +106,15 @@ void frame_dummy()
 // Preserved:
 frame_dummy_entry:
 l80000160:
-	word32 a6_18 = fp - 4<32>
-	word32 a7_23 = fp - 4<32>
 	branch null == 0<32> l8000017E
 l8000016E:
-	word32 a7_17
-	word32 a1_20
-	call fn00000000 (retsize: 4;)
-		uses: a1:a1_20,a6:fp - 4<32>,Stack +0004:0x8000065C<p32>,Stack +0008:0x8000272A<p32>
-		defs: a1:a1_20,a6:a6_18,a7:a7_17
-	a7_23 = a7_17 + 8<i32>
+	fn00000000(0x8000065C<p32>, 0x8000272A<p32>)
 l8000017E:
 	branch Mem25[0x8000271C<p32>:word32] != 0<32> l8000018E
 l8000018E:
 	branch null == 0<32> l80000188
 l80000198:
-	Mem37[a7_23 - 4<i32>:word32] = 0x8000271C<p32>
-	word32 a1_43
-	call fn00000000 (retsize: 4;)
-		uses: a1:a1_43,a6:a6_39
-		defs: a1:a1_43
+	fn00000000(0x8000271C<p32>)
 l800001A0_thunk_register_tm_clones:
 	register_tm_clones()
 	return

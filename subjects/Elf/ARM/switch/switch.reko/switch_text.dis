@@ -101,10 +101,7 @@ l00008404:
 l00008414:
 	branch Mem0[0x00008428<p32>:word32] != 0<32> l00008420
 l00008420:
-	word32 pc_13
-	call fn00000000 (retsize: 0;)
-		uses: pc:pc_13
-		defs: pc:pc_13
+	fn00000000()
 	return
 l0000841C_1:
 	return

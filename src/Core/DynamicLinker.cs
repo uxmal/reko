@@ -190,13 +190,13 @@ namespace Reko.Core
             var t = platform.DataTypeFromImportName(name);
             //$REVIEW: the way imported symbols are resolved as 
             // globals or functions needs a revisit.
-            if (t != null && !(t.Item2 is SerializedSignature))
+            if (t != null && t.Value.Item2 is not SerializedSignature)
             {
                 var dSer = program.CreateTypeLibraryDeserializer();
-                var dt = (t.Item2 == null) ?
+                var dt = (t.Value.Item2 == null) ?
                     new UnknownType() :
-                    t.Item2.Accept(dSer);
-                return Identifier.Global(t.Item1, dt);
+                    t.Value.Item2.Accept(dSer);
+                return Identifier.Global(t.Value.Item1, dt);
             }
             else
                 return null;

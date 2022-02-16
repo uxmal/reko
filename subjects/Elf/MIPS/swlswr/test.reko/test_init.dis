@@ -20,9 +20,6 @@ l000005B8:
 	return
 _init_exit:
 l000005AC:
-	word32 r25_31
-	call __gmon_start__ (retsize: 0;)
-		uses: r25:r25_31
-		defs: r25:r25_31
+	__gmon_start__()
 
 

@@ -10,10 +10,7 @@
 void deregister_tm_clones()
 {
 	if (false && 0x00 != 0x00)
-	{
-		word32 a0_n;
-		fn00000000();
-	}
+		fn00000000(0x80002724);
 }
 
 // 800000AE: void register_tm_clones()
@@ -26,17 +23,13 @@ void register_tm_clones()
 		d0_n = 0x01;
 	int32 d0_n = d0_n >> 0x01;
 	if (d0_n != 0x00 && 0x00 != 0x00)
-	{
-		word32 a0_n;
-		fn00000000();
-	}
+		fn00000000(0x80002724, d0_n);
 }
 
 // 800000E4: void __do_global_dtors_aux()
 void __do_global_dtors_aux()
 {
 	ptr32 a6_n = fp - 0x04;
-	struct Eq_n * a7_n = fp - 0x0C;
 	if (g_b80002724 == 0x00)
 	{
 		uint32 d0_n = dtor_idx.3228;
@@ -56,13 +49,7 @@ void __do_global_dtors_aux()
 		}
 		deregister_tm_clones();
 		if (0x00 != 0x00)
-		{
-			a7_n->ptrFFFFFFFC = 0x8000065C;
-			word32 d0_n;
-			word32 a0_n;
-			word32 d1_n;
-			fn00000000();
-		}
+			fn00000000(0x8000065C);
 		g_b80002724 = 0x01;
 	}
 }
@@ -75,20 +62,11 @@ void call___do_global_dtors_aux()
 // 80000160: void frame_dummy()
 void frame_dummy()
 {
-	ptr32 a6_n = fp - 0x04;
-	struct Eq_n * a7_n = fp - 0x04;
 	if (0x00 != 0x00)
-	{
-		word32 a7_n;
-		word32 a1_n;
-		fn00000000();
-		a7_n = a7_n + 8;
-	}
+		fn00000000(0x8000065C, 0x8000272A);
 	if (g_dw8000271C != 0x00 && 0x00 != 0x00)
 	{
-		a7_n->ptrFFFFFFFC = 0x8000271C;
-		word32 a1_n;
-		fn00000000();
+		fn00000000(0x8000271C);
 		register_tm_clones();
 	}
 	else

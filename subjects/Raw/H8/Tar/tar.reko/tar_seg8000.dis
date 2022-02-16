@@ -629,20 +629,20 @@ l8866:
 	Mem36[sp_7 + 6<i32>:word16] = 0<16>
 	ptr32 sp_116 = sp_7 - 6<i32>
 	er3_16_16_182 = er3_16_16
-	er1_16_16_519 = er1_16_16
-	er0_446 = er0
+	er1_16_16_515 = er1_16_16
+	er0_442 = er0
 l889C:
-	word32 er0_548
-	word32 er0_607
-	word32 er1_561
-	word32 er2_575
-	word32 er0_446
-	word16 er1_16_16_519
+	word32 er0_544
+	word32 er0_603
+	word32 er1_557
+	word32 er2_571
+	word32 er0_442
+	word16 er1_16_16_515
 	word16 er3_16_16_182
-	word16 er0_16_16_73 = SLICE(er0_446, word16, 16)
+	word16 er0_16_16_73 = SLICE(er0_442, word16, 16)
 	branch Mem40[SEQ(er2_16_16, Mem40[sp_116 + 18<i32>:word16] * 2<16> + 0x9EF0<16>):word16] > 0<16> l88B2
 l88B2:
-	word16 er0_16_16_412
+	word16 er0_16_16_408
 	word16 er2_16_16_265
 	word32 er5_55 = SEQ(er5_16_16, Mem40[sp_116 + 14<i32>:word16])
 	word16 r2_56 = Mem40[er5_55:word16]
@@ -658,9 +658,9 @@ l88DC:
 	word32 er2_78
 	word32 er3_79
 	word32 er6_82
-	word32 er5_620
-	word32 er4_619
-	word16 r0_88 = SLICE(fn8584(er0_16_16_73, er1_16_16_519, er2_16_16_65, er3_16_16_182, r4_69, r5_64, r6, out er1_77, out er2_78, out er3_79, out er4_619, out er5_620, out er6_82), word16, 0)
+	word32 er4_615
+	word32 er5_616
+	word16 r0_88 = SLICE(fn8584(er0_16_16_73, er1_16_16_515, er2_16_16_65, er3_16_16_182, r4_69, r5_64, r6, out er1_77, out er2_78, out er3_79, out er4_615, out er5_616, out er6_82), word16, 0)
 	Mem89[sp_83 + 6<i32>:word16] = r0_88
 	Mem102[sp_83 + 6<i32>:word16] = r0_88 * 0x64<16>
 	sp_116 = <invalid>
@@ -669,43 +669,43 @@ l88DC:
 	word32 er3_112
 	word32 er4_113
 	word32 er5_114
-	er0_16_16_412 = SLICE(fn8032(SLICE(er1_77, word16, 16), SLICE(er2_78, word16, 16), SLICE(er3_79, word16, 16), r0_88 * 0x18<16>, r0_88 * 0x64<16>, SLICE(er6_82, word16, 0), out er1_110, out er2_111, out er3_112, out er4_113, out er5_114), word16, 16) (alias)
+	er0_16_16_408 = SLICE(fn8032(SLICE(er1_77, word16, 16), SLICE(er2_78, word16, 16), SLICE(er3_79, word16, 16), r0_88 * 0x18<16>, r0_88 * 0x64<16>, SLICE(er6_82, word16, 0), out er1_110, out er2_111, out er3_112, out er4_113, out er5_114), word16, 16) (alias)
 	Mem123[sp_116 + 16<i32>:word16] = 0<16>
-	word16 er6_16_16_535 = SLICE(er6_82, word16, 16)
+	word16 er6_16_16_531 = SLICE(er6_82, word16, 16)
 	er4_16_16 = SLICE(er4_113, word16, 16) (alias)
 	er2_16_16_265 = SLICE(er2_111, word16, 16) (alias)
-	er1_16_16_519 = SLICE(er1_110, word16, 16) (alias)
+	er1_16_16_515 = SLICE(er1_110, word16, 16) (alias)
 	er5_16_16 = SLICE(er5_114, word16, 16) (alias)
 	er3_16_16_182 = SLICE(er3_112, word16, 16) (alias)
 l8908:
-	word16 er6_16_16_533
+	word16 er6_16_16_529
 	word16 r2_129 = Mem128[sp_116 + 16<i32>:word16]
 	Mem135[sp_116 + 8<i32>:word16] = r2_129 * 2<16>
 	Mem139[sp_116 + 8<i32>:word16] = r2_129 * 2<16> + 0x9EB0<16>
 	word16 r3_126 = 0<16>
-	word32 er6_156 = SEQ(er6_16_16_535, r2_129 * 2<16> + 0x9E42<16>)
-	er6_623 = er6_156
+	word32 er6_156 = SEQ(er6_16_16_531, r2_129 * 2<16> + 0x9E42<16>)
+	er6_619 = er6_156
 l8928:
-	ui16 r6h_r6l_545 = SLICE(er6_156, word16, 0)
-	er6_156 = SEQ(er6_16_16_533, SLICE(r6h_r6l_545 + 0xC<16>, byte, 8), SLICE(r6h_r6l_545, byte, 0) + 0xC<8>) (alias)
+	ui16 r6h_r6l_541 = SLICE(er6_156, word16, 0)
+	er6_156 = SEQ(er6_16_16_529, SLICE(r6h_r6l_541 + 0xC<16>, byte, 8), SLICE(r6h_r6l_541, byte, 0) + 0xC<8>) (alias)
 	word16 r5_144 = Mem143[sp_116 + 8<i32>:word16]
 	word16 r0_147 = Mem143[SEQ(er5_16_16, r5_144):word16]
 	Mem155[sp_116 + 8<i32>:word16] = r5_144 + 0xC<16>
-	word16 r1_157 = Mem155[er6_622:word16]
+	word16 r1_157 = Mem155[er6_618:word16]
 	Mem166[sp_116 + 10<i32>:word16] = r3_126
 	word16 r4_179 = Mem166[sp_116 + 6<i32>:word16] + fn9E08(SLICE(r0_147, byte, 0), SLICE(r1_157, byte, 8), SLICE(r1_157, byte, 0))
 	Mem180[sp_116 + 6<i32>:word16] = r4_179
 	word16 r3_181 = Mem180[sp_116 + 10<i32>:word16]
-	er6_16_16_533 = SLICE(er6_622, word16, 16) (alias)
+	er6_16_16_529 = SLICE(er6_618, word16, 16) (alias)
 	r3_126 = r3_181 + 1<16> (alias)
 	er3_16_16_182 = SLICE(SEQ(er3_16_16_182, r3_181) + 1<32>, word16, 16) (alias)
-	er6_622 = er6_156
+	er6_618 = er6_156
 	branch r3_181 <= 3<16> l8928
 l895C:
 	word16 r5_189 = Mem180[sp_116 + 16<i32>:word16]
 	Mem193[sp_116 + 16<i32>:word16] = r5_189 + 1<16>
 	er5_16_16 = SLICE(SEQ(er5_16_16, r5_189) + 1<32>, word16, 16) (alias)
-	er6_16_16_535 = er6_16_16_533
+	er6_16_16_531 = er6_16_16_529
 	branch r5_189 <= 4<16> l8908
 l896E:
 	Mem197[sp_116 + 28<i32>:word16] = r4_179
@@ -731,100 +731,96 @@ l8974:
 	word32 er5_237
 	word32 er1_240
 	word32 er2_241
-	word16 r6_621
-	er0_16_16_412 = SLICE(fn8866(er0, SLICE(sp_209, word16, 0) + 0x1E<16>, er1_16_16, SLICE(er2_225, word16, 0) + 1<16>, SLICE(er2_225 + 1<32>, word16, 16), er3_16_16, r4_216, er4_16_16, r5_219 - 1<16>, SLICE(SEQ(SLICE(SEQ(er5_16_16, r5_211) + 1<32>, word16, 16), r5_219) - 1<32>, word16, 16), r6, out er1_240, out er2_241, out er3_235, out er4_236, out er5_237, out r6_621), word16, 16) (alias)
-	er1_16_16_519 = SLICE(er1_240, word16, 16) (alias)
+	word16 r6_617
+	er0_16_16_408 = SLICE(fn8866(er0, SLICE(sp_209, word16, 0) + 0x1E<16>, er1_16_16, SLICE(er2_225, word16, 0) + 1<16>, SLICE(er2_225 + 1<32>, word16, 16), er3_16_16, r4_216, er4_16_16, r5_219 - 1<16>, SLICE(SEQ(SLICE(SEQ(er5_16_16, r5_211) + 1<32>, word16, 16), r5_219) - 1<32>, word16, 16), r6, out er1_240, out er2_241, out er3_235, out er4_236, out er5_237, out r6_617), word16, 16) (alias)
+	er1_16_16_515 = SLICE(er1_240, word16, 16) (alias)
 	r1 = SLICE(er1_240, word16, 0) (alias)
 	sp_116 = sp_234 + 4<32>
 l89B4:
 	word32 er4_253 = SEQ(er4_16_16, Mem246[sp_116 + 14<i32>:word16])
 	word16 r2_254 = Mem246[er4_253:word16]
-	word16 r5_257 = Mem246[sp_116 + 12<i32>:word16]
-	Mem264[SEQ(er3_16_16_182, r2_254 * 2<16> + r5_257) - 24912<i32>:word16] = 0<16>
+	Mem264[SEQ(er3_16_16_182, r2_254 * 2<16> + Mem246[sp_116 + 12<i32>:word16]) - 24912<i32>:word16] = 0<16>
 	Mem273[er4_253:word16] = r2_254 + 1<16>
 	word16 r0_259 = 0<16>
 	er2_16_16 = SLICE(SEQ(er2_16_16_265, r2_254) + 1<32>, word16, 16) (alias)
 	r6 = 0xFFFF<16>
 	branch Mem273[sp_116 + 20<i32>:word16] != 0xFFFF<16> l89E8
 l89DA:
-	r5_257 = Mem273[sp_116 + 22<i32>:word16]
-	branch Mem273[sp_116 + 28<i32>:word16] < Mem273[SEQ(er5_16_16, r5_257):word16] l8A22
+	branch Mem273[sp_116 + 28<i32>:word16] < Mem273[SEQ(er5_16_16, Mem273[sp_116 + 22<i32>:word16]):word16] l8A22
 l89E8:
-	word16 r4_290 = Mem273[sp_116 + 20<i32>:word16]
-	branch r4_290 != 1<16> l8A02
+	branch Mem273[sp_116 + 20<i32>:word16] != 1<16> l8A02
 l89F4:
-	r5_257 = Mem273[sp_116 + 22<i32>:word16]
-	branch Mem273[sp_116 + 28<i32>:word16] > Mem273[SEQ(er5_16_16, r5_257):word16] l8A22
+	branch Mem273[sp_116 + 28<i32>:word16] > Mem273[SEQ(er5_16_16, Mem273[sp_116 + 22<i32>:word16]):word16] l8A22
 l8A02:
-	r0_259 = CONVERT(fn9B66(r4_290, r5_257, 0xFFFF<16>, out r6), byte, uint16)
+	r0_259 = CONVERT(fn9B66(out r6), byte, uint16)
 	branch __btst(SLICE(r0_259, byte, 0), 0<8>) l8A18
 l8A0A:
 	branch Mem273[sp_116 + 28<i32>:word16] == Mem273[SEQ(er4_16_16, Mem273[sp_116 + 22<i32>:word16]):word16] l8A22
 l8A18:
 	branch Mem273[SEQ(er5_16_16, Mem273[sp_116 + 24<i32>:word16]):word16] != r6 l8A36
 l8A22:
-	Mem345[SEQ(er4_16_16, Mem273[sp_116 + 24<i32>:word16]):word16] = Mem273[sp_116 + 18<i32>:word16]
-	Mem349[SEQ(er4_16_16, Mem345[sp_116 + 22<i32>:word16]):word16] = Mem345[sp_116 + 28<i32>:word16]
+	Mem340[SEQ(er4_16_16, Mem273[sp_116 + 24<i32>:word16]):word16] = Mem273[sp_116 + 18<i32>:word16]
+	Mem344[SEQ(er4_16_16, Mem340[sp_116 + 22<i32>:word16]):word16] = Mem340[sp_116 + 28<i32>:word16]
 l8A36:
-	word16 r5_355 = Mem354[sp_116 + 20<i32>:word16]
-	branch r5_355 != 0xFFFF<16> l8A58
+	word16 r5_350 = Mem349[sp_116 + 20<i32>:word16]
+	branch r5_350 != 0xFFFF<16> l8A58
 l8A42:
-	word16 r4_358 = Mem354[sp_116 + 34<i32>:word16]
-	branch r4_358 == r5_355 l8A58
+	word16 r4_353 = Mem349[sp_116 + 34<i32>:word16]
+	branch r4_353 == r5_350 l8A58
 l8A4A:
-	word16 r2_365 = Mem354[SEQ(er5_16_16, Mem354[sp_116 + 22<i32>:word16]):word16]
-	er0_548 = SEQ(er0_16_16_412, r0_259) (alias)
-	er1_561 = SEQ(er1_16_16_519, r1) (alias)
-	er2_575 = SEQ(er2_16_16, r2_365) (alias)
-	branch r4_358 <= r2_365 l8A58
+	word16 r2_360 = Mem349[SEQ(er5_16_16, Mem349[sp_116 + 22<i32>:word16]):word16]
+	er0_544 = SEQ(er0_16_16_408, r0_259) (alias)
+	er1_557 = SEQ(er1_16_16_515, r1) (alias)
+	er2_571 = SEQ(er2_16_16, r2_360) (alias)
+	branch r4_353 <= r2_360 l8A58
 l8A58:
-	er0_607 = SEQ(er0_16_16_412, r0_259) (alias)
-	branch Mem354[sp_116 + 20<i32>:word16] != 1<16> l8A7A
+	er0_603 = SEQ(er0_16_16_408, r0_259) (alias)
+	branch Mem349[sp_116 + 20<i32>:word16] != 1<16> l8A7A
 l8A64:
-	word16 r5_375 = Mem354[sp_116 + 34<i32>:word16]
-	er0_607 = SEQ(er0_16_16_412, r0_259) (alias)
-	branch r5_375 == 0xFFFF<16> l8A7A
+	word16 r5_370 = Mem349[sp_116 + 34<i32>:word16]
+	er0_603 = SEQ(er0_16_16_408, r0_259) (alias)
+	branch r5_370 == 0xFFFF<16> l8A7A
 l8A70:
-	word16 r2_382 = Mem354[SEQ(er4_16_16, Mem354[sp_116 + 22<i32>:word16]):word16]
-	er0_548 = SEQ(er0_16_16_412, r0_259) (alias)
-	er1_561 = SEQ(er1_16_16_519, r1) (alias)
-	er2_575 = SEQ(er2_16_16, r2_382) (alias)
-	er0_607 = SEQ(er0_16_16_412, r0_259) (alias)
-	branch r5_375 < r2_382 l8ADC
+	word16 r2_377 = Mem349[SEQ(er4_16_16, Mem349[sp_116 + 22<i32>:word16]):word16]
+	er0_544 = SEQ(er0_16_16_408, r0_259) (alias)
+	er1_557 = SEQ(er1_16_16_515, r1) (alias)
+	er2_571 = SEQ(er2_16_16, r2_377) (alias)
+	er0_603 = SEQ(er0_16_16_408, r0_259) (alias)
+	branch r5_370 < r2_377 l8ADC
 l8A54:
 l88AE:
-	er0_607 = er0_446 (alias)
+	er0_603 = er0_442 (alias)
 l8A7A:
-	word16 er0_16_16_406 = SLICE(er0_607, word16, 16)
-	er0_446 = er0_607 (alias)
-	branch Mem386[sp_116 + 32<i32>:word16] != 0<16> l8AB0
+	word16 er0_16_16_402 = SLICE(er0_603, word16, 16)
+	er0_442 = er0_603 (alias)
+	branch Mem381[sp_116 + 32<i32>:word16] != 0<16> l8AB0
 l8A80:
-	ptr32 sp_392 = sp_116 - 2<i32>
-	Mem393[sp_392:word16] = 0x3002<16>
-	word16 r6_423
-	word16 r6_433
-	er0_446 = fn9BA6(SEQ(SLICE(fn9B90(SEQ(SLICE(fn9BB6(SEQ(er0_16_16_406, 0x1FF2<16>), 0x3001<16>, Mem393[SEQ(er4_16_16, Mem393[sp_392 + 24<i32>:word16]):word16], r6, Mem393[sp_392 + -2<i32>:word16], Mem393[sp_392:word16], out r6_423), word16, 16), 0x27C8<16>), r6_423, Mem393[sp_392 + -2<i32>:word16], out r6_433), word16, 16), 0x299A<16>), 0x4004<16>, 0<16>, r6_433, Mem393[sp_392:word16], out r6)
+	ptr32 sp_387 = sp_116 - 2<i32>
+	Mem388[sp_387:word16] = 0x3002<16>
+	word16 r6_419
+	word16 r6_429
+	er0_442 = fn9BA6(SEQ(SLICE(fn9B90(SEQ(SLICE(fn9BB6(SEQ(er0_16_16_402, 0x1FF2<16>), 0x3001<16>, Mem388[SEQ(er4_16_16, Mem388[sp_387 + 24<i32>:word16]):word16], r6, Mem388[sp_387 + -2<i32>:word16], Mem388[sp_387:word16], out r6_419), word16, 16), 0x27C8<16>), r6_419, Mem388[sp_387 + -2<i32>:word16], out r6_429), word16, 16), 0x299A<16>), 0x4004<16>, 0<16>, r6_429, Mem388[sp_387:word16], out r6)
 l8AB0:
-	word16 r5_455 = Mem454[sp_116 + 14<i32>:word16]
-	Mem462[sp_116 + 14<i32>:word16] = r5_455 + 2<16>
-	Mem471[sp_116 + 12<i32>:word16] = Mem462[sp_116 + 12<i32>:word16] + 0xC<16>
-	word16 r5_472 = Mem471[sp_116 + 18<i32>:word16]
-	Mem477[sp_116 + 18<i32>:word16] = r5_472 + 1<16>
-	er5_16_16 = SLICE(SEQ(SLICE(SEQ(er5_16_16, r5_455) + 2<32>, word16, 16), r5_472) + 1<32>, word16, 16) (alias)
-	er0_548 = er0_446 (alias)
-	er1_561 = SEQ(er1_16_16_519, r1) (alias)
-	er2_575 = SEQ(er2_16_16, 4<16>) (alias)
-	branch r5_472 > 3<16> l8ADC
+	word16 r5_451 = Mem450[sp_116 + 14<i32>:word16]
+	Mem458[sp_116 + 14<i32>:word16] = r5_451 + 2<16>
+	Mem467[sp_116 + 12<i32>:word16] = Mem458[sp_116 + 12<i32>:word16] + 0xC<16>
+	word16 r5_468 = Mem467[sp_116 + 18<i32>:word16]
+	Mem473[sp_116 + 18<i32>:word16] = r5_468 + 1<16>
+	er5_16_16 = SLICE(SEQ(SLICE(SEQ(er5_16_16, r5_451) + 2<32>, word16, 16), r5_468) + 1<32>, word16, 16) (alias)
+	er0_544 = er0_442 (alias)
+	er1_557 = SEQ(er1_16_16_515, r1) (alias)
+	er2_571 = SEQ(er2_16_16, 4<16>) (alias)
+	branch r5_468 > 3<16> l8ADC
 l8ADC:
-	word32 er4_582 = SEQ(er4_16_16, Mem483[sp_116:word16])
-	word32 er5_584 = SEQ(er5_16_16, Mem483[sp_116:word16])
-	er1Out = er1_561
-	er2Out = er2_575
+	word32 er4_578 = SEQ(er4_16_16, Mem479[sp_116:word16])
+	word32 er5_580 = SEQ(er5_16_16, Mem479[sp_116:word16])
+	er1Out = er1_557
+	er2Out = er2_571
 	er3Out = SEQ(er3_16_16_182, 0x18<16>)
-	er4Out = er4_582
-	er5Out = er5_584
+	er4Out = er4_578
+	er5Out = er5_580
 	r6Out = <invalid>
-	return er0_548
+	return er0_544
 fn8866_exit:
 l8AD8:
 
@@ -1981,25 +1977,25 @@ l9B54:
 fn9B54_exit:
 
 
-byte fn9B66(word16 r4, word16 r5, word16 r6, ptr32 & r6Out)
+byte fn9B66(ptr32 & r6Out)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
 //      fn8866
-// MayUse:  r4:[0..15] r5:[0..15] r6:[0..15]
+// MayUse: 
 // LiveOut: r0 r6
 // Trashed: NZVC r0 r1 r2 r3 r4 r5 r6
 // Preserved: sp
 fn9B66_entry:
 l9B66:
-	word16 r1_14
-	word16 r6_19
-	byte r2l_58
-	Mem39[0x9E90<p16>:word16] = fn9E18(Mem0[0x9E90<p16>:word16], Mem0[0x9E92<p16>:word16], 1<16>, 0xDCD<16>, r4, r5, r6, wLoc02, out r1_14, out r2l_58, out r6_19) + CONVERT(SLICE(cond(SLICE(r1_14 + 1<16>, byte, 8)), bool, 0), bool, uint16)
-	Mem41[0x9E92<p16>:word16] = r1_14 + 1<16>
-	word16 r0_42 = Mem41[0x9E92<p16>:word16]
-	r6Out = r6_19
-	return SLICE(r0_42, byte, 0)
+	word16 r1_11
+	word16 r6_16
+	byte r2l_55
+	Mem36[0x9E90<p16>:word16] = fn9E18(wLoc02, out r1_11, out r2l_55, out r6_16) + CONVERT(SLICE(cond(SLICE(r1_11 + 1<16>, byte, 8)), bool, 0), bool, uint16)
+	Mem38[0x9E92<p16>:word16] = r1_11 + 1<16>
+	word16 r0_39 = Mem38[0x9E92<p16>:word16]
+	r6Out = r6_16
+	return SLICE(r0_39, byte, 0)
 fn9B66_exit:
 
 
@@ -2023,7 +2019,7 @@ l9B90:
 	word16 r6_10
 	word32 er0_11
 	call er0 (retsize: 2;)
-		uses: er0:er0,r6:r6,Stack +0002:r6
+		uses: er0:er0,r6:r6,Stack +0002:r6,Stack +0004:wArg00
 		defs: er0:er0_11,r6:r6_10
 	r6Out = wArg00
 	return SEQ(SLICE(er0_11, word16, 16), r6_10)
@@ -2047,7 +2043,7 @@ l9B9A:
 	word16 r6_12
 	word32 er0_14
 	call er0 (retsize: 2;)
-		uses: er0:er0,r1:r1,r6:r1,Stack +0002:r6
+		uses: er0:er0,r1:r1,r6:r1,Stack +0002:r6,Stack +0004:wArg00
 		defs: er0:er0_14,r6:r6_12
 	r6Out = wArg00
 	return SEQ(SLICE(er0_14, word16, 16), r6_12)
@@ -2076,7 +2072,7 @@ l9BA6:
 	word16 r6_15
 	word32 er0_18
 	call er0 (retsize: 2;)
-		uses: er0:er0,r1:r1,r2:r2,r6:r1,Stack +0002:r2,Stack +0004:r6
+		uses: er0:er0,r1:r1,r2:r2,r6:r1,Stack +0002:r2,Stack +0004:r6,Stack +0006:wArg00
 		defs: er0:er0_18,r6:r6_15
 	r6Out = wArg00
 	return SEQ(SLICE(er0_18, word16, 16), r6_15)
@@ -2102,7 +2098,7 @@ l9BB6:
 	word16 r6_18
 	word32 er0_22
 	call er0 (retsize: 2;)
-		uses: er0:er0,r1:r1,r2:r2,r3:wArg02,r6:r1,Stack +0002:r2,Stack +0004:wArg02,Stack +0006:r6,Stack +000A:wArg02
+		uses: er0:er0,r1:r1,r2:r2,r3:wArg02,r6:r1,Stack +0002:r2,Stack +0004:wArg02,Stack +0006:r6,Stack +0008:wArg00,Stack +000A:wArg02
 		defs: er0:er0_22,r6:r6_18
 	r6Out = wArg00
 	return SEQ(SLICE(er0_22, word16, 16), r6_18)
@@ -2458,22 +2454,18 @@ l9E08:
 fn9E08_exit:
 
 
-word16 fn9E18(word16 r0, word16 r1, word16 r2, word16 r3, word16 r4, word16 r5, word16 r6, word16 wArg00, ptr32 & r1Out, ptr32 & r2lOut, ptr32 & r6Out)
+word16 fn9E18(word16 wArg00, ptr32 & r1Out, ptr32 & r2lOut, ptr32 & r6Out)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
 //      fn9B66
-// MayUse:  r0:[0..15] r1:[0..15] r2:[0..15] r3:[0..15] r4:[0..15] r5:[0..15] r6:[0..15] Stack +0000:[0..15]
+// MayUse:  Stack +0000:[0..15]
 // LiveOut: r0 r1 r2l r6
 // Trashed: NZV r0 r1 r2l r3l r4 r5 r6
 // Preserved: sp
 fn9E18_entry:
 l9E18:
-	word16 r5_24
-	word16 r6_25
-	call fn0054 (retsize: 2;)
-		uses: r0:r0,r1:r1,r2:r2,r3:r2,r4:r3,r5:r0,r6:r1,Stack +0002:r6,Stack +0004:r5,Stack +0006:r4
-		defs: r5:r5_24,r6:r6_25
+	fn0054()
 	r1Out = r6_25
 	r2lOut = <invalid>
 	r6Out = wArg00

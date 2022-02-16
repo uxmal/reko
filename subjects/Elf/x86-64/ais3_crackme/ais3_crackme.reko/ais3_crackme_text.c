@@ -58,7 +58,7 @@ void frame_dummy()
 		register_tm_clones();
 	else
 	{
-		fn0000000000000000();
+		fn0000000000000000(0x00600E08);
 		register_tm_clones();
 	}
 }

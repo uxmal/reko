@@ -299,7 +299,7 @@ namespace Reko.Analysis
             HashSet<RegisterStorage> trashedRegisters,
             Storage stg)
         {
-            if (!(stg is RegisterStorage))
+            if (stg is not RegisterStorage)
                 return false;
             if (trashedRegisters.Count == 0)
                 return false;
@@ -521,9 +521,16 @@ namespace Reko.Analysis
                 spBackpropagator.BackpropagateStackPointer();
                 DumpWatchedProcedure("spbp", "After SP BP", ssa);
 
-                // Propagate those newly created stack-based identifiers.
+                // Propagate newly created stack-relative identifiers and transform
+                // any new frame-relative memory accesses to identifiers.
                 vp.Transform();
+                sst.Transform();
                 DumpWatchedProcedure("vp2", "After VP2", ssa);
+
+                // Guess arguments to functions whose signatures we don't know.
+                var argGuesser = new ArgumentGuesser(program.Platform, ssa, eventListener);
+                argGuesser.Transform();
+                DumpWatchedProcedure("argg", "After argument guessing", ssa);
 
                 return sst;
             }
@@ -587,6 +594,8 @@ namespace Reko.Analysis
         {
             if (program.User.DebugTraceProcedures.Contains(proc.Name) ||
                 proc.Name == "usb_device_info"||
+                proc.Name == "fn0002466C" ||
+                proc.Name == "PM_CUSOR_DRAW_CreateSurfaceAndImgDecoding" ||
                 false)
             {
                 Debug.Print("// {0}: {1} ==================", proc.Name, caption);

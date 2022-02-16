@@ -39,10 +39,7 @@ void __do_global_dtors_aux()
 	if (g_b201048 != 0x00)
 		return;
 	if (__cxa_finalize != 0x00)
-	{
-		word64 rax_n;
-		__cxa_finalize();
-	}
+		__cxa_finalize(g_qw201040);
 	deregister_tm_clones();
 	g_b201048 = 0x01;
 }
@@ -66,9 +63,7 @@ void * _mm_malloc(uint64 rsi, Eq_n rdi)
 	{
 		if (rsi == 0x02 || rsi == 0x04)
 			qwLoc28_n = 0x08;
-		word64 rax_n;
-		posix_memalign();
-		if ((word32) rax_n == 0x00)
+		if ((word32) posix_memalign(qwLoc28_n, fp - 0x10, rdi, qwLoc28_n) == 0x00)
 			rax_n = qwLoc10;
 		else
 			rax_n = null;

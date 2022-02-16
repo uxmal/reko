@@ -257,7 +257,7 @@ l004007B0:
 l004001C8:
 	word32 r7_434 = Mem91[0x00412060<p32> + (r4_73 + 0xFFFFFFCC<32>) * 4<32>:word32]
 	call r7_434 (retsize: 0;)
-		uses: r4:r4_73 + 0xFFFFFFCC<32>,r5:r5_75,r7:r7_434
+		uses: r4:r4_73 + 0xFFFFFFCC<32>,r5:r5_75,r7:r7_434,Stack +FFFFFFA4:dwLoc5C,Stack +FFFFFFC4:dwLoc3C_603
 	return
 main_exit:
 
@@ -366,8 +366,7 @@ l004008CC:
 	deregister_tm_clones()
 	branch null == 0<32> l004008DE
 l004008D8:
-	call fn00000000 (retsize: 0;)
-		uses: r4:0x00413590<p32>
+	fn00000000(0x00413590<p32>)
 l004008DE:
 	Mem23[0x7C0<32>:byte] = 1<8>
 l004008E4:
@@ -386,17 +385,13 @@ frame_dummy_entry:
 l004008E6:
 	branch null == 0<32> l004008FA
 l004008F0:
-	call fn00000000 (retsize: 0;)
-		uses: r4:0x00413590<p32>,r5:0x004303C4<p32>
-		defs: r5:r5_11
+	fn00000000(0x00413590<p32>, 0x004303C4<p32>)
 l004008FA:
 	branch Mem5[0x0042FFFC<p32>:word32] != 0<32> l0040090A
 l0040090A:
 	branch null == 0<32> l00400902
 l00400912:
-	call fn00000000 (retsize: 0;)
-		uses: r5:r5_22
-		defs: r5:r5_22
+	fn00000000()
 l00400902:
 l00400906_thunk_register_tm_clones:
 	register_tm_clones(r5)
@@ -24121,7 +24116,7 @@ void frexpl(word32 r4, word32 r5, word32 r6)
 
 // MayUse:  r4:[0..31] r5:[0..31] r6:[0..31]
 // LiveOut:
-// Trashed: r10 r11 r12 r13 r18 r2 r25 r3 r4 r5 r6 r7 r8 r9
+// Trashed: r10 r11 r12 r13 r14 r15 r18 r2 r24 r25 r3 r4 r5 r6 r7 r8 r9
 // Preserved: sp
 frexpl_entry:
 l0040CF30:
@@ -26647,8 +26642,8 @@ void frexp(word32 r4, word32 r5, word32 r6)
 //      frexp
 // MayUse:  r4:[0..31] r5:[0..31] r6:[0..31]
 // LiveOut:
-// Trashed: r10 r11 r12 r13 r18 r2 r25 r3 r4 r5 r6 r7 r8 r9
-// Preserved: r14 r15 r16 r17 r24 ra sp
+// Trashed: r10 r11 r12 r13 r14 r15 r18 r2 r24 r25 r3 r4 r5 r6 r7 r8 r9
+// Preserved: r16 r17 ra sp
 frexp_entry:
 l0040E2C0:
 	word32 r7_17 = __ext(r5, 4<32>, 0xB<32>)

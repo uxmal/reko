@@ -1,7 +1,7 @@
 void fn0C00_0000(Register selector ds)
 // MayUse:  ds:[0..15]
 // LiveOut:
-// Trashed: SCZO ax cx Top
+// Trashed: SCZO ax cx dx Top
 // Preserved: sp
 // fn0C00_0000
 // Return size: 0
@@ -12,6 +12,7 @@ void fn0C00_0000(Register selector ds)
 // ds:ds
 // ax:ax
 // Top:Top
+// dx:dx
 // S:S
 // C:C
 // Z:Z
@@ -23,15 +24,15 @@ fn0C00_0000_entry:
 	// succ:  l0C00_0000
 l0C00_0000:
 	ax_5 = fn0C00_000B(5<16>)
-	Mem12[ds:0x64<16>:word16] = ax_5
+	Mem13[ds:0x64<16>:word16] = ax_5
 	return
 	// succ:  fn0C00_0000_exit
 fn0C00_0000_exit:
 Register word16 fn0C00_000B(Register word16 cx)
 // MayUse:  cx:[0..15]
 // LiveOut: ax
-// Trashed: SCZO ax cx Top
-// Preserved: dx si sp
+// Trashed: SCZO ax cx dx Top
+// Preserved: si sp
 // fn0C00_000B
 // Return size: 0
 // Mem0:Mem

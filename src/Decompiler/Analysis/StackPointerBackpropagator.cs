@@ -91,7 +91,7 @@ namespace Reko.Analysis
                 if (listener.IsCanceled())
                     return;
                 var (spPrevious, delta) = MatchStackOffsetPattern(spCur);
-                if (spPrevious == null)
+                if (spPrevious is null)
                     break;
                 ReplaceStackDefinition(spCur, spPrevious, offset);
                 offset -= delta;
@@ -194,6 +194,10 @@ namespace Reko.Analysis
             }
         }
 
+        /// <summary>
+        /// Finds a use of the architecture stack pointer in the synthetic exit
+        /// block of the procedure
+        /// </summary>
         private Identifier FindStackUseAtExit(Procedure proc)
         {
             return proc.ExitBlock.Statements

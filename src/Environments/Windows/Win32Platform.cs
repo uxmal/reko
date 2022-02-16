@@ -123,6 +123,14 @@ namespace Reko.Environments.Windows
             return possibleFastcallArgRegs.Contains(reg);
         }
 
+        public override Storage? PossibleReturnValue(IEnumerable<Storage> storages)
+        {
+            var eax = storages.FirstOrDefault(
+                s => s is RegisterStorage r &&
+                     r.Number == Registers.eax.Number);
+            return eax;
+        }
+
         public override HashSet<RegisterStorage> CreateTrashedRegisters()
         {
             // Win32 preserves, ebx, esi, edi.
@@ -341,13 +349,13 @@ namespace Reko.Environments.Windows
             return SignatureGuesser.SignatureFromName(fnName, this);
         }
 
-        public override Tuple<string, SerializedType, SerializedType>? DataTypeFromImportName(string importName)
+        public override (string, SerializedType, SerializedType)? DataTypeFromImportName(string importName)
         {
             EnsureTypeLibraries(PlatformIdentifier);
             var (name, type, outerType) = SignatureGuesser.InferTypeFromName(importName);
             if (name is null)
                 return null;
-            return Tuple.Create(name!, type!, outerType!);
+            return (name!, type!, outerType!);
         }
     }
 }

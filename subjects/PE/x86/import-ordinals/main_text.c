@@ -17,17 +17,13 @@ ptr32 fn00401000()
 //      fn00401040
 void fn00401010(word32 dwArg04)
 {
-	struct Eq_n * esp_n;
-	word32 eax_n;
-	_acrt_iob_func();
+	word32 eax_n = _acrt_iob_func(0x01);
 	esp_n->ptr0000 = fp + 0x08;
 	esp_n->dwFFFFFFFC = 0x00;
 	esp_n->dwFFFFFFF8 = dwArg04;
 	esp_n->dwFFFFFFF4 = eax_n;
 	struct Eq_n * eax_n = fn00401000();
-	esp_n->dwFFFFFFF0 = eax_n->dw0004;
-	esp_n->dwFFFFFFEC = eax_n->dw0000;
-	_stdio_common_vfprintf();
+	_stdio_common_vfprintf(eax_n->dw0000, eax_n->dw0004);
 }
 
 // 00401040: Register word32 fn00401040(Register word32 ecx)
@@ -35,17 +31,10 @@ void fn00401010(word32 dwArg04)
 //      Win32CrtStartup
 word32 fn00401040(word32 ecx)
 {
-	struct Eq_n * esp_n;
-	driver.dll!Ordinal_n();
-	esp_n->dwFFFFFFFC = 0x03;
-	struct Eq_n * esp_n;
-	driver.dll!Ordinal_n();
-	esp_n->dwFFFFFFFC = 0x01;
-	struct Eq_n * esp_n;
-	driver.dll!Ordinal_n();
-	esp_n->dwFFFFFFFC = 0x05;
-	struct Eq_n * esp_n;
-	driver.dll!Ordinal_n();
+	driver.dll!Ordinal_n(fp - 0x08, ecx);
+	driver.dll!Ordinal_n(fp - 0x08, 0x03);
+	driver.dll!Ordinal_n(fp - 0x08, 0x01);
+	driver.dll!Ordinal_n(fp - 0x08, 0x05);
 	esp_n->dwFFFFFFFC = ecx;
 	esp_n->dwFFFFFFF8 = *driver.dll!Ordinal_n;
 	esp_n->dwFFFFFFF4 = 0x00402118;
@@ -69,8 +58,7 @@ l00401172:
 	}
 	ebp_n->bFFFFFFE7 = 0x00;
 	ebp_n->dwFFFFFFFC = 0x00;
-	word32 edx_n;
-	ebp_n->tFFFFFFDC = fn0040143A(out edx_n);
+	ebp_n->tFFFFFFDC = fn0040143A();
 	struct Eq_n * ebp_n = ebp_n;
 	word32 eax_n = g_dw403334;
 	word32 ebx_n = SEQ(ebx_24_8_n, 0x00);
@@ -104,14 +92,15 @@ l00401172:
 		struct Eq_n * esp_n = esp_n - 4;
 		esp_n->t0000 = ebp_n->tFFFFFFDC;
 		fn004015C9(esp_n->t0000);
-		ptr32 esp_n = (char *) &esp_n->t0000 + 4;
+		struct Eq_n * esp_n = (char *) &esp_n->t0000 + 4;
 		Eq_n eax_n = fn00401761();
 		Eq_n edi_n = 0x00;
 		if (*eax_n != 0x00)
 		{
 			esp_n->t0000 = eax_n;
-			esp_n = (char *) &esp_n->t0000 + 4;
+			esp_n = (struct Eq_n *) ((char *) &esp_n->t0000 + 4);
 			<anonymous> ** esi_n;
+			word32 edx_n;
 			if (fn0040153F(ebx_n, eax_n, 0x00, out edx_n, out ebx_n, out ebp_n, out esi_n, out edi_n) != 0x00)
 			{
 				esp_n->t0000 = edi_n;
@@ -125,28 +114,16 @@ l00401172:
 		Eq_n eax_n = fn00401767();
 		if (*eax_n != edi_n)
 		{
-			union Eq_n * esp_n = esp_n - 4;
-			*esp_n = (union Eq_n *) eax_n;
-			union Eq_n * esi_n;
+			esp_n->tFFFFFFFC = eax_n;
+			word32 * esi_n;
+			word32 edx_n;
 			word32 edi_n;
 			if (fn0040153F(ebx_n, eax_n, edi_n, out edx_n, out ebx_n, out ebp_n, out esi_n, out edi_n) != 0x00)
-			{
-				*esp_n = *esi_n;
-				register_thread_local_exe_atexit_callback();
-			}
+				register_thread_local_exe_atexit_callback(*esi_n);
 		}
-		word32 * eax_n;
-		word32 edx_n;
-		_p___argv();
-		word32 * eax_n;
-		word32 edx_n;
-		_p___argc();
-		struct Eq_n * esp_n;
-		word32 ecx_n;
-		Eq_n eax_n;
-		word32 edx_n;
-		get_initial_narrow_environment();
-		esp_n->tFFFFFFFC = eax_n;
+		word32 * eax_n = _p___argv();
+		word32 * eax_n = _p___argc();
+		esp_n->tFFFFFFFC = get_initial_narrow_environment();
 		esp_n->dwFFFFFFF8 = *eax_n;
 		esp_n->dwFFFFFFF4 = *eax_n;
 		Eq_n eax_n = fn00401040(ecx_n);
@@ -199,34 +176,24 @@ l00401433:
 	return eax_n;
 }
 
-// 0040143A: Register byte fn0040143A(Register out ptr32 edxOut)
+// 0040143A: Register byte fn0040143A()
 // Called from:
 //      Win32CrtStartup
-byte fn0040143A(ptr32 & edxOut)
+byte fn0040143A()
 {
 	word32 eax_n = fn00401B98();
-	if (eax_n != 0x00)
-	{
-		ptr32 edx_n = fs->ptr0018->ptr0004;
-		do
-		{
-			__lock();
-			ptr32 eax_n;
-			__cmpxchg<word32>(g_dw403338, edx_n, 0x00, out eax_n);
-			if (eax_n == 0x00)
-			{
-				edxOut = edx_n;
-				return 0x00;
-			}
-		} while (edx_n != eax_n);
-		edxOut = edx_n;
-		return 0x01;
-	}
-	else
-	{
-		edxOut = edx;
+	if (eax_n == 0x00)
 		return 0x00;
-	}
+	word32 edx_n = fs->ptr0018->dw0004;
+	do
+	{
+		__lock();
+		word32 eax_n;
+		__cmpxchg<word32>(g_dw403338, edx_n, 0x00, out eax_n);
+		if (eax_n == 0x00)
+			return 0x00;
+	} while (edx_n != eax_n);
+	return 0x01;
 }
 
 // 0040146F: Register byte fn0040146F(Register word32 edx, Stack word32 dwArg04)

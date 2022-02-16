@@ -287,7 +287,7 @@ VarargsParserClass: FakeParser";
               .Returns((Expression)null);
             SerializedType nullType = null;
             platform.Setup(p => p.DataTypeFromImportName("??_7Scope@@6B@")).
-                Returns(Tuple.Create("`vftable'", nullType, nullType));
+                Returns(("`vftable'", nullType, nullType));
 
             var id = impres.ResolveImport("foo", "??_7Scope@@6B@", platform.Object);
 

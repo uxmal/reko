@@ -28,7 +28,7 @@ l0000000000001498:
 l00000000000014A8:
 	return
 l00000000000014A4:
-	call __gmon_start__ (retsize: 0;)
+	__gmon_start__()
 	return
 fn0000000000001498_exit:
 

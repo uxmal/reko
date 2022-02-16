@@ -166,6 +166,25 @@ SP	top of stack
             return null;
         }
 
+        public override Storage? PossibleReturnValue(IEnumerable<Storage> storages)
+        {
+            var ax = storages.FirstOrDefault(
+                s => s is RegisterStorage r &&
+                     r.Number == Registers.ax.Number);
+            var dx = storages.FirstOrDefault(
+                s => s is RegisterStorage r &&
+                     r.Number == Registers.dx.Number);
+            if (ax is not null)
+            {
+                if (dx is not null)
+                {
+                    return new SequenceStorage(dx, ax);
+                }
+                return ax;
+            }
+            return null;
+        }
+
         public override ProcedureBase_v1? SignatureFromName(string fnName)
         {
             var sig = SignatureGuesser.SignatureFromName(fnName, this);
