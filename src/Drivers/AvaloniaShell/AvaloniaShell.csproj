@@ -1,4 +1,5 @@
 <Project Sdk="Microsoft.NET.Sdk">
+  <Import Project="$(ProjectDir)..\Common.items" />
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
     <TargetFramework>net5.0</TargetFramework>
@@ -16,7 +17,8 @@
     <PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" Version="0.10.10" />
    </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Core\Core.csproj" />
+    <ProjectReference Include="$(SolutionDir)Gui\Gui.csproj" />
     <ProjectReference Include="..\..\UserInterfaces\AvaloniaUI\AvaloniaUI.csproj" />
   </ItemGroup>
+  <Import Project="$(ProjectDir)..\PreBuild.targets" />
 </Project>

@@ -25,7 +25,6 @@
     <ProjectReference Include="$(SolutionDir)Arch\X86.Design\X86.Design.csproj" />
     <ProjectReference Include="$(SolutionDir)Environments\AmigaOS.Design\AmigaOS.Design.csproj" />
     <ProjectReference Include="$(SolutionDir)Environments\Msdos.Design\Msdos.Design.csproj" />
-    <ProjectReference Include="..\..\Arch\Pdp10\Pdp10.csproj" />
 
     <Architectures Include="$(SolutionDir)Arch\M68k.Design\bin\$(Configuration)\Reko.Arch.M68k.Design.*" />
     <Architectures Include="$(SolutionDir)Arch\Microchip.Design\bin\$(Configuration)\Reko.Arch.MicrochipPIC.Design.*" />

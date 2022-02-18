@@ -22,7 +22,7 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
 
-namespace Reko.UserInterfaces.AvaloniaUI
+namespace Reko.UserInterfaces.AvaloniaUI.Views
 {
     public partial class MainWindow : Window
     {

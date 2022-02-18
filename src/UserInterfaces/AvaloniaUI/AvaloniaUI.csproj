@@ -5,6 +5,7 @@
 	  <RootNamespace>Reko.UserInterfaces.AvaloniaUI</RootNamespace>
 	  <AssemblyName>Reko.UserInterfaces.AvaloniaUI</AssemblyName>
 	  <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+	  <Nullable>enable</Nullable>
   </PropertyGroup>
 
   <ItemGroup>

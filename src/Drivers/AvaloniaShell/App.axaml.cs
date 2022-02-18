@@ -21,7 +21,8 @@
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
-using Reko.UserInterfaces.AvaloniaUI;
+using Reko.UserInterfaces.AvaloniaUI.ViewModels;
+using Reko.UserInterfaces.AvaloniaUI.Views;
 
 namespace Reko.AvaloniaShell
 {
@@ -36,9 +37,12 @@ namespace Reko.AvaloniaShell
         {
             if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
             {
-                desktop.MainWindow = new MainWindow();
+                var mvvm = new MainViewModel();
+                desktop.MainWindow = new MainWindow
+                {
+                    DataContext = mvvm
+                };
             }
-
             base.OnFrameworkInitializationCompleted();
         }
     }
