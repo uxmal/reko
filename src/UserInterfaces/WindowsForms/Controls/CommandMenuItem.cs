@@ -32,7 +32,6 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
 	{
 		public new event CommandMenuEventHandler Click;
 
-		private MenuCommand cmd;
 		private bool isDynamic;
 		private bool isTemp;
 
@@ -45,7 +44,7 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
 		public CommandMenuItem(string text)
 		{
 			Text = text.Replace('_', '&');
-			cmd = null;
+			MenuCommand = null;
 		}
 
 		public CommandMenuItem(string text, Guid cmdSet, int cmdId)
@@ -58,7 +57,7 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
             {
                 Text = text.Replace('_', '&');
             }
-			cmd = new MenuCommand(null, new CommandID(cmdSet, cmdId));
+			MenuCommand = new MenuCommand(null, new CommandID(cmdSet, cmdId));
 		}
 
 		public bool IsDynamic
@@ -78,10 +77,7 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
             return string.Format("{0} {1} {2}", Text, IsDynamic ? "Dyn" : "", IsTemporary ? "Tmp" : "   ");
         }
 
-		public MenuCommand MenuCommand
-		{
-			get { return cmd; }
-		}
+		public MenuCommand MenuCommand { get; }
 
 		protected override void OnClick(EventArgs e)
 		{

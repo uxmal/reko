@@ -36,11 +36,11 @@ namespace Reko.UserInterfaces.WindowsForms
         IDecompilerShellUiService,
         ICommandTarget
     {
-        private MainForm form;
-        private DecompilerMenus dm;
-        private Dictionary<string, WindowFrame> framesByName;
-        private Dictionary<TabPage, WindowFrame> framesByTab;
-        private IServiceProvider services;
+        private readonly MainForm form;
+        private readonly DecompilerMenus dm;
+        private readonly Dictionary<string, WindowFrame> framesByName;
+        private readonly Dictionary<TabPage, WindowFrame> framesByTab;
+        private readonly IServiceProvider services;
 
         public DecompilerShellUiService(
             MainForm form,
@@ -61,7 +61,7 @@ namespace Reko.UserInterfaces.WindowsForms
 
         public IEnumerable<IWindowFrame> DocumentWindows
         {
-            get {  return framesByTab.Values; }
+            get { return framesByTab.Values; }
         }
 
         public IEnumerable<IWindowFrame> ToolWindows
@@ -83,8 +83,7 @@ namespace Reko.UserInterfaces.WindowsForms
 
         public IWindowFrame FindWindow(string windowType)
         {
-            WindowFrame frame;
-            if (framesByName.TryGetValue(windowType, out frame))
+            if (framesByName.TryGetValue(windowType, out WindowFrame frame))
                 return frame;
             else
                 return null;
@@ -153,10 +152,9 @@ namespace Reko.UserInterfaces.WindowsForms
             get
             {
                 var activeTab = form.DocumentTabs.SelectedTab;
-                if (activeTab == null)
+                if (activeTab is null)
                     return null;
-                WindowFrame frame;
-                if (!framesByTab.TryGetValue(activeTab, out frame))
+                if (!framesByTab.TryGetValue(activeTab, out WindowFrame frame))
                     return null;
                 return frame;
             }
@@ -164,8 +162,7 @@ namespace Reko.UserInterfaces.WindowsForms
 
         private ICommandTarget ActiveCommandTarget()
         {
-            var frame = ActiveFrame as WindowFrame;
-            if (frame == null)
+            if (ActiveFrame is not WindowFrame frame)
                 return null;
             return frame.Pane as ICommandTarget;
         }

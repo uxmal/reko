@@ -57,12 +57,14 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
 
         private void MainForm_Load(object sender, EventArgs e)
         {
-            this.dm.MainToolbar.Text = "";
-            this.dm.MainToolbar.ImageList = this.ImageList;
-            this.dm.ProjectBrowserToolbar.ImageList = this.ImageList;
-            this.AddToolbar(dm.MainToolbar);
-            this.AddMenuStrip(dm.MainMenu);
-            this.AddProjectBrowserToolbar(dm.ProjectBrowserToolbar);
+            var mainToolbar = dm.GetToolStrip(MenuIds.MainToolbar);
+            mainToolbar.Text = "";
+            mainToolbar.ImageList = this.ImageList;
+            var projectToolbar = dm.GetToolStrip(MenuIds.ProjectBrowserToolbar);
+            projectToolbar.ImageList = this.ImageList;
+            this.AddToolbar(mainToolbar);
+            this.AddMenuStrip(dm.GetMenu(MenuIds.MainMenu));
+            this.AddProjectBrowserToolbar(projectToolbar);
 
             this.ToolBar.ItemClicked += toolBar_ItemClicked;
             this.ProjectBrowserToolbar.ItemClicked += toolBar_ItemClicked;

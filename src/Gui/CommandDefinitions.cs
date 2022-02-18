@@ -32,29 +32,29 @@ namespace Reko.Gui
 
         public readonly MenuDefinition[] Menus = new[]
         {
-            new MenuDefinition{ cmdSet = Reko, id = MenuIds.MainMenu },
-            new MenuDefinition{ id=MenuIds.FileMenu    , cmdSet = Reko, container = GroupIds.GrpMain, Text = "_File" },
-            new MenuDefinition{ id=MenuIds.EditMenu    , cmdSet = Reko, container = GroupIds.GrpMain, Text = "_Edit" },
-            new MenuDefinition{ id=MenuIds.ViewMenu    , cmdSet = Reko, container = GroupIds.GrpMain, Text = "_View" },
-            new MenuDefinition{ id=MenuIds.ActionMenu  , cmdSet = Reko, container = GroupIds.GrpMain, Text = "_Actions" },
-            new MenuDefinition{ id=MenuIds.ToolsMenu   , cmdSet = Reko, container = GroupIds.GrpMain, Text = "_Tools" },
-            new MenuDefinition{ id=MenuIds.WindowsMenu , cmdSet = Reko, container = GroupIds.GrpMain, Text = "_Windows" },
-            new MenuDefinition{ id=MenuIds.HelpMenu,     cmdSet = Reko, container = GroupIds.GrpMain, Text = "_Help" },
-            new MenuDefinition{ id=MenuIds.TextEncodingMenu, cmdSet = Reko, container = GroupIds.GrpLowLevel, Text = "_Text Encoding" },
+            new MenuDefinition{ type = MenuType.MainMenu, cmdSet = Reko, id = MenuIds.MainMenu },
+
+            new MenuDefinition{ type = MenuType.Submenu, id=MenuIds.FileMenu    , cmdSet = Reko, container = GroupIds.GrpMain, Text = "_File" },
+            new MenuDefinition{ type = MenuType.Submenu, id=MenuIds.EditMenu    , cmdSet = Reko, container = GroupIds.GrpMain, Text = "_Edit" },
+            new MenuDefinition{ type = MenuType.Submenu, id=MenuIds.ViewMenu    , cmdSet = Reko, container = GroupIds.GrpMain, Text = "_View" },
+            new MenuDefinition{ type = MenuType.Submenu, id=MenuIds.ActionMenu  , cmdSet = Reko, container = GroupIds.GrpMain, Text = "_Actions" },
+            new MenuDefinition{ type = MenuType.Submenu, id=MenuIds.ToolsMenu   , cmdSet = Reko, container = GroupIds.GrpMain, Text = "_Tools" },
+            new MenuDefinition{ type = MenuType.Submenu, id=MenuIds.WindowsMenu , cmdSet = Reko, container = GroupIds.GrpMain, Text = "_Windows" },
+            new MenuDefinition{ type = MenuType.Submenu, id=MenuIds.HelpMenu,     cmdSet = Reko, container = GroupIds.GrpMain, Text = "_Help" },
+            new MenuDefinition{ type = MenuType.Submenu, id=MenuIds.TextEncodingMenu, cmdSet = Reko, container = GroupIds.GrpLowLevel, Text = "_Text Encoding" },
 
             // Context menus
-            new MenuDefinition { /* ctxMenu*/ id = MenuIds.CtxMemoryControl, cmdSet = Reko },
-            new MenuDefinition { /* ctxMenu*/ id = MenuIds.CtxDisassembler, cmdSet = Reko },
-            new MenuDefinition { /* ctxMenu*/ id = MenuIds.CtxBrowser, cmdSet = Reko },
-            new MenuDefinition { /* ctxMenu*/ id = MenuIds.CtxProcedureList, cmdSet = Reko },
-            new MenuDefinition { /* ctxMenu*/ id = MenuIds.CtxProcedure, cmdSet = Reko },
-            new MenuDefinition { /* ctxMenu*/ id = MenuIds.CtxAddressSearch, cmdSet = Reko },
-            new MenuDefinition { /* ctxMenu*/ id = MenuIds.CtxCodeView, cmdSet = Reko },
+            new MenuDefinition { type = MenuType.ContextMenu, id = MenuIds.CtxMemoryControl, cmdSet = Reko },
+            new MenuDefinition { type = MenuType.ContextMenu, id = MenuIds.CtxDisassembler, cmdSet = Reko },
+            new MenuDefinition { type = MenuType.ContextMenu, id = MenuIds.CtxBrowser, cmdSet = Reko },
+            new MenuDefinition { type = MenuType.ContextMenu, id = MenuIds.CtxProcedureList, cmdSet = Reko },
+            new MenuDefinition { type = MenuType.ContextMenu, id = MenuIds.CtxProcedure, cmdSet = Reko },
+            new MenuDefinition { type = MenuType.ContextMenu, id = MenuIds.CtxAddressSearch, cmdSet = Reko },
+            new MenuDefinition { type = MenuType.ContextMenu, id = MenuIds.CtxCodeView, cmdSet = Reko },
 
         // Toolbars
-
-            new MenuDefinition { /*ToolStrip*/ id = MenuIds.MainToolbar, cmdSet = Reko },
-            new MenuDefinition { /*ToolStrip*/ id = MenuIds.ProjectBrowserToolbar, cmdSet = Reko },
+            new MenuDefinition { type = MenuType.Toolstrip, id = MenuIds.MainToolbar, cmdSet = Reko },
+            new MenuDefinition { type = MenuType.Toolstrip, id = MenuIds.ProjectBrowserToolbar, cmdSet = Reko },
         };
 
         // Groups ==========================================================
@@ -119,7 +119,7 @@ namespace Reko.Gui
             new CmdDefinition { id = CmdIds.FileAddScript, cmdSet = Reko, text = "Add _script file..." },
             new CmdDefinition { id = CmdIds.FileAssemble, cmdSet = Reko, text = "Add asse_mbler file..." },
             new CmdDefinition { id = CmdIds.FileCloseProject, cmdSet = Reko, text = "Close projec_t" },
-            new CmdDefinition { id = CmdIds.FileMru, cmdSet = Reko, dynamicItemId = 2200 },
+            new CmdDefinition { id = CmdIds.FileMru, cmdSet = Reko, container = GroupIds.GrpFileMru, dynamicItemId = 2200, text="" },
             new CmdDefinition { id = CmdIds.FileExit, cmdSet = Reko, container = GroupIds.GrpFileEnd, text = "E_xit" },
 
             new CmdDefinition { id = CmdIds.EditFind, cmdSet = Reko, container = GroupIds.GrpEdit, text = "_Find..." },
@@ -184,8 +184,8 @@ namespace Reko.Gui
             new CmdDefinition { id = CmdIds.ShowProcedureCallHierarchy, cmdSet = Reko, container = GroupIds.GrpProcedure, text = "Show Call _Hierarchy" },
             new CmdDefinition { id = CmdIds.ProcedureDebugTrace, cmdSet = Reko, container = GroupIds.GrpProcedureListDebug, text = "_Debug procedure decompilation" },
 
-            new CmdDefinition { id = CmdIds.CollapseAllNodes, cmdSet = Reko, container = GroupIds.GrpBrowserToolbar, imageKey = "Collapse.ico", text = "Collapse All" },
-            new CmdDefinition { id = CmdIds.CreateUserSegment, cmdSet = Reko, container = GroupIds.GrpBrowserToolbar, imageKey = "CreateSegment.ico", text = "Create Segment" },
+            new CmdDefinition { id = CmdIds.CollapseAllNodes, cmdSet = Reko, container = GroupIds.GrpBrowserToolbar, imageKey = "Collapse.ico", tip = "Collapse All" },
+            new CmdDefinition { id = CmdIds.CreateUserSegment, cmdSet = Reko, container = GroupIds.GrpBrowserToolbar, imageKey = "CreateSegment.ico", tip = "Create Segment" },
 
             new CmdDefinition { id = CmdIds.LoadSymbols, cmdSet = Reko, container = GroupIds.GrpBrowser, text = "Load Symbols..." },
         };
@@ -195,7 +195,9 @@ namespace Reko.Gui
         public readonly Placement[] Placements = new[]
         {
             new Placement { item=CmdIds.FileOpen, container=GroupIds.GrpFile },
+
             new Placement { item=CmdIds.FileOpenAs, container=GroupIds.GrpFile },
+
             new Placement { item=CmdIds.FileSave, container=GroupIds.GrpFile },
             new Placement { item=CmdIds.FileCloseProject, container=GroupIds.GrpFile },
             new Placement { item=CmdIds.FileNewScript, container=GroupIds.GrpFile },
@@ -285,10 +287,11 @@ namespace Reko.Gui
         public Guid cmdSet;
         public int container;
         public int priority;
-        public int image;
+        public int image = -1;
         public string text;
         public string imageKey;
         public int dynamicItemId;
+        public string tip;
     }
 
     public class Placement
@@ -300,11 +303,12 @@ namespace Reko.Gui
 
     public class MenuDefinition
     {
+        public MenuType type;
         public int id;
+        public Guid cmdSet;
         public string Text;
         public int priority;
         public int container;
-        public Guid cmdSet;
     }
 
     public class KeyBinding
@@ -324,5 +328,13 @@ namespace Reko.Gui
         Shift = 1,
         Control = 2,
         Alt = 4,
+    }
+
+    public enum MenuType
+    {
+        Submenu,
+        MainMenu,
+        ContextMenu,
+        Toolstrip,
     }
 }
