@@ -17,10 +17,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Include="Forms/DecompilerMenus.cs" Condition="!Exists('Forms/DecompilerMenus.cs')" />
-  </ItemGroup>
-
-  <ItemGroup>
     <None Remove=".gitignore" />
   </ItemGroup>
 
@@ -33,7 +29,4 @@
     <ProjectReference Include="..\..\Gui\Gui.csproj" />
   </ItemGroup>
 
-  <Target Name="GenerateCsFiles" BeforeTargets="CoreCompile">
-    <MSBuild Projects="$(ProjectDir)..\..\BuildTargets\BuildTargets.csproj" Properties="Configuration=$(Configuration);Platform=$(Platform)" Targets="gen_decompiler_menus_winforms" />
-  </Target>
 </Project>

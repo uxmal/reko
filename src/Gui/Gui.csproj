@@ -10,15 +10,6 @@
     <Configurations>Debug;Release</Configurations>
     <LangVersion>9.0</LangVersion>
   </PropertyGroup>
-  <!-- 
-      The file CmdIds.cs is generated from decompiler-menus.xml and is not committed to the
-      source code repository. On a clean install, CmdIds.cs will be missing. We do want to
-      include it in the build, so we use the hack below to force it to be included if it is
-      not present. 
-  -->
-  <ItemGroup>
-    <Compile Include="CmdIds.cs" Condition="!Exists('CmdIds.cs')" />
-  </ItemGroup>
   <ItemGroup>
     <None Remove=".gitignore" />
   </ItemGroup>
@@ -27,7 +18,4 @@
     <ProjectReference Include="..\Decompiler\Decompiler.csproj" />
   </ItemGroup>
 
-  <Target Name="GenerateCsFiles" BeforeTargets="CoreCompile">
-    <MSBuild Projects="$(ProjectDir)..\BuildTargets\BuildTargets.csproj" Properties="Configuration=$(Configuration);Platform=$(Platform)" Targets="gen_decompiler_menus" />
-  </Target>
 </Project>

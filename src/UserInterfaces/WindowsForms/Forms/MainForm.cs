@@ -73,7 +73,7 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
         public void Attach(IServiceContainer services)
         {
             this.interactor = new MainFormInteractor(services);
-            this.dm = new DecompilerMenus(interactor);
+            this.dm = new DecompilerMenus(new CommandDefinitions(), interactor);
             this.uiSvc = new DecompilerShellUiService(this, dm, this.OpenFileDialog, this.SaveFileDialog, services);
             services.AddService(typeof(IDecompilerShellUiService), this.uiSvc);
 
@@ -83,7 +83,7 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
         private void MainForm_ProcessCommandKey(object sender, KeyEventArgs e)
         {
             var frame = uiSvc.ActiveFrame;
-            if (frame != null)
+            if (frame is not null)
             {
                 if (frame.Pane is ICommandTarget ct)
                 {
@@ -97,7 +97,7 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
 
         private void toolBar_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
         {
-            if (!(e.ClickedItem.Tag is MenuCommand cmd))
+            if (e.ClickedItem.Tag is not MenuCommand cmd)
                 throw new NotImplementedException("Button not hooked up.");
             interactor.Execute(cmd.CommandID);
         }
@@ -295,7 +295,7 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
 
         private class DocumentWindowCollection : ICollection<IWindowFrame>
         {
-            private MainForm mainForm;
+            private readonly MainForm mainForm;
 
             public DocumentWindowCollection(MainForm mainForm)
             {

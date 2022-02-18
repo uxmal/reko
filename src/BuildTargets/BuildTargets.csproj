@@ -61,16 +61,6 @@
     <Exec Command="$(CMake) $(CMakeArguments) -DTARGET=run_regressions -P $(RekoCMake)" />
   </Target>
 
-  <!-- Executes the xslt tool to generate the C# code for the reko menus in ~/src/Gui -->
-  <Target Name="gen_decompiler_menus">
-    <Exec Command="$(CMake) $(CMakeArguments) -DTARGET=gen_decompiler_menus -P $(RekoCMake)" />
-  </Target>
-
-  <!-- Executes the xslt tool to generate the C# code for the reko menus in ~/src/UserInterfaces/WindowsForms -->
-  <Target Name="gen_decompiler_menus_winforms">
-    <Exec Command="$(CMake) $(CMakeArguments) -DTARGET=gen_decompiler_menus_winforms -P $(RekoCMake)" />
-  </Target>
-
   <!-- Preprocesses the C header files to XML -->
   <Target Name="gen_c2xml_os2">
     <Exec Command="$(CMake) $(CMakeArguments) -DTARGET=gen_c2xml_os2 -P $(RekoCMake)" />

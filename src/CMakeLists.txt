@@ -322,47 +322,7 @@ endfunction()
 
 set(GUI_BASEDIR ${REKO_SRC}/Gui)
 
-if("${TARGET}" STREQUAL "gen_decompiler_menus")
-	#
-	# Create a new target to generate CmdIds.cs
-	#
-	RUN_DOTNET(${REKO_SRC}/tools/xslt/xslt.csproj
-		NO_RESTORE
-		NO_CLEAN
-		CONFIG ${CMAKE_BUILD_TYPE}
-		ARGUMENTS
-			${GUI_BASEDIR}/cmdids.xslt
-			${GUI_BASEDIR}/decompiler-menus.xml
-			${GUI_BASEDIR}/CmdIds.cs
-		SOURCES
-			${GUI_BASEDIR}/cmdids.xslt
-			${GUI_BASEDIR}/decompiler-menus.xml
-		OUTPUT
-			${GUI_BASEDIR}/CmdIds.cs
-		TARGET_NAME "gen_decompiler_menus"
-	)
-elseif("${TARGET}" STREQUAL "gen_decompiler_menus_winforms")
-	#
-	# Create a new target to generate DecompilerMenus.cs (WinForms specific)
-	#
-	set(WINFORMS_BASEDIR ${REKO_SRC}/UserInterfaces/WindowsForms)
-	RUN_DOTNET(${REKO_SRC}/tools/xslt/xslt.csproj
-		NO_RESTORE
-		NO_CLEAN
-		CONFIG ${CMAKE_BUILD_TYPE}
-		PLATFORM ${REKO_PLATFORM}
-		ARGUMENTS
-			${WINFORMS_BASEDIR}/Forms/decompiler-menus.xslt
-			${GUI_BASEDIR}/decompiler-menus.xml
-			${WINFORMS_BASEDIR}/Forms/DecompilerMenus.cs
-		SOURCES
-			${WINFORMS_BASEDIR}/Forms/decompiler-menus.xslt
-			${GUI_BASEDIR}/decompiler-menus.xml
-		OUTPUT
-			${WINFORMS_BASEDIR}/Forms/DecompilerMenus.cs
-		TARGET_NAME "gen_decompiler_menus_winforms"
-	)
-elseif("${TARGET}" STREQUAL "run_hdrgen")
+if("${TARGET}" STREQUAL "run_hdrgen")
 	# 
 	# we need to obtain the path where Reko.Core.dll will be built, 
 	# since it's a dependency to 'hdrgen'
