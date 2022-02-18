@@ -76,6 +76,8 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
             this.dm = new DecompilerMenus(interactor);
             this.uiSvc = new DecompilerShellUiService(this, dm, this.OpenFileDialog, this.SaveFileDialog, services);
             services.AddService(typeof(IDecompilerShellUiService), this.uiSvc);
+
+            this.DataBindings.Add(nameof(Text), interactor, nameof(MainFormInteractor.TitleText));
         }
 
         private void MainForm_ProcessCommandKey(object sender, KeyEventArgs e)
@@ -101,12 +103,6 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
         }
 
         #region IMainForm Members
-
-        public string TitleText
-        {
-            get { return Text; }
-            set { Text = value; }
-        }
 
         public void AddMenuStrip(MenuStrip menu)
         {

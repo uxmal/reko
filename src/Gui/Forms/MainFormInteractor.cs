@@ -30,6 +30,7 @@ using Reko.Scanning;
 using Reko.Services;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.Design;
 using System.Diagnostics;
 using System.IO;
@@ -44,8 +45,11 @@ namespace Reko.Gui.Forms
     /// code. This will make it easier to port to other GUI platforms.
     /// </summary>
     public class MainFormInteractor :
-        ICommandTarget
+        ICommandTarget,
+        INotifyPropertyChanged
     {
+        public event PropertyChangedEventHandler PropertyChanged;
+        
         private IDecompilerShellUiService uiSvc;
         private IMainForm form;
         private IDecompilerService decompilerSvc;
@@ -84,6 +88,13 @@ namespace Reko.Gui.Forms
         public IServiceProvider Services { get { return sc; } }
 
         public string ProjectFileName { get; set; }
+
+        public string TitleText
+        {
+            get { return titleText; }
+            set { titleText = value; PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(TitleText))); }
+        }
+        private string titleText;
 
         public void Attach(IMainForm mainForm)
         {
@@ -238,11 +249,6 @@ namespace Reko.Gui.Forms
         {
             get { return currentPhase; }
             set { currentPhase = value; }
-        }
-
-        public IMainForm MainForm
-        {
-            get { return form; }
         }
 
         public void OpenBinaryWithPrompt()
@@ -825,7 +831,7 @@ namespace Reko.Gui.Forms
             sb.AppendFormat(
                 "Reko Decompiler ({0})", 
                 Environment.Is64BitProcess ? "64-bit" : "32-bit");
-            MainForm.TitleText = sb.ToString();
+            this.TitleText = sb.ToString();
         }
 
         #region ICommandTarget members

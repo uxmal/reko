@@ -34,10 +34,6 @@ namespace Reko.Gui.Forms
         event EventHandler Load;
         //$TODO: what happened to ProcessCommandKey?
 
-        /// <summary>
-        /// The text of the window's title bar.
-        /// </summary>
-        string TitleText { get; set; }
         System.Drawing.Size Size { get; set; }
         FormWindowState WindowState { get; set; }
 
