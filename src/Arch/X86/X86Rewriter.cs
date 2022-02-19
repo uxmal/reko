@@ -1154,7 +1154,6 @@ namespace Reko.Arch.X86
                 .Param(PrimitiveType.Word32)
                 .Returns(PrimitiveType.Bool);
             rdtsc_intrinsic = new IntrinsicBuilder("__rdtsc", true)
-                .Param(word64)
                 .Returns(word64);
 
             sfence_intrinsic = new IntrinsicBuilder("__sfence", true)
@@ -1494,8 +1493,8 @@ namespace Reko.Arch.X86
         private static readonly IntrinsicProcedure sysexit_intrinsic;
         private static readonly IntrinsicProcedure sysret_intrinsic;
         private static readonly IntrinsicProcedure tan_intrinsic = UnaryIntrinsic("tan", PrimitiveType.Real64);        //$REVIEW: math.h
-        private static readonly IntrinsicProcedure trunc_intrinsic = BinaryIntrinsic("trunc", PrimitiveType.Real64);    //$REVIEW: math.h
-        private static readonly IntrinsicProcedure truncf_intrinsic = BinaryIntrinsic("truncf", PrimitiveType.Real32);
+        private static readonly IntrinsicProcedure trunc_intrinsic = UnaryIntrinsic("trunc", PrimitiveType.Real64);    //$REVIEW: math.h
+        private static readonly IntrinsicProcedure truncf_intrinsic = UnaryIntrinsic("truncf", PrimitiveType.Real32);
         private static readonly IntrinsicProcedure tzcnt_intrinsic = GenericUnaryIntrinsic("__tzcnt");
         private static readonly IntrinsicProcedure unpckhp_intrinsic = GenericBinaryIntrinsic("__unpckhp");
         private static readonly IntrinsicProcedure unpcklp_intrinsic = GenericBinaryIntrinsic("__unpcklp");
