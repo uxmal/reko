@@ -18,31 +18,43 @@
  */
 #endregion
 
-using Reko.Core;
-using Reko.Gui;
 using Reko.Gui.Services;
+using Reko.UserInterfaces.AvaloniaUI.ViewModels;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
-namespace Reko.UserInterfaces.WindowsForms
+namespace Reko.UserInterfaces.AvaloniaUI.Services
 {
-    public class ImageSegmentServiceImpl : ViewService, ImageSegmentService
+    public class AvaloniaStatusBarService : IStatusBarService, INotifyPropertyChanged
     {
-        private ImageSegmentPane pane;
+        public event PropertyChangedEventHandler? PropertyChanged;
 
-        public ImageSegmentServiceImpl(IServiceProvider sp) : base (sp)
+
+        private MainViewModel mvvm;
+
+        public AvaloniaStatusBarService(MainViewModel mvvm)
         {
-            pane = new ImageSegmentPane();
+            this.mvvm = mvvm;
+            mvvm.Status = this;
         }
 
-        public void DisplayImageSegment(ImageSegment segment, Program program)
+
+        public string? Text
         {
-            if (segment == null)
-                return;
-            ShowWindow("imageSegmentViewer", "Segment: " + segment.Name, program, pane);
-            pane.DisplaySegment(segment, program);
+            get { return text; }
+            set { this.text = value; PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Text))); }
         }
+        private string? text;
+
+        public void SetText(string text)
+        {
+            this.Text = text;
+        }
+
+
     }
 }

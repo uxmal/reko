@@ -18,31 +18,24 @@
  */
 #endregion
 
-using Reko.Core;
-using Reko.Gui;
-using Reko.Gui.Services;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using Reko.Gui.Controls;
 
-namespace Reko.UserInterfaces.WindowsForms
+namespace Reko.UserInterfaces.AvaloniaUI.Services
 {
-    public class ImageSegmentServiceImpl : ViewService, ImageSegmentService
+    internal class AvaloniaTextFileEditor : ITextFileEditor
     {
-        private ImageSegmentPane pane;
+        public ITextBox TextBox => throw new System.NotImplementedException();
 
-        public ImageSegmentServiceImpl(IServiceProvider sp) : base (sp)
+        public IButton SaveButton => throw new System.NotImplementedException();
+
+        public void Dispose()
         {
-            pane = new ImageSegmentPane();
+            throw new System.NotImplementedException();
         }
 
-        public void DisplayImageSegment(ImageSegment segment, Program program)
+        public void GoToLine(int line)
         {
-            if (segment == null)
-                return;
-            ShowWindow("imageSegmentViewer", "Segment: " + segment.Name, program, pane);
-            pane.DisplaySegment(segment, program);
+            throw new System.NotImplementedException();
         }
     }
 }

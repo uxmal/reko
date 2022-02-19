@@ -18,29 +18,36 @@
  */
 #endregion
 
+using Reko.Core;
 using Reko.Gui;
+using Reko.Gui.Forms;
+using Reko.UserInterfaces.AvaloniaUI.Services;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel.Design;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Reko.UserInterfaces.AvaloniaUI.ViewModels
 {
     public class MainViewModel : ICommandTarget
     {
         private DecompilerMenus menus;
+        private MainFormInteractor interactor;
 
-        public MainViewModel()
+        public MainViewModel(IServiceContainer services, IMainForm mainForm)
         {
-            var cmdDefs = new Reko.Gui.CommandDefinitions();
+            var svcFactory = new AvaloniaServiceFactory(services, this);
+            services.AddService<IServiceFactory>(svcFactory);
+
+            var cmdDefs = new CommandDefinitions();
             this.menus = new DecompilerMenus(cmdDefs, this);
+            this.interactor = new MainFormInteractor(services);
+            interactor.Attach(mainForm);
         }
 
         public ObservableCollection<CommandItem> MainMenu => this.menus.GetMenu(MenuIds.MainMenu);
 
+        public AvaloniaStatusBarService? Status { get; set; }
+        
         public string WindowTitle => "Reko decompiler";
 
         bool ICommandTarget.QueryStatus(CommandID cmdId, CommandStatus status, CommandText text)

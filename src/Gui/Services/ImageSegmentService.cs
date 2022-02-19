@@ -19,30 +19,20 @@
 #endregion
 
 using Reko.Core;
-using Reko.Gui;
-using Reko.Gui.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Reko.UserInterfaces.WindowsForms
+namespace Reko.Gui.Services
 {
-    public class ImageSegmentServiceImpl : ViewService, ImageSegmentService
+    /// <summary>
+    /// This service is used the GUI to display the contents of an image segments.
+    /// Implementors are responsible for rendering the segment contents in an 
+    /// appropriate manner.
+    /// </summary>
+    public interface ImageSegmentService
     {
-        private ImageSegmentPane pane;
-
-        public ImageSegmentServiceImpl(IServiceProvider sp) : base (sp)
-        {
-            pane = new ImageSegmentPane();
-        }
-
-        public void DisplayImageSegment(ImageSegment segment, Program program)
-        {
-            if (segment == null)
-                return;
-            ShowWindow("imageSegmentViewer", "Segment: " + segment.Name, program, pane);
-            pane.DisplaySegment(segment, program);
-        }
+        void DisplayImageSegment(ImageSegment segment, Program program);
     }
 }

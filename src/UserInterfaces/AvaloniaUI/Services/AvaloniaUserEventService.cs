@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2022 John Källén.
  *
@@ -18,21 +18,18 @@
  */
 #endregion
 
-using Reko.Core;
+using Reko.Gui.Services;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
-namespace Reko.Gui
+namespace Reko.UserInterfaces.AvaloniaUI.Services
 {
-    /// <summary>
-    /// This service is used the GUI to display the contents of an image segments.
-    /// Implementors are responsible for rendering the segment contents in an 
-    /// appropriate manner.
-    /// </summary>
-    public interface ImageSegmentService
+    public class AvaloniaUserEventService : IUserEventService
     {
-        void DisplayImageSegment(ImageSegment segment, Program program);
+        public event EventHandler<string>? UserEvent;
+
+        public void RaiseEvent(object sender, string eventType)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

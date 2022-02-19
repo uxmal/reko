@@ -21,8 +21,15 @@
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
+using Reko.Core;
+using Reko.Core.Services;
+using Reko.Gui;
+using Reko.Gui.Forms;
+using Reko.Gui.Services;
+using Reko.UserInterfaces.AvaloniaUI.Services;
 using Reko.UserInterfaces.AvaloniaUI.ViewModels;
 using Reko.UserInterfaces.AvaloniaUI.Views;
+using System.ComponentModel.Design;
 
 namespace Reko.AvaloniaShell
 {
@@ -37,13 +44,23 @@ namespace Reko.AvaloniaShell
         {
             if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
             {
-                var mvvm = new MainViewModel();
-                desktop.MainWindow = new MainWindow
-                {
-                    DataContext = mvvm
-                };
+                var sc = new ServiceContainer();
+                var mainWindow = new MainWindow();
+                MakeServices(sc, mainWindow);
+                var mvvm = new MainViewModel(sc, mainWindow);
+                mainWindow.DataContext = mvvm;
+                desktop.MainWindow = mainWindow;
             }
             base.OnFrameworkInitializationCompleted();
+        }
+
+        private static void MakeServices(IServiceContainer services, MainWindow mainForm)
+        {
+            services.AddService<IDecompilerShellUiService>(new AvaloniaShellUiService(services, mainForm));
+            services.AddService<IDialogFactory>(new AvaloniaDialogFactory(services));
+            services.AddService<ISettingsService>(new AvaloniaSettingsService(services));
+            services.AddService<IFileSystemService>(new FileSystemServiceImpl());
+            services.AddService<IPluginLoaderService>(new PluginLoaderService());
         }
     }
 }

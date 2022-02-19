@@ -21,10 +21,15 @@
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
+using Reko.Gui.Forms;
+using Reko.Gui.Services;
+using Reko.UserInterfaces.AvaloniaUI.Services;
+using System;
+using System.ComponentModel.Design;
 
 namespace Reko.UserInterfaces.AvaloniaUI.Views
 {
-    public partial class MainWindow : Window
+    public partial class MainWindow : Window, IMainForm
     {
         public MainWindow()
         {
@@ -37,6 +42,84 @@ namespace Reko.UserInterfaces.AvaloniaUI.Views
         private void InitializeComponent()
         {
             AvaloniaXamlLoader.Load(this);
+        }
+
+        System.Drawing.Size IMainForm.Size
+        {
+            get { return new System.Drawing.Size((int) this.Bounds.Width, (int) this.Bounds.Height); }
+            set { this.Height = value.Height; this.Width = value.Width; }
+        }
+
+        FormWindowState IMainForm.WindowState {
+            get => this.WindowState switch
+            {
+                WindowState.Normal => FormWindowState.Normal,
+                WindowState.Minimized => FormWindowState.Minimized,
+                WindowState.Maximized => FormWindowState.Maximized,
+                _ => throw new NotImplementedException()
+            };
+            set
+            {
+                this.WindowState = value switch
+                {
+                    FormWindowState.Normal => WindowState.Normal,
+                    FormWindowState.Minimized => WindowState.Minimized,
+                    FormWindowState.Maximized => WindowState.Maximized,
+                    _ => throw new NotImplementedException()
+                };
+            }
+        }
+
+        event EventHandler IMainForm.Closed
+        {
+            add { closedEvent += value; }
+            remove { closedEvent -= value; }
+        }
+        private EventHandler? closedEvent = null;
+
+        event EventHandler IMainForm.Load
+        {
+            add
+            {
+                throw new NotImplementedException();
+            }
+
+            remove
+            {
+                throw new NotImplementedException();
+            }
+        }
+
+        void IMainForm.Close()
+        {
+            this.Close();
+        }
+
+        void IDisposable.Dispose()
+        {
+            this.Close();
+        }
+
+
+
+        object IMainForm.Invoke(Delegate action, params object[] args)
+        {
+            throw new NotImplementedException();
+        }
+
+        void IMainForm.LayoutMdi(DocumentWindowLayout layout)
+        {
+            throw new NotImplementedException();
+        }
+
+        void IMainForm.Show()
+        {
+            throw new NotImplementedException();
+        }
+
+        void IMainForm.UpdateToolbarState()
+        {
+            //$TODO:
         }
     }
 }
