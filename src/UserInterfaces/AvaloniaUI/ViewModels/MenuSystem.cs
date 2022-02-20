@@ -82,8 +82,8 @@ namespace Reko.UserInterfaces.AvaloniaUI.ViewModels
                 separator = true;
                 foreach (CommandItem cmi in group.Values)
                 {
-                    CommandItem cmiNew = (cmi.CommandId != null)
-                        ? new CommandItem { Text = cmi.Text, CommandId = cmi.CommandId }
+                    CommandItem cmiNew = (cmi.CommandID != null)
+                        ? new CommandItem { Text = cmi.Text, CommandID = cmi.CommandID }
                         : cmi;
                     cmiNew.IsDynamic = cmi.IsDynamic;
                     //cmiNew.DropDownOpening += new EventHandler(subMenu_Popup);
@@ -123,7 +123,7 @@ namespace Reko.UserInterfaces.AvaloniaUI.ViewModels
                 {
                     var btnNew = new CommandItem();
                     btnNew.Text = cmi.text;
-                    btnNew.CommandId = new CommandID(cmi.cmdSet, cmi.id);
+                    btnNew.CommandID = new CommandID(cmi.cmdSet, cmi.id);
 #if NYI
                     if (!string.IsNullOrEmpty(cmi.imageKey))
                         btnNew.ImageKey = cmi.ImageKey;

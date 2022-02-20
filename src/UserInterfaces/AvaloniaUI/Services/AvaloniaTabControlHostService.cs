@@ -36,7 +36,13 @@ namespace Reko.UserInterfaces.AvaloniaUI.Services
 
         public IWindowFrame ActiveFrame { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
-        public bool ContainsFocus => throw new NotImplementedException();
+        public bool ContainsFocus
+        {
+            get
+            {
+                return false;   //$TODO
+            }
+        }
 
         public IWindowFrame Add(IWindowPane pane, string tabCaption)
         {

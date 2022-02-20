@@ -34,6 +34,8 @@ namespace Reko.UserInterfaces.AvaloniaUI.ViewModels
         {
             this.menus = new();
 
+            var cmdAdapter = new CommandAdapter(target);
+
             var menusById = new SortedList<int, SortedList<int, SortedList<int, CommandItem>>>();
             foreach (var menu in cmdDefs.Menus)
             {
@@ -55,8 +57,9 @@ namespace Reko.UserInterfaces.AvaloniaUI.ViewModels
             var cmdsById = new SortedList<int, CommandItem>();
             foreach (var command in cmdDefs.Commands)
             {
-                var cmd = new CommandItem { CommandId = new CommandID(command.cmdSet, command.id), Text = command.text };
+                var cmd = new CommandItem { CommandID = new CommandID(command.cmdSet, command.id), Text = command.text };
                 cmdsById.Add(command.id, cmd);
+                cmd.Command = cmdAdapter;
                 cmd.IsDynamic = command.dynamicItemId != 0;
                 cmd.ImageKey = command.imageKey;
                 cmd.ImageIndex = command.image;
@@ -97,17 +100,20 @@ namespace Reko.UserInterfaces.AvaloniaUI.ViewModels
             {
                 AddBinding(binding.editor, binding.cmdSet, binding.id, binding.key1, binding.alt1);
             }
+
             foreach (var menu in cmdDefs.Menus)
             {
                 if (menu.container != 0)
                 {
                     BuildMenu(menusById[menu.id], submenuCommandItems[menu.id].Items);
+                    base.SetStatusForMenuItems(submenuCommandItems[menu.id].Items);
                 }
                 else
                 {
                     var itemcollection = new ObservableCollection<CommandItem>();
                     BuildMenu(menusById[menu.id], itemcollection);
                     this.menus.Add(menu.id, itemcollection);
+                    base.SetStatusForMenuItems(itemcollection);
                 }
             }
         }
@@ -126,6 +132,5 @@ namespace Reko.UserInterfaces.AvaloniaUI.ViewModels
         {
             return menus[menuId];
         }
-
     }
 }

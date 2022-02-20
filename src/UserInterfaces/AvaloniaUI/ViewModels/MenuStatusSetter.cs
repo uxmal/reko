@@ -37,7 +37,7 @@ namespace Reko.UserInterfaces.AvaloniaUI.ViewModels
         public MenuStatusSetter()
         {
             this.cmdStatus = new CommandStatus();
-            this.cmdText = new CommandText();
+            this.cmdText = new CommandText("_");
         }
 
         public int SetStatus(IMenuAdapter menu, ICommandTarget ct)
@@ -77,7 +77,7 @@ namespace Reko.UserInterfaces.AvaloniaUI.ViewModels
                             cmdId = new CommandID(cmdId.Guid, cmdId.ID + 1);
                             while (ct.QueryStatus(cmdId, cmdStatus, cmdText))
                             {
-                                var itemNew = new CommandItem { Text = cmdText.Text, CommandId = cmdId };
+                                var itemNew = new CommandItem { Text = cmdText.Text, CommandID = cmdId };
                                 itemNew.IsTemporary = true;
                                 //itemNew.Command
                                 //itemNew.DropDownOpening += popupHandler;

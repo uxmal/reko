@@ -35,7 +35,13 @@ namespace Reko.UserInterfaces.AvaloniaUI.Services
             this.services = services;
         }
 
-        public bool ContainsFocus => throw new NotImplementedException();
+        public bool ContainsFocus
+        {
+            get
+            {
+                return false; //$TODO:
+            }
+        }
 
         public void Clear()
         {

@@ -16,6 +16,10 @@
 				<Style Selector="MenuItem" x:DataType="vm:CommandItem">
 					<Setter Property="Header" Value="{Binding Text}" />
 					<Setter Property="Items" Value="{Binding Items}"/>
+					<Setter Property="Command" Value="{Binding Command}" />
+					<Setter Property="CommandParameter" Value="{Binding CommandID}" />
+					<Setter Property="IsVisible" Value="{Binding IsVisible}" />
+					<Setter Property="IsEnabled" Value="{Binding IsEnabled}" />
 				</Style>
 			</Menu.Styles>
 		</Menu>

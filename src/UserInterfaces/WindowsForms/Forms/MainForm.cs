@@ -247,7 +247,7 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
         public void UpdateToolbarState()
         {
             var status = new CommandStatus();
-            var text = new CommandText();
+            var text = new CommandText("&");
             foreach (ToolStripItem item in ToolBar.Items)
             {
                 if (item.Tag is MenuCommand cmd)

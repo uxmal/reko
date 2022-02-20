@@ -37,11 +37,17 @@ namespace Reko.UserInterfaces.AvaloniaUI.Services
 
         public Program CurrentProgram => throw new NotImplementedException();
 
-        public bool ContainsFocus => throw new NotImplementedException();
+        public bool ContainsFocus
+        {
+            get
+            {
+                return false; //$TODO
+            }
+        }
 
         public object SelectedObject { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
-        public event EventHandler<FileDropEventArgs> FileDropped;
+        public event EventHandler<FileDropEventArgs>? FileDropped;
 
         public void Clear()
         {

@@ -28,7 +28,7 @@ using System.ComponentModel.Design;
 
 namespace Reko.UserInterfaces.AvaloniaUI.ViewModels
 {
-    public class MainViewModel : ICommandTarget
+    public class MainViewModel
     {
         private DecompilerMenus menus;
         private MainFormInteractor interactor;
@@ -39,9 +39,9 @@ namespace Reko.UserInterfaces.AvaloniaUI.ViewModels
             services.AddService<IServiceFactory>(svcFactory);
 
             var cmdDefs = new CommandDefinitions();
-            this.menus = new DecompilerMenus(cmdDefs, this);
             this.interactor = new MainFormInteractor(services);
             interactor.Attach(mainForm);
+            this.menus = new DecompilerMenus(cmdDefs, this.interactor);
         }
 
         public ObservableCollection<CommandItem> MainMenu => this.menus.GetMenu(MenuIds.MainMenu);
@@ -50,14 +50,5 @@ namespace Reko.UserInterfaces.AvaloniaUI.ViewModels
         
         public string WindowTitle => "Reko decompiler";
 
-        bool ICommandTarget.QueryStatus(CommandID cmdId, CommandStatus status, CommandText text)
-        {
-            return true;
-        }
-
-        bool ICommandTarget.Execute(CommandID cmdId)
-        {
-            return true;
-        }
     }
 }

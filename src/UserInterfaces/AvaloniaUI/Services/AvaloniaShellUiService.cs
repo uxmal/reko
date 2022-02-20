@@ -81,7 +81,11 @@ namespace Reko.UserInterfaces.AvaloniaUI.Services
 
         public bool QueryStatus(CommandID cmdId, CommandStatus status, CommandText text)
         {
-            throw new NotImplementedException();
+            //$TODO
+            //ICommandTarget ct = ActiveCommandTarget();
+            //if (ct == null)
+                return false;
+            //return ct.QueryStatus(cmdId, status, text);
         }
 
         public void SetContextMenu(object control, int menuID)

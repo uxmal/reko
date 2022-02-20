@@ -202,7 +202,7 @@ namespace Reko.UnitTests.Gui.Forms
             i.OpenBinary("foo.exe");
 
             var status = new CommandStatus();
-            var text = new CommandText();
+            var text = new CommandText("&");
             Assert.IsTrue(i.QueryStatus(new CommandID(CmdSets.GuidReko, CmdIds.ActionNextPhase), status, text));
             Assert.AreEqual("A&nalyze dataflow", text.Text);
         }

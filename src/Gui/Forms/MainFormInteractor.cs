@@ -922,7 +922,7 @@ namespace Reko.Gui.Forms
             if (0 <= iMru && iMru < mru.Items.Count)
             {
                 cmdStatus.Status = MenuStatus.Visible | MenuStatus.Enabled;
-                cmdText.Text = string.Format("&{0} {1}", iMru + 1, mru.Items[iMru]);
+                cmdText.Text = string.Format("{0}{1} {2}", cmdText.MnemonicPrefix, iMru + 1, mru.Items[iMru]);
                 return true;
             }
             return false;

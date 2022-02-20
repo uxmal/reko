@@ -122,7 +122,7 @@ namespace Reko.UnitTests.Gui.Design
         private void Expect_MenuItem_LoadSymbols_Enabled()
         {
             var status = new CommandStatus();
-            var txt = new CommandText();
+            var txt = new CommandText("_");
             var outcome = programDesigner.QueryStatus(cmdidLoadSymbols, status, txt);
             Assert.IsTrue(outcome, "Expected command to be supported");
             Assert.AreEqual(MenuStatus.Visible|MenuStatus.Enabled, status.Status);

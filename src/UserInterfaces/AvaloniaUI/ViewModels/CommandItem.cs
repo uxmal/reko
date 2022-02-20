@@ -51,7 +51,7 @@ namespace Reko.UserInterfaces.AvaloniaUI.ViewModels
         public bool IsChecked
         {
             get { return isChecked; }
-            set { isChecked= value; }
+            set { isChecked = value; }
         }
         private bool isChecked;
 
@@ -65,10 +65,9 @@ namespace Reko.UserInterfaces.AvaloniaUI.ViewModels
         public bool IsEnabled
         {
             get { return isEnabled; }
-            set { isEnabled = value; }
+            set { isEnabled = value; Notify(nameof(IsEnabled)); }
         }
         private bool isEnabled;
-
 
         public bool IsTemporary
         {
@@ -80,16 +79,18 @@ namespace Reko.UserInterfaces.AvaloniaUI.ViewModels
         public bool IsVisible
         {
             get { return isVisible; }
-            set { isVisible = value; }
+            set { isVisible = value; Notify(nameof(IsVisible)); }
         }
         private bool isVisible;
 
-        public CommandID? CommandId { get; set; }
+        public CommandID? CommandID { get; set; }
+        public CommandAdapter? Command { get; set; }
         public string? ImageKey { get; set; }
         public int ImageIndex { get; set; }
         public string? ToolTipText { get; set; }
 
         public ObservableCollection<CommandItem> Items { get; }
+        
         private void Notify(string propertyName)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));

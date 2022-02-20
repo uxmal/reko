@@ -38,7 +38,7 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
         public MenuStatusSetter(EventHandler popupHandler, CommandMenuEventHandler clickHandler)
         {
             this.cmdStatus = new CommandStatus();
-            this.cmdText = new CommandText();
+            this.cmdText = new CommandText("&");
             this.popupHandler = popupHandler;
             this.clickHandler = clickHandler;
         }
