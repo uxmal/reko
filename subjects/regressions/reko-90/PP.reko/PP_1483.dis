@@ -353,12 +353,12 @@ l1483_0D52:
 l1483_0D68_1:
 	__syscall(4<8>)
 l1483_0D69:
+	word16 cx_690
 	word16 cx_684
-	segptr32 ds_bx_687
+	segptr32 ds_bx_693
 	bool v77_512
 	selector ds_410
-	segptr32 ds_bx_693
-	word16 cx_690
+	segptr32 ds_bx_687
 	Mem91[ds:si + 0x5C87<16>:byte] = ch_38
 	fn1483_8A82()
 	Mem119[ss:sp_110 - 2<i16>:word16] = ax_111

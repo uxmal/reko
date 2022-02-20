@@ -12897,12 +12897,11 @@ l0800_n:
 					wLoc08_n = wLoc08_n - 0x01;
 					goto l0800_nFCB;
 				}
-				v26_n.u1 = (word16) wLoc08_n.u1 + 1;
 				sp_n = sp_n - 2;
 				(ss->*sp_n).t0000 = wArg08;
 				(ss->*sp_n).wFFFFFFFE = wArg06;
 				SEQ(0x0800, wArg02)();
-				wLoc08_n = v26_n;
+				wLoc08_n.u1 = (word16) wLoc08_n.u1 + 1;
 				cx_n = (ss->*sp_n).t0002;
 				sp_n = (struct Eq_n Eq_n::*) ((char *) &sp_n->t0002 + 2);
 				ax_n = ax_n;
@@ -13165,7 +13164,7 @@ Eq_n fn0800-94B0(Eq_n ds, <anonymous> Eq_n::* wArg02, <anonymous> Eq_n::* wArg04
 	} while (((byte) ax_n & 0x80) == 0x00 && (ds->*((word16) ax_n + 8785) & 0x01) != 0x00);
 	ax_n = ax_n;
 	byte al_n = (byte) ax_n;
-	--wArg0C;
+	ci16 wArg0C_n = wArg0C - 0x01;
 	if (wArg0C < 0x01)
 	{
 l0800_n:
@@ -13189,7 +13188,7 @@ l0800_n:
 			goto l0800_nF;
 		bLoc03_n = 0x01;
 	}
-	wArg0C -= 0x02;
+	wArg0C_n = wArg0C - 0x02;
 	if (wArg0C < 0x02)
 		goto l0800_n;
 	(ss->*sp_n).t0002 = wArg08;
@@ -13218,17 +13217,16 @@ l0800_nF:
 		wArg0A = 0x0A;
 		if (al_n == 0x30)
 		{
-			ci16 v70_n = wArg0C - 0x01;
-			wArg0C = v70_n;
+			ci16 v70_n = wArg0C_n - 0x01;
+			wArg0C_n = v70_n;
 			if (v70_n >= 0x00)
 			{
-				word16 v71_n = wLoc06_n + 0x01;
 				struct Eq_n Eq_n::* sp_n = sp_n - 2;
 				(ss->*sp_n).t0000 = wArg08;
 				(ss->*sp_n).wFFFFFFFE = wArg06;
 				word16 sp_n;
 				SEQ(0x0800, wArg02)();
-				wLoc06_n = v71_n;
+				++wLoc06_n;
 				Eq_n al_n = (ss->*fp).t0002;
 				sp_n = sp_n + 4;
 				wArg0A = 0x08;
@@ -13266,17 +13264,16 @@ l0800_n:
 					{
 						do
 						{
-							ci16 v54_n = wArg0C - 0x01;
-							wArg0C = v54_n;
+							ci16 v54_n = wArg0C_n - 0x01;
+							wArg0C_n = v54_n;
 							if (v54_n < 0x00)
 								goto l0800_n;
 							struct Eq_n Eq_n::* sp_n = sp_n - 2;
 							(ss->*sp_n).t0000 = wArg08;
 							(ss->*sp_n).wFFFFFFFE = wArg06;
-							word16 v55_n = wLoc06_n + 0x01;
 							word16 sp_n;
 							SEQ(0x0800, wArg02)();
-							wLoc06_n = v55_n;
+							++wLoc06_n;
 							sp_n = sp_n + 4;
 							ax_n = bx_n;
 							uint16 bx_n;
@@ -13301,17 +13298,16 @@ l0800_n:
 						return ax_n;
 					}
 l0800_nB5:
-					ci16 v44_n = wArg0C - 0x01;
-					wArg0C = v44_n;
+					ci16 v44_n = wArg0C_n - 0x01;
+					wArg0C_n = v44_n;
 					if (v44_n < 0x00)
 						goto l0800_n;
-					word16 v45_n = wLoc06_n + 0x01;
 					struct Eq_n Eq_n::* sp_n = sp_n - 2;
 					(ss->*sp_n).t0000 = wArg08;
 					(ss->*sp_n).wFFFFFFFE = wArg06;
 					word16 sp_n;
 					SEQ(0x0800, wArg02)();
-					wLoc06_n = v45_n;
+					++wLoc06_n;
 					sp_n = sp_n + 4;
 					goto l0800_nC8;
 				}
@@ -13333,17 +13329,16 @@ l0800_nC:
 		{
 			if (cl_n != 0x10)
 				goto l0800_nC;
-			ci16 v31_n = wArg0C - 0x01;
-			wArg0C = v31_n;
+			ci16 v31_n = wArg0C_n - 0x01;
+			wArg0C_n = v31_n;
 			if (v31_n >= 0x00)
 			{
-				word16 v32_n = wLoc06_n + 0x01;
 				struct Eq_n Eq_n::* sp_n = sp_n - 2;
 				(ss->*sp_n).t0000 = wArg08;
 				(ss->*sp_n).wFFFFFFFE = wArg06;
 				word16 sp_n;
 				SEQ(0x0800, wArg02)();
-				wLoc06_n = v32_n;
+				++wLoc06_n;
 				Eq_n al_n = (ss->*fp).t0002;
 				sp_n = sp_n + 4;
 				if (al_n != 0x78 && al_n != 88)
@@ -16711,8 +16706,14 @@ l0800_B7BD:
 			ss->*((word32) sp_n - 6) = ax_n;
 			// Failed to bind call argument.
 			// Please report this issue at https://github.com/uxmal/reko
+			// Failed to bind call argument.
+			// Please report this issue at https://github.com/uxmal/reko
+			// Failed to bind call argument.
+			// Please report this issue at https://github.com/uxmal/reko
 			Eq_n stackArg2 = <invalid>;
-			fn0800_B6D6(ds, stackArg2, wArg02, wArg04);
+			Eq_n stackArg4 = <invalid>;
+			Eq_n stackArg6 = <invalid>;
+			fn0800_B6D6(ds, stackArg2, stackArg4, stackArg6);
 			sp_n = sp_n;
 			si_n = ax_n;
 		}
@@ -16723,8 +16724,14 @@ l0800_B7BD:
 			ss->*((word32) sp_n - 6) = ax_n;
 			// Failed to bind call argument.
 			// Please report this issue at https://github.com/uxmal/reko
+			// Failed to bind call argument.
+			// Please report this issue at https://github.com/uxmal/reko
+			// Failed to bind call argument.
+			// Please report this issue at https://github.com/uxmal/reko
 			Eq_n stackArg2 = <invalid>;
-			fn0800_B6D6(ds, stackArg2, wArg02, wLoc06_n);
+			Eq_n stackArg4 = <invalid>;
+			Eq_n stackArg6 = <invalid>;
+			fn0800_B6D6(ds, stackArg2, stackArg4, stackArg6);
 			sp_n = sp_n;
 			wArg04 = wLoc06_n;
 		}
