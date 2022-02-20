@@ -8,7 +8,8 @@
         x:Class="Reko.UserInterfaces.AvaloniaUI.Views.MainWindow"
 		x:CompileBindings="true"
 		x:DataType="vm:MainViewModel"
-        Title="{Binding WindowTitle}">
+        Title="{Binding WindowTitle}"
+		Icon="/Assets/App.ico">
 	<DockPanel VerticalAlignment="Top">
 		<Menu Items="{Binding MainMenu}" DockPanel.Dock="Top">
 			<Menu.Styles>

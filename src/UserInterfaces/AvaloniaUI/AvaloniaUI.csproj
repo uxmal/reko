@@ -20,4 +20,8 @@
     <ProjectReference Include="..\..\Gui\Gui.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+	  <AvaloniaResource Include="Assets\**" />
+  </ItemGroup>
+
 </Project>
