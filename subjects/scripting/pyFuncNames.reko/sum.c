@@ -7,7 +7,7 @@
 // 10001000: Register (ptr32 Eq_n) sum_wrapper(Stack (ptr32 Eq_n) ptrArg04, Stack (ptr32 Eq_n) ptrArg08)
 PyObject * sum_wrapper(PyObject * ptrArg04, PyObject * ptrArg08)
 {
-	PyObject * eax_n = PyArg_ParseTuple(ptrArg08, "ii:sum", fp - 0x04, fp - 0x08);
+	PyObject * eax_n = PyArg_ParseTuple(ptrArg08, "ii:sum", &dwLoc04, &dwLoc08);
 	if (eax_n != null)
 		return Py_BuildValue("i", dwLoc04 + dwLoc08);
 	return eax_n;

@@ -121,7 +121,7 @@ namespace Reko.Core.Expressions
         {
         }
 
-		public void VisitApplication(Application appl)
+		public virtual void VisitApplication(Application appl)
 		{
 			appl.Procedure.Accept(this);
 			for (int i = 0; i < appl.Arguments.Length; ++i)

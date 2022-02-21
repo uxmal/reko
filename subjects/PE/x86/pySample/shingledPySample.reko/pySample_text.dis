@@ -7,10 +7,10 @@ PyObject * fn10001000(PyObject * ptrArg04, PyObject * ptrArg08)
 // Preserved:
 fn10001000_entry:
 l10001000:
-	word32 eax_17 = PyArg_ParseTuple(ptrArg08, 0x10002144<32>, fp - 4<32>, fp - 8<32>)
+	word32 eax_17 = PyArg_ParseTuple(ptrArg08, 0x10002144<32>, &dwLoc04, &dwLoc08)
 	branch eax_17 != 0<32> l10001027
 l10001027:
-	return Py_BuildValue(0x1000214C<32>, dwLoc04 + dwLoc08)
+	return Py_BuildValue(0x1000214C<32>, Mem16[&dwLoc04:word32] + Mem16[&dwLoc08:word32])
 l10001023:
 	return eax_17
 fn10001000_exit:
@@ -25,10 +25,10 @@ PyObject * fn10001050(PyObject * ptrArg04, PyObject * ptrArg08)
 // Preserved:
 fn10001050_entry:
 l10001050:
-	word32 eax_17 = PyArg_ParseTuple(ptrArg08, 0x10002150<32>, fp - 8<32>, fp - 4<32>)
+	word32 eax_17 = PyArg_ParseTuple(ptrArg08, 0x10002150<32>, &dwLoc08, &dwLoc04)
 	branch eax_17 != 0<32> l10001078
 l10001078:
-	return Py_BuildValue(0x1000214C<32>, dwLoc08 - dwLoc04)
+	return Py_BuildValue(0x1000214C<32>, Mem16[&dwLoc08:word32] - Mem16[&dwLoc04:word32])
 l10001074:
 	return eax_17
 fn10001050_exit:
@@ -43,10 +43,10 @@ PyObject * fn100010A0(PyObject * ptrArg04, PyObject * ptrArg08)
 // Preserved:
 fn100010A0_entry:
 l100010A0:
-	word32 eax_17 = PyArg_ParseTuple(ptrArg08, 0x10002158<32>, fp - 8<32>, fp - 4<32>)
+	word32 eax_17 = PyArg_ParseTuple(ptrArg08, 0x10002158<32>, &dwLoc08, &dwLoc04)
 	branch eax_17 != 0<32> l100010C8
 l100010C8:
-	return Py_BuildValue(0x1000214C<32>, CONVERT(CONVERT(dwLoc08, word32, int64) /32 dwLoc04, word32, int32))
+	return Py_BuildValue(0x1000214C<32>, CONVERT(CONVERT(Mem16[&dwLoc08:word32], word32, int64) /32 Mem16[&dwLoc04:word32], word32, int32))
 l100010C4:
 	return eax_17
 fn100010A0_exit:
@@ -61,10 +61,10 @@ PyObject * fn100010F0(PyObject * ptrArg04, PyObject * ptrArg08)
 // Preserved:
 fn100010F0_entry:
 l100010F0:
-	word32 eax_17 = PyArg_ParseTuple(ptrArg08, 0x10002160<32>, fp - 8<32>, fp - 4<32>)
+	word32 eax_17 = PyArg_ParseTuple(ptrArg08, 0x10002160<32>, &rLoc08, &rLoc04)
 	branch eax_17 != 0<32> l10001118
 l10001118:
-	return Py_BuildValue(0x10002168<32>, CONVERT(rLoc08, real32, real64) / CONVERT(rLoc04, real32, real64))
+	return Py_BuildValue(0x10002168<32>, CONVERT(Mem16[&rLoc08:real32], real32, real64) / CONVERT(Mem16[&rLoc04:real32], real32, real64))
 l10001114:
 	return eax_17
 fn100010F0_exit:
@@ -610,8 +610,8 @@ l10001887:
 l10001894:
 	GetSystemTimeAsFileTime(fp - 0xC<32>)
 	word32 esi_46 = GetCurrentProcessId() ^ GetCurrentThreadId() ^ GetTickCount()
-	QueryPerformanceCounter(fp - 0x14<32>)
-	word32 esi_54 = esi_46 ^ (dwLoc10 ^ dwLoc14)
+	QueryPerformanceCounter(&tLoc14)
+	word32 esi_54 = esi_46 ^ (Mem49[&tLoc14 + 4<i32>:word32] ^ Mem49[&tLoc14:word32])
 	branch esi_54 != 0xBB40E64E<32> l100018DA
 l100018DA:
 	branch (esi_54 & 0xFFFF0000<32>) != 0<32> l100018E5
