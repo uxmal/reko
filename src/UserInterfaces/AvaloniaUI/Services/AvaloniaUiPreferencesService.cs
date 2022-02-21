@@ -27,7 +27,7 @@ using System.Drawing;
 
 namespace Reko.UserInterfaces.AvaloniaUI.Services
 {
-    internal class AvaloniaUiPreferencesService : IUiPreferencesService
+    public class AvaloniaUiPreferencesService : IUiPreferencesService
     {
         private IServiceProvider services;
 
@@ -38,14 +38,29 @@ namespace Reko.UserInterfaces.AvaloniaUI.Services
 
         public IDictionary<string, UiStyle> Styles => throw new NotImplementedException();
 
-        public Size WindowSize { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        public FormWindowState WindowState { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public Size WindowSize {
+            get => new Size(800, 600);
+            set { }  //$TODO 
+        }
+
+        public FormWindowState WindowState
+        {
+            get
+            {
+                return FormWindowState.Normal;
+            }
+            set
+            {
+                //$TODO
+                throw new NotImplementedException();
+            }
+        }
 
         public event EventHandler UiPreferencesChanged;
 
         public void Load()
         {
-            throw new NotImplementedException();
+            //$TODO
         }
 
         public void ResetStyle(string styleName)

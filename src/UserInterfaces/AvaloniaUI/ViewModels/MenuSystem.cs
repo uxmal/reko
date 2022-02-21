@@ -40,7 +40,7 @@ namespace Reko.UserInterfaces.AvaloniaUI.ViewModels
     /// </remarks>
     public abstract class MenuSystem
     {
-        private static TraceSwitch trace = new TraceSwitch(nameof(MenuSystem), "Trace the MenuSystem class");
+        private static readonly TraceSwitch trace = new TraceSwitch(nameof(MenuSystem), "Trace the MenuSystem class");
 
         private readonly ICommandTarget target;
 
@@ -68,7 +68,6 @@ namespace Reko.UserInterfaces.AvaloniaUI.ViewModels
         {
             DumpMenu(menu);
 
-
             bool separator = false;
             foreach (var group in menu.Values)
             {
@@ -80,7 +79,12 @@ namespace Reko.UserInterfaces.AvaloniaUI.ViewModels
                 foreach (CommandItem cmi in group.Values)
                 {
                     CommandItem cmiNew = (cmi.CommandID != null)
-                        ? new CommandItem { Text = cmi.Text, CommandID = cmi.CommandID }
+                        ? new CommandItem 
+                          {
+                            Text = cmi.Text,
+                            CommandID = cmi.CommandID,
+                            Command = cmi.Command 
+                          }
                         : cmi;
                     cmiNew.IsDynamic = cmi.IsDynamic;
                     //cmiNew.DropDownOpening += new EventHandler(subMenu_Popup);
@@ -118,8 +122,8 @@ namespace Reko.UserInterfaces.AvaloniaUI.ViewModels
                 //                    m.Add(new CommandMenuItem("-"));
                 foreach (CmdDefinition cmi in group)
                 {
-                    var btnNew = new CommandItem();
-                    btnNew.Text = cmi.text;
+                    var btnNew = new CommandItem { Text = cmi.text };
+                    btnNew.Command = null; //$BUG: command target needed.
                     btnNew.CommandID = new CommandID(cmi.cmdSet, cmi.id);
 #if NYI
                     if (!string.IsNullOrEmpty(cmi.imageKey))

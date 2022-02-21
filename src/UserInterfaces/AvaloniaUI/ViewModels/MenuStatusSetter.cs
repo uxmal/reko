@@ -77,9 +77,13 @@ namespace Reko.UserInterfaces.AvaloniaUI.ViewModels
                             cmdId = new CommandID(cmdId.Guid, cmdId.ID + 1);
                             while (ct.QueryStatus(cmdId, cmdStatus, cmdText))
                             {
-                                var itemNew = new CommandItem { Text = cmdText.Text, CommandID = cmdId };
-                                itemNew.IsTemporary = true;
-                                //itemNew.Command
+                                var itemNew = new CommandItem
+                                {
+                                    Text = cmdText.Text,
+                                    Command = null, //$BUG: need the command target.
+                                    CommandID = cmdId,
+                                    IsTemporary = true
+                                };
                                 //itemNew.DropDownOpening += popupHandler;
                                 //itemNew.Click += clickHandler;
                                 menu.InsertAt(++i, itemNew);

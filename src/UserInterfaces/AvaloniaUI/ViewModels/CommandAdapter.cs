@@ -46,12 +46,7 @@ namespace Reko.UserInterfaces.AvaloniaUI.ViewModels
 
         public bool CanExecute(object? parameter)
         {
-            if (parameter is CommandID cmdid)
-            {
-                return target.QueryStatus(cmdid, status, text) &&
-                    status.Status.HasFlag(MenuStatus.Enabled);
-            }
-            return false;
+            return true;
         }
 
         public void Execute(object? parameter)
