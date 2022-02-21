@@ -66,5 +66,17 @@ namespace Reko.UnitTests.ImageLoaders.WebAssembly
                 "2|L--|sp = sp - 8<i32>",
                 "3|L--|Mem0[sp:real32] = v2");
         }
+
+        [Test]
+        public void WasmRw_i64_store8()
+        {
+            Given_HexString("3C0404");
+            AssertCode("" +
+                "0|L--|@@@@@@",
+                "1|L--|v1 = Mem0[sp:ptr32]",
+                "2|L--|v2 = Mem0[sp + 8:byte]",
+                "3|L--|Mem0[v1 + 4<u32>:byte] = v2",
+                "3|L--|sp = sp + 10<i32>");
+        }
     }
 }

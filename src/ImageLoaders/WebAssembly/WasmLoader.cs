@@ -56,12 +56,7 @@ namespace Reko.ImageLoaders.WebAssembly
             var segmentMap = BuildSegmentMap(sections);
             var arch = new WasmArchitecture(Services, "wasm", new Dictionary<string, object>());
             var platform = new DefaultPlatform(Services, arch);
-            return new Program()
-            {
-                Architecture = arch,
-                Platform = platform,
-                SegmentMap = segmentMap
-            };
+            return new Program(segmentMap, arch, platform);
         }
 
         private List<Section> LoadSections(WasmImageReader rdr)
@@ -132,7 +127,7 @@ namespace Reko.ImageLoaders.WebAssembly
             case WasmSection.Export: return LoadExportSection(rdr2);        // Exports
             case WasmSection.Start: return LoadStartSection(rdr2);          // Start function declaration
             case WasmSection.Element: return LoadElementSection(rdr2);      // Elements section
-            case WasmSection.Code: return LoadCodeSection(rdr2);            // Function bodies (code)
+            case WasmSection.Code: return LoadCodeSection(rdr2, bytes);     // Function bodies (code)
             case WasmSection.Data: return LoadDataSection(rdr2);            // Data segments
             default: throw new NotSupportedException();
             }
@@ -438,7 +433,7 @@ namespace Reko.ImageLoaders.WebAssembly
             };
         }
 
-        private Section? LoadCodeSection(WasmImageReader rdr)
+        private Section? LoadCodeSection(WasmImageReader rdr, byte[] bytes)
         {
             if (!rdr.TryReadVarUInt32(out uint count))
                 return null;
@@ -453,6 +448,7 @@ namespace Reko.ImageLoaders.WebAssembly
             return new CodeSection
             {
                 Functions = funcBodies,
+                Bytes = bytes,
             };
         }
 
@@ -593,19 +589,30 @@ namespace Reko.ImageLoaders.WebAssembly
 
         public SegmentMap BuildSegmentMap(List<Section> sections)
         {
-            var dataSegs = sections.OfType<DataSection>().SingleOrDefault();
-            if (dataSegs == null || dataSegs.Segments.Count == 0)
+            var segments = new List<ImageSegment>();
+            var codeSection = sections.OfType<CodeSection>().SingleOrDefault();
+            if (codeSection is not null)
+            {
+                segments.Add(new ImageSegment(
+                    ".text",
+                    new ByteMemoryArea(Address.Ptr32(0x1000_0000), codeSection.Bytes),
+                    AccessMode.ReadExecute));
+            }
+
+            var dataSection = sections.OfType<DataSection>().SingleOrDefault();
+            if (dataSection is not null)
+            {
+                segments.AddRange(dataSection.Segments.Select(s => new ImageSegment(
+                    $".data{s.MemoryIndex}",
+                    new ByteMemoryArea(Address.Ptr32(s.Offset), s.Bytes),
+                    AccessMode.ReadWrite)));
+            }
+
+            if (segments.Count == 0)
             {
                 return new SegmentMap(Address.Ptr32(0));
             }
-            var baseSeg = dataSegs.Segments.Min(s => s.Offset);
-            return new SegmentMap(
-                Address.Ptr32(baseSeg),
-                dataSegs.Segments.Select(s => new ImageSegment(
-                    $"data{s.MemoryIndex}",
-                    new ByteMemoryArea(Address.Ptr32(s.Offset), s.Bytes),
-                    AccessMode.ReadWrite))
-                    .ToArray());
+            return new SegmentMap(segments.ToArray());
         }
     }
 
@@ -766,6 +773,7 @@ namespace Reko.ImageLoaders.WebAssembly
     public class CodeSection : Section
     {
         public List<FunctionDefinition> Functions;
+        public byte[] Bytes;
 
         public override string ToString()
         {

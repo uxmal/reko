@@ -39,6 +39,11 @@ namespace Reko.UnitTests.ImageLoaders.WebAssembly
             ldr = new WasmLoader(null, ImageLocation.FromUri("file:foo.wasm"), bytes);
         }
 
+        void Create_Loader(string hexBytes)
+        {
+            Create_Loader(BytePattern.FromHexBytes(hexBytes));
+        }
+
         [Test]
         public void WasmLdr_Header()
         {

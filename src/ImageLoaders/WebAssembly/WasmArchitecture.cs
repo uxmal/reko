@@ -38,6 +38,7 @@ namespace Reko.ImageLoaders.WebAssembly
             this.PointerType = PrimitiveType.Ptr32;
             this.FramePointerType = PrimitiveType.Ptr32;
             this.StackRegister = new RegisterStorage("sp", 0, 0, PointerType);
+            this.WordWidth = PrimitiveType.Word32;
             this.InstructionBitSize = 8;
         }
 

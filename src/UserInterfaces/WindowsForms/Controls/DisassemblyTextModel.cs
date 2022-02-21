@@ -99,9 +99,9 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
                     while (count != 0 && dasm.MoveNext())
                     {
                         var instr = dasm.Current;
-                        lines.Add(
-                            RenderAsmLine(
-                                instr.Address - addrStart, program, arch, instr, options));
+                        var asmLine = RenderAsmLine(
+                                instr.Address - addrStart, program, arch, instr, options);
+                        lines.Add(asmLine);
                         --count;
                         offset += instr.Length;
                     }

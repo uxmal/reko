@@ -18,31 +18,26 @@
  */
 #endregion
 
-using NUnit.Framework;
-using Reko.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Reko.Core.Machine;
+using Reko.Core.Types;
 
 namespace Reko.ImageLoaders.WebAssembly
 {
-    [TestFixture]
-    public class WasmEvaluatorTests
+    public class MemoryOperand : AbstractMachineOperand
     {
-        private WasmEvaluator eval;
-
-        private void Create_Eval(string hexBytes)
+        public MemoryOperand(PrimitiveType width, uint alignment, uint offset)
+            : base(width)
         {
-            this.eval = new WasmEvaluator(new WasmImageReader(BytePattern.FromHexBytes(hexBytes)));
+            this.Alignment = alignment;
+            this.Offset = offset;
         }
-        
-        [Test]
-        public void WasmEval_const()
+
+        public uint Alignment { get; }
+        public uint Offset { get; }
+
+        protected override void DoRender(MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
         {
-            Create_Eval("41120B");
-            Assert.AreEqual(0x12u, eval.Run());
+            renderer.WriteFormat("0x{0:X},0x{1:X}", Alignment, Offset);
         }
     }
 }

@@ -209,6 +209,8 @@ namespace Reko.ImageLoaders.WebAssembly
             { Mnemonic.i64_reinterpret_f64, "i64.reinterpret/f64" },
             { Mnemonic.f32_reinterpret_i32, "f32.reinterpret/i32" },
             { Mnemonic.f64_reinterpret_i64, "f64.reinterpret/i64" },
+
+            { Mnemonic.i32_extend8_s, "i32.extends_s" },
         };
 
         public WasmInstruction(Mnemonic mnemonic)
@@ -219,6 +221,12 @@ namespace Reko.ImageLoaders.WebAssembly
         public Mnemonic Mnemonic { get; set; }
         public override int MnemonicAsInteger => (int) Mnemonic;
 
-        public override string MnemonicAsString => Mnemonic.ToString();
+        public override string MnemonicAsString => mpoptostring[this.Mnemonic];
+
+        protected override void DoRender(MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
+        {
+            renderer.WriteMnemonic(MnemonicAsString);
+            base.RenderOperands(renderer, options);
+        }
     }
 }

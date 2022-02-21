@@ -20,29 +20,38 @@
 
 using NUnit.Framework;
 using Reko.Core;
-using System;
+using Reko.ImageLoaders.WebAssembly;
+using Reko.UnitTests.Arch;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace Reko.ImageLoaders.WebAssembly
+namespace Reko.UnitTests.ImageLoaders.WebAssembly
 {
     [TestFixture]
-    public class WasmEvaluatorTests
+    public class WasmDisassemblerTests : DisassemblerTestBase<WasmInstruction>
     {
-        private WasmEvaluator eval;
+        private readonly WasmArchitecture arch;
+        private readonly Address addr;
 
-        private void Create_Eval(string hexBytes)
+        public WasmDisassemblerTests()
         {
-            this.eval = new WasmEvaluator(new WasmImageReader(BytePattern.FromHexBytes(hexBytes)));
+            this.arch = new WasmArchitecture(CreateServiceContainer(), "wasm", new Dictionary<string, object>());
+            this.addr = Address.Ptr32(0x0010_0000);
         }
-        
-        [Test]
-        public void WasmEval_const()
+
+        public override IProcessorArchitecture Architecture => arch;
+
+        public override Address LoadAddress => addr;
+
+        private void AssertCode(string sExpected, string hexBytes)
         {
-            Create_Eval("41120B");
-            Assert.AreEqual(0x12u, eval.Run());
+            var instr = base.DisassembleHexBytes(hexBytes);
+            Assert.AreEqual(sExpected, instr.ToString());
+        }
+
+        [Test]
+        public void WasmDis_3C0404()
+        {
+            AssertCode("@@@", "3C0404");
         }
     }
 }
