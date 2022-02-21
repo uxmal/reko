@@ -552,6 +552,12 @@ namespace Reko.Core.Expressions
                 }
                 intrinsic = intrinsic.MakeInstance(types);
             }
+            var sig = intrinsic.Signature;
+            if (sig is not null && sig.Parameters!.Length != args.Length)
+                throw new InvalidOperationException(
+                    $"Parameter count must match. " +
+                    $"Expected: {sig.Parameters.Length}. " +
+                    $"But was: {args.Length}.");
             return new Application(new ProcedureConstant(PrimitiveType.Ptr32, intrinsic), intrinsic.ReturnType, args);
         }
 
