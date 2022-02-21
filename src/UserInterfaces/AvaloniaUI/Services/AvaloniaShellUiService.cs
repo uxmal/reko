@@ -59,10 +59,6 @@ namespace Reko.UserInterfaces.AvaloniaUI.Services
             throw new NotImplementedException();
         }
 
-        public bool Execute(CommandID cmdId)
-        {
-            throw new NotImplementedException();
-        }
 
         public IWindowFrame FindDocumentWindow(string documentType, object docItem)
         {
@@ -81,11 +77,18 @@ namespace Reko.UserInterfaces.AvaloniaUI.Services
 
         public bool QueryStatus(CommandID cmdId, CommandStatus status, CommandText text)
         {
-            //$TODO
+            //$TODO: dispatch the command to the currently active dock window.
             //ICommandTarget ct = ActiveCommandTarget();
             //if (ct == null)
                 return false;
             //return ct.QueryStatus(cmdId, status, text);
+        }
+
+
+        public bool Execute(CommandID cmdId)
+        {
+            //$TODO: dispatch the command to the currently active dock window
+            return false;
         }
 
         public void SetContextMenu(object control, int menuID)
