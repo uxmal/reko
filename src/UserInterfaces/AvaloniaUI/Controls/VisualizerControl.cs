@@ -20,25 +20,27 @@
 
 using Avalonia;
 using Avalonia.Controls;
-using Avalonia.Controls.ApplicationLifetimes;
-using System;
-using Reko.UserInterfaces.AvaloniaUI;
+using Avalonia.Media;
 
-namespace Reko.AvaloniaShell
+namespace Reko.UserInterfaces.AvaloniaUI.Views
 {
-    class Program
+    public class VisualizerControl : Control
     {
-        // Initialization code. Don't use any Avalonia, third-party APIs or any
-        // SynchronizationContext-reliant code before AppMain is called: things aren't initialized
-        // yet and stuff might break.
-        [STAThread]
-        public static void Main(string[] args) => BuildAvaloniaApp()
-            .StartWithClassicDesktopLifetime(args);
+        public static readonly DirectProperty<VisualizerControl, object?> VisualizerProperty =
+            AvaloniaProperty.RegisterDirect<VisualizerControl, object?>(
+                nameof(Visualizer),
+                v => v.Visualizer,
+                (v, vv) => v.Visualizer = vv);
 
-        // Avalonia configuration, don't remove; also used by visual designer.
-        public static AppBuilder BuildAvaloniaApp()
-            => AppBuilder.Configure<App>()
-                .UsePlatformDetect()
-                .LogToTrace();
+        public object? Visualizer
+        {   get => visualizer;
+            set => this.visualizer = value; }
+        private object? visualizer;
+
+        public override void Render(DrawingContext context)
+        {
+            context.FillRectangle(Brushes.Red, new Rect(0, 0, 100, 100));
+            base.Render(context);
+        }
     }
 }

@@ -57,6 +57,15 @@ namespace Reko.Core.Diagnostics
         }
 
         [Conditional("DEBUG")]
+        public static void Verbose(this TraceSwitch trace, string message)
+        {
+            if (trace != null && trace.TraceVerbose)
+            {
+                Debug.WriteLine(message);
+            }
+        }
+
+        [Conditional("DEBUG")]
         public static void Verbose(this TraceSwitch trace, string message, params object[]args)
         {
             if (trace != null && trace.TraceVerbose)

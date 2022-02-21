@@ -40,12 +40,9 @@ namespace Reko.UserInterfaces.AvaloniaUI.ViewModels
     /// </remarks>
     public abstract class MenuSystem
     {
-        private static TraceSwitch trace = new TraceSwitch(nameof(MenuSystem), "Trace the MenuSystem class")
-        {
-            Level = TraceLevel.Verbose
-        };
+        private static TraceSwitch trace = new TraceSwitch(nameof(MenuSystem), "Trace the MenuSystem class");
 
-        private ICommandTarget target;
+        private readonly ICommandTarget target;
 
         public MenuSystem(ICommandTarget target)
         {
@@ -205,10 +202,9 @@ namespace Reko.UserInterfaces.AvaloniaUI.ViewModels
             {
                 if (ct != null)
                 {
-                    if (KeyBindings.TryGetValue(ct.GetType().FullName, out bindings))
+                    if (KeyBindings.TryGetValue(ct.GetType().FullName!, out bindings))
                     {
-                        CommandID cmdID;
-                        if (bindings.TryGetValue((key, modifiers), out cmdID))
+                        if (bindings.TryGetValue((key, modifiers), out CommandID cmdID))
                         {
                             return ct.Execute(cmdID);
                         }
@@ -219,8 +215,8 @@ namespace Reko.UserInterfaces.AvaloniaUI.ViewModels
 
             if (KeyBindings.TryGetValue("", out bindings))
             {
-                CommandID cmdID;
-                if (bindings.TryGetValue((key, modifiers), out cmdID))
+                ;
+                if (bindings.TryGetValue((key, modifiers), out CommandID cmdID))
                 {
                     if (this.target.Execute(cmdID))
                     {

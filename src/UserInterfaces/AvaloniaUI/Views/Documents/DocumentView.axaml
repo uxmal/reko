@@ -1,0 +1,41 @@
+﻿<UserControl x:Class="Reko.UserInterfaces.AvaloniaUI.Views.Documents.DocumentView"
+             xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:md="clr-namespace:Markdown.Avalonia;assembly=Markdown.Avalonia"
+             xmlns:ctxt="clr-namespace:ColorTextBlock.Avalonia;assembly=ColorTextBlock.Avalonia"
+             xmlns:vm="using:Reko.UserInterfaces.AvaloniaUI.ViewModels.Documents"
+             mc:Ignorable="d"
+             d:DesignWidth="300" d:DesignHeight="400"
+             x:DataType="vm:DocumentViewModel" x:CompileBindings="True">
+  <Grid Focusable="True">
+    <StackPanel VerticalAlignment="Top" HorizontalAlignment="Left">
+      <TextBlock Text="{Binding Id}" Padding="2" />
+      <TextBlock Text="{Binding Title}" Padding="2" />
+      <TextBlock Text="{Binding Context}" Padding="2" />
+
+      <ScrollViewer Width="200">
+        <ItemsRepeater Items="{Binding Procedures}">
+          <ItemsRepeater.ItemTemplate>
+            <DataTemplate>
+              <Border Classes="procViewBorder">
+                <StackPanel>
+                  <TextBlock Text="{Binding Name}"></TextBlock>
+                  <TextBlock Classes="procBody" Text="{Binding Body}"></TextBlock>
+                  <Panel Name="nils">
+                    <md:MarkdownScrollViewer Name="bob" Markdown="{Binding Markdown}">
+                      <md:MarkdownScrollViewer.Styles>
+                      </md:MarkdownScrollViewer.Styles>
+                    </md:MarkdownScrollViewer>
+                  </Panel>
+                </StackPanel>
+              </Border>
+            </DataTemplate>
+          </ItemsRepeater.ItemTemplate>
+        </ItemsRepeater>
+      </ScrollViewer>
+
+    </StackPanel>
+  </Grid>
+</UserControl>

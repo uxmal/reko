@@ -1,30 +1,47 @@
-<Window xmlns="https://github.com/avaloniaui"
+﻿<Window x:Class="Reko.UserInterfaces.AvaloniaUI.Views.MainWindow"
+        xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-		xmlns:vm="using:Reko.UserInterfaces.AvaloniaUI.ViewModels"
-		xmlns:v="using:Reko.UserInterfaces.AvaloniaUI.Views"
-        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-        x:Class="Reko.UserInterfaces.AvaloniaUI.Views.MainWindow"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:id="using:Dock.Avalonia"
+        xmlns:vm="using:Reko.UserInterfaces.AvaloniaUI.ViewModels"
+        xmlns:v="using:Reko.UserInterfaces.AvaloniaUI.Views"
+        mc:Ignorable="d"
+        d:DesignWidth="1200" d:DesignHeight="680"
+        x:Name="MainWindow"
+        UseLayoutRounding="True" RenderOptions.BitmapInterpolationMode="HighQuality"
+        Background="{x:Null}"
+        TransparencyLevelHint="AcrylicBlur"
+        Foreground="{DynamicResource DockThemeForegroundBrush}"
+        BorderThickness="1" BorderBrush="{DynamicResource DockThemeBorderLowBrush}"
+        FontFamily="Segoe UI, SF Pro Display, Noto Sans, Cantarel"
 		x:CompileBindings="true"
 		x:DataType="vm:MainViewModel"
         Title="{Binding WindowTitle}"
-		Icon="/Assets/App.ico">
-	<DockPanel VerticalAlignment="Top">
-		<Menu Items="{Binding MainMenu}" DockPanel.Dock="Top">
-			<Menu.Styles>
-				<Style Selector="MenuItem" x:DataType="vm:CommandItem">
-					<Setter Property="Header" Value="{Binding Text}" />
-					<Setter Property="Items" Value="{Binding Items}"/>
-					<Setter Property="Command" Value="{Binding Command}" />
-					<Setter Property="CommandParameter" Value="{Binding CommandID}" />
-					<Setter Property="IsVisible" Value="{Binding IsVisible}" />
-					<Setter Property="IsEnabled" Value="{Binding IsEnabled}" />
-				</Style>
-			</Menu.Styles>
-		</Menu>
-		<TextBlock>
-			Welcome to the Reko decompiler!
-		</TextBlock>
-	</DockPanel>
-</Window>
+		Icon="/Assets/App.ico"
+        ExtendClientAreaToDecorationsHint="True"
+        ExtendClientAreaChromeHints="PreferSystemChrome"
+        id:DockProperties.IsDragEnabled="True"
+        id:DockProperties.IsDropEnabled="True">
+<!--         WindowState="Normal" WindowStartupLocation="CenterScreen" -->
+  <Design.DataContext>
+    <vm:MainViewModel />
+  </Design.DataContext>
+  <Panel>
+    <ExperimentalAcrylicBorder IsHitTestVisible="False">
+      <ExperimentalAcrylicBorder.Material>
+        <ExperimentalAcrylicMaterial BackgroundSource="Digger"
+                                     TintColor="{DynamicResource SystemAltHighColor}"
+                                     TintOpacity="1"
+                                     FallbackColor="{DynamicResource AcrylicFallbackColor}"
+                                     MaterialOpacity="0.55" />
+      </ExperimentalAcrylicBorder.Material>
+    </ExperimentalAcrylicBorder>
+    <Panel Margin="{Binding #MainWindow.OffScreenMargin}">
+      <Panel Margin="{Binding #MainWindow.WindowDecorationMargin}">
+        <v:MainView />
+      </Panel>
+    </Panel>
+	
+  </Panel>
+  </Window>

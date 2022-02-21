@@ -1,4 +1,4 @@
-#region License
+﻿#region License
 /* 
  * Copyright (C) 1999-2022 John Källén.
  *
@@ -22,10 +22,7 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
 using Reko.Gui.Forms;
-using Reko.Gui.Services;
-using Reko.UserInterfaces.AvaloniaUI.Services;
 using System;
-using System.ComponentModel.Design;
 
 namespace Reko.UserInterfaces.AvaloniaUI.Views
 {
@@ -48,7 +45,7 @@ namespace Reko.UserInterfaces.AvaloniaUI.Views
         {
             get { return new System.Drawing.Size((int) this.Bounds.Width, (int) this.Bounds.Height); }
             set { this.Height = value.Height; this.Width = value.Width; }
-        }
+    }
 
         FormWindowState IMainForm.WindowState {
             get => this.WindowState switch

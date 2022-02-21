@@ -1,0 +1,31 @@
+﻿<UserControl x:Class="Reko.UserInterfaces.AvaloniaUI.Views.Tools.ProcedureListView"
+             xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:vm="using:Reko.UserInterfaces.AvaloniaUI.ViewModels.Tools"
+             mc:Ignorable="d"
+             d:DesignWidth="300" d:DesignHeight="400"
+             x:DataType="vm:ProcedureListViewModel">
+  <!--x:CompileBindings="True">-->
+  <Panel Focusable="True" HorizontalAlignment="Stretch">
+    <Panel.Styles>
+      <StyleInclude Source="avares://Avalonia.Themes.Default/DefaultTheme.xaml"/>
+      <StyleInclude Source="avares://Avalonia.Themes.Default/Accents/BaseLight.xaml"/>
+      <StyleInclude Source="avares://Avalonia.Controls.DataGrid/Themes/Default.xaml"/>
+    </Panel.Styles>
+    <DockPanel VerticalAlignment="Top"
+               HorizontalAlignment="Left"
+               Margin="12"
+               LastChildFill="True">
+      <TextBox Text="{Binding SearchCriterion}" DockPanel.Dock="Top"></TextBox>
+      <TextBlock Text="{Binding Procedures.Count}" DockPanel.Dock="Top"/>
+      <DataGrid Name="slob" Items="{Binding Procedures}"  DockPanel.Dock="Top" AutoGenerateColumns="false">
+        <DataGrid.Columns>
+          <DataGridTextColumn Header="Name" Binding="{Binding Name}" />
+          <DataGridTextColumn Header="Address" />
+        </DataGrid.Columns>
+      </DataGrid>
+    </DockPanel>
+  </Panel>
+</UserControl>

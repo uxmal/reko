@@ -1,0 +1,21 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:rc="using:Reko.UserInterfaces.AvaloniaUI.Controls"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="Reko.UserInterfaces.AvaloniaUI.Views.Documents.MemoryView">
+	<StackPanel>
+		<StackPanel Orientation="Horizontal"
+					VerticalAlignment="Center">
+			<TextBlock>Address:</TextBlock>
+			<TextBox></TextBox>
+		</StackPanel>
+		<ScrollViewer>
+			<rc:HexViewer2 Background="#EEFFEE"
+						  MemoryArea="{Binding MemoryArea}"
+						  FontFamily="Lucida Console">
+			</rc:HexViewer2>
+		</ScrollViewer>
+	</StackPanel>
+</UserControl>

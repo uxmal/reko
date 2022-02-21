@@ -18,18 +18,35 @@
  */
 #endregion
 
-using Reko.Gui.Services;
 using System;
+using System.Collections.Generic;
+using System.Text;
+using Dock.Model.ReactiveUI.Controls;
+using ReactiveUI;
+using Reko.Gui;
 
-namespace Reko.UserInterfaces.AvaloniaUI.Services
+namespace Reko.UserInterfaces.AvaloniaUI.ViewModels.Tools
 {
-    public class AvaloniaUserEventService : IUserEventService
+    public class VisualizerViewModel : Tool
     {
-        public event EventHandler<string>? UserEvent;
 
-        public void RaiseEvent(object sender, string eventType)
+        public List<ListOption> Visualizers { get; } = new List<ListOption>()
         {
-            UserEvent?.Invoke(sender, eventType);
+            new ListOption("V1", "vis-1"),
+            new ListOption("V2", "vis-2"),
+            new ListOption("V3", "vis-3"),
+        };
+
+        public VisualizerViewModel()
+        {
+            this.selectedVisualizer = Visualizers[0];
         }
+
+
+        public ListOption SelectedVisualizer {
+            get => selectedVisualizer;
+            set { this.RaiseAndSetIfChanged(ref selectedVisualizer, value, nameof(SelectedVisualizer)); }
+        }
+        private ListOption selectedVisualizer;
     }
 }

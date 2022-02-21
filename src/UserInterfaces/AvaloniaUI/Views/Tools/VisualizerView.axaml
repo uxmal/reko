@@ -1,0 +1,25 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             xmlns:v="using:Reko.UserInterfaces.AvaloniaUI.Views"
+             x:Class="Reko.UserInterfaces.AvaloniaUI.Views.Tools.VisualizerView">
+  <Border BorderBrush="Black">
+    <StackPanel>
+      <TextBlock Text="{Binding SelectedVisualizer}" />
+      <v:VisualizerControl
+          Visualizer="{Binding SelectedVisualizer.Value}">
+      </v:VisualizerControl>
+      <ComboBox
+        Items="{Binding Visualizers}"
+        SelectedItem="{Binding SelectedVisualizer}">
+        <ComboBox.ItemTemplate>
+          <DataTemplate>
+            <TextBlock Text="{Binding Text}" Tag="{Binding Value}" />
+          </DataTemplate>
+        </ComboBox.ItemTemplate>
+      </ComboBox>
+    </StackPanel>
+  </Border>
+</UserControl>

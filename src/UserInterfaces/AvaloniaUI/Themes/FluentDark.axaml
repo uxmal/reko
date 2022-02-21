@@ -1,0 +1,20 @@
+﻿<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:idc="using:Dock.Avalonia.Controls">
+  <Styles.Resources>
+    <SolidColorBrush x:Key="TextControlBackground">#2F2F2F</SolidColorBrush>
+    <SolidColorBrush x:Key="TextControlBackgroundFocused">#2F2F2F</SolidColorBrush>
+    <SolidColorBrush x:Key="TextControlBackgroundPointerOver">#2F2F2F</SolidColorBrush>
+    <SolidColorBrush x:Key="TextControlForeground">#FFFFFF</SolidColorBrush>
+    <SolidColorBrush x:Key="TextForegroundColor">#FFFFFF</SolidColorBrush>
+    <SolidColorBrush x:Key="TextControlBorderBrush">#434343</SolidColorBrush>
+    <SolidColorBrush x:Key="TextControlBorderBrushPointerOver">#434343</SolidColorBrush>
+    <Color x:Key="RegionColor">#FF212121</Color>
+    <Color x:Key="AcrylicFallbackColor">#1F1F1F</Color>
+  </Styles.Resources>
+  <FluentTheme Mode="Dark" />
+  <StyleInclude Source="avares://Dock.Avalonia/Themes/DockFluentTheme.axaml" />
+  <Style Selector="idc|ToolChromeControl">
+    <Setter Property="Background" Value="Transparent" />
+  </Style>
+</Styles>

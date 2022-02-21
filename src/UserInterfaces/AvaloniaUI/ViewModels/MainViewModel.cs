@@ -18,25 +18,46 @@
  */
 #endregion
 
+using Dock.Model.Controls;
+using Dock.Model.Core;
+using ReactiveUI;
 using Reko.Core;
 using Reko.Gui;
 using Reko.Gui.Forms;
 using Reko.UserInterfaces.AvaloniaUI.Services;
-using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel.Design;
+using System.Diagnostics;
+using Reko.Core.Diagnostics;
 
 namespace Reko.UserInterfaces.AvaloniaUI.ViewModels
 {
-    public class MainViewModel
+    public class MainViewModel : ReactiveObject
     {
+        private static readonly TraceSwitch trace = new TraceSwitch(nameof(MainViewModel), "Trace events in the MainViewModel");
+
         private DecompilerMenus menus;
         private MainFormInteractor interactor;
+        private readonly IFactory? dockFactory;
 
         public MainViewModel(IServiceContainer services, IMainForm mainForm)
         {
+            trace.Inform("MainViewModel constructor");
             var svcFactory = new AvaloniaServiceFactory(services, this);
             services.AddService<IServiceFactory>(svcFactory);
+
+            dockFactory = new DockFactory(new Project());
+            DebugFactoryEvents(dockFactory);
+
+            Layout = dockFactory.CreateLayout();
+            if (Layout is not null)
+            {
+                dockFactory.InitLayout(Layout);
+                if (Layout is { } root)
+                {
+                    root.Navigate.Execute("Home");
+                }
+            }
 
             var cmdDefs = new CommandDefinitions();
             this.interactor = new MainFormInteractor(services);
@@ -44,11 +65,152 @@ namespace Reko.UserInterfaces.AvaloniaUI.ViewModels
             this.menus = new DecompilerMenus(cmdDefs, this.interactor);
         }
 
+        /// <summary>
+        /// The current dockable window layout.
+        /// </summary>
+        public IRootDock? Layout
+        {
+            get => layout;
+            set => this.RaiseAndSetIfChanged(ref layout, value, nameof(Layout));
+        }
+        private IRootDock? layout;
+
         public ObservableCollection<CommandItem> MainMenu => this.menus.GetMenu(MenuIds.MainMenu);
 
         public AvaloniaStatusBarService? Status { get; set; }
         
-        public string WindowTitle => "Reko decompiler";
+        public string? WindowTitle {
+            get { return windowTitle; }
+            set { windowTitle = value; this.RaiseAndSetIfChanged(ref windowTitle, value); }
+        }
+        private string? windowTitle;
+
+        [Conditional("DEBUG")]
+        private void DebugFactoryEvents(IFactory factory)
+        {
+            factory.ActiveDockableChanged += (_, args) =>
+            {
+                trace.Verbose($"[ActiveDockableChanged] Title='{args.Dockable?.Title}'");
+            };
+
+            factory.FocusedDockableChanged += (_, args) =>
+            {
+                trace.Verbose($"[FocusedDockableChanged] Title='{args.Dockable?.Title}'");
+            };
+
+            factory.DockableAdded += (_, args) =>
+            {
+                trace.Verbose($"[DockableAdded] Title='{args.Dockable?.Title}'");
+            };
+
+            factory.DockableRemoved += (_, args) =>
+            {
+                trace.Verbose($"[DockableRemoved] Title='{args.Dockable?.Title}'");
+            };
+
+            factory.DockableClosed += (_, args) =>
+            {
+                trace.Verbose($"[DockableClosed] Title='{args.Dockable?.Title}'");
+            };
+
+            factory.DockableMoved += (_, args) =>
+            {
+                trace.Verbose($"[DockableMoved] Title='{args.Dockable?.Title}'");
+            };
+
+            factory.DockableSwapped += (_, args) =>
+            {
+                trace.Verbose($"[DockableSwapped] Title='{args.Dockable?.Title}'");
+            };
+
+            factory.DockablePinned += (_, args) =>
+            {
+                trace.Verbose($"[DockablePinned] Title='{args.Dockable?.Title}'");
+            };
+
+            factory.DockableUnpinned += (_, args) =>
+            {
+                trace.Verbose($"[DockableUnpinned] Title='{args.Dockable?.Title}'");
+            };
+
+            factory.WindowOpened += (_, args) =>
+            {
+                trace.Verbose($"[WindowOpened] Title='{args.Window?.Title}'");
+            };
+
+            factory.WindowClosed += (_, args) =>
+            {
+                trace.Verbose($"[WindowClosed] Title='{args.Window?.Title}'");
+            };
+
+            factory.WindowClosing += (_, args) =>
+            {
+                // NOTE: Set to True to cancel window closing.
+#if false
+                args.Cancel = true;
+#endif
+                trace.Verbose($"[WindowClosing] Title='{args.Window?.Title}', Cancel={args.Cancel}");
+            };
+
+            factory.WindowAdded += (_, args) =>
+            {
+                trace.Verbose($"[WindowAdded] Title='{args.Window?.Title}'");
+            };
+
+            factory.WindowRemoved += (_, args) =>
+            {
+                trace.Verbose($"[WindowRemoved] Title='{args.Window?.Title}'");
+            };
+
+            factory.WindowMoveDragBegin += (_, args) =>
+            {
+                // NOTE: Set to True to cancel window dragging.
+#if false
+                args.Cancel = true;
+#endif
+                trace.Verbose($"[WindowMoveDragBegin] Title='{args.Window?.Title}', Cancel={args.Cancel}, X='{args.Window?.X}', Y='{args.Window?.Y}'");
+            };
+
+            factory.WindowMoveDrag += (_, args) =>
+            {
+                trace.Verbose($"[WindowMoveDrag] Title='{args.Window?.Title}', X='{args.Window?.X}', Y='{args.Window?.Y}");
+            };
+
+            factory.WindowMoveDragEnd += (_, args) =>
+            {
+                trace.Verbose($"[WindowMoveDragEnd] Title='{args.Window?.Title}', X='{args.Window?.X}', Y='{args.Window?.Y}");
+            };
+        }
+
+
+        public void CloseLayout()
+        {
+            if (Layout is IDock dock)
+            {
+                if (dock.Close.CanExecute(null))
+                {
+                    dock.Close.Execute(null);
+                }
+            }
+        }
+
+        public void ResetLayout()
+        {
+            if (Layout is not null)
+            {
+                if (Layout.Close.CanExecute(null))
+                {
+                    Layout.Close.Execute(null);
+                }
+            }
+
+            var layout = dockFactory?.CreateLayout();
+            if (layout is not null)
+            {
+                Layout = layout;
+                dockFactory?.InitLayout(layout);
+            }
+        }
 
     }
 }

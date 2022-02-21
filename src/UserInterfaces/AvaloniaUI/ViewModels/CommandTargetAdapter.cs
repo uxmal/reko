@@ -18,46 +18,39 @@
  */
 #endregion
 
-using ReactiveUI;
-using Reko.Gui.Services;
-using Reko.UserInterfaces.AvaloniaUI.ViewModels;
+using Reko.Gui;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
+using System.ComponentModel.Design;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Input;
 
-namespace Reko.UserInterfaces.AvaloniaUI.Services
+namespace Reko.UserInterfaces.AvaloniaUI.ViewModels
 {
-    /// <summary>
-    /// The status bar service has two "faces": one, its implementation of the
-    /// <see cref="IStatusBarService"/>, used by the GUI-agnostic parts to show
-    /// status messages etc. The other are the properties it exposes as a ViewModel.
-    /// </summary>
-    public class AvaloniaStatusBarService : ReactiveObject, IStatusBarService, INotifyPropertyChanged
+    public class CommandTargetAdapter : ICommand
     {
-        private MainViewModel mvvm;
+        public event EventHandler? CanExecuteChanged;
 
-        public AvaloniaStatusBarService(MainViewModel mvvm)
+        private ICommandTarget target;
+
+        public CommandTargetAdapter(ICommandTarget target)
         {
-            this.mvvm = mvvm;
-            mvvm.Status = this;
+            this.target = target;
         }
 
-
-        public string? Text
+        public bool CanExecute(object? parameter)
         {
-            get { return text; }
-            set { this.text = value; this.RaiseAndSetIfChanged(ref text, value, nameof(Text)); }
-        }
-        private string? text;
-
-        public void SetText(string text)
-        {
-            this.Text = text;
+            return true;
         }
 
-
+        public void Execute(object? parameter)
+        {
+            if (parameter is CommandID cmdid)
+            {
+                target.Execute(cmdid);
+            }
+        }
     }
 }

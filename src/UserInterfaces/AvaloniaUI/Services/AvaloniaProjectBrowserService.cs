@@ -26,8 +26,10 @@ using System.ComponentModel.Design;
 
 namespace Reko.UserInterfaces.AvaloniaUI.Services
 {
-    internal class AvaloniaProjectBrowserService : IProjectBrowserService
+    public class AvaloniaProjectBrowserService : IProjectBrowserService
     {
+        public event EventHandler<FileDropEventArgs>? FileDropped;
+
         private IServiceProvider services;
 
         public AvaloniaProjectBrowserService(IServiceProvider services)
@@ -46,8 +48,6 @@ namespace Reko.UserInterfaces.AvaloniaUI.Services
         }
 
         public object SelectedObject { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-
-        public event EventHandler<FileDropEventArgs>? FileDropped;
 
         public void Clear()
         {
