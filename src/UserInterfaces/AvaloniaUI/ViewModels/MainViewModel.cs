@@ -29,6 +29,7 @@ using System.Collections.ObjectModel;
 using System.ComponentModel.Design;
 using System.Diagnostics;
 using Reko.Core.Diagnostics;
+using Reko.Gui.Services;
 
 namespace Reko.UserInterfaces.AvaloniaUI.ViewModels
 {
@@ -38,16 +39,19 @@ namespace Reko.UserInterfaces.AvaloniaUI.ViewModels
 
         private DecompilerMenus menus;
         private MainFormInteractor interactor;
-        private readonly IFactory? dockFactory;
+        private readonly DockFactory dockFactory;
 
         public MainViewModel(IServiceContainer services, IMainForm mainForm)
         {
             trace.Inform("MainViewModel constructor");
-            var svcFactory = new AvaloniaServiceFactory(services, this);
-            services.AddService<IServiceFactory>(svcFactory);
 
             dockFactory = new DockFactory(new Project());
             DebugFactoryEvents(dockFactory);
+            services.AddService<IDecompilerShellUiService>(new AvaloniaShellUiService(services, dockFactory));
+
+            var svcFactory = new AvaloniaServiceFactory(services, this);
+            services.AddService<IServiceFactory>(svcFactory);
+
 
             Layout = dockFactory.CreateLayout();
             if (Layout is not null)

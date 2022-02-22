@@ -18,14 +18,16 @@
  */
 #endregion
 
+using Reko.Core;
 using Reko.Gui.Services;
+using Reko.UserInterfaces.AvaloniaUI.ViewModels.Documents;
 using System;
 
 namespace Reko.UserInterfaces.AvaloniaUI.Services
 {
-    internal class AvaloniaHexDisassemblerService : IHexDisassemblerService
+    public class AvaloniaHexDisassemblerService : IHexDisassemblerService
     {
-        private IServiceProvider services;
+        private readonly IServiceProvider services;
 
         public AvaloniaHexDisassemblerService(IServiceProvider services)
         {
@@ -34,7 +36,14 @@ namespace Reko.UserInterfaces.AvaloniaUI.Services
 
         public void Show()
         {
-            throw new NotImplementedException();
+            var uiSvc = services.RequireService<IDecompilerShellUiService>();
+            var window = uiSvc.FindDocumentWindow("hexDisassembler", this);
+            if (window is null)
+            {
+                var pane = new HexDisassemblerViewModel(services);
+                window = uiSvc.CreateDocumentWindow("hexDisassembler", this, "Hex disassembler", pane);
+            }
+            window.Show();
         }
     }
 }

@@ -18,11 +18,23 @@
  */
 #endregion
 
-using Dock.Model.ReactiveUI.Controls;
+using Avalonia;
+using Avalonia.Controls;
+using Avalonia.Markup.Xaml;
+using System;
 
-namespace Reko.UserInterfaces.AvaloniaUI.ViewModels.Tools
+namespace Reko.UserInterfaces.AvaloniaUI.Views.Documents
 {
-    public class FindResultsViewModel : Tool
+    public partial class HexDisassemblerView : UserControl
     {
+        public HexDisassemblerView()
+        {
+            InitializeComponent();
+        }
+
+        private void InitializeComponent()
+        {
+            AvaloniaXamlLoader.Load(this);
+        }
     }
 }

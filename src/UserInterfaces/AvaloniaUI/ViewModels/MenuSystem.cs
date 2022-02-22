@@ -95,7 +95,7 @@ namespace Reko.UserInterfaces.AvaloniaUI.ViewModels
         }
 
         [Conditional("DEBUG")]
-        private void DumpMenu(SortedList<int, SortedList<int, CommandItem>> menu)
+        private static void DumpMenu(SortedList<int, SortedList<int, CommandItem>> menu)
         {
             if (!trace.TraceVerbose)
                 return;
@@ -148,7 +148,7 @@ namespace Reko.UserInterfaces.AvaloniaUI.ViewModels
 
         public abstract ObservableCollection<CommandItem> GetToolStrip(int menuId);
 
-        public void SetItemVisibility(CommandItem item, CommandStatus cmdStatus)
+        public static void SetItemVisibility(CommandItem item, CommandStatus cmdStatus)
         {
             item.IsVisible = (cmdStatus.Status & MenuStatus.Visible) != 0;
             item.IsEnabled = (cmdStatus.Status & MenuStatus.Enabled) != 0;

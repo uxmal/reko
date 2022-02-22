@@ -26,16 +26,16 @@ namespace Reko.UserInterfaces.AvaloniaUI
 
         public override void OnFrameworkInitializationCompleted()
         {
-                var sc = new ServiceContainer();
-                var mainWindow = new MainWindow();
-                MakeServices(sc, mainWindow);
-                var mvvm = new MainViewModel(sc, mainWindow);
-                mainWindow.DataContext = mvvm;
+            var sc = new ServiceContainer();
+            var mainWindow = new MainWindow();
+            MakeServices(sc, mainWindow);
+            var mvvm = new MainViewModel(sc, mainWindow);
+            mainWindow.DataContext = mvvm;
             switch (ApplicationLifetime)
             {
-                case IClassicDesktopStyleApplicationLifetime desktop:
+            case IClassicDesktopStyleApplicationLifetime desktop:
                 {
-                desktop.MainWindow = mainWindow;
+                    desktop.MainWindow = mainWindow;
                     mainWindow.Closing += (_, _) =>
                     {
                         mvvm.CloseLayout();
@@ -47,10 +47,10 @@ namespace Reko.UserInterfaces.AvaloniaUI
                     {
                         mvvm.CloseLayout();
                     };
-                    
+
                     break;
                 }
-                case ISingleViewApplicationLifetime singleView:
+            case ISingleViewApplicationLifetime singleView:
                 {
                     var mainView = new MainView()
                     {
@@ -62,13 +62,11 @@ namespace Reko.UserInterfaces.AvaloniaUI
                     break;
                 }
             }
-
             base.OnFrameworkInitializationCompleted();
         }
 
         private static void MakeServices(IServiceContainer services, MainWindow mainForm)
         {
-            services.AddService<IDecompilerShellUiService>(new AvaloniaShellUiService(services, mainForm));
             services.AddService<IDialogFactory>(new AvaloniaDialogFactory(services));
             services.AddService<ISettingsService>(new AvaloniaSettingsService(services));
             services.AddService<IFileSystemService>(new FileSystemServiceImpl());

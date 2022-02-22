@@ -18,27 +18,28 @@
  */
 #endregion
 
+using Dock.Model.Core;
 using Reko.Gui;
 using Reko.Gui.Services;
+using Reko.UserInterfaces.AvaloniaUI.ViewModels;
+using Reko.UserInterfaces.AvaloniaUI.ViewModels.Docks;
+using Reko.UserInterfaces.AvaloniaUI.ViewModels.Documents;
 using Reko.UserInterfaces.AvaloniaUI.Views;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Reko.UserInterfaces.AvaloniaUI.Services
 {
     public class AvaloniaShellUiService : IDecompilerShellUiService
     {
-        private IServiceContainer services;
-        private MainWindow mainWindow;
+        private readonly IServiceContainer services;
+        private readonly DockFactory dockFactory;
 
-        public AvaloniaShellUiService(IServiceContainer services, MainWindow mainWindow)
+        public AvaloniaShellUiService(IServiceContainer services, DockFactory dockFactory)
         {
             this.services = services;
-            this.mainWindow = mainWindow;
+            this.dockFactory = dockFactory;
         }
 
         public IWindowFrame ActiveFrame => throw new NotImplementedException();
@@ -51,7 +52,11 @@ namespace Reko.UserInterfaces.AvaloniaUI.Services
 
         public IWindowFrame CreateDocumentWindow(string documentType, object docItem, string documentTitle, IWindowPane pane)
         {
-            throw new NotImplementedException();
+            var frame = new DocumentFrameViewModel(documentType, docItem, pane, documentTitle);
+            var customDocDock = (CustomDocumentDock) dockFactory.GetDockable<IDockable>("Documents")!;
+            customDocDock.VisibleDockables!.Add(frame);
+            customDocDock.ActiveDockable = frame;
+            return frame;
         }
 
         public IWindowFrame CreateWindow(string windowType, string windowTitle, IWindowPane pane)
@@ -60,9 +65,19 @@ namespace Reko.UserInterfaces.AvaloniaUI.Services
         }
 
 
-        public IWindowFrame FindDocumentWindow(string documentType, object docItem)
+        public IWindowFrame? FindDocumentWindow(string documentType, object? docItem)
         {
-            throw new NotImplementedException();
+            var customDocDock = (CustomDocumentDock) dockFactory.GetDockable<IDockable>("Documents")!;
+            foreach (var doc in customDocDock.VisibleDockables!)
+            {
+                if (doc is DocumentFrameViewModel docFrame && 
+                    docFrame.DocumentType == documentType && 
+                    docFrame.DocumentItem == docItem)
+                {
+                    return docFrame;
+                }
+            }
+            return null;
         }
 
         public IWindowFrame FindWindow(string windowType)

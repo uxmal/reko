@@ -1,14 +1,18 @@
 using Avalonia.Controls;
 using Avalonia.Controls.Templates;
 using Dock.Model.Core;
+using Reko.Gui;
 using Reko.UserInterfaces.AvaloniaUI.ViewModels;
 using System;
+using System.Diagnostics;
 
 namespace Reko.UserInterfaces.AvaloniaUI
 {
     /// <summary>
-    /// This class is used to map back to a particular view base on the name
-    /// of its ViewModel.
+    /// This class is used as a Data template to instantiate views from their
+    /// corresponding view models. It assumes all view model classes names end
+    /// with "...ViewModel" and the corresponding view models have the name
+    /// ending with "...View".
     /// </summary>
     public class ViewLocator : IDataTemplate
     {
@@ -31,7 +35,7 @@ namespace Reko.UserInterfaces.AvaloniaUI
 
         public bool Match(object data)
         {
-            return data is ViewModelBase || data is IDockable;
+            return data is ViewModelBase || data is IDockable || data is IWindowPane;
         }
     }
 }
