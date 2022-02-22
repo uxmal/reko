@@ -26,6 +26,7 @@ using System.ComponentModel.Design;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Input;
 
 namespace Reko.UserInterfaces.AvaloniaUI.ViewModels
 {
@@ -84,7 +85,7 @@ namespace Reko.UserInterfaces.AvaloniaUI.ViewModels
         private bool isVisible;
 
         public CommandID? CommandID { get; set; }
-        public CommandAdapter? Command { get; set; }
+        public ICommand? Command { get; set; }
         public string? ImageKey { get; set; }
         public int ImageIndex { get; set; }
         public string? ToolTipText { get; set; }
