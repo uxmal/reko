@@ -108,7 +108,7 @@ namespace Reko.ImageLoaders.LLVM
 
         public Block BlockOf(string label, bool defer)
         {
-            if (deferredBlocks.TryGetValue(label, out Block b))
+            if (deferredBlocks.TryGetValue(label, out Block? b))
             {
                 if (!defer)
                 {

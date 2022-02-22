@@ -231,7 +231,7 @@ namespace Reko.Arch.PowerPC
             public override PowerPcInstruction Decode(uint wInstr, PowerPcDisassembler dasm)
             {
                 var x = (wInstr >> shift) & mask;
-                if (decoders.TryGetValue(x, out Decoder decoder))
+                if (decoders.TryGetValue(x, out Decoder? decoder))
                 {
                     return decoder.Decode(wInstr, dasm);
                 }
@@ -591,7 +591,7 @@ namespace Reko.Arch.PowerPC
             {
                 var key = (wInstr >> 0x4) & mask;
                 DumpMaskedInstruction(32, wInstr, mask << 4, "  VMX");
-                if (decoders.TryGetValue(key, out Decoder decoder))
+                if (decoders.TryGetValue(key, out Decoder? decoder))
                 {
                     return decoder.Decode(wInstr, dasm);
                 }

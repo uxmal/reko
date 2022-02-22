@@ -77,7 +77,7 @@ namespace Reko.Environments.MacOS.Classic
             vector &= 0xFFFF;
             foreach (var module in this.Metadata.Modules.Values)
             {
-                if (module.ServicesByVector.TryGetValue(vector, out List<SystemService> svcs))
+                if (module.ServicesByVector.TryGetValue(vector, out List<SystemService>? svcs))
                     return svcs.FirstOrDefault(s => s.SyscallInfo!.Matches(vector, state));
             }
             return null;

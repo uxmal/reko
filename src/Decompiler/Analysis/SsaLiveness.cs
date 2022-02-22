@@ -75,7 +75,7 @@ namespace Reko.Analysis
 			{
 				if (ssa.Uses.Count > 0 && ssa.DefStatement != null)
 				{
-                    if (!defined.TryGetValue(ssa.DefStatement, out List<Identifier> al))
+                    if (!defined.TryGetValue(ssa.DefStatement, out List<Identifier>? al))
 					{
 						al = new List<Identifier>();
 						defined.Add(ssa.DefStatement, al);

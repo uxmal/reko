@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
@@ -30,7 +30,7 @@ namespace Reko.Core.NativeInterface
 
 		public object MarshalNativeToManaged(IntPtr pNativeData)
 		{
-			return Marshal.PtrToStringAnsi(pNativeData);
+			return Marshal.PtrToStringAnsi(pNativeData)!;
 		}
 	}
 }

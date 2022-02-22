@@ -519,7 +519,7 @@ namespace Reko.Loading
             var t = svc.GetType(typeName);
             if (t is null)
                 throw new ApplicationException(string.Format("Unable to find loader {0}.", typeName));
-            return (T) Activator.CreateInstance(t, services, imageLocation, bytes);
+            return (T) Activator.CreateInstance(t, services, imageLocation, bytes)!;
         }
 
         /// <summary>
@@ -531,7 +531,7 @@ namespace Reko.Loading
             var type = svc.GetType(typeName);
             if (type == null)
                 throw new ApplicationException(string.Format("Unable to find loader {0}.", typeName));
-            return (T) Activator.CreateInstance(type, innerLoader);
+            return (T) Activator.CreateInstance(type, innerLoader)!;
         }
 
         /// <summary>
@@ -562,7 +562,7 @@ namespace Reko.Loading
             var t = ass.GetTypes().SingleOrDefault(tt => typeof(ImageLoader).IsAssignableFrom(tt));
             if (t is null)
                 throw new ApplicationException(string.Format("Unable to find image loader in {0}.", loader));
-            return (ProgramImageLoader) Activator.CreateInstance(t, services, imageLocation, bytes);
+            return (ProgramImageLoader) Activator.CreateInstance(t, services, imageLocation, bytes)!;
         }
 
         protected void CopyImportReferences(Dictionary<Address, ImportReference> importReference, Program program)
@@ -596,7 +596,7 @@ namespace Reko.Loading
                 var svc = Services.RequireService<IPluginLoaderService>();
                 var type = svc.GetType("Reko.ImageLoaders.OdbgScript.OllyLangInterpreter,Reko.ImageLoaders.OdbgScript");
                 var arch = GetArchForDebuggerScript(program, script);
-                interpreter = (IScriptInterpreter) Activator.CreateInstance(type, Services, program, arch);
+                interpreter = (IScriptInterpreter) Activator.CreateInstance(type, Services, program, arch)!;
             }
             catch (Exception ex)
             {

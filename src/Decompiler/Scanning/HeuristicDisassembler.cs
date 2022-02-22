@@ -77,7 +77,7 @@ namespace Reko.Scanning
                 host);
             foreach (var instr in dasm.TakeWhile(i => isAddrValid(i.Address)))
             {
-                if (blockMap.TryGetValue(instr.Address, out RtlBlock block))
+                if (blockMap.TryGetValue(instr.Address, out RtlBlock? block))
                 {
                     // This instruction was already disassembled before.
                     if (instr.Address.ToLinear() != block.Address.ToLinear())

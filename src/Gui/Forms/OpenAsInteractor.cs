@@ -136,11 +136,11 @@ namespace Reko.Gui.Forms
             }
         }
 
-        private void BrowseButton_Click(object sender, EventArgs e)
+        private async void BrowseButton_Click(object sender, EventArgs e)
         {
             var uiSvc = dlg.Services.RequireService<IDecompilerShellUiService>();
-            var fileName = uiSvc.ShowOpenFileDialog("");
-            if (fileName != null)
+            var fileName = await uiSvc.ShowOpenFileDialog("");
+            if (fileName is not null)
             {
                 dlg.FileName.Text = fileName;
                 EnableControls();

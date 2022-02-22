@@ -28,6 +28,7 @@ using System.Threading.Tasks;
 namespace Reko.Core.Lib
 {
     public class Dijkstra<T>
+        where T : notnull
     {
         public Dictionary<T, double> dist;
         public Dictionary<T, T> prev;
@@ -82,7 +83,7 @@ namespace Reko.Core.Lib
         public List<T> GetPath(T destination)
         {
             var path = new List<T>();
-            while (prev.TryGetValue(destination, out T p))
+            while (prev.TryGetValue(destination, out T? p))
             {
                 path.Add(p);
                 destination = p;

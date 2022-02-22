@@ -84,7 +84,7 @@ namespace Reko.Typing
 		public LinearInductionVariable? GetInductionVariable(Expression e)
 		{
             if (!(e is Identifier id)) return null;
-            if (!program.InductionVariables.TryGetValue(id, out LinearInductionVariable iv))
+            if (!program.InductionVariables.TryGetValue(id, out LinearInductionVariable? iv))
                 return null;
             return iv;
 		}

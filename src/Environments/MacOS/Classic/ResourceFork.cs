@@ -351,7 +351,7 @@ namespace Reko.Environments.MacOS.Classic
             if (jt != null)
             {
                 // Find an address beyond all known segments.
-                var addr = program.SegmentMap.Segments.Values.Max(s => s.Address + s.Size).Align(0x10);
+                var addr = program.SegmentMap.Segments.Values.Max(s => s.Address + s.Size)!.Align(0x10);
                 var a5world = LoadA5World(jt, addr, codeSegs, program.ImageSymbols);
                 platform.A5World = a5world;
                 platform.A5Offset = jt.BelowA5Size;

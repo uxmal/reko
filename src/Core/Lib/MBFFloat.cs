@@ -49,32 +49,32 @@ namespace Reko.Core.Lib
             throw new NotImplementedException();
         }
 
-        public bool ToBoolean(IFormatProvider provider)
+        public bool ToBoolean(IFormatProvider? provider)
         {
             throw new NotImplementedException();
         }
 
-        public byte ToByte(IFormatProvider provider)
+        public byte ToByte(IFormatProvider? provider)
         {
             throw new NotImplementedException();
         }
 
-        public char ToChar(IFormatProvider provider)
+        public char ToChar(IFormatProvider? provider)
         {
             throw new NotImplementedException();
         }
 
-        public DateTime ToDateTime(IFormatProvider provider)
+        public DateTime ToDateTime(IFormatProvider? provider)
         {
             throw new NotImplementedException();
         }
 
-        public decimal ToDecimal(IFormatProvider provider)
+        public decimal ToDecimal(IFormatProvider? provider)
         {
             throw new NotImplementedException();
         }
 
-        public double ToDouble(IFormatProvider provider)
+        public double ToDouble(IFormatProvider? provider)
         {
             long mant = value & 0x007FFFFF;
             var biasedExp = value >> ExponentBitOffset;
@@ -87,57 +87,57 @@ namespace Reko.Core.Lib
             return d;
         }
 
-        public short ToInt16(IFormatProvider provider)
+        public short ToInt16(IFormatProvider? provider)
         {
             throw new NotImplementedException();
         }
 
-        public int ToInt32(IFormatProvider provider)
+        public int ToInt32(IFormatProvider? provider)
         {
             throw new NotImplementedException();
         }
 
-        public long ToInt64(IFormatProvider provider)
+        public long ToInt64(IFormatProvider? provider)
         {
             throw new NotImplementedException();
         }
 
-        public sbyte ToSByte(IFormatProvider provider)
+        public sbyte ToSByte(IFormatProvider? provider)
         {
             throw new NotImplementedException();
         }
 
-        public float ToSingle(IFormatProvider provider)
+        public float ToSingle(IFormatProvider? provider)
         {
             return (float) ToDouble(provider);
         }
 
-        public string ToString(IFormatProvider provider)
+        public string ToString(IFormatProvider? provider)
         {
             throw new NotImplementedException();
         }
 
-        public string ToString(string format, IFormatProvider formatProvider)
+        public string ToString(string? format, IFormatProvider? formatProvider)
         {
             throw new NotImplementedException();
         }
 
-        public object ToType(Type conversionType, IFormatProvider provider)
+        public object ToType(Type conversionType, IFormatProvider? provider)
         {
             throw new NotImplementedException();
         }
 
-        public ushort ToUInt16(IFormatProvider provider)
+        public ushort ToUInt16(IFormatProvider? provider)
         {
             throw new NotImplementedException();
         }
 
-        public uint ToUInt32(IFormatProvider provider)
+        public uint ToUInt32(IFormatProvider? provider)
         {
             throw new NotImplementedException();
         }
 
-        public ulong ToUInt64(IFormatProvider provider)
+        public ulong ToUInt64(IFormatProvider? provider)
         {
             throw new NotImplementedException();
         }

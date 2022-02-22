@@ -132,7 +132,7 @@ namespace Reko.Arch.MicrochipPIC.PIC16
                 IMemoryRegion? regn = null;
                 if (PICRegisters.TryGetAlwaysAccessibleRegister(bAddr, out var reg))
                 {
-                    regn = PICMemoryDescriptor.GetDataRegionByAddress(reg.Traits.RegAddress.Addr!);
+                    regn = PICMemoryDescriptor.GetDataRegionByAddress(reg!.Traits.RegAddress.Addr!);
                 }
                 else if (bAddr.BankSelect.IsValid)
                 {

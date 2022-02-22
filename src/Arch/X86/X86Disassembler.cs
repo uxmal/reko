@@ -375,7 +375,7 @@ namespace Reko.Arch.X86
                 rdr.Offset - rdrOffset <= MaxInstructionLength;
         }
 
-        private bool TryReadLe(DataType offsetWidth, [MaybeNullWhen(false)] out Constant? offset)
+        private bool TryReadLe(DataType offsetWidth, [MaybeNullWhen(false)] out Constant offset)
         {
             offset = null;
             if (!rdr.IsValidOffset(rdr.Offset + (uint) offsetWidth.Size - 1))

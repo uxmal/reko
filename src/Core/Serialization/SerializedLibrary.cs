@@ -66,7 +66,7 @@ namespace Reko.Core.Serialization
         {
             var ser = CreateSerializer();
             var rdr = new XmlTextReader(stm);
-            return (SerializedLibrary) ser.Deserialize(rdr);
+            return (SerializedLibrary) ser.Deserialize(rdr)!;
         }
 
         public static XmlSerializer CreateSerializer()

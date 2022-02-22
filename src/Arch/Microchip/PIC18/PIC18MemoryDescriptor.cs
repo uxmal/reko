@@ -42,9 +42,9 @@ namespace Reko.Arch.MicrochipPIC.PIC18
             private const string accessSFRRegionID = "accesssfr";
             private const string extendGPRERegionID = "gpre";
 
-            internal IMemoryRegion AccessRAM;
+            internal IMemoryRegion? AccessRAM;
             internal IMemoryRegion AccessSFR;
-            internal IMemoryRegion ExtendedGPRE;
+            internal IMemoryRegion? ExtendedGPRE;
 
 
             /// <summary>
@@ -155,7 +155,10 @@ namespace Reko.Arch.MicrochipPIC.PIC18
             /// </summary>
             /// <param name="bAddr">The memory banked address to check.</param>
             public override bool CanBeFSR2IndexAddress(PICBankedAddress bAddr)
-                => (ExecMode == PICExecMode.Extended) && bAddr.IsAccessRAMAddr && ExtendedGPRE.Contains(bAddr.BankOffset);
+                => (ExecMode == PICExecMode.Extended) && 
+                bAddr.IsAccessRAMAddr && 
+                ExtendedGPRE is not null && 
+                ExtendedGPRE.Contains(bAddr.BankOffset);
 
             /// <summary>
             /// Creates a data memory banked address.

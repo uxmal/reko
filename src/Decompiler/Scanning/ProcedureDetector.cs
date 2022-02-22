@@ -143,8 +143,12 @@ namespace Reko.Scanning
 
             private class Cmp : Comparer<RtlBlock>
             {
-                public override int Compare(RtlBlock x, RtlBlock y)
+                public override int Compare(RtlBlock? x, RtlBlock? y)
                 {
+                    if (x is null)
+                        return y is null ? 0 : -1;
+                    if (y is null)
+                        return 1;
                     return x.Address.CompareTo(y.Address);
                 }
 

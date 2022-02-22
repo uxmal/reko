@@ -353,7 +353,7 @@ namespace Reko.Scanning
                 if ((instr.type & (ushort)InstrClass.Linear) == 0)
                     continue;
                 // Find the instruction that is located directly after instr.
-                if (!sr.FlatInstructions.TryGetValue(instr.addr.ToLinear() + (uint) instr.size, out instr succ))
+                if (!sr.FlatInstructions.TryGetValue(instr.addr.ToLinear() + (uint) instr.size, out instr? succ))
                     continue;
                 // If the first instruction was padding the next one must also be padding, 
                 // otherwise we start a new block.

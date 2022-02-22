@@ -43,7 +43,7 @@ namespace Reko.Core
                 
         public virtual object ReadValue(System.Reflection.FieldInfo f, EndianImageReader rdr, ReaderContext ctx)
         {
-            Func<EndianImageReader, object> fn;
+            Func<EndianImageReader, object>? fn;
             if (readers.TryGetValue(f.FieldType, out fn))
             {
                 return fn(rdr);
@@ -56,6 +56,7 @@ namespace Reko.Core
     {
         private object obj;
         private FieldInfo[] fields;
+
         public ReaderContext(object obj, FieldInfo[] fields)
         {
             this.obj = obj;
@@ -64,7 +65,7 @@ namespace Reko.Core
 
         public object GetValue(string valueName)
         {
-            return fields.Where(f => f.Name == valueName).Single().GetValue(obj);
+            return fields.Where(f => f.Name == valueName).Single().GetValue(obj)!;
         }
     }
 

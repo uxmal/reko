@@ -6,7 +6,7 @@
     <OutputType>Library</OutputType>
     <RootNamespace>Reko.ImageLoaders.Omf</RootNamespace>
     <AssemblyName>Reko.ImageLoaders.Omf</AssemblyName>
-    <TargetFramework>netstandard2.1</TargetFramework>
+    <TargetFramework>net5.0</TargetFramework>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <Configurations>Debug;Release</Configurations>
   </PropertyGroup>

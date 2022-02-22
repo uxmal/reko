@@ -77,7 +77,7 @@ namespace Reko.Core
             return this.Lsb <= that.Lsb && this.Msb >= that.Msb;
         }
 
-        public override bool Equals(object obj)
+        public override bool Equals(object? obj)
         {
             if (obj != null && obj is BitRange that)
             {

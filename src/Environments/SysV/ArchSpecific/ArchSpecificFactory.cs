@@ -104,7 +104,7 @@ namespace Reko.Environments.SysV.ArchSpecific
                         4,      // stackAlignment,
                         4,      // pointerSize,
                         true,   // callerCleanup,
-                        false); // reverseArguments)
+                        false)!; // reverseArguments)
                 }
                 return this.ccX86;
             case "x86-protected-64":
@@ -127,8 +127,8 @@ namespace Reko.Environments.SysV.ArchSpecific
             case "risc-v":
                 if (this.ccRiscV == null)
                 {
-                    var t = Type.GetType("Reko.Arch.RiscV.RiscVCallingConvention,Reko.Arch.RiscV", true);
-                    this.ccRiscV = (CallingConvention) Activator.CreateInstance(t, arch);
+                    var t = Type.GetType("Reko.Arch.RiscV.RiscVCallingConvention,Reko.Arch.RiscV", true)!;
+                    this.ccRiscV = (CallingConvention) Activator.CreateInstance(t, arch)!;
                 }
                 return this.ccRiscV;
             case "superH-le":

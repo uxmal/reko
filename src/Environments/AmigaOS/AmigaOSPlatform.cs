@@ -75,7 +75,7 @@ namespace Reko.Environments.AmigaOS
 
             var cfgSvc = Services.RequireService<IConfigurationService>();
             var env = cfgSvc.GetEnvironment(this.PlatformIdentifier);
-            if (env.Options.TryGetValue("versionDependentLibraries", out object option))
+            if (env.Options.TryGetValue("versionDependentLibraries", out object? option))
             {
                 mapKickstartToListOfLibraries = (Dictionary<string, object>)option;
             }
@@ -144,7 +144,7 @@ namespace Reko.Environments.AmigaOS
                 return null;
             if (funcs == null)
                 funcs = LoadLibraryDef("exec", 33, Metadata);
-            return funcs.TryGetValue(offset, out SystemService svc) ? svc : null;
+            return funcs.TryGetValue(offset, out SystemService? svc) ? svc : null;
         }
 
         private string GetLibraryBaseName(string name_with_version) 

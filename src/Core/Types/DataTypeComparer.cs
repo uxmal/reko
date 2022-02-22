@@ -65,13 +65,17 @@ namespace Reko.Core.Types
         /// <param name="x"></param>
         /// <param name="y"></param>
         /// <returns></returns>
-        public int Compare(DataType x, DataType y)
+        public int Compare(DataType? x, DataType? y)
         {
             return Compare(x, y, 0);
         }
 
-        public int Compare(DataType x, DataType y, int count)
+        public int Compare(DataType? x, DataType? y, int count)
         {
+            if (x is null)
+                return y is null ? 0 : -1;
+            if (y is null)
+                return 1;
             var typePair = (x, y);
 
             // avoid infinite recursion
@@ -300,7 +304,7 @@ namespace Reko.Core.Types
             return Compare(x.ReturnValue!.DataType, y.ReturnValue!.DataType, count);
         }
 
-        public bool Equals(DataType a, DataType b)
+        public bool Equals(DataType? a, DataType? b)
         {
             return Compare(a, b) == 0;
         }

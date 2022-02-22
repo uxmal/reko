@@ -204,7 +204,7 @@ namespace Reko.Analysis
                 var sorted = de.Value.ToSortedList(k => k.offset);
                 foreach (var se in sorted)
                 {
-                    if (!sorted.TryGetValue(se.Key + 3, out UnalignedAccess other))
+                    if (!sorted.TryGetValue(se.Key + 3, out UnalignedAccess? other))
                         continue;
                     if (se.Value.isLeft == other.isLeft)
                         continue;

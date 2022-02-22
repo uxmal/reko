@@ -40,7 +40,7 @@ namespace Reko.Core
         Address? MakeAddressFromConstant(Constant c);
         Address MakeSegmentedAddress(Constant selector, Constant offset);
 
-        TBlock GetSinglePredecessor(TBlock block);
+        TBlock? GetSinglePredecessor(TBlock block);
         List<TBlock> GetPredecessors(TBlock block);
 
         bool IsValidAddress(Address addr);

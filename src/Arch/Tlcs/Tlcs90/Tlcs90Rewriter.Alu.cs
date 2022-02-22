@@ -100,11 +100,12 @@ namespace Reko.Arch.Tlcs.Tlcs90
 
         private void RewriteExx()
         {
+            //$TODO: use Registers.bc .. bc_ etc. instead.
             foreach (var r in new[] { "bc", "de", "hl" })
             {
                 var t = binder.CreateTemporary(PrimitiveType.Word16);
-                var reg = binder.EnsureRegister(arch.GetRegister(r));
-                var reg_ = binder.EnsureRegister(arch.GetRegister(r + "'"));
+                var reg = binder.EnsureRegister(arch.GetRegister(r)!);
+                var reg_ = binder.EnsureRegister(arch.GetRegister(r + "'")!);
                 m.Assign(t, reg);
                 m.Assign(reg, reg_);
                 m.Assign(reg_, t);

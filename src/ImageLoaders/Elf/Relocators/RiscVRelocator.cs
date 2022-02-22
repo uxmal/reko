@@ -53,12 +53,12 @@ namespace Reko.ImageLoaders.Elf.Relocators
             case RiscVRt.R_RISCV_COPY:
                 return (addr, null);
             case RiscVRt.R_RISCV_RELATIVE: // B + A
-                A = (ulong) rela.Addend;
+                A = (ulong) rela.Addend!.Value;
                 B = program.SegmentMap.BaseAddress.ToLinear();
                 S = 0;
                 break;
             case RiscVRt.R_RISCV_64: // S + A
-                A = (ulong) rela.Addend;
+                A = (ulong) rela.Addend!.Value;
                 B = 0;
                 break;
             case RiscVRt.R_RISCV_JUMP_SLOT: // S
@@ -112,12 +112,12 @@ namespace Reko.ImageLoaders.Elf.Relocators
             case RiscVRt.R_RISCV_COPY:
                 return (addr, null);
             case RiscVRt.R_RISCV_RELATIVE: // B + A
-                A = (ulong) rela.Addend;
+                A = (ulong) rela.Addend!;
                 B = program.SegmentMap.BaseAddress.ToLinear();
                 S = 0;
                 break;
             case RiscVRt.R_RISCV_64: // S + A
-                A = (ulong) rela.Addend;
+                A = (ulong) rela.Addend!;
                 B = 0;
                 break;
             case RiscVRt.R_RISCV_JUMP_SLOT: // S

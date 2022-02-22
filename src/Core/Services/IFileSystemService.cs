@@ -43,7 +43,7 @@ namespace Reko.Core.Services
         void CopyFile(
             string sourceFileName, string destFileName, bool overwrite);
         bool FileExists(string filePath);
-        string[] GetFiles(string? dir, string v);
+        string[] GetFiles(string dir, string v);
         bool IsPathRooted(string path);
         string MakeRelativePath(string fromPath, string toPath);
         byte[] ReadAllBytes(string filePath);
@@ -125,7 +125,7 @@ namespace Reko.Core.Services
             return Directory.GetCurrentDirectory();
         }
 
-        public string[] GetFiles(string? directory, string pattern)
+        public string[] GetFiles(string directory, string pattern)
         {
             return Directory.GetFiles(directory, pattern);
         }

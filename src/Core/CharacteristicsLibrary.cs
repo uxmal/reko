@@ -41,13 +41,20 @@ namespace Reko.Core
             var ser = new XmlSerializer(typeof(Serialization.CharacteristicsLibrary_v1));
             using (var stm = fsSvc.CreateFileStream(filename, FileMode.Open, FileAccess.Read))
             {
-                var slib = (CharacteristicsLibrary_v1) ser.Deserialize(stm);
-                return new CharacteristicsLibrary
+                var slib = (CharacteristicsLibrary_v1) ser.Deserialize(stm)!;
+                if (slib.Entries is null)
                 {
-                    Entries = slib.Entries
-                        .Where(e => e.ProcedureName != null && e.Characteristics != null)
-                        .ToDictionary(e => e.ProcedureName!, e => e.Characteristics!)
-                };
+                    return new CharacteristicsLibrary();
+                }
+                else
+                {
+                    return new CharacteristicsLibrary
+                    {
+                        Entries = slib.Entries
+                            .Where(e => e.ProcedureName != null && e.Characteristics != null)
+                            .ToDictionary(e => e.ProcedureName!, e => e.Characteristics!)
+                    };
+                }
             }
         }
 
@@ -55,7 +62,7 @@ namespace Reko.Core
 
         public ProcedureCharacteristics? Lookup(string procName)
         {
-            if (!Entries.TryGetValue(procName, out ProcedureCharacteristics ch))
+            if (!Entries.TryGetValue(procName, out ProcedureCharacteristics? ch))
                 return null;
             return ch;
         }

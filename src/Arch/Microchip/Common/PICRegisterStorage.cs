@@ -140,9 +140,9 @@ namespace Reko.Arch.MicrochipPIC.Common
             return Traits.CompareTo(other.Traits);
         }
 
-        public int CompareTo(object obj) => CompareTo(obj as PICRegisterStorage);
+        public int CompareTo(object? obj) => CompareTo(obj as PICRegisterStorage);
 
-        public int Compare(PICRegisterStorage x, PICRegisterStorage y)
+        public int Compare(PICRegisterStorage? x, PICRegisterStorage? y)
         {
             if (ReferenceEquals(x, y))
                 return 0;
@@ -151,11 +151,11 @@ namespace Reko.Arch.MicrochipPIC.Common
             return x.CompareTo(y);
         }
 
-        public override bool Equals(object obj) => CompareTo(obj as PICRegisterStorage) == 0;
+        public override bool Equals(object? obj) => CompareTo(obj as PICRegisterStorage) == 0;
 
-        public bool Equals(PICRegisterStorage other) => CompareTo(other) == 0;
+        public bool Equals(PICRegisterStorage? other) => CompareTo(other) == 0;
 
-        public bool Equals(PICRegisterStorage x, PICRegisterStorage y) => Compare(x, y) == 0;
+        public bool Equals(PICRegisterStorage? x, PICRegisterStorage? y) => Compare(x, y) == 0;
 
         public int GetHashCode(PICRegisterStorage obj) => obj?.GetHashCode() ?? 0;
 

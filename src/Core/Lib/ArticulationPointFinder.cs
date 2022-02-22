@@ -27,6 +27,7 @@ namespace Reko.Core.Lib
 {
     // Impleented after pseudocode on https://en.wikipedia.org/wiki/Biconnected_component
     public class ArticulationPointFinder<T>
+            where T : notnull
     {
         DirectedGraph<T> graph;
         private HashSet<T> aps;

@@ -171,7 +171,7 @@ namespace Reko.Analysis
         {
             if (ssa.Identifiers.TryGetValue(id, out var sid))
             {
-                if (sid.DefStatement != null &&
+                if (sid!.DefStatement != null &&
                     sid.DefStatement.Instruction is Assignment ass &&
                     ass.Dst == id)
                 {
@@ -214,12 +214,12 @@ namespace Reko.Analysis
 
         public override Instruction TransformAssignment(Assignment a)
         {
-            a.Src = a.Src.Accept(this);
-            a.Dst = (Identifier)FindDefinedId(call!, a.Dst.Storage);
-            if (a.Dst == null)
+            var src = a.Src.Accept(this);
+            var dst = (Identifier?) FindDefinedId(call!, a.Dst.Storage);
+            if (dst is null)
                 return new SideEffect(a.Src);
-            DefId(a.Dst, a.Src);
-            return a;
+            DefId(dst, src);
+            return new Assignment(dst, src); ;
         }
 
         public override Instruction TransformStore(Store store)
@@ -273,13 +273,13 @@ namespace Reko.Analysis
 
         private void UseId(Identifier id)
         {
-            if (ssa.Identifiers.TryGetValue(id, out var sid))
+            if (ssa.Identifiers.TryGetValue(id, out SsaIdentifier? sid))
             {
-                sid.Uses.Add(stm!);
+                sid!.Uses.Add(stm!);
             }
         }
 
-        private Expression FindDefinedId(CallInstruction call, Storage storage)
+        private Expression? FindDefinedId(CallInstruction call, Storage storage)
         {
             return call.Definitions
                 .Where(d => d.Storage.Equals(storage))
@@ -287,7 +287,7 @@ namespace Reko.Analysis
                 .FirstOrDefault();
         }
 
-        private Expression FindUsedId(CallInstruction call, Storage storage)
+        private Expression? FindUsedId(CallInstruction call, Storage storage)
         {
             return call.Uses
                 .Where(u => u.Storage.Equals(storage))

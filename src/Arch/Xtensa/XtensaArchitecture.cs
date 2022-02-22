@@ -26,6 +26,7 @@ using Reko.Core.Rtl;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 
 namespace Reko.Arch.Xtensa
@@ -235,10 +236,10 @@ namespace Reko.Arch.Xtensa
         public override SortedList<string, int> GetMnemonicNames()
         {
             return Enum.GetValues(typeof(Mnemonic))
-            .Cast<Mnemonic>()
-            .ToSortedList(
-                v => Enum.GetName(typeof(Mnemonic), v).Replace('_','.'),
-                v => (int)v);
+                .Cast<Mnemonic>()
+                .ToSortedList(
+                    v => Enum.GetName(typeof(Mnemonic), v)!.Replace('_','.'),
+                    v => (int)v);
         }
 
         public override int? GetMnemonicNumber(string name)
@@ -283,7 +284,7 @@ namespace Reko.Arch.Xtensa
             throw new NotImplementedException();
         }
 
-        public override bool TryGetRegister(string name, out RegisterStorage reg)
+        public override bool TryGetRegister(string name, [MaybeNullWhen(false)] out RegisterStorage reg)
         {
             return regsByName.TryGetValue(name, out reg);
         }

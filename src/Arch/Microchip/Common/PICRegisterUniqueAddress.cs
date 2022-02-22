@@ -80,9 +80,9 @@ namespace Reko.Arch.MicrochipPIC.Common
             return Addr.CompareTo(other.Addr);
         }
 
-        public virtual int CompareTo(object obj) => CompareTo(obj as PICRegisterUniqueAddress);
+        public virtual int CompareTo(object? obj) => CompareTo(obj as PICRegisterUniqueAddress);
 
-        public int Compare(PICRegisterUniqueAddress x, PICRegisterUniqueAddress y)
+        public int Compare(PICRegisterUniqueAddress? x, PICRegisterUniqueAddress? y)
         {
             if (ReferenceEquals(x, y))
                 return 0;
@@ -91,13 +91,13 @@ namespace Reko.Arch.MicrochipPIC.Common
             return x.CompareTo(y);
         }
 
-        public bool Equals(PICRegisterUniqueAddress other) => CompareTo(other) == 0;
+        public bool Equals(PICRegisterUniqueAddress? other) => CompareTo(other) == 0;
 
-        public bool Equals(PICRegisterUniqueAddress x, PICRegisterUniqueAddress y) => Compare(x, y) == 0;
+        public bool Equals(PICRegisterUniqueAddress? x, PICRegisterUniqueAddress? y) => Compare(x, y) == 0;
 
-        public override bool Equals(object obj) => CompareTo(obj as PICRegisterUniqueAddress) == 0;
+        public override bool Equals(object? obj) => CompareTo(obj as PICRegisterUniqueAddress) == 0;
 
-        public int GetHashCode(PICRegisterUniqueAddress obj) => obj?.GetHashCode() ?? 0;
+        public int GetHashCode(PICRegisterUniqueAddress? obj) => obj?.GetHashCode() ?? 0;
 
         public override int GetHashCode() => ((Addr?.GetHashCode() ?? NMMRID.GetHashCode()) * 512137) ^ base.GetHashCode();
 

@@ -35,11 +35,13 @@ namespace Reko.UserInterfaces.AvaloniaUI.Services
     public class AvaloniaShellUiService : IDecompilerShellUiService
     {
         private readonly IServiceContainer services;
+        private readonly MainWindow mainWindow;
         private readonly DockFactory dockFactory;
 
-        public AvaloniaShellUiService(IServiceContainer services, DockFactory dockFactory)
+        public AvaloniaShellUiService(IServiceContainer services, MainWindow mainWindow, DockFactory dockFactory)
         {
             this.services = services;
+            this.mainWindow = mainWindow;
             this.dockFactory = dockFactory;
         }
 
@@ -86,7 +88,7 @@ namespace Reko.UserInterfaces.AvaloniaUI.Services
             throw new NotImplementedException();
         }
 
-        public bool Prompt(string prompt)
+        public ValueTask<bool> Prompt(string prompt)
         {
             throw new NotImplementedException();
         }
@@ -112,12 +114,12 @@ namespace Reko.UserInterfaces.AvaloniaUI.Services
             throw new NotImplementedException();
         }
 
-        public void ShowError(Exception ex, string format, params object[] args)
+        public ValueTask ShowError(Exception ex, string format, params object[] args)
         {
             throw new NotImplementedException();
         }
 
-        public void ShowMessage(string msg)
+        public ValueTask ShowMessage(string msg)
         {
             throw new NotImplementedException();
         }
@@ -133,12 +135,12 @@ namespace Reko.UserInterfaces.AvaloniaUI.Services
         }
 
 
-        public string ShowOpenFileDialog(string fileName)
+        public ValueTask<string?> ShowOpenFileDialog(string fileName)
         {
             throw new NotImplementedException();
         }
 
-        public string ShowSaveFileDialog(string fileName)
+        public ValueTask<string?> ShowSaveFileDialog(string fileName)
         {
             throw new NotImplementedException();
         }

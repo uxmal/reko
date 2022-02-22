@@ -34,11 +34,11 @@ namespace Reko.Core.Services
             var components = fullyQualifiedTypeName.Split(',');
             if (components.Length < 2)
                 throw new ApplicationException($"reko.config contains malformed type name {fullyQualifiedTypeName}.");
-            var dir = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+            var dir = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)!;
             var asmName = Path.Combine(dir, (components[1].Trim() + ".dll"));
             var typeName = components[0].Trim();
             var asm = AssemblyLoadContext.Default.LoadFromAssemblyPath(asmName);
-            Type t = asm.GetType(typeName, true);
+            Type t = asm.GetType(typeName, true)!;
             return t;
         }
     }

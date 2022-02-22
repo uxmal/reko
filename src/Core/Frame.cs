@@ -439,7 +439,7 @@ namespace Reko.Core
 			return null;
 		}
 
-        public Identifier FindTemporary(string name)
+        public Identifier? FindTemporary(string name)
         {
             return (from id in identifiers
                    let tmp = id.Storage as TemporaryStorage

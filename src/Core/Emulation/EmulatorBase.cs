@@ -122,7 +122,7 @@ namespace Reko.Core.Emulation
         /// <returns></returns>
         protected bool TestForBreakpoint(ulong linAddrInstr)
         {
-            if (bpExecute.TryGetValue(linAddrInstr, out Action bpAction))
+            if (bpExecute.TryGetValue(linAddrInstr, out Action? bpAction))
             {
                 stepOverAddress = 0;
                 stepInto = false;

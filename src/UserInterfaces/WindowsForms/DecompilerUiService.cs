@@ -21,14 +21,11 @@
 using Reko.Core.Services;
 using Reko.Gui;
 using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Diagnostics;
-using System.Threading;
-using System.Windows.Forms;
 using System.IO;
-using DialogResult = Reko.Gui.Services.DialogResult;
+using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
+using DialogResult = Reko.Gui.Services.DialogResult;
 
 namespace Reko.UserInterfaces.WindowsForms
 {
@@ -50,12 +47,12 @@ namespace Reko.UserInterfaces.WindowsForms
 
         #region IDecompilerUIService Members
 
-        public bool Prompt(string prompt)
+        public ValueTask<bool> Prompt(string prompt)
         {
             DialogResult dlgr = DialogResult.No;
             form.Invoke(new Action(
                 () => { dlgr = (DialogResult)MessageBox.Show(prompt, "Reko Decompiler", MessageBoxButtons.YesNo, MessageBoxIcon.Question); }));
-            return dlgr == DialogResult.Yes;
+            return ValueTask.FromResult(dlgr == DialogResult.Yes);
         }
 
         private ValueTask<DialogResult> ShowModalDialog(Form dlg)
@@ -77,19 +74,19 @@ namespace Reko.UserInterfaces.WindowsForms
             throw new NotImplementedException();
         }
 
-        public virtual string ShowOpenFileDialog(string fileName)
+        public virtual ValueTask<string> ShowOpenFileDialog(string fileName)
         {
             if (string.IsNullOrEmpty(fileName))
                 ofd.FileName = fileName;
             if ((DialogResult)ofd.ShowDialog(form) == DialogResult.OK)
             {
-                return ofd.FileName;
+                return ValueTask.FromResult(ofd.FileName);
             }
             else
-                return null;
+                return ValueTask.FromResult<string>(null);
         }
 
-        public virtual string ShowSaveFileDialog(string fileName)
+        public virtual ValueTask<string> ShowSaveFileDialog(string fileName)
         {
             if (!string.IsNullOrEmpty(fileName))
             {
@@ -98,13 +95,13 @@ namespace Reko.UserInterfaces.WindowsForms
             }
             if ((DialogResult)sfd.ShowDialog(form) == DialogResult.OK)
             {
-                return sfd.FileName;
+                return ValueTask.FromResult(sfd.FileName);
             }
             else
-                return null;
+                return ValueTask.FromResult<string>(null);
         }
 
-        public virtual void ShowError(Exception ex, string format, params object[] args)
+        public virtual ValueTask ShowError(Exception ex, string format, params object[] args)
         {
             StringBuilder sb = new StringBuilder();
             sb.AppendFormat(format, args);
@@ -118,23 +115,26 @@ namespace Reko.UserInterfaces.WindowsForms
             form.Invoke(new Action<string>(delegate(string s)
                 { MessageBox.Show(form, s, "Reko decompiler", MessageBoxButtons.OK, MessageBoxIcon.Error); }),
                 sb.ToString() );
+            return ValueTask.CompletedTask;
         }
 
-        public virtual void ShowError(string format, params object[] args)
+        public virtual ValueTask ShowError(string format, params object[] args)
         {
             StringBuilder sb = new StringBuilder();
             sb.AppendFormat(format, args);
             form.Invoke(new Action<StringBuilder>(delegate(StringBuilder s)
                 { MessageBox.Show(form, s.ToString(), "Reko decompiler", MessageBoxButtons.OK, MessageBoxIcon.Error); }),
                 sb);
+            return ValueTask.CompletedTask;
         }
-#endregion
+        #endregion
 
-        public void ShowMessage(string msg)
+        public ValueTask ShowMessage(string msg)
         {
             form.Invoke(new Action<string>(delegate(string s)
                 { MessageBox.Show(form, s, "Reko decompiler", MessageBoxButtons.OK, MessageBoxIcon.Information); }),
                 msg);
+            return ValueTask.CompletedTask;
         }
     }
 }

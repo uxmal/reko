@@ -125,7 +125,7 @@ namespace Reko.Environments.OS2
             EnsureTypeLibraries(PlatformIdentifier);
             foreach (var tl in Metadata.Modules.Values.Where(t => string.Compare(t.ModuleName, moduleName, true) == 0))
             {
-                if (tl.ServicesByOrdinal.TryGetValue(ordinal, out SystemService svc))
+                if (tl.ServicesByOrdinal.TryGetValue(ordinal, out SystemService? svc))
                 {
                     // Found the name of the imported procedure, now try to find its signature.
                     string procName = svc.Name!;
@@ -146,9 +146,9 @@ namespace Reko.Environments.OS2
         public override ExternalProcedure? LookupProcedureByName(string? moduleName, string procName)
         {
             EnsureTypeLibraries(PlatformIdentifier);
-            if (moduleName != null && Metadata.Modules.TryGetValue(moduleName.ToUpper(), out ModuleDescriptor mod))
+            if (moduleName != null && Metadata.Modules.TryGetValue(moduleName.ToUpper(), out ModuleDescriptor? mod))
             {
-                if (mod.ServicesByName.TryGetValue(procName, out SystemService svc))
+                if (mod.ServicesByName.TryGetValue(procName, out SystemService? svc))
                 {
                     var chr = LookupCharacteristicsByName(svc.Name!);
                     return new ExternalProcedure(svc.Name!, svc.Signature!, chr);

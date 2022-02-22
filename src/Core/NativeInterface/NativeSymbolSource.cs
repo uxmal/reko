@@ -26,7 +26,7 @@ namespace Reko.Core.NativeInterface
 			handle = loader.LoadLibrary(libPath);
 
 			IntPtr gSymProvider = loader.GetSymbol(handle, SYM_NAME);
-			prv = (NativeSymbolSourceProvider)Marshal.PtrToStructure(gSymProvider, typeof(NativeSymbolSourceProvider));
+			prv = (NativeSymbolSourceProvider)Marshal.PtrToStructure(gSymProvider, typeof(NativeSymbolSourceProvider))!;
 		}
 
 		public bool CanLoad(string filename, byte[] fileContents)

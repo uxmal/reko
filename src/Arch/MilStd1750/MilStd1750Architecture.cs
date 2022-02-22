@@ -27,6 +27,7 @@ using Reko.Core.Rtl;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Text;
 
 namespace Reko.Arch.MilStd1750
@@ -92,7 +93,7 @@ namespace Reko.Arch.MilStd1750
 
         public override FlagGroupStorage GetFlagGroup(RegisterStorage flagRegister, uint grf)
         {
-            if (flagGroups.TryGetValue(grf, out FlagGroupStorage f))
+            if (flagGroups.TryGetValue(grf, out FlagGroupStorage? f))
                 return f;
 
             PrimitiveType dt = PrimitiveType.Byte;
@@ -199,7 +200,7 @@ namespace Reko.Arch.MilStd1750
             return flt_mant * flt_exp;
         }
 
-        public override bool TryGetRegister(string name, out RegisterStorage reg)
+        public override bool TryGetRegister(string name, [MaybeNullWhen(false)] out RegisterStorage reg)
         {
             return Registers.ByName.TryGetValue(name, out reg);
         }

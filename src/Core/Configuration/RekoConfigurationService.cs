@@ -81,7 +81,7 @@ namespace Reko.Core.Configuration
             if (pluginSvc is null)
                 pluginSvc = new PluginLoaderService();
             this.pluginSvc = pluginSvc;
-            this.configFileRoot = Path.GetDirectoryName(rekoConfigPath);
+            this.configFileRoot = Path.GetDirectoryName(rekoConfigPath)!;
             this.services = services;
             this.loaders = LoadCollection(config.Loaders, LoadLoaderConfiguration);
             this.sigFiles = LoadCollection(config.SignatureFiles, LoadSignatureFile);
@@ -321,7 +321,7 @@ namespace Reko.Core.Configuration
 
             using var stm = File.Open(configFileName, FileMode.Open, FileAccess.Read, FileShare.Read);
             var ser = new XmlSerializer(typeof(RekoConfiguration_v1));
-            var sConfig = (RekoConfiguration_v1) ser.Deserialize(stm);
+            var sConfig = (RekoConfiguration_v1) ser.Deserialize(stm)!;
             var cfg = new RekoConfigurationService(services, configFileName, sConfig);
             return cfg;
         }
@@ -447,7 +447,7 @@ namespace Reko.Core.Configuration
                 t, 
                 this.services, 
                 elem.Name, 
-                options ?? new Dictionary<string, object>());
+                options)!;
             arch.Description = elem.Description;
             return arch;
         }
@@ -465,7 +465,7 @@ namespace Reko.Core.Configuration
             };
         }
 
-        public virtual LoaderDefinition GetImageLoader(string loaderName)
+        public virtual LoaderDefinition? GetImageLoader(string loaderName)
         {
             return loaders.FirstOrDefault(ldr => ldr.Label == loaderName);
         }
@@ -496,7 +496,7 @@ namespace Reko.Core.Configuration
             {
                 string assemblyPath = typeof(RekoConfigurationService).Assembly.Location;
                 return Path.Combine(
-                    Path.GetDirectoryName(assemblyPath),
+                    Path.GetDirectoryName(assemblyPath)!,
                     filename);
             }
             return filename;

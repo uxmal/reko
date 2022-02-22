@@ -77,9 +77,9 @@ namespace Reko.Arch.MicrochipPIC.Common
             return res;
         }
 
-        public override int CompareTo(object obj) => CompareTo(obj as PICRegisterSizedUniqueAddress);
+        public override int CompareTo(object? obj) => CompareTo(obj as PICRegisterSizedUniqueAddress);
 
-        public int Compare(PICRegisterSizedUniqueAddress x, PICRegisterSizedUniqueAddress y)
+        public int Compare(PICRegisterSizedUniqueAddress? x, PICRegisterSizedUniqueAddress? y)
         {
             if (ReferenceEquals(x, y))
                 return 0;
@@ -88,13 +88,13 @@ namespace Reko.Arch.MicrochipPIC.Common
             return x.CompareTo(y);
         }
 
-        public bool Equals(PICRegisterSizedUniqueAddress other) => CompareTo(other) == 0;
+        public bool Equals(PICRegisterSizedUniqueAddress? other) => CompareTo(other) == 0;
 
-        public bool Equals(PICRegisterSizedUniqueAddress x, PICRegisterSizedUniqueAddress y) => Compare(x, y) == 0;
+        public bool Equals(PICRegisterSizedUniqueAddress? x, PICRegisterSizedUniqueAddress? y) => Compare(x, y) == 0;
 
-        public override bool Equals(object obj) => CompareTo(obj as PICRegisterSizedUniqueAddress) == 0;
+        public override bool Equals(object? obj) => CompareTo(obj as PICRegisterSizedUniqueAddress) == 0;
 
-        public int GetHashCode(PICRegisterSizedUniqueAddress obj) => obj?.GetHashCode() ?? 0;
+        public int GetHashCode(PICRegisterSizedUniqueAddress? obj) => obj?.GetHashCode() ?? 0;
 
         public override int GetHashCode() => BitWidth.GetHashCode() ^ base.GetHashCode();
 

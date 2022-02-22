@@ -125,10 +125,15 @@ namespace Reko.Core
         /// </summary>
         public class BlockComparer : IComparer<Block>
         {
-            public int Compare(Block x, Block y)
+            public int Compare(Block? x, Block? y)
             {
                 if (x == y) 
                     return 0;
+                if (x is null)
+                    return y is null ? 0 : -1;
+                if (y is null)
+                    return 1;
+
                 // Entry block is always displayed first.
                 var eb = x.Procedure.EntryBlock;
                 if (x == eb)

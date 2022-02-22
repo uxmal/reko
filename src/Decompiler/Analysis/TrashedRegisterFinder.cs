@@ -123,7 +123,7 @@ namespace Reko.Analysis
             var savedTops = new Dictionary<Procedure, int?>();
             if (arch.TryGetRegister("Top", out var top))
             {
-                savedTops = CollectStackPointers(flow, top);
+                savedTops = CollectStackPointers(flow, top!);
             }
 
             CreateState();
@@ -244,7 +244,7 @@ namespace Reko.Analysis
             {
                 procFlow.Trashed.Add(sig.ReturnValue.Storage);
             }
-            foreach (var stg in sig.Parameters
+            foreach (var stg in sig.Parameters!
                 .Select(p => p.Storage)
                 .OfType<OutArgumentStorage>())
             {
@@ -397,8 +397,8 @@ namespace Reko.Analysis
                             return e;
                         })
                         .SingleOrDefault();
-                    ctx.SetValue((Identifier)d.Expression, before);
-                    trace.Verbose("  {0} = [{1}]", d.Expression, before);
+                    ctx.SetValue((Identifier)d.Expression, before!);
+                    trace.Verbose("  {0} = [{1}]", d.Expression, before!);
                 }
             }
             return true;
@@ -697,7 +697,7 @@ namespace Reko.Analysis
             public Expression GetValue(SegmentedAccess access, SegmentMap segmentMap)
             {
                 var offset = this.GetFrameOffset(access.EffectiveAddress);
-                if (offset.HasValue && StackState.TryGetValue(offset.Value, out Expression value))
+                if (offset.HasValue && StackState.TryGetValue(offset.Value, out Expression? value))
                 {
                     return value;
                 }
@@ -722,7 +722,7 @@ namespace Reko.Analysis
             public Expression GetValue(MemoryAccess access, SegmentMap segmentMap)
             {
                 var offset = this.GetFrameOffset(access.EffectiveAddress);
-                if (offset.HasValue && StackState.TryGetValue(offset.Value, out Expression value))
+                if (offset.HasValue && StackState.TryGetValue(offset.Value, out Expression? value))
                 {
                     return value;
                 }
@@ -790,7 +790,7 @@ namespace Reko.Analysis
             {
                 if (id.Storage is StackStorage stack)
                 {
-                    if (!StackState.TryGetValue(stack.StackOffset, out Expression oldValue))
+                    if (!StackState.TryGetValue(stack.StackOffset, out Expression? oldValue))
                     {
                         trace.Verbose("Trf: Stack offset {0:X4} now has value {1}", stack.StackOffset, value);
                         IsDirty = true;
@@ -826,7 +826,7 @@ namespace Reko.Analysis
                 if (!offset.HasValue)
                     return;
 
-                if (!StackState.TryGetValue(offset.Value, out Expression oldValue))
+                if (!StackState.TryGetValue(offset.Value, out Expression? oldValue))
                 {
                     IsDirty = true;
                     trace.Verbose("Trf: Stack offset {0:X4} now has value {1}", offset.Value, value);

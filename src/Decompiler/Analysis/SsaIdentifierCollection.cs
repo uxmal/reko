@@ -23,6 +23,7 @@ using Reko.Core.Expressions;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Reko.Analysis
 {
@@ -89,7 +90,7 @@ namespace Reko.Analysis
             sids.Remove(sid.Identifier);
         }
 
-        public bool TryGetValue(Identifier id, out SsaIdentifier sid)
+        public bool TryGetValue(Identifier id, [MaybeNullWhen(false)] out SsaIdentifier sid)
         {
             return sids.TryGetValue(id, out sid);
         }

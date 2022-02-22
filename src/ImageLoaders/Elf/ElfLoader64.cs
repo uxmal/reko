@@ -288,7 +288,7 @@ namespace Reko.ImageLoaders.Elf
             return addr;
         }
 
-        internal ElfSection GetSectionInfoByAddr64(ulong r_offset)
+        internal ElfSection? GetSectionInfoByAddr64(ulong r_offset)
         {
             return
                 (from sh in this.Sections

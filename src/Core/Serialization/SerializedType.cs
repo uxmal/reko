@@ -64,7 +64,7 @@ namespace Reko.Core.Serialization
                     new XmlAttributeOverrides(),
                     (ov, field) =>
                     { 
-                        ov.Add(field.Field.DeclaringType, field.Field.Name, field.AttrCreator!(xmlNamespace)); 
+                        ov.Add(field.Field.DeclaringType!, field.Field.Name, field.AttrCreator!(xmlNamespace)); 
                         return ov;
                     });
             return overrides;

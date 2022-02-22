@@ -121,7 +121,7 @@ namespace Reko.ImageLoaders.MzExe.Ne
 
             for (int i = 0; i < entries.Length; i++)
             {
-                os2Resources.TryGetValue(entries[i].etype, out ProgramResourceGroup resGrp);
+                os2Resources.TryGetValue(entries[i].etype, out ProgramResourceGroup? resGrp);
                 var rt = Os2ResourceType.FromInt(entries[i].etype);
                 if (resGrp == null) resGrp = new ProgramResourceGroup { Name = rt.Name };
 
@@ -194,7 +194,7 @@ namespace Reko.ImageLoaders.MzExe.Ne
 
             foreach (ProgramResourceInstance iconGroup in iconGroups.Resources)
             {
-                var r = new BinaryReader(new MemoryStream(iconGroup.Bytes));
+                var r = new BinaryReader(new MemoryStream(iconGroup.Bytes!));
                 var stm = new MemoryStream();
                 var w = new BinaryWriter(stm);
 
@@ -222,7 +222,7 @@ namespace Reko.ImageLoaders.MzExe.Ne
                     w.Seek(id.Item2, SeekOrigin.Begin);
                     w.Write(icOffset);
                     w.Seek(icOffset, SeekOrigin.Begin);
-                    w.Write(icon.Bytes);
+                    w.Write(icon.Bytes!);
                 }
                 iconGroup.Bytes = stm.ToArray();
                 iconGroup.Type = "ICON";
@@ -234,7 +234,7 @@ namespace Reko.ImageLoaders.MzExe.Ne
 
         void PostProcessBitmaps(Dictionary<ResourceType, ProgramResourceGroup> resGrps)
         {
-            if (!resGrps.TryGetValue(Win16ResourceType.Bitmap, out ProgramResourceGroup bitmaps))
+            if (!resGrps.TryGetValue(Win16ResourceType.Bitmap, out ProgramResourceGroup? bitmaps))
                 return;
             foreach (ProgramResourceInstance bitmap in bitmaps.Resources)
             {

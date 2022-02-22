@@ -26,6 +26,7 @@ using Reko.Core.Rtl;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Reko.Arch.Qualcomm
 {
@@ -122,7 +123,7 @@ namespace Reko.Arch.Qualcomm
             throw new NotImplementedException();
         }
 
-        public override bool TryGetRegister(string name, out RegisterStorage reg)
+        public override bool TryGetRegister(string name, [MaybeNullWhen(false)] out RegisterStorage reg)
         {
             return Registers.ByName.TryGetValue(name, out reg);
         }

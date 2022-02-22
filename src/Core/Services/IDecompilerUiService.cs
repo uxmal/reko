@@ -22,6 +22,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace Reko.Core.Services
 {
@@ -30,11 +31,11 @@ namespace Reko.Core.Services
     /// </summary>
     public interface IDecompilerUIService
     {
-        void ShowError(Exception ex, string format, params object[] args);
-        string ShowOpenFileDialog(string fileName);
-        string ShowSaveFileDialog(string fileName);
-        bool Prompt(string prompt);
+        ValueTask ShowError(Exception ex, string format, params object[] args);
+        ValueTask<string?> ShowOpenFileDialog(string fileName);
+        ValueTask<string?> ShowSaveFileDialog(string fileName);
+        ValueTask<bool> Prompt(string prompt);
 
-        void ShowMessage(string msg);
+        ValueTask ShowMessage(string msg);
     }
 }

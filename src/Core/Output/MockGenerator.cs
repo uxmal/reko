@@ -435,7 +435,7 @@ namespace Reko.Core.Output
 
         void IExpressionVisitor.VisitBinaryExpression(BinaryExpression binExp)
         {
-            if (!mpopstr.TryGetValue(binExp.Operator, out string str))
+            if (!mpopstr.TryGetValue(binExp.Operator, out string? str))
                 throw new NotImplementedException(binExp.Operator.ToString());
             Method(str);
             binExp.Left.Accept(this);

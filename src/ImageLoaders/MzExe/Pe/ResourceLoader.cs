@@ -229,7 +229,7 @@ namespace Reko.ImageLoaders.MzExe.Pe
         {
             if (codepage == 0)
                 return null;
-            if (CodePages.ToEncodings.TryGetValue(codepage, out string encoding))
+            if (CodePages.ToEncodings.TryGetValue(codepage, out string? encoding))
                 return encoding;
             return $"CP{codepage}";
         }
@@ -239,7 +239,7 @@ namespace Reko.ImageLoaders.MzExe.Pe
             if (!int.TryParse(sLcid, out int lcid))
                 return sLcid;
             lcid &= 0b11_1111_1111;
-            if (LocaleIds.ToLanguageTags.TryGetValue(lcid, out string langTag))
+            if (LocaleIds.ToLanguageTags.TryGetValue(lcid, out string? langTag))
                 return langTag;
             return $"x{sLcid:X4}";
         }

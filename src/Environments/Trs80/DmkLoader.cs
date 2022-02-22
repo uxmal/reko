@@ -198,8 +198,8 @@ namespace Reko.Environments.Trs80
                 return addr;
             }
 
-            var procs = program.Platform.MemoryMap.Segments
-                .SelectMany(s => s.Procedures)
+            var procs = program.Platform.MemoryMap!.Segments!
+                .SelectMany(s => s.Procedures!)
                 .OfType<Procedure_v1>()
                 .Select(p => ImageSymbol.Create(
                     SymbolType.Procedure,

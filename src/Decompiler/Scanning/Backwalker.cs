@@ -101,10 +101,11 @@ namespace Reko.Scanning
 
             if (continueBackwalking)
             {
-                block = host.GetSinglePredecessor(block);
-                if (block == null)
+                var blockPrev = host.GetSinglePredecessor(block);
+                if (blockPrev is null)
                     return null;	// seems unguarded to me.
 
+                block = blockPrev;
                 BackwalkInstructions(Index, block);
                 if (Index == null && IndexExpression == null)
                     return null;

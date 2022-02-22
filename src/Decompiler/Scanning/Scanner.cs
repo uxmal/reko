@@ -70,7 +70,7 @@ namespace Reko.Scanning
         private Dictionary<Block, Address> blockStarts;
         private Dictionary<Address, ImportReference> importReferences;
         private HashSet<Procedure> visitedProcs;
-        private CancellationTokenSource cancelSvc;
+        private CancellationTokenSource? cancelSvc;
         private HashSet<Address> scannedGlobalData = new HashSet<Address>();
         private CommentInjector cinj;
         private ScanResults sr;

@@ -137,7 +137,7 @@ namespace Reko.Core.Serialization
                 if (ser.CanDeserialize(rdr))
                 {
                     var deser = new Deserializer(this);
-                    var project = ((SerializedProject)ser.Deserialize(rdr)).Accept(deser);
+                    var project = ((SerializedProject)ser.Deserialize(rdr)!).Accept(deser);
                     return project;
                 }
             }
@@ -433,7 +433,7 @@ namespace Reko.Core.Serialization
                 program.User.IndirectJumps = sUser.IndirectJumps
                     .Select(ij => LoadIndirectJump_v4(ij, program))
                     .Where(ij => ij.Item1 != null)
-                    .ToSortedList(k => k!.Item1, v => v!.Item2)!;
+                    .ToSortedList(k => k!.Item1!, v => v!.Item2)!;
             }
             if (sUser.Segments != null)
             {

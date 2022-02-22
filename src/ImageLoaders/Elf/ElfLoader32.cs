@@ -302,7 +302,7 @@ namespace Reko.ImageLoaders.Elf
                 return Address.Ptr32(Header.e_entry);
         }
 
-        internal ElfSection GetSectionInfoByAddr(uint r_offset)
+        internal ElfSection? GetSectionInfoByAddr(uint r_offset)
         {
             return
                 (from sh in this.Sections

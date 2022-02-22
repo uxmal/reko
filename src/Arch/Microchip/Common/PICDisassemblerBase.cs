@@ -70,7 +70,7 @@ namespace Reko.Arch.MicrochipPIC.Common
         ///                                              condition occurs.</exception>
         public override PICInstruction? DisassembleInstruction()
         {
-            IMemoryRegion GetProgRegion()
+            IMemoryRegion? GetProgRegion()
             {
                 if (lastusedregion != null && lastusedregion.Contains(addrCur))
                     return lastusedregion;

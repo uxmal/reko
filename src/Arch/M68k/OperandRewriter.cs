@@ -414,7 +414,7 @@ namespace Reko.Arch.M68k
             throw new AddressCorrelatedException(
                 addrInstr,
                 "Unimplemented RewriteUnary for operand {0} of type {1}.", 
-                operand.ToString(),
+                operand.ToString()!,
                 operand.GetType().Name);
         }
 

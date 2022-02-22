@@ -102,7 +102,7 @@ namespace Reko.Gui
             string? w = GetNextWord();
             if (w is null || w == "void")
                 return null;
-            if (arch.TryGetRegister(w, out RegisterStorage reg))
+            if (arch.TryGetRegister(w, out RegisterStorage? reg))
             {
                 return new Argument_v1(
                     reg.Name,
@@ -123,7 +123,7 @@ namespace Reko.Gui
             var regs = new List<Register_v1>();
             foreach (string subReg in subregs)
             {
-                if (!arch.TryGetRegister(subReg, out RegisterStorage r))
+                if (!arch.TryGetRegister(subReg, out RegisterStorage? r))
                     return null;
                 regs.Add(new Register_v1(r.Name));
             }
@@ -173,11 +173,11 @@ namespace Reko.Gui
         private Argument_v1? ParseArg()
         {
             var w = GetNextWord();
-            if (w == null)
+            if (w is null)
                 return null;
 
             string? type = null;
-            if (!arch.TryGetRegister(w, out RegisterStorage reg))
+            if (!arch.TryGetRegister(w, out RegisterStorage? reg))
             {
                 type = w;
                 w = GetNextWord();
@@ -216,12 +216,12 @@ namespace Reko.Gui
             string? w2 = GetNextWord();
             if (w2 == null)
                 return null;
-            if (!arch.TryGetRegister(w2, out RegisterStorage reg2))
+            if (!arch.TryGetRegister(w2, out RegisterStorage? reg2))
                 return null;
             var seqArgName = reg.Name + "_" + reg2.Name;
             var seqArgType = new TypeReference_v1 { TypeName = type };
             var seqKind = new SerializedSequence();
-            seqKind.Registers = new Register_v1[]{ 
+            seqKind.Registers = new Register_v1[] { 
                     new Register_v1(reg.Name), 
                     new Register_v1(reg2.Name)
                 };
@@ -237,7 +237,7 @@ namespace Reko.Gui
 		{
 			int sizeInWords;
 			int wordSize = arch.WordWidth.Size;
-			if (PrimitiveType.TryParse(typeName, out PrimitiveType p))
+			if (PrimitiveType.TryParse(typeName, out PrimitiveType? p))
 			{
 				sizeInWords = (p.Size + (wordSize - 1))/wordSize;
 			}

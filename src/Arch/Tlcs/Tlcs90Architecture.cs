@@ -28,6 +28,7 @@ using Reko.Core.Rtl;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
 
@@ -221,7 +222,7 @@ namespace Reko.Arch.Tlcs
             throw new NotImplementedException();
         }
 
-        public override RegisterStorage GetRegister(string name)
+        public override RegisterStorage? GetRegister(string name)
         {
             return Registers.allRegs.FirstOrDefault(r => r.Name == name);
         }
@@ -275,7 +276,7 @@ namespace Reko.Arch.Tlcs
             throw new NotImplementedException();
         }
 
-        public override bool TryGetRegister(string name, out RegisterStorage reg)
+        public override bool TryGetRegister(string name, [MaybeNullWhen(false)] out RegisterStorage reg)
         {
             reg = Registers.allRegs.FirstOrDefault(r => string.Compare(r.Name ,name, StringComparison.OrdinalIgnoreCase) == 0);
             return reg != null;

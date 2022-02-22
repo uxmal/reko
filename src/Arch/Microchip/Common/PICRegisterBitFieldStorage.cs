@@ -60,7 +60,7 @@ namespace Reko.Arch.MicrochipPIC.Common
 
         public bool Equals(PICRegisterBitFieldSortKey? other) => CompareTo(other) == 0;
 
-        public override bool Equals(object obj) => Equals(obj as PICRegisterBitFieldSortKey);
+        public override bool Equals(object? obj) => Equals(obj as PICRegisterBitFieldSortKey);
 
         public int CompareTo(PICRegisterBitFieldSortKey? other)
         {
@@ -73,7 +73,7 @@ namespace Reko.Arch.MicrochipPIC.Common
             return BitWidth.CompareTo(other.BitWidth);
         }
 
-        public int CompareTo(object obj) => CompareTo(obj as PICRegisterBitFieldSortKey);
+        public int CompareTo(object? obj) => CompareTo(obj as PICRegisterBitFieldSortKey);
 
     }
 

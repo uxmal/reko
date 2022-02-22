@@ -140,7 +140,7 @@ namespace Reko.Core.Output
             var n = this.name;
             if (mode == Mode.Writing)
             {
-                if (visited.TryGetValue(ct, out object v) && (v == Defined || v == Declared))
+                if (visited.TryGetValue(ct, out object? v) && (v == Defined || v == Declared))
                 {
                     writer.WriteHyperlink(ct.Name, ct);
                 }
@@ -334,7 +334,7 @@ namespace Reko.Core.Output
 			string? n = name;
 			if (mode == Mode.Writing)
 			{
-                if (visited.TryGetValue(str, out object v) && (v == Defined))
+                if (visited.TryGetValue(str, out object? v) && (v == Defined))
                 {
                     writer.WriteKeyword("struct");
                     writer.Write(" ");

@@ -27,6 +27,7 @@ using Reko.Core.Rtl;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 
 namespace Reko.Arch.PaRisc
@@ -192,7 +193,7 @@ namespace Reko.Arch.PaRisc
         }
 
 
-        public override bool TryGetRegister(string name, out RegisterStorage reg)
+        public override bool TryGetRegister(string name, [MaybeNullWhen(false)] out RegisterStorage reg)
         {
             return Registers.RegistersByName.TryGetValue(name, out reg);
         }

@@ -54,7 +54,7 @@ namespace Reko.Core
         /// procedures and global variables at absolute addresses. These are
         /// available in the MemoryMap.
         /// </summary>
-        MemoryMap_v1 MemoryMap { get; set; }
+        MemoryMap_v1? MemoryMap { get; set; }
         string PlatformIdentifier { get; }
         PrimitiveType PointerType { get; }
 
@@ -289,7 +289,7 @@ namespace Reko.Core
         public string Description { get; set; }
         public PlatformHeuristics Heuristics { get; set; }
         public string Name { get; set; }
-        public virtual MemoryMap_v1 MemoryMap { get; set; }
+        public virtual MemoryMap_v1? MemoryMap { get; set; }
         public virtual PrimitiveType FramePointerType { get { return Architecture.FramePointerType; } }
         public virtual PrimitiveType PointerType { get { return Architecture.PointerType; } }
 
@@ -441,7 +441,7 @@ namespace Reko.Core
             {
                 foreach (var m in metadata.Modules.Values)
                 {
-                    if (m.ServicesByName.TryGetValue(ch.Key, out SystemService svc))
+                    if (m.ServicesByName.TryGetValue(ch.Key, out SystemService? svc))
                     {
                         svc.Characteristics = ch.Value;
                     }

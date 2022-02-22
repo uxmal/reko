@@ -79,7 +79,7 @@ namespace Reko.ImageLoaders.Pef
             var pefSegments = container.GetImageSegments(rdr, PreferredBaseAddress!).ToArray();
 
             var segments = pefSegments.Select(s => s.Segment);
-            var addrBase = pefSegments.Min(s => s.Segment.Address);
+            var addrBase = pefSegments.Min(s => s.Segment.Address)!;
             var segMap = new SegmentMap(addrBase, segments.ToArray());
 
             var pefFile = PefFile.Load(container, pefSegments);

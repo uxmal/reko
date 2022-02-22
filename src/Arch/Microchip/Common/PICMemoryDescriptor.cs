@@ -83,7 +83,7 @@ namespace Reko.Arch.MicrochipPIC.Common
         /// <returns>
         /// The data memory region or null.
         /// </returns>
-        public static IMemoryRegion GetDataRegionByName(string sregionName)
+        public static IMemoryRegion? GetDataRegionByName(string sregionName)
             => memoryMap.GetDataRegionByName(sregionName);
 
         /// <summary>
@@ -93,7 +93,7 @@ namespace Reko.Arch.MicrochipPIC.Common
         /// <returns>
         /// The data memory region or null.
         /// </returns>
-        public static IMemoryRegion GetDataRegionByAddress(Address aByteAddr)
+        public static IMemoryRegion? GetDataRegionByAddress(Address aByteAddr)
             => memoryMap.GetDataRegionByAddress(aByteAddr);
 
         /// <summary>
@@ -103,7 +103,7 @@ namespace Reko.Arch.MicrochipPIC.Common
         /// <returns>
         /// The data region by selector.
         /// </returns>
-        public static IMemoryRegion GetDataRegionBySelector(Constant bankSel)
+        public static IMemoryRegion? GetDataRegionBySelector(Constant bankSel)
             => memoryMap.GetDataRegionBySelector(bankSel);
 
         /// <summary>
@@ -188,7 +188,7 @@ namespace Reko.Arch.MicrochipPIC.Common
         /// <returns>
         /// The program memory region.
         /// </returns>
-        public static IMemoryRegion GetProgramRegion(string sregionName)
+        public static IMemoryRegion? GetProgramRegion(string sregionName)
             => memoryMap.GetProgramRegionByName(sregionName);
 
         /// <summary>
@@ -198,7 +198,7 @@ namespace Reko.Arch.MicrochipPIC.Common
         /// <returns>
         /// The program memory region.
         /// </returns>
-        public static IMemoryRegion GetProgramRegion(Address aVirtByteAddr)
+        public static IMemoryRegion? GetProgramRegion(Address aVirtByteAddr)
             => memoryMap.GetProgramRegionByAddress(aVirtByteAddr);
 
         /// <summary>

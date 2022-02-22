@@ -26,6 +26,7 @@ using Reko.Core.Rtl;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 
 namespace Reko.Arch.Alpha
@@ -129,7 +130,7 @@ namespace Reko.Arch.Alpha
             throw new NotImplementedException();
         }
 
-        public override bool TryGetRegister(string name, out RegisterStorage reg)
+        public override bool TryGetRegister(string name, [MaybeNullWhen(false)] out RegisterStorage reg)
         {
             return Registers.AllRegisters.TryGetValue(name, out reg);
         }

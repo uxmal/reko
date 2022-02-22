@@ -57,7 +57,7 @@ namespace Reko.ImageLoaders.LLVM
 
         public PlatformHeuristics Heuristics { get; set; }
 
-        public MemoryMap_v1 MemoryMap { get; set; }
+        public MemoryMap_v1? MemoryMap { get; set; }
 
         public string Name { get; private set; }
 

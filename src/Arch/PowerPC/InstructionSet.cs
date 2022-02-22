@@ -41,7 +41,7 @@ namespace Reko.Arch.PowerPC
     {
         protected readonly Decoder invalid;
 
-        public static InstructionSet Create(string model)
+        public static InstructionSet Create(string? model)
         {
             model = model ?? "";
             switch (model.ToLowerInvariant())

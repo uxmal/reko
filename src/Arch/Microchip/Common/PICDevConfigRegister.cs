@@ -116,7 +116,7 @@ namespace Reko.Arch.MicrochipPIC.Common
         /// <returns>
         /// A <see cref="DevConfigField"/> instance or null.
         /// </returns>
-        public DevConfigField GetField(int bitpos) => fields.FirstOrDefault(f => f.BitPos == bitpos);
+        public DevConfigField? GetField(int bitpos) => fields.FirstOrDefault(f => f.BitPos == bitpos);
 
         /// <summary>
         /// Gets a device configuration register's bit-field given its name.
@@ -125,7 +125,7 @@ namespace Reko.Arch.MicrochipPIC.Common
         /// <returns>
         /// A <see cref="DevConfigField"/> instance or null.
         /// </returns>
-        public DevConfigField GetField(string name) => fields.FirstOrDefault(f => f.Name == name);
+        public DevConfigField? GetField(string name) => fields.FirstOrDefault(f => f.Name == name);
 
         /// <summary>
         /// Enumerates the bit-fields contained in this device configuration register.

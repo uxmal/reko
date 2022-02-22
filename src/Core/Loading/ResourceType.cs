@@ -58,7 +58,7 @@ namespace Reko.Core.Loading
         public static bool operator !=(ResourceType a, ResourceType b) =>
             a.Value != b.Value;
 
-        public override bool Equals(object obj)
+        public override bool Equals(object? obj)
         {
             return obj is ResourceType that &&
                 this.Value == that.Value;
@@ -74,7 +74,7 @@ namespace Reko.Core.Loading
             return type
                 .GetProperties(BindingFlags.Public | BindingFlags.Static)
                 .Where(p => p.PropertyType == typeof(ResourceType))
-                .Select(p => (ResourceType) p.GetValue(null))
+                .Select(p => (ResourceType) p.GetValue(null)!)
                 .ToDictionary(rt => rt.Value);
         }
     }

@@ -36,7 +36,7 @@ namespace Reko.Core.Lib
             this.stm = stm;
         }
 
-        public void Write(object o)
+        public void Write(object? o)
         {
             switch (o)
             {
@@ -73,7 +73,7 @@ namespace Reko.Core.Lib
                     if (elementMarker != UbjsonMarker.None)
                     {
                         Action<object, Stream> renderer = GetRenderer(elementType);
-                        int c = (int) itf.GetProperty("Count").GetValue(o, null);
+                        int c = (int) itf.GetProperty("Count")!.GetValue(o, null)!;
                         WriteArray(e, c, elementMarker, renderer);
                         return;
                     }
@@ -97,7 +97,7 @@ namespace Reko.Core.Lib
             tx.Flush();
         }
 
-        private void WriteDictionaryEntry(string key, object value)
+        private void WriteDictionaryEntry(string key, object? value)
         {
             WriteString(key);
             Write(value);
@@ -206,7 +206,7 @@ namespace Reko.Core.Lib
             stm.WriteByte((byte)UbjsonMarker.Object);
             foreach (DictionaryEntry de in d)
             {
-                WriteDictionaryEntry(de.Key.ToString(), de.Value);
+                WriteDictionaryEntry(de.Key.ToString()!, de.Value);
             }
             stm.WriteByte((byte)UbjsonMarker.ObjectEnd);
         }

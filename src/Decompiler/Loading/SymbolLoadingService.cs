@@ -67,7 +67,7 @@ namespace Reko.Loading
                 eventListener.Error("Symbol source {0} in the Reko configuration failed to load.", symSrcDef.Name!);
                 return null;
             }
-            var symSrc = (ISymbolSource)Activator.CreateInstance(type);
+            var symSrc = (ISymbolSource)Activator.CreateInstance(type)!;
             if (symSrc.CanLoad(filename, bytes))
             {
                 return symSrc;

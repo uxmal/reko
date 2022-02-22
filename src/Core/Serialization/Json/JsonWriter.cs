@@ -89,7 +89,7 @@ namespace Reko.Core.Serialization.Json
                 w.Write("null");
                 return;
             }
-            Action<JsonWriter, object> atomWriter;
+            Action<JsonWriter, object>? atomWriter;
             if (atomWriters.TryGetValue(o.GetType(), out atomWriter))
             {
                 atomWriter(this, o);

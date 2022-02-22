@@ -244,7 +244,7 @@ namespace Reko.Core.Lib
 
             public override string ToString()
             {
-                return "Node: " + Item == null ? "(null)" : Item.ToString();
+                return "Node: " + Item == null ? "(null)" : Item.ToString()!;
             }
 		}
 

@@ -88,7 +88,7 @@ namespace Reko.Arch.SuperH
         {
             if (flagRegister == Registers.sr)
             {
-                if (!grfs.TryGetValue(grf, out FlagGroupStorage fl))
+                if (!grfs.TryGetValue(grf, out FlagGroupStorage? fl))
                 {
                     PrimitiveType dt = Bits.IsSingleBitSet(grf) ? PrimitiveType.Bool : PrimitiveType.Byte;
                     fl = new FlagGroupStorage(flagRegister, grf, GrfToString(flagRegister, "", grf), dt);
@@ -111,7 +111,7 @@ namespace Reko.Arch.SuperH
 
         public override RegisterStorage? GetRegister(string name)
         {
-            var regField = typeof(Registers).GetField(name, BindingFlags.IgnoreCase | BindingFlags.Static | BindingFlags.Public);
+            var regField = typeof(Registers).GetField(name, BindingFlags.IgnoreCase | BindingFlags.Static | BindingFlags.Public)!;
             return (RegisterStorage?)regField.GetValue(null);
         }
 

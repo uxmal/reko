@@ -6,7 +6,7 @@
     <OutputType>Library</OutputType>
     <RootNamespace>Reko.ImageLoaders.OdbgScript</RootNamespace>
     <AssemblyName>Reko.ImageLoaders.OdbgScript</AssemblyName>
-    <TargetFramework>netstandard2.1</TargetFramework>
+    <TargetFramework>net5.0</TargetFramework>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <Configurations>Debug;Release</Configurations>
   </PropertyGroup>

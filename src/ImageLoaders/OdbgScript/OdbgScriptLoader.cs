@@ -131,7 +131,7 @@ namespace Reko.ImageLoaders.OdbgScript
                 }
                 else
                 {
-                    var dir = Path.GetDirectoryName(GetType().Assembly.Location);
+                    var dir = Path.GetDirectoryName(GetType().Assembly.Location)!;
                     absPath = Path.Combine(dir, scriptFilename);
                     scriptFilename = absPath;
                 }
@@ -142,11 +142,11 @@ namespace Reko.ImageLoaders.OdbgScript
             }
         }
 
-        private void emu_ExceptionRaised(object sender, EventArgs e)
+        private void emu_ExceptionRaised(object? sender, EventArgs e)
         {
         }
 
-        private void emu_BeforeStart(object sender, EventArgs e)
+        private void emu_BeforeStart(object? sender, EventArgs e)
         {
             scriptInterpreter.Reset();
             scriptInterpreter.debuggee_running = false;

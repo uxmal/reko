@@ -33,6 +33,7 @@ namespace Reko.Core.Lib
     /// actual work.
 	/// </remarks>
 	public class SccFinder<TNode>
+        where TNode : notnull
 	{
         private readonly DirectedGraph<TNode> graph;
         private readonly Action<IList<TNode>> processScc;
@@ -56,7 +57,7 @@ namespace Reko.Core.Lib
 
 		private Node AddNode(TNode o)
 		{
-            if (!map.TryGetValue(o, out Node node))
+            if (!map.TryGetValue(o, out Node? node))
 			{
 				node = new Node(o);
 				map[o] = node;

@@ -46,7 +46,7 @@ namespace Reko.Core.Serialization
         {
             if (projectRelative is null)
                 return null;
-            var dir = Path.GetDirectoryName(projectAbsPath);
+            var dir = Path.GetDirectoryName(projectAbsPath)!;
             if (string.IsNullOrEmpty(projectRelative))
                 return dir;
             var combined = Path.Combine(dir, projectRelative);
@@ -58,7 +58,7 @@ namespace Reko.Core.Serialization
         {
             if (projectLocation is null || projectRelativeUri is null)
                 return null;
-            var projectDir = Path.GetDirectoryName(projectLocation.FilesystemPath);
+            var projectDir = Path.GetDirectoryName(projectLocation.FilesystemPath)!;
             return new ImageLocation(projectDir).Combine(projectRelativeUri);
         }
 

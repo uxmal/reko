@@ -178,9 +178,9 @@ namespace Reko.Arch.Arm.AArch32
         private (MachineOperand[], bool) RenderMnemonic(MachineInstructionRenderer renderer)
         {
             var sb = new StringBuilder();
-            string sMnemonic;
+            string? sMnemonic;
             var ops = (this.Operands, this.Writeback);
-            if (aliases.TryGetValue(Mnemonic, out ArmAlias armAlias) &&
+            if (aliases.TryGetValue(Mnemonic, out ArmAlias? armAlias) &&
                 armAlias.Matches(this))
             {
                 sMnemonic = armAlias.sMnemonic;

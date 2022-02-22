@@ -252,7 +252,7 @@ namespace Reko.Arch.X86
             if (range.IsEmpty)
                 return null;
             RegisterStorage? reg = null;
-            if (Registers.SubRegisters.TryGetValue(domain, out RegisterStorage[] subregs))
+            if (Registers.SubRegisters.TryGetValue(domain, out RegisterStorage[]? subregs))
             {
                 for (int i = 0; i < subregs.Length; ++i)
                 {

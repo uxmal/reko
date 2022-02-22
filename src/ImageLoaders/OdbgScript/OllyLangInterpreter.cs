@@ -1893,7 +1893,7 @@ namespace Reko.ImageLoaders.OdbgScript
 
         void CHC_TRAMPOLINE(object ExceptionData, eCustomException ExceptionId)
         {
-            if (CustomHandlerLabels.TryGetValue(ExceptionId, out Expression it))
+            if (CustomHandlerLabels.TryGetValue(ExceptionId, out Expression? it))
             {
                 //variables["$TE_ARG_1"] = (rulong)ExceptionData;
                 DoCALL(it);
@@ -1918,9 +1918,8 @@ namespace Reko.ImageLoaders.OdbgScript
             if (Lib != null)
             {
                 Dictionary<string, string> labels = LibraryBreakpointLabels[bpxType];
-                if (labels.TryGetValue(Lib.szLibraryPath!, out string it))
+                if (labels.TryGetValue(Lib.szLibraryPath!, out string? it))
                 {
-
                     DoCALL(new[] { MkString(it) });
                 }
             }

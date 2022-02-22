@@ -1518,7 +1518,7 @@ refinement on the loop body, which we describe below.
             }
         }
 
-        private VirtualEdge FindLastResortEdge(ISet<Region> regions)
+        private VirtualEdge? FindLastResortEdge(ISet<Region> regions)
         {
             var edges = regions.SelectMany(
                 n => regionGraph.Successors(n).

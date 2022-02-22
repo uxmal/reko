@@ -150,7 +150,7 @@ namespace Reko.Scanning
 
         public ValueSet VisitCast(Cast cast, BitRange bitRange)
         {
-            if (this.context.TryGetValue(cast, out ValueSet vs))
+            if (this.context.TryGetValue(cast, out ValueSet? vs))
                 return vs;
             var bitRangeNarrow = new BitRange(0, (short)cast.DataType.BitSize);
             vs = cast.Expression.Accept(this, bitRangeNarrow);
@@ -187,7 +187,7 @@ namespace Reko.Scanning
 
         public ValueSet VisitConversion(Conversion conversion, BitRange bitRange)
         {
-            if (this.context.TryGetValue(conversion, out ValueSet vs))
+            if (this.context.TryGetValue(conversion, out ValueSet? vs))
                 return vs;
             var bitRangeNarrow = new BitRange(0, (short) conversion.DataType.BitSize);
             vs = conversion.Expression.Accept(this, bitRangeNarrow);
@@ -220,7 +220,7 @@ namespace Reko.Scanning
 
         public ValueSet VisitIdentifier(Identifier id, BitRange bitRange)
         {
-            if (context.TryGetValue(id, out ValueSet vs))
+            if (context.TryGetValue(id, out ValueSet? vs))
                 return vs;
             if (state != null && state.GetValue(id) is Constant c && c.IsValid)
                 return new ConcreteValueSet(c.DataType, c);
@@ -240,7 +240,7 @@ namespace Reko.Scanning
         /// <returns></returns>
         public ValueSet VisitMemoryAccess(MemoryAccess access, BitRange bitRange)
         {
-            if (context.TryGetValue(access, out ValueSet value))
+            if (context.TryGetValue(access, out ValueSet? value))
             {
                 return value;
             }
@@ -398,7 +398,7 @@ namespace Reko.Scanning
 
         public ValueSet VisitSegmentedAccess(SegmentedAccess access, BitRange bitRange)
         {
-            if (context.TryGetValue(access, out ValueSet value))
+            if (context.TryGetValue(access, out ValueSet? value))
             {
                 return value;
             }

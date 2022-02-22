@@ -242,7 +242,7 @@ namespace Reko.Core.Lib
             var blocks = new SortedDictionary<string, T?>();
             foreach (KeyValuePair<T,T?> node in idoms)
             {
-                blocks.Add(node.Key.ToString(), node.Value);
+                blocks.Add(node.Key.ToString()!, node.Value);
             }
 
             foreach (KeyValuePair<string,T?> b in blocks)

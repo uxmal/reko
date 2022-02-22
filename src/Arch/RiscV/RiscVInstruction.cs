@@ -103,7 +103,7 @@ namespace Reko.Arch.RiscV
         private void RenderMnemonic(MachineInstructionRenderer renderer)
         {
             var sb = new StringBuilder();
-            if (mnemonicNames.TryGetValue(Mnemonic, out string name))
+            if (mnemonicNames.TryGetValue(Mnemonic, out string? name))
             {
                 sb.Append(name);
             }

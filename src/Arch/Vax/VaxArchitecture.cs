@@ -27,6 +27,7 @@ using Reko.Core.Rtl;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
 
@@ -112,7 +113,7 @@ namespace Reko.Arch.Vax
         {
             return Enum.GetValues(typeof(Mnemonic))
                 .Cast<Mnemonic>()
-                .ToSortedList(v => Enum.GetName(typeof(Mnemonic), v), v => (int)v);
+                .ToSortedList(v => Enum.GetName(typeof(Mnemonic), v)!, v => (int)v);
         }
 
         public override int? GetMnemonicNumber(string name)
@@ -184,7 +185,7 @@ namespace Reko.Arch.Vax
             throw new NotImplementedException();
         }
 
-        public override bool TryGetRegister(string name, out RegisterStorage reg)
+        public override bool TryGetRegister(string name, [MaybeNullWhen(false)] out RegisterStorage reg)
         {
             return regsByName.TryGetValue(name, out reg);
         }

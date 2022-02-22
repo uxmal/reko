@@ -409,8 +409,6 @@ namespace Reko.ImageLoaders.Elf.Relocators
             ulong PP = P;
             var relR = program.CreateImageReader(program.Architecture, addr);
             var relW = program.CreateImageWriter(program.Architecture, addr);
-            int sh = 0;
-            uint mask = 0;
             if (!relR.TryPeekBeUInt32(0, out uint w))
                 return (null, null);
             uint A = (rel.Addend.HasValue)

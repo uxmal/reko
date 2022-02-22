@@ -60,7 +60,7 @@ namespace Reko.Arch.PowerPC
 
         public override Constant GetRegister(RegisterStorage reg)
         {
-            if (regs.TryGetValue(reg, out Constant value))
+            if (regs.TryGetValue(reg, out Constant? value))
             {
                 return value;
             }

@@ -42,16 +42,16 @@ namespace Reko.Core
     /// </remarks>
     public static class TypedServiceProvider
     {
-        public static T GetService<T>(this IServiceProvider sp)
+        public static T? GetService<T>(this IServiceProvider sp)
         {
-            return (T)sp.GetService(typeof(T));
+            return (T?)sp.GetService(typeof(T));
         }
 
         public static T RequireService<T>(this IServiceProvider sp) where T : class
         {
             var result = sp.GetService<T>();
             if (result == default(T))
-                throw new InvalidOperationException(string.Format("Service {0} is required.", typeof(T).Name));
+                throw new InvalidOperationException($"Service {typeof(T).Name} is required.");
             return result;
         }
 

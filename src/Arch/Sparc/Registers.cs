@@ -25,6 +25,7 @@ using Reko.Core.Machine;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
 
@@ -138,7 +139,7 @@ namespace Reko.Arch.Sparc
             return IntegerRegisters[r & 0x1F];
         }
 
-        public bool TryGetRegister(string regName, out RegisterStorage reg)
+        public bool TryGetRegister(string regName, [MaybeNullWhen(false)] out RegisterStorage reg)
         {
             return mpNameToReg.TryGetValue(regName, out reg);
         }

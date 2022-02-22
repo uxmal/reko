@@ -75,7 +75,7 @@ namespace Reko.Environments.MacOS.Classic
             foreach (var decl in declarations.OfType<CallableDeclaration>())
             {
                 var ft = (SerializedSignature) decl.Accept(typeImporter);
-                if (!(decl.Body is InlineMachineCode inline))
+                if (decl.Body is not InlineMachineCode inline)
                     continue;
                 var ici = new InlineCodeInterpreter(constants);
                 var syscall =  ici.BuildSystemCallFromMachineCode(decl.Name, ft, inline.Opcodes);
@@ -83,7 +83,7 @@ namespace Reko.Environments.MacOS.Classic
                 {
                     var svc = syscall.Build(platform, typelib);
                     PostProcessSignature(platform, svc);
-                    if (!module.ServicesByVector.TryGetValue(svc.SyscallInfo!.Vector, out List<SystemService> svcs))
+                    if (!module.ServicesByVector.TryGetValue(svc.SyscallInfo!.Vector, out List<SystemService>? svcs))
                     {
                         svcs = new List<SystemService>();
                         module.ServicesByVector.Add(svc.SyscallInfo.Vector, svcs);

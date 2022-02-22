@@ -82,7 +82,7 @@ namespace Reko.ImageLoaders.Elf
             this.loader = loader;
             this.shdr = shdr;
             this.machine = machine;
-            if (!ElfDynamicEntry.MachineSpecificInfos.TryGetValue(machine, out machineSpecific))
+            if (!ElfDynamicEntry.MachineSpecificInfos.TryGetValue(machine, out machineSpecific!))
             {
                 machineSpecific = new Dictionary<long, ElfDynamicEntry.TagInfo>();
             }
@@ -183,7 +183,7 @@ namespace Reko.ImageLoaders.Elf
         {
             this.loader = loader;
             this.shdr = shdr;
-            if (!ElfDynamicEntry.MachineSpecificInfos.TryGetValue(machine, out machineSpecific))
+            if (!ElfDynamicEntry.MachineSpecificInfos.TryGetValue(machine, out machineSpecific!))
             {
                 machineSpecific = new Dictionary<long, ElfDynamicEntry.TagInfo>();
             }

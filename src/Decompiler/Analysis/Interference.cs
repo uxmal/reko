@@ -61,8 +61,10 @@ namespace Reko.Analysis
 
 		#region IComparable Members
 
-		public int CompareTo(Interference i)
+		public int CompareTo(Interference? i)
 		{
+            if (i == null)
+                return 1;
             int d = string.Compare(Identifier1.Name, i.Identifier1.Name);
 			if (d != 0)
 				return d;

@@ -183,7 +183,7 @@ namespace Reko.Scanning
                 program,
                 addrInstr,
                 format,
-                services);
+                services)!;
             varargsParser.Parse();
             return varargsParser.ArgumentTypes;
         }
@@ -193,7 +193,7 @@ namespace Reko.Scanning
             FunctionType sig,
             IEnumerable<DataType> argumentTypes)
         {
-            var fixedArgs = sig.Parameters.TakeWhile(p => p.Name != "...").ToList();
+            var fixedArgs = sig.Parameters!.TakeWhile(p => p.Name != "...").ToList();
             var cc = platform.GetCallingConvention(""); //$REVIEW: default CC tends to be __cdecl.
             //$BUG: what if platform returns null or throws?
             var allTypes = fixedArgs

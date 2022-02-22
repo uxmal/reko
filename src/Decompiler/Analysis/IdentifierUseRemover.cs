@@ -23,7 +23,7 @@ namespace Reko.Analysis
 
         protected override void UseIdentifier(Identifier id)
         {
-            if (identifiers.TryGetValue(id, out var sid))
+            if (identifiers.TryGetValue(id, out SsaIdentifier? sid))
                 sid.Uses.RemoveAll(u => u == this.stm);
         }
     }

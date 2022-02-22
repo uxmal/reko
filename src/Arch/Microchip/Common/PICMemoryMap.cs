@@ -25,6 +25,7 @@ using Reko.Core.Expressions;
 using Reko.Libraries.Microchip;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 
 namespace Reko.Arch.MicrochipPIC.Common
@@ -67,7 +68,7 @@ namespace Reko.Arch.MicrochipPIC.Common
             /// </summary>
             class MemoryDomainKeyEqualityComparer : IEqualityComparer<MemoryDomainKey>
             {
-                public bool Equals(MemoryDomainKey x, MemoryDomainKey y)
+                public bool Equals(MemoryDomainKey? x, MemoryDomainKey? y)
                 {
                     if (ReferenceEquals(x, y))
                         return true;
@@ -131,7 +132,7 @@ namespace Reko.Arch.MicrochipPIC.Common
             /// <returns>
             /// True if it succeeds, false if it fails.
             /// </returns>
-            public bool GetTrait(PICMemoryDomain dom, PICMemorySubDomain subdom, out IPICMemTrait trait)
+            public bool GetTrait(PICMemoryDomain dom, PICMemorySubDomain subdom, [MaybeNullWhen(false)] out IPICMemTrait trait)
             {
                 if (!maptraits.TryGetValue(new MemoryDomainKey(dom, subdom), out trait))
                     trait = memtraitdefault;
@@ -146,7 +147,7 @@ namespace Reko.Arch.MicrochipPIC.Common
             /// <returns>
             /// True if it succeeds, false if it fails.
             /// </returns>
-            public bool GetTrait(PICMemorySubDomain subdom, out IPICMemTrait trait)
+            public bool GetTrait(PICMemorySubDomain subdom, [MaybeNullWhen(false)] out IPICMemTrait trait)
                 => GetTrait(subdom.GetDomain(), subdom, out trait);
 
         }
@@ -188,7 +189,7 @@ namespace Reko.Arch.MicrochipPIC.Common
                 SubtypeOfMemory = memSubDomain;
                 if (SubtypeOfMemory != PICMemorySubDomain.NNMR)  // Non-Memory-Mapped-Registers have no memory characteristics.
                 {
-                    if (!this.traits.GetTrait(memDomain, memSubDomain, out IPICMemTrait trait))
+                    if (!this.traits.GetTrait(memDomain, memSubDomain, out IPICMemTrait? trait))
                         throw new InvalidOperationException($"Missing characteristics for [{memDomain}/{memSubDomain}] memory region '{RegionName}'");
                     Trait = trait;
                 }
@@ -372,7 +373,7 @@ namespace Reko.Arch.MicrochipPIC.Common
                 BankSize = bankSz;
                 FSRByteAddress = regnAddr;
                 BlockByteRange = blockRng;
-                if (!this.traits.GetTrait(TypeOfMemory, SubtypeOfMemory, out IPICMemTrait trait))
+                if (!this.traits.GetTrait(TypeOfMemory, SubtypeOfMemory, out IPICMemTrait? trait))
                     throw new InvalidOperationException($"Missing characteristics for [{TypeOfMemory}/{SubtypeOfMemory}] linear region");
                 Trait = trait;
             }
@@ -527,7 +528,7 @@ namespace Reko.Arch.MicrochipPIC.Common
             /// <returns>
             /// The data memory region.
             /// </returns>
-            public IMemoryRegion GetRegionByName(string sRegionName)
+            public IMemoryRegion? GetRegionByName(string sRegionName)
                 => memRegions.Find(r => r.RegionName == sRegionName);
 
             /// <summary>
@@ -537,7 +538,7 @@ namespace Reko.Arch.MicrochipPIC.Common
             /// <returns>
             /// The data memory region.
             /// </returns>
-            public IMemoryRegion GetRegionByAddress(Address virtAddr)
+            public IMemoryRegion? GetRegionByAddress(Address virtAddr)
                 => memRegions.Find(r => r.Contains(virtAddr));
 
             public virtual void AddRegion(T regn)
@@ -672,7 +673,7 @@ namespace Reko.Arch.MicrochipPIC.Common
             /// <returns>
             /// The region by selector.
             /// </returns>
-            public IMemoryRegion GetRegionBySelector(Constant bankSel)
+            public IMemoryRegion? GetRegionBySelector(Constant bankSel)
                 => memRegions.Find(r => r.BankSelector == bankSel);
 
             protected override AddressRange CreateMemRange(uint begAddr, uint endAddr)
@@ -773,7 +774,7 @@ namespace Reko.Arch.MicrochipPIC.Common
         /// <returns>
         /// The data memory region or null.
         /// </returns>
-        public IMemoryRegion GetDataRegionByName(string sRegionName) => dataMap.GetRegionByName(sRegionName);
+        public IMemoryRegion? GetDataRegionByName(string sRegionName) => dataMap.GetRegionByName(sRegionName);
 
         /// <summary>
         /// Gets a data memory region given a memory virtual address.
@@ -782,7 +783,7 @@ namespace Reko.Arch.MicrochipPIC.Common
         /// <returns>
         /// The data memory region or null.
         /// </returns>
-        public IMemoryRegion GetDataRegionByAddress(Address aVirtAddr) => dataMap.GetRegionByAddress(aVirtAddr);
+        public IMemoryRegion? GetDataRegionByAddress(Address aVirtAddr) => dataMap.GetRegionByAddress(aVirtAddr);
 
         /// <summary>
         /// Gets a data memory region given a bank selector.
@@ -791,7 +792,7 @@ namespace Reko.Arch.MicrochipPIC.Common
         /// <returns>
         /// The data memory region or null.
         /// </returns>
-        public IMemoryRegion GetDataRegionBySelector(Constant bankSel) => dataMap.GetRegionBySelector(bankSel);
+        public IMemoryRegion? GetDataRegionBySelector(Constant bankSel) => dataMap.GetRegionBySelector(bankSel);
 
         /// <summary>
         /// Gets a list of data regions.
@@ -835,7 +836,7 @@ namespace Reko.Arch.MicrochipPIC.Common
         /// <returns>
         /// The program memory region or null.
         /// </returns>
-        public IMemoryRegion GetProgramRegionByName(string sRegionName)
+        public IMemoryRegion? GetProgramRegionByName(string sRegionName)
             => progMap.GetRegionByName(sRegionName);
 
         /// <summary>
@@ -845,7 +846,7 @@ namespace Reko.Arch.MicrochipPIC.Common
         /// <returns>
         /// The program memory region.
         /// </returns>
-        public IMemoryRegion GetProgramRegionByAddress(Address aVirtAddr)
+        public IMemoryRegion? GetProgramRegionByAddress(Address aVirtAddr)
             => progMap.GetRegionByAddress(aVirtAddr);
 
         /// <summary>
@@ -871,7 +872,7 @@ namespace Reko.Arch.MicrochipPIC.Common
         /// </returns>
         public (uint LocSize, uint WordSize) SubDomainSizes(PICMemorySubDomain subdom)
         {
-            if (traits.GetTrait(subdom, out IPICMemTrait t))
+            if (traits.GetTrait(subdom, out IPICMemTrait? t))
                 return (t.LocSize, t.WordSize);
             return (0, 0);
         }

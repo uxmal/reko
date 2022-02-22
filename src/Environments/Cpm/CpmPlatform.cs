@@ -46,7 +46,7 @@ namespace Reko.Environments.Cpm
             get { return ""; }
         }
 
-        public override MemoryMap_v1 MemoryMap
+        public override MemoryMap_v1? MemoryMap
         {
             get { return base.MemoryMap; }
             set { base.MemoryMap = value; OnMemoryMapChanged(); }
@@ -110,7 +110,7 @@ namespace Reko.Environments.Cpm
             var tser = new TypeLibraryDeserializer(this, true, Metadata);
             var sser = new ProcedureSerializer(this, tser, DefaultCallingConvention);
             var disps = new Dictionary<Address, DispatchProcedure>();
-            foreach (var callable in this.MemoryMap.Segments.SelectMany(s => s.Procedures))
+            foreach (var callable in this.MemoryMap!.Segments!.SelectMany(s => s.Procedures!))
             {
                 if (callable is DispatchProcedure_v1 sDisp)
                 {

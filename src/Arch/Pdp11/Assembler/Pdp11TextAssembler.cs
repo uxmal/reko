@@ -253,8 +253,7 @@ namespace Reko.Assemblers.Pdp11
 
         private object Evaluate(string symbol)
         {
-            object value;
-            if (!Assembler.Equates.TryGetValue(symbol, out value))
+            if (!Assembler.Equates.TryGetValue(symbol, out object? value))
                 value = symbol;
             return value;
         }

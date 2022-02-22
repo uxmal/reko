@@ -43,7 +43,7 @@ namespace Reko.Core
         {
             get
             {
-                if (map.TryGetValue(linAddress, out Constant c))
+                if (map.TryGetValue(linAddress, out Constant? c))
                     return c;
                 else
                     return null;

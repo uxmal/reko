@@ -29,6 +29,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 
 namespace Reko.Arch.PowerPC
@@ -255,7 +256,7 @@ namespace Reko.Arch.PowerPC
             if (this.primaryDecoders == null)
             {
                 this.Options.TryGetValue(ProcessorOption.Model, out var model);
-                var iset = InstructionSet.Create((string)model);
+                var iset = InstructionSet.Create((string?)model);
                 this.primaryDecoders = iset.CreateDecoders();
             }
             return this.primaryDecoders;
@@ -265,7 +266,7 @@ namespace Reko.Arch.PowerPC
         {
             return Enum.GetValues(typeof(Mnemonic))
                 .Cast<Mnemonic>()
-                .ToSortedList(v => Enum.GetName(typeof(Mnemonic), v), v => (int)v);
+                .ToSortedList(v => Enum.GetName(typeof(Mnemonic), v)!, v => (int)v);
         }
 
         public override int? GetMnemonicNumber(string name)
@@ -288,7 +289,7 @@ namespace Reko.Arch.PowerPC
             return GetRegister(domain - StorageDomain.Register);
         }
 
-        public override RegisterStorage GetRegister(string name)
+        public override RegisterStorage? GetRegister(string name)
         {
             return this.regs.Where(r => r.Name == name).SingleOrDefault();
         }
@@ -298,7 +299,7 @@ namespace Reko.Arch.PowerPC
             return regs.ToArray();
         }
 
-        public override bool TryGetRegister(string name, out RegisterStorage reg)
+        public override bool TryGetRegister(string name, [MaybeNullWhen(false)] out RegisterStorage reg)
         {
             reg = GetRegister(name);
             return reg != null;

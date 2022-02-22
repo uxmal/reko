@@ -68,7 +68,7 @@ namespace Reko.Core.Configuration
             if (type is null)
                 throw new TypeLoadException(
                     string.Format("Unable to load {0} environment.", Description));
-            var platform = (Platform)Activator.CreateInstance(type, services, arch);
+            var platform = (Platform)Activator.CreateInstance(type, services, arch)!;
             LoadSettingsFromConfiguration(services, platform);
             return platform;
         }
@@ -194,7 +194,9 @@ namespace Reko.Core.Configuration
                 platform.EnsureTypeLibraries(platform.Name);
                 var tser = new TypeLibraryDeserializer(platform, true, platform.Metadata);
                 var sser = new ProcedureSerializer(platform, tser, platform.DefaultCallingConvention);
-                return platform.MemoryMap.Segments.SelectMany(s => s.Procedures)
+                return platform.MemoryMap.Segments
+                    .Where(s => s.Procedures is not null)
+                    .SelectMany(s => s.Procedures!)
                     .OfType<Procedure_v1>()
                     .Where(p => p.Name != null)
                     .Select(p =>

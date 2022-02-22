@@ -28,6 +28,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Reko.Arch.MicrochipPIC.Common
 {
@@ -63,18 +64,17 @@ namespace Reko.Arch.MicrochipPIC.Common
                     return 1;
                 if (ReferenceEquals(this, other))
                     return 0;
-                int res;
-                res = RegAddr.CompareTo(other.RegAddr);
+                int res = RegAddr.CompareTo(other.RegAddr);
                 if ((res = RegAddr.CompareTo(other.RegAddr)) != 0)
                     return res;
                 return BitPos.CompareTo(other.BitPos);
             }
 
-            public int CompareTo(object obj) => CompareTo(obj as BitFieldPosAndAddrKey);
+            public int CompareTo(object? obj) => CompareTo(obj as BitFieldPosAndAddrKey);
 
             public bool Equals(BitFieldPosAndAddrKey? other) => CompareTo(other) == 0;
 
-            public override bool Equals(object obj) => Equals(obj as BitFieldPosAndAddrKey);
+            public override bool Equals(object? obj) => Equals(obj as BitFieldPosAndAddrKey);
 
             public override int GetHashCode()
             {
@@ -250,7 +250,7 @@ namespace Reko.Arch.MicrochipPIC.Common
         /// True if it succeeds, false if it fails.
         /// </returns>
         /// <exception cref="ArgumentNullException">Thrown if <paramref name="regName"/> is null or empty string.</exception>
-        public static bool TryGetRegister(string regName, out PICRegisterStorage reg)
+        public static bool TryGetRegister(string regName, [MaybeNullWhen(false)] out PICRegisterStorage reg)
         {
             if (string.IsNullOrWhiteSpace(regName))
                 throw new ArgumentNullException(nameof(regName));
@@ -347,7 +347,7 @@ namespace Reko.Arch.MicrochipPIC.Common
         /// <returns>
         /// The register or <seealso cref="RegisterStorage.None"/>.
         /// </returns>
-        public static PICRegisterStorage PeekRegisterByIdx(int i)
+        public static PICRegisterStorage? PeekRegisterByIdx(int i)
         {
             lock (symTabLock)
             {
@@ -365,7 +365,7 @@ namespace Reko.Arch.MicrochipPIC.Common
         /// <returns>
         /// True if it succeeds, false if it fails.
         /// </returns>
-        public static bool TryGetBitField(string fieldName, out PICRegisterBitFieldStorage field)
+        public static bool TryGetBitField(string fieldName, [MaybeNullWhen(false)] out PICRegisterBitFieldStorage field)
         {
             if (string.IsNullOrWhiteSpace(fieldName))
                 throw new ArgumentNullException(nameof(fieldName));
@@ -386,7 +386,7 @@ namespace Reko.Arch.MicrochipPIC.Common
         public static PICRegisterBitFieldStorage GetBitField(string fieldName)
         {
             if (TryGetBitField(fieldName, out var fld))
-                return fld;
+                return fld!;
             throw new InvalidOperationException($"Missing definition of bit field '{fieldName}' in symbol table.");
         }
 
@@ -401,7 +401,7 @@ namespace Reko.Arch.MicrochipPIC.Common
         /// <returns>
         /// True if bit-field found, false otherwise.
         /// </returns>
-        public static bool TryGetBitField(PICRegisterStorage parentReg, out PICRegisterBitFieldStorage field, byte bitPos, byte bitWidth = 0)
+        public static bool TryGetBitField(PICRegisterStorage parentReg, [MaybeNullWhen(false)] out PICRegisterBitFieldStorage field, byte bitPos, byte bitWidth = 0)
         {
             field = null!;
             if (parentReg is null)
@@ -432,7 +432,7 @@ namespace Reko.Arch.MicrochipPIC.Common
         /// True if bit-field found, false otherwise.
         /// </returns>
         /// <exception cref="ArgumentNullException">Thrown when one or more required arguments are null.</exception>
-        public static bool TryGetBitField(PICDataAddress regAddress, out PICRegisterBitFieldStorage field, byte bitPos, byte bitWidth = 0)
+        public static bool TryGetBitField(PICDataAddress regAddress, [MaybeNullWhen(false)] out PICRegisterBitFieldStorage field, byte bitPos, byte bitWidth = 0)
         {
             field = null!;
             if (regAddress is null)
@@ -457,11 +457,11 @@ namespace Reko.Arch.MicrochipPIC.Common
         /// <returns>
         /// True if bit-field found, false otherwise.
         /// </returns>
-        public static bool TryGetBitField(string regName, out PICRegisterBitFieldStorage field, byte bitPos, byte bitWidth = 0)
+        public static bool TryGetBitField(string regName, [MaybeNullWhen(false)] out PICRegisterBitFieldStorage field, byte bitPos, byte bitWidth = 0)
         {
             field = null!;
             if (TryGetRegister(regName, out var reg))
-                return TryGetBitField(reg, out field, bitPos, bitWidth);
+                return TryGetBitField(reg!, out field, bitPos, bitWidth);
             return false;
         }
 
@@ -486,7 +486,7 @@ namespace Reko.Arch.MicrochipPIC.Common
         /// etc)</code>
         /// do exist.
         /// </remarks>
-        public static RegisterStorage? GetSubregister(RegisterStorage reg, int offset, int width)
+        public static RegisterStorage? GetSubregister(RegisterStorage? reg, int offset, int width)
         {
             if (reg is null)
                 throw new ArgumentNullException(nameof(reg));
@@ -603,7 +603,7 @@ namespace Reko.Arch.MicrochipPIC.Common
         /// True if it succeeds, false if it fails.
         /// </returns>
         /// <exception cref="ArgumentNullException">Thrown if <paramref name="regAddr"/> is null.</exception>
-        public static bool TryGetAlwaysAccessibleRegister(PICBankedAddress regAddr, out PICRegisterStorage reg)
+        public static bool TryGetAlwaysAccessibleRegister(PICBankedAddress regAddr, [MaybeNullWhen(false)] out PICRegisterStorage reg)
         {
             if (regAddr == null)
                 throw new ArgumentNullException(nameof(regAddr));
@@ -618,7 +618,7 @@ namespace Reko.Arch.MicrochipPIC.Common
         /// <returns>
         /// True if it succeeds, false if it fails.
         /// </returns>
-        public static bool TryGetAlwaysAccessibleRegister(ushort regOffset, out PICRegisterStorage reg)
+        public static bool TryGetAlwaysAccessibleRegister(ushort regOffset, [MaybeNullWhen(false)] out PICRegisterStorage reg)
             => alwayAccessibleRegisters.TryGetValue(regOffset, out reg);
 
 

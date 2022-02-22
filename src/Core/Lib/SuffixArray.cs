@@ -44,12 +44,14 @@ namespace Reko.Core.Lib
         }
 
         public static SuffixArray<T> Load<T>(T[] arr, int [] intArray)
+            where T : notnull
         {
             return new SuffixArray<T>(arr, intArray);
         }
     }
 
     public class SuffixArray<T>
+            where T : notnull
     {
         private const int EOC = int.MaxValue;
         private int[] m_sa;
@@ -449,8 +451,10 @@ namespace Reko.Core.Lib
                 this.outer = outer;
             }
 
-            public int CompareTo(Chain other)
+            public int CompareTo(Chain? other)
             {
+                if (other is null)
+                    return 1;
                 return outer.Match(head, length, other.head, other.length);
             }
 

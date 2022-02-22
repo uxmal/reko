@@ -204,7 +204,7 @@ namespace Reko.Arch.M68k
 
         public static RegisterStorage GetRegister(string name)
         {
-            if (!regsByName.TryGetValue(name, out RegisterStorage reg))
+            if (!regsByName.TryGetValue(name, out RegisterStorage? reg))
             {
                 reg = RegisterStorage.None;
             }

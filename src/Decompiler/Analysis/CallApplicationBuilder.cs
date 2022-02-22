@@ -122,7 +122,7 @@ namespace Reko.Analysis
         {
             // If the architecture has no subregisters, this test will
             // be true.
-            if (ctx.map.TryGetValue(reg, out CallBinding cb))
+            if (ctx.map.TryGetValue(reg, out CallBinding? cb))
                 return cb.Expression;
             // If the architecture has subregisters, we need a more
             // expensive test.

@@ -331,7 +331,7 @@ namespace Reko.Arch.MicrochipPIC.Common
 
             if (PICRegisters.TryGetAlwaysAccessibleRegister(bankmem, out var reg))
             {
-                renderer.WriteString($"{reg.Name}");
+                renderer.WriteString($"{reg!.Name}");
             }
             else
             {

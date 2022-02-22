@@ -26,6 +26,7 @@ using Reko.Core.Rtl;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Reko.Arch.zSeries
 {
@@ -181,7 +182,7 @@ namespace Reko.Arch.zSeries
             this.StackRegister = Registers.GpRegisters[15];
         }
 
-        public override bool TryGetRegister(string name, out RegisterStorage reg)
+        public override bool TryGetRegister(string name, [MaybeNullWhen(false)] out RegisterStorage reg)
         {
             return Registers.RegistersByName.TryGetValue(name, out reg);
         }

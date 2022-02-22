@@ -51,7 +51,7 @@ namespace Reko.Arch.MilStd1750
 
         public override Constant GetRegister(RegisterStorage r)
         {
-            if (!regValues.TryGetValue(r, out Constant value))
+            if (!regValues.TryGetValue(r, out Constant? value))
             {
                 value = Constant.Zero(r.DataType);
             }

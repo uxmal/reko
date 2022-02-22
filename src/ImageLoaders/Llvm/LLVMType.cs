@@ -41,8 +41,7 @@ namespace Reko.ImageLoaders.LLVM
             if (sType[0] == 'i')
             {
                 int bitsize = int.Parse(sType.Substring(1));
-                LLVMBaseType i;
-                if (!intTypes.TryGetValue(bitsize, out i))
+                if (!intTypes.TryGetValue(bitsize, out LLVMBaseType? i))
                 {
                     i = new LLVMBaseType(sType, Domain.Integral, bitsize);
                     intTypes.Add(bitsize, i);

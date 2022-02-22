@@ -537,7 +537,7 @@ namespace Reko.ImageLoaders.MzExe
 		{
             relocator = CreateRelocator(machine, program);
             var relocations = imgLoaded.Relocations;
-			Section relocSection;
+			Section? relocSection;
             if (rvaBaseRelocationTable != 0 &&
                 (relocSection = sectionList.Find(section => 
                     this.rvaBaseRelocationTable >= section.VirtualAddress &&

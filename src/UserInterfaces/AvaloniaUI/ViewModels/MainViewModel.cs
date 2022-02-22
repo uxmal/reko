@@ -41,13 +41,12 @@ namespace Reko.UserInterfaces.AvaloniaUI.ViewModels
         private MainFormInteractor interactor;
         private readonly DockFactory dockFactory;
 
-        public MainViewModel(IServiceContainer services, IMainForm mainForm)
+        public MainViewModel(IServiceContainer services, DockFactory dockFactory, IMainForm mainForm)
         {
             trace.Inform("MainViewModel constructor");
 
-            dockFactory = new DockFactory(new Project());
-            DebugFactoryEvents(dockFactory);
-            services.AddService<IDecompilerShellUiService>(new AvaloniaShellUiService(services, dockFactory));
+            this.dockFactory = dockFactory;
+            DebugFactoryEvents(this.dockFactory);
 
             var svcFactory = new AvaloniaServiceFactory(services, this);
             services.AddService<IServiceFactory>(svcFactory);

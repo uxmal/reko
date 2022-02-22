@@ -304,7 +304,7 @@ namespace Reko.Core.Serialization
                 var el = doc.CreateElement("list", SerializedLibrary.Namespace_v5);
                 foreach (var oValue in ienum)
                 {
-                    el.AppendChild(SerializeValue(oValue, doc));
+                    el.AppendChild(SerializeValue(oValue, doc)!);
                 }
                 return el;
             }

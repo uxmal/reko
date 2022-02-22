@@ -181,7 +181,7 @@ namespace Reko.ImageLoaders.Elf
             return mode;
         }
 
-        public ElfSegment GetSegmentByAddress(ulong uAddr)
+        public ElfSegment? GetSegmentByAddress(ulong uAddr)
         {
             return Segments.FirstOrDefault(s => s.IsValidAddress(uAddr));
         }
@@ -558,7 +558,7 @@ namespace Reko.ImageLoaders.Elf
                 var addrSym = ReadAddress(rdr);
                 if (addrSym == null)
                     break;
-                if (symbols.TryGetValue(addrSym, out ImageSymbol symbol))
+                if (symbols.TryGetValue(addrSym, out ImageSymbol? symbol))
                 {
                     // This GOT entry is a known symbol!
                     if (symbol.Type == SymbolType.Procedure || symbol.Type == SymbolType.ExternalProcedure)
@@ -625,7 +625,7 @@ namespace Reko.ImageLoaders.Elf
             }
         }
 
-        public ElfSection GetSectionInfoByName(string sectionName)
+        public ElfSection? GetSectionInfoByName(string sectionName)
         {
             return Sections.FirstOrDefault(s => s.Name == sectionName);
         }
@@ -706,7 +706,7 @@ namespace Reko.ImageLoaders.Elf
 
         protected ImageSymbol EnsureEntryPoint(List<ImageSymbol> entryPoints, SortedList<Address, ImageSymbol> symbols, Address addr)
         {
-            if (!symbols.TryGetValue(addr, out ImageSymbol ep))
+            if (!symbols.TryGetValue(addr, out ImageSymbol? ep))
             {
                 ep = ImageSymbol.Procedure(this.Architecture, addr);
                 ep.ProcessorState = Architecture.CreateProcessorState();

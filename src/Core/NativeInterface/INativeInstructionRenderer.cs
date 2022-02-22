@@ -38,12 +38,12 @@ namespace Reko.Core.NativeInterface
         /// Annotations are displayed as comments at the end of the line.
         /// </summary>
         /// <param name="a"></param>
-        [PreserveSig] void AddAnnotation([MarshalAs(UnmanagedType.LPStr)] string a);
+        [PreserveSig] void AddAnnotation([MarshalAs(UnmanagedType.LPStr)] string? a);
 
         [PreserveSig] void WriteMnemonic([MarshalAs(UnmanagedType.LPStr)]string sMnemonic);
         [PreserveSig] void WriteAddress([MarshalAs(UnmanagedType.LPStr)]string formattedAddress, ulong uAddr);
         [PreserveSig] void Tab();
-        [PreserveSig] void WriteString([MarshalAs(UnmanagedType.LPStr)] string s);
+        [PreserveSig] void WriteString([MarshalAs(UnmanagedType.LPStr)] string? s);
         [PreserveSig] void WriteChar(char c);
         [PreserveSig] void WriteUInt32(uint n);
     }

@@ -52,7 +52,7 @@ namespace Reko.Core
 
         public abstract ExternalProcedure ResolveImportedProcedure(IDynamicLinker dynamicLinker, IPlatform platform, AddressContext ctx);
 
-        public abstract int CompareTo(ImportReference that);
+        public abstract int CompareTo(ImportReference? that);
 
         protected int CompareModuleNames(ImportReference that)
         {
@@ -79,11 +79,13 @@ namespace Reko.Core
             this.ImportName = importName;
         }
 
-        public override int CompareTo(ImportReference that)
+        public override int CompareTo(ImportReference? that)
         {
+            if (that is null)
+                return 1;
             if (this.GetType() != that.GetType())
             {
-                return this.GetType().FullName.CompareTo(this.GetType().FullName);
+                return this.GetType().FullName!.CompareTo(this.GetType().FullName);
             }
             System.Diagnostics.Debugger.Break();
             int cmp = CompareModuleNames(that);
@@ -148,11 +150,13 @@ namespace Reko.Core
             return string.Format("{0}_{1}", moduleName, ordinal);
         }
 
-        public override int CompareTo(ImportReference that)
+        public override int CompareTo(ImportReference? that)
         {
+            if (that is null)
+                return 1;
             if (this.GetType() != that.GetType())
             {
-                return this.GetType().FullName.CompareTo(this.GetType().FullName);
+                return this.GetType().FullName!.CompareTo(this.GetType().FullName);
             }
             int cmp = CompareModuleNames(that);
             if (cmp != 0)

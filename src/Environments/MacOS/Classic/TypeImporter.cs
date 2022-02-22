@@ -62,7 +62,7 @@ namespace Reko.Environments.MacOS.Classic
             var dt = array.ElementType.Accept(this);
             foreach (var dim in array.Dimensions)
             {
-                if (dim.Low is Id loId && pascalTypes.TryGetValue(loId.Name, out PascalType dtLo))
+                if (dim.Low is Id loId && pascalTypes.TryGetValue(loId.Name, out PascalType? dtLo))
                 {
                     if (dtLo is Core.Hll.Pascal.EnumType et)
                     {

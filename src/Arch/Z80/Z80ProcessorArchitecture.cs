@@ -27,6 +27,7 @@ using Reko.Core.Rtl;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
 
@@ -77,7 +78,7 @@ namespace Reko.Arch.Z80
             return Enum.GetValues(typeof(Mnemonic))
                 .Cast<Mnemonic>()
                 .ToSortedList(
-                    v => v == Mnemonic.ex_af ? "ex" : Enum.GetName(typeof(Mnemonic), v),
+                    v => v == Mnemonic.ex_af ? "ex" : Enum.GetName(typeof(Mnemonic), v)!,
                     v => (int)v);
         }
 
@@ -110,7 +111,7 @@ namespace Reko.Arch.Z80
             return Registers.Flags;
         }
 
-        public override bool TryGetRegister(string name, out RegisterStorage reg)
+        public override bool TryGetRegister(string name, [MaybeNullWhen(false)] out RegisterStorage reg)
         {
             return Registers.regsByName.TryGetValue(name, out reg);
         }

@@ -40,13 +40,13 @@ namespace Reko.Core.Machine
         [Conditional("DEBUG")]
         public static void DumpMaskedInstruction(uint wInstr, uint shMask, TMnemonic mnemonic)
         {
-            DumpMaskedInstruction(32, wInstr, shMask, mnemonic!.ToString());
+            DumpMaskedInstruction(32, wInstr, shMask, mnemonic.ToString()!);
         }
 
         [Conditional("DEBUG")]
         public static void DumpMaskedInstruction64(uint wInstr, uint shMask, TMnemonic mnemonic)
         {
-            DumpMaskedInstruction(64, wInstr, shMask, mnemonic!.ToString());
+            DumpMaskedInstruction(64, wInstr, shMask, mnemonic.ToString()!);
         }
     }
 

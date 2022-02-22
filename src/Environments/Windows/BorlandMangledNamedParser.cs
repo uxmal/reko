@@ -188,7 +188,7 @@ namespace Reko.Environments.Windows
             i = s.IndexOf('$', iStart);
             if (i < 0 || i == iStart)
                 return null;
-            if (!specialFnNames.TryGetValue(s.Substring(iStart, i - iStart), out string specialName))
+            if (!specialFnNames.TryGetValue(s.Substring(iStart, i - iStart), out string? specialName))
                 return null;
 
             ++i;    // skip by terminating '$'.

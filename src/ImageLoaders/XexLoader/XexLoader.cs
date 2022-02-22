@@ -312,7 +312,7 @@ namespace Reko.ImageLoaders.Xex
 
 				xexData.session_key = aes
 					.CreateDecryptor()
-					.TransformFinalBlock(xexData.loader_info.aes_key, 0, 16);
+					.TransformFinalBlock(xexData.loader_info.aes_key!, 0, 16);
 				decompilerEventListener.Info(
 					"XEX Session key: " + BitConverter.ToString(xexData.session_key).Replace("-", "")
 				);
@@ -406,7 +406,7 @@ namespace Reko.ImageLoaders.Xex
 			{
 				BlockSize = 128,
 				KeySize = 128,
-				Key = xexData.session_key,
+				Key = xexData.session_key!,
 				IV = ivec,
 				Mode = CipherMode.CBC,
 				Padding = PaddingMode.None
@@ -589,7 +589,7 @@ namespace Reko.ImageLoaders.Xex
 				UInt32 oldMemorySize = xexData.memorySize;
 
 				byte[] newMemoryData = new byte[extendedMemorySize];
-				Array.Copy(xexData.memoryData, newMemoryData, xexData.memorySize);
+				Array.Copy(xexData.memoryData!, newMemoryData, xexData.memorySize);
 				xexData.memorySize = extendedMemorySize;
 				xexData.memoryData = newMemoryData;
 

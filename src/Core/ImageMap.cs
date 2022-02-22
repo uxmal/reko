@@ -312,9 +312,9 @@ namespace Reko.Core
 
         private class ItemComparer : IComparer<Address>
 		{
-			public virtual int Compare(Address a, Address b)
+			public virtual int Compare(Address? a, Address? b)
 			{
-                return a.ToLinear().CompareTo(b.ToLinear());
+                return a!.ToLinear().CompareTo(b!.ToLinear());
 			}
 		}
 

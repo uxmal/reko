@@ -36,7 +36,7 @@ namespace Reko.Loading
             using (var stm = CreateReader(filename))
             {
                 var rdr = new StreamReader(stm, Encoding.UTF8);
-                string line = rdr.ReadLine();
+                string? line = rdr.ReadLine();
                 while (line!= null)
                 {
                     var m = re.Match(line);

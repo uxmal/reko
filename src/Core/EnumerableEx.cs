@@ -34,6 +34,7 @@ namespace Reko.Core
         public static SortedList<TKey, TSource> ToSortedList<TSource, TKey>(
             this IEnumerable<TSource> source,
             Func<TSource, TKey> keySelector)
+            where TKey : notnull
         {
             SortedList<TKey, TSource> list = new SortedList<TKey, TSource>();
             foreach (TSource item in source)
@@ -47,6 +48,7 @@ namespace Reko.Core
             this IEnumerable<TSource> source,
             Func<TSource, TKey> keySelector,
             Func<TSource, TElement> elementSelector)
+            where TKey : notnull
         {
             SortedList<TKey, TElement> list = new SortedList<TKey, TElement>();
             foreach (TSource item in source)
@@ -60,6 +62,7 @@ namespace Reko.Core
             this IEnumerable<TSource> source,
             Func<TSource, TKey> keySelector,
             IComparer<TKey> comparer)
+            where TKey : notnull
         {
             SortedList<TKey, TSource> list = new SortedList<TKey, TSource>(comparer);
             foreach (TSource item in source)
@@ -74,6 +77,7 @@ namespace Reko.Core
             Func<TSource, TKey> keySelector,
             Func<TSource, TValue> valueSelector,
             IComparer<TKey> comparer)
+            where TKey : notnull
         {
             SortedList<TKey, TValue> list = new SortedList<TKey, TValue>(comparer);
             foreach (TSource item in source)

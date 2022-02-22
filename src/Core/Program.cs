@@ -47,7 +47,7 @@ namespace Reko.Core
     [Designer("Reko.Gui.Design.ProgramDesigner,Reko.Gui")]
     public class Program : ILoadedImage, INotifyPropertyChanged
     {
-        public event PropertyChangedEventHandler PropertyChanged;
+        public event PropertyChangedEventHandler? PropertyChanged;
 
         public const string SingleFilePolicy = "SingleFile";
         public const string SegmentFilePolicy = "Segment";
@@ -633,7 +633,7 @@ namespace Reko.Core
                 return proc;
 
             bool deduceSignatureFromName = !string.IsNullOrEmpty(procedureName);
-            if (this.ImageSymbols.TryGetValue(addr, out ImageSymbol sym))
+            if (this.ImageSymbols.TryGetValue(addr, out ImageSymbol? sym))
             {
                 deduceSignatureFromName |= !string.IsNullOrEmpty(procedureName);
                 var generatedName = procedureName ?? sym.Name ?? this.NamingPolicy.ProcedureName(addr);

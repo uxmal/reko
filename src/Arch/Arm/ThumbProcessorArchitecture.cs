@@ -164,7 +164,7 @@ namespace Reko.Arch.Arm
         public override RegisterStorage? GetRegister(StorageDomain domain, BitRange range)
         {
             int i = domain - StorageDomain.Register;
-            if (regsByNumber.TryGetValue(i, out RegisterStorage reg))
+            if (regsByNumber.TryGetValue(i, out RegisterStorage? reg))
                 return reg;
             else
                 return null;
@@ -172,7 +172,7 @@ namespace Reko.Arch.Arm
 
         public override RegisterStorage? GetRegister(string name)
         {
-            if (regsByName.TryGetValue(name, out RegisterStorage reg))
+            if (regsByName.TryGetValue(name, out RegisterStorage? reg))
                 return reg;
             else
                 return null;
@@ -190,7 +190,7 @@ namespace Reko.Arch.Arm
 
         public override FlagGroupStorage GetFlagGroup(RegisterStorage flagRegister, uint grf)
         {
-            if (flagGroups.TryGetValue(grf, out FlagGroupStorage f))
+            if (flagGroups.TryGetValue(grf, out FlagGroupStorage? f))
             {
                 return f;
             }

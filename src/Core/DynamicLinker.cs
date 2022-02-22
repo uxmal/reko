@@ -209,16 +209,16 @@ namespace Reko.Core
                 foreach (var program in project.Programs)
                 {
                     // Try to find the imported procedure based on module + name.
-                    if (!program.EnvironmentMetadata.Modules.TryGetValue(moduleName!, out ModuleDescriptor mod))
+                    if (!program.EnvironmentMetadata.Modules.TryGetValue(moduleName!, out ModuleDescriptor? mod))
                         continue;
 
-                    if (mod.ServicesByName.TryGetValue(name, out SystemService svc))
+                    if (mod.ServicesByName.TryGetValue(name, out SystemService? svc))
                     {
                         var ep = new ExternalProcedure(svc.Name!, svc.Signature!, svc.Characteristics);
                         return new ProcedureConstant(platform.PointerType, ep);
                     }
 
-                    if (mod.GlobalsByName.TryGetValue(name, out ImageSymbol sym))
+                    if (mod.GlobalsByName.TryGetValue(name, out ImageSymbol? sym))
                     {
                         return CreateReferenceToImport(sym);
                     }

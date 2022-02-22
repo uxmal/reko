@@ -7,7 +7,7 @@
     <RootNamespace>Reko.Environments.Trs80</RootNamespace>
     <AssemblyName>Reko.Environments.Trs80</AssemblyName>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-    <TargetFramework>netstandard2.1</TargetFramework>
+    <TargetFramework>net5.0</TargetFramework>
     <Configurations>Debug;Release</Configurations>
   </PropertyGroup>
   <ItemGroup>

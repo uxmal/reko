@@ -86,7 +86,7 @@ namespace Reko.Loading
             var svc = Services.RequireService<IPluginLoaderService>();
             Type t = svc.GetType(typeName);
 
-            var ldr = (SignatureLoader)Activator.CreateInstance(t);
+            var ldr = (SignatureLoader)Activator.CreateInstance(t)!;
             return ldr;
         }
 

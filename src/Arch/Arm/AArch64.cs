@@ -28,6 +28,7 @@ using Reko.Core.Rtl;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Runtime.InteropServices;
 using System.Text;
 using Registers64 = Reko.Arch.Arm.AArch64.Registers;
@@ -221,7 +222,7 @@ namespace Reko.Arch.Arm
             return s.ToString();
         }
 
-        public override bool TryGetRegister(string name, out RegisterStorage reg)
+        public override bool TryGetRegister(string name, [MaybeNullWhen(false)] out RegisterStorage reg)
         {
             return Registers.ByName.TryGetValue(name, out reg);
         }

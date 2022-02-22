@@ -54,7 +54,7 @@ namespace Reko.Scanning
         public override Expression VisitIdentifier(Identifier id)
         {
             this.id = id;
-            if (!mapIds.TryGetValue(id, out Identifier idNew))
+            if (!mapIds.TryGetValue(id, out Identifier? idNew))
             {
                 idNew = id.Storage.Accept(this);
                 mapIds.Add(id, idNew);

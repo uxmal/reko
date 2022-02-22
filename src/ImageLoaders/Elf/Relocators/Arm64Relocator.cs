@@ -38,7 +38,7 @@ namespace Reko.ImageLoaders.Elf.Relocators
         {
             var addr = Address.Ptr64(rela.Offset);
             var rt = (Aarch64Rt) (rela.Info & 0xFFFF);
-            ulong A = (ulong) rela.Addend;
+            ulong A = (ulong) rela.Addend!;
             ulong S = symbol.Value;
 
             switch (rt)

@@ -31,6 +31,7 @@ namespace Reko.Core.Lib
     /// </summary>
     /// <typeparam name="T"></typeparam>
     public class DiGraph<T> : DirectedGraph<T>
+            where T : notnull
     {
         private readonly Dictionary<T, Node> nodes;
         private readonly NodeCollection nodeCollection;
@@ -189,7 +190,7 @@ namespace Reko.Core.Lib
 
         public void AddNode(T item)
         {
-            if (!nodes.TryGetValue(item, out Node node))
+            if (!nodes.TryGetValue(item, out Node? node))
             {
                 node = new Node(item);
                 nodes.Add(item, node);
@@ -198,7 +199,7 @@ namespace Reko.Core.Lib
 
         public bool RemoveNode(T item)
         {
-            if (!nodes.TryGetValue(item, out Node node))
+            if (!nodes.TryGetValue(item, out Node? node))
             {
                 return false;
             }

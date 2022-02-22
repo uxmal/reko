@@ -49,10 +49,10 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
             dlg.ArchitectureList.DataSource = asms;
         }
 
-        void BrowseButton_Click(object sender, EventArgs e)
+        private async void BrowseButton_Click(object sender, EventArgs e)
         {
             var uiSvc = dlg.Services.RequireService<IDecompilerShellUiService>();
-            var fileName = uiSvc.ShowOpenFileDialog(dlg.FileName.Text);
+            var fileName = await uiSvc.ShowOpenFileDialog(dlg.FileName.Text);
             if (!string.IsNullOrEmpty(fileName))
             {
                 dlg.FileName.Text = fileName;

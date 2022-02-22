@@ -22,7 +22,7 @@ namespace Reko.Core.NativeInterface
 		{
 			loader = ldr;
 			handle = ldr.LoadLibrary(libPath);
-			prv = (NativeProcessorArchitectureProvider)Marshal.PtrToStructure(ldr.GetSymbol(handle, SYM_NAME), typeof(NativeProcessorArchitectureProvider));
+			prv = (NativeProcessorArchitectureProvider)Marshal.PtrToStructure(ldr.GetSymbol(handle, SYM_NAME), typeof(NativeProcessorArchitectureProvider))!;
 		}
 
 		public new string Name {

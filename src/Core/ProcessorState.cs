@@ -131,8 +131,8 @@ namespace Reko.Core
 
         public Expression GetValue(RegisterStorage reg)
         {
-            Expression exp = GetRegister(reg);
-            if (!(exp is InvalidConstant))
+            Expression? exp = GetRegister(reg);
+            if (exp is not InvalidConstant)
                 return exp;
             if (linearDerived.TryGetValue(reg, out exp))
                 return exp;

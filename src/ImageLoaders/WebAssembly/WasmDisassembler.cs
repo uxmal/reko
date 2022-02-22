@@ -56,7 +56,7 @@ namespace Reko.ImageLoaders.WebAssembly
                 return null;
             }
             var opcode = (Mnemonic)b;
-            if (!decoders.TryGetValue(opcode, out string fmt))
+            if (!decoders.TryGetValue(opcode, out string? fmt))
             {
                 opcode = Mnemonic.unreachable;
                 fmt = "";

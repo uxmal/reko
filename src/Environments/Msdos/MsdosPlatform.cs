@@ -138,7 +138,7 @@ namespace Reko.Environments.Msdos
                         return null;
                 }
             }
-            if (signature.Parameters.Any(p => !(p.Storage is StackArgumentStorage)))
+            if (signature.Parameters!.Any(p => p.Storage is not StackArgumentStorage))
                 return null;
             if (signature.FpuStackDelta != 0 || signature.FpuStackArgumentMax >= 0)
                 return null;
@@ -201,7 +201,7 @@ namespace Reko.Environments.Msdos
 
         public void LoadRealmodeServices(IProcessorArchitecture arch)
         {
-            var prefix = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+            var prefix = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)!;
             var libPath = Path.Combine(prefix, "realmodeintservices.xml");
             if (!File.Exists(libPath))
             {

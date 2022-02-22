@@ -105,7 +105,7 @@ namespace Reko.Core.Services
                     return null;
                 }
             }
-            return (MetadataLoader)Activator.CreateInstance(loaderType, services, imageUri, bytes);
+            return (MetadataLoader)Activator.CreateInstance(loaderType, services, imageUri, bytes)!;
         }
 
         public CharacteristicsLibrary LoadCharacteristics(string name)
@@ -120,13 +120,13 @@ namespace Reko.Core.Services
 
         public string InstalledFileLocation(string name)
         {
-            string assemblyDir = Path.GetDirectoryName(GetType().Assembly.Location);
+            string assemblyDir = Path.GetDirectoryName(GetType().Assembly.Location)!;
             return Path.Combine(assemblyDir, name);
         }
 
         public string ImportFileLocation(string dllName)
         {
-            string assemblyDir = Path.GetDirectoryName(GetType().Assembly.Location);
+            string assemblyDir = Path.GetDirectoryName(GetType().Assembly.Location)!;
             return Path.Combine(assemblyDir, Path.ChangeExtension(dllName, ".xml"));
         }
     }

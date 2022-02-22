@@ -153,7 +153,7 @@ SP	top of stack
             EnsureTypeLibraries(PlatformIdentifier);
             foreach (var tl in Metadata.Modules.Values.Where(t => string.Compare(t.ModuleName, moduleName, true) == 0))
             {
-                if (tl.ServicesByOrdinal.TryGetValue(ordinal, out SystemService svc))
+                if (tl.ServicesByOrdinal.TryGetValue(ordinal, out SystemService? svc))
                 {
                     return new ExternalProcedure(svc.Name!, svc.Signature!);
                 }

@@ -94,10 +94,10 @@ namespace Reko.Arch.Qualcomm
             return GetEnumerator();
         }
 
-        private void EmitUnitTest(HexagonPacket packet, string mnemonic)
+        private void EmitUnitTest(HexagonPacket packet, string? mnemonic)
         {
             var testGenSvc = arch.Services.GetService<ITestGenerationService>();
-            testGenSvc?.ReportMissingRewriter("HexagonRw", packet, mnemonic, rdr, "");
+            testGenSvc?.ReportMissingRewriter("HexagonRw", packet, mnemonic ?? "Unknown", rdr, "");
         }
 
         private void ProcessPacket(HexagonPacket packet)

@@ -410,10 +410,13 @@ namespace Reko.Core.Output
                 formatter.Write("\t");
             }
 
-            public void WriteString(string s)
+            public void WriteString(string? s)
             {
-                chars += s.Length;
-                formatter.Write(s);
+                if (s is not null)
+                {
+                    chars += s.Length;
+                    formatter.Write(s);
+                }
             }
 
             public void WriteUInt32(uint n)
@@ -472,9 +475,12 @@ namespace Reko.Core.Output
                 formatter.WriteLine();
             }
 
-            public void AddAnnotation(string annotation)
+            public void AddAnnotation(string? annotation)
             {
-                annotations.Add(annotation);
+                if (!string.IsNullOrEmpty(annotation))
+                {
+                    annotations.Add(annotation);
+                }
             }
         }
 

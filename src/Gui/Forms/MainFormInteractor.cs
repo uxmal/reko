@@ -256,11 +256,11 @@ namespace Reko.Gui.Forms
         public async ValueTask OpenBinaryWithPrompt()
         {
             var uiSvc = Services.RequireService<IDecompilerShellUiService>();
-            var fileName = uiSvc.ShowOpenFileDialog(null);
+            var fileName = await uiSvc.ShowOpenFileDialog(null);
             if (fileName is not null)
             {
                 RememberFilenameInMru(fileName);
-                CloseProject();
+                await CloseProject();
                 await SwitchInteractor(InitialPageInteractor);
                 if (!await pageInitial.OpenBinary(fileName))
                     return;
@@ -280,9 +280,9 @@ namespace Reko.Gui.Forms
         /// <summary>
         /// Prompts the user for a metadata file and adds to the project.
         /// </summary>
-        public void AddMetadataFile()
+        public async ValueTask AddMetadataFile()
         {
-            var fileName = uiSvc.ShowOpenFileDialog(null);
+            var fileName = await uiSvc.ShowOpenFileDialog(null);
             if (fileName is null)
                 return;
             var projectLoader = new ProjectLoader(
@@ -299,16 +299,16 @@ namespace Reko.Gui.Forms
             }
             catch (Exception e)
             {
-                uiSvc.ShowError(e, "An error occured while parsing the metadata file {0}", fileName);
+                await uiSvc.ShowError(e, "An error occured while parsing the metadata file {0}", fileName);
             }
         }
 
         /// <summary>
         /// Prompts the user for a script file and adds to the project.
         /// </summary>
-        private void AddScriptFile()
+        private async ValueTask AddScriptFile()
         {
-            var fileName = uiSvc.ShowOpenFileDialog(null);
+            var fileName = await uiSvc.ShowOpenFileDialog(null);
             if (fileName == null)
                 return;
             AddScriptFile(fileName);
@@ -318,10 +318,10 @@ namespace Reko.Gui.Forms
         /// Prompts the user for a creating new script file and adds it to the
         /// project.
         /// </summary>
-        private void CreateScriptFile()
+        private async ValueTask CreateScriptFile()
         {
-            var fileName = uiSvc.ShowSaveFileDialog(GetDefaultScriptPath());
-            if (fileName == null)
+            var fileName = await uiSvc.ShowSaveFileDialog(GetDefaultScriptPath());
+            if (fileName is null)
                 return;
             var fsSvc = sc.RequireService<IFileSystemService>();
             try
@@ -331,7 +331,7 @@ namespace Reko.Gui.Forms
             }
             catch (Exception e)
             {
-                uiSvc.ShowError(
+               await uiSvc.ShowError(
                     e,
                     "An error occured while creating the script file {0}.",
                     fileName);
@@ -391,7 +391,7 @@ namespace Reko.Gui.Forms
                 string fileName = dlg.FileName.Text;
                 var arch = this.config.GetArchitecture(dlg.SelectedArchitectureName);
                 var asm = arch.CreateAssembler(null);
-                CloseProject();
+                await CloseProject();
                 await SwitchInteractor(InitialPageInteractor);
                 await InitialPageInteractor.Assemble(fileName, asm, null);
                 RememberFilenameInMru(fileName);
@@ -402,7 +402,7 @@ namespace Reko.Gui.Forms
             }
             catch (Exception e)
             {
-                uiSvc.ShowError(e, "An error occurred while assembling {0}.", dlg.FileName.Text);
+                await uiSvc.ShowError(e, "An error occurred while assembling {0}.", dlg.FileName.Text);
             }
             return true;
         }
@@ -417,7 +417,7 @@ namespace Reko.Gui.Forms
                     return false;
                 string fileName = dlg.FileName.Text;
                 LoadDetails details = dlg.GetLoadDetails();
-                CloseProject();
+                await CloseProject();
                 await SwitchInteractor(InitialPageInteractor);
                 await pageInitial.OpenBinaryAs(fileName, details);
                 if (fileName.EndsWith(Project_v5.FileExtension))
@@ -427,20 +427,20 @@ namespace Reko.Gui.Forms
             }
             catch (Exception ex)
             {
-                uiSvc.ShowError(
+               await uiSvc.ShowError(
                     ex,
                     string.Format("An error occurred when opening the file {0}.", dlg.FileName.Text));
             }
             return true;
         }
 
-        public void CloseProject()
+        public async ValueTask CloseProject()
         {
             if (IsDecompilerLoaded)
             {
-                if (uiSvc.Prompt("Do you want to save any changes made to the decompiler project?"))
+                if (await uiSvc.Prompt("Do you want to save any changes made to the decompiler project?"))
                 {
-                    if (!Save())
+                    if (!await Save())
                         return;
                 }
             }
@@ -518,7 +518,7 @@ namespace Reko.Gui.Forms
             }
             catch (Exception ex)
             {
-                uiSvc.ShowError(ex, "Unable to proceed.");
+                await uiSvc.ShowError(ex, "Unable to proceed.");
             }
             workerDlgSvc.FinishBackgroundWork();
         }
@@ -564,7 +564,7 @@ namespace Reko.Gui.Forms
             }
             catch (Exception ex)
             {
-                uiSvc.ShowError(ex, "An error occurred while finishing decompilation.");
+                await uiSvc.ShowError(ex, "An error occurred while finishing decompilation.");
             }
             workerDlgSvc.FinishBackgroundWork();
         }
@@ -757,14 +757,14 @@ namespace Reko.Gui.Forms
         /// Saves the project. 
         /// </summary>
         /// <returns>False if the user cancelled the save, true otherwise.</returns>
-        public bool Save()
+        public async ValueTask<bool> Save()
         {
             if (decompilerSvc.Decompiler == null)
                 return true;
             if (string.IsNullOrEmpty(this.ProjectFileName))
             {
                 var filename = decompilerSvc.Decompiler.Project.Programs[0].Location.FilesystemPath;
-                string newName = uiSvc.ShowSaveFileDialog(
+                string newName = await uiSvc.ShowSaveFileDialog(
                     Path.ChangeExtension(filename, Project_v5.FileExtension));
                 if (newName == null)
                     return false;
@@ -963,11 +963,11 @@ namespace Reko.Gui.Forms
                 case CmdIds.FileOpen: await OpenBinaryWithPrompt(); retval = true; break;
                 case CmdIds.FileOpenAs: retval = await OpenBinaryAs(""); break;
                 case CmdIds.FileAssemble: retval = await AssembleFile(); break;
-                case CmdIds.FileSave: Save(); retval = true; break;
-                case CmdIds.FileAddMetadata: AddMetadataFile(); retval = true; break;
-                case CmdIds.FileNewScript: CreateScriptFile(); retval = true; break;
-                case CmdIds.FileAddScript: AddScriptFile(); retval = true; break;
-                case CmdIds.FileCloseProject: CloseProject(); retval = true; break;
+                case CmdIds.FileSave: await Save(); retval = true; break;
+                case CmdIds.FileAddMetadata: await AddMetadataFile(); retval = true; break;
+                case CmdIds.FileNewScript: await CreateScriptFile(); retval = true; break;
+                case CmdIds.FileAddScript: await AddScriptFile(); retval = true; break;
+                case CmdIds.FileCloseProject: await CloseProject(); retval = true; break;
                 case CmdIds.FileExit: form.Close(); retval = true; break;
 
                 case CmdIds.ActionRestartDecompilation: await RestartRecompilation(); retval = true; break;
@@ -1008,7 +1008,7 @@ namespace Reko.Gui.Forms
             {
                 string file = mru.Items[iMru];
 
-                CloseProject();
+                await CloseProject();
                 await SwitchInteractor(InitialPageInteractor);
                 try
                 {
@@ -1023,7 +1023,7 @@ namespace Reko.Gui.Forms
                 }
                 catch (Exception ex)
                 {
-                    uiSvc.ShowError(
+                    await uiSvc.ShowError(
                         ex,
                         $"An error occurred when opening the file {file}.");
                 }

@@ -65,9 +65,9 @@ namespace Reko.Core
         public StructureReader(Func<int, byte[]> readBytes)
         {
             this.readBytes = readBytes;
-            if (typeof(T).IsDefined(typeof(EndianAttribute), false))
+            var attr = typeof(T).GetCustomAttribute<EndianAttribute>(false);
+            if (attr is { })
             {
-                EndianAttribute attr = (EndianAttribute)(typeof(T).GetCustomAttribute(typeof(EndianAttribute), false));
                 this.defaultEndianess = attr.Endianness;
             }
         }
@@ -89,8 +89,8 @@ namespace Reko.Core
 
 		private int FieldSize(FieldInfo field) {
 			if (field.FieldType.IsArray) {
-				MarshalAsAttribute attr = (MarshalAsAttribute)field.GetCustomAttribute(typeof(MarshalAsAttribute), false);
-				return Marshal.SizeOf(field.FieldType.GetElementType()) * attr.SizeConst;
+				MarshalAsAttribute attr = field.GetCustomAttribute<MarshalAsAttribute>(false)!;
+				return Marshal.SizeOf(field.FieldType.GetElementType()!) * attr.SizeConst;
 			} else {
                 if (field.FieldType.IsEnum) {
                     return Marshal.SizeOf( Enum.GetUnderlyingType(field.FieldType) );
@@ -102,8 +102,8 @@ namespace Reko.Core
 		private void SwapEndian(byte[] data, Type type, FieldInfo field) {
 			int offset = Marshal.OffsetOf(type, field.Name).ToInt32();
 			if (field.FieldType.IsArray) {
-				MarshalAsAttribute attr = (MarshalAsAttribute)field.GetCustomAttribute(typeof(MarshalAsAttribute), false);
-				int subSize = Marshal.SizeOf(field.FieldType.GetElementType());
+				MarshalAsAttribute attr = field.GetCustomAttribute<MarshalAsAttribute>(false)!;
+				int subSize = Marshal.SizeOf(field.FieldType.GetElementType()!);
 				for(int i=0; i<attr.SizeConst; i++) {
 					Array.Reverse(data, offset + (i * subSize), subSize);
 				}
@@ -161,7 +161,7 @@ namespace Reko.Core
 
 			try {
 				IntPtr rawDataPtr = handle.AddrOfPinnedObject();
-				result = (T)Marshal.PtrToStructure(rawDataPtr, typeof(T));
+				result = (T)Marshal.PtrToStructure(rawDataPtr, typeof(T))!;
 			} finally {
 				handle.Free();
 			}

@@ -6,7 +6,7 @@
     <AssemblyName>Reko.Core</AssemblyName>
     <RootNamespace>Reko.Core</RootNamespace>
     <OutputType>Library</OutputType>
-    <TargetFramework>netstandard2.1</TargetFramework>
+    <TargetFramework>net5.0</TargetFramework>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <Configurations>Debug;Release</Configurations>
   </PropertyGroup>

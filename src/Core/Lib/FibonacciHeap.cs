@@ -49,7 +49,9 @@ namespace Reko.Core.Lib
      *
      * @author  Nathan Fiedler
      */
-    public class FibonacciHeap<TKey, TValue> where TKey : IComparable<TKey>
+    public class FibonacciHeap<TKey, TValue>
+        where TKey : IComparable<TKey>
+        where TValue : notnull
     {
         /** Points to the minimum node in the heap. */
         private Node? min;

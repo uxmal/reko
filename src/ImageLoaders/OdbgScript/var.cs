@@ -139,7 +139,7 @@ namespace Reko.ImageLoaders.OdbgScript
                     return Var.Create(new string(revChars));
                 }
                 else
-                    return Var.Create(new string(str.Reverse().ToArray()));
+                    return Var.Create(new string(str!.Reverse().ToArray()));
             }
 
             public override string ToHexString()
@@ -148,7 +148,7 @@ namespace Reko.ImageLoaders.OdbgScript
                     return str!.Substring(1, str.Length - 2);
                 else      // "001122" to "303031313232"
                     return Helper.bytes2hexstr(
-                        Encoding.ASCII.GetBytes(str),
+                        Encoding.ASCII.GetBytes(str!),
                         size)
                         .ToUpperInvariant();
             }

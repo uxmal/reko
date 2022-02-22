@@ -36,7 +36,7 @@ namespace Reko.ImageLoaders.Srec
 
         public SrecRecord? ParseRecord()
         {
-            string line;
+            string? line;
             do
             {
                 line = rdr.ReadLine();

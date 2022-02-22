@@ -207,7 +207,7 @@ namespace Reko.Core.Output
 
         private void FormatOperator(BinaryExpression binExp)
         {
-            var sOperator = binExp.Operator.ToString();
+            var sOperator = binExp.Operator.ToString()!;
             var resultSize = binExp.DataType.BitSize;
             if (binExp.Operator is IMulOperator || binExp.Operator is FMulOperator ||
                 binExp.Operator is SDivOperator || binExp.Operator is SDivOperator ||
@@ -538,7 +538,7 @@ namespace Reko.Core.Output
 		public void VisitUnaryExpression(UnaryExpression unary)
 		{
 			int prec = SetPrecedence((int) precedences[unary.Operator]);
-			InnerFormatter.Write(unary.Operator.ToString());
+			InnerFormatter.Write(unary.Operator.ToString()!);
 			unary.Expression.Accept(this);
 			ResetPresedence(prec);
 		}

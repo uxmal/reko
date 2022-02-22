@@ -63,7 +63,7 @@ namespace Reko.Analysis
 				return;
 			}
 			
-            if (!assocs.TryGetValue(basePtr, out Identifier a))
+            if (!assocs.TryGetValue(basePtr, out Identifier? a))
                 assocs[basePtr] = membPtr;
             else if (a != membPtr)
                 assocs[basePtr] = overAssociatedId;
@@ -88,7 +88,7 @@ namespace Reko.Analysis
 
 		public Identifier? AssociatedIdentifier(Identifier pointer)
 		{
-            if (assocs.TryGetValue(pointer, out Identifier id))
+            if (assocs.TryGetValue(pointer, out Identifier? id))
             {
                 return (id != overAssociatedId) ? id : null;
             }
@@ -108,7 +108,7 @@ namespace Reko.Analysis
 
 		public bool IsOnlyAssociatedWithConstants(Identifier pointer)
 		{
-            return (consts.TryGetValue(pointer, out Constant c) && 
+            return (consts.TryGetValue(pointer, out Constant? c) && 
                     c != overAssociatedConst);
 		}
 

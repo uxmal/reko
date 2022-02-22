@@ -32,8 +32,12 @@ namespace Reko.Core.Hll.C
     {
         private SerializedType? y;
 
-        public bool Equals(SerializedType x, SerializedType y)
+        public bool Equals(SerializedType? x, SerializedType? y)
         {
+            if (x is null)
+                return y is null;
+            if (y is null)
+                return false;
             if (x.GetType() != y.GetType())
                 return false;
             this.y = y;

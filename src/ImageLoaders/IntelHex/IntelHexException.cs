@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 2017-2022 Christian Hostelet.
  *
@@ -75,7 +75,7 @@ namespace Reko.ImageLoaders.IntelHex
         public IntelHexException(SerializationInfo info, StreamingContext context)
             : base(info, context)
         {
-            LineNumber = (int)info.GetValue(nameof(LineNumber), typeof(int));
+            LineNumber = (int) info.GetValue(nameof(LineNumber), typeof(int))!;
         }
 
         /// <summary>

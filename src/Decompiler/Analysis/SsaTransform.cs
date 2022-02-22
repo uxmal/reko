@@ -991,7 +991,7 @@ namespace Reko.Analysis
                 return true;
             return
                 proc is Procedure callee &&
-                programFlow.ProcedureFlows.TryGetValue(callee, out ProcedureFlow pflow) &&
+                programFlow.ProcedureFlows.TryGetValue(callee, out ProcedureFlow? pflow) &&
                 pflow.TerminatesProcess;
         }
 

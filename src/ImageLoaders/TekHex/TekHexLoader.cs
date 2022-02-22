@@ -248,8 +248,7 @@ namespace Reko.ImageLoaders.TekHex
                     segs.Add(seg);
                 }
             }
-            var baseAddr = segs.Min(s => s.Address);
-            return new SegmentMap(baseAddr, segs.ToArray());
+            return new SegmentMap(segs.ToArray());
         }
 
         private void MakeSymbols(IProcessorArchitecture arch, Program program)

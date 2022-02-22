@@ -68,7 +68,7 @@ namespace Reko.Core.Dfa
             public bool Accepts;
             private int hash;
 
-            public override bool Equals(object obj)
+            public override bool Equals(object? obj)
             {
                 if (!(obj is IntermediateState that))
                     return false;
@@ -98,9 +98,9 @@ namespace Reko.Core.Dfa
 
         private class NodeComparer : IComparer<TreeNode>
         {
-            public int Compare(TreeNode x, TreeNode y)
+            public int Compare(TreeNode? x, TreeNode? y)
             {
-                return x.Number - y.Number;
+                return x!.Number - y!.Number;
             }
         }
 
@@ -126,15 +126,15 @@ namespace Reko.Core.Dfa
                 foreach (var p in T.Nodes.SelectMany(p => p.GetTransitionCharacters(), (p, c) => new { Node = p, Value = c }))
                 {
                     var U = CreateIntermediateState(p.Node.FollowPos!);
-                    Dstates.TryGetValue(U, out IntermediateState dstate);
+                    Dstates.TryGetValue(U, out IntermediateState? dstate);
                     if (U.Nodes.Count() > 0 && dstate == null)
                     {
                         Dstates.Add(U, U);
                         unmarked.Enqueue(U);
                         dstate = U;
                     }
-                    dstate.Starts |= p.Node.Starts;
-                    dstate.Accepts |= p.Node.FollowPos.Any(n => n.Type == NodeType.EOS);
+                    dstate!.Starts |= p.Node.Starts;
+                    dstate.Accepts |= p.Node.FollowPos!.Any(n => n.Type == NodeType.EOS);
                     Dtran.Add((T.Number, (int) p.Value, dstate.Number));
                 }
             }
@@ -191,16 +191,16 @@ namespace Reko.Core.Dfa
                 BuildNodeSets(node.Left!);
                 BuildNodeSets(node.Right!);
                 node.Nullable = node.Left!.Nullable && node.Right!.Nullable;
-                var setcu = new HashSet<TreeNode>(node.Left.FirstPos);
+                var setcu = new HashSet<TreeNode>(node.Left.FirstPos!);
                 if (node.Left.Nullable)
                 {
-                    setcu.UnionWith(node.Right!.FirstPos);
+                    setcu.UnionWith(node.Right!.FirstPos!);
                 }
                 node.FirstPos = setcu;
-                setcu = new HashSet<TreeNode>(node.Right!.LastPos);
+                setcu = new HashSet<TreeNode>(node.Right!.LastPos!);
                 if (node.Right.Nullable)
                 {
-                    setcu.UnionWith(node.Left.LastPos);
+                    setcu.UnionWith(node.Left.LastPos!);
                 }
                 node.LastPos = setcu;
                 foreach (var n in node.Right.FirstPos!)
@@ -215,8 +215,8 @@ namespace Reko.Core.Dfa
             case NodeType.Star:
                 BuildNodeSets(node.Left!);
                 node.Nullable = true;
-                node.FirstPos = new HashSet<TreeNode>(node.Left!.FirstPos);
-                node.LastPos = new HashSet<TreeNode>(node.Left.LastPos);
+                node.FirstPos = new HashSet<TreeNode>(node.Left!.FirstPos!);
+                node.LastPos = new HashSet<TreeNode>(node.Left.LastPos!);
                 foreach (var i in node.Left.LastPos!)
                 {
                     i.FollowPos!.UnionWith(node.FirstPos);
@@ -225,8 +225,8 @@ namespace Reko.Core.Dfa
             case NodeType.Plus:
                 BuildNodeSets(node.Left!);
                 node.Nullable = node.Left!.Nullable;
-                node.FirstPos = new HashSet<TreeNode>(node.Left.FirstPos);
-                node.LastPos = new HashSet<TreeNode>(node.Left.LastPos);
+                node.FirstPos = new HashSet<TreeNode>(node.Left.FirstPos!);
+                node.LastPos = new HashSet<TreeNode>(node.Left.LastPos!);
                 foreach (var i in node.Left.LastPos!)
                 {
                     i.FollowPos!.UnionWith(node.FirstPos);
@@ -238,35 +238,35 @@ namespace Reko.Core.Dfa
                 BuildNodeSets(node.Right!);
                 node.Nullable = node.Left!.Nullable | node.Right!.Nullable;
 
-                var set = new HashSet<TreeNode>(node.Left.FirstPos);
-                set.UnionWith(node.Left.FirstPos);
+                var set = new HashSet<TreeNode>(node.Left.FirstPos!);
+                set.UnionWith(node.Left.FirstPos!);
                 node.FirstPos = set;
 
-                set = new HashSet<TreeNode>(node.Left.LastPos);
-                set.UnionWith(node.Left.LastPos);
+                set = new HashSet<TreeNode>(node.Left.LastPos!);
+                set.UnionWith(node.Left.LastPos!);
                 node.LastPos = set;
                 break;
             case NodeType.Cat:
                 BuildNodeSets(node.Left!);
                 BuildNodeSets(node.Right!);
                 node.Nullable = node.Left!.Nullable & node.Right!.Nullable;
-                var setc = new HashSet<TreeNode>(node.Left.FirstPos);
+                var setc = new HashSet<TreeNode>(node.Left.FirstPos!);
                 if (node.Left.Nullable)
                 {
-                    setc.UnionWith(node.Right.FirstPos);
+                    setc.UnionWith(node.Right.FirstPos!);
                 }
                 node.FirstPos = setc;
 
-                setc = new HashSet<TreeNode>(node.Right.LastPos);
+                setc = new HashSet<TreeNode>(node.Right.LastPos!);
                 if (node.Right.Nullable)
                 {
-                    setc.UnionWith(node.Left.LastPos);
+                    setc.UnionWith(node.Left.LastPos!);
                 }
                 node.LastPos = setc;
 
                 foreach (var i in node.Left.LastPos!)
                 {
-                    i.FollowPos!.UnionWith(node.Right.FirstPos);
+                    i.FollowPos!.UnionWith(node.Right.FirstPos!);
                 }
                 break;
             default:

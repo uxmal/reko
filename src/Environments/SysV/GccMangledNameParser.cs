@@ -209,8 +209,7 @@ namespace Reko.Environments.SysV
                     ++i;
                 ++i;
                 var sub = str.Substring(iStart, i - iStart);
-                Debug.Print(sub);
-                return new List<string> { substitutions[sub].ToString() };
+                return new List<string> { substitutions[sub].ToString()! };
 
             }
             throw new NotImplementedException();

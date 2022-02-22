@@ -117,7 +117,7 @@ namespace Reko.UnitTests.Gui.Design
 
         private void Expect_OpenFileDialog()
         {
-            uiSvc.Setup(u => u.ShowOpenFileDialog(It.IsAny<string>())).Returns("foo.h");
+            uiSvc.Setup(u => u.ShowOpenFileDialog(It.IsAny<string>())).Returns(ValueTask.FromResult("foo.h"));
         }
 
         private void Expect_MenuItem_LoadSymbols_Enabled()

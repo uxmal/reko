@@ -117,7 +117,7 @@ namespace Reko.Core
             return new ImageLocation(fsPath, relative.Fragments);
         }
 
-        public int CompareTo(ImageLocation that) => throw new NotImplementedException();
+        public int CompareTo(ImageLocation? that) => throw new NotImplementedException();
 
         /// <summary>
         /// Determines whether this <see cref="ImageLocation"/> ends with the given string.
@@ -238,7 +238,7 @@ namespace Reko.Core
         {
             if (this.HasFragments)
                 throw new NotSupportedException("Making relative URI's to non-directories is not supported yet.");
-            var dir = Path.GetDirectoryName(this.FilesystemPath);
+            var dir = Path.GetDirectoryName(this.FilesystemPath)!;
             var fsAbsolute = Path.GetRelativePath(dir, imageLocation.FilesystemPath);
             return MakeUri(fsAbsolute, imageLocation.Fragments);
         }

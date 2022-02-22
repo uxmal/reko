@@ -224,7 +224,7 @@ namespace Reko.ImageLoaders.Elf
             foreach (var section in loader.Sections
                 .Where(s => (s.Flags & ElfLoader.SHF_ALLOC) != 0))
             {
-                if (!mpToSegment.TryGetValue(section.Flags, out Elf64_PHdr segment))
+                if (!mpToSegment.TryGetValue(section.Flags, out Elf64_PHdr? segment))
                 {
                     segment = new Elf64_PHdr();
                     segment.p_flags = SegmentAccess(section.Flags);
@@ -263,7 +263,7 @@ namespace Reko.ImageLoaders.Elf
             var psegMem = Segments.ToDictionary(k => k, v => arch.CreateImageWriter());
             foreach (var section in loader.Sections)
             {
-                if (!mpSections.TryGetValue(section, out Elf64_PHdr segment))
+                if (!mpSections.TryGetValue(section, out Elf64_PHdr? segment))
                     continue;
                 section.Address = Address.Ptr64(psegAlloc[segment]);
                 if (section.Type != SectionHeaderType.SHT_NOBITS)
@@ -316,7 +316,7 @@ namespace Reko.ImageLoaders.Elf
             foreach (var section in loader.Sections
                 .Where(s => (s.Flags & ElfLoader.SHF_ALLOC) != 0))
             {
-                if (!mpToSegment.TryGetValue(section.Flags, out Elf32_PHdr segment))
+                if (!mpToSegment.TryGetValue(section.Flags, out Elf32_PHdr? segment))
                 {
                     segment = new Elf32_PHdr();
                     segment.p_flags = SegmentAccess(section.Flags);
@@ -355,7 +355,7 @@ namespace Reko.ImageLoaders.Elf
             var psegMem = Segments.ToDictionary(k => k, v => arch.CreateImageWriter());
             foreach (var section in loader.Sections)
             {
-                if (!mpSections.TryGetValue(section, out Elf32_PHdr segment))
+                if (!mpSections.TryGetValue(section, out Elf32_PHdr? segment))
                     continue;
                 section.Address = Address.Ptr32(psegAlloc[segment]);
                 if (section.Type != SectionHeaderType.SHT_NOBITS)

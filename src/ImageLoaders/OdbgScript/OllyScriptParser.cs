@@ -446,7 +446,7 @@ namespace Reko.ImageLoaders.OdbgScript
                 path = Path.Combine(cdir, path);
             }
             if (string.IsNullOrEmpty(dir))
-                sdir = Path.GetDirectoryName(path);
+                sdir = Path.GetDirectoryName(path)!;
             else
                 sdir = dir;
             return new OllyScriptParser(fsSvc.CreateStreamReader(path, Encoding.UTF8), sdir, host, fsSvc);

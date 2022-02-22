@@ -73,7 +73,7 @@ namespace Reko.Arch.MicrochipPIC.Common
             var pic = db.GetPIC(procName);
             if (pic is null)
                 return null;
-            if (modes.TryGetValue(pic.GetInstructionSetID, out PICProcessorModel mode))
+            if (modes.TryGetValue(pic.GetInstructionSetID, out PICProcessorModel? mode))
             {
                 mode.PICDescriptor = pic;
                 return mode;

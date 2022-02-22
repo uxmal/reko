@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <Import Project="$(ProjectDir)../../Drivers/CommonBuildProperties.items" />
   <PropertyGroup>
-    <TargetFramework>netstandard2.1</TargetFramework>
+    <TargetFramework>net5.0</TargetFramework>
     <AssemblyName>Reko.ImageLoaders.Archives</AssemblyName>
     <RootNamespace>Reko.ImageLoaders.Archives</RootNamespace>
     <AllowUnsafeBlocks>True</AllowUnsafeBlocks>

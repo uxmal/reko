@@ -92,7 +92,7 @@ namespace Reko.Arch.MicrochipPIC.Common
         public PICDevConfigRegister? GetDCR(Address addr)
             => dcregisters.ContainsKey(addr) ? dcregisters[addr] : null;
 
-        public DevConfigField GetDCRField(string name)
+        public DevConfigField? GetDCRField(string name)
             => dcregisters.Values.SelectMany(dcr =>dcr.Fields).ToList().FirstOrDefault(f => f.Name == name);
 
         /// <summary>

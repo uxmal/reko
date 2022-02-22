@@ -93,10 +93,10 @@ namespace Reko.Environments.MacOS.Classic
 
         public Constant VisitIdentifier(Id id)
         {
-            if (!this.evaluated.TryGetValue(id.Name, out Constant c))
+            if (!this.evaluated.TryGetValue(id.Name, out Constant? c))
             {
                 this.evaluated.Add(id.Name, InvalidConstant.Create(PrimitiveType.Word32));
-                if (constDefinitions.TryGetValue(id.Name, out Exp def))
+                if (constDefinitions.TryGetValue(id.Name, out Exp? def))
                 {
                     c = def.Accept(this);
                     this.evaluated[id.Name] = c;

@@ -523,7 +523,7 @@ namespace Reko.Arch.Msp430
             public override Msp430Instruction Decode(uint uInstr, Msp430Disassembler dasm)
             {
                 var key = (ushort) (uInstr >> sh) & mask;
-                if (!decoders.TryGetValue(key, out Decoder decoder))
+                if (!decoders.TryGetValue(key, out Decoder? decoder))
                     return dasm.CreateInvalidInstruction();
                 return decoder.Decode(uInstr, dasm);
             }

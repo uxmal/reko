@@ -198,7 +198,7 @@ namespace Reko.Analysis
         /// Finds a use of the architecture stack pointer in the synthetic exit
         /// block of the procedure
         /// </summary>
-        private Identifier FindStackUseAtExit(Procedure proc)
+        private Identifier? FindStackUseAtExit(Procedure proc)
         {
             return proc.ExitBlock.Statements
                 .Select(s => s.Instruction)

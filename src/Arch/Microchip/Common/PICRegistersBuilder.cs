@@ -63,7 +63,7 @@ namespace Reko.Arch.MicrochipPIC.Common
                 bitRegAddr = 0;
                 foreach (var sfr in jsfr.ChildSFRs)
                 {
-                    if (!PICRegisters.TryGetRegister(sfr.Name, out var creg))
+                    if (!PICRegisters.TryGetRegister(sfr.Name, out PICRegisterStorage? creg))
                     {
                         creg = AddSFRRegister(sfr, regNumber++);
                     }

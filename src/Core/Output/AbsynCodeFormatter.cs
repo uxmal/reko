@@ -169,6 +169,7 @@ namespace Reko.Core.Output
         /// <param name="states"></param>
         /// <returns></returns>
         private static double Entropy<T>(IEnumerable<T> seq, IEnumerable<T> states)
+            where T : notnull
         {
             var frequencies = states.ToDictionary(k => k, v => 0);
             foreach (var state in seq)

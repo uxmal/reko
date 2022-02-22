@@ -129,7 +129,7 @@ namespace Reko.Core
             visit.VisitAddress(this);
         }
 
-        public override bool Equals(object obj)
+        public override bool Equals(object? obj)
         {
             return CompareTo(obj) == 0;
         }
@@ -203,12 +203,15 @@ namespace Reko.Core
 			return (long) a.ToLinear() - (long) b.ToLinear();
 		}
 
-        public int CompareTo(Address that)
+        public int CompareTo(Address? that)
         {
-            return this.ToLinear().CompareTo(that.ToLinear());
+            if (that is null)
+                return 1;
+            else 
+                return this.ToLinear().CompareTo(that.ToLinear());
         }
 
-		public int CompareTo(object a)
+		public int CompareTo(object? a)
 		{
             if (a is not Address that)
                 return 1;
@@ -270,8 +273,12 @@ namespace Reko.Core
 
         public class Comparer : IEqualityComparer<Address>
         {
-            public bool Equals(Address x, Address y)
+            public bool Equals(Address? x, Address? y)
             {
+                if (x is null)
+                    return y is null;
+                if (y is null)
+                    return false;
                 return x.ToLinear() == y.ToLinear();
             }
 

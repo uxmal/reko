@@ -60,7 +60,7 @@ namespace Reko.Arch.Xtensa
 
         private void RenderMnemonic(MachineInstructionRenderer renderer)
         {
-            if (!instrNames.TryGetValue(Mnemonic, out string instrName))
+            if (!instrNames.TryGetValue(Mnemonic, out string? instrName))
             {
                 instrName = Mnemonic.ToString().Replace('_', '.');
             }

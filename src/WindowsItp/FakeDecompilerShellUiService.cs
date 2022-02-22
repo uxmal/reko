@@ -68,11 +68,6 @@ namespace Reko.WindowsItp
             throw new NotImplementedException();
         }
 
-        public bool Prompt(string prompt)
-        {
-            throw new NotImplementedException();
-        }
-
         public bool QueryStatus(CommandID cmdId, CommandStatus status, CommandText text)
         {
             throw new NotImplementedException();
@@ -82,12 +77,17 @@ namespace Reko.WindowsItp
         {
         }
 
-        public void ShowError(Exception ex, string format, params object[] args)
+        public ValueTask<bool> Prompt(string prompt)
         {
             throw new NotImplementedException();
         }
 
-        public void ShowMessage(string msg)
+        public ValueTask ShowError(Exception ex, string format, params object[] args)
+        {
+            throw new NotImplementedException();
+        }
+
+        public ValueTask ShowMessage(string msg)
         {
             throw new NotImplementedException();
         }
@@ -102,23 +102,23 @@ namespace Reko.WindowsItp
             throw new NotImplementedException();
         }
 
-        public string ShowOpenFileDialog(string fileName)
+        public ValueTask<string> ShowOpenFileDialog(string fileName)
         {
             using (var ofd = new OpenFileDialog())
             {
                 ofd.FileName = fileName;
                 if (DialogResult.OK == (DialogResult) ofd.ShowDialog(form))
                 {
-                    return ofd.FileName;
+                    return ValueTask.FromResult(ofd.FileName);
                 }
                 else
                 {
-                    return null;
+                    return ValueTask.FromResult<string>(null);
                 }
             }
         }
 
-        public string ShowSaveFileDialog(string fileName)
+        public ValueTask<string> ShowSaveFileDialog(string fileName)
         {
             throw new NotImplementedException();
         }

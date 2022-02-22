@@ -63,8 +63,12 @@ namespace Reko.Core.Machine
             return NormalizeConstants || constA.GetValue().Equals(constB.GetValue());
         }
 
-        public virtual bool Equals(MachineInstruction x, MachineInstruction y)
+        public virtual bool Equals(MachineInstruction? x, MachineInstruction? y)
         {
+            if (x is null)
+                return y is null;
+            if (y is null)
+                return false;
             if (x.MnemonicAsInteger != y.MnemonicAsInteger)
                 return false;
             return CompareOperands(x, y);

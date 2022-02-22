@@ -66,7 +66,7 @@ namespace Reko.Core
         private ModuleDescriptor EnsureModule(string? moduleName, TypeLibrary dstLib)
         {
             moduleName ??= "";
-            if (!dstLib.Modules.TryGetValue(moduleName, out ModuleDescriptor mod))
+            if (!dstLib.Modules.TryGetValue(moduleName, out ModuleDescriptor? mod))
             {
                 mod = new ModuleDescriptor(moduleName);
                 dstLib.Modules.Add(moduleName, mod);
@@ -394,7 +394,7 @@ namespace Reko.Core
         public DataType VisitTypeReference(TypeReference_v1 typeReference)
         {
             var typeName = typeReference.TypeName!;
-            if (types.TryGetValue(typeName, out DataType type))
+            if (types.TryGetValue(typeName, out DataType? type))
                 return new TypeReference(typeName, type);
             return new TypeReference(typeName, new UnknownType());
         }
@@ -416,7 +416,7 @@ namespace Reko.Core
             else if (union.Alternatives.Count == 0)
             {
                 // Resolve forward reference.
-                var alts = sUnion.Alternatives.Select((a, i) => new UnionAlternative(a.Name, a.Type!.Accept(this), i));
+                var alts = sUnion.Alternatives!.Select((a, i) => new UnionAlternative(a.Name, a.Type!.Accept(this), i));
                 union.Alternatives.AddRange(alts);
                 return union;
             }

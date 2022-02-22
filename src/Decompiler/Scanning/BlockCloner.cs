@@ -68,7 +68,7 @@ namespace Reko.Scanning
             if (blockOrig == blockOrig.Procedure.ExitBlock)
                 return null;
 
-            if (mpBlocks.TryGetValue(blockOrig, out Block blockNew))
+            if (mpBlocks.TryGetValue(blockOrig, out Block? blockNew))
             {
                 return blockNew;
             }

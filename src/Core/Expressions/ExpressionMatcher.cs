@@ -49,14 +49,14 @@ namespace Reko.Core.Expressions
 
         public Expression? CapturedExpression(string label)
         {
-            if (string.IsNullOrEmpty(label) || !capturedExpressions.TryGetValue(label, out Expression value))
+            if (string.IsNullOrEmpty(label) || !capturedExpressions.TryGetValue(label, out Expression? value))
                 return null;
             return value;
         }
 
         public Operator? CapturedOperators(string label)
         {
-            if (string.IsNullOrEmpty(label) || !capturedOperators.TryGetValue(label, out Operator value))
+            if (string.IsNullOrEmpty(label) || !capturedOperators.TryGetValue(label, out Operator? value))
                 return null;
             return value;
         }

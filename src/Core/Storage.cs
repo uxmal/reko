@@ -123,11 +123,11 @@ namespace Reko.Core
 
         public class ArrayComparer : IEqualityComparer<Storage[]>
         {
-            public bool Equals(Storage[] x, Storage[] y)
+            public bool Equals(Storage[]? x, Storage[]? y)
             {
-                if (x == null && y == null)
+                if (x is null && y is null)
                     return true;
-                if (x == null || y == null)
+                if (x is null || y is null)
                     return false;
                 if (x.Length != y.Length)
                     return false;
@@ -206,7 +206,7 @@ namespace Reko.Core
             return (this.FlagGroupBits | that.FlagGroupBits) == this.FlagGroupBits;
         }
 
-        public override bool Equals(object obj)
+        public override bool Equals(object? obj)
         {
             if (obj is not FlagGroupStorage that)
                 return false;
@@ -309,7 +309,7 @@ namespace Reko.Core
                 this.FpuStackOffset == that.FpuStackOffset;
         }
 
-        public override bool Equals(object obj)
+        public override bool Equals(object? obj)
         {
             if (obj is not FpuStackStorage that)
                 return false;
@@ -436,7 +436,7 @@ namespace Reko.Core
             throw new NotImplementedException();
         }
 
-        public override bool Equals(object obj)
+        public override bool Equals(object? obj)
         {
             if (obj is not OutArgumentStorage that)
                 return false;
@@ -571,7 +571,7 @@ namespace Reko.Core
             return (this.BitMask & ~that.BitMask) != 0;
         }
 
-        public override bool Equals(object obj)
+        public override bool Equals(object? obj)
         {
             return obj is RegisterStorage that &&
                 this.Domain == that.Domain &&
@@ -663,8 +663,10 @@ namespace Reko.Core
                 return InvalidConstant.Create(this.DataType);
         }
 
-        public int CompareTo(RegisterStorage that)
+        public int CompareTo(RegisterStorage? that)
         {
+            if (that is null)
+                return 1;
             var d = this.Domain.CompareTo(that.Domain);
             if (d != 0)
                 return d;
@@ -896,7 +898,7 @@ namespace Reko.Core
             return visitor.VisitStackArgumentStorage(this, context);
         }
 
-        public override bool Equals(object obj)
+        public override bool Equals(object? obj)
         {
             if (obj is not StackArgumentStorage that)
                 return false;
@@ -945,7 +947,7 @@ namespace Reko.Core
             return visitor.VisitStackLocalStorage(this, context);
         }
 
-        public override bool Equals(object obj)
+        public override bool Equals(object? obj)
         {
             if (obj is not StackLocalStorage that)
                 return false;

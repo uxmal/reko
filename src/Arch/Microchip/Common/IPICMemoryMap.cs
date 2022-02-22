@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 2017-2022 Christian Hostelet.
  * inspired by work from:
@@ -84,7 +84,7 @@ namespace Reko.Arch.MicrochipPIC.Common
         /// <returns>
         /// The program memory region.
         /// </returns>
-        IMemoryRegion GetProgramRegionByName(string sregionName);
+        IMemoryRegion? GetProgramRegionByName(string sregionName);
 
         /// <summary>
         /// Gets a program memory region given a memory virtual byte address.
@@ -93,7 +93,7 @@ namespace Reko.Arch.MicrochipPIC.Common
         /// <returns>
         /// The program memory region.
         /// </returns>
-        IMemoryRegion GetProgramRegionByAddress(Address absByteAddr);
+        IMemoryRegion? GetProgramRegionByAddress(Address absByteAddr);
 
         /// <summary>
         /// Gets a data memory region given its name ID.
@@ -102,7 +102,7 @@ namespace Reko.Arch.MicrochipPIC.Common
         /// <returns>
         /// The data memory region or null.
         /// </returns>
-        IMemoryRegion GetDataRegionByName(string sregionName);
+        IMemoryRegion? GetDataRegionByName(string sregionName);
 
         /// <summary>
         /// Gets a data memory region given a memory byte address.
@@ -111,7 +111,7 @@ namespace Reko.Arch.MicrochipPIC.Common
         /// <returns>
         /// The data memory region or null.
         /// </returns>
-        IMemoryRegion GetDataRegionByAddress(Address absByteAddr);
+        IMemoryRegion? GetDataRegionByAddress(Address absByteAddr);
 
         /// <summary>
         /// Gets a data memory region given a bank selector.
@@ -120,7 +120,7 @@ namespace Reko.Arch.MicrochipPIC.Common
         /// <returns>
         /// The data memory region or null.
         /// </returns>
-        IMemoryRegion GetDataRegionBySelector(Constant bankSel);
+        IMemoryRegion? GetDataRegionBySelector(Constant bankSel);
 
         /// <summary>
         /// Gets a list of program regions.

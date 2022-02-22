@@ -842,7 +842,7 @@ rulong hwnd;
             {
                 int size = (int) uSize;
                 if (!Path.IsPathRooted(filename))
-                    filename = Path.Combine(Host.TE_GetTargetDirectory(), filename);
+                    filename = Path.Combine(Host.TE_GetTargetDirectory()!, filename);
 
                 variables["$RESULT"] = Var.Create(size);
 
@@ -2379,7 +2379,7 @@ string str;
             }
             else if (str == "PROCESSNAME") // File name of the debugged process/dll (no extension)
             {
-                string name = Path.GetFileNameWithoutExtension(Host.TE_GetTargetPath());
+                string name = Path.GetFileNameWithoutExtension(Host.TE_GetTargetPath())!;
                 variables["$RESULT"] = Var.Create(name);
             }
             else if (str == "EXEFILENAME") // Full path of the debugged file/dll
@@ -2529,7 +2529,7 @@ string str = "";
                         rulong strsize = (uint) buffer.Length;
                         if (strsize != 0 && strsize >= size && strsize < memsize)
                         {
-                            variables["$RESULT"] = Var.Create(buffer.ToString());       //$BUGBUG! stringize buffer first.
+                            variables["$RESULT"] = Var.Create(buffer.ToString()!);       //$BUGBUG! stringize buffer first.
                             variables["$RESULT_1"] = Var.Create(strsize);
                         }
                     }
@@ -3027,7 +3027,7 @@ string filename;
                     return true;
                 }
                 //$REFACTOR: another Identifier.
-                else if (arch.TryGetRegister(id.Name, out var reg))
+                else if (arch.TryGetRegister(id.Name, out RegisterStorage? reg))
                 {
                     // Dest is register
                     if (GetRulong(args[1], out dw))

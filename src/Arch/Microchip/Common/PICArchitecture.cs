@@ -30,6 +30,7 @@ using Reko.Core.Types;
 using Reko.Libraries.Microchip;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
 
@@ -230,7 +231,7 @@ namespace Reko.Arch.MicrochipPIC.Common
         /// <returns>
         /// True if it succeeds, false if it fails.
         /// </returns>
-        public override bool TryGetRegister(string regName, out RegisterStorage reg)
+        public override bool TryGetRegister(string regName, [MaybeNullWhen(false)] out RegisterStorage reg)
         {
             var res = PICRegisters.TryGetRegister(regName, out var preg);
             reg = preg;

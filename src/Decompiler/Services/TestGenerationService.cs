@@ -274,7 +274,7 @@ namespace Reko.Services
         public void RemoveFiles(string filePrefix)
         {
             var fsSvc = services.RequireService<IFileSystemService>();
-            var dir = GetOutputDirectory(fsSvc);
+            var dir = GetOutputDirectory(fsSvc)!;
             foreach (var filename in fsSvc.GetFiles(dir, filePrefix + "*"))
             {
                 fsSvc.DeleteFile(filename);
@@ -284,7 +284,7 @@ namespace Reko.Services
         public void ReportProcedure(string fileName, string testCaption, Procedure proc)
         {
             var fsSvc = services.RequireService<IFileSystemService>();
-            var dir = GetOutputDirectory(fsSvc);
+            var dir = GetOutputDirectory(fsSvc)!;
             var absFileName = Path.Combine(dir, fileName);
             using var w = fsSvc.CreateStreamWriter(absFileName, true, Encoding.UTF8);
             ReportProcedure(testCaption, proc, w);
@@ -299,8 +299,12 @@ namespace Reko.Services
 
         private class InstrBytesComparer : IEqualityComparer<byte[]>
         {
-            public bool Equals(byte[] x, byte[] y)
+            public bool Equals(byte[]? x, byte[]? y)
             {
+                if (x is null)
+                    return y is null;
+                if (y is null)
+                    return false;
                 if (x.Length != y.Length)
                     return false;
                 for (int i = 0; i < x.Length; ++i)

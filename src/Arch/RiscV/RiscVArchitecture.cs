@@ -26,6 +26,7 @@ using Reko.Core.Rtl;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 
 namespace Reko.Arch.RiscV
@@ -126,7 +127,7 @@ namespace Reko.Arch.RiscV
 
         public override RegisterStorage? GetRegister(string name)
         {
-            if (regsByName.TryGetValue(name, out RegisterStorage reg))
+            if (regsByName.TryGetValue(name, out RegisterStorage? reg))
                 return reg;
             else
                 return null;
@@ -225,7 +226,7 @@ namespace Reko.Arch.RiscV
                     WordWidth))
                 .ToArray();
 
-            if (Options.TryGetValue("FloatAbi", out object oFloatAbi) &&
+            if (Options.TryGetValue("FloatAbi", out object? oFloatAbi) &&
                 oFloatAbi is int floatAbi)
             {
                 this.FpRegs = CreateFpRegs(floatAbi);
@@ -533,7 +534,7 @@ namespace Reko.Arch.RiscV
                 .ToArray();
         }
 
-        public override bool TryGetRegister(string name, out RegisterStorage reg)
+        public override bool TryGetRegister(string name, [MaybeNullWhen(false)] out RegisterStorage reg)
         {
             return regsByName.TryGetValue(name, out reg);
         }

@@ -360,7 +360,7 @@ namespace Reko.Analysis
             {
                 if (!sig.ParametersValid)
                     return null;
-                var param = sig.Parameters
+                var param = sig.Parameters!
                     .FirstOrDefault(p => p.Storage.OverlapsWith(stg));
                 if (param == null)
                     return null;
@@ -1108,9 +1108,9 @@ namespace Reko.Analysis
                 this.stg = stg;
             }
 
-            public override SsaIdentifier ReadBlockLocalVariable(SsaBlockState bs)
+            public override SsaIdentifier? ReadBlockLocalVariable(SsaBlockState bs)
             {
-                bs.currentSimpleDef.TryGetValue(stg, out var sid);
+                bs.currentSimpleDef.TryGetValue(stg, out SsaIdentifier? sid);
                 return sid;
             }
 

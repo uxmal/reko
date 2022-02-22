@@ -249,8 +249,7 @@ namespace Reko.ImageLoaders.WebAssembly
                 case Mnemonic.f32_reinterpret_i32:
                 case Mnemonic.f64_reinterpret_i64:
                 default:
-                    string str;
-                    if (!WasmInstruction.mpoptostring.TryGetValue((Mnemonic)b, out str))
+                    if (!WasmInstruction.mpoptostring.TryGetValue((Mnemonic)b, out string? str))
                         str = string.Format("0x{0:X2}", (int)b);
                     throw new NotImplementedException(string.Format(
                         "WASM evaluator doesn't know how to evaluate {0} ({1:X2}).",

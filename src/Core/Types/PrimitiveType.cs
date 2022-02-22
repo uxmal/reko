@@ -23,6 +23,7 @@ using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Text;
 
@@ -120,7 +121,7 @@ namespace Reko.Core.Types
 
         public static PrimitiveType CreateBitSlice(int bitlength)
         {
-            if (!cache.TryGetValue((Domain.Integer, bitlength), out PrimitiveType shared))
+            if (!cache.TryGetValue((Domain.Integer, bitlength), out PrimitiveType? shared))
             {
                 var name = GenerateName(Domain.Integer, bitlength);
                 shared = new PrimitiveType(Domain.Integer, bitlength, false, name);
@@ -185,7 +186,7 @@ namespace Reko.Core.Types
         public static PrimitiveType CreateWord(uint bitSize)
             => CreateWord((int)bitSize);
 
-		public override bool Equals(object obj)
+		public override bool Equals(object? obj)
 		{
             return (obj is PrimitiveType that &&
                     that.Domain == this.Domain && 
@@ -255,7 +256,7 @@ namespace Reko.Core.Types
 			}
 		}
 
-        public static bool TryParse(string primitiveTypeName, out PrimitiveType type)
+        public static bool TryParse(string primitiveTypeName, [MaybeNullWhen(false)] out PrimitiveType type)
         {
             return lookupByName.TryGetValue(primitiveTypeName, out type);
         }

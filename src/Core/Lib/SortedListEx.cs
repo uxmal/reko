@@ -31,6 +31,7 @@ namespace Reko.Core.Lib
     public static class SortedListEx
     {
         public static bool TryGetLowerBound<K,V>(this SortedList<K, V> list, K key, out V value)
+            where K : notnull
         {
             var cmp = list.Comparer;
             int lo = 0;
@@ -62,6 +63,7 @@ namespace Reko.Core.Lib
         }
 
         public static bool TryGetUpperBound<K,V>(this SortedList<K, V> list, K key, out V value)
+            where K : notnull
         {
             var cmp = list.Comparer;
             int lo = 0;
@@ -93,6 +95,7 @@ namespace Reko.Core.Lib
         }
 
         public static bool TryGetLowerBoundKey<K, V>(this SortedList<K, V> list, K key, out K closestKey)
+            where K : notnull
         {
             var cmp = list.Comparer;
             int lo = 0;
@@ -124,6 +127,7 @@ namespace Reko.Core.Lib
         }
 
         public static bool TryGetUpperBoundKey<K,V>(this SortedList<K, V> list, K key, out K closestKey)
+            where K : notnull
         {
             var cmp = list.Comparer;
             int lo = 0;
@@ -155,6 +159,7 @@ namespace Reko.Core.Lib
         }
 
         public static bool TryGetLowerBoundIndex<K, V>(this SortedList<K, V> list, K key, out int closestIndex)
+            where K : notnull
         {
             var cmp = list.Comparer;
             int lo = 0;
@@ -186,6 +191,7 @@ namespace Reko.Core.Lib
         }
 
         public static bool TryGetUpperBoundIndex<K, V>(this SortedList<K, V> list, K key, out int closestIndex)
+            where K : notnull
         {
             var cmp = list.Comparer;
             int lo = 0;

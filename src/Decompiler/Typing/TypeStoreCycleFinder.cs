@@ -95,7 +95,7 @@ namespace Reko.Typing
         {
             return ft.ParametersValid &&
                 (Find(ft.ReturnValue.DataType) ||
-                 ft.Parameters.Any(p => Find(p.DataType)));
+                 ft.Parameters!.Any(p => Find(p.DataType)));
         }
 
         public bool VisitMemberPointer(MemberPointer memptr)

@@ -770,7 +770,7 @@ public const int FUNCFLAG_FORCELONG			= 2147483647;
 
         // ****************************************
 
-        public string Locale(int lcid) {
+        public string? Locale(int lcid) {
 
             var locales = new[] {
                 new { Lcid=0x0401, Code="ARA", Desc="Arabic Saudi Arabia" },
@@ -978,7 +978,7 @@ public const int FUNCFLAG_FORCELONG			= 2147483647;
 
         string VarType(int pn) {
             pn = pn & VT_TypeMask;
-            if (varTypes.TryGetValue(pn, out string ls))
+            if (varTypes.TryGetValue(pn, out string? ls))
                 return "VT_" + ls;
             return "(Unknown)";
 

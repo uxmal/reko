@@ -50,12 +50,12 @@ namespace Reko.ImageLoaders.Elf.Relocators
             switch (rt)
             {
             case zSeriesRt.R_390_RELATIVE:  // B + A
-                A = (ulong)rela.Addend;
+                A = (ulong)rela.Addend!;
                 B = program.SegmentMap.BaseAddress.ToLinear();
                 S = 0;
                 break;
             case zSeriesRt.R_390_GLOB_DAT:  // S + A
-                A = (ulong)rela.Addend;
+                A = (ulong)rela.Addend!;
                 break;
             case zSeriesRt.R_390_JMP_SLOT:
                 if (symbol.Value == 0)

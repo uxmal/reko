@@ -381,9 +381,9 @@ namespace Reko.Scanning
         //link to the existing basic block in the control flow graph
 
         [Conditional("DEBUG")]
-        private void DumpBlocks(IEnumerable<RtlBlock> blocks)
+        private void DumpBlocks(IEnumerable<RtlBlock>? blocks)
         {
-            if (blocks != null)
+            if (blocks is null)
                 return;
             foreach (var block in blocks.OrderBy(b => b.Address.ToLinear()))
             {

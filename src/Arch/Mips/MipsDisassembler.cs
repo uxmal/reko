@@ -118,7 +118,7 @@ namespace Reko.Arch.Mips
 
         private bool TryGetFCReg(uint regNumber, out RegisterStorage op)
         {
-            if (arch.fpuCtrlRegs.TryGetValue(regNumber & 0x1F, out RegisterStorage fcreg))
+            if (arch.fpuCtrlRegs.TryGetValue(regNumber & 0x1F, out RegisterStorage? fcreg))
             {
                 op = fcreg;
                 return true;

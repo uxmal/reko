@@ -21,6 +21,7 @@
 using Reko.Core;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 
 namespace Reko.Scanning
@@ -30,6 +31,7 @@ namespace Reko.Scanning
     /// sequence lengths.
 	/// </summary>
 	public class Trie<T>
+        where T : notnull
 	{
 		private TrieNode root;
 
@@ -57,10 +59,9 @@ namespace Reko.Scanning
 			long score = 0;
 			foreach (var instr in instrs)
 			{
-				TrieNode subNode;
-                if (!node.Next(instr, out subNode))
+                if (!node.Next(instr, out TrieNode? subNode))
 					break;
-				score = score * node.Successors.Count + subNode.Tally;
+				score = score * node.Successors.Count + subNode!.Tally;
 				node = subNode;
 			}
 			return score;
@@ -86,8 +87,7 @@ namespace Reko.Scanning
 
 			public TrieNode Add(T instr)
 			{
-				TrieNode subNode;
-                if (!Successors.TryGetValue(instr, out subNode))
+                if (!Successors.TryGetValue(instr, out TrieNode? subNode))
 				{
 					subNode = new TrieNode(instr, hasher);
 					Successors.Add(instr, subNode);
@@ -95,7 +95,7 @@ namespace Reko.Scanning
 				return subNode;
 			}
 
-			public bool Next(T instr, out TrieNode node)
+			public bool Next(T instr, [MaybeNullWhen(false)] out TrieNode node)
 			{
 				return Successors.TryGetValue(instr, out node);
 			}

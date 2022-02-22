@@ -143,7 +143,7 @@ namespace Reko.Core.Machine
             operandSeparator: ",");
     }
 
-    public delegate bool SymbolResolver(Address addr, [MaybeNullWhen(false)] out string? symbolName, out long offset);
+    public delegate bool SymbolResolver(Address addr, [MaybeNullWhen(false)] out string symbolName, out long offset);
 
     /// <summary>
     /// "Dumb" renderer that renders machine instructions as simple text.
@@ -164,7 +164,7 @@ namespace Reko.Core.Machine
         /// This renderer ignores annotations
         /// </summary>
         /// <param name="annotation"></param>
-        public void AddAnnotation(string annotation)
+        public void AddAnnotation(string? annotation)
         {
         }
 
@@ -210,7 +210,7 @@ namespace Reko.Core.Machine
             sb.Append(c);
         }
 
-        public void WriteString(string s)
+        public void WriteString(string? s)
         {
             sb.Append(s);
         }

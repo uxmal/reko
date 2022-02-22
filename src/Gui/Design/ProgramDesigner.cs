@@ -126,16 +126,16 @@ namespace Reko.Gui.Design
                     await uiSvc.ShowModalDialog(dlg);
                     return true;
                 case CmdIds.LoadSymbols:
-                    return LoadSymbols();
+                    return await LoadSymbols();
                 }
             }
             return await base.ExecuteAsync(cmdId);
         }
 
-        private bool LoadSymbols()
+        private async ValueTask<bool> LoadSymbols()
         {
             var uiSvc = Services!.RequireService<IDecompilerShellUiService>();
-            var filename = uiSvc.ShowOpenFileDialog("");
+            var filename = await uiSvc.ShowOpenFileDialog("");
             if (filename == null)
             {
                 // user canceled.

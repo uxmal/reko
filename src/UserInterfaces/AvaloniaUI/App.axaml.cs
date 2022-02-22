@@ -27,9 +27,11 @@ namespace Reko.UserInterfaces.AvaloniaUI
         public override void OnFrameworkInitializationCompleted()
         {
             var sc = new ServiceContainer();
+            var docFactory = new DockFactory(new Project());
             var mainWindow = new MainWindow();
-            MakeServices(sc, mainWindow);
-            var mvvm = new MainViewModel(sc, mainWindow);
+            MakeServices(sc, docFactory, mainWindow);
+
+            var mvvm = new MainViewModel(sc, docFactory, mainWindow);
             mainWindow.DataContext = mvvm;
             switch (ApplicationLifetime)
             {
@@ -65,8 +67,9 @@ namespace Reko.UserInterfaces.AvaloniaUI
             base.OnFrameworkInitializationCompleted();
         }
 
-        private static void MakeServices(IServiceContainer services, MainWindow mainForm)
+        private static void MakeServices(IServiceContainer services, DockFactory dockFactory, MainWindow mainForm)
         {
+            services.AddService<IDecompilerShellUiService>(new AvaloniaShellUiService(services, mainForm, dockFactory));
             services.AddService<IDialogFactory>(new AvaloniaDialogFactory(services));
             services.AddService<ISettingsService>(new AvaloniaSettingsService(services));
             services.AddService<IFileSystemService>(new FileSystemServiceImpl());

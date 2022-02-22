@@ -29,6 +29,7 @@ using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics.CodeAnalysis;
 using System.Text;
 
 namespace Reko.Core
@@ -267,8 +268,12 @@ namespace Reko.Core
         /// Returns all registers of this architecture.
         /// </summary>
         /// <returns></returns>
-        RegisterStorage[] GetRegisters(); 
-        bool TryGetRegister(string name, out RegisterStorage reg); // Attempts to find a register with name <paramref>name</paramref>
+        RegisterStorage[] GetRegisters();
+
+        /// <summary>
+        /// Attempts to find a register with name <paramref>name</paramref>
+        /// </summary>
+        bool TryGetRegister(string name, [MaybeNullWhen(false)] out RegisterStorage reg);
 
         /// <summary>
         /// Get all processor flags of this architecture.
@@ -597,7 +602,7 @@ namespace Reko.Core
             return sb.ToString().ToUpperInvariant();
         }
             
-        public abstract bool TryGetRegister(string name, out RegisterStorage reg);
+        public abstract bool TryGetRegister(string name, [MaybeNullWhen(false)] out RegisterStorage reg);
         public abstract FlagGroupStorage? GetFlagGroup(RegisterStorage flagRegister, uint grf);
         public abstract FlagGroupStorage? GetFlagGroup(string name);
         public abstract string GrfToString(RegisterStorage flagRegister, string prefix, uint grf);

@@ -40,7 +40,7 @@ namespace Reko.Loading
             using (TextReader txtRdr = CreateFileReader(filename))
             {
                 var serializer = new XmlSerializer(typeof(UnpackerSignatureFile_v1));
-                var sigs = (UnpackerSignatureFile_v1) serializer.Deserialize(txtRdr);
+                var sigs = (UnpackerSignatureFile_v1) serializer.Deserialize(txtRdr)!;
                 if (sigs != null && sigs.Signatures != null)
                 {
                     return sigs.Signatures.Select(s => CreateSignature(s));

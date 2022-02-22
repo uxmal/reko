@@ -120,7 +120,7 @@ namespace Reko.Environments.Msdos
 
         public void LoadInterruptServices(IProcessorArchitecture arch)
         {
-            var prefix = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+            var prefix = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)!;
             var libPath = Path.Combine(prefix, "realmodeintservices.xml");
             if (!File.Exists(libPath))
             {

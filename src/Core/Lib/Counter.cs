@@ -30,6 +30,7 @@ namespace Reko.Core.Lib
     /// </summary>
     /// <typeparam name="T">Item type to be tallied.</typeparam>
     public class Counter<T> : Dictionary<T, int>
+            where T : notnull
     {
         public Counter()
         {

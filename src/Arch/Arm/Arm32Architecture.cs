@@ -37,6 +37,7 @@ using Reko.Core.Lib;
 using Reko.Core.Operators;
 using Reko.Arch.Arm.AArch32;
 using Reko.Core.Emulation;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Reko.Arch.Arm
 {
@@ -221,7 +222,7 @@ namespace Reko.Arch.Arm
             return new SortedList<string, int>();
         }
 
-        public override bool TryGetRegister(string name, out RegisterStorage reg)
+        public override bool TryGetRegister(string name, [MaybeNullWhen(false)] out RegisterStorage reg)
         {
 #if NATIVE
             return regsByName.TryGetValue(name, out reg);'

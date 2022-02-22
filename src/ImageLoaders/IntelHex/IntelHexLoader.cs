@@ -86,7 +86,7 @@ namespace Reko.ImageLoaders.IntelHex
                 currMemChunk = null;
             }
 
-            private MemoryChunk GetPredChunk(Address addr)
+            private MemoryChunk? GetPredChunk(Address addr)
                 => memChunks.Values.FirstOrDefault(mchk => mchk.IsAtHeadOf(addr));
 
             /// <summary>

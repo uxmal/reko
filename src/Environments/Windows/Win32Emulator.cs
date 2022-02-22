@@ -68,7 +68,7 @@ namespace Reko.Environments.Windows
 
         private Module EnsureModule(string moduleName)
         {
-            if (!modules.TryGetValue(moduleName, out Module module))
+            if (!modules.TryGetValue(moduleName, out Module? module))
             {
                 module = new Module(moduleName);
                 modules.Add(module.Name, module);
@@ -83,7 +83,7 @@ namespace Reko.Environments.Windows
             Action<IProcessorEmulator> emulator,
             ProcedureCharacteristics? chars = null)
         {
-            if (!module.Procedures.TryGetValue(procName, out SimulatedProc proc))
+            if (!module.Procedures.TryGetValue(procName, out SimulatedProc? proc))
             {
                 //$REVIEW: LookupProcedureByName could return null.
                 var extProc = platform.LookupProcedureByName(module.Name, procName)!;
@@ -299,7 +299,7 @@ namespace Reko.Environments.Windows
 
         public bool InterceptCall(IProcessorEmulator emu, TWord l)
         {
-            if (!this.InterceptedCalls.TryGetValue(Address.Ptr32(l), out ExternalProcedure epProc))
+            if (!this.InterceptedCalls.TryGetValue(Address.Ptr32(l), out ExternalProcedure? epProc))
                 return false;
             ((SimulatedProc)epProc).Emulator(emu);
             return true;

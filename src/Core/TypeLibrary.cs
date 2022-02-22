@@ -107,14 +107,14 @@ namespace Reko.Core
 
 		public FunctionType? Lookup(string procedureName)
 		{
-            if (!Signatures.TryGetValue(procedureName, out FunctionType sig))
+            if (!Signatures.TryGetValue(procedureName, out FunctionType? sig))
                 return null;
 			return sig;
 		}
 
         public DataType? LookupType(string typedefName)
         {
-            if (!Types.TryGetValue(typedefName, out DataType dt))
+            if (!Types.TryGetValue(typedefName, out DataType? dt))
                 return null;
             return dt;
         }

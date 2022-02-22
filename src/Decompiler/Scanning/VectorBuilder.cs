@@ -189,7 +189,7 @@ namespace Reko.Scanning
             throw new NotImplementedException();
         }
 
-        public Block GetSinglePredecessor(Block block)
+        public Block? GetSinglePredecessor(Block block)
         {
             return block.Procedure.ControlGraph.Predecessors(block).FirstOrDefault();
         }

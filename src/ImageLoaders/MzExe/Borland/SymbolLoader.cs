@@ -683,8 +683,7 @@ private const byte TID_LOCALHANDLE = 0x3F;    //  Windows local handle
         private string GetKnownTypeName(ushort typeNumber)
         {
             if (typeNumber == 0) return "<no-type>"; 
-            BorlandType type;
-            return types.TryGetValue(typeNumber, out type) ? type.name! : "<unknown>";
+            return types.TryGetValue(typeNumber, out BorlandType? type) ? type.name! : "<unknown>";
         }
 
         private BorlandType ClassifyRangeType(LeImageReader rdr, SerializedType pt)

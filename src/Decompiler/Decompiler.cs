@@ -240,7 +240,7 @@ namespace Reko
         {
             if (resource is ProgramResourceGroup grp)
             {
-                outputDir = Path.Combine(outputDir, grp.Name);
+                outputDir = Path.Combine(outputDir, grp.Name!);
                 try
                 {
                     fsSvc.CreateDirectory(outputDir);

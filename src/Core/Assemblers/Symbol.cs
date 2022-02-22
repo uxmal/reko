@@ -139,7 +139,7 @@ namespace Reko.Core.Assemblers
 
 		public Symbol CreateSymbol(string s)
 		{
-            if (!symbols.TryGetValue(s, out Symbol sym))
+            if (!symbols.TryGetValue(s, out Symbol? sym))
             {
                 // Forward reference to a symbol. 
                 sym = new Symbol(s);

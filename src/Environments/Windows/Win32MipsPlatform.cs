@@ -192,9 +192,9 @@ namespace Reko.Environments.Windows
             if (moduleName is null)
                 return null;
             EnsureTypeLibraries(PlatformIdentifier);
-            if (!Metadata.Modules.TryGetValue(moduleName.ToUpper(), out ModuleDescriptor mod))
+            if (!Metadata.Modules.TryGetValue(moduleName.ToUpper(), out ModuleDescriptor? mod))
                 return null;
-            if (mod.ServicesByOrdinal.TryGetValue(ordinal, out SystemService svc))
+            if (mod.ServicesByOrdinal.TryGetValue(ordinal, out SystemService? svc))
             {
                 return new ExternalProcedure(svc.Name!, svc.Signature!);
             }
@@ -207,9 +207,9 @@ namespace Reko.Environments.Windows
             if (moduleName is null)
                 return null;
             EnsureTypeLibraries(PlatformIdentifier);
-            if (!Metadata.Modules.TryGetValue(moduleName.ToUpper(), out ModuleDescriptor mod))
+            if (!Metadata.Modules.TryGetValue(moduleName.ToUpper(), out ModuleDescriptor? mod))
                 return null;
-            if (mod.ServicesByName.TryGetValue(moduleName, out SystemService svc))
+            if (mod.ServicesByName.TryGetValue(moduleName, out SystemService? svc))
             {
                 return new ExternalProcedure(svc.Name!, svc.Signature!);
             }

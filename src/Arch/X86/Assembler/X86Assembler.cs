@@ -869,7 +869,7 @@ namespace Reko.Arch.X86.Assembler
 
         private void ResolveSegmentForwardReferences(Symbol sym)
         {
-            if (symbolSegments.TryGetValue(sym, out AssembledSegment asmSeg))
+            if (symbolSegments.TryGetValue(sym, out AssembledSegment? asmSeg))
             {
                 currentSegment.Relocations.AddRange(asmSeg.Relocations);
             }
@@ -1004,7 +1004,7 @@ namespace Reko.Arch.X86.Assembler
 
         private AssembledSegment GetSymbolSegmentReference(Symbol sym)
         {
-            if (symbolSegments.TryGetValue(sym, out AssembledSegment seg))
+            if (symbolSegments.TryGetValue(sym, out AssembledSegment? seg))
                 return seg;
             seg = new AssembledSegment(emitter, null);
             symbolSegments.Add(sym, seg);
@@ -2350,8 +2350,7 @@ namespace Reko.Arch.X86.Assembler
 
         public void Segment(string segmentName)
         {
-            AssembledSegment seg;
-            if (!mpNameToSegment.TryGetValue(segmentName, out seg))
+            if (!mpNameToSegment.TryGetValue(segmentName, out AssembledSegment? seg))
             {
                 var sym = symtab.DefineSymbol(segmentName, 0);
                 seg = new AssembledSegment(new Emitter(), sym);

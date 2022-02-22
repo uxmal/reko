@@ -48,7 +48,7 @@ namespace Reko.Gui.Commands
             }
             catch (Exception ex)
             {
-                Services.RequireService<IDecompilerShellUiService>()
+                await Services.RequireService<IDecompilerShellUiService>()
                     .ShowError(ex, "An error occurred.");
             }
         }

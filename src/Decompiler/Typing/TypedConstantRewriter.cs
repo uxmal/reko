@@ -98,7 +98,7 @@ namespace Reko.Typing
         {
             if (addr.Selector.HasValue)
             {
-                if (!mpSelectorToSegId.TryGetValue(addr.Selector.Value, out Identifier segId))
+                if (!mpSelectorToSegId.TryGetValue(addr.Selector.Value, out Identifier? segId))
                 {
                     eventListener.Warn(
                         "Selector {0:X4} has no known segment.",
@@ -256,7 +256,7 @@ namespace Reko.Typing
 			Expression e = c!;
             if (IsSegmentPointer(ptr))
             {
-                if (mpSelectorToSegId.TryGetValue(c!.ToUInt16(), out Identifier segID))
+                if (mpSelectorToSegId.TryGetValue(c!.ToUInt16(), out Identifier? segID))
                     return segID;
                 return e;
             } 

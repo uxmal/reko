@@ -296,9 +296,9 @@ namespace Reko.Environments.Windows
         public override ExternalProcedure? LookupProcedureByName(string? moduleName, string procName)
         {
             EnsureTypeLibraries(PlatformIdentifier);
-            if (moduleName != null && Metadata.Modules.TryGetValue(moduleName.ToUpper(), out ModuleDescriptor mod))
+            if (moduleName != null && Metadata.Modules.TryGetValue(moduleName.ToUpper(), out ModuleDescriptor? mod))
             {
-                if (mod.ServicesByName.TryGetValue(procName, out SystemService svc))
+                if (mod.ServicesByName.TryGetValue(procName, out SystemService? svc))
                 {
                     var chr = LookupCharacteristicsByName(svc.Name!);
                     return new ExternalProcedure(svc.Name!, svc.Signature!, chr);
@@ -310,7 +310,7 @@ namespace Reko.Environments.Windows
             }
             else
             {
-                if (!Metadata.Signatures.TryGetValue(procName, out FunctionType sig))
+                if (!Metadata.Signatures.TryGetValue(procName, out FunctionType? sig))
                     return null;
                 var chr = LookupCharacteristicsByName(procName);
                 return new ExternalProcedure(procName, sig, chr);
@@ -320,9 +320,9 @@ namespace Reko.Environments.Windows
         public override ExternalProcedure? LookupProcedureByOrdinal(string moduleName, int ordinal)
         {
             EnsureTypeLibraries(PlatformIdentifier);
-            if (!Metadata.Modules.TryGetValue(moduleName.ToUpper(), out ModuleDescriptor mod))
+            if (!Metadata.Modules.TryGetValue(moduleName.ToUpper(), out ModuleDescriptor? mod))
                 return null;
-            if (mod.ServicesByOrdinal.TryGetValue(ordinal, out SystemService svc))
+            if (mod.ServicesByOrdinal.TryGetValue(ordinal, out SystemService? svc))
             {
                 var chr = LookupCharacteristicsByName(svc.Name!);
                 return new ExternalProcedure(svc.Name!, svc.Signature!, chr);
@@ -333,7 +333,7 @@ namespace Reko.Environments.Windows
 
 		public override SystemService? FindService(int vector, ProcessorState? state, SegmentMap? segmentMap)
 		{
-            if (!services.TryGetValue(vector, out SystemService svc))
+            if (!services.TryGetValue(vector, out SystemService? svc))
                 return null;
             return svc;
 		}

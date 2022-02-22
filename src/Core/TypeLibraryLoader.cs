@@ -37,7 +37,7 @@ namespace Reko.Core
         public override TypeLibrary Load(IPlatform platform, TypeLibrary dstLib)
         {
             var ser = SerializedLibrary.CreateSerializer();
-            var slib = (SerializedLibrary) ser.Deserialize(stream);
+            var slib = (SerializedLibrary) ser.Deserialize(stream)!;
             var tldser = new TypeLibraryDeserializer(platform, true, dstLib);
             var tlib = tldser.Load(slib);
             return tlib;

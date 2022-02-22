@@ -64,9 +64,8 @@ namespace Reko.Assemblers.Pdp11
 
         public void Equate(string id, object id2)
         {
-            object value;
             var sId2 = id2 as string;
-            if (sId2 != null && !Equates.TryGetValue(sId2, out value))
+            if (sId2 != null && !Equates.TryGetValue(sId2, out object? value))
             {
                 value = id2;
             }

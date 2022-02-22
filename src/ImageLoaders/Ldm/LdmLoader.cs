@@ -436,7 +436,7 @@ namespace Reko.ImageLoaders.Ldm
             using var loadfile = new StreamReader(mem, Encoding.ASCII);
             for (; ; )
             {
-                string lline = loadfile.ReadLine();
+                string? lline = loadfile.ReadLine();
                 if (lline == null)
                     break;
                 ++linecnt;

@@ -457,8 +457,10 @@ namespace Reko.Scanning
             return new BackwardSlicerContext(ContextType.Condition, bitRange);
         }
 
-        public int CompareTo(BackwardSlicerContext that)
+        public int CompareTo(BackwardSlicerContext? that)
         {
+            if (that is null)
+                return 1;
             return this.BitRange.CompareTo(that.BitRange);
         }
 
@@ -811,7 +813,7 @@ namespace Reko.Scanning
             {
                 LiveExprs = liveExpr
                     .GroupBy(e => e.Key)
-                    .ToDictionary(k => k.Key, v => v.Max(vv => vv.Value)),
+                    .ToDictionary(k => k.Key, v => v.Max(vv => vv.Value)!),
                 SrcExpr = binExp,
             };
             return se;

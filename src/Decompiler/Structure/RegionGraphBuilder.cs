@@ -75,7 +75,7 @@ namespace Reko.Structure
                     if (s == proc.ExitBlock)
                         continue;
                     var to = Destination(b, s);
-                    graph.AddEdge(from, to);
+                    graph.AddEdge(from!, to);
                 }
                 if (from != null)
                 {

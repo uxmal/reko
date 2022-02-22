@@ -89,10 +89,10 @@ namespace Reko.Gui.Forms
             }
         }
 
-        private void BrowseAssemblyFile_Click(object sender, EventArgs e)
+        private async void BrowseAssemblyFile_Click(object sender, EventArgs e)
         {
-            var newFile = uiSvc.ShowOpenFileDialog(dlg.AssemblyFile.Text);
-            if (newFile != null)
+            var newFile = await uiSvc.ShowOpenFileDialog(dlg.AssemblyFile.Text);
+            if (newFile is not null)
             {
                 dlg.AssemblyFile.Text = newFile;
             }

@@ -95,7 +95,7 @@ namespace Reko.UserInterfaces.WindowsForms
                     if (await uiSvc.ShowModalDialog(dlg) == DialogResult.OK)
                         return true;
                     if (lastException != null)
-                        uiSvc.ShowError(lastException, "{0}", caption);
+                        await uiSvc.ShowError(lastException, "{0}", caption);
                     return false;
                 }
             }
