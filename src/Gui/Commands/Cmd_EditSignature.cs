@@ -24,6 +24,7 @@ using Reko.Core;
 using Reko.Gui.Forms;
 using Reko.Gui.Services;
 using System;
+using System.Threading.Tasks;
 
 namespace Reko.Gui.Commands
 {
@@ -41,7 +42,7 @@ namespace Reko.Gui.Commands
             this.address = addr;
         }
 
-        public override void DoIt()
+        public async override ValueTask DoItAsync()
         {
             var dlgFactory = Services.RequireService<IDialogFactory>();
             var uiSvc = Services.RequireService<IDecompilerShellUiService>();
@@ -49,8 +50,9 @@ namespace Reko.Gui.Commands
                 proc = new UserProcedure(address, procedure.Name);
             using (IProcedureDialog dlg = dlgFactory.CreateProcedureDialog(program, proc))
             {
-                if (DialogResult.OK == uiSvc.ShowModalDialog(dlg))
+                if (DialogResult.OK == await uiSvc.ShowModalDialog(dlg))
                 {
+                    //$TODO: move applychanges out!
                     dlg.ApplyChanges();
                     program.User.Procedures[address] = proc;
                     if (procedure != null)

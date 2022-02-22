@@ -28,6 +28,7 @@ using Reko.UserInterfaces.AvaloniaUI.Views;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
+using System.Threading.Tasks;
 
 namespace Reko.UserInterfaces.AvaloniaUI.Services
 {
@@ -100,10 +101,10 @@ namespace Reko.UserInterfaces.AvaloniaUI.Services
         }
 
 
-        public bool Execute(CommandID cmdId)
+        public ValueTask<bool> ExecuteAsync(CommandID cmdId)
         {
             //$TODO: dispatch the command to the currently active dock window
-            return false;
+            return ValueTask.FromResult(false);
         }
 
         public void SetContextMenu(object control, int menuID)
@@ -121,10 +122,16 @@ namespace Reko.UserInterfaces.AvaloniaUI.Services
             throw new NotImplementedException();
         }
 
-        public DialogResult ShowModalDialog(IDialog dlg)
+        public ValueTask<DialogResult> ShowModalDialog(IDialog dlg)
         {
             throw new NotImplementedException();
         }
+
+        public ValueTask<TResult> ShowModalDialog<TResult>(IDialog dlg)
+        {
+            throw new NotImplementedException();
+        }
+
 
         public string ShowOpenFileDialog(string fileName)
         {

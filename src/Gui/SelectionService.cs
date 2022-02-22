@@ -43,7 +43,7 @@ namespace Reko.Gui
             selection = new object[0];
         }
 
-        public object PrimarySelection =>
+        public object? PrimarySelection =>
             selection.Cast<object>().FirstOrDefault();
 
         public int SelectionCount =>

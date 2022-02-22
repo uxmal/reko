@@ -31,6 +31,7 @@ using Reko.Gui.Services;
 using Reko.UnitTests.Mocks;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
+using System.Threading.Tasks;
 
 namespace Reko.UnitTests.Gui.Design
 {
@@ -80,13 +81,13 @@ namespace Reko.UnitTests.Gui.Design
         }
 
         [Test]
-        public void ProgDes_CHeader_ShowOpenFileDialog()
+        public async Task ProgDes_CHeader_ShowOpenFileDialog()
         {
             Given_Program_NoSymbols();
             Expect_OpenFileDialog();
             Expect_CallsToSymbolService();
 
-            When_User_Selects_LoadSymbols();
+            await When_User_Selects_LoadSymbols();
             slSvc.VerifyAll();
             symSrc.VerifyAll();
             uiSvc.VerifyAll();
@@ -108,9 +109,9 @@ namespace Reko.UnitTests.Gui.Design
             }).Verifiable();
         }
 
-        private void When_User_Selects_LoadSymbols()
+        private async ValueTask When_User_Selects_LoadSymbols()
         {
-            var result = programDesigner.Execute(cmdidLoadSymbols);
+            var result = await programDesigner.ExecuteAsync(cmdidLoadSymbols);
             Assert.IsTrue(result, "Expected command handler to be implemented");
         }
 

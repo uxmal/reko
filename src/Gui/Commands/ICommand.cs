@@ -20,13 +20,15 @@
 
 #nullable enable
 
+using System.Threading.Tasks;
+
 namespace Reko.Gui.Commands
 {
     public interface ICommand
     {
         bool IsUndoable { get; }
 
-        void Do();
+        ValueTask DoAsync();
         void Undo();
     }
 }

@@ -25,6 +25,7 @@ using Reko.Gui.Services;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace Reko.Gui
 {
@@ -49,10 +50,11 @@ namespace Reko.Gui
             get { return Address.ToString(); }
         }
 
-        public void NavigateTo()
+        public ValueTask NavigateTo()
         {
             var svc = sp.RequireService<ILowLevelViewService>();
             svc.ShowMemoryAtAddress(Program, Address);
+            return ValueTask.CompletedTask;
         }
 
         #endregion

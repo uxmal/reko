@@ -164,9 +164,9 @@ namespace Reko.UserInterfaces.AvaloniaUI.Services
             throw new NotImplementedException();
         }
 
-        public bool StartBackgroundWork(string caption, Action backgroundWork)
+        public ValueTask<bool> StartBackgroundWork(string caption, Action backgroundWork)
         {
-            return false;   //$TODO
+            return ValueTask.FromResult(false);   //$TODO
         }
 
         public void Warn(string message)

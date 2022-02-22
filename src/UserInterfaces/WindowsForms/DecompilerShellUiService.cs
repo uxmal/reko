@@ -27,6 +27,7 @@ using System.ComponentModel.Design;
 using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace Reko.UserInterfaces.WindowsForms
@@ -180,17 +181,17 @@ namespace Reko.UserInterfaces.WindowsForms
         public bool QueryStatus(CommandID cmdId, CommandStatus status, CommandText text)
         {
             ICommandTarget ct = ActiveCommandTarget();
-            if (ct == null)
+            if (ct is null)
                 return false;
             return ct.QueryStatus(cmdId, status, text);
         }
 
-        public bool Execute(CommandID cmdId)
+        public ValueTask<bool> ExecuteAsync(CommandID cmdId)
         {
             ICommandTarget ct = ActiveCommandTarget();
-            if (ct == null)
-                return false;
-            return ct.Execute(cmdId);
+            if (ct is null)
+                return ValueTask.FromResult(false);
+            return ct.ExecuteAsync(cmdId);
         }
 
         public virtual void SetContextMenu(object control, int menuId)

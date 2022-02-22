@@ -23,6 +23,7 @@ using Reko.Gui;
 using Reko.Gui.Services;
 using System;
 using System.ComponentModel.Design;
+using System.Threading.Tasks;
 
 namespace Reko.UserInterfaces.AvaloniaUI.Services
 {
@@ -48,7 +49,7 @@ namespace Reko.UserInterfaces.AvaloniaUI.Services
             throw new NotImplementedException();
         }
 
-        public bool Execute(CommandID cmdId)
+        public ValueTask<bool> ExecuteAsync(CommandID cmdId)
         {
             throw new NotImplementedException();
         }

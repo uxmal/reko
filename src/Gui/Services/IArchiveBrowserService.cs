@@ -23,6 +23,7 @@
 using Reko.Core.Loading;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace Reko.Gui.Services
 {
@@ -39,8 +40,8 @@ namespace Reko.Gui.Services
         /// <returns>An instance of <see cref="ArchivedFile"/> if the user made a selection,
         /// null otherwise.
         /// </returns>
-        ArchivedFile? SelectFileFromArchive(IArchive archive);
+        ValueTask<ArchivedFile?> SelectFileFromArchive(IArchive archive);
 
-        ArchivedFile? UserSelectFileFromArchive(ICollection<ArchiveDirectoryEntry> archiveEntries);
+        ValueTask<ArchivedFile?> UserSelectFileFromArchive(ICollection<ArchiveDirectoryEntry> archiveEntries);
     }
 }

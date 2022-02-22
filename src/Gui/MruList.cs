@@ -52,8 +52,8 @@ namespace Reko.Gui
 			{
 				using (var reader = fsSvc.CreateStreamReader(fileLocation, new UTF8Encoding(false)))
 				{
-					string line = reader.ReadLine();
-					while (line != null && items.Count < items.Capacity)
+					string? line = reader.ReadLine();
+					while (line is not null && items.Count < items.Capacity)
 					{
                         items.Add(line.TrimEnd('\r', '\n'));
                         line = reader.ReadLine();

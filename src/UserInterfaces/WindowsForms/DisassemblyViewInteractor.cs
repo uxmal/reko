@@ -29,6 +29,7 @@ using System;
 using System.ComponentModel.Design;
 using System.Diagnostics;
 using System.IO;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace Reko.UserInterfaces.WindowsForms
@@ -125,12 +126,12 @@ namespace Reko.UserInterfaces.WindowsForms
                 StartAddress != null;
         }
 
-        private void GotoAddress()
+        private async ValueTask GotoAddress()
         {
 			var dlgFactory = sp.RequireService<IDialogFactory>();
             using (IAddressPromptDialog dlg = dlgFactory.CreateAddressPromptDialog())
             {
-                if (sp.GetService<IDecompilerShellUiService>().ShowModalDialog(dlg) == Gui.Services.DialogResult.OK)
+                if (await sp.GetService<IDecompilerShellUiService>().ShowModalDialog<Gui.Services.DialogResult>(dlg) == Gui.Services.DialogResult.OK)
                 {
                     StartAddress = dlg.Address;
                     DumpAssembler();
@@ -192,13 +193,13 @@ namespace Reko.UserInterfaces.WindowsForms
             return false;
         }
 
-        public bool Execute(CommandID cmdId)
+        public async ValueTask<bool> ExecuteAsync(CommandID cmdId)
         {
             if (cmdId.Guid == CmdSets.GuidReko)
             {
                 switch (cmdId.ID)
                 {
-                case CmdIds.ViewGoToAddress: GotoAddress(); return true;
+                case CmdIds.ViewGoToAddress: await GotoAddress(); return true;
                 }
             }
             return false;

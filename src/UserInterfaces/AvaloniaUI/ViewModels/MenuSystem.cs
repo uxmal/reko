@@ -27,6 +27,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel.Design;
 using System.Diagnostics;
+using System.Threading.Tasks;
 
 namespace Reko.UserInterfaces.AvaloniaUI.ViewModels
 {
@@ -42,16 +43,16 @@ namespace Reko.UserInterfaces.AvaloniaUI.ViewModels
     {
         private static readonly TraceSwitch trace = new TraceSwitch(nameof(MenuSystem), "Trace the MenuSystem class");
 
-        private readonly ICommandTarget target;
 
         public MenuSystem(ICommandTarget target)
         {
-            this.target = target;
+            this.Target = target;
             this.KeyBindings = new Dictionary<string, Dictionary<(string,KeyModifiers), CommandID>>();
         }
 
         public Dictionary<string, Dictionary<(string,KeyModifiers), CommandID>> KeyBindings { get; set; }
 
+        public ICommandTarget Target { get; }
 
 
         public void AddBinding(string windowKey, Guid cmdSet, int id, string key, KeyModifiers modifiers)
@@ -107,7 +108,7 @@ namespace Reko.UserInterfaces.AvaloniaUI.ViewModels
                     trace.Verbose("  -----");
                 foreach (var cmd in group.Values)
                 {
-                    trace.Verbose("  {0}", cmd.Text);
+                    trace.Verbose("  {0}", cmd.Text ?? "(null)");
                 }
             }
         }
@@ -158,13 +159,13 @@ namespace Reko.UserInterfaces.AvaloniaUI.ViewModels
         public int SetStatusForMenuItems(IList<CommandItem> menuItems)
         {
             var ms = new MenuStatusSetter();
-            return ms.SetStatus(new CommandItemAdapter(menuItems), target);
+            return ms.SetStatus(new CommandItemAdapter(menuItems), Target);
         }
 
         public int SetStatusForToolStripItems(IList<CommandItem> items)
         {
             var ms = new MenuStatusSetter();
-            return ms.SetStatus(new CommandItemAdapter(items), target);
+            return ms.SetStatus(new CommandItemAdapter(items), Target);
         }
 
         /// <summary>
@@ -200,7 +201,7 @@ namespace Reko.UserInterfaces.AvaloniaUI.ViewModels
         //    }
         //}
 
-        public bool ProcessKey(string controlType, ICommandTarget ct, string key, KeyModifiers modifiers)
+        public ValueTask<bool> ProcessKey(string controlType, ICommandTarget ct, string key, KeyModifiers modifiers)
         {
             if (this.KeyBindings.TryGetValue(controlType, out var bindings))
             {
@@ -208,27 +209,23 @@ namespace Reko.UserInterfaces.AvaloniaUI.ViewModels
                 {
                     if (KeyBindings.TryGetValue(ct.GetType().FullName!, out bindings))
                     {
-                        if (bindings.TryGetValue((key, modifiers), out CommandID cmdID))
+                        if (bindings.TryGetValue((key, modifiers), out CommandID? cmdID))
                         {
-                            return ct.Execute(cmdID);
+                            return ct.ExecuteAsync(cmdID);
                         }
                     }
-                    return false;
+                    return ValueTask.FromResult(false);
                 }
             }
 
             if (KeyBindings.TryGetValue("", out bindings))
             {
-                ;
-                if (bindings.TryGetValue((key, modifiers), out CommandID cmdID))
+                if (bindings.TryGetValue((key, modifiers), out CommandID? cmdID))
                 {
-                    if (this.target.Execute(cmdID))
-                    {
-                        return true;
-                    }
+                    return this.Target.ExecuteAsync(cmdID);
                 }
             }
-            return false;
+            return ValueTask.FromResult(false);
         }
     }
 }

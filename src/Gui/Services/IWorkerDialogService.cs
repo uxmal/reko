@@ -23,6 +23,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace Reko.Gui.Services
 {
@@ -34,7 +35,7 @@ namespace Reko.Gui.Services
         /// <param name="caption">Caption to display in the worker dialog.</param>
         /// <param name="backgroundWork"></param>
         /// <returns>True it task completed, false if it threw an exception.</returns>
-        bool StartBackgroundWork(string caption, Action backgroundWork);
+        ValueTask<bool> StartBackgroundWork(string caption, Action backgroundWork);
 
         /// <summary>
         /// Allows the background thread to update the caption.

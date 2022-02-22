@@ -126,7 +126,7 @@ namespace Reko.Gui.Controls
             }
         }
 
-        private void textEditor_Changed(object sender, EventArgs e)
+        private void textEditor_Changed(object? sender, EventArgs e)
         {
             if (textLoaded)
             {

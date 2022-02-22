@@ -82,26 +82,26 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
             this.DataBindings.Add(nameof(Text), interactor, nameof(MainFormInteractor.TitleText));
         }
 
-        private void MainForm_ProcessCommandKey(object sender, KeyEventArgs e)
+        private async void MainForm_ProcessCommandKey(object sender, KeyEventArgs e)
         {
             var frame = uiSvc.ActiveFrame;
             if (frame is not null)
             {
                 if (frame.Pane is ICommandTarget ct)
                 {
-                    e.Handled = dm.ProcessKey(ct.GetType().FullName, ct, e.KeyData);
+                    e.Handled = await dm.ProcessKey(ct.GetType().FullName, ct, e.KeyData);
                     if (e.Handled)
                         return;
                 }
             }
-            e.Handled = dm.ProcessKey("", this.interactor, e.KeyData);
+            e.Handled = await dm.ProcessKey("", this.interactor, e.KeyData);
         }
 
-        private void toolBar_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
+        private async void toolBar_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
         {
             if (e.ClickedItem.Tag is not MenuCommand cmd)
                 throw new NotImplementedException("Button not hooked up.");
-            interactor.Execute(cmd.CommandID);
+            await interactor.ExecuteAsync(cmd.CommandID);
         }
 
         #region IMainForm Members

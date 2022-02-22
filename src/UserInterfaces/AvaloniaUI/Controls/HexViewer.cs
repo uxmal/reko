@@ -195,8 +195,7 @@ namespace Reko.UserInterfaces.AvaloniaUI.Controls
         private RenderedLine RenderLine(int i, double yTopLine, double dxChar, double dyLine)
         {
             var spans = new TextSpan[16];
-            double x = 0;
-            for (int b = 0; b < 16; ++b)
+            for (int b =  0; b < 16; ++b)
             {
                 var offset = i * 16 + b;
                 var sByte = this.mem!.TryReadByte(offset, out byte by)

@@ -30,6 +30,7 @@ using System.ComponentModel.Design;
 using System.Drawing;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace Reko.Gui
 {
@@ -197,32 +198,34 @@ namespace Reko.Gui
             return false;
         }
 
-        public virtual bool Execute(CommandID cmdID)
+        public async virtual ValueTask<bool> ExecuteAsync(CommandID cmdID)
         {
             if (View is null || !View.IsFocused)
                 return false;
+            bool result = true;
             switch (cmdID.ID)
             {
-            case CmdIds.ViewFindWhatPointsHere: ViewFindWhatPointsHere(); return true;
-            case CmdIds.ViewAsCode: details = new CodeSearchDetails(); View.Invalidate(); return true;
+            case CmdIds.ViewFindWhatPointsHere: await ViewFindWhatPointsHere(); break;
+            case CmdIds.ViewAsCode: details = new CodeSearchDetails(); View.Invalidate(); break;
             case CmdIds.ViewAsStrings: details = new StringSearchDetails(new StringFinderCriteria
             {
                 Encoding = Encoding.ASCII,
                 StringType = StringType.NullTerminated(PrimitiveType.Char),
-            }); View.Invalidate(); return true;
-            case CmdIds.ViewAsData: details = new DataSearchDetails(); View.Invalidate(); return true;
-            case CmdIds.ActionMarkProcedure: MarkProcedures(); return true;
-            case CmdIds.ActionMarkType: MarkType(); return true;
-            case CmdIds.ActionMarkStrings: MarkStrings(); return true;
+            }); View.Invalidate(); break;
+            case CmdIds.ViewAsData: details = new DataSearchDetails(); View.Invalidate(); break;
+            case CmdIds.ActionMarkProcedure: await MarkProcedures(); break;
+            case CmdIds.ActionMarkType: MarkType(); break;
+            case CmdIds.ActionMarkStrings: MarkStrings(); break;
+            default: result = false; break;
             }
-            return false;
+            return result;
         }
 
-        public void MarkProcedures()
+        public ValueTask MarkProcedures()
         {
             //$TODO: if > 1 arch, pick one.
             var procAddrs = SelectedHits().Select(hit => new ProgramAddress(hit.Program, hit.Address));
-            services.RequireService<ICommandFactory>().MarkProcedures(procAddrs).Do();
+            return services.RequireService<ICommandFactory>().MarkProcedures(procAddrs).DoAsync();
         }
 
         public void MarkType()
@@ -264,7 +267,7 @@ namespace Reko.Gui
                 return View.SelectedIndices.Select(i => hits[i]);
         }
 
-        public void ViewFindWhatPointsHere()
+        public async ValueTask ViewFindWhatPointsHere()
         {
             var cmdFactory = services.RequireService<ICommandFactory>();
             var grs =
@@ -273,7 +276,7 @@ namespace Reko.Gui
                 select new { Program = g.Key, Addresses = g.Select(gg => gg.Address) };
             foreach (var gr in grs)
             {
-                cmdFactory.ViewWhatPointsHere(gr.Program, gr.Addresses).Do();
+                await cmdFactory.ViewWhatPointsHere(gr.Program, gr.Addresses).DoAsync();
             }
         }
     }

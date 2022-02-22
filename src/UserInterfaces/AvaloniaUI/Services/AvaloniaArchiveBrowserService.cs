@@ -37,12 +37,12 @@ namespace Reko.UserInterfaces.AvaloniaUI.Services
             this.services = services;
         }
 
-        public ArchivedFile? SelectFileFromArchive(IArchive archive)
+        public ValueTask<ArchivedFile?> SelectFileFromArchive(IArchive archive)
         {
             throw new NotImplementedException();
         }
 
-        public ArchivedFile? UserSelectFileFromArchive(ICollection<ArchiveDirectoryEntry> archiveEntries)
+        public ValueTask<ArchivedFile?> UserSelectFileFromArchive(ICollection<ArchiveDirectoryEntry> archiveEntries)
         {
             throw new NotImplementedException();
         }

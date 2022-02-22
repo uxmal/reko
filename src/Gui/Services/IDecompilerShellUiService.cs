@@ -23,6 +23,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace Reko.Gui.Services
 {
@@ -42,7 +43,8 @@ namespace Reko.Gui.Services
         IWindowFrame FindWindow(string windowType);
         IWindowFrame FindDocumentWindow(string documentType, object docItem);
         void SetContextMenu(object control, int menuID);
-        DialogResult ShowModalDialog(IDialog dlg);
+        ValueTask<DialogResult> ShowModalDialog(IDialog dlg);
+        ValueTask<TResult> ShowModalDialog<TResult>(IDialog dlg);
         void WithWaitCursor(Action p);
     }
 

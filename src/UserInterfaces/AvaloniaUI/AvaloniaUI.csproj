@@ -20,6 +20,7 @@
     <PackageReference Include="Dock.Avalonia" Version="0.10.10" />
     <PackageReference Include="Dock.Model.ReactiveUI" Version="0.10.10" />
     <PackageReference Include="Markdown.Avalonia" Version="0.10.7" />
+    <PackageReference Include="Microsoft.Toolkit.Mvvm" Version="7.1.2" />
 
   </ItemGroup>
 

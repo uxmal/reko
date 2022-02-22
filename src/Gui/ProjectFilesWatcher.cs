@@ -107,7 +107,7 @@ namespace Reko.Gui
                 if (script.Location.HasFragments)
                     continue;   // Can't watch inside archives...
                 var fullPath = script.Location.FilesystemPath;
-                var directoryName = Path.GetDirectoryName(fullPath);
+                var directoryName = Path.GetDirectoryName(fullPath)!;
                 var fileName = Path.GetFileName(fullPath);
                 
                 var watcher = new FileSystemWatcher(directoryName, fileName);
@@ -189,24 +189,27 @@ namespace Reko.Gui
             }
         }
 
-        private void OnScriptsChanged(object sender, NotifyCollectionChangedEventArgs e)
+        private void OnScriptsChanged(object? sender, NotifyCollectionChangedEventArgs e)
         {
             switch (e.Action)
             {
             case NotifyCollectionChangedAction.Add:
-                AddScripts(e.NewItems.OfType<ScriptFile>());
+                if (e.NewItems is not null)
+                {
+                    AddScripts(e.NewItems.OfType<ScriptFile>());
+                }
                 break;
             default:
                 throw new NotImplementedException();
             }
         }
 
-        private void OnProjectChanged(object sender, EventArgs e)
+        private void OnProjectChanged(object? sender, EventArgs e)
         {
             this.Project = Decompiler?.Project;
         }
 
-        private void OnDecompilerChanged(object sender, EventArgs e)
+        private void OnDecompilerChanged(object? sender, EventArgs e)
         {
             this.Decompiler = decompilerSvc.Decompiler;
         }

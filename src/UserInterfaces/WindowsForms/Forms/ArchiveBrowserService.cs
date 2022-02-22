@@ -26,7 +26,10 @@ using Reko.Gui.Services;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 using System.Windows.Forms;
+
+#nullable enable
 
 namespace Reko.UserInterfaces.WindowsForms.Forms
 {
@@ -39,12 +42,12 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
             this.services = sp;
         }
 
-        public ArchivedFile SelectFileFromArchive(IArchive archive)
+        public ValueTask<ArchivedFile?> SelectFileFromArchive(IArchive archive)
         {
             return UserSelectFileFromArchive(archive.RootEntries);
         }
 
-        public ArchivedFile UserSelectFileFromArchive(ICollection<ArchiveDirectoryEntry> archiveEntries)
+        public async ValueTask<ArchivedFile?> UserSelectFileFromArchive(ICollection<ArchiveDirectoryEntry> archiveEntries)
         {
             var dlgFactory = services.GetService<IDialogFactory>();
             if (dlgFactory == null)
@@ -55,7 +58,7 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
             using (var dlg = dlgFactory.CreateArchiveBrowserDialog())
             {
                 dlg.ArchiveEntries = archiveEntries;
-                if (uiSvc.ShowModalDialog(dlg) == Gui.Services.DialogResult.OK)
+                if (await uiSvc.ShowModalDialog(dlg) == Gui.Services.DialogResult.OK)
                     return dlg.GetSelectedFile();
                 else
                     return null;
@@ -68,6 +71,7 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
 
             public ArchiveBrowserInteractor()
             {
+                dlg = default!;
             }
 
             private void EnableControls()
@@ -84,7 +88,7 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
                 dlg.ArchiveTree.DoubleClick += new EventHandler(ArchiveTree_DoubleClick);
             }
 
-            void ArchiveTree_DoubleClick(object sender, EventArgs e)
+            void ArchiveTree_DoubleClick(object? sender, EventArgs e)
             {
                 if (dlg.SelectedArchiveEntry != null)
                 {
@@ -93,7 +97,7 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
                 }
             }
 
-            void dlg_Load(object sender, EventArgs e)
+            void dlg_Load(object? sender, EventArgs e)
             {
                 Populate(dlg.ArchiveEntries, dlg.ArchiveTree.Nodes);
             }
@@ -105,8 +109,7 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
                     TreeNode node = new TreeNode();
                     node.Text = entry.Name;
                     node.Tag = entry;
-                    ArchivedFolder folder = entry as ArchivedFolder;
-                    if (folder != null)
+                    if (entry is ArchivedFolder folder)
                     {
                         Populate(folder.Entries, node.Nodes);
                     }

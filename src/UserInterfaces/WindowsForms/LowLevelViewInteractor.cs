@@ -37,6 +37,7 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace Reko.UserInterfaces.WindowsForms
@@ -252,7 +253,7 @@ namespace Reko.UserInterfaces.WindowsForms
             return false;
         }
 
-        public bool Execute(CommandID cmdId)
+        public async ValueTask<bool> ExecuteAsync(CommandID cmdId)
         {
             if (Control.MemoryView.Focused)
             {
@@ -263,10 +264,10 @@ namespace Reko.UserInterfaces.WindowsForms
                     case CmdIds.EditCopy: return CopySelectionToClipboard();
                     case CmdIds.ViewGoToAddress: GotoAddress(); return true;
                     case CmdIds.ActionMarkType: return MarkType();
-                    case CmdIds.ActionMarkProcedure: MarkAndScanProcedure(); return true;
-                    case CmdIds.ViewFindWhatPointsHere: return ViewWhatPointsHere();
-                    case CmdIds.ViewFindPattern: return ViewFindPattern();
-                    case CmdIds.TextEncodingChoose: return ChooseTextEncoding();
+                    case CmdIds.ActionMarkProcedure: await MarkAndScanProcedure(); return true;
+                    case CmdIds.ViewFindWhatPointsHere: return await ViewWhatPointsHere();
+                    case CmdIds.ViewFindPattern: return await ViewFindPattern();
+                    case CmdIds.TextEncodingChoose: return await ChooseTextEncoding();
                     }
                 }
             }
@@ -278,9 +279,9 @@ namespace Reko.UserInterfaces.WindowsForms
                     {
                     case CmdIds.EditCopy: return CopyDisassemblerSelectionToClipboard();
                     case CmdIds.EditAnnotation: return EditDasmAnnotation();
-                    case CmdIds.EditRegisterValues: return EditRegisterValues();
-                    case CmdIds.TextEncodingChoose: return ChooseTextEncoding();
-                    case CmdIds.ActionCallTerminates: return EditCallSite();
+                    case CmdIds.EditRegisterValues: return await EditRegisterValues();
+                    case CmdIds.TextEncodingChoose: return await ChooseTextEncoding();
+                    case CmdIds.ActionCallTerminates: return await EditCallSite();
                     case CmdIds.ViewPcRelative: return ToggleShowPcRelative();
                     }
                 }
@@ -316,12 +317,12 @@ namespace Reko.UserInterfaces.WindowsForms
             control.Invalidate();
         }
 
-        public void MarkAndScanProcedure()
+        public ValueTask MarkAndScanProcedure()
         {
             if (!TryGetSelectedAddressRange(out var addrRange))
-                return;
+                return ValueTask.CompletedTask;
             var address = new ProgramAddress(program, addrRange.Begin);
-            services.RequireService<ICommandFactory>().MarkProcedure(address).Do();
+            return services.RequireService<ICommandFactory>().MarkProcedure(address).DoAsync();
         }
 
         private bool TryGetSelectedAddressRange(out AddressRange addrRange)
@@ -434,18 +435,18 @@ namespace Reko.UserInterfaces.WindowsForms
             return item;
         }
 
-        public bool ViewWhatPointsHere()
+        public async ValueTask<bool> ViewWhatPointsHere()
         {
             AddressRange addrRange = control.MemoryView.GetAddressRange();
             if (!addrRange.IsValid)
                 return true;
             if (program == null)
                 return true;
-            services.RequireService<ICommandFactory>().ViewWhatPointsHere(program, addrRange.Begin).Do();
+            await services.RequireService<ICommandFactory>().ViewWhatPointsHere(program, addrRange.Begin).DoAsync();
             return true;
         }
 
-        public bool ViewFindPattern()
+        public async ValueTask<bool> ViewFindPattern()
         {
             AddressRange addrRange = control.MemoryView.GetAddressRange();
             if (!addrRange.IsValid || program == null)
@@ -457,7 +458,7 @@ namespace Reko.UserInterfaces.WindowsForms
             using (ISearchDialog dlg = dlgFactory.CreateSearchDialog())
             {
                 dlg.InitialPattern = SelectionToHex(addrRange);
-                if (uiSvc.ShowModalDialog(dlg) == Gui.Services.DialogResult.OK)
+                if (await uiSvc.ShowModalDialog(dlg) == Gui.Services.DialogResult.OK)
                 {
                     var re = Core.Dfa.Automaton.CreateFromPattern(dlg.Patterns.Text);
                     var hits =
@@ -480,13 +481,13 @@ namespace Reko.UserInterfaces.WindowsForms
             return re.GetMatches(mem.Bytes, 0);
         }
 
-        public bool ChooseTextEncoding()
+        public async ValueTask<bool> ChooseTextEncoding()
         {
             var dlgFactory = services.RequireService<IDialogFactory>();
             var uiSvc = services.RequireService<IDecompilerShellUiService>();
             using (ITextEncodingDialog dlg = dlgFactory.CreateTextEncodingDialog())
             {
-                if (uiSvc.ShowModalDialog(dlg) == Gui.Services.DialogResult.OK)
+                if (await uiSvc.ShowModalDialog(dlg) == Gui.Services.DialogResult.OK)
                 {
                     var enc = dlg.GetSelectedTextEncoding();
                     this.control.MemoryView.Encoding = enc;
@@ -510,7 +511,7 @@ namespace Reko.UserInterfaces.WindowsForms
             return true;
         }
 
-        public bool EditRegisterValues()
+        public async ValueTask<bool> EditRegisterValues()
         {
             if (Control.DisassemblyView.SelectedObject is MachineInstruction instr)
             {
@@ -522,7 +523,7 @@ namespace Reko.UserInterfaces.WindowsForms
                 var uiSvc = services.RequireService<IDecompilerShellUiService>();
                 using (var dlg = dlgFactory.CreateRegisterValuesDialog(this.program.Architecture, regValues))
                 {
-                    if (Gui.Services.DialogResult.OK == uiSvc.ShowModalDialog(dlg))
+                    if (Gui.Services.DialogResult.OK == await uiSvc.ShowModalDialog(dlg))
                     {
                         regValues = dlg.RegisterValues;
                         program.User.RegisterValues[instr.Address] = regValues;
@@ -532,7 +533,7 @@ namespace Reko.UserInterfaces.WindowsForms
             return true;
         }
 
-        public bool EditCallSite()
+        public async ValueTask<bool> EditCallSite()
         {
             var instr = (MachineInstruction)Control.DisassemblyView.SelectedObject;
             var dlgFactory = services.RequireService<IDialogFactory>();
@@ -540,7 +541,7 @@ namespace Reko.UserInterfaces.WindowsForms
             var ucd = GetUserCallDataFromAddress(instr.Address);
             using (var dlg = dlgFactory.CreateCallSiteDialog(this.program, ucd))
             {
-                if (Gui.Services.DialogResult.OK == uiSvc.ShowModalDialog(dlg))
+                if (Gui.Services.DialogResult.OK == await uiSvc.ShowModalDialog(dlg))
                 {
                     ucd = dlg.GetUserCallData(null);
                     SetUserCallData(ucd);

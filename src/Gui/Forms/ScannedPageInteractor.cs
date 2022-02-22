@@ -27,6 +27,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace Reko.Gui.Forms
 {
@@ -59,17 +60,17 @@ namespace Reko.Gui.Forms
             return mc;
         }
 
-        public override bool Execute(CommandID cmdId)
+        public override ValueTask<bool> ExecuteAsync(CommandID cmdId)
         {
             if (cmdId.Guid == CmdSets.GuidReko)
             {
                 switch (cmdId.ID)
                 {
                 case CmdIds.ViewShowUnscanned:
-                    return ViewUnscannedBlocks();
+                    return ValueTask.FromResult(ViewUnscannedBlocks());
                 }
             }
-            return base.Execute(cmdId);
+            return base.ExecuteAsync(cmdId);
         }
 
         public override void PerformWork(IWorkerDialogService workerDialogSvc)

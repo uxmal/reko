@@ -25,6 +25,7 @@ using Reko.Gui.Services;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace Reko.Gui
 {
@@ -53,11 +54,12 @@ namespace Reko.Gui
             get { return Block.DisplayName; }
         }
 
-        public void NavigateTo()
+        public ValueTask NavigateTo()
         {
             var codeSvc = sp.GetService<ICodeViewerService>();
             if (codeSvc != null)
                 codeSvc.DisplayProcedure(program, Block.Procedure, program.NeedsScanning);
+            return ValueTask.CompletedTask;
         }
 
         #endregion

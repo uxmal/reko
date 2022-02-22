@@ -28,6 +28,7 @@ using System.ComponentModel.Design;
 using System.Diagnostics;
 using System.Text;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace Reko.UserInterfaces.WindowsForms.Forms
@@ -241,7 +242,7 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
             return false;
         }
 
-        public bool Execute(CommandID cmdId)
+        public ValueTask<bool> ExecuteAsync(CommandID cmdId)
         {
             if (cmdId.Guid == CmdSets.GuidReko)
             {
@@ -251,10 +252,10 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
                 case CmdIds.EditSelectAll: return SelectAll();
                 }
             }
-            return false;
+            return ValueTask.FromResult(false);
         }
 
-        public bool CopyDiagnosticsToClipboard()
+        public ValueTask<bool> CopyDiagnosticsToClipboard()
         {
             var sb = new StringBuilder();
             foreach (int i in listView.SelectedIndices)
@@ -264,14 +265,14 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
                 sb.AppendLine();
             }
             Clipboard.SetText(sb.ToString());
-            return true;
+            return ValueTask.FromResult(true);
         }
 
-        public bool SelectAll()
+        public ValueTask<bool> SelectAll()
         {
             for (int i = 0; i < listView.Items.Count; ++i)
                 listView.SelectedIndices.Add(i);
-            return true;
+            return ValueTask.FromResult(true);
         }
     }
 }

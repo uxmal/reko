@@ -26,6 +26,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace Reko.Gui
 {
@@ -60,10 +61,11 @@ namespace Reko.Gui
             }
         }
 
-        public void NavigateTo()
+        public ValueTask NavigateTo()
         {
             var editorSvc = sp.GetService<ITextFileEditorService>();
             editorSvc?.DisplayFile(fileName, line);
+            return ValueTask.CompletedTask;
         }
 
         #endregion

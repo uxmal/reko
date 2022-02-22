@@ -59,8 +59,10 @@ namespace Reko.Gui
 
         public ITreeView TreeView => tree;
 
-        public void AddComponents(IEnumerable components)
+        public void AddComponents(IEnumerable? components)
         {
+            if (components is null)
+                return;
             var nodes = components
                 .Cast<object>()
                 .Select(o => CreateTreeNode(o, CreateDesigner(o)!, null));
@@ -97,7 +99,7 @@ namespace Reko.Gui
         {
             if (o == null)
                 return null;
-            if (mpitemToDesigner.TryGetValue(o, out TreeNodeDesigner des))
+            if (mpitemToDesigner.TryGetValue(o, out TreeNodeDesigner? des))
                 return des;
             else
                 return o as TreeNodeDesigner;
@@ -135,7 +137,7 @@ namespace Reko.Gui
                         var desType = svc.GetType(
                             ((DesignerAttribute) attr[0]).DesignerTypeName);
                         if (desType != null)
-                            des = (TreeNodeDesigner) Activator.CreateInstance(desType);
+                            des = (TreeNodeDesigner) Activator.CreateInstance(desType)!;
                         else
                             des = new TreeNodeDesigner();
                     }
@@ -149,7 +151,10 @@ namespace Reko.Gui
                     des = new TreeNodeDesigner();
                 }
             }
-            mpitemToDesigner[o] = des;
+            if (des is not null)
+            {
+                mpitemToDesigner[o] = des;
+            }
             return des;
         }
 
@@ -168,7 +173,7 @@ namespace Reko.Gui
             return node;
         }
 
-        private void tree_AfterSelect(object sender, EventArgs e)
+        private void tree_AfterSelect(object? sender, EventArgs e)
         {
             var des = GetSelectedDesigner();
             if (des != null)
@@ -177,13 +182,13 @@ namespace Reko.Gui
             }
         }
 
-        private void tree_BeforeExpand(object sender, TreeViewEventArgs e)
+        private void tree_BeforeExpand(object? sender, TreeViewEventArgs e)
         {
             var des = (TreeNodeDesigner) e.Node.Tag;
             des?.OnExpanded();
         }
 
-        private void tree_AfterExpand(object sender, TreeViewEventArgs e)
+        private void tree_AfterExpand(object? sender, TreeViewEventArgs e)
         {
             var des = (TreeNodeDesigner) e.Node.Tag;
             des?.OnExpanded();
@@ -208,11 +213,9 @@ namespace Reko.Gui
         {
             if (component == null)
                 return;
-            if (!mpitemToDesigner.TryGetValue(component, out TreeNodeDesigner des))
+            if (!mpitemToDesigner.TryGetValue(component, out TreeNodeDesigner? des))
                 return;
             tree.SelectedNode = des.TreeNode;
         }
-
-
     }
 }

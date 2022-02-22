@@ -26,6 +26,7 @@ using System;
 using System.ComponentModel.Design;
 using System.IO;
 using System.Text;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace Reko.UserInterfaces.WindowsForms
@@ -102,8 +103,9 @@ namespace Reko.UserInterfaces.WindowsForms
             return false;
         }
 
-        public bool Execute(CommandID cmdId)
+        public ValueTask<bool> ExecuteAsync(CommandID cmdId)
         {
+            bool result = false;
             if (cmdId.Guid == CmdSets.GuidReko)
             {
                 switch (cmdId.ID)
@@ -113,14 +115,16 @@ namespace Reko.UserInterfaces.WindowsForms
                     this.segmentView.TextView.Selection.Save(ms, DataFormats.UnicodeText);
                     var text = new string(Encoding.Unicode.GetChars(ms.ToArray()));
                     Clipboard.SetData(DataFormats.UnicodeText, text);
-                    return true;
+                    result = true;
+                    break;
                 case CmdIds.EditSelectAll:
                     var tv = this.segmentView.TextView;
                     tv.SelectAll();
-                    return true;
+                    result = true;
+                    break;
                 }
             }
-            return false;
+            return ValueTask.FromResult(result);
         }
     }
 }

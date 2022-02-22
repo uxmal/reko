@@ -23,6 +23,7 @@ using Reko.Gui.Services;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
+using System.Threading.Tasks;
 
 namespace Reko.Gui.Forms
 {
@@ -93,12 +94,12 @@ namespace Reko.Gui.Forms
             return base.QueryStatus(cmdId, status, text);
         }
 
-        public override bool Execute(CommandID cmdId)
+        public override ValueTask<bool> ExecuteAsync(CommandID cmdId)
         {
             if (cmdId.Guid == CmdSets.GuidReko)
             {
             }
-            return base.Execute(cmdId);
+            return base.ExecuteAsync(cmdId);
         }
 
         #endregion

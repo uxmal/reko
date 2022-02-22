@@ -32,6 +32,7 @@ using System.ComponentModel.Design;
 using System.Diagnostics;
 using System.IO;
 using System.Text;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace Reko.UserInterfaces.WindowsForms
@@ -234,7 +235,7 @@ namespace Reko.UserInterfaces.WindowsForms
             return false;
         }
 
-        public bool Execute(CommandID cmdId)
+        public async ValueTask<bool> ExecuteAsync(CommandID cmdId)
         {
             if (cmdId.Guid == CmdSets.GuidReko)
             {
@@ -250,7 +251,7 @@ namespace Reko.UserInterfaces.WindowsForms
                     ViewCode();
                     return true;
                 case CmdIds.TextEncodingChoose:
-                    return ChooseTextEncoding();
+                    return await ChooseTextEncoding();
                 case CmdIds.EditDeclaration:
                     //EditDeclaration();
                     return true;
@@ -273,13 +274,13 @@ namespace Reko.UserInterfaces.WindowsForms
             Clipboard.SetData(DataFormats.UnicodeText, text);
         }
 
-        public bool ChooseTextEncoding()
+        public async ValueTask<bool> ChooseTextEncoding()
         {
             var dlgFactory = services.RequireService<IDialogFactory>();
             var uiSvc = services.RequireService<IDecompilerShellUiService>();
             using (ITextEncodingDialog dlg = dlgFactory.CreateTextEncodingDialog())
             {
-                if (uiSvc.ShowModalDialog(dlg) == Gui.Services.DialogResult.OK)
+                if (await uiSvc.ShowModalDialog(dlg) == Gui.Services.DialogResult.OK)
                 {
                     var enc = dlg.GetSelectedTextEncoding();
                     program.User.TextEncoding = enc;

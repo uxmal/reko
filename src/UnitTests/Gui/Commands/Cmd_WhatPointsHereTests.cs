@@ -30,6 +30,7 @@ using System.Collections.Generic;
 using System.ComponentModel.Design;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace Reko.UnitTests.Gui.Commands
 {
@@ -85,13 +86,13 @@ namespace Reko.UnitTests.Gui.Commands
 
 
         [Test(Description = "Test when a segment doesn't cover the program image")]
-        public void Cmdwph_SmallSegment()
+        public async Task Cmdwph_SmallSegment()
         {
             Given_Segment(".text", Address.Ptr32(0x00401000), 0x0800);
             Given_Pointers(new[] { Address.Ptr32(0x00401800), Address.Ptr32(0x00401804) });
 
             var cmd = new Cmd_ViewWhatPointsHere(sc, program, new[] { Address.Ptr32(0x00401400) });
-            cmd.DoIt();
+           await cmd.DoItAsync();
         }
     }
 }

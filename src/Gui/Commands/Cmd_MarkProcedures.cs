@@ -27,6 +27,7 @@ using Reko.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace Reko.Gui.Commands
 {
@@ -50,7 +51,7 @@ namespace Reko.Gui.Commands
             this.addresses = addresses;
         }
 
-        public override void DoIt()
+        public async override ValueTask DoItAsync()
         {
             var brSvc = Services.RequireService<IProjectBrowserService>();
             var procsSvc = Services.RequireService<IProcedureListService>();
@@ -64,7 +65,7 @@ namespace Reko.Gui.Commands
                 {
                     program.ImageMap.PauseEventHandler();
                 }
-                var sArch = DetermineArchitecture();
+                var sArch = await DetermineArchitecture();
                 var userProcs =
                     from hit in addresses
                     let uProc = DoScanProcedure(hit, sArch)
@@ -120,7 +121,7 @@ namespace Reko.Gui.Commands
         /// <returns>Null if no architecture could be determined,
         /// or the name of the chosen architecture.
         /// </returns>
-        private string? DetermineArchitecture()
+        private async ValueTask<string?> DetermineArchitecture()
         {
             var archs = addresses.SelectMany(a => a.Program.Architectures.Values)
                 .GroupBy(a => a.Name)
@@ -137,7 +138,7 @@ namespace Reko.Gui.Commands
             var uiSvc = Services.RequireService<IDecompilerShellUiService>();
             using (var dlg = dlgFactory.CreateSelectItemDialog("Select a processor architecture", archs, false))
             {
-                if (uiSvc.ShowModalDialog(dlg) != DialogResult.OK)
+                if (await uiSvc.ShowModalDialog(dlg) != DialogResult.OK)
                     return null;
                 return (string?)(((ListOption) dlg.SelectedItem).Value);
             }

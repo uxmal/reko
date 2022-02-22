@@ -56,7 +56,7 @@ namespace Reko.UserInterfaces.AvaloniaUI.Services
             }
         }
 
-        public event EventHandler UiPreferencesChanged;
+        public event EventHandler? UiPreferencesChanged;
 
         public void Load()
         {

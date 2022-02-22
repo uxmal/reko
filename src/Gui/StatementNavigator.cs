@@ -26,6 +26,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace Reko.Gui
 {
@@ -49,11 +50,12 @@ namespace Reko.Gui
 
         public string Text { get; private set; }
 
-        public void NavigateTo()
+        public ValueTask NavigateTo()
         {
             var codeSvc = services.GetService<ICodeViewerService>();
             if (codeSvc != null)
                 codeSvc.DisplayStatement(program, Statement);
+            return ValueTask.CompletedTask;
         }
     }
 }

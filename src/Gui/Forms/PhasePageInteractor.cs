@@ -24,6 +24,7 @@ using Reko.Gui.Services;
 using Reko.Services;
 using System;
 using System.ComponentModel.Design;
+using System.Threading.Tasks;
 
 namespace Reko.Gui.Forms
 {
@@ -106,17 +107,16 @@ namespace Reko.Gui.Forms
             return false;
         }
 
-        public virtual bool Execute(CommandID cmdId)
+        public virtual ValueTask<bool> ExecuteAsync(CommandID cmdId)
         {
-            return false;
+            return ValueTask.FromResult(false);
         }
 
         #endregion
 
         public virtual void Dispose()
         {
-            if (Disposed != null)
-                Disposed(this, EventArgs.Empty);
+            Disposed?.Invoke(this, EventArgs.Empty);
         }
     }
 }

@@ -23,9 +23,8 @@
 using Reko.Core;
 using Reko.Gui.Services;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
+using System.Threading.Tasks;
 
 namespace Reko.Gui
 {
@@ -51,7 +50,7 @@ namespace Reko.Gui
 
         public string Text { get { return IndirectJumpAddress.ToString();  } }
 
-        public void NavigateTo()
+        public async ValueTask NavigateTo()
         {
             var svc = services.RequireService<ILowLevelViewService>();
             svc.ShowMemoryAtAddress(Program, IndirectJumpAddress);
@@ -61,7 +60,7 @@ namespace Reko.Gui
             var instr = Program.CreateDisassembler(Program.Architecture, IndirectJumpAddress).First();
             using (var dlg = dlgSvc.CreateJumpTableDialog(Program, Architecture, instr, VectorAddress, Stride))
             {
-                if (DialogResult.OK == uiSvc.ShowModalDialog(dlg))
+                if (DialogResult.OK == await uiSvc.ShowModalDialog(dlg))
                 {
                     var ujmp = dlg.GetResults();
                     this.Program.User.JumpTables[ujmp.Address!] = ujmp.Table!;

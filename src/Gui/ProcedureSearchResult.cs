@@ -26,6 +26,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace Reko.Gui
 {
@@ -91,9 +92,9 @@ namespace Reko.Gui
             return false;
         }
 
-        public bool Execute(CommandID cmdId)
+        public ValueTask<bool> ExecuteAsync(CommandID cmdId)
         {
-            return false;
+            return ValueTask.FromResult(false);
         }
 
         public int SortedColumn

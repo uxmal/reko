@@ -18,6 +18,8 @@
  */
 #endregion
 
+using System.Threading.Tasks;
+
 namespace Reko.Core
 {
     /// <summary>
@@ -27,6 +29,6 @@ namespace Reko.Core
     public interface ICodeLocation
     {
         string Text { get; }
-        void NavigateTo();
+        ValueTask NavigateTo();
     }
 }

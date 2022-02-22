@@ -26,6 +26,7 @@ using System.Collections.Generic;
 using System.ComponentModel.Design;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace Reko.Gui
 {
@@ -59,9 +60,9 @@ namespace Reko.Gui
             return false;
         }
 
-        public virtual bool Execute(CommandID cmdId)
+        public virtual ValueTask<bool> ExecuteAsync(CommandID cmdId)
         {
-            return false;
+            return ValueTask.FromResult(false);
         }
     }
 

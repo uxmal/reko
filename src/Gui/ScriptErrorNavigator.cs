@@ -27,6 +27,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace Reko.Gui
 {
@@ -45,12 +46,14 @@ namespace Reko.Gui
 
         public string Text => Path.GetFileName(error.FileName);
 
-        public void NavigateTo()
+        public ValueTask NavigateTo()
         {
             var editorSvc = sp.GetService<ITextFileEditorService>();
             editorSvc?.DisplayFile(error.FileName, error.LineNumber);
             var stackTraceSvc = sp.GetService<IStackTraceService>();
             stackTraceSvc?.DisplayStackTrace(error.StackFrames);
+            return ValueTask.CompletedTask;
+
         }
 
         #endregion

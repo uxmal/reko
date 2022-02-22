@@ -27,6 +27,7 @@ using System;
 using System.ComponentModel.Design;
 using System.Diagnostics;
 using System.Linq;
+using System.Threading.Tasks;
 
 #nullable enable
 
@@ -34,9 +35,9 @@ namespace Reko.Gui.Forms
 {
     public interface InitialPageInteractor : IPhasePageInteractor
     {
-        bool OpenBinary(string file);
-        bool OpenBinaryAs(string file, LoadDetails details);
-        bool Assemble(string file, IAssembler asm, IPlatform platform);
+        ValueTask<bool> OpenBinary(string file);
+        ValueTask<bool> OpenBinaryAs(string file, LoadDetails details);
+        ValueTask<bool> Assemble(string file, IAssembler asm, IPlatform platform);
     }
 
     /// <summary>
@@ -105,13 +106,13 @@ namespace Reko.Gui.Forms
         /// Open the specified file.
         /// </summary>
         /// <param name="file">The file system path to the file.</param>
-        public bool OpenBinary(string file)
+        public async ValueTask<bool> OpenBinary(string file)
         {
             var ldr = Services.RequireService<ILoader>();
             var svc = Services.RequireService<IWorkerDialogService>();
             ILoadedImage? loadedImage = null;
             var imageUri = ImageLocation.FromUri(file);
-            bool exceptionThrown = !svc.StartBackgroundWork("Opening file", () =>
+            bool exceptionThrown = !await svc.StartBackgroundWork("Opening file", () =>
             {
                 var eventListener = Services.RequireService<DecompilerEventListener>();
                 eventListener.ShowStatus("Loading file.");
@@ -129,10 +130,10 @@ namespace Reko.Gui.Forms
                 loadedImage = Project.FromSingleProgram(program);
                 break;
             case IArchive archive:
-                loadedImage = LoadFromArchive(archive, ldr);
+                loadedImage = await LoadFromArchive(archive, ldr);
                 break;
             case Blob blob:
-                var details = ShowOpenBinaryAsDialog(file);
+                var details = await ShowOpenBinaryAsDialog(file);
                 if (details is null)
                     return false;
                 var rawProgram = ldr.LoadRawImage(blob.Location, blob.Image, null, details);
@@ -155,13 +156,13 @@ namespace Reko.Gui.Forms
             return true;
         }
 
-        private LoadDetails? ShowOpenBinaryAsDialog(string file)
+        private async ValueTask<LoadDetails?> ShowOpenBinaryAsDialog(string file)
         {
             var uiSvc = Services.RequireService<IDecompilerShellUiService>();
             var dlgFactory = Services.RequireService<IDialogFactory>();
             using (IOpenAsDialog dlg = dlgFactory.CreateOpenAsDialog(file))
             {
-                if (uiSvc.ShowModalDialog(dlg) == DialogResult.OK)
+                if (await uiSvc.ShowModalDialog(dlg) == DialogResult.OK)
                 {
                     return dlg.GetLoadDetails();
                 }
@@ -172,12 +173,13 @@ namespace Reko.Gui.Forms
             }
         }
 
-        public bool OpenBinaryAs(string file, LoadDetails details)
+        public async ValueTask<bool> OpenBinaryAs(string file, LoadDetails details)
         {
             var ldr = Services.RequireService<ILoader>();
             IWorkerDialogService svc = Services.RequireService<IWorkerDialogService>();
-            if (!svc.StartBackgroundWork("Loading program", delegate ()
+            if (!await svc.StartBackgroundWork("Loading program", delegate ()
             {
+                //$TODO: taskify this.
                 var eventListener = Services.RequireService<DecompilerEventListener>();
                 eventListener.ShowStatus("Loading source program.");
                 var imageUri = ImageLocation.FromUri(file);
@@ -206,10 +208,10 @@ namespace Reko.Gui.Forms
             }
         }
 
-        private Project? LoadFromArchive(IArchive archive, ILoader loader)
+        private async ValueTask<Project?> LoadFromArchive(IArchive archive, ILoader loader)
         {
             var abSvc = Services.RequireService<IArchiveBrowserService>();
-            while (abSvc.SelectFileFromArchive(archive) is ArchivedFile archiveFile)
+            while (await abSvc.SelectFileFromArchive(archive) is ArchivedFile archiveFile)
             {
                 var image = archiveFile.LoadImage(Services, null);
                 if (image is Blob blob)
@@ -225,7 +227,7 @@ namespace Reko.Gui.Forms
                     return Project.FromSingleProgram(program);
                 case Blob blob2:
                     //$TODO: make 'filename' textbox readonly when there are fragments in path.
-                    var loadDetails = ShowOpenBinaryAsDialog(blob2.Location.FilesystemPath);
+                    var loadDetails = await ShowOpenBinaryAsDialog(blob2.Location.FilesystemPath);
                     if (loadDetails is null)
                         return null;
                     var rawProgram = loader.LoadRawImage(blob2.Location, blob2.Image, null, loadDetails);
@@ -251,11 +253,11 @@ namespace Reko.Gui.Forms
             }
         }
 
-        public bool Assemble(string file, IAssembler asm, IPlatform platform)
+        public async ValueTask<bool> Assemble(string file, IAssembler asm, IPlatform platform)
         {
             var ldr = Services.RequireService<ILoader>();
             var svc = Services.RequireService<IWorkerDialogService>();
-            svc.StartBackgroundWork("Loading program", delegate()
+            await svc.StartBackgroundWork("Loading program", delegate()
             {
                 var eventListener = Services.RequireService<DecompilerEventListener>();
                 eventListener.ShowStatus("Assembling program.");

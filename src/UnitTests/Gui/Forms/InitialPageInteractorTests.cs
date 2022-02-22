@@ -31,6 +31,7 @@ using Reko.Services;
 using Reko.UnitTests.Mocks;
 using System;
 using System.ComponentModel.Design;
+using System.Threading.Tasks;
 
 namespace Reko.UnitTests.Gui.Forms
 {
@@ -100,7 +101,7 @@ namespace Reko.UnitTests.Gui.Forms
 		}
 
         [Test]
-        public void Ipi_OpenBinary_CanAdvance()
+        public async Task Ipi_OpenBinary_CanAdvance()
         {
             Assert.IsFalse(i.CanAdvance);
 
@@ -109,13 +110,13 @@ namespace Reko.UnitTests.Gui.Forms
             browserSvc.Setup(b => b.Load(project));
             memSvc.Setup(m => m.ViewImage(program));
 
-            i.OpenBinary("floxe.exe");
+            await i.OpenBinary("floxe.exe");
 
             Assert.IsTrue(i.CanAdvance, "Page should be ready to advance");
         }
 
         [Test]
-        public void Ipi_OpenBinary_ShouldPopulateFields()
+        public async Task Ipi_OpenBinary_ShouldPopulateFields()
         {
             dec.Setup(d => d.Project).Returns(project);
             browserSvc.Setup(b => b.Load(project));
@@ -125,39 +126,39 @@ namespace Reko.UnitTests.Gui.Forms
             loader.Setup(l => l.Load(ImageLocation.FromUri("file:floxe.exe"), null, null)).Returns(project);
             memSvc.Setup(m => m.ViewImage(program));
 
-            i.OpenBinary("floxe.exe");
+            await i.OpenBinary("floxe.exe");
 
             Assert.IsTrue(i.CanAdvance, "Page should be ready to advance");
         }
 
         [Test]
-        public void Ipi_OpenBinary_ShouldShowMemoryWindow()
+        public async Task Ipi_OpenBinary_ShouldShowMemoryWindow()
         {
             loader.Setup(l => l.Load(ImageLocation.FromUri("file:floxe.exe"), null, null)).Returns(project);
             dec.Setup(d => d.Project).Returns(project);
             browserSvc.Setup(d => d.Load(project));
             memSvc.Setup(s => s.ViewImage(program)).Verifiable();
 
-            i.OpenBinary("floxe.exe");
+            await i.OpenBinary("floxe.exe");
 
             memSvc.VerifyAll();
         }
 
         [Test]
-        public void Ipi_OpenBinary_ShouldBrowseProject()
+        public async Task Ipi_OpenBinary_ShouldBrowseProject()
         {
             loader.Setup(l => l.Load(ImageLocation.FromUri("file:foo.exe"), null, null)).Returns(project);
             dec.Setup(d => d.Project).Returns(project);
             browserSvc.Setup(b => b.Load(project)).Verifiable();
             memSvc.Setup(m => m.ViewImage(program));
 
-            i.OpenBinary("foo.exe");
+            await i.OpenBinary("foo.exe");
 
             browserSvc.VerifyAll();
         }
 
         [Test]
-        public void Ipi_OpenBinary_ShouldOpenArchiveDialog()
+        public async Task Ipi_OpenBinary_ShouldOpenArchiveDialog()
         {
             var archive = new Mock<IArchive>();
             var archiveFile = new Mock<ArchivedFile>();
@@ -169,37 +170,37 @@ namespace Reko.UnitTests.Gui.Forms
                 .Returns(program)
                 .Verifiable();
             abSvc.Setup(a => a.SelectFileFromArchive(archive.Object))
-                .Returns(archiveFile.Object)
+                .Returns(ValueTask.FromResult(archiveFile.Object))
                 .Verifiable();
 
-            i.OpenBinary("test.archive");
+            await i.OpenBinary("test.archive");
 
             archiveFile.VerifyAll();
             abSvc.VerifyAll();
         }
 
         [Test]
-        public void Ipi_LeavePage()
+        public async Task Ipi_LeavePage()
         {
             loader.Setup(l => l.Load(ImageLocation.FromUri("file:foo.exe"), null, null)).Returns(project);
             dec.Setup(d => d.Project).Returns(project);
             browserSvc.Setup(b => b.Load(project));
             memSvc.Setup(m => m.ViewImage(program));
 
-            i.OpenBinary("foo.exe");
+            await i.OpenBinary("foo.exe");
 
             Assert.IsTrue(i.LeavePage());
         }
 
         [Test]
-        public void Ipi_NextPhaseButton_ScanningNotNeeded()
+        public async Task Ipi_NextPhaseButton_ScanningNotNeeded()
         {
             program.NeedsScanning = false;
             loader.Setup(l => l.Load(ImageLocation.FromUri("file:foo.exe"), null, null)).Returns(project);
             dec.Setup(d => d.Project).Returns(project);
             browserSvc.Setup(b => b.Load(project));
 
-            i.OpenBinary("foo.exe");
+            await i.OpenBinary("foo.exe");
 
             var status = new CommandStatus();
             var text = new CommandText("&");
@@ -208,7 +209,7 @@ namespace Reko.UnitTests.Gui.Forms
         }
 
         [Test]
-        public void Ipi_FinishDecompilationButton()
+        public async Task Ipi_FinishDecompilationButton()
         {
             program.NeedsScanning = false;
             loader.Setup(l => l.Load(ImageLocation.FromUri("file:foo.exe"), null, null)).Returns(project);
@@ -221,7 +222,7 @@ namespace Reko.UnitTests.Gui.Forms
             Assert.IsTrue(i.QueryStatus(cmd, status, null));
             Assert.AreEqual(MenuStatus.Visible, status.Status);
 
-            i.OpenBinary("foo.exe");
+            await i.OpenBinary("foo.exe");
 
             Assert.IsTrue(i.QueryStatus(cmd, status, null));
             Assert.AreEqual(MenuStatus.Visible | MenuStatus.Enabled, status.Status);

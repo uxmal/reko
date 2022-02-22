@@ -23,6 +23,7 @@ using Reko.Gui.Services;
 using System;
 using System.ComponentModel.Design;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace Reko.Gui.Forms
 {
@@ -54,9 +55,9 @@ namespace Reko.Gui.Forms
             return view;
         }
 
-        public bool Execute(CommandID cmdId)
+        public ValueTask<bool> ExecuteAsync(CommandID cmdId)
         {
-            return false;
+            return ValueTask.FromResult(false);
         }
 
         public bool QueryStatus(CommandID cmdId, CommandStatus status, CommandText text)

@@ -18,23 +18,24 @@
  */
 #endregion
 
+using Microsoft.Toolkit.Mvvm.Input;
+using ReactiveUI;
 using Reko.Gui;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel.Design;
+using System.Threading.Tasks;
 
 namespace Reko.UserInterfaces.AvaloniaUI.ViewModels
 {
-    public class DecompilerMenus : MenuSystem
+    public partial class DecompilerMenus : MenuSystem
     {
         private readonly Dictionary<int, ObservableCollection<CommandItem>> menus;
 
         public DecompilerMenus(CommandDefinitions cmdDefs, ICommandTarget target) : base(target)
         {
             this.menus = new();
-
-            var cmdAdapter = new CommandAdapter(target);
 
             var menusById = new SortedList<int, SortedList<int, SortedList<int, CommandItem>>>();
             foreach (var menu in cmdDefs.Menus)
@@ -57,9 +58,10 @@ namespace Reko.UserInterfaces.AvaloniaUI.ViewModels
             var cmdsById = new SortedList<int, CommandItem>();
             foreach (var command in cmdDefs.Commands)
             {
-                var cmd = new CommandItem { CommandID = new CommandID(command.cmdSet, command.id), Text = command.text };
+                var cmdid = new CommandID(command.cmdSet, command.id);
+                var cmd = new CommandItem { CommandID = cmdid, Text = command.text };
                 cmdsById.Add(command.id, cmd);
-                cmd.Command = cmdAdapter;
+                cmd.Command = ExecuteCommand;
                 cmd.IsDynamic = command.dynamicItemId != 0;
                 cmd.ImageKey = command.imageKey;
                 cmd.ImageIndex = command.image;
@@ -116,6 +118,12 @@ namespace Reko.UserInterfaces.AvaloniaUI.ViewModels
                     base.SetStatusForMenuItems(itemcollection);
                 }
             }
+        }
+
+        [ICommand]
+        public async Task Execute(CommandID cmdId)
+        {
+            await base.Target.ExecuteAsync(cmdId);
         }
 
         public override ObservableCollection<CommandItem> GetMenu(int menuId)

@@ -26,6 +26,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
 using System.Linq;
+using System.Threading.Tasks;
 using Procedure_v1 = Reko.Core.Serialization.Procedure_v1;
 
 namespace Reko.Gui.Design
@@ -109,38 +110,46 @@ namespace Reko.Gui.Design
             return false;
         }
 
-        public override bool Execute(CommandID cmdId)
+        public async override ValueTask<bool> ExecuteAsync(CommandID cmdId)
         {
+            bool result = true;
             if (cmdId.Guid == CmdSets.GuidReko)
             {
                 switch (cmdId.ID)
                 {
                 case CmdIds.ViewGoToAddress:
                     Services!.RequireService<ILowLevelViewService>().ShowMemoryAtAddress(program, Address);
-                    return true;
+                    break;
                 case CmdIds.ActionEditSignature:
-                    EditSignature();
-                    return true;
+                    await EditSignature();
+                    break;
                 case CmdIds.ShowProcedureCallHierarchy:
                     Services!.RequireService<ICallHierarchyService>().Show(program, procedure);
-                    return true;
+                    break;
                 case CmdIds.ActionAssumeRegisterValues:
-                    AssumeRegisterValues();
-                    return true;
+                    await AssumeRegisterValues();
+                    break;
                 case CmdIds.ViewFindWhatPointsHere:
                     ViewWhatPointsHere();
-                    return true;
+                    break;
                 case CmdIds.EditRename:
                     Rename();
-                    return true;
+                    break;
+                default:
+                    result = false;
+                    break;
                 }
             }
-            return false;
+            else
+            {
+                result = false;
+            }
+            return result;
         }
 
-        private void EditSignature()
+        private ValueTask EditSignature()
         {
-            Services!.RequireService<ICommandFactory>().EditSignature(program, procedure, Address).Do();
+            return Services!.RequireService<ICommandFactory>().EditSignature(program, procedure, Address).DoAsync();
         }
 
         private void ViewWhatPointsHere()
@@ -166,14 +175,14 @@ namespace Reko.Gui.Design
         {
         }
 
-        private void AssumeRegisterValues()
+        private async ValueTask AssumeRegisterValues()
         {
             var dlgFactory = Services!.RequireService<IDialogFactory>();
             var uiSvc = Services!.RequireService<IDecompilerShellUiService>();
             using (var dlg = dlgFactory.CreateAssumedRegisterValuesDialog(program.Architecture))
             {
                 dlg.Values = GetAssumedRegisterValues(Address);
-                if (uiSvc.ShowModalDialog(dlg) != DialogResult.OK)
+                if (await uiSvc.ShowModalDialog(dlg) != DialogResult.OK)
                     return;
                 SetAssumedRegisterValues(Address, dlg.Values);
                 SetTreeNodeText();
@@ -216,12 +225,12 @@ namespace Reko.Gui.Design
             return Address.ToLinear().GetHashCode();
         }
 
-        public bool Equals(ProcedureDesigner other)
+        public bool Equals(ProcedureDesigner? other)
         {
-            return Address.ToLinear() == other.Address.ToLinear();
+            return other is not null && Address.ToLinear() == other.Address.ToLinear();
         }
 
-        void procedure_NameChanged(object sender, EventArgs e)
+        void procedure_NameChanged(object? sender, EventArgs e)
         {
             if (TreeNode != null)
             {

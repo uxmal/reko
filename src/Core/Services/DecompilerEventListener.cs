@@ -25,6 +25,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace Reko.Core.Services
 {
@@ -234,8 +235,11 @@ namespace Reko.Core.Services
 
         public string Text { get; private set; }
 
-        public void NavigateTo()
+        public ValueTask NavigateTo()
         {
+            //$TODO: net5.0 this thing. to ValueTask.CompletedTask.
+            var vt = new ValueTask(Task.CompletedTask);
+            return vt;
         }
 
         public override string ToString()

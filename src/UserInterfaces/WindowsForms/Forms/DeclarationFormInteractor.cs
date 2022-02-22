@@ -29,6 +29,7 @@ using Reko.Gui.Forms;
 using System;
 using System.Drawing;
 using System.IO;
+using System.Threading.Tasks;
 
 namespace Reko.UserInterfaces.WindowsForms.Forms
 {
@@ -68,13 +69,13 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
             return titleStr + " " + addrStr;
         }
 
-        void text_KeyDown(object sender, Gui.Controls.KeyEventArgs e)
+        private async void text_KeyDown(object sender, Gui.Controls.KeyEventArgs e)
         {
             switch (e.KeyData)
             {
                 case Keys.Enter:
                 case Keys.Escape:
-                    SaveAndClose();
+                    await SaveAndClose();
                     e.SuppressKeyPress = true;
                     e.Handled = true;
                     break;
@@ -137,12 +138,12 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
             declarationForm = null;
         }
 
-        private void SaveAndClose()
+        private async ValueTask SaveAndClose()
         {
             if (closing)
                 return;
             closing = true;
-            ModifyDeclaration();
+            await ModifyDeclaration();
             HideControls();
             closing = false;
         }
@@ -152,9 +153,9 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
             EnableControls();
         }
 
-        void text_LostFocus(object sender, EventArgs e)
+        private async void text_LostFocus(object sender, EventArgs e)
         {
-            SaveAndClose();
+            await SaveAndClose();
         }
 
         private void EnableControls()
@@ -210,7 +211,7 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
             return global != null;
         }
 
-        private void ModifyDeclaration()
+        private async ValueTask ModifyDeclaration()
         {
             var declText = declarationForm.TextBox.Text.Trim();
             if (!program.Procedures.TryGetValue(address, out Procedure proc))
@@ -249,7 +250,7 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
                 else
                 {
                     var pAddr = new ProgramAddress(program, address);
-                    services.RequireService<ICommandFactory>().MarkProcedure(pAddr).Do();
+                    await services.RequireService<ICommandFactory>().MarkProcedure(pAddr).DoAsync();
                 }
             }
         }

@@ -27,6 +27,7 @@ using System;
 using System.Collections.Specialized;
 using System.ComponentModel.Design;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace Reko.Gui
 {
@@ -121,7 +122,7 @@ namespace Reko.Gui
             FileDropped?.Invoke(this, e);
         }
 
-        void TypeLibraries_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        void TypeLibraries_CollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
         {
             switch (e.Action)
             {
@@ -134,14 +135,17 @@ namespace Reko.Gui
         }
 
         void ScriptFiles_CollectionChanged(
-            object sender,
+            object? sender,
             NotifyCollectionChangedEventArgs e)
         {
             switch (e.Action)
             {
             case NotifyCollectionChangedAction.Add:
-                AddComponents(e.NewItems);
-                SelectedObject = e.NewItems.OfType<object>().First();
+                if (e.NewItems is not null)
+                {
+                    AddComponents(e.NewItems);
+                    SelectedObject = e.NewItems.OfType<object>().First();
+                }
                 break;
             default:
                 throw new NotImplementedException();
@@ -168,12 +172,12 @@ namespace Reko.Gui
             return false;
         }
 
-        public bool Execute(CommandID cmdId)
+        public async ValueTask<bool> ExecuteAsync(CommandID cmdId)
         {
             var des = GetSelectedDesigner();
             if (des != null)
             {
-                if (des.Execute(cmdId))
+                if (await des.ExecuteAsync(cmdId))
                     return true;
             }
             if (cmdId.Guid == CmdSets.GuidReko)
@@ -181,7 +185,7 @@ namespace Reko.Gui
                 switch (cmdId.ID)
                 {
                 case CmdIds.CollapseAllNodes: tree.CollapseAll(); return true;
-                case CmdIds.CreateUserSegment: CreateUserSegment(); return true;
+                case CmdIds.CreateUserSegment: await CreateUserSegment(); return true;
                 }
             }
             return false;
@@ -195,7 +199,7 @@ namespace Reko.Gui
             return des.Component is ImageSegment;
         }
 
-        private void CreateUserSegment()
+        private async ValueTask CreateUserSegment()
         {
             var des = GetSelectedDesigner();
             if (des == null)
@@ -215,7 +219,7 @@ namespace Reko.Gui
                     AccessMode = segment.Access,
                     Architecture = program.Architecture
                 });
-                if (Services.RequireService<IDecompilerShellUiService>().ShowModalDialog(dlg) == DialogResult.OK)
+                if (await Services.RequireService<IDecompilerShellUiService>().ShowModalDialog(dlg) == DialogResult.OK)
                 {
 
                 }

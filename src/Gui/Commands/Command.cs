@@ -26,6 +26,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace Reko.Gui.Commands
 {
@@ -39,11 +40,11 @@ namespace Reko.Gui.Commands
         public bool IsUndoable { get; protected set; }
         public IServiceProvider Services { get; private set; }
 
-        public void Do()
+        public async ValueTask DoAsync()
         {
             try
             {
-                DoIt();
+                await DoItAsync();
             }
             catch (Exception ex)
             {
@@ -52,7 +53,7 @@ namespace Reko.Gui.Commands
             }
         }
 
-        public abstract void DoIt();
+        public abstract ValueTask DoItAsync();
 
         public virtual void Undo()
         {

@@ -26,6 +26,7 @@ using System.ComponentModel.Design;
 using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace Reko.Gui
@@ -163,14 +164,14 @@ namespace Reko.Gui
             return false;
         }
 
-        public bool Execute(CommandID cmdId)
+        public async ValueTask<bool> ExecuteAsync(CommandID cmdId)
         {
             if (cmdId.Guid == CmdSets.GuidReko)
             {
                 switch (cmdId.ID)
                 {
                 case CmdIds.ActionEditSignature:
-                    EditProcedureSignature();
+                    await EditProcedureSignature();
                     return true;
                 case CmdIds.ViewGoToAddress:
                     GotoProcedureAddress();
@@ -194,13 +195,13 @@ namespace Reko.Gui
             ((TabControl) tabPage.Parent).SelectedTab = tabPage;
         }
 
-        private void EditProcedureSignature()
+        private async ValueTask EditProcedureSignature()
         {
             Debug.Assert(listProcedures.SelectedItems.Count == 1, "QueryStatus should be ensuring this");
             var item = listProcedures.SelectedItems[0];
             if (item.Tag is ProgramProcedure pp)
             {
-                services.RequireService<ICommandFactory>().EditSignature(pp.Program, pp.Procedure, pp.Procedure.EntryAddress).Do();
+                await services.RequireService<ICommandFactory>().EditSignature(pp.Program, pp.Procedure, pp.Procedure.EntryAddress).DoAsync();
                 UpdateItem(item);
             }
         }

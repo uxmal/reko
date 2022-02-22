@@ -36,6 +36,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace Reko.Gui.Forms
 {
@@ -119,7 +120,8 @@ namespace Reko.Gui.Forms
                 form.WindowState = uiPrefsSvc.WindowState;
             }
             catch { };
-            SwitchInteractor(pageInitial);
+            //$REVIEW: how harmful is this? Initial page does no heavy lifting.
+            SwitchInteractor(pageInitial).AsTask().Wait();  
             form.UpdateToolbarState();
 
             form.Closed += this.MainForm_Closed;
@@ -251,7 +253,7 @@ namespace Reko.Gui.Forms
             set { currentPhase = value; }
         }
 
-        public void OpenBinaryWithPrompt()
+        public async ValueTask OpenBinaryWithPrompt()
         {
             var uiSvc = Services.RequireService<IDecompilerShellUiService>();
             var fileName = uiSvc.ShowOpenFileDialog(null);
@@ -259,8 +261,8 @@ namespace Reko.Gui.Forms
             {
                 RememberFilenameInMru(fileName);
                 CloseProject();
-                SwitchInteractor(InitialPageInteractor);
-                if (!pageInitial.OpenBinary(fileName))
+                await SwitchInteractor(InitialPageInteractor);
+                if (!await pageInitial.OpenBinary(fileName))
                     return;
                 if (fileName.EndsWith(Project_v5.FileExtension))
                 {
@@ -376,22 +378,22 @@ namespace Reko.Gui.Forms
             }
         }
 
-        public bool AssembleFile()
+        public async ValueTask<bool> AssembleFile()
         {
             IAssembleFileDialog dlg = null;
             try
             {
                 dlg = dlgFactory.CreateAssembleFileDialog();
                 dlg.Services = sc;
-                if (uiSvc.ShowModalDialog(dlg) != DialogResult.OK)
+                if (await uiSvc.ShowModalDialog(dlg) != DialogResult.OK)
                     return true;
 
                 string fileName = dlg.FileName.Text;
                 var arch = this.config.GetArchitecture(dlg.SelectedArchitectureName);
                 var asm = arch.CreateAssembler(null);
                 CloseProject();
-                SwitchInteractor(InitialPageInteractor);
-                InitialPageInteractor.Assemble(fileName, asm, null);
+                await SwitchInteractor(InitialPageInteractor);
+                await InitialPageInteractor.Assemble(fileName, asm, null);
                 RememberFilenameInMru(fileName);
                 if (fileName.EndsWith(Project_v5.FileExtension))
                 {
@@ -405,19 +407,19 @@ namespace Reko.Gui.Forms
             return true;
         }
 
-        public bool OpenBinaryAs(string initialFilename)
+        public async ValueTask<bool> OpenBinaryAs(string initialFilename)
         {
             IOpenAsDialog dlg = null;
             try
             {
                 dlg = dlgFactory.CreateOpenAsDialog(initialFilename);
-                if (uiSvc.ShowModalDialog(dlg) != DialogResult.OK)
+                if (await uiSvc.ShowModalDialog(dlg) != DialogResult.OK)
                     return false;
                 string fileName = dlg.FileName.Text;
                 LoadDetails details = dlg.GetLoadDetails();
                 CloseProject();
-                SwitchInteractor(InitialPageInteractor);
-                pageInitial.OpenBinaryAs(fileName, details);
+                await SwitchInteractor(InitialPageInteractor);
+                await pageInitial.OpenBinaryAs(fileName, details);
                 if (fileName.EndsWith(Project_v5.FileExtension))
                 {
                     ProjectFileName = fileName;
@@ -485,7 +487,7 @@ namespace Reko.Gui.Forms
             get { return Path.Combine(SettingsDirectory, "mru.txt"); }
         }
 
-        public void RestartRecompilation()
+        public async ValueTask RestartRecompilation()
         {
             if (!IsDecompilerLoaded)
                 return;
@@ -494,7 +496,7 @@ namespace Reko.Gui.Forms
             {
                 program.Reset();
             }
-            SwitchInteractor(this.InitialPageInteractor);
+            await SwitchInteractor(this.InitialPageInteractor);
             
             CloseAllDocumentWindows();
             sc.RequireService<IStackTraceService>().Clear();
@@ -503,7 +505,7 @@ namespace Reko.Gui.Forms
             projectBrowserSvc.Show();
         }
 
-        public void NextPhase()
+        public async ValueTask NextPhase()
         {
             try
             {
@@ -511,7 +513,7 @@ namespace Reko.Gui.Forms
 
                 if (next != null)
                 {
-                    SwitchInteractor(next);
+                    await SwitchInteractor(next);
                 }
             }
             catch (Exception ex)
@@ -539,12 +541,12 @@ namespace Reko.Gui.Forms
             return next;
         }
 
-        public void FinishDecompilation()
+        public async ValueTask FinishDecompilation()
         {
             try
             {
                 IPhasePageInteractor prev = CurrentPhase;
-                workerDlgSvc.StartBackgroundWork("Finishing decompilation.", delegate()
+                await workerDlgSvc.StartBackgroundWork("Finishing decompilation.", delegate()
                 {
                     for (;;)
                     {
@@ -580,11 +582,11 @@ namespace Reko.Gui.Forms
             }
         }
 
-        public void EditFind()
+        public async ValueTask EditFind()
         {
             using (ISearchDialog dlg = dlgFactory.CreateSearchDialog())
             {
-                if (uiSvc.ShowModalDialog(dlg) == DialogResult.OK)
+                if (await uiSvc.ShowModalDialog(dlg) == DialogResult.OK)
                 {
                     Func<int, Program, bool> filter = GetScannedFilter(dlg);
                     var re = Core.Dfa.Automaton.CreateFromPattern(dlg.Patterns.Text);
@@ -675,11 +677,11 @@ namespace Reko.Gui.Forms
             svc.ShowSearchResults(new ProcedureSearchResult(this.sc, hits));
         }
 
-        public void FindStrings(ISearchResultService srSvc)
+        public async ValueTask FindStrings(ISearchResultService srSvc)
         {
             using (var dlgStrings = dlgFactory.CreateFindStringDialog())
             {
-                if (uiSvc.ShowModalDialog(dlgStrings) == DialogResult.OK)
+                if (await uiSvc.ShowModalDialog(dlgStrings) == DialogResult.OK)
                 {
                     var criteria = dlgStrings.GetCriteria();
                     var hits = this.decompilerSvc.Decompiler.Project.Programs
@@ -725,11 +727,11 @@ namespace Reko.Gui.Forms
             hexDasmSvc.Show();
         }
 
-        public void ToolsOptions()
+        public async ValueTask ToolsOptions()
         {
             using (var dlg = dlgFactory.CreateUserPreferencesDialog())
             {
-                if (uiSvc.ShowModalDialog(dlg) == DialogResult.OK)
+                if (await uiSvc.ShowModalDialog(dlg) == DialogResult.OK)
                 {
                     var uiPrefsSvc = Services.RequireService<IUiPreferencesService>();
                     uiPrefsSvc.WindowSize = form.Size;
@@ -739,11 +741,11 @@ namespace Reko.Gui.Forms
             }
         }
 
-        public void ToolsKeyBindings()
+        public async ValueTask ToolsKeyBindings()
         {
             using (var dlg = dlgFactory.CreateKeyBindingsDialog(uiSvc.KeyBindings))
             {
-                if (uiSvc.ShowModalDialog(dlg) == DialogResult.OK)
+                if (await uiSvc.ShowModalDialog(dlg) == DialogResult.OK)
                 {
                     uiSvc.KeyBindings = dlg.KeyBindings; 
                     //$TODO: save in user settings.
@@ -798,7 +800,7 @@ namespace Reko.Gui.Forms
             }
         }
 
-        public void SwitchInteractor(IPhasePageInteractor interactor)
+        public async ValueTask SwitchInteractor(IPhasePageInteractor interactor)
         {
             if (interactor == CurrentPhase)
                 return;
@@ -809,7 +811,7 @@ namespace Reko.Gui.Forms
                     return;
             }
             CurrentPhase = interactor;
-            workerDlgSvc.StartBackgroundWork("Entering next phase...", delegate()
+            await workerDlgSvc.StartBackgroundWork("Entering next phase...", delegate()
             {
                 interactor.PerformWork(workerDlgSvc);
             });
@@ -934,33 +936,33 @@ namespace Reko.Gui.Forms
         /// <param name="cmdSet"></param>
         /// <param name="cmdId"></param>
         /// <returns></returns>
-        public bool Execute(CommandID cmdId)
+        public async ValueTask<bool> ExecuteAsync(CommandID cmdId)
         {
             var ct = GetSubCommandTarget();
-            if (ct != null && ct.Execute(cmdId))
+            if (ct != null && await ct.ExecuteAsync(cmdId))
             {
                 form.UpdateToolbarState();
                 return true;
             }
-            if (currentPhase != null && currentPhase.Execute(cmdId))
+            if (currentPhase != null && await currentPhase.ExecuteAsync(cmdId))
             {
                 form.UpdateToolbarState();
                 return true;
             }
             if (cmdId.Guid == CmdSets.GuidReko)
             {
-                if (ExecuteMruFile(cmdId.ID))
+                if (await ExecuteMruFile(cmdId.ID))
                 {
                     form.UpdateToolbarState();
-                    return false;
+                    return true;
                 }
 
                 bool retval = false;
                 switch (cmdId.ID)
                 {
-                case CmdIds.FileOpen: OpenBinaryWithPrompt(); retval = true; break;
-                case CmdIds.FileOpenAs: retval = OpenBinaryAs(""); break;
-                case CmdIds.FileAssemble: retval = AssembleFile(); break;
+                case CmdIds.FileOpen: await OpenBinaryWithPrompt(); retval = true; break;
+                case CmdIds.FileOpenAs: retval = await OpenBinaryAs(""); break;
+                case CmdIds.FileAssemble: retval = await AssembleFile(); break;
                 case CmdIds.FileSave: Save(); retval = true; break;
                 case CmdIds.FileAddMetadata: AddMetadataFile(); retval = true; break;
                 case CmdIds.FileNewScript: CreateScriptFile(); retval = true; break;
@@ -968,11 +970,11 @@ namespace Reko.Gui.Forms
                 case CmdIds.FileCloseProject: CloseProject(); retval = true; break;
                 case CmdIds.FileExit: form.Close(); retval = true; break;
 
-                case CmdIds.ActionRestartDecompilation: RestartRecompilation(); retval = true; break;
-                case CmdIds.ActionNextPhase: NextPhase(); retval = true; break;
-                case CmdIds.ActionFinishDecompilation: FinishDecompilation(); retval = true; break;
+                case CmdIds.ActionRestartDecompilation: await RestartRecompilation(); retval = true; break;
+                case CmdIds.ActionNextPhase: await NextPhase(); retval = true; break;
+                case CmdIds.ActionFinishDecompilation: await FinishDecompilation(); retval = true; break;
 
-                case CmdIds.EditFind: EditFind(); retval = true; break;
+                case CmdIds.EditFind: await EditFind(); retval = true; break;
 
                 case CmdIds.ViewProjectBrowser: ViewProjectBrowser(); retval = true; break;
                 case CmdIds.ViewProcedureList: ViewProcedureList(); retval = true; break;
@@ -980,11 +982,11 @@ namespace Reko.Gui.Forms
                 case CmdIds.ViewMemory: ViewMemoryWindow(); retval = true; break;
                 case CmdIds.ViewCallGraph: ViewCallGraph(); retval = true; break;
                 case CmdIds.ViewFindAllProcedures: FindProcedures(srSvc); retval = true; break;
-                case CmdIds.ViewFindStrings: FindStrings(srSvc); retval = true; break;
+                case CmdIds.ViewFindStrings: await FindStrings(srSvc); retval = true; break;
 
                 case CmdIds.ToolsHexDisassembler: ToolsHexDisassembler(); retval = true; break;
-                case CmdIds.ToolsOptions: ToolsOptions(); retval = true; break;
-                case CmdIds.ToolsKeyBindings: ToolsKeyBindings(); retval = true; break;
+                case CmdIds.ToolsOptions: await ToolsOptions(); retval = true; break;
+                case CmdIds.ToolsKeyBindings: await ToolsKeyBindings(); retval = true; break;
 
                 case CmdIds.WindowsCascade: LayoutMdi(DocumentWindowLayout.None); retval = true; break;
                 case CmdIds.WindowsTileVertical: LayoutMdi(DocumentWindowLayout.TiledVertical); retval = true; break;
@@ -999,7 +1001,7 @@ namespace Reko.Gui.Forms
             return false;
         }
 
-        private bool ExecuteMruFile(int cmdId)
+        private async ValueTask<bool> ExecuteMruFile(int cmdId)
         {
             int iMru = cmdId - CmdIds.FileMru;
             if (0 <= iMru && iMru < mru.Items.Count)
@@ -1007,10 +1009,10 @@ namespace Reko.Gui.Forms
                 string file = mru.Items[iMru];
 
                 CloseProject();
-                SwitchInteractor(InitialPageInteractor);
+                await SwitchInteractor(InitialPageInteractor);
                 try
                 {
-                    if (pageInitial.OpenBinary(file))
+                    if (await pageInitial.OpenBinary(file))
                     {
                         RememberFilenameInMru(file);
                         if (file.EndsWith(Project_v5.FileExtension))
@@ -1018,7 +1020,6 @@ namespace Reko.Gui.Forms
                             ProjectFileName = file;
                         }
                     }
-                    return true;
                 }
                 catch (Exception ex)
                 {
@@ -1026,6 +1027,7 @@ namespace Reko.Gui.Forms
                         ex,
                         $"An error occurred when opening the file {file}.");
                 }
+                return true;
             }
             return false;
         }

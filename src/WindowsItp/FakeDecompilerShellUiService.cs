@@ -3,6 +3,7 @@ using Reko.Gui.Services;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
+using System.Threading.Tasks;
 using Form = System.Windows.Forms.Form;
 using OpenFileDialog = System.Windows.Forms.OpenFileDialog;
 namespace Reko.WindowsItp
@@ -52,7 +53,7 @@ namespace Reko.WindowsItp
             throw new NotImplementedException();
         }
 
-        public bool Execute(CommandID cmdId)
+        public ValueTask<bool> ExecuteAsync(CommandID cmdId)
         {
             throw new NotImplementedException();
         }
@@ -91,7 +92,12 @@ namespace Reko.WindowsItp
             throw new NotImplementedException();
         }
 
-        public DialogResult ShowModalDialog(IDialog dlg)
+        public ValueTask<DialogResult> ShowModalDialog(IDialog dlg)
+        {
+            throw new NotImplementedException();
+        }
+
+        public ValueTask<T> ShowModalDialog<T>(IDialog dlg)
         {
             throw new NotImplementedException();
         }

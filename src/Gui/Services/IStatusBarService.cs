@@ -26,7 +26,6 @@ namespace Reko.Gui.Services
 {
     public interface IStatusBarService
     {
-        [Obsolete]
         void SetText(string text);
     }
 }

@@ -23,6 +23,7 @@ using Reko.Gui.Services;
 using System;
 using System.ComponentModel.Design;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace Reko.UserInterfaces.WindowsForms
@@ -79,15 +80,15 @@ namespace Reko.UserInterfaces.WindowsForms
             return ct.QueryStatus(cmdId, status, text);
         }
 
-        public bool Execute(CommandID cmdId)
+        public ValueTask<bool> ExecuteAsync(CommandID cmdId)
         {
             var frame = ActiveFrame;
-            if (frame == null)
-                return false;
-            var ct = frame.Pane as ICommandTarget;
-            if (ct == null)
-                return false;
-            return ct.Execute(cmdId);
+            if (frame is not null && frame.Pane is ICommandTarget ct)
+            {
+                return ct.ExecuteAsync(cmdId);
+            }
+            return ValueTask.FromResult(false);
+
         }
     }
 }

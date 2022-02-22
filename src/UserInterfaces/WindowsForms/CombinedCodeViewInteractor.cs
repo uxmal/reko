@@ -36,6 +36,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace Reko.UserInterfaces.WindowsForms
@@ -359,7 +360,7 @@ namespace Reko.UserInterfaces.WindowsForms
             return block;
         }
 
-        public bool Execute(CommandID cmdId)
+        public async ValueTask<bool> ExecuteAsync(CommandID cmdId)
         {
             if (cmdId.Guid == CmdSets.GuidReko)
             {
@@ -375,7 +376,7 @@ namespace Reko.UserInterfaces.WindowsForms
                     ViewCode();
                     return true;
                 case CmdIds.TextEncodingChoose:
-                    return ChooseTextEncoding();
+                    return await ChooseTextEncoding();
                 case CmdIds.EditDeclaration:
                     EditDeclaration();
                     return true;
@@ -386,7 +387,7 @@ namespace Reko.UserInterfaces.WindowsForms
                     OpenInNewTab();
                     return true;
                 case CmdIds.EditLabel:
-                    Rename();
+                    await Rename();
                     return true;
                 }
             }
@@ -407,13 +408,13 @@ namespace Reko.UserInterfaces.WindowsForms
             Clipboard.SetData(DataFormats.UnicodeText, text);
         }
 
-        public bool ChooseTextEncoding()
+        public async ValueTask<bool> ChooseTextEncoding()
         {
             var dlgFactory = services.RequireService<IDialogFactory>();
             var uiSvc = services.RequireService<IDecompilerShellUiService>();
             using (ITextEncodingDialog dlg = dlgFactory.CreateTextEncodingDialog())
             {
-                if (uiSvc.ShowModalDialog(dlg) == Gui.Services.DialogResult.OK)
+                if (await uiSvc.ShowModalDialog(dlg) == Gui.Services.DialogResult.OK)
                 {
                     var enc = dlg.GetSelectedTextEncoding();
                     program.User.TextEncoding = enc;
@@ -431,7 +432,6 @@ namespace Reko.UserInterfaces.WindowsForms
             var addr = tag as Address;
             if (tag is Procedure proc)
                 addr = proc.EntryAddress;
-
             return addr;
         }
 
@@ -481,7 +481,7 @@ namespace Reko.UserInterfaces.WindowsForms
         private void EditComment()
         {
             var addr = GetCommentAnchorAddress();
-            if (addr == null)
+            if (addr is null)
                 return;
             var anchorPt = FocusedTextView.GetAnchorTopPoint();
             var screenPoint = FocusedTextView.PointToScreen(anchorPt);
@@ -498,16 +498,16 @@ namespace Reko.UserInterfaces.WindowsForms
                 services.RequireService<ICodeViewerService>().DisplayProcedure(program, proc, program.NeedsScanning);
         }
 
-        private void Rename()
+        private async ValueTask Rename()
         {
             Block block = GetSelectedBlock();
-            if (block == null)
+            if (block is null)
                 return;
             IDecompilerShellUiService uiSvc = services.RequireService<IDecompilerShellUiService>();
             var dlgSvc = services.RequireService<IDialogFactory>();
             using (var dlg = dlgSvc.CreateBlockNameDialog(block.Procedure, block))
             { 
-                if (uiSvc.ShowModalDialog(dlg) == Gui.Services.DialogResult.OK)
+                if (await uiSvc.ShowModalDialog(dlg) == Gui.Services.DialogResult.OK)
                 {
                     block.UserLabel = dlg.BlockName.Text;
                     program.User.BlockLabels[block.Id] = block.UserLabel;

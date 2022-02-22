@@ -28,6 +28,7 @@ using System.Threading;
 using System.Windows.Forms;
 using System.IO;
 using DialogResult = Reko.Gui.Services.DialogResult;
+using System.Threading.Tasks;
 
 namespace Reko.UserInterfaces.WindowsForms
 {
@@ -57,18 +58,23 @@ namespace Reko.UserInterfaces.WindowsForms
             return dlgr == DialogResult.Yes;
         }
 
-        private Gui.Services.DialogResult ShowModalDialog(Form dlg)
+        private ValueTask<DialogResult> ShowModalDialog(Form dlg)
         {
-            return (Gui.Services.DialogResult)
+            return ValueTask.FromResult((Gui.Services.DialogResult)
                 form.Invoke(new Func<DialogResult>(delegate()
                 {
                     return (DialogResult)dlg.ShowDialog(form);
-                }));
+                })));
         }
 
-        public virtual Gui.Services.DialogResult ShowModalDialog(IDialog dlg)
+        public virtual ValueTask<DialogResult> ShowModalDialog(IDialog dlg)
         {
             return ShowModalDialog((Form)dlg);
+        }
+
+        public virtual ValueTask<T> ShowModalDialog<T>(IDialog dlg)
+        {
+            throw new NotImplementedException();
         }
 
         public virtual string ShowOpenFileDialog(string fileName)

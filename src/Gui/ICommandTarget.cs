@@ -20,6 +20,7 @@
 
 using System;
 using System.ComponentModel.Design;
+using System.Threading.Tasks;
 
 namespace Reko.Gui
 {
@@ -44,12 +45,14 @@ namespace Reko.Gui
 		/// <returns>false if the command is not supported, true if it is.</returns>
 		bool QueryStatus(CommandID cmdId, CommandStatus status, CommandText text);
 
-		/// <summary>
-		/// Executes the specified command.
-		/// </summary>
-		/// <param name="cmd"></param>
-		/// <returns>false if the specified command is unknown, true otherwise.</returns>
-		bool Execute(CommandID cmdId);
+        /// <summary>
+        /// Executes the specified command asynchronously.
+        /// </summary>
+        /// <param name="cmdId">The <see cref="CommandID"/> of the command to execute.</param>
+        /// <returns>A <see cref="ValueTask{bool}"/>, which when resolved indicates
+        /// whether the command was understood or not.
+        /// </returns>
+        ValueTask<bool> ExecuteAsync(CommandID cmdId);
 	}
 
 	public class CommandStatus

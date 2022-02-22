@@ -27,6 +27,7 @@ using Reko.Gui.Services;
 using Reko.Services;
 using Reko.UnitTests.Mocks;
 using System.ComponentModel.Design;
+using System.Threading.Tasks;
 
 namespace Reko.UnitTests.Gui.Commands
 {
@@ -54,7 +55,7 @@ namespace Reko.UnitTests.Gui.Commands
         }
 
         [Test]
-        public void Cmasp_Do()
+        public async Task Cmasp_Do()
         {
             var addr = Address.SegPtr(0x0C20, 0);
             var proc = new Procedure(new FakeArchitecture(sc), "foo", addr, null);
@@ -78,7 +79,7 @@ namespace Reko.UnitTests.Gui.Commands
 
             var locations = new[] { new ProgramAddress(program, addr) };
             var cmd = new Cmd_MarkProcedures(sc, locations);
-            cmd.DoIt();
+            await cmd.DoItAsync();
 
             dc.VerifyAll();
             brSvc.Verify();

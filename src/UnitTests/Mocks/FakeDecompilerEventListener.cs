@@ -27,6 +27,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace Reko.UnitTests.Mocks
 {
@@ -238,10 +239,10 @@ namespace Reko.UnitTests.Mocks
 
         #region IWorkerDialogService Members
 
-        public bool StartBackgroundWork(string caption, Action backgroundWork)
+        public ValueTask<bool> StartBackgroundWork(string caption, Action backgroundWork)
         {
             backgroundWork();
-            return true;
+            return ValueTask.FromResult(true);
         }
 
         public void FinishBackgroundWork()

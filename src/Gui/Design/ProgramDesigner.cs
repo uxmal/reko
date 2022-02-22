@@ -28,6 +28,7 @@ using System.Collections.Generic;
 using System.ComponentModel.Design;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace Reko.Gui.Design
 {
@@ -112,7 +113,7 @@ namespace Reko.Gui.Design
             return base.QueryStatus(cmdId, status, text);
         }
 
-        public override bool Execute(CommandID cmdId)
+        public async override ValueTask<bool> ExecuteAsync(CommandID cmdId)
         {
             if (cmdId.Guid == CmdSets.GuidReko)
             {
@@ -122,13 +123,13 @@ namespace Reko.Gui.Design
                     var dlgFactory = Services!.RequireService<IDialogFactory>();
                     var dlg = dlgFactory.CreateProgramPropertiesDialog((Program)this.Component!);
                     var uiSvc = Services!.RequireService<IDecompilerShellUiService>();
-                    uiSvc.ShowModalDialog(dlg);
+                    await uiSvc.ShowModalDialog(dlg);
                     return true;
                 case CmdIds.LoadSymbols:
                     return LoadSymbols();
                 }
             }
-            return base.Execute(cmdId);
+            return await base.ExecuteAsync(cmdId);
         }
 
         private bool LoadSymbols()

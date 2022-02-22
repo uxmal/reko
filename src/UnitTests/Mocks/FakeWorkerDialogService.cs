@@ -21,15 +21,16 @@
 using Reko.Core;
 using Reko.Gui.Services;
 using System;
+using System.Threading.Tasks;
 
 namespace Reko.UnitTests.Mocks
 {
     public class FakeWorkerDialogService : IWorkerDialogService
     {
-        public bool StartBackgroundWork(string caption, Action backgroundWork)
+        public ValueTask<bool> StartBackgroundWork(string caption, Action backgroundWork)
         {
             backgroundWork();
-            return true;
+            return ValueTask.FromResult(true);
         }
 
         public void FinishBackgroundWork()

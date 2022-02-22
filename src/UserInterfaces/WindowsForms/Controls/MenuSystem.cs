@@ -23,6 +23,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace Reko.UserInterfaces.WindowsForms.Controls
@@ -169,46 +170,40 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
             SetStatusForMenuItems(((ContextMenuStrip) sender).Items);
         }
 
-		private void item_Click(object sender, CommandMenuEventArgs e)
+		private async void item_Click(object sender, CommandMenuEventArgs e)
 		{
 			MenuCommand cmd = e.Item.MenuCommand;
 			if (cmd != null)
 			{
-				target.Execute(cmd.CommandID);
+				await target.ExecuteAsync(cmd.CommandID);
 			}
 		}
 
-        public bool ProcessKey(string controlType, ICommandTarget ct, Keys keyData)
+        public ValueTask<bool> ProcessKey(string controlType, ICommandTarget ct, Keys keyData)
         {
-            Dictionary<int, CommandID> bindings;
-            if (this.KeyBindings.TryGetValue(controlType, out bindings))
+            if (this.KeyBindings.TryGetValue(controlType, out var bindings))
             {
                 if (ct != null)
                 {
                     if (KeyBindings.TryGetValue(ct.GetType().FullName, out bindings))
                     {
-                CommandID cmdID;
-                        if (bindings.TryGetValue((int)keyData, out cmdID))
-                {
-                            return ct.Execute(cmdID);
+                        if (bindings.TryGetValue((int) keyData, out CommandID cmdID))
+                        {
+                            return ct.ExecuteAsync(cmdID);
                         }
                     }
-                    return false;
+                    return ValueTask.FromResult(false);
                 }
             }
             
             if (KeyBindings.TryGetValue("", out bindings))
             {
-                CommandID cmdID;
-                if (bindings.TryGetValue((int)keyData, out cmdID))
+                if (bindings.TryGetValue((int)keyData, out CommandID cmdID))
                 {
-                    if (this.target.Execute(cmdID))
-                    {
-                        return true;
-                    }
+                    return this.target.ExecuteAsync(cmdID);
                 }
             }
-            return false;
+            return ValueTask.FromResult(false);
         }
 	}
 }

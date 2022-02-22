@@ -26,6 +26,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace Reko.UserInterfaces.WindowsForms
@@ -246,9 +247,9 @@ namespace Reko.UserInterfaces.WindowsForms
                 return false;
             }
 
-            public bool Execute(CommandID cmdId)
+            public ValueTask<bool> ExecuteAsync(CommandID cmdId)
             {
-                return false;
+                return ValueTask.FromResult(false);
             }
 
             public bool IsColumnSortable(int iColumn)
@@ -277,9 +278,9 @@ namespace Reko.UserInterfaces.WindowsForms
             return result.QueryStatus(cmdId, status, text);
         }
 
-        public bool Execute(CommandID cmdId)
+        public async ValueTask<bool> ExecuteAsync(CommandID cmdId)
         {
-            if (result != null && result.Execute(cmdId))
+            if (result is not null && await result.ExecuteAsync(cmdId))
                 return true;
             if (cmdId.Guid == CmdSets.GuidReko)
             {

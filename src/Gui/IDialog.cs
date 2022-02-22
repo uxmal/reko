@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2022 John Källén.
  *
@@ -30,5 +30,14 @@ namespace Reko.Gui
     public interface IDialog : IDisposable
     {
         string Text { get; set; }
+    }
+
+    /// <summary>
+    /// Implemented by dialogs that return a value of type <typeparamref name="T"/>.
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    public interface IDialog<T> : IDialog
+    {
+
     }
 }

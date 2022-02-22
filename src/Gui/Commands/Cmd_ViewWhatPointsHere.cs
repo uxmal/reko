@@ -26,6 +26,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace Reko.Gui.Commands
 {
@@ -41,7 +42,7 @@ namespace Reko.Gui.Commands
             this.addresses = addresses;
         }
 
-        public override void DoIt()
+        public override ValueTask DoItAsync()
         {
             var resultSvc = Services.RequireService<ISearchResultService>();
             var arch = program.Architecture;
@@ -53,6 +54,7 @@ namespace Reko.Gui.Commands
                     Services,
                     progAddresses,
                     new CodeSearchDetails()));
+            return ValueTask.CompletedTask;
         }
 
         private IEnumerable<AddressSearchHit> GetPointersInSegment(ImageSegment s)
