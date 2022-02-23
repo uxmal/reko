@@ -63,7 +63,14 @@ namespace Reko.Core.Types
         public virtual bool IsIntegral { get { return false; } }
         public virtual bool IsReal => false;
 
+        /// <summary>
+        /// The name of this data type.
+        /// </summary>
         public virtual string Name { get { return name!; } set { name = value; } }
+
+        /// <summary>
+        /// Zero or more type qualifiers of this data type.
+        /// </summary>
         public Qualifier Qualifier { get; set; }
 
         /// <summary>

@@ -49,12 +49,11 @@ namespace Reko.Core.Expressions
         public static Constant Create(DataType dt, long value)
         {
             Debug.Assert(dt.BitSize > 0, "Bad constant size; this should never happen.");
-            PrimitiveType p = (PrimitiveType)dt;
-            int bitSize = p.BitSize;
+            int bitSize = dt.BitSize;
             switch (bitSize)
             {
             case 1:
-                return new ConstantBool(p, value != 0);
+                return new ConstantBool(dt, value != 0);
             case 2:
             case 3:
             case 4:
@@ -64,12 +63,12 @@ namespace Reko.Core.Expressions
                 value &= (long)Bits.Mask(0, bitSize);
                 goto case 8;
             case 8:
-                switch (p.Domain)
+                switch (dt.Domain)
                 {
-                case Domain.Boolean: return new ConstantBool(p, value != 0);
-                case Domain.SignedInt: return new ConstantSByte(p, (sbyte) value);
-                case Domain.Character: return new ConstantChar(p,(char) (byte) value);
-                default: return new ConstantByte(p, (byte) value);
+                case Domain.Boolean: return new ConstantBool(dt, value != 0);
+                case Domain.SignedInt: return new ConstantSByte(dt, (sbyte) value);
+                case Domain.Character: return new ConstantChar(dt,(char) (byte) value);
+                default: return new ConstantByte(dt, (byte) value);
                 }
             case 9:
             case 10:
@@ -81,11 +80,11 @@ namespace Reko.Core.Expressions
                 value &= (long)Bits.Mask(0, bitSize);
                 goto case 16;
             case 16:
-                switch (p.Domain)
+                switch (dt.Domain)
                 {
-                case Domain.SignedInt: return new ConstantInt16(p, (short) value);
-                case Domain.Character: return new ConstantChar(p, (char) value);
-                default: return new ConstantUInt16(p, (ushort) value);
+                case Domain.SignedInt: return new ConstantInt16(dt, (short) value);
+                case Domain.Character: return new ConstantChar(dt, (char) value);
+                default: return new ConstantUInt16(dt, (ushort) value);
                 }
             case 17:
             case 18:
@@ -105,11 +104,11 @@ namespace Reko.Core.Expressions
                 value &= (long)Bits.Mask(0, bitSize);
                 goto case 32;
             case 32:
-                switch (p.Domain)
+                switch (dt.Domain)
                 {
-                case Domain.SignedInt: return new ConstantInt32(p, (int) value);
+                case Domain.SignedInt: return new ConstantInt32(dt, (int) value);
                 case Domain.Real: return FloatFromBitpattern(value);
-                default: return new ConstantUInt32(p, (uint) value);
+                default: return new ConstantUInt32(dt, (uint) value);
                 }
             case 36:        // PDP-10 <3
             case 40:
@@ -118,28 +117,28 @@ namespace Reko.Core.Expressions
                 value &= (long)Bits.Mask(0, bitSize);
                 goto case 64;
             case 64:
-                switch (p.Domain)
+                switch (dt.Domain)
                 {
-                case Domain.SignedInt: return new ConstantInt64(p, (long) value);
+                case Domain.SignedInt: return new ConstantInt64(dt, (long) value);
                 case Domain.Real: return DoubleFromBitpattern(value);
-                default: return new ConstantUInt64(p, (ulong) value);
+                default: return new ConstantUInt64(dt, (ulong) value);
                 }
             case 96:
             case 128:
-                switch (p.Domain)
+                switch (dt.Domain)
                 {
-                case Domain.SignedInt: return new BigConstant(p, (long)value);
-                default: return BigConstant.CreateUnsigned(p, value);
+                case Domain.SignedInt: return new BigConstant(dt, (long)value);
+                default: return BigConstant.CreateUnsigned(dt, value);
                 }
             case 136:
             case 144:
             case 192:
             case 224:
             case 256:
-                switch (p.Domain)
+                switch (dt.Domain)
                 {
-                case Domain.SignedInt: return new BigConstant(p, (long)value);
-                default: return BigConstant.CreateUnsigned(p, (ulong)value);
+                case Domain.SignedInt: return new BigConstant(dt, (long)value);
+                default: return BigConstant.CreateUnsigned(dt, (ulong)value);
                 }
             default:
                 //$TODO: if we encounter less common bit sizes, do them in a cascading if statement.
