@@ -22,19 +22,23 @@ using Reko.Core;
 using Reko.Gui;
 using Reko.Gui.Services;
 using System;
+using System.Collections.ObjectModel;
 using System.ComponentModel.Design;
 using System.Threading.Tasks;
 
 namespace Reko.UserInterfaces.AvaloniaUI.Services
 {
-    internal class AvaloniaProcedureListService : IProcedureListService
+    public class AvaloniaProcedureListService : IProcedureListService
     {
         private IServiceProvider services;
 
         public AvaloniaProcedureListService(IServiceProvider services)
         {
             this.services = services;
+            this.Procedures = new ObservableCollection<string>();
         }
+
+        public ObservableCollection<string> Procedures { get; }
 
         public bool ContainsFocus
         {
@@ -46,7 +50,7 @@ namespace Reko.UserInterfaces.AvaloniaUI.Services
 
         public void Clear()
         {
-            throw new NotImplementedException();
+            this.Procedures.Clear();
         }
 
         public ValueTask<bool> ExecuteAsync(CommandID cmdId)

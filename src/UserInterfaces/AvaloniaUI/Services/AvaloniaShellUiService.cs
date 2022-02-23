@@ -18,6 +18,7 @@
  */
 #endregion
 
+using Avalonia.Controls;
 using Dock.Model.Core;
 using Reko.Gui;
 using Reko.Gui.Services;
@@ -28,6 +29,7 @@ using Reko.UserInterfaces.AvaloniaUI.Views;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Reko.UserInterfaces.AvaloniaUI.Services
@@ -47,7 +49,14 @@ namespace Reko.UserInterfaces.AvaloniaUI.Services
 
         public IWindowFrame ActiveFrame => throw new NotImplementedException();
 
-        public IEnumerable<IWindowFrame> DocumentWindows => throw new NotImplementedException();
+        public IEnumerable<IWindowFrame> DocumentWindows
+        {
+            get
+            {
+                var customDocDock = (CustomDocumentDock) dockFactory.GetDockable<IDockable>("Documents")!;
+                return customDocDock.VisibleDockables!.OfType<IWindowFrame>();
+            }
+        }
 
         public IEnumerable<IWindowFrame> ToolWindows => throw new NotImplementedException();
 
@@ -135,9 +144,17 @@ namespace Reko.UserInterfaces.AvaloniaUI.Services
         }
 
 
-        public ValueTask<string?> ShowOpenFileDialog(string fileName)
+        public async ValueTask<string?> ShowOpenFileDialog(string fileName)
         {
-            throw new NotImplementedException();
+            var ofd = new OpenFileDialog();
+            ofd.Filters.Add(new FileDialogFilter { Name = "All files", Extensions = new List<string> { "*.*" } });
+            ofd.InitialFileName = fileName;
+            ofd.AllowMultiple = false;
+            var files = await ofd.ShowAsync(mainWindow);
+            if (files is null)
+                return null;
+            else
+                return files[0];
         }
 
         public ValueTask<string?> ShowSaveFileDialog(string fileName)

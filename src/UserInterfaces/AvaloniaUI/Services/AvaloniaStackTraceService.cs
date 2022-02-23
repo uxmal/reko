@@ -36,7 +36,7 @@ namespace Reko.UserInterfaces.AvaloniaUI.Services
 
         public void Clear()
         {
-            throw new NotImplementedException();
+            //$TODO
         }
 
         public void DisplayStackTrace(IList<ScriptStackFrame> stackFrames)

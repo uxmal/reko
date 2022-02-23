@@ -40,7 +40,7 @@ namespace Reko.UserInterfaces.AvaloniaUI.Services
 
         public void ClearDiagnostics()
         {
-            throw new NotImplementedException();
+            return; //$TODO
         }
 
         public void Error(string message)
