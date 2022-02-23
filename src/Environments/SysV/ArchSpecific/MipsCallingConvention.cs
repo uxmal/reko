@@ -134,7 +134,7 @@ namespace Reko.Environments.SysV.ArchSpecific
         public void SetReturnRegister(ICallingConventionEmitter ccr, DataType dt)
         {
             int bitSize = dt.BitSize;
-            if (dt is PrimitiveType prim && prim.Domain == Domain.Real)
+            if (dt.Domain == Domain.Real)
             {
                 ccr.RegReturn(fret);
             }

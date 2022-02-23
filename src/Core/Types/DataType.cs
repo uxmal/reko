@@ -53,10 +53,9 @@ namespace Reko.Core.Types
         public virtual int BitSize { get { return Size * BitsPerByte; } }       //$REVIEW: Wrong for 36-bit machines
 
         /// <summary>
-        /// The domain of this <see cref="DataType"/>.
+        /// The type <see cref="Domain"/> of this <see cref="DataType"/>.
         /// </summary>
         public Domain Domain { get; protected set; }
-
 
         public virtual bool IsComplex { get { return false; } }
         public virtual bool IsPointer { get { return false; } }

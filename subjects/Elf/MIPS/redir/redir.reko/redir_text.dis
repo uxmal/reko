@@ -3110,7 +3110,7 @@ l004054D0:
 l0040555C:
 	branch r5 != 0<32> l00405698
 l0040556C:
-	word32 r2_52 = malloc(SLICE(CONVERT(strlen(r4), size_t, uint32) + 11<i32>, size_t, 0))
+	word32 r2_52 = malloc(strlen(r4) + SLICE(11<i32>, size_t, 0))
 	dwArg04_530 = r2_52
 	branch r2_52 != 0<32> l004055F4
 l004055F4:

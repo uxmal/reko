@@ -151,8 +151,7 @@ namespace Reko.Environments.SysV.ArchSpecific
             if (stubInstrs[3] is RtlGoto g &&
                 g.Target is MemoryAccess mem &&
                 mem.EffectiveAddress == dst &&
-                mem.DataType is PrimitiveType dt &&
-                dt.BitSize == 32)
+                mem.DataType.BitSize == 32)
             {
                 return addr;
             }

@@ -84,8 +84,10 @@ namespace Reko.Environments.SysV.ArchSpecific
                     break;
                 }
             }
-            if (dtRet is PrimitiveType ptRet && 
-                ptRet.Domain == Domain.Real)
+            if (dtRet is null || dtRet is VoidType)
+                return;
+
+            if (dtRet.Domain == Domain.Real)
             {
                 ccr.RegReturn(fregs[0]);
             }

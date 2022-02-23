@@ -171,7 +171,7 @@ namespace Reko.Arch.X86
                 RenderImmediate(imm, instr, renderer);
                 break;
             case MemoryOperand mem:
-                if (mem.Width is PrimitiveType pt && pt.Domain == Domain.SegPointer)
+                if (mem.Width.Domain == Domain.SegPointer)
                 {
                     renderer.WriteChar('*');
                 }

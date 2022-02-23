@@ -75,7 +75,7 @@ namespace Reko.Evaluation
                 var cNew = src!.CloneExpression();
                 if (src.DataType.IsWord &&
                     src is Constant cSrc &&
-                    pt != null &&
+                    pt is not null &&
                     pt.Domain == Domain.Real)
                 {
                     // Raw bitvector assigned to an real-valued register. We need to interpret the bitvector

@@ -114,26 +114,26 @@ namespace Reko.Arch.Arm.AArch64
 
             if (dtRet != null)
             {
-                if (dtRet is PrimitiveType pt && pt.Domain == Domain.Real)
+                if (dtRet.Domain == Domain.Real)
                 {
-                    if (pt.Size < 8)
+                    if (dtRet.BitSize < 64)
                     {
                         ccr.RegReturn(floatRegs[0]);
                     }
-                    else if (pt.Size < 16)
+                    else if (dtRet.BitSize < 128)
                     {
                         ccr.SequenceReturn(floatRegs[1], floatRegs[0]);
                     }
                     else
                         throw new NotImplementedException();
                 }
-                else if (dtRet != null)
+                else
                 {
-                    if (dtRet.Size <= 8)
+                    if (dtRet.BitSize <= 64)
                     {
                         ccr.RegReturn(argRegs[0]);
                     }
-                    else if (dtRet.Size <= 16)
+                    else if (dtRet.BitSize <= 128)
                     {
                         ccr.SequenceReturn(argRegs[1], argRegs[0]);
                     }

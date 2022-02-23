@@ -148,27 +148,20 @@ namespace Reko.Core.Machine
     /// Represents an immediate constant value used by a MachineInstruction.
     /// </summary>
 	public class ImmediateOperand : AbstractMachineOperand
-	{
-        public ImmediateOperand(Constant c) : base((PrimitiveType)c.DataType)
-		{
-			Value = c;
-		}
+    {
+        public ImmediateOperand(Constant c) : base((PrimitiveType) c.DataType)
+        {
+            Value = c;
+        }
 
         public Constant Value { get; }
 
         protected override void DoRender(MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
         {
             var s = FormatValue(Value);
-            if (Value.DataType is PrimitiveType pt)
-            {
-                if (pt.Domain == Domain.Pointer)
-                    renderer.WriteAddress(s, Address.FromConstant(Value));
-                else
-                    renderer.WriteString(s);
-            }
-            else if (Value.DataType is Pointer)
+            if (Value.DataType.Domain == Domain.Pointer)
                 renderer.WriteAddress(s, Address.FromConstant(Value));
-            else 
+            else
                 renderer.WriteString(s);
         }
 

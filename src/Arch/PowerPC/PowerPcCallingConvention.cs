@@ -60,7 +60,7 @@ namespace Reko.Arch.PowerPC
             for (int iArg = 0; iArg < dtParams.Count; ++iArg)
             {
                 var dtArg = dtParams[iArg];
-                if (dtArg is PrimitiveType prim && prim.Domain == Domain.Real)
+                if (dtArg.Domain == Domain.Real)
                 {
                     if (fr >= fregs.Length)
                     {
@@ -105,8 +105,7 @@ namespace Reko.Arch.PowerPC
 
         public void SetReturnRegister(ICallingConventionEmitter ccr, DataType dt)
         {
-            var prim = dt as PrimitiveType;
-            if (prim != null && prim.Domain == Domain.Real)
+            if (dt.Domain == Domain.Real)
             {
                 ccr.RegReturn(fregs[0]);
             }

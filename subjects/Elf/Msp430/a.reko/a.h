@@ -1126,7 +1126,7 @@ Eq_1432: (fn void ((ptr20 Eq_1434)))
 	T_1433 (in signature of vListInitialiseItem @ 00004C00 : void)
 	T_1438 (in vListInitialiseItem @ 000049F8 : word16)
 	T_1719 (in vListInitialiseItem @ 00004BF4 : word16)
-Eq_1434: (struct "Eq_1434" (8 word16 w0008))
+Eq_1434: (struct "Eq_1434" (0 word16 w0000) (8 word16 w0008))
 	T_1434 (in r15 @ 000049EE : (ptr20 Eq_1434))
 	T_1436 (in r15 + 8<16> @ 000049EE : word20)
 	T_1440 (in r15 + 0x12<16> @ 000049F8 : word20)
@@ -1282,10 +1282,10 @@ Eq_1695: (union "Eq_1695" (word20 u0) (word16 u1))
 Eq_1699: (union "Eq_1699" (ptr20 u0) (word16 u1))
 	T_1699 (in r15 + 6<16> @ 00004BE0 : word20)
 	T_1702 (in Mem11[r15 + 4<i16>:word16] @ 00004BE0 : word16)
-Eq_1707: (union "Eq_1707" (ptr20 u0) (word16 u1))
+Eq_1707: (union "Eq_1707" (word16 u0) ((ptr20 word16) u1))
 	T_1707 (in r15 + 6<16> @ 00004BE8 : word20)
 	T_1710 (in Mem13[r15 + 8<i16>:word16] @ 00004BE8 : word16)
-Eq_1711: (union "Eq_1711" (ptr20 u0) (word16 u1))
+Eq_1711: (union "Eq_1711" (word16 u0) ((ptr20 word16) u1))
 	T_1711 (in r15 + 6<16> @ 00004BEC : word20)
 	T_1714 (in Mem14[r15 + 10<i16>:word16] @ 00004BEC : word16)
 Eq_1756: (struct "Eq_1756" (2 Eq_728 t0002))
@@ -8995,7 +8995,7 @@ T_1706: (in Mem12[r15 + 6<i16>:word16] @ 00004BE4 : word16)
 T_1707: (in r15 + 6<16> @ 00004BE8 : word20)
   Class: Eq_1707
   DataType: Eq_1707
-  OrigDataType: ptr20
+  OrigDataType: (ptr20 word16)
 T_1708: (in 8<i16> @ 00004BE8 : int16)
   Class: Eq_1708
   DataType: int16
@@ -9011,7 +9011,7 @@ T_1710: (in Mem13[r15 + 8<i16>:word16] @ 00004BE8 : word16)
 T_1711: (in r15 + 6<16> @ 00004BEC : word20)
   Class: Eq_1711
   DataType: Eq_1711
-  OrigDataType: ptr20
+  OrigDataType: (ptr20 word16)
 T_1712: (in 10<i16> @ 00004BEC : int16)
   Class: Eq_1712
   DataType: int16
@@ -9047,7 +9047,7 @@ T_1719: (in vListInitialiseItem @ 00004BF4 : word16)
 T_1720: (in r15 + 6<16> @ 00004BF4 : word20)
   Class: Eq_1434
   DataType: (ptr20 Eq_1434)
-  OrigDataType: ptr20
+  OrigDataType: (ptr20 word16)
 T_1721: (in vListInitialiseItem((word24) r15 + 6<i32>) @ 00004BF4 : void)
   Class: Eq_1437
   DataType: void
@@ -19379,6 +19379,7 @@ typedef union Eq_1419 {
 typedef void (Eq_1432)(Eq_1434 *);
 
 typedef struct Eq_1434 {
+	word16 w0000;	// 0
 	word16 w0008;	// 8
 } Eq_1434;
 
@@ -19520,13 +19521,13 @@ typedef union Eq_1699 {
 } Eq_1699;
 
 typedef union Eq_1707 {
-	ptr20 u0;
-	word16 u1;
+	word16 u0;
+	word16 * u1;
 } Eq_1707;
 
 typedef union Eq_1711 {
-	ptr20 u0;
-	word16 u1;
+	word16 u0;
+	word16 * u1;
 } Eq_1711;
 
 typedef struct Eq_1756 {

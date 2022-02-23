@@ -1913,7 +1913,7 @@ void properties_load(Eq_n r4, Eq_n r5, word32 ra)
 		return;
 	if (r5 == 0x00)
 	{
-		Eq_n r2_n = malloc((size_t) ((uint32) strlen(r4) + 11));
+		word32 r2_n = malloc(strlen(r4) + SLICE(11, size_t, 0));
 		dwArg04_n = r2_n;
 		if (r2_n == 0x00)
 		{

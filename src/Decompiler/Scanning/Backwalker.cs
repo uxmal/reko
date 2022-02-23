@@ -504,9 +504,9 @@ namespace Reko.Scanning
 
         private void DetermineVector(MemoryAccess mem, Expression possibleVector)
         {
-            if (!(possibleVector is Constant vector))
+            if (possibleVector is not Constant vector)
                 return;
-            if (vector.DataType is PrimitiveType pt && pt.Domain == Domain.SignedInt)
+            if (vector.DataType.Domain == Domain.SignedInt)
                 return;
             if (mem is SegmentedAccess segmem)
             {

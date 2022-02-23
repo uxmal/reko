@@ -68,7 +68,7 @@ namespace Reko.Arch.IA64
             switch (operand)
             {
             case ImmediateOperand imm:
-                if (imm.Width is PrimitiveType pt && pt.Domain == Domain.SignedInt)
+                if (imm.Width.Domain == Domain.SignedInt)
                 {
                     renderer.WriteFormat("{0}", imm.Value.ToInt64());
                 }

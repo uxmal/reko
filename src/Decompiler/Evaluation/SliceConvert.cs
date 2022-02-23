@@ -82,7 +82,7 @@ namespace Reko.Evaluation
         {
             if (dataType.IsWord || dataType.IsIntegral)
                 return true;
-            return (dataType is PrimitiveType pt && pt.Domain.HasFlag(Domain.Character));
+            return (dataType.Domain.HasFlag(Domain.Character));
         }
 
         public Expression Transform()

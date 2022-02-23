@@ -575,7 +575,7 @@ namespace Reko.Analysis
 			{
 				cc = cc.Invert();
 			}
-            bool isReal = (bin.DataType is PrimitiveType p && p.Domain == Domain.Real);
+            bool isReal = bin.DataType.Domain == Domain.Real;
 			switch (cc)
 			{
 			case ConditionCode.UGT: cmpOp = Operator.Ugt; break;

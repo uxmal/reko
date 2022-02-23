@@ -58,7 +58,7 @@ namespace Reko.Arch.Tms320C28
 
         private void WriteNumber(Constant c, MachineInstructionRenderer renderer)
         {
-            if (c.DataType is PrimitiveType pt && pt.Domain == Domain.SignedInt)
+            if (c.DataType.Domain == Domain.SignedInt)
                 throw new NotImplementedException();
             var v = c.ToUInt32();
             if (v >= 10)

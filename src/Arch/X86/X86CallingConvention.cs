@@ -107,8 +107,7 @@ namespace Reko.Arch.X86
             }
             else
             {
-                var pt = dtRet.ResolveAs<PrimitiveType>();
-                if (pt != null && pt.Domain == Domain.Real)
+                if (dtRet.Domain == Domain.Real)
                 {
                     ccr.FpuReturn(-1, PrimitiveType.Real64);
                     return;

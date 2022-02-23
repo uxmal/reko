@@ -302,7 +302,7 @@ complex) in f1:f4.
             int fReg = 0;
             foreach (var dtParam in dtParams)
             {
-                if (dtParam is PrimitiveType pt && pt.Domain == Domain.Real)
+                if (dtParam.Domain == Domain.Real)
                 {
                     ccr.RegParam(fregs[fReg]);
                     ++fReg;
@@ -324,11 +324,11 @@ complex) in f1:f4.
 
         private (int, int)  GenerateReturn(ICallingConventionEmitter ccr, DataType? dtRet)
         {
-            if (dtRet == null || dtRet is VoidType)
+            if (dtRet is null || dtRet is VoidType)
             {
                 return (0, 0);
             }
-            if (dtRet is PrimitiveType pt && pt.Domain == Domain.Real)
+            if (dtRet.Domain == Domain.Real)
             {
                 ccr.RegReturn(fregs[0]);
                 return (0, 1);

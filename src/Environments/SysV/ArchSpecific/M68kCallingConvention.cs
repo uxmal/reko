@@ -47,7 +47,7 @@ namespace Reko.Environments.SysV.ArchSpecific
             ccr.LowLevelDetails(4, 4);
             if (dtRet != null)
             {
-                if (dtRet is PrimitiveType pt && pt.Domain == Domain.Real)
+                if (dtRet.Domain == Domain.Real)
                     ccr.RegReturn(fp0);
                 if (dtRet.BitSize > 64)
                     throw new NotImplementedException();

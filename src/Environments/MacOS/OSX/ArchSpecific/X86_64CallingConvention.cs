@@ -71,8 +71,7 @@ namespace Reko.Environments.MacOS.OSX.ArchSpecific
             // space for the four registers
             foreach (var dtParam in dtParams)
             {
-                var prim = dtParam as PrimitiveType;
-                if (prim != null && prim.Domain == Domain.Real)
+                if (dtParam.Domain == Domain.Real)
                 {
                     if (fr >= fregs.Length)
                     {
@@ -112,9 +111,8 @@ namespace Reko.Environments.MacOS.OSX.ArchSpecific
 
         public void SetReturnRegister(ICallingConventionEmitter ccr, DataType dtArg)
         {
-            var pt = dtArg as PrimitiveType;
             int bitSize = dtArg.BitSize;
-            if (pt != null && pt.Domain == Domain.Real)
+            if (dtArg.Domain == Domain.Real)
             {
                 var xmm0 = fregs[0];
                 if (bitSize <= 64)

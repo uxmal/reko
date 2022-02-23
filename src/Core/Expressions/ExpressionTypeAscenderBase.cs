@@ -194,7 +194,7 @@ namespace Reko.Core.Expressions
                 return null;
             if (right is Constant cOffset)
             {
-                if (dtRight is PrimitiveType ptRight && ptRight.Domain != Domain.Pointer)
+                if (dtRight.Domain != Domain.Pointer)
                 {
                     int offset = cOffset.ToInt32();
                     return GetPossibleFieldType(dtLeft, offset);
@@ -274,10 +274,8 @@ namespace Reko.Core.Expressions
 
         private DataType PullDiffDataType(DataType dtLeft, DataType dtRight, Domain sign)
         {
-            var ptLeft = dtLeft as PrimitiveType;
             var ptRight = dtRight.ResolveAs<PrimitiveType>();
-            if (ptLeft != null && ptLeft.Domain == Domain.Pointer || 
-                dtLeft is Pointer)
+            if (dtLeft.Domain == Domain.Pointer)
             {
                 if (ptRight != null)
                 {
@@ -300,7 +298,7 @@ namespace Reko.Core.Expressions
                 // If a dtRight is a pointer and it's being subtracted from 
                 // something, then the result has to be a ptrdiff_t, i.e.
                 // integer.
-                if (ptLeft != null && (ptLeft.Domain & Domain.Pointer) != 0)
+                if ((dtLeft.Domain & Domain.Pointer) != 0)
                     return PrimitiveType.Create(Domain.Integer, dtLeft.BitSize);
                 // We are unable to reconcile the differences here. 
                 return PrimitiveType.CreateWord(dtLeft.BitSize);
@@ -339,9 +337,9 @@ namespace Reko.Core.Expressions
 
         private DataType? ExistingGlobalField(Constant c)
         {
-            if (!(c.DataType is PrimitiveType pt) || (pt.Domain & Domain.Pointer) == 0)
+            if ((c.DataType.Domain & Domain.Pointer) == 0)
                 return null;
-            var global = factory.CreatePointer(globalFields, pt.BitSize);
+            var global = factory.CreatePointer(globalFields, c.DataType.BitSize);
             return GetPossibleFieldType(global, PrimitiveType.Int32, c);
         }
 
@@ -408,9 +406,9 @@ namespace Reko.Core.Expressions
             }
             else 
             {
-                if (dtElems[0] is PrimitiveType ptHead && ptHead.IsIntegral)
+                if (dtElems[0].IsIntegral)
                 {
-                    dtSeq = PrimitiveType.Create(ptHead.Domain, seq.DataType.BitSize);
+                    dtSeq = PrimitiveType.Create(dtElems[0].Domain, seq.DataType.BitSize);
                 }
                 else
                 {
@@ -422,7 +420,7 @@ namespace Reko.Core.Expressions
 
         private bool IsSelector(DataType dt)
         {
-            return dt is PrimitiveType pt && pt.Domain == Domain.Selector;
+            return dt.Domain == Domain.Selector;
         }
 
         public DataType VisitOutArgument(OutArgument outArgument)

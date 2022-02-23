@@ -202,19 +202,13 @@ namespace Reko.Arch.X86
             X86Instruction instr,
             MachineInstructionRenderer renderer)
         {
-            if (imm.Value.DataType is PrimitiveType pt)
-            {
-                if (pt.Domain == Domain.Pointer)
-                    renderer.WriteAddress(FormatValue(imm.Value), Address.FromConstant(imm.Value));
-                else if (pt.Domain == Domain.Offset)
-                    renderer.WriteString(FormatUnsignedValue(imm.Value.ToUInt64(), "{0:X4}"));
-                else
-                    renderer.WriteString(FormatValue(imm.Value));
-            }
+            var pt = imm.Value.DataType;
+            if (pt.Domain == Domain.Offset)
+                renderer.WriteString(FormatUnsignedValue(imm.Value.ToUInt64(), "{0:X4}"));
             else
             {
                 var s = FormatValue(imm.Value);
-                if (imm.Value.DataType is Pointer)
+                if (pt.Domain == Domain.Pointer)
                     renderer.WriteAddress(s, Address.FromConstant(imm.Value));
                 else
                     renderer.WriteString(s);

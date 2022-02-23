@@ -81,7 +81,7 @@ namespace Reko.Arch.Arm.AArch64
                 break;
             case ImmediateOperand imm:
                 renderer.BeginOperand();
-                if (imm.Width is PrimitiveType pt && pt.Domain == Domain.Real)
+                if (imm.Width.Domain == Domain.Real)
                 {
                     renderer.WriteFormat($"#{imm.Value}");
                 }

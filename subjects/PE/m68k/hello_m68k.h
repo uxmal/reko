@@ -11041,8 +11041,8 @@ T_2486: (in d1_79 + 8<32> @ 0000278E : word32)
   OrigDataType: word32
 T_2487: (in a0 + 0xFF8<32> @ 00002792 : word32)
   Class: Eq_2487
-  DataType: ptr32
-  OrigDataType: ptr32
+  DataType: (ptr32 word32)
+  OrigDataType: (ptr32 word32)
 T_2488: (in &a0->dw0FF8 - d1_79 @ 00000000 : word32)
   Class: Eq_2488
   DataType: ptr32

@@ -87,7 +87,7 @@ namespace Reko.Core.Expressions
             }
             else
             {
-                if (dt is PrimitiveType pt && pt.Domain == Domain.SignedInt)
+                if (dt.Domain == Domain.SignedInt)
                 {
                     throw new NotImplementedException();
                 }

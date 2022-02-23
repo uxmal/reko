@@ -123,7 +123,7 @@ namespace Reko.Typing
 		
 		public Domain DomainOf(DataType t)
 		{
-			return ((PrimitiveType)t).Domain;
+			return t.Domain;
 		}
 
         private DataType? MakeNonPointer(DataType dataType)

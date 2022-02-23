@@ -613,7 +613,7 @@ void * fn00000000000164D0(void * a0, Eq_n a1)
 	Eq_n a0_n = (uint64) open("/dev/urandom", 0);
 	if (a0_n >= 0x00)
 	{
-		uint64 a0_n = (uint64) read((int32) a0_n, a0, (size_t) (word64) (word32) a1);
+		uint64 a0_n = (uint64) read((int32) a0_n, a0, (size_t) a1);
 		close((int32) a0_n);
 		a0_n = (int64) (0x00 - (word32) ((int64) ((word32) (a0_n - a1)) != 0x00));
 	}

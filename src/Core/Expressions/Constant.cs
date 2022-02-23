@@ -321,7 +321,7 @@ namespace Reko.Core.Expressions
 		{
 			get 
 			{
-                if (DataType is not PrimitiveType p || p.Domain == Domain.Real)
+                if (DataType.Domain == Domain.Real)
                     return false;
                 return ToInt64() == 0;
 			}
@@ -362,13 +362,7 @@ namespace Reko.Core.Expressions
 			}
 		}
 
-        public bool IsReal
-		{
-			get 
-			{
-                return DataType is PrimitiveType p && p.Domain == Domain.Real;
-            }
-		}
+        public bool IsReal => DataType.Domain == Domain.Real;
 
         public virtual bool IsValid => true;
 

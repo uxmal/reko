@@ -30,12 +30,10 @@ namespace Reko.Core.Operators
 		{
             if (!ValidArgs(c1, c2))
                 return InvalidConstant.Create(c1.DataType);
-            var dom = Domain.Integer;
-            if (c1.DataType is PrimitiveType pt)
-                dom = pt.Domain & Domain.Integer;
+            var dom = c1.DataType.Domain & Domain.Integer;
             if (dom == 0)
                 dom = Domain.Integer;
-            pt = PrimitiveType.Create(dom, c1.DataType.BitSize);
+            var pt = PrimitiveType.Create(dom, c1.DataType.BitSize);
             return Constant.Create(
                 pt, 
                 c1.ToInt64() << c2.ToInt32());

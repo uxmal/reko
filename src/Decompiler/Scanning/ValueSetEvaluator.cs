@@ -163,7 +163,7 @@ namespace Reko.Scanning
             {
                 return vs.Truncate(cast.DataType);
             }
-            if (cast.DataType is PrimitiveType pt && pt.Domain == Domain.SignedInt)
+            if (cast.DataType.Domain == Domain.SignedInt)
             {
                 return vs.SignExtend(cast.DataType);
             }
@@ -200,7 +200,7 @@ namespace Reko.Scanning
             {
                 return vs.Truncate(conversion.DataType);
             }
-            if (conversion.DataType is PrimitiveType pt && pt.Domain == Domain.SignedInt)
+            if (conversion.DataType.Domain == Domain.SignedInt)
             {
                 return vs.SignExtend(conversion.DataType);
             }
@@ -441,7 +441,7 @@ namespace Reko.Scanning
             {
                 return vs.Truncate(slice.DataType);
             }
-            if (slice.DataType is PrimitiveType pt && pt.Domain == Domain.SignedInt)
+            if (slice.DataType.Domain == Domain.SignedInt)
             {
                 return vs.SignExtend(slice.DataType);
             }

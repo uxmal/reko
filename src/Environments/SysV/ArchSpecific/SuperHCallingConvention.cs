@@ -65,9 +65,9 @@ namespace Reko.Environments.SysV.ArchSpecific
             if (dtRet != null && !(dtRet is VoidType))
             {
                 RegisterStorage reg;
-                if (dtRet is PrimitiveType pt && pt.Domain == Domain.Real)
+                if (dtRet.Domain == Domain.Real)
                 {
-                    if (pt.Size == 4)
+                    if (dtRet.Size == 4)
                     {
                         reg = fret;
                     }

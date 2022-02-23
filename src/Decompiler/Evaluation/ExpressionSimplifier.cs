@@ -779,8 +779,8 @@ namespace Reko.Evaluation
             var (exp, changed) = conversion.Expression.Accept(this);
             if (exp is not InvalidConstant)
             {
-                var ptCvt = conversion.DataType.ResolveAs<PrimitiveType>();
-                var ptSrc = conversion.SourceDataType.ResolveAs<PrimitiveType>();
+                var ptCvt = conversion.DataType;
+                var ptSrc = conversion.SourceDataType;
                 if (exp is Constant c && ptCvt != null)
                 {
                     if (ptSrc != null)
@@ -878,7 +878,7 @@ namespace Reko.Evaluation
         /// <returns>A floating-point constant, possibly with a <see cref="Cast"/> wrapped around it
         /// if the constant is not 32- or 64-bit.
         /// </returns>
-        private Expression CastRawBitsToReal(PrimitiveType ptCast, Constant rawBits)
+        private Expression CastRawBitsToReal(DataType ptCast, Constant rawBits)
         {
             var bitSize = Math.Min(rawBits.DataType.BitSize, 64);
             var dtImm = PrimitiveType.Create(Domain.Real, bitSize);
@@ -1031,8 +1031,8 @@ namespace Reko.Evaluation
                 // two concatenated bit vectors.
                 if (newSeq[0] is Constant c1 && newSeq[1] is Constant c2)
                 {
-                    PrimitiveType tHead = (PrimitiveType) c1.DataType;
-                    PrimitiveType tTail = (PrimitiveType) c2.DataType;
+                    DataType tHead = c1.DataType;
+                    DataType tTail = c2.DataType;
                     PrimitiveType t;
                     if (tHead.Domain == Domain.Selector)            //$REVIEW: seems to require Address, SegmentedAddress?
                     {
