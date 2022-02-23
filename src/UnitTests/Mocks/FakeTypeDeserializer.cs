@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2022 Pavel Tomin.
  *
@@ -103,7 +103,7 @@ namespace Reko.UnitTests.Mocks
 
         public DataType VisitTypeReference(TypeReference_v1 typeReference)
         {
-            return new TypeReference(typeReference.TypeName, null);
+            return new TypeReference(typeReference.TypeName);
         }
 
         public DataType VisitUnion(UnionType_v1 union)

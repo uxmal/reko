@@ -33,12 +33,12 @@ namespace Reko.Core.Types
 		private DataType? dtOriginal;
         private EquivalenceClass? eqClass;
 
-		public TypeVariable(int n) : base("T_" + n)
+		public TypeVariable(int n) : base(Domain.Any, "T_" + n)
 		{
 			this.Number = n;
 		}
 
-		public TypeVariable(string name, int n) : base(name)
+		public TypeVariable(string name, int n) : base(Domain.Any, name)
 		{
 			this.Number = n;
 		}

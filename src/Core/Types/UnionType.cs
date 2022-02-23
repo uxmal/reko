@@ -56,7 +56,8 @@ namespace Reko.Core.Types
         {
         }
 
-        public UnionType(string? name, DataType? preferredType, bool userDefined, params DataType[] alternatives) : base(name)
+        public UnionType(string? name, DataType? preferredType, bool userDefined, params DataType[] alternatives) 
+            : base(Domain.Union, name)
         {
             this.PreferredType = preferredType;
             this.UserDefined = userDefined;

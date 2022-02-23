@@ -33,8 +33,8 @@ namespace Reko.UnitTests.Core
     [TestFixture]
     public class IntrinsicProcedureTests
     {
-        private static readonly DataType t = new TypeReference("T", null!);
-        private static readonly DataType u = new TypeReference("U", null!);
+        private static readonly DataType t = new TypeReference("T");
+        private static readonly DataType u = new TypeReference("U");
 
         [Test]
         public void Intrinsic_Generic()

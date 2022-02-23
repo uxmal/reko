@@ -31,7 +31,7 @@ namespace Reko.Core.Types
     /// </summary>
     public class CodeType : DataType
     {
-        public CodeType()
+        public CodeType() : base(Domain.Function)
         {
         }
 

@@ -32,6 +32,7 @@ namespace Reko.Core.Types
 		private readonly int bitSize;
 
 		public Pointer(DataType pointee, int bitSize)
+            : base(Domain.Pointer)
 		{
             if (bitSize <= 0)
                 throw new ArgumentOutOfRangeException("bitSize", "Invalid pointer size.");

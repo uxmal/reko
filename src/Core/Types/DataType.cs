@@ -39,16 +39,25 @@ namespace Reko.Core.Types
 
         private string? name;
 
-		protected DataType()
+		protected DataType(Domain domain)
 		{
+            this.Domain = domain;
 		}
 
-		protected DataType(string? name)
+		protected DataType(Domain domain, string? name)
 		{
+            this.Domain = domain;
 			this.name = name!;
 		}
 
-        public virtual int BitSize { get { return Size * BitsPerByte; } }		//$REVIEW: Wrong for 36-bit machines
+        public virtual int BitSize { get { return Size * BitsPerByte; } }       //$REVIEW: Wrong for 36-bit machines
+
+        /// <summary>
+        /// The domain of this <see cref="DataType"/>.
+        /// </summary>
+        public Domain Domain { get; protected set; }
+
+
         public virtual bool IsComplex { get { return false; } }
         public virtual bool IsPointer { get { return false; } }
         public virtual bool IsIntegral { get { return false; } }

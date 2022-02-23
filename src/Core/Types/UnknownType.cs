@@ -34,6 +34,7 @@ namespace Reko.Core.Types
         private readonly int size;
 
 		public UnknownType(int size = 0)
+            : base(Domain.Any)
 		{
             this.size = size;
 		}

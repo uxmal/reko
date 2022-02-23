@@ -482,6 +482,7 @@ namespace Reko.Core.Expressions
         private class WildDataType : DataType
         {
             public WildDataType(string? label)
+                : base(Domain.None)
             {
                 this.Label = label;
             }

@@ -42,7 +42,8 @@ namespace Reko.Core.Types
 		{
 		}
 
-        public StructureType(string? name, int size, bool userDefined) : base(name)
+        public StructureType(string? name, int size, bool userDefined) 
+            : base(Domain.Structure, name)
         {
             this.UserDefined = userDefined;
             this.Fields = new StructureFieldCollection();

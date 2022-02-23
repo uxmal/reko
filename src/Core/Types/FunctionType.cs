@@ -49,7 +49,7 @@ namespace Reko.Core.Types
         private Identifier? retValue;
 
         public FunctionType()
-            : base(null)
+            : base(Domain.Function, null)
         {
             this.ParametersValid = false;
             this.FpuStackArgumentMax = -1;
@@ -58,7 +58,7 @@ namespace Reko.Core.Types
         public FunctionType(
             Identifier? returnValue,    // 'null' means Void return value.
             params Identifier [] parameters)
-            : base(null)
+            : base(Domain.Function, null)
         {
             this.Parameters = parameters;
             this.ParametersValid = true;

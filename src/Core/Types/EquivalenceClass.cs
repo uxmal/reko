@@ -39,6 +39,7 @@ namespace Reko.Core.Types
 		}
 
         public EquivalenceClass(TypeVariable rep, DataType? dt)
+            : base(Domain.Any)
         {
             Representative = rep;
             this.dt = dt;

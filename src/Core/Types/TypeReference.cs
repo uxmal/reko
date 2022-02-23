@@ -31,14 +31,27 @@ namespace Reko.Core.Types
     /// </summary>
     public class TypeReference : DataType
     {
-        public TypeReference(DataType dataType) 
+        private DataType referent;
+
+        public TypeReference(DataType dataType) : base(dataType.Domain)
         {
-            this.Referent = dataType;
+            this.referent = dataType;
         }
 
-        public TypeReference(string name, DataType dataType) : base(name)
+        public TypeReference(string name, DataType dataType) : base(dataType.Domain, name)
         {
-            this.Referent = dataType;
+            this.referent = dataType;
+        }
+
+        /// <summary>
+        /// This constructor is used to generate generic type variables.
+        /// </summary>
+        /// <param name="name">The name of the generic type variable.</param>
+        public TypeReference(string name) : base(Domain.Any, name)
+        {
+            // This kind of type reference is used as a placeholder, and should never
+            // participate in Reko's type inference.
+            this.referent = default!;
         }
 
         public override bool IsComplex => Referent.IsComplex;
@@ -46,7 +59,11 @@ namespace Reko.Core.Types
         public override bool IsPointer => Referent.IsPointer;
         public override bool IsReal => Referent.IsReal;
 
-        public DataType Referent { get; set; }
+        public DataType Referent
+        {
+            get { return referent; }
+            set { referent = value; Domain = referent.Domain; }
+        }
 
         public override int Size
         {

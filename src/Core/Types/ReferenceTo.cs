@@ -31,6 +31,7 @@ namespace Reko.Core.Types
     public class ReferenceTo : DataType
     {
         public ReferenceTo(DataType referent)
+            : base(Domain.Pointer)
         {
             this.Referent = referent;
         } 

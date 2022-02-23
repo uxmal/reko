@@ -33,6 +33,7 @@ namespace Reko.Core.Types
 	public class MemberPointer : DataType
 	{
 		public MemberPointer(DataType basePtr, DataType pointee, int bitSize)
+            : base(Domain.Offset)
 		{
 			this.Pointee = pointee;
 			this.BasePointer = basePtr;

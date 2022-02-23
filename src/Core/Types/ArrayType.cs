@@ -29,7 +29,7 @@ namespace Reko.Core.Types
     /// </summary>
 	public class ArrayType : DataType
 	{
-		public ArrayType(DataType elType, int length)
+		public ArrayType(DataType elType, int length) : base(Domain.Array)
 		{
 			this.ElementType = elType;
 			this.Length = length;

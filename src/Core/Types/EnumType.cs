@@ -28,12 +28,13 @@ namespace Reko.Core.Types
     public class EnumType : DataType
     {
         public EnumType()
+            : base(Domain.Enum)
         {
             this.Members = new SortedList<string, long>();
         }
 
         public EnumType(string name)
-            : base(name)
+            : base(Domain.Enum, name)
         {
             this.Members = new SortedList<string, long>();
         }

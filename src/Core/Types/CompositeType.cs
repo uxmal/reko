@@ -27,7 +27,7 @@ namespace Reko.Core.Types
 {
     public abstract class CompositeType : DataType
     {
-        protected CompositeType(string? name) : base(name)
+        protected CompositeType(Domain domain, string? name) : base(domain, name)
         { }
 
         public bool UserDefined { get; protected set; }

@@ -79,7 +79,7 @@ namespace Reko.Core.Intrinsics
             var types = new List<DataType>();
             foreach (var typename in typenames)
             {
-                DataType dt = new TypeReference(typename, null!);
+                DataType dt = new TypeReference(typename);
                 types.Add(dt);
                 genericTypeDictionary.Add(typename, dt);
             }

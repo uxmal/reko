@@ -30,11 +30,8 @@ namespace Reko.Core.Types
     /// </summary>
     public class ClassType : CompositeType
     {
-        public ClassType() : this(null)
-        {
-        }
-
-        public ClassType(string? name) : base(name)
+        public ClassType(string? name = null) :
+            base(Domain.Class, name)
         {
             Fields = new List<ClassField>();
             Methods = new List<ClassMethod>();

@@ -20,20 +20,19 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace Reko.Core.Types
 {
+    /// <summary>
+    /// This class represents the Unit, or 'void' type. 
+    /// </summary>
     public class VoidType : DataType
     {
-        private VoidType() : base("void")
+        private VoidType() : base(Domain.None, "void")
         {
         }
 
-        static VoidType instance = new VoidType();
-
-        public static VoidType Instance { get { return instance; } }
+        public static VoidType Instance { get; } = new VoidType();
 
         public override int Size
         {

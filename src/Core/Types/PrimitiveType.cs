@@ -29,36 +29,6 @@ using System.Text;
 
 namespace Reko.Core.Types
 {
-    /// <summary>
-    /// A Domain specifies the possible interpretation of a datum.
-    /// </summary>
-    /// <remarks>
-    /// A 32-bit load from memory could mean that the variable could be 
-    /// treated as an signed int, unsigned int, floating point number, a 
-    /// pointer to something. As the decompiler records how the value is used,
-    /// some of these alternatives will be discarded. For instance, if the
-    /// 32-bit word is used in a memory access, it is certain that it is a
-    /// pointer to (something), and it can't be a float.
-    /// </remarks>
-	[Flags]
-	public enum Domain
-	{
-		None = 0,
-		Boolean = 1,                // f
-		Character = 2,              // c
-		SignedInt = 4,              // i 
-		UnsignedInt = 8,            // u
-        Integer = SignedInt|UnsignedInt,
-        Bcd = 16,                   // b - Binary coded decimal; a decimal digit stored in each nybble of a byte.
-        Real = 32,                  // r
-		Pointer = 64,               // p
-        Offset = 128,               // n - "near pointer" (x86)
-		Selector = 256,             // S
-        SegPointer = 512,           // P - Segmented pointer (x86-style)
-
-        Any = Boolean|Character|SignedInt|UnsignedInt|Bcd|Real|Pointer|Offset|Selector|SegPointer
-	}
-
 	/// <summary>
 	/// Represents a primitive machine data type, with no internal structure.
 	/// </summary>
@@ -79,15 +49,12 @@ namespace Reko.Core.Types
         private readonly int byteSize;
 		
 		private PrimitiveType(Domain dom, int bitSize, bool isWord, string? name)
+            : base(dom, name)
 		{
-            this.Domain = dom;
 			this.bitSize = bitSize;
             this.byteSize = (bitSize + (BitsPerByte-1)) / BitsPerByte;
-			this.Name = name!;
             this.IsWord = isWord;
 		}
-
-        public Domain Domain { get; }
 
         public override bool IsPointer { get { return Domain == Domain.Pointer; } }
 
