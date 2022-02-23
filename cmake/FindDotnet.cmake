@@ -75,7 +75,7 @@
 #                 [SOURCES additional_file_dependencies... ])
 # 
 # For all the above functions, `RELEASE|DEBUG` overrides `CONFIG`, `X86|X64|ANYCPU` overrides PLATFORM.
-# For Unix systems, the target framework defaults to `netstandard2.1`, unless `NETCOREAPP` is specified.
+# For Unix systems, the target framework defaults to `net5.0`, unless `NETCOREAPP` is specified.
 # For Windows, the project is built as-is, allowing multi-targeting.
 #
 #
@@ -274,9 +274,9 @@ FUNCTION(DOTNET_GET_DEPS _DN_PROJECT arguments)
         SET(_DN_BUILD_OPTIONS -f net5.0)
         SET(_DN_PACK_OPTIONS /p:TargetFrameworks=net5.0)
     ELSEIF(UNIX)
-        # Unix builds default to netstandard2.1
-        SET(_DN_BUILD_OPTIONS -f netstandard2.1)
-        SET(_DN_PACK_OPTIONS /p:TargetFrameworks=netstandard2.1)
+        # Unix builds default to net5.0
+        SET(_DN_BUILD_OPTIONS -f net5.0)
+        SET(_DN_PACK_OPTIONS /p:TargetFrameworks=net5.0)
     ENDIF()
 
     SET(_DN_IMPORT_PROP ${CMAKE_CURRENT_BINARY_DIR}/${_DN_projname}.imports.props)

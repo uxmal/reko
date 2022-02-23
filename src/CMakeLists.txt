@@ -23,7 +23,7 @@ endif()
 
 # The path to the Reko's "src" directory, used for relative path
 set(REKO_SRC ${CMAKE_CURRENT_LIST_DIR})
-set(REKO_VERSION "0.10.2")
+set(REKO_VERSION "0.11.0")
 
 set(artifacts_dir ${REKO_SRC}/../bin)
 file(MAKE_DIRECTORY ${artifacts_dir})
