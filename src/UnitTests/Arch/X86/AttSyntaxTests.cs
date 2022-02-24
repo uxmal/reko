@@ -111,6 +111,12 @@ namespace Reko.UnitTests.Arch.X86
         }
 
         [Test]
+        public void X86AttSx_mov_sib_eiz()
+        {
+            AssertEqual32("mov\t-0x8(%ecx,%eiz,2),%ecx", "8B4C61F8"); 
+        }
+
+        [Test]
         public void X86AttSx_movsx()
         {
             AssertEqual64("movsbl\t0x1234(%rdx),%ebp", "0f be aa 34 12 00 00");

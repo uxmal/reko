@@ -1531,7 +1531,8 @@ namespace Reko.Arch.X86
 
                     if (!TryReadByte(out byte sib))
                         return null;
-					if (((this.decodingContext.ModRegMemByte & 0xC0) == 0) && ((sib & 0x7) == 5))
+                    scale = (byte) (1 << (sib >> 6));
+                    if (((this.decodingContext.ModRegMemByte & 0xC0) == 0) && ((sib & 0x7) == 5))
 					{
 						offsetWidth = PrimitiveType.Word32;
 						b = RegisterStorage.None;
@@ -1542,8 +1543,24 @@ namespace Reko.Arch.X86
 					}
 			
 					int i = (sib >> 3) & 0x7;
-					idx = (i == 0x04) ? RegisterStorage.None : RegFromBitsRexX(i, decodingContext.addressWidth, GpRegFromBits);
-					scale = (byte) (1 << (sib >> 6));
+                    if (i == 0x04)
+                    {
+                        if (scale != 1)
+                        {
+                            if (decodingContext.addressWidth.BitSize == 64)
+                                idx = Registers.riz;
+                            else
+                                idx = Registers.eiz;
+                        }
+                        else
+                        {
+                            idx = RegisterStorage.None;
+                        }
+                    }
+                    else
+                    {
+                        idx = RegFromBitsRexX(i, decodingContext.addressWidth, GpRegFromBits);
+                    }
 				}
 			}
 

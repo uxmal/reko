@@ -194,7 +194,9 @@ namespace Reko.Arch.X86
         public static readonly RegisterStorage rip;     
         public static readonly RegisterStorage eip;     
         public static readonly RegisterStorage ip;
-        
+        public static readonly RegisterStorage riz;
+        public static readonly RegisterStorage eiz;
+
         public static readonly RegisterStorage Top;     // The x87 stack pointer is modelled explicitly.
         public static readonly MemoryIdentifier ST;
 
@@ -265,8 +267,14 @@ namespace Reko.Arch.X86
             fs = factory.Reg("fs", PrimitiveType.SegmentSelector);
             gs = factory.Reg("gs", PrimitiveType.SegmentSelector);
             rip = factory.Reg64("rip");
+
             eip = new RegisterStorage("eip", rip.Number, 0, PrimitiveType.Word32);
             ip = new RegisterStorage("ip", rip.Number, 0, PrimitiveType.Word32);
+
+            // Not a real architectural register, but used in some SIB encodings.
+            riz = factory.Reg64("riz");
+            eiz = new RegisterStorage("eiz", riz.Number, 0, PrimitiveType.Word32);
+
             eflags = factory.Reg32("eflags");
             S = FlagRegister("S", eflags, FlagM.SF);
             C = FlagRegister("C", eflags, FlagM.CF);

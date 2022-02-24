@@ -153,14 +153,7 @@ namespace Reko.Arch.X86
                 else
                 {
                     eBase = AluRegister(mem.Base);
-                    if (expr != null)
-                    {
-                        expr = m.IAdd(eBase, expr);
-                    }
-                    else
-                    {
-                        expr = eBase;
-                    }
+                    expr = eBase;
                 }
             }
 
@@ -180,7 +173,7 @@ namespace Reko.Arch.X86
                         op = Operator.ISub;
                     }
 
-                    DataType dt = (eBase != null) ? eBase.DataType : eIndex!.DataType;
+                    DataType dt = expr.DataType;
                     Constant cOffset = Constant.Create(dt, l);
                     expr = new BinaryExpression(op, dt, expr, cOffset);
                 }
@@ -201,7 +194,7 @@ namespace Reko.Arch.X86
                 }
             }
 
-            if (mem.Index != RegisterStorage.None)
+            if (mem.Index != RegisterStorage.None && mem.Index.Number != Registers.riz.Number)
             {
                 eIndex = AluRegister(mem.Index);
                 if (mem.Scale != 0 && mem.Scale != 1)

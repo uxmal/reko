@@ -2740,6 +2740,15 @@ namespace Reko.UnitTests.Arch.X86
         }
 
         [Test]
+        public void X86rw_mov_sib_eiz()
+        {
+            Run32bitTest("8B4C61F8");   // mov\tecx,[ecx+eiz*2-8h]
+            AssertCode(
+                "0|L--|10000000(4): 1 instructions",
+                "1|L--|ecx = Mem0[ecx - 8<32>:word32]");
+        }
+
+        [Test]
         public void X86rw_mov_control_reg()
         {
             Run32bitTest("0F2242");    // mov\tcr0,edx

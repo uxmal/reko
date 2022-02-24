@@ -25,11 +25,8 @@ using Reko.Core;
 using Reko.Core.Machine;
 using Reko.Core.Memory;
 using Reko.Core.Types;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Reko.UnitTests.Arch.X86
 {
@@ -437,6 +434,40 @@ namespace Reko.UnitTests.Arch.X86
         public void X86dis_minps()
         {
             AssertCode32("minps\txmm0,[edx+42h]", 0x0F, 0x5D, 0x42, 0x42);
+        }
+
+        [Test]
+        public void X86dis_modrm()
+        {
+            AssertCode32("mov\tecx,[eax]", "8B 08");
+            AssertCode32("mov\tecx,[12345678h]", "8B 0D 78 56 34 12");
+            AssertCode32("mov\tecx,[edi]", "8B 0F");
+            AssertCode32("mov\tecx,[eax+42h]", "8B 48 42");
+            AssertCode32("mov\tecx,[eax+12345678h]", "8B 88 78 56 34 12");
+        }
+
+        [Test]
+        public void X86dis_modrm_sib_mod0()
+        {
+            AssertCode32("mov\tecx,[ecx+eax*2]", "8B 0C 41");
+            AssertCode32("mov\tecx,[12345678h+eax*2]", "8B 0C 45 78 56 34 12");
+            AssertCode32("mov\tecx,[edi+eax*2]", "8B 0C 47");
+
+            AssertCode32("mov\tecx,[ecx+eiz*2]", "8B 0C 61");
+            AssertCode32("mov\tecx,[12345678h+eiz*2]", "8B 0C 65 78 56 34 12");
+            AssertCode32("mov\tecx,[edi+eiz*2]", "8B 0C 67");
+        }
+
+        [Test]
+        public void X86dis_modrm_sib_mod1()
+        {
+            AssertCode32("mov\tecx,[ecx+eax*2-8h]", "8B 4C 41 F8");
+            AssertCode32("mov\tecx,[ebp+eax*2-8h]", "8B 4C 45 F8");
+            AssertCode32("mov\tecx,[edi+eax*2-8h]", "8B 4C 47 F8");
+
+            AssertCode32("mov\tecx,[ecx+eiz*2-8h]", "8B 4C 61 F8");
+            AssertCode32("mov\tecx,[ebp+eiz*2-8h]", "8B 4C 65 F8");
+            AssertCode32("mov\tecx,[edi+eiz*2-8h]", "8B 4C 67 F8");
         }
 
         [Test]
