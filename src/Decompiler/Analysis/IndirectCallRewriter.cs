@@ -217,9 +217,9 @@ namespace Reko.Analysis
             var src = a.Src.Accept(this);
             var dst = (Identifier?) FindDefinedId(call!, a.Dst.Storage);
             if (dst is null)
-                return new SideEffect(a.Src);
+                return new SideEffect(src);
             DefId(dst, src);
-            return new Assignment(dst, src); ;
+            return new Assignment(dst, src);
         }
 
         public override Instruction TransformStore(Store store)
