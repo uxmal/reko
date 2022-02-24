@@ -339,7 +339,7 @@ namespace Reko.UnitTests.Arch.X86
             Run16bitTest("FF6F34");
             AssertCode(
                 "0|T--|0C00:0000(3): 1 instructions",
-                "1|T--|goto Mem0[ds:bx + 52<16>:segptr32]");
+                "1|T--|goto Mem0[ds:bx + 52<i16>:segptr32]");
         }
 
         [Test]
@@ -380,7 +380,7 @@ namespace Reko.UnitTests.Arch.X86
                 m.Call("self");
             });
             AssertCode(
-                "0|T--|10000000(5): 1 instriuctions",
+                "0|T--|10000000(5): 1 instructions",
                 "1|T--|call 10000000 (4)");
         }
 
