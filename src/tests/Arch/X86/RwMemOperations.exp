@@ -6,23 +6,23 @@ fn0C00_0000_entry:
 	Top = 0<i8>
 	// succ:  l0C00_0000
 l0C00_0000:
-	bx = Mem0[ds:bx + 2<16>:word16]
+	bx = Mem0[ds:bx + 2<i16>:word16]
 	SCZO = cond(bx - ax)
 	branch Test(GT,SZO) l0C00_000F
 	// succ:  l0C00_0007 l0C00_000F
 l0C00_0007:
-	Mem0[ds:bx + 4<16>:word16] = 1<16>
+	Mem0[ds:bx + 4<i16>:word16] = 1<16>
 	goto l0C00_002B
 	// succ:  l0C00_002B
 l0C00_000F:
-	Mem0[ds:bx + 4<16>:word16] = 0<16>
-	ax = Mem0[ds:bx + 4<16>:word16]
-	Mem0[ds:bx + 6<16>:word16] = ax
-	eax = CONVERT(Mem0[ds:bx + 8<16>:word16], word16, word32)
-	ecx = CONVERT(Mem0[ds:bx + 0xA<16>:word16], word16, int32)
+	Mem0[ds:bx + 4<i16>:word16] = 0<16>
+	ax = Mem0[ds:bx + 4<i16>:word16]
+	Mem0[ds:bx + 6<i16>:word16] = ax
+	eax = CONVERT(Mem0[ds:bx + 8<i16>:word16], word16, word32)
+	ecx = CONVERT(Mem0[ds:bx + 10<i16>:word16], word16, int32)
 	eax = eax + ecx
 	SCZO = cond(eax)
-	Mem0[ds:bx + 0xC<16>:word32] = eax
+	Mem0[ds:bx + 12<i16>:word32] = eax
 	// succ:  l0C00_002B
 l0C00_002B:
 	return

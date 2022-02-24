@@ -117,7 +117,7 @@ l004011B0:
 l004011C6:
 	branch dwArg04 != 0<32> l004011D7
 l004011CA:
-	fn004011FC(fp - 0xC<32>)
+	fn004011FC(fp - 12<i32>)
 	ebx_12 = dwLoc08
 l004011D7:
 	memcpy(fn00401158(), ebx_12, 0x9C<32>)
@@ -140,7 +140,7 @@ fn004011FC_entry:
 l004011FC:
 	Mem17[0x004020F8<p32>:word32] = fn00401158() + 0x1C<32>
 	Mem18[dwArg04:word32] = 0x82727349<32>
-	Mem19[dwArg04 + 4<32>:word32] = 0x004020E4<p32>
+	Mem19[dwArg04 + 4<i32>:word32] = 0x004020E4<p32>
 	return
 fn004011FC_exit:
 

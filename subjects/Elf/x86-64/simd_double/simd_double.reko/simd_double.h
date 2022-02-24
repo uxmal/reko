@@ -550,19 +550,19 @@ T_103: (in fp @ 0000077E : ptr64)
   Class: Eq_103
   DataType: ptr64
   OrigDataType: ptr64
-T_104: (in 0x10<64> @ 0000077E : word64)
+T_104: (in 16<i64> @ 0000077E : int64)
   Class: Eq_104
-  DataType: ui64
-  OrigDataType: ui64
-T_105: (in fp - 0x10<64> @ 00000000 : word64)
+  DataType: int64
+  OrigDataType: int64
+T_105: (in fp - 16<i64> @ 00000000 : word64)
   Class: Eq_105
   DataType: ptr64
   OrigDataType: ptr64
-T_106: (in posix_memalign(qwLoc28_55, fp - 0x10<64>, rdi, qwLoc28_55) @ 0000077E : void)
+T_106: (in posix_memalign(qwLoc28_55, fp - 16<i64>, rdi, qwLoc28_55) @ 0000077E : void)
   Class: Eq_106
   DataType: void
   OrigDataType: void
-T_107: (in SLICE(posix_memalign(qwLoc28_55, fp - 0x10<64>, rdi, qwLoc28_55), word32, 0) @ 0000077E : word32)
+T_107: (in SLICE(posix_memalign(qwLoc28_55, fp - 16<i64>, rdi, qwLoc28_55), word32, 0) @ 0000077E : word32)
   Class: Eq_107
   DataType: word32
   OrigDataType: word32
@@ -570,7 +570,7 @@ T_108: (in 0<32> @ 0000077E : word32)
   Class: Eq_107
   DataType: word32
   OrigDataType: word32
-T_109: (in (word32) posix_memalign(qwLoc28_55, fp - 0x10<64>, rdi, qwLoc28_55) != 0<32> @ 00000000 : bool)
+T_109: (in (word32) posix_memalign(qwLoc28_55, fp - 16<i64>, rdi, qwLoc28_55) != 0<32> @ 00000000 : bool)
   Class: Eq_109
   DataType: bool
   OrigDataType: bool

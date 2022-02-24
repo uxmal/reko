@@ -62,8 +62,8 @@ l0C00_0017:
 	Mem8[ds:0x402<16>:word16] = bx
 	Mem10[ds:0x404<16>:word16] = cx
 	bx_11 = Mem10[ds:0x100<16>:word16]
-	cl_12 = Mem10[ds:bx_11 + 0x42<16>:byte]
-	ax_13 = Mem10[ds:bx_11 + 0x40<16>:word16]
+	cl_12 = Mem10[ds:bx_11 + 66<i16>:byte]
+	ax_13 = Mem10[ds:bx_11 + 64<i16>:word16]
 	ax_14 = ax_13 << cl_12
 	SCZO_15 = cond(ax_14)
 	C_20 = SLICE(SCZO_15, bool, 1) (alias)
@@ -109,13 +109,13 @@ l0C00_0040:
 	Mem7[ds:0x500<16>:word16] = ax
 	bx_8 = Mem7[ds:0x1000<16>:word16]
 	ax_9 = Mem7[ds:bx_8:word16]
-	ax_10 = ax_9 + Mem7[ds:bx_8 + 2<16>:word16]
+	ax_10 = ax_9 + Mem7[ds:bx_8 + 2<i16>:word16]
 	SCZO_11 = cond(ax_10)
 	C_14 = SLICE(SCZO_11, bool, 1) (alias)
 	O_15 = SLICE(SCZO_11, bool, 4) (alias)
 	S_16 = SLICE(SCZO_11, bool, 0) (alias)
 	Z_17 = SLICE(SCZO_11, bool, 2) (alias)
-	Mem12[ds:bx_8 + 4<16>:word16] = ax_10
+	Mem12[ds:bx_8 + 4<i16>:word16] = ax_10
 	ax_13 = Mem12[ds:0x500<16>:word16]
 	return ax_13
 	// succ:  membar_exit

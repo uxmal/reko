@@ -58,8 +58,8 @@ l0C00_0020:
 	sp = sp - 2<i16>
 	Mem0[ss:sp:word16] = bp
 	bp = sp
-	es_bx = Mem0[ss:bp + 6<16>:segptr32]
-	ax = Mem0[ss:bp + 0xA<16>:word16]
+	es_bx = Mem0[ss:bp + 6<i16>:segptr32]
+	ax = Mem0[ss:bp + 10<i16>:word16]
 	v9 = Mem0[es:bx:word16] + ax
 	Mem0[es:bx:word16] = v9
 	SCZO = cond(v9)
@@ -92,8 +92,8 @@ l0C00_002E:
 	sp = sp - 2<i16>
 	Mem0[ss:sp:word16] = bp
 	bp = sp
-	es_bx = Mem0[ss:bp + 6<16>:segptr32]
-	ax = Mem0[ss:bp + 0xA<16>:word16]
+	es_bx = Mem0[ss:bp + 6<i16>:segptr32]
+	ax = Mem0[ss:bp + 10<i16>:word16]
 	v9 = Mem0[es:bx:word16] - ax
 	Mem0[es:bx:word16] = v9
 	SCZO = cond(v9)

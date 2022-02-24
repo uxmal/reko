@@ -54,8 +54,8 @@ l10000017:
 	ebp = esp
 	esp = esp - 4<i32>
 	Mem0[esp:word32] = ecx
-	Mem0[ebp - 4<32>:word16] = 0<16>
-	SCZO = cond(Mem0[ebp + 8<32>:word32] - 0<32>)
+	Mem0[ebp - 4<i32>:word16] = 0<16>
+	SCZO = cond(Mem0[ebp + 8<i32>:word32] - 0<32>)
 	branch Test(NE,Z) l1000002F
 	// succ:  l10000027 l1000002F
 l10000027:
@@ -65,27 +65,27 @@ l10000027:
 	goto l1000005E
 	// succ:  l1000005E
 l1000002F:
-	eax = CONVERT(Mem0[ebp - 4<32>:word16], word16, int32)
-	ecx = Mem0[ebp + 8<32>:word32]
+	eax = CONVERT(Mem0[ebp - 4<i32>:word16], word16, int32)
+	ecx = Mem0[ebp + 8<i32>:word32]
 	edx = CONVERT(Mem0[ecx + eax:byte], byte, int32)
 	SZO = cond(edx & edx)
 	C = false
 	branch Test(EQ,Z) l1000005A
 	// succ:  l1000003E l1000005A
 l1000003E:
-	eax = CONVERT(Mem0[ebp - 4<32>:word16], word16, int32)
+	eax = CONVERT(Mem0[ebp - 4<i32>:word16], word16, int32)
 	SCZO = cond(eax - 0x7FFF<32>)
 	branch Test(GE,SO) l1000005A
 	// succ:  l10000049 l1000005A
 l10000049:
-	cx = Mem0[ebp - 4<32>:word16]
+	cx = Mem0[ebp - 4<i32>:word16]
 	cx = cx + 1<16>
 	SCZO = cond(cx)
-	Mem0[ebp - 4<32>:word16] = cx
+	Mem0[ebp - 4<i32>:word16] = cx
 	goto l1000002F
 	// succ:  l1000002F
 l1000005A:
-	ax = Mem0[ebp - 4<32>:word16]
+	ax = Mem0[ebp - 4<i32>:word16]
 	// succ:  l1000005E
 l1000005E:
 	esp = ebp

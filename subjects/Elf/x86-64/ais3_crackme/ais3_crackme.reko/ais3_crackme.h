@@ -419,15 +419,15 @@ T_85: (in CONVERT(dwLoc0C_130, word32, int64) @ 00400594 : int64)
   Class: Eq_85
   DataType: int64
   OrigDataType: int64
-T_86: (in 0x601020<64> @ 00400594 : word64)
+T_86: (in 6295584<i64> @ 00400594 : int64)
   Class: Eq_86
   DataType: (ptr64 (arr byte))
   OrigDataType: (ptr64 (struct (0 (arr T_169) a0000)))
-T_87: (in CONVERT(dwLoc0C_130, word32, int64) + 0x601020<64> @ 00400594 : word64)
+T_87: (in CONVERT(dwLoc0C_130, word32, int64) + 6295584<i64> @ 00400594 : word64)
   Class: Eq_87
   DataType: int64
   OrigDataType: int64
-T_88: (in Mem103[CONVERT(dwLoc0C_130, word32, int64) + 0x601020<64>:byte] @ 00400594 : byte)
+T_88: (in Mem103[CONVERT(dwLoc0C_130, word32, int64) + 6295584<i64>:byte] @ 00400594 : byte)
   Class: Eq_88
   DataType: byte
   OrigDataType: byte

@@ -25,12 +25,12 @@ void fn00401010(word32 dwArg04)
 fn00401010_entry:
 l00401010:
 	word32 eax_16 = _acrt_iob_func(1<32>)
-	Mem23[esp_14:word32] = fp + 8<32>
+	Mem23[esp_14:word32] = fp + 8<i32>
 	Mem25[esp_14 - 4<i32>:word32] = 0<32>
 	Mem27[esp_14 - 8<i32>:word32] = dwArg04
 	Mem29[esp_14 - 12<i32>:word32] = eax_16
 	word32 eax_30 = fn00401000()
-	_stdio_common_vfprintf(Mem33[eax_30:word32], Mem29[eax_30 + 4<32>:word32])
+	_stdio_common_vfprintf(Mem33[eax_30:word32], Mem29[eax_30 + 4<i32>:word32])
 	return
 fn00401010_exit:
 
@@ -46,10 +46,10 @@ word32 fn00401040(word32 ecx)
 // Preserved: ebp esp
 fn00401040_entry:
 l00401040:
-	driver.dll!Ordinal_1(fp - 8<32>, ecx)
-	driver.dll!Ordinal_2(fp - 8<32>, 3<32>)
-	driver.dll!Ordinal_4(fp - 8<32>, 1<32>)
-	driver.dll!Ordinal_3(fp - 8<32>, 5<32>)
+	driver.dll!Ordinal_1(fp - 8<i32>, ecx)
+	driver.dll!Ordinal_2(fp - 8<i32>, 3<32>)
+	driver.dll!Ordinal_4(fp - 8<i32>, 1<32>)
+	driver.dll!Ordinal_3(fp - 8<i32>, 5<32>)
 	Mem44[esp_36 - 4<i32>:word32] = ecx
 	Mem47[esp_36 - 8<i32>:word32] = Mem44[driver.dll!Ordinal_11:word32]
 	Mem49[esp_36 - 12<i32>:word32] = 0x402118<32>
@@ -78,9 +78,9 @@ l00401172:
 	Mem42[esp_35:word32] = 7<32>
 	fn0040176D(Mem42[esp_35:word32])
 l00401179:
-	Mem53[ebp_19 - 0x19<32>:byte] = 0<8>
-	Mem55[ebp_19 - 4<32>:word32] = 0<32>
-	Mem68[ebp_19 - 0x24<32>:byte] = fn0040143A()
+	Mem53[ebp_19 - 25<i32>:byte] = 0<8>
+	Mem55[ebp_19 - 4<i32>:word32] = 0<32>
+	Mem68[ebp_19 - 36<i32>:byte] = fn0040143A()
 	word32 ebp_132 = ebp_19
 	word32 eax_69 = Mem68[0x00403334<p32>:word32]
 	word32 ebx_125 = SEQ(ebx_24_8_127, 0<8>)
@@ -90,7 +90,7 @@ l00401196:
 	word32 esp_285
 	branch eax_69 != 0<32> l004011E3
 l004011E3:
-	Mem79[ebp_19 - 0x19<32>:byte] = 1<8>
+	Mem79[ebp_19 - 25<i32>:byte] = 1<8>
 	ebx_125 = SEQ(ebx_24_8_127, 1<8>) (alias)
 l0040119A:
 	Mem80[0x00403334<p32>:word32] = 1<32>
@@ -106,7 +106,7 @@ l004011C6:
 	Mem102[0x00403334<p32>:word32] = 2<32>
 l004011E8:
 	word32 esp_107 = esp_35 - 4<i32>
-	Mem108[esp_107:word32] = Mem104[ebp_19 - 0x24<32>:word32]
+	Mem108[esp_107:word32] = Mem104[ebp_19 - 36<i32>:word32]
 	fn004015C9(Mem108[esp_107:byte])
 	word32 esp_116 = esp_107 + 4<i32>
 	word32 eax_117 = fn00401761()
@@ -157,14 +157,14 @@ l00401270:
 	Mem273[esp_272:word32] = 0<32>
 	Mem275[esp_272 - 4<i32>:word32] = 1<32>
 	fn004015E6(Mem275[esp_272:byte])
-	Mem289[ebp_132 - 4<32>:word32] = 0xFFFFFFFE<32>
+	Mem289[ebp_132 - 4<i32>:word32] = 0xFFFFFFFE<32>
 	esp_285 = esp_272 + 4<i32>
 	eax_291 = eax_242
 l00401261:
 	Mem293[esp_228 - 4<i32>:word32] = eax_242
 	exit(Mem293[esp_228 - 4<i32>:int32])
 l004011B5:
-	Mem294[ebp_19 - 4<32>:word32] = 0xFFFFFFFE<32>
+	Mem294[ebp_19 - 4<i32>:word32] = 0xFFFFFFFE<32>
 	eax_291 = 0xFF<32>
 l004012C3:
 	word32 ebp_301
@@ -187,15 +187,15 @@ word32 fn004013F6(word32 dwArg04, word32 dwArg08, ptr32 & edxOut)
 fn004013F6_entry:
 l004013F6:
 	word32 eax_32
-	word32 ecx_13 = Mem11[dwArg04 + 0x3C<32>:word32] + dwArg04
-	word32 edx_16 = ecx_13 + 0x18<32> + CONVERT(Mem11[ecx_13 + 0x14<32>:word16], word16, word32)
-	word32 esi_19 = CONVERT(Mem11[ecx_13 + 6<32>:word16], word16, word32) *s 0x28<32> + edx_16
+	word32 ecx_13 = Mem11[dwArg04 + 60<i32>:word32] + dwArg04
+	word32 edx_16 = ecx_13 + 24<i32> + CONVERT(Mem11[ecx_13 + 20<i32>:word16], word16, word32)
+	word32 esi_19 = CONVERT(Mem11[ecx_13 + 6<i32>:word16], word16, word32) *s 0x28<32> + edx_16
 	branch edx_16 == esi_19 l00401431
 l00401418:
 l0040141B:
-	branch dwArg08 <u Mem11[edx_16 + 0xC<32>:word32] l0040142A
+	branch dwArg08 <u Mem11[edx_16 + 12<i32>:word32] l0040142A
 l00401420:
-	branch dwArg08 <u Mem11[edx_16 + 8<32>:word32] + Mem11[edx_16 + 0xC<32>:word32] l00401436
+	branch dwArg08 <u Mem11[edx_16 + 8<i32>:word32] + Mem11[edx_16 + 12<i32>:word32] l00401436
 l00401436:
 	eax_32 = edx_16
 l0040142A:
@@ -223,7 +223,7 @@ l0040143A:
 	word32 eax_4 = fn00401B98()
 	branch eax_4 != 0<32> l00401446
 l00401446:
-	word32 edx_19 = Mem17[Mem0[fs:0x18<32>:word32] + 4<32>:word32]
+	word32 edx_19 = Mem17[Mem0[fs:0x18<32>:word32] + 4<i32>:word32]
 l0040145B:
 	__lock()
 	word32 eax_25
@@ -281,7 +281,7 @@ fn0040153F_entry:
 l0040153F:
 	word32 eax_84
 	word32 ebp_13 = fn00401980(ebx, esi, edi, dwLoc0C, 8<32>)
-	Mem19[ebp_13 - 4<32>:word32] = 0<32>
+	Mem19[ebp_13 - 4<i32>:word32] = 0<32>
 	word24 eax_24_8_85 = 0x5A<24>
 	branch Mem19[0x00400000<p32>:word16] != 0x5A4D<16> l004015BA
 l0040155D:
@@ -291,18 +291,18 @@ l0040155D:
 l0040156E:
 	branch Mem19[eax_25 + 0x400018<32>:word16] != 0x10B<16> l004015BA
 l0040157C:
-	word32 eax_32 = Mem19[ebp_13 + 8<32>:word32]
+	word32 eax_32 = Mem19[ebp_13 + 8<i32>:word32]
 	word32 eax_40 = fn004013F6(0x00400000<p32>, eax_32 - 0x00400000<p32>, out edx)
 	dwLoc0C = eax_32 - 0x00400000<p32>
 	eax_24_8_85 = SLICE(eax_40, word24, 8) (alias)
 	branch eax_40 == 0<32> l004015BA
 l00401593:
-	branch Mem39[eax_40 + 0x24<32>:word32] < 0<32> l004015BA
+	branch Mem39[eax_40 + 36<i32>:word32] < 0<32> l004015BA
 l004015BA:
-	Mem57[ebp_13 - 4<32>:word32] = 0xFFFFFFFE<32>
+	Mem57[ebp_13 - 4<i32>:word32] = 0xFFFFFFFE<32>
 	eax_84 = SEQ(eax_24_8_85, 0<8>) (alias)
 l00401599:
-	Mem61[ebp_13 - 4<32>:word32] = 0xFFFFFFFE<32>
+	Mem61[ebp_13 - 4<i32>:word32] = 0xFFFFFFFE<32>
 	eax_84 = SEQ(eax_24_8_85, 1<8>) (alias)
 l004015C3:
 	word32 ebp_69
@@ -377,10 +377,10 @@ l0040165E:
 l00401681:
 	branch (eax_15 & 0xFFFF0000<32>) == 0<32> l0040168E
 l0040168E:
-	GetSystemTimeAsFileTime(fp - 0x10<32>)
+	GetSystemTimeAsFileTime(fp - 16<i32>)
 	word32 v14_43 = GetCurrentThreadId() ^ GetCurrentProcessId()
 	QueryPerformanceCounter(&tLoc18)
-	word32 ecx_55 = Mem48[&tLoc18 + 4<i32>:word32] ^ Mem48[&tLoc18:word32] ^ v14_43 ^ fp - 8<32>
+	word32 ecx_55 = Mem48[&tLoc18 + 4<i32>:word32] ^ Mem48[&tLoc18:word32] ^ v14_43 ^ fp - 8<i32>
 	branch ecx_55 != 0xBB40E64E<32> l004016D6
 l004016D6:
 	branch (ecx_55 & 0xFFFF0000<32>) != 0<32> l004016E6
@@ -443,10 +443,10 @@ l0040176D:
 l00401788:
 	Mem30[0x00403368<p32>:word32] = 0<32>
 	memset(fp - 0x328<32>, 0<32>, 0x2CC<32>)
-	memset(fp - 0x5C<32>, 0<32>, 0x50<32>)
+	memset(fp - 92<i32>, 0<32>, 0x50<32>)
 	byte bl_90 = 0<8> - (IsDebuggerPresent() != 1<32>)
 	SetUnhandledExceptionFilter(0<32>)
-	branch UnhandledExceptionFilter(fp - 0xC<32>) != 0<32> l00401882
+	branch UnhandledExceptionFilter(fp - 12<i32>) != 0<32> l00401882
 l00401875:
 	Mem108[0x00403368<p32>:word32] = Mem97[0x00403368<p32>:word32] & 0<32> - (CONVERT(bl_90 + 1<8>, byte, word32) != 0<32>)
 l00401882:
@@ -472,12 +472,12 @@ l0040188B:
 l0040189C:
 	branch Mem5[eax_6:word16] != 0x5A4D<16> l00401899
 l004018A6:
-	word32 eax_17 = Mem5[eax_6 + 0x3C<32>:word32] + eax_6
+	word32 eax_17 = Mem5[eax_6 + 60<i32>:word32] + eax_6
 	branch Mem5[eax_17:word32] != 0x4550<32> l00401899
 l004018B3:
-	branch Mem5[eax_17 + 0x18<32>:word16] != 0x10B<16> l00401899
+	branch Mem5[eax_17 + 24<i32>:word16] != 0x10B<16> l00401899
 l004018BE:
-	branch Mem5[eax_17 + 0x74<32>:word32] <=u 0xE<32> l00401899
+	branch Mem5[eax_17 + 116<i32>:word32] <=u 0xE<32> l00401899
 l004018C4:
 	return CONVERT(Mem5[eax_17 + 0xE8<32>:word32] != 0<32>, bool, int8)
 l00401899:
@@ -517,10 +517,10 @@ l00401980:
 	Mem17[esp_14 - 4<i32>:word32] = ebx
 	Mem20[esp_14 - 8<i32>:word32] = esi
 	Mem23[esp_14 - 12<i32>:word32] = edi
-	Mem32[esp_14 - 16<i32>:word32] = Mem23[0x00403004<p32>:word32] ^ fp + 8<32>
+	Mem32[esp_14 - 16<i32>:word32] = Mem23[0x00403004<p32>:word32] ^ fp + 8<i32>
 	Mem36[esp_14 - 20<i32>:word32] = dwArg00
-	Mem41[fs:0<32>:word32] = fp - 8<32>
-	return fp + 8<32>
+	Mem41[fs:0<32>:word32] = fp - 8<i32>
+	return fp + 8<i32>
 fn00401980_exit:
 
 
@@ -536,7 +536,7 @@ word32 fn004019C6(word32 ebp, word32 dwArg00, ptr32 & ebpOut, ptr32 & esiOut, pt
 // Preserved:
 fn004019C6_entry:
 l004019C6:
-	Mem8[fs:0x00000000<p32>:word32] = Mem0[ebp - 0x10<32>:word32]
+	Mem8[fs:0x00000000<p32>:word32] = Mem0[ebp - 16<i32>:word32]
 	word32 ebp_19 = Mem8[ebp:word32]
 	Mem22[ebp:word32] = dwArg00
 	ebpOut = ebp_19

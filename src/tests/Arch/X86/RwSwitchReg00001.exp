@@ -23,20 +23,20 @@ l10000000:
 	esp = esp - 4<i32>
 	Mem0[esp:word32] = ebp
 	ebp = esp
-	eax = Mem0[ebp + 8<32>:word32]
+	eax = Mem0[ebp + 8<i32>:word32]
 	eax = eax + 0x7FF8FFFA<32>
 	SCZO = cond(eax)
-	Mem0[ebp - 4<32>:word32] = eax
-	SCZO = cond(Mem0[ebp - 4<32>:word32] - 3<32>)
+	Mem0[ebp - 4<i32>:word32] = eax
+	SCZO = cond(Mem0[ebp - 4<i32>:word32] - 3<32>)
 	branch Test(UGT,CZ) l10000054
 	// succ:  l10000014 l10000054
 l10000014:
-	edx = Mem0[ebp - 4<32>:word32]
+	edx = Mem0[ebp - 4<i32>:word32]
 	ecx = ecx ^ ecx
 	SZO = cond(ecx)
 	C = false
 	cl = Mem0[edx + 0x10000026<32>:byte]
-	switch (Mem0[ebp - 4<32>:word32]) { l10000040 l10000036 l10000040 l1000004A }
+	switch (Mem0[ebp - 4<i32>:word32]) { l10000040 l10000036 l10000040 l1000004A }
 	// succ:  l10000040 l10000036 l10000040 l1000004A
 l10000036:
 	eax = 0<32>

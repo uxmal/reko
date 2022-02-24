@@ -25,6 +25,6 @@ void reko_array_local()
 {
 	up32 dwLoc0C_n;
 	for (dwLoc0C_n = 0x00; dwLoc0C_n <= 0x1F; ++dwLoc0C_n)
-		(fp - 0x38)[(int64) dwLoc0C_n] = (byte) dwLoc0C_n;
+		(fp - 56)[(int64) dwLoc0C_n] = (byte) dwLoc0C_n;
 }
 

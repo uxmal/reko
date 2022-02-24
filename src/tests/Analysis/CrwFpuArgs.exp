@@ -69,7 +69,7 @@ fn0C00_0024_entry:
 	// succ:  l0C00_0024
 l0C00_0024:
 	Mem12[ds:wArg02:real32] = CONVERT(rArg0, real64, real32)
-	Mem14[ds:wArg02 + 4<16>:real32] = CONVERT(rArg1, real64, real32)
+	Mem14[ds:wArg02 + 4<i16>:real32] = CONVERT(rArg1, real64, real32)
 	return
 	// succ:  fn0C00_0024_exit
 fn0C00_0024_exit:

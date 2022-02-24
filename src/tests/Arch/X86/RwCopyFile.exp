@@ -30,23 +30,23 @@ l0C00_0000:
 	sp = sp - 4<16>
 	SCZO = cond(sp)
 	ax = 0x3D00<16>
-	dx = Mem0[ss:bp + 4<16>:word16]
+	dx = Mem0[ss:bp + 4<i16>:word16]
 	C = msdos_open_file(ds_dx, al, out ax)
-	Mem0[ss:bp - 2<16>:word16] = ax
+	Mem0[ss:bp - 2<i16>:word16] = ax
 	ax = 0x3D01<16>
-	dx = Mem0[ss:bp + 6<16>:word16]
+	dx = Mem0[ss:bp + 6<i16>:word16]
 	C = msdos_open_file(ds_dx, al, out ax)
-	Mem0[ss:bp - 4<16>:word16] = ax
+	Mem0[ss:bp - 4<i16>:word16] = ax
 	goto l0C00_002A
 	// succ:  l0C00_002A
 l0C00_001F:
-	bx = Mem0[ss:bp - 4<16>:word16]
+	bx = Mem0[ss:bp - 4<i16>:word16]
 	dx = 0x800<16>
 	ax = 0x4000<16>
 	C = msdos_write_file(bx, cx, ds_dx, out ax)
 	// succ:  l0C00_002A
 l0C00_002A:
-	bx = Mem0[ss:bp - 2<16>:word16]
+	bx = Mem0[ss:bp - 2<i16>:word16]
 	dx = 0x800<16>
 	cx = 0x800<16>
 	ax = 0x3F00<16>

@@ -28,11 +28,11 @@ fn0C00_0004_entry:
 	// succ:  l0C00_0004
 l0C00_0004:
 	fn0C00_001D(ds)
-	Mem14[ds:0x1444<16>:word16] = Mem7[ds:0x1444<16>:word16] + Mem7[ds:si + 0x28<16>:word16]
-	branch Mem14[ds:di + 0x30<16>:byte] == 0<8> l0C00_001C
+	Mem14[ds:0x1444<16>:word16] = Mem7[ds:0x1444<16>:word16] + Mem7[ds:si + 40<i16>:word16]
+	branch Mem14[ds:di + 48<i16>:byte] == 0<8> l0C00_001C
 	// succ:  l0C00_0016 l0C00_001C
 l0C00_0016:
-	fn0C00_0004(si, Mem14[ds:di + 0x30<16>:word16], ds)
+	fn0C00_0004(si, Mem14[ds:di + 48<i16>:word16], ds)
 	// succ:  l0C00_001C
 l0C00_001C:
 	return

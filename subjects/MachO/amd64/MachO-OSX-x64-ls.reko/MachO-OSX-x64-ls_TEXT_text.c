@@ -112,10 +112,10 @@ l0000000100001F1A:
 							Eq_n r15_n;
 							if (g_dw6584 != 0x00)
 							{
-								snprintf("%u", 0x0D, fp - 0x6A);
-								snprintf("%u", 0x0D, fp - 0x5D);
-								qwLoc0100_n = fp - 0x6A;
-								r15_n = fp - 0x5D;
+								snprintf("%u", 0x0D, fp - 0x006A);
+								snprintf("%u", 0x0D, fp - 93);
+								qwLoc0100_n = fp - 0x006A;
+								r15_n = fp - 93;
 							}
 							else
 							{
@@ -193,14 +193,14 @@ l0000000100001F1A:
 			struct Eq_n * rsi_n = rsi;
 			if (dwLoc011C_n != 0x00)
 			{
-				snprintf("%qu", 0x18, fp - 0x50);
-				strlen(fp - 0x50);
-				snprintf("%llu", 0x18, fp - 0x50);
-				strlen(fp - 0x50);
-				snprintf("%lu", 0x18, fp - 0x50);
-				strlen(fp - 0x50);
-				snprintf("%qu", 0x18, fp - 0x50);
-				strlen(fp - 0x50);
+				snprintf("%qu", 0x18, fp - 80);
+				strlen(fp - 80);
+				snprintf("%llu", 0x18, fp - 80);
+				strlen(fp - 80);
+				snprintf("%lu", 0x18, fp - 80);
+				strlen(fp - 80);
+				snprintf("%qu", 0x18, fp - 80);
+				strlen(fp - 80);
 				rsi_n = (struct Eq_n *) 0x18;
 			}
 			word64 rcx_n;
@@ -945,7 +945,7 @@ void fn000000010000328E(Eq_n rdi)
 		if (eax_n <= r15d_n)
 		{
 			r12b_n = r15_n->b5411;
-			rax_n = qwLoc40_n + 0x01 + qwLoc40_n + 0x100005411;
+			rax_n = qwLoc40_n + 1 + qwLoc40_n + 0x100005411;
 		}
 		else
 		{
@@ -958,16 +958,16 @@ void fn000000010000328E(Eq_n rdi)
 		{
 			if (r12b_n <= 0xC9)
 			{
-				(r14_n - 0x08)[r13_n] = (int32) r12b_n + ~0x2F;
+				(r14_n - 8)[r13_n] = (int32) r12b_n + ~0x2F;
 				if (bx_n == 0x00)
 					fputs(*__stderrp, "warn: LSCOLORS should use characters a-h instead of 0-9 (see the manual page)\n");
 				bx_n = 0x01;
 			}
 			else if (r12b_n <= 0x98)
-				(r14_n - 0x08)[r13_n] = (int32) r12b_n + ~0x60;
+				(r14_n - 8)[r13_n] = (int32) r12b_n + ~0x60;
 			else if (r12b_n <= 0xB8)
 			{
-				(r14_n - 0x08)[r13_n] = (int32) r12b_n + ~0x40;
+				(r14_n - 8)[r13_n] = (int32) r12b_n + ~0x40;
 				r14_n->dw0000 = 0x01;
 			}
 			else
@@ -975,13 +975,13 @@ void fn000000010000328E(Eq_n rdi)
 				__tolower();
 				if (SEQ(eax_24_8_n, (int8) (r12b_n == 0x78)) == 0x00)
 					fprintf("error: invalid character '%c' in LSCOLORS env var\n", *__stderrp);
-				(r14_n - 0x08)[r13_n] = ~0x00;
+				(r14_n - 8)[r13_n] = ~0x00;
 			}
 			if (r13_n == 0x01)
 				break;
 			Eq_n rax_n = (word64) r13_n + 1;
 			eax_24_8_n = SLICE(rax_n, word24, 8);
-			r12b_n = Mem146[fp - 0x31 + r13_n:byte];
+			r12b_n = Mem146[fp - 49 + r13_n:byte];
 			r13_n = rax_n;
 		}
 		++qwLoc48_n;
@@ -1111,7 +1111,7 @@ word32 fn000000010000356F(Eq_n rdi, ptr64 & rbxOut, ptr64 & rbpOut, union Eq_n &
 		while (true)
 		{
 			uint64 rax_n;
-			Eq_n rax_n = mbrtowc(fp - 0xB8, 0x06, r14_n, fp - 188);
+			Eq_n rax_n = mbrtowc(fp - 0x00B8, 0x06, r14_n, fp - 188);
 			word32 eax_n = (word32) rax_n;
 			if (rax_n == ~0x01)
 				break;
@@ -1242,7 +1242,7 @@ word32 fn0000000100004715(Eq_n rdi)
 	while (true)
 	{
 		uint64 rax_n;
-		Eq_n rax_n = mbrtowc(fp - 0xB8, 0x06, r14_n, fp - 188);
+		Eq_n rax_n = mbrtowc(fp - 0x00B8, 0x06, r14_n, fp - 188);
 		word32 eax_n = (word32) rax_n;
 		if (rax_n == ~0x01)
 			break;
@@ -1327,7 +1327,7 @@ word32 fn0000000100004ABB(Eq_n rbx, struct Eq_n * rbp, ptr64 & rbxOut, ptr64 & r
 {
 	while (true)
 	{
-		Eq_n rax_n = mbrtowc(rbp - 0xB0, 0x06, rbx, rbp - 0xB4);
+		Eq_n rax_n = mbrtowc(rbp - 0x00B0, 0x06, rbx, rbp - 0x00B4);
 		word32 eax_n = (word32) rax_n;
 		if (rax_n == 0x00)
 			break;
@@ -1461,7 +1461,7 @@ uint64 fn0000000100004AFA(word32 esi, Eq_n rdi)
 		uint64 rax_n;
 		if (ebx_n == 0x00)
 			break;
-		Eq_n rax_n = mbrtowc(fp - 0xB8, r15_n, r12_n, fp - 188);
+		Eq_n rax_n = mbrtowc(fp - 0x00B8, r15_n, r12_n, fp - 188);
 		word32 eax_n = (word32) rax_n;
 		if (rax_n == ~0x01)
 		{

@@ -29,8 +29,8 @@ fn0C00_000D_entry:
 	def ds
 l0C00_000D:
 	si_9 = Mem7[ds:0x7A<16>:word16]
-	si_10 = Mem7[ds:si_9 + 4<16>:word16]
-	ax_11 = si_10 + 8<16>
+	si_10 = Mem7[ds:si_9 + 4<i16>:word16]
+	ax_11 = si_10 + 8<i16>
 	return
 fn0C00_000D_exit:
 	use ax_11

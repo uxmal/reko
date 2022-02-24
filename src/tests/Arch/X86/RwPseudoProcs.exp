@@ -27,7 +27,7 @@ fn0C00_0000_entry:
 	Top = 0<i8>
 	// succ:  l0C00_0000
 l0C00_0000:
-	si = bp + 0xC<16>
+	si = bp + 12<i16>
 	__out<byte>(dx, al)
 	v8 = (bx & 1<16> << 1<8>) != 0<16>
 	bx = __ror<word16,byte>(bx, 1<8>)

@@ -31,7 +31,7 @@ l10000015:
 	esp = esp + 4<32>
 	SCZO = cond(esp)
 	Mem0[eax:word32] = 0<32>
-	Mem0[eax + 4<32>:word32] = 0<32>
+	Mem0[eax + 4<i32>:word32] = 0<32>
 	Mem0[edi:word32] = eax
 	esi = esi - 1<32>
 	SZO = cond(esi)

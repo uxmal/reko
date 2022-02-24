@@ -98,11 +98,11 @@ T_22: (in fp @ 2121D1079 : ptr64)
   Class: Eq_22
   DataType: ptr64
   OrigDataType: ptr64
-T_23: (in 0x38<64> @ 2121D1079 : word64)
+T_23: (in 56<i64> @ 2121D1079 : int64)
   Class: Eq_23
-  DataType: ui64
-  OrigDataType: ui64
-T_24: (in fp - 0x38<64> @ 00000000 : (arr byte))
+  DataType: int64
+  OrigDataType: int64
+T_24: (in fp - 56<i64> @ 00000000 : (arr byte))
   Class: Eq_24
   DataType: (ptr64 (arr byte))
   OrigDataType: (ptr64 (struct (0 (arr T_32) a0000)))
@@ -110,11 +110,11 @@ T_25: (in CONVERT(dwLoc0C_39, word32, int64) @ 2121D1079 : int64)
   Class: Eq_25
   DataType: int64
   OrigDataType: int64
-T_26: (in fp - 0x38<64> + CONVERT(dwLoc0C_39, word32, int64) @ 2121D1079 : word64)
+T_26: (in fp - 56<i64> + CONVERT(dwLoc0C_39, word32, int64) @ 2121D1079 : word64)
   Class: Eq_26
   DataType: (ptr64 byte)
   OrigDataType: (ptr64 (struct (0 T_27 t0000)))
-T_27: (in Mem27[fp - 0x38<64> + CONVERT(dwLoc0C_39, word32, int64):byte] @ 2121D1079 : byte)
+T_27: (in Mem27[fp - 56<i64> + CONVERT(dwLoc0C_39, word32, int64):byte] @ 2121D1079 : byte)
   Class: Eq_21
   DataType: byte
   OrigDataType: byte

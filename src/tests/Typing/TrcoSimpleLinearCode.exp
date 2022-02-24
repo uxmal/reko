@@ -4,9 +4,9 @@ void fn0C00_0000(word16 bx, word16 si, selector ds)
 fn0C00_0000_entry:
 	// succ:  l0C00_0000
 l0C00_0000:
-	word16 ax_7 = Mem0[ds:bx + 4<16>:word16]
-	Mem9[ds:bx + 6<16>:word16] = ax_7 *s ax_7
-	Mem12[ds:si + 0x4D4<16>:word16] = si + 2<16>
+	word16 ax_7 = Mem0[ds:bx + 4<i16>:word16]
+	Mem9[ds:bx + 6<i16>:word16] = ax_7 *s ax_7
+	Mem12[ds:si + 0x4D4<16>:word16] = si + 2<i16>
 	return
 	// succ:  fn0C00_0000_exit
 fn0C00_0000_exit:
@@ -33,25 +33,25 @@ T_6 (in ax_7 : word16)
 	trait_primitive(word16)
 	trait_primitive(int16)
 	trait_primitive(int16)
-T_7 (in 4<16> : word16)
+T_7 (in 4<i16> : int16)
+	trait_primitive(int16)
+T_8 (in bx + 4<i16> : word16)
 	trait_primitive(word16)
-T_8 (in bx + 4<16> : word16)
-	trait_primitive(word16)
-T_9 (in Mem0[ds:bx + 4<16>:word16] : word16)
+T_9 (in Mem0[ds:bx + 4<i16>:word16] : word16)
 	trait_primitive(word16)
 T_10 (in ax_7 *s ax_7 : int16)
 	trait_primitive(int16)
 	trait_primitive(int16)
-T_11 (in 6<16> : word16)
+T_11 (in 6<i16> : int16)
+	trait_primitive(int16)
+T_12 (in bx + 6<i16> : word16)
 	trait_primitive(word16)
-T_12 (in bx + 6<16> : word16)
-	trait_primitive(word16)
-T_13 (in Mem9[ds:bx + 6<16>:word16] : word16)
+T_13 (in Mem9[ds:bx + 6<i16>:word16] : word16)
 	trait_primitive(word16)
 	trait_equal(T_10)
-T_14 (in 2<16> : word16)
-	trait_primitive(word16)
-T_15 (in si + 2<16> : word16)
+T_14 (in 2<i16> : int16)
+	trait_primitive(int16)
+T_15 (in si + 2<i16> : word16)
 	trait_primitive(word16)
 T_16 (in 0x4D4<16> : word16)
 	trait_primitive(word16)

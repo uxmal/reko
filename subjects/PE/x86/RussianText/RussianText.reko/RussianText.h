@@ -68,7 +68,7 @@ Eq_1: (struct "Globals"
 Eq_2: (struct "Eq_2" (0 word32 dw0000) (4 ptr32 ptr0004))
 	T_2 (in dwArg04 @ 00000000 : (ptr32 Eq_2))
 	T_5 (in dwArg04 @ 00401071 : (ptr32 Eq_2))
-	T_74 (in fp - 0xC<32> @ 00000000 : word32)
+	T_74 (in fp - 12<i32> @ 00000000 : word32)
 Eq_3: (fn void ((ptr32 Eq_2)))
 	T_3 (in fn004011FC @ 00401071 : ptr32)
 	T_4 (in signature of fn004011FC @ 004011FC : void)
@@ -403,15 +403,15 @@ T_72: (in fp @ 004011CE : ptr32)
   Class: Eq_72
   DataType: ptr32
   OrigDataType: ptr32
-T_73: (in 0xC<32> @ 004011CE : word32)
+T_73: (in 12<i32> @ 004011CE : int32)
   Class: Eq_73
-  DataType: ui32
-  OrigDataType: ui32
-T_74: (in fp - 0xC<32> @ 00000000 : word32)
+  DataType: int32
+  OrigDataType: int32
+T_74: (in fp - 12<i32> @ 00000000 : word32)
   Class: Eq_2
   DataType: (ptr32 Eq_2)
   OrigDataType: ptr32
-T_75: (in fn004011FC(fp - 0xC<32>) @ 004011CE : void)
+T_75: (in fn004011FC(fp - 12<i32>) @ 004011CE : void)
   Class: Eq_6
   DataType: void
   OrigDataType: void
@@ -463,15 +463,15 @@ T_87: (in 0x004020E4<p32> @ 00401219 : ptr32)
   Class: Eq_87
   DataType: ptr32
   OrigDataType: ptr32
-T_88: (in 4<32> @ 00401219 : word32)
+T_88: (in 4<i32> @ 00401219 : int32)
   Class: Eq_88
-  DataType: word32
-  OrigDataType: word32
-T_89: (in dwArg04 + 4<32> @ 00401219 : word32)
+  DataType: int32
+  OrigDataType: int32
+T_89: (in dwArg04 + 4<i32> @ 00401219 : word32)
   Class: Eq_89
   DataType: ptr32
   OrigDataType: ptr32
-T_90: (in Mem19[dwArg04 + 4<32>:word32] @ 00401219 : word32)
+T_90: (in Mem19[dwArg04 + 4<i32>:word32] @ 00401219 : word32)
   Class: Eq_87
   DataType: ptr32
   OrigDataType: word32

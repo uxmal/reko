@@ -5,7 +5,7 @@ fn10000000_entry:
 	esp = fp
 	// succ:  l10000000
 l10000000:
-	ecx = Mem0[esi + 0x6C<32>:word32]
+	ecx = Mem0[esi + 108<i32>:word32]
 	SZO = cond(ecx & ecx)
 	C = false
 	branch Test(NE,Z) l10000012
@@ -20,7 +20,7 @@ l1000000B:
 	branch Test(EQ,Z) l10000021
 	// succ:  l10000012 l10000021
 l10000012:
-	eax = Mem0[esi + 0x7C<32>:word32]
+	eax = Mem0[esi + 124<i32>:word32]
 	esp = esp - 4<i32>
 	Mem0[esp:word32] = ebp
 	ecx = eax + eax * 2<32>

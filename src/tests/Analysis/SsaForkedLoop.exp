@@ -18,7 +18,7 @@ C_6: orig: C
 ax_7: orig: ax
     def:  ax_7 = PHI((ax_4, l0C00_0000), (ax_21, l0C00_000D), (ax_19, l0C00_0012))
     uses: SCZO_9 = cond(ax_7 - bx)
-          ax_19 = ax_7 + Mem0[ds:si_18 + 4<16>:word16]
+          ax_19 = ax_7 + Mem0[ds:si_18 + 4<i16>:word16]
           ax_21 = ax_7 + Mem0[ds:si_14:word16]
           use ax_7
 S_28: orig: S
@@ -59,10 +59,10 @@ Z_17: orig: Z
     uses: branch Test(EQ,Z_17) l0C00_0012
 si_18: orig: si
     def:  si_18 = Mem0[ds:0x302<16>:word16]
-    uses: ax_19 = ax_7 + Mem0[ds:si_18 + 4<16>:word16]
+    uses: ax_19 = ax_7 + Mem0[ds:si_18 + 4<i16>:word16]
           si_29 = PHI((si, l0C00_0000), (si_14, l0C00_000D), (si_18, l0C00_0012))
 ax_19: orig: ax
-    def:  ax_19 = ax_7 + Mem0[ds:si_18 + 4<16>:word16]
+    def:  ax_19 = ax_7 + Mem0[ds:si_18 + 4<i16>:word16]
     uses: SCZO_20 = cond(ax_19)
           ax_7 = PHI((ax_4, l0C00_0000), (ax_21, l0C00_000D), (ax_19, l0C00_0012))
 SCZO_20: orig: SCZO
@@ -80,13 +80,13 @@ ds:ds
     def:  def ds
     uses: si_13 = Mem0[ds:0x300<16>:word16]
           si_18 = Mem0[ds:0x302<16>:word16]
-          ax_19 = ax_7 + Mem0[ds:si_18 + 4<16>:word16]
+          ax_19 = ax_7 + Mem0[ds:si_18 + 4<i16>:word16]
           ax_21 = ax_7 + Mem0[ds:si_14:word16]
 Mem0:Mem
     def:  def Mem0
     uses: si_13 = Mem0[ds:0x300<16>:word16]
           si_18 = Mem0[ds:0x302<16>:word16]
-          ax_19 = ax_7 + Mem0[ds:si_18 + 4<16>:word16]
+          ax_19 = ax_7 + Mem0[ds:si_18 + 4<i16>:word16]
           ax_21 = ax_7 + Mem0[ds:si_14:word16]
 si_29: orig: si
     def:  si_29 = PHI((si, l0C00_0000), (si_14, l0C00_000D), (si_18, l0C00_0012))
@@ -130,7 +130,7 @@ l0C00_000D:
 	// succ:  l0C00_0019
 l0C00_0012:
 	si_18 = Mem0[ds:0x302<16>:word16]
-	ax_19 = ax_7 + Mem0[ds:si_18 + 4<16>:word16]
+	ax_19 = ax_7 + Mem0[ds:si_18 + 4<i16>:word16]
 	SCZO_20 = cond(ax_19)
 	// succ:  l0C00_0019
 l0C00_0019:

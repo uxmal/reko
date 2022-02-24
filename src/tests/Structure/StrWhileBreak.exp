@@ -15,7 +15,7 @@ l0C00_000A:
 	branch Mem16[ds:bx_10:word16] == 0xFFFF<16> l0C00_001A
 	// succ:  l0C00_0013 l0C00_001A
 l0C00_0013:
-	bx_10 = Mem16[ds:bx_10 + 4<16>:word16]
+	bx_10 = Mem16[ds:bx_10 + 4<i16>:word16]
 	ax_20 = ax_20 + 1<16>
 	goto l0C00_0006
 	// succ:  l0C00_0006
@@ -34,7 +34,7 @@ void fn0C00_0000(selector ds)
 		Mem16[ds:0x204<16>:word16] = bx_10;
 		if (Mem16[ds:bx_10:word16] == 0xFFFF<16>)
 			break;
-		bx_10 = Mem16[ds:bx_10 + 4<16>:word16];
+		bx_10 = Mem16[ds:bx_10 + 4<i16>:word16];
 		++ax_20;
 	}
 	Mem22[ds:0x300<16>:word16] = ax_20;

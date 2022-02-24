@@ -11,7 +11,7 @@ l0C00_0002:
 	// succ:  l0C00_0006 l0C00_000D
 l0C00_0006:
 	ax_12 = ax_12 + 1<16>
-	bx = Mem0[ds:bx + 4<16>:word16]
+	bx = Mem0[ds:bx + 4<i16>:word16]
 	goto l0C00_0002
 	// succ:  l0C00_0002
 l0C00_000D:
@@ -54,11 +54,11 @@ T_9 (in 1<16> : word16)
 	trait_primitive(word16)
 T_10 (in ax_12 + 1<16> : word16)
 	trait_primitive(word16)
-T_11 (in 4<16> : word16)
+T_11 (in 4<i16> : int16)
+	trait_primitive(int16)
+T_12 (in bx + 4<i16> : word16)
 	trait_primitive(word16)
-T_12 (in bx + 4<16> : word16)
-	trait_primitive(word16)
-T_13 (in Mem0[ds:bx + 4<16>:word16] : word16)
+T_13 (in Mem0[ds:bx + 4<i16>:word16] : word16)
 	trait_primitive(word16)
 T_14 (in 0<16> : word16)
 	trait_primitive(word16)

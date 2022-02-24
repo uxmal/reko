@@ -48,7 +48,7 @@ l0C00_001B:
 	v20_44 = PHI((v19_43, l0C00_0019), (v18_42, l0C00_0019_1))
 	branch v20_44 l0C00_002D
 l0C00_001D:
-	ah_32 = Mem0[ds:di_30 + 1<16>:byte]
+	ah_32 = Mem0[ds:di_30 + 1<i16>:byte]
 	ax_34 = SEQ(ah_32, 0<8>) (alias)
 	cx_35 = __bsr<word16>(ax_34)
 	cx_36 = cx_35 - 8<16>

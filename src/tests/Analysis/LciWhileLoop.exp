@@ -9,7 +9,7 @@ fn0C00_0000_entry:
 	// succ:  l0C00_0000
 l0C00_0000:
 	Mem7[ss:fp - 2<i16>:word16] = bp
-	ax_12 = Mem7[ss:fp + 4<16>:word16]
+	ax_12 = Mem7[ss:fp + 4<i16>:word16]
 	bx_9 = 0<16>
 	branch ax_12 <= 0<16> l0C00_0015
 	// succ:  l0C00_000C l0C00_0015

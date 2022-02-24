@@ -113,10 +113,10 @@ void acl_get_qualifier()
 	acl_get_qualifier();
 }
 
-// 0000000100004DFC: Register int32 acl_get_tag_type(Register (ptr64 Eq_n) rsi, Register Eq_n edi)
+// 0000000100004DFC: Register int32 acl_get_tag_type(Register (ptr64 Eq_n) rsi, Register word32 edi)
 // Called from:
 //      fn0000000100003AA8
-int32 acl_get_tag_type(acl_tag_t * rsi, Eq_n edi)
+int32 acl_get_tag_type(acl_tag_t * rsi, word32 edi)
 {
 	return acl_get_tag_type((acl_entry_t) rdi, rsi);
 }

@@ -19,7 +19,7 @@ l10000008:
 	esp = esp + 4<32>
 	SCZO = cond(esp)
 	Mem0[eax:word32] = 0<32>
-	Mem0[eax + 4<32>:word32] = 0x1024<32>
+	Mem0[eax + 4<i32>:word32] = 0x1024<32>
 	esp = esp - 4<i32>
 	Mem0[esp:word32] = eax
 	free(Mem0[esp:(ptr32 void)])

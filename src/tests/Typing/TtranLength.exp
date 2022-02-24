@@ -11,7 +11,7 @@ l0C00_0002:
 	// succ:  l0C00_0006 l0C00_000D
 l0C00_0006:
 	ax_12 = ax_12 + 1<16>
-	bx = Mem0[ds:bx + 4<16>:word16]
+	bx = Mem0[ds:bx + 4<i16>:word16]
 	goto l0C00_0002
 	// succ:  l0C00_0002
 l0C00_000D:
@@ -27,7 +27,7 @@ Eq_2: (segment "seg0C00_t" 0012)
 	T_2 (in seg0C00 : selector)
 Eq_3: (struct (4 (memptr Eq_4 Eq_3) ptr0004))
 	T_3 (in bx : word16)
-	T_13 (in Mem0[ds:bx + 4<16>:word16] : word16)
+	T_13 (in Mem0[ds:bx + 4<i16>:word16] : word16)
 	T_14 (in 0<16> : word16)
 Eq_4: (segment (0 Eq_3 t0000) (200 word16 w0200))
 	T_4 (in ds : selector)
@@ -72,15 +72,15 @@ T_10: (in ax_12 + 1<16> : word16)
   Class: Eq_5
   DataType: word16
   OrigDataType: word16
-T_11: (in 4<16> : word16)
+T_11: (in 4<i16> : int16)
   Class: Eq_11
-  DataType: word16
-  OrigDataType: word16
-T_12: (in bx + 4<16> : word16)
+  DataType: int16
+  OrigDataType: int16
+T_12: (in bx + 4<i16> : word16)
   Class: Eq_12
   DataType: word16
   OrigDataType: word16
-T_13: (in Mem0[ds:bx + 4<16>:word16] : word16)
+T_13: (in Mem0[ds:bx + 4<i16>:word16] : word16)
   Class: Eq_3
   DataType: (memptr (ptr16 Eq_4) Eq_3)
   OrigDataType: word16

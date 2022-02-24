@@ -121,22 +121,22 @@ bp:bp
 ss:ss
     def:  def ss
     uses: Mem7[ss:sp_4:word16] = bp
-          ax_9 = Mem7[ss:bp_8 + 4<16>:word16]
+          ax_9 = Mem7[ss:bp_8 + 4<i16>:word16]
           Mem15[ss:sp_14:word16] = ax_10
           call fn0C00_000F (retsize: 2;)	uses: bp:bp_8,sp:sp_14,ss:ss,Top:Top_3	defs: ax:ax_17,dx:dx_18,SCZO:SCZO_20,sp:sp_16,Top:Top_19
-          dx_25 = Mem15[ss:bp_8 + 4<16>:word16]
+          dx_25 = Mem15[ss:bp_8 + 4<i16>:word16]
           bp_33 = Mem32[ss:sp_31:word16]
 Mem7: orig: Mem0
     def:  Mem7[ss:sp_4:word16] = bp
-    uses: ax_9 = Mem7[ss:bp_8 + 4<16>:word16]
+    uses: ax_9 = Mem7[ss:bp_8 + 4<i16>:word16]
           Mem32 = PHI((Mem15, l0C00_0018), (Mem7, l0C00_0026))
 bp_8: orig: bp
     def:  bp_8 = sp_4
-    uses: ax_9 = Mem7[ss:bp_8 + 4<16>:word16]
+    uses: ax_9 = Mem7[ss:bp_8 + 4<i16>:word16]
           call fn0C00_000F (retsize: 2;)	uses: bp:bp_8,sp:sp_14,ss:ss,Top:Top_3	defs: ax:ax_17,dx:dx_18,SCZO:SCZO_20,sp:sp_16,Top:Top_19
-          dx_25 = Mem15[ss:bp_8 + 4<16>:word16]
+          dx_25 = Mem15[ss:bp_8 + 4<i16>:word16]
 ax_9: orig: ax
-    def:  ax_9 = Mem7[ss:bp_8 + 4<16>:word16]
+    def:  ax_9 = Mem7[ss:bp_8 + 4<i16>:word16]
     uses: ax_10 = ax_9 - 1<16>
 ax_10: orig: ax
     def:  ax_10 = ax_9 - 1<16>
@@ -160,7 +160,7 @@ sp_14: orig: sp
           call fn0C00_000F (retsize: 2;)	uses: bp:bp_8,sp:sp_14,ss:ss,Top:Top_3	defs: ax:ax_17,dx:dx_18,SCZO:SCZO_20,sp:sp_16,Top:Top_19
 Mem15: orig: Mem0
     def:  Mem15[ss:sp_14:word16] = ax_10
-    uses: dx_25 = Mem15[ss:bp_8 + 4<16>:word16]
+    uses: dx_25 = Mem15[ss:bp_8 + 4<i16>:word16]
           Mem32 = PHI((Mem15, l0C00_0018), (Mem7, l0C00_0026))
 sp_16: orig: sp
     def:  call fn0C00_000F (retsize: 2;)	uses: bp:bp_8,sp:sp_14,ss:ss,Top:Top_3	defs: ax:ax_17,dx:dx_18,SCZO:SCZO_20,sp:sp_16,Top:Top_19
@@ -188,7 +188,7 @@ sp_23: orig: sp
 SZO_24: orig: SZO
     def:  SZO_24 = cond(sp_23)
 dx_25: orig: dx
-    def:  dx_25 = Mem15[ss:bp_8 + 4<16>:word16]
+    def:  dx_25 = Mem15[ss:bp_8 + 4<i16>:word16]
     uses: dx_ax_26 = dx_25 *s32 ax_17
 dx_ax_26: orig: dx_ax
     def:  dx_ax_26 = dx_25 *s32 ax_17
@@ -281,7 +281,7 @@ l0C00_000F:
 	sp_4 = sp_2 - 2<i16>
 	Mem7[ss:sp_4:word16] = bp
 	bp_8 = sp_4
-	ax_9 = Mem7[ss:bp_8 + 4<16>:word16]
+	ax_9 = Mem7[ss:bp_8 + 4<i16>:word16]
 	ax_10 = ax_9 - 1<16>
 	SZO_11 = cond(ax_10)
 	Z_12 = SLICE(SZO_11, bool, 2) (alias)
@@ -299,7 +299,7 @@ l0C00_0018:
 	SZO_22 = cond(sp_21)
 	sp_23 = sp_21 + 1<16>
 	SZO_24 = cond(sp_23)
-	dx_25 = Mem15[ss:bp_8 + 4<16>:word16]
+	dx_25 = Mem15[ss:bp_8 + 4<i16>:word16]
 	dx_ax_26 = dx_25 *s32 ax_17
 	dx_27 = SLICE(dx_ax_26, word16, 16) (alias)
 	ax_28 = SLICE(dx_ax_26, word16, 0) (alias)

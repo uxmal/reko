@@ -692,15 +692,15 @@ T_141: (in 0000000000002008 @ 000011F8 : ptr64)
   Class: Eq_139
   DataType: (ptr64 char)
   OrigDataType: (ptr64 char)
-T_142: (in 8<64> @ 000011F8 : word64)
+T_142: (in 8<i64> @ 000011F8 : int64)
   Class: Eq_142
-  DataType: word64
-  OrigDataType: word64
-T_143: (in rsi + 8<64> @ 000011F8 : word64)
+  DataType: int64
+  OrigDataType: int64
+T_143: (in rsi + 8<i64> @ 000011F8 : word64)
   Class: Eq_143
   DataType: word64
   OrigDataType: word64
-T_144: (in Mem6[rsi + 8<64>:word64] @ 000011F8 : word64)
+T_144: (in Mem6[rsi + 8<i64>:word64] @ 000011F8 : word64)
   Class: Eq_140
   DataType: (ptr64 char)
   OrigDataType: (ptr64 char)
@@ -732,15 +732,15 @@ T_151: (in rdi_18 @ 00001209 : (ptr64 char))
   Class: Eq_151
   DataType: (ptr64 char)
   OrigDataType: (ptr64 char)
-T_152: (in 0x10<64> @ 00001209 : word64)
+T_152: (in 16<i64> @ 00001209 : int64)
   Class: Eq_152
-  DataType: word64
-  OrigDataType: word64
-T_153: (in rsi + 0x10<64> @ 00001209 : word64)
+  DataType: int64
+  OrigDataType: int64
+T_153: (in rsi + 16<i64> @ 00001209 : word64)
   Class: Eq_153
   DataType: ptr64
   OrigDataType: ptr64
-T_154: (in Mem6[rsi + 0x10<64>:word64] @ 00001209 : word64)
+T_154: (in Mem6[rsi + 16<i64>:word64] @ 00001209 : word64)
   Class: Eq_151
   DataType: (ptr64 char)
   OrigDataType: word64

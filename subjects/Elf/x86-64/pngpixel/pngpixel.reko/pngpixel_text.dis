@@ -162,7 +162,7 @@ l00000000004011D2:
 	printf(0x401914<u64>, component(eax_49, 0<32>, ecx, rdx, 2<32>), component(eax_49, 1<32>, ecx, rdx, 2<32>))
 l0000000000400F8D:
 	word32 eax_275 = component(eax_49, 0<32>, ecx, rdx, 1<32>)
-	png_get_PLTE(fp - 0x50<64>, rdi, fp - 0x40<64>, rsi, 0<32>, eax_275, 0<64>)
+	png_get_PLTE(fp - 80<i64>, rdi, fp - 64<i64>, rsi, 0<32>, eax_275, 0<64>)
 	branch (SLICE(rax_288, word32, 0) & 8<32>) == 0<32> l0000000000401137
 l0000000000400FE1:
 	branch true l0000000000401137
@@ -171,13 +171,13 @@ l0000000000400FEC:
 l0000000000401137:
 	printf(0x4018EA<u64>, eax_275)
 l0000000000400FF9:
-	branch (SLICE(png_get_tRNS(0<u64>, fp - 0x4C<64>, rdi, fp - 0x38<64>, rsi, 0<32>, 0<64>), word32, 0) & 0x10<32>) == 0<32> l00000000004010D1
+	branch (SLICE(png_get_tRNS(0<u64>, fp - 76<i64>, rdi, fp - 56<i64>, rsi, 0<32>, 0<64>), word32, 0) & 0x10<32>) == 0<32> l00000000004010D1
 l0000000000401031:
 	branch true l00000000004010D1
 l000000000040103C:
 	branch true l00000000004010D1
 l00000000004010D1:
-	printf(0x4018D3<u64>, eax_275, CONVERT(Mem321[CONVERT(eax_275, word32, uint64) * 3<64>:byte], byte, int32), CONVERT(Mem321[CONVERT(eax_275, word32, uint64) * 3<64> + 1<64>:byte], byte, int32), CONVERT(Mem321[CONVERT(eax_275, word32, uint64) * 3<64> + 2<64>:byte], byte, int32))
+	printf(0x4018D3<u64>, eax_275, CONVERT(Mem321[CONVERT(eax_275, word32, uint64) * 3<64>:byte], byte, int32), CONVERT(Mem321[CONVERT(eax_275, word32, uint64) * 3<64> + 1<i64>:byte], byte, int32), CONVERT(Mem321[CONVERT(eax_275, word32, uint64) * 3<64> + 2<i64>:byte], byte, int32))
 l0000000000401049:
 	word32 esi_463
 	branch eax_275 >=u 0<32> l0000000000401063
@@ -186,7 +186,7 @@ l0000000000401063:
 l0000000000401051:
 	esi_463 = CONVERT(Mem321[CONVERT(eax_275, word32, uint64):byte], byte, word32) (alias)
 l0000000000401068:
-	printf(0x4018B9<u64>, eax_275, CONVERT(Mem321[CONVERT(eax_275, word32, uint64) * 3<64>:byte], byte, int32), CONVERT(Mem321[CONVERT(eax_275, word32, uint64) * 3<64> + 1<64>:byte], byte, int32), CONVERT(Mem321[CONVERT(eax_275, word32, uint64) * 3<64> + 2<64>:byte], byte, int32), esi_463)
+	printf(0x4018B9<u64>, eax_275, CONVERT(Mem321[CONVERT(eax_275, word32, uint64) * 3<64>:byte], byte, int32), CONVERT(Mem321[CONVERT(eax_275, word32, uint64) * 3<64> + 1<i64>:byte], byte, int32), CONVERT(Mem321[CONVERT(eax_275, word32, uint64) * 3<64> + 2<i64>:byte], byte, int32), esi_463)
 l0000000000401150:
 l0000000000401155:
 	printf(0x401906<u64>, component(eax_49, 0<32>, ecx, rdx, 3<32>), component(eax_49, 1<32>, ecx, rdx, 3<32>), component(eax_49, 2<32>, ecx, rdx, 3<32>))
@@ -238,7 +238,7 @@ l00000000004013E4:
 	png_read_info(rax_78, rax_102, rax_102)
 	word64 rax_143 = png_get_rowbytes(rax_78, rax_102, rax_102)
 	word64 rax_155 = png_malloc(rax_78, rax_143, rax_143)
-	branch SLICE(png_get_IHDR(fp - 0x80<64>, fp - 0x7C<64>, fp - 0x84<64>, fp - 0x70<64>, fp - 0x74<64>, fp - 0x78<64>, rax_78, fp - 0x88<64>, rax_102, fp - 0x78<64>, fp - 0x74<64>, fp - 0x70<64>, rax_155, rax_155), word32, 0) == 0<32> l00000000004016AF
+	branch SLICE(png_get_IHDR(fp - 128<i64>, fp - 124<i64>, fp - 132<i64>, fp - 112<i64>, fp - 116<i64>, fp - 120<i64>, rax_78, fp - 136<i64>, rax_102, fp - 120<i64>, fp - 116<i64>, fp - 112<i64>, rax_155, rax_155), word32, 0) == 0<32> l00000000004016AF
 l00000000004016AF:
 	png_error(rax_78, 0x4019C3<u64>)
 l00000000004016C0:
@@ -327,9 +327,9 @@ l000000000040166F:
 	dwLoc68_727 = dwLoc68_727 + 1<32>
 l000000000040167F:
 	png_free(rax_78, rax_155, rax_155, 0<64>)
-	png_destroy_info_struct(rax_78, fp - 0x38<64>, fp - 0x38<64>)
+	png_destroy_info_struct(rax_78, fp - 56<i64>, fp - 56<i64>)
 l00000000004016DE:
-	png_destroy_read_struct(fp - 0x40<64>, 0<u64>, 0<u64>)
+	png_destroy_read_struct(fp - 64<i64>, 0<u64>, 0<u64>)
 l000000000040175D:
 	branch (rax_14 ^ Mem684[fs:0x28<32>:word64]) == 0<64> l0000000000401777
 l0000000000401777:

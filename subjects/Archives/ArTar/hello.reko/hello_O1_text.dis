@@ -144,9 +144,9 @@ void main(word64 rsi)
 // Preserved: rbx rsp
 main_entry:
 l00000000000011E0:
-	printf(0x0000000000002008<p64>, Mem6[rsi + 8<64>:word64])
+	printf(0x0000000000002008<p64>, Mem6[rsi + 8<i64>:word64])
 	puts(0x0000000000002030<p64>)
-	word64 rdi_18 = Mem6[rsi + 0x10<64>:word64]
+	word64 rdi_18 = Mem6[rsi + 16<i64>:word64]
 	word128 xmm0_21 = SEQ(0<96>, strtof(rdi_18, 0<u64>))
 	real32 rLoc10_61 = strtof(rdi_18, 0<u64>)
 	real32 rLoc0C_63 = SLICE(Q_rsqrt(xmm0_21, dwLoc20), real32, 0)

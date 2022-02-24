@@ -16,7 +16,7 @@ fn10000000_entry:
 l10000000:
 	esp = esp - 4<i32>
 	Mem0[esp:word32] = esi
-	esi = Mem0[esp + 8<32>:word32]
+	esi = Mem0[esp + 8<i32>:word32]
 	esp = esp - 4<i32>
 	Mem0[esp:word32] = edi
 	edi = GlobalHandle

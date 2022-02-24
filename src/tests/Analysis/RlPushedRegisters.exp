@@ -38,7 +38,7 @@ fn0C00_0034_entry:
 	def fp
 	def ds
 l0C00_0034:
-	bx_18 = fp + 6<16>
+	bx_18 = fp + 6<i16>
 l0C00_003D:
 	bx_20 = PHI((bx_18, l0C00_0034), (bx_23, l0C00_003D))
 	ax_22 = Mem16[ds:bx_20:word16]
@@ -47,7 +47,7 @@ l0C00_003D:
 l0C00_0046:
 	cx_33 = Mem16[ds:bx_23:word16]
 	call fn0C00_0069 (retsize: 2;)
-		uses: bx:fp + 6<16>,cx:cx_33,ds:ds
+		uses: bx:fp + 6<i16>,cx:cx_33,ds:ds
 	return
 fn0C00_0034_exit:
 // fn0C00_005D /////////////////////

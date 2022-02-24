@@ -392,7 +392,7 @@ l0C00_0000:
 	ax = 0<16>
 	// succ:  l0C00_0003
 l0C00_0003:
-	Mem0[ds:si + 0<16>:byte] = 0<8>
+	Mem0[ds:si:byte] = 0<8>
 	si = si + 1<16>
 	SZO = cond(si)
 	cx = cx - 1<16>

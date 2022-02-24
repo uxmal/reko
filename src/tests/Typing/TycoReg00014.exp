@@ -21,7 +21,7 @@ l00100035:
 	return 1<32>
 	// succ:  fn0010002B_exit
 l0010003C:
-	return fn0010002B(dwArg04 - 1<32>) + fn0010002B(dwArg04 - 2<32>)
+	return fn0010002B(dwArg04 - 1<32>) + fn0010002B(dwArg04 - 2<i32>)
 	// succ:  fn0010002B_exit
 fn0010002B_exit:
 
@@ -32,7 +32,7 @@ fn00100057_entry:
 	// succ:  l00100057
 l00100057:
 	word32 ecx_32 = dwArg08
-	word32 edi_10 = dwArg08 - 1<32> + dwArg0C
+	word32 edi_10 = dwArg08 - 1<i32> + dwArg0C
 	branch dwArg08 >=u edi_10 l00100095
 	// succ:  l00100068 l00100095
 l00100068:
@@ -167,19 +167,19 @@ T_28: (in fn0010002B : ptr32)
   Class: Eq_7
   DataType: (ptr32 (fn T_31 (T_30)))
   OrigDataType: (ptr32 (fn T_31 (T_30)))
-T_29: (in 2<32> : word32)
+T_29: (in 2<i32> : int32)
   Class: Eq_29
   DataType: int32
   OrigDataType: int32
-T_30: (in dwArg04 - 2<32> : word32)
+T_30: (in dwArg04 - 2<i32> : word32)
   Class: Eq_9
   DataType: int32
   OrigDataType: int32
-T_31: (in fn0010002B(dwArg04 - 2<32>) : word32)
+T_31: (in fn0010002B(dwArg04 - 2<i32>) : word32)
   Class: Eq_31
   DataType: word32
   OrigDataType: word32
-T_32: (in fn0010002B(dwArg04 - 1<32>) + fn0010002B(dwArg04 - 2<32>) : word32)
+T_32: (in fn0010002B(dwArg04 - 1<32>) + fn0010002B(dwArg04 - 2<i32>) : word32)
   Class: Eq_21
   DataType: word32
   OrigDataType: word32
@@ -195,15 +195,15 @@ T_35: (in edi_10 : word32)
   Class: Eq_5
   DataType: up32
   OrigDataType: up32
-T_36: (in 1<32> : word32)
+T_36: (in 1<i32> : int32)
   Class: Eq_36
-  DataType: word32
-  OrigDataType: word32
-T_37: (in dwArg08 - 1<32> : word32)
+  DataType: int32
+  OrigDataType: int32
+T_37: (in dwArg08 - 1<i32> : word32)
   Class: Eq_37
   DataType: word32
   OrigDataType: word32
-T_38: (in dwArg08 - 1<32> + dwArg0C : word32)
+T_38: (in dwArg08 - 1<i32> + dwArg0C : word32)
   Class: Eq_5
   DataType: word32
   OrigDataType: word32

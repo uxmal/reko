@@ -36,7 +36,7 @@ l10000000:
 	Mem0[esp:word32] = esi
 	esp = esp - 4<i32>
 	Mem0[esp:word32] = edi
-	di = Mem0[esp + 0x14<32>:word16]
+	di = Mem0[esp + 20<i32>:word16]
 	bl = bl ^ bl
 	SZO = cond(bl)
 	C = false
@@ -58,7 +58,7 @@ l10000010:
 	return
 	// succ:  fn10000000_exit
 l10000021:
-	eax = Mem0[esp + 0x1C<32>:word32]
+	eax = Mem0[esp + 28<i32>:word32]
 	SCZO = cond(Mem0[eax:word32] - 0<32>)
 	branch Test(NE,Z) l1000002C
 	// succ:  l1000002A l1000002C
@@ -66,12 +66,12 @@ l1000002A:
 	bl = 1<8>
 	// succ:  l1000002C
 l1000002C:
-	ebp = Mem0[esp + 0x20<32>:word32]
+	ebp = Mem0[esp + 32<i32>:word32]
 	esp = esp - 4<i32>
 	Mem0[esp:word32] = 0x1000A700<32>
 	esp = esp - 4<i32>
 	Mem0[esp:word32] = eax
-	eax = Mem0[esp + 0x20<32>:word32]
+	eax = Mem0[esp + 32<i32>:word32]
 	esp = esp - 4<i32>
 	Mem0[esp:word32] = 0x3158<32>
 	ecx = Mem0[eax + 0xD0<32>:word32]
@@ -92,7 +92,7 @@ l1000002C:
 l10000056:
 	edi = Mem0[esp:word32]
 	esp = esp + 4<i32>
-	Mem0[ebp + 0<32>:word16] = 0xFF94<16>
+	Mem0[ebp:word16] = 0xFF94<16>
 	esi = Mem0[esp:word32]
 	esp = esp + 4<i32>
 	ebp = Mem0[esp:word32]
@@ -137,10 +137,10 @@ l100000A0:
 	esp = esp - 4<i32>
 	Mem0[esp:word32] = esi
 	call fn10000251 (retsize: 4;)
-	edx = Mem0[esi + 4<32>:word32]
+	edx = Mem0[esi + 4<i32>:word32]
 	esp = esp + 4<32>
 	SCZO = cond(esp)
-	eax = Mem0[edx + 0xC<32>:word32]
+	eax = Mem0[edx + 12<i32>:word32]
 	ecx = Mem0[eax:word32]
 	Mem0[ecx:word32] = 1<32>
 	goto l10000211
@@ -150,29 +150,29 @@ l100000BC:
 	branch Test(NE,Z) l10000132
 	// succ:  l100000C2 l10000132
 l100000C2:
-	edx = Mem0[esi + 4<32>:word32]
+	edx = Mem0[esi + 4<i32>:word32]
 	esp = esp - 4<i32>
 	Mem0[esp:word32] = esi
-	Mem0[edx + 0x30<32>:word32] = ebp
+	Mem0[edx + 48<i32>:word32] = ebp
 	call fn10000251 (retsize: 4;)
-	eax = Mem0[esi + 4<32>:word32]
+	eax = Mem0[esi + 4<i32>:word32]
 	esp = esp - 4<i32>
 	Mem0[esp:word32] = 1<32>
-	Mem0[eax + 0x30<32>:word32] = ebp
-	eax = Mem0[esi + 4<32>:word32]
+	Mem0[eax + 48<i32>:word32] = ebp
+	eax = Mem0[esi + 4<i32>:word32]
 	eax = eax + 0x10<32>
 	SCZO = cond(eax)
-	cx = Mem0[eax + 2<32>:word16]
+	cx = Mem0[eax + 2<i32>:word16]
 	Mem0[esi + 0xB4<32>:word16] = cx
 	dx = Mem0[eax:word16]
 	Mem0[esi + 0xB2<32>:word16] = dx
-	cx = Mem0[eax + 6<32>:word16]
+	cx = Mem0[eax + 6<i32>:word16]
 	Mem0[esi + 0xB8<32>:word16] = cx
 	// succ:  l100000F8
 l100000F8:
-	dx = Mem0[eax + 4<32>:word16]
+	dx = Mem0[eax + 4<i32>:word16]
 	Mem0[esi + 0xB6<32>:word16] = dx
-	eax = Mem0[esi + 4<32>:word32]
+	eax = Mem0[esi + 4<i32>:word32]
 	eax = eax + 0x10<32>
 	SCZO = cond(eax)
 	esp = esp - 4<i32>
@@ -210,7 +210,7 @@ l10000146:
 	branch Test(NE,Z) l100000F8
 	// succ:  l1000014C l100000F8
 l1000014C:
-	ecx = Mem0[esi + 4<32>:word32]
+	ecx = Mem0[esi + 4<i32>:word32]
 	SCZO = cond(Mem0[ecx + 0xE0<32>:word32] - ebp)
 	bl = CONVERT(Test(NE,Z), bool, int8)
 	// succ:  l10000158
@@ -256,7 +256,7 @@ l10000194:
 	branch Test(EQ,Z) l10000211
 	// succ:  l10000198 l10000211
 l10000198:
-	edx = Mem0[esi + 4<32>:word32]
+	edx = Mem0[esi + 4<i32>:word32]
 	call Mem0[edx + 0xE0<32>:word32] (retsize: 4;)
 	ecx = Mem0[esi:word32]
 	Mem0[ecx:word16] = ax
@@ -274,7 +274,7 @@ l100001B2:
 	esp = esp - 4<i32>
 	Mem0[esp:word32] = esi
 	call fn1000029C (retsize: 4;)
-	eax = Mem0[esi + 4<32>:word32]
+	eax = Mem0[esi + 4<i32>:word32]
 	esp = esp - 4<i32>
 	Mem0[esp:word32] = ebp
 	esp = esp - 4<i32>
@@ -288,7 +288,7 @@ l100001B2:
 	esp = esp - 4<i32>
 	Mem0[esp:word32] = eax
 	call fn1000032B (retsize: 4;)
-	ecx = Mem0[esi + 4<32>:word32]
+	ecx = Mem0[esi + 4<i32>:word32]
 	esp = esp - 4<i32>
 	Mem0[esp:word32] = ebp
 	esp = esp - 4<i32>
@@ -302,7 +302,7 @@ l100001B2:
 	esp = esp - 4<i32>
 	Mem0[esp:word32] = ecx
 	call fn1000032B (retsize: 4;)
-	edx = Mem0[esi + 4<32>:word32]
+	edx = Mem0[esi + 4<i32>:word32]
 	esp = esp - 4<i32>
 	Mem0[esp:word32] = ebp
 	esp = esp - 4<i32>
@@ -324,13 +324,13 @@ l1000020C:
 	Mem0[eax:word16] = 0x8A6C<16>
 	// succ:  l10000211
 l10000211:
-	eax = Mem0[esp + 0x1C<32>:word32]
+	eax = Mem0[esp + 28<i32>:word32]
 	eax = Mem0[eax:word32]
 	SCZO = cond(eax - ebp)
 	branch Test(EQ,Z) l1000022E
 	// succ:  l1000021B l1000022E
 l1000021B:
-	ecx = Mem0[esi + 4<32>:word32]
+	ecx = Mem0[esi + 4<i32>:word32]
 	esp = esp - 4<i32>
 	Mem0[esp:word32] = eax
 	edx = Mem0[ecx + 0xD0<32>:word32]
@@ -368,7 +368,7 @@ fn10000233_entry:
 	// succ:  l10000233
 l10000233:
 	Mem0[0x00123400<p32>:word32] = 0x10004AE0<32>
-	eax = Mem0[esp + 4<32>:word32]
+	eax = Mem0[esp + 4<i32>:word32]
 	return
 	// succ:  fn10000233_exit
 fn10000233_exit:
@@ -388,7 +388,7 @@ fn10000242_entry:
 	// succ:  l10000242
 l10000242:
 	Mem0[0x00123400<p32>:word32] = 0x10004EA0<32>
-	eax = Mem0[esp + 4<32>:word32]
+	eax = Mem0[esp + 4<i32>:word32]
 	return
 	// succ:  fn10000242_exit
 fn10000242_exit:
@@ -408,7 +408,7 @@ fn10000251_entry:
 	// succ:  l10000251
 l10000251:
 	Mem0[0x00123400<p32>:word32] = 0x1000022D<32>
-	eax = Mem0[esp + 4<32>:word32]
+	eax = Mem0[esp + 4<i32>:word32]
 	return
 	// succ:  fn10000251_exit
 fn10000251_exit:
@@ -428,7 +428,7 @@ fn10000260_entry:
 	// succ:  l10000260
 l10000260:
 	Mem0[0x00123400<p32>:word32] = 0x10005A80<32>
-	eax = Mem0[esp + 4<32>:word32]
+	eax = Mem0[esp + 4<i32>:word32]
 	return
 	// succ:  fn10000260_exit
 fn10000260_exit:
@@ -448,7 +448,7 @@ fn1000026F_entry:
 	// succ:  l1000026F
 l1000026F:
 	Mem0[0x00123400<p32>:word32] = 0x1000A450<32>
-	eax = Mem0[esp + 4<32>:word32]
+	eax = Mem0[esp + 4<i32>:word32]
 	return
 	// succ:  fn1000026F_exit
 fn1000026F_exit:
@@ -468,7 +468,7 @@ fn1000027E_entry:
 	// succ:  l1000027E
 l1000027E:
 	Mem0[0x00123400<p32>:word32] = 0x1000A700<32>
-	eax = Mem0[esp + 4<32>:word32]
+	eax = Mem0[esp + 4<i32>:word32]
 	return
 	// succ:  fn1000027E_exit
 fn1000027E_exit:
@@ -488,7 +488,7 @@ fn1000028D_entry:
 	// succ:  l1000028D
 l1000028D:
 	Mem0[0x00123400<p32>:word32] = 0x1000B860<32>
-	eax = Mem0[esp + 4<32>:word32]
+	eax = Mem0[esp + 4<i32>:word32]
 	return
 	// succ:  fn1000028D_exit
 fn1000028D_exit:
@@ -508,7 +508,7 @@ fn1000029C_entry:
 	// succ:  l1000029C
 l1000029C:
 	Mem0[0x00123400<p32>:word32] = 0x1000D460<32>
-	eax = Mem0[esp + 4<32>:word32]
+	eax = Mem0[esp + 4<i32>:word32]
 	return
 	// succ:  fn1000029C_exit
 fn1000029C_exit:
@@ -528,7 +528,7 @@ fn100002AB_entry:
 	// succ:  l100002AB
 l100002AB:
 	Mem0[0x00123400<p32>:word32] = 0x1000D510<32>
-	eax = Mem0[esp + 4<32>:word32]
+	eax = Mem0[esp + 4<i32>:word32]
 	return
 	// succ:  fn100002AB_exit
 fn100002AB_exit:
@@ -549,8 +549,8 @@ fn100002BA_entry:
 	// succ:  l100002BA
 l100002BA:
 	Mem0[0x00123400<p32>:word32] = 0x1000D580<32>
-	eax = Mem0[esp + 8<32>:word32]
-	eax = eax + Mem0[esp + 4<32>:word32]
+	eax = Mem0[esp + 8<i32>:word32]
+	eax = eax + Mem0[esp + 4<i32>:word32]
 	SCZO = cond(eax)
 	return
 	// succ:  fn100002BA_exit
@@ -571,7 +571,7 @@ fn100002CD_entry:
 	// succ:  l100002CD
 l100002CD:
 	Mem0[0x00123400<p32>:word32] = 0x1000D5E0<32>
-	eax = Mem0[esp + 4<32>:word32]
+	eax = Mem0[esp + 4<i32>:word32]
 	return
 	// succ:  fn100002CD_exit
 fn100002CD_exit:
@@ -592,8 +592,8 @@ fn100002DC_entry:
 	// succ:  l100002DC
 l100002DC:
 	Mem0[0x00123400<p32>:word32] = 0x10025160<32>
-	eax = Mem0[esp + 8<32>:word32]
-	eax = eax + Mem0[esp + 4<32>:word32]
+	eax = Mem0[esp + 8<i32>:word32]
+	eax = eax + Mem0[esp + 4<i32>:word32]
 	SCZO = cond(eax)
 	return
 	// succ:  fn100002DC_exit
@@ -616,18 +616,18 @@ fn100002EF_entry:
 l100002EF:
 	Mem0[0x00123400<p32>:word32] = 0x10000267<32>
 	edx = Mem0[0x20000000<p32>:word32]
-	eax = Mem0[esp + 4<32>:word32]
-	Mem0[edx + 4<32>:word32] = eax
-	eax = Mem0[esp + 8<32>:word32]
-	Mem0[edx + 8<32>:word32] = eax
-	eax = Mem0[esp + 0xC<32>:word32]
-	Mem0[edx + 0xC<32>:word32] = eax
-	eax = Mem0[esp + 0x10<32>:word32]
-	Mem0[edx + 0x10<32>:word32] = eax
-	eax = Mem0[esp + 0x14<32>:word32]
-	Mem0[edx + 0x14<32>:word32] = eax
-	eax = Mem0[esp + 0x18<32>:word32]
-	Mem0[edx + 0x1C<32>:word32] = eax
+	eax = Mem0[esp + 4<i32>:word32]
+	Mem0[edx + 4<i32>:word32] = eax
+	eax = Mem0[esp + 8<i32>:word32]
+	Mem0[edx + 8<i32>:word32] = eax
+	eax = Mem0[esp + 12<i32>:word32]
+	Mem0[edx + 12<i32>:word32] = eax
+	eax = Mem0[esp + 16<i32>:word32]
+	Mem0[edx + 16<i32>:word32] = eax
+	eax = Mem0[esp + 20<i32>:word32]
+	Mem0[edx + 20<i32>:word32] = eax
+	eax = Mem0[esp + 24<i32>:word32]
+	Mem0[edx + 28<i32>:word32] = eax
 	return
 	// succ:  fn100002EF_exit
 fn100002EF_exit:
@@ -666,16 +666,16 @@ fn1000032B_entry:
 l1000032B:
 	Mem0[0x00123400<p32>:word32] = 0x10032760<32>
 	edx = Mem0[0x20000000<p32>:word32]
-	eax = Mem0[esp + 4<32>:word32]
-	Mem0[edx + 4<32>:word32] = eax
-	eax = Mem0[esp + 8<32>:word32]
-	Mem0[edx + 8<32>:word32] = eax
-	eax = Mem0[esp + 0xC<32>:word32]
-	Mem0[edx + 0xC<32>:word32] = eax
-	eax = Mem0[esp + 0x10<32>:word32]
-	Mem0[edx + 0x10<32>:word32] = eax
-	eax = Mem0[esp + 0x14<32>:word32]
-	Mem0[edx + 0x14<32>:word32] = eax
+	eax = Mem0[esp + 4<i32>:word32]
+	Mem0[edx + 4<i32>:word32] = eax
+	eax = Mem0[esp + 8<i32>:word32]
+	Mem0[edx + 8<i32>:word32] = eax
+	eax = Mem0[esp + 12<i32>:word32]
+	Mem0[edx + 12<i32>:word32] = eax
+	eax = Mem0[esp + 16<i32>:word32]
+	Mem0[edx + 16<i32>:word32] = eax
+	eax = Mem0[esp + 20<i32>:word32]
+	Mem0[edx + 20<i32>:word32] = eax
 	return
 	// succ:  fn1000032B_exit
 fn1000032B_exit:

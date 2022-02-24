@@ -284,7 +284,7 @@ Eq_n fn100015CF(Eq_n (* ebx)(LONG *, Eq_n, Eq_n), ptr32 esi, word32 edi)
 		ebp_n->tFFFFFFE0 = _decode_pointer(esp_n->ptrFFFFFFFC);
 		Eq_n v16_n = ebp_n->t0008;
 		ebp_n->tFFFFFFDC = __dllonexit(esp_n->tFFFFFFF0, esp_n->ptrFFFFFFF4, esp_n->ptrFFFFFFF8);
-		g_ptr100033B4 = encode_pointer(ecx_n, ebp_n->tFFFFFFE4, v16_n, ebp_n - 0x1C, ebp_n - 0x20, v15_n, v14_n);
+		g_ptr100033B4 = encode_pointer(ecx_n, ebp_n->tFFFFFFE4, v16_n, ebp_n - 28, ebp_n - 32, v15_n, v14_n);
 		g_ptr100033B0 = encode_pointer(ebp_n->tFFFFFFE0);
 		ebp_n->dwFFFFFFFC = ~0x01;
 		fn10001665();
@@ -345,7 +345,7 @@ struct Eq_n * fn10001700(struct Eq_n * dwArg04, uint32 dwArg08)
 	struct Eq_n * ecx_n = dwArg04 + dwArg04->dw003C / 64;
 	up32 esi_n = (word32) ecx_n->w0006;
 	up32 edx_n = 0x00;
-	struct Eq_n * eax_n = ecx_n + ((word32) ecx_n->w0014 + 0x18) / 22;
+	struct Eq_n * eax_n = ecx_n + ((word32) ecx_n->w0014 + 24) / 22;
 	if (esi_n > 0x00)
 	{
 		do
@@ -410,10 +410,10 @@ ptr32 fn100017E8(Eq_n (* ebx)(LONG *, Eq_n, Eq_n), ptr32 esi, word32 edi, word32
 	esp_n->ptrFFFFFFFC = ebx;
 	esp_n->ptrFFFFFFF8 = esi;
 	esp_n->dwFFFFFFF4 = edi;
-	esp_n->dwFFFFFFF0 = g_dw10003000 ^ fp + 0x08;
+	esp_n->dwFFFFFFF0 = g_dw10003000 ^ fp + 8;
 	esp_n->dwFFFFFFEC = dwArg00;
-	fs->ptr0000 = fp - 0x08;
-	return fp + 0x08;
+	fs->ptr0000 = fp - 8;
+	return fp + 8;
 }
 
 // 1000182D: Register word32 fn1000182D(Register (ptr32 Eq_n) ebp, Stack Eq_n dwArg00)

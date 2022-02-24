@@ -8,16 +8,16 @@ esp_2: orig: esp
 esp_3: orig: esp
     def:  esp_3 = esp_2 - 4<i32>
     uses: Mem5[esp_3:word32] = esi
-          esi_6 = Mem5[esp_3 + 8<32>:word32]
+          esi_6 = Mem5[esp_3 + 8<i32>:word32]
           esp_7 = esp_3 - 4<i32>
 esi:esi
     def:  def esi
     uses: Mem5[esp_3:word32] = esi
 Mem5: orig: Mem0
     def:  Mem5[esp_3:word32] = esi
-    uses: esi_6 = Mem5[esp_3 + 8<32>:word32]
+    uses: esi_6 = Mem5[esp_3 + 8<i32>:word32]
 esi_6: orig: esi
-    def:  esi_6 = Mem5[esp_3 + 8<32>:word32]
+    def:  esi_6 = Mem5[esp_3 + 8<i32>:word32]
     uses: Mem12[esp_11:word32] = esi_6
           Mem20[esp_19:word32] = esi_6
 esp_7: orig: esp
@@ -110,7 +110,7 @@ fn10000000_entry:
 l10000000:
 	esp_3 = esp_2 - 4<i32>
 	Mem5[esp_3:word32] = esi
-	esi_6 = Mem5[esp_3 + 8<32>:word32]
+	esi_6 = Mem5[esp_3 + 8<i32>:word32]
 	esp_7 = esp_3 - 4<i32>
 	Mem9[esp_7:word32] = edi
 	edi_10 = GlobalHandle

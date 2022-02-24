@@ -18,7 +18,7 @@ fn10000000_entry:
 	Top = 0<i8>
 	// succ:  l10000000
 l10000000:
-	eax = Mem0[esp + 4<32>:word32]
+	eax = Mem0[esp + 4<i32>:word32]
 	SCZO = cond(eax - 3<32>)
 	branch Test(UGT,CZ) l10000048
 	// succ:  l1000000B l10000048

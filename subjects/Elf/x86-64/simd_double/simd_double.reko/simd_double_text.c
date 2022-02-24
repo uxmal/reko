@@ -63,7 +63,7 @@ void * _mm_malloc(uint64 rsi, Eq_n rdi)
 	{
 		if (rsi == 0x02 || rsi == 0x04)
 			qwLoc28_n = 0x08;
-		if ((word32) posix_memalign(qwLoc28_n, fp - 0x10, rdi, qwLoc28_n) == 0x00)
+		if ((word32) posix_memalign(qwLoc28_n, fp - 16, rdi, qwLoc28_n) == 0x00)
 			rax_n = qwLoc10;
 		else
 			rax_n = null;

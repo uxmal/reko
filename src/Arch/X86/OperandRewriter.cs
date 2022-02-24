@@ -165,17 +165,24 @@ namespace Reko.Arch.X86
                 }
                 else if (expr != null)
                 {
-                    BinaryOperator op = Operator.IAdd;
-                    long l = mem.Offset.ToInt64();
-                    if (l < 0 && l > -0x800)
+                    if (expr.DataType.BitSize > mem.Offset.DataType.BitSize)
                     {
-                        l = -l;
-                        op = Operator.ISub;
+                        expr = m.AddSubSignedInt(expr, mem.Offset.ToInt32());
                     }
+                    else
+                    {
+                        BinaryOperator op = Operator.IAdd;
+                        long l = mem.Offset.ToInt64();
+                        if (l < 0 && l > -0x800)
+                        {
+                            l = -l;
+                            op = Operator.ISub;
+                        }
 
-                    DataType dt = expr.DataType;
-                    Constant cOffset = Constant.Create(dt, l);
-                    expr = new BinaryExpression(op, dt, expr, cOffset);
+                        DataType dt = expr.DataType;
+                        Constant cOffset = Constant.Create(dt, l);
+                        expr = new BinaryExpression(op, dt, expr, cOffset);
+                    }
                 }
                 else
                 {

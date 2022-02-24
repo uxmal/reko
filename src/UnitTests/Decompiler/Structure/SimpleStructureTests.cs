@@ -321,16 +321,16 @@ ret
 ===
 word32 fn0010000C(word32 dwArg04, word32 dwArg08)
 {
-	word32 ecx_11 = Mem7[dwArg04 + 0x3C<32>:word32] + dwArg04;
-	word32 esi_19 = CONVERT(Mem18[ecx_11 + 6<32>:word16], word16, word32);
+	word32 ecx_11 = Mem7[dwArg04 + 60<i32>:word32] + dwArg04;
+	word32 esi_19 = CONVERT(Mem18[ecx_11 + 6<i32>:word16], word16, word32);
 	word32 edx_20 = 0<32>;
-	word32 eax_23 = CONVERT(Mem7[ecx_11 + 0x14<32>:word16], word16, word32) + 0x12<32> + ecx_11;
+	word32 eax_23 = CONVERT(Mem7[ecx_11 + 20<i32>:word16], word16, word32) + 18<i32> + ecx_11;
 	if (esi_19 >u 0<32>)
 	{
 		do
 		{
-			word32 ecx_31 = Mem22[eax_23 + 0xC<32>:word32];
-			if (dwArg08 >=u ecx_31 && dwArg08 <u Mem22[eax_23 + 8<32>:word32] + ecx_31)
+			word32 ecx_31 = Mem22[eax_23 + 12<i32>:word32];
+			if (dwArg08 >=u ecx_31 && dwArg08 <u Mem22[eax_23 + 8<i32>:word32] + ecx_31)
 				return eax_23;
 			++edx_20;
 			eax_23 += 0x28<32>;

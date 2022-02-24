@@ -42,7 +42,7 @@ fn0C00_0011_entry:
 	def ds_si
 	def Mem0
 l0C00_0011:
-	ax_7 = Mem0[ds_si + 4<16>:word16]
+	ax_7 = Mem0[ds_si + 4<i16>:word16]
 	return
 fn0C00_0011_exit:
 	use ax_7

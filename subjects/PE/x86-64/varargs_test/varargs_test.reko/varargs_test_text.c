@@ -447,10 +447,10 @@ word64 fn000000014000186C(word64 qwArg18)
 	ui64 rax_n = g_qw40003000;
 	if (rax_n == 0x2B992DDFA232)
 	{
-		GetSystemTimeAsFileTime(fp + 0x10);
+		GetSystemTimeAsFileTime(fp + 16);
 		ui64 v14_n = (uint64) GetCurrentThreadId() ^ (uint64) GetCurrentProcessId();
-		QueryPerformanceCounter(fp + 0x18);
-		ui64 rax_n = (uint64) dwArg18 << 0x20 ^ qwArg18 ^ v14_n ^ fp + 0x08;
+		QueryPerformanceCounter(fp + 24);
+		ui64 rax_n = (uint64) dwArg18 << 0x20 ^ qwArg18 ^ v14_n ^ fp + 8;
 		rax_n = rax_n & 0xFFFFFFFFFFFF;
 		if ((rax_n & 0xFFFFFFFFFFFF) == 0x2B992DDFA232)
 			rax_n = 0x2B992DDFA233;
@@ -540,9 +540,9 @@ uint64 fn0000000140001974(word32 ecx, word64 qwArg10, ptr64 & rcxOut)
 		g_dw40003610 = 0x00;
 		memset(fp - 0x04D8, 0, 0x04D0);
 		RtlCaptureContext(fp - 0x04D8);
-		Eq_n rax_n = RtlLookupFunctionEntry(qwLoc03E0, fp + 0x10, null);
+		Eq_n rax_n = RtlLookupFunctionEntry(qwLoc03E0, fp + 16, null);
 		if (rax_n != null)
-			KERNEL32.dll!RtlVirtualUnwind(0x00, 0x00, qwLoc03E0, rax_n, fp + 0x18, fp + 0x20, fp - 0x04D8, 0x00, qwArg10, fp - 0x04D8, fp + 0x20, fp + 0x18, 0x00);
+			KERNEL32.dll!RtlVirtualUnwind(0x00, 0x00, qwLoc03E0, rax_n, fp + 24, fp + 32, fp - 0x04D8, 0x00, qwArg10, fp - 0x04D8, fp + 32, fp + 24, 0x00);
 		memset(fp - 1400, 0, 0x98);
 		int8 bl_n = (int8) (IsDebuggerPresent() == 0x01);
 		word32 rax_32_32_n = SLICE(SetUnhandledExceptionFilter(null), word32, 32);
@@ -598,7 +598,7 @@ void fn0000000140001B24(struct Eq_n ** rcx)
 		return;
 	uint64 rcx_n = (uint64) rax_n->dw0020;
 	word32 ecx_n = (word32) rcx_n;
-	if ((word32) rcx_n > ~0x19930521 && ecx_n != 0x01994000)
+	if ((word32) rcx_n > 0x19930522 && ecx_n != 0x01994000)
 		return;
 	api-ms-win-crt-runtime-l1-1-0.dll!terminate();
 	int3();

@@ -1229,19 +1229,19 @@ T_235: (in fp @ 00400FD1 : ptr64)
   Class: Eq_235
   DataType: ptr64
   OrigDataType: ptr64
-T_236: (in 0x50<64> @ 00400FD1 : word64)
+T_236: (in 80<i64> @ 00400FD1 : int64)
   Class: Eq_236
-  DataType: ui64
-  OrigDataType: ui64
-T_237: (in fp - 0x50<64> @ 00000000 : word64)
+  DataType: int64
+  OrigDataType: int64
+T_237: (in fp - 80<i64> @ 00000000 : word64)
   Class: Eq_237
   DataType: ptr64
   OrigDataType: ptr64
-T_238: (in 0x40<64> @ 00400FD1 : word64)
+T_238: (in 64<i64> @ 00400FD1 : int64)
   Class: Eq_238
-  DataType: ui64
-  OrigDataType: ui64
-T_239: (in fp - 0x40<64> @ 00000000 : word64)
+  DataType: int64
+  OrigDataType: int64
+T_239: (in fp - 64<i64> @ 00000000 : word64)
   Class: Eq_239
   DataType: ptr64
   OrigDataType: ptr64
@@ -1253,7 +1253,7 @@ T_241: (in 0<64> @ 00400FD1 : word64)
   Class: Eq_241
   DataType: word64
   OrigDataType: word64
-T_242: (in png_get_PLTE(fp - 0x50<64>, rdi, fp - 0x40<64>, rsi, 0<32>, eax_275, 0<64>) @ 00400FD1 : void)
+T_242: (in png_get_PLTE(fp - 80<i64>, rdi, fp - 64<i64>, rsi, 0<32>, eax_275, 0<64>) @ 00400FD1 : void)
   Class: Eq_242
   DataType: void
   OrigDataType: void
@@ -1505,19 +1505,19 @@ T_304: (in 0<u64> @ 0040102B : uint64)
   Class: Eq_304
   DataType: uint64
   OrigDataType: uint64
-T_305: (in 0x4C<64> @ 0040102B : word64)
+T_305: (in 76<i64> @ 0040102B : int64)
   Class: Eq_305
-  DataType: ui64
-  OrigDataType: ui64
-T_306: (in fp - 0x4C<64> @ 00000000 : word64)
+  DataType: int64
+  OrigDataType: int64
+T_306: (in fp - 76<i64> @ 00000000 : word64)
   Class: Eq_306
   DataType: ptr64
   OrigDataType: ptr64
-T_307: (in 0x38<64> @ 0040102B : word64)
+T_307: (in 56<i64> @ 0040102B : int64)
   Class: Eq_307
-  DataType: ui64
-  OrigDataType: ui64
-T_308: (in fp - 0x38<64> @ 00000000 : word64)
+  DataType: int64
+  OrigDataType: int64
+T_308: (in fp - 56<i64> @ 00000000 : word64)
   Class: Eq_308
   DataType: ptr64
   OrigDataType: ptr64
@@ -1529,11 +1529,11 @@ T_310: (in 0<64> @ 0040102B : word64)
   Class: Eq_310
   DataType: word64
   OrigDataType: word64
-T_311: (in png_get_tRNS(0<u64>, fp - 0x4C<64>, rdi, fp - 0x38<64>, rsi, 0<32>, 0<64>) @ 0040102B : void)
+T_311: (in png_get_tRNS(0<u64>, fp - 76<i64>, rdi, fp - 56<i64>, rsi, 0<32>, 0<64>) @ 0040102B : void)
   Class: Eq_311
   DataType: void
   OrigDataType: void
-T_312: (in SLICE(png_get_tRNS(0<u64>, fp - 0x4C<64>, rdi, fp - 0x38<64>, rsi, 0<32>, 0<64>), word32, 0) @ 0040102B : word32)
+T_312: (in SLICE(png_get_tRNS(0<u64>, fp - 76<i64>, rdi, fp - 56<i64>, rsi, 0<32>, 0<64>), word32, 0) @ 0040102B : word32)
   Class: Eq_312
   DataType: ui32
   OrigDataType: ui32
@@ -1541,7 +1541,7 @@ T_313: (in 0x10<32> @ 0040102B : word32)
   Class: Eq_313
   DataType: ui32
   OrigDataType: ui32
-T_314: (in (word32) png_get_tRNS(0<u64>, fp - 0x4C<64>, rdi, fp - 0x38<64>, rsi, 0<32>, 0<64>) & 0x10<32> @ 00000000 : word32)
+T_314: (in (word32) png_get_tRNS(0<u64>, fp - 76<i64>, rdi, fp - 56<i64>, rsi, 0<32>, 0<64>) & 0x10<32> @ 00000000 : word32)
   Class: Eq_314
   DataType: ui32
   OrigDataType: ui32
@@ -1549,7 +1549,7 @@ T_315: (in 0<32> @ 0040102B : word32)
   Class: Eq_314
   DataType: ui32
   OrigDataType: word32
-T_316: (in ((word32) png_get_tRNS(0<u64>, fp - 0x4C<64>, rdi, fp - 0x38<64>, rsi, 0<32>, 0<64>) & 0x10<32>) == 0<32> @ 00000000 : bool)
+T_316: (in ((word32) png_get_tRNS(0<u64>, fp - 76<i64>, rdi, fp - 56<i64>, rsi, 0<32>, 0<64>) & 0x10<32>) == 0<32> @ 00000000 : bool)
   Class: Eq_316
   DataType: bool
   OrigDataType: bool
@@ -1605,7 +1605,7 @@ T_329: (in CONVERT(0<64>[CONVERT(eax_275, word32, uint64) * 3<64>], byte, int32)
   Class: Eq_320
   DataType: int32
   OrigDataType: int32
-T_330: (in 1<64> @ 00401130 : word64)
+T_330: (in 1<i64> @ 00401130 : int64)
   Class: Eq_330
   DataType: (ptr64 (arr Eq_712))
   OrigDataType: (ptr64 (struct (0 (arr T_712) a0000)))
@@ -1621,15 +1621,15 @@ T_333: (in (uint64) eax_275 * 3<64> @ 00000000 : uint64)
   Class: Eq_333
   DataType: ui64
   OrigDataType: ui64
-T_334: (in 1<64>[CONVERT(eax_275, word32, uint64) * 3<64>] @ 00401130 : byte)
+T_334: (in 1<i64>[CONVERT(eax_275, word32, uint64) * 3<64>] @ 00401130 : byte)
   Class: Eq_334
   DataType: byte
   OrigDataType: byte
-T_335: (in CONVERT(1<64>[CONVERT(eax_275, word32, uint64) * 3<64>], byte, int32) @ 00401130 : int32)
+T_335: (in CONVERT(1<i64>[CONVERT(eax_275, word32, uint64) * 3<64>], byte, int32) @ 00401130 : int32)
   Class: Eq_321
   DataType: int32
   OrigDataType: int32
-T_336: (in 2<64> @ 00401130 : word64)
+T_336: (in 2<i64> @ 00401130 : int64)
   Class: Eq_336
   DataType: (ptr64 (arr Eq_714))
   OrigDataType: (ptr64 (struct (0 (arr T_714) a0000)))
@@ -1645,15 +1645,15 @@ T_339: (in (uint64) eax_275 * 3<64> @ 00000000 : uint64)
   Class: Eq_339
   DataType: ui64
   OrigDataType: ui64
-T_340: (in 2<64>[CONVERT(eax_275, word32, uint64) * 3<64>] @ 00401130 : byte)
+T_340: (in 2<i64>[CONVERT(eax_275, word32, uint64) * 3<64>] @ 00401130 : byte)
   Class: Eq_340
   DataType: byte
   OrigDataType: byte
-T_341: (in CONVERT(2<64>[CONVERT(eax_275, word32, uint64) * 3<64>], byte, int32) @ 00401130 : int32)
+T_341: (in CONVERT(2<i64>[CONVERT(eax_275, word32, uint64) * 3<64>], byte, int32) @ 00401130 : int32)
   Class: Eq_322
   DataType: int32
   OrigDataType: int32
-T_342: (in printf("INDEXED %u = %d %d %d\n", eax_275, (int32) null[(uint64) eax_275].b0000, (int32) ((Eq_712[]) 1<64>)[(uint64) eax_275].b0000, (int32) ((Eq_714[]) 2<64>)[(uint64) eax_275]) @ 00401130 : int32)
+T_342: (in printf("INDEXED %u = %d %d %d\n", eax_275, (int32) null[(uint64) eax_275].b0000, (int32) ((Eq_712[]) 1<i64>)[(uint64) eax_275].b0000, (int32) ((Eq_714[]) 2<i64>)[(uint64) eax_275]) @ 00401130 : int32)
   Class: Eq_342
   DataType: int32
   OrigDataType: int32
@@ -1757,7 +1757,7 @@ T_367: (in CONVERT(0<64>[CONVERT(eax_275, word32, uint64) * 3<64>], byte, int32)
   Class: Eq_357
   DataType: int32
   OrigDataType: int32
-T_368: (in 1<64> @ 004010CA : word64)
+T_368: (in 1<i64> @ 004010CA : int64)
   Class: Eq_368
   DataType: (ptr64 (arr Eq_720))
   OrigDataType: (ptr64 (struct (0 (arr T_720) a0000)))
@@ -1773,15 +1773,15 @@ T_371: (in (uint64) eax_275 * 3<64> @ 00000000 : uint64)
   Class: Eq_371
   DataType: ui64
   OrigDataType: ui64
-T_372: (in 1<64>[CONVERT(eax_275, word32, uint64) * 3<64>] @ 004010CA : byte)
+T_372: (in 1<i64>[CONVERT(eax_275, word32, uint64) * 3<64>] @ 004010CA : byte)
   Class: Eq_372
   DataType: byte
   OrigDataType: byte
-T_373: (in CONVERT(1<64>[CONVERT(eax_275, word32, uint64) * 3<64>], byte, int32) @ 004010CA : int32)
+T_373: (in CONVERT(1<i64>[CONVERT(eax_275, word32, uint64) * 3<64>], byte, int32) @ 004010CA : int32)
   Class: Eq_358
   DataType: int32
   OrigDataType: int32
-T_374: (in 2<64> @ 004010CA : word64)
+T_374: (in 2<i64> @ 004010CA : int64)
   Class: Eq_374
   DataType: (ptr64 (arr Eq_722))
   OrigDataType: (ptr64 (struct (0 (arr T_722) a0000)))
@@ -1797,15 +1797,15 @@ T_377: (in (uint64) eax_275 * 3<64> @ 00000000 : uint64)
   Class: Eq_377
   DataType: ui64
   OrigDataType: ui64
-T_378: (in 2<64>[CONVERT(eax_275, word32, uint64) * 3<64>] @ 004010CA : byte)
+T_378: (in 2<i64>[CONVERT(eax_275, word32, uint64) * 3<64>] @ 004010CA : byte)
   Class: Eq_378
   DataType: byte
   OrigDataType: byte
-T_379: (in CONVERT(2<64>[CONVERT(eax_275, word32, uint64) * 3<64>], byte, int32) @ 004010CA : int32)
+T_379: (in CONVERT(2<i64>[CONVERT(eax_275, word32, uint64) * 3<64>], byte, int32) @ 004010CA : int32)
   Class: Eq_359
   DataType: int32
   OrigDataType: int32
-T_380: (in printf("INDEXED %u = %d %d %d %d\n", eax_275, (int32) null[(uint64) eax_275].b0000, (int32) ((Eq_720[]) 1<64>)[(uint64) eax_275].b0000, (int32) ((Eq_722[]) 2<64>)[(uint64) eax_275].b0000, esi_463) @ 004010CA : int32)
+T_380: (in printf("INDEXED %u = %d %d %d %d\n", eax_275, (int32) null[(uint64) eax_275].b0000, (int32) ((Eq_720[]) 1<i64>)[(uint64) eax_275].b0000, (int32) ((Eq_722[]) 2<i64>)[(uint64) eax_275].b0000, esi_463) @ 004010CA : int32)
   Class: Eq_380
   DataType: int32
   OrigDataType: int32
@@ -2245,79 +2245,79 @@ T_489: (in fp @ 00401474 : ptr64)
   Class: Eq_489
   DataType: ptr64
   OrigDataType: ptr64
-T_490: (in 0x80<64> @ 00401474 : word64)
+T_490: (in 128<i64> @ 00401474 : int64)
   Class: Eq_490
-  DataType: ui64
-  OrigDataType: ui64
-T_491: (in fp - 0x80<64> @ 00000000 : word64)
+  DataType: int64
+  OrigDataType: int64
+T_491: (in fp - 128<i64> @ 00000000 : word64)
   Class: Eq_491
   DataType: ptr64
   OrigDataType: ptr64
-T_492: (in 0x7C<64> @ 00401474 : word64)
+T_492: (in 124<i64> @ 00401474 : int64)
   Class: Eq_492
-  DataType: ui64
-  OrigDataType: ui64
-T_493: (in fp - 0x7C<64> @ 00000000 : word64)
+  DataType: int64
+  OrigDataType: int64
+T_493: (in fp - 124<i64> @ 00000000 : word64)
   Class: Eq_493
   DataType: ptr64
   OrigDataType: ptr64
-T_494: (in 0x84<64> @ 00401474 : word64)
+T_494: (in 132<i64> @ 00401474 : int64)
   Class: Eq_494
-  DataType: ui64
-  OrigDataType: ui64
-T_495: (in fp - 0x84<64> @ 00000000 : word64)
+  DataType: int64
+  OrigDataType: int64
+T_495: (in fp - 132<i64> @ 00000000 : word64)
   Class: Eq_495
   DataType: ptr64
   OrigDataType: ptr64
-T_496: (in 0x70<64> @ 00401474 : word64)
+T_496: (in 112<i64> @ 00401474 : int64)
   Class: Eq_496
-  DataType: ui64
-  OrigDataType: ui64
-T_497: (in fp - 0x70<64> @ 00000000 : word64)
+  DataType: int64
+  OrigDataType: int64
+T_497: (in fp - 112<i64> @ 00000000 : word64)
   Class: Eq_497
   DataType: ptr64
   OrigDataType: ptr64
-T_498: (in 0x74<64> @ 00401474 : word64)
+T_498: (in 116<i64> @ 00401474 : int64)
   Class: Eq_498
-  DataType: ui64
-  OrigDataType: ui64
-T_499: (in fp - 0x74<64> @ 00000000 : word64)
+  DataType: int64
+  OrigDataType: int64
+T_499: (in fp - 116<i64> @ 00000000 : word64)
   Class: Eq_499
   DataType: ptr64
   OrigDataType: ptr64
-T_500: (in 0x78<64> @ 00401474 : word64)
+T_500: (in 120<i64> @ 00401474 : int64)
   Class: Eq_500
-  DataType: ui64
-  OrigDataType: ui64
-T_501: (in fp - 0x78<64> @ 00000000 : word64)
+  DataType: int64
+  OrigDataType: int64
+T_501: (in fp - 120<i64> @ 00000000 : word64)
   Class: Eq_501
   DataType: ptr64
   OrigDataType: ptr64
-T_502: (in 0x88<64> @ 00401474 : word64)
+T_502: (in 136<i64> @ 00401474 : int64)
   Class: Eq_502
-  DataType: ui64
-  OrigDataType: ui64
-T_503: (in fp - 0x88<64> @ 00000000 : word64)
+  DataType: int64
+  OrigDataType: int64
+T_503: (in fp - 136<i64> @ 00000000 : word64)
   Class: Eq_503
   DataType: ptr64
   OrigDataType: ptr64
-T_504: (in fp - 0x78<64> @ 00000000 : word64)
+T_504: (in fp - 120<i64> @ 00000000 : word64)
   Class: Eq_504
   DataType: ptr64
   OrigDataType: ptr64
-T_505: (in fp - 0x74<64> @ 00000000 : word64)
+T_505: (in fp - 116<i64> @ 00000000 : word64)
   Class: Eq_505
   DataType: ptr64
   OrigDataType: ptr64
-T_506: (in fp - 0x70<64> @ 00000000 : word64)
+T_506: (in fp - 112<i64> @ 00000000 : word64)
   Class: Eq_506
   DataType: ptr64
   OrigDataType: ptr64
-T_507: (in png_get_IHDR(fp - 0x80<64>, fp - 0x7C<64>, fp - 0x84<64>, fp - 0x70<64>, fp - 0x74<64>, fp - 0x78<64>, rax_78, fp - 0x88<64>, rax_102, fp - 0x78<64>, fp - 0x74<64>, fp - 0x70<64>, rax_155, rax_155) @ 00401474 : void)
+T_507: (in png_get_IHDR(fp - 128<i64>, fp - 124<i64>, fp - 132<i64>, fp - 112<i64>, fp - 116<i64>, fp - 120<i64>, rax_78, fp - 136<i64>, rax_102, fp - 120<i64>, fp - 116<i64>, fp - 112<i64>, rax_155, rax_155) @ 00401474 : void)
   Class: Eq_507
   DataType: void
   OrigDataType: void
-T_508: (in SLICE(png_get_IHDR(fp - 0x80<64>, fp - 0x7C<64>, fp - 0x84<64>, fp - 0x70<64>, fp - 0x74<64>, fp - 0x78<64>, rax_78, fp - 0x88<64>, rax_102, fp - 0x78<64>, fp - 0x74<64>, fp - 0x70<64>, rax_155, rax_155), word32, 0) @ 00401474 : word32)
+T_508: (in SLICE(png_get_IHDR(fp - 128<i64>, fp - 124<i64>, fp - 132<i64>, fp - 112<i64>, fp - 116<i64>, fp - 120<i64>, rax_78, fp - 136<i64>, rax_102, fp - 120<i64>, fp - 116<i64>, fp - 112<i64>, rax_155, rax_155), word32, 0) @ 00401474 : word32)
   Class: Eq_508
   DataType: word32
   OrigDataType: word32
@@ -2325,7 +2325,7 @@ T_509: (in 0<32> @ 00401474 : word32)
   Class: Eq_508
   DataType: word32
   OrigDataType: word32
-T_510: (in (word32) png_get_IHDR(fp - 0x80<64>, fp - 0x7C<64>, fp - 0x84<64>, fp - 0x70<64>, fp - 0x74<64>, fp - 0x78<64>, rax_78, fp - 0x88<64>, rax_102, fp - 0x78<64>, fp - 0x74<64>, fp - 0x70<64>, rax_155, rax_155) == 0<32> @ 00000000 : bool)
+T_510: (in (word32) png_get_IHDR(fp - 128<i64>, fp - 124<i64>, fp - 132<i64>, fp - 112<i64>, fp - 116<i64>, fp - 120<i64>, rax_78, fp - 136<i64>, rax_102, fp - 120<i64>, fp - 116<i64>, fp - 112<i64>, rax_155, rax_155) == 0<32> @ 00000000 : bool)
   Class: Eq_510
   DataType: bool
   OrigDataType: bool
@@ -2473,19 +2473,19 @@ T_546: (in signature of png_destroy_info_struct @ 00000000 : void)
   Class: Eq_546
   DataType: Eq_546
   OrigDataType: 
-T_547: (in 0x38<64> @ 004016A8 : word64)
+T_547: (in 56<i64> @ 004016A8 : int64)
   Class: Eq_547
-  DataType: ui64
-  OrigDataType: ui64
-T_548: (in fp - 0x38<64> @ 00000000 : word64)
+  DataType: int64
+  OrigDataType: int64
+T_548: (in fp - 56<i64> @ 00000000 : word64)
   Class: Eq_548
   DataType: ptr64
   OrigDataType: ptr64
-T_549: (in fp - 0x38<64> @ 00000000 : word64)
+T_549: (in fp - 56<i64> @ 00000000 : word64)
   Class: Eq_549
   DataType: ptr64
   OrigDataType: ptr64
-T_550: (in png_destroy_info_struct(rax_78, fp - 0x38<64>, fp - 0x38<64>) @ 004016A8 : void)
+T_550: (in png_destroy_info_struct(rax_78, fp - 56<i64>, fp - 56<i64>) @ 004016A8 : void)
   Class: Eq_550
   DataType: void
   OrigDataType: void
@@ -2497,11 +2497,11 @@ T_552: (in signature of png_destroy_read_struct @ 00000000 : void)
   Class: Eq_552
   DataType: Eq_552
   OrigDataType: 
-T_553: (in 0x40<64> @ 004016EF : word64)
+T_553: (in 64<i64> @ 004016EF : int64)
   Class: Eq_553
-  DataType: ui64
-  OrigDataType: ui64
-T_554: (in fp - 0x40<64> @ 00000000 : word64)
+  DataType: int64
+  OrigDataType: int64
+T_554: (in fp - 64<i64> @ 00000000 : word64)
   Class: Eq_554
   DataType: ptr64
   OrigDataType: ptr64
@@ -2513,7 +2513,7 @@ T_556: (in 0<u64> @ 004016EF : uint64)
   Class: Eq_556
   DataType: uint64
   OrigDataType: uint64
-T_557: (in png_destroy_read_struct(fp - 0x40<64>, 0<u64>, 0<u64>) @ 004016EF : void)
+T_557: (in png_destroy_read_struct(fp - 64<i64>, 0<u64>, 0<u64>) @ 004016EF : void)
   Class: Eq_557
   DataType: void
   OrigDataType: void

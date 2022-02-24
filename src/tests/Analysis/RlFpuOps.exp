@@ -28,15 +28,15 @@ fn0C00_0010_entry:
 l0C00_0010:
 	rLoc1_36 = Mem7[ds:wArg02:real64]
 	rLoc1_37 = rLoc1_36 * rLoc1_36
-	rLoc2_38 = Mem7[ds:wArg02 + 8<16>:real64]
+	rLoc2_38 = Mem7[ds:wArg02 + 8<i16>:real64]
 	rLoc2_39 = rLoc2_38 * rLoc2_38
 	rLoc1_40 = rLoc1_37 + rLoc2_39
-	rLoc2_41 = Mem7[ds:wArg02 + 0x10<16>:real64]
+	rLoc2_41 = Mem7[ds:wArg02 + 16<i16>:real64]
 	rLoc2_42 = rLoc2_41 * rLoc2_41
 	rLoc1_43 = rLoc1_40 + rLoc2_42
 	Mem25[ds:wArg04:real64] = rLoc1_43
-	rLoc1_45 = CONVERT(Mem25[ds:wArg04 + 0x20<16>:int16], int16, real64)
-	Mem29[ds:wArg04 + 0x28<16>:real64] = rLoc1_45
+	rLoc1_45 = CONVERT(Mem25[ds:wArg04 + 32<i16>:int16], int16, real64)
+	Mem29[ds:wArg04 + 40<i16>:real64] = rLoc1_45
 	return
 fn0C00_0010_exit:
 // fn0C00_0037 /////////////////////

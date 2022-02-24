@@ -59,7 +59,7 @@ fn0C00_0010_entry:
 	def Mem0
 	// succ:  l0C00_0010
 l0C00_0010:
-	ax_7 = Mem0[ds:si + 2<16>:word16]
+	ax_7 = Mem0[ds:si + 2<i16>:word16]
 	fn0C00_0029(ds_di, ax_7)
 	return
 	// succ:  fn0C00_0010_exit
@@ -98,7 +98,7 @@ fn0C00_0017_entry:
 	def wArg02
 	// succ:  l0C00_0017
 l0C00_0017:
-	ax_11 = Mem7[ds:wArg02 + 2<16>:word16]
+	ax_11 = Mem7[ds:wArg02 + 2<i16>:word16]
 	fn0C00_002C(ds_di, ax_11)
 	return
 	// succ:  fn0C00_0017_exit

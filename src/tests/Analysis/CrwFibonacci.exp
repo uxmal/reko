@@ -36,7 +36,7 @@ l1000000A:
 	return eax_37
 	// succ:  fn10000000_exit
 l10000011:
-	eax_17 = fn10000000(dwArg04 - 2<32>)
+	eax_17 = fn10000000(dwArg04 - 2<i32>)
 	eax_26 = fn10000000(dwArg04 - 1<32>)
 	eax_31 = eax_26 + eax_17
 	return eax_31

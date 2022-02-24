@@ -68,7 +68,7 @@ l0C00_001B:
 	branch Test(EQ,Z) l0C00_002D
 	// succ:  l0C00_001D l0C00_002D
 l0C00_001D:
-	ah = Mem0[ds:di + 1<16>:byte]
+	ah = Mem0[ds:di + 1<i16>:byte]
 	Z = ax == 0<16>
 	cx = __bsr<word16>(ax)
 	cx = cx - 8<16>

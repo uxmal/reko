@@ -18,7 +18,7 @@ l0C00_0000:
 	sp = sp - 2<i16>
 	Mem0[ss:sp:word16] = bp
 	bp = sp
-	bx = Mem0[ss:bp + 4<16>:word16]
+	bx = Mem0[ss:bp + 4<i16>:word16]
 	Mem0[ds:bx:byte] = 0<8>
 	sp = bp
 	bp = Mem0[ss:sp:word16]

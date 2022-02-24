@@ -32,7 +32,7 @@ ptr32 fn00401050()
 void fn00401060(word32 dwArg04)
 {
 	word32 eax_n = _acrt_iob_func(0x01);
-	esp_n->ptr0000 = fp + 0x08;
+	esp_n->ptr0000 = fp + 8;
 	esp_n->dwFFFFFFFC = 0x00;
 	esp_n->dwFFFFFFF8 = dwArg04;
 	esp_n->dwFFFFFFF4 = eax_n;
@@ -346,10 +346,10 @@ void fn00401663()
 		g_dw403000 = ~eax_n;
 	else
 	{
-		GetSystemTimeAsFileTime(fp - 0x10);
+		GetSystemTimeAsFileTime(fp - 16);
 		ui32 v14_n = GetCurrentThreadId() ^ GetCurrentProcessId();
 		QueryPerformanceCounter(&tLoc18);
-		Eq_n ecx_n = tLoc18.dw0004 ^ tLoc18 ^ v14_n ^ fp - 0x08;
+		Eq_n ecx_n = tLoc18.dw0004 ^ tLoc18 ^ v14_n ^ fp - 8;
 		if (ecx_n == 0xBB40E64E)
 			ecx_n.u0 = ~0x44BF19B0;
 		else if ((ecx_n & 0xFFFF0000) == 0x00)
@@ -444,7 +444,7 @@ void fn00401774(word32 dwArg04)
 	{
 		g_dw403368 = 0x00;
 		memset(fp - 808, 0x00, 0x02CC);
-		memset(fp - 0x5C, 0x00, 0x50);
+		memset(fp - 92, 0x00, 0x50);
 		byte bl_n = 0x00 - (IsDebuggerPresent() != 0x01);
 		SetUnhandledExceptionFilter(null);
 		if (UnhandledExceptionFilter(fp - 0x0C) == 0x00)
@@ -512,10 +512,10 @@ ptr32 fn00401980(word32 ebx, Eq_n esi, Eq_n edi, Eq_n dwArg00, ui32 dwArg08)
 	esp_n->dwFFFFFFFC = ebx;
 	esp_n->tFFFFFFF8 = esi;
 	esp_n->tFFFFFFF4 = edi;
-	esp_n->dwFFFFFFF0 = g_t403004 ^ fp + 0x08;
+	esp_n->dwFFFFFFF0 = g_t403004 ^ fp + 8;
 	esp_n->tFFFFFFEC = dwArg00;
-	fs->ptr0000 = fp - 0x08;
-	return fp + 0x08;
+	fs->ptr0000 = fp - 8;
+	return fp + 8;
 }
 
 // 004019C6: Register word32 fn004019C6(Register (ptr32 Eq_n) ebp, Stack Eq_n dwArg00, Register out Eq_n ebpOut, Register out ptr32 esiOut, Register out ptr32 ediOut)

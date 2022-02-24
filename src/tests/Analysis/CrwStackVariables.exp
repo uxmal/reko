@@ -66,7 +66,7 @@ fn0C00_0020_entry:
 	def ptrArg02
 	// succ:  l0C00_0020
 l0C00_0020:
-	ax_12 = Mem7[ptrArg02 + 4<16>:word16]
+	ax_12 = Mem7[ptrArg02 + 4<i16>:word16]
 	return ax_12
 	// succ:  fn0C00_0020_exit
 fn0C00_0020_exit:
@@ -102,7 +102,7 @@ fn0C00_002E_entry:
 	def wArg06
 	// succ:  l0C00_002E
 l0C00_002E:
-	ax_13 = wArg06 + Mem7[ptrArg02 + 6<16>:word16]
+	ax_13 = wArg06 + Mem7[ptrArg02 + 6<i16>:word16]
 	return ax_13
 	// succ:  fn0C00_002E_exit
 fn0C00_002E_exit:

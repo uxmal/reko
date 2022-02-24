@@ -28,12 +28,12 @@ fn0C00_0004_entry:
 l0C00_0004:
 	call fn0C00_001D (retsize: 2;)
 		uses: ds:ds
-	ax_12 = Mem7[ds:si + 0x28<16>:word16]
+	ax_12 = Mem7[ds:si + 40<i16>:word16]
 	v7_13 = Mem7[ds:0x1444<16>:word16] + ax_12
 	Mem14[ds:0x1444<16>:word16] = v7_13
-	branch Mem14[ds:di + 0x30<16>:byte] == 0<8> l0C00_001C
+	branch Mem14[ds:di + 48<i16>:byte] == 0<8> l0C00_001C
 l0C00_0016:
-	di_18 = Mem14[ds:di + 0x30<16>:word16]
+	di_18 = Mem14[ds:di + 48<i16>:word16]
 	call fn0C00_0004 (retsize: 2;)
 		uses: di:di_18,ds:ds,si:si
 l0C00_001C:

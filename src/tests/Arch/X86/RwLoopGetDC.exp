@@ -36,7 +36,7 @@ l10000016:
 	Mem0[esp:word32] = 0<32>
 	eax = GetDC(Mem0[esp:HWND])
 	esp = esp + 4<32>
-	Mem0[edi + 4<32>:word32] = eax
+	Mem0[edi + 4<i32>:word32] = eax
 	esi = esi - 1<32>
 	SZO = cond(esi)
 	edi = edi + 8<32>

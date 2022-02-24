@@ -30,7 +30,7 @@ fn0C00_0015_entry:
 l0C00_0015:
 	branch ax <u Mem0[ds:bx:word16] l0C00_0023
 l0C00_0019:
-	branch ax >=u Mem0[ds:bx + 2<16>:word16] l0C00_0023
+	branch ax >=u Mem0[ds:bx + 2<i16>:word16] l0C00_0023
 l0C00_001E:
 	bx_19 = bx + ax
 	ax_21 = Mem0[ds:bx_19:word16]

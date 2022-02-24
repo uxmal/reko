@@ -353,7 +353,7 @@ void fn0000000140001550(word64 rcx, word64 qwArg08)
 fn0000000140001550_entry:
 l0000000140001550:
 	RtlCaptureContext(rcx)
-	word64 rsi_15 = Mem11[rcx + 0xF8<64>:word64]
+	word64 rsi_15 = Mem11[rcx + 248<i64>:word64]
 	word64 rdi_17 = 0<u64>
 l000000014000156A:
 	word32 edi_56 = SLICE(rdi_17, word32, 0)
@@ -381,7 +381,7 @@ fn00000001400015C4_entry:
 l00000001400015C4:
 	branch fn0000000140001DC4() == 0<32> l00000001400015F2
 l00000001400015D1:
-	word64 rcx_17 = Mem0[Mem0[gs:0x30<32>:word64] + 8<64>:word64]
+	word64 rcx_17 = Mem0[Mem0[gs:0x30<32>:word64] + 8<i64>:word64]
 l00000001400015E5:
 	__lock()
 	word64 rax_25
@@ -496,12 +496,12 @@ l000000014000172D:
 	branch Mem0[rcx_14:word32] != 0x4550<32> l00000001400017A6
 l0000000140001747:
 	rax_56_8_95 = 2<56> (alias)
-	branch Mem0[rcx_14 + 0x18<64>:word16] != 0x20B<16> l00000001400017A6
+	branch Mem0[rcx_14 + 24<i64>:word16] != 0x20B<16> l00000001400017A6
 l00000001400017A6:
 	rax_105 = SEQ(rax_56_8_95, 0<8>) (alias)
 l0000000140001752:
-	word64 rax_32 = CONVERT(Mem0[rcx_14 + 6<64>:word16], word16, uint64)
-	word64 rdx_29 = rcx_14 + 0x18<64> + CONVERT(Mem0[rcx_14 + 0x14<64>:word16], word16, uint64)
+	word64 rax_32 = CONVERT(Mem0[rcx_14 + 6<i64>:word16], word16, uint64)
+	word64 rdx_29 = rcx_14 + 24<i64> + CONVERT(Mem0[rcx_14 + 20<i64>:word16], word16, uint64)
 	word64 r8_25 = rcx - 0x0000000140000000<p64>
 	word56 rax_56_8_100 = SLICE(rax_32, word56, 8)
 	word64 r9_34 = rdx_29 + rax_32 * 0x28<64>
@@ -510,17 +510,17 @@ l000000014000176C:
 l000000014000178D:
 	rdx_29 = 0<u64>
 l0000000140001775:
-	word64 rcx_47 = CONVERT(Mem37[rdx_29 + 0xC<64>:word32], word32, uint64)
+	word64 rcx_47 = CONVERT(Mem37[rdx_29 + 12<i64>:word32], word32, uint64)
 	word32 ecx_54 = SLICE(rcx_47, word32, 0)
 	branch r8_25 <u rcx_47 l0000000140001787
 l000000014000177D:
-	word64 rax_56 = CONVERT(Mem37[rdx_29 + 8<64>:word32] + ecx_54, word32, uint64)
+	word64 rax_56 = CONVERT(Mem37[rdx_29 + 8<i64>:word32] + ecx_54, word32, uint64)
 	rax_56_8_100 = SLICE(rax_56, word56, 8) (alias)
 	branch r8_25 <u rax_56 l000000014000178F
 l000000014000178F:
 	branch rdx_29 != 0<64> l0000000140001798
 l0000000140001798:
-	branch Mem37[rdx_29 + 0x24<64>:word32] >= 0<32> l00000001400017A2
+	branch Mem37[rdx_29 + 36<i64>:word32] >= 0<32> l00000001400017A2
 l00000001400017A2:
 	rax_105 = SEQ(rax_56_8_100, 1<8>) (alias)
 l000000014000179E:
@@ -636,10 +636,10 @@ l000000014000186C:
 	word64 rax_14 = Mem11[0x0000000140003000<p64>:word64]
 	branch rax_14 != 0x2B992DDFA232<64> l0000000140001903
 l0000000140001894:
-	GetSystemTimeAsFileTime(fp + 0x10<64>)
+	GetSystemTimeAsFileTime(fp + 16<i64>)
 	word64 v14_30 = CONVERT(GetCurrentThreadId(), DWORD, uint64) ^ CONVERT(GetCurrentProcessId(), DWORD, uint64)
-	QueryPerformanceCounter(fp + 0x18<64>)
-	word64 rax_40 = CONVERT(dwArg18, word32, uint64) << 0x20<64> ^ qwArg18 ^ v14_30 ^ fp + 8<64>
+	QueryPerformanceCounter(fp + 24<i64>)
+	word64 rax_40 = CONVERT(dwArg18, word32, uint64) << 0x20<64> ^ qwArg18 ^ v14_30 ^ fp + 8<i64>
 	rax_14 = rax_40 & 0xFFFFFFFFFFFF<64>
 	branch (rax_40 & 0xFFFFFFFFFFFF<64>) != 0x2B992DDFA232<64> l00000001400018FC
 l00000001400018F8_1:
@@ -796,12 +796,12 @@ l0000000140001974:
 	branch IsProcessorFeaturePresent(0x17<u32>) == 0<32> l000000014000199D
 l000000014000199D:
 	Mem20[0x0000000140003610<p64>:word32] = 0<32>
-	memset(fp - 0x4D8<64>, 0<i32>, 0x4D0<u32>)
-	RtlCaptureContext(fp - 0x4D8<64>)
-	word64 rax_34 = RtlLookupFunctionEntry(qwLoc03E0, fp + 0x10<64>, 0<u64>)
+	memset(fp - 1240<i64>, 0<i32>, 0x4D0<u32>)
+	RtlCaptureContext(fp - 1240<i64>)
+	word64 rax_34 = RtlLookupFunctionEntry(qwLoc03E0, fp + 16<i64>, 0<u64>)
 	branch rax_34 == 0<64> l0000000140001A1A
 l00000001400019DE:
-	KERNEL32.dll!RtlVirtualUnwind(0<32>, 0<32>, qwLoc03E0, rax_34, fp + 0x18<64>, fp + 0x20<64>, fp - 0x4D8<64>, 0<u64>, qwArg10, fp - 0x4D8<64>, fp + 0x20<64>, fp + 0x18<64>, 0<64>)
+	KERNEL32.dll!RtlVirtualUnwind(0<32>, 0<32>, qwLoc03E0, rax_34, fp + 24<i64>, fp + 32<i64>, fp - 1240<i64>, 0<u64>, qwArg10, fp - 1240<i64>, fp + 32<i64>, fp + 24<i64>, 0<64>)
 l0000000140001A1A:
 	memset(fp - 0x578<64>, 0<i32>, 0x98<u32>)
 	byte bl_85 = CONVERT(IsDebuggerPresent() == 1<32>, bool, int8)
@@ -852,12 +852,12 @@ l0000000140001AC0:
 l0000000140001AD8:
 	branch Mem0[rax_6:word16] != 0x5A4D<16> l0000000140001AD4
 l0000000140001AE2:
-	word64 rax_18 = CONVERT(Mem0[rax_6 + 0x3C<64>:word32], word32, int64) + rax_6
+	word64 rax_18 = CONVERT(Mem0[rax_6 + 60<i64>:word32], word32, int64) + rax_6
 	branch Mem0[rax_18:word32] != 0x4550<32> l0000000140001AD4
 l0000000140001AF1:
-	branch Mem0[rax_18 + 0x18<64>:word16] != 0x20B<16> l0000000140001AD4
+	branch Mem0[rax_18 + 24<i64>:word16] != 0x20B<16> l0000000140001AD4
 l0000000140001AFC:
-	branch Mem0[rax_18 + 0x84<64>:word32] <=u 0xE<32> l0000000140001AD4
+	branch Mem0[rax_18 + 132<i64>:word32] <=u 0xE<32> l0000000140001AD4
 l0000000140001B05:
 l0000000140001AD4:
 l0000000140001B0F:
@@ -893,11 +893,11 @@ l0000000140001B24:
 	word64 rax_6 = Mem0[rcx:word64]
 	branch Mem0[rax_6:word32] != 0xE06D7363<32> l0000000140001B4F
 l0000000140001B33:
-	branch Mem0[rax_6 + 0x18<64>:word32] != 4<32> l0000000140001B4F
+	branch Mem0[rax_6 + 24<i64>:word32] != 4<32> l0000000140001B4F
 l0000000140001B39:
-	word64 rcx_12 = CONVERT(Mem0[rax_6 + 0x20<64>:word32], word32, uint64)
+	word64 rcx_12 = CONVERT(Mem0[rax_6 + 32<i64>:word32], word32, uint64)
 	word32 ecx_18 = SLICE(rcx_12, word32, 0)
-	branch SLICE(rcx_12, word32, 0) <=u 0xE66CFADE<32> l0000000140001B56
+	branch SLICE(rcx_12, word32, 0) <=u 0x19930522<32> l0000000140001B56
 l0000000140001B47:
 	branch ecx_18 == 0x1994000<32> l0000000140001B56
 l0000000140001B56:
@@ -1105,7 +1105,7 @@ void fn0000000140001E7C(word64 rdx, word64 r9)
 // Preserved: rsp
 fn0000000140001E7C_entry:
 l0000000140001E7C:
-	fn0000000140001E9C(rdx, r9, Mem0[r9 + 0x38<64>:word64], qwLoc30)
+	fn0000000140001E9C(rdx, r9, Mem0[r9 + 56<i64>:word64], qwLoc30)
 	return
 fn0000000140001E7C_exit:
 
@@ -1126,13 +1126,13 @@ l0000000140001E9C:
 	word64 r10_18 = rcx
 	branch (Mem5[r8:byte] & 4<8>) == 0<8> l0000000140001EC7
 l0000000140001EB4:
-	r10_18 = CONVERT(Mem5[r8 + 4<64>:word32], word32, int64) + rcx & CONVERT(-Mem5[r8 + 8<64>:word32], word32, int64)
+	r10_18 = CONVERT(Mem5[r8 + 4<i64>:word32], word32, int64) + rcx & CONVERT(-Mem5[r8 + 8<i64>:word32], word32, int64)
 l0000000140001EC7:
 	word64 rdx_37 = Mem5[CONVERT(r11d_33, word32, int64) + r10_18:word64]
-	word64 rcx_42 = CONVERT(Mem5[Mem5[rdx + 0x10<64>:word64] + 8<64>:word32], word32, uint64) + Mem5[rdx + 8<64>:word64]
-	branch (Mem5[rcx_42 + 3<64>:byte] & 0xF<8>) == 0<8> l0000000140001EE9
+	word64 rcx_42 = CONVERT(Mem5[Mem5[rdx + 16<i64>:word64] + 8<i64>:word32], word32, uint64) + Mem5[rdx + 8<i64>:word64]
+	branch (Mem5[rcx_42 + 3<i64>:byte] & 0xF<8>) == 0<8> l0000000140001EE9
 l0000000140001EDF:
-	r9_15 = rcx + CONVERT(CONVERT(Mem5[rcx_42 + 3<64>:byte], byte, word32) & 0xFFFFFFF0<32>, word32, uint64)
+	r9_15 = rcx + CONVERT(CONVERT(Mem5[rcx_42 + 3<i64>:byte], byte, word32) & 0xFFFFFFF0<32>, word32, uint64)
 l0000000140001EE9:
 	word64 r9_56 = r9_15 ^ rdx_37
 l0000000140001EF0_thunk_fn00000001400011B0:

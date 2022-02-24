@@ -9,17 +9,17 @@ Top_3: orig: Top
     uses: use Top_3
 bp_4: orig: bp
     def:  bp_4 = sp_2
-    uses: ax_7 = Mem0[ss:bp_4 + 6<16>:word16]
+    uses: ax_7 = Mem0[ss:bp_4 + 6<i16>:word16]
           sp_14 = bp_4
           use bp_4
 ss:ss
     def:  def ss
-    uses: ax_7 = Mem0[ss:bp_4 + 6<16>:word16]
+    uses: ax_7 = Mem0[ss:bp_4 + 6<i16>:word16]
 Mem0:Mem
     def:  def Mem0
-    uses: ax_7 = Mem0[ss:bp_4 + 6<16>:word16]
+    uses: ax_7 = Mem0[ss:bp_4 + 6<i16>:word16]
 ax_7: orig: ax
-    def:  ax_7 = Mem0[ss:bp_4 + 6<16>:word16]
+    def:  ax_7 = Mem0[ss:bp_4 + 6<i16>:word16]
     uses: ax_8 = ax_7 | ax_7
           ax_8 = ax_7 | ax_7
 ax_8: orig: ax
@@ -65,7 +65,7 @@ fn0C00_0000_entry:
 	// succ:  l0C00_0000
 l0C00_0000:
 	bp_4 = sp_2
-	ax_7 = Mem0[ss:bp_4 + 6<16>:word16]
+	ax_7 = Mem0[ss:bp_4 + 6<i16>:word16]
 	ax_8 = ax_7 | ax_7
 	SZO_9 = cond(ax_8)
 	Z_11 = SLICE(SZO_9, bool, 2) (alias)

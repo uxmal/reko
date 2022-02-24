@@ -14,13 +14,13 @@ l0C00_0000:
 	goto l0C00_000E
 	// succ:  l0C00_000E
 l0C00_0005:
-	Mem22[ds_si + 6<16>:word16] = Mem19[ds_si + 6<16>:word16] + Mem19[ds_si + 6<16>:word16]
+	Mem22[ds_si + 6<i16>:word16] = Mem19[ds_si + 6<i16>:word16] + Mem19[ds_si + 6<i16>:word16]
 	ax_26 = ax_26 - 1<16>
 	// succ:  l0C00_000E
 l0C00_000E:
-	Mem11[ds_si + 2<16>:word16] = ax_26
-	Mem12[ds_si + 4<16>:word16] = ax_26
-	Mem13[ds_si + 8<16>:word16] = 3<16>
+	Mem11[ds_si + 2<i16>:word16] = ax_26
+	Mem12[ds_si + 4<i16>:word16] = ax_26
+	Mem13[ds_si + 8<i16>:word16] = 3<16>
 	branch ax_26 != 0<16> l0C00_0005
 	// succ:  l0C00_001E l0C00_0005
 l0C00_001E:

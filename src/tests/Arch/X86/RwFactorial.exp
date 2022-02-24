@@ -50,7 +50,7 @@ l0C00_000F:
 	sp = sp - 2<i16>
 	Mem0[ss:sp:word16] = bp
 	bp = sp
-	ax = Mem0[ss:bp + 4<16>:word16]
+	ax = Mem0[ss:bp + 4<i16>:word16]
 	ax = ax - 1<16>
 	SZO = cond(ax)
 	branch Test(EQ,Z) l0C00_0026
@@ -63,7 +63,7 @@ l0C00_0018:
 	SZO = cond(sp)
 	sp = sp + 1<16>
 	SZO = cond(sp)
-	dx = Mem0[ss:bp + 4<16>:word16]
+	dx = Mem0[ss:bp + 4<i16>:word16]
 	dx_ax = dx *s32 ax
 	SCZO = cond(dx_ax)
 	goto l0C00_0029

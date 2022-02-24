@@ -26,8 +26,8 @@ l10000000:
 	SZO = cond(ecx)
 	C = false
 	Mem0[esp:word32] = 1<32>
-	Mem0[esp + 4<32>:word32] = 2<32>
-	Mem0[esp + 8<32>:word32] = 3<32>
+	Mem0[esp + 4<i32>:word32] = 2<32>
+	Mem0[esp + 8<i32>:word32] = 3<32>
 	goto l10000027
 	// succ:  l10000027
 l10000023:
@@ -41,7 +41,7 @@ l10000027:
 	branch Test(LE,SZO) l10000023
 	// succ:  l1000002C l10000023
 l1000002C:
-	edi = Mem0[esp + 0x10<32>:word32]
+	edi = Mem0[esp + 16<i32>:word32]
 	Mem0[edi:word32] = eax
 	esp = esp + 0xC<32>
 	SCZO = cond(esp)

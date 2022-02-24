@@ -15,7 +15,7 @@ l0C00_000D:
 	goto l0C00_0019
 	// succ:  l0C00_0019
 l0C00_0012:
-	ax_19 = ax_19 + Mem0[ds:Mem0[ds:0x302<16>:word16] + 4<16>:word16]
+	ax_19 = ax_19 + Mem0[ds:Mem0[ds:0x302<16>:word16] + 4<i16>:word16]
 	// succ:  l0C00_0019
 l0C00_0019:
 	branch ax_19 < bx l0C00_0005
@@ -34,7 +34,7 @@ void fn0C00_0000(word16 bx, selector ds)
 		if (si_13 != 0<16>)
 			ax_19 += Mem0[ds:si_13:word16];
 		else
-			ax_19 += Mem0[ds:Mem0[ds:0x302<16>:word16] + 4<16>:word16];
+			ax_19 += Mem0[ds:Mem0[ds:0x302<16>:word16] + 4<i16>:word16];
 	}
 }
 ===========================

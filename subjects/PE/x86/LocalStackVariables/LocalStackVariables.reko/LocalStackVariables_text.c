@@ -15,14 +15,14 @@ int32 main(int32 argc, char ** argv)
 	// s1.i = 100
 	// res->i = 5
 	real64 rLoc1_n = 11.0;
-	struct Eq_n * eax_n = GetMin(fp - 44, fp - 0x1C);
+	struct Eq_n * eax_n = GetMin(fp - 44, fp - 28);
 	eax_n->dw0000 = 0x05;
 	// res->d = 5.0
 	eax_n->r0008 = 5.0;
 	// printf("%d %f %d %f\n", s1.i, s1.d, s2.i, s2.d)
 	printf("%d %f %d %f\n", 100, 1.0, 0x0A, rLoc1_n);
 	// gbl_s = &s2
-	g_ptr403018 = fp - 0x1C;
+	g_ptr403018 = fp - 28;
 	// s2.i = 2
 	// s2.d = 2.0
 	// gbl_s->i = 3
