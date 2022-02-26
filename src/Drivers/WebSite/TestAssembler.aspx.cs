@@ -26,9 +26,9 @@ using System.ComponentModel.Design;
 
 namespace Reko.WebSite
 {
-#if WEB_FORMS
-    public class TestAssembler : System.Web.UI.Page
+    public class TestAssembler // : System.Web.UI.Page
 	{
+#if WEB_FORMS
 		private WebDecompilerHost host;
 
 		protected System.Web.UI.WebControls.DropDownList ddlSamples;
@@ -46,7 +46,7 @@ namespace Reko.WebSite
 			}
 		}
 
-#region Web Form Designer generated code
+        #region Web Form Designer generated code
 		override protected void OnInit(EventArgs e)
 		{
 			//
@@ -67,7 +67,7 @@ namespace Reko.WebSite
 			this.Load += new System.EventHandler(this.Page_Load);
 
 		}
-#endregion
+        #endregion
 
 		private void btnDecompile_Click(object sender, System.EventArgs e)
 		{
@@ -111,6 +111,6 @@ namespace Reko.WebSite
 		{
 			txtAssembler.Text = host.FetchSample(Server, ddlSamples.SelectedValue);
 		}
-	}
 #endif
+    }
 }

@@ -18,7 +18,8 @@
  */
 #endregion
 
-#if WEB_FORMS
+namespace Reko.WebSite
+{
 using Reko.Core;
 using Reko.Core.Serialization;
 using System;
@@ -30,18 +31,17 @@ using System.Drawing;
 using System.IO;
 using System.Text;
 using System.Web;
-using System.Web.SessionState;
-using System.Web.UI;
-using System.Web.UI.WebControls;
-using System.Web.UI.HtmlControls;
+//using System.Web.SessionState;
+//using System.Web.UI;
+//using System.Web.UI.WebControls;
+//using System.Web.UI.HtmlControls;
 using Reko.Loading;
 using System.ComponentModel.Design;
 using Reko.Core.Configuration;
 
-namespace Reko.WebSite
-{
-	public class TestC : System.Web.UI.Page
+	public class TestC // : System.Web.UI.Page
 	{
+#if WEB_FORMS
 		private WebDecompilerHost host;
 
 		protected System.Web.UI.WebControls.DropDownList ddlSamples;
@@ -59,7 +59,7 @@ namespace Reko.WebSite
 			}
 		}
 
-		#region Web Form Designer generated code
+        #region Web Form Designer generated code
 		override protected void OnInit(EventArgs e)
 		{
 			//
@@ -80,7 +80,7 @@ namespace Reko.WebSite
 			this.btnDecompile.Click += new EventHandler(btnDecompile_Click);
 
 		}
-		#endregion
+        #endregion
 
 		private bool CompileCFile(string workdir, string filename)
 		{
@@ -187,6 +187,6 @@ namespace Reko.WebSite
 		{
 			txtAssembler.Text = host.FetchSample(Server, ddlSamples.SelectedValue);
 		}
-	}
-}
 #endif
+    }
+}

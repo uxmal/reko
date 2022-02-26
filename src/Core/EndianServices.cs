@@ -250,7 +250,7 @@ namespace Reko.Core
 
             public override EndianImageReader CreateImageReader(byte[] bytes, long off)
             {
-                return new BeImageReader(bytes, off);
+                return new BeImageReader(bytes, off, bytes.Length);
             }
 
 
