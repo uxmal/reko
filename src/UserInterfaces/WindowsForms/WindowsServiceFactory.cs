@@ -219,7 +219,7 @@ namespace Reko.UserInterfaces.WindowsForms
         {
             var fsSvc = services.RequireService<IFileSystemService>();
             var listener = services.RequireService<DecompilerEventListener>();
-            var svc = new DecompiledFileService(fsSvc, listener);
+            var svc = new DecompiledFileService(services, fsSvc, listener);
             return svc;
         }
 

@@ -91,7 +91,7 @@ namespace Reko.UserInterfaces.WindowsForms
                     var options = new MachineInstructionRendererOptions(platform: program.Platform);
                     if (program.SegmentMap.TryFindSegment(StartAddress, out ImageSegment segment))
                     {
-                        var formatter = new Dumper.InstrWriter(new TextFormatter(writer));
+                        var formatter = new Dumper.FormatterInstructionWriter(new TextFormatter(writer));
                         var dasm = program.CreateDisassembler(program.Architecture, StartAddress).GetEnumerator();
                         while (dasm.MoveNext())
                         {

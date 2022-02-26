@@ -60,7 +60,7 @@ namespace Reko.CmdLine
             services.AddService<IConfigurationService>(config);
             services.AddService<ITypeLibraryLoaderService>(new TypeLibraryLoaderServiceImpl(services));
             services.AddService<IFileSystemService>(fsSvc);
-            services.AddService<IDecompiledFileService>(new DecompiledFileService(fsSvc, listener));
+            services.AddService<IDecompiledFileService>(new DecompiledFileService(services, fsSvc, listener));
             services.AddService<IPluginLoaderService>(new PluginLoaderService());
             services.AddService<ITestGenerationService>(new TestGenerationService(services));
             services.AddService<IOutputService>(new CmdOutputService());

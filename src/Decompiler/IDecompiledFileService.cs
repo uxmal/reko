@@ -100,11 +100,13 @@ namespace Reko
 
     public class DecompiledFileService : IDecompiledFileService
     {
+        private readonly IServiceProvider services;
         private readonly IFileSystemService fsSvc;
         private readonly DecompilerEventListener listener;
 
-        public DecompiledFileService(IFileSystemService fsSvc, DecompilerEventListener listener)
+        public DecompiledFileService(IServiceProvider services, IFileSystemService fsSvc, DecompilerEventListener listener)
         {
+            this.services = services;
             this.fsSvc = fsSvc;
             this.listener = listener;
         }
@@ -121,7 +123,7 @@ namespace Reko
 
         public void WriteDisassembly(Program program, Action<string, Dictionary<ImageSegment, List<ImageMapItem>>, Formatter> writer)
         {
-            var outputPolicy = program.CreateOutputPolicy();
+            var outputPolicy = OutputFilePolicy.CreateOutputPolicy(this.services, program, program.User.OutputFilePolicy);
             foreach (var placement in outputPolicy.GetItemPlacements(".asm"))
             {
                 var dasmFilename = Path.GetFileName(placement.Key);
@@ -135,7 +137,7 @@ namespace Reko
 
         public void WriteIntermediateCode(Program program, Action<string, IEnumerable<IAddressable>, TextWriter> writer)
         {
-            var outputPolicy = program.CreateOutputPolicy();
+            var outputPolicy = OutputFilePolicy.CreateOutputPolicy(this.services, program, program.User.OutputFilePolicy);
             foreach (var placement in outputPolicy.GetObjectPlacements(".dis", listener))
             {
                 var irFilename = Path.GetFileName(placement.Key);
@@ -161,7 +163,7 @@ namespace Reko
 
         public void WriteDecompiledCode(Program program, Action<string, IEnumerable<IAddressable>, TextWriter> writer)
         {
-            var outputPolicy = program.CreateOutputPolicy();
+            var outputPolicy = OutputFilePolicy.CreateOutputPolicy(this.services, program, program.User.OutputFilePolicy);
             foreach (var placement in outputPolicy.GetObjectPlacements(".c", listener))
             {
                 var filename = placement.Key;
