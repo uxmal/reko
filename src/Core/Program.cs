@@ -24,7 +24,6 @@ using Reko.Core.Lib;
 using Reko.Core.Loading;
 using Reko.Core.Machine;
 using Reko.Core.Memory;
-using Reko.Core.Output;
 using Reko.Core.Serialization;
 using Reko.Core.Types;
 using System;
@@ -285,22 +284,6 @@ namespace Reko.Core
                 namedTypes[typedef.Key] = typedef.Value.Accept(dtSer);
             }
             return new SymbolTable(Platform, primitiveTypes, namedTypes, Platform.PointerType.Size);
-        }
-
-        /// <summary>
-        /// Creates an output policy based on the user's preferences, defaulting to the old
-        /// <see cref="SingleFilePolicy"/>.
-        /// </summary>
-        public OutputFilePolicy CreateOutputPolicy()
-        {
-            switch (User.OutputFilePolicy)
-            {
-            case Program.SingleFilePolicy:
-                return new SingleFilePolicy(this);
-            case Program.SegmentFilePolicy:
-            default:
-                return new SegmentFilePolicy(this);
-            }
         }
 
         public ProcedureSerializer CreateProcedureSerializer()

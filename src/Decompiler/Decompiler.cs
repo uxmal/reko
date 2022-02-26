@@ -462,14 +462,15 @@ namespace Reko
 
         private void ScanProgram(Program program)
         {
-            if (!program.NeedsScanning)
-                return;
             try
             {
-                eventListener.ShowStatus("Rewriting reachable machine code.");
-                scanner = CreateScanner(program);
-                scanner.ScanImage();
-                eventListener.ShowStatus("Finished rewriting reachable machine code.");
+                if (program.NeedsScanning)
+                {
+                    eventListener.ShowStatus("Rewriting reachable machine code.");
+                    scanner = CreateScanner(program);
+                    scanner.ScanImage();
+                    eventListener.ShowStatus("Finished rewriting reachable machine code.");
+                }
             }
             finally
             {

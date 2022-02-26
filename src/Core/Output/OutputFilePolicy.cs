@@ -23,9 +23,7 @@ using Reko.Core.Services;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Text;
 
 namespace Reko.Core.Output
 {
@@ -36,6 +34,33 @@ namespace Reko.Core.Output
     public abstract class OutputFilePolicy
     {
         protected readonly Program program;
+
+        /// <summary>
+        /// Creates an output policy based on the user's preferences, defaulting to the old
+        /// <see cref="SingleFilePolicy"/>.
+        /// </summary>
+        public static OutputFilePolicy CreateOutputPolicy(IServiceProvider services, Program program, string? sPolicy)
+        {
+            switch (sPolicy)
+            {
+            case Program.SingleFilePolicy:
+                return new SingleFilePolicy(program);
+            case Program.SegmentFilePolicy:
+            case null:
+                return new SegmentFilePolicy(program);
+            default:
+                if (!string.IsNullOrEmpty(sPolicy))
+                {
+                    var pluginLoader = services.RequireService<IPluginLoaderService>();
+                    var type = pluginLoader.GetType(sPolicy);
+                    return (OutputFilePolicy) Activator.CreateInstance(type, program)!;
+                }
+                else
+                {
+                    return new SingleFilePolicy(program);
+                }
+            }
+        }
 
         public OutputFilePolicy(Program program)
         {
