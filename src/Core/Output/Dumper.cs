@@ -58,7 +58,7 @@ namespace Reko.Core.Output
                 formatter.WriteLine(";;; Segment {0} ({1})", seg.Name, seg.Address);
                 if (seg.Designer != null)
                 {
-                    seg.Designer.Render(seg, program, new AsmCommentFormatter(formatter));
+                    seg.Designer.Render(seg, program, new AsmCommentFormatter("; ", formatter));
                 }
                 else
                 {
@@ -284,7 +284,7 @@ namespace Reko.Core.Output
             var dasm = arch.CreateDisassembler(arch.CreateImageReader(mem, addrStart));
             try
             {
-                var writer = new InstrWriter(formatter);
+                var writer = new FormatterInstructionWriter(formatter, true);
                 var options = new MachineInstructionRendererOptions(
                     flags: MachineInstructionRendererFlags.ResolvePcRelativeAddress,
                     syntax: "");
@@ -309,7 +309,7 @@ namespace Reko.Core.Output
             MemoryArea mem, 
             IProcessorArchitecture arch, 
             MachineInstruction instr, 
-            InstrWriter writer,
+            FormatterInstructionWriter writer,
             MachineInstructionRendererOptions options)
         {
             var instrAddress = instr.Address;
@@ -358,7 +358,7 @@ namespace Reko.Core.Output
             w.Write("\t");
         }
 
-        public void WriteOpcodes(MemoryArea image, IProcessorArchitecture arch, Address begin, Address addrEnd, InstrWriter writer)
+        public void WriteOpcodes(MemoryArea image, IProcessorArchitecture arch, Address begin, Address addrEnd, FormatterInstructionWriter writer)
 		{
 			EndianImageReader rdr = arch.CreateImageReader(image, begin);
             var byteSize = (7 + arch.InstructionBitSize) / 8;
@@ -371,126 +371,18 @@ namespace Reko.Core.Output
 			}
 		}
 
-        public class InstrWriter : MachineInstructionRenderer
+        /// <summary>
+        /// This <see cref="Formatter"/> renders comments appropriately for assembly-language output
+        /// </summary>
+        private class AsmCommentFormatter : Formatter
         {
-            private readonly Formatter formatter;
-            private int chars;
-            private readonly List<string> annotations;
-            private Address addrInstr;
-
-            public InstrWriter(Formatter formatter)
-            {
-                this.formatter = formatter;
-                this.annotations = new List<string>();
-                this.addrInstr = Address.Ptr32(0);
-            }
-
-            public Address Address => addrInstr;
-
-            public void BeginInstruction(Address addr)
-            {
-                this.addrInstr = addr;
-            }
-
-            public void EndInstruction()
-            {
-            }
-
-            public void BeginOperand()
-            {
-            }
-
-            public void EndOperand()
-            {
-            }
-
-            public void Tab()
-            {
-                ++chars;
-                formatter.Write("\t");
-            }
-
-            public void WriteString(string? s)
-            {
-                if (s is not null)
-                {
-                    chars += s.Length;
-                    formatter.Write(s);
-                }
-            }
-
-            public void WriteUInt32(uint n)
-            {
-                var nn = n.ToString();
-                chars += nn.Length;
-                formatter.Write(nn);
-            }
-
-            public void WriteChar(char c)
-            {
-                ++chars;
-                formatter.Write(c);
-            }
-
-            public void WriteFormat(string fmt, params object[] parms)
-            {
-                var s = string.Format(fmt, parms);
-                chars += s.Length;
-                formatter.Write(s);
-            }
-
-            public void WriteAddress(string formattedAddress, ulong uAddr)
-            {
-                chars += formattedAddress.Length;
-                formatter.WriteHyperlink(formattedAddress, uAddr);
-            }
-
-            public void WriteAddress(string formattedAddress, Address addr)
-            {
-                chars += formattedAddress.Length;
-                formatter.WriteHyperlink(formattedAddress, addr);
-            }
-
-            public void WriteMnemonic(string sMnemonic)
-            {
-                chars += sMnemonic.Length;
-                formatter.Write(sMnemonic);
-            }
-
-            public void WriteLine()
-            {
-                if (annotations.Count > 0)
-                {
-                    var pad = 60 - chars;
-                    if (pad > 0)
-                    {
-                        formatter.WriteSpaces(pad);
-                        chars += pad;
-                    }
-                    WriteString("; ");
-                    WriteString(string.Join(", ", annotations));
-                    annotations.Clear();
-                }
-                chars = 0;
-                formatter.WriteLine();
-            }
-
-            public void AddAnnotation(string? annotation)
-            {
-                if (!string.IsNullOrEmpty(annotation))
-                {
-                    annotations.Add(annotation);
-                }
-            }
-        }
-
-        class AsmCommentFormatter : Formatter
-        {
+            private readonly string asmCommentPrefix;
             private readonly Formatter w;
             private bool needPrefix;
 
-            public AsmCommentFormatter(Formatter w)
+            public AsmCommentFormatter(string asmCommentPrefix, Formatter w)
             {
+                this.asmCommentPrefix = asmCommentPrefix;
                 this.w = w;
                 this.needPrefix = true;
             }
@@ -574,7 +466,7 @@ namespace Reko.Core.Output
             {
                 if (needPrefix)
                 {
-                    w.Write("; ");
+                    w.Write(asmCommentPrefix);
                     needPrefix = false;
                 }
             }
