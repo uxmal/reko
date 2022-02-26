@@ -228,5 +228,19 @@ namespace Reko.ImageLoaders.WebAssembly
             renderer.WriteMnemonic(MnemonicAsString);
             base.RenderOperands(renderer, options);
         }
+
+        protected override void RenderOperand(MachineOperand operand, MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
+        {
+            switch (operand)
+            {
+            case ImmediateOperand imm:
+                if (imm.Width.IsIntegral || imm.Width.IsWord)
+                    renderer.WriteFormat("0x{0:X}", imm.Value.ToUInt64());
+                else
+                    throw new NotImplementedException();
+                return;
+            }
+            base.RenderOperand(operand, renderer, options);
+        }
     }
 }

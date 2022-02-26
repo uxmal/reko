@@ -53,10 +53,10 @@ namespace Reko.ImageLoaders.WebAssembly
         {
             var rdr = LoadHeader();
             var sections = LoadSections(rdr);
-            var segmentMap = BuildSegmentMap(sections);
             var arch = new WasmArchitecture(Services, "wasm", new Dictionary<string, object>());
             var platform = new DefaultPlatform(Services, arch);
-            return new Program(segmentMap, arch, platform);
+            var preprocessor = new WasmPreprocessor(sections, arch, platform);
+            return preprocessor.Preprocess();
         }
 
         private List<Section> LoadSections(WasmImageReader rdr)
@@ -135,12 +135,7 @@ namespace Reko.ImageLoaders.WebAssembly
 
         private Section LoadCustomSection(string name, byte[] bytes)
         {
-            return new CustomSection
-            {
-                Name = name,
-                Bytes = bytes,
-            };
-
+            return new CustomSection(name, bytes);
         }
 
         // The type section declares all function signatures that will be used in the module.
@@ -157,10 +152,7 @@ namespace Reko.ImageLoaders.WebAssembly
                     return null;
                 types.Add(ft);
             }
-            return new TypeSection
-            {
-                Types = types,
-            };
+            return new TypeSection(".types",  rdr.Bytes, types);
         }
 
         private Section? LoadImportSection(WasmImageReader rdr)
@@ -241,10 +233,7 @@ namespace Reko.ImageLoaders.WebAssembly
                  * 
                  */
             }
-            return new ImportSection
-            {
-                Imports = imps,
-            };
+            return new ImportSection(".imports", rdr.Bytes, imps);
         }
 
         private Section? LoadFunctionSection(WasmImageReader rdr)
@@ -258,10 +247,7 @@ namespace Reko.ImageLoaders.WebAssembly
                     return null;
                 decls.Add(decl);
             }
-            return new FunctionSection
-            {
-                Declarations = decls
-            };
+            return new FunctionSection(".functions", rdr.Bytes, decls);
         }
 
         private Section? LoadTableSection(WasmImageReader rdr)
@@ -276,10 +262,7 @@ namespace Reko.ImageLoaders.WebAssembly
                     return null;
                 tables.Add(tt);
             }
-            return new TableSection
-            {
-                Tables = tables
-            };
+            return new TableSection(".tables", rdr.Bytes, tables);
         }
 
         private TableType? ReadTableType(WasmImageReader rdr)
@@ -340,10 +323,7 @@ namespace Reko.ImageLoaders.WebAssembly
                 };
                 mems.Add(mem);
             }
-            return new MemorySection
-            {
-                Memories = mems,
-            };
+            return new MemorySection(".memory", rdr.Bytes, mems);
         }
 
         private Section? LoadGlobalSection(WasmImageReader rdr)
@@ -363,10 +343,7 @@ namespace Reko.ImageLoaders.WebAssembly
                     InitExpr = expr,
                 });
             }
-            return new GlobalSection
-            {
-                Globals = globals
-            };
+            return new GlobalSection(".globals", rdr.Bytes, globals);
         }
 
         private Section? LoadExportSection(WasmImageReader rdr)
@@ -390,10 +367,7 @@ namespace Reko.ImageLoaders.WebAssembly
                     Index = index,
                 });
             }
-            return new ExportSection
-            {
-                ExportEntries = exports
-            };
+            return new ExportSection(".exports", rdr.Bytes, exports);
         }
 
         private Section LoadStartSection(WasmImageReader rdr)
@@ -427,10 +401,7 @@ namespace Reko.ImageLoaders.WebAssembly
                     Elements = elements,
                 });
             }
-            return new ElementSection
-            {
-                Segments = elementSegs
-            };
+            return new ElementSection(".elements", rdr.Bytes, elementSegs);
         }
 
         private Section? LoadCodeSection(WasmImageReader rdr, byte[] bytes)
@@ -440,16 +411,12 @@ namespace Reko.ImageLoaders.WebAssembly
             var funcBodies = new List<FunctionDefinition>();
             for (int i = 0; i < count; ++i)
             {
-                var fd =  LoadFunctionDefinition(rdr);
+                var fd = LoadFunctionDefinition(rdr);
                 if (fd == null)
                     return null;
                 funcBodies.Add(fd);
             }
-            return new CodeSection
-            {
-                Functions = funcBodies,
-                Bytes = bytes,
-            };
+            return new CodeSection(".text", bytes, funcBodies);
         }
 
         private FunctionDefinition? LoadFunctionDefinition(WasmImageReader rdr)
@@ -468,17 +435,15 @@ namespace Reko.ImageLoaders.WebAssembly
                 var dt = ReadValueType(rdr);
                 if (dt == null)
                     return null;
-                locals.AddRange(Enumerable.Range(0, (int)n).Select(nn => new LocalVariable { DataType = dt }));
+                locals.AddRange(Enumerable.Range(0, (int)n).Select(nn => new LocalVariable(dt)));
             }
             len -= (uint)(rdr.Offset - start);
             var codeBytes = rdr.ReadBytes(len);
-            return new FunctionDefinition
-            {
-                Start = start,
-                End = end,
-                Locals = locals.ToArray(),
-                ByteCode = codeBytes
-            };
+            return new FunctionDefinition(
+                start,
+                end,
+                locals.ToArray(),
+                codeBytes);
         }
 
         private Section? LoadDataSection(WasmImageReader rdr)
@@ -502,17 +467,9 @@ namespace Reko.ImageLoaders.WebAssembly
                 var bytes = rdr.ReadBytes(size);
                 if (bytes == null)
                     return null;
-                segments.Add(new DataSegment
-                {
-                    MemoryIndex = index,
-                    Offset = offset,
-                    Bytes = bytes,
-                });
+                segments.Add(new DataSegment(index, offset, bytes));
             }
-            return new DataSection
-            {
-                Segments = segments
-            };
+            return new DataSection(".data", rdr.Bytes, segments);
         }
 
         private FunctionType? LoadFuncType(WasmImageReader rdr)
@@ -587,33 +544,6 @@ namespace Reko.ImageLoaders.WebAssembly
             return (dt!, b != 0);
         }
 
-        public SegmentMap BuildSegmentMap(List<Section> sections)
-        {
-            var segments = new List<ImageSegment>();
-            var codeSection = sections.OfType<CodeSection>().SingleOrDefault();
-            if (codeSection is not null)
-            {
-                segments.Add(new ImageSegment(
-                    ".text",
-                    new ByteMemoryArea(Address.Ptr32(0x1000_0000), codeSection.Bytes),
-                    AccessMode.ReadExecute));
-            }
-
-            var dataSection = sections.OfType<DataSection>().SingleOrDefault();
-            if (dataSection is not null)
-            {
-                segments.AddRange(dataSection.Segments.Select(s => new ImageSegment(
-                    $".data{s.MemoryIndex}",
-                    new ByteMemoryArea(Address.Ptr32(s.Offset), s.Bytes),
-                    AccessMode.ReadWrite)));
-            }
-
-            if (segments.Count == 0)
-            {
-                return new SegmentMap(Address.Ptr32(0));
-            }
-            return new SegmentMap(segments.ToArray());
-        }
     }
 
     public enum WasmSection
@@ -633,21 +563,46 @@ namespace Reko.ImageLoaders.WebAssembly
         Data = 11,      // Data segments
     }
 
-    public class Section
+    public abstract class Section
     {
+        public Section(string name, byte[] bytes)
+        {
+            this.Name = name;
+            this.Bytes = bytes;
+        }
 
+        /// <summary>
+        /// The preferred name of this section.
+        /// </summary>
+        public string Name { get;  }
+        public byte[] Bytes { get; }
+
+        /// <summary>
+        /// Optionally creates an <see cref="ImageSegmentRenderer"/>
+        /// </summary>
+        /// <returns></returns>
+        public virtual ImageSegmentRenderer? CreateDesigner(WasmArchitecture wasm, List<Section> sections) => null;
+
+        public override string ToString() => Name;
     }
 
-#nullable disable   //$TODO: remove this '#nullable' when C# 9.0 is released.
     public class CustomSection : Section
     {
-        public string Name { get; internal set; }
-        public byte[] Bytes { get; internal set; }
+        public CustomSection(string name, byte[] bytes) 
+            : base( name, bytes)
+        {
+        }
     }
 
-    public class TypeSection :Section
+    public class TypeSection : Section
     {
         public List<FunctionType> Types;
+
+        public TypeSection(string name, byte[] bytes, List<FunctionType> types)
+            : base(name, bytes)
+        {
+            this.Types = types;
+        }
 
         public override string ToString()
         {
@@ -664,17 +619,24 @@ namespace Reko.ImageLoaders.WebAssembly
     public class ImportSection : Section
     {
         public List<Import> Imports;
+
+        public ImportSection (string name, byte[] bytes, List<Import> imports)
+            : base(name, bytes)
+        {
+            this.Imports = imports;
+        }
+
     }
 
     public class Import
     {
         public SymbolType Type;
-        public string Module;
-        public string Field;
+        public string? Module;
+        public string? Field;
         public uint Index = ~0u;
         public (DataType, bool) GlobalType;
         public (uint, uint) MemoryType;
-        public TableType TableType;
+        public TableType? TableType;
 
         public override string ToString()
         {
@@ -692,7 +654,7 @@ namespace Reko.ImageLoaders.WebAssembly
                 sb.AppendFormat("memory {0} {1}", MemoryType.Item1, MemoryType.Item2);
                 break;
             case SymbolType.Table:
-                sb.AppendFormat("table {0} {1} {2}", TableType.Initial, TableType.Maximum, TableType.EntryType);
+                sb.AppendFormat("table {0} {1} {2}", TableType?.Initial ?? 0, TableType?.Maximum ?? 0, TableType?.EntryType ?? new UnknownType());
                 break;
             default:
                 throw new NotImplementedException();
@@ -704,17 +666,29 @@ namespace Reko.ImageLoaders.WebAssembly
 
     public class FunctionSection : Section
     {
-        public List<uint> Declarations;
+        public FunctionSection(string name, byte[] bytes, List<uint> declarations)
+            :base(name, bytes)
+        {
+            this.Declarations = declarations;
+        }
+
+        public List<uint> Declarations { get; }
     }
 
     public class TableSection : Section
     {
-        public List<TableType> Tables;
+        public TableSection(string name, byte[] bytes, List<TableType> tables)
+            : base(name, bytes)
+        {
+            this.Tables = tables;
+        }
+
+        public List<TableType> Tables { get; }
     }
 
     public class TableType
     {
-        public DataType EntryType;
+        public DataType? EntryType;
         public uint Flags;
         public uint Initial;
         public uint Maximum;
@@ -731,7 +705,13 @@ namespace Reko.ImageLoaders.WebAssembly
 
     public class MemorySection : Section
     {
-        public List<Memory> Memories;
+        public MemorySection(string name, byte[] bytes, List<Memory> memories)
+            : base(name, bytes)
+        {
+            this.Memories = memories;
+        }
+
+        public List<Memory> Memories { get; }
     }
 
     public class Memory
@@ -750,12 +730,19 @@ namespace Reko.ImageLoaders.WebAssembly
 
     public class ExportSection : Section
     {
-        public List<ExportEntry> ExportEntries;
+        public ExportSection(string name, byte[] bytes, List<ExportEntry> exports)
+            : base(name, bytes)
+        {
+            this.ExportEntries = exports;
+        }
+        public List<ExportEntry> ExportEntries { get; }
     }
 
     public class ExportEntry
     {
-        public string Field;
+        public const byte Func = 0;
+
+        public string? Field;
         public byte Kind;
         public uint Index;
 
@@ -772,17 +759,30 @@ namespace Reko.ImageLoaders.WebAssembly
 
     public class CodeSection : Section
     {
-        public List<FunctionDefinition> Functions;
-        public byte[] Bytes;
-
-        public override string ToString()
+        public CodeSection(string name, byte[] bytes, List<FunctionDefinition> functions)
+            : base(name, bytes)
         {
-            return base.ToString();
+            this.Functions = functions;
+        }
+
+        public List<FunctionDefinition> Functions { get; }
+
+        public override ImageSegmentRenderer? CreateDesigner(WasmArchitecture arch, List<Section> sections)
+        {
+            return new CodeSectionRenderer(arch, this, sections);
         }
     }
 
     public class FunctionDefinition
     {
+        public FunctionDefinition(int iStart, int iEnd, LocalVariable[] locals, byte[] bytes)
+        {
+            this.Start = iStart;
+            this.End = iEnd;
+            this.Locals = locals;
+            this.ByteCode = bytes;
+        }
+
         public int Start;
         public int End;
         public LocalVariable[] Locals;
@@ -791,12 +791,25 @@ namespace Reko.ImageLoaders.WebAssembly
 
     public class DataSection : Section
     {
+        public DataSection(string name, byte[] bytes, List<DataSegment> segments, List<int>? offsets = null)
+            : base(name, bytes)
+        {
+            this.Segments = segments;
+            this.FunctionBodyOffsets = offsets ?? new();
+        }
         public List<DataSegment> Segments;
         public List<int> FunctionBodyOffsets;
     }
 
     public class DataSegment
     {
+        public DataSegment(uint memoryIndex, uint offset, byte[] bytes)
+        {
+            this.MemoryIndex = memoryIndex;
+            this.Offset = offset;
+            this.Bytes = bytes;
+        }
+
         public uint MemoryIndex;
         public uint Offset;
         public byte[] Bytes;
@@ -804,29 +817,41 @@ namespace Reko.ImageLoaders.WebAssembly
 
     public class GlobalSection : Section
     {
-        public List<GlobalEntry> Globals;
+        public GlobalSection(string name, byte[] bytes, List<GlobalEntry> globals)
+            : base(name, bytes)
+        {
+            this.Globals = globals;
+        }
+
+        public List<GlobalEntry> Globals { get; }
     }
 
     public class GlobalEntry
     {
-        public object InitExpr { get; internal set; }
-        public (DataType, bool) Type { get; internal set; }
+        public object? InitExpr { get; set; }
+        public (DataType, bool) Type { get; set; }
     }
 
     public class ElementSegment
     {
-        public List<uint> Elements { get; internal set; }
-        public object Offset { get; internal set; }
-        public uint TableIndex { get; internal set; }
+        public List<uint>? Elements { get; set; }
+        public object? Offset { get; set; }
+        public uint TableIndex { get; set; }
     }
 
     public class ElementSection : Section
     {
-        public List<ElementSegment> Segments { get; internal set; }
+        public ElementSection(string name, byte[] bytes, List<ElementSegment> segments)
+            : base(name, bytes)
+        {
+            this.Segments = segments;
+        }
+        public List<ElementSegment> Segments { get; }
     }
 
     public class LocalVariable
     {
+        public LocalVariable(DataType dt) { this.DataType = dt; }
         internal DataType DataType;
     }
 #nullable enable

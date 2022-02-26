@@ -41,19 +41,20 @@ namespace Reko.UnitTests.Decompiler
         public void Setup()
         {
             var arch = new Mock<IProcessorArchitecture>();
+            var sc = new ServiceContainer();
             arch.Setup(a => a.Name).Returns("FakeArch");
             arch.Setup(a => a.PointerType).Returns(PrimitiveType.Ptr32);
             this.program = new Program(
                 new SegmentMap(Address.Ptr32(0x00100000)),
                 arch.Object,
-                new DefaultPlatform(new ServiceContainer(), arch.Object));
+                new DefaultPlatform(sc, arch.Object));
             program.Location = ImageLocation.FromUri("file:bar/foo.exe");
             program.Name = "foo.exe";
             program.SourceDirectory = "bar";
 
             this.fsSvc = new Mock<IFileSystemService>();
 
-            this.dfSvc = new DecompiledFileService(fsSvc.Object, new FakeDecompilerEventListener());
+            this.dfSvc = new DecompiledFileService(sc, fsSvc.Object, new FakeDecompilerEventListener());
 
             this.proc1 = Procedure.Create(arch.Object, Address.Ptr32(0x00123400), new Frame(PrimitiveType.Ptr32));
         }
