@@ -71,8 +71,8 @@ namespace Reko.Core.Memory
 		protected EndianByteImageReader(ByteMemoryArea img, long offsetBegin, long offsetEnd) : base(img, offsetBegin, offsetEnd) { }
 		protected EndianByteImageReader(ByteMemoryArea img, Address addrBegin, Address addrEnd) : base(img, addrBegin, addrEnd) { }
 		protected EndianByteImageReader(ByteMemoryArea img, long off) : base(img, off) { }
-		protected EndianByteImageReader(byte[] img, long off) : base(img, off) { }
-        protected EndianByteImageReader(byte[] img) : this(img, 0) { }
+		protected EndianByteImageReader(byte[] img, long off, long offEnd) : base(img, off, offEnd) { }
+        protected EndianByteImageReader(byte[] img, long off = 0) : base(img, off, img.Length) { }
 
         /// <summary>
         /// Create a new EndianImageReader with the same endianness as this one.
@@ -193,13 +193,13 @@ namespace Reko.Core.Memory
 	/// </summary>
 	public class LeImageReader : EndianByteImageReader
 	{
-        public LeImageReader(byte[] bytes, long offset = 0) : base(bytes, offset) { }
 		public LeImageReader(ByteMemoryArea image, long offset) : base(image, offset) { }
 		public LeImageReader(ByteMemoryArea image, Address addr) : base(image, addr) { }
 		public LeImageReader(ByteMemoryArea image, Address addr, long cUnits) : base(image, addr, cUnits) { }
 		public LeImageReader(ByteMemoryArea image, long offsetBegin, long offsetEnd) : base(image, offsetBegin, offsetEnd) { }
 		public LeImageReader(ByteMemoryArea image, Address addrBegin, Address addrEnd) : base(image, addrBegin, addrEnd) { }
-        public LeImageReader(byte[] bytes) : this(bytes, 0) { }
+        public LeImageReader(byte[] bytes, long offsetBegin, long offsetEnd) : base(bytes, offsetBegin, offsetEnd) { }
+        public LeImageReader(byte[] bytes, long offset = 0) : base(bytes, offset, bytes.Length) { }
 
         public override EndianImageReader CreateNew(byte[] bytes, long offset)
 		{
@@ -248,17 +248,17 @@ namespace Reko.Core.Memory
 	/// </summary>
 	public class BeImageReader : EndianByteImageReader
 	{
-        public BeImageReader(byte[] bytes, long offset) : base(bytes, offset) { }
 		public BeImageReader(ByteMemoryArea image, long offset) : base(image, offset) { }
 		public BeImageReader(ByteMemoryArea image, Address addr) : base(image, addr) { }
 		public BeImageReader(ByteMemoryArea image, Address addr, long cUnits) : base(image, addr, cUnits) { }
         public BeImageReader(ByteMemoryArea image, long offsetBegin, long offsetEnd) : base(image, offsetBegin, offsetEnd) { }
 		public BeImageReader(ByteMemoryArea image, Address addrBegin, Address addrEnd) : base(image, addrBegin, addrEnd) { }
-        public BeImageReader(byte[] bytes) : this(bytes, 0) { }
+        public BeImageReader(byte[] bytes, long offset, long offsetEnd) : base(bytes, offset, offsetEnd) { }
+        public BeImageReader(byte[] bytes, long offset = 0) : base(bytes, offset, bytes.Length) { }
 
         public override EndianImageReader CreateNew(byte[] bytes, long offset)
 		{
-			return new BeImageReader(bytes, offset);
+			return new BeImageReader(bytes, offset, this.offEnd);
 		}
 
 		public override EndianImageReader CreateNew(MemoryArea image, Address addr)

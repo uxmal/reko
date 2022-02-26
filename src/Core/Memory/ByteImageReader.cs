@@ -103,15 +103,15 @@ namespace Reko.Core.Memory
             this.Offset = offStart;
         }
 
-        public ByteImageReader(byte[] img, long off)
+        public ByteImageReader(byte[] img, long off, long offEnd)
         {
             this.bytes = img;
             this.offStart = off;
-            this.offEnd = img.Length;
+            this.offEnd = offEnd;
             this.off = offStart;
         }
 
-        public ByteImageReader(byte[] img) : this(img, 0) { }
+        public ByteImageReader(byte[] img, long off = 0) : this(img, off, img.Length) { }
 
         public Address Address { get { return addrStart! + (off - offStart); } }
         public byte[] Bytes { get { return bytes; } }
@@ -121,7 +121,7 @@ namespace Reko.Core.Memory
 
         public ByteImageReader Clone()
         {
-            var that = new ByteImageReader(this.bytes, this.off);
+            var that = new ByteImageReader(this.bytes, this.off, this.offEnd);
             that.mem = this.mem;
             that.offStart = this.offStart;
             that.offEnd = this.offEnd;
