@@ -58,6 +58,22 @@ namespace Reko.ImageLoaders.WebAssembly
             return true;
         }
 
+        public bool TryReadVarUInt64(out ulong u)
+        {
+            u = 0;
+            int sh = 0;
+            byte b;
+            do
+            {
+                if (!TryReadByte(out b))
+                    return false;
+                u = ((b & 0x7Fu) << sh) | u;
+                sh += 7;
+                //$TODO: overflow.
+            } while ((b & 0x80) != 0);
+            return true;
+        }
+
         public bool TryReadVarUInt7(out byte b)
         {
             if (!TryReadByte(out b))

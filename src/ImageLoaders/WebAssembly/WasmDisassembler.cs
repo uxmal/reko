@@ -84,6 +84,13 @@ namespace Reko.ImageLoaders.WebAssembly
                     }
                     ops.Add(ImmediateOperand.Word32(u));
                     break;
+                case 'V':
+                    if (!rdr.TryReadVarUInt64(out ul))
+                    {
+                        return CreateInvalidInstruction();
+                    }
+                    ops.Add(ImmediateOperand.Word64(ul));
+                    break;
                 case 'b':
                     if (!rdr.TryReadVarInt64(out long blockType))
                     {
@@ -125,6 +132,30 @@ namespace Reko.ImageLoaders.WebAssembly
                     }
                     Debug.Assert(decoder.DataType is not null, $"Missing data type for {decoder.Mnemonic}");
                     ops.Add(new MemoryOperand(decoder.DataType, alignment, offset));
+                    break;
+                case 't':
+                    if (!rdr.TryReadVarUInt32(out uint tableidx))
+                    {
+                        return CreateInvalidInstruction();
+                    }
+                    ops.Add(ImmediateOperand.UInt32(tableidx));
+                    break;
+                case 'T':
+                    if (!rdr.TryReadVarUInt32(out uint cLabels))
+                    {
+                        return CreateInvalidInstruction();
+                    }
+                    var labels = new uint[cLabels];
+                    for (i = 0; i < (int)cLabels; ++i)
+                    {
+                        if (!rdr.TryReadVarUInt32(out labels[i]))
+                            return CreateInvalidInstruction();
+                    }
+                    if (!rdr.TryReadVarUInt32(out uint defaultLabel))
+                    {
+                        return CreateInvalidInstruction();
+                    }
+                    ops.Add(new BranchTableOperand(labels, defaultLabel));
                     break;
                 default:
                     return this.NotYetImplemented($"Wasm format '{fmt[i - 1]}'.");
@@ -302,7 +333,7 @@ namespace Reko.ImageLoaders.WebAssembly
 
                 Instr(Mnemonic.br, "v"),
                 Instr(Mnemonic.br_if, "v"),
-                Instr(Mnemonic.br_table, "t"),
+                Instr(Mnemonic.br_table, "T"),
                 Instr(Mnemonic.@return, ""),
 
                 // 10
@@ -333,8 +364,8 @@ namespace Reko.ImageLoaders.WebAssembly
                 Instr(Mnemonic.get_global, "v"),
 
                 Instr(Mnemonic.set_global, "v"),
-                Instr(Mnemonic.table_get, "@"),
-                Instr(Mnemonic.table_set, "@"),
+                Instr(Mnemonic.table_get, "t"),
+                Instr(Mnemonic.table_set, "t"),
                 invalid,
 
                 Instr(Mnemonic.i32_load, PrimitiveType.Word32, "m"),

@@ -35,12 +35,18 @@ namespace Reko.ImageLoaders.WebAssembly
         private readonly WasmArchitecture arch;
         private readonly CodeSection codeSection;
         private readonly List<Section> sections;
+        private readonly TypeSection? typeSection;
+        private readonly FunctionSection? funcSection;
+        private readonly TableSection? tableSection;
 
         public CodeSectionRenderer(WasmArchitecture arch, CodeSection section, List<Section> sections)
         {
             this.arch = arch;
             this.codeSection = section;
             this.sections = sections;
+            this.typeSection = sections.OfType<TypeSection>().FirstOrDefault();
+            this.funcSection = sections.OfType<FunctionSection>().FirstOrDefault();
+            this.tableSection = sections.OfType<TableSection>().FirstOrDefault();
         }
 
         public override void Render(ImageSegment segment, Program program, Formatter formatter)
@@ -73,15 +79,47 @@ namespace Reko.ImageLoaders.WebAssembly
                 bool popBlockStack = false;
                 switch (instr.Mnemonic)
                 {
+                case Mnemonic.i32_and:
                 case Mnemonic.i32_add:
                 case Mnemonic.i32_sub:
                 case Mnemonic.i32_mul:
+                case Mnemonic.i32_rem_s:
+                case Mnemonic.i32_rem_u:
+                case Mnemonic.i32_shl:
+                case Mnemonic.i32_or:
+                case Mnemonic.i32_shr_s:
+                case Mnemonic.i32_shr_u:
+                case Mnemonic.i32_xor:
                     dataStack.RemoveAt(dataStack.Count - 1);
                     dataStack[^1] = PrimitiveType.Word32;
+                    break;
+                case Mnemonic.i64_and:
+                case Mnemonic.i64_add:
+                case Mnemonic.i64_sub:
+                case Mnemonic.i64_mul:
+                case Mnemonic.i64_rem_s:
+                case Mnemonic.i64_rem_u:
+                case Mnemonic.i64_shl:
+                case Mnemonic.i64_or:
+                case Mnemonic.i64_shr_s:
+                case Mnemonic.i64_shr_u:
+                case Mnemonic.i64_xor:
+                    dataStack.RemoveAt(dataStack.Count - 1);
+                    dataStack[^1] = PrimitiveType.Word32;
+                    break;
+                case Mnemonic.f32_add:
+                case Mnemonic.f32_div:
+                case Mnemonic.f32_sub:
+                case Mnemonic.f32_max:
+                case Mnemonic.f32_min:
+                case Mnemonic.f32_mul:
+                    PopDataStack(dataStack, 1);
+                    dataStack[^1] = PrimitiveType.Real32;
                     break;
                 case Mnemonic.f64_add:
                 case Mnemonic.f64_div:
                 case Mnemonic.f64_sub:
+                case Mnemonic.f64_max:
                 case Mnemonic.f64_min:
                 case Mnemonic.f64_mul:
                     dataStack.RemoveAt(dataStack.Count - 1);
@@ -96,17 +134,52 @@ namespace Reko.ImageLoaders.WebAssembly
                 case Mnemonic.br_if:
                     dataStack.RemoveAt(dataStack.Count - 1);
                     break;
-                case Mnemonic.call: //$TODO: stack effects.
+                case Mnemonic.br_table:
+                    break;
+                case Mnemonic.call:
+                    if (typeSection is null)
+                        throw new BadImageFormatException("Missing type section.");
+                    if (funcSection is null)
+                        throw new BadImageFormatException("Missung function section.");
+                    var ifuncCall = ((ImmediateOperand) instr.Operands[0]).Value.ToInt32();
+                    if (ifuncCall > funcSection.Declarations.Count)
+                    {
+                        Debug.Print("*** Unknown function {0:X}", ifunc);
+                    }
+                    else
+                    {
+                        var funcDecl = (int) funcSection.Declarations[ifuncCall];
+                        HandleCall(typeSection.Types[funcDecl], dataStack);
+                    }
+                    break;
+                case Mnemonic.call_indirect:
+                    if (typeSection is null)
+                        throw new BadImageFormatException("Missing type section.");
+                    var itypeCall = ((ImmediateOperand) instr.Operands[1]).Value.ToInt32();
+                    HandleCall(typeSection.Types[itypeCall], dataStack);
                     break;
                 case Mnemonic.i32_const:
                     dataStack.Add(PrimitiveType.Word32);
+                    break;
+                case Mnemonic.i64_const:
+                    dataStack.Add(PrimitiveType.Word64);
+                    break;
+                case Mnemonic.f32_const:
+                    dataStack.Add(PrimitiveType.Real32);
                     break;
                 case Mnemonic.f64_const:
                     dataStack.Add(PrimitiveType.Real64);
                     break;
                 case Mnemonic.i64_div_s:
-                    dataStack.RemoveAt(dataStack.Count - 1);
+                    PopDataStack(dataStack, 1);
                     dataStack[^1] = PrimitiveType.Int64;
+                    break;
+                case Mnemonic.i64_div_u:
+                    PopDataStack(dataStack, 1);
+                    dataStack[^1] = PrimitiveType.Int64;
+                    break;
+                case Mnemonic.drop:
+                    PopDataStack(dataStack, 1);
                     break;
                 case Mnemonic.@else:
                     if (blockStack.Count < 1 || blockStack[^1].Mnemonic != Mnemonic.@if)
@@ -116,14 +189,50 @@ namespace Reko.ImageLoaders.WebAssembly
                 case Mnemonic.end:
                     popBlockStack = true;
                     break;
+
+                case Mnemonic.f32_eq:
+                case Mnemonic.f32_ge:
+                case Mnemonic.f32_gt:
+                case Mnemonic.f32_ne:
+                
+                case Mnemonic.f64_eq:
+                case Mnemonic.f64_ge:
+                case Mnemonic.f64_gt:
+                case Mnemonic.f64_ne:
+
                 case Mnemonic.i32_eq:
                 case Mnemonic.i32_ge_s:
+                case Mnemonic.i32_ge_u:
                 case Mnemonic.i32_gt_s:
+                case Mnemonic.i32_gt_u:
                 case Mnemonic.i32_le_s:
+                case Mnemonic.i32_le_u:
                 case Mnemonic.i32_lt_s:
+                case Mnemonic.i32_lt_u:
                 case Mnemonic.i32_ne:
-                    dataStack.RemoveAt(dataStack.Count - 1);
+
+                case Mnemonic.i64_eq:
+                case Mnemonic.i64_ge_s:
+                case Mnemonic.i64_ge_u:
+                case Mnemonic.i64_gt_s:
+                case Mnemonic.i64_gt_u:
+                case Mnemonic.i64_le_s:
+                case Mnemonic.i64_le_u:
+                case Mnemonic.i64_lt_s:
+                case Mnemonic.i64_lt_u:
+                case Mnemonic.i64_ne:
+                    PopDataStack(dataStack, 1);
                     dataStack[^1] = PrimitiveType.Bool;
+                    break;
+                case Mnemonic.i32_eqz:
+                case Mnemonic.i64_eqz:
+                    dataStack[^1] = PrimitiveType.Bool;
+                    break;
+                case Mnemonic.i64_extend_s_i32:
+                    dataStack[^1] = PrimitiveType.Int64;
+                    break;
+                case Mnemonic.i64_extend_u_i32:
+                    dataStack[^1] = PrimitiveType.UInt64;
                     break;
                 case Mnemonic.get_global:
                     dataStack.Add(new UnknownType());
@@ -132,14 +241,31 @@ namespace Reko.ImageLoaders.WebAssembly
                     dataStack.Add(new UnknownType());
                     break;
                 case Mnemonic.@if:
+                    PopDataStack(dataStack, 1);
                     pushBlockStack = true;
+                    break;
+                case Mnemonic.f32_load:
+                    dataStack[^1] = PrimitiveType.Real32;
                     break;
                 case Mnemonic.f64_load:
                     dataStack[^1] = PrimitiveType.Real64;
                     break;
+                case Mnemonic.i32_load:
+                    dataStack[^1] = PrimitiveType.Word32;
+                    break;
+                case Mnemonic.i64_load:
+                    dataStack[^1] = PrimitiveType.Word64;
+                    break;
+                case Mnemonic.i32_load8_s:
+                    dataStack[^1] = PrimitiveType.Int32;
+                    break;
+                case Mnemonic.i32_load16_s:
+                    dataStack[^1] = PrimitiveType.Int32;
+                    break;
                 case Mnemonic.loop:
                     blockStack.Add(instr);
                     break;
+                case Mnemonic.f64_abs:
                 case Mnemonic.f64_neg:
                 case Mnemonic.f64_sqrt:
                     //$TODO: Validate args?
@@ -147,21 +273,49 @@ namespace Reko.ImageLoaders.WebAssembly
                     break;
                 case Mnemonic.nop:
                     break;
+                case Mnemonic.f32_convert_s_i32:
+                case Mnemonic.f32_demote_f64:
+                case Mnemonic.f32_reinterpret_i32:
+                    dataStack[^1] = PrimitiveType.Real32;
+                    break;
+                case Mnemonic.f64_convert_s_i32:
+                case Mnemonic.f64_convert_s_i64:
+                case Mnemonic.f64_convert_u_i32:
+                case Mnemonic.f64_convert_u_i64:
+                case Mnemonic.f64_promote_f32:
+                case Mnemonic.f64_reinterpret_i64:
+                    dataStack[^1] = PrimitiveType.Real64;
+                    break;
+                case Mnemonic.i32_reinterpret_f32:
+                case Mnemonic.i32_wrap_i64:
+                    dataStack[^1] = PrimitiveType.Word32;
+                    break;
+                case Mnemonic.i64_reinterpret_f64:
+                    dataStack[^1] = PrimitiveType.Word64;
+                    break;
                 case Mnemonic.@return:
                     // Leave the structured block we're in
                     break;
                 case Mnemonic.set_global:
                 case Mnemonic.set_local:
-                    dataStack.RemoveAt(dataStack.Count - 1);
+                    PopDataStack(dataStack, 1);
                     break;
+                case Mnemonic.f32_store:
                 case Mnemonic.f64_store:
-                    dataStack.RemoveRange(dataStack.Count - 2, 2);
+                case Mnemonic.i32_store:
+                case Mnemonic.i64_store:
+                case Mnemonic.i32_store8:
+                case Mnemonic.i32_store16:
+                case Mnemonic.i64_store16:
+                    PopDataStack(dataStack, 2);
                     break;
                 case Mnemonic.tee_local:
                 case Mnemonic.unreachable:
                     break;
                 default:
-                    throw new NotImplementedException(instr.ToString());
+                    Debug.WriteLine("$$$$ BLE: " + instr);
+                    break;
+                    //throw new NotImplementedException(instr.ToString());
                 }
 
                 if (popBlockStack)
@@ -172,6 +326,11 @@ namespace Reko.ImageLoaders.WebAssembly
                     formatter.Indentation -= formatter.TabSize;
                 }
                 formatter.Indent();
+#if DEBUG
+                var debug = $"{instr.Address}:{dataStack.Count,3}{new string(' ', blockStack.Count * 4)} {instr}";
+                Debug.WriteLine(debug);
+                Console.WriteLine(debug);
+#endif
                 instr.Render(instrRenderer, options);
                 formatter.WriteLine();
                 if (pushBlockStack)
@@ -182,6 +341,29 @@ namespace Reko.ImageLoaders.WebAssembly
             }
             formatter.Indentation -= formatter.TabSize;
             formatter.WriteLine(")");
+        }
+
+        private void PopDataStack(List<DataType> dataStack, int n)
+        {
+            if (dataStack.Count < n)
+            {
+                Debug.WriteLine($"*** stack imbalance, expected {n} stack slots");
+                n = dataStack.Count;
+            }
+            dataStack.RemoveRange(dataStack.Count - n, n);
+        }
+
+        private static void HandleCall(FunctionType sig, List<DataType> dataStack)
+        {
+            var cParams = sig.Parameters!.Length;
+            if (cParams > dataStack.Count)
+            {
+                Debug.WriteLine($"*** stack imbalance, require {cParams} arguments");
+                cParams = dataStack.Count;
+            }
+            dataStack.RemoveRange(dataStack.Count - cParams, cParams);
+            if (!sig.HasVoidReturn)
+                dataStack.Add(sig.ReturnValue.DataType);
         }
 
         private string GetFunctionName(int ifunc)
