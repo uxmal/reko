@@ -84,5 +84,28 @@ namespace Reko.ImageLoaders.WebAssembly
             }
             return true;
         }
+
+        public bool TryReadVarInt64(out long result)
+        {
+            int shift = 0;
+            long u = 0;
+            int size = 64;
+            byte b;
+            while (TryReadByte(out b))
+            {
+                u |= ((b & 0x7Fu) << shift);
+                shift += 7;
+                if ((b & 0x80) == 0)
+                {
+                    if (shift < size && (b & 0x40) != 0)
+                        result = u | (~0L << shift);
+                    else
+                        result = u;
+                    return true;
+                }
+            }
+            result = 0;
+            return false;
+        }
     }
 }

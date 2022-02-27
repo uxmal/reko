@@ -59,6 +59,7 @@ namespace Reko.ImageLoaders.WebAssembly
                 {
                 case Mnemonic.i32_const: Const(PrimitiveType.Word32); break;
                 case Mnemonic.f32_const: Const(PrimitiveType.Real32); break;
+                case Mnemonic.i64_store8: Store(PrimitiveType.Byte); break;
                 default: m.Invalid(); break;
                 }
                 yield return m.MakeCluster(instr.Address, instr.Length, this.iclass);
@@ -80,6 +81,18 @@ namespace Reko.ImageLoaders.WebAssembly
             var tmp = binder.CreateTemporary(dt);
             m.Assign(tmp, ((ImmediateOperand)instr.Operands[0]).Value);
             Push(tmp);
+        }
+
+        private void Store(DataType dt)
+        {
+            var sp = binder.EnsureRegister(arch.StackRegister);
+            var tmpPtr = binder.CreateTemporary(arch.PointerType);
+            var tmpValue = binder.CreateTemporary(dt);
+            m.Assign(tmpPtr, m.Mem(tmpPtr.DataType, sp));
+            m.Assign(tmpValue, m.Mem(dt, m.IAddS(sp, 8)));
+            var offset = (int)((MemoryOperand) instr.Operands[0]).Offset;
+            m.Assign(m.Mem(dt, m.IAddS(tmpPtr, offset)), tmpValue);
+            m.Assign(sp, m.IAddS(sp, 16));
         }
     }
 }

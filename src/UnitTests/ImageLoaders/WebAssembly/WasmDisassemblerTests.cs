@@ -51,7 +51,19 @@ namespace Reko.UnitTests.ImageLoaders.WebAssembly
         [Test]
         public void WasmDis_i64_store8()
         {
-            AssertCode("@@@", "3C0404");
+            AssertCode("i64.store8\t0x4,0x4", "3C0404");
+        }
+
+        [Test]
+        public void WasmDis_block()
+        {
+            AssertCode("block", "0240");
+        }
+
+        [Test]
+        public void WasmDis_block_with_type()
+        {
+            AssertCode("block\t0x1", "0201");
         }
     }
 }

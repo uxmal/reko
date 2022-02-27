@@ -80,7 +80,7 @@ namespace Reko.UnitTests.ImageLoaders.WebAssembly
         }
 
         [Test]
-        public void Csr_SimpleProc()
+        public void WasmCsr_SimpleProc()
         {
             Given_Function(
                 0,

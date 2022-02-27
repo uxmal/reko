@@ -423,8 +423,7 @@ namespace Reko.ImageLoaders.WebAssembly
         {
             if (!rdr.TryReadVarUInt32(out uint len))
                 return null;
-            var start = (int)rdr.Offset;
-            var end = start + (int)len;
+            var end = (int)rdr.Offset + (int)len;
             if (!rdr.TryReadVarUInt32(out uint cEntries))
                 return null;
             var locals = new List<LocalVariable>();
@@ -437,13 +436,13 @@ namespace Reko.ImageLoaders.WebAssembly
                     return null;
                 locals.AddRange(Enumerable.Range(0, (int)n).Select(nn => new LocalVariable(dt)));
             }
-            len -= (uint)(rdr.Offset - start);
-            var codeBytes = rdr.ReadBytes(len);
+            var start = (int) rdr.Offset;
+            rdr.Offset = end;
             return new FunctionDefinition(
                 start,
                 end,
                 locals.ToArray(),
-                codeBytes);
+                rdr.Bytes);
         }
 
         private Section? LoadDataSection(WasmImageReader rdr)
@@ -526,7 +525,7 @@ namespace Reko.ImageLoaders.WebAssembly
             case -0x10: return new TypeReference("anyfunc", new StructureType("anyfunc", 4)); // anyfunc
             case -0x20: throw new NotImplementedException(); // func
             case -0x40: throw new NotImplementedException(); // pseudo type for representing an empty block_type
-            default: throw new NotImplementedException();
+            default: throw new NotImplementedException($"Unknown value type: {ty:X}.");
             }
         }
 

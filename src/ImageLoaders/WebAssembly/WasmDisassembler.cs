@@ -70,6 +70,7 @@ namespace Reko.ImageLoaders.WebAssembly
             var ops = new List<MachineOperand>();
             int i = 0;
             uint u;
+            ulong ul;
             var fmt = decoder.OperandFormat;
             while (i < fmt.Length)
             {
@@ -83,12 +84,38 @@ namespace Reko.ImageLoaders.WebAssembly
                     }
                     ops.Add(ImmediateOperand.Word32(u));
                     break;
+                case 'b':
+                    if (!rdr.TryReadVarInt64(out long blockType))
+                    {
+                        return CreateInvalidInstruction();
+                    }
+                    if (blockType < 0)
+                    {
+                        if (blockType != -0x40L)
+                        {
+                            // byte: signals a valtype
+                            ops.Add(ImmediateOperand.Byte((byte) (blockType & 0x7F)));
+                        }
+                    }
+                    else
+                    {
+                        // uint32: signals type index.
+                        ops.Add(ImmediateOperand.UInt32((uint) blockType));
+                    }
+                    break;
                 case 'r':
                     if (!rdr.TryReadUInt32(out u))
                     {
                         return CreateInvalidInstruction();
                     }
                     ops.Add(new ImmediateOperand(Constant.FloatFromBitpattern(u)));
+                    break;
+                case 'R':
+                    if (!rdr.TryReadUInt64(out ul))
+                    {
+                        return CreateInvalidInstruction();
+                    }
+                    ops.Add(new ImmediateOperand(Constant.DoubleFromBitpattern((long)ul)));
                     break;
                 case 'm':
                     if (!rdr.TryReadVarUInt32(out uint alignment) ||

@@ -198,7 +198,9 @@ namespace Reko.UnitTests.ImageLoaders.WebAssembly
             var section = ldr.LoadSection(rdr);
             var codes = (CodeSection)section;
             Assert.AreEqual(1, codes.Functions.Count);
-            Assert.AreEqual(new byte[] {  0x41, 0x10, 0x10, 0x00, 0x0B }, codes.Functions[0].ByteCode);
+            var fn0 = codes.Functions[0];
+            Assert.AreEqual(0x41, fn0.ByteCode[fn0.Start]);
+            Assert.AreEqual(0x0B, fn0.ByteCode[fn0.End-1]);
         }
 
         [Test]
@@ -219,7 +221,12 @@ namespace Reko.UnitTests.ImageLoaders.WebAssembly
             var section = ldr.LoadSection(rdr);
             var codes = (CodeSection)section;
             Assert.AreEqual(2, codes.Functions.Count);
-            Assert.AreEqual(new byte[] { 0x41, 0x10, 0x10, 0x00, 0x0B }, codes.Functions[0].ByteCode);
+            var fn0 = codes.Functions[0];
+            Assert.AreEqual(0x41, fn0.ByteCode[fn0.Start]);
+            Assert.AreEqual(0x0B, fn0.ByteCode[fn0.End-1]);
+            var fn1 = codes.Functions[1];
+            Assert.AreEqual(0x02, fn1.ByteCode[fn1.Start]);
+            Assert.AreEqual(0x0B, fn1.ByteCode[fn1.End - 1]);
         }
 
         [Test]
@@ -299,7 +306,7 @@ namespace Reko.UnitTests.ImageLoaders.WebAssembly
             var codes = (CodeSection)section;
             Assert.AreEqual(1, codes.Functions.Count);
             var func = codes.Functions[0];
-            Assert.AreEqual(new byte[] { 0x0B }, func.ByteCode);
+            Assert.AreEqual(0x0B, func.ByteCode[func.Start]);
         }
     }
 }

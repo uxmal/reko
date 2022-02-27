@@ -53,6 +53,10 @@ namespace Reko.ImageLoaders.WebAssembly
             { Mnemonic.tee_local, "tee_local" },
             { Mnemonic.get_global, "get_global" },
             { Mnemonic.set_global, "set_global" },
+
+            { Mnemonic.table_get, "table.get" },
+            { Mnemonic.table_set, "table.set" },
+
             { Mnemonic.i32_load, "i32.load" },
             { Mnemonic.i64_load, "i64.load" },
             { Mnemonic.f32_load, "f32.load" },
@@ -236,8 +240,8 @@ namespace Reko.ImageLoaders.WebAssembly
             case ImmediateOperand imm:
                 if (imm.Width.IsIntegral || imm.Width.IsWord)
                     renderer.WriteFormat("0x{0:X}", imm.Value.ToUInt64());
-                else
-                    throw new NotImplementedException();
+                else if (imm.Width.IsReal)
+                    renderer.WriteFormat("{0}", imm.Value.ToReal64());
                 return;
             }
             base.RenderOperand(operand, renderer, options);
