@@ -7075,15 +7075,15 @@ T_1495: (in a5_35 @ 00002098 : ptr32)
   Class: Eq_1495
   DataType: ptr32
   OrigDataType: word32
-T_1496: (in d3_200 @ 00002098 : word32)
+T_1496: (in d3_199 @ 00002098 : word32)
   Class: Eq_1496
   DataType: word32
   OrigDataType: word32
-T_1497: (in d4_201 @ 00002098 : word32)
+T_1497: (in d4_200 @ 00002098 : word32)
   Class: Eq_1497
   DataType: word32
   OrigDataType: word32
-T_1498: (in a6_202 @ 00002098 : word32)
+T_1498: (in a6_201 @ 00002098 : word32)
   Class: Eq_1498
   DataType: word32
   OrigDataType: word32
@@ -7095,11 +7095,11 @@ T_1500: (in fn00001D80 @ 00002098 : ptr32)
   Class: Eq_351
   DataType: (ptr32 Eq_351)
   OrigDataType: (ptr32 (fn T_1506 (T_1357, T_1358, T_1501, T_1502, T_1503, T_1504, T_1505)))
-T_1501: (in out d3_200 @ 00002098 : ptr32)
+T_1501: (in out d3_199 @ 00002098 : ptr32)
   Class: Eq_355
   DataType: ptr32
   OrigDataType: ptr32
-T_1502: (in out d4_201 @ 00002098 : ptr32)
+T_1502: (in out d4_200 @ 00002098 : ptr32)
   Class: Eq_356
   DataType: ptr32
   OrigDataType: ptr32
@@ -7111,11 +7111,11 @@ T_1504: (in out a5_35 @ 00002098 : ptr32)
   Class: Eq_326
   DataType: (ptr32 Eq_326)
   OrigDataType: ptr32
-T_1505: (in out a6_202 @ 00002098 : ptr32)
+T_1505: (in out a6_201 @ 00002098 : ptr32)
   Class: Eq_359
   DataType: ptr32
   OrigDataType: ptr32
-T_1506: (in fn00001D80(a5, dwArg04, out d3_200, out d4_201, out a2_30, out a5_35, out a6_202) @ 00002098 : word32)
+T_1506: (in fn00001D80(a5, dwArg04, out d3_199, out d4_200, out a2_30, out a5_35, out a6_201) @ 00002098 : word32)
   Class: Eq_365
   DataType: word32
   OrigDataType: word32

@@ -6609,8 +6609,8 @@ l000000000040D570:
 	Mem55[qwLoc48:word64] = r12_139
 l000000000040D4C5:
 	word64 r13_62 = rdi + (rsi >>u 3<64>) * 8<64>
-	word64 rdx_426
-	fn000000000040D450(rcx, qwLoc48, rdi, qwLoc58 - (rsi >>u 3<64>), r13_62, out rdx_426)
+	word64 rdx_424
+	fn000000000040D450(rcx, qwLoc48, rdi, qwLoc58 - (rsi >>u 3<64>), r13_62, out rdx_424)
 	word64 rdx_105
 	rcx = fn000000000040D450(rcx, qwLoc48, rdi, rsi >>u 3<64>, rdi, out rdx_105)
 	word64 r14_111 = rsi >>u 3<64>
@@ -6646,11 +6646,12 @@ l000000000040D634:
 l000000000040D57B:
 	word64 r14_143 = rsi >>u 1<64>
 	word64 r15_145 = 1<u64>
+	word64 qwLoc58_358 = 0<64>
 	word64 r13_147 = Mem146[qwLoc40_296:word64]
 l000000000040D5B7:
 	word64 rax_164
 	call rcx (retsize: 8;)
-		uses: rax:rax_164,rcx:rcx_155,rdi:r12_150,rdx:rdx_157,rsi:r13_148,Stack +0018:qwLoc58,Stack +0028:qwLoc48,Stack +0038:qwLoc38,Stack +FFFFFFB0:qwLoc58,Stack +FFFFFFC0:qwLoc48
+		uses: rax:rax_164,rcx:rcx_155,rdi:r12_150,rdx:rdx_157,rsi:r13_148,Stack +0018:qwLoc58_360,Stack +0028:qwLoc48,Stack +0038:qwLoc38
 		defs: rax:rax_164,rcx:rcx_160,rdx:rdx_163
 	branch SLICE(rax_164, word32, 0) > 0<32> l000000000040D5A0
 l000000000040D5A0:
@@ -6658,18 +6659,20 @@ l000000000040D5A0:
 	r14_143 = r14_143 + 1<64>
 	branch rsi == r14_143 l000000000040D5F0
 l000000000040D5F0:
-	word64 r15_187 = (rsi >>u 1<64>) - qwLoc58
-	memcpy(rdi + r15_145 * 8<64>, rdx + qwLoc58 * 8<64>, r15_187 * 8<64>)
+	word64 r15_187 = (rsi >>u 1<64>) - qwLoc58_358
+	memcpy(rdi + r15_145 * 8<64>, rdx + qwLoc58_358 * 8<64>, r15_187 * 8<64>)
 	rdxOut = r15_187 * 8<64>
 	return rdx
 l000000000040D5AF:
 	r13_147 = Mem172[rdi + r14_143 * 8<64>:word64]
 l000000000040D5C3:
+	word64 v23_197 = qwLoc58_358 + 1<64>
 	Mem199[rdi - 8<i64> + r15_145 * 8<64>:word64] = r12_139
-	branch rsi >>u 1<64> == qwLoc58 + 1<64> l000000000040D479
+	qwLoc58_358 = v23_197
+	branch rsi >>u 1<64> == v23_197 l000000000040D479
 l000000000040D5DE:
 	rcx = rdx
-	r12_139 = Mem199[rdx + (qwLoc58 + 1<64>) * 8<64>:word64]
+	r12_139 = Mem199[rdx + v23_197 * 8<64>:word64]
 l000000000040D5B3:
 	r15_145 = r15_145 + 1<64>
 l000000000040D561:

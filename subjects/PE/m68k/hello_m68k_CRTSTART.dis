@@ -164,7 +164,7 @@ l000023A0:
 	Mem87[Mem63[a5 + -1376<i32>:word32] + 14<i32>:word32] = Mem63[a6_101 + 8<i32>:word32]
 l000023AA:
 	call a5 + 98<i32> (retsize: 4;)
-		uses: a5:a5,a6:a6_68,Stack +000C:dwArg08,Stack +0013:bArg0F
+		uses: a5:a5,a6:a6_68
 		defs: a6:a6_93
 l000023AE:
 	return Mem103[a6_101:word32]
@@ -197,7 +197,7 @@ l000023D4:
 	word32 a0_42
 	word32 d0_43
 	call d0_26 (retsize: 4;)
-		uses: a0:a0_42,a6:a6_34,d0:d0_43,d3:d3_23,d4:d4_35,d5:d5_29,Stack +0008:dwArg04,Stack +000C:dwArg08
+		uses: a0:a0_42,a6:a6_34,d0:d0_43,d3:d3_23,d4:d4_35,d5:d5_29
 		defs: a0:a0_42,a6:a6_38,d0:d0_43,d3:d3_41,d4:d4_40,d5:d5_39
 l000023D8:
 	d3_19 = d3_19 + 4<32>

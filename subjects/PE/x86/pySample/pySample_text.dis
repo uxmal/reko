@@ -132,10 +132,10 @@ l10001348:
 	branch eax_89 == 0<32> l10001350
 l1000134E:
 	word32 ecx_99
-	word32 edx_286
+	word32 edx_285
 	call eax_89 (retsize: 4;)
-		uses: ecx:ecx_99,edx:edx_286,Stack +0008:dwArg04,Stack +000C:dwArg08,Stack +0010:dwArg0C
-		defs: ecx:ecx_99,edx:edx_286,esp:esp_97
+		uses: ecx:ecx_99,edx:edx_285
+		defs: ecx:ecx_99,edx:edx_285,esp:esp_97
 l10001357:
 	word32 esp_102 = esp_81 - 4<i32>
 	Mem103[esp_102:word32] = eax_69
@@ -241,7 +241,7 @@ l100013C7:
 l100013CC:
 	branch Mem29[0x100020CC<p32>:word32] == 0<32> l100013DD
 l100013D5:
-	Mem74[ebp_13 - 28<i32>:word32] = fn00000000(ebx_113, edx)
+	Mem74[ebp_13 - 28<i32>:word32] = fn00000000(ebx_113, edx, ecx)
 l100013DD:
 	branch Mem76[ebp_13 - 28<i32>:word32] == 0<32> l1000147A
 l100013E7:

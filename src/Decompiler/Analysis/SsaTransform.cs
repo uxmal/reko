@@ -722,7 +722,7 @@ namespace Reko.Analysis
             // If the guess is wrong, the user can correct it with a 
             // decompilation directive.
 
-            var ids = GuessParameterIdentifiers(ci, stmCur!, stackDepth)
+            var ids = GuessParameterIdentifiers(ci, stmCur!)
                 .Concat(ssa.Procedure.EntryBlock.Statements
                     .Select(s => s.Instruction)
                     .OfType<DefInstruction>()
@@ -739,7 +739,8 @@ namespace Reko.Analysis
             foreach (Identifier id in ResolveOverlaps(ids))
             {
                 var calleeStg = FrameShift(ci, id.Storage, stackDepth);
-                if (!existingUses.Contains(calleeStg) &&
+                if (calleeStg is not null &&
+                    !existingUses.Contains(calleeStg) &&
                     (calleeStg is RegisterStorage ||
                      calleeStg is StackArgumentStorage))
                 {
@@ -754,7 +755,8 @@ namespace Reko.Analysis
             foreach (Identifier id in ResolveOverlaps(ids))
             {
                 var calleeStg = FrameShift(ci, id.Storage, stackDepth);
-                if (!existingDefs.Contains(calleeStg) &&
+                if (calleeStg is not null &&
+                    !existingDefs.Contains(calleeStg) &&
                     (IsTrashed(trashedRegisters, calleeStg)
                     || calleeStg is FlagGroupStorage))
                 {
@@ -779,7 +781,7 @@ namespace Reko.Analysis
         /// <param name="procedure"></param>
         /// <param name="stmCall"></param>
         /// <returns></returns>
-        public IEnumerable<Identifier> GuessParameterIdentifiers(CallInstruction call, Statement stmCall, int stackDepth)
+        public IEnumerable<Identifier> GuessParameterIdentifiers(CallInstruction call, Statement stmCall)
         {
             var ids = new List<Identifier>();
             var stms = stmCall.Block.Statements;
@@ -805,7 +807,6 @@ namespace Reko.Analysis
                         ids.Add(ass.Dst);
                         break;
                     case StackStorage stk:
-                        var calleeStg = FrameShift(call, stk, stackDepth);
                         ids.Add(ass.Dst);
                         break;
                     }
@@ -819,11 +820,11 @@ namespace Reko.Analysis
             return ids;
         }
 
-        private int GetStackDepthAtCall(Procedure proc, CallInstruction call)
+        private int? GetStackDepthAtCall(Procedure proc, CallInstruction call)
         {
             var sp = call.Uses.FirstOrDefault(u => u.Storage == proc.Architecture.StackRegister);
             if (sp == null)
-                return 0;
+                return null;
             if (sp.Expression is Identifier fp && fp.Storage == proc.Frame.FramePointer.Storage)
                 return 0;
             if (sp.Expression is BinaryExpression bin &&
@@ -840,15 +841,18 @@ namespace Reko.Analysis
                 }
             }
             // Give up.
-            return 0;
+            return null;
         }
 
-        private Storage FrameShift(CallInstruction call, Storage callerStorage, int spDepth)
+        private Storage? FrameShift(CallInstruction call, Storage callerStorage, int? spDepth)
         {
             if (callerStorage is StackStorage stgArg)
             {
+                // We can not bind stack variables if offset is unknown
+                if (!spDepth.HasValue)
+                    return null;
                 return new StackArgumentStorage(
-                    stgArg.StackOffset - spDepth + call.CallSite.SizeOfReturnAddressOnStack,
+                    stgArg.StackOffset - spDepth.Value + call.CallSite.SizeOfReturnAddressOnStack,
                     stgArg.DataType);
             }
             return callerStorage;

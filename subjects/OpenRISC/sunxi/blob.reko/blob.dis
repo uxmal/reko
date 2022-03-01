@@ -8002,7 +8002,7 @@ l0000E774:
 l00008C34:
 	word32 r3_124 = (fn00008AC0() << 3<32>) + 0x13834<32>
 	call Mem113[r3_124:word32] (retsize: 0;)
-		uses: r14:dwLoc38,r15:r15,r2:0x13834<32>,r3:Mem113[r3_124 + 4<i32>:word32],r4:r4,r5:r5,r9:dwLoc34,Stack +FFFFFFC4:dwLoc3C,Stack +FFFFFFC8:dwLoc3C,Stack +FFFFFFCC:dwLoc34,VR:VR
+		uses: r14:dwLoc38,r15:r15,r2:0x13834<32>,r3:Mem113[r3_124 + 4<i32>:word32],r4:r4,r5:r5,r9:dwLoc34,VR:VR
 	return
 fn0000E758_exit:
 

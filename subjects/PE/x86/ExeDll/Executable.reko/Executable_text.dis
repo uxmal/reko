@@ -123,7 +123,7 @@ l0040120E:
 	word32 esi_154 = Mem153[esi_136:word32]
 	fn00401976()
 	call esi_154 (retsize: 4;)
-		uses: edx:edx_137,Stack +FFFFFFF8:1<32>
+		uses: edx:edx_137
 		defs: esp:esp_159
 l0040121D:
 	word32 eax_165 = fn0040176E()
@@ -131,9 +131,9 @@ l0040121D:
 l00401228:
 	Mem173[esp_116 - 4<i32>:word32] = eax_165
 	word32 esi_181
-	word32 edx_346
-	word32 edi_347
-	branch fn00401544(ebx_125, eax_165, edi_119, out edx_346, out ebx_125, out ebp_132, out esi_181, out edi_347) == 0<8> l0040123B
+	word32 edx_341
+	word32 edi_342
+	branch fn00401544(ebx_125, eax_165, edi_119, out edx_341, out ebx_125, out ebp_132, out esi_181, out edi_342) == 0<8> l0040123B
 l00401233:
 	register_thread_local_exe_atexit_callback(Mem173[esi_181:word32])
 l0040123B:
