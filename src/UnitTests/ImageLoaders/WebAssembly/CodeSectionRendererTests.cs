@@ -96,7 +96,7 @@ namespace Reko.UnitTests.ImageLoaders.WebAssembly
             var sExp =
             #region Expected
 @"WASM functions
-(func fn6 (; 0 ;) retval??
+(func fn000000 (; 0 ;) retval??
     i32.const 0x42
     return
 )
