@@ -1,0 +1,7 @@
+;;; Segment .types (00030000)
+;   (type (; 0x0 ;) (func (param i32 i32 f64))
+;   (type (; 0x1 ;) (func (param i32 i32) (result f64))
+;   (type (; 0x2 ;) (func (param i32 i32))
+;   (type (; 0x3 ;) (func (result f64))
+;   (type (; 0x4 ;) (func (param i32) (result f64))
+;   (type (; 0x5 ;) (func)

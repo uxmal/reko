@@ -470,6 +470,8 @@ Warning: Recursion too deep in PtrPrimitiveReplacer
 
 === i8051\reko-825\ledwith8051
 
+=== wasm\life
+
 === PE\x86\LocalStackVariables\LocalStackVariables
 Signature of 'Microsoft Visual C++ 8' detected.
 
@@ -587,7 +589,7 @@ Error: An error occurred while writing assembly language output.
     Address 0000C3F4 is outside of image. (Parameter 'addr')
        at Reko.Core.Memory.ByteImageReader..ctor(ByteMemoryArea mem, Address addr, Int64 cUnits) in d:\dev\uxmal\reko\master\src\Core\Memory\ByteImageReader.cs:line 64
    at Reko.Core.Memory.EndianByteImageReader..ctor(ByteMemoryArea img, Address addr, Int64 cUnits) in d:\dev\uxmal\reko\master\src\Core\Memory\EndianImageReader.cs:line 70
-   at Reko.Core.Memory.BeImageReader..ctor(ByteMemoryArea image, Address addr, Int64 cUnits) in d:\dev\uxmal\reko\master\src\Core\Memory\EndianImageReader.cs:line 254
+   at Reko.Core.Memory.BeImageReader..ctor(ByteMemoryArea image, Address addr, Int64 cUnits) in d:\dev\uxmal\reko\master\src\Core\Memory\EndianImageReader.cs:line 253
    at Reko.Core.Memory.ByteMemoryArea.CreateBeReader(Address addr, Int64 cUnits) in d:\dev\uxmal\reko\master\src\Core\Memory\ByteMemoryArea.cs:line 79
    at Reko.Core.EndianServices.BeServices.CreateImageReader(MemoryArea mem, Address addr, Int64 cUnits) in d:\dev\uxmal\reko\master\src\Core\EndianServices.cs:line 238
    at Reko.Core.ProcessorArchitecture.CreateImageReader(MemoryArea mem, Address addr, Int64 cbUnits) in d:\dev\uxmal\reko\master\src\Core\IProcessorArchitecture.cs:line 492
@@ -776,7 +778,7 @@ fn0000000100003AA8: error: An error occurred while rewriting procedure to high-l
    at Reko.Core.Lib.DominatorGraph`1..ctor(DirectedGraph`1 graph, T entryNode) in d:\dev\uxmal\reko\master\src\Core\Lib\DominatorGraph.cs:line 45
    at Reko.Structure.StructureAnalysis.Execute() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 144
    at Reko.Structure.StructureAnalysis.Structure() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 81
-   at Reko.Decompiler.StructureProgram() in d:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 539
+   at Reko.Decompiler.StructureProgram() in d:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 540
 
 === Hunk-m68k\MATRIXMU
 
@@ -811,18 +813,18 @@ fn0000CE88: error: An error occurred while rewriting procedure to high-level lan
     The given key 'l0000CEAC' was not present in the dictionary.
        at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
    at Reko.Core.Lib.DominatorGraph`1.BuildDominanceFrontiers(DirectedGraph`1 graph, Dictionary`2 idoms) in d:\dev\uxmal\reko\master\src\Core\Lib\DominatorGraph.cs:line 192
-   at Reko.Core.Lib.DominatorGraph`1..ctor(DirectedGraph`1 graph, T entryNode) in d:\dev\uxmal\reko\master\src\Core\Lib\DominatorGraph.cs:line 46
+   at Reko.Core.Lib.DominatorGraph`1..ctor(DirectedGraph`1 graph, T entryNode) in d:\dev\uxmal\reko\master\src\Core\Lib\DominatorGraph.cs:line 45
    at Reko.Structure.StructureAnalysis.Execute() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 144
    at Reko.Structure.StructureAnalysis.Structure() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 81
-   at Reko.Decompiler.StructureProgram() in d:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 539
+   at Reko.Decompiler.StructureProgram() in d:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 540
 fn0000EE14: error: An error occurred while rewriting procedure to high-level language.
     The given key 'l0000EE2C' was not present in the dictionary.
        at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
    at Reko.Core.Lib.DominatorGraph`1.BuildDominanceFrontiers(DirectedGraph`1 graph, Dictionary`2 idoms) in d:\dev\uxmal\reko\master\src\Core\Lib\DominatorGraph.cs:line 192
-   at Reko.Core.Lib.DominatorGraph`1..ctor(DirectedGraph`1 graph, T entryNode) in d:\dev\uxmal\reko\master\src\Core\Lib\DominatorGraph.cs:line 46
+   at Reko.Core.Lib.DominatorGraph`1..ctor(DirectedGraph`1 graph, T entryNode) in d:\dev\uxmal\reko\master\src\Core\Lib\DominatorGraph.cs:line 45
    at Reko.Structure.StructureAnalysis.Execute() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 144
    at Reko.Structure.StructureAnalysis.Structure() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 81
-   at Reko.Decompiler.StructureProgram() in d:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 539
+   at Reko.Decompiler.StructureProgram() in d:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 540
 00000007: warning: Expected sizes of arrays to have been determined by now
 0000000D: warning: Expected sizes of arrays to have been determined by now
 00000015: warning: Expected sizes of arrays to have been determined by now
@@ -1270,7 +1272,7 @@ safe_read: error: An error occurred while rewriting procedure to high-level lang
    at Reko.Structure.CompoundConditionCoalescer.MaybeCoalesce(Block block) in d:\dev\uxmal\reko\master\src\Decompiler\Structure\CompoundConditionCoalescer.cs:line 96
    at Reko.Structure.CompoundConditionCoalescer.Transform() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\CompoundConditionCoalescer.cs:line 62
    at Reko.Structure.StructureAnalysis.Structure() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 79
-   at Reko.Decompiler.StructureProgram() in d:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 539
+   at Reko.Decompiler.StructureProgram() in d:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 540
 00017540: warning: Expected sizes of arrays to have been determined by now
 0002B411: warning: Expected sizes of arrays to have been determined by now
 00017540: warning: Expected sizes of arrays to have been determined by now
@@ -1898,7 +1900,7 @@ fn0000802E: error: An error occurred while rewriting procedure to high-level lan
    at Reko.Core.Lib.DominatorGraph`1..ctor(DirectedGraph`1 graph, T entryNode) in d:\dev\uxmal\reko\master\src\Core\Lib\DominatorGraph.cs:line 45
    at Reko.Structure.StructureAnalysis.Execute() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 144
    at Reko.Structure.StructureAnalysis.Structure() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 81
-   at Reko.Decompiler.StructureProgram() in d:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 539
+   at Reko.Decompiler.StructureProgram() in d:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 540
 fn00009746: error: An error occurred while rewriting procedure to high-level language.
     The given key 'l0000985B' was not present in the dictionary.
        at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
@@ -1906,7 +1908,7 @@ fn00009746: error: An error occurred while rewriting procedure to high-level lan
    at Reko.Core.Lib.DominatorGraph`1..ctor(DirectedGraph`1 graph, T entryNode) in d:\dev\uxmal\reko\master\src\Core\Lib\DominatorGraph.cs:line 45
    at Reko.Structure.StructureAnalysis.Execute() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 144
    at Reko.Structure.StructureAnalysis.Structure() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 81
-   at Reko.Decompiler.StructureProgram() in d:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 539
+   at Reko.Decompiler.StructureProgram() in d:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 540
 fn000125CA: warning: Structure analysis stopped making progress, quitting. Please report this issue at https://github.com/uxmal/reko
 
 === PE\x86-64\varargs_test\varargs_test
@@ -1958,4 +1960,4 @@ Signature of 'Microsoft Visual C++ 8' detected.
 0040120B: warning: Unable to determine the upper bound of an indirect call or jump; there may be more than 2 entries.
 004011A5: warning: Unable to determine the upper bound of an indirect call or jump; there may be more than 2 entries.
 
-Decompiled 83 binaries in 54.92 seconds.
+Decompiled 84 binaries in 44.23 seconds.
