@@ -1931,11 +1931,11 @@ T_338: (in esi_181 @ 00401231 : (ptr32 word32))
   Class: Eq_338
   DataType: (ptr32 word32)
   OrigDataType: (ptr32 (struct (0 T_354 t0000)))
-T_339: (in edx_346 @ 00401231 : word32)
+T_339: (in edx_341 @ 00401231 : word32)
   Class: Eq_339
   DataType: word32
   OrigDataType: word32
-T_340: (in edi_347 @ 00401231 : word32)
+T_340: (in edi_342 @ 00401231 : word32)
   Class: Eq_340
   DataType: word32
   OrigDataType: word32
@@ -1943,7 +1943,7 @@ T_341: (in fn00401544 @ 00401231 : ptr32)
   Class: Eq_260
   DataType: (ptr32 Eq_260)
   OrigDataType: (ptr32 (fn T_347 (T_114, T_245, T_238, T_342, T_343, T_344, T_345, T_346)))
-T_342: (in out edx_346 @ 00401231 : ptr32)
+T_342: (in out edx_341 @ 00401231 : ptr32)
   Class: Eq_265
   DataType: ptr32
   OrigDataType: ptr32
@@ -1959,11 +1959,11 @@ T_345: (in out esi_181 @ 00401231 : ptr32)
   Class: Eq_268
   DataType: ptr32
   OrigDataType: ptr32
-T_346: (in out edi_347 @ 00401231 : ptr32)
+T_346: (in out edi_342 @ 00401231 : ptr32)
   Class: Eq_269
   DataType: ptr32
   OrigDataType: ptr32
-T_347: (in fn00401544(ebx_125, eax_165, edi_119, out edx_346, out ebx_125, out ebp_132, out esi_181, out edi_347) @ 00401231 : byte)
+T_347: (in fn00401544(ebx_125, eax_165, edi_119, out edx_341, out ebx_125, out ebp_132, out esi_181, out edi_342) @ 00401231 : byte)
   Class: Eq_276
   DataType: byte
   OrigDataType: byte
@@ -1971,7 +1971,7 @@ T_348: (in 0<8> @ 00401231 : byte)
   Class: Eq_276
   DataType: byte
   OrigDataType: byte
-T_349: (in fn00401544(ebx_125, eax_165, edi_119, out edx_346, out ebx_125, out ebp_132, out esi_181, out edi_347) == 0<8> @ 00000000 : bool)
+T_349: (in fn00401544(ebx_125, eax_165, edi_119, out edx_341, out ebx_125, out ebp_132, out esi_181, out edi_342) == 0<8> @ 00000000 : bool)
   Class: Eq_349
   DataType: bool
   OrigDataType: bool

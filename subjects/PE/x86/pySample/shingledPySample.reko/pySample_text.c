@@ -181,7 +181,7 @@ Eq_n fn10001388(Eq_n ecx, Eq_n edx, Eq_n (* ebx)(LONG *, Eq_n, Eq_n), ptr32 esi,
 	if (edx == 0x01 || edx == 0x02)
 	{
 		if (g_dw100020CC != 0x00)
-			ebp_n->tFFFFFFE4 = fn00000000(ebx_n, edx);
+			ebp_n->tFFFFFFE4 = fn00000000(ebx_n, edx, ecx);
 		if (ebp_n->tFFFFFFE4 == 0x00)
 		{
 l1000147A:

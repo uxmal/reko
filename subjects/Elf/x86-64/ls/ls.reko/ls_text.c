@@ -6377,6 +6377,7 @@ l000000000040D537:
 	}
 	Eq_n r14_n = rsi >> 0x01;
 	uint64 r15_n = 0x01;
+	uint64 qwLoc58_n = 0x00;
 	Eq_n r13_n = *qwLoc40_n.u0;
 	while (true)
 	{
@@ -6384,15 +6385,17 @@ l000000000040D537:
 		rcx();
 		if ((word32) rax_n <= 0x00)
 		{
+			uint64 v23_n = qwLoc58_n + 0x01;
 			(rdi - 8)[r15_n] = r12_n;
-			if (rsi >> 0x01 == qwLoc58 + 0x01)
+			qwLoc58_n = v23_n;
+			if (rsi >> 0x01 == v23_n)
 			{
 l000000000040D479:
 				rdxOut = rdx;
 				return rcx;
 			}
 			rcx = rdx;
-			r12_n = *((word64) rdx + (qwLoc58 + 0x01) * 0x08);
+			r12_n = *((word64) rdx + v23_n * 0x08);
 		}
 		else
 		{
@@ -6400,8 +6403,8 @@ l000000000040D479:
 			r14_n = (word64) r14_n + 1;
 			if (rsi == r14_n)
 			{
-				uint64 r15_n = (rsi >> 0x01) - qwLoc58;
-				memcpy((word64) rdi + r15_n * 0x08, (word64) rdx + qwLoc58 * 0x08, r15_n * 0x08);
+				uint64 r15_n = (rsi >> 0x01) - qwLoc58_n;
+				memcpy((word64) rdi + r15_n * 0x08, (word64) rdx + qwLoc58_n * 0x08, r15_n * 0x08);
 				rdxOut = r15_n * 0x08;
 				return rdx;
 			}

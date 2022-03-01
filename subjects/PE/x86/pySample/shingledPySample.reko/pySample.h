@@ -257,7 +257,7 @@ Eq_159: DWORD
 	T_516 (in 1<32> @ 10001408 : word32)
 	T_520 (in Mem76[ebp_13 + -28<i32>:word32] @ 100013E1 : word32)
 	T_521 (in 0<32> @ 100013E1 : word32)
-	T_525 (in fn00000000(ebx_113, edx) @ 100013DA : void)
+	T_525 (in fn00000000(ebx_113, edx, ecx) @ 100013DA : void)
 	T_528 (in Mem74[ebp_13 + -28<i32>:word32] @ 100013DA : word32)
 	T_537 (in Mem85[esp_80 + -4<i32>:word32] @ 100013E8 : word32)
 	T_541 (in eax_90 @ 100013EA : Eq_159)
@@ -469,7 +469,7 @@ Eq_500: (fn Eq_159 (Eq_158, Eq_159))
 	T_500 (in fn100017C6 @ 100013FD : ptr32)
 	T_501 (in signature of fn100017C6 @ 100017C6 : void)
 	T_577 (in fn100017C6 @ 10001411 : ptr32)
-Eq_523: (fn Eq_159 (Eq_158, Eq_159))
+Eq_523: (fn Eq_159 (Eq_158, Eq_159, Eq_160))
 	T_523 (in fn00000000 @ 100013DA : ptr32)
 Eq_529: (struct "Eq_529" (FFFFFFF8 Eq_158 tFFFFFFF8) (FFFFFFFC Eq_159 tFFFFFFFC) (0 Eq_160 t0000))
 	T_529 (in esp_80 @ 100013E7 : (ptr32 Eq_529))
@@ -2077,7 +2077,7 @@ T_368: (in ecx_99 @ 1000134E : word32)
   Class: Eq_368
   DataType: word32
   OrigDataType: word32
-T_369: (in edx_286 @ 1000134E : word32)
+T_369: (in edx_285 @ 1000134E : word32)
   Class: Eq_369
   DataType: word32
   OrigDataType: word32
@@ -2696,12 +2696,12 @@ T_522: (in ebp_13->tFFFFFFE4 == 0<32> @ 00000000 : bool)
 T_523: (in fn00000000 @ 100013DA : ptr32)
   Class: Eq_523
   DataType: (ptr32 Eq_523)
-  OrigDataType: (ptr32 (fn T_525 (T_422, T_407)))
+  OrigDataType: (ptr32 (fn T_525 (T_422, T_407, T_406)))
 T_524: (in signature of fn00000000 @ 00000000 : void)
   Class: Eq_524
   DataType: Eq_524
   OrigDataType: 
-T_525: (in fn00000000(ebx_113, edx) @ 100013DA : void)
+T_525: (in fn00000000(ebx_113, edx, ecx) @ 100013DA : void)
   Class: Eq_159
   DataType: Eq_159
   OrigDataType: void
@@ -5317,7 +5317,7 @@ typedef struct Eq_487 {
 
 typedef DWORD (Eq_500)(Eq_158, DWORD);
 
-typedef DWORD (Eq_523)(Eq_158, DWORD);
+typedef DWORD (Eq_523)(Eq_158, DWORD, LPVOID);
 
 typedef struct Eq_529 {
 	Eq_158 tFFFFFFF8;	// FFFFFFF8

@@ -17,7 +17,7 @@ l00000610:
 	Mem22[sp_17 + 0x14<32>:word32] = r2
 	Mem23[sp_17 + 0x18<32>:word32] = sp_17
 	call Mem23[0x00020A24<p32>:word32] (retsize: 0;)
-		uses: r2:r2,r4:r4_12,r5:dwArg00,r6:fp + 4<i32>,r7:r7_18,r8:r8_19,Stack +0000:dwArg00
+		uses: r2:r2,r4:r4_12,r5:dwArg00,r6:fp + 4<i32>,r7:r7_18,r8:r8_19
 l00000664:
 
 
