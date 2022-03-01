@@ -31,6 +31,9 @@ using System.Threading.Tasks;
 
 namespace Reko.ImageLoaders.WebAssembly
 {
+    /// <summary>
+    /// This class loads WebAssembly wasm files into a <see cref="Program"/>.
+    /// </summary>
     public class WasmLoader : ProgramImageLoader
     {
         internal static string[] ExportKinds =
@@ -595,7 +598,6 @@ namespace Reko.ImageLoaders.WebAssembly
 
     public class TypeSection : Section
     {
-        public List<FunctionType> Types;
 
         public TypeSection(string name, byte[] bytes, List<FunctionType> types)
             : base(name, bytes)
@@ -603,15 +605,14 @@ namespace Reko.ImageLoaders.WebAssembly
             this.Types = types;
         }
 
+        public List<FunctionType> Types { get; }
+
+        public override ImageSegmentRenderer? CreateDesigner(WasmArchitecture wasm, List<Section> sections)
+            => new TypeSectionRenderer(this);
+        
         public override string ToString()
         {
-            var sb = new StringBuilder();
-            for (int i = 0; i < Types.Count; ++i)
-            {
-                sb.AppendFormat("(type $type{0} {1})", i, Types[i]);
-                sb.AppendLine();
-            }
-            return sb.ToString();
+            return $"Types: {Types.Count}";
         }
     }
 
@@ -671,6 +672,9 @@ namespace Reko.ImageLoaders.WebAssembly
             this.Declarations = declarations;
         }
 
+        public override ImageSegmentRenderer? CreateDesigner(WasmArchitecture wasm, List<Section> sections)
+            => new FunctionSectionRenderer(wasm, this, sections);
+        
         public List<uint> Declarations { get; }
     }
 

@@ -266,6 +266,8 @@ namespace Reko.Typing
                 if (c!.IsZero)
                 {
                     var np = program.Platform.MakeAddressFromConstant(c, false)!;
+                    if (np is null)
+                        return c;
                     np.TypeVariable = c.TypeVariable;
                     np.DataType = c.DataType;
                     return np;

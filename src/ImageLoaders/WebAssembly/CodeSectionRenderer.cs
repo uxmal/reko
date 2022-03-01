@@ -259,11 +259,14 @@ namespace Reko.ImageLoaders.WebAssembly
                 case Mnemonic.i32_load8_s:
                     dataStack[^1] = PrimitiveType.Int32;
                     break;
+                case Mnemonic.i32_load8_u:
+                    dataStack[^1] = PrimitiveType.UInt32;
+                    break;
                 case Mnemonic.i32_load16_s:
                     dataStack[^1] = PrimitiveType.Int32;
                     break;
                 case Mnemonic.loop:
-                    blockStack.Add(instr);
+                    pushBlockStack = true;
                     break;
                 case Mnemonic.f64_abs:
                 case Mnemonic.f64_neg:
@@ -296,6 +299,9 @@ namespace Reko.ImageLoaders.WebAssembly
                 case Mnemonic.@return:
                     // Leave the structured block we're in
                     break;
+                case Mnemonic.select:   // pop 3, but push 1
+                    PopDataStack(dataStack, 2);
+                    break;
                 case Mnemonic.set_global:
                 case Mnemonic.set_local:
                     PopDataStack(dataStack, 1);
@@ -326,7 +332,7 @@ namespace Reko.ImageLoaders.WebAssembly
                     formatter.Indentation -= formatter.TabSize;
                 }
                 formatter.Indent();
-#if DEBUG
+#if VERBOSE
                 var debug = $"{instr.Address}:{dataStack.Count,3}{new string(' ', blockStack.Count * 4)} {instr}";
                 Debug.WriteLine(debug);
                 Console.WriteLine(debug);
@@ -375,7 +381,7 @@ namespace Reko.ImageLoaders.WebAssembly
                 if (funcExport != null && !string.IsNullOrEmpty(funcExport.Field))
                     return funcExport.Field;
             }
-            return $"fn{ifunc:6}";
+            return $"fn{ifunc:000000}";
         }
     }
 }
