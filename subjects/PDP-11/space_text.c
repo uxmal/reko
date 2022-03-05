@@ -727,7 +727,7 @@ l06B2:
 	{
 		if (r4_n <= 0x00)
 		{
-			__syscall(0x898A);
+			__syscall<word16>(0x898A);
 			goto l06B2;
 		}
 	}
@@ -739,7 +739,7 @@ l06B2:
 		if ((r4_n & 0x7F00) == 0x00)
 		{
 l06B0:
-			__syscall(0x898B);
+			__syscall<word16>(0x898B);
 			goto l06B2;
 		}
 	}
@@ -837,7 +837,7 @@ void fn0754(<anonymous> * wArg00, Eq_n wArg02, Eq_n wArg04, cui16 wArg06, uint16
 	bool C_n = (bool) cond(wArg02 << 1);
 	if (wArg02 << 1 == 0x00)
 	{
-		__syscall(0x898C);
+		__syscall<word16>(0x898C);
 		goto l080C;
 	}
 	Eq_n v23_n = __rcl<word16,byte>(wArg02, 0x01, C_n);
@@ -855,7 +855,7 @@ void fn0754(<anonymous> * wArg00, Eq_n wArg02, Eq_n wArg04, cui16 wArg06, uint16
 		{
 			if (r2_n <= 0x00)
 			{
-				__syscall(0x898A);
+				__syscall<word16>(0x898A);
 				goto l080A;
 			}
 l078E:
@@ -942,7 +942,7 @@ l07CE:
 		}
 		if (r2_n <= 0x00)
 			goto l078E;
-		__syscall(0x898B);
+		__syscall<word16>(0x898B);
 	}
 l080C:
 	r2_n.u0 = 0x00;
@@ -1071,7 +1071,7 @@ l1086:
 			goto l105E;
 		}
 l105E:
-		__syscall(0x8981);
+		__syscall<word16>(0x8981);
 	}
 	r0_n = 0x00;
 	goto l107E;
@@ -1416,7 +1416,7 @@ void fn0CF4(struct Eq_n * r5)
 		fn0D3E(&r0_n->b0004 + 1, v35_n);
 	}
 	else
-		__syscall(0x8990);
+		__syscall<word16>(0x8990);
 }
 
 <anonymous> g_t0D0A = <code>; // 0D0A
@@ -1618,7 +1618,7 @@ void fn0F48(struct Eq_n * r5)
 		while ((SLICE(r0_r1_n, word16, 16) & 0x8000) == 0x00);
 	}
 	else
-		__syscall(0x8990);
+		__syscall<word16>(0x8990);
 }
 
 // 0F9C: void fn0F9C()
@@ -1679,7 +1679,7 @@ void fn0FB2(word16 r0, struct Eq_n * wArg00, word16 wArg02, union Eq_n * wArg04,
 	struct Eq_n * r3_n = g_ptr5424;
 	r3_n->ptr0064 = fp + 0x0A;
 	if (r3_n->ptr0014 != null)
-		__syscall(0x899A);
+		__syscall<word16>(0x899A);
 	r3_n->ptr0014 = wArg00;
 	r3_n->ptr001C = wArg04;
 	g_t0FE2();
@@ -1840,7 +1840,7 @@ void fn12AC(Eq_n r2)
 	struct Eq_n * r3_n = g_ptr5424;
 	r3_n->t00A2 = r2;
 	if (r3_n->ptr0014 != null)
-		__syscall(0x899A);
+		__syscall<word16>(0x899A);
 	struct Eq_n * r0_n = fn1420(r2, r3_n);
 	r3_n->ptr0014 = r0_n;
 	r0_n->t0000.u2 = r0_n->t0000 & 0x0800;
@@ -1986,22 +1986,22 @@ Eq_n g_t1396 = // 1396
 //      fn45F6
 void fn13FE()
 {
-	__syscall(0x88A0);
-	__syscall(0x88A1);
-	__syscall(0x88A2);
-	__syscall(0x88A3);
-	__syscall(0x88A4);
-	__syscall(0x88A5);
-	__syscall(0x88A6);
-	__syscall(0x88A7);
-	__syscall(0x88A8);
-	__syscall(0x88A9);
-	__syscall(0x88AA);
-	__syscall(0x88AB);
-	__syscall(0x88AC);
-	__syscall(0x88AD);
-	__syscall(0x88AE);
-	__syscall(0x88AF);
+	__syscall<word16>(0x88A0);
+	__syscall<word16>(0x88A1);
+	__syscall<word16>(0x88A2);
+	__syscall<word16>(0x88A3);
+	__syscall<word16>(0x88A4);
+	__syscall<word16>(0x88A5);
+	__syscall<word16>(0x88A6);
+	__syscall<word16>(0x88A7);
+	__syscall<word16>(0x88A8);
+	__syscall<word16>(0x88A9);
+	__syscall<word16>(0x88AA);
+	__syscall<word16>(0x88AB);
+	__syscall<word16>(0x88AC);
+	__syscall<word16>(0x88AD);
+	__syscall<word16>(0x88AE);
+	__syscall<word16>(0x88AF);
 }
 
 // 1420: Register word16 fn1420(Register Eq_n r2, Register (ptr16 Eq_n) r3)
@@ -2012,7 +2012,7 @@ void fn13FE()
 word16 fn1420(Eq_n r2, struct Eq_n * r3)
 {
 	if (r2 <= 0x00 || r2 < 99)
-		__syscall(0x8994);
+		__syscall<word16>(0x8994);
 	struct Eq_n * v14_n = r3->ptr0004;
 	struct Eq_n * r1_n = v14_n;
 	do
@@ -2028,7 +2028,7 @@ word16 fn1420(Eq_n r2, struct Eq_n * r3)
 		if (r1_n->b0000 == 0x00)
 			goto l144A;
 	} while (r3->ptr0002 - r1_n < 0x00);
-	__syscall(0x8995);
+	__syscall<word16>(0x8995);
 l144A:
 	union Eq_n * r1_n = r1_n - 0x02;
 	*r1_n = (union Eq_n *) r2;
@@ -2047,7 +2047,7 @@ void fn145E(Eq_n r2, <anonymous> * wArg00, word16 wArg02, union Eq_n * ptrArg04)
 	r3_n->ptr0064 = fp + 22;
 	r3_n->t00A2 = r2;
 	if (r3_n->ptr0014 != null)
-		__syscall(0x899A);
+		__syscall<word16>(0x899A);
 	r3_n->w0012 = wArg02;
 	Eq_n v17_n = *ptrArg04;
 	struct Eq_n * r0_n = fn1420(v17_n, r3_n);
@@ -2139,7 +2139,7 @@ void fn14A8(Eq_n r2, uint16 r5)
 			ci16 v60_n = r4_n->t0000 & 0x04;
 			r4_n->t0000.u1 = v60_n;
 			int16 r1_n = (int16) r4_n->b0011;
-			__syscall(0x88FC);
+			__syscall<word16>(0x88FC);
 			Eq_n r0_n = 0x00;
 			bool C_n = true;
 			do
@@ -2251,12 +2251,12 @@ void fn15CC(struct Eq_n * r5)
 {
 	char bLoc04;
 	if (r5->t0000 != 0x03)
-		__syscall(0x8990);
+		__syscall<word16>(0x8990);
 	else
 	{
 		bLoc04 = (char) 0x1100;
 		FnSubfn(&bLoc04);
-		__syscall(0x88FC);
+		__syscall<word16>(0x88FC);
 		<anonymous> * r2_n = &g_t0A00;
 		if (true)
 			r2_n = (<anonymous> *) (&t0000.w0036 + 9);
@@ -2387,7 +2387,7 @@ void fn172C(struct Eq_n * r0, word16 r2)
 				Eq_n r1_n = __swab(SEQ(SLICE(r1_n, byte, 8), 0x00));
 				Eq_n r4_n = __swab(r4_n);
 				if (r4_n != 0x00)
-					__syscall(0x89A8);
+					__syscall<word16>(0x89A8);
 				struct Eq_n * r3_n = g_ptr5424;
 				r3_n->w005E = r1_n | r4_n;
 				r3_n->t005C = r0->t0014;
@@ -2419,7 +2419,7 @@ word16 fn1836(struct Eq_n * r3, struct Eq_n * r4, ptr16 & r2Out, struct Eq_n & r
 	{
 		r4->t0000.u2 = r4->t0000 & 0x7FFF;
 		r4[0x0C] = (struct Eq_n) 0x00;
-		__syscall(35235);
+		__syscall<word16>(35235);
 	}
 	struct Eq_n * r3_n;
 	struct Eq_n * r4_n;
@@ -2508,7 +2508,7 @@ word16 fn1900(struct Eq_n * r3, struct Eq_n * r4, ptr16 & r3Out, ptr16 & r4Out)
 			}
 			else
 			{
-				__syscall(35223);
+				__syscall<word16>(35223);
 				ptr16 r3_n;
 				ptr16 r4_n;
 				word16 r2_n = fn1932(r3, r4_n, out r3_n, out r4_n);
@@ -2542,7 +2542,7 @@ word16 fn1932(struct Eq_n * r3, struct Eq_n * r4, struct Eq_n & r3Out, struct Eq
 		r3->ptr0072 = null;
 		struct Eq_n * r4_n = r3->ptr0070;
 		if (r4_n == null)
-			__syscall(0x8998);
+			__syscall<word16>(0x8998);
 		struct Eq_n * sp_n = r3->ptr0064;
 		sp_n->ptrFFFFFFFE = &g_t0EF4;
 		sp_n->ptrFFFFFFFC = r3;
@@ -3868,10 +3868,10 @@ l4614:
 			r1_n = (word16) r1_n + 1;
 			if (OVERFLOW<word16>(r1_n))
 			{
-				__syscall(~0x7660);
-				__syscall(0x899B);
-				__syscall(0x899C);
-				__syscall(0x899D);
+				__syscall<word16>(~0x7660);
+				__syscall<word16>(0x899B);
+				__syscall<word16>(0x899C);
+				__syscall<word16>(0x899D);
 				r3->t0010 = r0_n;
 				*((word16) r1_n + 0x0000FFFA) |= 0x80;
 				((word16) r1_n + 0x0A)->u0 = 0x00;

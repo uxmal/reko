@@ -116,9 +116,9 @@ Eq_1: (struct "Globals"
 		(FFFE word16 wFFFE))
 	globals_t (in globals @ 00000000 : (ptr16 (struct "Globals")))
 Eq_2: (fn void ())
-	T_2 (in __wait @ 00000128 : ptr16)
+	T_2 (in __wait @ 00000128 : ptr32)
 	T_3 (in signature of __wait @ 00000000 : void)
-	T_2840 (in __wait @ 000013C6 : ptr16)
+	T_2840 (in __wait @ 000013C6 : ptr32)
 Eq_5: (struct "Eq_5" (FFFFFFFE (ptr16 word16) ptrFFFFFFFE))
 	T_5 (in r0_4 @ 0000012A : (ptr16 Eq_5))
 	T_7 (in Mem0[0x006C<p16>:word16] @ 0000012A : word16)
@@ -520,10 +520,10 @@ Eq_15: (fn void ())
 	T_15 (in fn053A @ 00000138 : ptr16)
 	T_16 (in signature of fn053A @ 0000053A : void)
 Eq_39: (fn cu16 (cui16))
-	T_39 (in __swab @ 0000028C : ptr16)
+	T_39 (in __swab @ 0000028C : ptr32)
 	T_40 (in signature of __swab @ 00000000 : void)
-	T_1056 (in __swab @ 00000ADA : ptr16)
-	T_1597 (in __swab @ 00000E5C : ptr16)
+	T_1056 (in __swab @ 00000ADA : ptr32)
+	T_1597 (in __swab @ 00000E5C : ptr32)
 Eq_82: (fn word16 ((ptr16 Eq_84), Eq_85, ptr16))
 	T_82 (in fn02C8 @ 00000258 : ptr16)
 	T_83 (in signature of fn02C8 @ 000002C8 : void)
@@ -768,13 +768,13 @@ Eq_1223: (fn void ())
 	T_1224 (in signature of fn0128 @ 00000128 : void)
 	T_2900 (in fn0128 @ 00000122 : ptr16)
 Eq_1239: (fn byte ())
-	T_1239 (in __bpt @ 00000BCE : ptr16)
+	T_1239 (in __bpt @ 00000BCE : ptr32)
 	T_1240 (in signature of __bpt @ 00000000 : void)
 Eq_1260: (fn void ())
 	T_1260 (in fn0C72 @ 00000C5C : ptr16)
 	T_1261 (in signature of fn0C72 @ 00000C72 : void)
 Eq_1263: (fn void ())
-	T_1263 (in __halt @ 00000C72 : ptr16)
+	T_1263 (in __halt @ 00000C72 : ptr32)
 	T_1264 (in signature of __halt @ 00000000 : void)
 Eq_1292: (union "Eq_1292" (int16 u0) (cup16 u1))
 	T_1292 (in wArg02 >> 1<i16> @ 00000000 : word16)
@@ -832,14 +832,14 @@ Eq_1615: (fn word16 ((ptr16 Eq_1614), (ptr16 Eq_1614)))
 Eq_1632: (struct "Eq_1632" (0 word16 w0000) (2 word16 w0002))
 	T_1632 (in r5_41 @ 00000E6E : (ptr16 Eq_1632))
 Eq_1664: (fn void ())
-	T_1664 (in __reset @ 00000E96 : ptr16)
+	T_1664 (in __reset @ 00000E96 : ptr32)
 	T_1665 (in signature of __reset @ 00000000 : void)
-	T_2851 (in __reset @ 000000DC : ptr16)
-	T_3101 (in __reset @ 000034E0 : ptr16)
-	T_3103 (in __reset @ 000034E2 : ptr16)
-	T_3105 (in __reset @ 000034E4 : ptr16)
-	T_3107 (in __reset @ 000034E6 : ptr16)
-	T_3109 (in __reset @ 000034E8 : ptr16)
+	T_2851 (in __reset @ 000000DC : ptr32)
+	T_3101 (in __reset @ 000034E0 : ptr32)
+	T_3103 (in __reset @ 000034E2 : ptr32)
+	T_3105 (in __reset @ 000034E4 : ptr32)
+	T_3107 (in __reset @ 000034E6 : ptr32)
+	T_3109 (in __reset @ 000034E8 : ptr32)
 Eq_1712: (struct "Eq_1712" (FFFFFFFE word16 wFFFFFFFE) (0 word16 w0000))
 	T_1712 (in r5_44 @ 00000EDC : (ptr16 Eq_1712))
 	T_1714 (in r5 + 2<16> @ 00000EDC : word16)
@@ -919,13 +919,13 @@ globals_t: (in globals @ 00000000 : (ptr16 (struct "Globals")))
   Class: Eq_1
   DataType: (ptr16 Eq_1)
   OrigDataType: (ptr16 (struct "Globals"))
-T_2: (in __wait @ 00000128 : ptr16)
+T_2: (in __wait @ 00000128 : ptr32)
   Class: Eq_2
-  DataType: (ptr16 Eq_2)
-  OrigDataType: (ptr16 (fn T_4 ()))
+  DataType: (ptr32 Eq_2)
+  OrigDataType: (ptr32 (fn T_4 ()))
 T_3: (in signature of __wait @ 00000000 : void)
   Class: Eq_2
-  DataType: (ptr16 Eq_2)
+  DataType: (ptr32 Eq_2)
   OrigDataType: 
 T_4: (in __wait() @ 00000128 : void)
   Class: Eq_4
@@ -1067,15 +1067,15 @@ T_38: (in r2_45 @ 0000028C : cu16)
   Class: Eq_38
   DataType: cu16
   OrigDataType: cu16
-T_39: (in __swab @ 0000028C : ptr16)
+T_39: (in __swab @ 0000028C : ptr32)
   Class: Eq_39
-  DataType: (ptr16 Eq_39)
-  OrigDataType: (ptr16 (fn T_44 (T_43)))
+  DataType: (ptr32 Eq_39)
+  OrigDataType: (ptr32 (fn T_44 (T_43)))
 T_40: (in signature of __swab @ 00000000 : void)
   Class: Eq_39
-  DataType: (ptr16 Eq_39)
+  DataType: (ptr32 Eq_39)
   OrigDataType: 
-T_41: (in  @ 0000028C : word16)
+T_41: (in p1 @ 0000028C : word16)
   Class: Eq_41
   DataType: cui16
   OrigDataType: 
@@ -5135,10 +5135,10 @@ T_1055: (in r0_49 @ 00000ADA : cui16)
   Class: Eq_1055
   DataType: cui16
   OrigDataType: cui16
-T_1056: (in __swab @ 00000ADA : ptr16)
+T_1056: (in __swab @ 00000ADA : ptr32)
   Class: Eq_39
-  DataType: (ptr16 Eq_39)
-  OrigDataType: (ptr16 (fn T_1063 (T_1062)))
+  DataType: (ptr32 Eq_39)
+  OrigDataType: (ptr32 (fn T_1063 (T_1062)))
 T_1057: (in 0x2766<16> @ 00000ADA : word16)
   Class: Eq_1057
   DataType: word16
@@ -5867,13 +5867,13 @@ T_1238: (in fn13AA(stackArg0) @ 00000BCA : void)
   Class: Eq_1119
   DataType: void
   OrigDataType: void
-T_1239: (in __bpt @ 00000BCE : ptr16)
+T_1239: (in __bpt @ 00000BCE : ptr32)
   Class: Eq_1239
-  DataType: (ptr16 Eq_1239)
-  OrigDataType: (ptr16 (fn T_1241 ()))
+  DataType: (ptr32 Eq_1239)
+  OrigDataType: (ptr32 (fn T_1241 ()))
 T_1240: (in signature of __bpt @ 00000000 : void)
   Class: Eq_1239
-  DataType: (ptr16 Eq_1239)
+  DataType: (ptr32 Eq_1239)
   OrigDataType: 
 T_1241: (in __bpt() @ 00000BCE : byte)
   Class: Eq_1241
@@ -5963,13 +5963,13 @@ T_1262: (in fn0C72() @ 00000C5C : void)
   Class: Eq_1262
   DataType: void
   OrigDataType: void
-T_1263: (in __halt @ 00000C72 : ptr16)
+T_1263: (in __halt @ 00000C72 : ptr32)
   Class: Eq_1263
-  DataType: (ptr16 Eq_1263)
-  OrigDataType: (ptr16 (fn T_1265 ()))
+  DataType: (ptr32 Eq_1263)
+  OrigDataType: (ptr32 (fn T_1265 ()))
 T_1264: (in signature of __halt @ 00000000 : void)
   Class: Eq_1263
-  DataType: (ptr16 Eq_1263)
+  DataType: (ptr32 Eq_1263)
   OrigDataType: 
 T_1265: (in __halt() @ 00000C72 : void)
   Class: Eq_1265
@@ -7299,10 +7299,10 @@ T_1596: (in Mem8[0xF402<p16>:word16] @ 00000E3E : word16)
   Class: Eq_278
   DataType: word16
   OrigDataType: word16
-T_1597: (in __swab @ 00000E5C : ptr16)
+T_1597: (in __swab @ 00000E5C : ptr32)
   Class: Eq_39
-  DataType: (ptr16 Eq_39)
-  OrigDataType: (ptr16 (fn T_1602 (T_1601)))
+  DataType: (ptr32 Eq_39)
+  OrigDataType: (ptr32 (fn T_1602 (T_1601)))
 T_1598: (in 00AC @ 00000E5C : ptr16)
   Class: Eq_1598
   DataType: (ptr16 int16)
@@ -7567,13 +7567,13 @@ T_1663: (in fn13AA(stackArg0) @ 00000E92 : void)
   Class: Eq_1119
   DataType: void
   OrigDataType: void
-T_1664: (in __reset @ 00000E96 : ptr16)
+T_1664: (in __reset @ 00000E96 : ptr32)
   Class: Eq_1664
-  DataType: (ptr16 Eq_1664)
-  OrigDataType: (ptr16 (fn T_1666 ()))
+  DataType: (ptr32 Eq_1664)
+  OrigDataType: (ptr32 (fn T_1666 ()))
 T_1665: (in signature of __reset @ 00000000 : void)
   Class: Eq_1664
-  DataType: (ptr16 Eq_1664)
+  DataType: (ptr32 Eq_1664)
   OrigDataType: 
 T_1666: (in __reset() @ 00000E96 : void)
   Class: Eq_1666
@@ -12271,10 +12271,10 @@ T_2839: (in -r0_4 @ 000013BC : word16)
   Class: Eq_2820
   DataType: ci16
   OrigDataType: ci16
-T_2840: (in __wait @ 000013C6 : ptr16)
+T_2840: (in __wait @ 000013C6 : ptr32)
   Class: Eq_2
-  DataType: (ptr16 Eq_2)
-  OrigDataType: (ptr16 (fn T_2841 ()))
+  DataType: (ptr32 Eq_2)
+  OrigDataType: (ptr32 (fn T_2841 ()))
 T_2841: (in __wait() @ 000013C6 : void)
   Class: Eq_4
   DataType: void
@@ -12315,10 +12315,10 @@ T_2850: (in r0_4 < 0<16> @ 00000000 : bool)
   Class: Eq_2850
   DataType: bool
   OrigDataType: bool
-T_2851: (in __reset @ 000000DC : ptr16)
+T_2851: (in __reset @ 000000DC : ptr32)
   Class: Eq_1664
-  DataType: (ptr16 Eq_1664)
-  OrigDataType: (ptr16 (fn T_2852 ()))
+  DataType: (ptr32 Eq_1664)
+  OrigDataType: (ptr32 (fn T_2852 ()))
 T_2852: (in __reset() @ 000000DC : void)
   Class: Eq_1666
   DataType: void
@@ -13315,42 +13315,42 @@ T_3100: (in Mem38[r0_29 + 0<16>:byte] @ 00001686 : byte)
   Class: Eq_3097
   DataType: byte
   OrigDataType: byte
-T_3101: (in __reset @ 000034E0 : ptr16)
+T_3101: (in __reset @ 000034E0 : ptr32)
   Class: Eq_1664
-  DataType: (ptr16 Eq_1664)
-  OrigDataType: (ptr16 (fn T_3102 ()))
+  DataType: (ptr32 Eq_1664)
+  OrigDataType: (ptr32 (fn T_3102 ()))
 T_3102: (in __reset() @ 000034E0 : void)
   Class: Eq_1666
   DataType: void
   OrigDataType: void
-T_3103: (in __reset @ 000034E2 : ptr16)
+T_3103: (in __reset @ 000034E2 : ptr32)
   Class: Eq_1664
-  DataType: (ptr16 Eq_1664)
-  OrigDataType: (ptr16 (fn T_3104 ()))
+  DataType: (ptr32 Eq_1664)
+  OrigDataType: (ptr32 (fn T_3104 ()))
 T_3104: (in __reset() @ 000034E2 : void)
   Class: Eq_1666
   DataType: void
   OrigDataType: void
-T_3105: (in __reset @ 000034E4 : ptr16)
+T_3105: (in __reset @ 000034E4 : ptr32)
   Class: Eq_1664
-  DataType: (ptr16 Eq_1664)
-  OrigDataType: (ptr16 (fn T_3106 ()))
+  DataType: (ptr32 Eq_1664)
+  OrigDataType: (ptr32 (fn T_3106 ()))
 T_3106: (in __reset() @ 000034E4 : void)
   Class: Eq_1666
   DataType: void
   OrigDataType: void
-T_3107: (in __reset @ 000034E6 : ptr16)
+T_3107: (in __reset @ 000034E6 : ptr32)
   Class: Eq_1664
-  DataType: (ptr16 Eq_1664)
-  OrigDataType: (ptr16 (fn T_3108 ()))
+  DataType: (ptr32 Eq_1664)
+  OrigDataType: (ptr32 (fn T_3108 ()))
 T_3108: (in __reset() @ 000034E6 : void)
   Class: Eq_1666
   DataType: void
   OrigDataType: void
-T_3109: (in __reset @ 000034E8 : ptr16)
+T_3109: (in __reset @ 000034E8 : ptr32)
   Class: Eq_1664
-  DataType: (ptr16 Eq_1664)
-  OrigDataType: (ptr16 (fn T_3110 ()))
+  DataType: (ptr32 Eq_1664)
+  OrigDataType: (ptr32 (fn T_3110 ()))
 T_3110: (in __reset() @ 000034E8 : void)
   Class: Eq_1666
   DataType: void

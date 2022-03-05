@@ -73,11 +73,11 @@ Eq_1: (struct "Globals"
 		(8090 (arr Eq_1286) a8090))
 	globals_t (in globals @ 00000000 : (ptr16 (struct "Globals")))
 Eq_2: (fn void ((ptr16 Eq_4), ptr16))
-	T_2 (in __mov @ 00000106 : ptr16)
+	T_2 (in __mov @ 00000106 : ptr32)
 	T_3 (in signature of __mov @ 00000000 : void)
-	T_9 (in __mov @ 0000010D : ptr16)
-	T_13 (in __mov @ 00000114 : ptr16)
-	T_1066 (in __mov @ 0000044D : ptr16)
+	T_9 (in __mov @ 0000010D : ptr32)
+	T_13 (in __mov @ 00000114 : ptr32)
+	T_1066 (in __mov @ 0000044D : ptr32)
 Eq_4: (struct "Eq_4" 0001
 		(0 Eq_1292 t0000)
 		(1 byte b0001)
@@ -88,7 +88,7 @@ Eq_4: (struct "Eq_4" 0001
 		(8 word16 w0008)
 		(9 word16 w0009)
 		(A word16 w000A))
-	T_4 (in  @ 00000106 : ptr16)
+	T_4 (in p1 @ 00000106 : ptr16)
 	T_6 (in 0x8000<p16> @ 00000106 : ptr16)
 	T_10 (in 0x800C<p16> @ 0000010D : ptr16)
 	T_14 (in 0x801B<p16> @ 00000114 : ptr16)
@@ -111,8 +111,8 @@ Eq_20: (union "Eq_20" (int16 u0) ((ptr32 Eq_1293) u1))
 	T_22 (in 0x801B<16> @ 00000114 : word16)
 	T_26 (in gp0_25 @ 00000118 : Eq_20)
 	T_27 (in 0<16> @ 00000118 : word16)
-	T_43 (in gp0_25 | __shift_logical(1<16>, 3<16> - gp1_13) @ 00000000 : word16)
-	T_47 (in  @ 00000120 : word16)
+	T_43 (in gp0_25 | __shift_logical<word16,word16>(1<16>, 3<16> - gp1_13) @ 00000000 : word16)
+	T_47 (in p1 @ 00000120 : word16)
 	T_60 (in gp3_42 @ 00000131 : Eq_20)
 	T_61 (in 0<16> @ 00000131 : word16)
 	T_64 (in Mem12[gp14_11 + 1<16>:word16] @ 00000133 : word16)
@@ -136,10 +136,10 @@ Eq_21: (struct "Eq_21" 0001 (1 word16 w0001))
 	T_25 (in fp @ 00000115 : (ptr16 Eq_21))
 	T_67 (in out gp14_11 @ 00000135 : ptr16)
 Eq_35: (fn cui16 (word16, word16))
-	T_35 (in __shift_logical @ 00000127 : ptr16)
+	T_35 (in __shift_logical<word16,word16> @ 00000127 : ptr32)
 	T_36 (in signature of __shift_logical @ 00000000 : void)
 Eq_45: (fn cui16 (Eq_20, ci16))
-	T_45 (in __shift_arithmetic @ 00000120 : ptr16)
+	T_45 (in __shift_arithmetic<word16,word16> @ 00000120 : ptr32)
 	T_46 (in signature of __shift_arithmetic @ 00000000 : void)
 Eq_57: (struct "Eq_57" 0001 (1 word16 w0001))
 	T_57 (in gp14_11 @ 00000130 : (ptr16 Eq_57))
@@ -316,9 +316,9 @@ Eq_1056: (union "Eq_1056" (ui32 u0) (word16 u1))
 	T_1056 (in gp2_96 @ 0000047A : Eq_1056)
 	T_1063 (in __xbr(gp2_93) | gp2_93 % 0xA<16> @ 00000000 : word16)
 Eq_1057: (fn Eq_1060 (int16))
-	T_1057 (in __xbr @ 0000047A : ptr16)
+	T_1057 (in __xbr @ 0000047A : ptr32)
 	T_1058 (in signature of __xbr @ 00000000 : void)
-	T_1215 (in __xbr @ 000004DE : ptr16)
+	T_1215 (in __xbr @ 000004DE : ptr32)
 Eq_1060: (union "Eq_1060" (uint16 u0) (ui32 u1))
 	T_1060 (in __xbr(gp2_93) @ 0000047A : word32)
 	T_1188 (in gp0 @ 000004B4 : Eq_1060)
@@ -351,7 +351,7 @@ Eq_1151: (union "Eq_1151" (byte u0) (word16 u1))
 	T_1151 (in 0x2020<16> @ 000004A9 : word16)
 	T_1154 (in Mem189[gp11 + 1<16>:word16] @ 000004A9 : word16)
 Eq_1156: (fn void (cui16))
-	T_1156 (in __console_output @ 000004AC : ptr16)
+	T_1156 (in __console_output @ 000004AC : ptr32)
 	T_1157 (in signature of __console_output @ 00000000 : void)
 Eq_1164: (fn void (cui16))
 	T_1164 (in putchar @ 000004B5 : ptr16)
@@ -424,19 +424,19 @@ globals_t: (in globals @ 00000000 : (ptr16 (struct "Globals")))
   Class: Eq_1
   DataType: (ptr16 Eq_1)
   OrigDataType: (ptr16 (struct "Globals"))
-T_2: (in __mov @ 00000106 : ptr16)
+T_2: (in __mov @ 00000106 : ptr32)
   Class: Eq_2
-  DataType: (ptr16 Eq_2)
-  OrigDataType: (ptr16 (fn T_8 (T_6, T_7)))
+  DataType: (ptr32 Eq_2)
+  OrigDataType: (ptr32 (fn T_8 (T_6, T_7)))
 T_3: (in signature of __mov @ 00000000 : void)
   Class: Eq_2
-  DataType: (ptr16 Eq_2)
+  DataType: (ptr32 Eq_2)
   OrigDataType: 
-T_4: (in  @ 00000106 : ptr16)
+T_4: (in p1 @ 00000106 : ptr16)
   Class: Eq_4
   DataType: (ptr16 Eq_4)
   OrigDataType: 
-T_5: (in  @ 00000106 : ptr16)
+T_5: (in p2 @ 00000106 : ptr16)
   Class: Eq_5
   DataType: ptr16
   OrigDataType: 
@@ -452,10 +452,10 @@ T_8: (in __mov(&g_tFFFF8000, 0x050B<p16>) @ 00000106 : void)
   Class: Eq_8
   DataType: void
   OrigDataType: void
-T_9: (in __mov @ 0000010D : ptr16)
+T_9: (in __mov @ 0000010D : ptr32)
   Class: Eq_2
-  DataType: (ptr16 Eq_2)
-  OrigDataType: (ptr16 (fn T_12 (T_10, T_11)))
+  DataType: (ptr32 Eq_2)
+  OrigDataType: (ptr32 (fn T_12 (T_10, T_11)))
 T_10: (in 0x800C<p16> @ 0000010D : ptr16)
   Class: Eq_4
   DataType: (ptr16 Eq_4)
@@ -468,10 +468,10 @@ T_12: (in __mov(&g_tFFFF800C, 0x0517<p16>) @ 0000010D : void)
   Class: Eq_8
   DataType: void
   OrigDataType: void
-T_13: (in __mov @ 00000114 : ptr16)
+T_13: (in __mov @ 00000114 : ptr32)
   Class: Eq_2
-  DataType: (ptr16 Eq_2)
-  OrigDataType: (ptr16 (fn T_16 (T_14, T_15)))
+  DataType: (ptr32 Eq_2)
+  OrigDataType: (ptr32 (fn T_16 (T_14, T_15)))
 T_14: (in 0x801B<p16> @ 00000114 : ptr16)
   Class: Eq_4
   DataType: (ptr16 Eq_4)
@@ -556,19 +556,19 @@ T_34: (in gp1_13 <= 2<16> @ 00000000 : bool)
   Class: Eq_34
   DataType: bool
   OrigDataType: bool
-T_35: (in __shift_logical @ 00000127 : ptr16)
+T_35: (in __shift_logical<word16,word16> @ 00000127 : ptr32)
   Class: Eq_35
-  DataType: (ptr16 Eq_35)
-  OrigDataType: (ptr16 (fn T_42 (T_39, T_41)))
+  DataType: (ptr32 Eq_35)
+  OrigDataType: (ptr32 (fn T_42 (T_39, T_41)))
 T_36: (in signature of __shift_logical @ 00000000 : void)
   Class: Eq_35
-  DataType: (ptr16 Eq_35)
+  DataType: (ptr32 Eq_35)
   OrigDataType: 
-T_37: (in  @ 00000127 : word16)
+T_37: (in p1 @ 00000127 : word16)
   Class: Eq_37
   DataType: word16
   OrigDataType: 
-T_38: (in  @ 00000127 : word16)
+T_38: (in p2 @ 00000127 : word16)
   Class: Eq_38
   DataType: word16
   OrigDataType: 
@@ -584,11 +584,11 @@ T_41: (in 3<16> - gp1_13 @ 00000000 : word16)
   Class: Eq_38
   DataType: word16
   OrigDataType: word16
-T_42: (in __shift_logical(1<16>, 3<16> - gp1_13) @ 00000127 : word16)
+T_42: (in __shift_logical<word16,word16>(1<16>, 3<16> - gp1_13) @ 00000127 : word16)
   Class: Eq_42
   DataType: cui16
   OrigDataType: cui16
-T_43: (in gp0_25 | __shift_logical(1<16>, 3<16> - gp1_13) @ 00000000 : word16)
+T_43: (in gp0_25 | __shift_logical<word16,word16>(1<16>, 3<16> - gp1_13) @ 00000000 : word16)
   Class: Eq_20
   DataType: Eq_20
   OrigDataType: cui16
@@ -596,23 +596,23 @@ T_44: (in -gp1_12 @ 0000011C : word16)
   Class: Eq_30
   DataType: ci16
   OrigDataType: word16
-T_45: (in __shift_arithmetic @ 00000120 : ptr16)
+T_45: (in __shift_arithmetic<word16,word16> @ 00000120 : ptr32)
   Class: Eq_45
-  DataType: (ptr16 Eq_45)
-  OrigDataType: (ptr16 (fn T_49 (T_20, T_30)))
+  DataType: (ptr32 Eq_45)
+  OrigDataType: (ptr32 (fn T_49 (T_20, T_30)))
 T_46: (in signature of __shift_arithmetic @ 00000000 : void)
   Class: Eq_45
-  DataType: (ptr16 Eq_45)
+  DataType: (ptr32 Eq_45)
   OrigDataType: 
-T_47: (in  @ 00000120 : word16)
+T_47: (in p1 @ 00000120 : word16)
   Class: Eq_20
   DataType: Eq_20
   OrigDataType: 
-T_48: (in  @ 00000120 : word16)
+T_48: (in p2 @ 00000120 : word16)
   Class: Eq_30
   DataType: ci16
   OrigDataType: 
-T_49: (in __shift_arithmetic(gp0, gp1_13) @ 00000120 : word16)
+T_49: (in __shift_arithmetic<word16,word16>(gp0, gp1_13) @ 00000120 : word16)
   Class: Eq_49
   DataType: cui16
   OrigDataType: cui16
@@ -620,7 +620,7 @@ T_50: (in 1<16> @ 00000120 : word16)
   Class: Eq_50
   DataType: cui16
   OrigDataType: cui16
-T_51: (in __shift_arithmetic(gp0, gp1_13) & 1<16> @ 00000000 : word16)
+T_51: (in __shift_arithmetic<word16,word16>(gp0, gp1_13) & 1<16> @ 00000000 : word16)
   Class: Eq_51
   DataType: cui16
   OrigDataType: cui16
@@ -628,7 +628,7 @@ T_52: (in 0<16> @ 00000120 : word16)
   Class: Eq_51
   DataType: cui16
   OrigDataType: word16
-T_53: (in (__shift_arithmetic(gp0, gp1_13) & 1<16>) == 0<16> @ 00000000 : bool)
+T_53: (in (__shift_arithmetic<word16,word16>(gp0, gp1_13) & 1<16>) == 0<16> @ 00000000 : bool)
   Class: Eq_53
   DataType: bool
   OrigDataType: bool
@@ -4665,15 +4665,15 @@ T_1056: (in gp2_96 @ 0000047A : Eq_1056)
   Class: Eq_1056
   DataType: Eq_1056
   OrigDataType: (union (ui32 u1) (word16 u0))
-T_1057: (in __xbr @ 0000047A : ptr16)
+T_1057: (in __xbr @ 0000047A : ptr32)
   Class: Eq_1057
-  DataType: (ptr16 Eq_1057)
-  OrigDataType: (ptr16 (fn T_1060 (T_1053)))
+  DataType: (ptr32 Eq_1057)
+  OrigDataType: (ptr32 (fn T_1060 (T_1053)))
 T_1058: (in signature of __xbr @ 00000000 : void)
   Class: Eq_1057
-  DataType: (ptr16 Eq_1057)
+  DataType: (ptr32 Eq_1057)
   OrigDataType: 
-T_1059: (in  @ 0000047A : word16)
+T_1059: (in p1 @ 0000047A : word16)
   Class: Eq_1053
   DataType: int16
   OrigDataType: 
@@ -4701,10 +4701,10 @@ T_1065: (in gp1 == 6<16> @ 00000000 : bool)
   Class: Eq_1065
   DataType: bool
   OrigDataType: bool
-T_1066: (in __mov @ 0000044D : ptr16)
+T_1066: (in __mov @ 0000044D : ptr32)
   Class: Eq_2
-  DataType: (ptr16 Eq_2)
-  OrigDataType: (ptr16 (fn T_1068 (T_960, T_1067)))
+  DataType: (ptr32 Eq_2)
+  OrigDataType: (ptr32 (fn T_1068 (T_960, T_1067)))
 T_1067: (in 0x0582<p16> @ 0000044D : ptr16)
   Class: Eq_5
   DataType: ptr16
@@ -5061,15 +5061,15 @@ T_1155: (in gp0 @ 000004A9 : cui16)
   Class: Eq_1155
   DataType: cui16
   OrigDataType: word16
-T_1156: (in __console_output @ 000004AC : ptr16)
+T_1156: (in __console_output @ 000004AC : ptr32)
   Class: Eq_1156
-  DataType: (ptr16 Eq_1156)
-  OrigDataType: (ptr16 (fn T_1159 (T_1155)))
+  DataType: (ptr32 Eq_1156)
+  OrigDataType: (ptr32 (fn T_1159 (T_1155)))
 T_1157: (in signature of __console_output @ 00000000 : void)
   Class: Eq_1156
-  DataType: (ptr16 Eq_1156)
+  DataType: (ptr32 Eq_1156)
   OrigDataType: 
-T_1158: (in  @ 000004AC : word16)
+T_1158: (in p1 @ 000004AC : word16)
   Class: Eq_1155
   DataType: cui16
   OrigDataType: 
@@ -5297,10 +5297,10 @@ T_1214: (in pr_hex_byte @ 000004DE : ptr16)
   Class: Eq_1212
   DataType: (ptr16 Eq_1212)
   OrigDataType: (ptr16 (fn T_1217 (T_1216)))
-T_1215: (in __xbr @ 000004DE : ptr16)
+T_1215: (in __xbr @ 000004DE : ptr32)
   Class: Eq_1057
-  DataType: (ptr16 Eq_1057)
-  OrigDataType: (ptr16 (fn T_1216 (T_1211)))
+  DataType: (ptr32 Eq_1057)
+  OrigDataType: (ptr32 (fn T_1216 (T_1211)))
 T_1216: (in __xbr(gp0) @ 000004DE : word32)
   Class: Eq_1060
   DataType: Eq_1060

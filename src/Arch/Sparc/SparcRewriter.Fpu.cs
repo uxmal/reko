@@ -21,6 +21,7 @@
 using Reko.Arch.Sparc;
 using Reko.Core;
 using Reko.Core.Expressions;
+using Reko.Core.Intrinsics;
 using Reko.Core.Lib;
 using Reko.Core.Machine;
 using Reko.Core.Operators;
@@ -40,7 +41,7 @@ namespace Reko.Arch.Sparc
         {
             var dst = RewriteOp(instrCur.Operands[1]);
             var src = RewriteOp(instrCur.Operands[0]);
-            m.Assign(dst, host.Intrinsic("fabs", true, PrimitiveType.Real32, src));
+            m.Assign(dst, m.Fn(FpOps.FAbs32, src));
         }
 
         private void RewriteFadds()

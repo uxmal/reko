@@ -94,6 +94,7 @@ namespace Reko.Arch.zSeries
         public readonly IntrinsicProcedure move_zones = new IntrinsicBuilder("__move_zones", true)
             .GenericTypes("T")
             .Param("T")
+            .Param("T")
             .Returns("T");
 
         public readonly IntrinsicProcedure risbg = new IntrinsicBuilder("__risbg", false)

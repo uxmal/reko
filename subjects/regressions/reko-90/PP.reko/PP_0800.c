@@ -14960,7 +14960,7 @@ Eq_n fn0800_A53C(Eq_n ds, byte bArg06, union Eq_n & cxOut)
 	bool C;
 	Eq_n wArg08;
 	Eq_n ax_n;
-	__syscall(33);
+	__syscall<byte>(33);
 	Eq_n cx_n = wArg08;
 	Eq_n ax_n = SEQ(0x43, bArg06);
 	if (!C)

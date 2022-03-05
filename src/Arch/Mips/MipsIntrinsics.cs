@@ -53,13 +53,13 @@ namespace Reko.Arch.Mips
             clz = new IntrinsicBuilder("__clz", false)
                 .Param(arch.WordWidth)
                 .Returns(PrimitiveType.Int32);
-            ext = new IntrinsicBuilder("__ext", false)
+            ext = new IntrinsicBuilder("__ext", true)
                 .GenericTypes("TValue", "TPos")
                 .Param("TValue")
                 .Param("TPos")
                 .Param("TPos")
                 .Returns("TValue");
-            ins = new IntrinsicBuilder("__ins", false)
+            ins = new IntrinsicBuilder("__ins", true)
                 .GenericTypes("TValue", "TPos")
                 .Param("TValue")
                 .Param("TValue")

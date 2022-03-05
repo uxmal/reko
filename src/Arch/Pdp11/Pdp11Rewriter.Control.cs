@@ -138,7 +138,7 @@ namespace Reko.Arch.Pdp11
 
         private void RewriteReset()
         {
-            m.SideEffect(m.Fn(reset_intrinsic), InstrClass.Terminates);
+            m.SideEffect(m.Fn(reset_intrinsic));
         }
 
         private void RewriteRti()

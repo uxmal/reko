@@ -252,8 +252,8 @@ namespace Reko.Arch.Arm.AArch32
                 case Mnemonic.clz: RewriteClz(); break;
                 case Mnemonic.cmn: RewriteCmp(m.IAdd); break;
                 case Mnemonic.cmp: RewriteCmp(m.ISub); break;
-                case Mnemonic.cps: RewriteCps("__cps"); break;
-                case Mnemonic.cpsid: RewriteCps("__cps_id"); break;
+                case Mnemonic.cps: RewriteCps(cps_intrinsic); break;
+                case Mnemonic.cpsid: RewriteCps(cps_id_intrinsic); break;
                 case Mnemonic.crc32b: RewriteCrc("__crc32b", PrimitiveType.UInt8); break;
                 case Mnemonic.crc32h: RewriteCrc("__crc32h", PrimitiveType.UInt16); break;
                 case Mnemonic.crc32w: RewriteCrc("__crc32w", PrimitiveType.UInt32); break;
@@ -378,13 +378,13 @@ namespace Reko.Arch.Arm.AArch32
                 case Mnemonic.smull: RewriteMull(PrimitiveType.Int64, m.SMul); break;
                 case Mnemonic.smusd: RewriteSmusd(); break;
                 case Mnemonic.ssat: RewriteSsat(); break;
-                case Mnemonic.ssat16: RewriteSat16(PrimitiveType.Int16, "__ssat16"); break;
+                case Mnemonic.ssat16: RewriteSat16(ssat16_intrinsic); break;
                 case Mnemonic.ssub16: RewriteVectorBinOp("__ssub16", ArmVectorData.S16); break;
                 case Mnemonic.ssub8: RewriteVectorBinOp("__ssub8", ArmVectorData.S8); break;
-                case Mnemonic.stc2l: RewriteStc("__stc2l"); break;
-                case Mnemonic.stc2: RewriteStc("__stc2"); break;
-                case Mnemonic.stc: RewriteStc("__stc"); break;
-                case Mnemonic.stcl: RewriteStc("__stcl"); break;
+                case Mnemonic.stc: RewriteStc(stc_intrinsic); break;
+                case Mnemonic.stc2l: RewriteStc(stc2l_intrinsic); break;
+                case Mnemonic.stc2: RewriteStc(stc2_intrinsic); break;
+                case Mnemonic.stcl: RewriteStc(stcl_intrinsic); break;
                 case Mnemonic.stl:  RewriteStoreRelease("__store_release_32", PrimitiveType.Word32); break;
                 case Mnemonic.stlb: RewriteStoreRelease("__store_release_8", PrimitiveType.Byte); break;
                 case Mnemonic.stlh: RewriteStoreRelease("__store_release_16", PrimitiveType.Word16); break;
@@ -438,7 +438,7 @@ namespace Reko.Arch.Arm.AArch32
                 case Mnemonic.uqsub8: RewriteVectorBinOp("__uqsub_{0}", ArmVectorData.U8); break;
                 case Mnemonic.usada8: RewriteUsada8(); break;
                 case Mnemonic.usat: RewriteUsat(); break;
-                case Mnemonic.usat16: RewriteSat16(PrimitiveType.UInt16, "__usat16"); break;
+                case Mnemonic.usat16: RewriteSat16(usat16_intrinsic); break;
                 case Mnemonic.usax: RewriteUsax(); break;
                 case Mnemonic.usub16: RewriteVectorBinOp("__usub_{0}", ArmVectorData.I16); break;
                 case Mnemonic.usub8: RewriteVectorBinOp("__usub_{0}", ArmVectorData.I8); break;
@@ -1061,6 +1061,12 @@ namespace Reko.Arch.Arm.AArch32
             testgenSvc?.ReportMissingRewriter("ArmRw", instr, instr.Mnemonic.ToString(), rdr, "");
         }
 
+        private static readonly IntrinsicProcedure clrex_intrinsic = new IntrinsicBuilder("__clrex", true)
+            .Void();
+        private static readonly IntrinsicProcedure cps_intrinsic = new IntrinsicBuilder("__cps", true)
+            .Void();
+        private static readonly IntrinsicProcedure cps_id_intrinsic = new IntrinsicBuilder("__cps_id", true)
+            .Void();
         private static readonly IntrinsicProcedure lda_sig;
         private static readonly IntrinsicProcedure ldab_sig;
         private static readonly IntrinsicProcedure ldah_sig;
@@ -1068,7 +1074,42 @@ namespace Reko.Arch.Arm.AArch32
         private static readonly IntrinsicProcedure ldaexb_sig;
         private static readonly IntrinsicProcedure ldaexd_sig;
         private static readonly IntrinsicProcedure ldaexh_sig;
+        private static readonly IntrinsicProcedure ldrex_intrinsic = new IntrinsicBuilder("__ldrex", true)
+            .PtrParam(PrimitiveType.Word32)
+            .Returns(PrimitiveType.Word32);
+        private static readonly IntrinsicProcedure rev_intrinsic = new IntrinsicBuilder("__rev", false)
+            .GenericTypes("T")
+            .Param(PrimitiveType.Word32)
+            .Returns(PrimitiveType.Word32);
 
+        private static readonly IntrinsicProcedure ssat16_intrinsic;
+        private static readonly IntrinsicProcedure stc_intrinsic = new IntrinsicBuilder("__stc", true)
+            .Param(PrimitiveType.Word32)
+            .Param(PrimitiveType.Word32)
+            .Param(PrimitiveType.Word32)
+            .Void();
+        private static readonly IntrinsicProcedure stc2_intrinsic = new IntrinsicBuilder("__stc2", true)
+            .Param(PrimitiveType.Word32)
+            .Param(PrimitiveType.Word32)
+            .Param(PrimitiveType.Word32)
+            .Void();
+        private static readonly IntrinsicProcedure stc2l_intrinsic = new IntrinsicBuilder("__stc2l", true)
+            .Param(PrimitiveType.Word32)
+            .Param(PrimitiveType.Word32)
+            .Param(PrimitiveType.Word32)
+            .Void();
+        private static readonly IntrinsicProcedure stcl_intrinsic = new IntrinsicBuilder("__stcl", true)
+            .Param(PrimitiveType.Word32)
+            .Param(PrimitiveType.Word32)
+            .Param(PrimitiveType.Word32)
+            .Void();
+        private static readonly IntrinsicProcedure usat_intrinsic = new IntrinsicBuilder("__usat", false)
+            .Param(PrimitiveType.Int32)
+            .Param(PrimitiveType.Int32)
+            .Returns(PrimitiveType.UInt32);
+        private static readonly IntrinsicProcedure usat16_intrinsic;
+        private static readonly IntrinsicProcedure yield_intrinsic = new IntrinsicBuilder("__yield", true)
+            .Void();
 
         static ArmRewriter()
         {
@@ -1090,6 +1131,16 @@ namespace Reko.Arch.Arm.AArch32
                 .Param(p64).Returns(PrimitiveType.Word64);
             ldaexh_sig = new IntrinsicBuilder("__load_acquire_exclusive_16", true)
                 .Param(p16).Returns(PrimitiveType.Word16);
+
+            ssat16_intrinsic = new IntrinsicBuilder("__ssat16", false)
+                .Param(PrimitiveType.Int32)
+                .Param(new ArrayType(PrimitiveType.Int16, 2))
+                .Returns(new ArrayType(PrimitiveType.Int16, 2));
+            usat16_intrinsic = new IntrinsicBuilder("__usat16", false)
+                .Param(PrimitiveType.Int32)
+                .Param(new ArrayType(PrimitiveType.Int16, 2))
+                .Returns(new ArrayType(PrimitiveType.UInt16, 2));
+
         }
     }
 

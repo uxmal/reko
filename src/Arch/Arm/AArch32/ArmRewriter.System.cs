@@ -50,12 +50,12 @@ namespace Reko.Arch.Arm.AArch32
 
         private void RewriteClrex()
         {
-            m.SideEffect(host.Intrinsic("__clrex", true, VoidType.Instance));
+            m.SideEffect(m.Fn(clrex_intrinsic));
         }
 
-        private void RewriteCps(string name)
+        private void RewriteCps(IntrinsicProcedure intrinsic)
         {
-            m.SideEffect(host.Intrinsic(name, true, VoidType.Instance));
+            m.SideEffect(m.Fn(intrinsic));
         }
 
         private void RewriteDmb()
@@ -197,13 +197,13 @@ namespace Reko.Arch.Arm.AArch32
             m.SideEffect(host.Intrinsic("__smc", true, VoidType.Instance, n));
         }
 
-        private void RewriteStc(string name)
+        private void RewriteStc(IntrinsicProcedure intrinsic)
         {
-            var intrinsic = host.Intrinsic("__stc", true, PrimitiveType.Word32,
+            m.SideEffect(m.Fn(
+                intrinsic,
                 Operand(0),
                 Operand(1),
-                Operand(2));
-            m.SideEffect(intrinsic);
+                Operand(2)));
         }
 
         private void RewriteSvc()

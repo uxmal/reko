@@ -188,7 +188,7 @@ namespace Reko.Arch.Xtensa
             var src1 = RewriteOp(this.instr.Operands[1]);
             var src2 = RewriteOp(this.instr.Operands[2]);
             var dst = RewriteOp(this.instr.Operands[0]);
-            m.Assign(dst, host.Intrinsic("min", false, PrimitiveType.Int32, src1, src2));
+            m.Assign(dst, m.Fn(CommonOps.Min.MakeInstance(PrimitiveType.Int32), src1, src2));
         }
 
         private void RewriteMinu()
@@ -196,7 +196,7 @@ namespace Reko.Arch.Xtensa
             var src1 = RewriteOp(this.instr.Operands[1]);
             var src2 = RewriteOp(this.instr.Operands[2]);
             var dst = RewriteOp(this.instr.Operands[0]);
-            m.Assign(dst, host.Intrinsic("__minu", false, PrimitiveType.UInt32, src1, src2));
+            m.Assign(dst, m.Fn(CommonOps.Min.MakeInstance(PrimitiveType.UInt32), src1, src2));
         }
 
         private void RewriteMovft(Func<Expression, Expression> fn)

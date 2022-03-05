@@ -15,9 +15,9 @@ l0115:
 	word16 gp1_12 = 0<16>
 l011B:
 	word16 gp1_13 = -gp1_12
-	branch (__shift_arithmetic(gp0, gp1_13) & 1<16>) == 0<16> l0128
+	branch (__shift_arithmetic<word16,word16>(gp0, gp1_13) & 1<16>) == 0<16> l0128
 l0122:
-	gp0_25 = gp0_25 | __shift_logical(1<16>, 3<16> - gp1_13)
+	gp0_25 = gp0_25 | __shift_logical<word16,word16>(1<16>, 3<16> - gp1_13)
 l0128:
 	gp1_12 = gp1_13 + 1<16>
 	branch gp1_13 <= 2<16> l011B

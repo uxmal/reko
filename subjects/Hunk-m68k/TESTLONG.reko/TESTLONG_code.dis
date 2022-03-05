@@ -2574,7 +2574,7 @@ l000033A8:
 	word32 d0_2124 = SEQ(SLICE(d0_2075, word24, 8), bLoc41_4002)
 	word32 d3_2116 = d3_1781 + 1<32>
 	d0 = d0_2124 & 0xFF<32>
-	branch __btst(Mem2114[0x00002815<p32> + CONVERT(SLICE(d0_2124, int16, 0) & 255<i16>, int16, int32):byte], 0<16>) l000033CE
+	branch __btst<byte>(Mem2114[0x00002815<p32> + CONVERT(SLICE(d0_2124, int16, 0) & 255<i16>, int16, int32):byte], 0<16>) l000033CE
 l000033CA:
 	d0 = CONVERT(bLoc41_4002 | 0x20<8>, byte, uint32)
 l000033CE:
@@ -2649,7 +2649,7 @@ l0000351A:
 	word32 d3_2407 = d3_1781 + 1<32>
 	word32 d4_2411 = d4_126 + 1<32>
 	d0 = d0_2416 & 0xFF<32>
-	branch __btst(Mem2405[0x00002815<p32> + CONVERT(SLICE(d0_2416, int16, 0) & 255<i16>, int16, int32):byte], 0<16>) l00003540
+	branch __btst<byte>(Mem2405[0x00002815<p32> + CONVERT(SLICE(d0_2416, int16, 0) & 255<i16>, int16, int32):byte], 0<16>) l00003540
 l0000353C:
 	d0 = CONVERT(bLoc41_4030 | 0x20<8>, byte, uint32)
 l00003540:

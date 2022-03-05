@@ -647,7 +647,6 @@ namespace Reko.Arch.Avr.Avr8
             .Param(PrimitiveType.Byte)
             .Param(PrimitiveType.Ptr16)
             .Returns(PrimitiveType.Byte);
-    }
 
         private static readonly IntrinsicProcedure bit_set_intrinsic;
         private static readonly IntrinsicProcedure cli_intrinsic;

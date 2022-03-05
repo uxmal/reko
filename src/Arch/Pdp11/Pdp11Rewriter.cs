@@ -620,10 +620,7 @@ namespace Reko.Arch.Pdp11
             .Param(PrimitiveType.Word16)
             .Param(PrimitiveType.Word16)
             .Void();
-        static readonly IntrinsicProcedure reset_intrinsic = new IntrinsicBuilder("__reset", true, new ProcedureCharacteristics
-            {
-                Terminates = true,
-            })
+        static readonly IntrinsicProcedure reset_intrinsic = new IntrinsicBuilder("__reset", true)
             .Void();
         static readonly IntrinsicProcedure shift_intrinsic = new IntrinsicBuilder("__shift", false)
             .GenericTypes("TValue", "TShift")

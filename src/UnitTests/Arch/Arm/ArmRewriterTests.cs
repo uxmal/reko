@@ -1499,7 +1499,7 @@ means
             Given_UInt32s(0xE6BF2F32); // rev r2,r2
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|r2 = __rev_8(r2)");
+                "1|L--|r2 = __rev<byte>(r2)");
         }
 
         [Test]
@@ -1508,7 +1508,7 @@ means
             Given_HexString("B00FBFE6");
             AssertCode(     // rev16	r0,r0
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|r0 = __rev_16(r0)");
+                "1|L--|r0 = __rev<word16>(r0)");
         }
 
         [Test]

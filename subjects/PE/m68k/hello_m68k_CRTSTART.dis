@@ -115,7 +115,7 @@ l000022C4:
 		defs: a0:a0_81,a2:a2_77,a5:a5_78,a6:a6_76,a7:a7_75
 	branch a2_77 - Mem70[a7_75:word32] == 0<32> l0000231C
 l00002304:
-	__syscall(0xA1AD<16>)
+	__syscall<word16>(0xA1AD<16>)
 	Mem93[a6_76 + -4<i32>:word32] = a0_81
 	branch true l0000231C
 l00002316:

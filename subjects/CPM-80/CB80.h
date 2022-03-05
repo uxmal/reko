@@ -802,7 +802,7 @@ Eq_2316: (fn void (byte))
 	T_2316 (in fn0BE4 @ 00001224 : ptr16)
 	T_2317 (in signature of fn0BE4 @ 00000BE4 : void)
 Eq_2319: (fn void ())
-	T_2319 (in __ei @ 00001227 : ptr16)
+	T_2319 (in __ei @ 00001227 : ptr32)
 	T_2320 (in signature of __ei @ 00000000 : void)
 Eq_2322: (fn void ())
 	T_2322 (in __hlt @ 00001228 : ptr16)
@@ -10112,13 +10112,13 @@ T_2318: (in fn0BE4(f_110) @ 00001224 : void)
   Class: Eq_2318
   DataType: void
   OrigDataType: void
-T_2319: (in __ei @ 00001227 : ptr16)
+T_2319: (in __ei @ 00001227 : ptr32)
   Class: Eq_2319
-  DataType: (ptr16 Eq_2319)
-  OrigDataType: (ptr16 (fn T_2321 ()))
+  DataType: (ptr32 Eq_2319)
+  OrigDataType: (ptr32 (fn T_2321 ()))
 T_2320: (in signature of __ei @ 00000000 : void)
   Class: Eq_2319
-  DataType: (ptr16 Eq_2319)
+  DataType: (ptr32 Eq_2319)
   OrigDataType: 
 T_2321: (in __ei() @ 00001227 : void)
   Class: Eq_2321

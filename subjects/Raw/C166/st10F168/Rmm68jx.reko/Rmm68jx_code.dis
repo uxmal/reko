@@ -90,9 +90,9 @@ fn0110_entry:
 l0110:
 	Mem3[0xFEB0<p16>:word16] = fp
 l0114:
-	branch !__bit(S0TIC, 7<i16>) l0114
+	branch !__bit<word16,int16>(S0TIC, 7<i16>) l0114
 l0118:
-	return __bit_clear(S0TIC, 7<i16>)
+	return __bit_clear<word16,int16>(S0TIC, 7<i16>)
 fn0110_exit:
 
 
@@ -107,9 +107,9 @@ word16 fn011C(word16 S0RIC)
 // Preserved:
 fn011C_entry:
 l011C:
-	branch !__bit(S0RIC, 7<i16>) l011C
+	branch !__bit<word16,int16>(S0RIC, 7<i16>) l011C
 l0120:
-	return __bit_clear(S0RIC, 7<i16>)
+	return __bit_clear<word16,int16>(S0RIC, 7<i16>)
 fn011C_exit:
 
 

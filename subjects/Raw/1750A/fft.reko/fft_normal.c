@@ -16,8 +16,8 @@ Eq_n reverse(Eq_n gp0, struct Eq_n & gp14Out)
 	do
 	{
 		ci16 gp1_n = -gp1_n;
-		if ((__shift_arithmetic(gp0, gp1_n) & 0x01) != 0x00)
-			gp0_n |= __shift_logical(0x01, 0x03 - gp1_n);
+		if ((__shift_arithmetic<word16,word16>(gp0, gp1_n) & 0x01) != 0x00)
+			gp0_n |= __shift_logical<word16,word16>(0x01, 0x03 - gp1_n);
 		gp1_n = gp1_n + 0x01;
 	} while (gp1_n <= 0x02);
 	gp14Out = fp;

@@ -450,7 +450,11 @@ namespace Reko.Arch.zSeries
         private void RewriteUnary(IntrinsicProcedure intrinsic, PrimitiveType dt)
         {
             Expression src = Reg(1, dt);
-            src = m.Fn(intrinsic.MakeInstance(dt), src);
+            if (intrinsic.IsGeneric)
+            {
+                intrinsic = intrinsic.MakeInstance(dt);
+            }
+            src = m.Fn(intrinsic, src);
             var dst = Assign(Reg(0), src);
             SetCc(m.Cond(dst));
         }
@@ -570,14 +574,6 @@ namespace Reko.Arch.zSeries
             m.Assign(cc, m.Cond(tmp));
         }
 
-        private void RewriteNr(PrimitiveType dt)
-        {
-            var src1 = Reg(1, dt);
-            var src2 = Reg(1, dt);
-            var dst = Assign(Reg(0), m.And(src1, src2));
-            SetCc(m.Cond(dst));
-        }
-
         private void RewriteNi()
         {
             var right = Imm(1, PrimitiveType.Byte);
@@ -605,11 +601,6 @@ namespace Reko.Arch.zSeries
             var e = m.Fn(intrinsic, Op(1, dt), Op(2, dt), Op(3, dt), Op(4, dt));
             var dst = Assign(Reg(0), e);
             SetCc(m.Cond(dst));
-        }
-
-        private void RewriteRll(PrimitiveType dt)
-        {
-
         }
 
         private void RewriteS(PrimitiveType dt)
@@ -680,13 +671,6 @@ namespace Reko.Arch.zSeries
             }
             var ea = EffectiveAddress(1);
             m.Assign(m.Mem(dt, ea), src);
-        }
-
-        private void RewriteStgrl()
-        {
-            var addr = PcRel(1);
-            var src = Reg(0);
-            m.Assign(m.Mem64(addr), src);
         }
 
         private void RewriteStmg()

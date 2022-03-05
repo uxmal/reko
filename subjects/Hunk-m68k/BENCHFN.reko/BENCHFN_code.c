@@ -1967,7 +1967,7 @@ Eq_n fn00002C04(Eq_n d0, struct Eq_n * dwArg04, struct Eq_n * dwArg08, Eq_n dwAr
 											ui32 d0_n = SEQ(SLICE(d0_n, word24, 8), bLoc41_n);
 											Eq_n d3_n = (word32) d3_n + 1;
 											d0 = d0_n & 0xFF;
-											if (!__btst(g_a288D[(int32) ((int16) d0_n & 0x00FF)], 0x00))
+											if (!__btst<byte>(g_a288D[(int32) ((int16) d0_n & 0x00FF)], 0x00))
 												d0 = (uint32) (bLoc41_n | 0x20);
 											if (d0 == 0x78 && d6_n - d3_n >= 0x00)
 											{
@@ -2043,7 +2043,7 @@ Eq_n fn00002C04(Eq_n d0, struct Eq_n * dwArg04, struct Eq_n * dwArg08, Eq_n dwAr
 										Eq_n d3_n = (word32) d3_n + 1;
 										int32 d4_n = (word32) d4_n + 1;
 										d0 = d0_n & 0xFF;
-										if (!__btst(g_a288D[(int32) ((int16) d0_n & 0x00FF)], 0x00))
+										if (!__btst<byte>(g_a288D[(int32) ((int16) d0_n & 0x00FF)], 0x00))
 											d0 = (uint32) (bLoc41_n | 0x20);
 										if (d0 == 0x78 && d6_n - d3_n >= 0x00)
 										{

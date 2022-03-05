@@ -344,17 +344,6 @@ namespace Reko.UnitTests.Arch.Sparc
         [Test]
         public void SparcRw_ta()
         {
-            host.Setup(h => h.Intrinsic(
-                IntrinsicProcedure.Syscall,
-                true,
-                VoidType.Instance,
-                It.IsNotNull<Expression[]>()))
-                .Returns(new Application(
-                    new ProcedureConstant(
-                        PrimitiveType.Ptr32,
-                        new IntrinsicProcedure(IntrinsicProcedure.Syscall, true, VoidType.Instance, 1)),
-                    VoidType.Instance,
-                    Constant.Word32(0x19)));
             Given_UInt32s(0x91D02999);  // ta\t%g1,0x00000019<32>"
             AssertCode(
                 "0|L--|00100000(4): 2 instructions",

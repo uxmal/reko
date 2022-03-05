@@ -387,7 +387,7 @@ namespace Reko.UnitTests.Arch.Xtensa
             Given_HexString("005243");    // min	a5,a2,a0
             AssertCode(
                 "0|L--|00010000(3): 1 instructions",
-                "1|L--|a5 = min(a2, a0)");
+                "1|L--|a5 = min<int32>(a2, a0)");
         }
 
         [Test]
@@ -396,7 +396,7 @@ namespace Reko.UnitTests.Arch.Xtensa
             Given_HexString("004063");    // minu	a4,a0,a0
             AssertCode(
                 "0|L--|00010000(3): 1 instructions",
-                "1|L--|a4 = __minu(a0, a0)");
+                "1|L--|a4 = min<uint32>(a0, a0)");
         }
 
         [Test]

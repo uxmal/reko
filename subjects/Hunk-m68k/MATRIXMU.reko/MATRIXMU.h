@@ -167,7 +167,7 @@ Eq_560: (union "Eq_560" (int32 u0) (uint32 u1))
 	T_570 (in 0<i32> @ 000013AC : int32)
 	T_572 (in d4_141 + 1<32> @ 00001458 : word32)
 	T_573 (in 4<i32> @ 0000144A : int32)
-	T_578 (in  @ 000013CA : word32)
+	T_578 (in p1 @ 000013CA : word32)
 	T_579 (in 20<i32> @ 000013CA : int32)
 	T_596 (in SEQ(SLICE(d1_64, word16, 16), SLICE(d1_64, word16, 0) + SLICE(__swap(d2_136), word16, 0) *u 0x14<16>) @ 000013E0 : uipr32)
 	T_606 (in d0_81 @ 000013E2 : Eq_560)
@@ -2535,7 +2535,7 @@ T_577: (in signature of __swap @ 00000000 : void)
   Class: Eq_576
   DataType: (ptr32 Eq_576)
   OrigDataType: 
-T_578: (in  @ 000013CA : word32)
+T_578: (in p1 @ 000013CA : word32)
   Class: Eq_560
   DataType: Eq_560
   OrigDataType: 

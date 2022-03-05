@@ -533,7 +533,7 @@ namespace Reko.Core.Expressions
         /// processor-specific intrinsic functions that cannot be expressed
         /// in RTL any other way.
         /// </summary>
-        /// <param name="ep">The instrinsic function to apply.</param>
+        /// <param name="intrinsic">The instrinsic function to apply.</param>
         /// <param name="args">The arguments of the function.</param>
         /// <returns>A function application</returns>
         public Application Fn(IntrinsicProcedure intrinsic, params Expression[] args)
@@ -550,7 +550,7 @@ namespace Reko.Core.Expressions
             var sig = intrinsic.Signature;
             if (sig is not null && sig.Parameters!.Length != args.Length)
                 throw new InvalidOperationException(
-                    $"Parameter count must match. " +
+                    $"Parameter count for {intrinsic.Name} must match argument count. " +
                     $"Expected: {sig.Parameters.Length}. " +
                     $"But was: {args.Length}.");
             return new Application(new ProcedureConstant(PrimitiveType.Ptr32, intrinsic), intrinsic.ReturnType, args);

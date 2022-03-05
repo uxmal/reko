@@ -530,6 +530,6 @@ namespace Reko.Arch.H8
             .GenericTypes("TValue", "TPos")
             .Param("TValue")
             .Param("TPos")
-            .Returns("TValue");
+            .Returns(PrimitiveType.Bool);
     }
 }

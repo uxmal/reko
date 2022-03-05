@@ -12,21 +12,21 @@ void fn00001498()
 // 0000149C: void fn0000149C()
 void fn0000149C()
 {
-	__syscall(43424);
+	__syscall<word16>(43424);
 	if (false)
 		*(word16 *) 0x0AF0 = 0x1A;
 	else
 	{
-		__syscall(43118);
-		__syscall(43262);
-		__syscall(43282);
-		__syscall(0xA930);
-		__syscall(0xA9CC);
-		__syscall(43387);
-		__syscall(0xA850);
-		__syscall(43398);
+		__syscall<word16>(43118);
+		__syscall<word16>(43262);
+		__syscall<word16>(43282);
+		__syscall<word16>(0xA930);
+		__syscall<word16>(0xA9CC);
+		__syscall<word16>(43387);
+		__syscall<word16>(0xA850);
+		__syscall<word16>(43398);
 	}
-	__syscall(~0x560B);
+	__syscall<word16>(~0x560B);
 }
 
 // 000014E8: void fn000014E8(Register word32 a3, Register word32 a5, Stack word16 wArg00, Stack int32 dwArg02)
@@ -34,13 +34,13 @@ void fn000014E8(word32 a3, word32 a5, word16 wArg00, int32 dwArg02)
 {
 	word16 wLoc12;
 	0x00 = 0x00;
-	__syscall(43424);
+	__syscall<word16>(43424);
 	struct Eq_n ** dwLoc12_n = SEQ(wLoc12, 0x4441);
 	word32 dwLoc02_n = SEQ((word16) a3, wArg00);
 	if (dwLoc12_n == null)
 	{
 		*(word16 *) 0x0AF0 = ~0x025C;
-		__syscall(~0x560B);
+		__syscall<word16>(~0x560B);
 		goto l0000159A;
 	}
 	else
@@ -60,7 +60,7 @@ void fn000014E8(word32 a3, word32 a5, word16 wArg00, int32 dwArg02)
 			} while (d0_n != 0x00);
 		}
 		word32 a2_n = a2_n - a3_n->dw0004;
-		__syscall(0xA02E);
+		__syscall<word16>(0xA02E);
 		uint32 d0_n = a3_n->dw0008;
 		word16 * a2_n = a2_n - d0_n;
 		word16 * a0_n = a2_n;
@@ -76,7 +76,7 @@ void fn000014E8(word32 a3, word32 a5, word16 wArg00, int32 dwArg02)
 		}
 		union Eq_n * a2_n = a2_n - a3_n->dw000C;
 		struct Eq_n * a3_n = &a3_n->dw000C + 1 + a3_n->dw0004 / 16 + a3_n->dw000C / 16;
-		__syscall(0xA02E);
+		__syscall<word16>(0xA02E);
 l00001556:
 		ui32 d0_n;
 		ci8 v18_n = a3_n->b0000;
@@ -102,7 +102,7 @@ l00001578:
 					goto l00001556;
 				}
 l0000159A:
-				__syscall(0xA9A3);
+				__syscall<word16>(0xA9A3);
 				return;
 			}
 			++a3_n;

@@ -9,10 +9,10 @@ Eq_1: (struct "Globals" (13E byte b013E) (FBFE word16 wFBFE) (FEB0 ptr16 ptrFEB0
 Eq_2: (struct "Eq_2" (FFFFFFFA word16 wFFFFFFFA) (FFFFFFFC word16 wFFFFFFFC) (FFFFFFFE word16 wFFFFFFFE))
 	T_2 (in SP @ 00000000 : (ptr16 Eq_2))
 Eq_22: (fn void ())
-	T_22 (in __disable_watchdog_timer @ 00000062 : ptr16)
+	T_22 (in __disable_watchdog_timer @ 00000062 : ptr32)
 	T_23 (in signature of __disable_watchdog_timer @ 00000000 : void)
 Eq_25: (fn void ())
-	T_25 (in __end_of_initialization @ 00000066 : ptr16)
+	T_25 (in __end_of_initialization @ 00000066 : ptr32)
 	T_26 (in signature of __end_of_initialization @ 00000000 : void)
 Eq_34: (fn word16 (word16))
 	T_34 (in fn011C @ 00000098 : ptr16)
@@ -41,13 +41,13 @@ Eq_82: (fn word16 (word16))
 Eq_109: (union "Eq_109" (int16 u0) (byte u1))
 	T_109 (in 1<8> @ 000000C6 : byte)
 Eq_123: (fn bool (word16, int16))
-	T_123 (in __bit @ 00000114 : ptr16)
+	T_123 (in __bit<word16,int16> @ 00000114 : ptr32)
 	T_124 (in signature of __bit @ 00000000 : void)
-	T_136 (in __bit @ 0000011C : ptr16)
+	T_136 (in __bit<word16,int16> @ 0000011C : ptr32)
 Eq_130: (fn word16 (word16, int16))
-	T_130 (in __bit_clear @ 0000011A : ptr16)
+	T_130 (in __bit_clear<word16,int16> @ 0000011A : ptr32)
 	T_131 (in signature of __bit_clear @ 00000000 : void)
-	T_140 (in __bit_clear @ 00000126 : ptr16)
+	T_140 (in __bit_clear<word16,int16> @ 00000126 : ptr32)
 // Type Variables ////////////
 globals_t: (in globals @ 00000000 : (ptr16 (struct "Globals")))
   Class: Eq_1
@@ -133,25 +133,25 @@ T_21: (in fp @ 00000034 : ptr16)
   Class: Eq_21
   DataType: ptr16
   OrigDataType: ptr16
-T_22: (in __disable_watchdog_timer @ 00000062 : ptr16)
+T_22: (in __disable_watchdog_timer @ 00000062 : ptr32)
   Class: Eq_22
-  DataType: (ptr16 Eq_22)
-  OrigDataType: (ptr16 (fn T_24 ()))
+  DataType: (ptr32 Eq_22)
+  OrigDataType: (ptr32 (fn T_24 ()))
 T_23: (in signature of __disable_watchdog_timer @ 00000000 : void)
   Class: Eq_22
-  DataType: (ptr16 Eq_22)
+  DataType: (ptr32 Eq_22)
   OrigDataType: 
 T_24: (in __disable_watchdog_timer() @ 00000062 : void)
   Class: Eq_24
   DataType: void
   OrigDataType: void
-T_25: (in __end_of_initialization @ 00000066 : ptr16)
+T_25: (in __end_of_initialization @ 00000066 : ptr32)
   Class: Eq_25
-  DataType: (ptr16 Eq_25)
-  OrigDataType: (ptr16 (fn T_27 ()))
+  DataType: (ptr32 Eq_25)
+  OrigDataType: (ptr32 (fn T_27 ()))
 T_26: (in signature of __end_of_initialization @ 00000000 : void)
   Class: Eq_25
-  DataType: (ptr16 Eq_25)
+  DataType: (ptr32 Eq_25)
   OrigDataType: 
 T_27: (in __end_of_initialization() @ 00000066 : void)
   Class: Eq_27
@@ -537,19 +537,19 @@ T_122: (in Mem3[0xFEB0<p16>:word16] @ 00000110 : word16)
   Class: Eq_120
   DataType: ptr16
   OrigDataType: word16
-T_123: (in __bit @ 00000114 : ptr16)
+T_123: (in __bit<word16,int16> @ 00000114 : ptr32)
   Class: Eq_123
-  DataType: (ptr16 Eq_123)
-  OrigDataType: (ptr16 (fn T_128 (T_84, T_127)))
+  DataType: (ptr32 Eq_123)
+  OrigDataType: (ptr32 (fn T_128 (T_84, T_127)))
 T_124: (in signature of __bit @ 00000000 : void)
   Class: Eq_123
-  DataType: (ptr16 Eq_123)
+  DataType: (ptr32 Eq_123)
   OrigDataType: 
-T_125: (in  @ 00000114 : word16)
+T_125: (in p1 @ 00000114 : word16)
   Class: Eq_28
   DataType: word16
   OrigDataType: 
-T_126: (in  @ 00000114 : int16)
+T_126: (in p2 @ 00000114 : int16)
   Class: Eq_126
   DataType: int16
   OrigDataType: 
@@ -557,27 +557,27 @@ T_127: (in 7<i16> @ 00000114 : int16)
   Class: Eq_126
   DataType: int16
   OrigDataType: int16
-T_128: (in __bit(S0TIC, 7<i16>) @ 00000114 : bool)
+T_128: (in __bit<word16,int16>(S0TIC, 7<i16>) @ 00000114 : bool)
   Class: Eq_128
   DataType: bool
   OrigDataType: bool
-T_129: (in !__bit(S0TIC, 7<i16>) @ 00000114 : bool)
+T_129: (in !__bit<word16,int16>(S0TIC, 7<i16>) @ 00000114 : bool)
   Class: Eq_129
   DataType: bool
   OrigDataType: bool
-T_130: (in __bit_clear @ 0000011A : ptr16)
+T_130: (in __bit_clear<word16,int16> @ 0000011A : ptr32)
   Class: Eq_130
-  DataType: (ptr16 Eq_130)
-  OrigDataType: (ptr16 (fn T_135 (T_84, T_134)))
+  DataType: (ptr32 Eq_130)
+  OrigDataType: (ptr32 (fn T_135 (T_84, T_134)))
 T_131: (in signature of __bit_clear @ 00000000 : void)
   Class: Eq_130
-  DataType: (ptr16 Eq_130)
+  DataType: (ptr32 Eq_130)
   OrigDataType: 
-T_132: (in  @ 0000011A : word16)
+T_132: (in p1 @ 0000011A : word16)
   Class: Eq_28
   DataType: word16
   OrigDataType: 
-T_133: (in  @ 0000011A : int16)
+T_133: (in p2 @ 0000011A : int16)
   Class: Eq_133
   DataType: int16
   OrigDataType: 
@@ -585,35 +585,35 @@ T_134: (in 7<i16> @ 0000011A : int16)
   Class: Eq_133
   DataType: int16
   OrigDataType: int16
-T_135: (in __bit_clear(S0TIC, 7<i16>) @ 0000011A : word16)
+T_135: (in __bit_clear<word16,int16>(S0TIC, 7<i16>) @ 0000011A : word16)
   Class: Eq_28
   DataType: word16
   OrigDataType: word16
-T_136: (in __bit @ 0000011C : ptr16)
+T_136: (in __bit<word16,int16> @ 0000011C : ptr32)
   Class: Eq_123
-  DataType: (ptr16 Eq_123)
-  OrigDataType: (ptr16 (fn T_138 (T_36, T_137)))
+  DataType: (ptr32 Eq_123)
+  OrigDataType: (ptr32 (fn T_138 (T_36, T_137)))
 T_137: (in 7<i16> @ 0000011C : int16)
   Class: Eq_126
   DataType: int16
   OrigDataType: int16
-T_138: (in __bit(S0RIC, 7<i16>) @ 0000011C : bool)
+T_138: (in __bit<word16,int16>(S0RIC, 7<i16>) @ 0000011C : bool)
   Class: Eq_128
   DataType: bool
   OrigDataType: bool
-T_139: (in !__bit(S0RIC, 7<i16>) @ 0000011C : bool)
+T_139: (in !__bit<word16,int16>(S0RIC, 7<i16>) @ 0000011C : bool)
   Class: Eq_139
   DataType: bool
   OrigDataType: bool
-T_140: (in __bit_clear @ 00000126 : ptr16)
+T_140: (in __bit_clear<word16,int16> @ 00000126 : ptr32)
   Class: Eq_130
-  DataType: (ptr16 Eq_130)
-  OrigDataType: (ptr16 (fn T_142 (T_36, T_141)))
+  DataType: (ptr32 Eq_130)
+  OrigDataType: (ptr32 (fn T_142 (T_36, T_141)))
 T_141: (in 7<i16> @ 00000126 : int16)
   Class: Eq_133
   DataType: int16
   OrigDataType: int16
-T_142: (in __bit_clear(S0RIC, 7<i16>) @ 00000126 : word16)
+T_142: (in __bit_clear<word16,int16>(S0RIC, 7<i16>) @ 00000126 : word16)
   Class: Eq_28
   DataType: word16
   OrigDataType: word16

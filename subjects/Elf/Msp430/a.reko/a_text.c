@@ -201,7 +201,7 @@ ui20 init_uart_isr(Eq_n r14_r13, ui20 sr, Eq_n r15)
 // 4380: void getchar(Register ui20 sr)
 void getchar(ui20 sr)
 {
-	word16 fp;
+	ptr16 fp;
 	x_getchar(sr, 100, fp - 0x02) == 0x00;
 }
 
@@ -256,7 +256,7 @@ Eq_n x_getchar(ui20 sr, Eq_n r14, Eq_n r15)
 //      putchar
 ui20 x_putchar(ui20 sr, Eq_n r14, Eq_n r15, union Eq_n & r15Out)
 {
-	word16 fp;
+	ptr16 fp;
 	++usCriticalNesting;
 	ui20 sr_n = sr & ~0x08;
 	if (sTHREEmpty != 0x01)
@@ -287,7 +287,7 @@ l00004420:
 // 4450: void vRxISR(Register ui20 sr)
 void vRxISR(ui20 sr)
 {
-	word16 fp;
+	ptr16 fp;
 	word20 r15_n;
 	ui20 sr_n = xQueueSendFromISR(sr, 0x00, fp - 0x0A, xRxedChars[0], out r15_n);
 	if (r15_n != 0x00)
@@ -303,7 +303,7 @@ void vRxISR(ui20 sr)
 // 4480: void vTxISR(Register ui20 sr)
 void vTxISR(ui20 sr)
 {
-	word16 fp;
+	ptr16 fp;
 	word16 tLoc0C;
 	Eq_n bLoc0A;
 	if (xQueueReceiveFromISR(sr, &tLoc0C, fp - 0x0A, xCharsForTx) != 0x01)
@@ -1486,7 +1486,7 @@ void vPortEndScheduler()
 //      xQueueReceive
 ui20 vPortYield(ui20 sr, union Eq_n & r8Out, union Eq_n & r9Out, union Eq_n & r10Out, union Eq_n & r11Out)
 {
-	word16 fp;
+	ptr16 fp;
 	pxCurrentTCB->ptr0000 = fp - 28;
 	vTaskSwitchContext();
 	struct Eq_n * v20_n = pxCurrentTCB->ptr0000;
@@ -1518,7 +1518,7 @@ void prvSetupTimerInterrupt()
 // 52B4: void prvTickISR()
 void prvTickISR()
 {
-	word16 fp;
+	ptr16 fp;
 	pxCurrentTCB->ptr0000 = fp - 26;
 	vTaskIncrementTick();
 	vTaskSwitchContext();
@@ -1532,16 +1532,16 @@ void prvTickISR()
 void printf(Eq_n r8)
 {
 	struct Eq_n * fp;
-	vuprintf(r8, (char *) &fp->t0002 + 2, fp->t0002, 17314);
+	vuprintf(r8, (char *) &fp->ptr0002 + 2, fp->ptr0002, 17314);
 }
 
-// 531A: Register Eq_n PRINT(Register Eq_n r14, Register Eq_n r15)
+// 531A: Register (ptr20 Eq_n) PRINT(Register Eq_n r14, Register (ptr20 Eq_n) r15)
 // Called from:
 //      vuprintf
-Eq_n PRINT(Eq_n r14, Eq_n r15)
+struct Eq_n * PRINT(Eq_n r14, struct Eq_n * r15)
 {
-	Eq_n r15_n;
-	Eq_n r10_n = r15;
+	struct Eq_n * r15_n;
+	struct Eq_n * r10_n = r15;
 	Eq_n r11_n = r14;
 	if (r14 != 0x00)
 	{
@@ -1552,14 +1552,14 @@ Eq_n PRINT(Eq_n r14, Eq_n r15)
 			__write_char();
 			if (r15_n < 0x00)
 			{
-				r15_n.u0 = ~0x00;
+				r15_n = (struct Eq_n *) &g_tFFFFFFFF;
 				return r15_n;
 			}
 			++total_len;
 			r11_n = r11_n + ~0x00;
 		} while (r11_n != ~0x00);
 	}
-	r15_n.u0 = 0x01;
+	r15_n = (struct Eq_n *) 0x01;
 	return r15_n;
 }
 
@@ -1592,20 +1592,20 @@ Eq_n __write_pad(Eq_n r14, Eq_n r15)
 	return r15_n;
 }
 
-// 537E: void vuprintf(Register Eq_n r8, Register Eq_n r13, Register Eq_n r14, Register Eq_n r15)
+// 537E: void vuprintf(Register Eq_n r8, Register Eq_n r13, Register (ptr20 Eq_n) r14, Register Eq_n r15)
 // Called from:
 //      printf
-void vuprintf(Eq_n r8, Eq_n r13, Eq_n r14, Eq_n r15)
+void vuprintf(Eq_n r8, Eq_n r13, struct Eq_n * r14, Eq_n r15)
 {
-	word16 fp;
+	ptr16 fp;
 	total_len = 0x00;
 	__write_char = r15;
 	Eq_n r5_n = r13;
-	Eq_n r6_n = r14;
+	struct Eq_n * r6_n = r14;
 	uint32 dwLoc1C_n = 0x00;
 l53A6:
-	Eq_n r6_n;
-	Eq_n v15_n = *r6_n;
+	struct Eq_n * r6_n;
+	Eq_n v15_n = r6_n->b0000;
 	Eq_n r7_n = v15_n;
 	r6_n = r6_n;
 	if (v15_n != 0x00)
@@ -1616,8 +1616,8 @@ l53A6:
 		{
 			do
 			{
-				r6_n = (word20) r6_n + 1;
-				Eq_n v17_n = *r6_n;
+				++r6_n;
+				Eq_n v17_n = r6_n->b0000;
 				r7_n = v17_n;
 			} while (v17_n != 0x00 && v17_n != 0x25);
 		}
@@ -1635,7 +1635,7 @@ l53A6:
 	while (true)
 	{
 l53E8:
-		Eq_n r7_n = *r6_n;
+		Eq_n r7_n = r6_n->b0000;
 		++r6_n;
 		while (true)
 		{
@@ -1695,7 +1695,7 @@ l58A8:
 					{
 						ui20 r14_n = r13_n *20 0x02;
 						ui20 r13_n = r13_n *20 0x04 + r14_n + r14_n + r14_n + (int16) ((byte) r7_n);
-						Eq_n v53_n = *r6_n;
+						Eq_n v53_n = r6_n->b0000;
 						r13_n = r13_n + ~0x2F;
 						r7_n = v53_n;
 						++r6_n;
@@ -1713,7 +1713,7 @@ l58A8:
 					bLoc1E_n |= 0x01;
 					goto l53E8;
 				}
-				Eq_n wLoc20_n;
+				struct Eq_n * wLoc20_n;
 				Eq_n r9_n;
 				if (r7_n == 99)
 				{
@@ -1777,10 +1777,10 @@ l57A2:
 				}
 				if (r7_n == 115)
 				{
-					Eq_n v115_n = *r5_n;
+					struct Eq_n * v115_n = *r5_n;
 					r5_n += 0x02;
-					Eq_n wLoc20_n = v115_n;
-					if (v115_n == 0x00)
+					struct Eq_n * wLoc20_n = v115_n;
+					if (v115_n == null)
 						wLoc20_n = fp - 0x4C;
 					Eq_n bLoc20_n = (byte) wLoc20_n;
 					if (r11_n < 0x00)
@@ -1855,7 +1855,7 @@ l5620:
 				bLoc17_n = r11_n;
 				if (r11_n >= 0x00)
 					bLoc1E_n &= ~0x20;
-				Eq_n wLoc20_n = fp - 0x24;
+				struct Eq_n * wLoc20_n = fp - 0x24;
 				byte bLoc20_n = (byte) (uipr32) fp - 0x24;
 				byte bLoc1F_n = SLICE(fp - 0x24, byte, 8);
 				if (wLoc1C_n == 0x00)
@@ -1893,8 +1893,8 @@ l564A:
 							if (r7_n == 88)
 								r4_n = (word24) r14_n + 87 & ~0x20;
 						}
-						wLoc20_n = (word16) wLoc20_n + 0x0000FFFF;
-						*wLoc20_n = r4_n;
+						wLoc20_n = wLoc20_n + 0x0000FFFF;
+						wLoc20_n->b0000 = (byte) r4_n;
 						ui40 r13_r12_n;
 						ui40 r15_r14_n;
 						fn00005B4E((uint40) wLoc14_n, r8_n, wLoc1C_n, wLoc1A_n, out r13_r12_n, out r15_r14_n, out r8);
@@ -1912,8 +1912,8 @@ l564A:
 							dwLoc1C_n = SEQ(r13_n, r12_n);
 							if (r4_n != 0x30)
 							{
-								*((word16) wLoc20_n + 0x0000FFFE) = 0x30;
-								wLoc20_n = SEQ(SLICE((word16) wLoc20_n + 0x0000FFFE, byte, 8), (byte) wLoc20_n + ~0x01);
+								wLoc20_n[0x0000FFFE] = (struct Eq_n) 0x30;
+								wLoc20_n = SEQ(SLICE(wLoc20_n + 0x0000FFFE, byte, 8), (byte) wLoc20_n + ~0x01);
 								dwLoc1C_n = SEQ(r13_n, r12_n);
 							}
 						}
@@ -1940,7 +1940,7 @@ l54FC:
 						return;
 				}
 				Eq_n r14_n;
-				Eq_n r15_n;
+				struct Eq_n * r15_n;
 				if (bLoc24_n == 0x00)
 				{
 					if ((bLoc1E_n & 0x40) == 0x00)
@@ -1976,7 +1976,7 @@ l5576:
 					return;
 				goto l53A6;
 			}
-			Eq_n v46_n = *r6_n;
+			Eq_n v46_n = r6_n->b0000;
 			r7_n = v46_n;
 			++r6_n;
 			if (v46_n == 0x2A)
@@ -1995,7 +1995,7 @@ l5576:
 				do
 				{
 					ui20 r14_n = r13_n *20 0x02;
-					Eq_n v48_n = *r6_n;
+					Eq_n v48_n = r6_n->b0000;
 					r13_n = r13_n *20 0x04 + r14_n + r14_n + r14_n + (int16) ((byte) r7_n) + ~0x2F;
 					r7_n = v48_n;
 					++r6_n;
@@ -2011,27 +2011,27 @@ l5576:
 	}
 }
 
-// 593E: Register Eq_n memchr(Register Eq_n r13, Register Eq_n r14, Register Eq_n r15)
+// 593E: Register (ptr20 Eq_n) memchr(Register Eq_n r13, Register Eq_n r14, Register (ptr20 Eq_n) r15)
 // Called from:
 //      vuprintf
-Eq_n memchr(Eq_n r13, Eq_n r14, Eq_n r15)
+struct Eq_n * memchr(Eq_n r13, Eq_n r14, struct Eq_n * r15)
 {
-	Eq_n r15_n;
+	struct Eq_n * r15_n;
 	if (r13 != 0x00)
 	{
-		Eq_n r14_n = r15;
+		struct Eq_n * r14_n = r15;
 		do
 		{
-			r14_n = (word24) r14_n + 1;
-			if (*r14_n == r14)
+			++r14_n;
+			if (r14_n->b0000 == r14)
 			{
-				r15_n = (word24) r14_n + 0x0000FFFF;
+				r15_n = r14_n + 0x0000FFFF;
 				return r15_n;
 			}
 			r13.u1 = (word20) r13.u1 + 0x0000FFFF;
 		} while (r13 != 0x00);
 	}
-	r15_n.u0 = 0x00;
+	r15_n = null;
 	return r15_n;
 }
 

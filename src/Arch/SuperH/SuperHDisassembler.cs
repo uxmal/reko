@@ -176,7 +176,6 @@ namespace Reko.Arch.SuperH
             return true;
         }
 
-
         private static bool xd2(uint uInstr, SuperHDisassembler dasm)
         {
             var reg = (uInstr >> (1 + 4)) & 0x7;

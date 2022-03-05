@@ -330,7 +330,7 @@ namespace Reko.Arch.Rl78
 
         private void RewriteBrk()
         {
-            m.SideEffect(m.Fn(CommonOps.Syscall, m.Word16(0)));
+            m.SideEffect(m.Fn(CommonOps.Syscall_1, m.Word16(0)));
         }
 
         private void RewriteBranch(ConditionCode cc, Identifier grf)

@@ -324,7 +324,7 @@ Eq_18: (union "Eq_18" (byte u0) ((ptr16 (ptr16 (ptr16 code))) u1) ((ptr16 Eq_486
 	T_254 (in 0<16> @ 00000632 : word16)
 	T_258 (in -wArg02 @ 00000634 : word16)
 	T_259 (in r1_47 @ 00000650 : Eq_18)
-	T_262 (in  @ 00000650 : word16)
+	T_262 (in p1 @ 00000650 : word16)
 	T_266 (in SEQ(SLICE(r1_15, byte, 8), 0<8>) | r2_30 @ 00000000 : word16)
 	T_267 (in __swab(SEQ(SLICE(r1_15, byte, 8), 0<8>) | r2_30) @ 00000650 : word16)
 	T_270 (in p1 @ 0000065A : word16)
@@ -754,20 +754,20 @@ Eq_197: (struct "Eq_197" (96 cui16 w0096))
 	T_197 (in r0_13 @ 00000562 : (ptr16 Eq_197))
 	T_202 (in (r0 >> 3<i16> & 0xFFFE<16>) + r3 @ 00000562 : word16)
 Eq_260: (fn Eq_18 (Eq_18))
-	T_260 (in __swab @ 00000650 : ptr16)
+	T_260 (in __swab @ 00000650 : ptr32)
 	T_261 (in signature of __swab @ 00000000 : void)
-	T_390 (in __swab @ 000006CC : ptr16)
-	T_393 (in __swab @ 000006D2 : ptr16)
-	T_411 (in __swab @ 000006DA : ptr16)
-	T_414 (in __swab @ 000006E0 : ptr16)
-	T_492 (in __swab @ 00000736 : ptr16)
-	T_498 (in __swab @ 00000736 : ptr16)
-	T_787 (in __swab @ 00001054 : ptr16)
-	T_1208 (in __swab @ 00000D3E : ptr16)
-	T_1219 (in __swab @ 00000D4E : ptr16)
-	T_2493 (in __swab @ 0000160E : ptr16)
-	T_2659 (in __swab @ 00001744 : ptr16)
-	T_2666 (in __swab @ 00001746 : ptr16)
+	T_390 (in __swab @ 000006CC : ptr32)
+	T_393 (in __swab @ 000006D2 : ptr32)
+	T_411 (in __swab @ 000006DA : ptr32)
+	T_414 (in __swab @ 000006E0 : ptr32)
+	T_492 (in __swab @ 00000736 : ptr32)
+	T_498 (in __swab @ 00000736 : ptr32)
+	T_787 (in __swab @ 00001054 : ptr32)
+	T_1208 (in __swab @ 00000D3E : ptr32)
+	T_1219 (in __swab @ 00000D4E : ptr32)
+	T_2493 (in __swab @ 0000160E : ptr32)
+	T_2659 (in __swab @ 00001744 : ptr32)
+	T_2666 (in __swab @ 00001746 : ptr32)
 Eq_268: (fn Eq_18 (Eq_18, byte, bool))
 	T_268 (in __rcr<word16,byte> @ 0000065A : ptr32)
 	T_269 (in signature of __rcr @ 00000000 : void)
@@ -785,47 +785,47 @@ Eq_282: (fn byte (byte, byte, bool))
 	T_282 (in __rcr<byte,byte> @ 0000065A : ptr32)
 	T_283 (in signature of __rcr @ 00000000 : void)
 Eq_431: (fn void (word16))
-	T_431 (in __syscall @ 000006AA : ptr16)
+	T_431 (in __syscall<word16> @ 000006AA : ptr32)
 	T_432 (in signature of __syscall @ 00000000 : void)
-	T_470 (in __syscall @ 000006B0 : ptr16)
-	T_558 (in __syscall @ 00000810 : ptr16)
-	T_637 (in __syscall @ 00000788 : ptr16)
-	T_659 (in __syscall @ 00000808 : ptr16)
-	T_804 (in __syscall @ 0000105E : ptr16)
-	T_1200 (in __syscall @ 00000CFA : ptr16)
-	T_1435 (in __syscall @ 00000F98 : ptr16)
-	T_1628 (in __syscall @ 00000FCA : ptr16)
-	T_1742 (in __syscall @ 000012BA : ptr16)
-	T_1965 (in __syscall @ 000013FE : ptr16)
-	T_1968 (in __syscall @ 00001400 : ptr16)
-	T_1971 (in __syscall @ 00001402 : ptr16)
-	T_1974 (in __syscall @ 00001404 : ptr16)
-	T_1977 (in __syscall @ 00001406 : ptr16)
-	T_1980 (in __syscall @ 00001408 : ptr16)
-	T_1983 (in __syscall @ 0000140A : ptr16)
-	T_1986 (in __syscall @ 0000140C : ptr16)
-	T_1989 (in __syscall @ 0000140E : ptr16)
-	T_1992 (in __syscall @ 00001410 : ptr16)
-	T_1995 (in __syscall @ 00001412 : ptr16)
-	T_1998 (in __syscall @ 00001414 : ptr16)
-	T_2001 (in __syscall @ 00001416 : ptr16)
-	T_2004 (in __syscall @ 00001418 : ptr16)
-	T_2007 (in __syscall @ 0000141A : ptr16)
-	T_2010 (in __syscall @ 0000141C : ptr16)
-	T_2016 (in __syscall @ 0000142A : ptr16)
-	T_2067 (in __syscall @ 00001448 : ptr16)
-	T_2130 (in __syscall @ 00001476 : ptr16)
-	T_2442 (in __syscall @ 00001564 : ptr16)
-	T_2484 (in __syscall @ 000015EA : ptr16)
-	T_2490 (in __syscall @ 000015D2 : ptr16)
-	T_2692 (in __syscall @ 0000174A : ptr16)
-	T_2775 (in __syscall @ 0000185E : ptr16)
-	T_2860 (in __syscall @ 00001930 : ptr16)
-	T_2921 (in __syscall @ 00001948 : ptr16)
-	T_4457 (in __syscall @ 000046C2 : ptr16)
-	T_4460 (in __syscall @ 000046C4 : ptr16)
-	T_4463 (in __syscall @ 000046C6 : ptr16)
-	T_4466 (in __syscall @ 000046C8 : ptr16)
+	T_470 (in __syscall<word16> @ 000006B0 : ptr32)
+	T_558 (in __syscall<word16> @ 00000810 : ptr32)
+	T_637 (in __syscall<word16> @ 00000788 : ptr32)
+	T_659 (in __syscall<word16> @ 00000808 : ptr32)
+	T_804 (in __syscall<word16> @ 0000105E : ptr32)
+	T_1200 (in __syscall<word16> @ 00000CFA : ptr32)
+	T_1435 (in __syscall<word16> @ 00000F98 : ptr32)
+	T_1628 (in __syscall<word16> @ 00000FCA : ptr32)
+	T_1742 (in __syscall<word16> @ 000012BA : ptr32)
+	T_1965 (in __syscall<word16> @ 000013FE : ptr32)
+	T_1968 (in __syscall<word16> @ 00001400 : ptr32)
+	T_1971 (in __syscall<word16> @ 00001402 : ptr32)
+	T_1974 (in __syscall<word16> @ 00001404 : ptr32)
+	T_1977 (in __syscall<word16> @ 00001406 : ptr32)
+	T_1980 (in __syscall<word16> @ 00001408 : ptr32)
+	T_1983 (in __syscall<word16> @ 0000140A : ptr32)
+	T_1986 (in __syscall<word16> @ 0000140C : ptr32)
+	T_1989 (in __syscall<word16> @ 0000140E : ptr32)
+	T_1992 (in __syscall<word16> @ 00001410 : ptr32)
+	T_1995 (in __syscall<word16> @ 00001412 : ptr32)
+	T_1998 (in __syscall<word16> @ 00001414 : ptr32)
+	T_2001 (in __syscall<word16> @ 00001416 : ptr32)
+	T_2004 (in __syscall<word16> @ 00001418 : ptr32)
+	T_2007 (in __syscall<word16> @ 0000141A : ptr32)
+	T_2010 (in __syscall<word16> @ 0000141C : ptr32)
+	T_2016 (in __syscall<word16> @ 0000142A : ptr32)
+	T_2067 (in __syscall<word16> @ 00001448 : ptr32)
+	T_2130 (in __syscall<word16> @ 00001476 : ptr32)
+	T_2442 (in __syscall<word16> @ 00001564 : ptr32)
+	T_2484 (in __syscall<word16> @ 000015EA : ptr32)
+	T_2490 (in __syscall<word16> @ 000015D2 : ptr32)
+	T_2692 (in __syscall<word16> @ 0000174A : ptr32)
+	T_2775 (in __syscall<word16> @ 0000185E : ptr32)
+	T_2860 (in __syscall<word16> @ 00001930 : ptr32)
+	T_2921 (in __syscall<word16> @ 00001948 : ptr32)
+	T_4457 (in __syscall<word16> @ 000046C2 : ptr32)
+	T_4460 (in __syscall<word16> @ 000046C4 : ptr32)
+	T_4463 (in __syscall<word16> @ 000046C6 : ptr32)
+	T_4466 (in __syscall<word16> @ 000046C8 : ptr32)
 Eq_718: (fn void ((ptr16 Eq_720), (ptr16 word16)))
 	T_718 (in fn11A6 @ 00000820 : ptr16)
 	T_719 (in signature of fn11A6 @ 000011A6 : void)
@@ -2662,15 +2662,15 @@ T_259: (in r1_47 @ 00000650 : Eq_18)
   Class: Eq_18
   DataType: Eq_18
   OrigDataType: cui16
-T_260: (in __swab @ 00000650 : ptr16)
+T_260: (in __swab @ 00000650 : ptr32)
   Class: Eq_260
-  DataType: (ptr16 Eq_260)
-  OrigDataType: (ptr16 (fn T_267 (T_266)))
+  DataType: (ptr32 Eq_260)
+  OrigDataType: (ptr32 (fn T_267 (T_266)))
 T_261: (in signature of __swab @ 00000000 : void)
   Class: Eq_260
-  DataType: (ptr16 Eq_260)
+  DataType: (ptr32 Eq_260)
   OrigDataType: 
-T_262: (in  @ 00000650 : word16)
+T_262: (in p1 @ 00000650 : word16)
   Class: Eq_18
   DataType: Eq_18
   OrigDataType: 
@@ -3182,10 +3182,10 @@ T_389: (in r3_87 @ 000006CC : Eq_18)
   Class: Eq_18
   DataType: Eq_18
   OrigDataType: cui16
-T_390: (in __swab @ 000006CC : ptr16)
+T_390: (in __swab @ 000006CC : ptr32)
   Class: Eq_260
-  DataType: (ptr16 Eq_260)
-  OrigDataType: (ptr16 (fn T_391 (T_317)))
+  DataType: (ptr32 Eq_260)
+  OrigDataType: (ptr32 (fn T_391 (T_317)))
 T_391: (in __swab(r3_19) @ 000006CC : word16)
   Class: Eq_18
   DataType: Eq_18
@@ -3194,10 +3194,10 @@ T_392: (in r2_90 @ 000006D2 : cu16)
   Class: Eq_392
   DataType: cu16
   OrigDataType: cu16
-T_393: (in __swab @ 000006D2 : ptr16)
+T_393: (in __swab @ 000006D2 : ptr32)
   Class: Eq_260
-  DataType: (ptr16 Eq_260)
-  OrigDataType: (ptr16 (fn T_394 (T_380)))
+  DataType: (ptr32 Eq_260)
+  OrigDataType: (ptr32 (fn T_394 (T_380)))
 T_394: (in __swab(r2_84) @ 000006D2 : word16)
   Class: Eq_18
   DataType: Eq_18
@@ -3266,10 +3266,10 @@ T_410: (in r1_99 @ 000006DA : Eq_18)
   Class: Eq_18
   DataType: Eq_18
   OrigDataType: cui16
-T_411: (in __swab @ 000006DA : ptr16)
+T_411: (in __swab @ 000006DA : ptr32)
   Class: Eq_260
-  DataType: (ptr16 Eq_260)
-  OrigDataType: (ptr16 (fn T_412 (T_327)))
+  DataType: (ptr32 Eq_260)
+  OrigDataType: (ptr32 (fn T_412 (T_327)))
 T_412: (in __swab(r1_38) @ 000006DA : word16)
   Class: Eq_18
   DataType: Eq_18
@@ -3278,10 +3278,10 @@ T_413: (in r0_103 @ 000006E0 : Eq_18)
   Class: Eq_18
   DataType: Eq_18
   OrigDataType: cui16
-T_414: (in __swab @ 000006E0 : ptr16)
+T_414: (in __swab @ 000006E0 : ptr32)
   Class: Eq_260
-  DataType: (ptr16 Eq_260)
-  OrigDataType: (ptr16 (fn T_415 (T_329)))
+  DataType: (ptr32 Eq_260)
+  OrigDataType: (ptr32 (fn T_415 (T_329)))
 T_415: (in __swab(r0_43) @ 000006E0 : word16)
   Class: Eq_18
   DataType: Eq_18
@@ -3346,15 +3346,15 @@ T_430: (in SEQ(r2_90 >>u 1<8>, r3_97) @ 000006E8 : ui32)
   Class: Eq_428
   DataType: uint32
   OrigDataType: uint32
-T_431: (in __syscall @ 000006AA : ptr16)
+T_431: (in __syscall<word16> @ 000006AA : ptr32)
   Class: Eq_431
-  DataType: (ptr16 Eq_431)
-  OrigDataType: (ptr16 (fn T_435 (T_434)))
+  DataType: (ptr32 Eq_431)
+  OrigDataType: (ptr32 (fn T_435 (T_434)))
 T_432: (in signature of __syscall @ 00000000 : void)
   Class: Eq_431
-  DataType: (ptr16 Eq_431)
+  DataType: (ptr32 Eq_431)
   OrigDataType: 
-T_433: (in  @ 000006AA : word16)
+T_433: (in p1 @ 000006AA : word16)
   Class: Eq_433
   DataType: word16
   OrigDataType: 
@@ -3362,7 +3362,7 @@ T_434: (in 0x898A<16> @ 000006AA : word16)
   Class: Eq_433
   DataType: word16
   OrigDataType: word16
-T_435: (in __syscall(0x898A<16>) @ 000006AA : void)
+T_435: (in __syscall<word16>(0x898A<16>) @ 000006AA : void)
   Class: Eq_435
   DataType: void
   OrigDataType: void
@@ -3502,15 +3502,15 @@ T_469: (in (r4_59 & 0x7F00<16>) == 0<16> @ 00000000 : bool)
   Class: Eq_469
   DataType: bool
   OrigDataType: bool
-T_470: (in __syscall @ 000006B0 : ptr16)
+T_470: (in __syscall<word16> @ 000006B0 : ptr32)
   Class: Eq_431
-  DataType: (ptr16 Eq_431)
-  OrigDataType: (ptr16 (fn T_472 (T_471)))
+  DataType: (ptr32 Eq_431)
+  OrigDataType: (ptr32 (fn T_472 (T_471)))
 T_471: (in 0x898B<16> @ 000006B0 : word16)
   Class: Eq_433
   DataType: word16
   OrigDataType: word16
-T_472: (in __syscall(0x898B<16>) @ 000006B0 : void)
+T_472: (in __syscall<word16>(0x898B<16>) @ 000006B0 : void)
   Class: Eq_435
   DataType: void
   OrigDataType: void
@@ -3590,10 +3590,10 @@ T_491: (in r2_r3_254 @ 00000736 : ui32)
   Class: Eq_491
   DataType: uint32
   OrigDataType: uint32
-T_492: (in __swab @ 00000736 : ptr16)
+T_492: (in __swab @ 00000736 : ptr32)
   Class: Eq_260
-  DataType: (ptr16 Eq_260)
-  OrigDataType: (ptr16 (fn T_496 (T_495)))
+  DataType: (ptr32 Eq_260)
+  OrigDataType: (ptr32 (fn T_496 (T_495)))
 T_493: (in SLICE(r2_158, byte, 8) @ 00000736 : byte)
   Class: Eq_493
   DataType: byte
@@ -3614,10 +3614,10 @@ T_497: (in __swab(SEQ(SLICE(r2_158, byte, 8), 0<8>)) + r4_157 @ 00000736 : word1
   Class: Eq_497
   DataType: ui16
   OrigDataType: ui16
-T_498: (in __swab @ 00000736 : ptr16)
+T_498: (in __swab @ 00000736 : ptr32)
   Class: Eq_260
-  DataType: (ptr16 Eq_260)
-  OrigDataType: (ptr16 (fn T_506 (T_505)))
+  DataType: (ptr32 Eq_260)
+  OrigDataType: (ptr32 (fn T_506 (T_505)))
 T_499: (in __rcl<word16,byte> @ 00000736 : ptr32)
   Class: Eq_90
   DataType: (ptr32 Eq_90)
@@ -3854,15 +3854,15 @@ T_557: (in wArg02 << 1<i16> == 0<16> @ 00000000 : bool)
   Class: Eq_557
   DataType: bool
   OrigDataType: bool
-T_558: (in __syscall @ 00000810 : ptr16)
+T_558: (in __syscall<word16> @ 00000810 : ptr32)
   Class: Eq_431
-  DataType: (ptr16 Eq_431)
-  OrigDataType: (ptr16 (fn T_560 (T_559)))
+  DataType: (ptr32 Eq_431)
+  OrigDataType: (ptr32 (fn T_560 (T_559)))
 T_559: (in 0x898C<16> @ 00000810 : word16)
   Class: Eq_433
   DataType: word16
   OrigDataType: word16
-T_560: (in __syscall(0x898C<16>) @ 00000810 : void)
+T_560: (in __syscall<word16>(0x898C<16>) @ 00000810 : void)
   Class: Eq_435
   DataType: void
   OrigDataType: void
@@ -4170,15 +4170,15 @@ T_636: (in v33_71 > 0<16> @ 00000000 : bool)
   Class: Eq_636
   DataType: bool
   OrigDataType: bool
-T_637: (in __syscall @ 00000788 : ptr16)
+T_637: (in __syscall<word16> @ 00000788 : ptr32)
   Class: Eq_431
-  DataType: (ptr16 Eq_431)
-  OrigDataType: (ptr16 (fn T_639 (T_638)))
+  DataType: (ptr32 Eq_431)
+  OrigDataType: (ptr32 (fn T_639 (T_638)))
 T_638: (in 0x898A<16> @ 00000788 : word16)
   Class: Eq_433
   DataType: word16
   OrigDataType: word16
-T_639: (in __syscall(0x898A<16>) @ 00000788 : void)
+T_639: (in __syscall<word16>(0x898A<16>) @ 00000788 : void)
   Class: Eq_435
   DataType: void
   OrigDataType: void
@@ -4258,15 +4258,15 @@ T_658: (in r2_139 + r0_120 @ 000007E6 : word16)
   Class: Eq_18
   DataType: Eq_18
   OrigDataType: word16
-T_659: (in __syscall @ 00000808 : ptr16)
+T_659: (in __syscall<word16> @ 00000808 : ptr32)
   Class: Eq_431
-  DataType: (ptr16 Eq_431)
-  OrigDataType: (ptr16 (fn T_661 (T_660)))
+  DataType: (ptr32 Eq_431)
+  OrigDataType: (ptr32 (fn T_661 (T_660)))
 T_660: (in 0x898B<16> @ 00000808 : word16)
   Class: Eq_433
   DataType: word16
   OrigDataType: word16
-T_661: (in __syscall(0x898B<16>) @ 00000808 : void)
+T_661: (in __syscall<word16>(0x898B<16>) @ 00000808 : void)
   Class: Eq_435
   DataType: void
   OrigDataType: void
@@ -4770,10 +4770,10 @@ T_786: (in r2_38 @ 00001054 : Eq_18)
   Class: Eq_18
   DataType: Eq_18
   OrigDataType: word16
-T_787: (in __swab @ 00001054 : ptr16)
+T_787: (in __swab @ 00001054 : ptr32)
   Class: Eq_260
-  DataType: (ptr16 Eq_260)
-  OrigDataType: (ptr16 (fn T_788 (T_779)))
+  DataType: (ptr32 Eq_260)
+  OrigDataType: (ptr32 (fn T_788 (T_779)))
 T_788: (in __swab(r2_36) @ 00001054 : word16)
   Class: Eq_18
   DataType: Eq_18
@@ -4838,15 +4838,15 @@ T_803: (in v31_47 < 0<16> @ 00000000 : bool)
   Class: Eq_803
   DataType: bool
   OrigDataType: bool
-T_804: (in __syscall @ 0000105E : ptr16)
+T_804: (in __syscall<word16> @ 0000105E : ptr32)
   Class: Eq_431
-  DataType: (ptr16 Eq_431)
-  OrigDataType: (ptr16 (fn T_806 (T_805)))
+  DataType: (ptr32 Eq_431)
+  OrigDataType: (ptr32 (fn T_806 (T_805)))
 T_805: (in 0x8981<16> @ 0000105E : word16)
   Class: Eq_433
   DataType: word16
   OrigDataType: word16
-T_806: (in __syscall(0x8981<16>) @ 0000105E : void)
+T_806: (in __syscall<word16>(0x8981<16>) @ 0000105E : void)
   Class: Eq_435
   DataType: void
   OrigDataType: void
@@ -6422,15 +6422,15 @@ T_1199: (in Mem82[&tLoc08 + 6<i16>:word16] @ 00000D3C : word16)
   Class: Eq_18
   DataType: Eq_18
   OrigDataType: (ptr16 (struct (0 T_44 t0000)))
-T_1200: (in __syscall @ 00000CFA : ptr16)
+T_1200: (in __syscall<word16> @ 00000CFA : ptr32)
   Class: Eq_431
-  DataType: (ptr16 Eq_431)
-  OrigDataType: (ptr16 (fn T_1202 (T_1201)))
+  DataType: (ptr32 Eq_431)
+  OrigDataType: (ptr32 (fn T_1202 (T_1201)))
 T_1201: (in 0x8990<16> @ 00000CFA : word16)
   Class: Eq_433
   DataType: word16
   OrigDataType: word16
-T_1202: (in __syscall(0x8990<16>) @ 00000CFA : void)
+T_1202: (in __syscall<word16>(0x8990<16>) @ 00000CFA : void)
   Class: Eq_435
   DataType: void
   OrigDataType: void
@@ -6454,10 +6454,10 @@ T_1207: (in r2_4 @ 00000D3E : Eq_18)
   Class: Eq_18
   DataType: Eq_18
   OrigDataType: word16
-T_1208: (in __swab @ 00000D3E : ptr16)
+T_1208: (in __swab @ 00000D3E : ptr32)
   Class: Eq_260
-  DataType: (ptr16 Eq_260)
-  OrigDataType: (ptr16 (fn T_1209 (T_1163)))
+  DataType: (ptr32 Eq_260)
+  OrigDataType: (ptr32 (fn T_1209 (T_1163)))
 T_1209: (in __swab(r2) @ 00000D3E : word16)
   Class: Eq_18
   DataType: Eq_18
@@ -6498,10 +6498,10 @@ T_1218: (in Mem15[r0 + 0<16>:word16] @ 00000D4A : word16)
   Class: Eq_1215
   DataType: ci16
   OrigDataType: word16
-T_1219: (in __swab @ 00000D4E : ptr16)
+T_1219: (in __swab @ 00000D4E : ptr32)
   Class: Eq_260
-  DataType: (ptr16 Eq_260)
-  OrigDataType: (ptr16 (fn T_1221 (T_1220)))
+  DataType: (ptr32 Eq_260)
+  OrigDataType: (ptr32 (fn T_1221 (T_1220)))
 T_1220: (in r2_4 + 0x3A2F<16> @ 00000D4E : word16)
   Class: Eq_18
   DataType: Eq_18
@@ -7369,15 +7369,15 @@ T_1434: (in r5->b0000 != 2<8> @ 00000000 : bool)
   Class: Eq_1434
   DataType: bool
   OrigDataType: bool
-T_1435: (in __syscall @ 00000F98 : ptr16)
+T_1435: (in __syscall<word16> @ 00000F98 : ptr32)
   Class: Eq_431
-  DataType: (ptr16 Eq_431)
-  OrigDataType: (ptr16 (fn T_1437 (T_1436)))
+  DataType: (ptr32 Eq_431)
+  OrigDataType: (ptr32 (fn T_1437 (T_1436)))
 T_1436: (in 0x8990<16> @ 00000F98 : word16)
   Class: Eq_433
   DataType: word16
   OrigDataType: word16
-T_1437: (in __syscall(0x8990<16>) @ 00000F98 : void)
+T_1437: (in __syscall<word16>(0x8990<16>) @ 00000F98 : void)
   Class: Eq_435
   DataType: void
   OrigDataType: void
@@ -8141,15 +8141,15 @@ T_1627: (in Mem26[r3_10 + 0x1C<16>:word16] @ 00000FD2 : word16)
   Class: Eq_1587
   DataType: (ptr16 Eq_1850)
   OrigDataType: word16
-T_1628: (in __syscall @ 00000FCA : ptr16)
+T_1628: (in __syscall<word16> @ 00000FCA : ptr32)
   Class: Eq_431
-  DataType: (ptr16 Eq_431)
-  OrigDataType: (ptr16 (fn T_1630 (T_1629)))
+  DataType: (ptr32 Eq_431)
+  OrigDataType: (ptr32 (fn T_1630 (T_1629)))
 T_1629: (in 0x899A<16> @ 00000FCA : word16)
   Class: Eq_433
   DataType: word16
   OrigDataType: word16
-T_1630: (in __syscall(0x899A<16>) @ 00000FCA : void)
+T_1630: (in __syscall<word16>(0x899A<16>) @ 00000FCA : void)
   Class: Eq_435
   DataType: void
   OrigDataType: void
@@ -8597,15 +8597,15 @@ T_1741: (in Mem23[r0_15 + 0<16>:word16] @ 000012C4 : word16)
   Class: Eq_1736
   DataType: Eq_4861
   OrigDataType: Eq_1736
-T_1742: (in __syscall @ 000012BA : ptr16)
+T_1742: (in __syscall<word16> @ 000012BA : ptr32)
   Class: Eq_431
-  DataType: (ptr16 Eq_431)
-  OrigDataType: (ptr16 (fn T_1744 (T_1743)))
+  DataType: (ptr32 Eq_431)
+  OrigDataType: (ptr32 (fn T_1744 (T_1743)))
 T_1743: (in 0x899A<16> @ 000012BA : word16)
   Class: Eq_433
   DataType: word16
   OrigDataType: word16
-T_1744: (in __syscall(0x899A<16>) @ 000012BA : void)
+T_1744: (in __syscall<word16>(0x899A<16>) @ 000012BA : void)
   Class: Eq_435
   DataType: void
   OrigDataType: void
@@ -9489,195 +9489,195 @@ T_1964: (in fn1836(r3, r4, out r2_24, out r3_25, out r4_26) @ 0000138A : word16)
   Class: Eq_1770
   DataType: int16
   OrigDataType: word16
-T_1965: (in __syscall @ 000013FE : ptr16)
+T_1965: (in __syscall<word16> @ 000013FE : ptr32)
   Class: Eq_431
-  DataType: (ptr16 Eq_431)
-  OrigDataType: (ptr16 (fn T_1967 (T_1966)))
+  DataType: (ptr32 Eq_431)
+  OrigDataType: (ptr32 (fn T_1967 (T_1966)))
 T_1966: (in 0x88A0<16> @ 000013FE : word16)
   Class: Eq_433
   DataType: word16
   OrigDataType: word16
-T_1967: (in __syscall(0x88A0<16>) @ 000013FE : void)
+T_1967: (in __syscall<word16>(0x88A0<16>) @ 000013FE : void)
   Class: Eq_435
   DataType: void
   OrigDataType: void
-T_1968: (in __syscall @ 00001400 : ptr16)
+T_1968: (in __syscall<word16> @ 00001400 : ptr32)
   Class: Eq_431
-  DataType: (ptr16 Eq_431)
-  OrigDataType: (ptr16 (fn T_1970 (T_1969)))
+  DataType: (ptr32 Eq_431)
+  OrigDataType: (ptr32 (fn T_1970 (T_1969)))
 T_1969: (in 0x88A1<16> @ 00001400 : word16)
   Class: Eq_433
   DataType: word16
   OrigDataType: word16
-T_1970: (in __syscall(0x88A1<16>) @ 00001400 : void)
+T_1970: (in __syscall<word16>(0x88A1<16>) @ 00001400 : void)
   Class: Eq_435
   DataType: void
   OrigDataType: void
-T_1971: (in __syscall @ 00001402 : ptr16)
+T_1971: (in __syscall<word16> @ 00001402 : ptr32)
   Class: Eq_431
-  DataType: (ptr16 Eq_431)
-  OrigDataType: (ptr16 (fn T_1973 (T_1972)))
+  DataType: (ptr32 Eq_431)
+  OrigDataType: (ptr32 (fn T_1973 (T_1972)))
 T_1972: (in 0x88A2<16> @ 00001402 : word16)
   Class: Eq_433
   DataType: word16
   OrigDataType: word16
-T_1973: (in __syscall(0x88A2<16>) @ 00001402 : void)
+T_1973: (in __syscall<word16>(0x88A2<16>) @ 00001402 : void)
   Class: Eq_435
   DataType: void
   OrigDataType: void
-T_1974: (in __syscall @ 00001404 : ptr16)
+T_1974: (in __syscall<word16> @ 00001404 : ptr32)
   Class: Eq_431
-  DataType: (ptr16 Eq_431)
-  OrigDataType: (ptr16 (fn T_1976 (T_1975)))
+  DataType: (ptr32 Eq_431)
+  OrigDataType: (ptr32 (fn T_1976 (T_1975)))
 T_1975: (in 0x88A3<16> @ 00001404 : word16)
   Class: Eq_433
   DataType: word16
   OrigDataType: word16
-T_1976: (in __syscall(0x88A3<16>) @ 00001404 : void)
+T_1976: (in __syscall<word16>(0x88A3<16>) @ 00001404 : void)
   Class: Eq_435
   DataType: void
   OrigDataType: void
-T_1977: (in __syscall @ 00001406 : ptr16)
+T_1977: (in __syscall<word16> @ 00001406 : ptr32)
   Class: Eq_431
-  DataType: (ptr16 Eq_431)
-  OrigDataType: (ptr16 (fn T_1979 (T_1978)))
+  DataType: (ptr32 Eq_431)
+  OrigDataType: (ptr32 (fn T_1979 (T_1978)))
 T_1978: (in 0x88A4<16> @ 00001406 : word16)
   Class: Eq_433
   DataType: word16
   OrigDataType: word16
-T_1979: (in __syscall(0x88A4<16>) @ 00001406 : void)
+T_1979: (in __syscall<word16>(0x88A4<16>) @ 00001406 : void)
   Class: Eq_435
   DataType: void
   OrigDataType: void
-T_1980: (in __syscall @ 00001408 : ptr16)
+T_1980: (in __syscall<word16> @ 00001408 : ptr32)
   Class: Eq_431
-  DataType: (ptr16 Eq_431)
-  OrigDataType: (ptr16 (fn T_1982 (T_1981)))
+  DataType: (ptr32 Eq_431)
+  OrigDataType: (ptr32 (fn T_1982 (T_1981)))
 T_1981: (in 0x88A5<16> @ 00001408 : word16)
   Class: Eq_433
   DataType: word16
   OrigDataType: word16
-T_1982: (in __syscall(0x88A5<16>) @ 00001408 : void)
+T_1982: (in __syscall<word16>(0x88A5<16>) @ 00001408 : void)
   Class: Eq_435
   DataType: void
   OrigDataType: void
-T_1983: (in __syscall @ 0000140A : ptr16)
+T_1983: (in __syscall<word16> @ 0000140A : ptr32)
   Class: Eq_431
-  DataType: (ptr16 Eq_431)
-  OrigDataType: (ptr16 (fn T_1985 (T_1984)))
+  DataType: (ptr32 Eq_431)
+  OrigDataType: (ptr32 (fn T_1985 (T_1984)))
 T_1984: (in 0x88A6<16> @ 0000140A : word16)
   Class: Eq_433
   DataType: word16
   OrigDataType: word16
-T_1985: (in __syscall(0x88A6<16>) @ 0000140A : void)
+T_1985: (in __syscall<word16>(0x88A6<16>) @ 0000140A : void)
   Class: Eq_435
   DataType: void
   OrigDataType: void
-T_1986: (in __syscall @ 0000140C : ptr16)
+T_1986: (in __syscall<word16> @ 0000140C : ptr32)
   Class: Eq_431
-  DataType: (ptr16 Eq_431)
-  OrigDataType: (ptr16 (fn T_1988 (T_1987)))
+  DataType: (ptr32 Eq_431)
+  OrigDataType: (ptr32 (fn T_1988 (T_1987)))
 T_1987: (in 0x88A7<16> @ 0000140C : word16)
   Class: Eq_433
   DataType: word16
   OrigDataType: word16
-T_1988: (in __syscall(0x88A7<16>) @ 0000140C : void)
+T_1988: (in __syscall<word16>(0x88A7<16>) @ 0000140C : void)
   Class: Eq_435
   DataType: void
   OrigDataType: void
-T_1989: (in __syscall @ 0000140E : ptr16)
+T_1989: (in __syscall<word16> @ 0000140E : ptr32)
   Class: Eq_431
-  DataType: (ptr16 Eq_431)
-  OrigDataType: (ptr16 (fn T_1991 (T_1990)))
+  DataType: (ptr32 Eq_431)
+  OrigDataType: (ptr32 (fn T_1991 (T_1990)))
 T_1990: (in 0x88A8<16> @ 0000140E : word16)
   Class: Eq_433
   DataType: word16
   OrigDataType: word16
-T_1991: (in __syscall(0x88A8<16>) @ 0000140E : void)
+T_1991: (in __syscall<word16>(0x88A8<16>) @ 0000140E : void)
   Class: Eq_435
   DataType: void
   OrigDataType: void
-T_1992: (in __syscall @ 00001410 : ptr16)
+T_1992: (in __syscall<word16> @ 00001410 : ptr32)
   Class: Eq_431
-  DataType: (ptr16 Eq_431)
-  OrigDataType: (ptr16 (fn T_1994 (T_1993)))
+  DataType: (ptr32 Eq_431)
+  OrigDataType: (ptr32 (fn T_1994 (T_1993)))
 T_1993: (in 0x88A9<16> @ 00001410 : word16)
   Class: Eq_433
   DataType: word16
   OrigDataType: word16
-T_1994: (in __syscall(0x88A9<16>) @ 00001410 : void)
+T_1994: (in __syscall<word16>(0x88A9<16>) @ 00001410 : void)
   Class: Eq_435
   DataType: void
   OrigDataType: void
-T_1995: (in __syscall @ 00001412 : ptr16)
+T_1995: (in __syscall<word16> @ 00001412 : ptr32)
   Class: Eq_431
-  DataType: (ptr16 Eq_431)
-  OrigDataType: (ptr16 (fn T_1997 (T_1996)))
+  DataType: (ptr32 Eq_431)
+  OrigDataType: (ptr32 (fn T_1997 (T_1996)))
 T_1996: (in 0x88AA<16> @ 00001412 : word16)
   Class: Eq_433
   DataType: word16
   OrigDataType: word16
-T_1997: (in __syscall(0x88AA<16>) @ 00001412 : void)
+T_1997: (in __syscall<word16>(0x88AA<16>) @ 00001412 : void)
   Class: Eq_435
   DataType: void
   OrigDataType: void
-T_1998: (in __syscall @ 00001414 : ptr16)
+T_1998: (in __syscall<word16> @ 00001414 : ptr32)
   Class: Eq_431
-  DataType: (ptr16 Eq_431)
-  OrigDataType: (ptr16 (fn T_2000 (T_1999)))
+  DataType: (ptr32 Eq_431)
+  OrigDataType: (ptr32 (fn T_2000 (T_1999)))
 T_1999: (in 0x88AB<16> @ 00001414 : word16)
   Class: Eq_433
   DataType: word16
   OrigDataType: word16
-T_2000: (in __syscall(0x88AB<16>) @ 00001414 : void)
+T_2000: (in __syscall<word16>(0x88AB<16>) @ 00001414 : void)
   Class: Eq_435
   DataType: void
   OrigDataType: void
-T_2001: (in __syscall @ 00001416 : ptr16)
+T_2001: (in __syscall<word16> @ 00001416 : ptr32)
   Class: Eq_431
-  DataType: (ptr16 Eq_431)
-  OrigDataType: (ptr16 (fn T_2003 (T_2002)))
+  DataType: (ptr32 Eq_431)
+  OrigDataType: (ptr32 (fn T_2003 (T_2002)))
 T_2002: (in 0x88AC<16> @ 00001416 : word16)
   Class: Eq_433
   DataType: word16
   OrigDataType: word16
-T_2003: (in __syscall(0x88AC<16>) @ 00001416 : void)
+T_2003: (in __syscall<word16>(0x88AC<16>) @ 00001416 : void)
   Class: Eq_435
   DataType: void
   OrigDataType: void
-T_2004: (in __syscall @ 00001418 : ptr16)
+T_2004: (in __syscall<word16> @ 00001418 : ptr32)
   Class: Eq_431
-  DataType: (ptr16 Eq_431)
-  OrigDataType: (ptr16 (fn T_2006 (T_2005)))
+  DataType: (ptr32 Eq_431)
+  OrigDataType: (ptr32 (fn T_2006 (T_2005)))
 T_2005: (in 0x88AD<16> @ 00001418 : word16)
   Class: Eq_433
   DataType: word16
   OrigDataType: word16
-T_2006: (in __syscall(0x88AD<16>) @ 00001418 : void)
+T_2006: (in __syscall<word16>(0x88AD<16>) @ 00001418 : void)
   Class: Eq_435
   DataType: void
   OrigDataType: void
-T_2007: (in __syscall @ 0000141A : ptr16)
+T_2007: (in __syscall<word16> @ 0000141A : ptr32)
   Class: Eq_431
-  DataType: (ptr16 Eq_431)
-  OrigDataType: (ptr16 (fn T_2009 (T_2008)))
+  DataType: (ptr32 Eq_431)
+  OrigDataType: (ptr32 (fn T_2009 (T_2008)))
 T_2008: (in 0x88AE<16> @ 0000141A : word16)
   Class: Eq_433
   DataType: word16
   OrigDataType: word16
-T_2009: (in __syscall(0x88AE<16>) @ 0000141A : void)
+T_2009: (in __syscall<word16>(0x88AE<16>) @ 0000141A : void)
   Class: Eq_435
   DataType: void
   OrigDataType: void
-T_2010: (in __syscall @ 0000141C : ptr16)
+T_2010: (in __syscall<word16> @ 0000141C : ptr32)
   Class: Eq_431
-  DataType: (ptr16 Eq_431)
-  OrigDataType: (ptr16 (fn T_2012 (T_2011)))
+  DataType: (ptr32 Eq_431)
+  OrigDataType: (ptr32 (fn T_2012 (T_2011)))
 T_2011: (in 0x88AF<16> @ 0000141C : word16)
   Class: Eq_433
   DataType: word16
   OrigDataType: word16
-T_2012: (in __syscall(0x88AF<16>) @ 0000141C : void)
+T_2012: (in __syscall<word16>(0x88AF<16>) @ 0000141C : void)
   Class: Eq_435
   DataType: void
   OrigDataType: void
@@ -9693,15 +9693,15 @@ T_2015: (in r2 <= 0<16> @ 00000000 : bool)
   Class: Eq_2015
   DataType: bool
   OrigDataType: bool
-T_2016: (in __syscall @ 0000142A : ptr16)
+T_2016: (in __syscall<word16> @ 0000142A : ptr32)
   Class: Eq_431
-  DataType: (ptr16 Eq_431)
-  OrigDataType: (ptr16 (fn T_2018 (T_2017)))
+  DataType: (ptr32 Eq_431)
+  OrigDataType: (ptr32 (fn T_2018 (T_2017)))
 T_2017: (in 0x8994<16> @ 0000142A : word16)
   Class: Eq_433
   DataType: word16
   OrigDataType: word16
-T_2018: (in __syscall(0x8994<16>) @ 0000142A : void)
+T_2018: (in __syscall<word16>(0x8994<16>) @ 0000142A : void)
   Class: Eq_435
   DataType: void
   OrigDataType: void
@@ -9897,15 +9897,15 @@ T_2066: (in r1_24->b0000 == 0<8> @ 00000000 : bool)
   Class: Eq_2066
   DataType: bool
   OrigDataType: bool
-T_2067: (in __syscall @ 00001448 : ptr16)
+T_2067: (in __syscall<word16> @ 00001448 : ptr32)
   Class: Eq_431
-  DataType: (ptr16 Eq_431)
-  OrigDataType: (ptr16 (fn T_2069 (T_2068)))
+  DataType: (ptr32 Eq_431)
+  OrigDataType: (ptr32 (fn T_2069 (T_2068)))
 T_2068: (in 0x8995<16> @ 00001448 : word16)
   Class: Eq_433
   DataType: word16
   OrigDataType: word16
-T_2069: (in __syscall(0x8995<16>) @ 00001448 : void)
+T_2069: (in __syscall<word16>(0x8995<16>) @ 00001448 : void)
   Class: Eq_435
   DataType: void
   OrigDataType: void
@@ -10157,15 +10157,15 @@ T_2129: (in v21_47 != 0<16> @ 00000000 : bool)
   Class: Eq_2129
   DataType: bool
   OrigDataType: bool
-T_2130: (in __syscall @ 00001476 : ptr16)
+T_2130: (in __syscall<word16> @ 00001476 : ptr32)
   Class: Eq_431
-  DataType: (ptr16 Eq_431)
-  OrigDataType: (ptr16 (fn T_2132 (T_2131)))
+  DataType: (ptr32 Eq_431)
+  OrigDataType: (ptr32 (fn T_2132 (T_2131)))
 T_2131: (in 0x899A<16> @ 00001476 : word16)
   Class: Eq_433
   DataType: word16
   OrigDataType: word16
-T_2132: (in __syscall(0x899A<16>) @ 00001476 : void)
+T_2132: (in __syscall<word16>(0x899A<16>) @ 00001476 : void)
   Class: Eq_435
   DataType: void
   OrigDataType: void
@@ -11436,15 +11436,15 @@ T_2441: (in CONVERT(Mem157[r4_104 + 0x11<16>:byte], byte, int16) @ 0000155E : in
   Class: Eq_2437
   DataType: int16
   OrigDataType: int16
-T_2442: (in __syscall @ 00001564 : ptr16)
+T_2442: (in __syscall<word16> @ 00001564 : ptr32)
   Class: Eq_431
-  DataType: (ptr16 Eq_431)
-  OrigDataType: (ptr16 (fn T_2444 (T_2443)))
+  DataType: (ptr32 Eq_431)
+  OrigDataType: (ptr32 (fn T_2444 (T_2443)))
 T_2443: (in 0x88FC<16> @ 00001564 : word16)
   Class: Eq_433
   DataType: word16
   OrigDataType: word16
-T_2444: (in __syscall(0x88FC<16>) @ 00001564 : void)
+T_2444: (in __syscall<word16>(0x88FC<16>) @ 00001564 : void)
   Class: Eq_435
   DataType: void
   OrigDataType: void
@@ -11604,15 +11604,15 @@ T_2483: (in FnSubfn(&bLoc04) @ 000015E2 : void)
   Class: Eq_2483
   DataType: void
   OrigDataType: void
-T_2484: (in __syscall @ 000015EA : ptr16)
+T_2484: (in __syscall<word16> @ 000015EA : ptr32)
   Class: Eq_431
-  DataType: (ptr16 Eq_431)
-  OrigDataType: (ptr16 (fn T_2486 (T_2485)))
+  DataType: (ptr32 Eq_431)
+  OrigDataType: (ptr32 (fn T_2486 (T_2485)))
 T_2485: (in 0x88FC<16> @ 000015EA : word16)
   Class: Eq_433
   DataType: word16
   OrigDataType: word16
-T_2486: (in __syscall(0x88FC<16>) @ 000015EA : void)
+T_2486: (in __syscall<word16>(0x88FC<16>) @ 000015EA : void)
   Class: Eq_435
   DataType: void
   OrigDataType: void
@@ -11628,22 +11628,22 @@ T_2489: (in false @ 000015F2 : bool)
   Class: Eq_2489
   DataType: bool
   OrigDataType: bool
-T_2490: (in __syscall @ 000015D2 : ptr16)
+T_2490: (in __syscall<word16> @ 000015D2 : ptr32)
   Class: Eq_431
-  DataType: (ptr16 Eq_431)
-  OrigDataType: (ptr16 (fn T_2492 (T_2491)))
+  DataType: (ptr32 Eq_431)
+  OrigDataType: (ptr32 (fn T_2492 (T_2491)))
 T_2491: (in 0x8990<16> @ 000015D2 : word16)
   Class: Eq_433
   DataType: word16
   OrigDataType: word16
-T_2492: (in __syscall(0x8990<16>) @ 000015D2 : void)
+T_2492: (in __syscall<word16>(0x8990<16>) @ 000015D2 : void)
   Class: Eq_435
   DataType: void
   OrigDataType: void
-T_2493: (in __swab @ 0000160E : ptr16)
+T_2493: (in __swab @ 0000160E : ptr32)
   Class: Eq_260
-  DataType: (ptr16 Eq_260)
-  OrigDataType: (ptr16 (fn T_2495 (T_2494)))
+  DataType: (ptr32 Eq_260)
+  OrigDataType: (ptr32 (fn T_2495 (T_2494)))
 T_2494: (in 0x280<16> @ 0000160E : word16)
   Class: Eq_18
   DataType: byte
@@ -12304,10 +12304,10 @@ T_2658: (in r1_43 @ 00001744 : Eq_18)
   Class: Eq_18
   DataType: Eq_18
   OrigDataType: cui16
-T_2659: (in __swab @ 00001744 : ptr16)
+T_2659: (in __swab @ 00001744 : ptr32)
   Class: Eq_260
-  DataType: (ptr16 Eq_260)
-  OrigDataType: (ptr16 (fn T_2664 (T_2663)))
+  DataType: (ptr32 Eq_260)
+  OrigDataType: (ptr32 (fn T_2664 (T_2663)))
 T_2660: (in r1_20 @ 00001744 : word16)
   Class: Eq_2660
   DataType: word16
@@ -12332,10 +12332,10 @@ T_2665: (in r4_44 @ 00001746 : Eq_18)
   Class: Eq_18
   DataType: Eq_18
   OrigDataType: cui16
-T_2666: (in __swab @ 00001746 : ptr16)
+T_2666: (in __swab @ 00001746 : ptr32)
   Class: Eq_260
-  DataType: (ptr16 Eq_260)
-  OrigDataType: (ptr16 (fn T_2668 (T_2667)))
+  DataType: (ptr32 Eq_260)
+  OrigDataType: (ptr32 (fn T_2668 (T_2667)))
 T_2667: (in r4_24 @ 00001746 : Eq_18)
   Class: Eq_18
   DataType: Eq_18
@@ -12436,15 +12436,15 @@ T_2691: (in Mem71[r3_61 + 0x5C<16>:word16] @ 00001760 : word16)
   Class: Eq_2601
   DataType: Eq_2601
   OrigDataType: word16
-T_2692: (in __syscall @ 0000174A : ptr16)
+T_2692: (in __syscall<word16> @ 0000174A : ptr32)
   Class: Eq_431
-  DataType: (ptr16 Eq_431)
-  OrigDataType: (ptr16 (fn T_2694 (T_2693)))
+  DataType: (ptr32 Eq_431)
+  OrigDataType: (ptr32 (fn T_2694 (T_2693)))
 T_2693: (in 0x89A8<16> @ 0000174A : word16)
   Class: Eq_433
   DataType: word16
   OrigDataType: word16
-T_2694: (in __syscall(0x89A8<16>) @ 0000174A : void)
+T_2694: (in __syscall<word16>(0x89A8<16>) @ 0000174A : void)
   Class: Eq_435
   DataType: void
   OrigDataType: void
@@ -12768,15 +12768,15 @@ T_2774: (in Mem27[r4 + 0x18<16>:word16] @ 0000185A : word16)
   Class: Eq_2233
   DataType: cu16
   OrigDataType: word16
-T_2775: (in __syscall @ 0000185E : ptr16)
+T_2775: (in __syscall<word16> @ 0000185E : ptr32)
   Class: Eq_431
-  DataType: (ptr16 Eq_431)
-  OrigDataType: (ptr16 (fn T_2777 (T_2776)))
+  DataType: (ptr32 Eq_431)
+  OrigDataType: (ptr32 (fn T_2777 (T_2776)))
 T_2776: (in 0x89A3<16> @ 0000185E : word16)
   Class: Eq_433
   DataType: word16
   OrigDataType: word16
-T_2777: (in __syscall(0x89A3<16>) @ 0000185E : void)
+T_2777: (in __syscall<word16>(0x89A3<16>) @ 0000185E : void)
   Class: Eq_435
   DataType: void
   OrigDataType: void
@@ -13116,15 +13116,15 @@ T_2859: (in r4_56 != null @ 00000000 : bool)
   Class: Eq_2859
   DataType: bool
   OrigDataType: bool
-T_2860: (in __syscall @ 00001930 : ptr16)
+T_2860: (in __syscall<word16> @ 00001930 : ptr32)
   Class: Eq_431
-  DataType: (ptr16 Eq_431)
-  OrigDataType: (ptr16 (fn T_2862 (T_2861)))
+  DataType: (ptr32 Eq_431)
+  OrigDataType: (ptr32 (fn T_2862 (T_2861)))
 T_2861: (in 0x8997<16> @ 00001930 : word16)
   Class: Eq_433
   DataType: word16
   OrigDataType: word16
-T_2862: (in __syscall(0x8997<16>) @ 00001930 : void)
+T_2862: (in __syscall<word16>(0x8997<16>) @ 00001930 : void)
   Class: Eq_435
   DataType: void
   OrigDataType: void
@@ -13360,15 +13360,15 @@ T_2920: (in r4_24 != null @ 00000000 : bool)
   Class: Eq_2920
   DataType: bool
   OrigDataType: bool
-T_2921: (in __syscall @ 00001948 : ptr16)
+T_2921: (in __syscall<word16> @ 00001948 : ptr32)
   Class: Eq_431
-  DataType: (ptr16 Eq_431)
-  OrigDataType: (ptr16 (fn T_2923 (T_2922)))
+  DataType: (ptr32 Eq_431)
+  OrigDataType: (ptr32 (fn T_2923 (T_2922)))
 T_2922: (in 0x8998<16> @ 00001948 : word16)
   Class: Eq_433
   DataType: word16
   OrigDataType: word16
-T_2923: (in __syscall(0x8998<16>) @ 00001948 : void)
+T_2923: (in __syscall<word16>(0x8998<16>) @ 00001948 : void)
   Class: Eq_435
   DataType: void
   OrigDataType: void
@@ -19531,51 +19531,51 @@ T_4456: (in Mem112[r0 + 0<16>:word16] @ 0000465E : word16)
   Class: Eq_2119
   DataType: ci16
   OrigDataType: ci16
-T_4457: (in __syscall @ 000046C2 : ptr16)
+T_4457: (in __syscall<word16> @ 000046C2 : ptr32)
   Class: Eq_431
-  DataType: (ptr16 Eq_431)
-  OrigDataType: (ptr16 (fn T_4459 (T_4458)))
+  DataType: (ptr32 Eq_431)
+  OrigDataType: (ptr32 (fn T_4459 (T_4458)))
 T_4458: (in 0x899F<16> @ 000046C2 : word16)
   Class: Eq_433
   DataType: word16
   OrigDataType: word16
-T_4459: (in __syscall(0x899F<16>) @ 000046C2 : void)
+T_4459: (in __syscall<word16>(0x899F<16>) @ 000046C2 : void)
   Class: Eq_435
   DataType: void
   OrigDataType: void
-T_4460: (in __syscall @ 000046C4 : ptr16)
+T_4460: (in __syscall<word16> @ 000046C4 : ptr32)
   Class: Eq_431
-  DataType: (ptr16 Eq_431)
-  OrigDataType: (ptr16 (fn T_4462 (T_4461)))
+  DataType: (ptr32 Eq_431)
+  OrigDataType: (ptr32 (fn T_4462 (T_4461)))
 T_4461: (in 0x899B<16> @ 000046C4 : word16)
   Class: Eq_433
   DataType: word16
   OrigDataType: word16
-T_4462: (in __syscall(0x899B<16>) @ 000046C4 : void)
+T_4462: (in __syscall<word16>(0x899B<16>) @ 000046C4 : void)
   Class: Eq_435
   DataType: void
   OrigDataType: void
-T_4463: (in __syscall @ 000046C6 : ptr16)
+T_4463: (in __syscall<word16> @ 000046C6 : ptr32)
   Class: Eq_431
-  DataType: (ptr16 Eq_431)
-  OrigDataType: (ptr16 (fn T_4465 (T_4464)))
+  DataType: (ptr32 Eq_431)
+  OrigDataType: (ptr32 (fn T_4465 (T_4464)))
 T_4464: (in 0x899C<16> @ 000046C6 : word16)
   Class: Eq_433
   DataType: word16
   OrigDataType: word16
-T_4465: (in __syscall(0x899C<16>) @ 000046C6 : void)
+T_4465: (in __syscall<word16>(0x899C<16>) @ 000046C6 : void)
   Class: Eq_435
   DataType: void
   OrigDataType: void
-T_4466: (in __syscall @ 000046C8 : ptr16)
+T_4466: (in __syscall<word16> @ 000046C8 : ptr32)
   Class: Eq_431
-  DataType: (ptr16 Eq_431)
-  OrigDataType: (ptr16 (fn T_4468 (T_4467)))
+  DataType: (ptr32 Eq_431)
+  OrigDataType: (ptr32 (fn T_4468 (T_4467)))
 T_4467: (in 0x899D<16> @ 000046C8 : word16)
   Class: Eq_433
   DataType: word16
   OrigDataType: word16
-T_4468: (in __syscall(0x899D<16>) @ 000046C8 : void)
+T_4468: (in __syscall<word16>(0x899D<16>) @ 000046C8 : void)
   Class: Eq_435
   DataType: void
   OrigDataType: void

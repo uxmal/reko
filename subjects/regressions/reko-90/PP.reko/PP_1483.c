@@ -298,7 +298,7 @@ segptr32 fn1483-0D3F(struct Eq_n * ds_di, struct Eq_n * ss_bp, Eq_n ax, Eq_n cx,
 	(ss->*v19_n).wFFFFFFFA = v23_n;
 	struct Eq_n Eq_n::* bp_n = v19_n;
 	if (OVERFLOW<word16>(v23_n))
-		__syscall(0x04);
+		__syscall<byte>(0x04);
 	word16 cx_n;
 	word16 cx_n;
 	uint8 * ds_bx_n;

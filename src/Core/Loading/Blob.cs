@@ -36,7 +36,7 @@ namespace Reko.Core.Loading
             this.Location = location;
         }
 
-        public ImageLocation Location { get;  }
+        public ImageLocation Location { get; }
 
         public byte[] Image { get; }
 

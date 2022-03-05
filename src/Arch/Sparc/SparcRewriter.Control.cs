@@ -20,6 +20,7 @@
 
 using Reko.Core;
 using Reko.Core.Expressions;
+using Reko.Core.Intrinsics;
 using Reko.Core.Lib;
 using Reko.Core.Machine;
 using Reko.Core.Rtl;
@@ -131,11 +132,7 @@ namespace Reko.Arch.Sparc
                 instrCur.Address + instrCur.Length,
                 InstrClass.ConditionalTransfer);
             m.SideEffect(
-                    host.Intrinsic(
-                        IntrinsicProcedure.Syscall, 
-                        true,
-                        VoidType.Instance, 
-                    SimplifySum(src1, src2)));
+                m.Fn(CommonOps.Syscall_1, SimplifySum(src1, src2)));
         }
     }
 }

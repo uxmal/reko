@@ -321,7 +321,7 @@ namespace Reko.Arch.M68k
             var opDst = orw.RewriteSrc(instr.Operands[1], instr.Address);
             m.Assign(
                 binder.EnsureFlagGroup(Registers.Z),
-                m.Fn(btst_intrinsic, opDst, opSrc));
+                m.Fn(btst_intrinsic.MakeInstance(opDst.DataType), opDst, opSrc));
         }
 
         private void RewriteCas()

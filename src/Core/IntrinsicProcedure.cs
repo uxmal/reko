@@ -38,7 +38,7 @@ namespace Reko.Core
         /// </summary>
         /// //$REVIEW: perhaps this is premature optimization? Intrinsics aren't _that_
         /// common, but SIMD-heavy programs will have more of them.
-        private static readonly ConcurrentDictionary<(string, DataType[]), IntrinsicProcedure> instanceCache = 
+        private static readonly ConcurrentDictionary<(IntrinsicProcedure, DataType[]), IntrinsicProcedure> instanceCache = 
             new(new InstanceCacheComparer());
 
 		private readonly int arity;
@@ -145,11 +145,11 @@ namespace Reko.Core
         {
             if (this.IsConcreteGeneric)
                 throw new InvalidOperationException($"The intrinsic {this} is already a concrete instance.");
-            var key = (Name, concreteTypes);
+            var key = (this, concreteTypes);
             IntrinsicProcedure? instance;
             while (!instanceCache.TryGetValue(key, out instance))
             {
-            var sig = base.MakeConcreteSignature(ptrSize, concreteTypes);
+                var sig = base.MakeConcreteSignature(ptrSize, concreteTypes);
                 instance = new IntrinsicProcedure(this.Name, concreteTypes, true, this.HasSideEffect, sig)
                 {
                     Characteristics = this.Characteristics,
@@ -176,9 +176,9 @@ namespace Reko.Core
 			}
 		}
 
-        private class InstanceCacheComparer : IEqualityComparer<(string, DataType[])>
+        private class InstanceCacheComparer : IEqualityComparer<(IntrinsicProcedure, DataType[])>
         {
-            public bool Equals((string, DataType[]) x, (string, DataType[]) y)
+            public bool Equals((IntrinsicProcedure, DataType[]) x, (IntrinsicProcedure, DataType[]) y)
             {
                 if (x.Item1 != y.Item1)
                     return false;
@@ -193,7 +193,7 @@ namespace Reko.Core
                 return true;
             }
 
-            public int GetHashCode((string, DataType[]) obj)
+            public int GetHashCode((IntrinsicProcedure, DataType[]) obj)
             {
                 int h = obj.Item1.GetHashCode();
                 for (int i = 0; i < obj.Item2.Length; ++i)

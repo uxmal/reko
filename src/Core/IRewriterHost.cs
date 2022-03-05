@@ -35,7 +35,7 @@ namespace Reko.Core
         /// <param name="returnType"></param>
         /// <param name="args"></param>
         /// <returns>An Application expression.</returns>
-        [Obsolete("", false)] Expression Intrinsic(string name, bool hasSideEffect, DataType returnType, params Expression [] args);
+        Expression Intrinsic(string name, bool hasSideEffect, DataType returnType, params Expression [] args);
         Expression CallIntrinsic(string name, bool hasSideEffect, FunctionType fnType, params Expression [] args);
         Expression Intrinsic(string name, bool hasSideEffect, ProcedureCharacteristics c, DataType returnType, params Expression [] args);
 

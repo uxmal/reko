@@ -90,7 +90,7 @@ void fn0200(Eq_n r5, struct Eq_n * pc)
 		g_w116C = 0x01;
 		g_w116E = 0x00;
 		FnSubfn(&g_w1166);
-		__syscall(0x88FC);
+		__syscall<word16>(0x88FC);
 	}
 	fn0BD6();
 l02A2:
@@ -181,7 +181,7 @@ l03E6:
 					g_w116C = 0x01;
 					g_w116E = 0x00;
 					FnSubfn(&g_w1166);
-					__syscall(0x88FC);
+					__syscall<word16>(0x88FC);
 					r0_n.u0 = 0x0601;
 				}
 			}

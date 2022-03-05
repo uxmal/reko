@@ -2003,7 +2003,7 @@ namespace Reko.UnitTests.Arch.zSeries
             Given_HexString("2001");
             AssertCode(     // lpdr	f0,f1
                 "0|L--|00100000(2): 2 instructions",
-                "1|L--|f0 = fabs<word64>(f1)",
+                "1|L--|f0 = fabs<real64>(f1)",
                 "2|L--|CC = cond(f0)");
         }
 

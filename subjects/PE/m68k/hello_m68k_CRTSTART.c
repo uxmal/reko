@@ -88,7 +88,7 @@ void fn000022C4(word32 a2, ptr32 a5)
 	(a5_n + 0x00C2)();
 	if (a2_n - *a7_n != 0x00)
 	{
-		__syscall(0xA1AD);
+		__syscall<word16>(0xA1AD);
 		a6_n->dwFFFFFFFC = a0_n;
 		if (false)
 			a5_n->dwFFFFF948 = a6_n->dwFFFFFFFC;

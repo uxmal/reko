@@ -16938,7 +16938,7 @@ fn0800_A53C_entry:
 	word16 wArg08
 l0800_A53C:
 	word16 ax_22
-	__syscall(0x21<8>)
+	__syscall<byte>(0x21<8>)
 	word16 cx_12 = wArg08
 	word16 ax_20 = SEQ(0x43<8>, bArg06)
 	branch C l0800_A553

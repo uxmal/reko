@@ -47,9 +47,9 @@ namespace Reko.Arch.M68k
         private readonly M68kState state;
         private readonly IRewriterHost host;
         private readonly IEnumerator<M68kInstruction> dasm;
+        private readonly List<RtlInstruction> rtlInstructions;
+        private readonly RtlEmitter m;
         private M68kInstruction instr;
-        private RtlEmitter m;
-        private List<RtlInstruction> rtlInstructions;
         private InstrClass iclass;
         private OperandRewriter orw;
 
@@ -61,10 +61,10 @@ namespace Reko.Arch.M68k
             this.host = host;
             this.rdr = rdr;
             this.dasm = arch.CreateDisassemblerImpl(rdr).GetEnumerator();
-            this.instr = default!;
-            this.m = default!;
-            this.orw = default!;
             this.rtlInstructions = new List<RtlInstruction>();
+            this.instr = default!;
+            this.m = new RtlEmitter(rtlInstructions);
+            this.orw = default!;
         }
 
         public IEnumerator<RtlInstructionCluster> GetEnumerator()
@@ -75,7 +75,6 @@ namespace Reko.Arch.M68k
                 var addr = instr.Address;
                 var len = instr.Length;
                 iclass = instr.InstructionClass;
-                m = new RtlEmitter(rtlInstructions);
                 orw = new OperandRewriter(arch, this.m, this.binder, instr.DataWidth!);
                 switch (instr.Mnemonic)
                 {
@@ -385,7 +384,7 @@ VS Overflow Set 1001 V
             };
         }
 
-        static readonly IntrinsicProcedure bclr_intrinsic = new IntrinsicBuilder("__bclr", false)
+        static readonly IntrinsicProcedure bclr_intrinsic = new IntrinsicBuilder("__bclr", true)
             .GenericTypes("T")
             .Param("T")
             .Param("T")
@@ -395,7 +394,7 @@ VS Overflow Set 1001 V
             .GenericTypes("T")
             .Param("T")
             .Void();
-        static readonly IntrinsicProcedure bset_intrinsic = new IntrinsicBuilder("__bset", false)
+        static readonly IntrinsicProcedure bset_intrinsic = new IntrinsicBuilder("__bset", true)
             .GenericTypes("T")
             .Param("T")
             .Param("T")
@@ -435,7 +434,9 @@ VS Overflow Set 1001 V
             .Void();
         static readonly IntrinsicProcedure stop_intrinsic = new IntrinsicBuilder("__stop", true)
             .Void();
-        static readonly IntrinsicProcedure swap_intrinsic = IntrinsicBuilder.Unary("__swap", PrimitiveType.Word32);
+        static readonly IntrinsicProcedure swap_intrinsic = new IntrinsicBuilder("__swap", true)
+            .Param(PrimitiveType.Word32)
+            .Returns(PrimitiveType.Word32);
         static readonly IntrinsicProcedure unpk_intrinsic = new IntrinsicBuilder("__unpk", false)
             .Param(PrimitiveType.UInt16)
             .Param(PrimitiveType.UInt16)

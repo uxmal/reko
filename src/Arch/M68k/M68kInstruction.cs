@@ -70,7 +70,7 @@ namespace Reko.Arch.M68k
             {
                 var uAddr = Address.ToUInt32();
                 if (memOp.Offset != null)
-                    uAddr = (uint)(uAddr +  memOp.Offset.ToInt32());
+                    uAddr = (uint)(uAddr + memOp.Offset.ToInt32());
                 var addr = Address.Ptr32(uAddr);
                 if ((options.Flags & MachineInstructionRendererFlags.ResolvePcRelativeAddress) != 0)
                 {

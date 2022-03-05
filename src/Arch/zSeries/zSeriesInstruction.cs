@@ -92,7 +92,7 @@ namespace Reko.Arch.zSeries
             {
                 sb.Append('s');
             }
-            renderer.WriteString(sb.ToString());
+            renderer.WriteMnemonic(sb.ToString());
         }
     }
 }

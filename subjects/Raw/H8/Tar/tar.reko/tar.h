@@ -1064,9 +1064,9 @@ Eq_2305: (union "Eq_2305" (ptr32 u0) (word16 u1))
 	T_2306 (in out r6 @ 00008A02 : ptr32)
 	T_5906 (in r6_16 @ 00009B82 : Eq_2305)
 Eq_2310: (fn bool (byte, byte))
-	T_2310 (in __btst @ 00008A08 : ptr16)
+	T_2310 (in __btst<byte,byte> @ 00008A08 : ptr32)
 	T_2311 (in signature of __btst @ 00000000 : void)
-	T_4727 (in __btst @ 000094B4 : ptr16)
+	T_4727 (in __btst<byte,byte> @ 000094B4 : ptr32)
 Eq_2356: (union "Eq_2356" (ptr32 u0) (word16 u1))
 	T_2356 (in Mem479[sp_116 + 0<32>:word16] @ 00008AE6 : word16)
 	T_2361 (in Mem479[sp_116 + 0<32>:word16] @ 00008AE6 : word16)
@@ -1193,9 +1193,9 @@ Eq_3540: (struct "Eq_3540" (FFFFFFFE Eq_8 tFFFFFFFE) (0 Eq_8 t0000) (8 word16 w0
 	T_3540 (in sp_201 @ 0000901E : (ptr32 Eq_3540))
 	T_3542 (in sp_154 - 2<i32> @ 00000000 : ptr32)
 Eq_3571: (fn byte (ui8, bool, byte))
-	T_3571 (in __bst @ 00009044 : ptr16)
-	T_3572 (in signature of __bst @ 00000000 : void)
-	T_3766 (in __bst @ 000090FE : ptr16)
+	T_3571 (in __bset<byte,byte> @ 00009044 : ptr32)
+	T_3572 (in signature of __bset @ 00000000 : void)
+	T_3766 (in __bset<byte,byte> @ 000090FE : ptr32)
 Eq_3592: (fn uint8 (byte, byte, bool))
 	T_3592 (in __rcr<byte,byte> @ 0000904A : ptr32)
 	T_3593 (in signature of __rcr @ 00000000 : void)
@@ -10647,19 +10647,19 @@ T_2309: (in r0_259 @ 00008A02 : uint16)
   Class: Eq_2308
   DataType: uint16
   OrigDataType: uint16
-T_2310: (in __btst @ 00008A08 : ptr16)
+T_2310: (in __btst<byte,byte> @ 00008A08 : ptr32)
   Class: Eq_2310
-  DataType: (ptr16 Eq_2310)
-  OrigDataType: (ptr16 (fn T_2316 (T_2314, T_2315)))
+  DataType: (ptr32 Eq_2310)
+  OrigDataType: (ptr32 (fn T_2316 (T_2314, T_2315)))
 T_2311: (in signature of __btst @ 00000000 : void)
   Class: Eq_2310
-  DataType: (ptr16 Eq_2310)
+  DataType: (ptr32 Eq_2310)
   OrigDataType: 
-T_2312: (in  @ 00008A08 : byte)
+T_2312: (in p1 @ 00008A08 : byte)
   Class: Eq_2312
   DataType: byte
   OrigDataType: 
-T_2313: (in  @ 00008A08 : byte)
+T_2313: (in p2 @ 00008A08 : byte)
   Class: Eq_2313
   DataType: byte
   OrigDataType: 
@@ -10671,7 +10671,7 @@ T_2315: (in 0<8> @ 00008A08 : byte)
   Class: Eq_2313
   DataType: byte
   OrigDataType: byte
-T_2316: (in __btst((byte) r0_259, 0<8>) @ 00008A08 : bool)
+T_2316: (in __btst<byte,byte>((byte) r0_259, 0<8>) @ 00008A08 : bool)
   Class: Eq_2316
   DataType: bool
   OrigDataType: bool
@@ -15691,23 +15691,23 @@ T_3570: (in r2_231 @ 00009044 : uint16)
   Class: Eq_3570
   DataType: uint16
   OrigDataType: uint16
-T_3571: (in __bst @ 00009044 : ptr16)
+T_3571: (in __bset<byte,byte> @ 00009044 : ptr32)
   Class: Eq_3571
-  DataType: (ptr16 Eq_3571)
-  OrigDataType: (ptr16 (fn T_3582 (T_3577, T_3580, T_3581)))
-T_3572: (in signature of __bst @ 00000000 : void)
+  DataType: (ptr32 Eq_3571)
+  OrigDataType: (ptr32 (fn T_3582 (T_3577, T_3580, T_3581)))
+T_3572: (in signature of __bset @ 00000000 : void)
   Class: Eq_3571
-  DataType: (ptr16 Eq_3571)
+  DataType: (ptr32 Eq_3571)
   OrigDataType: 
-T_3573: (in  @ 00009044 : byte)
+T_3573: (in p1 @ 00009044 : byte)
   Class: Eq_3573
   DataType: ui8
   OrigDataType: 
-T_3574: (in  @ 00009044 : bool)
+T_3574: (in p2 @ 00009044 : bool)
   Class: Eq_3574
   DataType: bool
   OrigDataType: 
-T_3575: (in  @ 00009044 : byte)
+T_3575: (in p3 @ 00009044 : byte)
   Class: Eq_3575
   DataType: byte
   OrigDataType: 
@@ -15735,7 +15735,7 @@ T_3581: (in 0<8> @ 00009044 : byte)
   Class: Eq_3575
   DataType: byte
   OrigDataType: byte
-T_3582: (in __bst(r2l_221 << 1<i32>, (bool) cond(r2l_221 << 1<i32>), 0<8>) @ 00009044 : byte)
+T_3582: (in __bset<byte,byte>(r2l_221 << 1<i32>, (bool) cond(r2l_221 << 1<i32>), 0<8>) @ 00009044 : byte)
   Class: Eq_3582
   DataType: byte
   OrigDataType: byte
@@ -15743,15 +15743,15 @@ T_3583: (in 1<8> @ 00009044 : byte)
   Class: Eq_3583
   DataType: byte
   OrigDataType: byte
-T_3584: (in __bst(r2l_221 << 1<i32>, (bool) cond(r2l_221 << 1<i32>), 0<8>) & 1<8> @ 00000000 : byte)
+T_3584: (in __bset<byte,byte>(r2l_221 << 1<i32>, (bool) cond(r2l_221 << 1<i32>), 0<8>) & 1<8> @ 00000000 : byte)
   Class: Eq_3584
   DataType: byte
   OrigDataType: byte
-T_3585: (in CONVERT(__bst(r2l_221 << 1<i32>, (bool) cond(r2l_221 << 1<i32>), 0<8>) & 1<8>, byte, uint16) @ 00009044 : uint16)
+T_3585: (in CONVERT(__bset<byte,byte>(r2l_221 << 1<i32>, (bool) cond(r2l_221 << 1<i32>), 0<8>) & 1<8>, byte, uint16) @ 00009044 : uint16)
   Class: Eq_3585
   DataType: uint16
   OrigDataType: uint16
-T_3586: (in (uint16) (__bst(r2l_221 << 1<i32>, (bool) cond(r2l_221 << 1<i32>), 0<8>) & 1<8>) + r3_219 @ 00000000 : word16)
+T_3586: (in (uint16) (__bset<byte,byte>(r2l_221 << 1<i32>, (bool) cond(r2l_221 << 1<i32>), 0<8>) & 1<8>) + r3_219 @ 00000000 : word16)
   Class: Eq_3570
   DataType: uint16
   OrigDataType: uint16
@@ -16471,10 +16471,10 @@ T_3765: (in r2_426 @ 000090FE : uint16)
   Class: Eq_3765
   DataType: uint16
   OrigDataType: uint16
-T_3766: (in __bst @ 000090FE : ptr16)
+T_3766: (in __bset<byte,byte> @ 000090FE : ptr32)
   Class: Eq_3571
-  DataType: (ptr16 Eq_3571)
-  OrigDataType: (ptr16 (fn T_3773 (T_3768, T_3771, T_3772)))
+  DataType: (ptr32 Eq_3571)
+  OrigDataType: (ptr32 (fn T_3773 (T_3768, T_3771, T_3772)))
 T_3767: (in 1<i32> @ 000090FE : int32)
   Class: Eq_3767
   DataType: int32
@@ -16499,7 +16499,7 @@ T_3772: (in 0<8> @ 000090FE : byte)
   Class: Eq_3575
   DataType: byte
   OrigDataType: byte
-T_3773: (in __bst(r2l_416 << 1<i32>, (bool) cond(r2l_416 << 1<i32>), 0<8>) @ 000090FE : byte)
+T_3773: (in __bset<byte,byte>(r2l_416 << 1<i32>, (bool) cond(r2l_416 << 1<i32>), 0<8>) @ 000090FE : byte)
   Class: Eq_3582
   DataType: byte
   OrigDataType: byte
@@ -16507,15 +16507,15 @@ T_3774: (in 1<8> @ 000090FE : byte)
   Class: Eq_3774
   DataType: byte
   OrigDataType: byte
-T_3775: (in __bst(r2l_416 << 1<i32>, (bool) cond(r2l_416 << 1<i32>), 0<8>) & 1<8> @ 00000000 : byte)
+T_3775: (in __bset<byte,byte>(r2l_416 << 1<i32>, (bool) cond(r2l_416 << 1<i32>), 0<8>) & 1<8> @ 00000000 : byte)
   Class: Eq_3775
   DataType: byte
   OrigDataType: byte
-T_3776: (in CONVERT(__bst(r2l_416 << 1<i32>, (bool) cond(r2l_416 << 1<i32>), 0<8>) & 1<8>, byte, uint16) @ 000090FE : uint16)
+T_3776: (in CONVERT(__bset<byte,byte>(r2l_416 << 1<i32>, (bool) cond(r2l_416 << 1<i32>), 0<8>) & 1<8>, byte, uint16) @ 000090FE : uint16)
   Class: Eq_3776
   DataType: uint16
   OrigDataType: uint16
-T_3777: (in (uint16) (__bst(r2l_416 << 1<i32>, (bool) cond(r2l_416 << 1<i32>), 0<8>) & 1<8>) + r3_414 @ 00000000 : word16)
+T_3777: (in (uint16) (__bset<byte,byte>(r2l_416 << 1<i32>, (bool) cond(r2l_416 << 1<i32>), 0<8>) & 1<8>) + r3_414 @ 00000000 : word16)
   Class: Eq_3765
   DataType: uint16
   OrigDataType: uint16
@@ -20315,10 +20315,10 @@ T_4726: (in 0<16> @ 000094B4 : ui16)
   Class: Eq_4726
   DataType: ui16
   OrigDataType: ui16
-T_4727: (in __btst @ 000094B4 : ptr16)
+T_4727: (in __btst<byte,byte> @ 000094B4 : ptr32)
   Class: Eq_2310
-  DataType: (ptr16 Eq_2310)
-  OrigDataType: (ptr16 (fn T_4730 (T_4728, T_4729)))
+  DataType: (ptr32 Eq_2310)
+  OrigDataType: (ptr32 (fn T_4730 (T_4728, T_4729)))
 T_4728: (in SLICE(r0_62, byte, 8) @ 000094B4 : byte)
   Class: Eq_2312
   DataType: byte
@@ -20327,19 +20327,19 @@ T_4729: (in 7<8> @ 000094B4 : byte)
   Class: Eq_2313
   DataType: byte
   OrigDataType: byte
-T_4730: (in __btst(SLICE(r0_62, byte, 8), 7<8>) @ 000094B4 : bool)
+T_4730: (in __btst<byte,byte>(SLICE(r0_62, byte, 8), 7<8>) @ 000094B4 : bool)
   Class: Eq_2316
   DataType: bool
   OrigDataType: bool
-T_4731: (in CONVERT(__btst(SLICE(r0_62, byte, 8), 7<8>), bool, uint16) @ 000094B4 : uint16)
+T_4731: (in CONVERT(__btst<byte,byte>(SLICE(r0_62, byte, 8), 7<8>), bool, uint16) @ 000094B4 : uint16)
   Class: Eq_4731
   DataType: uint16
   OrigDataType: uint16
-T_4732: (in 0<16> - (uint16) __btst(SLICE(r0_62, byte, 8), 7<8>) @ 00000000 : ui16)
+T_4732: (in 0<16> - (uint16) __btst<byte,byte>(SLICE(r0_62, byte, 8), 7<8>) @ 00000000 : ui16)
   Class: Eq_4724
   DataType: ui16
   OrigDataType: ui16
-T_4733: (in fn9B54(0<16> - (uint16) __btst(SLICE(r0_62, byte, 8), 7<8>), r0_62) @ 000094B4 : void)
+T_4733: (in fn9B54(0<16> - (uint16) __btst<byte,byte>(SLICE(r0_62, byte, 8), 7<8>), r0_62) @ 000094B4 : void)
   Class: Eq_4733
   DataType: void
   OrigDataType: void

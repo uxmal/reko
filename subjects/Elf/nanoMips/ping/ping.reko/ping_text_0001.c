@@ -9,8 +9,8 @@
 //      fn00409170
 Eq_n __fixunsdfsi(Eq_n r4, Eq_n r5)
 {
-	Eq_n r6_n = __ext(r5, 0x04, 11);
-	Eq_n r9_n = __ext(r5, 0x00, 0x14);
+	Eq_n r6_n = __ext<word32,word32>(r5, 0x04, 11);
+	Eq_n r9_n = __ext<word32,word32>(r5, 0x00, 0x14);
 	if (r6_n <= 1022)
 		return 0x00;
 	if (r5 >> 0x1F != 0x00)
@@ -65,7 +65,7 @@ Eq_n __floatsidf(Eq_n r4)
 		r6_n.u0 = 0x00;
 		r8_n.u0 = 0x00;
 	}
-	__ins(__ins(__ins(0x00, r7_n, 0x00, 0x01), r6_n, 0x04, 0x01), r8_n, 0x0F, 0x01);
+	__ins<word32,word32>(__ins<word32,word32>(__ins<word32,word32>(0x00, r7_n, 0x00, 0x01), r6_n, 0x04, 0x01), r8_n, 0x0F, 0x01);
 	return r4_n;
 }
 
@@ -100,7 +100,7 @@ Eq_n __floatunsidf(Eq_n r4, union Eq_n & r5Out)
 		r4_n.u0 = 0x00;
 		r6_n.u0 = 0x00;
 	}
-	r5Out = __ext(__ins(__ins(0x00, r7_n, 0x00, 0x01), r6_n, 0x04, 0x01), 0x00, 0x1F);
+	r5Out = __ext<word32,word32>(__ins<word32,word32>(__ins<word32,word32>(0x00, r7_n, 0x00, 0x01), r6_n, 0x04, 0x01), 0x00, 0x1F);
 	return r4_n;
 }
 
@@ -112,8 +112,8 @@ Eq_n __truncdfsf2(Eq_n r4, Eq_n r5, union Eq_n & r9Out, union Eq_n & r10Out)
 {
 	Eq_n r8_n;
 	Eq_n r7_n;
-	Eq_n r9_n = __ext(r5, 0x00, 0x14);
-	Eq_n r10_n = __ext(r5, 0x04, 11);
+	Eq_n r9_n = __ext<word32,word32>(r5, 0x00, 0x14);
+	Eq_n r10_n = __ext<word32,word32>(r5, 0x04, 11);
 	Eq_n r9_n = r4 >> 0x1D | r9_n << 0x03;
 	if (((word32) r10_n + 1 & 0x07FF) >= 0x02)
 	{
@@ -171,17 +171,17 @@ l004102C8:
 l00410336:
 			r7_n = (word32) r7_n + 4;
 l004102FC:
-			if (!__bit(r7_n, 0x1A))
+			if (!__bit<word32,word32>(r7_n, 0x1A))
 			{
 				r8_n = (word16) r8_n.u0 + 1;
-				r7_n = __ins(r7_n, 0x00, 0x0A, 0x01);
+				r7_n = __ins<word32,word32>(r7_n, 0x00, 0x0A, 0x01);
 				if (r8_n == 0xFF)
 					r7_n.u0 = 0x00;
 			}
 			Eq_n r7_n = r7_n >> 0x03;
 			if (r8_n == 0xFF && r7_n != 0x00)
 				r7_n |= 0x04000000;
-			__ins(__ins(__ins(0x00, r7_n, 0x00, 0x01), r8_n, 0x07, 0x01), r5 >> 0x1F, 0x0F, 0x01);
+			__ins<word32,word32>(__ins<word32,word32>(__ins<word32,word32>(0x00, r7_n, 0x00, 0x01), r8_n, 0x07, 0x01), r5 >> 0x1F, 0x0F, 0x01);
 			r9Out = r9_n;
 			r10Out = r10_n;
 			return r8_n;

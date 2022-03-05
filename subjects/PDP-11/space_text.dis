@@ -325,7 +325,7 @@ l0716:
 	r2_158 = __rcl<word16,byte>(r2_158, 1<8>, (r3_166 & 0x8000<16>) != 0<16>)
 	branch (r4_77 & 0x7F80<16>) == 0<16> l06B0
 l06B0:
-	__syscall(0x898B<16>)
+	__syscall<word16>(0x898B<16>)
 l0720:
 	r4_157 = (r4_77 & 0x7F80<16>) - 0x80<16>
 	C_163 = SLICE(cond(r4_157), bool, 0) (alias)
@@ -342,7 +342,7 @@ l06F0:
 l06F4:
 	r2_r3_249 = r2_r3_252 + r4_r5_326
 l06AA:
-	__syscall(0x898A<16>)
+	__syscall<word16>(0x898A<16>)
 l06B2:
 	r2_202 = 0<16>
 	r3_199 = 0<16>
@@ -369,7 +369,7 @@ l0754:
 	bool C_29 = SLICE(cond(wArg02 << 1<i16>), bool, 0)
 	branch wArg02 << 1<i16> == 0<16> l0810
 l0810:
-	__syscall(0x898C<16>)
+	__syscall<word16>(0x898C<16>)
 l076E:
 	word16 v23_30 = __rcl<word16,byte>(wArg02, 1<8>, C_29)
 	wArg02 = v23_30
@@ -386,7 +386,7 @@ l0774:
 l078C:
 	branch r2_44 > 0<16> l0808
 l0808:
-	__syscall(0x898B<16>)
+	__syscall<word16>(0x898B<16>)
 l0786:
 	branch r2_44 > 0<16> l078E
 l078E:
@@ -452,7 +452,7 @@ l07CE:
 l07D2:
 	return
 l0788:
-	__syscall(0x898A<16>)
+	__syscall<word16>(0x898A<16>)
 l080A:
 l080C:
 	r2_139 = 0<16>
@@ -540,7 +540,7 @@ l1078:
 l107C:
 	r0_53 = -r0_53
 l105E:
-	__syscall(0x8981<16>)
+	__syscall<word16>(0x8981<16>)
 l1060:
 	r0_53 = 0<16>
 l107E:
@@ -829,7 +829,7 @@ l0D3C_thunk_fn0D3E:
 	fn0D3E(r0_60 + 5<16>, v35_84)
 	return
 l0CFA:
-	__syscall(0x8990<16>)
+	__syscall<word16>(0x8990<16>)
 l0D50_in_fn0CF4:
 	return
 fn0CF4_exit:
@@ -1052,7 +1052,7 @@ fn0F48_entry:
 l0F48:
 	branch Mem0[r5:byte] != 2<8> l0F98
 l0F98:
-	__syscall(0x8990<16>)
+	__syscall<word16>(0x8990<16>)
 l0F4E:
 	ui32 r0_r1_109
 	word16 v13_13 = Mem0[r5 + 2<16>:word16]
@@ -1175,7 +1175,7 @@ l0FB2:
 	Mem13[r3_10 + 0x64<16>:word16] = fp + 0xA<16>
 	branch Mem13[r3_10 + 0x14<16>:word16] == 0<16> l0FCC
 l0FCA:
-	__syscall(0x899A<16>)
+	__syscall<word16>(0x899A<16>)
 l0FCC:
 	Mem24[r3_10 + 0x14<16>:word16] = wArg00
 	Mem26[r3_10 + 0x1C<16>:word16] = wArg04
@@ -1252,7 +1252,7 @@ l12AC:
 	Mem6[r3_4 + 0xA2<16>:byte] = r2
 	branch Mem6[r3_4 + 0x14<16>:word16] == 0<16> l12BC
 l12BA:
-	__syscall(0x899A<16>)
+	__syscall<word16>(0x899A<16>)
 l12BC:
 	word16 r0_15 = fn1420(r2, r3_4)
 	Mem21[r3_4 + 0x14<16>:word16] = r0_15
@@ -1408,22 +1408,22 @@ void fn13FE()
 // Preserved: sp
 fn13FE_entry:
 l13FE:
-	__syscall(0x88A0<16>)
-	__syscall(0x88A1<16>)
-	__syscall(0x88A2<16>)
-	__syscall(0x88A3<16>)
-	__syscall(0x88A4<16>)
-	__syscall(0x88A5<16>)
-	__syscall(0x88A6<16>)
-	__syscall(0x88A7<16>)
-	__syscall(0x88A8<16>)
-	__syscall(0x88A9<16>)
-	__syscall(0x88AA<16>)
-	__syscall(0x88AB<16>)
-	__syscall(0x88AC<16>)
-	__syscall(0x88AD<16>)
-	__syscall(0x88AE<16>)
-	__syscall(0x88AF<16>)
+	__syscall<word16>(0x88A0<16>)
+	__syscall<word16>(0x88A1<16>)
+	__syscall<word16>(0x88A2<16>)
+	__syscall<word16>(0x88A3<16>)
+	__syscall<word16>(0x88A4<16>)
+	__syscall<word16>(0x88A5<16>)
+	__syscall<word16>(0x88A6<16>)
+	__syscall<word16>(0x88A7<16>)
+	__syscall<word16>(0x88A8<16>)
+	__syscall<word16>(0x88A9<16>)
+	__syscall<word16>(0x88AA<16>)
+	__syscall<word16>(0x88AB<16>)
+	__syscall<word16>(0x88AC<16>)
+	__syscall<word16>(0x88AD<16>)
+	__syscall<word16>(0x88AE<16>)
+	__syscall<word16>(0x88AF<16>)
 	return
 fn13FE_exit:
 
@@ -1445,7 +1445,7 @@ l1420:
 l1424:
 	branch r2 >= 0x63<16> l142C
 l142A:
-	__syscall(0x8994<16>)
+	__syscall<word16>(0x8994<16>)
 l142C:
 	word16 v14_19 = Mem0[r3 + 4<16>:word16]
 	word16 r1_24 = v14_19
@@ -1462,7 +1462,7 @@ l143E:
 l1442:
 	branch Mem23[r3 + 2<16>:word16] - r1_24 <u 0<16> l143E
 l1448:
-	__syscall(0x8995<16>)
+	__syscall<word16>(0x8995<16>)
 l144A:
 	word16 r1_58 = r1_24 - 2<16>
 	Mem61[r1_58:word16] = r2
@@ -1493,7 +1493,7 @@ l145E:
 	Mem9[r3_4 + 0xA2<16>:byte] = r2
 	branch Mem9[r3_4 + 0x14<16>:word16] == 0<16> l1478
 l1476:
-	__syscall(0x899A<16>)
+	__syscall<word16>(0x899A<16>)
 l1478:
 	Mem24[r3_4 + 0x12<16>:word16] = wArg02
 	word16 v17_25 = Mem24[ptrArg04:word16]
@@ -1600,7 +1600,7 @@ l154C:
 l155A:
 l155E:
 	word16 r1_166 = CONVERT(Mem157[r4_104 + 0x11<16>:byte], byte, int16)
-	__syscall(0x88FC<16>)
+	__syscall<word16>(0x88FC<16>)
 	word16 r0_169 = 0<16>
 	bool C_173 = true
 l156A:
@@ -1668,7 +1668,7 @@ l15CC:
 l15D6:
 	Mem12[&bLoc04:word16] = 0x1100<16>
 	FnSubfn(&bLoc04)
-	__syscall(0x88FC<16>)
+	__syscall<word16>(0x88FC<16>)
 	word16 r2_22 = 0xA00<16>
 	branch false l15FA
 l15F4:
@@ -1678,7 +1678,7 @@ l15FA:
 	Mem48[Mem46[r5 + 4<16>:word16]:ptr16] = 0x10<16>
 	Mem51[Mem48[r5 + 6<16>:word16]:ptr16] = r2_22
 l15D2:
-	__syscall(0x8990<16>)
+	__syscall<word16>(0x8990<16>)
 l1614:
 	return
 fn15CC_exit:
@@ -1769,7 +1769,7 @@ l173E:
 	word16 r4_44 = __swab(r4_24)
 	branch r4_44 == 0<16> l174C
 l174A:
-	__syscall(0x89A8<16>)
+	__syscall<word16>(0x89A8<16>)
 l174C:
 	word16 r3_61 = Mem9[0x5424<p16>:word16]
 	Mem62[r3_61 + 0x5E<16>:word16] = r1_43 | r4_44
@@ -1805,7 +1805,7 @@ l1850:
 l1856:
 	Mem26[r4:word16] = Mem21[r4:word16] & 0x7FFF<16>
 	Mem27[r4 + 0x18<16>:word16] = 0<16>
-	__syscall(0x89A3<16>)
+	__syscall<word16>(0x89A3<16>)
 l1860:
 	word16 r3_38
 	word16 r4_39
@@ -1907,7 +1907,7 @@ l192E_thunk_fn1932:
 	r4Out = r4_64
 	return r2_61
 l1930:
-	__syscall(0x8997<16>)
+	__syscall<word16>(0x8997<16>)
 l1930_thunk_fn1932:
 	word16 r3_72
 	word16 r4_73
@@ -1946,7 +1946,7 @@ l193A:
 	word16 r4_24 = Mem22[r3 + 0x70<16>:word16]
 	branch r4_24 != 0<16> l194A
 l1948:
-	__syscall(0x8998<16>)
+	__syscall<word16>(0x8998<16>)
 l194A:
 l0E92:
 	word16 sp_30 = Mem22[r3 + 0x64<16>:word16]
@@ -2778,10 +2778,10 @@ l466A:
 	r1_129 = r1_129 + 1<16>
 	branch OVERFLOW<word16>(r1_129) l46C2
 l46C2:
-	__syscall(0x899F<16>)
-	__syscall(0x899B<16>)
-	__syscall(0x899C<16>)
-	__syscall(0x899D<16>)
+	__syscall<word16>(0x899F<16>)
+	__syscall<word16>(0x899B<16>)
+	__syscall<word16>(0x899C<16>)
+	__syscall<word16>(0x899D<16>)
 l4712:
 	Mem143[r3 + 0x10<16>:word16] = r0_123
 	Mem145[r1_129 + 0xFFFA<16>:word16] = Mem143[r1_129 + 0xFFFA<16>:word16] | 0x80<16>

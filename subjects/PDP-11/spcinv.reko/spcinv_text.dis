@@ -55,7 +55,7 @@ l027A:
 	Mem68[0x116C<16>:word16] = 1<16>
 	Mem69[0x116E<16>:word16] = 0<16>
 	FnSubfn(0x1166<16>)
-	__syscall(0x88FC<16>)
+	__syscall<word16>(0x88FC<16>)
 l029E:
 	fn0BD6()
 l02A2:
@@ -143,7 +143,7 @@ l03E6:
 	Mem283[0x116C<16>:word16] = 1<16>
 	Mem284[0x116E<16>:word16] = 0<16>
 	FnSubfn(0x1166<16>)
-	__syscall(0x88FC<16>)
+	__syscall<word16>(0x88FC<16>)
 	r0_105 = 0x601<16>
 l040A:
 	word16 r4_298

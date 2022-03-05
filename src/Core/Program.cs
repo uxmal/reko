@@ -111,10 +111,10 @@ namespace Reko.Core
 
 #nullable enable
 
-    /// <summary>
-    /// The program's file name and extension, but not its path.
-    /// </summary>
-    public string Name { get; set; }
+        /// <summary>
+        /// The program's file name and extension, but not its path.
+        /// </summary>
+        public string Name { get; set; }
 
         /// <summary>
         /// The default processor architecture to use for decompilation.

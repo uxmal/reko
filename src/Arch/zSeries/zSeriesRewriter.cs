@@ -74,7 +74,7 @@ namespace Reko.Arch.zSeries
             this.instrs = new List<RtlInstruction>();
             this.m = new RtlEmitter(instrs);
             this.ptrSize = arch.PointerType.BitSize;
-            this.instr = null!;
+            this.instr = default!;
         }
 
         public IEnumerator<RtlInstructionCluster> GetEnumerator()
@@ -83,7 +83,6 @@ namespace Reko.Arch.zSeries
             {
                 this.instr = dasm.Current;
                 this.iclass = instr.InstructionClass;
-                var instrs = new List<RtlInstruction>();
                 switch (instr.Mnemonic)
                 {
                 default:

@@ -149,16 +149,18 @@ namespace Reko.Arch.Arm.AArch32
         private void RewriteRev(PrimitiveType dt)
         {
             var opDst = this.Operand(0, PrimitiveType.Word32, true);
-            var name = $"__rev_{dt.BitSize}";
-            var intrinsic = host.Intrinsic(name, false, PrimitiveType.Word32, this.Operand(1));
-            m.Assign(opDst, intrinsic);
+            var intrinsic = rev_intrinsic.MakeInstance(dt);
+            var application = m.Fn(intrinsic, this.Operand(1));
+            m.Assign(opDst, application);
         }
 
         private void RewriteRevsh()
         {
             var opDst = this.Operand(0, PrimitiveType.Word32, true);
             var intrinsic = m.Convert(
-                host.Intrinsic("__rev_16", false, PrimitiveType.Word16, m.Slice(PrimitiveType.Word16, this.Operand(1), 0)),
+                m.Fn(
+                    rev_intrinsic.MakeInstance(PrimitiveType.Word16),
+                    m.Slice(PrimitiveType.Word16, this.Operand(1), 0)),
                 PrimitiveType.Word16,
                 PrimitiveType.Int32);
             m.Assign(opDst, intrinsic);
@@ -207,7 +209,7 @@ namespace Reko.Arch.Arm.AArch32
                 op(dst, src)));
         }
 
-        private void RewriteCrc(string fnName, DataType dt)
+        private void RewriteCrc(string  fnName, DataType dt)
         {
             var src1 = this.Operand(1);
             var src2 = this.Operand(2);
@@ -469,7 +471,7 @@ namespace Reko.Arch.Arm.AArch32
 
         private void RewriteHint()
         {
-            var ldrex = host.Intrinsic("__ldrex", true, VoidType.Instance, Operand(0));
+            var ldrex = m.Fn(ldrex_intrinsic, m.AddrOf(PrimitiveType.Ptr32, Operand(0)));
             m.SideEffect(m.Fn(ldrex));
         }
 
@@ -514,8 +516,7 @@ namespace Reko.Arch.Arm.AArch32
 
         private void RewriteLdrex()
         {
-            var intrinsic = host.Intrinsic("__ldrex", false, VoidType.Instance);
-            m.SideEffect(intrinsic);
+            m.Assign(Operand(0), m.Fn(ldrex_intrinsic, Operand(1)));
         }
 
         private void RewriteShift(Func<Expression, Expression, Expression> ctor)
@@ -1042,27 +1043,22 @@ namespace Reko.Arch.Arm.AArch32
 
         private void RewriteUsat()
         {
-            var dst = this.Operand(0);
             var src1 = this.Operand(1);
             var src2 = this.Operand(2);
-            var intrinsic = host.Intrinsic("__usat", false, PrimitiveType.UInt32, src1, src2);
+            var dst = this.Operand(0);
+            var intrinsic = m.Fn(usat_intrinsic, src1, src2);
             m.Assign(dst, intrinsic);
             m.Assign(Q(), m.Cond(dst));
         }
 
-        private void RewriteSat16(PrimitiveType elemType, string intrinsicName)
+        private void RewriteSat16(IntrinsicProcedure intrinsic)
         {
-            var dst = this.Operand(0);
             var src1 = this.Operand(1);
             var src2 = this.Operand(2);
-            var arrSrc = new ArrayType(elemType, 2);
-            var arrDst = new ArrayType(elemType, 2);
-
-            var intrinsic = host.Intrinsic(intrinsicName, false, arrDst, src1, src2);
-            m.Assign(dst, intrinsic);
+            var dst = this.Operand(0);
+            m.Assign(dst, m.Fn(intrinsic, src1, src2));
             m.Assign(Q(), m.Cond(dst));
         }
-
 
         private void RewriteUsax()
         {
@@ -1103,8 +1099,7 @@ namespace Reko.Arch.Arm.AArch32
 
         private void RewriteYield()
         {
-            var intrinsic = host.Intrinsic("__yield", true, VoidType.Instance);
-            m.SideEffect(intrinsic);
+            m.SideEffect(m.Fn(yield_intrinsic));
         }
     }
 }

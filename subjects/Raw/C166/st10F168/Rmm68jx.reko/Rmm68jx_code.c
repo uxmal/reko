@@ -78,8 +78,8 @@ word16 fn0110(word16 S0TIC)
 	*(ptr16 *) ~0x014F = fp;
 	do
 		;
-	while (!__bit(S0TIC, 7));
-	return __bit_clear(S0TIC, 7);
+	while (!__bit<word16,int16>(S0TIC, 7));
+	return __bit_clear<word16,int16>(S0TIC, 7);
 }
 
 // 011C: Register word16 fn011C(Register word16 S0RIC)
@@ -89,8 +89,8 @@ word16 fn011C(word16 S0RIC)
 {
 	do
 		;
-	while (!__bit(S0RIC, 7));
-	return __bit_clear(S0RIC, 7);
+	while (!__bit<word16,int16>(S0RIC, 7));
+	return __bit_clear<word16,int16>(S0RIC, 7);
 }
 
 // 0128: void fn0128(Register (ptr16 byte) r1, Register word16 S0TIC)

@@ -70,8 +70,7 @@ namespace Reko.Arch.Pdp11
                 m.Invalid();
                 return;
             }
-            var csh = sh as Constant;
-            if (csh != null)
+            if (sh is Constant csh)
             {
                 var n = csh.ToInt16();
                 if (n >= 0)
@@ -85,7 +84,7 @@ namespace Reko.Arch.Pdp11
             }
             else
             {
-                m.Assign(dst, m.Fn(shift_intrinsic, dst, sh));
+                m.Assign(dst, m.Fn(shift_intrinsic.MakeInstance(dst.DataType, sh.DataType), dst, sh));
             }
             SetFlags(dst, Registers.NVC);
         }
@@ -330,7 +329,7 @@ namespace Reko.Arch.Pdp11
             else
             {
                 fn = (a, b) =>
-                    m.Fn(shift_intrinsic.MakeInstance(instr.DataWidth!), a, b);
+                    m.Fn(shift_intrinsic.MakeInstance(instr.DataWidth!, b.DataType), a, b);
             }
             var dst = RewriteDst(instr.Operands[1], src, fn);
             SetFlags(dst, Registers.NZVC);

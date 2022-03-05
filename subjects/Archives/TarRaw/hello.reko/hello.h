@@ -18,7 +18,7 @@ Eq_8: (fn void (word16))
 	T_8 (in putchar @ 00000109 : ptr16)
 	T_9 (in signature of putchar @ 0000010E : void)
 Eq_20: (fn void (word16))
-	T_20 (in __console_output @ 0000010E : ptr16)
+	T_20 (in __console_output @ 0000010E : ptr32)
 	T_21 (in signature of __console_output @ 00000000 : void)
 // Type Variables ////////////
 globals_t: (in globals @ 00000000 : (ptr16 (struct "Globals")))
@@ -97,15 +97,15 @@ T_19: (in gp0_8 == 0<16> @ 00000000 : bool)
   Class: Eq_19
   DataType: bool
   OrigDataType: bool
-T_20: (in __console_output @ 0000010E : ptr16)
+T_20: (in __console_output @ 0000010E : ptr32)
   Class: Eq_20
-  DataType: (ptr16 Eq_20)
-  OrigDataType: (ptr16 (fn T_23 (T_10)))
+  DataType: (ptr32 Eq_20)
+  OrigDataType: (ptr32 (fn T_23 (T_10)))
 T_21: (in signature of __console_output @ 00000000 : void)
   Class: Eq_20
-  DataType: (ptr16 Eq_20)
+  DataType: (ptr32 Eq_20)
   OrigDataType: 
-T_22: (in  @ 0000010E : word16)
+T_22: (in p1 @ 0000010E : word16)
   Class: Eq_10
   DataType: word16
   OrigDataType: 

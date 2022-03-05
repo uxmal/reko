@@ -46,7 +46,6 @@ namespace Reko.Arch.Z80
         private InstrClass iclass;
         private Z80Instruction instr;
 
-#nullable disable
         public Z80Rewriter(Z80ProcessorArchitecture arch, EndianImageReader rdr, ProcessorState state, IStorageBinder binder, IRewriterHost host)
         {
             this.arch = arch;
@@ -57,7 +56,6 @@ namespace Reko.Arch.Z80
             this.m = new RtlEmitter(rtlInstructions);
             this.instr = default!;
         }
-#nullable enable
 
         public IEnumerator<RtlInstructionCluster> GetEnumerator()
         {

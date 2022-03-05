@@ -22,21 +22,21 @@ void fn0000149C()
 fn0000149C_exit:
 fn0000149C_entry:
 l0000149C:
-	__syscall(0xA9A0<16>)
+	__syscall<word16>(0xA9A0<16>)
 	branch true l000014BE
 l000014BE:
-	__syscall(0xA86E<16>)
-	__syscall(0xA8FE<16>)
-	__syscall(0xA912<16>)
-	__syscall(0xA930<16>)
-	__syscall(0xA9CC<16>)
-	__syscall(0xA97B<16>)
-	__syscall(0xA850<16>)
-	__syscall(0xA986<16>)
+	__syscall<word16>(0xA86E<16>)
+	__syscall<word16>(0xA8FE<16>)
+	__syscall<word16>(0xA912<16>)
+	__syscall<word16>(0xA930<16>)
+	__syscall<word16>(0xA9CC<16>)
+	__syscall<word16>(0xA97B<16>)
+	__syscall<word16>(0xA850<16>)
+	__syscall<word16>(0xA986<16>)
 l000014B6:
 	Mem21[0x00000AF0<p32>:word16] = 0x1A<16>
 l000014E2:
-	__syscall(0xA9F4<16>)
+	__syscall<word16>(0xA9F4<16>)
 
 
 void fn000014E8(word32 a3, word32 a5, word16 wArg00, word32 dwArg02)
@@ -50,13 +50,13 @@ fn000014E8_entry:
 	word16 wLoc12
 l000014E8:
 	Mem13[0<16>:word16] = 0<16>
-	__syscall(0xA9A0<16>)
+	__syscall<word16>(0xA9A0<16>)
 	word32 dwLoc12_187 = SEQ(wLoc12, 0x4441<16>)
 	word32 dwLoc02_197 = SEQ(SLICE(a3, word16, 0), wArg00)
 	branch dwLoc12_187 == 0<32> l00001592
 l00001592:
 	Mem18[0x00000AF0<p32>:word16] = 0xFDA3<16>
-	__syscall(0xA9F4<16>)
+	__syscall<word16>(0xA9F4<16>)
 l000014FE:
 	word32 a3_21 = Mem13[dwLoc12_187:word32]
 	word32 d0_24 = Mem13[a3_21:word32]
@@ -71,7 +71,7 @@ l0000150E:
 	branch d0_27 != 0<32> l0000150E
 l00001514:
 	word32 a2_43 = a2_25 - Mem39[a3_21 + 4<i32>:word32]
-	__syscall(0xA02E<16>)
+	__syscall<word16>(0xA02E<16>)
 	word32 d0_45 = Mem39[a3_21 + 8<i32>:word32]
 	word32 a2_46 = a2_43 - d0_45
 	word32 a0_47 = a2_46
@@ -85,7 +85,7 @@ l0000152E:
 l00001534:
 	word32 a2_137 = a2_46 - Mem60[a3_21 + 12<i32>:word32]
 	word32 a3_131 = Mem60[a3_21 + 12<i32>:word32] + ((a3_21 + 16<i32>) + Mem60[a3_21 + 4<i32>:word32])
-	__syscall(0xA02E<16>)
+	__syscall<word16>(0xA02E<16>)
 l00001556:
 	word32 d0_100
 	byte v18_81 = Mem80[a3_131:byte]
@@ -104,7 +104,7 @@ l0000155E:
 	word32 d0_105 = CONVERT(v22_102, byte, uint32)
 	branch v22_102 == 0<8> l0000159A
 l0000159A:
-	__syscall(0xA9A3<16>)
+	__syscall<word16>(0xA9A3<16>)
 	return
 fn000014E8_exit:
 l00001562:
