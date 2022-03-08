@@ -39,11 +39,8 @@ namespace Reko.Core.Operators
 
         protected Constant BuildConstant(DataType t1, DataType t2, long val)
 		{
-            //$REVIEW what to do when these resolutions fail?
-			PrimitiveType p1 = t1.ResolveAs<PrimitiveType>()!;
-			PrimitiveType p2 = t2.ResolveAs<PrimitiveType>()!;
-			int bitSize = Math.Max(p1.BitSize, p2.BitSize);
-			return Constant.Create(PrimitiveType.Create(p1.Domain|p2.Domain, bitSize), val);
+			int bitSize = Math.Max(t1.BitSize, t2.BitSize);
+			return Constant.Create(PrimitiveType.Create(t1.Domain|t2.Domain, bitSize), val);
 		}
 
         protected Constant BuildConstant(DataType t1, DataType t2, ulong val)
