@@ -22,8 +22,9 @@ using Reko.Core;
 using Reko.Core.Code;
 using Reko.Core.Expressions;
 using Reko.Core.Lib;
-using Reko.Core.Rtl;
 using Reko.Core.Operators;
+using Reko.Core.Rtl;
+using Reko.Core.Services;
 using Reko.Core.Types;
 using Reko.Evaluation;
 using System;
@@ -31,9 +32,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using ProcedureCharacteristics = Reko.Core.Serialization.ProcedureCharacteristics;
-using Reko.Analysis;
-using Reko.Core.Services;
-using System.ComponentModel;
 
 namespace Reko.Scanning
 {

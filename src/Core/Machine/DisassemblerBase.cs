@@ -91,6 +91,17 @@ namespace Reko.Core.Machine
             return default!;
         }
 
+        /// <summary>
+        /// This method creates an invalid instruction. The instruction must 
+        /// have its `InstrClass` property set to `InstructionClass.Invalid`.
+        /// </summary>
+        /// <remarks>
+        /// The disassembler should generate invalid instructions when the 
+        /// opcode it is decoding doesn't correspond to a valid instruction.
+        /// Processors with variable-length instructions should return invalid
+        /// instructions when the available machine code is shorter than the
+        /// expected length of the instruction.
+        /// </remarks>
         public abstract TInstr CreateInvalidInstruction();
 
         // Utility functions 

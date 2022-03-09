@@ -55,6 +55,17 @@ namespace Reko.Core
         /// <param name="id"></param>
         /// <returns></returns>
         Expression? GetValue(Identifier id);
+
+        /// <summary>
+        /// Retrieves the value located at the address obtained by evaluating
+        /// the <paramref name="access"/> expression.
+        /// </summary>
+        /// <param name="access">Memory access expression.</param>
+        /// <param name="segmentMap">The segment map of the program
+        /// being analyzed.</param>
+        /// <returns>An expression at the memory address, or an instance
+        /// of <see cref="InvalidConstant"/> if the address couldn't be resolved.
+        /// </returns>
         Expression GetValue(MemoryAccess access, SegmentMap segmentMap);
         Expression GetValue(SegmentedAccess access, SegmentMap segmentMap);
         Expression GetValue(Application appl);

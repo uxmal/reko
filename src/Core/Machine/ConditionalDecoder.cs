@@ -27,6 +27,11 @@ using System.Threading.Tasks;
 
 namespace Reko.Core.Machine
 {
+    /// <summary>
+    /// This decoder extracts a value from one or more bitfields and selects one
+    /// of two sub-decoders depending on the result of evaluating a provided
+    /// predicate with the bitfield value.
+    /// </summary>
     public class ConditionalDecoder<TDasm, TMnemonic, TInstr> : Decoder<TDasm, TMnemonic, TInstr>
         where TInstr : MachineInstruction
         where TMnemonic : struct

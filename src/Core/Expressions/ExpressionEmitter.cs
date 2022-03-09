@@ -270,9 +270,6 @@ namespace Reko.Core.Expressions
         /// <param name="src">The smaller value to deposit.</param>
         /// <param name="offset">The bit offset at which to deposit the value.</param>
         /// <returns>A deposit-bits expression.</returns>
-        /// <remarks>
-        /// The method expects 
-        /// </remarks>
         public MkSequence Dpb(Expression dst, Expression src, int offset)
         {
             Debug.Assert(dst is Identifier || dst is Constant);
@@ -312,7 +309,7 @@ namespace Reko.Core.Expressions
 
         /// <summary>
         /// Convenience method for equality comparison. The second parameter
-        /// is converted to a Constant first.
+        /// is converted to a <see cref="Constant" first.
         /// </summary>
         /// <param name="a"></param>
         /// <param name="b"></param>
@@ -466,10 +463,8 @@ namespace Reko.Core.Expressions
             return new BinaryExpression(Operator.FSub, dtSum, a, b);
         }
 
-        // Field access: "point.x"
-
         /// <summary>
-        /// Generate a field access ('foo.bar' in the C language family
+        /// Generate a field access ('foo.bar' in the C language family).
         /// </summary>
         /// <param name="dt">Data type of the field access.</param>
         /// <param name="e">Structured type whose field we're accessing.</param>
@@ -532,7 +527,7 @@ namespace Reko.Core.Expressions
 
         /// <summary>
         /// Generates a function application that applies the intrinsic 
-        /// procedure <paramref name="ep"/> to
+        /// procedure <paramref name="intrinsic"/> to
         /// the arguments <paramref name="args" /> and returns a value of the
         /// return type of the external procedure. Use this when modelling
         /// processor-specific intrinsic functions that cannot be expressed
@@ -574,7 +569,7 @@ namespace Reko.Core.Expressions
         /// <summary>
         /// Convenience function that generates a signed integer greater-or-equal comparison
         /// ('>=' in the C language family). The second parameter is first converted
-        /// to a Constant.
+        /// to a <see cref="Constant" />.
         /// </summary>
         /// <returns>Signed integer comparison.</returns>
         public Expression Ge(Expression a, int b)
@@ -605,7 +600,7 @@ namespace Reko.Core.Expressions
         /// <summary>
         /// Convenience function that generates a signed integer greater-than comparison
         /// ('>' in the C language family). The second parameter is first converted
-        /// to a Constant.
+        /// to a <see cref="Constant" />.
         /// </summary>
         /// <returns>Signed integer comparison.</returns>
         public BinaryExpression Gt(Expression a, int b)
@@ -787,7 +782,7 @@ namespace Reko.Core.Expressions
         /// <summary>
         /// Convenience function that generates a signed integer less-than comparison
         /// ('&lt;' in the C language family). The second parameter is first converted
-        /// to a Constant.
+        /// to a <see cref="Constant" />.
         /// </summary>
         /// <returns>Signed integer comparison.</returns>
         public BinaryExpression Lt(Expression a, int b)
@@ -1206,7 +1201,7 @@ namespace Reko.Core.Expressions
 
         /// <summary>
         /// Convenience method to generate a signed Shift arithmetic right expression ('a >> b' in the C language family). 
-        /// The shift amount is converted to a Constant.
+        /// The shift amount is converted to a <see cref="Constant" />.
         /// </summary>
         /// <param name="e">Value to shift.</param>
         /// <param name="sh">Shift amount.</param>
@@ -1217,8 +1212,9 @@ namespace Reko.Core.Expressions
         }
 
         /// <summary>
-        /// Convenience method to generate a signed Shift arithmetic right expression ('a >> b' in the C language family). 
-        /// The shift amount is converted to a Constant.
+        /// Convenience method to generate a signed Shift arithmetic right
+        /// expression ('a >> b' in the C language family). 
+        /// The shift amount is converted to a <see cref="Constant" />.
         /// </summary>
         /// <param name="e">Value to shift.</param>
         /// <param name="sh">Shift amount.</param>

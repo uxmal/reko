@@ -89,7 +89,7 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
         public LineSpan[] GetLineSpans(int count)
         {
             var spans = new List<LineSpan>();
-            if (!(CurrentPosition is Location loc))
+            if (CurrentPosition is not Location loc)
                 return spans.ToArray();
             for (int i = loc.iModel; count > 0 && i < Nodes.Count; ++i)
             {

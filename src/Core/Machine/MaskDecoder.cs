@@ -24,7 +24,7 @@ using System.Diagnostics;
 namespace Reko.Core.Machine
 {
     /// <summary>
-    /// This class decodes an machine instruction by observing a bitfield of the
+    /// This class decodes an machine instruction by decoding a bitfield of the
     /// opcode, and dispatching to one of 2^N sub-decoders.
     /// </summary>
     public class MaskDecoder<TDasm, TMnemonic, TInstr> : Decoder<TDasm, TMnemonic, TInstr>
@@ -64,6 +64,10 @@ namespace Reko.Core.Machine
         }
     }
 
+    /// <summary>
+    /// This class is the 64-bit version of <see cref="MaskDecoder" />: it performs the same
+    /// function on 64-bit opcodes.
+    /// </summary>
     public class WideMaskDecoder<TDasm, TMnemonic, TInstr> : WideDecoder<TDasm, TMnemonic, TInstr>
         where TDasm : DisassemblerBase<TInstr, TMnemonic>
         where TMnemonic : struct

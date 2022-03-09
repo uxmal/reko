@@ -34,8 +34,19 @@ namespace Reko.Core.Machine
     /// </summary>
 	public interface MachineOperand
 	{
+        /// <summary>
+        /// The data type of this MachineOperand.
+        /// </summary>
         DataType Width { get; set; }
+
+        /// <summary>
+        /// Renders the operand as a string, according to the specified
+        // <paramref name="options" />.
         string ToString(MachineInstructionRendererOptions options);
+
+        /// <summary>
+        /// Renders the operand to a <see cref="MachineInstructionRenderer" />,
+        /// according to the specified <paramref name="options" />.
         public void Render(MachineInstructionRenderer renderer, MachineInstructionRendererOptions options);
     }
 
