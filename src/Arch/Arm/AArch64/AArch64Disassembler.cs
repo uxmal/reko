@@ -1103,11 +1103,10 @@ namespace Reko.Arch.Arm.AArch64
             var cmodeField = new Bitfield(cmodePos, cmodeLength);
             return (u, d) =>
             {
-                var encodedNumber = Bitfield.ReadFields(bitfields, u);
+                var number = (byte)Bitfield.ReadFields(bitfields, u);
                 var op = opField.Read(u);
                 var cmode = cmodeField.Read(u);
-                var decodedNumber = DecodeSimdImmediate(op, cmode, encodedNumber);
-                var imm = new ImmediateOperand(Constant.Word64(decodedNumber));
+                var imm = new ImmediateOperand(Constant.Byte(number));
                 d.state.ops.Add(imm);
                 return true;
             };
@@ -4441,17 +4440,18 @@ namespace Reko.Arch.Arm.AArch64
             Decoder AdvancedSimdModifiedImm;
             {
                 var sShifts = new int[] { 0, 8, 16, 24 };
+                var mslShifts = new int[] { 8, 16 };
                 var modImm64 = Is64(16, 3, 5, 5, 29, 1, 12, 4);
                 var modFloat32 = If32(16, 3, 5, 5);
                 var shiftImm = ShiftImm(13, 2, sShifts, Mnemonic.lsl);
-                var shiftImmOnes = ShiftImm(13, 2, sShifts, Mnemonic.msl);
+                var shiftImmOnes = ShiftImm(12, 1, mslShifts, Mnemonic.msl);
 
                 var movShift32Imm = Instr(Mnemonic.movi, q30, Vr(0, 5, SSSS), modImm64, shiftImm);
                 var movShift16Imm = Instr(Mnemonic.movi, q30, Vr(0, 5, HHHH), modImm64, shiftImm);
                 var movi8 = Instr(Mnemonic.movi, q30, Vr(0, 5, BBBB), modImm64);
                 var orrVec32Imm = Instr(Mnemonic.orr, q30, Vr(0, 5, SSSS), modImm64, shiftImm);
                 var orrVec16Imm = Instr(Mnemonic.orr, q30, Vr(0, 5, HHHH), modImm64, shiftImm);
-                var moviShiftOnes32Imm = Instr(Mnemonic.mvni, q30, Vr(0, 5, SSSS), modImm64, shiftImm);
+                var moviShiftOnes32Imm = Instr(Mnemonic.movi, q30, Vr(0, 5, SSSS), modImm64, shiftImmOnes);
                 var mvniShift32Imm = Instr(Mnemonic.mvni, q30, Vr(0, 5, SSSS), modImm64, shiftImm);
                 var bicVec32Imm = Instr(Mnemonic.bic, q30, Vr(0, 5, SSSS), modImm64, shiftImm);
                 var mvniShift16Imm = Instr(Mnemonic.mvni, q30, Vr(0, 5, HHHH), modImm64, shiftImm);
@@ -4585,7 +4585,6 @@ namespace Reko.Arch.Arm.AArch64
                         Instr(Mnemonic.movi, q30, Vr(0, 5, DDDD), modImm64),
                         fmovDoubleVariant),
                     invalid);
-
             }
 
             Decoder AdvancedSimd2RegMisc;  // C4-298

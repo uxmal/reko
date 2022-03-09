@@ -37,6 +37,7 @@ namespace Reko.UnitTests.Arch.Arm
         {
             this.arch = new Arm64Architecture(CreateServiceContainer(), "aarch64", new Dictionary<string, object>());
             this.baseAddress = Address.Ptr64(0x00100000);
+            Reko.Core.Machine.Decoder.trace.Level = System.Diagnostics.TraceLevel.Verbose;
         }
 
         public override IProcessorArchitecture Architecture => arch;
@@ -203,14 +204,14 @@ namespace Reko.UnitTests.Arch.Arm
         public void AArch64Dis_bic_vector_imm16()
         {
             //$TODO: fix constant
-            AssertCode("bic\tv17.4h,#&B000B000B000B00,lsl #8", "71B5002F");
-            AssertCode("bic\tv17.8h,#&B000B000B000B00,lsl #8", "71B5006F");
+            AssertCode("bic\tv17.4h,#&B,lsl #8", "71B5002F");
+            AssertCode("bic\tv17.8h,#&B,lsl #8", "71B5006F");
         }
 
         [Test]
         public void AArch64Dis_bic_vector_imm32()
         {
-            AssertCode("bic\tv10.2s,#&4D0000004D0000,lsl #&10", "AA55022F");
+            AssertCode("bic\tv10.2s,#&4D,lsl #&10", "AA55022F");
         }
 
         [Test]
@@ -1203,7 +1204,7 @@ namespace Reko.UnitTests.Arch.Arm
         [Test]
         public void AArch64Dis_orr_vector_imm32()
         {
-            AssertCode("orr\tv11.4s,#&D5000000D50000,lsl #&10", "AB56064F");
+            AssertCode("orr\tv11.4s,#&D5,lsl #&10", "AB56064F");
         }
 
 
@@ -2334,18 +2335,17 @@ namespace Reko.UnitTests.Arch.Arm
             Assert.AreEqual("movk\tx7,#&AAA4", instr.ToString());
         }
 
-
         [Test]
         public void AArch64Dis_mvni_ones()
         {
-            AssertCode("mvni\tv13.4s,#&A1000000A1,msl #&10", "2DD4056F");
+            AssertCode("mvni\tv13.4s,#&A1,msl #&10", "2DD4056F");
         }
 
         [Test]
         public void AArch64Dis_mvni_vector_16imm()
         {
             //$TODO: simplify constant to 0062
-            AssertCode("mvni\tv13.8h,#&62006200620062", "4D84036F");
+            AssertCode("mvni\tv13.8h,#&62", "4D84036F");
         }
 
         [Test]
@@ -2737,25 +2737,52 @@ namespace Reko.UnitTests.Arch.Arm
         [Test]
         public void AArch64Dis_movi_vs()
         {
-            AssertCode("movi\tv8.2s,#&4800000048", "0805020F");
+            AssertCode("movi\tv8.2s,#&48", "0805020F");
         }
 
         [Test]
         public void AArch64Dis_movi_vs_v2()
         {
-            AssertCode("movi\tv1.4s,#&400000004", "8104004F");
+            AssertCode("movi\tv1.4s,#4", "8104004F");
         }
 
         [Test]
         public void AArch64Dis_movi_vb()
         {
-            AssertCode("movi\tv2.16b,#&E0E0E0E0E0E0E0E0", "02E4074F");
+            AssertCode("movi\tv2.16b,#&E0", "02E4074F");
         }
 
         [Test]
         public void AArch64Dis_movi_vs_shift()
         {
-            AssertCode("movi\tv1.2s,#&80000000800000,lsl #&10", "0144040F");
+            AssertCode("movi\tv1.2s,#&80,lsl #&10", "0144040F");
+        }
+
+        [Test]
+        public void AArch64Dis_movi_shiftOnes()
+        {
+            AssertCode("movi\tv11.4s,#&64,msl #8", "8BC4034F");
+        }
+
+        [Test]
+        public void AArch64Dis_movi_all_cmodes()
+        {
+            AssertCode("movi\tv8.2s,#&48"          , "08 05 02 0f");
+            AssertCode("orr\tv8.2s,#&48"           , "08 15 02 0f");
+            AssertCode("movi\tv8.2s,#&48,lsl #8"   , "08 25 02 0f");
+            AssertCode("orr\tv8.2s,#&48,lsl #8"    , "08 35 02 0f");
+            AssertCode("movi\tv8.2s,#&48,lsl #&10" , "08 45 02 0f");
+            AssertCode("orr\tv8.2s,#&48,lsl #&10"  , "08 55 02 0f");
+            AssertCode("movi\tv8.2s,#&48,lsl #&18" , "08 65 02 0f");
+            AssertCode("orr\tv8.2s,#&48,lsl #&18"  , "08 75 02 0f");
+            AssertCode("movi\tv8.4h,#&48"          , "08 85 02 0f");
+            AssertCode("orr\tv8.4h,#&48"           , "08 95 02 0f");
+            AssertCode("movi\tv8.4h,#&48,lsl #8"   , "08 a5 02 0f");
+            AssertCode("orr\tv8.4h,#&48,lsl #8"    , "08 b5 02 0f");
+            AssertCode("movi\tv8.2s,#&48,msl #8"   , "08 c5 02 0f");
+            AssertCode("movi\tv8.2s,#&48,msl #&10" , "08 d5 02 0f");
+            AssertCode("movi\tv8.8b,#&48"          , "08 e5 02 0f");
+            AssertCode("fmov\tv8.2s,#0.1875F"      , "08 f5 02 0f");
         }
 
         [Test]

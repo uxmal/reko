@@ -393,7 +393,11 @@ namespace Reko.Arch.Arm.AArch64
 
         private void RewriteMovi()
         {
-            RewriteSimdExpand("__movi_{0}");
+            var vDst = (VectorRegisterOperand) instr.Operands[0];
+            var eType = Bitsize(vDst.ElementType);
+            var src = ReplicateSimdConstant(vDst, eType, 1);
+            var dst = RewriteOp(instr.Operands[0]);
+            m.Assign(dst, src);
         }
 
         private void RewriteIcvtf(string sSign, Domain intDomain)

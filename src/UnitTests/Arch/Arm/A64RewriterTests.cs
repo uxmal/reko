@@ -1312,6 +1312,15 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
+        public void AArch64Rw_orr_vector_imm()
+        {
+            Given_HexString("08 15 02 0f");
+            AssertCode(     // orr\tv8.2s,#&48
+                "0|L--|0000000000100000(4): 1 instructions",
+                "1|L--|d8 = d8 | 0x4800000048<64>");
+        }
+
+        [Test]
         public void AArch64Rw_orn()
         {
             Given_Instruction(0x2A2200F8);
@@ -1991,9 +2000,8 @@ namespace Reko.UnitTests.Arch.Arm
         {
             Given_Instruction(0x0F00E460);
             AssertCode(     // movi\tv0.8b,#&3030303
-                "0|L--|00100000(4): 2 instructions",
-                "1|L--|v2 = 0x303030303030303<64>",
-                "2|L--|d0 = __movi_i8(v2)");
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|d0 = 0x303030303030303<64>");
         }
 
         [Test]
@@ -2001,9 +2009,8 @@ namespace Reko.UnitTests.Arch.Arm
         {
             Given_Instruction(0x4F008441);
             AssertCode(     // movi\tv1.8h,#&20002
-                "0|L--|00100000(4): 2 instructions",
-                "1|L--|v2 = 0x2000200020002<64>",
-                "2|L--|q1 = __movi_i16(v2)");
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|q1 = 0x20002000200020002000200020002<128>");
         }
 
         [Test]
@@ -2011,9 +2018,17 @@ namespace Reko.UnitTests.Arch.Arm
         {
             Given_Instruction(0x6F00E401);
             AssertCode(     // movi\tv1.2d,#0
-                "0|L--|00100000(4): 2 instructions",
-                "1|L--|v2 = 0<64>",
-                "2|L--|q1 = __movi_i64(v2)");
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|q1 = 0<128>");
+        }
+
+        [Test]
+        public void AArch64Rw_movi_shiftOnes()
+        {
+            Given_HexString("8BC4034F");
+            AssertCode(     // movi\tv11.4s,#&6400000064,msl #8
+                "0|L--|0000000000100000(4): 1 instructions",
+                "1|L--|q11 = 0x64FF000064FF000064FF000064FF<128>");
         }
 
         [Test]
@@ -2024,12 +2039,6 @@ namespace Reko.UnitTests.Arch.Arm
                 "0|L--|0000000000100000(4): 1 instructions",
                 "1|L--|d16 = CONVERT(d0, int64, real64)");
         }
-
-
-
-
-
-
 
         [Test]
         public void AArch64Rw_fmov_vector_hiword()

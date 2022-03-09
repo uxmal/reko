@@ -23,8 +23,10 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Numerics;
 using Reko.Core;
 using Reko.Core.Expressions;
+using Reko.Core.Lib;
 using Reko.Core.Machine;
 using Reko.Core.Memory;
 using Reko.Core.Rtl;
@@ -433,6 +435,35 @@ namespace Reko.Arch.Arm.AArch64
         {
             var testGenSvc = arch.Services.GetService<ITestGenerationService>();
             testGenSvc?.ReportMissingRewriter("AArch64Rw", this.instr, instr.Mnemonic.ToString(), rdr, message);
+        }
+
+        private Constant ReplicateSimdConstant(VectorRegisterOperand v, int cbitsElement, int iConstOp)
+        {
+            var imm = ((ImmediateOperand) instr.Operands[iConstOp]).Value.ToUInt64();
+            if (instr.ShiftAmount is not null)
+            {
+                var amount = ((ImmediateOperand) instr.ShiftAmount).Value.ToInt32();
+                switch (instr.ShiftCode)
+                {
+                case Mnemonic.lsl:
+                    imm <<= amount;
+                    break;
+                case Mnemonic.msl:
+                    imm <<= amount;
+                    imm |= Bits.Mask(0, amount);
+                    break;
+                default:
+                    throw new NotImplementedException($"ExtendSimdConstant {instr.ShiftCode}.");
+                }
+            }
+            int nElements = v.Width.BitSize / cbitsElement;
+            var n = new BigInteger(imm);
+            var result = BigInteger.Zero;
+            for (int i = 0; i < nElements; ++i)
+            {
+                result = (result << cbitsElement) | n;
+            }
+            return BigConstant.Create(v.Width, result); 
         }
 
         //$TODO: prefer this RewriteOp
