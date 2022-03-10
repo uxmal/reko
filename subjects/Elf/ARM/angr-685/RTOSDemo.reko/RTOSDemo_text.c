@@ -1887,22 +1887,22 @@ void IntMasterDisable()
 //      I2CIntRegister
 void IntRegister(ui32 r0, word32 r1)
 {
-	word32 r4_n[] = g_ptr9534;
+	struct Eq_n * r4_n = g_ptr9534;
 	if (*g_ptr9530 != r4_n)
 	{
-		word32 r3_n[] = r4_n;
+		struct Eq_n * r3_n = r4_n;
 		do
 		{
-			Mem21[r3_n + 0x00:word32] = Mem19[r3_n - r4_n:word32];
-			r3_n = (word32 (*)[]) (r3_n + 1);
+			r3_n->a0000[0] = r3_n - r4_n;
+			++r3_n;
 		} while (r3_n != r4_n + 46);
-		*g_ptr9530 = r4_n;
+		*g_ptr9530 = (struct Eq_n **) r4_n;
 	}
-	r4_n[r0] = r1;
+	r4_n[r0] = (struct Eq_n) r1;
 }
 
-word32 (** g_ptr9530)[] = &g_ptrE000ED08; // 00009530
-word32 (* g_ptr9534)[] = &g_a20000000; // 00009534
+struct Eq_n ** g_ptr9530 = &g_ptrE000ED08; // 00009530
+struct Eq_n * g_ptr9534 = &g_t20000000; // 00009534
 // 00009538: void IntUnregister(Register ui32 r0)
 // Called from:
 //      GPIOPortIntUnregister

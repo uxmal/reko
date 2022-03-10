@@ -1,5 +1,7 @@
 void main(Register selector ds)
 // MayUse:  ds:[0..15]
+// DataTypes: 
+//   ds: (ptr16 (segment (300 T_5 t0300) (302 T_2 t0302) (304 T_8 t0304)))
 // LiveOut:
 // Trashed: ax sp Top
 // Preserved:
@@ -27,6 +29,11 @@ l0C00_0000:
 main_exit:
 Register word16 memfoo()
 // MayUse:  ax:[0..15] bx:[0..15] cx:[0..15] ds:[0..15]
+// DataTypes: 
+//   ax: word16
+//   bx: word16
+//   cx: word16
+//   ds: (ptr16 (segment (100 T_11 t0100) (102 T_19 t0102) (400 T_2 t0400) (402 T_6 t0402) (404 T_9 t0404)))
 // LiveOut: ax
 // Trashed: ax
 // Preserved:
@@ -79,6 +86,9 @@ l0C00_0017:
 memfoo_exit:
 Register word16 membar(Register word16 ax)
 // MayUse:  ax:[0..15] ds:[0..15]
+// DataTypes: 
+//   ax: word16
+//   ds: (ptr16 (segment (500 T_2 t0500) (1000 T_5 t1000)))
 // LiveOut: ax
 // Trashed: ax
 // Preserved:

@@ -80,5 +80,11 @@ namespace Reko.Core.Expressions
             this.Value = value;
             this.Block = block;
         }
+
+        public void Deconstruct(out Block block, out Expression value)
+        {
+            block = this.Block;
+            value = this.Value;
+        }
     }
 }

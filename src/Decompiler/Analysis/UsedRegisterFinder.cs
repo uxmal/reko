@@ -27,6 +27,8 @@ using Reko.Core.Services;
 using Reko.Core.Code;
 using Reko.Core.Expressions;
 using System.Diagnostics;
+using Reko.Core.Types;
+using Reko.Typing;
 
 namespace Reko.Analysis
 {
@@ -45,6 +47,7 @@ namespace Reko.Analysis
         InstructionVisitor<BitRange>,
         ExpressionVisitor<BitRange>
     {
+        private readonly Program program;
         private readonly ProgramDataFlow flow;
         private readonly HashSet<Procedure> scc;
         private readonly Dictionary<PhiAssignment, BitRange> visited;
@@ -55,20 +58,21 @@ namespace Reko.Analysis
         private bool useLiveness;
 
         public UsedRegisterFinder(
+            Program program,
             ProgramDataFlow flow,
             IEnumerable<Procedure> scc,
             DecompilerEventListener eventListener)
         {
+            this.program = program;
             this.flow = flow;
             this.scc = scc.ToHashSet();
             this.eventListener = eventListener;
             this.visited = new Dictionary<PhiAssignment, BitRange>();
         }
 
-
         /// <summary>
-        /// Compute the live-in of the procedure whose SSA state is 
-        /// in <paramref name="ssaState"/>.
+        /// Compute the live-in and preliminary data types of the procedure 
+        /// whose SSA state is in <paramref name="ssaState"/>.
         /// </summary>
         /// <remarks>
         /// Assmumes that any live-in parameters are located in the
@@ -79,22 +83,27 @@ namespace Reko.Analysis
             this.procFlow = flow[ssaState.Procedure];
             this.ssa = ssaState;
             this.useLiveness = ignoreUse;
+            var store = new TypeStore();
+            var desc = new LocalTypeDescender(program, store, new TypeFactory());
             foreach (var stm in ssa.Procedure.EntryBlock.Statements)
             {
-                if (!(stm.Instruction is DefInstruction def))
+                if (stm.Instruction is not DefInstruction def)
                     continue;
                 var sid = ssa.Identifiers[def.Identifier];
-                if ((sid.Identifier.Storage is RegisterStorage ||
-                     sid.Identifier.Storage is StackArgumentStorage ||
-                     sid.Identifier.Storage is FpuStackStorage ||
-                     sid.Identifier.Storage is SequenceStorage))
+                var stg = sid.Identifier.Storage;
+                if ((stg is RegisterStorage ||
+                     stg is StackArgumentStorage ||
+                     stg is FpuStackStorage ||
+                     stg is SequenceStorage))
                      //$REVIEW: flag groups could theoretically be live in
                      // although it's uncommon.
                 {
-                    var n = Classify(ssa, sid, sid.Identifier.Storage, ignoreUse);
+                    var n = Classify(ssa, sid, stg, ignoreUse);
                     if (!n.IsEmpty)
                     {
-                        procFlow.BitsUsed[sid.Identifier.Storage] = n;
+                        desc.BuildEquivalenceClasses(ssa);
+                        procFlow.BitsUsed[stg] = n;
+                        procFlow.LiveInDataTypes[stg] = DataTypeOf(sid, desc, store);
                     }
                 }
             }
@@ -137,6 +146,66 @@ namespace Reko.Analysis
             idCur = sid.Identifier;
             return sid.Uses
                 .Aggregate(BitRange.Empty, (w, stm) => w | stm.Instruction.Accept(this));
+        }
+
+        private DataType DataTypeOf(
+            SsaIdentifier sidParam,
+            LocalTypeDescender typeDescender,
+            TypeStore typeStore)
+        {
+            SsaIdentifier SidOf(PhiArgument a)
+            {
+                return this.ssa!.Identifiers[(Identifier) a.Value];
+            }
+            var visited = new HashSet<SsaIdentifier>();
+            var wl = new WorkList<SsaIdentifier>();
+            wl.Add(sidParam);
+            while (wl.TryGetWorkItem(out var sid))
+            {
+                if (visited.Contains(sid))
+                    continue;
+                visited.Add(sid);
+                foreach (var use in sid.Uses)
+                {
+                    switch (use.Instruction)
+                    {
+                    case Assignment ass:
+                        typeDescender.Visit(ass.Src);
+                        break;
+                    case Store store:
+                        typeDescender.Visit(store.Src);
+                        if (store.Dst.ToString().Contains(" - "))
+                            _ = this;//$DEBUG
+                        typeDescender.Visit(store.Dst);
+                        break;
+                    case SideEffect side:
+                        typeDescender.Visit(side.Expression);
+                        break;
+                    case PhiAssignment phi:
+                        wl.AddRange(phi.Src.Arguments.Select(SidOf));
+                        break;
+                    case Branch branch:
+                        typeDescender.Visit(branch.Condition);
+                        break;
+                    case GotoInstruction g:
+                        typeDescender.Visit(g.Target);
+                        break;
+                    case CallInstruction call:
+                        typeDescender.Visit(call.Callee);
+                        foreach (var u in call.Uses)
+                        {
+                            typeDescender.Visit(u.Expression);
+                        }
+                        break;
+                    case SwitchInstruction sw:
+                        typeDescender.Visit(sw.Expression);
+                        break;
+                    }
+                }
+            }
+            typeDescender.MergeDataTypes();
+            return typeDescender.TypeVariables[sidParam.Identifier]
+                .DataType;
         }
 
         public BitRange VisitAssignment(Assignment ass)

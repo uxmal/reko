@@ -25,6 +25,7 @@ using Reko.Core.Types;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 
 namespace Reko.Analysis
 {
@@ -44,6 +45,11 @@ namespace Reko.Analysis
         public Dictionary<Storage, BitRange> BitsUsed;
 
         /// <summary>
+        /// The data types inferred for each live-in storage.
+        /// </summary>
+        public Dictionary<Storage, DataType> LiveInDataTypes;
+
+        /// <summary>
         /// A collection of all storages that are live-out after the procedure 
         /// is called.
         /// </summary>
@@ -59,7 +65,6 @@ namespace Reko.Analysis
         public Dictionary<Storage, BitRange> BitsLiveOut;
 
         public Dictionary<RegisterStorage, uint> grfLiveOut;
-
 
         public HashSet<Storage> Preserved;			// Registers explicitly preserved by the procedure.
 		public Dictionary<RegisterStorage, uint> grfPreserved;
@@ -92,6 +97,7 @@ namespace Reko.Analysis
             BitsLiveOut = new Dictionary<Storage, BitRange>();
 
             this.BitsUsed = new Dictionary<Storage, BitRange>();
+            this.LiveInDataTypes = new Dictionary<Storage, DataType>();
         }
 
         [Conditional("DEBUG")]
@@ -106,6 +112,7 @@ namespace Reko.Analysis
 		{
 			EmitRegisterValues("// MayUse: ", BitsUsed, writer);
 			writer.WriteLine();
+            EmitStorageDataTypes("// DataTypes: ", LiveInDataTypes, writer);
 			EmitRegisters(arch, "// LiveOut:", grfLiveOut, BitsLiveOut.Keys, writer);
 			writer.WriteLine();
 			EmitRegisters(arch, "// Trashed:", grfTrashed, Trashed, writer);
@@ -115,6 +122,22 @@ namespace Reko.Analysis
             if (TerminatesProcess)
                 writer.WriteLine("// Terminates process");
 		}
+
+        private void EmitStorageDataTypes(
+            string caption,
+            Dictionary<Storage, DataType> dataTypes,
+            TextWriter writer)
+        {
+            if (dataTypes.Count == 0)
+                return;
+            writer.WriteLine(caption);
+            foreach (var (stg, dt) in dataTypes
+                .Select(de => (de.Key.ToString(), de.Value))
+                .OrderBy(de => de.Item1))
+            {
+                writer.WriteLine("//   {0}: {1}", stg, dt);
+            }
+        }
 
 		public bool IsLiveOut(Identifier id)
 		{

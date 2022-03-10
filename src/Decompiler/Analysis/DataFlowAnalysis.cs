@@ -156,6 +156,12 @@ namespace Reko.Analysis
             // At this point, the exit blocks contain only live out registers.
             // We can create signatures from that.
             CallRewriter.Rewrite(program.Platform, ssts, this.flow, eventListener);
+
+            //$TODO: at this point, the type information in ProcedureFlow is no longer needed,
+            // so we clear it to save space. It's possible that in the future, we do all the 
+            // type analysis as part of the Analysis stage.
+            foreach (var procflow in flow.ProcedureFlows.Values)
+                procflow.LiveInDataTypes = new Dictionary<Storage, DataType>(0);
             return ssts;
         }
 
@@ -226,7 +232,7 @@ namespace Reko.Analysis
                 //DumpWatchedProcedure("stfu", "After store fusion", ssa.Procedure);
             }
 
-            var uid = new UsedRegisterFinder(flow, procs, this.eventListener);
+            var uid = new UsedRegisterFinder(program, flow, procs, this.eventListener);
             foreach (var sst in ssts)
             {
                 if (eventListener.IsCanceled())

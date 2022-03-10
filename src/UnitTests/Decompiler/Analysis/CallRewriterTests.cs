@@ -642,6 +642,10 @@ l1:
 main_exit:
 FpuStack real64 FpuMultiplyAdd(FpuStack real64 rArg0, FpuStack real64 rArg1, FpuStack real64 rArg2)
 // MayUse:  FPU +0:[0..63] FPU +1:[0..63] FPU +2:[0..63]
+// DataTypes: 
+//   FPU +0: real64
+//   FPU +1: real64
+//   FPU +2: real64
 // LiveOut: FPU +2
 // Trashed: FPU +1 FPU +2 Top
 // Preserved: r63
@@ -711,6 +715,9 @@ FpuMultiplyAdd_exit:
             #region Expected
 @"void main(Register word32 r1, Register word32 r2)
 // MayUse:  r1:[0..31] r2:[0..31]
+// DataTypes: 
+//   r1: word32
+//   r2: word32
 // LiveOut:
 // Trashed: r1 r2
 // Preserved: r63
@@ -736,6 +743,9 @@ l1:
 main_exit:
 Register word32 fnOutParam(Register word32 r1, Register word32 r2, Register out ptr32 r2Out)
 // MayUse:  r1:[0..31] r2:[0..31]
+// DataTypes: 
+//   r1: word32
+//   r2: word32
 // LiveOut: r1 r2
 // Trashed: r1 r2
 // Preserved: r63

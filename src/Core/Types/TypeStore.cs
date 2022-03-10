@@ -261,9 +261,9 @@ namespace Reko.Core.Types
             writer.WriteLine();
         }
 
-        public DataType GetDataTypeOf(Expression tField)
+        public DataType GetDataTypeOf(Expression exp)
         {
-            return tField.TypeVariable!.DataType;
+            return exp.TypeVariable!.DataType;
         }
 
         public void SetDataTypeOf(Expression expr, DataType dt)

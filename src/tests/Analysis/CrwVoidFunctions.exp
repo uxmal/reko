@@ -1,5 +1,7 @@
 void fn0C00_0000(Sequence segptr32 ds_di)
 // MayUse:  Sequence ds:di:[0..31]
+// DataTypes: 
+//   Sequence ds:di: segptr32
 // LiveOut:
 // Trashed: SCZO ax bx si Top
 // Preserved: sp
@@ -35,6 +37,9 @@ l0C00_0000:
 fn0C00_0000_exit:
 void fn0C00_0010(Sequence segptr32 ds_di, Register word16 si)
 // MayUse:  Sequence ds:di:[0..31] si:[0..15]
+// DataTypes: 
+//   Sequence ds:di: segptr32
+//   si: (memptr T_5 (struct (2 T_4 t0002)))
 // LiveOut:
 // Trashed: ax Top
 // Preserved: sp
@@ -66,6 +71,9 @@ l0C00_0010:
 fn0C00_0010_exit:
 void fn0C00_0017(Sequence segptr32 ds_di, Stack word16 wArg02)
 // MayUse:  Sequence ds:di:[0..31] Stack +0002:[0..15]
+// DataTypes: 
+//   Sequence ds:di: segptr32
+//   Stack +0002: (memptr T_6 (struct (2 T_5 t0002)))
 // LiveOut:
 // Trashed: SCZO ax bx Top
 // Preserved: bp sp
@@ -105,6 +113,9 @@ l0C00_0017:
 fn0C00_0017_exit:
 void fn0C00_0029(Sequence segptr32 ds_di, Register word16 ax)
 // MayUse:  ax:[0..15] Sequence ds:di:[0..31]
+// DataTypes: 
+//   ax: word16
+//   Sequence ds:di: (ptr32 (struct (0 T_2 t0000)))
 // LiveOut:
 // Trashed: Top
 // Preserved: sp
@@ -131,6 +142,9 @@ l0C00_0029:
 fn0C00_0029_exit:
 void fn0C00_002C(Sequence segptr32 ds_di, Stack word16 wArg02)
 // MayUse:  Sequence ds:di:[0..31] Stack +0002:[0..15]
+// DataTypes: 
+//   Sequence ds:di: (ptr32 (struct (0 T_2 t0000)))
+//   Stack +0002: word16
 // LiveOut:
 // Trashed: ax Top
 // Preserved: bp sp

@@ -1,5 +1,7 @@
 void fn0C00_0000(Sequence segptr32 ds_di)
 // MayUse:  Sequence ds:di:[0..31]
+// DataTypes: 
+//   Sequence ds:di: segptr32
 // LiveOut:
 // Trashed: SCZO ax Top
 // Preserved: di sp
@@ -37,6 +39,8 @@ l0C00_000E_thunk_fn0C00_000F:
 fn0C00_0000_exit:
 void fn0C00_000F(Sequence segptr32 ds_di)
 // MayUse:  Sequence ds:di:[0..31]
+// DataTypes: 
+//   Sequence ds:di: (ptr32 (struct (0 T_2 t0000)))
 // LiveOut:
 // Trashed: Top
 // Preserved: sp
@@ -61,6 +65,8 @@ l0C00_000F:
 fn0C00_000F_exit:
 Register word16 fn0C00_0014(Register word16 ax)
 // MayUse:  ax:[0..15]
+// DataTypes: 
+//   ax: word16
 // LiveOut: ax
 // Trashed: SCZO ax di Top
 // Preserved: sp
