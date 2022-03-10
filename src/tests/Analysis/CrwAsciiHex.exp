@@ -1,5 +1,8 @@
 void fn0C00_0000(Register byte al, Register selector ds)
 // MayUse:  al:[0..7] ds:[0..15]
+// DataTypes: 
+//   al: byte
+//   ds: (ptr16 (segment (300 T_3 t0300)))
 // LiveOut:
 // Trashed: SCZO al Top
 // Preserved: sp
@@ -34,6 +37,8 @@ l0C00_0009:
 fn0C00_0000_exit:
 FlagGroup bool fn0C00_000A(Register byte al, Register out ptr16 alOut)
 // MayUse:  al:[0..7]
+// DataTypes: 
+//   al: cu8
 // LiveOut: C al
 // Trashed: SCZO al Top
 // Preserved: sp

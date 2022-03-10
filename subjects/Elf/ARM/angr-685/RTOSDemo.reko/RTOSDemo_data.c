@@ -4,8 +4,11 @@
 
 #include "RTOSDemo.h"
 
-word32 g_a20000000[] = // 20000000
+Eq_n g_t20000000 = // 20000000
 	{
+		
+		{
+		},
 	};
 word32 uxErrorStatus = 0x01; // 200000B8
 word32 uxCriticalNesting = 0xAAAAAAAA; // 200000BC

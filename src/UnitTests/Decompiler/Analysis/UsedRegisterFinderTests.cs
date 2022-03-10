@@ -99,6 +99,7 @@ namespace Reko.UnitTests.Decompiler.Analysis
             var dynamicLinker = new Mock<IDynamicLinker>();
             var platform = new Mock<IPlatform>();
             platform.Setup(p => p.CreateTrashedRegisters()).Returns(new HashSet<RegisterStorage>());
+            platform.Setup(p => p.PointerType).Returns(arch.PointerType);
             progBuilder.Program.Platform = platform.Object;
 
             var sst = new SsaTransform(
@@ -124,28 +125,38 @@ namespace Reko.UnitTests.Decompiler.Analysis
 
             vp.Transform();
 
-            return RunTest(sExp, sst.SsaState);
+            return RunTest(sExp, progBuilder.Program, sst.SsaState);
         }
 
         private Procedure RunSsaTest(string sExp, Action<SsaProcedureBuilder> builder, Func<Procedure, ProcedureFlow> mkFlow = null)
         {
             var m = new SsaProcedureBuilder();
             builder(m);
-            return RunTest(sExp, m.Ssa, mkFlow);
+            var arch = m.Procedure.Architecture;
+            var platform = new DefaultPlatform(arch.Services, arch);
+            var program = new Program { Architecture = arch, Platform = platform };
+            return RunTest(sExp, program, m.Ssa, mkFlow);
         }
 
-        private Procedure RunTest(string sExp, SsaState ssa, Func<Procedure, ProcedureFlow> mkFlow = null)
+        private Procedure RunTest(string sExp, Program program, SsaState ssa, Func<Procedure, ProcedureFlow> mkFlow = null)
         {
             mkFlow ??= p => new ProcedureFlow(p);
             pf.ProcedureFlows[ssa.Procedure] = mkFlow(ssa.Procedure);
             var urf = new UsedRegisterFinder(
+                program,
                 pf,
                 new Procedure[] { ssa.Procedure },
                 NullDecompilerEventListener.Instance);
             var flow = urf.ComputeLiveIn(ssa, true);
             var sw = new StringWriter();
+            sw.WriteLine();
             sw.Write("Used: ");
-            sw.Write(string.Join(",", flow.BitsUsed.OrderBy(p => p.Key.ToString())));
+            sw.WriteLine(string.Join(",", flow.BitsUsed.OrderBy(p => p.Key.ToString())));
+            sw.WriteLine("DataTypes:");
+            foreach (var de in flow.LiveInDataTypes.OrderBy(p => p.Key.ToString()))
+            {
+                sw.WriteLine("  {0}: {1}", de.Key, de.Value);
+            }
             var sActual = sw.ToString();
             if (sActual != sExp)
             {
@@ -166,7 +177,9 @@ namespace Reko.UnitTests.Decompiler.Analysis
             gen(m);
             var ssa = m.Ssa;
             pf.ProcedureFlows[ssa.Procedure] = mkFlow(ssa.Procedure);
+            var program = new Program();
             var urf = new UsedRegisterFinder(
+                program,
                 pf,
                 new Procedure[] { ssa.Procedure },
                 NullDecompilerEventListener.Instance);
@@ -188,7 +201,11 @@ namespace Reko.UnitTests.Decompiler.Analysis
         [Category(Categories.UnitTests)]
         public void UrfRegisterArg()
         {
-            var sExp = "Used: [r1, [0..31]]";
+            var sExp = @"
+Used: [r1, [0..31]]
+DataTypes:
+  r1: word32
+";
             RunTest(sExp, m =>
             {
                 var r1 = m.Register("r1");
@@ -201,7 +218,11 @@ namespace Reko.UnitTests.Decompiler.Analysis
         [Category(Categories.UnitTests)]
         public void UrfStackArg()
         {
-            var sExp = "Used: [Stack +0004, [0..31]]";
+            var sExp = @"
+Used: [Stack +0004, [0..31]]
+DataTypes:
+  Stack +0004: word32
+";
             RunTest(sExp, m =>
             {
                 var fp = m.Frame.FramePointer;
@@ -216,7 +237,11 @@ namespace Reko.UnitTests.Decompiler.Analysis
         [Category(Categories.UnitTests)]
         public void UrfCast()
         {
-            var sExp = @"Used: [r1, [0..15]]";
+            var sExp = @"
+Used: [r1, [0..15]]
+DataTypes:
+  r1: word32
+";
             RunTest(sExp, m =>
             {
                 var r1 = m.Reg32("r1", 1);
@@ -227,12 +252,14 @@ namespace Reko.UnitTests.Decompiler.Analysis
             });
         }
 
-
         [Test(Description = "Identifiers are not considered used if they only are copied.")]
         [Category(Categories.UnitTests)]
         public void UrfCopy()
         {
-            var sExp ="Used: ";
+            var sExp = @"
+Used: 
+DataTypes:
+";
             RunTest(sExp, m =>
             {
                 var r1 = m.Reg32("r1", 1);
@@ -246,7 +273,11 @@ namespace Reko.UnitTests.Decompiler.Analysis
         [Category(Categories.UnitTests)]
         public void UrfBranch()
         {
-            var sExp = @"Used: [r1, [0..31]]";
+            var sExp = @"
+Used: [r1, [0..31]]
+DataTypes:
+  r1: word32
+";
             RunTest(sExp, m =>
             {
                 var r1 = m.Reg32("r1", 1);
@@ -265,7 +296,12 @@ namespace Reko.UnitTests.Decompiler.Analysis
         [Category(Categories.UnitTests)]
         public void UrfSequence()
         {
-            var sExp = "Used: [r1, [0..31]],[r2, [0..31]]";
+            var sExp = @"
+Used: [r1, [0..31]],[r2, [0..31]]
+DataTypes:
+  r1: word32
+  r2: word32
+";
 
             RunTest(sExp, m =>
             {
@@ -282,7 +318,10 @@ namespace Reko.UnitTests.Decompiler.Analysis
         [Category(Categories.UnitTests)]
         public void UrfPhiBranch()
         {
-            var sExp = "Used: ";
+            var sExp = @"
+Used: 
+DataTypes:
+";
 
             RunTest(sExp, m =>
             {
@@ -301,7 +340,11 @@ namespace Reko.UnitTests.Decompiler.Analysis
         [Category(Categories.UnitTests)]
         public void UrfSlice()
         {
-            var sExp = "Used: [r1, [16..31]]";
+            var sExp = @"
+Used: [r1, [16..31]]
+DataTypes:
+  r1: word32
+";
 
             RunTest(sExp, m =>
             {
@@ -316,7 +359,12 @@ namespace Reko.UnitTests.Decompiler.Analysis
         [Category(Categories.UnitTests)]
         public void UrfCall()
         {
-            var sExp = "Used: [r1, [0..31]],[r2, [0..31]]";
+            var sExp = @"
+Used: [r1, [0..31]],[r2, [0..31]]
+DataTypes:
+  r1: word32
+  r2: word32
+";
             RunTest(sExp, m =>
             {
                 var r1 = m.Reg32("r1", 1);
@@ -332,7 +380,11 @@ namespace Reko.UnitTests.Decompiler.Analysis
         [Category(Categories.UnitTests)]
         public void UrfDpb()
         {
-            var sExp = "Used: [bx, [0..15]]";
+            var sExp = @"
+Used: [bx, [0..15]]
+DataTypes:
+  bx: word16
+";
             RunTest(sExp, m =>
             {
                 var _bx = new RegisterStorage("bx", 3, 0, PrimitiveType.Word16);
@@ -358,7 +410,12 @@ namespace Reko.UnitTests.Decompiler.Analysis
         [Category(Categories.UnitTests)]
         public void UrfDpb2()
         {
-            var sExp = "Used: [bx, [0..15]],[cl, [0..7]]";
+            var sExp = @"
+Used: [bx, [0..15]],[cl, [0..7]]
+DataTypes:
+  bx: word16
+  cl: byte
+";
             RunTest(sExp, new X86ArchitectureFlat32(new ServiceContainer(), "", new Dictionary<string, object>()), m =>
             {
                 var bx = m.Frame.EnsureRegister(Registers.bx);
@@ -379,7 +436,11 @@ namespace Reko.UnitTests.Decompiler.Analysis
         [Category(Categories.UnitTests)]
         public void UrfSequence2()
         {
-            var sExp = "Used: [Sequence r1:r2, [32..63]]";
+            var sExp = @"
+Used: [Sequence r1:r2, [32..63]]
+DataTypes:
+  Sequence r1:r2: word64
+";
             RunSsaTest(sExp, m =>
             {
                 var r1 = m.Reg32("r1");
@@ -395,7 +456,12 @@ namespace Reko.UnitTests.Decompiler.Analysis
         [Category(Categories.UnitTests)]
         public void UrfMkSequence()
         {
-            var sExp = "Used: [r1, [0..31]],[r2, [0..31]]";
+            var sExp = @"
+Used: [r1, [0..31]],[r2, [0..31]]
+DataTypes:
+  r1: word32
+  r2: word32
+";
             RunSsaTest(sExp, m =>
             {
                 var r1 = m.Reg32("r1");
@@ -413,7 +479,10 @@ namespace Reko.UnitTests.Decompiler.Analysis
         [Category(Categories.UnitTests)]
         public void UrfMkSequence_unused()
         {
-            var sExp = "Used: ";
+            var sExp = @"
+Used: 
+DataTypes:
+";
             RunSsaTest(sExp, m =>
             {
                 var r1 = m.Reg32("r1");
@@ -430,7 +499,12 @@ namespace Reko.UnitTests.Decompiler.Analysis
         [Category(Categories.UnitTests)]
         public void UrfArray()
         {
-            var sExp = "Used: [r1, [0..31]],[r2, [0..31]]";
+            var sExp = @"
+Used: [r1, [0..31]],[r2, [0..31]]
+DataTypes:
+  r1: (ptr32 (struct (0 (arr T_2) a0000)))
+  r2: word32
+";
             RunSsaTest(sExp, m =>
             {
                 var r1 = m.Reg32("r1");
@@ -448,7 +522,7 @@ namespace Reko.UnitTests.Decompiler.Analysis
 
         [Test]
         [Category(Categories.UnitTests)]
-        public void UrfXXX()
+        public void UrfAliasedSequence()
         {
             var sExp = "Used: [0..31]";
             var regDx = new RegisterStorage("dx", 2, 0, PrimitiveType.Word16);
@@ -474,6 +548,31 @@ namespace Reko.UnitTests.Decompiler.Analysis
                     flow.BitsLiveOut.Add(seqDxAx, new BitRange(0, 32));
                     return flow;
                 });
+        }
+
+        [Category(Categories.UnitTests)]
+        [Test]
+        public void UrfPointerArg()
+        {
+            var sExp = @"
+Used: [r1, [0..31]]
+DataTypes:
+  r1: (ptr32 (struct (0 T_1 t0000) (4 T_3 t0004)))
+";
+            RunSsaTest(sExp, m =>
+            {
+                var r1 = m.Reg32("r1");
+                var r2 = m.Reg32("r2");
+                var r3 = m.Reg64("r3");
+
+                m.AddDefToEntryBlock(r1);
+                m.AddDefToEntryBlock(r2);
+
+                m.Assign(r3, m.Mem32(r1));
+                m.Assign(r3, m.Mem32(m.IAddS(r1, 4)));
+
+                m.AddUseToExitBlock(r3);
+            });
         }
     }
 }

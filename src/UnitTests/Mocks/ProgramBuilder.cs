@@ -50,6 +50,7 @@ namespace Reko.UnitTests.Mocks
         {
             Program = new Program {
                 Architecture = arch,
+                Platform = new DefaultPlatform(arch.Services, arch)
             };
         }
 

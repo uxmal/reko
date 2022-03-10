@@ -1,5 +1,7 @@
 void fn0C00_0000(Register selector ds)
 // MayUse:  ds:[0..15]
+// DataTypes: 
+//   ds: (ptr16 (segment (64 T_2 t0064)))
 // LiveOut:
 // Trashed: SCZO ax cx dx Top
 // Preserved: sp
@@ -30,6 +32,8 @@ l0C00_0000:
 fn0C00_0000_exit:
 Register word16 fn0C00_000B(Register word16 cx)
 // MayUse:  cx:[0..15]
+// DataTypes: 
+//   cx: int16
 // LiveOut: ax
 // Trashed: SCZO ax cx dx Top
 // Preserved: si sp

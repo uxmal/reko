@@ -6159,8 +6159,8 @@ T_1141: (in 0xD4F<16> @ 00000D32 : word16)
   OrigDataType: word16
 T_1142: (in r1_53 + 0xD4F<16> @ 00000D32 : word16)
   Class: Eq_1142
-  DataType: word16
-  OrigDataType: word16
+  DataType: ui16
+  OrigDataType: ui16
 T_1143: (in Mem66[r1_53 + 0xD4F<16>:byte] @ 00000D32 : byte)
   Class: Eq_1143
   DataType: byte

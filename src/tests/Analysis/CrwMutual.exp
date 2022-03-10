@@ -1,5 +1,7 @@
 void fn0C00_0000(Register word16 dx)
 // MayUse:  dx:[0..15]
+// DataTypes: 
+//   dx: word16
 // LiveOut:
 // Trashed: SCZO ax dx Top
 // Preserved: sp
@@ -27,6 +29,8 @@ l0C00_0000:
 fn0C00_0000_exit:
 Register word16 fn0C00_0004(Register word16 dx, Register out ptr16 dxOut)
 // MayUse:  dx:[0..15]
+// DataTypes: 
+//   dx: word16
 // LiveOut: ax dx
 // Trashed: SCZO ax dx Top
 // Preserved: sp
@@ -69,6 +73,8 @@ l0C00_0010:
 fn0C00_0004_exit:
 Register word16 fn0C00_0013(Register word16 dx)
 // MayUse:  dx:[0..15]
+// DataTypes: 
+//   dx: ci16
 // LiveOut: dx
 // Trashed: SCZO ax dx Top
 // Preserved: sp

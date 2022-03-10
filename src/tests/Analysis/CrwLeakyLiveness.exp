@@ -1,5 +1,7 @@
 void fn0C00_0000(Register selector ds)
 // MayUse:  ds:[0..15]
+// DataTypes: 
+//   ds: (ptr16 (segment (300 T_15 t0300)))
 // LiveOut:
 // Trashed: SCZO ax si Top
 // Preserved: sp
@@ -38,6 +40,8 @@ l0C00_0009:
 fn0C00_0000_exit:
 FlagGroup bool fn0C00_000A(Register selector ds, Register out ptr16 axOut)
 // MayUse:  ds:[0..15]
+// DataTypes: 
+//   ds: (ptr16 (segment (100 T_19 t0100) (102 T_24 t0102)))
 // LiveOut: C ax
 // Trashed: SCZO ax si Top
 // Preserved: sp

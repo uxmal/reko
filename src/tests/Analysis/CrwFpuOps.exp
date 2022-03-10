@@ -1,5 +1,7 @@
 void fn0C00_0000(Register selector ds)
 // MayUse:  ds:[0..15]
+// DataTypes: 
+//   ds: selector
 // LiveOut:
 // Trashed: SCZO bx Top
 // Preserved: sp
@@ -32,6 +34,10 @@ l0C00_0000:
 fn0C00_0000_exit:
 void fn0C00_0010(Register selector ds, Stack word16 wArg02, Stack word16 wArg04)
 // MayUse:  ds:[0..15] Stack +0002:[0..15] Stack +0004:[0..15]
+// DataTypes: 
+//   ds: (ptr16 (segment))
+//   Stack +0002: (memptr T_2 (struct (0 T_1 t0000) (8 T_4 t0008) (10 T_6 t0010)))
+//   Stack +0004: (memptr T_2 (struct (0 T_9 t0000) (20 T_12 t0020) (28 T_15 t0028)))
 // LiveOut:
 // Trashed: bx FPU -1 FPU -2 Top
 // Preserved: bp sp
@@ -74,6 +80,8 @@ l0C00_0010:
 fn0C00_0010_exit:
 void fn0C00_0037(Register selector ds)
 // MayUse:  ds:[0..15]
+// DataTypes: 
+//   ds: (ptr16 (segment (400 T_2 t0400) (408 T_7 t0408)))
 // LiveOut:
 // Trashed: FPU -1 Top
 // Preserved: sp

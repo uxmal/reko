@@ -55,12 +55,12 @@ namespace Reko.Typing
                 ExpressionMatcher.AnyExpression("p"),
                 ExpressionMatcher.AnyConstant("c")));
 
-        private readonly IPlatform platform;
-        private readonly TypeStore store;
-        private readonly TypeFactory factory;
-        private readonly Unifier unifier;
-        private readonly Identifier globals;
-        private readonly Dictionary<Identifier,LinearInductionVariable> ivs;
+        protected readonly IPlatform platform;
+        protected readonly TypeStore store;
+        protected readonly TypeFactory factory;
+        protected readonly Unifier unifier;
+        protected readonly Identifier globals;
+        protected readonly Dictionary<Identifier,LinearInductionVariable> ivs;
 
         public ExpressionTypeDescender(Program program, TypeStore store, TypeFactory factory)
         {
@@ -72,6 +72,9 @@ namespace Reko.Typing
             this.unifier = new DataTypeBuilderUnifier(factory, store);
         }
 
+        protected virtual TypeVariable TypeVar(Expression exp)
+            => exp.TypeVariable!;
+        
         public bool VisitAddress(Address addr, TypeVariable tv)
         {
             MeetDataType(addr, tv.DataType);
@@ -80,16 +83,16 @@ namespace Reko.Typing
 
         public bool VisitApplication(Application appl, TypeVariable tv)
         {
-            MeetDataType(appl, appl.TypeVariable!.DataType);
+            MeetDataType(appl, TypeVar(appl).DataType);
 
-            appl.Procedure.Accept(this, appl.Procedure.TypeVariable!);
+            appl.Procedure.Accept(this, TypeVar(appl.Procedure));
             TypeVariable[] paramTypes = new TypeVariable[appl.Arguments.Length];
             for (int i = 0; i < appl.Arguments.Length; ++i)
             {
-                appl.Arguments[i].Accept(this, appl.Arguments[i].TypeVariable!);
-                paramTypes[i] = appl.Arguments[i].TypeVariable!;
+                appl.Arguments[i].Accept(this, TypeVar(appl.Arguments[i]));
+                paramTypes[i] = TypeVar(appl.Arguments[i]);
             }
-            FunctionTrait(appl.Procedure, appl.Procedure.DataType.BitSize, appl.TypeVariable!, paramTypes);
+            FunctionTrait(appl.Procedure, appl.Procedure.DataType.BitSize, TypeVar(appl), paramTypes);
             BindActualTypesToFormalTypes(appl);
             return false;
         }
@@ -106,13 +109,13 @@ namespace Reko.Typing
         {
             if (proc is ProcedureConstant pc)
                 return pc.Procedure.Signature;
-            return MatchFunctionPointer(proc.TypeVariable!.DataType);
+            return MatchFunctionPointer(TypeVar(proc).DataType);
         }
 
         private void BindActualTypesToFormalTypes(Application appl)
         {
             var sig = ExtractSignature(appl.Procedure);
-            if (sig == null || !sig.ParametersValid)
+            if (sig is null || !sig.ParametersValid)
                 return;
             var parameters = sig.Parameters!;
             if (!sig.IsVariadic && appl.Arguments.Length != parameters.Length)
@@ -124,7 +127,7 @@ namespace Reko.Typing
                 if (!sig.IsVariadic || i < parameters.Length)
                 {
                     MeetDataType(appl.Arguments[i], parameters[i].DataType);
-                    parameters[i].Accept(this, parameters[i].TypeVariable!);
+                    parameters[i].Accept(this, TypeVar(parameters[i]));
                 }
             }
         }
@@ -182,11 +185,11 @@ namespace Reko.Typing
                     stride = c.ToInt32();
                 }
             }
-            var tvArray = ArrayField(null, arr, arr.DataType.BitSize, offset, stride, 0, acc.TypeVariable!);
+            var tvArray = ArrayField(null, arr, arr.DataType.BitSize, offset, stride, 0, TypeVar(acc));
 
             MeetDataType(acc.Array, factory.CreatePointer(tvArray, acc.Array.DataType.BitSize));
-            acc.Array.Accept(this, acc.Array.TypeVariable!);
-            acc.Index.Accept(this, acc.Index.TypeVariable!);
+            acc.Array.Accept(this, TypeVar(acc.Array));
+            acc.Index.Accept(this, TypeVar(acc.Index));
             return false;
         }
 
@@ -243,7 +246,7 @@ namespace Reko.Typing
             s.Fields.Add(field);
 
             var pointer = eBase != null && eBase != globals
-                ? (DataType)factory.CreateMemberPointer(eBase.TypeVariable!, s, structPtrBitSize)
+                ? (DataType)factory.CreateMemberPointer(TypeVar(eBase), s, structPtrBitSize)
                 : (DataType)factory.CreatePointer(s, structPtrBitSize);
             return MeetDataType(eStructPtr, pointer);
         }
@@ -251,21 +254,24 @@ namespace Reko.Typing
         public bool VisitBinaryExpression(BinaryExpression binExp, TypeVariable tv)
         {
             var eLeft = binExp.Left;
-            var eRight= binExp.Right;
+            var eRight = binExp.Right;
+            var tvBin = TypeVar(binExp);
+            var tvLeft = TypeVar(eLeft);
+            var tvRight = TypeVar(eRight);
             if (binExp.Operator == Operator.IAdd)
             {
-                var dt = PushAddendDataType(binExp.TypeVariable!.DataType, eRight.TypeVariable!.DataType);
+                var dt = PushAddendDataType(tvBin.DataType, tvRight.DataType);
                 if (dt != null)
                     MeetDataType(eLeft, dt);
-                dt = PushAddendDataType(binExp.TypeVariable!.DataType, eLeft.TypeVariable!.DataType);
+                dt = PushAddendDataType(tvBin.DataType, tvLeft.DataType);
                 if (dt != null)
                     MeetDataType(eRight, dt);
             }
             else if (binExp.Operator == Operator.ISub || binExp.Operator == Operator.USub)
             {
-                var dt = PushMinuendDataType(binExp.TypeVariable!.DataType, eRight.TypeVariable!.DataType);
+                var dt = PushMinuendDataType(tvBin.DataType, tvRight.DataType);
                 MeetDataType(eLeft, dt);
-                dt = PushSubtrahendDataType(binExp.TypeVariable!.DataType, eLeft.TypeVariable!.DataType);
+                dt = PushSubtrahendDataType(tvBin.DataType, tvLeft.DataType);
                 MeetDataType(eRight, dt);
             }
             else if (binExp.Operator == Operator.And || binExp.Operator == Operator.Or)
@@ -314,16 +320,16 @@ namespace Reko.Typing
             }
             else if (binExp.Operator is SignedIntOperator)
             {
-                var dt = PrimitiveType.CreateWord(eRight.TypeVariable!.DataType.BitSize).MaskDomain(Domain.SignedInt | Domain.Character);
+                var dt = PrimitiveType.CreateWord(tvRight.DataType.BitSize).MaskDomain(Domain.SignedInt | Domain.Character);
                 MeetDataType(eLeft, dt);
-                dt = PrimitiveType.CreateWord(eRight.TypeVariable!.DataType.BitSize).MaskDomain(Domain.SignedInt | Domain.Character);
+                dt = PrimitiveType.CreateWord(tvRight.DataType.BitSize).MaskDomain(Domain.SignedInt | Domain.Character);
                 MeetDataType(eRight, dt);
             }
             else if (binExp.Operator is UnsignedIntOperator)
             {
-                var dt = PrimitiveType.CreateWord(eRight.TypeVariable!.DataType.BitSize).MaskDomain(Domain.Pointer| Domain.UnsignedInt | Domain.Character);
+                var dt = PrimitiveType.CreateWord(tvRight.DataType.BitSize).MaskDomain(Domain.Pointer| Domain.UnsignedInt | Domain.Character);
                 MeetDataType(eLeft, dt);
-                dt = PrimitiveType.CreateWord(eRight.TypeVariable!.DataType.BitSize).MaskDomain(Domain.Pointer | Domain.UnsignedInt|Domain.Character);
+                dt = PrimitiveType.CreateWord(tvRight.DataType.BitSize).MaskDomain(Domain.Pointer | Domain.UnsignedInt|Domain.Character);
                 MeetDataType(eRight, dt);
             }
             else if (binExp.Operator == Operator.Eq || binExp.Operator == Operator.Ne||
@@ -361,8 +367,8 @@ namespace Reko.Typing
             }
             else
                 throw new TypeInferenceException($"Unhandled binary operator {binExp.Operator} in expression {binExp}.");
-            eLeft.Accept(this, eLeft.TypeVariable!);
-            eRight.Accept(this, eRight.TypeVariable!);
+            eLeft.Accept(this, tvLeft);
+            eRight.Accept(this, tvRight);
             return false;
         }
 
@@ -407,13 +413,13 @@ namespace Reko.Typing
             {
                 if ((dtSub.Domain & Domain.Integer) != 0)
                     return PrimitiveType.Create(Domain.Pointer, dtDiff.BitSize);
-                throw new TypeInferenceException($"Not handling {dtDiff} and {dtSub} yet.");
+                //throw new TypeInferenceException($"Not handling {dtDiff} and {dtSub} yet.");
             }
             if (dtDiff.Domain == Domain.Offset)
             {
                 if ((dtSub.Domain & Domain.Integer) != 0)
                     return dtDiff;
-                throw new TypeInferenceException($"Not handling {dtDiff} and {dtSub} yet.");
+                //throw new TypeInferenceException($"Not handling {dtDiff} and {dtSub} yet.");
             }
             return dtDiff;
         }
@@ -424,22 +430,23 @@ namespace Reko.Typing
             {
                 if (dtMin.Domain == Domain.Pointer)
                     return PrimitiveType.Create(Domain.Integer, dtDiff.BitSize);
-                throw new TypeInferenceException(string.Format("Not handling {0} and {1} yet", dtDiff, dtMin));
+                //throw new TypeInferenceException(string.Format("Not handling {0} and {1} yet", dtDiff, dtMin));
             }
             if (dtDiff.Domain == Domain.Offset)
             {
                 if (dtMin.Domain == Domain.Offset)
                     return PrimitiveType.Create(Domain.Integer, dtDiff.BitSize);
-                throw new TypeInferenceException(string.Format("Not handling {0} and {1} yet", dtDiff, dtMin));
+                //throw new TypeInferenceException(string.Format("Not handling {0} and {1} yet", dtDiff, dtMin));
             }
             return dtMin;
         }
 
         public DataType MeetDataType(Expression exp, DataType dt)
         {
+            var tv = TypeVar(exp);
             if (exp is Conversion || exp is Cast)
-                return exp.TypeVariable!.DataType;
-            return MeetDataType(exp.TypeVariable!, dt);
+                return tv.DataType;
+            return MeetDataType(tv, dt);
         }
 
         public DataType MeetDataType(TypeVariable tvExp, DataType dt)
@@ -459,23 +466,23 @@ namespace Reko.Typing
         public bool VisitCast(Cast cast, TypeVariable? tv)
         {
             MeetDataType(cast, cast.DataType);
-            cast.Expression.Accept(this, cast.Expression.TypeVariable!);
+            cast.Expression.Accept(this, TypeVar(cast.Expression));
             return false;
         }
 
         public bool VisitConditionalExpression(ConditionalExpression c, TypeVariable tv)
         {
             MeetDataType(c.Condition, PrimitiveType.Bool);
-            c.Condition.Accept(this, c.Condition.TypeVariable!);
-            c.ThenExp.Accept(this, c.TypeVariable!);
-            c.FalseExp.Accept(this, c.TypeVariable!);
+            c.Condition.Accept(this, TypeVar(c.Condition));
+            c.ThenExp.Accept(this, TypeVar(c));
+            c.FalseExp.Accept(this, TypeVar(c));
             return false;
         }
 
         public bool VisitConditionOf(ConditionOf cof, TypeVariable tv)
         {
             MeetDataType(cof, cof.DataType);
-            cof.Expression.Accept(this, cof.Expression.TypeVariable!);
+            cof.Expression.Accept(this, TypeVar(cof.Expression));
             return false;
         }
 
@@ -491,7 +498,7 @@ namespace Reko.Typing
                     null,
                     globals, 
                     c.ToInt32() * 0x10,   //$REVIEW Platform-dependent: only valid for x86 real mode.
-                    c.TypeVariable!,
+                    TypeVar(c),
                     platform.PointerType.BitSize);
             }
             return false;
@@ -501,14 +508,14 @@ namespace Reko.Typing
         {
      //       MeetDataType(conversion, conversion.DataType);
             MeetDataType(conversion.Expression, conversion.SourceDataType);
-            conversion.Expression.Accept(this, conversion.Expression.TypeVariable!);
+            conversion.Expression.Accept(this, TypeVar(conversion.Expression));
             return false;
         }
 
         public bool VisitDereference(Dereference deref, TypeVariable tv)
         {
             //$BUG: push (ptr (typeof(deref)
-            deref.Expression.Accept(this, deref.Expression.TypeVariable!);
+            deref.Expression.Accept(this, TypeVar(deref.Expression));
             return false;
         }
 
@@ -529,13 +536,13 @@ namespace Reko.Typing
 
         public bool VisitMemoryAccess(MemoryAccess access, TypeVariable tv)
         {
-            return VisitMemoryAccess(null, access.TypeVariable!, access.EffectiveAddress, globals);
+            return VisitMemoryAccess(null, TypeVar(access), access.EffectiveAddress, globals);
         }
 
         private bool VisitMemoryAccess(Expression? basePointer, TypeVariable tvAccess, Expression effectiveAddress, Expression globals)
         {
             MeetDataType(tvAccess, tvAccess.DataType);
-            int eaBitSize = effectiveAddress.TypeVariable!.DataType.BitSize;
+            int eaBitSize = TypeVar(effectiveAddress).DataType.BitSize;
             Expression p;
             int offset;
             if (fieldAccessPattern.Match(effectiveAddress))
@@ -549,7 +556,7 @@ namespace Reko.Typing
                     // p some convert-extended thing and cannot be a pointer; c therefore must be treated as a
                     // pointer and p is the index.
                     // First do the array index.
-                    p.Accept(this, p.TypeVariable!);
+                    p.Accept(this, TypeVar(p));
 
                     // Now treat c as an array pointer.
                     var cbElement = tvAccess.DataType.Size;
@@ -559,7 +566,7 @@ namespace Reko.Typing
                 }
                 else if (p is Cast cast && cast.Expression.DataType.BitSize < cast.DataType.BitSize)
                 {
-                    p.Accept(this, p.TypeVariable!);
+                    p.Accept(this, TypeVar(p));
 
                     var cbElement = tvAccess.DataType.Size;
                     var tvArray = ArrayField(basePointer, c, c.DataType.BitSize, 0, cbElement, 0, tvAccess);
@@ -599,7 +606,7 @@ namespace Reko.Typing
                 var binEa = (BinaryExpression) effectiveAddress;
                 VisitPossibleArrayAccess(basePointer, tvAccess, binEa.Left, binEa.Right, globals, eaBitSize);
                 StructField(basePointer, effectiveAddress, 0, tvAccess, eaBitSize);
-                effectiveAddress.Accept(this, effectiveAddress.TypeVariable!);
+                effectiveAddress.Accept(this, TypeVar(effectiveAddress));
                 return false;
             }
             else
@@ -609,11 +616,11 @@ namespace Reko.Typing
                 offset = 0;
             }
             StructField(basePointer, p, offset, tvAccess, eaBitSize);
-            p.Accept(this, p.TypeVariable!);
+            p.Accept(this, TypeVar(p));
             return false;
         }
 
-        private Constant? ToConstant(Expression expression)
+        private static Constant? ToConstant(Expression expression)
         {
             if (expression is Constant c)
                 return c;
@@ -625,14 +632,14 @@ namespace Reko.Typing
         private void VisitPossibleArrayAccess(Expression? basePointer, TypeVariable tvAccess, Expression left, Expression right, Expression globals, int eaBitSize)
         {
             // First do the array index.
-            right.Accept(this, right.TypeVariable!);
+            right.Accept(this, TypeVar(right));
 
             var cbElement = tvAccess.DataType.Size;
             var tvArray = ArrayField(basePointer, left, left.DataType.BitSize, 0, cbElement, 0, tvAccess);
 
             StructField(basePointer, left, 0, tvArray, eaBitSize);
 
-            if (!(left is Identifier))
+            if (left is not Identifier)
             {
                 VisitMemoryAccess(basePointer, tvArray, left, globals);
             }
@@ -647,7 +654,7 @@ namespace Reko.Typing
             if (effectiveAddress is not BinaryExpression binEa ||
                 binEa.Operator != Operator.IAdd)
                 return false;
-            return binEa.Right.TypeVariable!.DataType.IsIntegral;
+            return TypeVar(binEa.Right).DataType.IsIntegral;
         }
 
         public LinearInductionVariable? GetInductionVariable(Expression e)
@@ -722,7 +729,7 @@ namespace Reko.Typing
                 throw new ArgumentOutOfRangeException("size must be positive");
             var s = factory.CreateStructureType(null, size);
             var ptr = eBase != null && eBase != globals
-                ? (DataType) factory.CreateMemberPointer(eBase.TypeVariable!, s, platform.FramePointerType.BitSize)
+                ? (DataType) factory.CreateMemberPointer(TypeVar(eBase), s, platform.FramePointerType.BitSize)
                 : (DataType) factory.CreatePointer(s, platform.PointerType.BitSize);
             return MeetDataType(tStruct, ptr);
         }
@@ -742,7 +749,7 @@ namespace Reko.Typing
 
         private DataType DataTypeOf(Expression e)
         {
-             return e.TypeVariable!.DataType;
+             return TypeVar(e).DataType;
         }
 
         private bool IsSelector(Expression e)
@@ -762,13 +769,13 @@ namespace Reko.Typing
                     var dtSeq = DataTypeOf(seq);
                     if (dtSeq is Pointer ptr)
                     {
-                        MeetDataType(off, MemberPointerTo(seg.TypeVariable!, ptr.Pointee, DataTypeOf(off).BitSize));
+                        MeetDataType(off, MemberPointerTo(TypeVar(seg), ptr.Pointee, DataTypeOf(off).BitSize));
                     } else if (dtSeq.IsPointer)
                     {
-                        MeetDataType(off, MemberPointerTo(seg.TypeVariable!, new UnknownType(), DataTypeOf(off).BitSize));
+                        MeetDataType(off, MemberPointerTo(TypeVar(seg), new UnknownType(), DataTypeOf(off).BitSize));
                     }
-                    seg.Accept(this, seg.TypeVariable!);
-                    off.Accept(this, off.TypeVariable!);
+                    seg.Accept(this, TypeVar(seg));
+                    off.Accept(this, TypeVar(off));
                     return false;
                 }
             }
@@ -782,7 +789,7 @@ namespace Reko.Typing
             }
             foreach (var e in seq.Expressions)
             {
-                e.Accept(this, e.TypeVariable!);
+                e.Accept(this, TypeVar(e));
             }
             return false;
         }
@@ -794,7 +801,7 @@ namespace Reko.Typing
 
         public bool VisitOutArgument(OutArgument outArgument, TypeVariable tv)
         {
-            outArgument.Expression.Accept(this, outArgument.Expression.TypeVariable!);
+            outArgument.Expression.Accept(this, TypeVar(outArgument.Expression));
             return false;
         }
 
@@ -824,27 +831,27 @@ namespace Reko.Typing
             var seg = factory.CreateStructureType(null, 0);
             seg.IsSegment = true;
             MeetDataType(access.BasePointer, factory.CreatePointer(seg, access.BasePointer.DataType.BitSize));
-            access.BasePointer.Accept(this, access.BasePointer.TypeVariable!);
+            access.BasePointer.Accept(this, TypeVar(access.BasePointer));
 
-            return VisitMemoryAccess(access.BasePointer, access.TypeVariable!, access.EffectiveAddress, access.BasePointer);
+            return VisitMemoryAccess(access.BasePointer, TypeVar(access), access.EffectiveAddress, access.BasePointer);
         }
 
         public bool VisitSlice(Slice slice, TypeVariable tv)
         {
-            slice.Expression.Accept(this, slice.Expression.TypeVariable!);
+            slice.Expression.Accept(this, TypeVar(slice.Expression));
             return false;
         }
 
         public bool VisitTestCondition(TestCondition tc, TypeVariable tv)
         {
             MeetDataType(tc, tc.DataType);
-            tc.Expression.Accept(this, tc.Expression.TypeVariable!);
+            tc.Expression.Accept(this, TypeVar(tc.Expression));
             return false;
         }
 
         public bool VisitUnaryExpression(UnaryExpression unary, TypeVariable tv)
         {
-            unary.Expression.Accept(this, unary.Expression.TypeVariable!);
+            unary.Expression.Accept(this, TypeVar(unary.Expression));
             return false;
         }
     }

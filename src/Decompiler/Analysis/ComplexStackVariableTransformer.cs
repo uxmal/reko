@@ -39,7 +39,7 @@ namespace Reko.Analysis
     /// <code>fp - offset</code> to <code>&amp;tLoc_offset1 + offset2</code>
     /// where <code>offset1 - offset2 = offset</code>
     /// </summary>
-    public class ComplexStackVariableTransformer: InstructionTransformer
+    public class ComplexStackVariableTransformer : InstructionTransformer
     {
         private readonly SsaState ssa;
         private readonly IntervalTree<int, DataType> escapedFrameIntervals;
