@@ -174,8 +174,6 @@ namespace Reko.Analysis
                         break;
                     case Store store:
                         typeDescender.Visit(store.Src);
-                        if (store.Dst.ToString().Contains(" - "))
-                            _ = this;//$DEBUG
                         typeDescender.Visit(store.Dst);
                         break;
                     case SideEffect side:

@@ -213,10 +213,10 @@ namespace Reko.Analysis
 
         private void AddInterval(int offset, DataType dt)
         {
-            var newInterval = Interval.Create(offset, offset + MeasureSize(dt));
+            var newInterval = Interval.Create(offset, offset + dt.MeasureSize());
             var ints = intervals.GetIntervalsOverlappingWith(
                 newInterval).Select(de => de.Key).ToArray();
-            foreach(var interval in ints)
+            foreach (var interval in ints)
             {
                 if (interval.Covers(newInterval))
                 {
@@ -235,76 +235,6 @@ namespace Reko.Analysis
                 }
             }
             intervals.Add(newInterval, dt);
-        }
-
-        /// <summary>
-        /// Compute the size of the data type <paramref name="dt"/>.
-        /// </summary>
-        /// <param name="dt"></param>
-        /// <remarks>
-        /// We don't trust the <see cref="DataType.Size"/> property because
-        /// the types may be inferred. For instance, inferred <see cref="StructureType"/>s
-        /// don't have a value for their Size properties.
-        /// </remarks>
-        //$TODO: this should be a method on the DataType class.
-        private int MeasureSize(DataType dt)
-        {
-            int offset = 0;
-            for (; ; )
-            {
-                switch (dt)
-                {
-                case PrimitiveType _:
-                case Pointer _:
-                case MemberPointer _:
-                case VoidType _:
-                case UnknownType _:
-                case EnumType _:
-                    return offset + dt.Size;
-                case StructureType st:
-                    if (st.Size > 0)
-                        return st.Size; // Trust the user/metadata
-                    var field = st.Fields.LastOrDefault();
-                    if (field is null)
-                        return 0;
-                    offset += field.Offset;
-                    dt = field.DataType;
-                    break;
-                case UnionType ut:
-                    int unionSize = 0;
-                    foreach (var alt in ut.Alternatives.Values)
-                    {
-                        unionSize = Math.Max(unionSize, MeasureSize(alt.DataType));
-                    }
-                    return offset + unionSize;
-                case ArrayType array:
-                    var elemSize = MeasureSize(array.ElementType);
-                    return offset + elemSize * array.Length;
-                case ClassType cls:
-                    if (cls.Size > 0)
-                        return cls.Size; // Trust the user/metadata
-                    var cfield = cls.Fields.LastOrDefault();
-                    if (cfield is null)
-                        return 0;
-                    offset += cfield.Offset;
-                    dt = cfield.DataType;
-                    break;
-                case TypeVariable tv:
-                    dt = tv.DataType;
-                    break;
-                case EquivalenceClass eq:
-                    dt = eq.DataType;
-                    break;
-                case TypeReference tref:
-                    dt = tref.Referent;
-                    break;
-                case ReferenceTo refto:
-                    dt = refto.Referent;
-                    break;
-                default:
-                    throw new NotImplementedException($"MeasureSize: {dt.GetType().Name} not implemented.");
-                }
-            }
         }
 
         private bool IsFrameAccess(Expression e, out int offset)
