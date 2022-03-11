@@ -41,19 +41,22 @@ namespace Reko.Analysis
     /// </summary>
     public class EscapedFrameIntervalsFinder : ExpressionVisitorBase, InstructionVisitor
     {
-        private Program program;
-        private SsaState ssa;
-        private DecompilerEventListener eventListener;
+        private readonly Program program;
+        private readonly ProgramDataFlow flow;
+        private readonly SsaState ssa;
+        private readonly DecompilerEventListener eventListener;
         private Context ctx;
         private ExpressionSimplifier eval;
         private IntervalTree<int, DataType> intervals;
 
         public EscapedFrameIntervalsFinder(
             Program program,
+            ProgramDataFlow flow,
             SsaState ssa,
             DecompilerEventListener eventListener)
         {
             this.program = program;
+            this.flow = flow;
             this.ssa = ssa;
             this.eventListener = eventListener;
             this.ctx = default!;
@@ -100,6 +103,24 @@ namespace Reko.Analysis
 
         public void VisitCallInstruction(CallInstruction ci)
         {
+            if (ci.Callee is not ProcedureConstant pc ||
+                pc.Procedure is not Procedure proc ||
+                !flow.ProcedureFlows.TryGetValue(proc, out var procFlow))
+                return;
+
+            foreach (var use in ci.Uses)
+            {
+                if (!procFlow.LiveInDataTypes.TryGetValue(use.Storage, out var dt))
+                    continue;
+                var ptr = dt.ResolveAs<Pointer>();
+                if (ptr is null)
+                    continue;
+                var pointee = ptr.Pointee;
+                if (IsFrameAccess(use.Expression, out var offset))
+                {
+                    AddInterval(offset, pointee);
+                }
+            }
         }
 
         public void VisitComment(CodeComment code)
@@ -192,7 +213,7 @@ namespace Reko.Analysis
 
         private void AddInterval(int offset, DataType dt)
         {
-            var newInterval = Interval.Create(offset, offset + dt.Size);
+            var newInterval = Interval.Create(offset, offset + MeasureSize(dt));
             var ints = intervals.GetIntervalsOverlappingWith(
                 newInterval).Select(de => de.Key).ToArray();
             foreach(var interval in ints)
@@ -214,6 +235,76 @@ namespace Reko.Analysis
                 }
             }
             intervals.Add(newInterval, dt);
+        }
+
+        /// <summary>
+        /// Compute the size of the data type <paramref name="dt"/>.
+        /// </summary>
+        /// <param name="dt"></param>
+        /// <remarks>
+        /// We don't trust the <see cref="DataType.Size"/> property because
+        /// the types may be inferred. For instance, inferred <see cref="StructureType"/>s
+        /// don't have a value for their Size properties.
+        /// </remarks>
+        //$TODO: this should be a method on the DataType class.
+        private int MeasureSize(DataType dt)
+        {
+            int offset = 0;
+            for (; ; )
+            {
+                switch (dt)
+                {
+                case PrimitiveType _:
+                case Pointer _:
+                case MemberPointer _:
+                case VoidType _:
+                case UnknownType _:
+                case EnumType _:
+                    return offset + dt.Size;
+                case StructureType st:
+                    if (st.Size > 0)
+                        return st.Size; // Trust the user/metadata
+                    var field = st.Fields.LastOrDefault();
+                    if (field is null)
+                        return 0;
+                    offset += field.Offset;
+                    dt = field.DataType;
+                    break;
+                case UnionType ut:
+                    int unionSize = 0;
+                    foreach (var alt in ut.Alternatives.Values)
+                    {
+                        unionSize = Math.Max(unionSize, MeasureSize(alt.DataType));
+                    }
+                    return offset + unionSize;
+                case ArrayType array:
+                    var elemSize = MeasureSize(array.ElementType);
+                    return offset + elemSize * array.Length;
+                case ClassType cls:
+                    if (cls.Size > 0)
+                        return cls.Size; // Trust the user/metadata
+                    var cfield = cls.Fields.LastOrDefault();
+                    if (cfield is null)
+                        return 0;
+                    offset += cfield.Offset;
+                    dt = cfield.DataType;
+                    break;
+                case TypeVariable tv:
+                    dt = tv.DataType;
+                    break;
+                case EquivalenceClass eq:
+                    dt = eq.DataType;
+                    break;
+                case TypeReference tref:
+                    dt = tref.Referent;
+                    break;
+                case ReferenceTo refto:
+                    dt = refto.Referent;
+                    break;
+                default:
+                    throw new NotImplementedException($"MeasureSize: {dt.GetType().Name} not implemented.");
+                }
+            }
         }
 
         private bool IsFrameAccess(Expression e, out int offset)

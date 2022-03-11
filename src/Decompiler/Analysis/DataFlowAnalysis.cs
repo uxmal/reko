@@ -498,7 +498,7 @@ namespace Reko.Analysis
                 DumpWatchedProcedure("cce", "After CCE", ssa);
 
                 var efif = new EscapedFrameIntervalsFinder(
-                    program, ssa, eventListener);
+                    program, flow, ssa, eventListener);
                 var escapedFrameIntervals = efif.Find();
                 if (escapedFrameIntervals.Count > 0)
                 {

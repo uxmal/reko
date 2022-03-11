@@ -1,7 +1,7 @@
 void fn0C00_0000(Register selector ds)
 // MayUse:  ds:[0..15]
 // DataTypes: 
-//   ds: (ptr16 (segment (300 T_2 t0300) (304 T_6 t0304) (308 T_14 t0308) (30C T_12 t030C)))
+//   ds: (ptr16 (segment (300 T_2 t0300) (304 T_6 t0304) (308 T_15 t0308) (30C T_13 t030C)))
 // LiveOut:
 // Trashed: SCZO ax bx FPU -1 FPU -2 Top
 // Preserved: sp

@@ -18,16 +18,12 @@
  */
 #endregion
 
-using Reko.Analysis;
 using Reko.Core;
-using Reko.Core.Code;
 using Reko.Core.Expressions;
 using Reko.Core.Operators;
 using Reko.Core.Types;
-using Reko.Scanning;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 
 namespace Reko.Typing
