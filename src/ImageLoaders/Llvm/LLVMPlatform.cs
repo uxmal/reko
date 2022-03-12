@@ -64,7 +64,7 @@ namespace Reko.ImageLoaders.LLVM
         public string PlatformIdentifier { get; set; }
 
         public PrimitiveType PointerType { get; set; }
-
+        
         public Address AdjustProcedureAddress(Address addrCode)
         {
             throw new NotImplementedException();

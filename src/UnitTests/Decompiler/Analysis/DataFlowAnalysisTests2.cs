@@ -247,7 +247,7 @@ test_exit:
                 .Returns(false);
             platform.Setup(p => p.DefaultCallingConvention).Returns("__cdecl");
             platform.Setup(p => p.GetCallingConvention(null))
-                .Returns(new X86CallingConvention(4, 4, 4, true, false));
+                .Returns(new X86CallingConvention(4, 4, true, false));
             platform.Setup(p => p.GetBitSizeFromCBasicType(CBasicType.Int)).Returns(32);
             platform.Setup(p => p.PointerType).Returns(PrimitiveType.Ptr32);
             platform.Setup(p => p.CreateCParser(It.IsAny<TextReader>(), It.IsAny<ParserState>()))

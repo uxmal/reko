@@ -40,7 +40,7 @@ namespace Reko.UnitTests.Environments.SysV.ArchSpecific
             var arch = new XtensaArchitecture(new ServiceContainer(), "xtensa", new Dictionary<string, object>());
             var cc = new XtensaCallingConvention(arch);
             var ccr = new CallingConventionEmitter();
-            cc.Generate(ccr, dtRet, null, args.ToList());
+            cc.Generate(ccr, 0, dtRet, null, args.ToList());
             Assert.AreEqual(sExp.Trim(), ccr.ToString());
         }
 

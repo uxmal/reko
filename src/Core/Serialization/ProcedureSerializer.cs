@@ -172,7 +172,7 @@ namespace Reko.Core.Serialization
                     };
                 }
                 var res = new CallingConventionEmitter();
-                cc.Generate(res, dtRet, dtThis, dtParameters);
+                cc.Generate(res, retAddrSize, dtRet, dtThis, dtParameters);
                 if (res.Return != null)
                 {
                     ret = new Identifier(

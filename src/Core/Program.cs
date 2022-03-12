@@ -283,7 +283,7 @@ namespace Reko.Core
             {
                 namedTypes[typedef.Key] = typedef.Value.Accept(dtSer);
             }
-            return new SymbolTable(Platform, primitiveTypes, namedTypes, Platform.PointerType.Size);
+            return new SymbolTable(Platform, primitiveTypes, namedTypes);
         }
 
         public ProcedureSerializer CreateProcedureSerializer()

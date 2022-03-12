@@ -47,10 +47,10 @@ namespace Reko.UnitTests.Arch.X86
         private ICallingConventionEmitter ccr;
         private Win32Platform platform;
         private ISerializedTypeVisitor<DataType> deserializer;
-        private PrimitiveType i16 = PrimitiveType.Int16;
-        private PrimitiveType i32 = PrimitiveType.Int32;
-        private PrimitiveType u64 = PrimitiveType.UInt64;
-        private PrimitiveType r64 = PrimitiveType.Real64;
+        private readonly PrimitiveType i16 = PrimitiveType.Int16;
+        private readonly PrimitiveType i32 = PrimitiveType.Int32;
+        private readonly PrimitiveType u64 = PrimitiveType.UInt64;
+        private readonly PrimitiveType r64 = PrimitiveType.Real64;
 
         [SetUp]
         public void Setup()
@@ -66,7 +66,7 @@ namespace Reko.UnitTests.Arch.X86
             this.ccr = new CallingConventionEmitter();
             this.deserializer = new FakeTypeDeserializer(32);
             FastcallConvention fcc = new FastcallConvention(
-                Registers.ecx, Registers.edx, 4, 4);
+                Registers.ecx, Registers.edx, 4);
             this.fcc = fcc;
         }
 
@@ -75,7 +75,7 @@ namespace Reko.UnitTests.Arch.X86
             this.ccr = new CallingConventionEmitter();
             this.deserializer = new FakeTypeDeserializer(32);
             FastcallConvention fcc = new FastcallConvention(
-                Registers.cx, Registers.dx, 4, 4);
+                Registers.cx, Registers.dx, 4);
             this.fcc = fcc;
         }
 
@@ -83,7 +83,7 @@ namespace Reko.UnitTests.Arch.X86
         public void FastCc_Load()
         {
             Given_32bit_CallingConvention();
-            fcc.Generate(ccr, i32, null, new List<DataType> { i32 });
+            fcc.Generate(ccr, 4, i32, null, new List<DataType> { i32 });
             Assert.AreEqual("Stk: 4 eax (ecx)", ccr.ToString());
         }
 
@@ -91,7 +91,7 @@ namespace Reko.UnitTests.Arch.X86
         public void FastCc_instance_method()
         {
             Given_32bit_CallingConvention();
-            fcc.Generate(ccr, i32, i32, new List<DataType> { i32 });
+            fcc.Generate(ccr, 4, i32, i32, new List<DataType> { i32 });
             Assert.AreEqual("Stk: 4 eax [this ecx] (edx)", ccr.ToString());
         }
     }

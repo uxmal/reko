@@ -42,7 +42,12 @@ namespace Reko.Environments.SysV.ArchSpecific
             this.fp0 = arch.GetRegister("fp0")!;
         }
 
-        public void Generate(ICallingConventionEmitter ccr, DataType? dtRet, DataType? dtThis, List<DataType> dtParams)
+        public void Generate(
+            ICallingConventionEmitter ccr,
+            int retAddressOnStack,
+            DataType? dtRet,
+            DataType? dtThis,
+            List<DataType> dtParams)
         {
             ccr.LowLevelDetails(4, 4);
             if (dtRet != null)

@@ -59,7 +59,12 @@ namespace Reko.Environments.SysV.ArchSpecific
 
         // https://en.wikipedia.org/wiki/Calling_convention#SuperH
         // https://www.renesas.com/en-eu/doc/products/tool/001/rej10b0152_sh.pdf
-        public void Generate(ICallingConventionEmitter ccr, DataType? dtRet, DataType? dtThis, List<DataType> dtParams)
+        public void Generate(
+            ICallingConventionEmitter ccr,
+            int retAddressOnStack,
+            DataType? dtRet,
+            DataType? dtThis,
+            List<DataType> dtParams)
         {
             ccr.LowLevelDetails(4, 0x14);
             if (dtRet != null && !(dtRet is VoidType))

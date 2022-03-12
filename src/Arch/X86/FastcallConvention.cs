@@ -36,20 +36,22 @@ namespace Reko.Arch.X86
     {
         private RegisterStorage[] iArgs;
         private int stackAlignment;
-        private int retSizeOnStack;
 
         public FastcallConvention(
             RegisterStorage arg1,
             RegisterStorage arg2,
-            int stackAlignment,
-            int retSizeOnStack)
+            int stackAlignment)
         {
             this.iArgs = new[] { arg1, arg2 };
             this.stackAlignment = stackAlignment;
-            this.retSizeOnStack = retSizeOnStack;
         }
 
-        public void Generate(ICallingConventionEmitter ccr, DataType? dtRet, DataType? dtThis, List<DataType> dtParams)
+        public void Generate(
+            ICallingConventionEmitter ccr,
+            int retSizeOnStack,
+            DataType? dtRet,
+            DataType? dtThis,
+            List<DataType> dtParams)
         {
             ccr.LowLevelDetails(stackAlignment, retSizeOnStack);
             ccr.CallerCleanup(retSizeOnStack);

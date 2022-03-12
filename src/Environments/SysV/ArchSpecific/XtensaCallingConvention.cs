@@ -75,7 +75,12 @@ namespace Reko.Environments.SysV.ArchSpecific
             this.arch = arch;
         }
 
-        public void Generate(ICallingConventionEmitter ccr, DataType? dtRet, DataType? dtThis, List<DataType> dtParams)
+        public void Generate(
+            ICallingConventionEmitter ccr,
+            int retAddressOnStack,
+            DataType? dtRet,
+            DataType? dtThis,
+            List<DataType> dtParams)
         {
             ccr.LowLevelDetails(4, 0);
             if (dtRet != null)

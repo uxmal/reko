@@ -81,14 +81,14 @@ namespace Reko.UnitTests.Decompiler.Scanning
             };
             this.x86PrintfSig = new FunctionType(
                 null,
-                StackId(null, 4, CStringType32())) { IsVariadic = true };
+                StackId(null, 4, CStringType32())) { ReturnAddressOnStack = 4, IsVariadic = true };
             this.x86SprintfSig = new FunctionType(
                 null,
                 StackId(null,   4, CStringType32()),
-                StackId(null,   8, CStringType32())) { IsVariadic = true };
+                StackId(null,   8, CStringType32())) { ReturnAddressOnStack = 4, IsVariadic = true };
             this.win_x86_64PrintfSig = new FunctionType(
                 null,
-                RegId(null, win_x86_64, "rcx", CStringType64())) { IsVariadic = true };
+                RegId(null, win_x86_64, "rcx", CStringType64())) { ReturnAddressOnStack=8, IsVariadic = true };
             this.ppcPrintfSig = new FunctionType(
                 null,
                 RegId(null,  sysV_ppc, "r3", CStringType32())) { IsVariadic = true };
@@ -289,7 +289,7 @@ namespace Reko.UnitTests.Decompiler.Scanning
         public void Vafs_ReplaceArgs()
         {
             var platform = new Mock<IPlatform>();
-            var cc = new X86CallingConvention(4, 4, 4, false, false);
+            var cc = new X86CallingConvention(4, 4, false, false);
             platform.Setup(p => p.GetCallingConvention("")).Returns(cc);
 
             var newSig = VarargsFormatScanner.ReplaceVarargs(

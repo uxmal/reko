@@ -43,7 +43,12 @@ namespace Reko.Arch.Arm.AArch32
             this.argRegs = new[] { Registers.r0, Registers.r1, Registers.r2, Registers.r3 };
         }
 
-        public void Generate(ICallingConventionEmitter ccr, DataType? dtRet, DataType? dtThis, List<DataType> dtParams)
+        public void Generate(
+            ICallingConventionEmitter ccr,
+            int retAddressOnStack,
+            DataType? dtRet,
+            DataType? dtThis,
+            List<DataType> dtParams)
         {
             ccr.LowLevelDetails(4, 0);
 

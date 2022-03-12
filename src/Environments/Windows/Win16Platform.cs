@@ -43,10 +43,7 @@ namespace Reko.Environments.Windows
         {
         }
 
-        public override string DefaultCallingConvention
-        {
-            get { return "pascal"; }
-        }
+        public override string DefaultCallingConvention => "pascal";
 
         public override CParser CreateCParser(TextReader rdr, ParserState? state)
         {
@@ -103,13 +100,13 @@ SP	top of stack
             case "":
             case "__cdecl":
             case "cdecl":
-                return new X86CallingConvention(4, 2, 4, true, false);
+                return new X86CallingConvention(2, 4, true, false);
             case "__pascal":
             case "pascal":
-                return new X86CallingConvention(4, 2, 4, false, true);
+                return new X86CallingConvention(2, 4, false, true);
             case "__stdcall":
             case "stdcall":
-                return new X86CallingConvention(4, 4, 4, false, false);
+                return new X86CallingConvention(4, 4, false, false);
             }
             throw new NotSupportedException(string.Format("Calling convention '{0}' is not supported.", ccName));
         }

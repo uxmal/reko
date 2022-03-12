@@ -56,7 +56,12 @@ namespace Reko.Environments.MacOS.OSX.ArchSpecific
             this.rdx = arch.GetRegister("rdx")!;
         }
 
-        public void Generate(ICallingConventionEmitter ccr, DataType? dtRet, DataType? dtThis, List<DataType> dtParams)
+        public void Generate(
+            ICallingConventionEmitter ccr,
+            int retAddressOnStack,
+            DataType? dtRet,
+            DataType? dtThis,
+            List<DataType> dtParams)
         {
             ccr.LowLevelDetails(arch.PointerType.Size, 0x0008);
             if (dtRet != null)

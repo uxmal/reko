@@ -34,7 +34,6 @@ namespace Reko.Arch.X86
     /// </summary>
     public class X86CallingConvention : CallingConvention
     {
-        private readonly int retAddressOnStack;
         private readonly int stackAlignment;
         private readonly int pointerSize;
         private readonly Storage fpuReturnStorage;
@@ -42,13 +41,11 @@ namespace Reko.Arch.X86
         private readonly bool reverseArguments;
 
         public X86CallingConvention(
-            int retAddressOnStack,
             int stackAlignment, 
             int pointerSize, 
             bool callerCleanup,
             bool reverseArguments)
         {
-            this.retAddressOnStack = retAddressOnStack;
             this.stackAlignment = stackAlignment;
             this.pointerSize = pointerSize;
             //$TODO: not strictly correct, should be real80, but 
@@ -59,7 +56,12 @@ namespace Reko.Arch.X86
             this.reverseArguments = reverseArguments;
         }
 
-        public void Generate(ICallingConventionEmitter ccr, DataType? dtRet, DataType? dtThis, List<DataType> dtParams)
+        public void Generate(
+            ICallingConventionEmitter ccr,
+            int retAddressOnStack, 
+            DataType? dtRet, 
+            DataType? dtThis,
+            List<DataType> dtParams)
         {
             ccr.LowLevelDetails(stackAlignment, retAddressOnStack);
             SetReturnStorage(ccr, dtRet, stackAlignment);

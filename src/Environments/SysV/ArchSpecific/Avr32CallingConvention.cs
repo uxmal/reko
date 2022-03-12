@@ -61,7 +61,12 @@ What the different instructions do is explained in the Atmel AVR 32-bit Architec
             this.arch = arch;
         }
 
-        public void Generate(ICallingConventionEmitter ccr, DataType? dtRet, DataType? dtThis, List<DataType> dtParams)
+        public void Generate(
+            ICallingConventionEmitter ccr,
+            int retAddressOnStack,
+            DataType? dtRet,
+            DataType? dtThis,
+            List<DataType> dtParams)
         {
             ccr.LowLevelDetails(4, 0);
             foreach (var dt in dtParams)

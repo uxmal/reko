@@ -1588,5 +1588,16 @@ struct __attribute__((aligned(4))) yapl_vm
                 "(Double) ((field8)) ((attr aligned (NumericLiteral 8)))))",
                 decl.ToString());
         }
+
+        [Test]
+        public void CParser_msvc_near_fn()
+        {
+            MsvcLex(@"
+void __near exit(int status);
+");
+            var decl = parser.Parse()[0];
+            Assert.AreEqual("(decl Void _Near ((init-decl (func exit ((Int status))))))",
+                decl.ToString());
+        }
     }
 }

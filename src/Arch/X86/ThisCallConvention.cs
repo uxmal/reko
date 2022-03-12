@@ -34,14 +34,12 @@ namespace Reko.Arch.X86
     public class ThisCallConvention : CallingConvention
     {
         private RegisterStorage ecxThis;
-        private int retAddressOnStack;
         private int stackAlignment;
 
-        public ThisCallConvention(RegisterStorage ecxThis, int stackAlignment, int retAddressOnStack)
+        public ThisCallConvention(RegisterStorage ecxThis, int stackAlignment)
         {
             this.ecxThis = ecxThis;
             this.stackAlignment = stackAlignment;
-            this.retAddressOnStack = retAddressOnStack;
         }
 
         /// <summary>
@@ -49,7 +47,12 @@ namespace Reko.Arch.X86
         /// corresponding to an enclosing C++ class. If dtThis is null, then
         /// the first of the dtParams will be treated as a `this`.
         /// </summary>
-        public void Generate(ICallingConventionEmitter ccr, DataType? dtRet, DataType? dtThis, List<DataType> dtParams)
+        public void Generate(
+            ICallingConventionEmitter ccr,
+            int retAddressOnStack,
+            DataType? dtRet,
+            DataType? dtThis,
+            List<DataType> dtParams)
         {
             ccr.LowLevelDetails(stackAlignment, retAddressOnStack);
             X86CallingConvention.SetReturnStorage(ccr, dtRet, stackAlignment);

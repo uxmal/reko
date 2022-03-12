@@ -96,7 +96,12 @@ char - just clr r25). Arguments to functions with variable argument lists
                      select reg).ToArray();
         }
 
-        public void Generate(ICallingConventionEmitter ccr, DataType? dtRet, DataType? dtThis, List<DataType> dtParams)
+        public void Generate(
+            ICallingConventionEmitter ccr,
+            int retAddressOnStack,
+            DataType? dtRet,
+            DataType? dtThis,
+            List<DataType> dtParams)
         {
             /*
              * To find the register where a function argument is passed, initialize the register number 

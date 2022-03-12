@@ -292,7 +292,12 @@ complex) in f1:f4.
                 .ToArray();
         }
 
-        public void Generate(ICallingConventionEmitter ccr, DataType? dtRet, DataType? dtThis, List<DataType> dtParams)
+        public void Generate(
+            ICallingConventionEmitter ccr,
+            int retAddressOnStack,
+            DataType? dtRet,
+            DataType? dtThis,
+            List<DataType> dtParams)
         {
             //$TODO: full implementation needed. Currently can't handle varargs, args whose bit size > 64, or more than 8 args.
             int stackSaveOffset = 0x48;

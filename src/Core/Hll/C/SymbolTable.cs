@@ -34,21 +34,28 @@ namespace Reko.Core.Hll.C
         private readonly IPlatform platform;
         private readonly int pointerSize;
 
-        public SymbolTable(IPlatform platform, int pointerSize) : this(platform,
+        public SymbolTable(IPlatform platform) : this(
+            platform,
             new Dictionary<string, PrimitiveType_v1>(),
-            new Dictionary<string, SerializedType>(),
-            pointerSize)
+            new Dictionary<string, SerializedType>())
         {
+        }
+
+        public SymbolTable(IPlatform platform, int pointerSize) : this(
+            platform,
+            new Dictionary<string, PrimitiveType_v1>(),
+            new Dictionary<string, SerializedType>())
+        {
+            this.pointerSize = pointerSize;
         }
 
         public SymbolTable(
             IPlatform platform,
             Dictionary<string, PrimitiveType_v1> primitiveTypes,
-            Dictionary<string, SerializedType> namedTypes,
-            int pointerSize)
+            Dictionary<string, SerializedType> namedTypes)
         {
             this.platform = platform;
-            this.pointerSize = pointerSize;
+            this.pointerSize = platform.PointerType.Size;
 
             this.Types = new List<SerializedType>();
             this.StructsSeen = new Dictionary<string, StructType_v1>();

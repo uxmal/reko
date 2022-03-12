@@ -67,6 +67,7 @@ namespace Reko.UnitTests.Environments.Windows
         {
             cc.Generate(
                 ccr,
+                0,
                 null,
                 null,
                 new List<DataType> { PrimitiveType.Char });
@@ -79,6 +80,7 @@ namespace Reko.UnitTests.Environments.Windows
         {
             cc.Generate(
                 ccr,
+                0,
                 null,
                 null,
                 new List<DataType> {
@@ -98,6 +100,7 @@ namespace Reko.UnitTests.Environments.Windows
         {
             cc.Generate(
                 ccr,
+                0,
                 null,
                 null,
                 new List<DataType> {
@@ -119,6 +122,7 @@ namespace Reko.UnitTests.Environments.Windows
         {
             cc.Generate(
                 ccr,
+                0,
                 null,
                 null,
                 new List<DataType> { r32, r64, r32, r64, r32 });
@@ -134,7 +138,7 @@ namespace Reko.UnitTests.Environments.Windows
         [Test]
         public void WinAlphaCc_AllInts()
         {
-            cc.Generate(ccr, i32, null, new List<DataType> { i32, i32, i32, i32, i32, Ptr(i32) });
+            cc.Generate(ccr, 0, i32, null, new List<DataType> { i32, i32, i32, i32, i32, Ptr(i32) });
             Assert.AreEqual("Stk: 0 r0 (r16, r17, r18, r19, r20, r21)", ccr.ToString());
         }
 
@@ -142,7 +146,7 @@ namespace Reko.UnitTests.Environments.Windows
         [Ignore("Need reliable documentation for the WinAlpha calling convention")]
         public void WinAlphaCc_AllFloats()
         {
-            cc.Generate(ccr, r32, null, new List<DataType> { r32, r64, r32, r64, r32 });
+            cc.Generate(ccr, 0, r32, null, new List<DataType> { r32, r64, r32, r64, r32 });
             Assert.AreEqual("Stk: 0 xmm0 (xmm0, xmm1, xmm2, xmm3, Stack +0028)", ccr.ToString());
         }
 
@@ -150,7 +154,7 @@ namespace Reko.UnitTests.Environments.Windows
         [Ignore("Need reliable documentation for the WinAlpha calling convention")]
         public void WinAlphaCc_MixedIntsFloats()
         {
-            cc.Generate(ccr, i32, null, new List<DataType> { i32, r64, Ptr(i8), r64, r32 });
+            cc.Generate(ccr, 0, i32, null, new List<DataType> { i32, r64, Ptr(i8), r64, r32 });
             Assert.AreEqual("Stk: 0 eax (rcx, xmm1, r8, xmm3, Stack +0028)", ccr.ToString());
         }
 
@@ -159,7 +163,7 @@ namespace Reko.UnitTests.Environments.Windows
         [Ignore("Need reliable documentation for the WinAlpha calling convention")]
         public void WinAlphaCc_SmallStackArguments()
         {
-            cc.Generate(ccr, i32, null, new List<DataType> { i32, r64, Ptr(i8), r64, i8, i8, i8 });
+            cc.Generate(ccr, 0, i32, null, new List<DataType> { i32, r64, Ptr(i8), r64, i8, i8, i8 });
             Assert.AreEqual("Stk: 8 eax (rcx, xmm1, r8, xmm3, Stack +0028, Stack +0030, Stack +0038)", ccr.ToString());
         }
 

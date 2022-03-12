@@ -70,7 +70,7 @@ namespace Reko.UnitTests.Environments.SysV.ArchSpecific
         public void SHCC_csii()
         {
             Given_CallingConvention();
-            cc.Generate(ccr, PrimitiveType.Int32, null, new List<DataType> { c, s, i, i });
+            cc.Generate(ccr, 0, PrimitiveType.Int32, null, new List<DataType> { c, s, i, i });
             Assert.AreEqual("Stk: 0 r0 (r4, r5, r6, r7)", ccr.ToString());
         }
 
@@ -79,7 +79,7 @@ namespace Reko.UnitTests.Environments.SysV.ArchSpecific
         public void SHCC_csiic()
         {
             Given_CallingConvention();
-            cc.Generate(ccr, PrimitiveType.Real32, null, new List<DataType> { c, s, i, i, c });
+            cc.Generate(ccr, 0, PrimitiveType.Real32, null, new List<DataType> { c, s, i, i, c });
             Assert.AreEqual("Stk: 0 fr0 (r4, r5, r6, r7, Stack +0014)", ccr.ToString());
         }
 
@@ -87,7 +87,7 @@ namespace Reko.UnitTests.Environments.SysV.ArchSpecific
         public void SHCC_struct()
         {
             Given_CallingConvention();
-            cc.Generate(ccr, PrimitiveType.Int32, null, new List<DataType> { i, str, i });
+            cc.Generate(ccr, 0, PrimitiveType.Int32, null, new List<DataType> { i, str, i });
             Assert.AreEqual("Stk: 0 r0 (r4, Stack +0014, r5)", ccr.ToString());
         }
 
@@ -95,7 +95,7 @@ namespace Reko.UnitTests.Environments.SysV.ArchSpecific
         public void SHCC_cfsfd()
         {
             Given_CallingConvention();
-            cc.Generate(ccr, PrimitiveType.Int32, null, new List<DataType> { c, f, s, f, d });
+            cc.Generate(ccr, 0, PrimitiveType.Int32, null, new List<DataType> { c, f, s, f, d });
             Assert.AreEqual("Stk: 0 r0 (r4, fr4, r5, fr5, dr6)", ccr.ToString());
         }
     }

@@ -63,18 +63,18 @@ namespace Reko.UnitTests.Arch.X86
             switch (cConvention)
             {
             case "__cdecl":
-                cc = new X86CallingConvention(4, 4, 4, true, false);
+                cc = new X86CallingConvention(4, 4, true, false);
                 break;
             case "stdapi":
             case "stdcall":
             case "__stdcall":
-                cc = new X86CallingConvention(4, 4, 4, false, false);
+                cc = new X86CallingConvention(4, 4, false, false);
                 break;
             case "pascal":
-                cc = new X86CallingConvention(4, 4, 4, false, true);
+                cc = new X86CallingConvention(4, 4, false, true);
                 break;
             case "__thiscall":
-                cc = new X86CallingConvention(4, 4, 4, false, false);
+                cc = new X86CallingConvention(4, 4, false, false);
                 break;
             default: throw new NotImplementedException(cConvention + " not supported.");
             }
@@ -89,15 +89,15 @@ namespace Reko.UnitTests.Arch.X86
             switch (cConvention)
             {
             case "__cdecl":
-                cc = new X86CallingConvention(4, 2, 4, true, false);
+                cc = new X86CallingConvention(2, 4, true, false);
                 break;
             case "stdapi":
             case "stdcall":
             case "__stdcall":
-                cc = new X86CallingConvention(4, 2, 4, false, false);
+                cc = new X86CallingConvention(2, 4, false, false);
                 break;
             case "pascal":
-                cc = new X86CallingConvention(4, 2, 4, false, true);
+                cc = new X86CallingConvention(2, 4, false, true);
                 break;
             default: throw new NotImplementedException(cConvention + " not supported.");
             }
@@ -108,7 +108,7 @@ namespace Reko.UnitTests.Arch.X86
         public void X86Cc_Load_cdecl()
         {
             Given_32bit_CallingConvention("__cdecl");
-            cc.Generate(ccr, null, null, new List<DataType> { i32 });
+            cc.Generate(ccr, 4, null, null, new List<DataType> { i32 });
             Assert.AreEqual("Stk: 4 void (Stack +0004)", ccr.ToString());
         }
 
@@ -116,7 +116,7 @@ namespace Reko.UnitTests.Arch.X86
         public void X86Cc_Load_stdapi()
         {
             Given_32bit_CallingConvention("stdapi");
-            cc.Generate(ccr, null, null, new List<DataType> { i32 });
+            cc.Generate(ccr, 4, null, null, new List<DataType> { i32 });
             Assert.AreEqual("Stk: 8 void (Stack +0004)", ccr.ToString());
         }
 
@@ -124,7 +124,7 @@ namespace Reko.UnitTests.Arch.X86
         public void X86Cc_Load_stdcall()
         {
             Given_32bit_CallingConvention("stdcall");
-            cc.Generate(ccr, null, null, new List<DataType> { i32 });
+            cc.Generate(ccr, 4, null, null, new List<DataType> { i32 });
             Assert.AreEqual("Stk: 8 void (Stack +0004)", ccr.ToString());
         }
 
@@ -132,7 +132,7 @@ namespace Reko.UnitTests.Arch.X86
         public void X86Cc_Load___stdcall()
         {
             Given_32bit_CallingConvention("stdcall");
-            cc.Generate(ccr, null, null, new List<DataType> { i32 });
+            cc.Generate(ccr, 4, null, null, new List<DataType> { i32 });
             Assert.AreEqual("Stk: 8 void (Stack +0004)", ccr.ToString());
         }
 
@@ -157,7 +157,7 @@ namespace Reko.UnitTests.Arch.X86
                 }
             };
             Given_32bit_CallingConvention("pascal");
-            cc.Generate(ccr, null, null, new List<DataType> { i16, i32 });
+            cc.Generate(ccr, 4, null, null, new List<DataType> { i16, i32 });
             Assert.AreEqual("Stk: 12 void (Stack +0008, Stack +0004)", ccr.ToString());
         }
 
@@ -202,7 +202,7 @@ namespace Reko.UnitTests.Arch.X86
         public void X86Cc_Load_FpuReturnValue()
         {
             Given_32bit_CallingConvention("__cdecl");
-            cc.Generate(ccr, r64, null, new List<DataType> ());
+            cc.Generate(ccr, 4, r64, null, new List<DataType> ());
             Assert.AreEqual("Stk: 4 Fpu: 1 FPU -1 ()", ccr.ToString());
         }
 
@@ -210,7 +210,7 @@ namespace Reko.UnitTests.Arch.X86
         public void X86Cc_Return_bool()
         {
             Given_32bit_CallingConvention("__cdecl");
-            cc.Generate(ccr, PrimitiveType.Bool, null, new List<DataType>());
+            cc.Generate(ccr, 4, PrimitiveType.Bool, null, new List<DataType>());
             Assert.AreEqual("Stk: 4 al ()", ccr.ToString());
         }
 
@@ -218,7 +218,7 @@ namespace Reko.UnitTests.Arch.X86
         public void X86Cc_Return_16bit_long()
         {
             Given_16bit_CallingConvention("__cdecl");
-            cc.Generate(ccr, i32, null, new List<DataType>());
+            cc.Generate(ccr, 4, i32, null, new List<DataType>());
             Assert.AreEqual("Stk: 4 Sequence dx:ax ()", ccr.ToString());
         }
 
@@ -226,7 +226,7 @@ namespace Reko.UnitTests.Arch.X86
         public void X86Cc_Return_32bit_long()
         {
             Given_32bit_CallingConvention("__cdecl");
-            cc.Generate(ccr, i32, null, new List<DataType>());
+            cc.Generate(ccr, 4, i32, null, new List<DataType>());
             Assert.AreEqual("Stk: 4 eax ()", ccr.ToString());
         }
 
@@ -234,7 +234,7 @@ namespace Reko.UnitTests.Arch.X86
         public void X86Cc_Return_32bit_long_long()
         {
             Given_32bit_CallingConvention("__cdecl");
-            cc.Generate(ccr, u64, null, new List<DataType>());
+            cc.Generate(ccr, 4, u64, null, new List<DataType>());
             Assert.AreEqual("Stk: 4 Sequence edx:eax ()", ccr.ToString());
         }
 
@@ -242,7 +242,7 @@ namespace Reko.UnitTests.Arch.X86
         public void X86Cc_Return_double()
         {
             Given_32bit_CallingConvention("__cdecl");
-            cc.Generate(ccr, r64, null, new List<DataType>());
+            cc.Generate(ccr, 4, r64, null, new List<DataType>());
             Assert.AreEqual("Stk: 4 Fpu: 1 FPU -1 ()", ccr.ToString());
         }
     }

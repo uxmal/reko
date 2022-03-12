@@ -42,7 +42,12 @@ namespace Reko.Environments.SysV.ArchSpecific
                 .ToArray();
         }
 
-        public void Generate(ICallingConventionEmitter ccr, DataType? dtRet, DataType? dtThis, List<DataType> dtParams)
+        public void Generate(
+            ICallingConventionEmitter ccr,
+            int retAddressOnStack,
+            DataType? dtRet,
+            DataType? dtThis,
+            List<DataType> dtParams)
         {
             ccr.LowLevelDetails(4, 0);
             //Return values of types up to 8 bytes are returned in r2 and r3.For return values

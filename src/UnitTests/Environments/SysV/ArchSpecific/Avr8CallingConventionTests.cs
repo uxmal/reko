@@ -56,7 +56,7 @@ namespace Reko.UnitTests.Environments.SysV.ArchSpecific
         public void SvAvr8cc_ByteArg()
         {
             Given_CallingConvention();
-            cc.Generate(ccr, VoidType.Instance, null, new List<DataType>
+            cc.Generate(ccr, 0, VoidType.Instance, null, new List<DataType>
             {
                 PrimitiveType.Byte
             });
@@ -67,7 +67,7 @@ namespace Reko.UnitTests.Environments.SysV.ArchSpecific
         public void SvAvr8cc_Byte_Byte_args()
         {
             Given_CallingConvention();
-            cc.Generate(ccr, VoidType.Instance, null, new List<DataType>
+            cc.Generate(ccr, 0, VoidType.Instance, null, new List<DataType>
             {
                 PrimitiveType.Byte, PrimitiveType.Byte
             });
@@ -78,7 +78,7 @@ namespace Reko.UnitTests.Environments.SysV.ArchSpecific
         public void SvAvr8cc_word16_args()
         {
             Given_CallingConvention();
-            cc.Generate(ccr, VoidType.Instance, null, new List<DataType>
+            cc.Generate(ccr, 0, VoidType.Instance, null, new List<DataType>
             {
                 Word16
             });
@@ -89,7 +89,7 @@ namespace Reko.UnitTests.Environments.SysV.ArchSpecific
         public void SvAvr8cc_word32_args()
         {
             Given_CallingConvention();
-            cc.Generate(ccr, VoidType.Instance, null, new List<DataType>
+            cc.Generate(ccr, 0, VoidType.Instance, null, new List<DataType>
             {
                 Word32
             });
@@ -100,7 +100,7 @@ namespace Reko.UnitTests.Environments.SysV.ArchSpecific
         public void SvAvr8cc_mem_args()
         {
             Given_CallingConvention();
-            cc.Generate(ccr, VoidType.Instance, null, new List<DataType>
+            cc.Generate(ccr, 0, VoidType.Instance, null, new List<DataType>
             {
                 Word32,
                 Word32,
@@ -123,7 +123,7 @@ namespace Reko.UnitTests.Environments.SysV.ArchSpecific
         public void SvAvr8cc_return_byte()
         {
             Given_CallingConvention();
-            cc.Generate(ccr, PrimitiveType.SByte, null, new List<DataType>());
+            cc.Generate(ccr, 0, PrimitiveType.SByte, null, new List<DataType>());
             Assert.AreEqual("Stk: 0 r24 ()", ccr.ToString());
         }
 
@@ -131,7 +131,7 @@ namespace Reko.UnitTests.Environments.SysV.ArchSpecific
         public void SvAvr8cc_return_word32()
         {
             Given_CallingConvention();
-            cc.Generate(ccr, Word32, null, new List<DataType>());
+            cc.Generate(ccr, 0, Word32, null, new List<DataType>());
             Assert.AreEqual("Stk: 0 Sequence r25:r24:r23:r22 ()", ccr.ToString());
         }
     }

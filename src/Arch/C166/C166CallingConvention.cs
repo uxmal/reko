@@ -29,7 +29,12 @@ namespace Reko.Arch.C166
     // https://www.keil.com/support/man/docs/c166/c166_ap_funcparam.htm
     public class C166CallingConvention : CallingConvention
     {
-        public void Generate(ICallingConventionEmitter ccr, DataType? dtRet, DataType? dtThis, List<DataType> dtParams)
+        public void Generate(
+            ICallingConventionEmitter ccr,
+            int retAddressOnStack,
+            DataType? dtRet,
+            DataType? dtThis,
+            List<DataType> dtParams)
         {
             throw new NotImplementedException();
         }

@@ -699,7 +699,12 @@ register*/
                 .Select(r => arch.GetRegister(r)!).ToArray();
         }
 
-        public void Generate(ICallingConventionEmitter ccr, DataType? dtRet, DataType? dtThis, List<DataType> dtParams)
+        public void Generate(
+            ICallingConventionEmitter ccr,
+            int retAddressOnStack,
+            DataType? dtRet,
+            DataType? dtThis,
+            List<DataType> dtParams)
         {
             ccr.LowLevelDetails(2, 0);
             if (dtRet != null && !(dtRet is VoidType))

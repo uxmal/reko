@@ -75,10 +75,8 @@ namespace Reko.Scanning
 
         public bool TryScan(Address addrInstr, Expression callee, FunctionType sig, ProcedureCharacteristics? chr)
         {
-            if (
-                sig == null || !sig.IsVariadic ||
-                chr == null || !VarargsParserSet(chr)
-            )
+            if (sig is null || !sig.IsVariadic ||
+                chr is null || !VarargsParserSet(chr))
             {
                 this.expandedSig = null;    //$out parameter
                 return false;
@@ -194,7 +192,8 @@ namespace Reko.Scanning
             IEnumerable<DataType> argumentTypes)
         {
             var fixedArgs = sig.Parameters!.TakeWhile(p => p.Name != "...").ToList();
-            var cc = platform.GetCallingConvention(""); //$REVIEW: default CC tends to be __cdecl.
+            //$REVIEW: default CC tends to be __cdecl.
+            var cc = platform.GetCallingConvention("");
             //$BUG: what if platform returns null or throws?
             var allTypes = fixedArgs
                 .Select(p => p.DataType)
@@ -203,6 +202,7 @@ namespace Reko.Scanning
             var ccr = new CallingConventionEmitter();
             cc!.Generate(
                 ccr,
+                sig.ReturnAddressOnStack,
                 sig.ReturnValue.DataType,
                 null, //$TODO: what to do about implicit this?
                 allTypes);

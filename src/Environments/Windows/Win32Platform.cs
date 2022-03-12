@@ -153,7 +153,6 @@ namespace Reko.Environments.Windows
             case "":
             case "cdecl":
                 return new X86CallingConvention(
-                    Architecture.PointerType.Size,
                     Architecture.WordWidth.Size,
                     Architecture.PointerType.Size,
                     true,
@@ -161,14 +160,12 @@ namespace Reko.Environments.Windows
             case "stdcall":
             case "stdapi":
                 return new X86CallingConvention(
-                    Architecture.PointerType.Size,
                     Architecture.WordWidth.Size,
                     Architecture.PointerType.Size,
                     false,
                     false);
             case "pascal":
                 return new X86CallingConvention(
-                    Architecture.PointerType.Size,
                     Architecture.WordWidth.Size,
                     Architecture.PointerType.Size,
                     false,
@@ -176,14 +173,12 @@ namespace Reko.Environments.Windows
             case "thiscall":
                 return new ThisCallConvention(
                     Registers.ecx,
-                    Architecture.WordWidth.Size,
-                    Architecture.PointerType.Size);
+                    Architecture.WordWidth.Size);
             case "fastcall":
                 return new FastcallConvention(
                     Registers.ecx,
                     Registers.edx,
-                    Architecture.WordWidth.Size,
-                    Architecture.PointerType.Size);
+                    Architecture.WordWidth.Size);
             }
             throw new ArgumentOutOfRangeException(string.Format("Unknown calling convention '{0}'.", ccName));
         }

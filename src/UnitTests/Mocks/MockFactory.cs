@@ -78,8 +78,8 @@ namespace Reko.UnitTests.Mocks
             var arch = new X86ArchitectureFlat32(new ServiceContainer(), "x86-protected-32", new Dictionary<string, object>());
             mockPlatform.Setup(p => p.Architecture).Returns(arch);
             mockPlatform.Setup(p => p.DefaultCallingConvention).Returns("__cdecl");
-            var ccStdcall = new X86CallingConvention(4, 4, 4, false, false);
-            var ccCdecl = new X86CallingConvention(4, 4, 4, true, false);
+            var ccStdcall = new X86CallingConvention(4, 4, false, false);
+            var ccCdecl = new X86CallingConvention(4, 4, true, false);
             mockPlatform.Setup(p => p.GetCallingConvention(null)).Returns(ccCdecl);
             mockPlatform.Setup(p => p.GetCallingConvention("__stdcall")).Returns(ccStdcall);
             mockPlatform.Setup(p => p.SaveUserOptions()).Returns((Dictionary<string,object>) null);

@@ -39,7 +39,12 @@ namespace Reko.UnitTests.Mocks
             this.returnRegisters = returnRegisters;
         }
 
-        public void Generate(ICallingConventionEmitter ccr, DataType dtRet, DataType dtThis, List<DataType> dtParams)
+        public void Generate(
+            ICallingConventionEmitter ccr,
+            int retAddressOnStack,
+            DataType? dtRet,
+            DataType? dtThis,
+            List<DataType> dtParams)
         {
             throw new NotImplementedException();
         }

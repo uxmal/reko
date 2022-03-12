@@ -64,7 +64,7 @@ namespace Reko.UnitTests.Arch.PowerPC
         public void PpcCc_DeserializeFpuArgument()
         {
             Given_CallingConvention();
-            cc.Generate(ccr, i32, null, new List<DataType> { r64 });
+            cc.Generate(ccr, 0, i32, null, new List<DataType> { r64 });
             Assert.AreEqual("Stk: 0 r3 (f1)", ccr.ToString());
         }
 
@@ -92,7 +92,7 @@ namespace Reko.UnitTests.Arch.PowerPC
         public void PpcCc_DeserializeFpuStackReturnValue()
         {
             Given_CallingConvention();
-            cc.Generate(ccr, r64, null, new List<DataType>());
+            cc.Generate(ccr, 0, r64, null, new List<DataType>());
             Assert.AreEqual("Stk: 0 f1 ()", ccr.ToString());
         }
 
@@ -100,7 +100,7 @@ namespace Reko.UnitTests.Arch.PowerPC
         public void PpcCc_Load_cdecl()
         {
             Given_CallingConvention();
-            cc.Generate(ccr, null, null, new List<DataType> { i32 });
+            cc.Generate(ccr, 0, null, null, new List<DataType> { i32 });
             Assert.AreEqual("Stk: 0 void (r3)", ccr.ToString());
         }
 
@@ -108,7 +108,7 @@ namespace Reko.UnitTests.Arch.PowerPC
         public void PpcCc_Load_LongArg()
         {
             Given_CallingConvention();
-            cc.Generate(ccr, null, null, new List<DataType> { i16, i64 });
+            cc.Generate(ccr, 0, null, null, new List<DataType> { i16, i64 });
             Assert.AreEqual("Stk: 0 void (r3, Sequence r5:r6)", ccr.ToString());
         }
     }

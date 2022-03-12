@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2022 John Källén.
  *
@@ -64,6 +64,7 @@ namespace Reko.UnitTests.Environments.Windows
         {
             cc.Generate(
                 ccr,
+                8,
                 null,
                 null,
                 new List<DataType> { PrimitiveType.Char });
@@ -76,6 +77,7 @@ namespace Reko.UnitTests.Environments.Windows
         {
             cc.Generate(
                 ccr,
+                8,
                 null,
                 null,
                 new List<DataType> {
@@ -93,6 +95,7 @@ namespace Reko.UnitTests.Environments.Windows
         {
             cc.Generate(
                 ccr,
+                8,
                 null,
                 null,
                 new List<DataType> {
@@ -111,6 +114,7 @@ namespace Reko.UnitTests.Environments.Windows
         {
             cc.Generate(
                 ccr,
+                8,
                 null,
                 null,
                 new List<DataType> { r32, r64, r32, r64, r32 });
@@ -126,21 +130,21 @@ namespace Reko.UnitTests.Environments.Windows
         [Test]
         public void X86_64Cc_AllInts()
         {
-            cc.Generate(ccr, i32, null, new List<DataType> { i32, i32, i32, i32, i32, Ptr(i32) });
+            cc.Generate(ccr, 8, i32, null, new List<DataType> { i32, i32, i32, i32, i32, Ptr(i32) });
             Assert.AreEqual("Stk: 8 eax (rcx, rdx, r8, r9, Stack +0028, Stack +0030)", ccr.ToString());
         }
 
         [Test]
         public void X86_64Cc_AllFloats()
         {
-            cc.Generate(ccr, r32, null, new List<DataType> { r32, r64, r32, r64, r32 });
+            cc.Generate(ccr, 8, r32, null, new List<DataType> { r32, r64, r32, r64, r32 });
             Assert.AreEqual("Stk: 8 xmm0 (xmm0, xmm1, xmm2, xmm3, Stack +0028)", ccr.ToString());
         }
 
         [Test]
         public void X86_64Cc_MixedIntsFloats()
         {
-            cc.Generate(ccr, i32, null, new List<DataType> { i32, r64, Ptr(i8), r64, r32 });
+            cc.Generate(ccr, 8, i32, null, new List<DataType> { i32, r64, Ptr(i8), r64, r32 });
             Assert.AreEqual("Stk: 8 eax (rcx, xmm1, r8, xmm3, Stack +0028)", ccr.ToString());
         }
 
@@ -148,7 +152,7 @@ namespace Reko.UnitTests.Environments.Windows
         [Test(Description = "Verifies that small stack arguments are properly aligned on stack")]
         public void X86_64Cc_SmallStackArguments()
         {
-            cc.Generate(ccr, i32, null, new List<DataType> { i32, r64, Ptr(i8), r64, i8, i8, i8 });
+            cc.Generate(ccr, 8, i32, null, new List<DataType> { i32, r64, Ptr(i8), r64, i8, i8, i8 });
             Assert.AreEqual("Stk: 8 eax (rcx, xmm1, r8, xmm3, Stack +0028, Stack +0030, Stack +0038)", ccr.ToString());
         }
     }

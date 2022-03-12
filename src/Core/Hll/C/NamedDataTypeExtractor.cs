@@ -43,16 +43,26 @@ namespace Reko.Core.Hll.C
         private Domain domain;
         private int byteSize;
         private CTokenType callingConvention;
+        private bool isNear;
         private CBasicType basicType;
 
-        public NamedDataTypeExtractor(IPlatform platform, IEnumerable<DeclSpec> specs, SymbolTable converter, int pointerSize)
+        /// <summary>
+        /// Creates an instance of <see cref="NamedDataTypeExtractor"/>.
+        /// </summary>
+        /// <param name="platform">The current <see cref="IPlatform"/>.</param>
+        /// <param name="specs">The C declspecs of the declaration.</param>
+        /// <param name="symbolTable">Information about types that may be needed to calculate sizes of objects.</param>
+        /// <param name="pointerSize">The size of a pointer on this platform.</param>
+        /// <exception cref="ArgumentNullException"></exception>
+        public NamedDataTypeExtractor(IPlatform platform, IEnumerable<DeclSpec> specs, SymbolTable symbolTyable, int pointerSize)
         {
             this.platform = platform ?? throw new ArgumentNullException("platform");
             this.specs = specs;
-            this.symbolTable = converter;
+            this.symbolTable = symbolTyable;
             this.pointerSize = pointerSize;
             this.callingConvention = CTokenType.None;
-            this.eval = new CConstantEvaluator(platform, converter.Constants);
+            this.isNear = false;
+            this.eval = new CConstantEvaluator(platform, symbolTyable.Constants);
             this.basicType = CBasicType.None;
             foreach (var declspec in specs)
             {
@@ -197,6 +207,7 @@ namespace Reko.Core.Hll.C
                         ? callingConvention.ToString().ToLower()
                         : null,
                     ReturnValue = ret,
+                    ReturnAddressOnStack = isNear ? 2 : 0,
                     Arguments = parameters.ToArray(),
                 };
                 return fn(nt);
@@ -584,6 +595,10 @@ namespace Reko.Core.Hll.C
 
         public SerializedType? VisitTypeQualifier(TypeQualifier typeQualifier)
         {
+            if (typeQualifier.Qualifier == CTokenType._Near)
+            {
+                this.isNear = true;
+            }
             return dt;      //$TODO: Ignoring 'const' and 'volatile' for now.
         }
     }

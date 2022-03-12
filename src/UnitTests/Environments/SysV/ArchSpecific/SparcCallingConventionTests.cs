@@ -55,7 +55,7 @@ namespace Reko.UnitTests.Environments.SysV.ArchSpecific
         public void SvSparcPs_DeserializeFpuStackReturnValue()
         {
             Given_CallingConvention();
-            cc.Generate(ccr, PrimitiveType.Real64, null, new List<DataType>());
+            cc.Generate(ccr, 0, PrimitiveType.Real64, null, new List<DataType>());
             Assert.AreEqual("Sequence f1:f0", ccr.Return.ToString());
         }
 
@@ -63,7 +63,7 @@ namespace Reko.UnitTests.Environments.SysV.ArchSpecific
         public void SvSparcPs_Load_cdecl()
         {
             Given_CallingConvention();
-            cc.Generate(ccr, null, null, new List<DataType> { PrimitiveType.Int32 });
+            cc.Generate(ccr, 0, null, null, new List<DataType> { PrimitiveType.Int32 });
             Assert.AreEqual("Stk: 0 void (o0)", ccr.ToString());
         }
 
@@ -71,7 +71,7 @@ namespace Reko.UnitTests.Environments.SysV.ArchSpecific
         public void SvSparcPs_Load_IntArgs()
         {
             Given_CallingConvention();
-            cc.Generate(ccr, null, null, new List<DataType> { i16, i8, i32, i16, i8, i32, i8 });
+            cc.Generate(ccr, 0, null, null, new List<DataType> { i16, i8, i32, i16, i8, i32, i8 });
             Assert.AreEqual("Stk: 0 void (o0, o1, o2, o3, o4, o5, Stack +0018)", ccr.ToString());
         }
     }

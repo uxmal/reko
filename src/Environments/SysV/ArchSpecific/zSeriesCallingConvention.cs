@@ -45,7 +45,12 @@ namespace Reko.Environments.SysV.ArchSpecific
                 .ToArray();
         }
 
-        public void Generate(ICallingConventionEmitter ccr, DataType? dtRet, DataType? dtThis, List<DataType> dtParams)
+        public void Generate(
+            ICallingConventionEmitter ccr,
+            int retAddressOnStack,
+            DataType? dtRet,
+            DataType? dtThis,
+            List<DataType> dtParams)
         {
             int fr = 0;
             int gr = 0;

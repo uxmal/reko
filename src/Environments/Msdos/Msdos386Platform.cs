@@ -113,7 +113,6 @@ namespace Reko.Environments.Msdos
             return new X86CallingConvention(
                 4,
                 4,
-                4,
                 true,
                 false);
         }

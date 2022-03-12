@@ -66,28 +66,28 @@ namespace Reko.UnitTests.Arch.RiscV
         [Test]
         public void RiscVCc_SingleArg()
         {
-            cc.Generate(ccr, null, null, new List<DataType> { i32 });
+            cc.Generate(ccr, 0, null, null, new List<DataType> { i32 });
             Assert.AreEqual("Stk: 0 void (a0)", ccr.ToString());
         }
 
         [Test]
         public void RiscVCc_ReturnInt()
         {
-            cc.Generate(ccr, i64, null, new List<DataType> { r64 });
+            cc.Generate(ccr, 0, i64, null, new List<DataType> { r64 });
             Assert.AreEqual("Stk: 0 a0 (fa0)", ccr.ToString());
         }
 
         [Test]
         public void RiscVCc_ReturnLongLong()
         {
-            cc.Generate(ccr, r64, null, new List<DataType> { i32, w128 });
+            cc.Generate(ccr, 0, r64, null, new List<DataType> { i32, w128 });
             Assert.AreEqual("Stk: 0 fa0 (a0, Sequence a3:a2)", ccr.ToString());
         }
 
         [Test]
         public void RiscVcc_ArgsOnStack()
         {
-            cc.Generate(ccr, null, null,
+            cc.Generate(ccr, 0, null, null,
                 new List<DataType> { w128, w128, w128, i32, w128, r64 });
 
             Assert.AreEqual(
@@ -103,7 +103,7 @@ namespace Reko.UnitTests.Arch.RiscV
         [Test]
         public void RiscVcc_MixedRegs()
         {
-            cc.Generate(ccr, null, null,
+            cc.Generate(ccr, 0, null, null,
                 new List<DataType> { r64, i32, r32, i64, r64, i32, r32, i64, r32, i32 });
             Assert.AreEqual(
                 "Stk: 0 void (fa0, a1, fa2, a3, fa4, a5, fa6, a7, Stack +0000, Stack +0008)",
@@ -114,7 +114,7 @@ namespace Reko.UnitTests.Arch.RiscV
         public void RiscVCc_RealArgsReturn_NoFpuSupport()
         {
             Given_ArchWithFloatAbi(0);  // No FPU support.
-            cc.Generate(ccr, r64, null, new List<DataType> { r64 });
+            cc.Generate(ccr, 0, r64, null, new List<DataType> { r64 });
             Assert.AreEqual("Stk: 0 a0 (a0)", ccr.ToString());
         }
 

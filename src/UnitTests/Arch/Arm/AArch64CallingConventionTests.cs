@@ -57,14 +57,14 @@ namespace Reko.UnitTests.Arch.Arm
         [Test]
         public void SysVArm64cc_int_arg()
         {
-            cc.Generate(ccr, null, null, new List<DataType> { i32 });
+            cc.Generate(ccr, 0, null, null, new List<DataType> { i32 });
             Assert.AreEqual("Stk: 0 void (x0)", ccr.ToString());
         }
 
         [Test]
         public void SysVArm64cc_float_arg()
         {
-            cc.Generate(ccr, null, null, new List<DataType> { i32 });
+            cc.Generate(ccr, 0, null, null, new List<DataType> { i32 });
             Assert.AreEqual("Stk: 0 void (x0)", ccr.ToString());
         }
     }

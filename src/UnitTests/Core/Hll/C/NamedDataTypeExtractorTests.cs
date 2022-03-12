@@ -44,7 +44,7 @@ namespace Reko.UnitTests.Core.Hll.C
             var sc = new ServiceContainer();
             this.arch = new FakeArchitecture(sc);
             this.platform = new DefaultPlatform(sc, arch);
-            symbolTable = new SymbolTable(platform, platform.PointerType.Size);
+            symbolTable = new SymbolTable(platform);
         }
 
         public void Given_16bitPlatform()
@@ -55,7 +55,7 @@ namespace Reko.UnitTests.Core.Hll.C
             platformMock.Setup(p => p.Architecture).Returns(arch);
             platformMock.Setup(p => p.PointerType).Returns(PrimitiveType.Ptr32);
             this.platform = platformMock.Object;
-            symbolTable = new SymbolTable(platform, platform.PointerType.Size);
+            symbolTable = new SymbolTable(platform);
         }
 
         private void Run(DeclSpec[] declSpecs, Declarator decl)
@@ -346,6 +346,32 @@ namespace Reko.UnitTests.Core.Hll.C
             var ptrType = (PointerType_v1) nt.DataType;
             Assert.AreEqual("ptr(prim(Character,1))", ptrType.ToString());
             Assert.AreEqual(2, ptrType.PointerSize);
+        }
+
+        [Test(Description = "Near functions have a stack delta of 2")]
+        public void Ndte_near_fn()
+        {
+            Given_16bitPlatform();
+            Run(
+                new DeclSpec[] {
+                    SType(CTokenType.Void), 
+                    new TypeQualifier { Qualifier = CTokenType._Near },
+                    new TypeQualifier { Qualifier = CTokenType.__Cdecl },
+                },
+                new FunctionDeclarator
+                {
+                    Declarator = new IdDeclarator { Name = "exit" },
+                    Parameters = new List<ParamDecl>
+                    {
+                        new ParamDecl
+                        {
+                            DeclSpecs = new(){ SType(CTokenType.Int) },
+                            Declarator = new IdDeclarator { Name = "arg" }
+                        }
+                    }
+                });
+            var sig = (SerializedSignature) nt.DataType;
+            Assert.AreEqual(2, sig.ReturnAddressOnStack);
         }
     }
 }

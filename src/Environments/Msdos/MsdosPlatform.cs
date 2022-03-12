@@ -99,21 +99,18 @@ namespace Reko.Environments.Msdos
             case "":
             case "cdecl":
                 return new X86CallingConvention(
-                    4,      //$REVIEW: this is a far call, what about near calls?
                     2,
                     4,      //$REVIEW: this is a far ptr.
                     true,
                     false);
             case "stdcall":
                 return new X86CallingConvention(
-                    4,      //$REVIEW: this is a far call, what about near calls?
                     2,
                     4,      //$REVIEW: this is a far ptr.
                     false,
                     false);
             case "pascal":
                 return new X86CallingConvention(
-                    4,      //$REVIEW: this is a far call, what about near calls?
                     2,
                     4,      //$REVIEW: this is a far ptr.
                     false,
@@ -121,7 +118,6 @@ namespace Reko.Environments.Msdos
             }
             throw new ArgumentOutOfRangeException(string.Format("Unknown calling convention '{0}'.", ccName));
         }
-
 
         public override string? DetermineCallingConvention(FunctionType signature)
         {

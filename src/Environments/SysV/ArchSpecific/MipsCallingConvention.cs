@@ -54,7 +54,12 @@ namespace Reko.Environments.SysV.ArchSpecific
             this.fret = arch.GetRegister("f1")!;
         }
 
-        public void Generate(ICallingConventionEmitter ccr, DataType? dtRet, DataType? dtThis, List<DataType> dtParams)
+        public void Generate(
+            ICallingConventionEmitter ccr,
+            int retAddressOnStack,
+            DataType? dtRet,
+            DataType? dtThis,
+            List<DataType> dtParams)
         {
             ccr.LowLevelDetails(arch.WordWidth.Size, 0x10);
 

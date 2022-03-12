@@ -65,7 +65,7 @@ namespace Reko.UnitTests.Environments.SysV.ArchSpecific
         public void SvArm32Cc_DeserializeFpuReturnValue()
         {
             Given_CallingConvention();
-            cc.Generate(ccr, PrimitiveType.Real64, null, new List<DataType>());
+            cc.Generate(ccr, 0, PrimitiveType.Real64, null, new List<DataType>());
             Assert.AreEqual("Stk: 0 Sequence r1:r0 ()", ccr.ToString());
         }
 
@@ -73,7 +73,7 @@ namespace Reko.UnitTests.Environments.SysV.ArchSpecific
         public void SvArm32Cc_Load_cdecl()
         {
             Given_CallingConvention();
-            cc.Generate(ccr, null, null, new List<DataType> { i32 });
+            cc.Generate(ccr, 0, null, null, new List<DataType> { i32 });
             Assert.AreEqual("Stk: 0 void (r0)", ccr.ToString());
         }
 
@@ -81,7 +81,7 @@ namespace Reko.UnitTests.Environments.SysV.ArchSpecific
         public void SvArm32Cc_Load_IntArgs()
         {
             Given_CallingConvention();
-            cc.Generate(ccr, null, null, new List<DataType> { i16, i8, i32, i16, u8, i32, i32 });
+            cc.Generate(ccr, 0, null, null, new List<DataType> { i16, i8, i32, i16, u8, i32, i32 });
             Assert.AreEqual("Stk: 0 void (r0, r1, r2, r3, Stack +0010, Stack +0014, Stack +0018)", ccr.ToString());
         }
 
@@ -89,7 +89,7 @@ namespace Reko.UnitTests.Environments.SysV.ArchSpecific
         public void SvArm32Cc_mmap()
         {
             Given_CallingConvention();
-            cc.Generate(ccr, Ptr(v), null, new List<DataType> { Ptr(v), u32, i32, i32, i32, i32 });
+            cc.Generate(ccr, 0, Ptr(v), null, new List<DataType> { Ptr(v), u32, i32, i32, i32, i32 });
             Assert.AreEqual("Stk: 0 r0 (r0, r1, r2, r3, Stack +0010, Stack +0014)", ccr.ToString());
         }
     }

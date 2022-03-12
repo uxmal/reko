@@ -39,7 +39,12 @@ namespace Reko.Environments.AtariTOS
             this.arch = arch;
         }
 
-        public void Generate(ICallingConventionEmitter ccr, DataType? dtRet, DataType? dtThis, List<DataType> dtParams)
+        public void Generate(
+            ICallingConventionEmitter ccr,
+            int retAddressOnStack,
+            DataType? dtRet,
+            DataType? dtThis,
+            List<DataType> dtParams)
         {
             int stackOffset = 4 + 4;   // Skip the system call selector + return address.
             ccr.LowLevelDetails(4, stackOffset);

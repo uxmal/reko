@@ -42,7 +42,7 @@ namespace Reko.UnitTests.Environments.SysV.ArchSpecific
             var arch = new MipsBe32Architecture(new ServiceContainer(), "mips-be-32", new Dictionary<string, object>());
             var cc = new MipsCallingConvention(arch);
             var ccr = new CallingConventionEmitter();
-            cc.Generate(ccr, null, null, args.ToList());
+            cc.Generate(ccr, 0, null, null, args.ToList());
             Assert.AreEqual(sExp.Trim(), ccr.ToString());
         }
 
@@ -51,7 +51,7 @@ namespace Reko.UnitTests.Environments.SysV.ArchSpecific
             var arch = new MipsBe64Architecture(new ServiceContainer(), "mips-be-64", new Dictionary<string, object>());
             var cc = new MipsCallingConvention(arch);
             var ccr = new CallingConventionEmitter();
-            cc.Generate(ccr, null, null, args.ToList());
+            cc.Generate(ccr, 0, null, null, args.ToList());
             Assert.AreEqual(sExp.Trim(), ccr.ToString());
         }
 

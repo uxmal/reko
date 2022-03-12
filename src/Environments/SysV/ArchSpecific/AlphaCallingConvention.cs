@@ -50,7 +50,12 @@ namespace Reko.Environments.SysV.ArchSpecific
 
         }
 
-        public void Generate(ICallingConventionEmitter ccr, DataType? dtRet, DataType? dtThis, List<DataType> dtParams)
+        public void Generate(
+            ICallingConventionEmitter ccr,
+            int retAddressOnStack,
+            DataType? dtRet,
+            DataType? dtThis,
+            List<DataType> dtParams)
         {
             ccr.LowLevelDetails(8, 0);      //$BUGBUG: the '0' is incorrect, but we need a reliable spec for WinAlpha to determine exact value.
             if (dtRet != null)

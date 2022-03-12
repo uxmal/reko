@@ -50,7 +50,7 @@ namespace Reko.Environments.AmigaOS
         {
             var rdr = new StreamReader(new MemoryStream(bytes));
             var parser = platform.CreateCParser(rdr);
-            var symbolTable = new SymbolTable(platform, 4);
+            var symbolTable = new SymbolTable(platform);
             var declarations = parser.Parse();
             var tldser = new TypeLibraryDeserializer(platform, true, dstLib);
             foreach (var decl in declarations)

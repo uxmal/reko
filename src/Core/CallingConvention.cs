@@ -35,8 +35,12 @@ namespace Reko.Core
     /// </summary>
     public interface CallingConvention
     {
-
-        void Generate(ICallingConventionEmitter ccr, DataType? dtRet, DataType? dtThis, List<DataType> dtParams);
+        void Generate(
+            ICallingConventionEmitter ccr,
+            int retAddressOnStack,
+            DataType? dtRet,
+            DataType? dtThis,
+            List<DataType> dtParams);
 
         /// <summary>
         /// Can <paramref name="stg"/> be used as a parameter in this calling convention?

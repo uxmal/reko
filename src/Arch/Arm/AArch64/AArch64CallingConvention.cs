@@ -43,7 +43,12 @@ namespace Reko.Arch.Arm.AArch64
                 .Select(r => arch.GetRegister(r)!).ToArray();
         }
 
-        public void Generate(ICallingConventionEmitter ccr, DataType? dtRet, DataType? dtThis, List<DataType> dtParams)
+        public void Generate(
+            ICallingConventionEmitter ccr,
+            int retAddressOnStack,
+            DataType? dtRet,
+            DataType? dtThis,
+            List<DataType> dtParams)
         {
             ccr.LowLevelDetails(8, 0x0040);
 

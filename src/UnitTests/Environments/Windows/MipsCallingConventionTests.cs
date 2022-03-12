@@ -77,7 +77,7 @@ namespace Reko.UnitTests.Environments.Windows
         public void MipsCc_ReturnRegister()
         {
             Given_CallingConvention();
-            cc.Generate(ccr, i32, null, new List<DataType> { });
+            cc.Generate(ccr, 0, i32, null, new List<DataType> { });
             Assert.AreEqual("Stk: 0 r2 ()", ccr.ToString());
         }
 
@@ -85,7 +85,7 @@ namespace Reko.UnitTests.Environments.Windows
         public void MipsCc_CharArg()
         {
             Given_CallingConvention();
-            cc.Generate(ccr, null, null,new List<DataType> { Ptr(v) });
+            cc.Generate(ccr, 0, null, null,new List<DataType> { Ptr(v) });
             Assert.AreEqual("Stk: 0 void (r4)", ccr.ToString());
         }
 
@@ -93,7 +93,7 @@ namespace Reko.UnitTests.Environments.Windows
         public void MipsCc_ManyArgs()
         {
             Given_CallingConvention();
-            cc.Generate(ccr, null, null, new List<DataType> { Ptr(v), Ptr(v), Ptr(v), Ptr(v), Ptr(v) });
+            cc.Generate(ccr, 0, null, null, new List<DataType> { Ptr(v), Ptr(v), Ptr(v), Ptr(v), Ptr(v) });
             Assert.AreEqual("Stk: 0 void (r4, r5, r6, r7, Stack +0010)", ccr.ToString());
         }
 
@@ -103,7 +103,7 @@ namespace Reko.UnitTests.Environments.Windows
         {
             Given_CallingConvention();
             var largeInt = LargeInt();
-            cc.Generate(ccr, null, null, new List<DataType> {
+            cc.Generate(ccr, 0, null, null, new List<DataType> {
                 PrimitiveType.Word32,
                 largeInt,
                 largeInt,

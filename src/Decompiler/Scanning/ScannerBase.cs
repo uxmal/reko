@@ -82,7 +82,7 @@ namespace Reko.Scanning
             }
             var usb = new UserSignatureBuilder(Program);
             var procDecl = usb.ParseFunctionDeclaration(sProc.CSignature);
-            if (procDecl == null)
+            if (procDecl is null)
             {
                 Warn(addr, "The user-defined procedure signature at address {0} could not be parsed.", addr);
                 return true;

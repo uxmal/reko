@@ -115,6 +115,16 @@ namespace Reko.Core
         /// </returns>
         int GetBitSizeFromCBasicType(CBasicType cb);
 
+        /// <summary>
+        /// Given the name of a calling convention and a return address size,
+        /// creates an instance of a <see cref="CallingConvention"/>.
+        /// </summary>
+        /// <param name="ccName">The name of the calling convention. Passing
+        /// null or the empty string will use the default convention for this
+        /// platform.</param>
+        /// <returns>A <see cref="CallingConvention"/> instance if one with a
+        /// matching name was found.
+        /// </returns>
         CallingConvention? GetCallingConvention(string? ccName);
 
         /// <summary>

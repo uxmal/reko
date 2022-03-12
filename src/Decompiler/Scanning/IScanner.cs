@@ -61,11 +61,11 @@ namespace Reko.Scanning
         /// <returns></returns>
         ProcedureBase ScanProcedure(IProcessorArchitecture arch, Address addr, string? procedureName, ProcessorState state);
 
-/// <summary>
-/// Performs a scan starting at the address of the given image symbol
-/// </summary>
-/// <param name="sym"></param>
-/// <param name="isEntryPoint"></param>
+        /// <summary>
+        /// Performs a scan starting at the address of the given image symbol
+        /// </summary>
+        /// <param name="sym"></param>
+        /// <param name="isEntryPoint"></param>
         void ScanImageSymbol(ImageSymbol sym, bool isEntryPoint);
 
         Block? EnqueueJumpTarget(Address addrSrc, Address addrDst, Procedure proc, ProcessorState state);
