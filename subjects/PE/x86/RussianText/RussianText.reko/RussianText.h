@@ -68,11 +68,11 @@ Eq_1: (struct "Globals"
 Eq_2: (struct "Eq_2" (0 word32 dw0000) (4 ptr32 ptr0004))
 	T_2 (in dwArg04 @ 00000000 : (ptr32 Eq_2))
 	T_5 (in dwArg04 @ 00401071 : (ptr32 Eq_2))
-	T_74 (in fp - 12<i32> @ 00000000 : word32)
+	T_75 (in fp - 12<i32> @ 00000000 : word32)
 Eq_3: (fn void ((ptr32 Eq_2)))
 	T_3 (in fn004011FC @ 00401071 : ptr32)
 	T_4 (in signature of fn004011FC @ 004011FC : void)
-	T_71 (in fn004011FC @ 004011CE : ptr32)
+	T_73 (in fn004011FC @ 004011CE : ptr32)
 Eq_11: LPVOID
 	T_11 (in eax_11 @ 0040111A : Eq_11)
 	T_16 (in __CRTL_TLS_GetValue(g_dw40208B) @ 0040111A : void)
@@ -97,23 +97,23 @@ Eq_28: BOOL
 Eq_29: (fn void (uint32))
 	T_29 (in __CRTL_TLS_ExitThread @ 00401137 : ptr32)
 Eq_35: (segment "Eq_35" (2C (ptr32 (arr word32)) ptr002C))
-	T_35 (in fs @ 00401166 : selector)
+	T_35 (in fs @ 00401158 : (ptr16 Eq_35))
 Eq_46: (fn int32 ((ptr32 char)))
 	T_46 (in printf @ 00401170 : ptr32)
 	T_47 (in signature of printf @ 00000000 : void)
-Eq_56: (fn (ptr32 void) ((ptr32 void), (ptr32 void), Eq_60))
-	T_56 (in memcpy @ 004011E9 : ptr32)
-	T_57 (in signature of memcpy @ 00000000 : void)
-Eq_60: size_t
-	T_60 (in _Size @ 004011E9 : size_t)
-	T_64 (in 0x9C<32> @ 004011E9 : word32)
-Eq_61: (fn (ptr32 void) ())
-	T_61 (in fn00401158 @ 004011E9 : ptr32)
-	T_62 (in signature of fn00401158 @ 00401158 : void)
+Eq_58: (fn (ptr32 void) ((ptr32 void), (ptr32 void), Eq_62))
+	T_58 (in memcpy @ 004011E9 : ptr32)
+	T_59 (in signature of memcpy @ 00000000 : void)
+Eq_62: size_t
+	T_62 (in _Size @ 004011E9 : size_t)
+	T_66 (in 0x9C<32> @ 004011E9 : word32)
+Eq_63: (fn (ptr32 void) ())
+	T_63 (in fn00401158 @ 004011E9 : ptr32)
+	T_64 (in signature of fn00401158 @ 00401158 : void)
 	T_77 (in fn00401158 @ 0040120E : ptr32)
-Eq_66: (fn void ())
-	T_66 (in _InitTermAndUnexPtrs @ 004011F1 : ptr32)
-	T_67 (in signature of _InitTermAndUnexPtrs @ 00000000 : void)
+Eq_68: (fn void ())
+	T_68 (in _InitTermAndUnexPtrs @ 004011F1 : ptr32)
+	T_69 (in signature of _InitTermAndUnexPtrs @ 00000000 : void)
 // Type Variables ////////////
 globals_t: (in globals @ 00000000 : (ptr32 (struct "Globals")))
   Class: Eq_1
@@ -251,7 +251,7 @@ T_34: (in eax @ 00401137 : word32)
   Class: Eq_34
   DataType: word32
   OrigDataType: word32
-T_35: (in fs @ 00401166 : selector)
+T_35: (in fs @ 00401158 : (ptr16 Eq_35))
   Class: Eq_35
   DataType: (ptr16 Eq_35)
   OrigDataType: (ptr16 (segment (2C T_37 t002C)))
@@ -323,108 +323,108 @@ T_52: (in dwArg04 @ 00401180 : (ptr32 void))
   Class: Eq_52
   DataType: (ptr32 void)
   OrigDataType: word32
-T_53: (in ebx_12 @ 004011B7 : (ptr32 void))
-  Class: Eq_52
-  DataType: (ptr32 void)
-  OrigDataType: (ptr32 void)
-T_54: (in 0<32> @ 004011C4 : word32)
-  Class: Eq_52
-  DataType: (ptr32 void)
-  OrigDataType: word32
-T_55: (in dwArg04 != null @ 00000000 : bool)
-  Class: Eq_55
-  DataType: bool
-  OrigDataType: bool
-T_56: (in memcpy @ 004011E9 : ptr32)
-  Class: Eq_56
-  DataType: (ptr32 Eq_56)
-  OrigDataType: (ptr32 (fn T_65 (T_63, T_53, T_64)))
-T_57: (in signature of memcpy @ 00000000 : void)
-  Class: Eq_56
-  DataType: (ptr32 Eq_56)
-  OrigDataType: 
-T_58: (in _Dst @ 004011E9 : (ptr32 void))
-  Class: Eq_58
-  DataType: (ptr32 void)
-  OrigDataType: 
-T_59: (in _Src @ 004011E9 : (ptr32 void))
-  Class: Eq_52
-  DataType: (ptr32 void)
-  OrigDataType: 
-T_60: (in _Size @ 004011E9 : size_t)
-  Class: Eq_60
-  DataType: Eq_60
-  OrigDataType: 
-T_61: (in fn00401158 @ 004011E9 : ptr32)
-  Class: Eq_61
-  DataType: (ptr32 Eq_61)
-  OrigDataType: (ptr32 (fn T_63 ()))
-T_62: (in signature of fn00401158 @ 00401158 : void)
-  Class: Eq_61
-  DataType: (ptr32 Eq_61)
-  OrigDataType: 
-T_63: (in fn00401158() @ 004011E9 : word32)
-  Class: Eq_58
-  DataType: (ptr32 void)
-  OrigDataType: (ptr32 void)
-T_64: (in 0x9C<32> @ 004011E9 : word32)
-  Class: Eq_60
-  DataType: Eq_60
-  OrigDataType: size_t
-T_65: (in memcpy(fn00401158(), ebx_12, 0x9C<32>) @ 004011E9 : (ptr32 void))
-  Class: Eq_65
-  DataType: (ptr32 void)
-  OrigDataType: (ptr32 void)
-T_66: (in _InitTermAndUnexPtrs @ 004011F1 : ptr32)
-  Class: Eq_66
-  DataType: (ptr32 Eq_66)
-  OrigDataType: (ptr32 (fn T_68 ()))
-T_67: (in signature of _InitTermAndUnexPtrs @ 00000000 : void)
-  Class: Eq_66
-  DataType: (ptr32 Eq_66)
-  OrigDataType: 
-T_68: (in _InitTermAndUnexPtrs() @ 004011F1 : void)
-  Class: Eq_68
-  DataType: void
-  OrigDataType: void
-T_69: (in 0<32> @ 004011C8 : word32)
-  Class: Eq_52
-  DataType: (ptr32 void)
-  OrigDataType: word32
-T_70: (in dwArg04 != null @ 00000000 : bool)
-  Class: Eq_70
-  DataType: bool
-  OrigDataType: bool
-T_71: (in fn004011FC @ 004011CE : ptr32)
-  Class: Eq_3
-  DataType: (ptr32 Eq_3)
-  OrigDataType: (ptr32 (fn T_75 (T_74)))
-T_72: (in fp @ 004011CE : ptr32)
-  Class: Eq_72
+T_53: (in fp @ 004011B0 : ptr32)
+  Class: Eq_53
   DataType: ptr32
   OrigDataType: ptr32
-T_73: (in 12<i32> @ 004011CE : int32)
-  Class: Eq_73
+T_54: (in dwLoc08 @ 004011B0 : (ptr32 void))
+  Class: Eq_52
+  DataType: (ptr32 void)
+  OrigDataType: word32
+T_55: (in ebx_12 @ 004011B7 : (ptr32 void))
+  Class: Eq_52
+  DataType: (ptr32 void)
+  OrigDataType: (ptr32 void)
+T_56: (in 0<32> @ 004011C4 : word32)
+  Class: Eq_52
+  DataType: (ptr32 void)
+  OrigDataType: word32
+T_57: (in dwArg04 != null @ 00000000 : bool)
+  Class: Eq_57
+  DataType: bool
+  OrigDataType: bool
+T_58: (in memcpy @ 004011E9 : ptr32)
+  Class: Eq_58
+  DataType: (ptr32 Eq_58)
+  OrigDataType: (ptr32 (fn T_67 (T_65, T_55, T_66)))
+T_59: (in signature of memcpy @ 00000000 : void)
+  Class: Eq_58
+  DataType: (ptr32 Eq_58)
+  OrigDataType: 
+T_60: (in _Dst @ 004011E9 : (ptr32 void))
+  Class: Eq_60
+  DataType: (ptr32 void)
+  OrigDataType: 
+T_61: (in _Src @ 004011E9 : (ptr32 void))
+  Class: Eq_52
+  DataType: (ptr32 void)
+  OrigDataType: 
+T_62: (in _Size @ 004011E9 : size_t)
+  Class: Eq_62
+  DataType: Eq_62
+  OrigDataType: 
+T_63: (in fn00401158 @ 004011E9 : ptr32)
+  Class: Eq_63
+  DataType: (ptr32 Eq_63)
+  OrigDataType: (ptr32 (fn T_65 ()))
+T_64: (in signature of fn00401158 @ 00401158 : void)
+  Class: Eq_63
+  DataType: (ptr32 Eq_63)
+  OrigDataType: 
+T_65: (in fn00401158() @ 004011E9 : word32)
+  Class: Eq_60
+  DataType: (ptr32 void)
+  OrigDataType: (ptr32 void)
+T_66: (in 0x9C<32> @ 004011E9 : word32)
+  Class: Eq_62
+  DataType: Eq_62
+  OrigDataType: size_t
+T_67: (in memcpy(fn00401158(), ebx_12, 0x9C<32>) @ 004011E9 : (ptr32 void))
+  Class: Eq_67
+  DataType: (ptr32 void)
+  OrigDataType: (ptr32 void)
+T_68: (in _InitTermAndUnexPtrs @ 004011F1 : ptr32)
+  Class: Eq_68
+  DataType: (ptr32 Eq_68)
+  OrigDataType: (ptr32 (fn T_70 ()))
+T_69: (in signature of _InitTermAndUnexPtrs @ 00000000 : void)
+  Class: Eq_68
+  DataType: (ptr32 Eq_68)
+  OrigDataType: 
+T_70: (in _InitTermAndUnexPtrs() @ 004011F1 : void)
+  Class: Eq_70
+  DataType: void
+  OrigDataType: void
+T_71: (in 0<32> @ 004011C8 : word32)
+  Class: Eq_52
+  DataType: (ptr32 void)
+  OrigDataType: word32
+T_72: (in dwArg04 != null @ 00000000 : bool)
+  Class: Eq_72
+  DataType: bool
+  OrigDataType: bool
+T_73: (in fn004011FC @ 004011CE : ptr32)
+  Class: Eq_3
+  DataType: (ptr32 Eq_3)
+  OrigDataType: (ptr32 (fn T_76 (T_75)))
+T_74: (in 12<i32> @ 004011CE : int32)
+  Class: Eq_74
   DataType: int32
   OrigDataType: int32
-T_74: (in fp - 12<i32> @ 00000000 : word32)
+T_75: (in fp - 12<i32> @ 00000000 : word32)
   Class: Eq_2
   DataType: (ptr32 Eq_2)
   OrigDataType: ptr32
-T_75: (in fn004011FC(fp - 12<i32>) @ 004011CE : void)
+T_76: (in fn004011FC(fp - 12<i32>) @ 004011CE : void)
   Class: Eq_6
   DataType: void
   OrigDataType: void
-T_76: (in dwLoc08 @ 004011D4 : word32)
-  Class: Eq_52
-  DataType: (ptr32 void)
-  OrigDataType: word32
 T_77: (in fn00401158 @ 0040120E : ptr32)
-  Class: Eq_61
-  DataType: (ptr32 Eq_61)
+  Class: Eq_63
+  DataType: (ptr32 Eq_63)
   OrigDataType: (ptr32 (fn T_78 ()))
 T_78: (in fn00401158() @ 0040120E : word32)
-  Class: Eq_58
+  Class: Eq_60
   DataType: (ptr32 void)
   OrigDataType: word32
 T_79: (in 0x1C<32> @ 0040120E : word32)
@@ -687,11 +687,11 @@ typedef struct Eq_35 {
 
 typedef int32 (Eq_46)(char *);
 
-typedef void (Eq_56)(void, void, size_t);
+typedef void (Eq_58)(void, void, size_t);
 
-typedef size_t Eq_60;
+typedef size_t Eq_62;
 
-typedef void (Eq_61)();
+typedef void (Eq_63)();
 
-typedef void (Eq_66)();
+typedef void (Eq_68)();
 

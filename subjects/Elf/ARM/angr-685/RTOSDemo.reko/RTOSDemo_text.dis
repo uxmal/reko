@@ -72,6 +72,8 @@ void vPrintTask(word32 lr, word32 cpsr)
 // Terminates process
 vPrintTask_exit:
 vPrintTask_entry:
+	ptr32 fp
+	word32 dwLoc14
 l00008038:
 	word32 r4_10 = 0<32>
 	word32 r5_11 = Mem9[0x00008064<p32>:word32]
@@ -92,6 +94,7 @@ void vCheckTask(word32 lr, word32 cpsr)
 // Terminates process
 vCheckTask_exit:
 vCheckTask_entry:
+	ptr32 fp
 l00008068:
 	MPU_xTaskGetTickCount(cpsr)
 	word32 r5_20 = Mem12[0x0000809C<p32>:word32]
@@ -131,6 +134,7 @@ void vUART_ISR(word32 lr, word32 cpsr)
 // Trashed: NZC r0 r1 r2 r3
 // Preserved: V lr r4 r5 r6 sp
 vUART_ISR_entry:
+	ptr32 fp
 l00008108:
 	word32 r5_13 = Mem11[0x00008174<p32>:word32]
 	word32 r0_18 = UARTIntStatus(r5_13, 1<32>)
@@ -290,6 +294,7 @@ word32 PDCWrite(word32 r0, word32 r1)
 // Trashed: NZC r0 r1 r2 r3
 // Preserved: r4 r5 sp
 PDCWrite_entry:
+	ptr32 fp
 l0000829C:
 	word32 r4_12 = Mem9[0x000082CC<p32>:word32]
 	SSIDataPut(r4_12, r0 & 0xF<32>)
@@ -389,6 +394,7 @@ bool vListInsert(word32 r0, word32 r1)
 // Trashed: NZCV r2 r3
 // Preserved: r4 r5 sp
 vListInsert_entry:
+	bool Z
 l0000830C:
 	word32 r2_13
 	word32 r3_14
@@ -529,6 +535,7 @@ bool xQueueCRReceive(word32 r0, word32 r1, word32 r2, word32 r6, word32 r7, word
 // Trashed: NZCV lr r0 r1 r2 r6 r7
 // Preserved: r3 r4 r5 sp
 xQueueCRReceive_entry:
+	bool Z
 l00008400:
 	__msr(cpsr, 0xBF<32>)
 	__isb_sy()
@@ -965,6 +972,8 @@ void prvFlashCoRoutine(word32 r0, word32 r7, word32 lr, word32 cpsr)
 // Trashed: NZCV lr r0 r1 r2 r3 r7
 // Preserved: cpsr r4 r5 r6 sp
 prvFlashCoRoutine_entry:
+	ptr32 fp
+	word32 dwLoc14
 l00008670:
 	word32 r5_107
 	word32 r6_105
@@ -1013,6 +1022,7 @@ void prvFixedDelayCoRoutine(word32 r0, word32 r1, word32 r7, word32 lr, word32 c
 // Trashed: NZCV lr r0 r1 r2 r3 r7
 // Preserved: r4 sp
 prvFixedDelayCoRoutine_entry:
+	ptr32 fp
 l000086E8:
 	bool v18_111
 	word32 r0_81

@@ -42,6 +42,7 @@ void reko_array_local()
 // Trashed: SCZO rax rdx
 // Preserved: rbp rsp
 reko_array_local_entry:
+	ptr64 fp
 l00000002121D105E:
 	word32 dwLoc0C_39 = 0<32>
 l00000002121D1081:

@@ -9,6 +9,7 @@
 //      _start
 void _init(word32 o0, word32 o1, word32 o2, word32 o3, word32 o4, word32 o5, struct Eq_n * o7)
 {
+	ptr32 fp;
 	fn00010C90(o7, o0, o1, o2, o3, o4, o5, fp, o7);
 }
 

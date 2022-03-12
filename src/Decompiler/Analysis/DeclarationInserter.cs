@@ -23,6 +23,7 @@ using Reko.Core.Code;
 using Reko.Core.Lib;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Reko.Analysis
 {
@@ -47,7 +48,7 @@ namespace Reko.Analysis
 			{
 				if (sid.DefStatement != null)
 				{
-                    if (sid.DefStatement.Instruction is DefInstruction)
+                    if (IsImplicitDeclaration(sid.DefStatement))
                         return;
                     blocks.Add(sid.DefStatement.Block);
 					foreach (Statement u in sid.Uses)
@@ -87,5 +88,23 @@ namespace Reko.Analysis
                     new Declaration(web.Identifier!, null));
 			}
 		}
-	}
+
+        static private bool IsImplicitDeclaration(Statement stm)
+        {
+            if (stm.Instruction is not DefInstruction def)
+                return false;
+            // Do not add declarations for global variables
+            if (def.Identifier.Storage is GlobalStorage)
+                return true;
+            // Do not add declarations for parameters of procedure
+            var sig = stm.Block.Procedure.Signature;
+            if (
+                sig.ParametersValid &&
+                sig.Parameters!.Any(p => p.Name == def.Identifier.Name))
+            {
+                return true;
+            }
+            return false;
+        }
+    }
 }

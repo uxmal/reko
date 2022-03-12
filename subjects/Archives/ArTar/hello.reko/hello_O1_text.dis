@@ -8,6 +8,8 @@ void _start(word64 rdx, word32 dwArg00)
 // Terminates process
 _start_exit:
 _start_entry:
+	ptr64 fp
+	word64 qwArg00
 l0000000000001080:
 	__align_stack<word64>(fp + 8<i64>)
 	__libc_start_main(0x00000000000011E0<p64>, SLICE(qwArg00, int32, 0), fp + 8<i64>, 0x0000000000001280<p64>, 0x00000000000012E0<p64>, rdx, fp)
@@ -143,6 +145,7 @@ void main(word64 rsi)
 // Trashed: SCZOP rax rdi rdx rsi Top xmm0 xmm1 xmm2
 // Preserved: rbx rsp
 main_entry:
+	word32 dwLoc20
 l00000000000011E0:
 	printf(0x0000000000002008<p64>, Mem6[rsi + 8<i64>:word64])
 	puts(0x0000000000002030<p64>)
@@ -165,6 +168,7 @@ void __libc_csu_init(word64 rdx, word64 rsi, word32 edi)
 // Trashed: SCZO rax rdi rdx rsi Top
 // Preserved: r12 r13 r14 r15 rbp rbx rsp
 __libc_csu_init_entry:
+	word64 rdi
 	word32 edi = SLICE(rdi, word32, 0)
 l0000000000001280:
 	_init()

@@ -17,6 +17,7 @@ void fn0000(struct Eq_n * SP)
 // 0034: void fn0034()
 void fn0034()
 {
+	ptr16 fp;
 	__disable_watchdog_timer();
 	__end_of_initialization();
 	word16 S0TIC_n = 0x00;
@@ -73,6 +74,7 @@ void fn0034()
 //      fn0128
 word16 fn0110(word16 S0TIC)
 {
+	ptr16 fp;
 	*(ptr16 *) ~0x014F = fp;
 	do
 		;

@@ -206,6 +206,8 @@ void fn0608(word16 wArg00, word16 wArg02)
 // Trashed: NZVC r1 r2 r4
 // Preserved: sp
 fn0608_entry:
+	word16 wLoc02
+	word16 wLoc04
 	byte bArg03_100 = SLICE(wArg02, byte, 8)
 	byte bArg02_102 = SLICE(wArg02, byte, 0)
 l0608:
@@ -707,6 +709,7 @@ void fn0B60(word16 r0, word16 wArg00, word16 wArg02, word16 wArg04, ptr16 ptrArg
 // Trashed: NZVC r0 r3 sp
 // Preserved:
 fn0B60_entry:
+	ptr16 fp
 	byte bArg00 = SLICE(wArg00, byte, 0)
 	byte bArg01 = SLICE(wArg00, byte, 8)
 l0B60:
@@ -804,6 +807,7 @@ void fn0CF4(word16 r5)
 // Trashed: NZVC r0 r1 r2 r3 r5
 // Preserved: sp
 fn0CF4_entry:
+	ptr16 fp
 l0CF4:
 	branch Mem0[r5:byte] == 1<8> l0CFE
 l0CFE:
@@ -974,6 +978,8 @@ void fn0EF8(word16 r4, word16 r5)
 // Trashed: NZVC r0 r1 r3 r4 r5 sp
 // Preserved: r2
 fn0EF8_entry:
+	ptr16 fp
+	word16 pc
 l0EF8:
 	word16 r3_13 = Mem0[0x5424<p16>:word16]
 	word16 v13_10 = Mem0[r4:word16]
@@ -1158,6 +1164,7 @@ void fn0FB2(word16 r0, word16 wArg00, word16 wArg02, word16 wArg04, word16 wArg0
 // Trashed: NZVC r0 r2 r3 sp
 // Preserved:
 fn0FB2_entry:
+	ptr16 fp
 l0FB2:
 	word16 r3_10 = Mem9[0x5424<p16>:word16]
 	Mem13[r3_10 + 0x64<16>:word16] = fp + 0xA<16>
@@ -1257,6 +1264,7 @@ void fn12CA(word16 r2, word16 r3)
 // Trashed: NZVC r0 r1 r2 r3
 // Preserved: r4 r5 sp
 fn12CA_entry:
+	ptr16 fp
 l12CA:
 	word16 r4_10 = Mem8[r3 + 0x14<16>:word16]
 	word16 r1_11 = Mem8[r3 + 0x1A<16>:word16]
@@ -1324,6 +1332,7 @@ word16 fn1366(word16 r0, word16 r3, word16 r4, ptr16 & r2Out, ptr16 & r3Out, ptr
 // Trashed: NZVC r0 r2 r3 r4
 // Preserved: sp
 fn1366_entry:
+	word16 r2
 l1366:
 	branch Mem0[r4:byte] > 0<8> l1368_thunk_fn1370
 l1368_thunk_fn1370:
@@ -1472,6 +1481,7 @@ void fn145E(word16 r2, word16 wArg00, word16 wArg02, ptr16 ptrArg04)
 // Trashed: NZVC r0 r1 r2 r3 sp
 // Preserved:
 fn145E_entry:
+	ptr16 fp
 l145E:
 	word16 r3_4 = Mem0[0x5424<p16>:word16]
 	Mem7[r3_4 + 0x64<16>:word16] = fp + 0x16<16>
@@ -1509,6 +1519,7 @@ void fn14A8(word16 r2, word16 r5)
 // Trashed: NZVC r0 r1 r3
 // Preserved: r2 r4 r5 sp
 fn14A8_entry:
+	ptr16 fp
 l14A8:
 	word16 r3_100 = Mem11[0x5424<p16>:word16]
 	Mem13[r3_100 + 0xA2<16>:byte] = r2
@@ -1646,6 +1657,7 @@ void fn15CC(word16 r5)
 // Trashed: NZVC r0 r1 r2 r3 r5
 // Preserved: sp
 fn15CC_entry:
+	ptr16 fp
 l15CC:
 	branch Mem0[r5:byte] == 3<8> l15D6
 l15D6:
@@ -1847,6 +1859,7 @@ word16 fn1900(word16 r3, word16 r4, ptr16 & r3Out, ptr16 & r4Out)
 // Trashed: NZVC r0 r2 r3 r4
 // Preserved: sp
 fn1900_entry:
+	ptr16 fp
 l1900:
 	byte NZVC_13
 	call fp - 4<16> (retsize: 2;)
@@ -1910,6 +1923,7 @@ word16 fn1932(word16 r3, word16 r4, ptr16 & r3Out, ptr16 & r4Out)
 // Trashed: NZVC r0 r2 r3 r4 sp
 // Preserved:
 fn1932_entry:
+	word16 r2
 l1932:
 	word16 v4_5 = Mem0[r4 + 0x1C<16>:word16] & 8<16>
 	Mem6[r4 + 0x1C<16>:word16] = v4_5
@@ -2285,6 +2299,7 @@ void fn2B96(word16 pc)
 // Trashed: NZVC r0 r1 r2 r3 r4 r5
 // Preserved: sp
 fn2B96_entry:
+	word16 wLoc06
 l2B96:
 	Mem5[Mem0[0x5426<p16>:ptr16]:word16] = 5<16>
 	fn457C()
@@ -2575,6 +2590,7 @@ void fn4030()
 // Trashed: r4 sp
 // Preserved:
 fn4030_entry:
+	word16 r5
 l4030:
 l4030_thunk_fn0EF8:
 	fn0EF8(0x4034<p16>, r5)
@@ -2592,6 +2608,7 @@ word16 fn4072()
 // Trashed: r4 sp
 // Preserved:
 fn4072_entry:
+	word16 r5
 l4072:
 l4072_thunk_fn0EF8:
 	fn0EF8(0x4076<p16>, r5)
@@ -2609,6 +2626,7 @@ void fn413C()
 // Trashed: r4 sp
 // Preserved:
 fn413C_entry:
+	word16 r5
 l413C:
 l413C_thunk_fn0EF8:
 	fn0EF8(0x4140<p16>, r5)
@@ -2641,6 +2659,7 @@ void fn4230()
 // Trashed: r4 sp
 // Preserved:
 fn4230_entry:
+	word16 r5
 l4230:
 l4230_thunk_fn0EF8:
 	fn0EF8(0x4234<p16>, r5)
@@ -2673,6 +2692,7 @@ void fn457C()
 // Trashed: r4 sp
 // Preserved:
 fn457C_entry:
+	word16 r5
 l457C:
 l457C_thunk_fn0EF8:
 	fn0EF8(0x4580<p16>, r5)
@@ -2705,6 +2725,7 @@ void fn45F6(word16 r0, word16 r2, word16 r3)
 // Trashed: NZVC
 // Preserved: r0 r1 r2 r3 r4 r5 sp
 fn45F6_entry:
+	ptr16 fp
 l45F6:
 	word16 r4_18 = 0<16>
 	r2_23 = r2
@@ -2830,6 +2851,7 @@ word16 fn474C(word16 r1, word16 r2, word16 r3, word16 r4)
 // Trashed: NZVC r0 r2 r4
 // Preserved: sp
 fn474C_entry:
+	ptr16 fp
 l474C:
 	LOCK()
 	word16 sp_11 = fp - 2<16>

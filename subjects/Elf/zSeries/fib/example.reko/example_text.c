@@ -7,6 +7,7 @@
 // 0000000000000600: void _start(Register word64 r14)
 void _start(word64 r14)
 {
+	Eq_n fp;
 	struct Eq_n * r15_n = fp - 0x00A0 & ~0x0F;
 	r15_n->bFFFFFF50 = 0x00;
 	r15_n->qwFFFFFFF0 = r14;
@@ -73,6 +74,7 @@ void __do_global_dtors_aux(word64 r11, word64 r12, word64 r13, <anonymous> * r14
 // 0000000000000720: void frame_dummy()
 void frame_dummy()
 {
+	ptr64 fp;
 	ptr64 r13_n = 0x08D8;
 	ptr64 r15_n = fp - 320;
 	Eq_n CC_n = g_b08D8 > g_b1E18;
@@ -103,6 +105,7 @@ l0000000000000740:
 //      main
 Eq_n fib(Eq_n r2, ptr64 & r10Out, ptr64 & r11Out)
 {
+	ptr64 fp;
 	Eq_n r1_n;
 	struct Eq_n * r11_n = fp - 328;
 	word32 dwLocA4_n = (word32) r2;
@@ -140,6 +143,7 @@ void main(word64 r3)
 // 0000000000000820: void __libc_csu_init(Register word64 r2, Register word64 r3, Register word64 r4, Register word64 r6, Register word64 r7, Register word64 r11, Register word64 r13)
 void __libc_csu_init(word64 r2, word64 r3, word64 r4, word64 r6, word64 r7, word64 r11, word64 r13)
 {
+	ptr64 fp;
 	int64 r11_n = 0x1E10 - 7688;
 	struct Eq_n * r15_n = fp - 320;
 	word64 r8_n;

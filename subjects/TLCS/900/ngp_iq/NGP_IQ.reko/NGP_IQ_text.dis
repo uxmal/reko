@@ -170,6 +170,7 @@ void fn002004F2(byte w)
 // Trashed: SZHVNC
 // Preserved: xsp xwa
 fn002004F2_entry:
+	word32 xwa
 	byte w_20 = SLICE(xwa, byte, 8)
 l002004F2:
 	Mem7[0x00004004<p32>:byte] = 0<8>
@@ -190,6 +191,7 @@ bool fn0020050A(word16 hl)
 // Trashed: SZHVNC a w
 // Preserved: xbc xde xhl xsp
 fn0020050A_entry:
+	word32 xhl
 	byte h_13 = SLICE(xhl, byte, 8)
 	byte l_22 = SLICE(xhl, byte, 0)
 l0020050A:

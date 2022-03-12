@@ -29,6 +29,7 @@ void __maskrune()
 //      fn0000000100003AA8
 void __snprintf_chk(Eq_n rcx, word32 edx, Eq_n rsi, Eq_n rdi, char * r8)
 {
+	word64 rdx;
 	__snprintf_chk(rdi, rsi, (int32) rdx, rcx, r8, 0x00);
 }
 
@@ -62,6 +63,7 @@ void acl_free()
 //      fn0000000100003AA8
 int32 acl_get_entry(struct acl_entry_t * rdx, int32 esi, Eq_n rdi)
 {
+	word64 rsi;
 	return acl_get_entry(rdi, (int32) rsi, rdx);
 }
 
@@ -118,6 +120,7 @@ void acl_get_qualifier()
 //      fn0000000100003AA8
 int32 acl_get_tag_type(acl_tag_t * rsi, word32 edi)
 {
+	word64 rdi;
 	return acl_get_tag_type((acl_entry_t) rdi, rsi);
 }
 
@@ -156,6 +159,7 @@ void err()
 //      fn000000010000488B
 void exit(word32 edi)
 {
+	word64 rdi;
 	exit((int32) rdi);
 }
 
@@ -257,6 +261,7 @@ char * getenv(char * rdi)
 //      fn0000000100003AA8
 struct group * getgrgid(word32 edi)
 {
+	word64 rdi;
 	return getgrgid((gid_t) rdi);
 }
 
@@ -265,6 +270,7 @@ struct group * getgrgid(word32 edi)
 //      fn00000001000026A0
 int32 getopt(char * rdx, char ** rsi, int32 edi)
 {
+	word64 rdi;
 	return getopt((int32) rdi, rsi, rdx);
 }
 
@@ -279,6 +285,7 @@ void getpid()
 //      fn0000000100003AA8
 struct passwd * getpwuid(word32 edi)
 {
+	word64 rdi;
 	return getpwuid((uid_t) rdi);
 }
 
@@ -319,6 +326,8 @@ void humanize_number()
 //      fn00000001000026A0
 int32 ioctl(word32 esi, word32 edi)
 {
+	word64 rdi;
+	word64 rsi;
 	return ioctl((int32) rdi, (uint32) rsi, 0x00);
 }
 
@@ -327,6 +336,7 @@ int32 ioctl(word32 esi, word32 edi)
 //      fn00000001000026A0
 int32 isatty(word32 edi)
 {
+	word64 rdi;
 	return isatty((int32) rdi);
 }
 
@@ -349,6 +359,7 @@ void listxattr()
 //      fn0000000100003AA8
 struct tm * localtime(word32 edi)
 {
+	word64 rdi;
 	return localtime((time_t) rdi);
 }
 
@@ -401,6 +412,7 @@ void memchr()
 //      fn0000000100003AA8
 char * nl_langinfo(word32 edi)
 {
+	word64 rdi;
 	return nl_langinfo((nl_item) rdi);
 }
 
@@ -425,6 +437,7 @@ int32 printf(char * rdi)
 //      fn000000010000488B
 int32 putchar(int32 edi)
 {
+	word64 rdi;
 	return putchar((int32) rdi);
 }
 
@@ -455,6 +468,7 @@ void setenv()
 //      fn00000001000026A0
 void setlocale(char * rsi, word32 edi)
 {
+	word64 rdi;
 	setlocale((int32) rdi, rsi);
 }
 
@@ -463,6 +477,7 @@ void setlocale(char * rsi, word32 edi)
 //      fn00000001000026A0
 void signal(Eq_n rsi, word32 edi)
 {
+	word64 rdi;
 	signal((int32) rdi, rsi);
 }
 
@@ -512,6 +527,7 @@ char * strdup(char * rdi)
 //      fn0000000100003AA8
 char * strerror(word32 edi)
 {
+	word64 rdi;
 	return strerror((int32) rdi);
 }
 
@@ -614,12 +630,14 @@ void warnx()
 //      fn000000010000488B
 int32 wcwidth(word16 di)
 {
+	word64 rdi;
 	return wcwidth((wchar_t) rdi);
 }
 
 // 0000000100004F64: void write(Register Eq_n rdx, Register (ptr64 void) rsi, Register word32 edi)
 void write(Eq_n rdx, void * rsi, word32 edi)
 {
+	word64 rdi;
 	write((int32) rdi, rsi, rdx);
 }
 

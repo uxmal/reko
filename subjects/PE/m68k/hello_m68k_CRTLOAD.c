@@ -32,6 +32,7 @@ void fn0000149C()
 // 000014E8: void fn000014E8(Register word32 a3, Register word32 a5, Stack word16 wArg00, Stack int32 dwArg02)
 void fn000014E8(word32 a3, word32 a5, word16 wArg00, int32 dwArg02)
 {
+	word16 wLoc12;
 	0x00 = 0x00;
 	__syscall(43424);
 	struct Eq_n ** dwLoc12_n = SEQ(wLoc12, 0x4441);

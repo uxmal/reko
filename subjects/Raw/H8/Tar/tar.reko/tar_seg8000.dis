@@ -22,6 +22,10 @@ word32 fn8032(word16 er1_16_16, word16 er2_16_16, word16 er3_16_16, word16 r4, w
 // Trashed: NZVC er0 er1 er2 er3 er4 er5 r6 sp
 // Preserved:
 fn8032_entry:
+	ptr32 fp
+	word16 er5_16_16
+	word16 er0_16_16
+	word16 er4_16_16
 	word16 r7_4 = SLICE(fp, word16, 0)
 	word16 sp_16_16_6 = SLICE(fp, word16, 16)
 l8032:
@@ -431,6 +435,10 @@ word32 fn8584(word16 er0_16_16, word16 er1_16_16, word16 er2_16_16, word16 er3_1
 // Trashed: NZVC er0 er1 er2 er3 er4 er5 er6 sp
 // Preserved:
 fn8584_entry:
+	ptr32 fp
+	word16 er4_16_16
+	word16 er5_16_16
+	word16 er6_16_16
 	word16 r7_4 = SLICE(fp, word16, 0)
 	word16 sp_16_16_6 = SLICE(fp, word16, 16)
 l8584:
@@ -611,6 +619,7 @@ word32 fn8866(word32 er0, word16 r1, word16 er1_16_16, word16 r2, word16 er2_16_
 // Trashed: NZVC er0 er1 er2 er3 er4 er5 er6 sp
 // Preserved:
 fn8866_entry:
+	ptr32 fp
 	word16 r0 = SLICE(er0, word16, 0)
 	word16 r7_4 = SLICE(fp, word16, 0)
 	word16 sp_16_16_6 = SLICE(fp, word16, 16)
@@ -835,6 +844,7 @@ word32 fn8AEA(word16 er0_16_16, word16 er4_16_16, word16 r6, ptr32 & er2Out, ptr
 // Trashed: NZV er0 er2 er4 r1 r3 r6
 // Preserved: sp
 fn8AEA_entry:
+	word16 wLoc06
 l8AEA:
 	ptr32 sp_35 = <invalid>
 	word16 r6_21
@@ -898,6 +908,8 @@ word32 fn8BB0(word16 er0_16_16, word16 r1, word32 er4, word16 r5, word16 r6, ptr
 // Trashed: NZVC er0 er2 er4 r1 r3 r5 r6
 // Preserved: sp
 fn8BB0_entry:
+	ptr32 fp
+	word16 wLoc0E
 l8BB0:
 	ptr32 sp_11 = fp - 0xA<32>
 	word32 er4_113 = er4
@@ -1128,6 +1140,9 @@ word32 fn8F4E(word16 er0_16_16, word32 er4, word16 r5, word16 r6, ptr32 & er4Out
 // Trashed: NZVC er0 er2 er4 r1 r3 r5 r6
 // Preserved: sp
 fn8F4E_entry:
+	word16 wLoc0A
+	word16 wLoc0C
+	word16 wLoc02
 l8F4E:
 	Mem14[0x9E34<p16>:word16] = 0xFFFF<16>
 	Mem15[0x9E36<p16>:word16] = 0xFFFF<16>
@@ -1397,6 +1412,8 @@ word32 fn9370(word16 er0_16_16, word16 er2_16_16, word16 er3_16_16, word16 r4, w
 // Trashed: NZVC er0 er1 er2 er3 er4 r5 r6 sp
 // Preserved:
 fn9370_entry:
+	ptr32 fp
+	word16 er1_16_16
 	word16 r7_4 = SLICE(fp, word16, 0)
 	word16 sp_16_16_6 = SLICE(fp, word16, 16)
 l9370:
@@ -1502,6 +1519,9 @@ word32 fn9478(word16 er0_16_16, word16 er1_16_16, word16 er2_16_16, word16 er3_1
 // Trashed: NZVC er0 er1 er2 er3 er4 er5 er6
 // Preserved: sp
 fn9478_entry:
+	ptr32 fp
+	word16 wLoc0E
+	word16 wLoc04
 l9478:
 	word32 er0_17 = fn9BFC(0<16>, er0_16_16)
 	word16 r6_38
@@ -1927,6 +1947,7 @@ void fn9AF8(word16 er0_16_16, word16 er1_16_16, word16 er2_16_16, word16 er3_16_
 // Trashed: NZVC er0 er1 er2 er3 er4 er5 er6
 // Preserved: sp
 fn9AF8_entry:
+	word16 wLoc02
 l9AF8:
 	word32 er2_10 = SEQ(er2_16_16, 0x9E90<16>)
 	branch false l9B0E
@@ -1987,6 +2008,7 @@ byte fn9B66(ptr32 & r6Out)
 // Trashed: NZVC r0 r1 r2 r3 r4 r5 r6
 // Preserved: sp
 fn9B66_entry:
+	word16 wLoc02
 l9B66:
 	word16 r1_11
 	word16 r6_16
@@ -2166,6 +2188,7 @@ word32 fn9C18(word32 er0, word32 er4, word16 r6, ptr32 & er2Out, ptr32 & er4Out,
 // Trashed: NZV er0 er2 er4 r1 r6 sp
 // Preserved:
 fn9C18_entry:
+	word32 er2
 	word16 r0 = SLICE(er0, word16, 0)
 	word16 er4_16_16 = SLICE(er4, word16, 16)
 	word16 er0_16_16 = SLICE(er0, word16, 16)
@@ -2222,6 +2245,7 @@ word32 fn9C6E(word16 r0, word16 er0_16_16, word32 er4, word16 r6, ptr32 & er4Out
 // Trashed: NZVC er0 er4 r1 r2 r6 sp
 // Preserved:
 fn9C6E_entry:
+	word16 wLoc04
 	word16 er4_16_16 = SLICE(er4, word16, 16)
 	byte r0h_11 = SLICE(r0, byte, 8)
 	byte r0l_16 = SLICE(r0, byte, 0)
@@ -2245,6 +2269,7 @@ word32 fn9C92(word16 r0, word16 er0_16_16, word32 er4, word16 r6, ptr32 & er4Out
 // Trashed: NZVC er0 er4 r1 r2 r3 r6 sp
 // Preserved:
 fn9C92_entry:
+	word16 wLoc04
 	word16 er4_16_16 = SLICE(er4, word16, 16)
 	byte r0h_15 = SLICE(r0, byte, 8)
 	byte r0l_18 = SLICE(r0, byte, 0)
@@ -2268,6 +2293,10 @@ word32 fn9CBC(word16 er0_16_16, word16 er4_16_16, word16 r5, word16 er5_16_16, w
 // Trashed: NZVC er0 er2 er4 er5 r1 r3 r6 sp
 // Preserved:
 fn9CBC_entry:
+	ptr32 fp
+	word16 wLoc0A
+	word16 wLoc02
+	word16 wLoc04
 l9CBC:
 	word16 r7_11 = SLICE(fp, word16, 0) - 8<16>
 	word32 er5_16 = SEQ(er5_16_16, r7_11)
@@ -2325,6 +2354,11 @@ word32 fn9D34(word16 er0_16_16, word16 r6, ptr32 & er2Out, ptr32 & r6Out)
 // Trashed: NZV er0 er2 r1 r6
 // Preserved: sp
 fn9D34_entry:
+	ptr32 fp
+	word16 er2_16_16
+	word16 wLoc06
+	word16 wLoc02
+	word16 wLoc04
 l9D34:
 	word32 er0_58
 	word16 r7_5 = SLICE(fp, word16, 0) - 4<16>
@@ -2354,6 +2388,7 @@ word32 fn9D6A(word16 er0_16_16, word16 r6, ptr32 & er2Out, ptr32 & r6Out)
 // Trashed: NZVC er0 er2 r1 r6
 // Preserved: sp
 fn9D6A_entry:
+	word16 wLoc02
 l9D6A:
 	word16 r6_11
 	word16 r6_21
@@ -2383,6 +2418,10 @@ word32 fn9DC0(word16 er0_16_16, word16 r6, ptr32 & er2Out, ptr32 & r6Out)
 // Trashed: NZV er0 er2 r1 r6
 // Preserved: sp
 fn9DC0_entry:
+	ptr32 fp
+	word16 er2_16_16
+	word16 wLoc04
+	byte bLoc01
 l9DC0:
 	word16 r7_32 = SLICE(fp, word16, 0) - 2<16>
 l9DC2:
@@ -2409,6 +2448,7 @@ word32 fn9DDC(word16 er0_16_16, word16 r6, ptr32 & r6Out)
 // Trashed: NZV er0 r1 r6
 // Preserved: sp
 fn9DDC_entry:
+	word16 wLoc02
 l9DDC:
 	word16 r6_13
 	word16 r6_23
@@ -2428,6 +2468,7 @@ word32 fn9DF2(word16 er0_16_16, word16 r6, ptr32 & r6Out)
 // Trashed: NZV er0 r1 r6
 // Preserved: sp
 fn9DF2_entry:
+	word16 wLoc02
 l9DF2:
 	word16 r6_13
 	word16 r6_23
@@ -2447,6 +2488,7 @@ word16 fn9E08(byte r0h, byte r1h, byte r1l)
 // Trashed: NZVC r0 r1 r2
 // Preserved: sp
 fn9E08_entry:
+	word16 r0
 	byte r0h_8 = SLICE(r0, byte, 8)
 l9E08:
 	word16 r0_11 = r0h_8 *u16 r1l

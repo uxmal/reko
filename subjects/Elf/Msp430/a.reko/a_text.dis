@@ -66,6 +66,7 @@ void task_1(word20 sr)
 // Terminates process
 task_1_exit:
 task_1_entry:
+	word16 fp
 l4096:
 	word20 r15_46
 	word20 sr_19 = xTaskGetTickCount(sr, out r15_46)
@@ -85,6 +86,7 @@ void task_2(word20 sr)
 // Terminates process
 task_2_exit:
 task_2_entry:
+	word16 fp
 l40BC:
 	word20 r15_46
 	word20 sr_19 = xTaskGetTickCount(sr, out r15_46)
@@ -104,6 +106,7 @@ void task_3(word20 sr)
 // Terminates process
 task_3_exit:
 task_3_entry:
+	word16 fp
 l40E2:
 	word20 r15_46
 	word20 sr_19 = xTaskGetTickCount(sr, out r15_46)
@@ -154,6 +157,7 @@ word20 msp430_compute_modulator_bits(ui40 r13_r12, ui40 r15_r14)
 // Trashed: VNZC r12 r13 r14 r15
 // Preserved: r10 r11 r4 r5 r6 r7 r8 r9 sp sr
 msp430_compute_modulator_bits_entry:
+	word16 fp
 	word20 r14 = SLICE(r15_r14, word20, 0)
 	word20 r15 = SLICE(r15_r14, word20, 20)
 l0000420E:
@@ -200,6 +204,8 @@ word20 init_uart_isr(word40 r14_r13, word20 sr, word20 r15)
 // Trashed: VNZC r12 r13 r14 r15 sr
 // Preserved: r10 r11 r4 r6 r7 r8 r9 sp
 init_uart_isr_entry:
+	word16 wLoc10
+	word16 fp
 	byte bLoc10 = SLICE(wLoc10, byte, 0)
 l000042CC:
 	word16 v15_34 = Mem23[fp + 2<32>:word16]
@@ -243,6 +249,7 @@ void getchar(word20 sr)
 // Trashed: VNZC r12 r13 r14 r15 r4 r5 r6 r7 r8 sr
 // Preserved: sp
 getchar_entry:
+	word16 fp
 l4380:
 	branch x_getchar(sr, 0x64<16>, fp - 2<16>) == 0<20> l4396
 l4396:
@@ -337,6 +344,7 @@ word20 x_putchar(word20 sr, word20 r14, word20 r15, ptr16 & r15Out)
 // Trashed: VNZC r13 r15 sr
 // Preserved: r12 r14 r4 r5 r6 r7 r8 sp
 x_putchar_entry:
+	word16 fp
 l000043FC:
 	Mem12[0x0218<p16>:word16] = Mem5[0x0218<p16>:word16] + 1<16>
 	word20 sr_111 = sr & 0xFFF7<16>
@@ -375,6 +383,7 @@ void vRxISR(word20 sr)
 // Trashed: VNZC r10 r11 r4 r5 r6 r7 r8 r9 sr
 // Preserved: r12 r13 r14 r15 sp
 vRxISR_entry:
+	word16 fp
 l4450:
 	word20 r15_27
 	word20 sr_28 = xQueueSendFromISR(sr, 0<16>, fp - 0xA<32>, Mem18[0x021C<p16>:word16], out r15_27)
@@ -398,6 +407,8 @@ void vTxISR(word20 sr)
 // Trashed: VNZC sr
 // Preserved: r12 r13 r14 r15 sp
 vTxISR_entry:
+	word16 fp
+	byte bLoc0A
 l4480:
 	branch xQueueReceiveFromISR(sr, fp - 0xC<32>, fp - 0xA<32>, Mem14[0x021E<p16>:word16]) == 1<16> l44A2
 l44A2:
@@ -420,6 +431,7 @@ word20 xTaskCreate(word20 sr, word20 r12, word20 r13, word20 r14, word20 r15, pt
 // Trashed: VNZC r12 r13 r14 r15 r4 sr
 // Preserved: r10 r11 r5 r6 r7 r8 r9 sp
 xTaskCreate_entry:
+	word16 fp
 l000044B4:
 	word20 r10_144
 	word16 v15_35 = Mem23[fp + 2<32>:word16]
@@ -1966,6 +1978,7 @@ word20 vPortYield(word20 sr, ptr16 & r8Out, ptr16 & r9Out, ptr16 & r10Out, ptr16
 // Trashed: VNZC r10 r11 r12 r13 r14 r15 r4 r5 r6 r7 r8 r9 sp sr
 // Preserved:
 vPortYield_entry:
+	word16 fp
 l0000523A:
 	Mem49[Mem46[0x00000202<p32>:word16]:word16] = fp - 28<i32>
 	vTaskSwitchContext()
@@ -2012,6 +2025,7 @@ void prvTickISR()
 // Trashed: VNZC r10 r11 r12 r13 r14 r15 r4 r5 r6 r7 r8 r9 sp
 // Preserved:
 prvTickISR_entry:
+	word16 fp
 l52B4:
 	Mem45[Mem42[0x0202<p16>:word16]:word16] = fp - 26<i32>
 	vTaskIncrementTick()
@@ -2032,6 +2046,7 @@ void printf(word20 r8)
 // Trashed: VNZC r12 r13 r14 r15
 // Preserved: sp
 printf_entry:
+	word16 fp
 l00005308:
 	vuprintf(r8, fp + 4<16>, Mem0[fp + 2<16>:word16], 0x43A2<16>)
 	return
@@ -2121,6 +2136,7 @@ void vuprintf(word20 r8, word20 r13, word20 r14, word20 r15)
 // Trashed: VNZC r12 r13 r14 r15
 // Preserved: r10 r11 r4 r5 r6 r7 r8 r9 sp
 vuprintf_entry:
+	word16 fp
 l0000537E:
 	Mem33[0x021A<p16>:word16] = 0<16>
 	Mem35[0x09B2<p16>:word16] = r15

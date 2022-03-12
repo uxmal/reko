@@ -8,6 +8,7 @@ void fn00000000004028C0(word64 rsi, word32 edi, selector fs)
 // Terminates process
 fn00000000004028C0_exit:
 fn00000000004028C0_entry:
+	ptr64 fp
 l00000000004028C0:
 	fn000000000040D6A0(Mem23[rsi:word64])
 	setlocale(6<i32>, 0x416919<u64>)
@@ -1189,6 +1190,8 @@ void fn0000000000404890(word64 rdx, word32 dwArg00)
 // Terminates process
 fn0000000000404890_exit:
 fn0000000000404890_entry:
+	ptr64 fp
+	word64 qwArg00
 l0000000000404890:
 	__align_stack<word64>(fp + 8<i64>)
 	__libc_start_main(0x4028C0<64>, SLICE(qwArg00, int32, 0), fp + 8<i64>, 0x411E60<64>, 0x411ED0<64>, rdx, fp)
@@ -1226,6 +1229,8 @@ byte fn00000000004049E0(word64 rcx, byte dl, word64 rsi, word64 rdi, ptr64 & ebx
 // Trashed: SCZO dl r10 r11 r12 r8 r9 rax rbp rbx rcx rdi rsi rsp Top
 // Preserved: r14
 fn00000000004049E0_entry:
+	word64 r12
+	word64 rbp
 l00000000004049E0:
 	word64 r8_124 = Mem6[rsi:word64]
 	word64 r9_110 = Mem6[rdi:word64]
@@ -1446,6 +1451,7 @@ void fn0000000000404D20(word32 edx, word64 rsi, word64 rdi)
 // Trashed: SCZO rax rdi rdx rsi Top
 // Preserved: r12 r13 rbp rbx rsp
 fn0000000000404D20_entry:
+	word64 rdx
 	word32 edx = SLICE(rdx, word32, 0)
 l0000000000404D20:
 	byte r13b_71 = SLICE(edx, byte, 0)
@@ -1619,6 +1625,7 @@ void fn0000000000405090(byte sil, word64 rdi)
 // Trashed: SCZO rax rcx rdi rdx rsi Top
 // Preserved: r12 r13 r14 r15 rbp rbx rsp
 fn0000000000405090_entry:
+	word64 rsi
 	byte sil = SLICE(rsi, byte, 0)
 l0000000000405090:
 	word32 r14d_245 = CONVERT(sil, byte, word32)
@@ -1751,6 +1758,8 @@ word64 fn00000000004052D0(word64 rcx, word64 rdx, word64 rsi, word64 rdi, word64
 // Trashed: SCZO r10 r11 r8 r9 rcx rdi rdx rsi Top
 // Preserved: r12 r13 r14 r15 rbp rbx rsp
 fn00000000004052D0_entry:
+	ptr64 fp
+	word32 dwLoc205C
 l00000000004052D0:
 	word64 rax_39 = Mem36[fs:0x28<32>:word64]
 	word64 rax_50 = fn000000000040E6F0(0xFFFFFFFFFFFFFFFF<64>, rsi, 0x2000<u64>, fp - 8264<i64>, rdx, fs)
@@ -1961,6 +1970,7 @@ void fn0000000000405700(word32 edx, word64 rdi, selector fs)
 // Trashed: SCZO rax rcx rdi rdx rsi Top
 // Preserved: rbp rbx rsp
 fn0000000000405700_entry:
+	word64 rdx
 	word32 edx = SLICE(rdx, word32, 0)
 l0000000000405700:
 	word64 rbp_31
@@ -2060,6 +2070,8 @@ word32 fn0000000000405C20(word32 ecx, word32 edx, word32 esi, byte dil)
 // Trashed: SCZO rax rcx rsi Top
 // Preserved: rsp
 fn0000000000405C20_entry:
+	word64 rsi
+	word64 rcx
 	word24 ecx_24_8 = SLICE(rcx, word24, 8)
 	word32 esi = SLICE(rsi, word32, 0)
 l0000000000405C20:
@@ -2125,6 +2137,7 @@ byte fn0000000000405D00(word64 rcx, word32 edx, word64 rsi, byte dil)
 // Trashed: SCZO rax rcx rdi rdx rsi Top
 // Preserved: rbx rsp
 fn0000000000405D00_entry:
+	word64 rdx
 	word32 edx = SLICE(rdx, word32, 0)
 l0000000000405D00:
 	word64 rax_14 = CONVERT(fn0000000000405C20(SLICE(rcx, word32, 0), edx, SLICE(rsi, word32, 0), dil), word32, uint64)
@@ -2158,6 +2171,8 @@ word64 fn0000000000405D50(word64 rdi, word64 r12, selector fs)
 // Trashed: SCZO r10 r11 r8 r9 rax rcx rdi rdx rsi Top
 // Preserved: rbp rbx rsp
 fn0000000000405D50_entry:
+	ptr64 fp
+	word64 qwLoc02C0
 l0000000000405D50:
 	word64 rbx_101 = 0<u64>
 	word64 rax_16 = Mem11[fs:0x28<32>:word64]
@@ -2218,6 +2233,7 @@ word64 fn0000000000405ED0(word32 edi, selector fs)
 // Trashed: SCZO r8 rax rdi rdx rsi Top
 // Preserved: r10 r11 r12 r13 r14 r9 rbp rbx rcx rsp
 fn0000000000405ED0_entry:
+	word64 rdi
 	word32 edi = SLICE(rdi, word32, 0)
 l0000000000405ED0:
 	word64 rdx_7 = Mem6[0x000000000061B1B0<p64>:word64]
@@ -2371,6 +2387,7 @@ word32 fn00000000004061B0(word64 rdi, selector fs)
 // Trashed: SCZO rax rdi rdx rsi Top
 // Preserved: r8 rbp rbx rcx rsp
 fn00000000004061B0_entry:
+	ptr64 fp
 l00000000004061B0:
 	word64 rdx_127
 	word64 rax_15 = Mem12[fs:0x28<32>:word64]
@@ -2428,6 +2445,7 @@ void fn0000000000406400()
 // Trashed: SCZO rdi Top
 // Preserved: rsp
 fn0000000000406400_entry:
+	word64 rdi
 l0000000000406400:
 	branch Mem0[0x000000000061A408<p64>:word64] == 0<64> l0000000000406418
 l0000000000406418:
@@ -2485,6 +2503,7 @@ void fn0000000000406490()
 // Trashed: SCZO rax rdi rdx rsi Top
 // Preserved: rbx rcx rsp
 fn0000000000406490_entry:
+	ptr64 fp
 l0000000000406490:
 l00000000004064EF:
 	branch Mem9[0x000000000061B038<p64>:word32] != 0<32> l0000000000406503
@@ -2759,6 +2778,7 @@ word64 fn0000000000406A30()
 // Trashed: SCZO rax rcx rdi rdx rsi Top
 // Preserved: rsp
 fn0000000000406A30_entry:
+	word64 rax
 l0000000000406A30:
 	branch Mem0[0x000000000061B129<p64>:byte] == 0<8> l0000000000406A4F
 l0000000000406A39:
@@ -2788,6 +2808,7 @@ word64 fn0000000000406A80(word64 rdx, word64 rsi, word64 rdi, selector fs)
 // Trashed: SCZO r10 r11 r15 r8 r9 rax rcx rdi rdx rsi Top
 // Preserved: r12 r13 r14 rbp rbx rsp
 fn0000000000406A80_entry:
+	ptr64 fp
 l0000000000406A80:
 	word64 rbx_27 = rsi
 	word64 rax_30 = Mem25[fs:0x28<32>:word64]
@@ -2822,6 +2843,7 @@ void fn0000000000406B70(word64 rdi, selector fs)
 // Trashed: SCZO r10 r11 r8 r9 rax rcx rdi rdx rsi Top
 // Preserved: fs r12 r13 r14 r15 rbp rbx rsp
 fn0000000000406B70_entry:
+	ptr64 fp
 l0000000000406B70:
 	word64 qwLoc12B8_1240
 	word64 qwLoc12B0_1239
@@ -3148,6 +3170,7 @@ void fn0000000000407870(word64 rsi, word64 rdi, selector fs)
 // Trashed: SCZO r10 r11 r8 r9 rcx rdi rdx rsi Top
 // Preserved: rbp rbx rsp
 fn0000000000407870_entry:
+	ptr64 fp
 l0000000000407870:
 	word64 rax_16 = Mem11[fs:0x28<32>:word64]
 	word64 rax_173 = fn0000000000406A30()
@@ -3401,6 +3424,8 @@ word64 fn0000000000407EA0(word64 rcx, word32 edx, word32 esi, word64 rdi, select
 // Trashed: SCZO r9 rax rcx rdi rdx rsi Top
 // Preserved: r10 r11 r12 r13 r14 r15 r8 rbp rbx rsp
 fn0000000000407EA0_entry:
+	ptr64 fp
+	word32 dwLoc0370
 l0000000000407EA0:
 	byte bLoc038C_2825 = SLICE(edx, byte, 0)
 	word64 rax_34 = Mem30[fs:0x28<32>:word64]
@@ -4652,6 +4677,9 @@ void fn000000000040AB30(word64 rdi)
 // Trashed: SCZO rax rdi rsi Top
 // Preserved: rbx rsp
 fn000000000040AB30_entry:
+	ptr64 fp
+	word64 qwLoc18
+	word64 qwLoc10
 l000000000040AB30:
 	branch clock_gettime(0<i32>, rdi) == 0<32> l000000000040AB67
 l000000000040AB46:
@@ -4673,6 +4701,7 @@ byte fn000000000040AB70(word32 edi)
 // Trashed: SCZO rax rcx rdi rsi Top
 // Preserved: rsp
 fn000000000040AB70_entry:
+	word64 rdi
 l000000000040AB70:
 	word64 rax_8 = setlocale(SLICE(rdi, int32, 0), 0<u64>)
 	branch rax_8 == 0<64> l000000000040ABB0
@@ -4790,6 +4819,7 @@ word64 fn000000000040ACB0(word32 ecx, word64 rdx, word64 rsi, word64 rdi, ptr64 
 // Trashed: SCZO r10 r9 rax rcx rdi rdx rsi Top
 // Preserved: r12 r13 r14 rbp rbx rsp
 fn000000000040ACB0_entry:
+	word64 rcx
 	word32 ecx = SLICE(rcx, word32, 0)
 l000000000040ACB0:
 	word64 r13_14 = CONVERT(ecx, word32, uint64)
@@ -4918,6 +4948,7 @@ word32 fn000000000040AE40(word32 edx, word64 rsi, word64 rdi)
 // Trashed: SCZO rax rcx rdi rdx rsi Top
 // Preserved: r12 r13 r14 r15 rbp rbx rsp
 fn000000000040AE40_entry:
+	word64 rdx
 	word32 edx = SLICE(rdx, word32, 0)
 l000000000040AE40:
 	byte r15b_199 = SLICE(edx, byte, 0)
@@ -5177,6 +5208,8 @@ word32 fn000000000040B710(word64 rsi, word64 rdi)
 // Trashed: SCZOP r8 r9 rax rcx rdi rdx rsi Top xmm0 xmm1
 // Preserved: r12 rbp rbx rsp
 fn000000000040B710_entry:
+	ptr64 fp
+	word128 xmm0
 	word32 esi_25 = SLICE(rsi, word32, 0)
 l000000000040B710:
 	word64 rbp_16 = Mem12[rdi + 40<i64>:word64]
@@ -5249,6 +5282,10 @@ word32 fn000000000040B8F0(word64 rdx, word64 rsi, word64 rdi)
 // Trashed: SCZOP r10 r8 r9 rax rcx rdi rdx rsi Top xmm0 xmm1 xmm2 xmm3
 // Preserved: r12 rbp rbx rsp
 fn000000000040B8F0_entry:
+	ptr64 fp
+	word128 xmm0
+	word128 xmm1
+	word64 qwLoc20
 l000000000040B8F0:
 	branch rsi == 0<64> l000000000040BA67
 l000000000040B904:
@@ -5373,6 +5410,8 @@ word64 fn000000000040BB50(word64 rsi, word64 rdi)
 // Trashed: SCZOP r10 r8 r9 rax rcx rdi rdx rsi Top xmm0 xmm1 xmm2 xmm3
 // Preserved: rbx rsp
 fn000000000040BB50_entry:
+	ptr64 fp
+	word64 qwLoc10
 l000000000040BB50:
 	word64 rax_34
 	word32 eax_30 = fn000000000040B8F0(fp - 0x10<64>, rsi, rdi)
@@ -5399,6 +5438,10 @@ word64 fn000000000040BB90(word64 rsi, word64 rdi)
 // Trashed: SCZOP r10 r8 r9 rax rcx rdi rdx rsi Top xmm0 xmm1 xmm2 xmm3
 // Preserved: r12 rbp rbx rsp
 fn000000000040BB90_entry:
+	ptr64 fp
+	word128 xmm0
+	word128 xmm1
+	word64 qwLoc20
 l000000000040BB90:
 	word64 rsi_24
 	word64 rax_21 = fn000000000040ACB0(1<32>, fp - 0x20<64>, rsi, rdi, out rsi_24)
@@ -5506,6 +5549,7 @@ word64 fn000000000040BD70(word64 rcx, word32 edx, word64 rsi, word64 rdi, word64
 // Trashed: SCZO FPU -1 FPU -2 FPU -3 r11 r8 r9 rax rcx rdi rdx rsi Top
 // Preserved: P FPU -4 r10 r12 r13 r14 r15 rbp rbx rsp
 fn000000000040BD70_entry:
+	ptr64 fp
 l000000000040BD70:
 	word64 rcx_47 = Mem45[fs:0x28<32>:word64]
 	word64 rax_64 = localeconv()
@@ -5984,6 +6028,8 @@ word32 fn000000000040C810(word64 rdx, word64 rsi, word64 rdi, ptr64 & r14bOut, p
 // Trashed: SCZO r14 r15 r8 r9 rax rcx rdi rdx rsi Top
 // Preserved: r12 r13 rbp rbx rsp
 fn000000000040C810_entry:
+	ptr64 fp
+	word64 r15
 l000000000040C810:
 	word64 rax_104
 	word64 rdx_121
@@ -6081,6 +6127,7 @@ word64 fn000000000040C9B0(word32 edi)
 // Trashed: SCZO rax rdi rdx rsi Top
 // Preserved: r12 rbp rbx rsp
 fn000000000040C9B0_entry:
+	word64 rdi
 	word32 edi = SLICE(rdi, word32, 0)
 l000000000040C9B0:
 	word64 rbx_16 = Mem15[0x000000000061B1F8<p64>:word64]
@@ -6129,6 +6176,7 @@ word64 fn000000000040CB40(word32 edi)
 // Trashed: SCZO rax rdi rdx rsi Top
 // Preserved: r12 rbp rbx rsp
 fn000000000040CB40_entry:
+	word64 rdi
 	word32 edi = SLICE(rdi, word32, 0)
 l000000000040CB40:
 	word64 rbx_16 = Mem15[0x000000000061B1E8<p64>:word64]
@@ -6454,6 +6502,9 @@ word32 fn000000000040D240(word32 edx, word64 rsi, word64 rdi, selector fs)
 // Trashed: SCZO rax rdx rsi Top
 // Preserved: r12 r13 r14 r15 rbp rbx rcx rdi rsp
 fn000000000040D240_entry:
+	word64 rdx
+	ptr64 fp
+	word32 dwLoc4C
 	word32 edx = SLICE(rdx, word32, 0)
 l000000000040D240:
 	word64 rax_205
@@ -6595,6 +6646,9 @@ word64 fn000000000040D450(word64 rcx, word64 rdx, word64 rbx, word64 rsi, word64
 // Trashed: SCZO rax rcx rdi rdx rsi Top
 // Preserved: r12 r13 r14 r15 rbp rbx rsp
 fn000000000040D450_entry:
+	word64 qwLoc48
+	word64 qwLoc58
+	word64 qwLoc38
 l000000000040D450:
 	word64 qwLoc30_292 = rbx
 	branch rsi >u 2<64> l000000000040D490
@@ -6807,6 +6861,14 @@ void fn000000000040D740(word32 esi, word64 rdi)
 // Trashed: SCZO rax rcx rdi rdx Top
 // Preserved: rsp
 fn000000000040D740_entry:
+	ptr64 fp
+	word32 dwLoc44
+	word64 qwLoc40
+	word64 qwLoc38
+	word64 qwLoc30
+	word64 qwLoc28
+	word64 qwLoc20
+	word64 qwLoc18
 l000000000040D740:
 	word64 rcx_10 = 7<u64>
 	word64 rdi_11 = fp - 0x48<64>
@@ -6842,6 +6904,7 @@ word64 fn000000000040D7B0(word32 esi, word64 rdi, selector fs, ptr64 & rcxOut, p
 // Trashed: SCZO rax rcx rdi rdx rsi Top
 // Preserved: r12 r13 rbp rbx rsp
 fn000000000040D7B0_entry:
+	word64 rcx
 l000000000040D7B0:
 	word64 rax_27 = dcgettext(0<u64>, rdi, 5<i32>)
 	word64 rdx_176 = 5<u64>
@@ -6918,6 +6981,14 @@ word64 fn000000000040D8A0(word64 rcx, word64 rdx, word64 rsi, word64 rdi, word32
 // Trashed: SCZO r10 r11 r12 r13 r14 r15 r8 r9 rax rbp rbx rcx rdi rdx rsi rsp Top
 // Preserved: fs
 fn000000000040D8A0_entry:
+	ptr64 fp
+	word64 r15
+	word64 r14
+	word64 r13
+	word64 r12
+	word64 rbp
+	word64 rbx
+	word32 dwLoc4C
 l000000000040D8A0:
 	word64 rax_46 = Mem44[fs:0x28<32>:word64]
 	byte al_63 = SLICE(r9d >>u 1<32>, byte, 0) & 1<8>
@@ -7715,6 +7786,7 @@ void fn000000000040E970(word64 rdx, word32 esi, word32 edi, selector fs)
 // Trashed: SCZO r10 r11 r8 r9 rax rcx rdi rdx rsi Top
 // Preserved: rbp rbx rsp
 fn000000000040E970_entry:
+	ptr64 fp
 l000000000040E970:
 	fn000000000040D740(esi, fp - 0x58<64>)
 	word64 r8_60
@@ -7736,6 +7808,7 @@ void fn000000000040EAB0(word64 rdi, selector fs)
 // Trashed: SCZO r10 r11 r8 r9 rax rcx rdi rdx rsi Top
 // Preserved: rsp
 fn000000000040EAB0_entry:
+	ptr64 fp
 l000000000040EAB0:
 l000000000040EA00:
 	word64 r8_96
@@ -7842,6 +7915,8 @@ word64 fn000000000040ECD0(word64 rcx, word64 rdx, word64 rsi, byte dil, word64 r
 // Trashed: SCZO r10 r11 r12 r13 r14 r15 r8 r9 rax rbp rbx rcx rdi rdx rsi rsp Top
 // Preserved:
 fn000000000040ECD0_entry:
+	word64 rdi
+	ptr64 fp
 	byte dil = SLICE(rdi, byte, 0)
 l000000000040ECD0:
 	word64 r12_19 = rsi
@@ -8118,6 +8193,7 @@ void fn0000000000410AC0(word64 rcx, word64 rsi, word64 rdi, word64 r8)
 // Trashed: SCZO r10 r12 r8 r9 rax rbp rbx rcx rdi rdx rsi Top
 // Preserved: rsp
 fn0000000000410AC0_entry:
+	ptr64 fp
 l0000000000410AC0:
 	word64 r9_28 = 0<u64>
 l0000000000410AF3:
@@ -8155,6 +8231,7 @@ void fn0000000000410B30(byte al, word64 rcx, word64 rsi, word64 rdi)
 // Trashed: SCZO r10 r12 r8 r9 rax rbp rbx rcx rdi rdx rsi Top
 // Preserved: rsp
 fn0000000000410B30_entry:
+	ptr64 fp
 l0000000000410B30:
 	branch al == 0<8> l0000000000410B7C
 l0000000000410B45:
@@ -8295,6 +8372,9 @@ word32 fn0000000000410E90(word64 rcx, word32 edx, word64 rsi, word64 rdi, word64
 // Trashed: SCZO r12 r13 r14 r15 r8 r9 rax rbp rbx rcx rdi rdx rsi rsp Top
 // Preserved:
 fn0000000000410E90_entry:
+	ptr64 fp
+	word64 r12
+	word64 rbp
 l0000000000410E90:
 	branch edx >u 0x24<32> l00000000004112B0
 l00000000004112B0:
@@ -8457,6 +8537,11 @@ word32 fn0000000000411360(word64 rcx, word32 edx, word64 rsi, word64 rdi, word64
 // Trashed: SCZO r12 r13 r14 r15 r8 r9 rax rbp rbx rcx rdi rdx rsi rsp Top
 // Preserved:
 fn0000000000411360_entry:
+	ptr64 fp
+	word64 r15
+	word64 r13
+	word64 r12
+	word64 rbx
 l0000000000411360:
 	branch edx >u 0x24<32> l0000000000411788
 l0000000000411788:
@@ -8588,6 +8673,7 @@ word32 fn00000000004117B0(word64 rsi, word32 edi)
 // Trashed: SCZO rax rcx rdi rdx rsi Top
 // Preserved: rsp
 fn00000000004117B0_entry:
+	word64 rdi
 	word32 edi = SLICE(rdi, word32, 0)
 l00000000004117B0:
 	word64 rax_12
@@ -8699,6 +8785,7 @@ word64 fn0000000000411900(selector fs)
 // Trashed: SCZO rcx rdi Top
 // Preserved: fs r10 r12 r13 r14 r15 rbp rbx rdx rsi rsp
 fn0000000000411900_entry:
+	ptr64 fp
 l0000000000411900:
 	word64 rax_26 = Mem23[fs:0x28<32>:word64]
 	word64 rax_30 = nl_langinfo(14<i32>)
@@ -8969,6 +9056,7 @@ void fn0000000000411DF0(word32 edx, word64 rsi, word64 rdi)
 // Trashed: SCZO rax rdi rdx Top
 // Preserved: rbx rsi rsp
 fn0000000000411DF0_entry:
+	word64 rdx
 	word32 edx = SLICE(rdx, word32, 0)
 l0000000000411DF0:
 	branch Mem6[rdi + 16<i64>:word64] == Mem6[rdi + 8<i64>:word64] l0000000000411E10

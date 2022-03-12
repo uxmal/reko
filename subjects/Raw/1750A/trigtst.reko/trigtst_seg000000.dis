@@ -167,6 +167,7 @@ word16 fn02BF(word32 gp2_gp3, word16 gp1, word16 gp4, ptr16 & gp1Out, ptr16 & gp
 // Trashed: CPZN gp0 gp1 gp14 gp2 gp3 gp4 gp5 gp6 gp7
 // Preserved: gp15
 fn02BF_entry:
+	ptr16 fp
 	word16 gp3 = SLICE(gp2_gp3, word16, 0)
 l02BF:
 	word16 gp2_12 = gp1

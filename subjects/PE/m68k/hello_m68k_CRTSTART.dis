@@ -135,6 +135,7 @@ word32 fn00002354(word32 a5, word32 dwArg08, byte bArg0F)
 // Trashed: CVZNX a0 a5 a6 a7 d0 d3 d4 d5
 // Preserved:
 fn00002354_entry:
+	ptr32 fp
 l00002354:
 	Mem10[a5 + -1380<i32>:byte] = bArg0F
 	word32 a7_38 = fp - 4<32>
@@ -182,6 +183,7 @@ word32 fn000023B4(word32 dwArg04, word32 dwArg08)
 // Trashed: CVZNX a0 a6 a7 d0 d3 d4 d5
 // Preserved:
 fn000023B4_entry:
+	ptr32 fp
 l000023B4:
 	word32 a6_34 = fp - 4<32>
 	word32 d5_17 = -1<i32>
@@ -272,6 +274,7 @@ word32 fn0000243C(word32 a5, word32 dwArg04, ptr32 & a6Out)
 // Trashed: CVZNX a0 a1 a2 a5 a6 a7 d0 d1 d2
 // Preserved:
 fn0000243C_entry:
+	ptr32 fp
 l0000243C:
 	word32 a6_6 = fp - 4<32>
 	word32 d1_13 = 0<i32>

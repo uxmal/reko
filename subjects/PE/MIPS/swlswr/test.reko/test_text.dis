@@ -8,6 +8,7 @@ word32 fn00011000()
 // Trashed: r2 r4 r5 r6 r8
 // Preserved: ra sp
 fn00011000_entry:
+	ptr32 fp
 l00011000:
 	memset(fp + -20<i32>, 0<32>, 5<i32>)
 	word32 r2_20 = calloc(1<i32>, 5<i32>)
@@ -271,6 +272,8 @@ word32 fn0001152C()
 // Trashed: r2 r4 r5 r8 r9
 // Preserved: ra sp
 fn0001152C_entry:
+	ptr32 fp
+	word32 dwLoc0C
 l0001152C:
 	word32 r8_10 = Mem8[0x13040<32>:word32]
 	word32 sp_3 = fp + -56<i32>

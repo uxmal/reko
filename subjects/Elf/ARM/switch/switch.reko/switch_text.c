@@ -7,6 +7,7 @@
 // 00008334: void _start(Stack int32 dwArg00, Stack (ptr32 Eq_n) ptrArg08, Stack (ptr32 Eq_n) ptrArg0C, Stack (ptr32 void) ptrArg10)
 void _start(int32 dwArg00, void (* ptrArg08)(), void (* ptrArg0C)(), void * ptrArg10)
 {
+	ptr32 fp;
 	__libc_start_main(g_ptr8364, dwArg00, fp + 4, g_ptr8368, ptrArg08, ptrArg0C, ptrArg10);
 	abort();
 }
@@ -18,6 +19,7 @@ void (* g_ptr8368)() = __libc_csu_init; // 00008368
 //      _init
 word32 call_gmon_start()
 {
+	word32 r10;
 	ptr32 r10_n = 0x8380 + g_dw8394;
 	<anonymous> * r3_n = r10_n + g_dw8398;
 	if (r3_n == null)
@@ -283,6 +285,7 @@ int32 g_dw8708 = 36; // 00008708
 //      _init
 word32 __do_global_ctors_aux()
 {
+	word32 r4;
 	struct Eq_n * r3_n = g_ptr8740;
 	<anonymous> * r2_n = r3_n->ptrFFFFFFFC;
 	if (r2_n == (<anonymous> *) 0x01)

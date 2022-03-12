@@ -9,6 +9,7 @@
 //      fn000110E8
 word32 fn00011000()
 {
+	ptr32 fp;
 	memset(fp + -20, 0x00, 5);
 	struct Eq_n * r2_n = calloc(1, 5);
 	memcpy(r2_n, fp + -20, 5);
@@ -167,6 +168,8 @@ void fn000114E4()
 //      fn000116FC
 word32 fn0001152C()
 {
+	ptr32 fp;
+	word32 dwLoc0C;
 	<anonymous> ** r8_n = g_ptr13040;
 	struct Eq_n * sp_n = fp + -56;
 	if (g_ptr1303C - r8_n >= 0x00)

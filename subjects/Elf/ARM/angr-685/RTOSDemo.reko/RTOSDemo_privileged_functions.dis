@@ -206,6 +206,7 @@ word32 xQueueGenericSend(word32 r0, word32 r1, word32 r2, word32 r3, word32 lr, 
 // Trashed: NZCV lr r0 r1 r2 r3
 // Preserved: r10 r4 r5 r6 r7 r8 r9 sp
 xQueueGenericSend_entry:
+	ptr32 fp
 l00000190:
 	word32 r5_124 = 0<32>
 	word32 r9_31 = Mem27[0x000002A0<p32>:word32]
@@ -321,6 +322,7 @@ word32 xQueueGenericReceive(word32 r0, word32 r1, word32 r2, word32 r3, word32 l
 // Trashed: NZCV lr r0 r1 r2 r3
 // Preserved: r10 r4 r5 r6 r7 r8 r9 sp
 xQueueGenericReceive_entry:
+	ptr32 fp
 l000002D8:
 	word32 r5_133 = 0<32>
 	word32 r8_31 = Mem27[0x00000424<p32>:word32]
@@ -1950,6 +1952,7 @@ word32 xTaskPriorityDisinherit(word32 r0, ptr32 & lrOut)
 // Trashed: NZCV lr r0 r1 r2
 // Preserved: r3 r4 r5 r6 r7 sp
 xTaskPriorityDisinherit_entry:
+	word32 lr
 l00001250:
 	branch r0 == 0<32> l000012C8
 l000012C8:

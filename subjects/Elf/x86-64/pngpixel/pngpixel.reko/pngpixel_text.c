@@ -7,6 +7,8 @@
 // 0000000000400CD0: void _start(Register (ptr64 Eq_n) rdx, Stack word32 dwArg00)
 void _start(void (* rdx)(), word32 dwArg00)
 {
+	void * fp;
+	word64 qwArg00;
 	__align_stack<word64>((char *) fp + 8);
 	__libc_start_main(&g_t4012F9, (int32) qwArg00, (char *) fp + 8, &g_t401780, &g_t4017F0, rdx, fp);
 	__hlt();
@@ -59,6 +61,7 @@ void frame_dummy()
 //      print_pixel
 word32 component(Eq_n ecx, word32 edx, uint32 esi, word64 rdi, int32 r8d)
 {
+	word64 rcx;
 	Eq_n ecx = (word32) rcx;
 	Eq_n eax_n = (edx + (esi & 0x3F) *s r8d) *s ecx;
 	struct Eq_n * v16_n = rdi + ((uint64) (((esi >> 0x06) *s r8d) *s ecx) << 0x03) + (uint64) (eax_n >> 0x03);
@@ -111,6 +114,7 @@ l0000000000400EC1:
 //      main
 void print_pixel(uint32 ecx, word64 rdx, word64 rsi, word64 rdi, struct Eq_n * fs)
 {
+	ptr64 fp;
 	word64 rax_n = fs->qw0028;
 	Eq_n eax_n = (word32) (byte) png_get_bit_depth(rdi, rsi, rsi, rdx, rsi, rdi, rax_n);
 	png_get_color_type(rdi, rsi, rsi, eax_n);
@@ -169,6 +173,11 @@ l00000000004012C9:
 // 00000000004012F9: void main(Register (ptr64 Eq_n) rsi, Register word32 edi, Register (ptr32 Eq_n) fs)
 void main(struct Eq_n * rsi, word32 edi, struct Eq_n * fs)
 {
+	ptr64 fp;
+	word32 dwLoc78;
+	int32 dwLoc6C;
+	uint32 dwLoc88;
+	uint32 dwLoc84;
 	word64 rax_n = fs->qw0028;
 	if (edi != 0x04)
 	{
@@ -290,6 +299,7 @@ l000000000040175D:
 // 0000000000401780: void __libc_csu_init(Register word64 rdx, Register word64 rsi, Register word32 edi)
 void __libc_csu_init(word64 rdx, word64 rsi, word32 edi)
 {
+	word64 rdi;
 	word32 edi = (word32) rdi;
 	_init();
 	int64 rbp_n = 0x00601E08 - 0x00601E00;

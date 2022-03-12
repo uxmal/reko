@@ -58,6 +58,7 @@ word32 fn00401158()
 // Trashed: eax edx Top
 // Preserved: esp
 fn00401158_entry:
+	selector fs
 l00401158:
 	return Mem0[Mem0[fs:0x2C<16>:word32] + Mem0[0x0040208B<p32>:word32] * 4<32>:word32]
 fn00401158_exit:
@@ -111,6 +112,8 @@ void fn004011B0(word32 dwArg04)
 // Trashed: SCZO eax ecx edx Top
 // Preserved: ebp ebx esp
 fn004011B0_entry:
+	ptr32 fp
+	word32 dwLoc08
 l004011B0:
 	word32 ebx_12 = dwArg04
 	branch dwArg04 != 0<32> l004011D7

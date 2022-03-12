@@ -8,6 +8,7 @@ void _start(word32 g1, word32 o3, word32 o4, word32 o5, word32 o7)
 // Terminates process
 _start_exit:
 _start_entry:
+	ptr32 fp
 l00011498:
 	branch g1 == 0<32> l000114B0_ds_t
 l000114B0_ds_t:
@@ -159,6 +160,9 @@ word32 notice(word32 o0, ptr32 & i1Out, ptr32 & i2Out, ptr32 & i6Out)
 // Trashed: i0 i1 i2 i3 i4 i5 i6 i7
 // Preserved: o0 o1 o2 o3 o4 o5 o7 sp
 notice_entry:
+	ptr32 fp
+	word32 o1
+	word32 o2
 l0001162C:
 	vfprintf(0x2B640<32>, o0, fp + 0x48<32>)
 	i1Out = o1
@@ -213,6 +217,10 @@ word32 xmalloc(ptr32 & i1Out, ptr32 & i2Out, ptr32 & i6Out)
 // Trashed: NZVC g0 i0 i1 i2 i3 i4 i5 i6 i7
 // Preserved: o1 o2 o3 o4 o5 o7 sp
 xmalloc_entry:
+	ptr32 fp
+	word32 o0
+	word32 o1
+	word32 o2
 l00011674:
 	branch malloc(SLICE(o0, size_t, 0)) != 0<32> l000116A8
 l000116A8:
@@ -240,6 +248,8 @@ word32 xrealloc(word32 o0, ptr32 & i1Out, ptr32 & i2Out)
 // Trashed: NZVC g0 i0 i1 i2 i3 i4 i5 i6 i7
 // Preserved: o1 o2 o3 o4 o5 o7 sp
 xrealloc_entry:
+	word32 o1
+	word32 o2
 l000116B0:
 	bool v23_67
 	branch o0 == 0<32> l000116BC_ds_t
@@ -816,6 +826,7 @@ word32 visit_each_hash_node(word32 o0)
 // Trashed: NZVC g0 g3 i0 i1 i2 i3 i4 i5 i6 i7 l0 l1 o0
 // Preserved: o1 o2 o3 o4 o5 o7 sp
 visit_each_hash_node_entry:
+	word32 l0
 l00011BE4:
 	word32 i0_33 = o0
 	branch o0 - (o0 + 0x1800<32>) >=u 0<32> l00011BF8_ds_t
@@ -1082,6 +1093,7 @@ word32 abspath(word32 o0, word32 o1, ptr32 & i6Out)
 // Trashed: NZVC g0 i0 i1 i2 i3 i4 i5 i6 i7 l0 o1 o2 o3 o4 o5 o7 sp
 // Preserved:
 abspath_entry:
+	ptr32 fp
 l00011F34:
 	word32 i0_25 = o0
 	branch o0 != 0<32> l00011F4C
@@ -1420,6 +1432,8 @@ word32 find_file(word32 o0, ptr32 & l2Out, ptr32 & l3Out, ptr32 & i0Out, ptr32 &
 // Trashed: NZVC g0 i0 i1 i2 i3 i4 i5 i6 i7 l0 l1 l2 l3 l4 l5 o0 o1 o2 o3 o4 o5 o7 sp
 // Preserved:
 find_file_entry:
+	word32 l2
+	word32 l3
 l00012304:
 	word32 l1_34
 	word32 i1_121
@@ -1496,6 +1510,7 @@ word32 check_aux_info(word32 o0, ptr32 & i1Out)
 // Trashed: NZVC g0 i0 i1 i2 i3 i4 i5 i6 i7
 // Preserved: o0 o1 o2 o3 o4 o5 o7 sp
 check_aux_info_entry:
+	word32 o1
 l000123F8:
 	branch o0 != 0<32> l00012410
 l00012410:
@@ -1552,6 +1567,7 @@ void referenced_file_is_newer(word32 o0)
 // Trashed: NZVC g0 i0 i1 i2 i3 i4 i5 i6 i7 l0 l1 l2 l3 l4 l5 o0 o1 o2 o3 o4 o5 o7 sp
 // Preserved:
 referenced_file_is_newer_entry:
+	ptr32 fp
 l0001245C:
 	word32 l1_83
 	word32 i1_199
@@ -1597,6 +1613,7 @@ void save_def_or_dec()
 // Trashed: NZVC g0 g2 g3 i0 i1 i2 i3 i4 i5 i6 i7 l0 l1 l2 l3 l4 l5 o0 o1 o2 o3 o4 o5 o7 sp
 // Preserved:
 save_def_or_dec_entry:
+	ptr32 fp
 l0001251C:
 	word32 i2_1124
 	word32 i1_1127
@@ -1880,6 +1897,7 @@ word32 munge_compile_params(word32 o0, ptr32 & i6Out)
 // Trashed: NZVC g0 g2 i0 i1 i2 i3 i4 i5 i6 i7 l0 l1 l2 o0 o1 o2 o3 o4 o5 o7 sp
 // Preserved:
 munge_compile_params_entry:
+	ptr32 fp
 l00012B64:
 	word32 sp_25 = fp + 0xFFFFFF90<32> - ((CONVERT(strlen(o0), size_t, uint32) << 2<32>) + 0x27<32> & 0xFFFFFFF8<32>)
 	Mem30[sp_25 + 0x60<32>:word32] = Mem0[0x27F24<32>:word32]
@@ -2052,6 +2070,9 @@ word32 process_aux_info_file(word32 o0, word32 o2, ptr32 & l1Out)
 // Trashed: NZVC g0 i0 i1 i2 i3 i4 i5 i6 i7 l0 l1 l2 l3 l4 l5 l6 l7 o0 o1 o2 o3 o4 o5 o7 sp
 // Preserved:
 process_aux_info_file_entry:
+	ptr32 fp
+	word32 l0
+	word32 l1
 l00013034:
 	word32 sp_23 = fp + 0xFFFFFF08<32> - (CONVERT(strlen(o0), size_t, uint32) + 0xA<32> & 0xFFFFFFF8<32>)
 	strcpy(sp_23 + 0x60<32>, o0)
@@ -2341,6 +2362,8 @@ word32 check_source(word32 o0, word32 o1, ptr32 & i1Out, ptr32 & i2Out, ptr32 & 
 // Trashed: NZVC g0 i0 i1 i2 i3 i4 i5 i6 i7
 // Preserved: o0 o1 o2 o3 o4 o5 o7 sp
 check_source_entry:
+	ptr32 fp
+	word32 o2
 l000136E0:
 	branch o0 != 0<32> l000136EC_ds_t
 l000136EC_ds_t:
@@ -2453,6 +2476,7 @@ word32 output_bytes(word32 o0, word32 o1, ptr32 & l1Out, ptr32 & l2Out, ptr32 & 
 // Trashed: NZVC g0 i0 i1 i2 i3 i4 i5 i6 i7 l0 l1 l2 l3 o0 o1 o2 o3 o4 o5 o7 sp
 // Preserved:
 output_bytes_entry:
+	word32 o2
 l00013808:
 	word32 l0_24 = Mem0[0x28200<32>:word32]
 	word32 i0_37 = o0
@@ -2518,6 +2542,10 @@ word32 output_up_to(word32 o0, ptr32 & l2Out, ptr32 & i0Out, ptr32 & i1Out, ptr3
 // Trashed: NZVC g0 i0 i1 i2 i3 i4 i5 i6 i7 l0 l1 l2 l3 o0 o1 o2 o3 o4 o5 o7 sp
 // Preserved:
 output_up_to_entry:
+	word32 o1
+	word32 o2
+	word32 l1
+	word32 l2
 l000138AC:
 	word32 o2_24 = Mem0[0x281E0<32>:word32]
 	word32 i0_35 = o0
@@ -2549,6 +2577,8 @@ word32 other_variable_style_function(word32 o0, ptr32 & i1Out, ptr32 & i6Out)
 // Trashed: NZVC g0 g2 g3 i0 i1 i2 i3 i4 i5 i6 i7 o0
 // Preserved: o1 o2 o3 o4 o5 o7 sp
 other_variable_style_function_entry:
+	ptr32 fp
+	word32 o1
 l000138F0:
 	word32 o0_37 = CONVERT(SLICE(cond(0<32> - substr(o0, 0x17468<32>)), bool, 0), bool, word32)
 	i1Out = o1
@@ -2980,6 +3010,7 @@ void scan_for_missed_items()
 // Trashed: NZVC g0 i0 i1 i2 i3 i4 i5 i6 i7
 // Preserved: g2 g3 l0 l1 l2 l3 l4 o0 o1 o2 o3 o4 o5 o7 sp
 scan_for_missed_items_entry:
+	ptr32 fp
 l00014578:
 	word32 o1_22 = Mem0[0x281C0<32>:word32]
 	word32 o0_24 = Mem0[0x281D0<32>:word32]
@@ -3377,6 +3408,11 @@ word32 getpwd()
 // Trashed: NZVC g0 i0 i1 i2 i3 i4 i5 i6 i7 l0 l1 l2 l3 l4 o0 o1 o2 o3 o4 o5 o7 sp
 // Preserved:
 getpwd_entry:
+	ptr32 fp
+	word32 dwLoc88
+	word32 dwLoc0110
+	word32 dwLoc98
+	word32 dwLoc0120
 l000152B8:
 	word32 i0_108 = Mem0[0x2B2A0<32>:word32]
 	branch i0_108 != 0<32> l000152CC_ds_t
@@ -4151,6 +4187,8 @@ word32 exchange(word32 o0, ptr32 & i2Out, ptr32 & i4Out, ptr32 & i5Out, ptr32 & 
 // Trashed: NZVC g0 g1 g2 g3 g4 i0 i1 i2 i3 i4 i5 i6 i7 o0 o1 o4 o5
 // Preserved: o2 o3 o7 sp
 exchange_entry:
+	ptr32 fp
+	word32 o2
 l00015C60:
 	word32 g2_134
 	word32 g1_18 = Mem0[0x2B300<32>:word32]
@@ -4255,6 +4293,10 @@ word32 _getopt_initialize(word32 o2, ptr32 & i1Out, ptr32 & i4Out, ptr32 & i5Out
 // Trashed: NZVC g0 i0 i1 i2 i3 i4 i5 i6 i7 o0
 // Preserved: o1 o2 o3 o4 o5 o7 sp
 _getopt_initialize_entry:
+	ptr32 fp
+	word32 o1
+	word32 o4
+	word32 o5
 l00015D64:
 	word32 o2_20 = Mem0[0x28068<32>:word32]
 	Mem25[0x2B2F0<32>:word32] = o2_20
@@ -4306,6 +4348,8 @@ word32 _getopt_internal(word32 o1, word32 o2, word32 o4, word32 o5, ptr32 & l6Ou
 // Trashed: NZVC g0 g2 g3 i0 i1 i2 i3 i4 i5 i6 i7 l0 l1 l2 l3 l4 l5 l6 l7 o0 o1 o2 o3 o4 o5 o7 sp
 // Preserved: g1 g4
 _getopt_internal_entry:
+	ptr32 fp
+	word32 l7
 l00015E04:
 	word32 o2_22 = Mem0[0x28068<32>:word32]
 	Mem27[0x28064<32>:word32] = 0<32>
@@ -5069,6 +5113,9 @@ word32 pexecute(word32 o0, word32 o1, word32 o3, word32 o4, word32 o5, word32 l1
 // Trashed: NZVC g0 i0 i1 i2 i3 i4 i5 i6 i7 l0 l1 o0
 // Preserved: o1 o2 o3 o4 o5 o7 sp
 pexecute_entry:
+	ptr32 fp
+	word32 dwLoc18
+	word32 dwLoc14
 l000169F8:
 	word32 o0_31
 	branch (dwArg5C & 4<32>) == 0<32> l00016A18_ds_t
@@ -5202,6 +5249,9 @@ word32 pwait(word32 o1, ptr32 & i2Out, ptr32 & i6Out)
 // Trashed: i0 i1 i2 i3 i4 i5 i6 i7
 // Preserved: o1 o2 o3 o4 o5 o7 sp
 pwait_entry:
+	ptr32 fp
+	word32 o0
+	word32 o2
 l00016C2C:
 	wait(o1)
 	i2Out = o2
@@ -5220,6 +5270,9 @@ word32 mkstemps(word32 o0, word32 o1)
 // Trashed: NZVC g0 i0 i1 i2 i3 i4 i5 i6 i7 o0 o1
 // Preserved: g2 g3 l0 l1 l2 l3 l4 l5 o2 o3 o4 o5 o7 sp
 mkstemps_entry:
+	ptr32 fp
+	word32 dwLoc14
+	word32 dwLoc18
 l00016C40:
 	word32 i0_432
 	word32 o0_21 = CONVERT(strlen(o0), size_t, uint32)

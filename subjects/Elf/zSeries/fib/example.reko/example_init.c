@@ -9,6 +9,7 @@
 //      __libc_csu_init
 word64 _init(word64 r6, word64 r7, word64 r8, word64 r9, word64 r10, word64 r11, word64 r13, ptr64 & r8Out, ptr64 & r9Out, ptr64 & r10Out, ptr64 & r12Out, ptr64 & r13Out)
 {
+	ptr64 fp;
 	struct Eq_n * r15_n = fp - 320;
 	<anonymous> * r1_n = g_ptr2038;
 	if (r1_n != null)

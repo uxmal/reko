@@ -397,6 +397,8 @@ void fn0856(word16 r4, word16 wArg00)
 // Trashed: NZVC r0 r1 r5
 // Preserved: r4 sp
 fn0856_entry:
+	word16 r3
+	word16 r5
 l0856:
 	fn1578()
 	word16 r5_9 = Mem8[0x007E<p16>:word16]
@@ -710,6 +712,7 @@ l0BC2:
 	fn13AA(stackArg0)
 	__bpt()
 fn0B06_entry:
+	ptr16 fp
 l0B06:
 	// Failed to bind call argument.
 	// Please report this issue at https://github.com/uxmal/reko
@@ -839,6 +842,7 @@ void fn0C90(word16 wArg02, byte bArg04)
 // Trashed: NZVC sp
 // Preserved: r4
 fn0C90_entry:
+	word16 wArg04
 	byte bArg04_46 = SLICE(wArg04, byte, 0)
 l0C90:
 	branch wArg02 >> 1<i16> >=u 0<16> l0CB2
@@ -883,6 +887,7 @@ void fn0CEC(word16 r0)
 // Terminates process
 fn0CEC_exit:
 fn0CEC_entry:
+	ptr16 ptrLoc02
 l0CEC:
 	word16 r5_6 = fn0D3C(r0, ptrLoc02)
 	word16 r4_18 = (Mem0[0x28F0<p16>:word16] >> 5<i16>) + 0x17<16>
@@ -1083,6 +1088,7 @@ word16 fn0E98(word16 r5, ptr16 & r5Out)
 // Trashed: NZVC r0 r4 r5
 // Preserved: r1 r2 r3 sp
 fn0E98_entry:
+	word16 wLoc08
 l0E98:
 	Mem3[0x0046<p16>:word16] = 0xFFE2<16>
 	word16 wLoc02_101 = 0xF1<16>
@@ -1137,6 +1143,7 @@ void fn0F04(word16 r0)
 // Terminates process
 fn0F04_exit:
 fn0F04_entry:
+	ptr16 ptrLoc02
 l0F04:
 	word16 r5_6 = fn0D3C(r0, ptrLoc02)
 	Mem12[0x00AA<p16>:word16] = 0<16>

@@ -7,6 +7,7 @@
 // 00011498: void _start(Register (ptr32 Eq_n) g1, Register word32 o3, Register word32 o4, Register word32 o5, Register word32 o7)
 void _start(void (* g1)(), word32 o3, word32 o4, word32 o5, word32 o7)
 {
+	ptr32 fp;
 	if (g1 == null)
 	{
 		atexit(&g_t16EE4);
@@ -99,6 +100,9 @@ void init_dummy()
 //      main
 char * notice(char * o0, ptr32 & i1Out, struct Eq_n & i2Out, struct Eq_n & i6Out)
 {
+	struct Eq_n * fp;
+	ptr32 o1;
+	struct Eq_n * o2;
 	vfprintf(&g_t2B640, o0, &fp->dw0044 + 1);
 	i1Out = o1;
 	i2Out = o2;
@@ -138,6 +142,10 @@ void xstrerror(char * o0)
 //      make_temp_file
 word32 xmalloc(ptr32 & i1Out, ptr32 & i2Out, ptr32 & i6Out)
 {
+	ptr32 fp;
+	word32 o0;
+	ptr32 o1;
+	ptr32 o2;
 	if (malloc((size_t) o0) != null)
 	{
 		i1Out = o1;
@@ -161,6 +169,8 @@ word32 xmalloc(ptr32 & i1Out, ptr32 & i2Out, ptr32 & i6Out)
 //      output_bytes
 Eq_n xrealloc(Eq_n o0, ptr32 & i1Out, ptr32 & i2Out)
 {
+	ptr32 o1;
+	ptr32 o2;
 	bool v23_n;
 	if (o0 != 0x00)
 		v23_n = realloc(o0, (size_t) o1) != null;
@@ -600,6 +610,7 @@ word32 string_list_cons(ptr32 & i6Out)
 //      do_processing
 struct Eq_n * visit_each_hash_node(struct Eq_n * o0)
 {
+	struct Eq_n * l0;
 	struct Eq_n * i0_n = o0;
 	if (o0 - (o0 + 0x1800) <u 0x00)
 	{
@@ -828,6 +839,7 @@ l00011EC8:
 //      main
 word32 abspath(Eq_n o0, Eq_n o1, struct Eq_n & i6Out)
 {
+	ptr32 fp;
 	Eq_n i0_n = o0;
 	if (o0 == 0x00)
 		i0_n = g_t2B270;
@@ -1126,6 +1138,8 @@ l000122FC:
 //      save_def_or_dec
 Eq_n find_file(Eq_n o0, char & l2Out, ptr32 & l3Out, union Eq_n & i0Out, ptr32 & i1Out)
 {
+	char * l2;
+	ptr32 l3;
 	Eq_n l1_n;
 	ptr32 i1_n;
 	struct Eq_n * o0_n = lookup(164416, o0, out l1_n, out i1_n);
@@ -1190,6 +1204,7 @@ void aux_info_corrupted()
 //      save_def_or_dec
 word32 check_aux_info(word32 o0, ptr32 & i1Out)
 {
+	ptr32 o1;
 	if (o0 != 0x00)
 	{
 		i1Out = o1;
@@ -1231,6 +1246,7 @@ l00012448:
 // 0001245C: void referenced_file_is_newer(Register (ptr32 int8) o0)
 void referenced_file_is_newer(int8 * o0)
 {
+	ptr32 fp;
 	int8 * l1_n;
 	word32 i1_n;
 	word32 i1_n;
@@ -1261,6 +1277,7 @@ void referenced_file_is_newer(int8 * o0)
 // 0001251C: void save_def_or_dec()
 void save_def_or_dec()
 {
+	ptr32 fp;
 	word32 i2_n;
 	word32 i1_n;
 	word32 i1_n;
@@ -1506,6 +1523,7 @@ l00012AB4:
 //      main
 Eq_n munge_compile_params(Eq_n o0, ptr32 & i6Out)
 {
+	ptr32 fp;
 	struct Eq_n * sp_n = fp + ~0x6F - (((uint32) strlen(o0) << 0x02) + 0x27 & ~0x07);
 	sp_n->a0060[0] = compiler_file_name;
 	Eq_n i0_n = o0;
@@ -1648,6 +1666,9 @@ Eq_n gen_aux_info_file(Eq_n o0, ptr32 & l0Out, struct stat & l1Out, char & l4Out
 //      do_processing
 char * process_aux_info_file(Eq_n o0, word32 o2, union Eq_n & l1Out)
 {
+	struct Eq_n * fp;
+	char * l0;
+	Eq_n l1;
 	ptr32 sp_n = (char *) fp - 0x00F8 - ((uint32) strlen(o0) + 0x0A & ~0x07);
 	strcpy(sp_n + 0x60, o0);
 	strcat(sp_n + 0x60, 0x00016F00);
@@ -1886,6 +1907,8 @@ void declare_source_confusing(Eq_n o0)
 //      scan_for_missed_items
 word32 check_source(word32 o0, Eq_n o1, union Eq_n & i1Out, struct Eq_n & i2Out, struct Eq_n & i6Out)
 {
+	struct Eq_n * fp;
+	struct Eq_n * o2;
 	if (o0 != 0x00)
 	{
 		i1Out = o1;
@@ -1973,6 +1996,7 @@ Eq_n forward_to_next_token_char(Eq_n o0)
 //      output_up_to
 uint32 output_bytes(Eq_n o0, Eq_n o1, ptr32 & l1Out, ptr32 & l2Out, union Eq_n & i0Out, union Eq_n & i1Out, ptr32 & i2Out)
 {
+	ptr32 o2;
 	uint32 l0_n = g_dw28200;
 	Eq_n i0_n = o0;
 	Eq_n i1_n = o1;
@@ -2022,6 +2046,10 @@ word32 output_string(Eq_n o0, struct Eq_n & l2Out, ptr32 & i0Out, ptr32 & i1Out,
 //      edit_fn_definition
 word32 output_up_to(Eq_n o0, ptr32 & l2Out, union Eq_n & i0Out, ptr32 & i1Out, ptr32 & i2Out)
 {
+	ptr32 o1;
+	ptr32 o2;
+	word32 l1;
+	ptr32 l2;
 	ui32 o2_n = g_dw281E0;
 	Eq_n i0_n = o0;
 	ptr32 i1_n = o1;
@@ -2042,6 +2070,8 @@ word32 output_up_to(Eq_n o0, ptr32 & l2Out, union Eq_n & i0Out, ptr32 & i1Out, p
 //      edit_fn_definition
 int8 * other_variable_style_function(int8 * o0, ptr32 & i1Out, ptr32 & i6Out)
 {
+	ptr32 fp;
+	ptr32 o1;
 	int8 * o0_n = (word32) (bool) cond(0x00 - substr(o0, &g_b17468));
 	i1Out = o1;
 	i6Out = fp;
@@ -2406,6 +2436,7 @@ l00014550:
 // 00014578: void scan_for_missed_items()
 void scan_for_missed_items()
 {
+	struct Eq_n * fp;
 	Eq_n o1_n = g_t281C0;
 	up32 o0_n = g_dw281D0;
 	g_t28130 = (word32) o1_n - 1;
@@ -2727,6 +2758,11 @@ ui32 main(char ** o1)
 //      main
 Eq_n getpwd()
 {
+	ptr32 fp;
+	word32 dwLoc88;
+	word32 dwLoc0110;
+	word32 dwLoc98;
+	word32 dwLoc0120;
 	Eq_n i0_n = g_t2B2A0;
 	if (i0_n != 0x00)
 		return i0_n;
@@ -3325,6 +3361,8 @@ int8 * my_index(int8 * o0, Eq_n o1)
 //      _getopt_internal
 word32 (* exchange)[](word32 o0[], int8 & i2Out, ptr32 & i4Out, ptr32 & i5Out, struct Eq_n & i6Out)
 {
+	struct Eq_n * fp;
+	int8 * o2;
 	ptr32 * g2_n;
 	ptr32 * g1_n = g_ptr2B300;
 	ptr32 * i5_n = optind;
@@ -3419,6 +3457,10 @@ l00015D30:
 //      _getopt_internal
 int8 * _getopt_initialize(int8 * o2, ptr32 & i1Out, ptr32 & i4Out, ptr32 & i5Out, ptr32 & i6Out)
 {
+	ptr32 fp;
+	ptr32 o1;
+	ptr32 o4;
+	ptr32 o5;
 	ptr32 * o2_n = optind;
 	g_ptr2B2F0 = o2_n;
 	g_ptr2B300 = o2_n;
@@ -3455,6 +3497,8 @@ int8 * _getopt_initialize(int8 * o2, ptr32 & i1Out, ptr32 & i4Out, ptr32 & i5Out
 //      getopt_long_only
 Eq_n _getopt_internal(word32 (* o1)[], int8 * o2, ptr32 * o4, word32 o5, ptr32 & l6Out, ptr32 & l7Out, struct Eq_n & i6Out)
 {
+	struct Eq_n * fp;
+	ptr32 l7;
 	ptr32 * o2_n = optind;
 	optarg.u0 = 0x00;
 	word32 i1_n[] = o1;
@@ -4064,6 +4108,9 @@ void getopt_long_only(word32 (* o1)[], int8 * o2, ptr32 * o4)
 //      gen_aux_info_file
 Eq_n pexecute(Eq_n o0, pid_t * o1, word32 o3, word32 * o4, word32 * o5, Eq_n l1, ui32 dwArg5C, ptr32 & l0Out, ptr32 & i6Out)
 {
+	ptr32 fp;
+	Eq_n dwLoc18;
+	Eq_n dwLoc14;
 	<anonymous> * o0_n;
 	if ((dwArg5C & 0x04) != 0x00)
 		o0_n = &g_t27E3C;
@@ -4165,6 +4212,9 @@ l00016B10:
 //      gen_aux_info_file
 word32 pwait(int32 * o1, ptr32 & i2Out, ptr32 & i6Out)
 {
+	ptr32 fp;
+	word32 o0;
+	ptr32 o2;
 	wait(o1);
 	i2Out = o2;
 	i6Out = fp;
@@ -4176,6 +4226,9 @@ word32 pwait(int32 * o1, ptr32 & i2Out, ptr32 & i6Out)
 //      make_temp_file
 Eq_n mkstemps(Eq_n o0, Eq_n o1)
 {
+	ptr32 fp;
+	Eq_n dwLoc14;
+	int32 dwLoc18;
 	Eq_n i0_n;
 	Eq_n o0_n = (uint32) strlen(o0);
 	if (o0_n - ((word32) o1 + 6) >= 0x00)

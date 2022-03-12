@@ -23,6 +23,7 @@ word16 fn02F4(byte a, byte c, byte b, word16 de, byte h, word16 ix, word16 wArg2
 // Trashed: SZHVNC af bc de hl ix
 // Preserved: sp
 fn02F4_entry:
+	bool C
 l02F4:
 	byte a_8 = a + Mem0[ix + -28<i16>:byte] + CONVERT(C, bool, byte)
 	ui16 a_a_114 = SEQ(v22_40, Mem0[ix + -10<i16>:byte]) + (SEQ(b, c) ^ Mem0[ix - 6<i16>:ui16])
@@ -132,6 +133,7 @@ word16 fn03B2(byte a, byte b, byte c, word16 de, word16 hl, word16 ix, word16 wA
 // Trashed: SZHVNC af bc de hl ix sp
 // Preserved:
 fn03B2_entry:
+	ptr32 fp
 	word16 hl_313 = hl
 l03B2:
 	uint32 v77 = SEQ(hl_313, b, c) >>u 1<8>
@@ -343,6 +345,8 @@ void fn060E(byte a, byte c, word16 de, word16 ix, word16 wArg20)
 // Trashed: SZHVNC af bc de hl ix sp
 // Preserved:
 fn060E_entry:
+	ptr32 fp
+	bool C
 l060E:
 	byte a_8 = a + Mem4[ix + -37<i16>:byte] + CONVERT(C, bool, byte)
 	byte a_15 = Mem4[ix + -32<i16>:byte] + Mem4[ix + -36<i16>:byte] + CONVERT(a_8 <u 0<8>, bool, byte)
@@ -548,6 +552,7 @@ void fn0C39(byte a, byte b, word16 de, byte l, byte h, word16 ix, word16 wArg20)
 // Trashed: SZHVNC af bc de hl ix
 // Preserved: sp
 fn0C39_entry:
+	bool C
 l0C39:
 	Mem5[ix + -4<i16>:byte] = a
 	byte a_10 = b + Mem5[ix + -9<i16>:byte] + CONVERT(C, bool, byte)
@@ -645,6 +650,7 @@ void fn0CB7(byte c, byte b, word16 de, byte h, byte l, word16 ix, word16 wArg20)
 // Trashed: SZHVNC af bc de hl ix
 // Preserved: sp
 fn0CB7_entry:
+	bool C
 l0CB7:
 	ui16 a_a_85 = SEQ(v21_35, Mem0[ix + -34<i16>:byte]) - (SEQ(b, c) ^ Mem0[ix - 4<i16>:ui16])
 	byte a_24 = l ^ Mem0[ix + -2<i16>:byte]
@@ -792,6 +798,7 @@ void fn0E13(word16 de, word16 wArg20)
 // Trashed: SZHVNC bc de hl ix sp
 // Preserved:
 fn0E13_entry:
+	ptr32 fp
 l0E13:
 	word16 hl_13 = fp + 0xC<16>
 	word16 bc_15 = 4<16>
@@ -837,6 +844,8 @@ void fn164F(byte a, word16 bc, byte h, word16 ix, word16 wArg0E, byte bArg11, wo
 // Trashed: SZHVNC af bc de hl ix
 // Preserved: sp
 fn164F_entry:
+	bool C
+	word16 wArg11
 	byte bArg1B_262 = SLICE(wArg1B, byte, 0)
 	byte bArg21_276 = SLICE(wArg21, byte, 0)
 l164F:

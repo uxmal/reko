@@ -7,6 +7,7 @@
 // 0000269C: void _start(Register word32 r4, Register word32 r5, Register word32 r12, Stack word32 dwArg00)
 void _start(word32 r4, word32 r5, word32 r12, word32 dwArg00)
 {
+	ptr32 fp;
 	struct Eq_n * r6_n = 9898 - g_dw26BC;
 	word32 r7_n;
 	int32 lr_n;
@@ -538,6 +539,11 @@ word32 fn00002CBC(struct Eq_n & r6Out, struct Eq_n & r7Out)
 //      fn00002CBC
 word32 fn00002CDA(struct Eq_n * r6, uint32 r7, ptr32 & r6Out, ptr32 & r7Out, ptr32 & r8Out, struct Eq_n & r9Out, ptr32 & r12Out)
 {
+	ptr32 r12;
+	ptr32 dwLoc10;
+	ptr32 dwLoc0C;
+	word32 dwLoc08;
+	word32 dwLoc04;
 	while (true)
 	{
 		uint32 r7_n;
@@ -688,6 +694,7 @@ ui32 g_dw2DEA = ~0x28FC0001; // 00002DEA
 // 00002DF0: void fn00002DF0(Register word32 r0, Register word32 r1, Register word32 r2, Register word32 r7, Register (ptr32 Eq_n) r11)
 void fn00002DF0(word32 r0, word32 r1, word32 r2, word32 r7, struct Eq_n * r11)
 {
+	ptr32 fp;
 	int32 r9_n = r11->dw000C;
 	int32 r5_n = r11->dw0008;
 	struct Eq_n * r6_n = 11764 - g_dw2E76;
@@ -1007,6 +1014,8 @@ ui32 g_dw30D2 = ~0x28FC0001; // 000030D2
 //      fn000045F0
 Eq_n (* fn000030D8)[](Eq_n r4, Eq_n r5, Eq_n r7, ui32 r12, Eq_n lr, union Eq_n & r9Out, struct Eq_n & r10Out, ptr32 & r11Out, union Eq_n & r12Out, union Eq_n & lrOut)
 {
+	ptr32 r11;
+	Eq_n r9;
 	struct Eq_n * r6_n = 0x30DC - g_dw311E;
 	Eq_n r8_n[] = r6_n->ptrFFFFFFC8;
 	struct Eq_n * r10_n = r8_n[r12].ptr0000;
@@ -1273,6 +1282,7 @@ ui32 g_dw3276 = ~0x28FC0001; // 00003276
 //      fn00003334
 Eq_n fn000032D0(Eq_n r0, Eq_n r1, Eq_n r2, Eq_n r3, Eq_n r4, Eq_n r5, Eq_n r7, Eq_n r11, Eq_n r12, Eq_n lr, union Eq_n & r1Out, union Eq_n & r2Out, union Eq_n & r3Out, union Eq_n & r10Out, ptr32 & r11Out, union Eq_n & r12Out, ptr32 & lrOut)
 {
+	ptr32 fp;
 	Eq_n r12_n;
 	ptr32 r11_n;
 	Eq_n r10_n;
@@ -1344,6 +1354,7 @@ ui32 g_dw332E = ~0x27DD0001; // 0000332E
 //      fn0000511C
 word64 fn00003334(Eq_n r4, word32 r8, Eq_n r9, word32 r10, Eq_n r11, Eq_n lr, Eq_n dwArg00, union Eq_n & r11_r10Out, ptr32 & r2Out, ptr32 & r3Out, ptr32 & r4Out, ptr32 & r5Out, struct Eq_n & r6Out, struct Eq_n & r7Out, union Eq_n & lrOut)
 {
+	ptr32 fp;
 	Eq_n r7_n = fp - 36;
 	struct Eq_n * r6_n = 0x333E - g_dw3468;
 	word32 r0_n = r10;
@@ -2147,6 +2158,10 @@ ui32 g_dw3B5A = ~0x28FC0001; // 00003B5A
 //      fn000045F0
 Eq_n fn00003B60(union Eq_n & r5Out, union Eq_n & r6Out, union Eq_n & r7Out, ptr32 & lrOut)
 {
+	Eq_n r4;
+	Eq_n r5;
+	Eq_n lr;
+	Eq_n r12;
 	Eq_n r7_n = (0x3B64 - g_dw3B8A)->tFFFFFFC8;
 	if (*((word32) r7_n + 20) == 0x00)
 	{
@@ -2209,6 +2224,10 @@ ui32 g_dw3B9E = ~0x27DD0001; // 00003B9E
 //      fn0000511C
 Eq_n fn00003BA4(Eq_n r0, Eq_n r1, Eq_n r2, Eq_n r3, Eq_n r4, Eq_n r11, Eq_n r12, Eq_n lr, union Eq_n & r1Out, union Eq_n & r2Out, union Eq_n & r3Out, union Eq_n & r4Out, union Eq_n & r5Out, union Eq_n & r6Out, union Eq_n & r7Out, struct Eq_n & r10Out, union Eq_n & r11Out, union Eq_n & r12Out, union Eq_n & lrOut)
 {
+	Eq_n r5;
+	Eq_n r6;
+	Eq_n r7;
+	Eq_n dwArg00;
 	ptr32 r6_n = 15272 - g_dw3BC6;
 	Eq_n r5_n = r11;
 	Eq_n r7_n = r12;
@@ -2260,6 +2279,7 @@ ui32 g_dw3BC6 = ~0x27DD0001; // 00003BC6
 //      fn0000511C
 word32 fn0000418C(Eq_n r1, Eq_n r5, Eq_n r9, Eq_n r10, Eq_n r11, Eq_n lr, ptr32 & r1Out, ptr32 & r2Out, ptr32 & r3Out, ptr32 & r4Out, ptr32 & r5Out, ptr32 & r6Out, ptr32 & r7Out, union Eq_n & r10Out, union Eq_n & r11Out, union Eq_n & r12Out, union Eq_n & lrOut)
 {
+	ptr32 fp;
 	Eq_n r12_n;
 	struct Eq_n * r6_n = 0x4196 - g_dw42E8;
 	Eq_n r7_n = fp - 36;
@@ -2453,6 +2473,8 @@ ui32 g_dw42E8 = 0x700AC0C8; // 000042E8
 //      fn00004968
 word32 fn00004374(Eq_n r0, Eq_n r1, Eq_n r2, Eq_n r3, Eq_n r4, Eq_n r5, Eq_n r12, Eq_n lr, ptr32 & r12Out, ptr32 & lrOut)
 {
+	ptr32 fp;
+	word32 dwLoc28;
 	word32 r4_n;
 	struct Eq_n * r6_n = 17276 - g_dw4456;
 	Eq_n r10_n = r6_n->t0008;
@@ -2972,6 +2994,7 @@ ui32 g_dw4706 = ~0x3F070001; // 00004706
 //      fn00004968
 Eq_n fn00004864(Eq_n r0, Eq_n r1, Eq_n r2, Eq_n r3, Eq_n r11, Eq_n r12, Eq_n lr, union Eq_n & lrOut)
 {
+	ptr32 fp;
 	struct Eq_n * r6_n = 0x486C - g_dw4966;
 	Eq_n r5_n = r6_n->t0008;
 	ptr32 sp_n = fp - 688;
@@ -3071,6 +3094,7 @@ ui32 g_dw4966 = 4168930353; // 00004966
 //      fn0000511C
 Eq_n fn00004968(Eq_n r0, Eq_n r1, Eq_n r2, Eq_n r3, Eq_n r4, Eq_n r5, Eq_n lr, struct Eq_n & r11Out)
 {
+	ptr32 fp;
 	struct Eq_n * r6_n = 18800 - g_dw4A8A;
 	struct Eq_n * r8_n = r6_n->ptr0008;
 	struct Eq_n * sp_n = fp - 0x1518;
@@ -4432,6 +4456,7 @@ word32 fn000067DC(word32 r12)
 //      fn00003A0C
 void fn00006814(word32 r0, word32 r1, word32 r2, word32 r3, word32 r4, word32 r5, ptr32 r6, word32 r7, word32 r11, word32 r12, word32 lr)
 {
+	word32 dwLoc30;
 	struct Eq_n * r6_n = 26650 - g_dw692C;
 	word32 r0_n;
 	word32 r1_n;
@@ -4908,6 +4933,7 @@ ui32 g_dw6C60 = ~0xE48D; // 00006C60
 // 00006C64: void fn00006C64(Register Eq_n r0, Register Eq_n r1, Register ui32 r2, Register word32 r9, Register word32 r10, Register word32 r11, Register word32 r12, Register (ptr32 Eq_n) pc)
 void fn00006C64(Eq_n r0, Eq_n r1, ui32 r2, word32 r9, word32 r10, word32 r11, word32 r12, struct Eq_n * pc)
 {
+	word32 * fp;
 	fn00006B5C(r0, r1, r2, fp, r9, r10, r11, r12, pc);
 }
 
@@ -4975,6 +5001,7 @@ ui32 g_dw6CCA = 0x0013FFFF; // 00006CCA
 //      fn00006E5C
 word32 fn00006D14(word32 r0, word32 r1, word32 r2, word32 r3, word32 r4, word32 r5, word32 r6, word32 r7, word32 r10, word32 r11, word32 r12, word32 lr, ptr32 & r9Out, ptr32 & r10Out, struct Eq_n & r11Out, ptr32 & r12Out, ptr32 & lrOut)
 {
+	ptr32 fp;
 	struct Eq_n * r6_n = 27928 - g_dw6D96;
 	word32 r8_n = r6_n->dw0094;
 	word32 r3_n;
@@ -5351,6 +5378,7 @@ void fn00007130(Eq_n r10, struct Eq_n * r11, struct Eq_n * r12)
 //      fn000071D4
 bool fn00007140(Eq_n r3, Eq_n r4, Eq_n r5, Eq_n r11, Eq_n r12, Eq_n lr, ptr32 & r12Out, ptr32 & lrOut)
 {
+	ptr32 fp;
 	ptr32 r4_n;
 	struct Eq_n * r6_n = 28998 - g_dw71CC;
 	word32 r11_n;
@@ -5524,6 +5552,7 @@ ui32 g_dw7292 = 570217521; // 00007292
 //      fn00008144
 Eq_n fn00007294(Eq_n r0, Eq_n r1, Eq_n r2, struct Eq_n * r12, Eq_n lr, union Eq_n & r1Out, union Eq_n & r2Out, union Eq_n & r3Out, union Eq_n & r4Out, union Eq_n & r6Out, byte & r9Out, struct Eq_n & r10Out, struct Eq_n & r12Out, union Eq_n & lrOut)
 {
+	byte * r9;
 	struct Eq_n * r6_n = 29336 - g_dw7352;
 	word32 r3_n = r6_n[0x00A4];
 	struct Eq_n * r4_n = r12;
@@ -5601,6 +5630,7 @@ ui32 g_dw7352 = ~0x27CD0000; // 00007352
 //      fn00007754
 Eq_n fn00007358(Eq_n r0, Eq_n r1, Eq_n r2, Eq_n r3, Eq_n r4, Eq_n r5, struct Eq_n * r6, word32 r7, Eq_n r8, word32 r9, Eq_n r10, Eq_n r11, word32 r12, Eq_n lr, union Eq_n & r1Out, union Eq_n & r2Out, struct Eq_n & r3Out, word32 & r4Out, union Eq_n & r5Out, struct Eq_n & r6Out, ptr32 & r7Out, union Eq_n & r9Out, union Eq_n & r10Out, union Eq_n & r11Out, ptr32 & r12Out, struct Eq_n & lrOut)
 {
+	ptr32 fp;
 	struct Eq_n * r6_n = 0x7360 - g_dw74CA;
 	word32 r4_n;
 	word32 r12_n;
@@ -5956,6 +5986,8 @@ Eq_n g_t762E = // 0000762E
 //      fn000087C0
 byte fn00007754(Eq_n r2, Eq_n r3, Eq_n r8, Eq_n r9, Eq_n r10, Eq_n r11, Eq_n r12, union Eq_n & r0Out, union Eq_n & r1Out, union Eq_n & r2Out, union Eq_n & r3Out, union Eq_n & r4Out, union Eq_n & r5Out, union Eq_n & r6Out, union Eq_n & r7Out, union Eq_n & r9Out, union Eq_n & r10Out, union Eq_n & r11Out, union Eq_n & r12Out, union Eq_n & lrOut)
 {
+	ptr32 fp;
+	Eq_n lr;
 	struct Eq_n * sp_n = fp - 0x0544;
 	struct Eq_n * r6_n = 0x775C - g_dw78B2;
 	Eq_n r0_n = r9;
@@ -6577,6 +6609,7 @@ ui32 g_dw78B2 = 661411845; // 000078B2
 //      fn00008144
 Eq_n fn00007D56(Eq_n r0, Eq_n r1, Eq_n r2, Eq_n r3, Eq_n r4, Eq_n r5, struct Eq_n * r6, Eq_n r7, Eq_n r8, word32 r9, Eq_n r10, Eq_n r11, Eq_n r12, Eq_n lr, union Eq_n & r1Out, union Eq_n & r2Out, ptr32 & r3Out, byte & r4Out, struct Eq_n & r5Out, struct Eq_n & r6Out, union Eq_n & r7Out, union Eq_n & r8Out, byte & r9Out, union Eq_n & r10Out, union Eq_n & r11Out, ptr32 & r12Out, union Eq_n & lrOut)
 {
+	ptr32 fp;
 	struct Eq_n * r6_n = 0x7D5E - g_dw7EC8;
 	word32 r4_n;
 	word32 r12_n;
@@ -6941,6 +6974,9 @@ ui32 g_dw7EC8 = ~0x00073F77; // 00007EC8
 //      fn000087C0
 byte fn00008144(Eq_n r2, Eq_n r8, Eq_n r9, Eq_n r10, Eq_n r11, Eq_n r12, union Eq_n & r0Out, union Eq_n & r1Out, union Eq_n & r2Out, union Eq_n & r3Out, union Eq_n & r4Out, union Eq_n & r5Out, union Eq_n & r6Out, union Eq_n & r7Out, union Eq_n & r8Out, union Eq_n & r9Out, union Eq_n & r10Out, union Eq_n & r11Out, union Eq_n & r12Out, union Eq_n & lrOut)
 {
+	ptr32 fp;
+	Eq_n r3;
+	Eq_n lr;
 	struct Eq_n * sp_n = fp - 0x0140;
 	struct Eq_n * r6_n = 33100 - g_dw82AA;
 	Eq_n r0_n = r9;
@@ -7617,6 +7653,7 @@ ui32 g_dw82AA = 828114825; // 000082AA
 //      fn00003BA4
 bool fn000087C0(Eq_n r0, Eq_n r1, Eq_n r2, Eq_n r3, Eq_n r4, Eq_n r5, ptr32 r6, Eq_n r7, word32 r10, Eq_n r11, word32 r12, Eq_n lr, ptr32 & r0Out, ptr32 & r1Out, ptr32 & r2Out, ptr32 & r3Out, ptr32 & r4Out, ptr32 & r5Out, ptr32 & r6Out, ptr32 & r7Out, ptr32 & r10Out, ptr32 & r11Out, ptr32 & lrOut)
 {
+	ptr32 fp;
 	ptr32 r11_n;
 	ptr32 r10_n;
 	ptr32 lr_n;
@@ -7804,6 +7841,8 @@ uint32 g_dw8908 = 0x3FFFFFFF; // 00008908
 //      fn00004968
 struct Eq_n * fn0000895C(Eq_n r0, struct Eq_n * r1, Eq_n r2, Eq_n r3, Eq_n r4, struct Eq_n * r5, struct Eq_n * r6, Eq_n r7, word32 * r12, word32 lr)
 {
+	ui32 dwLoc18;
+	word32 dwLoc1C;
 	struct Eq_n * r6_n = 0x8962 - g_dw8988;
 	word32 r4_n;
 	word32 r5_n;
@@ -7827,6 +7866,7 @@ ui32 g_dw8988 = 4294916466; // 00008988
 //      fn0000895C
 void fn0000898C(Eq_n r0, struct Eq_n * r1, Eq_n r2, Eq_n r3, word32 r4, word32 r5, word32 r6, struct Eq_n * r7, word32 lr)
 {
+	ptr32 fp;
 	struct Eq_n * r6_n = 0x8992 - g_dw89E8;
 	struct Eq_n ** r5_n = r6_n->ptr00D8;
 	struct Eq_n * r10_n = *r5_n;
@@ -7965,6 +8005,15 @@ void fn00008AC8(struct Eq_n * r12)
 //      fn000090C0
 ptr32 fn00008BE0(Eq_n r12, ptr32 & r1Out, ptr32 & r2Out, ptr32 & r3Out, ptr32 & r4Out, ptr32 & r5Out, ptr32 & r6Out, ptr32 & r7Out, ptr32 & r8Out, ptr32 & r9Out, ptr32 & r10Out, union Eq_n & r11Out, ptr32 & r12Out)
 {
+	ptr32 r0;
+	ptr32 r1;
+	ptr32 r2;
+	ptr32 r3;
+	ptr32 r4;
+	ptr32 r5;
+	ptr32 r6;
+	ptr32 r7;
+	ptr32 dwArg00;
 	Eq_n r5_n = *((word32) r12 + 20);
 	Eq_n r4_n = *((word32) r5_n + 8);
 	Eq_n r11_n = r4_n;
@@ -8402,6 +8451,11 @@ Eq_n fn00008F68(Eq_n r2, struct Eq_n * r7, word32 r11, struct Eq_n * r12, Eq_n l
 //      fn00008FEC
 Eq_n fn00008FEA(union Eq_n & r10Out, union Eq_n & r11Out, union Eq_n & r12Out, union Eq_n & lrOut)
 {
+	Eq_n r2;
+	struct Eq_n * r3;
+	Eq_n r4;
+	struct Eq_n * r6;
+	Eq_n lr;
 	word32 r10_n;
 	word32 r11_n;
 	word32 r12_n;
@@ -8420,6 +8474,7 @@ Eq_n fn00008FEA(union Eq_n & r10Out, union Eq_n & r11Out, union Eq_n & r12Out, u
 //      fn00008FEA
 Eq_n fn00008FEC(Eq_n r2, struct Eq_n * r3, Eq_n r4, struct Eq_n * r6, Eq_n lr, ptr32 & r10Out, ptr32 & r11Out, union Eq_n & r12Out, union Eq_n & lrOut)
 {
+	Eq_n dwLoc0C;
 	if (r2 < r3->t0004)
 	{
 		if (*r2 == 0x00)
@@ -8525,6 +8580,15 @@ Eq_n fn00008FEC(Eq_n r2, struct Eq_n * r3, Eq_n r4, struct Eq_n * r6, Eq_n lr, p
 //      fn00008F68
 word32 fn00008FF2(struct Eq_n * r3, struct Eq_n * r6)
 {
+	word32 dwLoc24;
+	word32 dwLoc20;
+	word32 dwLoc1C;
+	word32 dwLoc18;
+	word32 dwLoc14;
+	word32 dwLoc10;
+	word32 dwLoc0C;
+	word32 dwLoc08;
+	word32 dwLoc04;
 	struct Eq_n * r3_n;
 	struct Eq_n * r6_n;
 	struct Eq_n * r4_n;
@@ -8547,6 +8611,8 @@ ui32 g_dw901A = 1065145393; // 0000901A
 // 0000901C: void fn0000901C(Register word32 r0, Register word32 r1, Register Eq_n r2, Register word32 r3, Register Eq_n r4, Register Eq_n r5, Register Eq_n r11, Register Eq_n r12, Register word32 lr)
 void fn0000901C(word32 r0, word32 r1, Eq_n r2, word32 r3, Eq_n r4, Eq_n r5, Eq_n r11, Eq_n r12, word32 lr)
 {
+	ptr32 fp;
+	word32 * dwLoc28;
 	Eq_n lr_n;
 	word32 r12_n;
 	word32 r10_n;
@@ -8626,6 +8692,7 @@ ui32 g_dw90BC = ~0xBFCD; // 000090BC
 //      fn0000511C
 bool fn000090C0(word32 r0, word32 r1, word32 r3, Eq_n r4, Eq_n r5, Eq_n r11, Eq_n r12, word32 lr, ptr32 & r10Out, union Eq_n & r11Out, union Eq_n & r12Out, union Eq_n & lrOut)
 {
+	ptr32 fp;
 	struct Eq_n ** sp_n = fp - 0x28;
 	struct Eq_n * r6_n = 0x90C6 - g_dw9198;
 	Eq_n r2_n = r11;
@@ -8743,6 +8810,9 @@ Eq_n g_t91A0 = // 000091A0
 //      fn000095D6
 ui64 fn00009248(Eq_n r10, Eq_n r11, Eq_n r12, struct Eq_n * pc, union Eq_n & r8Out, ptr32 & r9Out, ptr32 & lrOut)
 {
+	ptr32 lr;
+	Eq_n r8;
+	ptr32 r9;
 	Eq_n r4_n = r10;
 	Eq_n r5_n = r11;
 	if (r12 != 0x01)
@@ -8809,6 +8879,7 @@ ui32 g_dw92D2 = ~0x27DD0000; // 000092D2
 // 000092D8: void fn000092D8(Register word32 r0, Register (ptr32 code) r1, Register word32 r4, Register word32 r5, Register (ptr32 word64) r10, Register (ptr32 (ptr32 Eq_n)) r11, Register (ptr32 Eq_n) r12, Register ptr32 lr)
 void fn000092D8(word32 r0, <anonymous> * r1, word32 r4, word32 r5, word64 * r10, struct Eq_n ** r11, struct Eq_n * r12, ptr32 lr)
 {
+	ptr32 fp;
 	ptr32 lr_n;
 	struct Eq_n * r5_n;
 	ptr32 r4_n;
@@ -8907,6 +8978,7 @@ ui32 g_dw93B0 = 805165106; // 000093B0
 //      fn0000511C
 Eq_n fn000093B8(Eq_n r0, Eq_n r1, Eq_n r2, Eq_n r3, Eq_n r4, Eq_n r5, Eq_n r9, ptr32 r12, word64 qwArg00, Eq_n qwArg08, Eq_n dwArg10, Eq_n dwArg14, uint64 qwArg18, Eq_n dwArg24, Eq_n dwArg28, struct Eq_n * dwArg38, word32 dwArg3C, ui32 dwArg40, union Eq_n & r1Out, union Eq_n & r2Out, word32 & r3Out, struct Eq_n & r4Out, ptr32 & r5Out, struct Eq_n & r6Out, union Eq_n & r7Out, ptr32 & r10Out, ptr32 & r11Out, ptr32 & r12Out, struct Eq_n & lrOut)
 {
+	struct Eq_n * fp;
 	Eq_n dwArg0C_n = (word32) qwArg08;
 	word32 dwArg08_n = SLICE(qwArg08, word32, 32);
 	word32 dwArg04_n = (word32) qwArg00;
@@ -9327,6 +9399,17 @@ ui32 g_dw9510 = 3233339139; // 00009510
 //      fn000095D6
 Eq_n fn000095B2(Eq_n r4, Eq_n r5, Eq_n dwArg28, ptr32 & r3Out, ptr32 & r4Out, ptr32 & r5Out, ptr32 & r10Out, ptr32 & r11Out, ptr32 & r12Out, ptr32 & lrOut)
 {
+	word32 dwArg34;
+	Eq_n r0;
+	Eq_n r1;
+	Eq_n r2;
+	struct Eq_n * r6;
+	word32 r7;
+	Eq_n r8;
+	Eq_n r9;
+	Eq_n r10;
+	Eq_n r11;
+	struct Eq_n * pc;
 	Eq_n r11_n;
 	Eq_n r11_n = SLICE(__avr32_f64_mul(__avr32_u32_to_f64(dwArg28, out r11_n), r11_n, r4, r5), word32, 32);
 	// Failed to bind call argument.
@@ -9370,6 +9453,7 @@ Eq_n fn000095B2(Eq_n r4, Eq_n r5, Eq_n dwArg28, ptr32 & r3Out, ptr32 & r4Out, pt
 //      fn000095B2
 Eq_n fn000095D6(Eq_n r0, Eq_n r1, Eq_n r2, Eq_n r5, struct Eq_n * r6, word32 r7, Eq_n r8, Eq_n r9, Eq_n r10, Eq_n r11, struct Eq_n * pc, Eq_n dwArg14, Eq_n dwArg20, Eq_n dwArg24, int32 dwArg34, Eq_n dwArg38, Eq_n dwArg40, Eq_n dwArg48, ptr32 & r3Out, ptr32 & r4Out, union Eq_n & r5Out, ptr32 & r10Out, ptr32 & r11Out, ptr32 & r12Out, ptr32 & lrOut)
 {
+	Eq_n r4;
 	word64 r11_r10_n = __avr32_f64_mul(r8, r9, r10, r11);
 	word32 lr_n;
 	word32 r12_n;
@@ -9603,6 +9687,21 @@ Eq_n fn0000967E(ptr32 r5, struct Eq_n * r6, int32 r7, Eq_n dwArg14, Eq_n dwArg38
 //      fn0000967E
 word32 fn0000988A(struct Eq_n * r1, struct Eq_n * r6, struct Eq_n * r12, Eq_n dwArg14, Eq_n dwArg48, ptr32 & r1Out, ptr32 & r2Out, ptr32 & r3Out, ptr32 & r4Out, ptr32 & r5Out, ptr32 & r6Out, ptr32 & r7Out, byte & r10Out, union Eq_n & r11Out, struct Eq_n & r12Out)
 {
+	Eq_n r11;
+	ui32 dwLoc88;
+	Eq_n dwLoc68;
+	byte * dwLoc64;
+	word32 dwLoc7C;
+	ptr32 dwLoc20;
+	ptr32 dwLoc1C;
+	ptr32 dwLoc18;
+	ptr32 dwLoc14;
+	ptr32 dwLoc10;
+	ptr32 dwLoc0C;
+	ptr32 dwLoc08;
+	word32 dwLoc04;
+	word64 qwLoc98;
+	uint32 dwLoc74;
 	if (Test(EQ,SLICE(dwArg14, bool, 2)))
 	{
 		word32 r5_n = r12 - r1;
@@ -9878,6 +9977,7 @@ struct Eq_n * fn00009BC8(int32 r10, Eq_n r11, struct Eq_n * r12, ptr32 & lrOut)
 //      fn00009D6C
 Eq_n fn00009C40(Eq_n r0, Eq_n r1, Eq_n r2, <anonymous> * r9, word32 * r10, uint32 r11, struct Eq_n * r12, ptr32 lr, union Eq_n & r1Out, union Eq_n & r2Out, union Eq_n & r3Out, union Eq_n & r4Out, union Eq_n & r5Out, union Eq_n & r6Out, word32 & r10Out, ptr32 & lrOut)
 {
+	ptr32 fp;
 	ptr32 r6_n = 40006 - g_dw9D64;
 	if (r11 <= 0x02)
 	{
@@ -10099,6 +10199,14 @@ ui32 g_dw9E12 = 1307366433; // 00009E12
 //      fn0000A7C8
 word32 fn00009E30(word32 r0, Eq_n r1, Eq_n r2, Eq_n r3, Eq_n r4, word32 r5, struct Eq_n * r6, Eq_n r7, word32 r11, ptr32 r12, word32 lr)
 {
+	ptr32 fp;
+	word32 dwLoc44;
+	word32 dwLoc40;
+	word32 dwLoc3C;
+	word32 dwLoc38;
+	word32 dwLoc34;
+	word32 dwLoc30;
+	word64 qwLoc2C;
 	struct Eq_n * r6_n = 40502 - g_dw9E70;
 	struct Eq_n * r5_n;
 	word32 lr_n;
@@ -10811,6 +10919,8 @@ ui32 g_dwA3C6 = 3332913152; // 0000A3C6
 //      fn0000A828
 word32 fn0000A614(word32 r0, Eq_n r1, Eq_n r2, Eq_n r3, Eq_n r4, ptr32 r5, struct Eq_n * r6, Eq_n r7, struct Eq_n * r9, Eq_n r10, Eq_n r11, Eq_n r12, Eq_n lr, word32 & r9Out, ptr32 & r10Out, ptr32 & r11Out, union Eq_n & r12Out, union Eq_n & lrOut)
 {
+	word32 dwLoc28;
+	word32 * dwLoc2C;
 	struct Eq_n * r6_n = 42522 - g_dwA700;
 	word32 r0_n;
 	word32 r4_n;
@@ -10919,6 +11029,7 @@ Eq_n g_tA704 = // 0000A704
 //      fn0000A764
 word32 fn0000A708(word32 r10, Eq_n r11, Eq_n r12, Eq_n lr, ptr32 & r9Out, ptr32 & r10Out, ptr32 & r11Out, ptr32 & r12Out, ptr32 & lrOut)
 {
+	ptr32 fp;
 	struct Eq_n * r6_n = 0xA70E - g_dwA74C;
 	struct Eq_n * r9_n = r6_n->ptrFFFFFFDC;
 	Eq_n r3_n = r9_n->t0010;
@@ -10984,6 +11095,7 @@ word32 fn0000A778(Eq_n r12, Eq_n lr, ptr32 & r9Out, ptr32 & r10Out, ptr32 & r11O
 // 0000A788: void fn0000A788(Register word32 r0, Register Eq_n r4, Register word32 r5, Register Eq_n r7, Register Eq_n r9, Register Eq_n r10, Register word32 r11, Register Eq_n r12, Register word32 lr)
 void fn0000A788(word32 r0, Eq_n r4, word32 r5, Eq_n r7, Eq_n r9, Eq_n r10, word32 r11, Eq_n r12, word32 lr)
 {
+	ptr32 fp;
 	struct Eq_n * r6_n = 42894 - g_dwA7A8;
 	word32 r9_n;
 	word32 r10_n;
@@ -11000,6 +11112,7 @@ ui32 g_dwA7A8 = 795727922; // 0000A7A8
 //      fn00009D80
 Eq_n fn0000A7C8(word32 r0, Eq_n r1, Eq_n r4, word32 r5, Eq_n r7, Eq_n r10, word32 r11, Eq_n r12, word32 lr, ptr32 & lrOut)
 {
+	ptr32 fp;
 	struct Eq_n * r6_n = 0xA7CE - g_dwA7E8;
 	ptr32 lr_n;
 	Eq_n r12_n;
@@ -11232,6 +11345,16 @@ void fn0000ACAE(struct Eq_n * r6, byte * r7)
 //      fn0000AE42
 word32 fn0000ACB0(struct Eq_n * r6, byte * r7, ptr32 & r1Out, ptr32 & r2Out, ptr32 & r3Out, struct Eq_n & r6Out, ptr32 & r12Out, byte & lrOut)
 {
+	Eq_n fp;
+	byte * lr;
+	ptr32 dwLoc047C;
+	struct Eq_n * dwLoc1C;
+	ptr32 dwLoc10;
+	ptr32 dwLoc0C;
+	ptr32 dwLoc08;
+	word32 dwLoc04;
+	struct Eq_n * r8;
+	word32 r4;
 	Eq_n sp_n = fp;
 l0000ACB0:
 l0000B706:
@@ -12760,6 +12883,8 @@ l0000B7AA:
 //      fn0000AE42
 Eq_n fn0000AE3E(union Eq_n & r2Out, union Eq_n & r6Out, union Eq_n & r12Out, union Eq_n & lrOut)
 {
+	word32 r4;
+	struct Eq_n * r6;
 	// Failed to bind call argument.
 	// Please report this issue at https://github.com/uxmal/reko
 	// Failed to bind call argument.
@@ -12787,6 +12912,8 @@ Eq_n fn0000AE3E(union Eq_n & r2Out, union Eq_n & r6Out, union Eq_n & r12Out, uni
 //      fn0000AEFA
 word32 fn0000AE42(word32 r4, struct Eq_n * r6, Eq_n dwArg18, Eq_n dwArg40, ptr32 & r1Out, ptr32 & r2Out, ptr32 & r3Out, ptr32 & r6Out, ptr32 & r12Out, ptr32 & lrOut)
 {
+	ptr32 fp;
+	byte * r7;
 	struct Eq_n * lr_n;
 	if (r4 == 0x00)
 		lr_n = fp + 0x044A;
@@ -12888,6 +13015,8 @@ word32 fn0000AE42(word32 r4, struct Eq_n * r6, Eq_n dwArg18, Eq_n dwArg40, ptr32
 //      fn0000AF76
 word32 fn0000AEFA(ptr32 & r1Out, ptr32 & r2Out, ptr32 & r3Out, ptr32 & r6Out, ptr32 & r12Out, ptr32 & lrOut)
 {
+	word32 r4;
+	struct Eq_n * r6;
 	// Failed to bind call argument.
 	// Please report this issue at https://github.com/uxmal/reko
 	// Failed to bind call argument.
@@ -13006,6 +13135,7 @@ word32 fn0000B7D4(word32 r10, Eq_n r11, struct Eq_n * r12, ptr32 & r9Out, ptr32 
 //      fn00006B5C
 void fn0000B818(Eq_n r0, Eq_n r1, ui32 r2, Eq_n r10, Eq_n r11, struct Eq_n * pc)
 {
+	ptr32 fp;
 	word32 lr_n;
 	word32 pc_n;
 	word32 r0_n;
@@ -13248,6 +13378,7 @@ ui32 g_dwB9AA = ~0x28FC0000; // 0000B9AA
 // 0000B9C8: void fn0000B9C8(Register word32 r4, Register word32 r8, Register (arr Eq_n) r9, Register word32 r10, Register int32 r11, Register up32 r12)
 void fn0000B9C8(word32 r4, word32 r8, Eq_n r9[], word32 r10, int32 r11, up32 r12)
 {
+	ptr32 fp;
 	struct Eq_n * r6_n = 47566 - g_dwBA3C;
 	word32 lr_n = r12 - 0x01;
 	word32 r7_n = r8;
@@ -13350,6 +13481,7 @@ uint32 * fn0000BA66(word32 r10, uint32 r11, uint32 * r12)
 // 0000BA8C: void fn0000BA8C(Register ptr32 r1, Register word32 r4, Register word32 r8, Register word32 r9, Register up32 r10, Register ptr32 r11, Register (ptr32 byte) r12, Register word32 lr)
 void fn0000BA8C(ptr32 r1, word32 r4, word32 r8, word32 r9, up32 r10, ptr32 r11, byte * r12, word32 lr)
 {
+	ptr32 fp;
 	ptr32 sp_n = fp - 44;
 	struct Eq_n * r6_n = 47762 - g_dwBB94;
 	up32 r2_n = r10;
@@ -13627,6 +13759,7 @@ void fn0000BD82(int16 * r12)
 //      fn0000B88C
 byte * fn0000BD8C(Eq_n r0, Eq_n r1, Eq_n r2, byte * r3, byte * r4, byte * r5, struct Eq_n * r6, Eq_n r7, Eq_n lr, ptr32 & lrOut)
 {
+	byte * dwLoc94;
 	struct Eq_n * r6_n = 0xBD92 - g_dwBE98;
 	byte ** sp_n;
 	word32 r7_n;
@@ -13913,6 +14046,13 @@ ui32 g_dwBE98 = 4294929826; // 0000BE98
 //      fn0000C2C8
 Eq_n fn0000BFB8(Eq_n r0, word32 r8, word32 r9, word32 r10, word32 r11, struct Eq_n * r12, Eq_n dwArg00, Eq_n dwArg04, Eq_n dwArg08, Eq_n dwArg0C, Eq_n dwArg10, Eq_n dwArg14, ptr32 & r2Out, ptr32 & r3Out, ptr32 & r4Out, ptr32 & r5Out, ptr32 & r6Out, union Eq_n & r12Out)
 {
+	ptr32 r1;
+	ptr32 r2;
+	ptr32 r3;
+	ptr32 r4;
+	ptr32 r5;
+	ptr32 r6;
+	Eq_n r7;
 	struct Eq_n * r6_n = 0xBFBC - g_dwC056;
 	word32 r7_n = (word32) r12->b0000;
 	if ((byte) (r7_n - r10) != 0x00)
@@ -14004,6 +14144,11 @@ ui32 g_dwC056 = 1875694641; // 0000C056
 //      fn0000B88C
 byte fn0000C058(Eq_n r0, struct Eq_n * r11, Eq_n r12, union Eq_n & r0Out, ptr32 & r1Out, ptr32 & r2Out, ptr32 & r3Out, ptr32 & r10Out, struct Eq_n & r11Out, union Eq_n & r12Out, ptr32 & lrOut)
 {
+	ptr32 r1;
+	ptr32 r2;
+	ptr32 r3;
+	ptr32 lr;
+	ptr32 r10;
 	struct Eq_n * r6_n = 49244 - g_dwC0CE;
 	if (r12 >> 0x09 > 0xEF)
 	{
@@ -14127,6 +14272,9 @@ ui32 g_dwC0CE = 1886187084; // 0000C0CE
 //      fn0000C058
 byte fn0000C0E4(Eq_n r0, struct Eq_n * r5, struct Eq_n * r6, Eq_n r12, ptr32 & r0Out, ptr32 & r1Out, ptr32 & r2Out, ptr32 & r3Out, ptr32 & r10Out, ptr32 & r11Out, ptr32 & r12Out, union Eq_n & lrOut)
 {
+	Eq_n lr;
+	ptr32 r10;
+	ptr32 r11;
 	if (r12 <= 4447)
 	{
 		fn0000C2D4();
@@ -14557,6 +14705,7 @@ void fn0000C2C8(Eq_n r0, word32 r8, word32 r10, word32 r11, struct Eq_n * r12, E
 //      fn0000C2C8
 void fn0000C2D4()
 {
+	bool Z;
 	if (Z)
 		;
 }
@@ -14648,6 +14797,7 @@ ui64 * fn0000CA68(Eq_n r11, ui64 * r12, union Eq_n & lrOut)
 //      fn0000CAE0
 ui64 * fn0000CAB8(word32 r10, Eq_n r11, ui64 * r12, ptr32 & lrOut)
 {
+	ptr32 lr;
 	word32 r7_n = r10;
 	ui64 * r5_n = null;
 	while (true)
@@ -14666,6 +14816,7 @@ ui64 * fn0000CAB8(word32 r10, Eq_n r11, ui64 * r12, ptr32 & lrOut)
 //      fn000092D8
 bool fn0000CAE0(<anonymous> * r1, ptr32 r4, word32 r8, word64 * r9, up32 r10, <anonymous> * r11, struct Eq_n * r12, ptr32 lr, ptr32 & lrOut)
 {
+	ptr32 fp;
 	ptr32 sp_n = fp - 0x30;
 	struct Eq_n * r6_n = 0xCAE6 - g_dwCBEC;
 	up32 r2_n = r10;
@@ -15130,6 +15281,10 @@ Eq_n g_tCE84 = // 0000CE84
 //      fn0000D1B8
 Eq_n fn0000CEEE(Eq_n r0, ptr32 r1, word32 * r10, <anonymous> * r11, Eq_n r12)
 {
+	ptr32 fp;
+	int32 dwLoc5C;
+	int32 dwLoc3C;
+	int32 dwLoc68;
 	ui32 r10_n;
 	Eq_n r3_n = *((word32) r12 + 16);
 	int32 r4_n = *((word32) r12 + 20);
@@ -15330,6 +15485,10 @@ ui32 g_dwD21A = ~0x27DD0000; // 0000D21A
 //      fn0000B818
 bool fn0000D220(Eq_n r0, Eq_n r1, ui32 r2, Eq_n r9, Eq_n r10, ptr32 lr, struct Eq_n * pc, ptr32 & r0Out, ptr32 & r1Out, ptr32 & r2Out, ptr32 & r3Out, ptr32 & r6Out, union Eq_n & r12Out, ptr32 & lrOut, struct Eq_n & pcOut)
 {
+	ptr32 fp;
+	up32 dwLoc38;
+	word32 dwLoc34;
+	word32 dwLoc3C;
 	struct Eq_n * r6_n = 0xD22A - g_dwD390;
 	ptr32 lr_n;
 	fn0000EB48(r0, r1, r2, fp - 0x30, r10, r9, r6_n, fp - 36, fp - 0x30, fp - 0x40, r10, lr, out lr_n);
@@ -17231,6 +17390,7 @@ Eq_n g_tE556 = // 0000E556
 //      fn0000D220
 word64 fn0000E684(Eq_n r10, Eq_n r11, int32 * r12, struct Eq_n * pc)
 {
+	ptr32 fp;
 	int32 r0_n;
 	int32 r1_n;
 	word64 r9_r8_n = pc->qw017E;
@@ -17368,6 +17528,7 @@ l0000E7EE:
 //      fn0000D220
 word64 fn0000E868(Eq_n r10, Eq_n r11, int32 * r12, struct Eq_n * pc)
 {
+	ptr32 fp;
 	int32 r0_n;
 	int32 r1_n;
 	word64 r9_r8_n = pc->qw017E;
@@ -17505,6 +17666,7 @@ l0000E9D2:
 //      fn0000D220
 byte fn0000EA4C(struct Eq_n * r11, Eq_n r12, ptr32 & r9Out, union Eq_n & r10Out, union Eq_n & r11Out, union Eq_n & lrOut)
 {
+	ptr32 r9;
 	struct Eq_n * r6_n = 0xEA50 - g_dwEB26;
 	struct Eq_n * r10_n = r11->dw0004 + 0x04;
 	up32 r11_n;
@@ -18272,6 +18434,7 @@ uint32 g_dwF270 = 0x15555555; // 0000F270
 //      fn0000D220
 bool fn0000F278(word64 r11_r10, struct Eq_n * r7, struct Eq_n * pc, struct Eq_n & pcOut)
 {
+	ptr32 fp;
 	Eq_n r10 = (word32) r11_r10;
 	Eq_n r11 = SLICE(r11_r10, word32, 32);
 	struct Eq_n * r6_n = 0xF27E - g_dwF2C8;
@@ -18461,6 +18624,9 @@ ui64 __avr32_f64_mul(Eq_n r8, Eq_n r9, Eq_n r10, Eq_n r11)
 //      __avr32_f64_add
 word32 __avr32_f64_sub(Eq_n r8, Eq_n r9, Eq_n r10, Eq_n r11, Eq_n lr, struct Eq_n & r6Out, struct Eq_n & r7Out, union Eq_n & r8Out, union Eq_n & r9Out, union Eq_n & r10Out, union Eq_n & r11Out, union Eq_n & lrOut)
 {
+	word32 r5;
+	struct Eq_n * r6;
+	struct Eq_n * r7;
 	if ((r11 ^ r9) < 0x00)
 	{
 		Eq_n r9_n;
@@ -18642,6 +18808,9 @@ l0000F552:
 //      fn000101CC
 uint64 __avr32_f64_add(Eq_n r8, Eq_n r9, Eq_n r10, Eq_n r11, byte & r5Out, struct Eq_n & r6Out, struct Eq_n & r7Out, union Eq_n & r8Out, union Eq_n & r9Out, union Eq_n & lrOut)
 {
+	byte * r5;
+	struct Eq_n * r6;
+	struct Eq_n * r7;
 	if ((r11 ^ r9) < 0x00)
 	{
 		ui32 r11_n;
@@ -18868,6 +19037,8 @@ word32 __avr32_s32_to_f64(Eq_n r12, ptr32 & r11Out, ptr32 & lrOut)
 //      __avr32_s32_to_f64
 word32 fn0000F806(Eq_n r11, Eq_n r12, union Eq_n & r11Out, ptr32 & lrOut)
 {
+	bool Z;
+	ptr32 lr;
 	if (Z)
 	{
 		Eq_n r11_n;
@@ -18891,6 +19062,7 @@ word32 fn0000F806(Eq_n r11, Eq_n r12, union Eq_n & r11Out, ptr32 & lrOut)
 //      fn0000F806
 Eq_n fn0000F80A(ui64 r11_r10, Eq_n r12, union Eq_n & r11Out, union Eq_n & lrOut)
 {
+	Eq_n lr;
 	Eq_n r11 = SLICE(r11_r10, word32, 32);
 	Eq_n r10 = (word32) r11_r10;
 	int32 r9_n = 0x041E;
@@ -19036,6 +19208,7 @@ bool __avr32_f64_cmp_eq(Eq_n r8, Eq_n r9, Eq_n r10, Eq_n r11, struct Eq_n & r12O
 //      fn0000E868
 bool __avr32_f64_cmp_ge(word32 r8, ui32 r9, Eq_n r10, Eq_n r11, union Eq_n & r12Out, ptr32 & lrOut)
 {
+	ptr32 lr;
 	bool v17_n = r11 << 1 == 0x00;
 	Eq_n r12_n = (word32) (r11 << 1 < 0x00);
 	if (r11 << 1 == 0x00)
@@ -19134,6 +19307,7 @@ bool __avr32_f64_cmp_ge(word32 r8, ui32 r9, Eq_n r10, Eq_n r11, union Eq_n & r12
 //      fn0000F278
 bool __avr32_f64_cmp_lt(Eq_n r8, Eq_n r9, Eq_n r10, Eq_n r11, union Eq_n & r9Out, union Eq_n & r12Out, ptr32 & lrOut)
 {
+	ptr32 lr;
 	bool v17_n = r11 << 1 == 0x00;
 	Eq_n r12_n = (word32) (r11 << 1 < 0x00);
 	if (r11 << 1 == 0x00)
@@ -19239,6 +19413,7 @@ bool __avr32_f64_cmp_lt(Eq_n r8, Eq_n r9, Eq_n r10, Eq_n r11, union Eq_n & r9Out
 //      fn000090C0
 bool fn0000F9D0(Eq_n r11, Eq_n r12, ptr32 & r8Out, union Eq_n & r9Out, union Eq_n & r10Out)
 {
+	ptr32 r8;
 	bool v17_n = r11 << 0x01 != 0x00;
 	if (r11 << 0x01 == 0x00)
 		v17_n = r12 << 0x01 != 0x00;
@@ -19334,6 +19509,7 @@ bool fn0000F9D0(Eq_n r11, Eq_n r12, ptr32 & r8Out, union Eq_n & r9Out, union Eq_
 //      fn000090C0
 bool fn0000FA0E(Eq_n r11, Eq_n r12, ptr32 & r8Out, union Eq_n & r9Out, union Eq_n & r10Out)
 {
+	ptr32 r8;
 	bool v17_n = r11 << 0x01 != 0x00;
 	if (r11 << 0x01 == 0x00)
 		v17_n = r12 << 0x01 != 0x00;
@@ -20021,6 +20197,7 @@ Eq_n fn00010050(Eq_n r9, ui32 r11, ui32 r12, union Eq_n & r12Out)
 //      fn000090C0
 Eq_n fn0001013A(Eq_n r12, union Eq_n & r12Out)
 {
+	Eq_n r9;
 	if (r12 != 0x00)
 	{
 		Eq_n r9_n = __clz(r12);
@@ -20070,6 +20247,7 @@ Eq_n fn0001013A(Eq_n r12, union Eq_n & r12Out)
 //      fn000090C0
 Eq_n fn000101B2(Eq_n r12, union Eq_n & r12Out)
 {
+	Eq_n r11;
 	if (r12 >= 0x00)
 	{
 		Eq_n r11_n = SLICE(r12, byte, 23);
@@ -20122,6 +20300,7 @@ word32 fn000101CC(Eq_n r10, Eq_n r11, struct Eq_n * pc, ptr32 & r9Out, ptr32 & r
 //      fn00009BC8
 Eq_n __avr32_sdiv64(ui64 r11_r10, word64 r9_r8, ptr32 & r11Out, union Eq_n & lrOut)
 {
+	Eq_n lr;
 	Eq_n r11 = SLICE(r11_r10, word32, 32);
 	Eq_n r10 = (word32) r11_r10;
 	Eq_n r8 = (word32) r9_r8;
@@ -20390,6 +20569,7 @@ l000104C6:
 //      fn00009BC8
 word32 __moddi3(ui64 r11_r10, ui64 r9_r8)
 {
+	word64 qwLoc2C;
 	int32 r9 = SLICE(r9_r8, word32, 32);
 	int32 r11 = SLICE(r11_r10, word32, 32);
 	word32 dwLoc40_n;
@@ -21044,6 +21224,9 @@ l00010CD0:
 //      fn0000F278
 bool fn00010CFC(struct Eq_n * pc, struct Eq_n & r12Out, Eq_n (& lrOut)
 {
+	ptr32 fp;
+	up32 dwLoc38;
+	up32 dwLoc4C;
 	struct Eq_n * r12_n;
 	fn00010D38(fp - 0x38, fp - 0x1C, pc);
 	Eq_n (* lr_n)[] = fn00010D38(fp - 0x4C, fp - 0x24, pc);

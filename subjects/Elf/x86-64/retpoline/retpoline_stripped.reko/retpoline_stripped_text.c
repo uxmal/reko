@@ -7,6 +7,8 @@
 // 0000000000400480: void fn0000000000400480(Register (ptr64 Eq_n) rdx, Stack word32 dwArg00)
 void fn0000000000400480(void (* rdx)(), word32 dwArg00)
 {
+	void * fp;
+	word64 qwArg00;
 	__align_stack<word64>((char *) fp + 8);
 	__libc_start_main(&g_t400660, (int32) qwArg00, (char *) fp + 8, &g_t400710, &g_t400780, rdx, fp);
 	__hlt();

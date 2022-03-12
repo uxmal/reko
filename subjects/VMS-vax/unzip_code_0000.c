@@ -1425,6 +1425,9 @@ void fn0000A8D6(word32 r0, word32 r6, word32 r7, struct Eq_n * r9, struct Eq_n *
 //      fn00009B0A
 struct Eq_n * fn0000AA6A(struct Eq_n * r8, struct Eq_n * r10, struct Eq_n * r11, struct Eq_n * ap, union Eq_n * fp, struct Eq_n & r3Out, word16 & r6Out, ptr32 & r7Out, struct Eq_n & r8Out, struct Eq_n & r10Out, struct Eq_n & r11Out, struct Eq_n & apOut, union Eq_n & fpOut)
 {
+	struct Eq_n * r3;
+	word16 * r6;
+	ptr32 r7;
 	word32 v8_n = r10->dwC627;
 	r8->ptr0134 = null;
 	r8->ptr013C = null;
@@ -1790,6 +1793,7 @@ union Eq_n * fn0000B072(struct Eq_n * r6, struct Eq_n * ap, union Eq_n * fp)
 // 0000B192: void fn0000B192(Register (ptr32 Eq_n) r2, Register (ptr32 Eq_n) ap, Register (ptr32 ptr32) pc)
 void fn0000B192(struct Eq_n * r2, struct Eq_n * ap, ptr32 * pc)
 {
+	ptr32 fp;
 	struct Eq_n * sp_n = fp - 0x04;
 	if (r2->dw101F4 != 0x00)
 	{
@@ -2125,6 +2129,7 @@ word32 fn0000C022(struct Eq_n * r3, struct Eq_n * ap, struct Eq_n * fp, struct E
 //      fn000108D2
 void fn0000C0CE(struct Eq_n * r6, struct Eq_n * ap)
 {
+	ptr32 fp;
 	struct Eq_n * sp_n = fp - 0x04;
 	if (r6->dw10A78 == 0x00)
 	{
@@ -2174,6 +2179,9 @@ void fn0000C1FE(struct Eq_n * r2, struct Eq_n * r3, ptr32 * pc)
 //      fn000108D2
 struct Eq_n * fn0000C6FA(struct Eq_n * r6, struct Eq_n * r7, struct Eq_n * r8, struct Eq_n * ap, struct Eq_n * fp, struct Eq_n & r2Out, union Eq_n & r3Out, ptr32 & r4Out, struct Eq_n & r7Out, struct Eq_n & r8Out, union Eq_n & r9Out, ptr32 & r10Out, struct Eq_n & apOut, ptr32 & fpOut)
 {
+	struct Eq_n * r2;
+	Eq_n r3;
+	ptr32 r4;
 	ptr32 r10_n = g_ptr19370;
 	Eq_n r9_n = ap->t0008 & 0x07;
 	if (r9_n == 0x00)
@@ -3007,6 +3015,8 @@ void fn0000D0D6(word32 ap)
 //      fn00010E6A
 int32 fn0000D39E(struct Eq_n * r6, union Eq_n * fp, word32 & r3Out, struct Eq_n & r6Out, ptr32 & apOut, ptr32 & fpOut)
 {
+	int32 r2;
+	word32 * r3;
 	if (r6->ptr0000 == null)
 	{
 		word32 * r0_n;
@@ -3145,6 +3155,8 @@ struct Eq_n * fn0000D566(struct Eq_n * ap, union Eq_n * fp, union Eq_n & fpOut)
 //      fn000173CA
 struct Eq_n * fn0000D5BE(struct Eq_n * r0, struct Eq_n * r4, struct Eq_n * ap, union Eq_n * fp, struct Eq_n & r2Out, ptr32 & r3Out, struct Eq_n & r4Out, ptr32 & r5Out, ptr32 & apOut, struct Eq_n & fpOut)
 {
+	ptr32 r3;
+	ptr32 r5;
 	struct Eq_n * r2_n = ap->ptr0008;
 	struct Eq_n * sp_n = fp - 0x04;
 	struct Eq_n * r7_n = r2_n;
@@ -3249,6 +3261,9 @@ struct Eq_n * fn0000D5BE(struct Eq_n * r0, struct Eq_n * r4, struct Eq_n * ap, u
 //      fn000185AE
 Eq_n fn0000D69A(struct Eq_n * r4, union Eq_n * fp, ptr32 * pc, struct Eq_n & r2Out, struct Eq_n & r3Out, struct Eq_n & r4Out, struct Eq_n & r6Out, struct Eq_n & apOut, union Eq_n & fpOut, ptr32 & pcOut)
 {
+	struct Eq_n * r2;
+	struct Eq_n * r3;
+	struct Eq_n * r6;
 	if (r4->dwC6C5 == 0x00)
 	{
 		if (r4->dw0084 > 0x00)
@@ -3441,6 +3456,7 @@ uint32 fn0000E276(struct Eq_n * ap, union Eq_n * fp, union Eq_n & r2Out, struct 
 //      fn000121EA
 void fn0000E2A6(byte r7[], struct Eq_n * ap)
 {
+	uip32 r5;
 	byte * r0_n = ap->ptr0008;
 	byte * r1_n = ap->ptr0004;
 	do
@@ -3463,6 +3479,8 @@ void fn0000E2A6(byte r7[], struct Eq_n * ap)
 //      fn0000C6FA
 int32 fn0000E2EA(struct Eq_n * ap, struct Eq_n * fp, union Eq_n & r6Out, ptr32 & r7Out, ui32 (& r8Out, ptr32 & apOut, ptr32 & fpOut)
 {
+	ptr32 r7;
+	Eq_n r6;
 	struct Eq_n * sp_n = fp - 0x04;
 	ui32 r8_n[] = g_ptr1934C;
 	byte * r2_n = ap->ptr0004;
@@ -4353,6 +4371,7 @@ void fn0000F816(struct Eq_n * r3, word32 r5, word32 r6, struct Eq_n * r8, struct
 // 000100C2: void fn000100C2(Register (ptr32 Eq_n) r2, Register ptr32 r7, Register ptr32 r11, Register (ptr32 Eq_n) ap)
 void fn000100C2(struct Eq_n * r2, ptr32 r7, ptr32 r11, struct Eq_n * ap)
 {
+	ptr32 fp;
 	struct Eq_n * sp_n = fp - 0x08;
 	if (ap[1] >= (byte *) 0x04)
 	{
@@ -4734,6 +4753,9 @@ void fn000100C2(struct Eq_n * r2, ptr32 r7, ptr32 r11, struct Eq_n * ap)
 //      fn000100C2
 struct Eq_n * fn000105F2(ptr32 r7, struct Eq_n * ap, union Eq_n * fp, struct Eq_n & r2Out, ptr32 & r7Out, union Eq_n & r8Out, up32 & r9Out, struct Eq_n & apOut, ptr32 & fpOut)
 {
+	struct Eq_n * r2;
+	Eq_n r8;
+	up32 * r9;
 	if (ap[1] >= (byte *) 0x04)
 	{
 		struct Eq_n * ap_n;

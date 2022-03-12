@@ -395,6 +395,8 @@ struct Eq_n g_t07D0 = // 07D0
 //      fn053A
 void fn0856(struct Eq_n * r4, word16 wArg00)
 {
+	int16 r3;
+	word16 * r5;
 l0856:
 	fn1578();
 	ci16 r5_n = g_w007E;
@@ -651,6 +653,7 @@ void fn0AF6()
 //      fn0856
 void fn0B06(int16 r3, struct Eq_n * r4, word16 * r5)
 {
+	ptr16 fp;
 	// Failed to bind call argument.
 	// Please report this issue at https://github.com/uxmal/reko
 	Eq_n stackArg0 = <invalid>;
@@ -743,6 +746,7 @@ void fn0C76()
 //      fn0E06
 void fn0C90(int16 wArg02, Eq_n bArg04)
 {
+	word16 wArg04;
 	ui8 bArg04_n = (byte) wArg04;
 	if (wArg02 >> 1 < 0x00)
 	{
@@ -766,6 +770,7 @@ void fn0CCA(int16 wArg02)
 //      fn053A
 void fn0CEC(int16 r0)
 {
+	<anonymous> * ptrLoc02;
 	struct Eq_n * r5_n = fn0D3C(r0, ptrLoc02);
 	word16 * r4_n = (g_w28F0 >> 5) + 0x17;
 	r5_n->ptr0000 = r4_n;
@@ -925,6 +930,7 @@ word16 fn0E32()
 //      fn0E32
 cui16 fn0E98(struct Eq_n * r5, struct Eq_n & r5Out)
 {
+	ci16 wLoc08;
 	g_w0046 = 65506;
 	ci16 wLoc02_n = 0xF1;
 	do
@@ -972,6 +978,7 @@ l0EF0:
 //      fn0856
 void fn0F04(int16 r0)
 {
+	<anonymous> * ptrLoc02;
 	struct Eq_n * r5_n = fn0D3C(r0, ptrLoc02);
 	g_w00AA = 0x00;
 	word16 * r0_n = (g_w0074 << 1) + 0x28F0;

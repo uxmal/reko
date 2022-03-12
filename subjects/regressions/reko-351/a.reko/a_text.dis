@@ -54,6 +54,7 @@ void __do_global_dtors_aux()
 // Trashed: CVZNX a0 a2 a6 a7 d0 d1 d2
 // Preserved:
 __do_global_dtors_aux_entry:
+	ptr32 fp
 l800000E4:
 	word32 a6_35 = fp - 4<32>
 	branch Mem13[0x80002724<p32>:byte] != 0<8> l8000014C
@@ -232,6 +233,7 @@ void main()
 // Trashed: CVZNX d0
 // Preserved: a6 a7
 main_entry:
+	ptr32 fp
 l8000049A:
 	sine_taylor(3.14)
 	_sin(3.14, 0.003, fp - 8<32>)
@@ -275,6 +277,7 @@ void __do_global_ctors_aux()
 // Trashed: CVZN a0 a2 a6 a7 d0
 // Preserved:
 __do_global_ctors_aux_entry:
+	ptr32 fp
 l80000624:
 	word32 a0_11 = Mem10[0x8000270C<p32>:word32]
 	word32 a6_18 = fp - 4<32>

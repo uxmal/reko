@@ -7,6 +7,8 @@
 // 0000000000400480: void _start(Register (ptr64 Eq_n) rdx, Stack word32 dwArg00)
 void _start(void (* rdx)(), word32 dwArg00)
 {
+	void * fp;
+	word64 qwArg00;
 	__align_stack<word64>((char *) fp + 8);
 	__libc_start_main(&g_t400660, (int32) qwArg00, (char *) fp + 8, &g_t400710, &g_t400780, rdx, fp);
 	__hlt();
@@ -64,6 +66,7 @@ void my2(byte sil, byte * rdi)
 // 00000000004005B0: void branches(Register int32 esi, Register int32 edi)
 void branches(int32 esi, int32 edi)
 {
+	word64 rdi;
 	int32 edi = (word32) rdi;
 	if (edi >= esi || (edi << 0x01 >= esi << 0x01 || (edi *s 0x03 >= esi *s 0x03 || edi << 0x02 >= esi << 0x02)))
 		return;
@@ -102,6 +105,7 @@ void fn0000000000400700()
 // 0000000000400710: void __libc_csu_init(Register word64 rdx, Register word64 rsi, Register word32 edi)
 void __libc_csu_init(word64 rdx, word64 rsi, word32 edi)
 {
+	word64 rdi;
 	word32 edi = (word32) rdi;
 	_init();
 	int64 rbp_n = 0x00600E18 - 0x00600E10;

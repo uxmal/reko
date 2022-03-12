@@ -147,6 +147,7 @@ word32 fn01E6(word32 gp0_gp1, ptr16 gp2, ptr16 & gp2Out)
 //      fn034E
 word16 fn02BF(Eq_n gp2_gp3, ci16 gp1, word16 gp4, ptr16 & gp1Out, ptr16 & gp2Out, ptr16 & gp14Out)
 {
+	ptr16 fp;
 	word16 gp3 = (word16) gp2_gp3;
 	ci16 gp2_n = gp1;
 	if (gp1 < 0x00)

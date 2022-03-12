@@ -73,6 +73,8 @@ void raise()
 // 00008038: void vPrintTask(Register Eq_n lr, Register ptr32 cpsr)
 void vPrintTask(Eq_n lr, ptr32 cpsr)
 {
+	ptr32 fp;
+	byte * dwLoc14;
 	ui32 r4_n = 0x00;
 	union Eq_n * r5_n = g_ptr8064;
 	while (true)
@@ -88,6 +90,7 @@ union Eq_n * g_ptr8064 = &g_t20000880; // 00008064
 // 00008068: void vCheckTask(Register Eq_n lr, Register ptr32 cpsr)
 void vCheckTask(Eq_n lr, ptr32 cpsr)
 {
+	ptr32 fp;
 	MPU_xTaskGetTickCount(cpsr);
 	union Eq_n * r5_n = g_ptr809C;
 	while (true)
@@ -123,6 +126,7 @@ byte * g_ptr8104 = &g_bA268; // 00008104
 // 00008108: void vUART_ISR(Register Eq_n lr, Register ptr32 cpsr)
 void vUART_ISR(Eq_n lr, ptr32 cpsr)
 {
+	ptr32 fp;
 	struct Eq_n * r5_n = g_ptr8174;
 	Eq_n r0_n = UARTIntStatus(r5_n, 0x01);
 	UARTIntClear(r5_n, r0_n);
@@ -224,6 +228,7 @@ uint32 g_dw8298 = 1000000; // 00008298
 //      vParTestToggleLED
 struct Eq_n * PDCWrite(struct Eq_n * r0, ui32 r1)
 {
+	ptr32 fp;
 	struct Eq_n * r4_n = g_ptr82CC;
 	SSIDataPut(r4_n, r0 & 0x0F);
 	SSIDataPut(r4_n, r1);
@@ -293,6 +298,7 @@ void vListInsertEnd(struct Eq_n * r0, struct Eq_n * r1)
 //      vCoRoutineAddToDelayedList
 bool vListInsert(struct Eq_n * r0, struct Eq_n * r1)
 {
+	bool Z;
 	struct Eq_n * r2_n;
 	struct Eq_n * r3_n;
 	up32 r5_n = r1->dw0000;
@@ -423,6 +429,7 @@ l000083AA:
 //      prvFlashCoRoutine
 bool xQueueCRReceive(Eq_n r0, Eq_n r1, Eq_n r2, Eq_n r6, Eq_n r7, Eq_n lr, ptr32 cpsr, union Eq_n & r0Out, union Eq_n & r6Out, union Eq_n & r7Out, union Eq_n & lrOut)
 {
+	bool Z;
 	__msr(cpsr, 191);
 	__isb_sy();
 	__dsb_sy();
@@ -752,6 +759,8 @@ byte * g_ptr866C = &g_b200007F4; // 0000866C
 // 00008670: void prvFlashCoRoutine(Register (ptr32 Eq_n) r0, Register Eq_n r7, Register Eq_n lr, Register ptr32 cpsr)
 void prvFlashCoRoutine(struct Eq_n * r0, Eq_n r7, Eq_n lr, ptr32 cpsr)
 {
+	ptr32 fp;
+	up32 dwLoc14;
 	union Eq_n * r5_n;
 	Eq_n r6_n;
 	word32 r0_n;
@@ -828,6 +837,7 @@ word32 * g_ptr86E4 = &g_dw200000C0; // 000086E4
 // 000086E8: void prvFixedDelayCoRoutine(Register (ptr32 Eq_n) r0, Register ui32 r1, Register Eq_n r7, Register Eq_n lr, Register ptr32 cpsr)
 void prvFixedDelayCoRoutine(struct Eq_n * r0, ui32 r1, Eq_n r7, Eq_n lr, ptr32 cpsr)
 {
+	ptr32 fp;
 	bool v18_n;
 	Eq_n r0_n;
 	word32 r0_n;

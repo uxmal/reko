@@ -6,6 +6,8 @@ void fn00001000(word32 d0, word32 a0)
 // Trashed: CVZNX a0 a1 a2 a3 a4 a5 a6 d0 d1 d2 d3 d4 d5
 // Preserved: a7 d7
 fn00001000_entry:
+	ptr32 fp
+	word32 dwLoc10
 l00001000:
 l0000100A:
 	word32 a6_9 = Mem0[0x00000004<p32>:word32]
@@ -324,6 +326,7 @@ word32 fn0000131C(word32 dwArg04)
 // Trashed: CVZN a1 a4 a5 a6 d0 d1
 // Preserved: X a2 a3 a7
 fn0000131C_entry:
+	word32 a5
 l0000131C:
 	branch Mem8[0x00003E50<p32>:word32] != 0<32> l0000134E
 l00001328:
@@ -380,6 +383,9 @@ word32 fn00001390(word32 d0)
 // Trashed: CVZNX a0 a1 d0 d1
 // Preserved: a7 d2 d3
 fn00001390_entry:
+	word32 dwLoc04
+	word32 dwLoc14
+	word32 dwLoc10
 l00001390:
 	word32 d0_157 = fn00002BF0(fn00002BF0(fn000015A4(fn00002BF0(d0, 0x0000147C<p32>), 0x00001480<p32>), 0x0000149C<p32>), 0x000014A0<p32>)
 	word32 d3_149 = 1<i32>
@@ -578,6 +584,7 @@ word32 fn000015A4(word32 d0, word32 dwArg04)
 // Trashed: CVZNX a0 a1 d0 d1
 // Preserved: a7
 fn000015A4_entry:
+	ptr32 fp
 l000015A4:
 	return fn000015C0(d0, Mem8[0x00003F80<p32>:word32], dwArg04, fp + 8<i32>)
 fn000015A4_exit:
@@ -593,6 +600,7 @@ word32 fn000015C0(word32 d0, word32 dwArg04, word32 dwArg08, word32 dwArg0C)
 // Trashed: CVZNX a0 a1 d0 d1
 // Preserved: a2 a3 a4 a5 a6 a7 d2 d3 d4 d5 d6 d7
 fn000015C0_entry:
+	ptr32 fp
 l000015C0:
 	word32 d0_1851
 	word32 d3_1399 = dwArg0C
@@ -1157,6 +1165,7 @@ word32 fn00001F40(word32 dwArg04, word32 dwArg08, ptr32 & a0Out, ptr32 & a5Out)
 // Trashed: CVZNX a0 a1 a5 d0 d1
 // Preserved: a2 a3 a7 d2
 fn00001F40_entry:
+	word32 a5
 l00001F40:
 	word32 a0_101
 	word32 d1_51
@@ -1192,6 +1201,7 @@ word32 fn00001F9C(word32 dwArg04, word32 dwArg08, ptr32 & a0Out, ptr32 & a5Out)
 // Trashed: CVZNX a0 a1 a5 d0 d1
 // Preserved: a2 a3 a4 a6 a7 d2 d3 d4 d5 d6
 fn00001F9C_entry:
+	word32 a0
 l00001F9C:
 	word32 d0_107
 	word32 a5_123 = fn00002530()
@@ -1271,6 +1281,7 @@ word32 fn000020B0(word32 dwArg04, ptr32 & a0Out, ptr32 & a5Out)
 // Trashed: CVZNX a0 a1 a4 a5 d0 d1
 // Preserved: a2 a6 a7 d2 d3 d4
 fn000020B0_entry:
+	word32 a0
 l000020B0:
 	word32 d0_152
 	word32 a5_23 = fn00002530()
@@ -1326,6 +1337,8 @@ word32 fn0000215C(word32 dwArg04, ptr32 & a0Out)
 // Trashed: CVZN a0 a1 d0 d1
 // Preserved: X a7 d2
 fn0000215C_entry:
+	word32 dwLoc10
+	word32 a0
 l0000215C:
 	word32 d0_100
 	branch dwArg04 != 0<32> l0000216A
@@ -1589,6 +1602,7 @@ word32 fn00002530()
 // Trashed: CVZN a1 a4 a5 d0 d1
 // Preserved: a6 a7
 fn00002530_entry:
+	word32 a5
 l00002530:
 	branch (SetSignal(0<i32>, 0x1000<32>) & 0x1000<32>) == 0<32> l0000255A
 l0000254E:
@@ -1703,6 +1717,7 @@ word32 fn00002664(word32 d0, word32 d1, word32 d2, ptr32 & d1Out, ptr32 & d2Out)
 // Trashed: CVZNX d0 d1 d2
 // Preserved: a0 a1 a7 d3 d4 d5 d6 d7
 fn00002664_entry:
+	word32 dwLoc24
 l00002664:
 	word32 d7_13 = d2
 	branch d2 == 0<32> l0000267E
@@ -1950,6 +1965,7 @@ word32 fn00002BF0(word32 d0, word32 dwArg04)
 // Trashed: CVZN a0 d0
 // Preserved: a7
 fn00002BF0_entry:
+	ptr32 fp
 l00002BF0:
 	return fn00002C3C(d0, Mem8[0x00003F7C<p32>:word32], dwArg04, fp + 8<i32>)
 fn00002BF0_exit:
@@ -1991,6 +2007,9 @@ word32 fn00002C3C(word32 d0, word32 dwArg04, word32 dwArg08, word32 dwArg0C)
 // Trashed: CVZN d0
 // Preserved: X a0 a1 a2 a3 a4 a5 a6 a7 d1 d2 d3 d4 d5 d6 d7
 fn00002C3C_entry:
+	ptr32 fp
+	word32 d7
+	word32 d1
 l00002C3C:
 	word32 d2_1050 = dwArg0C
 	word32 a4_261 = dwArg08
@@ -3105,6 +3124,7 @@ word32 fn00003DDC()
 // Trashed: CVZN a0 a1 a4 a5 d0 d1
 // Preserved: X a2 a7
 fn00003DDC_entry:
+	word32 a5
 l00003DDC:
 	word32 a2_11 = Mem5[0x00003F88<p32>:word32]
 	branch a2_11 == 0<32> l00003E14

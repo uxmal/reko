@@ -7,6 +7,8 @@
 // 10001000: Register (ptr32 Eq_n) fn10001000(Stack (ptr32 Eq_n) ptrArg04, Stack (ptr32 Eq_n) ptrArg08)
 PyObject * fn10001000(PyObject * ptrArg04, PyObject * ptrArg08)
 {
+	int32 dwLoc08;
+	int32 dwLoc04;
 	PyObject * eax_n = PyArg_ParseTuple(ptrArg08, "ii:sum", &dwLoc04, &dwLoc08);
 	if (eax_n != null)
 		return Py_BuildValue("i", dwLoc04 + dwLoc08);
@@ -16,6 +18,8 @@ PyObject * fn10001000(PyObject * ptrArg04, PyObject * ptrArg08)
 // 10001050: Register (ptr32 Eq_n) fn10001050(Stack (ptr32 Eq_n) ptrArg04, Stack (ptr32 Eq_n) ptrArg08)
 PyObject * fn10001050(PyObject * ptrArg04, PyObject * ptrArg08)
 {
+	int32 dwLoc08;
+	int32 dwLoc04;
 	PyObject * eax_n = PyArg_ParseTuple(ptrArg08, "ii:dif", &dwLoc08, &dwLoc04);
 	if (eax_n != null)
 		return Py_BuildValue("i", dwLoc08 - dwLoc04);
@@ -25,6 +29,8 @@ PyObject * fn10001050(PyObject * ptrArg04, PyObject * ptrArg08)
 // 100010A0: Register (ptr32 Eq_n) fn100010A0(Stack (ptr32 Eq_n) ptrArg04, Stack (ptr32 Eq_n) ptrArg08)
 PyObject * fn100010A0(PyObject * ptrArg04, PyObject * ptrArg08)
 {
+	int32 dwLoc08;
+	int32 dwLoc04;
 	PyObject * eax_n = PyArg_ParseTuple(ptrArg08, "ii:div", &dwLoc08, &dwLoc04);
 	if (eax_n != null)
 		return Py_BuildValue("i", (int32) ((int64) dwLoc08 /32 dwLoc04));
@@ -34,6 +40,8 @@ PyObject * fn100010A0(PyObject * ptrArg04, PyObject * ptrArg08)
 // 100010F0: Register (ptr32 Eq_n) fn100010F0(Stack (ptr32 Eq_n) ptrArg04, Stack (ptr32 Eq_n) ptrArg08)
 PyObject * fn100010F0(PyObject * ptrArg04, PyObject * ptrArg08)
 {
+	real32 rLoc08;
+	real32 rLoc04;
 	PyObject * eax_n = PyArg_ParseTuple(ptrArg08, "ff:fdiv", &rLoc08, &rLoc04);
 	if (eax_n != null)
 		return Py_BuildValue("f", (real64) rLoc08 / (real64) rLoc04);
@@ -51,6 +59,11 @@ void initpySample()
 //      fn10001388
 word32 fn100011E9(Eq_n dwArg04, Eq_n dwArg08, Eq_n dwArg0C, ptr32 & ebxOut, ptr32 & esiOut, ptr32 & ediOut)
 {
+	ptr32 fp;
+	ptr32 ebx;
+	ptr32 esi;
+	ptr32 edi;
+	struct Eq_n * fs;
 	word32 eax_n;
 	Eq_n ebp_n = 0x00;
 	if (dwArg08 == 0x00)
@@ -164,6 +177,8 @@ l10001384:
 //      DllMain
 Eq_n fn10001388(Eq_n ecx, Eq_n edx, Eq_n (* ebx)(LONG *, Eq_n, Eq_n), ptr32 esi, word32 edi)
 {
+	ptr32 fp;
+	word32 dwLoc0C;
 	struct Eq_n * ebp_n = fn100017E8(ebx, esi, edi, dwLoc0C, 0x10);
 	Eq_n ebx_n = ebp_n->t0008;
 	ebp_n->tFFFFFFE4 = 0x01;
@@ -253,6 +268,9 @@ void fn10001493()
 // 1000149E: Register Eq_n DllMain(Stack Eq_n hModule, Stack Eq_n dwReason, Stack Eq_n lpReserved)
 Eq_n DllMain(Eq_n hModule, Eq_n dwReason, Eq_n lpReserved)
 {
+	Eq_n (* ebx)(LONG *, Eq_n, Eq_n);
+	ptr32 esi;
+	word32 edi;
 	if (dwReason == 0x01)
 		fn10001864();
 	return fn10001388(lpReserved, dwReason, ebx, esi, edi);
@@ -263,6 +281,8 @@ Eq_n DllMain(Eq_n hModule, Eq_n dwReason, Eq_n lpReserved)
 //      fn1000166E
 Eq_n fn100015CF(Eq_n (* ebx)(LONG *, Eq_n, Eq_n), ptr32 esi, word32 edi)
 {
+	ptr32 fp;
+	word32 dwLoc0C;
 	Eq_n eax_n;
 	struct Eq_n * esp_n;
 	struct Eq_n * ebp_n = fn100017E8(ebx, esi, edi, dwLoc0C, 0x14);
@@ -366,6 +386,7 @@ struct Eq_n * fn10001700(struct Eq_n * dwArg04, uint32 dwArg08)
 //      fn100011E9
 ui32 fn10001742(Eq_n (* ebx)(LONG *, Eq_n, Eq_n), ptr32 esi, word32 edi, ptr32 & ediOut)
 {
+	word32 dwLoc0C;
 	ui32 eax_n;
 	struct Eq_n * ebp_n = fn100017E8(ebx, esi, edi, dwLoc0C, 0x08);
 	ebp_n->dwFFFFFFFC = 0x00;
@@ -406,6 +427,8 @@ word32 fn100017C6(Eq_n dwArg04, Eq_n dwArg08)
 //      fn10001742
 ptr32 fn100017E8(Eq_n (* ebx)(LONG *, Eq_n, Eq_n), ptr32 esi, word32 edi, word32 dwArg00, ui32 dwArg08)
 {
+	ptr32 fp;
+	struct Eq_n * fs;
 	struct Eq_n * esp_n = fp - 8 - dwArg08;
 	esp_n->ptrFFFFFFFC = ebx;
 	esp_n->ptrFFFFFFF8 = esi;
@@ -423,6 +446,8 @@ ptr32 fn100017E8(Eq_n (* ebx)(LONG *, Eq_n, Eq_n), ptr32 esi, word32 edi, word32
 //      fn10001742
 word32 fn1000182D(struct Eq_n * ebp, Eq_n dwArg00)
 {
+	struct Eq_n * fs;
+	word32 dwArg08;
 	fs->dw0000 = ebp->dwFFFFFFF0;
 	ebp->t0000 = dwArg00;
 	return dwArg08;
@@ -433,6 +458,8 @@ word32 fn1000182D(struct Eq_n * ebp, Eq_n dwArg00)
 //      DllMain
 void fn10001864()
 {
+	ptr32 fp;
+	Eq_n tLoc14;
 	ui32 eax_n = g_dw10003000;
 	if (eax_n != 0xBB40E64E && (eax_n & 0xFFFF0000) != 0x00)
 		g_dw10003004 = ~eax_n;

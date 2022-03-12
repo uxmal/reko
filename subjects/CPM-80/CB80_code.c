@@ -25,6 +25,7 @@ void fn0387()
 //      fn0990
 void fn0390(byte b, Eq_n c, byte e, byte bArg02)
 {
+	word16 wArg02;
 	g_b1656 = e;
 	g_b1655 = b;
 	g_t1654 = c;
@@ -57,6 +58,7 @@ bool fn03BB(Eq_n c, union Eq_n & aOut)
 //      fn0990
 word16 fn03CB(Eq_n c)
 {
+	byte f;
 	g_t1658 = c;
 	byte a_n = ~SLICE(0x19 - (uint16) (g_t1658 - 0x41), byte, 8);
 	byte a_n;
@@ -200,6 +202,7 @@ char fn0524(char c)
 //      fn056B
 word16 fn0534(char c)
 {
+	word16 bc;
 	char c = (byte) bc;
 	g_b166B = c;
 	g_ptr14BC + g_w14BE = (char *) g_b166B;
@@ -472,6 +475,8 @@ void fn075C(byte b, Eq_n c, byte d, Eq_n e)
 //      fn100A
 void fn07B3(cu8 b)
 {
+	word16 bc;
+	Eq_n C;
 	cu8 b = SLICE(bc, byte, 8);
 	if (__rcr<byte,byte,bool>(g_b14F9, 0x01, C) < 0x00)
 	{
@@ -813,6 +818,7 @@ Eq_n fn0990(byte f, byte b, Eq_n c, byte d, Eq_n e, union Eq_n & afOut)
 //      fn0990
 word16 fn0B74()
 {
+	byte f;
 	return SEQ(0x00 - (byte) (g_t1696 < ~0x00) & 0x00 - (byte) (*((word16) g_t1692 + (uint16) g_b1697) < 0x2F), f);
 }
 
@@ -1135,6 +1141,7 @@ void fn1262()
 //      fn100A
 word16 fn1279()
 {
+	byte f;
 	g_b16A8 = fn045B();
 	fn1262();
 	if (g_b16A8 != 0x28)
@@ -1160,6 +1167,7 @@ word16 fn1279()
 //      fn100A
 word16 fn12D8()
 {
+	byte f;
 	g_b16A8 = fn045B();
 	fn1262();
 	if (g_b16A8 == 0x28)

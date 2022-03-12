@@ -32,6 +32,10 @@ word32 fn00400268(word32 r2, word32 r3, word32 r13, word32 r14, word32 r15, word
 // Trashed: cr0 ctr r0 r10 r11 r12 r13 r14 r15 r16 r17 r18 r19 r2 r20 r21 r22 r23 r24 r25 r26 r27 r28 r29 r3 r30 r31 r4 r5 r6 r7 r8 r9
 // Preserved: lr r1
 fn00400268_entry:
+	word32 v11
+	word32 dwLoc10
+	word32 dwLoc0C
+	word32 dwLoc08
 l00400268:
 	Mem23[v11:word32] = r29
 	Mem26[v11 + 4<i32>:word32] = r30
@@ -71,6 +75,7 @@ word32 fn004002F8(word32 r2, word32 r3, word32 r25, word32 r26, word32 r27, word
 // Trashed: cr0 ctr r0 r10 r11 r12 r2 r25 r26 r27 r28 r29 r3 r30 r31 r4 r5 r6 r7 r8 r9
 // Preserved: lr r1
 fn004002F8_entry:
+	word32 v3
 l004002F8:
 	Mem7[v3:word32] = r30
 	Mem10[v3 + 4<i32>:word32] = r31
@@ -206,6 +211,15 @@ word32 fn004004B4(word32 r2, word32 r3, word32 r4, word32 r13, word32 r14, word3
 // Trashed: cr0 ctr r0 r10 r11 r12 r13 r14 r15 r16 r17 r18 r19 r2 r20 r21 r22 r23 r24 r25 r26 r27 r28 r29 r3 r30 r31 r4 r5 r6 r7 r8 r9
 // Preserved: lr r1
 fn004004B4_entry:
+	ptr32 fp
+	word32 v3
+	word32 dwLoc20
+	word32 dwLoc1C
+	word32 dwLoc18
+	word32 dwLoc14
+	word32 dwLoc10
+	word32 dwLoc0C
+	word32 dwLoc08
 l004004B4:
 	Mem7[v3:word32] = r13
 	Mem10[v3 + 4<i32>:word32] = r14
@@ -370,6 +384,7 @@ void fn00400E9C(word32 r2, word32 r3, word32 r4, word32 r5, word32 r6, word32 r2
 // Trashed: cr1 ctr r0 r10 r11 r12 r2 r25 r26 r27 r28 r29 r3 r30 r31 r4 r5 r6 r7 r8 r9
 // Preserved: cr0 lr r1
 fn00400E9C_entry:
+	word32 v3
 l00400E9C:
 	Mem7[v3:word32] = r28
 	Mem10[v3 + 4<i32>:word32] = r29
@@ -398,6 +413,7 @@ void fn00400F00(word32 r2, word32 r3, word32 r4, word32 r5, word32 r6, word32 r2
 // Trashed: cr1 ctr r0 r10 r11 r12 r2 r25 r26 r27 r28 r29 r3 r30 r31 r4 r5 r6 r7 r8 r9
 // Preserved: cr0 lr r1
 fn00400F00_entry:
+	word32 v3
 l00400F00:
 	Mem7[v3:word32] = r28
 	Mem10[v3 + 4<i32>:word32] = r29
@@ -490,6 +506,7 @@ word32 fn00400FC4(word32 r2, word32 r3, word32 r4, word32 r25, word32 r26, word3
 // Trashed: cr1 ctr r0 r10 r11 r12 r2 r25 r26 r27 r28 r29 r3 r30 r31 r4 r5 r6 r7 r8 r9
 // Preserved: cr0 lr r1
 fn00400FC4_entry:
+	word32 v3
 l00400FC4:
 	Mem7[v3:word32] = r30
 	Mem10[v3 + 4<i32>:word32] = r31
@@ -550,6 +567,8 @@ word32 fn0040105C(word32 r2, word32 r3, word32 r25, word32 r26, word32 r27, word
 // Trashed: cr0 ctr r0 r10 r11 r12 r2 r25 r26 r27 r28 r29 r3 r30 r31 r4 r5 r6 r7 r8 r9
 // Preserved: lr r1
 fn0040105C_entry:
+	word32 v5
+	word32 dwLoc10
 l0040105C:
 	Mem10[v5:word32] = r29
 	Mem13[v5 + 4<i32>:word32] = r30
@@ -617,6 +636,7 @@ word32 fn0040115C(word32 r2, word32 r3, word32 r4, word32 r29, word32 r30, word3
 // Trashed: cr1 ctr r0 r10 r11 r12 r2 r29 r3 r30 r31 r4 r5 r6
 // Preserved: lr r1
 fn0040115C_entry:
+	word32 v3
 l0040115C:
 	Mem7[v3:word32] = r29
 	Mem10[v3 + 4<i32>:word32] = r30
@@ -655,6 +675,8 @@ word32 fn004011FC(word32 r2, word32 r3, word32 r29, word32 r30, ptr32 & r3Out, p
 // Trashed: cr0 ctr r0 r10 r11 r12 r2 r29 r3 r30 r4 r5 r6 r7 r8 r9
 // Preserved: lr r1 r31
 fn004011FC_entry:
+	word32 r27
+	word32 r28
 l004011FC:
 	branch r3 != 0<32> l00401234
 l00401234:
@@ -727,6 +749,10 @@ word32 fn004012B0(word32 r2, word32 r3, word32 r29, word32 r30, word32 r31, ptr3
 // Trashed: cr0 ctr r0 r10 r11 r12 r2 r29 r3 r30 r31 r4 r5 r6 r7 r8 r9
 // Preserved: lr r1
 fn004012B0_entry:
+	word32 v3
+	word32 dwLoc10
+	word32 dwLoc0C
+	word32 dwLoc08
 l004012B0:
 	Mem7[v3:word32] = r29
 	Mem10[v3 + 4<i32>:word32] = r30
@@ -794,6 +820,9 @@ word32 fn00401380(word32 r2, word32 r3, word32 r27, word32 r28, word32 r29, word
 // Trashed: cr0 lr r12 r2 r27 r28 r29 r3 r30 r31 r4 r5
 // Preserved: r1
 fn00401380_entry:
+	word32 v3
+	word32 dwLoc10
+	word32 dwLoc0C
 l00401380:
 	Mem7[v3:word32] = r27
 	Mem10[v3 + 4<i32>:word32] = r28
@@ -948,6 +977,8 @@ word32 fn00401598(word32 r2, word32 r3, word32 r4, word32 r25, word32 r26, word3
 // Trashed: cr0 ctr r0 r10 r11 r12 r2 r25 r26 r27 r28 r29 r3 r30 r31 r4 r5 r6 r7 r8 r9
 // Preserved: lr r1
 fn00401598_entry:
+	ptr32 fp
+	word32 v3
 l00401598:
 	Mem7[v3:word32] = r27
 	Mem10[v3 + 4<i32>:word32] = r28
@@ -1088,6 +1119,7 @@ word32 fn004017F0(word32 r2, word32 r3, ptr32 & r3Out)
 // Trashed: cr1 ctr r0 r11 r12 r2 r3 r4
 // Preserved: lr r1
 fn004017F0_entry:
+	word32 dwLoc24
 l004017F0:
 	branch Mem0[Mem0[r2 + 128<i32>:word32]:word32] == 0<32> l00401838
 l0040180C:
@@ -1142,6 +1174,7 @@ word32 fn00401A34(word32 r2, ptr32 & r3Out)
 // Trashed: cr1 ctr r0 r10 r11 r12 r2 r3 r4
 // Preserved: lr r1
 fn00401A34_entry:
+	word32 dwLoc24
 l00401A34:
 	fn00404104(r2)
 	branch true l00401A68
@@ -1198,6 +1231,8 @@ word32 fn00401ADC(word32 r2, word32 r3, word32 r25, word32 r26, word32 r27, word
 // Trashed: cr1 ctr r0 r10 r11 r12 r2 r25 r26 r27 r28 r29 r3 r30 r31 r4 r5 r6 r7 r8 r9
 // Preserved: cr0 lr r1
 fn00401ADC_entry:
+	word32 v3
+	word32 dwLoc44
 l00401ADC:
 	Mem7[v3:word32] = r25
 	Mem10[v3 + 4<i32>:word32] = r26
@@ -1321,6 +1356,8 @@ word32 fn00401CE8(word32 r2, word32 r3, word32 r4, word32 r26, word32 r27, word3
 // Trashed: cr0 ctr r0 r10 r11 r12 r2 r26 r27 r28 r29 r3 r30 r31 r4 r5 r6 r7 r8 r9
 // Preserved: lr r1
 fn00401CE8_entry:
+	word32 v3
+	word32 dwLoc34
 l00401CE8:
 	Mem7[v3:word32] = r29
 	Mem10[v3 + 4<i32>:word32] = r30
@@ -1379,6 +1416,8 @@ word32 fn00401DD8(word32 r2, word32 r3, word32 r4, word32 r26, word32 r27, word3
 // Trashed: cr1 ctr r0 r10 r11 r12 r2 r26 r27 r28 r29 r3 r30 r31 r4 r5 r6 r7 r8 r9
 // Preserved: cr0 lr r1
 fn00401DD8_entry:
+	word32 v3
+	word32 dwLoc3C
 l00401DD8:
 	Mem7[v3:word32] = r28
 	Mem10[v3 + 4<i32>:word32] = r29
@@ -1447,6 +1486,8 @@ word32 fn00401ED4(word32 r2, word32 r3, word32 r30, word32 r31)
 // Trashed: cr1 ctr r0 r10 r11 r12 r2 r3 r30 r31 r4
 // Preserved: lr r1
 fn00401ED4_entry:
+	word32 v3
+	word32 dwLoc2C
 l00401ED4:
 	Mem7[v3:word32] = r30
 	Mem10[v3 + 4<i32>:word32] = r31
@@ -1545,6 +1586,9 @@ word32 fn004020BC(word32 r2, word32 r3, word32 r29, word32 r30, word32 r31, ptr3
 // Trashed: cr0 ctr r0 r10 r11 r12 r2 r29 r3 r30 r31 r4 r5 r6 r7 r8 r9
 // Preserved: lr r1
 fn004020BC_entry:
+	ptr32 fp
+	word32 v5
+	word32 dwLoc84
 l004020BC:
 	word32 r4_8 = Mem6[Mem0[r2 + 116<i32>:word32]:word32]
 	Mem11[v5:word32] = r29
@@ -1632,6 +1676,13 @@ word32 fn00402248(word32 r2, word32 r3, word32 r4, word32 r5, word32 r29, word32
 // Trashed: cr0 ctr r0 r10 r11 r12 r2 r29 r3 r30 r31 r4 r5 r6 r7 r8 r9
 // Preserved: lr r1
 fn00402248_entry:
+	ptr32 fp
+	word32 v11
+	word32 dwLoc8C
+	word32 dwLoc38
+	word32 dwLoc10
+	word32 dwLoc0C
+	word32 dwLoc08
 l00402248:
 	word32 r6_8 = Mem0[Mem0[r2 + 116<i32>:word32]:word32]
 	Mem18[v11:word32] = r29
@@ -1701,6 +1752,7 @@ void fn00402398(word32 r2, word32 r28, word32 r29, word32 r30, word32 r31)
 // Trashed: cr1 ctr r0 r10 r11 r12 r2 r28 r29 r3 r30 r31 r4 r5 r6 r7 r8 r9
 // Preserved: cr0 lr r1
 fn00402398_entry:
+	word32 v3
 l00402398:
 	Mem7[v3:word32] = r29
 	Mem10[v3 + 4<i32>:word32] = r30
@@ -1735,6 +1787,8 @@ word32 fn00402404(word32 r2, word32 r29, word32 r30, word32 r31, ptr32 & r29Out,
 // Trashed: cr1 ctr r0 r12 r2 r29 r3 r30 r4 r5
 // Preserved: lr r1 r31
 fn00402404_entry:
+	word32 dwLoc2C
+	word32 dwLoc08
 l00402404:
 	word32 r29_17
 	word32 r30_18
@@ -1769,6 +1823,8 @@ word32 fn004024F0(word32 r2, word32 r3, word32 r4, word32 r5, word32 r29, word32
 // Trashed: cr1 ctr r0 r11 r12 r2 r29 r3 r30 r31 r4 r5
 // Preserved: lr r1
 fn004024F0_entry:
+	word32 v8
+	word32 dwLoc04
 l004024F0:
 	word32 r4_9 = Mem0[r2 + 112<i32>:word32]
 	Mem14[v8:word32] = r30
@@ -1815,6 +1871,11 @@ word32 fn0040262C(word32 r2, word32 r3, word32 r4, word32 r29, word32 r30, word3
 // Trashed: cr1 ctr r0 r12 r2 r29 r30 r31 r4
 // Preserved: lr r1
 fn0040262C_entry:
+	word32 v3
+	word32 dwLoc10
+	word32 dwLoc0C
+	word32 dwLoc08
+	word32 dwLoc34
 l0040262C:
 	Mem7[v3:word32] = r29
 	Mem10[v3 + 4<i32>:word32] = r30
@@ -1850,6 +1911,11 @@ word32 fn004026B8(word32 r2, word32 r3, word32 r5, word32 r26, word32 r27, word3
 // Trashed: cr0 ctr r0 r10 r11 r12 r2 r26 r27 r28 r29 r3 r30 r31 r4 r5 r6 r7 r8 r9
 // Preserved: lr r1
 fn004026B8_entry:
+	ptr32 fp
+	word32 v3
+	word32 dwLoc8C
+	word32 dwLoc18
+	word32 dwLoc14
 l004026B8:
 	Mem7[v3:word32] = r26
 	Mem10[v3 + 4<i32>:word32] = r27
@@ -2048,6 +2114,9 @@ void fn00402A24(word32 r2, word32 r3, word32 r4, word32 r5, word32 r11, word32 r
 // Trashed: cr0 ctr r0 r10 r11 r12 r13 r14 r15 r16 r17 r18 r19 r2 r20 r21 r22 r23 r24 r25 r26 r27 r28 r29 r3 r30 r31 r4 r5 r6 r7 r8 r9
 // Preserved: lr r1
 fn00402A24_entry:
+	ptr32 fp
+	word32 v3
+	word32 dwLoc0244
 l00402A24:
 	word32 r31_155
 	word32 r30_154
@@ -2118,6 +2187,9 @@ word32 fn00402BA0(word32 r2, word32 r3, word32 r29, word32 r30, word32 r31, ptr3
 // Trashed: cr1 ctr r0 r10 r11 r12 r2 r29 r3 r30 r31 r4 r5 r6 r7 r8 r9
 // Preserved: lr r1
 fn00402BA0_entry:
+	word32 v7
+	word32 dwLoc08
+	word32 dwLoc04
 l00402BA0:
 	Mem12[v7:word32] = r30
 	Mem15[v7 + 4<i32>:word32] = r31
@@ -2159,6 +2231,7 @@ word32 fn00402C4C(word32 r2, word32 r3, word32 r29, word32 r30, ptr32 & r29Out, 
 // Trashed: cr1 ctr r0 r10 r11 r12 r2 r29 r3 r30 r4 r5 r6 r7 r8 r9
 // Preserved: lr r1 r31
 fn00402C4C_entry:
+	word32 dwLoc2C
 l00402C4C:
 	word32 r29_21
 	word32 r30_23
@@ -2184,6 +2257,9 @@ word32 fn00402CE0(word32 r2, word32 r3, word32 r4, word32 r26, word32 r27, word3
 // Trashed: cr0 ctr r0 r10 r11 r12 r2 r26 r27 r28 r29 r3 r30 r31 r4 r5 r6 r7 r8 r9
 // Preserved: lr r1
 fn00402CE0_entry:
+	ptr32 fp
+	word32 v5
+	word32 dwLoc24
 l00402CE0:
 	Mem9[v5:word32] = r26
 	Mem12[v5 + 4<i32>:word32] = r27
@@ -2375,6 +2451,7 @@ word32 fn00403170(word32 r2, word32 r3, word32 r28, word32 r29, word32 r30, word
 // Trashed: cr0 ctr r0 r10 r11 r12 r2 r28 r29 r3 r30 r31 r4 r5 r6 r7 r8 r9
 // Preserved: lr r1
 fn00403170_entry:
+	word32 v3
 l00403170:
 	Mem7[v3:word32] = r30
 	Mem10[v3 + 4<i32>:word32] = r31
@@ -2441,6 +2518,7 @@ word32 fn00403248(word32 r2)
 // Trashed: ctr r0 r12 r2
 // Preserved: lr r1
 fn00403248_entry:
+	word32 dwLoc24
 l00403248:
 	fn00403F84(r2)
 	return dwLoc24
@@ -2518,6 +2596,10 @@ word32 fn004032FC(word32 r2, word32 r4, word32 r13, word32 r14, word32 r15, word
 // Trashed: cr0 ctr r0 r10 r11 r12 r13 r14 r15 r16 r17 r18 r19 r2 r20 r21 r22 r23 r24 r25 r26 r27 r28 r29 r3 r30 r31 r4 r5 r6 r7 r8 r9
 // Preserved: lr r1
 fn004032FC_entry:
+	ptr32 fp
+	word32 v13
+	word32 dwLoc08
+	word32 dwLoc04
 l004032FC:
 	Mem26[v13:word32] = r30
 	Mem29[v13 + 4<i32>:word32] = r31
@@ -2564,6 +2646,10 @@ word32 fn004033C4(word32 r2, word32 r3, word32 r4, word32 r13, word32 r14, word3
 // Trashed: cr0 ctr r0 r10 r11 r12 r13 r14 r15 r16 r17 r18 r19 r2 r20 r21 r22 r23 r24 r25 r26 r27 r28 r29 r3 r30 r31 r4 r5 r6 r7 r8 r9
 // Preserved: lr r1
 fn004033C4_entry:
+	word32 v13
+	word32 dwLoc10
+	word32 dwLoc0C
+	word32 dwLoc08
 l004033C4:
 	Mem26[v13:word32] = r29
 	Mem29[v13 + 4<i32>:word32] = r30
@@ -2601,6 +2687,7 @@ word32 fn00403450(word32 r2, word32 r3, word32 r4, word32 r5, word32 r6, word32 
 // Trashed: cr0 ctr r0 r10 r11 r12 r2 r25 r26 r27 r28 r29 r3 r30 r31 r4 r5 r6 r7 r8 r9
 // Preserved: lr r1
 fn00403450_entry:
+	word32 v3
 l00403450:
 	Mem7[v3:word32] = r27
 	Mem10[v3 + 4<i32>:word32] = r28
@@ -2722,6 +2809,7 @@ word32 fn004035CC(word32 r2, word32 r29, word32 r30, word32 r31, ptr32 & r29Out,
 // Trashed: cr1 ctr r0 r10 r11 r12 r2 r29 r3 r30 r31 r4 r5 r6 r7 r8 r9
 // Preserved: lr r1
 fn004035CC_entry:
+	word32 dwLoc24
 l004035CC:
 	word32 r29_21
 	word32 r30_23
@@ -2837,6 +2925,12 @@ word32 fn00403744(word32 r2, word32 r3, word32 r29, word32 r30, word32 r31, ptr3
 // Trashed: cr0 ctr r0 r10 r11 r12 r2 r29 r3 r30 r31 r4 r5 r8 r9
 // Preserved: lr r1
 fn00403744_entry:
+	ptr32 fp
+	word32 v8
+	word32 dwLoc0184
+	word32 dwLoc10
+	word32 dwLoc0C
+	word32 dwLoc08
 l00403744:
 	word32 r4_8 = CONVERT(Mem0[r3:byte], byte, int32)
 	Mem15[v8:word32] = r29
@@ -2923,6 +3017,9 @@ word32 fn00403898(word32 r2, word32 r3, word32 r28, word32 r29, word32 r30, word
 // Trashed: cr0 ctr r0 r10 r11 r12 r2 r28 r29 r3 r30 r31 r4 r5 r6 r7 r8 r9
 // Preserved: lr r1
 fn00403898_entry:
+	ptr32 fp
+	word32 v5
+	word32 dwLoc84
 l00403898:
 	word32 r4_8 = Mem6[Mem0[r2 + 116<i32>:word32]:word32]
 	Mem11[v5:word32] = r28
@@ -3043,6 +3140,9 @@ word32 fn00403B08(word32 r2, word32 r3, word32 r29, word32 r30, word32 r31, ptr3
 // Trashed: cr1 ctr r0 r10 r11 r12 r2 r29 r3 r30 r31 r4 r5
 // Preserved: lr r1
 fn00403B08_entry:
+	word32 v3
+	word32 dwLoc34
+	word32 dwLoc10
 l00403B08:
 	Mem7[v3:word32] = r29
 	Mem10[v3 + 4<i32>:word32] = r30
@@ -3131,6 +3231,27 @@ void Win32CrtStartup()
 // Trashed:
 // Preserved:
 Win32CrtStartup_entry:
+	word32 lr
+	word32 r2
+	word32 r29
+	word32 r30
+	word32 r31
+	word32 r13
+	word32 r25
+	word32 r26
+	word32 r27
+	word32 r28
+	word32 r14
+	word32 r15
+	word32 r16
+	word32 r17
+	word32 r18
+	word32 r19
+	word32 r20
+	word32 r21
+	word32 r22
+	word32 r23
+	word32 r24
 l00403C6C:
 	Mem11[Mem7[r2 + 340<i32>:word32]:word32] = fn00403DD8()
 	fn00403CA0(r2, r13, r14, r15, r16, r17, r18, r19, r20, r21, r22, r23, r24, r25, r26, r27, r28, r29, r30, r31, lr)
@@ -3148,6 +3269,8 @@ void fn00403CA0(word32 r2, word32 r13, word32 r14, word32 r15, word32 r16, word3
 // Trashed: cr0 ctr r0 r10 r11 r12 r14 r15 r16 r17 r18 r19 r2 r20 r21 r22 r23 r24 r25 r26 r27 r28 r29 r3 r30 r31 r4 r5 r6 r7 r8 r9
 // Preserved: lr r1 r13
 fn00403CA0_entry:
+	ptr32 fp
+	word32 v5
 l00403CA0:
 	word32 r4_8 = Mem6[Mem0[r2 + 212<i32>:word32]:word32]
 	Mem11[v5:word32] = r29
@@ -3221,6 +3344,7 @@ word32 fn00403DD8()
 // Trashed: r3
 // Preserved: r1
 fn00403DD8_entry:
+	ptr32 fp
 l00403DD8:
 	return fp
 fn00403DD8_exit:
