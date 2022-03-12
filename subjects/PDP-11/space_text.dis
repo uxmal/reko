@@ -808,20 +808,26 @@ void fn0CF4(word16 r5)
 // Preserved: sp
 fn0CF4_entry:
 	ptr16 fp
+	struct <anonymous> tLoc08
 l0CF4:
 	branch Mem0[r5:byte] == 1<8> l0CFE
 l0CFE:
 	word16 r0_12 = Mem0[r5 + 2<16>:word16]
+	Mem16[&tLoc08 + 6<i16>:word16] = &tLoc08 + 6<i16>
+	Mem20[&tLoc08 + 4<i16>:word16] = &tLoc08 + 4<i16>
+	Mem25[&tLoc08 + 2<i16>:word16] = &tLoc08 + 2<i16>
+	Mem27[&tLoc08:word16] = 3<16>
 	fn15CC(fp - 8<16>)
-	word16 r0_60 = fn0D3E(r0_12, fp - 4<16>)
+	word16 r1_53 = (Mem30[&tLoc08 + 2<i16>:word16] << 1<i16>) + Mem30[&tLoc08 + 2<i16>:word16]
+	word16 r0_60 = fn0D3E(r0_12, Mem30[&tLoc08 + 4<i16>:word16])
 	Mem66[r0_60:byte] = 0x2D<8>
-	word16 r1_53 = (fp - 6<16> << 1<i16>) + (fp - 6<16>)
 	Mem72[r0_60 + 1<16>:byte] = Mem66[r1_53 + 0xD4F<16>:byte]
 	Mem76[r0_60 + 2<16>:byte] = Mem72[r1_53 + 0xD50<16>:byte]
 	Mem80[r0_60 + 3<16>:byte] = Mem76[r1_53 + 0xD51<16>:byte]
 	Mem82[r0_60 + 4<16>:byte] = 0x2D<8>
+	word16 v35_84 = Mem82[&tLoc08 + 6<i16>:word16]
 l0D3C_thunk_fn0D3E:
-	fn0D3E(r0_60 + 5<16>, fp - 2<16>)
+	fn0D3E(r0_60 + 5<16>, v35_84)
 	return
 l0CFA:
 	__syscall(0x8990<16>)

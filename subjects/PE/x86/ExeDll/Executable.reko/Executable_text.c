@@ -353,13 +353,16 @@ void fn00401663()
 {
 	ptr32 fp;
 	Eq_n tLoc18;
+	Eq_n tLoc10;
+	tLoc10.dwLowDateTime = (DWORD) 0x00;
+	tLoc10.dwHighDateTime = (DWORD) 0x00;
 	Eq_n eax_n = g_t403004;
 	if (eax_n != 0xBB40E64E && (eax_n & 0xFFFF0000) != 0x00)
 		g_dw403000 = ~eax_n;
 	else
 	{
-		GetSystemTimeAsFileTime(fp - 16);
-		ui32 v14_n = GetCurrentThreadId() ^ GetCurrentProcessId();
+		GetSystemTimeAsFileTime(&tLoc10);
+		ui32 v14_n = tLoc10.dwHighDateTime ^ tLoc10.dwLowDateTime ^ GetCurrentThreadId() ^ GetCurrentProcessId();
 		QueryPerformanceCounter(&tLoc18);
 		Eq_n ecx_n = tLoc18.dw0004 ^ tLoc18 ^ v14_n ^ fp - 8;
 		if (ecx_n == 0xBB40E64E)
@@ -453,14 +456,18 @@ ptr32 fn0040176E()
 void fn00401774(word32 dwArg04)
 {
 	ptr32 fp;
+	Eq_n tLoc0C;
 	if (IsProcessorFeaturePresent(0x17) == 0x00)
 	{
 		g_dw403368 = 0x00;
 		memset(fp - 808, 0x00, 0x02CC);
 		memset(fp - 92, 0x00, 0x50);
-		byte bl_n = 0x00 - (IsDebuggerPresent() != 0x01);
+		Eq_n eax_n = IsDebuggerPresent();
+		tLoc0C.ExceptionRecord = (PEXCEPTION_RECORD) (fp - 92);
+		tLoc0C.ContextRecord = (PCONTEXT) (fp - 808);
 		SetUnhandledExceptionFilter(null);
-		if (UnhandledExceptionFilter(fp - 0x0C) == 0x00)
+		byte bl_n = 0x00 - (eax_n != 0x01);
+		if (UnhandledExceptionFilter(&tLoc0C) == 0x00)
 			g_dw403368 &= 0x00 - ((word32) (bl_n + 0x01) != 0x00);
 	}
 	else

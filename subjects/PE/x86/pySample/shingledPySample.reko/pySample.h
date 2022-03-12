@@ -100,7 +100,7 @@ Eq_1: (struct "Globals"
 		(1000232C word32 dw1000232C)
 		(10003000 ui32 dw10003000)
 		(10003004 ui32 dw10003004)
-		(10003008 Eq_1117 t10003008)
+		(10003008 Eq_1136 t10003008)
 		(10003010 (arr PyMethodDef 5) methods)
 		(10003070 int32 dw10003070)
 		(100033A4 word32 dw100033A4)
@@ -302,9 +302,9 @@ Eq_159: DWORD
 	T_778 (in Mem61[ebp_13 + -28<i32>:word32] @ 1000163E : word32)
 	T_789 (in Mem71[ebp_13 + -32<i32>:word32] @ 1000164B : word32)
 	T_963 (in 1<32> @ 100017CB : word32)
-	T_1033 (in GetCurrentProcessId() @ 100018BB : DWORD)
-	T_1036 (in GetCurrentThreadId() @ 100018BB : DWORD)
-	T_1040 (in GetTickCount() @ 100018BB : DWORD)
+	T_1051 (in GetCurrentProcessId() @ 100018BB : DWORD)
+	T_1055 (in GetCurrentThreadId() @ 100018BB : DWORD)
+	T_1059 (in GetTickCount() @ 100018BB : DWORD)
 Eq_160: LPVOID
 	T_160 (in dwArg0C @ 1000118C : Eq_160)
 	T_406 (in ecx @ 10001385 : Eq_160)
@@ -490,7 +490,7 @@ Eq_680: BOOL
 	T_680 (in eax @ 1000149D : Eq_680)
 	T_691 (in fn10001388(lpReserved, dwReason, ebx, esi, edi) @ 100014BC : word32)
 	T_973 (in DisableThreadLibraryCalls(dwArg04) @ 100017DA : BOOL)
-	T_1046 (in QueryPerformanceCounter(&tLoc14) @ 100018C1 : BOOL)
+	T_1065 (in QueryPerformanceCounter(&tLoc14) @ 100018C1 : BOOL)
 Eq_681: HANDLE
 	T_681 (in hModule @ 1000149D : Eq_681)
 Eq_689: (fn Eq_680 (Eq_160, Eq_159, (ptr32 Eq_206), ptr32, word32))
@@ -575,35 +575,63 @@ Eq_1007: (segment "Eq_1007" (0 word32 dw0000))
 	T_1007 (in fs @ 1000182D : (ptr32 Eq_1007))
 Eq_1012: (union "Eq_1012" (ptr32 u0) ((memptr (ptr32 Eq_1007) word32) u1))
 	T_1012 (in 0x00000000<p32> @ 10001830 : ptr32)
-Eq_1018: LARGE_INTEGER
-	T_1018 (in tLoc14 @ 10001864 : Eq_1018)
-Eq_1024: (fn void (Eq_1026))
-	T_1024 (in GetSystemTimeAsFileTime @ 10001899 : ptr32)
-	T_1025 (in signature of GetSystemTimeAsFileTime @ 00000000 : void)
-Eq_1026: LPFILETIME
-	T_1026 (in lpSystemTimeAsFileTime @ 10001899 : LPFILETIME)
-	T_1028 (in fp - 12<i32> @ 00000000 : word32)
-Eq_1031: (fn Eq_159 ())
-	T_1031 (in GetCurrentProcessId @ 100018BB : ptr32)
-	T_1032 (in signature of GetCurrentProcessId @ 00000000 : void)
-Eq_1034: (fn Eq_159 ())
-	T_1034 (in GetCurrentThreadId @ 100018BB : ptr32)
-	T_1035 (in signature of GetCurrentThreadId @ 00000000 : void)
-Eq_1038: (fn Eq_159 ())
-	T_1038 (in GetTickCount @ 100018BB : ptr32)
-	T_1039 (in signature of GetTickCount @ 00000000 : void)
-Eq_1042: (fn Eq_680 ((ptr32 Eq_1044)))
-	T_1042 (in QueryPerformanceCounter @ 100018C1 : ptr32)
-	T_1043 (in signature of QueryPerformanceCounter @ 00000000 : void)
-Eq_1044: LARGE_INTEGER
-	T_1044 (in lpPerformanceCount @ 100018C1 : (ptr32 LARGE_INTEGER))
-	T_1045 (in &tLoc14 @ 100018C1 : (ptr32 LARGE_INTEGER))
-Eq_1048: (struct "Eq_1048" (0 LARGE_INTEGER t0000) (4 word32 dw0004))
-	T_1048 (in &tLoc14 @ 100018CD : (ptr32 LARGE_INTEGER))
-Eq_1052: LARGE_INTEGER
-	T_1052 (in &tLoc14 @ 100018CD : (ptr32 LARGE_INTEGER))
-Eq_1117: DWORD
-	T_1117
+Eq_1017: LARGE_INTEGER
+	T_1017 (in tLoc14 @ 10001864 : Eq_1017)
+Eq_1018: (struct "_FILETIME" (0 DWORD dwLowDateTime) (4 DWORD dwHighDateTime))
+	T_1018 (in tLoc0C @ 10001864 : Eq_1018)
+Eq_1022: DWORD
+	T_1022 (in 0<32> @ 1000186F : word32)
+	T_1026 (in Mem11[&tLoc0C + 0<32>:word32] @ 1000186F : word32)
+Eq_1023: (struct "_FILETIME" (0 DWORD dwLowDateTime) (4 DWORD dwHighDateTime))
+	T_1023 (in &tLoc0C @ 1000186F : (ptr32 (struct "_FILETIME")))
+Eq_1025: DWORD
+	T_1025 (in &tLoc0C + 0<32> @ 1000186F : word32)
+Eq_1027: DWORD
+	T_1027 (in 0<32> @ 10001873 : word32)
+	T_1031 (in Mem14[&tLoc0C + 4<i32>:word32] @ 10001873 : word32)
+Eq_1028: (struct "_FILETIME" (0 DWORD dwLowDateTime) (4 DWORD dwHighDateTime))
+	T_1028 (in &tLoc0C @ 10001873 : (ptr32 (struct "_FILETIME")))
+Eq_1030: DWORD
+	T_1030 (in &tLoc0C + 4<i32> @ 10001873 : word32)
+Eq_1034: (fn void (Eq_1036))
+	T_1034 (in GetSystemTimeAsFileTime @ 10001899 : ptr32)
+	T_1035 (in signature of GetSystemTimeAsFileTime @ 00000000 : void)
+Eq_1036: LPFILETIME
+	T_1036 (in lpSystemTimeAsFileTime @ 10001899 : LPFILETIME)
+	T_1037 (in &tLoc0C @ 10001899 : (ptr32 (struct "_FILETIME")))
+Eq_1040: (struct "_FILETIME" (0 DWORD dwLowDateTime) (4 DWORD dwHighDateTime))
+	T_1040 (in &tLoc0C @ 100018BB : (ptr32 (struct "_FILETIME")))
+Eq_1042: DWORD
+	T_1042 (in &tLoc0C + 4<i32> @ 100018BB : word32)
+Eq_1043: DWORD
+	T_1043 (in Mem37[&tLoc0C + 4<i32>:word32] @ 100018BB : word32)
+Eq_1044: (struct "_FILETIME" (0 DWORD dwLowDateTime) (4 DWORD dwHighDateTime))
+	T_1044 (in &tLoc0C @ 100018BB : (ptr32 (struct "_FILETIME")))
+Eq_1046: DWORD
+	T_1046 (in &tLoc0C + 0<32> @ 100018BB : word32)
+Eq_1047: DWORD
+	T_1047 (in Mem37[&tLoc0C + 0<32>:word32] @ 100018BB : word32)
+Eq_1049: (fn Eq_159 ())
+	T_1049 (in GetCurrentProcessId @ 100018BB : ptr32)
+	T_1050 (in signature of GetCurrentProcessId @ 00000000 : void)
+Eq_1053: (fn Eq_159 ())
+	T_1053 (in GetCurrentThreadId @ 100018BB : ptr32)
+	T_1054 (in signature of GetCurrentThreadId @ 00000000 : void)
+Eq_1057: (fn Eq_159 ())
+	T_1057 (in GetTickCount @ 100018BB : ptr32)
+	T_1058 (in signature of GetTickCount @ 00000000 : void)
+Eq_1061: (fn Eq_680 ((ptr32 Eq_1063)))
+	T_1061 (in QueryPerformanceCounter @ 100018C1 : ptr32)
+	T_1062 (in signature of QueryPerformanceCounter @ 00000000 : void)
+Eq_1063: LARGE_INTEGER
+	T_1063 (in lpPerformanceCount @ 100018C1 : (ptr32 LARGE_INTEGER))
+	T_1064 (in &tLoc14 @ 100018C1 : (ptr32 LARGE_INTEGER))
+Eq_1067: (struct "Eq_1067" (0 LARGE_INTEGER t0000) (4 word32 dw0004))
+	T_1067 (in &tLoc14 @ 100018CD : (ptr32 LARGE_INTEGER))
+Eq_1071: LARGE_INTEGER
+	T_1071 (in &tLoc14 @ 100018CD : (ptr32 LARGE_INTEGER))
+Eq_1136: DWORD
+	T_1136
 // Type Variables ////////////
 globals_t: (in globals @ 00000000 : (ptr32 (struct "Globals")))
   Class: Eq_1
@@ -4669,14 +4697,14 @@ T_1016: (in Mem22[ebp + 0<32>:word32] @ 1000183F : word32)
   Class: Eq_476
   DataType: Eq_476
   OrigDataType: word32
-T_1017: (in fp @ 10001864 : ptr32)
+T_1017: (in tLoc14 @ 10001864 : Eq_1017)
   Class: Eq_1017
-  DataType: ptr32
-  OrigDataType: ptr32
-T_1018: (in tLoc14 @ 10001864 : Eq_1018)
+  DataType: Eq_1017
+  OrigDataType: LARGE_INTEGER
+T_1018: (in tLoc0C @ 10001864 : Eq_1018)
   Class: Eq_1018
   DataType: Eq_1018
-  OrigDataType: LARGE_INTEGER
+  OrigDataType: (struct "_FILETIME" (0 DWORD dwLowDateTime) (4 DWORD dwHighDateTime))
 T_1019: (in eax_9 @ 1000186A : ui32)
   Class: Eq_991
   DataType: ui32
@@ -4689,314 +4717,314 @@ T_1021: (in Mem6[0x10003000<p32>:word32] @ 1000186A : word32)
   Class: Eq_991
   DataType: ui32
   OrigDataType: word32
-T_1022: (in 0xBB40E64E<32> @ 10001885 : word32)
+T_1022: (in 0<32> @ 1000186F : word32)
+  Class: Eq_1022
+  DataType: Eq_1022
+  OrigDataType: word32
+T_1023: (in &tLoc0C @ 1000186F : (ptr32 (struct "_FILETIME")))
+  Class: Eq_1023
+  DataType: (ptr32 Eq_1023)
+  OrigDataType: (ptr32 (struct "_FILETIME"))
+T_1024: (in 0<32> @ 1000186F : word32)
+  Class: Eq_1024
+  DataType: word32
+  OrigDataType: word32
+T_1025: (in &tLoc0C + 0<32> @ 1000186F : word32)
+  Class: Eq_1025
+  DataType: (ptr32 Eq_1025)
+  OrigDataType: (ptr32 DWORD)
+T_1026: (in Mem11[&tLoc0C + 0<32>:word32] @ 1000186F : word32)
+  Class: Eq_1022
+  DataType: Eq_1022
+  OrigDataType: DWORD
+T_1027: (in 0<32> @ 10001873 : word32)
+  Class: Eq_1027
+  DataType: Eq_1027
+  OrigDataType: word32
+T_1028: (in &tLoc0C @ 10001873 : (ptr32 (struct "_FILETIME")))
+  Class: Eq_1028
+  DataType: (ptr32 Eq_1028)
+  OrigDataType: (ptr32 (struct "_FILETIME"))
+T_1029: (in 4<i32> @ 10001873 : int32)
+  Class: Eq_1029
+  DataType: int32
+  OrigDataType: int32
+T_1030: (in &tLoc0C + 4<i32> @ 10001873 : word32)
+  Class: Eq_1030
+  DataType: (ptr32 Eq_1030)
+  OrigDataType: (ptr32 DWORD)
+T_1031: (in Mem14[&tLoc0C + 4<i32>:word32] @ 10001873 : word32)
+  Class: Eq_1027
+  DataType: Eq_1027
+  OrigDataType: DWORD
+T_1032: (in 0xBB40E64E<32> @ 10001885 : word32)
   Class: Eq_991
   DataType: ui32
   OrigDataType: word32
-T_1023: (in eax_9 == 0xBB40E64E<32> @ 00000000 : bool)
-  Class: Eq_1023
+T_1033: (in eax_9 == 0xBB40E64E<32> @ 00000000 : bool)
+  Class: Eq_1033
   DataType: bool
   OrigDataType: bool
-T_1024: (in GetSystemTimeAsFileTime @ 10001899 : ptr32)
-  Class: Eq_1024
-  DataType: (ptr32 Eq_1024)
-  OrigDataType: (ptr32 (fn T_1029 (T_1028)))
-T_1025: (in signature of GetSystemTimeAsFileTime @ 00000000 : void)
-  Class: Eq_1024
-  DataType: (ptr32 Eq_1024)
+T_1034: (in GetSystemTimeAsFileTime @ 10001899 : ptr32)
+  Class: Eq_1034
+  DataType: (ptr32 Eq_1034)
+  OrigDataType: (ptr32 (fn T_1038 (T_1037)))
+T_1035: (in signature of GetSystemTimeAsFileTime @ 00000000 : void)
+  Class: Eq_1034
+  DataType: (ptr32 Eq_1034)
   OrigDataType: 
-T_1026: (in lpSystemTimeAsFileTime @ 10001899 : LPFILETIME)
-  Class: Eq_1026
-  DataType: Eq_1026
+T_1036: (in lpSystemTimeAsFileTime @ 10001899 : LPFILETIME)
+  Class: Eq_1036
+  DataType: Eq_1036
   OrigDataType: 
-T_1027: (in 12<i32> @ 10001899 : int32)
-  Class: Eq_1027
-  DataType: int32
-  OrigDataType: int32
-T_1028: (in fp - 12<i32> @ 00000000 : word32)
-  Class: Eq_1026
-  DataType: Eq_1026
+T_1037: (in &tLoc0C @ 10001899 : (ptr32 (struct "_FILETIME")))
+  Class: Eq_1036
+  DataType: Eq_1036
   OrigDataType: LPFILETIME
-T_1029: (in GetSystemTimeAsFileTime(fp - 12<i32>) @ 10001899 : void)
-  Class: Eq_1029
+T_1038: (in GetSystemTimeAsFileTime(&tLoc0C) @ 10001899 : void)
+  Class: Eq_1038
   DataType: void
   OrigDataType: void
-T_1030: (in esi_46 @ 100018BB : ui32)
-  Class: Eq_1030
+T_1039: (in esi_46 @ 100018BB : ui32)
+  Class: Eq_1039
   DataType: ui32
   OrigDataType: ui32
-T_1031: (in GetCurrentProcessId @ 100018BB : ptr32)
-  Class: Eq_1031
-  DataType: (ptr32 Eq_1031)
-  OrigDataType: (ptr32 (fn T_1033 ()))
-T_1032: (in signature of GetCurrentProcessId @ 00000000 : void)
-  Class: Eq_1031
-  DataType: (ptr32 Eq_1031)
-  OrigDataType: 
-T_1033: (in GetCurrentProcessId() @ 100018BB : DWORD)
-  Class: Eq_159
-  DataType: Eq_159
-  OrigDataType: DWORD
-T_1034: (in GetCurrentThreadId @ 100018BB : ptr32)
-  Class: Eq_1034
-  DataType: (ptr32 Eq_1034)
-  OrigDataType: (ptr32 (fn T_1036 ()))
-T_1035: (in signature of GetCurrentThreadId @ 00000000 : void)
-  Class: Eq_1034
-  DataType: (ptr32 Eq_1034)
-  OrigDataType: 
-T_1036: (in GetCurrentThreadId() @ 100018BB : DWORD)
-  Class: Eq_159
-  DataType: Eq_159
-  OrigDataType: DWORD
-T_1037: (in GetCurrentProcessId() ^ GetCurrentThreadId() @ 00000000 : word32)
-  Class: Eq_1037
-  DataType: ui32
-  OrigDataType: ui32
-T_1038: (in GetTickCount @ 100018BB : ptr32)
-  Class: Eq_1038
-  DataType: (ptr32 Eq_1038)
-  OrigDataType: (ptr32 (fn T_1040 ()))
-T_1039: (in signature of GetTickCount @ 00000000 : void)
-  Class: Eq_1038
-  DataType: (ptr32 Eq_1038)
-  OrigDataType: 
-T_1040: (in GetTickCount() @ 100018BB : DWORD)
-  Class: Eq_159
-  DataType: Eq_159
-  OrigDataType: DWORD
-T_1041: (in GetCurrentProcessId() ^ GetCurrentThreadId() ^ GetTickCount() @ 00000000 : word32)
-  Class: Eq_1030
-  DataType: ui32
-  OrigDataType: ui32
-T_1042: (in QueryPerformanceCounter @ 100018C1 : ptr32)
-  Class: Eq_1042
-  DataType: (ptr32 Eq_1042)
-  OrigDataType: (ptr32 (fn T_1046 (T_1045)))
-T_1043: (in signature of QueryPerformanceCounter @ 00000000 : void)
-  Class: Eq_1042
-  DataType: (ptr32 Eq_1042)
-  OrigDataType: 
-T_1044: (in lpPerformanceCount @ 100018C1 : (ptr32 LARGE_INTEGER))
-  Class: Eq_1044
-  DataType: (ptr32 Eq_1044)
-  OrigDataType: 
-T_1045: (in &tLoc14 @ 100018C1 : (ptr32 LARGE_INTEGER))
-  Class: Eq_1044
-  DataType: (ptr32 Eq_1044)
-  OrigDataType: (ptr32 LARGE_INTEGER)
-T_1046: (in QueryPerformanceCounter(&tLoc14) @ 100018C1 : BOOL)
-  Class: Eq_680
-  DataType: Eq_680
-  OrigDataType: BOOL
-T_1047: (in esi_54 @ 100018CD : ui32)
-  Class: Eq_991
-  DataType: ui32
-  OrigDataType: ui32
-T_1048: (in &tLoc14 @ 100018CD : (ptr32 LARGE_INTEGER))
-  Class: Eq_1048
-  DataType: (ptr32 Eq_1048)
-  OrigDataType: (ptr32 (struct (0 LARGE_INTEGER t0000) (4 T_1051 t0004)))
-T_1049: (in 4<i32> @ 100018CD : int32)
-  Class: Eq_1049
+T_1040: (in &tLoc0C @ 100018BB : (ptr32 (struct "_FILETIME")))
+  Class: Eq_1040
+  DataType: (ptr32 Eq_1040)
+  OrigDataType: (ptr32 (struct "_FILETIME"))
+T_1041: (in 4<i32> @ 100018BB : int32)
+  Class: Eq_1041
   DataType: int32
   OrigDataType: int32
-T_1050: (in &tLoc14 + 4<i32> @ 100018CD : word32)
-  Class: Eq_1050
-  DataType: ptr32
-  OrigDataType: ptr32
-T_1051: (in Mem49[&tLoc14 + 4<i32>:word32] @ 100018CD : word32)
-  Class: Eq_1051
+T_1042: (in &tLoc0C + 4<i32> @ 100018BB : word32)
+  Class: Eq_1042
+  DataType: (ptr32 Eq_1042)
+  OrigDataType: (ptr32 DWORD)
+T_1043: (in Mem37[&tLoc0C + 4<i32>:word32] @ 100018BB : word32)
+  Class: Eq_1043
+  DataType: Eq_1043
+  OrigDataType: DWORD
+T_1044: (in &tLoc0C @ 100018BB : (ptr32 (struct "_FILETIME")))
+  Class: Eq_1044
+  DataType: (ptr32 Eq_1044)
+  OrigDataType: (ptr32 (struct "_FILETIME"))
+T_1045: (in 0<32> @ 100018BB : word32)
+  Class: Eq_1045
   DataType: word32
   OrigDataType: word32
-T_1052: (in &tLoc14 @ 100018CD : (ptr32 LARGE_INTEGER))
+T_1046: (in &tLoc0C + 0<32> @ 100018BB : word32)
+  Class: Eq_1046
+  DataType: (ptr32 Eq_1046)
+  OrigDataType: (ptr32 DWORD)
+T_1047: (in Mem37[&tLoc0C + 0<32>:word32] @ 100018BB : word32)
+  Class: Eq_1047
+  DataType: Eq_1047
+  OrigDataType: DWORD
+T_1048: (in tLoc0C.dwHighDateTime ^ tLoc0C.dwLowDateTime @ 00000000 : word32)
+  Class: Eq_1048
+  DataType: ui32
+  OrigDataType: ui32
+T_1049: (in GetCurrentProcessId @ 100018BB : ptr32)
+  Class: Eq_1049
+  DataType: (ptr32 Eq_1049)
+  OrigDataType: (ptr32 (fn T_1051 ()))
+T_1050: (in signature of GetCurrentProcessId @ 00000000 : void)
+  Class: Eq_1049
+  DataType: (ptr32 Eq_1049)
+  OrigDataType: 
+T_1051: (in GetCurrentProcessId() @ 100018BB : DWORD)
+  Class: Eq_159
+  DataType: Eq_159
+  OrigDataType: DWORD
+T_1052: (in tLoc0C.dwHighDateTime ^ tLoc0C.dwLowDateTime ^ GetCurrentProcessId() @ 00000000 : word32)
   Class: Eq_1052
-  DataType: (ptr32 Eq_1052)
-  OrigDataType: (ptr32 (struct (0 LARGE_INTEGER t0000)))
-T_1053: (in 0<32> @ 100018CD : word32)
+  DataType: ui32
+  OrigDataType: ui32
+T_1053: (in GetCurrentThreadId @ 100018BB : ptr32)
   Class: Eq_1053
-  DataType: word32
-  OrigDataType: word32
-T_1054: (in &tLoc14 + 0<32> @ 100018CD : word32)
-  Class: Eq_1054
-  DataType: ptr32
-  OrigDataType: ptr32
-T_1055: (in Mem49[&tLoc14 + 0<32>:word32] @ 100018CD : word32)
-  Class: Eq_1055
-  DataType: word32
-  OrigDataType: word32
-T_1056: (in tLoc14.dw0004 ^ tLoc14 @ 00000000 : word32)
+  DataType: (ptr32 Eq_1053)
+  OrigDataType: (ptr32 (fn T_1055 ()))
+T_1054: (in signature of GetCurrentThreadId @ 00000000 : void)
+  Class: Eq_1053
+  DataType: (ptr32 Eq_1053)
+  OrigDataType: 
+T_1055: (in GetCurrentThreadId() @ 100018BB : DWORD)
+  Class: Eq_159
+  DataType: Eq_159
+  OrigDataType: DWORD
+T_1056: (in tLoc0C.dwHighDateTime ^ tLoc0C.dwLowDateTime ^ GetCurrentProcessId() ^ GetCurrentThreadId() @ 00000000 : word32)
   Class: Eq_1056
   DataType: ui32
   OrigDataType: ui32
-T_1057: (in esi_46 ^ (tLoc14.dw0004 ^ tLoc14) @ 00000000 : word32)
-  Class: Eq_991
+T_1057: (in GetTickCount @ 100018BB : ptr32)
+  Class: Eq_1057
+  DataType: (ptr32 Eq_1057)
+  OrigDataType: (ptr32 (fn T_1059 ()))
+T_1058: (in signature of GetTickCount @ 00000000 : void)
+  Class: Eq_1057
+  DataType: (ptr32 Eq_1057)
+  OrigDataType: 
+T_1059: (in GetTickCount() @ 100018BB : DWORD)
+  Class: Eq_159
+  DataType: Eq_159
+  OrigDataType: DWORD
+T_1060: (in tLoc0C.dwHighDateTime ^ tLoc0C.dwLowDateTime ^ GetCurrentProcessId() ^ GetCurrentThreadId() ^ GetTickCount() @ 00000000 : word32)
+  Class: Eq_1039
   DataType: ui32
   OrigDataType: ui32
-T_1058: (in 0xBB40E64E<32> @ 100018D1 : word32)
-  Class: Eq_991
-  DataType: ui32
-  OrigDataType: word32
-T_1059: (in esi_54 != 0xBB40E64E<32> @ 00000000 : bool)
-  Class: Eq_1059
-  DataType: bool
-  OrigDataType: bool
-T_1060: (in 0xFFFF0000<32> @ 10001889 : word32)
-  Class: Eq_1060
-  DataType: ui32
-  OrigDataType: ui32
-T_1061: (in eax_9 & 0xFFFF0000<32> @ 00000000 : word32)
+T_1061: (in QueryPerformanceCounter @ 100018C1 : ptr32)
   Class: Eq_1061
-  DataType: ui32
-  OrigDataType: ui32
-T_1062: (in 0<32> @ 10001889 : word32)
+  DataType: (ptr32 Eq_1061)
+  OrigDataType: (ptr32 (fn T_1065 (T_1064)))
+T_1062: (in signature of QueryPerformanceCounter @ 00000000 : void)
   Class: Eq_1061
-  DataType: ui32
-  OrigDataType: word32
-T_1063: (in (eax_9 & 0xFFFF0000<32>) == 0<32> @ 00000000 : bool)
+  DataType: (ptr32 Eq_1061)
+  OrigDataType: 
+T_1063: (in lpPerformanceCount @ 100018C1 : (ptr32 LARGE_INTEGER))
   Class: Eq_1063
-  DataType: bool
-  OrigDataType: bool
-T_1064: (in ~eax_9 @ 1000188D : word32)
-  Class: Eq_1064
+  DataType: (ptr32 Eq_1063)
+  OrigDataType: 
+T_1064: (in &tLoc14 @ 100018C1 : (ptr32 LARGE_INTEGER))
+  Class: Eq_1063
+  DataType: (ptr32 Eq_1063)
+  OrigDataType: (ptr32 LARGE_INTEGER)
+T_1065: (in QueryPerformanceCounter(&tLoc14) @ 100018C1 : BOOL)
+  Class: Eq_680
+  DataType: Eq_680
+  OrigDataType: BOOL
+T_1066: (in esi_54 @ 100018CD : ui32)
+  Class: Eq_991
   DataType: ui32
   OrigDataType: ui32
-T_1065: (in 10003004 @ 1000188D : ptr32)
-  Class: Eq_1065
-  DataType: (ptr32 ui32)
-  OrigDataType: (ptr32 (struct (0 T_1066 t0000)))
-T_1066: (in Mem76[0x10003004<p32>:word32] @ 1000188D : word32)
-  Class: Eq_1064
-  DataType: ui32
-  OrigDataType: word32
-T_1067: (in 0xFFFF0000<32> @ 100018DC : word32)
+T_1067: (in &tLoc14 @ 100018CD : (ptr32 LARGE_INTEGER))
   Class: Eq_1067
+  DataType: (ptr32 Eq_1067)
+  OrigDataType: (ptr32 (struct (0 LARGE_INTEGER t0000) (4 T_1070 t0004)))
+T_1068: (in 4<i32> @ 100018CD : int32)
+  Class: Eq_1068
+  DataType: int32
+  OrigDataType: int32
+T_1069: (in &tLoc14 + 4<i32> @ 100018CD : word32)
+  Class: Eq_1069
+  DataType: ptr32
+  OrigDataType: ptr32
+T_1070: (in Mem49[&tLoc14 + 4<i32>:word32] @ 100018CD : word32)
+  Class: Eq_1070
+  DataType: word32
+  OrigDataType: word32
+T_1071: (in &tLoc14 @ 100018CD : (ptr32 LARGE_INTEGER))
+  Class: Eq_1071
+  DataType: (ptr32 Eq_1071)
+  OrigDataType: (ptr32 (struct (0 LARGE_INTEGER t0000)))
+T_1072: (in 0<32> @ 100018CD : word32)
+  Class: Eq_1072
+  DataType: word32
+  OrigDataType: word32
+T_1073: (in &tLoc14 + 0<32> @ 100018CD : word32)
+  Class: Eq_1073
+  DataType: ptr32
+  OrigDataType: ptr32
+T_1074: (in Mem49[&tLoc14 + 0<32>:word32] @ 100018CD : word32)
+  Class: Eq_1074
+  DataType: word32
+  OrigDataType: word32
+T_1075: (in tLoc14.dw0004 ^ tLoc14 @ 00000000 : word32)
+  Class: Eq_1075
   DataType: ui32
   OrigDataType: ui32
-T_1068: (in esi_54 & 0xFFFF0000<32> @ 00000000 : word32)
-  Class: Eq_1068
+T_1076: (in esi_46 ^ (tLoc14.dw0004 ^ tLoc14) @ 00000000 : word32)
+  Class: Eq_991
   DataType: ui32
   OrigDataType: ui32
-T_1069: (in 0<32> @ 100018DC : word32)
-  Class: Eq_1068
+T_1077: (in 0xBB40E64E<32> @ 100018D1 : word32)
+  Class: Eq_991
   DataType: ui32
   OrigDataType: word32
-T_1070: (in (esi_54 & 0xFFFF0000<32>) != 0<32> @ 00000000 : bool)
-  Class: Eq_1070
+T_1078: (in esi_54 != 0xBB40E64E<32> @ 00000000 : bool)
+  Class: Eq_1078
   DataType: bool
   OrigDataType: bool
-T_1071: (in 0xBB40E64F<32> @ 100018D3 : word32)
-  Class: Eq_991
-  DataType: ui32
-  OrigDataType: word32
-T_1072: (in 10003000 @ 100018E5 : ptr32)
-  Class: Eq_1072
-  DataType: (ptr32 ui32)
-  OrigDataType: (ptr32 (struct (0 T_1073 t0000)))
-T_1073: (in Mem69[0x10003000<p32>:word32] @ 100018E5 : word32)
-  Class: Eq_991
-  DataType: ui32
-  OrigDataType: word32
-T_1074: (in ~esi_54 @ 100018ED : word32)
-  Class: Eq_1064
+T_1079: (in 0xFFFF0000<32> @ 10001889 : word32)
+  Class: Eq_1079
   DataType: ui32
   OrigDataType: ui32
-T_1075: (in 10003004 @ 100018ED : ptr32)
-  Class: Eq_1075
-  DataType: (ptr32 ui32)
-  OrigDataType: (ptr32 (struct (0 T_1076 t0000)))
-T_1076: (in Mem71[0x10003004<p32>:word32] @ 100018ED : word32)
-  Class: Eq_1064
-  DataType: ui32
-  OrigDataType: word32
-T_1077: (in 0x10<32> @ 100018E3 : word32)
-  Class: Eq_1077
-  DataType: word32
-  OrigDataType: word32
-T_1078: (in esi_54 << 0x10<32> @ 00000000 : word32)
-  Class: Eq_1078
-  DataType: ui32
-  OrigDataType: ui32
-T_1079: (in esi_54 | esi_54 << 0x10<32> @ 00000000 : word32)
-  Class: Eq_991
-  DataType: ui32
-  OrigDataType: ui32
-T_1080:
+T_1080: (in eax_9 & 0xFFFF0000<32> @ 00000000 : word32)
   Class: Eq_1080
-  DataType: word32
+  DataType: ui32
+  OrigDataType: ui32
+T_1081: (in 0<32> @ 10001889 : word32)
+  Class: Eq_1080
+  DataType: ui32
   OrigDataType: word32
-T_1081:
-  Class: Eq_1081
-  DataType: word32
-  OrigDataType: word32
-T_1082:
+T_1082: (in (eax_9 & 0xFFFF0000<32>) == 0<32> @ 00000000 : bool)
   Class: Eq_1082
-  DataType: word32
-  OrigDataType: word32
-T_1083:
+  DataType: bool
+  OrigDataType: bool
+T_1083: (in ~eax_9 @ 1000188D : word32)
   Class: Eq_1083
-  DataType: word32
-  OrigDataType: word32
-T_1084:
+  DataType: ui32
+  OrigDataType: ui32
+T_1084: (in 10003004 @ 1000188D : ptr32)
   Class: Eq_1084
-  DataType: word32
+  DataType: (ptr32 ui32)
+  OrigDataType: (ptr32 (struct (0 T_1085 t0000)))
+T_1085: (in Mem76[0x10003004<p32>:word32] @ 1000188D : word32)
+  Class: Eq_1083
+  DataType: ui32
   OrigDataType: word32
-T_1085:
-  Class: Eq_1085
-  DataType: word32
-  OrigDataType: word32
-T_1086:
+T_1086: (in 0xFFFF0000<32> @ 100018DC : word32)
   Class: Eq_1086
-  DataType: word32
-  OrigDataType: word32
-T_1087:
+  DataType: ui32
+  OrigDataType: ui32
+T_1087: (in esi_54 & 0xFFFF0000<32> @ 00000000 : word32)
   Class: Eq_1087
-  DataType: word32
+  DataType: ui32
+  OrigDataType: ui32
+T_1088: (in 0<32> @ 100018DC : word32)
+  Class: Eq_1087
+  DataType: ui32
   OrigDataType: word32
-T_1088:
-  Class: Eq_1088
-  DataType: word32
-  OrigDataType: word32
-T_1089:
+T_1089: (in (esi_54 & 0xFFFF0000<32>) != 0<32> @ 00000000 : bool)
   Class: Eq_1089
-  DataType: word32
+  DataType: bool
+  OrigDataType: bool
+T_1090: (in 0xBB40E64F<32> @ 100018D3 : word32)
+  Class: Eq_991
+  DataType: ui32
   OrigDataType: word32
-T_1090:
-  Class: Eq_1090
-  DataType: word32
-  OrigDataType: word32
-T_1091:
+T_1091: (in 10003000 @ 100018E5 : ptr32)
   Class: Eq_1091
-  DataType: word32
+  DataType: (ptr32 ui32)
+  OrigDataType: (ptr32 (struct (0 T_1092 t0000)))
+T_1092: (in Mem69[0x10003000<p32>:word32] @ 100018E5 : word32)
+  Class: Eq_991
+  DataType: ui32
   OrigDataType: word32
-T_1092:
-  Class: Eq_1092
-  DataType: word32
-  OrigDataType: word32
-T_1093:
-  Class: Eq_1093
-  DataType: word32
-  OrigDataType: word32
-T_1094:
+T_1093: (in ~esi_54 @ 100018ED : word32)
+  Class: Eq_1083
+  DataType: ui32
+  OrigDataType: ui32
+T_1094: (in 10003004 @ 100018ED : ptr32)
   Class: Eq_1094
-  DataType: word32
+  DataType: (ptr32 ui32)
+  OrigDataType: (ptr32 (struct (0 T_1095 t0000)))
+T_1095: (in Mem71[0x10003004<p32>:word32] @ 100018ED : word32)
+  Class: Eq_1083
+  DataType: ui32
   OrigDataType: word32
-T_1095:
-  Class: Eq_1095
-  DataType: word32
-  OrigDataType: word32
-T_1096:
+T_1096: (in 0x10<32> @ 100018E3 : word32)
   Class: Eq_1096
   DataType: word32
   OrigDataType: word32
-T_1097:
+T_1097: (in esi_54 << 0x10<32> @ 00000000 : word32)
   Class: Eq_1097
-  DataType: word32
-  OrigDataType: word32
-T_1098:
-  Class: Eq_1098
-  DataType: word32
-  OrigDataType: word32
+  DataType: ui32
+  OrigDataType: ui32
+T_1098: (in esi_54 | esi_54 << 0x10<32> @ 00000000 : word32)
+  Class: Eq_991
+  DataType: ui32
+  OrigDataType: ui32
 T_1099:
   Class: Eq_1099
   DataType: word32
@@ -5064,14 +5092,90 @@ T_1114:
 T_1115:
   Class: Eq_1115
   DataType: word32
-  OrigDataType: (struct 0004 (0 T_834 t0000))
+  OrigDataType: word32
 T_1116:
   Class: Eq_1116
-  DataType: (arr word32 1)
-  OrigDataType: (arr T_1115 1)
+  DataType: word32
+  OrigDataType: word32
 T_1117:
   Class: Eq_1117
-  DataType: Eq_1117
+  DataType: word32
+  OrigDataType: word32
+T_1118:
+  Class: Eq_1118
+  DataType: word32
+  OrigDataType: word32
+T_1119:
+  Class: Eq_1119
+  DataType: word32
+  OrigDataType: word32
+T_1120:
+  Class: Eq_1120
+  DataType: word32
+  OrigDataType: word32
+T_1121:
+  Class: Eq_1121
+  DataType: word32
+  OrigDataType: word32
+T_1122:
+  Class: Eq_1122
+  DataType: word32
+  OrigDataType: word32
+T_1123:
+  Class: Eq_1123
+  DataType: word32
+  OrigDataType: word32
+T_1124:
+  Class: Eq_1124
+  DataType: word32
+  OrigDataType: word32
+T_1125:
+  Class: Eq_1125
+  DataType: word32
+  OrigDataType: word32
+T_1126:
+  Class: Eq_1126
+  DataType: word32
+  OrigDataType: word32
+T_1127:
+  Class: Eq_1127
+  DataType: word32
+  OrigDataType: word32
+T_1128:
+  Class: Eq_1128
+  DataType: word32
+  OrigDataType: word32
+T_1129:
+  Class: Eq_1129
+  DataType: word32
+  OrigDataType: word32
+T_1130:
+  Class: Eq_1130
+  DataType: word32
+  OrigDataType: word32
+T_1131:
+  Class: Eq_1131
+  DataType: word32
+  OrigDataType: word32
+T_1132:
+  Class: Eq_1132
+  DataType: word32
+  OrigDataType: word32
+T_1133:
+  Class: Eq_1133
+  DataType: word32
+  OrigDataType: word32
+T_1134:
+  Class: Eq_1134
+  DataType: word32
+  OrigDataType: (struct 0004 (0 T_834 t0000))
+T_1135:
+  Class: Eq_1135
+  DataType: (arr word32 1)
+  OrigDataType: (arr T_1134 1)
+T_1136:
+  Class: Eq_1136
+  DataType: Eq_1136
   OrigDataType: 
 */
 typedef struct Globals {
@@ -5170,7 +5274,7 @@ typedef struct Globals {
 	word32 dw1000232C;	// 1000232C
 	ui32 dw10003000;	// 10003000
 	ui32 dw10003004;	// 10003004
-	Eq_1117 t10003008;	// 10003008
+	Eq_1136 t10003008;	// 10003008
 	PyMethodDef methods[5];	// 10003010
 	int32 dw10003070;	// 10003070
 	word32 dw100033A4;	// 100033A4
@@ -5439,28 +5543,69 @@ typedef union Eq_1012 {
 	word32 Eq_1007::* u1;
 } Eq_1012;
 
-typedef LARGE_INTEGER Eq_1018;
+typedef LARGE_INTEGER Eq_1017;
 
-typedef void (Eq_1024)(LPFILETIME);
+typedef struct _FILETIME {
+	DWORD dwLowDateTime;	// 0
+	DWORD dwHighDateTime;	// 4
+} Eq_1018;
 
-typedef LPFILETIME Eq_1026;
+typedef DWORD Eq_1022;
 
-typedef DWORD (Eq_1031)();
+typedef struct _FILETIME {
+	DWORD dwLowDateTime;	// 0
+	DWORD dwHighDateTime;	// 4
+} Eq_1023;
 
-typedef DWORD (Eq_1034)();
+typedef DWORD Eq_1025;
 
-typedef DWORD (Eq_1038)();
+typedef DWORD Eq_1027;
 
-typedef BOOL (Eq_1042)(LARGE_INTEGER *);
+typedef struct _FILETIME {
+	DWORD dwLowDateTime;	// 0
+	DWORD dwHighDateTime;	// 4
+} Eq_1028;
 
-typedef LARGE_INTEGER Eq_1044;
+typedef DWORD Eq_1030;
 
-typedef struct Eq_1048 {
+typedef void (Eq_1034)(LPFILETIME);
+
+typedef LPFILETIME Eq_1036;
+
+typedef struct _FILETIME {
+	DWORD dwLowDateTime;	// 0
+	DWORD dwHighDateTime;	// 4
+} Eq_1040;
+
+typedef DWORD Eq_1042;
+
+typedef DWORD Eq_1043;
+
+typedef struct _FILETIME {
+	DWORD dwLowDateTime;	// 0
+	DWORD dwHighDateTime;	// 4
+} Eq_1044;
+
+typedef DWORD Eq_1046;
+
+typedef DWORD Eq_1047;
+
+typedef DWORD (Eq_1049)();
+
+typedef DWORD (Eq_1053)();
+
+typedef DWORD (Eq_1057)();
+
+typedef BOOL (Eq_1061)(LARGE_INTEGER *);
+
+typedef LARGE_INTEGER Eq_1063;
+
+typedef struct Eq_1067 {
 	LARGE_INTEGER t0000;	// 0
 	word32 dw0004;	// 4
-} Eq_1048;
+} Eq_1067;
 
-typedef LARGE_INTEGER Eq_1052;
+typedef LARGE_INTEGER Eq_1071;
 
-typedef DWORD Eq_1117;
+typedef DWORD Eq_1136;
 

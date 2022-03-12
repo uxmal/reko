@@ -482,6 +482,7 @@ Signature of 'Microsoft Visual C++ 8' detected.
 00000000004136B0: warning: Expected sizes of arrays to have been determined by now
 00000000004136C0: warning: Expected sizes of arrays to have been determined by now
 0000000000413700: warning: Expected sizes of arrays to have been determined by now
+0000000000413728: warning: Expected sizes of arrays to have been determined by now
 0000000000415F50: warning: Expected sizes of arrays to have been determined by now
 0000000000415F60: warning: Expected sizes of arrays to have been determined by now
 0000000000415F78: warning: Expected sizes of arrays to have been determined by now
@@ -508,6 +509,7 @@ Signature of 'Microsoft Visual C++ 8' detected.
 00000000004136B0: warning: Expected sizes of arrays to have been determined by now
 00000000004136C0: warning: Expected sizes of arrays to have been determined by now
 0000000000413700: warning: Expected sizes of arrays to have been determined by now
+0000000000413728: warning: Expected sizes of arrays to have been determined by now
 0000000000415F50: warning: Expected sizes of arrays to have been determined by now
 0000000000415F60: warning: Expected sizes of arrays to have been determined by now
 0000000000415F78: warning: Expected sizes of arrays to have been determined by now
@@ -1178,6 +1180,26 @@ Evaluating d:\dev\uxmal\reko\master\subjects\scripting\segmented.py
 4D58: warning: PDP-11 instruction spl is not supported yet.
 53EA: warning: PDP-11 instruction spl is not supported yet.
 46BE: warning: Unable to determine size of call or jump table; there may be more than 2 entries.
+Warning: Recursion too deep in PtrPrimitiveReplacer
+Warning: Recursion too deep in PtrPrimitiveReplacer
+Warning: Recursion too deep in PtrPrimitiveReplacer
+Warning: Recursion too deep in PtrPrimitiveReplacer
+Warning: Recursion too deep in PtrPrimitiveReplacer
+Warning: Recursion too deep in PtrPrimitiveReplacer
+Warning: Recursion too deep in PtrPrimitiveReplacer
+Warning: Recursion too deep in PtrPrimitiveReplacer
+Warning: Recursion too deep in PtrPrimitiveReplacer
+Warning: Recursion too deep in PtrPrimitiveReplacer
+Warning: Recursion too deep in PtrPrimitiveReplacer
+Warning: Recursion too deep in PtrPrimitiveReplacer
+Warning: Recursion too deep in PtrPrimitiveReplacer
+Warning: Recursion too deep in PtrPrimitiveReplacer
+Warning: Recursion too deep in PtrPrimitiveReplacer
+Warning: Recursion too deep in PtrPrimitiveReplacer
+Warning: Recursion too deep in PtrPrimitiveReplacer
+Warning: Recursion too deep in PtrPrimitiveReplacer
+Warning: Recursion too deep in PtrPrimitiveReplacer
+Warning: Recursion too deep in PtrPrimitiveReplacer
 47E2: warning: Expected sizes of arrays to have been determined by now
 541C: warning: Expected sizes of arrays to have been determined by now
 5898: warning: Expected sizes of arrays to have been determined by now
@@ -1910,4 +1932,4 @@ Signature of 'Microsoft Visual C++ 8' detected.
 0040120B: warning: Unable to determine the upper bound of an indirect call or jump; there may be more than 2 entries.
 004011A5: warning: Unable to determine the upper bound of an indirect call or jump; there may be more than 2 entries.
 
-Decompiled 85 binaries in 54.57 seconds.
+Decompiled 85 binaries in 56.63 seconds.

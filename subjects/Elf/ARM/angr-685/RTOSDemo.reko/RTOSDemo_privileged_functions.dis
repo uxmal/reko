@@ -207,7 +207,9 @@ word32 xQueueGenericSend(word32 r0, word32 r1, word32 r2, word32 r3, word32 lr, 
 // Preserved: r10 r4 r5 r6 r7 r8 r9 sp
 xQueueGenericSend_entry:
 	ptr32 fp
+	struct <anonymous> tLoc2C
 l00000190:
+	Mem27[&tLoc2C:word32] = r2
 	word32 r5_124 = 0<32>
 	word32 r9_31 = Mem27[0x000002A0<p32>:word32]
 l000001F8:
@@ -218,8 +220,8 @@ l00000204:
 l00000246:
 	word32 lr_57
 	word32 r0_58
-	word32 r7_402
-	prvCopyDataToQueue(r0, r1, r3, r3, lr, out r0_58, out r7_402, out lr_57)
+	word32 r7_398
+	prvCopyDataToQueue(r0, r1, r3, r3, lr, out r0_58, out r7_398, out lr_57)
 	branch Mem40[r0 + 36<i32>:word32] != 0<32> l00000290
 l00000290:
 	branch xTaskRemoveFromEventList(r0 + 0x24<32>) != 0<32> l00000256
@@ -234,7 +236,7 @@ l00000266:
 	vPortExitCritical(cpsr)
 	return lr_57
 l00000208:
-	branch r2 == 0<32> l00000272
+	branch Mem40[&tLoc2C:word32] == 0<32> l00000272
 l00000272:
 	vPortExitCritical(cpsr)
 	return lr
@@ -266,7 +268,7 @@ l000001DC:
 	branch Mem206[r0 + 56<i32>:word32] == Mem206[r0 + 60<i32>:word32] l00000218
 l00000218:
 	vPortExitCritical(cpsr)
-	vTaskPlaceOnEventList(r0 + 0x10<32>, r2)
+	vTaskPlaceOnEventList(r0 + 0x10<32>, Mem206[&tLoc2C:word32])
 	prvUnlockQueue(r0, cpsr)
 	branch xTaskResumeAll(cpsr) != 0<32> l000001F6
 l00000234:
@@ -323,7 +325,9 @@ word32 xQueueGenericReceive(word32 r0, word32 r1, word32 r2, word32 r3, word32 l
 // Preserved: r10 r4 r5 r6 r7 r8 r9 sp
 xQueueGenericReceive_entry:
 	ptr32 fp
+	struct <anonymous> tLoc2C
 l000002D8:
+	Mem27[&tLoc2C:word32] = r2
 	word32 r5_133 = 0<32>
 	word32 r8_31 = Mem27[0x00000424<p32>:word32]
 l0000030A:
@@ -334,8 +338,8 @@ l000003B0:
 	word32 lr_51
 	word32 r5_56
 	word32 r6_57
-	word32 r7_483
-	word32 r4_55 = prvCopyDataFromQueue(r0, r1, r0, Mem40[r0 + 12<i32>:word32], r6_41, 0<32>, lr, out r5_56, out r6_57, out r7_483, out lr_51)
+	word32 r7_478
+	word32 r4_55 = prvCopyDataFromQueue(r0, r1, r0, Mem40[r0 + 12<i32>:word32], r6_41, 0<32>, lr, out r5_56, out r6_57, out r7_478, out lr_51)
 	branch r3 != 0<32> l000003E8
 l000003E8:
 	word32 r3_62 = Mem40[r4_55 + 36<i32>:word32]
@@ -363,7 +367,7 @@ l000003CC:
 	lrOut = lr_51
 	return 1<32>
 l00000314:
-	branch r2 == 0<32> l000003A4
+	branch Mem40[&tLoc2C:word32] == 0<32> l000003A4
 l0000031A:
 	branch r5_133 == 0<32> l0000039C
 l0000039C:
@@ -393,7 +397,7 @@ l000003D8:
 	vTaskPriorityInherit(Mem202[r0 + 4<i32>:word32])
 	vPortExitCritical(cpsr)
 l00000372:
-	vTaskPlaceOnEventList(r0 + 0x24<32>, r2)
+	vTaskPlaceOnEventList(r0 + 0x24<32>, Mem202[&tLoc2C:word32])
 	prvUnlockQueue(r0, cpsr)
 	branch xTaskResumeAll(cpsr) != 0<32> l00000308
 l0000038A:

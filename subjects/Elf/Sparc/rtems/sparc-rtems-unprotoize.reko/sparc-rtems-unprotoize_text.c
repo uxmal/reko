@@ -8,10 +8,11 @@
 void _start(void (* g1)(), word32 o3, word32 o4, word32 o5, word32 o7)
 {
 	ptr32 fp;
+	word32 tArg44;
 	if (g1 == null)
 	{
 		atexit(&g_t16EE4);
-		_environ = fp + 0x44 + ((_init(o3, o4, o5, o7) << 0x02) + 0x04);
+		_environ = &tArg44 + ((_init(o3, o4, o5, o7) << 0x02) + 0x04);
 		exit(main(fp + 0x44));
 	}
 	else

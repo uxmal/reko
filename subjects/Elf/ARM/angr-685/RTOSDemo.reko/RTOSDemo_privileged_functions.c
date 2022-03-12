@@ -276,6 +276,8 @@ Eq_n prvCopyDataFromQueue(Eq_n r0, Eq_n r1, Eq_n r4, Eq_n r5, Eq_n r6, Eq_n r7, 
 Eq_n xQueueGenericSend(Eq_n r0, Eq_n r1, up32 r2, Eq_n r3, Eq_n lr, ptr32 cpsr)
 {
 	ptr32 fp;
+	up32 tLoc2C;
+	tLoc2C = r2;
 	word32 r5_n = 0x00;
 	word32 * r9_n = g_ptr02A0;
 	while (true)
@@ -283,7 +285,7 @@ Eq_n xQueueGenericSend(Eq_n r0, Eq_n r1, up32 r2, Eq_n r3, Eq_n lr, ptr32 cpsr)
 		vPortEnterCritical(cpsr);
 		if (*((word32) r0 + 56) < *((word32) r0 + 60) || r3 == 0x02)
 			break;
-		if (r2 == 0x00)
+		if (tLoc2C == 0x00)
 		{
 			vPortExitCritical(cpsr);
 			return lr;
@@ -314,7 +316,7 @@ Eq_n xQueueGenericSend(Eq_n r0, Eq_n r1, up32 r2, Eq_n r3, Eq_n lr, ptr32 cpsr)
 		else
 		{
 			vPortExitCritical(cpsr);
-			vTaskPlaceOnEventList((word32) r0 + 16, r2);
+			vTaskPlaceOnEventList((word32) r0 + 16, tLoc2C);
 			prvUnlockQueue(r0, cpsr);
 			if (xTaskResumeAll(cpsr) == 0x00)
 			{
@@ -374,6 +376,8 @@ void xQueuePeekFromISR(Eq_n r0, Eq_n r1, Eq_n r7, Eq_n lr, ptr32 cpsr)
 Eq_n xQueueGenericReceive(Eq_n r0, Eq_n r1, up32 r2, word32 r3, Eq_n lr, ptr32 cpsr, union Eq_n & lrOut)
 {
 	ptr32 fp;
+	up32 tLoc2C;
+	tLoc2C = r2;
 	word32 r5_n = 0x00;
 	word32 * r8_n = g_ptr0424;
 	while (true)
@@ -382,7 +386,7 @@ Eq_n xQueueGenericReceive(Eq_n r0, Eq_n r1, up32 r2, word32 r3, Eq_n lr, ptr32 c
 		Eq_n r6_n = *((word32) r0 + 56);
 		if (r6_n != 0x00)
 			break;
-		if (r2 == 0x00)
+		if (tLoc2C == 0x00)
 		{
 l000003A4:
 			vPortExitCritical(cpsr);
@@ -426,7 +430,7 @@ l000003A4:
 					vTaskPriorityInherit(*((word32) r0 + 4));
 					vPortExitCritical(cpsr);
 				}
-				vTaskPlaceOnEventList((word32) r0 + 36, r2);
+				vTaskPlaceOnEventList((word32) r0 + 36, tLoc2C);
 				prvUnlockQueue(r0, cpsr);
 				if (xTaskResumeAll(cpsr) == 0x00)
 				{

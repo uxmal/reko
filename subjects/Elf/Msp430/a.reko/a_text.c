@@ -54,8 +54,10 @@ void task_idle(ui20 sr, Eq_n r8)
 void task_n(ui20 sr)
 {
 	word16 fp;
-	word20 r15_n;
+	Eq_n tLoc02;
+	Eq_n r15_n;
 	ui20 sr_n = xTaskGetTickCount(sr, out r15_n);
+	tLoc02 = r15_n;
 	while (true)
 	{
 		*(union Eq_n *) 0x31 = *(union Eq_n *) 0x31 ^ 0x01;
@@ -68,8 +70,10 @@ void task_n(ui20 sr)
 void task_n(ui20 sr)
 {
 	word16 fp;
-	word20 r15_n;
+	Eq_n tLoc02;
+	Eq_n r15_n;
 	ui20 sr_n = xTaskGetTickCount(sr, out r15_n);
+	tLoc02 = r15_n;
 	while (true)
 	{
 		*(union Eq_n *) 0x31 = *(union Eq_n *) 0x31 ^ 0x02;
@@ -82,8 +86,10 @@ void task_n(ui20 sr)
 void task_n(ui20 sr)
 {
 	word16 fp;
-	word20 r15_n;
+	Eq_n tLoc02;
+	Eq_n r15_n;
 	ui20 sr_n = xTaskGetTickCount(sr, out r15_n);
+	tLoc02 = r15_n;
 	while (true)
 	{
 		*(union Eq_n *) 0x31 = *(union Eq_n *) 0x31 ^ 0x04;
