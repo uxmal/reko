@@ -480,14 +480,17 @@ void fn00401663()
 fn00401663_entry:
 	ptr32 fp
 	LARGE_INTEGER tLoc18
+	struct _FILETIME tLoc10
 l00401663:
+	Mem10[&tLoc10:word32] = 0<32>
+	Mem13[&tLoc10 + 4<i32>:word32] = 0<32>
 	word32 eax_15 = Mem13[0x00403004<p32>:word32]
 	branch eax_15 == 0xBB40E64E<32> l00401693
 l00401686:
 	branch (eax_15 & 0xFFFF0000<32>) == 0<32> l00401693
 l00401693:
-	GetSystemTimeAsFileTime(fp - 16<i32>)
-	word32 v14_43 = GetCurrentThreadId() ^ GetCurrentProcessId()
+	GetSystemTimeAsFileTime(&tLoc10)
+	word32 v14_43 = Mem33[&tLoc10 + 4<i32>:word32] ^ Mem33[&tLoc10:word32] ^ GetCurrentThreadId() ^ GetCurrentProcessId()
 	QueryPerformanceCounter(&tLoc18)
 	word32 ecx_55 = Mem48[&tLoc18 + 4<i32>:word32] ^ Mem48[&tLoc18:word32] ^ v14_43 ^ fp - 8<i32>
 	branch ecx_55 != 0xBB40E64E<32> l004016DB
@@ -674,15 +677,19 @@ void fn00401774(word32 dwArg04)
 // Preserved: ebp ebx esi esp
 fn00401774_entry:
 	ptr32 fp
+	struct _EXCEPTION_POINTERS tLoc0C
 l00401774:
 	branch IsProcessorFeaturePresent(0x17<32>) == 0<32> l0040178F
 l0040178F:
 	Mem30[0x00403368<p32>:word32] = 0<32>
 	memset(fp - 0x328<32>, 0<32>, 0x2CC<32>)
 	memset(fp - 92<i32>, 0<32>, 0x50<32>)
-	byte bl_90 = 0<8> - (IsDebuggerPresent() != 1<32>)
+	word32 eax_81 = IsDebuggerPresent()
+	Mem88[&tLoc0C:word32] = fp - 92<i32>
+	Mem91[&tLoc0C + 4<i32>:word32] = fp - 0x328<32>
 	SetUnhandledExceptionFilter(0<32>)
-	branch UnhandledExceptionFilter(fp - 12<i32>) != 0<32> l00401889
+	byte bl_90 = 0<8> - (eax_81 != 1<32>)
+	branch UnhandledExceptionFilter(&tLoc0C) != 0<32> l00401889
 l0040187C:
 	Mem108[0x00403368<p32>:word32] = Mem97[0x00403368<p32>:word32] & 0<32> - (CONVERT(bl_90 + 1<8>, byte, word32) != 0<32>)
 l00401889:

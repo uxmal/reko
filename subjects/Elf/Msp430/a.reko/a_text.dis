@@ -67,13 +67,15 @@ void task_1(word20 sr)
 task_1_exit:
 task_1_entry:
 	word16 fp
+	struct <anonymous> tLoc02
 l4096:
-	word20 r15_46
-	word20 sr_19 = xTaskGetTickCount(sr, out r15_46)
+	word20 r15_6
+	word20 sr_19 = xTaskGetTickCount(sr, out r15_6)
+	Mem12[&tLoc02:word16] = r15_6
 l40A0:
 	Mem16[0x0031<p16>:byte] = Mem13[0x0031<p16>:byte] ^ 1<8>
-	word20 r11_47
-	sr_19 = vTaskDelayUntil(putchar(sr_19, 0x58<16>, out r11_47), 0x1F4<16>, fp - 2<16>)
+	word20 r11_46
+	sr_19 = vTaskDelayUntil(putchar(sr_19, 0x58<16>, out r11_46), 0x1F4<16>, fp - 2<16>)
 
 
 void task_2(word20 sr)
@@ -87,13 +89,15 @@ void task_2(word20 sr)
 task_2_exit:
 task_2_entry:
 	word16 fp
+	struct <anonymous> tLoc02
 l40BC:
-	word20 r15_46
-	word20 sr_19 = xTaskGetTickCount(sr, out r15_46)
+	word20 r15_6
+	word20 sr_19 = xTaskGetTickCount(sr, out r15_6)
+	Mem12[&tLoc02:word16] = r15_6
 l40C6:
 	Mem16[0x0031<p16>:byte] = Mem13[0x0031<p16>:byte] ^ 2<8>
-	word20 r11_47
-	sr_19 = vTaskDelayUntil(putchar(sr_19, 0x59<16>, out r11_47), 0xFA<16>, fp - 2<16>)
+	word20 r11_46
+	sr_19 = vTaskDelayUntil(putchar(sr_19, 0x59<16>, out r11_46), 0xFA<16>, fp - 2<16>)
 
 
 void task_3(word20 sr)
@@ -107,13 +111,15 @@ void task_3(word20 sr)
 task_3_exit:
 task_3_entry:
 	word16 fp
+	struct <anonymous> tLoc02
 l40E2:
-	word20 r15_46
-	word20 sr_19 = xTaskGetTickCount(sr, out r15_46)
+	word20 r15_6
+	word20 sr_19 = xTaskGetTickCount(sr, out r15_6)
+	Mem12[&tLoc02:word16] = r15_6
 l40EC:
 	Mem16[0x0031<p16>:byte] = Mem13[0x0031<p16>:byte] ^ 4<8>
-	word20 r11_47
-	sr_19 = vTaskDelayUntil(putchar(sr_19, 0x5A<16>, out r11_47), 0x19<16>, fp - 2<16>)
+	word20 r11_46
+	sr_19 = vTaskDelayUntil(putchar(sr_19, 0x5A<16>, out r11_46), 0x19<16>, fp - 2<16>)
 
 
 void main(word20 sr, word20 r8)

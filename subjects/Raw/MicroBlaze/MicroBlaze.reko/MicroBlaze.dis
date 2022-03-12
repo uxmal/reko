@@ -21218,7 +21218,7 @@ word32 fn0001AAB0(word32 r0, word32 r3, word32 r5, word32 r6, word32 r21, word32
 // Preserved: r1 r15 r19 r21 r22 r23 r24 r25 r26 r27 r28
 fn0001AAB0_entry:
 	ptr32 fp
-	word32 dwLoc28
+	struct <anonymous> tLoc28
 	word32 dwLoc2C
 l0001AAB0:
 	word32 r3_109
@@ -21232,14 +21232,14 @@ l0001AAFC_ds_f:
 l0001AB00:
 	word32 r24_257 = fp + 0xFFFFF1CC<32>
 	word32 r26_314 = 0<32>
-	r3_252 = r3
+	r3_128 = r3
 l0001AB0C:
-	word32 r3_252
-	word32 r3_51 = fn0001A7E4(r3_252, fp + 0xFFFFFFD4<32>, fp + 0xFFFFFFD8<32>)
+	word32 r3_128
+	word32 r3_51 = fn0001A7E4(r3_128, fp + 0xFFFFFFD4<32>, fp + 0xFFFFFFD8<32>)
 	branch Test(EQ,r3_51) l0001AB20_ds_t
 l0001AB20_ds_t:
 l0001ADB0:
-	branch Test(EQ,~dwLoc28) l0001AE1C
+	branch Test(EQ,~Mem58[&tLoc28:word32]) l0001AE1C
 l0001AE1C:
 	branch Test(EQ,r26_314) l0001AE6C
 l0001AE20:
@@ -21251,7 +21251,7 @@ l0001AE20:
 	word32 r4_95
 	word32 r18_97
 	call 0x0001AE48<p32> + r3_72 (retsize: 0;)
-		uses: r0:r0_96,r15:0x0001AE48<p32>,r18:r18_97,r19:r19_67 * 4<32>,r21:r21_76,r22:r22_77,r23:r3,r24:r24_78,r25:r6,r26:r26_61,r27:r5,r28:0x3F<32>,r3:r3_72,r4:r4_95,r5:r5,r6:1<32>,r7:r19_67 * 4<32>,Stack +0E2C:dwLoc2C,Stack +0E30:dwLoc28
+		uses: r0:r0_96,r15:0x0001AE48<p32>,r18:r18_97,r19:r19_67 * 4<32>,r21:r21_76,r22:r22_77,r23:r3,r24:r24_78,r25:r6,r26:r26_61,r27:r5,r28:0x3F<32>,r3:r3_72,r4:r4_95,r5:r5,r6:1<32>,r7:r19_67 * 4<32>,Stack +0E2C:dwLoc2C,Stack +0E30:tLoc28
 		defs: r0:r0_96,r18:r18_97,r26:r26_91,r27:r27_83,r3:r3_93,r4:r4_95
 	fn0002F60C()
 	Mem103[r27_83 + 216<i32>:word32] = r3_93
@@ -21274,34 +21274,39 @@ l0001ADEC:
 	r3_109 = r19_118
 l0001AB2C_ds_f:
 l0001AB30:
+	word32 r4_133
+	r3_128 = Mem58[&tLoc28:word32]
 	Mem130[r24_257 - 4<i32>:word32] = dwLoc2C
 	r22 = r24_257
-	branch Test(NE,dwLoc28 ^ 0x20<32>) l0001AB44_ds_t
+	branch Test(NE,r3_128 ^ 0x20<32>) l0001AB44_ds_t
 l0001AB44_ds_t:
 	r21 = 1<32>
 l0001AC08:
+	r4_133 = r3_128 ^ 0x3A<32>
 l0001AB44_ds_f:
 	r21 = 1<32>
 l0001AB48:
 	r21 = r21 + 1<32>
-	branch Test(EQ,fn0001A7E4(dwLoc28, fp + 0xFFFFFFD4<32>, fp + 0xFFFFFFD8<32>)) l0001AB64_ds_t
+	branch Test(EQ,fn0001A7E4(r3_128, fp + 0xFFFFFFD4<32>, fp + 0xFFFFFFD8<32>)) l0001AB64_ds_t
 l0001AB64_ds_t:
 l0001AB64_ds_f:
 l0001AB68:
+	r3_128 = Mem152[&tLoc28:word32]
 	r22 = r22 + 4<32>
 	Mem158[r22 - 4<i32>:word32] = dwLoc2C
-	branch Test(NE,dwLoc28 ^ 0x20<32>) l0001AB7C_ds_t
+	branch Test(NE,r3_128 ^ 0x20<32>) l0001AB7C_ds_t
 l0001AB7C_ds_t:
+	r4_133 = r3_128 ^ 0x3A<32>
 l0001AC0C:
-	branch Test(EQ,dwLoc28 ^ 0x3A<32>) l0001AC10_ds_t
+	branch Test(EQ,r4_133) l0001AC10_ds_t
 l0001AC10_ds_t:
 	Mem165[r24_257 - 8<i32>:word32] = r21
 l0001AD08:
-	branch Test(EQ,fn0001A7E4(dwLoc28, fp + 0xFFFFFFD4<32>, fp + 0xFFFFFFD8<32>)) l0001AD1C_ds_t
+	branch Test(EQ,fn0001A7E4(r3_128, fp + 0xFFFFFFD4<32>, fp + 0xFFFFFFD8<32>)) l0001AD1C_ds_t
 l0001AD1C_ds_t:
 l0001AD1C_ds_f:
 l0001AD20:
-	branch Test(NE,dwLoc28 ^ 0x20<32>) l0001AD2C_ds_t
+	branch Test(NE,Mem165[&tLoc28:word32] ^ 0x20<32>) l0001AD2C_ds_t
 l0001AD2C_ds_t:
 l0001AD2C_ds_f:
 l0001AD30:
@@ -21310,16 +21315,17 @@ l0001AD30:
 l0001AD48_ds_t:
 l0001AD48_ds_f:
 l0001AD4C:
-	branch Test(NE,dwLoc28 ^ 0x20<32>) l0001AD58_ds_t
+	word32 r3_202 = Mem192[&tLoc28:word32]
+	branch Test(NE,r3_202 ^ 0x20<32>) l0001AD58_ds_t
 l0001AD58_ds_t:
 l0001AD58_ds_f:
 l0001AD5C:
 	Mem210[r24_257 + 16<i32>:word32] = dwLoc2C
-	branch Test(EQ,fn0001A7E4(dwLoc28 ^ 0x20<32>, fp + 0xFFFFFFD4<32>, fp + 0xFFFFFFD8<32>)) l0001AD74_ds_t
+	branch Test(EQ,fn0001A7E4(r3_202 ^ 0x20<32>, fp + 0xFFFFFFD4<32>, fp + 0xFFFFFFD8<32>)) l0001AD74_ds_t
 l0001AD74_ds_t:
 l0001AD74_ds_f:
 l0001AD78:
-	branch Test(NE,dwLoc28 ^ 0x20<32>) l0001AD84_ds_t
+	branch Test(NE,Mem210[&tLoc28:word32] ^ 0x20<32>) l0001AD84_ds_t
 l0001AD84_ds_t:
 l0001AD84_ds_f:
 l0001AD88:
@@ -21329,6 +21335,7 @@ l0001ADA0_ds_t:
 l0001ACD4:
 l0001ADA0_ds_f:
 l0001ADA4:
+	r3_128 = Mem228[&tLoc28:word32]
 	Mem241[r24_257 + 24<i32>:word32] = dwLoc2C
 l0001AC10_ds_f:
 	Mem242[r24_257 - 8<i32>:word32] = r21
@@ -21338,16 +21345,16 @@ l0001AC14:
 	Mem250[r24_257 + 20<i32>:word32] = r0
 	Mem251[r24_257 + 24<i32>:word32] = r0
 l0001AC24:
-	r3_252 = dwLoc28
-	branch Test(GE,-(dwLoc28 ^ 0x3B<32>) | dwLoc28 ^ 0x3B<32>) l0001AC34_ds_t
+	word32 r5_253 = r3_128 ^ 0x3B<32>
+	branch Test(GE,-r5_253 | r5_253) l0001AC34_ds_t
 l0001AC34_ds_t:
 	r24_257 = r24_257 + 0x24<32>
 l0001AC34_ds_f:
 	r24_257 = r24_257 + 0x24<32>
 l0001AC38:
-	word32 r3_259 = ~dwLoc28
-	r3_252 = -r3_259 | r3_259
-	branch Test(NE,r3_252 >>u 31<i32>) l0001ACC8_ds_t
+	word32 r3_259 = ~r3_128
+	r3_128 = -r3_259 | r3_259
+	branch Test(NE,r3_128 >>u 31<i32>) l0001ACC8_ds_t
 l0001ACC8_ds_t:
 l0001ACD8:
 	fn0002EB28()
@@ -25456,19 +25463,29 @@ l00022320:
 		uses: r0:r0,r15:0x0002232C<p32>,r19:r19_217,r21:8<32>,r22:r22_757,r23:r23_340,r24:r24_362,r25:0x100<32>,r26:r26_227,r27:r27_377,r28:r28_389,r29:r29_218,r3:r3_699,r30:r30_715,r31:r31_721,r4:r4_701,r5:r28_389,r6:r6_643,r7:r7_727,r8:r8_664,Stack +001C:dwLoc053C,Stack +0030:dwLoc0528,Stack +0420:bLoc0138
 
 
-void fn0002283C(word32 r0, word32 r5, word32 r22, word32 r26, word32 r27, word32 r28, word32 r29)
+void fn0002283C(word32 r0, word32 r5, word32 r19, word32 r20, word32 r21, word32 r22, word32 r23, word32 r24, word32 r25, word32 r26, word32 r27, word32 r28, word32 r29)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  r0:[0..31] r22:[0..31] r26:[0..31] r27:[0..31] r28:[0..31] r29:[0..31] r5:[0..31]
+// MayUse:  r0:[0..31] r19:[0..31] r20:[0..31] r21:[0..31] r22:[0..31] r23:[0..31] r24:[0..31] r25:[0..31] r26:[0..31] r27:[0..31] r28:[0..31] r29:[0..31] r5:[0..31]
 // LiveOut:
-// Trashed: C r10 r11 r12 r18 r20 r29 r3 r4 r5 r6 r7 r8 r9
-// Preserved: r1 r15 r19 r21 r22 r23 r24 r25 r26 r27 r28
+// Trashed: C r10 r11 r12 r18 r19 r20 r21 r22 r23 r24 r25 r26 r27 r28 r29 r3 r4 r5 r6 r7 r8 r9
+// Preserved: r1 r15
 fn0002283C_entry:
 	ptr32 fp
+	struct <anonymous> tLoc6C
 	word32 dwLoc0874
 	word32 dwLoc0860
-	word16 wLoc4C
 l0002283C:
+	Mem5[&tLoc6C + 84<i32>:word32] = r23
+	Mem8[&tLoc6C + 88<i32>:word32] = r24
+	Mem13[&tLoc6C + 68<i32>:word32] = r19
+	Mem15[&tLoc6C + 92<i32>:word32] = r25
+	Mem25[&tLoc6C + 72<i32>:word32] = r20
+	Mem27[&tLoc6C + 76<i32>:word32] = r21
+	Mem29[&tLoc6C + 80<i32>:word32] = r22
+	Mem31[&tLoc6C + 96<i32>:word32] = r26
+	Mem33[&tLoc6C + 100<i32>:word32] = r27
+	Mem35[&tLoc6C + 104<i32>:word32] = r28
 	word32 r21_43
 	word32 r22_44
 	word32 r23_45
@@ -25477,24 +25494,24 @@ l0002283C:
 	word32 r27_49
 	word32 r28_50
 	word32 r29_51
-	word32 r19_1064
-	word32 r25_1065
-	word32 r8_1063
-	word32 r7_1062
-	fn0001F63C(r0, fp + 0xFFFFFF94<32>, fp + 0xFFFFFB90<32>, r22, fp + 0xFFFFFF94<32>, r5, r26, r27, r28, r29, dwLoc0874, dwLoc0860, out r7_1062, out r8_1063, out r19_1064, out r21_43, out r22_44, out r23_45, out r24_46, out r25_1065, out r26_48, out r27_49, out r28_50, out r29_51)
+	word32 r8_940
+	word32 r25_942
+	word32 r19_941
+	word32 r7_939
+	fn0001F63C(r0, fp + 0xFFFFFF94<32>, fp + 0xFFFFFB90<32>, r22, fp + 0xFFFFFF94<32>, r5, r26, r27, r28, r29, dwLoc0874, dwLoc0860, out r7_939, out r8_940, out r19_941, out r21_43, out r22_44, out r23_45, out r24_46, out r25_942, out r26_48, out r27_49, out r28_50, out r29_51)
 	word32 r19_64
 	word32 r21_65
 	word32 r23_67
 	word32 r24_68
 	word32 r25_69
 	word32 r29_73
-	word32 r7_1066
-	word32 r8_1067
-	word32 r27_1070
-	word32 r28_1071
-	word32 r26_1069
-	word32 r22_1068
-	fn0001F63C(r0, r21_43, r21_43, r22_44, r23_45, r24_46, r26_48, r27_49, r28_50, r29_51, dwLoc0874, dwLoc0860, out r7_1066, out r8_1067, out r19_64, out r21_65, out r22_1068, out r23_67, out r24_68, out r25_69, out r26_1069, out r27_1070, out r28_1071, out r29_73)
+	word32 r28_948
+	word32 r22_945
+	word32 r8_944
+	word32 r7_943
+	word32 r26_946
+	word32 r27_947
+	fn0001F63C(r0, r21_43, r21_43, r22_44, r23_45, r24_46, r26_48, r27_49, r28_50, r29_51, dwLoc0874, dwLoc0860, out r7_943, out r8_944, out r19_64, out r21_65, out r22_945, out r23_67, out r24_68, out r25_69, out r26_946, out r27_947, out r28_948, out r29_73)
 	word32 r3_81 = fp + 0xFFFFF78C<32>
 l000228B4:
 	Mem85[r3_81:word32] = 0xFFFFFFFF<32>
@@ -25580,9 +25597,9 @@ l00022B74:
 	branch Test(NE,r23_67 ^ r26_235) l00022B7C_ds_t
 l00022B7C_ds_t:
 l00022B7C_ds_f:
-	word32 r8_262 = fp + 0xFFFFFFD0<32>
+	word32 r8_262 = &tLoc6C + 60<i32>
 l00022B80:
-	word32 r9_263 = fp + 0xFFFFFFCE<32>
+	word32 r9_263 = &tLoc6C + 58<i32>
 	word32 r11_264 = 0x20<32>
 l00022B88:
 	r11_264 = r11_264 + 0xFFFFFFFF<32>
@@ -25629,7 +25646,7 @@ l00022C18_ds_t:
 l00022C18_ds_f:
 l00022C1C:
 	word32 r4_355
-	word32 r3_354 = CONVERT(wLoc4C, word16, int32)
+	word32 r3_354 = CONVERT(Mem350[&tLoc6C + 32<i32>:word16], word16, int32)
 	branch Test(NE,r3_354) l00022C28_ds_t
 l00022C28_ds_t:
 	r4_355 = 0x20<32>
@@ -25679,7 +25696,7 @@ l00022B50:
 	word32 r4_454 = Mem239[r3_453:word32]
 	Mem458[r3_453 + 20<i32>:word32] = 0x27<32>
 	call 0x00022B58<p32> + r4_454 (retsize: 0;)
-		uses: r0:r0,r15:0x00022B58<p32>,r19:r19_64,r20:0xFFFFCA00<32>,r21:r21_65,r22:fp + 0xFFFFF78C<32>,r23:r23_67,r24:r24_68,r25:r25_240,r26:r26_242,r27:0x27<32>,r28:0x20<32>,r29:r29_73,r3:r3_453,r4:r4_454,r5:r24_68,r6:r6_136,r7:r6_136 >>u 31<i32>,Stack +001C:dwLoc0874,Stack +0030:dwLoc0860,Stack +0844:wLoc4C
+		uses: r0:r0,r15:0x00022B58<p32>,r19:r19_64,r20:0xFFFFCA00<32>,r21:r21_65,r22:fp + 0xFFFFF78C<32>,r23:r23_67,r24:r24_68,r25:r25_240,r26:r26_242,r27:0x27<32>,r28:0x20<32>,r29:r29_73,r3:r3_453,r4:r4_454,r5:r24_68,r6:r6_136,r7:r6_136 >>u 31<i32>,Stack +001C:dwLoc0874,Stack +0030:dwLoc0860,Stack +0824:tLoc6C
 l00022A78_ds_f:
 	word32 r9_514 = r9_103 * 2<32>
 l00022A7C:

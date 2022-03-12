@@ -123,30 +123,39 @@ ui32 g_dw80F8 = 0x8069; // 000080F8
 word32 g_dw80FC = 0xA260; // 000080FC
 ui32 g_dw8100 = 0x8039; // 00008100
 byte * g_ptr8104 = &g_bA268; // 00008104
-// 00008108: void vUART_ISR(Register Eq_n lr, Register ptr32 cpsr)
-void vUART_ISR(Eq_n lr, ptr32 cpsr)
+// 00008108: void vUART_ISR(Register word32 r4, Register word32 r5, Register word32 r6, Register Eq_n lr, Register ptr32 cpsr)
+void vUART_ISR(word32 r4, word32 r5, word32 r6, Eq_n lr, ptr32 cpsr)
 {
 	ptr32 fp;
+	Eq_n tLoc15;
+	tLoc15.dw0005 = r4;
+	tLoc15.dw0009 = r5;
+	tLoc15.dw000D = r6;
+	tLoc15.t0011 = lr;
 	struct Eq_n * r5_n = g_ptr8174;
+	tLoc15.dw0001 = 0x00;
 	Eq_n r0_n = UARTIntStatus(r5_n, 0x01);
 	UARTIntClear(r5_n, r0_n);
 	if (r0_n << 27 < 0x00 && *g_ptr8178 << 25 < 0x00)
+	{
+		tLoc15.t0000 = r5_n->t0000;
 		xQueueGenericSendFromISR(fp - 0x15, r0_n, fp - 20, 0x00, lr, cpsr);
+	}
 	if (r0_n << 26 < 0x00)
 	{
 		byte * r2_n = g_ptr817C;
-		up32 r3_n = (word32) *r2_n;
+		Eq_n r3_n = (word32) *r2_n;
 		if (r3_n <= 122)
 		{
 			ui32 r1_n = *g_ptr8178;
 			struct Eq_n * r1_n = r1_n << 26;
 			if (r1_n << 26 >= 0x00)
 				r1_n = g_ptr8174;
-			r1_n->dw0000 = r3_n;
+			r1_n->t0000 = r3_n;
 			*r2_n = (byte) r3_n + 0x01;
 		}
 	}
-	if (false)
+	if (tLoc15.dw0001 != 0x00)
 		*g_ptr8180 = 0x10000000;
 }
 

@@ -4187,6 +4187,7 @@ int32 fn0000B034(Eq_n r3, int32 * r4, union Eq_n * r5)
 void fn0000B0B8(Eq_n r3, Eq_n r4)
 {
 	word32 fp;
+	Eq_n tLoc10;
 	if (r3 == 0x03)
 	{
 		struct Eq_n * r3_n = g_ptr13948;
@@ -4195,7 +4196,12 @@ void fn0000B0B8(Eq_n r3, Eq_n r4)
 	else if (r3 > 0x03)
 	{
 		if (r3 == 0x14)
-			*(union Eq_n *) 0x01C20050 = r4 - 1 & 0x03 | *((union Eq_n *) 0x01C20050) & ~0x03;
+		{
+			tLoc10 = *(union Eq_n *) 0x01C20050;
+			tLoc10 &= ~0x03;
+			tLoc10 = r4 - 1 & 0x03 | tLoc10;
+			*(union Eq_n *) 0x01C20050 = tLoc10;
+		}
 		else
 		{
 			if (!(r3 == 0x1F))
@@ -4649,23 +4655,20 @@ void fn0000BDC8(word32 * r3)
 Eq_n fn0000BE00(int32 r3, Eq_n r4, Eq_n r15)
 {
 	word32 fp;
-	byte bLoc0D;
-	byte bLoc0E;
-	byte bLoc10;
-	byte bLoc0F;
+	Eq_n tLoc10;
 	if (!(r3 == 0x06))
 		return r15;
 	r15 = fn0000B8D8(fp - 16, r4, r15);
 	union Eq_n * r3_n = g_ptr13944;
 	Eq_n r2_n = *r3_n;
-	int32 r4_n = (word32) bLoc0D;
+	int32 r4_n = (word32) tLoc10.b0003;
 	if ((r2_n >> 0x10 & 0x03) >= r4_n)
 	{
-		int32 r3_n = (word32) bLoc0E;
+		int32 r3_n = (word32) tLoc10.b0002;
 		if ((r2_n & 0x03) >= r3_n)
 		{
 			uint32 r4_n;
-			*g_ptr13944 = (union Eq_n *) ((r2_n & ~0x1F00 | ((word32) bLoc10 & 0x1F) << 0x08) & ~0x30 | ((word32) bLoc0F & 0x03) << 0x04);
+			*g_ptr13944 = (union Eq_n *) ((r2_n & ~0x1F00 | ((word32) tLoc10.b0000 & 0x1F) << 0x08) & ~0x30 | ((word32) tLoc10.b0001 & 0x03) << 0x04);
 			fn0000DB28(-20);
 			Eq_n r2_n = fn0000C768(-1);
 			struct Eq_n * r1_n = (struct Eq_n *) <invalid>;

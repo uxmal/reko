@@ -3434,11 +3434,12 @@ void __truncdfsf2(word32 ra, word32 f12, word32 f13)
 {
 	ptr32 fp;
 	ui32 dwLoc14;
+	word32 dwLoc28;
 	word32 dwLoc24;
 	word32 dwLoc20;
 	word32 r7;
 	__unpack_d(fp + -16, fp + -40);
-	__make_fp(dwLoc24, dwLoc20, r7, ra);
+	__make_fp(dwLoc28, dwLoc24, dwLoc20, r7, ra);
 }
 
 // 004093E0: void __pack_f(Register (ptr32 Eq_n) r4)
@@ -3546,12 +3547,17 @@ void __unpack_f(uint32 * r4, struct Eq_n * r5)
 		r5->dw0000 = 2;
 }
 
-// 00409630: void __make_fp(Register word32 r5, Register word32 r6, Register word32 r7, Register word32 ra)
+// 00409630: void __make_fp(Register word32 r4, Register word32 r5, Register word32 r6, Register word32 r7, Register word32 ra)
 // Called from:
 //      __truncdfsf2
-void __make_fp(word32 r5, word32 r6, word32 r7, word32 ra)
+void __make_fp(word32 r4, word32 r5, word32 r6, word32 r7, word32 ra)
 {
 	ptr32 fp;
+	Eq_n tLoc18;
+	tLoc18.dw0000 = r4;
+	tLoc18.dw0004 = r5;
+	tLoc18.dw0008 = r6;
+	tLoc18.dw000C = r7;
 	__pack_f(fp + -24);
 }
 

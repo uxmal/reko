@@ -54,7 +54,7 @@ Error: Unable to load metadata file libc.so.xml.
    at Reko.Core.TypeLibraryLoader.Load(IPlatform platform, TypeLibrary dstLib) in d:\dev\uxmal\reko\master\src\Core\TypeLibraryLoader.cs:line 42
    at Reko.Core.MetadataLoader.Load(IPlatform platform, String moduleName, TypeLibrary dstLib) in d:\dev\uxmal\reko\master\src\Core\MetadataLoader.cs:line 55
    at Reko.Core.Services.TypeLibraryLoaderServiceImpl.LoadMetadataIntoLibrary(IPlatform platform, TypeLibraryDefinition tlElement, TypeLibrary libDst) in d:\dev\uxmal\reko\master\src\Core\Services\ITypeLibraryLoaderService.cs:line 72
-       at Reko.Environments.SysV.ArchSpecific.Msp430CallingConvention.Generate(ICallingConventionEmitter ccr, DataType dtRet, DataType dtThis, List`1 dtParams) in d:\dev\uxmal\reko\master\src\Environments\SysV\ArchSpecific\Msp430CallingConvention.cs:line 712
+       at Reko.Environments.SysV.ArchSpecific.Msp430CallingConvention.Generate(ICallingConventionEmitter ccr, Int32 retAddressOnStack, DataType dtRet, DataType dtThis, List`1 dtParams) in d:\dev\uxmal\reko\master\src\Environments\SysV\ArchSpecific\Msp430CallingConvention.cs:line 717
    at Reko.Core.Serialization.ProcedureSerializer.Deserialize(SerializedSignature ss, Frame frame) in d:\dev\uxmal\reko\master\src\Core\Serialization\ProcedureSerializer.cs:line 175
    at Reko.Core.TypeLibraryDeserializer.LoadProcedure(Procedure_v1 sp) in d:\dev\uxmal\reko\master\src\Core\TypeLibraryDeserializer.cs:line 127
 0200: warning: Expected sizes of arrays to have been determined by now
@@ -140,6 +140,8 @@ l0800_17AE: warning: Non-integral switch expression
 0105: warning: Call target address 1729 is invalid.
 
 === regressions\reko-367\code
+
+=== Raw\CR16\CompactRISC
 
 === MachO\amd64\const
 
@@ -480,6 +482,7 @@ Signature of 'Microsoft Visual C++ 8' detected.
 00000000004136B0: warning: Expected sizes of arrays to have been determined by now
 00000000004136C0: warning: Expected sizes of arrays to have been determined by now
 0000000000413700: warning: Expected sizes of arrays to have been determined by now
+0000000000413728: warning: Expected sizes of arrays to have been determined by now
 0000000000415F50: warning: Expected sizes of arrays to have been determined by now
 0000000000415F60: warning: Expected sizes of arrays to have been determined by now
 0000000000415F78: warning: Expected sizes of arrays to have been determined by now
@@ -506,6 +509,7 @@ Signature of 'Microsoft Visual C++ 8' detected.
 00000000004136B0: warning: Expected sizes of arrays to have been determined by now
 00000000004136C0: warning: Expected sizes of arrays to have been determined by now
 0000000000413700: warning: Expected sizes of arrays to have been determined by now
+0000000000413728: warning: Expected sizes of arrays to have been determined by now
 0000000000415F50: warning: Expected sizes of arrays to have been determined by now
 0000000000415F60: warning: Expected sizes of arrays to have been determined by now
 0000000000415F78: warning: Expected sizes of arrays to have been determined by now
@@ -1176,6 +1180,26 @@ Evaluating d:\dev\uxmal\reko\master\subjects\scripting\segmented.py
 4D58: warning: PDP-11 instruction spl is not supported yet.
 53EA: warning: PDP-11 instruction spl is not supported yet.
 46BE: warning: Unable to determine size of call or jump table; there may be more than 2 entries.
+Warning: Recursion too deep in PtrPrimitiveReplacer
+Warning: Recursion too deep in PtrPrimitiveReplacer
+Warning: Recursion too deep in PtrPrimitiveReplacer
+Warning: Recursion too deep in PtrPrimitiveReplacer
+Warning: Recursion too deep in PtrPrimitiveReplacer
+Warning: Recursion too deep in PtrPrimitiveReplacer
+Warning: Recursion too deep in PtrPrimitiveReplacer
+Warning: Recursion too deep in PtrPrimitiveReplacer
+Warning: Recursion too deep in PtrPrimitiveReplacer
+Warning: Recursion too deep in PtrPrimitiveReplacer
+Warning: Recursion too deep in PtrPrimitiveReplacer
+Warning: Recursion too deep in PtrPrimitiveReplacer
+Warning: Recursion too deep in PtrPrimitiveReplacer
+Warning: Recursion too deep in PtrPrimitiveReplacer
+Warning: Recursion too deep in PtrPrimitiveReplacer
+Warning: Recursion too deep in PtrPrimitiveReplacer
+Warning: Recursion too deep in PtrPrimitiveReplacer
+Warning: Recursion too deep in PtrPrimitiveReplacer
+Warning: Recursion too deep in PtrPrimitiveReplacer
+Warning: Recursion too deep in PtrPrimitiveReplacer
 47E2: warning: Expected sizes of arrays to have been determined by now
 541C: warning: Expected sizes of arrays to have been determined by now
 5898: warning: Expected sizes of arrays to have been determined by now
@@ -1837,7 +1861,7 @@ fn000125CA: error: An error occurred while renaming variables.
        at System.Collections.Generic.Dictionary`2.FindValue(TKey key)
    at System.Collections.Generic.Dictionary`2.TryGetValue(TKey key, TValue& value)
    at Reko.Core.Lib.DominatorGraph`1.CommonDominator(IEnumerable`1 blocks) in d:\dev\uxmal\reko\master\src\Core\Lib\DominatorGraph.cs:line 99
-   at Reko.Analysis.DeclarationInserter.InsertDeclaration(Web web) in d:\dev\uxmal\reko\master\src\Decompiler\Analysis\DeclarationInserter.cs:line 60
+   at Reko.Analysis.DeclarationInserter.InsertDeclaration(Web web) in d:\dev\uxmal\reko\master\src\Decompiler\Analysis\DeclarationInserter.cs:line 61
    at Reko.Analysis.WebBuilder.InsertDeclarations() in d:\dev\uxmal\reko\master\src\Decompiler\Analysis\WebBuilder.cs:line 86
    at Reko.Analysis.WebBuilder.Transform() in d:\dev\uxmal\reko\master\src\Decompiler\Analysis\WebBuilder.cs:line 112
 l00008081: warning: Phi functions will be ignored by type analysis. This may be caused by a failure in a previous stage of the decompilation.
@@ -1908,4 +1932,4 @@ Signature of 'Microsoft Visual C++ 8' detected.
 0040120B: warning: Unable to determine the upper bound of an indirect call or jump; there may be more than 2 entries.
 004011A5: warning: Unable to determine the upper bound of an indirect call or jump; there may be more than 2 entries.
 
-Decompiled 85 binaries in 46.31 seconds.
+Decompiled 85 binaries in 56.63 seconds.

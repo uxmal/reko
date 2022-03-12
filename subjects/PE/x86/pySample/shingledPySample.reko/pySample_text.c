@@ -458,15 +458,17 @@ word32 fn1000182D(struct Eq_n * ebp, Eq_n dwArg00)
 //      DllMain
 void fn10001864()
 {
-	ptr32 fp;
 	Eq_n tLoc14;
+	Eq_n tLoc0C;
 	ui32 eax_n = g_dw10003000;
+	tLoc0C.dwLowDateTime = (DWORD) 0x00;
+	tLoc0C.dwHighDateTime = (DWORD) 0x00;
 	if (eax_n != 0xBB40E64E && (eax_n & 0xFFFF0000) != 0x00)
 		g_dw10003004 = ~eax_n;
 	else
 	{
-		GetSystemTimeAsFileTime(fp - 0x0C);
-		ui32 esi_n = GetCurrentProcessId() ^ GetCurrentThreadId() ^ GetTickCount();
+		GetSystemTimeAsFileTime(&tLoc0C);
+		ui32 esi_n = tLoc0C.dwHighDateTime ^ tLoc0C.dwLowDateTime ^ GetCurrentProcessId() ^ GetCurrentThreadId() ^ GetTickCount();
 		QueryPerformanceCounter(&tLoc14);
 		ui32 esi_n = esi_n ^ (tLoc14.dw0004 ^ tLoc14);
 		if (esi_n == 0xBB40E64E)

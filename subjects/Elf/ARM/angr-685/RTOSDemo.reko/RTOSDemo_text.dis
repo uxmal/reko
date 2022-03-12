@@ -126,23 +126,30 @@ l000080A0:
 l000080EC:
 
 
-void vUART_ISR(word32 lr, word32 cpsr)
+void vUART_ISR(word32 r4, word32 r5, word32 r6, word32 lr, word32 cpsr)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  cpsr:[0..31] lr:[0..31]
+// MayUse:  cpsr:[0..31] lr:[0..31] r4:[0..31] r5:[0..31] r6:[0..31]
 // LiveOut:
-// Trashed: NZC r0 r1 r2 r3
-// Preserved: V lr r4 r5 r6 sp
+// Trashed: NZC r0 r1 r2 r3 r4 r5 r6
+// Preserved: V lr sp
 vUART_ISR_entry:
 	ptr32 fp
+	struct <anonymous> tLoc15
 l00008108:
+	Mem5[&tLoc15 + 5<i32>:word32] = r4
+	Mem7[&tLoc15 + 9<i32>:word32] = r5
+	Mem9[&tLoc15 + 13<i32>:word32] = r6
+	Mem11[&tLoc15 + 17<i32>:word32] = lr
 	word32 r5_13 = Mem11[0x00008174<p32>:word32]
+	Mem17[&tLoc15 + 1<i32>:word32] = 0<32>
 	word32 r0_18 = UARTIntStatus(r5_13, 1<32>)
 	UARTIntClear(r5_13, r0_18)
 	branch r0_18 << 27<i32> >= 0<32> l00008130
 l00008128:
 	branch Mem17[Mem17[0x00008178<p32>:word32]:word32] << 25<i32> < 0<32> l0000815E
 l0000815E:
+	Mem34[&tLoc15:byte] = Mem17[r5_13:byte]
 	xQueueGenericSendFromISR(fp - 0x15<32>, r0_18, fp - 20<i32>, 0<32>, lr, cpsr)
 l00008130:
 	branch r0_18 << 26<i32> >= 0<32> l0000813C
@@ -160,7 +167,7 @@ l00008156:
 	Mem61[r1_55:word32] = r3_50
 	Mem65[r2_49:byte] = SLICE(r3_50, byte, 0) + 1<8>
 l0000813C:
-	branch true l00008148
+	branch Mem69[&tLoc15 + 1<i32>:word32] == 0<32> l00008148
 l00008140:
 	Mem73[Mem69[0x00008180<p32>:word32]:word32] = 0x10000000<32>
 l00008148:

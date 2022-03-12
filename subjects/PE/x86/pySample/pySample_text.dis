@@ -528,16 +528,18 @@ void fn10001864()
 // Trashed: SCZO eax Top
 // Preserved: ebp ebx edi esi esp
 fn10001864_entry:
-	ptr32 fp
 	LARGE_INTEGER tLoc14
+	struct _FILETIME tLoc0C
 l10001864:
 	word32 eax_9 = Mem6[0x10003000<p32>:word32]
+	Mem11[&tLoc0C:word32] = 0<32>
+	Mem14[&tLoc0C + 4<i32>:word32] = 0<32>
 	branch eax_9 == 0xBB40E64E<32> l10001894
 l10001887:
 	branch (eax_9 & 0xFFFF0000<32>) == 0<32> l10001894
 l10001894:
-	GetSystemTimeAsFileTime(fp - 12<i32>)
-	word32 esi_46 = GetCurrentProcessId() ^ GetCurrentThreadId() ^ GetTickCount()
+	GetSystemTimeAsFileTime(&tLoc0C)
+	word32 esi_46 = Mem37[&tLoc0C + 4<i32>:word32] ^ Mem37[&tLoc0C:word32] ^ GetCurrentProcessId() ^ GetCurrentThreadId() ^ GetTickCount()
 	QueryPerformanceCounter(&tLoc14)
 	word32 esi_54 = esi_46 ^ (Mem49[&tLoc14 + 4<i32>:word32] ^ Mem49[&tLoc14:word32])
 	branch esi_54 != 0xBB40E64E<32> l100018DA

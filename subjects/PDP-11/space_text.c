@@ -1396,19 +1396,25 @@ Eq_n g_t0CD6 = // 0CD6
 // 0CF4: void fn0CF4(Register (ptr16 Eq_n) r5)
 void fn0CF4(struct Eq_n * r5)
 {
-	Eq_n fp;
+	ptr16 fp;
+	Eq_n tLoc08;
 	if (r5->b0000 == 0x01)
 	{
 		struct Eq_n * r0_n = r5->ptr0002;
+		tLoc08.t0006 = &tLoc08.t0006;
+		tLoc08.t0004 = &tLoc08.t0004;
+		tLoc08.ptr0002 = (struct Eq_n **) &tLoc08.ptr0002;
+		tLoc08.t0000.u1 = 0x03;
 		fn15CC(fp - 0x08);
-		struct Eq_n * r0_n = fn0D3E(r0_n, fp - 0x04);
+		struct Eq_n * r1_n = (char *) tLoc08.ptr0002 + (tLoc08.ptr0002 << 1);
+		struct Eq_n * r0_n = fn0D3E(r0_n, tLoc08.t0004);
 		r0_n->b0000 = 0x2D;
-		struct Eq_n * r1_n = (fp - 0x06 << 1) + (fp - 0x06);
 		r0_n->b0001 = r1_n->b0D4F;
 		r0_n->b0002 = r1_n->b0D50;
 		r0_n->b0003 = r1_n->b0D51;
 		r0_n->b0004 = 0x2D;
-		fn0D3E(&r0_n->b0004 + 1, fp - 0x02);
+		Eq_n v35_n = tLoc08.t0006;
+		fn0D3E(&r0_n->b0004 + 1, v35_n);
 	}
 	else
 		__syscall(0x8990);

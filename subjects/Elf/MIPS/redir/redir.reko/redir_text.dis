@@ -5155,6 +5155,7 @@ void __truncdfsf2(word32 ra, word32 f12, word32 f13)
 __truncdfsf2_entry:
 	ptr32 fp
 	word32 dwLoc14
+	word32 dwLoc28
 	word32 dwLoc24
 	word32 dwLoc20
 	word32 r7
@@ -5165,7 +5166,7 @@ l004093A8_ds_t:
 l004093A8_ds_f:
 l004093AC:
 l004093B0:
-	__make_fp(dwLoc24, dwLoc20, r7, ra)
+	__make_fp(dwLoc28, dwLoc24, dwLoc20, r7, ra)
 	return
 __truncdfsf2_exit:
 
@@ -5329,18 +5330,23 @@ l00409570:
 __unpack_f_exit:
 
 
-void __make_fp(word32 r5, word32 r6, word32 r7, word32 ra)
+void __make_fp(word32 r4, word32 r5, word32 r6, word32 r7, word32 ra)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
 //      __truncdfsf2
-// MayUse:  r5:[0..31] r6:[0..31] r7:[0..31] ra:[0..31]
+// MayUse:  r4:[0..31] r5:[0..31] r6:[0..31] r7:[0..31] ra:[0..31]
 // LiveOut:
 // Trashed: r25 r28 r4 r5 r6 r7
 // Preserved: ra sp
 __make_fp_entry:
 	ptr32 fp
+	struct <anonymous> tLoc18
 l00409630:
+	Mem10[&tLoc18:word32] = r4
+	Mem16[&tLoc18 + 4<i32>:word32] = r5
+	Mem18[&tLoc18 + 8<i32>:word32] = r6
+	Mem20[&tLoc18 + 12<i32>:word32] = r7
 	__pack_f(fp + -24<i32>)
 	return
 __make_fp_exit:

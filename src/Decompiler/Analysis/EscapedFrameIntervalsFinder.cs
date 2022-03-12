@@ -112,15 +112,24 @@ namespace Reko.Analysis
             {
                 if (!procFlow.LiveInDataTypes.TryGetValue(use.Storage, out var dt))
                     continue;
-                var ptr = dt.ResolveAs<Pointer>();
-                if (ptr is null)
-                    continue;
-                var pointee = ptr.Pointee;
-                if (IsFrameAccess(use.Expression, out var offset))
+                DataType? pointee = DeterminePointee(dt);
+                if (pointee is not null && 
+                    IsFrameAccess(use.Expression, out var offset))
                 {
                     AddInterval(offset, pointee);
                 }
             }
+        }
+
+        private static DataType? DeterminePointee(DataType dt)
+        {
+            var ptr = dt.ResolveAs<Pointer>();
+            if (ptr is not null)
+            {
+                return ptr.Pointee;
+            }
+            var memptr = dt.ResolveAs<MemberPointer>();
+            return memptr?.Pointee;
         }
 
         public void VisitComment(CodeComment code)
@@ -198,11 +207,8 @@ namespace Reko.Analysis
             for (int i = 0; i < appl.Arguments.Length; ++i)
             {
                 appl.Arguments[i].Accept(this);
-                var ptr = appl.Arguments[i].DataType.ResolveAs<Pointer>();
-                if (ptr is null)
-                    continue;
-                var pointee = ptr.Pointee;
-                if (IsFrameAccess(appl.Arguments[i], out var offset))
+                var pointee = DeterminePointee(appl.Arguments[i].DataType);
+                if (pointee is not null && IsFrameAccess(appl.Arguments[i], out var offset))
                 {
                     AddInterval(offset, pointee);
                 }
