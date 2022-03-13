@@ -265,7 +265,6 @@ namespace Reko.Arch.CompactRisc
 
         private Expression Bind(Storage stg)
         {
-            Expression e; 
             if (stg is RegisterStorage reg)
                 return binder.EnsureRegister(reg);
             else if (stg is SequenceStorage seq)

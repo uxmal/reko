@@ -326,11 +326,11 @@ namespace Reko.Core
 				: EnsureStackLocal(cbOffset, type);
 		}
 
-        public Identifier EnsureStackVariable(int byteOffset, DataType type)
+        public Identifier EnsureStackVariable(int byteOffset, DataType type, string? name = null)
         {
             return arch.IsStackArgumentOffset(byteOffset)
-                ? EnsureStackArgument(byteOffset, type)
-                : EnsureStackLocal(byteOffset, type);
+                ? EnsureStackArgument(byteOffset, type, name)
+                : EnsureStackLocal(byteOffset, type, name);
         }
 
         public Identifier? FindSequence(Storage[] elements)

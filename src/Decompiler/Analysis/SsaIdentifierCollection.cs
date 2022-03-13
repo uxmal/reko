@@ -55,7 +55,6 @@ namespace Reko.Analysis
 		public SsaIdentifier this[Identifier id]
 		{
 			get { return sids[id]; }
-			set { sids[id] = value; }
 		}
 
         public void Add(Identifier id, SsaIdentifier sid)

@@ -205,8 +205,7 @@ namespace Reko.Core.Code
         /// </summary>
         public virtual Identifier Local16(string name, int offset)
         {
-            Debug.Assert(offset < 0);
-            return Frame.EnsureStackLocal(offset, PrimitiveType.Word16, name);
+            return Frame.EnsureStackVariable(offset, PrimitiveType.Word16, name);
         }
 
         /// <summary>

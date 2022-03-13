@@ -199,6 +199,10 @@ namespace Reko.Analysis
                 vp.Transform();
                 dfa.DumpWatchedProcedure("cce", "After CCE", ssa);
 
+                var lcf = new LongComparisonFuser(ssa, eventListener);
+                lcf.Transform();
+                dfa.DumpWatchedProcedure("lcf", "After long comparison fuser", ssa);
+
                 var efif = new EscapedFrameIntervalsFinder(
                     program, flow, ssa, eventListener);
                 var escapedFrameIntervals = efif.Find();

@@ -134,9 +134,9 @@ namespace Reko.Analysis
             var totalSize = PrimitiveType.Create(
                 Domain.SignedInt | Domain.UnsignedInt,
                 loCandidate.Dst!.DataType.BitSize + hiCandidate.Dst!.DataType.BitSize);
-            var left = CreateWideExpression(loCandidate.Left, hiCandidate.Left, totalSize);
-            var right = CreateWideExpression(loCandidate.Right!, hiCandidate.Right!, totalSize);
-            this.dst = CreateWideExpression(loCandidate.Dst, hiCandidate.Dst, totalSize);
+            var left = CreateWideExpression(ssa, loCandidate.Left, hiCandidate.Left, totalSize);
+            var right = CreateWideExpression(ssa, loCandidate.Right!, hiCandidate.Right!, totalSize);
+            this.dst = CreateWideExpression(ssa, loCandidate.Dst, hiCandidate.Dst, totalSize);
             var stmts = hiCandidate.Statement!.Block.Statements;
             var addr = hiCandidate.Statement.Address;
             var iStm = FindInsertPosition(loCandidate, hiCandidate, stmts);
@@ -231,7 +231,7 @@ namespace Reko.Analysis
             var totalSize = PrimitiveType.Create(
                 Domain.SignedInt | Domain.UnsignedInt,
                 loCandidate.Dst!.DataType.BitSize + hiCandidate.Dst!.DataType.BitSize);
-            var wideSrc = CreateWideExpression(loCandidate.Left, hiCandidate.Left, totalSize);
+            var wideSrc = CreateWideExpression(ssa, loCandidate.Left, hiCandidate.Left, totalSize);
             if (wideSrc is Identifier idWideSrc)
             {
                 var sidWideSrc = AddSsaId(idWideSrc);
@@ -240,7 +240,7 @@ namespace Reko.Analysis
                     CreateMkSeq(wideSrc, hiCandidate.Left, loCandidate.Left));
             }
              
-            var sidWideDst = AddSsaId((Identifier) CreateWideExpression(loCandidate.Dst, hiCandidate.Dst, totalSize));
+            var sidWideDst = AddSsaId((Identifier) CreateWideExpression(ssa, loCandidate.Dst, hiCandidate.Dst, totalSize));
 
             var wideDst = sidWideDst.Identifier;
             sidWideDst.DefStatement = stmHi.Block.Statements.Insert(iStm++, stmHi.Address, 
@@ -533,7 +533,7 @@ namespace Reko.Analysis
             return null;
         }
 
-        private Expression CreateWideExpression(Expression expLo, Expression expHi, DataType totalSize)
+        private Expression CreateWideExpression(SsaState ssa, Expression expLo, Expression expHi, DataType totalSize)
         {
             if (expLo is Identifier idLo && expHi is Identifier idHi)
             {

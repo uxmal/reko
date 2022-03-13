@@ -155,7 +155,7 @@ namespace Reko.Core
             return id;
         }
 
-        public Identifier EnsureStackVariable(int offset, DataType dataType)
+        public Identifier EnsureStackVariable(int offset, DataType dataType, string? name)
         {
             throw new NotImplementedException();
         }

@@ -167,10 +167,7 @@ Eq_n status_snapshot = // 00454500
 	};
 word32 tclass = 0x00; // 00454504
 word32 timing = 0x00; // 00454508
-Eq_n tmax = // 0045450C
-	{
-		0
-	};
+int32 tmax = 0; // 0045450C
 word32 ttl = 0x00; // 00454510
 Eq_n uid = // 00454514
 	{

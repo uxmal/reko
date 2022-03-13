@@ -1599,7 +1599,6 @@ namespace Reko.Core.Expressions
             return new BinaryExpression(Operator.Uge, PrimitiveType.Bool, a, b);
         }
 
-
         /// <summary>
         /// Convenience method to generate an unsigned integer greater-or-equal comparison ('>=' in the C
         /// language family). The second argument is converted to a Constant.
@@ -1621,6 +1620,16 @@ namespace Reko.Core.Expressions
         }
 
         /// <summary>
+        /// Generates an unsigned integer greater-than-0 comparison
+        /// ('>= 0' in the C language family).
+        /// </summary>
+        /// <returns>An unsigned integer point inequality comparison.</returns>
+        public BinaryExpression Ugt0(Expression exp)
+        {
+            return new BinaryExpression(Operator.Ugt, PrimitiveType.Bool, exp, Constant.Zero(exp.DataType));
+        }
+
+        /// <summary>
         /// Generates an unsigned integer less-or-equal comparison ('&lt;=' in the C
         /// language family).
         /// </summary>
@@ -1628,6 +1637,17 @@ namespace Reko.Core.Expressions
         public BinaryExpression Ule(Expression a, Expression b)
         {
             return new BinaryExpression(Operator.Ule, PrimitiveType.Bool, a, b);
+        }
+
+        /// <summary>
+        /// Convenience method to generate an unsigned integer less-than-or-
+        /// equal comparison ('>=' in the C language family). The second
+        /// argument is converted to a Constant.
+        /// </summary>
+        /// <returns>An unsigned integer point inequality comparison.</returns>
+        public BinaryExpression Ule(Expression a, int n)
+        {
+            return new BinaryExpression(Operator.Ule, PrimitiveType.Bool, a, Constant.Create(a.DataType, n));
         }
 
         /// <summary>
@@ -1648,6 +1668,16 @@ namespace Reko.Core.Expressions
         public Expression Ult(Expression a, ulong b)
         {
             return Ult(a, Word(a.DataType.BitSize, b));
+        }
+
+        /// <summary>
+        /// Generates an unsigned integer less-than-0 comparison
+        /// ('<= 0' in the C language family).
+        /// </summary>
+        /// <returns>An unsigned integer point inequality comparison.</returns>
+        public BinaryExpression Ult0(Expression exp)
+        {
+            return new BinaryExpression(Operator.Ult, PrimitiveType.Bool, exp, Constant.Zero(exp.DataType));
         }
 
         /// <summary>
