@@ -16,6 +16,7 @@ byte g_b0001 = 0x00; // 00000001
 //      fn164F
 word16 fn02F4(byte a, uint8 c, ui8 b, Eq_n de, byte h, struct Eq_n * ix, Eq_n wArg24, union Eq_n & deOut, union Eq_n & hlOut, union Eq_n & ixOut)
 {
+	bool C;
 	cu8 a_n = a + ix->bFFFFFFE4 + (byte) C;
 	ui16 a_a_n = SEQ(v22_n, ix->tFFFFFFF6) + (SEQ(b, c) ^ ix->tFFFFFFFA);
 	ui8 a_n = a_n ^ ix->tFFFFFFFC;
@@ -91,6 +92,7 @@ void fn03AA()
 //      fn039D
 word16 fn03B2(Eq_n a, uint8 b, Eq_n c, Eq_n de, Eq_n hl, struct Eq_n * ix, Eq_n wArg24, union Eq_n & deOut, union Eq_n & hlOut, union Eq_n & ixOut)
 {
+	ptr32 fp;
 	Eq_n hl_n = hl;
 	while (true)
 	{
@@ -275,6 +277,8 @@ void fn0607(byte a, Eq_n de, struct Eq_n * ix, Eq_n wArg20)
 //      fn0DFC
 void fn060E(uint8 a, uint8 c, Eq_n de, struct Eq_n * ix, Eq_n wArg20)
 {
+	ptr32 fp;
+	bool C;
 	do
 	{
 		cu8 a_n = a + ix->bFFFFFFDB + (byte) C;
@@ -427,6 +431,7 @@ void fn0C35(Eq_n bc, Eq_n de, byte l, byte h, struct Eq_n * ix, Eq_n wArg20)
 // 0C39: void fn0C39(Register Eq_n a, Register byte b, Register Eq_n de, Register byte l, Register byte h, Register (ptr16 Eq_n) ix, Stack Eq_n wArg20)
 void fn0C39(Eq_n a, byte b, Eq_n de, byte l, byte h, struct Eq_n * ix, Eq_n wArg20)
 {
+	bool C;
 	ix->tFFFFFFFC = a;
 	uint8 a_n = b + ix->bFFFFFFF7 + (byte) C;
 	ix->bFFFFFFFD = a_n;
@@ -498,6 +503,7 @@ void fn0C9D(byte a, uint8 b, Eq_n c, Eq_n de, Eq_n hl, struct Eq_n * ix, Eq_n wA
 // 0CB7: void fn0CB7(Register uint8 c, Register ui8 b, Register Eq_n de, Register byte h, Register byte l, Register (ptr16 Eq_n) ix, Stack Eq_n wArg20)
 void fn0CB7(uint8 c, ui8 b, Eq_n de, byte h, byte l, struct Eq_n * ix, Eq_n wArg20)
 {
+	bool C;
 	ui16 a_a_n = SEQ(v21_n, ix->tFFFFFFDE) - (SEQ(b, c) ^ ix->tFFFFFFFC);
 	ui8 a_n = l ^ ix->bFFFFFFFE;
 	ui8 a_n = h + ix->bFFFFFFED + (byte) C ^ ix->bFFFFFFFF;
@@ -616,6 +622,7 @@ void fn0DFC(uint8 c, uint8 b, Eq_n de, cu8 l, byte h, struct Eq_n * ix, Eq_n wAr
 //      fn0DFC
 void fn0E13(Eq_n de, Eq_n wArg20)
 {
+	ptr32 fp;
 	Eq_n hl_n = fp + 0x0C;
 	word16 bc_n;
 	for (bc_n = 0x04; bc_n != 0x00; --bc_n)
@@ -643,6 +650,8 @@ void fn0F9A()
 // 164F: void fn164F(Register uint8 a, Register word16 bc, Register byte h, Register (ptr16 Eq_n) ix, Stack (ptr16 ui16) wArg0E, Stack byte bArg11, Stack Eq_n wArg13, Stack (ptr16 ui16) wArg15, Stack (ptr16 Eq_n) wArg17, Stack byte bArg1A, Stack (ptr16 ui16) wArg1B, Stack byte bArg20, Stack (ptr16 Eq_n) wArg21, Stack (ptr16 ui16) wArg25)
 void fn164F(uint8 a, word16 bc, byte h, struct Eq_n * ix, ui16 * wArg0E, byte bArg11, Eq_n wArg13, ui16 * wArg15, struct Eq_n * wArg17, byte bArg1A, ui16 * wArg1B, byte bArg20, struct Eq_n * wArg21, ui16 * wArg25)
 {
+	bool C;
+	word16 wArg11;
 	byte bArg1B_n = (byte) wArg1B;
 	byte bArg21_n = (byte) wArg21;
 	Eq_n wArg20_n;

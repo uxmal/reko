@@ -2,6 +2,8 @@
 // Return size: 0
 void fn0C00_0000(selector ds)
 fn0C00_0000_entry:
+	selector ss
+	selector cs
 	Mem10[0C00:0001:word16] = 0x800<16>
 	Mem11[0800:5422:word16] = ds
 	Mem17[0800:0066:word16] = Mem11[0800:5420:word16]
@@ -228,6 +230,8 @@ fn0C00_0000_exit:
 
 void fn0C00_0000(selector ds)
 {
+	selector ss;
+	selector cs;
 	Mem10[0C00:0001:word16] = 0x800<16>;
 	Mem11[0800:5422:word16] = ds;
 	Mem17[0800:0066:word16] = Mem11[0800:5420:word16];

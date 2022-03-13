@@ -31,14 +31,14 @@ Eq_122: (fn void (int32))
 	T_122 (in factorial @ 800003FC : ptr32)
 	T_123 (in signature of factorial @ 8000033C : void)
 	T_132 (in factorial @ 80000454 : ptr32)
-Eq_139: (fn void (real64))
-	T_139 (in sine_taylor @ 800004AA : ptr32)
-	T_140 (in signature of sine_taylor @ 800001AC : void)
-Eq_143: (fn void (real64, real64, Eq_147))
-	T_143 (in _sin @ 800004CE : ptr32)
-	T_144 (in signature of _sin @ 800004DE : void)
-Eq_147: (union "Eq_147" ((ptr32 word32) u0) ((ref int32) u1))
-	T_147 (in tArg14 @ 800004CE : Eq_147)
+Eq_140: (fn void (real64))
+	T_140 (in sine_taylor @ 800004AA : ptr32)
+	T_141 (in signature of sine_taylor @ 800001AC : void)
+Eq_144: (fn void (real64, real64, Eq_148))
+	T_144 (in _sin @ 800004CE : ptr32)
+	T_145 (in signature of _sin @ 800004DE : void)
+Eq_148: (union "Eq_148" ((ptr32 word32) u0) ((ref int32) u1))
+	T_148 (in tArg14 @ 800004CE : Eq_148)
 	T_152 (in fp - 8<32> @ 00000000 : word32)
 Eq_164: (ref int32)
 	T_164 (in tArg14 + 0<32> @ 80000608 : word32)
@@ -147,11 +147,11 @@ T_25: (in fn00000000(0x80002724<u32>, d0_18) @ 800000DC : void)
   Class: Eq_25
   DataType: void
   OrigDataType: void
-T_26: (in a6_35 @ 800000E4 : ptr32)
+T_26: (in fp @ 800000E4 : ptr32)
   Class: Eq_26
   DataType: ptr32
   OrigDataType: ptr32
-T_27: (in fp @ 800000E4 : ptr32)
+T_27: (in a6_35 @ 800000E4 : ptr32)
   Class: Eq_27
   DataType: ptr32
   OrigDataType: ptr32
@@ -160,7 +160,7 @@ T_28: (in 4<32> @ 800000E4 : word32)
   DataType: ui32
   OrigDataType: ui32
 T_29: (in fp - 4<32> @ 00000000 : word32)
-  Class: Eq_26
+  Class: Eq_27
   DataType: ptr32
   OrigDataType: ptr32
 T_30: (in 80002724 @ 800000F2 : ptr32)
@@ -599,68 +599,68 @@ T_138: (in dwLoc08_118 - dwArg0C > 0<32> @ 00000000 : bool)
   Class: Eq_138
   DataType: bool
   OrigDataType: bool
-T_139: (in sine_taylor @ 800004AA : ptr32)
+T_139: (in fp @ 8000049A : ptr32)
   Class: Eq_139
-  DataType: (ptr32 Eq_139)
-  OrigDataType: (ptr32 (fn T_142 (T_141)))
-T_140: (in signature of sine_taylor @ 800001AC : void)
-  Class: Eq_139
-  DataType: (ptr32 Eq_139)
+  DataType: ptr32
+  OrigDataType: ptr32
+T_140: (in sine_taylor @ 800004AA : ptr32)
+  Class: Eq_140
+  DataType: (ptr32 Eq_140)
+  OrigDataType: (ptr32 (fn T_143 (T_142)))
+T_141: (in signature of sine_taylor @ 800001AC : void)
+  Class: Eq_140
+  DataType: (ptr32 Eq_140)
   OrigDataType: 
-T_141: (in 3.14 @ 800004AA : real64)
+T_142: (in 3.14 @ 800004AA : real64)
   Class: Eq_95
   DataType: real64
   OrigDataType: real64
-T_142: (in sine_taylor(3.14) @ 800004AA : void)
-  Class: Eq_142
+T_143: (in sine_taylor(3.14) @ 800004AA : void)
+  Class: Eq_143
   DataType: void
   OrigDataType: void
-T_143: (in _sin @ 800004CE : ptr32)
-  Class: Eq_143
-  DataType: (ptr32 Eq_143)
-  OrigDataType: (ptr32 (fn T_153 (T_148, T_149, T_152)))
-T_144: (in signature of _sin @ 800004DE : void)
-  Class: Eq_143
-  DataType: (ptr32 Eq_143)
+T_144: (in _sin @ 800004CE : ptr32)
+  Class: Eq_144
+  DataType: (ptr32 Eq_144)
+  OrigDataType: (ptr32 (fn T_153 (T_149, T_150, T_152)))
+T_145: (in signature of _sin @ 800004DE : void)
+  Class: Eq_144
+  DataType: (ptr32 Eq_144)
   OrigDataType: 
-T_145: (in rArg04 @ 800004CE : real64)
-  Class: Eq_145
-  DataType: real64
-  OrigDataType: real64
-T_146: (in rArg0C @ 800004CE : real64)
+T_146: (in rArg04 @ 800004CE : real64)
   Class: Eq_146
   DataType: real64
   OrigDataType: real64
-T_147: (in tArg14 @ 800004CE : Eq_147)
+T_147: (in rArg0C @ 800004CE : real64)
   Class: Eq_147
-  DataType: Eq_147
-  OrigDataType: (union ((ptr32 (struct (0 T_165 t0000))) u1) ((ref int32) u0))
-T_148: (in 3.14 @ 800004CE : real64)
-  Class: Eq_145
   DataType: real64
   OrigDataType: real64
-T_149: (in 0.003 @ 800004CE : real64)
+T_148: (in tArg14 @ 800004CE : Eq_148)
+  Class: Eq_148
+  DataType: Eq_148
+  OrigDataType: (union ((ptr32 (struct (0 T_165 t0000))) u1) ((ref int32) u0))
+T_149: (in 3.14 @ 800004CE : real64)
   Class: Eq_146
   DataType: real64
   OrigDataType: real64
-T_150: (in fp @ 800004CE : ptr32)
-  Class: Eq_150
-  DataType: ptr32
-  OrigDataType: ptr32
+T_150: (in 0.003 @ 800004CE : real64)
+  Class: Eq_147
+  DataType: real64
+  OrigDataType: real64
 T_151: (in 8<32> @ 800004CE : word32)
   Class: Eq_151
   DataType: ui32
   OrigDataType: ui32
 T_152: (in fp - 8<32> @ 00000000 : word32)
-  Class: Eq_147
-  DataType: Eq_147
+  Class: Eq_148
+  DataType: Eq_148
   OrigDataType: (union (ptr32 u0) ((ref int32) u1))
 T_153: (in _sin(3.14, 0.003, fp - 8<32>) @ 800004CE : void)
   Class: Eq_153
   DataType: void
   OrigDataType: void
 T_154: (in rLoc0C_109 @ 800004EE : real64)
-  Class: Eq_145
+  Class: Eq_146
   DataType: real64
   OrigDataType: real64
 T_155: (in v9_14 @ 800004FA : real64)
@@ -725,7 +725,7 @@ T_169: (in tArg14 + 0<32> @ 80000608 : word32)
   OrigDataType: (union ((ptr32 word32) u1) ((ref int32) u0))
 T_170: (in Mem101[tArg14 + 0<32>:word32] @ 80000608 : word32)
   Class: Eq_165
-  DataType: Eq_147
+  DataType: Eq_148
   OrigDataType: word32
 T_171: (in v18_53 @ 8000055E : word32)
   Class: Eq_171
@@ -752,7 +752,7 @@ T_176: (in (real96) rLoc0C_109 *96 v9_14 *96 v9_14 @ 00000000 : real96)
   DataType: real96
   OrigDataType: real96
 T_177: (in CONVERT(CONVERT(rLoc0C_109, real64, real96) *96 v9_14 *96 v9_14, real96, real64) @ 800005BE : real64)
-  Class: Eq_145
+  Class: Eq_146
   DataType: real64
   OrigDataType: real64
 T_178: (in 3<32> @ 800005E0 : word32)
@@ -848,30 +848,30 @@ T_200: (in (real96) rLoc0C_109 /96 rLoc14_117 @ 00000000 : real96)
   DataType: real96
   OrigDataType: real96
 T_201: (in CONVERT(CONVERT(rLoc0C_109, real64, real96) /96 rLoc14_117, real96, real64) @ 8000052C : real64)
-  Class: Eq_146
+  Class: Eq_147
   DataType: real64
   OrigDataType: real64
 T_202: (in (real64) ((real96) rLoc0C_109 /96 rLoc14_117) < rArg0C @ 00000000 : bool)
   Class: Eq_202
   DataType: bool
   OrigDataType: bool
-T_203: (in a0_11 @ 8000062A : (ptr32 code))
+T_203: (in fp @ 80000624 : ptr32)
   Class: Eq_203
-  DataType: (ptr32 code)
-  OrigDataType: (ptr32 code)
-T_204: (in 8000270C @ 8000062A : ptr32)
-  Class: Eq_204
-  DataType: (ptr32 (ptr32 code))
-  OrigDataType: (ptr32 (struct (0 T_205 t0000)))
-T_205: (in Mem10[0x8000270C<p32>:word32] @ 8000062A : word32)
-  Class: Eq_203
-  DataType: (ptr32 code)
-  OrigDataType: word32
-T_206: (in a6_18 @ 80000624 : ptr32)
-  Class: Eq_206
   DataType: ptr32
   OrigDataType: ptr32
-T_207: (in fp @ 80000624 : ptr32)
+T_204: (in a0_11 @ 8000062A : (ptr32 code))
+  Class: Eq_204
+  DataType: (ptr32 code)
+  OrigDataType: (ptr32 code)
+T_205: (in 8000270C @ 8000062A : ptr32)
+  Class: Eq_205
+  DataType: (ptr32 (ptr32 code))
+  OrigDataType: (ptr32 (struct (0 T_206 t0000)))
+T_206: (in Mem10[0x8000270C<p32>:word32] @ 8000062A : word32)
+  Class: Eq_204
+  DataType: (ptr32 code)
+  OrigDataType: word32
+T_207: (in a6_18 @ 80000624 : ptr32)
   Class: Eq_207
   DataType: ptr32
   OrigDataType: ptr32
@@ -880,7 +880,7 @@ T_208: (in 4<32> @ 80000624 : word32)
   DataType: ui32
   OrigDataType: ui32
 T_209: (in fp - 4<32> @ 00000000 : word32)
-  Class: Eq_206
+  Class: Eq_207
   DataType: ptr32
   OrigDataType: ptr32
 T_210: (in a2_12 @ 80000630 : ptr32)
@@ -892,7 +892,7 @@ T_211: (in 8000270C @ 80000630 : ptr32)
   DataType: ptr32
   OrigDataType: ptr32
 T_212: (in -1<i32> @ 8000063A : int32)
-  Class: Eq_203
+  Class: Eq_204
   DataType: (ptr32 code)
   OrigDataType: int32
 T_213: (in a0_11 == (<anonymous> *) -1<i32> @ 00000000 : bool)
@@ -912,7 +912,7 @@ T_216: (in a2_23 + -4<i32> @ 8000063E : word32)
   DataType: word32
   OrigDataType: word32
 T_217: (in Mem10[a2_23 + -4<i32>:word32] @ 8000063E : word32)
-  Class: Eq_203
+  Class: Eq_204
   DataType: (ptr32 code)
   OrigDataType: word32
 T_218: (in 4<i32> @ 8000063E : int32)
@@ -924,7 +924,7 @@ T_219: (in a2_23 - 4<i32> @ 00000000 : word32)
   DataType: ptr32
   OrigDataType: ptr32
 T_220: (in -1<i32> @ 80000644 : int32)
-  Class: Eq_203
+  Class: Eq_204
   DataType: (ptr32 code)
   OrigDataType: int32
 T_221: (in a0_11 != (<anonymous> *) -1<i32> @ 00000000 : bool)
@@ -971,14 +971,14 @@ typedef void (Eq_119)(real64, int32);
 
 typedef void (Eq_122)(int32);
 
-typedef void (Eq_139)(real64);
+typedef void (Eq_140)(real64);
 
-typedef void (Eq_143)(real64, real64, Eq_147);
+typedef void (Eq_144)(real64, real64, Eq_148);
 
-typedef union Eq_147 {
+typedef union Eq_148 {
 	word32 * u0;
 	int32 & u1;
-} Eq_147;
+} Eq_148;
 
 typedef int32 & Eq_164;
 

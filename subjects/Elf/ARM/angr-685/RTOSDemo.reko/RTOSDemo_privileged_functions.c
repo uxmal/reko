@@ -275,6 +275,7 @@ Eq_n prvCopyDataFromQueue(Eq_n r0, Eq_n r1, Eq_n r4, Eq_n r5, Eq_n r6, Eq_n r7, 
 //      MPU_xQueueGenericSend
 Eq_n xQueueGenericSend(Eq_n r0, Eq_n r1, up32 r2, Eq_n r3, Eq_n lr, ptr32 cpsr)
 {
+	ptr32 fp;
 	word32 r5_n = 0x00;
 	word32 * r9_n = g_ptr02A0;
 	while (true)
@@ -372,6 +373,7 @@ void xQueuePeekFromISR(Eq_n r0, Eq_n r1, Eq_n r7, Eq_n lr, ptr32 cpsr)
 //      MPU_xQueueGenericReceive
 Eq_n xQueueGenericReceive(Eq_n r0, Eq_n r1, up32 r2, word32 r3, Eq_n lr, ptr32 cpsr, union Eq_n & lrOut)
 {
+	ptr32 fp;
 	word32 r5_n = 0x00;
 	word32 * r8_n = g_ptr0424;
 	while (true)
@@ -1609,6 +1611,7 @@ word32 g_dw124C = 0x200000CC; // 0000124C
 //      prvCopyDataToQueue
 Eq_n xTaskPriorityDisinherit(Eq_n r0, union Eq_n & lrOut)
 {
+	Eq_n lr;
 	if (r0 == 0x00)
 	{
 		lrOut = lr;

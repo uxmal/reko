@@ -7,6 +7,8 @@
 // 0000000000001080: void _start(Register (ptr64 Eq_n) rdx, Stack word32 dwArg00)
 void _start(void (* rdx)(), word32 dwArg00)
 {
+	void * fp;
+	word64 qwArg00;
 	__align_stack<word64>((char *) fp + 8);
 	__libc_start_main(&g_t11E0, (int32) qwArg00, (char *) fp + 8, &g_t1280, &g_t12E0, rdx, fp);
 	__hlt();
@@ -75,6 +77,7 @@ word128 lib_rsqrt(word128 xmm0)
 // 00000000000011E0: void main(Register (ptr64 Eq_n) rsi)
 void main(struct Eq_n * rsi)
 {
+	int32 dwLoc20;
 	printf("Hello %s, I'm inside an archive.\n", rsi->ptr0008);
 	puts("Inverse square root computation.");
 	char * rdi_n = rsi->ptr0010;
@@ -89,6 +92,7 @@ void main(struct Eq_n * rsi)
 // 0000000000001280: void __libc_csu_init(Register word64 rdx, Register word64 rsi, Register word32 edi)
 void __libc_csu_init(word64 rdx, word64 rsi, word32 edi)
 {
+	word64 rdi;
 	word32 edi = (word32) rdi;
 	_init();
 	int64 rbp_n = 0x3DE0 - 0x3DD8;

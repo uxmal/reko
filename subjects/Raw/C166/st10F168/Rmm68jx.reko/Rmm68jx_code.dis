@@ -25,6 +25,7 @@ void fn0034()
 // Trashed: EZVCN ADDRSEL1 CP DP3 P3 r1 S0BG S0CON S0EIC S0RIC S0TIC SP STKOV STKUN
 // Preserved: r0 r2
 fn0034_entry:
+	ptr16 fp
 l0034:
 	__disable_watchdog_timer()
 	__end_of_initialization()
@@ -85,6 +86,7 @@ word16 fn0110(word16 S0TIC)
 // Trashed: EZVCN S0TIC
 // Preserved: r0
 fn0110_entry:
+	ptr16 fp
 l0110:
 	Mem3[0xFEB0<p16>:word16] = fp
 l0114:

@@ -8,6 +8,7 @@ void __start(word32 r2, word32 dwArg00)
 // Terminates process
 __start_exit:
 __start_entry:
+	ptr32 fp
 l00000610:
 	word32 r4_12 = Mem0[0x00020A68<p32>:word32]
 	word32 sp_17 = (fp & -8<i32>) + -32<i32>
@@ -141,6 +142,9 @@ void main()
 // Trashed: r2 r25 r28 r3 r4 r5 r6
 // Preserved: r30 ra sp
 main_entry:
+	ptr32 fp
+	word32 dwLoc14
+	byte bLoc10
 l000007F0:
 	memset(fp + -20<i32>, 0<32>, SLICE(5<i32>, size_t, 0))
 	word32 r2_38 = calloc(SLICE(1<i32>, size_t, 0), SLICE(5<i32>, size_t, 0))

@@ -8,6 +8,7 @@ void __start(word32 dwArg00)
 // Terminates process
 __start_exit:
 __start_entry:
+	ptr32 fp
 l00400230:
 	word32 r2_17 = Mem0[0x100107A0<p32>:word32]
 	call Mem18[0x100107F8<p32>:word32] (retsize: 0;)
@@ -1359,6 +1360,7 @@ void main(word32 r4, word32 r5, word32 r16, word32 ra)
 // Terminates process
 main_exit:
 main_entry:
+	ptr32 fp
 l004008D0:
 	Mem25[Mem21[0x10000A20<32>:word32]:word32] = Mem21[Mem21[0x10000914<32>:word32]:word32]
 	signal(2<i32>, handle_stop)
@@ -1693,6 +1695,7 @@ void client_new(word32 r4, word32 r5, word32 r6, word32 r7, word32 ra)
 // Trashed: r2 r25 r28 r3 r4 r5 r6 r7
 // Preserved: r30 ra sp
 client_new_entry:
+	ptr32 fp
 l00401B70:
 	word32 r2_29 = malloc(SLICE(6100<i32>, size_t, 0))
 	branch r2_29 != 0<32> l00401BC8_ds_t
@@ -1774,6 +1777,7 @@ word32 client_prepare_connect(word32 r4, word32 ra, ptr32 & r6Out, ptr32 & r7Out
 // Trashed: r2 r25 r28 r3 r4 r5 r6 r7
 // Preserved: r16 r30 ra sp
 client_prepare_connect_entry:
+	ptr32 fp
 l00402028:
 	getsockopt(Mem24[r4:word32], 0<32>, 80<i32>, r4 + 6040<i32>, fp + -24<i32>, 0x10008860<32>, 16<i32>)
 	inet_ntoa(Mem24[r4 + 0x179C<32>:word32])
@@ -1818,6 +1822,8 @@ void client_parse_request(word32 r4, word32 ra)
 // Trashed: r2 r25 r28 r3 r4 r5 r6 r7
 // Preserved: r30 ra sp
 client_parse_request_entry:
+	ptr32 fp
+	int8 bLoc0810
 l00402244:
 	word32 dwLoc40_521 = r4 + 8<i32>
 	word32 r2_21 = Mem19[r4 + 0x7D8<32>:word32]
@@ -2845,6 +2851,8 @@ word32 get_method(word32 r4, ptr32 & r5Out)
 // Trashed: r2 r25 r28 r4 r5 r6
 // Preserved: r30 ra sp
 get_method_entry:
+	ptr32 fp
+	word32 r5
 l00404B34:
 	strncpy(r4, strsep(fp + 4<i32>, 0x410000<32>, 0x40A464<32>, 0x10008860<32>), 256<i32>)
 	word32 r5_36 = <invalid>
@@ -2863,6 +2871,8 @@ word32 get_uri(word32 r4)
 // Trashed: r2 r25 r28 r4 r5 r6
 // Preserved: r30 ra sp
 get_uri_entry:
+	ptr32 fp
+	word32 r5
 l00404BC8:
 	strncpy(r4, strsep(fp + 4<i32>, 0x410000<32>, 0x40A464<32>, 0x10008860<32>), 256<i32>)
 	return r5
@@ -2879,6 +2889,7 @@ void get_version(word32 r4)
 // Trashed: r2 r25 r28 r4 r5 r6
 // Preserved: r30 ra sp
 get_version_entry:
+	ptr32 fp
 l00404C5C:
 	strncpy(r4, strsep(fp + 4<i32>, 0x410000<32>, 0x40A468<32>, 0x10008860<32>), 256<i32>)
 	return
@@ -2960,6 +2971,7 @@ void request_get_content_length(word32 r4, word32 r5, word32 ra)
 // Trashed: r2 r25 r28 r3 r4 r5 r6 r7
 // Preserved: r30 ra sp
 request_get_content_length_entry:
+	ptr32 fp
 l00404FC0:
 	branch r4 == 0<32> l00405210
 l00404FF8:
@@ -3076,6 +3088,8 @@ void properties_parse_int(word32 r4, word32 r5, word32 ra)
 // Trashed: r2 r25 r28 r3 r4 r5 r6 r7
 // Preserved: r30 ra sp
 properties_parse_int_entry:
+	ptr32 fp
+	word32 dwLoc18
 l004053F0:
 	strtoul(r4, fp + -24<i32>, 0<32>)
 	branch CONVERT(Mem30[dwLoc18:int8], int8, word32) == 0<32> l004054B4
@@ -3103,6 +3117,7 @@ void properties_load(word32 r4, word32 r5, word32 ra)
 // Trashed: r2 r25 r28 r3 r4 r5 r6 r7
 // Preserved: r30 ra sp
 properties_load_entry:
+	ptr32 fp
 l004054D0:
 	word32 dwArg04_530 = r5
 	word32 dwLoc30_535 = 0<32>
@@ -3410,6 +3425,9 @@ word32 print_log(word32 r4, word32 r5, ptr32 & r5Out, ptr32 & r6Out, ptr32 & r7O
 // Trashed: r2 r25 r28 r3 r4 r5 r6 r7
 // Preserved: r30 ra sp
 print_log_entry:
+	ptr32 fp
+	word32 r6
+	word32 r7
 	word32 r25_3 = 0x406610<32>
 l00406610:
 	branch CONVERT(Mem22[Mem22[0x100008F4<32>:word32]:word32] < r4, bool, word32) != 0<32> l004066D4
@@ -3471,6 +3489,7 @@ void log_rotate(word32 ra)
 // Trashed: r2 r25 r28 r3 r4 r5
 // Preserved: r30 ra sp
 log_rotate_entry:
+	ptr32 fp
 l00406848:
 	fclose(Mem12[Mem12[0x10000A20<32>:word32]:word32])
 	branch CONVERT(Mem12[Mem12[Mem12[0x100008A0<32>:word32]:word32]:int8], int8, word32) == 0<32> l00406944
@@ -3498,6 +3517,7 @@ void log_string(word32 r4, word32 r5, word32 r7, word32 ra)
 // Trashed: hi lo r1 r2 r25 r28 r3 r4 r5 r6 r7
 // Preserved: r16 r17 r30 ra sp
 log_string_entry:
+	ptr32 fp
 l0040697C:
 	gettimeofday(fp + -40<i32>, 0<32>)
 	word32 r7_33 = <invalid>
@@ -4054,6 +4074,7 @@ void __addsf3(word32 r16, word32 ra, word32 f12, word32 f14)
 // Trashed: r2 r25 r28 r4 r5 r6
 // Preserved: r16 r17 ra sp
 __addsf3_entry:
+	ptr32 fp
 l00407A38:
 	__unpack_f(fp + -24<i32>, fp + -72<i32>)
 	__unpack_f(fp + -20<i32>, fp + -56<i32>)
@@ -4074,6 +4095,8 @@ void __subsf3(word32 r16, word32 ra, word32 f12, word32 f14)
 // Trashed: r2 r25 r28 r4 r5 r6
 // Preserved: r16 r17 ra sp
 __subsf3_entry:
+	ptr32 fp
+	word32 dwLoc34
 l00407AE0:
 	__unpack_f(fp + -24<i32>, fp + -72<i32>)
 	__unpack_f(fp + -20<i32>, fp + -56<i32>)
@@ -4094,6 +4117,12 @@ void __mulsf3(word32 r16, word32 ra, word32 f12, word32 f14)
 // Trashed: hi lo r2 r25 r28 r3 r4 r5 r6 r7
 // Preserved: r16 r17 ra sp
 __mulsf3_entry:
+	ptr32 fp
+	word32 dwLoc48
+	word32 dwLoc38
+	word32 dwLoc3C
+	word32 dwLoc2C
+	word32 r4
 l00407BA0:
 	__unpack_f(fp + -24<i32>, fp + -72<i32>)
 	__unpack_f(fp + -20<i32>, fp + -56<i32>)
@@ -4196,6 +4225,12 @@ void __divsf3(word32 r16, word32 ra, word32 f12, word32 f14)
 // Trashed: r2 r25 r28 r3 r4 r5 r6 r7 r8
 // Preserved: r16 r17 ra sp
 __divsf3_entry:
+	ptr32 fp
+	word32 dwLoc38
+	word32 dwLoc28
+	word32 dwLoc1C
+	word32 dwLoc2C
+	word32 r4
 l00407DD0:
 	__unpack_f(fp + -24<i32>, fp + -56<i32>)
 	__unpack_f(fp + -20<i32>, fp + -40<i32>)
@@ -4276,6 +4311,7 @@ void __floatsisf(word32 r4, word32 ra)
 // Trashed: f0 r1 r2 r25 r28 r3
 // Preserved: r4 r5 r6 ra sp
 __floatsisf_entry:
+	ptr32 fp
 l00407F70:
 	branch r4 != 0<32> l00407F98_ds_t
 l00407F98_ds_t:
@@ -4321,6 +4357,10 @@ void __fixsfsi(word32 ra, word32 f12)
 // Trashed: r2 r25 r28 r3 r4 r5
 // Preserved: ra sp
 __fixsfsi_entry:
+	ptr32 fp
+	word32 dwLoc20
+	word32 dwLoc18
+	word32 dwLoc1C
 l00408040:
 	__unpack_f(fp + -16<i32>, fp + -32<i32>)
 	branch (dwLoc20 ^ 2<32>) == 0<32> l00408080_ds_t
@@ -4355,6 +4395,10 @@ void __extendsfdf2(word32 ra, word32 f12)
 // Trashed: r2 r25 r28 r3 r4 r5 r6 r7
 // Preserved: ra sp
 __extendsfdf2_entry:
+	ptr32 fp
+	word32 dwLoc14
+	word32 dwLoc1C
+	word32 dwLoc18
 l00408100:
 	__unpack_f(fp + -16<i32>, fp + -32<i32>)
 	__make_dp(dwLoc1C, dwLoc18, ra, dwLoc14 >>u 2<8>, dwLoc14 << 0x1E<8>)
@@ -4583,6 +4627,7 @@ void __adddf3(word32 r16, word32 ra, word32 f12, word32 f13, word32 f14, word32 
 // Trashed: r2 r25 r28 r3 r4 r5 r6 r7 r8
 // Preserved: r16 r17 r18 ra sp
 __adddf3_entry:
+	ptr32 fp
 l004084FC:
 	__unpack_d(fp + -40<i32>, fp + -112<i32>)
 	__unpack_d(fp + -32<i32>, fp + -88<i32>)
@@ -4603,6 +4648,8 @@ void __subdf3(word32 r16, word32 ra, word32 f12, word32 f13, word32 f14, word32 
 // Trashed: r2 r25 r28 r3 r4 r5 r6 r7 r8
 // Preserved: r16 r17 r18 ra sp
 __subdf3_entry:
+	ptr32 fp
+	word32 dwLoc54
 l004085CC:
 	__unpack_d(fp + -40<i32>, fp + -112<i32>)
 	__unpack_d(fp + -32<i32>, fp + -88<i32>)
@@ -4623,6 +4670,14 @@ void __muldf3(word32 r17, word32 r19, word32 r20, word32 r21, word32 r22, word32
 // Trashed: hi lo r10 r11 r12 r13 r14 r15 r2 r24 r25 r28 r3 r4 r5 r6 r7 r8 r9
 // Preserved: r16 r17 r18 r19 r20 r21 r22 ra sp
 __muldf3_entry:
+	ptr32 fp
+	word32 dwLoc88
+	word32 dwLoc70
+	word32 dwLoc78
+	word32 dwLoc74
+	word32 dwLoc60
+	word32 dwLoc5C
+	word32 r4
 l004086B0:
 	__unpack_d(fp + -64<i32>, fp + -136<i32>)
 	__unpack_d(fp + -56<i32>, fp + -112<i32>)
@@ -4781,6 +4836,14 @@ void __divdf3(word32 r17, word32 ra, word32 f12, word32 f13, word32 f14, word32 
 // Trashed: r10 r11 r12 r13 r14 r15 r2 r25 r28 r3 r4 r5 r6 r7 r8 r9
 // Preserved: r16 r17 r18 ra sp
 __divdf3_entry:
+	ptr32 fp
+	word32 dwLoc58
+	word32 dwLoc40
+	word32 dwLoc30
+	word32 dwLoc2C
+	word32 dwLoc48
+	word32 dwLoc44
+	word32 r4
 l00408BA0:
 	__unpack_d(fp + -40<i32>, fp + -88<i32>)
 	__unpack_d(fp + -32<i32>, fp + -64<i32>)
@@ -4892,6 +4955,10 @@ void __eqdf2(word32 r17, word32 ra, word32 f12, word32 f13, word32 f14, word32 f
 // Trashed: r2 r25 r28 r3 r4 r5 r6 r7 r8
 // Preserved: r16 r17 r18 ra sp
 __eqdf2_entry:
+	ptr32 fp
+	word32 dwLoc58
+	word32 dwLoc40
+	word32 r4
 l00408E10:
 	__unpack_d(fp + -40<i32>, fp + -88<i32>)
 	__unpack_d(fp + -32<i32>, fp + -64<i32>)
@@ -4917,6 +4984,10 @@ void __nedf2(word32 r17, word32 ra, word32 f12, word32 f13, word32 f14, word32 f
 // Trashed: r2 r25 r28 r3 r4 r5 r6 r7 r8
 // Preserved: r16 r17 r18 ra sp
 __nedf2_entry:
+	ptr32 fp
+	word32 dwLoc58
+	word32 dwLoc40
+	word32 r4
 l00408EE0:
 	__unpack_d(fp + -40<i32>, fp + -88<i32>)
 	__unpack_d(fp + -32<i32>, fp + -64<i32>)
@@ -4942,6 +5013,10 @@ void __gedf2(word32 r17, word32 ra, word32 f12, word32 f13, word32 f14, word32 f
 // Trashed: r2 r25 r28 r3 r4 r5 r6 r7 r8
 // Preserved: r16 r17 r18 ra sp
 __gedf2_entry:
+	ptr32 fp
+	word32 dwLoc58
+	word32 dwLoc40
+	word32 r4
 l00408FB0:
 	__unpack_d(fp + -40<i32>, fp + -88<i32>)
 	__unpack_d(fp + -32<i32>, fp + -64<i32>)
@@ -4967,6 +5042,10 @@ void __ltdf2(word32 r17, word32 ra, word32 f12, word32 f13, word32 f14, word32 f
 // Trashed: r2 r25 r28 r3 r4 r5 r6 r7 r8
 // Preserved: r16 r17 r18 ra sp
 __ltdf2_entry:
+	ptr32 fp
+	word32 dwLoc58
+	word32 dwLoc40
+	word32 r4
 l00409080:
 	__unpack_d(fp + -40<i32>, fp + -88<i32>)
 	__unpack_d(fp + -32<i32>, fp + -64<i32>)
@@ -4992,6 +5071,7 @@ void __floatsidf(word32 r4, word32 ra)
 // Trashed: f0 f1 r1 r2 r25 r28 r3
 // Preserved: r4 r5 r6 ra sp
 __floatsidf_entry:
+	ptr32 fp
 l00409150:
 	branch r4 != 0<32> l00409178_ds_t
 l00409178_ds_t:
@@ -5040,6 +5120,7 @@ void __negdf2(word32 ra, word32 f12, word32 f13)
 // Trashed: r2 r25 r28 r3 r4 r5 r6
 // Preserved: ra sp
 __negdf2_entry:
+	ptr32 fp
 l00409250:
 	__unpack_d(fp + -16<i32>, fp + -40<i32>)
 	__pack_d(fp + -40<i32>)
@@ -5057,6 +5138,7 @@ void __make_dp(word32 r5, word32 r6, word32 ra, word32 dwArg10, word32 dwArg14)
 // Trashed: r2 r25 r28 r3 r4 r5 r6
 // Preserved: ra sp
 __make_dp_entry:
+	ptr32 fp
 l004092D0:
 	__pack_d(fp + -32<i32>)
 	return
@@ -5071,6 +5153,11 @@ void __truncdfsf2(word32 ra, word32 f12, word32 f13)
 // Trashed: r2 r25 r28 r3 r4 r5 r6 r7
 // Preserved: ra sp
 __truncdfsf2_entry:
+	ptr32 fp
+	word32 dwLoc14
+	word32 dwLoc24
+	word32 dwLoc20
+	word32 r7
 l00409330:
 	__unpack_d(fp + -16<i32>, fp + -40<i32>)
 	branch (dwLoc14 & 0x3FFFFFFF<32>) == 0<32> l004093A8_ds_t
@@ -5252,6 +5339,7 @@ void __make_fp(word32 r5, word32 r6, word32 r7, word32 ra)
 // Trashed: r25 r28 r4 r5 r6 r7
 // Preserved: ra sp
 __make_fp_entry:
+	ptr32 fp
 l00409630:
 	__pack_f(fp + -24<i32>)
 	return

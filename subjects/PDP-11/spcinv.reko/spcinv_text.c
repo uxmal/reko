@@ -263,6 +263,8 @@ Eq_n fn0486(Eq_n r0, byte * r4, Eq_n r5, ptr16 & r4Out, ptr16 & r5Out)
 //      fn0200
 byte * fn04A0(byte * r4, struct Eq_n * pc, union Eq_n & r5Out)
 {
+	ptr16 fp;
+	Eq_n r5;
 	cui16 v5_n = pc->w0A52 & g_w0EF4;
 	pc->w0A52 = v5_n;
 	if (v5_n == 0x00)
@@ -540,6 +542,7 @@ void fn06A2()
 //      fn0200
 byte * fn06D6(byte * r4, Eq_n r5, struct Eq_n * pc)
 {
+	ptr16 fp;
 	struct Eq_n * r2_n = g_ptr0F06;
 	do
 	{
@@ -618,6 +621,9 @@ byte * g_ptr078E = &g_b111B; // 078E
 //      fn0200
 Eq_n fn07A6(byte * r4, struct Eq_n * pc, byte & r4Out, union Eq_n & r5Out)
 {
+	Eq_n fp;
+	Eq_n r0;
+	Eq_n r5;
 	Eq_n sp_n = fp;
 	ci16 v5_n = g_w0F1C - 0x01;
 	g_w0F1E = v5_n;

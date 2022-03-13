@@ -8,6 +8,8 @@ word32 fn0000000140001000()
 // Trashed: SCZO r8 r9 rax rcx rdx xmm0
 // Preserved: rsp
 fn0000000140001000_entry:
+	ptr64 fp
+	word64 qwLocD0
 l0000000140001000:
 	word64 rax_6 = Mem0[0x0000000140003000<p64>:word64] ^ fp - 0xC8<64>
 	fn0000000140001140(0x0000000140002210<p64>)
@@ -42,6 +44,7 @@ void fn00000001400010D0(word64 rcx)
 // Trashed: SCZO r8 r9 rax rcx rdx
 // Preserved: rbx rdi rsi rsp
 fn00000001400010D0_entry:
+	ptr64 fp
 l00000001400010D0:
 	_stdio_common_vfscanf(rcx, 0<u64>, 0<32>, 0<32>, Mem41[fn00000001400010C0():word64], _acrt_iob_func(0<32>, 0<32>, 0<u64>), fp + 0x10<64>)
 	return
@@ -74,6 +77,7 @@ void fn0000000140001140(word64 rcx)
 // Trashed: SCZO r8 r9 rax rcx rdx
 // Preserved: rbx rdi rsi rsp
 fn0000000140001140_entry:
+	ptr64 fp
 l0000000140001140:
 	_stdio_common_vfprintf(rcx, 0<u64>, 0<32>, 0<32>, Mem39[fn0000000140001130():word64], _acrt_iob_func(1<32>, 1<u64>), fp + 0x10<64>)
 	return
@@ -91,6 +95,7 @@ word32 fn00000001400011B0(word64 rcx, word64 qwArg00)
 // Trashed: SCZO r8 rax rcx rdx
 // Preserved: rsp
 fn00000001400011B0_entry:
+	word64 rax
 l00000001400011B0:
 	branch rcx != Mem0[0x0000000140003000<p64>:word64] l00000001400011CC
 l00000001400011BA:
@@ -197,6 +202,13 @@ word32 fn00000001400012BC(word64 rax)
 // Trashed: SCZO r8 r9 rax rcx rdx xmm0
 // Preserved: rbx rdi rsi rsp
 fn00000001400012BC_entry:
+	word64 rsi
+	word64 qwLoc30
+	word32 ecx
+	word32 edx
+	selector gs
+	byte cl
+	byte dl
 	word56 rsi_56_8_114 = SLICE(rsi, word56, 8)
 	byte al = SLICE(rax, byte, 0)
 l00000001400012BC:
@@ -287,6 +299,7 @@ DWORD Win32CrtStartup()
 // Trashed: eax
 // Preserved:
 Win32CrtStartup_entry:
+	word64 qwLoc18
 l0000000140001434:
 	word64 rax_6 = fn000000014000186C(qwLoc18)
 l0000000140001441_thunk_fn00000001400012BC:
@@ -322,6 +335,8 @@ word32 fn000000014000147C(word64 rcx, word64 qwArg00)
 // Trashed: SCZO r8 rax rcx rdx
 // Preserved: rsp
 fn000000014000147C_entry:
+	ptr64 fp
+	word64 qwLoc38
 l000000014000147C:
 	branch IsProcessorFeaturePresent(0x17<u32>) == 0<32> l000000014000149A
 l000000014000149A:
@@ -351,6 +366,7 @@ void fn0000000140001550(word64 rcx, word64 qwArg08)
 // Trashed: SCZO r8 rax rcx rdx
 // Preserved: r9 rbx rdi rsi rsp
 fn0000000140001550_entry:
+	ptr64 fp
 l0000000140001550:
 	RtlCaptureContext(rcx)
 	word64 rsi_15 = Mem11[rcx + 248<i64>:word64]
@@ -435,6 +451,7 @@ byte fn000000014000164C(word32 ecx)
 // Trashed: SCZO r8 r9 rax rbp rbx rcx rdx rsp xmm0 xmm1
 // Preserved:
 fn000000014000164C_entry:
+	word64 qwLoc40
 l000000014000164C:
 	branch ecx >u 1<32> l000000014000170A
 l000000014000170A:
@@ -631,6 +648,7 @@ word64 fn000000014000186C(word64 qwArg18)
 // Trashed: SCZO rax rcx
 // Preserved: rbp rbx rsp
 fn000000014000186C_entry:
+	ptr64 fp
 	word32 dwArg18 = SLICE(qwArg18, word32, 0)
 l000000014000186C:
 	word64 rax_14 = Mem11[0x0000000140003000<p64>:word64]
@@ -792,6 +810,8 @@ word64 fn0000000140001974(word32 ecx, word64 qwArg10, ptr64 & rcxOut)
 // Trashed: SCZO r8 rax rcx rdx
 // Preserved: r9 rbp rbx rsp
 fn0000000140001974_entry:
+	ptr64 fp
+	word64 qwLoc03E0
 l0000000140001974:
 	branch IsProcessorFeaturePresent(0x17<u32>) == 0<32> l000000014000199D
 l000000014000199D:
@@ -990,6 +1010,7 @@ void fn0000000140001BFC(word32 edx, word32 ebx)
 // Trashed: SCZO r10 r8 r9 rax rcx rdx
 // Preserved: rbp rbx rdi rsp
 fn0000000140001BFC_entry:
+	word64 rbx
 	word32 ebx_168 = SLICE(rbx, word32, 0)
 l0000000140001BFC:
 	Mem19[0x000000014000301C<p64>:word32] = 2<32>
@@ -1104,6 +1125,7 @@ void fn0000000140001E7C(word64 rdx, word64 r9)
 // Trashed: SCZO r10 r8 r9 rax rcx rdx
 // Preserved: rsp
 fn0000000140001E7C_entry:
+	word64 qwLoc30
 l0000000140001E7C:
 	fn0000000140001E9C(rdx, r9, Mem0[r9 + 56<i64>:word64], qwLoc30)
 	return

@@ -7,6 +7,8 @@
 // 0000000100001778: void fn0000000100001778(Stack word32 dwArg04)
 void fn0000000100001778(word32 dwArg04)
 {
+	ptr64 fp;
+	word64 qwArg04;
 	__align_stack<word64>(fp - 4);
 	int32 edi_n = (word32) qwArg04;
 	word64 * rcx_n = (uint64) (edi_n + 0x01 << 0x03) + (fp + 0x0C);
@@ -20,6 +22,8 @@ void fn0000000100001778(word32 dwArg04)
 //      fn00000001000023B0
 word64 fn0000000100001B4A(struct Eq_n * rsi, struct Eq_n * rdi, union Eq_n & ebxOut, struct Eq_n & rbpOut)
 {
+	ptr64 fp;
+	struct Eq_n * rbp;
 	word64 rax_n;
 	word64 rax_n = *__stack_chk_guard;
 	if (rsi == null)
@@ -503,6 +507,7 @@ l00000001000024BB:
 //      fn0000000100001778
 void fn00000001000026A0(char ** rsi, int32 edi)
 {
+	word16 wLoc36;
 	if (edi <= 0x00)
 		fn000000010000488B();
 	word32 ebx_n;
@@ -870,6 +875,7 @@ l0000000100002748:
 //      fn0000000100003AA8
 word32 fn0000000100003201(ui32 edi)
 {
+	word64 rdi;
 	ui32 edi = (word32) rdi;
 	byte dil_n = (byte) edi;
 	uint64 rdi_n;
@@ -927,6 +933,7 @@ l0000000100003224:
 //      fn00000001000026A0
 void fn000000010000328E(Eq_n rdi)
 {
+	ptr64 fp;
 	Eq_n rax_n = 0x100005410;
 	if (rdi != 0x00)
 		rax_n = rdi;
@@ -997,6 +1004,7 @@ void fn000000010000328E(Eq_n rdi)
 //      fn00000001000034AC
 void fn00000001000033F4(word32 edi)
 {
+	word64 rdi;
 	word32 edi = (word32) rdi;
 	uint64 rax_n = (uint64) edi;
 	if ((&g_t65F8)[rax_n] != 0x00)
@@ -1089,6 +1097,12 @@ l00000001000034F3:
 //      fn0000000100003AA8
 word32 fn000000010000356F(Eq_n rdi, ptr64 & rbxOut, ptr64 & rbpOut, union Eq_n & r12dOut, ptr64 & r14Out, ptr64 & r15Out)
 {
+	ptr64 fp;
+	ptr64 rbp;
+	ptr64 r15;
+	ptr64 r14;
+	ptr64 rbx;
+	word32 dwLocBC;
 	if (g_dw6588 != 0x00 || g_dw658C != 0x00)
 	{
 		ptr64 r14_n;
@@ -1237,6 +1251,8 @@ void fn0000000100003AA8(int64 rdi)
 //      fn000000010000356F
 word32 fn0000000100004715(Eq_n rdi)
 {
+	ptr64 fp;
+	word32 dwLocBC;
 	word32 dwLocC0_n = 0x00;
 	Eq_n r14_n = rdi;
 	while (true)
@@ -1305,6 +1321,7 @@ void fn000000010000488B()
 //      fn000000010000488B
 word32 fn00000001000048AF(Eq_n rdi, ptr64 & rbxOut, ptr64 & rbpOut, union Eq_n & r12dOut, ptr64 & r14Out, ptr64 & r15Out)
 {
+	ptr64 fp;
 	ptr64 r14_n;
 	ptr64 r15_n;
 	ptr64 rbp_n;
@@ -1325,6 +1342,10 @@ word32 fn00000001000048AF(Eq_n rdi, ptr64 & rbxOut, ptr64 & rbpOut, union Eq_n &
 //      fn00000001000048AF
 word32 fn0000000100004ABB(Eq_n rbx, struct Eq_n * rbp, ptr64 & rbxOut, ptr64 & rbpOut, union Eq_n & r12dOut, ptr64 & r14Out, ptr64 & r15Out)
 {
+	ptr64 qwArg98;
+	ptr64 qwArgB0;
+	ptr64 qwArgB8;
+	ptr64 qwArgC0;
 	while (true)
 	{
 		Eq_n rax_n = mbrtowc(rbp - 0x00B0, 0x06, rbx, rbp - 0x00B4);
@@ -1449,6 +1470,9 @@ l0000000100004AA8:
 //      fn0000000100001B4A
 uint64 fn0000000100004AFA(word32 esi, Eq_n rdi)
 {
+	word64 rsi;
+	ptr64 fp;
+	word32 dwLocBC;
 	word32 esi = (word32) rsi;
 	Eq_n rbx_n = (int64) esi;
 	word32 ebx_n = (word32) rbx_n;

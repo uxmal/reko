@@ -6,6 +6,7 @@ int32 main(int32 argc, char ** argv)
 // Trashed: eax
 // Preserved:
 main_entry:
+	ptr32 fp
 l00401000:
 	// s1.i = 0
 	// s1.d = 1.0

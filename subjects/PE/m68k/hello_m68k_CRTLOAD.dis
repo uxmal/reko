@@ -47,6 +47,7 @@ void fn000014E8(word32 a3, word32 a5, word16 wArg00, word32 dwArg02)
 // Trashed: CVZNX a0 a1 a2 a3 a7 d0 d1 d2
 // Preserved:
 fn000014E8_entry:
+	word16 wLoc12
 l000014E8:
 	Mem13[0<16>:word16] = 0<16>
 	__syscall(0xA9A0<16>)

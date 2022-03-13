@@ -8,6 +8,7 @@ void _start(word32 dwArg00, void (* ptrArg08)(), void (* ptrArg0C)(), void * ptr
 // Terminates process
 _start_exit:
 _start_entry:
+	ptr32 fp
 l00008334:
 	__libc_start_main(Mem14[0x00008364<p32>:word32], dwArg00, fp + 4<i32>, Mem14[0x00008368<p32>:word32], ptrArg08, ptrArg0C, ptrArg10)
 	abort()
@@ -23,6 +24,7 @@ word32 call_gmon_start()
 // Trashed: NZCV lr pc r10 r3
 // Preserved: sp
 call_gmon_start_entry:
+	word32 r10
 l0000836C:
 	word32 r10_10 = 0x00008380<p32> + Mem6[0x00008394<p32>:word32]
 	word32 r3_11 = Mem6[r10_10 + Mem6[0x00008398<p32>:word32]:word32]
@@ -392,6 +394,7 @@ word32 __do_global_ctors_aux()
 // Trashed: NZCV lr pc r2 r3 r4
 // Preserved: sp
 __do_global_ctors_aux_entry:
+	word32 r4
 l0000870C:
 	word32 r3_8 = Mem6[0x00008740<p32>:word32]
 	word32 r2_9 = Mem6[r3_8 - 4<i32>:word32]

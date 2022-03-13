@@ -7,6 +7,7 @@
 // 00401000: Register int32 main(Stack int32 argc, Stack (ptr32 (ptr32 char)) argv)
 int32 main(int32 argc, char ** argv)
 {
+	ptr32 fp;
 	// s1.i = 0
 	// s1.d = 1.0
 	// s2.i = 10

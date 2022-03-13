@@ -156,6 +156,7 @@ byte g_a2004B5[] = // 002004B5
 //      fn00200089
 void fn002004F2(byte w)
 {
+	word32 xwa;
 	byte w_n = SLICE(xwa, byte, 8);
 	*(byte *) 0x4004 = 0x00;
 	do
@@ -168,6 +169,7 @@ void fn002004F2(byte w)
 //      fn00200532
 bool fn0020050A(word16 hl)
 {
+	word32 xhl;
 	byte h_n = SLICE(xhl, byte, 8);
 	byte l_n = (byte) xhl;
 	return SLICE(cond((uint32) ((uint16) h_n * 0x02 + 0x9800 + (uint16) l_n * 0x40) + 0x01), bool, 4);

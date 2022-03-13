@@ -7,6 +7,8 @@
 // 0000000000400440: void _start(Register (ptr64 Eq_n) rdx, Stack word32 dwArg00)
 void _start(void (* rdx)(), word32 dwArg00)
 {
+	void * fp;
+	word64 qwArg00;
 	__align_stack<word64>((char *) fp + 8);
 	__libc_start_main(&g_t40053D, (int32) qwArg00, (char *) fp + 8, &g_t400550, &g_t4005C0, rdx, fp);
 	__hlt();
@@ -71,6 +73,7 @@ void main()
 // 0000000000400550: void __libc_csu_init(Register word64 rdx, Register word64 rsi, Register word32 edi)
 void __libc_csu_init(word64 rdx, word64 rsi, word32 edi)
 {
+	word64 rdi;
 	word32 edi = (word32) rdi;
 	_init();
 	int64 rbp_n = 0x00600E18 - 0x00600E10;

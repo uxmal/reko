@@ -23,6 +23,7 @@ void fn00401010(word32 dwArg04)
 // Trashed: SCZO eax ecx Top
 // Preserved: ebp esi esp
 fn00401010_entry:
+	ptr32 fp
 l00401010:
 	word32 eax_16 = _acrt_iob_func(1<32>)
 	Mem23[esp_14:word32] = fp + 8<i32>
@@ -45,6 +46,7 @@ word32 fn00401040(word32 ecx)
 // Trashed: SCZO eax ecx Top
 // Preserved: ebp esp
 fn00401040_entry:
+	ptr32 fp
 l00401040:
 	driver.dll!Ordinal_1(fp - 8<i32>, ecx)
 	driver.dll!Ordinal_2(fp - 8<i32>, 3<32>)
@@ -66,6 +68,12 @@ DWORD Win32CrtStartup()
 // Trashed: eax
 // Preserved:
 Win32CrtStartup_entry:
+	ptr32 fp
+	word32 ebx
+	word32 esi
+	word32 edi
+	word32 edx
+	word32 dwLoc0C
 	word24 ebx_24_8_127 = SLICE(ebx, word24, 8)
 l004012C9:
 	fn0040165E()
@@ -219,6 +227,7 @@ byte fn0040143A()
 // Trashed: SCZO eax ecx edx Top
 // Preserved: esi esp
 fn0040143A_entry:
+	selector fs
 l0040143A:
 	word32 eax_4 = fn00401B98()
 	branch eax_4 != 0<32> l00401446
@@ -278,6 +287,8 @@ byte fn0040153F(word32 ebx, word32 esi, word32 edi, ptr32 & edxOut, ptr32 & ebxO
 // Trashed: SCZO eax ebp ebx ecx edi edx esi Top
 // Preserved: esp
 fn0040153F_entry:
+	word32 dwLoc0C
+	word32 edx
 l0040153F:
 	word32 eax_84
 	word32 ebp_13 = fn00401980(ebx, esi, edi, dwLoc0C, 8<32>)
@@ -371,6 +382,8 @@ void fn0040165E()
 // Trashed: SCZO eax ecx Top
 // Preserved: ebp edi esi esp
 fn0040165E_entry:
+	ptr32 fp
+	LARGE_INTEGER tLoc18
 l0040165E:
 	word32 eax_15 = Mem13[0x00403004<p32>:word32]
 	branch eax_15 == 0xBB40E64E<32> l0040168E
@@ -438,6 +451,7 @@ void fn0040176D(word32 dwArg04)
 // Trashed: SCZDOP eax Top
 // Preserved: ebp ebx esi esp
 fn0040176D_entry:
+	ptr32 fp
 l0040176D:
 	branch IsProcessorFeaturePresent(0x17<32>) == 0<32> l00401788
 l00401788:
@@ -512,6 +526,8 @@ word32 fn00401980(word32 ebx, word32 esi, word32 edi, word32 dwArg00, word32 dwA
 // Trashed: SCZO eax ebp Top
 // Preserved: esp
 fn00401980_entry:
+	ptr32 fp
+	selector fs
 l00401980:
 	word32 esp_14 = fp - 8<i32> - dwArg08
 	Mem17[esp_14 - 4<i32>:word32] = ebx
@@ -535,6 +551,10 @@ word32 fn004019C6(word32 ebp, word32 dwArg00, ptr32 & ebpOut, ptr32 & esiOut, pt
 // Trashed: ebp ebx ecx edi esi esp Top
 // Preserved:
 fn004019C6_entry:
+	selector fs
+	word32 dwArg08
+	word32 dwArg0C
+	word32 dwArg10
 l004019C6:
 	Mem8[fs:0x00000000<p32>:word32] = Mem0[ebp - 16<i32>:word32]
 	word32 ebp_19 = Mem8[ebp:word32]

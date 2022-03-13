@@ -53,6 +53,7 @@ void fn0800_0176(selector ds)
 // Trashed: ax bx dx es Top
 // Preserved: ds sp
 fn0800_0176_entry:
+	selector cs
 l0800_0176:
 	word32 es_bx_10 = msdos_get_interrupt_vector(0<8>)
 	Mem12[ds:0x5B<16>:word16] = SLICE(es_bx_10, word16, 0)
@@ -167,6 +168,7 @@ void main(selector ds)
 // Trashed: SCZDO ax bp bx cx di ds dx es si sp Top
 // Preserved: P
 main_entry:
+	selector ss
 l0800_025E:
 	Mem15[ds:0x2A27<16>:word16] = 1<16>
 	Mem16[ds:0x2E4D<16>:word16] = 0<16>
@@ -448,6 +450,11 @@ word16 fn0800_0541(word16 di, selector ds, ptr16 & bpOut, ptr16 & dsOut)
 // Trashed: SCZO ax bp bx cx di ds dx es si sp Top
 // Preserved: D
 fn0800_0541_entry:
+	segptr32 ptrLoc06
+	mp16 fp
+	word16 bp
+	selector ss
+	word16 dx
 l0800_0541:
 	word16 bp_1161 = fp - 2<i16>
 	word16 ax_17 = Mem15[ds:0x2A27<16>:word16]
@@ -883,6 +890,7 @@ word16 fn0800_09A3(selector ds, ptr16 & bpOut, ptr16 & dsOut)
 // Trashed: SCZDO ax bp bx cx di ds dx es si sp Top
 // Preserved:
 fn0800_09A3_entry:
+	selector ss
 l0800_09A3:
 	ui32 ax_dx_387 = SEQ((CONVERT(Mem15[ds:0xA72<16>:byte], byte, int16) << 8<8>) + CONVERT(Mem15[ds:0xA73<16>:byte], byte, uint16), 0<16>) + CONVERT((CONVERT(Mem27[ds:0xA74<16>:byte], byte, int16) << 8<8>) + CONVERT(Mem27[ds:0xA75<16>:byte], byte, uint16), word16, uint32)
 	word16 bp_51
@@ -1023,6 +1031,8 @@ word16 fn0800_0ABC(selector ds, word32 dwArg04, ptr16 & dxOut)
 // Trashed: SCZDO ax bx cx di dx es Top
 // Preserved: bp si sp
 fn0800_0ABC_entry:
+	mp16 fp
+	selector ss
 l0800_0ABC:
 	word16 dx_265
 	fn0800_35A3(fp - 16<i16>, ss, dwArg04, out dx_265)
@@ -1068,6 +1078,8 @@ word16 fn0800_0B79(word32 dwArg02, ui32 dwArg06)
 // Trashed: SCZO ax bx cx dx Top
 // Preserved: bp sp
 fn0800_0B79_entry:
+	mp16 fp
+	selector ss
 	word16 wArg02 = SLICE(dwArg02, word16, 0)
 	word16 wArg04 = SLICE(dwArg02, word16, 16)
 	word16 wArg06 = SLICE(dwArg06, word16, 0)
@@ -1207,6 +1219,7 @@ word16 fn0800_0C6C(selector ds, segptr32 ptrArg02)
 // Trashed: SCZO ax bx dx es Top
 // Preserved: bp sp
 fn0800_0C6C_entry:
+	word16 dx
 l0800_0C6C:
 l0800_0C88:
 	word16 wArg02_49 = SLICE(ptrArg02, word16, 0)
@@ -1234,6 +1247,8 @@ word16 fn0800_0C93(selector ds, word32 dwArg02, ptr16 & dxOut)
 // Trashed: SCZDO ax bx cx dx es Top
 // Preserved: bp di ds si sp
 fn0800_0C93_entry:
+	mp16 fp
+	selector ss
 l0800_0C93:
 	word16 bx_29
 	word16 dx_163 = fn0800_3509(fp - 104<i16>, ss, dwArg02, out bx_29)
@@ -1385,6 +1400,8 @@ word16 fn0800_0DA9(selector ds, word32 dwArg02, word32 dwArg06, ptr16 & dxOut, p
 // Trashed: SCZO ax bx cx ds dx es Top
 // Preserved: bp sp
 fn0800_0DA9_entry:
+	word16 cx
+	word16 dx
 l0800_0DA9:
 	branch dwArg02 == 0<16> l0800_0DCC
 l0800_0DB4:
@@ -1430,6 +1447,8 @@ word16 fn0800_0DE8(word16 cx, word16 dx, selector ds, ptr16 & dsOut)
 // Trashed: SCZDOP ax bx cx di ds dx es Top
 // Preserved: bp si sp
 fn0800_0DE8_entry:
+	mp16 fp
+	selector ss
 l0800_0DE8:
 	word16 bx_18 = Mem17[ds:0x2A25<16>:word16]
 	word16 si_990
@@ -1701,6 +1720,8 @@ word16 fn0800_112D(word16 cx, word16 dx, selector ds, ptr16 & dsOut)
 // Trashed: SCZDOP bx cx di ds dx es Top
 // Preserved: bp si sp
 fn0800_112D_entry:
+	mp16 fp
+	selector ss
 l0800_112D:
 	word16 bx_18 = Mem17[ds:0x2A25<16>:word16]
 	word16 si_592
@@ -1849,6 +1870,8 @@ word16 fn0800_12E2(word16 cx, word16 dx, selector ds, ptr16 & bpOut, ptr16 & dsO
 // Trashed: SCZDOP ax bp bx cx di ds dx es si sp Top
 // Preserved:
 fn0800_12E2_entry:
+	mp16 fp
+	selector ss
 l0800_12E2:
 	word16 bx_22 = Mem21[ds:0x2A25<16>:word16]
 	word16 si_2004
@@ -2405,6 +2428,7 @@ word16 fn0800_18D9(word16 cx, word16 dx, selector ds, ptr16 & bpOut, ptr16 & dsO
 // Trashed: SCZDOP ax bp bx cx di ds dx es si sp Top
 // Preserved:
 fn0800_18D9_entry:
+	selector ss
 l0800_18D9:
 	word16 si_433
 	word16 di_434
@@ -2525,6 +2549,8 @@ word16 fn0800_19EE(word16 cx, word16 dx, selector ds, ptr16 & bpOut, ptr16 & dsO
 // Trashed: SCZDOP ax bp bx cx di ds dx es si sp Top
 // Preserved:
 fn0800_19EE_entry:
+	mp16 fp
+	selector ss
 l0800_19EE:
 	word16 di_1262
 	word16 si_1261
@@ -2926,6 +2952,7 @@ word16 fn0800_1CF6(selector ds, word16 wArg02, ptr16 & dxOut, ptr16 & bpOut, ptr
 // Trashed: SCZO ax bp bx cx di ds dx es si sp Top
 // Preserved: D
 fn0800_1CF6_entry:
+	selector ss
 l0800_1CF6:
 	Mem18[ds:0x45A8<16>:word16] = 0<16>
 	Mem19[ds:0x45A6<16>:word16] = 0<16>
@@ -3056,6 +3083,7 @@ word16 fn0800_1E5E(selector ds, ptr16 & dsOut)
 // Trashed: SCZO ax bp bx cx di ds dx es Top
 // Preserved: D si sp
 fn0800_1E5E_entry:
+	word16 bp
 l0800_1E5E:
 	ptr32 es_bx_9 = Mem7[ds:0x2E51<16>:segptr32]
 	word16 ax_20 = (CONVERT(Mem7[es_bx_9 + 4<i16>:byte], byte, uint16) << 8<8>) + CONVERT(Mem7[es_bx_9 + 5<i16>:byte], byte, uint16)
@@ -3107,6 +3135,7 @@ word16 fn0800_1F5C(selector ds, segptr32 ptrArg02, ptr16 & dxOut, ptr16 & dsOut)
 // Trashed: SCZO ax bx cx di ds dx es si Top
 // Preserved: bp sp
 fn0800_1F5C_entry:
+	selector ss
 l0800_1F5C:
 	selector es_347 = SLICE(ptrArg02, selector, 16)
 	word16 di_24 = SLICE(ptrArg02, word16, 0)
@@ -3563,6 +3592,7 @@ byte fn0800_23EC(selector ds, segptr32 ptrArg02, ptr16 & bpOut, ptr16 & siOut, p
 // Trashed: SCZDO ax bp bx cx di ds dx es si sp Top
 // Preserved:
 fn0800_23EC_entry:
+	selector ss
 	word16 wArg04 = SLICE(ptrArg02, word16, 16)
 	word16 wArg02 = SLICE(ptrArg02, word16, 0)
 l0800_23EC:
@@ -3704,6 +3734,7 @@ selector fn0800_24FE(selector ds, segptr32 ptrArg02)
 // Trashed: SCZO ax bx cx di ds dx es si Top
 // Preserved: D bp sp
 fn0800_24FE_entry:
+	selector ss
 l0800_24FE:
 	selector es_49 = SLICE(ptrArg02, selector, 16)
 	word16 di_21 = SLICE(ptrArg02, word16, 0)
@@ -3877,6 +3908,8 @@ void fn0800_2688(selector ds, ui32 dwArg02, word16 wArg06, word16 wArg08)
 // Trashed: SCZO ax bx cl dx es Top
 // Preserved: bp sp
 fn0800_2688_entry:
+	mp16 fp
+	selector ss
 	word16 wArg02 = SLICE(dwArg02, word16, 0)
 l0800_2688:
 	ptr32 es_bx_11 = Mem7[ds:0x2E51<16>:segptr32]
@@ -4204,6 +4237,8 @@ word16 fn0800_29C5(word16 cx, word16 dx, word16 si, selector ds, segptr32 ptrArg
 // Trashed: SCZDOP ax bx cx ds dx es Top
 // Preserved: bp di si sp
 fn0800_29C5_entry:
+	mp16 fp
+	selector ss
 	word16 wArg0C = SLICE(ptrArg0A, word16, 16)
 	word16 wArg0A = SLICE(ptrArg0A, word16, 0)
 	word16 wArg06 = SLICE(ptrArg06, word16, 0)
@@ -4542,6 +4577,8 @@ word16 fn0800_2CCF(selector ds, segptr32 ptrArg02, word16 wArg06, word16 wArg08,
 // Trashed: SCZO ax bx cl dx es Top
 // Preserved: bp si sp
 fn0800_2CCF_entry:
+	byte cl
+	word16 dx
 l0800_2CCF:
 	word16 si_12 = wArg06
 	word16 ax_38 = wArg08
@@ -4573,6 +4610,7 @@ word16 fn0800_2D0A(selector ds, ptr16 & dxOut, ptr16 & bpOut, ptr16 & dsOut)
 // Trashed: SCZO ax bp bx cx di ds dx es si sp Top
 // Preserved:
 fn0800_2D0A_entry:
+	selector ss
 l0800_2D0A:
 	word16 bp_23
 	word16 dx_28
@@ -4686,6 +4724,8 @@ word16 fn0800_2DE2(word16 cx, word16 dx, word16 si, selector ds, segptr32 ptrArg
 // Trashed: SCZDOP ax bx cx ds dx es Top
 // Preserved: bp di si sp
 fn0800_2DE2_entry:
+	mp16 fp
+	selector ss
 	word16 wArg04_1478 = SLICE(ptrArg02, word16, 16)
 	word16 wArg02_1480 = SLICE(ptrArg02, word16, 0)
 l0800_2DE2:
@@ -5104,6 +5144,8 @@ word16 fn0800_31B4(selector ds, word32 dwArg02, ptr16 & cxOut, ptr16 & dxOut)
 // Trashed: SCZDOP ax bx cx dx es Top
 // Preserved: bp di ds si sp
 fn0800_31B4_entry:
+	mp16 fp
+	selector ss
 	word16 wArg04 = SLICE(dwArg02, word16, 16)
 	word16 wArg02 = SLICE(dwArg02, word16, 0)
 l0800_31B4:
@@ -5190,6 +5232,8 @@ word16 fn0800_32CD(selector ds, word32 dwArg02, word16 wArg06, selector psegArg0
 // Trashed: SCZDOP ax bx cx dx es Top
 // Preserved: bp di ds si sp
 fn0800_32CD_entry:
+	mp16 fp
+	selector ss
 l0800_32CD:
 	word16 di_26 = wArg06
 	word16 cx_30 = 0xFFFF<16>
@@ -5271,6 +5315,8 @@ word16 fn0800_335C(selector ds, segptr32 ptrArg02)
 // Trashed: SCZDOP ax bx cx dx es Top
 // Preserved: bp di ds si sp
 fn0800_335C_entry:
+	mp16 fp
+	selector ss
 	word16 wArg04 = SLICE(ptrArg02, word16, 16)
 	word16 wArg02 = SLICE(ptrArg02, word16, 0)
 l0800_335C:
@@ -5581,6 +5627,8 @@ word16 fn0800_3509(word16 wArg02, selector psegArg04, word32 dwArg06, ptr16 & bx
 // Trashed: SCZDO ax bx cx dx es Top
 // Preserved: bp di ds si sp
 fn0800_3509_entry:
+	mp16 fp
+	selector ss
 l0800_3509:
 	word16 bx_44 = fn0800_BE3B(dwArg06, SEQ(ss, fp - 6<i16>), SEQ(ss, fp - 90<i16>), SEQ(ss, fp - 16<i16>), SEQ(ss, fp - 22<i16>))
 	word16 di_397 = fp - 6<i16>
@@ -5665,6 +5713,8 @@ byte fn0800_35A3(word16 wArg02, selector psegArg04, word32 dwArg06, ptr16 & dxOu
 // Trashed: SCZDO ax bx cx dx es Top
 // Preserved: bp di ds si sp
 fn0800_35A3_entry:
+	mp16 fp
+	selector ss
 l0800_35A3:
 	fn0800_BE3B(dwArg06, SEQ(ss, fp - 6<i16>), SEQ(ss, fp - 90<i16>), SEQ(ss, fp - 16<i16>), SEQ(ss, fp - 22<i16>))
 	word16 di_397 = fp - 16<i16>
@@ -5743,6 +5793,10 @@ word16 fn0800_363D(selector ds, segptr32 ptrArg02, word32 dwArg06, ptr16 & dxOut
 // Trashed: SCZDOP ax bx cx dx es Top
 // Preserved: bp sp
 fn0800_363D_entry:
+	mp16 fp
+	selector ss
+	word16 wLoc18
+	word16 wLoc16
 l0800_363D:
 	word16 cx_30
 	word16 dx_31
@@ -5768,6 +5822,7 @@ word16 fn0800_3678(selector ds, segptr32 ptrArg02, ptr16 & dxOut, ptr16 & siOut,
 // Trashed: SCZO ax bx cx ds dx es si Top
 // Preserved: DP bp di sp
 fn0800_3678_entry:
+	word16 si
 	word16 wArg04 = SLICE(ptrArg02, word16, 16)
 	word16 wArg02 = SLICE(ptrArg02, word16, 0)
 l0800_3678:
@@ -5875,6 +5930,7 @@ word16 fn0800_3764(selector ds)
 // Trashed: SCZO ax bx cx dx es Top
 // Preserved: D di ds si sp
 fn0800_3764_entry:
+	word16 dx
 l0800_3764:
 	branch Mem10[ds:0x427E<16>:byte] == 0<8> l0800_3796
 l0800_3796:
@@ -5966,6 +6022,9 @@ word16 fn0800_37DF(selector ds, ptr16 & dsOut)
 // Trashed: SCZDO ax bx cx ds dx es si Top
 // Preserved: bp di sp
 fn0800_37DF_entry:
+	mp16 fp
+	selector ss
+	word16 si
 l0800_37DF:
 	word16 bx_360
 	fn0800_3509(fp - 108<i16>, ss, SEQ(ds, 0x44DC<16>), out bx_360)
@@ -6033,6 +6092,10 @@ word16 fn0800_388C(word16 dx, selector ds, ptr16 & cxOut, ptr16 & dxOut, ptr16 &
 // Trashed: SCZDOP ax bx cx di ds dx es si Top
 // Preserved: bp sp
 fn0800_388C_entry:
+	mp16 fp
+	selector ss
+	word16 wLoc04
+	word16 wLoc06
 l0800_388C:
 	selector ds_24
 	word16 si_317
@@ -6115,6 +6178,9 @@ word16 fn0800_3992(selector ds, ptr16 & dxOut, ptr16 & dsOut)
 // Trashed: SCZO ax bx cx di ds dx es Top
 // Preserved: DP bp sp
 fn0800_3992_entry:
+	mp16 fp
+	selector ss
+	word16 dx
 l0800_3992:
 	branch Mem12[ds:0x427E<16>:byte] == 0<8> l0800_39AE
 l0800_39A0:
@@ -6285,6 +6351,10 @@ word16 fn0800_3B0A(selector ds, word16 wArg0A, word16 wArg0C, ptr16 & dxOut, ptr
 // Trashed: SCZO ax bp bx cx di ds dx es si sp Top
 // Preserved:
 fn0800_3B0A_entry:
+	mp16 fp
+	selector ss
+	word16 dx
+	word16 si
 l0800_3B0A:
 	word16 bp_194 = fp - 2<i16>
 	word16 ax_11 = wArg0A | wArg0C
@@ -6373,6 +6443,7 @@ word16 fn0800_3BC3(word16 cx, word16 dx, selector ds, word32 dwArg02, ui32 dwArg
 // Trashed: SCZDO ax bp bx cx di ds dx es si sp Top
 // Preserved:
 fn0800_3BC3_entry:
+	selector ss
 l0800_3BC3:
 	fn0800_37BE(cx, dx, ds, SEQ(ds, 0x43AD<16>))
 	selector ds_48
@@ -6439,6 +6510,8 @@ byte fn0800_3C99(selector ds, word32 dwArg02, word16 wArg06, word16 wArg08, ptr1
 // Trashed: SCZDO ax bp bx cx di ds dx es si sp Top
 // Preserved:
 fn0800_3C99_entry:
+	mp16 fp
+	selector ss
 l0800_3C99:
 	word16 bx_479
 	fn0800_3509(fp - 108<i16>, ss, SEQ(ds, 0x4348<16>), out bx_479)
@@ -6566,6 +6639,8 @@ word16 fn0800_3DCF(selector ds, segptr32 ptrArg02, ptr16 & chOut, ptr16 & dxOut,
 // Trashed: SCZO ax bx cx di ds dx es Top
 // Preserved: D bp si sp
 fn0800_3DCF_entry:
+	word16 di
+	word16 dx
 	word16 wArg04_104 = SLICE(ptrArg02, word16, 16)
 	word16 wArg02_106 = SLICE(ptrArg02, word16, 0)
 l0800_3DCF:
@@ -6831,6 +6906,7 @@ byte fn0800_401E(selector ds, byte bArg02, word32 dwArg04, ptr16 & cxOut, ptr16 
 // Trashed: SCZO ax bx cx di ds dx es Top
 // Preserved: bp sp
 fn0800_401E_entry:
+	word16 wArg02
 	byte bArg02_72 = SLICE(wArg02, byte, 0)
 l0800_401E:
 	selector ds_28
@@ -6872,6 +6948,9 @@ byte fn0800_4047(selector ds, byte bArg02, segptr32 ptrArg04, ptr16 & cxOut, ptr
 // Trashed: SCZO ax bx cx di ds dx es Top
 // Preserved: D bp si sp
 fn0800_4047_entry:
+	byte ch
+	word16 di
+	byte dh
 	word16 wArg06_108 = SLICE(ptrArg04, word16, 16)
 	word16 wArg04_110 = SLICE(ptrArg04, word16, 0)
 l0800_4047:
@@ -6958,6 +7037,7 @@ word16 fn0800_40BF(selector ds, byte bArg02, word32 dwArg04, ptr16 & diOut, ptr1
 // Trashed: SCZO ax bx cx di ds dx es Top
 // Preserved: bp sp
 fn0800_40BF_entry:
+	word16 wArg02
 	byte bArg02 = SLICE(wArg02, byte, 0)
 l0800_40BF:
 	selector ds_30
@@ -7104,6 +7184,7 @@ word16 fn0800_4234(selector ds, word32 dwArg02, word32 dwArg06, ptr16 & siOut, p
 // Trashed: SCZO bx cx di ds es si Top
 // Preserved: D bp sp
 fn0800_4234_entry:
+	word16 si
 l0800_4234:
 	word16 cx_26
 	selector ds_101
@@ -7192,6 +7273,7 @@ word16 fn0800_4311(selector ds, word32 dwArg02, ptr16 & dxOut, ptr16 & bpOut, pt
 // Trashed: SCZO ax bp bx cx di ds dx es si sp Top
 // Preserved: D
 fn0800_4311_entry:
+	selector ss
 l0800_4311:
 	word16 bp_19
 	word16 dx_24
@@ -7353,6 +7435,7 @@ void fn0800_441C(selector ds, segptr32 ptrArg02, word16 wArg06)
 // Trashed: SCZO ax bx cx dx es Top
 // Preserved: bp di si sp
 fn0800_441C_entry:
+	word16 wLoc04
 	word16 wArg02 = SLICE(ptrArg02, word16, 0)
 	selector psegArg04 = SLICE(ptrArg02, selector, 16)
 l0800_441C:
@@ -7440,6 +7523,8 @@ void fn0800_4550(word16 wArg02, selector psegArg04, word16 wArg06)
 // Trashed: SCZO ax bx cx di dx es si Top
 // Preserved: bp sp
 fn0800_4550_entry:
+	mp16 fp
+	selector ss
 l0800_4550:
 	word16 sp_114 = fp - 0x10<16>
 	word16 wLoc0C_132 = 1<16>
@@ -7595,6 +7680,8 @@ word16 fn0800_46FE(selector ds, ptr16 & dxOut, ptr16 & dsOut)
 // Trashed: SCZO ax bp bx cx di ds dx es si sp Top
 // Preserved:
 fn0800_46FE_entry:
+	selector ss
+	word16 dx
 l0800_46FE:
 	branch Mem15[ds:0x2A05<16>:word16] >u 0<16> l0800_471F
 l0800_470D:
@@ -8014,6 +8101,7 @@ word16 fn0800_4BB1(word16 ax, word16 dx, selector ds, ptr16 & dxOut, ptr16 & dsO
 // Trashed: SCZO ax bp bx cx di ds dx es si Top
 // Preserved: sp
 fn0800_4BB1_entry:
+	selector ss
 l0800_4BB1:
 	selector ds_19
 	word16 dx_20
@@ -8082,6 +8170,7 @@ word16 fn0800_4C55(selector ds, ptr16 & dxOut, ptr16 & dsOut)
 // Trashed: SCZO ax bp bx cx di ds dx es Top
 // Preserved: sp
 fn0800_4C55_entry:
+	selector ss
 l0800_4C55:
 	selector ds_22
 	ui32 dx_ax_923 = fn0800_3E5D(ds, Mem7[ds:0x29E3<16>:word32], out ds_22)
@@ -8232,6 +8321,11 @@ void fn0800_4F2C(selector ds)
 // Trashed: SCZO ax bp bx cx di ds dx es si sp Top
 // Preserved:
 fn0800_4F2C_entry:
+	selector ss
+	word16 wLoc16
+	word16 wLoc18
+	word16 wLoc0E
+	word16 wLoc10
 l0800_4F2C:
 	selector ds_102
 	ui32 dx_ax_812 = fn0800_3E5D(ds, Mem7[ds:0x29E3<16>:word32], out ds_102)
@@ -8471,6 +8565,8 @@ word16 fn0800_51A9(selector ds, ptr16 & dxOut, ptr16 & dsOut)
 // Trashed: SCZO ax bp bx cx di ds dx es si sp Top
 // Preserved:
 fn0800_51A9_entry:
+	mp16 fp
+	selector ss
 l0800_51A9:
 	word16 bp_284 = fp - 2<i16>
 	word16 sp_11 = fp - 8<16>
@@ -8668,6 +8764,7 @@ word16 fn0800_5374(selector ds, ptr16 & dxOut, ptr16 & bpOut, ptr16 & dsOut)
 // Trashed: SCZO ax bp bx cx di ds dx es si sp Top
 // Preserved:
 fn0800_5374_entry:
+	selector ss
 l0800_5374:
 	fn0800_AD2F(ds, Mem13[ds:0x29E3<16>:word32])
 	selector ds_44
@@ -8873,6 +8970,8 @@ word16 fn0800_55E8(selector ds, ptr16 & dsOut)
 // Trashed: SCZO ax bx cx di ds dx es si Top
 // Preserved: bp sp
 fn0800_55E8_entry:
+	mp16 fp
+	selector ss
 l0800_55E8:
 	word16 sp_153 = fp - 6<16>
 l0800_574B:
@@ -9290,6 +9389,8 @@ word16 fn0800_5B15(selector ds, ptr16 & siOut, ptr16 & diOut, ptr16 & dsOut)
 // Trashed: SCZO ax bx cx di ds dx es si Top
 // Preserved: bp sp
 fn0800_5B15_entry:
+	word16 di
+	word16 si
 l0800_5B15:
 	word16 ax_11 = Mem7[ds:0x2E73<16>:word16]
 	byte ah_289 = SLICE(ax_11, byte, 8)
@@ -9364,6 +9465,7 @@ word16 fn0800_5C1A(selector ds, word16 wArg02, ptr16 & siOut, ptr16 & dsOut)
 // Trashed: SCZO ax bx cx di ds dx es si Top
 // Preserved: bp sp
 fn0800_5C1A_entry:
+	word16 si
 l0800_5C1A:
 	branch Mem7[ds:0x2A21<16>:word16] != 2<16> l0800_5C30
 l0800_5C30:
@@ -9395,6 +9497,8 @@ word16 fn0800_5C39(selector ds, word16 wArg02, ptr16 & siOut, ptr16 & diOut, ptr
 // Trashed: SCZO ax bx cx di ds dx es si Top
 // Preserved: bp sp
 fn0800_5C39_entry:
+	mp16 fp
+	selector ss
 l0800_5C39:
 	word16 sp_13 = fp - 0xC<16>
 	word16 si_151 = wArg02
@@ -9577,6 +9681,8 @@ word16 fn0800_5E64(selector ds, ptr16 & dxOut, ptr16 & dsOut)
 // Trashed: SCZO ax bp bx cx di ds dx es si sp Top
 // Preserved: D
 fn0800_5E64_entry:
+	mp16 fp
+	selector ss
 l0800_5E64:
 	word16 bp_1036 = fp - 2<i16>
 	word16 sp_127 = fp - 0x3E<16>
@@ -10255,6 +10361,9 @@ word16 fn0800_669C(selector ds, ptr16 & dxOut, ptr16 & dsOut)
 // Trashed: SCZO ax bp bx cx di ds dx es si sp Top
 // Preserved: D
 fn0800_669C_entry:
+	mp16 fp
+	selector ss
+	word16 dx
 l0800_669C:
 	word16 bp_121 = fp - 2<i16>
 	branch Mem15[ds:0x2A09<16>:word16] <u 0<16> l0800_66BE
@@ -10395,6 +10504,7 @@ word16 fn0800_67BF(selector ds, ptr16 & dxOut, ptr16 & dsOut)
 // Trashed: SCZO ax bp bx cx di ds dx es si sp Top
 // Preserved:
 fn0800_67BF_entry:
+	selector ss
 l0800_67BF:
 	word16 ax_19 = (CONVERT(Mem7[ds:0x2E75<16>:byte], byte, uint16) << 8<8>) + CONVERT(Mem7[ds:0x2E76<16>:byte], byte, uint16)
 	branch Mem20[ds:0x2A09<16>:word16] >u 0<16> l0800_67F0
@@ -10780,6 +10890,8 @@ void fn0800_6F20(selector ds, word16 wArg02, word16 wArg04)
 // Trashed: SCZO ax bp bx cx di ds dx es si sp Top
 // Preserved:
 fn0800_6F20_entry:
+	mp16 fp
+	selector ss
 l0800_6F20:
 	selector ds_102
 	ui32 dx_ax_1513 = fn0800_3E5D(ds, Mem7[ds:0x29E3<16>:word32], out ds_102)
@@ -11180,6 +11292,8 @@ word16 fn0800_741D(selector ds, ptr16 & dxOut)
 // Trashed: SCZO ax bx cx dx es si Top
 // Preserved: bp di ds sp
 fn0800_741D_entry:
+	mp16 fp
+	selector ss
 l0800_741D:
 	word16 bp_219 = fp - 2<i16>
 	word16 sp_11 = fp - 8<16>
@@ -11365,6 +11479,8 @@ word16 fn0800_75EA(selector ds, word16 wArg02, word16 wArg04, word32 dwArg06, pt
 // Trashed: SCZO ax bp bx cx di ds dx es si sp Top
 // Preserved: D
 fn0800_75EA_entry:
+	mp16 fp
+	selector ss
 	word16 wArg06 = SLICE(dwArg06, word16, 0)
 l0800_75EA:
 	Mem16[ds:0x4680<16>:word16] = wArg04
@@ -12088,6 +12204,8 @@ selector fn0800_7FDC(selector ds)
 // Trashed: SCZO ax bx cx di ds dx es si Top
 // Preserved: D bp sp
 fn0800_7FDC_entry:
+	mp16 fp
+	selector ss
 l0800_7FDC:
 	Mem11[ds:0x466C<16>:word16] = 0<16>
 	Mem12[ds:0x466A<16>:word16] = 0<16>
@@ -12597,6 +12715,7 @@ word16 fn0800_8600(selector ds, byte bArg02, ptr16 & dsOut)
 // Trashed: SCZO ax bx cx di ds dx es Top
 // Preserved: bp sp
 fn0800_8600_entry:
+	word16 di
 l0800_8600:
 	branch Mem7[ds:0x2E45<16>:word16] == 0<16> l0800_861B
 l0800_861B:
@@ -12628,6 +12747,7 @@ byte fn0800_8624(selector ds, byte bArg02, ptr16 & diOut, ptr16 & dsOut)
 // Trashed: SCZO ax bx cx di ds dx es Top
 // Preserved: bp sp
 fn0800_8624_entry:
+	word16 di
 l0800_8624:
 	word16 ax_10 = Mem7[ds:0x2A05<16>:word16]
 	word16 dx_11 = Mem7[ds:0x2A03<16>:word16]
@@ -13275,6 +13395,8 @@ byte fn0800_8B0D(selector ds, word16 wArg02, word16 wArg04, word16 wArg06, ptr16
 // Trashed: SCZO ax dx Top
 // Preserved: bp bx cx es si sp
 fn0800_8B0D_entry:
+	mp16 fp
+	selector ss
 l0800_8B0D:
 	branch wArg06 != 0<16> l0800_8B36
 l0800_8B18:
@@ -13780,6 +13902,8 @@ void fn0800_8D87(byte bArg02, byte bArg04, word16 wArg06, segptr32 ptrArg08, wor
 // Trashed: SCZDO ax bx cx dx Top
 // Preserved: bp di es si sp ss
 fn0800_8D87_entry:
+	mp16 fp
+	selector ss
 l0800_8D87:
 	selector es_34 = SLICE(ptrArg08, selector, 16)
 	word16 di_121 = SLICE(ptrArg08, word16, 0)
@@ -14011,6 +14135,7 @@ word16 fn0800_8F50(selector ds, word16 wArg02, segptr32 ptrArg04, word16 wArg08,
 // Trashed: SCZO ax bx cx dx Top
 // Preserved: bp ds sp
 fn0800_8F50_entry:
+	word16 dx
 l0800_8F50:
 	word16 ax_23
 	word16 wLoc04_52
@@ -14684,6 +14809,7 @@ word16 fn0800_93BE(segptr32 ss_bp, ptr16 & diOut)
 // Trashed: ax bp di es si sp Top
 // Preserved:
 fn0800_93BE_entry:
+	word16 wArg02
 l0800_93BE:
 l0800_9453:
 	word16 bp_14 = Mem0[ss_bp:word16]
@@ -14703,6 +14829,11 @@ word16 fn0800_93C5(segptr32 ss_bp, selector ds, ptr16 & diOut)
 // Trashed: SCZO ax bp bx cx di es si Top
 // Preserved: sp
 fn0800_93C5_entry:
+	mp16 fp
+	word16 di
+	word16 wLoc06
+	word16 wLoc04
+	word16 wLoc02
 	selector ss = SLICE(ss_bp, selector, 16)
 	word16 bp = SLICE(ss_bp, word16, 0)
 	word16 sp_11 = fp
@@ -14749,6 +14880,8 @@ void fn0800_93EF(segptr32 ss_bp)
 // Trashed: SCZO ax bp cx di dx es si Top
 // Preserved: sp
 fn0800_93EF_entry:
+	mp16 fp
+	word16 wLoc02
 	selector ss = SLICE(ss_bp, selector, 16)
 	word16 sp_16 = fp
 l0800_93EF:
@@ -14823,6 +14956,7 @@ bool fn0800_9485(byte cl, byte bl, ptr16 & bxOut)
 // Trashed: SCZO bx Top
 // Preserved: sp
 fn0800_9485_entry:
+	word16 bx
 	byte bl_8 = SLICE(bx, byte, 0)
 l0800_9485:
 	word16 bx_38
@@ -14863,6 +14997,8 @@ word16 fn0800_94B0(selector ds, word16 wArg02, word16 wArg04, word16 wArg06, wor
 // Trashed: SCZO ax bx cx di dx es si Top
 // Preserved: bp ds sp ss
 fn0800_94B0_entry:
+	mp16 fp
+	selector ss
 l0800_94B0:
 	word16 sp_119 = fp - 0xC<16>
 	byte bLoc03_540 = 0<8>
@@ -15118,6 +15254,8 @@ word16 fn0800_9764(selector ds, segptr32 ptrArg02)
 // Trashed: SCZDO bx cx es Top
 // Preserved: bp sp
 fn0800_9764_entry:
+	mp16 fp
+	selector ss
 l0800_9764:
 	fn0800_8B95(SEQ(ss, fp - 6<i16>))
 	fn0800_8BA8(SEQ(ss, fp - 10<i16>))
@@ -15970,6 +16108,8 @@ word16 fn0800_9E3E(selector ds)
 // Trashed: SCZDOP bx es Top
 // Preserved: sp ss
 fn0800_9E3E_entry:
+	selector ss
+	word16 bx
 l0800_9E3E:
 	word16 ax_5 = Mem0[0800:9D39:word16]
 	branch ax_5 == 0<16> l0800_9E67
@@ -16003,6 +16143,9 @@ word16 fn0800_9E75(selector ds, word16 wArg04, ptr16 & cxOut, ptr16 & dxOut, ptr
 // Trashed: SCZO ax bx cx ds dx es Top
 // Preserved: bp di si sp
 fn0800_9E75_entry:
+	word16 ax
+	word16 bx
+	word16 cx
 l0800_9E75:
 	Mem16[0800:9D3B:word16] = ds
 	word16 dx_18 = wArg04
@@ -16178,6 +16321,9 @@ word16 fn0800_9F92(int32 dx_ax, selector ds, ptr16 & dxOut, ptr16 & bpOut, ptr16
 // Trashed: SCZO ax bp bx cx di ds dx es si sp Top
 // Preserved:
 fn0800_9F92_entry:
+	word16 si
+	word16 di
+	word16 wArg00
 	word16 ax = SLICE(dx_ax, word16, 0)
 	word16 dx = SLICE(dx_ax, word16, 16)
 l0800_9F92:
@@ -16218,6 +16364,9 @@ word16 fn0800_9F9F(int32 dx_ax, ptr16 & dxOut, ptr16 & bpOut, ptr16 & siOut, ptr
 // Trashed: SCZO ax bp bx cx di ds dx es si sp Top
 // Preserved:
 fn0800_9F9F_entry:
+	word16 wArg00
+	word16 wArg02
+	word16 wArg04
 	word16 ax = SLICE(dx_ax, word16, 0)
 l0800_9F9F:
 	word16 dx_138
@@ -16381,6 +16530,8 @@ word16 fn0800_A162(selector ds, word16 wArg02, word16 wArg04, ptr16 & cxOut, ptr
 // Trashed: SCZO ax bx cx dx es Top
 // Preserved: bp si sp
 fn0800_A162_entry:
+	word16 bx
+	byte ch
 l0800_A162:
 	word16 dx_113
 	word16 ax_57
@@ -16470,6 +16621,7 @@ word16 fn0800_A215(selector ds, ui32 dwArg02, ptr16 & dxOut)
 // Trashed: SCZO ax bx cx dx es Top
 // Preserved: bp sp
 fn0800_A215_entry:
+	selector ss
 	word16 wArg04_126 = SLICE(dwArg02, word16, 16)
 	word16 wArg02_128 = SLICE(dwArg02, word16, 0)
 l0800_A215:
@@ -16533,6 +16685,9 @@ word16 fn0800_A2A3(selector ds, word16 wArg04, ptr16 & cxOut)
 // Trashed: SCZO ax bx cx dx Top
 // Preserved: bp ds sp
 fn0800_A2A3_entry:
+	bool C
+	segptr32 ptrArg06
+	word16 wArg0A
 	byte bArg04 = SLICE(wArg04, byte, 0)
 l0800_A2A3:
 	msdos_unknown_2144()
@@ -16779,6 +16934,8 @@ word16 fn0800_A53C(selector ds, byte bArg06, ptr16 & cxOut)
 // Trashed: ax cx dx Top
 // Preserved: SCZO bp ds sp
 fn0800_A53C_entry:
+	bool C
+	word16 wArg08
 l0800_A53C:
 	word16 ax_22
 	__syscall(0x21<8>)
@@ -16851,6 +17008,7 @@ word16 fn0800_A59D(selector ds, word16 wArg02, ptr16 & dxOut)
 // Trashed: SCZO ax bx cx dx Top
 // Preserved: bp sp
 fn0800_A59D_entry:
+	word16 dx
 l0800_A59D:
 	word16 wLoc08_109
 	word16 ax_118
@@ -16919,6 +17077,8 @@ word16 fn0800_A614(selector ds, segptr32 ptrArg02, ptr16 & dxOut, ptr16 & dsOut)
 // Trashed: SCZO ax bx cx ds dx es Top
 // Preserved: D bp si sp
 fn0800_A614_entry:
+	word16 cx
+	word16 dx
 	word16 wArg02_178 = SLICE(ptrArg02, word16, 0)
 	word16 wArg04_179 = SLICE(ptrArg02, word16, 16)
 l0800_A614:
@@ -16979,6 +17139,7 @@ word16 fn0800_A6B7(selector ds, segptr32 ptrArg02, ptr16 & dxOut, ptr16 & bxOut)
 // Trashed: SCZO ax bx cx dx es Top
 // Preserved: bp si sp
 fn0800_A6B7_entry:
+	word16 dx
 	word16 wArg02 = SLICE(ptrArg02, word16, 0)
 	word16 wArg04 = SLICE(ptrArg02, word16, 16)
 l0800_A6B7:
@@ -17116,6 +17277,8 @@ word16 fn0800_A817(byte al, selector ds, segptr32 ptrArg02, segptr32 ptrArg06, w
 // Trashed: SCZDOP ax bx cx dx es Top
 // Preserved: bp ds sp
 fn0800_A817_entry:
+	mp16 fp
+	byte SCZDOP
 l0800_A817:
 	word16 ax_54
 	word32 es_bx_12 = msdos_get_disk_transfer_area_address()
@@ -17146,6 +17309,8 @@ word16 fn0800_A84A(byte al, selector ds, segptr32 ptrArg02, ptr16 & cxOut, ptr16
 // Trashed: SCZDOP ax bx cx dx es Top
 // Preserved: bp ds sp
 fn0800_A84A_entry:
+	mp16 fp
+	byte SCZDOP
 l0800_A84A:
 	word16 ax_50
 	word32 es_bx_12 = msdos_get_disk_transfer_area_address()
@@ -17176,6 +17341,7 @@ word16 fn0800_A877(selector ds, ptr16 & bxOut)
 // Trashed: SCZO ax bx cx di es si Top
 // Preserved: bp sp
 fn0800_A877_entry:
+	word16 bx
 l0800_A877:
 	word16 si_20 = Mem15[ds:0x24E8<16>:word16]
 	segptr32 ptrLoc06_83 = SEQ(ds, 0x2358<16>)
@@ -17287,6 +17453,11 @@ word16 fn0800_A96D(selector ds, word16 wArg02, word32 dwArg04, word32 dwArg08, s
 // Trashed: SCZO ax bx cx ds dx es Top
 // Preserved: bp sp
 fn0800_A96D_entry:
+	mp16 fp
+	selector ss
+	word16 wLoc06
+	word16 wLoc04
+	byte ch
 	word16 wArg0E_243 = SLICE(ptrArg0C, word16, 16)
 l0800_A96D:
 	word16 dx_169
@@ -17390,6 +17561,7 @@ word32 fn0800_AA7E(selector ds, word32 dwArg02, word32 dwArg06, ptr16 & cxOut, p
 // Trashed: SCZO ax bx cx ds dx es Top
 // Preserved: bp sp
 fn0800_AA7E_entry:
+	word16 cx
 l0800_AA7E:
 	word16 dx_52
 	word16 ax_49
@@ -17509,6 +17681,8 @@ word16 fn0800_ABA3(selector ds, word32 dwArg02, word16 wArg06, word16 wArg08, wo
 // Trashed: SCZO ax bx cx di dx es si Top
 // Preserved: bp sp
 fn0800_ABA3_entry:
+	mp16 fp
+	selector ss
 	word16 wArg04 = SLICE(dwArg02, word16, 16)
 	word16 wArg02 = SLICE(dwArg02, word16, 0)
 	word16 wArg0C = SLICE(dwArg0A, word16, 16)
@@ -17761,6 +17935,8 @@ word16 fn0800_AD85(selector ds, word32 dwArg02, word16 wArg06, word16 wArg08, wo
 // Trashed: SCZO ax bx cx di dx es si Top
 // Preserved: bp sp
 fn0800_AD85_entry:
+	mp16 fp
+	selector ss
 	word16 wArg04 = SLICE(dwArg02, word16, 16)
 	word16 wArg02 = SLICE(dwArg02, word16, 0)
 	word16 wArg0C = SLICE(dwArg0A, word16, 16)
@@ -17923,6 +18099,7 @@ word16 fn0800_AED6(selector ds, segptr32 ptrArg02, ptr16 & dxOut)
 // Trashed: SCZO ax bx cx dx es Top
 // Preserved: D bp si sp
 fn0800_AED6_entry:
+	word16 dx
 l0800_AED6:
 	word16 ax_190
 	branch ptrArg02 != 0<16> l0800_AEE8
@@ -18444,6 +18621,7 @@ word16 fn0800_B2EF(word16 cx, word16 dx, word16 bx, selector ds, word32 dwArg02,
 // Trashed: SCZDO ax di si Top
 // Preserved: bp sp
 fn0800_B2EF_entry:
+	mp16 fp
 l0800_B2EF:
 	word16 di_31
 	word16 si_32
@@ -18489,6 +18667,8 @@ word16 fn0800_B324(selector ds, byte bArg02, segptr32 ptrArg04, ptr16 & cxOut, p
 // Trashed: SCZO ax bx cx dx es Top
 // Preserved: bp si sp
 fn0800_B324_entry:
+	word16 dx
+	word16 cx
 	byte dh = SLICE(dx, byte, 8)
 	word16 wArg04_307 = SLICE(ptrArg04, word16, 0)
 	word16 wArg06_312 = SLICE(ptrArg04, word16, 16)
@@ -18767,6 +18947,8 @@ void fn0800_B6D6(selector ds, word16 wArg02, word16 wArg04, word16 wArg06)
 // Trashed: SCZDO ax bx cx di dx es si Top
 // Preserved: bp sp
 fn0800_B6D6_entry:
+	mp16 fp
+	selector ss
 l0800_B6D6:
 	word16 sp_14 = fp - 0x1A<16>
 	word16 si_17 = wArg02
@@ -19070,6 +19252,10 @@ word16 fn0800_B97F(selector ds, word16 wArg02, segptr32 ptrArg04, word16 wArg08,
 // Trashed: SCZDO ax bx cx dx es Top
 // Preserved: bp di si sp
 fn0800_B97F_entry:
+	mp16 fp
+	selector ss
+	byte bLoc05
+	word16 dx
 	word16 wArg06 = SLICE(ptrArg04, word16, 16)
 	word16 wArg04 = SLICE(ptrArg04, word16, 0)
 l0800_B97F:
@@ -19189,6 +19375,9 @@ word16 fn0800_BA89(selector ds, segptr32 ptrArg02, word16 wArg06, word16 wArg08,
 // Trashed: SCZO ax bx cx ds dx es Top
 // Preserved: bp di si sp
 fn0800_BA89_entry:
+	mp16 fp
+	selector ss
+	word16 cx
 	word16 wArg02_227 = SLICE(ptrArg02, word16, 0)
 l0800_BA89:
 	word16 ax_201
@@ -19342,6 +19531,8 @@ word16 fn0800_BC49(segptr32 ptrArg02, segptr32 ptrArg06, segptr32 ptrArg0A, segp
 // Trashed: SCZDO ax bp bx cx di dx es si Top
 // Preserved: sp
 fn0800_BC49_entry:
+	mp16 fp
+	selector ss
 	word16 wArg06 = SLICE(ptrArg06, word16, 0)
 	word16 wArg08 = SLICE(ptrArg06, word16, 16)
 	word16 wArg0A = SLICE(ptrArg0A, word16, 0)
@@ -19439,6 +19630,7 @@ word16 fn0800_BEA2(word16 cx, word16 dx, selector ds, segptr32 ptrArg02, word32 
 // Trashed: SCZDO ax bx di es si Top
 // Preserved: bp sp
 fn0800_BEA2_entry:
+	mp16 fp
 l0800_BEA2:
 	Mem12[ptrArg02:byte] = 0<8>
 	word16 di_34
@@ -19459,6 +19651,8 @@ word16 fn0800_BF18(word16 di, selector ds, word16 wArg06, word16 wArg08, ptr16 &
 // Trashed: SCZDO ax bx cx di dx es si Top
 // Preserved: bp sp
 fn0800_BF18_entry:
+	mp16 fp
+	selector ss
 l0800_BF18:
 	word16 di_35
 	word16 dx_40 = fn0800_8F97(di, ds, 0xBEE5<16>, 0xBF0D<16>, fp + 2<i16>, ss, wArg06, wArg08, out di_35)
@@ -19585,6 +19779,7 @@ word16 fn0800_BFC7(segptr32 ptrArg02, ptr16 & cxOut)
 // Trashed: SCZDO ax cx es Top
 // Preserved: bp di sp
 fn0800_BFC7_entry:
+	word16 cx
 	word16 wArg04_66 = SLICE(ptrArg02, word16, 16)
 l0800_BFC7:
 	word16 di_16 = SLICE(ptrArg02, word16, 0)
@@ -19772,6 +19967,7 @@ void fn0800_C177(selector ds, ui32 dwArg02, segptr32 ptrArg06, segptr32 ptrArg0A
 // Trashed: SCZDO ax bx cx dx es Top
 // Preserved: bp sp
 fn0800_C177_entry:
+	selector ss
 l0800_C177:
 	fn0800_C379(ds)
 	ui32 v11_v10_536 = dwArg02 - (Mem7[ds:0x26E2<16>:ui32] + 0x12CEA600<32>)
@@ -20099,6 +20295,10 @@ word16 fn0800_C632(selector ds, word16 wArg02, word32 dwArg04, word16 wArg08, pt
 // Trashed: SCZO ax bx cx dx es Top
 // Preserved: bp di si sp
 fn0800_C632_entry:
+	mp16 fp
+	selector ss
+	word16 bx
+	word16 dx
 l0800_C632:
 	word16 ax_123
 	branch wArg02 <u Mem15[ds:0x24E8<16>:word16] l0800_C64E
@@ -20212,6 +20412,8 @@ word16 fn0800_C779(selector ds, word16 wArg02, segptr32 ptrArg04, word16 wArg08,
 // Trashed: SCZO ax bx cx dx Top
 // Preserved: bp ds sp
 fn0800_C779_entry:
+	word16 cx
+	word16 dx
 l0800_C779:
 	word16 ax_37
 	word16 wLoc04_62

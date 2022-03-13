@@ -7,6 +7,7 @@
 // 00010CB8: void _fini(Register word32 o0, Register word32 o1, Register word32 o2, Register word32 o3, Register word32 o4, Register word32 o5, Register (ptr32 Eq_n) o7)
 void _fini(word32 o0, word32 o1, word32 o2, word32 o3, word32 o4, word32 o5, struct Eq_n * o7)
 {
+	ptr32 fp;
 	fn00010CC8(o7, o0, o1, o2, o3, o4, o5, fp, o7);
 }
 

@@ -8,6 +8,7 @@ void _start(word32 g1, word32 o2, word32 o3, word32 o4, word32 o5, word32 o7, wo
 // Terminates process
 _start_exit:
 _start_entry:
+	ptr32 fp
 l00010958:
 	Mem8[0x20E60<32>:word32] = fp + 0x44<32>
 	Mem13[0x20E3C<32>:word32] = fp + 0x44<32> + ((dwArg40 << 2<32>) + 4<32>)

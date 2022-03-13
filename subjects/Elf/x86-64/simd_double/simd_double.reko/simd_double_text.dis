@@ -8,6 +8,8 @@ void _start(word64 rdx, word32 dwArg00)
 // Terminates process
 _start_exit:
 _start_entry:
+	ptr64 fp
+	word64 qwArg00
 l0000000000000620:
 	__align_stack<word64>(fp + 8<i64>)
 	__libc_start_main(0x0000000000000898<p64>, SLICE(qwArg00, int32, 0), fp + 8<i64>, 0x0000000000000A70<p64>, 0x0000000000000AE0<p64>, rdx, fp)
@@ -107,6 +109,8 @@ word64 _mm_malloc(word64 rsi, word64 rdi)
 // Trashed: SCZO rax rdi Top
 // Preserved: rbp rcx rdi rdx rsi rsp
 _mm_malloc_entry:
+	ptr64 fp
+	word64 qwLoc10
 l000000000000072A:
 	word64 rax_43
 	word64 qwLoc28_55 = rsi
@@ -156,6 +160,7 @@ void vec_add(word64 rdi)
 // Trashed: SCZO r10 rax rcx rdx Top
 // Preserved: rbp rsp
 vec_add_entry:
+	ptr64 fp
 l00000000000007A8:
 	__align_stack<word64>(fp)
 	word64 rax_31 = CONVERT(CONVERT(rdi, word64, uint128) /u Mem23[0x0000000000000B00<p64>:word64], word64, uint64)
@@ -175,6 +180,7 @@ void main()
 // Trashed: SCZO r10 rax rcx rdi rdx rsi Top xmm0
 // Preserved: rbp rsp
 main_entry:
+	word128 xmm0
 l0000000000000898:
 	word64 rax_16 = _mm_malloc(0x20<u64>, 0x2000<64>)
 	word64 rax_29 = _mm_malloc(0x20<u64>, 0x2000<64>)
@@ -241,6 +247,7 @@ void __libc_csu_init(word64 rdx, word64 rsi, word32 edi)
 // Trashed: SCZO rax rdi rdx rsi Top
 // Preserved: r12 r13 r14 r15 rbp rbx rsp
 __libc_csu_init_entry:
+	word64 rdi
 	word32 edi = SLICE(rdi, word32, 0)
 l0000000000000A70:
 	_init()

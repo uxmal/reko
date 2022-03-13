@@ -7,6 +7,26 @@
 // 0000000000015180: void fn0000000000015180(Register word64 ra, Register (ptr64 Eq_n) gp, Register int64 a0, Register (ptr64 (ptr64 char)) a1, Register word64 a7, Register word64 s5, Register word64 s11)
 void fn0000000000015180(word64 ra, struct Eq_n * gp, int64 a0, char ** a1, word64 a7, word64 s5, word64 s11)
 {
+	ptr64 fp;
+	ui64 qwLoc0190;
+	word24 nLocBF;
+	char * qwLoc0158;
+	int32 dwLocE8;
+	char * qwLoc0160;
+	char * qwLoc0168;
+	char * qwLoc0170;
+	char * qwLocE0;
+	char * qwLocD8;
+	char * qwLocD0;
+	word64 qwLoc0150;
+	char * qwLoc0140;
+	char * qwLoc0148;
+	char * qwLoc0138;
+	char * qwLoc0130;
+	char * qwLoc0180;
+	word56 nLoc0187;
+	char * qwLoc0178;
+	char * qwLocC8;
 	Eq_n a5_n = gp->tFFFFF870;
 	word32 dwLoc01A4_n = 0x00;
 	Eq_n s0_n = 0;
@@ -464,6 +484,8 @@ l00000000000153DC:
 // 0000000000015EB8: void fn0000000000015EB8(Register (ptr64 Eq_n) a0, Stack word32 dwArg00)
 void fn0000000000015EB8(void (* a0)(), word32 dwArg00)
 {
+	Eq_n fp;
+	word64 qwArg00;
 	__libc_start_main(&g_t15180, (int32) qwArg00, (word64) fp + 8, &g_t182E8, &g_t18378, a0, fp & -16);
 }
 
@@ -572,6 +594,7 @@ void fn0000000000015FCC(struct Eq_n * gp, int64 a0)
 //      fn00000000000175BC
 char * fn00000000000163B0(struct Eq_n * gp)
 {
+	ptr64 fp;
 	Eq_n a5_n = gp->tFFFFF870;
 	__sprintf_chk(fp + -232, 1, (size_t) 0x0080, "%.2x", 0x00);
 	int64 s0_n = 1;
@@ -627,6 +650,7 @@ void * fn00000000000164D0(void * a0, Eq_n a1)
 //      fn0000000000015180
 struct Eq_n * fn000000000001654C(struct Eq_n * gp, char * a3, Eq_n a4, char * a5, word64 a6, word64 a7, union Eq_n & a4Out, union Eq_n & a5Out, ptr64 & a6Out, ptr64 & a7Out)
 {
+	ptr64 fp;
 	Eq_n t3_n = gp->tFFFFF870;
 	__vasprintf_chk(fp + -112, 1, fp + -40, fp + -40, a3, a4, a5, a6, a7);
 	if (a0_n >= 0x00)
@@ -691,6 +715,8 @@ l0000000000016698:
 //      fn0000000000015180
 int32 * fn00000000000166F4(struct Eq_n * gp, int32 * a0, char * a1, int64 a2)
 {
+	ptr64 fp;
+	int32 dwLoc40;
 	int32 * a0_n;
 	Eq_n a5_n = gp->tFFFFF870;
 	int64 s0_n = (int64) *a0;
@@ -799,6 +825,7 @@ void fn00000000000168B8(struct Eq_n * gp, char * a1)
 //      fn00000000000175BC
 char * fn00000000000168E4(struct Eq_n * gp, char * a0, void * a1)
 {
+	ptr64 fp;
 	char * a0_n;
 	uint64 a0_n;
 	Eq_n a4_n = gp->tFFFFF870;
@@ -829,6 +856,8 @@ l0000000000016910:
 //      fn0000000000015180
 char * fn00000000000169D8(struct Eq_n * gp, char * a1)
 {
+	ptr64 fp;
+	struct addrinfo * qwLoc70;
 	char * a0_n;
 	Eq_n a5_n = gp->tFFFFF870;
 	if ((uint64) getaddrinfo(a1, null, fp + -0x0068, fp + -112) == 0x00)
@@ -1008,6 +1037,8 @@ l0000000000016CB8:
 //      fn0000000000015180
 char * fn0000000000016D74(word64 ra, struct Eq_n * gp, char * a0, char * a1, struct Eq_n * a2, Eq_n a3, union Eq_n & a4Out)
 {
+	ptr64 fp;
+	int32 dwLoc01B8;
 	char * a0_n;
 	Eq_n a5_n = gp->tFFFFF870;
 	memset(a2, 0, (size_t) 200);
@@ -1214,6 +1245,7 @@ l0000000000017074:
 //      fn00000000000175BC
 char * fn000000000001730C(struct Eq_n * gp, char * a0, void * a1)
 {
+	ptr64 fp;
 	char * a0_n;
 	Eq_n a4_n = gp->tFFFFF870;
 	if (a0 <= (char *) 0x0080)
@@ -1309,6 +1341,7 @@ l0000000000017408:
 //      fn0000000000015180
 char * fn00000000000175BC(word64 ra, struct Eq_n * gp, char * s1, char * a0, char * a1, struct Eq_n * a2, Eq_n a3, union Eq_n & a4Out)
 {
+	ptr64 fp;
 	char * a0_n;
 	Eq_n a5_n = gp->tFFFFF870;
 	memset(a2, 0, (size_t) 200);
@@ -1442,6 +1475,11 @@ l0000000000017774:
 //      fn0000000000017D10
 int64 fn0000000000017924(struct Eq_n * gp, FILE & a1Out, union Eq_n & a2Out, union Eq_n & a3Out, union Eq_n & a4Out, union Eq_n & a6Out)
 {
+	FILE * a1;
+	Eq_n a2;
+	Eq_n a3;
+	Eq_n a4;
+	Eq_n a6;
 	int64 s0_n;
 	if (gp->qwFFFFF820 == 0x00)
 	{
@@ -1719,6 +1757,8 @@ l0000000000017B84:
 //      fn00000000000175BC
 struct Eq_n * fn0000000000017D10(word64 ra, struct Eq_n * gp, char * s1, ptr64 a0, ptr64 a1, ptr64 a2, ptr64 a3, ptr64 a4, Eq_n s6, ptr64 s7, void & s0Out, ptr64 & s3Out, union Eq_n & s6Out)
 {
+	void * s0;
+	ptr64 s3;
 	word64 a1_n;
 	word64 a2_n;
 	word64 a3_n;
@@ -1928,6 +1968,7 @@ l0000000000017D54:
 //      fn0000000000016D74
 int64 fn0000000000017F04(struct Eq_n * gp, int64 a0, char * a1, int64 a2, int64 a3)
 {
+	ptr64 fp;
 	Eq_n a0_n;
 	Eq_n a5_n = gp->tFFFFF870;
 	word64 a3_n;
@@ -2004,6 +2045,7 @@ l0000000000017F84:
 //      fn00000000000175BC
 char * fn0000000000018118(struct Eq_n * gp, char * a0, char * a1)
 {
+	ptr64 fp;
 	char * a0_n;
 	Eq_n a5_n = gp->tFFFFF870;
 	int64 t4_n = a1 & 3;

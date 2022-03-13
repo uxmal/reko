@@ -2,6 +2,8 @@
 // Return size: 0
 void TreeFindMock()
 TreeFindMock_entry:
+	word32 t
+	word32 v
 	// succ:  l0
 l0:
 	// succ:  l0_seek
@@ -30,21 +32,21 @@ TreeFindMock_exit:
 // Equivalence classes ////////////
 Eq_1: (ptr32 (struct "Globals"))
 	globals_t (in globals : (ptr32 (struct "Globals")))
-Eq_2: (ptr32 (struct (0 T_8 t0000) (4 T_14 t0004) (8 T_17 t0008)))
+Eq_2: (ptr32 (struct (0 T_9 t0000) (4 T_14 t0004) (8 T_17 t0008)))
 	T_2 (in t : word32)
-	T_3 (in 0<32> : word32)
+	T_4 (in 0<32> : word32)
 	T_14 (in Mem0[t + 4<32>:word32] : word32)
 	T_17 (in Mem0[t + 8<32>:word32] : word32)
-Eq_4: bool
-	T_4 (in t == 0<32> : bool)
-Eq_5: int32
-	T_5 (in vv_5 : word32)
-	T_8 (in Mem0[t + 0<32>:word32] : word32)
-	T_9 (in v : word32)
-Eq_6: word32
-	T_6 (in 0<32> : word32)
+Eq_3: int32
+	T_3 (in v : word32)
+	T_6 (in vv_5 : word32)
+	T_9 (in Mem0[t + 0<32>:word32] : word32)
+Eq_5: bool
+	T_5 (in t == 0<32> : bool)
 Eq_7: word32
-	T_7 (in t + 0<32> : word32)
+	T_7 (in 0<32> : word32)
+Eq_8: word32
+	T_8 (in t + 0<32> : word32)
 Eq_10: bool
 	T_10 (in v == vv_5 : bool)
 Eq_11: bool
@@ -64,36 +66,36 @@ globals_t: (in globals : (ptr32 (struct "Globals")))
   OrigDataType: (ptr32 (struct "Globals"))
 T_2: (in t : word32)
   Class: Eq_2
-  DataType: (ptr32 (struct (0 T_8 t0000) (4 T_14 t0004) (8 T_17 t0008)))
-  OrigDataType: (ptr32 (struct (0 T_8 t0000) (4 T_14 t0004) (8 T_17 t0008)))
-T_3: (in 0<32> : word32)
-  Class: Eq_2
-  DataType: (ptr32 (struct (0 T_8 t0000) (4 T_14 t0004) (8 T_17 t0008)))
-  OrigDataType: word32
-T_4: (in t == 0<32> : bool)
-  Class: Eq_4
-  DataType: bool
-  OrigDataType: bool
-T_5: (in vv_5 : word32)
-  Class: Eq_5
+  DataType: (ptr32 (struct (0 T_9 t0000) (4 T_14 t0004) (8 T_17 t0008)))
+  OrigDataType: (ptr32 (struct (0 T_9 t0000) (4 T_14 t0004) (8 T_17 t0008)))
+T_3: (in v : word32)
+  Class: Eq_3
   DataType: int32
   OrigDataType: int32
-T_6: (in 0<32> : word32)
-  Class: Eq_6
-  DataType: word32
+T_4: (in 0<32> : word32)
+  Class: Eq_2
+  DataType: (ptr32 (struct (0 T_9 t0000) (4 T_14 t0004) (8 T_17 t0008)))
   OrigDataType: word32
-T_7: (in t + 0<32> : word32)
+T_5: (in t == 0<32> : bool)
+  Class: Eq_5
+  DataType: bool
+  OrigDataType: bool
+T_6: (in vv_5 : word32)
+  Class: Eq_3
+  DataType: int32
+  OrigDataType: int32
+T_7: (in 0<32> : word32)
   Class: Eq_7
   DataType: word32
   OrigDataType: word32
-T_8: (in Mem0[t + 0<32>:word32] : word32)
-  Class: Eq_5
+T_8: (in t + 0<32> : word32)
+  Class: Eq_8
+  DataType: word32
+  OrigDataType: word32
+T_9: (in Mem0[t + 0<32>:word32] : word32)
+  Class: Eq_3
   DataType: int32
   OrigDataType: word32
-T_9: (in v : word32)
-  Class: Eq_5
-  DataType: int32
-  OrigDataType: int32
 T_10: (in v == vv_5 : bool)
   Class: Eq_10
   DataType: bool
@@ -112,7 +114,7 @@ T_13: (in t + 4<32> : word32)
   OrigDataType: ptr32
 T_14: (in Mem0[t + 4<32>:word32] : word32)
   Class: Eq_2
-  DataType: (ptr32 (struct (0 T_8 t0000) (4 T_14 t0004) (8 T_17 t0008)))
+  DataType: (ptr32 (struct (0 T_9 t0000) (4 T_14 t0004) (8 T_17 t0008)))
   OrigDataType: word32
 T_15: (in 8<32> : word32)
   Class: Eq_15
@@ -124,5 +126,5 @@ T_16: (in t + 8<32> : word32)
   OrigDataType: ptr32
 T_17: (in Mem0[t + 8<32>:word32] : word32)
   Class: Eq_2
-  DataType: (ptr32 (struct (0 T_8 t0000) (4 T_14 t0004) (8 T_17 t0008)))
+  DataType: (ptr32 (struct (0 T_9 t0000) (4 T_14 t0004) (8 T_17 t0008)))
   OrigDataType: word32

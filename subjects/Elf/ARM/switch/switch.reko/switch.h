@@ -6,8 +6,8 @@
 // Equivalence classes ////////////
 Eq_1: (struct "Globals"
 		(1 code t0001)
-		(8364 (ptr32 Eq_21) ptr8364)
-		(8368 (ptr32 Eq_24) ptr8368)
+		(8364 (ptr32 Eq_22) ptr8364)
+		(8368 (ptr32 Eq_25) ptr8368)
 		(8394 int32 dw8394)
 		(8398 int32 dw8398)
 		(83F4 (ptr32 byte) ptr83F4)
@@ -38,18 +38,18 @@ Eq_12: (fn word32 ())
 	T_13 (in signature of __do_global_ctors_aux @ 0000870C : void)
 Eq_16: (fn void ())
 	T_16 (in ptrArg08 @ 00008300 : (ptr32 Eq_16))
-	T_25 (in fini @ 00008358 : (ptr32 (fn void ())))
+	T_26 (in fini @ 00008358 : (ptr32 (fn void ())))
 Eq_17: (fn void ())
 	T_17 (in ptrArg0C @ 00008300 : (ptr32 Eq_17))
-	T_26 (in rtld_fini @ 00008358 : (ptr32 (fn void ())))
-Eq_19: (fn int32 ((ptr32 Eq_21), int32, (ptr32 (ptr32 char)), (ptr32 Eq_24), (ptr32 Eq_16), (ptr32 Eq_17), (ptr32 void)))
-	T_19 (in __libc_start_main @ 00008358 : ptr32)
-	T_20 (in signature of __libc_start_main @ 00000000 : void)
-Eq_21: (fn int32 (int32, (ptr32 (ptr32 char)), (ptr32 (ptr32 char))))
-	T_21 (in main @ 00008358 : (ptr32 (fn int32 (int32, (ptr32 (ptr32 char)), (ptr32 (ptr32 char))))))
-	T_29 (in Mem14[0x00008364<p32>:word32] @ 00008358 : word32)
-Eq_24: (fn void ())
-	T_24 (in init @ 00008358 : (ptr32 (fn void ())))
+	T_27 (in rtld_fini @ 00008358 : (ptr32 (fn void ())))
+Eq_20: (fn int32 ((ptr32 Eq_22), int32, (ptr32 (ptr32 char)), (ptr32 Eq_25), (ptr32 Eq_16), (ptr32 Eq_17), (ptr32 void)))
+	T_20 (in __libc_start_main @ 00008358 : ptr32)
+	T_21 (in signature of __libc_start_main @ 00000000 : void)
+Eq_22: (fn int32 (int32, (ptr32 (ptr32 char)), (ptr32 (ptr32 char))))
+	T_22 (in main @ 00008358 : (ptr32 (fn int32 (int32, (ptr32 (ptr32 char)), (ptr32 (ptr32 char))))))
+	T_30 (in Mem14[0x00008364<p32>:word32] @ 00008358 : word32)
+Eq_25: (fn void ())
+	T_25 (in init @ 00008358 : (ptr32 (fn void ())))
 	T_34 (in Mem14[0x00008368<p32>:word32] @ 00008358 : word32)
 Eq_36: (fn void ())
 	T_36 (in abort @ 0000835C : ptr32)
@@ -250,69 +250,69 @@ T_18: (in ptrArg10 @ 00008300 : (ptr32 void))
   Class: Eq_18
   DataType: (ptr32 void)
   OrigDataType: (ptr32 void)
-T_19: (in __libc_start_main @ 00008358 : ptr32)
+T_19: (in fp @ 00008334 : ptr32)
   Class: Eq_19
-  DataType: (ptr32 Eq_19)
-  OrigDataType: (ptr32 (fn T_35 (T_29, T_15, T_32, T_34, T_16, T_17, T_18)))
-T_20: (in signature of __libc_start_main @ 00000000 : void)
-  Class: Eq_19
-  DataType: (ptr32 Eq_19)
+  DataType: ptr32
+  OrigDataType: ptr32
+T_20: (in __libc_start_main @ 00008358 : ptr32)
+  Class: Eq_20
+  DataType: (ptr32 Eq_20)
+  OrigDataType: (ptr32 (fn T_35 (T_30, T_15, T_32, T_34, T_16, T_17, T_18)))
+T_21: (in signature of __libc_start_main @ 00000000 : void)
+  Class: Eq_20
+  DataType: (ptr32 Eq_20)
   OrigDataType: 
-T_21: (in main @ 00008358 : (ptr32 (fn int32 (int32, (ptr32 (ptr32 char)), (ptr32 (ptr32 char))))))
-  Class: Eq_21
-  DataType: (ptr32 Eq_21)
+T_22: (in main @ 00008358 : (ptr32 (fn int32 (int32, (ptr32 (ptr32 char)), (ptr32 (ptr32 char))))))
+  Class: Eq_22
+  DataType: (ptr32 Eq_22)
   OrigDataType: 
-T_22: (in argc @ 00008358 : int32)
+T_23: (in argc @ 00008358 : int32)
   Class: Eq_15
   DataType: int32
   OrigDataType: 
-T_23: (in ubp_av @ 00008358 : (ptr32 (ptr32 char)))
-  Class: Eq_23
+T_24: (in ubp_av @ 00008358 : (ptr32 (ptr32 char)))
+  Class: Eq_24
   DataType: (ptr32 (ptr32 char))
   OrigDataType: 
-T_24: (in init @ 00008358 : (ptr32 (fn void ())))
-  Class: Eq_24
-  DataType: (ptr32 Eq_24)
+T_25: (in init @ 00008358 : (ptr32 (fn void ())))
+  Class: Eq_25
+  DataType: (ptr32 Eq_25)
   OrigDataType: 
-T_25: (in fini @ 00008358 : (ptr32 (fn void ())))
+T_26: (in fini @ 00008358 : (ptr32 (fn void ())))
   Class: Eq_16
   DataType: (ptr32 Eq_16)
   OrigDataType: 
-T_26: (in rtld_fini @ 00008358 : (ptr32 (fn void ())))
+T_27: (in rtld_fini @ 00008358 : (ptr32 (fn void ())))
   Class: Eq_17
   DataType: (ptr32 Eq_17)
   OrigDataType: 
-T_27: (in stack_end @ 00008358 : (ptr32 void))
+T_28: (in stack_end @ 00008358 : (ptr32 void))
   Class: Eq_18
   DataType: (ptr32 void)
   OrigDataType: 
-T_28: (in 00008364 @ 00008358 : ptr32)
-  Class: Eq_28
-  DataType: (ptr32 (ptr32 Eq_21))
-  OrigDataType: (ptr32 (struct (0 T_29 t0000)))
-T_29: (in Mem14[0x00008364<p32>:word32] @ 00008358 : word32)
-  Class: Eq_21
-  DataType: (ptr32 Eq_21)
+T_29: (in 00008364 @ 00008358 : ptr32)
+  Class: Eq_29
+  DataType: (ptr32 (ptr32 Eq_22))
+  OrigDataType: (ptr32 (struct (0 T_30 t0000)))
+T_30: (in Mem14[0x00008364<p32>:word32] @ 00008358 : word32)
+  Class: Eq_22
+  DataType: (ptr32 Eq_22)
   OrigDataType: (ptr32 (fn int32 (int32, (ptr32 (ptr32 char)), (ptr32 (ptr32 char)))))
-T_30: (in fp @ 00008358 : ptr32)
-  Class: Eq_30
-  DataType: ptr32
-  OrigDataType: ptr32
 T_31: (in 4<i32> @ 00008358 : int32)
   Class: Eq_31
   DataType: int32
   OrigDataType: int32
 T_32: (in fp + 4<i32> @ 00000000 : word32)
-  Class: Eq_23
+  Class: Eq_24
   DataType: (ptr32 (ptr32 char))
   OrigDataType: (ptr32 (ptr32 char))
 T_33: (in 00008368 @ 00008358 : ptr32)
   Class: Eq_33
-  DataType: (ptr32 (ptr32 Eq_24))
+  DataType: (ptr32 (ptr32 Eq_25))
   OrigDataType: (ptr32 (struct (0 T_34 t0000)))
 T_34: (in Mem14[0x00008368<p32>:word32] @ 00008358 : word32)
-  Class: Eq_24
-  DataType: (ptr32 Eq_24)
+  Class: Eq_25
+  DataType: (ptr32 Eq_25)
   OrigDataType: (ptr32 (fn void ()))
 T_35: (in __libc_start_main(g_ptr8364, dwArg00, fp + 4<i32>, g_ptr8368, ptrArg08, ptrArg0C, ptrArg10) @ 00008358 : int32)
   Class: Eq_35
@@ -1605,11 +1605,11 @@ typedef void (Eq_16)();
 
 typedef void (Eq_17)();
 
-typedef int32 (Eq_19)( *, int32, char * *,  *,  *,  *, void);
+typedef int32 (Eq_20)( *, int32, char * *,  *,  *,  *, void);
 
-typedef int32 (Eq_21)(int32 r0, char * * r1, char * * r2);
+typedef int32 (Eq_22)(int32 r0, char * * r1, char * * r2);
 
-typedef void (Eq_24)();
+typedef void (Eq_25)();
 
 typedef void (Eq_36)();
 

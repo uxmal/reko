@@ -29,6 +29,7 @@ void register_tm_clones()
 // 800000E4: void __do_global_dtors_aux()
 void __do_global_dtors_aux()
 {
+	ptr32 fp;
 	ptr32 a6_n = fp - 0x04;
 	if (g_b80002724 == 0x00)
 	{
@@ -127,6 +128,7 @@ void sine_taylor(real64 rArg04, int32 dwArg0C)
 // 8000049A: void main()
 void main()
 {
+	ptr32 fp;
 	sine_taylor(3.14);
 	_sin(3.14, 0.003, fp - 0x08);
 }
@@ -153,6 +155,7 @@ void _sin(real64 rArg04, real64 rArg0C, Eq_n tArg14)
 // 80000624: void __do_global_ctors_aux()
 void __do_global_ctors_aux()
 {
+	ptr32 fp;
 	<anonymous> * a0_n = g_ptr8000270C;
 	ptr32 a6_n = fp - 0x04;
 	ptr32 a2_n = 0x8000270C;

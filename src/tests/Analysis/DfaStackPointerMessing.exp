@@ -25,6 +25,8 @@ fn0C00_0000_exit:
 // Return size: 0
 word16 fn0C00_0008(word16 bx, selector ds)
 fn0C00_0008_entry:
+	mp16 fp
+	selector ss
 	// succ:  l0C00_0008
 l0C00_0008:
 	Mem5[ds:0x300<16>:word16] = fp

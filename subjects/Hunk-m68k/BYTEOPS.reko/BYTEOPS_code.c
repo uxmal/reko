@@ -7,6 +7,8 @@
 // 00001000: void fn00001000(Register int32 d0, Register (ptr32 byte) a0)
 void fn00001000(int32 d0, byte * a0)
 {
+	struct Eq_n * fp;
+	int32 dwLoc10;
 	struct Eq_n * a6_n = *(struct Eq_n **) 0x04;
 	int32 d2_n = d0;
 	byte * a2_n = a0;
@@ -280,6 +282,7 @@ word32 fn000012D0(ptr32 dwArg04)
 //      fn000023C8
 word32 fn0000131C(ptr32 dwArg04)
 {
+	word32 a5;
 	if (g_dw2BB8 == 0x00)
 	{
 		struct Eq_n * a3_n;
@@ -331,6 +334,7 @@ byte g_b142C = 0x61; // 0000142C
 //      fn00001390
 Eq_n fn0000143C(Eq_n d0, byte * dwArg04)
 {
+	ptr32 fp;
 	return fn00001458(d0, *(struct Eq_n **) 11496, dwArg04, fp + 8);
 }
 
@@ -339,6 +343,7 @@ Eq_n fn0000143C(Eq_n d0, byte * dwArg04)
 //      fn0000143C
 Eq_n fn00001458(Eq_n d0, struct Eq_n * dwArg04, byte * dwArg08, Eq_n dwArg0C)
 {
+	struct Eq_n * fp;
 	Eq_n d0_n;
 	Eq_n d3_n = dwArg0C;
 	struct Eq_n * a5_n = dwArg04;
@@ -896,6 +901,7 @@ byte g_b1DAC = 0x25; // 00001DAC
 //      fn00001458
 uint32 fn00001DD8(Eq_n dwArg04, struct Eq_n * dwArg08, ui32 & a0Out, ptr32 & a5Out)
 {
+	ptr32 a5;
 	ui32 * a0_n;
 	uint32 d1_n;
 	dwArg08->dw0018 |= 2;
@@ -920,6 +926,7 @@ uint32 fn00001DD8(Eq_n dwArg04, struct Eq_n * dwArg08, ui32 & a0Out, ptr32 & a5O
 //      fn00001DD8
 int32 fn00001E34(Eq_n dwArg04, struct Eq_n * dwArg08, ui32 & a0Out, ptr32 & a5Out)
 {
+	ui32 * a0;
 	int32 d0_n;
 	ptr32 a5_n = fn000023C8();
 	if (dwArg08 == null)
@@ -995,6 +1002,7 @@ l00001F42:
 //      fn00002A44
 int32 fn00001F48(struct Eq_n * dwArg04, ui32 & a0Out, ptr32 & a5Out)
 {
+	ui32 * a0;
 	int32 d0_n;
 	ptr32 a5_n = fn000023C8();
 	if (dwArg04 == null)
@@ -1045,6 +1053,8 @@ l00001FD6:
 //      fn00001E34
 Eq_n fn00001FF4(int32 dwArg04, ptr32 & a0Out)
 {
+	Eq_n dwLoc10;
+	ptr32 a0;
 	Eq_n d0_n;
 	if (dwArg04 == 0x00)
 		d0_n.u0 = 0;
@@ -1261,6 +1271,7 @@ void fn00002358(struct Eq_n * dwArg04)
 //      fn00001F48
 word32 fn000023C8()
 {
+	word32 a5;
 	if ((SetSignal(0, 0x1000) & 0x1000) != 0x00)
 		a5 = fn0000131C(0x14);
 	return a5;
@@ -1358,6 +1369,7 @@ l000024F4:
 //      fn00002648
 word32 * fn000024FC(word32 * d0, word32 * d1, word32 * d2, word32 & d1Out, word32 & d2Out)
 {
+	word32 dwLoc24;
 	word32 * d7_n = d2;
 	if (d2 == null)
 	{

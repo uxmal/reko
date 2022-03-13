@@ -237,6 +237,8 @@ word16 fn04A0(word16 r4, word16 pc, ptr16 & r5Out)
 // Trashed: NZVC r0 r1 r2 r3 r4 r5
 // Preserved: sp
 fn04A0_entry:
+	ptr16 fp
+	word16 r5
 l04A0:
 	word16 v5_5 = Mem0[pc + 0xA52<16>:word16] & Mem0[0x0EF4<p16>:word16]
 	Mem6[pc + 0xA52<16>:word16] = v5_5
@@ -538,6 +540,7 @@ word16 fn06D6(word16 r4, word16 r5, word16 pc)
 // Trashed: NZVC r0 r2 r3 r4 r5
 // Preserved: r1 sp
 fn06D6_entry:
+	ptr16 fp
 l06D6:
 	word16 r2_172 = Mem0[0x0F06<p16>:word16]
 l06DA:
@@ -626,6 +629,9 @@ word16 fn07A6(word16 r4, word16 pc, ptr16 & r4Out, ptr16 & r5Out)
 // Trashed: NZVC r0 r1 r2 r3 r4 r5
 // Preserved: sp
 fn07A6_entry:
+	ptr16 fp
+	word16 r0
+	word16 r5
 	word16 sp_119 = fp
 l07A6:
 	word16 v5_4 = Mem0[0x0F1C<p16>:word16] - 1<16>

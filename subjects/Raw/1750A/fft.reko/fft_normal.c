@@ -10,6 +10,7 @@
 //      init_fft
 Eq_n reverse(Eq_n gp0, struct Eq_n & gp14Out)
 {
+	struct Eq_n * fp;
 	Eq_n gp0_n = 0x00;
 	word16 gp1_n = 0x00;
 	do
@@ -28,6 +29,7 @@ Eq_n reverse(Eq_n gp0, struct Eq_n & gp14Out)
 //      main
 int16 init_fft(ptr16 & gp4Out)
 {
+	ptr16 fp;
 	struct Eq_n * gp14_n = fp - 0x01;
 	Eq_n gp3_n = 0x00;
 	do
@@ -50,6 +52,7 @@ int16 init_fft(ptr16 & gp4Out)
 //      main
 struct Eq_n * compute_output()
 {
+	ptr16 fp;
 	struct Eq_n * gp14_n = fp - 0x02;
 	uint16 gp9_n = 0x00;
 	do
@@ -71,6 +74,7 @@ struct Eq_n * compute_output()
 //      main
 void fft(uint16 gp3, uint16 gp4)
 {
+	ptr16 fp;
 	struct Eq_n * gp14_n = fp - 0x0F;
 	do
 	{
@@ -159,6 +163,8 @@ cui16 frex(cui16 gp1, struct Eq_n ** gp3)
 //      asin
 real48 sqrt(int32 gp0_gp1, word16 gp2, struct Eq_n & gp14Out)
 {
+	ptr16 fp;
+	real48 rLoc02;
 	word16 gp0 = SLICE(gp0_gp1, word16, 16);
 	cui16 gp1 = (word16) gp0_gp1;
 	word16 gp2_n;
@@ -191,6 +197,7 @@ real48 sqrt(int32 gp0_gp1, word16 gp2, struct Eq_n & gp14Out)
 //      asin
 word32 auxasin(Eq_n gp0_gp1_gp2, ptr16 & gp2Out, ptr16 & gp14Out)
 {
+	ptr16 fp;
 	real48 gp5_gp6_gp7_n = gp0_gp1_gp2 * gp0_gp1_gp2;
 	word16 gp7_n = (word16) gp5_gp6_gp7_n;
 	real48 gp0_gp1_gp2_n = gp0_gp1_gp2 * ((SEQ((word32) gp5_gp6_gp7_n, gp7_n) *48 g_tFFFF801B.t0000) / ((SEQ((word32) gp5_gp6_gp7_n, gp7_n) + g_rFFFF801E) + g_rFFFF8024 / (gp5_gp6_gp7_n + *((char *) (&g_rFFFF801E) + 3))) + *((char *) (&g_rFFFF8024) + 3));
@@ -249,6 +256,7 @@ void rcos()
 //      cos
 word16 sincos(Eq_n gp2_gp3, ci16 gp1, word16 gp4, ptr16 & gp1Out, ptr16 & gp2Out, ptr16 & gp3Out, ptr16 & gp4Out, ptr16 & gp14Out)
 {
+	ptr16 fp;
 	word16 gp3 = (word16) gp2_gp3;
 	ci16 gp2_n = gp1;
 	if (gp1 < 0x00)

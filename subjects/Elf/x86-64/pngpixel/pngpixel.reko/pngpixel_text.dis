@@ -8,6 +8,8 @@ void _start(word64 rdx, word32 dwArg00)
 // Terminates process
 _start_exit:
 _start_entry:
+	ptr64 fp
+	word64 qwArg00
 l0000000000400CD0:
 	__align_stack<word64>(fp + 8<i64>)
 	__libc_start_main(0x4012F9<64>, SLICE(qwArg00, int32, 0), fp + 8<i64>, 0x401780<64>, 0x4017F0<64>, rdx, fp)
@@ -112,6 +114,7 @@ word32 component(word32 ecx, word32 edx, word32 esi, word64 rdi, word32 r8d)
 // Trashed: SCZO rax rcx rdx Top
 // Preserved: rbp rsp
 component_entry:
+	word64 rcx
 	word32 ecx = SLICE(rcx, word32, 0)
 l0000000000400DC6:
 	word32 eax_52 = (edx + (esi & 0x3F<32>) *s r8d) *s ecx
@@ -148,6 +151,7 @@ void print_pixel(word32 ecx, word64 rdx, word64 rsi, word64 rdi, selector fs)
 // Trashed: SCZO r8 r9 rax rcx rdi rdx rsi Top
 // Preserved: r12 r13 rbp rbx rsp
 print_pixel_entry:
+	ptr64 fp
 l0000000000400EE9:
 	word64 rax_27 = Mem25[fs:0x28<32>:word64]
 	word32 eax_49 = CONVERT(SLICE(png_get_bit_depth(rdi, rsi, rsi, rdx, rsi, rdi, rax_27), byte, 0), byte, word32)
@@ -211,6 +215,11 @@ void main(word64 rsi, word32 edi, selector fs)
 // Trashed: SCZO rax rcx rdi rdx rsi Top
 // Preserved: r8 r9 rbp rsp
 main_entry:
+	ptr64 fp
+	word32 dwLoc78
+	word32 dwLoc6C
+	word32 dwLoc88
+	word32 dwLoc84
 l00000000004012F9:
 	word64 rax_14 = Mem12[fs:0x28<32>:word64]
 	branch edi != 4<32> l000000000040173F
@@ -347,6 +356,7 @@ void __libc_csu_init(word64 rdx, word64 rsi, word32 edi)
 // Trashed: SCZO rax rdi rdx rsi Top
 // Preserved: r12 r13 r14 r15 rbp rbx rsp
 __libc_csu_init_entry:
+	word64 rdi
 	word32 edi = SLICE(rdi, word32, 0)
 l0000000000401780:
 	_init()

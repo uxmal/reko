@@ -12,6 +12,7 @@ void __exit()
 // Terminates process
 __exit_exit:
 __exit_entry:
+	selector ss
 l0800_0121:
 	selector ds_5 = Mem0[0800:01F8:selector]
 	__restorezero(ds_5)
@@ -42,6 +43,7 @@ void fn0800_0162(selector ds)
 // Trashed: ax bx dx es Top
 // Preserved: ds sp
 fn0800_0162_entry:
+	selector cs
 l0800_0162:
 	word32 es_bx_10 = msdos_get_interrupt_vector(0<8>)
 	Mem12[ds:0x74<16>:word16] = SLICE(es_bx_10, word16, 0)
@@ -230,6 +232,7 @@ void _main(word16 cx, word16 dx, word16 bx, selector es, selector ds)
 // Trashed: SCZDO ax bp bx cx di dx es si sp Top
 // Preserved:
 _main_entry:
+	selector ss
 l0800_0265:
 	word16 bp_36
 	word16 bx_37
@@ -308,6 +311,7 @@ void _exit(selector ds, word16 wArg02)
 // Terminates process
 _exit_exit:
 _exit_entry:
+	selector ss
 l0800_0301:
 l0800_0310:
 	word16 ax_11 = Mem10[ds:0x23E<16>:word16]
@@ -335,6 +339,8 @@ void __setargv(selector ds, word16 wArg00)
 // Trashed: SCZDO ax bp bx cx di ds dx es si Top
 // Preserved: sp
 __setargv_entry:
+	mp16 fp
+	selector ss
 l0800_0336:
 	selector es_30
 	Mem6[0800:0330:word16] = wArg00
@@ -700,6 +706,7 @@ void ___brk(selector ds, word16 wArg02)
 // Trashed: SCZO ax dx Top
 // Preserved: bp sp
 ___brk_entry:
+	mp16 fp
 l0800_05E3:
 	branch wArg02 >=u fp - 0x102<16> l0800_05FA
 l0800_05FA:
@@ -722,6 +729,7 @@ word16 ___sbrk(selector ds, word32 dwArg02)
 // Trashed: SCZO ax cx Top
 // Preserved: bp sp
 ___sbrk_entry:
+	mp16 fp
 l0800_0607:
 	word16 ax_29
 	ui32 dx_ax_41 = dwArg02 + CONVERT(Mem7[ds:0x9E<16>:word16], word16, uint32)
@@ -905,6 +913,8 @@ void _fgetc(selector ds, word16 wArg02)
 // Trashed: SCZO ax bx cx dx es Top
 // Preserved: D bp si sp
 _fgetc_entry:
+	mp16 fp
+	byte bLoc03
 l0800_07F2:
 l0800_07FC:
 	word16 v8_18 = Mem17[ds:wArg02:word16] - 1<16>
@@ -1063,6 +1073,8 @@ word16 _read(selector ds, word16 wArg02, word16 wArg04, word16 wArg06)
 // Trashed: SCZDO ax bx cx dx es Top
 // Preserved: bp di si sp
 _read_entry:
+	mp16 fp
+	byte bLoc03
 l0800_09F7:
 	word16 ax_153
 	branch wArg06 <u 1<16> l0800_0A15
@@ -1147,6 +1159,7 @@ word16 _write(selector ds, word16 wArg02, word16 wArg04, word16 wArg06)
 // Trashed: SCZO ax bx cx dx Top
 // Preserved: bp di si sp
 _write_entry:
+	mp16 fp
 l0800_0ACF:
 	word16 ax_141
 	branch wArg06 >=u 1<16> l0800_0AE6
@@ -1280,6 +1293,7 @@ void __LONGTOA(selector ds, byte bArg02, byte bArg04, word16 wArg06, word16 wArg
 // Trashed: SCZO ax bx Top
 // Preserved: D bp cx di ds dx es si sp ss
 __LONGTOA_entry:
+	mp16 fp
 l0800_0C53:
 	word16 di_125 = wArg08
 	byte bl_28 = SLICE(wArg06, byte, 0)
@@ -1446,6 +1460,7 @@ word16 _printf(word16 cx, word16 dx, word16 bx, selector ds, word16 wArg02)
 // Trashed: SCZDO ax di si Top
 // Preserved: bp sp
 _printf_entry:
+	mp16 fp
 l0800_0E4B:
 	word16 di_26 = __VPRINTER(cx, dx, bx, ds, fp + 4<i16>, wArg02)
 l0800_0E62:
@@ -1479,6 +1494,7 @@ void _fputc(selector ds, byte bArg02, word16 wArg04)
 // Trashed: SCZO ax bx cx dx Top
 // Preserved: bp si sp
 _fputc_entry:
+	mp16 fp
 l0800_0E7D:
 l0800_0E8D:
 	word16 v9_20 = Mem19[ds:wArg04:word16] + 1<16>
@@ -2284,6 +2300,7 @@ word16 _scanf(word16 di, selector es, selector ds, word16 wArg02, ptr16 & bxOut,
 // Trashed: SCZDO ax bp bx cx di dx es si sp Top
 // Preserved:
 _scanf_entry:
+	selector ss
 l0800_16D4:
 	word16 bp_28
 	word16 bx_33
@@ -2306,6 +2323,12 @@ word16 __scanner(word16 di, selector es, selector ds, word16 wArg02, word16 wArg
 // Trashed: SCZDO ax bp bx cx di dx es si Top
 // Preserved: sp
 __scanner_entry:
+	mp16 fp
+	selector ss
+	word16 wLoc26
+	word16 bx
+	word16 dx
+	word16 wLoc04
 l0800_16F3:
 	word16 wLoc28_1037 = 0<16>
 l0800_1721:
@@ -2885,6 +2908,9 @@ word16 fn0800_1B06(segptr32 ss_bp, selector ds, ptr16 & bpOut)
 // Trashed: SCZO ax bp bx cx di es si Top
 // Preserved: sp
 fn0800_1B06_entry:
+	mp16 fp
+	word16 wLoc04
+	word16 wLoc02
 	selector ss = SLICE(ss_bp, selector, 16)
 	word16 bp = SLICE(ss_bp, word16, 0)
 	word16 sp_11 = fp
@@ -2930,6 +2956,8 @@ void fn0800_1B2C(segptr32 ss_bp)
 // Trashed: SCZO ax bp cx di dx es si Top
 // Preserved: sp
 fn0800_1B2C_entry:
+	mp16 fp
+	word16 wLoc02
 	selector ss = SLICE(ss_bp, selector, 16)
 	word16 sp_16 = fp
 l0800_1B2C:
@@ -3050,6 +3078,7 @@ bool fn0800_1B9E(byte cl, byte bl)
 // Trashed: SCZO Top
 // Preserved: bx sp
 fn0800_1B9E_entry:
+	word16 bx
 	byte bl_8 = SLICE(bx, byte, 0)
 l0800_1B9E:
 	bool C_40
@@ -3087,6 +3116,8 @@ word16 __scantol(selector ds, word16 wArg02, word16 wArg04, word16 wArg06, word1
 // Trashed: SCZO ax bx cx di dx es si Top
 // Preserved: bp ds sp ss
 __scantol_entry:
+	mp16 fp
+	selector ss
 l0800_1BCC:
 	byte bLoc07_537 = 0<8>
 	word16 wLoc06_538 = 0<16>

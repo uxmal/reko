@@ -6,6 +6,8 @@ PyObject * fn10001000(PyObject * ptrArg04, PyObject * ptrArg08)
 // Trashed: eax
 // Preserved:
 fn10001000_entry:
+	int32 dwLoc08
+	int32 dwLoc04
 l10001000:
 	word32 eax_17 = PyArg_ParseTuple(ptrArg08, 0x10002144<32>, &dwLoc04, &dwLoc08)
 	branch eax_17 != 0<32> l10001027
@@ -24,6 +26,8 @@ PyObject * fn10001050(PyObject * ptrArg04, PyObject * ptrArg08)
 // Trashed: eax
 // Preserved:
 fn10001050_entry:
+	int32 dwLoc08
+	int32 dwLoc04
 l10001050:
 	word32 eax_17 = PyArg_ParseTuple(ptrArg08, 0x10002150<32>, &dwLoc08, &dwLoc04)
 	branch eax_17 != 0<32> l10001078
@@ -42,6 +46,8 @@ PyObject * fn100010A0(PyObject * ptrArg04, PyObject * ptrArg08)
 // Trashed: eax
 // Preserved:
 fn100010A0_entry:
+	int32 dwLoc08
+	int32 dwLoc04
 l100010A0:
 	word32 eax_17 = PyArg_ParseTuple(ptrArg08, 0x10002158<32>, &dwLoc08, &dwLoc04)
 	branch eax_17 != 0<32> l100010C8
@@ -60,6 +66,8 @@ PyObject * fn100010F0(PyObject * ptrArg04, PyObject * ptrArg08)
 // Trashed: eax
 // Preserved:
 fn100010F0_entry:
+	real32 rLoc08
+	real32 rLoc04
 l100010F0:
 	word32 eax_17 = PyArg_ParseTuple(ptrArg08, 0x10002160<32>, &rLoc08, &rLoc04)
 	branch eax_17 != 0<32> l10001118
@@ -94,6 +102,11 @@ word32 fn100011E9(word32 dwArg04, word32 dwArg08, word32 dwArg0C, ptr32 & ebxOut
 // Trashed: SCZO eax ebx ecx edi edx esi Top
 // Preserved: ebp esp
 fn100011E9_entry:
+	ptr32 fp
+	word32 ebx
+	word32 esi
+	word32 edi
+	selector fs
 l100011E9:
 	word32 eax_14
 	word32 ebp_145 = 0<32>
@@ -221,6 +234,8 @@ word32 fn10001388(word32 ecx, word32 edx, word32 ebx, word32 esi, word32 edi)
 // Trashed: SCZO eax ebp ebx ecx edi edx esi Top
 // Preserved: esp
 fn10001388_entry:
+	ptr32 fp
+	word32 dwLoc0C
 l10001388:
 	word32 ebp_13 = fn100017E8(ebx, esi, edi, dwLoc0C, 0x10<32>)
 	word32 ebx_113 = Mem7[ebp_13 + 8<i32>:word32]
@@ -336,6 +351,9 @@ BOOL DllMain(HANDLE hModule, DWORD dwReason, LPVOID lpReserved)
 // Trashed: eax
 // Preserved:
 DllMain_entry:
+	word32 ebx
+	word32 esi
+	word32 edi
 l1000149E:
 	branch dwReason != 1<32> l100014AA
 l100014A5:
@@ -355,6 +373,8 @@ word32 fn100015CF(word32 ebx, word32 esi, word32 edi)
 // Trashed: SCZO eax ebp ebx ecx edi esi Top
 // Preserved: esp
 fn100015CF_entry:
+	ptr32 fp
+	word32 dwLoc0C
 l100015CF:
 	word32 eax_111
 	word32 esp_80
@@ -505,6 +525,7 @@ word32 fn10001742(word32 ebx, word32 esi, word32 edi, ptr32 & ediOut)
 // Trashed: SCZO eax ebp ebx ecx edi edx esi Top
 // Preserved: esp
 fn10001742_entry:
+	word32 dwLoc0C
 l10001742:
 	word32 eax_59
 	word32 ebp_13 = fn100017E8(ebx, esi, edi, dwLoc0C, 8<32>)
@@ -561,6 +582,8 @@ word32 fn100017E8(word32 ebx, word32 esi, word32 edi, word32 dwArg00, word32 dwA
 // Trashed: SCZO eax ebp Top
 // Preserved: esp
 fn100017E8_entry:
+	ptr32 fp
+	selector fs
 l100017E8:
 	word32 esp_14 = fp - 8<i32> - dwArg08
 	Mem17[esp_14 - 4<i32>:word32] = ebx
@@ -585,6 +608,8 @@ word32 fn1000182D(word32 ebp, word32 dwArg00)
 // Trashed: ebp ebx ecx edi esi esp Top
 // Preserved:
 fn1000182D_entry:
+	selector fs
+	word32 dwArg08
 l1000182D:
 	Mem8[fs:0x00000000<p32>:word32] = Mem0[ebp - 16<i32>:word32]
 	Mem22[ebp:word32] = dwArg00
@@ -602,6 +627,8 @@ void fn10001864()
 // Trashed: SCZO eax Top
 // Preserved: ebp ebx edi esi esp
 fn10001864_entry:
+	ptr32 fp
+	LARGE_INTEGER tLoc14
 l10001864:
 	word32 eax_9 = Mem6[0x10003000<p32>:word32]
 	branch eax_9 == 0xBB40E64E<32> l10001894

@@ -6,6 +6,26 @@ void fn0000000000015180(word64 ra, word64 gp, word64 a0, word64 a1, word64 a7, w
 // Trashed: a0 a1 a2 a3 a4 a5 a6 a7 gp ra s0 s1 s10 s11 s2 s3 s4 s5 s6 s7 s8 s9 t1 t3
 // Preserved: sp
 fn0000000000015180_entry:
+	ptr64 fp
+	word64 qwLoc0190
+	word24 nLocBF
+	word64 qwLoc0158
+	int32 dwLocE8
+	word64 qwLoc0160
+	word64 qwLoc0168
+	word64 qwLoc0170
+	word64 qwLocE0
+	word64 qwLocD8
+	word64 qwLocD0
+	word64 qwLoc0150
+	word64 qwLoc0140
+	word64 qwLoc0148
+	word64 qwLoc0138
+	word64 qwLoc0130
+	word64 qwLoc0180
+	word56 nLoc0187
+	word64 qwLoc0178
+	word64 qwLocC8
 l0000000000015180:
 	word64 a5_7 = Mem5[gp + -1936<i64>:word64]
 	word32 dwLoc01A4_1480 = 0<32>
@@ -494,6 +514,8 @@ void fn0000000000015EB8(word64 a0, word32 dwArg00)
 // Trashed: a0 a1 a2 a3 a4 a5 a6 gp sp
 // Preserved:
 fn0000000000015EB8_entry:
+	ptr64 fp
+	word64 qwArg00
 l0000000000015EB8:
 	__libc_start_main(0x0000000000015180<p64>, SLICE(qwArg00, int32, 0), fp + 8<i64>, 0x00000000000182E8<p64>, 0x0000000000018378<p64>, a0, fp & -16<i64>)
 	return
@@ -665,6 +687,7 @@ word64 fn00000000000163B0(word64 gp)
 // Trashed: a0 a1 a2 a3 a4 a5
 // Preserved: ra s0 s1 s2 s3 s4 s5 s6 s7 s8 s9 sp
 fn00000000000163B0_entry:
+	ptr64 fp
 l00000000000163B0:
 	word64 a5_27 = Mem25[gp + -1936<i64>:word64]
 	__sprintf_chk(fp + -232<i64>, 1<i32>, SLICE(128<i64>, size_t, 0), 0x115C8<64>, 0<32>)
@@ -733,6 +756,7 @@ word64 fn000000000001654C(word64 gp, word64 a3, word64 a4, word64 a5, word64 a6,
 // Trashed: a0 a1 a2 a3 a4 a5 a6 a7 gp t1 t3
 // Preserved: ra s0 s1 s2 s3 sp
 fn000000000001654C_entry:
+	ptr64 fp
 l000000000001654C:
 	word64 t3_7 = Mem5[gp + -1936<i64>:word64]
 	__vasprintf_chk(fp + -112<i64>, 1<i64>, fp + -40<i64>, fp + -40<i64>, a3, a4, a5, a6, a7)
@@ -820,6 +844,8 @@ word64 fn00000000000166F4(word64 gp, word64 a0, word64 a1, word64 a2)
 // Trashed: a0 a1 a2 a3 a4 a5
 // Preserved: ra s0 s1 s2 s3 s4 sp
 fn00000000000166F4_entry:
+	ptr64 fp
+	int32 dwLoc40
 l00000000000166F4:
 	word64 a0_204
 	word64 a5_7 = Mem5[gp + -1936<i64>:word64]
@@ -944,6 +970,7 @@ word64 fn00000000000168E4(word64 gp, word64 a0, word64 a1)
 // Trashed: a0 a1 a2 a3 a5 a6 a7 t1 t3 t4 t5
 // Preserved: ra s0 s1 sp
 fn00000000000168E4_entry:
+	ptr64 fp
 l00000000000168E4:
 	word64 a0_100
 	word64 a0_35
@@ -981,6 +1008,8 @@ word64 fn00000000000169D8(word64 gp, word64 a1)
 // Trashed: a0 a1 a2 a3 a4 a5
 // Preserved: ra s0 s1 s2 s3 s4 sp
 fn00000000000169D8_entry:
+	ptr64 fp
+	word64 qwLoc70
 l00000000000169D8:
 	word64 a0_143
 	word64 a5_7 = Mem5[gp + -1936<i64>:word64]
@@ -1164,6 +1193,8 @@ word64 fn0000000000016D74(word64 ra, word64 gp, word64 a0, word64 a1, word64 a2,
 // Trashed: a0 a1 a2 a4 a5
 // Preserved: a3 a6 a7 fa3 fa4 fa5 gp ra s0 s1 s2 s3 s4 s5 s6 s7 s8 sp t1 t3 t4 t5
 fn0000000000016D74_entry:
+	ptr64 fp
+	int32 dwLoc01B8
 l0000000000016D74:
 	word64 a0_437
 	word64 a5_7 = Mem5[gp + -1936<i64>:word64]
@@ -1353,6 +1384,7 @@ word64 fn000000000001730C(word64 gp, word64 a0, word64 a1)
 // Trashed: a0 a5
 // Preserved: a1 a2 a3 a6 ra s0 s1 sp
 fn000000000001730C_entry:
+	ptr64 fp
 l000000000001730C:
 	word64 a0_104
 	word64 a4_7 = Mem5[gp + -1936<i64>:word64]
@@ -1463,6 +1495,7 @@ word64 fn00000000000175BC(word64 ra, word64 gp, word64 s1, word64 a0, word64 a1,
 // Trashed: a0 a1 a2 a4 a5
 // Preserved: a3 a6 a7 fa3 fa4 fa5 gp ra s0 s1 s2 s3 s4 s5 s6 s7 s8 s9 sp t1 t3 t4 t5
 fn00000000000175BC_entry:
+	ptr64 fp
 l00000000000175BC:
 	word64 a0_100
 	word64 a5_7 = Mem5[gp + -1936<i64>:word64]
@@ -1590,6 +1623,11 @@ word64 fn0000000000017924(word64 gp, ptr64 & a1Out, ptr64 & a2Out, ptr64 & a3Out
 // Trashed: a0 a1 a2 a3 a4 a5 a6
 // Preserved: ra s0 s1 s2 s3 s4 s5 s6 s7 s8 s9 sp
 fn0000000000017924_entry:
+	word64 a1
+	word64 a2
+	word64 a3
+	word64 a4
+	word64 a6
 l0000000000017924:
 	word64 s0_107
 	branch Mem5[gp + -2016<i64>:word64] == 0<64> l00000000000179B8
@@ -1910,6 +1948,8 @@ word64 fn0000000000017D10(word64 ra, word64 gp, word64 s1, word64 a0, word64 a1,
 // Trashed: a0 a1 a2 a3 a4 a5 a6 fa3 fa4 fa5 gp ra s0 s1 s2 s3 s4 s5 s6 s7 t1
 // Preserved: sp
 fn0000000000017D10_entry:
+	word64 s0
+	word64 s3
 l0000000000017D10:
 	word64 a1_34
 	word64 a2_35
@@ -2147,6 +2187,7 @@ word64 fn0000000000017F04(word64 gp, word64 a0, word64 a1, word64 a2, word64 a3)
 // Trashed: a0 a1 a2 a3 a4 a5 a6 t1 t3
 // Preserved: a7 ra s0 s1 s2 s3 s4 s5 s6 sp
 fn0000000000017F04_entry:
+	ptr64 fp
 l0000000000017F04:
 	word64 a0_116
 	word64 a5_7 = Mem5[gp + -1936<i64>:word64]
@@ -2221,6 +2262,7 @@ word64 fn0000000000018118(word64 gp, word64 a0, word64 a1)
 // Trashed: a0 a4 a5 t4
 // Preserved: a1 a2 a3 a6 a7 ra s0 sp t1 t3 t5 t6
 fn0000000000018118_entry:
+	ptr64 fp
 l0000000000018118:
 	word64 a0_13
 	word64 a5_7 = Mem5[gp + -1936<i64>:word64]

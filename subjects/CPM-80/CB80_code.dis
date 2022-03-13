@@ -30,6 +30,7 @@ void fn0390(byte b, byte c, byte e, byte bArg02)
 // Trashed: SZPC a bc de hl sp
 // Preserved:
 fn0390_entry:
+	word16 wArg02
 l0390:
 	Mem5[0x1656<16>:byte] = e
 	Mem8[0x1655<16>:byte] = b
@@ -76,6 +77,7 @@ word16 fn03CB(byte c)
 // Trashed: SZPC af bc hl
 // Preserved: sp
 fn03CB_entry:
+	byte f
 l03CB:
 	Mem5[0x1658<16>:byte] = c
 	byte a_15 = ~SLICE(0x19<16> - CONVERT(Mem5[0x1658<16>:byte] - 0x41<8>, byte, uint16), byte, 8)
@@ -280,6 +282,7 @@ word16 fn0534(byte c)
 // Trashed: SZPC a bc de hl
 // Preserved: sp
 fn0534_entry:
+	word16 bc
 	byte c = SLICE(bc, byte, 0)
 l0534:
 	Mem5[0x166B<16>:byte] = c
@@ -625,6 +628,8 @@ void fn07B3(byte b)
 // Trashed: C a bc de hl
 // Preserved: SZP sp
 fn07B3_entry:
+	word16 bc
+	bool C
 	byte b = SLICE(bc, byte, 8)
 l07B3:
 	branch __rcr<byte,byte,bool>(Mem0[0x14F9<16>:byte], 1<8>, C) >=u 0<8> l080E
@@ -1020,6 +1025,7 @@ word16 fn0B74()
 // Trashed: SZPC af bc de hl
 // Preserved: sp
 fn0B74_entry:
+	byte f
 l0B74:
 	return SEQ(0<8> - CONVERT(Mem22[0x1696<16>:byte] <u 0xFF<8>, bool, byte) & 0<8> - CONVERT(Mem0[Mem0[0x1692<16>:word16] + CONVERT(Mem0[0x1697<16>:byte], byte, uint16):byte] <u 0x2F<8>, bool, byte), f)
 fn0B74_exit:
@@ -1490,6 +1496,7 @@ word16 fn1279()
 // Trashed: SZPC af bc hl
 // Preserved: sp
 fn1279_entry:
+	byte f
 l1279:
 	Mem9[0x16A8<16>:byte] = fn045B()
 	fn1262()
@@ -1527,6 +1534,7 @@ word16 fn12D8()
 // Trashed: SZPC af bc hl
 // Preserved: sp
 fn12D8_entry:
+	byte f
 l12D8:
 	Mem9[0x16A8<16>:byte] = fn045B()
 	fn1262()

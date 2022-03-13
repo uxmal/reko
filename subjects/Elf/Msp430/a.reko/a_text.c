@@ -53,6 +53,7 @@ void task_idle(ui20 sr, Eq_n r8)
 // 4096: void task_n(Register ui20 sr)
 void task_n(ui20 sr)
 {
+	word16 fp;
 	word20 r15_n;
 	ui20 sr_n = xTaskGetTickCount(sr, out r15_n);
 	while (true)
@@ -66,6 +67,7 @@ void task_n(ui20 sr)
 // 40BC: void task_n(Register ui20 sr)
 void task_n(ui20 sr)
 {
+	word16 fp;
 	word20 r15_n;
 	ui20 sr_n = xTaskGetTickCount(sr, out r15_n);
 	while (true)
@@ -79,6 +81,7 @@ void task_n(ui20 sr)
 // 40E2: void task_n(Register ui20 sr)
 void task_n(ui20 sr)
 {
+	word16 fp;
 	word20 r15_n;
 	ui20 sr_n = xTaskGetTickCount(sr, out r15_n);
 	while (true)
@@ -118,6 +121,7 @@ void main(ui20 sr, Eq_n r8)
 //      init_uart_isr
 Eq_n msp430_compute_modulator_bits(ui40 r13_r12, Eq_n r15_r14)
 {
+	struct Eq_n * fp;
 	Eq_n r14 = (word20) r15_r14;
 	Eq_n r15 = SLICE(r15_r14, word20, 20);
 	union Eq_n * v16_n = fp->ptr0002;
@@ -157,6 +161,8 @@ Eq_n msp430_compute_modulator_bits(ui40 r13_r12, Eq_n r15_r14)
 //      fn00004000
 ui20 init_uart_isr(Eq_n r14_r13, ui20 sr, Eq_n r15)
 {
+	Eq_n wLoc10;
+	struct Eq_n * fp;
 	byte bLoc10 = (byte) wLoc10;
 	uint16 v15_n = fp->w0002;
 	ui16 v16_n = fp->w0004;
@@ -192,6 +198,7 @@ ui20 init_uart_isr(Eq_n r14_r13, ui20 sr, Eq_n r15)
 // 4380: void getchar(Register ui20 sr)
 void getchar(ui20 sr)
 {
+	word16 fp;
 	x_getchar(sr, 100, fp - 0x02) == 0x00;
 }
 
@@ -246,6 +253,7 @@ Eq_n x_getchar(ui20 sr, Eq_n r14, Eq_n r15)
 //      putchar
 ui20 x_putchar(ui20 sr, Eq_n r14, Eq_n r15, union Eq_n & r15Out)
 {
+	word16 fp;
 	++usCriticalNesting;
 	ui20 sr_n = sr & ~0x08;
 	if (sTHREEmpty != 0x01)
@@ -276,6 +284,7 @@ l00004420:
 // 4450: void vRxISR(Register ui20 sr)
 void vRxISR(ui20 sr)
 {
+	word16 fp;
 	word20 r15_n;
 	ui20 sr_n = xQueueSendFromISR(sr, 0x00, fp - 0x0A, xRxedChars[0], out r15_n);
 	if (r15_n != 0x00)
@@ -291,6 +300,8 @@ void vRxISR(ui20 sr)
 // 4480: void vTxISR(Register ui20 sr)
 void vTxISR(ui20 sr)
 {
+	word16 fp;
+	Eq_n bLoc0A;
 	if (xQueueReceiveFromISR(sr, fp - 0x0C, fp - 0x0A, xCharsForTx) != 0x01)
 		sTHREEmpty = 0x01;
 	else
@@ -303,6 +314,7 @@ void vTxISR(ui20 sr)
 //      vTaskStartScheduler
 ui20 xTaskCreate(ui20 sr, Eq_n r12, Eq_n r13, Eq_n r14, Eq_n r15, union Eq_n & r15Out)
 {
+	struct Eq_n * fp;
 	Eq_n r10_n;
 	Eq_n v15_n = fp->t0002;
 	struct Eq_n ** v16_n = fp->ptr0004;
@@ -1470,6 +1482,7 @@ void vPortEndScheduler()
 //      xQueueReceive
 ui20 vPortYield(ui20 sr, union Eq_n & r8Out, union Eq_n & r9Out, union Eq_n & r10Out, union Eq_n & r11Out)
 {
+	word16 fp;
 	pxCurrentTCB->ptr0000 = fp - 28;
 	vTaskSwitchContext();
 	struct Eq_n * v20_n = pxCurrentTCB->ptr0000;
@@ -1501,6 +1514,7 @@ void prvSetupTimerInterrupt()
 // 52B4: void prvTickISR()
 void prvTickISR()
 {
+	word16 fp;
 	pxCurrentTCB->ptr0000 = fp - 26;
 	vTaskIncrementTick();
 	vTaskSwitchContext();
@@ -1513,6 +1527,7 @@ void prvTickISR()
 //      task_idle
 void printf(Eq_n r8)
 {
+	struct Eq_n * fp;
 	vuprintf(r8, (char *) &fp->t0002 + 2, fp->t0002, 17314);
 }
 
@@ -1578,6 +1593,7 @@ Eq_n __write_pad(Eq_n r14, Eq_n r15)
 //      printf
 void vuprintf(Eq_n r8, Eq_n r13, Eq_n r14, Eq_n r15)
 {
+	word16 fp;
 	total_len = 0x00;
 	__write_char = r15;
 	Eq_n r5_n = r13;

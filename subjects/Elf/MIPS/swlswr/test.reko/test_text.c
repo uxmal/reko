@@ -7,6 +7,7 @@
 // 00000610: void __start(Register word32 r2, Stack word32 dwArg00)
 void __start(word32 r2, word32 dwArg00)
 {
+	Eq_n fp;
 	word32 r4_n = *(word32 *) 133736;
 	struct Eq_n * sp_n = (fp & -8) + -32;
 	word32 r7_n = *(word32 *) 133732;
@@ -81,6 +82,9 @@ void frame_dummy()
 // 000007F0: void main()
 void main()
 {
+	ptr32 fp;
+	Eq_n dwLoc14;
+	byte bLoc10;
 	memset(fp + -20, 0x00, (size_t) 5);
 	struct Eq_n * r2_n = calloc((size_t) 1, (size_t) 5);
 	r2_n->t0000 = dwLoc14;

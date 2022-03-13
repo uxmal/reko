@@ -9,6 +9,7 @@ word16 reverse(word16 gp0, ptr16 & gp14Out)
 // Trashed: CPZN gp0 gp1 gp14 gp2 gp3 gp4
 // Preserved: gp15 gp5
 reverse_entry:
+	ptr16 fp
 l0115:
 	word16 gp0_25 = 0<16>
 	word16 gp1_12 = 0<16>
@@ -36,6 +37,7 @@ word16 init_fft(ptr16 & gp4Out)
 // Trashed: CPZN gp0 gp1 gp14 gp15 gp2 gp3 gp4 gp5 gp6
 // Preserved:
 init_fft_entry:
+	ptr16 fp
 l012E:
 	word16 gp14_11 = fp - 1<16>
 	word16 gp3_42 = 0<16>
@@ -65,6 +67,7 @@ word16 compute_output()
 // Trashed: CPZN gp0 gp1 gp10 gp14 gp15 gp2 gp3 gp4 gp5 gp6 gp7 gp8 gp9
 // Preserved:
 compute_output_entry:
+	ptr16 fp
 l014E:
 	word16 gp14_46 = fp - 2<16>
 	word16 gp9_6 = 0<16>
@@ -93,6 +96,7 @@ void fft(word16 gp3, word16 gp4)
 // Trashed: CPZN gp0 gp1 gp10 gp14 gp15 gp2 gp3 gp4 gp5 gp6 gp7 gp8 gp9
 // Preserved: gp11 gp12 gp13
 fft_entry:
+	ptr16 fp
 l016F:
 	word16 gp14_220 = fp - 0xF<16>
 l0174:
@@ -213,6 +217,8 @@ real48 sqrt(word32 gp0_gp1, word16 gp2, ptr16 & gp14Out)
 // Trashed: CPZN gp0 gp1 gp10 gp14 gp2 gp3 gp4 gp5 gp6 gp7 gp8 gp9
 // Preserved: gp15
 sqrt_entry:
+	ptr16 fp
+	real48 rLoc02
 	word16 gp0 = SLICE(gp0_gp1, word16, 16)
 	word16 gp1 = SLICE(gp0_gp1, word16, 0)
 l0245:
@@ -250,6 +256,7 @@ word32 auxasin(real48 gp0_gp1_gp2, ptr16 & gp2Out, ptr16 & gp14Out)
 // Trashed: CPZN gp0 gp1 gp10 gp11 gp12 gp13 gp14 gp2 gp3 gp4 gp5 gp6 gp7 gp8 gp9
 // Preserved: gp15
 auxasin_entry:
+	ptr16 fp
 l0273:
 	real48 gp5_gp6_gp7_16 = gp0_gp1_gp2 * gp0_gp1_gp2
 	word16 gp7_17 = SLICE(gp5_gp6_gp7_16, word16, 0)
@@ -340,6 +347,7 @@ word16 sincos(word32 gp2_gp3, word16 gp1, word16 gp4, ptr16 & gp1Out, ptr16 & gp
 // Trashed: CPZN gp0 gp1 gp14 gp2 gp3 gp4 gp5 gp6 gp7
 // Preserved: gp15
 sincos_entry:
+	ptr16 fp
 	word16 gp3 = SLICE(gp2_gp3, word16, 0)
 l0311:
 	word16 gp2_12 = gp1

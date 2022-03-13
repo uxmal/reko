@@ -17,6 +17,7 @@ ptr32 fn00401000()
 //      fn00401040
 void fn00401010(word32 dwArg04)
 {
+	ptr32 fp;
 	word32 eax_n = _acrt_iob_func(0x01);
 	esp_n->ptr0000 = fp + 8;
 	esp_n->dwFFFFFFFC = 0x00;
@@ -31,6 +32,7 @@ void fn00401010(word32 dwArg04)
 //      Win32CrtStartup
 word32 fn00401040(word32 ecx)
 {
+	ptr32 fp;
 	driver.dll!Ordinal_n(fp - 8, ecx);
 	driver.dll!Ordinal_n(fp - 8, 0x03);
 	driver.dll!Ordinal_n(fp - 8, 0x01);
@@ -45,6 +47,12 @@ word32 fn00401040(word32 ecx)
 // 004012C9: Register Eq_n Win32CrtStartup()
 Eq_n Win32CrtStartup()
 {
+	ptr32 fp;
+	word32 ebx;
+	Eq_n esi;
+	Eq_n edi;
+	word32 edx;
+	Eq_n dwLoc0C;
 	word24 ebx_24_8_n = SLICE(ebx, word24, 8);
 	fn0040165E();
 	struct Eq_n * ebp_n = fn00401980(ebx, esi, edi, dwLoc0C, 0x14);
@@ -181,6 +189,7 @@ l00401433:
 //      Win32CrtStartup
 byte fn0040143A()
 {
+	struct Eq_n * fs;
 	word32 eax_n = fn00401B98();
 	if (eax_n == 0x00)
 		return 0x00;
@@ -217,6 +226,8 @@ byte fn0040146F(word32 edx, word32 dwArg04)
 //      Win32CrtStartup
 byte fn0040153F(word32 ebx, Eq_n esi, Eq_n edi, ptr32 & edxOut, ptr32 & ebxOut, struct Eq_n & ebpOut, ptr32 & esiOut, ptr32 & ediOut)
 {
+	Eq_n dwLoc0C;
+	ptr32 edx;
 	word32 eax_n;
 	struct Eq_n * ebp_n = fn00401980(ebx, esi, edi, dwLoc0C, 0x08);
 	ebp_n->dwFFFFFFFC = 0x00;
@@ -280,6 +291,8 @@ void fn004015E6(Eq_n bArg08)
 //      Win32CrtStartup
 void fn0040165E()
 {
+	ptr32 fp;
+	Eq_n tLoc18;
 	ui32 eax_n = g_dw403004;
 	if (eax_n != 0xBB40E64E && (eax_n & 0xFFFF0000) != 0x00)
 		g_dw403000 = ~eax_n;
@@ -320,6 +333,7 @@ ptr32 fn00401767()
 //      Win32CrtStartup
 void fn0040176D(word32 dwArg04)
 {
+	ptr32 fp;
 	if (IsProcessorFeaturePresent(0x17) == 0x00)
 	{
 		g_dw403368 = 0x00;
@@ -362,6 +376,8 @@ void fn00401972()
 //      fn0040153F
 ptr32 fn00401980(word32 ebx, Eq_n esi, Eq_n edi, Eq_n dwArg00, ui32 dwArg08)
 {
+	ptr32 fp;
+	struct Eq_n * fs;
 	struct Eq_n * esp_n = fp - 8 - dwArg08;
 	esp_n->dwFFFFFFFC = ebx;
 	esp_n->tFFFFFFF8 = esi;
@@ -378,6 +394,10 @@ ptr32 fn00401980(word32 ebx, Eq_n esi, Eq_n edi, Eq_n dwArg00, ui32 dwArg08)
 //      fn0040153F
 word32 fn004019C6(struct Eq_n * ebp, Eq_n dwArg00, union Eq_n & ebpOut, ptr32 & esiOut, ptr32 & ediOut)
 {
+	struct Eq_n * fs;
+	ptr32 dwArg08;
+	ptr32 dwArg0C;
+	word32 dwArg10;
 	fs->dw0000 = ebp->dwFFFFFFF0;
 	Eq_n ebp_n = ebp->t0000;
 	ebp->t0000 = dwArg00;

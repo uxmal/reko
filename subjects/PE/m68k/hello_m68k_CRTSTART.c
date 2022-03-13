@@ -100,6 +100,7 @@ void fn000022C4(word32 a2, ptr32 a5)
 //      fn00002294
 word32 fn00002354(struct Eq_n * a5, int32 dwArg08, byte bArg0F)
 {
+	ptr32 fp;
 	a5->bFFFFFA9C = bArg0F;
 	ptr32 a7_n = fp - 0x04;
 	if (dwArg08 == 0x00)
@@ -136,6 +137,7 @@ word32 fn00002354(struct Eq_n * a5, int32 dwArg08, byte bArg0F)
 //      fn00002354
 word32 fn000023B4(Eq_n dwArg04, Eq_n dwArg08)
 {
+	ptr32 fp;
 	word32 * a6_n = fp - 0x04;
 	int32 d5_n = -1;
 	Eq_n d4_n = dwArg08;
@@ -197,6 +199,7 @@ Eq_n fn00002418(Eq_n a5, ptr32 & a6Out)
 //      fn00002418
 Eq_n fn0000243C(Eq_n a5, ptr32 dwArg04, ptr32 & a6Out)
 {
+	ptr32 fp;
 	ptr32 * a6_n = fp - 0x04;
 	int32 d1_n = 0;
 	struct Eq_n * d2_n = (word32) a5 - 0x044C;

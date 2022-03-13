@@ -9,6 +9,7 @@
 // Return size: 0
 void fn0C00_0000(word16 ax, word16 dx, word16 bx)
 fn0C00_0000_entry:
+	selector ss
 	// succ:  l0C00_0000
 l0C00_0000:
 	Mem8[ss:0x6B6<16>:word16] = bx
