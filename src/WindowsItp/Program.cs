@@ -33,9 +33,6 @@ namespace Reko.WindowsItp
         [STAThread]
         static void Main()
         {
-            var perf = new PerformanceHarness();
-            perf.Run(new string[0]);
-            return;
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new ItpForm());
