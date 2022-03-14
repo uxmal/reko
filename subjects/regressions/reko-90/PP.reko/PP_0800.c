@@ -4711,7 +4711,7 @@ word16 fn0800-2DE2(Eq_n cx, Eq_n dx, Eq_n si, Eq_n ds, Eq_n ptrArg02, union Eq_n
 //      fn0800-2DE2
 word16 fn0800-31B4(Eq_n ds, Eq_n dwArg02, union Eq_n & cxOut, union Eq_n & dxOut)
 {
-	Eq_n fp;
+	<type-error> Eq_n::* fp;
 	Eq_n ss;
 	Eq_n wArg04 = SLICE(dwArg02, word16, 16);
 	Eq_n wArg02 = (word16) dwArg02;
@@ -4742,20 +4742,20 @@ word16 fn0800-31B4(Eq_n ds, Eq_n dwArg02, union Eq_n & cxOut, union Eq_n & dxOut
 			if (ss->*di_n != 0x00)
 				break;
 		}
-		Mem131[ss:~cx_n - 0x02 + (fp - 0x84):byte] = 0x00;
+		ss->*((char *) (fp - 0x84) + (~cx_n - 0x02)) = 0x00;
 		word16 bx_n;
 		fn0800-3509(wArg02, wArg04, SEQ(ss, fp - 0x84), out bx_n);
-		Eq_n di_n = fp - 16;
+		byte Eq_n::* di_n = fp - 16;
 		word16 cx_n = ~0x00;
 		while (cx_n != 0x00)
 		{
-			di_n = (word16) di_n + 1;
+			++di_n;
 			--cx_n;
 			if (ss->*di_n != 0x00)
 				break;
 		}
-		Eq_n cx_n = ~cx_n;
-		Eq_n si_n = di_n - cx_n;
+		ui16 cx_n = ~cx_n;
+		byte Eq_n::* si_n = di_n - cx_n;
 		Eq_n di_n = wArg02;
 		word16 cx_n = ~0x00;
 		while (cx_n != 0x00)
@@ -4766,11 +4766,11 @@ word16 fn0800-31B4(Eq_n ds, Eq_n dwArg02, union Eq_n & cxOut, union Eq_n & dxOut
 				break;
 		}
 		byte Eq_n::* di_n = di_n - 0x01;
-		Eq_n cx_n;
+		ui16 cx_n;
 		for (cx_n = cx_n; cx_n != 0x00; --cx_n)
 		{
 			wArg04->*di_n = ss->*si_n;
-			si_n = (word16) si_n + 1;
+			++si_n;
 			++di_n;
 		}
 		--*((word32) ds + 0x09AC);
@@ -4786,18 +4786,18 @@ word16 fn0800-31B4(Eq_n ds, Eq_n dwArg02, union Eq_n & cxOut, union Eq_n & dxOut
 	return 0x01;
 }
 
-// 0800:32CD: Register word16 fn0800-32CD(Register Eq_n ds, Stack Eq_n dwArg02, Stack Eq_n wArg06, Stack Eq_n psegArg08, Stack word16 wArg0A, Register out ptr16 cxOut, Register out ptr16 dxOut)
+// 0800:32CD: Register word16 fn0800-32CD(Register Eq_n ds, Stack Eq_n dwArg02, Stack (memptr Eq_n byte) wArg06, Stack Eq_n psegArg08, Stack word16 wArg0A, Register out ptr16 cxOut, Register out ptr16 dxOut)
 // Called from:
 //      fn0800-31B4
-word16 fn0800-32CD(Eq_n ds, Eq_n dwArg02, Eq_n wArg06, Eq_n psegArg08, word16 wArg0A, ptr16 & cxOut, ptr16 & dxOut)
+word16 fn0800-32CD(Eq_n ds, Eq_n dwArg02, byte Eq_n::* wArg06, Eq_n psegArg08, word16 wArg0A, ptr16 & cxOut, ptr16 & dxOut)
 {
 	mp16 fp;
 	struct Eq_n * ss;
-	Eq_n di_n = wArg06;
+	byte Eq_n::* di_n = wArg06;
 	word16 cx_n = ~0x00;
 	while (cx_n != 0x00)
 	{
-		di_n = (word16) di_n + 1;
+		++di_n;
 		--cx_n;
 		if (psegArg08->*di_n != 0x00)
 			break;

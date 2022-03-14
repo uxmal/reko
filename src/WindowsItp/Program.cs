@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2022 John Källén.
  *
@@ -18,6 +18,7 @@
  */
 #endregion
 
+using Reko.WindowsItp.Performance;
 using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
@@ -32,6 +33,9 @@ namespace Reko.WindowsItp
         [STAThread]
         static void Main()
         {
+            var perf = new PerformanceHarness();
+            perf.Run(new string[0]);
+            return;
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new ItpForm());

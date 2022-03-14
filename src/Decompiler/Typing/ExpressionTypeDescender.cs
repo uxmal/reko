@@ -368,35 +368,33 @@ namespace Reko.Typing
 
         private DataType? PushAddendDataType(DataType dtSum, DataType dtOther)
         {
-            var ptSum = dtSum as PrimitiveType;
-            var ptOther = dtOther as PrimitiveType;
-            if (ptSum != null && ptSum.Domain == Domain.Pointer || dtSum is Pointer)
+            if (dtSum.Domain == Domain.Pointer)
             {
-                if (ptOther != null && ptOther.Domain == Domain.Pointer || dtOther is Pointer)
+                if (dtOther.Domain == Domain.Pointer)
                 {
                     return PrimitiveType.Create(Domain.SignedInt, dtSum.BitSize);
                 }
-                if (ptOther != null && (ptOther.Domain & Domain.Integer) != 0)
+                if ((dtOther.Domain & Domain.Integer) != 0)
                 {
                     return PrimitiveType.Create(Domain.Pointer, dtSum.BitSize);
                 }
             }
             if (dtSum is MemberPointer mpSum)
             {
-                if (dtOther is MemberPointer)
+                if (dtOther.Domain is Domain.Offset)
                     return PrimitiveType.Create(Domain.SignedInt, dtOther.BitSize);
-                if (ptOther != null && (ptOther.Domain & Domain.Integer) != 0)
+                if ((dtOther.Domain & Domain.Integer) != 0)
                 {
                     return factory.CreateMemberPointer(mpSum.BasePointer, factory.CreateUnknown(), mpSum.BitSize);
                 }
             }
-            if (ptSum != null && ptSum.IsIntegral)
+            if (dtSum.IsIntegral)
             {
                 // With integral types, type information flows only from leaves
                 // to root.
                 return null;
             }
-            if (ptSum != null && ptSum.Domain == Domain.Pointer || dtSum is Pointer)
+            if (dtSum.Domain == Domain.Pointer)
             {
                 return PrimitiveType.Create(Domain.SignedInt, dtSum.BitSize);
             }
@@ -405,17 +403,15 @@ namespace Reko.Typing
 
         private DataType PushMinuendDataType(DataType dtDiff, DataType dtSub)
         {
-            var ptDiff = dtDiff as PrimitiveType;
-            var ptSub = dtSub.ResolveAs<PrimitiveType>();
-            if (dtDiff is Pointer || ptDiff != null && ptDiff.Domain == Domain.Pointer)
+            if (dtDiff.Domain == Domain.Pointer)
             {
-                if (ptSub != null && (ptSub.Domain & Domain.Integer) != 0)
+                if ((dtSub.Domain & Domain.Integer) != 0)
                     return PrimitiveType.Create(Domain.Pointer, dtDiff.BitSize);
                 throw new TypeInferenceException($"Not handling {dtDiff} and {dtSub} yet.");
             }
-            if (dtDiff is MemberPointer || ptDiff != null && ptDiff.Domain == Domain.Offset)
+            if (dtDiff.Domain == Domain.Offset)
             {
-                if (ptSub != null && (ptSub.Domain & Domain.Integer) != 0)
+                if ((dtSub.Domain & Domain.Integer) != 0)
                     return dtDiff;
                 throw new TypeInferenceException($"Not handling {dtDiff} and {dtSub} yet.");
             }
@@ -424,17 +420,15 @@ namespace Reko.Typing
 
         private DataType PushSubtrahendDataType(DataType dtDiff, DataType dtMin)
         {
-            var ptDiff = dtDiff as PrimitiveType;
-            var ptMin = dtMin as PrimitiveType;
-            if (dtDiff is Pointer || ptDiff != null && ptDiff.Domain == Domain.Pointer)
+            if (dtDiff.Domain == Domain.Pointer)
             {
-                if (dtMin is Pointer || ptMin != null && ptMin.Domain == Domain.Pointer)
+                if (dtMin.Domain == Domain.Pointer)
                     return PrimitiveType.Create(Domain.Integer, dtDiff.BitSize);
                 throw new TypeInferenceException(string.Format("Not handling {0} and {1} yet", dtDiff, dtMin));
             }
-            if (dtDiff is MemberPointer || ptDiff != null && ptDiff.Domain == Domain.Offset)
+            if (dtDiff.Domain == Domain.Offset)
             {
-                if (dtMin is MemberPointer || ptMin != null && ptMin.Domain == Domain.Offset)
+                if (dtMin.Domain == Domain.Offset)
                     return PrimitiveType.Create(Domain.Integer, dtDiff.BitSize);
                 throw new TypeInferenceException(string.Format("Not handling {0} and {1} yet", dtDiff, dtMin));
             }
@@ -650,22 +644,19 @@ namespace Reko.Typing
         /// </summary>
         private bool IsArrayAccess(Expression effectiveAddress)
         {
-            if (!(effectiveAddress is BinaryExpression binEa) ||
+            if (effectiveAddress is not BinaryExpression binEa ||
                 binEa.Operator != Operator.IAdd)
                 return false;
-            if (!(binEa.Right.TypeVariable!.DataType is PrimitiveType ptRight) ||
-                !ptRight.IsIntegral)
-                return false;
-            return true;
+            return binEa.Right.TypeVariable!.DataType.IsIntegral;
         }
 
         public LinearInductionVariable? GetInductionVariable(Expression e)
 		{
-			if (!(e is Identifier id))
+			if (e is Identifier id &&
+                ivs.TryGetValue(id, out var iv))
+                return iv;
+            else
                 return null;
-            if (!ivs.TryGetValue(id, out var iv))
-                return null;
-            return iv;
 		}
 
         /// <summary>
@@ -738,16 +729,10 @@ namespace Reko.Typing
 
         private int OffsetOf(Constant c)
         {
-            if (c.DataType is PrimitiveType pt &&
-                (pt.Domain & Domain.Integer) == Domain.SignedInt)
+            if ((c.DataType.Domain & Domain.Integer) == Domain.SignedInt)
                 return c.ToInt32();
             else
                 return (int) c.ToUInt32();
-        }
-
-        private Pointer PointerTo(DataType dt)
-        {
-            return new Pointer(dt, platform.PointerType.BitSize);
         }
 
         private MemberPointer MemberPointerTo(DataType baseType, DataType fieldType, int bitSize)
@@ -762,11 +747,8 @@ namespace Reko.Typing
 
         private bool IsSelector(Expression e)
         {
-            return
-                DataTypeOf(e) is PrimitiveType pt &&
-                pt.Domain == Domain.Selector;
+            return DataTypeOf(e).Domain == Domain.Selector;
         }
-
 
         public bool VisitMkSequence(MkSequence seq, TypeVariable tv)
         {
@@ -790,9 +772,9 @@ namespace Reko.Typing
                     return false;
                 }
             }
-            if (tv.DataType is PrimitiveType pt && pt.IsIntegral)
+            if (tv.DataType.IsIntegral)
             {
-                MeetDataType(seq.Expressions[0], PrimitiveType.Create(pt.Domain, seq.Expressions[0].DataType.BitSize));
+                MeetDataType(seq.Expressions[0], PrimitiveType.Create(tv.DataType.Domain, seq.Expressions[0].DataType.BitSize));
                 foreach (var e in seq.Expressions.Skip(1))
                 {
                     MeetDataType(e, PrimitiveType.Create(Domain.UnsignedInt, e.DataType.BitSize));
