@@ -411,7 +411,7 @@ namespace Reko.UnitTests.Decompiler.Evaluation
 
             var (result, _) = exp.Accept(simplifier);
 
-            Assert.AreEqual("CONVERT(foo_1, <type-error>, <type-error>)", result.ToString());
+            Assert.AreEqual("CONVERT(foo_1, <unknown>, <unknown>)", result.ToString());
         }
 
         [Test]

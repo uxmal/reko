@@ -102,7 +102,7 @@ Eq_n fn1483-0C91(Eq_n ds_bx, struct Eq_n * ss_bp, cu8 al, Eq_n cx, Eq_n si, Eq_n
 	byte al_n = (byte) ax;
 	byte ch = SLICE(cx, byte, 8);
 	struct Eq_n * ds = SLICE(ds_bx, selector, 16);
-	<type-error> Eq_n::* bx = (word16) ds_bx;
+	<unknown> Eq_n::* bx = (word16) ds_bx;
 	if (!OVERFLOW(al_n + ch))
 	{
 		Eq_n ax_n = fn1483-0C55();
@@ -445,7 +445,7 @@ segptr32 fn1483-0D3F(struct Eq_n * ds_di, struct Eq_n * ss_bp, Eq_n ax, Eq_n cx,
 		ds_bx_n = (uint8 *) bx_n;
 		cx_n = SEQ(ch_n, cl_n);
 l1483_nDA8:
-		<type-error> Eq_n::* bx_n = (word16) ds_bx_n;
+		<unknown> Eq_n::* bx_n = (word16) ds_bx_n;
 		ds_n = SLICE(ds_bx_n, selector, 16);
 		if (v77_n)
 		{
@@ -469,7 +469,7 @@ l1483_nDBF:
 		ds_bx_n = ds_bx_n;
 	}
 	Mem449[ds_bx_n + di:byte] = Mem442[ds_bx_n + di:byte] >>u 0x01;
-	<type-error> Eq_n::* bx_n = (word16) ds_bx_n;
+	<unknown> Eq_n::* bx_n = (word16) ds_bx_n;
 	ds_n = SLICE(ds_bx_n, selector, 16);
 	Mem455[ds_n:bx_n + 2 + di:byte] = Mem449[ds_n:bx_n + 2 + di:byte] + SLICE(cx_n, byte, 0);
 	sp_n = &sp_n->w0000 + 1;

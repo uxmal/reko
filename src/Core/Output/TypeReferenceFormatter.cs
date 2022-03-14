@@ -198,18 +198,16 @@ namespace Reko.Core.Output
         void TypeSpecifier(DataType t)
         {
             TypeFormatter.WriteQualifier(t.Qualifier, Formatter);
-            if (t is UnknownType)
+            switch (t)
             {
-                Formatter.Write("<type-error>");
+            case UnknownType:
+                Formatter.Write("<unknown>");
                 return;
-            }
-            else if (t is EquivalenceClass)
-            {
+            case EquivalenceClass:
                 Formatter.Write(t.Name);
                 wantSpace = true;
                 return;
-            }
-            else if (t is PrimitiveType pt) {
+            case PrimitiveType pt:
                 //case tree_code.VOID_TYPE:
                 //case tree_code.BOOLEAN_TYPE:
                 //case tree_code.CHAR_TYPE:
@@ -224,27 +222,22 @@ namespace Reko.Core.Output
                 //    fmt.Write(' ');
                 wantSpace = true;
                 return;
-            }
-            else if (t is VoidType vt)
-            {
+            case VoidType vt:
                 WriteVoidType(vt);
                 wantSpace = true;
                 return;
-            }
-            else if (t is UnionType)
-            {
+            case UnionType _:
                 Formatter.WriteKeyword("union");
                 Formatter.Write(" ");
-            }
-            else if (t is StructureType)
-            {
+                break;
+            case StructureType _:
                 Formatter.WriteKeyword("struct");
                 Formatter.Write(" ");
-            }
-            else if (t is EnumType)
-            {
+                break;
+            case EnumType _:
                 Formatter.WriteKeyword("enum");
                 Formatter.Write(" ");
+                break;
             }
             if (string.IsNullOrEmpty(t.Name))
                 Formatter.Write("<anonymous>");

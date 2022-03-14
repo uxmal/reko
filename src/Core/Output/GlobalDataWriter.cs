@@ -345,9 +345,9 @@ namespace Reko.Core.Output
                     // terminated string is a wild-assed guess of course.
                     // It could be a pascal string, or a raw area of bytes.
                     // Depend on user for this, or possibly platform.
-                    if (dt is PrimitiveType pt && pt.Domain == Domain.Character)
+                    if (dt.Domain == Domain.Character)
                     {
-                        dt = StringType.NullTerminated(pt);
+                        dt = StringType.NullTerminated(dt);
                     }
                     field = globals.Fields.Add(offset, dt);
                     if (chasePointers)

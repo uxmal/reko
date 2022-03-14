@@ -2870,7 +2870,7 @@ word16 fn0800-1E5E(Eq_n ds, struct Eq_n & dsOut)
 // 0800:1F5C: Register (memptr Eq_n Eq_n) fn0800-1F5C(Register Eq_n ds, Stack Eq_n ptrArg02, Register out Eq_n dxOut, Register out Eq_n dsOut)
 // Called from:
 //      fn0800-12E2
-<type-error> Eq_n::* fn0800-1F5C(Eq_n ds, Eq_n ptrArg02, union Eq_n & dxOut, union Eq_n & dsOut)
+<unknown> Eq_n::* fn0800-1F5C(Eq_n ds, Eq_n ptrArg02, union Eq_n & dxOut, union Eq_n & dsOut)
 {
 	struct Eq_n * ss;
 	struct Eq_n * es_n = SLICE(ptrArg02, selector, 16);
@@ -2934,7 +2934,7 @@ word16 fn0800-1E5E(Eq_n ds, struct Eq_n & dsOut)
 	struct Eq_n * wArg04_n = SLICE(ptrArg02, word16, 16);
 	byte Eq_n::* wArg02_n = (word16) ptrArg02;
 	Eq_n ax_n = *((word32) ds + 11859);
-	<type-error> Eq_n::* dx_n = (word32) *((word32) ds + 11857) + ax_n;
+	<unknown> Eq_n::* dx_n = (word32) *((word32) ds + 11857) + ax_n;
 	struct Eq_n * es_n = SLICE(ptrArg02, selector, 16);
 	byte Eq_n::* di_n = (word16) ptrArg02;
 	word16 cx_n = ~0x00;
@@ -4711,7 +4711,7 @@ word16 fn0800-2DE2(Eq_n cx, Eq_n dx, Eq_n si, Eq_n ds, Eq_n ptrArg02, union Eq_n
 //      fn0800-2DE2
 word16 fn0800-31B4(Eq_n ds, Eq_n dwArg02, union Eq_n & cxOut, union Eq_n & dxOut)
 {
-	<type-error> Eq_n::* fp;
+	<unknown> Eq_n::* fp;
 	Eq_n ss;
 	Eq_n wArg04 = SLICE(dwArg02, word16, 16);
 	Eq_n wArg02 = (word16) dwArg02;
@@ -13052,7 +13052,7 @@ Eq_n fn0800-8FAB(struct Eq_n * ss_bp, Eq_n ds)
 	union Eq_n Eq_n::* di_n = (word16) es_di_n;
 	if ((ss_bp->bFFFFFFFF & 0x20) == 0x00)
 	{
-		<type-error> Eq_n::* di_n = *es_di_n;
+		<unknown> Eq_n::* di_n = *es_di_n;
 		ss_bp->t0010 = (word32) ss_bp->t0010 + 2;
 		return SEQ(ds, di_n);
 	}
@@ -14392,7 +14392,7 @@ Eq_n fn0800-9F02(Eq_n ax, struct Eq_n & dxOut)
 		{
 l0800_nF25:
 			word16 cx_n = seg0800->t9D37;
-			seg0800->t9D37 = (<type-error>) dx_n;
+			seg0800->t9D37 = (<unknown>) dx_n;
 			dx_n->t0000 = ax;
 			dx_n->w0002 = cx_n;
 			dxOut = dx_n;
@@ -17674,7 +17674,7 @@ void fn0800_C379(Eq_n ds)
 {
 	Eq_n dx_ax_n = fn0800_AFCB(ds, SEQ(ds, 9960));
 	struct Eq_n * dx_n = SLICE(dx_ax_n, word16, 16);
-	<type-error> Eq_n::* ax_n = (word16) dx_ax_n;
+	<unknown> Eq_n::* ax_n = (word16) dx_ax_n;
 	if (dx_ax_n != 0x00)
 	{
 		word16 cx_n;

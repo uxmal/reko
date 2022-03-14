@@ -85,7 +85,7 @@ void _abort()
 }
 
 // 0800:01E9: void fn0800-01E9(Register word16 cx, Register (memptr (ptr16 Eq_n) Eq_n) dx)
-void fn0800-01E9(word16 cx, <type-error> Eq_n::* dx)
+void fn0800-01E9(word16 cx, <unknown> Eq_n::* dx)
 {
 	fn0800-01DA(SEQ(seg0800->t01F8, dx), cx);
 	__exit();
@@ -241,7 +241,7 @@ void __setargv(struct Eq_n * ds, word16 wArg00)
 	struct Eq_n * ss;
 	struct Eq_n * es_n;
 	seg0800->t0330 = wArg00;
-	seg0800->t0332 = (<type-error>) ds;
+	seg0800->t0332 = (<unknown>) ds;
 	word16 si_n = ds->w008A;
 	struct Eq_n * es_n = ds->ptr0090;
 	uint16 ax_n = (uint16) ds->b0080;

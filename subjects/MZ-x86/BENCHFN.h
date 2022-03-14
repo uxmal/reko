@@ -21679,7 +21679,7 @@ typedef union Eq_3 {
 	ptr32 u0;
 	segptr32 u1;
 	struct seg0800_t * u2;
-	<type-error> Eq_3::* u3;
+	<unknown> Eq_3::* u3;
 } Eq_3;
 
 typedef struct seg09DB_t {
@@ -23307,7 +23307,7 @@ typedef struct Eq_3029 {
 	word16 wFFFFFFF6;	// FFFFFFF6
 	cui16 wFFFFFFF8;	// FFFFFFF8
 	uint16 wFFFFFFFA;	// FFFFFFFA
-	<type-error> Eq_3::* ptrFFFFFFFC;	// FFFFFFFC
+	<unknown> Eq_3::* ptrFFFFFFFC;	// FFFFFFFC
 	word16 wFFFFFFFE;	// FFFFFFFE
 	struct Eq_2380 Eq_3::* ptr0000;	// 0
 } Eq_3029;
@@ -23320,14 +23320,14 @@ typedef struct Eq_3041 {
 } Eq_3041;
 
 typedef struct Eq_3044 {
-	<type-error> Eq_3::* ptrFFFFFFFC;	// FFFFFFFC
+	<unknown> Eq_3::* ptrFFFFFFFC;	// FFFFFFFC
 	word16 wFFFFFFFE;	// FFFFFFFE
 	struct Eq_2380 Eq_3::* ptr0000;	// 0
 } Eq_3044;
 
 typedef struct Eq_3049 {
 	uint16 wFFFFFFFA;	// FFFFFFFA
-	<type-error> Eq_3::* ptrFFFFFFFC;	// FFFFFFFC
+	<unknown> Eq_3::* ptrFFFFFFFC;	// FFFFFFFC
 	word16 wFFFFFFFE;	// FFFFFFFE
 	struct Eq_2380 Eq_3::* ptr0000;	// 0
 } Eq_3049;
@@ -23392,7 +23392,7 @@ typedef void;
 typedef struct Eq_3143 {
 	cui16 wFFFFFFF8;	// FFFFFFF8
 	uint16 wFFFFFFFA;	// FFFFFFFA
-	<type-error> Eq_3::* ptrFFFFFFFC;	// FFFFFFFC
+	<unknown> Eq_3::* ptrFFFFFFFC;	// FFFFFFFC
 	word16 wFFFFFFFE;	// FFFFFFFE
 	struct Eq_2380 Eq_3::* ptr0000;	// 0
 } Eq_3143;
@@ -23403,7 +23403,7 @@ typedef struct Eq_3149 {
 	word16 wFFFFFFF6;	// FFFFFFF6
 	cui16 wFFFFFFF8;	// FFFFFFF8
 	uint16 wFFFFFFFA;	// FFFFFFFA
-	<type-error> Eq_3::* ptrFFFFFFFC;	// FFFFFFFC
+	<unknown> Eq_3::* ptrFFFFFFFC;	// FFFFFFFC
 	word16 wFFFFFFFE;	// FFFFFFFE
 	struct Eq_2380 Eq_3::* ptr0000;	// 0
 } Eq_3149;
@@ -23418,7 +23418,7 @@ typedef struct Eq_3155 {
 	word16 wFFFFFFF6;	// FFFFFFF6
 	cui16 wFFFFFFF8;	// FFFFFFF8
 	uint16 wFFFFFFFA;	// FFFFFFFA
-	<type-error> Eq_3::* ptrFFFFFFFC;	// FFFFFFFC
+	<unknown> Eq_3::* ptrFFFFFFFC;	// FFFFFFFC
 	word16 wFFFFFFFE;	// FFFFFFFE
 	struct Eq_2380 Eq_3::* ptr0000;	// 0
 } Eq_3155;
@@ -23428,7 +23428,7 @@ typedef struct Eq_3158 {
 	word16 wFFFFFFF6;	// FFFFFFF6
 	cui16 wFFFFFFF8;	// FFFFFFF8
 	uint16 wFFFFFFFA;	// FFFFFFFA
-	<type-error> Eq_3::* ptrFFFFFFFC;	// FFFFFFFC
+	<unknown> Eq_3::* ptrFFFFFFFC;	// FFFFFFFC
 	word16 wFFFFFFFE;	// FFFFFFFE
 	struct Eq_2380 Eq_3::* ptr0000;	// 0
 } Eq_3158;
@@ -23825,7 +23825,7 @@ typedef union Eq_4144 {
 typedef union Eq_4146 {
 	ptr32 u0;
 	segptr32 u1;
-	<type-error> Eq_3::* u2;
+	<unknown> Eq_3::* u2;
 } Eq_4146;
 
 typedef word16 (Eq_4186)(Eq_3659 *, Eq_3, ptr16);
