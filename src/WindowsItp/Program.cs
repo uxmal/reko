@@ -18,7 +18,6 @@
  */
 #endregion
 
-using Reko.WindowsItp.Performance;
 using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
