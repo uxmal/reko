@@ -166,11 +166,16 @@ namespace Reko.Arch.Z80
                     return dasm.CreateInvalidInstruction();
                 if (op == 0xCB)
                 {
-                    var offset = dasm.rdr.ReadSByte();
-                    op = dasm.rdr.ReadByte();
+                    if (!dasm.rdr.TryReadByte(out byte uOffset))
+                        return dasm.CreateInvalidInstruction();
+                    sbyte offset = (sbyte) uOffset;
+                    if (!dasm.rdr.TryReadByte(out op))
+                        return dasm.CreateInvalidInstruction();
                     switch (op >> 6)
                     {
-                    default: throw new NotImplementedException();
+                    default:
+                        //$TODO: some kind volunteer could implement the unofficial opcodes.
+                        return dasm.CreateInvalidInstruction();
                     case 1:
                         dasm.ops.Add(new ImmediateOperand(Constant.Byte((byte) ((op >> 3) & 0x07))));
                         dasm.ops.Add(new MemoryOperand(IndexRegister, offset, PrimitiveType.Byte));
@@ -218,8 +223,7 @@ namespace Reko.Arch.Z80
                 var y = (byte) ((op >> 3) & 0x07);
                 switch (op >> 6)
                 {
-                default: throw new InvalidOperationException();
-                case 0:
+                default:
                     mnemonic = cbMnemonics[y];
                     break;
                 case 1:

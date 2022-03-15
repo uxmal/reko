@@ -41,8 +41,9 @@ namespace Reko.Arch.Z80
         private readonly IStorageBinder binder;
         private readonly IRewriterHost host;
         private readonly IEnumerator<Z80Instruction> dasm;
+        private readonly RtlEmitter m;
+        private readonly List<RtlInstruction> rtlInstructions;
         private InstrClass iclass;
-        private RtlEmitter m;
         private Z80Instruction instr;
 
 #nullable disable
@@ -52,6 +53,8 @@ namespace Reko.Arch.Z80
             this.binder = binder;
             this.host = host;
             this.dasm = new Z80Disassembler(arch, rdr).GetEnumerator();
+            this.rtlInstructions = new List<RtlInstruction>();
+            this.m = new RtlEmitter(rtlInstructions);
             this.instr = default!;
         }
 #nullable enable
@@ -64,8 +67,6 @@ namespace Reko.Arch.Z80
                 var addr = instr.Address;
                 var len = instr.Length;
                 this.iclass = instr.InstructionClass;
-                var rtlInstructions = new List<RtlInstruction>();
-                m = new RtlEmitter(rtlInstructions);
                 switch (dasm.Current.Mnemonic)
                 {
                 default:
@@ -149,7 +150,10 @@ namespace Reko.Arch.Z80
                 case Mnemonic.rld: goto default;
                 case Mnemonic.rrd: goto default;
                 }
+                if (len < 0)
+                    throw new Exception($"addr: {instr.Address} len < 0");
                 yield return m.MakeCluster(addr, len, iclass);
+                rtlInstructions.Clear();
             }
         }
 

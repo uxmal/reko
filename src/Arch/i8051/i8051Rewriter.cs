@@ -18,13 +18,6 @@
  */
 #endregion
 
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Intrinsics;
@@ -33,6 +26,9 @@ using Reko.Core.Memory;
 using Reko.Core.Rtl;
 using Reko.Core.Services;
 using Reko.Core.Types;
+using System;
+using System.Collections;
+using System.Collections.Generic;
 
 namespace Reko.Arch.i8051
 {
