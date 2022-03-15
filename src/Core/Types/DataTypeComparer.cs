@@ -19,6 +19,7 @@
 #endregion
 
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
 
@@ -47,13 +48,13 @@ namespace Reko.Core.Types
         private const int Unk = 14;
         private const int Void = 15;
 
-        private IDictionary<(DataType, DataType), int> compareResult;
+        private ConcurrentDictionary<(DataType, DataType), int> compareResult;
 
 		private static DataTypeComparer ourGlobalComparer = new DataTypeComparer();
 
         public DataTypeComparer()
         {
-            this.compareResult = new Dictionary<(DataType, DataType), int>();
+            this.compareResult = new ConcurrentDictionary<(DataType, DataType), int>();
         }
 
         /// <summary>
@@ -79,13 +80,16 @@ namespace Reko.Core.Types
             var typePair = (x, y);
 
             // avoid infinite recursion
-            if (compareResult.TryGetValue(typePair, out int d))
-                return d;
-
-            compareResult[typePair] = 0;
-            d = CompareInternal(x, y, count);
-            compareResult[typePair] = d;
-
+            int d;
+            while (!compareResult.TryGetValue(typePair, out d))
+            {
+                if (compareResult.TryAdd(typePair, 0))
+                {
+                    d = CompareInternal(x, y, count);
+                    if (compareResult.TryUpdate(typePair, d, 0))
+                        return d;
+                }
+            }
             return d;
         }
 

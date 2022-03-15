@@ -18,22 +18,19 @@
  */
 #endregion
 
+using Reko.Core.Expressions;
+using Reko.Core.Types;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.IO;
-using Reko.Core;
-using Reko.Core.Expressions;
-using Reko.Core.Output;
-using Reko.Core.Types;
 
 namespace Reko.Core
 {
-	/// <summary>
-	/// Represents predefined functions or processor instructions that don't have a 
-	/// C/C++ equivalent (like rotate operations).
-	/// </summary>
-	public class IntrinsicProcedure : ProcedureBase
+    /// <summary>
+    /// Represents predefined functions or processor instructions that don't have a 
+    /// C/C++ equivalent (like rotate operations).
+    /// </summary>
+    public class IntrinsicProcedure : ProcedureBase
 	{
         /// <summary>
         /// To avoid generating massive amounts of instances of generic intrinsics,
@@ -143,28 +140,24 @@ namespace Reko.Core
         /// <param name="concreteTypes">Concrete </param>
         /// <returns>A newly minted or previously cached concrete instance.
         /// </returns>
-
         public IntrinsicProcedure MakeInstance(params DataType[] concreteTypes)
         {
             if (this.IsConcreteGeneric)
                 throw new InvalidOperationException($"The intrinsic {this} is already a concrete instance.");
             var key = (Name, concreteTypes);
-            if (instanceCache.TryGetValue(key, out var instance))
-                return instance;
-            var sig = base.MakeConcreteSignature(concreteTypes);
-            instance = new IntrinsicProcedure(this.Name, concreteTypes, true, this.HasSideEffect, sig)
+            IntrinsicProcedure? instance;
+            while (!instanceCache.TryGetValue(key, out instance))
             {
-                Characteristics = this.Characteristics,
-                EnclosingType = this.EnclosingType
-            };
-            if (!instanceCache.TryAdd(key, instance))
-            {
-                return instanceCache[key];
+                var sig = base.MakeConcreteSignature(concreteTypes);
+                instance = new IntrinsicProcedure(this.Name, concreteTypes, true, this.HasSideEffect, sig)
+                {
+                    Characteristics = this.Characteristics,
+                    EnclosingType = this.EnclosingType
+                };
+                if (instanceCache.TryAdd(key, instance))
+                    break;
             }
-            else
-            {
-                return instance;
-            }
+            return instance;
         }
 
 		public override string ToString()
