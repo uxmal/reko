@@ -58,6 +58,7 @@ namespace Reko.Arch.WE32100
             var instr = rootDecoder.Decode(op, this);
             instr.Address = addr;
             instr.Length = (int) (rdr.Address - addr);
+            ops.Clear();
             return instr;
         }
 
@@ -77,7 +78,6 @@ namespace Reko.Arch.WE32100
             {
                 InstructionClass = InstrClass.Invalid,
                 Mnemonic = Mnemonic.invalid,
-                Operands = new MachineOperand[0]
             };
         }
 
