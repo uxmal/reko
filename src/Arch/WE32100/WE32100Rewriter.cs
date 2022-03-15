@@ -39,8 +39,9 @@ namespace Reko.Arch.WE32100
         private readonly IStorageBinder binder;
         private readonly IRewriterHost host;
         private readonly IEnumerator<WE32100Instruction> dasm;
+        private readonly RtlEmitter m;
+        private readonly List<RtlInstruction> rtls;
         private WE32100Instruction instr;
-        private RtlEmitter m;
         private InstrClass iclass;
 
         public WE32100Rewriter(WE32100Architecture arch, EndianImageReader rdr, ProcessorState state, IStorageBinder binder, IRewriterHost host)
@@ -51,8 +52,9 @@ namespace Reko.Arch.WE32100
             this.binder = binder;
             this.host = host;
             this.dasm = new WE32100Disassembler(arch, rdr).GetEnumerator();
-            this.instr = null!;
-            this.m = null!;
+            this.rtls = new List<RtlInstruction>();
+            this.m = new RtlEmitter(rtls);
+            this.instr = default!;
         }
 
         public IEnumerator<RtlInstructionCluster> GetEnumerator()
@@ -60,8 +62,6 @@ namespace Reko.Arch.WE32100
             while (dasm.MoveNext())
             {
                 this.instr = dasm.Current;
-                var rtls = new List<RtlInstruction>();
-                m = new RtlEmitter(rtls);
                 this.iclass = instr.InstructionClass;
                 switch (instr.Mnemonic)
                 {
@@ -93,6 +93,7 @@ namespace Reko.Arch.WE32100
                 case Mnemonic.xorw2: RewriteLogical2(m.Xor, PrimitiveType.Word32); break;
                 }
                 yield return m.MakeCluster(instr.Address, instr.Length, iclass);
+                rtls.Clear();
             }
         }
 
