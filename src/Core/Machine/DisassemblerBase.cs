@@ -47,6 +47,8 @@ namespace Reko.Core.Machine
                 TInstr? instr = DisassembleInstruction();
                 if (instr is null)
                     break;
+                if (instr.Length < 0)
+                    break;
                 yield return instr;
             }
         }
