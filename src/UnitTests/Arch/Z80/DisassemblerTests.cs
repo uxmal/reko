@@ -31,24 +31,31 @@ using System.Linq;
 namespace Reko.UnitTests.Arch.Z80
 {
     [TestFixture]
-    public class DisassemblerTests
+    public class DisassemblerTests : DisassemblerTestBase<Z80Instruction>
     {
-        private ServiceContainer sc;
         private Z80ProcessorArchitecture arch;
 
         public DisassemblerTests()
         {
-            this.sc = new ServiceContainer();
-            sc.AddService<ITestGenerationService>(new UnitTestGenerationService(sc));
-            this.arch = new Z80ProcessorArchitecture(sc, "z80", new Dictionary<string, object>());
+            this.arch = new Z80ProcessorArchitecture(CreateServiceContainer(), "z80", new Dictionary<string, object>());
+            this.LoadAddress = Address.Ptr16(0x100);
         }
+
+        public override IProcessorArchitecture Architecture => arch;
+        public override Address LoadAddress { get; }
 
         private MachineInstruction RunTest(params byte [] bytes)
         {
-            var image = new ByteMemoryArea(Address.Ptr16(0x0100), bytes);
+            var image = new ByteMemoryArea(LoadAddress, bytes);
             var rdr = new LeImageReader(image, 0);
             var dasm = arch.CreateDisassembler(rdr);
             return dasm.First();
+        }
+
+        private void AssertCode(string sExpected, string hexString)
+        {
+            var instr = DisassembleHexBytes(hexString);
+            Assert.AreEqual(sExpected, instr.ToString());
         }
 
         [Test]
@@ -315,5 +322,7 @@ namespace Reko.UnitTests.Arch.Z80
              var instr = RunTest(0xFD, 0xCB, 0x3B, 0x7E);
              Assert.AreEqual("bit\t07,(iy+3B)", instr.ToString());
          }
+
+
     }
 }
