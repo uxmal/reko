@@ -52,7 +52,7 @@ namespace Reko.Arch.H8
         }
 
 
-        public static MemoryOperand BaseOffset(PrimitiveType dt, short offset, PrimitiveType addrSize, RegisterStorage baseReg)
+        public static MemoryOperand BaseOffset(PrimitiveType dt, int offset, PrimitiveType addrSize, RegisterStorage baseReg)
         {
             return new MemoryOperand(dt)
             {
@@ -99,7 +99,14 @@ namespace Reko.Arch.H8
                 else if (Offset != 0)
                 {
                     renderer.WriteChar('(');
-                    renderer.WriteFormat("{0}:{1},", Offset, AddressWidth!.BitSize);
+                    if (AddressWidth!.BitSize == 32)
+                    {
+                        renderer.WriteFormat("0x{0:X}:{1},", Offset, AddressWidth!.BitSize);
+                    }
+                    else
+                    {
+                        renderer.WriteFormat("{0}:{1},", Offset, AddressWidth!.BitSize);
+                    }
                     renderer.WriteString(Base.Name);
                     renderer.WriteChar(')');
                 }

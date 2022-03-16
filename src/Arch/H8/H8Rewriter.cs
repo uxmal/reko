@@ -85,10 +85,22 @@ namespace Reko.Arch.H8
                 case Mnemonic.adds: RewriteAdds(instr); break;
                 case Mnemonic.addx: RewriteAddxSubx(instr, m.IAdd); break;
                 case Mnemonic.and: RewriteLogical(instr, m.And); break;
+                case Mnemonic.andc: RewriteLogicalC(instr, m.And); break;
+                case Mnemonic.band: RewriteLogicalB(instr, m.And); break;
+                case Mnemonic.bclr: RewriteBclr(instr); break;
+                case Mnemonic.biand: RewriteLogicalB(instr, InvAnd); break;
+                case Mnemonic.bild: RewriteLogicalB(instr, InvLd); break;
+                case Mnemonic.bior: RewriteLogicalB(instr, InvOr); break;
+                case Mnemonic.bist: RewriteBist(instr); break;
+                case Mnemonic.bixor: RewriteLogicalB(instr, InvXor); break;
                 case Mnemonic.bld: RewriteBtst(instr, C); break;
+                case Mnemonic.bnot: RewriteBnot(instr); break;
+                case Mnemonic.bor: RewriteLogicalB(instr, m.Or); break;
                 case Mnemonic.bset: RewriteBset(instr, Constant.True()); break;
                 case Mnemonic.bst: RewriteBset(instr, binder.EnsureFlagGroup(C)); break;
                 case Mnemonic.btst: RewriteBtst(instr, Z); break;
+                case Mnemonic.bxor: RewriteLogicalB(instr, m.Xor); break;
+
                 case Mnemonic.bra: RewriteBranch(instr); break;
                 case Mnemonic.brn: RewriteNop(); break;
                 case Mnemonic.bhi: RewriteBranch(instr, ConditionCode.UGT, ZC); break;
@@ -105,16 +117,24 @@ namespace Reko.Arch.H8
                 case Mnemonic.blt: RewriteBranch(instr, ConditionCode.LT, NV); break;
                 case Mnemonic.bgt: RewriteBranch(instr, ConditionCode.GT, NZV); break;
                 case Mnemonic.ble: RewriteBranch(instr, ConditionCode.LE, NZV); break;
+
                 case Mnemonic.cmp: RewriteCmp(instr); break;
+                case Mnemonic.dec: RewriteIncDec(instr, m.ISub); break;
+                case Mnemonic.exts: RewriteExt(instr, Domain.SignedInt); break;
                 case Mnemonic.extu: RewriteExt(instr, Domain.UnsignedInt); break;
+                case Mnemonic.inc: RewriteIncDec(instr, m.IAdd); break;
                 case Mnemonic.jmp: RewriteJmp(instr); break;
                 case Mnemonic.jsr: RewriteJsr(instr); break;
                 case Mnemonic.ldc: RewriteLdc(instr); break;
                 case Mnemonic.mov: RewriteMov(instr); break;
                 case Mnemonic.mulxu: RewriteMulxu(instr); break;
                 case Mnemonic.nop: RewriteNop(); break;
+                case Mnemonic.neg: RewriteNeg(instr); break;
                 case Mnemonic.not: RewriteUnaryLogical(instr, m.Comp); break;
                 case Mnemonic.or: RewriteLogical(instr, m.Or); break;
+                case Mnemonic.orc: RewriteLogicalC(instr, m.Or); break;
+                case Mnemonic.rotl: RewriteRotation(instr, CommonOps.Rol); break;
+                case Mnemonic.rotr: RewriteRotation(instr, CommonOps.Ror); break;
                 case Mnemonic.rotxl: RewriteRotationX(instr, CommonOps.RolC); break;
                 case Mnemonic.rotxr: RewriteRotationX(instr, CommonOps.RorC); break;
                 case Mnemonic.rts: RewriteRts(); break;
@@ -122,10 +142,12 @@ namespace Reko.Arch.H8
                 case Mnemonic.shar: RewriteShift(instr, m.Sar); break;
                 case Mnemonic.shll: RewriteShift(instr, m.Shl); break;
                 case Mnemonic.shlr: RewriteShift(instr, m.Shr); break;
+                case Mnemonic.stc: RewriteStc(instr); break;
                 case Mnemonic.sub: RewriteSub(instr); break;
                 case Mnemonic.subs: RewriteSubs(instr); break;
                 case Mnemonic.subx: RewriteAddxSubx(instr, m.ISub); break;
                 case Mnemonic.xor: RewriteLogical(instr, m.Xor); break;
+                case Mnemonic.xorc: RewriteLogicalC(instr, m.Xor); break;
                 }
                 yield return m.MakeCluster(instr.Address, instr.Length, iclass);
                 this.m = new RtlEmitter(new List<RtlInstruction>());
@@ -239,6 +261,25 @@ namespace Reko.Arch.H8
             testgenSvc?.ReportMissingRewriter("H8Rw", instr, instr.Mnemonic.ToString(), rdr, message);
         }
 
+        private Expression InvAnd(Expression a, Expression b)
+        {
+            return m.And(a, m.Comp(b));
+        }
+
+        private Expression InvLd(Expression a, Expression b)
+        {
+            return m.Comp(b);
+        }
+
+        private Expression InvOr(Expression a, Expression b)
+        {
+            return m.Or(a, m.Comp(b));
+        }
+
+        private Expression InvXor(Expression a, Expression b)
+        {
+            return m.Xor(a, m.Comp(b));
+        }
 
         private void RewriteAdd(H8Instruction instr)
         {
@@ -258,6 +299,34 @@ namespace Reko.Arch.H8
             var src = OpSrc(instr.Operands[0]);
             var dst = OpDst(instr.Operands[1], src, (d, s) => fn(fn(d, s), binder.EnsureFlagGroup(C)));
             EmitCond(NZVC, dst);
+        }
+
+        private void RewriteBclr(H8Instruction instr)
+        {
+            var left = OpSrc(instr.Operands[1]);
+            var right = OpSrc(instr.Operands[0]);
+            m.Assign(left, m.Fn(
+                CommonOps.ClearBit.MakeInstance(left.DataType, right.DataType),
+                left, right));
+        }
+
+        private void RewriteBist(H8Instruction instr)
+        {
+            var left = OpSrc(instr.Operands[1]);
+            var right = OpSrc(instr.Operands[0]);
+            m.Assign(left, m.Fn(
+                CommonOps.WriteBit.MakeInstance(left.DataType, right.DataType),
+                left, right, m.Comp(binder.EnsureFlagGroup(C))));
+        }
+
+        private void RewriteBnot(H8Instruction instr)
+        {
+            var left = OpSrc(instr.Operands[1]);
+            var right = OpSrc(instr.Operands[0]);
+            m.Assign(left, m.Fn(
+                CommonOps.InvertBit.MakeInstance(left.DataType, right.DataType),
+                left, right));
+
         }
 
         private void RewriteBranch(H8Instruction instr)
@@ -293,6 +362,13 @@ namespace Reko.Arch.H8
             m.Assign(binder.EnsureFlagGroup(V), Constant.False());
         }
 
+        private void RewriteIncDec(H8Instruction instr, Func<Expression, Expression, Expression> fn)
+        {
+            var reg = (Identifier) OpSrc(instr.Operands[0]);
+            m.Assign(reg, fn(reg, Constant.Create(reg.DataType, 1)));
+            EmitCond(NZV, reg);
+        }
+        
         private void RewriteJmp(H8Instruction instr)
         {
             var target = ((MemoryAccess) OpSrc(instr.Operands[0])).EffectiveAddress;
@@ -333,6 +409,24 @@ namespace Reko.Arch.H8
             m.Assign(binder.EnsureFlagGroup(V), Constant.False());
         }
 
+        private void RewriteLogicalB(H8Instruction instr, Func<Expression, Expression, Expression> fn)
+        {
+            var c = binder.EnsureFlagGroup(C);
+            var right = OpSrc(instr.Operands[0]);
+            var left = OpSrc(instr.Operands[1]);
+            var src = m.Fn(
+                CommonOps.Bit.MakeInstance(left.DataType, right.DataType),
+                left,
+                right);
+            m.Assign(c, fn(c, src));
+        }
+
+        private void RewriteLogicalC(H8Instruction instr, Func<Expression, Expression, Expression> fn)
+        {
+            var src = OpSrc(instr.Operands[0]);
+            var dst = OpDst(instr.Operands[1], src, fn);
+        }
+
         private void RewriteMov(H8Instruction instr)
         {
             var src = OpSrc(instr.Operands[0]);
@@ -353,16 +447,35 @@ namespace Reko.Arch.H8
             m.Assign(dst, umul);
         }
 
+        private void RewriteNeg(H8Instruction instr)
+        {
+            var reg = (Identifier) OpSrc(instr.Operands[0]);
+            m.Assign(reg, m.Neg(reg));
+            EmitCond(NZVC, reg);
+        }
+
         private void RewriteNop()
         {
             m.Nop();
+        }
+
+        private void RewriteRotation(H8Instruction instr, IntrinsicProcedure intrinsic)
+        {
+            var src = OpSrc(instr.Operands[0]);
+            m.Assign(src, m.Fn(
+                intrinsic.MakeInstance(src.DataType, PrimitiveType.Byte), 
+                src, Constant.Byte(1)));
+            EmitCond(NZC, src);
+            m.Assign(binder.EnsureFlagGroup(V), Constant.False());
         }
 
         private void RewriteRotationX(H8Instruction instr, IntrinsicProcedure intrinsic)
         {
             var src = OpSrc(instr.Operands[0]);
             var c = binder.EnsureFlagGroup(C);
-            m.Assign(src, m.Fn(intrinsic, src, Constant.Int32(1), c));
+            m.Assign(src, m.Fn(
+                intrinsic.MakeInstance(src.DataType, PrimitiveType.Byte),
+                src, Constant.Byte(1), c));
             EmitCond(NZC, src);
             m.Assign(binder.EnsureFlagGroup(V), Constant.False());
         }
@@ -377,6 +490,13 @@ namespace Reko.Arch.H8
             var src = OpSrc(instr.Operands[0]);
             m.Assign(src, fn(src, Constant.Int32(1)));
             EmitCond(NZVC, src);
+        }
+
+        private void RewriteStc(H8Instruction instr)
+        {
+            var src = OpSrc(instr.Operands[0]);
+            var dst = OpSrc(instr.Operands[1]);
+            m.Assign(dst, src);
         }
 
         private void RewriteSub(H8Instruction instr)

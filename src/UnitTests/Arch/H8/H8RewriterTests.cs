@@ -83,6 +83,33 @@ namespace Reko.UnitTests.Arch.H8
         }
 
         [Test]
+        public void H8Rw_andc()
+        {
+            Given_HexString("06CB");
+            AssertCode(     // andc	#0xCB,ccr
+                "0|L--|8000(2): 1 instructions",
+                "1|L--|ccr = ccr & 0xCB<8>");
+        }
+
+        [Test]
+        public void H8Rw_band()
+        {
+            Given_HexString("7645");
+            AssertCode(     // band	#0x04,r5h
+                "0|L--|8000(2): 1 instructions",
+                "1|L--|C = C & __bit<byte,byte>(r5h, 4<8>)");
+        }
+
+        [Test]
+        public void H8Rw_bclr()
+        {
+            Given_HexString("7279");
+            AssertCode(     // bclr	#0x07,r1l
+                "0|L--|8000(2): 1 instructions",
+                "1|L--|r1l = __clear_bit<byte,byte>(r1l, 7<8>)");
+        }
+
+        [Test]
         public void H8Rw_beq()
         {
             Given_HexString("470A");
@@ -92,12 +119,75 @@ namespace Reko.UnitTests.Arch.H8
         }
 
         [Test]
+        public void H8Rw_biand()
+        {
+            Given_HexString("76A7");
+            AssertCode(     // biand	#0x02,r7h
+                "0|L--|8000(2): 1 instructions",
+                "1|L--|C = C & ~__bit<byte,byte>(r7h, 2<8>)");
+        }
+
+        [Test]
+        public void H8Rw_bild()
+        {
+            Given_HexString("77C8");
+            AssertCode(     // bild	#0x04,r0l
+                "0|L--|8000(2): 1 instructions",
+                "1|L--|C = ~__bit<byte,byte>(r0l, 4<8>)");
+        }
+
+        [Test]
+        public void H8Rw_bior()
+        {
+            Given_HexString("74BF");
+            AssertCode(     // bior	#0x03,r7l
+                "0|L--|8000(2): 1 instructions",
+                "1|L--|C = C | ~__bit<byte,byte>(r7l, 3<8>)");
+        }
+
+        [Test]
+        public void H8Rw_bist()
+        {
+            Given_HexString("67B8");
+            AssertCode(     // bist	#0x03,r0l
+                "0|L--|8000(2): 1 instructions",
+                "1|L--|r0l = __write_bit<byte,byte>(r0l, 3<8>, ~C)");
+        }
+
+        [Test]
+        public void H8Rw_bixor()
+        {
+            Given_HexString("75B4");
+            AssertCode(     // bixor	#0x03,r4h
+                "0|L--|8000(2): 1 instructions",
+                "1|L--|C = C ^ ~__bit<byte,byte>(r4h, 3<8>)");
+        }
+
+        [Test]
         public void H8Rw_bld()
         {
             Given_HexString("7771");
             AssertCode(     // bld	#0x07,r1h
                 "0|L--|8000(2): 1 instructions",
                 "1|L--|C = __btst(r1h, 7<8>)");
+        }
+
+        [Test]
+        public void H8Rw_bnot()
+        {
+            Given_HexString("7116");
+            AssertCode(     // bnot	#0x01,r6h
+                "0|L--|8000(2): 1 instructions",
+                "1|L--|r6h = __invert_bit<byte,byte>(r6h, 1<8>)");
+        }
+
+        [Test]
+        public void H8Rw_bor()
+        {
+            Given_HexString("7403");
+            AssertCode(     // bor	#0x00,r3h
+                "0|L--|8000(2): 1 instructions",
+                "1|L--|C = C | __bit<byte,byte>(r3h, 0<8>)");
         }
 
         [Test]
@@ -128,12 +218,43 @@ namespace Reko.UnitTests.Arch.H8
         }
 
         [Test]
+        public void H8Rw_bxor()
+        {
+            Given_HexString("7519");
+            AssertCode(     // bxor	#0x01,r1l
+                "0|L--|8000(2): 1 instructions",
+                "1|L--|C = C ^ __bit<byte,byte>(r1l, 1<8>)");
+        }
+
+        [Test]
         public void H8Rw_cmp()
         {
             Given_HexString("1D32");
             AssertCode(     // cmp.w	r3,r2
                 "0|L--|8000(2): 1 instructions",
                 "1|L--|NZVC = cond(r2 - r3)");
+        }
+
+        [Test]
+        public void H8Rw_dec()
+        {
+            Given_HexString("1A0D");
+            AssertCode(     // dec.b	r5l
+                "0|L--|8000(2): 2 instructions",
+                "1|L--|r5l = r5l - 1<8>",
+                "2|L--|NZV = cond(r5l)");
+        }
+
+        [Test]
+        public void H8Rw_exts()
+        {
+            Given_HexString("17D8");
+            AssertCode(     // exts.w	e0
+                "0|L--|8000(2): 4 instructions",
+                "1|L--|e0 = CONVERT(r0l, byte, int16)",
+                "2|L--|Z = cond(e0)",
+                "3|L--|N = false",
+                "4|L--|V = false");
         }
 
         [Test]
@@ -146,6 +267,16 @@ namespace Reko.UnitTests.Arch.H8
                 "2|L--|Z = cond(er3)",
                 "3|L--|N = false",
                 "4|L--|V = false");
+        }
+
+        [Test]
+        public void H8Rw_inc()
+        {
+            Given_HexString("0A03");
+            AssertCode(     // inc.b	r3h
+                "0|L--|8000(2): 2 instructions",
+                "1|L--|r3h = r3h + 1<8>",
+                "2|L--|NZV = cond(r3h)");
         }
 
         [Test]
@@ -197,6 +328,16 @@ namespace Reko.UnitTests.Arch.H8
         }
 
         [Test]
+        public void H8Rw_neg()
+        {
+            Given_HexString("1786");
+            AssertCode(     // neg.b	r6h
+                "0|L--|8000(2): 2 instructions",
+                "1|L--|r6h = -r6h",
+                "2|L--|NZVC = cond(r6h)");
+        }
+
+        [Test]
         public void H8Rw_not()
         {
             Given_HexString("1708");
@@ -219,12 +360,43 @@ namespace Reko.UnitTests.Arch.H8
         }
 
         [Test]
+        public void H8Rw_orc()
+        {
+            Given_HexString("0474");
+            AssertCode(     // orc	#0x74,ccr
+                "0|L--|8000(2): 1 instructions",
+                "1|L--|ccr = ccr | 0x74<8>");
+        }
+
+        [Test]
+        public void H8Rw_rotl()
+        {
+            Given_HexString("12B3");
+            AssertCode(     // rotl.l	er3
+                "0|L--|8000(2): 3 instructions",
+                "1|L--|er3 = __rol<word32,byte>(er3, 1<8>)",
+                "2|L--|NZC = cond(er3)",
+                "3|L--|V = false");
+        }
+
+        [Test]
+        public void H8Rw_rotr()
+        {
+            Given_HexString("1395");
+            AssertCode(     // rotr.w	r5
+                "0|L--|8000(2): 3 instructions",
+                "1|L--|r5 = __ror<word16,byte>(r5, 1<8>)",
+                "2|L--|NZC = cond(r5)",
+                "3|L--|V = false");
+        }
+
+        [Test]
         public void H8Rw_rotxl()
         {
             Given_HexString("1202");
             AssertCode(     // rotxl.b	r2h
                 "0|L--|8000(2): 3 instructions",
-                "1|L--|r2h = __rcl<byte,int32,bool>(r2h, 1<i32>, C)",
+                "1|L--|r2h = __rcl<byte,byte>(r2h, 1<8>, C)",
                 "2|L--|NZC = cond(r2h)",
                 "3|L--|V = false");
         }
@@ -235,7 +407,7 @@ namespace Reko.UnitTests.Arch.H8
             Given_HexString("130A");
             AssertCode(     // rotxr.b	r2l
                 "0|L--|8000(2): 3 instructions",
-                "1|L--|r2l = __rcr<byte,int32,bool>(r2l, 1<i32>, C)",
+                "1|L--|r2l = __rcr<byte,byte>(r2l, 1<8>, C)",
                 "2|L--|NZC = cond(r2l)",
                 "3|L--|V = false");
         }
@@ -269,6 +441,14 @@ namespace Reko.UnitTests.Arch.H8
                 "2|L--|NZVC = cond(r0h)");
         }
 
+        [Test]
+        public void H8Rw_stc()
+        {
+            Given_HexString("0209");
+            AssertCode(     // stc.b	ccr,r1l
+                "0|L--|8000(2): 1 instructions",
+                "1|L--|r1l = ccr");
+        }
 
         [Test]
         public void H8Rw_sub()
@@ -299,14 +479,14 @@ namespace Reko.UnitTests.Arch.H8
                 "2|L--|NZ = cond(e4)",
                 "3|L--|V = false");
         }
-        // This file contains unit tests automatically generated by Reko decompiler.
-        // Please copy the contents of this file and report it on GitHub, using the 
-        // following URL: https://github.com/uxmal/reko/issues
 
-
-
-
-
-
+        [Test]
+        public void H8Rw_xorc()
+        {
+            Given_HexString("051D");
+            AssertCode(     // xorc	#0x1D,ccr
+                "0|L--|8000(2): 1 instructions",
+                "1|L--|ccr = ccr ^ 0x1D<8>");
+        }
     }
 }
