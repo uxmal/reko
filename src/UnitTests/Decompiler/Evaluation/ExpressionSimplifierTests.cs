@@ -49,7 +49,7 @@ namespace Reko.UnitTests.Decompiler.Evaluation
         public void Setup()
         {
             m = new ProcedureBuilder();
-            this.rolc_8 = CommonOps.RolC.MakeInstance(PrimitiveType.Word32, PrimitiveType.Byte, PrimitiveType.Bool);
+            this.rolc_8 = CommonOps.RolC.MakeInstance(PrimitiveType.Word32, PrimitiveType.Byte);
             arch = new Mock<IProcessorArchitecture>();
         }
 

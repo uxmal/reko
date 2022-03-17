@@ -50,6 +50,12 @@ namespace Reko.UnitTests.Arch.i8051
             get { return Address.Ptr16(0); }
         }
 
+        private void AssertCode(string sExpected, string sHexBytes)
+        {
+            var instr = DisassembleHexBytes(sHexBytes);
+            Assert.AreEqual(sExpected, instr.ToString());
+        }
+
         [Test]
         public void I8051_dis_nop()
         {
@@ -361,5 +367,6 @@ namespace Reko.UnitTests.Arch.i8051
             var instr = DisassembleBytes(0xC4);
             Assert.AreEqual("swap\tA", instr.ToString());
         }
+
     }
 }

@@ -482,7 +482,7 @@ namespace Reko.UnitTests.Arch.MicroBlaze
             Given_HexString("90F90021");   // src	r7,r25
             AssertCode(
                 "0|L--|00100000(4): 2 instructions",
-                "1|L--|r7 = __rcr<word32,int32,bool>(r25, 1<i32>, C)",
+                "1|L--|r7 = __rcr<word32,int32>(r25, 1<i32>, C)",
                 "2|L--|C = cond(r7)");
         }
 

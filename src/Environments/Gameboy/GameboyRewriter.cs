@@ -537,7 +537,9 @@ namespace Reko.Environments.Gameboy
         {
             var exp = Op(0);
             var cy = binder.EnsureFlagGroup(Registers.C);
-            m.Assign(exp, m.Fn(CommonOps.RolC, exp, m.Byte(1), cy));
+            m.Assign(exp, m.Fn(
+                CommonOps.RolC.MakeInstance(exp.DataType, PrimitiveType.Byte),
+                exp, m.Byte(1), cy));
             Emit_Z00C(m.Cond(exp));
         }
 
@@ -545,7 +547,9 @@ namespace Reko.Environments.Gameboy
         {
             var exp = binder.EnsureRegister(Registers.a);
             var cy = binder.EnsureFlagGroup(Registers.C);
-            m.Assign(exp, m.Fn(CommonOps.RolC, exp, m.Byte(1), cy));
+            m.Assign(exp, m.Fn(
+                CommonOps.RolC.MakeInstance(exp.DataType, PrimitiveType.Byte),
+                exp, m.Byte(1), cy));
             Emit_000C(m.Cond(exp));
         }
 
@@ -553,14 +557,18 @@ namespace Reko.Environments.Gameboy
         {
             var exp = Op(0);
             var cy = binder.EnsureFlagGroup(Registers.C);
-            m.Assign(exp, m.Fn(CommonOps.RolC, exp, m.Byte(1), cy));
+            m.Assign(exp, m.Fn(
+                CommonOps.RolC.MakeInstance(exp.DataType, PrimitiveType.Byte),
+                exp, m.Byte(1), cy));
             Emit_Z00C(m.Cond(exp));
         }
 
         private void Rewrite_rlca()
         {
             var exp = binder.EnsureRegister(Registers.a);
-            m.Assign(exp, m.Fn(CommonOps.Rol, exp, m.Byte(1)));
+            m.Assign(exp, m.Fn(
+                CommonOps.Rol.MakeInstance(exp.DataType, PrimitiveType.Byte),
+                exp, m.Byte(1)));
             Emit_000C(m.Cond(exp));
         }
 
@@ -568,7 +576,9 @@ namespace Reko.Environments.Gameboy
         {
             var exp = Op(0);
             var cy = binder.EnsureFlagGroup(Registers.C);
-            m.Assign(exp, m.Fn(CommonOps.RorC, exp, m.Byte(1), cy));
+            m.Assign(exp, m.Fn(
+                CommonOps.RorC.MakeInstance(exp.DataType, PrimitiveType.Byte),
+                exp, m.Byte(1), cy));
             Emit_Z00C(m.Cond(exp));
         }
 
@@ -576,7 +586,9 @@ namespace Reko.Environments.Gameboy
         {
             var exp = binder.EnsureRegister(Registers.a);
             var cy = binder.EnsureFlagGroup(Registers.C);
-            m.Assign(exp, m.Fn(CommonOps.RorC, exp, m.Byte(1), cy));
+            m.Assign(exp, m.Fn(
+                CommonOps.RorC.MakeInstance(exp.DataType, PrimitiveType.Byte),
+                exp, m.Byte(1), cy));
             Emit_000C(m.Cond(exp));
         }
 

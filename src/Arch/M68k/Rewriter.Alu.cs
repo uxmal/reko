@@ -77,13 +77,13 @@ namespace Reko.Arch.M68k
             {
                 var opSrc = orw.RewriteSrc(instr.Operands[0], instr.Address);
                 opDst = orw.RewriteDst(instr.Operands[1], instr.Address, opSrc, (s, d) =>
-                    m.Fn(rotation, d, s, binder.EnsureFlagGroup(Registers.X)));
+                    m.Fn(rotation.MakeInstance(d.DataType, s.DataType), d, s, binder.EnsureFlagGroup(Registers.X)));
             }
             else
             {
                 opDst = orw.RewriteDst(instr.Operands[0], instr.Address,
                     Constant.Byte(1), (s, d) =>
-                        m.Fn(rotation, d, s, binder.EnsureFlagGroup(Registers.X)));
+                        m.Fn(rotation.MakeInstance(d.DataType, s.DataType), d, s, binder.EnsureFlagGroup(Registers.X)));
             }
             if (opDst is null)
             {

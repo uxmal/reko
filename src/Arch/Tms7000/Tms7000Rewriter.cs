@@ -28,9 +28,6 @@ using Reko.Core.Types;
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Reko.Arch.Tms7000
 {
@@ -462,7 +459,7 @@ namespace Reko.Arch.Tms7000
         {
             var op = Operand(instr.Operands[0]);
             var C = binder.EnsureFlagGroup(arch.GetFlagGroup(arch.st, (uint)FlagM.CF));
-            m.Assign(op, m.Fn(rot, op, m.Byte(1), C));
+            m.Assign(op, m.Fn(rot.MakeInstance(op.DataType, PrimitiveType.Byte), op, m.Byte(1), C));
             m.Assign(C, m.Cond(op));
         }
 

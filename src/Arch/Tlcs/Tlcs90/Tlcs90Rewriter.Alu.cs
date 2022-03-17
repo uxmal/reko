@@ -216,7 +216,7 @@ namespace Reko.Arch.Tlcs.Tlcs90
             m.Assign(c, Constant.False());
         }
 
-        private void RewriteRotation(IntrinsicProcedure pseudoOp, bool useCarry)
+        private void RewriteRotation(IntrinsicProcedure intrinsic, bool useCarry)
         {
             Expression reg;
             if (instr.Operands.Length >= 1)
@@ -230,13 +230,14 @@ namespace Reko.Arch.Tlcs.Tlcs90
             var c = binder.EnsureFlagGroup(Registers.C);
             Expression src;
             var one = m.Byte(1);
+            intrinsic = intrinsic.MakeInstance(reg.DataType, one.DataType);
             if (useCarry)
             {
-                src = m.Fn(pseudoOp, reg, one, c);
+                src = m.Fn(intrinsic, reg, one, c);
             }
             else
             {
-                src = m.Fn(pseudoOp, reg, one);
+                src = m.Fn(intrinsic, reg, one);
             }
             Expression result;
             if (instr.Operands.Length >= 1)

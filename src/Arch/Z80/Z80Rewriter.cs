@@ -223,7 +223,7 @@ namespace Reko.Arch.Z80
             AssignCond(Registers.SZPC, dst);
         }
 
-        private void RewriteRotation(IntrinsicProcedure pseudoOp, bool useCarry)
+        private void RewriteRotation(IntrinsicProcedure intrinsic, bool useCarry)
         {
             Expression reg;
             if (dasm.Current.Operands.Length > 0)
@@ -236,14 +236,15 @@ namespace Reko.Arch.Z80
             }
             var C = FlagGroup(Registers.C);
             var one = m.Byte(1);
+            intrinsic = intrinsic.MakeInstance(reg.DataType, one.DataType);
             Expression src;
             if (useCarry)
             {
-                src = m.Fn(pseudoOp, reg, one, C);
+                src = m.Fn(intrinsic, reg, one, C);
             }
             else
             {
-                src = m.Fn(pseudoOp, reg, one);
+                src = m.Fn(intrinsic, reg, one);
             }
             m.Assign(reg, src);
             m.Assign(C, m.Cond(reg));

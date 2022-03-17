@@ -339,14 +339,14 @@ namespace Reko.Arch.M6800.M6812
         private Expression Rol(Expression a, Expression b)
         {
             var C = binder.EnsureFlagGroup(Registers.C);
-            var intrinsic = m.Fn(CommonOps.RolC, a, b, C);
+            var intrinsic = m.Fn(CommonOps.RolC.MakeInstance(a.DataType, b.DataType), a, b, C);
             return intrinsic;
         }
 
         private Expression Ror(Expression a, Expression b)
         {
             var C = binder.EnsureFlagGroup(Registers.C);
-            var intrinsic = m.Fn(CommonOps.RorC, a, b, C);
+            var intrinsic = m.Fn(CommonOps.RorC.MakeInstance(a.DataType, b.DataType), a, b, C);
             return intrinsic;
         }
 

@@ -351,7 +351,7 @@ namespace Reko.UnitTests.Arch.Sanyo
             Given_HexString("E0");
             AssertCode(     // rol
                 "0|L--|0100(1): 1 instructions",
-                "1|L--|ACC = __rol<byte,int8>(ACC, 1<i8>)");
+                "1|L--|ACC = __rol<byte,byte>(ACC, 1<8>)");
         }
 
         [Test]
@@ -360,7 +360,7 @@ namespace Reko.UnitTests.Arch.Sanyo
             Given_HexString("F0");
             AssertCode(     // rolc
                 "0|L--|0100(1): 2 instructions",
-                "1|L--|ACC = __rcl<byte,int8,bool>(ACC, 1<i8>, C)",
+                "1|L--|ACC = __rcl<byte,byte>(ACC, 1<8>, C)",
                 "2|L--|C = cond(ACC)");
         }
 
@@ -370,7 +370,7 @@ namespace Reko.UnitTests.Arch.Sanyo
             Given_HexString("D0");
             AssertCode(     // rorc
                 "0|L--|0100(1): 2 instructions",
-                "1|L--|ACC = __rcr<byte,int8,bool>(ACC, 1<i8>, C)",
+                "1|L--|ACC = __rcr<byte,byte>(ACC, 1<8>, C)",
                 "2|L--|C = cond(ACC)");
         }
 
@@ -380,7 +380,7 @@ namespace Reko.UnitTests.Arch.Sanyo
             Given_HexString("C0");
             AssertCode(     // ror
                 "0|L--|0100(1): 1 instructions",
-                "1|L--|ACC = __ror<byte,int8>(ACC, 1<i8>)");
+                "1|L--|ACC = __ror<byte,byte>(ACC, 1<8>)");
         }
 
         [Test]

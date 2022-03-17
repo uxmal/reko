@@ -305,7 +305,7 @@ namespace Reko.UnitTests.Environments.Gameboy
             Given_HexString("CB16");
             AssertCode(     // rl	(hl)
                 "0|L--|0100(2): 4 instructions",
-                "1|L--|Mem0[hl:byte] = __rcl<byte,byte,bool>(Mem0[hl:byte], 1<8>, C)",
+                "1|L--|Mem0[hl:byte] = __rcl<byte,byte>(Mem0[hl:byte], 1<8>, C)",
                 "2|L--|ZC = cond(Mem0[hl:byte])",
                 "3|L--|N = false",
                 "4|L--|H = false");
@@ -328,7 +328,7 @@ namespace Reko.UnitTests.Environments.Gameboy
             Given_HexString("17");
             AssertCode(     // rla
                 "0|L--|0100(1): 5 instructions",
-                "1|L--|a = __rcl<byte,byte,bool>(a, 1<8>, C)",
+                "1|L--|a = __rcl<byte,byte>(a, 1<8>, C)",
                 "2|L--|C = cond(a)",
                 "3|L--|Z = false",
                 "4|L--|N = false",
@@ -510,7 +510,7 @@ namespace Reko.UnitTests.Environments.Gameboy
             Given_HexString("1F");
             AssertCode(     // rra
                 "0|L--|0100(1): 5 instructions",
-                "1|L--|a = __rcr<byte,byte,bool>(a, 1<8>, C)",
+                "1|L--|a = __rcr<byte,byte>(a, 1<8>, C)",
                 "2|L--|C = cond(a)",
                 "3|L--|Z = false",
                 "4|L--|N = false",

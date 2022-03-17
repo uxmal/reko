@@ -21,14 +21,7 @@
 using NUnit.Framework;
 using Reko.Arch.Tms7000;
 using Reko.Core;
-using Reko.Core.Memory;
-using Reko.Core.Rtl;
-using System;
 using System.Collections.Generic;
-using System.ComponentModel.Design;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Reko.UnitTests.Arch.Tms7000
 {
@@ -326,7 +319,7 @@ namespace Reko.UnitTests.Arch.Tms7000
             Given_Bytes(0xBF);
             AssertCode(
                  "0|L--|0100(1): 2 instructions",
-                 "1|L--|a = __rcl<byte,byte,bool>(a, 1<8>, C)",
+                 "1|L--|a = __rcl<byte,byte>(a, 1<8>, C)",
                  "2|L--|C = cond(a)");
         }
 

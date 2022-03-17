@@ -44,7 +44,7 @@ namespace Reko.UnitTests.Arch.M6800
             Given_HexString("45");
             AssertCode(
                 "0|L--|0000(1): 2 instructions",
-                "1|L--|a = __rcl<byte,int8,bool>(a, 1<i8>, C)",
+                "1|L--|a = __rcl<byte,int8>(a, 1<i8>, C)",
                 "2|L--|NZVC = cond(a)");
         }
 
@@ -54,7 +54,7 @@ namespace Reko.UnitTests.Arch.M6800
             Given_HexString("55");
             AssertCode(
                 "0|L--|0000(1): 2 instructions",
-                "1|L--|b = __rcl<byte,int8,bool>(b, 1<i8>, C)",
+                "1|L--|b = __rcl<byte,int8>(b, 1<i8>, C)",
                 "2|L--|NZVC = cond(b)");
         }
 
@@ -64,7 +64,7 @@ namespace Reko.UnitTests.Arch.M6800
             Given_HexString("46");
             AssertCode(
                 "0|L--|0000(1): 2 instructions",
-                "1|L--|a = __rcr<byte,int8,bool>(a, 1<i8>, C)",
+                "1|L--|a = __rcr<byte,int8>(a, 1<i8>, C)",
                 "2|L--|NZVC = cond(a)");
         }
 
@@ -74,7 +74,7 @@ namespace Reko.UnitTests.Arch.M6800
             Given_HexString("56");
             AssertCode(
                 "0|L--|0000(1): 2 instructions",
-                "1|L--|b = __rcr<byte,int8,bool>(b, 1<i8>, C)",
+                "1|L--|b = __rcr<byte,int8>(b, 1<i8>, C)",
                 "2|L--|NZVC = cond(b)");
         }
 

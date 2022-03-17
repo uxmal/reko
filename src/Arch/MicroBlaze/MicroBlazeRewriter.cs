@@ -246,7 +246,7 @@ namespace Reko.Arch.MicroBlaze
         private Expression RorC(Expression a, Expression shift)
         {
             var cy = binder.EnsureFlagGroup(Registers.C);
-            var rorc = m.Fn(CommonOps.RorC, a, shift, cy);
+            var rorc = m.Fn(CommonOps.RorC.MakeInstance(a.DataType, shift.DataType), a, shift, cy);
             return rorc;
         }
 

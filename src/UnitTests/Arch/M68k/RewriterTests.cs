@@ -971,7 +971,7 @@ namespace Reko.UnitTests.Arch.M68k
             Given_UInt16s(0xE391);
             AssertCode(
                "0|L--|00010000(2): 3 instructions",
-               "1|L--|d1 = __rcl<word32,word32,bool>(d1, 1<32>, X)",
+               "1|L--|d1 = __rcl<word32,word32>(d1, 1<32>, X)",
                "2|L--|CZNX = cond(d1)",
                "3|L--|V = false");
         }
@@ -1002,7 +1002,7 @@ namespace Reko.UnitTests.Arch.M68k
             Given_UInt16s(0xE014);
             AssertCode(
                 "0|L--|00010000(2): 5 instructions",
-                "1|L--|v4 = __rcr<byte,byte,bool>(SLICE(d4, byte, 0), 8<8>, X)",
+                "1|L--|v4 = __rcr<byte,byte>(SLICE(d4, byte, 0), 8<8>, X)",
                 "2|L--|v5 = SLICE(d4, word24, 8)",
                 "3|L--|d4 = SEQ(v5, v4)",
                 "4|L--|CZNX = cond(v4)",

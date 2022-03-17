@@ -484,7 +484,7 @@ namespace Reko.Arch.Msp430
                 instr.Operands[0],
                 src,
                 (a, b) => m.Fn(
-                    CommonOps.RorC,
+                    CommonOps.RorC.MakeInstance(a.DataType, PrimitiveType.Byte),
                     a,
                     m.Byte(1),
                     binder.EnsureFlagGroup(Registers.C)));

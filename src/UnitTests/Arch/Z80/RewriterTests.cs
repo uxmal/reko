@@ -286,7 +286,7 @@ namespace Reko.UnitTests.Arch.Z80
             Given_Bytes(0x17);
             AssertCode(
                 "0|L--|0100(1): 2 instructions",
-                "1|L--|a = __rcl<byte,byte,bool>(a, 1<8>, C)",
+                "1|L--|a = __rcl<byte,byte>(a, 1<8>, C)",
                 "2|L--|C = cond(a)");
         }
 
