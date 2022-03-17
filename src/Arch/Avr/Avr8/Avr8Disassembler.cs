@@ -28,13 +28,13 @@ using Reko.Core.Expressions;
 using System.Diagnostics;
 using Reko.Core.Services;
 
-namespace Reko.Arch.Avr
+namespace Reko.Arch.Avr.Avr8
 {
-    using Decoder = Decoder<Avr8Disassembler, Mnemonic, AvrInstruction>;
+    using Decoder = Decoder<Avr8Disassembler, Mnemonic, Avr8Instruction>;
 
     // Opcode map: http://lyons42.com/AVR/Opcodes/AVRAllOpcodes.html
     // Opcode map: https://en.wikipedia.org/wiki/Atmel_AVR_instruction_set
-    public class Avr8Disassembler : DisassemblerBase<AvrInstruction, Mnemonic>
+    public class Avr8Disassembler : DisassemblerBase<Avr8Instruction, Mnemonic>
     {
         private readonly static Decoder[] decoders;
         private readonly static Decoder invalid;
@@ -52,7 +52,7 @@ namespace Reko.Arch.Avr
             this.addr = null!;
         }
 
-        public override AvrInstruction? DisassembleInstruction()
+        public override Avr8Instruction? DisassembleInstruction()
         {
             this.addr = rdr.Address;
             if (!rdr.TryReadUInt16(out ushort wInstr))
@@ -65,9 +65,9 @@ namespace Reko.Arch.Avr
             return instr;
         }
 
-        public override AvrInstruction MakeInstruction(InstrClass iclass, Mnemonic mnemonic)
+        public override Avr8Instruction MakeInstruction(InstrClass iclass, Mnemonic mnemonic)
         {
-            return new AvrInstruction
+            return new Avr8Instruction
             {
                 Mnemonic = mnemonic,
                 InstructionClass = iclass,
@@ -75,9 +75,9 @@ namespace Reko.Arch.Avr
             };
         }
 
-        public override AvrInstruction CreateInvalidInstruction()
+        public override Avr8Instruction CreateInvalidInstruction()
         {
-            return new AvrInstruction
+            return new Avr8Instruction
             {
                 InstructionClass = InstrClass.Invalid,
                 Mnemonic = Mnemonic.invalid,
@@ -99,9 +99,9 @@ namespace Reko.Arch.Avr
                 return true;
             };
         }
-        private static readonly Mutator<Avr8Disassembler> IncX = Inc(Avr8Architecture.x);
-        private static readonly Mutator<Avr8Disassembler> IncY = Inc(Avr8Architecture.y);
-        private static readonly Mutator<Avr8Disassembler> IncZ = Inc(Avr8Architecture.z);
+        private static readonly Mutator<Avr8Disassembler> IncX = Inc(Registers.x);
+        private static readonly Mutator<Avr8Disassembler> IncY = Inc(Registers.y);
+        private static readonly Mutator<Avr8Disassembler> IncZ = Inc(Registers.z);
 
         private static Mutator<Avr8Disassembler> Dec(RegisterStorage reg)
         {
@@ -116,9 +116,9 @@ namespace Reko.Arch.Avr
             };
         }
 
-        private static Mutator<Avr8Disassembler> DecX = Dec(Avr8Architecture.x);
-        private static Mutator<Avr8Disassembler> DecY = Dec(Avr8Architecture.y);
-        private static Mutator<Avr8Disassembler> DecZ = Dec(Avr8Architecture.z);
+        private static Mutator<Avr8Disassembler> DecX = Dec(Registers.x);
+        private static Mutator<Avr8Disassembler> DecY = Dec(Registers.y);
+        private static Mutator<Avr8Disassembler> DecZ = Dec(Registers.z);
 
         // I/O location
         private static bool A(uint wInstr, Avr8Disassembler dasm)
@@ -276,28 +276,28 @@ namespace Reko.Arch.Avr
 
         private static bool X(uint wInstr, Avr8Disassembler dasm)
         {
-            dasm.ops.Add(dasm.MemD(Avr8Architecture.x, 0));
+            dasm.ops.Add(dasm.MemD(Registers.x, 0));
             return true;
         }
         private static bool Y(uint wInstr, Avr8Disassembler dasm)
         {
-            dasm.ops.Add(dasm.MemD(Avr8Architecture.y, 0));
+            dasm.ops.Add(dasm.MemD(Registers.y, 0));
             return true;
         }
 
         private static bool y(uint wInstr, Avr8Disassembler dasm) {
-            dasm.ops.Add(dasm.MemD(Avr8Architecture.y, dasm.Displacement((ushort)wInstr)));
+            dasm.ops.Add(dasm.MemD(Registers.y, dasm.Displacement((ushort)wInstr)));
             return true;
         }
 
         private static bool Z(uint wInstr, Avr8Disassembler dasm) {
-            dasm.ops.Add(dasm.MemD(Avr8Architecture.z, 0));
+            dasm.ops.Add(dasm.MemD(Registers.z, 0));
             return true;
         }
 
         private static bool z(uint wInstr, Avr8Disassembler dasm)
         {
-            dasm.ops.Add(dasm.MemD(Avr8Architecture.z, dasm.Displacement((ushort) wInstr)));
+            dasm.ops.Add(dasm.MemD(Registers.z, dasm.Displacement((ushort) wInstr)));
             return true;
         }
 
@@ -305,12 +305,12 @@ namespace Reko.Arch.Avr
 
         private static Decoder Instr(Mnemonic mnemonic, params Mutator<Avr8Disassembler>[] mutators)
         {
-            return new InstrDecoder<Avr8Disassembler, Mnemonic, AvrInstruction>(InstrClass.Linear, mnemonic, mutators);
+            return new InstrDecoder<Avr8Disassembler, Mnemonic, Avr8Instruction>(InstrClass.Linear, mnemonic, mutators);
         }
 
         private static Decoder Instr(Mnemonic mnemonic, InstrClass iclass, params Mutator<Avr8Disassembler>[] mutators)
         {
-            return new InstrDecoder<Avr8Disassembler, Mnemonic, AvrInstruction>(iclass, mnemonic, mutators);
+            return new InstrDecoder<Avr8Disassembler, Mnemonic, Avr8Instruction>(iclass, mnemonic, mutators);
         }
 
         private MachineOperand Register(int v)
@@ -336,7 +336,7 @@ namespace Reko.Arch.Avr
             return (short)d;
         }
 
-        public override AvrInstruction NotYetImplemented(string message)
+        public override Avr8Instruction NotYetImplemented(string message)
         {
             var testGenSvc = arch.Services.GetService<ITestGenerationService>();
             testGenSvc?.ReportMissingDecoder("Avr8_dis", this.addr, this.rdr, message);
@@ -761,12 +761,12 @@ namespace Reko.Arch.Avr
                 Mnemonic.brge, Mnemonic.brhc, Mnemonic.brtc, Mnemonic.brid
             };
 
-            public override AvrInstruction Decode(uint uInstr, Avr8Disassembler dasm)
+            public override Avr8Instruction Decode(uint uInstr, Avr8Disassembler dasm)
             {
                 ushort wInstr = (ushort) uInstr;
                 int br = (((wInstr >> 7) & 8) | (wInstr & 7)) & 0xF;
                 o(wInstr, dasm);
-                return new AvrInstruction
+                return new Avr8Instruction
                 {
                     InstructionClass = InstrClass.ConditionalTransfer,
                     Mnemonic = branches[br],

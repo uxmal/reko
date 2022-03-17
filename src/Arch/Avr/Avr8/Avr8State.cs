@@ -18,13 +18,12 @@
  */
 #endregion
 
-using System;
 using Reko.Core;
 using Reko.Core.Code;
 using Reko.Core.Expressions;
 using Reko.Core.Types;
 
-namespace Reko.Arch.Avr
+namespace Reko.Arch.Avr.Avr8
 {
     public class Avr8State : ProcessorState
     {

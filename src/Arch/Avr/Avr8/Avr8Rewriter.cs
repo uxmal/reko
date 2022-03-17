@@ -18,33 +18,30 @@
  */
 #endregion
 
-using Reko.Core.Rtl;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Collections;
 using Reko.Core;
 using Reko.Core.Expressions;
-using Reko.Core.Machine;
-using Reko.Core.Types;
-using System.Diagnostics;
-using Reko.Core.Lib;
-using Reko.Core.Services;
-using Reko.Core.Memory;
 using Reko.Core.Intrinsics;
+using Reko.Core.Lib;
+using Reko.Core.Machine;
+using Reko.Core.Memory;
+using Reko.Core.Rtl;
+using Reko.Core.Services;
+using Reko.Core.Types;
+using System;
+using System.Collections;
+using System.Collections.Generic;
 
-namespace Reko.Arch.Avr
+namespace Reko.Arch.Avr.Avr8
 {
     public class Avr8Rewriter : IEnumerable<RtlInstructionCluster>
     {
         private readonly Avr8Architecture arch;
         private readonly IStorageBinder binder;
         private readonly IRewriterHost host;
-        private readonly LookaheadEnumerator<AvrInstruction> dasm;
+        private readonly LookaheadEnumerator<Avr8Instruction> dasm;
         private readonly EndianImageReader rdr;
         private readonly ProcessorState state;
-        private AvrInstruction instr;
+        private Avr8Instruction instr;
         private RtlEmitter m;
         private InstrClass iclass;
         private List<RtlInstruction> rtlInstructions;
@@ -54,7 +51,7 @@ namespace Reko.Arch.Avr
         {
             this.arch = arch;
             this.rdr = rdr;
-            this.dasm = new LookaheadEnumerator<AvrInstruction>(new Avr8Disassembler(arch, rdr).GetEnumerator());
+            this.dasm = new LookaheadEnumerator<Avr8Instruction>(new Avr8Disassembler(arch, rdr).GetEnumerator());
             this.state = state;
             this.binder = binder;
             this.host = host;
@@ -77,7 +74,7 @@ namespace Reko.Arch.Avr
             }
         }
 
-        public void Rewrite(AvrInstruction instr)
+        public void Rewrite(Avr8Instruction instr)
         {
             this.instr = instr;
             this.rtlInstructions = new List<RtlInstruction>();
@@ -88,26 +85,37 @@ namespace Reko.Arch.Avr
             case Mnemonic.adc: RewriteAdcSbc(m.IAdd); break;
             case Mnemonic.add: RewriteBinOp(m.IAdd, CmpFlags); break;
             case Mnemonic.adiw: RewriteAddSubIW(m.IAdd); break;
-            case Mnemonic.and: RewriteBinOp(m.And, arch.SNZ, arch.V); break;
-            case Mnemonic.andi: RewriteBinOp(m.And, arch.SNZ, arch.V); break;
+            case Mnemonic.and: RewriteBinOp(m.And, Registers.SNZ, Registers.V); break;
+            case Mnemonic.andi: RewriteBinOp(m.And, Registers.SNZ, Registers.V); break;
             case Mnemonic.asr: RewriteAsr(); break;
-            case Mnemonic.brcc: RewriteBranch(ConditionCode.UGE, arch.C); break;
-            case Mnemonic.brcs: RewriteBranch(ConditionCode.ULT, arch.C); break;
-            case Mnemonic.breq: RewriteBranch(ConditionCode.EQ, arch.Z); break;
-            case Mnemonic.brge: RewriteBranch(ConditionCode.GE, arch.VN); break;
-            case Mnemonic.brid: RewriteBranch(arch.I, false); break;
-            case Mnemonic.brne: RewriteBranch(ConditionCode.NE, arch.Z); break;
-            case Mnemonic.brpl: RewriteBranch(ConditionCode.GE, arch.N); break;
+            case Mnemonic.brcc: RewriteBranch(ConditionCode.UGE, Registers.C); break;
+            case Mnemonic.brcs: RewriteBranch(ConditionCode.ULT, Registers.C); break;
+            case Mnemonic.breq: RewriteBranch(ConditionCode.EQ, Registers.Z); break;
+            case Mnemonic.brge: RewriteBranch(ConditionCode.GE, Registers.VN); break;
+            case Mnemonic.brhc: RewriteBranch(Registers.H, false); break;
+            case Mnemonic.brhs: RewriteBranch(Registers.H, true); break;
+            case Mnemonic.brid: RewriteBranch(Registers.I, false); break;
+            case Mnemonic.brie: RewriteBranch(Registers.I, true); break;
+            case Mnemonic.brlt: RewriteBranch(ConditionCode.LT, Registers.VN); break;
+            case Mnemonic.brmi: RewriteBranch(ConditionCode.LT, Registers.N); break;
+            case Mnemonic.brne: RewriteBranch(ConditionCode.NE, Registers.Z); break;
+            case Mnemonic.brpl: RewriteBranch(ConditionCode.GE, Registers.N); break;
+            case Mnemonic.brtc: RewriteBranch(Registers.T, false); break;
+            case Mnemonic.brts: RewriteBranch(Registers.T, true); break;
+            case Mnemonic.brvc: RewriteBranch(Registers.V, false); break;
+            case Mnemonic.brvs: RewriteBranch(Registers.V, true); break;
             case Mnemonic.call: RewriteCall(); break;
             case Mnemonic.cli: RewriteCli(); break;
-            case Mnemonic.com: RewriteUnary(m.Comp, arch.SNZ, arch.V, arch.C); break;
+            case Mnemonic.cln: RewriteClearBit(Registers.N); break;
+            case Mnemonic.com: RewriteUnary(m.Comp, Registers.SNZ, Registers.V, Registers.C); break;
             case Mnemonic.cp: RewriteCp(); break;
             case Mnemonic.cpi: RewriteCp(); break;
             case Mnemonic.cpc: RewriteCpc(); break;
             case Mnemonic.cpse: SkipIf(m.Eq); break;
             case Mnemonic.dec: RewriteIncDec(m.ISub); break;
             case Mnemonic.des: RewriteDes(); break;
-            case Mnemonic.eor: RewriteBinOp(m.Xor, LogicalFlags, arch.V); break;
+            case Mnemonic.elpm: RewriteElpm(); break;
+            case Mnemonic.eor: RewriteBinOp(m.Xor, LogicalFlags, Registers.V); break;
             case Mnemonic.icall: RewriteIcall(); break;
             case Mnemonic.@in: RewriteIn(); break;
             case Mnemonic.inc: RewriteIncDec(m.IAdd); break;
@@ -124,8 +132,8 @@ namespace Reko.Arch.Avr
             case Mnemonic.muls: RewriteMuls(); break;
             case Mnemonic.neg: RewriteUnary(m.Neg, CmpFlags); break;
             case Mnemonic.@out: RewriteOut(); break;
-            case Mnemonic.or: RewriteBinOp(m.Or, arch.SNZV); break;
-            case Mnemonic.ori: RewriteBinOp(m.Or, arch.SNZV); break;
+            case Mnemonic.or: RewriteBinOp(m.Or, Registers.SNZV); break;
+            case Mnemonic.ori: RewriteBinOp(m.Or, Registers.SNZV); break;
             case Mnemonic.pop: RewritePop(); break;
             case Mnemonic.push: RewritePush(); break;
             case Mnemonic.rcall: RewriteCall(); break;
@@ -139,7 +147,7 @@ namespace Reko.Arch.Avr
             case Mnemonic.sbiw: RewriteAddSubIW(m.ISub); break;
             case Mnemonic.sbrc: SkipIf(Sbrc); break;
             case Mnemonic.sbrs: SkipIf(Sbrs); break;
-            case Mnemonic.sec: RewriteSetBit(arch.C, true); break;
+            case Mnemonic.sec: RewriteSetBit(Registers.C, true); break;
             case Mnemonic.sei: RewriteSei(); break;
             case Mnemonic.st: RewriteSt(); break;
             case Mnemonic.std: RewriteSt(); break;
@@ -173,17 +181,24 @@ namespace Reko.Arch.Avr
             m.Assign(grf, m.Cond(e));
         }
 
-        private FlagGroupStorage CmpFlags => arch.HSVNZC;
-        private FlagGroupStorage ArithFlags => arch.SVNZC;
-        private FlagGroupStorage LogicalFlags => arch.SNZC;
-        private FlagGroupStorage IncDecFlags => arch.SVNZ;
+        private FlagGroupStorage CmpFlags => Registers.HSVNZC;
+        private FlagGroupStorage ArithFlags => Registers.SVNZC;
+        private FlagGroupStorage LogicalFlags => Registers.SNZC;
+        private FlagGroupStorage IncDecFlags => Registers.SVNZ;
 
         private Identifier RegisterPair(MachineOperand operand)
         {
-            var regN = (RegisterStorage)operand;
-            var regN1 = arch.GetRegister(regN.Number + 1);
-            var regPair = binder.EnsureSequence(PrimitiveType.Word16, regN1, regN);
-            return regPair;
+            var regN = (RegisterStorage) operand;
+            if (regN.Number == Registers.z.Number)
+            {
+                return binder.EnsureRegister(Registers.z);
+            }
+            else
+            {
+                var regN1 = Registers.ByteRegs[regN.Number + 1];
+                var regPair = binder.EnsureSequence(PrimitiveType.Word16, regN1, regN);
+                return regPair;
+            }
         }
 
         private void RewriteIO(int iRegOp, int iPortOp, bool read)
@@ -192,7 +207,7 @@ namespace Reko.Arch.Avr
             var port = ((ImmediateOperand)instr.Operands[iPortOp]).Value.ToByte();
             if (port == 0x3F)
             {
-                var psreg = binder.EnsureRegister(arch.sreg);
+                var psreg = binder.EnsureRegister(Registers.sreg);
                 if (read)
                 {
                     m.Assign(reg, psreg);
@@ -294,7 +309,7 @@ namespace Reko.Arch.Avr
         {
             // We do not take the trouble of widening the CF to the word size
             // to simplify code analysis in later stages. 
-            var c = binder.EnsureFlagGroup(arch.C);
+            var c = binder.EnsureFlagGroup(Registers.C);
             var dst = RewriteOp(0);
             var src = RewriteOp(1);
             m.Assign(
@@ -356,6 +371,11 @@ namespace Reko.Arch.Avr
             m.Call(RewriteOp(0), 2);    //$TODO: 3-byte mode in architecture.
         }
 
+        private void RewriteClearBit(FlagGroupStorage grf)
+        {
+            m.Assign(binder.EnsureFlagGroup(grf), Constant.False());
+        }
+
         private void RewriteCli()
         {
             m.SideEffect(host.Intrinsic("__cli", true, VoidType.Instance));
@@ -373,7 +393,7 @@ namespace Reko.Arch.Avr
         {
             var left = RewriteOp(0);
             var right = RewriteOp(1);
-            var c = binder.EnsureFlagGroup(arch.C);
+            var c = binder.EnsureFlagGroup(Registers.C);
             var flags = binder.EnsureFlagGroup(CmpFlags);
             m.Assign(flags, m.ISub(m.ISub(left, right), c));
         }
@@ -408,14 +428,36 @@ namespace Reko.Arch.Avr
 
         private void RewriteDes()
         {
-            var h = binder.EnsureFlagGroup(arch.H);
+            var h = binder.EnsureFlagGroup(Registers.H);
             m.SideEffect(host.Intrinsic("__des", true, VoidType.Instance, RewriteOp(0), h));
+        }
+
+        private void RewriteElpm()
+        {
+            Identifier dst;
+            if (instr.Operands.Length == 0)
+            {
+                dst = binder.EnsureRegister(Registers.ByteRegs[0]);
+            }
+            else
+            {
+                dst = (Identifier) RewriteOp(0);
+            }
+            var rampz = binder.EnsureRegister(Registers.rampz);
+            var z = binder.EnsureRegister(Registers.z);
+            m.Assign(dst, m.Fn(elpmIntrinsic, rampz, z));
+            if (instr.Operands.Length == 2 &&
+                instr.Operands[1] is MemoryOperand mem &&
+                mem.PostIncrement)
+            {
+                m.Assign(z, m.IAddS(z, 1));
+            }
         }
 
         private void RewriteIcall()
         {
             iclass = InstrClass.Transfer | InstrClass.Call;
-            var z = binder.EnsureRegister(Avr8Architecture.z);
+            var z = binder.EnsureRegister(Registers.z);
             m.Call(z, 2);
         }
 
@@ -427,7 +469,7 @@ namespace Reko.Arch.Avr
         private void RewriteIjmp()
         {
             iclass = InstrClass.Transfer;
-            var z = binder.EnsureRegister(Avr8Architecture.z);
+            var z = binder.EnsureRegister(Registers.z);
             m.Goto(z);
         }
 
@@ -456,10 +498,10 @@ namespace Reko.Arch.Avr
 
         private void RewriteLpm()
         {
-            var codeSel = binder.EnsureRegister(arch.code);
+            var codeSel = binder.EnsureRegister(Registers.code);
             if (instr.Operands.Length == 0)
             {
-                var z = binder.EnsureRegister(Avr8Architecture.z);
+                var z = binder.EnsureRegister(Registers.z);
                 var r0 = binder.EnsureRegister(arch.GetRegister(0));
                 m.Assign(r0, m.SegMem8(codeSel, z));
             }
@@ -474,8 +516,8 @@ namespace Reko.Arch.Avr
         {
             var reg = RewriteOp(0);
             m.Assign(reg, m.Shr(reg, 1));
-            EmitFlags(reg, arch.SVZC);
-            m.Assign(binder.EnsureFlagGroup(arch.N), 0);
+            EmitFlags(reg, Registers.SVZC);
+            m.Assign(binder.EnsureFlagGroup(Registers.N), 0);
         }
 
         private void RewriteJmp()
@@ -491,11 +533,11 @@ namespace Reko.Arch.Avr
 
         private void RewriteMuls()
         {
-            var r1_r0 = binder.EnsureSequence(PrimitiveType.Word16, arch.ByteRegs[1], arch.ByteRegs[0]);
+            var r1_r0 = binder.EnsureSequence(PrimitiveType.Word16, Registers.ByteRegs[1], Registers.ByteRegs[0]);
             var op0 = RewriteOp(0);
             var op1 = RewriteOp(1);
-            var c = binder.EnsureFlagGroup(arch.C);
-            var z = binder.EnsureFlagGroup(arch.Z);
+            var c = binder.EnsureFlagGroup(Registers.C);
+            var z = binder.EnsureFlagGroup(Registers.Z);
             var smul = m.SMul(op0, op1);
             smul.DataType = PrimitiveType.Int16;
             m.Assign(r1_r0, smul);
@@ -510,14 +552,14 @@ namespace Reko.Arch.Avr
 
         private void RewritePop()
         {
-            var sp = binder.EnsureRegister(arch.StackRegister);
+            var sp = binder.EnsureRegister(Registers.StackRegister);
             m.Assign(RewriteOp(0), m.Mem8(sp));
             m.Assign(sp, m.IAddS(sp, 1));
         }
 
         private void RewritePush()
         {
-            var sp = binder.EnsureRegister(arch.StackRegister);
+            var sp = binder.EnsureRegister(Registers.StackRegister);
             m.Assign(sp, m.ISubS(sp, 1));
             m.Assign(m.Mem8(sp), RewriteOp(0));
         }
@@ -529,9 +571,10 @@ namespace Reko.Arch.Avr
 
         private void RewriteRor()
         {
-            var c = binder.EnsureFlagGroup(arch.C);
+            var c = binder.EnsureFlagGroup(Registers.C);
             var reg = RewriteOp(0);
-            m.Assign(reg, m.Fn(CommonOps.RorC, reg, m.Int32(1), c));
+            m.Assign(reg, m.Fn(CommonOps.RorC.MakeInstance(reg.DataType, PrimitiveType.Byte),
+                reg, m.Byte(1), c));
             EmitFlags(reg, CmpFlags);
         }
 
@@ -577,5 +620,9 @@ namespace Reko.Arch.Avr
             m.Assign(reg, host.Intrinsic("__swap", false, PrimitiveType.Byte, reg));
         }
 
+        private static readonly IntrinsicProcedure elpmIntrinsic = new IntrinsicBuilder("__extended_load_program_memory", true)
+            .Param(PrimitiveType.Byte)
+            .Param(PrimitiveType.Ptr16)
+            .Returns(PrimitiveType.Byte);
     }
 }

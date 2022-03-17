@@ -18,39 +18,54 @@
  */
 #endregion
 
-using System;
-using Reko.Core;
-using Reko.Core.Expressions;
 using Reko.Core.Machine;
 using Reko.Core.Types;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace Reko.Arch.Avr
+namespace Reko.Arch.CompactRisc
 {
-    public class MemoryOperand : AbstractMachineOperand
+    public class CacheFlagOperand : AbstractMachineOperand
     {
-        public RegisterStorage? Base;
-        public short Displacement;
-        public bool PreDecrement;
-        public bool PostIncrement;
-
-        public MemoryOperand(PrimitiveType width) : base(width)
+        public CacheFlagOperand(CacheFlag flag) : base(PrimitiveType.Byte)
         {
+            this.Flag = flag;
         }
+
+        public CacheFlag Flag { get; }
 
         protected override void DoRender(MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
         {
-            if (PreDecrement)
+            renderer.WriteChar('[');
+            var sep = "";
+            if (Flag.HasFlag(CacheFlag.I))
             {
-                renderer.WriteChar('-');
+                renderer.WriteChar('i');
+                sep = ",";
             }
-            renderer.WriteString(Base!.Name);
-            if (PostIncrement)
+            renderer.WriteString(sep);
+            if (Flag.HasFlag(CacheFlag.D))
             {
-                renderer.WriteChar('+');
-            } else if (Displacement !=0)
-            {
-                renderer.WriteFormat("+{0:X2}", Displacement);
+                renderer.WriteChar('d');
+                sep = ",";
             }
+            renderer.WriteString(sep);
+            if (Flag.HasFlag(CacheFlag.U))
+            {
+                renderer.WriteChar('u');
+            }
+            renderer.WriteChar(']');
         }
+    }
+
+    [Flags]
+    public enum CacheFlag
+    {
+        I = 1,
+        D = 2,
+        U = 4,
     }
 }

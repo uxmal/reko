@@ -23,7 +23,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Reko.Arch.Avr
+namespace Reko.Arch.Avr.Avr8
 {
     public enum Mnemonic
     {

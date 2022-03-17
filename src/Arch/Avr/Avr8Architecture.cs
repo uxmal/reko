@@ -18,6 +18,7 @@
  */
 #endregion
 
+using Reko.Arch.Avr.Avr8;
 using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Lib;
@@ -34,8 +35,6 @@ namespace Reko.Arch.Avr
 {
     public class Avr8Architecture : ProcessorArchitecture
     {
-        private readonly RegisterStorage[] regs;
-        private readonly List<(FlagM, char)> grfToString;
 
         public Avr8Architecture(IServiceProvider services, string archId, Dictionary<string, object> options)
             : base(services, archId, options)
@@ -45,78 +44,13 @@ namespace Reko.Arch.Avr
             this.WordWidth = PrimitiveType.Word16;
             this.FramePointerType = PrimitiveType.UInt8;
             this.InstructionBitSize = 16;
-            this.sreg = new RegisterStorage("sreg", 36, 0, PrimitiveType.Byte);
-            this.code = new RegisterStorage("code", 100, 0, PrimitiveType.SegmentSelector);
-            this.StackRegister = new RegisterStorage("SP", 0x3D, 0, PrimitiveType.Word16);
-            this.ByteRegs = Enumerable.Range(0, 32)
-                .Select(n => new RegisterStorage(
-                    string.Format("r{0}", n),
-                    n,
-                    0,
-                    PrimitiveType.Byte))
-                .ToArray();
-            this.regs =
-                ByteRegs
-                .Concat(new[] { x, y, z, this.sreg })
-                .ToArray();
-            this.I = new FlagGroupStorage(sreg, (uint) FlagM.IF, "I", PrimitiveType.Bool);
-            this.H = new FlagGroupStorage(sreg, (uint) FlagM.HF, "H", PrimitiveType.Bool);
-            this.V = new FlagGroupStorage(sreg, (uint) FlagM.VF, "V", PrimitiveType.Bool);
-            this.N = new FlagGroupStorage(sreg, (uint) FlagM.NF, "N", PrimitiveType.Bool);
-            this.C = new FlagGroupStorage(sreg, (uint) FlagM.CF, "C", PrimitiveType.Bool);
-            this.Z = new FlagGroupStorage(sreg, (uint) FlagM.ZF, "Z", PrimitiveType.Bool);
-            this.HSVNZC = new FlagGroupStorage(sreg, (uint) (FlagM.HF | FlagM.SF | FlagM.VF | FlagM.NF | FlagM.ZF | FlagM.CF), "HSVNZC", PrimitiveType.Byte);
-            this.SNZ = new FlagGroupStorage(sreg, (uint) (FlagM.SF | FlagM.NF | FlagM.ZF), "SNZ", PrimitiveType.Byte);
-            this.SNZC = new FlagGroupStorage(sreg, (uint) (FlagM.SF | FlagM.NF | FlagM.ZF | FlagM.CF), "SNZC", PrimitiveType.Byte);
-            this.SNZV = new FlagGroupStorage(sreg, (uint) (FlagM.SF | FlagM.NF | FlagM.ZF | FlagM.VF), "SNZV", PrimitiveType.Byte);
-            this.SVNC = new FlagGroupStorage(sreg, (uint) (FlagM.SF | FlagM.VF | FlagM.NF | FlagM.CF), "SVNC", PrimitiveType.Byte);
-            this.SVNZ = new FlagGroupStorage(sreg, (uint) (FlagM.SF | FlagM.VF | FlagM.NF | FlagM.ZF), "SVNZ", PrimitiveType.Byte);
-            this.SVNZC = new FlagGroupStorage(sreg, (uint) (FlagM.SF | FlagM.VF | FlagM.NF | FlagM.ZF | FlagM.CF), "SVNZC", PrimitiveType.Byte);
-            this.SVZC = new FlagGroupStorage(sreg, (uint) (FlagM.SF | FlagM.VF | FlagM.ZF | FlagM.CF), "SVZC", PrimitiveType.Byte);
-            this.VN = new FlagGroupStorage(sreg, (uint) (FlagM.VF | FlagM.NF), "VN", PrimitiveType.Byte);
-            this.grfToString = new List<(FlagM, char)>
-            {
-                (FlagM.IF, 'I'),
-                (FlagM.TF, 'T'),
-                (FlagM.HF, 'H'),
-                (FlagM.SF, 'S'),
-                (FlagM.VF, 'V'),
-                (FlagM.NF, 'N'),
-                (FlagM.ZF, 'Z'),
-                (FlagM.CF, 'C'),
-            };
+            this.StackRegister = Registers.StackRegister;
         }
         
         static Avr8Architecture()
         {
-            x = new RegisterStorage("x", 33, 0, PrimitiveType.Word16);
-            y = new RegisterStorage("y", 34, 0, PrimitiveType.Word16);
-            z = new RegisterStorage("z", 35, 0, PrimitiveType.Word16);
         }
 
-        public RegisterStorage sreg { get; private set; }
-        public static RegisterStorage x { get; }
-        public static RegisterStorage y { get; }
-        public static RegisterStorage z { get; }
-        public RegisterStorage code { get; private set; }
-        public FlagGroupStorage H { get; }
-        public FlagGroupStorage I { get; }
-        public FlagGroupStorage V { get; }
-        public FlagGroupStorage N { get; }
-        public FlagGroupStorage C { get; }
-        public FlagGroupStorage Z { get; }
-        public FlagGroupStorage HSVNZC { get; }
-        public FlagGroupStorage SNZC { get; }
-        public FlagGroupStorage SNZ { get; }
-        public FlagGroupStorage SNZV { get; }
-        public FlagGroupStorage SVNZ { get; }
-        public FlagGroupStorage SVNC { get; }
-        public FlagGroupStorage SVNZC { get; }
-        public FlagGroupStorage SVZC { get; }
-        public FlagGroupStorage VN { get; }
-
-
-        public RegisterStorage[] ByteRegs { get; }
 
 		public override IEnumerable<MachineInstruction> CreateDisassembler(EndianImageReader rdr)
         {
@@ -151,7 +85,7 @@ namespace Reko.Arch.Avr
         public override FlagGroupStorage GetFlagGroup(RegisterStorage flagRegister, uint grf)
         {
             PrimitiveType dt = Bits.IsSingleBitSet(grf) ? PrimitiveType.Bool : PrimitiveType.Byte;
-            var fl = new FlagGroupStorage(this.sreg, grf, GrfToString(flagRegister, "", grf), dt);
+            var fl = new FlagGroupStorage(Registers.sreg, grf, GrfToString(flagRegister, "", grf), dt);
             return fl;
         }
 
@@ -172,31 +106,31 @@ namespace Reko.Arch.Avr
 
         public override RegisterStorage GetRegister(StorageDomain domain, BitRange range)
         {
-            var reg= regs[domain - StorageDomain.Register];
-            if (domain == z.Domain)
+            var reg= Registers.regs[domain - StorageDomain.Register];
+            if (domain == Registers.z.Domain)
             {
                 if (range.Lsb == 0)
-                    return regs[30];
+                    return Registers.regs[30];
                 else
-                    return regs[31];
+                    return Registers.regs[31];
             }
             return reg;
         }
 
         public RegisterStorage GetRegister(int i)
         {
-            return regs[i];
+            return Registers.regs[i];
         }
 
         public override RegisterStorage[] GetRegisters()
         {
-            return regs;
+            return Registers.regs;
         }
 
         public override string GrfToString(RegisterStorage flagRegister, string prefix, uint grf)
         {
             var s = new StringBuilder();
-            foreach (var tpl in this.grfToString)
+            foreach (var tpl in Registers.grfToString)
             {
                 if ((grf & (uint)tpl.Item1) != 0)
                 {

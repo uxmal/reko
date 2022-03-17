@@ -20,22 +20,35 @@
 
 using Reko.Core;
 using Reko.Core.Machine;
-using System;
+using Reko.Core.Types;
 
-namespace Reko.Arch.Avr
+namespace Reko.Arch.Avr.Avr8
 {
-    public class AvrInstruction : MachineInstruction
+    public class MemoryOperand : AbstractMachineOperand
     {
-        public Mnemonic Mnemonic { get; set; }
+        public RegisterStorage? Base;
+        public short Displacement;
+        public bool PreDecrement;
+        public bool PostIncrement;
 
-        public override int MnemonicAsInteger => (int)Mnemonic;
-
-        public override string MnemonicAsString => Mnemonic.ToString();
+        public MemoryOperand(PrimitiveType width) : base(width)
+        {
+        }
 
         protected override void DoRender(MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
         {
-            renderer.WriteMnemonic(Mnemonic.ToString());
-            RenderOperands(renderer, options);
+            if (PreDecrement)
+            {
+                renderer.WriteChar('-');
+            }
+            renderer.WriteString(Base!.Name);
+            if (PostIncrement)
+            {
+                renderer.WriteChar('+');
+            } else if (Displacement !=0)
+            {
+                renderer.WriteFormat("+{0:X2}", Displacement);
+            }
         }
     }
 }

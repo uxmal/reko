@@ -188,12 +188,16 @@ namespace Reko.Arch.CompactRisc
                     throw new System.Exception();
                 else if (op == 0xF)
                     throw new System.Exception();
-                else 
+                else
+                {
                     throw new System.Exception();
+                }
+                return dasm.MakeInstruction(InstrClass.Linear, mnemonic);
+                
                 /*
                 1001 1110 xxxx xxxx  Fmt18 1 ZZ ope 0  loadw (prp) disp0 4 src (prp) 4 dest reg 4E 
-                1001 1111 xxxx xxxx  Fmt19 2 ZZ ope 0  loadw (rp) disp16 4 src (rp) 4 dest reg 4F 16 src disp 
-                1001 xxxx xxxx xxxx  Fmt18 1 ZZ  loadw (rp) disp4 4 src (rp) 4 dest reg 4 src disp*2 
+                1001 1111 xxxx xxxx  Fmt19 2 ZZ ope 0  loadw (rp) disp16 4 src (rp)  4 dest reg 4F 16 src disp 
+                1001 xxxx xxxx xxxx  Fmt18 1 ZZ        loadw (rp) disp4  4 src (rp)  4 dest reg 4  src disp*2 
 */
             }
         }
