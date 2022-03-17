@@ -1081,11 +1081,15 @@ namespace Reko.Arch.X86
             var src1 = SrcOp(1);
             if (useCarry)
             {
-                p = m.Fn(operation, src0, src1, binder.EnsureFlagGroup(Registers.C));
+                p = m.Fn(
+                    operation.MakeInstance(src0.DataType, src1.DataType),
+                    src0, src1, binder.EnsureFlagGroup(Registers.C));
             }
             else
             {
-                p = m.Fn(operation, src0, src1);
+                p = m.Fn(
+                    operation.MakeInstance(src0.DataType, src1.DataType),
+                    src0, src1);
             }
             m.Assign(SrcOp(0), p);
             m.Assign(binder.EnsureFlagGroup(Registers.C), t);

@@ -20,12 +20,6 @@
 
 #pragma warning disable IDE1006
 
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Lib;
@@ -33,6 +27,8 @@ using Reko.Core.Machine;
 using Reko.Core.Memory;
 using Reko.Core.Services;
 using Reko.Core.Types;
+using System;
+using System.Collections.Generic;
 using static Reko.Arch.Arm.AArch32.ArmVectorData;
 
 #pragma warning disable IDE1006
@@ -291,7 +287,6 @@ namespace Reko.Arch.Arm.AArch32
             {
                 InstructionClass = InstrClass.Invalid,
                 Mnemonic = Mnemonic.Nyi,
-                Operands = new MachineOperand[0]
             };
         }
 
@@ -433,6 +428,7 @@ namespace Reko.Arch.Arm.AArch32
             };
         }
         private static readonly Mutator<A32Disassembler> vi_ld1 = vi(10, new[] { 8, 16, 32, 0 });
+        private static readonly Mutator<A32Disassembler> vi_ld2 = vi(10, new[] { 8, 16, 32, 0 });
         private static readonly Mutator<A32Disassembler> vi_ld3 = vi(6, new[] { 8, 16, 32, 0 });
         private static readonly Mutator<A32Disassembler> vi_ld4 = vi(6, new[] { 8, 16, 32, 0 });
         private static readonly Mutator<A32Disassembler> vi_BHSD = vi(6, new[] { 8, 16, 32, 64 });
@@ -468,6 +464,9 @@ namespace Reko.Arch.Arm.AArch32
             };
         }
         private static readonly Mutator<A32Disassembler> vi_HW_f_HS_ = ves(Bf((8, 1), (20, 2)), INVALID, I16, I32, INVALID, INVALID, F16, F32, INVALID);
+
+        private static readonly Mutator<A32Disassembler> viBHW_10 = ves(Bf((10, 2)), I8, I16, I32, INVALID);
+
 
         private static readonly Mutator<A32Disassembler> viBH__18 = ves(Bf((18, 2)), I8, I16, INVALID, INVALID);
         private static readonly Mutator<A32Disassembler> viBHW_18 = ves(Bf((18, 2)), I8, I16, I32, INVALID);
@@ -3113,7 +3112,8 @@ namespace Reko.Arch.Arm.AArch32
                         FloatingPointMoveSpecialReg),
                     AdvancedSimd_32bitTransfer);
 
-            var FldmdbxFldmiax = nyi("FLDMDBX FLDMIAX");
+            var fldmdbx = Instr(Mnemonic.fldmdbx, w(21), r(16), x("fldmdbx"));
+            var fldmiax = Instr(Mnemonic.fldmiax, w(21), r(16), x("fldmiax"));
 
             var AdvancedSimd_and_floatingpoint_LdSt = Mask(23, 2, 20, 2, "Advanced SIMD and floating-point load/store",
                 invalid,
@@ -3123,26 +3123,32 @@ namespace Reko.Arch.Arm.AArch32
 
                 Mask(8, 2, "PUWL: 0b0100",
                     invalid,
-                    nyi("AdvancedSimd_and_floatingpoint_LdSt - PUWL: 0b0100 size: 0b01"),
+                    invalid,
                     Instr(Mnemonic.vstmia, w(21), r(4), Ms(0, 16)),
-                    Instr(Mnemonic.vstmia, w(21), r(4), Md(0, 16))),
+                    Mask(0, 1,
+                        Instr(Mnemonic.vstmia, w(21), r(4), Md(0, 16)),
+                        fldmiax)),
                 Mask(8, 2, "PUWL: 0b0101",
-                    nyi("AdvancedSimd_and_floatingpoint_LdSt - PUWL: 0b0101 size: 0b00"),
-                    nyi("AdvancedSimd_and_floatingpoint_LdSt - PUWL: 0b0101 size: 0b01"),
+                    invalid,
+                    invalid,
                     Instr(Mnemonic.vldmia, w(21), r(4), Ms(0,16)),
-                    Instr(Mnemonic.vldmia, w(21), r(4), Md(0,16))),
+                    Mask(0, 1, 
+                        Instr(Mnemonic.vldmia, w(21), r(4), Md(0,16)),
+                        fldmiax)),
                 Mask(8, 2, "PUWL: 0b0110",
-                    nyi("AdvancedSimd_and_floatingpoint_LdSt - PUWL: 0b0110 size: 0b00"),
-                    nyi("AdvancedSimd_and_floatingpoint_LdSt - PUWL: 0b0110 size: 0b01"),
+                    invalid,
+                    invalid,
                     Instr(Mnemonic.vstmia, w(21), r(4), Ms(0,16)),
-                    Instr(Mnemonic.vstmia, w(21), r(4), Md(0,16))),
+                    Mask(0, 1,
+                        Instr(Mnemonic.vstmia, w(21), r(4), Md(0,16)),
+                        fldmiax)),
                 Mask(8, 2, "PUWL: 0b0111",
                     invalid,
                     invalid,
                     Instr(Mnemonic.vldmia, w(21), r(4), Ms(0,16)),
                     Mask(0, 1,
                         Instr(Mnemonic.vldmia, w(21), r(4), Md(0,16)),
-                        FldmdbxFldmiax)),
+                        fldmiax)),
 
                 Mask(8, 2, // size
                     invalid,
@@ -3160,14 +3166,14 @@ namespace Reko.Arch.Arm.AArch32
                     Instr(Mnemonic.vstmdb, w(21), r(4), Ms(0,16)),
                     Mask(0, 1,
                         Instr(Mnemonic.vstmdb, w(21), r(4), Md(0,16)),
-                        FldmdbxFldmiax)),
+                        fldmdbx)),
                 Mask(8, 2, // AdvancedSimd_and_floatingpoint_LdSt - PUWL: 0b1011 size
                     invalid,
                     invalid,
                     Instr(Mnemonic.vstmdb, w(21), r(4), Ms(0, 16)),
                     Mask(0, 1,
                         Instr(Mnemonic.vldmdb, w(21), r(4), Md(0, 16)),
-                        FldmdbxFldmiax)),
+                        fldmdbx)),
 
                 Mask(8, 2, // size
                     invalid,    
@@ -3885,7 +3891,9 @@ namespace Reko.Arch.Arm.AArch32
                         invalid),
                     Mask(10, 2, "  N=01 size",
                         nyi("VLD2 (single 2-element structure from one lane) - A1"),
-                        nyi("VLD2 (single 2-element structure from one lane) - A2"),
+                        Mask(5, 1, "  size=01",
+                            Instr(Mnemonic.vld2, vi_ld2, Vel(2, 1)),
+                            Instr(Mnemonic.vld2, vi_ld2, Vel(2, 2), Mve)),
                         nyi("VLD2 (single 2-element structure from one lane) - A3"),
                         invalid),
                     Mask(10, 2, "  N=10 size",
@@ -4099,18 +4107,18 @@ namespace Reko.Arch.Arm.AArch32
                         AdvancedSimd_LdSt_64bitmove),
                     Select("  op1=x00", 28, 0xF, Is15,
                        AdvancedSimd_ThreeRegisterExtension,
-                       nyi("  x10")),
+                       invalid),
                     SystemRegister_LdSt_64bitMove),
                 Mask(9, 2, "  op0=0b01",
                     Select("  op1=x00", 28, 0xF, Is15,
                        AdvancedSimd_ThreeRegisterExtension,
                        AdvancedSimd_LdSt_64bitmove),
-                    Select("  op1=x00", 28, 0xF, Is15,
-                        nyi("01"),
+                    Select("  op1=x01", 28, 0xF, Is15,
+                        invalid,
                         AdvancedSimd_LdSt_64bitmove),
-                    Select("  op1=x00", 28, 0xF, Is15,
+                    Select("  op1=x10", 28, 0xF, Is15,
                        AdvancedSimd_ThreeRegisterExtension,
-                       nyi("  x10")),
+                       invalid),
                     SystemRegister_LdSt_64bitMove),
                 Mask(9, 2, "  op0=0b10",
                     Select("  op1=x00", 28, 0xF, Is15,
@@ -4123,11 +4131,11 @@ namespace Reko.Arch.Arm.AArch32
                         Mask(4, 1, "  op1=x00",
                             nyi("  op2=0"),
                             AdvancedSIMDandFloatingPoint32bitMove)),
-                    Select("  op1=x00", 28, 0xF, Is15,
+                    Select("  op1=x10", 28, 0xF, Is15,
                         AdvancedSimd_TwoRegistersScalarExtension,
-                        nyi("10")),
-                    Mask(4, 1, "  op1=x01",
-                        nyi("   op=0"),
+                        invalid),
+                    Mask(4, 1, "  op1=x11",
+                        invalid,
                         SystemRegister32BitMove)),
                 Instr(Mnemonic.svc, InstrClass.Transfer | InstrClass.Call, i(0, 24)));
 

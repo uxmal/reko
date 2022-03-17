@@ -18,18 +18,16 @@
  */
 #endregion
 
+using NUnit.Framework;
 using Reko.Arch.Arm;
+using Reko.Arch.Arm.AArch32;
 using Reko.Core;
 using Reko.Core.Machine;
-using NUnit.Framework;
+using Reko.Core.Memory;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using Reko.Arch.Arm.AArch32;
 using System.ComponentModel.Design;
-using Reko.Core.Memory;
+using System.Linq;
 
 namespace Reko.UnitTests.Arch.Arm
 {
@@ -83,7 +81,7 @@ namespace Reko.UnitTests.Arch.Arm
             var dasm = arch.CreateDisassembler(mem.CreateLeReader(0));
             var instr = dasm.First();
 
-            if (sExp != instr.ToString()) // && instr.MnemonicAsString == "Nyi")
+            if (sExp != instr.ToString() && instr.MnemonicAsString == "Nyi")
             {
                 Assert.AreEqual(sExp, instr.ToString());
             }
@@ -1723,6 +1721,12 @@ namespace Reko.UnitTests.Arch.Arm
         {
             Disassemble32(0xF4663303);
             Expect_Code("vld2.i8\t{d19-d22},[r6],r3");
+        }
+
+        [Test]
+        public void ArmDasm_vld2_16()
+        {
+            AssertCode("vld2.16 {d31[0],d32[0]},[r1],lr", "0EF5E1F4");
         }
 
         [Test]

@@ -19,17 +19,7 @@
 #endregion
 
 using Reko.Core;
-using Reko.Core.Expressions;
 using Reko.Core.Memory;
-using Reko.Core.NativeInterface;
-using Reko.Core.Rtl;
-using Reko.Core.Types;
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.InteropServices;
-using System.Text;
 
 namespace Reko.Arch.Arm.AArch32
 {

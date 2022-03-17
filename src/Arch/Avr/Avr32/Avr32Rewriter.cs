@@ -890,7 +890,9 @@ namespace Reko.Arch.Avr.Avr32
         {
             var src = RewriteOp(0);
             var c = binder.EnsureFlagGroup(C);
-            var dst = RewriteOpDst(0, m.Fn(CommonOps.RolC, src, m.Int32(1), c));
+            var dst = RewriteOpDst(0, m.Fn(
+                CommonOps.RolC.MakeInstance(src.DataType, PrimitiveType.Byte),
+                src, m.Byte(1), c));
             EmitCc(NZC, dst);
         }
 
@@ -898,7 +900,9 @@ namespace Reko.Arch.Avr.Avr32
         {
             var src = RewriteOp(0);
             var c = binder.EnsureFlagGroup(C);
-            var dst = RewriteOpDst(0, m.Fn(CommonOps.RorC, src, m.Int32(1), c));
+            var dst = RewriteOpDst(0, m.Fn(
+                CommonOps.RorC.MakeInstance(src.DataType, PrimitiveType.Byte),
+                src, m.Byte(1), c));
             EmitCc(NZC, dst);
         }
 

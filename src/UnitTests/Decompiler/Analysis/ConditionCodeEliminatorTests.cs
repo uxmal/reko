@@ -96,7 +96,7 @@ namespace Reko.UnitTests.Decompiler.Analysis
 
         private Expression RorC(Expression expr, Expression count, Expression carry)
         {
-            return m.Fn(CommonOps.RorC, expr, count, carry);
+            return m.Fn(CommonOps.RorC.MakeInstance(expr.DataType, count.DataType), expr, count, carry);
         }
 
         private void RunSsaTest(string sExpected, Action<SsaProcedureBuilder> generateCode)
@@ -479,7 +479,9 @@ done:
 
                 m.Assign(r1, m.Shr(r1, 1));
                 m.Assign(C, m.Cond(r1));
-                m.Assign(r2, m.Fn(CommonOps.RorC, r2, Constant.Byte(1), C));
+                m.Assign(r2, m.Fn(
+                    CommonOps.RorC.MakeInstance(r2.DataType, PrimitiveType.Byte),
+                    r2, Constant.Byte(1), C));
                 m.Assign(C, m.Cond(r2));
                 m.MStore(m.Word32(0x3000), r2);
                 m.MStore(m.Word32(0x3004), r1);
@@ -501,7 +503,9 @@ done:
 
                 m.Assign(r1, m.Shl(r1, 1));
                 m.Assign(C, m.Cond(r1));
-                m.Assign(r2, m.Fn(CommonOps.RolC, r2, Constant.Byte(1), C));
+                m.Assign(r2, m.Fn(
+                    CommonOps.RolC.MakeInstance(r2.DataType, PrimitiveType.Byte),
+                    r2, Constant.Byte(1), C));
                 m.Assign(C, m.Cond(r2));
                 m.MStore(m.Word32(0x3000), r1);
                 m.MStore(m.Word32(0x3004), r2);
@@ -837,7 +841,9 @@ ProcedureBuilder_exit:
                 m.Assign(r1, m.Shl(r1, m.Int16(1)));
                 m.Assign(NZVC, m.Cond(r1));
                 m.Assign(tmp, r0);
-                m.Assign(r0, m.Fn(CommonOps.RolC, r0, m.Int16(1), C));
+                m.Assign(r0, m.Fn(
+                    CommonOps.RolC.MakeInstance(r0.DataType, PrimitiveType.Int16), 
+                    r0, m.Int16(1), C));
                 m.Assign(C, m.Ne0(m.And(tmp, m.Word16(0x8000))));
                 m.MStore(m.Word16(0x1234), r0);
                 m.MStore(m.Word16(0x1236), r1);
@@ -1049,7 +1055,9 @@ ProcedureBuilder_exit:
                 m.Assign(ax, m.Shl(ax, 1));
                 m.Assign(SCZO, m.Cond(ax));
                 m.Assign(tmp, m.Ne0(m.And(dx, 0x8000)));
-                m.Assign(dx, m.Fn(CommonOps.RolC, dx, Constant.Byte(1), CF));
+                m.Assign(dx, m.Fn(
+                    CommonOps.RolC.MakeInstance(dx.DataType, PrimitiveType.Byte),
+                    dx, Constant.Byte(1), CF));
                 m.Assign(CF, tmp);
                 m.Assign(cx, m.ISub(cx, 1));
                 m.BranchIf(m.Ne0(cx), "m0Loop");

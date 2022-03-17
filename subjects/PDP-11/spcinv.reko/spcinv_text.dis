@@ -397,7 +397,7 @@ l05E0:
 	word16 r5_30
 	fn0A7C(fn0AB6(r0, r4, r5, out r4_23, out r5_24), r4_23, r5_24, out r4_29, out r5_30)
 	word16 r0_34 = fn0A94()
-	word16 r3_49 = __rcl<word16,int16,bool>(__rcl<word16,int16,bool>(0<16>, 1<i16>, SLICE(cond(r0_34 << 1<i16>), bool, 0)), 1<i16>, SLICE(cond(r0_34 << 2<i16>), bool, 0))
+	word16 r3_49 = __rcl<word16,byte>(__rcl<word16,byte>(0<16>, 1<8>, SLICE(cond(r0_34 << 1<i16>), bool, 0)), 1<8>, SLICE(cond(r0_34 << 2<i16>), bool, 0))
 	word16 r0_51 = Mem17[(r3_49 << 1<i16>) + 0xF2A<16>:word16]
 	word16 v26_53 = Mem17[pc + 0x90A<16>:word16] >> 1<i16>
 	Mem54[pc + 0x90A<16>:word16] = v26_53
@@ -776,7 +776,7 @@ l08EA:
 l08EE:
 	ui32 v113_453 = CONVERT(r0_346, word16, uint32) << 1<8>
 	word16 r0_366 = SLICE(v113_453, word16, 0)
-	word16 r1_380 = __rcl<word16,int16,bool>(__rcl<word16,int16,bool>(SLICE(v113_453, word16, 16), 1<i16>, SLICE(cond(r0_366 << 1<i16>), bool, 0)), 1<i16>, SLICE(cond(r0_366 << 2<i16>), bool, 0))
+	word16 r1_380 = __rcl<word16,byte>(__rcl<word16,byte>(SLICE(v113_453, word16, 16), 1<8>, SLICE(cond(r0_366 << 1<i16>), bool, 0)), 1<8>, SLICE(cond(r0_366 << 2<i16>), bool, 0))
 	r1_351 = r1_380 << 1<i16>
 	branch Mem321[(r1_380 << 1<i16>) + 0xDC4<16>:word16] <= 0<16> l08D0
 l0904:

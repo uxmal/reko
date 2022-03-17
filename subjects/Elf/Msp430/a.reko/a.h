@@ -66,26 +66,26 @@ Eq_3: (union "Eq_3" (uint20 u0) (byte u1) (word16 u2))
 	T_3379 (in r8_427 @ 00005682 : Eq_3)
 	T_3385 (in r8 @ 00005682 : Eq_3)
 	T_3670 (in r14_152 @ 000059D4 : Eq_3)
-	T_3677 (in __rcr<word20,byte,bool>(r11_12, 1<8>, C_149) @ 000059D4 : word20)
+	T_3677 (in __rcr<word20,byte>(r11_12, 1<8>, C_149) @ 000059D4 : word20)
 	T_3678 (in 0<20> @ 000059D8 : word20)
 	T_3724 (in r14_152 + 0xFFFF<16> @ 000059E0 : word20)
 	T_3725 (in 0<20> @ 000059E2 : word20)
 	T_3743 (in r14_73 @ 00005A34 : Eq_3)
-	T_3746 (in __rcr<word20,byte,bool>(r11_12, 1<8>, C_70) @ 00005A34 : word20)
+	T_3746 (in __rcr<word20,byte>(r11_12, 1<8>, C_70) @ 00005A34 : word20)
 	T_3747 (in 0<20> @ 00005A38 : word20)
 	T_3791 (in r14_73 + 0xFFFF<16> @ 00005A42 : word20)
 	T_3792 (in 0<20> @ 00005A44 : word20)
 	T_3840 (in r12_57 @ 00005AB2 : Eq_3)
-	T_3843 (in __rcr<word20,byte,bool>(r13, 1<8>, C_54) @ 00005AB2 : word20)
+	T_3843 (in __rcr<word20,byte>(r13, 1<8>, C_54) @ 00005AB2 : word20)
 	T_3867 (in r12_57 + 0xFFFF<16> @ 00005ABA : word20)
 	T_3868 (in 0<20> @ 00005ABC : word20)
 	T_3913 (in r8_18 @ 00005B04 : Eq_3)
 	T_3914 (in 0<16> @ 00005B04 : word16)
 	T_3932 (in r8_18 | 4<16> @ 00000000 : word20)
 	T_3938 (in r8_55 @ 00005B2A : Eq_3)
-	T_3946 (in __rcr<word20,byte,bool>(r8_49, 1<8>, fn00005B4E(r11_r10_126, r8_18, r12, r13, out r13_r12_131, out r15_r14_132, out r8_49)) @ 00005B2A : word20)
+	T_3946 (in __rcr<word20,byte>(r8_49, 1<8>, fn00005B4E(r11_r10_126, r8_18, r12, r13, out r13_r12_131, out r15_r14_132, out r8_49)) @ 00005B2A : word20)
 	T_3952 (in r8_18 | 8<16> @ 00000000 : word20)
-	T_4006 (in __rcr<word20,byte,bool>(r8_17, 1<8>, C_22) @ 00005B58 : word20)
+	T_4006 (in __rcr<word20,byte>(r8_17, 1<8>, C_22) @ 00005B58 : word20)
 	T_4009 (in 0<20> @ 00005B5A : word20)
 Eq_37: (fn void (ui20, Eq_3))
 	T_37 (in main @ 00004036 : word16)
@@ -1879,12 +1879,12 @@ Eq_3661: (union "Eq_3661" (ui20 u0) (word16 u1))
 Eq_3668: (union "Eq_3668" (ui20 u0) (word16 u1))
 	T_3668 (in 0xFFFE<16> @ 000059D2 : word16)
 Eq_3671: (fn Eq_3 (Eq_1590, byte, bool))
-	T_3671 (in __rcr<word20,byte,bool> @ 000059D4 : ptr32)
+	T_3671 (in __rcr<word20,byte> @ 000059D4 : ptr32)
 	T_3672 (in signature of __rcr @ 00000000 : void)
-	T_3744 (in __rcr<word20,byte,bool> @ 00005A34 : ptr32)
-	T_3841 (in __rcr<word20,byte,bool> @ 00005AB2 : ptr32)
-	T_3939 (in __rcr<word20,byte,bool> @ 00005B2A : ptr32)
-	T_4004 (in __rcr<word20,byte,bool> @ 00005B58 : ptr32)
+	T_3744 (in __rcr<word20,byte> @ 00005A34 : ptr32)
+	T_3841 (in __rcr<word20,byte> @ 00005AB2 : ptr32)
+	T_3939 (in __rcr<word20,byte> @ 00005B2A : ptr32)
+	T_4004 (in __rcr<word20,byte> @ 00005B58 : ptr32)
 Eq_3682: (union "Eq_3682" (ui20 u0) (word16 u1))
 	T_3682 (in 1<16> @ 000059BA : word16)
 Eq_3689: (union "Eq_3689" (ui20 u0) (word16 u1))
@@ -16878,7 +16878,7 @@ T_3670: (in r14_152 @ 000059D4 : Eq_3)
   Class: Eq_3
   DataType: Eq_3
   OrigDataType: word24
-T_3671: (in __rcr<word20,byte,bool> @ 000059D4 : ptr32)
+T_3671: (in __rcr<word20,byte> @ 000059D4 : ptr32)
   Class: Eq_3671
   DataType: (ptr32 Eq_3671)
   OrigDataType: (ptr32 (fn T_3677 (T_3637, T_3676, T_3660)))
@@ -16902,7 +16902,7 @@ T_3676: (in 1<8> @ 000059D4 : byte)
   Class: Eq_3674
   DataType: byte
   OrigDataType: byte
-T_3677: (in __rcr<word20,byte,bool>(r11_12, 1<8>, C_149) @ 000059D4 : word20)
+T_3677: (in __rcr<word20,byte>(r11_12, 1<8>, C_149) @ 000059D4 : word20)
   Class: Eq_3
   DataType: Eq_3
   OrigDataType: word20
@@ -17170,7 +17170,7 @@ T_3743: (in r14_73 @ 00005A34 : Eq_3)
   Class: Eq_3
   DataType: Eq_3
   OrigDataType: word24
-T_3744: (in __rcr<word20,byte,bool> @ 00005A34 : ptr32)
+T_3744: (in __rcr<word20,byte> @ 00005A34 : ptr32)
   Class: Eq_3671
   DataType: (ptr32 Eq_3671)
   OrigDataType: (ptr32 (fn T_3746 (T_3637, T_3745, T_3650)))
@@ -17178,7 +17178,7 @@ T_3745: (in 1<8> @ 00005A34 : byte)
   Class: Eq_3674
   DataType: byte
   OrigDataType: byte
-T_3746: (in __rcr<word20,byte,bool>(r11_12, 1<8>, C_70) @ 00005A34 : word20)
+T_3746: (in __rcr<word20,byte>(r11_12, 1<8>, C_70) @ 00005A34 : word20)
   Class: Eq_3
   DataType: Eq_3
   OrigDataType: word20
@@ -17558,7 +17558,7 @@ T_3840: (in r12_57 @ 00005AB2 : Eq_3)
   Class: Eq_3
   DataType: Eq_3
   OrigDataType: word24
-T_3841: (in __rcr<word20,byte,bool> @ 00005AB2 : ptr32)
+T_3841: (in __rcr<word20,byte> @ 00005AB2 : ptr32)
   Class: Eq_3671
   DataType: (ptr32 Eq_3671)
   OrigDataType: (ptr32 (fn T_3843 (T_1590, T_3842, T_3827)))
@@ -17566,7 +17566,7 @@ T_3842: (in 1<8> @ 00005AB2 : byte)
   Class: Eq_3674
   DataType: byte
   OrigDataType: byte
-T_3843: (in __rcr<word20,byte,bool>(r13, 1<8>, C_54) @ 00005AB2 : word20)
+T_3843: (in __rcr<word20,byte>(r13, 1<8>, C_54) @ 00005AB2 : word20)
   Class: Eq_3
   DataType: Eq_3
   OrigDataType: word20
@@ -17950,7 +17950,7 @@ T_3938: (in r8_55 @ 00005B2A : Eq_3)
   Class: Eq_3
   DataType: Eq_3
   OrigDataType: ui20
-T_3939: (in __rcr<word20,byte,bool> @ 00005B2A : ptr32)
+T_3939: (in __rcr<word20,byte> @ 00005B2A : ptr32)
   Class: Eq_3671
   DataType: (ptr32 Eq_3671)
   OrigDataType: (ptr32 (fn T_3946 (T_3936, T_3940, T_3945)))
@@ -17978,7 +17978,7 @@ T_3945: (in fn00005B4E(r11_r10_126, r8_18, r12, r13, out r13_r12_131, out r15_r1
   Class: Eq_3397
   DataType: bool
   OrigDataType: bool
-T_3946: (in __rcr<word20,byte,bool>(r8_49, 1<8>, fn00005B4E(r11_r10_126, r8_18, r12, r13, out r13_r12_131, out r15_r14_132, out r8_49)) @ 00005B2A : word20)
+T_3946: (in __rcr<word20,byte>(r8_49, 1<8>, fn00005B4E(r11_r10_126, r8_18, r12, r13, out r13_r12_131, out r15_r14_132, out r8_49)) @ 00005B2A : word20)
   Class: Eq_3
   DataType: Eq_3
   OrigDataType: word20
@@ -18210,7 +18210,7 @@ T_4003: (in r9_18 != 0<20> @ 00000000 : bool)
   Class: Eq_4003
   DataType: bool
   OrigDataType: bool
-T_4004: (in __rcr<word20,byte,bool> @ 00005B58 : ptr32)
+T_4004: (in __rcr<word20,byte> @ 00005B58 : ptr32)
   Class: Eq_3671
   DataType: (ptr32 Eq_3671)
   OrigDataType: (ptr32 (fn T_4006 (T_3992, T_4005, T_3999)))
@@ -18218,7 +18218,7 @@ T_4005: (in 1<8> @ 00005B58 : byte)
   Class: Eq_3674
   DataType: byte
   OrigDataType: byte
-T_4006: (in __rcr<word20,byte,bool>(r8_17, 1<8>, C_22) @ 00005B58 : word20)
+T_4006: (in __rcr<word20,byte>(r8_17, 1<8>, C_22) @ 00005B58 : word20)
   Class: Eq_3
   DataType: Eq_3
   OrigDataType: word20

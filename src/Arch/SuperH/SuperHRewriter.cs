@@ -623,7 +623,10 @@ namespace Reko.Arch.SuperH
         {
             var t = binder.EnsureFlagGroup(Registers.T);
             var op1 = SrcOp(instr.Operands[0]);
-            m.Assign(op1, m.Fn(intrinsic, op1, m.Int32(1), t));
+            var one = m.Byte(1);
+            m.Assign(op1, m.Fn(
+                intrinsic.MakeInstance(op1.DataType, one.DataType),
+                op1, one, t));
         }
 
         private void RewriteRts()

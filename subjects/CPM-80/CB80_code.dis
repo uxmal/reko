@@ -100,7 +100,7 @@ fn03E6_entry:
 l03E6:
 	Mem5[0x1659<16>:byte] = c
 	byte a_9
-	branch __rcr<byte,byte,bool>(a_9, 1<8>, fn03BB(Mem5[0x1659<16>:byte], out a_9)) >=u 0<8> l03FB
+	branch __rcr<byte,byte>(a_9, 1<8>, fn03BB(Mem5[0x1659<16>:byte], out a_9)) >=u 0<8> l03FB
 l03FB:
 	return Mem5[0x1659<16>:byte]
 l03F5:
@@ -478,7 +478,7 @@ l0665:
 	bool C_47 = fn1348(0x1676<16>, CONVERT(Mem29[0x167A<16>:byte], byte, uint16) * 2<16> + 0x227<16>, out de_129, out hl_130)
 	branch C_47 l0697
 l0697:
-	branch __rcr<byte,byte,bool>(Mem29[0x167B<16>:byte], 1<8>, C_47) >=u 0<8> l06AF
+	branch __rcr<byte,byte>(Mem29[0x167B<16>:byte], 1<8>, C_47) >=u 0<8> l06AF
 l069E:
 	word16 hl_51 = Mem29[0x1678<16>:word16]
 	byte a_52 = Mem29[hl_51:byte]
@@ -632,7 +632,7 @@ fn07B3_entry:
 	bool C
 	byte b = SLICE(bc, byte, 8)
 l07B3:
-	branch __rcr<byte,byte,bool>(Mem0[0x14F9<16>:byte], 1<8>, C) >=u 0<8> l080E
+	branch __rcr<byte,byte>(Mem0[0x14F9<16>:byte], 1<8>, C) >=u 0<8> l080E
 l07BA:
 	word16 bc_12
 	fn056B(SEQ(b, 0xD<8>), out bc_12)
@@ -712,13 +712,13 @@ l082F:
 	Mem35[0x1690<16>:byte] = 0<8>
 	Mem38[0x1691<16>:byte] = 0<8>
 	byte a_40 = __rol<byte,byte>(Mem38[0x168D<16>:byte], 1<8>)
-	branch __rcr<byte,byte,bool>(a_40, 1<8>, cond(a_40)) >=u 0<8> l085E
+	branch __rcr<byte,byte>(a_40, 1<8>, cond(a_40)) >=u 0<8> l085E
 l085E:
 	byte a_46 = __rol<byte,byte>(Mem38[0x168D<16>:byte], 2<8>)
-	branch __rcr<byte,byte,bool>(a_46, 1<8>, cond(a_46)) >=u 0<8> l086F
+	branch __rcr<byte,byte>(a_46, 1<8>, cond(a_46)) >=u 0<8> l086F
 l086F:
 	byte a_53 = __rol<byte,byte>(Mem38[0x168D<16>:byte], 3<8>)
-	branch __rcr<byte,byte,bool>(a_53, 1<8>, cond(a_53)) >=u 0<8> l087E
+	branch __rcr<byte,byte>(a_53, 1<8>, cond(a_53)) >=u 0<8> l087E
 l0879:
 	Mem58[0x168F<16>:byte] = 1<8>
 l0867:
@@ -727,7 +727,7 @@ l0856:
 	Mem62[0x1690<16>:byte] = 1<8>
 l087E:
 	byte a_68 = __rol<byte,byte>(Mem63[0x168D<16>:byte], 4<8>)
-	branch __rcr<byte,byte,bool>(a_68, 1<8>, cond(a_68)) >=u 0<8> l088E
+	branch __rcr<byte,byte>(a_68, 1<8>, cond(a_68)) >=u 0<8> l088E
 l0889:
 	Mem73[0x168E<16>:byte] = 1<8>
 l088E:
@@ -735,7 +735,7 @@ l088E:
 	word16 hl_79 = Mem78[0x1687<16>:word16]
 	word16 hl_84 = Mem78[0x1689<16>:word16]
 	word16 af_95
-	byte a_106 = __rcr<byte,byte,bool>(~SLICE(af_95, byte, 8), 1<8>, fn0990(f, SLICE(hl_79, byte, 8), SLICE(hl_79, byte, 0), SLICE(hl_84, byte, 8), SLICE(hl_84, byte, 0), out af_95))
+	byte a_106 = __rcr<byte,byte>(~SLICE(af_95, byte, 8), 1<8>, fn0990(f, SLICE(hl_79, byte, 8), SLICE(hl_79, byte, 0), SLICE(hl_84, byte, 8), SLICE(hl_84, byte, 0), out af_95))
 	byte f_219 = SLICE(af_95, byte, 0)
 	bool C_107 = cond(a_106)
 	branch a_106 >=u 0<8> l08B1
@@ -743,15 +743,15 @@ l08A7:
 	word16 hl_108 = Mem78[0x1687<16>:word16]
 	C_107 = fn061B(2<8>, 0x4C<8>, SLICE(hl_108, byte, 8), SLICE(hl_108, byte, 0))
 l08B1:
-	byte a_128 = __rcr<byte,byte,bool>(Mem78[0x1690<16>:byte], 1<8>, C_107)
+	byte a_128 = __rcr<byte,byte>(Mem78[0x1690<16>:byte], 1<8>, C_107)
 	bool C_129 = cond(a_128)
 	branch a_128 >=u 0<8> l08DD
 l08DD:
-	byte a_131 = __rcr<byte,byte,bool>(Mem78[0x1691<16>:byte], 1<8>, C_129)
+	byte a_131 = __rcr<byte,byte>(Mem78[0x1691<16>:byte], 1<8>, C_129)
 	bool C_132 = cond(a_131)
 	branch a_131 >=u 0<8> l0900
 l0900:
-	branch __rcr<byte,byte,bool>(Mem78[0x168F<16>:byte], 1<8>, C_132) >=u 0<8> l0920
+	branch __rcr<byte,byte>(Mem78[0x168F<16>:byte], 1<8>, C_132) >=u 0<8> l0920
 l0904_thunk_fn0920:
 	fn0920()
 	return f_219
@@ -1165,7 +1165,7 @@ void fn0D84()
 fn0D84_entry:
 l0D84:
 	byte a_3
-	branch __rcr<byte,byte,bool>(a_3, 1<8>, fn0D64(out a_3)) >=u 0<8> l0D94
+	branch __rcr<byte,byte>(a_3, 1<8>, fn0D64(out a_3)) >=u 0<8> l0D94
 l0D8B:
 	fn075C(0<8>, 2<8>, 0<8>, 0<8>)
 l0D94:
@@ -1226,7 +1226,7 @@ l0E85:
 	branch Mem44[0x16A6<16>:byte] != Mem44[Mem44[0x1521<16>:word16] + 2<16>:byte] l0E9B
 l0E91:
 	byte a_51
-	branch __rcr<byte,byte,bool>(a_51, 1<8>, fn0EAB(out a_51)) >=u 0<8> l0E9B
+	branch __rcr<byte,byte>(a_51, 1<8>, fn0EAB(out a_51)) >=u 0<8> l0E9B
 l0E9B:
 	word16 hl_62 = Mem44[0x1521<16>:word16]
 	Mem71[0x1521<16>:word16] = Mem44[hl_62:word16]

@@ -33,7 +33,7 @@ l0C00_0000:
 	bx = __ror<word16,byte>(bx, 1<8>)
 	C = v8
 	v11 = (cx & 1<16> << 1<8>) != 0<16>
-	cx = __rcr<word16,byte,bool>(cx, 1<8>, C)
+	cx = __rcr<word16,byte>(cx, 1<8>, C)
 	C = v11
 	dx = dx + 1<16>
 	SZO = cond(dx)

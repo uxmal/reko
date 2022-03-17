@@ -1202,7 +1202,7 @@ l901A:
 	byte r2l_221 = SLICE(r3_219, byte, 0)
 	word16 r2_231 = CONVERT(__bst(r2l_221 << 1<i32>, SLICE(cond(r2l_221 << 1<i32>), bool, 0), 0<8>) & 1<8>, byte, uint16) + r3_219
 	byte r2h_232 = SLICE(r2_231, byte, 8)
-	word16 r2_238 = SEQ(r2h_232 >> 1<i32>, __rcr<byte,int32,bool>(SLICE(r2_231, byte, 0), 1<i32>, SLICE(cond(r2h_232 >> 1<i32>), bool, 0)))
+	word16 r2_238 = SEQ(r2h_232 >> 1<i32>, __rcr<byte,byte>(SLICE(r2_231, byte, 0), 1<8>, SLICE(cond(r2h_232 >> 1<i32>), bool, 0)))
 	Mem239[0x9E3A<p16>:word16] = r2_238
 	Mem242[sp_201:word16] = 0x3002<16>
 	word16 r6_253
@@ -1252,7 +1252,7 @@ l90D4:
 	byte r2l_416 = SLICE(r3_414, byte, 0)
 	word16 r2_426 = CONVERT(__bst(r2l_416 << 1<i32>, SLICE(cond(r2l_416 << 1<i32>), bool, 0), 0<8>) & 1<8>, byte, uint16) + r3_414
 	byte r2h_427 = SLICE(r2_426, byte, 8)
-	word16 r2_433 = SEQ(r2h_427 >> 1<i32>, __rcr<byte,int32,bool>(SLICE(r2_426, byte, 0), 1<i32>, SLICE(cond(r2h_427 >> 1<i32>), bool, 0)))
+	word16 r2_433 = SEQ(r2h_427 >> 1<i32>, __rcr<byte,byte>(SLICE(r2_426, byte, 0), 1<8>, SLICE(cond(r2h_427 >> 1<i32>), bool, 0)))
 	Mem434[0x9E38<p16>:word16] = r2_433
 	Mem437[sp_356 - 2<i32>:word16] = 0x3002<16>
 	word16 r6_448

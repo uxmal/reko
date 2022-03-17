@@ -633,13 +633,9 @@ namespace Reko.Analysis
 
 		public Expression ComparisonFromOverflow(BinaryExpression bin, bool isNegated)
 		{
-            var sig = new FunctionType(
-                new Identifier("", PrimitiveType.Bool, null!),
-                new Identifier("", bin.DataType, null!));
+            var intrinsic = CommonOps.Overflow.MakeInstance(bin.DataType);
             Expression e = new Application(
-                new ProcedureConstant(
-                    program.Platform.PointerType,
-                    new IntrinsicProcedure("OVERFLOW", false, sig)),
+                new ProcedureConstant(program.Platform.PointerType, intrinsic),
                 PrimitiveType.Bool,
                 bin);
 			if (isNegated)

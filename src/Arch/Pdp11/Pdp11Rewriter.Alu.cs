@@ -304,7 +304,7 @@ namespace Reko.Arch.Pdp11
             var tmp = binder.CreateTemporary(src.DataType);
             m.Assign(tmp, src);
             var dst = RewriteDst(instr.Operands[0], src, (a, b) =>
-                m.Fn(op, a, m.Int16(1), C))!;
+                m.Fn(op.MakeInstance(a.DataType, PrimitiveType.Byte), a, m.Byte(1), C))!;
             m.Assign(C, m.Ne0(m.And(tmp, cyMask)));
             SetFlags(dst, Registers.NZV);
         }

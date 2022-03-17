@@ -21,14 +21,7 @@
 using NUnit.Framework;
 using Reko.Arch.SuperH;
 using Reko.Core;
-using Reko.Core.Configuration;
-using Reko.Core.Memory;
-using Reko.Core.Rtl;
-using System;
 using System.Collections.Generic;
-using System.ComponentModel.Design;
-using System.Linq;
-using System.Text;
 
 namespace Reko.UnitTests.Arch.Tlcs
 {
@@ -36,15 +29,10 @@ namespace Reko.UnitTests.Arch.Tlcs
     public class SuperHRewriterTests : RewriterTestBase
     {
         private readonly SuperHArchitecture arch = new SuperHLeArchitecture(CreateServiceContainer(), "superH", new Dictionary<string, object>());
-        private Address baseAddr = Address.Ptr32(0x00100000);
+        private readonly Address baseAddr = Address.Ptr32(0x00100000);
 
         public override IProcessorArchitecture Architecture => arch;
         public override Address LoadAddress => baseAddr;
-
-        [SetUp]
-        public void Setup()
-        {
-        }
 
         [Test]
         public void SHRw_add_imm_rn()
@@ -806,7 +794,7 @@ namespace Reko.UnitTests.Arch.Tlcs
             Given_HexString("2440");	// invalid
             AssertCode(
                 "0|L--|00100000(2): 1 instructions",
-                "1|L--|r0 = __rcl<word32,int32,bool>(r0, 1<i32>, T)");
+                "1|L--|r0 = __rcl<word32,byte>(r0, 1<8>, T)");
         }
 
         [Test]

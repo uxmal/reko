@@ -908,7 +908,7 @@ namespace Reko.Arch.Arm.AArch32
             case Mnemonic.lsl: return m.Shl(exp, sh);
             case Mnemonic.lsr: return m.Sar(exp, sh);
             case Mnemonic.ror: return m.Fn(CommonOps.Ror, exp, sh);
-            case Mnemonic.rrx: return m.Fn(CommonOps.RorC, exp, sh, C());
+            case Mnemonic.rrx: return m.Fn(CommonOps.RorC.MakeInstance(exp.DataType, sh.DataType), exp, sh, C());
             default: return exp;
             }
         }

@@ -18578,9 +18578,9 @@ ui64 __avr32_f64_mul(Eq_n r8, Eq_n r9, Eq_n r10, Eq_n r11)
 			uint32 r7_n = (word32) r10_r7_n;
 			if (Test(NE,SLICE(r11_n, bool, 20)))
 			{
-				r10_n = __rcl<word32,int32,bool>(r10_n, 1, (bool) cond(r7_n << 1));
+				r10_n = __rcl<word32,byte>(r10_n, 0x01, (bool) cond(r7_n << 1));
 				r7_n <<= 1;
-				r11_n = __rcl<word32,int32,bool>(r11_n, 1, (bool) cond(r10_n));
+				r11_n = __rcl<word32,byte>(r11_n, 0x01, (bool) cond(r10_n));
 				r12_n = r12_n - 0x03FF;
 			}
 			Eq_n r11_r10_n;
@@ -18927,8 +18927,8 @@ uint64 __avr32_f64_add(Eq_n r8, Eq_n r9, Eq_n r10, Eq_n r11, byte & r5Out, struc
 			Eq_n r10_n = (word32) r11_r10_n;
 			if (Test(EQ,SLICE(r11_n, bool, 21)))
 			{
-				r10_n = __rcr<word32,int32,bool>(r10_n, 1, (bool) cond(r11_n >> 1));
-				lr_n = __rcr<word32,int32,bool>(lr_n | lr_n << 0x01, 1, (bool) cond(r10_n));
+				r10_n = __rcr<word32,byte>(r10_n, 0x01, (bool) cond(r11_n >> 1));
+				lr_n = __rcr<word32,byte>(lr_n | lr_n << 0x01, 0x01, (bool) cond(r10_n));
 				r7_n = (word32) r7_n + 1;
 				if (r7_n == 0x07FE)
 				{
@@ -19115,7 +19115,7 @@ Eq_n fn0000F80A(ui64 r11_r10, Eq_n r12, union Eq_n & r11Out, union Eq_n & lrOut)
 			r10_n = r10_n >> 11 | r11_n << 0x15;
 			r11_n = r11_n << 1 >> 11 | r9_n << 0x15;
 		}
-		r11Out = __rcr<word32,int32,bool>(r11_n, 1, (bool) cond(r12 << 1));
+		r11Out = __rcr<word32,byte>(r11_n, 0x01, (bool) cond(r12 << 1));
 		lrOut = lr;
 		return r10_n;
 	}
@@ -19160,8 +19160,8 @@ Eq_n fn0000F80A(ui64 r11_r10, Eq_n r12, union Eq_n & r11Out, union Eq_n & lrOut)
 			r11_n = (word32) r11_n + 1;
 	}
 l0000F89C:
-	r11_n = __rcr<word32,int32,bool>(r11_n, 1, (bool) cond(__rcl<word32,int32,bool>(r12, 1, C_n)));
-	r10_n = __rcr<word32,int32,bool>(r10_n, 1, (bool) cond(r11_n));
+	r11_n = __rcr<word32,byte>(r11_n, 0x01, (bool) cond(__rcl<word32,byte>(r12, 0x01, C_n)));
+	r10_n = __rcr<word32,byte>(r10_n, 0x01, (bool) cond(r11_n));
 l0000F8A2:
 	r11Out = r11_n;
 	lrOut = lr;
@@ -19235,7 +19235,7 @@ bool __avr32_f64_cmp_ge(word32 r8, ui32 r9, Eq_n r10, Eq_n r11, union Eq_n & r12
 	else
 	{
 		Eq_n C_n = (bool) cond(r10);
-		Eq_n r12_n = __rcl<word32,int32,bool>(r12_n, 1, (bool) cond(r9 << 1));
+		Eq_n r12_n = __rcl<word32,byte>(r12_n, 0x01, (bool) cond(r9 << 1));
 		ptr32 lr_n = 0xFFE00000;
 		bool Z_n = SLICE(cond((r11 << 1) - 0xFFE00000 - C_n), bool, 1);
 		if ((r11 << 1) - 0xFFE00000 <= C_n)
@@ -19336,7 +19336,7 @@ bool __avr32_f64_cmp_lt(Eq_n r8, Eq_n r9, Eq_n r10, Eq_n r11, union Eq_n & r9Out
 	else
 	{
 		Eq_n C_n = (bool) cond(r10);
-		Eq_n r12_n = __rcl<word32,int32,bool>(r12_n, 1, (bool) cond(r9 << 1));
+		Eq_n r12_n = __rcl<word32,byte>(r12_n, 0x01, (bool) cond(r9 << 1));
 		ptr32 lr_n = 0xFFE00000;
 		bool Z_n = SLICE(cond((r11 << 1) - 0xFFE00000 - C_n), bool, 1);
 		if ((r11 << 1) - 0xFFE00000 <= C_n)
@@ -19685,7 +19685,7 @@ l0000FA94:
 				if (Test(NE,SLICE(r3_n, bool, 28)))
 				{
 					r2_n <<= 1;
-					r3_n = __rcl<word32,int32,bool>(r3_n, 1, (bool) cond(r2_n << 1));
+					r3_n = __rcl<word32,byte>(r3_n, 0x01, (bool) cond(r2_n << 1));
 					r7_n = r7_n + 1022;
 					r10_n = r10_n >> 3 | r11_n << 0x1D;
 					r11_n = r11_n >> 3;
@@ -19832,7 +19832,7 @@ Eq_n fn0000FD70(ui32 r11, Eq_n r12)
 		if (r12 << 1 == 0x00)
 			return ~0x00;
 		r12_n.u0 = 0xFF000000;
-		return __rcr<word32,int32,bool>(r12_n, 1, (bool) cond(r8_n << 1));
+		return __rcr<word32,byte>(r12_n, 0x01, (bool) cond(r8_n << 1));
 	}
 	else
 	{
@@ -19845,7 +19845,7 @@ Eq_n fn0000FD70(ui32 r11, Eq_n r12)
 				if (r9_n != 0xFF)
 					return ~0x00;
 				if (r11 << 1 < 0xFF000000)
-					return __rcr<word32,int32,bool>(r12_n, 1, (bool) cond(r8_n << 1));
+					return __rcr<word32,byte>(r12_n, 0x01, (bool) cond(r8_n << 1));
 				return ~0x00;
 			}
 			r12_n = r12 << 8 | 0x80000000;
@@ -20214,7 +20214,7 @@ Eq_n fn0001013A(Eq_n r12, union Eq_n & r12Out)
 				r9_n.u0 = 0x7F;
 				if (Test(EQ,SLICE(r12_n, bool, 8)))
 					r9_n.u0 = 0x80;
-				r12_n = __rcr<word32,int32,bool>((bool) r9_n.u0 + r12_n >> 0x07, 1, (bool) cond(0x00));
+				r12_n = __rcr<word32,byte>((bool) r9_n.u0 + r12_n >> 0x07, 0x01, (bool) cond(0x00));
 			}
 			r12Out = r12_n;
 			return r9_n;

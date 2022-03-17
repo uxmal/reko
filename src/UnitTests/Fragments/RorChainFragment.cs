@@ -54,7 +54,8 @@ namespace Reko.UnitTests.Fragments
             Assign(C, Cond(a));
             Assign(h, a);
             Assign(a, l);
-            Assign(a, Fn(CommonOps.RorC, a, Constant.Byte(1), C));
+            Assign(a, Fn(CommonOps.RorC.MakeInstance(a.DataType, PrimitiveType.Byte),
+                a, Constant.Byte(1), C));
             Assign(C, Cond(a));
             Assign(l, a);
             Assign(c, ISub(c, 1));

@@ -1196,10 +1196,10 @@ Eq_3571: (fn byte (ui8, bool, byte))
 	T_3571 (in __bst @ 00009044 : ptr16)
 	T_3572 (in signature of __bst @ 00000000 : void)
 	T_3766 (in __bst @ 000090FE : ptr16)
-Eq_3592: (fn uint8 (byte, int32, bool))
-	T_3592 (in __rcr<byte,int32,bool> @ 0000904A : ptr32)
+Eq_3592: (fn uint8 (byte, byte, bool))
+	T_3592 (in __rcr<byte,byte> @ 0000904A : ptr32)
 	T_3593 (in signature of __rcr @ 00000000 : void)
-	T_3783 (in __rcr<byte,int32,bool> @ 00009104 : ptr32)
+	T_3783 (in __rcr<byte,byte> @ 00009104 : ptr32)
 Eq_3616: (fn word32 (word16, Eq_8, ptr32, Eq_8, Eq_8, ptr32, Eq_8, Eq_8))
 	T_3616 (in fn8BB0 @ 00009070 : ptr16)
 	T_3617 (in signature of fn8BB0 @ 00008BB0 : void)
@@ -15775,7 +15775,7 @@ T_3591: (in r2h_232 >> 1<i32> @ 00000000 : byte)
   Class: Eq_3591
   DataType: int8
   OrigDataType: int8
-T_3592: (in __rcr<byte,int32,bool> @ 0000904A : ptr32)
+T_3592: (in __rcr<byte,byte> @ 0000904A : ptr32)
   Class: Eq_3592
   DataType: (ptr32 Eq_3592)
   OrigDataType: (ptr32 (fn T_3602 (T_3597, T_3598, T_3601)))
@@ -15787,9 +15787,9 @@ T_3594: (in p1 @ 0000904A : byte)
   Class: Eq_3594
   DataType: byte
   OrigDataType: 
-T_3595: (in p2 @ 0000904A : int32)
+T_3595: (in p2 @ 0000904A : byte)
   Class: Eq_3595
-  DataType: int32
+  DataType: byte
   OrigDataType: 
 T_3596: (in p3 @ 0000904A : bool)
   Class: Eq_3596
@@ -15799,10 +15799,10 @@ T_3597: (in SLICE(r2_231, byte, 0) @ 0000904A : byte)
   Class: Eq_3594
   DataType: byte
   OrigDataType: byte
-T_3598: (in 1<i32> @ 0000904A : int32)
+T_3598: (in 1<8> @ 0000904A : byte)
   Class: Eq_3595
-  DataType: int32
-  OrigDataType: int32
+  DataType: byte
+  OrigDataType: byte
 T_3599: (in r2h_232 >> 1<i32> @ 00000000 : byte)
   Class: Eq_3599
   DataType: int8
@@ -15815,11 +15815,11 @@ T_3601: (in SLICE(cond(r2h_232 >> 1<i32>), bool, 0) @ 0000904A : bool)
   Class: Eq_3596
   DataType: bool
   OrigDataType: bool
-T_3602: (in __rcr<byte,int32,bool>((byte) r2_231, 1<i32>, (bool) cond(r2h_232 >> 1<i32>)) @ 0000904A : byte)
+T_3602: (in __rcr<byte,byte>((byte) r2_231, 1<8>, (bool) cond(r2h_232 >> 1<i32>)) @ 0000904A : byte)
   Class: Eq_3602
   DataType: uint8
   OrigDataType: uint8
-T_3603: (in SEQ(r2h_232 >> 1<i32>, __rcr<byte,int32,bool>((byte) r2_231, 1<i32>, (bool) cond(r2h_232 >> 1<i32>))) @ 0000904A : word16)
+T_3603: (in SEQ(r2h_232 >> 1<i32>, __rcr<byte,byte>((byte) r2_231, 1<8>, (bool) cond(r2h_232 >> 1<i32>))) @ 0000904A : word16)
   Class: Eq_2226
   DataType: int16
   OrigDataType: int16
@@ -16539,7 +16539,7 @@ T_3782: (in r2h_427 >> 1<i32> @ 00000000 : byte)
   Class: Eq_3782
   DataType: int8
   OrigDataType: int8
-T_3783: (in __rcr<byte,int32,bool> @ 00009104 : ptr32)
+T_3783: (in __rcr<byte,byte> @ 00009104 : ptr32)
   Class: Eq_3592
   DataType: (ptr32 Eq_3592)
   OrigDataType: (ptr32 (fn T_3789 (T_3784, T_3785, T_3788)))
@@ -16547,10 +16547,10 @@ T_3784: (in SLICE(r2_426, byte, 0) @ 00009104 : byte)
   Class: Eq_3594
   DataType: byte
   OrigDataType: byte
-T_3785: (in 1<i32> @ 00009104 : int32)
+T_3785: (in 1<8> @ 00009104 : byte)
   Class: Eq_3595
-  DataType: int32
-  OrigDataType: int32
+  DataType: byte
+  OrigDataType: byte
 T_3786: (in r2h_427 >> 1<i32> @ 00000000 : byte)
   Class: Eq_3786
   DataType: int8
@@ -16563,11 +16563,11 @@ T_3788: (in SLICE(cond(r2h_427 >> 1<i32>), bool, 0) @ 00009104 : bool)
   Class: Eq_3596
   DataType: bool
   OrigDataType: bool
-T_3789: (in __rcr<byte,int32,bool>((byte) r2_426, 1<i32>, (bool) cond(r2h_427 >> 1<i32>)) @ 00009104 : byte)
+T_3789: (in __rcr<byte,byte>((byte) r2_426, 1<8>, (bool) cond(r2h_427 >> 1<i32>)) @ 00009104 : byte)
   Class: Eq_3602
   DataType: uint8
   OrigDataType: uint8
-T_3790: (in SEQ(r2h_427 >> 1<i32>, __rcr<byte,int32,bool>((byte) r2_426, 1<i32>, (bool) cond(r2h_427 >> 1<i32>))) @ 00009104 : word16)
+T_3790: (in SEQ(r2h_427 >> 1<i32>, __rcr<byte,byte>((byte) r2_426, 1<8>, (bool) cond(r2h_427 >> 1<i32>))) @ 00009104 : word16)
   Class: Eq_2226
   DataType: int16
   OrigDataType: int16
@@ -27143,7 +27143,7 @@ typedef struct Eq_3540 {
 
 typedef byte (Eq_3571)(ui8, bool, byte);
 
-typedef uint8 (Eq_3592)(byte, int32, bool);
+typedef uint8 (Eq_3592)(byte, byte, bool);
 
 typedef word32 (Eq_3616)(word16, Eq_8, ptr32, Eq_8, Eq_8, ptr32, Eq_8, Eq_8);
 

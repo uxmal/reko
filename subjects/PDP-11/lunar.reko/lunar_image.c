@@ -138,7 +138,7 @@ void fn0242(word16 r0, word16 * r1)
 		cui16 r3_n = r3_n & 0x3F;
 		if (g_ptr0086 - r3_n < 0x00)
 			g_ptr0086 = r3_n;
-		*r5_n = r3_n | r2_n >> 1 | wLoc02_n;
+		*r5_n = r3_n | r2_n >> 0x01 | wLoc02_n;
 		++r5_n;
 	}
 }
@@ -565,9 +565,9 @@ void fn0A0A()
 		bool C_n = (bool) cond(v15_n);
 		if (v15_n > 0x00)
 			r4_n = (struct Eq_n *) &g_t003F;
-		struct Eq_n * r4_n = __rcl<word16,int16,bool>(r4_n, 1, C_n);
-		struct Eq_n * r4_n = __rcl<word16,int16,bool>(r4_n, 1, (r4_n & 0x8000) != 0x00);
-		g_w35CA = __rcl<word16,int16,bool>(__rcl<word16,int16,bool>(r4_n, 1, (r4_n & 0x8000) != 0x00), 1, (r4_n & 0x8000) != 0x00) & 0x0380 | 0x9C50;
+		struct Eq_n * r4_n = __rcl<word16,byte>(r4_n, 0x01, C_n);
+		struct Eq_n * r4_n = __rcl<word16,byte>(r4_n, 0x01, (r4_n & 0x8000) != 0x00);
+		g_w35CA = __rcl<word16,byte>(__rcl<word16,byte>(r4_n, 0x01, (r4_n & 0x8000) != 0x00), 0x01, (r4_n & 0x8000) != 0x00) & 0x0380 | 0x9C50;
 		if (g_w0046 < 0x2D)
 			g_w34D2 = 0x00;
 		else if (g_w0046 > ~0x2C)
@@ -623,7 +623,7 @@ void fn0A94(int16 r3, struct Eq_n * r4, word16 * r5)
 			struct Eq_n * r2_n = r2_n + g_w0070 + 0x01 & 0x3F;
 			word16 r2_n = r2_n + Mem29[0x0052<p16>:word16];
 			r4 = ~r4 & 0x2000 | 0x4000;
-			cui16 r0_n = __swab((int16) r2_n->b2766 & 0x3F) >> 1 | r4 | (int16) (r2_n & 0x3F)->b2766 & 0x3F;
+			cui16 r0_n = __swab((int16) r2_n->b2766 & 0x3F) >> 0x01 | r4 | (int16) (r2_n & 0x3F)->b2766 & 0x3F;
 			*r5 = r0_n;
 			struct Eq_n * r5_n = r5 + 1;
 			r5_n->w0000 = r0_n + 0x2040 & 0x3FFF;
@@ -903,7 +903,7 @@ word16 fn0E32()
 	*(word16 *) 62466 = *(word16 *) 62466;
 	do
 	{
-		g_w35CA = (__swab(g_w00AC + 0x01) >> 1) + g_w35CA & 0x0380 | 0x9C50;
+		g_w35CA = (__swab(g_w00AC + 0x01) >> 0x01) + g_w35CA & 0x0380 | 0x9C50;
 		struct Eq_n * r5_n;
 		fn0E98(&g_w35CC, out r5_n);
 		*(word16 *) 62466 = *(word16 *) 62466;
@@ -1101,76 +1101,76 @@ bool fn114A(struct Eq_n * r0, struct Eq_n * r1, union Eq_n & r2_r3Out)
 	uint32 r2_r3_n;
 	uint32 r2_r3_n;
 	uint32 r2_r3_n;
-	struct Eq_n * r2_n = __rcl<word16,int16,bool>(r2_n, 1, C_n);
+	struct Eq_n * r2_n = __rcl<word16,byte>(r2_n, 0x01, C_n);
 	bool C_n = (r2_n & 0x8000) != 0x00;
 	if ((r2_n & 0x8000) == 0x00)
 	{
-		struct Eq_n * r2_n = __rcl<word16,int16,bool>(r2_n, 1, C_n);
+		struct Eq_n * r2_n = __rcl<word16,byte>(r2_n, 0x01, C_n);
 		bool C_n = (r2_n & 0x8000) != 0x00;
 		r2_r3_n = (uint32) ((char *) &r2_n->ptrFFFFFFFE + 2);
 		if ((r2_n & 0x8000) == 0x00)
 		{
-			struct Eq_n * r2_n = __rcl<word16,int16,bool>(r2_n, 1, C_n);
+			struct Eq_n * r2_n = __rcl<word16,byte>(r2_n, 0x01, C_n);
 			bool C_n = (r2_n & 0x8000) != 0x00;
 			r2_r3_n = (uint32) ((char *) &r2_n->ptrFFFFFFFE + 2);
 			if ((r2_n & 0x8000) == 0x00)
 			{
-				struct Eq_n * r2_n = __rcl<word16,int16,bool>(r2_n, 1, C_n);
+				struct Eq_n * r2_n = __rcl<word16,byte>(r2_n, 0x01, C_n);
 				bool C_n = (r2_n & 0x8000) != 0x00;
 				r2_r3_n = (uint32) ((char *) &r2_n->ptrFFFFFFFE + 2);
 				if ((r2_n & 0x8000) == 0x00)
 				{
-					struct Eq_n * r2_n = __rcl<word16,int16,bool>(r2_n, 1, C_n);
+					struct Eq_n * r2_n = __rcl<word16,byte>(r2_n, 0x01, C_n);
 					bool C_n = (r2_n & 0x8000) != 0x00;
 					r2_r3_n = (uint32) ((char *) &r2_n->ptrFFFFFFFE + 2);
 					if ((r2_n & 0x8000) == 0x00)
 					{
-						struct Eq_n * r2_n = __rcl<word16,int16,bool>(r2_n, 1, C_n);
+						struct Eq_n * r2_n = __rcl<word16,byte>(r2_n, 0x01, C_n);
 						bool C_n = (r2_n & 0x8000) != 0x00;
 						r2_r3_n = (uint32) ((char *) &r2_n->ptrFFFFFFFE + 2);
 						if ((r2_n & 0x8000) == 0x00)
 						{
-							struct Eq_n * r2_n = __rcl<word16,int16,bool>(r2_n, 1, C_n);
+							struct Eq_n * r2_n = __rcl<word16,byte>(r2_n, 0x01, C_n);
 							bool C_n = (r2_n & 0x8000) != 0x00;
 							r2_r3_n = (uint32) ((char *) &r2_n->ptrFFFFFFFE + 2);
 							if ((r2_n & 0x8000) == 0x00)
 							{
-								struct Eq_n * r2_n = __rcl<word16,int16,bool>(r2_n, 1, C_n);
+								struct Eq_n * r2_n = __rcl<word16,byte>(r2_n, 0x01, C_n);
 								bool C_n = (r2_n & 0x8000) != 0x00;
 								r2_r3_n = (uint32) ((char *) &r2_n->ptrFFFFFFFE + 2);
 								if ((r2_n & 0x8000) == 0x00)
 								{
-									struct Eq_n * r2_n = __rcl<word16,int16,bool>(r2_n, 1, C_n);
+									struct Eq_n * r2_n = __rcl<word16,byte>(r2_n, 0x01, C_n);
 									bool C_n = (r2_n & 0x8000) != 0x00;
 									r2_r3_n = (uint32) ((char *) &r2_n->ptrFFFFFFFE + 2);
 									if ((r2_n & 0x8000) == 0x00)
 									{
-										struct Eq_n * r2_n = __rcl<word16,int16,bool>(r2_n, 1, C_n);
+										struct Eq_n * r2_n = __rcl<word16,byte>(r2_n, 0x01, C_n);
 										bool C_n = (r2_n & 0x8000) != 0x00;
 										r2_r3_n = (uint32) ((char *) &r2_n->ptrFFFFFFFE + 2);
 										if ((r2_n & 0x8000) == 0x00)
 										{
-											struct Eq_n * r2_n = __rcl<word16,int16,bool>(r2_n, 1, C_n);
+											struct Eq_n * r2_n = __rcl<word16,byte>(r2_n, 0x01, C_n);
 											bool C_n = (r2_n & 0x8000) != 0x00;
 											r2_r3_n = (uint32) ((char *) &r2_n->ptrFFFFFFFE + 2);
 											if ((r2_n & 0x8000) == 0x00)
 											{
-												struct Eq_n * r2_n = __rcl<word16,int16,bool>(r2_n, 1, C_n);
+												struct Eq_n * r2_n = __rcl<word16,byte>(r2_n, 0x01, C_n);
 												bool C_n = (r2_n & 0x8000) != 0x00;
 												r2_r3_n = (uint32) ((char *) &r2_n->ptrFFFFFFFE + 2);
 												if ((r2_n & 0x8000) == 0x00)
 												{
-													struct Eq_n * r2_n = __rcl<word16,int16,bool>(r2_n, 1, C_n);
+													struct Eq_n * r2_n = __rcl<word16,byte>(r2_n, 0x01, C_n);
 													bool C_n = (r2_n & 0x8000) != 0x00;
 													r2_r3_n = (uint32) ((char *) &r2_n->ptrFFFFFFFE + 2);
 													if ((r2_n & 0x8000) == 0x00)
 													{
-														struct Eq_n * r2_n = __rcl<word16,int16,bool>(r2_n, 1, C_n);
+														struct Eq_n * r2_n = __rcl<word16,byte>(r2_n, 0x01, C_n);
 														bool C_n = (r2_n & 0x8000) != 0x00;
 														r2_r3_n = (uint32) ((char *) &r2_n->ptrFFFFFFFE + 2);
 														if ((r2_n & 0x8000) == 0x00)
 														{
-															r2_r3_n = (uint32) ((char *) &__rcl<word16,int16,bool>(r2_n, 1, C_n)->ptrFFFFFFFE + 2);
+															r2_r3_n = (uint32) ((char *) &__rcl<word16,byte>(r2_n, 0x01, C_n)->ptrFFFFFFFE + 2);
 															if ((r2_n & 0x8000) == 0x00)
 															{
 																C_n = false;
@@ -1372,7 +1372,7 @@ struct Eq_n * fn125E(struct Eq_n * r0, struct Eq_n * r1, struct Eq_n & r2Out)
 	struct Eq_n * r2_n;
 	cui16 r3_n;
 	struct Eq_n * r0_n = fn123A(r0, r1, out r2_n, out r3_n);
-	r2Out = __rcl<word16,int16,bool>(__rcl<word16,int16,bool>(r2_n, 1, (bool) cond(r3_n << 1)), 1, (bool) cond(r3_n << 2));
+	r2Out = __rcl<word16,byte>(__rcl<word16,byte>(r2_n, 0x01, (bool) cond(r3_n << 1)), 0x01, (bool) cond(r3_n << 2));
 	return r0_n;
 }
 
@@ -1431,10 +1431,10 @@ struct Eq_n * fn126C(struct Eq_n * r0, struct Eq_n * r2, struct Eq_n * r3, union
 	ui16 r3_n;
 	struct Eq_n * r2_n;
 	ui16 r3_n;
-	struct Eq_n * r2_n = __rcl<word16,int16,bool>(r2, 1, (bool) cond(r3 << 1)) - r0;
+	struct Eq_n * r2_n = __rcl<word16,byte>(r2, 0x01, (bool) cond(r3 << 1)) - r0;
 	if (r2_n <= null)
 	{
-		r2_n = __rcl<word16,int16,bool>(r2_n, 1, (bool) cond(r3 << 2)) + r0;
+		r2_n = __rcl<word16,byte>(r2_n, 0x01, (bool) cond(r3 << 2)) + r0;
 		r3_n = r3 << 2;
 		r2_r3_n = (ui32) (r3 << 2);
 		if (r2_n <= null)
@@ -1548,14 +1548,14 @@ l1386:
 l137C:
 															ui16 r3_n = r3_n + 0x01;
 															r3_n = r3_n << 1;
-															r2_n = __rcl<word16,int16,bool>(r2_n, 1, (bool) cond(r3_n << 1)) - r0;
+															r2_n = __rcl<word16,byte>(r2_n, 0x01, (bool) cond(r3_n << 1)) - r0;
 															if (r2_n < null)
 																goto l12EC;
 															goto l1386;
 														}
 l1372:
 														ui16 r3_n = r3_n + 0x01;
-														r2_n = __rcl<word16,int16,bool>(r2_n, 1, (bool) cond(r3_n << 1)) - r0;
+														r2_n = __rcl<word16,byte>(r2_n, 0x01, (bool) cond(r3_n << 1)) - r0;
 														r3_n = r3_n << 1;
 														r2_r3_n = (ui32) (r3_n << 1);
 														if (r2_n < null)
@@ -1564,7 +1564,7 @@ l1372:
 													}
 l1368:
 													ui16 r3_n = r3_n + 0x01;
-													r2_n = __rcl<word16,int16,bool>(r2_n, 1, (bool) cond(r3_n << 1)) - r0;
+													r2_n = __rcl<word16,byte>(r2_n, 0x01, (bool) cond(r3_n << 1)) - r0;
 													r3_n = r3_n << 1;
 													r2_r3_n = (ui32) (r3_n << 1);
 													if (r2_n < null)
@@ -1573,7 +1573,7 @@ l1368:
 												}
 l135E:
 												ui16 r3_n = r3_n + 0x01;
-												r2_n = __rcl<word16,int16,bool>(r2_n, 1, (bool) cond(r3_n << 1)) - r0;
+												r2_n = __rcl<word16,byte>(r2_n, 0x01, (bool) cond(r3_n << 1)) - r0;
 												r3_n = r3_n << 1;
 												r2_r3_n = (ui32) (r3_n << 1);
 												if (r2_n < null)
@@ -1582,7 +1582,7 @@ l135E:
 											}
 l1354:
 											ui16 r3_n = r3_n + 0x01;
-											r2_n = __rcl<word16,int16,bool>(r2_n, 1, (bool) cond(r3_n << 1)) - r0;
+											r2_n = __rcl<word16,byte>(r2_n, 0x01, (bool) cond(r3_n << 1)) - r0;
 											r3_n = r3_n << 1;
 											r2_r3_n = (ui32) (r3_n << 1);
 											if (r2_n < null)
@@ -1591,7 +1591,7 @@ l1354:
 										}
 l134A:
 										ui16 r3_n = r3_n + 0x01;
-										r2_n = __rcl<word16,int16,bool>(r2_n, 1, (bool) cond(r3_n << 1)) - r0;
+										r2_n = __rcl<word16,byte>(r2_n, 0x01, (bool) cond(r3_n << 1)) - r0;
 										r3_n = r3_n << 1;
 										r2_r3_n = (ui32) (r3_n << 1);
 										if (r2_n < null)
@@ -1600,7 +1600,7 @@ l134A:
 									}
 l1340:
 									ui16 r3_n = r3_n + 0x01;
-									r2_n = __rcl<word16,int16,bool>(r2_n, 1, (bool) cond(r3_n << 1)) - r0;
+									r2_n = __rcl<word16,byte>(r2_n, 0x01, (bool) cond(r3_n << 1)) - r0;
 									r3_n = r3_n << 1;
 									r2_r3_n = (ui32) (r3_n << 1);
 									if (r2_n < null)
@@ -1609,7 +1609,7 @@ l1340:
 								}
 l1336:
 								ui16 r3_n = r3_n + 0x01;
-								r2_n = __rcl<word16,int16,bool>(r2_n, 1, (bool) cond(r3_n << 1)) - r0;
+								r2_n = __rcl<word16,byte>(r2_n, 0x01, (bool) cond(r3_n << 1)) - r0;
 								r3_n = r3_n << 1;
 								r2_r3_n = (ui32) (r3_n << 1);
 								if (r2_n < null)
@@ -1618,7 +1618,7 @@ l1336:
 							}
 l132C:
 							ui16 r3_n = r3_n + 0x01;
-							r2_n = __rcl<word16,int16,bool>(r2_n, 1, (bool) cond(r3_n << 1)) - r0;
+							r2_n = __rcl<word16,byte>(r2_n, 0x01, (bool) cond(r3_n << 1)) - r0;
 							r3_n = r3_n << 1;
 							r2_r3_n = (ui32) (r3_n << 1);
 							if (r2_n < null)
@@ -1627,7 +1627,7 @@ l132C:
 						}
 l1322:
 						ui16 r3_n = r3_n + 0x01;
-						r2_n = __rcl<word16,int16,bool>(r2_n, 1, (bool) cond(r3_n << 1)) - r0;
+						r2_n = __rcl<word16,byte>(r2_n, 0x01, (bool) cond(r3_n << 1)) - r0;
 						r3_n = r3_n << 1;
 						r2_r3_n = (ui32) (r3_n << 1);
 						if (r2_n < null)
@@ -1636,7 +1636,7 @@ l1322:
 					}
 l1318:
 					ui16 r3_n = r3_n + 0x01;
-					r2_n = __rcl<word16,int16,bool>(r2_n, 1, (bool) cond(r3_n << 1)) - r0;
+					r2_n = __rcl<word16,byte>(r2_n, 0x01, (bool) cond(r3_n << 1)) - r0;
 					r3_n = r3_n << 1;
 					r2_r3_n = (ui32) (r3_n << 1);
 					if (r2_n < null)
@@ -1645,7 +1645,7 @@ l1318:
 				}
 l130E:
 				ui16 r3_n = r3_n + 0x01;
-				r2_n = __rcl<word16,int16,bool>(r2_n, 1, (bool) cond(r3_n << 1)) - r0;
+				r2_n = __rcl<word16,byte>(r2_n, 0x01, (bool) cond(r3_n << 1)) - r0;
 				r3_n = r3_n << 1;
 				r2_r3_n = (ui32) (r3_n << 1);
 				if (r2_n < null)
@@ -1654,7 +1654,7 @@ l130E:
 			}
 l1304:
 			ui16 r3_n = r3_n + 0x01;
-			r2_n = __rcl<word16,int16,bool>(r2_n, 1, (bool) cond(r3_n << 1)) - r0;
+			r2_n = __rcl<word16,byte>(r2_n, 0x01, (bool) cond(r3_n << 1)) - r0;
 			r3_n = r3_n << 1;
 			r2_r3_n = (ui32) (r3_n << 1);
 			if (r2_n < null)
@@ -1665,14 +1665,14 @@ l1304:
 	else
 	{
 		ui16 r3_n = (r3 << 1) + 0x01;
-		r2_n = __rcl<word16,int16,bool>(r2_n, 1, (bool) cond(r3_n << 1)) - r0;
+		r2_n = __rcl<word16,byte>(r2_n, 0x01, (bool) cond(r3_n << 1)) - r0;
 		r3_n = r3_n << 1;
 		r2_r3_n = (ui32) (r3_n << 1);
 		if (r2_n < null)
 			goto l127C;
 	}
 	ui16 r3_n = r3_n + 0x01;
-	r2_n = __rcl<word16,int16,bool>(r2_n, 1, (bool) cond(r3_n << 1)) - r0;
+	r2_n = __rcl<word16,byte>(r2_n, 0x01, (bool) cond(r3_n << 1)) - r0;
 	r3_n = r3_n << 1;
 	r2_r3_n = (ui32) (r3_n << 1);
 	if (r2_n < null)

@@ -54,7 +54,7 @@ l0C00_005B:
 	Mem68[ss:bp - 0xA<16>:byte] = 1<8>
 l0C00_005F:
 	bp_70 = (bp - 0x10<16>) * 2<16>
-	branch !OVERFLOW(bp_70) l0C00_0068
+	branch !OVERFLOW<word16>(bp_70) l0C00_0068
 l0C00_0063:
 	Mem75[ds:0xF07<16>:byte] = 1<8>
 l0C00_0068:

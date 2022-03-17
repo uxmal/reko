@@ -20,6 +20,7 @@
 
 using NUnit.Framework;
 using Reko.Arch.Avr;
+using Reko.Arch.Avr.Avr8;
 using Reko.Core;
 using System;
 using System.Collections.Generic;
@@ -38,7 +39,7 @@ namespace Reko.UnitTests.Arch.Avr
             var arch = new Avr8Architecture(new ServiceContainer(), "avr8", new Dictionary<string, object>());
             var r30 = arch.GetRegister(30);
             var r31 = arch.GetRegister(31);
-            var z = Avr8Architecture.z;
+            var z = Registers.z;
 
             Assert.AreSame(r30, arch.GetRegister(z.Domain, new BitRange(0, 8)));
             Assert.AreSame(r31, arch.GetRegister(z.Domain, new BitRange(8, 16)));

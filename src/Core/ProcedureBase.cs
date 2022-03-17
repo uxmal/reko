@@ -129,13 +129,13 @@ namespace Reko.Core
         {
             var sig = this.Signature;
             if (sig is null)
-                throw new InvalidOperationException("Cannot make a null concrete signature.");
+                throw new InvalidOperationException($"Cannot make a null concrete signature for {Name}.");
             if (!sig.ParametersValid)
-                throw new InvalidOperationException("Signature is not valid.");
+                throw new InvalidOperationException($"Signature for {Name} is not valid.");
             if (genericArguments.Length == 0)
                 throw new InvalidOperationException($"{Name} is not generic.");
             if (concreteTypes.Length != genericArguments.Length)
-                throw new InvalidOperationException("Mismatched number of concrete types.");
+                throw new InvalidOperationException($"Mismatched number of concrete types for {Name}.");
             var parameters = new Identifier[sig.Parameters!.Length];
             for (int i = 0; i < sig.Parameters.Length; ++i)
             {

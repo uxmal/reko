@@ -7989,7 +7989,7 @@ namespace Reko.UnitTests.Arch.Arm
             Given_HexString("54EB3200"); // adcs.w\tr0,r4,r2,rrx
             AssertCode(
                  "0|L--|00100000(4): 2 instructions",
-                 "1|L--|r0 = r4 + __rcr<word32,uint32,bool>(r2, 1<u32>, C) + C");
+                 "1|L--|r0 = r4 + __rcr<word32,uint32>(r2, 1<u32>, C) + C");
         }
 
         [Test]

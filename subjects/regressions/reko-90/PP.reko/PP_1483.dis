@@ -134,7 +134,7 @@ fn1483_0C91_entry:
 	selector ds = SLICE(ds_bx, selector, 16)
 	word16 bx = SLICE(ds_bx, word16, 0)
 l1483_0C91:
-	branch !OVERFLOW(al_12 + ch) l1483_0C96_thunk_fn1483_0C55
+	branch !OVERFLOW<byte>(al_12 + ch) l1483_0C96_thunk_fn1483_0C55
 l1483_0C96_thunk_fn1483_0C55:
 	word16 ax_21 = fn1483_0C55()
 	diOut = di
@@ -228,7 +228,7 @@ l1483_0CE5_in_fn1483_0CED:
 	esOut = es
 	return di + 2<i16>
 l1483_0CF8:
-	Mem28[ds:bx_25 + si_8:byte] = __rcr<byte,byte,bool>(Mem15[ds:bx_25 + si_8:byte], 0xAC<8>, C_27)
+	Mem28[ds:bx_25 + si_8:byte] = __rcr<byte,byte>(Mem15[ds:bx_25 + si_8:byte], 0xAC<8>, C_27)
 l1483_0CF9_thunk_fn1483_0CFC:
 	selector es_43
 	word16 di_41 = fn1483_0CFC(SEQ(ds, di + 2<i16>), ss_bp, al_33, ah_34, wArg00, dx, bl_17 + 1<8>, bh_24, si_8, fs, psegArg02, wArg06, wArg10, out es_43)
@@ -365,7 +365,7 @@ l1483_0D52:
 	word16 v23_82 = -Mem78[ss:v19_74 - 6<i16>:word16]
 	Mem83[ss:v19_74 - 6<i16>:word16] = v23_82
 	word16 bp_183 = v19_74
-	branch !OVERFLOW(v23_82) l1483_0D69
+	branch !OVERFLOW<word16>(v23_82) l1483_0D69
 l1483_0D68_1:
 	__syscall(4<8>)
 l1483_0D69:
@@ -754,7 +754,7 @@ l1483_1B51:
 	Mem94[es:di_78:byte] = SLICE(ax_91, byte, 0)
 	word16 v37_101 = Mem94[ds:bx_85 + (di_78 + 1<i16>):word16] + bx_85
 	Mem102[ds:bx_85 + (di_78 + 1<i16>):word16] = v37_101
-	Mem107[ds:di_78 + 1<i16>:byte] = __rcl<byte,byte,bool>(Mem102[ds:di_78 + 1<i16>:byte], SLICE(cx_89, byte, 0), SLICE(cond(v37_101), bool, 1))
+	Mem107[ds:di_78 + 1<i16>:byte] = __rcl<byte,byte>(Mem102[ds:di_78 + 1<i16>:byte], SLICE(cx_89, byte, 0), SLICE(cond(v37_101), bool, 1))
 	word16 ax_97 = ax_91 - 0xECBA<16> - CONVERT(SCZO_73, byte, word16)
 	sp_115 = sp_58 + 0x10<16>
 	di = di_78 + 1<i16>

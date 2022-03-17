@@ -164,6 +164,25 @@ namespace Reko.Core.Machine
             return new ConditionalDecoder<TDasm, TMnemonic, TInstr>(fields, predicate, "", decoderTrue, decoderFalse);
         }
 
+        public static IfDecoder<TDasm, TMnemonic, TInstr> If<TDasm>(
+            Predicate<uint> predicate,
+            Decoder<TDasm, TMnemonic, TInstr> decoderTrue)
+            where TDasm : DisassemblerBase<TInstr, TMnemonic>
+        {
+            var bf = new Bitfield(0, 32, 0xFFFFFFFF);
+            return new IfDecoder<TDasm, TMnemonic, TInstr>(bf, predicate, decoderTrue);
+        }
+
+        public static IfDecoder<TDasm, TMnemonic, TInstr> If<TDasm>(
+            int bitpos, int bitlen,
+            Predicate<uint> predicate,
+            Decoder<TDasm, TMnemonic, TInstr> decoderTrue)
+            where TDasm : DisassemblerBase<TInstr, TMnemonic>
+        {
+            var bf = new Bitfield(bitpos, bitlen);
+            return new IfDecoder<TDasm, TMnemonic, TInstr>(bf, predicate, decoderTrue);
+        }
+
         public static ConditionalDecoder<TDasm, TMnemonic, TInstr> Select<TDasm>(
             (int, int) fieldSpecifier,
             Predicate<uint> predicate,

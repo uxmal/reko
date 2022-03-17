@@ -21,13 +21,7 @@
 using NUnit.Framework;
 using Reko.Arch.Avr;
 using Reko.Core;
-using Reko.Core.Memory;
-using Reko.Core.Rtl;
-using System;
 using System.Collections.Generic;
-using System.ComponentModel.Design;
-using System.Linq;
-using System.Text;
 
 namespace Reko.UnitTests.Arch.Avr
 {
@@ -46,19 +40,135 @@ namespace Reko.UnitTests.Arch.Avr
 
         public override Address LoadAddress => baseAddr;
 
-
-        [SetUp]
-        public void Setup()
+        [Test]
+        public void Avr8_rw_adiw()
         {
+            Given_UInt16s(0x9601); // "adiw\tr24,01"
+            AssertCode(
+                "0|L--|0100(2): 2 instructions",
+                "1|L--|r25_r24 = r25_r24 + 1<16>");
         }
 
         [Test]
-        public void Avr8_rw_rjmp()
+        public void Avr8_rw_brcc()
         {
-            Given_UInt16s(0xC00C); // "rjmp\t001A"
+            Given_UInt16s(0xF000); // "brcs\t0102"
             AssertCode(
                 "0|T--|0100(2): 1 instructions",
-                "1|T--|goto 011A");
+                "1|T--|if (Test(ULT,C)) branch 0102");
+            Given_UInt16s(0xF4FF); // "brid\t003E"
+            AssertCode(
+                "0|T--|0100(2): 1 instructions",
+                "1|T--|if (!I) branch 0140");
+        }
+
+        [Test]
+        public void Avr8_rw_brhc()
+        {
+            Given_HexString("5DF6");
+            AssertCode(     // brhc	964A
+                "0|T--|0100(2): 1 instructions",
+                "1|T--|if (!H) branch 0098");
+        }
+
+        [Test]
+        public void Avr8_rw_brhs()
+        {
+            Given_HexString("6DF3");
+            AssertCode(     // brhs	58BE
+                "0|T--|0100(2): 1 instructions",
+                "1|T--|if (H) branch 00DC");
+        }
+
+        [Test]
+        public void Avr8_rw_brie()
+        {
+            Given_HexString("AFF2");
+            AssertCode(     // brie	48E4
+                "0|T--|0100(2): 1 instructions",
+                "1|T--|if (I) branch 00AC");
+        }
+
+        [Test]
+        public void Avr8_rw_brlt()
+        {
+            Given_HexString("84F1");
+            AssertCode(     // brlt	FDE2
+                "0|T--|0100(2): 1 instructions",
+                "1|T--|if (Test(LT,VN)) branch 0162");
+        }
+
+        [Test]
+        public void Avr8_rw_brpl()
+        {
+            Given_UInt16s(0xF7E2);	// brpl	0364
+            AssertCode(
+                "0|T--|0100(2): 1 instructions",
+                "1|T--|if (Test(GE,N)) branch 00FA");
+        }
+
+        [Test]
+        public void Avr8_rw_brmi()
+        {
+            Given_HexString("32F1");
+            AssertCode(     // brmi	4916
+                "0|T--|0100(2): 1 instructions",
+                "1|T--|if (Test(LT,N)) branch 014E");
+        }
+
+        [Test]
+        public void Avr8_rw_brtc()
+        {
+            Given_HexString("46F6");
+            AssertCode(     // brtc	4818
+                "0|T--|0100(2): 1 instructions",
+                "1|T--|if (!T) branch 0092");
+        }
+
+        [Test]
+        public void Avr8_rw_brts()
+        {
+            Given_HexString("96F3");
+            AssertCode(     // brts	496E
+                "0|T--|0100(2): 1 instructions",
+                "1|T--|if (T) branch 00E6");
+        }
+
+        [Test]
+        public void Avr8_rw_brvc()
+        {
+            Given_HexString("DBF4");
+            AssertCode(     // brvc	486A
+                "0|T--|0100(2): 1 instructions",
+                "1|T--|if (!V) branch 0138");
+        }
+
+        [Test]
+        public void Avr8_rw_brvs()
+        {
+            Given_HexString("A3F3");
+            AssertCode(     // brvs	91A4
+                "0|T--|0100(2): 1 instructions",
+                "1|T--|if (V) branch 00EA");
+        }
+
+        [Test]
+        public void Avr8_rw_cln()
+        {
+            Given_HexString("A894");
+            AssertCode(     // cln
+                "0|L--|0100(2): 1 instructions",
+                "1|L--|N = false");
+        }
+
+        [Test]
+        public void Avr8_rw_elpm()
+        {
+            Given_HexString("E790");
+            AssertCode(     // elpm	r14,z+
+                "0|L--|0100(2): 2 instructions",
+                "1|L--|r14 = __extended_load_program_memory(rampz, z)",
+                "2|L--|z = z + 1<i16>");
         }
 
         [Test]
@@ -70,6 +180,15 @@ namespace Reko.UnitTests.Arch.Avr
                 "1|L--|r1 = r1 ^ r1",
                 "2|L--|SNZC = cond(r1)",
                 "3|L--|V = false");
+        }
+
+        [Test]
+        public void Avr8_rw_rjmp()
+        {
+            Given_UInt16s(0xC00C); // "rjmp\t001A"
+            AssertCode(
+                "0|T--|0100(2): 1 instructions",
+                "1|T--|goto 011A");
         }
 
         [Test]
@@ -223,7 +342,7 @@ namespace Reko.UnitTests.Arch.Avr
             Given_UInt16s(0x9407); // "ror\tr0"
             AssertCode(
                 "0|L--|0100(2): 2 instructions",
-                "1|L--|r0 = __rcr<byte,int32,bool>(r0, 1<i32>, C)",
+                "1|L--|r0 = __rcr<byte,byte>(r0, 1<8>, C)",
                 "2|L--|HSVNZC = cond(r0)");
         }
 
@@ -301,35 +420,26 @@ namespace Reko.UnitTests.Arch.Avr
         }
 
         [Test]
-        public void Avr8_rw_brcc()
-        {
-            Given_UInt16s(0xF000); // "brcs\t0102"
-            AssertCode(
-                "0|T--|0100(2): 1 instructions",
-                "1|T--|if (Test(ULT,C)) branch 0102");
-            Given_UInt16s(0xF4FF); // "brid\t003E"
-            AssertCode(
-                "0|T--|0100(2): 1 instructions",
-                "1|T--|if (!I) branch 0140");
-        }
-
-        [Test]
         public void Avr8_rw_movw()
         {
             Given_UInt16s(0x01FE); // "movw\tr30,r28"
             AssertCode(
                 "0|L--|0100(2): 1 instructions",
-                "1|L--|r31_r30 = r29_r28");
+                "1|L--|z = r29_r28");
         }
 
         [Test]
-        public void Avr8_rw_adiw()
+        public void Avr8_rw_muls()
         {
-            Given_UInt16s(0x9601); // "adiw\tr24,01"
+            Given_UInt16s(0x02E2);	// muls	r30,r18
             AssertCode(
-                "0|L--|0100(2): 2 instructions",
-                "1|L--|r25_r24 = r25_r24 + 1<16>");
+                "0|L--|0100(2): 3 instructions",
+                "1|L--|r1_r0 = r30 *s16 r18",
+                "2|L--|C = r1_r0 < 0<16>",
+                "3|L--|Z = r1_r0 == 0<16>");
         }
+
+
 
         [Test]
         public void Avr8_rw_adc()
@@ -433,7 +543,7 @@ namespace Reko.UnitTests.Arch.Avr
                 "1|L--|r24 = Mem0[y + 6<i16>:byte]");
         }
 
-                [Test]
+        [Test]
         public void Avr8_rw_ldd_z()
         {
             Given_UInt16s(0x8964);	
@@ -449,15 +559,6 @@ namespace Reko.UnitTests.Arch.Avr
             AssertCode(
                 "0|L--|0100(2): 1 instructions",
                 "1|L--|Mem0[z + 3<i16>:byte] = r1");
-        }
-
-        [Test]
-        public void Avr8_rw_brpl()
-        {
-            Given_UInt16s(0xF7E2);	// brpl	0364
-            AssertCode(
-                "0|T--|0100(2): 1 instructions",
-                "1|T--|if (Test(GE,N)) branch 00FA");
         }
 
         [Test]
@@ -483,15 +584,5 @@ namespace Reko.UnitTests.Arch.Avr
                 "3|L--|Mem0[z + 3<i16>:byte] = r1");
         }
 
-        [Test]
-        public void Avr8_rw_muls()
-        {
-            Given_UInt16s(0x02E2);	// muls	r30,r18
-            AssertCode(
-                "0|L--|0100(2): 3 instructions",
-                "1|L--|r1_r0 = r30 *s16 r18",
-                "2|L--|C = r1_r0 < 0<16>",
-                "3|L--|Z = r1_r0 == 0<16>");
-        }
     }
 }

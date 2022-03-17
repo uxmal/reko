@@ -70,6 +70,12 @@ namespace Reko.Core.Intrinsics
             .Param("TData").Param("TCount").Param(PrimitiveType.Bool)
             .Returns("TData");
 
+        // Overflow
+        public static readonly IntrinsicProcedure Overflow = new IntrinsicBuilder("OVERFLOW", false)
+            .GenericTypes("T")
+            .Param("T")
+            .Returns(PrimitiveType.Bool);
+
         // System calls.
         public static readonly IntrinsicProcedure Syscall = new IntrinsicBuilder("__syscall", true)
             .Param(PrimitiveType.Word32)

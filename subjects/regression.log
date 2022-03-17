@@ -157,6 +157,8 @@ l0800_17AE: warning: Non-integral switch expression
 
 === regressions\reko-367\code
 
+=== Raw\CR16\CompactRISC
+
 === MachO\amd64\const
 
 === PE\x86\demo_upx\Demo
@@ -1959,4 +1961,4 @@ Signature of 'Microsoft Visual C++ 8' detected.
 0040120B: warning: Unable to determine the upper bound of an indirect call or jump; there may be more than 2 entries.
 004011A5: warning: Unable to determine the upper bound of an indirect call or jump; there may be more than 2 entries.
 
-Decompiled 84 binaries in 50.07 seconds.
+Decompiled 85 binaries in 60.23 seconds.

@@ -81,6 +81,7 @@ namespace Reko.Arch.Arm.AArch32
             case ArmVectorData.F64S32: dstType = PrimitiveType.Real64; srcType = PrimitiveType.Int32; break;
             case ArmVectorData.F64F32: dstType = PrimitiveType.Real64; srcType = PrimitiveType.Real32; break;
             case ArmVectorData.F64U32: dstType = PrimitiveType.Real64; srcType = PrimitiveType.UInt32; break;
+            case ArmVectorData.S32F32: dstType = PrimitiveType.Int32; srcType = PrimitiveType.Real32; break;
             default: NotImplementedYet(); return;
             }
             if (dst.DataType.BitSize == dstType.BitSize && src.DataType.BitSize == srcType.BitSize)

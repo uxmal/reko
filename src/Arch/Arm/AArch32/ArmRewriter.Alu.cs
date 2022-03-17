@@ -547,7 +547,9 @@ namespace Reko.Arch.Arm.AArch32
 
         private Expression Rrx(Expression left, Expression right)
         {
-            var intrinsic = m.Fn(CommonOps.RorC, left, right, C());
+            var intrinsic = m.Fn(
+                CommonOps.RorC.MakeInstance(left.DataType, right.DataType),
+                left, right, C());
             return intrinsic;
         }
 

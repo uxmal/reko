@@ -37,7 +37,6 @@ namespace Reko.UnitTests.Arch.Arm
         {
             this.arch = new Arm64Architecture(CreateServiceContainer(), "aarch64", new Dictionary<string, object>());
             this.baseAddress = Address.Ptr64(0x00100000);
-            Reko.Core.Machine.Decoder.trace.Level = System.Diagnostics.TraceLevel.Verbose;
         }
 
         public override IProcessorArchitecture Architecture => arch;

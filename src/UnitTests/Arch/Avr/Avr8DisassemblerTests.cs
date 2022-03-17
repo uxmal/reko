@@ -20,6 +20,7 @@
  
 using NUnit.Framework;
 using Reko.Arch.Avr;
+using Reko.Arch.Avr.Avr8;
 using Reko.Core;
 using Reko.Core.Memory;
 using System;
@@ -31,7 +32,7 @@ using System.Text;
 namespace Reko.UnitTests.Arch.Avr
 {
     [TestFixture]
-    public class Avr8DisassemblerTests : DisassemblerTestBase<AvrInstruction>
+    public class Avr8DisassemblerTests : DisassemblerTestBase<Avr8Instruction>
     {
         private readonly Avr8Architecture arch;
 

@@ -223,20 +223,20 @@ Eq_79: (union "Eq_79" (bool u0) (Eq_2759 u1))
 	T_2127 (in fn0EAB(out a_51) @ 00000E95 : bool)
 	T_2703 (in fn1348(de, bc, out de_19, out hl_13) @ 00001347 : bool)
 Eq_87: (fn cu8 (byte, byte, Eq_79))
-	T_87 (in __rcr<byte,byte,bool> @ 000003F2 : ptr32)
+	T_87 (in __rcr<byte,byte> @ 000003F2 : ptr32)
 	T_88 (in signature of __rcr @ 00000000 : void)
-	T_632 (in __rcr<byte,byte,bool> @ 0000069B : ptr32)
-	T_878 (in __rcr<byte,byte,bool> @ 000007B7 : ptr32)
-	T_1033 (in __rcr<byte,byte,bool> @ 00000853 : ptr32)
-	T_1045 (in __rcr<byte,byte,bool> @ 00000864 : ptr32)
-	T_1060 (in __rcr<byte,byte,bool> @ 00000886 : ptr32)
-	T_1072 (in __rcr<byte,byte,bool> @ 00000876 : ptr32)
-	T_1095 (in __rcr<byte,byte,bool> @ 000008A3 : ptr32)
-	T_1127 (in __rcr<byte,byte,bool> @ 000008B4 : ptr32)
-	T_1147 (in __rcr<byte,byte,bool> @ 000008E0 : ptr32)
-	T_1181 (in __rcr<byte,byte,bool> @ 00000904 : ptr32)
-	T_2052 (in __rcr<byte,byte,bool> @ 00000D88 : ptr32)
-	T_2121 (in __rcr<byte,byte,bool> @ 00000E95 : ptr32)
+	T_632 (in __rcr<byte,byte> @ 0000069B : ptr32)
+	T_878 (in __rcr<byte,byte> @ 000007B7 : ptr32)
+	T_1033 (in __rcr<byte,byte> @ 00000853 : ptr32)
+	T_1045 (in __rcr<byte,byte> @ 00000864 : ptr32)
+	T_1060 (in __rcr<byte,byte> @ 00000886 : ptr32)
+	T_1072 (in __rcr<byte,byte> @ 00000876 : ptr32)
+	T_1095 (in __rcr<byte,byte> @ 000008A3 : ptr32)
+	T_1127 (in __rcr<byte,byte> @ 000008B4 : ptr32)
+	T_1147 (in __rcr<byte,byte> @ 000008E0 : ptr32)
+	T_1181 (in __rcr<byte,byte> @ 00000904 : ptr32)
+	T_2052 (in __rcr<byte,byte> @ 00000D88 : ptr32)
+	T_2121 (in __rcr<byte,byte> @ 00000E95 : ptr32)
 Eq_111: (struct "Eq_111" (1 byte b0001))
 	T_111 (in 0x80<16> @ 00000409 : word16)
 	T_113 (in Mem7[0x164E<16>:word16] @ 00000409 : word16)
@@ -1184,7 +1184,7 @@ T_86: (in a_9 @ 000003F2 : byte)
   Class: Eq_86
   DataType: byte
   OrigDataType: byte
-T_87: (in __rcr<byte,byte,bool> @ 000003F2 : ptr32)
+T_87: (in __rcr<byte,byte> @ 000003F2 : ptr32)
   Class: Eq_87
   DataType: (ptr32 Eq_87)
   OrigDataType: (ptr32 (fn T_98 (T_86, T_92, T_97)))
@@ -1228,7 +1228,7 @@ T_97: (in fn03BB(g_t1659, out a_9) @ 000003F2 : bool)
   Class: Eq_79
   DataType: Eq_79
   OrigDataType: bool
-T_98: (in __rcr<byte,byte,bool>(a_9, 1<8>, fn03BB(g_t1659, out a_9)) @ 000003F2 : byte)
+T_98: (in __rcr<byte,byte>(a_9, 1<8>, fn03BB(g_t1659, out a_9)) @ 000003F2 : byte)
   Class: Eq_98
   DataType: cu8
   OrigDataType: cu8
@@ -1236,7 +1236,7 @@ T_99: (in 0<8> @ 000003F2 : byte)
   Class: Eq_98
   DataType: cu8
   OrigDataType: cu8
-T_100: (in __rcr<byte,byte,bool>(a_9, 1<8>, fn03BB(g_t1659, out a_9)) >= 0<8> @ 00000000 : bool)
+T_100: (in __rcr<byte,byte>(a_9, 1<8>, fn03BB(g_t1659, out a_9)) >= 0<8> @ 00000000 : bool)
   Class: Eq_100
   DataType: bool
   OrigDataType: bool
@@ -3364,7 +3364,7 @@ T_631: (in Mem28[0x167C<16>:byte] @ 00000663 : byte)
   Class: Eq_629
   DataType: byte
   OrigDataType: byte
-T_632: (in __rcr<byte,byte,bool> @ 0000069B : ptr32)
+T_632: (in __rcr<byte,byte> @ 0000069B : ptr32)
   Class: Eq_87
   DataType: (ptr32 Eq_87)
   OrigDataType: (ptr32 (fn T_637 (T_634, T_635, T_636)))
@@ -3384,7 +3384,7 @@ T_636: (in C_47 @ 0000069B : Eq_79)
   Class: Eq_79
   DataType: Eq_79
   OrigDataType: bool
-T_637: (in __rcr<byte,byte,bool>(g_b167B, 1<8>, C_47) @ 0000069B : byte)
+T_637: (in __rcr<byte,byte>(g_b167B, 1<8>, C_47) @ 0000069B : byte)
   Class: Eq_98
   DataType: cu8
   OrigDataType: cu8
@@ -3392,7 +3392,7 @@ T_638: (in 0<8> @ 0000069B : byte)
   Class: Eq_98
   DataType: cu8
   OrigDataType: cu8
-T_639: (in __rcr<byte,byte,bool>(g_b167B, 1<8>, C_47) >= 0<8> @ 00000000 : bool)
+T_639: (in __rcr<byte,byte>(g_b167B, 1<8>, C_47) >= 0<8> @ 00000000 : bool)
   Class: Eq_639
   DataType: bool
   OrigDataType: bool
@@ -4348,7 +4348,7 @@ T_877: (in SLICE(bc, byte, 8) @ 000007B3 : byte)
   Class: Eq_874
   DataType: cu8
   OrigDataType: byte
-T_878: (in __rcr<byte,byte,bool> @ 000007B7 : ptr32)
+T_878: (in __rcr<byte,byte> @ 000007B7 : ptr32)
   Class: Eq_87
   DataType: (ptr32 Eq_87)
   OrigDataType: (ptr32 (fn T_882 (T_880, T_881, T_876)))
@@ -4364,7 +4364,7 @@ T_881: (in 1<8> @ 000007B7 : byte)
   Class: Eq_90
   DataType: byte
   OrigDataType: byte
-T_882: (in __rcr<byte,byte,bool>(g_b14F9, 1<8>, C) @ 000007B7 : byte)
+T_882: (in __rcr<byte,byte>(g_b14F9, 1<8>, C) @ 000007B7 : byte)
   Class: Eq_98
   DataType: cu8
   OrigDataType: cu8
@@ -4372,7 +4372,7 @@ T_883: (in 0<8> @ 000007B7 : byte)
   Class: Eq_98
   DataType: cu8
   OrigDataType: cu8
-T_884: (in __rcr<byte,byte,bool>(g_b14F9, 1<8>, C) >= 0<8> @ 00000000 : bool)
+T_884: (in __rcr<byte,byte>(g_b14F9, 1<8>, C) >= 0<8> @ 00000000 : bool)
   Class: Eq_884
   DataType: bool
   OrigDataType: bool
@@ -4968,7 +4968,7 @@ T_1032: (in __rol<byte,byte>(g_b168D, 1<8>) @ 00000851 : byte)
   Class: Eq_86
   DataType: byte
   OrigDataType: byte
-T_1033: (in __rcr<byte,byte,bool> @ 00000853 : ptr32)
+T_1033: (in __rcr<byte,byte> @ 00000853 : ptr32)
   Class: Eq_87
   DataType: (ptr32 Eq_87)
   OrigDataType: (ptr32 (fn T_1036 (T_1024, T_1034, T_1035)))
@@ -4980,7 +4980,7 @@ T_1035: (in cond(a_40) @ 00000853 : byte)
   Class: Eq_79
   DataType: Eq_79
   OrigDataType: (union (bool u1) (byte u0))
-T_1036: (in __rcr<byte,byte,bool>(a_40, 1<8>, cond(a_40)) @ 00000853 : byte)
+T_1036: (in __rcr<byte,byte>(a_40, 1<8>, cond(a_40)) @ 00000853 : byte)
   Class: Eq_98
   DataType: cu8
   OrigDataType: cu8
@@ -4988,7 +4988,7 @@ T_1037: (in 0<8> @ 00000853 : byte)
   Class: Eq_98
   DataType: cu8
   OrigDataType: cu8
-T_1038: (in __rcr<byte,byte,bool>(a_40, 1<8>, cond(a_40)) >= 0<8> @ 00000000 : bool)
+T_1038: (in __rcr<byte,byte>(a_40, 1<8>, cond(a_40)) >= 0<8> @ 00000000 : bool)
   Class: Eq_1038
   DataType: bool
   OrigDataType: bool
@@ -5016,7 +5016,7 @@ T_1044: (in __rol<byte,byte>(g_b168D, 2<8>) @ 00000862 : byte)
   Class: Eq_86
   DataType: byte
   OrigDataType: byte
-T_1045: (in __rcr<byte,byte,bool> @ 00000864 : ptr32)
+T_1045: (in __rcr<byte,byte> @ 00000864 : ptr32)
   Class: Eq_87
   DataType: (ptr32 Eq_87)
   OrigDataType: (ptr32 (fn T_1048 (T_1039, T_1046, T_1047)))
@@ -5028,7 +5028,7 @@ T_1047: (in cond(a_46) @ 00000864 : byte)
   Class: Eq_79
   DataType: Eq_79
   OrigDataType: (union (bool u1) (byte u0))
-T_1048: (in __rcr<byte,byte,bool>(a_46, 1<8>, cond(a_46)) @ 00000864 : byte)
+T_1048: (in __rcr<byte,byte>(a_46, 1<8>, cond(a_46)) @ 00000864 : byte)
   Class: Eq_98
   DataType: cu8
   OrigDataType: cu8
@@ -5036,7 +5036,7 @@ T_1049: (in 0<8> @ 00000864 : byte)
   Class: Eq_98
   DataType: cu8
   OrigDataType: cu8
-T_1050: (in __rcr<byte,byte,bool>(a_46, 1<8>, cond(a_46)) >= 0<8> @ 00000000 : bool)
+T_1050: (in __rcr<byte,byte>(a_46, 1<8>, cond(a_46)) >= 0<8> @ 00000000 : bool)
   Class: Eq_1050
   DataType: bool
   OrigDataType: bool
@@ -5076,7 +5076,7 @@ T_1059: (in __rol<byte,byte>(g_b168D, 4<8>) @ 00000884 : byte)
   Class: Eq_86
   DataType: byte
   OrigDataType: byte
-T_1060: (in __rcr<byte,byte,bool> @ 00000886 : ptr32)
+T_1060: (in __rcr<byte,byte> @ 00000886 : ptr32)
   Class: Eq_87
   DataType: (ptr32 Eq_87)
   OrigDataType: (ptr32 (fn T_1063 (T_1054, T_1061, T_1062)))
@@ -5088,7 +5088,7 @@ T_1062: (in cond(a_68) @ 00000886 : byte)
   Class: Eq_79
   DataType: Eq_79
   OrigDataType: (union (bool u1) (byte u0))
-T_1063: (in __rcr<byte,byte,bool>(a_68, 1<8>, cond(a_68)) @ 00000886 : byte)
+T_1063: (in __rcr<byte,byte>(a_68, 1<8>, cond(a_68)) @ 00000886 : byte)
   Class: Eq_98
   DataType: cu8
   OrigDataType: cu8
@@ -5096,7 +5096,7 @@ T_1064: (in 0<8> @ 00000886 : byte)
   Class: Eq_98
   DataType: cu8
   OrigDataType: cu8
-T_1065: (in __rcr<byte,byte,bool>(a_68, 1<8>, cond(a_68)) >= 0<8> @ 00000000 : bool)
+T_1065: (in __rcr<byte,byte>(a_68, 1<8>, cond(a_68)) >= 0<8> @ 00000000 : bool)
   Class: Eq_1065
   DataType: bool
   OrigDataType: bool
@@ -5124,7 +5124,7 @@ T_1071: (in __rol<byte,byte>(g_b168D, 3<8>) @ 00000874 : byte)
   Class: Eq_86
   DataType: byte
   OrigDataType: byte
-T_1072: (in __rcr<byte,byte,bool> @ 00000876 : ptr32)
+T_1072: (in __rcr<byte,byte> @ 00000876 : ptr32)
   Class: Eq_87
   DataType: (ptr32 Eq_87)
   OrigDataType: (ptr32 (fn T_1075 (T_1066, T_1073, T_1074)))
@@ -5136,7 +5136,7 @@ T_1074: (in cond(a_53) @ 00000876 : byte)
   Class: Eq_79
   DataType: Eq_79
   OrigDataType: (union (bool u1) (byte u0))
-T_1075: (in __rcr<byte,byte,bool>(a_53, 1<8>, cond(a_53)) @ 00000876 : byte)
+T_1075: (in __rcr<byte,byte>(a_53, 1<8>, cond(a_53)) @ 00000876 : byte)
   Class: Eq_98
   DataType: cu8
   OrigDataType: cu8
@@ -5144,7 +5144,7 @@ T_1076: (in 0<8> @ 00000876 : byte)
   Class: Eq_98
   DataType: cu8
   OrigDataType: cu8
-T_1077: (in __rcr<byte,byte,bool>(a_53, 1<8>, cond(a_53)) >= 0<8> @ 00000000 : bool)
+T_1077: (in __rcr<byte,byte>(a_53, 1<8>, cond(a_53)) >= 0<8> @ 00000000 : bool)
   Class: Eq_1077
   DataType: bool
   OrigDataType: bool
@@ -5216,7 +5216,7 @@ T_1094: (in a_106 @ 000008A3 : cu8)
   Class: Eq_98
   DataType: cu8
   OrigDataType: cu8
-T_1095: (in __rcr<byte,byte,bool> @ 000008A3 : ptr32)
+T_1095: (in __rcr<byte,byte> @ 000008A3 : ptr32)
   Class: Eq_87
   DataType: (ptr32 Eq_87)
   OrigDataType: (ptr32 (fn T_1113 (T_1097, T_1098, T_1112)))
@@ -5288,7 +5288,7 @@ T_1112: (in fn0990(f, SLICE(hl_79, byte, 8), (byte) hl_79, SLICE(hl_84, byte, 8)
   Class: Eq_79
   DataType: Eq_79
   OrigDataType: bool
-T_1113: (in __rcr<byte,byte,bool>(~SLICE(af_95, byte, 8), 1<8>, fn0990(f, SLICE(hl_79, byte, 8), (byte) hl_79, SLICE(hl_84, byte, 8), (byte) hl_84, out af_95)) @ 000008A3 : byte)
+T_1113: (in __rcr<byte,byte>(~SLICE(af_95, byte, 8), 1<8>, fn0990(f, SLICE(hl_79, byte, 8), (byte) hl_79, SLICE(hl_84, byte, 8), (byte) hl_84, out af_95)) @ 000008A3 : byte)
   Class: Eq_98
   DataType: cu8
   OrigDataType: byte
@@ -5344,7 +5344,7 @@ T_1126: (in a_128 @ 000008B4 : cu8)
   Class: Eq_98
   DataType: cu8
   OrigDataType: cu8
-T_1127: (in __rcr<byte,byte,bool> @ 000008B4 : ptr32)
+T_1127: (in __rcr<byte,byte> @ 000008B4 : ptr32)
   Class: Eq_87
   DataType: (ptr32 Eq_87)
   OrigDataType: (ptr32 (fn T_1131 (T_1129, T_1130, T_1116)))
@@ -5360,7 +5360,7 @@ T_1130: (in 1<8> @ 000008B4 : byte)
   Class: Eq_90
   DataType: byte
   OrigDataType: byte
-T_1131: (in __rcr<byte,byte,bool>(g_b1690, 1<8>, C_107) @ 000008B4 : byte)
+T_1131: (in __rcr<byte,byte>(g_b1690, 1<8>, C_107) @ 000008B4 : byte)
   Class: Eq_98
   DataType: cu8
   OrigDataType: byte
@@ -5424,7 +5424,7 @@ T_1146: (in a_131 @ 000008E0 : cu8)
   Class: Eq_98
   DataType: cu8
   OrigDataType: cu8
-T_1147: (in __rcr<byte,byte,bool> @ 000008E0 : ptr32)
+T_1147: (in __rcr<byte,byte> @ 000008E0 : ptr32)
   Class: Eq_87
   DataType: (ptr32 Eq_87)
   OrigDataType: (ptr32 (fn T_1151 (T_1149, T_1150, T_1132)))
@@ -5440,7 +5440,7 @@ T_1150: (in 1<8> @ 000008E0 : byte)
   Class: Eq_90
   DataType: byte
   OrigDataType: byte
-T_1151: (in __rcr<byte,byte,bool>(g_b1691, 1<8>, C_129) @ 000008E0 : byte)
+T_1151: (in __rcr<byte,byte>(g_b1691, 1<8>, C_129) @ 000008E0 : byte)
   Class: Eq_98
   DataType: cu8
   OrigDataType: byte
@@ -5560,7 +5560,7 @@ T_1180: (in Mem203[Mem78[0x168B<16>:word16] + 0<16>:byte] @ 000008CF : byte)
   Class: Eq_1160
   DataType: Eq_993
   OrigDataType: cu8
-T_1181: (in __rcr<byte,byte,bool> @ 00000904 : ptr32)
+T_1181: (in __rcr<byte,byte> @ 00000904 : ptr32)
   Class: Eq_87
   DataType: (ptr32 Eq_87)
   OrigDataType: (ptr32 (fn T_1185 (T_1183, T_1184, T_1152)))
@@ -5576,7 +5576,7 @@ T_1184: (in 1<8> @ 00000904 : byte)
   Class: Eq_90
   DataType: byte
   OrigDataType: byte
-T_1185: (in __rcr<byte,byte,bool>(g_b168F, 1<8>, C_132) @ 00000904 : byte)
+T_1185: (in __rcr<byte,byte>(g_b168F, 1<8>, C_132) @ 00000904 : byte)
   Class: Eq_98
   DataType: cu8
   OrigDataType: cu8
@@ -5584,7 +5584,7 @@ T_1186: (in 0<8> @ 00000904 : byte)
   Class: Eq_98
   DataType: cu8
   OrigDataType: cu8
-T_1187: (in __rcr<byte,byte,bool>(g_b168F, 1<8>, C_132) >= 0<8> @ 00000000 : bool)
+T_1187: (in __rcr<byte,byte>(g_b168F, 1<8>, C_132) >= 0<8> @ 00000000 : bool)
   Class: Eq_1187
   DataType: bool
   OrigDataType: bool
@@ -9044,7 +9044,7 @@ T_2051: (in a_3 @ 00000D88 : byte)
   Class: Eq_86
   DataType: byte
   OrigDataType: byte
-T_2052: (in __rcr<byte,byte,bool> @ 00000D88 : ptr32)
+T_2052: (in __rcr<byte,byte> @ 00000D88 : ptr32)
   Class: Eq_87
   DataType: (ptr32 Eq_87)
   OrigDataType: (ptr32 (fn T_2058 (T_2051, T_2053, T_2057)))
@@ -9068,7 +9068,7 @@ T_2057: (in fn0D64(out a_3) @ 00000D88 : bool)
   Class: Eq_79
   DataType: Eq_79
   OrigDataType: bool
-T_2058: (in __rcr<byte,byte,bool>(a_3, 1<8>, fn0D64(out a_3)) @ 00000D88 : byte)
+T_2058: (in __rcr<byte,byte>(a_3, 1<8>, fn0D64(out a_3)) @ 00000D88 : byte)
   Class: Eq_98
   DataType: cu8
   OrigDataType: cu8
@@ -9076,7 +9076,7 @@ T_2059: (in 0<8> @ 00000D88 : byte)
   Class: Eq_98
   DataType: cu8
   OrigDataType: cu8
-T_2060: (in __rcr<byte,byte,bool>(a_3, 1<8>, fn0D64(out a_3)) >= 0<8> @ 00000000 : bool)
+T_2060: (in __rcr<byte,byte>(a_3, 1<8>, fn0D64(out a_3)) >= 0<8> @ 00000000 : bool)
   Class: Eq_2060
   DataType: bool
   OrigDataType: bool
@@ -9320,7 +9320,7 @@ T_2120: (in a_51 @ 00000E95 : byte)
   Class: Eq_86
   DataType: byte
   OrigDataType: byte
-T_2121: (in __rcr<byte,byte,bool> @ 00000E95 : ptr32)
+T_2121: (in __rcr<byte,byte> @ 00000E95 : ptr32)
   Class: Eq_87
   DataType: (ptr32 Eq_87)
   OrigDataType: (ptr32 (fn T_2128 (T_2120, T_2122, T_2127)))
@@ -9348,7 +9348,7 @@ T_2127: (in fn0EAB(out a_51) @ 00000E95 : bool)
   Class: Eq_79
   DataType: Eq_79
   OrigDataType: bool
-T_2128: (in __rcr<byte,byte,bool>(a_51, 1<8>, fn0EAB(out a_51)) @ 00000E95 : byte)
+T_2128: (in __rcr<byte,byte>(a_51, 1<8>, fn0EAB(out a_51)) @ 00000E95 : byte)
   Class: Eq_98
   DataType: cu8
   OrigDataType: cu8
@@ -9356,7 +9356,7 @@ T_2129: (in 0<8> @ 00000E95 : byte)
   Class: Eq_98
   DataType: cu8
   OrigDataType: cu8
-T_2130: (in __rcr<byte,byte,bool>(a_51, 1<8>, fn0EAB(out a_51)) >= 0<8> @ 00000000 : bool)
+T_2130: (in __rcr<byte,byte>(a_51, 1<8>, fn0EAB(out a_51)) >= 0<8> @ 00000000 : bool)
   Class: Eq_2130
   DataType: bool
   OrigDataType: bool

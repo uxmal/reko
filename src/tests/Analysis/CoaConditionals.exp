@@ -98,7 +98,7 @@ bp:bp
     def:  def bp
     uses: Mem68[ss:bp - 0xA<16>:byte] = 1<8>
           branch bp < 0x10<16> l0C00_005F
-          branch !OVERFLOW((bp - 0x10<16>) * 2<16>) l0C00_0068
+          branch !OVERFLOW<word16>((bp - 0x10<16>) * 2<16>) l0C00_0068
 bp_63: orig: bp
 SCZO_64: orig: SCZO
 SO_65: orig: SO
@@ -169,7 +169,7 @@ l0C00_005B:
 	Mem68[ss:bp - 0xA<16>:byte] = 1<8>
 	// succ:  l0C00_005F
 l0C00_005F:
-	branch !OVERFLOW((bp - 0x10<16>) * 2<16>) l0C00_0068
+	branch !OVERFLOW<word16>((bp - 0x10<16>) * 2<16>) l0C00_0068
 	// succ:  l0C00_0063 l0C00_0068
 l0C00_0063:
 	Mem75[ds:0xF07<16>:byte] = 1<8>

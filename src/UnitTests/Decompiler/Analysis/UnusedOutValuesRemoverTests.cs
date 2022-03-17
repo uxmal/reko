@@ -51,8 +51,6 @@ namespace Reko.UnitTests.Decompiler.Analysis
         [SetUp]
         public void Setup()
         {
-            UnusedOutValuesRemover.trace.Level = TraceLevel.Verbose;
-
             this.import = new Mock<IDynamicLinker>();
             this.eventListener = new Mock<DecompilerEventListener>();
             this.pb = new ProgramBuilder();
