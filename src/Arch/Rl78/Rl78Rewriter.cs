@@ -30,8 +30,6 @@ using Reko.Core.Types;
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
 
 namespace Reko.Arch.Rl78
 {
@@ -71,9 +69,6 @@ namespace Reko.Arch.Rl78
                 {
                 case Mnemonic.invalid:
                     m.Invalid(); break;
-                case Mnemonic.brk:
-                case Mnemonic.cmps:
-                case Mnemonic.movs:
                 case Mnemonic.retb:
                 case Mnemonic.stop:
                 default:
@@ -93,6 +88,7 @@ namespace Reko.Arch.Rl78
                 case Mnemonic.bnh: RewriteBranch(ConditionCode.ULE, CZ()); break;
                 case Mnemonic.bnz: RewriteBranch(ConditionCode.NE, Z()); break;
                 case Mnemonic.br: RewriteBr(); break;
+                case Mnemonic.brk: RewriteBrk(); break;
                 case Mnemonic.bt: RewriteBt(); break;
                 case Mnemonic.btclr: RewriteBtclr(); break;
                 case Mnemonic.bz: RewriteBranch(ConditionCode.EQ, Z()); break;
@@ -104,6 +100,7 @@ namespace Reko.Arch.Rl78
                 case Mnemonic.cmp: RewriteCmp(); break;
                 case Mnemonic.cmp0: RewriteCmp0(); break;
                 case Mnemonic.cmpw: RewriteCmp(); break;
+                case Mnemonic.cmps: RewriteCmp(); break;
                 case Mnemonic.dec: RewriteIncDec((a, b) => m.ISubS(a, 1)); break;
                 case Mnemonic.decw: RewriteIncwDecw((a, b) => m.ISubS(a, 1)); break;
                 case Mnemonic.halt: RewriteHalt(); break;
@@ -112,6 +109,7 @@ namespace Reko.Arch.Rl78
                 case Mnemonic.mov: RewriteMov(); break;
                 case Mnemonic.mov1: RewriteMov1(); break;
                 case Mnemonic.movw: RewriteMov(); break;
+                case Mnemonic.movs: RewriteMovs(); break;
                 case Mnemonic.mulu: RewriteMulu(); break;
                 case Mnemonic.oneb: RewriteOne(PrimitiveType.Byte); break;
                 case Mnemonic.onew: RewriteOne(PrimitiveType.Word16); break;
@@ -330,6 +328,11 @@ namespace Reko.Arch.Rl78
             m.Goto(target);
         }
 
+        private void RewriteBrk()
+        {
+            m.SideEffect(m.Fn(CommonOps.Syscall, m.Word16(0)));
+        }
+
         private void RewriteBranch(ConditionCode cc, Identifier grf)
         {
             var target = (Address) RewriteSrc(instr.Operands[0]);
@@ -417,6 +420,15 @@ namespace Reko.Arch.Rl78
             m.Assign(dst, src);
         }
 
+        private void RewriteMovs()
+        {
+            var src = RewriteSrc(instr.Operands[1]);
+            var dst = RewriteSrc(instr.Operands[0]);
+            m.Assign(dst, src);
+            m.Assign(C(), m.Eq0(binder.EnsureRegister(Registers.a)));
+            m.Assign(Z(), m.Eq0(src));
+        }
+
         private void RewriteMov1()
         {
             var src = RewriteSrc(instr.Operands[1]);
@@ -477,7 +489,7 @@ namespace Reko.Arch.Rl78
             var src = RewriteSrc(instr.Operands[0]);
             var dst = RewriteDst(instr.Operands[0], src, (a, b) =>
                 m.Fn(
-                    intrinsic,
+                    intrinsic.MakeInstance(b.DataType, instr.Operands[1].Width),
                     b,
                     RewriteSrc(instr.Operands[1])));
             EmitCond(dst, C());
@@ -488,7 +500,7 @@ namespace Reko.Arch.Rl78
             var src = RewriteSrc(instr.Operands[0]);
             var dst = RewriteDst(instr.Operands[0], src, (a, b) =>
                 m.Fn(
-                    intrinsic,
+                    intrinsic.MakeInstance(b.DataType, instr.Operands[1].Width),
                     b,
                     RewriteSrc(instr.Operands[1]),
                     C()));

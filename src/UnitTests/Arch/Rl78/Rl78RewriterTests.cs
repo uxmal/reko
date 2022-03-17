@@ -52,6 +52,15 @@ namespace Reko.UnitTests.Arch.Rl78
         }
 
         [Test]
+        public void Rl78Rw_brk()
+        {
+            Given_HexString("61CC");
+            AssertCode(     // brk
+                "0|L--|00001000(2): 1 instructions",
+                "1|L--|__syscall(0<16>)");
+        }
+
+        [Test]
         public void Rl78Rw_push_hl()
         {
             Given_HexString("C7");  // push hl
@@ -132,6 +141,15 @@ namespace Reko.UnitTests.Arch.Rl78
             AssertCode(
                 "0|L--|00001000(2): 1 instructions",
                 "1|L--|CZ = cond(a - c)");
+        }
+
+        [Test]
+        public void Rl78Rw_cmps()
+        {
+            Given_HexString("61DE78");
+            AssertCode(     // cmps	x,[hl+78h]
+                "0|L--|00001000(3): 1 instructions",
+                "1|L--|CZ = cond(x - Mem0[hl + 120<i16>:byte])");
         }
 
         [Test]
@@ -526,7 +544,7 @@ namespace Reko.UnitTests.Arch.Rl78
             Given_HexString("61 EE");	// rolwc	ax,0x01
             AssertCode(
                 "0|L--|00001000(2): 2 instructions",
-                "1|L--|ax = __rcl<word16,byte,bool>(ax, 1<8>, C)",
+                "1|L--|ax = __rcl<word16,byte>(ax, 1<8>, C)",
                 "2|L--|C = cond(ax)");
         }
 
@@ -596,12 +614,23 @@ namespace Reko.UnitTests.Arch.Rl78
         }
 
         [Test]
+        public void Rl78Rw_movs()
+        {
+            Given_HexString("61CEA6");
+            AssertCode(     // movs	[hl+0A6h],x
+                "0|L--|00001000(3): 3 instructions",
+                "1|L--|Mem0[hl + 166<i16>:byte] = x",
+                "2|L--|C = a == 0<8>",
+                "3|L--|Z = x == 0<8>");
+        }
+
+        [Test]
         public void Rl78Rw_rolc()
         {
             Given_HexString("61 DC");	// rolc	a,0x01
             AssertCode(
                 "0|L--|00001000(2): 2 instructions",
-                "1|L--|a = __rcl<byte,byte,bool>(a, 1<8>, C)",
+                "1|L--|a = __rcl<byte,byte>(a, 1<8>, C)",
                 "2|L--|C = cond(a)");
         }
 
@@ -611,7 +640,7 @@ namespace Reko.UnitTests.Arch.Rl78
             Given_HexString("61 FB");   // rorc a,0x01
             AssertCode(
                 "0|L--|00001000(2): 2 instructions",
-                "1|L--|a = __rcr<byte,byte,bool>(a, 1<8>, C)",
+                "1|L--|a = __rcr<byte,byte>(a, 1<8>, C)",
                 "2|L--|C = cond(a)");
         }
 
@@ -651,5 +680,15 @@ namespace Reko.UnitTests.Arch.Rl78
                 "0|T--|00001000(3): 1 instructions",
                 "1|T--|if (Test(UGT,CZ)) branch 0000102A");
         }
+
+
+
+
+
+
+
+
+
+
     }
 }

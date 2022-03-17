@@ -3936,6 +3936,5 @@ namespace Reko.UnitTests.Arch.CompactRisc
             AssertCode("@@@", "1F28");
         }
 #endif
-
     }
 }
