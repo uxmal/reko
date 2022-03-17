@@ -769,7 +769,7 @@ namespace Reko.Arch.PowerPC
                 if (sh < 16)
                     m.Assign(rd, m.Fn(CommonOps.Rol, rs, Constant.Byte(sh)));
                 else
-                    m.Assign(rd, m.Fn(CommonOps.Ror, Constant.Byte((byte)(32 - sh))));
+                    m.Assign(rd, m.Fn(CommonOps.Ror, rs, Constant.Byte((byte)(32 - sh))));
             }
             else if (me == 31)
             {
