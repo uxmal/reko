@@ -85,6 +85,7 @@ namespace Reko.Analysis
             this.useLiveness = ignoreUse;
             var store = new TypeStore();
             var desc = new LocalTypeDescender(program, store, new TypeFactory());
+            desc.BuildEquivalenceClasses(ssa);
             foreach (var stm in ssa.Procedure.EntryBlock.Statements)
             {
                 if (stm.Instruction is not DefInstruction def)
@@ -101,7 +102,6 @@ namespace Reko.Analysis
                     var n = Classify(ssa, sid, stg, ignoreUse);
                     if (!n.IsEmpty)
                     {
-                        desc.BuildEquivalenceClasses(ssa);
                         procFlow.BitsUsed[stg] = n;
                         procFlow.LiveInDataTypes[stg] = DataTypeOf(sid, desc, store);
                     }
