@@ -250,19 +250,17 @@ void rcos()
 {
 }
 
-// 0311: Register word16 sincos(Sequence Eq_n gp2_gp3, Register ci16 gp1, Register word16 gp4, Register out ptr16 gp1Out, Register out ptr16 gp2Out, Register out ptr16 gp3Out, Register out ptr16 gp4Out, Register out ptr16 gp14Out)
+// 0311: Register word16 sincos(Register ci16 gp1, Register word16 gp4, Register out ptr16 gp1Out, Register out ptr16 gp2Out, Register out ptr16 gp3Out, Register out ptr16 gp4Out, Register out ptr16 gp14Out)
 // Called from:
 //      sin
 //      cos
-word16 sincos(Eq_n gp2_gp3, ci16 gp1, word16 gp4, ptr16 & gp1Out, ptr16 & gp2Out, ptr16 & gp3Out, ptr16 & gp4Out, ptr16 & gp14Out)
+word16 sincos(ci16 gp1, word16 gp4, ptr16 & gp1Out, ptr16 & gp2Out, ptr16 & gp3Out, ptr16 & gp4Out, ptr16 & gp14Out)
 {
 	ptr16 fp;
-	word16 gp3 = (word16) gp2_gp3;
 	ci16 gp2_n = gp1;
 	if (gp1 < 0x00)
 		gp2_n = gp1 + 0x07;
 	struct Eq_n * gp2_n = gp2_n & ~0x07;
-	word16 wLoc01_n = SEQ((byte) gp3, (byte) gp4);
 	if ((uint32) (gp1 - gp2_n) > 0x07)
 	{
 		real48 gp3_gp4_gp5_n = g_rFFFF8051;
@@ -305,13 +303,12 @@ word48 sin(int32 gp0_gp1, word16 gp2, union Eq_n & gp3Out, union Eq_n & gp4Out, 
 	}
 	real48 gp5_gp6_gp7_n = gp5_gp6_gp7_n * g_rFFFF8057;
 	int32 gp0_gp1_n = (int32) gp5_gp6_gp7_n;
-	Eq_n gp2_gp3_n = gp5_gp6_gp7_n - (real48) gp0_gp1_n;
-	word16 gp7_n = (word16) gp2_gp3_n;
+	real48 gp5_gp6_gp7_n = gp5_gp6_gp7_n - (real48) gp0_gp1_n;
+	word16 gp7_n = (word16) gp5_gp6_gp7_n;
 	word16 gp4_n = gp7_n;
-	if (gp2_gp3_n < 0.0)
+	if (gp5_gp6_gp7_n < 0.0)
 	{
-		gp2_gp3_n = SEQ((word32) gp2_gp3_n, gp7_n) + *((char *) (&g_rFFFF8057) + 3);
-		gp4_n = (word16) gp2_gp3_n;
+		gp4_n = (word16) (SEQ((word32) gp5_gp6_gp7_n, gp7_n) + *((char *) (&g_rFFFF8057) + 3));
 		gp0_gp1_n += g_dwFFFF805D;
 	}
 	ci16 gp1_n = (word16) gp0_gp1_n;
@@ -322,7 +319,7 @@ word48 sin(int32 gp0_gp1, word16 gp2, union Eq_n & gp3Out, union Eq_n & gp4Out, 
 	word16 gp2_n;
 	Eq_n gp3_n;
 	Eq_n gp4_n;
-	word16 gp0_n = sincos(gp2_gp3_n, gp1_n, gp4_n, out gp1_n, out gp2_n, out gp3_n, out gp4_n, out gp14_n);
+	word16 gp0_n = sincos(gp1_n, gp4_n, out gp1_n, out gp2_n, out gp3_n, out gp4_n, out gp14_n);
 	gp3Out = gp3_n;
 	gp4Out = gp4_n;
 	gp14Out = gp14_n;
@@ -342,13 +339,12 @@ word48 cos(int32 gp0_gp1, word16 gp2, ptr16 & gp14Out)
 	}
 	real48 gp5_gp6_gp7_n = gp5_gp6_gp7_n * g_rFFFF8064;
 	int32 gp0_gp1_n = (int32) gp5_gp6_gp7_n;
-	Eq_n gp2_gp3_n = gp5_gp6_gp7_n - (real48) gp0_gp1_n;
-	word16 gp7_n = (word16) gp2_gp3_n;
+	real48 gp5_gp6_gp7_n = gp5_gp6_gp7_n - (real48) gp0_gp1_n;
+	word16 gp7_n = (word16) gp5_gp6_gp7_n;
 	word16 gp4_n = gp7_n;
-	if (gp2_gp3_n < 0.0)
+	if (gp5_gp6_gp7_n < 0.0)
 	{
-		gp2_gp3_n = SEQ((word32) gp2_gp3_n, gp7_n) + *((char *) (&g_rFFFF8064) + 3);
-		gp4_n = (word16) gp2_gp3_n;
+		gp4_n = (word16) (SEQ((word32) gp5_gp6_gp7_n, gp7_n) + *((char *) (&g_rFFFF8064) + 3));
 		gp0_gp1_n += g_dwFFFF806A;
 	}
 	word16 gp1_n;
@@ -356,7 +352,7 @@ word48 cos(int32 gp0_gp1, word16 gp2, ptr16 & gp14Out)
 	word16 gp2_n;
 	word16 gp3_n;
 	word16 gp4_n;
-	word16 gp0_n = sincos(gp2_gp3_n, (word16) gp0_gp1_n + g_wFFFF806C, gp4_n, out gp1_n, out gp2_n, out gp3_n, out gp4_n, out gp14_n);
+	word16 gp0_n = sincos((word16) gp0_gp1_n + g_wFFFF806C, gp4_n, out gp1_n, out gp2_n, out gp3_n, out gp4_n, out gp14_n);
 	gp14Out = gp14_n;
 	return SEQ(gp0_n, gp1_n, gp2_n);
 }

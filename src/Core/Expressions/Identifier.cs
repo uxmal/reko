@@ -39,6 +39,8 @@ namespace Reko.Core.Expressions
 	{
 		public Identifier(string name, DataType type, Storage stg) : base(type)
 		{
+            if (name == "wLoc04_77")
+                _ = this; //$DEBug
 			this.Name = name;
 			this.Storage = stg;
 		}

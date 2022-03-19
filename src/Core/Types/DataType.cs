@@ -90,6 +90,142 @@ namespace Reko.Core.Types
             return Clone(null);
         }
 
+        /// <summary>
+        /// Compute the size of the data type <paramref name="dt"/>.
+        /// </summary>
+        /// <param name="dt"></param>
+        /// <remarks>
+        /// We don't trust the <see cref="DataType.Size"/> property because
+        /// the types may be inferred. For instance, inferred <see cref="StructureType"/>s
+        /// don't have a value for their Size properties.
+        /// </remarks>
+        //$TODO: convert to virtual method.
+        public int MeasureSize()
+        {
+            DataType dt = this;
+            int offset = 0;
+            for (; ; )
+            {
+                switch (dt)
+                {
+                case PrimitiveType _:
+                case Pointer _:
+                case MemberPointer _:
+                case VoidType _:
+                case UnknownType _:
+                case EnumType _:
+                    return offset + dt.Size;
+                case StructureType st:
+                    if (st.Size > 0)
+                        return st.Size; // Trust the user/metadata
+                    if (st.Fields.Count == 0)
+                        return 0;
+                    var field = st.Fields[^1];
+                    offset += field.Offset;
+                    dt = field.DataType;
+                    break;
+                case UnionType ut:
+                    int unionSize = 0;
+                    foreach (var alt in ut.Alternatives.Values)
+                    {
+                        unionSize = Math.Max(unionSize, alt.DataType.MeasureSize());
+                    }
+                    return offset + unionSize;
+                case ArrayType array:
+                    var elemSize = array.ElementType.MeasureSize();
+                    return offset + elemSize * array.Length;
+                case ClassType cls:
+                    if (cls.Size > 0)
+                        return cls.Size; // Trust the user/metadata
+                    if (cls.Fields.Count == 0)
+                        return 0;
+                    var cfield = cls.Fields[^1];
+                    if (cfield is null)
+                        return 0;
+                    offset += cfield.Offset;
+                    dt = cfield.DataType;
+                    break;
+                case TypeVariable tv:
+                    dt = tv.DataType;
+                    break;
+                case EquivalenceClass eq:
+                    dt = eq.DataType;
+                    break;
+                case TypeReference tref:
+                    dt = tref.Referent;
+                    break;
+                case ReferenceTo refto:
+                    dt = refto.Referent;
+                    break;
+                default:
+                    throw new NotImplementedException($"MeasureSize: {dt.GetType().Name} not implemented.");
+                }
+            }
+        }
+
+        public int MeasureBitSize(int bitsPerUnit)
+        {
+            DataType dt = this;
+            int bitOffset = 0;
+            for (; ; )
+            {
+                switch (dt)
+                {
+                case PrimitiveType _:
+                case Pointer _:
+                case MemberPointer _:
+                case VoidType _:
+                case UnknownType _:
+                case EnumType _:
+                    return bitOffset + dt.BitSize;
+                case StructureType st:
+                    if (st.Size > 0)
+                        return st.Size * bitsPerUnit; // Trust the user/metadata
+                    if (st.Fields.Count == 0)
+                        return 0;
+                    var field = st.Fields[^1];
+                    bitOffset += field.Offset * bitsPerUnit;
+                    dt = field.DataType;
+                    break;
+                case UnionType ut:
+                    int unionBitSize = 0;
+                    foreach (var alt in ut.Alternatives.Values)
+                    {
+                        unionBitSize = Math.Max(unionBitSize, alt.DataType.MeasureBitSize(bitsPerUnit));
+                    }
+                    return bitOffset + unionBitSize;
+                case ArrayType array:
+                    var elemBitSize = array.ElementType.MeasureBitSize(bitsPerUnit);
+                    return bitOffset + elemBitSize * array.Length;
+                case ClassType cls:
+                    if (cls.Size > 0)
+                        return cls.Size * bitsPerUnit; // Trust the user/metadata
+                    if (cls.Fields.Count == 0)
+                        return 0;
+                    var cfield = cls.Fields[^1];
+                    if (cfield is null)
+                        return 0;
+                    bitOffset += cfield.Offset * bitsPerUnit;
+                    dt = cfield.DataType;
+                    break;
+                case TypeVariable tv:
+                    dt = tv.DataType;
+                    break;
+                case EquivalenceClass eq:
+                    dt = eq.DataType;
+                    break;
+                case TypeReference tref:
+                    dt = tref.Referent;
+                    break;
+                case ReferenceTo refto:
+                    dt = refto.Referent;
+                    break;
+                default:
+                    throw new NotImplementedException($"MeasureSize: {dt.GetType().Name} not implemented.");
+                }
+            }
+        }
+
         public T? ResolveAs<T>() where T : DataType
         {
             DataType dt = this;

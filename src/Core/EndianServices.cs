@@ -130,8 +130,9 @@ namespace Reko.Core
         /// <param name="dataType">DataType of the resulting slice.</param>
         /// <param name="expr">The memory expression.</param>
         /// <param name="loOffset"></param>
+        /// <param name="bitsPerUnit">Number of bits per memory unit of the current architecture.</param>
         /// <returns></returns>
-        public abstract Slice MakeSlice(DataType dataType, Expression expr, int loOffset);
+        public abstract Slice MakeSlice(DataType dataType, Expression expr, int loOffset, int bitsPerUnit);
 
         /// <summary>
         /// Given two offsets and a size, determines whether the
@@ -205,7 +206,7 @@ namespace Reko.Core
                     accesses.Reverse().ToArray());
             }
 
-            public override Slice MakeSlice(DataType dataType, Expression expr, int loOffset)
+            public override Slice MakeSlice(DataType dataType, Expression expr, int loOffset, int bitsPerUnit)
             {
                 return new Slice(dataType, expr, loOffset);
             }
@@ -277,9 +278,9 @@ namespace Reko.Core
                 return new MkSequence(dataType, accesses);
             }
 
-            public override Slice MakeSlice(DataType dataType, Expression expr, int bitOffset)
+            public override Slice MakeSlice(DataType dataType, Expression expr, int bitOffset, int bitsPerUnit)
             {
-                return new Slice(dataType, expr, expr.DataType.BitSize - (dataType.BitSize + bitOffset));
+                return new Slice(dataType, expr, expr.DataType.MeasureBitSize(bitsPerUnit) - (dataType.MeasureBitSize(bitsPerUnit) + bitOffset));
             }
 
             public override bool OffsetsAdjacent(long oLsb, long oMsb, long size)

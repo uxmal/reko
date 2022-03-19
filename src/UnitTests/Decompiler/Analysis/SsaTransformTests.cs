@@ -110,6 +110,7 @@ namespace Reko.UnitTests.Decompiler.Analysis
             arch.Setup(a => a.Endianness).Returns(EndianServices.Big);
             arch.Setup(a => a.Name).Returns("fake-be-arch");
             arch.Setup(a => a.CreateFrame()).Returns(() => new Frame(PrimitiveType.Ptr32));
+            arch.Setup(a => a.MemoryGranularity).Returns(8);
             Given_Architecture(arch.Object);
         }
 

@@ -823,7 +823,7 @@ namespace Reko.Analysis
         private int? GetStackDepthAtCall(Procedure proc, CallInstruction call)
         {
             var sp = call.Uses.FirstOrDefault(u => u.Storage == proc.Architecture.StackRegister);
-            if (sp == null)
+            if (sp is null)
                 return null;
             if (sp.Expression is Identifier fp && fp.Storage == proc.Frame.FramePointer.Storage)
                 return 0;
@@ -1249,7 +1249,7 @@ namespace Reko.Analysis
         {
             public readonly Block Block;
             public readonly Dictionary<StorageDomain, AliasState> currentDef;       // Identifiers defined in this block
-            public readonly IntervalTree<int, Alias> currentStackDef;
+            public readonly IntervalTree<int, Alias> currentStackDef;               // currently visible stack-based aliases by _bit_ offset.
             public readonly Dictionary<StorageDomain, FlagAliasState> currentFlagDef;
             public readonly Dictionary<Storage, SsaIdentifier> currentSimpleDef;
             public bool Visited;
@@ -1319,7 +1319,6 @@ namespace Reko.Analysis
             }
 
             public SsaIdentifier SsaId { get; set; }
-
         }
 
         public class TransformerFactory : StorageVisitor<IdentifierTransformer>

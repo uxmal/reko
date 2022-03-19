@@ -325,6 +325,11 @@ namespace Reko.Analysis
                 }
             }
 
+            protected int MeasureBitSize(DataType dt)
+            {
+                return dt.MeasureBitSize(outer.arch.MemoryGranularity);
+            }
+
             /// <summary>
             /// Generate a 'def' instruction for identifiers that are used
             /// without any previous definitions inside the current procedure.
@@ -371,7 +376,8 @@ namespace Reko.Analysis
                 var dt = PrimitiveType.CreateWord((int) stg.BitSize);
                 if (param.Storage.Covers(stg))
                 {
-                    var slice = this.outer.arch.Endianness.MakeSlice(dt, idParam, idParam.Storage.OffsetOf(stg));
+                    var arch = this.outer.arch;
+                    var slice = arch.Endianness.MakeSlice(dt, idParam, idParam.Storage.OffsetOf(stg), arch.MemoryGranularity);
                     return slice;
                 }
                 else
@@ -439,13 +445,13 @@ namespace Reko.Analysis
                 SsaIdentifier sidOld,
                 SsaIdentifier sidNew)
             {
-                if (!(sidOld.Identifier.Storage is StackStorage stack))
+                if (sidOld.Identifier.Storage is not StackStorage stack)
                     return;
-                var offsetInterval = Interval.Create(
+                var offsetInterval = CreateBitInterval(
                     stack.StackOffset,
-                    stack.StackOffset + sidOld.Identifier.DataType.Size);
-                var ints = bs.currentStackDef
-                    .GetIntervalsOverlappingWith(offsetInterval).ToArray();
+                    sidOld.Identifier.DataType);
+                var ints = bs.currentStackDef.GetIntervalsOverlappingWith(offsetInterval)
+                    .ToArray();
                 foreach (var de in ints)
                 {
                     if (de.Value.SsaId == sidOld)
@@ -453,6 +459,15 @@ namespace Reko.Analysis
                         de.Value.SsaId = sidNew;
                     }
                 }
+            }
+
+            protected Interval<int> CreateBitInterval(int unitStackOffset, DataType dt)
+            {
+                var bitsPerUnit = outer.arch.MemoryGranularity;
+                var bitOffset = unitStackOffset * bitsPerUnit;
+                return Interval.Create(
+                    bitOffset,
+                    bitOffset + MeasureBitSize(dt));
             }
         }
 
@@ -482,7 +497,7 @@ namespace Reko.Analysis
                     aliasState = new AliasState();
                     bs.currentDef.Add(id.Storage.Domain, aliasState);
                 }
-                if (sid.DefStatement != null && !(sid.DefStatement.Instruction is AliasAssignment))
+                if (sid.DefStatement != null && sid.DefStatement.Instruction is not AliasAssignment)
                 {
                     // Only store a definition if it isn't an alias.
                     var stgDef = id.Storage;
@@ -792,7 +807,8 @@ namespace Reko.Analysis
 
         public class StackTransformer : IdentifierTransformer
         {
-            private Interval<int> offsetInterval;
+            private Interval<int> bitOffsetInterval;
+            private int stackOffset;            // measured in units (not bits or bytes)
 
             public StackTransformer(
                 Identifier id,
@@ -801,14 +817,13 @@ namespace Reko.Analysis
                 SsaTransform outer)
                 : base(id, stm, outer)
             {
-                this.offsetInterval = Interval.Create(
-                    stackOffset,
-                    stackOffset + id.DataType.Size);
+                this.stackOffset = stackOffset;
+                this.bitOffsetInterval = CreateBitInterval(stackOffset, id.DataType);
             }
 
             public override SsaIdentifier? ReadBlockLocalVariable(SsaBlockState bs)
             {
-                var ints = bs.currentStackDef.GetIntervalsOverlappingWith(offsetInterval)
+                var ints = bs.currentStackDef.GetIntervalsOverlappingWith(bitOffsetInterval)
                     .OrderBy(i => i.Key.Start)
                     .ThenBy(i => i.Key.End - i.Key.Start)
                     .Select(SliceAndShift)
@@ -822,8 +837,8 @@ namespace Reko.Analysis
                 {
                     if (use.Instruction is AliasAssignment alias && 
                         alias.Dst.Storage is StackStorage stg &&
-                        stg.StackOffset == offsetInterval.Start &&
-                        stg.DataType.Size == offsetInterval.End - offsetInterval.Start)
+                        stg.StackOffset == stackOffset &&
+                        MeasureBitSize(stg.DataType) == bitOffsetInterval.End - bitOffsetInterval.Start)
                     {
                         return ssaIds[alias.Dst];
                     }
@@ -831,8 +846,8 @@ namespace Reko.Analysis
 
                 // Part of 'id' is defined locally in this block. We now 
                 // walk across the bits of 'id'.
-                int offsetLo = this.offsetInterval.Start;
-                int offsetHi = this.offsetInterval.End;
+                int offsetLo = this.bitOffsetInterval.Start;
+                int offsetHi = this.bitOffsetInterval.End;
                 var sequence = new List<(SsaIdentifier sid, Interval<int> interval)>();
                 foreach (var (sid, expr, intFrom) in ints)
                 {
@@ -884,31 +899,36 @@ namespace Reko.Analysis
                 SsaBlockState bs,
                 Interval<int> intv)
             {
-                var curInteval = this.offsetInterval;
+                var curInterval = this.bitOffsetInterval;
+                var curOffset = this.stackOffset;
                 var curId = this.id;
-                var bitSize = (intv.End - intv.Start) * DataType.BitsPerByte;
+                var bitsPerUnit = outer.arch.MemoryGranularity;
+                var bitSize = (intv.End - intv.Start);
+                this.stackOffset = intv.Start / bitsPerUnit;
                 this.id = outer.ssa.Procedure.Frame.EnsureStackVariable(
-                    intv.Start,
+                    stackOffset,
                     PrimitiveType.CreateWord(bitSize));
-                this.offsetInterval = intv;
+                this.bitOffsetInterval = intv;
                 var sid = ReadVariableRecursive(bs);
                 this.id = curId;
-                this.offsetInterval = curInteval;
+                this.stackOffset = curOffset;
+                this.bitOffsetInterval = curInterval;
                 return sid!;
             }
 
             private SsaIdentifier MakeSequenceElement((SsaIdentifier sid, Interval<int> interval) elem)
             {
                 var stg = (StackStorage) elem.sid.Identifier.Storage;
-                var start = stg.StackOffset;
-                var end = start + stg.DataType.Size;
-                if (start == elem.interval.Start &&
+                var bitsPerUnit = outer.arch.MemoryGranularity;
+                var bitStart = stg.StackOffset * bitsPerUnit;
+                var end = bitStart + MeasureBitSize(stg.DataType);
+                if (bitStart == elem.interval.Start &&
                     end == elem.interval.End)
                 {
                     // Exact match
                     return elem.sid;
                 }
-                var sidSlice = EnsureSliceStatement(elem.sid, elem.interval, elem.interval.Start - start);
+                var sidSlice = EnsureSliceStatement(elem.sid, elem.interval, elem.interval.Start - bitStart);
                 return sidSlice;
             }
 
@@ -918,15 +938,16 @@ namespace Reko.Analysis
             /// <paramref name="sidFrom"/>.
             /// </summary>
             /// <remarks>
-            /// The source, or defined identifer is "wider" than the destinatior or
-            /// used storage. We must provide a slice of the defined identifier.
+            /// The source, or defined identifier <paramRef name=sidFrom" /> is "wider"
+            /// than the destination or used storage. We must provide a slice of the
+            /// defined identifier.
             /// </remarks>
-            private SsaIdentifier EnsureSliceStatement(SsaIdentifier sidFrom, Interval<int> intv, int offset)
+            private SsaIdentifier EnsureSliceStatement(SsaIdentifier sidFrom, Interval<int> intv, int bitOffset)
             {
-                var bitSize = (intv.End - intv.Start) * DataType.BitsPerByte;
-                var bitOffset = offset * DataType.BitsPerByte;
-                var idSlice = outer.ssa.Procedure.Frame.EnsureStackVariable(intv.Start, PrimitiveType.CreateWord(bitSize));
-                var e = this.outer.arch.Endianness.MakeSlice(idSlice.DataType, sidFrom.Identifier, bitOffset);
+                var arch = this.outer.arch;
+                var bitSize = intv.End - intv.Start;
+                var idSlice = outer.ssa.Procedure.Frame.EnsureStackVariable(intv.Start / outer.arch.MemoryGranularity, PrimitiveType.CreateWord(bitSize));
+                var e = arch.Endianness.MakeSlice(idSlice.DataType, sidFrom.Identifier, bitOffset, arch.MemoryGranularity);
 
                 // Find existing alias of that size.
                 foreach (var use in sidFrom.Uses)
@@ -942,7 +963,6 @@ namespace Reko.Analysis
                 }
                 var sidUse = sidFrom;
 
-                //$TODO: perhaps this alias has already been computed?
                 var ass = new AliasAssignment(idSlice, e);
                 var sidAlias = outer.InsertAfterDefinition(sidFrom.DefStatement!, ass);
                 sidUse.Uses.Add(sidAlias.DefStatement!);
@@ -954,33 +974,33 @@ namespace Reko.Analysis
                 return (
                     arg.Value.SsaId,
                     arg.Value.SsaId.Identifier,
-                    arg.Key.Intersect(this.offsetInterval));
+                    arg.Key.Intersect(this.bitOffsetInterval));
             }
 
             public override Identifier WriteVariable(SsaBlockState bs, SsaIdentifier sid)
             {
                 var ints = bs.currentStackDef
-                    .GetIntervalsOverlappingWith(offsetInterval)
+                    .GetIntervalsOverlappingWith(bitOffsetInterval)
                     .ToArray();
                 foreach (var i in ints)
                 {
                     bs.currentStackDef.Delete(i.Key);
-                    if (!this.offsetInterval.Covers(i.Key))
+                    if (!this.bitOffsetInterval.Covers(i.Key))
                     {
                         // Some of the bits of interval `i` will shine through
-                        if (i.Key.End > offsetInterval.Start && i.Key.Start < offsetInterval.Start)
+                        if (i.Key.End > bitOffsetInterval.Start && i.Key.Start < bitOffsetInterval.Start)
                         {
-                            var newInt = Interval.Create(i.Key.Start, offsetInterval.Start);
+                            var newInt = Interval.Create(i.Key.Start, bitOffsetInterval.Start);
                             bs.currentStackDef.Add(newInt, i.Value);
                         }
-                        if (i.Key.Start < offsetInterval.End && offsetInterval.End < i.Key.End)
+                        if (i.Key.Start < bitOffsetInterval.End && bitOffsetInterval.End < i.Key.End)
                         {
-                            var newInt = Interval.Create(offsetInterval.End, i.Key.End);
+                            var newInt = Interval.Create(bitOffsetInterval.End, i.Key.End);
                             bs.currentStackDef.Add(newInt, i.Value);
                         }
                     }
                 }
-                bs.currentStackDef.Add(this.offsetInterval, new Alias(sid));
+                bs.currentStackDef.Add(this.bitOffsetInterval, new Alias(sid));
                 return sid.Identifier;
             }
         }
