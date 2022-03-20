@@ -69,8 +69,8 @@ word32 fn00000001400011B0(ui64 rcx, word64 qwArg00)
 	return fn000000014000147C(rcx, qwArg00);
 }
 
-// 00000001400011D4: void fn00000001400011D4(Stack word64 qwArg08)
-void fn00000001400011D4(word64 qwArg08)
+// 00000001400011D4: void fn00000001400011D4(Register word64 rbx, Stack Eq_n tArg08)
+void fn00000001400011D4(word64 rbx, Eq_n tArg08)
 {
 	set_app_type(0x01, 0x01);
 	_set_fmode(fn0000000140001920());
@@ -98,11 +98,11 @@ void fn00000001400011D4(word64 qwArg08)
 	else
 	{
 		word64 rcx_n;
-		fn0000000140001974(0x07, qwArg08, out rcx_n);
+		fn0000000140001974(0x07, rbx, tArg08, out rcx_n);
 		int3();
 	}
 	word64 rcx_n;
-	fn0000000140001974(0x07, qwArg08, out rcx_n);
+	fn0000000140001974(0x07, rbx, tArg08, out rcx_n);
 	int3();
 	int3();
 	fn0000000140001290();
@@ -130,7 +130,8 @@ void fn00000001400012A0()
 word32 fn00000001400012BC(<anonymous> ** rax)
 {
 	word64 rsi;
-	word64 qwLoc30;
+	Eq_n tLoc30;
+	word64 qwLoc40;
 	word32 ecx;
 	word32 edx;
 	struct Eq_n * gs;
@@ -143,7 +144,7 @@ word32 fn00000001400012BC(<anonymous> ** rax)
 	if (al == 0x00)
 	{
 		word64 rcx_n;
-		rax_n = fn0000000140001974(0x07, qwLoc30, out rcx_n);
+		rax_n = fn0000000140001974(0x07, qwLoc40, tLoc30, out rcx_n);
 		int3();
 	}
 	fn00000001400015C4(gs);
@@ -152,7 +153,7 @@ word32 fn00000001400012BC(<anonymous> ** rax)
 	if (ecx_n == 0x01)
 	{
 		word64 rcx_n;
-		rax_n = fn0000000140001974(0x07, qwLoc30, out rcx_n);
+		rax_n = fn0000000140001974(0x07, qwLoc40, tLoc30, out rcx_n);
 		ecx_n = (word32) rcx_n;
 	}
 	uint64 rax_n;
@@ -213,8 +214,8 @@ word32 fn00000001400012BC(<anonymous> ** rax)
 // 0000000140001434: Register Eq_n Win32CrtStartup()
 Eq_n Win32CrtStartup()
 {
-	word64 qwLoc18;
-	<anonymous> ** rax_n = fn000000014000186C(qwLoc18);
+	Eq_n tLoc18;
+	<anonymous> ** rax_n = fn000000014000186C(tLoc18);
 	return fn00000001400012BC(rax_n);
 }
 
@@ -234,10 +235,10 @@ void fn0000000140001448(struct _EXCEPTION_POINTERS * rcx)
 word32 fn000000014000147C(ui64 rcx, word64 qwArg00)
 {
 	ptr64 fp;
-	word64 qwLoc38;
+	Eq_n tLoc38;
 	if (IsProcessorFeaturePresent(0x17) == 0x00)
 	{
-		fn0000000140001550(&g_t400030E0, qwLoc38);
+		fn0000000140001550(0x1400030E0, tLoc38);
 		g_qw400031D8 = qwArg00;
 		g_ptr40003178 = fp + 0x08;
 		g_qw40003050 = g_qw400031D8;
@@ -253,22 +254,22 @@ word32 fn000000014000147C(ui64 rcx, word64 qwArg00)
 		__fastfail(0x02);
 }
 
-// 0000000140001550: void fn0000000140001550(Register Eq_n rcx, Stack word64 qwArg08)
+// 0000000140001550: void fn0000000140001550(Register Eq_n rcx, Stack Eq_n tArg08)
 // Called from:
 //      fn00000001400011B0
-void fn0000000140001550(Eq_n rcx, word64 qwArg08)
+void fn0000000140001550(Eq_n rcx, Eq_n tArg08)
 {
 	ptr64 fp;
 	RtlCaptureContext(rcx);
-	Eq_n rsi_n = rcx->t00F8;
+	Eq_n rsi_n = *((word64) rcx + 0x00F8);
 	uint64 rdi_n = 0x00;
 	do
 	{
 		word32 edi_n = (word32) rdi_n;
-		Eq_n rax_n = RtlLookupFunctionEntry(rsi_n, fp + 0x08, null);
+		Eq_n rax_n = RtlLookupFunctionEntry(rsi_n, &tArg08, null);
 		if (rax_n == null)
 			return;
-		KERNEL32.dll!RtlVirtualUnwind(0x00, 0x00, rsi_n, rax_n, fp + 0x10, fp + 0x18, 0x00, qwArg08, rcx, fp + 0x18, fp + 0x10, 0x00);
+		KERNEL32.dll!RtlVirtualUnwind(0x00, 0x00, rsi_n, rax_n, fp + 0x10, fp + 0x18, 0x00, tArg08, rcx, fp + 0x18, fp + 0x10, 0x00);
 		rdi_n = (uint64) (edi_n + 0x01);
 	} while ((word32) rdi_n < 0x02);
 }
@@ -317,11 +318,12 @@ void fn0000000140001600(word32 ecx, word32 edx)
 //      fn00000001400011D4
 byte fn000000014000164C(up32 ecx)
 {
-	word64 qwLoc40;
+	Eq_n tLoc40;
+	word64 qwLoc50;
 	if (ecx > 0x01)
 	{
 		<anonymous> ** rcx_n;
-		fn0000000140001974(0x05, qwLoc40, out rcx_n);
+		fn0000000140001974(0x05, qwLoc50, tLoc40, out rcx_n);
 		int3();
 		int3();
 		int3();
@@ -455,20 +457,21 @@ void fn0000000140001854(Eq_n rcx)
 	fn0000000140001804(rcx);
 }
 
-// 000000014000186C: Register word64 fn000000014000186C(Stack word64 qwArg18)
+// 000000014000186C: Register word64 fn000000014000186C(Stack Eq_n tArg18)
 // Called from:
 //      Win32CrtStartup
-word64 fn000000014000186C(word64 qwArg18)
+word64 fn000000014000186C(Eq_n tArg18)
 {
 	ptr64 fp;
-	word32 dwArg18 = (word32) qwArg18;
+	Eq_n tArg10;
+	tArg10.dwLowDateTime = (DWORD) 0x00;
 	ui64 rax_n = g_qw40003000;
 	if (rax_n == 0x2B992DDFA232)
 	{
-		GetSystemTimeAsFileTime(fp + 16);
-		ui64 v14_n = (uint64) GetCurrentThreadId() ^ (uint64) GetCurrentProcessId();
-		QueryPerformanceCounter(fp + 24);
-		ui64 rax_n = (uint64) dwArg18 << 0x20 ^ qwArg18 ^ v14_n ^ fp + 8;
+		GetSystemTimeAsFileTime(&tArg10);
+		Eq_n v14_n = tArg10.dwLowDateTime ^ (uint64) GetCurrentThreadId() ^ (uint64) GetCurrentProcessId();
+		QueryPerformanceCounter(&tArg18);
+		ui64 rax_n = (uint64) tArg18 << 0x20 ^ tArg18 ^ v14_n ^ fp + 8;
 		rax_n = rax_n & 0xFFFFFFFFFFFF;
 		if ((rax_n & 0xFFFFFFFFFFFF) == 0x2B992DDFA232)
 			rax_n = 0x2B992DDFA233;
@@ -546,34 +549,42 @@ void fn000000014000196C()
 {
 }
 
-// 0000000140001974: Register uint64 fn0000000140001974(Register word32 ecx, Stack word64 qwArg10, Register out ptr64 rcxOut)
+// 0000000140001974: Register uint64 fn0000000140001974(Register word32 ecx, Stack word64 qwArg00, Stack Eq_n tArg10, Register out (ptr64 Eq_n) rcxOut)
 // Called from:
 //      fn00000001400011D4
 //      Win32CrtStartup
 //      fn000000014000164C
-uint64 fn0000000140001974(word32 ecx, word64 qwArg10, ptr64 & rcxOut)
+uint64 fn0000000140001974(word32 ecx, word64 qwArg00, Eq_n tArg10, struct _EXCEPTION_POINTERS & rcxOut)
 {
 	ptr64 fp;
-	Eq_n qwLoc03E0;
+	Eq_n tLoc0588;
+	void vLoc04D8;
 	if (IsProcessorFeaturePresent(0x17) == 0x00)
 	{
 		g_dw40003610 = 0x00;
-		memset(fp - 0x04D8, 0, 0x04D0);
-		RtlCaptureContext(fp - 0x04D8);
-		Eq_n rax_n = RtlLookupFunctionEntry(qwLoc03E0, fp + 16, null);
+		memset(&vLoc04D8, 0, 0x04D0);
+		RtlCaptureContext(&vLoc04D8);
+		Eq_n rbx_n = vLoc04D8.t00F8;
+		Eq_n rax_n = RtlLookupFunctionEntry(rbx_n, &tArg10, null);
 		if (rax_n != null)
-			KERNEL32.dll!RtlVirtualUnwind(0x00, 0x00, qwLoc03E0, rax_n, fp + 24, fp + 32, fp - 0x04D8, 0x00, qwArg10, fp - 0x04D8, fp + 32, fp + 24, 0x00);
+			KERNEL32.dll!RtlVirtualUnwind(0x00, 0x00, rbx_n, rax_n, fp + 24, fp + 32, &vLoc04D8, 0x00, tArg10, &vLoc04D8, fp + 32, fp + 24, 0x00);
+		vLoc04D8.qw00F8 = qwArg00;
+		vLoc04D8.ptr0098 = fp + 0x08;
 		memset(fp - 1400, 0, 0x98);
-		int8 bl_n = (int8) (IsDebuggerPresent() == 0x01);
+		Eq_n eax_n = IsDebuggerPresent();
+		tLoc0588.ExceptionRecord = (PEXCEPTION_RECORD) (fp - 1400);
+		tLoc0588.ptr0008 = &vLoc04D8;
 		word32 rax_32_32_n = SLICE(SetUnhandledExceptionFilter(null), word32, 32);
-		Eq_n eax_n = UnhandledExceptionFilter(fp - 0x0588);
+		Eq_n eax_n = UnhandledExceptionFilter(&tLoc0588);
+		int8 bl_n = (int8) (eax_n == 0x01);
+		struct _EXCEPTION_POINTERS * rcx_n = &tLoc0588;
 		uint64 rax_n = SEQ(rax_32_32_n, eax_n);
 		if (eax_n == 0x00)
 		{
 			rax_n = (uint64) (0x00 - (bl_n != 0x00));
 			g_dw40003610 &= (word32) rax_n;
 		}
-		rcxOut = fp - 0x0588;
+		rcxOut = rcx_n;
 		return rax_n;
 	}
 	else

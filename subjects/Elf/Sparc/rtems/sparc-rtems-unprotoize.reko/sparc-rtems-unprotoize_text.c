@@ -7,13 +7,12 @@
 // 00011498: void _start(Register (ptr32 Eq_n) g1, Register word32 o3, Register word32 o4, Register word32 o5, Register word32 o7)
 void _start(void (* g1)(), word32 o3, word32 o4, word32 o5, word32 o7)
 {
-	ptr32 fp;
-	word32 tArg44;
+	char * tArg44;
 	if (g1 == null)
 	{
 		atexit(&g_t16EE4);
-		_environ = &tArg44 + ((_init(o3, o4, o5, o7) << 0x02) + 0x04);
-		exit(main(fp + 0x44));
+		_environ = (char *) &tArg44 + ((_init(o3, o4, o5, o7) << 0x02) + 0x04);
+		exit(main(&tArg44));
 	}
 	else
 		atexit(g1);
@@ -4110,7 +4109,7 @@ void getopt_long_only(word32 (* o1)[], int8 * o2, ptr32 * o4)
 Eq_n pexecute(Eq_n o0, pid_t * o1, word32 o3, word32 * o4, word32 * o5, Eq_n l1, ui32 dwArg5C, ptr32 & l0Out, ptr32 & i6Out)
 {
 	ptr32 fp;
-	Eq_n dwLoc18;
+	int32 dwLoc18;
 	Eq_n dwLoc14;
 	<anonymous> * o0_n;
 	if ((dwArg5C & 0x04) != 0x00)
@@ -4125,12 +4124,13 @@ Eq_n pexecute(Eq_n o0, pid_t * o1, word32 o3, word32 * o4, word32 * o5, Eq_n l1,
 	Eq_n o0_n = g_t2B310;
 	if ((dwArg5C & 0x02) == 0x00)
 	{
-		if (pipe(fp + ~0x17) < 0x00)
+		if (pipe(&dwLoc18) < 0x00)
 		{
 			o0_n = 0x00017B18;
 			goto l00016B10;
 		}
-		g_t2B310 = dwLoc18;
+		Eq_n o0_n = dwLoc18;
+		g_t2B310 = o0_n;
 		dwLoc24_n = dwLoc14;
 	}
 	else

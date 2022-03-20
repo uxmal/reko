@@ -6,6 +6,7 @@
 
 Eq_n g_t0001;
 Eq_n g_t0002;
+Eq_n g_t0003;
 Eq_n g_t0004;
 Eq_n g_t0020;
 byte g_bFFFFFFFE; // FFFFFFFE

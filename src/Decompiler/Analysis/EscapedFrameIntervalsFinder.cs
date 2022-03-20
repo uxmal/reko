@@ -107,14 +107,14 @@ namespace Reko.Analysis
                 pc.Procedure is not Procedure proc ||
                 !flow.ProcedureFlows.TryGetValue(proc, out var procFlow))
                 return;
-
             foreach (var use in ci.Uses)
             {
                 if (!procFlow.LiveInDataTypes.TryGetValue(use.Storage, out var dt))
                     continue;
+                var (e, _) = use.Expression.Accept(eval);
                 DataType? pointee = DeterminePointee(dt);
                 if (pointee is not null && 
-                    IsFrameAccess(use.Expression, out var offset))
+                    IsFrameAccess(e, out var offset))
                 {
                     AddInterval(offset, pointee);
                 }
@@ -204,14 +204,41 @@ namespace Reko.Analysis
         public override void VisitApplication(Application appl)
         {
             appl.Procedure.Accept(this);
+            var sig = GetSignature(appl.Procedure);
             for (int i = 0; i < appl.Arguments.Length; ++i)
             {
                 appl.Arguments[i].Accept(this);
-                var pointee = DeterminePointee(appl.Arguments[i].DataType);
+                var dtArg = GetArgumentDataType(appl.Arguments, sig, i);
+                var pointee = DeterminePointee(dtArg);
                 if (pointee is not null && IsFrameAccess(appl.Arguments[i], out var offset))
                 {
                     AddInterval(offset, pointee);
                 }
+            }
+        }
+
+        // Prefer using the data type from the signature, but if the procedure is 
+        // varargs or has no signature, fall back on the argument types.
+        private DataType GetArgumentDataType(Expression[] arguments, FunctionType? sig, int i)
+        {
+            if (sig is not null && i < sig.Parameters!.Length)
+            {
+                return sig.Parameters[i].DataType;
+            }
+            else
+                return arguments[i].DataType;
+        }
+
+        private FunctionType? GetSignature(Expression callee)
+        {
+            if (callee is ProcedureConstant pc &&
+                pc.Procedure is ProcedureBase proc)
+            {
+                return proc.Signature;
+            }
+            else
+            {
+                return null;
             }
         }
 

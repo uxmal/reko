@@ -1959,7 +1959,7 @@ union Eq_n * fn00402CE0(union Eq_n * r2, struct Eq_n * r3, int32 r4, struct Eq_n
 		if (r3_n != 0x00)
 		{
 			struct Eq_n * r30_n;
-			int32 r3_n = fn004036B0(r2_n, r3, fp + ~0x23);
+			int32 r3_n = fn004036B0(r2_n, r3, &tLoc24);
 			if (r3_n == 0x00)
 			{
 				if ((tLoc24->ptr0004 & 0x03) != 0x02)
@@ -1997,9 +1997,9 @@ union Eq_n * fn00402CE0(union Eq_n * r2, struct Eq_n * r3, int32 r4, struct Eq_n
 					if (r31_n->dw0010 < r11_n)
 						r31_n->dw0010 = r11_n;
 				}
-				fn00403070(r30_n, r4, r5_n, fp + ~0x27);
+				fn00403070(r30_n, r4, r5_n, &tLoc28);
 				struct Eq_n * r4_n = tLoc24;
-				fn00403070(r4_n, (r4_n->ptr0000->ptr0004 & ~0x03) - (r4_n->ptr0004 & ~0x03), r30_n, fp + ~0x27);
+				fn00403070(r4_n, (r4_n->ptr0000->ptr0004 & ~0x03) - (r4_n->ptr0004 & ~0x03), r30_n, &tLoc28);
 l00402FB8:
 				if ((r31_n->ptr0004->ptr0004 & ~0x03) > r3 && (((r30_n->ptr0000)->ptr0004 & ~0x03) - (r30_n->ptr0004 & ~0x03)) + ~0x07 >= *(*((char *) r2_n + 220)))
 					r31_n->ptr0004 = r30_n;
@@ -2510,7 +2510,7 @@ union Eq_n * fn00403744(union Eq_n * r2, Eq_n r3, struct Eq_n * r29, ptr32 r30, 
 				(&tLoc0160)[r11_n] = (byte) r4_n;
 				++r11_n;
 			} while (r4_n != 0x00);
-			fn004032AC((char *) fp - 352);
+			fn004032AC(&tLoc0160);
 			int32 r11_n = 0x00;
 			word32 ctr_n;
 			for (ctr_n = 0x05; ctr_n != 0x00; --ctr_n)
@@ -2794,7 +2794,7 @@ void fn00403CA0(union Eq_n * r2, word32 r13, word32 r14, word32 r15, word32 r16,
 		**((char *) r2 + 348) = 0x01;
 		tLoc38 = *(union Eq_n *) 0x0910;
 		r13 = *(word32 *) 0x092C;
-		fn00403D7C(fp + ~0x37);
+		fn00403D7C(&tLoc38);
 		**((char *) r2 + 352) = fp + ~0x17;
 	}
 	ptr32 * r31_n = *((char *) r2 + 352);
@@ -2807,10 +2807,10 @@ void fn00403CA0(union Eq_n * r2, word32 r13, word32 r14, word32 r15, word32 r16,
 	fn00403574(fn00400220(fn00402404(r2, r29_n, *((char *) r2 + 348), r31_n, out r29_n, out r30_n), r13, r14, r15, r16, r17, r18, r19, r20, r21, r22, r23, r24, r25, r26, r27, r28, r29_n, r30_n, r31_n, lr, out r3_n, out r29_n, out r30_n, out r31_n), r3_n, r29_n, r30_n, r31_n);
 }
 
-// 00403D7C: void fn00403D7C(Register (ptr32 byte) r3)
+// 00403D7C: void fn00403D7C(Register (ptr32 Eq_n) r3)
 // Called from:
 //      fn00403CA0
-void fn00403D7C(byte * r3)
+void fn00403D7C(union Eq_n * r3)
 {
 	if (r3 != null)
 	{
@@ -2818,11 +2818,11 @@ void fn00403D7C(byte * r3)
 		if (r8_n != 0x00)
 		{
 			word32 r11_n = r8_n;
-			byte * r10_n = r3;
+			union Eq_n * r10_n = r3;
 			if (r8_n != 0x00)
 			{
-				byte * r10_n = r3 + -1 + 1;
-				byte * r9_n = r3 + 1;
+				byte * r10_n = (char *) r3 - 1 + 1;
+				byte * r9_n = (char *) r3 + 1;
 				do
 				{
 					*r10_n = *r9_n;
@@ -2830,9 +2830,9 @@ void fn00403D7C(byte * r3)
 					++r9_n;
 					++r10_n;
 				} while (r11_n != 0x00);
-				r10_n = r10_n + 1;
+				r10_n = (union Eq_n *) (r10_n + 1);
 			}
-			*r10_n = 0x00;
+			*r10_n = (union Eq_n *) 0x00;
 		}
 	}
 }

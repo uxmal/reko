@@ -206,8 +206,8 @@ word32 xQueueGenericSend(word32 r0, word32 r1, word32 r2, word32 r3, word32 lr, 
 // Trashed: NZCV lr r0 r1 r2 r3
 // Preserved: r10 r4 r5 r6 r7 r8 r9 sp
 xQueueGenericSend_entry:
-	ptr32 fp
 	struct <anonymous> tLoc2C
+	struct <anonymous> tLoc28
 l00000190:
 	Mem27[&tLoc2C:word32] = r2
 	word32 r5_124 = 0<32>
@@ -243,7 +243,7 @@ l00000272:
 l0000020C:
 	branch r5_124 != 0<32> l000001A8
 l00000210:
-	vTaskSetTimeOutState(fp - 40<i32>)
+	vTaskSetTimeOutState(&tLoc28)
 l000001A8:
 	vPortExitCritical(cpsr)
 	vTaskSuspendAll()
@@ -257,7 +257,7 @@ l000001C8_1:
 	Mem163[r0 + 69<i32>:byte] = 0<8>
 l000001CC:
 	vPortExitCritical(cpsr)
-	branch xTaskCheckForTimeOut(fp - 40<i32>, fp - 44<i32>, cpsr) != 0<32> l0000027E
+	branch xTaskCheckForTimeOut(&tLoc28, &tLoc2C, cpsr) != 0<32> l0000027E
 l0000027E:
 	prvUnlockQueue(r0, cpsr)
 	xTaskResumeAll(cpsr)
@@ -324,8 +324,8 @@ word32 xQueueGenericReceive(word32 r0, word32 r1, word32 r2, word32 r3, word32 l
 // Trashed: NZCV lr r0 r1 r2 r3
 // Preserved: r10 r4 r5 r6 r7 r8 r9 sp
 xQueueGenericReceive_entry:
-	ptr32 fp
 	struct <anonymous> tLoc2C
+	struct <anonymous> tLoc28
 l000002D8:
 	Mem27[&tLoc2C:word32] = r2
 	word32 r5_133 = 0<32>
@@ -371,7 +371,7 @@ l00000314:
 l0000031A:
 	branch r5_133 == 0<32> l0000039C
 l0000039C:
-	vTaskSetTimeOutState(fp - 40<i32>)
+	vTaskSetTimeOutState(&tLoc28)
 l0000031E:
 	vPortExitCritical(cpsr)
 	vTaskSuspendAll()
@@ -385,7 +385,7 @@ l0000033E_1:
 	Mem171[r0 + 69<i32>:byte] = 0<8>
 l00000342:
 	vPortExitCritical(cpsr)
-	branch xTaskCheckForTimeOut(fp - 40<i32>, fp - 44<i32>, cpsr) == 0<32> l000002F0
+	branch xTaskCheckForTimeOut(&tLoc28, &tLoc2C, cpsr) == 0<32> l000002F0
 l000002F0:
 	vPortEnterCritical(cpsr)
 	branch Mem202[r0 + 56<i32>:word32] == 0<32> l0000036A

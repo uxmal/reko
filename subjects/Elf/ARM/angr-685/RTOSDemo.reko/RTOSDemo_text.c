@@ -126,7 +126,6 @@ byte * g_ptr8104 = &g_bA268; // 00008104
 // 00008108: void vUART_ISR(Register word32 r4, Register word32 r5, Register word32 r6, Register Eq_n lr, Register ptr32 cpsr)
 void vUART_ISR(word32 r4, word32 r5, word32 r6, Eq_n lr, ptr32 cpsr)
 {
-	ptr32 fp;
 	Eq_n tLoc15;
 	tLoc15.dw0005 = r4;
 	tLoc15.dw0009 = r5;
@@ -139,7 +138,7 @@ void vUART_ISR(word32 r4, word32 r5, word32 r6, Eq_n lr, ptr32 cpsr)
 	if (r0_n << 27 < 0x00 && *g_ptr8178 << 25 < 0x00)
 	{
 		tLoc15.t0000 = r5_n->t0000;
-		xQueueGenericSendFromISR(fp - 0x15, r0_n, fp - 20, 0x00, lr, cpsr);
+		xQueueGenericSendFromISR(&tLoc15, r0_n, (char *) &tLoc15 + 1, 0x00, lr, cpsr);
 	}
 	if (r0_n << 26 < 0x00)
 	{
@@ -237,12 +236,12 @@ uint32 g_dw8298 = 1000000; // 00008298
 //      vParTestToggleLED
 struct Eq_n * PDCWrite(struct Eq_n * r0, ui32 r1)
 {
-	ptr32 fp;
+	ui32 tLoc14;
 	struct Eq_n * r4_n = g_ptr82CC;
 	SSIDataPut(r4_n, r0 & 0x0F);
 	SSIDataPut(r4_n, r1);
-	SSIDataGet(r4_n, fp - 20);
-	SSIDataGet(r4_n, fp - 20);
+	SSIDataGet(r4_n, &tLoc14);
+	SSIDataGet(r4_n, &tLoc14);
 	return r4_n;
 }
 

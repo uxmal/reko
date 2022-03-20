@@ -4,13 +4,13 @@
 
 #include "simd_double.h"
 
-// 0000000000000620: void _start(Register (ptr64 Eq_n) rdx, Stack word32 dwArg00)
-void _start(void (* rdx)(), word32 dwArg00)
+// 0000000000000620: void _start(Register (ptr64 Eq_n) rdx, Stack word32 dwArg00, Stack (ptr64 char) ptrArg08)
+void _start(void (* rdx)(), word32 dwArg00, char * ptrArg08)
 {
 	void * fp;
 	word64 qwArg00;
-	__align_stack<word64>((char *) fp + 8);
-	__libc_start_main(&g_t0898, (int32) qwArg00, (char *) fp + 8, &g_t0A70, &g_t0AE0, rdx, fp);
+	__align_stack<word64>(&ptrArg08);
+	__libc_start_main(&g_t0898, (int32) qwArg00, &ptrArg08, &g_t0A70, &g_t0AE0, rdx, fp);
 	__hlt();
 }
 
@@ -88,7 +88,7 @@ void _mm_free(real64 (* rdi)[])
 //      main
 void vec_add(word64 rdi)
 {
-	ptr64 fp;
+	char ** fp;
 	__align_stack<word64>(fp);
 	uint64 rax_n = (uint64) ((uint128) rdi /u double_size.21529);
 	if (rax_n <= 0x00)

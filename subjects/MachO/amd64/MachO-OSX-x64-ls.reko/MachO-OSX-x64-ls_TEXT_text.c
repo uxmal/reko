@@ -119,8 +119,8 @@ l0000000100001F1A:
 							Eq_n r15_n;
 							if (g_dw6584 != 0x00)
 							{
-								snprintf("%u", 0x0D, fp - 0x006A);
-								snprintf("%u", 0x0D, fp - 93);
+								snprintf("%u", 0x0D, &bLoc6A);
+								snprintf("%u", 0x0D, &bLoc5D);
 								qwLoc0100_n = &bLoc6A;
 								r15_n = &bLoc5D;
 							}
@@ -200,14 +200,14 @@ l0000000100001F1A:
 			struct Eq_n * rsi_n = rsi;
 			if (dwLoc011C_n != 0x00)
 			{
-				snprintf("%qu", 0x18, fp - 80);
-				strlen(fp - 80);
-				snprintf("%llu", 0x18, fp - 80);
-				strlen(fp - 80);
-				snprintf("%lu", 0x18, fp - 80);
-				strlen(fp - 80);
-				snprintf("%qu", 0x18, fp - 80);
-				strlen(fp - 80);
+				snprintf("%qu", 0x18, &bLoc50);
+				strlen(&bLoc50);
+				snprintf("%llu", 0x18, &bLoc50);
+				strlen(&bLoc50);
+				snprintf("%lu", 0x18, &bLoc50);
+				strlen(&bLoc50);
+				snprintf("%qu", 0x18, &bLoc50);
+				strlen(&bLoc50);
 				rsi_n = (struct Eq_n *) 0x18;
 			}
 			word64 rcx_n;
@@ -1100,7 +1100,6 @@ l00000001000034F3:
 //      fn0000000100003AA8
 word32 fn000000010000356F(Eq_n rdi, ptr64 & rbxOut, ptr64 & rbpOut, union Eq_n & r12dOut, ptr64 & r14Out, ptr64 & r15Out)
 {
-	ptr64 fp;
 	ptr64 rbp;
 	ptr64 r15;
 	ptr64 r14;
@@ -1130,7 +1129,7 @@ word32 fn000000010000356F(Eq_n rdi, ptr64 & rbxOut, ptr64 & rbpOut, union Eq_n &
 		while (true)
 		{
 			uint64 rax_n;
-			Eq_n rax_n = mbrtowc(fp - 0x00B8, 0x06, r14_n, fp - 188);
+			Eq_n rax_n = mbrtowc(&tLocB8, 0x06, r14_n, &wLocBC);
 			word32 eax_n = (word32) rax_n;
 			if (rax_n == ~0x01)
 				break;
@@ -1257,7 +1256,6 @@ void fn0000000100003AA8(int64 rdi)
 //      fn000000010000356F
 word32 fn0000000100004715(Eq_n rdi)
 {
-	ptr64 fp;
 	wchar_t wLocBC;
 	Eq_n tLocB8;
 	tLocB8 = (Eq_n) 0;
@@ -1266,7 +1264,7 @@ word32 fn0000000100004715(Eq_n rdi)
 	while (true)
 	{
 		uint64 rax_n;
-		Eq_n rax_n = mbrtowc(fp - 0x00B8, 0x06, r14_n, fp - 188);
+		Eq_n rax_n = mbrtowc(&tLocB8, 0x06, r14_n, &wLocBC);
 		word32 eax_n = (word32) rax_n;
 		if (rax_n == ~0x01)
 			break;
@@ -1480,7 +1478,6 @@ l0000000100004AA8:
 uint64 fn0000000100004AFA(word32 esi, Eq_n rdi)
 {
 	word64 rsi;
-	ptr64 fp;
 	wchar_t wLocBC;
 	Eq_n tLocB8;
 	word32 esi = (word32) rsi;
@@ -1496,7 +1493,7 @@ uint64 fn0000000100004AFA(word32 esi, Eq_n rdi)
 		uint64 rax_n;
 		if (ebx_n == 0x00)
 			break;
-		Eq_n rax_n = mbrtowc(fp - 0x00B8, r15_n, r12_n, fp - 188);
+		Eq_n rax_n = mbrtowc(&tLocB8, r15_n, r12_n, &wLocBC);
 		word32 eax_n = (word32) rax_n;
 		if (rax_n == ~0x01)
 		{

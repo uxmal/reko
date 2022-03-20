@@ -999,7 +999,7 @@ Eq_n g_t09F7 = // 09F7
 		0x104A,
 		0x5800,
 	};
-char g_str0A00[] = ""; // 0A00
+<anonymous> g_t0A00 = <code>; // 0A00
 Eq_n g_t0A15 = // 0A15
 	{
 		0x01,
@@ -1396,7 +1396,6 @@ Eq_n g_t0CD6 = // 0CD6
 // 0CF4: void fn0CF4(Register (ptr16 Eq_n) r5)
 void fn0CF4(struct Eq_n * r5)
 {
-	ptr16 fp;
 	Eq_n tLoc08;
 	if (r5->b0000 == 0x01)
 	{
@@ -1405,7 +1404,7 @@ void fn0CF4(struct Eq_n * r5)
 		tLoc08.t0004 = &tLoc08.t0004;
 		tLoc08.ptr0002 = (struct Eq_n **) &tLoc08.ptr0002;
 		tLoc08.t0000.u1 = 0x03;
-		fn15CC(fp - 0x08);
+		fn15CC(&tLoc08);
 		struct Eq_n * r1_n = (char *) tLoc08.ptr0002 + (tLoc08.ptr0002 << 1);
 		struct Eq_n * r0_n = fn0D3E(r0_n, tLoc08.t0004);
 		r0_n->b0000 = 0x2D;
@@ -2250,19 +2249,20 @@ Eq_n g_t15C5 = // 15C5
 //      fn0CF4
 void fn15CC(struct Eq_n * r5)
 {
-	ptr16 fp;
-	if (r5->b0000 != 0x03)
+	char bLoc04;
+	if (r5->t0000 != 0x03)
 		__syscall(0x8990);
 	else
 	{
-		FnSubfn(fp - 0x04);
+		bLoc04 = (char) 0x1100;
+		FnSubfn(&bLoc04);
 		__syscall(0x88FC);
-		ptr16 r2_n = 0x0A00;
+		<anonymous> * r2_n = &g_t0A00;
 		if (true)
-			r2_n = 0x48;
-		*r5->ptr0002 = (union Eq_n *) (__swab(0x0280) & 0x1F);
-		*r5->ptr0004 = 0x10;
-		*r5->ptr0006 = r2_n;
+			r2_n = (<anonymous> *) (&t0000.w0036 + 9);
+		*r5->ptr0002 = (struct Eq_n **) (__swab(0x0280) & 0x1F);
+		*r5->t0004 = &t0000.w0010;
+		*r5->t0006 = r2_n;
 	}
 }
 

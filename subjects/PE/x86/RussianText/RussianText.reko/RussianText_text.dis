@@ -112,16 +112,15 @@ void fn004011B0(word32 dwArg04)
 // Trashed: SCZO eax ecx edx Top
 // Preserved: ebp ebx esp
 fn004011B0_entry:
-	ptr32 fp
-	word32 dwLoc08
+	struct <anonymous> tLoc0C
 l004011B0:
 	word32 ebx_12 = dwArg04
 	branch dwArg04 != 0<32> l004011D7
 l004011C6:
 	branch dwArg04 != 0<32> l004011D7
 l004011CA:
-	fn004011FC(fp - 12<i32>)
-	ebx_12 = dwLoc08
+	fn004011FC(&tLoc0C)
+	ebx_12 = Mem27[&tLoc0C + 4<i32>:word32]
 l004011D7:
 	memcpy(fn00401158(), ebx_12, 0x9C<32>)
 	_InitTermAndUnexPtrs()

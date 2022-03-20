@@ -66,7 +66,6 @@ void task_1(word20 sr)
 // Terminates process
 task_1_exit:
 task_1_entry:
-	word16 fp
 	struct <anonymous> tLoc02
 l4096:
 	word20 r15_6
@@ -75,7 +74,7 @@ l4096:
 l40A0:
 	Mem16[0x0031<p16>:byte] = Mem13[0x0031<p16>:byte] ^ 1<8>
 	word20 r11_46
-	sr_19 = vTaskDelayUntil(putchar(sr_19, 0x58<16>, out r11_46), 0x1F4<16>, fp - 2<16>)
+	sr_19 = vTaskDelayUntil(putchar(sr_19, 0x58<16>, out r11_46), 0x1F4<16>, &tLoc02)
 
 
 void task_2(word20 sr)
@@ -88,7 +87,6 @@ void task_2(word20 sr)
 // Terminates process
 task_2_exit:
 task_2_entry:
-	word16 fp
 	struct <anonymous> tLoc02
 l40BC:
 	word20 r15_6
@@ -97,7 +95,7 @@ l40BC:
 l40C6:
 	Mem16[0x0031<p16>:byte] = Mem13[0x0031<p16>:byte] ^ 2<8>
 	word20 r11_46
-	sr_19 = vTaskDelayUntil(putchar(sr_19, 0x59<16>, out r11_46), 0xFA<16>, fp - 2<16>)
+	sr_19 = vTaskDelayUntil(putchar(sr_19, 0x59<16>, out r11_46), 0xFA<16>, &tLoc02)
 
 
 void task_3(word20 sr)
@@ -110,7 +108,6 @@ void task_3(word20 sr)
 // Terminates process
 task_3_exit:
 task_3_entry:
-	word16 fp
 	struct <anonymous> tLoc02
 l40E2:
 	word20 r15_6
@@ -119,7 +116,7 @@ l40E2:
 l40EC:
 	Mem16[0x0031<p16>:byte] = Mem13[0x0031<p16>:byte] ^ 4<8>
 	word20 r11_46
-	sr_19 = vTaskDelayUntil(putchar(sr_19, 0x5A<16>, out r11_46), 0x19<16>, fp - 2<16>)
+	sr_19 = vTaskDelayUntil(putchar(sr_19, 0x5A<16>, out r11_46), 0x19<16>, &tLoc02)
 
 
 void main(word20 sr, word20 r8)
@@ -414,9 +411,10 @@ void vTxISR(word20 sr)
 // Preserved: r12 r13 r14 r15 sp
 vTxISR_entry:
 	word16 fp
+	struct <anonymous> tLoc0C
 	byte bLoc0A
 l4480:
-	branch xQueueReceiveFromISR(sr, fp - 0xC<32>, fp - 0xA<32>, Mem14[0x021E<p16>:word16]) == 1<16> l44A2
+	branch xQueueReceiveFromISR(sr, &tLoc0C, fp - 0xA<32>, Mem14[0x021E<p16>:word16]) == 1<16> l44A2
 l44A2:
 	Mem35[0x007F<p16>:byte] = bLoc0A
 l449C:

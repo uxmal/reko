@@ -740,6 +740,7 @@ namespace Reko.Analysis
             {
                 var calleeStg = FrameShift(ci, id.Storage, stackDepth);
                 if (calleeStg is not null &&
+                    id.DataType.MeasureBitSize(arch.MemoryGranularity) > 0 &&
                     !existingUses.Contains(calleeStg) &&
                     (calleeStg is RegisterStorage ||
                      calleeStg is StackArgumentStorage))

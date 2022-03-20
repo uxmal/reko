@@ -81,6 +81,17 @@ namespace Reko.Analysis
 
         #region IExpressionVisitor Members
 
+        public override Instruction TransformCallInstruction(CallInstruction ci)
+        {
+            foreach (var use in ci.Uses.ToArray())
+            {
+                var e = use.Expression.Accept(this);
+                ci.Uses.Remove(use);
+                ci.Uses.Add(new CallBinding(use.Storage, e));
+            }
+            return base.TransformCallInstruction(ci);
+        }
+
         public override Expression VisitBinaryExpression(BinaryExpression bin)
         {
             if (IsFrameAccess(bin, out var offset))

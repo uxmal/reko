@@ -5319,7 +5319,7 @@ void fn0000B0B8(word32 r3, word32 r4)
 // Trashed: CV r11 r3 r4 r5 r6
 // Preserved: r1 r2 r9
 fn0000B0B8_entry:
-	word32 fp
+	struct <anonymous> tLoc14
 	struct <anonymous> tLoc10
 l0000B0B8:
 	branch r3 == 3<32> l0000B0C8_ds_t
@@ -5346,7 +5346,7 @@ l0000B0F8_ds_t:
 l0000B0F8_ds_f:
 l0000B0FC:
 l0000B174:
-	word32 r11_53 = fn0000B034(r4, fp - 20<i32>, fp - 16<i32>)
+	word32 r11_53 = fn0000B034(r4, &tLoc14, &tLoc10)
 	word32 r1_52 = <invalid>
 	branch r11_53 != 0<32> l0000B184_ds_t
 l0000B184_ds_t:
@@ -5956,14 +5956,13 @@ word32 fn0000BE00(word32 r3, word32 r4, word32 r15)
 // Trashed: CV r11 r13 r15 r17 r3 r4 r5 r6 r7 r8
 // Preserved: r1 r14 r2 r9
 fn0000BE00_entry:
-	word32 fp
 	struct <anonymous> tLoc10
 l0000BE00:
 	branch !(r3 == 6<32>) l0000BE18_ds_t
 l0000BE18_ds_t:
 l0000BE18_ds_f:
 l0000BE1C:
-	r15 = fn0000B8D8(fp - 16<i32>, r4, r15)
+	r15 = fn0000B8D8(&tLoc10, r4, r15)
 	word32 r3_34 = Mem8[0x13944<32>:word32]
 	word32 r2_36 = Mem8[r3_34:word32]
 	word32 r4_35 = CONVERT(Mem8[&tLoc10 + 3<i32>:byte], byte, word32)
@@ -9638,11 +9637,13 @@ word32 fn00010570(word32 r3, word32 r9, word32 r15, word32 VR)
 // Preserved: r1 r14 r16 r18 r19 r2 r21 r23 r25 r27 r29 r31 r9
 fn00010570_entry:
 	word32 fp
+	struct <anonymous> tLoc70
+	struct <anonymous> tLoc6C
 	word32 dwLoc18
 l00010570:
 	word32 r11_3031
 	fn0000AEDC(0xF3F31000<32>)
-	fn0000ECC8(fp - 112<i32>, fp - 108<i32>)
+	fn0000ECC8(&tLoc70, &tLoc6C)
 	fn0000DF10(fp - 72<i32>, dwLoc18, -32<i32>)
 	word32 r1_34 = <invalid>
 	word32 r4_44 = Mem13[r1_34 + 40<i32>:word32]

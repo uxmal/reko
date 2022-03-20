@@ -3088,13 +3088,12 @@ void properties_parse_int(word32 r4, word32 r5, word32 ra)
 // Trashed: r2 r25 r28 r3 r4 r5 r6 r7
 // Preserved: r30 ra sp
 properties_parse_int_entry:
-	ptr32 fp
-	word32 dwLoc18
+	char * ptrLoc18
 l004053F0:
-	strtoul(r4, fp + -24<i32>, 0<32>)
-	branch CONVERT(Mem30[dwLoc18:int8], int8, word32) == 0<32> l004054B4
+	strtoul(r4, &ptrLoc18, 0<32>)
+	branch CONVERT(Mem30[Mem30[&ptrLoc18:word32]:int8], int8, word32) == 0<32> l004054B4
 l00405454:
-	branch dwLoc18 == r5 l004054B4
+	branch Mem30[&ptrLoc18:word32] == r5 l004054B4
 l004054B4:
 l00405468:
 	word32 r25_93
@@ -3531,12 +3530,12 @@ l0040697C:
 	branch Mem106[Mem106[0x10000A28<32>:word32]:word32] == 0<32> l00406BCC
 l00406AEC:
 	word32 r2_110 = Mem106[Mem106[0x10000A28<32>:word32]:word32]
-	word32 dwLoc20_178 = r2_110
+	word32 dwLoc20_179 = r2_110
 	branch r2_110 >= 0<32> l00406B20
 l00406B10:
-	dwLoc20_178 = r2_110 + 1023<i32>
+	dwLoc20_179 = r2_110 + 1023<i32>
 l00406B20:
-	branch CONVERT(dwLoc20_178 >> 0xA<8> < Mem117[Mem117[0x10000878<32>:word32] + 2084<i32>:word32], bool, word32) == 0<32> l00406BCC
+	branch CONVERT(dwLoc20_179 >> 0xA<8> < Mem117[Mem117[0x10000878<32>:word32] + 2084<i32>:word32], bool, word32) == 0<32> l00406BCC
 l00406B4C:
 	branch CONVERT(ftell(r4) < Mem117[Mem117[0x10000A28<32>:word32]:word32], bool, word32) != 0<32> l00406BA4
 l00406BA4:
@@ -5340,14 +5339,13 @@ void __make_fp(word32 r4, word32 r5, word32 r6, word32 r7, word32 ra)
 // Trashed: r25 r28 r4 r5 r6 r7
 // Preserved: ra sp
 __make_fp_entry:
-	ptr32 fp
 	struct <anonymous> tLoc18
 l00409630:
 	Mem10[&tLoc18:word32] = r4
 	Mem16[&tLoc18 + 4<i32>:word32] = r5
 	Mem18[&tLoc18 + 8<i32>:word32] = r6
 	Mem20[&tLoc18 + 12<i32>:word32] = r7
-	__pack_f(fp + -24<i32>)
+	__pack_f(&tLoc18)
 	return
 __make_fp_exit:
 

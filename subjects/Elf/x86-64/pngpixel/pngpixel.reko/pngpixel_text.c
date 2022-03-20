@@ -4,13 +4,13 @@
 
 #include "pngpixel.h"
 
-// 0000000000400CD0: void _start(Register (ptr64 Eq_n) rdx, Stack word32 dwArg00)
-void _start(void (* rdx)(), word32 dwArg00)
+// 0000000000400CD0: void _start(Register (ptr64 Eq_n) rdx, Stack word32 dwArg00, Stack (ptr64 char) ptrArg08)
+void _start(void (* rdx)(), word32 dwArg00, char * ptrArg08)
 {
 	void * fp;
 	word64 qwArg00;
-	__align_stack<word64>((char *) fp + 8);
-	__libc_start_main(&g_t4012F9, (int32) qwArg00, (char *) fp + 8, &g_t401780, &g_t4017F0, rdx, fp);
+	__align_stack<word64>(&ptrArg08);
+	__libc_start_main(&g_t4012F9, (int32) qwArg00, &ptrArg08, &g_t401780, &g_t4017F0, rdx, fp);
 	__hlt();
 }
 
