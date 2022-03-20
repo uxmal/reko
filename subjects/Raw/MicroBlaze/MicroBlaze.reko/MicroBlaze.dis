@@ -21235,7 +21235,7 @@ l0001AB00:
 	r3_128 = r3
 l0001AB0C:
 	word32 r3_128
-	word32 r3_51 = fn0001A7E4(r3_128, fp + 0xFFFFFFD4<32>, fp + 0xFFFFFFD8<32>)
+	word32 r3_51 = fn0001A7E4(r3_128, fp + 0xFFFFFFD4<32>, &tLoc28)
 	branch Test(EQ,r3_51) l0001AB20_ds_t
 l0001AB20_ds_t:
 l0001ADB0:
@@ -21287,7 +21287,7 @@ l0001AB44_ds_f:
 	r21 = 1<32>
 l0001AB48:
 	r21 = r21 + 1<32>
-	branch Test(EQ,fn0001A7E4(r3_128, fp + 0xFFFFFFD4<32>, fp + 0xFFFFFFD8<32>)) l0001AB64_ds_t
+	branch Test(EQ,fn0001A7E4(r3_128, fp + 0xFFFFFFD4<32>, &tLoc28)) l0001AB64_ds_t
 l0001AB64_ds_t:
 l0001AB64_ds_f:
 l0001AB68:
@@ -21302,7 +21302,7 @@ l0001AC0C:
 l0001AC10_ds_t:
 	Mem165[r24_257 - 8<i32>:word32] = r21
 l0001AD08:
-	branch Test(EQ,fn0001A7E4(r3_128, fp + 0xFFFFFFD4<32>, fp + 0xFFFFFFD8<32>)) l0001AD1C_ds_t
+	branch Test(EQ,fn0001A7E4(r3_128, fp + 0xFFFFFFD4<32>, &tLoc28)) l0001AD1C_ds_t
 l0001AD1C_ds_t:
 l0001AD1C_ds_f:
 l0001AD20:
@@ -21311,7 +21311,7 @@ l0001AD2C_ds_t:
 l0001AD2C_ds_f:
 l0001AD30:
 	Mem192[r24_257 + 12<i32>:word32] = dwLoc2C
-	branch Test(EQ,fn0001A7E4(dwLoc2C, fp + 0xFFFFFFD4<32>, fp + 0xFFFFFFD8<32>)) l0001AD48_ds_t
+	branch Test(EQ,fn0001A7E4(dwLoc2C, fp + 0xFFFFFFD4<32>, &tLoc28)) l0001AD48_ds_t
 l0001AD48_ds_t:
 l0001AD48_ds_f:
 l0001AD4C:
@@ -21321,7 +21321,7 @@ l0001AD58_ds_t:
 l0001AD58_ds_f:
 l0001AD5C:
 	Mem210[r24_257 + 16<i32>:word32] = dwLoc2C
-	branch Test(EQ,fn0001A7E4(r3_202 ^ 0x20<32>, fp + 0xFFFFFFD4<32>, fp + 0xFFFFFFD8<32>)) l0001AD74_ds_t
+	branch Test(EQ,fn0001A7E4(r3_202 ^ 0x20<32>, fp + 0xFFFFFFD4<32>, &tLoc28)) l0001AD74_ds_t
 l0001AD74_ds_t:
 l0001AD74_ds_f:
 l0001AD78:
@@ -21330,7 +21330,7 @@ l0001AD84_ds_t:
 l0001AD84_ds_f:
 l0001AD88:
 	Mem228[r24_257 + 20<i32>:word32] = dwLoc2C
-	branch Test(EQ,fn0001A7E4(dwLoc2C, fp + 0xFFFFFFD4<32>, fp + 0xFFFFFFD8<32>)) l0001ADA0_ds_t
+	branch Test(EQ,fn0001A7E4(dwLoc2C, fp + 0xFFFFFFD4<32>, &tLoc28)) l0001ADA0_ds_t
 l0001ADA0_ds_t:
 l0001ACD4:
 l0001ADA0_ds_f:
@@ -25498,7 +25498,7 @@ l0002283C:
 	word32 r25_942
 	word32 r19_941
 	word32 r7_939
-	fn0001F63C(r0, fp + 0xFFFFFF94<32>, fp + 0xFFFFFB90<32>, r22, fp + 0xFFFFFF94<32>, r5, r26, r27, r28, r29, dwLoc0874, dwLoc0860, out r7_939, out r8_940, out r19_941, out r21_43, out r22_44, out r23_45, out r24_46, out r25_942, out r26_48, out r27_49, out r28_50, out r29_51)
+	fn0001F63C(r0, &tLoc6C, fp + 0xFFFFFB90<32>, r22, &tLoc6C, r5, r26, r27, r28, r29, dwLoc0874, dwLoc0860, out r7_939, out r8_940, out r19_941, out r21_43, out r22_44, out r23_45, out r24_46, out r25_942, out r26_48, out r27_49, out r28_50, out r29_51)
 	word32 r19_64
 	word32 r21_65
 	word32 r23_67

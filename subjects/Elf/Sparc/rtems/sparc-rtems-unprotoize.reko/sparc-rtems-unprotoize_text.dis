@@ -8,7 +8,6 @@ void _start(word32 g1, word32 o3, word32 o4, word32 o5, word32 o7)
 // Terminates process
 _start_exit:
 _start_entry:
-	ptr32 fp
 	struct <anonymous> tArg44
 l00011498:
 	branch g1 == 0<32> l000114B0_ds_t
@@ -16,7 +15,7 @@ l000114B0_ds_t:
 l000114BC:
 	atexit(0x16EE4<32>)
 	Mem49[0x2B40C<32>:word32] = &tArg44 + ((_init(o3, o4, o5, o7) << 2<32>) + 4<32>)
-	exit(main(fp + 0x44<32>))
+	exit(main(&tArg44))
 l000114B0_ds_f:
 l000114B4:
 	atexit(g1)
@@ -3458,10 +3457,10 @@ l0001536C_ds_t:
 l00015370:
 	l1_107 = 0x64<32>
 l0001537C:
-	word32 i6_183
-	word32 i2_182
-	word32 i1_181
-	xmalloc(out i1_181, out i2_182, out i6_183)
+	word32 i6_185
+	word32 i2_184
+	word32 i1_183
+	xmalloc(out i1_183, out i2_184, out i6_185)
 	i0_108 = l1_107
 	branch getcwd(l1_107, SLICE(l1_107, size_t, 0)) != 0<32> l00015398_ds_t
 l00015398_ds_t:
@@ -5115,7 +5114,7 @@ word32 pexecute(word32 o0, word32 o1, word32 o3, word32 o4, word32 o5, word32 l1
 // Preserved: o1 o2 o3 o4 o5 o7 sp
 pexecute_entry:
 	ptr32 fp
-	word32 dwLoc18
+	int32 dwLoc18
 	word32 dwLoc14
 l000169F8:
 	word32 o0_31
@@ -5133,7 +5132,7 @@ l00016A38_ds_f:
 l00016A3C:
 	Mem44[0x2B310<32>:word32] = 0<32>
 l00016A44:
-	word32 dwLoc24_341
+	word32 dwLoc24_342
 	word32 i0_250
 	word32 o0_108
 	word32 o0_47 = Mem46[0x2B310<32>:word32]
@@ -5141,20 +5140,21 @@ l00016A44:
 l00016A54_ds_t:
 l00016A8C:
 	Mem55[0x2B310<32>:word32] = 0<32>
-	dwLoc24_341 = 1<32>
+	dwLoc24_342 = 1<32>
 l00016A54_ds_f:
 l00016A58:
-	branch pipe(fp + 0xFFFFFFE8<32>) >= 0<32> l00016A68_ds_t
+	branch pipe(&dwLoc18) >= 0<32> l00016A68_ds_t
 l00016A68_ds_t:
+	word32 o0_63 = Mem57[&dwLoc18:word32]
 l00016A7C:
-	Mem65[0x2B310<32>:word32] = dwLoc18
-	dwLoc24_341 = dwLoc14
+	Mem65[0x2B310<32>:word32] = o0_63
+	dwLoc24_342 = dwLoc14
 l00016A98:
-	word32 dwLoc2C_350 = 1<32>
-	word32 dwLoc28_351 = 0<32>
+	word32 dwLoc2C_348 = 1<32>
+	word32 dwLoc28_349 = 0<32>
 l00016AC8:
 	bool v26_328
-	branch dwLoc28_351 > 3<32> l00016AD4_ds_t
+	branch dwLoc28_349 > 3<32> l00016AD4_ds_t
 l00016AD4_ds_t:
 	v26_328 = l1 == 0xFFFFFFFF<32>
 l00016AD4_ds_f:
@@ -5164,9 +5164,9 @@ l00016AD8:
 	branch o0_82 < 0<32> l00016AE8_ds_t
 l00016AE8_ds_t:
 l00016AA8:
-	sleep(dwLoc2C_350)
-	dwLoc2C_350 = dwLoc2C_350 << 1<32>
-	dwLoc28_351 = dwLoc28_351 + 1<32>
+	sleep(dwLoc2C_348)
+	dwLoc2C_348 = dwLoc2C_348 << 1<32>
+	dwLoc28_349 = dwLoc28_349 + 1<32>
 l00016AE8_ds_f:
 	v26_328 = o0_82 == 0xFFFFFFFF<32>
 l00016AEC:
@@ -5187,13 +5187,13 @@ l00016B30:
 	dup(o0_47)
 	close(o0_47)
 l00016B4C:
-	branch dwLoc24_341 == 1<32> l00016B54_ds_t
+	branch dwLoc24_342 == 1<32> l00016B54_ds_t
 l00016B54_ds_t:
 l00016B54_ds_f:
 l00016B58:
 	close(1<32>)
-	dup(dwLoc24_341)
-	close(dwLoc24_341)
+	dup(dwLoc24_342)
+	close(dwLoc24_342)
 l00016B74:
 	word32 o0_142 = Mem72[0x2B310<32>:word32]
 	branch o0_142 == 0<32> l00016B80_ds_t
@@ -5220,12 +5220,12 @@ l00016BFC_ds_f:
 l00016C00:
 	close(o0_47)
 l00016C0C:
-	branch dwLoc24_341 == 1<32> l00016C14_ds_t
+	branch dwLoc24_342 == 1<32> l00016C14_ds_t
 l00016C14_ds_t:
 	i0_250 = l1
 l00016C14_ds_f:
 l00016C18:
-	close(dwLoc24_341)
+	close(dwLoc24_342)
 	i0_250 = l1
 l00016A6C:
 	o0_108 = 0x17B18<32>

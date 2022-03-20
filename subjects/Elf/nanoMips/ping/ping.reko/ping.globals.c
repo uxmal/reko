@@ -8,10 +8,13 @@ byte g_b0000; // 00000000
 Eq_n g_t0001;
 Eq_n g_t0002;
 Eq_n g_a000A[];
+Eq_n g_t000E;
 Eq_n g_t0010;
 Eq_n g_t0018;
 byte g_b001A; // 0000001A
 Eq_n g_t0020;
+<anonymous> g_t0021; // 00000021
+Eq_n g_t002B;
 Eq_n g_t0054;
 Eq_n g_t0069;
 Eq_n g_t0267;
@@ -77,6 +80,7 @@ Eq_n g_t41202C0;
 Eq_n g_t41202C4;
 Eq_n g_t41202C8;
 Eq_n g_t41202CC;
+Eq_n g_t7FFFFFFE;
 Eq_n g_t8000000F;
 Eq_n g_tFBEE0054;
 Eq_n g_tFFFFF402;

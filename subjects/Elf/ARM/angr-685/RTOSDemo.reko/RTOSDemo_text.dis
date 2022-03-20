@@ -134,7 +134,6 @@ void vUART_ISR(word32 r4, word32 r5, word32 r6, word32 lr, word32 cpsr)
 // Trashed: NZC r0 r1 r2 r3 r4 r5 r6
 // Preserved: V lr sp
 vUART_ISR_entry:
-	ptr32 fp
 	struct <anonymous> tLoc15
 l00008108:
 	Mem5[&tLoc15 + 5<i32>:word32] = r4
@@ -150,7 +149,7 @@ l00008128:
 	branch Mem17[Mem17[0x00008178<p32>:word32]:word32] << 25<i32> < 0<32> l0000815E
 l0000815E:
 	Mem34[&tLoc15:byte] = Mem17[r5_13:byte]
-	xQueueGenericSendFromISR(fp - 0x15<32>, r0_18, fp - 20<i32>, 0<32>, lr, cpsr)
+	xQueueGenericSendFromISR(&tLoc15, r0_18, &tLoc15 + 1<i32>, 0<32>, lr, cpsr)
 l00008130:
 	branch r0_18 << 26<i32> >= 0<32> l0000813C
 l00008134:
@@ -301,13 +300,13 @@ word32 PDCWrite(word32 r0, word32 r1)
 // Trashed: NZC r0 r1 r2 r3
 // Preserved: r4 r5 sp
 PDCWrite_entry:
-	ptr32 fp
+	struct <anonymous> tLoc14
 l0000829C:
 	word32 r4_12 = Mem9[0x000082CC<p32>:word32]
 	SSIDataPut(r4_12, r0 & 0xF<32>)
 	SSIDataPut(r4_12, r1)
-	SSIDataGet(r4_12, fp - 20<i32>)
-	SSIDataGet(r4_12, fp - 20<i32>)
+	SSIDataGet(r4_12, &tLoc14)
+	SSIDataGet(r4_12, &tLoc14)
 	return r4_12
 PDCWrite_exit:
 

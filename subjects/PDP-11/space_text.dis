@@ -807,7 +807,6 @@ void fn0CF4(word16 r5)
 // Trashed: NZVC r0 r1 r2 r3 r5
 // Preserved: sp
 fn0CF4_entry:
-	ptr16 fp
 	struct <anonymous> tLoc08
 l0CF4:
 	branch Mem0[r5:byte] == 1<8> l0CFE
@@ -817,7 +816,7 @@ l0CFE:
 	Mem20[&tLoc08 + 4<i16>:word16] = &tLoc08 + 4<i16>
 	Mem25[&tLoc08 + 2<i16>:word16] = &tLoc08 + 2<i16>
 	Mem27[&tLoc08:word16] = 3<16>
-	fn15CC(fp - 8<16>)
+	fn15CC(&tLoc08)
 	word16 r1_53 = (Mem30[&tLoc08 + 2<i16>:word16] << 1<i16>) + Mem30[&tLoc08 + 2<i16>:word16]
 	word16 r0_60 = fn0D3E(r0_12, Mem30[&tLoc08 + 4<i16>:word16])
 	Mem66[r0_60:byte] = 0x2D<8>
@@ -1663,11 +1662,12 @@ void fn15CC(word16 r5)
 // Trashed: NZVC r0 r1 r2 r3 r5
 // Preserved: sp
 fn15CC_entry:
-	ptr16 fp
+	char bLoc04
 l15CC:
 	branch Mem0[r5:byte] == 3<8> l15D6
 l15D6:
-	FnSubfn(fp - 4<16>)
+	Mem12[&bLoc04:word16] = 0x1100<16>
+	FnSubfn(&bLoc04)
 	__syscall(0x88FC<16>)
 	word16 r2_22 = 0xA00<16>
 	branch false l15FA

@@ -5,12 +5,12 @@
 #include "subject.h"
 
 Eq_n g_t0FC0 = ??/* Unexpected function type (fn int32 (int32, (ptr64 (ptr64 char)), (ptr64 (ptr64 char)))) */ ; // 0000000000000FC0
-// 0000000000001460: void fn0000000000001460(Register (ptr64 Eq_n) x0, Stack word32 dwArg00)
-void fn0000000000001460(void (* x0)(), word32 dwArg00)
+// 0000000000001460: void fn0000000000001460(Register (ptr64 Eq_n) x0, Stack word32 dwArg00, Stack (ptr64 char) ptrArg08)
+void fn0000000000001460(void (* x0)(), word32 dwArg00, char * ptrArg08)
 {
 	void * fp;
 	word64 qwArg00;
-	__libc_start_main(g_ptr1FFE8, (int32) qwArg00, (char *) fp + 8, g_ptr1FFE0, g_ptr1FF98, x0, fp);
+	__libc_start_main(g_ptr1FFE8, (int32) qwArg00, &ptrArg08, g_ptr1FFE0, g_ptr1FF98, x0, fp);
 	abort();
 }
 

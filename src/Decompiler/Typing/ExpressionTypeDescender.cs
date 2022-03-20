@@ -409,13 +409,11 @@ namespace Reko.Typing
             {
                 if ((dtSub.Domain & Domain.Integer) != 0)
                     return PrimitiveType.Create(Domain.Pointer, dtDiff.BitSize);
-                //throw new TypeInferenceException($"Not handling {dtDiff} and {dtSub} yet.");
             }
             if (dtDiff.Domain == Domain.Offset)
             {
                 if ((dtSub.Domain & Domain.Integer) != 0)
                     return dtDiff;
-                //throw new TypeInferenceException($"Not handling {dtDiff} and {dtSub} yet.");
             }
             return dtDiff;
         }
@@ -426,13 +424,11 @@ namespace Reko.Typing
             {
                 if (dtMin.Domain == Domain.Pointer)
                     return PrimitiveType.Create(Domain.Integer, dtDiff.BitSize);
-                //throw new TypeInferenceException(string.Format("Not handling {0} and {1} yet", dtDiff, dtMin));
             }
             if (dtDiff.Domain == Domain.Offset)
             {
                 if (dtMin.Domain == Domain.Offset)
                     return PrimitiveType.Create(Domain.Integer, dtDiff.BitSize);
-                //throw new TypeInferenceException(string.Format("Not handling {0} and {1} yet", dtDiff, dtMin));
             }
             return dtMin;
         }

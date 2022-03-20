@@ -1,7 +1,7 @@
-void fn0000000000001460(word64 x0, word32 dwArg00)
+void fn0000000000001460(word64 x0, word32 dwArg00, char * ptrArg08)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  Stack +0000:[0..31] x0:[0..63]
+// MayUse:  Stack +0000:[0..31] Stack +0008:[0..63] x0:[0..63]
 // LiveOut:
 // Trashed:
 // Preserved:
@@ -11,7 +11,7 @@ fn0000000000001460_entry:
 	ptr64 fp
 	word64 qwArg00
 l0000000000001460:
-	__libc_start_main(Mem0[0x000000000001FFE8<p64>:word64], SLICE(qwArg00, int32, 0), fp + 8<64>, Mem0[0x000000000001FFE0<p64>:word64], Mem0[0x000000000001FF98<p64>:word64], x0, fp)
+	__libc_start_main(Mem0[0x000000000001FFE8<p64>:word64], SLICE(qwArg00, int32, 0), &ptrArg08, Mem0[0x000000000001FFE0<p64>:word64], Mem0[0x000000000001FF98<p64>:word64], x0, fp)
 	abort()
 
 

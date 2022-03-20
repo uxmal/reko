@@ -275,8 +275,8 @@ Eq_n prvCopyDataFromQueue(Eq_n r0, Eq_n r1, Eq_n r4, Eq_n r5, Eq_n r6, Eq_n r7, 
 //      MPU_xQueueGenericSend
 Eq_n xQueueGenericSend(Eq_n r0, Eq_n r1, up32 r2, Eq_n r3, Eq_n lr, ptr32 cpsr)
 {
-	ptr32 fp;
 	up32 tLoc2C;
+	Eq_n tLoc28;
 	tLoc2C = r2;
 	word32 r5_n = 0x00;
 	word32 * r9_n = g_ptr02A0;
@@ -291,7 +291,7 @@ Eq_n xQueueGenericSend(Eq_n r0, Eq_n r1, up32 r2, Eq_n r3, Eq_n lr, ptr32 cpsr)
 			return lr;
 		}
 		if (r5_n == 0x00)
-			vTaskSetTimeOutState(fp - 40);
+			vTaskSetTimeOutState(&tLoc28);
 		vPortExitCritical(cpsr);
 		vTaskSuspendAll();
 		vPortEnterCritical(cpsr);
@@ -300,7 +300,7 @@ Eq_n xQueueGenericSend(Eq_n r0, Eq_n r1, up32 r2, Eq_n r3, Eq_n lr, ptr32 cpsr)
 		if ((word32) *((word32) r0 + 69) == 0xFF)
 			*((word32) r0 + 69) = 0x00;
 		vPortExitCritical(cpsr);
-		if (xTaskCheckForTimeOut(fp - 40, fp - 44, cpsr) != 0x00)
+		if (xTaskCheckForTimeOut(&tLoc28, &tLoc2C, cpsr) != 0x00)
 		{
 			prvUnlockQueue(r0, cpsr);
 			xTaskResumeAll(cpsr);
@@ -375,8 +375,8 @@ void xQueuePeekFromISR(Eq_n r0, Eq_n r1, Eq_n r7, Eq_n lr, ptr32 cpsr)
 //      MPU_xQueueGenericReceive
 Eq_n xQueueGenericReceive(Eq_n r0, Eq_n r1, up32 r2, word32 r3, Eq_n lr, ptr32 cpsr, union Eq_n & lrOut)
 {
-	ptr32 fp;
 	up32 tLoc2C;
+	Eq_n tLoc28;
 	tLoc2C = r2;
 	word32 r5_n = 0x00;
 	word32 * r8_n = g_ptr0424;
@@ -394,7 +394,7 @@ l000003A4:
 			return 0x00;
 		}
 		if (r5_n == 0x00)
-			vTaskSetTimeOutState(fp - 40);
+			vTaskSetTimeOutState(&tLoc28);
 		vPortExitCritical(cpsr);
 		vTaskSuspendAll();
 		vPortEnterCritical(cpsr);
@@ -403,7 +403,7 @@ l000003A4:
 		if ((word32) *((word32) r0 + 69) == 0xFF)
 			*((word32) r0 + 69) = 0x00;
 		vPortExitCritical(cpsr);
-		if (xTaskCheckForTimeOut(fp - 40, fp - 44, cpsr) != 0x00)
+		if (xTaskCheckForTimeOut(&tLoc28, &tLoc2C, cpsr) != 0x00)
 		{
 			prvUnlockQueue(r0, cpsr);
 			xTaskResumeAll(cpsr);
@@ -1530,7 +1530,7 @@ struct Eq_n * g_ptr1140 = &g_t200000C4; // 00001140
 void vTaskSetTimeOutState(struct Eq_n * r0)
 {
 	struct Eq_n * r3_n = g_ptr1154;
-	word32 r3_n = r3_n->dw0080;
+	up32 r3_n = r3_n->dw0080;
 	r0->dw0000 = r3_n->dw0094;
 	r0->dw0004 = r3_n;
 }

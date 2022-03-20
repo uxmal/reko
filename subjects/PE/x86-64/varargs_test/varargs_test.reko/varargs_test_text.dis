@@ -111,10 +111,10 @@ l00000001400011C6:
 fn00000001400011B0_exit:
 
 
-void fn00000001400011D4(word64 qwArg08)
+void fn00000001400011D4(word64 rbx, ULONGLONG tArg08)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  Stack +0008:[0..63]
+// MayUse:  rbx:[0..63] Stack +0008:[0..63]
 // LiveOut:
 // Trashed: SCZO r8 r9 rax rbp rbx rcx rdx xmm0 xmm1
 // Preserved: rsp
@@ -125,8 +125,8 @@ l00000001400011D4:
 	Mem28[__p__commode():word32] = fn0000000140001ABC()
 	branch fn000000014000164C(1<32>) == 0<8> l0000000140001279
 l0000000140001279:
-	word64 rcx_197
-	fn0000000140001974(7<32>, qwArg08, out rcx_197)
+	word64 rcx_198
+	fn0000000140001974(7<32>, rbx, tArg08, out rcx_198)
 	int3()
 l000000014000120D:
 	fn0000000140001B5C()
@@ -134,8 +134,8 @@ l000000014000120D:
 	word32 eax_72 = fn0000000140001918()
 	branch SLICE(configure_narrow_argv(eax_72, CONVERT(eax_72, word32, uint64)), word32, 0) != 0<32> l0000000140001284
 l0000000140001284:
-	word64 rcx_198
-	fn0000000140001974(7<32>, qwArg08, out rcx_198)
+	word64 rcx_199
+	fn0000000140001974(7<32>, rbx, tArg08, out rcx_199)
 	int3()
 	int3()
 l000000014000128F_thunk_fn0000000140001290:
@@ -203,7 +203,8 @@ word32 fn00000001400012BC(word64 rax)
 // Preserved: rbx rdi rsi rsp
 fn00000001400012BC_entry:
 	word64 rsi
-	word64 qwLoc30
+	ULONGLONG tLoc30
+	word64 qwLoc40
 	word32 ecx
 	word32 edx
 	selector gs
@@ -216,8 +217,8 @@ l00000001400012BC:
 	word64 rax_22 = rax
 	branch al != 0<8> l00000001400012E4
 l00000001400012D9:
-	word64 rcx_315
-	rax_22 = fn0000000140001974(7<32>, qwLoc30, out rcx_315)
+	word64 rcx_321
+	rax_22 = fn0000000140001974(7<32>, qwLoc40, tLoc30, out rcx_321)
 	int3()
 l00000001400012E4:
 	fn00000001400015C4(gs)
@@ -226,7 +227,7 @@ l00000001400012E4:
 	branch ecx_39 != 1<32> l0000000140001308
 l00000001400012FE:
 	word64 rcx_47
-	rax_124 = fn0000000140001974(7<32>, qwLoc30, out rcx_47)
+	rax_124 = fn0000000140001974(7<32>, qwLoc40, tLoc30, out rcx_47)
 	ecx_39 = SLICE(rcx_47, word32, 0) (alias)
 l0000000140001308:
 	word64 rax_235
@@ -258,7 +259,7 @@ l000000014000137F:
 	fn0000000140001BF4()
 	word64 r9_127
 	call rbx_100 (retsize: 8;)
-		uses: al:al_96,r8:0<u64>,r9:r9_127,rax_56_8:rax_56_8_121,rcx:0<u64>,rdx:2<u64>,Stack +0010:qwLoc30
+		uses: al:al_96,r8:0<u64>,r9:r9_127,rax_56_8:rax_56_8_121,rcx:0<u64>,rdx:2<u64>,Stack +0000:qwLoc40,Stack +0010:tLoc30
 		defs: r9:r9_127,rax:rax_124
 l0000000140001395:
 	fn000000014000196C()
@@ -299,9 +300,9 @@ DWORD Win32CrtStartup()
 // Trashed: eax
 // Preserved:
 Win32CrtStartup_entry:
-	word64 qwLoc18
+	LARGE_INTEGER tLoc18
 l0000000140001434:
-	word64 rax_6 = fn000000014000186C(qwLoc18)
+	word64 rax_6 = fn000000014000186C(tLoc18)
 l0000000140001441_thunk_fn00000001400012BC:
 	return fn00000001400012BC(rax_6)
 Win32CrtStartup_exit:
@@ -336,11 +337,11 @@ word32 fn000000014000147C(word64 rcx, word64 qwArg00)
 // Preserved: rsp
 fn000000014000147C_entry:
 	ptr64 fp
-	word64 qwLoc38
+	ULONGLONG tLoc38
 l000000014000147C:
 	branch IsProcessorFeaturePresent(0x17<u32>) == 0<32> l000000014000149A
 l000000014000149A:
-	fn0000000140001550(0x00000001400030E0<p64>, qwLoc38)
+	fn0000000140001550(0x00000001400030E0<p64>, tLoc38)
 	Mem22[0x00000001400031D8<p64>:word64] = qwArg00
 	Mem25[0x0000000140003178<p64>:word64] = fp + 8<64>
 	Mem27[0x0000000140003050<p64>:word64] = Mem25[0x00000001400031D8<p64>:word64]
@@ -356,7 +357,7 @@ l0000000140001493:
 	__fastfail(2<32>)
 
 
-void fn0000000140001550(word64 rcx, word64 qwArg08)
+void fn0000000140001550(word64 rcx, ULONGLONG tArg08)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
@@ -373,10 +374,10 @@ l0000000140001550:
 	word64 rdi_17 = 0<u64>
 l000000014000156A:
 	word32 edi_56 = SLICE(rdi_17, word32, 0)
-	word64 rax_27 = RtlLookupFunctionEntry(rsi_15, fp + 8<64>, 0<u64>)
+	word64 rax_27 = RtlLookupFunctionEntry(rsi_15, &tArg08, 0<u64>)
 	branch rax_27 == 0<64> l00000001400015B9
 l0000000140001580:
-	KERNEL32.dll!RtlVirtualUnwind(0<32>, 0<32>, rsi_15, rax_27, fp + 0x10<64>, fp + 0x18<64>, 0<u64>, qwArg08, rcx, fp + 0x18<64>, fp + 0x10<64>, 0<64>)
+	KERNEL32.dll!RtlVirtualUnwind(0<32>, 0<32>, rsi_15, rax_27, fp + 0x10<64>, fp + 0x18<64>, 0<u64>, Mem33[&tArg08:word64], rcx, fp + 0x18<64>, fp + 0x10<64>, 0<64>)
 	rdi_17 = CONVERT(edi_56 + 1<32>, word32, uint64)
 	branch SLICE(rdi_17, word32, 0) < 2<32> l000000014000156A
 l00000001400015B9:
@@ -451,12 +452,13 @@ byte fn000000014000164C(word32 ecx)
 // Trashed: SCZO r8 r9 rax rbp rbx rcx rdx rsp xmm0 xmm1
 // Preserved:
 fn000000014000164C_entry:
-	word64 qwLoc40
+	ULONGLONG tLoc40
+	word64 qwLoc50
 l000000014000164C:
 	branch ecx >u 1<32> l000000014000170A
 l000000014000170A:
 	word64 rcx_20
-	fn0000000140001974(5<32>, qwLoc40, out rcx_20)
+	fn0000000140001974(5<32>, qwLoc50, tLoc40, out rcx_20)
 	int3()
 	int3()
 	int3()
@@ -464,7 +466,7 @@ l000000014000170A:
 l0000000140001717_thunk_fn0000000140001718:
 	return SLICE(fn0000000140001718(rcx_20), byte, 0)
 l0000000140001664:
-	word64 rax_147
+	word64 rax_148
 	branch fn0000000140001DC4() == 0<32> l0000000140001698
 l000000014000166D:
 	branch ecx != 0<32> l0000000140001698
@@ -476,18 +478,18 @@ l0000000140001698:
 	Mem83[0x00000001400035D0<p64>:real64] = r8_69
 	Mem85[0x00000001400035D8<p64>:word128] = SEQ(r8_69, r8_69)
 	Mem86[0x00000001400035E8<p64>:real64] = r8_69
-	rax_147 = SEQ(SLICE(rax_60, word56, 8), 1<8>) (alias)
+	rax_148 = SEQ(SLICE(rax_60, word56, 8), 1<8>) (alias)
 l0000000140001671:
 	word64 rax_89 = initialize_onexit_table(0x00000001400035C0<p64>)
-	word56 rax_56_8_148 = SLICE(rax_89, word56, 8)
+	word56 rax_56_8_149 = SLICE(rax_89, word56, 8)
 	branch SLICE(rax_89, word32, 0) == 0<32> l0000000140001685
 l0000000140001685:
 	word64 rax_100 = initialize_onexit_table(0x00000001400035D8<p64>)
-	rax_147 = SEQ(SLICE(rax_100, word56, 8), CONVERT(SLICE(rax_100, word32, 0) == 0<32>, bool, int8)) (alias)
+	rax_148 = SEQ(SLICE(rax_100, word56, 8), CONVERT(SLICE(rax_100, word32, 0) == 0<32>, bool, int8)) (alias)
 l0000000140001681:
-	rax_147 = SEQ(rax_56_8_148, 0<8>) (alias)
+	rax_148 = SEQ(rax_56_8_149, 0<8>) (alias)
 l00000001400016FF:
-	return SLICE(rax_147, byte, 0)
+	return SLICE(rax_148, byte, 0)
 fn000000014000164C_exit:
 
 
@@ -638,7 +640,7 @@ l0000000140001854:
 fn0000000140001854_exit:
 
 
-word64 fn000000014000186C(word64 qwArg18)
+word64 fn000000014000186C(LARGE_INTEGER tArg18)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
@@ -649,15 +651,16 @@ word64 fn000000014000186C(word64 qwArg18)
 // Preserved: rbp rbx rsp
 fn000000014000186C_entry:
 	ptr64 fp
-	word32 dwArg18 = SLICE(qwArg18, word32, 0)
+	struct _FILETIME tArg10
 l000000014000186C:
+	Mem11[&tArg10:word64] = 0<64>
 	word64 rax_14 = Mem11[0x0000000140003000<p64>:word64]
 	branch rax_14 != 0x2B992DDFA232<64> l0000000140001903
 l0000000140001894:
-	GetSystemTimeAsFileTime(fp + 16<i64>)
-	word64 v14_30 = CONVERT(GetCurrentThreadId(), DWORD, uint64) ^ CONVERT(GetCurrentProcessId(), DWORD, uint64)
-	QueryPerformanceCounter(fp + 24<i64>)
-	word64 rax_40 = CONVERT(dwArg18, word32, uint64) << 0x20<64> ^ qwArg18 ^ v14_30 ^ fp + 8<i64>
+	GetSystemTimeAsFileTime(&tArg10)
+	word64 v14_30 = Mem11[&tArg10:word64] ^ CONVERT(GetCurrentThreadId(), DWORD, uint64) ^ CONVERT(GetCurrentProcessId(), DWORD, uint64)
+	QueryPerformanceCounter(&tArg18)
+	word64 rax_40 = CONVERT(Mem31[&tArg18:word32], word32, uint64) << 0x20<64> ^ Mem31[&tArg18:word64] ^ v14_30 ^ fp + 8<i64>
 	rax_14 = rax_40 & 0xFFFFFFFFFFFF<64>
 	branch (rax_40 & 0xFFFFFFFFFFFF<64>) != 0x2B992DDFA232<64> l00000001400018FC
 l00000001400018F8_1:
@@ -798,43 +801,51 @@ l000000014000196C:
 fn000000014000196C_exit:
 
 
-word64 fn0000000140001974(word32 ecx, word64 qwArg10, ptr64 & rcxOut)
+word64 fn0000000140001974(word32 ecx, word64 qwArg00, ULONGLONG tArg10, ptr64 & rcxOut)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
 //      fn00000001400011D4
 //      Win32CrtStartup
 //      fn000000014000164C
-// MayUse:  ecx:[0..31] Stack +0010:[0..63]
+// MayUse:  ecx:[0..31] Stack +0000:[0..63] Stack +0010:[0..63]
 // LiveOut: rax rcx
 // Trashed: SCZO r8 rax rcx rdx
 // Preserved: r9 rbp rbx rsp
 fn0000000140001974_entry:
 	ptr64 fp
-	word64 qwLoc03E0
+	struct _EXCEPTION_POINTERS tLoc0588
+	void vLoc04D8
 l0000000140001974:
 	branch IsProcessorFeaturePresent(0x17<u32>) == 0<32> l000000014000199D
 l000000014000199D:
 	Mem20[0x0000000140003610<p64>:word32] = 0<32>
-	memset(fp - 1240<i64>, 0<i32>, 0x4D0<u32>)
-	RtlCaptureContext(fp - 1240<i64>)
-	word64 rax_34 = RtlLookupFunctionEntry(qwLoc03E0, fp + 16<i64>, 0<u64>)
+	memset(&vLoc04D8, 0<i32>, 0x4D0<u32>)
+	RtlCaptureContext(&vLoc04D8)
+	word64 rbx_29 = Mem20[&vLoc04D8 + 248<i64>:word64]
+	word64 rax_34 = RtlLookupFunctionEntry(rbx_29, &tArg10, 0<u64>)
 	branch rax_34 == 0<64> l0000000140001A1A
 l00000001400019DE:
-	KERNEL32.dll!RtlVirtualUnwind(0<32>, 0<32>, qwLoc03E0, rax_34, fp + 24<i64>, fp + 32<i64>, fp - 1240<i64>, 0<u64>, qwArg10, fp - 1240<i64>, fp + 32<i64>, fp + 24<i64>, 0<64>)
+	KERNEL32.dll!RtlVirtualUnwind(0<32>, 0<32>, rbx_29, rax_34, fp + 24<i64>, fp + 32<i64>, &vLoc04D8, 0<u64>, Mem39[&tArg10:word64], &vLoc04D8, fp + 32<i64>, fp + 24<i64>, 0<64>)
 l0000000140001A1A:
+	Mem66[&vLoc04D8 + 248<i64>:word64] = qwArg00
+	Mem73[&vLoc04D8 + 152<i64>:word64] = fp + 8<64>
 	memset(fp - 0x578<64>, 0<i32>, 0x98<u32>)
-	byte bl_85 = CONVERT(IsDebuggerPresent() == 1<32>, bool, int8)
-	word32 rax_32_32_143 = SLICE(SetUnhandledExceptionFilter(0<u64>), word32, 32)
-	word32 eax_91 = UnhandledExceptionFilter(fp - 0x588<64>)
-	word64 rax_142 = SEQ(rax_32_32_143, eax_91)
+	word32 eax_79 = IsDebuggerPresent()
+	Mem82[&tLoc0588:word64] = fp - 0x578<64>
+	Mem86[&tLoc0588 + 8<i64>:word64] = &vLoc04D8
+	word32 rax_32_32_141 = SLICE(SetUnhandledExceptionFilter(0<u64>), word32, 32)
+	word32 eax_91 = UnhandledExceptionFilter(&tLoc0588)
+	byte bl_85 = CONVERT(eax_79 == 1<32>, bool, int8)
+	word64 rcx_90 = &tLoc0588
+	word64 rax_140 = SEQ(rax_32_32_141, eax_91)
 	branch eax_91 != 0<32> l0000000140001AA8
 l0000000140001A9E:
-	rax_142 = CONVERT(0<32> - (bl_85 != 0<8>), word32, uint64)
-	Mem101[0x0000000140003610<p64>:word32] = Mem86[0x0000000140003610<p64>:word32] & SLICE(rax_142, word32, 0)
+	rax_140 = CONVERT(0<32> - (bl_85 != 0<8>), word32, uint64)
+	Mem101[0x0000000140003610<p64>:word32] = Mem86[0x0000000140003610<p64>:word32] & SLICE(rax_140, word32, 0)
 l0000000140001AA8:
-	rcxOut = fp - 0x588<64>
-	return rax_142
+	rcxOut = rcx_90
+	return rax_140
 fn0000000140001974_exit:
 l0000000140001999:
 	__fastfail(ecx)

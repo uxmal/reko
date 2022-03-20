@@ -4,11 +4,10 @@
 
 #include "switch.h"
 
-// 00008334: void _start(Stack int32 dwArg00, Stack (ptr32 Eq_n) ptrArg08, Stack (ptr32 Eq_n) ptrArg0C, Stack (ptr32 void) ptrArg10)
-void _start(int32 dwArg00, void (* ptrArg08)(), void (* ptrArg0C)(), void * ptrArg10)
+// 00008334: void _start(Stack int32 dwArg00, Stack (ptr32 char) ptrArg04, Stack (ptr32 Eq_n) ptrArg08, Stack (ptr32 Eq_n) ptrArg0C, Stack (ptr32 void) ptrArg10)
+void _start(int32 dwArg00, char * ptrArg04, void (* ptrArg08)(), void (* ptrArg0C)(), void * ptrArg10)
 {
-	ptr32 fp;
-	__libc_start_main(g_ptr8364, dwArg00, fp + 4, g_ptr8368, ptrArg08, ptrArg0C, ptrArg10);
+	__libc_start_main(g_ptr8364, dwArg00, &ptrArg04, g_ptr8368, ptrArg08, ptrArg0C, ptrArg10);
 	abort();
 }
 

@@ -1,16 +1,15 @@
-void _start(word32 dwArg00, void (* ptrArg08)(), void (* ptrArg0C)(), void * ptrArg10)
+void _start(word32 dwArg00, char * ptrArg04, void (* ptrArg08)(), void (* ptrArg0C)(), void * ptrArg10)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  Stack +0000:[0..31] Stack +0008:[0..31] Stack +000C:[0..31] Stack +0010:[0..31]
+// MayUse:  Stack +0000:[0..31] Stack +0004:[0..31] Stack +0008:[0..31] Stack +000C:[0..31] Stack +0010:[0..31]
 // LiveOut:
 // Trashed:
 // Preserved:
 // Terminates process
 _start_exit:
 _start_entry:
-	ptr32 fp
 l00008334:
-	__libc_start_main(Mem14[0x00008364<p32>:word32], dwArg00, fp + 4<i32>, Mem14[0x00008368<p32>:word32], ptrArg08, ptrArg0C, ptrArg10)
+	__libc_start_main(Mem14[0x00008364<p32>:word32], dwArg00, &ptrArg04, Mem14[0x00008368<p32>:word32], ptrArg08, ptrArg0C, ptrArg10)
 	abort()
 
 

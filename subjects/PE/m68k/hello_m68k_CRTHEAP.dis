@@ -679,29 +679,30 @@ word32 fn00002BB4(word32 a5, word32 dwArg04, word32 dwArg08, ptr32 & a5Out, ptr3
 fn00002BB4_entry:
 	ptr32 fp
 	word32 a6
-	word32 dwLoc08
+	struct <anonymous> tLoc1C
+	struct <anonymous> tLoc08
 l00002BB4:
-	word32 dwLoc1C_295 = fp + 0xFFFFFFE8<32>
+	Mem20[&tLoc1C:word32] = fp + 0xFFFFFFE8<32>
 	word32 a0_23
-	word32 d0_24 = fn0000273C(fp + 0xFFFFFFE8<32>, a5, out a0_23)
-	branch d0_24 == 0<32> l00002DE8
+	branch fn0000273C(fp + 0xFFFFFFE8<32>, a5, out a0_23) == 0<32> l00002DE8
 l00002BE2:
 	word32 a0_34
 	branch fn0000273C(a0_23, a5, out a0_34) == 0<32> l00002DE8
 l00002BEE:
-	word32 a0_396
-	branch fn0000273C(a0_34, a5, out a0_396) == 0<32> l00002DE8
+	word32 a0_391
+	branch fn0000273C(a0_34, a5, out a0_391) == 0<32> l00002DE8
 l00002BFA:
 	word32 a3_77
-	word32 d0_64 = fn00002EA8(a5, dwArg04, fp + 0xFFFFFFF8<32>)
+	word32 d0_64 = fn00002EA8(a5, dwArg04, &tLoc08)
 	branch d0_64 != 0<32> l00002C28
 l00002C28:
-	a3_77 = d0_24
-	dwLoc1C_295 = fp + 0xFFFFFFEC<32>
+	a3_77 = Mem60[Mem60[&tLoc1C:word32]:word32]
+	Mem79[&tLoc1C:word32] = Mem60[&tLoc1C:word32] + 4<32>
 l00002C0E:
-	branch (Mem60[dwLoc08 + 4<i32>:word32] & 3<i32>) != 2<i32> l00002DE8
+	word32 a0_81 = Mem60[&tLoc08:word32]
+	branch (Mem60[a0_81 + 4<i32>:word32] & 3<i32>) != 2<i32> l00002DE8
 l00002C22:
-	a3_77 = dwLoc08
+	a3_77 = a0_81
 l00002C32:
 	Mem92[a3_77 + 4<i32>:word32] = dwArg04
 	word32 d1_94
@@ -712,21 +713,21 @@ l00002C32:
 	Mem99[dwArg04:word32] = a3_77
 	branch d0_64 >u 0<32> l00002C60
 l00002C60:
-	branch (Mem99[dwLoc08 + 4<i32>:word32] & 3<i32>) != 2<i32> l00002DE8
+	word32 a0_108 = Mem99[&tLoc08:word32]
+	branch (Mem99[a0_108 + 4<i32>:word32] & 3<i32>) != 2<i32> l00002DE8
 l00002DE8:
-	branch Mem117[dwLoc1C_295:word32] == 0<32> l00002E0E
+	branch Mem117[Mem117[&tLoc1C:word32]:word32] == 0<32> l00002E0E
 l00002DF0:
-	Mem129[Mem124[dwLoc1C_295:word32]:word32] = Mem124[a5 + -1328<i32>:word32]
-	Mem132[a5 + -1328<i32>:word32] = Mem129[dwLoc1C_295:word32]
-	word32 v19_133 = dwLoc1C_295 + 4<32>
-	dwLoc1C_295 = v19_133
-	branch Mem134[v19_133:word32] != 0<32> l00002DF0
+	Mem129[Mem124[Mem124[&tLoc1C:word32]:word32]:word32] = Mem124[a5 + -1328<i32>:word32]
+	Mem132[a5 + -1328<i32>:word32] = Mem129[Mem129[&tLoc1C:word32]:word32]
+	Mem134[&tLoc1C:word32] = Mem132[&tLoc1C:word32] + 4<32>
+	branch Mem134[Mem134[&tLoc1C:word32]:word32] != 0<32> l00002DF0
 l00002E0E:
 	a5Out = a5
 	a6Out = a6
 	return -1<i32>
 l00002C74:
-	branch a5 + -1324<i32> - Mem99[dwLoc08:word32] != 0<32> l00002C92
+	branch a5 + -1324<i32> - Mem99[a0_108:word32] != 0<32> l00002C92
 l00002C7C:
 	word32 d0_162 = Mem99[a3_77 + 4<i32>:word32]
 	word32 d0_166 = SEQ(SLICE(d0_162, word16, 16), SLICE(d0_162, word16, 0) & 0xFFFC<16>) + dwArg08
@@ -734,12 +735,14 @@ l00002C7C:
 l00002C8E:
 	Mem171[a5 + -1320<i32>:word32] = d0_166
 l00002C92:
-	fn00002E18(a3_77, dwArg08, Mem176[dwLoc08:word32], fp + 0xFFFFFFE4<32>)
-	word32 d0_205 = Mem202[Mem202[dwLoc08:word32] + 4<i32>:word32]
-	word32 d1_210 = Mem202[dwLoc08 + 4<i32>:word32]
+	fn00002E18(a3_77, dwArg08, Mem176[Mem176[&tLoc08:word32]:word32], &tLoc1C)
+	word32 a0_209 = Mem202[&tLoc08:word32]
+	word32 d0_205 = Mem202[Mem202[Mem202[&tLoc08:word32]:word32] + 4<i32>:word32]
+	word32 d1_210 = Mem202[a0_209 + 4<i32>:word32]
+	word32 dwLoc28_322 = &tLoc1C
 	word32 d0_214 = SEQ(SLICE(d0_205, word16, 16), SLICE(d0_205, word16, 0) & 0xFFFC<16>) - SEQ(SLICE(d1_210, word16, 16), SLICE(d1_210, word16, 0) & 0xFFFC<16>)
 l00002DA4:
-	fn00002E18(dwLoc08, d0_214, a3_77, fp + 0xFFFFFFE4<32>)
+	fn00002E18(a0_209, d0_214, a3_77, dwLoc28_322)
 	word32 d0_234 = Mem219[Mem219[a5 + -1332<i32>:word32] + 4<i32>:word32]
 	branch SEQ(SLICE(d0_234, word16, 16), SLICE(d0_234, word16, 0) & 0xFFFC<16>) - dwArg04 <=u 0<32> l00002DDC
 l00002DBC:
@@ -759,7 +762,7 @@ l00002C4E:
 	word32 a5_284
 	word32 a1_285
 	call 0x00002C58<p32> + CONVERT(v24_272, word16, int32) (retsize: 0;)
-		uses: a1:a1_285,a2:dwArg04,a3:a3_91,a5:a5,a6:fp - 4<32>,d0:SEQ(SLICE(d0_64 + 3<32>, word16, 16), v24_272),Stack +001C:dwLoc08,Stack +0028:dwArg04,Stack +002C:dwArg08
+		uses: a1:a1_285,a2:dwArg04,a3:a3_91,a5:a5,a6:fp - 4<32>,d0:SEQ(SLICE(d0_64 + 3<32>, word16, 16), v24_272),Stack +0008:tLoc1C,Stack +001C:tLoc08,Stack +0028:dwArg04,Stack +002C:dwArg08
 		defs: a1:a1_285,a5:a5_284,a6:a6_277,d0:d0_282
 	a5Out = a5_284
 	a6Out = a6_277

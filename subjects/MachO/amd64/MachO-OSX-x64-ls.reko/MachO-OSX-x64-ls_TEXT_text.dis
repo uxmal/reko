@@ -249,8 +249,8 @@ l000000010000203E:
 	qwLoc0100_1055 = 0x0000000100006584<p64>
 	r15_393 = 0x0000000100006584<p64>
 l0000000100001FF7:
-	snprintf(0x00000001000052FC<p64>, 0xD<u64>, fp - 106<i64>)
-	snprintf(0x00000001000052FC<p64>, 0xD<u64>, fp - 93<i64>)
+	snprintf(0x00000001000052FC<p64>, 0xD<u64>, &bLoc6A)
+	snprintf(0x00000001000052FC<p64>, 0xD<u64>, &bLoc5D)
 	qwLoc0100_1055 = &bLoc6A
 	r15_393 = &bLoc5D
 l000000010000205C:
@@ -335,14 +335,14 @@ l00000001000021C5:
 	word64 rsi_577 = rsi
 	branch dwLoc011C_1538 == 0<32> l00000001000022E2
 l00000001000021F8:
-	snprintf(0x000000010000530D<p64>, 0x18<u64>, fp - 80<i64>)
-	strlen(fp - 80<i64>)
-	snprintf(0x0000000100005311<p64>, 0x18<u64>, fp - 80<i64>)
-	strlen(fp - 80<i64>)
-	snprintf(0x0000000100005316<p64>, 0x18<u64>, fp - 80<i64>)
-	strlen(fp - 80<i64>)
-	snprintf(0x000000010000530D<p64>, 0x18<u64>, fp - 80<i64>)
-	strlen(fp - 80<i64>)
+	snprintf(0x000000010000530D<p64>, 0x18<u64>, &bLoc50)
+	strlen(&bLoc50)
+	snprintf(0x0000000100005311<p64>, 0x18<u64>, &bLoc50)
+	strlen(&bLoc50)
+	snprintf(0x0000000100005316<p64>, 0x18<u64>, &bLoc50)
+	strlen(&bLoc50)
+	snprintf(0x000000010000530D<p64>, 0x18<u64>, &bLoc50)
+	strlen(&bLoc50)
 	rsi_577 = 0x18<u64>
 l00000001000022E2:
 	word64 rcx_807
@@ -1150,7 +1150,6 @@ word32 fn000000010000356F(word64 rdi, ptr64 & rbxOut, ptr64 & rbpOut, ptr64 & r1
 // Trashed: SCZO r12 r13 r14 r15 rax rbp rbx rcx rdi rdx rsi xmm0
 // Preserved: rsp
 fn000000010000356F_entry:
-	ptr64 fp
 	word64 rbp
 	word64 r15
 	word64 r14
@@ -1184,7 +1183,7 @@ l0000000100004C44:
 	word64 r14_113 = rdi
 l0000000100004D5B:
 	word64 rax_197
-	word64 rax_82 = mbrtowc(fp - 184<i64>, 6<u64>, r14_113, fp - 188<i64>)
+	word64 rax_82 = mbrtowc(&tLocB8, 6<u64>, r14_113, &wLocBC)
 	word32 eax_124 = SLICE(rax_82, word32, 0)
 	branch rax_82 == 0xFFFFFFFFFFFFFFFE<64> l0000000100004C8F
 l0000000100004C8F:
@@ -1682,6 +1681,7 @@ l00000001000046EB:
 fn0000000100003AA8_entry:
 	def fp
 	def rdi
+	def bLoc70
 l0000000100003AA8:
 	rax_15 = Mem12[__stack_chk_guard:word64]
 	rax_32_32_41 = SLICE(rax_15, word32, 32) (alias)
@@ -1742,8 +1742,8 @@ l0000000100003B9F_1:
 	rbx_96 = rax_95
 l0000000100003BA3:
 	rbx_109 = PHI((rbx_110, l0000000100003B9F), (rbx_96, l0000000100003B9F_1))
-	strftime(localtime(SLICE(fp, word32, 0) - 0x78<32>), rbx_109, 0x50<u64>, fp - 112<i64>)
-	fputs(Mem46[__stdoutp:word64], fp - 112<i64>)
+	strftime(localtime(SLICE(fp, word32, 0) - 0x78<32>), rbx_109, 0x50<u64>, &bLoc70)
+	fputs(Mem46[__stdoutp:word64], &bLoc70)
 	branch Mem46[__stack_chk_guard:word64] != rax_15 l0000000100003BEE
 l0000000100003BEE:
 	__stack_chk_fail()
@@ -1762,7 +1762,6 @@ word32 fn0000000100004715(word64 rdi)
 // Trashed: SCZO rax rcx rdi rdx rsi xmm0
 // Preserved: r12 r13 r14 r15 rbp rbx rsp
 fn0000000100004715_entry:
-	ptr64 fp
 	wchar_t wLocBC
 	mbstate_t tLocB8
 l0000000100004715:
@@ -1771,7 +1770,7 @@ l0000000100004715:
 	word64 r14_121 = rdi
 l000000010000482F:
 	word64 rax_231
-	word64 rax_46 = mbrtowc(fp - 184<i64>, 6<u64>, r14_121, fp - 188<i64>)
+	word64 rax_46 = mbrtowc(&tLocB8, 6<u64>, r14_121, &wLocBC)
 	word32 eax_111 = SLICE(rax_46, word32, 0)
 	branch rax_46 == 0xFFFFFFFFFFFFFFFE<64> l000000010000476F
 l000000010000476F:
@@ -2003,7 +2002,6 @@ word64 fn0000000100004AFA(word32 esi, word64 rdi)
 // Preserved: r12 r13 r14 r15 rbp rbx rsp
 fn0000000100004AFA_entry:
 	word64 rsi
-	ptr64 fp
 	wchar_t wLocBC
 	mbstate_t tLocB8
 	word32 esi = SLICE(rsi, word32, 0)
@@ -2019,7 +2017,7 @@ l0000000100004BEC:
 	word64 rax_130
 	branch ebx_152 == 0<32> l0000000100004C2F
 l0000000100004BF0:
-	word64 rax_59 = mbrtowc(fp - 184<i64>, r15_43, r12_127, fp - 188<i64>)
+	word64 rax_59 = mbrtowc(&tLocB8, r15_43, r12_127, &wLocBC)
 	word32 eax_95 = SLICE(rax_59, word32, 0)
 	branch rax_59 == 0xFFFFFFFFFFFFFFFE<64> l0000000100004B59
 l0000000100004B59:

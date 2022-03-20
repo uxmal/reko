@@ -6,33 +6,39 @@ int32 main(int32 argc, char ** argv)
 // Trashed: eax
 // Preserved:
 main_entry:
-	ptr32 fp
+	struct <anonymous> tLoc2C
+	struct <anonymous> tLoc1C
 l00401000:
 	// s1.i = 0
+	Mem10[&tLoc2C:word32] = 0<32>
 	// s1.d = 1.0
+	Mem13[&tLoc2C + 8<i32>:real64] = 1.0
 	// s2.i = 10
+	Mem15[&tLoc1C:word32] = 0xA<32>
 	// s2.d = 11.0
+	Mem18[&tLoc1C + 8<i32>:real64] = Mem15[0x004020F8<p32>:real64]
 	// res = GetMin(&s1, &s2)
 	// s1.i = 100
+	word32 eax_26 = GetMin(&tLoc2C, &tLoc1C)
+	Mem36[&tLoc2C:word32] = 0x64<32>
 	// res->i = 5
-	real64 rLoc1_101 = Mem15[0x004020F8<p32>:real64]
-	word32 eax_26 = GetMin(fp - 44<i32>, fp - 28<i32>)
 	Mem38[eax_26:word32] = 5<32>
 	// res->d = 5.0
 	Mem42[eax_26 + 8<i32>:real64] = Mem38[0x004020F0<p32>:real64]
 	// printf("%d %f %d %f\n", s1.i, s1.d, s2.i, s2.d)
-	printf(0x4020C8<32>, 0x64<32>, 1.0, 0xA<32>, rLoc1_101)
+	printf(0x4020C8<32>, Mem55[&tLoc2C:word32], Mem51[&tLoc2C + 8<i32>:real64], Mem47[&tLoc1C:word32], Mem42[&tLoc1C + 8<i32>:real64])
 	// gbl_s = &s2
-	Mem65[0x00403018<p32>:word32] = fp - 28<i32>
+	Mem65[0x00403018<p32>:word32] = &tLoc1C
 	// s2.i = 2
+	Mem66[&tLoc1C:word32] = 2<32>
 	// s2.d = 2.0
+	Mem69[&tLoc1C + 8<i32>:real64] = Mem66[0x004020E8<p32>:real64]
 	// gbl_s->i = 3
-	real64 rLoc1_116 = Mem66[0x004020E8<p32>:real64]
 	Mem72[Mem69[0x00403018<p32>:word32]:word32] = 3<32>
 	// gbl_s->d = 3.0
 	Mem76[Mem72[0x00403018<p32>:word32] + 8<i32>:real64] = Mem72[0x004020E0<p32>:real64]
 	// printf("%d %f\n", s2.i, s2.d)
-	printf(0x4020D8<32>, 2<32>, rLoc1_116)
+	printf(0x4020D8<32>, Mem81[&tLoc1C:word32], Mem76[&tLoc1C + 8<i32>:real64])
 	return 0<32>
 main_exit:
 

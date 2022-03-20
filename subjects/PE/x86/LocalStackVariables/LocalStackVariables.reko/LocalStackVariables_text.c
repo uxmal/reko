@@ -7,32 +7,38 @@
 // 00401000: Register int32 main(Stack int32 argc, Stack (ptr32 (ptr32 char)) argv)
 int32 main(int32 argc, char ** argv)
 {
-	ptr32 fp;
+	Eq_n tLoc2C;
+	Eq_n tLoc1C;
 	// s1.i = 0
+	tLoc2C.dw0000 = 0x00;
 	// s1.d = 1.0
+	tLoc2C.r0008 = 1.0;
 	// s2.i = 10
+	tLoc1C.dw0000 = 0x0A;
 	// s2.d = 11.0
+	tLoc1C.r0008 = 11.0;
 	// res = GetMin(&s1, &s2)
 	// s1.i = 100
+	struct Eq_n * eax_n = GetMin(&tLoc2C, &tLoc1C);
+	tLoc2C.dw0000 = 100;
 	// res->i = 5
-	real64 rLoc1_n = 11.0;
-	struct Eq_n * eax_n = GetMin(fp - 44, fp - 28);
 	eax_n->dw0000 = 0x05;
 	// res->d = 5.0
 	eax_n->r0008 = 5.0;
 	// printf("%d %f %d %f\n", s1.i, s1.d, s2.i, s2.d)
-	printf("%d %f %d %f\n", 100, 1.0, 0x0A, rLoc1_n);
+	printf("%d %f %d %f\n", tLoc2C.dw0000, tLoc2C.r0008, tLoc1C.dw0000, tLoc1C.r0008);
 	// gbl_s = &s2
-	g_ptr403018 = fp - 28;
+	g_ptr403018 = &tLoc1C;
 	// s2.i = 2
+	tLoc1C.dw0000 = 0x02;
 	// s2.d = 2.0
+	tLoc1C.r0008 = 2.0;
 	// gbl_s->i = 3
-	real64 rLoc1_n = 2.0;
 	g_ptr403018->dw0000 = 0x03;
 	// gbl_s->d = 3.0
 	g_ptr403018->r0008 = 3.0;
 	// printf("%d %f\n", s2.i, s2.d)
-	printf("%d %f\n", 0x02, rLoc1_n);
+	printf("%d %f\n", tLoc1C.dw0000, tLoc1C.r0008);
 	return 0x00;
 }
 
