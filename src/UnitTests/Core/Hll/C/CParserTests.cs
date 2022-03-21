@@ -178,7 +178,7 @@ namespace Reko.UnitTests.Core.Hll.C
         {
             GccLex("typedef enum _S { Item = 1, Folder } S;");
             var decl = parser.Parse_ExternalDecl();
-            var sExp = "(decl Typedef Reko.Core.Hll.C.EnumeratorTypeSpec " +
+            var sExp = "(decl Typedef (Enum _S ((Item 1) (Folder))) " +
                 "((init-decl S)))";
             Assert.AreEqual(sExp, decl.ToString());
         }
