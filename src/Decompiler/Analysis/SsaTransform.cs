@@ -722,7 +722,7 @@ namespace Reko.Analysis
             // If the guess is wrong, the user can correct it with a 
             // decompilation directive.
 
-            var ids = GuessParameterIdentifiers(ci, stmCur!)
+                var ids = GuessParameterIdentifiers(ci, stmCur!)
                 .Concat(ssa.Procedure.EntryBlock.Statements
                     .Select(s => s.Instruction)
                     .OfType<DefInstruction>()
@@ -740,7 +740,6 @@ namespace Reko.Analysis
             {
                 var calleeStg = FrameShift(ci, id.Storage, stackDepth);
                 if (calleeStg is not null &&
-                    id.DataType.MeasureBitSize(arch.MemoryGranularity) > 0 &&
                     !existingUses.Contains(calleeStg) &&
                     (calleeStg is RegisterStorage ||
                      calleeStg is StackArgumentStorage))
@@ -798,6 +797,8 @@ namespace Reko.Analysis
                     // and currently causes the type inference phase 
                     // serious problems (deeply recursive function pointers)
                     if (call.Callee == ass.Dst)
+                        continue;
+                    if (ass.Dst.DataType.MeasureBitSize(arch.MemoryGranularity) == 0)
                         continue;
                     switch (ass.Dst.Storage)
                     {

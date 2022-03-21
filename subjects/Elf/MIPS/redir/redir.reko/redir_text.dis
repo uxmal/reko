@@ -3517,13 +3517,14 @@ void log_string(word32 r4, word32 r5, word32 r7, word32 ra)
 // Preserved: r16 r17 r30 ra sp
 log_string_entry:
 	ptr32 fp
+	word32 dwLoc28
 l0040697C:
-	gettimeofday(fp + -40<i32>, 0<32>)
+	gettimeofday(&dwLoc28, 0<32>)
 	word32 r7_33 = <invalid>
 	word32 r6_31 = <invalid>
 	word32 r5_30 = <invalid>
 	word32 r4_29 = <invalid>
-	strftime(fp + -72<i32>, SLICE(28<i32>, size_t, 0), 0x40A74C<32>, gmtime(fp + -40<i32>, r4_29, fp + -40<i32>, 0<32>, r5_30, r6_31, r7_33, 0x10008860<32>))
+	strftime(fp + -72<i32>, SLICE(28<i32>, size_t, 0), 0x40A74C<32>, gmtime(&dwLoc28, r4_29, &dwLoc28, 0<32>, r5_30, r6_31, r7_33, 0x10008860<32>))
 	fprintf(r4, 0x40A760<32>, 0<32>)
 	fflush(r4)
 	Mem106[Mem75[0x10000878<32>:word32] + 2084<i32>:word32] = Mem75[Mem75[0x10000878<32>:word32] + 2084<i32>:word32] + 1<i32>

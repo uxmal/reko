@@ -157,6 +157,11 @@ namespace Reko.Core.Types
                 case ReferenceTo refto:
                     dt = refto.Referent;
                     break;
+                case CodeType _:
+                case FunctionType _:
+                    // Functions can vary in size, but must be at least this big.
+                    dt = PrimitiveType.Byte;
+                    break;
                 default:
                     throw new NotImplementedException($"MeasureSize: {dt.GetType().Name} not implemented.");
                 }
@@ -219,6 +224,10 @@ namespace Reko.Core.Types
                     break;
                 case ReferenceTo refto:
                     dt = refto.Referent;
+                    break;
+                case CodeType _:
+                case FunctionType _:
+                    dt = PrimitiveType.Byte;
                     break;
                 default:
                     throw new NotImplementedException($"MeasureSize: {dt.GetType().Name} not implemented.");
