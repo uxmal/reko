@@ -87,7 +87,15 @@ namespace Reko.Core.Hll.C
 
         public Func<NamedDataType, NamedDataType> VisitArray(ArrayDeclarator array)
         {
-            var fn = array.Declarator.Accept(this);
+            Func<NamedDataType, NamedDataType> fn;
+            if (array.Declarator is null)
+            {
+                fn = (nt) => nt;
+            }
+            else
+            {
+                fn = array.Declarator.Accept(this);
+            }
             return (nt) =>
             {
                 nt = new NamedDataType
