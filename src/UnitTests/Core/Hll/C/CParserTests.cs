@@ -1599,5 +1599,24 @@ void __near exit(int status);
             Assert.AreEqual("(decl Void _Near ((init-decl (func exit ((Int status))))))",
                 decl.ToString());
         }
+
+        [Test]
+        public void CParser_xxx()
+        {
+            MsvcLex(@"
+typedef void (__cdecl  * PfnType)(void  * arg);
+
+typedef struct _THING {
+	PfnType  *pfn;
+	const PfnType  *cpfn;
+} THING;");
+            var decls = parser.Parse();
+            var decl = decls[1];
+            Console.WriteLine(decls[1].ToString());
+            Assert.AreEqual("(decl Typedef (Struct _THING " +
+                "((PfnType) (((ptr pfn))) " +
+                "(Const PfnType) (((ptr cpfn)))) ((init-decl THING)))",
+                decl.ToString());
+        }
     }
 }

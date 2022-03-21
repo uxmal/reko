@@ -768,6 +768,7 @@ IGNORE tab + cr + lf
                 }
                 return grammar.Enum(tag, enums);
             case CTokenType.EOF:
+            case CTokenType.LParen:
             case CTokenType.RParen:
             case CTokenType.Colon:
             case CTokenType.Const:
@@ -780,6 +781,8 @@ IGNORE tab + cr + lf
             case CTokenType._Huge:
             case CTokenType._Near:
             case CTokenType.__Unaligned:
+            case CTokenType.Star:
+            case CTokenType.Semicolon:
                 return null;
             default:
                 throw Unexpected(token);
@@ -851,7 +854,7 @@ IGNORE tab + cr + lf
         private List<DeclSpec> Parse_SpecifierQualifierList()
         {
             var sql = new List<DeclSpec>();
-            do
+            while (true)
             {
                 DeclSpec t = Parse_TypeSpecifier();
                 if (t == null)
@@ -859,7 +862,11 @@ IGNORE tab + cr + lf
                 if (t == null)
                     break;
                 sql.Add(t);
-            } while (!IsDeclarator(false));
+                var nextToken = PeekToken();
+                if (nextToken.Type == CTokenType.Id &&
+                    (t is TypeDefName || t is TypeSpec))
+                    break;
+            }
             return sql;
         }
 
