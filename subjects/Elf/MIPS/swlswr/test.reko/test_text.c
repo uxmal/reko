@@ -83,16 +83,19 @@ void frame_dummy()
 void main()
 {
 	ptr32 fp;
-	Eq_n dwLoc14;
+	word32 dwLoc14;
 	byte bLoc10;
-	memset(fp + -20, 0x00, (size_t) 5);
+	memset(&dwLoc14, 0x00, (size_t) 5);
 	struct Eq_n * r2_n = calloc((size_t) 1, (size_t) 5);
-	r2_n->t0000 = dwLoc14;
+	r2_n->t0000.u1 = dwLoc14;
 	r2_n->b0004 = bLoc10;
 	r2_n->t0000.u0 = 0x0C;
 	r2_n->dw0001 = 0x00;
+	dwLoc14 = (word32) 66;
+	dwLoc14.ptr0001 = r2_n;
+	r30_n = fp + -48;
 	r2_n = r2_n;
-	r3_n = dwLoc14;
+	r2_n = r2_n;
 	r2_n = r2_n;
 }
 

@@ -2259,12 +2259,13 @@ void log_rotate(word32 ra)
 void log_string(FILE * r4, word32 r5, word32 r7, word32 ra)
 {
 	ptr32 fp;
-	gettimeofday(fp + -40, null);
+	word32 dwLoc28;
+	gettimeofday(&dwLoc28, null);
 	Eq_n r7_n = <invalid>;
 	Eq_n r6_n = <invalid>;
 	Eq_n r5_n = <invalid>;
 	Eq_n r4_n = <invalid>;
-	strftime(fp + -72, (size_t) 28, "%Y-%m-%d %H:%M:%S", gmtime(fp + -40, r4_n, fp + -40, 0x00, r5_n, r6_n, r7_n, 0x10008860));
+	strftime(fp + -72, (size_t) 28, "%Y-%m-%d %H:%M:%S", gmtime(&dwLoc28, r4_n, &dwLoc28, 0x00, r5_n, r6_n, r7_n, 0x10008860));
 	fprintf(r4, "%s:%s.%03d:%s\n", 0x00);
 	fflush(r4);
 	++g_ptr10000878->dw0824;

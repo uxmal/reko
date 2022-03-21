@@ -677,15 +677,17 @@ void fn00401774(word32 dwArg04)
 // Preserved: ebp ebx esi esp
 fn00401774_entry:
 	ptr32 fp
+	word32 dwLoc5C
 	struct _EXCEPTION_POINTERS tLoc0C
 l00401774:
 	branch IsProcessorFeaturePresent(0x17<32>) == 0<32> l0040178F
 l0040178F:
 	Mem30[0x00403368<p32>:word32] = 0<32>
 	memset(fp - 0x328<32>, 0<32>, 0x2CC<32>)
-	memset(fp - 92<i32>, 0<32>, 0x50<32>)
+	memset(&dwLoc5C, 0<32>, 0x50<32>)
+	Mem78[&dwLoc5C:word32] = 0x40000015<32>
 	word32 eax_81 = IsDebuggerPresent()
-	Mem88[&tLoc0C:word32] = fp - 92<i32>
+	Mem88[&tLoc0C:word32] = &dwLoc5C
 	Mem91[&tLoc0C + 4<i32>:word32] = fp - 0x328<32>
 	SetUnhandledExceptionFilter(0<32>)
 	byte bl_90 = 0<8> - (eax_81 != 1<32>)

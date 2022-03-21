@@ -121,15 +121,29 @@ namespace Reko.Analysis
             }
         }
 
-        private static DataType? DeterminePointee(DataType dt)
+        private DataType? DeterminePointee(DataType dt)
         {
             var ptr = dt.ResolveAs<Pointer>();
+            DataType dtPointee;
             if (ptr is not null)
             {
-                return ptr.Pointee;
+                dtPointee = ptr.Pointee;
             }
-            var memptr = dt.ResolveAs<MemberPointer>();
-            return memptr?.Pointee;
+            else
+            {
+                var memptr = dt.ResolveAs<MemberPointer>();
+                if (memptr is null)
+                    return null;
+                dtPointee = memptr.Pointee;
+            }
+            if (dtPointee.MeasureBitSize(ssa.Procedure.Architecture.MemoryGranularity) == 0)
+            {
+                //$TODO: This happens when arguments are void *. (e.g. memset).
+                // Other mechanisms will be needed to specify parameter sizes.
+                // For now, to avoid crashes, return the size of a machine word.
+                return ssa.Procedure.Architecture.WordWidth;
+            }
+            return dtPointee;
         }
 
         public void VisitComment(CodeComment code)
@@ -221,7 +235,7 @@ namespace Reko.Analysis
         // varargs or has no signature, fall back on the argument types.
         private DataType GetArgumentDataType(Expression[] arguments, FunctionType? sig, int i)
         {
-            if (sig is not null && i < sig.Parameters!.Length)
+            if (sig is not null && sig.ParametersValid && i < sig.Parameters!.Length)
             {
                 return sig.Parameters[i].DataType;
             }
@@ -246,6 +260,8 @@ namespace Reko.Analysis
 
         private void AddInterval(int offset, DataType dt)
         {
+            if (dt.MeasureSize() == 0)
+                _ = this;       //$DEBUG
             var newInterval = Interval.Create(offset, offset + dt.MeasureSize());
             var ints = intervals.GetIntervalsOverlappingWith(
                 newInterval).Select(de => de.Key).ToArray();

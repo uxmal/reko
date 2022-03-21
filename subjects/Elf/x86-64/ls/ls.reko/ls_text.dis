@@ -2507,7 +2507,7 @@ void fn0000000000406490()
 // Trashed: SCZO rax rdi rdx rsi Top
 // Preserved: rbx rcx rsp
 fn0000000000406490_entry:
-	ptr64 fp
+	word64 qwLoc88
 l0000000000406490:
 l00000000004064EF:
 	branch Mem9[0x000000000061B038<p64>:word32] != 0<32> l0000000000406503
@@ -2525,7 +2525,7 @@ l000000000040650C:
 	fn0000000000406440(0x61A3F0<u64>, out rcx_129)
 l00000000004064A0:
 	fflush_unlocked(Mem9[0x000000000061A610<p64>:word64])
-	sigprocmask(0<i32>, 0x61B040<u64>, fp + 0xFFFFFFFFFFFFFF78<64>)
+	sigprocmask(0<i32>, 0x61B040<u64>, &qwLoc88)
 	word32 ebx_76 = Mem9[0x000000000061B038<p64>:word32]
 	word32 eax_67 = Mem9[0x000000000061B034<p64>:word32]
 	branch eax_67 == 0<32> l0000000000406528
@@ -2536,7 +2536,7 @@ l00000000004064CB:
 	ebx_76 = 0x13<32> (alias)
 l00000000004064D9:
 	raise(ebx_76)
-	sigprocmask(2<i32>, fp + 0xFFFFFFFFFFFFFF78<64>, 0<u64>)
+	sigprocmask(2<i32>, &qwLoc88, 0<u64>)
 
 
 word64 fn0000000000406540(word64 rax, word64 rcx, word64 rdx, byte sil, word64 rdi, selector fs, ptr64 & rcxOut)
@@ -2812,7 +2812,7 @@ word64 fn0000000000406A80(word64 rdx, word64 rsi, word64 rdi, selector fs)
 // Trashed: SCZO r10 r11 r15 r8 r9 rax rcx rdi rdx rsi Top
 // Preserved: r12 r13 r14 rbp rbx rsp
 fn0000000000406A80_entry:
-	ptr64 fp
+	word64 qwLoc0138
 l0000000000406A80:
 	word64 rbx_27 = rsi
 	word64 rax_30 = Mem25[fs:0x28<32>:word64]
@@ -2823,10 +2823,10 @@ l0000000000406AB8:
 l0000000000406ACD:
 	branch strlen(rsi) <=u 0x65<64> l0000000000406B20
 l0000000000406B20:
-	word64 rax_55 = __mempcpy_chk(fp - 0x138<64>, rsi, rax_39 - rsi, 0x105<u64>)
+	word64 rax_55 = __mempcpy_chk(&qwLoc0138, rsi, rax_39 - rsi, 0x105<u64>)
 	word64 rcx_56 = CONVERT(Mem31[rdx + 16<i64>:word32], word32, int64)
 	strcpy(stpcpy(rax_55, rcx_56 + 6399840<i64> + rcx_56 * 0xA0<64>), rax_39 + 2<i64>)
-	rbx_27 = fp - 0x138<64>
+	rbx_27 = &qwLoc0138
 l0000000000406ADB:
 	word64 rax_92 = fn0000000000410600(rdx, rbx_27, 0x3E9<u64>, rdi, fs)
 	branch (rax_30 ^ Mem31[fs:0x28<32>:word64]) != 0<64> l0000000000406B66
@@ -3440,6 +3440,7 @@ word64 fn0000000000407EA0(word64 rcx, word32 edx, word32 esi, word64 rdi, select
 // Preserved: r10 r11 r12 r13 r14 r15 r8 rbp rbx rsp
 fn0000000000407EA0_entry:
 	ptr64 fp
+	word64 qwLoc0388
 	struct <anonymous> tLoc02F8
 	struct <anonymous> tLoc02D8
 	word32 dwLoc0370
@@ -3838,7 +3839,7 @@ l0000000000408B80:
 	branch Mem1363[0x000000000061B115<p64>:byte] == 0<8> l0000000000408607
 l0000000000408B8D:
 l00000000004085B3:
-	branch __xstat(1<i32>, r13_1246, fp - 904<i64>) != 0<32> l0000000000408607
+	branch __xstat(1<i32>, r13_1246, &qwLoc0388) != 0<32> l0000000000408607
 l00000000004085CB:
 	Mem1384[r14_129 + 177<i64>:byte] = 1<8>
 	branch bLoc038C_2828 == 0<8> l0000000000408600
@@ -4694,14 +4695,13 @@ void fn000000000040AB30(word64 rdi)
 // Trashed: SCZO rax rdi rsi Top
 // Preserved: rbx rsp
 fn000000000040AB30_entry:
-	ptr64 fp
 	word64 qwLoc18
 	word64 qwLoc10
 l000000000040AB30:
 	branch clock_gettime(0<i32>, rdi) == 0<32> l000000000040AB67
 l000000000040AB46:
-	gettimeofday(fp - 0x18<64>, 0<u64>)
-	Mem22[rdi:word64] = qwLoc18
+	gettimeofday(&qwLoc18, 0<u64>)
+	Mem22[rdi:word64] = Mem6[&qwLoc18:word64]
 	Mem26[rdi + 8<i64>:word64] = qwLoc10 *s 0x3E8<64>
 l000000000040AB67:
 	return
@@ -5574,7 +5574,7 @@ word64 fn000000000040BD70(word64 rcx, word32 edx, word64 rsi, word64 rdi, word64
 // Trashed: SCZO FPU -1 FPU -2 FPU -3 r11 r8 r9 rax rcx rdi rdx rsi Top
 // Preserved: P FPU -4 r10 r12 r13 r14 r15 rbp rbx rsp
 fn000000000040BD70_entry:
-	ptr64 fp
+	word64 qwLoc78
 l000000000040BD70:
 	word64 rcx_47 = Mem45[fs:0x28<32>:word64]
 	word64 rax_64 = localeconv()
@@ -5948,7 +5948,7 @@ l000000000040C237:
 l000000000040C318:
 	word64 r8_1161 = r8_1150 - r12_1144
 	word64 rax_1202 = strlen(r13_1174)
-	__memcpy_chk(fp - 0x78<64>, r12_1144, r8_1161, 0x29<u64>)
+	__memcpy_chk(&qwLoc78, r12_1144, r8_1161, 0x29<u64>)
 	word64 r15_1200 = 0xFFFFFFFFFFFFFFFF<64>
 	word64 r14_1201 = r8_1161
 	word64 r9_1210 = r12_1144 + r8_1161
@@ -5968,7 +5968,7 @@ l000000000040C38B_1:
 	r15_1200 = r14_1201
 l000000000040C38F:
 	r14_1201 = r14_1201 - r15_1200
-	word64 rax_1254 = memcpy(r9_1210 - r15_1200, fp - 0x78<64> + r14_1201, r15_1200)
+	word64 rax_1254 = memcpy(r9_1210 - r15_1200, &qwLoc78 + r14_1201, r15_1200)
 	branch r14_1201 != 0<64> l000000000040C358
 l000000000040C358:
 	r9_1210 = memcpy(rax_1254 - rax_1202, r13_1174, rax_1202)

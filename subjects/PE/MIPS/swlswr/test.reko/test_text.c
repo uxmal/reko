@@ -9,12 +9,14 @@
 //      fn000110E8
 word32 fn00011000()
 {
-	ptr32 fp;
-	memset(fp + -20, 0x00, 5);
+	word32 dwLoc14;
+	memset(&dwLoc14, 0x00, 5);
 	struct Eq_n * r2_n = calloc(1, 5);
-	memcpy(r2_n, fp + -20, 5);
+	memcpy(r2_n, &dwLoc14, 5);
 	r2_n->b0000 = 0x0C;
 	r2_n->dw0001 = 0x00;
+	dwLoc14 = (word32) 66;
+	dwLoc14.ptr0001 = r2_n;
 	return 0x00;
 }
 

@@ -456,14 +456,16 @@ ptr32 fn0040176E()
 void fn00401774(word32 dwArg04)
 {
 	ptr32 fp;
+	word32 dwLoc5C;
 	Eq_n tLoc0C;
 	if (IsProcessorFeaturePresent(0x17) == 0x00)
 	{
 		g_dw403368 = 0x00;
 		memset(fp - 808, 0x00, 0x02CC);
-		memset(fp - 92, 0x00, 0x50);
+		memset(&dwLoc5C, 0x00, 0x50);
+		dwLoc5C = 0x40000015;
 		Eq_n eax_n = IsDebuggerPresent();
-		tLoc0C.ExceptionRecord = (PEXCEPTION_RECORD) (fp - 92);
+		tLoc0C.ExceptionRecord = (PEXCEPTION_RECORD) &dwLoc5C;
 		tLoc0C.ContextRecord = (PCONTEXT) (fp - 808);
 		SetUnhandledExceptionFilter(null);
 		byte bl_n = 0x00 - (eax_n != 0x01);

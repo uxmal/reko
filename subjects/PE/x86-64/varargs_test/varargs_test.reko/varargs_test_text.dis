@@ -815,37 +815,40 @@ word64 fn0000000140001974(word32 ecx, word64 qwArg00, ULONGLONG tArg10, ptr64 & 
 fn0000000140001974_entry:
 	ptr64 fp
 	struct _EXCEPTION_POINTERS tLoc0588
-	void vLoc04D8
+	word64 qwLoc0578
+	CONTEXT tLoc04D8
 l0000000140001974:
 	branch IsProcessorFeaturePresent(0x17<u32>) == 0<32> l000000014000199D
 l000000014000199D:
 	Mem20[0x0000000140003610<p64>:word32] = 0<32>
-	memset(&vLoc04D8, 0<i32>, 0x4D0<u32>)
-	RtlCaptureContext(&vLoc04D8)
-	word64 rbx_29 = Mem20[&vLoc04D8 + 248<i64>:word64]
+	memset(&tLoc04D8, 0<i32>, 0x4D0<u32>)
+	RtlCaptureContext(&tLoc04D8)
+	word64 rbx_29 = Mem20[&tLoc04D8 + 248<i64>:word64]
 	word64 rax_34 = RtlLookupFunctionEntry(rbx_29, &tArg10, 0<u64>)
 	branch rax_34 == 0<64> l0000000140001A1A
 l00000001400019DE:
-	KERNEL32.dll!RtlVirtualUnwind(0<32>, 0<32>, rbx_29, rax_34, fp + 24<i64>, fp + 32<i64>, &vLoc04D8, 0<u64>, Mem39[&tArg10:word64], &vLoc04D8, fp + 32<i64>, fp + 24<i64>, 0<64>)
+	KERNEL32.dll!RtlVirtualUnwind(0<32>, 0<32>, rbx_29, rax_34, fp + 24<i64>, fp + 32<i64>, &tLoc04D8, 0<u64>, Mem39[&tArg10:word64], &tLoc04D8, fp + 32<i64>, fp + 24<i64>, 0<64>)
 l0000000140001A1A:
-	Mem66[&vLoc04D8 + 248<i64>:word64] = qwArg00
-	Mem73[&vLoc04D8 + 152<i64>:word64] = fp + 8<64>
-	memset(fp - 0x578<64>, 0<i32>, 0x98<u32>)
+	Mem66[&tLoc04D8 + 248<i64>:word64] = qwArg00
+	Mem73[&tLoc04D8 + 152<i64>:word64] = fp + 8<64>
+	memset(&qwLoc0578, 0<i32>, 0x98<u32>)
+	Mem77[&qwLoc0578:word32] = 0x40000015<32>
+	Mem78[&qwLoc0578 + 4<i64>:word32] = 1<32>
 	word32 eax_79 = IsDebuggerPresent()
-	Mem82[&tLoc0588:word64] = fp - 0x578<64>
-	Mem86[&tLoc0588 + 8<i64>:word64] = &vLoc04D8
-	word32 rax_32_32_141 = SLICE(SetUnhandledExceptionFilter(0<u64>), word32, 32)
+	Mem82[&tLoc0588:word64] = &qwLoc0578
+	Mem86[&tLoc0588 + 8<i64>:word64] = &tLoc04D8
+	word32 rax_32_32_139 = SLICE(SetUnhandledExceptionFilter(0<u64>), word32, 32)
 	word32 eax_91 = UnhandledExceptionFilter(&tLoc0588)
 	byte bl_85 = CONVERT(eax_79 == 1<32>, bool, int8)
 	word64 rcx_90 = &tLoc0588
-	word64 rax_140 = SEQ(rax_32_32_141, eax_91)
+	word64 rax_138 = SEQ(rax_32_32_139, eax_91)
 	branch eax_91 != 0<32> l0000000140001AA8
 l0000000140001A9E:
-	rax_140 = CONVERT(0<32> - (bl_85 != 0<8>), word32, uint64)
-	Mem101[0x0000000140003610<p64>:word32] = Mem86[0x0000000140003610<p64>:word32] & SLICE(rax_140, word32, 0)
+	rax_138 = CONVERT(0<32> - (bl_85 != 0<8>), word32, uint64)
+	Mem101[0x0000000140003610<p64>:word32] = Mem86[0x0000000140003610<p64>:word32] & SLICE(rax_138, word32, 0)
 l0000000140001AA8:
 	rcxOut = rcx_90
-	return rax_140
+	return rax_138
 fn0000000140001974_exit:
 l0000000140001999:
 	__fastfail(ecx)

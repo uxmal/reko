@@ -146,15 +146,18 @@ main_entry:
 	word32 dwLoc14
 	byte bLoc10
 l000007F0:
-	memset(fp + -20<i32>, 0<32>, SLICE(5<i32>, size_t, 0))
+	memset(&dwLoc14, 0<32>, SLICE(5<i32>, size_t, 0))
 	word32 r2_38 = calloc(SLICE(1<i32>, size_t, 0), SLICE(5<i32>, size_t, 0))
-	Mem45[r2_38:word32] = dwLoc14
+	Mem45[r2_38:word32] = Mem42[&dwLoc14:word32]
 	Mem48[r2_38 + 4<32>:byte] = bLoc10
 	Mem51[r2_38:byte] = 0xC<8>
 	Mem53[r2_38 + 1<32>:word32] = 0<32>
+	Mem56[&dwLoc14:byte] = 0x42<8>
+	Mem58[&dwLoc14 + 1<i32>:word32] = r2_38
+	r30_12 = fp + -48<i32>
 	r2_43 = r2_38
-	r3_44 = dwLoc14
 	r2_52 = r2_38
+	r2_57 = r2_38
 	return
 main_exit:
 

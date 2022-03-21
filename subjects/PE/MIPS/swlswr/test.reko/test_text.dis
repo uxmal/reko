@@ -8,13 +8,15 @@ word32 fn00011000()
 // Trashed: r2 r4 r5 r6 r8
 // Preserved: ra sp
 fn00011000_entry:
-	ptr32 fp
+	word32 dwLoc14
 l00011000:
-	memset(fp + -20<i32>, 0<32>, 5<i32>)
+	memset(&dwLoc14, 0<32>, 5<i32>)
 	word32 r2_20 = calloc(1<i32>, 5<i32>)
-	memcpy(r2_20, fp + -20<i32>, 5<i32>)
+	memcpy(r2_20, &dwLoc14, 5<i32>)
 	Mem28[r2_20:byte] = 0xC<8>
 	Mem32[r2_20 + 1<i32>:word32] = 0<32>
+	Mem34[&dwLoc14:byte] = 0x42<8>
+	Mem37[&dwLoc14 + 1<i32>:word32] = r2_20
 	return 0<32>
 fn00011000_exit:
 

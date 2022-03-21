@@ -7,7 +7,7 @@
 // 00011498: void _start(Register (ptr32 Eq_n) g1, Register word32 o3, Register word32 o4, Register word32 o5, Register word32 o7)
 void _start(void (* g1)(), word32 o3, word32 o4, word32 o5, word32 o7)
 {
-	char * tArg44;
+	Eq_n tArg44;
 	if (g1 == null)
 	{
 		atexit(&g_t16EE4);
@@ -78,7 +78,7 @@ void init_dummy()
 {
 }
 
-// 0001162C: Register (ptr32 char) notice(Register (ptr32 char) o0, Register out ptr32 i1Out, Register out (ptr32 Eq_n) i2Out, Register out (ptr32 Eq_n) i6Out)
+// 0001162C: Register (ptr32 char) notice(Register (ptr32 char) o0, Register Eq_n o1, Stack word32 dwArg48, Register out Eq_n i1Out, Register out (ptr32 Eq_n) i2Out, Register out (ptr32 Eq_n) i6Out)
 // Called from:
 //      xmalloc
 //      xrealloc
@@ -98,12 +98,12 @@ void init_dummy()
 //      scan_for_missed_items
 //      edit_file
 //      main
-char * notice(char * o0, ptr32 & i1Out, struct Eq_n & i2Out, struct Eq_n & i6Out)
+char * notice(char * o0, Eq_n o1, word32 dwArg48, union Eq_n & i1Out, struct Eq_n & i2Out, struct Eq_n & i6Out)
 {
 	struct Eq_n * fp;
-	ptr32 o1;
 	struct Eq_n * o2;
-	vfprintf(&g_t2B640, o0, &fp->dw0044 + 1);
+	dwArg48 = (word32) o1;
+	vfprintf(&g_t2B640, o0, &dwArg48);
 	i1Out = o1;
 	i2Out = o2;
 	i6Out = fp;
@@ -146,6 +146,7 @@ word32 xmalloc(ptr32 & i1Out, ptr32 & i2Out, ptr32 & i6Out)
 	word32 o0;
 	ptr32 o1;
 	ptr32 o2;
+	word32 dwLoc28;
 	if (malloc((size_t) o0) != null)
 	{
 		i1Out = o1;
@@ -158,7 +159,7 @@ word32 xmalloc(ptr32 & i1Out, ptr32 & i2Out, ptr32 & i6Out)
 		word32 i1_n;
 		word32 i2_n;
 		word32 i6_n;
-		notice("\n%s: virtual memory exceeded\n", out i1_n, out i2_n, out i6_n);
+		notice("\n%s: virtual memory exceeded\n", g_t28150, dwLoc28, out i1_n, out i2_n, out i6_n);
 		exit(33);
 	}
 }
@@ -171,6 +172,7 @@ Eq_n xrealloc(Eq_n o0, ptr32 & i1Out, ptr32 & i2Out)
 {
 	ptr32 o1;
 	ptr32 o2;
+	word32 dwLoc28;
 	bool v23_n;
 	if (o0 != 0x00)
 		v23_n = realloc(o0, (size_t) o1) != null;
@@ -187,7 +189,7 @@ Eq_n xrealloc(Eq_n o0, ptr32 & i1Out, ptr32 & i2Out)
 		word32 i1_n;
 		word32 i2_n;
 		word32 i6_n;
-		notice("\n%s: virtual memory exceeded\n", out i1_n, out i2_n, out i6_n);
+		notice("\n%s: virtual memory exceeded\n", g_t28150, dwLoc28, out i1_n, out i2_n, out i6_n);
 		exit(33);
 	}
 }
@@ -239,10 +241,11 @@ Eq_n savestring2(Eq_n o0, uint32 o1, word32 o3)
 // 00011780: void fancy_abort()
 void fancy_abort()
 {
+	word32 dwLoc28;
 	word32 i1_n;
 	word32 i2_n;
 	word32 i6_n;
-	notice("%s: internal abort\n", out i1_n, out i2_n, out i6_n);
+	notice("%s: internal abort\n", g_t28150, dwLoc28, out i1_n, out i2_n, out i6_n);
 	exit(33);
 }
 
@@ -361,16 +364,18 @@ void safe_write(int32 o0, void * o1, int32 o2, Eq_n o3)
 				if (errno != (char *) 0x04)
 				{
 					word32 l0_n;
+					Eq_n l1_n;
 					char * l2_n;
 					ui32 l3_n;
 					word32 i0_n;
 					word32 l4_n;
-					shortpath(0x00, o3, out l0_n, out l2_n, out l3_n, out l4_n, out i0_n);
+					shortpath(0x00, o3, out l0_n, out l1_n, out l2_n, out l3_n, out l4_n, out i0_n);
 					xstrerror(l2_n);
+					struct Eq_n * sp_n = (struct Eq_n *) <invalid>;
 					word32 i1_n;
 					word32 i2_n;
 					word32 i6_n;
-					notice(l3_n | 0xE0, out i1_n, out i2_n, out i6_n);
+					notice(l3_n | 0xE0, l1_n, sp_n->dw0048, out i1_n, out i2_n, out i6_n);
 					return;
 				}
 			}
@@ -433,10 +438,11 @@ int32 is_id_char(int32 o0)
 //      main
 void usage()
 {
+	word32 dwLoc28;
 	word32 i1_n;
 	word32 i2_n;
 	word32 i6_n;
-	notice("%s: usage '%s [ -VqfnkN ] [ -i <istring> ] [ filename ... ]'\n", out i1_n, out i2_n, out i6_n);
+	notice("%s: usage '%s [ -VqfnkN ] [ -i <istring> ] [ filename ... ]'\n", g_t28150, dwLoc28, out i1_n, out i2_n, out i6_n);
 	exit(33);
 }
 
@@ -637,19 +643,20 @@ struct Eq_n * visit_each_hash_node(struct Eq_n * o0)
 	return l0;
 }
 
-// 00011C3C: Register Eq_n add_symbol(Register Eq_n o0, Register Eq_n o1, Register out ptr32 i1Out)
+// 00011C3C: Register Eq_n add_symbol(Register Eq_n o0, Register Eq_n o1, Register out ptr32 i1Out, Register out ptr32 i6Out)
 // Called from:
 //      lookup
-Eq_n add_symbol(Eq_n o0, Eq_n o1, ptr32 & i1Out)
+Eq_n add_symbol(Eq_n o0, Eq_n o1, ptr32 & i1Out, ptr32 & i6Out)
 {
 	(&(&(&(&(&o0.ptr0000->a0000[0].ptr0000.a0000)[0].ptr0000.a0000)[0].ptr0000.a0000)[0].ptr0000.a0000)[0].ptr0000.a0000)[0].ptr0000 = (struct Eq_n *) 0x00;
 	Eq_n i0_n;
 	ptr32 i1_n;
+	ptr32 i6_n;
 	struct Eq_n * l0_n;
-	word32 i6_n;
 	l0_n->dw0004 = savestring(o1, (uint32) strlen(o1), out l0_n, out i0_n, out i1_n, out i6_n);
 	l0_n->dw0008 = 0x00;
 	i1Out = i1_n;
+	i6Out = i6_n;
 	return i0_n;
 }
 
@@ -704,7 +711,8 @@ l00011D1C:
 		*xmalloc(out i1_n, out i2_n, out i6_n) = 0x0C;
 		o0_n = (Eq_n) 0x0C;
 	}
-	i0_n = add_symbol(o0_n, i1_n, out i1_n);
+	word32 i6_n;
+	i0_n = add_symbol(o0_n, i1_n, out i1_n, out i6_n);
 	goto l00011D34;
 }
 
@@ -944,7 +952,7 @@ l00012024:
 						word32 i6_n;
 						word32 i1_n;
 						word32 i2_n;
-						notice("%s: invalid file name: %s\n", out i1_n, out i2_n, out i6_n);
+						notice("%s: invalid file name: %s\n", g_t28150, *((word32) sp_n + 72), out i1_n, out i2_n, out i6_n);
 						exit(33);
 					}
 					o2_n = o2_n + 0x01;
@@ -985,7 +993,7 @@ l00012120:
 	return l0_n;
 }
 
-// 0001214C: Register Eq_n shortpath(Register Eq_n o0, Register Eq_n o1, Register out Eq_n l0Out, Register out (ptr32 Eq_n) l2Out, Register out Eq_n l3Out, Register out Eq_n l4Out, Register out Eq_n i0Out)
+// 0001214C: Register Eq_n shortpath(Register Eq_n o0, Register Eq_n o1, Register out Eq_n l0Out, Register out Eq_n l1Out, Register out (ptr32 Eq_n) l2Out, Register out Eq_n l3Out, Register out Eq_n l4Out, Register out Eq_n i0Out)
 // Called from:
 //      safe_write
 //      find_file
@@ -997,7 +1005,7 @@ l00012120:
 //      scan_for_missed_items
 //      edit_file
 //      main
-Eq_n shortpath(Eq_n o0, Eq_n o1, union Eq_n & l0Out, struct Eq_n & l2Out, union Eq_n & l3Out, union Eq_n & l4Out, union Eq_n & i0Out)
+Eq_n shortpath(Eq_n o0, Eq_n o1, union Eq_n & l0Out, union Eq_n & l1Out, struct Eq_n & l2Out, union Eq_n & l3Out, union Eq_n & l4Out, union Eq_n & i0Out)
 {
 	Eq_n o0_n = (uint32) strlen(o1);
 	word32 i6_n;
@@ -1008,6 +1016,7 @@ Eq_n shortpath(Eq_n o0, Eq_n o1, union Eq_n & l0Out, struct Eq_n & l2Out, union 
 	Eq_n i0_n = xmalloc(out i1_n, out i2_n, out i6_n);
 	struct Eq_n * l2_n = null;
 	int32 o1_n = (int32) *l0_n;
+	Eq_n l1_n = o0_n;
 	while (true)
 	{
 		int32 o0_n;
@@ -1064,7 +1073,7 @@ l00012238:
 	}
 	else
 		o0_n = (int32) *l0_n;
-	Eq_n l1_n = o0_n;
+	l1_n = o0_n;
 	Mem134 = Mem0;
 	if (o0_n == 0x00)
 	{
@@ -1105,6 +1114,7 @@ l000122B8:
 			if (o0_n << 0x18 == 0x00)
 			{
 				word32 l1_n = l1_n + 0x01;
+				l1_n = &l1_n->bFFFFFFFE + 1;
 				if ((int32) l1_n->bFFFFFFFE == 0x2F)
 					l1_n->bFFFFFFFE = 0x00;
 				i0_n = o0_n;
@@ -1115,6 +1125,7 @@ l000122B8:
 		i0_n = i1_n;
 l000122FC:
 		l0Out = l0_n;
+		l1Out = l1_n;
 		l2Out = l2_n;
 		l3Out = o0_n;
 		l4Out = o0_n;
@@ -1132,14 +1143,14 @@ l000122FC:
 	goto l00012238;
 }
 
-// 00012304: Register Eq_n find_file(Register Eq_n o0, Register out (ptr32 char) l2Out, Register out ptr32 l3Out, Register out Eq_n i0Out, Register out ptr32 i1Out)
+// 00012304: Register Eq_n find_file(Register Eq_n o0, Register out (ptr32 char) l2Out, Register out Eq_n l3Out, Register out Eq_n i0Out, Register out ptr32 i1Out)
 // Called from:
 //      referenced_file_is_newer
 //      save_def_or_dec
-Eq_n find_file(Eq_n o0, char & l2Out, ptr32 & l3Out, union Eq_n & i0Out, ptr32 & i1Out)
+Eq_n find_file(Eq_n o0, char & l2Out, union Eq_n & l3Out, union Eq_n & i0Out, ptr32 & i1Out)
 {
 	char * l2;
-	ptr32 l3;
+	Eq_n l3;
 	Eq_n l1_n;
 	ptr32 i1_n;
 	struct Eq_n * o0_n = lookup(164416, o0, out l1_n, out i1_n);
@@ -1176,11 +1187,13 @@ l000123B4:
 			goto l000123C8;
 		}
 		char * l0_n;
+		word32 l1_n;
 		word32 i0_n;
-		shortpath(0x00, l1_n, out l0_n, out l2, out l3, out l4_n, out i0_n);
+		shortpath(0x00, l1_n, out l0_n, out l1_n, out l2, out l3, out l4_n, out i0_n);
 		xstrerror(l2);
+		struct Eq_n * sp_n = (struct Eq_n *) <invalid>;
 		word32 i2_n;
-		i6_n->tFFFFFFA8 = notice(l0_n, out i1_n, out i2_n, out i6_n);
+		i6_n->tFFFFFFA8 = notice(l0_n, l3, sp_n->dw0048, out i1_n, out i2_n, out i6_n);
 	}
 	o0_n->t0008 = l4_n;
 	goto l000123B4;
@@ -1191,10 +1204,11 @@ l000123B4:
 //      check_aux_info
 void aux_info_corrupted()
 {
+	word32 dwLoc28;
 	word32 i1_n;
 	word32 i2_n;
 	word32 i6_n;
-	notice("\n%s: fatal error: aux info file corrupted at line %d\n", out i1_n, out i2_n, out i6_n);
+	notice("\n%s: fatal error: aux info file corrupted at line %d\n", g_t28150, dwLoc28, out i1_n, out i2_n, out i6_n);
 	exit(33);
 }
 
@@ -1279,11 +1293,11 @@ void save_def_or_dec()
 {
 	ptr32 fp;
 	word32 i2_n;
-	word32 i1_n;
-	word32 i1_n;
-	word32 i1_n;
-	word32 i1_n;
 	word32 i6_n;
+	word32 i1_n;
+	word32 i1_n;
+	word32 i1_n;
+	word32 i1_n;
 	struct Eq_n * i0_n = check_aux_info(0x01 - (word32) (((int32) (check_aux_info)(0x01 - (word32) (((int32) (check_aux_info)(0x01 - (word32) (((int32) (*xmalloc(out i1_n, out i2_n, out i6_n)) ^ 0x2F) > 0x00), out i1_n)[1] ^ 0x2A) > 0x00), out i1_n)[2] ^ 0x20) > 0x00), out i1_n);
 	int8 * i0_n = i0_n + 3;
 	if ((int32) i0_n[3] != 0x3A)
@@ -1300,10 +1314,10 @@ void save_def_or_dec()
 	sp_n->a0060[l1_n] = 0x00;
 	word32 i6_n;
 	abspath(o0_n, sp_n->a0060, out i6_n);
-	word32 i1_n;
 	Eq_n i0_n;
 	struct Eq_n * l2_n;
 	union Eq_n * l3_n;
+	word32 i1_n;
 	l2_n->ptr0004 = find_file(o0_n, out l2_n, out l3_n, out i0_n, out i1_n);
 	if ((int32) *i0_n != 0x3A)
 	{
@@ -1412,6 +1426,7 @@ l00012AC0:
 					struct Eq_n * i1_n;
 					struct Eq_n * o0_n = lookup(0x00029A40, sp_n->a0060, out l1_n, out i1_n);
 					l2_n->ptr0010 = o0_n;
+					struct Eq_n * sp_n = (struct Eq_n *) <invalid>;
 					Eq_n o2_n = o0_n->t0008;
 					if (o2_n != 0x00)
 					{
@@ -1427,7 +1442,7 @@ l00012AC0:
 										word32 i2_n;
 										word32 i6_n;
 										word32 i1_n;
-										notice("%s:%d: declaration of function `%s' takes different forms\n", out i1_n, out i2_n, out i6_n);
+										notice("%s:%d: declaration of function `%s' takes different forms\n", l2_n->ptr0004->ptr0000->t0004, sp_n->dw0048, out i1_n, out i2_n, out i6_n);
 										exit(33);
 									}
 									goto l00012AC0;
@@ -1608,13 +1623,15 @@ Eq_n gen_aux_info_file(Eq_n o0, ptr32 & l0Out, struct stat & l1Out, char & l4Out
 	struct Eq_n * l2_n;
 	char * l4_n;
 	word32 l0_n;
+	word32 l1_n;
 	word32 l3_n;
 	word32 i0_n;
-	Eq_n o0_n = shortpath(0x00, o1_n, out l0_n, out l2_n, out l3_n, out l4_n, out i0_n);
+	Eq_n o0_n = shortpath(0x00, o1_n, out l0_n, out l1_n, out l2_n, out l3_n, out l4_n, out i0_n);
 	compile_params[l2_n->dw0344] = o0_n;
 	Eq_n o0_n = savestring2(o0_n, (uint32) strlen(o0_n), 0x02);
 	word32 o1_n = quiet_flag;
 	compile_params[aux_info_file_name_index] = o0_n;
+	struct Eq_n * sp_n = (struct Eq_n *) <invalid>;
 	if (o1_n != 0x00)
 	{
 		struct Eq_n * i0_n;
@@ -1657,7 +1674,7 @@ Eq_n gen_aux_info_file(Eq_n o0, ptr32 & l0Out, struct stat & l1Out, char & l4Out
 		word32 i1_n;
 		word32 i2_n;
 		word32 i6_n;
-		notice("%s: compiling `%s'\n", out i1_n, out i2_n, out i6_n);
+		notice("%s: compiling `%s'\n", g_t28150, sp_n->dw0048, out i1_n, out i2_n, out i6_n);
 	}
 }
 
@@ -1669,16 +1686,18 @@ char * process_aux_info_file(Eq_n o0, word32 o2, union Eq_n & l1Out)
 	struct Eq_n * fp;
 	char * l0;
 	Eq_n l1;
-	ptr32 sp_n = (char *) fp - 0x00F8 - ((uint32) strlen(o0) + 0x0A & ~0x07);
-	strcpy(sp_n + 0x60, o0);
-	strcat(sp_n + 0x60, 0x00016F00);
+	struct Eq_n * sp_n = (char *) fp - 0x00F8 - ((uint32) strlen(o0) + 0x0A & ~0x07);
+	strcpy(&sp_n->dw005C + 1, o0);
+	strcat(&sp_n->dw005C + 1, 0x00016F00);
 	Eq_n i0_n = o0;
 	word32 i2_n = o2;
 	struct Eq_n * i6_n = fp;
-	Eq_n l4_n = sp_n + 0x60;
+	Eq_n l4_n = &sp_n->dw005C + 1;
 	word32 l2_n = 0x00;
 	while (true)
 	{
+		struct Eq_n * sp_n;
+		Eq_n o1_n;
 		char * o0_n;
 		bool v34_n;
 		if (access(l4_n, 0x04) == ~0x00)
@@ -1686,19 +1705,23 @@ char * process_aux_info_file(Eq_n o0, word32 o2, union Eq_n & l1Out)
 			if (errno != (char *) 0x02)
 			{
 				char * l0_n;
+				Eq_n l2_n;
 				char * l3_n;
 				word32 l4_n;
 				word32 i0_n;
-				word32 l2_n;
-				shortpath(0x00, l4_n, out l0_n, out l2_n, out l3_n, out l4_n, out i0_n);
+				word32 l1_n;
+				shortpath(0x00, l4_n, out l0_n, out l1_n, out l2_n, out l3_n, out l4_n, out i0_n);
 				xstrerror(l3_n);
+				sp_n = (struct Eq_n *) <invalid>;
 				o0_n = l0_n;
+				o1_n = l2_n;
 				goto l000131F0;
 			}
 			if (i2_n != 0x00)
 			{
+				Eq_n o1_n = g_t28150;
 				word32 i1_n;
-				i0_n = notice("%s: warning: missing SYSCALLS file `%s'\n", out i1_n, out i2_n, out i6_n);
+				i0_n = notice("%s: warning: missing SYSCALLS file `%s'\n", o1_n, sp_n->dw0048, out i1_n, out i2_n, out i6_n);
 				goto l000135B8;
 			}
 			v34_n = false;
@@ -1708,6 +1731,7 @@ char * process_aux_info_file(Eq_n o0, word32 o2, union Eq_n & l1Out)
 		Eq_n o1_n;
 		if (!v34_n)
 		{
+			sp_n = (struct Eq_n *) <invalid>;
 			if (gen_aux_info_file(i0_n, out l0, out l1, out l4_n, out i0_n, out i2_n, out i6_n) == 0x00)
 			{
 				++errors;
@@ -1738,35 +1762,39 @@ l00013218:
 			{
 				char * l0_n;
 				char * l2_n;
+				Eq_n l3_n;
 				word32 l4_n;
-				word32 l3_n;
+				word32 l1_n;
 				word32 i0_n;
-				shortpath(0x00, l4_n, out l0_n, out l2_n, out l3_n, out l4_n, out i0_n);
+				shortpath(0x00, l4_n, out l0_n, out l1_n, out l2_n, out l3_n, out l4_n, out i0_n);
 				xstrerror(l2_n);
+				struct Eq_n * sp_n = (struct Eq_n *) <invalid>;
 				word32 i1_n;
 				word32 i2_n;
 				word32 i6_n;
-				notice(l0_n, out i1_n, out i2_n, out i6_n);
+				notice(l0_n, l3_n, sp_n->dw0048, out i1_n, out i2_n, out i6_n);
 			}
 			word32 i1_n;
 			word32 i2_n;
 			word32 i6_n;
 			xmalloc(out i1_n, out i2_n, out i6_n);
-			Mem231[l0 + 0x01 + l0:byte] = 0x00;
+			Mem232[l0 + 0x01 + l0:byte] = 0x00;
 			word32 l2_n;
 			l0 = safe_read(o0_n, l0 + 0x01, l0, out l1, out l2_n);
 			if (o0_n - l0 != 0x00 || close(o0_n) != 0x00)
 			{
 				char * l2_n;
-				word32 l3_n;
+				Eq_n l3_n;
+				word32 l1_n;
 				word32 l4_n;
 				word32 i0_n;
-				l1 = shortpath(0x00, l4_n, out l0, out l2_n, out l3_n, out l4_n, out i0_n);
+				l1 = shortpath(0x00, l4_n, out l0, out l1_n, out l2_n, out l3_n, out l4_n, out i0_n);
 				xstrerror(l2_n);
+				struct Eq_n * sp_n = (struct Eq_n *) <invalid>;
 				word32 i1_n;
 				word32 i2_n;
 				word32 i6_n;
-				notice(l0, out i1_n, out i2_n, out i6_n);
+				notice(l0, l3_n, sp_n->dw0048, out i1_n, out i2_n, out i6_n);
 				free(l0 + 0x01);
 				close(o0_n);
 			}
@@ -1779,17 +1807,20 @@ l00013218:
 l000131D0:
 			char * l0_n;
 			char * l2_n;
-			word32 l3_n;
+			Eq_n l3_n;
+			word32 l1_n;
 			word32 l4_n;
 			word32 i0_n;
-			shortpath(0x00, o1_n, out l0_n, out l2_n, out l3_n, out l4_n, out i0_n);
+			shortpath(0x00, o1_n, out l0_n, out l1_n, out l2_n, out l3_n, out l4_n, out i0_n);
 			xstrerror(l2_n);
+			sp_n = (struct Eq_n *) <invalid>;
 			o0_n = l0_n;
+			o1_n = l3_n;
 l000131F0:
 			word32 i1_n;
 			word32 i2_n;
 			word32 i6_n;
-			notice(o0_n, out i1_n, out i2_n, out i6_n);
+			notice(o0_n, o1_n, sp_n->dw0048, out i1_n, out i2_n, out i6_n);
 		}
 		int32 o0_n = i6_n->dwFFFFFFA8;
 		if (o0_n - l7_n <= 0x00)
@@ -1868,30 +1899,33 @@ void declare_source_confusing(Eq_n o0)
 	{
 		if (o0 == 0x00)
 		{
+			struct Eq_n * sp_n = (struct Eq_n *) <invalid>;
 			char * l0_n;
+			word32 l1_n;
 			word32 l2_n;
 			word32 l3_n;
 			word32 l4_n;
 			word32 i0_n;
-			shortpath(0x00, g_t28180, out l0_n, out l2_n, out l3_n, out l4_n, out i0_n);
 			word32 i1_n;
 			word32 i2_n;
 			word32 i6_n;
-			notice(l0_n, out i1_n, out i2_n, out i6_n);
+			notice(l0_n, shortpath(0x00, g_t28180, out l0_n, out l1_n, out l2_n, out l3_n, out l4_n, out i0_n), sp_n->dw0048, out i1_n, out i2_n, out i6_n);
 		}
 		else
 		{
 			Eq_n i0_n;
 			char * l0_n;
+			word32 l1_n;
 			word32 l2_n;
 			word32 l3_n;
 			word32 l4_n;
-			shortpath(0x00, g_t28180, out l0_n, out l2_n, out l3_n, out l4_n, out i0_n);
+			Eq_n o0_n = shortpath(0x00, g_t28180, out l0_n, out l1_n, out l2_n, out l3_n, out l4_n, out i0_n);
 			identify_lineno(i0_n);
+			struct Eq_n * sp_n = (struct Eq_n *) <invalid>;
 			word32 i1_n;
 			word32 i2_n;
 			word32 i6_n;
-			notice(l0_n, out i1_n, out i2_n, out i6_n);
+			notice(l0_n, o0_n, sp_n->dw0048, out i1_n, out i2_n, out i6_n);
 		}
 	}
 	longjmp(&g_t2B240, 0x01);
@@ -2081,6 +2115,7 @@ int8 * other_variable_style_function(int8 * o0, ptr32 & i1Out, ptr32 & i6Out)
 // 00013914: void edit_fn_declaration(Register (ptr32 Eq_n) o0)
 void edit_fn_declaration(struct Eq_n * o0)
 {
+	word32 dwLoc30;
 	strlen(o0->ptr0010->t0004);
 	save_pointers();
 	if (setjmp(&g_t2B240) != 0x00)
@@ -2089,7 +2124,7 @@ void edit_fn_declaration(struct Eq_n * o0)
 		word32 i1_n;
 		word32 i2_n;
 		word32 i6_n;
-		notice("%s: declaration of function `%s' not converted\n", out i1_n, out i2_n, out i6_n);
+		notice("%s: declaration of function `%s' not converted\n", g_t28150, dwLoc30, out i1_n, out i2_n, out i6_n);
 	}
 }
 
@@ -2236,16 +2271,19 @@ l00013D80:
 				Eq_n l3_n;
 				struct Eq_n * l4_n;
 				word32 l0_n;
+				word32 l1_n;
 				word32 l2_n;
 				word32 i0_n;
-				l2_n = shortpath(0x00, *((char *) *o0_n + 4), out l0_n, out l2_n, out l3_n, out l4_n, out i0_n);
+				Eq_n o0_n = shortpath(0x00, *((char *) *o0_n + 4), out l0_n, out l1_n, out l2_n, out l3_n, out l4_n, out i0_n);
 				l1_n = identify_lineno(l3_n);
 				char * l0_n;
 				word32 i0_n;
 				word32 i6_n;
 				dupnstr(l3_n, l4_n, out l0_n, out i0_n, out i6_n);
+				struct Eq_n * sp_n = (struct Eq_n *) <invalid>;
 				word32 i6_n;
-				notice(l0_n, out i1_n, out i2_n, out i6_n);
+				notice(l0_n, o0_n, sp_n->dw0048, out i1_n, out i2_n, out i6_n);
+				l2_n = o0_n;
 				i0_n.u0 = 0x01;
 				goto l00013DFC;
 			}
@@ -2332,6 +2370,7 @@ word32 find_rightmost_formals_list(int8 * o0)
 // 00013EDC: void edit_fn_definition(Register (ptr32 int8) o1)
 void edit_fn_definition(int8 * o1)
 {
+	word32 dwLoc30;
 	save_pointers();
 	if (setjmp(&g_t2B240) != 0x00)
 	{
@@ -2339,7 +2378,7 @@ void edit_fn_definition(int8 * o1)
 		Eq_n i1_n;
 		word32 i2_n;
 		word32 i6_n;
-		notice("%s: definition of function `%s' not converted\n", out i1_n, out i2_n, out i6_n);
+		notice("%s: definition of function `%s' not converted\n", g_t28150, dwLoc30, out i1_n, out i2_n, out i6_n);
 		word32 l2_n;
 		word32 i0_n;
 		word32 i1_n;
@@ -2364,16 +2403,18 @@ void edit_fn_definition(int8 * o1)
 			{
 				struct Eq_n * o1_n = i6_n->ptr0044;
 				char * l0_n;
+				word32 l1_n;
 				word32 l2_n;
 				word32 l3_n;
 				word32 l4_n;
 				word32 i0_n;
-				shortpath(0x00, *((char *) *o1_n->ptr0004 + 4), out l0_n, out l2_n, out l3_n, out l4_n, out i0_n);
+				Eq_n o0_n = shortpath(0x00, *((char *) *o1_n->ptr0004 + 4), out l0_n, out l1_n, out l2_n, out l3_n, out l4_n, out i0_n);
 				identify_lineno(i1_n);
+				struct Eq_n * sp_n = (struct Eq_n *) <invalid>;
 				word32 i1_n;
 				word32 i2_n;
 				word32 i6_n;
-				notice(l0_n, out i1_n, out i2_n, out i6_n);
+				notice(l0_n, o0_n, sp_n->dw0048, out i1_n, out i2_n, out i6_n);
 			}
 		}
 	}
@@ -2550,20 +2591,22 @@ l000147BC:
 						else
 							o1_n = i6_n->ptr0044;
 						word32 l4_n;
+						word32 l3_n;
 						Eq_n i0_n;
 						char * l0_n;
-						word32 l3_n;
 						word32 l2_n;
-						shortpath(0x00, o1_n->ptr0000->t0004, out l0_n, out l2_n, out l3_n, out l4_n, out i0_n);
+						word32 l1_n;
+						Eq_n o0_n = shortpath(0x00, o1_n->ptr0000->t0004, out l0_n, out l1_n, out l2_n, out l3_n, out l4_n, out i0_n);
 						identify_lineno(i0_n);
+						struct Eq_n * sp_n = (struct Eq_n *) <invalid>;
+						word32 i2_n;
 						word32 i1_n;
 						word32 i6_n;
-						word32 i2_n;
-						notice(l0_n, out i1_n, out i2_n, out i6_n);
+						notice(l0_n, o0_n, sp_n->dw0048, out i1_n, out i2_n, out i6_n);
 						word32 i1_n;
 						word32 i2_n;
 						word32 i6_n;
-						notice("%s: function definition not converted\n", out i1_n, out i2_n, out i6_n);
+						notice("%s: function definition not converted\n", g_t28150, sp_n->dw0048, out i1_n, out i2_n, out i6_n);
 					}
 					word32 * l0_n = &g_t1753C;
 					Eq_n o1_n = g_t1753C;
@@ -2605,15 +2648,17 @@ void edit_file(struct Eq_n * o0)
 		if (quiet_flag == 0x00 && in_system_include_dir(g_t28180) == 0x00)
 		{
 			char * l0_n;
+			Eq_n l1_n;
 			word32 l4_n;
 			word32 i0_n;
 			word32 l3_n;
 			word32 l2_n;
-			shortpath(0x00, g_t28180, out l0_n, out l2_n, out l3_n, out l4_n, out i0_n);
+			shortpath(0x00, g_t28180, out l0_n, out l1_n, out l2_n, out l3_n, out l4_n, out i0_n);
+			struct Eq_n * sp_n = (struct Eq_n *) <invalid>;
 			word32 i1_n;
 			word32 i2_n;
 			word32 i6_n;
-			notice(l0_n, out i1_n, out i2_n, out i6_n);
+			notice(l0_n, l1_n, sp_n->dw0048, out i1_n, out i2_n, out i6_n);
 		}
 	}
 }
@@ -2639,23 +2684,24 @@ void do_processing()
 	visit_each_hash_node(visit_each_hash_node(&g_t28240));
 }
 
-// 00014EA4: Register ui32 main(Register (ptr32 (ptr32 char)) o1)
+// 00014EA4: Register ui32 main(Register (ptr32 Eq_n) o1)
 // Called from:
 //      _start
-ui32 main(char ** o1)
+ui32 main(union Eq_n * o1)
 {
-	char * o0_n = strrchr(*o1, '/');
-	char * o2_n = o0_n + 1;
-	if (o0_n == null)
+	Eq_n o0_n = strrchr(*o1, '/');
+	Eq_n o2_n = (word32) o0_n + 1;
+	if (o0_n == 0x00)
 	{
-		g_ptr28150 = o0_n;
-		o2_n = (char *) *o1;
+		g_t28150 = o0_n;
+		o2_n = *o1;
 	}
 	else
-		g_ptr28150 = o0_n;
-	g_ptr28150 = o2_n;
+		g_t28150 = o0_n;
+	g_t28150 = o2_n;
 	setlocale(0x05, "");
 	Eq_n o0_n = getpwd();
+	struct Eq_n * sp_n = (struct Eq_n *) <invalid>;
 	if (o0_n != 0x00)
 	{
 		g_t2B270 = o0_n;
@@ -2706,13 +2752,15 @@ ui32 main(char ** o1)
 					}
 					else
 					{
+						Eq_n l0_n;
 						struct Eq_n * l3_n;
 						word32 i0_n;
-						word32 l0_n;
-						shortpath(0x00, 0x00, out l0_n, out l2_n, out l3_n, out l4_n, out i0_n);
+						word32 l1_n;
+						shortpath(0x00, 0x00, out l0_n, out l1_n, out l2_n, out l3_n, out l4_n, out i0_n);
+						struct Eq_n * sp_n = (struct Eq_n *) <invalid>;
 						word32 i2_n;
 						word32 i1_n;
-						notice("%s: input file names must have .c suffixes: %s\n", out i1_n, out i2_n, out i6_n);
+						notice("%s: input file names must have .c suffixes: %s\n", l0_n, sp_n->dw0048, out i1_n, out i2_n, out i6_n);
 						++l3_n->dw0320;
 					}
 					int32 o0_n = l2_n->dw0068;
@@ -2735,7 +2783,7 @@ ui32 main(char ** o1)
 					exit(o1_n);
 				}
 				else
-					fprintf(&g_t2B640, "%s: %s\n", g_ptr28150, version_string);
+					fprintf(&g_t2B640, "%s: %s\n", g_t28150, version_string);
 			}
 			else
 				usage();
@@ -2744,11 +2792,12 @@ ui32 main(char ** o1)
 	else
 	{
 		g_t2B270 = o0_n;
+		Eq_n l1_n = g_t28150;
 		xstrerror(errno);
 		word32 i6_n;
 		word32 i2_n;
 		word32 i1_n;
-		notice("%s: cannot get working directory: %s\n", out i1_n, out i2_n, out i6_n);
+		notice("%s: cannot get working directory: %s\n", l1_n, sp_n->dw0048, out i1_n, out i2_n, out i6_n);
 		exit(33);
 	}
 }
@@ -2758,11 +2807,10 @@ ui32 main(char ** o1)
 //      main
 Eq_n getpwd()
 {
-	ptr32 fp;
+	word32 dwLoc0120;
+	word32 dwLoc98;
 	word32 dwLoc88;
 	word32 dwLoc0110;
-	word32 dwLoc98;
-	word32 dwLoc0120;
 	Eq_n i0_n = g_t2B2A0;
 	if (i0_n != 0x00)
 		return i0_n;
@@ -2783,9 +2831,9 @@ Eq_n getpwd()
 			l1_n.u0 = 100;
 			if ((int32) *o0_n == 0x2F)
 			{
-				if (stat(o0_n, fp + ~0x011F) == 0x00)
+				if (stat(o0_n, &dwLoc0120) == 0x00)
 				{
-					if (stat(96400, fp + ~0x97) == 0x00)
+					if (stat(96400, &dwLoc98) == 0x00)
 					{
 						if (dwLoc88 - dwLoc0110 == 0x00)
 						{
@@ -4227,9 +4275,8 @@ word32 pwait(int32 * o1, ptr32 & i2Out, ptr32 & i6Out)
 //      make_temp_file
 Eq_n mkstemps(Eq_n o0, Eq_n o1)
 {
-	ptr32 fp;
+	word32 dwLoc18;
 	Eq_n dwLoc14;
-	int32 dwLoc18;
 	Eq_n i0_n;
 	Eq_n o0_n = (uint32) strlen(o0);
 	if (o0_n - ((word32) o1 + 6) >= 0x00)
@@ -4239,11 +4286,12 @@ Eq_n mkstemps(Eq_n o0, Eq_n o1)
 			i0_n.u0 = ~0x00;
 		else
 		{
-			gettimeofday(fp + ~0x17, null);
+			gettimeofday(&dwLoc18, null);
 			Eq_n o0_n = getpid();
 			word64 o0_o1_n = g_qw2B400;
-			up32 o1_n = (word32) o0_o1_n + ((dwLoc14 << 0x10 ^ dwLoc18) ^ o0_n);
-			g_qw2B400 = SEQ(SLICE(o0_o1_n, word32, 32) + (((dwLoc14 >> 0x10 | (dwLoc14 >> 0x1F) << 0x10) ^ dwLoc18 >> 0x1F) ^ o0_n >> 0x1F) + (word32) (o1_n < 0x00), o1_n);
+			int32 o7_n = dwLoc18;
+			up32 o1_n = (word32) o0_o1_n + ((dwLoc14 << 0x10 ^ o7_n) ^ o0_n);
+			g_qw2B400 = SEQ(SLICE(o0_o1_n, word32, 32) + (((dwLoc14 >> 0x10 | (dwLoc14 >> 0x1F) << 0x10) ^ o7_n >> 0x1F) ^ o0_n >> 0x1F) + (word32) (o1_n < 0x00), o1_n);
 			word64 * l4_n = &g_qw2B400;
 			while (true)
 			{

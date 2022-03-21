@@ -2552,7 +2552,7 @@ Eq_n fn0000000000406440(struct Eq_n * rdi, FILE & rcxOut)
 //      fn0000000000406540
 void fn0000000000406490()
 {
-	ptr64 fp;
+	word64 qwLoc88;
 	while (g_dw61B038 != 0x00 || g_dw61B034 != 0x00)
 	{
 		if (g_b61B128 != 0x00)
@@ -2563,7 +2563,7 @@ void fn0000000000406490()
 			fn0000000000406440(&g_qw61A3F0, out rcx_n);
 		}
 		fflush_unlocked(stdout);
-		sigprocmask(0, g_a61B040, fp + ~0x87);
+		sigprocmask(0, g_a61B040, &qwLoc88);
 		int32 ebx_n = g_dw61B038;
 		word32 eax_n = g_dw61B034;
 		if (eax_n != 0x00)
@@ -2574,7 +2574,7 @@ void fn0000000000406490()
 		else
 			signal(ebx_n, null);
 		raise(ebx_n);
-		sigprocmask(2, fp + ~0x87, null);
+		sigprocmask(2, &qwLoc88, null);
 	}
 }
 
@@ -2839,7 +2839,7 @@ Eq_n fn0000000000406A30()
 //      fn0000000000406B70
 word64 fn0000000000406A80(Eq_n rdx, Eq_n rsi, Eq_n rdi, struct Eq_n * fs)
 {
-	ptr64 fp;
+	word64 qwLoc0138;
 	Eq_n rbx_n = rsi;
 	word64 rax_n = fs->qw0028;
 	if (g_t61A748 != 0x00)
@@ -2847,10 +2847,10 @@ word64 fn0000000000406A80(Eq_n rdx, Eq_n rsi, Eq_n rdi, struct Eq_n * fs)
 		char * rax_n = strstr(rsi, "%b");
 		if (rax_n != null && strlen(rsi) <= 101)
 		{
-			char * rax_n = __mempcpy_chk(fp - 0x0138, rsi, rax_n - rsi, 0x0105);
+			char * rax_n = __mempcpy_chk(&qwLoc0138, rsi, rax_n - rsi, 0x0105);
 			int64 rcx_n = (int64) *((word64) rdx + 16);
 			strcpy(stpcpy(rax_n, rcx_n + 0x0061A760 + rcx_n * 0xA0), rax_n + 2);
-			rbx_n = fp - 0x0138;
+			rbx_n = &qwLoc0138;
 		}
 	}
 	word64 rax_n = fn0000000000410600(rdx, rbx_n, 1001, rdi, fs);
@@ -3446,7 +3446,8 @@ l0000000000407A18:
 //      fn00000000004028C0
 Eq_n fn0000000000407EA0(Eq_n rcx, word32 edx, word32 esi, Eq_n rdi, struct Eq_n * fs)
 {
-	word64 * fp;
+	Eq_n fp;
+	word64 qwLoc0388;
 	Eq_n tLoc02F8;
 	Eq_n tLoc02D8;
 	ui32 dwLoc0370;
@@ -3550,7 +3551,7 @@ l0000000000407F68:
 					char r15b_n = *rcx;
 					if (r15b_n != 0x00)
 					{
-						word64 rax_n = fp - 0x03A8 - ((strlen(rdi) + 32) + strlen(rcx) & ~0x0F) + 0x0F & ~0x0F;
+						Eq_n rax_n = (word64) (fp - 0x03A8 - ((word64) strlen(rcx) + ((word64) strlen(rdi) + 32) & ~0x0F)) + 0x0F & ~0x0F;
 						char sil_n = (byte) esi_n;
 						r12_n = rax_n;
 						if (r15b_n != 0x2E || *((word64) rcx + 1) != 0x00)
@@ -3798,7 +3799,7 @@ l000000000040862A:
 								}
 								else
 									r13_n = fn0000000000410E30(r13_n);
-								if (r13_n != 0x00 && (g_dw61B12C > 0x01 || g_b61B115 != 0x00) && __xstat(1, r13_n, fp - (word64 *) 0x0388) == 0x00)
+								if (r13_n != 0x00 && (g_dw61B12C > 0x01 || g_b61B115 != 0x00) && __xstat(1, r13_n, &qwLoc0388) == 0x00)
 								{
 									r14_n->b00B1 = 0x01;
 									if (bLoc038C_n == 0x00 || (g_dw61B150 == 0x00 || (dwLoc0370 & 0xF000) != 0x4000))
@@ -4562,12 +4563,11 @@ l000000000040A768:
 //      fn0000000000406B70
 void fn000000000040AB30(struct timespec * rdi)
 {
-	ptr64 fp;
-	Eq_n qwLoc18;
+	word64 qwLoc18;
 	int64 qwLoc10;
 	if (clock_gettime(0, rdi) != 0x00)
 	{
-		gettimeofday(fp - 0x18, null);
+		gettimeofday(&qwLoc18, null);
 		rdi->tv_sec = (int32) qwLoc18;
 		rdi[1] = (struct timespec) (qwLoc10 *s 1000);
 	}
@@ -5342,7 +5342,7 @@ Eq_n fn000000000040BB90(Eq_n rsi, Eq_n rdi)
 //      fn0000000000407EA0
 struct Eq_n * fn000000000040BD70(Eq_n rcx, ui32 edx, Eq_n rsi, Eq_n rdi, Eq_n r8, struct Eq_n * fs)
 {
-	Eq_n fp;
+	word64 qwLoc78;
 	word64 rcx_n = fs->qw0028;
 	struct lconv * rax_n = localeconv();
 	Eq_n r15_n = rax_n->t0000;
@@ -5524,7 +5524,7 @@ l000000000040C237:
 			{
 				Eq_n r8_n = r8_n - r12_n;
 				Eq_n rax_n = strlen(r13_n);
-				__memcpy_chk(fp - 0x78, r12_n, r8_n, 0x29);
+				__memcpy_chk(&qwLoc78, r12_n, r8_n, 0x29);
 				Eq_n r15_n = ~0x00;
 				Eq_n r14_n = r8_n;
 				word64 r9_n = r12_n + r8_n;
@@ -5541,7 +5541,7 @@ l000000000040C237:
 					if (r15_n > r14_n)
 						r15_n = r14_n;
 					r14_n -= r15_n;
-					word64 rax_n = memcpy(r9_n - r15_n, fp - 0x78 + r14_n, r15_n);
+					word64 rax_n = memcpy(r9_n - r15_n, &qwLoc78 + r14_n, r15_n);
 					if (r14_n == 0x00)
 						break;
 					r9_n = memcpy(rax_n - rax_n, r13_n, rax_n);
