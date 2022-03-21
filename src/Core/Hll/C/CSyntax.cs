@@ -259,6 +259,25 @@ namespace Reko.Core.Hll.C
         {
             return visitor.VisitEnum(this);
         }
+
+        public override string ToString()
+        {
+            var sb = new StringBuilder();
+            sb.Append("(Enum");
+            if (!string.IsNullOrEmpty(Tag))
+            {
+                sb.AppendFormat(" {0}", Tag);
+            }
+            var sep = " (";
+            foreach (var e in Enums)
+            {
+                sb.Append(sep);
+                sep = " ";
+                sb.Append(e);
+            }
+            sb.Append("))");
+                return sb.ToString();
+        }
     }
 
     public class Enumerator : CSyntax

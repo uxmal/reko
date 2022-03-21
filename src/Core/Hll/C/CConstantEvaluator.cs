@@ -67,6 +67,8 @@ namespace Reko.Core.Hll.C
             {
             case CTokenType.Ampersand:
                 return 0;
+            case CTokenType.Tilde:
+                return ~(int) unary.Expression.Accept(this);
             default: throw new NotImplementedException();
             }
         }
