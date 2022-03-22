@@ -625,6 +625,9 @@ IGNORE tab + cr + lf
                     else if (s == "noalias")
                     {
                     }
+                    else if (s == "allocator")
+                    {
+                    }
                     else
                         throw new CParserException($"Unknown __declspec '{s}'.");
                     ExpectToken(CTokenType.RParen);

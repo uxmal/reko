@@ -45,6 +45,11 @@ namespace Reko.UnitTests.Core.Hll.C
             lexer = new CDirectiveLexer(state, new CLexer(new StringReader(text), CLexer.GccKeywords));
         }
 
+        private void LexMsvc(string text)
+        {
+            lexer = new CDirectiveLexer(state, new CLexer(new StringReader(text), CLexer.MsvcKeywords));
+        }
+
         private void Expect(CTokenType expectedType)
         {
             var token = lexer.Read();
@@ -192,5 +197,23 @@ typedef int");
             Assert.AreEqual(CTokenType.EOF, lexer.Read().Type);
         }
 
+        [Test]
+        public void CDirectiveLexer_msvc_pragma_pack_push()
+        {
+            LexMsvc(@"
+        __pragma(pack(push, 8))
+");
+            Assert.AreEqual(CTokenType.Float, lexer.Read().Type);
+            Assert.AreEqual(8, state.Alignment);
+        }
+
+        [Test]
+        public void CDirectiveLexer_msvc_pragma_pack_pop()
+        {
+            LexMsvc(@"
+__pragma(pack(pop))
+");
+            Assert.AreEqual("@@@", lexer.Read().Type);
+        }
     }
 }

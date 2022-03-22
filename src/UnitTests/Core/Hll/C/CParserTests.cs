@@ -56,6 +56,12 @@ namespace Reko.UnitTests.Core.Hll.C
             parser = new CParser(parserState, lexer);
         }
 
+        private void MsvcCeLex(string str)
+        {
+            lexer = new CLexer(new StringReader(str), CLexer.MsvcCeKeywords);
+            parser = new CParser(parserState, lexer);
+        }
+
         [Test]
         public void CParser_decl()
         {
@@ -1601,7 +1607,7 @@ void __near exit(int status);
         }
 
         [Test]
-        public void CParser_xxx()
+        public void CParser_const_and_typedef_field()
         {
             MsvcLex(@"
 typedef void (__cdecl  * PfnType)(void  * arg);
@@ -1612,10 +1618,46 @@ typedef struct _THING {
 } THING;");
             var decls = parser.Parse();
             var decl = decls[1];
-            Console.WriteLine(decls[1].ToString());
             Assert.AreEqual("(decl Typedef (Struct _THING " +
                 "((PfnType) (((ptr pfn))) " +
                 "(Const PfnType) (((ptr cpfn)))) ((init-decl THING)))",
+                decl.ToString());
+        }
+
+        [Test]
+        public void CParser_msvcce__asm()
+        {
+            MsvcCeLex("extern void __asm(char[], ...);");
+            var decls = parser.Parse();
+            var decl = decls[0];
+            Assert.AreEqual("(decl Extern Void ((init-decl (func __asm ((Char (arr  )) ())))))",
+                decl.ToString());
+        }
+
+        [Test]
+        [Ignore("Working on other C warts")]
+        public void CParser_attribute_access()
+        {
+            GccLex(
+                "__attribute__ ((access (write_only, 1, 2), access (read_write, 3))) " +
+                "int fgets (char*, int, FILE*);");
+            var decls = parser.Parse();
+            var decl = decls[0];
+            Assert.AreEqual("(decl Extern Void ((init-decl (func __asm ((Char (arr  )) ())))))",
+                decl.ToString());
+        }
+
+        [Test]
+        public void CParser_msvc_declspec_allocator()
+        {
+            MsvcLex(
+                @" __declspec(allocator) wchar_t* __cdecl _wcsdup(
+                 wchar_t const* _String
+                 );");
+            var decls = parser.Parse();
+            var decl = decls[0];
+            Assert.AreEqual("(decl (__declspec allocator) Wchar_t ((init-decl (ptr (__Cdecl "+
+                "(func _wcsdup ((Wchar_t Const (ptr _String)))))))))",
                 decl.ToString());
         }
     }
