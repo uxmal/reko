@@ -353,7 +353,7 @@ IGNORE tab + cr + lf
         {
             var list = new List<Decl>();
             var decl = Parse_ExternalDecl();
-            if (decl == null)
+            if (decl is null)
                 return list;
             list.Add(decl);
             while (PeekToken().Type != CTokenType.EOF)
@@ -702,9 +702,11 @@ IGNORE tab + cr + lf
                         alignment = (int) ExpectToken(CTokenType.NumericLiteral);
                         ExpectToken(CTokenType.RParen);
                     }
+                    else if (s == "no_init_all")
+                    {
+                    }
                     else
-                        throw new CParserException("Expected __declspec(align(nn)).");
-
+                        throw new CParserException($"Unexpected __declspec({s}).");
                     ExpectToken(CTokenType.RParen);
                 }
                 var attrs = Parse_GccExtensions();
@@ -1795,6 +1797,7 @@ IGNORE tab + cr + lf
             }
 
             CExpression expr;
+            var q = PeekToken();
             switch (PeekToken().Type)
             {
             case CTokenType.LBrace:

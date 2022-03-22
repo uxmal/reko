@@ -1660,5 +1660,20 @@ typedef struct _THING {
                 "(func _wcsdup ((Wchar_t Const (ptr _String)))))))))",
                 decl.ToString());
         }
+
+        [Test]
+        public void CParser_goto()
+        {
+            MsvcLex(@"
+            int x(int a) {
+                if (a == 0)
+                    goto fail;
+                return 1;
+fail:
+                return 0;
+            }
+");
+            var decl = parser.Parse()[0];
+        }
     }
 }

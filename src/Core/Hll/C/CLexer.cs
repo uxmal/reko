@@ -957,6 +957,7 @@ namespace Reko.Core.Hll.C
                 { "enum", CTokenType.Enum },
                 { "extern", CTokenType.Extern },
                 { "float", CTokenType.Float },
+                { "goto", CTokenType.Goto },
                 { "if", CTokenType.If },
                 { "int", CTokenType.Int },
                 { "long", CTokenType.Long },

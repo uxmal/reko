@@ -200,7 +200,10 @@ namespace Reko.Core.Hll.C
 
         public Stat GotoStatement(string gotoLabel)
         {
-            throw new NotImplementedException();
+            return new GotoStat
+            {
+                Label = gotoLabel
+            };
         }
 
         public Stat ContinueStatement()
@@ -282,7 +285,7 @@ namespace Reko.Core.Hll.C
 
         internal Label Label(string p)
         {
-            throw new NotImplementedException();
+            return new LineLabel { Name = p };
         }
 
         public InitDeclarator InitDeclarator(Declarator decl, Initializer init)

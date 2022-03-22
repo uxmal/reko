@@ -888,6 +888,11 @@ namespace Reko.Core.Hll.C
         public Stat Body;
     }
 
+    public class GotoStat : Stat
+    {
+        public string Label;
+    }
+
     public class ReturnStat : Stat
     {
         public CExpression Expression;

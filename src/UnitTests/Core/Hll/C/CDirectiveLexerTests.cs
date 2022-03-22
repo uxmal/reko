@@ -203,17 +203,8 @@ typedef int");
             LexMsvc(@"
         __pragma(pack(push, 8))
 ");
-            Assert.AreEqual(CTokenType.Float, lexer.Read().Type);
+            Assert.AreEqual(CTokenType.EOF, lexer.Read().Type);
             Assert.AreEqual(8, state.Alignment);
-        }
-
-        [Test]
-        public void CDirectiveLexer_msvc_pragma_pack_pop()
-        {
-            LexMsvc(@"
-__pragma(pack(pop))
-");
-            Assert.AreEqual("@@@", lexer.Read().Type);
         }
     }
 }
