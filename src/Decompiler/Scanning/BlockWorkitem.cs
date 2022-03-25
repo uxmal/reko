@@ -459,42 +459,45 @@ namespace Reko.Scanning
                     blockCur!.Procedure.ControlGraph.AddEdge(blockCur, blockCur.Procedure.ExitBlock);
                     return false;
                 }
-                var trampoline = scanner.GetTrampoline(blockCur!.Procedure.Architecture, addrTarget);
-                if (trampoline != null)
+                if (program.SegmentMap.IsExecutableAddress(addrTarget))
                 {
-                    var jmpSite = state.OnBeforeCall(stackReg!, 0);
-                    if (trampoline is DispatchProcedure disp)
+                    var trampoline = scanner.GetTrampoline(blockCur!.Procedure.Architecture, addrTarget);
+                    if (trampoline != null)
                     {
-                        trampoline = ResolveDispatchProcedureCall(disp, state);
+                        var jmpSite = state.OnBeforeCall(stackReg!, 0);
+                        if (trampoline is DispatchProcedure disp)
+                        {
+                            trampoline = ResolveDispatchProcedureCall(disp, state);
+                        }
+                        var sig = trampoline.Signature;
+                        var chr = trampoline.Characteristics;
+                        EmitCall(CreateProcedureConstant(trampoline), sig, chr, jmpSite);
+                        Emit(new ReturnInstruction());
+                        blockCur.Procedure.ControlGraph.AddEdge(blockCur, blockCur.Procedure.ExitBlock);
+                        return false;
                     }
-                    var sig = trampoline.Signature;
-                    var chr = trampoline.Characteristics;
-                    EmitCall(CreateProcedureConstant(trampoline), sig, chr, jmpSite);
-                    Emit(new ReturnInstruction());
-                    blockCur.Procedure.ControlGraph.AddEdge(blockCur, blockCur.Procedure.ExitBlock);
+                    var blockTarget = BlockFromAddress(ric.Address, addrTarget, blockCur.Procedure, state);
+                    var blockSource = blockCur.IsSynthesized
+                        ? blockCur
+                        : scanner.FindContainingBlock(ric.Address)!;
+                    EnsureEdge(blockSource.Procedure, blockSource, blockTarget);
+                    if (ric.Address == addrTarget)
+                    {
+                        var bt = BlockFromAddress(ric.Address, addrTarget, blockCur.Procedure, state);
+                        EnsureEdge(blockSource.Procedure, blockFrom!, bt);
+                    }
+
+                    // Always emit goto statements to avoid error during block splitting
+                    //$REVIEW: we insert a statement into empty blocks to satisfy the BlockHasBeenScanned
+                    // predicate. This should be done in a better way; perhaps by keeping track
+                    // of scanned blocks in the Scanner class?
+                    // The recursive scanning of basic blocks does need improvement;
+                    // consider using a similar technique to Shingle scanner, where reachable
+                    // statements are collected first, and basic blocks reconstructed afterwards.
+
+                    Emit(new GotoInstruction(addrTarget));
                     return false;
                 }
-                var blockTarget = BlockFromAddress(ric.Address, addrTarget, blockCur.Procedure, state);
-                var blockSource = blockCur.IsSynthesized
-                    ? blockCur
-                    : scanner.FindContainingBlock(ric.Address)!;
-                EnsureEdge(blockSource.Procedure, blockSource, blockTarget);
-                if (ric.Address == addrTarget)
-                {
-                    var bt = BlockFromAddress(ric.Address, addrTarget, blockCur.Procedure, state);
-                    EnsureEdge(blockSource.Procedure, blockFrom!, bt);
-                }
-
-                // Always emit goto statements to avoid error during block splitting
-                //$REVIEW: we insert a statement into empty blocks to satisfy the BlockHasBeenScanned
-                // predicate. This should be done in a better way; perhaps by keeping track
-                // of scanned blocks in the Scanner class?
-                // The recursive scanning of basic blocks does need improvement;
-                // consider using a similar technique to Shingle scanner, where reachable
-                // statements are collected first, and basic blocks reconstructed afterwards.
-
-                Emit(new GotoInstruction(addrTarget));
-                return false;
             }
             if (g.Target is MemoryAccess mem && mem.EffectiveAddress is Constant)
             {

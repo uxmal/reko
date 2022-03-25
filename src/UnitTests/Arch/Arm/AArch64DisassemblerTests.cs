@@ -2746,6 +2746,12 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
+        public void AArch64Dis_movi_vs_v3()
+        {
+            AssertCode("movi\tv10.2s,#&F2,msl #8", "4AC6070F");
+        }
+
+        [Test]
         public void AArch64Dis_movi_vb()
         {
             AssertCode("movi\tv2.16b,#&E0", "02E4074F");
