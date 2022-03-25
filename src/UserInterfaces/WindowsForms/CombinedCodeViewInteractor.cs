@@ -676,6 +676,11 @@ namespace Reko.UserInterfaces.WindowsForms
                 gViewer.ZoomF /= 1.2;
                 e.Handled = true;
             }
+            else if (e.KeyData == (Keys.Control | Keys.D0))
+            {
+                gViewer.ZoomF = 1.0;
+                e.Handled = true;
+            }
         }
 
         private void IViewer_MouseDown(object sender, MsaglMouseEventArgs e)
