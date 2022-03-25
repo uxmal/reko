@@ -32,6 +32,7 @@ using System.Text;
 using System.Diagnostics;
 using Reko.Core.Services;
 using Reko.Core.Memory;
+using Reko.Core.Intrinsics;
 
 namespace Reko.Arch.PowerPC
 {
@@ -93,10 +94,13 @@ namespace Reko.Arch.PowerPC
                 case Mnemonic.addc: RewriteAddc(); break;
                 case Mnemonic.addco: RewriteAddc(); break;
                 case Mnemonic.adde: RewriteAdde(); break;
+                case Mnemonic.addeo: RewriteAdde(); break;
                 case Mnemonic.addi: RewriteAddi(); break;
                 case Mnemonic.addic: RewriteAddic(); break;
                 case Mnemonic.addis: RewriteAddis(); break;
                 case Mnemonic.addme: RewriteAddme(); break;
+                case Mnemonic.addmeo: RewriteAddme(); break;
+                case Mnemonic.addpcis: RewriteAddpcis(); break;
                 case Mnemonic.addze: RewriteAddze(); break;
                 case Mnemonic.and: RewriteAnd(false); break;
                 case Mnemonic.andc: RewriteAndc(); break;
@@ -106,10 +110,14 @@ namespace Reko.Arch.PowerPC
                 case Mnemonic.bc: RewriteBc(false); break;
                 case Mnemonic.bcctr: RewriteBcctr(false); break;
                 case Mnemonic.bcctrl: RewriteBcctr(true); break;
+                case Mnemonic.bcds: RewriteBcds(); break;
+                case Mnemonic.bcdtrunc: RewriteBcdtrunc(); break;
+                case Mnemonic.bcdus: RewriteBcdus(); break;
                 case Mnemonic.bctrl: RewriteBcctr(true); break;
                 case Mnemonic.bcdadd: RewriteBcdadd(); break;
                 case Mnemonic.bdnz: RewriteCtrBranch(false, false, m.Ne, false); break;
                 case Mnemonic.bdnzf: RewriteCtrBranch(false, false, m.Ne, false); break;
+                case Mnemonic.bdnzfl: RewriteCtrBranch(true, false, m.Ne, false); break;
                 case Mnemonic.bdnzl: RewriteCtrBranch(true, false, m.Ne, false); break;
                 case Mnemonic.bdnzt: RewriteCtrBranch(false, false, m.Ne, true); break;
                 case Mnemonic.bdnztl: RewriteCtrBranch(true, false, m.Ne, true); break;
@@ -155,6 +163,7 @@ namespace Reko.Arch.PowerPC
                 case Mnemonic.cmpwi: RewriteCmpwi(); break;
                 case Mnemonic.cntlzd: RewriteCntlz("__cntlzd", PrimitiveType.Word64); break;
                 case Mnemonic.cntlzw: RewriteCntlz("__cntlzw", PrimitiveType.Word32); break;
+                case Mnemonic.crandc: RewriteCrLogical(crandc); break;
                 case Mnemonic.creqv: RewriteCrLogical("__creqv"); break;
                 case Mnemonic.cror:  RewriteCrLogical("__cror"); break;
                 case Mnemonic.crorc: RewriteCrLogical("__crorc"); break;
@@ -195,6 +204,7 @@ namespace Reko.Arch.PowerPC
                 case Mnemonic.fmadds: RewriteFmadd(PrimitiveType.Real32, m.FAdd, false); break;
                 case Mnemonic.fmsub: RewriteFmadd(PrimitiveType.Real64, m.FSub, false); break;
                 case Mnemonic.fmsubs: RewriteFmadd(PrimitiveType.Real32, m.FSub, false); break;
+                case Mnemonic.fnabs: RewriteFnabs(); break;
                 case Mnemonic.fnmadd: RewriteFmadd(PrimitiveType.Real64, m.FAdd, true); break;
                 case Mnemonic.fnmadds: RewriteFmadd(PrimitiveType.Real32, m.FAdd, true); break;
                 case Mnemonic.fnmsub: RewriteFmadd(PrimitiveType.Real64, m.FSub, true); break;
@@ -202,10 +212,12 @@ namespace Reko.Arch.PowerPC
                 case Mnemonic.fmul: RewriteFmul(); break;
                 case Mnemonic.fmuls: RewriteFmul(); break;
                 case Mnemonic.fneg: RewriteFneg(); break;
+                case Mnemonic.fres: RewriteFres(); break;
                 case Mnemonic.frsp: RewriteFrsp(); break;
                 case Mnemonic.frsqrte: RewriteFrsqrte(); break;
                 case Mnemonic.fsel: RewriteFsel(); break;
                 case Mnemonic.fsqrt: RewriteFsqrt(); break;
+                case Mnemonic.fsqrts: RewriteFsqrts(); break;
                 case Mnemonic.fsub: RewriteFsub(); break;
                 case Mnemonic.fsubs: RewriteFsub(); break;
                 case Mnemonic.icbi: RewriteIcbi(); break;
@@ -217,11 +229,15 @@ namespace Reko.Arch.PowerPC
                 case Mnemonic.ld: RewriteLz(PrimitiveType.Word64, arch.WordWidth); break;
                 case Mnemonic.ldarx: RewriteLarx("__ldarx", PrimitiveType.Word64); break;
                 case Mnemonic.ldu: RewriteLzu(PrimitiveType.Word64, arch.WordWidth); break;
+                case Mnemonic.ldux: RewriteLzux(PrimitiveType.Word64, arch.WordWidth); break;
                 case Mnemonic.ldx: RewriteLzx(PrimitiveType.Word64, arch.WordWidth); break;
                 case Mnemonic.lfd: RewriteLfd(); break;
+                case Mnemonic.lfdp: RewriteLfdp(); break;
+                case Mnemonic.lfdpx: RewriteLfdpx(); break;
                 case Mnemonic.lfdu: RewriteLzu(PrimitiveType.Real64, PrimitiveType.Real64); break;
                 case Mnemonic.lfdux: RewriteLzux(PrimitiveType.Real64, PrimitiveType.Real64); break;
                 case Mnemonic.lfdx: RewriteLzx(PrimitiveType.Real64, PrimitiveType.Real64); break;
+                case Mnemonic.lfiwax: RewriteLfiwax(); break;
                 case Mnemonic.lfs: RewriteLfs(); break;
                 case Mnemonic.lfsu: RewriteLzu(PrimitiveType.Real32, PrimitiveType.Real64); break;
                 case Mnemonic.lfsux: RewriteLzux(PrimitiveType.Real32, PrimitiveType.Real64); break;
@@ -238,11 +254,13 @@ namespace Reko.Arch.PowerPC
                 case Mnemonic.lmw: RewriteLmw(); break;
                 case Mnemonic.lq: RewriteLq(); break;
                 case Mnemonic.lswi: RewriteLswi(); break;
+                case Mnemonic.lswx: RewriteLswx(); break;
                 case Mnemonic.lvewx: RewriteLvewx(); break;
                 case Mnemonic.lvlx:
                 case Mnemonic.lvlx128: RewriteLvlx(); break;
                 case Mnemonic.lvrx128: RewriteLvrx(); break;
-                case Mnemonic.lvsl: RewriteLvsl(); break;
+                case Mnemonic.lvsl: RewriteLvsX(lvsl); break;
+                case Mnemonic.lvsr: RewriteLvsX(lvsr); break;
                 case Mnemonic.lvx:
                 case Mnemonic.lvx128: RewriteLzx(PrimitiveType.Word128, PrimitiveType.Word128); break;
                 case Mnemonic.lwarx: RewriteLarx("__lwarx", PrimitiveType.Word32); break;
@@ -252,6 +270,9 @@ namespace Reko.Arch.PowerPC
                 case Mnemonic.lwzu: RewriteLzu(PrimitiveType.Word32, arch.WordWidth); break;
                 case Mnemonic.lwzux: RewriteLzux(PrimitiveType.Word32, arch.WordWidth); break;
                 case Mnemonic.lwzx: RewriteLzx(PrimitiveType.Word32, arch.WordWidth); break;
+                case Mnemonic.maddhd: RewriteMulAcc(m.SMul, PrimitiveType.Int64, PrimitiveType.Int128, 64); break;
+                case Mnemonic.maddhdu: RewriteMulAcc(m.UMul, PrimitiveType.UInt64, PrimitiveType.UInt128, 64); break;
+                case Mnemonic.maddld: RewriteMulAcc(m.SMul, PrimitiveType.Int64, PrimitiveType.Int128, 0); break;
                 case Mnemonic.mcrf: RewriteMcrf(); break;
                 case Mnemonic.mfcr: RewriteMfcr(); break;
                 case Mnemonic.mfctr: RewriteMfctr(); break;
@@ -259,9 +280,11 @@ namespace Reko.Arch.PowerPC
                 case Mnemonic.mffs: RewriteMffs(); break;
                 case Mnemonic.mflr: RewriteMflr(); break;
                 case Mnemonic.mfmsr: RewriteMfmsr(); break;
+                case Mnemonic.mfocrf: RewriteMfocrf(); break;
                 case Mnemonic.mfspr: RewriteMfspr(); break;
                 case Mnemonic.mtcrf: RewriteMtcrf(); break;
                 case Mnemonic.mtctr: RewriteMtctr(); break;
+                case Mnemonic.mtfsb1: RewriteMtfsb1(); break;
                 case Mnemonic.mtfsf: RewriteMtfsf(); break;
                 case Mnemonic.mtmsr: RewriteMtmsr(PrimitiveType.Word32); break;
                 case Mnemonic.mtmsrd: RewriteMtmsr(PrimitiveType.Word64); break;
@@ -316,6 +339,9 @@ namespace Reko.Arch.PowerPC
                 case Mnemonic.psq_stux: Rewrite_psq_st(true); break;
                 case Mnemonic.rfi: RewriteRfi(); break;
                 case Mnemonic.rfid: RewriteRfi(); break;
+                case Mnemonic.rldcl: RewriteRldcl(); break;
+                case Mnemonic.rldcr: RewriteRldcr(); break;
+                case Mnemonic.rldic: RewriteRldic(); break;
                 case Mnemonic.rldicl: RewriteRldicl(); break;
                 case Mnemonic.rldicr: RewriteRldicr(); break;
                 case Mnemonic.rldimi: RewriteRldimi(); break;
@@ -332,14 +358,17 @@ namespace Reko.Arch.PowerPC
                 case Mnemonic.srd: RewriteSrw(); break;
                 case Mnemonic.srw: RewriteSrw(); break;
                 case Mnemonic.stb: RewriteSt(PrimitiveType.Byte); break;
+                case Mnemonic.stbcx: RewriteStcx(PrimitiveType.Byte); break;
                 case Mnemonic.stbu: RewriteStu(PrimitiveType.Byte); break;
                 case Mnemonic.stbux: RewriteStux(PrimitiveType.Byte); break;
                 case Mnemonic.stbx: RewriteStx(PrimitiveType.Byte); break;
                 case Mnemonic.std: RewriteSt(PrimitiveType.Word64); break;
-                case Mnemonic.stdcx: RewriteStcx("__stdcx", PrimitiveType.Word64); break;
+                case Mnemonic.stdcx: RewriteStcx(PrimitiveType.Word64); break;
                 case Mnemonic.stdu: RewriteStu(PrimitiveType.Word64); break;
                 case Mnemonic.stdx: RewriteStx(PrimitiveType.Word64); break;
                 case Mnemonic.stfd: RewriteSt(PrimitiveType.Real64); break;
+                case Mnemonic.stfdp: RewriteStfdp(); break;
+                case Mnemonic.stfdpx: RewriteStfdpx(); break;
                 case Mnemonic.stfdu: RewriteStu(PrimitiveType.Real64); break;
                 case Mnemonic.stfdux: RewriteStux(PrimitiveType.Real64); break;
                 case Mnemonic.stfdx: RewriteStx(PrimitiveType.Real64); break;
@@ -348,18 +377,21 @@ namespace Reko.Arch.PowerPC
                 case Mnemonic.stfsu: RewriteStu(PrimitiveType.Real32); break;
                 case Mnemonic.stfsx: RewriteStx(PrimitiveType.Real32); break;
                 case Mnemonic.sth: RewriteSt(PrimitiveType.Word16); break;
+                case Mnemonic.sthbrx: RewriteStbrx(PrimitiveType.Word16); break;
                 case Mnemonic.sthu: RewriteStu(PrimitiveType.Word16); break;
                 case Mnemonic.sthx: RewriteStx(PrimitiveType.Word16); break;
                 case Mnemonic.stmw: RewriteStmw(); break;
                 case Mnemonic.stswi: RewriteStswi(); break;
-                case Mnemonic.stvewx: RewriteStvewx(); break;
+                case Mnemonic.stvebx: RewriteStvex(PrimitiveType.Byte); break;
+                case Mnemonic.stvehx: RewriteStvex(PrimitiveType.Word16); break;
+                case Mnemonic.stvewx: RewriteStvex(PrimitiveType.Word32); break;
                 case Mnemonic.stvx: RewriteStx(PrimitiveType.Word128); break;
                 case Mnemonic.stvx128: RewriteStx(PrimitiveType.Word128); break;
                 case Mnemonic.stvlx128: RewriteStx(PrimitiveType.Word128); break;
                 case Mnemonic.stvrx128: RewriteStx(PrimitiveType.Word128); break;
                 case Mnemonic.stw: RewriteSt(PrimitiveType.Word32); break;
                 case Mnemonic.stwbrx: RewriteStwbrx(); break;
-                case Mnemonic.stwcx: RewriteStcx("__stwcx", PrimitiveType.Word32); break;
+                case Mnemonic.stwcx: RewriteStcx(PrimitiveType.Word32); break;
                 case Mnemonic.stwcix: RewriteStwcix(PrimitiveType.Word32); break;
                 case Mnemonic.stwu: RewriteStu(PrimitiveType.Word32); break;
                 case Mnemonic.stwux: RewriteStux(PrimitiveType.Word32); break;
@@ -368,8 +400,10 @@ namespace Reko.Arch.PowerPC
                 case Mnemonic.subfc: RewriteSubfc(); break;
                 case Mnemonic.subfco: RewriteSubfc(); break;
                 case Mnemonic.subfe: RewriteSubfe(); break;
+                case Mnemonic.subfeo: RewriteSubfe(); break;
                 case Mnemonic.subfic: RewriteSubfic(); break;
                 case Mnemonic.subfze: RewriteSubfze(); break;
+                case Mnemonic.subfzeo: RewriteSubfze(); break;
                 case Mnemonic.sync: RewriteSync(); break;
                 case Mnemonic.td: RewriteTrap(PrimitiveType.Word64); break;
                 case Mnemonic.tdi: RewriteTrap(PrimitiveType.Word64); break;
@@ -377,78 +411,178 @@ namespace Reko.Arch.PowerPC
                 case Mnemonic.tlbsync: RewriteTlbsync(); break;
                 case Mnemonic.tw: RewriteTrap(PrimitiveType.Word32); break;
                 case Mnemonic.twi: RewriteTrap(PrimitiveType.Word32); break;
-                case Mnemonic.vaddfp: RewriteVaddfp(); break;
-                case Mnemonic.vaddubm: RewriteVectorBinOp("__vaddubm", true, PrimitiveType.UInt8); break;
-                case Mnemonic.vaddubs: RewriteVectorBinOp("__vaddubs", true, PrimitiveType.UInt8); break;
-                case Mnemonic.vadduwm: RewriteVectorBinOp("__vadduwm", true, PrimitiveType.UInt32); break;
+                case Mnemonic.vabsduw: RewriteVectorBinOp(vabsduw, PrimitiveType.UInt32); break;
+                case Mnemonic.vaddecuq: RewriteVaddecuq(); break;
+                case Mnemonic.vaddeuqm: RewriteTernaryOp(vaddeuqm); break;
+                case Mnemonic.vaddfp:
+                case Mnemonic.vaddfp128: RewriteVectorBinOp(vaddfp, PrimitiveType.Real32); break;
+                case Mnemonic.vaddubm: RewriteVectorBinOp(vaddm, PrimitiveType.UInt8); break;
+                case Mnemonic.vaddubs: RewriteVectorBinOp(vadds, PrimitiveType.UInt8); break;
+                case Mnemonic.vadduhm: RewriteVectorBinOp(vaddm, PrimitiveType.UInt8); break;
+                case Mnemonic.vadduwm: RewriteVectorBinOp(vaddm, PrimitiveType.UInt32); break;
+                case Mnemonic.vadduws: RewriteVectorBinOp(vadds, PrimitiveType.UInt32); break;
                 case Mnemonic.vadduqm: RewriteAdd(); break;
                 case Mnemonic.vand:
                 case Mnemonic.vand128: RewriteAnd(false); break;
-                case Mnemonic.vandc: RewriteAndc(); break;
-                case Mnemonic.vcfsx: RewriteVct("__vcfsx", PrimitiveType.Real32); break;
-                case Mnemonic.vcfpsxws128: RewriteVcfpsxws("__vcfpsxws"); break;
+                case Mnemonic.vandc:
+                case Mnemonic.vandc128: RewriteAndc(); break;
+                case Mnemonic.vavgsb: RewriteVectorBinOp(vavg, PrimitiveType.Int8); break;
+                case Mnemonic.vavgsh: RewriteVectorBinOp(vavg, PrimitiveType.Int16); break;
+                case Mnemonic.vbpermd: RewriteVbperm(PrimitiveType.UInt64); break;
+                case Mnemonic.vcfsx: RewriteVctfixed(vcfp, PrimitiveType.Int32); break;
+                case Mnemonic.vcfux: RewriteVctfixed(vcfp, PrimitiveType.UInt32); break;
+                case Mnemonic.vcfpsxws128: RewriteVctfixed(vcfps, PrimitiveType.Int32); break;
+                case Mnemonic.vcfpuxws128: RewriteVctfixed(vcfps, PrimitiveType.UInt32); break;
                 case Mnemonic.vcmpbfp:
-                case Mnemonic.vcmpbfp128: RewriteVcmpfp("__vcmpebfp"); break;
+                case Mnemonic.vcmpbfp128: RewriteVcmp(vcmpbfp, PrimitiveType.Real32); break;
                 case Mnemonic.vcmpeqfp:
-                case Mnemonic.vcmpeqfp128: RewriteVcmpfp("__vcmpeqfp"); break;
+                case Mnemonic.vcmpeqfp128: RewriteVcmp(vcmpeqfp, PrimitiveType.Real32); break;
+                case Mnemonic.vcmpgefp:
+                case Mnemonic.vcmpgefp128: RewriteVcmp(vcmpgefp, PrimitiveType.Real32); break;
                 case Mnemonic.vcmpgtfp:
-                case Mnemonic.vcmpgtfp128: RewriteVcmpfp("__vcmpgtfp"); break;
-                case Mnemonic.vcmpgtuw: RewriteVcmpu("__vcmpgtuw", PrimitiveType.UInt32); break;
-                case Mnemonic.vcmpequb: RewriteVcmpu("__vcmpequb", PrimitiveType.UInt8); break;
-                case Mnemonic.vcmpequd: RewriteVcmpu("__vcmpequd", PrimitiveType.UInt64); break;
-                case Mnemonic.vcmpequw: RewriteVcmpu("__vcmpequw", PrimitiveType.UInt32); break;
+                case Mnemonic.vcmpgtfp128: RewriteVcmp(vcmpgtfp, PrimitiveType.Real32); break;
+                case Mnemonic.vcmpgtsb: RewriteVcmp(vcmpgt, PrimitiveType.Int8); break;
+                case Mnemonic.vcmpgtsh: RewriteVcmp(vcmpgt, PrimitiveType.Int16); break;
+                case Mnemonic.vcmpgtub: RewriteVcmp(vcmpgt, PrimitiveType.UInt8); break;
+                case Mnemonic.vcmpgtuh: RewriteVcmp(vcmpgt, PrimitiveType.UInt16); break;
+                case Mnemonic.vcmpgtuw: RewriteVcmp(vcmpgt, PrimitiveType.UInt32); break;
+                case Mnemonic.vcmpequb: RewriteVcmp(vcmpeq, PrimitiveType.UInt8); break;
+                case Mnemonic.vcmpequd: RewriteVcmp(vcmpeq, PrimitiveType.UInt64); break;
+                case Mnemonic.vcmpequw:
+                case Mnemonic.vcmpequw128: RewriteVcmp(vcmpeq, PrimitiveType.UInt32); break;
+                case Mnemonic.vcmpnezh: RewriteVcmp(vcmpnez, PrimitiveType.Word16); break;
                 case Mnemonic.vcsxwfp128: RewriteVcsxwfp("__vcsxwfp"); break;
-                case Mnemonic.vctsxs: RewriteVct("__vctsxs", PrimitiveType.Int32); break;
+                case Mnemonic.vcuxwfp128: RewriteVcsxwfp("__vcuxwfp"); break;
+                case Mnemonic.vctsxs: RewriteVctfixed(vcfps, PrimitiveType.Int32); break;
+                case Mnemonic.vctuxs: RewriteVctfixed(vcfps, PrimitiveType.UInt32); break;
                 case Mnemonic.vexptefp128: RewriteVectorUnary("__vexptefp", true); break;
+                case Mnemonic.vextractd: RewriteVextract(vextract, PrimitiveType.UInt64); break;
+                case Mnemonic.vextractub: RewriteVextract(vextract, PrimitiveType.Byte); break;
+                case Mnemonic.vextractuh: RewriteVextract(vextract, PrimitiveType.UInt16); break;
+                case Mnemonic.vextractuw: RewriteVextract(vextract, PrimitiveType.UInt32); break;
+                case Mnemonic.vextuwrx: RewriteBinOp(vextrx); break;
+                case Mnemonic.vgbbd: RewriteVectorUnary(vgbbd, PrimitiveType.UInt32); break;
                 case Mnemonic.vlogefp128: RewriteVectorUnary("__vlogefp", true); break;
-                case Mnemonic.vmaddfp: RewriteVmaddfp(); break;
+                case Mnemonic.vmaddfp:
+                case Mnemonic.vmaddfp128: RewriteVmaddfp(); break;
                 case Mnemonic.vmaddcfp128: RewriteVectorBinOp("__vmaddcfp", true, PrimitiveType.Real32); break;
-                case Mnemonic.vmaxfp128: RewriteVectorBinOp("__vmaxfp", true, PrimitiveType.Real32); break;
-                case Mnemonic.vminfp128: RewriteVectorBinOp("__vminfp", true, PrimitiveType.Real32); break;
-                case Mnemonic.vmaxub: RewriteVectorBinOp("__vmaxub", true, PrimitiveType.UInt8); break;
-                case Mnemonic.vmaxuh: RewriteVectorBinOp("__vmaxuh", true, PrimitiveType.UInt16); break;
+                case Mnemonic.vmaxfp: RewriteVectorBinOp(vmaxfp, PrimitiveType.Real32); break;
+                case Mnemonic.vmaxfp128: RewriteVectorBinOp(vmaxfp, PrimitiveType.Real32); break;
+                case Mnemonic.vminfp128: RewriteVectorBinOp(vminfp, PrimitiveType.Real32); break;
+                case Mnemonic.vmaxsb: RewriteVectorBinOp(vmax, PrimitiveType.Int8); break;
+                case Mnemonic.vmaxsh: RewriteVectorBinOp(vmax, PrimitiveType.Int16); break;
+                case Mnemonic.vmaxsw: RewriteVectorBinOp(vmax, PrimitiveType.Int32); break;
+                case Mnemonic.vmaxub: RewriteVectorBinOp(vmax, PrimitiveType.UInt8); break;
+                case Mnemonic.vmaxuh: RewriteVectorBinOp(vmax, PrimitiveType.UInt16); break;
+                case Mnemonic.vmhaddshs: RewriteVectorTernaryOp(vmhadds, PrimitiveType.Int16); break;
+                case Mnemonic.vmhraddshs: RewriteVectorTernaryOp(vmhradds, PrimitiveType.Int16); break;
+                case Mnemonic.vminfp: RewriteVectorBinOp(vminfp, PrimitiveType.Real32); break;
+                case Mnemonic.vminuw: RewriteVectorBinOp(vmin, PrimitiveType.UInt32); break;
                 case Mnemonic.vmladduhm: RewriteVectorBinOp("__vmladduhm", true, PrimitiveType.UInt16); break;
+                case Mnemonic.vmrghb: RewriteVectorBinOp(vmrgh, PrimitiveType.Byte); break;
+                case Mnemonic.vmrghh: RewriteVectorBinOp(vmrgh, PrimitiveType.Word16); break;
                 case Mnemonic.vmrghw:
-                case Mnemonic.vmrghw128: RewriteVmrghw(); break;
+                case Mnemonic.vmrghw128: RewriteVectorBinOp(vmrgh, PrimitiveType.Word32); break;
+                case Mnemonic.vmrglb: RewriteVectorBinOp(vmrgl, PrimitiveType.Byte); break;
+                case Mnemonic.vmrglh: RewriteVectorBinOp(vmrgl, PrimitiveType.Word16); ; break;
                 case Mnemonic.vmrglw:
-                case Mnemonic.vmrglw128: RewriteVmrglw(); break;
+                case Mnemonic.vmrglw128: RewriteVectorBinOp(vmrgl, PrimitiveType.Word32); break;
+                case Mnemonic.vmsummbm: RewriteVmsumm(vmsummm, PrimitiveType.Int8); break;
                 case Mnemonic.vmsumshm: RewriteVectorTernaryOp("__vmsumshm", true, PrimitiveType.Int16); break;
+                case Mnemonic.vmsumshs: RewriteVmsumm(vmsums, PrimitiveType.Int16); break;
+                case Mnemonic.vmsumubm: RewriteVmsumm(vmsumm, PrimitiveType.UInt8); break;
+                case Mnemonic.vmsumuhm: RewriteVmsumm(vmsumm, PrimitiveType.UInt16); break;
+                case Mnemonic.vmsumuhs: RewriteVmsumm(vmsums, PrimitiveType.UInt16); break;
                 case Mnemonic.vmsub3fp128: RewriteVectorBinOp("__vmsub3fp", true, PrimitiveType.Real32); break;
                 case Mnemonic.vmsub4fp128: RewriteVectorBinOp("__vmsub4fp", true, PrimitiveType.Real32); break;  //$REVIEW: is it correct?
+                case Mnemonic.vmul10euq: RewriteBinOp(vmul10euq); break;
                 case Mnemonic.vmulfp128: RewriteVectorBinOp("__vmulfp", true, PrimitiveType.Real32); break;         //$REVIEW: is it correct?
-                case Mnemonic.vnmsubfp: RewriteVnmsubfp(); break;
+                case Mnemonic.vmulesh: RewriteVmuloe(vmule, PrimitiveType.Int16, PrimitiveType.Int32); break;
+                case Mnemonic.vmulosh: RewriteVmuloe(vmulo, PrimitiveType.Int16, PrimitiveType.Int32); break;
+                case Mnemonic.vmuluwm: RewriteVectorBinOp(vmulm, PrimitiveType.UInt32); break;
+                case Mnemonic.vnmsubfp:
+                case Mnemonic.vnmsubfp128: RewriteVnmsubfp(); break;
                 case Mnemonic.vnor: RewriteOr(true); break;
                 case Mnemonic.vor:
                 case Mnemonic.vor128: RewriteVor(); break;
                 case Mnemonic.vorc: RewriteOrc();break;
                 case Mnemonic.vperm:
-                case Mnemonic.vperm128: RewriteVperm(); break;
+                case Mnemonic.vperm128: RewriteVectorTernaryOp(vperm, PrimitiveType.Byte); break;
+                case Mnemonic.vpermr: RewriteVectorTernaryOp(vpermr, PrimitiveType.Byte); break;
+                case Mnemonic.vpermxor: RewriteVectorTernaryOp(vpermxor, PrimitiveType.Byte); break;
                 case Mnemonic.vpkd3d128: RewriterVpkD3d(); break;
+                case Mnemonic.vpksdss: RewriterVpks(PrimitiveType.Int64, PrimitiveType.Int32); break;
+                case Mnemonic.vpksdus: RewriterVpks(PrimitiveType.Int64, PrimitiveType.UInt32); break;
+                case Mnemonic.vpkswss: RewriterVpks(PrimitiveType.Int32, PrimitiveType.Int16); break;
+                case Mnemonic.vpmsumb: RewriteVpmsum(PrimitiveType.Byte, PrimitiveType.UInt16); break;
+                case Mnemonic.vpmsumd: RewriteVpmsum(PrimitiveType.Word64, PrimitiveType.Word128); break;
+                case Mnemonic.vpopcntb: RewriteVectorUnary(vpopcnt, PrimitiveType.Byte); break;
+                case Mnemonic.vpopcntd: RewriteVectorUnary(vpopcnt, PrimitiveType.Word64); break;
+                case Mnemonic.vpopcnth: RewriteVectorUnary(vpopcnt, PrimitiveType.Word16); break;
+                case Mnemonic.vpopcntw: RewriteVectorUnary(vpopcnt, PrimitiveType.Word32); break;
                 case Mnemonic.vrefp:
                 case Mnemonic.vrefp128: RewriteVrefp(); break;
+                case Mnemonic.vrfim:
+                case Mnemonic.vrfim128: RewriteVectorUnary(vrfim, PrimitiveType.Real32); break;
                 case Mnemonic.vrfin128: RewriteVectorUnary("__vrfin", true); break;
                 case Mnemonic.vrfip128: RewriteVectorUnary("__vrfip", true); break;
                 case Mnemonic.vrfiz128: RewriteVectorUnary("__vrfiz", true); break;
                 case Mnemonic.vrlimi128: RewriteVrlimi(); break;
                 case Mnemonic.vrsqrtefp: 
                 case Mnemonic.vrsqrtefp128: RewriteVrsqrtefp(); break;
+                case Mnemonic.vsbox: RewriteVsbox(); break;
                 case Mnemonic.vsel: RewriteVsel(); break;
-                case Mnemonic.vsldoi: RewriteVsldoi(); break;
+                case Mnemonic.vsldoi:
+                case Mnemonic.vsldoi128: RewriteVsldoi(); break;
+                case Mnemonic.vslb:
+                case Mnemonic.vslb128: RewriteVsx(vsl, PrimitiveType.Byte); break;
                 case Mnemonic.vslw:
-                case Mnemonic.vslw128: RewriteVsxw("__vslw"); break;
+                case Mnemonic.vslw128: RewriteVsx(vsl, PrimitiveType.Word32); break;
+                case Mnemonic.vsr: RewriteBinOp(vsr.MakeInstance(PrimitiveType.Word128)); break;
+                case Mnemonic.vsraw:
+                case Mnemonic.vsraw128: RewriteVsx(vsra, PrimitiveType.Word32); break;
+                case Mnemonic.vsrb: RewriteVsx(vsr, PrimitiveType.Byte); break;
+                case Mnemonic.vsrd: RewriteVsx(vsr, PrimitiveType.Word64); break;
+                case Mnemonic.vsrw:
+                case Mnemonic.vsrw128: RewriteVsx(vsr, PrimitiveType.Word32); break;
+                case Mnemonic.vspltb: RewriteVsplt(PrimitiveType.Byte); break;
+                case Mnemonic.vsplth: RewriteVsplt(PrimitiveType.Word16); break;
+                case Mnemonic.vspltisb: RewriteVsplti(PrimitiveType.Int8); break;
+                case Mnemonic.vspltish: RewriteVsplti(PrimitiveType.Int16); break;
                 case Mnemonic.vspltisw:
-                case Mnemonic.vspltisw128: RewriteVspltisw(); break;
+                case Mnemonic.vspltisw128: RewriteVsplti(PrimitiveType.Int32); break;
                 case Mnemonic.vspltw:
-                case Mnemonic.vspltw128: RewriteVspltw(); break;
-                case Mnemonic.vsrw128: RewriteVsxw("__vsrw"); break;
+                case Mnemonic.vspltw128: RewriteVsplt(PrimitiveType.Word32); break;
+                case Mnemonic.vsubcuw: RewriteVectorBinOp(vsubc, PrimitiveType.UInt32); break;
+                case Mnemonic.vsubecuq: RewriteTernaryOp(vsubec.MakeInstance(PrimitiveType.Word128)); break;
+                case Mnemonic.vsubeuqm: RewriteTernaryOp(vsubeuqm); break;
                 case Mnemonic.vsubfp:
                 case Mnemonic.vsubfp128: RewriteVsubfp(); break;
+                case Mnemonic.vsubsbs: RewriteVectorBinOp(vsubs, PrimitiveType.Int8); break;
+                case Mnemonic.vsubshs: RewriteVectorBinOp(vsubs, PrimitiveType.Int16); break;
+                case Mnemonic.vsubsws: RewriteVectorBinOp(vsubs, PrimitiveType.Int32); break;
+                case Mnemonic.vsububm: RewriteVectorBinOp(vsubm, PrimitiveType.UInt8); break;
+                case Mnemonic.vsububs: RewriteVectorBinOp(vsubs, PrimitiveType.UInt8);  break;
+                case Mnemonic.vsubuhm: RewriteVectorBinOp(vsubm, PrimitiveType.UInt16); break;
+                case Mnemonic.vsubuhs: RewriteVectorBinOp(vsubs, PrimitiveType.UInt16); break;
+                case Mnemonic.vsubuwm: RewriteVectorBinOp(vsubm, PrimitiveType.UInt32); break;
+                case Mnemonic.vsubuws: RewriteVectorBinOp(vsubs, PrimitiveType.UInt32); break;
+                case Mnemonic.vsum4shs: RewriteVsum4(vsum4s, PrimitiveType.Int16, PrimitiveType.Int32); break;
                 case Mnemonic.vupkd3d128: RewriteVupkd3d(); break;
+                case Mnemonic.vupkhpx: RewriteUnaryOp(vupkhpx); break;
+                case Mnemonic.vupklpx: RewriteUnaryOp(vupklpx); break;
+                case Mnemonic.vupkhsb:
+                case Mnemonic.vupkhsb128: RewriteVupk(vupkh, PrimitiveType.Int8, PrimitiveType.Int16); break;
+                case Mnemonic.vupkhsh: RewriteVupk(vupkh, PrimitiveType.Int16, PrimitiveType.Int32); break;
+                case Mnemonic.vupklsb:
+                case Mnemonic.vupklsb128: RewriteVupk(vupkl, PrimitiveType.Int8, PrimitiveType.Int16); break;
+                case Mnemonic.vupklsh: RewriteVupk(vupkl, PrimitiveType.Int16, PrimitiveType.Int32); break;
                 case Mnemonic.vxor:
                 case Mnemonic.vxor128: RewriteXor(false); break;
                 case Mnemonic.xor: RewriteXor(false); break;
                 case Mnemonic.xori: RewriteXor(false); break;
                 case Mnemonic.xoris: RewriteXoris(); break;
+                case Mnemonic.xsaddsp: RewriteXsaddsp(); break;
                 }
                 yield return m.MakeCluster(addr, 4, iclass);
             }
@@ -466,6 +600,36 @@ namespace Reko.Arch.PowerPC
         private Expression ImmOperand(MachineOperand op)
         {
             return ((ImmediateOperand) op).Value;
+        }
+
+        private void RewriteBinOp(IntrinsicProcedure intrinsic)
+        {
+            var vra = RewriteOperand(1);
+            var vrb = RewriteOperand(2);
+            var vrt = RewriteOperand(0);
+            m.Assign(
+                vrt,
+                m.Fn(intrinsic, vra, vrb));
+        }
+
+        private void RewriteTernaryOp(IntrinsicProcedure intrinsic)
+        {
+            var vra = RewriteOperand(1);
+            var vrb = RewriteOperand(2);
+            var vrc = RewriteOperand(3);
+            var vrt = RewriteOperand(0);
+            m.Assign(
+                vrt,
+                m.Fn(intrinsic, vra, vrb, vrc));
+        }
+
+        private void RewriteUnaryOp(IntrinsicProcedure intrinsic)
+        {
+            var vra = RewriteOperand(1);
+            var vrt = RewriteOperand(0);
+            m.Assign(
+                vrt,
+                m.Fn(intrinsic, vra));
         }
 
         private Expression RewriteOperand(int iop, bool maybe0 = false) =>
@@ -542,7 +706,25 @@ namespace Reko.Arch.PowerPC
             return emitter.IAddS(reg, offset);
         }
 
-        private Expression EffectiveAddress_r0(MachineOperand operand, RtlEmitter emitter)
+        private Expression EffectiveAddress_r0(int iOp, int extraOffset = 0)
+        {
+            var mop = (MemoryOperand) instr.Operands[iOp];
+            if (mop.BaseRegister.Number == 0)
+            {
+                return Constant.Word32(mop.Offset + extraOffset);
+            }
+            else
+            {
+                var reg = binder.EnsureRegister(mop.BaseRegister);
+                var offset = mop.Offset + extraOffset;
+                if (offset != 0)
+                    return m.IAddS(reg, offset);
+                else
+                    return reg;
+            }
+        }
+
+        private Expression EffectiveAddress_r0(MachineOperand operand)
         {
             var mop = (MemoryOperand) operand;
             if (mop.BaseRegister.Number == 0)
@@ -554,7 +736,7 @@ namespace Reko.Arch.PowerPC
                 var reg = binder.EnsureRegister(mop.BaseRegister);
                 var offset = mop.Offset;
                 if (offset != 0)
-                    return emitter.IAddS(reg, offset);
+                    return m.IAddS(reg, offset);
                 else
                     return reg;
             }
@@ -575,5 +757,197 @@ namespace Reko.Arch.PowerPC
             var bin = (BinaryExpression) effectiveAddress;
             return bin.Left;
         }
+
+        static PowerPcRewriter()
+        {
+        }
+
+        private static readonly IntrinsicProcedure bcds = IntrinsicBuilder.Binary("__bcd_shift", PrimitiveType.Word128);
+        private static readonly IntrinsicProcedure bcdus = IntrinsicBuilder.Binary("__bcd_unsigned_shift", PrimitiveType.Word128);
+        private static readonly IntrinsicProcedure bcdtrunc = IntrinsicBuilder.Binary("__bcd_truncate", PrimitiveType.Word128);
+        private static readonly IntrinsicProcedure crandc = new IntrinsicBuilder("__crandc", false)
+            .Param(PrimitiveType.Byte)
+            .Param(PrimitiveType.Byte)
+            .Param(PrimitiveType.Byte)
+            .Void();
+        private static readonly IntrinsicProcedure fre = IntrinsicBuilder.GenericUnary("__fp_reciprocal_estimate");
+        private static readonly IntrinsicProcedure lvsl = new IntrinsicBuilder("__lvsl", true)
+            .Param(PrimitiveType.Word64)
+            .Returns(PrimitiveType.Word128);
+        private static readonly IntrinsicProcedure lvsr = new IntrinsicBuilder("__lvsr", true)
+            .Param(PrimitiveType.Word64)
+            .Returns(PrimitiveType.Word128);
+        private static readonly IntrinsicProcedure lwsx = new IntrinsicBuilder("__lwsx", true)
+            .GenericTypes("TPtr", "TXer")
+            .Param("TPtr")
+            .Param("TXer")
+            .Void();
+        private static readonly IntrinsicProcedure mfocrf = new IntrinsicBuilder("__mfocrf", true)
+            .GenericTypes("T")
+            .Param("T")
+            .Param(PrimitiveType.Byte)
+            .Returns("T");
+        private static readonly IntrinsicProcedure mtfsb1 = new IntrinsicBuilder("__mtfsb1", true)
+            .Param(PrimitiveType.Byte)
+            .Void();
+        private static readonly IntrinsicProcedure stcx = new IntrinsicBuilder("__store_conditional", true)
+            .GenericTypes("TPtr", "TElem")
+            .Param("TPtr")
+            .Param("TElem")
+            .Returns(PrimitiveType.Byte);
+        private static readonly IntrinsicProcedure stve = new IntrinsicBuilder("__store_vector_element", true)
+            .GenericTypes("TPtr", "TElem")
+            .Param("TPtr")
+            .Param("TElem")
+            .Void();
+        private static readonly IntrinsicProcedure vabsduw = new IntrinsicBuilder("__vector_abs_difference", false)
+            .GenericTypes("T")
+            .Param("T")
+            .Param("T")
+            .Returns("T");
+        private static readonly IntrinsicProcedure vaddecuq = new IntrinsicBuilder("__vector_add_extended_write_carry", false)
+            .GenericTypes("T")
+            .Param("T")
+            .Param("T")
+            .Param("T")
+            .Returns("T");
+        private static readonly IntrinsicProcedure vavg = IntrinsicBuilder.GenericBinary("__vector_average");
+        private static readonly IntrinsicProcedure vaddeuqm = IntrinsicBuilder.Ternary("__vector_add_extended_modulo", PrimitiveType.UInt128);
+        private static readonly IntrinsicProcedure vaddfp = IntrinsicBuilder.GenericBinary("__vector_fp_add");
+        private static readonly IntrinsicProcedure vaddm = IntrinsicBuilder.GenericBinary("__vector_add_modulo");
+        private static readonly IntrinsicProcedure vadds = IntrinsicBuilder.GenericBinary("__vector_add_saturate");
+        private static readonly IntrinsicProcedure vbperm = IntrinsicBuilder.GenericBinary("__vector_bit_permute");
+        private static readonly IntrinsicProcedure vcfp = new IntrinsicBuilder("__vector_cvt_fixedpt_saturate", false)
+            .GenericTypes("TFrom", "TTo")
+            .Param("TFrom")
+            .Param(PrimitiveType.Byte)
+            .Returns("TTo");
+        private static readonly IntrinsicProcedure vcfps = new IntrinsicBuilder("__vector_cvt_fixedpt", false)
+            .GenericTypes("TFrom", "TTo")
+            .Param("TFrom")
+            .Param(PrimitiveType.Byte)
+            .Returns("TTo");
+
+        private static readonly IntrinsicProcedure vcmpbfp = IntrinsicBuilder.GenericBinary("__vector_fp_cmp_bounds");
+        private static readonly IntrinsicProcedure vcmpeq = IntrinsicBuilder.GenericBinary("__vector_cmpeq");
+        private static readonly IntrinsicProcedure vcmpeqfp = IntrinsicBuilder.GenericBinary("__vector_fp_cmpeq");
+        private static readonly IntrinsicProcedure vcmpgefp = IntrinsicBuilder.GenericBinary("__vector_fp_cmpge");
+        private static readonly IntrinsicProcedure vcmpgt = IntrinsicBuilder.GenericBinary("__vector_cmpgt");
+        private static readonly IntrinsicProcedure vcmpgtfp = IntrinsicBuilder.GenericBinary("__vector_fp_cmpgt");
+        private static readonly IntrinsicProcedure vcmpnez = IntrinsicBuilder.GenericBinary("__vector_cmpne_or_0");
+        private static readonly IntrinsicProcedure vextract = new IntrinsicBuilder("__vector_extract", false)
+            .GenericTypes("T")
+            .Param(PrimitiveType.Word128)
+            .Param(PrimitiveType.Byte)
+            .Returns("T");
+        private static readonly IntrinsicProcedure vextrx = new IntrinsicBuilder("__vector_extract_right_indexed", false)
+            .Param(PrimitiveType.Word64)
+            .Param(PrimitiveType.Word128)
+            .Returns(PrimitiveType.Word64);
+
+        private static readonly IntrinsicProcedure vgbbd = IntrinsicBuilder.GenericUnary("__vector_gather_bits_bytes");
+        private static readonly IntrinsicProcedure vmax = IntrinsicBuilder.GenericBinary("__vector_max");
+        private static readonly IntrinsicProcedure vmaxfp = IntrinsicBuilder.GenericBinary("__vector_fp_max");
+        private static readonly IntrinsicProcedure vmhadds = IntrinsicBuilder.GenericTernary("__vector_mul_high_add_sat");
+        private static readonly IntrinsicProcedure vmhradds = IntrinsicBuilder.GenericTernary("__vector_mul_high_round_add_sat");
+        private static readonly IntrinsicProcedure vmin = IntrinsicBuilder.GenericBinary("__vector_min");
+        private static readonly IntrinsicProcedure vminfp = IntrinsicBuilder.GenericBinary("__vector_fp_min");
+        private static readonly IntrinsicProcedure vmrgh = IntrinsicBuilder.GenericBinary("__vector_merge_high");
+        private static readonly IntrinsicProcedure vmrgl = IntrinsicBuilder.GenericBinary("__vector_merge_low");
+        private static readonly IntrinsicProcedure vmsummm = new IntrinsicBuilder("__vector_mul_sum_mixed_modulo", false)
+            .GenericTypes("TSrc", "TDst")
+            .Param("TSrc")
+            .Param("TSrc")
+            .Param("TDst")
+            .Returns("TDst");
+        private static readonly IntrinsicProcedure vmsumm = new IntrinsicBuilder("__vector_mul_sum_modulo", false)
+            .GenericTypes("TSrc", "TDst")
+            .Param("TSrc")
+            .Param("TSrc")
+            .Param("TDst")
+            .Returns("TDst");
+        private static readonly IntrinsicProcedure vmsums = new IntrinsicBuilder("__vector_mul_sum_sat", false)
+            .GenericTypes("TSrc", "TDst")
+            .Param("TSrc")
+            .Param("TSrc")
+            .Param("TDst")
+            .Returns("TDst");
+        private static readonly IntrinsicProcedure vmul10euq = IntrinsicBuilder.Binary("__vector_mul10_extended", PrimitiveType.UInt128);
+        private static readonly IntrinsicProcedure vmule = new IntrinsicBuilder("__vector_mul_even", false)
+            .GenericTypes("TSrc", "TDst")
+            .Param("TSrc")
+            .Param("TSrc")
+            .Returns("TDst");
+        private static readonly IntrinsicProcedure vmulo = new IntrinsicBuilder("__vector_mul_odd", false)
+            .GenericTypes("TSrc", "TDst")
+            .Param("TSrc")
+            .Param("TSrc")
+            .Returns("TDst");
+        private static readonly IntrinsicProcedure vmulm = IntrinsicBuilder.GenericBinary("__vector_mul_modulo");
+        private static readonly IntrinsicProcedure vperm = IntrinsicBuilder.GenericTernary("__vector_permute");
+        private static readonly IntrinsicProcedure vpermr = IntrinsicBuilder.GenericTernary("__vector_permute_right_indexed");
+        private static readonly IntrinsicProcedure vpermxor = IntrinsicBuilder.GenericTernary("__vector_permute_xor");
+        private static readonly IntrinsicProcedure vpks = new IntrinsicBuilder("__vector_pack_sat", false)
+            .GenericTypes("TSrc", "TDst")
+            .Param("TSrc")
+            .Param("TSrc")
+            .Returns("TDst");
+        private static readonly IntrinsicProcedure vpmsum = new IntrinsicBuilder("__vector_poly_mac", false)
+            .GenericTypes("TSrc", "TResult")
+            .Param("TSrc")
+            .Param("TSrc")
+            .Returns("TResult");
+        private static readonly IntrinsicProcedure vpopcnt = IntrinsicBuilder.GenericUnary("__vector_popcnt");
+        private static readonly IntrinsicProcedure vrfim = IntrinsicBuilder.GenericUnary("__vector_floor");
+        private static readonly IntrinsicProcedure vsbox = IntrinsicBuilder.Unary("__aes_subbytes", PrimitiveType.Word128);
+        private static readonly IntrinsicProcedure vsl = new IntrinsicBuilder("__vector_shift_left", false)
+            .GenericTypes("T")
+            .Param("T")
+            .Param(PrimitiveType.Byte)
+            .Returns("T");
+        private static readonly IntrinsicProcedure vsldoi = new IntrinsicBuilder("__vector_shift_left_double", false)
+            .Param(PrimitiveType.Word128)
+            .Param(PrimitiveType.Word128)
+            .Param(PrimitiveType.Byte)
+            .Returns(PrimitiveType.Word128);
+        private static readonly IntrinsicProcedure vsplt = new IntrinsicBuilder("__vector_splat", false)
+            .GenericTypes("TArr")
+            .Param("TArr")
+            .Param(PrimitiveType.Byte)
+            .Returns("TArr");
+        private static readonly IntrinsicProcedure vsplti = new IntrinsicBuilder("__vector_splat_imm", false)
+            .GenericTypes("TArr")
+            .Param(PrimitiveType.Byte)
+            .Returns("TArr"); 
+        private static readonly IntrinsicProcedure vsr = new IntrinsicBuilder("__vector_shift_right", false)
+            .GenericTypes("T")
+            .Param("T")
+            .Param(PrimitiveType.Byte)
+            .Returns("T");
+        private static readonly IntrinsicProcedure vsra = new IntrinsicBuilder("__vector_shift_right_arithmetic", false)
+            .GenericTypes("T")
+            .Param("T")
+            .Param(PrimitiveType.Byte)
+            .Returns("T");
+        private static readonly IntrinsicProcedure vsubc = IntrinsicBuilder.GenericBinary("__vector_sub_carry");
+        private static readonly IntrinsicProcedure vsubec = IntrinsicBuilder.GenericTernary("__vector_sub_extend_carry");
+        private static readonly IntrinsicProcedure vsubeuqm = IntrinsicBuilder.Ternary("__vector_sub_extended_modulo", PrimitiveType.UInt128);
+        private static readonly IntrinsicProcedure vsubm = IntrinsicBuilder.GenericBinary("__vector_sub_modulo");
+        private static readonly IntrinsicProcedure vsubs = IntrinsicBuilder.GenericBinary("__vector_sub_saturate");
+        private static readonly IntrinsicProcedure vsum4s = new IntrinsicBuilder("__vector_sum_across_quarter_sat", false)
+            .GenericTypes("TSrc", "TDst")
+            .Param("TSrc")
+            .Param("TDst")
+            .Returns("TDst");
+        private static readonly IntrinsicProcedure vupkh = new IntrinsicBuilder("__vector_unpack_high", false)
+            .GenericTypes("TSrc", "TDst")
+            .Param("TSrc")
+            .Returns("TDst");
+        private static readonly IntrinsicProcedure vupkl = new IntrinsicBuilder("__vector_unpack_low", false)
+            .GenericTypes("TSrc", "TDst")
+            .Param("TSrc")
+            .Returns("TDst");
+        private static readonly IntrinsicProcedure vupkhpx = IntrinsicBuilder.Unary("__vector_unpack_high_pixel", PrimitiveType.Word128);
+        private static readonly IntrinsicProcedure vupklpx = IntrinsicBuilder.Unary("__vector_unpack_low_pixel", PrimitiveType.Word128);
     }
 }

@@ -20,6 +20,7 @@
 
 using Reko.Core;
 using Reko.Core.Expressions;
+using Reko.Core.Lib;
 using Reko.Core.Machine;
 using System;
 using System.Collections.Generic;
@@ -248,14 +249,12 @@ namespace Reko.Arch.PowerPC
             {
                 var mnemonic = (wInstr & 1) == 1 ? Mnemonic.bl : Mnemonic.b;
                 var iclass = (wInstr & 1) == 1 ? InstrClass.Transfer | InstrClass.Call : InstrClass.Transfer;
-                var uOffset = wInstr & 0x03FFFFFC;
-                if ((uOffset & 0x02000000) != 0)
-                    uOffset |= 0xFF000000;
+                var sOffset = (int) Bits.SignExtend(wInstr & 0x03FF_FFFC, 24);
                 var baseAddr = (wInstr & 2) != 0 ? Address.Create(dasm.defaultWordWidth, 0) : dasm.rdr.Address - 4;
                 return new PowerPcInstruction(mnemonic)
                 {
                     InstructionClass = iclass,
-                    Operands = new MachineOperand[] { new AddressOperand(baseAddr + uOffset) },
+                    Operands = new MachineOperand[] { new AddressOperand(baseAddr + sOffset) },
                 };
             }
         }
@@ -316,9 +315,7 @@ namespace Reko.Arch.PowerPC
             public override PowerPcInstruction Decode(uint wInstr, PowerPcDisassembler dasm)
             {
                 uint link = (wInstr & 1);
-                var uOffset = wInstr & 0x0000FFFC;
-                if ((uOffset & 0x8000) != 0)
-                    uOffset |= 0xFFFF0000;
+                var sOffset = (short)(wInstr & 0x0000FFFC);
                 var grfBi = (wInstr >> 16) & 0x1F;
                 var grfBo = (wInstr >> 21) & 0x1F;
                 var crf = grfBi >> 2;
@@ -327,7 +324,7 @@ namespace Reko.Arch.PowerPC
                 InstrClass iclass = link == 1 ? InstrClass.Transfer | InstrClass.Call : InstrClass.Transfer;
                 var ops = new List<MachineOperand>();
                 var baseAddr = (wInstr & 2) != 0 ? Address.Create(dasm.defaultWordWidth, 0) : dasm.rdr.Address - 4;
-                var dst = new AddressOperand(baseAddr + uOffset);
+                var dst = new AddressOperand(baseAddr + sOffset);
                 switch (grfBo)
                 {
                 case 0:

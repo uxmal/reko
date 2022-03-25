@@ -180,13 +180,13 @@ namespace Reko.Arch.PowerPC
             return new InstrDecoder(mnemonic,  mutators, iclass);
         }
 
-        protected Decoder Mask(int ppcBitPosition, int bits, params Decoder[] decoders)
+        protected static Decoder Mask(int ppcBitPosition, int bits, params Decoder[] decoders)
         {
             return new MaskDecoder<PowerPcDisassembler, Mnemonic, PowerPcInstruction>(
                 32 - (ppcBitPosition + bits), bits, "", decoders);
         }
 
-        protected Decoder Mask(int ppcBitPosition, int bits, string diagnostic, params Decoder[] decoders)
+        protected static Decoder Mask(int ppcBitPosition, int bits, string diagnostic, params Decoder[] decoders)
         {
             return new MaskDecoder<PowerPcDisassembler, Mnemonic, PowerPcInstruction>(
                 32 - (ppcBitPosition + bits), bits, diagnostic, decoders);
@@ -575,10 +575,10 @@ namespace Reko.Arch.PowerPC
                         (0b00101, Instr(Mnemonic.vpkswus, v1, v2, v3)),   // v2.03 vpkswus Vector Pack Signed Word Unsigned Saturate
                         (0b00110, Instr(Mnemonic.vpkshss, v1, v2, v3)),   // v2.03 vpkshss Vector Pack Signed Hword Signed Saturate
                         (0b00111, Instr(Mnemonic.vpkswss, v1, v2, v3)),   // v2.03 vpkswss Vector Pack Signed Word Signed Saturate
-                        (0b01000, Instr(Mnemonic.vupkhsb, v1, v2, v3)),   // v2.03 vupkhsb Vector Unpack High Signed Byte
-                        (0b01001, Instr(Mnemonic.vupkhsh, v1, v2, v3)),   // v2.03 vupkhsh Vector Unpack High Signed Hword
-                        (0b01010, Instr(Mnemonic.vupklsb, v1, v2, v3)),   // v2.03 vupklsb Vector Unpack Low Signed Byte
-                        (0b01011, Instr(Mnemonic.vupklsh, v1, v2, v3)),   // v2.03 vupklsh Vector Unpack Low Signed Hword
+                        (0b01000, Instr(Mnemonic.vupkhsb, v1, v3)),       // v2.03 vupkhsb Vector Unpack High Signed Byte
+                        (0b01001, Instr(Mnemonic.vupkhsh, v1, v3)),       // v2.03 vupkhsh Vector Unpack High Signed Hword
+                        (0b01010, Instr(Mnemonic.vupklsb, v1, v3)),       // v2.03 vupklsb Vector Unpack Low Signed Byte
+                        (0b01011, Instr(Mnemonic.vupklsh, v1, v3)),       // v2.03 vupklsh Vector Unpack Low Signed Hword
                         (0b01100, Instr(Mnemonic.vpkpx, v1, v2, v3)),     // v2.03 vpkpx Vector Pack Pixel
                         (0b01101, Instr(Mnemonic.vupkhpx, v1, v2, v3)),   // v2.03 vupkhpx Vector Unpack High Pixel
                         (0b01111, Instr(Mnemonic.vupklpx, v1, v2, v3)),   // v2.03 vupklpx Vector Unpack Low Pixel
@@ -691,7 +691,9 @@ namespace Reko.Arch.PowerPC
                     (0b10000, Mask(31, 1,                               // P1
                         Instr(InstrClass.ConditionalTransfer, Mnemonic.bcctr, I1, I2),
                         Instr(InstrClass.ConditionalTransfer | InstrClass.Call, Mnemonic.bcctrl, I1, I2))),
-                    (0b10001, Nyi(Mnemonic.bctar)))),                   // v2.07 bctar[l] Branch Conditional to BTAR [& Link]
+                    (0b10001, Mask(31, 1, 
+                        Instr(InstrClass.Conditional, Mnemonic.bctar, I1, I2),          // v2.07 bctar[l] Branch Conditional to BTAR [& Link]
+                        Instr(InstrClass.Conditional, Mnemonic.bctarl, I1, I2))))),     // v2.07 bctar[l] Branch Conditional to BTAR [& Link]
                 (0b10010, Sparse(21, 5,
                     (0b00000, Instr(InstrClass.Transfer | InstrClass.Return, Mnemonic.rfid)),   //  PPC  P  rfid Return from Interrupt Dword
                     (0b00010, Nyi(Mnemonic.rfscv)),                     // v3.0 P  rfscv Return From System Call Vectored
@@ -709,7 +711,7 @@ namespace Reko.Arch.PowerPC
                 Sparse(21, 5, invalid, "  0b00000",
                     (0b00000, new CmpDecoder(Mnemonic.cmp, C1, r2, r3)),    // P1 cmp Compare
                     (0b00001, new CmpDecoder(Mnemonic.cmpl, C1, r2, r3)),   // P1 cmpl Compare Logical
-                    (0b00100, Nyi("setb")),                             // v3.0 setb Set Boolean
+                    (0b00100, Instr(Mnemonic.setb, r1,C2)),                 // v3.0 setb Set Boolean
                     (0b00110, Nyi("cmprb")),                            // v3.0 cmprb Compare Ranged Byte
                     (0b00111, Nyi("cmpeqb")),                           // v3.0 cmpeqb Compare Equal Byte
                     (0b10010, Nyi("mcrxrx"))),                          // v3.0 mcrxrx Move XER to CR Extended
@@ -723,7 +725,7 @@ namespace Reko.Arch.PowerPC
                 invalid,
                 Sparse(21, 5, invalid, "  0b00110",
                     (0b00000, Instr(Mnemonic.lvsl, v1, r2, r3)),        // v2.03 lvsl Load Vector for Shift Left
-                    (0b00001, Nyi("lvsr")),                             // v2.03 lvsr Load Vector for Shift Right
+                    (0b00001, Instr(Mnemonic.lvsr, v1, r2, r3)),        // v2.03 lvsr Load Vector for Shift Right
                     (0b10010, Nyi("lwat")),                             // v3.0 lwat Load Word ATomic
                     (0b10011, Nyi("ldat")),                             // v3.0 ldat Load Dword ATomic
                     (0b10110, Nyi("stwat")),                            // v3.0 stwat Store Word ATomic
@@ -737,7 +739,7 @@ namespace Reko.Arch.PowerPC
                     (0b00010, Instr(Mnemonic.lvewx, v1, r2, r3)),       // v2.03 lvewx Load Vector Element Word Indexed
                     (0b00011, Instr(Mnemonic.lvx, v1, r2, r3)),         // v2.03 lvx Load Vector Indexed
                     (0b00100, Nyi("stvebx")),                           // v2.03 stvebx Store Vector Element Byte Indexed
-                    (0b00101, Nyi("stvehx")),                           // v2.03 stvehx Store Vector Element Hword Indexed
+                    (0b00101, Instr(Mnemonic.stvehx, v1, r2,r3)),       // v2.03 stvehx Store Vector Element Hword Indexed
                     (0b00110, Instr(Mnemonic.stvewx, v1, r2, r3)),      // v2.03 stvewx Store Vector Element Word Indexed
                     (0b00111, Instr(Mnemonic.stvx, v1, r2, r3)),        // v2.03 stvx Store Vector Indexed
                     (0b01011, Instr(Mnemonic.lvxl, r1,r2,r3)),          // v2.03 lvxl Load Vector Indexed Last
@@ -864,7 +866,7 @@ namespace Reko.Arch.PowerPC
                 Sparse(21, 5, invalid, "  0b10011",
                     (0b00000, Mask(11, 1, "  mfcr,mfocrf",
                         Instr(Mnemonic.mfcr, r1),                       // P1 mfcr Move From CR
-                        Nyi("mfocrf"))),                                // v2.01 mfocrf Move From One CR Field
+                        Instr(Mnemonic.mfocrf, r1,M))),                 // v2.01 mfocrf Move From One CR Field
                     (0b00001, Mask(31, 1, "  mfvsrd",
                         Instr(Mnemonic.mffpsrd, r2,f1),                 // v2.07 mfvsrd Move From VSR Dword
                         Instr(Mnemonic.mfvrd, r2,v1))),                 // v2.07 mfvsrd Move From VSR Dword
@@ -925,12 +927,12 @@ namespace Reko.Arch.PowerPC
                     (0b10100, Instr(Mnemonic.stwbrx, C, r2, r1, r3)),   // P1 stwbrx Store Word Byte-Reverse Indexed
                     (0b11000, Instr(Mnemonic.lhbrx, r1, r2, r3)),       // P1 lhbrx Load Hword Byte-Reverse Indexed
                     (0b11010, Instr(Mnemonic.eieio)),                   // PPC eieio Enforce In-order Execution of I/O
-                    (0b11011, Nyi("H")),                                // v3.0 H msgsync Message Synchronize
-                    (0b11100, Nyi("sthbrx")),                           // P1 sthbrx Store Hword Byte-Reverse Indexed
+                    (0b11011, Nyi("msgsync")),                                // v3.0 H msgsync Message Synchronize
+                    (0b11100, Instr(Mnemonic.sthbrx, r2, r1, r3)),      // P1 sthbrx Store Hword Byte-Reverse Indexed
                     (0b11110, Instr(Mnemonic.icbi, r2, r3)),            // PPC icbi Instruction Cache Block Invalidate
                     (0b11111, Instr(Mnemonic.dcbz, r2, r3)),            // P1 dcbz Data Cache Block Zero
                     (0b00100, Instr(Mnemonic.stwcx, C, r1, r2, r3)),    // PPC stwcx. Store Word Conditional Indexed & record
-                    (0b00101, Nyi("")),                                 // v2.07 stqcx. Store Qword Conditional Indexed & record
+                    (0b00101, Nyi("stqcx")),                                 // v2.07 stqcx. Store Qword Conditional Indexed & record
                     (0b00110, Instr(Mnemonic.stdcx, CC, r1, r2, r3)),   // PPC stdcx. Store Dword Conditional Indexed & record
                     (0b10101, Instr(Mnemonic.stbcx, CC, r1, r2, r3)),   // v2.06 stbcx. Store Byte Conditional Indexed & record
                     (0b10110, Instr(Mnemonic.sthcx, CC, r1, r2, r3))),  // v2.06 sthcx. Store Hword Conditional Indexed & record
@@ -1048,12 +1050,12 @@ namespace Reko.Arch.PowerPC
                     invalid,
                     invalid,
 
-                    Nyi("dsub[.] D"), // 111011 ..... ..... ..... 10000 00010. X I 195 v2.05 dsub[.] DFP Subtract
+                    Instr(Mnemonic.dsub, C,f1, f2, f3),     // 111011 ..... ..... ..... 10000 00010. X I 195 v2.05 dsub[.] DFP Subtract
                     Nyi("ddiv[.] D"), // 111011 ..... ..... ..... 10001 00010. X I 198 v2.05 ddiv[.] DFP Divide
                     Nyi("dscli[.]"),  // 111011 ..... ..... ..... .0010 00010. Z22 I 222 v2.05 dscli[.] DFP Shift Significand Left Immediate
                     Nyi("dscri[.]"),  // 111011 ..... ..... ..... .0011 00010. Z22 I 222 v2.05 dscri[.] DFP Shift Significand Right Immediate
 
-                    Nyi("dcmpu DFP"), // 111011 ...// ..... ..... 10100 00010/ X I 200 v2.05 dcmpu DFP Compare Unordered
+                    Instr(Mnemonic.dcmpu, C1,f1,f2),        // 111011 ...// ..... ..... 10100 00010/ X I 200 v2.05 dcmpu DFP Compare Unordered
                     Nyi("dtstsf DF"), // 111011 ...// ..... ..... 10101 00010/ X I 204 v2.05 dtstsf DFP Test Significance
                     Nyi("dtstdc"),    // 111011 ...// ..... ..... .0110 00010/ Z22 I 202 v2.05 dtstdc DFP Test Data Class
                     Nyi("dtstdg"),    // 111011 ...// ..... ..... .0111 00010/ Z22 I 202 v2.05 dtstdg DFP Test Data Group
@@ -1085,7 +1087,7 @@ namespace Reko.Arch.PowerPC
                 (0b10110, Instr(Mnemonic.fsqrts, C, f1, f3)),       // 111011 ..... ///// ..... ///// 10110. A I 155 PPC fsqrts[.] Floating Square Root Single
                 (0b11000, Instr(Mnemonic.fres, C, f1, f3)),         // 111011 ..... ///// ..... ///// 11000. A I 155 PPC fres[.] Floating Reciprocal Estimate Single
                 (0b11001, Instr(Mnemonic.fmuls, C, f1, f2, f4)),    // 111011 ..... ..... ///// ..... 11001. A I 154 PPC fmuls[.] Floating Multiply Single
-                (0b11010, Nyi("frsqrtes[.]")),                      // 111011 ..... ///// ..... ///// 11010. A I 156 v2.02 frsqrtes[.] Floating Reciprocal Square Root Estimate Single
+                (0b11010, Instr(Mnemonic.frsqrtes, C, f1, f3)),     // 111011 ..... ///// ..... ///// 11010. A I 156 v2.02 frsqrtes[.] Floating Reciprocal Square Root Estimate Single
                 (0b11100, Instr(Mnemonic.fmsubs, C,f1,f2,f4,f3)),   // 111011 ..... ..... ..... ..... 11100. A I 159 PPC fmsubs[.] Floating Multiply-Subtract Single
                 (0b11101, Instr(Mnemonic.fmadds, C,f1,f2,f4,f3)),   // 111011 ..... ..... ..... ..... 11101. A I 158 PPC fmadds[.] Floating Multiply-Add Single
                 (0b11110, Instr(Mnemonic.fnmsubs, C,f1,f2,f3,f4)),  // 111011 ..... ..... ..... ..... 11110. A I 159 PPC fnmsubs[.] Floating Negative Multiply-Subtract Single
@@ -1097,23 +1099,23 @@ namespace Reko.Arch.PowerPC
         {
             var decoder = Mask(26, 3, "Ext3C",
                 Mask(21, 5, "  000",
-                    Instr(Mnemonic.xsaddsp, v1, v2, v3),            // 111100 ..... ..... ..... 00000 000... XX3 I 519 v2.07 xsaddsp VSX Scalar Add SP
+                    Instr(Mnemonic.xsaddsp, vsr1, vsr2, vsr3),      // 111100 ..... ..... ..... 00000 000... XX3 I 519 v2.07 xsaddsp VSX Scalar Add SP
                     Nyi("xssubsp"),    // 111100 ..... ..... ..... 00001 000... XX3 I 651 v2.07 xssubsp VSX Scalar Subtract SP
                     Nyi("xsmulsp"),    // 111100 ..... ..... ..... 00010 000... XX3 I 606 v2.07 xsmulsp VSX Scalar Multiply SP
                     Nyi("xsdivsp"),    // 111100 ..... ..... ..... 00011 000... XX3 I 568 v2.07 xsdivsp VSX Scalar Divide SP
                     Nyi("xsadddp"),    // 111100 ..... ..... ..... 00100 000... XX3 I 514 v2.06 xsadddp VSX Scalar Add DP
-                    Nyi("xssubdp"),    // 111100 ..... ..... ..... 00101 000... XX3 I 647 v2.06 xssubdp VSX Scalar Subtract DP
+                    Instr(Mnemonic.xssubdp, vsr1, vsr2, vsr3),    // 111100 ..... ..... ..... 00101 000... XX3 I 647 v2.06 xssubdp VSX Scalar Subtract DP
                     Nyi("xsmuldp"),    // 111100 ..... ..... ..... 00110 000... XX3 I 602 v2.06 xsmuldp VSX Scalar Multiply DP
                     Nyi("xsdivdp"),    // 111100 ..... ..... ..... 00111 000... XX3 I 564 v2.06 xsdivdp VSX Scalar Divide DP
                     Nyi("xvaddsp"),    // 111100 ..... ..... ..... 01000 000... XX3 I 665 v2.06 xvaddsp VSX Vector Add SP
-                    Nyi("xvsubsp"),    // 111100 ..... ..... ..... 01001 000... XX3 I 759 v2.06 xvsubsp VSX Vector Subtract SP
+                    Instr(Mnemonic.xvsubsp, vsr1,vsr2,vsr3),        // 111100 ..... ..... ..... 01001 000... XX3 I 759 v2.06 xvsubsp VSX Vector Subtract SP
                     Nyi("xvmulsp"),    // 111100 ..... ..... ..... 01010 000... XX3 I 727 v2.06 xvmulsp VSX Vector Multiply SP
                     Nyi("xvdivsp"),    // 111100 ..... ..... ..... 01011 000... XX3 I 702 v2.06 xvdivsp VSX Vector Divide SP
                     Nyi("xvadddp"),    // 111100 ..... ..... ..... 01100 000... XX3 I 661 v2.06 xvadddp VSX Vector Add DP
-                    Nyi("xvsubdp"),    // 111100 ..... ..... ..... 01101 000... XX3 I 757 v2.06 xvsubdp VSX Vector Subtract DP
+                    Instr(Mnemonic.xvsubdp, vsr1, vsr2, vsr3),      // 111100 ..... ..... ..... 01101 000... XX3 I 757 v2.06 xvsubdp VSX Vector Subtract DP
                     Nyi("xvmuldp"),    // 111100 ..... ..... ..... 01110 000... XX3 I 725 v2.06 xvmuldp VSX Vector Multiply DP
                     Nyi("xvdivdp"),    // 111100 ..... ..... ..... 01111 000... XX3 I 700 v2.06 xvdivdp VSX Vector Divide DP
-                    Nyi("xsmaxcdp"),   // 111100 ..... ..... ..... 10000 000... XX3 I 583 v3.0 xsmaxcdp VSX Scalar Maximum Type-C Double-Precision
+                    Instr(Mnemonic.xsmaxcdp, vsr1,vsr2,vsr3),       // 111100 ..... ..... ..... 10000 000... XX3 I 583 v3.0 xsmaxcdp VSX Scalar Maximum Type-C Double-Precision
                     Nyi("xsmincdp"),   // 111100 ..... ..... ..... 10001 000... XX3 I 589 v3.0 xsmincdp VSX Scalar Minimum Type-C Double-Precision
                     Nyi("xsmaxjdp"),   // 111100 ..... ..... ..... 10010 000... XX3 I 585 v3.0 xsmaxjdp VSX Scalar Maximum Type-J Double-Precision
                     Nyi("xsminjdp"),   // 111100 ..... ..... ..... 10011 000... XX3 I 591 v3.0 xsminjdp VSX Scalar Minimum Type-J Double-Precision
@@ -1136,7 +1138,7 @@ namespace Reko.Arch.PowerPC
                     Nyi("xsmsubmsp"),    // 111100 ..... ..... ..... 00011 001... XX3 I 596 v2.07 xsmsubmsp VSX Scalar Multiply-Subtract Type-M SP
                     
                     Nyi("xsmaddadp"),    // 111100 ..... ..... ..... 00100 001... XX3 I 572 v2.06 xsmaddadp VSX Scalar Multiply-Add Type-A DP
-                    Nyi("xsmaddmdp"),    // 111100 ..... ..... ..... 00101 001... XX3 I 572 v2.06 xsmaddmdp VSX Scalar Multiply-Add Type-M DP
+                    Instr(Mnemonic.xsmaddmdp, vsr1,vsr2,vsr3),      // 111100 ..... ..... ..... 00101 001... XX3 I 572 v2.06 xsmaddmdp VSX Scalar Multiply-Add Type-M DP
                     Nyi("xsmsubadp"),    // 111100 ..... ..... ..... 00110 001... XX3 I 593 v2.06 xsmsubadp VSX Scalar Multiply-Subtract Type-A DP
                     Nyi("xsmsubmdp"),    // 111100 ..... ..... ..... 00111 001... XX3 I 593 v2.06 xsmsubmdp VSX Scalar Multiply-Subtract Type-M DP
                     
@@ -1208,107 +1210,185 @@ namespace Reko.Arch.PowerPC
                 Nyi("xscmpodp"),        // 111100 ...// ..... ..... 00101 011../ XX3 I 529 v2.06 xscmpodp VSX Scalar Compare Ordered DP
                 Nyi("xscmpexpdp"),      // 111100 ...// ..... ..... 00111 011../ XX3 I 523 v3.0 xscmpexpdp VSX Scalar Compare Exponents DP
                 */
-                Nyi("Ext3C 100"),
-                /*
-                Nyi("xscvdpuxws"),      // 111100 ..... ///// ..... 00100 1000.. XX2 I 546 v2.06 xscvdpuxws VSX Scalar Convert DP to Unsigned Word truncate
-                Nyi("xscvdpsxws"),      // 111100 ..... ///// ..... 00101 1000.. XX2 I 542 v2.06 xscvdpsxws VSX Scalar Convert DP to Signed Word truncate
-                Nyi("xvcvspuxws"),      // 111100 ..... ///// ..... 01000 1000.. XX2 I 694 v2.06 xvcvspuxws VSX Vector Convert SP to Unsigned Word truncate
-                Nyi("xvcvspsxws"),      // 111100 ..... ///// ..... 01001 1000.. XX2 I 690 v2.06 xvcvspsxws VSX Vector Convert SP to Signed Word truncate
-                Nyi("xvcvuxwsp"),       // 111100 ..... ///// ..... 01010 1000.. XX2 I 699 v2.06 xvcvuxwsp VSX Vector Convert Unsigned Word to SP
-                Nyi("xvcvsxwsp"),       // 111100 ..... ///// ..... 01011 1000.. XX2 I 697 v2.06 xvcvsxwsp VSX Vector Convert Signed Word to SP
-                Nyi("xvcvdpuxws"),      // 111100 ..... ///// ..... 01100 1000.. XX2 I 683 v2.06 xvcvdpuxws VSX Vector Convert DP to Unsigned Word truncate
-                Nyi("xvcvdpsxws"),      // 111100 ..... ///// ..... 01101 1000.. XX2 I 679 v2.06 xvcvdpsxws VSX Vector Convert DP to Signed Word truncate
-                Nyi("xvcvuxwdp"),       // 111100 ..... ///// ..... 01110 1000.. XX2 I 699 v2.06 xvcvuxwdp VSX Vector Convert Unsigned Word to DP
-                Nyi("xvcvsxwdp"),       // 111100 ..... ///// ..... 01111 1000.. XX2 I 697 v2.06 xvcvsxwdp VSX Vector Convert Signed Word to DP
-                Nyi("xscvuxdsp"),       // 111100 ..... ///// ..... 10010 1000.. XX2 I 563 v2.07 xscvuxdsp VSX Scalar Convert Unsigned Dword to SP
-                Nyi("xscvsxdsp"),       // 111100 ..... ///// ..... 10011 1000.. XX2 I 561 v2.07 xscvsxdsp VSX Scalar Convert Signed Dword to SP
-                Nyi("xscvdpuxds"),      // 111100 ..... ///// ..... 10100 1000.. XX2 I 544 v2.06 xscvdpuxds VSX Scalar Convert DP to Unsigned Dword truncate
-                Nyi("xscvdpsxds"),      // 111100 ..... ///// ..... 10101 1000.. XX2 I 539 v2.06 xscvdpsxds VSX Scalar Convert DP to Signed Dword truncate
-                Nyi("xscvuxddp"),       // 111100 ..... ///// ..... 10110 1000.. XX2 I 563 v2.06 xscvuxddp VSX Scalar Convert Unsigned Dword to DP
-                Nyi("xscvsxddp"),       // 111100 ..... ///// ..... 10111 1000.. XX2 I 561 v2.06 xscvsxddp VSX Scalar Convert Signed Dword to DP
-                Nyi("xvcvspuxds"),      // 111100 ..... ///// ..... 11000 1000.. XX2 I 692 v2.06 xvcvspuxds VSX Vector Convert SP to Unsigned Dword truncate
-                Nyi("xvcvspsxds"),      // 111100 ..... ///// ..... 11001 1000.. XX2 I 688 v2.06 xvcvspsxds VSX Vector Convert SP to Signed Dword truncate
-                Nyi("xvcvuxdsp"),       // 111100 ..... ///// ..... 11010 1000.. XX2 I 698 v2.06 xvcvuxdsp VSX Vector Convert Unsigned Dword to SP
-                Nyi("xvcvsxdsp"),       // 111100 ..... ///// ..... 11011 1000.. XX2 I 696 v2.06 xvcvsxdsp VSX Vector Convert Signed Dword to SP
-                Nyi("xvcvdpuxds"),      // 111100 ..... ///// ..... 11100 1000.. XX2 I 681 v2.06 xvcvdpuxds VSX Vector Convert DP to Unsigned Dword truncate
-                Nyi("xvcvdpsxds"),      // 111100 ..... ///// ..... 11101 1000.. XX2 I 677 v2.06 xvcvdpsxds VSX Vector Convert DP to Signed Dword truncate
-                Nyi("xvcvuxddp"),       // 111100 ..... ///// ..... 11110 1000.. XX2 I 698 v2.06 xvcvuxddp VSX Vector Convert Unsigned Dword to DP
-                Nyi("xvcvsxddp"),       // 111100 ..... ///// ..... 11111 1000.. XX2 I 696 v2.06 xvcvsxddp VSX Vector Convert Signed Dword to DP
+                Mask(29, 1, "Ext3C 100",
+                    Mask(21, 5, "  Ext3C 1000",
+                        invalid,
+                        invalid,
+                        invalid,
+                        invalid,
 
-                Nyi("xsrdpi"),          // 111100 ..... ///// ..... 00100 1001.. XX2 I 630 v2.06 xsrdpi VSX Scalar Round DP to Integral to Nearest Away
-                Nyi("xsrdpiz"),         // 111100 ..... ///// ..... 00101 1001.. XX2 I 633 v2.06 xsrdpiz VSX Scalar Round DP to Integral toward Zero
-                Nyi("xsrdpip"),         // 111100 ..... ///// ..... 00110 1001.. XX2 I 632 v2.06 xsrdpip VSX Scalar Round DP to Integral toward +Infinity
-                Nyi("xsrdpim"),         // 111100 ..... ///// ..... 00111 1001.. XX2 I 632 v2.06 xsrdpim VSX Scalar Round DP to Integral toward -Infinity
-                Nyi("xvrspi"),          // 111100 ..... ///// ..... 01000 1001.. XX2 I 750 v2.06 xvrspi VSX Vector Round SP to Integral to Nearest Away
-                Nyi("xvrspiz"),         // 111100 ..... ///// ..... 01001 1001.. XX2 I 752 v2.06 xvrspiz VSX Vector Round SP to Integral toward Zero
-                Nyi("xvrspip"),         // 111100 ..... ///// ..... 01010 1001.. XX2 I 751 v2.06 xvrspip VSX Vector Round SP to Integral toward +Infinity
-                Nyi("xvrspim"),         // 111100 ..... ///// ..... 01011 1001.. XX2 I 751 v2.06 xvrspim VSX Vector Round SP to Integral toward -Infinity
-                Nyi("xvrdpi"),          // 111100 ..... ///// ..... 01100 1001.. XX2 I 745 v2.06 xvrdpi VSX Vector Round DP to Integral to Nearest Away
-                Nyi("xvrdpiz"),         // 111100 ..... ///// ..... 01101 1001.. XX2 I 747 v2.06 xvrdpiz VSX Vector Round DP to Integral toward Zero
-                Nyi("xvrdpip"),         // 111100 ..... ///// ..... 01110 1001.. XX2 I 746 v2.06 xvrdpip VSX Vector Round DP to Integral toward +Infinity
-                Nyi("xvrdpim"),         // 111100 ..... ///// ..... 01111 1001.. XX2 I 746 v2.06 xvrdpim VSX Vector Round DP to Integral toward -Infinity
-                Nyi("xscvdpsp"),        // 111100 ..... ///// ..... 10000 1001.. XX2 I 538 v2.06 xscvdpsp VSX Scalar Convert DP to SP
-                Nyi("xsrsp"),           // 111100 ..... ///// ..... 10001 1001.. XX2 I 640 v2.07 xsrsp VSX Scalar Round DP to SP
-                Nyi("xscvspdp"),        // 111100 ..... ///// ..... 10100 1001.. XX2 I 559 v2.06 xscvspdp VSX Scalar Convert SP to DP
-                Nyi("xsabsdp"),         // 111100 ..... ///// ..... 10101 1001.. XX2 I 513 v2.06 xsabsdp VSX Scalar Absolute DP
-                Nyi("xsnabsdp"),        // 111100 ..... ///// ..... 10110 1001.. XX2 I 608 v2.06 xsnabsdp VSX Scalar Negative Absolute DP
-                Nyi("xsnegdp"),         // 111100 ..... ///// ..... 10111 1001.. XX2 I 609 v2.06 xsnegdp VSX Scalar Negate DP
-                Nyi("xvcvdpsp"),        // 111100 ..... ///// ..... 11000 1001.. XX2 I 676 v2.06 xvcvdpsp VSX Vector Convert DP to SP
-                Nyi("xvabssp"),         // 111100 ..... ///// ..... 11001 1001.. XX2 I 660 v2.06 xvabssp VSX Vector Absolute SP
-                Nyi("xvnabssp"),        // 111100 ..... ///// ..... 11010 1001.. XX2 I 729 v2.06 xvnabssp VSX Vector Negative Absolute SP
-                Nyi("xvnegsp"),         // 111100 ..... ///// ..... 11011 1001.. XX2 I 730 v2.06 xvnegsp VSX Vector Negate SP
-                Nyi("xvcvspdp"),        // 111100 ..... ///// ..... 11100 1001.. XX2 I 686 v2.06 xvcvspdp VSX Vector Convert SP to DP
-                Nyi("xvabsdp"),         // 111100 ..... ///// ..... 11101 1001.. XX2 I 660 v2.06 xvabsdp VSX Vector Absolute DP
-                Nyi("xvnabsdp"),        // 111100 ..... ///// ..... 11110 1001.. XX2 I 729 v2.06 xvnabsdp VSX Vector Negative Absolute DP
-                Nyi("xvnegdp"),         // 111100 ..... ///// ..... 11111 1001.. XX2 I 730 v2.06 xvnegdp VSX Vector Negate DP
-                */
-                Nyi("Ext3C 101"),
-                /*
-                Nyi("xstdivdp"),    // 111100 ...// ..... ..... 00111 101../ XX3 I 653 v2.06 xstdivdp VSX Scalar Test for software Divide DP
-                Nyi("xvtdivsp"),    // 111100 ...// ..... ..... 01011 101../ XX3 I 762 v2.06 xvtdivsp VSX Vector Test for software Divide SP
-                Nyi("xvtdivdp"),    // 111100 ...// ..... ..... 01111 101../ XX3 I 761 v2.06 xvtdivdp VSX Vector Test for software Divide DP
-                Nyi("xvtstdcsp"),    // 111100 ..... ..... ..... 1101. 101... XX2 I 765 v3.0 xvtstdcsp VSX Vector Test Data Class SP
-                Nyi("xvtstdcdp"),    // 111100 ..... ..... ..... 1111. 101... XX2 I 764 v3.0 xvtstdcdp VSX Vector Test Data Class DP
-                Nyi("xsrsqrtesp"),    // 111100 ..... ///// ..... 00000 1010.. XX2 I 642 v2.07 xsrsqrtesp VSX Scalar Reciprocal Square Root Estimate SP
-                Nyi("xsresp"),    // 111100 ..... ///// ..... 00001 1010.. XX2 I 635 v2.07 xsresp VSX Scalar Reciprocal Estimate SP
-                Nyi("xsrsqrtedp"),    // 111100 ..... ///// ..... 00100 1010.. XX2 I 641 v2.06 xsrsqrtedp VSX Scalar Reciprocal Square Root Estimate DP
-                Nyi("xsredp"),    // 111100 ..... ///// ..... 00101 1010.. XX2 I 634 v2.06 xsredp VSX Scalar Reciprocal Estimate DP
-                Nyi("xstsqrtdp"),    // 111100 ...// ///// ..... 00110 1010./ XX2 I 654 v2.06 xstsqrtdp VSX Scalar Test for software Square Root DP
-                Nyi("xvrsqrtesp"),    // 111100 ..... ///// ..... 01000 1010.. XX2 I 754 v2.06 xvrsqrtesp VSX Vector Reciprocal Square Root Estimate SP
-                Nyi("xvresp"),    // 111100 ..... ///// ..... 01001 1010.. XX2 I 749 v2.06 xvresp VSX Vector Reciprocal Estimate SP
-                Nyi("xvtsqrtsp"),    // 111100 ...// ///// ..... 01010 1010./ XX2 I 763 v2.06 xvtsqrtsp VSX Vector Test for software Square Root SP
-                Nyi("xvrsqrtedp"),    // 111100 ..... ///// ..... 01100 1010.. XX2 I 752 v2.06 xvrsqrtedp VSX Vector Reciprocal Square Root Estimate DP
-                Nyi("xvredp"),    // 111100 ..... ///// ..... 01101 1010.. XX2 I 748 v2.06 xvredp VSX Vector Reciprocal Estimate DP
-                Nyi("xvtsqrtdp"),    // 111100 ...// ///// ..... 01110 1010./ XX2 I 763 v2.06 xvtsqrtdp VSX Vector Test for software Square Root DP
-                Nyi("xststdcsp"),    // 111100 ..... ..... ..... 10010 1010./ XX2 I 657 v3.0 xststdcsp VSX Scalar Test Data Class SP
-                Nyi("xststdcdp"),    // 111100 ..... ..... ..... 10110 1010./ XX2 I 655 v3.0 xststdcdp VSX Scalar Test Data Class DP
-                Nyi("xssqrtsp"),    // 111100 ..... ///// ..... 00000 1011.. XX2 I 646 v2.07 xssqrtsp VSX Scalar Square Root SP
-                Nyi("xssqrtdp"),    // 111100 ..... ///// ..... 00100 1011.. XX2 I 643 v2.06 xssqrtdp VSX Scalar Square Root DP
-                Nyi("xsrdpic"),    // 111100 ..... ///// ..... 00110 1011.. XX2 I 631 v2.06 xsrdpic VSX Scalar Round DP to Integral using Current rounding mode
-                Nyi("xvsqrtsp"),    // 111100 ..... ///// ..... 01000 1011.. XX2 I 756 v2.06 xvsqrtsp VSX Vector Square Root SP
-                Nyi("xvrspic"),    // 111100 ..... ///// ..... 01010 1011.. XX2 I 750 v2.06 xvrspic VSX Vector Round SP to Integral using Current rounding mode
-                Nyi("xvsqrtdp"),    // 111100 ..... ///// ..... 01100 1011.. XX2 I 755 v2.06 xvsqrtdp VSX Vector Square Root DP
-                Nyi("xvrdpic"),    // 111100 ..... ///// ..... 01110 1011.. XX2 I 745 v2.06 xvrdpic VSX Vector Round DP to Integral using Current rounding mode
-                Nyi("xscvdpspn"),    // 111100 ..... ///// ..... 10000 1011.. XX2 I 539 v2.07 xscvdpspn VSX Scalar Convert DP to SP Non-signalling
-                Nyi("xscvspdpn"),    // 111100 ..... ///// ..... 10100 1011.. XX2 I 560 v2.07 xscvspdpn VSX Scalar Convert SP to DP Non-signalling
-                Nyi("xsxexpdp"),    // 111100 ..... 00000 ..... 10101 1011./ XX2 I 658 v3.0 xsxexpdp VSX Scalar Extract Exponent DP
-                Nyi("xsxsigdp"),    // 111100 ..... 00001 ..... 10101 1011./ XX2 I 659 v3.0 xsxsigdp VSX Scalar Extract Significand DP
-                Nyi("xscvhpdp"),    // 111100 ..... 10000 ..... 10101 1011.. XX2 I 548 v3.0 xscvhpdp VSX Scalar Convert HP to DP
-                Nyi("xscvdphp"),    // 111100 ..... 10001 ..... 10101 1011.. XX2 I 536 v3.0 xscvdphp VSX Scalar Convert DP to HP
-                Nyi("xvxexpdp"),    // 111100 ..... 00000 ..... 11101 1011.. XX2 I 766 v3.0 xvxexpdp VSX Vector Extract Exponent DP
-                Nyi("xvxsigdp"),    // 111100 ..... 00001 ..... 11101 1011.. XX2 I 767 v3.0 xvxsigdp VSX Vector Extract Significand DP
-                Nyi("xxbrh"),    // 111100 ..... 00111 ..... 11101 1011.. XX2 I 768 v3.0 xxbrh VSX Vector Byte-Reverse Hword
-                Nyi("xvxexpsp"),    // 111100 ..... 01000 ..... 11101 1011.. XX2 I 766 v3.0 xvxexpsp VSX Vector Extract Exponent SP
-                Nyi("xvxsigsp"),    // 111100 ..... 01001 ..... 11101 1011.. XX2 I 767 v3.0 xvxsigsp VSX Vector Extract Significand SP
-                Nyi("xxbrw"),    // 111100 ..... 01111 ..... 11101 1011.. XX2 I 769 v3.0 xxbrw VSX Vector Byte-Reverse Word
-                Nyi("xxbrd"),    // 111100 ..... 10111 ..... 11101 1011.. XX2 I 768 v3.0 xxbrd VSX Vector Byte-Reverse Dword
-                Nyi("xvcvhpsp"),    // 111100 ..... 11000 ..... 11101 1011.. XX2 I 685 v3.0 xvcvhpsp VSX Vector Convert HP to SP
-                Nyi("xvcvsphp"),    // 111100 ..... 11001 ..... 11101 1011.. XX2 I 687 v3.0 xvcvsphp VSX Vector Convert SP to HP
-                Nyi("xxbrq"),    // 111100 ..... 11111 ..... 11101 1011.. XX2 I 769 v3.0 xxbrq VSX Vector Byte-Reverse Qword
-                Nyi("xsiexpdp"),    // 111100 ..... ..... ..... 11100 10110. XX1 I 570 v3.0 xsiexpdp VSX Scalar Insert Exponent DP
-                */
-                Nyi("xxsel"),       // 111100 ..... ..... ..... ..... 11.... XX4 I 777 v2.06 xxsel VSX Vector Select
-                Nyi("xxsel"));      // 111100 ..... ..... ..... ..... 11.... XX4 I 777 v2.06 xxsel VSX Vector Select
+                        Nyi("xscvdpuxws"),      // 111100 ..... ///// ..... 00100 1000.. XX2 I 546 v2.06 xscvdpuxws VSX Scalar Convert DP to Unsigned Word truncate
+                        Nyi("xscvdpsxws"),      // 111100 ..... ///// ..... 00101 1000.. XX2 I 542 v2.06 xscvdpsxws VSX Scalar Convert DP to Signed Word truncate
+                        invalid,
+                        invalid,
+
+                        Nyi("xvcvspuxws"),      // 111100 ..... ///// ..... 01000 1000.. XX2 I 694 v2.06 xvcvspuxws VSX Vector Convert SP to Unsigned Word truncate
+                        Nyi("xvcvspsxws"),      // 111100 ..... ///// ..... 01001 1000.. XX2 I 690 v2.06 xvcvspsxws VSX Vector Convert SP to Signed Word truncate
+                        Nyi("xvcvuxwsp"),       // 111100 ..... ///// ..... 01010 1000.. XX2 I 699 v2.06 xvcvuxwsp VSX Vector Convert Unsigned Word to SP
+                        Nyi("xvcvsxwsp"),       // 111100 ..... ///// ..... 01011 1000.. XX2 I 697 v2.06 xvcvsxwsp VSX Vector Convert Signed Word to SP
+
+                        Nyi("xvcvdpuxws"),      // 111100 ..... ///// ..... 01100 1000.. XX2 I 683 v2.06 xvcvdpuxws VSX Vector Convert DP to Unsigned Word truncate
+                        Nyi("xvcvdpsxws"),      // 111100 ..... ///// ..... 01101 1000.. XX2 I 679 v2.06 xvcvdpsxws VSX Vector Convert DP to Signed Word truncate
+                        Nyi("xvcvuxwdp"),       // 111100 ..... ///// ..... 01110 1000.. XX2 I 699 v2.06 xvcvuxwdp VSX Vector Convert Unsigned Word to DP
+                        Nyi("xvcvsxwdp"),       // 111100 ..... ///// ..... 01111 1000.. XX2 I 697 v2.06 xvcvsxwdp VSX Vector Convert Signed Word to DP
+                        
+                        invalid,
+                        invalid,
+                        Nyi("xscvuxdsp"),       // 111100 ..... ///// ..... 10010 1000.. XX2 I 563 v2.07 xscvuxdsp VSX Scalar Convert Unsigned Dword to SP
+                        Nyi("xscvsxdsp"),       // 111100 ..... ///// ..... 10011 1000.. XX2 I 561 v2.07 xscvsxdsp VSX Scalar Convert Signed Dword to SP
+                       
+                        Nyi("xscvdpuxds"),      // 111100 ..... ///// ..... 10100 1000.. XX2 I 544 v2.06 xscvdpuxds VSX Scalar Convert DP to Unsigned Dword truncate
+                        Nyi("xscvdpsxds"),      // 111100 ..... ///// ..... 10101 1000.. XX2 I 539 v2.06 xscvdpsxds VSX Scalar Convert DP to Signed Dword truncate
+                        Nyi("xscvuxddp"),       // 111100 ..... ///// ..... 10110 1000.. XX2 I 563 v2.06 xscvuxddp VSX Scalar Convert Unsigned Dword to DP
+                        Nyi("xscvsxddp"),       // 111100 ..... ///// ..... 10111 1000.. XX2 I 561 v2.06 xscvsxddp VSX Scalar Convert Signed Dword to DP
+                        
+                        Nyi("xvcvspuxds"),      // 111100 ..... ///// ..... 11000 1000.. XX2 I 692 v2.06 xvcvspuxds VSX Vector Convert SP to Unsigned Dword truncate
+                        Nyi("xvcvspsxds"),      // 111100 ..... ///// ..... 11001 1000.. XX2 I 688 v2.06 xvcvspsxds VSX Vector Convert SP to Signed Dword truncate
+                        Nyi("xvcvuxdsp"),       // 111100 ..... ///// ..... 11010 1000.. XX2 I 698 v2.06 xvcvuxdsp VSX Vector Convert Unsigned Dword to SP
+                        Nyi("xvcvsxdsp"),       // 111100 ..... ///// ..... 11011 1000.. XX2 I 696 v2.06 xvcvsxdsp VSX Vector Convert Signed Dword to SP
+                        
+                        Nyi("xvcvdpuxds"),      // 111100 ..... ///// ..... 11100 1000.. XX2 I 681 v2.06 xvcvdpuxds VSX Vector Convert DP to Unsigned Dword truncate
+                        Nyi("xvcvdpsxds"),      // 111100 ..... ///// ..... 11101 1000.. XX2 I 677 v2.06 xvcvdpsxds VSX Vector Convert DP to Signed Dword truncate
+                        Nyi("xvcvuxddp"),       // 111100 ..... ///// ..... 11110 1000.. XX2 I 698 v2.06 xvcvuxddp VSX Vector Convert Unsigned Dword to DP
+                        Nyi("xvcvsxddp")),       // 111100 ..... ///// ..... 11111 1000.. XX2 I 696 v2.06 xvcvsxddp VSX Vector Convert Signed Dword to DP
+                    Mask(21, 5, "  Ext3C 1000",
+                        invalid,
+                        invalid,
+                        invalid,
+                        invalid,
+
+                        Nyi("xsrdpi"),          // 111100 ..... ///// ..... 00100 1001.. XX2 I 630 v2.06 xsrdpi VSX Scalar Round DP to Integral to Nearest Away
+                        Nyi("xsrdpiz"),         // 111100 ..... ///// ..... 00101 1001.. XX2 I 633 v2.06 xsrdpiz VSX Scalar Round DP to Integral toward Zero
+                        Instr(Mnemonic.xsrdpip, vsr1, vsr3),    // 111100 ..... ///// ..... 00110 1001.. XX2 I 632 v2.06 xsrdpip VSX Scalar Round DP to Integral toward +Infinity
+                        Nyi("xsrdpim"),         // 111100 ..... ///// ..... 00111 1001.. XX2 I 632 v2.06 xsrdpim VSX Scalar Round DP to Integral toward -Infinity
+
+                        Nyi("xvrspi"),          // 111100 ..... ///// ..... 01000 1001.. XX2 I 750 v2.06 xvrspi VSX Vector Round SP to Integral to Nearest Away
+                        Nyi("xvrspiz"),         // 111100 ..... ///// ..... 01001 1001.. XX2 I 752 v2.06 xvrspiz VSX Vector Round SP to Integral toward Zero
+                        Nyi("xvrspip"),         // 111100 ..... ///// ..... 01010 1001.. XX2 I 751 v2.06 xvrspip VSX Vector Round SP to Integral toward +Infinity
+                        Nyi("xvrspim"),         // 111100 ..... ///// ..... 01011 1001.. XX2 I 751 v2.06 xvrspim VSX Vector Round SP to Integral toward -Infinity
+
+                        Nyi("xvrdpi"),          // 111100 ..... ///// ..... 01100 1001.. XX2 I 745 v2.06 xvrdpi VSX Vector Round DP to Integral to Nearest Away
+                        Nyi("xvrdpiz"),         // 111100 ..... ///// ..... 01101 1001.. XX2 I 747 v2.06 xvrdpiz VSX Vector Round DP to Integral toward Zero
+                        Nyi("xvrdpip"),         // 111100 ..... ///// ..... 01110 1001.. XX2 I 746 v2.06 xvrdpip VSX Vector Round DP to Integral toward +Infinity
+                        Nyi("xvrdpim"),         // 111100 ..... ///// ..... 01111 1001.. XX2 I 746 v2.06 xvrdpim VSX Vector Round DP to Integral toward -Infinity
+
+                        Nyi("xscvdpsp"),        // 111100 ..... ///// ..... 10000 1001.. XX2 I 538 v2.06 xscvdpsp VSX Scalar Convert DP to SP
+                        Nyi("xsrsp"),           // 111100 ..... ///// ..... 10001 1001.. XX2 I 640 v2.07 xsrsp VSX Scalar Round DP to SP
+                        invalid,
+                        invalid,
+
+                        Nyi("xscvspdp"),        // 111100 ..... ///// ..... 10100 1001.. XX2 I 559 v2.06 xscvspdp VSX Scalar Convert SP to DP
+                        Nyi("xsabsdp"),         // 111100 ..... ///// ..... 10101 1001.. XX2 I 513 v2.06 xsabsdp VSX Scalar Absolute DP
+                        Nyi("xsnabsdp"),        // 111100 ..... ///// ..... 10110 1001.. XX2 I 608 v2.06 xsnabsdp VSX Scalar Negative Absolute DP
+                        Nyi("xsnegdp"),         // 111100 ..... ///// ..... 10111 1001.. XX2 I 609 v2.06 xsnegdp VSX Scalar Negate DP
+
+                        Nyi("xvcvdpsp"),        // 111100 ..... ///// ..... 11000 1001.. XX2 I 676 v2.06 xvcvdpsp VSX Vector Convert DP to SP
+                        Nyi("xvabssp"),         // 111100 ..... ///// ..... 11001 1001.. XX2 I 660 v2.06 xvabssp VSX Vector Absolute SP
+                        Nyi("xvnabssp"),        // 111100 ..... ///// ..... 11010 1001.. XX2 I 729 v2.06 xvnabssp VSX Vector Negative Absolute SP
+                        Nyi("xvnegsp"),         // 111100 ..... ///// ..... 11011 1001.. XX2 I 730 v2.06 xvnegsp VSX Vector Negate SP
+
+                        Nyi("xvcvspdp"),        // 111100 ..... ///// ..... 11100 1001.. XX2 I 686 v2.06 xvcvspdp VSX Vector Convert SP to DP
+                        Nyi("xvabsdp"),         // 111100 ..... ///// ..... 11101 1001.. XX2 I 660 v2.06 xvabsdp VSX Vector Absolute DP
+                        Nyi("xvnabsdp"),        // 111100 ..... ///// ..... 11110 1001.. XX2 I 729 v2.06 xvnabsdp VSX Vector Negative Absolute DP
+                        Nyi("xvnegdp")          // 111100 ..... ///// ..... 11111 1001.. XX2 I 730 v2.06 xvnegdp VSX Vector Negate DP
+                        )),
+                Mask(29, 1, "  Ext3C 101",
+                    Mask(21, 5, "  Ext3C 1010",
+                        Nyi("xsrsqrtesp"),      // 111100 ..... ///// ..... 00000 1010.. XX2 I 642 v2.07 xsrsqrtesp VSX Scalar Reciprocal Square Root Estimate SP
+                        Nyi("xsresp"),          // 111100 ..... ///// ..... 00001 1010.. XX2 I 635 v2.07 xsresp VSX Scalar Reciprocal Estimate SP
+                        invalid,
+                        invalid,
+
+                        Nyi("xsrsqrtedp"),      // 111100 ..... ///// ..... 00100 1010.. XX2 I 641 v2.06 xsrsqrtedp VSX Scalar Reciprocal Square Root Estimate DP
+                        Nyi("xsredp"),          // 111100 ..... ///// ..... 00101 1010.. XX2 I 634 v2.06 xsredp VSX Scalar Reciprocal Estimate DP
+                        Nyi("xstsqrtdp"),       // 111100 ...// ///// ..... 00110 1010./ XX2 I 654 v2.06 xstsqrtdp VSX Scalar Test for software Square Root DP
+                        Nyi("xstdivdp"),        // 111100 ...// ..... ..... 00111 101../ XX3 I 653 v2.06 xstdivdp VSX Scalar Test for software Divide DP
+                        
+                        Nyi("xvrsqrtesp"),      // 111100 ..... ///// ..... 01000 1010.. XX2 I 754 v2.06 xvrsqrtesp VSX Vector Reciprocal Square Root Estimate SP
+                        Nyi("xvresp"),          // 111100 ..... ///// ..... 01001 1010.. XX2 I 749 v2.06 xvresp VSX Vector Reciprocal Estimate SP
+                        Nyi("xvtsqrtsp"),       // 111100 ...// ///// ..... 01010 1010./ XX2 I 763 v2.06 xvtsqrtsp VSX Vector Test for software Square Root SP
+                        Nyi("xvtdivsp"),        // 111100 ...// ..... ..... 01011 101../ XX3 I 762 v2.06 xvtdivsp VSX Vector Test for software Divide SP
+                        
+                        Nyi("xvrsqrtedp"),      // 111100 ..... ///// ..... 01100 1010.. XX2 I 752 v2.06 xvrsqrtedp VSX Vector Reciprocal Square Root Estimate DP
+                        Nyi("xvredp"),          // 111100 ..... ///// ..... 01101 1010.. XX2 I 748 v2.06 xvredp VSX Vector Reciprocal Estimate DP
+                        Nyi("xvtsqrtdp"),       // 111100 ...// ///// ..... 01110 1010./ XX2 I 763 v2.06 xvtsqrtdp VSX Vector Test for software Square Root DP
+                        Nyi("xvtdivdp"),        // 111100 ...// ..... ..... 01111 101../ XX3 I 761 v2.06 xvtdivdp VSX Vector Test for software Divide DP
+                        
+                        invalid,
+                        invalid,
+                        Nyi("xststdcsp"),       // 111100 ..... ..... ..... 10010 1010./ XX2 I 657 v3.0 xststdcsp VSX Scalar Test Data Class SP
+                        invalid,
+
+                        invalid,
+                        invalid,
+                        Nyi("xststdcdp"),       // 111100 ..... ..... ..... 10110 1010./ XX2 I 655 v3.0 xststdcdp VSX Scalar Test Data Class DP
+                        invalid,
+                        
+                        invalid,
+                        invalid,
+                        Nyi("xvtstdcsp"),       // 111100 ..... ..... ..... 11010 101... XX2 I 765 v3.0 xvtstdcsp VSX Vector Test Data Class SP
+                        Nyi("xvtstdcsp"),       // 111100 ..... ..... ..... 11011 101... XX2 I 765 v3.0 xvtstdcsp VSX Vector Test Data Class SP
+
+                        invalid,
+                        invalid,
+                        Nyi("xvtstdcdp") ,      // 111100 ..... ..... ..... 11110 101... XX2 I 764 v3.0 xvtstdcdp VSX Vector Test Data Class DP
+                        Nyi("xvtstdcdp")),      // 111100 ..... ..... ..... 11111 101... XX2 I 764 v3.0 xvtstdcdp VSX Vector Test Data Class DP
+                    Mask(21, 5, "  Ext3C 1011",
+                        Nyi("xssqrtsp"),        // 111100 ..... ///// ..... 00000 1011.. XX2 I 646 v2.07 xssqrtsp VSX Scalar Square Root SP
+                        invalid,
+                        invalid,
+                        invalid,
+
+                        Nyi("xssqrtdp"),        // 111100 ..... ///// ..... 00100 1011.. XX2 I 643 v2.06 xssqrtdp VSX Scalar Square Root DP
+                        invalid,
+                        Nyi("xsrdpic"),         // 111100 ..... ///// ..... 00110 1011.. XX2 I 631 v2.06 xsrdpic VSX Scalar Round DP to Integral using Current rounding mode
+                        Nyi("xstdivdp"),        // 111100 ...// ..... ..... 00111 101../ XX3 I 653 v2.06 xstdivdp VSX Scalar Test for software Divide DP
+                        
+                        Nyi("xvsqrtsp"),        // 111100 ..... ///// ..... 01000 1011.. XX2 I 756 v2.06 xvsqrtsp VSX Vector Square Root SP
+                        invalid,
+                        Nyi("xvrspic"),         // 111100 ..... ///// ..... 01010 1011.. XX2 I 750 v2.06 xvrspic VSX Vector Round SP to Integral using Current rounding mode
+                        Nyi("xvtdivsp"),        // 111100 ...// ..... ..... 01011 101../ XX3 I 762 v2.06 xvtdivsp VSX Vector Test for software Divide SP
+                        
+                        Nyi("xvsqrtdp"),        // 111100 ..... ///// ..... 01100 1011.. XX2 I 755 v2.06 xvsqrtdp VSX Vector Square Root DP
+                        invalid,
+                        Nyi("xvrdpic"),         // 111100 ..... ///// ..... 01110 1011.. XX2 I 745 v2.06 xvrdpic VSX Vector Round DP to Integral using Current rounding mode
+                        Nyi("xvtdivdp"),        // 111100 ...// ..... ..... 01111 101../ XX3 I 761 v2.06 xvtdivdp VSX Vector Test for software Divide DP
+                        
+                        Nyi("xscvdpspn"),       // 111100 ..... ///// ..... 10000 1011.. XX2 I 539 v2.07 xscvdpspn VSX Scalar Convert DP to SP Non-signalling
+                        invalid,
+                        invalid,
+                        invalid,
+                        
+                        Nyi("xscvspdpn"),       // 111100 ..... ///// ..... 10100 1011.. XX2 I 560 v2.07 xscvspdpn VSX Scalar Convert SP to DP Non-signalling
+                        Sparse(11, 5, invalid, "  Ext 101 - 10101",
+                            (0b00000,  Nyi("xsxexpdp")),        // 111100 ..... 00000 ..... 10101 1011./ XX2 I 658 v3.0 xsxexpdp VSX Scalar Extract Exponent DP
+                            (0b00001,  Nyi("xsxsigdp")),        // 111100 ..... 00001 ..... 10101 1011./ XX2 I 659 v3.0 xsxsigdp VSX Scalar Extract Significand DP
+                            (0b10000,  Nyi("xscvhpdp")),        // 111100 ..... 10000 ..... 10101 1011.. XX2 I 548 v3.0 xscvhpdp VSX Scalar Convert HP to DP
+                            (0b10001,  Nyi("xscvdphp"))),       // 111100 ..... 10001 ..... 10101 1011.. XX2 I 536 v3.0 xscvdphp VSX Scalar Convert DP to HP
+                        invalid,
+                        invalid,
+
+                        invalid,
+                        invalid,
+                        Nyi("xvtstdcsp"),       // 111100 ..... ..... ..... 11010 101... XX2 I 765 v3.0 xvtstdcsp VSX Vector Test Data Class SP
+                        Nyi("xvtstdcsp"),       // 111100 ..... ..... ..... 11011 101... XX2 I 765 v3.0 xvtstdcsp VSX Vector Test Data Class SP
+                        
+                        Nyi("xsiexpdp"),                      // 111100 ..... ..... ..... 11100 10110. XX1 I 570 v3.0 xsiexpdp VSX Scalar Insert Exponent DP
+                        Sparse(11, 5, invalid, "  Ext 101 - 11101",
+                            (0b00000, Nyi("xvxexpdp")),        // 111100 ..... 00000 ..... 11101 1011.. XX2 I 766 v3.0 xvxexpdp VSX Vector Extract Exponent DP
+                            (0b00001, Nyi("xvxsigdp")),        // 111100 ..... 00001 ..... 11101 1011.. XX2 I 767 v3.0 xvxsigdp VSX Vector Extract Significand DP
+                            (0b00111, Nyi("xxbrh")),           // 111100 ..... 00111 ..... 11101 1011.. XX2 I 768 v3.0 xxbrh VSX Vector Byte-Reverse Hword
+                            (0b01000, Nyi("xvxexpsp")),        // 111100 ..... 01000 ..... 11101 1011.. XX2 I 766 v3.0 xvxexpsp VSX Vector Extract Exponent SP
+                            (0b01001, Nyi("xvxsigsp")),        // 111100 ..... 01001 ..... 11101 1011.. XX2 I 767 v3.0 xvxsigsp VSX Vector Extract Significand SP
+                            (0b01111, Nyi("xxbrw")),           // 111100 ..... 01111 ..... 11101 1011.. XX2 I 769 v3.0 xxbrw VSX Vector Byte-Reverse Word
+                            (0b10111, Nyi("xxbrd")),           // 111100 ..... 10111 ..... 11101 1011.. XX2 I 768 v3.0 xxbrd VSX Vector Byte-Reverse Dword
+                            (0b11000, Nyi("xvcvhpsp")),        // 111100 ..... 11000 ..... 11101 1011.. XX2 I 685 v3.0 xvcvhpsp VSX Vector Convert HP to SP
+                            (0b11001, Nyi("xvcvsphp")),        // 111100 ..... 11001 ..... 11101 1011.. XX2 I 687 v3.0 xvcvsphp VSX Vector Convert SP to HP
+                            (0b11111, Nyi("xxbrq"))),          // 111100 ..... 11111 ..... 11101 1011.. XX2 I 769 v3.0 xxbrq VSX Vector Byte-Reverse Qword
+                        Nyi("xvtstdcdp"),                      // 111100 ..... ..... ..... 11110 101... XX2 I 764 v3.0 xvtstdcdp VSX Vector Test Data Class DP
+                        Nyi("xvtstdcdp"))),                     // 111100 ..... ..... ..... 11111 101... XX2 I 764 v3.0 xvtstdcdp VSX Vector Test Data Class DP
+                Instr(Mnemonic.xxsel, vsr1,vsr2,vsr3,vsr4),     // 111100 ..... ..... ..... ..... 11.... XX4 I 777 v2.06 xxsel VSX Vector Select
+                Instr(Mnemonic.xxsel, vsr1, vsr2, vsr3, vsr4)); // 111100 ..... ..... ..... ..... 11.... XX4 I 777 v2.06 xxsel VSX Vector Select
             return decoder;
 
         }
@@ -1316,14 +1396,14 @@ namespace Reko.Arch.PowerPC
         public virtual Decoder Ext3DDecoder()
         {
             var decoder = Mask(29, 3, "  Ext3D",
-                Instr(Mnemonic.stfdp, p1, E2_2),    // 111101 ..... ..... ..... ..... ....00 DS I 150 v2.05 stfdp Store Floating Double Pair
-                Nyi("lxv"),                         // 111101 ..... ..... ..... ..... ...001 DQ I 493 v3.0 lxv Load VSX Vector
-                Nyi("stxsd"),                       // 111101 ..... ..... ..... ..... ....10 DS I 499 v3.0 stxsd Store VSX Scalar Dword
-                Nyi("stxssp"),                      // 111101 ..... ..... ..... ..... ....11 DS I 502 v3.0 stxssp Store VSX Scalar SP
-                Instr(Mnemonic.stfdp, p1, E2_2),    // 111101 ..... ..... ..... ..... ....00 DS I 150 v2.05 stfdp Store Floating Double Pair
-                Nyi("stxv"),                        // 111101 ..... ..... ..... ..... ...101 DQ I 508 v3.0 stxv Store VSX Vector
-                Nyi("stxsd"),                       // 111101 ..... ..... ..... ..... ....10 DS I 499 v3.0 stxsd Store VSX Scalar Dword
-                Nyi("stxssp"));                     // 111101 ..... ..... ..... ..... ....11 DS I 502 v3.0 stxssp Store VSX Scalar SP
+                Instr(Mnemonic.stfdp, p1, E2_2),        // 111101 ..... ..... ..... ..... ....00 DS I 150 v2.05 stfdp Store Floating Double Pair
+                Instr(Mnemonic.lxv, vsr(21,3), DQ_4),   // 111101 ..... ..... ..... ..... ...001 DQ I 493 v3.0 lxv Load VSX Vector
+                Instr(Mnemonic.stxsd, p1, DS_2),        // 111101 ..... ..... ..... ..... ....10 DS I 499 v3.0 stxsd Store VSX Scalar Dword
+                Instr(Mnemonic.stxssp, p1, DS_2),       // 111101 ..... ..... ..... ..... ....11 DS I 502 v3.0 stxssp Store VSX Scalar SP
+                Instr(Mnemonic.stfdp, p1, E2_2),        // 111101 ..... ..... ..... ..... ....00 DS I 150 v2.05 stfdp Store Floating Double Pair
+                Instr(Mnemonic.stxv, p1, DS_2),         // 111101 ..... ..... ..... ..... ...101 DQ I 508 v3.0 stxv Store VSX Vector
+                Instr(Mnemonic.stxsd, p1, DS_2),        // 111101 ..... ..... ..... ..... ....10 DS I 499 v3.0 stxsd Store VSX Scalar Dword
+                Instr(Mnemonic.stxsd, p1, DS_2));       // 111101 ..... ..... ..... ..... ....11 DS I 502 v3.0 stxssp Store VSX Scalar SP
             return decoder;
         }
 
@@ -1334,26 +1414,26 @@ namespace Reko.Arch.PowerPC
                     ( 0b00000, Instr(Mnemonic.fcmpu, C1,f2,f3)),        // 111111 ...// ..... ..... 00000 00000/ X I 168 P1 fcmpu Floating Compare Unordered
                     ( 0b00001, Instr(Mnemonic.fcmpo, C1,f2,f3)),        // 111111 ...// ..... ..... 00001 00000/ X I 168 P1 fcmpo Floating Compare Ordered
                     ( 0b00010, Nyi("mcrfs")),       // 111111 ...// ...// ///// 00010 00000/ X I 171 P1 mcrfs Move To CR from FPSCR
-                    ( 0b00100, Nyi("ftdiv")),       // 111111 ...// ..... ..... 00100 00000/ X I 157 v2.06 ftdiv Floating Test for software Divide
-                    ( 0b00101, Nyi("ftsqrt"))),     // 111111 ...// ///// ..... 00101 00000/ X I 157 v2.06 ftsqrt Floating Test for software Square Root
+                    ( 0b00100, Instr(Mnemonic.ftdiv, C1,f2,f3)),        // 111111 ...// ..... ..... 00100 00000/ X I 157 v2.06 ftdiv Floating Test for software Divide
+                    ( 0b00101, Instr(Mnemonic.ftsqrt, C1,f3))),         // 111111 ...// ///// ..... 00101 00000/ X I 157 v2.06 ftsqrt Floating Test for software Square Root
                 invalid,
                 Sparse(21, 5, invalid, "  00010",
-                    ( 0b00000, Nyi("daddq[.]")),    // 111111 ..... ..... ..... 00000 00010. X I 195 v2.05 daddq[.] DFP Add Quad
+                    ( 0b00000, Instr(Mnemonic.daddq, C,f1,f2,f3)),    // 111111 ..... ..... ..... 00000 00010. X I 195 v2.05 daddq[.] DFP Add Quad
                     ( 0b00001, Nyi("dmulq[.]")),    // 111111 ..... ..... ..... 00001 00010. X I 197 v2.05 dmulq[.] DFP Multiply Quad
                     ( 0b00010, Nyi("dscliq[.]")),   // 111111 ..... ..... ..... .0010 00010. Z22 I 222 v2.05 dscliq[.] DFP Shift Significand Left Immediate Quad
                     ( 0b00011, Nyi("dscriq[.]")),   // 111111 ..... ..... ..... .0011 00010. Z22 I 222 v2.05 dscriq[.] DFP Shift Significand Right Immediate Quad
                         
-                    ( 0b00100, Nyi("dcmpoq")),      // 111111 ...// ..... ..... 00100 00010/ X I 201 v2.05 dcmpoq DFP Compare Ordered Quad
-                    ( 0b00101, Nyi("dtstexq")),     // 111111 ...// ..... ..... 00101 00010/ X I 203 v2.05 dtstexq DFP Test Exponent Quad
+                    ( 0b00100, Instr(Mnemonic.dcmpoq, C1,f2,f3)),           // 111111 ...// ..... ..... 00100 00010/ X I 201 v2.05 dcmpoq DFP Compare Ordered Quad
+                    ( 0b00101, Instr(Mnemonic.dtstexq, C1,f2,f3)),          // 111111 ...// ..... ..... 00101 00010/ X I 203 v2.05 dtstexq DFP Test Exponent Quad
                     ( 0b00110, Nyi("dtstdcq")),     // 111111 ...// ..... ..... .0110 00010/ Z22 I 202 v2.05 dtstdcq DFP Test Data Class Quad
-                    ( 0b00111, Nyi("dtstdgq")),     // 111111 ...// ..... ..... .0111 00010/ Z22 I 202 v2.05 dtstdgq DFP Test Data Group Quad
+                    ( 0b00111, Instr(Mnemonic.dtstdgq, u23_3, f2,u10_6)),     // 111111 ...// ..... ..... .0111 00010/ Z22 I 202 v2.05 dtstdgq DFP Test Data Group Quad
 
                     ( 0b01000, Nyi("dctqpq[.]")),   // 111111 ..... ///// ..... 01000 00010. X I 215 v2.05 dctqpq[.] DFP Convert To DFP Extended
                     ( 0b01001, Nyi("dctfixq[.]")),  // 111111 ..... ///// ..... 01001 00010. X I 217 v2.05 dctfixq[.] DFP Convert To Fixed Quad
                     ( 0b01010, Nyi("ddedpdq[.]")),  // 111111 ..... ../// ..... 01010 00010. X I 219 v2.05 ddedpdq[.] DFP Decode DPD To BCD Quad
-                    ( 0b01011, Nyi("dxexq[.]")),    // 111111 ..... ///// ..... 01011 00010. X I 220 v2.05 dxexq[.] DFP Extract Exponent Quad
+                    ( 0b01011, Instr(Mnemonic.dxexq, C,f1,f3)),             // 111111 ..... ///// ..... 01011 00010. X I 220 v2.05 dxexq[.] DFP Extract Exponent Quad
 
-                    ( 0b10000, Nyi("dsubq[.]")),    // 111111 ..... ..... ..... 10000 00010. X I 195 v2.05 dsubq[.] DFP Subtract Quad
+                    ( 0b10000, Instr(Mnemonic.dsubq, C,f1,f2,f3)),          // 111111 ..... ..... ..... 10000 00010. X I 195 v2.05 dsubq[.] DFP Subtract Quad
                     ( 0b10001, Nyi("ddivq[.]")),    // 111111 ..... ..... ..... 10001 00010. X I 198 v2.05 ddivq[.] DFP Divide Quad
                     ( 0b10010, Nyi("dscliq[.]")),   // 111111 ..... ..... ..... .0010 00010. Z22 I 222 v2.05 dscliq[.] DFP Shift Significand Left Immediate Quad
                     ( 0b10011, Nyi("dscriq[.]")),   // 111111 ..... ..... ..... .0011 00010. Z22 I 222 v2.05 dscriq[.] DFP Shift Significand Right Immediate Quad
@@ -1361,29 +1441,29 @@ namespace Reko.Arch.PowerPC
                     ( 0b10100, Nyi("dcmpuq")),      // 111111 ...// ..... ..... 10100 00010/ X I 200 v2.05 dcmpuq DFP Compare Unordered Quad
                     ( 0b10101, Nyi("dtstsfq")),     // 111111 ...// ..... ..... 10101 00010/ X I 204 v2.05 dtstsfq DFP Test Significance Quad
                     ( 0b10110, Nyi("dtstdcq")),     // 111111 ...// ..... ..... .0110 00010/ Z22 I 202 v2.05 dtstdcq DFP Test Data Class Quad
-                    ( 0b10111, Nyi("dtstdgq")),     // 111111 ...// ..... ..... .0111 00010/ Z22 I 202 v2.05 dtstdgq DFP Test Data Group Quad
+                    ( 0b10111, Instr(Mnemonic.dtstdgq, u23_3, f2, u10_6)),  // 111111 ...// ..... ..... .0111 00010/ Z22 I 202 v2.05 dtstdgq DFP Test Data Group Quad
 
                     ( 0b11000, Nyi("drdpq[.]")),    // 111111 ..... ///// ..... 11000 00010. X I 216 v2.05 drdpq[.] DFP Round To DFP Long
-                    ( 0b11001, Nyi("dcffixq[.]")),  // 111111 ..... ///// ..... 11001 00010. X I 217 v2.05 dcffixq[.] DFP Convert From Fixed Quad
+                    ( 0b11001, Instr(Mnemonic.dcffixq, C,f1,f3)),           // 111111 ..... ///// ..... 11001 00010. X I 217 v2.05 dcffixq[.] DFP Convert From Fixed Quad
                     ( 0b11010, Nyi("denbcdq[.]")),  // 111111 ..... .//// ..... 11010 00010. X I 219 v2.05 denbcdq[.] DFP Encode BCD To DPD Quad
                     ( 0b11011, Nyi("diexq[.]"))),   // 111111 ..... ..... ..... 11011 00010. X I 220 v2.05 diexq[.] DFP Insert Exponent Quad
                 Mask(23, 3, "  00011",
                     Nyi("dquaq[.]"),                // 111111 ..... ..... ..... ..000 00011. Z23 I 206 v2.05 dquaq[.] DFP Quantize Quad
-                    Nyi("drrndq[.]"),               // 111111 ..... ..... ..... ..001 00011. Z23 I 208 v2.05 drrndq[.] DFP Reround Quad
+                    Instr(Mnemonic.drrndq, f1,f2,f3,u9_2),               // 111111 ..... ..... ..... ..001 00011. Z23 I 208 v2.05 drrndq[.] DFP Reround Quad
                     Nyi("dquaiq[.]"),               // 111111 ..... ..... ..... ..010 00011. Z23 I 205 v2.05 dquaiq[.] DFP Quantize Immediate Quad
                     Nyi("drintxq[.]"),              // 111111 ..... ////. ..... ..011 00011. Z23 I 211 v2.05 drintxq[.] DFP Round To FP Integer With Inexact Quad
                         
                     invalid,
-                    Nyi("dtstsfiq"),                // 111111 ...// ..... ..... 10101 00011/ X I 204 v3.0 dtstsfiq DFP Test Significance Immediate Quad
+                    Instr(Mnemonic.dtstsfiq, C1,u16_6,f3),                // 111111 ...// ..... ..... 10101 00011/ X I 204 v3.0 dtstsfiq DFP Test Significance Immediate Quad
                     invalid,
-                    Nyi("drintnq[.]")),             // 111111 ..... ////. ..... ..111 00011. Z23 I 213 v2.05 drintnq[.] DFP Round To FP Integer Without Inexact Quad
+                    Instr(Mnemonic.drintnq,f1,f3,C)),             // 111111 ..... ////. ..... ..111 00011. Z23 I 213 v2.05 drintnq[.] DFP Round To FP Integer Without Inexact Quad
                 Mask(21, 5, "  00100",
                     Nyi("xsaddqp[o]"),      // 111111 ..... ..... ..... 00000 00100. X I 521 v3.0 xsaddqp[o] VSX Scalar Add QP
                     Nyi("xsmulqp[o]"),      // 111111 ..... ..... ..... 00001 00100. X I 604 v3.0 xsmulqp[o] VSX Scalar Multiply QP
                     invalid,
                     Nyi("xscpsgnqp"),       // 111111 ..... ..... ..... 00011 00100/ X I 535 v3.0 xscpsgnqp VSX Scalar Copy Sign QP
             
-                    Nyi("xscmpoqp"),        // 111111 ...// ..... ..... 00100 00100/ X I 531 v3.0 xscmpoqp VSX Scalar Compare Ordered QP
+                    Instr(Mnemonic.xscmpoqp, u23_3,f2,f3),      // 111111 ...// ..... ..... 00100 00100/ X I 531 v3.0 xscmpoqp VSX Scalar Compare Ordered QP
                     Nyi("xscmpexpqp"),      // 111111 ...// ..... ..... 00101 00100/ X I 524 v3.0 xscmpexpqp VSX Scalar Compare Exponents QP
                     invalid,
                     invalid,
@@ -1405,7 +1485,7 @@ namespace Reko.Arch.PowerPC
             
                     Nyi("xscmpuqp"),        // 111111 ...// ..... ..... 10100 00100/ X I 534 v3.0 xscmpuqp VSX Scalar Compare Unordered QP
                     invalid,
-                    Nyi("xststdcqp"),       // 111111 ..... ..... ..... 10110 00100/ X I 656 v3.0 xststdcqp VSX Scalar Test Data Class QP
+                    Instr(Mnemonic.xststdcqp, u23_3,vsr3, u16_7),       // 111111 ..... ..... ..... 10110 00100/ X I 656 v3.0 xststdcqp VSX Scalar Test Data Class QP
                     invalid,
             
                     invalid,
@@ -1433,7 +1513,9 @@ namespace Reko.Arch.PowerPC
                     invalid,
                     invalid),
                 Mask(23, 3, "  00101",
-                    Nyi("xsrqpi[x]"),                               // 111111 ..... ////. ..... ..000 00101. Z23 I 636 v3.0 xsrqpi[x] VSX Scalar Round QP to Integral
+                    Mask(0, 1, 
+                        Instr(Mnemonic.xsrqpi, u16_1, v1,v3, u9_2),     // 111111 ..... ////. ..... ..000 00101. Z23 I 636 v3.0 xsrqpi[x] VSX Scalar Round QP to Integral
+                        Instr(Mnemonic.xsrqpix, u16_1, v1,v3, u9_2)),    // 111111 ..... ////. ..... ..000 00101. Z23 I 636 v3.0 xsrqpi[x] VSX Scalar Round QP to Integral
                     Nyi("xsrqpxp"),                                 // 111111 ..... ////. ..... ..001 00101/ Z23 I 638 v3.0 xsrqpxp VSX Scalar Round QP to XP
                     invalid,
                     invalid,
@@ -1448,7 +1530,7 @@ namespace Reko.Arch.PowerPC
                     ( 0b00010, Nyi("mtfsb0[.]")),                   // 111111 ..... ///// ///// 00010 00110. X I 173 P1 mtfsb0[.] Move To FPSCR Bit 0
                     ( 0b00100, Nyi("mtfsfi[.]")),                   // 111111 ...// ////. ..../ 00100 00110. X I 172 P1 mtfsfi[.] Move To FPSCR Field Immediate
                     ( 0b11010, Nyi("fmrgow")),                      // 111111 ..... ..... ..... 11010 00110/ X I 152 v2.07 fmrgow Floating Merge Odd Word
-                    ( 0b11110, Nyi("fmrgew"))),                     // 111111 ..... ..... ..... 11110 00110/ X I 151 v2.07 fmrgew Floating Merge Even Word
+                    ( 0b11110, Instr(Mnemonic.fmrgew,f1,f2,f3))),   // 111111 ..... ..... ..... 11110 00110/ X I 151 v2.07 fmrgew Floating Merge Even Word
                 Sparse(21, 5, invalid, "  00111",
                     ( 0b10010, Instr(Mnemonic.mffs, C,f1)),         // 111111 ..... ///// ///// 10010 00111. X I 171 P1 mffs[.] Move From FPSCR
                     ( 0b10110, Instr(Mnemonic.mtfsf, u17_8,f3 ))),  // 111111 ..... ..... ..... 10110 00111. XFL I 172 P1 mtfsf[.] Move To FPSCR Fields
@@ -1459,7 +1541,7 @@ namespace Reko.Arch.PowerPC
                     ( 0b00010, Instr(Mnemonic.fmr, C,f1,f3)),       // 111111 ..... ///// ..... 00010 01000. X I 151 P1 fmr[.] Floating Move Register
                     ( 0b00100, Instr(Mnemonic.fnabs, C,f1,f3)),     // 111111 ..... ///// ..... 00100 01000. X I 151 P1 fnabs[.] Floating Negative Absolute Value
                     ( 0b01000, Instr(Mnemonic.fabs, C,f1,f3)),      // 111111 ..... ///// ..... 01000 01000. X I 151 P1 fabs[.] Floating Absolute
-                    ( 0b01100, Nyi("frin[.]")),                     // 111111 ..... ///// ..... 01100 01000. X I 167 v2.02 frin[.] Floating Round To Integer Nearest
+                    ( 0b01100, Instr(Mnemonic.frin, C,f1,f3)),      // 111111 ..... ///// ..... 01100 01000. X I 167 v2.02 frin[.] Floating Round To Integer Nearest
                     ( 0b01101, Nyi("friz[.]")),                     // 111111 ..... ///// ..... 01101 01000. X I 167 v2.02 friz[.] Floating Round To Integer Zero
                     ( 0b01110, Nyi("frip[.]")),                     // 111111 ..... ///// ..... 01110 01000. X I 167 v2.02 frip[.] Floating Round To Integer Plus
                     ( 0b01111, Nyi("frim[.]"))),                    // 111111 ..... ///// ..... 01111 01000. X I 167 v2.02 frim[.] Floating Round To Integer Minus
@@ -1474,11 +1556,11 @@ namespace Reko.Arch.PowerPC
                     ( 0b00100, Nyi("fctiwu[.]")),                   // 111111 ..... ///// ..... 00100 01110. X I 163 v2.06 fctiwu[.] Floating Convert To Integer Word Unsigned
                     ( 0b11001, Instr(Mnemonic.fctid, C,f1,f3)),     // 111111 ..... ///// ..... 11001 01110. X I 160 PPC fctid[.] Floating Convert To Integer Dword
                     ( 0b11010, Instr(Mnemonic.fcfid, C,f1,f3)),     // 111111 ..... ///// ..... 11010 01110. X I 164 PPC fcfid[.] Floating Convert From Integer Dword
-                    ( 0b11101, Nyi("fctidu[.]")),                   // 111111 ..... ///// ..... 11101 01110. X I 161 v2.06 fctidu[.] Floating Convert To Integer Dword Unsigned
+                    ( 0b11101, Instr(Mnemonic.fctidu, C,f1,f3)),                   // 111111 ..... ///// ..... 11101 01110. X I 161 v2.06 fctidu[.] Floating Convert To Integer Dword Unsigned
                     ( 0b11110, Nyi("fcfidu[.]"))),                  // 111111 ..... ///// ..... 11110 01110. X I 165 v2.06 fcfidu[.] Floating Convert From Integer Dword Unsigned
                 Sparse(21, 5, invalid, "  01111",
                     ( 0b00000, Instr(Mnemonic.fctiwz, C, f1, f3)),  // 111111 ..... ///// ..... 00000 01111. X I 163 P2 fctiwz[.] Floating Convert To Integer Word truncate
-                    ( 0b00100, Nyi("fctiwuz[.]")),                  // 111111 ..... ///// ..... 00100 01111. X I 164 v2.06 fctiwuz[.] Floating Convert To Integer Word Unsigned truncate
+                    ( 0b00100, Instr(Mnemonic.fctiwuz, C, f1,f3)),  // 111111 ..... ///// ..... 00100 01111. X I 164 v2.06 fctiwuz[.] Floating Convert To Integer Word Unsigned truncate
                     ( 0b11001, Instr(Mnemonic.fctidz, C, f1, f3)),  // 111111 ..... ///// ..... 11001 01111. X I 161 PPC fctidz[.] Floating Convert To Integer Dword truncate
                     ( 0b11101, Nyi("fctiduz[.]"))),                 // 111111 ..... ///// ..... 11101 01111. X I 162 v2.06 fctiduz[.] Floating Convert To Integer Dword Unsigned truncate
 
@@ -1492,7 +1574,7 @@ namespace Reko.Arch.PowerPC
                 Instr(Mnemonic.fsqrt, C,f1,f3),             // 111111 ..... ///// ..... ///// 10110. A I 155 P2 fsqrt[.] Floating Square Root
                 Instr(Mnemonic.fsel, C,f1,f2,f4,f3),        // 111111 ..... ..... ..... ..... 10111. A I 169 PPC fsel[.] Floating Select
                 
-                Nyi("fre[.]"),                              // 111111 ..... ///// ..... ///// 11000. A I 155 v2.02 fre[.] Floating Reciprocal Estimate
+                Instr(Mnemonic.fre, C,f2,f3),               // 111111 ..... ///// ..... ///// 11000. A I 155 v2.02 fre[.] Floating Reciprocal Estimate
                 Instr(Mnemonic.fmul, C,f1,f2,f4),           // 111111 ..... ..... ///// ..... 11001. A I 154 P1 fmul[.] Floating Multiply
                 Instr(Mnemonic.frsqrte, C,f1,f3),           // 111111 ..... ///// ..... ///// 11010. A I 156 PPC frsqrte[.] Floating Reciprocal Square Root Estimate
                 invalid,
@@ -1500,7 +1582,7 @@ namespace Reko.Arch.PowerPC
                 Instr(Mnemonic.fmsub, C,f1,f2,f4,f3),       // 111111 ..... ..... ..... ..... 11100. A I 159 P1 fmsub[.] Floating Multiply-Subtract
                 Instr(Mnemonic.fmadd, C,f1,f2,f4,f3),       // 111111 ..... ..... ..... ..... 11101. A I 158 P1 fmadd[.] Floating Multiply-Add
                 Instr(Mnemonic.fnmsub, C,f1,f2,f4,f3),      // 111111 ..... ..... ..... ..... 11110. A I 159 P1 fnmsub[.] Floating Negative Multiply-Subtract
-                Instr(Mnemonic.fnmadd, C,f1,f2,f4,f3));     // 111111 ..... ..... ..... ..... 11111. A I 159 P1 fnmadd[.] Floating Negative Multiply-Add
+                Instr(Mnemonic.fnmadd, C,f1,f2,f4,f3));    // 111111 ..... ..... ..... ..... 11111. A I 159 P1 fnmadd[.] Floating Negative Multiply-Add
             return decoder;
         }
     }

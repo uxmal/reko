@@ -28,6 +28,7 @@ namespace Reko.Arch.PowerPC
 {
     using Decoder = Decoder<PowerPcDisassembler, Mnemonic, PowerPcInstruction>;
 
+    // https://github.com/yui-konnu/PPC-Altivec-IDA/blob/master/plugin.cpp
     public class XenonInstructionSet : InstructionSet
     {
 
@@ -339,9 +340,9 @@ namespace Reko.Arch.PowerPC
                     Instr(Mnemonic.vmrglw128, Wd,Wa,Wb),
                     Instr(Mnemonic.vmrglw128, Wd,Wa,Wb),
 
-                    Nyi("vupkhsb128"), //    vr(VD128), vr(VB128)(R == 0)
+                    Instr(Mnemonic.vupkhsb128, Wd,Wb),  //    vr(VD128), vr(VB128)(R == 0)
                     invalid,
-                    Nyi("vupkhsb128"), //    vr(VD128), vr(VB128)(R == 0)
+                    Instr(Mnemonic.vupklsb128, Wd,Wb),  //    vr(VD128), vr(VB128)(R == 0)
                     invalid),
 
                 Mask(22, 1, "  .....1",

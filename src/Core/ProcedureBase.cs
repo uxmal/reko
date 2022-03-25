@@ -135,7 +135,7 @@ namespace Reko.Core
             if (genericArguments.Length == 0)
                 throw new InvalidOperationException($"{Name} is not generic.");
             if (concreteTypes.Length != genericArguments.Length)
-                throw new InvalidOperationException($"Mismatched number of concrete types for {Name}.");
+                throw new InvalidOperationException($"Mismatched number of concrete types for {Name}; expected {genericArguments.Length} but saw {concreteTypes.Length}");
             var parameters = new Identifier[sig.Parameters!.Length];
             for (int i = 0; i < sig.Parameters.Length; ++i)
             {

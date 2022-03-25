@@ -21,6 +21,8 @@
 using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Intrinsics;
+using Reko.Core.Lib;
+using Reko.Core.Machine;
 using Reko.Core.Rtl;
 using Reko.Core.Types;
 using System;
@@ -105,10 +107,19 @@ namespace Reko.Arch.PowerPC
 
         public void RewriteAddis()
         {
-            var opL = RewriteOperand(instr.Operands[1], true);
+            var opL = RewriteOperand(1, true);
             var opR = Shift16(dasm.Current.Operands[2]);
-            var opD = RewriteOperand(instr.Operands[0]);
+            var opD = RewriteOperand(0);
             RewriteAdd(opD, opL, opR);
+        }
+
+        private void RewriteAddpcis()
+        {
+            var addr =
+                instr.Address +
+                (4 + (((ImmediateOperand) instr.Operands[1]).Value.ToInt32() << 4));
+            var opD = RewriteOperand(0);
+            m.Assign(opD, addr);
         }
 
         private void RewriteAddze()
@@ -252,6 +263,14 @@ namespace Reko.Arch.PowerPC
         }
 
         //$TODO: improve this.
+        private void RewriteCrLogical(IntrinsicProcedure intrinsic)
+        {
+            var cr = ImmOperand(instr.Operands[0]);
+            var r = ImmOperand(instr.Operands[1]);
+            var i = ImmOperand(instr.Operands[2]);
+            m.SideEffect(m.Fn(intrinsic, cr, r, i));
+        }
+
         private void RewriteCrLogical(string intrinsic)
         {
             var cr = ImmOperand(instr.Operands[0]);
@@ -318,6 +337,14 @@ namespace Reko.Arch.PowerPC
             m.Assign(dst, src);
         }
 
+        private void RewriteMfocrf()
+        {
+            var src1 = binder.EnsureRegister(arch.cr);
+            var src2 = RewriteOperand(1);
+            var dst = RewriteOperand(0);
+            m.Assign(dst, m.Fn(mfocrf.MakeInstance(dst.DataType), src1, src2));
+        }
+
         private void RewriteMftb()
         {
             var dst = RewriteOperand(instr.Operands[0]);
@@ -353,11 +380,30 @@ namespace Reko.Arch.PowerPC
             m.Assign(dst, src);
         }
 
+        private void RewriteMulAcc(
+            Func<Expression,Expression,Expression> mul,
+            DataType dtElem,
+            DataType dtProduct,
+            int slice)
+        {
+            var opA = RewriteOperand(1);
+            var opB = RewriteOperand(2);
+            var opC = RewriteOperand(3);
+            var opT = RewriteOperand(0);
+            var tmp = binder.CreateTemporary(dtProduct);
+            m.Assign(tmp, m.IAdd(
+               mul(
+                   m.Convert(opA, dtElem, dtProduct),
+                   m.Convert(opB, dtElem, dtProduct)),
+               m.Convert(opC, dtElem, dtProduct)));
+            m.Assign(opT, m.Slice(tmp, dtElem, slice));
+        } 
+
         private void RewriteMulhhwu()
         {
-            var opL = RewriteOperand(instr.Operands[1]);
-            var opR = RewriteOperand(instr.Operands[2]);
-            var opD = RewriteOperand(instr.Operands[0]);
+            var opL = RewriteOperand(1);
+            var opR = RewriteOperand(2);
+            var opD = RewriteOperand(0);
             m.Assign(opD, m.UMul(m.Shr(opL, 0x10), m.Shr(opR, 0x10)));
             MaybeEmitCr0(opD);
         }
@@ -471,12 +517,27 @@ namespace Reko.Arch.PowerPC
                 );
         }
 
+        private void RewriteRldic()
+        {
+            var rs = RewriteOperand(1);
+            var sh = ((Constant)RewriteOperand(2)).ToByte();
+            var mb = ((Constant)RewriteOperand(3)).ToByte();
+            var rd = RewriteOperand(0);
+            var tmp = binder.CreateTemporary(rs.DataType);
+            m.Assign(tmp, m.Fn(CommonOps.Rol.MakeInstance(
+                rs.DataType, PrimitiveType.Byte),
+                rs,
+                m.Byte(sh)));
+            ulong maskBegin = (1ul << (64 - mb)) - 1;
+            m.Assign(rd, m.And(tmp, maskBegin));
+        }
+
         void RewriteRldicl()
         {
-            var rd = RewriteOperand(instr.Operands[0]);
             var rs = RewriteOperand(instr.Operands[1]);
             byte sh = ((Constant)RewriteOperand(instr.Operands[2])).ToByte();
             byte mb = ((Constant)RewriteOperand(instr.Operands[3])).ToByte();
+            var rd = RewriteOperand(instr.Operands[0]);
             ulong maskBegin = (1ul << (64 - mb)) - 1;
             if (sh == 0)
             {
@@ -529,6 +590,12 @@ namespace Reko.Arch.PowerPC
                         maskBegin));
                 }
                 else if (sh == 0x08 && mb == 0x37)
+                {
+                    m.Assign(rd, m.And(
+                        m.Shr(rs, (byte) (64 - sh)),
+                        maskBegin));
+                }
+                else if (sh == 0x0B && mb == 0x1)
                 {
                     m.Assign(rd, m.And(
                         m.Shr(rs, (byte) (64 - sh)),
@@ -600,6 +667,38 @@ namespace Reko.Arch.PowerPC
                 }
             }
             MaybeEmitCr0(rd);
+        }
+
+        private void RewriteRldcl()
+        {
+            var rs = RewriteOperand(1);
+            var sh = RewriteOperand(2);
+            var mb = RewriteOperand(3);
+            var rd = RewriteOperand(0);
+            var tmp = binder.CreateTemporary(rd.DataType);
+            m.Assign(tmp, m.Fn(
+                CommonOps.Rol.MakeInstance(rs.DataType, PrimitiveType.Byte),
+                rs,
+                m.Slice(sh, PrimitiveType.Byte, 0)));
+            var maskPos = ((Constant) mb).ToInt32();
+            var mask = Bits.Mask(0, 64-maskPos);
+            m.Assign(rd, m.And(tmp, mask));
+        }
+
+        private void RewriteRldcr()
+        {
+            var rs = RewriteOperand(1);
+            var sh = RewriteOperand(2);
+            var mb = RewriteOperand(3);
+            var rd = RewriteOperand(0);
+            var tmp = binder.CreateTemporary(rd.DataType);
+            m.Assign(tmp, m.Fn(
+                CommonOps.Rol.MakeInstance(rs.DataType, PrimitiveType.Byte),
+                rs,
+                m.Slice(sh, PrimitiveType.Byte, 0)));
+            var maskPos = ((Constant) mb).ToInt32();
+            var mask = Bits.Mask(63 - maskPos, maskPos);
+            m.Assign(rd, m.And(tmp, mask));
         }
 
         private void RewriteRldicr()

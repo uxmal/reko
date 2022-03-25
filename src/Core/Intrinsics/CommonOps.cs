@@ -52,6 +52,9 @@ namespace Reko.Core.Intrinsics
             .Param("TData").Param("TBit").Param(PrimitiveType.Bool)
             .Returns("TData");
 
+        // Byte manipulations
+        public static readonly IntrinsicProcedure ReverseBytes = IntrinsicBuilder.GenericUnary("__reverse_bytes");
+
         // Rotations
         public static readonly IntrinsicProcedure Rol = new IntrinsicBuilder("__rol", false)
             .GenericTypes("TData", "TCount")

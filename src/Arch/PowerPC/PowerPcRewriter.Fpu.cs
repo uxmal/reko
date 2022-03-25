@@ -19,6 +19,7 @@
 #endregion
 
 using Reko.Core.Expressions;
+using Reko.Core.Intrinsics;
 using Reko.Core.Machine;
 using Reko.Core.Types;
 using System;
@@ -167,18 +168,37 @@ namespace Reko.Arch.PowerPC
             MaybeEmitCr1(opD);
         }
 
+        private void RewriteFnabs()
+        {
+            var opS = RewriteOperand(1);
+            var opD = RewriteOperand(0);
+            m.Assign(opD, m.FNeg(m.Fn(FpuOps.fabs, opS)));
+            MaybeEmitCr1(opD);
+        }
+
         public void RewriteFneg()
         {
-            var opS = RewriteOperand(instr.Operands[1]);
-            var opD = RewriteOperand(instr.Operands[0]);
+            var opS = RewriteOperand(1);
+            var opD = RewriteOperand(0);
             m.Assign(opD, m.Neg(opS));
             MaybeEmitCr1(opD);
         }
 
+        private void RewriteFres()
+        {
+            var opS = RewriteOperand(1);
+            var opD = RewriteOperand(0);
+            var tmp = binder.CreateTemporary(PrimitiveType.Real32);
+            m.Assign(tmp, m.Fn(
+                fre.MakeInstance(PrimitiveType.Real32),
+                m.Convert(opS, PrimitiveType.Real64, PrimitiveType.Real32)));
+            m.Assign(opD, m.Convert(tmp, tmp.DataType, PrimitiveType.Real64));
+            MaybeEmitCr1(tmp);
+        }
         public void RewriteFrsp()
         {
-            var opS = RewriteOperand(instr.Operands[1]);
-            var opD = RewriteOperand(instr.Operands[0]);
+            var opS = RewriteOperand(1);
+            var opD = RewriteOperand(0);
             m.Assign(opD, m.Convert(opS, PrimitiveType.Real64, PrimitiveType.Real32));
             MaybeEmitCr1(opD);
         }
@@ -200,12 +220,20 @@ namespace Reko.Arch.PowerPC
 
         private void RewriteFsqrt()
         {
-            //$TODO: include math.h
-            var dst = RewriteOperand(instr.Operands[0]);
-            var src = RewriteOperand(instr.Operands[1]);
-            m.Assign(
-                dst,
-                host.Intrinsic("sqrt", true, PrimitiveType.Real64, src));
+            var src = RewriteOperand(1);
+            var dst = RewriteOperand(0);
+            m.Assign(dst, m.Fn(FpuOps.sqrt, src));
+            MaybeEmitCr1(dst);
+        }
+
+        private void RewriteFsqrts()
+        {
+            var src = RewriteOperand(1);
+            var dst = RewriteOperand(0);
+            var tmp = binder.CreateTemporary(PrimitiveType.Real32);
+            m.Assign(tmp, m.Fn(FpuOps.sqrtf, m.Convert(src, PrimitiveType.Real64, PrimitiveType.Real32)));
+            m.Assign(dst, m.Convert(tmp, tmp.DataType, PrimitiveType.Real64));
+            MaybeEmitCr1(tmp);
         }
 
         private void RewriteFrsqrte()
@@ -234,7 +262,13 @@ namespace Reko.Arch.PowerPC
             MaybeEmitCr1(opD);
         }
 
-        public void RewriteMtfsf()
+        private void RewriteMtfsb1()
+        {
+            var op = RewriteOperand(0);
+            m.SideEffect(m.Fn(mtfsb1, op));
+        }
+
+        private void RewriteMtfsf()
         {
             var op1 = ((ImmediateOperand)instr.Operands[0]).Value;
             var op2 = RewriteOperand(instr.Operands[1]);

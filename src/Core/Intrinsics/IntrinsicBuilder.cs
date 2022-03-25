@@ -73,7 +73,7 @@ namespace Reko.Core.Intrinsics
         /// </summary>
         /// <param name="typenames">Names of the generic types.</param>
         /// <returns></returns>
-        public IntrinsicBuilder GenericTypes(params string [] typenames)
+        public IntrinsicBuilder GenericTypes(params string[] typenames)
         {
             genericTypeDictionary = new Dictionary<string, DataType>();
             var types = new List<DataType>();
@@ -111,7 +111,29 @@ namespace Reko.Core.Intrinsics
             return Param(GetGenericArgument(genericType));
         }
 
-        public IntrinsicBuilder Params(params string [] genericTypes)
+        /// <summary>
+        /// Creates a parameter of type "pointer to <paramref name="genericType" />.
+        /// </summary>
+        public IntrinsicBuilder PtrParam(DataType dt)
+        {
+            // The '0' size below indicates that we don't know the size of the pointer.
+            // When IntrinsicProcedure.MakeInstance is called, the pointer
+            // size of the architecture is resolved.
+            return Param(new Pointer(dt, 0));
+        }
+
+        /// <summary>
+        /// Creates a parameter of type "pointer to <paramref name="genericType" />.
+        /// </summary>
+        public IntrinsicBuilder PtrParam(string genericType)
+        {
+            // The '0' size below indicates that we don't know the size of the pointer.
+            // When IntrinsicProcedure.MakeInstance is called, the pointer
+            // size of the architecture is resolved.
+            return Param(new Pointer(GetGenericArgument(genericType), 0));
+        }
+
+        public IntrinsicBuilder Params(params string[] genericTypes)
         {
             foreach (var type in genericTypes)
                 Param(GetGenericArgument(type));
@@ -149,7 +171,7 @@ namespace Reko.Core.Intrinsics
         public IntrinsicProcedure Returns(string genericType)
         {
             var signature = FunctionType.Func(
-                new Identifier("",  GetGenericArgument(genericType), null!),
+                new Identifier("", GetGenericArgument(genericType), null!),
                 parameters.ToArray());
             return MakeIntrinsic(signature);
         }
@@ -168,6 +190,62 @@ namespace Reko.Core.Intrinsics
             proc.Characteristics = characteristics;
             proc.ApplyConstants = this.applyConstants;
             return proc;
+        }
+
+        public static IntrinsicProcedure GenericTernary(string name)
+        {
+            return new IntrinsicBuilder(name, false)
+                .GenericTypes("T")
+                .Param("T")
+                .Param("T")
+                .Param("T")
+                .Returns("T");
+        }
+
+        public static IntrinsicProcedure GenericBinary(string name)
+        {
+            return new IntrinsicBuilder(name, false)
+                .GenericTypes("T")
+                .Param("T")
+                .Param("T")
+                .Returns("T");
+        }
+
+        public static IntrinsicProcedure GenericUnary(string name)
+        {
+            return new IntrinsicBuilder(name, false)
+                .GenericTypes("T")
+                .Param("T")
+                .Returns("T");
+        }
+
+        public static IntrinsicProcedure Binary(string intrinsicName, DataType dt)
+        {
+            return new IntrinsicBuilder(intrinsicName, false).Param(dt).Param(dt).Returns(dt);
+        }
+
+        public static IntrinsicProcedure Ternary(string intrinsicName, DataType dt)
+        {
+            return new IntrinsicBuilder(intrinsicName, false)
+                .Param(dt)
+                .Param(dt)
+                .Param(dt)
+                .Returns(dt);
+        }
+
+        public static IntrinsicProcedure Unary(string intrinsicName, PrimitiveType dt)
+        {
+            return new IntrinsicBuilder(intrinsicName, false).Param(dt).Returns(dt);
+        }
+
+        public static IntrinsicProcedure Predicate(string intrinsicName, params DataType[] dataTypes)
+        {
+            var b = new IntrinsicBuilder(intrinsicName, false);
+            foreach (var dt in dataTypes)
+            {
+                b.Param(dt);
+            }
+            return b.Returns(PrimitiveType.Bool);
         }
     }
 }

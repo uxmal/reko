@@ -166,6 +166,26 @@ namespace Reko.Arch.PowerPC
             return true;
         }
 
+        /// <summary>
+        /// Displacement, with bottom 2 bits masked off
+        /// </summary>
+        internal static bool DS_2(uint wInstr, PowerPcDisassembler dasm)
+        {
+            var op = dasm.MemOff(wInstr >> 16, wInstr & ~3u);
+            dasm.ops.Add(op);
+            return true;
+        }
+
+        /// <summary>
+        /// Displacement, with bottom 4 bits masked off
+        /// </summary>
+        internal static bool DQ_4(uint wInstr, PowerPcDisassembler dasm)
+        {
+            var op = dasm.MemOff(wInstr >> 16, wInstr & ~0xFu);
+            dasm.ops.Add(op);
+            return true;
+        }
+
         internal static Mutator<PowerPcDisassembler> c(int bitPos)
         {
             return (u, d) =>
@@ -254,7 +274,32 @@ namespace Reko.Arch.PowerPC
         internal static readonly Mutator<PowerPcDisassembler> v3 = v(11);
         internal static readonly Mutator<PowerPcDisassembler> v4 = v(6);
 
-        // vector register using only 3 bits of encoding
+
+        /// <summary>
+        /// 6-bit reference to vsr register.
+        /// </summary>
+        internal static Mutator<PowerPcDisassembler> vsr(int bitpos_hi, int bitpos_lo)
+        {
+            var bitfields = new Bitfield[] {
+                new Bitfield(bitpos_hi, 5),
+                new Bitfield(bitpos_lo, 1)
+            };
+            return (u, d) =>
+            {
+                var iReg = Bitfield.ReadFields(bitfields, u);
+                var op = d.VRegFromBits(iReg);
+                d.ops.Add(op);
+                return true;
+            };
+        }
+        internal static readonly Mutator<PowerPcDisassembler> vsr1 = vsr(21, 0);
+        internal static readonly Mutator<PowerPcDisassembler> vsr2 = vsr(16, 2);
+        internal static readonly Mutator<PowerPcDisassembler> vsr3 = vsr(11, 1);
+        internal static readonly Mutator<PowerPcDisassembler> vsr4 = vsr(6, 3);
+
+        ///<summary>
+        /// vector register using only 3 bits of encoding
+        /// </summary>
         internal static Mutator<PowerPcDisassembler> v3_(int offset)
         {
             return (u, d) =>
@@ -267,6 +312,9 @@ namespace Reko.Arch.PowerPC
         internal static readonly Mutator<PowerPcDisassembler> v3_6 = v3_(6);
 
 
+        /// <summary>
+        /// 5-bit immediate field.
+        /// </summary>
         internal static Mutator<PowerPcDisassembler> I(int offset)
         {
             return (u, d) =>
@@ -279,7 +327,7 @@ namespace Reko.Arch.PowerPC
         internal static readonly Mutator<PowerPcDisassembler> I1 = I(21);
         internal static readonly Mutator<PowerPcDisassembler> I2 = I(16);
         internal static readonly Mutator<PowerPcDisassembler> I3 = I(11);
-        internal static readonly Mutator<PowerPcDisassembler> I4 = I(6) ;
+        internal static readonly Mutator<PowerPcDisassembler> I4 = I(6);
         internal static readonly Mutator<PowerPcDisassembler> I5 = I(1);
 
         internal static Mutator<PowerPcDisassembler> i(params Bitfield[] bitfields)
@@ -327,6 +375,8 @@ namespace Reko.Arch.PowerPC
         internal static readonly Mutator<PowerPcDisassembler> u6_4 = u(6, 4);
         internal static readonly Mutator<PowerPcDisassembler> u6_5 = u(6, 5);
         internal static readonly Mutator<PowerPcDisassembler> u9_1 = u(9, 1);
+        internal static readonly Mutator<PowerPcDisassembler> u9_2 = u(9, 2);
+        internal static readonly Mutator<PowerPcDisassembler> u10_6 = u(10, 6);
         internal static readonly Mutator<PowerPcDisassembler> u11_5 = u(11, 5);
         internal static readonly Mutator<PowerPcDisassembler> u14_2 = u(14, 2);
         internal static readonly Mutator<PowerPcDisassembler> u16_1 = u(16, 1);
@@ -334,12 +384,15 @@ namespace Reko.Arch.PowerPC
         internal static readonly Mutator<PowerPcDisassembler> u16_3 = u(16, 3);
         internal static readonly Mutator<PowerPcDisassembler> u16_4 = u(16, 4);
         internal static readonly Mutator<PowerPcDisassembler> u16_5 = u(16, 5);
+        internal static readonly Mutator<PowerPcDisassembler> u16_6 = u(16, 6);
+        internal static readonly Mutator<PowerPcDisassembler> u16_7 = u(16, 7);
         internal static readonly Mutator<PowerPcDisassembler> u17_8 = u(17, 8);
         internal static readonly Mutator<PowerPcDisassembler> u18_3 = u(18, 3);
         internal static readonly Mutator<PowerPcDisassembler> u21_1 = u(21, 1);
         internal static readonly Mutator<PowerPcDisassembler> u21_4 = u(21, 4);
         internal static readonly Mutator<PowerPcDisassembler> u22_3 = u(22, 3);
         internal static readonly Mutator<PowerPcDisassembler> u22_5 = u(22, 5);
+        internal static readonly Mutator<PowerPcDisassembler> u23_3 = u(23, 3);
 
         internal static Mutator<PowerPcDisassembler> s(int bitOffset, int len)
         {

@@ -46,10 +46,16 @@ namespace Reko.UnitTests.Arch.PowerPC
 
         public override Address LoadAddress { get; } = Address.Ptr32(0x00100000);
 
-        private void AssertCode(uint instr, string sExp)
+        private void AssertCode(uint instr, string sExpected)
         {
             var i = DisassembleWord(instr);
-            Assert.AreEqual(sExp, i.ToString());
+            Assert.AreEqual(sExpected, i.ToString());
+        }
+
+        private void AssertCode(string sExpected, string hexBytes)
+        {
+            var i = base.DisassembleHexBytes(hexBytes);
+            Assert.AreEqual(sExpected, i.ToString());
         }
 
         [Test]
@@ -524,10 +530,6 @@ namespace Reko.UnitTests.Arch.PowerPC
             AssertCode(0x10100008, "vmuloub\tv0,v16,v0");
         }
 
-
-
-
-
         [Test]
         public void PPCDis_Xenon_vaddfp128()
         {
@@ -536,5 +538,15 @@ namespace Reko.UnitTests.Arch.PowerPC
             // 0001 0101 0101 1111 1010 1100 0011 1001
             AssertCode(0x155FAC39, "vaddfp128\tv74,v127,v53");
         }
+
+        // Reko: a decoder for the instruction 1B003B84 at address 831FAE98 has not been implemented. (vupkhsb128)
+        [Test]
+        public void PPCDis_Xenon_upkhsb128()
+        {
+            AssertCode(0x1B003B84, "vupkhsb128\tv56,v7");
+        }
+
+        // Reko: a decoder for the instruction 7C00504C at address 822C1970 has not been implemented. (lvsr)
+
     }
 }
