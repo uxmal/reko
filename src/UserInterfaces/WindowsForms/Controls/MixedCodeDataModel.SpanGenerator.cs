@@ -226,7 +226,7 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
             {
                 Debug.Assert(line.Count == 0);
                 var addr = this.position.Address;
-                var rdr = program.CreateImageReader(program.Architecture, addr);
+                var rdr = program.CreateImageReader(program.Architecture, addr, item.EndAddress);
                 mem.Formatter.RenderLine(rdr, program.TextEncoding, this);
                 var memLine = new LineSpan(position, line.ToArray());
                 line.Clear();

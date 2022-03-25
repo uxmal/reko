@@ -442,8 +442,18 @@ namespace Reko.Core
         public EndianImageReader CreateImageReader(IProcessorArchitecture arch, Address addr)
         {
             if (!SegmentMap.TryFindSegment(addr, out var segment))
-                 throw new ArgumentException(string.Format("The address {0} is invalid.", addr));
+                 throw new ArgumentException($"The address {addr} is invalid.");
             return arch.CreateImageReader(segment.MemoryArea, addr);
+        }
+
+        public EndianImageReader CreateImageReader(
+            IProcessorArchitecture arch,
+            Address addrBegin,
+            Address addrEnd)
+        {
+            if (!SegmentMap.TryFindSegment(addrBegin, out var segment))
+                throw new ArgumentException($"The address {addrBegin} is invalid.");
+            return arch.CreateImageReader(segment.MemoryArea, addrBegin, addrEnd - addrBegin);
         }
 
         public ImageWriter CreateImageWriter(IProcessorArchitecture arch, Address addr)
