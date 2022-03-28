@@ -303,13 +303,11 @@ namespace Reko.Analysis
                     .ToArray()!;
             }
 
-            SccFinder<PhiAssignment> sccFinder = new SccFinder<PhiAssignment>(new PhiGraph(ssa, phis), processScc);
-            sccFinder.FindAll();
-
-            void processScc(IList<PhiAssignment> scc)
-            {
-                if (scc.Count == 1)
-                    return;
+            SccFinder<PhiAssignment> sccFinder = new SccFinder<PhiAssignment>(new PhiGraph(ssa, phis));
+            foreach (var scc in sccFinder.FindAll())
+            { 
+                if (scc.Length == 1)
+                    continue;
                 var sccIds = new HashSet<Expression>(scc.Select(p => (Expression) p.Dst));
                 var inner = new HashSet<PhiAssignment>();
                 var outerOps = new HashSet<Expression>();

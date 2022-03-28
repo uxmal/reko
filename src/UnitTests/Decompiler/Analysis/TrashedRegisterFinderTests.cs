@@ -71,10 +71,10 @@ namespace Reko.UnitTests.Decompiler.Analysis
         {
             this.program = builder.BuildProgram();
             this.dataFlow = new ProgramDataFlow(program);
-            var sscf = new SccFinder<Procedure>(new ProcedureGraph(program), ProcessScc);
-            foreach (var procedure in program.Procedures.Values)
+            var sscf = new SccFinder<Procedure>(new ProcedureGraph(program));
+            foreach (var scc in sscf.FindAll())
             {
-                sscf.Find(procedure);
+                ProcessScc(scc);
             }
             var sbActual = new StringBuilder();
             var sw = new StringWriter();

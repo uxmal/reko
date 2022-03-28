@@ -36,7 +36,6 @@ namespace Reko.UnitTests.Arch.PowerPC
         [SetUp]
         public void Setup()
         {
-            Reko.Core.Machine.Decoder.trace.Level = System.Diagnostics.TraceLevel.Verbose;
             this.arch = new PowerPcBe32Architecture(new ServiceContainer(), "ppc-be-32", new Dictionary<string, object>());
             this.addrLoad = Address.Ptr32(0x00100000);
         }

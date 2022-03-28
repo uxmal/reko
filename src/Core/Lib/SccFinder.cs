@@ -20,6 +20,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Reko.Core.Lib
 {
@@ -27,31 +28,18 @@ namespace Reko.Core.Lib
 	/// Encapsulates Tarjan's algorithm for finding strongly connected
     /// components (SCC's) in a directed graph.
 	/// </summary>
-	/// <remarks>
-	/// The algorithm itself is generic, and uses the graph and 
-    /// processScc procedure to perform the 
-    /// actual work.
 	/// </remarks>
 	public class SccFinder<TNode>
         where TNode : notnull
 	{
         private readonly DirectedGraph<TNode> graph;
-        private readonly Action<IList<TNode>> processScc;
-        private readonly Action<TNode> firstVisit;
         private int nextDfs = 0;
 		private readonly Stack<Node> stack = new Stack<Node>();
 		private readonly Dictionary<TNode,Node> map = new Dictionary<TNode,Node>();
 
-        public SccFinder(DirectedGraph<TNode> graph, Action<IList<TNode>> processScc) :
-            this(graph, x => { }, processScc) 
-        {
-        }
-
-        public SccFinder(DirectedGraph<TNode> graph, Action<TNode> firstVisit, Action<IList<TNode>> processScc)
+        public SccFinder(DirectedGraph<TNode> graph)
         {
             this.graph = graph;
-            this.firstVisit = firstVisit;
-            this.processScc = processScc;
             this.nextDfs = 0;
         }
 
@@ -65,19 +53,18 @@ namespace Reko.Core.Lib
 			return node;
 		}
 
-        private void Dfs(Node node)
+        private void Dfs(Node node, List<TNode[]> result)
         {
-            firstVisit(node.o);
-
             node.dfsNumber = nextDfs++;
             node.visited = true;
             node.low = node.dfsNumber;
             stack.Push(node);
-            foreach (Node o in GetSuccessors(node))
+
+            foreach (Node o in graph.Successors(node.o).Select(n => AddNode(n)))
             {
                 if (!o.visited)
                 {
-                    Dfs(o);
+                    Dfs(o, result);
                     node.low = Math.Min(node.low, o.low);
                 }
                 if (o.dfsNumber < node.dfsNumber && stack.Contains(o))
@@ -87,46 +74,41 @@ namespace Reko.Core.Lib
             }
             if (node.low == node.dfsNumber)
             {
-                List<TNode> scc = new List<TNode>();
+                var scc = new List<TNode>();
                 Node x;
                 do
                 {
                     x = stack.Pop();
                     scc.Add(x.o);
                 } while (x != node);
-                processScc(scc);
+                result.Add(scc.ToArray());
             }
         }
 
         /// <summary>
         /// Find all the SCC's starting at the node <paramref name="start" />.
         /// </summary>
-        public void Find(TNode start)
+        public List<TNode[]> Find(TNode start)
         {
+            var list = new List<TNode[]>();
             if (!map.ContainsKey(start))
-                Dfs(AddNode(start));
+                Dfs(AddNode(start), list);
+            return list;
         }
 
         
         /// <summary>
         /// Find all the SCC's in the entire graph.
         /// </summary>
-        public void FindAll()
+        public List<TNode[]> FindAll()
         {
+            var list = new List<TNode[]>();
             foreach (TNode node in this.graph.Nodes)
             {
                 if (!map.ContainsKey(node))
-                    Dfs(AddNode(node));
+                    Dfs(AddNode(node), list);
             }
-        }
-
-
-        private IEnumerable<Node> GetSuccessors(Node node)
-        {
-            foreach (TNode successor in graph.Successors(node.o))
-            {
-                yield return AddNode(successor);
-            }
+            return list;
         }
 
 		private class Node

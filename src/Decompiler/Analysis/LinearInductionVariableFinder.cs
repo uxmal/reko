@@ -25,6 +25,7 @@ using Reko.Core.Lib;
 using Reko.Core.Operators;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Reko.Analysis
 {
@@ -151,10 +152,10 @@ namespace Reko.Analysis
         /// </summary>
         public void Find()
         {
-            var sccFinder = new SccFinder<SsaIdentifier>(new SsaGraph(ssa.Identifiers), x=> {}, ProcessScc);
-            foreach (SsaIdentifier sid in ssa.Identifiers)
+            var sccFinder = new SccFinder<SsaIdentifier>(new SsaGraph(ssa.Identifiers));
+            foreach (var scc in sccFinder.FindAll())
             {
-                sccFinder.Find(sid);
+                ProcessScc(scc);
             }
         }
 
@@ -313,10 +314,7 @@ namespace Reko.Analysis
                 return operands;
             }
 
-            public ICollection<SsaIdentifier> Nodes
-            {
-                get { throw new NotImplementedException(); }
-            }
+            public ICollection<SsaIdentifier> Nodes => ssaIds;
 
             public void AddEdge(SsaIdentifier nodeFrom, SsaIdentifier nodeTo)
             {

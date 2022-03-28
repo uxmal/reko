@@ -27,7 +27,7 @@ using System.Diagnostics.CodeAnalysis;
 
 namespace Reko.Analysis
 {
-	public class SsaIdentifierCollection : IEnumerable<SsaIdentifier>
+	public class SsaIdentifierCollection : ICollection<SsaIdentifier>
 	{
         private readonly Dictionary<Identifier, SsaIdentifier> sids =
             new Dictionary<Identifier, SsaIdentifier>();
@@ -65,14 +65,24 @@ namespace Reko.Analysis
             sids.Add(id, sid);
         }
 
-        public int Count
+        public int Count => sids.Count;
+
+        public bool IsReadOnly => false;
+
+        public void Clear()
         {
-            get { return sids.Count; }
+            sids.Clear();
+            serialNumber = 0;
         }
 
         public bool Contains(Identifier id)
         {
             return sids.ContainsKey(id);
+        }
+
+        void ICollection<SsaIdentifier>.CopyTo(SsaIdentifier[] array, int arrayIndex)
+        {
+            sids.Values.CopyTo(array, arrayIndex);
         }
 
         public IEnumerator<SsaIdentifier> GetEnumerator()
@@ -85,9 +95,9 @@ namespace Reko.Analysis
             return GetEnumerator();
         }
 
-        public void Remove(SsaIdentifier sid)
+        public bool Remove(SsaIdentifier sid)
         {
-            sids.Remove(sid.Identifier);
+            return sids.Remove(sid.Identifier);
         }
 
         public bool TryGetValue(Identifier id, [MaybeNullWhen(false)] out SsaIdentifier sid)
@@ -125,6 +135,18 @@ namespace Reko.Analysis
                 return new StackLocalStorage(offset, e.DataType);
             else 
                 return new StackArgumentStorage(offset, e.DataType);
+        }
+
+        // The following methods are part of ICollection. Either no code in the
+        // decompiler needs needs them, or they are unsafe.
+        void ICollection<SsaIdentifier>.Add(SsaIdentifier item)
+        {
+            throw new NotSupportedException("Use other overloads of Add instead of this method.");
+        }
+
+        bool ICollection<SsaIdentifier>.Contains(SsaIdentifier item)
+        {
+            throw new NotImplementedException();
         }
     }
 }
