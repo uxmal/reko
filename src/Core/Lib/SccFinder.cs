@@ -25,103 +25,140 @@ using System.Linq;
 namespace Reko.Core.Lib
 {
 	/// <summary>
-	/// Encapsulates Tarjan's algorithm for finding strongly connected
+	/// Implementation of Tarjan's algorithm for finding strongly connected
     /// components (SCC's) in a directed graph.
 	/// </summary>
 	/// </remarks>
-	public class SccFinder<TNode>
-        where TNode : notnull
+	public static class SccFinder
 	{
-        private readonly DirectedGraph<TNode> graph;
-        private int nextDfs = 0;
-		private readonly Stack<Node> stack = new Stack<Node>();
-		private readonly Dictionary<TNode,Node> map = new Dictionary<TNode,Node>();
-
-        public SccFinder(DirectedGraph<TNode> graph)
-        {
-            this.graph = graph;
-            this.nextDfs = 0;
-        }
-
-		private Node AddNode(TNode o)
-		{
-            if (!map.TryGetValue(o, out Node? node))
-			{
-				node = new Node(o);
-				map[o] = node;
-			}
-			return node;
-		}
-
-        private void Dfs(Node node, List<TNode[]> result)
-        {
-            node.dfsNumber = nextDfs++;
-            node.visited = true;
-            node.low = node.dfsNumber;
-            stack.Push(node);
-
-            foreach (Node o in graph.Successors(node.o).Select(n => AddNode(n)))
-            {
-                if (!o.visited)
-                {
-                    Dfs(o, result);
-                    node.low = Math.Min(node.low, o.low);
-                }
-                if (o.dfsNumber < node.dfsNumber && stack.Contains(o))
-                {
-                    node.low = Math.Min(o.dfsNumber, node.low);
-                }
-            }
-            if (node.low == node.dfsNumber)
-            {
-                var scc = new List<TNode>();
-                Node x;
-                do
-                {
-                    x = stack.Pop();
-                    scc.Add(x.o);
-                } while (x != node);
-                result.Add(scc.ToArray());
-            }
-        }
 
         /// <summary>
-        /// Find all the SCC's starting at the node <paramref name="start" />.
+        /// Find the Strongly Connected Components (SCCs) of a <see cref="DirectedGraph{T}"/>,
+        /// using O(1) processor stack space.
         /// </summary>
-        public List<TNode[]> Find(TNode start)
+        /// <typeparam name="TNode">The type of the nodes in the graph.</typeparam>
+        /// <param name="graph">A directed graph of nodes.</param>
+        /// <returns>A <see cref="List{TNode[]}"/>. Each item in the list is an array
+        /// consisting of the nodes forming the SCC.</returns>
+        /// <remarks>
+        /// This implementation avoids overflowing the processor stack if the
+        /// graph is very deep.
+        /// http://www.logarithmic.net/pfh-files/blog/01208083168/sort.py
+        /// https://stackoverflow.com/questions/46511682/non-recursive-version-of-tarjans-algorithm
+        /// </remarks>
+        public static List<TNode[]> FindAll<TNode>(DirectedGraph<TNode> graph)
+            where TNode : notnull
         {
-            var list = new List<TNode[]>();
-            if (!map.ContainsKey(start))
-                Dfs(AddNode(start), list);
-            return list;
-        }
-
-        
-        /// <summary>
-        /// Find all the SCC's in the entire graph.
-        /// </summary>
-        public List<TNode[]> FindAll()
-        {
-            var list = new List<TNode[]>();
-            foreach (TNode node in this.graph.Nodes)
+            var result = new List<TNode[]>();
+            var stack = new Stack<TNode>();
+            var low = new Dictionary<TNode, int>();
+            var callstack = new Stack<(TNode, IEnumerator<TNode>?, int)>();
+            var eqc = EqualityComparer<TNode>.Default;
+            foreach (var w in graph.Nodes)
             {
-                if (!map.ContainsKey(node))
-                    Dfs(AddNode(node), list);
+                callstack.Push((w, null, low.Count));
+                while (callstack.Count > 0)
+                {
+                    var (v, eSucc, num) = callstack.Pop();
+                    if (eSucc is null)
+                    {
+                        if (low.ContainsKey(v))
+                            continue;
+                        low[v] = num;
+                        stack.Push(v);
+                        eSucc = graph.Successors(v).GetEnumerator();
+                    }
+                    else
+                    {
+                        low[v] = Math.Min(low[v], low[eSucc.Current]);
+                    }
+                    if (eSucc.MoveNext())
+                    {
+                        callstack.Push((v, eSucc, num));
+                        callstack.Push((eSucc.Current, null, low.Count));
+                        continue;
+                    }
+                    // eSucc is exhausted. Check if we're at the start of a SCC. 
+                    if (num == low[v])
+                    {
+                        var comp = new List<TNode>();
+                        while (true)
+                        {
+                            var n = stack.Pop();
+                            comp.Add(n);
+                            low[n] = graph.Nodes.Count;
+                            if (eqc.Equals(n, v)) break;
+                        }
+                        result.Add(comp.ToArray());
+                    }
+                }
             }
-            return list;
+            return result;
         }
 
-		private class Node
-		{
-			public int dfsNumber;
-			public bool visited;
-			public int low;
-			public TNode o;
+        public static List<TNode[]> RobustTopologicalSort<TNode>(DirectedGraph<TNode> graph)
+            where TNode : notnull
+        {
+            // First identify strongly connected components,
+            // then perform a topological sort on these components.
 
-			public Node(TNode o)
-			{
-				this.o = o;
-			}
-		}
+            var components = FindAll(graph);
+
+            var node_component = new Dictionary<TNode, TNode[]>();
+            foreach (var component in components)
+            {
+                foreach (var node in component)
+                {
+                    node_component[node] = component;
+                }
+            }
+
+            var component_graph = new DiGraph<TNode[]>();
+            foreach (var component in components)
+            {
+                component_graph.Nodes.Add(component);
+            }
+
+            foreach (var node in graph.Nodes)
+            {
+                var node_c = node_component[node];
+                foreach (var successor in graph.Successors(node))
+                {
+                    var successor_c = node_component[successor];
+                    if (node_c != successor_c)
+                    {
+                        component_graph.AddEdge(node_c, successor_c);
+                    }
+                }
+            }
+            return TopologicalSort(component_graph);
+        }
+
+        public static List<TNode> TopologicalSort<TNode>(DirectedGraph<TNode> graph)
+            where TNode : notnull
+        {
+            var count = graph.Nodes.ToDictionary(n => n, n => 0);
+            foreach (var node in graph.Nodes)
+            {
+                foreach (var successor in graph.Successors(node))
+                    ++count[successor];
+            }
+
+            var ready = (from node in graph.Nodes where count[node] == 0 select node).ToList();
+            var result = new List<TNode>();
+            while (ready.Count > 0)
+            {
+                var node = ready[^1];
+                ready.RemoveAt(ready.Count - 1);
+                result.Add(node);
+
+                foreach (var successor in graph.Successors(node))
+                {
+                    if (--count[successor] == 0)
+                        ready.Add(successor);
+                }
+            }
+            return result;
+        }
     }
 }

@@ -303,8 +303,8 @@ namespace Reko.Analysis
                     .ToArray()!;
             }
 
-            SccFinder<PhiAssignment> sccFinder = new SccFinder<PhiAssignment>(new PhiGraph(ssa, phis));
-            foreach (var scc in sccFinder.FindAll())
+            var sccs = SccFinder.FindAll(new PhiGraph(ssa, phis));
+            foreach (var scc in sccs)
             { 
                 if (scc.Length == 1)
                     continue;
@@ -611,7 +611,7 @@ namespace Reko.Analysis
                     return;
                 }
 
-                foreach (var def in calleeFlow.Trashed.Where(dd => !(dd is FpuStackStorage)))
+                foreach (var def in calleeFlow.Trashed.Where(dd => dd is not FpuStackStorage))
                 {
                     var d = ssa.Procedure.Frame.EnsureIdentifier(def);
 

@@ -139,8 +139,8 @@ namespace Reko.UnitTests.Decompiler.Analysis
         private List<Procedure> ProceduresInSccOrder(Program program)
         {
             var list = new List<Procedure>();
-            var sscf = new SccFinder<Procedure>(new ProcedureGraph(program));
-            foreach (var scc in sscf.FindAll())
+            var sscs = SccFinder.FindAll(new ProcedureGraph(program));
+            foreach (var scc in sscs)
             {
                 list.AddRange(scc);
             }

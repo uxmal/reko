@@ -605,8 +605,8 @@ namespace Reko
             var globalsPath = Path.Combine(program.SourceDirectory, filename);
             using (TextWriter output = host.CreateTextWriter(globalsPath))
             {
-                var sscf = new SccFinder<Procedure>(new ProcedureGraph(program));
-                foreach (var scc in sscf.FindAll())
+                var sccs = SccFinder.FindAll(new ProcedureGraph(program));
+                foreach (var scc in sccs)
                 {
                     output.WriteLine("== {0} procedures ===", scc.Length);
                     var procs = scc.OrderBy(p => p.EntryAddress).ToList();
@@ -618,7 +618,6 @@ namespace Reko
                         output.WriteLine();
                     }
                 }
-                sscf.FindAll();
             }
         }
     }

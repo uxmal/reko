@@ -71,8 +71,8 @@ namespace Reko.UnitTests.Decompiler.Analysis
         {
             this.program = builder.BuildProgram();
             this.dataFlow = new ProgramDataFlow(program);
-            var sscf = new SccFinder<Procedure>(new ProcedureGraph(program));
-            foreach (var scc in sscf.FindAll())
+            var sccs = SccFinder.FindAll(new ProcedureGraph(program));
+            foreach (var scc in sccs)
             {
                 ProcessScc(scc);
             }

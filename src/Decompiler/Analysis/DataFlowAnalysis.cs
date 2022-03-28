@@ -174,11 +174,10 @@ namespace Reko.Analysis
         public List<SsaTransform> RewriteProceduresToSsa()
         {
             this.ssts = new List<SsaTransform>();
-            var sscf = new SccFinder<Procedure>(new ProcedureGraph(program));
-            var sscs = sscf.FindAll();
-            foreach (var ssc in sscs)
+            var sccs = SccFinder.FindAll(new ProcedureGraph(program));
+            foreach (var scc in sccs)
             {
-                UntangleProcedureScc(ssc);
+                UntangleProcedureScc(scc);
             }
             return ssts;
         }

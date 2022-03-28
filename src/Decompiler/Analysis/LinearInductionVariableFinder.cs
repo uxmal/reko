@@ -152,8 +152,8 @@ namespace Reko.Analysis
         /// </summary>
         public void Find()
         {
-            var sccFinder = new SccFinder<SsaIdentifier>(new SsaGraph(ssa.Identifiers));
-            foreach (var scc in sccFinder.FindAll())
+            var sccs = SccFinder.FindAll(new SsaGraph(ssa.Identifiers));
+            foreach (var scc in sccs)
             {
                 ProcessScc(scc);
             }
