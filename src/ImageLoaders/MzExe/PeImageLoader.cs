@@ -39,42 +39,9 @@ namespace Reko.ImageLoaders.MzExe
     /// Loads Windows NT PE images.
     /// http://geos.icc.ru:8080/scripts/wwwbinv.dll/ShowR?coff.rfi
     /// </summary>
-	public class PeImageLoader : ProgramImageLoader
+	public class PeImageLoader : AbstractPeLoader
 	{
         internal static readonly TraceSwitch trace = new TraceSwitch(nameof(PeImageLoader), "Traces the progress of loading PE binary images") { Level = TraceLevel.Warning };
-
-        private const ushort MACHINE_x86_64 = (ushort) 0x8664u;
-		private const ushort MACHINE_m68k = (ushort)0x0268;
-        private const ushort MACHINE_UNKNOWN = 0x0;         // The contents of this field are assumed to be applicable to any machine type
-        private const ushort MACHINE_AM33 = 0x1d3;          // Matsushita AM33
-        private const ushort MACHINE_AMD64 = (ushort) 0x8664;    // x64
-        private const ushort MACHINE_ARM = 0x01c0;          // ARM little endian -- "Modern" Windows
-        private const ushort MACHINE_ARM64 = 0xAA64;        // ARM64 little endian
-        private const ushort MACHINE_ARMNT = 0x01C4;        // ARM Thumb-2 little endian -- WinCE
-        private const ushort MACHINE_EBC =  0x0ebc;         // EFI byte code
-        private const ushort MACHINE_I386 = 0x014c;         // Intel 386 or later processors and compatible processors
-        private const ushort MACHINE_IA64 = 0x0200;         // Intel Itanium processor family
-        private const ushort MACHINE_M32R = 0x9041;         // Mitsubishi M32R little endian
-        private const ushort MACHINE_MIPS16 = 0x0266;       // MIPS16
-        private const ushort MACHINE_MIPSFPU = 0x0366;      // MIPS with FPU
-        private const ushort MACHINE_MIPSFPU16 = 0x0466;    // MIPS16 with FPU
-        private const ushort MACHINE_POWERPC = 0x01f0;      // Power PC little endian
-        private const ushort MACHINE_POWERPCFP = 0x01f1;    // Power PC with floating point support
-        private const ushort MACHINE_POWERPC_BE = (ushort) 0x0601;       // Big-endian PC: intended for PowerMac (!)
-        private const ushort MACHINE_XBOX360 = 0x01F2;         // Xbox 360
-        private const ushort MACHINE_R4000 = 0x0166;        // MIPS little endian
-        private const ushort MACHINE_RISCV32 = 0x5032;      // RISC-V 32-bit address space
-        private const ushort MACHINE_RISCV64 = 0x5064;      // RISC-V 64-bit address space
-        private const ushort MACHINE_RISCV128 = 0x5128;     // RISC-V 128-bit address space
-        private const ushort MACHINE_SH3 = 0x01a2;          // Hitachi SH3
-        private const ushort MACHINE_SH3DSP = 0x01a3;       // Hitachi SH3 DSP
-        private const ushort MACHINE_SH4 = 0x01a6;          // Hitachi SH4
-        private const ushort MACHINE_SH5 = 0x01a8;          // Hitachi SH5
-        private const ushort MACHINE_THUMB = 0x01c2;        // Thumb
-        private const ushort MACHINE_WCEMIPSV2 = 0x0169;    // MIPS little-endian WCE v2
-
-
-        private const ushort MACHINE_ALPHA = (ushort)0x0184;
 
         private const short ImageFileRelocationsStripped = 0x0001;
         private const short ImageFileExecutable = 0x0002;
@@ -106,7 +73,6 @@ namespace Reko.ImageLoaders.MzExe
         private uint sizeBaseRelocationTable;
 
         private uint rvaResources;
-        private Dictionary<Address, ImportReference> importReferences;
         private Relocator relocator;
 
 #nullable disable
@@ -122,7 +88,6 @@ namespace Reko.ImageLoaders.MzExe
 				throw new BadImageFormatException("Not a valid PE header.");
 			}
             importThunks = new Dictionary<uint, IntrinsicProcedure>();
-            importReferences = new Dictionary<Address, ImportReference>();
             ImageSymbols = new SortedList<Address, ImageSymbol>();
 			short expectedMagic = ReadCoffHeader(rdr);
 			ReadOptionalHeader(rdr, expectedMagic);
@@ -132,7 +97,10 @@ namespace Reko.ImageLoaders.MzExe
         public SortedList<Address, ImageSymbol> ImageSymbols { get; private set; }
         public SegmentMap SegmentMap { get; private set; }
 
-		private void AddExportedEntryPoints(Address addrLoad, SegmentMap imageMap, IDictionary<Address, ImageSymbol> entryPoints)
+        protected override SizeSpecificLoader Create32BitLoader(AbstractPeLoader outer) => new Pe32Loader(this);
+        protected override SizeSpecificLoader Create64BitLoader(AbstractPeLoader outer) => new Pe64Loader(this);
+
+        private void AddExportedEntryPoints(Address addrLoad, SegmentMap imageMap, IDictionary<Address, ImageSymbol> entryPoints)
 		{
 			EndianImageReader rdr = imgLoaded.CreateLeReader(rvaExportTable);
 			uint characteristics = rdr.ReadLeUInt32();
@@ -182,92 +150,6 @@ namespace Reko.ImageLoaders.MzExe
                 name,
                 new FunctionType(),
                 state: arch.CreateProcessorState());
-        }
-
-		public IProcessorArchitecture CreateArchitecture(ushort peMachineType)
-		{
-            string arch;
-            var cfgSvc = Services.RequireService<IConfigurationService>();
-			switch (peMachineType)
-			{
-            case MACHINE_ALPHA: arch = "alpha"; break;
-            case MACHINE_ARM: arch = "arm"; break;
-            case MACHINE_ARM64: arch = "arm-64"; break;
-            case MACHINE_ARMNT: arch = "arm-thumb"; break;
-            case MACHINE_I386: arch = "x86-protected-32"; break;
-            case MACHINE_x86_64: arch = "x86-protected-64"; break;
-			case MACHINE_m68k: arch = "m68k"; break;
-            case MACHINE_R4000: arch = "mips-le-32"; break;
-            case MACHINE_POWERPC: arch = "ppc-le-32"; break;
-            case MACHINE_POWERPC_BE: arch = "ppc-be-32"; break;
-            case MACHINE_XBOX360: arch = "ppc-be-64"; break;
-			default: throw new NotSupportedException($"Unsupported machine type 0x{peMachineType:X4} in PE header.");
-			}
-            return cfgSvc.GetArchitecture(arch)!;
-		}
-
-        public IPlatform CreatePlatform(ushort peMachineType, IServiceProvider sp, IProcessorArchitecture arch)
-        {
-            string env;
-            switch (peMachineType)
-            {
-            case MACHINE_ALPHA: env = "winAlpha"; break;
-            case MACHINE_ARM: env = "winArm"; break;
-            case MACHINE_ARM64: env = "winArm64"; break;
-            case MACHINE_ARMNT: env= "winArm"; break;
-            case MACHINE_I386: env = "win32"; break;
-            case MACHINE_x86_64: env = "win64"; break;
-	        case MACHINE_m68k: env = "winM68k"; break;
-            case MACHINE_R4000: env = "winMips"; break;
-            case MACHINE_POWERPC: env = "winPpc32"; break;
-            case MACHINE_POWERPC_BE: env = "winPpc32"; break;   //$REVIEW: this probably should be macOS-ppc
-            case MACHINE_XBOX360: env = "xbox360"; break;
-            default: throw new ArgumentException(string.Format("Unsupported machine type 0x:{0:X4} in PE hader.", peMachineType));
-            }
-            return Services.RequireService<IConfigurationService>()
-                .GetEnvironment(env)
-                .Load(Services, this.arch);
-        }
-
-        private SizeSpecificLoader CreateInnerLoader(ushort peMachineType)
-        {
-            switch (peMachineType)
-            {
-            case MACHINE_ALPHA:
-            case MACHINE_ARM:
-            case MACHINE_ARMNT:
-            case MACHINE_I386:
-            case MACHINE_m68k:
-            case MACHINE_R4000:
-            case MACHINE_POWERPC:
-            case MACHINE_POWERPC_BE:
-            case MACHINE_XBOX360:
-                return new Pe32Loader(this);
-            case MACHINE_x86_64:
-            case MACHINE_ARM64:
-                return new Pe64Loader(this);
-            default: throw new ArgumentException(string.Format("Unsupported machine type 0x:{0:X4} in PE header.", peMachineType));
-            }
-        }
-
-        private Relocator CreateRelocator(ushort peMachineType, Program program)
-        {
-            switch (peMachineType)
-            {
-            case MACHINE_ALPHA: return new AlphaRelocator(Services, program);
-            case MACHINE_ARM: return new ArmRelocator(program);
-            case MACHINE_ARM64: return new Arm64Relocator(Services, program);
-            case MACHINE_ARMNT: return new ArmRelocator(program);
-            case MACHINE_I386: return new i386Relocator(Services, program);
-            case MACHINE_R4000: return new MipsRelocator(Services, program);
-            case MACHINE_x86_64: return new x86_64Relocator(Services, program);
-			case MACHINE_m68k: return new M68kRelocator(Services, program);
-            case MACHINE_POWERPC: return new PowerPcRelocator(Services, program);
-            case MACHINE_POWERPC_BE: return new PowerPcRelocator(Services, program);    //$REVIEW do we need a big-endian version of this?
-            case MACHINE_XBOX360: return new PowerPcRelocator(Services, program);       //$REVIEW do we need a big-endian version of this?
-
-            default: throw new NotSupportedException($"Unsupported machine type 0x:{peMachineType:X4} in PE header.");
-            }
         }
 
         private short GetExpectedMagic(ushort peMachineType)
@@ -619,15 +501,7 @@ namespace Reko.ImageLoaders.MzExe
         {
             foreach (Section s in sectionList)
             {
-                AccessMode acc = AccessMode.Read;
-                if ((s.Flags & SectionFlagsWriteable) != 0)
-                {
-                    acc |= AccessMode.Write;
-                }
-                if ((s.Flags & SectionFlagsExecutable) != 0)
-                {
-                    acc |= AccessMode.Execute;
-                }
+                AccessMode acc = AccessFromCharacteristics(s.Flags);
                 var seg = segmentMap.AddSegment(new ImageSegment(
                     s.Name!,
                     addrLoad + s.VirtualAddress,
@@ -640,6 +514,7 @@ namespace Reko.ImageLoaders.MzExe
                 seg.IsDiscardable = s.IsDiscardable;
             }
         }
+
 
 
 #if I386
@@ -780,22 +655,6 @@ void applyRelX86(uint8_t* Off, uint16_t Type, Defined* Sym,
 			}
 		}
 
-		public string? ReadUtf8String(uint rva, int maxLength)
-		{
-            if (rva == 0)
-                return null;
-			EndianImageReader rdr = imgLoaded.CreateLeReader(rva);
-			var bytes = new List<byte>();
-			byte b;
-			while ((b = rdr.ReadByte()) != 0)
-			{
-				bytes.Add(b);
-				if (bytes.Count == maxLength)
-					break;
-			}
-			return Encoding.UTF8.GetString(bytes.ToArray());
-		}
-
         /// <summary>
         /// Loads the import directory entry for one particular DLL.
         /// </summary>
@@ -814,7 +673,7 @@ void applyRelX86(uint8_t* Off, uint16_t Type, Defined* Sym,
             var rvaILT = rdr.ReadLeUInt32();            // Import lookup table
             rdr.ReadLeUInt32();		                    // Ignore datestamp...
             rdr.ReadLeUInt32();		                    // ...and forwarder chain
-            var dllName = ReadUtf8String(rdr.ReadLeUInt32(), 0);		// DLL name
+            var dllName = ReadUtf8String(imgLoaded, rdr.ReadLeUInt32(), 0);		// DLL name
             var rvaIAT = rdr.ReadLeUInt32();		    // Import address table 
             if (rvaILT == 0 && dllName == null)
                 return false;
@@ -826,7 +685,7 @@ void applyRelX86(uint8_t* Off, uint16_t Type, Defined* Sym,
                 var addrIat = rdrIat.Address;
                 var addrIlt = rdrIlt.Address;
 
-                var (impRef, bitSize) = innerLoader.ResolveImportDescriptorEntry(dllName!, rdrIlt, rdrIat);
+                var (impRef, bitSize) = innerLoader.ResolveImportDescriptorEntry(imgLoaded, dllName!, rdrIlt, rdrIat);
                 if (impRef == null)
                     break;
                 ImageSymbols[addrIat] = ImageSymbol.DataObject(
@@ -844,105 +703,6 @@ void applyRelX86(uint8_t* Off, uint16_t Type, Defined* Sym,
             return true;
         }
 
-        private abstract class SizeSpecificLoader
-        {
-            protected PeImageLoader outer;
-
-            public SizeSpecificLoader(PeImageLoader outer)
-            {
-                this.outer = outer;
-            }
-
-            public abstract (ImportReference?, int) ResolveImportDescriptorEntry(string dllName, EndianImageReader rdrIlt, EndianImageReader rdrIat);
-
-            public abstract bool ImportedFunctionNameSpecified(ulong rvaEntry);
-
-            public ImportReference CreateImportReference(string dllName, ulong rvaEntry, Address addrThunk)
-            {
-                if (!ImportedFunctionNameSpecified(rvaEntry))
-                {
-                    return new OrdinalImportReference(
-                        addrThunk, dllName, (int)rvaEntry & 0xFFFF, SymbolType.ExternalProcedure);
-                }
-                else
-                {
-                    string? fnName = outer.ReadUtf8String((uint)rvaEntry + 2, 0);
-                    return new NamedImportReference(
-                        addrThunk, dllName, fnName!, SymbolType.ExternalProcedure);
-                }
-            }
-
-            public abstract Address ReadPreferredImageBase(EndianImageReader rdr);
-            public abstract long ReadWord(EndianImageReader rdr);
-        }
-
-        private class Pe32Loader : SizeSpecificLoader
-        {
-            public Pe32Loader(PeImageLoader outer) : base(outer) {}
-
-            public override bool ImportedFunctionNameSpecified(ulong rvaEntry)
-            {
-                return (rvaEntry & 0x80000000) == 0;
-            }
-
-            public override Address ReadPreferredImageBase(EndianImageReader rdr)
-            {
-                uint rvaBaseOfData = rdr.ReadLeUInt32();        // Only exists in PE32, not PE32+
-                return Address.Ptr32(rdr.ReadLeUInt32());
-            }
-
-            public override long ReadWord(EndianImageReader rdr)
-            {
-                return rdr.ReadInt32();
-            }
-
-            public override (ImportReference?, int) ResolveImportDescriptorEntry(string dllName, EndianImageReader rdrIlt, EndianImageReader rdrIat)
-            {
-                Address addrThunk = rdrIat.Address;
-                uint iatEntry = rdrIat.ReadLeUInt32();
-                uint iltEntry = rdrIlt.ReadLeUInt32();
-                if (iltEntry == 0)
-                    return (null, 0);
-
-                var impRef = CreateImportReference(dllName, iltEntry, addrThunk);
-                outer.importReferences.Add(addrThunk, impRef);
-
-                return (impRef, 32);
-            }
-        }
-
-        private class Pe64Loader : SizeSpecificLoader
-        {
-            public Pe64Loader(PeImageLoader outer) : base(outer) {}
-
-            public override bool ImportedFunctionNameSpecified(ulong rvaEntry)
-            {
-                return (rvaEntry & 0x8000000000000000u) == 0;
-            }
-
-            public override Address ReadPreferredImageBase(EndianImageReader rdr)
-            {
-                return Address64.Ptr64(rdr.ReadLeUInt64());
-            }
-
-            public override long ReadWord(EndianImageReader rdr)
-            {
-                return rdr.ReadInt64();
-            }
-
-            public override (ImportReference?, int) ResolveImportDescriptorEntry(string dllName, EndianImageReader rdrIlt, EndianImageReader rdrIat)
-            {
-                Address addrThunk = rdrIat.Address;
-                ulong iatEntry = rdrIat.ReadLeUInt64();
-                ulong iltEntry = rdrIlt.ReadLeUInt64();
-                if (iltEntry == 0)
-                    return (null, 0);
-                var impRef = CreateImportReference(dllName, iltEntry, addrThunk);
-                outer.importReferences.Add(addrThunk, impRef);
-                return (impRef, 64);
-            }
-        }
-
         private bool ReadDeferredLoadDescriptors(EndianImageReader rdr, Address addrLoad)
         {
             var symbols = new List<ImageSymbol>();
@@ -951,7 +711,7 @@ void applyRelX86(uint8_t* Off, uint16_t Type, Defined* Sym,
             var rvaDllName = rdr.ReadLeUInt32();
             if (rvaDllName == 0)
                 return false;
-            var dllName = ReadUtf8String(rvaDllName - offset, 0);    // DLL name.
+            var dllName = ReadUtf8String(imgLoaded, rvaDllName - offset, 0);    // DLL name.
             if (dllName == null)
                 return false;
             var rdrModule = rdr.ReadLeInt32();
@@ -967,7 +727,7 @@ void applyRelX86(uint8_t* Off, uint16_t Type, Defined* Sym,
                 rvaName -= offset;
                 rvaThunk -= offset;
                 var impRef =
-                    innerLoader.CreateImportReference(dllName, rvaName, addrThunk);
+                    innerLoader.CreateImportReference(imgLoaded, dllName, rvaName, addrThunk);
 
                 importReferences[addrThunk] = impRef;
             }
@@ -1017,36 +777,6 @@ void applyRelX86(uint8_t* Off, uint16_t Type, Defined* Sym,
 			sec.Flags = rdr.ReadLeUInt32();
 			return sec;
 		}
-
-		private static string? ReadSectionName(EndianImageReader rdr)
-		{
-			byte [] bytes = new Byte[8];
-			for (int b = 0; b < bytes.Length; ++b)
-			{
-				bytes[b] = rdr.ReadByte();
-			}
-
-			Encoding asc = Encoding.ASCII;
-			char [] chars = asc.GetChars(bytes);
-			int i;
-			for (i = chars.Length - 1; i >= 0; --i)
-			{
-				if (chars[i] != 0)
-				{
-					++i;
-					break;
-				}
-			}
-			if(i < 0) {
-				return null;
-			}
-			return new String(chars, 0, i);
-		}
-
-		private const uint SectionFlagsInitialized = 0x00000040;
-		private const uint SectionFlagsDiscardable = 0x02000000;
-		private const uint SectionFlagsWriteable =   0x80000000;
-		private const uint SectionFlagsExecutable =  0x20000020;
 
         public class Section
 		{
