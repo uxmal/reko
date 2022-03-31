@@ -11,27 +11,33 @@ namespace Reko.ScannerV2
 {
     public class Cfg
     {
-        public ConcurrentDictionary<Address, Block> Blocks;
-        public ConcurrentDictionary<Address, List<Edge>> Edges;
-        public ConcurrentDictionary<Address, Proc> Procedures;
-        public ConcurrentDictionary<Address, ExternalProcedure> Stubs;
-        public ConcurrentDictionary<Address, ExternalProcedure> NoDecompiles;
+        public Cfg()
+        {
+            this.Blocks = new();
+            this.Edges = new();
+            this.Procedures = new();
+            this.Stubs = new();
+            this.NoDecompiles = new();
+        }
+
+        public ConcurrentDictionary<Address, Block> Blocks { get; }
+        public ConcurrentDictionary<Address, List<Edge>> Edges { get; }
+        public ConcurrentDictionary<Address, Proc> Procedures { get; }
+        public ConcurrentDictionary<Address, ExternalProcedure> Stubs { get; }
+        public ConcurrentDictionary<Address, ExternalProcedure> NoDecompiles { get; }
     }
 
-    public class Proc
-    {
-        public Address Address { get; set; }
-        public ProvenanceType Provenance { get; set; }
-        public IProcessorArchitecture Architecture { get; internal set; }
-    }
+    public record Proc(
+        Address Address,
+        ProvenanceType Provenance,
+        IProcessorArchitecture Architecture,
+        string Name);
 
-    public class Block
-    {
-        public IProcessorArchitecture Architecture;
-        public string Id;
-        public Address Address;
-        public List<(Address, Instruction)> Instructions;
-    }
+    public record Block(
+        IProcessorArchitecture Architecture,
+        string Id,
+        Address Address,
+        List<(Address, Instruction)> Instructions);
 
     public enum EdgeType
     {
@@ -42,10 +48,8 @@ namespace Reko.ScannerV2
         Return,
     }
 
-    public class Edge
-    {
-        public Address From;
-        public Address To;
-        public EdgeType Type;
-    }
+    public record Edge(
+        Address From,
+        Address To,
+        EdgeType Type);
 }

@@ -1,20 +1,29 @@
 ﻿using Reko.Core;
 using Reko.Core.Code;
+using Reko.Core.Diagnostics;
 using Reko.Core.Rtl;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Reko.ScannerV2
 {
     public class ProcedureWorker : Worker
     {
-        private RecursiveScanner scanner;
-        private Proc proc;
-        private WorkList<BlockItem> workList;
-        private IStorageBinder binder;
+        private static TraceSwitch trace = new TraceSwitch(nameof(ProcedureWorker), "ProcedureWorker tracing")
+        {
+            Level = TraceLevel.Verbose,
+        };
+
+        private readonly RecursiveScanner scanner;
+        private readonly Proc proc;
+        private readonly WorkList<BlockItem> workList;
+        private readonly IStorageBinder binder;
+        private Dictionary<Address, (Address, ProcedureWorker)> callsWaitingForReturn;
 
         public ProcedureWorker(RecursiveScanner scanner, Proc proc, ProcessorState state)
         {
@@ -22,33 +31,47 @@ namespace Reko.ScannerV2
             this.proc = proc;
             this.workList = new WorkList<BlockItem>();
             this.binder = new StorageBinder();
+            this.callsWaitingForReturn = new Dictionary<Address, (Address, ProcedureWorker)>();
             var trace = scanner.MakeTrace(proc.Address, state, binder).GetEnumerator();
             this.workList.Add(new BlockItem(proc.Address, trace, state));
         }
 
+        public Address ProcedureAddress => proc.Address;
+
         public override void Run()
         {
-            for (; ; )
+            trace_Inform("PW: {0} Processing", proc.Name);
+            for (;;)
             {
                 while (workList.TryGetWorkItem(out var work))
                 {
-                    var (addr, trace, state) = work;
-                    if (!scanner.TryRegisterBlockStart(addr, proc.Address))
-                        //$TODO someone else scanned our block;
+                    if (!scanner.TryRegisterBlockStart(work.Address, proc.Address))
                         continue;
-                    var (block, stateNew) = ParseBlock(work);
-                    HandleBlockEnd(block, stateNew);
+                    trace.Verbose("    {0}: Parsing block at {1}", proc.Name, work.Address);
+                    var (block,state) = ParseBlock(work);
+                    if (block is not null)
+                    {
+                        trace_Verbose("    {0}: Parsed block at {1}", proc.Name, work.Address);
+                        TerminateBlock(block, state);
+                    }
+                    else
+                    {
+                        trace_Verbose("    {0}: Bad block at {1}", proc.Name, work.Address);
+                        HandleBadBlock(work.Address);
+                    }
                 }
                 //$Check for indirects
                 //$Check for calls.
+                trace_Inform("    {0}: Finished", proc.Name);
                 return;
             }
         }
 
-        private (Block, ProcessorState) ParseBlock(BlockItem work)
+        private (Block?, ProcessorState) ParseBlock(BlockItem work)
         {
-            var instrs = new List<RtlInstruction>();
+            var instrs = new List<(Address, Instruction)>();
             var trace = work.Trace;
+            var state = work.State;
             while (work.Trace.MoveNext())
             {
                 var cluster = work.Trace.Current;
@@ -58,17 +81,24 @@ namespace Reko.ScannerV2
                     {
                     case RtlAssignment ass:
                         //$TODO: emulate state;
-                        break;
+                        throw new NotImplementedException();
                     case RtlBranch branch:
-                        break;
+                        throw new NotImplementedException();
+                    case RtlGoto g:
+                        throw new NotImplementedException();
+                    case RtlReturn ret:
+                        instrs.Add((cluster.Address, new ReturnInstruction()));
+                        return (
+                            scanner.RegisterBlock(work.State.Architecture, work.Address, instrs),
+                            state);
                     }
                 }
             }
             // Fell off the end.
-            return (null, null);
+            return (null, work.State);
         }
 
-        private void HandleBlockEnd(Block block, ProcessorState state)
+        private Block TerminateBlock(Block block, ProcessorState state)
         {
             var (lastAddr, lastInstr) = block.Instructions[^1];
             if (scanner.TryRegisterBlockEnd(block.Address, lastAddr))
@@ -83,9 +113,6 @@ namespace Reko.ScannerV2
                         var trace = scanner.MakeTrace(edge.To, state, binder).GetEnumerator();
                         workList.Add(new BlockItem(edge.To, trace, state));
                         break;
-                    case EdgeType.Return:
-                        scanner.ResumeWorkers(proc.Address);
-                        break;
                     default:
                         throw new NotImplementedException();
                     }
@@ -95,9 +122,103 @@ namespace Reko.ScannerV2
             {
                 scanner.Splitblock(block, lastAddr);
             }
+            return block;
+        }
+
+        private void HandleBadBlock(Address addrBadBlock)
+        {
+            throw new NotImplementedException();
+        }
+
+        private void ProcessReturn()
+        {
+            var empty = new Dictionary<Address, (Address, ProcedureWorker)>();
+            Interlocked.Exchange(ref callsWaitingForReturn, empty);
+            foreach (var (addrFallThrough, (addrCaller, caller)) in callsWaitingForReturn)
+            {
+                scanner.ResumeWorker(caller, addrCaller, addrFallThrough);
+            }
         }
 
         private List<Edge> ComputeEdges(Instruction instr)
+        {
+            switch (instr)
+            {
+            case ReturnInstruction:
+                return new List<Edge> { };
+            }
+            throw new NotImplementedException();
+        }
+
+        public bool TryEnqueueCaller(ProcedureWorker procedureWorker, Address addrCall, Address addrFallthrough)
+        {
+            lock (callsWaitingForReturn)
+            {
+                callsWaitingForReturn.Add(addrFallthrough, (addrCall, procedureWorker));
+            }
+            return true;
+        }
+
+        [Conditional("DEBUG")]
+        private void trace_Inform(string format, params object[] args)
+        {
+            if (trace.TraceInfo)
+                Debug.Print(format, args);
+        }
+
+        [Conditional("DEBUG")]
+        private void trace_Verbose(string format, params object[] args)
+        {
+            if (trace.TraceVerbose)
+                Debug.Print(format, args);
+        }
+
+        public bool VisitAssignment(RtlAssignment ass)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool VisitBranch(RtlBranch branch)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool VisitCall(RtlCall call)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool VisitGoto(RtlGoto go)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool VisitIf(RtlIf rtlIf)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool VisitInvalid(RtlInvalid invalid)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool VisitMicroGoto(RtlMicroGoto uGoto)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool VisitMicroLabel(RtlMicroLabel uLabel)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool VisitNop(RtlNop rtlNop)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool VisitSideEffect(RtlSideEffect side)
         {
             throw new NotImplementedException();
         }

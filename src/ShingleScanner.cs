@@ -19,12 +19,12 @@ namespace Reko.ScannerV2
 		public Cfg Scan(object gaps)
         {
 			var sections = MakeScanSections(gaps);
-			return ExecuteInParallel(sections);
+			return ExecuteInParallel(sections!);
         }
 
-        private object MakeScanSections(object gaps)
+        private object? MakeScanSections(object gaps)
         {
-            throw new NotImplementedException();
+			return null;
         }
 
         private Cfg ExecuteInParallel(object o)

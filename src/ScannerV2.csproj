@@ -5,6 +5,7 @@
     <TargetFramework>net5.0</TargetFramework>
     <RootNamespace>Reko.ScannerV2</RootNamespace>
 	<AssemblyName>ScannerV2</AssemblyName>
+	  <Nullable>enable</Nullable>
   </PropertyGroup>
 
   <ItemGroup>
