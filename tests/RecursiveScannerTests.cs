@@ -165,7 +165,7 @@ namespace Reko.ScannerV2.UnitTests
 @"
 define fn00001000
 l00001000:
-    return
+    return (0,0)
     succ:
 ";
             #endregion
@@ -190,7 +190,48 @@ define fn00001000
 l00001000:
     r2 = 0x2A<32>
     r1 = r2
-    return
+    return (0,0)
+    succ:
+";
+            #endregion
+            RunTest(sExpected);
+        }
+
+        [Test]
+        public void RecScan_Branch()
+        {
+            Given_EntryPoint(0x001000);
+            Given_Trace(0x1000, m =>
+            {
+                m.Assign(r2, m.ISub(r2, 1));
+                m.Branch(m.Ne0(r2), Address.Ptr32(0x1008));
+            });
+            Given_Trace(0x1004, m =>
+            {
+                m.Assign(r1, 0);
+                m.Return(0, 0);
+            });
+            Given_Trace(0x1008, m =>
+            { 
+                m.Assign(r1, 1);
+                m.Return(0, 0);
+            });
+
+            var sExpected =
+            #region Expected
+@"
+define fn00001000
+l00001000:
+    r2 = r2 - 1<32>
+    if (r2 != 0<32>) branch 00001008
+    succ: l00001000 l00001000
+l00001004:
+    r1 = 0<32>
+    return (0,0)
+    succ:
+l00001008:
+    r1 = 1<32>
+    return (0,0)
     succ:
 ";
             #endregion

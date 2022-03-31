@@ -120,10 +120,14 @@ namespace Reko.ScannerV2
             return this.blockStarts.TryAdd(addrBlock, addrProc);
         }
 
-        public Block RegisterBlock(IProcessorArchitecture arch, Address addrBlock, List<(Address, Instruction)> instrs)
+        public Block RegisterBlock(
+            IProcessorArchitecture arch,
+            Address addrBlock,
+            long length,
+            List<(Address, RtlInstruction)> instrs)
         {
             var id = program.NamingPolicy.BlockName(addrBlock);
-            var block = new Block(arch, id, addrBlock, instrs);
+            var block = new Block(arch, id, addrBlock, (int)length, instrs);
             var success = cfg.Blocks.TryAdd(addrBlock, block);
             Debug.Assert(success);
             return block;
@@ -142,6 +146,16 @@ namespace Reko.ScannerV2
                 suspendedWorkers.TryAdd(worker.ProcedureAddress, worker);
             }
             return true;
+        }
+
+        public void RegisterEdge(Edge edge)
+        {
+            if (!cfg.Edges.TryGetValue(edge.From, out var edges))
+            {
+                edges = new List<Edge>();
+                cfg.Edges.TryAdd(edge.From, edges);
+            }
+            edges.Add(edge);
         }
 
         public void ResumeWorker(ProcedureWorker worker, Address addrCaller, Address addrFallthrough)

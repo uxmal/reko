@@ -1,11 +1,7 @@
 ﻿using Reko.Core;
-using Reko.Core.Code;
-using System;
+using Reko.Core.Rtl;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Reko.ScannerV2
 {
@@ -37,7 +33,8 @@ namespace Reko.ScannerV2
         IProcessorArchitecture Architecture,
         string Id,
         Address Address,
-        List<(Address, Instruction)> Instructions);
+        int Length,
+        List<(Address, RtlInstruction)> Instructions);
 
     public enum EdgeType
     {

@@ -48,7 +48,7 @@ namespace Reko.ScannerV2
                 {
                     if (!scanner.TryRegisterBlockStart(work.Address, proc.Address))
                         continue;
-                    trace.Verbose("    {0}: Parsing block at {1}", proc.Name, work.Address);
+                    trace_Verbose("    {0}: Parsing block at {1}", proc.Name, work.Address);
                     var (block,state) = ParseBlock(work);
                     if (block is not null)
                     {
@@ -70,7 +70,7 @@ namespace Reko.ScannerV2
 
         private (Block?, ProcessorState) ParseBlock(BlockItem work)
         {
-            var instrs = new List<(Address, Instruction)>();
+            var instrs = new List<(Address, RtlInstruction)>();
             var trace = work.Trace;
             var state = work.State;
             while (work.Trace.MoveNext())
@@ -78,23 +78,30 @@ namespace Reko.ScannerV2
                 var cluster = work.Trace.Current;
                 foreach (var rtl in cluster.Instructions)
                 {
+                    trace_Verbose("    {0}: {1}", cluster.Address, rtl);
+                    instrs.Add((cluster.Address, rtl));
                     switch (rtl)
                     {
                     case RtlAssignment ass:
                         //$TODO: emulate state;
-                        if (ass.Dst is Identifier id)
-                            instrs.Add((cluster.Address, new Assignment(id, ass.Src)));
-                        else
-                            instrs.Add((cluster.Address, new Store(ass.Dst, ass.Src)));
                         break;
                     case RtlBranch branch:
-                        throw new NotImplementedException();
+                        return (
+                            scanner.RegisterBlock(
+                                work.State.Architecture,
+                                work.Address,
+                                cluster.Address - work.Address + cluster.Length,
+                                instrs),
+                            state);
                     case RtlGoto g:
                         throw new NotImplementedException();
                     case RtlReturn ret:
-                        instrs.Add((cluster.Address, new ReturnInstruction()));
                         return (
-                            scanner.RegisterBlock(work.State.Architecture, work.Address, instrs),
+                            scanner.RegisterBlock(
+                                work.State.Architecture,
+                                work.Address,
+                                cluster.Address - work.Address + cluster.Length,
+                                instrs),
                             state);
                     }
                 }
@@ -108,7 +115,7 @@ namespace Reko.ScannerV2
             var (lastAddr, lastInstr) = block.Instructions[^1];
             if (scanner.TryRegisterBlockEnd(block.Address, lastAddr))
             {
-                var edges = ComputeEdges(lastInstr);
+                var edges = ComputeEdges(lastInstr, lastAddr, block);
                 foreach (var edge in edges)
                 {
                     switch (edge.Type)
@@ -117,6 +124,7 @@ namespace Reko.ScannerV2
                         //$TODO mutate state depending on outcome
                         var trace = scanner.MakeTrace(edge.To, state, binder).GetEnumerator();
                         workList.Add(new BlockItem(edge.To, trace, state));
+                        scanner.RegisterEdge(edge);
                         break;
                     default:
                         throw new NotImplementedException();
@@ -145,11 +153,18 @@ namespace Reko.ScannerV2
             }
         }
 
-        private List<Edge> ComputeEdges(Instruction instr)
+        private List<Edge> ComputeEdges(RtlInstruction instr, Address addrInstr, Block block)
         {
             switch (instr)
             {
-            case ReturnInstruction:
+            case RtlBranch b:
+                var addrFallThrough = block.Address + block.Length;
+                return new List<Edge>
+                {
+                    new Edge(addrInstr, addrFallThrough, EdgeType.DirectJump),
+                    new Edge(addrInstr, (Address) b.Target, EdgeType.DirectJump),
+                };
+            case RtlReturn:
                 return new List<Edge> { };
             }
             throw new NotImplementedException();
