@@ -1,6 +1,7 @@
 ﻿using Reko.Core;
 using Reko.Core.Code;
 using Reko.Core.Diagnostics;
+using Reko.Core.Expressions;
 using Reko.Core.Rtl;
 using System;
 using System.Collections.Generic;
@@ -81,7 +82,11 @@ namespace Reko.ScannerV2
                     {
                     case RtlAssignment ass:
                         //$TODO: emulate state;
-                        throw new NotImplementedException();
+                        if (ass.Dst is Identifier id)
+                            instrs.Add((cluster.Address, new Assignment(id, ass.Src)));
+                        else
+                            instrs.Add((cluster.Address, new Store(ass.Dst, ass.Src)));
+                        break;
                     case RtlBranch branch:
                         throw new NotImplementedException();
                     case RtlGoto g:

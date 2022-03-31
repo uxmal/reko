@@ -1,9 +1,11 @@
 ﻿using Moq;
 using NUnit.Framework;
 using Reko.Core;
+using Reko.Core.Expressions;
 using Reko.Core.Lib;
 using Reko.Core.Memory;
 using Reko.Core.Rtl;
+using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -19,6 +21,8 @@ namespace Reko.ScannerV2.UnitTests
         private Dictionary<Address, RtlTrace> traces = default!;
         private Mock<IProcessorArchitecture> arch = default!;
         private Program program = default!;
+        private Identifier r1 = Identifier.Create(new RegisterStorage("r1", 1, 0, PrimitiveType.Word32));
+        private Identifier r2 = Identifier.Create(new RegisterStorage("r2", 2, 0, PrimitiveType.Word32));
 
         [SetUp]
         public void Setup()
@@ -147,15 +151,14 @@ namespace Reko.ScannerV2.UnitTests
                     }
                     w.WriteLine();
                 }
-                w.WriteLine();
             }
         }
 
         [Test]
         public void RecScan_Return()
         {
-            Given_Trace(0x001000, m => m.Return(0,0));
             Given_EntryPoint(0x001000);
+            Given_Trace(0x001000, m => m.Return(0,0));
 
             var sExpected =
             #region Expected
@@ -164,10 +167,35 @@ define fn00001000
 l00001000:
     return
     succ:
-
 ";
             #endregion
             RunTest(sExpected);
         }
+
+        [Test]
+        public void RecScan_Assignment()
+        {
+            Given_EntryPoint(0x001000);
+            Given_Trace(0x1000, m =>
+            {
+                m.Assign(r2, m.Word32(42));
+                m.Assign(r1, r2);
+                m.Return(0, 0);
+            });
+
+            var sExpected =
+            #region Expected
+@"
+define fn00001000
+l00001000:
+    r2 = 0x2A<32>
+    r1 = r2
+    return
+    succ:
+";
+            #endregion
+            RunTest(sExpected);
+        }
+
     }
 }
