@@ -127,10 +127,11 @@ namespace Reko.ScannerV2
             IProcessorArchitecture arch,
             Address addrBlock,
             long length,
+            Address addrFallthrough,
             List<(Address, RtlInstruction)> instrs)
         {
             var id = program.NamingPolicy.BlockName(addrBlock);
-            var block = new Block(arch, id, addrBlock, (int)length, instrs);
+            var block = new Block(arch, id, addrBlock, (int)length, addrFallthrough, instrs);
             var success = cfg.Blocks.TryAdd(addrBlock, block);
             Debug.Assert(success);
             return block;
@@ -351,7 +352,8 @@ namespace Reko.ScannerV2
             var addr = instrs[0].Item1;
             var instrLast = instrs[^1];
             var id = program.NamingPolicy.BlockName(addr);
-            return new Block(block.Architecture, id, addr, (int)blockSize, instrs);
+            var addrFallthrough = addr + blockSize;
+            return new Block(block.Architecture, id, addr, (int)blockSize, addrFallthrough, instrs);
         }
 
         private void StealEdges(Block from, Block to)

@@ -28,10 +28,16 @@ namespace Reko.ScannerV2
         /// addresses.
         /// </summary>
         public ConcurrentDictionary<Address, List<Edge>> Edges { get; }
+
         /// <summary>
         /// Maps the entry point address to <see cref="Proc"/>s.
         /// </summary>
         public ConcurrentDictionary<Address, Proc> Procedures { get; }
+
+        /// <summary>
+        /// Short sequences of instructions identified as dynamic link stubs
+        /// (such as those in an ELF PLT)
+        /// </summary>
         public ConcurrentDictionary<Address, ExternalProcedure> Stubs { get; }
         public ConcurrentDictionary<Address, ExternalProcedure> NoDecompiles { get; }
     }
@@ -42,12 +48,28 @@ namespace Reko.ScannerV2
         IProcessorArchitecture Architecture,
         string Name);
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="Architecture"></param>
+    /// <param name="Id"></param>
+    /// <param name="Address"></param>
+    /// <param name="Length">The size of the basic block starting at <see cref="Address"/> and
+    /// ending at a control transfer instruction, inclusive.</param>
+    /// <param name="FallThrough">The address after the block if control flow falls through.
+    /// Note that this is not necessarily <see cref="Address"/> + <see cref="Length"/>, because
+    /// control instructions with delay slots may require skipping one extra instruction.
+    /// </param>
+    /// <param name="Instructions"></param>
     public record Block(
         IProcessorArchitecture Architecture,
         string Id,
         Address Address,
         int Length,
-        List<(Address, RtlInstruction)> Instructions);
+        Address FallThrough,
+        List<(Address, RtlInstruction)> Instructions)
+    {
+    }
 
     public enum EdgeType
     {

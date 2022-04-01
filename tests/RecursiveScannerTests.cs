@@ -378,6 +378,61 @@ l00001018:
             RunTest(sExpected);
         }
 
+        [Test]
+        public void RecScan_DelaySlots()
+        {
+            Given_EntryPoint(0x1000);
+            Given_Trace(new RtlTrace(0x1000)
+            {
+                m => m.Assign(r1, 0),
+                m => m.GotoD(Address.Ptr32(0x1014)),
+                m => m.Assign(r2, m.Mem32(m.Word32(0x00123400))),
+            });
+            Given_Trace(new RtlTrace(0x100C)
+            {
+                m => m.Assign(r1, r2),
+                m => m.Assign(r2, m.ISub(r2, 1)),
+                m => m.Branch(m.Ne0(r2), Address.Ptr32(0x100C), InstrClass.ConditionalTransfer|InstrClass.Delay ),
+                m => m.Nop()
+            });
+            Given_Trace(new RtlTrace(0x1014)
+            {
+                m => m.Branch(m.Ne0(r2), Address.Ptr32(0x100C), InstrClass.ConditionalTransfer|InstrClass.Delay ),
+                m => m.Nop()
+            });
+            Given_Trace(new RtlTrace(0x101C)
+            {
+                m => m.ReturnD(0, 0),
+                m => m.Nop()
+            });
+
+            var sExpected =
+            #region Expected
+                @"
+define fn00001000
+l00001000:
+    r1 = 0<32>
+    r2 = Mem0[0x123400<32>:word32]
+    goto 00001014
+    succ: l00001014
+l0000100C:
+    r1 = r2
+    r2 = r2 - 1<32>
+    succ: l00001014
+l00001014:
+    v0 = r2 != 0<32>
+    nop
+    if (v0) branch 0000100C
+    succ: l0000101C l0000100C
+l0000101C:
+    nop
+    return (0,0)
+    succ:
+";
+            #endregion
+
+            RunTest(sExpected);
+        }
 
     }
 }
