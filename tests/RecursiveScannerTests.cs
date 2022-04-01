@@ -328,5 +328,56 @@ l00001020:
             RunTest(sExpected);
         }
 
+        [Test]
+        public void RecScan_Goto()
+        {
+            Given_EntryPoint(0x1000);
+            Given_Trace(new RtlTrace(0x1000)
+            {
+                m => m.Assign(r1, 0),
+                m => m.Assign(r2, 20),
+                m => m.Goto(Address.Ptr32(0x1014)),
+            });
+            Given_Trace(new RtlTrace(0x100C)
+            {
+                m => m.Assign(r1, r2),
+                m => m.Assign(r2, m.ISub(r2, 1)),
+                m => m.Branch(m.Ne0(r2), Address.Ptr32(0x100C))
+            });
+            Given_Trace(new RtlTrace(0x1014)
+            { 
+                m => m.Branch(m.Ne0(r2), Address.Ptr32(0x100C))
+            });
+            Given_Trace(new RtlTrace(0x1018)
+            {
+                m => m.Return(0, 0)
+            });
+
+            var sExpected =
+            #region Expected
+                @"
+define fn00001000
+l00001000:
+    r1 = 0<32>
+    r2 = 0x14<32>
+    goto 00001014
+    succ: l00001014
+l0000100C:
+    r1 = r2
+    r2 = r2 - 1<32>
+    succ: l00001014
+l00001014:
+    if (r2 != 0<32>) branch 0000100C
+    succ: l00001018 l0000100C
+l00001018:
+    return (0,0)
+    succ:
+";
+            #endregion
+
+            RunTest(sExpected);
+        }
+
+
     }
 }

@@ -277,7 +277,7 @@ namespace Reko.ScannerV2
                     // We split block B so that it falls through to block A
                     var newB = Chop(blockB, 0, b, addrA - addrB);
                     cfg.Blocks.TryUpdate(addrB, newB, blockB);
-                    RegisterEdge(new Edge(blockB.Address, newB.Address, EdgeType.Jump));
+                    RegisterEdge(new Edge(blockB.Address, addrA, EdgeType.Jump));
                     var newBEnd = newB.Instructions[^1].Item1;
                     if (!TryRegisterBlockEnd(newB.Address, newBEnd))
                     {

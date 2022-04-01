@@ -203,6 +203,17 @@ namespace Reko.ScannerV2
                 result.Add(new Edge(block.Address, addrFallThrough, EdgeType.Jump));
                 result.Add(new Edge(block.Address, (Address)b.Target, EdgeType.Jump));
                 break;
+            case RtlGoto g:
+                addrFallThrough = block.Address + block.Length;
+                if (g.Target is Address addrGotoTarget)
+                {
+                    result.Add(new Edge(block.Address, addrGotoTarget, EdgeType.Jump));
+                }
+                else
+                {
+                    throw new NotImplementedException("//$TODO: indirect calls");
+                }
+                break;
             case RtlCall call:
                 addrFallThrough = block.Address + block.Length;
                 if (call.Target is Address addrTarget)
