@@ -139,7 +139,7 @@ namespace Reko.ScannerV2.UnitTests
                 w.WriteLine();
                 w.WriteLine("define {0}", proc.Name);
                 var it = new DfsIterator<Block>(g);
-                foreach(var block in it.PreOrder().OrderBy(b => b.Id))
+                foreach(var block in it.PreOrder(cfg.Blocks[proc.Address]).OrderBy(b => b.Id))
                 {
                     w.WriteLine("{0}:", block.Id);
                     foreach (var (_, instr) in block.Instructions)
@@ -283,6 +283,50 @@ l0000100C:
             RunTest(sExpected);
         }
 
+        [Test]
+        public void RecScan_Call()
+        {
+            Given_EntryPoint(0x1000);
+            Given_Trace(new RtlTrace(0x1000)
+            {
+                m => m.Assign(r1, 3),
+                m => m.Call(Address.Ptr32(0x1020), 0),
+            });
+            Given_Trace(new RtlTrace(0x1008)
+            {
+                m => m.Assign(m.Mem32(m.Word32(0x3000)), r1),
+                m => m.Return(0,0)
+            });
+
+            Given_Trace(new RtlTrace(0x1020)
+            {
+                m => m.Assign(r1, m.SMul(r1, r1)),
+                m => m.Return(0, 0)
+            });
+
+            var sExpected =
+            #region Expected
+                @"
+define fn00001000
+l00001000:
+    r1 = 3<32>
+    call 00001020 (0)
+    succ: l00001008
+l00001008:
+    Mem0[0x3000<32>:word32] = r1
+    return (0,0)
+    succ:
+
+define fn00001020
+l00001020:
+    r1 = r1 *s r1
+    return (0,0)
+    succ:
+";
+            #endregion
+
+            RunTest(sExpected);
+        }
 
     }
 }

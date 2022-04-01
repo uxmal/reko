@@ -15,7 +15,7 @@ namespace Reko.ScannerV2
 {
     public class ProcedureWorker : Worker
     {
-        private static TraceSwitch trace = new TraceSwitch(nameof(ProcedureWorker), "ProcedureWorker tracing")
+        private static readonly TraceSwitch trace = new TraceSwitch(nameof(ProcedureWorker), "ProcedureWorker tracing")
         {
             Level = TraceLevel.Verbose,
         };
@@ -24,7 +24,7 @@ namespace Reko.ScannerV2
         private readonly Proc proc;
         private readonly WorkList<BlockItem> workList;
         private readonly IStorageBinder binder;
-        private Dictionary<Address, (Address, ProcedureWorker)> callsWaitingForReturn;
+        private Dictionary<Address, (Address, ProcedureWorker, ProcessorState)> callersWaitingForReturn;
 
         public ProcedureWorker(RecursiveScanner scanner, Proc proc, ProcessorState state)
         {
@@ -32,9 +32,8 @@ namespace Reko.ScannerV2
             this.proc = proc;
             this.workList = new WorkList<BlockItem>();
             this.binder = new StorageBinder();
-            this.callsWaitingForReturn = new Dictionary<Address, (Address, ProcedureWorker)>();
-            var trace = scanner.MakeTrace(proc.Address, state, binder).GetEnumerator();
-            this.workList.Add(new BlockItem(proc.Address, trace, state));
+            this.callersWaitingForReturn = new();
+            AddJob(proc.Address, state);
         }
 
         public Address ProcedureAddress => proc.Address;
@@ -53,7 +52,7 @@ namespace Reko.ScannerV2
                     if (block is not null)
                     {
                         trace_Verbose("    {0}: Parsed block at {1}", proc.Name, work.Address);
-                        TerminateBlock(block, state);
+                        HandleBlockEnd(block, work.Trace, state);
                     }
                     else
                     {
@@ -66,6 +65,12 @@ namespace Reko.ScannerV2
                 trace_Inform("    {0}: Finished", proc.Name);
                 return;
             }
+        }
+
+        public void AddJob(Address addr, ProcessorState state)
+        {
+            var trace = scanner.MakeTrace(addr, state, binder).GetEnumerator();
+            this.workList.Add(new BlockItem(addr, trace, state));
         }
 
         private (Block?, ProcessorState) ParseBlock(BlockItem work)
@@ -94,7 +99,7 @@ namespace Reko.ScannerV2
                                 instrs),
                             state);
                     case RtlGoto g:
-                        throw new NotImplementedException();
+                    case RtlCall call:
                     case RtlReturn ret:
                         return (
                             scanner.RegisterBlock(
@@ -110,7 +115,10 @@ namespace Reko.ScannerV2
             return (null, work.State);
         }
 
-        private Block TerminateBlock(Block block, ProcessorState state)
+        private Block HandleBlockEnd(
+            Block block, 
+            IEnumerator<RtlInstructionCluster> trace,
+            ProcessorState state)
         {
             var (lastAddr, lastInstr) = block.Instructions[^1];
             if (scanner.TryRegisterBlockEnd(block.Address, lastAddr))
@@ -120,15 +128,38 @@ namespace Reko.ScannerV2
                 {
                     switch (edge.Type)
                     {
-                    case EdgeType.DirectJump:
-                        //$TODO mutate state depending on outcome
-                        var trace = scanner.MakeTrace(edge.To, state, binder).GetEnumerator();
+                    case EdgeType.Fallthrough:
+                        // Reuse the same trace. This is necessary to handle the 
+                        // ARM Thumb IT instruction, which puts state in the trace.
                         workList.Add(new BlockItem(edge.To, trace, state));
                         scanner.RegisterEdge(edge);
                         trace_Verbose("    {0}: added edge {1}, {2}", proc.Address, edge.From, edge.To);
                         break;
+                    case EdgeType.Jump:
+                        // Start a new trace somewhere else.
+                        trace = scanner.MakeTrace(edge.To, state, binder).GetEnumerator();
+                        workList.Add(new BlockItem(edge.To, trace, state));
+                        scanner.RegisterEdge(edge);
+                        trace_Verbose("    {0}: added edge {1}, {2}", proc.Address, edge.From, edge.To);
+                        break;
+                    case EdgeType.Call:
+                        if (scanner.GetProcedureReturnStatus(edge.To) != ReturnStatus.Unknown)
+                            break;
+                        //$TODO: won't work with delay slots.
+                        scanner.TrySuspendWorker(this);
+                        if (scanner.TryStartProcedureWorker(edge.To, state, out var calleeWorker))
+                        {
+                            calleeWorker.TryEnqueueCaller(this, edge.From, block.Address + block.Length, state);
+                            trace_Verbose("    {0}: suspended, waiting for {1} to return", proc.Address, calleeWorker.ProcedureAddress);
+                        }
+                        else
+                            throw new NotImplementedException("Couldn't start procedure worker");
+                        break;
+                    case EdgeType.Return:
+                        ProcessReturn();
+                        break;
                     default:
-                        throw new NotImplementedException();
+                        throw new NotImplementedException($"{edge.Type} edge not handled yet.");
                     }
                 }
             }
@@ -147,36 +178,60 @@ namespace Reko.ScannerV2
 
         private void ProcessReturn()
         {
-            var empty = new Dictionary<Address, (Address, ProcedureWorker)>();
-            Interlocked.Exchange(ref callsWaitingForReturn, empty);
-            foreach (var (addrFallThrough, (addrCaller, caller)) in callsWaitingForReturn)
+            scanner.SetProcedureReturnStatus(proc.Address, ReturnStatus.Returns);
+            var empty = new Dictionary<Address, (Address, ProcedureWorker, ProcessorState)>();
+            var callers = Interlocked.Exchange(ref callersWaitingForReturn, empty);
+            while (callers.Count != 0)
             {
-                scanner.ResumeWorker(caller, addrCaller, addrFallThrough);
+                foreach (var (addrFallThrough, (addrCaller, caller, state)) in callers)
+                {
+                    trace_Verbose("   {0}: resuming worker {1} at {2}", proc.Address, caller.ProcedureAddress, addrFallThrough);
+                    scanner.ResumeWorker(caller, addrCaller, addrFallThrough, state);
+                }
+                empty = new Dictionary<Address, (Address, ProcedureWorker, ProcessorState)>();
+                callers = Interlocked.Exchange(ref callersWaitingForReturn, empty);
             }
         }
 
         private List<Edge> ComputeEdges(RtlInstruction instr, Address addrInstr, Block block)
         {
+            var result = new List<Edge>();
             switch (instr)
             {
             case RtlBranch b:
                 var addrFallThrough = block.Address + block.Length;
-                return new List<Edge>
+                result.Add(new Edge(block.Address, addrFallThrough, EdgeType.Jump));
+                result.Add(new Edge(block.Address, (Address)b.Target, EdgeType.Jump));
+                break;
+            case RtlCall call:
+                addrFallThrough = block.Address + block.Length;
+                if (call.Target is Address addrTarget)
                 {
-                    new Edge(block.Address, addrFallThrough, EdgeType.DirectJump),
-                    new Edge(block.Address, (Address) b.Target, EdgeType.DirectJump),
-                };
+                    result.Add(new Edge(block.Address, addrTarget, EdgeType.Call));
+                }
+                else
+                {
+                    throw new NotImplementedException("//$TODO: indirect calls");
+                }
+                break;
             case RtlReturn:
-                return new List<Edge> { };
+                result.Add(new Edge(block.Address, proc.Address, EdgeType.Return));
+                break;
+            default:
+                throw new NotImplementedException();
             }
-            throw new NotImplementedException();
+            return result;
         }
 
-        public bool TryEnqueueCaller(ProcedureWorker procedureWorker, Address addrCall, Address addrFallthrough)
+        public bool TryEnqueueCaller(
+            ProcedureWorker procedureWorker,
+            Address addrCall,
+            Address addrFallthrough,
+            ProcessorState state)
         {
-            lock (callsWaitingForReturn)
+            lock (callersWaitingForReturn)
             {
-                callsWaitingForReturn.Add(addrFallthrough, (addrCall, procedureWorker));
+                callersWaitingForReturn.Add(addrFallthrough, (addrCall, procedureWorker, state));
             }
             return true;
         }
@@ -193,56 +248,6 @@ namespace Reko.ScannerV2
         {
             if (trace.TraceVerbose)
                 Debug.Print(format, args);
-        }
-
-        public bool VisitAssignment(RtlAssignment ass)
-        {
-            throw new NotImplementedException();
-        }
-
-        public bool VisitBranch(RtlBranch branch)
-        {
-            throw new NotImplementedException();
-        }
-
-        public bool VisitCall(RtlCall call)
-        {
-            throw new NotImplementedException();
-        }
-
-        public bool VisitGoto(RtlGoto go)
-        {
-            throw new NotImplementedException();
-        }
-
-        public bool VisitIf(RtlIf rtlIf)
-        {
-            throw new NotImplementedException();
-        }
-
-        public bool VisitInvalid(RtlInvalid invalid)
-        {
-            throw new NotImplementedException();
-        }
-
-        public bool VisitMicroGoto(RtlMicroGoto uGoto)
-        {
-            throw new NotImplementedException();
-        }
-
-        public bool VisitMicroLabel(RtlMicroLabel uLabel)
-        {
-            throw new NotImplementedException();
-        }
-
-        public bool VisitNop(RtlNop rtlNop)
-        {
-            throw new NotImplementedException();
-        }
-
-        public bool VisitSideEffect(RtlSideEffect side)
-        {
-            throw new NotImplementedException();
         }
 
         private record BlockItem(

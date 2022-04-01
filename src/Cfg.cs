@@ -51,10 +51,9 @@ namespace Reko.ScannerV2
 
     public enum EdgeType
     {
-        DirectJump,
-        DirectCall,
-        IndirectJump,
-        IndirectCall,
+        Jump,
+        Fallthrough,
+        Call,
         Return,
     }
 

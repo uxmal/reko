@@ -8,6 +8,7 @@ using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -22,8 +23,9 @@ namespace Reko.ScannerV2
         private IRewriterHost host;
         private ConcurrentDictionary<Address, Address> blockStarts;
         private ConcurrentDictionary<Address, Address> blockEnds;
-        private ConcurrentDictionary<Address, Worker> workers;
-        private ConcurrentDictionary<Address, Worker> suspendedWorkers;
+        private ConcurrentDictionary<Address, Worker> activeWorkers;
+        private ConcurrentDictionary<Address, Worker> suspendedWorkers; 
+        private ConcurrentDictionary<Address, ReturnStatus> procReturnStatus;
 
         public RecursiveScanner(Reko.Core.Program program)
         {
@@ -33,8 +35,9 @@ namespace Reko.ScannerV2
             this.host = new RewriterHost(program);
             this.blockStarts = new ConcurrentDictionary<Address, Address>();
             this.blockEnds = new ConcurrentDictionary<Address, Address>();
-            this.workers = new();
+            this.activeWorkers = new();
             this.suspendedWorkers = new();
+            this.procReturnStatus = new();
         }
 
         public Cfg ScanProgram()
@@ -138,14 +141,62 @@ namespace Reko.ScannerV2
             return this.blockEnds.TryAdd(addrBlockLast, addrBlockStart);
         }
 
+        public bool TryStartProcedureWorker(
+            Address addrProc,
+            ProcessorState state,
+            [MaybeNullWhen(false)] out ProcedureWorker worker)
+        {
+            Proc? proc;
+            while (!cfg.Procedures.TryGetValue(addrProc, out proc))
+            {
+                var name = program.NamingPolicy.ProcedureName(addrProc);
+                proc = new Proc(addrProc, ProvenanceType.Scanning, state.Architecture, name);
+                if (cfg.Procedures.TryAdd(proc.Address, proc))
+                    break;
+            }
+            Worker? w;
+            while (!this.activeWorkers.TryGetValue(addrProc, out w))
+            {
+                worker = new ProcedureWorker(this, proc, state);
+                if (activeWorkers.TryAdd(addrProc, worker))
+                {
+                    wl.Add(worker);
+                    return true;
+                }
+            }
+            worker = w as ProcedureWorker;
+            return worker is not null;
+        }
+
         public bool TrySuspendWorker(ProcedureWorker worker)
         {
-            if (workers.TryRemove(worker.ProcedureAddress, out var w))
+            if (activeWorkers.TryRemove(worker.ProcedureAddress, out var w))
             {
                 Debug.Assert(worker == w);
-                suspendedWorkers.TryAdd(worker.ProcedureAddress, worker);
             }
+            suspendedWorkers.TryAdd(worker.ProcedureAddress, worker);
             return true;
+        }
+
+        public ReturnStatus GetProcedureReturnStatus(Address addrProc)
+        {
+            return this.procReturnStatus.TryGetValue(addrProc, out var status)
+                ? status
+                : ReturnStatus.Unknown;
+        }
+
+        public void SetProcedureReturnStatus(Address address, ReturnStatus returns)
+        {
+            if (this.procReturnStatus.TryAdd(address, returns))
+            {
+                return;
+            }
+            if (this.procReturnStatus.TryGetValue(address, out var oldRet))
+            {
+                if (oldRet == ReturnStatus.Returns)
+                    return;
+                this.procReturnStatus[address] = returns;
+            }
         }
 
         public void RegisterEdge(Edge edge)
@@ -158,11 +209,17 @@ namespace Reko.ScannerV2
             edges.Add(edge);
         }
 
-        public void ResumeWorker(ProcedureWorker worker, Address addrCaller, Address addrFallthrough)
+        public void ResumeWorker(
+            ProcedureWorker worker,
+            Address addrCaller,
+            Address addrFallthrough, 
+            ProcessorState state)
         {
+            RegisterEdge(new Edge(addrCaller, addrFallthrough, EdgeType.Fallthrough));
+            worker.AddJob(addrFallthrough, state);
             suspendedWorkers.TryRemove(worker.ProcedureAddress, out var w);
             Debug.Assert(worker == w);
-            workers.TryAdd(worker.ProcedureAddress, worker);
+            activeWorkers.TryAdd(worker.ProcedureAddress, worker);
             wl.Add(worker);
         }
 
@@ -220,7 +277,7 @@ namespace Reko.ScannerV2
                     // We split block B so that it falls through to block A
                     var newB = Chop(blockB, 0, b, addrA - addrB);
                     cfg.Blocks.TryUpdate(addrB, newB, blockB);
-                    RegisterEdge(new Edge(blockB.Address, newB.Address, EdgeType.DirectJump));
+                    RegisterEdge(new Edge(blockB.Address, newB.Address, EdgeType.Jump));
                     var newBEnd = newB.Instructions[^1].Item1;
                     if (!TryRegisterBlockEnd(newB.Address, newBEnd))
                     {
@@ -241,7 +298,7 @@ namespace Reko.ScannerV2
                     var newA = Chop(blockA, 0, a, addrB - addrA);
                     cfg.Blocks.TryUpdate(addrA, newA, blockA);
                     StealEdges(blockA, blockB);
-                    RegisterEdge(new Edge(newA.Address, blockB.Address, EdgeType.DirectJump));
+                    RegisterEdge(new Edge(newA.Address, blockB.Address, EdgeType.Jump));
                     var newAEnd = newA.Instructions[^1].Item1;
                     if (!TryRegisterBlockEnd(newA.Address, newAEnd))
                     {
@@ -252,6 +309,15 @@ namespace Reko.ScannerV2
             }
         }
 
+        /// <summary>
+        /// Starting at the end of two blocks, walk towards their respective beginnings
+        /// while the addresses match. 
+        /// </summary>
+        /// <param name="blockA">First block</param>
+        /// <param name="blockB">Second block</param>
+        /// <returns>A pair of indices into the respective instruction lists where the 
+        /// instruction addresses start matching.
+        /// </returns>
         private (int, int) FindSharedInstructions(Block blockA, Block blockB)
         {
             int a = blockA.Instructions.Count - 1;
@@ -378,5 +444,12 @@ namespace Reko.ScannerV2
                 throw new NotImplementedException();
             }
         }
+    }
+
+    public enum ReturnStatus
+    {
+        Unknown,
+        Returns,
+        Diverges,
     }
 }
