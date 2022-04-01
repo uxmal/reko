@@ -166,9 +166,136 @@ namespace Reko.ScannerV2
             wl.Add(worker);
         }
 
-        public void Splitblock(object block, Address address)
+        public void Splitblock(Block block, Address addrEnd)
         {
-            throw new NotImplementedException();
+            var wl = new Queue<(Block block, Address addrEnd)>();
+            wl.Enqueue((block, addrEnd));
+            while (wl.TryDequeue(out var item))
+            {
+                Block blockB;
+                (blockB, addrEnd) = item;
+                // Invariant: we arrive here if blockB ends at the same
+                // address as some other block A. Get the address of that
+                // block.
+
+                var addrA = this.blockEnds[addrEnd];
+                var addrB = block.Address;
+
+                // If both addresses are the same, we have a self-loop. No need for splitting.
+                if (addrA == addrB)
+                    continue;
+
+                var blockA = cfg.Blocks[addrA];
+
+                // Find the indices where both blocks have the same instructions: "shared tails"
+                // Because both blocks end at addrEnd, we're guaranteed at least one shared instruction.
+                var (a, b) = FindSharedInstructions(blockA, blockB);
+
+                if (a > 0 && b > 0)
+                {
+                    // The shared instructions S do not fully take up either of the
+                    // two blocks. One of the blocks starts in the middle of an
+                    // instruction in the other block:
+                    //
+                    //  addrA     S
+                    //  +-+--+--+-+-----+
+                    //      +--+--+-----+
+                    //      addrB
+                    //
+                    // We want to create a new block S with the shared instructions:
+                    //  addrA       S
+                    //  +-+--+--+-+ +-----+
+                    //      +--+--+
+                    throw new NotImplementedException();
+                }
+                else if (a == 0)
+                {
+                    // Block B falls through into block A
+                    // 
+                    //       addrA
+                    //       +-----------+
+                    //  +----------------+
+                    //  addrB
+                    //
+                    // We split block B so that it falls through to block A
+                    var newB = Chop(blockB, 0, b, addrA - addrB);
+                    cfg.Blocks.TryUpdate(addrB, newB, blockB);
+                    RegisterEdge(new Edge(blockB.Address, newB.Address, EdgeType.DirectJump));
+                    var newBEnd = newB.Instructions[^1].Item1;
+                    if (!TryRegisterBlockEnd(newB.Address, newBEnd))
+                    {
+                        // There is already a block ending at newBEnd.
+                        wl.Enqueue((newB, newBEnd));
+                    }
+                }
+                else if (b == 0)
+                {
+                    // Block A falls through into B
+                    //
+                    // addrA
+                    // +----------------+
+                    //       +----------+
+                    //       addrB
+                    // We split block A so that it falls through to B. We also
+                    // move the out edges of block A to block B.
+                    var newA = Chop(blockA, 0, a, addrB - addrA);
+                    cfg.Blocks.TryUpdate(addrA, newA, blockA);
+                    StealEdges(blockA, blockB);
+                    RegisterEdge(new Edge(newA.Address, blockB.Address, EdgeType.DirectJump));
+                    var newAEnd = newA.Instructions[^1].Item1;
+                    if (!TryRegisterBlockEnd(newA.Address, newAEnd))
+                    {
+                        // There is already a block ending at newAEnd
+                        wl.Enqueue((newA, newAEnd));
+                    }
+                }
+            }
+        }
+
+        private (int, int) FindSharedInstructions(Block blockA, Block blockB)
+        {
+            int a = blockA.Instructions.Count - 1;
+            int b = blockB.Instructions.Count - 1;
+            for (; a >= 0 && b >= 0; --a, --b)
+            {
+                if (blockA.Instructions[a].Item1 != blockB.Instructions[b].Item1)
+                    break;
+            }
+            return (a + 1, b + 1);
+        }
+
+        /// <summary>
+        /// Creates a new block from an existing block, using the instruction range
+        /// [iStart, iEnd).
+        /// </summary>
+        /// <param name="block">The block to chop.</param>
+        /// <param name="iStart">Index of first instruction in the new block.</param>
+        /// <param name="iEnd">Index of the first instruction to not include.</param>
+        /// <param name="blockSize">The size in address units of the resulting block.</param>
+        /// <returns>A new, terminated but unregistered block. The caller is responsible for 
+        /// registering it.
+        /// </returns>
+        private Block Chop(Block block, int iStart, int iEnd, long blockSize)
+        {
+            var instrs = new List<(Address, RtlInstruction)>(iEnd - iStart);
+            for (int i = iStart; i < iEnd; ++i)
+            {
+                instrs.Add(block.Instructions[i]);
+            }
+            var addr = instrs[0].Item1;
+            var instrLast = instrs[^1];
+            var id = program.NamingPolicy.BlockName(addr);
+            return new Block(block.Architecture, id, addr, (int)blockSize, instrs);
+        }
+
+        private void StealEdges(Block from, Block to)
+        {
+            if (cfg.Edges.TryGetValue(from.Address, out var edges))
+            {
+                cfg.Edges.TryRemove(from.Address, out _);
+                var newEges = edges.Select(e => new Edge(to.Address, e.To, e.Type)).ToList();
+                cfg.Edges.TryAdd(to.Address, newEges);
+            }
         }
 
         private class RewriterHost : IRewriterHost

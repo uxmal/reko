@@ -78,7 +78,7 @@ namespace Reko.ScannerV2
                 var cluster = work.Trace.Current;
                 foreach (var rtl in cluster.Instructions)
                 {
-                    trace_Verbose("    {0}: {1}", cluster.Address, rtl);
+                    trace_Verbose("      {0}: {1}", cluster.Address, rtl);
                     instrs.Add((cluster.Address, rtl));
                     switch (rtl)
                     {
@@ -125,6 +125,7 @@ namespace Reko.ScannerV2
                         var trace = scanner.MakeTrace(edge.To, state, binder).GetEnumerator();
                         workList.Add(new BlockItem(edge.To, trace, state));
                         scanner.RegisterEdge(edge);
+                        trace_Verbose("    {0}: added edge {1}, {2}", proc.Address, edge.From, edge.To);
                         break;
                     default:
                         throw new NotImplementedException();
@@ -133,6 +134,7 @@ namespace Reko.ScannerV2
             }
             else
             {
+                trace_Verbose("    {0}: Splitting block at [{1}-{2}]", proc.Address, block.Address, lastAddr);
                 scanner.Splitblock(block, lastAddr);
             }
             return block;
@@ -161,8 +163,8 @@ namespace Reko.ScannerV2
                 var addrFallThrough = block.Address + block.Length;
                 return new List<Edge>
                 {
-                    new Edge(addrInstr, addrFallThrough, EdgeType.DirectJump),
-                    new Edge(addrInstr, (Address) b.Target, EdgeType.DirectJump),
+                    new Edge(block.Address, addrFallThrough, EdgeType.DirectJump),
+                    new Edge(block.Address, (Address) b.Target, EdgeType.DirectJump),
                 };
             case RtlReturn:
                 return new List<Edge> { };

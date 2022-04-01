@@ -18,7 +18,6 @@ namespace Reko.ScannerV2.UnitTests
     [TestFixture]
     public class RecursiveScannerTests
     {
-        private Dictionary<Address, RtlTrace> traces = default!;
         private Mock<IProcessorArchitecture> arch = default!;
         private Program program = default!;
         private Identifier r1 = Identifier.Create(new RegisterStorage("r1", 1, 0, PrimitiveType.Word32));
@@ -27,7 +26,6 @@ namespace Reko.ScannerV2.UnitTests
         [SetUp]
         public void Setup()
         {
-            this.traces = new Dictionary<Address, RtlTrace>();
             this.arch = new Mock<IProcessorArchitecture>();
             arch.Setup(a => a.Name).Returns("FakeCpu");
             arch.Setup(a => a.CreateProcessorState())
@@ -62,10 +60,8 @@ namespace Reko.ScannerV2.UnitTests
             this.program.EntryPoints.Add(addr, sym);
         }
 
-        private void Given_Trace(uint uAddr, Action<RtlEmitter> action)
+        private void Given_Trace(RtlTrace trace)
         {
-            RtlTrace trace = new RtlTrace(uAddr) { action };
-            traces.Add(trace.StartAddress, trace);
             arch.Setup(a => a.CreateRewriter(
                 It.Is<EndianImageReader>(r => r.Address == trace.StartAddress),
                 It.IsNotNull<ProcessorState>(),
@@ -123,9 +119,15 @@ namespace Reko.ScannerV2.UnitTests
             {
                 return cfg.Edges.TryGetValue(node.Address, out var edges)
                     ? edges
-                        .Select(e => cfg.Blocks[e.To])
+                        .Select(e => Get(e))
                         .ToArray()
                     : Array.Empty<Block>();
+            }
+
+            private Block Get(Edge e)
+            {
+                var b = cfg.Blocks[e.To];
+                return b;
             }
         }
 
@@ -147,7 +149,7 @@ namespace Reko.ScannerV2.UnitTests
                     w.Write("    succ:");
                     foreach (var s in g.Successors(block))
                     {
-                        w.Write(" {0}", block.Id);
+                        w.Write(" {0}", s.Id);
                     }
                     w.WriteLine();
                 }
@@ -158,8 +160,10 @@ namespace Reko.ScannerV2.UnitTests
         public void RecScan_Return()
         {
             Given_EntryPoint(0x001000);
-            Given_Trace(0x001000, m => m.Return(0,0));
-
+            Given_Trace(new RtlTrace(0x001000)
+            {
+                m => m.Return(0,0)
+            });
             var sExpected =
             #region Expected
 @"
@@ -176,11 +180,11 @@ l00001000:
         public void RecScan_Assignment()
         {
             Given_EntryPoint(0x001000);
-            Given_Trace(0x1000, m =>
+            Given_Trace(new RtlTrace(0x1000)
             {
-                m.Assign(r2, m.Word32(42));
-                m.Assign(r1, r2);
-                m.Return(0, 0);
+                m => m.Assign(r2, m.Word32(42)),
+                m => m.Assign(r1, r2),
+                m => m.Return(0, 0)
             });
 
             var sExpected =
@@ -201,20 +205,20 @@ l00001000:
         public void RecScan_Branch()
         {
             Given_EntryPoint(0x001000);
-            Given_Trace(0x1000, m =>
-            {
-                m.Assign(r2, m.ISub(r2, 1));
-                m.Branch(m.Ne0(r2), Address.Ptr32(0x1008));
+            Given_Trace(new RtlTrace(0x1000)
+            {  
+                m => m.Assign(r2, m.ISub(r2, 1)),
+                m => m.Branch(m.Ne0(r2), Address.Ptr32(0x1010))
             });
-            Given_Trace(0x1004, m =>
+            Given_Trace(new RtlTrace(0x1008)
             {
-                m.Assign(r1, 0);
-                m.Return(0, 0);
+                m => m.Assign(r1, 0),
+                m => m.Return(0, 0)
             });
-            Given_Trace(0x1008, m =>
-            { 
-                m.Assign(r1, 1);
-                m.Return(0, 0);
+            Given_Trace(new RtlTrace(0x1010)
+            {
+                m => m.Assign(r1, 1),
+                m => m.Return(0, 0),
             });
 
             var sExpected =
@@ -223,13 +227,13 @@ l00001000:
 define fn00001000
 l00001000:
     r2 = r2 - 1<32>
-    if (r2 != 0<32>) branch 00001008
-    succ: l00001000 l00001000
-l00001004:
+    if (r2 != 0<32>) branch 00001010
+    succ: l00001008 l00001010
+l00001008:
     r1 = 0<32>
     return (0,0)
     succ:
-l00001008:
+l00001010:
     r1 = 1<32>
     return (0,0)
     succ:
@@ -237,6 +241,48 @@ l00001008:
             #endregion
             RunTest(sExpected);
         }
+
+        [Test]
+        public void RecScan_BackBranch()
+        {
+            Given_EntryPoint(0x001000);
+            Given_Trace(new RtlTrace(0x1000)
+            {
+                m => m.Assign(r2, 10),
+                m => m.Assign(r2, m.ISub(r2, 1)),
+                m => m.Branch(m.Ne0(r2), Address.Ptr32(0x1004))
+            });
+            Given_Trace(new RtlTrace(0x1004)
+            {
+                m => m.Assign(r2, m.ISub(r2, 1)),
+                m => m.Branch(m.Ne0(r2), Address.Ptr32(0x1004))
+            });
+            Given_Trace(new RtlTrace(0x100C)
+            { 
+                m => m.Assign(r1, 0),
+                m => m.Return(0, 0),
+            });
+
+            var sExpected =
+            #region Expected
+@"
+define fn00001000
+l00001000:
+    r2 = 0xA<32>
+    succ: l00001004
+l00001004:
+    r2 = r2 - 1<32>
+    if (r2 != 0<32>) branch 00001004
+    succ: l0000100C l00001004
+l0000100C:
+    r1 = 0<32>
+    return (0,0)
+    succ:
+";
+            #endregion
+            RunTest(sExpected);
+        }
+
 
     }
 }
