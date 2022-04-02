@@ -117,7 +117,7 @@ namespace Reko.ScannerV2.UnitTests
 
             public ICollection<Block> Successors(Block node)
             {
-                return cfg.Edges.TryGetValue(node.Address, out var edges)
+                return cfg.Successors.TryGetValue(node.Address, out var edges)
                     ? edges
                         .Select(e => Get(e))
                         .ToArray()
@@ -433,6 +433,5 @@ l0000101C:
 
             RunTest(sExpected);
         }
-
     }
 }

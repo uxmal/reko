@@ -13,7 +13,7 @@ namespace Reko.ScannerV2
         public Cfg()
         {
             this.Blocks = new();
-            this.Edges = new();
+            this.Successors = new();
             this.Procedures = new();
             this.Stubs = new();
             this.NoDecompiles = new();
@@ -27,7 +27,7 @@ namespace Reko.ScannerV2
         /// Maps start ("from") addresses to <see cref="Edge"/>s leaving those
         /// addresses.
         /// </summary>
-        public ConcurrentDictionary<Address, List<Edge>> Edges { get; }
+        public ConcurrentDictionary<Address, List<Edge>> Successors { get; }
 
         /// <summary>
         /// Maps the entry point address to <see cref="Proc"/>s.

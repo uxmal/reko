@@ -202,10 +202,10 @@ namespace Reko.ScannerV2
 
         public void RegisterEdge(Edge edge)
         {
-            if (!cfg.Edges.TryGetValue(edge.From, out var edges))
+            if (!cfg.Successors.TryGetValue(edge.From, out var edges))
             {
                 edges = new List<Edge>();
-                cfg.Edges.TryAdd(edge.From, edges);
+                cfg.Successors.TryAdd(edge.From, edges);
             }
             edges.Add(edge);
         }
@@ -358,11 +358,11 @@ namespace Reko.ScannerV2
 
         private void StealEdges(Block from, Block to)
         {
-            if (cfg.Edges.TryGetValue(from.Address, out var edges))
+            if (cfg.Successors.TryGetValue(from.Address, out var edges))
             {
-                cfg.Edges.TryRemove(from.Address, out _);
+                cfg.Successors.TryRemove(from.Address, out _);
                 var newEges = edges.Select(e => new Edge(to.Address, e.To, e.Type)).ToList();
-                cfg.Edges.TryAdd(to.Address, newEges);
+                cfg.Successors.TryAdd(to.Address, newEges);
             }
         }
 

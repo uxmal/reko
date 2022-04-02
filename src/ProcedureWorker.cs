@@ -22,7 +22,7 @@ namespace Reko.ScannerV2
 
         private readonly RecursiveScanner scanner;
         private readonly Proc proc;
-        private readonly WorkList<BlockItem> workList;
+        private readonly WorkList<BlockWorker> workList;
         private readonly IStorageBinder binder;
         private Dictionary<Address, (Address, ProcedureWorker, ProcessorState)> callersWaitingForReturn;
 
@@ -30,7 +30,7 @@ namespace Reko.ScannerV2
         {
             this.scanner = scanner;
             this.proc = proc;
-            this.workList = new WorkList<BlockItem>();
+            this.workList = new WorkList<BlockWorker>();
             this.binder = new StorageBinder();
             this.callersWaitingForReturn = new();
             AddJob(proc.Address, state);
@@ -53,11 +53,9 @@ namespace Reko.ScannerV2
                 {
                     if (!scanner.TryRegisterBlockStart(work.Address, proc.Address))
                         continue;
-                    trace_Verbose("    {0}: Parsing block at {1}", proc.Name, work.Address);
                     var (block,state) = ParseBlock(work);
                     if (block is not null)
                     {
-                        trace_Verbose("    {0}: Parsed block at {1}", proc.Name, work.Address);
                         HandleBlockEnd(block, work.Trace, state);
                     }
                     else
@@ -81,7 +79,7 @@ namespace Reko.ScannerV2
         public void AddJob(Address addr, ProcessorState state)
         {
             var trace = scanner.MakeTrace(addr, state, binder).GetEnumerator();
-            this.workList.Add(new BlockItem(addr, trace, state));
+            this.workList.Add(new BlockWorker(this, addr, trace, state));
         }
 
         /// <summary>
@@ -90,8 +88,9 @@ namespace Reko.ScannerV2
         /// </summary>
         /// <param name="work">Work item to use</param>
         /// <returns></returns>
-        private (Block?, ProcessorState) ParseBlock(BlockItem work)
+        private (Block?, ProcessorState) ParseBlock(BlockWorker work)
         {
+            trace_Verbose("    {0}: Parsing block at {1}", proc.Name, work.Address);
             var instrs = new List<(Address, RtlInstruction)>();
             var trace = work.Trace;
             var state = work.State;
@@ -124,7 +123,7 @@ namespace Reko.ScannerV2
         }
 
         private (Block?, ProcessorState) ParseTransferInstruction(
-            BlockItem work,
+            BlockWorker work,
             List<(Address, RtlInstruction)> instrs,
             IEnumerator<RtlInstructionCluster> trace,
             ProcessorState state,
@@ -207,6 +206,7 @@ namespace Reko.ScannerV2
             IEnumerator<RtlInstructionCluster> trace,
             ProcessorState state)
         {
+            trace_Verbose("    {0}: Parsed block at {1}", proc.Name, block.Address);
             var (lastAddr, lastInstr) = block.Instructions[^1];
             if (scanner.TryRegisterBlockEnd(block.Address, lastAddr))
             {
@@ -218,14 +218,14 @@ namespace Reko.ScannerV2
                     case EdgeType.Fallthrough:
                         // Reuse the same trace. This is necessary to handle the 
                         // ARM Thumb IT instruction, which puts state in the trace.
-                        workList.Add(new BlockItem(edge.To, trace, state));
+                        workList.Add(new BlockWorker(this, edge.To, trace, state));
                         scanner.RegisterEdge(edge);
                         trace_Verbose("    {0}: added edge {1}, {2}", proc.Address, edge.From, edge.To);
                         break;
                     case EdgeType.Jump:
                         // Start a new trace somewhere else.
                         trace = scanner.MakeTrace(edge.To, state, binder).GetEnumerator();
-                        workList.Add(new BlockItem(edge.To, trace, state));
+                        workList.Add(new BlockWorker(this, edge.To, trace, state));
                         scanner.RegisterEdge(edge);
                         trace_Verbose("    {0}: added edge {1}, {2}", proc.Address, edge.From, edge.To);
                         break;
@@ -344,10 +344,5 @@ namespace Reko.ScannerV2
             if (trace.TraceVerbose)
                 Debug.Print(format, args);
         }
-
-        private record BlockItem(
-            Address Address,
-            IEnumerator<RtlInstructionCluster> Trace,
-            ProcessorState State);
     }
 }
