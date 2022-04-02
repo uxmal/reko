@@ -171,11 +171,11 @@ namespace Reko.ScannerV2
 
         public bool TrySuspendWorker(ProcedureWorker worker)
         {
-            if (activeWorkers.TryRemove(worker.ProcedureAddress, out var w))
+            if (activeWorkers.TryRemove(worker.Procedure.Address, out var w))
             {
                 Debug.Assert(worker == w);
             }
-            suspendedWorkers.TryAdd(worker.ProcedureAddress, worker);
+            suspendedWorkers.TryAdd(worker.Procedure.Address, worker);
             return true;
         }
 
@@ -218,9 +218,9 @@ namespace Reko.ScannerV2
         {
             RegisterEdge(new Edge(addrCaller, addrFallthrough, EdgeType.Fallthrough));
             worker.AddJob(addrFallthrough, state);
-            suspendedWorkers.TryRemove(worker.ProcedureAddress, out var w);
+            suspendedWorkers.TryRemove(worker.Procedure.Address, out var w);
             Debug.Assert(worker == w);
-            activeWorkers.TryAdd(worker.ProcedureAddress, worker);
+            activeWorkers.TryAdd(worker.Procedure.Address, worker);
             wl.Add(worker);
         }
 

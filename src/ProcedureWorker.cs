@@ -39,7 +39,7 @@ namespace Reko.ScannerV2
         /// <summary>
         /// The procedure on which this <see cref="ProcedureWorker"/> is working.
         /// </summary>
-        public Address ProcedureAddress => proc.Address;
+        public Proc Procedure => proc;
 
         /// <summary>
         /// Executes work items in the scope of the current procedure.
@@ -53,14 +53,13 @@ namespace Reko.ScannerV2
                 {
                     if (!scanner.TryRegisterBlockStart(work.Address, proc.Address))
                         continue;
-                    var (block,state) = ParseBlock(work);
+                    var (block,state) = work.ParseBlock();
                     if (block is not null)
                     {
                         HandleBlockEnd(block, work.Trace, state);
                     }
                     else
                     {
-                        trace_Verbose("    {0}: Bad block at {1}", proc.Name, work.Address);
                         HandleBadBlock(work.Address);
                     }
                 }
@@ -79,126 +78,12 @@ namespace Reko.ScannerV2
         public void AddJob(Address addr, ProcessorState state)
         {
             var trace = scanner.MakeTrace(addr, state, binder).GetEnumerator();
-            this.workList.Add(new BlockWorker(this, addr, trace, state));
+            AddJob(addr, trace, state);
         }
 
-        /// <summary>
-        /// Performs a linear scan, stopping when a CTI is encountered,
-        /// or we run off the edge of the world.
-        /// </summary>
-        /// <param name="work">Work item to use</param>
-        /// <returns></returns>
-        private (Block?, ProcessorState) ParseBlock(BlockWorker work)
+        public void AddJob(Address addr, IEnumerator<RtlInstructionCluster> trace, ProcessorState state)
         {
-            trace_Verbose("    {0}: Parsing block at {1}", proc.Name, work.Address);
-            var instrs = new List<(Address, RtlInstruction)>();
-            var trace = work.Trace;
-            var state = work.State;
-            while (work.Trace.MoveNext())
-            {
-                var cluster = trace.Current;
-                foreach (var rtl in cluster.Instructions)
-                {
-                    trace_Verbose("      {0}: {1}", cluster.Address, rtl);
-                    switch (rtl)
-                    {
-                    case RtlAssignment ass:
-                        instrs.Add((cluster.Address, rtl));
-                        //$TODO: emulate state;
-                        continue;
-                    case RtlBranch branch:
-                    case RtlGoto g:
-                    case RtlCall call:
-                    case RtlReturn ret:
-                        break;
-                    default:
-                        throw new NotImplementedException($"{rtl.GetType()} - not implemented");
-                    }
-                    Debug.Assert(rtl.Class.HasFlag(InstrClass.Transfer));
-                    return ParseTransferInstruction(work, instrs, trace, state, cluster.Address, rtl);
-                }
-            }
-            // Fell off the end.
-            return (null, work.State);
-        }
-
-        private (Block?, ProcessorState) ParseTransferInstruction(
-            BlockWorker work,
-            List<(Address, RtlInstruction)> instrs,
-            IEnumerator<RtlInstructionCluster> trace,
-            ProcessorState state,
-            Address addr,
-            RtlInstruction rtl)
-        {
-            var size = addr - work.Address + trace.Current.Length;
-            if (rtl.Class.HasFlag(InstrClass.Delay))
-            {
-                if (!MaybeStealDelaySlot(rtl, instrs, trace))
-                    return (null, state);
-            }
-            else
-            {
-                instrs.Add((addr, rtl));
-            }
-            var addrFallthrough = trace.Current.Address + trace.Current.Length; 
-            var block = scanner.RegisterBlock(
-                work.State.Architecture,
-                work.Address,
-                size,
-                addrFallthrough,
-                instrs);
-            return (block, state);
-        }
-
-        private bool MaybeStealDelaySlot(
-            RtlInstruction rtlTransfer,
-            List<(Address,RtlInstruction)> instrs,
-            IEnumerator<RtlInstructionCluster> trace)
-        {
-            Expression MkTmp(Address addr, Expression e)
-            {
-                var tmp = binder.CreateTemporary(e.DataType);
-                instrs.Add((addr, new RtlAssignment(tmp, e)));
-                return tmp;
-            }
-
-            Expression? tmp = null;
-            var addrTransfer = trace.Current.Address;
-            switch (rtlTransfer)
-            {
-            case RtlBranch branch:
-                if (branch.Condition is not Constant)
-                {
-                    tmp = MkTmp(addrTransfer , branch.Condition);
-                    rtlTransfer = new RtlBranch(tmp, (Address)branch.Target, InstrClass.ConditionalTransfer);
-                }
-                break;
-            case RtlGoto g:
-                if (g.Target is not Address)
-                {
-                    tmp = MkTmp(addrTransfer, g.Target);
-                    rtlTransfer = new RtlGoto(tmp, InstrClass.Transfer);
-                }
-                break;
-            case RtlReturn ret:
-                break;
-            default:
-                throw new NotImplementedException($"{rtlTransfer.GetType().Name} - not implemented.");
-            }
-            if (!trace.MoveNext())
-                return false;
-            var rtlDelayed = trace.Current;
-            if (rtlDelayed.Class.HasFlag(InstrClass.Transfer))
-            {
-                // Can't deal with transfer functions in delay slots yet.
-                return false;
-            }
-            foreach (var instr in rtlDelayed.Instructions)
-            {
-                instrs.Add((rtlDelayed.Address, instr));
-            }
-            instrs.Add((addrTransfer, rtlTransfer));
-            return true;
+            this.workList.Add(new BlockWorker(scanner, binder, this, addr, trace, state));
         }
 
         private Block HandleBlockEnd(
@@ -218,14 +103,13 @@ namespace Reko.ScannerV2
                     case EdgeType.Fallthrough:
                         // Reuse the same trace. This is necessary to handle the 
                         // ARM Thumb IT instruction, which puts state in the trace.
-                        workList.Add(new BlockWorker(this, edge.To, trace, state));
+                        AddJob(edge.To, trace, state);
                         scanner.RegisterEdge(edge);
                         trace_Verbose("    {0}: added edge {1}, {2}", proc.Address, edge.From, edge.To);
                         break;
                     case EdgeType.Jump:
                         // Start a new trace somewhere else.
-                        trace = scanner.MakeTrace(edge.To, state, binder).GetEnumerator();
-                        workList.Add(new BlockWorker(this, edge.To, trace, state));
+                        AddJob(edge.To, state);
                         scanner.RegisterEdge(edge);
                         trace_Verbose("    {0}: added edge {1}, {2}", proc.Address, edge.From, edge.To);
                         break;
@@ -237,7 +121,7 @@ namespace Reko.ScannerV2
                         if (scanner.TryStartProcedureWorker(edge.To, state, out var calleeWorker))
                         {
                             calleeWorker.TryEnqueueCaller(this, edge.From, block.Address + block.Length, state);
-                            trace_Verbose("    {0}: suspended, waiting for {1} to return", proc.Address, calleeWorker.ProcedureAddress);
+                            trace_Verbose("    {0}: suspended, waiting for {1} to return", proc.Address, calleeWorker.Procedure.Address);
                         }
                         else
                             throw new NotImplementedException("Couldn't start procedure worker");
@@ -260,6 +144,7 @@ namespace Reko.ScannerV2
 
         private void HandleBadBlock(Address addrBadBlock)
         {
+            trace_Verbose("    {0}: Bad block at {1}", proc.Name,addrBadBlock);
             throw new NotImplementedException();
         }
 
@@ -272,7 +157,7 @@ namespace Reko.ScannerV2
             {
                 foreach (var (addrFallThrough, (addrCaller, caller, state)) in callers)
                 {
-                    trace_Verbose("   {0}: resuming worker {1} at {2}", proc.Address, caller.ProcedureAddress, addrFallThrough);
+                    trace_Verbose("   {0}: resuming worker {1} at {2}", proc.Address, caller.Procedure.Address, addrFallThrough);
                     scanner.ResumeWorker(caller, addrCaller, addrFallThrough, state);
                 }
                 empty = new Dictionary<Address, (Address, ProcedureWorker, ProcessorState)>();
