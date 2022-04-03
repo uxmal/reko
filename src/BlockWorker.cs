@@ -16,39 +16,46 @@ namespace Reko.ScannerV2
 
         private readonly RecursiveScanner scanner;
         private readonly IStorageBinder binder;
-        private readonly ProcedureWorker pw;
-        public Address Address { get; }
-        public readonly IEnumerator<RtlInstructionCluster> Trace;
-        public readonly ProcessorState State;
+        private readonly ProcessorState state;
 
         public BlockWorker(
             RecursiveScanner scanner,
             IStorageBinder binder,
-            ProcedureWorker pw,
             Address Address,
             IEnumerator<RtlInstructionCluster> Trace,
             ProcessorState State)
         {
             this.scanner = scanner;
             this.binder = binder;
-            this.pw = pw;
             this.Address = Address;
             this.Trace = Trace;
-            this.State = State;
+            this.state = State;
         }
 
         /// <summary>
-        /// Performs a linear scan, stopping when a CTI is encountered,
-        /// or we run off the edge of the world.
+        /// Address of the start of the current block being parsed.
+        /// </summary>
+        public Address Address { get; }
+
+        /// <summary>
+        /// Trace of RTL instructions.
+        /// </summary>
+        public IEnumerator<RtlInstructionCluster> Trace { get; }
+
+        /// <summary>
+        /// Performs a linear scan, stopping when a CTI is encountered, or we
+        /// run off the edge of the world.
         /// </summary>
         /// <param name="work">Work item to use</param>
-        /// <returns></returns>
+        /// <returns>
+        /// A pair of a completed <see cref="Block"/> and an updated <see cref="ProcessorState"/>.
+        /// If parsing runs off the end of memory, the block reference will be null.
+        /// </returns>
         public (Block?, ProcessorState) ParseBlock()
         {
-            trace_Verbose("    {0}: Parsing block at {1}", pw.Procedure.Address, this.Address);
             var instrs = new List<(Address, RtlInstruction)>();
             var trace = this.Trace;
-            var state = this.State;
+            var state = this.state;
             while (trace.MoveNext())
             {
                 var cluster = trace.Current;
@@ -70,32 +77,44 @@ namespace Reko.ScannerV2
                         throw new NotImplementedException($"{rtl.GetType()} - not implemented");
                     }
                     Debug.Assert(rtl.Class.HasFlag(InstrClass.Transfer));
-                    return ParseTransferInstruction(instrs, state, cluster.Address, rtl);
+                    return MakeBlock(instrs, state, rtl);
                 }
             }
-            // Fell off the end.
+            // Fell off the end, mark as bad.
             return (null, state);
         }
 
-        private (Block?, ProcessorState) ParseTransferInstruction(
+        /// <summary>
+        /// After reaching a CTI, make a <see cref="Block"/>.
+        /// </summary>
+        /// <param name="instrs">The instuctions of the resulting <see cref="Block"/>.</param>
+        /// <param name="state">The current <see cref="ProcessorState"/>.</param>
+        /// <param name="rtlTransfer">The transfer instruction that triggers the creation
+        /// of the block.</param>
+        /// A pair of a completed <see cref="Block"/> and an updated <see cref="ProcessorState"/>.
+        /// If parsing runs off the end of memory, the block reference will be null.
+        /// </returns>
+        private (Block?, ProcessorState) MakeBlock(
             List<(Address, RtlInstruction)> instrs,
             ProcessorState state,
-            Address addr,
-            RtlInstruction rtl)
+            RtlInstruction rtlTransfer)
         {
-            var size = addr - this.Address + this.Trace.Current.Length;
-            if (rtl.Class.HasFlag(InstrClass.Delay))
+            // We are positioned at the CTI.
+            var cluster = this.Trace.Current;
+            var size = cluster.Address - this.Address + cluster.Length;
+            if (rtlTransfer.Class.HasFlag(InstrClass.Delay))
             {
-                if (!MaybeStealDelaySlot(rtl, instrs))
+                if (!StealDelaySlot(rtlTransfer, instrs))
                     return (null, state);
             }
             else
             {
-                instrs.Add((addr, rtl));
+                instrs.Add((cluster.Address, rtlTransfer));
             }
-            var addrFallthrough = Trace.Current.Address + Trace.Current.Length;
+            cluster = this.Trace.Current;
+            var addrFallthrough = cluster.Address + cluster.Length;
             var block = scanner.RegisterBlock(
-                this.State.Architecture,
+                this.state.Architecture,
                 this.Address,
                 size,
                 addrFallthrough,
@@ -103,8 +122,18 @@ namespace Reko.ScannerV2
             return (block, state);
         }
 
-
-        private bool MaybeStealDelaySlot(
+        /// <summary>
+        /// The <see cref="Trace"/> is positioned on a CTI with a delay slot.
+        /// We swap the positions of the delay slot instruction and the CTI
+        /// so that the CTI appears last in the block.
+        /// </summary>
+        /// <param name="rtlTransfer">The CTI instruction.</param>
+        /// <param name="instrs"></param>
+        /// <returns>False if another CTI was found in the first CTI delay 
+        /// slot. Reko currently doesn't handle this rare idiom, although 
+        /// SPARC does allow it.
+        /// </returns>
+        private bool StealDelaySlot(
             RtlInstruction rtlTransfer,
             List<(Address, RtlInstruction)> instrs)
         {
@@ -115,46 +144,54 @@ namespace Reko.ScannerV2
                 return tmp;
             }
 
-            Expression? tmp = null;
             var addrTransfer = Trace.Current.Address;
-            switch (rtlTransfer)
-            {
-            case RtlBranch branch:
-                if (branch.Condition is not Constant)
-                {
-                    tmp = MkTmp(addrTransfer, branch.Condition);
-                    rtlTransfer = new RtlBranch(tmp, (Address)branch.Target, InstrClass.ConditionalTransfer);
-                }
-                break;
-            case RtlGoto g:
-                if (g.Target is not Core.Address)
-                {
-                    tmp = MkTmp(addrTransfer, g.Target);
-                    rtlTransfer = new RtlGoto(tmp, InstrClass.Transfer);
-                }
-                break;
-            case RtlReturn ret:
-                break;
-            default:
-                throw new NotImplementedException($"{rtlTransfer.GetType().Name} - not implemented.");
-            }
             if (!Trace.MoveNext())
+            {
+                // Fell off the end of memory, CTI is an invalid instruction.
                 return false;
+            }
             var rtlDelayed = Trace.Current;
             if (rtlDelayed.Class.HasFlag(InstrClass.Transfer))
             {
                 // Can't deal with transfer functions in delay slots yet.
                 return false;
             }
-            foreach (var instr in rtlDelayed.Instructions)
+            // If the delay slot instruction is a nop (padding), we 
+            // can ignore it.
+            if (!rtlDelayed.Class.HasFlag(InstrClass.Padding))
             {
-                instrs.Add((rtlDelayed.Address, instr));
+                // Delay slot instruction does real work, so we will insert it
+                // before the CTI instruction.
+                Expression? tmp = null;
+                switch (rtlTransfer)
+                {
+                case RtlBranch branch:
+                    if (branch.Condition is not Constant)
+                    {
+                        tmp = MkTmp(addrTransfer, branch.Condition);
+                        rtlTransfer = new RtlBranch(tmp, (Address)branch.Target, InstrClass.ConditionalTransfer);
+                    }
+                    break;
+                case RtlGoto g:
+                    if (g.Target is not Core.Address)
+                    {
+                        tmp = MkTmp(addrTransfer, g.Target);
+                        rtlTransfer = new RtlGoto(tmp, InstrClass.Transfer);
+                    }
+                    break;
+                case RtlReturn ret:
+                    break;
+                default:
+                    throw new NotImplementedException($"{rtlTransfer.GetType().Name} - not implemented.");
+                }
+                foreach (var instr in rtlDelayed.Instructions)
+                {
+                    instrs.Add((rtlDelayed.Address, instr));
+                }
             }
             instrs.Add((addrTransfer, rtlTransfer));
             return true;
         }
-
-
 
         [Conditional("DEBUG")]
         private void trace_Inform(string format, params object[] args)
@@ -169,6 +206,5 @@ namespace Reko.ScannerV2
             if (trace.TraceVerbose)
                 Debug.Print(format, args);
         }
-
     }
 }

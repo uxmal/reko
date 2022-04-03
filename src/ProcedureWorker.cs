@@ -53,6 +53,7 @@ namespace Reko.ScannerV2
                 {
                     if (!scanner.TryRegisterBlockStart(work.Address, proc.Address))
                         continue;
+                    trace_Verbose("    {0}: Parsing block at {1}", proc.Address, work.Address);
                     var (block,state) = work.ParseBlock();
                     if (block is not null)
                     {
@@ -83,7 +84,7 @@ namespace Reko.ScannerV2
 
         public void AddJob(Address addr, IEnumerator<RtlInstructionCluster> trace, ProcessorState state)
         {
-            this.workList.Add(new BlockWorker(scanner, binder, this, addr, trace, state));
+            this.workList.Add(new BlockWorker(scanner, binder, addr, trace, state));
         }
 
         private Block HandleBlockEnd(
@@ -145,7 +146,7 @@ namespace Reko.ScannerV2
         private void HandleBadBlock(Address addrBadBlock)
         {
             trace_Verbose("    {0}: Bad block at {1}", proc.Name,addrBadBlock);
-            throw new NotImplementedException();
+            throw new NotImplementedException($"Bad block at {addrBadBlock}");
         }
 
         private void ProcessReturn()

@@ -23,6 +23,7 @@ namespace Reko.ScannerV2
         /// Maps addresses to the <see cref="Block"/>s at those addresses.
         /// </summary>
         public ConcurrentDictionary<Address, Block> Blocks { get; }
+
         /// <summary>
         /// Maps start ("from") addresses to <see cref="Edge"/>s leaving those
         /// addresses.
@@ -49,18 +50,18 @@ namespace Reko.ScannerV2
         string Name);
 
     /// <summary>
-    /// 
+    /// This class models a basic block consisting of <see cref="RtlInstruction"/>s.
     /// </summary>
-    /// <param name="Architecture"></param>
-    /// <param name="Id"></param>
-    /// <param name="Address"></param>
+    /// <param name="Architecture">CPU architecture used to disassemble this block.</param>
+    /// <param name="Id">Invariant identifier used for this block.</param>
+    /// <param name="Address">Address at which the block starts.</param>
     /// <param name="Length">The size of the basic block starting at <see cref="Address"/> and
-    /// ending at a control transfer instruction, inclusive.</param>
+    /// including the length of the final instruction.</param>
     /// <param name="FallThrough">The address after the block if control flow falls through.
     /// Note that this is not necessarily <see cref="Address"/> + <see cref="Length"/>, because
     /// control instructions with delay slots may require skipping one extra instruction.
     /// </param>
-    /// <param name="Instructions"></param>
+    /// <param name="Instructions">The instructions this block consists of.</param>
     public record Block(
         IProcessorArchitecture Architecture,
         string Id,

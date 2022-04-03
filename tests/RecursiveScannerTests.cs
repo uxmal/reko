@@ -420,12 +420,9 @@ l0000100C:
     r2 = r2 - 1<32>
     succ: l00001014
 l00001014:
-    v0 = r2 != 0<32>
-    nop
-    if (v0) branch 0000100C
+    if (r2 != 0<32>) branch 0000100C
     succ: l0000101C l0000100C
 l0000101C:
-    nop
     return (0,0)
     succ:
 ";

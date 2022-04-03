@@ -49,7 +49,11 @@ namespace Reko.ScannerV2.UnitTests
         {
             var rtls = new List<RtlInstruction>();
             generator(new RtlEmitter(rtls));
-            clusters.Add(new RtlInstructionCluster(addr, 4, rtls.ToArray()));
+            var artls = rtls.ToArray();
+            clusters.Add(new RtlInstructionCluster(addr, 4, artls)
+            {
+                Class = artls[^1].Class,
+            });
             addr += 4;
         }
 
