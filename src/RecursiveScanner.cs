@@ -17,21 +17,21 @@ namespace Reko.ScannerV2
 {
     public class RecursiveScanner
     {
-        private Program program;
+        private Reko.Core.Program program;
         private Cfg cfg;
-        private WorkList<Worker> wl;
+        private WorkList<ProcedureWorker> wl;
         private IRewriterHost host;
         private ConcurrentDictionary<Address, Address> blockStarts;
         private ConcurrentDictionary<Address, Address> blockEnds;
-        private ConcurrentDictionary<Address, Worker> activeWorkers;
-        private ConcurrentDictionary<Address, Worker> suspendedWorkers; 
+        private ConcurrentDictionary<Address, ProcedureWorker> activeWorkers;
+        private ConcurrentDictionary<Address, ProcedureWorker> suspendedWorkers; 
         private ConcurrentDictionary<Address, ReturnStatus> procReturnStatus;
 
         public RecursiveScanner(Reko.Core.Program program)
         {
             this.program = program;
             this.cfg = new Cfg();
-            this.wl = new WorkList<Worker>();
+            this.wl = new WorkList<ProcedureWorker>();
             this.host = new RewriterHost(program);
             this.blockStarts = new ConcurrentDictionary<Address, Address>();
             this.blockEnds = new ConcurrentDictionary<Address, Address>();
@@ -68,9 +68,21 @@ namespace Reko.ScannerV2
             return null;
         }
 
-        private void EnqueueWorkers(IEnumerable<Worker> workers)
+        private void EnqueueWorkers(IEnumerable<ProcedureWorker?> workers)
         {
-            wl.AddRange(workers);
+            foreach (var worker in workers)
+            {
+                if (worker is null)
+                    continue;
+                if (!this.activeWorkers.TryAdd(worker.Procedure.Address, worker))
+                {
+                    Debug.Print("RecScan: worker for {0} already enqueued.", worker.Procedure.Address);
+                }
+                else
+                {
+                    wl.Add(worker);
+                }
+            }
         }
 
         private Dictionary<Address, ImageSymbol> CollectSeeds()
@@ -80,10 +92,14 @@ namespace Reko.ScannerV2
             {
                 result.Add(sym.Key, sym.Value);
             }
+            foreach (var sym in program.ImageSymbols)
+            {
+                result.TryAdd(sym.Key, sym.Value);
+            }
             return result;
         }
 
-        private Worker MakeSeedWorker(KeyValuePair<Address, ImageSymbol> seed)
+        private ProcedureWorker? MakeSeedWorker(KeyValuePair<Address, ImageSymbol> seed)
         {
             var name = program.NamingPolicy.ProcedureName(seed.Key);
             var proc = new Proc(seed.Key, ProvenanceType.ImageEntrypoint, seed.Value.Architecture, name);
@@ -94,11 +110,11 @@ namespace Reko.ScannerV2
             }
             else
             {
-                return NullWorker.Instance;
+                return null;
             }
         }
 
-        private Worker MakeProcWorker(KeyValuePair<Address, Proc> de)
+        private ProcedureWorker? MakeProcWorker(KeyValuePair<Address, Proc> de)
         {
             var name = program.NamingPolicy.ProcedureName(de.Key);
             var proc = new Proc(de.Key, ProvenanceType.Scanning, de.Value.Architecture, name);
@@ -108,7 +124,7 @@ namespace Reko.ScannerV2
             }
             else
             {
-                return NullWorker.Instance;
+                return null;
             }
         }
 
@@ -155,8 +171,12 @@ namespace Reko.ScannerV2
                 if (cfg.Procedures.TryAdd(proc.Address, proc))
                     break;
             }
-            Worker? w;
-            while (!this.activeWorkers.TryGetValue(addrProc, out w))
+            if (this.suspendedWorkers.TryGetValue(addrProc, out worker))
+            {
+                // It's already running, but suspended.
+                return true;
+            }
+            while (!this.activeWorkers.TryGetValue(addrProc, out worker))
             {
                 worker = new ProcedureWorker(this, proc, state);
                 if (activeWorkers.TryAdd(addrProc, worker))
@@ -165,8 +185,7 @@ namespace Reko.ScannerV2
                     return true;
                 }
             }
-            worker = w as ProcedureWorker;
-            return worker is not null;
+            return true;
         }
 
         public bool TrySuspendWorker(ProcedureWorker worker)
@@ -175,7 +194,10 @@ namespace Reko.ScannerV2
             {
                 Debug.Assert(worker == w);
             }
-            suspendedWorkers.TryAdd(worker.Procedure.Address, worker);
+            if (!suspendedWorkers.TryAdd(worker.Procedure.Address, worker))
+            {
+                //$Already suspended.
+            }
             return true;
         }
 
@@ -218,8 +240,17 @@ namespace Reko.ScannerV2
         {
             RegisterEdge(new Edge(addrCaller, addrFallthrough, EdgeType.Fallthrough));
             worker.AddJob(addrFallthrough, state);
-            suspendedWorkers.TryRemove(worker.Procedure.Address, out var w);
-            Debug.Assert(worker == w);
+            if (!suspendedWorkers.TryRemove(worker.Procedure.Address, out var w))
+            {
+                // Tried to resume not suspended worker
+                if (!activeWorkers.TryGetValue(worker.Procedure.Address, out w))
+                    throw new Exception("Expected active worker!");
+                return;
+            }
+            else
+            {
+                Debug.Assert(worker == w);
+            }
             activeWorkers.TryAdd(worker.Procedure.Address, worker);
             wl.Add(worker);
         }
@@ -294,10 +325,16 @@ namespace Reko.ScannerV2
                     // +----------------+
                     //       +----------+
                     //       addrB
-                    // We split block A so that it falls through to B. We also
-                    // move the out edges of block A to block B.
+                    // We split block A so that it falls through to B. We make
+                    // B be the new block end, and move the out edges of block
+                    // A to block B.
                     var newA = Chop(blockA, 0, a, addrB - addrA);
                     cfg.Blocks.TryUpdate(addrA, newA, blockA);
+                    //$TODO: check for race conditions.
+                    if (!blockEnds.TryUpdate(addrEnd, addrB, addrA))
+                    {
+                        throw new Exception("Who stole it?");
+                    }
                     StealEdges(blockA, blockB);
                     RegisterEdge(new Edge(newA.Address, blockB.Address, EdgeType.Jump));
                     var newAEnd = newA.Instructions[^1].Item1;
@@ -368,9 +405,9 @@ namespace Reko.ScannerV2
 
         private class RewriterHost : IRewriterHost
         {
-            private Program program;
+            private Reko.Core.Program program;
 
-            public RewriterHost(Program program)
+            public RewriterHost(Reko.Core.Program program)
             {
                 this.program = program;
             }
@@ -438,7 +475,8 @@ namespace Reko.ScannerV2
 
             public void Error(Address address, string format, params object[] args)
             {
-                throw new NotImplementedException();
+                var msg = string.Format(format, args);
+                Debug.WriteLine($"E: {address}: {msg}");
             }
 
             public void Warn(Address address, string format, params object[] args)

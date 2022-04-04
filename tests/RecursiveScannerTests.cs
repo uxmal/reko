@@ -430,5 +430,119 @@ l0000101C:
 
             RunTest(sExpected);
         }
+
+        [Test]
+        public void RecScan_MultipleBackEdges()
+        {
+            Given_EntryPoint(0x1000);
+            Given_Trace(new RtlTrace(0x1000)
+            {
+                m => m.Assign(r1, r2),
+                m => m.Assign(r2, m.IAdd(r2, 1)),
+                m => m.Assign(r1, m.Mem32(m.Word32(0x00123400))),
+                m => m.Branch(m.Eq0(r1), Address.Ptr32(0x1004))
+            });
+            Given_Trace(new RtlTrace(0x1004)
+            {
+                m => m.Assign(r2, m.IAdd(r2, 1)),
+                m => m.Assign(r1, m.Mem32(m.Word32(0x00123400))),
+                m => m.Branch(m.Eq0(r1), Address.Ptr32(0x1004))
+            });
+            Given_Trace(new RtlTrace(0x1008)
+            {
+                m => m.Assign(r1, m.Mem32(m.Word32(0x00123400))),
+                m => m.Branch(m.Eq0(r1), Address.Ptr32(0x1004))
+            });
+            Given_Trace(new RtlTrace(0x1010)
+            {
+                m => m.Assign(r2, m.Mem32(r1)),
+                m => m.Branch(m.Eq0(r2), Address.Ptr32(0x1008))
+            });
+            Given_Trace(new RtlTrace(0x1018)
+            {
+                m => m.Return(0, 0)
+            });
+
+            var sExpected =
+            #region Expected
+                @"
+define fn00001000
+l00001000:
+    r1 = r2
+    succ: l00001004
+l00001004:
+    r2 = r2 + 1<32>
+    succ: l00001008
+l00001008:
+    r1 = Mem0[0x123400<32>:word32]
+    if (r1 == 0<32>) branch 00001004
+    succ: l00001010 l00001004
+l00001010:
+    r2 = Mem0[r1:word32]
+    if (r2 == 0<32>) branch 00001008
+    succ: l00001018 l00001008
+l00001018:
+    return (0,0)
+    succ:
+";
+            #endregion
+
+            RunTest(sExpected);
+        }
+
+        [Test]
+        public void RecScan_NestedCalls()
+        {
+            Given_EntryPoint(0x1000);
+            Given_EntryPoint(0x1040);
+            Given_Trace(new RtlTrace(0x1000)
+            {
+                m => m.Call(Address.Ptr32(0x1030), 0),
+            });
+            Given_Trace(new RtlTrace(0x1004)
+            {
+                m => m.Return(0,0)
+            });
+            Given_Trace(new RtlTrace(0x1030)
+            {
+                m => m.Return(0, 0)
+            });
+            Given_Trace(new RtlTrace(0x1040)
+            {
+                m => m.Call(Address.Ptr32(0x1000), 0),
+            });
+            Given_Trace(new RtlTrace(0x1044)
+            {
+                m => m.Return(0,0)
+            });
+
+            var sExpected =
+            #region Expected
+                @"
+define fn00001000
+l00001000:
+    call 00001030 (0)
+    succ: l00001004
+l00001004:
+    return (0,0)
+    succ:
+
+define fn00001030
+l00001030:
+    return (0,0)
+    succ:
+
+define fn00001040
+l00001040:
+    call 00001000 (0)
+    succ: l00001044
+l00001044:
+    return (0,0)
+    succ:
+";
+            #endregion
+
+            RunTest(sExpected);
+        }
     }
 }
