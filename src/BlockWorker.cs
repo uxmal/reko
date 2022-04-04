@@ -1,6 +1,7 @@
 ﻿using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Rtl;
+using Reko.Evaluation;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -17,19 +18,21 @@ namespace Reko.ScannerV2
         private readonly RecursiveScanner scanner;
         private readonly IStorageBinder binder;
         private readonly ProcessorState state;
+        private readonly ExpressionSimplifier eval;
 
         public BlockWorker(
             RecursiveScanner scanner,
             IStorageBinder binder,
             Address Address,
             IEnumerator<RtlInstructionCluster> Trace,
-            ProcessorState State)
+            ProcessorState state)
         {
             this.scanner = scanner;
             this.binder = binder;
             this.Address = Address;
             this.Trace = Trace;
-            this.state = State;
+            this.state = state;
+            this.eval = scanner.CreateEvaluator(state);
         }
 
         /// <summary>
@@ -70,7 +73,7 @@ namespace Reko.ScannerV2
                     {
                     case RtlAssignment ass:
                         instrs.Add((cluster.Address, rtl));
-                        //$TODO: emulate state;
+                        EmulateState(ass);
                         continue;
                     case RtlSideEffect side:
                         instrs.Add((cluster.Address, rtl));
@@ -87,6 +90,7 @@ namespace Reko.ScannerV2
                         //Expand sub-instruction statements in a later pass.
                         if (branch.NextStatementRequiresLabel)
                         {
+                            clusterHadControlInstrs = true;
                             instrs.Add((cluster.Address, rtl));
                             continue;
                         }
@@ -115,6 +119,35 @@ namespace Reko.ScannerV2
             }
             // Fell off the end, mark as bad.
             return (MakeInvalidBlock(instrs, addrLast - this.Address), state);
+        }
+
+        private void EmulateState(RtlAssignment ass)
+        {
+            try
+            {
+                var value = GetValue(ass.Src);
+                switch (ass.Dst)
+                {
+                case Identifier id:
+                    state.SetValue(id, value);
+                    return;
+                case SegmentedAccess smem:
+                    state.SetValueEa(smem.BasePointer, GetValue(smem.EffectiveAddress), value);
+                    return;
+                case MemoryAccess mem:
+                    state.SetValueEa(GetValue(mem.EffectiveAddress), value);
+                    return;
+                }
+            } catch
+            {
+                // Drop all on the floor.
+            }
+        }
+
+        private Expression GetValue(Expression e)
+        {
+            var (value, _) = e.Accept(eval);
+            return value;
         }
 
         /// <summary>

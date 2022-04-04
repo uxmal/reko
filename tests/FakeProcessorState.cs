@@ -26,7 +26,7 @@ namespace Reko.ScannerV2.UnitTests
 
         public override Constant GetRegister(RegisterStorage r)
         {
-            throw new NotImplementedException();
+            return InvalidConstant.Create(r.DataType);
         }
 
         public override void OnAfterCall(FunctionType? sigCallee)
@@ -51,7 +51,6 @@ namespace Reko.ScannerV2.UnitTests
 
         public override void SetRegister(RegisterStorage r, Constant v)
         {
-            throw new NotImplementedException();
         }
     }
 }

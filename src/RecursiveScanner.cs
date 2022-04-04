@@ -3,7 +3,9 @@ using Reko.Core.Code;
 using Reko.Core.Expressions;
 using Reko.Core.Rtl;
 using Reko.Core.Serialization;
+using Reko.Core.Services;
 using Reko.Core.Types;
+using Reko.Evaluation;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -19,15 +21,16 @@ namespace Reko.ScannerV2
     {
         private Reko.Core.Program program;
         private Cfg cfg;
-        private WorkList<ProcedureWorker> wl;
-        private IRewriterHost host;
-        private ConcurrentDictionary<Address, Address> blockStarts;
-        private ConcurrentDictionary<Address, Address> blockEnds;
-        private ConcurrentDictionary<Address, ProcedureWorker> activeWorkers;
-        private ConcurrentDictionary<Address, ProcedureWorker> suspendedWorkers; 
-        private ConcurrentDictionary<Address, ReturnStatus> procReturnStatus;
+        private readonly WorkList<ProcedureWorker> wl;
+        private readonly IRewriterHost host;
+        private readonly ConcurrentDictionary<Address, Address> blockStarts;
+        private readonly ConcurrentDictionary<Address, Address> blockEnds;
+        private readonly ConcurrentDictionary<Address, ProcedureWorker> activeWorkers;
+        private readonly ConcurrentDictionary<Address, ProcedureWorker> suspendedWorkers; 
+        private readonly ConcurrentDictionary<Address, ReturnStatus> procReturnStatus;
+        private readonly DecompilerEventListener listener;
 
-        public RecursiveScanner(Reko.Core.Program program)
+        public RecursiveScanner(Reko.Core.Program program, DecompilerEventListener listener)
         {
             this.program = program;
             this.cfg = new Cfg();
@@ -38,6 +41,15 @@ namespace Reko.ScannerV2
             this.activeWorkers = new();
             this.suspendedWorkers = new();
             this.procReturnStatus = new();
+            this.listener = listener;
+        }
+
+        public ExpressionSimplifier CreateEvaluator(ProcessorState state)
+        {
+            return new ExpressionSimplifier(
+                program.SegmentMap,
+                state,
+                listener);
         }
 
         public Cfg ScanProgram()

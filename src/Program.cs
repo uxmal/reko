@@ -44,7 +44,7 @@ namespace Reko.ScannerV2
             }
             var program = project.Programs[0];
             tgSvc.OutputDirectory = program.DisassemblyDirectory;
-            var scanner = new RecursiveScanner(program);
+            var scanner = new RecursiveScanner(program, listener);
 
             var (cfg, time) = Time(() => scanner.ScanProgram());
 

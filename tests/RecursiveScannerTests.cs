@@ -5,6 +5,7 @@ using Reko.Core.Expressions;
 using Reko.Core.Lib;
 using Reko.Core.Memory;
 using Reko.Core.Rtl;
+using Reko.Core.Services;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
@@ -72,7 +73,7 @@ namespace Reko.ScannerV2.UnitTests
 
         private void RunTest(string sExpected)
         {
-            var scanner = new RecursiveScanner(program);
+            var scanner = new RecursiveScanner(program, new Mock<DecompilerEventListener>().Object);
             var cfg = scanner.ScanProgram();
             var sw = new StringWriter();
             DumpCfg(cfg, sw);
