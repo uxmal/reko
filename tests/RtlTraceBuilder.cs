@@ -47,6 +47,11 @@ namespace Reko.ScannerV2.UnitTests
 
         public void Add(Action<RtlEmitter> generator)
         {
+            Add(4, generator);
+        }
+
+        public void Add(int length, Action<RtlEmitter> generator)
+        {
             var rtls = new List<RtlInstruction>();
             generator(new RtlEmitter(rtls));
             var artls = rtls.ToArray();
@@ -54,7 +59,7 @@ namespace Reko.ScannerV2.UnitTests
             {
                 Class = artls[^1].Class,
             });
-            addr += 4;
+            addr += length;
         }
 
         public IEnumerator<RtlInstructionCluster> GetEnumerator()

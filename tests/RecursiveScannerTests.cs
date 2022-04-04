@@ -600,5 +600,47 @@ l00001008:
             #endregion
             RunTest(sExpected);
         }
+
+        [Test]
+        public void RecScan_JumpIntoOtherInstruction()
+        {
+            Given_EntryPoint(0x1000);
+            Given_Trace(new RtlTrace(0x1000)
+            {
+                { 3, m => m.Assign(r1, 4) },
+                { 3, m => m.Assign(m.Mem32(r2), r1) },
+                { 4, m => m.Branch(m.Ne0(m.Mem32(m.IAdd(r2, 4))), Address.Ptr32(0x1002)) }
+            });
+            Given_Trace(new RtlTrace(0x1002)
+            {
+                { 4, m => m.Assign(m.Mem32(r2), m.ISub(r1, 1)) },
+                { 4, m => m.Branch(m.Ne0(m.Mem32(m.IAdd(r2, 4))), Address.Ptr32(0x1002)) },
+            });
+            Given_Trace(new RtlTrace(0x1008)
+            {
+                m => m.Return(0, 0)
+            });
+
+            var sExpected =
+            #region Expected
+                @"
+define fn00001000
+l00001000:
+    r1 = 4<32>
+    Mem0[r2:word32] = r1
+    succ: l00001006
+l00001002:
+    Mem0[r2:word32] = r1 - 1<32>
+    succ: l00001006
+l00001006:
+    if (Mem0[r2 + 4<32>:word32] != 0<32>) branch 00001002
+    succ: l0000100A l00001002
+l0000100A:
+    succ:
+";
+            #endregion
+
+            RunTest(sExpected);
+        }
     }
 }

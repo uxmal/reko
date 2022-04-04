@@ -323,7 +323,31 @@ namespace Reko.ScannerV2
                     //  addrA       S
                     //  +-+--+--+-+ +-----+
                     //      +--+--+
-                    throw new NotImplementedException();
+                    var addrS = blockA.Instructions[a].Item1;
+                    if (TryRegisterBlockStart(addrS, blockA.Address))
+                    {
+                        // S didn't exist already.
+                        var sSize = blockA.Length - (addrS - blockA.Address);
+                        var instrs = blockA.Instructions.Skip(a).ToList();
+                        var blockS = RegisterBlock(
+                            blockA.Architecture,
+                            addrS,
+                            sSize,
+                            blockA.FallThrough,
+                            instrs);
+                        StealEdges(blockA, blockS);
+                    }
+                    // Trim off the last instructions of A and B, then
+                    // replace their original values
+                    //$REVIEW: the below code is not thread safe.
+                    RegisterEdge(new Edge(addrA, addrS, EdgeType.Jump));
+                    RegisterEdge(new Edge(addrB, addrS, EdgeType.Jump));
+                    var newA = Chop(blockA, 0, a, addrS - addrA);
+                    var newB = Chop(blockB, 0, b, addrS - addrB);
+                    cfg.Blocks.TryUpdate(addrA, newA, blockA);
+                    cfg.Blocks.TryUpdate(addrB, newB, blockB);
+                    blockEnds.TryUpdate(newA.Address, addrS, addrEnd);
+                    blockEnds.TryUpdate(newB.Address, addrS, addrEnd);
                 }
                 else if (a == 0)
                 {
@@ -345,8 +369,9 @@ namespace Reko.ScannerV2
                         wl.Enqueue((newB, newBEnd));
                     }
                 }
-                else if (b == 0)
+                else
                 {
+                    Debug.Assert(b == 0);
                     // Block A falls through into B
                     //
                     // addrA
