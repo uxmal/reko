@@ -57,7 +57,7 @@ namespace Reko.ScannerV2
         /// </returns>
         public (Block, ProcessorState) ParseBlock()
         {
-            var instrs = new List<(Address, RtlInstruction)>();
+            var instrs = new List<RtlInstructionCluster>();
             var trace = this.Trace;
             var state = this.state;
             var addrLast = this.Address;
@@ -72,18 +72,15 @@ namespace Reko.ScannerV2
                     switch (rtl)
                     {
                     case RtlAssignment ass:
-                        instrs.Add((cluster.Address, rtl));
                         EmulateState(ass);
                         continue;
                     case RtlSideEffect side:
-                        instrs.Add((cluster.Address, rtl));
                         //$TODO: emulate side effect.
                         continue;
                     case RtlNop _:
-                        instrs.Add((cluster.Address, rtl));
                         continue;
                     case RtlInvalid _:
-                        instrs.Add((cluster.Address, new RtlInvalid()));
+                        instrs.Add(cluster);
                         var size = addrLast - this.Address + cluster.Length;
                         return (MakeInvalidBlock(instrs, size), state);
                     case RtlBranch branch:
@@ -91,7 +88,6 @@ namespace Reko.ScannerV2
                         if (branch.NextStatementRequiresLabel)
                         {
                             clusterHadControlInstrs = true;
-                            instrs.Add((cluster.Address, rtl));
                             continue;
                         }
                         break;
@@ -105,6 +101,7 @@ namespace Reko.ScannerV2
                     Debug.Assert(rtl.Class.HasFlag(InstrClass.Transfer));
                     return MakeBlock(instrs, state, rtl);
                 }
+                instrs.Add(cluster);
                 if (clusterHadControlInstrs)
                 {
                     var addrFallthrough = cluster.Address + cluster.Length;
@@ -161,7 +158,7 @@ namespace Reko.ScannerV2
         /// If parsing runs off the end of memory, the block reference will be null.
         /// </returns>
         private (Block, ProcessorState) MakeBlock(
-            List<(Address, RtlInstruction)> instrs,
+            List<RtlInstructionCluster> instrs,
             ProcessorState state,
             RtlInstruction rtlTransfer)
         {
@@ -175,18 +172,18 @@ namespace Reko.ScannerV2
                 xfer.Target is Address addrTarget &&
                 !scanner.IsExecutableAddress(addrTarget))
             {
-                instrs.Add((cluster.Address, new RtlInvalid()));
+                instrs.Add(new RtlInstructionCluster(cluster.Address, cluster.Length, new RtlInvalid()));
                 return (MakeInvalidBlock(instrs, size), state);
             }
 
             if (rtlTransfer.Class.HasFlag(InstrClass.Delay))
             {
-                if (!StealDelaySlot(rtlTransfer, instrs))
+                if (!StealDelaySlot(cluster, instrs))
                     return (MakeInvalidBlock(instrs, size), state);
             }
             else
             {
-                instrs.Add((cluster.Address, rtlTransfer));
+                instrs.Add(cluster);
             }
             cluster = this.Trace.Current;
             var addrFallthrough = cluster.Address + cluster.Length;
@@ -200,7 +197,7 @@ namespace Reko.ScannerV2
         }
 
         private Block MakeInvalidBlock(
-            List<(Address, RtlInstruction)> instrs, 
+            List<RtlInstructionCluster> instrs, 
             long size)
         {
             var block = scanner.RegisterBlock(
@@ -209,7 +206,7 @@ namespace Reko.ScannerV2
                 size,
                 this.Address + size,
                 instrs);
-            block.IsInvalid = true;
+            block.IsValid = false;
             return block;
         }
 
@@ -225,17 +222,17 @@ namespace Reko.ScannerV2
         /// SPARC does allow it.
         /// </returns>
         private bool StealDelaySlot(
-            RtlInstruction rtlTransfer,
-            List<(Address, RtlInstruction)> instrs)
+            RtlInstructionCluster rtlTransfer,
+            List<RtlInstructionCluster> instrs)
         {
-            Expression MkTmp(Address addr, Expression e)
+            RtlAssignment MkTmp(Address addr, Expression e)
             {
                 var tmp = binder.CreateTemporary(e.DataType);
-                instrs.Add((addr, new RtlAssignment(tmp, e)));
-                return tmp;
+                return new RtlAssignment(tmp, e);
             }
 
             var addrTransfer = Trace.Current.Address;
+            var lengthTransfer = Trace.Current.Length;
             if (!Trace.MoveNext())
             {
                 // Fell off the end of memory, CTI is an invalid instruction.
@@ -253,21 +250,29 @@ namespace Reko.ScannerV2
             {
                 // Delay slot instruction does real work, so we will insert it
                 // before the CTI instruction.
-                Expression? tmp = null;
-                switch (rtlTransfer)
+                RtlAssignment? tmp = null;
+                switch (rtlTransfer.Instructions[^1])
                 {
                 case RtlBranch branch:
                     if (branch.Condition is not Constant)
                     {
                         tmp = MkTmp(addrTransfer, branch.Condition);
-                        rtlTransfer = new RtlBranch(tmp, (Address)branch.Target, InstrClass.ConditionalTransfer);
+                        rtlTransfer = new RtlInstructionCluster(
+                            rtlTransfer.Address,
+                            rtlTransfer.Length,
+                            tmp,
+                            new RtlBranch(tmp.Dst, (Address)branch.Target, InstrClass.ConditionalTransfer));
                     }
                     break;
                 case RtlGoto g:
                     if (g.Target is not Core.Address)
                     {
                         tmp = MkTmp(addrTransfer, g.Target);
-                        rtlTransfer = new RtlGoto(tmp, InstrClass.Transfer);
+                        rtlTransfer = new RtlInstructionCluster(
+                            rtlTransfer.Address,
+                            rtlTransfer.Length,
+                            tmp, 
+                            new RtlGoto(tmp.Dst, InstrClass.Transfer));
                     }
                     break;
                 case RtlReturn ret:
@@ -275,12 +280,9 @@ namespace Reko.ScannerV2
                 default:
                     throw new NotImplementedException($"{rtlTransfer.GetType().Name} - not implemented.");
                 }
-                foreach (var instr in rtlDelayed.Instructions)
-                {
-                    instrs.Add((rtlDelayed.Address, instr));
-                }
+                instrs.Add(rtlDelayed);
             }
-            instrs.Add((addrTransfer, rtlTransfer));
+            instrs.Add(rtlTransfer);
             return true;
         }
 

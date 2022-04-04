@@ -55,7 +55,7 @@ namespace Reko.ScannerV2
                         continue;
                     trace_Verbose("    {0}: Parsing block at {1}", proc.Address, work.Address);
                     var (block,state) = work.ParseBlock();
-                    if (!block.IsInvalid)
+                    if (block.IsValid)
                     {
                         HandleBlockEnd(block, work.Trace, state);
                     }
@@ -93,7 +93,9 @@ namespace Reko.ScannerV2
             ProcessorState state)
         {
             trace_Verbose("    {0}: Parsed block at {1}", proc.Name, block.Address);
-            var (lastAddr, lastInstr) = block.Instructions[^1];
+            var lastCluster = block.Instructions[^1];
+            var lastInstr = lastCluster.Instructions[^1];
+            var lastAddr = lastCluster.Address;
             if (scanner.TryRegisterBlockEnd(block.Address, lastAddr))
             {
                 var edges = ComputeEdges(lastInstr, lastAddr, block);

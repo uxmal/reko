@@ -140,17 +140,20 @@ namespace Reko.ScannerV2.UnitTests
                 w.WriteLine();
                 w.WriteLine("define {0}", proc.Name);
                 var it = new DfsIterator<Block>(g);
-                foreach(var block in it.PreOrder(cfg.Blocks[proc.Address]).OrderBy(b => b.Id))
+                foreach(var block in it.PreOrder(cfg.Blocks[proc.Address]).OrderBy(b => b.Name))
                 {
-                    w.WriteLine("{0}:", block.Id);
-                    foreach (var (_, instr) in block.Instructions)
+                    w.WriteLine("{0}:", block.Name);
+                    foreach (var cluster in block.Instructions)
                     {
-                        w.WriteLine("    {0}", instr);
+                        foreach (var instr in cluster.Instructions)
+                        {
+                            w.WriteLine("    {0}", instr);
+                        }
                     }
                     w.Write("    succ:");
                     foreach (var s in g.Successors(block))
                     {
-                        w.Write(" {0}", s.Id);
+                        w.Write(" {0}", s.Name);
                     }
                     w.WriteLine();
                 }

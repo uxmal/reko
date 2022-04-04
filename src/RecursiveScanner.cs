@@ -172,10 +172,10 @@ namespace Reko.ScannerV2
             Address addrBlock,
             long length,
             Address addrFallthrough,
-            List<(Address, RtlInstruction)> instrs)
+            List<RtlInstructionCluster> instrs)
         {
             var id = program.NamingPolicy.BlockName(addrBlock);
-            var block = new Block(arch, id, addrBlock, (int)length, addrFallthrough, instrs);
+            var block = new Block(arch, addrBlock, id, (int)length, addrFallthrough, instrs);
             var success = cfg.Blocks.TryAdd(addrBlock, block);
             Debug.Assert(success);
             return block;
@@ -323,7 +323,7 @@ namespace Reko.ScannerV2
                     //  addrA       S
                     //  +-+--+--+-+ +-----+
                     //      +--+--+
-                    var addrS = blockA.Instructions[a].Item1;
+                    var addrS = blockA.Instructions[a].Address;
                     if (TryRegisterBlockStart(addrS, blockA.Address))
                     {
                         // S didn't exist already.
@@ -362,7 +362,7 @@ namespace Reko.ScannerV2
                     var newB = Chop(blockB, 0, b, addrA - addrB);
                     cfg.Blocks.TryUpdate(addrB, newB, blockB);
                     RegisterEdge(new Edge(blockB.Address, addrA, EdgeType.Jump));
-                    var newBEnd = newB.Instructions[^1].Item1;
+                    var newBEnd = newB.Instructions[^1].Address;
                     if (!TryRegisterBlockEnd(newB.Address, newBEnd))
                     {
                         // There is already a block ending at newBEnd.
@@ -390,7 +390,7 @@ namespace Reko.ScannerV2
                     }
                     StealEdges(blockA, blockB);
                     RegisterEdge(new Edge(newA.Address, blockB.Address, EdgeType.Jump));
-                    var newAEnd = newA.Instructions[^1].Item1;
+                    var newAEnd = newA.Instructions[^1].Address;
                     if (!TryRegisterBlockEnd(newA.Address, newAEnd))
                     {
                         // There is already a block ending at newAEnd
@@ -415,7 +415,7 @@ namespace Reko.ScannerV2
             int b = blockB.Instructions.Count - 1;
             for (; a >= 0 && b >= 0; --a, --b)
             {
-                if (blockA.Instructions[a].Item1 != blockB.Instructions[b].Item1)
+                if (blockA.Instructions[a].Address != blockB.Instructions[b].Address)
                     break;
             }
             return (a + 1, b + 1);
@@ -434,16 +434,16 @@ namespace Reko.ScannerV2
         /// </returns>
         private Block Chop(Block block, int iStart, int iEnd, long blockSize)
         {
-            var instrs = new List<(Address, RtlInstruction)>(iEnd - iStart);
+            var instrs = new List<RtlInstructionCluster>(iEnd - iStart);
             for (int i = iStart; i < iEnd; ++i)
             {
                 instrs.Add(block.Instructions[i]);
             }
-            var addr = instrs[0].Item1;
+            var addr = instrs[0].Address;
             var instrLast = instrs[^1];
             var id = program.NamingPolicy.BlockName(addr);
             var addrFallthrough = addr + blockSize;
-            return new Block(block.Architecture, id, addr, (int)blockSize, addrFallthrough, instrs);
+            return new Block(block.Architecture, addr, id, (int)blockSize, addrFallthrough, instrs);
         }
 
         private void StealEdges(Block from, Block to)
