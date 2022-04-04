@@ -788,7 +788,11 @@ namespace Reko.Arch.Arm.AArch32
                                 ea = m.IAdd(ea, ix);
                                 break;
                             case Mnemonic.rrx:
-                                var rrx = m.Fn(CommonOps.RorC, ireg, Constant.Int32(mop.Shift), C());
+                                var rrx = m.Fn(
+                                    CommonOps.RorC.MakeInstance(ireg.DataType, PrimitiveType.Int32),
+                                    ireg, 
+                                    Constant.Int32(mop.Shift),
+                                    C());
                                 ea = m.IAdd(ea, rrx);
                                 break;
                             }
