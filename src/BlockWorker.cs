@@ -12,7 +12,7 @@ namespace Reko.ScannerV2
 {
     public class BlockWorker
     {
-        private static TraceSwitch trace = new TraceSwitch(nameof(BlockWorker), "");
+        private static readonly TraceSwitch trace = new TraceSwitch(nameof(BlockWorker), "");
 
         private readonly RecursiveScanner scanner;
         private readonly IStorageBinder binder;
@@ -49,16 +49,19 @@ namespace Reko.ScannerV2
         /// <param name="work">Work item to use</param>
         /// <returns>
         /// A pair of a completed <see cref="Block"/> and an updated <see cref="ProcessorState"/>.
-        /// If parsing runs off the end of memory, the block reference will be null.
+        /// If parsing runs off the end of memory, the returned block will be marked
+        /// as invalid.
         /// </returns>
-        public (Block?, ProcessorState) ParseBlock()
+        public (Block, ProcessorState) ParseBlock()
         {
             var instrs = new List<(Address, RtlInstruction)>();
             var trace = this.Trace;
             var state = this.state;
+            var addrLast = this.Address;
             while (trace.MoveNext())
             {
                 var cluster = trace.Current;
+                addrLast = cluster.Address;
                 foreach (var rtl in cluster.Instructions)
                 {
                     trace_Verbose("      {0}: {1}", cluster.Address, rtl);
@@ -72,8 +75,13 @@ namespace Reko.ScannerV2
                         instrs.Add((cluster.Address, rtl));
                         //$TODO: emulate side effect.
                         continue;
+                    case RtlNop _:
+                        instrs.Add((cluster.Address, rtl));
+                        continue;
                     case RtlInvalid _:
-                        return (null, state);
+                        instrs.Add((cluster.Address, new RtlInvalid()));
+                        var size = addrLast - this.Address + cluster.Length;
+                        return (MakeInvalidBlock(instrs, size), state);
                     case RtlBranch branch:
                     case RtlGoto g:
                     case RtlCall call:
@@ -87,7 +95,7 @@ namespace Reko.ScannerV2
                 }
             }
             // Fell off the end, mark as bad.
-            return (null, state);
+            return (MakeInvalidBlock(instrs, addrLast - this.Address), state);
         }
 
         /// <summary>
@@ -100,18 +108,29 @@ namespace Reko.ScannerV2
         /// A pair of a completed <see cref="Block"/> and an updated <see cref="ProcessorState"/>.
         /// If parsing runs off the end of memory, the block reference will be null.
         /// </returns>
-        private (Block?, ProcessorState) MakeBlock(
+        private (Block, ProcessorState) MakeBlock(
             List<(Address, RtlInstruction)> instrs,
             ProcessorState state,
             RtlInstruction rtlTransfer)
         {
             // We are positioned at the CTI.
             var cluster = this.Trace.Current;
+
             var size = cluster.Address - this.Address + cluster.Length;
+
+            // Make sure we're not heading to hyperspace.
+            if (rtlTransfer is RtlTransfer xfer &&
+                xfer.Target is Address addrTarget &&
+                !scanner.IsExecutableAddress(addrTarget))
+            {
+                instrs.Add((cluster.Address, new RtlInvalid()));
+                return (MakeInvalidBlock(instrs, size), state);
+            }
+
             if (rtlTransfer.Class.HasFlag(InstrClass.Delay))
             {
                 if (!StealDelaySlot(rtlTransfer, instrs))
-                    return (null, state);
+                    return (MakeInvalidBlock(instrs, size), state);
             }
             else
             {
@@ -126,6 +145,20 @@ namespace Reko.ScannerV2
                 addrFallthrough,
                 instrs);
             return (block, state);
+        }
+
+        private Block MakeInvalidBlock(
+            List<(Address, RtlInstruction)> instrs, 
+            long size)
+        {
+            var block = scanner.RegisterBlock(
+                this.state.Architecture,
+                this.Address,
+                size,
+                this.Address + size,
+                instrs);
+            block.IsInvalid = true;
+            return block;
         }
 
         /// <summary>

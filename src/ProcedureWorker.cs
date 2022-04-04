@@ -55,7 +55,7 @@ namespace Reko.ScannerV2
                         continue;
                     trace_Verbose("    {0}: Parsing block at {1}", proc.Address, work.Address);
                     var (block,state) = work.ParseBlock();
-                    if (block is not null)
+                    if (!block.IsInvalid)
                     {
                         HandleBlockEnd(block, work.Trace, state);
                     }

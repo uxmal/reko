@@ -9,7 +9,7 @@ namespace Reko.ScannerV2
 {
     public class ShingleScanner
 	{
-        private Program program;
+        private Reko.Core.Program program;
 
         public ShingleScanner(Core.Program program)
 		{

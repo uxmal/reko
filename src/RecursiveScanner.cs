@@ -99,6 +99,15 @@ namespace Reko.ScannerV2
             return result;
         }
 
+        /// <summary>
+        /// Returns true if the given address is inside an executable
+        /// <see cref="ImageSegment"/>.
+        /// </summary>
+        /// <param name="addr"></param>
+        /// <returns>Whether or not the address is executable.</returns>
+        public bool IsExecutableAddress(Address addr) =>
+            program.SegmentMap.IsExecutableAddress(addr);
+
         private ProcedureWorker? MakeSeedWorker(KeyValuePair<Address, ImageSymbol> seed)
         {
             var name = program.NamingPolicy.ProcedureName(seed.Key);

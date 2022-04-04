@@ -544,5 +544,26 @@ l00001044:
 
             RunTest(sExpected);
         }
+
+        [Test]
+        public void RecScan_Jump_to_invalid_address()
+        {
+            Given_EntryPoint(0x1000);
+            Given_Trace(new RtlTrace(0x1000)
+            {
+                m=> m.Goto(Address.Ptr32(0x6000))
+            });
+            var sExpected =
+            #region Expected
+                @"
+define fn00001000
+l00001000:
+    <invalid>
+    succ:
+";
+            #endregion
+
+            RunTest(sExpected);
+        }
     }
 }

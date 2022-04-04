@@ -70,6 +70,10 @@ namespace Reko.ScannerV2
         Address FallThrough,
         List<(Address, RtlInstruction)> Instructions)
     {
+        /// <summary>
+        /// Indicates whether this block is valid or not.
+        /// </summary>
+        public bool IsInvalid { get; set; }
     }
 
     public enum EdgeType
