@@ -13,11 +13,11 @@ using System.Threading.Tasks;
 
 namespace Reko.ScannerV2
 {
-    public class ProcedureWorker : Worker
+    public class ProcedureWorker
     {
         private static readonly TraceSwitch trace = new TraceSwitch(nameof(ProcedureWorker), "ProcedureWorker tracing")
         {
-            Level = TraceLevel.Verbose,
+            Level = TraceLevel.Warning,
         };
 
         private readonly RecursiveScanner scanner;
@@ -44,7 +44,7 @@ namespace Reko.ScannerV2
         /// <summary>
         /// Executes work items in the scope of the current procedure.
         /// </summary>
-        public override void Run()
+        public void Run()
         {
             trace_Inform("PW: {0} Processing", proc.Name);
             for (;;)
@@ -146,7 +146,7 @@ namespace Reko.ScannerV2
         private void HandleBadBlock(Address addrBadBlock)
         {
             trace_Verbose("    {0}: Bad block at {1}", proc.Name,addrBadBlock);
-            throw new NotImplementedException($"Bad block at {addrBadBlock}");
+            //$TODO: enqueue low-prio item for throw new NotImplementedException($"Bad block at {addrBadBlock}");
         }
 
         private void ProcessReturn()
@@ -182,7 +182,8 @@ namespace Reko.ScannerV2
                 }
                 else
                 {
-                    throw new NotImplementedException("//$TODO: indirect calls");
+                    //$TODO: indirect jumps
+                    result.Add(new Edge(block.Address, proc.Address, EdgeType.Return));
                 }
                 break;
             case RtlCall call:
@@ -192,7 +193,8 @@ namespace Reko.ScannerV2
                 }
                 else
                 {
-                    throw new NotImplementedException("//$TODO: indirect calls");
+                    //$TODO: indirect calls
+                    result.Add(new Edge(block.Address, block.FallThrough, EdgeType.Fallthrough));
                 }
                 break;
             case RtlReturn:

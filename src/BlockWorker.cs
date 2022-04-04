@@ -68,6 +68,12 @@ namespace Reko.ScannerV2
                         instrs.Add((cluster.Address, rtl));
                         //$TODO: emulate state;
                         continue;
+                    case RtlSideEffect side:
+                        instrs.Add((cluster.Address, rtl));
+                        //$TODO: emulate side effect.
+                        continue;
+                    case RtlInvalid _:
+                        return (null, state);
                     case RtlBranch branch:
                     case RtlGoto g:
                     case RtlCall call:
