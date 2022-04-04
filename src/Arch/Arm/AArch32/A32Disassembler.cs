@@ -924,6 +924,9 @@ namespace Reko.Arch.Arm.AArch32
         }
 
         private static readonly int[] mveAlignments = { 0, 64, 128, 256 };
+        private static readonly int[] mve8Alignments = { 0, 16 };
+        private static readonly int[] mve16Alignments = { 0, 32 };
+        private static readonly int[] mve32Alignments = { 0, 64 };
         private static readonly int[] mveaAlignments = { 0, 0, 0, 0,  0, 16, 32, 0 };
 
         /// <summary>
@@ -972,6 +975,9 @@ namespace Reko.Arch.Arm.AArch32
             };
         }
         private static readonly Mutator<A32Disassembler> Mve = VectorElementAccess(Bf((4, 2)), mveAlignments);
+        private static readonly Mutator<A32Disassembler> Mve8 = VectorElementAccess(Bf((4, 1)), mve8Alignments);
+        private static readonly Mutator<A32Disassembler> Mve16 = VectorElementAccess(Bf((4, 1)), mve16Alignments);
+        private static readonly Mutator<A32Disassembler> Mve32 = VectorElementAccess(Bf((4, 1)), mve32Alignments);
         private static readonly Mutator<A32Disassembler> Mvea = VectorElementAccess(Bf((4, 1), (6, 2)), mveaAlignments);
 
         private static Mutator<A32Disassembler> SR =>
@@ -1339,7 +1345,7 @@ namespace Reko.Arch.Arm.AArch32
         /// <summary>
         /// Multiple vector registers.
         /// </summary>
-        private static Mutator<A32Disassembler> Vmr(int nregs, bool allLanes)
+        private static Mutator<A32Disassembler> Vmr(int nregs, bool allLanes = false)
         {
             var fields = Bf((22, 1), (12, 4));
             return (u, d) =>
@@ -1347,20 +1353,36 @@ namespace Reko.Arch.Arm.AArch32
                 var dregStart = (int) Bitfield.ReadFields(fields, u);
                 if (dregStart + nregs > Registers.DRegs.Length)
                     return false;
-                var vmr = new VectorMultipleRegisterOperand(PrimitiveType.Word64, Registers.DRegs, dregStart, nregs);
+                var vmr = new VectorMultipleRegisterOperand(PrimitiveType.Word64, Registers.DRegs, dregStart, nregs, 1);
                 vmr.ElementType = ArmVectorData.I64;
                 vmr.AllLanes = allLanes;
                 d.state.ops.Add(vmr);
                 return true;
             };
         }
-        private readonly static Mutator<A32Disassembler> vmr1 = Vmr(1, false);
-        private readonly static Mutator<A32Disassembler> vmr2 = Vmr(2, false);
-        private readonly static Mutator<A32Disassembler> vmr3 = Vmr(3, false);
-        private readonly static Mutator<A32Disassembler> vmr4 = Vmr(4, false);
-        private readonly static Mutator<A32Disassembler> vmr1a = Vmr(1, true);
-        private readonly static Mutator<A32Disassembler> vmr2a = Vmr(2, true);
 
+        private static Mutator<A32Disassembler> Vmr(int nregs, Bitfield index, int inc, bool allLanes)
+        {
+            var fields = Bf((22, 1), (12, 4));
+            return (u, d) =>
+            {
+                var dregStart = (int) Bitfield.ReadFields(fields, u);
+                if (dregStart + nregs > Registers.DRegs.Length)
+                    return false;
+                var vmr = new VectorMultipleRegisterOperand(PrimitiveType.Word64, Registers.DRegs, dregStart, nregs, inc);
+                vmr.ElementType = ArmVectorData.I64;
+                if (allLanes)
+                {
+                    vmr.AllLanes = allLanes;
+                }
+                else
+                {
+                    vmr.Index = (int)index.Read(u);
+                }
+                d.state.ops.Add(vmr);
+                return true;
+            };
+        }
 
         private static Mutator<A32Disassembler> Imm(Constant c)
         {
@@ -3819,21 +3841,21 @@ namespace Reko.Arch.Arm.AArch32
                     AdvancedSimd_TwoRegisterOrThreeRegisters,
                     AdvancedSimd_ShiftsAndImmediate));
 
-            var AdvancedSimdLdStMultipleStructures = Mask(21, 1, "Advanced SIMD load/ store multiple structures",
+            var AdvancedSimdLdStMultipleStructures = Mask(21, 1, "Advanced SIMD load/store multiple structures",
                 Mask(8, 4, "  L=0 type",
                     nyi("VST4(multiple 4 - element structures)"),
                     nyi("VST4(multiple 4 - element structures)"),
-                    Instr(Mnemonic.vst1, vi_BHSD, vmr4, Mve),
-                    Instr(Mnemonic.vst2, vi_BHSD, vmr2, Mve),
+                    Instr(Mnemonic.vst1, vi_BHSD, Vmr(4), Mve),
+                    Instr(Mnemonic.vst2, vi_BHSD, Vmr(2), Mve),
 
                     Instr(Mnemonic.vst3, vi_ld3, Vel(4, 2), Mve),
                     Instr(Mnemonic.vst3, vi_ld3, Vel(4, 2), Mve),
                     nyi("VST1(multiple single elements)"),
-                    Instr(Mnemonic.vst1, vi_BHSD, vmr1, Mve),
+                    Instr(Mnemonic.vst1, vi_BHSD, Vmr(1), Mve),
 
-                    Instr(Mnemonic.vst2, vi_BHSD, vmr2, Mve),
+                    Instr(Mnemonic.vst2, vi_BHSD, Vmr(2), Mve),
                     nyi("VST2(multiple 2 - element structures)"),
-                    Instr(Mnemonic.vst1, vi_BHSD, vmr2, Mve),
+                    Instr(Mnemonic.vst1, vi_BHSD, Vmr(2), Mve),
                     invalid,
 
                     invalid,
@@ -3849,11 +3871,11 @@ namespace Reko.Arch.Arm.AArch32
                     nyi("VLD3(multiple 3 - element structures)"),
                     nyi("VLD3(multiple 3 - element structures)"),
                     nyi("VLD1(multiple single elements)"),
-                    Instr(Mnemonic.vld1, vi_BHSD, vmr1, Mve),
+                    Instr(Mnemonic.vld1, vi_BHSD, Vmr(1), Mve),
 
                     nyi("VLD2(multiple 2 - element structures)"),
                     nyi("VLD2(multiple 2 - element structures)"),
-                    Instr(Mnemonic.vld1, vi_BHSD, vmr2, Mve),
+                    Instr(Mnemonic.vld1, vi_BHSD, Vmr(2), Mve),
                     invalid,
 
                     invalid,
@@ -3885,16 +3907,20 @@ namespace Reko.Arch.Arm.AArch32
                         invalid)),
                 Mask(8, 2, "  L=1",
                     Mask(10, 2, "  N=00 size",
-                        Instr(Mnemonic.vst1, x("single element - A1")),
-                        Instr(Mnemonic.vst1, x("single element - A2")),
-                        Instr(Mnemonic.vst1, x("single element - A3")),
+                        Instr(Mnemonic.vld1, x("single element - A1")),
+                        Instr(Mnemonic.vld1, x("single element - A2")),
+                        Instr(Mnemonic.vld1, x("single element - A3")),
                         invalid),
                     Mask(10, 2, "  N=01 size",
-                        nyi("VLD2 (single 2-element structure from one lane) - A1"),
+                        Instr(Mnemonic.vld2, vi_ld2, Vmr(2, new Bitfield(5,3), 1, false), Mve8),
                         Mask(5, 1, "  size=01",
-                            Instr(Mnemonic.vld2, vi_ld2, Vel(2, 1)),
-                            Instr(Mnemonic.vld2, vi_ld2, Vel(2, 2), Mve)),
-                        nyi("VLD2 (single 2-element structure from one lane) - A3"),
+                            Instr(Mnemonic.vld2, vi_ld2, Vmr(2, new Bitfield(6, 2), 1, false), Mve16),
+                            Instr(Mnemonic.vld2, vi_ld2, Vmr(2, new Bitfield(6, 2), 2, false), Mve16)),
+                        Mask(5, 2, "  size=10",
+                            Instr(Mnemonic.vld2, vi_ld2, Vmr(2, new Bitfield(7, 1), 1, false), Mve32),
+                            invalid,
+                            Instr(Mnemonic.vld2, vi_ld2, Vmr(2, new Bitfield(7, 1), 2, false), Mve32),
+                            invalid),
                         invalid),
                     Mask(10, 2, "  N=10 size",
                         nyi("VLD3 (single 3-element structure from one lane) - A1"),
@@ -3911,8 +3937,8 @@ namespace Reko.Arch.Arm.AArch32
                 invalid,
                 Mask(8, 2, "  L=1 N",
                     Mask(5, 1, "  N=00 T",
-                        Instr(Mnemonic.vld1, vi_BHSD, vmr1a, Mvea),
-                        Instr(Mnemonic.vld1, vi_BHSD, vmr2a, Mvea)),
+                        Instr(Mnemonic.vld1, vi_BHSD, Vmr(1, true), Mvea),
+                        Instr(Mnemonic.vld1, vi_BHSD, Vmr(2, true), Mvea)),
                     nyi("VLD2(single 2 - element structure to all lanes)"),
                     Mask(4, 1, "  N=10 a",
                         nyi("VLD3(single 3 - element structure to all lanes)"),

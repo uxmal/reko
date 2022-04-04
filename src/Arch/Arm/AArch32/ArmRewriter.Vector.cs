@@ -74,6 +74,7 @@ namespace Reko.Arch.Arm.AArch32
             DataType srcType;
             switch (instr.vector_data)
             {
+            case ArmVectorData.F32F64: dstType = PrimitiveType.Real32; srcType = PrimitiveType.Real64; break;
             case ArmVectorData.F32S16: dstType = PrimitiveType.Real32; srcType = PrimitiveType.Int16; break;
             case ArmVectorData.F32S32: dstType = PrimitiveType.Real32; srcType = PrimitiveType.Int32; break;
             case ArmVectorData.F32U32: dstType = PrimitiveType.Real32; srcType = PrimitiveType.UInt32; break;
@@ -108,6 +109,7 @@ namespace Reko.Arch.Arm.AArch32
             switch (instr.vector_data)
             {
             case ArmVectorData.S32F32: srcType = PrimitiveType.Real32; dstType = PrimitiveType.Int32; break;
+            case ArmVectorData.S32F64: srcType = PrimitiveType.Real64; dstType = PrimitiveType.Int32; break;
             case ArmVectorData.U32F32: srcType = PrimitiveType.Real32; dstType = PrimitiveType.UInt32; break;
             case ArmVectorData.U32F64: srcType = PrimitiveType.Real64; dstType = PrimitiveType.UInt32; break;
             default: NotImplementedYet(); return;

@@ -34,11 +34,12 @@ namespace Reko.Arch.Arm.AArch32
         private readonly RegisterStorage[] registers;
         private readonly int iRegStart;
 
-        public VectorMultipleRegisterOperand(PrimitiveType width, RegisterStorage[] registers, int iRegStart, int repeat) : base(width)
+        public VectorMultipleRegisterOperand(PrimitiveType width, RegisterStorage[] registers, int iRegStart, int repeat, int increment) : base(width)
         {
             this.registers = registers;
             this.iRegStart = iRegStart;
             this.Repeat = repeat;
+            this.Increment = increment;
             this.Index = -1;
         }
 
@@ -46,13 +47,17 @@ namespace Reko.Arch.Arm.AArch32
         public ArmVectorData ElementType { get; set; }
 
         public int Repeat { get; set; }
-        public int Index { get; internal set; }
+        public int Increment { get; set; }
+        public int Index { get; set; }
+
 
         public IEnumerable<RegisterStorage> GetRegisters()
         {
+            var iReg = iRegStart;
             for (int i = 0; i < Repeat; ++i)
             {
-                var reg = this.registers[(i + iRegStart) & 0x1F];
+                var reg = this.registers[iReg & 0x1F];
+                iReg += Increment;
                 yield return reg;
             }
         }
@@ -74,18 +79,17 @@ namespace Reko.Arch.Arm.AArch32
                 WriteName(reg, AllLanes, renderer, options);
             }
             renderer.WriteChar('}');
+        }
+
+        public void WriteName(RegisterStorage VectorRegister, bool allLanes, MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
+        {
+            renderer.WriteString(VectorRegister.Name);
+            if (allLanes)
+                renderer.WriteString("[]");
             if (Index >= 0)
             {
                 renderer.WriteFormat("[{0}]", Index);
             }
         }
-
-        public static void WriteName(RegisterStorage VectorRegister, bool allLanes, MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
-        {
-            renderer.WriteString(VectorRegister.Name);
-            if (allLanes)
-                renderer.WriteString("[]");
-        }
     }
-
 }

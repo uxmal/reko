@@ -81,7 +81,7 @@ namespace Reko.UnitTests.Arch.Arm
             var dasm = arch.CreateDisassembler(mem.CreateLeReader(0));
             var instr = dasm.First();
 
-            if (sExp != instr.ToString() && instr.MnemonicAsString == "Nyi")
+            if (sExp != instr.ToString()) // && instr.MnemonicAsString == "Nyi")
             {
                 Assert.AreEqual(sExp, instr.ToString());
             }
@@ -1724,9 +1724,28 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        public void ArmDasm_vld2_16()
+        public void ArmDasm_vld2_single_lane()
         {
-            AssertCode("vld2.16 {d31[0],d32[0]},[r1],lr", "0EF5E1F4");
+            AssertCode("vld2.i8\t{d3[0],d4[0]},[r10],r0", "00 31 aa f4");
+            AssertCode("vld2.i8\t{d3[0],d4[0]},[r10:16],r0", "10 31 aa f4");
+            AssertCode("vld2.i8\t{d3[1],d4[1]},[r10],r0", "20 31 aa f4");
+            AssertCode("vld2.i8\t{d3[1],d4[1]},[r10:16],r0", "30 31 aa f4");
+            AssertCode("vld2.i8\t{d3[2],d4[2]},[r10],r0", "40 31 aa f4");
+            AssertCode("vld2.i8\t{d3[2],d4[2]},[r10:16],r0", "50 31 aa f4");
+            AssertCode("vld2.i8\t{d3[3],d4[3]},[r10],r0", "60 31 aa f4");
+            AssertCode("vld2.i8\t{d3[7],d4[7]},[r10:16],r0", "f0 31 aa f4");
+            AssertCode("vld2.i16\t{d3[0],d4[0]},[r10],r0", "00 35 aa f4");
+            AssertCode("vld2.i16\t{d3[0],d4[0]},[r10:32],r0", "10 35 aa f4");
+            AssertCode("vld2.i16\t{d3[1],d4[1]},[r10],r0", "40 35 aa f4");
+            AssertCode("vld2.i16\t{d3[3],d5[3]},[r10],r0", "e0 35 aa f4");
+            AssertCode("vld2.i16\t{d3[3],d5[3]},[r10:32],r0", "f0 35 aa f4");
+            AssertCode("vld2.i32\t{d3[0],d4[0]},[r10],r0", "00 39 aa f4");
+            AssertCode("vld2.i32\t{d3[0],d4[0]},[r10:64],r0", "10 39 aa f4");
+            AssertCode("vld2.i32\t{d3[0],d5[0]},[r10],r0", "40 39 aa f4");
+            AssertCode("vld2.i32\t{d3[1],d4[1]},[r10],r0", "80 39 aa f4");
+            AssertCode("vld2.i32\t{d3[1],d4[1]},[r10:64],r0", "90 39 aa f4");
+            AssertCode("vld2.i32\t{d3[1],d5[1]},[r10],r0", "c0 39 aa f4");
+            AssertCode("vld2.i32\t{d3[1],d5[1]},[r10:64],r0", "d0 39 aa f4");
         }
 
         [Test]

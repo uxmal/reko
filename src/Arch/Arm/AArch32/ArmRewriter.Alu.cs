@@ -862,6 +862,18 @@ namespace Reko.Arch.Arm.AArch32
                 m.Int32(16)));
         }
 
+        private void RewriteShasx()
+        {
+            var src1 = Operand(1);
+            var src2 = Operand(2);
+            var diff = binder.CreateTemporary(PrimitiveType.Int16);
+            var sum = binder.CreateTemporary(PrimitiveType.Int16);
+            m.Assign(diff, m.ISub(m.Slice(src1, PrimitiveType.Int16, 0), m.Slice(src2, PrimitiveType.Int16, 16)));
+            m.Assign(sum, m.ISub(m.Slice(src1, PrimitiveType.Int16, 16), m.Slice(src2, PrimitiveType.Int16, 0)));
+            var dst = Operand(0);
+            m.Assign(dst, m.Seq(sum, diff));
+        }
+
         private void RewriteSsat()
         {
             var dst = this.Operand(0);
@@ -960,6 +972,18 @@ namespace Reko.Arch.Arm.AArch32
                     ((ImmediateOperand) instr.Operands[2]).Value.ToInt32(),
                     ((ImmediateOperand) instr.Operands[3]).Value.ToInt32());
             m.Assign(dst, m.Convert(src, src.DataType, PrimitiveType.UInt32));
+        }
+
+        private void RewriteUhsax()
+        {
+            var src1 = Operand(1);
+            var src2 = Operand(2);
+            var sum = binder.CreateTemporary(PrimitiveType.UInt16);
+            var diff = binder.CreateTemporary(PrimitiveType.UInt16);
+            m.Assign(sum, m.ISub(m.Slice(src1, PrimitiveType.UInt16, 0), m.Slice(src2, PrimitiveType.UInt16, 16)));
+            m.Assign(diff, m.ISub(m.Slice(src1, PrimitiveType.UInt16, 16), m.Slice(src2, PrimitiveType.UInt16, 0)));
+            var dst = Operand(0);
+            m.Assign(dst, m.Seq(diff, sum));
         }
 
         private void RewriteUmaal()

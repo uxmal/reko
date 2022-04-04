@@ -120,7 +120,6 @@ namespace Reko.Arch.Arm.AArch32
                 case Mnemonic.sha256su1:
                 case Mnemonic.shadd16:
                 case Mnemonic.shadd8:
-                case Mnemonic.shasx:
                 case Mnemonic.shsax:
                 case Mnemonic.smmlar:
                 case Mnemonic.smmlsr:
@@ -138,7 +137,6 @@ namespace Reko.Arch.Arm.AArch32
                 case Mnemonic.uhadd16:
                 case Mnemonic.uhadd8:
                 case Mnemonic.uhasx:
-                case Mnemonic.uhsax:
                 case Mnemonic.uhsub16:
                 case Mnemonic.uhsub8:
                 case Mnemonic.usad8:
@@ -344,6 +342,7 @@ namespace Reko.Arch.Arm.AArch32
                 case Mnemonic.sbfx: RewriteSbfx(); break;
                 case Mnemonic.sdiv: RewriteDiv(m.SDiv); break;
                 case Mnemonic.setend: RewriteSetend(); break;
+                case Mnemonic.shasx: RewriteShasx(); break;
                 case Mnemonic.shsub16: RewriteVectorBinOp("__shsub_{0}", ArmVectorData.S16); break;
                 case Mnemonic.shsub8: RewriteVectorBinOp("__shsub_{0}", ArmVectorData.S8); break;
                 case Mnemonic.smc: RewriteSmc(); break;
@@ -427,6 +426,7 @@ namespace Reko.Arch.Arm.AArch32
                 case Mnemonic.ubfx: RewriteUbfx(); break;
                 case Mnemonic.udf: RewriteUdf(); break;
                 case Mnemonic.udiv: RewriteDiv(m.UDiv); break;
+                case Mnemonic.uhsax: RewriteUhsax(); break;
                 case Mnemonic.umaal: RewriteUmaal(); break;
                 case Mnemonic.umlal: RewriteUmlal(); break;
                 case Mnemonic.umull: RewriteMull(PrimitiveType.UInt64, m.UMul); break;
