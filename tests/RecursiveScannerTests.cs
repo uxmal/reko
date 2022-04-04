@@ -108,7 +108,11 @@ namespace Reko.ScannerV2.UnitTests
 
             public ICollection<Block> Predecessors(Block node)
             {
-                throw new NotImplementedException();
+                return cfg.Predecessors.TryGetValue(node.Address, out var edges)
+                    ? edges
+                        .Select(e => cfg.Blocks[e.From])
+                        .ToArray()
+                    : Array.Empty<Block>();
             }
 
             public void RemoveEdge(Block nodeFrom, Block nodeTo)
@@ -143,6 +147,13 @@ namespace Reko.ScannerV2.UnitTests
                 foreach(var block in it.PreOrder(cfg.Blocks[proc.Address]).OrderBy(b => b.Name))
                 {
                     w.WriteLine("{0}:", block.Name);
+                    w.Write("    // pred:");
+                    foreach (var s in g.Predecessors(block))
+                    {
+                        w.Write(" {0}", s.Name);
+                    }
+                    w.WriteLine();
+
                     foreach (var cluster in block.Instructions)
                     {
                         foreach (var instr in cluster.Instructions)
@@ -150,7 +161,7 @@ namespace Reko.ScannerV2.UnitTests
                             w.WriteLine("    {0}", instr);
                         }
                     }
-                    w.Write("    succ:");
+                    w.Write("    // succ:");
                     foreach (var s in g.Successors(block))
                     {
                         w.Write(" {0}", s.Name);
@@ -173,8 +184,9 @@ namespace Reko.ScannerV2.UnitTests
 @"
 define fn00001000
 l00001000:
+    // pred:
     return (0,0)
-    succ:
+    // succ:
 ";
             #endregion
             RunTest(sExpected);
@@ -196,10 +208,11 @@ l00001000:
 @"
 define fn00001000
 l00001000:
+    // pred:
     r2 = 0x2A<32>
     r1 = r2
     return (0,0)
-    succ:
+    // succ:
 ";
             #endregion
             RunTest(sExpected);
@@ -230,17 +243,20 @@ l00001000:
 @"
 define fn00001000
 l00001000:
+    // pred:
     r2 = r2 - 1<32>
     if (r2 != 0<32>) branch 00001010
-    succ: l00001008 l00001010
+    // succ: l00001008 l00001010
 l00001008:
+    // pred: l00001000
     r1 = 0<32>
     return (0,0)
-    succ:
+    // succ:
 l00001010:
+    // pred: l00001000
     r1 = 1<32>
     return (0,0)
-    succ:
+    // succ:
 ";
             #endregion
             RunTest(sExpected);
@@ -272,16 +288,19 @@ l00001010:
 @"
 define fn00001000
 l00001000:
+    // pred:
     r2 = 0xA<32>
-    succ: l00001004
+    // succ: l00001004
 l00001004:
+    // pred: l00001000 l00001004
     r2 = r2 - 1<32>
     if (r2 != 0<32>) branch 00001004
-    succ: l0000100C l00001004
+    // succ: l0000100C l00001004
 l0000100C:
+    // pred: l00001004
     r1 = 0<32>
     return (0,0)
-    succ:
+    // succ:
 ";
             #endregion
             RunTest(sExpected);
@@ -313,19 +332,22 @@ l0000100C:
                 @"
 define fn00001000
 l00001000:
+    // pred:
     r1 = 3<32>
     call 00001020 (0)
-    succ: l00001008
+    // succ: l00001008
 l00001008:
+    // pred: l00001000
     Mem0[0x3000<32>:word32] = r1
     return (0,0)
-    succ:
+    // succ:
 
 define fn00001020
 l00001020:
+    // pred:
     r1 = r1 *s r1
     return (0,0)
-    succ:
+    // succ:
 ";
             #endregion
 
@@ -362,20 +384,24 @@ l00001020:
                 @"
 define fn00001000
 l00001000:
+    // pred:
     r1 = 0<32>
     r2 = 0x14<32>
     goto 00001014
-    succ: l00001014
+    // succ: l00001014
 l0000100C:
+    // pred: l00001014
     r1 = r2
     r2 = r2 - 1<32>
-    succ: l00001014
+    // succ: l00001014
 l00001014:
+    // pred: l00001000 l0000100C
     if (r2 != 0<32>) branch 0000100C
-    succ: l00001018 l0000100C
+    // succ: l00001018 l0000100C
 l00001018:
+    // pred: l00001014
     return (0,0)
-    succ:
+    // succ:
 ";
             #endregion
 
@@ -415,20 +441,24 @@ l00001018:
                 @"
 define fn00001000
 l00001000:
+    // pred:
     r1 = 0<32>
     r2 = Mem0[0x123400<32>:word32]
     goto 00001014
-    succ: l00001014
+    // succ: l00001014
 l0000100C:
+    // pred: l00001014
     r1 = r2
     r2 = r2 - 1<32>
-    succ: l00001014
+    // succ: l00001014
 l00001014:
+    // pred: l00001000 l0000100C
     if (r2 != 0<32>) branch 0000100C
-    succ: l0000101C l0000100C
+    // succ: l0000101C l0000100C
 l0000101C:
+    // pred: l00001014
     return (0,0)
-    succ:
+    // succ:
 ";
             #endregion
 
@@ -472,22 +502,27 @@ l0000101C:
                 @"
 define fn00001000
 l00001000:
+    // pred:
     r1 = r2
-    succ: l00001004
+    // succ: l00001004
 l00001004:
+    // pred: l00001000 l00001008
     r2 = r2 + 1<32>
-    succ: l00001008
+    // succ: l00001008
 l00001008:
+    // pred: l00001004 l00001010
     r1 = Mem0[0x123400<32>:word32]
     if (r1 == 0<32>) branch 00001004
-    succ: l00001010 l00001004
+    // succ: l00001010 l00001004
 l00001010:
+    // pred: l00001008
     r2 = Mem0[r1:word32]
     if (r2 == 0<32>) branch 00001008
-    succ: l00001018 l00001008
+    // succ: l00001018 l00001008
 l00001018:
+    // pred: l00001010
     return (0,0)
-    succ:
+    // succ:
 ";
             #endregion
 
@@ -525,24 +560,29 @@ l00001018:
                 @"
 define fn00001000
 l00001000:
+    // pred:
     call 00001030 (0)
-    succ: l00001004
+    // succ: l00001004
 l00001004:
+    // pred: l00001000
     return (0,0)
-    succ:
+    // succ:
 
 define fn00001030
 l00001030:
+    // pred:
     return (0,0)
-    succ:
+    // succ:
 
 define fn00001040
 l00001040:
+    // pred:
     call 00001000 (0)
-    succ: l00001044
+    // succ: l00001044
 l00001044:
+    // pred: l00001040
     return (0,0)
-    succ:
+    // succ:
 ";
             #endregion
 
@@ -562,8 +602,9 @@ l00001044:
                 @"
 define fn00001000
 l00001000:
+    // pred:
     <invalid>
-    succ:
+    // succ:
 ";
             #endregion
 
@@ -591,14 +632,16 @@ l00001000:
 @"
 define fn00001000
 l00001000:
+    // pred:
     r1 = Mem0[0x00003000<p32>:word32]
     if (r1 == 0<32>) branch 00001008
     r2 = r2 / r1
-    succ: l00001008
+    // succ: l00001008
 l00001008:
+    // pred: l00001000
     Mem0[0x00004000<p32>:word32] = r2
     return (0,0)
-    succ:
+    // succ:
 ";
             #endregion
             RunTest(sExpected);
@@ -619,7 +662,7 @@ l00001008:
                 { 4, m => m.Assign(m.Mem32(r2), m.ISub(r1, 1)) },
                 { 4, m => m.Branch(m.Ne0(m.Mem32(m.IAdd(r2, 4))), Address.Ptr32(0x1002)) },
             });
-            Given_Trace(new RtlTrace(0x1008)
+            Given_Trace(new RtlTrace(0x100A)
             {
                 m => m.Return(0, 0)
             });
@@ -629,17 +672,22 @@ l00001008:
                 @"
 define fn00001000
 l00001000:
+    // pred:
     r1 = 4<32>
     Mem0[r2:word32] = r1
-    succ: l00001006
+    // succ: l00001006
 l00001002:
+    // pred: l00001006
     Mem0[r2:word32] = r1 - 1<32>
-    succ: l00001006
+    // succ: l00001006
 l00001006:
+    // pred: l00001000 l00001002
     if (Mem0[r2 + 4<32>:word32] != 0<32>) branch 00001002
-    succ: l0000100A l00001002
+    // succ: l0000100A l00001002
 l0000100A:
-    succ:
+    // pred: l00001006
+    return (0,0)
+    // succ:
 ";
             #endregion
 

@@ -57,6 +57,7 @@ namespace Reko.ScannerV2
             var seeds = CollectSeeds();
             EnqueueWorkers(seeds.Select(MakeSeedWorker));
             ProcessWorkers();
+            RegisterPredecessors();
             //var gaps = FindGaps(cfg);
             //var shingle = new ShingleScanner(program);
             //var newCfg = shingle.Scan(gaps);
@@ -258,6 +259,22 @@ namespace Reko.ScannerV2
                 cfg.Successors.TryAdd(edge.From, edges);
             }
             edges.Add(edge);
+        }
+
+        private void RegisterPredecessors()
+        {
+            foreach (var (from, succs) in cfg.Successors)
+            {
+                foreach (var edge in succs)
+                {
+                    if (!cfg.Predecessors.TryGetValue(edge.To, out var edges))
+                    {
+                        edges = new List<Edge>();
+                        cfg.Predecessors.TryAdd(edge.To, edges);
+                    }
+                    edges.Add(edge);
+                }
+            }
         }
 
         public void ResumeWorker(

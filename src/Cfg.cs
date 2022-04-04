@@ -14,6 +14,7 @@ namespace Reko.ScannerV2
         {
             this.Blocks = new();
             this.Successors = new();
+            this.Predecessors = new();
             this.Procedures = new();
             this.Stubs = new();
             this.NoDecompiles = new();
@@ -29,6 +30,12 @@ namespace Reko.ScannerV2
         /// addresses.
         /// </summary>
         public ConcurrentDictionary<Address, List<Edge>> Successors { get; }
+
+        /// <summary>
+        /// Maps end ("to") addresses to <see cref="Edge"/>s arriving at those
+        /// addresses.
+        /// </summary>
+        public ConcurrentDictionary<Address, List<Edge>> Predecessors { get; }
 
         /// <summary>
         /// Maps the entry point address to <see cref="Proc"/>s.
