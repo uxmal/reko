@@ -94,7 +94,12 @@ namespace Reko.ScannerV2
             }
             foreach (var sym in program.ImageSymbols)
             {
-                result.TryAdd(sym.Key, sym.Value);
+                if ((sym.Value.Type == SymbolType.Code ||
+                    sym.Value.Type == SymbolType.Procedure)
+                    && IsExecutableAddress(sym.Value.Address))
+                {
+                    result.TryAdd(sym.Key, sym.Value);
+                }
             }
             return result;
         }
@@ -140,7 +145,9 @@ namespace Reko.ScannerV2
         private void ProcessWorkers()
         {
             while (wl.TryGetWorkItem(out var worker))
+            {
                 worker.Run();
+            }
         }
 
         public bool TryRegisterBlockStart(Address addrBlock, Address addrProc)

@@ -200,6 +200,11 @@ namespace Reko.ScannerV2
             case RtlReturn:
                 result.Add(new Edge(block.Address, proc.Address, EdgeType.Return));
                 break;
+            case RtlAssignment:
+            case RtlSideEffect:
+            case RtlNop:
+                result.Add(new Edge(block.Address, block.FallThrough, EdgeType.Fallthrough));
+                break;
             default:
                 throw new NotImplementedException();
             }

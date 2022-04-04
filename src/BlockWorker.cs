@@ -62,6 +62,7 @@ namespace Reko.ScannerV2
             {
                 var cluster = trace.Current;
                 addrLast = cluster.Address;
+                bool clusterHadControlInstrs = false;
                 foreach (var rtl in cluster.Instructions)
                 {
                     trace_Verbose("      {0}: {1}", cluster.Address, rtl);
@@ -83,6 +84,13 @@ namespace Reko.ScannerV2
                         var size = addrLast - this.Address + cluster.Length;
                         return (MakeInvalidBlock(instrs, size), state);
                     case RtlBranch branch:
+                        //Expand sub-instruction statements in a later pass.
+                        if (branch.NextStatementRequiresLabel)
+                        {
+                            instrs.Add((cluster.Address, rtl));
+                            continue;
+                        }
+                        break;
                     case RtlGoto g:
                     case RtlCall call:
                     case RtlReturn ret:
@@ -92,6 +100,17 @@ namespace Reko.ScannerV2
                     }
                     Debug.Assert(rtl.Class.HasFlag(InstrClass.Transfer));
                     return MakeBlock(instrs, state, rtl);
+                }
+                if (clusterHadControlInstrs)
+                {
+                    var addrFallthrough = cluster.Address + cluster.Length;
+                    var block = scanner.RegisterBlock(
+                        this.state.Architecture,
+                        this.Address,
+                        addrFallthrough - this.Address,
+                        addrFallthrough,
+                        instrs);
+                    return (block, state);
                 }
             }
             // Fell off the end, mark as bad.

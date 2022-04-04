@@ -565,5 +565,39 @@ l00001000:
 
             RunTest(sExpected);
         }
+
+        [Test]
+        public void RecScan_ConditionalMove()
+        {
+            Given_EntryPoint(0x1000);
+            Given_Trace(new RtlTrace(0x1000)
+            {
+                m => m.Assign(r1, m.Mem32(m.Ptr32(0x3000))),
+                m =>
+                {
+                    m.BranchInMiddleOfInstruction(m.Eq0(r1), Address.Ptr32(0x1008), InstrClass.ConditionalTransfer);
+                    m.Assign(r2, m.SDiv(r2, r1));
+                },
+                m => m.Assign(m.Mem32(m.Ptr32(0x4000)), r2),
+                m => m.Return(0,0)
+            });
+
+            var sExpected =
+            #region Expected
+@"
+define fn00001000
+l00001000:
+    r1 = Mem0[0x00003000<p32>:word32]
+    if (r1 == 0<32>) branch 00001008
+    r2 = r2 / r1
+    succ: l00001008
+l00001008:
+    Mem0[0x00004000<p32>:word32] = r2
+    return (0,0)
+    succ:
+";
+            #endregion
+            RunTest(sExpected);
+        }
     }
 }
