@@ -17,31 +17,24 @@ using System.Threading.Tasks;
 
 namespace Reko.ScannerV2
 {
-    public class RecursiveScanner
+    public class RecursiveScanner : AbstractScanner
     {
-        private Reko.Core.Program program;
-        private Cfg cfg;
         private readonly WorkList<ProcedureWorker> wl;
-        private readonly IRewriterHost host;
         private readonly ConcurrentDictionary<Address, Address> blockStarts;
         private readonly ConcurrentDictionary<Address, Address> blockEnds;
         private readonly ConcurrentDictionary<Address, ProcedureWorker> activeWorkers;
         private readonly ConcurrentDictionary<Address, ProcedureWorker> suspendedWorkers; 
         private readonly ConcurrentDictionary<Address, ReturnStatus> procReturnStatus;
-        private readonly DecompilerEventListener listener;
 
         public RecursiveScanner(Reko.Core.Program program, DecompilerEventListener listener)
+            : base(program, new Cfg(), listener)
         {
-            this.program = program;
-            this.cfg = new Cfg();
             this.wl = new WorkList<ProcedureWorker>();
-            this.host = new RewriterHost(program);
             this.blockStarts = new ConcurrentDictionary<Address, Address>();
             this.blockEnds = new ConcurrentDictionary<Address, Address>();
             this.activeWorkers = new();
             this.suspendedWorkers = new();
             this.procReturnStatus = new();
-            this.listener = listener;
         }
 
         public ExpressionSimplifier CreateEvaluator(ProcessorState state)
@@ -68,13 +61,7 @@ namespace Reko.ScannerV2
             return cfg;
         }
 
-        public IEnumerable<RtlInstructionCluster> MakeTrace(Address addr, ProcessorState state, IStorageBinder binder)
-        {
-            var arch = state.Architecture;
-            var rdr = program.CreateImageReader(arch, addr);
-            var rw = arch.CreateRewriter(rdr, state, binder, host);
-            return rw;
-        }
+
 
         private object? FindGaps(Cfg cfg)
         {
@@ -168,19 +155,6 @@ namespace Reko.ScannerV2
             return this.blockStarts.TryAdd(addrBlock, addrProc);
         }
 
-        public Block RegisterBlock(
-            IProcessorArchitecture arch,
-            Address addrBlock,
-            long length,
-            Address addrFallthrough,
-            List<RtlInstructionCluster> instrs)
-        {
-            var id = program.NamingPolicy.BlockName(addrBlock);
-            var block = new Block(arch, addrBlock, id, (int)length, addrFallthrough, instrs);
-            var success = cfg.Blocks.TryAdd(addrBlock, block);
-            Debug.Assert(success);
-            return block;
-        }
 
         public bool TryRegisterBlockEnd(Address addrBlockStart, Address addrBlockLast)
         {
@@ -473,87 +447,6 @@ namespace Reko.ScannerV2
             }
         }
 
-        private class RewriterHost : IRewriterHost
-        {
-            private Reko.Core.Program program;
-
-            public RewriterHost(Reko.Core.Program program)
-            {
-                this.program = program;
-            }
-
-            public IProcessorArchitecture GetArchitecture(string archMoniker)
-            {
-                throw new NotImplementedException();
-            }
-
-            public Expression GetImport(Address addrThunk, Address addrInstr)
-            {
-                throw new NotImplementedException();
-            }
-
-            public ExternalProcedure GetImportedProcedure(IProcessorArchitecture arch, Address addrThunk, Address addrInstr)
-            {
-                throw new NotImplementedException();
-            }
-
-            public ExternalProcedure GetInterceptedCall(IProcessorArchitecture arch, Address addrImportThunk)
-            {
-                throw new NotImplementedException();
-            }
-
-            public IntrinsicProcedure EnsureIntrinsic(string name, bool hasSideEffect, DataType returnType, int arity)
-            {
-                var args = Enumerable.Range(0, arity).Select(i => Constant.Create(program.Architecture.WordWidth, 0)).ToArray();
-                var intrinsic = program.EnsureIntrinsicProcedure(name, hasSideEffect, returnType, args);
-                return intrinsic;
-            }
-
-            public Expression CallIntrinsic(string name, bool hasSideEffect, FunctionType fnType, params Expression[] args)
-            {
-                var intrinsic = program.EnsureIntrinsicProcedure(name, hasSideEffect, fnType);
-                return new Application(
-                    new ProcedureConstant(program.Architecture.PointerType, intrinsic),
-                    fnType.ReturnValue.DataType,
-                    args);
-            }
-
-            public Expression Intrinsic(string name, bool hasSideEffect, DataType returnType, params Expression[] args)
-            {
-                var intrinsic = program.EnsureIntrinsicProcedure(name, hasSideEffect, returnType, args);
-                return new Application(
-                    new ProcedureConstant(program.Architecture.PointerType, intrinsic),
-                    returnType,
-                    args);
-            }
-
-
-            public Expression Intrinsic(string name, bool hasSideEffect, ProcedureCharacteristics c, DataType returnType, params Expression[] args)
-            {
-                var intrinsic = program.EnsureIntrinsicProcedure(name, hasSideEffect, returnType, args);
-                intrinsic.Characteristics = c;
-                return new Application(
-                    new ProcedureConstant(program.Architecture.PointerType, intrinsic),
-                    returnType,
-                    args);
-            }
-
-            public bool TryRead(IProcessorArchitecture arch, Address addr, PrimitiveType dt, out Constant value)
-            {
-                throw new NotImplementedException();
-            }
-
-            public void Error(Address address, string format, params object[] args)
-            {
-                var msg = string.Format(format, args);
-                Debug.WriteLine($"E: {address}: {msg}");
-            }
-
-            public void Warn(Address address, string format, params object[] args)
-            {
-                throw new NotImplementedException();
-            }
-        }
     }
 
     public enum ReturnStatus

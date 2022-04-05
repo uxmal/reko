@@ -1,74 +1,21 @@
 ﻿using Moq;
 using NUnit.Framework;
 using Reko.Core;
-using Reko.Core.Expressions;
 using Reko.Core.Lib;
-using Reko.Core.Memory;
-using Reko.Core.Rtl;
 using Reko.Core.Services;
-using Reko.Core.Types;
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Reko.ScannerV2.UnitTests
 {
     [TestFixture]
-    public class RecursiveScannerTests
+    public class RecursiveScannerTests : AbstractScannerTests
     {
-        private Mock<IProcessorArchitecture> arch = default!;
-        private Program program = default!;
-        private Identifier r1 = Identifier.Create(new RegisterStorage("r1", 1, 0, PrimitiveType.Word32));
-        private Identifier r2 = Identifier.Create(new RegisterStorage("r2", 2, 0, PrimitiveType.Word32));
-
         [SetUp]
         public void Setup()
         {
-            this.arch = new Mock<IProcessorArchitecture>();
-            arch.Setup(a => a.Name).Returns("FakeCpu");
-            arch.Setup(a => a.CreateProcessorState())
-                .Returns(new Func<ProcessorState>(() => new FakeProcessorState(arch.Object)));
-            arch.Setup(a => a.CreateImageReader(
-                It.IsNotNull<MemoryArea>(),
-                It.IsNotNull<Address>()))
-                .Returns(new Func<MemoryArea, Address, EndianImageReader>((mm, aa) =>
-                    mm.CreateLeReader(aa)));
-
-            var segmentMap = new SegmentMap(
-                new ImageSegment(
-                    ".text",
-                    new ByteMemoryArea(Address.Ptr32(0x1000), new byte[4096]),
-                    AccessMode.ReadExecute),
-                new ImageSegment(
-                    ".data",
-                    new ByteMemoryArea(Address.Ptr32(0x3000), new byte[4096]),
-                    AccessMode.ReadWrite));
-
-            this.program = new Program
-            {
-                SegmentMap = segmentMap,
-                Architecture = arch.Object,
-            };
-        }
-
-        private void Given_EntryPoint(uint uAddr)
-        {
-            var addr = Address.Ptr32(uAddr);
-            var sym = ImageSymbol.Procedure(arch.Object, addr);
-            this.program.EntryPoints.Add(addr, sym);
-        }
-
-        private void Given_Trace(RtlTrace trace)
-        {
-            arch.Setup(a => a.CreateRewriter(
-                It.Is<EndianImageReader>(r => r.Address == trace.StartAddress),
-                It.IsNotNull<ProcessorState>(),
-                It.IsNotNull<IStorageBinder>(),
-                It.IsNotNull<IRewriterHost>()))
-                .Returns(trace);
+            base.Setup(4096, 8);
         }
 
         private void RunTest(string sExpected)
@@ -85,57 +32,6 @@ namespace Reko.ScannerV2.UnitTests
             }
         }
 
-        private class CfgGraph : DirectedGraph<Block>
-        {
-            private Cfg cfg;
-
-            public CfgGraph(Cfg cfg)
-            {
-                this.cfg = cfg;
-            }
-
-            public ICollection<Block> Nodes => cfg.Blocks.Values;
-
-            public void AddEdge(Block nodeFrom, Block nodeTo)
-            {
-                throw new NotImplementedException();
-            }
-
-            public bool ContainsEdge(Block nodeFrom, Block nodeTo)
-            {
-                throw new NotImplementedException();
-            }
-
-            public ICollection<Block> Predecessors(Block node)
-            {
-                return cfg.Predecessors.TryGetValue(node.Address, out var edges)
-                    ? edges
-                        .Select(e => cfg.Blocks[e.From])
-                        .ToArray()
-                    : Array.Empty<Block>();
-            }
-
-            public void RemoveEdge(Block nodeFrom, Block nodeTo)
-            {
-                throw new NotImplementedException();
-            }
-
-            public ICollection<Block> Successors(Block node)
-            {
-                return cfg.Successors.TryGetValue(node.Address, out var edges)
-                    ? edges
-                        .Select(e => Get(e))
-                        .ToArray()
-                    : Array.Empty<Block>();
-            }
-
-            private Block Get(Edge e)
-            {
-                var b = cfg.Blocks[e.To];
-                return b;
-            }
-        }
-
         private void DumpCfg(Cfg cfg, TextWriter w)
         {
             var g = new CfgGraph(cfg);
@@ -144,29 +40,9 @@ namespace Reko.ScannerV2.UnitTests
                 w.WriteLine();
                 w.WriteLine("define {0}", proc.Name);
                 var it = new DfsIterator<Block>(g);
-                foreach(var block in it.PreOrder(cfg.Blocks[proc.Address]).OrderBy(b => b.Name))
+                foreach (var block in it.PreOrder(cfg.Blocks[proc.Address]).OrderBy(b => b.Name))
                 {
-                    w.WriteLine("{0}:", block.Name);
-                    w.Write("    // pred:");
-                    foreach (var s in g.Predecessors(block))
-                    {
-                        w.Write(" {0}", s.Name);
-                    }
-                    w.WriteLine();
-
-                    foreach (var cluster in block.Instructions)
-                    {
-                        foreach (var instr in cluster.Instructions)
-                        {
-                            w.WriteLine("    {0}", instr);
-                        }
-                    }
-                    w.Write("    // succ:");
-                    foreach (var s in g.Successors(block))
-                    {
-                        w.Write(" {0}", s.Name);
-                    }
-                    w.WriteLine();
+                    DumpBlock(block, g, w);
                 }
             }
         }
@@ -601,7 +477,7 @@ l00001044:
             #region Expected
                 @"
 define fn00001000
-l00001000:
+l00001000: // (INVALID)
     // pred:
     <invalid>
     // succ:
