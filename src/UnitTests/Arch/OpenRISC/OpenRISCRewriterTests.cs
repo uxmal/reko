@@ -566,7 +566,7 @@ namespace Reko.UnitTests.Arch.OpenRISC
             Given_HexString("20006372");	// l.sys	00006372
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|__syscall(0x6372<32>)");
+                "1|L--|__syscall<word32>(0x6372<32>)");
         }
 
         [Test]

@@ -38,19 +38,6 @@ namespace Reko.WindowsItp
                 this.intrinsics = new Dictionary<string, IntrinsicProcedure>();
             }
 
-            public Expression CallIntrinsic(string name, bool hasSideEffect, FunctionType fnType, params Expression[] args)
-            {
-                if (!intrinsics.TryGetValue(name, out var intrinsic))
-                {
-                    intrinsic = new IntrinsicProcedure(name, hasSideEffect, fnType);
-                    intrinsics.Add(name, intrinsic);
-                }
-                return new Application(
-                    new ProcedureConstant(PrimitiveType.Ptr32, intrinsic),
-                    fnType.ReturnValue.DataType,
-                    args);
-            }
-
             public IntrinsicProcedure EnsureIntrinsic(string name, bool hasSideEffect, DataType returnType, int arity)
             {
                 if (intrinsics.TryGetValue(name, out var intrinsic))

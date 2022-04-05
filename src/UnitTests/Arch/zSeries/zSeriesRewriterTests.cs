@@ -2833,7 +2833,7 @@ namespace Reko.UnitTests.Arch.zSeries
             Given_HexString("0A68");
             AssertCode(     // svc	68
                 "0|T--|00100000(2): 1 instructions",
-                "1|L--|__syscall(0x68<8>)");
+                "1|L--|__syscall<byte>(0x68<8>)");
         }
 
         [Test]

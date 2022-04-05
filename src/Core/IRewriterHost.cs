@@ -36,7 +36,6 @@ namespace Reko.Core
         /// <param name="args"></param>
         /// <returns>An Application expression.</returns>
         Expression Intrinsic(string name, bool hasSideEffect, DataType returnType, params Expression [] args);
-        Expression CallIntrinsic(string name, bool hasSideEffect, FunctionType fnType, params Expression [] args);
         Expression Intrinsic(string name, bool hasSideEffect, ProcedureCharacteristics c, DataType returnType, params Expression [] args);
 
 
@@ -70,11 +69,6 @@ namespace Reko.Core
 
     public class NullRewriterHost : IRewriterHost
     {
-        public Expression CallIntrinsic(string name, bool hasSideEffect, FunctionType fnType, params Expression[] args)
-        {
-            throw new NotSupportedException();
-        }
-
         public IntrinsicProcedure EnsureIntrinsic(string name, bool hasSideEffect, DataType returnType, int arity)
         {
             throw new NotSupportedException();

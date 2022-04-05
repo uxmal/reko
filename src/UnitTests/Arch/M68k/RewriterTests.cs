@@ -1507,7 +1507,7 @@ namespace Reko.UnitTests.Arch.M68k
             AssertCode(
                 "0|L--|00010000(2): 2 instructions",
                 "1|T--|if (SLICE(d2, word16, 0) >= 0<16> && SLICE(d2, word16, 0) <= SLICE(d6, word16, 0)) branch 00010002",
-                "2|L--|__syscall(6<8>)");
+                "2|L--|__syscall<byte>(6<8>)");
         }
 
         [Test]
@@ -1517,7 +1517,7 @@ namespace Reko.UnitTests.Arch.M68k
             AssertCode(
                 "0|L--|00010000(2): 2 instructions",
                 "1|T--|if (Mem0[a2:word16] >= 0<16> && Mem0[a2:word16] <= SLICE(d6, word16, 0)) branch 00010002",
-                "2|L--|__syscall(6<8>)");
+                "2|L--|__syscall<byte>(6<8>)");
         }
 
         [Test]
@@ -1529,7 +1529,7 @@ namespace Reko.UnitTests.Arch.M68k
                 "1|L--|v3 = Mem0[a2:word16]",
                 "2|L--|a2 = a2 + 2<i32>",
                 "3|T--|if (v3 >= 0<16> && v3 <= SLICE(d6, word16, 0)) branch 00010002",
-                "4|L--|__syscall(6<8>)");
+                "4|L--|__syscall<byte>(6<8>)");
         }
 
         [Test]
@@ -1539,7 +1539,7 @@ namespace Reko.UnitTests.Arch.M68k
             AssertCode(
                 "0|L--|00010000(2): 2 instructions",
                 "1|T--|if (d2 >= 0<32> && d2 <= d6) branch 00010002",
-                "2|L--|__syscall(6<8>)");
+                "2|L--|__syscall<byte>(6<8>)");
         }
 
         [Test]
@@ -1577,7 +1577,7 @@ namespace Reko.UnitTests.Arch.M68k
             Given_UInt16s(0x4E4E);
             AssertCode(
                 "0|T--|00010000(2): 1 instructions",
-                "1|L--|__syscall(0xE<8>)");
+                "1|L--|__syscall<byte>(0xE<8>)");
         }
 
         [Test]
@@ -1586,7 +1586,7 @@ namespace Reko.UnitTests.Arch.M68k
             Given_HexString("50FC");
             AssertCode(     // trapt
                 "0|T--|00010000(2): 1 instructions",
-                "1|L--|__syscall(7<u16>)");
+                "1|L--|__syscall<uint16>(7<u16>)");
         }
 
  
@@ -1838,7 +1838,7 @@ namespace Reko.UnitTests.Arch.M68k
             AssertCode(
                 "0|T--|00010000(4): 2 instructions",
                 "1|T--|if (Test(NE,Z)) branch 00010004",
-                "2|L--|__syscall(7<u16>, 0x29<u16>)");
+                "2|L--|__syscall<uint16,uint16>(7<u16>, 0x29<u16>)");
         }
 
         [Test]
@@ -1868,7 +1868,7 @@ namespace Reko.UnitTests.Arch.M68k
             AssertCode(
                 "0|L--|00010000(4): 2 instructions",
                 "1|T--|if (null >= 0x00000000<p32> && null <= d3) branch 00010004",
-                "2|L--|__syscall(6<8>)");
+                "2|L--|__syscall<byte>(6<8>)");
         }
 
         [Test]
@@ -1929,7 +1929,7 @@ namespace Reko.UnitTests.Arch.M68k
             AssertCode(
                 "0|T--|00010000(2): 2 instructions",
                 "1|T--|if (Test(GE,N)) branch 00010002",
-                "2|L--|__syscall(7<u16>)");
+                "2|L--|__syscall<uint16>(7<u16>)");
         }
 
         [Test]

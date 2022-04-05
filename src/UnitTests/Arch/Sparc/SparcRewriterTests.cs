@@ -348,7 +348,7 @@ namespace Reko.UnitTests.Arch.Sparc
             AssertCode(
                 "0|L--|00100000(4): 2 instructions",
                 "1|T--|if (false) branch 00100004",
-                "2|L--|__syscall(0x19<32>)");
+                "2|L--|__syscall<word32>(0x19<32>)");
         }
 
         [Test]

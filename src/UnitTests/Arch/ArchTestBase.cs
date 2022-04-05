@@ -81,19 +81,6 @@ namespace Reko.UnitTests.Arch
                 return p;
             }
 
-            public Expression CallIntrinsic(string name, bool hasSideEffect, FunctionType fnType, params Expression[] args)
-            {
-                if (!intrinsics.TryGetValue(name, out var intrinsic))
-                {
-                    intrinsic = new IntrinsicProcedure(name, hasSideEffect, fnType);
-                    intrinsics.Add(name, intrinsic);
-                }
-                return new Application(
-                    new ProcedureConstant(PrimitiveType.Ptr32, intrinsic),
-                    intrinsic.ReturnType,
-                    args);
-            }
-
             public Expression Intrinsic(string name, bool hasSideEffect, DataType returnType, params Expression[] args)
             {
                 var intrinsic = EnsureIntrinsic(name, hasSideEffect, returnType, args.Length);

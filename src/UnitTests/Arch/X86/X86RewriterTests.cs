@@ -408,7 +408,7 @@ namespace Reko.UnitTests.Arch.X86
                 "0|L--|0C00:0000(3): 1 instructions",
                 "1|L--|ax = 0x4C00<16>",
                 "2|T--|0C00:0003(2): 1 instructions",
-                "3|L--|__syscall(0x21<8>)");
+                "3|L--|__syscall<byte>(0x21<8>)");
         }
 
         [Test]

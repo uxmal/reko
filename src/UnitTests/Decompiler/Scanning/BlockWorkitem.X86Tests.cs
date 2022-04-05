@@ -112,18 +112,6 @@ namespace Reko.UnitTests.Decompiler.Scanning
                 return p;
             }
 
-            public Expression CallIntrinsic(string name, bool hasSideEffect, FunctionType fnType, params Expression[] args)
-            {
-                if (!pprocs.TryGetValue(name, out var intrinsic))
-                {
-                    intrinsic = new IntrinsicProcedure(name, hasSideEffect, fnType);
-                    pprocs.Add(name, intrinsic);
-                }
-                return new Application(
-                    new ProcedureConstant(PrimitiveType.Ptr32, intrinsic),
-                    intrinsic.ReturnType, args);
-            }
-
             public Expression Intrinsic(string name, bool hasSideEffect, DataType returnType, params Expression[] args)
             {
                 var intrinsic = EnsureIntrinsic(name, hasSideEffect, returnType, args.Length);

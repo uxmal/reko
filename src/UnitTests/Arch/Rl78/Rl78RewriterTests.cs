@@ -57,7 +57,7 @@ namespace Reko.UnitTests.Arch.Rl78
             Given_HexString("61CC");
             AssertCode(     // brk
                 "0|L--|00001000(2): 1 instructions",
-                "1|L--|__syscall(0<16>)");
+                "1|L--|__syscall<word16>(0<16>)");
         }
 
         [Test]

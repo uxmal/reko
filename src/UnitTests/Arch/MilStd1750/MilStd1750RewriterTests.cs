@@ -109,7 +109,7 @@ namespace Reko.UnitTests.Arch.MilStd1750
             Given_HexString("770B");
             AssertCode(     // bex	053C
                 "0|T--|0100(1): 1 instructions",
-                "1|L--|__syscall(0xB<16>)");
+                "1|L--|__syscall<word16>(0xB<16>)");
         }
 
         [Test]

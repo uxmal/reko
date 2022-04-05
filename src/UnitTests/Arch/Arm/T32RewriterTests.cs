@@ -51,11 +51,6 @@ namespace Reko.UnitTests.Arch.Arm
                 return new IntrinsicProcedure(name, hasSideEffect, returnType, arity);
             }
 
-            public Expression CallIntrinsic(string name, bool hasSideEffect, FunctionType fnType, params Expression[] args)
-            {
-                throw new NotImplementedException();
-            }
-
             public Expression Intrinsic(string name, bool hasSideEffect, DataType returnType, params Expression[] args)
             {
                 throw new NotImplementedException();
