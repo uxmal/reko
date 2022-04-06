@@ -6,6 +6,7 @@ using Reko.Core.Services;
 using System;
 using System.IO;
 using System.Linq;
+using RtlBlock = Reko.Scanning.RtlBlock;
 
 namespace Reko.ScannerV2.UnitTests
 {
@@ -40,7 +41,7 @@ namespace Reko.ScannerV2.UnitTests
             {
                 w.WriteLine();
                 w.WriteLine("define {0}", proc.Name);
-                var it = new DfsIterator<Block>(g);
+                var it = new DfsIterator<RtlBlock>(g);
                 foreach (var block in it.PreOrder(cfg.Blocks[proc.Address]).OrderBy(b => b.Name))
                 {
                     DumpBlock(block, g, w);

@@ -10,6 +10,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using RtlBlock = Reko.Scanning.RtlBlock;
 
 namespace Reko.ScannerV2
 {
@@ -45,7 +46,7 @@ namespace Reko.ScannerV2
             return rw;
         }
 
-        public Block RegisterBlock(
+        public RtlBlock RegisterBlock(
             IProcessorArchitecture arch,
             Address addrBlock,
             long length,
@@ -53,7 +54,7 @@ namespace Reko.ScannerV2
             List<RtlInstructionCluster> instrs)
         {
             var id = program.NamingPolicy.BlockName(addrBlock);
-            var block = new Block(arch, addrBlock, id, (int)length, addrFallthrough, instrs);
+            var block = new RtlBlock(arch, addrBlock, id, (int)length, addrFallthrough, instrs);
             var success = cfg.Blocks.TryAdd(addrBlock, block);
             Debug.Assert(success);
             return block;
@@ -106,7 +107,7 @@ namespace Reko.ScannerV2
         /// <returns>A new, terminated but unregistered block. The caller is responsible for 
         /// registering it.
         /// </returns>
-        protected Block Chop(Block block, int iStart, int iEnd, long blockSize)
+        protected RtlBlock Chop(RtlBlock block, int iStart, int iEnd, long blockSize)
         {
             var instrs = new List<RtlInstructionCluster>(iEnd - iStart);
             for (int i = iStart; i < iEnd; ++i)
@@ -117,10 +118,10 @@ namespace Reko.ScannerV2
             var instrLast = instrs[^1];
             var id = program.NamingPolicy.BlockName(addr);
             var addrFallthrough = addr + blockSize;
-            return new Block(block.Architecture, addr, id, (int)blockSize, addrFallthrough, instrs);
+            return new RtlBlock(block.Architecture, addr, id, (int)blockSize, addrFallthrough, instrs);
         }
 
-        public abstract void SplitBlockEndingAt(Block block, Address lastAddr);
+        public abstract void SplitBlockEndingAt(RtlBlock block, Address lastAddr);
 
         public abstract bool TryRegisterBlockEnd(Address addrStart, Address addrLast);
 

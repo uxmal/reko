@@ -7,6 +7,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using RtlBlock = Reko.Scanning.RtlBlock;
 
 namespace Reko.ScannerV2
 {
@@ -26,8 +27,8 @@ namespace Reko.ScannerV2
             this.binder = new StorageBinder();
         }
 
-        public Block HandleBlockEnd(
-            Block block,
+        public RtlBlock HandleBlockEnd(
+            RtlBlock block,
             IEnumerator<RtlInstructionCluster> trace,
             ProcessorState state)
         {
@@ -80,7 +81,7 @@ namespace Reko.ScannerV2
             //$TODO: enqueue low-prio item for throw new NotImplementedException($"Bad block at {addrBadBlock}");
         }
 
-        private List<Edge> ComputeEdges(RtlInstruction instr, Address addrInstr, Block block)
+        private List<Edge> ComputeEdges(RtlInstruction instr, Address addrInstr, RtlBlock block)
         {
             var result = new List<Edge>();
             switch (instr)
@@ -144,7 +145,7 @@ namespace Reko.ScannerV2
 
         public abstract AbstractBlockWorker AddJob(Address addr, IEnumerator<RtlInstructionCluster> trace, ProcessorState state);
 
-        protected abstract void ProcessCall(Block block, Edge edge, ProcessorState state);
+        protected abstract void ProcessCall(RtlBlock block, Edge edge, ProcessorState state);
 
         protected abstract void ProcessReturn();
 

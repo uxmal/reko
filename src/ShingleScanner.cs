@@ -5,8 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using RtlBlock = Reko.Scanning.RtlBlock;
 
 namespace Reko.ScannerV2
 {
@@ -27,7 +26,7 @@ namespace Reko.ScannerV2
 
         public List<ChunkWorker> MakeScanChunks()
         {
-            var sortedBlocks = new BTreeDictionary<Address, Block>();
+            var sortedBlocks = new BTreeDictionary<Address, RtlBlock>();
             foreach (var block in cfg.Blocks.Values)
             {
                 sortedBlocks.Add(block.Address, block);
@@ -47,7 +46,7 @@ namespace Reko.ScannerV2
         /// <returns></returns>
         private IEnumerable<ChunkWorker> PartitionSegment(
             ImageSegment segment, 
-            BTreeDictionary<Address, Block> sortedBlocks)
+            BTreeDictionary<Address, RtlBlock> sortedBlocks)
         {
             long Align(long value, int alignment)
             {
@@ -98,7 +97,7 @@ namespace Reko.ScannerV2
             }
         }
 
-        public override void SplitBlockEndingAt(Block block, Address lastAddr)
+        public override void SplitBlockEndingAt(RtlBlock block, Address lastAddr)
         {
             throw new NotImplementedException();
         }
@@ -145,7 +144,7 @@ namespace Reko.ScannerV2
             return cfg;
         }
 
-        private Block SplitBlockAt(Block block, Address to)
+        private RtlBlock SplitBlockAt(RtlBlock block, Address to)
         {
             int c = block.Instructions.Count;
             for (int i = 0; i < c; ++i)

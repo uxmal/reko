@@ -8,8 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using RtlBlock = Reko.Scanning.RtlBlock;
 
 namespace Reko.ScannerV2.UnitTests
 {
@@ -35,7 +34,7 @@ namespace Reko.ScannerV2.UnitTests
                 new RtlInstructionCluster(addr, length,
                     new RtlAssignment(r2, r1))
             };
-            var block = new Block(program.Architecture, addr, id, length, addrFallThrough, instrs);
+            var block = new RtlBlock(program.Architecture, addr, id, length, addrFallThrough, instrs);
             cfg.Blocks.TryAdd(addr, block);
         }
 

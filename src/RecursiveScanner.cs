@@ -1,10 +1,5 @@
 ﻿using Reko.Core;
-using Reko.Core.Code;
-using Reko.Core.Expressions;
-using Reko.Core.Rtl;
-using Reko.Core.Serialization;
 using Reko.Core.Services;
-using Reko.Core.Types;
 using Reko.Evaluation;
 using System;
 using System.Collections.Concurrent;
@@ -12,8 +7,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using RtlBlock = Reko.Scanning.RtlBlock;
 
 namespace Reko.ScannerV2
 {
@@ -238,13 +232,13 @@ namespace Reko.ScannerV2
             wl.Add(worker);
         }
 
-        public override void SplitBlockEndingAt(Block block, Address addrEnd)
+        public override void SplitBlockEndingAt(RtlBlock block, Address addrEnd)
         {
-            var wl = new Queue<(Block block, Address addrEnd)>();
+            var wl = new Queue<(RtlBlock block, Address addrEnd)>();
             wl.Enqueue((block, addrEnd));
             while (wl.TryDequeue(out var item))
             {
-                Block blockB;
+                RtlBlock blockB;
                 (blockB, addrEnd) = item;
                 // Invariant: we arrive here if blockB ends at the same
                 // address as some other block A. Get the address of that
@@ -364,7 +358,7 @@ namespace Reko.ScannerV2
         /// <returns>A pair of indices into the respective instruction lists where the 
         /// instruction addresses start matching.
         /// </returns>
-        private (int, int) FindSharedInstructions(Block blockA, Block blockB)
+        private (int, int) FindSharedInstructions(RtlBlock blockA, RtlBlock blockB)
         {
             int a = blockA.Instructions.Count - 1;
             int b = blockB.Instructions.Count - 1;

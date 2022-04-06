@@ -2,13 +2,9 @@
 using Reko.Core.Memory;
 using Reko.Core.Rtl;
 using System;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
+using RtlBlock = Reko.Scanning.RtlBlock;
 
 namespace Reko.ScannerV2
 {
@@ -90,7 +86,7 @@ namespace Reko.ScannerV2
             return oldValue == 0;
         }
 
-        protected override void ProcessCall(Block block, Edge edge, ProcessorState state)
+        protected override void ProcessCall(RtlBlock block, Edge edge, ProcessorState state)
         {
             throw new NotImplementedException();
         }

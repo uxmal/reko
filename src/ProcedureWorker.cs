@@ -1,15 +1,9 @@
 ﻿using Reko.Core;
-using Reko.Core.Code;
-using Reko.Core.Diagnostics;
-using Reko.Core.Expressions;
 using Reko.Core.Rtl;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
+using RtlBlock = Reko.Scanning.RtlBlock;
 
 namespace Reko.ScannerV2
 {
@@ -74,7 +68,7 @@ namespace Reko.ScannerV2
 
         public override bool MarkVisited(Address addr) => true;
 
-        protected override void ProcessCall(Block block, Edge edge, ProcessorState state)
+        protected override void ProcessCall(RtlBlock block, Edge edge, ProcessorState state)
         {
             if (recScanner.GetProcedureReturnStatus(edge.To) != ReturnStatus.Unknown)
                 return;

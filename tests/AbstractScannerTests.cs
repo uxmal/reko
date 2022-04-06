@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using RtlBlock = Reko.Scanning.RtlBlock;
 
 namespace Reko.ScannerV2.UnitTests
 {
@@ -49,7 +50,7 @@ namespace Reko.ScannerV2.UnitTests
             };
         }
 
-        protected void DumpBlock(Block block, CfgGraph g, TextWriter w)
+        protected void DumpBlock(RtlBlock block, CfgGraph g, TextWriter w)
         {
             w.WriteLine("{0}:{1}", block.Name, block.IsValid ? "" : " // (INVALID)");
             w.Write("    // pred:");
@@ -92,7 +93,7 @@ namespace Reko.ScannerV2.UnitTests
                 .Returns(trace);
         }
 
-        protected class CfgGraph : DirectedGraph<Block>
+        protected class CfgGraph : DirectedGraph<RtlBlock>
         {
             private Cfg cfg;
 
@@ -101,42 +102,42 @@ namespace Reko.ScannerV2.UnitTests
                 this.cfg = cfg;
             }
 
-            public ICollection<Block> Nodes => cfg.Blocks.Values;
+            public ICollection<RtlBlock> Nodes => cfg.Blocks.Values;
 
-            public void AddEdge(Block nodeFrom, Block nodeTo)
+            public void AddEdge(RtlBlock nodeFrom, RtlBlock nodeTo)
             {
                 throw new NotImplementedException();
             }
 
-            public bool ContainsEdge(Block nodeFrom, Block nodeTo)
+            public bool ContainsEdge(RtlBlock nodeFrom, RtlBlock nodeTo)
             {
                 throw new NotImplementedException();
             }
 
-            public ICollection<Block> Predecessors(Block node)
+            public ICollection<RtlBlock> Predecessors(RtlBlock node)
             {
                 return cfg.Predecessors.TryGetValue(node.Address, out var edges)
                     ? edges
                         .Select(e => cfg.Blocks[e.From])
                         .ToArray()
-                    : Array.Empty<Block>();
+                    : Array.Empty<RtlBlock>();
             }
 
-            public void RemoveEdge(Block nodeFrom, Block nodeTo)
+            public void RemoveEdge(RtlBlock nodeFrom, RtlBlock nodeTo)
             {
                 throw new NotImplementedException();
             }
 
-            public ICollection<Block> Successors(Block node)
+            public ICollection<RtlBlock> Successors(RtlBlock node)
             {
                 return cfg.Successors.TryGetValue(node.Address, out var edges)
                     ? edges
                         .Select(e => Get(e))
                         .ToArray()
-                    : Array.Empty<Block>();
+                    : Array.Empty<RtlBlock>();
             }
 
-            private Block Get(Edge e)
+            private RtlBlock Get(Edge e)
             {
                 var b = cfg.Blocks[e.To];
                 return b;

@@ -2,6 +2,7 @@
 using Reko.Core.Rtl;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using RtlBlock = Reko.Scanning.RtlBlock;
 
 namespace Reko.ScannerV2
 {
@@ -21,9 +22,9 @@ namespace Reko.ScannerV2
         }
 
         /// <summary>
-        /// Maps addresses to the <see cref="Block"/>s at those addresses.
+        /// Maps addresses to the <see cref="RtlBlock"/>s at those addresses.
         /// </summary>
-        public ConcurrentDictionary<Address, Block> Blocks { get; }
+        public ConcurrentDictionary<Address, RtlBlock> Blocks { get; }
 
         /// <summary>
         /// Maps start ("from") addresses to <see cref="Edge"/>s leaving those
@@ -59,9 +60,9 @@ namespace Reko.ScannerV2
     /// <summary>
     /// This class models a basic block consisting of <see cref="RtlInstruction"/>s.
     /// </summary>
-    public class Block
+    public class BlockQ
     { 
-        public Block(
+        public BlockQ(
             IProcessorArchitecture arch,
             Address addr,
             string id,
@@ -78,7 +79,7 @@ namespace Reko.ScannerV2
             this.IsValid = true;
         }
 
-        public Block(Address addr, string id) : this(
+        public BlockQ(Address addr, string id) : this(
             default!,
             addr,
             id,

@@ -4,6 +4,7 @@ using Reko.Core.Rtl;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using RtlBlock = Reko.Scanning.RtlBlock;
 
 namespace Reko.ScannerV2
 {
@@ -50,7 +51,7 @@ namespace Reko.ScannerV2
         /// If parsing runs off the end of memory, the returned block will be marked
         /// as invalid.
         /// </returns>
-        public (Block, ProcessorState) ParseBlock()
+        public (RtlBlock, ProcessorState) ParseBlock()
         {
             var instrs = new List<RtlInstructionCluster>();
             var trace = this.Trace;
@@ -105,7 +106,7 @@ namespace Reko.ScannerV2
                 if (clusterHadControlInstrs)
                 {
                     var addrFallthrough = cluster.Address + cluster.Length;
-                    Block block = MakeFallthroughBlock(addrFallthrough, instrs);
+                    RtlBlock block = MakeFallthroughBlock(addrFallthrough, instrs);
                     return (block, state);
                 }
             }
@@ -113,7 +114,7 @@ namespace Reko.ScannerV2
             return (MakeInvalidBlock(instrs, addrLast - this.Address), state);
         }
 
-        private Block MakeFallthroughBlock(Address addrFallthrough, List<RtlInstructionCluster> instrs)
+        private RtlBlock MakeFallthroughBlock(Address addrFallthrough, List<RtlInstructionCluster> instrs)
         {
             return scanner.RegisterBlock(
                 this.state.Architecture,
@@ -205,7 +206,7 @@ namespace Reko.ScannerV2
         /// A pair of a completed <see cref="Block"/> and an updated <see cref="ProcessorState"/>.
         /// If parsing runs off the end of memory, the block reference will be null.
         /// </returns>
-        private (Block, ProcessorState) MakeBlock(
+        private (RtlBlock, ProcessorState) MakeBlock(
             List<RtlInstructionCluster> instrs,
             ProcessorState state,
             RtlInstruction rtlTransfer)
@@ -245,7 +246,7 @@ namespace Reko.ScannerV2
             return (block, state);
         }
 
-        private Block MakeInvalidBlock(
+        private RtlBlock MakeInvalidBlock(
             List<RtlInstructionCluster> instrs,
             long size)
         {
