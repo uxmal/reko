@@ -141,8 +141,6 @@ namespace Reko.ScannerV2
             RtlInstructionCluster rtlTransfer,
             List<RtlInstructionCluster> instrs)
         {
-            var addrTransfer = Trace.Current.Address;
-            var lengthTransfer = Trace.Current.Length;
             if (!Trace.MoveNext())
             {
                 // Fell off the end of memory, CTI is an invalid instruction.
@@ -160,13 +158,12 @@ namespace Reko.ScannerV2
             {
                 // Delay slot instruction does real work, so we will insert it
                 // before the CTI instruction.
-                RtlAssignment? tmp = null;
                 switch (rtlTransfer.Instructions[^1])
                 {
                 case RtlBranch branch:
                     if (branch.Condition is not Constant)
                     {
-                        tmp = worker.MkTmp(branch.Condition);
+                        var tmp = worker.MkTmp(branch.Condition);
                         rtlTransfer = new RtlInstructionCluster(
                             rtlTransfer.Address,
                             rtlTransfer.Length,
@@ -177,7 +174,7 @@ namespace Reko.ScannerV2
                 case RtlGoto g:
                     if (g.Target is not Core.Address)
                     {
-                        tmp = worker.MkTmp(g.Target);
+                        var tmp = worker.MkTmp(g.Target);
                         rtlTransfer = new RtlInstructionCluster(
                             rtlTransfer.Address,
                             rtlTransfer.Length,
@@ -185,7 +182,7 @@ namespace Reko.ScannerV2
                             new RtlGoto(tmp.Dst, InstrClass.Transfer));
                     }
                     break;
-                case RtlReturn ret:
+                case RtlReturn:
                     break;
                 default:
                     throw new NotImplementedException($"{rtlTransfer.GetType().Name} - not implemented.");

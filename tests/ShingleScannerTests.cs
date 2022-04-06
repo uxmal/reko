@@ -172,7 +172,6 @@ l00001008:
                 #endregion
 
                 RunTest(sExpected);
-
             }
         }
 }
