@@ -38,6 +38,12 @@ namespace Reko.ScannerV2
         public bool IsExecutableAddress(Address addr) =>
             program.SegmentMap.IsExecutableAddress(addr);
 
+
+        public IBackWalkHost<RtlBlock, RtlInstruction> MakeBackwardSlicerHost(IProcessorArchitecture arch)
+        {
+            return new CfgBackWalkHost(program, arch, cfg);
+        }
+
         public IEnumerable<RtlInstructionCluster> MakeTrace(Address addr, ProcessorState state, IStorageBinder binder)
         {
             var arch = state.Architecture;
@@ -45,6 +51,16 @@ namespace Reko.ScannerV2
             var rw = arch.CreateRewriter(rdr, state, binder, host);
             return rw;
         }
+
+        public void MarkDataInImageMap(Address addr, DataType dt)
+        {
+            var item = new ImageMapItem(addr, (uint)dt.Size)
+            {
+                DataType = dt
+            };
+            program.ImageMap.AddItemWithSize(addr, item);
+        }
+
 
         public RtlBlock RegisterBlock(
             IProcessorArchitecture arch,

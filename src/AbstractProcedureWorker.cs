@@ -1,6 +1,7 @@
 ﻿using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Rtl;
+using Reko.Core.Services;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -8,6 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using RtlBlock = Reko.Scanning.RtlBlock;
+using BackwardSlicer = Reko.Scanning.BackwardSlicer;
 
 namespace Reko.ScannerV2
 {
@@ -18,12 +20,14 @@ namespace Reko.ScannerV2
             Level = TraceLevel.Warning,
         };
 
-        private AbstractScanner scanner;
+        private readonly AbstractScanner scanner;
+        private readonly DecompilerEventListener listener;
         protected readonly IStorageBinder binder;
 
-        protected AbstractProcedureWorker(AbstractScanner scanner)
+        protected AbstractProcedureWorker(AbstractScanner scanner, DecompilerEventListener listener)
         {
             this.scanner = scanner;
+            this.listener = listener;
             this.binder = new StorageBinder();
         }
 
@@ -124,6 +128,53 @@ namespace Reko.ScannerV2
                 throw new NotImplementedException();
             }
             return result;
+        }
+
+
+        /// <summary>
+        /// Discovers the extent of a jump/call table by walking backwards from the 
+        /// jump/call until some gating condition (index < value, index & bitmask etc)
+        /// can be found.
+        /// </summary>
+        /// <param name="addrSwitch">Address of the indirect transfer instruction</param>
+        /// <param name="xfer">Expression that computes the transfer destination.
+        /// It is never a constant value</param>
+        /// <param name="vector">If successful, returns the list of addresses
+        /// jumped/called to</param>
+        /// <param name="imgVector"></param>
+        /// <param name="switchExp">The expression to use in the resulting switch / call.</param>
+        /// <returns></returns>
+        private bool DiscoverTableExtent(
+            IProcessorArchitecture arch,
+            RtlBlock rtlBlock,
+            ProcessorState state,
+            Address addrSwitch,
+            RtlTransfer xfer,
+            out List<Address> vector,
+            out ImageMapVectorTable imgVector,
+            out Expression switchExp)
+        {
+            Debug.Assert(!(xfer.Target is Address || xfer.Target is Constant), $"This should not be a constant {xfer}.");
+            vector = null!;
+            imgVector = null!;
+            switchExp = null!;
+
+            var bwsHost = scanner.MakeBackwardSlicerHost(arch);
+            var bws = new BackwardSlicer(bwsHost, rtlBlock, state);
+            var te = bws.DiscoverTableExtent(addrSwitch, xfer, listener);
+            if (te == null)
+                return false;
+            foreach (var (addr, dt) in te.Accesses!)
+            {
+                scanner.MarkDataInImageMap(addr, dt);
+            }
+            imgVector = new ImageMapVectorTable(
+                null!, // bw.VectorAddress,
+                te.Targets!.ToArray(),
+                4); // builder.TableByteSize);
+            vector = te.Targets;
+            switchExp = te.Index!;
+            return true;
         }
 
         public RtlAssignment MkTmp(Expression e)

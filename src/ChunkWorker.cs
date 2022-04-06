@@ -1,6 +1,7 @@
 ﻿using Reko.Core;
 using Reko.Core.Memory;
 using Reko.Core.Rtl;
+using Reko.Core.Services;
 using System;
 using System.Collections.Generic;
 using System.Threading;
@@ -15,17 +16,18 @@ namespace Reko.ScannerV2
     /// </summary>
     public class ChunkWorker : AbstractProcedureWorker
     {
-        private ShingleScanner shScanner;
-        private MemoryArea mem;
-        private int[] blockNos; // 0 = not owned by anyone.
+        private readonly ShingleScanner shScanner;
+        private readonly MemoryArea mem;
+        private readonly int[] blockNos; // 0 = not owned by anyone.
 
         public ChunkWorker(
             ShingleScanner scanner,
             IProcessorArchitecture arch,
             MemoryArea mem,
             Address addrStart,
-            int chunkUnits)
-            : base(scanner)
+            int chunkUnits,
+            DecompilerEventListener listener)
+            : base(scanner, listener)
         {
             this.shScanner = scanner;
             this.Architecture = arch;

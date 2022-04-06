@@ -104,7 +104,7 @@ namespace Reko.ScannerV2
             if (cfg.Procedures.TryAdd(proc.Address, proc))
             {
                 var state = seed.Value.ProcessorState ?? seed.Value.Architecture.CreateProcessorState();
-                return new ProcedureWorker(this, proc, state);
+                return new ProcedureWorker(this, proc, state, listener);
             }
             else
             {
@@ -118,7 +118,8 @@ namespace Reko.ScannerV2
             var proc = new Proc(de.Key, ProvenanceType.Scanning, de.Value.Architecture, name);
             if (cfg.Procedures.TryAdd(proc.Address, proc))
             {
-                return new ProcedureWorker(this, proc, proc.Architecture.CreateProcessorState());
+                var state = proc.Architecture.CreateProcessorState();
+                return new ProcedureWorker(this, proc, state, listener);
             }
             else
             {
@@ -165,7 +166,7 @@ namespace Reko.ScannerV2
             }
             while (!this.activeWorkers.TryGetValue(addrProc, out worker))
             {
-                worker = new ProcedureWorker(this, proc, state);
+                worker = new ProcedureWorker(this, proc, state, listener);
                 if (activeWorkers.TryAdd(addrProc, worker))
                 {
                     wl.Add(worker);

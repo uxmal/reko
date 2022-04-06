@@ -93,7 +93,8 @@ namespace Reko.ScannerV2
                    program.Architecture,
                    segment.MemoryArea,
                    addr,
-                   (int)length);
+                   (int)length,
+                   listener);
             }
         }
 

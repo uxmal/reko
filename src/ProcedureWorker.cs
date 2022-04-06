@@ -1,5 +1,6 @@
 ﻿using Reko.Core;
 using Reko.Core.Rtl;
+using Reko.Core.Services;
 using System;
 using System.Collections.Generic;
 using System.Threading;
@@ -14,8 +15,12 @@ namespace Reko.ScannerV2
         private readonly WorkList<BlockWorker> workList;
         private Dictionary<Address, (Address, ProcedureWorker, ProcessorState)> callersWaitingForReturn;
 
-        public ProcedureWorker(RecursiveScanner scanner, Proc proc, ProcessorState state)
-            : base(scanner)
+        public ProcedureWorker(
+            RecursiveScanner scanner,
+            Proc proc,
+            ProcessorState state,
+            DecompilerEventListener listener)
+            : base(scanner, listener)
         {
             this.recScanner = scanner;
             this.proc = proc;
