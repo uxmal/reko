@@ -33,9 +33,9 @@ using System.Runtime.CompilerServices;
 [assembly: AssemblyProduct("")]
 [assembly: AssemblyCopyright("Copyright © 1999-2022 John Källén")]
 [assembly: AssemblyTrademark("")]
-[assembly: AssemblyCulture("")]		
+[assembly: AssemblyCulture("")]
 
-[assembly: AssemblyVersion("0.11.0.0")]
+[assembly: AssemblyVersion("0.11.1.0")]
 [assembly: AssemblyFileVersion("0.11.1.0")]
 [assembly: AssemblyDelaySign(false)]
 [assembly: AssemblyKeyFile("")]

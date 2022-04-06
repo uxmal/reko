@@ -51,12 +51,16 @@ namespace Reko.Scanning
 
         public (Expression?, Expression?) AsAssignment(RtlInstruction instr)
         {
-            throw new NotImplementedException();
+            if (instr is RtlAssignment ass)
+                return (ass.Dst, ass.Src);
+            return (null, null);
         }
 
-        public Expression AsBranch(RtlInstruction instr)
+        public Expression? AsBranch(RtlInstruction instr)
         {
-            throw new NotImplementedException();
+            if (instr is RtlBranch bra)
+                return bra.Condition;
+            return null;
         }
 
         public List<RtlBlock> GetPredecessors(RtlBlock block)

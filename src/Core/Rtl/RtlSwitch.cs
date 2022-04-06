@@ -65,7 +65,7 @@ namespace Reko.Core.Rtl
                 writer.Write(target);
             }
             writer.WriteLine("");
-            writer.WriteLine("}");
+            writer.Write("    }");
         }
     }
 }
