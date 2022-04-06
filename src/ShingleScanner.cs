@@ -35,10 +35,22 @@ namespace Reko.ScannerV2
                 .ToList();
         }
 
+        /// <summary>
+        /// Break up an <see cref="ImageSegment"/> into blocks that
+        /// aren't present in the <see cref="Cfg"/>.
+        /// </summary>
+        /// <param name="segment"></param>
+        /// <param name="sortedBlocks"></param>
+        /// <returns></returns>
         private IEnumerable<ChunkWorker> PartitionSegment(
             ImageSegment segment, 
             BTreeDictionary<Address, Block> sortedBlocks)
         {
+            long Align(long value, int alignment)
+            {
+                return alignment * ((value + (alignment - 1)) / alignment);
+            }
+
             long iGapOffset = 0;
             long length;
             ChunkWorker? chunk;
@@ -46,17 +58,15 @@ namespace Reko.ScannerV2
             while (iGapOffset < segment.Size)
             {
                 var addrGapStart = segment.Address + iGapOffset;
-                if (!sortedBlocks.TryGetUpperBoundIndex(addrGapStart, out int iBlock))
+                if (!sortedBlocks.TryGetUpperBound(addrGapStart, out var nextBlock))
                     break;
-                var nextBlock = sortedBlocks.Values[iBlock];
                 var gapSize = nextBlock.Address - addrGapStart;
                 chunk = MakeChunkWorker(segment, addrGapStart, gapSize);
                 if (chunk is not null)
                 {
                     yield return chunk;
                 }
-                iGapOffset += gapSize + nextBlock.Length;
-                iGapOffset = unitAlignment * ((iGapOffset + (unitAlignment - 1)) / unitAlignment);
+                iGapOffset = Align(iGapOffset + gapSize + nextBlock.Length, unitAlignment);
             }
 
             // Consume the remainder of the segment.
@@ -83,6 +93,17 @@ namespace Reko.ScannerV2
                    addr,
                    (int)length);
             }
+        }
+
+        public override void Splitblock(Block block, Address lastAddr)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override bool TryRegisterBlockEnd(Address addrStart, Address addrLast)
+        {
+            //$TODO: when two ShingleScanners are leapfrogging.
+            return true;
         }
 
         private Cfg ExecuteInParallel(List<ChunkWorker> chunks)

@@ -13,25 +13,19 @@ using System.Threading.Tasks;
 
 namespace Reko.ScannerV2
 {
-    public class ProcedureWorker
+    public class ProcedureWorker : AbstractProcedureWorker
     {
-        private static readonly TraceSwitch trace = new TraceSwitch(nameof(ProcedureWorker), "ProcedureWorker tracing")
-        {
-            Level = TraceLevel.Warning,
-        };
-
-        private readonly RecursiveScanner scanner;
+        private readonly RecursiveScanner recScanner;
         private readonly Proc proc;
         private readonly WorkList<BlockWorker> workList;
-        private readonly IStorageBinder binder;
         private Dictionary<Address, (Address, ProcedureWorker, ProcessorState)> callersWaitingForReturn;
 
         public ProcedureWorker(RecursiveScanner scanner, Proc proc, ProcessorState state)
+            : base(scanner)
         {
-            this.scanner = scanner;
+            this.recScanner = scanner;
             this.proc = proc;
             this.workList = new WorkList<BlockWorker>();
-            this.binder = new StorageBinder();
             this.callersWaitingForReturn = new();
             AddJob(proc.Address, state);
         }
@@ -51,7 +45,7 @@ namespace Reko.ScannerV2
             {
                 while (workList.TryGetWorkItem(out var work))
                 {
-                    if (!scanner.TryRegisterBlockStart(work.Address, proc.Address))
+                    if (!recScanner.TryRegisterBlockStart(work.Address, proc.Address))
                         continue;
                     trace_Verbose("    {0}: Parsing block at {1}", proc.Address, work.Address);
                     var (block,state) = work.ParseBlock();
@@ -71,89 +65,31 @@ namespace Reko.ScannerV2
             }
         }
 
-        /// <summary>
-        /// Add a job to this worker.
-        /// </summary>
-        /// <param name="addr">The address at which to start.</param>
-        /// <param name="state">The state to use.</param>
-        public void AddJob(Address addr, ProcessorState state)
+        public override AbstractBlockWorker AddJob(Address addr, IEnumerator<RtlInstructionCluster> trace, ProcessorState state)
         {
-            var trace = scanner.MakeTrace(addr, state, binder).GetEnumerator();
-            AddJob(addr, trace, state);
+            var worker = new BlockWorker(recScanner, this, addr, trace, state);
+            this.workList.Add(worker);
+            return worker;
         }
 
-        public void AddJob(Address addr, IEnumerator<RtlInstructionCluster> trace, ProcessorState state)
+        protected override void ProcessCall(Block block, Edge edge, ProcessorState state)
         {
-            this.workList.Add(new BlockWorker(scanner, binder, addr, trace, state));
-        }
-
-        private Block HandleBlockEnd(
-            Block block, 
-            IEnumerator<RtlInstructionCluster> trace,
-            ProcessorState state)
-        {
-            trace_Verbose("    {0}: Parsed block at {1}", proc.Name, block.Address);
-            var lastCluster = block.Instructions[^1];
-            var lastInstr = lastCluster.Instructions[^1];
-            var lastAddr = lastCluster.Address;
-            if (scanner.TryRegisterBlockEnd(block.Address, lastAddr))
+            if (recScanner.GetProcedureReturnStatus(edge.To) != ReturnStatus.Unknown)
+                return;
+            //$TODO: won't work with delay slots.
+            recScanner.TrySuspendWorker(this);
+            if (recScanner.TryStartProcedureWorker(edge.To, state, out var calleeWorker))
             {
-                var edges = ComputeEdges(lastInstr, lastAddr, block);
-                foreach (var edge in edges)
-                {
-                    switch (edge.Type)
-                    {
-                    case EdgeType.Fallthrough:
-                        // Reuse the same trace. This is necessary to handle the 
-                        // ARM Thumb IT instruction, which puts state in the trace.
-                        AddJob(edge.To, trace, state);
-                        scanner.RegisterEdge(edge);
-                        trace_Verbose("    {0}: added edge {1}, {2}", proc.Address, edge.From, edge.To);
-                        break;
-                    case EdgeType.Jump:
-                        // Start a new trace somewhere else.
-                        AddJob(edge.To, state);
-                        scanner.RegisterEdge(edge);
-                        trace_Verbose("    {0}: added edge {1}, {2}", proc.Address, edge.From, edge.To);
-                        break;
-                    case EdgeType.Call:
-                        if (scanner.GetProcedureReturnStatus(edge.To) != ReturnStatus.Unknown)
-                            break;
-                        //$TODO: won't work with delay slots.
-                        scanner.TrySuspendWorker(this);
-                        if (scanner.TryStartProcedureWorker(edge.To, state, out var calleeWorker))
-                        {
-                            calleeWorker.TryEnqueueCaller(this, edge.From, block.Address + block.Length, state);
-                            trace_Verbose("    {0}: suspended, waiting for {1} to return", proc.Address, calleeWorker.Procedure.Address);
-                        }
-                        else
-                            throw new NotImplementedException("Couldn't start procedure worker");
-                        break;
-                    case EdgeType.Return:
-                        ProcessReturn();
-                        break;
-                    default:
-                        throw new NotImplementedException($"{edge.Type} edge not handled yet.");
-                    }
-                }
+                calleeWorker.TryEnqueueCaller(this, edge.From, block.Address + block.Length, state);
+                trace_Verbose("    {0}: suspended, waiting for {1} to return", proc.Address, calleeWorker.Procedure.Address);
             }
             else
-            {
-                trace_Verbose("    {0}: Splitting block at [{1}-{2}]", proc.Address, block.Address, lastAddr);
-                scanner.Splitblock(block, lastAddr);
-            }
-            return block;
+                throw new NotImplementedException("Couldn't start procedure worker");
         }
 
-        private void HandleBadBlock(Address addrBadBlock)
+        protected override void ProcessReturn()
         {
-            trace_Verbose("    {0}: Bad block at {1}", proc.Name,addrBadBlock);
-            //$TODO: enqueue low-prio item for throw new NotImplementedException($"Bad block at {addrBadBlock}");
-        }
-
-        private void ProcessReturn()
-        {
-            scanner.SetProcedureReturnStatus(proc.Address, ReturnStatus.Returns);
+            recScanner.SetProcedureReturnStatus(proc.Address, ReturnStatus.Returns);
             var empty = new Dictionary<Address, (Address, ProcedureWorker, ProcessorState)>();
             var callers = Interlocked.Exchange(ref callersWaitingForReturn, empty);
             while (callers.Count != 0)
@@ -161,56 +97,11 @@ namespace Reko.ScannerV2
                 foreach (var (addrFallThrough, (addrCaller, caller, state)) in callers)
                 {
                     trace_Verbose("   {0}: resuming worker {1} at {2}", proc.Address, caller.Procedure.Address, addrFallThrough);
-                    scanner.ResumeWorker(caller, addrCaller, addrFallThrough, state);
+                    recScanner.ResumeWorker(caller, addrCaller, addrFallThrough, state);
                 }
                 empty = new Dictionary<Address, (Address, ProcedureWorker, ProcessorState)>();
                 callers = Interlocked.Exchange(ref callersWaitingForReturn, empty);
             }
-        }
-
-        private List<Edge> ComputeEdges(RtlInstruction instr, Address addrInstr, Block block)
-        {
-            var result = new List<Edge>();
-            switch (instr)
-            {
-            case RtlBranch b:
-                result.Add(new Edge(block.Address, block.FallThrough, EdgeType.Jump));
-                result.Add(new Edge(block.Address, (Address)b.Target, EdgeType.Jump));
-                break;
-            case RtlGoto g:
-                if (g.Target is Address addrGotoTarget)
-                {
-                    result.Add(new Edge(block.Address, addrGotoTarget, EdgeType.Jump));
-                }
-                else
-                {
-                    //$TODO: indirect jumps
-                    result.Add(new Edge(block.Address, proc.Address, EdgeType.Return));
-                }
-                break;
-            case RtlCall call:
-                if (call.Target is Address addrTarget)
-                {
-                    result.Add(new Edge(block.Address, addrTarget, EdgeType.Call));
-                }
-                else
-                {
-                    //$TODO: indirect calls
-                    result.Add(new Edge(block.Address, block.FallThrough, EdgeType.Fallthrough));
-                }
-                break;
-            case RtlReturn:
-                result.Add(new Edge(block.Address, proc.Address, EdgeType.Return));
-                break;
-            case RtlAssignment:
-            case RtlSideEffect:
-            case RtlNop:
-                result.Add(new Edge(block.Address, block.FallThrough, EdgeType.Fallthrough));
-                break;
-            default:
-                throw new NotImplementedException();
-            }
-            return result;
         }
 
         public bool TryEnqueueCaller(
@@ -224,20 +115,6 @@ namespace Reko.ScannerV2
                 callersWaitingForReturn.Add(addrFallthrough, (addrCall, procedureWorker, state));
             }
             return true;
-        }
-
-        [Conditional("DEBUG")]
-        private void trace_Inform(string format, params object[] args)
-        {
-            if (trace.TraceInfo)
-                Debug.Print(format, args);
-        }
-
-        [Conditional("DEBUG")]
-        private void trace_Verbose(string format, params object[] args)
-        {
-            if (trace.TraceVerbose)
-                Debug.Print(format, args);
         }
     }
 }

@@ -104,15 +104,6 @@ namespace Reko.ScannerV2
             return result;
         }
 
-        /// <summary>
-        /// Returns true if the given address is inside an executable
-        /// <see cref="ImageSegment"/>.
-        /// </summary>
-        /// <param name="addr"></param>
-        /// <returns>Whether or not the address is executable.</returns>
-        public bool IsExecutableAddress(Address addr) =>
-            program.SegmentMap.IsExecutableAddress(addr);
-
         private ProcedureWorker? MakeSeedWorker(KeyValuePair<Address, ImageSymbol> seed)
         {
             var name = program.NamingPolicy.ProcedureName(seed.Key);
@@ -156,7 +147,7 @@ namespace Reko.ScannerV2
         }
 
 
-        public bool TryRegisterBlockEnd(Address addrBlockStart, Address addrBlockLast)
+        public override bool TryRegisterBlockEnd(Address addrBlockStart, Address addrBlockLast)
         {
             return this.blockEnds.TryAdd(addrBlockLast, addrBlockStart);
         }
@@ -225,16 +216,6 @@ namespace Reko.ScannerV2
             }
         }
 
-        public void RegisterEdge(Edge edge)
-        {
-            if (!cfg.Successors.TryGetValue(edge.From, out var edges))
-            {
-                edges = new List<Edge>();
-                cfg.Successors.TryAdd(edge.From, edges);
-            }
-            edges.Add(edge);
-        }
-
         private void RegisterPredecessors()
         {
             foreach (var (from, succs) in cfg.Successors)
@@ -274,7 +255,7 @@ namespace Reko.ScannerV2
             wl.Add(worker);
         }
 
-        public void Splitblock(Block block, Address addrEnd)
+        public override void Splitblock(Block block, Address addrEnd)
         {
             var wl = new Queue<(Block block, Address addrEnd)>();
             wl.Enqueue((block, addrEnd));

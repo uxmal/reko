@@ -28,6 +28,15 @@ namespace Reko.ScannerV2
             this.host = new RewriterHost(program);
         }
 
+        /// <summary>
+        /// Returns true if the given address is inside an executable
+        /// <see cref="ImageSegment"/>.
+        /// </summary>
+        /// <param name="addr"></param>
+        /// <returns>Whether or not the address is executable.</returns>
+        public bool IsExecutableAddress(Address addr) =>
+            program.SegmentMap.IsExecutableAddress(addr);
+
         public IEnumerable<RtlInstructionCluster> MakeTrace(Address addr, ProcessorState state, IStorageBinder binder)
         {
             var arch = state.Architecture;
@@ -49,6 +58,21 @@ namespace Reko.ScannerV2
             Debug.Assert(success);
             return block;
         }
+
+        public void RegisterEdge(Edge edge)
+        {
+            if (!cfg.Successors.TryGetValue(edge.From, out var edges))
+            {
+                edges = new List<Edge>();
+                cfg.Successors.TryAdd(edge.From, edges);
+            }
+            edges.Add(edge);
+        }
+
+        public abstract void Splitblock(Block block, Address lastAddr);
+
+        public abstract bool TryRegisterBlockEnd(Address addrStart, Address addrLast);
+
 
 
         private class RewriterHost : IRewriterHost
@@ -132,6 +156,5 @@ namespace Reko.ScannerV2
                 throw new NotImplementedException();
             }
         }
-
     }
 }

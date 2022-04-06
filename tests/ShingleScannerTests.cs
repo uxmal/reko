@@ -1,6 +1,7 @@
 ﻿using Moq;
 using NUnit.Framework;
 using Reko.Core;
+using Reko.Core.Expressions;
 using Reko.Core.Rtl;
 using Reko.Core.Services;
 using System;
@@ -80,13 +81,35 @@ namespace Reko.ScannerV2.UnitTests
         }
 
         [Test]
-        public void ShScanner_MakeChunks_SingleBlock()
+        public void ShScanner_MakeChunks_SingleBlock_AtStart()
         {
             Given_Block(0x1000, 0x7);
             var chunks = When_MakeScanChunks();
             Assert.AreEqual(chunks.Count, 1);
             Assert.AreEqual(0x1008ul, chunks[0].Address.ToLinear());
             Assert.AreEqual(8, chunks[0].Length);
+        }
+
+        [Test]
+        public void ShScanner_MakeChunks_SingleBlock_AtEnd()
+        {
+            Given_Block(0x1007, 0x10);
+            var chunks = When_MakeScanChunks();
+            Assert.AreEqual(chunks.Count, 1);
+            Assert.AreEqual(0x1000ul, chunks[0].Address.ToLinear());
+            Assert.AreEqual(7, chunks[0].Length);
+        }
+
+        [Test]
+        public void ShScanner_MakeChunks_SingleBlock_InMiddle()
+        {
+            Given_Block(0x1007, 4);
+            var chunks = When_MakeScanChunks();
+            Assert.AreEqual(chunks.Count, 2);
+            Assert.AreEqual(0x1000ul, chunks[0].Address.ToLinear());
+            Assert.AreEqual(7, chunks[0].Length);
+            Assert.AreEqual(0x100Cul, chunks[1].Address.ToLinear());
+            Assert.AreEqual(4, chunks[1].Length);
         }
 
         [Test]
@@ -116,5 +139,38 @@ l00001000:
 
             RunTest(sExpected);
         }
-    }
+
+        [Test]
+        [Ignore("During refactoring")]
+        public void ShScanner_Branch()
+        {
+            // No previous discoveries in the block, all instructions 4 bytes.
+            Given_Trace(new RtlTrace(0x1000)
+            {
+                m => m.Branch(m.Eq0(r1), Address.Ptr32(0x1008)),
+                m => m.Assign(r2, m.UDiv(Constant.UInt32(1000), r1)),
+                m => m.Assign(r1, m.Mem32(r2)),
+                m => m.Return(0, 0)
+            });
+
+                string sExpected =
+            #region Expected
+                @"
+l00001000:
+    r1 = r2 + 3<32>
+    // succ: l00001004 l00001008
+l00001004:
+    r2 = Mem0[r1:word32]
+    // succ: l0000
+l00001008:
+    r1 = Mem0[r2:word32]
+    return (0,0)
+    // succ:
+";
+                #endregion
+
+                RunTest(sExpected);
+
+            }
+        }
 }

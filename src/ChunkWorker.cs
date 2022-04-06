@@ -4,16 +4,21 @@ using Reko.Core.Rtl;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace Reko.ScannerV2
 {
-    public class ChunkWorker
+    /// <summary>
+    /// Performs scan of a chunk of memory that wasn't reached
+    /// by the <see cref="RecursiveScanner"/>, finding blocks
+    /// by doing linear scan.
+    /// </summary>
+    public class ChunkWorker : AbstractProcedureWorker
     {
-        private ShingleScanner scanner;
-        private IStorageBinder binder;
+        private ShingleScanner shScanner;
         private MemoryArea mem;
         private int[] blockNos; // 0 = not owned by anyone.
 
@@ -23,13 +28,13 @@ namespace Reko.ScannerV2
             MemoryArea mem,
             Address addrStart,
             int chunkUnits)
+            : base(scanner)
         {
-            this.scanner = scanner;
+            this.shScanner = scanner;
             this.Architecture = arch;
             this.mem = mem;
             this.Address = addrStart;
             this.Length = chunkUnits;
-            this.binder = new StorageBinder();
             this.blockNos = new int[chunkUnits];
         }
 
@@ -39,43 +44,39 @@ namespace Reko.ScannerV2
 
         public int Length { get; }
 
-
         public void Run()
         {
             var stepsize = Architecture.InstructionBitSize / Architecture.MemoryGranularity;
             int i = 0;
+            var job = AddJob(this.Address, Architecture.CreateProcessorState());
             //for (int i = 0; i < chunkUnits; i += stepsize)
             {
                 int iMark = i;
                 var addrBlock = this.Address + iMark;
-                var state = Architecture.CreateProcessorState();
-                var trace = scanner.MakeTrace(addrBlock, state, binder).GetEnumerator();
-                var instrs = new List<RtlInstructionCluster>();
-                while (trace.MoveNext())
+                var (block, state) = job.ParseBlock();
+                if (block.IsValid)
                 {
-                    var cluster = trace.Current; 
-                    foreach (var rtl in cluster.Instructions)
-                    {
-                        switch (rtl)
-                        {
-                        case RtlAssignment:
-                            instrs.Add(cluster);
-                            continue;
-                        case RtlReturn:
-                            instrs.Add(cluster);
-                            break;
-                        }
-                        var addrFallthrough = cluster.Address + cluster.Length;
-                        var block = scanner.RegisterBlock(
-                            Architecture,
-                            addrBlock,
-                            (cluster.Address - addrBlock) + cluster.Length,
-                            addrFallthrough,
-                            instrs);
-                        break;
-                    }
+                    HandleBlockEnd(block, job.Trace, state);
+                }
+                else
+                {
+                    HandleBadBlock(addrBlock);
                 }
             }
+        }
+
+        public override AbstractBlockWorker AddJob(Address addr, IEnumerator<RtlInstructionCluster> trace, ProcessorState state)
+        {
+            return new ShingleWorker(shScanner, this, addr, trace, state);
+        }
+
+        protected override void ProcessCall(Block block, Edge edge, ProcessorState state)
+        {
+            throw new NotImplementedException();
+        }
+
+        protected override void ProcessReturn()
+        {
         }
     }
 }
