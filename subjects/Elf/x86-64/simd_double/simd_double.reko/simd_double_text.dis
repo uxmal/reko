@@ -13,7 +13,7 @@ _start_entry:
 l0000000000000620:
 	__align_stack<word64>(&ptrArg08)
 	__libc_start_main(0x0000000000000898<p64>, SLICE(qwArg00, int32, 0), &ptrArg08, 0x0000000000000A70<p64>, 0x0000000000000AE0<p64>, rdx, fp)
-	__hlt()
+	__halt()
 
 
 void deregister_tm_clones()

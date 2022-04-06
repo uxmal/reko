@@ -18,7 +18,9 @@
  */
 #endregion
 
+using Reko.Core;
 using Reko.Core.Expressions;
+using Reko.Core.Intrinsics;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
@@ -29,7 +31,7 @@ namespace Reko.Arch.Vax
 {
     public partial class VaxRewriter
     {
-        private void RewriteEmod(string fnname, PrimitiveType floatType, PrimitiveType extType)
+        private void RewriteEmod(IntrinsicProcedure intrinsic, PrimitiveType floatType, PrimitiveType extType)
         {
             var mulr = RewriteSrcOp(0, floatType);
             var mulrx = RewriteSrcOp(1, extType);
@@ -39,9 +41,9 @@ namespace Reko.Arch.Vax
             var nzv = FlagGroup(Registers.VZN);
             m.Assign(
                 nzv,
-                host.Intrinsic(fnname, true, nzv.DataType, mulr, mulrx, muld,
-                m.Out(PrimitiveType.Word32, integral),
-                m.Out(floatType, frac)));
+                m.Fn(intrinsic, mulr, mulrx, muld,
+                    m.Out(PrimitiveType.Word32, integral),
+                    m.Out(floatType, frac)));
             m.Assign(FlagGroup(Registers.C), Constant.False());
         }
 

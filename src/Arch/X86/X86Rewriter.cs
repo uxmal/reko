@@ -971,12 +971,6 @@ namespace Reko.Arch.X86
                 .Param(word32)
                 .Returns(word64);
 
-            hlt_intrinsic = new IntrinsicBuilder("__hlt", true, new ProcedureCharacteristics
-            {
-                Terminates = true,
-            })
-                .Void();
-
             in_intrinsic = new IntrinsicBuilder("__in", true)
                 .GenericTypes("T")
                 .Param(PrimitiveType.UInt16)
@@ -1402,7 +1396,6 @@ namespace Reko.Arch.X86
         private static readonly IntrinsicProcedure fxrstor_intrinsic;
         private static readonly IntrinsicProcedure fxsave_intrinsic;
         private static readonly IntrinsicProcedure getsec_intrinsic;
-        private static readonly IntrinsicProcedure hlt_intrinsic;
         private static readonly IntrinsicProcedure in_intrinsic;
         private static readonly IntrinsicProcedure invd_intrinsic;
         private static readonly IntrinsicProcedure invldpg_intrinsic;

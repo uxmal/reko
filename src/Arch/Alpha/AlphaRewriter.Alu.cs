@@ -58,9 +58,8 @@ namespace Reko.Arch.Alpha
                 m.Not(m.Fn(ov_intrinsic, dst)),
                 instr.Address + instr.Length, 
                 InstrClass.ConditionalTransfer);
-            var ch = new ProcedureCharacteristics { Terminates = true };
             m.SideEffect(
-                host.Intrinsic("__trap_overflow", true, ch, VoidType.Instance),
+                m.Fn(trap_overflow),
                 InstrClass.Transfer|InstrClass.Call);
         }
 

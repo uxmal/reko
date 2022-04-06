@@ -19,6 +19,7 @@
 #endregion
 
 using Reko.Core;
+using Reko.Core.Intrinsics;
 using Reko.Core.Machine;
 using Reko.Core.Rtl;
 using Reko.Core.Serialization;
@@ -48,11 +49,7 @@ namespace Reko.Arch.Tlcs.Tlcs900
 
         private void RewriteHalt()
         {
-            var c = new ProcedureCharacteristics
-            {
-                Terminates = true,
-            };
-            m.SideEffect(host.Intrinsic("__halt", true, c, VoidType.Instance));
+            m.SideEffect(m.Fn(CommonOps.Halt), InstrClass.Terminates);
         }
 
         private void RewriteIncf()

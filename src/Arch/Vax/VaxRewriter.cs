@@ -31,6 +31,7 @@ using Reko.Core.Machine;
 using Reko.Core.Operators;
 using Reko.Core.Services;
 using Reko.Core.Memory;
+using Reko.Core.Intrinsics;
 
 namespace Reko.Arch.Vax
 {
@@ -102,8 +103,8 @@ namespace Reko.Arch.Vax
                 case Mnemonic.addf3: RewriteFpu3(PrimitiveType.Real32, m.FAdd, NZ00); break;
                 case Mnemonic.addl2: RewriteAlu2(PrimitiveType.Word32, m.IAdd, AllFlags); break;
                 case Mnemonic.addl3: RewriteAlu3(PrimitiveType.Word32, m.IAdd, AllFlags); break;
-                case Mnemonic.addp4: RewriteP4("vax_addp4"); break;
-                case Mnemonic.addp6: RewriteP6("vax_addp6"); break;
+                case Mnemonic.addp4: RewriteP4(addp4); break;
+                case Mnemonic.addp6: RewriteP6(addp6); break;
                 case Mnemonic.addw2: RewriteAlu2(PrimitiveType.Word16, m.IAdd, AllFlags); break;
                 case Mnemonic.addw3: RewriteAlu3(PrimitiveType.Word16, m.IAdd, AllFlags); break;
                 case Mnemonic.adwc: RewriteAdwc(); break;
@@ -162,10 +163,10 @@ namespace Reko.Arch.Vax
                 case Mnemonic.caseb: RewriteCase(PrimitiveType.Byte); break;
                 case Mnemonic.casel: RewriteCase(PrimitiveType.Word32); break;
                 case Mnemonic.casew: RewriteCase(PrimitiveType.Word16); break;
-                case Mnemonic.chme: RewriteChm("vax_chme"); break;
-                case Mnemonic.chmk: RewriteChm("vax_chmk"); break;
-                case Mnemonic.chms: RewriteChm("vax_chms"); break;
-                case Mnemonic.chmu: RewriteChm("vax_chmu"); break;
+                case Mnemonic.chme: RewriteChm(chme); break;
+                case Mnemonic.chmk: RewriteChm(chmk); break;
+                case Mnemonic.chms: RewriteChm(chms); break;
+                case Mnemonic.chmu: RewriteChm(chmu); break;
 
                 case Mnemonic.clrb: RewriteClr(PrimitiveType.Byte); break;
                 case Mnemonic.clrh: RewriteClr(PrimitiveType.Word128); break;
@@ -211,7 +212,7 @@ namespace Reko.Arch.Vax
                 case Mnemonic.cvthg: RewriteCvt(PrimitiveType.Real128, PrimitiveType.Real64); break;
                 case Mnemonic.cvthl: RewriteCvt(PrimitiveType.Real128, PrimitiveType.Int32); break;
                 case Mnemonic.cvthw: RewriteCvt(PrimitiveType.Real128, PrimitiveType.Int16); break;
-                case Mnemonic.cvtps: RewriteCvtComplex("__cvtps"); break;
+                case Mnemonic.cvtps: RewriteCvtComplex(cvtps); break;
                 case Mnemonic.cvtrdl: RewriteCvtr(PrimitiveType.Real64, PrimitiveType.Int32); break;
                 case Mnemonic.cvtrfl: RewriteCvtr(PrimitiveType.Real32, PrimitiveType.Int32); break;
                 case Mnemonic.cvtrgl: RewriteCvtr(PrimitiveType.Real64, PrimitiveType.Int32); break;
@@ -225,7 +226,7 @@ namespace Reko.Arch.Vax
                 case Mnemonic.cvtlw: RewriteCvt(PrimitiveType.Int32, PrimitiveType.Int16); break;
                 case Mnemonic.cvtpl: goto default;
                 case Mnemonic.cvtpt: goto default;
-                case Mnemonic.cvtsp: RewriteCvtComplex("__cvtsp"); break;
+                case Mnemonic.cvtsp: RewriteCvtComplex(cvtsp); break;
                 case Mnemonic.cvttp: goto default;
                 case Mnemonic.cvtwb: RewriteCvt(PrimitiveType.Int16, PrimitiveType.SByte); break;
                 case Mnemonic.cvtwd: RewriteCvt(PrimitiveType.Int16, PrimitiveType.Real64); break;
@@ -247,15 +248,15 @@ namespace Reko.Arch.Vax
                 case Mnemonic.divp: RewriteDivp(); break;
                 case Mnemonic.divw2: RewriteAlu2(PrimitiveType.Word16, m.SDiv, AllFlags); break;
                 case Mnemonic.divw3: RewriteAlu3(PrimitiveType.Word16, m.SDiv, AllFlags); break;
-                case Mnemonic.emodd: RewriteEmod("emodd", PrimitiveType.Real64 , PrimitiveType.Byte); break; //$TODO: VAX floating point types
-                case Mnemonic.emodf: RewriteEmod("emodf", PrimitiveType.Real32 , PrimitiveType.Byte); break; //$TODO: VAX floating point types
-                case Mnemonic.emodg: RewriteEmod("emodg", PrimitiveType.Real64 , PrimitiveType.Word16); break; //$TODO: VAX floating point types
-                case Mnemonic.emodh: RewriteEmod("emodh", PrimitiveType.Real128, PrimitiveType.Word16); break; //$TODO: VAX floating point types
+                case Mnemonic.emodd: RewriteEmod(emodd, PrimitiveType.Real64 , PrimitiveType.Byte); break; //$TODO: VAX floating point types
+                case Mnemonic.emodf: RewriteEmod(emodf, PrimitiveType.Real32 , PrimitiveType.Byte); break; //$TODO: VAX floating point types
+                case Mnemonic.emodg: RewriteEmod(emodg, PrimitiveType.Real64 , PrimitiveType.Word16); break; //$TODO: VAX floating point types
+                case Mnemonic.emodh: RewriteEmod(emodh, PrimitiveType.Real128, PrimitiveType.Word16); break; //$TODO: VAX floating point types
                 case Mnemonic.extv: RewriteExtv(Domain.SignedInt); break;
                 case Mnemonic.extzv: RewriteExtv(Domain.UnsignedInt); break;
 
-                case Mnemonic.ffc: RewriteFfx("__ffc"); break;
-                case Mnemonic.ffs: RewriteFfx("__ffs"); break;
+                case Mnemonic.ffc: RewriteFfx(ffc); break;
+                case Mnemonic.ffs: RewriteFfx(ffs); break;
                 case Mnemonic.halt: RewriteHalt(); break;
                 case Mnemonic.incb: RewriteIncDec(PrimitiveType.Byte, Inc); break;
                 case Mnemonic.incl: RewriteIncDec(PrimitiveType.Word32, Inc); break;
@@ -351,8 +352,8 @@ namespace Reko.Arch.Vax
                 case Mnemonic.subh3: RewriteAlu3(PrimitiveType.Real128, m.FSub, NZ00); break;
                 case Mnemonic.subl2: RewriteAlu2(PrimitiveType.Word32, m.ISub, AllFlags); break;
                 case Mnemonic.subl3: RewriteAlu3(PrimitiveType.Word32, m.ISub, AllFlags); break;
-                case Mnemonic.subp4: RewriteP4("vax_subp4"); break;
-                case Mnemonic.subp6: RewriteP6("vax_subp6"); break;
+                case Mnemonic.subp4: RewriteP4(subp4); break;
+                case Mnemonic.subp6: RewriteP6(subp6); break;
                 case Mnemonic.subw2: RewriteAlu2(PrimitiveType.Word16, m.ISub, AllFlags); break;
                 case Mnemonic.subw3: RewriteAlu3(PrimitiveType.Word16, m.ISub, AllFlags); break;
                 case Mnemonic.tstb: RewriteTst(PrimitiveType.Byte, ICmp0); break;
@@ -793,5 +794,184 @@ namespace Reko.Arch.Vax
             iclass = InstrClass.Invalid;
             m.Invalid();
         }
+
+        private static readonly IntrinsicProcedure addp4 = new IntrinsicBuilder("vax_addp4", true)
+            .Param(PrimitiveType.Word16)
+            .Param(PrimitiveType.Ptr32)
+            .Param(PrimitiveType.Word16)
+            .Param(PrimitiveType.Ptr32)
+            .Returns(PrimitiveType.Byte);
+        private static readonly IntrinsicProcedure addp6 = new IntrinsicBuilder("vax_addp6", true)
+            .Param(PrimitiveType.Word16)
+            .Param(PrimitiveType.Ptr32)
+            .Param(PrimitiveType.Word16)
+            .Param(PrimitiveType.Ptr32)
+            .Param(PrimitiveType.Word16)
+            .Param(PrimitiveType.Ptr32)
+            .Returns(PrimitiveType.Byte);
+        private static readonly IntrinsicProcedure ashift = new IntrinsicBuilder("__ashift", false)
+            .GenericTypes("TValue", "TShift")
+            .Param("TValue")
+            .Param("TShift")
+            .Returns("TValue");
+        private static readonly IntrinsicProcedure ashp = new IntrinsicBuilder("vax_ashp", true)
+            .Param(PrimitiveType.Word16)
+            .Param(PrimitiveType.Ptr32)
+            .Param(PrimitiveType.Word16)
+            .Param(PrimitiveType.Ptr32)
+            .Param(PrimitiveType.Word16)
+            .Param(PrimitiveType.Ptr32)
+            .Returns(PrimitiveType.Byte);
+
+        private static readonly IntrinsicProcedure atomic_fetch_add = IntrinsicBuilder.GenericBinary("atomic_fetch_add", true);
+
+        private static readonly IntrinsicProcedure bpt = new IntrinsicBuilder("vax_bpt", true)
+            .Void();
+
+        private static readonly IntrinsicProcedure chme = new IntrinsicBuilder("vax_chme", true).Param(PrimitiveType.Word16).Void();
+        private static readonly IntrinsicProcedure chmk = new IntrinsicBuilder("vax_chmk", true).Param(PrimitiveType.Word16).Void();
+        private static readonly IntrinsicProcedure chms = new IntrinsicBuilder("vax_chms", true).Param(PrimitiveType.Word16).Void();
+        private static readonly IntrinsicProcedure chmu = new IntrinsicBuilder("vax_chmu", true).Param(PrimitiveType.Word16).Void();
+
+
+
+        private static readonly IntrinsicProcedure cmpp3 = new IntrinsicBuilder("vax_cmpp3", true)
+            .Param(PrimitiveType.Word16)
+            .Param(PrimitiveType.Ptr32)
+            .Param(PrimitiveType.Ptr32)
+            .Returns(PrimitiveType.Byte);
+        private static readonly IntrinsicProcedure cmpp4 = new IntrinsicBuilder("vax_cmpp4", true)
+            .Param(PrimitiveType.Word16)
+            .Param(PrimitiveType.Ptr32)
+            .Param(PrimitiveType.Word16)
+            .Param(PrimitiveType.Ptr32)
+            .Returns(PrimitiveType.Byte);
+        private static readonly IntrinsicProcedure cvtps = new IntrinsicBuilder("__cvtps", true)
+            .Param(PrimitiveType.Word16)
+            .Param(PrimitiveType.Ptr32)
+            .Param(PrimitiveType.Word16)
+            .Param(PrimitiveType.Word16)
+            .Returns(PrimitiveType.Byte);
+        private static readonly IntrinsicProcedure cvtsp = new IntrinsicBuilder("__cvtsp", true)
+            .Param(PrimitiveType.Word16)
+            .Param(PrimitiveType.Ptr32)
+            .Param(PrimitiveType.Word16)
+            .Param(PrimitiveType.Word16)
+            .Returns(PrimitiveType.Byte);
+
+        private static readonly IntrinsicProcedure divp = new IntrinsicBuilder("vax_divp", true)
+            .Param(PrimitiveType.Word16)
+            .Param(PrimitiveType.Ptr32)
+            .Param(PrimitiveType.Word16)
+            .Param(PrimitiveType.Ptr32)
+            .Param(PrimitiveType.Word16)
+            .Param(PrimitiveType.Ptr32)
+            .Returns(PrimitiveType.Byte);
+
+        private static readonly IntrinsicProcedure emodd = new IntrinsicBuilder("emodd", true)
+            .Param(PrimitiveType.Real64)
+            .Param(PrimitiveType.Byte)
+            .Param(PrimitiveType.Real64)
+            .OutParam(PrimitiveType.Int32)
+            .OutParam(PrimitiveType.Real64)
+            .Returns(PrimitiveType.Byte);
+        private static readonly IntrinsicProcedure emodf = new IntrinsicBuilder("emodf", true)
+            .Param(PrimitiveType.Real32)
+            .Param(PrimitiveType.Byte)
+            .Param(PrimitiveType.Real32)
+            .OutParam(PrimitiveType.Int32)
+            .OutParam(PrimitiveType.Real32)
+            .Returns(PrimitiveType.Byte);
+        private static readonly IntrinsicProcedure emodg = new IntrinsicBuilder("emodg", true)
+            .Param(PrimitiveType.Real64)
+            .Param(PrimitiveType.Word16)
+            .Param(PrimitiveType.Real64)
+            .OutParam(PrimitiveType.Int32)
+            .OutParam(PrimitiveType.Real64)
+            .Returns(PrimitiveType.Byte);
+        private static readonly IntrinsicProcedure emodh = new IntrinsicBuilder("emodh", true)
+            .Param(PrimitiveType.Real128)
+            .Param(PrimitiveType.Word16)
+            .Param(PrimitiveType.Real128)
+            .OutParam(PrimitiveType.Int32)
+            .OutParam(PrimitiveType.Real128)
+            .Returns(PrimitiveType.Byte);
+
+        private static readonly IntrinsicProcedure ffc = new IntrinsicBuilder("__ffc", true)
+            .Param(PrimitiveType.Word32)
+            .Param(PrimitiveType.Byte)
+            .Param(PrimitiveType.Word32)
+            .OutParam(PrimitiveType.Ptr32)
+            .Returns(PrimitiveType.Bool);
+        private static readonly IntrinsicProcedure ffs = new IntrinsicBuilder("__ffs", true)
+            .Param(PrimitiveType.Word32)
+            .Param(PrimitiveType.Byte)
+            .Param(PrimitiveType.Word32)
+            .OutParam(PrimitiveType.Ptr32)
+            .Returns(PrimitiveType.Bool);
+        private static readonly IntrinsicProcedure insque = new IntrinsicBuilder("__insque", true)
+            .Param(PrimitiveType.Word32)
+            .Param(PrimitiveType.Word32)
+            .Returns(PrimitiveType.Byte);
+        private static readonly IntrinsicProcedure movp = new IntrinsicBuilder("__movp", true)
+            .Param(PrimitiveType.Word16)
+            .Param(PrimitiveType.Ptr32)
+            .Param(PrimitiveType.Ptr32)
+            .Void();
+
+        private static readonly IntrinsicProcedure mulp = new IntrinsicBuilder("vax_mulp", true)
+            .Param(PrimitiveType.Word16)
+            .Param(PrimitiveType.Ptr32)
+            .Param(PrimitiveType.Word16)
+            .Param(PrimitiveType.Ptr32)
+            .Param(PrimitiveType.Word16)
+            .Param(PrimitiveType.Ptr32)
+            .Returns(PrimitiveType.Byte);
+
+        private static readonly IntrinsicProcedure poly = new IntrinsicBuilder("vax_poly", true)
+            .GenericTypes("T")
+            .Param("T")
+            .Param(PrimitiveType.Word16)
+            .Param(PrimitiveType.Ptr32)
+            .Returns("T");
+
+        private static readonly IntrinsicProcedure prober = new IntrinsicBuilder("__prober", true)
+            .Param(PrimitiveType.Word16)
+            .Param(PrimitiveType.Ptr32)
+            .Param(PrimitiveType.Ptr32)
+            .Returns(PrimitiveType.Bool);
+
+        private static readonly IntrinsicProcedure round = IntrinsicBuilder.GenericUnary("round");
+
+        private static readonly IntrinsicProcedure release_interlock = new IntrinsicBuilder("__release_interlock", true)
+            .Void();
+
+        private static readonly IntrinsicProcedure scanc = new IntrinsicBuilder("__scanc", true)
+            .Param(PrimitiveType.Word16)
+            .Param(PrimitiveType.Ptr32)
+            .Param(PrimitiveType.Ptr32)
+            .Param(PrimitiveType.Byte)
+            .OutParam(PrimitiveType.Word32)
+            .OutParam(PrimitiveType.Word32)
+            .Returns(PrimitiveType.Bool);
+
+        private static readonly IntrinsicProcedure set_interlock = new IntrinsicBuilder("__set_interlock", true)
+            .Void();
+
+        private static readonly IntrinsicProcedure subp4 = new IntrinsicBuilder("vax_subp4", true)
+            .Param(PrimitiveType.Word16)
+            .Param(PrimitiveType.Ptr32)
+            .Param(PrimitiveType.Word16)
+            .Param(PrimitiveType.Ptr32)
+            .Returns(PrimitiveType.Byte);
+        private static readonly IntrinsicProcedure subp6 = new IntrinsicBuilder("vax_subp6", true)
+            .Param(PrimitiveType.Word16)
+            .Param(PrimitiveType.Ptr32)
+            .Param(PrimitiveType.Word16)
+            .Param(PrimitiveType.Ptr32)
+            .Param(PrimitiveType.Word16)
+            .Param(PrimitiveType.Ptr32)
+            .Returns(PrimitiveType.Byte);
+
     }
 }

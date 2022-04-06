@@ -19,6 +19,7 @@
 #endregion
 
 using Reko.Core;
+using Reko.Core.Intrinsics;
 using Reko.Core.Serialization;
 using Reko.Core.Types;
 
@@ -28,13 +29,7 @@ namespace Reko.Arch.Alpha
     {
         private void RewriteHalt()
         {
-            var c = new ProcedureCharacteristics
-            {
-                Terminates = true,
-            };
-            m.SideEffect(
-                host.Intrinsic("__halt", true, c, VoidType.Instance), 
-                InstrClass.Terminates);
+            m.SideEffect(m.Fn(CommonOps.Halt), InstrClass.Terminates);
         }
 
         private void RewriteImplver()

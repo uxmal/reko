@@ -134,7 +134,7 @@ namespace Reko.UnitTests.Environments.C64
             m.Add(10, m.End());
             AssertCode(
                 "0|L--|0801(1): 1 instructions",
-                "1|L--|__End()");
+                "1|H--|__End()");
         }
 
         [Test]
@@ -238,7 +238,7 @@ namespace Reko.UnitTests.Environments.C64
                 "1|L--|__Get(out AN_s)",
                 "2|T--|if (AN_s == \"\") branch 0806",
                 "3|L--|0806(1): 1 instructions",
-                "4|L--|__End()");
+                "4|H--|__End()");
         }
 
         [Test]
@@ -250,7 +250,7 @@ namespace Reko.UnitTests.Environments.C64
                 "0|T--|0801(1): 1 instructions",
                 "1|T--|goto 0806",
                 "2|L--|0806(1): 1 instructions",
-                "3|L--|__End()");
+                "3|H--|__End()");
         }
 
         [Test]
@@ -262,7 +262,7 @@ namespace Reko.UnitTests.Environments.C64
                 "0|T--|0801(1): 1 instructions",
                 "1|T--|call 0806 (2)",
                 "2|L--|0806(1): 1 instructions",
-                "3|L--|__End()");
+                "3|H--|__End()");
         }
 
         [Test]
@@ -381,7 +381,7 @@ namespace Reko.UnitTests.Environments.C64
                 "0|T--|0801(1): 1 instructions",
                 "1|T--|if (S_r > 3<i16>) branch 0806",
                 "2|L--|0806(1): 1 instructions",
-                "3|L--|__End()");
+                "3|H--|__End()");
         }
 
         [Test]

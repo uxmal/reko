@@ -18,6 +18,7 @@
  */
 #endregion
 
+using Reko.Core.Serialization;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
@@ -83,6 +84,21 @@ namespace Reko.Core.Intrinsics
             .GenericTypes("T")
             .Param("T")
             .Returns(PrimitiveType.Bool);
+
+        // Halt the processor
+        public static readonly IntrinsicProcedure Halt = new IntrinsicBuilder(
+            "__halt", true, new ProcedureCharacteristics
+            {
+                Terminates = true,
+            }).Void();
+        public static readonly IntrinsicProcedure Halt_1 = new IntrinsicBuilder(
+            "__halt", true, new ProcedureCharacteristics
+            {
+                Terminates = true,
+            })
+            .GenericTypes("T")
+            .Param("T")
+            .Void();
 
         // System calls.
         public static readonly IntrinsicProcedure Syscall = new IntrinsicBuilder("__syscall", true)

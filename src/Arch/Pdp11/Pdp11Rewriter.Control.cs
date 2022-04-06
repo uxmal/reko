@@ -67,7 +67,7 @@ namespace Reko.Arch.Pdp11
         private void RewriteHalt()
         {
             iclass = InstrClass.Terminates;
-            m.SideEffect(m.Fn(halt_intrinsic));
+            m.SideEffect(m.Fn(CommonOps.Halt), InstrClass.Terminates);
         }
 
         private void RewriteIot()

@@ -805,9 +805,9 @@ Eq_2319: (fn void ())
 	T_2319 (in __ei @ 00001227 : ptr32)
 	T_2320 (in signature of __ei @ 00000000 : void)
 Eq_2322: (fn void ())
-	T_2322 (in __hlt @ 00001228 : ptr16)
-	T_2323 (in signature of __hlt @ 00000000 : void)
-	T_2735 (in __hlt @ 00001644 : ptr16)
+	T_2322 (in __halt @ 00001228 : ptr32)
+	T_2323 (in signature of __halt @ 00000000 : void)
+	T_2735 (in __halt @ 00001644 : ptr32)
 Eq_2364: (fn word16 ())
 	T_2364 (in fn12D8 @ 000010C4 : ptr16)
 	T_2365 (in signature of fn12D8 @ 000012D8 : void)
@@ -10124,15 +10124,15 @@ T_2321: (in __ei() @ 00001227 : void)
   Class: Eq_2321
   DataType: void
   OrigDataType: void
-T_2322: (in __hlt @ 00001228 : ptr16)
+T_2322: (in __halt @ 00001228 : ptr32)
   Class: Eq_2322
-  DataType: (ptr16 Eq_2322)
-  OrigDataType: (ptr16 (fn T_2324 ()))
-T_2323: (in signature of __hlt @ 00000000 : void)
+  DataType: (ptr32 Eq_2322)
+  OrigDataType: (ptr32 (fn T_2324 ()))
+T_2323: (in signature of __halt @ 00000000 : void)
   Class: Eq_2322
-  DataType: (ptr16 Eq_2322)
+  DataType: (ptr32 Eq_2322)
   OrigDataType: 
-T_2324: (in __hlt() @ 00001228 : void)
+T_2324: (in __halt() @ 00001228 : void)
   Class: Eq_2324
   DataType: void
   OrigDataType: void
@@ -11776,11 +11776,11 @@ T_2734: (in fn15B0() @ 000015AF : void)
   Class: Eq_2734
   DataType: void
   OrigDataType: void
-T_2735: (in __hlt @ 00001644 : ptr16)
+T_2735: (in __halt @ 00001644 : ptr32)
   Class: Eq_2322
-  DataType: (ptr16 Eq_2322)
-  OrigDataType: (ptr16 (fn T_2736 ()))
-T_2736: (in __hlt() @ 00001644 : void)
+  DataType: (ptr32 Eq_2322)
+  OrigDataType: (ptr32 (fn T_2736 ()))
+T_2736: (in __halt() @ 00001644 : void)
   Class: Eq_2324
   DataType: void
   OrigDataType: void

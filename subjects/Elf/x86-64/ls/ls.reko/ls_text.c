@@ -1411,7 +1411,7 @@ void fn0000000000404890(void (* rdx)(), word32 dwArg00, char * ptrArg08)
 	word64 qwArg00;
 	__align_stack<word64>(&ptrArg08);
 	__libc_start_main(&g_t4028C0, (int32) qwArg00, &ptrArg08, &g_t411E60, &g_t411ED0, rdx, fp);
-	__hlt();
+	__halt();
 }
 
 // 00000000004048C0: void fn00000000004048C0()

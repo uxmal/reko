@@ -11,7 +11,7 @@ void _start(void (* rdx)(), word32 dwArg00, char * ptrArg08)
 	word64 qwArg00;
 	__align_stack<word64>(&ptrArg08);
 	__libc_start_main(&g_t40053D, (int32) qwArg00, &ptrArg08, &g_t400550, &g_t4005C0, rdx, fp);
-	__hlt();
+	__halt();
 }
 
 // 0000000000400470: void deregister_tm_clones()

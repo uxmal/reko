@@ -230,7 +230,7 @@ namespace Reko.UnitTests.Environments.Gameboy
             Given_HexString("76");
             AssertCode(     // halt
                 "0|L--|0100(1): 1 instructions",
-                "1|L--|__halt()");
+                "1|H--|__halt()");
         }
 
         [Test]
@@ -501,7 +501,7 @@ namespace Reko.UnitTests.Environments.Gameboy
             Given_HexString("10");
             AssertCode(     // stop
                 "0|H--|0100(1): 1 instructions",
-                "1|L--|__stop()");
+                "1|H--|__stop()");
         }
 
         [Test]

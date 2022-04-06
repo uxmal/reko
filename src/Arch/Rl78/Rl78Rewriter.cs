@@ -386,7 +386,7 @@ namespace Reko.Arch.Rl78
 
         private void RewriteHalt()
         {
-            m.SideEffect(host.Intrinsic("__halt", true, VoidType.Instance));
+            m.SideEffect(m.Fn(CommonOps.Halt), InstrClass.Terminates);
         }
 
         private void RewriteIncDec(Func<Expression, Expression, Expression> fn)

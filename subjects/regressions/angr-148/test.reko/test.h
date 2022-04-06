@@ -40,8 +40,8 @@ Eq_25: (fn void ())
 	T_25 (in fini @ 00400464 : (ptr64 (fn void ())))
 	T_32 (in 0x4005C0<64> @ 00400464 : word64)
 Eq_34: (fn void ())
-	T_34 (in __hlt @ 00400469 : ptr32)
-	T_35 (in signature of __hlt @ 00000000 : void)
+	T_34 (in __halt @ 00400469 : ptr32)
+	T_35 (in signature of __halt @ 00000000 : void)
 Eq_47: (fn void ())
 	T_47 (in deregister_tm_clones @ 004004ED : ptr64)
 	T_48 (in signature of deregister_tm_clones @ 00400470 : void)
@@ -202,15 +202,15 @@ T_33: (in __libc_start_main(&g_t40053D, (int32) qwArg00, &ptrArg08, &g_t400550, 
   Class: Eq_33
   DataType: int32
   OrigDataType: int32
-T_34: (in __hlt @ 00400469 : ptr32)
+T_34: (in __halt @ 00400469 : ptr32)
   Class: Eq_34
   DataType: (ptr32 Eq_34)
   OrigDataType: (ptr32 (fn T_36 ()))
-T_35: (in signature of __hlt @ 00000000 : void)
+T_35: (in signature of __halt @ 00000000 : void)
   Class: Eq_34
   DataType: (ptr32 Eq_34)
   OrigDataType: 
-T_36: (in __hlt() @ 00400469 : void)
+T_36: (in __halt() @ 00400469 : void)
   Class: Eq_36
   DataType: void
   OrigDataType: void

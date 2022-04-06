@@ -162,7 +162,7 @@ d:\dev\uxmal\reko\master\subjects\Elf\IA64\bash\elf-Linux-ia64-bash: error: An i
    at Reko.Scanning.ShingledScanner.ScanRange(IProcessorArchitecture arch, MemoryArea mem, Address addrStart, UInt32 cbAlloc, UInt64 workToDo) in d:\dev\uxmal\reko\master\src\Decompiler\Scanning\ShingledScanner.cs:line 201
    at Reko.Scanning.ScannerInLinq.ScanInstructions(ScanResults sr) in d:\dev\uxmal\reko\master\src\Decompiler\Scanning\ScannerInLinq.cs:line 130
    at Reko.Scanning.ScannerInLinq.ScanImage(ScanResults sr) in d:\dev\uxmal\reko\master\src\Decompiler\Scanning\ScannerInLinq.cs:line 65
-   at Reko.Scanning.Scanner.ShingleScanProcedures() in d:\dev\uxmal\reko\master\src\Decompiler\Scanning\Scanner.cs:line 1084
+   at Reko.Scanning.Scanner.ShingleScanProcedures() in d:\dev\uxmal\reko\master\src\Decompiler\Scanning\Scanner.cs:line 1073
    at Reko.Scanning.Scanner.ScanImage() in d:\dev\uxmal\reko\master\src\Decompiler\Scanning\Scanner.cs:line 804
    at Reko.Decompiler.ScanProgram(Program program) in d:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 471
    at Reko.Decompiler.ScanPrograms() in d:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 449
@@ -788,13 +788,13 @@ fn0000EE14: error: An internal error occurred while building the expressions of 
     The given key 'l0000EE2C' was not present in the dictionary.
        at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
    at Reko.Core.Lib.DominatorGraph`1.BuildDominanceFrontiers(DirectedGraph`1 graph, Dictionary`2 idoms) in d:\dev\uxmal\reko\master\src\Core\Lib\DominatorGraph.cs:line 192
-   at Reko.Core.Lib.DominatorGraph`1..ctor(DirectedGraph`1 graph, T entryNode) in d:\dev\uxmal\reko\master\src\Core\Lib\DominatorGraph.cs:line 46
+   at Reko.Core.Lib.DominatorGraph`1..ctor(DirectedGraph`1 graph, T entryNode) in d:\dev\uxmal\reko\master\src\Core\Lib\DominatorGraph.cs:line 45
    at Reko.Analysis.DataFlowAnalysis.BuildExpressionTrees() in d:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 409
 fn0000CE88: error: An internal error occurred while building the expressions of fn0000CE88
     The given key 'l0000CEAC' was not present in the dictionary.
        at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
    at Reko.Core.Lib.DominatorGraph`1.BuildDominanceFrontiers(DirectedGraph`1 graph, Dictionary`2 idoms) in d:\dev\uxmal\reko\master\src\Core\Lib\DominatorGraph.cs:line 192
-   at Reko.Core.Lib.DominatorGraph`1..ctor(DirectedGraph`1 graph, T entryNode) in d:\dev\uxmal\reko\master\src\Core\Lib\DominatorGraph.cs:line 46
+   at Reko.Core.Lib.DominatorGraph`1..ctor(DirectedGraph`1 graph, T entryNode) in d:\dev\uxmal\reko\master\src\Core\Lib\DominatorGraph.cs:line 45
    at Reko.Analysis.DataFlowAnalysis.BuildExpressionTrees() in d:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 409
 l0000CEAC: warning: Phi functions will be ignored by type analysis. This may be caused by a failure in a previous stage of the decompilation.
 fn0000CE88: error: An error occurred while rewriting procedure to high-level language.
@@ -1847,7 +1847,6 @@ test.exe: warning: Win32 MIPS main procedure finder not supported.
 00011B41: warning: Call target address 00000002 is invalid.
 00011B4E: warning: Call target address 00000002 is invalid.
 00011B7D: warning: Call target address 00000002 is invalid.
-00010700: warning: Call target address 4000E3D8 is invalid.
 000101A8: warning: Call target address 4000E3D8 is invalid.
 0000A9E4: warning: Call target address 40009A48 is invalid.
 0000E747: warning: Call target address 00000003 is invalid.
@@ -1941,4 +1940,4 @@ Signature of 'Microsoft Visual C++ 8' detected.
 0040120B: warning: Unable to determine the upper bound of an indirect call or jump; there may be more than 2 entries.
 004011A5: warning: Unable to determine the upper bound of an indirect call or jump; there may be more than 2 entries.
 
-Decompiled 85 binaries in 48.71 seconds.
+Decompiled 85 binaries in 50.79 seconds.

@@ -4434,7 +4434,7 @@ l0001538C:
 	Mem70[r5 + 0xC5F7<32>:word32] = Mem45[r5 + 0xC5F7<32>:word32] + 1<32>
 	r7_64 = CONVERT(Mem70[r6_68:byte], byte, uint32)
 l000153A6:
-	r0 = __ashift(r7_64, r3_34)
+	r0 = __ashift<word32,word32>(r7_64, r3_34)
 	r4_55 = r4_55 | r0
 	r3_34 = r3_34 + 8<32>
 	branch r3_34 <u 1<32> l00015384
@@ -4486,7 +4486,7 @@ l00015918:
 	Mem70[r5 + 0xC5F7<32>:word32] = Mem45[r5 + 0xC5F7<32>:word32] + 1<32>
 	r7_64 = CONVERT(Mem70[r6_68:byte], byte, uint32)
 l00015932:
-	r0 = __ashift(r7_64, r3_34)
+	r0 = __ashift<word32,word32>(r7_64, r3_34)
 	r4_55 = r4_55 | r0
 	r3_34 = r3_34 + 8<32>
 	branch r3_34 <u 1<32> l00015910
@@ -4537,7 +4537,7 @@ l00015E94:
 	Mem65[r6 + 0xC5F7<32>:word32] = Mem40[r6 + 0xC5F7<32>:word32] + 1<32>
 	r7_59 = CONVERT(Mem65[r5_63:byte], byte, uint32)
 l00015EAE:
-	r0 = __ashift(r7_59, r4_29)
+	r0 = __ashift<word32,word32>(r7_59, r4_29)
 	r3_49 = r3_49 | r0
 	r4_29 = r4_29 + 8<32>
 	branch r4_29 <u 1<32> l00015E8C
@@ -4587,7 +4587,7 @@ l00016358:
 	Mem65[r6 + 0xC5F7<32>:word32] = Mem40[r6 + 0xC5F7<32>:word32] + 1<32>
 	r7_59 = CONVERT(Mem65[r5_63:byte], byte, uint32)
 l00016372:
-	r0 = __ashift(r7_59, r4_29)
+	r0 = __ashift<word32,word32>(r7_59, r4_29)
 	r3_49 = r3_49 | r0
 	r4_29 = r4_29 + 8<32>
 	branch r4_29 <u 1<32> l00016350
@@ -5115,7 +5115,7 @@ l00017814:
 l00017832:
 	branch r7_46 != 0xFFFFFFFF<32> l00017842
 l00017842:
-	r4_29 = r4_29 | __ashift(r7_46, r3_37)
+	r4_29 = r4_29 | __ashift<word32,word32>(r7_46, r3_37)
 	r3_37 = r3_37 + 8<32>
 	branch r3_37 <u Mem70[ap + 12<i32>:word32] l0001780C
 l00017852:
@@ -5273,7 +5273,7 @@ l000185D4:
 l000185F2:
 	branch r5_33 != 0xFFFFFFFF<32> l00018602
 l00018602:
-	r3_24 = r3_24 | __ashift(r5_33, r2_23)
+	r3_24 = r3_24 | __ashift<word32,word32>(r5_33, r2_23)
 	r2_23 = r2_23 + 8<32>
 	branch r2_23 <u 1<32> l000185CC
 l00018611:
@@ -5453,7 +5453,7 @@ l00018826:
 l00018833:
 	Mem140[r2_135:word32] = r11_101
 l00018836:
-	Mem150[sp_38 + 4<i32>:word32] = __ashift(1<32>, r10_158)
+	Mem150[sp_38 + 4<i32>:word32] = __ashift<word32,word32>(1<32>, r10_158)
 	branch r10_158 >=u r11_101 l00018859
 l00018840:
 	word32 v31_159 = Mem156[sp_38 + 4<i32>:word32] - Mem156[(fp_39 + -72<i32>) + r10_158 * 4<i32>:word32]
@@ -5547,7 +5547,7 @@ l00018960:
 l0001896C:
 	Mem366[sp_236 + 44<i32>:word32] = r4_355
 	word32 r10_370 = r9_244 - r6_347
-	Mem373[sp_236 + 52<i32>:word32] = __ashift(1<32>, r10_370)
+	Mem373[sp_236 + 52<i32>:word32] = __ashift<word32,word32>(1<32>, r10_370)
 	branch Mem373[sp_236 + 52<i32>:word32] <=u Mem373[sp_236 + 32<i32>:word32] l000189C2
 l00018986:
 	Mem380[sp_236 + 52<i32>:word32] = Mem373[sp_236 + 52<i32>:word32] - (Mem373[sp_236 + 16<i32>:word32] + 1<32>)
@@ -5570,7 +5570,7 @@ l000189CC:
 l000189D2:
 	r10_370 = Mem417[sp_236 + 28<i32>:word32] - r6_347
 l000189D7:
-	Mem429[sp_236 + 44<i32>:word32] = __ashift(1<32>, r10_370)
+	Mem429[sp_236 + 44<i32>:word32] = __ashift<word32,word32>(1<32>, r10_370)
 	Mem432[Mem429[sp_236 + 36<i32>:word32] + Mem429[sp_236 + 48<i32>:word32] * 4<i32>:word32] = r10_370
 	word32 r2_433 = Mem432[sp_236 + 44<i32>:word32] + 1<32>
 	word32 sp_434 = sp_236 - 4<32>
@@ -5600,7 +5600,6 @@ l00018A55:
 	Mem494[fp_237 + -1429<i32>:byte] = Mem490[Mem490[sp_236 + 36<i32>:word32] + (Mem490[sp_236 + 48<i32>:word32] - 1<32>) * 4<i32>:byte]
 	Mem497[fp_237 + -1430<i32>:int8] = CONVERT(r10_453 + 0x10<32>, word32, int8)
 	Mem499[fp_237 + -1428<i32>:word32] = r0_452 + 6<32>
-	__ashift(1<32>, r6_301)
 l000189F7:
 	branch Mem436[sp_236 + 48<i32>:word32] == 0<32> l00018A1D
 l000189FC:
@@ -5650,7 +5649,7 @@ l00018AF7:
 l00018AD0:
 	Mem629[fp_237 + -1430<i32>:byte] = 0x63<8>
 l00018B2A:
-	Mem641[sp_236 + 52<i32>:word32] = __ashift(1<32>, r9_244 - r6_301)
+	Mem641[sp_236 + 52<i32>:word32] = __ashift<word32,word32>(1<32>, r9_244 - r6_301)
 l00018925:
 l00018BCF:
 	r9_244 = r9_244 + 1<32>

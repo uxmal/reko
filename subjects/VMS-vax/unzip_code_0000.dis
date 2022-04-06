@@ -2942,7 +2942,7 @@ l0000C226:
 	call Mem17[pc:word32] + 2<i32> (retsize: 4;)
 		uses: pc:pc + 4<32>,r2:r2,r3:r3,Stack +0004:0<32>,Stack +0008:r2 + 0x10AA4<32>
 		defs: r11:r11_30,r2:r2_27,r6:r6_29
-	Mem36[r11_30 + -3953<i32> + r6_29 * 2<i32>:word32] = atomic_fetch_add(Mem17[r11_30 + -3953<i32>:word32], Mem17[r2_27 + 0x50E97FFE<32>:word16])
+	Mem36[r11_30 + -3953<i32> + r6_29 * 2<i32>:word32] = atomic_fetch_add<word32>(Mem17[r11_30 + -3953<i32>:word32], Mem17[r2_27 + 0x50E97FFE<32>:word16])
 l0000C223:
 l0000C327:
 	word32 r0_39 = Mem0[Mem0[r3 + 1511<i32>:word32] + 12<i32>:word32]
@@ -3031,7 +3031,7 @@ l0000C7A5:
 	call Mem81[pc_62:word32] + 2<i32> (retsize: 4;)
 		uses: ap:ap_56,fp:fp_58,pc:pc_62 + 4<32>,r1:r1_742,r2:r2_94,r3:r3_97,r4:r4_743,r5:r5_744,r6:r6_59,r7:r7_96,r8:r8_98
 		defs: fp:fp_91,r0:r0_93,r1:r1_742,r10:r10_88,r2:r2_94,r3:r3_97,r4:r4_743,r5:r5_744,r7:r7_96,r8:r8_98,r9:r9_90
-	Mem101[Mem81[r0_93 + 20483<i32>:word32]:word32] = __ashift(4<32>, Mem81[r2_94 + 0x50E87FFE<32>:word32])
+	Mem101[Mem81[r0_93 + 20483<i32>:word32]:word32] = __ashift<word32,word32>(4<32>, Mem81[r2_94 + 0x50E87FFE<32>:word32])
 	word32 fp_105 = Mem101[fp_91 + 0xC<32>:word32]
 	word32 ap_106 = Mem101[fp_91 + 8<32>:word32]
 	r2Out = r2_94
@@ -6146,31 +6146,24 @@ l00010676:
 	word32 r0_58 = CONVERT(v17_27, word16, uint32)
 	branch r0_58 > 8<32> l000106FB
 l000106FB:
-	Mem65[Mem57[r4:word32]:real32] = 0.5F + 36.0F
+	Mem65[Mem57[r4:word32]:real32] = 36.0F + 0.5F
 	__halt()
-	fn4000E3D8()
+l000106E7_1:
+	word32 ap_75
+	word32 r3_76
+	word32 r0_77
+	word32 r7_78
+	word32 r4_80
+	word32 fp_81
+	call 0x000106EB<p32> + r0_58 * 2<32> (retsize: 0;)
+		uses: ap:ap_35,fp:fp_36,r2:r2_39,r4:r4,r7:r7_30
+		defs: ap:ap_75,fp:fp_81,r0:r0_77,r3:r3_76,r4:r4_80,r7:r7_78
 	r3Out = r3_76
 	r4Out = r4_80
 	r7Out = r7_78
 	apOut = ap_75
 	fpOut = fp_81
 	return r0_77
-l000106E7_1:
-	word32 ap_89
-	word32 r3_90
-	word32 r0_91
-	word32 r7_92
-	word32 r4_94
-	word32 fp_95
-	call 0x000106EB<p32> + r0_58 * 2<32> (retsize: 0;)
-		uses: ap:ap_35,fp:fp_36,r2:r2_39,r4:r4,r7:r7_30
-		defs: ap:ap_89,fp:fp_95,r0:r0_91,r3:r3_90,r4:r4_94,r7:r7_92
-	r3Out = r3_90
-	r4Out = r4_94
-	r7Out = r7_92
-	apOut = ap_89
-	fpOut = fp_95
-	return r0_91
 fn00010676_exit:
 
 

@@ -25,6 +25,7 @@ using Reko.Core.Machine;
 using Reko.Core.Memory;
 using Reko.Core.Operators;
 using Reko.Core.Rtl;
+using Reko.Core.Serialization;
 using Reko.Core.Services;
 using Reko.Core.Types;
 using System;
@@ -334,7 +335,12 @@ namespace Reko.Arch.Alpha
         private static readonly IntrinsicProcedure mskwl_intrinsic = IntrinsicBuilder.GenericBinary("__mskwl");
         private static readonly IntrinsicProcedure store_conditional_intrinsic;
         private static readonly IntrinsicProcedure store_unaligned_intrinsic;
-
+        private static readonly IntrinsicProcedure trap_overflow = new IntrinsicBuilder(
+            "__trap_overflow", true, new ProcedureCharacteristics
+            {
+                Terminates = true,
+            })
+            .Void();
 
 
         private static readonly IntrinsicProcedure ov_intrinsic;

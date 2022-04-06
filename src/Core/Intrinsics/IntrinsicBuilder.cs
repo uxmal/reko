@@ -211,6 +211,15 @@ namespace Reko.Core.Intrinsics
                 .Returns("T");
         }
 
+        public static IntrinsicProcedure GenericBinary(string name, bool hasSideEffect)
+        {
+            return new IntrinsicBuilder(name, hasSideEffect)
+                .GenericTypes("T")
+                .Param("T")
+                .Param("T")
+                .Returns("T");
+        }
+
         public static IntrinsicProcedure GenericUnary(string name)
         {
             return new IntrinsicBuilder(name, false)

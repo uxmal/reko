@@ -2537,7 +2537,7 @@ namespace Reko.UnitTests.Arch.Arm
             Given_HexString("000046D4");
             AssertCode(     // hlt	#&3000
                 "0|H--|0000000000100000(4): 1 instructions",
-                "1|L--|__hlt(0x3000<16>)");
+                "1|H--|__halt<word16>(0x3000<16>)");
         }
 
         [Test]

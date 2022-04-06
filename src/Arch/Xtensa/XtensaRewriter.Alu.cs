@@ -98,12 +98,12 @@ namespace Reko.Arch.Xtensa
             m.Assign(dst, m.Fn(intrinsic, src));
         }
 
-        private void RewriteIntrinsicProc(string name)
+        private void RewriteIntrinsicProc(IntrinsicProcedure intrinsic)
         {
             var aSrc = instr.Operands
                 .Select(o => RewriteOp(o))
                 .ToArray();
-            m.SideEffect(host.Intrinsic(name, true, VoidType.Instance, aSrc));
+            m.SideEffect(m.Fn(intrinsic, aSrc));
         }
 
         private void RewriteClamps()
@@ -111,7 +111,7 @@ namespace Reko.Arch.Xtensa
             var src = RewriteOp(instr.Operands[1]);
             var clampSize = RewriteOp(instr.Operands[2]);
             var dst = RewriteOp(instr.Operands[0]);
-            m.Assign(dst, host.Intrinsic("__clamps", false, PrimitiveType.Int32, src, clampSize));
+            m.Assign(dst, m.Fn(clamps_intrinsic, src, clampSize));
         }
 
         private void RewriteCopy()

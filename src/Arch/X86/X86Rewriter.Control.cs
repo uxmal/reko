@@ -154,7 +154,7 @@ namespace Reko.Arch.X86
 
         private void RewriteHlt()
         {
-            m.SideEffect(m.Fn(hlt_intrinsic), InstrClass.Terminates);
+            m.SideEffect(m.Fn(CommonOps.Halt), InstrClass.Terminates);
         }
 
         private void RewriteInt()

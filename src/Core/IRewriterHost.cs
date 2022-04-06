@@ -19,7 +19,6 @@
 #endregion 
 
 using Reko.Core.Expressions;
-using Reko.Core.Serialization;
 using Reko.Core.Types;
 using System;
 
@@ -36,7 +35,6 @@ namespace Reko.Core
         /// <param name="args"></param>
         /// <returns>An Application expression.</returns>
         Expression Intrinsic(string name, bool hasSideEffect, DataType returnType, params Expression [] args);
-        Expression Intrinsic(string name, bool hasSideEffect, ProcedureCharacteristics c, DataType returnType, params Expression [] args);
 
 
         /// <summary>
@@ -101,12 +99,6 @@ namespace Reko.Core
         public Expression Intrinsic(string name, bool hasSideEffect, DataType returnType, params Expression[] args)
         {
             throw new NotSupportedException();
-        }
-
-        public Expression Intrinsic(string name, bool hasSideEffect, ProcedureCharacteristics c, DataType returnType, params Expression[] args)
-        {
-            throw new NotSupportedException();
-            throw new NotImplementedException();
         }
 
         public bool TryRead(IProcessorArchitecture arch, Address addr, PrimitiveType dt, out Constant value)

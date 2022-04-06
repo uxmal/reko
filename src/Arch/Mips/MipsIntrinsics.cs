@@ -20,6 +20,7 @@
 
 using Reko.Core;
 using Reko.Core.Intrinsics;
+using Reko.Core.Serialization;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
@@ -76,6 +77,13 @@ namespace Reko.Arch.Mips
         public readonly IntrinsicProcedure clz;
         public readonly IntrinsicProcedure ext;
         public readonly IntrinsicProcedure ins;
+        public readonly IntrinsicProcedure reserved_instruction = new IntrinsicBuilder(
+            "__reserved_instruction", true, new ProcedureCharacteristics
+            {
+                Terminates = true
+            })
+            .Param(PrimitiveType.Word32)
+            .Void();
         public readonly IntrinsicProcedure trunc_intrinsic = IntrinsicBuilder.GenericUnary("trunc");
     }
 }

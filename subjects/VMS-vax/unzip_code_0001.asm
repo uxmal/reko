@@ -1459,51 +1459,16 @@ l0001251B:
 	pushl	#00000000
 	calls	#0C,0001253B                                         ; @(pc)+
 	halt
-	Invalid
-	blbs	r0,0001254B
-	movl	+14(r2),r0
-	ret
-	cvtwl	+0A(r2),+14(r2)
-	bbs	#00000000,+14(r2),0001255A
-	movl	+14(r2),r0
-	ret
-	movl	+18(r2),+20(r2)
-	movl	+1C(r2),+24(r2)
-	tstl	+04(ap)
-	bneq	00012570
-	bisl2	#00000002,+24(r2)
-	brb	00012574
-	nop
-	bicl2	#00000002,+24(r2)
-	clrq	-(sp)
-	clrq	-(sp)
-	pushl	#00000008
-	pushal	+20(r2)
-	clrq	-(sp)
-	pushal	+0A(r2)
-	pushl	#00000023
-	cvtwl	+08(r2),-(sp)
-	pushl	#00000000
-	calls	#0C,0001258D                                         ; @(pc)+
-	halt
-	Invalid
-	blbs	r0,0001259D
-	movl	+14(r2),r0
-	ret
-	cvtwl	+0A(r2),+14(r2)
-	bbs	#00000000,+14(r2),000125AC
-	movl	+14(r2),r0
-	ret
-	cvtwl	+08(r2),-(sp)
-	calls	#01,000125B3                                         ; @(pc)+
-	bbs	@+7FFE(sp),@-5DB0(r0),000125CF
-	blbs	r0,000125C3
-	movl	+14(r2),r0
-	ret
-	cvtbl	#01,r0
-	ret
-	ret
-	halt
+0001253C                                     DE FE 7F D0             ....
+00012540 50 A2 14 E8 50 05 D0 A2 14 50 04 32 A2 0A A2 14 P...P....P.2....
+00012550 E0 00 A2 14 05 D0 A2 14 50 04 D0 A2 18 A2 20 D0 ........P..... .
+00012560 A2 1C A2 24 D5 AC 04 12 07 C8 02 A2 24 11 05 01 ...$........$...
+00012570 CA 02 A2 24 7C 7E 7C 7E DD 08 DF A2 20 7C 7E DF ...$|~|~.... |~.
+00012580 A2 0A DD 23 32 A2 08 7E DD 00 FB 0C 9F 00 DE FE ...#2..~........
+00012590 7F D0 50 A2 14 E8 50 05 D0 A2 14 50 04 32 A2 0A ..P...P....P.2..
+000125A0 A2 14 E0 00 A2 14 05 D0 A2 14 50 04 32 A2 08 7E ..........P.2..~
+000125B0 FB 01 9F E0 DE FE 7F D0 50 A2 14 E8 50 05 D0 A2 ........P...P...
+000125C0 14 50 04 98 8F 01 50 04 04 00                   .P....P...      
 
 ;; fn000125CA: 000125CA
 fn000125CA proc

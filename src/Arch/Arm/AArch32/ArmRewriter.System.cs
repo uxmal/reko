@@ -18,6 +18,7 @@
 
 using Reko.Core;
 using Reko.Core.Expressions;
+using Reko.Core.Intrinsics;
 using Reko.Core.Machine;
 using Reko.Core.Types;
 using System;
@@ -79,15 +80,7 @@ namespace Reko.Arch.Arm.AArch32
 
         private void RewriteHlt()
         {
-            m.SideEffect(host.Intrinsic(
-                "__hlt",
-                true,
-                new Core.Serialization.ProcedureCharacteristics
-                {
-                    Terminates = true
-                },
-                VoidType.Instance),
-                InstrClass.Terminates);
+            m.SideEffect(m.Fn(CommonOps.Halt), InstrClass.Terminates);
         }
 
         private void RewriteHvc()

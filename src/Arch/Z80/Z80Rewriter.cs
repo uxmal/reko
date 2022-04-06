@@ -434,11 +434,7 @@ namespace Reko.Arch.Z80
 
         private void RewriteHlt()
         {
-            var c = new ProcedureCharacteristics
-            {
-                Terminates = true,
-            };
-            m.SideEffect(host.Intrinsic("__hlt", true, c, VoidType.Instance));
+            m.SideEffect(m.Fn(CommonOps.Halt), InstrClass.Terminates);
         }
 
         private void RewriteInc()

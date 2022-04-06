@@ -1196,7 +1196,7 @@ fn0000000000404890_entry:
 l0000000000404890:
 	__align_stack<word64>(&ptrArg08)
 	__libc_start_main(0x4028C0<64>, SLICE(qwArg00, int32, 0), &ptrArg08, 0x411E60<64>, 0x411ED0<64>, rdx, fp)
-	__hlt()
+	__halt()
 
 
 void fn00000000004048C0()

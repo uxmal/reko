@@ -13,7 +13,7 @@ fn0000000000400480_entry:
 l0000000000400480:
 	__align_stack<word64>(&ptrArg08)
 	__libc_start_main(0x400660<64>, SLICE(qwArg00, int32, 0), &ptrArg08, 0x400710<64>, 0x400780<64>, rdx, fp)
-	__hlt()
+	__halt()
 
 
 void fn00000000004004B0()

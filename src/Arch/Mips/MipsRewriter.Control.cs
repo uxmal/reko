@@ -263,12 +263,8 @@ namespace Reko.Arch.Mips
 
         private void RewriteSigrie(MipsInstruction instr)
         {
-            var chr = new ProcedureCharacteristics
-            {
-                Terminates = true
-            };
-            m.SideEffect(host.Intrinsic("__reserved_instruction", true, chr,
-                VoidType.Instance, RewriteOperand(instr.Operands[0])));
+            m.SideEffect(m.Fn(intrinsics.reserved_instruction, RewriteOperand(instr.Operands[0])),
+                InstrClass.Terminates);
         }
     }
 }

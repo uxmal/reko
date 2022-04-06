@@ -1111,7 +1111,7 @@ namespace Reko.UnitTests.Arch.Mips
             Given_HexString("00000000");   // sigrie	00000000
             AssertCode(
                 "0|H--|00100000(4): 1 instructions",
-                "1|L--|__reserved_instruction(0<32>)");
+                "1|H--|__reserved_instruction(0<32>)");
         }
 
         [Test]

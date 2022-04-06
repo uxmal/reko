@@ -180,16 +180,6 @@ namespace Reko.UnitTests.Arch.X86
                 args);
         }
 
-        public Expression Intrinsic(string name, bool hasSideEffect, ProcedureCharacteristics c, DataType returnType, params Expression[] args)
-        {
-            var intrinsic = program.EnsureIntrinsicProcedure(name, hasSideEffect, returnType, args);
-            intrinsic.Characteristics = c;
-            return new Application(
-                new ProcedureConstant(PrimitiveType.Ptr32, intrinsic),
-                returnType,
-                args);
-        }
-
         public FunctionType GetCallSignatureAtAddress(Address addrCallInstruction)
 		{
             if (callSignatures.TryGetValue(addrCallInstruction, out FunctionType sig))

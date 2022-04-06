@@ -605,11 +605,6 @@ namespace Reko.Arch.Pdp11
 
         static readonly IntrinsicProcedure bpt_intrinsic = new IntrinsicBuilder("__bpt", true)
             .Returns(PrimitiveType.Byte);
-        static readonly IntrinsicProcedure halt_intrinsic = new IntrinsicBuilder("__halt", true, new ProcedureCharacteristics
-            {
-                Terminates = true,
-            })
-            .Void();
         static readonly IntrinsicProcedure mfpd_intrinsic = new IntrinsicBuilder("__mfpd", true)
             .Param(PrimitiveType.Word16)
             .Returns(PrimitiveType.Word16);

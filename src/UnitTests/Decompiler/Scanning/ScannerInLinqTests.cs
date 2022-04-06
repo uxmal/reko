@@ -396,17 +396,6 @@ namespace Reko.UnitTests.Decompiler.Scanning
                 m.Ret();
             });
             CreateScanner();
-            host.Setup(h => h.Intrinsic(
-                "__hlt",
-                true,
-                It.IsNotNull<ProcedureCharacteristics>(),
-                It.IsNotNull<DataType>(),
-                It.IsAny<Expression>())).
-                Returns(new Application(
-                    new ProcedureConstant(
-                        new UnknownType(),
-                        new IntrinsicProcedure("__hlt", true, VoidType.Instance, 0)),
-                    VoidType.Instance));
 
             siq.ScanInstructions(sr);
             var blocks = ScannerInLinq.BuildBasicBlocks(sr);

@@ -610,7 +610,7 @@ namespace Reko.UnitTests.Arch.Rl78
             Given_HexString("61 ED");	// halt
             AssertCode(
                 "0|H--|00001000(2): 1 instructions",
-                "1|L--|__halt()");
+                "1|H--|__halt()");
         }
 
         [Test]

@@ -24,6 +24,7 @@ using Reko.Core.Intrinsics;
 using Reko.Core.Machine;
 using Reko.Core.Memory;
 using Reko.Core.Rtl;
+using Reko.Core.Serialization;
 using Reko.Core.Services;
 using Reko.Core.Types;
 using System;

@@ -7024,8 +7024,8 @@ l0000CEE8:
 	pushl	#00000000
 	calls	#0C,0000CF01                                         ; @(pc)+
 	halt
-	Invalid
-	xorw3	@-60FE0482(r10),-16800122(r0),r3
+0000CF02       DE FE 7F D0 50 53 32 AD FA 7E FB 01 9F E0   ....PS2..~....
+0000CF10 DE FE 7F                                        ...             
 
 l0000CF13:
 	blbc	r3,0000CF2C
@@ -11121,8 +11121,7 @@ fn00010676 proc
 l000106FB:
 	addf3	#0.5,#36.0,@(r4)+
 	halt
-	jmp	4000E3D8
-00010706                   D5 50 DD E2 FB C5 00 00 DD E2       .P........
+00010700 17 EF D2 DC FF 3F D5 50 DD E2 FB C5 00 00 DD E2 .....?.P........
 00010710 F7 C5 00 00 DD AC 04 FB 03 FF 7E 8B 00 00 D0 C2 ..........~.....
 00010720 84 00 E2 FD C6 00 00 31 AA 00 D5 50 D4 E2 FD C6 .......1...P....
 00010730 00 00 FB 00 EF 77 7F 00 00 D0 50 54 13 54 D5 A2 .....w....PT.T..

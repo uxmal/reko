@@ -4063,8 +4063,8 @@ Eq_3135: (fn void ())
 	T_3135 (in fini @ 004048B4 : (ptr64 (fn void ())))
 	T_3142 (in 0x411ED0<64> @ 004048B4 : word64)
 Eq_3144: (fn void ())
-	T_3144 (in __hlt @ 004048B9 : ptr32)
-	T_3145 (in signature of __hlt @ 00000000 : void)
+	T_3144 (in __halt @ 004048B9 : ptr32)
+	T_3145 (in signature of __halt @ 00000000 : void)
 Eq_3163: (union "Eq_3163" (uint64 u0) (ui32 u1))
 	T_3163 (in r11_127 @ 004049ED : Eq_3163)
 	T_3164 (in 0<u64> @ 004049ED : uint64)
@@ -18628,15 +18628,15 @@ T_3143: (in __libc_start_main(&g_t4028C0, (int32) qwArg00, &ptrArg08, &g_t411E60
   Class: Eq_3143
   DataType: int32
   OrigDataType: int32
-T_3144: (in __hlt @ 004048B9 : ptr32)
+T_3144: (in __halt @ 004048B9 : ptr32)
   Class: Eq_3144
   DataType: (ptr32 Eq_3144)
   OrigDataType: (ptr32 (fn T_3146 ()))
-T_3145: (in signature of __hlt @ 00000000 : void)
+T_3145: (in signature of __halt @ 00000000 : void)
   Class: Eq_3144
   DataType: (ptr32 Eq_3144)
   OrigDataType: 
-T_3146: (in __hlt() @ 004048B9 : void)
+T_3146: (in __halt() @ 004048B9 : void)
   Class: Eq_3146
   DataType: void
   OrigDataType: void

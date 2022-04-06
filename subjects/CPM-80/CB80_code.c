@@ -1089,7 +1089,7 @@ void fn100A(word16 af)
 	fn07B3((byte) bc_n);
 	fn0BE4(f_n);
 	__ei();
-	__hlt();
+	__halt();
 }
 
 // 1229: void fn1229()
@@ -1308,7 +1308,7 @@ void fn156F()
 //      fn156F
 void fn15B0()
 {
-	__hlt();
+	__halt();
 }
 
 word16 g_w1640 = 0x00; // 1640

@@ -20,6 +20,7 @@
 
 using Reko.Core;
 using Reko.Core.Expressions;
+using Reko.Core.Intrinsics;
 using Reko.Core.Machine;
 using Reko.Core.Types;
 using System;
@@ -75,7 +76,11 @@ namespace Reko.Arch.Arm.AArch64
 
         private void RewriteHlt()
         {
-            m.SideEffect(host.Intrinsic("__hlt", true, VoidType.Instance, RewriteOp(0)));
+            m.SideEffect(
+                m.Fn(
+                    CommonOps.Halt_1.MakeInstance(PrimitiveType.Word16),
+                    RewriteOp(0)),
+                InstrClass.Terminates);
         }
 
         private void RewriteRet()

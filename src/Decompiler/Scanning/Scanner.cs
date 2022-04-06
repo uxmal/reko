@@ -860,17 +860,6 @@ namespace Reko.Scanning
         }
 
 
-        public Expression Intrinsic(string name, bool hasSideEffect, ProcedureCharacteristics c, DataType returnType, params Expression[] args)
-        {
-            var intrinsic = Program.EnsureIntrinsicProcedure(name, hasSideEffect, returnType, args);
-            intrinsic.Characteristics = c;
-            return new Application(
-                new ProcedureConstant(Program.Architecture.PointerType, intrinsic),
-                returnType,
-                args);
-        }
-
-        
         public void SetAssumedRegisterValues(Address addr, ProcessorState st)
         {
             if (!Program.User.Procedures.TryGetValue(addr, out var userProc) ||

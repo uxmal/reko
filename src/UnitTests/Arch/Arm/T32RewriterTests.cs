@@ -56,11 +56,6 @@ namespace Reko.UnitTests.Arch.Arm
                 throw new NotImplementedException();
             }
 
-            public Expression Intrinsic(string name, bool hasSideEffect, ProcedureCharacteristics c, DataType returnType, params Expression[] args)
-            {
-                throw new NotImplementedException();
-            }
-
             public IProcessorArchitecture GetArchitecture(string archLabel)
             {
                 throw new NotImplementedException();
@@ -7937,7 +7932,7 @@ namespace Reko.UnitTests.Arch.Arm
             Given_HexString("86BA");
             AssertCode(
                 "0|H--|00100000(2): 1 instructions",
-                "1|H--|__hlt()");
+                "1|H--|__halt()");
         }
 
 

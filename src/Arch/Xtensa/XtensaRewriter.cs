@@ -31,6 +31,7 @@ using System.Linq;
 using Reko.Core.Services;
 using Reko.Core.Memory;
 using Reko.Core.Intrinsics;
+using Reko.Core.Serialization;
 
 namespace Reko.Arch.Xtensa
 {
@@ -137,8 +138,8 @@ namespace Reko.Arch.Xtensa
                 case Mnemonic.callx12: RewriteCallW(12); break;
                 case Mnemonic.ceil_s: RewriteCvtFloatToIntegral(ceil_intrinsic, PrimitiveType.Int32); break;
                 case Mnemonic.clamps: RewriteClamps(); break;
-                case Mnemonic.cust0: RewriteIntrinsicProc("__cust0"); break;
-                case Mnemonic.cust1: RewriteIntrinsicProc("__cust1"); break;
+                case Mnemonic.cust0: RewriteIntrinsicProc(cust0_intrinsic); break;
+                case Mnemonic.cust1: RewriteIntrinsicProc(cust1_intrinsic); break;
                 case Mnemonic.dhi: RewriteCacheFn(dhi_intrinsic); break;
                 case Mnemonic.dhu: RewriteCacheFn(dhu_intrinsic); break;
                 case Mnemonic.dhwb: RewriteCacheFn(dhwb_intrinsic); break;
@@ -149,17 +150,17 @@ namespace Reko.Arch.Xtensa
                 case Mnemonic.dpfro: RewriteCacheFn(dpfro_intrinsic); break;
                 case Mnemonic.dpfw: RewriteCacheFn(dpfw_intrinsic); break;
                 case Mnemonic.dpfwo: RewriteCacheFn(dpfwo_intrinsic); break;
-                case Mnemonic.dsync: RewriteIntrinsicProc("__dsync"); break;
-                case Mnemonic.esync: RewriteIntrinsicProc("__esync"); break;
-                case Mnemonic.excw: RewriteIntrinsicProc("__excw"); break;
+                case Mnemonic.dsync: RewriteIntrinsicProc(dsync_intrinsic); break;
+                case Mnemonic.esync: RewriteIntrinsicProc(esync_intrinsic); break;
+                case Mnemonic.excw: RewriteIntrinsicProc(excw_intrinsic); break;
                 case Mnemonic.extui: RewriteExtui(); break;
                 case Mnemonic.entry: RewriteEntry(); break;
                 case Mnemonic.float_s: RewriteFloat_s(PrimitiveType.Int32); break;
                 case Mnemonic.floor_s: RewriteBinOp((a, b) => m.Fn(floor_intrinsic, a, b)); break;
                 case Mnemonic.iii: RewriteCacheFn(iii_intrinsic); break;
-                case Mnemonic.iitlb: RewriteIntrinsicProc("__iitlb"); break;
+                case Mnemonic.iitlb: RewriteIntrinsicProc(iitlb_intrinsic); break;
                 case Mnemonic.ipf: RewriteCacheFn(ipf_intrinsic); break;
-                case Mnemonic.isync: RewriteIntrinsicProc("__isync"); break;
+                case Mnemonic.isync: RewriteIntrinsicProc(isync_intrinsic); break;
                 case Mnemonic.j:
                 case Mnemonic.jx: RewriteJ(); break;
                 case Mnemonic.ill: RewriteIll(); break;
@@ -173,7 +174,7 @@ namespace Reko.Arch.Xtensa
                 case Mnemonic.l8ui: RewriteLui(PrimitiveType.Byte); break;
                 case Mnemonic.lddec: RewriteLddecinc(m.ISub); break;
                 case Mnemonic.ldinc: RewriteLddecinc(m.IAdd); break;
-                case Mnemonic.ldpte: RewriteIntrinsicProc("__ldpte"); break;
+                case Mnemonic.ldpte: RewriteIntrinsicProc(ldpte_intrinsic); break;
                 case Mnemonic.loop: RewriteLoop(); break;
                 case Mnemonic.lsiu: RewriteLsiu(); break;
                 case Mnemonic.madd_s: RewriteMaddSub(m.FAdd); break;
@@ -335,9 +336,9 @@ namespace Reko.Arch.Xtensa
                 case Mnemonic.umul_aa_ll: RewriteMul(umul_ll_intrinsic, UInt40); break;
                 case Mnemonic.un_s: RewriteBinOp((a,b) => m.Fn(FpOps.IsUnordered_f32, a, b)); break;
                 case Mnemonic.utrunc_s: RewriteCvtFloatToIntegral(utrunc_intrinsic, PrimitiveType.UInt32); break;
-                case Mnemonic.waiti: RewriteIntrinsicProc("__waiti"); break;
-                case Mnemonic.wdtlb: RewriteIntrinsicProc("__wdtlb"); break;
-                case Mnemonic.witlb: RewriteIntrinsicProc("__witlb"); break;
+                case Mnemonic.waiti: RewriteIntrinsicProc(waiti_instrinsic); break;
+                case Mnemonic.wdtlb: RewriteIntrinsicProc(wdtlb_instrinsic); break;
+                case Mnemonic.witlb: RewriteIntrinsicProc(witlb_instrinsic); break;
                 case Mnemonic.wer: RewriteWer(); break;
                 case Mnemonic.wsr: RewriteWsr(); break;
                 case Mnemonic.wur: RewriteInverseCopy(); break;
@@ -419,6 +420,15 @@ namespace Reko.Arch.Xtensa
         private static readonly IntrinsicProcedure ceil_intrinsic = new IntrinsicBuilder("__ceil", false)
             .Param(PrimitiveType.Real32)
             .Returns(PrimitiveType.Int32);
+        private static readonly IntrinsicProcedure clamps_intrinsic = new IntrinsicBuilder("__clamps", false)
+            .Param(PrimitiveType.Int32)
+            .Param(PrimitiveType.Byte)
+            .Returns(PrimitiveType.Int32);
+        private static readonly IntrinsicProcedure cust0_intrinsic = new IntrinsicBuilder("__cust0", true)
+            .Void();
+        private static readonly IntrinsicProcedure cust1_intrinsic = new IntrinsicBuilder("__cust1", true)
+            .Void();
+
         private static readonly IntrinsicProcedure dhi_intrinsic = new IntrinsicBuilder("__dhi", true)
             .Param(PrimitiveType.Ptr32)
             .Void();
@@ -449,6 +459,14 @@ namespace Reko.Arch.Xtensa
         private static readonly IntrinsicProcedure dpfwo_intrinsic = new IntrinsicBuilder("__dpfwo", true)
             .Param(PrimitiveType.Ptr32)
             .Void();
+        private static readonly IntrinsicProcedure dsync_intrinsic = new IntrinsicBuilder("__dsync", true)
+            .Void();
+        private static readonly IntrinsicProcedure esync_intrinsic = new IntrinsicBuilder("__esync", true)
+            .Void();
+        private static readonly IntrinsicProcedure excw_intrinsic  = new IntrinsicBuilder("__excw", true)
+            .Void();
+
+
         private static readonly IntrinsicProcedure floor_intrinsic = new IntrinsicBuilder("__floor_s", false)
             .Param(PrimitiveType.Real32)
             .Param(PrimitiveType.Byte)
@@ -456,15 +474,28 @@ namespace Reko.Arch.Xtensa
         private static readonly IntrinsicProcedure iii_intrinsic = new IntrinsicBuilder("__iii", true)
             .Param(PrimitiveType.Ptr32)
             .Void();
+        private static readonly IntrinsicProcedure ill_intrinsic = new IntrinsicBuilder(
+            "__ill", true, new ProcedureCharacteristics
+            {
+                Terminates = true,
+            }).Void();
         private static readonly IntrinsicProcedure ipf_intrinsic = new IntrinsicBuilder("__ipf", true)
             .Param(PrimitiveType.Ptr32)
             .Void();
+        private static readonly IntrinsicProcedure isync_intrinsic = new IntrinsicBuilder("__isync", true)
+            .Void();
+        private static readonly IntrinsicProcedure iitlb_intrinsic = new IntrinsicBuilder("__iitlb", true)
+            .Param(PrimitiveType.Ptr32)
+            .Void();
+
         private static readonly IntrinsicProcedure l32ai_intrinsic = new IntrinsicBuilder("__l32ai", true)
             .Param(PrimitiveType.Ptr32)
             .Returns(PrimitiveType.Word32);
         private static readonly IntrinsicProcedure l32e_intrinsic = new IntrinsicBuilder("__l32e", true)
             .Param(PrimitiveType.Ptr32)
             .Returns(PrimitiveType.Word32);
+        private static readonly IntrinsicProcedure ldpte_intrinsic = new IntrinsicBuilder("__ldpte", true)
+            .Void();
 
         private static readonly IntrinsicProcedure mul_ll_intrinsic = new IntrinsicBuilder("__mul_ll", false)
             .GenericTypes("TSrc", "TDst")
@@ -566,6 +597,17 @@ namespace Reko.Arch.Xtensa
         private static readonly IntrinsicProcedure utrunc_intrinsic = new IntrinsicBuilder("__utrunc", false)
             .Param(PrimitiveType.Real32)
             .Returns(PrimitiveType.UInt32);
+        private static readonly IntrinsicProcedure waiti_instrinsic = new IntrinsicBuilder("__waiti", true)
+            .Param(PrimitiveType.Byte)
+            .Void();
+        private static readonly IntrinsicProcedure wdtlb_instrinsic = new IntrinsicBuilder("__wdtlb", true)
+            .Param(PrimitiveType.Byte)
+            .Param(PrimitiveType.Byte)
+            .Void();
+        private static readonly IntrinsicProcedure witlb_instrinsic = new IntrinsicBuilder("__witlb", true)
+            .Param(PrimitiveType.Byte)
+            .Param(PrimitiveType.Byte)
+            .Void();
         private static readonly IntrinsicProcedure wer_intrinsic = new IntrinsicBuilder("__wer", true)
             .Param(PrimitiveType.Word32)
             .Param(PrimitiveType.Word32)

@@ -1006,7 +1006,7 @@ namespace Reko.UnitTests.Arch.Vax
             AssertCode(
                 "0|L--|00010000(3): 5 instructions",
                 "1|L--|r3 = r3 - 8<32>",
-                "2|L--|v4 = CONVERT(round(Mem0[r3:real64]), real64, int32)",
+                "2|L--|v4 = CONVERT(round<real64>(Mem0[r3:real64]), real64, int32)",
                 "3|L--|Mem0[r2:int32] = v4",
                 "4|L--|VZN = cond(v4)",
                 "5|L--|C = false");
@@ -1019,7 +1019,7 @@ namespace Reko.UnitTests.Arch.Vax
             AssertCode(
                 "0|L--|00010000(3): 5 instructions",
                 "1|L--|r3 = r3 - 4<32>",
-                "2|L--|v4 = CONVERT(round(Mem0[r3:real32]), real32, int32)",
+                "2|L--|v4 = CONVERT(round<real32>(Mem0[r3:real32]), real32, int32)",
                 "3|L--|Mem0[r2:int32] = v4",
                 "4|L--|VZN = cond(v4)",
                 "5|L--|C = false");
@@ -1625,7 +1625,7 @@ namespace Reko.UnitTests.Arch.Vax
             AssertCode(
                 "0|L--|00010000(4): 5 instructions",
                 "1|L--|r4 = r4 - 2<32>",
-                "2|L--|r1_r0 = vax_poly(Mem0[r9:real64], Mem0[r4:word16], Mem0[r5:ptr32])",
+                "2|L--|r1_r0 = vax_poly<real64>(Mem0[r9:real64], Mem0[r4:word16], Mem0[r5:ptr32])",
                 "3|L--|ZN = cond(r1_r0)",
                 "4|L--|V = false",
                 "5|L--|C = false");
@@ -1638,7 +1638,7 @@ namespace Reko.UnitTests.Arch.Vax
             AssertCode(
                 "0|L--|00010000(4): 5 instructions",
                 "1|L--|r4 = r4 - 2<32>",
-                "2|L--|r0 = vax_poly(Mem0[r9:real32], Mem0[r4:word16], Mem0[r5:ptr32])",
+                "2|L--|r0 = vax_poly<real32>(Mem0[r9:real32], Mem0[r4:word16], Mem0[r5:ptr32])",
                 "3|L--|ZN = cond(r0)",
                 "4|L--|V = false",
                 "5|L--|C = false");
@@ -2143,7 +2143,7 @@ namespace Reko.UnitTests.Arch.Vax
             Given_Bytes(0x58, 0x52, 0x64);	// adawi	
             AssertCode(
                 "0|L--|00010000(3): 3 instructions",
-                "1|L--|v4 = atomic_fetch_add(Mem0[r4:word16], SLICE(r2, word16, 0))");
+                "1|L--|v4 = atomic_fetch_add<word16>(Mem0[r4:word16], SLICE(r2, word16, 0))");
         }
 
         [Ignore("")]

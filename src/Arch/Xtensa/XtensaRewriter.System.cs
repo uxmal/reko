@@ -51,11 +51,7 @@ namespace Reko.Arch.Xtensa
 
         private void RewriteIll()
         {
-            var c = new ProcedureCharacteristics
-            {
-                Terminates = true,
-            };
-            m.SideEffect(host.Intrinsic("__ill", true, c, VoidType.Instance));
+            m.SideEffect(m.Fn(ill_intrinsic), InstrClass.Terminates);
         }
 
         private void RewriteL32ai()

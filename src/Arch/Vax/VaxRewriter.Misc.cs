@@ -20,6 +20,7 @@
 
 using Reko.Core;
 using Reko.Core.Expressions;
+using Reko.Core.Intrinsics;
 using Reko.Core.Rtl;
 using Reko.Core.Types;
 using System;
@@ -47,7 +48,7 @@ namespace Reko.Arch.Vax
 
         private void RewriteHalt()
         {
-            m.SideEffect(host.Intrinsic("__halt", true, VoidType.Instance));
+            m.SideEffect(m.Fn(CommonOps.Halt), InstrClass.Terminates);
         }
 
         private void RewriteInsque()
@@ -55,19 +56,18 @@ namespace Reko.Arch.Vax
             var entry = RewriteSrcOp(0, PrimitiveType.Word32);
             var queue = RewriteSrcOp(1, PrimitiveType.Word32);
             var grf = FlagGroup(Registers.CZN);
-            m.Assign(grf, host.Intrinsic("__insque", true, grf.DataType, queue, entry));
+            m.Assign(grf, m.Fn(insque, queue, entry));
             m.Assign(FlagGroup(Registers.V), Constant.False());
         }
 
         private void RewriteBpt()
         {
-            m.SideEffect(host.Intrinsic("vax_bpt", true, VoidType.Instance));
+            m.SideEffect(m.Fn(bpt));
         }
 
-        private void RewriteChm(string name)
+        private void RewriteChm(IntrinsicProcedure intrinsic)
         {
-            m.SideEffect(host.Intrinsic(name, true, VoidType.Instance,
-                RewriteSrcOp(0, PrimitiveType.Word16)));
+            m.SideEffect(m.Fn(intrinsic, RewriteSrcOp(0, PrimitiveType.Word16)));
         }
 
         private void RewriteCmpc3()
@@ -93,11 +93,7 @@ namespace Reko.Arch.Vax
             var len = RewriteSrcOp(0, PrimitiveType.Word16);
             var src = RewriteSrcOp(1, PrimitiveType.Ptr32);
             var dst = RewriteSrcOp(2, PrimitiveType.Ptr32);
-            m.SideEffect(host.Intrinsic(
-                "__movp", 
-                true,
-                VoidType.Instance,
-                dst, src, len));
+            m.SideEffect(m.Fn(movp, dst, src, len));
         }
 
         private void RewriteProber()
@@ -106,11 +102,7 @@ namespace Reko.Arch.Vax
             var len = RewriteSrcOp(1, PrimitiveType.Ptr32);
             var @base = RewriteSrcOp(2, PrimitiveType.Ptr32);
             var z = FlagGroup(Registers.Z);
-            m.Assign(z, host.Intrinsic(
-                "__prober",
-                true,
-                PrimitiveType.Bool,
-                @base, len, mode));
+            m.Assign(z, m.Fn(prober, @base, len, mode));
         }
 
         private void RewriteScanc()
@@ -125,7 +117,7 @@ namespace Reko.Arch.Vax
             var r3 = binder.EnsureRegister(Registers.r3);
             var z = FlagGroup(Registers.Z);
             m.Assign(r3, tbl);
-            m.Assign(z, host.Intrinsic("__scanc", true, z.DataType, len, addr, tbl, mask,
+            m.Assign(z, m.Fn(scanc, len, addr, tbl, mask,
                 m.Out(PrimitiveType.Word32, r0),
                 m.Out(PrimitiveType.Word32, r1)));
             m.Assign(r2, 0);

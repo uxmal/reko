@@ -1318,7 +1318,7 @@ l120F:
 	fn07B3(SLICE(bc_135, byte, 0))
 	fn0BE4(f_110)
 	__ei()
-	__hlt()
+	__halt()
 l10A1:
 	branch Mem112[0x16A8<16>:byte] != 0x20<8> l10AC
 l10A9:
@@ -1732,6 +1732,6 @@ void fn15B0()
 fn15B0_exit:
 fn15B0_entry:
 l15B0:
-	__hlt()
+	__halt()
 
 

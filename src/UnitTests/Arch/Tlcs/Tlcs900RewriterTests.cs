@@ -447,7 +447,7 @@ namespace Reko.UnitTests.Arch.Tlcs
             Given_HexString("05");
             AssertCode(
                 "0|L--|00010000(1): 1 instructions",
-                "1|L--|__halt()");
+                "1|H--|__halt()");
         }
 
         [Test]

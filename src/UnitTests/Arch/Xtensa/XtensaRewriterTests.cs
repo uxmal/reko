@@ -206,7 +206,7 @@ namespace Reko.UnitTests.Arch.Xtensa
             Given_UInt32s(0x000000);  // ill
             AssertCode(
                 "0|---|00010000(3): 1 instructions",
-                "1|L--|__ill()");
+                "1|H--|__ill()");
         }
 
         [Test]

@@ -411,7 +411,7 @@ namespace Reko.Environments.Gameboy
 
         private void Rewrite_halt()
         {
-            m.SideEffect(m.Fn(halt_intrinsic));
+            m.SideEffect(m.Fn(CommonOps.Halt), InstrClass.Terminates);
         }
 
         private void Rewrite_inc()
@@ -656,11 +656,7 @@ namespace Reko.Environments.Gameboy
 
         private void Rewrite_stop()
         {
-            var ch = new ProcedureCharacteristics
-            {
-                Terminates = true
-            };
-            m.SideEffect(host.Intrinsic("__stop", true, ch, VoidType.Instance));
+            m.SideEffect(m.Fn(stop_intrinsic), InstrClass.Terminates);
         }
 
         private void Rewrite_sub()
@@ -691,11 +687,6 @@ namespace Reko.Environments.Gameboy
             .Void();
         private readonly static IntrinsicProcedure enable_interrupts_intrinsic = new IntrinsicBuilder("__enable_interrupts", true)
             .Void();
-        private readonly static IntrinsicProcedure halt_intrinsic = new IntrinsicBuilder("__halt", true, new ProcedureCharacteristics
-            {
-                Terminates = true
-            })
-            .Void();
         private readonly static IntrinsicProcedure reset_bit_intrinsic = new IntrinsicBuilder("__reset_bit", false)
             .Param(PrimitiveType.Byte)
             .Param(PrimitiveType.Byte)
@@ -704,6 +695,10 @@ namespace Reko.Environments.Gameboy
             .Param(PrimitiveType.Byte)
             .Param(PrimitiveType.Byte)
             .Returns(PrimitiveType.Bool);
+        private readonly static IntrinsicProcedure stop_intrinsic = new IntrinsicBuilder("__stop", true, new ProcedureCharacteristics
+            {
+                Terminates = true
+            }).Void();
         private readonly static IntrinsicProcedure swap_nybbles_intrinsic = IntrinsicBuilder.Unary("__swap_nybbles", PrimitiveType.Byte);
         private readonly static IntrinsicProcedure test_bit_intrinsic = new IntrinsicBuilder("__test_bit", false)
             .Param(PrimitiveType.Byte)

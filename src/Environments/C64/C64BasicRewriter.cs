@@ -21,6 +21,7 @@
 using Reko.Arch.Mos6502;
 using Reko.Core;
 using Reko.Core.Expressions;
+using Reko.Core.Intrinsics;
 using Reko.Core.Operators;
 using Reko.Core.Rtl;
 using Reko.Core.Serialization;
@@ -39,10 +40,12 @@ namespace Reko.Environments.C64
     /// </summary>
     public class C64BasicRewriter : IEnumerable<RtlInstructionCluster> 
     {
+        private static readonly StringType strType =
+            StringType.LengthPrefixedStringType(PrimitiveType.Char, PrimitiveType.Byte);
+
         private readonly IDictionary<Address, C64BasicInstruction> instrs;
         private readonly Address address;
         private readonly IRewriterHost host;
-        private readonly StringType strType;
         private RtlEmitter m;
         private InstrClass iclass;
         private List<RtlInstruction> rtlInstructions;
@@ -60,7 +63,6 @@ namespace Reko.Environments.C64
             this.Lines = lines;
             this.instrs = instrs; 
             this.host = host;
-            this.strType = StringType.LengthPrefixedStringType(PrimitiveType.Char, PrimitiveType.Byte);
             this.line = null!;
             this.m = null!;
             this.rtlInstructions = null!;
@@ -110,9 +112,8 @@ namespace Reko.Environments.C64
             switch ((Token)b)
             {
             case Token.END:
-                var c = new ProcedureCharacteristics { Terminates = true };
-                var intrinsic = host.Intrinsic("__End", true, c, VoidType.Instance);
-                m.SideEffect(intrinsic);
+                var intrinsic = m.Fn(end_intrinsic);
+                m.SideEffect(intrinsic, InstrClass.Terminates);
                 i = line.Length;        // We never return from end.
                 return;
             case Token.CLOSE:
@@ -358,15 +359,15 @@ namespace Reko.Environments.C64
                 Expect((byte)'(');
                 e = ExpectExpr()!;
                 Expect((byte)')');
-                return host.Intrinsic("__Chr", true, strType, e);
+                return m.Fn(chr_intrinsic, e);
             case Token.SPC_lp:
                 e = ExpectExpr()!;
                 Expect((byte)')');
-                return host.Intrinsic("__Spc", true, strType, e);
+                return m.Fn(spc_intrinsic, e);
             case Token.TAB_lp:
                 e = ExpectExpr()!;
                 Expect((byte)')');
-                return host.Intrinsic("__Tab", true, strType, e);
+                return m.Fn(tab_intrinsic, e);
             case Token.QUOTE:
                 return ParseStringLiteral();
             default:
@@ -446,15 +447,12 @@ namespace Reko.Environments.C64
                 }
             }
             iclass = InstrClass.Linear;
-            m.SideEffect(
-                host.Intrinsic("__Close", true, VoidType.Instance,
-                handle!));
+            m.SideEffect(m.Fn(close_intrinsic, handle!));
         }
 
         private void RewriteClr()
         {
-            m.SideEffect(
-                host.Intrinsic("__Clr", true, VoidType.Instance));
+            m.SideEffect(m.Fn(clr_intrinsic));
         }
 
         private void RewriteFor()
@@ -500,11 +498,7 @@ namespace Reko.Environments.C64
             if (!GetIdentifier(out Identifier id))
                 SyntaxError();
             iclass = InstrClass.Linear;
-            m.SideEffect(
-                host.Intrinsic("__Get",
-                true,
-                VoidType.Instance,
-                m.Out(strType, id)));
+            m.SideEffect(m.Fn(get_intrinsic, m.Out(strType, id)));
         }
 
         private void RewriteGosub()
@@ -665,10 +659,7 @@ namespace Reko.Environments.C64
                     }
                 }
             }
-            m.SideEffect(host.Intrinsic(
-                "__Open",
-                true,
-                VoidType.Instance,
+            m.SideEffect(m.Fn(open_intrinsic, 
                 logicalFileNo!,
                 deviceNo!,
                 secondaryNo!,
@@ -690,11 +681,7 @@ namespace Reko.Environments.C64
                 SyntaxError();
                 return;
             }
-            m.SideEffect(host.Intrinsic("__Poke",
-                true,
-                VoidType.Instance,
-                addr,
-                val));
+            m.SideEffect(m.Fn(poke_intrinsic, addr, val));
         }
 
         // Print
@@ -705,7 +692,7 @@ namespace Reko.Environments.C64
 
         private void RewritePrint()
         {
-            string fnName;
+            string intrinsic;
             if (!EatSpaces() ||
                 line[i] == ':')
             {
@@ -728,24 +715,24 @@ namespace Reko.Environments.C64
                     PeekAndDiscard((byte)';');
                     continue;
                 }
-                fnName = "__PrintLine";
+                intrinsic = "__PrintLine";
                 expr = ParseExpr();
                 if (EatSpaces() &&
                     PeekAndDiscard((byte)';'))
                 {
-                    fnName = "__Print";
+                    intrinsic = "__Print";
                 }
                 else if (expr == null)
                 {
-                    fnName = "__PrintEmptyLine";
+                    intrinsic = "__PrintEmptyLine";
                 }
                 if (expr != null)
                 {
-                    m.SideEffect(host.Intrinsic(fnName, true, VoidType.Instance, expr));
+                    m.SideEffect(host.Intrinsic(intrinsic, true, VoidType.Instance, expr));
                 }
                 else
                 {
-                    m.SideEffect(host.Intrinsic(fnName, true, VoidType.Instance));
+                    m.SideEffect(host.Intrinsic(intrinsic, true, VoidType.Instance));
                 }
             } while (EatSpaces() && line[i] != ':');
             
@@ -815,5 +802,39 @@ namespace Reko.Environments.C64
             }
             return false;
         }
+
+        private static readonly IntrinsicProcedure chr_intrinsic = new IntrinsicBuilder("__Chr", false)
+            .Param(PrimitiveType.Int16)
+            .Returns(strType);
+        private static readonly IntrinsicProcedure close_intrinsic = new IntrinsicBuilder("__Close", true)
+            .Param(PrimitiveType.Int16)
+            .Void();
+        private static readonly IntrinsicProcedure clr_intrinsic = new IntrinsicBuilder("__Clr", true)
+            .Void();
+        private static readonly IntrinsicProcedure end_intrinsic = new IntrinsicBuilder(
+            "__End", true, new ProcedureCharacteristics { Terminates = true })
+            .Void();
+        private static readonly IntrinsicProcedure get_intrinsic = new IntrinsicBuilder("__Get", true)
+            .OutParam(strType)
+            .Void();
+        private static readonly IntrinsicProcedure open_intrinsic = new IntrinsicBuilder("__Open", true)
+            .Param(PrimitiveType.Int16)
+            .Param(PrimitiveType.Int16)
+            .Param(PrimitiveType.Int16)
+            .Param(strType)
+            .Void();
+        private static readonly IntrinsicProcedure peek_intrinsic = new IntrinsicBuilder("__Peek", true)
+            .Param(PrimitiveType.Int16)
+            .Returns(PrimitiveType.Int16);
+        private static readonly IntrinsicProcedure poke_intrinsic = new IntrinsicBuilder("__Poke", true)
+            .Param(PrimitiveType.Int16)
+            .Param(PrimitiveType.Int16)
+            .Void();
+        private static readonly IntrinsicProcedure spc_intrinsic = new IntrinsicBuilder("__Spc", false)
+            .Param(PrimitiveType.Int16)
+            .Returns(strType);
+        private static readonly IntrinsicProcedure tab_intrinsic = new IntrinsicBuilder("__Tab", false)
+            .Param(PrimitiveType.Int16)
+            .Returns(strType);
     }
 }

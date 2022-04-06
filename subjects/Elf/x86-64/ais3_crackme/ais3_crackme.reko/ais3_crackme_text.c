@@ -11,7 +11,7 @@ void _start(void (* rdx)(), word32 dwArg00, char * ptrArg08)
 	word64 qwArg00;
 	__align_stack<word64>(&ptrArg08);
 	__libc_start_main(&g_t4005C5, (int32) qwArg00, &ptrArg08, &g_t400620, &g_t4006B0, rdx, fp);
-	__hlt();
+	__halt();
 }
 
 // 000000000040043C: void call_gmon_start()
