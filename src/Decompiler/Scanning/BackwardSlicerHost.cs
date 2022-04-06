@@ -59,11 +59,6 @@ namespace Reko.Scanning
             throw new NotImplementedException();
         }
 
-        public Address GetBlockStartAddress(Address addr)
-        {
-            throw new NotImplementedException();
-        }
-
         public List<RtlBlock> GetPredecessors(RtlBlock block)
         {
             return invCache[block].Pred
@@ -126,11 +121,6 @@ namespace Reko.Scanning
 
 
         public RtlBlock GetSinglePredecessor(RtlBlock block)
-        {
-            throw new NotImplementedException();
-        }
-
-        public AddressRange GetSinglePredecessorAddressRange(Address block)
         {
             throw new NotImplementedException();
         }

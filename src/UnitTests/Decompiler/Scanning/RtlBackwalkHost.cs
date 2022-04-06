@@ -56,11 +56,6 @@ namespace Reko.UnitTests.Decompiler.Scanning
             throw new NotImplementedException();
         }
 
-        public Address GetBlockStartAddress(Address addr)
-        {
-            throw new NotImplementedException();
-        }
-
         public int BlockInstructionCount(RtlBlock block)
         {
             return block.Instructions.Sum(b => b.Instructions.Length);
@@ -80,11 +75,6 @@ namespace Reko.UnitTests.Decompiler.Scanning
         public List<RtlBlock> GetPredecessors(RtlBlock block)
         {
             return graph.Predecessors(block).ToList();
-        }
-
-        public AddressRange GetSinglePredecessorAddressRange(Address block)
-        {
-            throw new NotImplementedException();
         }
 
         public RegisterStorage GetSubregister(RegisterStorage rIdx, BitRange range)

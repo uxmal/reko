@@ -199,32 +199,6 @@ namespace Reko.Scanning
             return block.Pred.ToList();
         }
 
-        public AddressRange? GetSinglePredecessorAddressRange(Address addr)
-        {
-            ImageMapBlock? block = null;
-            foreach (Address addrPred in this.jumpGraph.Predecessors(addr))
-            {
-                if (block != null)
-                    return null;
-                if (!program.ImageMap.TryFindItem(addrPred, out ImageMapItem item))
-                    return null;
-                block = item as ImageMapBlock;
-            }
-            if (block == null)
-                return null;
-            else
-                return new AddressRange(block.Address, block.Address + block.Size);
-        }
-
-        public Address? GetBlockStartAddress(Address addr)
-        {
-            if (!program.ImageMap.TryFindItem(addr, out ImageMapItem item))
-                return null;
-            if (item is ImageMapBlock block)
-                return block.Address;
-            return null;
-        }
-
         public Address? MakeAddressFromConstant(Constant c)
         {
             return program.Platform.MakeAddressFromConstant(c, true);

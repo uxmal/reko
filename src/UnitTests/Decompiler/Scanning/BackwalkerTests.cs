@@ -94,16 +94,6 @@ namespace Reko.UnitTests.Decompiler.Scanning
                 return bra.Target != block;
             }
 
-            public AddressRange GetSinglePredecessorAddressRange(Address block)
-            {
-                throw new NotImplementedException();
-            }
-
-            public Address GetBlockStartAddress(Address addr)
-            {
-                throw new NotImplementedException();
-            }
-
             public Block GetSinglePredecessor(Block block)
             {
                 return block.Procedure.ControlGraph.Predecessors(block).ToArray()[0];
