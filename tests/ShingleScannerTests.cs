@@ -1,5 +1,7 @@
 ﻿using Moq;
 using NUnit.Framework;
+using Reko.Core;
+using Reko.Core.Rtl;
 using Reko.Core.Services;
 using System;
 using System.Collections.Generic;
@@ -18,8 +20,29 @@ namespace Reko.ScannerV2.UnitTests
         [SetUp]
         public void Setup()
         {
-            base.Setup(16, 8);
+            base.Setup(0x10, 16); // block of 0x10 bytes, with 16-bit instruction granularity.
             this.cfg = new Cfg();
+        }
+
+        private void Given_Block(uint uAddr, int length)
+        {
+            var addr = Address.Ptr32(uAddr);
+            var addrFallThrough = addr + length;
+            var id = $"l{addr:X4}";
+            var instrs = new List<RtlInstructionCluster>
+            {
+                new RtlInstructionCluster(addr, length,
+                    new RtlAssignment(r2, r1))
+            };
+            var block = new Block(program.Architecture, addr, id, length, addrFallThrough, instrs);
+            cfg.Blocks.TryAdd(addr, block);
+        }
+
+        private List<ChunkWorker> When_MakeScanChunks()
+        {
+            var scanner = new ShingleScanner(program, cfg, new Mock<DecompilerEventListener>().Object);
+            var chunks = scanner.MakeScanChunks();
+            return chunks;
         }
 
         private void RunTest(string sExpected)
@@ -45,6 +68,25 @@ namespace Reko.ScannerV2.UnitTests
             {
                 DumpBlock(block, g, sw);
             }
+        }
+
+        [Test]
+        public void ShScanner_MakeChunks_NoCfg()
+        {
+            var chunks = When_MakeScanChunks();
+            Assert.AreEqual(chunks.Count, 1);
+            Assert.AreEqual(0x1000ul, chunks[0].Address.ToLinear());
+            Assert.AreEqual(0x10, chunks[0].Length);
+        }
+
+        [Test]
+        public void ShScanner_MakeChunks_SingleBlock()
+        {
+            Given_Block(0x1000, 0x7);
+            var chunks = When_MakeScanChunks();
+            Assert.AreEqual(chunks.Count, 1);
+            Assert.AreEqual(0x1008ul, chunks[0].Address.ToLinear());
+            Assert.AreEqual(8, chunks[0].Length);
         }
 
         [Test]

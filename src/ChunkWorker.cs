@@ -13,11 +13,8 @@ namespace Reko.ScannerV2
     public class ChunkWorker
     {
         private ShingleScanner scanner;
-        private IProcessorArchitecture arch;
         private IStorageBinder binder;
         private MemoryArea mem;
-        private Address addrStart;
-        private int chunkUnits;
         private int[] blockNos; // 0 = not owned by anyone.
 
         public ChunkWorker(
@@ -28,23 +25,30 @@ namespace Reko.ScannerV2
             int chunkUnits)
         {
             this.scanner = scanner;
-            this.arch = arch;
+            this.Architecture = arch;
             this.mem = mem;
-            this.addrStart = addrStart;
-            this.chunkUnits = chunkUnits;
+            this.Address = addrStart;
+            this.Length = chunkUnits;
             this.binder = new StorageBinder();
             this.blockNos = new int[chunkUnits];
         }
 
+        public Address Address { get; }
+
+        public IProcessorArchitecture Architecture { get; }
+
+        public int Length { get; }
+
+
         public void Run()
         {
-            var stepsize = arch.InstructionBitSize / arch.MemoryGranularity;
+            var stepsize = Architecture.InstructionBitSize / Architecture.MemoryGranularity;
             int i = 0;
             //for (int i = 0; i < chunkUnits; i += stepsize)
             {
                 int iMark = i;
-                var addrBlock = this.addrStart + iMark;
-                var state = arch.CreateProcessorState();
+                var addrBlock = this.Address + iMark;
+                var state = Architecture.CreateProcessorState();
                 var trace = scanner.MakeTrace(addrBlock, state, binder).GetEnumerator();
                 var instrs = new List<RtlInstructionCluster>();
                 while (trace.MoveNext())
@@ -63,7 +67,7 @@ namespace Reko.ScannerV2
                         }
                         var addrFallthrough = cluster.Address + cluster.Length;
                         var block = scanner.RegisterBlock(
-                            arch,
+                            Architecture,
                             addrBlock,
                             (cluster.Address - addrBlock) + cluster.Length,
                             addrFallthrough,

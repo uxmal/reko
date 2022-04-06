@@ -1,4 +1,5 @@
 ﻿using Reko.Core;
+using Reko.Core.Lib;
 using Reko.Core.Services;
 using System;
 using System.Collections.Generic;
@@ -21,17 +22,67 @@ namespace Reko.ScannerV2
             return ExecuteInParallel(chunks);
         }
 
-        private List<ChunkWorker> MakeScanChunks()
+        public List<ChunkWorker> MakeScanChunks()
         {
+            var sortedBlocks = new BTreeDictionary<Address, Block>();
+            foreach (var block in cfg.Blocks.Values)
+            {
+                sortedBlocks.Add(block.Address, block);
+            }
             return program.SegmentMap.Segments.Values
                 .Where(s => s.IsExecutable)
-                .Select(s => new ChunkWorker(
-                    this,
-                    program.Architecture,
-                    s.MemoryArea,
-                    s.Address,
-                    (int)s.Size))
+                .SelectMany(s => PartitionSegment(s, sortedBlocks))
                 .ToList();
+        }
+
+        private IEnumerable<ChunkWorker> PartitionSegment(
+            ImageSegment segment, 
+            BTreeDictionary<Address, Block> sortedBlocks)
+        {
+            long iGapOffset = 0;
+            long length;
+            ChunkWorker? chunk;
+            int unitAlignment = program.Architecture.InstructionBitSize / program.Architecture.MemoryGranularity;
+            while (iGapOffset < segment.Size)
+            {
+                var addrGapStart = segment.Address + iGapOffset;
+                if (!sortedBlocks.TryGetUpperBoundIndex(addrGapStart, out int iBlock))
+                    break;
+                var nextBlock = sortedBlocks.Values[iBlock];
+                var gapSize = nextBlock.Address - addrGapStart;
+                chunk = MakeChunkWorker(segment, addrGapStart, gapSize);
+                if (chunk is not null)
+                {
+                    yield return chunk;
+                }
+                iGapOffset += gapSize + nextBlock.Length;
+                iGapOffset = unitAlignment * ((iGapOffset + (unitAlignment - 1)) / unitAlignment);
+            }
+
+            // Consume the remainder of the segment.
+            length = segment.Size - iGapOffset;
+            chunk = MakeChunkWorker(segment, segment.Address + iGapOffset, length);
+            if (chunk is not null)
+            {
+                yield return chunk;
+            }
+        }
+
+        private ChunkWorker? MakeChunkWorker(ImageSegment segment, Address addr, long length)
+        {
+            if (length <= 0)
+            {
+                return null;
+            }
+            else
+            {
+                return new ChunkWorker(
+                   this,
+                   program.Architecture,
+                   segment.MemoryArea,
+                   addr,
+                   (int)length);
+            }
         }
 
         private Cfg ExecuteInParallel(List<ChunkWorker> chunks)
