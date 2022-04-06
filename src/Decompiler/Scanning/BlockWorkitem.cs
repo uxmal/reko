@@ -883,6 +883,10 @@ namespace Reko.Scanning
             return true;
         }
 
+        public bool VisitSwitch(RtlSwitch rtlSwitch)
+        {
+            return false;
+        }
         /// <summary>
         /// Takes a system service description and generates a system call from it.
         /// </summary>

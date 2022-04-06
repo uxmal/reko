@@ -1054,6 +1054,11 @@ namespace Reko.Scanning
             return slice.Expression.Accept(this, new BackwardSlicerContext(ctx.Type, range));
         }
 
+        public SlicerResult? VisitSwitch(RtlSwitch rtlSwitch)
+        {
+            return null;
+        }
+
         public SlicerResult? VisitTestCondition(TestCondition tc, BackwardSlicerContext ctx)
         {
             var se = tc.Expression.Accept(this, BackwardSlicerContext.Cond(RangeOf(tc.Expression)));

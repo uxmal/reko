@@ -37,5 +37,6 @@ namespace Reko.Core.Rtl
         T VisitNop(RtlNop rtlNop);
         T VisitReturn(RtlReturn ret);
         T VisitSideEffect(RtlSideEffect side);
+        T VisitSwitch(RtlSwitch sw);
     }
 }

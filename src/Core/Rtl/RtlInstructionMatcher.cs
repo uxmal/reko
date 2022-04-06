@@ -140,6 +140,16 @@ namespace Reko.Core.Rtl
             return matcher.Match(side.Expression);
         }
 
+        public bool VisitSwitch(RtlSwitch sw)
+        {
+            if (pattern is not RtlSwitch swPat)
+                return false;
+            if (swPat.Targets.Length != sw.Targets.Length)
+                return false;
+            matcher.Pattern = swPat.Expression;
+            return matcher.Match(sw.Expression);
+        }
+
         #endregion
     }
 }

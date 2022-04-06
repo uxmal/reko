@@ -29,20 +29,73 @@ namespace Reko.Scanning
     /// </summary>
     public class RtlBlock
     {
-        public RtlBlock(Address address, string name)
+        public RtlBlock(
+            IProcessorArchitecture arch,
+            Address addr,
+            string id,
+            int length,
+            Address addrFallThrough,
+            List<RtlInstructionCluster> instructions)
         {
-            this.Address = address;
-            this.Name = name; 
-            this.Instructions = new List<RtlInstructionCluster>();
+            this.Architecture = arch;
+            this.Name = id;
+            this.Address = addr;
+            this.Length = length;
+            this.FallThrough = addrFallThrough;
+            this.Instructions = instructions;
             this.IsValid = true;
         }
 
-        public Address Address { get; private set; }
-        public string Name { get; private set; }
-        public List<RtlInstructionCluster> Instructions { get; set; }
+        public RtlBlock(Address addr, string id) : this(
+            default!,
+            addr,
+            id,
+            0,
+            default!,
+            new List<RtlInstructionCluster>())
+        {
+        }
+
+        /// <summary>
+        /// Address at which the block starts.
+        /// </summary>
+        public Address Address { get; }
+
+        /// <summary>
+        /// CPU architecture used to disassemble this block.
+        /// </summary>
+        public IProcessorArchitecture Architecture { get; }
+
+        /// <summary>
+        /// The address after the block if control flow falls through.
+        /// Note that this is not necessarily <see cref="Address"/> + <see cref="Length"/>, because
+        /// control instructions with delay slots may require skipping one extra instruction.
+        /// </summary>
+        public Address FallThrough { get; }
+
+        /// <summary>
+        /// Indicates whether this block is valid or not.
+        /// </summary>
         public bool IsValid { get; set; }
 
-        // True if this block has been identifierd as a shared exit block
+        /// <summary>
+        /// <param name="Length">The size of the basic block starting 
+        /// at <see cref="Address"/> and including the length of the final
+        /// instruction.
+        /// </summary>
+        public int Length { get; }
+
+        /// <summary>
+        /// Invariant identifier used for this block.
+        /// </summary>
+        public string Name { get; }
+
+        /// <summary>
+        /// The instructions this block consists of.</param>
+        /// <summary>
+        public List<RtlInstructionCluster> Instructions { get; init; }
+
+        // True if this block has been identified as a shared exit block
         public bool IsSharedExitBlock { get; set; }
 
         public Address GetEndAddress()
