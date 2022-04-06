@@ -50,7 +50,7 @@ namespace Reko.ScannerV2
             //for (int i = 0; i < chunkUnits; i += stepsize)
             {
                 var state = Architecture.CreateProcessorState();
-                var trace = shScanner.MakeTrace(addrNext, state, binder).GetEnumerator();
+                var trace = MakeTrace(addrNext, state).GetEnumerator();
                 while (IsValid(addrNext))
                 {
                     var job = AddJob(addrNext, trace, state);

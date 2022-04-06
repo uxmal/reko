@@ -1,4 +1,5 @@
 ﻿using Moq;
+using NUnit.Framework;
 using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Lib;
@@ -16,8 +17,18 @@ namespace Reko.ScannerV2.UnitTests
     {
         protected Mock<IProcessorArchitecture> arch = default!;
         protected Program program = default!;
-        protected Identifier r1 = Identifier.Create(new RegisterStorage("r1", 1, 0, PrimitiveType.Word32));
-        protected Identifier r2 = Identifier.Create(new RegisterStorage("r2", 2, 0, PrimitiveType.Word32));
+        protected Identifier r1;
+        protected Identifier r2;
+        protected RegisterStorage sr;
+        protected Identifier C;
+
+        public AbstractScannerTests()
+        {
+            this.r1 = Identifier.Create(new RegisterStorage("r1", 1, 0, PrimitiveType.Word32));
+            this.r2 = Identifier.Create(new RegisterStorage("r2", 2, 0, PrimitiveType.Word32));
+            this.sr = new RegisterStorage("SR", 42, 0, PrimitiveType.Word32);
+            this.C = Identifier.Create(new FlagGroupStorage(sr, 1, "C", PrimitiveType.Bool));
+        }
 
         protected void Setup(int textSize, int instrBitSize)
         {
@@ -25,6 +36,8 @@ namespace Reko.ScannerV2.UnitTests
             arch.Setup(a => a.Name).Returns("FakeCpu");
             arch.Setup(a => a.InstructionBitSize).Returns(instrBitSize);
             arch.Setup(a => a.MemoryGranularity).Returns(8);
+            arch.Setup(a => a.Endianness).Returns(EndianServices.Little);
+            arch.Setup(a => a.PointerType).Returns(PrimitiveType.Ptr32);
             arch.Setup(a => a.CreateProcessorState())
                 .Returns(new Func<ProcessorState>(() => new FakeProcessorState(arch.Object)));
             arch.Setup(a => a.CreateImageReader(
@@ -32,6 +45,11 @@ namespace Reko.ScannerV2.UnitTests
                 It.IsNotNull<Address>()))
                 .Returns(new Func<MemoryArea, Address, EndianImageReader>((mm, aa) =>
                     mm.CreateLeReader(aa)));
+            arch.Setup(a => a.MakeAddressFromConstant(
+                It.IsNotNull<Constant>(),
+                It.IsAny<bool>()))
+                .Returns(new Func<Constant, bool, Address>((c, a) =>
+                    Address.Ptr32(c.ToUInt32())));
 
             var segmentMap = new SegmentMap(
                 new ImageSegment(
@@ -75,12 +93,24 @@ namespace Reko.ScannerV2.UnitTests
             w.WriteLine();
         }
 
-
         protected void Given_EntryPoint(uint uAddr)
         {
             var addr = Address.Ptr32(uAddr);
             var sym = ImageSymbol.Procedure(arch.Object, addr);
             this.program.EntryPoints.Add(addr, sym);
+        }
+
+        protected void Given_JumpTable(uint uAddrTable, params uint[] entries)
+        {
+            var addrTable = Address.Ptr32(uAddrTable);
+            if (!program.SegmentMap.TryFindSegment(addrTable, out var segment))
+                Assert.Fail($"No segment available for {uAddrTable:X8}");
+            var mem = segment.MemoryArea;
+            var writer = program.Architecture.Endianness.CreateImageWriter(mem, addrTable);
+            foreach (var uEntry in entries)
+            {
+                writer.WriteUInt32(uEntry);
+            }
         }
 
         protected void Given_Trace(RtlTrace trace)

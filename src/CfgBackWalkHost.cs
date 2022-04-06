@@ -3,19 +3,26 @@ using Reko.Core.Expressions;
 using Reko.Core.Rtl;
 using Reko.Scanning;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Reko.ScannerV2
 {
     public class CfgBackWalkHost : IBackWalkHost<RtlBlock, RtlInstruction>
     {
         private readonly Cfg cfg;
+        private readonly Dictionary<Address,List<Address>> backEdges;
 
-        public CfgBackWalkHost(Core.Program program, IProcessorArchitecture arch, Cfg cfg)
+        public CfgBackWalkHost(
+            Core.Program program,
+            IProcessorArchitecture arch,
+            Cfg cfg, 
+            Dictionary<Address, List<Address>> backEdges)
         {
             this.Program = program;
             this.SegmentMap = program.SegmentMap;
             this.Architecture = arch;
             this.cfg = cfg;
+            this.backEdges = backEdges;
         }
 
         public IProcessorArchitecture Architecture { get; }
@@ -26,40 +33,37 @@ namespace Reko.ScannerV2
 
         public (Expression?, Expression?) AsAssignment(RtlInstruction instr)
         {
-            throw new System.NotImplementedException();
+            if (instr is RtlAssignment ass)
+                return (ass.Dst, ass.Src);
+            return (null, null);
         }
 
         public Expression? AsBranch(RtlInstruction instr)
         {
-            throw new System.NotImplementedException();
+            if (instr is RtlBranch bra)
+                return bra.Condition;
+            return null;
         }
 
         public int BlockInstructionCount(RtlBlock rtlBlock)
         {
-            throw new System.NotImplementedException();
+            return rtlBlock.Instructions.Sum(i => i.Instructions.Length);
         }
 
         public IEnumerable<RtlInstruction?> GetBlockInstructions(RtlBlock block)
         {
-            throw new System.NotImplementedException();
-        }
-
-        public Address? GetBlockStartAddress(Address addr)
-        {
-            throw new System.NotImplementedException();
+            return block.Instructions.SelectMany(c => c.Instructions);
         }
 
         public List<RtlBlock> GetPredecessors(RtlBlock block)
         {
-            throw new System.NotImplementedException();
+            if (!backEdges.TryGetValue(block.Address, out var preds))
+                return new List<RtlBlock>();
+            var pp = preds.Select(p => cfg.Blocks[p]).ToList();
+            return pp;
         }
 
         public RtlBlock? GetSinglePredecessor(RtlBlock block)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public AddressRange? GetSinglePredecessorAddressRange(Address block)
         {
             throw new System.NotImplementedException();
         }

@@ -1,6 +1,7 @@
 ﻿using Moq;
 using NUnit.Framework;
 using Reko.Core;
+using Reko.Core.Expressions;
 using Reko.Core.Lib;
 using Reko.Core.Services;
 using System;
@@ -548,6 +549,73 @@ l00001006:
     // succ: l0000100A l00001002
 l0000100A:
     // pred: l00001006
+    return (0,0)
+    // succ:
+";
+            #endregion
+
+            RunTest(sExpected);
+        }
+
+        [Test]
+        public void RecScan_Switch()
+        {
+            Given_EntryPoint(0x1000);
+            Given_JumpTable(0x1020, 
+                0x1030, 0x1038, 0x1030, 0x1038);
+            Given_Trace(new RtlTrace(0x1000)
+            {
+                m => m.Assign(C, m.Cond(m.ISub(r1, 3))),
+                m => m.Branch(m.Test(ConditionCode.UGT, C), Address.Ptr32(0x1040)),
+                m => m.Goto(m.Mem32(m.IAdd(m.IMul(r1, 4), 0x1020)))
+            });
+            Given_Trace(new RtlTrace(0x1030)
+            {
+                m => m.Assign(r2, 1),
+                m => m.Goto(Address.Ptr32(0x1040))
+            });
+            Given_Trace(new RtlTrace(0x1038)
+            {
+                m => m.Assign(r2, 1),
+                m => m.Assign(r1, -1),
+                m => m.Return(0, 0)
+            });
+            Given_Trace(new RtlTrace(0x1040)
+            {
+                m => m.Return(0, 0)
+            });
+
+            var sExpected =
+            #region Expected
+                @"
+define fn00001000
+l00001000:
+    // pred:
+    C = cond(r1 - 3<32>)
+    if (Test(UGT,C)) branch 00001040
+    // succ: l00001008 l00001040
+l00001008:
+    // pred: l00001000
+    switch (r1) {
+        00001030,
+        00001038,
+        00001030,
+        00001038
+}
+
+    // succ: l00001030 l00001038 l00001030 l00001038
+l00001030:
+    // pred: l00001008 l00001008
+    r2 = 1<32>
+    goto 00001040
+    // succ: l00001040
+l00001038:
+    // pred: l00001008 l00001008
+    r2 = 1<32>
+    r1 = 0xFFFFFFFF<32>
+    // succ: l00001040
+l00001040:
+    // pred: l00001000 l00001030 l00001038
     return (0,0)
     // succ:
 ";

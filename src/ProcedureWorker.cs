@@ -4,6 +4,7 @@ using Reko.Core.Services;
 using System;
 using System.Collections.Generic;
 using System.Threading;
+using System.Threading.Tasks;
 using RtlBlock = Reko.Scanning.RtlBlock;
 
 namespace Reko.ScannerV2

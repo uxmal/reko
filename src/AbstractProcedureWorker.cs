@@ -22,13 +22,15 @@ namespace Reko.ScannerV2
 
         private readonly AbstractScanner scanner;
         private readonly DecompilerEventListener listener;
-        protected readonly IStorageBinder binder;
+        private readonly IStorageBinder binder;
+        private readonly Dictionary<Address, List<Address>> miniCfg;
 
         protected AbstractProcedureWorker(AbstractScanner scanner, DecompilerEventListener listener)
         {
             this.scanner = scanner;
             this.listener = listener;
             this.binder = new StorageBinder();
+            this.miniCfg = new Dictionary<Address, List<Address>>();
         }
 
         public RtlBlock HandleBlockEnd(
@@ -42,7 +44,7 @@ namespace Reko.ScannerV2
             var lastAddr = lastCluster.Address;
             if (scanner.TryRegisterBlockEnd(block.Address, lastAddr))
             {
-                var edges = ComputeEdges(lastInstr, lastAddr, block);
+                var edges = ComputeEdges(lastInstr, lastAddr, block, state);
                 foreach (var edge in edges)
                 {
                     switch (edge.Type)
@@ -50,13 +52,13 @@ namespace Reko.ScannerV2
                     case EdgeType.Fallthrough:
                         // Reuse the same trace. This is necessary to handle the 
                         // ARM Thumb IT instruction, which puts state in the trace.
-                        scanner.RegisterEdge(edge);
+                        RegisterEdge(edge);
                         AddJob(edge.To, trace, state);
                         trace_Verbose("    {0}: added edge to {1}", edge.From, edge.To);
                         break;
                     case EdgeType.Jump:
                         // Start a new trace somewhere else.
-                        scanner.RegisterEdge(edge);
+                        RegisterEdge(edge);
                         AddJob(edge.To, state);
                         trace_Verbose("    {0}: added edge to {1}", edge.From, edge.To);
                         break;
@@ -85,7 +87,11 @@ namespace Reko.ScannerV2
             //$TODO: enqueue low-prio item for throw new NotImplementedException($"Bad block at {addrBadBlock}");
         }
 
-        private List<Edge> ComputeEdges(RtlInstruction instr, Address addrInstr, RtlBlock block)
+        private List<Edge> ComputeEdges(
+            RtlInstruction instr,
+            Address addrInstr,
+            RtlBlock block,
+            ProcessorState state)
         {
             var result = new List<Edge>();
             switch (instr)
@@ -99,9 +105,24 @@ namespace Reko.ScannerV2
                 {
                     result.Add(new Edge(block.Address, addrGotoTarget, EdgeType.Jump));
                 }
+                else if (DiscoverTableExtent(
+                        block.Architecture,
+                        block,
+                        state,
+                        addrInstr,
+                        g,
+                        out var vector,
+                        out _,
+                        out var switchExp))
+                {
+                    var lastCluster = block.Instructions[^1];
+                    Debug.Assert(lastCluster.Instructions[^1] == g);
+                    var sw = new RtlSwitch(switchExp, vector.ToArray());
+                    lastCluster.Instructions[^1] = sw;
+                    result.AddRange(vector.Select(a => new Edge(block.Address, a, EdgeType.Jump)));
+                }
                 else
                 {
-                    //$TODO: indirect jumps
                     result.Add(new Edge(block.Address, block.Address, EdgeType.Return));
                 }
                 break;
@@ -129,7 +150,6 @@ namespace Reko.ScannerV2
             }
             return result;
         }
-
 
         /// <summary>
         /// Discovers the extent of a jump/call table by walking backwards from the 
@@ -159,7 +179,7 @@ namespace Reko.ScannerV2
             imgVector = null!;
             switchExp = null!;
 
-            var bwsHost = scanner.MakeBackwardSlicerHost(arch);
+            var bwsHost = scanner.MakeBackwardSlicerHost(arch, miniCfg);
             var bws = new BackwardSlicer(bwsHost, rtlBlock, state);
             var te = bws.DiscoverTableExtent(addrSwitch, xfer, listener);
             if (te == null)
@@ -177,10 +197,31 @@ namespace Reko.ScannerV2
             return true;
         }
 
+        protected void RegisterEdge(Edge edge)
+        {
+            RegisterEdgeInMiniCfg(edge);
+            scanner.RegisterEdge(edge);
+        }
+
+        private void RegisterEdgeInMiniCfg(Edge edge)
+        {
+            if (!miniCfg.TryGetValue(edge.To, out var edges))
+            {
+                edges = new List<Address>();
+                miniCfg.Add(edge.To, edges);
+            }
+            edges.Add(edge.From);
+        }
+
         public RtlAssignment MkTmp(Expression e)
         {
             var tmp = binder.CreateTemporary(e.DataType);
             return new RtlAssignment(tmp, e);
+        }
+
+        public IEnumerable<RtlInstructionCluster> MakeTrace(Address addr, ProcessorState state)
+        {
+            return scanner.MakeTrace(addr, state, binder);
         }
 
         /// <summary>
