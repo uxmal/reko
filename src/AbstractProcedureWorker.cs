@@ -161,6 +161,5 @@ namespace Reko.ScannerV2
             if (trace.TraceVerbose)
                 Debug.Print(format, args);
         }
-
     }
 }

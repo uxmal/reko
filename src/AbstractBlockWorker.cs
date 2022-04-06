@@ -63,6 +63,10 @@ namespace Reko.ScannerV2
             {
                 var cluster = trace.Current;
                 addrLast = cluster.Address;
+                if (!worker.MarkVisited(addrLast))
+                {
+                    return FallthroughTo(addrLast);
+                }
                 bool clusterHadControlInstrs = false;
                 foreach (var rtl in cluster.Instructions)
                 {
@@ -103,17 +107,22 @@ namespace Reko.ScannerV2
                 if (clusterHadControlInstrs)
                 {
                     var addrFallthrough = cluster.Address + cluster.Length;
-                    var block = scanner.RegisterBlock(
-                        this.state.Architecture,
-                        this.Address,
-                        addrFallthrough - this.Address,
-                        addrFallthrough,
-                        instrs);
+                    Block block = MakeFallthroughBlock(instrs, addrFallthrough);
                     return (block, state);
                 }
             }
             // Fell off the end, mark as bad.
             return (MakeInvalidBlock(instrs, addrLast - this.Address), state);
+        }
+
+        private Block MakeFallthroughBlock(List<RtlInstructionCluster> instrs, Address addrFallthrough)
+        {
+            return scanner.RegisterBlock(
+                this.state.Architecture,
+                this.Address,
+                addrFallthrough - this.Address,
+                addrFallthrough,
+                instrs);
         }
 
         protected abstract void EmulateState(RtlAssignment ass);
