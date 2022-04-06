@@ -4,9 +4,6 @@ using Reko.Core.Rtl;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Reko.ScannerV2
 {
@@ -65,7 +62,8 @@ namespace Reko.ScannerV2
                 addrLast = cluster.Address;
                 if (!worker.MarkVisited(addrLast))
                 {
-                    return FallthroughTo(addrLast);
+                    var block = MakeFallthroughBlock(addrLast, instrs);
+                    return (block, state);
                 }
                 bool clusterHadControlInstrs = false;
                 foreach (var rtl in cluster.Instructions)
@@ -107,7 +105,7 @@ namespace Reko.ScannerV2
                 if (clusterHadControlInstrs)
                 {
                     var addrFallthrough = cluster.Address + cluster.Length;
-                    Block block = MakeFallthroughBlock(instrs, addrFallthrough);
+                    Block block = MakeFallthroughBlock(addrFallthrough, instrs);
                     return (block, state);
                 }
             }
@@ -115,7 +113,7 @@ namespace Reko.ScannerV2
             return (MakeInvalidBlock(instrs, addrLast - this.Address), state);
         }
 
-        private Block MakeFallthroughBlock(List<RtlInstructionCluster> instrs, Address addrFallthrough)
+        private Block MakeFallthroughBlock(Address addrFallthrough, List<RtlInstructionCluster> instrs)
         {
             return scanner.RegisterBlock(
                 this.state.Architecture,

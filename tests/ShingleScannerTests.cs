@@ -50,6 +50,7 @@ namespace Reko.ScannerV2.UnitTests
         {
             var scanner = new ShingleScanner(program, cfg, new Mock<DecompilerEventListener>().Object);
             var cfgNew = scanner.ScanProgram();
+            scanner.RegisterPredecessors();
             var sw = new StringWriter();
             DumpCfg(cfgNew, sw);
             var sActual = sw.ToString();
@@ -141,7 +142,6 @@ l00001000:
         }
 
         [Test]
-        [Ignore("During refactoring")]
         public void ShScanner_Branch()
         {
             // No previous discoveries in the block, all instructions 4 bytes.
@@ -153,16 +153,19 @@ l00001000:
                 m => m.Return(0, 0)
             });
 
-                string sExpected =
+            string sExpected =
             #region Expected
-                @"
+@"
 l00001000:
-    r1 = r2 + 3<32>
+    // pred:
+    if (r1 == 0<32>) branch 00001008
     // succ: l00001004 l00001008
 l00001004:
-    r2 = Mem0[r1:word32]
-    // succ: l0000
+    // pred: l00001000
+    r2 = 0x3E8<u32> /u r1
+    // succ: l00001008
 l00001008:
+    // pred: l00001000 l00001004
     r1 = Mem0[r2:word32]
     return (0,0)
     // succ:

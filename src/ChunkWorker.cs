@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Reko.ScannerV2
@@ -46,28 +47,47 @@ namespace Reko.ScannerV2
 
         public void Run()
         {
+            var addrNext = this.Address;
             var stepsize = Architecture.InstructionBitSize / Architecture.MemoryGranularity;
-            int i = 0;
-            var job = AddJob(this.Address, Architecture.CreateProcessorState());
             //for (int i = 0; i < chunkUnits; i += stepsize)
             {
-                int iMark = i;
-                var addrBlock = this.Address + iMark;
-                var (block, state) = job.ParseBlock();
-                if (block.IsValid)
+                var state = Architecture.CreateProcessorState();
+                var trace = shScanner.MakeTrace(addrNext, state, binder).GetEnumerator();
+                while (IsValid(addrNext))
                 {
-                    HandleBlockEnd(block, job.Trace, state);
-                }
-                else
-                {
-                    HandleBadBlock(addrBlock);
+                    var job = AddJob(addrNext, trace, state);
+                    var (block, newState) = job.ParseBlock();
+                    if (block.IsValid)
+                    {
+                        HandleBlockEnd(block, job.Trace, newState);
+                    }
+                    else
+                    {
+                        HandleBadBlock(block.Address);
+                    }
+                    // Don't use block.Fallthrough, because that would
+                    // skip any instructions in delay slots.
+                    addrNext = block.Address + block.Length;
                 }
             }
+        }
+
+        private bool IsValid(Address addr)
+        {
+            var offset = addr - this.Address;
+            return 0 <= offset && offset < blockNos.Length &&
+                blockNos[offset] == 0;
         }
 
         public override AbstractBlockWorker AddJob(Address addr, IEnumerator<RtlInstructionCluster> trace, ProcessorState state)
         {
             return new ShingleWorker(shScanner, this, addr, trace, state);
+        }
+
+        public override bool MarkVisited(Address addr)
+        {
+            var oldValue = Interlocked.Exchange(ref blockNos[addr - this.Address], 1);
+            return oldValue == 0;
         }
 
         protected override void ProcessCall(Block block, Edge edge, ProcessorState state)

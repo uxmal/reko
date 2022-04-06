@@ -50,7 +50,6 @@ namespace Reko.ScannerV2
             var seeds = CollectSeeds();
             EnqueueWorkers(seeds.Select(MakeSeedWorker));
             ProcessWorkers();
-            RegisterPredecessors();
             //var gaps = FindGaps(cfg);
             //var shingle = new ShingleScanner(program);
             //var newCfg = shingle.Scan(gaps);
@@ -216,22 +215,6 @@ namespace Reko.ScannerV2
             }
         }
 
-        private void RegisterPredecessors()
-        {
-            foreach (var (from, succs) in cfg.Successors)
-            {
-                foreach (var edge in succs)
-                {
-                    if (!cfg.Predecessors.TryGetValue(edge.To, out var edges))
-                    {
-                        edges = new List<Edge>();
-                        cfg.Predecessors.TryAdd(edge.To, edges);
-                    }
-                    edges.Add(edge);
-                }
-            }
-        }
-
         public void ResumeWorker(
             ProcedureWorker worker,
             Address addrCaller,
@@ -255,7 +238,7 @@ namespace Reko.ScannerV2
             wl.Add(worker);
         }
 
-        public override void Splitblock(Block block, Address addrEnd)
+        public override void SplitBlockEndingAt(Block block, Address addrEnd)
         {
             var wl = new Queue<(Block block, Address addrEnd)>();
             wl.Enqueue((block, addrEnd));
@@ -307,7 +290,7 @@ namespace Reko.ScannerV2
                             sSize,
                             blockA.FallThrough,
                             instrs);
-                        StealEdges(blockA, blockS);
+                        StealEdges(addrA, addrS);
                     }
                     // Trim off the last instructions of A and B, then
                     // replace their original values
@@ -360,7 +343,7 @@ namespace Reko.ScannerV2
                     {
                         throw new Exception("Who stole it?");
                     }
-                    StealEdges(blockA, blockB);
+                    StealEdges(blockA.Address, blockB.Address);
                     RegisterEdge(new Edge(newA.Address, blockB.Address, EdgeType.Jump));
                     var newAEnd = newA.Instructions[^1].Address;
                     if (!TryRegisterBlockEnd(newA.Address, newAEnd))
@@ -392,42 +375,6 @@ namespace Reko.ScannerV2
             }
             return (a + 1, b + 1);
         }
-
-        /// <summary>
-        /// Creates a new block from an existing block, using the instruction range
-        /// [iStart, iEnd).
-        /// </summary>
-        /// <param name="block">The block to chop.</param>
-        /// <param name="iStart">Index of first instruction in the new block.</param>
-        /// <param name="iEnd">Index of the first instruction to not include.</param>
-        /// <param name="blockSize">The size in address units of the resulting block.</param>
-        /// <returns>A new, terminated but unregistered block. The caller is responsible for 
-        /// registering it.
-        /// </returns>
-        private Block Chop(Block block, int iStart, int iEnd, long blockSize)
-        {
-            var instrs = new List<RtlInstructionCluster>(iEnd - iStart);
-            for (int i = iStart; i < iEnd; ++i)
-            {
-                instrs.Add(block.Instructions[i]);
-            }
-            var addr = instrs[0].Address;
-            var instrLast = instrs[^1];
-            var id = program.NamingPolicy.BlockName(addr);
-            var addrFallthrough = addr + blockSize;
-            return new Block(block.Architecture, addr, id, (int)blockSize, addrFallthrough, instrs);
-        }
-
-        private void StealEdges(Block from, Block to)
-        {
-            if (cfg.Successors.TryGetValue(from.Address, out var edges))
-            {
-                cfg.Successors.TryRemove(from.Address, out _);
-                var newEges = edges.Select(e => new Edge(to.Address, e.To, e.Type)).ToList();
-                cfg.Successors.TryAdd(to.Address, newEges);
-            }
-        }
-
     }
 
     public enum ReturnStatus

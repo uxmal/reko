@@ -69,7 +69,58 @@ namespace Reko.ScannerV2
             edges.Add(edge);
         }
 
-        public abstract void Splitblock(Block block, Address lastAddr);
+        public void RegisterPredecessors()
+        {
+            foreach (var (from, succs) in cfg.Successors)
+            {
+                foreach (var edge in succs)
+                {
+                    if (!cfg.Predecessors.TryGetValue(edge.To, out var edges))
+                    {
+                        edges = new List<Edge>();
+                        cfg.Predecessors.TryAdd(edge.To, edges);
+                    }
+                    edges.Add(edge);
+                }
+            }
+        }
+
+        protected void StealEdges(Address from, Address to)
+        {
+            if (cfg.Successors.TryGetValue(from, out var edges))
+            {
+                cfg.Successors.TryRemove(from, out _);
+                var newEges = edges.Select(e => new Edge(to, e.To, e.Type)).ToList();
+                cfg.Successors.TryAdd(to, newEges);
+            }
+        }
+
+        /// <summary>
+        /// Creates a new block from an existing block, using the instruction range
+        /// [iStart, iEnd).
+        /// </summary>
+        /// <param name="block">The block to chop.</param>
+        /// <param name="iStart">Index of first instruction in the new block.</param>
+        /// <param name="iEnd">Index of the first instruction to not include.</param>
+        /// <param name="blockSize">The size in address units of the resulting block.</param>
+        /// <returns>A new, terminated but unregistered block. The caller is responsible for 
+        /// registering it.
+        /// </returns>
+        protected Block Chop(Block block, int iStart, int iEnd, long blockSize)
+        {
+            var instrs = new List<RtlInstructionCluster>(iEnd - iStart);
+            for (int i = iStart; i < iEnd; ++i)
+            {
+                instrs.Add(block.Instructions[i]);
+            }
+            var addr = instrs[0].Address;
+            var instrLast = instrs[^1];
+            var id = program.NamingPolicy.BlockName(addr);
+            var addrFallthrough = addr + blockSize;
+            return new Block(block.Architecture, addr, id, (int)blockSize, addrFallthrough, instrs);
+        }
+
+        public abstract void SplitBlockEndingAt(Block block, Address lastAddr);
 
         public abstract bool TryRegisterBlockEnd(Address addrStart, Address addrLast);
 

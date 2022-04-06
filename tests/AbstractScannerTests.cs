@@ -142,7 +142,5 @@ namespace Reko.ScannerV2.UnitTests
                 return b;
             }
         }
-
-
     }
 }

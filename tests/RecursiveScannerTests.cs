@@ -22,6 +22,7 @@ namespace Reko.ScannerV2.UnitTests
         {
             var scanner = new RecursiveScanner(program, new Mock<DecompilerEventListener>().Object);
             var cfg = scanner.ScanProgram();
+            scanner.RegisterPredecessors();
             var sw = new StringWriter();
             DumpCfg(cfg, sw);
             var sActual = sw.ToString();
@@ -101,10 +102,7 @@ l00001000:
             Given_Trace(new RtlTrace(0x1000)
             {  
                 m => m.Assign(r2, m.ISub(r2, 1)),
-                m => m.Branch(m.Ne0(r2), Address.Ptr32(0x1010))
-            });
-            Given_Trace(new RtlTrace(0x1008)
-            {
+                m => m.Branch(m.Ne0(r2), Address.Ptr32(0x1010)),
                 m => m.Assign(r1, 0),
                 m => m.Return(0, 0)
             });
@@ -146,16 +144,14 @@ l00001010:
             {
                 m => m.Assign(r2, 10),
                 m => m.Assign(r2, m.ISub(r2, 1)),
-                m => m.Branch(m.Ne0(r2), Address.Ptr32(0x1004))
+                m => m.Branch(m.Ne0(r2), Address.Ptr32(0x1004)),
+                m => m.Assign(r1, 0),
+                m => m.Return(0, 0),
             });
             Given_Trace(new RtlTrace(0x1004)
             {
                 m => m.Assign(r2, m.ISub(r2, 1)),
-                m => m.Branch(m.Ne0(r2), Address.Ptr32(0x1004))
-            });
-            Given_Trace(new RtlTrace(0x100C)
-            { 
-                m => m.Assign(r1, 0),
+                m => m.Branch(m.Ne0(r2), Address.Ptr32(0x1004)),
                 m => m.Return(0, 0),
             });
 
@@ -244,14 +240,12 @@ l00001020:
             {
                 m => m.Assign(r1, r2),
                 m => m.Assign(r2, m.ISub(r2, 1)),
-                m => m.Branch(m.Ne0(r2), Address.Ptr32(0x100C))
+                m => m.Branch(m.Ne0(r2), Address.Ptr32(0x100C)),
+                m => m.Return(0, 0)
             });
             Given_Trace(new RtlTrace(0x1014)
             { 
-                m => m.Branch(m.Ne0(r2), Address.Ptr32(0x100C))
-            });
-            Given_Trace(new RtlTrace(0x1018)
-            {
+                m => m.Branch(m.Ne0(r2), Address.Ptr32(0x100C)),
                 m => m.Return(0, 0)
             });
 
@@ -299,15 +293,14 @@ l00001018:
                 m => m.Assign(r1, r2),
                 m => m.Assign(r2, m.ISub(r2, 1)),
                 m => m.Branch(m.Ne0(r2), Address.Ptr32(0x100C), InstrClass.ConditionalTransfer|InstrClass.Delay ),
+                m => m.Nop(),
+                m => m.ReturnD(0, 0),
                 m => m.Nop()
             });
             Given_Trace(new RtlTrace(0x1014)
             {
                 m => m.Branch(m.Ne0(r2), Address.Ptr32(0x100C), InstrClass.ConditionalTransfer|InstrClass.Delay ),
-                m => m.Nop()
-            });
-            Given_Trace(new RtlTrace(0x101C)
-            {
+                m => m.Nop(),
                 m => m.ReturnD(0, 0),
                 m => m.Nop()
             });
@@ -350,7 +343,10 @@ l0000101C:
                 m => m.Assign(r1, r2),
                 m => m.Assign(r2, m.IAdd(r2, 1)),
                 m => m.Assign(r1, m.Mem32(m.Word32(0x00123400))),
-                m => m.Branch(m.Eq0(r1), Address.Ptr32(0x1004))
+                m => m.Branch(m.Eq0(r1), Address.Ptr32(0x1004)),
+                m => m.Assign(r2, m.Mem32(r1)),
+                m => m.Branch(m.Eq0(r2), Address.Ptr32(0x1008)),
+                m => m.Return(0, 0)
             });
             Given_Trace(new RtlTrace(0x1004)
             {
@@ -362,15 +358,6 @@ l0000101C:
             {
                 m => m.Assign(r1, m.Mem32(m.Word32(0x00123400))),
                 m => m.Branch(m.Eq0(r1), Address.Ptr32(0x1004))
-            });
-            Given_Trace(new RtlTrace(0x1010)
-            {
-                m => m.Assign(r2, m.Mem32(r1)),
-                m => m.Branch(m.Eq0(r2), Address.Ptr32(0x1008))
-            });
-            Given_Trace(new RtlTrace(0x1018)
-            {
-                m => m.Return(0, 0)
             });
 
             var sExpected =
@@ -531,16 +518,14 @@ l00001008:
             {
                 { 3, m => m.Assign(r1, 4) },
                 { 3, m => m.Assign(m.Mem32(r2), r1) },
-                { 4, m => m.Branch(m.Ne0(m.Mem32(m.IAdd(r2, 4))), Address.Ptr32(0x1002)) }
+                { 4, m => m.Branch(m.Ne0(m.Mem32(m.IAdd(r2, 4))), Address.Ptr32(0x1002)) },
+                { 4, m => m.Return(0, 0) }
             });
             Given_Trace(new RtlTrace(0x1002)
             {
                 { 4, m => m.Assign(m.Mem32(r2), m.ISub(r1, 1)) },
                 { 4, m => m.Branch(m.Ne0(m.Mem32(m.IAdd(r2, 4))), Address.Ptr32(0x1002)) },
-            });
-            Given_Trace(new RtlTrace(0x100A)
-            {
-                m => m.Return(0, 0)
+                { 4, m => m.Return(0, 0) }
             });
 
             var sExpected =

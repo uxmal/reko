@@ -3,6 +3,7 @@ using Reko.Core.Lib;
 using Reko.Core.Services;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -19,7 +20,9 @@ namespace Reko.ScannerV2
         public Cfg ScanProgram()
         {
             var chunks = MakeScanChunks();
-            return ExecuteInParallel(chunks);
+            var cfg = ExecuteChunks(chunks);
+            cfg = EnsureBlocks(cfg);
+            return cfg;
         }
 
         public List<ChunkWorker> MakeScanChunks()
@@ -95,7 +98,7 @@ namespace Reko.ScannerV2
             }
         }
 
-        public override void Splitblock(Block block, Address lastAddr)
+        public override void SplitBlockEndingAt(Block block, Address lastAddr)
         {
             throw new NotImplementedException();
         }
@@ -106,7 +109,7 @@ namespace Reko.ScannerV2
             return true;
         }
 
-        private Cfg ExecuteInParallel(List<ChunkWorker> chunks)
+        private Cfg ExecuteChunks(List<ChunkWorker> chunks)
         {
             //$TODO: this should be parallelizable, but we
             // do it first in series to make it correct.
@@ -115,6 +118,56 @@ namespace Reko.ScannerV2
                 chunk.Run();
             }
             return cfg;
+        }
+
+        /// <summary>
+        /// Ensure there are <see cref="Block"/>s at 
+        /// </summary>
+        private Cfg EnsureBlocks(Cfg cfg)
+        {
+            var blocks = cfg.Blocks.Values.ToSortedList(b => b.Address);
+            var edges = cfg.Successors.Values
+                .SelectMany(e => e)
+                .OrderBy(e => e.To)
+                .ToList();
+            foreach (var e in edges)
+            {
+                if (!blocks.TryGetLowerBound(e.To, out var block))
+                {
+                    Debug.Fail("Edge going to hyperspace");
+                    continue; 
+                }
+                if (block.Address != e.To)
+                {
+                    SplitBlockAt(block, e.To);
+                }
+            }
+            return cfg;
+        }
+
+        private Block SplitBlockAt(Block block, Address to)
+        {
+            int c = block.Instructions.Count;
+            for (int i = 0; i < c; ++i)
+            {
+                //$PERF Binary search only makes sense if blocks are 
+                // really large. Needs measurement
+                var addrInstr = block.Instructions[i].Address;
+                if (addrInstr == to)
+                {
+                    var newInstrs = block.Instructions.Skip(i).ToList();
+                    block.Instructions.RemoveRange(i, c - i);
+                    var newBlock = RegisterBlock(
+                        block.Architecture,
+                        to,
+                        (int)(addrInstr - block.Address),
+                        addrInstr,
+                        newInstrs);
+                    RegisterEdge(new Edge(block.Address, newBlock.Address, EdgeType.Fallthrough));
+                    return newBlock;
+                }
+            } 
+            throw new NotImplementedException("Couldn't find split.");
         }
 
         //if (at zero)

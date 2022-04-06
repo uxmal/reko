@@ -69,7 +69,7 @@ namespace Reko.ScannerV2
             else
             {
                 trace_Verbose("    {0}: Splitting block at [{1}-{2}]", block.Address, block.Address, lastAddr);
-                scanner.Splitblock(block, lastAddr);
+                scanner.SplitBlockEndingAt(block, lastAddr);
             }
             return block;
         }
@@ -147,6 +147,15 @@ namespace Reko.ScannerV2
         protected abstract void ProcessCall(Block block, Edge edge, ProcessorState state);
 
         protected abstract void ProcessReturn();
+
+        /// <summary>
+        /// Attempt to mark the address <paramref name="addr"/> as visited.
+        /// </summary>
+        /// <param name="addr">Address to mark as visited.</param>
+        /// <returns>True if the address hadn't been visited before, false
+        /// if the address had been visited before.
+        /// </returns>
+        public abstract bool MarkVisited(Address addr);
 
         [Conditional("DEBUG")]
         protected void trace_Inform(string format, params object[] args)

@@ -72,10 +72,8 @@ namespace Reko.ScannerV2
             return worker;
         }
 
-        public override bool IsVisited(Address addr) => false;
+        public override bool MarkVisited(Address addr) => true;
 
-        public override void MarkVisited(Address addr) { }
-        
         protected override void ProcessCall(Block block, Edge edge, ProcessorState state)
         {
             if (recScanner.GetProcedureReturnStatus(edge.To) != ReturnStatus.Unknown)
