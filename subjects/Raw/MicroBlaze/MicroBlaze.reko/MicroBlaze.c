@@ -19612,8 +19612,8 @@ void fn0001E1F8(Eq_n r5, ui32 r6, ui32 r7, word32 r26, word32 r27, word32 r28, p
 	fn0001E004(r5, 0x01, 30004, r6, r7, r5, r26, r27, r28, fn0001E004(r5, 0x00, 30260, r6, r7, r5, r26, r27, r28, r30, r31, out r31_n), r31_n, out r31_n);
 }
 
-// 0001E384: void fn0001E384(Register word32 r0, Register (ptr32 Eq_n) r5, Register int32 r6)
-void fn0001E384(word32 r0, struct Eq_n * r5, int32 r6)
+// 0001E384: void fn0001E384(Register word32 r0, Register (ptr32 Eq_n) r5, Register int32 r6, Register word32 r15)
+void fn0001E384(word32 r0, struct Eq_n * r5, int32 r6, word32 r15)
 {
 	word32 r4_n = r5->dw0014;
 	if (Test(EQ,r4_n ^ 100))
@@ -19629,7 +19629,11 @@ void fn0001E384(word32 r0, struct Eq_n * r5, int32 r6)
 			(0x0001E6E8 + r3_n)();
 		}
 		else
+		{
 			r5->dw0110 = r0;
+			<anonymous> * r3_n = *((char *) g_a71BC + r6 * 0x04);
+			r3_n();
+		}
 	}
 	else
 	{
@@ -19676,12 +19680,13 @@ void fn0001E530(word32 r7, struct Eq_n * r19)
 	}
 }
 
-// 0001E704: Register word32 fn0001E704(Register Eq_n r5, Register out ptr32 r4Out, Register out ptr32 r6Out)
+// 0001E704: Register word32 fn0001E704(Register Eq_n r5, Register ptr32 r15, Register out ptr32 r4Out, Register out ptr32 r6Out)
 // Called from:
 //      fn0001E908
-word32 fn0001E704(Eq_n r5, ptr32 & r4Out, ptr32 & r6Out)
+word32 fn0001E704(Eq_n r5, ptr32 r15, ptr32 & r4Out, ptr32 & r6Out)
 {
-	if (0x05 - *((word32) r5 + 40) < 0x00)
+	Eq_n r6_n = *((word32) r5 + 40);
+	if (0x05 - r6_n < 0x00)
 	{
 		struct Eq_n * r3_n = *r5;
 		r3_n->dw0014 = 0x09;
@@ -19690,6 +19695,17 @@ word32 fn0001E704(Eq_n r5, ptr32 & r4Out, ptr32 & r6Out)
 		word32 r3_n;
 		ptr32 r4_n;
 		(124844 + r3_n)();
+		r4Out = r4_n;
+		r6Out = r6_n;
+		return r3_n;
+	}
+	else
+	{
+		<anonymous> * r3_n = *((char *) g_a71D4 + r6_n * 0x04);
+		ptr32 r6_n;
+		word32 r3_n;
+		ptr32 r4_n;
+		r3_n();
 		r4Out = r4_n;
 		r6Out = r6_n;
 		return r3_n;
@@ -19773,7 +19789,7 @@ word32 fn0001E908(Eq_n r0, Eq_n r5, Eq_n r19, ptr32 & r4Out, ptr32 & r6Out, ptr3
 	((word32) r19 + 260)->u1 = (word16) r0;
 	ptr32 r4_n;
 	ptr32 r6_n;
-	word32 r3_n = fn0001E704(r5, out r4_n, out r6_n);
+	word32 r3_n = fn0001E704(r5, 0x0001E90C, out r4_n, out r6_n);
 	r4Out = r4_n;
 	r6Out = r6_n;
 	r19Out = dwArg1C;

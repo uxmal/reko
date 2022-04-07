@@ -1483,7 +1483,7 @@ void fn145E(word16 r2, word16 wArg00, word16 wArg02, ptr16 ptrArg04)
 
 // MayUse:  r2:[0..15] Stack +0000:[0..15] Stack +0002:[0..15] Stack +0004:[0..15]
 // LiveOut:
-// Trashed: NZVC r0 r1 r2 r3 sp
+// Trashed: NZVC r0 r1 r2 r3 r4 r5 sp
 // Preserved:
 fn145E_entry:
 	ptr16 fp
@@ -1510,8 +1510,8 @@ l1478:
 l1496:
 	fn45F6(r0_45, v17_25, r3_4)
 l149A:
-	Mem61[r3_4 + 0x1A<16>:word16] = Mem48[r3_4 + 2<16>:word16]
-	Mem63[r3_4 + 0x58<16>:word16] = Mem61[r3_4 + 0xC<16>:word16]
+	Mem66[r3_4 + 0x1A<16>:word16] = Mem48[r3_4 + 2<16>:word16]
+	Mem68[r3_4 + 0x58<16>:word16] = Mem66[r3_4 + 0xC<16>:word16]
 	return
 fn145E_exit:
 
@@ -2728,8 +2728,8 @@ void fn45F6(word16 r0, word16 r2, word16 r3)
 //      fn145E
 // MayUse:  r0:[0..15] r2:[0..15] r3:[0..15]
 // LiveOut:
-// Trashed: NZVC
-// Preserved: r0 r1 r2 r3 r4 r5 sp
+// Trashed: NZVC r0 r1 r2 r4 r5
+// Preserved: r3 sp
 fn45F6_entry:
 	ptr16 fp
 l45F6:
@@ -2754,13 +2754,13 @@ l462E:
 	branch r2_265 != 0<16> l465A
 l4638:
 	Mem69[r0 + 6<16>:word16] = r4_43 * 0x28<16>
-	word16 r1_279 = 0x47E4<16>
+	word16 r1_284 = 0x47E4<16>
 l463E:
-	branch Mem69[r1_279:word16] == 0<16> l464A
+	branch Mem69[r1_284:word16] == 0<16> l464A
 l4642:
-	branch r2 - Mem69[r1_279:word16] == 0<16> l464A
+	branch r2 - Mem69[r1_284:word16] == 0<16> l464A
 l464A:
-	r2_265 = Mem69[r1_279 - 2<16>:word16]
+	r2_265 = Mem69[r1_284 - 2<16>:word16]
 	Mem92[r0 + 8<16>:word16] = 0x28AE<16>
 	Mem96[r0 + 0xA<16>:word16] = r4_43 * 0x28<16>
 	Mem98[r0 + 0xC<16>:word16] = 0x193C<16>
@@ -2804,12 +2804,11 @@ l473C:
 l4740:
 	Mem179[r0:word16] = Mem177[r0:word16] | 0x800<16>
 	return
-fn45F6_exit:
 l466E:
-	r0_193 = __rcr<word16,byte>(r0_349, 1<8>, C_130)
-	C_130 = (r0_349 & 1<16>) != 0<16>
-	r0_349 = r0_193
-	branch (r0_349 & 1<16>) != 0<16> l466A
+	r0_193 = __rcr<word16,byte>(r0_369, 1<8>, C_130)
+	C_130 = (r0_369 & 1<16>) != 0<16>
+	r0_369 = r0_193
+	branch (r0_369 & 1<16>) != 0<16> l466A
 l4672:
 	Mem202[r0 + 0x11<16>:byte] = r1_129
 	Mem204[r0 + 0x11<16>:byte] = Mem202[r0 + 0x11<16>:byte] - 1<8>
@@ -2840,20 +2839,24 @@ l46B2:
 l46B8:
 l46BA:
 	// This indirect jump appears to use the range [-1,1], which Reko can't deduce. This is a typical place where a user annotation (indicating the range of valid values) would help.
-	switch (fn474C(r0 + 6<16>, r2_265, r3, r4_220) << 1<i16>) { }
+	word16 r4_269
+	call Mem276[(r4_269 << 1<i16>) + 0x46C4<16>:word16] (retsize: 0;)
+		uses: r0:fn474C(r0 + 6<16>, r2_265, r3, r4_220, out r4_269)
+	return
+fn45F6_exit:
 l4646:
-	r1_279 = r1_279 + 4<16>
+	r1_284 = r1_284 + 4<16>
 l4608:
 	r4_18 = r4_18 + 1<16>
 
 
-word16 fn474C(word16 r1, word16 r2, word16 r3, word16 r4)
+word16 fn474C(word16 r1, word16 r2, word16 r3, word16 r4, ptr16 & r4Out)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
 //      fn45F6
 // MayUse:  r1:[0..15] r2:[0..15] r3:[0..15] r4:[0..15]
-// LiveOut: r4
+// LiveOut: r0 r4
 // Trashed: NZVC r0 r2 r4
 // Preserved: sp
 fn474C_entry:
@@ -2870,6 +2873,7 @@ l4756:
 l4762:
 	word16 sp_101 = sp_11 - 2<16>
 	Mem27[sp_101:word16] = r4
+	word16 r0_150 = r1
 	branch DSTAT(Mem27[sp_101:ptr16], r1) l4772
 l476A:
 	Mem33[r1:word16] = r2
@@ -2887,8 +2891,7 @@ l4780:
 l478C:
 	sp_101 = sp_101 - 2<16>
 	Mem68[sp_101:word16] = Mem59[r3 + 0xA<16>:word16]
-	word16 r0_71
-	branch FETCH(Mem68[sp_101:ptr16], r1, out r0_71) l47DC
+	branch FETCH(Mem68[sp_101:ptr16], r1, out r0_150) l47DC
 l4796:
 	word16 sp_75 = sp_101 - 2<16>
 	Mem76[sp_75:word16] = 0<16>
@@ -2905,6 +2908,7 @@ l47AE:
 	Mem94[sp_92:word16] = r1
 	Mem98[sp_92 - 2<16>:word16] = r0_78 | Mem94[r1 + 0xB<16>:byte]
 	FnSubfn(sp_92 - 2<16>)
+	r0_150 = sp_92 - 2<16>
 	branch Test(UGE,false) l47D4
 l47D4:
 	Mem106[sp_101:word16] = Mem98[sp_101:word16] + 1<16>
@@ -2920,7 +2924,8 @@ l47DA:
 	Mem126[sp_101:word16] = Mem124[sp_101:word16] + 1<16>
 l47DC:
 	UNLOCK()
-	return 0<16>
+	r4Out = 0<16>
+	return r0_150
 fn474C_exit:
 l47C6:
 	Mem136[r1 + 0xFFFA<16>:word16] = Mem119[r1 + 0xFFFA<16>:word16] & 0xFEFF<16>

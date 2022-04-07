@@ -860,6 +860,32 @@ namespace Reko.UnitTests.Decompiler.Scanning
             Assert.AreEqual("1[0,3]", bwslc.JumpTableIndexInterval.ToString());
         }
 
+        [Test]
+        public void Bwslc_Arm()
+        {
+            // Follow the ARM pattern:
+            //  cmp r1,#4
+            //  ldrCC pc,[pc,r1,lsl #2]
+            //  goto other
+            var C = Cc("C");
+            var b1000 = Given_Block(0x1000);
+            var r1 = binder.EnsureRegister(new RegisterStorage("r1", 1, 0, PrimitiveType.Word32));
+            Given_Instrs(b1000, m =>
+            {
+                m.Assign(C, m.Cond(m.ISub(r1, 4)));
+                m.Branch(m.Test(ConditionCode.UGT, C), Address.Ptr32(0x1004));
+                m.Goto(m.Mem32(m.IAdd(m.Ptr32(0x1020), m.IMul(r1, 4))));
+            });
+            var bwslc = new BackwardSlicer(host, b1000, processorState);
+            Assert.IsTrue(bwslc.Start(b1000, 2, Target(b1000)));
+            while (bwslc.Step())
+                ;
+            Assert.AreEqual("Mem0[0x00001020<p32> + r1 * 4<32>:word32]", bwslc.JumpTableFormat.ToString());
+            Assert.AreEqual("r1", bwslc.JumpTableIndex.ToString());
+            Assert.AreEqual("r1", bwslc.JumpTableIndexToUse.ToString(), "Expression to use when indexing");
+            Assert.AreEqual("1[0,4]", bwslc.JumpTableIndexInterval.ToString());
+        }
+
         [Test(Description = "MIPS switches are guarded by have explicit comparisons")]
         [Ignore("Get this working soon")]
         public void Bwslc_MipsBranch()

@@ -226,6 +226,12 @@ byte g_b6F78 = ~0x07; // 00006F78
 byte g_b6F84 = 0x10; // 00006F84
 byte g_b6F90 = 0x90; // 00006F90
 byte g_b6F98 = 0x90; // 00006F98
+<anonymous> * g_a71BC[] = // 000071BC
+	{
+	};
+<anonymous> * g_a71D4[] = // 000071D4
+	{
+	};
 <anonymous> * g_a7734[] = // 00007734
 	{
 	};

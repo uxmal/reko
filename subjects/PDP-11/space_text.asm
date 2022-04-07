@@ -3554,9 +3554,10 @@ l46BA:
 
 l46C2:
 	trap	#9F
-l46C4	dw	0x899B
-l46C6	dw	0x899C
-46C8                         9D 89 23 01                     ..#.    
+	trap	#9B
+	trap	#9C
+	trap	#9D
+	br	4712
 46CC                                     D6 0B 42 9C             ..B.
 46D0 0A 00 01 02 82 0A B1 90 0A 00 C2 00 B1 10 FE FF ................
 46E0 F1 1C 0C 00 FC FF C2 0C B3 60 0C 00 D7 AE 50 00 .........`....P.

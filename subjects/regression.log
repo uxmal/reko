@@ -788,13 +788,13 @@ fn0000EE14: error: An internal error occurred while building the expressions of 
     The given key 'l0000EE2C' was not present in the dictionary.
        at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
    at Reko.Core.Lib.DominatorGraph`1.BuildDominanceFrontiers(DirectedGraph`1 graph, Dictionary`2 idoms) in d:\dev\uxmal\reko\master\src\Core\Lib\DominatorGraph.cs:line 192
-   at Reko.Core.Lib.DominatorGraph`1..ctor(DirectedGraph`1 graph, T entryNode) in d:\dev\uxmal\reko\master\src\Core\Lib\DominatorGraph.cs:line 45
+   at Reko.Core.Lib.DominatorGraph`1..ctor(DirectedGraph`1 graph, T entryNode) in d:\dev\uxmal\reko\master\src\Core\Lib\DominatorGraph.cs:line 46
    at Reko.Analysis.DataFlowAnalysis.BuildExpressionTrees() in d:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 409
 fn0000CE88: error: An internal error occurred while building the expressions of fn0000CE88
     The given key 'l0000CEAC' was not present in the dictionary.
        at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
    at Reko.Core.Lib.DominatorGraph`1.BuildDominanceFrontiers(DirectedGraph`1 graph, Dictionary`2 idoms) in d:\dev\uxmal\reko\master\src\Core\Lib\DominatorGraph.cs:line 192
-   at Reko.Core.Lib.DominatorGraph`1..ctor(DirectedGraph`1 graph, T entryNode) in d:\dev\uxmal\reko\master\src\Core\Lib\DominatorGraph.cs:line 45
+   at Reko.Core.Lib.DominatorGraph`1..ctor(DirectedGraph`1 graph, T entryNode) in d:\dev\uxmal\reko\master\src\Core\Lib\DominatorGraph.cs:line 46
    at Reko.Analysis.DataFlowAnalysis.BuildExpressionTrees() in d:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 409
 l0000CEAC: warning: Phi functions will be ignored by type analysis. This may be caused by a failure in a previous stage of the decompilation.
 fn0000CE88: error: An error occurred while rewriting procedure to high-level language.
@@ -829,6 +829,8 @@ fn0000EE14: error: An error occurred while rewriting procedure to high-level lan
 0000004D: warning: Expected sizes of arrays to have been determined by now
 00000051: warning: Expected sizes of arrays to have been determined by now
 00000055: warning: Expected sizes of arrays to have been determined by now
+000071BC: warning: Expected sizes of arrays to have been determined by now
+000071D4: warning: Expected sizes of arrays to have been determined by now
 00007734: warning: Expected sizes of arrays to have been determined by now
 00007860: warning: Expected sizes of arrays to have been determined by now
 00000007: warning: Expected sizes of arrays to have been determined by now
@@ -847,6 +849,8 @@ fn0000EE14: error: An error occurred while rewriting procedure to high-level lan
 0000004D: warning: Expected sizes of arrays to have been determined by now
 00000051: warning: Expected sizes of arrays to have been determined by now
 00000055: warning: Expected sizes of arrays to have been determined by now
+000071BC: warning: Expected sizes of arrays to have been determined by now
+000071D4: warning: Expected sizes of arrays to have been determined by now
 00007734: warning: Expected sizes of arrays to have been determined by now
 00007860: warning: Expected sizes of arrays to have been determined by now
 
@@ -1209,9 +1213,15 @@ Warning: Recursion too deep in PtrPrimitiveReplacer
 Warning: Recursion too deep in PtrPrimitiveReplacer
 Warning: Recursion too deep in PtrPrimitiveReplacer
 Warning: Recursion too deep in PtrPrimitiveReplacer
+Warning: Recursion too deep in PtrPrimitiveReplacer
+Warning: Recursion too deep in PtrPrimitiveReplacer
+Warning: Recursion too deep in PtrPrimitiveReplacer
+Warning: Recursion too deep in PtrPrimitiveReplacer
+46C4: warning: Expected sizes of arrays to have been determined by now
 47E2: warning: Expected sizes of arrays to have been determined by now
 541C: warning: Expected sizes of arrays to have been determined by now
 5898: warning: Expected sizes of arrays to have been determined by now
+46C4: warning: Expected sizes of arrays to have been determined by now
 47E2: warning: Expected sizes of arrays to have been determined by now
 541C: warning: Expected sizes of arrays to have been determined by now
 5898: warning: Expected sizes of arrays to have been determined by now
@@ -1940,4 +1950,4 @@ Signature of 'Microsoft Visual C++ 8' detected.
 0040120B: warning: Unable to determine the upper bound of an indirect call or jump; there may be more than 2 entries.
 004011A5: warning: Unable to determine the upper bound of an indirect call or jump; there may be more than 2 entries.
 
-Decompiled 85 binaries in 50.79 seconds.
+Decompiled 85 binaries in 51.14 seconds.

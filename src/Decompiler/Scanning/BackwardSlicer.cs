@@ -151,10 +151,9 @@ namespace Reko.Scanning
             var vse = new ValueSetEvaluator(host.Architecture, host.SegmentMap, ctx, this.processorState);
             var (values, accesses) = vse.Evaluate(jumpExpr!);
             var vector = values.Values
-                .TakeWhile(c => !(c is InvalidConstant))
-                .Take(2000)             // Arbitrary limit
                 .Select(ForceToAddress)
-                .TakeWhile(a => !(a is null))
+                .TakeWhile(IsValidJumpTarget)
+                .Take(2000)             // Arbitrary limit
                 .ToList()!;
             if (vector.Count == 0)
                 return null;
@@ -166,8 +165,17 @@ namespace Reko.Scanning
             };
         }
 
+        private bool IsValidJumpTarget(Address? addr)
+        {
+            if (addr is null)
+                return false;
+            return host.SegmentMap.IsExecutableAddress(addr);
+        }
+
         private Address? ForceToAddress(Expression arg)
         {
+            if (arg is InvalidConstant)
+                return null;
             if (arg is Address addr)
                 return addr;
             if (arg is Constant c)

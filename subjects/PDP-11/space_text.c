@@ -45,12 +45,8 @@ Eq_n g_t0003 = // 0003
 	};
 Eq_n g_t0004 = // 0004
 	{
-		
-		{
-			0x00
-		},
-		0x00,
-		0x00,
+		null,
+		null,
 	};
 Eq_n g_t0005 = // 0005
 	{
@@ -101,24 +97,6 @@ Eq_n g_t0015 = // 0015
 	{
 		0
 	};
-Eq_n g_t0016 = // 0016
-	{
-		
-		{
-			0x00
-		},
-		0x00,
-		0x00,
-	};
-Eq_n g_t0019 = // 0019
-	{
-		
-		{
-			0x00
-		},
-		0xC000,
-		0x03,
-	};
 Eq_n g_t001B = // 001B
 	{
 		0x24,
@@ -129,8 +107,6 @@ Eq_n g_t0020 = // 0020
 		&g_str0200,
 		null,
 		0x00,
-		23202,
-		null,
 		0x00,
 		null,
 		
@@ -143,7 +119,7 @@ Eq_n g_t0020 = // 0020
 		null,
 		null,
 		null,
-		null,
+		0x00,
 		0x00,
 		0x00,
 		0x00,
@@ -212,6 +188,7 @@ Eq_n g_t002F = // 002F
 		0x00,
 		0x00,
 	};
+<anonymous> g_t0035 = <code>; // 0035
 Eq_n g_t003B = // 003B
 	{
 		0
@@ -230,8 +207,6 @@ Eq_n g_t0050 = // 0050
 		0x00,
 		0x00,
 		null,
-		0x00,
-		null,
 		
 		{
 			0x00
@@ -242,7 +217,7 @@ Eq_n g_t0050 = // 0050
 		null,
 		null,
 		null,
-		null,
+		0x00,
 		0x00,
 		0x00,
 		0x00,
@@ -293,8 +268,6 @@ Eq_n g_t0080 = // 0080
 		0x00,
 		0x00,
 		null,
-		0x00,
-		null,
 		
 		{
 			0x00
@@ -305,7 +278,7 @@ Eq_n g_t0080 = // 0080
 		null,
 		null,
 		null,
-		null,
+		0x00,
 		0x00,
 		0x00,
 		0x00,
@@ -339,8 +312,6 @@ Eq_n g_t00B8 = // 00B8
 		0x00,
 		0x00,
 		null,
-		0x00,
-		null,
 		
 		{
 			0x00
@@ -351,7 +322,7 @@ Eq_n g_t00B8 = // 00B8
 		null,
 		null,
 		null,
-		null,
+		0x00,
 		0x00,
 		0x00,
 		0x00,
@@ -378,7 +349,58 @@ Eq_n g_t00B8 = // 00B8
 	};
 word16 g_w0115 = 0x00; // 0115
 char g_str011C[] = ""; // 011C
+Eq_n g_t0135 = // 0135
+	{
+		<code>,
+		null,
+		null,
+		0x00,
+		0x00,
+		null,
+		
+		{
+			0x00
+		},
+		0x00,
+		null,
+		null,
+		null,
+		null,
+		null,
+		0x00,
+		0x00,
+		0x00,
+		0x00,
+		0x00,
+		0x00,
+		
+		{
+			0
+		},
+		0x00,
+		null,
+		0x00,
+		null,
+		null,
+		null,
+		0x00,
+		null,
+		null,
+		
+		{
+			0
+		},
+		0x00,
+	};
+Eq_n g_t014A = // 014A
+	{
+		0
+	};
 char g_str0200[] = "\xA0"; // 0200
+Eq_n g_t0201 = // 0201
+	{
+		&g_t201D,
+	};
 char g_str0215[] = "\x01\xC1\x15\x01\n\xC0\x1D\x8E\x1B\x01\x03\xC8\t\xC6\x17\""; // 0215
 Eq_n g_t021D = // 021D
 	{
@@ -386,8 +408,6 @@ Eq_n g_t021D = // 021D
 		&g_strFFFFC803,
 		&g_tFFFFC609,
 		0x2217,
-		0x2600,
-		&g_tFFFFC011,
 		37397,
 		&g_tFFFFFD05,
 		
@@ -400,7 +420,7 @@ Eq_n g_t021D = // 021D
 		&g_t0015,
 		&g_tFFFF8488,
 		&g_t1EF0,
-		&g_t2602,
+		0x2602,
 		0xF700,
 		~0x08,
 		0x780B,
@@ -425,23 +445,12 @@ Eq_n g_t021D = // 021D
 		},
 		0xC200,
 	};
-Eq_n g_t026C = // 026C
-	{
-		
-		{
-			0x00
-		},
-		0x26,
-		3063,
-	};
 Eq_n g_t0305 = // 0305
 	{
 		<code>,
 		&g_str0C11,
 		&g_t0500,
 		0x3221,
-		63363,
-		&g_tFFFF9A0B,
 		3866,
 		&g_tFFFFC003,
 		
@@ -454,7 +463,7 @@ Eq_n g_t0305 = // 0305
 		&g_tFFFFC823,
 		&g_t2021,
 		&g_tFFFF8400,
-		&g_t3300,
+		0x3300,
 		0x7A12,
 		122,
 		0xDF00,
@@ -950,23 +959,48 @@ l080C:
 }
 
 word16 g_w07A7 = 0x0620; // 07A7
-Eq_n g_t07CF = // 07CF
-	{
-		
-		{
-			0x0C
-		},
-		0x8786,
-		0x4300,
-	};
 Eq_n g_t07DD = // 07DD
 	{
+		<code>,
+		&g_strFFFF9786,
+		&g_tFFFFF625,
+		0x0C07,
+		0x090A,
+		&g_t0201,
 		
 		{
-			0x0C
+			0x60
 		},
-		0x9786,
-		63013,
+		0x0115,
+		&g_tFFFFF700,
+		&g_str440C,
+		&g_t40A1,
+		&g_tFFFF8B00,
+		&g_tFFFF8209,
+		0xC200,
+		0xA29C,
+		0xA2,
+		0x00,
+		20069,
+		0xC800,
+		
+		{
+			0x0055
+		},
+		63360,
+		&g_t0035,
+		0x0201,
+		&g_tFFFFA28A,
+		&g_t3300,
+		&g_t720A,
+		0x00,
+		&g_tFFFFF710,
+		&g_t0135,
+		
+		{
+			587
+		},
+		52227,
 	};
 // 0818: void fn0818(Register (ptr16 word16) r5)
 void fn0818(word16 * r5)
@@ -992,27 +1026,52 @@ Eq_n g_t09DE = // 09DE
 	};
 Eq_n g_t09F7 = // 09F7
 	{
+		<code>,
+		&g_str104A,
+		&g_t5800,
+		0xF700,
+		0x034A,
+		&g_tFFFFF403,
 		
 		{
-			~0x60
+			0x1F
 		},
-		0x104A,
-		0x5800,
+		0x184A,
+		&g_t5800,
+		&g_str1601,
+		&g_t014A,
+		&g_t0035,
+		&g_t740B,
+		0xF700,
+		0x0135,
+		0x01,
+		0xDA00,
+		0xC303,
+		22665,
+		
+		{
+			-0x0900
+		},
+		2101,
+		&g_tFFFFC303,
+		22665,
+		&g_t4011,
+		&g_t4063,
+		&g_tFFFFD063,
+		11,
+		&g_t5854,
+		&g_tFFFFC200,
+		
+		{
+			-0x00006FE1
+		},
+		63305,
 	};
 <anonymous> g_t0A00 = <code>; // 0A00
 Eq_n g_t0A15 = // 0A15
 	{
 		0x01,
 		0x03,
-	};
-Eq_n g_t0A37 = // 0A37
-	{
-		
-		{
-			0x15
-		},
-		16651,
-		0x740B,
 	};
 // 0A64: void fn0A64(Register (ptr16 word16) r5)
 void fn0A64(word16 * r5)
@@ -1247,8 +1306,6 @@ Eq_n g_t0BCE = // 0BCE
 		&g_strFFFF9CC0,
 		&g_t0053,
 		0x6033,
-		0x44,
-		&g_t1580,
 		0x0AF3,
 		&g_t005A,
 		
@@ -1261,7 +1318,7 @@ Eq_n g_t0BCE = // 0BCE
 		&g_t005E,
 		&g_t1581,
 		&g_t0305,
-		&g_t09F7,
+		2551,
 		0x28,
 		0x00,
 		772,
@@ -1292,8 +1349,6 @@ Eq_n g_t0BEC = // 0BEC
 		&g_str15C2,
 		&g_t0007,
 		0x0102,
-		5570,
-		&g_tFFFF8009,
 		5505,
 		&g_t1580,
 		
@@ -1306,7 +1361,7 @@ Eq_n g_t0BEC = // 0BEC
 		&g_t03FD,
 		&g_t000D,
 		&g_t0BCE,
-		&g_tFFFF8702,
+		0x8702,
 		0x6081,
 		0x60,
 		~0x7911,
@@ -1686,15 +1741,6 @@ void fn0FB2(word16 r0, struct Eq_n * wArg00, word16 wArg02, union Eq_n * wArg04,
 }
 
 <anonymous> g_t0FE2 = <code>; // 0FE2
-Eq_n g_t1002 = // 1002
-	{
-		
-		{
-			0x60
-		},
-		0x15F3,
-		0x01,
-	};
 Eq_n g_t101E = // 101E
 	{
 		
@@ -1731,8 +1777,6 @@ Eq_n g_t1037 = // 1037
 		&g_str0215,
 		&g_tFFFFB600,
 		533,
-		0x8000,
-		&g_tFFFF8115,
 		0x0315,
 		&g_tFFFFC00A,
 		
@@ -1745,7 +1789,7 @@ Eq_n g_t1037 = // 1037
 		&g_tFFFFC240,
 		&g_t0D0A,
 		&g_t0080,
-		&g_t5C10,
+		0x5C10,
 		0x8000,
 		0x80,
 		3731,
@@ -1770,6 +1814,7 @@ Eq_n g_t1037 = // 1037
 		},
 		0x0400,
 	};
+char g_str104A[] = "\xB1"; // 104A
 <anonymous> g_t105D = <code>; // 105D
 Eq_n g_t10A6 = // 10A6
 	{
@@ -2272,8 +2317,6 @@ Eq_n g_t15E6 = // 15E6
 		&g_str0A00,
 		&g_tFFFF88FC,
 		5571,
-		~0x1F,
-		&g_t1002,
 		0x0303,
 		&g_t40C2,
 		
@@ -2286,7 +2329,7 @@ Eq_n g_t15E6 = // 15E6
 		&g_str0C81,
 		&g_t105D,
 		&g_tFFFF8000,
-		&g_t09F7,
+		2551,
 		65060,
 		~0x01,
 		0x0202,
@@ -2331,6 +2374,7 @@ Eq_n g_t15F7 = // 15F7
 		0x8710,
 	};
 <anonymous> g_t15FF = <code>; // 15FF
+char g_str1601[] = "\f\x81\f\x81\f\xC1@\xC0"; // 1601
 char g_str16B4[] = "\x04\x80\xCCU\x02"; // 16B4
 // 16DA: void fn16DA(Register int16 r0, Register cui16 r2, Register (ptr16 Eq_n) r3, Register (ptr16 Eq_n) r4)
 void fn16DA(int16 r0, cui16 r2, struct Eq_n * r3, struct Eq_n * r4)
@@ -2854,8 +2898,6 @@ Eq_n g_t1EB6 = // 1EB6
 		&g_str0024,
 		&g_t356A,
 		0x1DC1,
-		13848,
-		&g_t6541,
 		0x0CC1,
 		&g_t15F1,
 		
@@ -2868,7 +2910,7 @@ Eq_n g_t1EB6 = // 1EB6
 		&g_t0004,
 		&g_t5A3E,
 		&g_t07DD,
-		&g_t07CF,
+		1999,
 		0x0ABF,
 		0x0A,
 		0x351A,
@@ -2899,8 +2941,6 @@ Eq_n g_t1EF0 = // 1EF0
 		&g_str35E6,
 		&g_t2DD7,
 		0x35E2,
-		0x0A,
-		&g_t07DD,
 		0x0AB7,
 		&g_t35D8,
 		
@@ -2913,7 +2953,7 @@ Eq_n g_t1EF0 = // 1EF0
 		&g_t15C5,
 		&g_t0001,
 		&g_t34F0,
-		&g_t48D0,
+		0x48D0,
 		2551,
 		0x09,
 		0x22EA,
@@ -2964,14 +3004,16 @@ Eq_n g_t2000 = // 2000
 	{
 		&g_t0ABF,
 	};
+Eq_n g_t201D = // 201D
+	{
+		0x02,
+	};
 Eq_n g_t2020 = // 2020
 	{
 		<code>,
 		&g_str3402,
 		&g_t0A15,
 		0x15FF,
-		66,
-		&g_t33FA,
 		0x0AC4,
 		&g_t06F7,
 		
@@ -2984,7 +3026,7 @@ Eq_n g_t2020 = // 2020
 		&g_t0002,
 		&g_t348C,
 		&g_t15FF,
-		&g_t3448,
+		0x3448,
 		0x0CC0,
 		0x0C,
 		0x0BF0,
@@ -3028,8 +3070,6 @@ Eq_n g_t2072 = // 2072
 		&g_str0BF0,
 		&g_t58C2,
 		0x0202,
-		0x77,
-		&g_t026C,
 		0x15FF,
 		&g_t0047,
 		
@@ -3042,7 +3082,7 @@ Eq_n g_t2072 = // 2072
 		&g_t3452,
 		&g_t1DC0,
 		&g_t1037,
-		&g_t3416,
+		13334,
 		0x6FC1,
 		111,
 		0x33F2,
@@ -3092,8 +3132,6 @@ Eq_n g_t228C = // 228C
 		&g_str48BA,
 		&g_t09F7,
 		0x1B7E,
-		0x0ABF,
-		&g_t318E,
 		0x010D,
 		&g_t15FF,
 		
@@ -3106,7 +3144,7 @@ Eq_n g_t228C = // 228C
 		&g_t0ABF,
 		&g_t0078,
 		fn3220,
-		&g_t09F7,
+		2551,
 		0x0B40,
 		11,
 		0x0ABF,
@@ -3146,15 +3184,7 @@ Eq_n g_t22B6 = // 22B6
 		0x3220,
 		60919,
 	};
-Eq_n g_t241E = // 241E
-	{
-		
-		{
-			0xC0
-		},
-		0x30A2,
-		0x0202,
-	};
+word16 g_w2402 = 0x0A37; // 2402
 // 243A: void fn243A(Register (ptr16 word16) r5)
 void fn243A(word16 * r5)
 {
@@ -3180,15 +3210,6 @@ Eq_n g_t2600 = // 2600
 		0x0ABF,
 		0x2E0A,
 		12247,
-	};
-Eq_n g_t2602 = // 2602
-	{
-		
-		{
-			0x46
-		},
-		0x15FF,
-		0x29,
 	};
 Eq_n g_t260A = // 260A
 	{
@@ -3400,15 +3421,6 @@ struct Eq_n g_t2EC8 = // 2EC8
 		&g_t15FF,
 	};
 word16 g_w316C = 0x44; // 316C
-Eq_n g_t318E = // 318E
-	{
-		
-		{
-			0xC0
-		},
-		0x04,
-		0x2040,
-	};
 Eq_n g_t31F8 = // 31F8
 	{
 		-9
@@ -3430,17 +3442,14 @@ Eq_n g_t3300 = // 3300
 		{
 			0xC0
 		},
-		0x2402,
+		&g_w2402,
 		0x0CC0,
-	};
-Eq_n g_t33FA = // 33FA
-	{
-		
-		{
-			~0x08
-		},
-		0x24C2,
-		8984,
+		0x2057,
+		0x00,
+		0x210E,
+		0x65F7,
+		0x0A,
+		0x2558,
 	};
 char g_str3402[] = "\x14#\xC5\x15jQ\xF7\t$\x0E\xBF\n\x16 ?\n\xF6\"\xBF\n\x0E ?\n\xF0\"\xBF\n\x06 ?\n\xE4\"\xBF\n\xFE\x1F7\n\x94$\xBF\n\xF6\x1F7\n\x8E$\xBF\n\xEE\x1F\x12\x01\xFF\x15:"; // 3402
 Eq_n g_t3404 = // 3404
@@ -3457,15 +3466,6 @@ Eq_n g_t3404 = // 3404
 		0x0ABF,
 		0x2006,
 		2623,
-	};
-Eq_n g_t3416 = // 3416
-	{
-		
-		{
-			0x0E
-		},
-		2623,
-		0x22F0,
 	};
 Eq_n g_t343C = // 343C
 	{
@@ -3488,8 +3488,6 @@ Eq_n g_t3444 = // 3444
 		&g_str65F7,
 		&g_t0002,
 		0x22BE,
-		0x65F7,
-		&g_t0002,
 		0x22BA,
 		&g_t0AB7,
 		
@@ -3502,7 +3500,7 @@ Eq_n g_t3444 = // 3444
 		&g_t003B,
 		&g_t003D,
 		&g_t09F7,
-		&g_t09F7,
+		2551,
 		0xDA10,
 		~0x25,
 		0x0ABF,
@@ -3526,15 +3524,6 @@ Eq_n g_t3444 = // 3444
 			0x0000223C
 		},
 		0x0CC0,
-	};
-Eq_n g_t3448 = // 3448
-	{
-		
-		{
-			0x02
-		},
-		0x22BE,
-		0x65F7,
 	};
 Eq_n g_t3452 = // 3452
 	{
@@ -3597,8 +3586,6 @@ Eq_n g_t34F0 = // 34F0
 		&g_str011C,
 		&g_t15FF,
 		0x0F,
-		0x1F2C,
-		&g_t0A37,
 		0x2236,
 		&g_t0ABF,
 		
@@ -3611,7 +3598,7 @@ Eq_n g_t34F0 = // 34F0
 		&g_t15FF,
 		&g_t1F0A,
 		&g_t0AB7,
-		&g_t0ABF,
+		0x0ABF,
 		0x1EE2,
 		0x1E,
 		3063,
@@ -3678,6 +3665,7 @@ void fn3E12(word16 * r5)
 	fn0EF8(&g_t3E16, r5);
 }
 
+word16 g_w3E15 = 0xE2D0; // 3E15
 struct Eq_n g_t3E16 = // 3E16
 	{
 		&g_t52E2,
@@ -3694,6 +3682,10 @@ struct Eq_n g_t3F46 = // 3F46
 		&g_t530A,
 		&g_t15FF,
 	};
+Eq_n g_t4011 = // 4011
+	{
+		90
+	};
 // 4030: void fn4030()
 // Called from:
 //      fn2B96
@@ -3707,6 +3699,21 @@ struct Eq_n g_t4034 = // 4034
 	{
 		&g_t5330,
 		&g_t15FF,
+	};
+Eq_n g_t4063 = // 4063
+	{
+		
+		{
+			0x13
+		},
+		&g_w3E15,
+		63315,
+		0x3700,
+		0x82,
+		0x0315,
+		0xA800,
+		~0x08EC,
+		22047,
 	};
 Eq_n g_t4066 = // 4066
 	{
@@ -3737,6 +3744,10 @@ struct Eq_n g_t4076 = // 4076
 	{
 		&g_t5344,
 		&g_t15FF,
+	};
+Eq_n g_t40A1 = // 40A1
+	{
+		1813
 	};
 Eq_n g_t40C2 = // 40C2
 	{
@@ -3781,6 +3792,7 @@ struct Eq_n g_t4234 = // 4234
 		&g_t537A,
 		&g_t15FF,
 	};
+char g_str440C[] = "\x16X\xF7\t2\xC7\xF7\t\x92\xCA\xBF\n\f\x10w"; // 440C
 // 4534: void fn4534(Register (ptr16 word16) r5)
 void fn4534(word16 * r5)
 {
@@ -3913,7 +3925,7 @@ l473C:
 		} while (r1_n != 0x00);
 		r3->t0010 = r0_n;
 		fn13FE();
-		struct Eq_n * r4_n = r3->ptr0050;
+		word16 r4_n = r3->w0050;
 		cup16 r5_n = t0000.w0026;
 		if (r5_n != 0x00 && r5_n < 0xC8B2)
 		{
@@ -3930,14 +3942,20 @@ l473C:
 			}
 		}
 		// This indirect jump appears to use the range [-1,1], which Reko can't deduce. This is a typical place where a user annotation (indicating the range of valid values) would help.
+		ui16 r4_n;
+		(*((char *) g_a46C4 + r4_n * 0x02))();
+		return;
 	}
 	goto l4614;
 }
 
-// 474C: Register (ptr16 Eq_n) fn474C(Register (ptr16 Eq_n) r1, Register ui16 r2, Register (ptr16 Eq_n) r3, Register (ptr16 Eq_n) r4)
+<anonymous> * g_a46C4[] = // 46C4
+	{
+	};
+// 474C: Register (ptr16 Eq_n) fn474C(Register (ptr16 Eq_n) r1, Register word16 r2, Register (ptr16 Eq_n) r3, Register (ptr16 Eq_n) r4, Register out ptr16 r4Out)
 // Called from:
 //      fn45F6
-struct Eq_n * fn474C(struct Eq_n * r1, ui16 r2, struct Eq_n * r3, struct Eq_n * r4)
+struct Eq_n * fn474C(struct Eq_n * r1, word16 r2, struct Eq_n * r3, struct Eq_n * r4, ptr16 & r4Out)
 {
 	ptr16 fp;
 	LOCK();
@@ -3951,6 +3969,7 @@ struct Eq_n * fn474C(struct Eq_n * r1, ui16 r2, struct Eq_n * r3, struct Eq_n * 
 	}
 	struct Eq_n * sp_n = sp_n - 0x02;
 	sp_n->ptr0000 = r4;
+	struct Eq_n * r0_n = r1;
 	if (!DSTAT(sp_n->ptr0000, r1))
 	{
 		r1->w0000 = r2;
@@ -3973,11 +3992,11 @@ l47DA:
 				sp_n->ptr0000 = (struct Eq_n *) ((char *) &sp_n->ptr0000->t0000 + 1);
 l47DC:
 				UNLOCK();
-				return null;
+				r4Out = 0x00;
+				return r0_n;
 			}
 			sp_n -= 0x02;
 			sp_n->ptr0000 = r3->ptr000A;
-			word16 r0_n;
 			if (FETCH(sp_n->ptr0000, r1, out r0_n))
 				goto l47DC;
 		}
@@ -3998,6 +4017,7 @@ l47DC:
 			sp_n->ptr0000 = r1;
 			sp_n->wFFFFFFFE = r0_n | r1->t000B;
 			FnSubfn(sp_n - 0x02);
+			r0_n = sp_n - 0x02;
 			if (Test(UGE,false))
 				break;
 			cui16 v32_n = r1->w0016 & 0x04;
@@ -4029,15 +4049,6 @@ Eq_n g_t47FE = // 47FE
 	};
 word16 g_w4898 = 0x05; // 4898
 char g_str48BA[] = ""; // 48BA
-Eq_n g_t48D0 = // 48D0
-	{
-		
-		{
-			0x04
-		},
-		0x48A8,
-		0x48A8,
-	};
 Eq_n g_t4968 = // 4968
 	{
 		0x4B,
@@ -4057,8 +4068,6 @@ Eq_n g_t4DBC = // 4DBC
 		&g_t2020,
 		0x2000,
 		0x2020,
-		&g_t7B7D,
-		0x2020,
 		&g_t2000,
 		
 		{
@@ -4070,7 +4079,7 @@ Eq_n g_t4DBC = // 4DBC
 		&g_t203E,
 		&g_t18A6,
 		&g_t6120,
-		&g_t2020,
+		0x2020,
 		0x2020,
 		0x20,
 		0x6120,
@@ -4102,8 +4111,6 @@ Eq_n g_t5006 = // 5006
 		&g_str0006,
 		&g_t0007,
 		0x1E,
-		0x00,
-		&g_t0016,
 		0x14,
 		&g_t0003,
 		
@@ -4116,7 +4123,7 @@ Eq_n g_t5006 = // 5006
 		&g_t0002,
 		&g_t5014,
 		&g_t4DBC,
-		&g_t0004,
+		0x04,
 		22208,
 		0x56,
 		0x5018,
@@ -4188,8 +4195,6 @@ Eq_n g_t518E = // 518E
 		&g_str0005,
 		&g_t000A,
 		0x0F,
-		0x14,
-		&g_t0019,
 		0x1E,
 		&g_t0023,
 		
@@ -4202,7 +4207,7 @@ Eq_n g_t518E = // 518E
 		&g_t4066,
 		&g_t0004,
 		&g_t51A8,
-		fn1900,
+		0x1900,
 		0x00,
 		0x00,
 		22362,
@@ -4237,8 +4242,6 @@ Eq_n g_t51A8 = // 51A8
 		&g_str4066,
 		&g_t6666,
 		0x02,
-		22710,
-		&g_t58B8,
 		0x01,
 		&g_t574A,
 		
@@ -4251,7 +4254,7 @@ Eq_n g_t51A8 = // 51A8
 		&g_t51A6,
 		&g_t51A8,
 		&g_t0020,
-		&g_t241E,
+		0x241E,
 		0x0110,
 		0x01,
 		0x0E06,
@@ -4291,8 +4294,6 @@ Eq_n g_t51E8 = // 51E8
 		0x2A,
 		0x2A,
 		&g_t002A,
-		0x2A,
-		&g_t002A,
 		
 		{
 			0x1E
@@ -4303,7 +4304,7 @@ Eq_n g_t51E8 = // 51E8
 		&g_t000F,
 		&g_t51E4,
 		&g_t5206,
-		&g_t5206,
+		0x5206,
 		20972,
 		0x51,
 		0x04,
@@ -4447,8 +4448,6 @@ Eq_n g_t54DC = // 54DC
 		0x00,
 		0x00,
 		null,
-		0x00,
-		null,
 		
 		{
 			0x00
@@ -4459,7 +4458,7 @@ Eq_n g_t54DC = // 54DC
 		null,
 		null,
 		null,
-		null,
+		0x00,
 		0x00,
 		0x00,
 		0x00,
@@ -4504,8 +4503,6 @@ Eq_n g_t56C4 = // 56C4
 		0x00,
 		0x00,
 		null,
-		0x00,
-		null,
 		
 		{
 			0x00
@@ -4516,7 +4513,7 @@ Eq_n g_t56C4 = // 56C4
 		null,
 		null,
 		null,
-		null,
+		0x00,
 		0x00,
 		0x00,
 		0x00,
@@ -4572,8 +4569,6 @@ Eq_n g_t5766 = // 5766
 		0x00,
 		0x00,
 		null,
-		0x00,
-		null,
 		
 		{
 			0x00
@@ -4584,7 +4579,7 @@ Eq_n g_t5766 = // 5766
 		null,
 		null,
 		null,
-		null,
+		0x00,
 		0x00,
 		0x00,
 		0x00,
@@ -4632,8 +4627,6 @@ Eq_n g_t577E = // 577E
 		0x00,
 		0x00,
 		null,
-		0x00,
-		null,
 		
 		{
 			0x00
@@ -4644,7 +4637,7 @@ Eq_n g_t577E = // 577E
 		null,
 		null,
 		null,
-		null,
+		0x00,
 		0x00,
 		0x00,
 		0x00,
@@ -4676,21 +4669,21 @@ word16 g_w57D4 = 0x00; // 57D4
 word16 g_w57D8 = 0x00; // 57D8
 word16 g_w57E4 = 0x00; // 57E4
 word16 g_w57E8 = 0x00; // 57E8
+Eq_n g_t5800 = // 5800
+	{
+		0x00,
+		0x00,
+	};
 word16 g_w5808 = 0x00; // 5808
+Eq_n g_t5854 = // 5854
+	{
+		?? /* Can't read byte at address 5E03 */ ,
+	};
 word16 g_w5864 = 0x00; // 5864
 word16 g_w586E = 0x00; // 586E
 word16 g_w5874 = 0x00; // 5874
 byte g_a5898[] = // 5898
 	{
-	};
-Eq_n g_t58B8 = // 58B8
-	{
-		
-		{
-			0x00
-		},
-		0x00,
-		0x00,
 	};
 Eq_n g_t58BA = // 58BA
 	{

@@ -22615,13 +22615,13 @@ l0001E1F8:
 fn0001E1F8_exit:
 
 
-void fn0001E384(word32 r0, word32 r5, word32 r6)
+void fn0001E384(word32 r0, word32 r5, word32 r6, word32 r15)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  r0:[0..31] r5:[0..31] r6:[0..31]
+// MayUse:  r0:[0..31] r15:[0..31] r5:[0..31] r6:[0..31]
 // LiveOut:
-// Trashed: r0 r18 r3 r4 r5 r6 r7
-// Preserved: r1 r15 r19 r21
+// Trashed: r0 r15 r18 r19 r21 r3 r4 r5 r6 r7
+// Preserved: r1
 fn0001E384_entry:
 l0001E384:
 	word32 r4_11 = Mem9[r5 + 20<i32>:word32]
@@ -22640,19 +22640,22 @@ l0001E6D8:
 	call 0x0001E6E8<p32> + r3_25 (retsize: 0;)
 		uses: r0:r0,r15:0x0001E6E8<p32>,r19:r5,r21:r6,r3:r3_25,r5:r5,r6:r6,r7:0xA<32>
 	return
-fn0001E384_exit:
 l0001E3D4_ds_f:
 	Mem43[r5 + 272<i32>:word32] = r0
 l0001E3D8:
-	switch (r6) { }
+	word32 r3_47 = Mem43[r6 * 4<32> + 0x71BC<32>:word32]
+	call r3_47 (retsize: 0;)
+		uses: r0:r0,r15:r15,r19:r5,r21:r6,r3:r3_47,r5:r5,r6:r6
+	return
+fn0001E384_exit:
 l0001E3A4_ds_f:
 l0001E3A8:
-	word32 r3_49 = Mem9[r5:word32]
-	Mem51[r3_49 + 20<i32>:word32] = 0x14<32>
-	word32 r6_52 = Mem51[r3_49:word32]
-	Mem54[r3_49 + 24<i32>:word32] = r4_11
-	call 0x0001E3B8<p32> + r6_52 (retsize: 0;)
-		uses: r0:r0,r15:0x0001E3B8<p32>,r19:r5,r21:r6,r3:r3_49,r5:r5,r6:r6_52
+	word32 r3_60 = Mem9[r5:word32]
+	Mem62[r3_60 + 20<i32>:word32] = 0x14<32>
+	word32 r6_63 = Mem62[r3_60:word32]
+	Mem65[r3_60 + 24<i32>:word32] = r4_11
+	call 0x0001E3B8<p32> + r6_63 (retsize: 0;)
+		uses: r0:r0,r15:0x0001E3B8<p32>,r19:r5,r21:r6,r3:r3_60,r5:r5,r6:r6_63
 
 
 void fn0001E530(word32 r7, word32 r19)
@@ -22704,18 +22707,19 @@ l0001E598:
 fn0001E530_exit:
 
 
-word32 fn0001E704(word32 r5, ptr32 & r4Out, ptr32 & r6Out)
+word32 fn0001E704(word32 r5, word32 r15, ptr32 & r4Out, ptr32 & r6Out)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
 //      fn0001E908
-// MayUse:  r5:[0..31]
+// MayUse:  r15:[0..31] r5:[0..31]
 // LiveOut: r3 r4 r6
-// Trashed: r18 r3 r4 r5 r6
-// Preserved: r1 r15
+// Trashed: r15 r18 r3 r4 r5 r6
+// Preserved: r1
 fn0001E704_entry:
 l0001E704:
-	branch 5<32> -u Mem0[r5 + 40<i32>:word32] < 0<32> l0001E718_ds_t
+	word32 r6_5 = Mem0[r5 + 40<i32>:word32]
+	branch 5<32> -u r6_5 < 0<32> l0001E718_ds_t
 l0001E718_ds_t:
 l0001E79C:
 	word32 r3_11 = Mem10[r5:word32]
@@ -22730,10 +22734,19 @@ l0001E79C:
 	r4Out = r4_22
 	r6Out = r6_17
 	return r3_19
-fn0001E704_exit:
 l0001E718_ds_f:
 l0001E71C:
-	switch (Mem25[r5 + 40<i32>:word32]) { }
+	word32 r3_29 = Mem25[r6_5 * 4<32> + 0x71D4<32>:word32]
+	word32 r6_31
+	word32 r3_33
+	word32 r4_36
+	call r3_29 (retsize: 0;)
+		uses: r15:r15,r3:r3_29,r5:r5
+		defs: r3:r3_33,r4:r4_36,r6:r6_31
+	r4Out = r4_36
+	r6Out = r6_31
+	return r3_33
+fn0001E704_exit:
 
 
 void fn0001E7C0(word32 r0, word32 r5, word32 r25, word32 r26, word32 r27, word32 r28, word32 r30, word32 r31)
@@ -22833,7 +22846,7 @@ l0001E908:
 	Mem8[r19 + 260<i32>:word16] = SLICE(r0, word16, 0)
 	word32 r4_12
 	word32 r6_14
-	word32 r3_11 = fn0001E704(r5, out r4_12, out r6_14)
+	word32 r3_11 = fn0001E704(r5, 0x0001E90C<p32>, out r4_12, out r6_14)
 	r4Out = r4_12
 	r6Out = r6_14
 	r19Out = dwArg1C
