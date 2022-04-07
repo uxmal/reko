@@ -94,9 +94,6 @@ namespace Reko.Arch.Arm.AArch32
                 case Mnemonic.fldmiax:
                 case Mnemonic.fstmdbx:
                 case Mnemonic.fstmiax:
-                case Mnemonic.ldrexb:
-                case Mnemonic.ldrexd:
-                case Mnemonic.ldrexh:
                 case Mnemonic.mcr2:
                 case Mnemonic.mcrr2:
                 case Mnemonic.mrc2:
@@ -132,7 +129,6 @@ namespace Reko.Arch.Arm.AArch32
                 case Mnemonic.srsia:
                 case Mnemonic.srsib:
                 case Mnemonic.ssax:
-                case Mnemonic.strexd:
                 case Mnemonic.sxtab16:
                 case Mnemonic.sxtb16:
                 case Mnemonic.uhadd16:
@@ -270,12 +266,13 @@ namespace Reko.Arch.Arm.AArch32
                 case Mnemonic.hvc: RewriteHvc(); break;
                 case Mnemonic.isb: RewriteIsb(); break;
                 case Mnemonic.it: RewriteIt(); break;
-                case Mnemonic.lda: RewriteLoadAcquire(lda_sig); break;
-                case Mnemonic.ldab: RewriteLoadAcquire(ldab_sig); break;
-                case Mnemonic.ldaex: RewriteLoadAcquire(ldaex_sig); break;
-                case Mnemonic.ldaexb: RewriteLoadAcquire(ldaexb_sig); break;
-                case Mnemonic.ldaexd: RewriteLoadAcquireDouble(ldaexd_sig); break;
-                case Mnemonic.ldah: RewriteLoadAcquire(ldah_sig); break;
+                case Mnemonic.lda: RewriteLoadAcquire(lda_sig, PrimitiveType.Word32); break;
+                case Mnemonic.ldab: RewriteLoadAcquire(lda_sig, PrimitiveType.Byte); break;
+                case Mnemonic.ldaex: RewriteLoadAcquire(ldaex_sig, PrimitiveType.Word32); break;
+                case Mnemonic.ldaexb: RewriteLoadAcquire(ldaex_sig, PrimitiveType.Byte); break;
+                case Mnemonic.ldaexd: RewriteLoadAcquireDouble(ldaex_sig); break;
+                case Mnemonic.ldaexh: RewriteLoadAcquire(ldaex_sig, PrimitiveType.Word16); break;
+                case Mnemonic.ldah: RewriteLoadAcquire(lda_sig, PrimitiveType.Word16); break;
                 case Mnemonic.ldc2l: RewriteLdc("__ldc2l"); break;
                 case Mnemonic.ldc2: RewriteLdc("__ldc2"); break;
                 case Mnemonic.ldcl: RewriteLdc("__ldcl"); break;
@@ -295,7 +292,10 @@ namespace Reko.Arch.Arm.AArch32
                 case Mnemonic.ldrsh: RewriteLdr(PrimitiveType.Word32, PrimitiveType.Int16); break;
                 case Mnemonic.ldrsht: RewriteLdr(PrimitiveType.Word32, PrimitiveType.Int16); break;
                 case Mnemonic.ldrd: RewriteLdrd(); break;
-                case Mnemonic.ldrex: RewriteLdrex(); break;
+                case Mnemonic.ldrex: RewriteLdrex(PrimitiveType.Word32); break;
+                case Mnemonic.ldrexb: RewriteLdrex(PrimitiveType.Byte); break;
+                case Mnemonic.ldrexd: RewriteLdrexd(); break;
+                case Mnemonic.ldrexh: RewriteLdrex(PrimitiveType.Word16); break;
                 case Mnemonic.lsl: case Mnemonic.lsls: RewriteShift(m.Shl); break;
                 case Mnemonic.lsr: RewriteShift(m.Shr); break;
                 case Mnemonic.nop: m.Nop(); break;
@@ -386,13 +386,13 @@ namespace Reko.Arch.Arm.AArch32
                 case Mnemonic.stc2l: RewriteStc(stc2l_intrinsic); break;
                 case Mnemonic.stc2: RewriteStc(stc2_intrinsic); break;
                 case Mnemonic.stcl: RewriteStc(stcl_intrinsic); break;
-                case Mnemonic.stl:  RewriteStoreRelease("__store_release_32", PrimitiveType.Word32); break;
-                case Mnemonic.stlb: RewriteStoreRelease("__store_release_8", PrimitiveType.Byte); break;
-                case Mnemonic.stlh: RewriteStoreRelease("__store_release_16", PrimitiveType.Word16); break;
-                case Mnemonic.stlex:  RewriteStoreExclusive("__store_release_exclusive_32", PrimitiveType.Word32); break;
-                case Mnemonic.stlexb: RewriteStoreExclusive("__store_release_exclusive_8", PrimitiveType.Byte); break;
-                case Mnemonic.stlexh: RewriteStoreExclusive("__store_release_exclusive_16", PrimitiveType.Word16); break;
-                case Mnemonic.stlexd: RewriteStoreReleaseDoubleExclusive("__store_release_exclusive_64"); break;
+                case Mnemonic.stl:  RewriteStoreRelease(stl_intrinsic, PrimitiveType.Word32); break;
+                case Mnemonic.stlb: RewriteStoreRelease(stl_intrinsic, PrimitiveType.Byte); break;
+                case Mnemonic.stlh: RewriteStoreRelease(stl_intrinsic, PrimitiveType.Word16); break;
+                case Mnemonic.stlex:  RewriteStoreExclusive(stlex_intrinsic, PrimitiveType.Word32); break;
+                case Mnemonic.stlexb: RewriteStoreExclusive(stlex_intrinsic, PrimitiveType.Byte); break;
+                case Mnemonic.stlexh: RewriteStoreExclusive(stlex_intrinsic, PrimitiveType.Word16); break;
+                case Mnemonic.stlexd: RewriteStoreReleaseDoubleExclusive(stlex_intrinsic); break;
                 case Mnemonic.stm: RewriteStm(true, true); break;
                 case Mnemonic.stmdb: RewriteStm(false, false); break;
                 case Mnemonic.stmda: RewriteStm(false, true); break;
@@ -401,9 +401,10 @@ namespace Reko.Arch.Arm.AArch32
                 case Mnemonic.strb: RewriteStr(PrimitiveType.Byte); break;
                 case Mnemonic.strbt: RewriteStr(PrimitiveType.Byte); break;
                 case Mnemonic.strd: RewriteStrd(); break;
-                case Mnemonic.strex: RewriteStoreExclusive("__store_exclusive_32", PrimitiveType.Word32); break;
-                case Mnemonic.strexb: RewriteStoreExclusive("__store_exclusive_8", PrimitiveType.Byte); break;
-                case Mnemonic.strexh: RewriteStoreExclusive("__store_exclusive_16", PrimitiveType.Word16); break;
+                case Mnemonic.strex: RewriteStoreExclusive(strex_intrinsic, PrimitiveType.Word32); break;
+                case Mnemonic.strexb: RewriteStoreExclusive(strex_intrinsic, PrimitiveType.Byte); break;
+                case Mnemonic.strexd: RewriteStoreReleaseDoubleExclusive(strex_intrinsic);  break;
+                case Mnemonic.strexh: RewriteStoreExclusive(strex_intrinsic, PrimitiveType.Word16); break;
                 case Mnemonic.strh: RewriteStr(PrimitiveType.UInt16); break;
                 case Mnemonic.strht: RewriteStr(PrimitiveType.UInt16); break;
                 case Mnemonic.strt: RewriteStr(PrimitiveType.Word32); break;
@@ -646,7 +647,17 @@ namespace Reko.Arch.Arm.AArch32
                     else
                     {
                         ConditionalSkip(true);
-                        m.Goto(dst);
+                        if (instr.Operands[0] is RegisterStorage rop && rop == Registers.lr)
+                        {
+                            //$TODO: cheating a little since
+                            // one could consider lr being set explitly.
+                            // however, this is very uncommon.
+                            m.Return(0, 0);
+                        }
+                        else
+                        {
+                            m.Goto(dst);
+                        }
                     }
                 }
             }
@@ -1068,16 +1079,14 @@ namespace Reko.Arch.Arm.AArch32
             .Void();
         private static readonly IntrinsicProcedure cps_id_intrinsic = new IntrinsicBuilder("__cps_id", true)
             .Void();
-        private static readonly IntrinsicProcedure lda_sig;
-        private static readonly IntrinsicProcedure ldab_sig;
-        private static readonly IntrinsicProcedure ldah_sig;
-        private static readonly IntrinsicProcedure ldaex_sig;
-        private static readonly IntrinsicProcedure ldaexb_sig;
-        private static readonly IntrinsicProcedure ldaexd_sig;
-        private static readonly IntrinsicProcedure ldaexh_sig;
+        private static readonly IntrinsicProcedure lda_sig = new IntrinsicBuilder("__load_acquire", true)
+            .GenericTypes("T").PtrParam("T").Returns("T");
+        private static readonly IntrinsicProcedure ldaex_sig = new IntrinsicBuilder("__load_acquire_exclusive", true)
+             .GenericTypes("T").PtrParam("T").Returns("T");
         private static readonly IntrinsicProcedure ldrex_intrinsic = new IntrinsicBuilder("__ldrex", true)
-            .PtrParam(PrimitiveType.Word32)
-            .Returns(PrimitiveType.Word32);
+            .GenericTypes("T")
+            .PtrParam("T")
+            .Returns("T");
         private static readonly IntrinsicProcedure rev_intrinsic = new IntrinsicBuilder("__rev", false)
             .GenericTypes("T")
             .Param(PrimitiveType.Word32)
@@ -1104,6 +1113,21 @@ namespace Reko.Arch.Arm.AArch32
             .Param(PrimitiveType.Word32)
             .Param(PrimitiveType.Word32)
             .Void();
+        private static readonly IntrinsicProcedure stl_intrinsic = new IntrinsicBuilder("__store_release", true)
+            .GenericTypes("T")
+            .PtrParam("T")
+            .Param("T")
+            .Void();
+        private static readonly IntrinsicProcedure stlex_intrinsic = new IntrinsicBuilder("__store_release_exclusive", true)
+            .GenericTypes("T")
+            .PtrParam("T")
+            .Param("T")
+            .Returns("T");
+        private static readonly IntrinsicProcedure strex_intrinsic = new IntrinsicBuilder("__store_exclusive", true)
+            .GenericTypes("T")
+            .PtrParam("T")
+            .Param("T")
+            .Returns("T");
         private static readonly IntrinsicProcedure usat_intrinsic = new IntrinsicBuilder("__usat", false)
             .Param(PrimitiveType.Int32)
             .Param(PrimitiveType.Int32)
@@ -1118,20 +1142,6 @@ namespace Reko.Arch.Arm.AArch32
             var p16 = new Pointer(PrimitiveType.Word16, 32);
             var p32 = new Pointer(PrimitiveType.Word32, 32);
             var p64 = new Pointer(PrimitiveType.Word64, 64);
-            lda_sig = new IntrinsicBuilder("__load_acquire_32", true)
-                .Param(p32).Returns(PrimitiveType.Word32);
-            ldab_sig = new IntrinsicBuilder("__load_acquire_8", true)
-                .Param(pb).Returns(PrimitiveType.Byte);
-            ldah_sig = new IntrinsicBuilder("__load_acquire_16", true)
-                .Param(p16).Returns(PrimitiveType.Byte);
-            ldaex_sig = new IntrinsicBuilder("__load_acquire_exclusive_32", true)
-                .Param(p32).Returns(PrimitiveType.Word32);
-            ldaexb_sig = new IntrinsicBuilder("__load_acquire_exclusive_8", true)
-                .Param(pb).Returns(PrimitiveType.Byte);
-            ldaexd_sig = new IntrinsicBuilder("__load_acquire_exclusive_64", true)
-                .Param(p64).Returns(PrimitiveType.Word64);
-            ldaexh_sig = new IntrinsicBuilder("__load_acquire_exclusive_16", true)
-                .Param(p16).Returns(PrimitiveType.Word16);
 
             ssat16_intrinsic = new IntrinsicBuilder("__ssat16", false)
                 .Param(PrimitiveType.Int32)

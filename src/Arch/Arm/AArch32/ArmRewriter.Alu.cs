@@ -280,15 +280,15 @@ namespace Reko.Arch.Arm.AArch32
                 m.Cond(m.And(opDst, opSrc)));
         }
 
-        private void RewriteLoadAcquire(IntrinsicProcedure intrinsic)
+        private void RewriteLoadAcquire(IntrinsicProcedure intrinsic, DataType dt)
         {
             var mem = (MemoryOperand) instr.Operands[1];
             var ea = binder.EnsureRegister(mem.BaseRegister!);
             var dst = binder.EnsureRegister((RegisterStorage) instr.Operands[0]);
+            intrinsic = intrinsic.MakeInstance(32, dt);
             Expression src = m.Fn(intrinsic, ea);
             if (src.DataType.BitSize != dst.DataType.BitSize)
             {
-                var dt = intrinsic.ReturnType;
                 var tmp = binder.CreateTemporary(dt);
                 m.Assign(tmp, src);
                 src = m.Convert(tmp, dt, dst.DataType);
@@ -304,7 +304,7 @@ namespace Reko.Arch.Arm.AArch32
             var regHi = (RegisterStorage) instr.Operands[0];
             var regLo = (RegisterStorage) instr.Operands[1];
             var dst = binder.EnsureSequence(PrimitiveType.Word64, regHi, regLo);
-            var src = m.Fn(intrinsic, ea);
+            var src = m.Fn(intrinsic.MakeInstance(32, dst.DataType), ea);
             m.Assign(dst, src);
         }
 
@@ -380,7 +380,7 @@ namespace Reko.Arch.Arm.AArch32
             MaybePostOperand(2);
         }
 
-        private void RewriteStoreRelease(string intrinsicName, PrimitiveType dt)
+        private void RewriteStoreRelease(IntrinsicProcedure intrinsic, PrimitiveType dt)
         {
             var src = binder.EnsureRegister((RegisterStorage) instr.Operands[0]);
             if (src.DataType.BitSize != dt.BitSize)
@@ -392,11 +392,11 @@ namespace Reko.Arch.Arm.AArch32
             var mem = (MemoryOperand) instr.Operands[1];
             var ea = binder.EnsureRegister(mem.BaseRegister!);
             ea.DataType = new Pointer(dt, 32);
-            var store = host.Intrinsic(intrinsicName, true, dt, ea, src);
+            var store = m.Fn(intrinsic.MakeInstance(32, dt), ea, src);
             m.SideEffect(store);
         }
 
-        private void RewriteStoreExclusive(string intrinsicName, PrimitiveType dt)
+        private void RewriteStoreExclusive(IntrinsicProcedure intrinsic, PrimitiveType dt)
         {
             var src = binder.EnsureRegister((RegisterStorage) instr.Operands[1]);
             if (src.DataType.BitSize != dt.BitSize)
@@ -408,12 +408,12 @@ namespace Reko.Arch.Arm.AArch32
             var mem = (MemoryOperand) instr.Operands[2];
             var ea = binder.EnsureRegister(mem.BaseRegister!);
             ea.DataType = new Pointer(dt, 32);
-            var store = host.Intrinsic(intrinsicName, true, dt, ea, src);
+            var store = m.Fn(intrinsic.MakeInstance(32, dt), ea, src);
             var dst = Operand(0);
             m.Assign(dst, store);
         }
 
-        private void RewriteStoreReleaseDoubleExclusive(string intrinsicName)
+        private void RewriteStoreReleaseDoubleExclusive(IntrinsicProcedure intrinsic)
         {
             var mem = (MemoryOperand) instr.Operands[3];
             var ea = binder.EnsureRegister(mem.BaseRegister!);
@@ -421,7 +421,7 @@ namespace Reko.Arch.Arm.AArch32
             var regHi = (RegisterStorage) instr.Operands[1];
             var regLo = (RegisterStorage) instr.Operands[2];
             var src = binder.EnsureSequence(PrimitiveType.Word64, regHi, regLo);
-            var store = host.Intrinsic(intrinsicName, true, src.DataType, ea, src);
+            var store = m.Fn(intrinsic.MakeInstance(32, src.DataType), ea, src);
             var dst = Operand(0);
             m.Assign(dst, store);
         }
@@ -471,7 +471,7 @@ namespace Reko.Arch.Arm.AArch32
 
         private void RewriteHint()
         {
-            var ldrex = m.Fn(ldrex_intrinsic, m.AddrOf(PrimitiveType.Ptr32, Operand(0)));
+            var ldrex = m.Fn(ldrex_intrinsic.MakeInstance(32, PrimitiveType.Word32), m.AddrOf(PrimitiveType.Ptr32, Operand(0)));
             m.SideEffect(m.Fn(ldrex));
         }
 
@@ -514,9 +514,17 @@ namespace Reko.Arch.Arm.AArch32
             }
         }
 
-        private void RewriteLdrex()
+        private void RewriteLdrex(PrimitiveType dt)
         {
-            m.Assign(Operand(0), m.Fn(ldrex_intrinsic, Operand(1)));
+            m.Assign(Operand(0), m.Fn(ldrex_intrinsic.MakeInstance(32, dt), Operand(1)));
+        }
+
+        private void RewriteLdrexd()
+        {
+            var regLo = (RegisterStorage) instr.Operands[0];
+            var regHi = (RegisterStorage) instr.Operands[1];
+            var opDst = binder.EnsureSequence(PrimitiveType.Word64, regHi, regLo);
+            m.Assign(opDst, m.Fn(ldrex_intrinsic.MakeInstance(32, PrimitiveType.Word64), this.Operand(2)));
         }
 
         private void RewriteShift(Func<Expression, Expression, Expression> ctor)

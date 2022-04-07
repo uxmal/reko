@@ -156,6 +156,34 @@ namespace Reko.UnitTests.Arch.Arm
                 "1|L--|r0 = Mem0[r4 + 8<i32>:word32]");
         }
 
+
+        [Test]
+        public void ArmRw_ldrexb()
+        {
+            Given_HexString("9622D9E1");
+            AssertCode(     // ldrexb	r2,[r9]
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|r2 = __ldrex<byte>(Mem0[r9:void])");
+        }
+
+        [Test]
+        public void ArmRw_ldrexd()
+        {
+            Given_HexString("9F07B6E1");
+            AssertCode(     // ldrexd	r0,r1,[r6]
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|r1_r0 = __ldrex<word64>(Mem0[r6:void])");
+        }
+
+        [Test]
+        public void ArmRw_ldrexh()
+        {
+            Given_HexString("90BEF0E1");
+            AssertCode(     // ldrexh	fp,[r0]
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|fp = __ldrex<word16>(Mem0[r0:void])");
+        }
+
         [Test]
         public void ArmRw_ldrh()
         {
@@ -164,7 +192,6 @@ namespace Reko.UnitTests.Arch.Arm
                 "0|L--|00100000(4): 1 instructions",
                 "1|L--|r4 = CONVERT(Mem0[r0 + 28<i32>:word16], uint16, word32)");
         }
-
 
         [Test]
         public void ArmRw_ldrsb()
@@ -218,7 +245,7 @@ namespace Reko.UnitTests.Arch.Arm
             Given_HexString("9F6C91E1");
             AssertCode(     // lda	r6,[r1]
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|r6 = __load_acquire_32(r1)");
+                "1|L--|r6 = __load_acquire<word32>(r1)");
         }
 
         [Test]
@@ -227,7 +254,7 @@ namespace Reko.UnitTests.Arch.Arm
             Given_HexString("9F0CD0E1");
             AssertCode(     // ldab	r0,[r0]
                 "0|L--|00100000(4): 2 instructions",
-                "1|L--|v3 = __load_acquire_8(r0)",
+                "1|L--|v3 = __load_acquire<byte>(r0)",
                 "2|L--|r0 = CONVERT(v3, byte, word32)");
         }
 
@@ -237,7 +264,7 @@ namespace Reko.UnitTests.Arch.Arm
             Given_HexString("9F3E91E1");
             AssertCode(     // ldaex	r3,[r1]
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|r3 = __load_acquire_exclusive_32(r1)");
+                "1|L--|r3 = __load_acquire_exclusive<word32>(r1)");
         }
 
         [Test]
@@ -246,7 +273,17 @@ namespace Reko.UnitTests.Arch.Arm
             Given_HexString("9F2EB0E1");
             AssertCode(     // ldaexd	r2,r3,[r0]
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|r2_r3 = __load_acquire_exclusive_64(r0)");
+                "1|L--|r2_r3 = __load_acquire_exclusive<word64>(r0)");
+        }
+
+        [Test]
+        public void ArmRw_ldaexh()
+        {
+            Given_HexString("90DFF0E1");
+            AssertCode(     // ldaexh	sp,[r0]
+                "0|L--|00100000(4): 2 instructions",
+                "1|L--|v4 = __load_acquire_exclusive<word16>(r0)",
+                "2|L--|sp = CONVERT(v4, word16, word32)");
         }
 
         [Test]
@@ -309,7 +346,7 @@ namespace Reko.UnitTests.Arch.Arm
             AssertCode(
                 "0|T--|00100000(4): 2 instructions",
                 "1|T--|if (Test(ULT,C)) branch 00100004",
-                "2|T--|goto lr");
+                "2|R--|return (0,0)");
         }
 
         [Test]
@@ -1512,12 +1549,24 @@ means
         }
 
         [Test]
+        public void ArmRw_shasx()
+        {
+            Given_HexString("36323036");
+            AssertCode(     // shasxlo	r3,r0,r6
+                "0|L--|00100000(4): 4 instructions",
+                "1|T--|if (Test(UGE,C)) branch 00100004",
+                "2|L--|v5 = SLICE(r0, int16, 0) - SLICE(r6, int16, 16)",
+                "3|L--|v6 = SLICE(r0, int16, 16) - SLICE(r6, int16, 0)",
+                "4|L--|r3 = SEQ(v6, v5)");
+        }
+
+        [Test]
         public void ArmRw_stl()
         {
             Given_HexString("91FC80E1");
             AssertCode(     // stl	r1,[r0]
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|__store_release_32(r0, r1)");
+                "1|L--|__store_release<word32>(r0, r1)");
         }
 
         [Test]
@@ -1527,7 +1576,7 @@ means
             AssertCode(     // stlexeq	r8,r4,[r3]
                 "0|L--|00100000(4): 2 instructions",
                 "1|T--|if (Test(NE,Z)) branch 00100004",
-                "2|L--|r8 = __store_release_exclusive_32(r3, r4)");
+                "2|L--|r8 = __store_release_exclusive<word32>(r3, r4)");
         }
 
         [Test]
@@ -1536,7 +1585,7 @@ means
             Given_HexString("961EA0E1");
             AssertCode(     // stlexd	r1,r6,r7,[r0]
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|r1 = __store_release_exclusive_64(r0, r6_r7)");
+                "1|L--|r1 = __store_release_exclusive<word64>(r0, r6_r7)");
         }
 
         [Test]
@@ -1547,7 +1596,7 @@ means
                 "0|L--|00100000(4): 3 instructions",
                 "1|T--|if (Test(NE,Z)) branch 00100004",
                 "2|L--|v4 = SLICE(r4, word16, 0)",
-                "3|L--|r10 = __store_release_exclusive_16(fp, v4)");
+                "3|L--|r10 = __store_release_exclusive<word16>(fp, v4)");
         }
 
         [Test]
@@ -1558,7 +1607,16 @@ means
                 "0|L--|00100000(4): 3 instructions",
                 "1|T--|if (Test(NE,Z)) branch 00100004",
                 "2|L--|v4 = SLICE(r4, word16, 0)",
-                "3|L--|__store_release_16(r10, v4)");
+                "3|L--|__store_release<word16>(r10, v4)");
+        }
+
+        [Test]
+        public void ArmRw_strexd()
+        {
+            Given_HexString("9097A9E1");
+            AssertCode(     // strexdeq	r9,r0,r1,[r9]
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|r9 = __store_exclusive<word64>(r9, r0_r1)");
         }
 
         [Test]
@@ -1569,7 +1627,7 @@ means
                 "0|L--|00100000(4): 3 instructions",
                 "1|T--|if (Test(NE,Z)) branch 00100004",
                 "2|L--|v4 = SLICE(r8, word16, 0)",
-                "3|L--|sp = __store_exclusive_16(r10, v4)");
+                "3|L--|sp = __store_exclusive<word16>(r10, v4)");
         }
 
         [Test]
@@ -1579,18 +1637,6 @@ means
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
                 "1|L--|Mem0[r3:word16] = SLICE(r2, uint16, 0)");
-        }
-
-        [Test]
-        public void ArmRw_shasx()
-        {
-            Given_HexString("36323036");
-            AssertCode(     // shasxlo	r3,r0,r6
-                "0|L--|00100000(4): 4 instructions",
-                "1|T--|if (Test(UGE,C)) branch 00100004",
-                "2|L--|v5 = SLICE(r0, int16, 0) - SLICE(r6, int16, 16)",
-                "3|L--|v6 = SLICE(r0, int16, 16) - SLICE(r6, int16, 0)",
-                "4|L--|r3 = SEQ(v6, v5)");
         }
 
         [Test]
@@ -2449,14 +2495,6 @@ means
                 "1|L--|@@@");
         }
 
-        [Test]
-        public void ArmRw_ldrexd()
-        {
-            Given_HexString("9F07B6E1");
-            AssertCode(     // ldrexd	r0,r1,[r6]
-                "0|L--|00109624(4): 1 instructions",
-                "1|L--|@@@");
-        }
 
         [Test]
         public void ArmRw_vrsqrts()
@@ -2485,14 +2523,8 @@ means
                 "1|L--|@@@");
         }
 
-        [Test]
-        public void ArmRw_ldrexb()
-        {
-            Given_HexString("9622D961");
-            AssertCode(     // ldrexbvs	r2,[r9]
-                "0|L--|00115734(4): 1 instructions",
-                "1|L--|@@@");
-        }
+
+
 
         [Test]
         public void ArmRw_vqsub()

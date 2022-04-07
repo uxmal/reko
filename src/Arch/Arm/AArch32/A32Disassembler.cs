@@ -1769,15 +1769,15 @@ namespace Reko.Arch.Arm.AArch32
 
             // --
             var LdrdRegister = Instr(Mnemonic.ldrd, Rp_12,M_(w8));
-            var LdrhRegister = Instr(Mnemonic.ldrh, r(3),M_(w2));
-            var LdrsbRegister = Instr(Mnemonic.ldrsb, r(3),M_(s1));
-            var LdrshRegister = Instr(Mnemonic.ldrsh, r(3),M_(s2));
-            var Ldrht = Instr(Mnemonic.ldrht, r(3),Mh(w2));
-            var Ldrsbt = Instr(Mnemonic.ldrsbt, r(3),Mh(s1));
-            var Ldrsht = Instr(Mnemonic.ldrsht, r(3),Mh(s2));
+            var LdrhRegister = Instr(Mnemonic.ldrh, Rnp12,M_(w2));
+            var LdrsbRegister = Instr(Mnemonic.ldrsb, Rnp12,M_(s1));
+            var LdrshRegister = Instr(Mnemonic.ldrsh, Rnp12,M_(s2));
+            var Ldrht = Instr(Mnemonic.ldrht, Rnp12,Mh(w2));
+            var Ldrsbt = Instr(Mnemonic.ldrsbt, Rnp12,Mh(s1));
+            var Ldrsht = Instr(Mnemonic.ldrsht, Rnp12,Mh(s2));
             var StrdRegister = Instr(Mnemonic.strd, Rp_12,Mx(w8));
-            var StrhRegister = Instr(Mnemonic.strh, r(3),M_(w2));
-            var Strht = Instr(Mnemonic.strht, r(3),Mh(w2));
+            var StrhRegister = Instr(Mnemonic.strh, Rnp12,M_(w2));
+            var Strht = Instr(Mnemonic.strht, Rnp12,Mh(w2));
 
             var LoadStoreDualHalfSbyteRegister = Mask(24, 1,
                 Mask(20, 2,
@@ -1813,16 +1813,16 @@ namespace Reko.Arch.Arm.AArch32
                         LdrsbRegister,
                         LdrshRegister)));
 
-            var LdrdLiteral = Instr(Mnemonic.ldrd, Rp_12, r(3), Mh(w8, false));
-            var LdrhLiteral = Instr(Mnemonic.ldrh, r(3), Mh(w2, false));
-            var LdrsbLiteral = Instr(Mnemonic.ldrsb, r(3),Mh(s1, false));
-            var LdrshLiteral = Instr(Mnemonic.ldrsh, r(3),Mh(s2, false));
-            var StrhImmediate = Instr(Mnemonic.strh, r(3),Mh(w2));
+            var LdrdLiteral = Instr(Mnemonic.ldrd, Rp_12, Rnp12, Mh(w8, false));
+            var LdrhLiteral = Instr(Mnemonic.ldrh, Rnp12, Mh(w2, false));
+            var LdrsbLiteral = Instr(Mnemonic.ldrsb, Rnp12, Mh(s1, false));
+            var LdrshLiteral = Instr(Mnemonic.ldrsh, Rnp12, Mh(s2, false));
+            var StrhImmediate = Instr(Mnemonic.strh, Rnp12, Mh(w2));
             var LdrdImmediate = Instr(Mnemonic.ldrd, Rp_12,Mh(w8));
             var StrdImmediate = Instr(Mnemonic.strd, Rp_12,Mh(w8));
-            var LdrhImmediate = Instr(Mnemonic.ldrh, r(3),Mh(w2));
-            var LdrsbImmediate = Instr(Mnemonic.ldrsb, r(3),Mh(s1));
-            var LdrshImmediate = Instr(Mnemonic.ldrsh, r(3),Mh(s2));
+            var LdrhImmediate = Instr(Mnemonic.ldrh, Rnp12, Mh(w2));
+            var LdrsbImmediate = Instr(Mnemonic.ldrsb, Rnp12, Mh(s1));
+            var LdrshImmediate = Instr(Mnemonic.ldrsh, Rnp12, Mh(s2));
 
             var LoadStoreDualHalfSbyteImmediate = Mask(Bf((24, 1), (20, 2)), // LoadStoreDualHalfSbyteImmediate Rn != pc P:W:op1"LoadStoreDualHalfSbyteImmediate",
                     Mask(5, 2, // LoadStoreDualHalfSbyteImmediate Rn != pc P:W:op1=000 op2
