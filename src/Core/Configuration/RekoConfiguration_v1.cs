@@ -355,6 +355,11 @@ namespace Reko.Core.Configuration
         [XmlArray("TypeLibraries")]
         [XmlArrayItem("TypeLibrary")]
         public TypeLibraryReference_v1[]? TypeLibraries;
+
+        [XmlArray("ProcedurePrologs")]
+        [XmlArrayItem("Pattern")]
+        public BytePattern_v1[]? ProcedurePrologs;
+
     }
 
     /// <summary>

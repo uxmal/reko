@@ -207,7 +207,19 @@ namespace Reko.Core.Configuration
         private PlatformArchitectureDefinition LoadPlatformArchitecture(PlatformArchitecture_v1 spa)
         {
             var sTrashedRegs = spa.TrashedRegisters ?? "";
-            var sLibraries = spa.TypeLibraries ?? new TypeLibraryReference_v1[0];
+            List<MaskedPattern> prologs;
+            if (spa.ProcedurePrologs is null)
+            {
+                prologs = new();
+            }
+            else
+            {
+                prologs = spa.ProcedurePrologs
+                    .Select(p => MaskedPattern.Load(p.Bytes, p.Mask)!)
+                    .Where(p => p != null && p.Bytes != null)
+                    .ToList();
+            }
+
             return new PlatformArchitectureDefinition
             {
                 Name = spa.Name,
@@ -215,7 +227,8 @@ namespace Reko.Core.Configuration
                     .Split(',')
                     .Select(s => s.Trim())
                     .ToList(),
-                TypeLibraries = LoadCollection(sLibraries, LoadTypeLibraryReference)
+                TypeLibraries = LoadCollection(spa.TypeLibraries, LoadTypeLibraryReference),
+                ProcedurePrologs = prologs
             };
         }
 

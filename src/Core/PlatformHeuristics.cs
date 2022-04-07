@@ -20,6 +20,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 
@@ -34,5 +35,67 @@ namespace Reko.Core
     {
         public byte[]? Bytes;
         public byte[]? Mask;
+
+        public static MaskedPattern? Load(string? sBytes, string? sMask)
+        {
+            if (sBytes == null)
+                return null;
+            if (sMask == null)
+            {
+                var bytes = new List<byte>();
+                var mask = new List<byte>();
+                int shift = 4;
+                int bb = 0;
+                int mm = 0;
+                for (int i = 0; i < sBytes.Length; ++i)
+                {
+                    char c = sBytes[i];
+                    if (BytePattern.TryParseHexDigit(c, out byte b))
+                    {
+                        bb |= (b << shift);
+                        mm |= (0x0F << shift);
+                        shift -= 4;
+                        if (shift < 0)
+                        {
+                            bytes.Add((byte) bb);
+                            mask.Add((byte) mm);
+                            shift = 4;
+                            bb = mm = 0;
+                        }
+                    }
+                    else if (c == '?' || c == '.')
+                    {
+                        shift -= 4;
+                        if (shift < 0)
+                        {
+                            bytes.Add((byte) bb);
+                            mask.Add((byte) mm);
+                            shift = 4;
+                            bb = mm = 0;
+                        }
+                    }
+                }
+                Debug.Assert(bytes.Count == mask.Count);
+                if (bytes.Count == 0)
+                    return null;
+                return new MaskedPattern
+                {
+                    Bytes = bytes.ToArray(),
+                    Mask = mask.ToArray()
+                };
+            }
+            else
+            {
+                var bytes = BytePattern.FromHexBytes(sBytes);
+                var mask = BytePattern.FromHexBytes(sMask);
+                if (bytes.Length == 0)
+                    return null;
+                return new MaskedPattern
+                {
+                    Bytes = bytes.ToArray(),
+                    Mask = mask.ToArray()
+                };
+            }
+        }
     }
 }

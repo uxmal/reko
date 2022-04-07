@@ -81,13 +81,20 @@ namespace Reko.UnitTests.Core.Configuration
                             new PlatformArchitecture_v1
                             {
                                 Name="testCPU",
-                                 TypeLibraries = new[]
-                                 {
-                                     new TypeLibraryReference_v1
-                                     {
-                                         Name = "lp32.xml",
-                                     }
-                                 }
+                                TypeLibraries = new[]
+                                {
+                                    new TypeLibraryReference_v1
+                                    {
+                                        Name = "lp32.xml",
+                                    }
+                                },
+                                ProcedurePrologs = new[]
+                                {
+                                    new BytePattern_v1
+                                    {
+                                        Bytes = "55 8B EC"
+                                    }
+                                }
                             }
                         }
                     }
@@ -107,6 +114,7 @@ namespace Reko.UnitTests.Core.Configuration
             var archs = env.Architectures;
             Assert.AreEqual(1, archs.Count);
             Assert.AreEqual("lp32.xml", archs[0].TypeLibraries[0].Name);
+            Assert.AreEqual(0xEC, archs[0].ProcedurePrologs[0].Bytes[2]);
         }
 
         [Test]

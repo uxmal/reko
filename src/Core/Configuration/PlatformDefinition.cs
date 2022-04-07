@@ -114,7 +114,7 @@ namespace Reko.Core.Configuration
             else
             {
                 prologs = heuristics.ProcedurePrologs
-                    .Select(p => LoadMaskedPattern(p)!)
+                    .Select(p => MaskedPattern.Load(p.Bytes, p.Mask)!)
                     .Where(p => p != null && p.Bytes != null)
                     .ToArray();
             }
@@ -123,68 +123,6 @@ namespace Reko.Core.Configuration
             {
                 ProcedurePrologs = prologs
             };
-        }
-
-        public MaskedPattern? LoadMaskedPattern(BytePattern_v1 sPattern)
-        {
-            if (sPattern.Bytes == null)
-                return null;
-            if (sPattern.Mask == null)
-            {
-                var bytes = new List<byte>();
-                var mask = new List<byte>();
-                int shift = 4;
-                int bb = 0;
-                int mm = 0;
-                for (int i = 0; i < sPattern.Bytes.Length; ++i)
-                {
-                    char c = sPattern.Bytes[i];
-                    if (BytePattern.TryParseHexDigit(c, out byte b))
-                    {
-                        bb |= (b << shift);
-                        mm |= (0x0F << shift);
-                        shift -= 4;
-                        if (shift < 0)
-                        {
-                            bytes.Add((byte)bb);
-                            mask.Add((byte)mm);
-                            shift = 4;
-                            bb = mm = 0;
-                        }
-                    }
-                    else if (c == '?' || c == '.')
-                    {
-                        shift -= 4;
-                        if (shift < 0)
-                        {
-                            bytes.Add((byte)bb);
-                            mask.Add((byte)mm);
-                            shift = 4;
-                            bb = mm = 0;
-                        }
-                    }
-                }
-                Debug.Assert(bytes.Count == mask.Count);
-                if (bytes.Count == 0)
-                    return null;
-                return new MaskedPattern
-                {
-                    Bytes = bytes.ToArray(),
-                    Mask = mask.ToArray()
-                };
-            }
-            else
-            {
-                var bytes = BytePattern.FromHexBytes(sPattern.Bytes);
-                var mask = BytePattern.FromHexBytes(sPattern.Mask);
-                if (bytes.Length == 0)
-                    return null;
-                return new MaskedPattern
-                {
-                    Bytes = bytes.ToArray(),
-                    Mask = mask.ToArray()
-                };
-            }
         }
 
         private Dictionary<Address, ExternalProcedure> LoadPlatformProcedures(Platform platform)

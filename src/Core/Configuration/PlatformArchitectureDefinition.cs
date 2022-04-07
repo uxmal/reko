@@ -35,10 +35,12 @@ namespace Reko.Core.Configuration
         {
             this.TrashedRegisters = new List<string>();
             this.TypeLibraries = new List<TypeLibraryDefinition>();
+            this.ProcedurePrologs = new List<MaskedPattern>();
         }
 
         public string? Name { get; set; }
-        public List<string> TrashedRegisters { get; internal set; }
-        public List<TypeLibraryDefinition> TypeLibraries { get; internal set; }
+        public List<string> TrashedRegisters { get; set; }
+        public List<TypeLibraryDefinition> TypeLibraries { get; set; }
+        public List<MaskedPattern> ProcedurePrologs { get; set; }
     }
 }

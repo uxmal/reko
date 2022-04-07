@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2022 John Källén.
  *
@@ -40,7 +40,7 @@ namespace Reko.UnitTests.Core.Configuration
                 Mask = "FF C0 0F",
             };
             var element = new PlatformDefinition();
-            var pattern = element.LoadMaskedPattern(sPattern);
+            var pattern = MaskedPattern.Load(sPattern.Bytes, sPattern.Mask);
             Assert.AreEqual(new byte[] { 0x55, 0x32, 0x12 }, pattern.Bytes);
             Assert.AreEqual(new byte[] { 0xFF, 0xC0, 0x0F }, pattern.Mask);
         }
@@ -53,7 +53,7 @@ namespace Reko.UnitTests.Core.Configuration
                 Bytes = "55 3? ?2",
             };
             var element = new PlatformDefinition();
-            var pattern = element.LoadMaskedPattern(sPattern);
+            var pattern = MaskedPattern.Load(sPattern.Bytes, sPattern.Mask);
             Assert.AreEqual(new byte[] { 0x55, 0x30, 0x02 }, pattern.Bytes);
             Assert.AreEqual(new byte[] { 0xFF, 0xF0, 0x0F }, pattern.Mask);
         }
