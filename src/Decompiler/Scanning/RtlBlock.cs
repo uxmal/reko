@@ -71,7 +71,7 @@ namespace Reko.Scanning
         /// Note that this is not necessarily <see cref="Address"/> + <see cref="Length"/>, because
         /// control instructions with delay slots may require skipping one extra instruction.
         /// </summary>
-        public Address FallThrough { get; }
+        public Address FallThrough { get; set; }
 
         /// <summary>
         /// Indicates whether this block is valid or not.
@@ -83,7 +83,7 @@ namespace Reko.Scanning
         /// at <see cref="Address"/> and including the length of the final
         /// instruction.
         /// </summary>
-        public int Length { get; }
+        public int Length { get; set; }
 
         /// <summary>
         /// Invariant identifier used for this block.
