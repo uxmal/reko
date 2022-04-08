@@ -127,7 +127,7 @@ namespace Reko.ScannerV2.UnitTests
             string sExpected =
             #region Expected
                 @"
-l00001000:
+l00001000: // l:16; ft:00001010
     // pred:
     r1 = r2 + 3<32>
     r2 = Mem0[r1:word32]
@@ -155,15 +155,15 @@ l00001000:
             string sExpected =
             #region Expected
 @"
-l00001000:
+l00001000: // l:4; ft:00001004
     // pred:
     if (r1 == 0<32>) branch 00001008
     // succ: l00001004 l00001008
-l00001004:
+l00001004: // l:4; ft:00001008
     // pred: l00001000
     r2 = 0x3E8<u32> /u r1
     // succ: l00001008
-l00001008:
+l00001008: // l:8; ft:00001010
     // pred: l00001000 l00001004
     r1 = Mem0[r2:word32]
     return (0,0)

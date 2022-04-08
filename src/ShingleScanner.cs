@@ -173,17 +173,22 @@ namespace Reko.ScannerV2
                 if (addrInstr == to)
                 {
                     var newInstrs = block.Instructions.Skip(i).ToList();
+                    var offset = (int)(to - block.Address);
                     block.Instructions.RemoveRange(i, c - i);
                     var newBlock = RegisterBlock(
                         block.Architecture,
                         to,
-                        (int)(addrInstr - block.Address),
-                        addrInstr,
+                        block.Length - offset,
+                        block.FallThrough,
                         newInstrs);
+                    block.FallThrough = newBlock.Address;
+                    block.Length = offset;
                     RegisterEdge(new Edge(block.Address, newBlock.Address, EdgeType.Fallthrough));
                     return newBlock;
                 }
             }
+            //$TODO this shouldn't happen, since shingle scanning
+            // scans every possible byte.
             return null;
         }
 

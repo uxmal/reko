@@ -70,7 +70,8 @@ namespace Reko.ScannerV2.UnitTests
 
         protected void DumpBlock(RtlBlock block, CfgGraph g, TextWriter w)
         {
-            w.WriteLine("{0}:{1}", block.Name, block.IsValid ? "" : " // (INVALID)");
+            w.WriteLine("{0}: // l:{1}; ft:{2}{3}",
+                block.Name, block.Length, block.FallThrough, block.IsValid ? "" : " (INVALID)");
             w.Write("    // pred:");
             foreach (var s in g.Predecessors(block))
             {
