@@ -20,8 +20,8 @@ namespace Reko.ScannerV2
         {
             var chunks = MakeScanChunks();
             var cfg = ExecuteChunks(chunks);
-            cfg = EnsureBlocks(cfg);
-            return cfg;
+            var (cfg2, blocksSplit) = EnsureBlocks(cfg);
+            return cfg2;
         }
 
         public List<ChunkWorker> MakeScanChunks()
@@ -120,16 +120,29 @@ namespace Reko.ScannerV2
             return cfg;
         }
 
+        private T Time<T>(string caption, Func<T> fn)
+        {
+            var sw = new Stopwatch();
+            sw.Start();
+            var result = fn();
+            sw.Stop();
+            Console.WriteLine("{0}: {1} msec", caption, sw.ElapsedMilliseconds);
+            return result; 
+        }
+
         /// <summary>
         /// Ensure there are <see cref="Block"/>s at 
         /// </summary>
-        private Cfg EnsureBlocks(Cfg cfg)
+        private (Cfg, int) EnsureBlocks(Cfg cfg)
         {
-            var blocks = cfg.Blocks.Values.ToSortedList(b => b.Address);
+            var blocks = Time("EnsureBlocks (BTree)", () => 
+                new BTreeDictionary<Address, RtlBlock>(cfg.Blocks));
+
             var edges = cfg.Successors.Values
                 .SelectMany(e => e)
                 .OrderBy(e => e.To)
                 .ToList();
+            int blocksSplit = 0;
             foreach (var e in edges)
             {
                 if (!blocks.TryGetLowerBound(e.To, out var block))
@@ -137,15 +150,19 @@ namespace Reko.ScannerV2
                     Debug.Fail("Edge going to hyperspace");
                     continue; 
                 }
-                if (block.Address != e.To)
+                long offset = e.To - block.Address;
+                if (0 < offset && offset < block.Length)
                 {
-                    SplitBlockAt(block, e.To);
+                    if (SplitBlockAt(block, e.To) is not null)
+                    {
+                        ++blocksSplit;
+                    }
                 }
             }
-            return cfg;
+            return (cfg, blocksSplit);
         }
 
-        private RtlBlock SplitBlockAt(RtlBlock block, Address to)
+        private RtlBlock? SplitBlockAt(RtlBlock block, Address to)
         {
             int c = block.Instructions.Count;
             for (int i = 0; i < c; ++i)
@@ -166,8 +183,8 @@ namespace Reko.ScannerV2
                     RegisterEdge(new Edge(block.Address, newBlock.Address, EdgeType.Fallthrough));
                     return newBlock;
                 }
-            } 
-            throw new NotImplementedException("Couldn't find split.");
+            }
+            return null;
         }
 
         //if (at zero)

@@ -44,14 +44,24 @@ namespace Reko.ScannerV2
             }
             var program = project.Programs[0];
             tgSvc.OutputDirectory = program.DisassemblyDirectory;
+            Console.WriteLine("= Loaded file ======");
+            Console.WriteLine("{0} entry points", program.EntryPoints.Count);
+            Console.WriteLine("{0} symbols", program.ImageSymbols.Count);
+
             var scanner = new RecursiveScanner(program, listener);
-
-            var (cfg, time) = Time(() => scanner.ScanProgram());
-
+            var (cfg, recTime) = Time(() => scanner.ScanProgram());
+            Console.WriteLine("= Recursive scan ======");
             Console.WriteLine("Found {0} procs", cfg.Procedures.Count);
-            Console.WriteLine("      {0} entry points", program.EntryPoints.Count);
-            Console.WriteLine("      {0} symbols", program.ImageSymbols.Count);
-            Console.WriteLine("      in {0} msec", (int) time.TotalMilliseconds);
+            Console.WriteLine("      {0} basic blocks", cfg.Blocks.Count);
+            Console.WriteLine("      in {0} msec", (int)recTime.TotalMilliseconds);
+
+            var shScanner = new ShingleScanner(program, cfg, listener);
+            var (cfg2, shTime) = Time(() => shScanner.ScanProgram());
+            Console.WriteLine("= Shingle scan ======");
+            Console.WriteLine("Found {0} procs", cfg2.Procedures.Count);
+            Console.WriteLine("      {0} basic blocks", cfg2.Blocks.Count);
+            Console.WriteLine("      in {0} msec", (int)shTime.TotalMilliseconds);
+
 
             //var dec = new Reko.Decompiler(project, sc);
             //var stopw = new Stopwatch();

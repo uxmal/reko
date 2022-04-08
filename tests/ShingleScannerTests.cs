@@ -169,9 +169,9 @@ l00001008:
     return (0,0)
     // succ:
 ";
-                #endregion
+            #endregion
 
-                RunTest(sExpected);
-            }
+            RunTest(sExpected);
         }
+    }
 }

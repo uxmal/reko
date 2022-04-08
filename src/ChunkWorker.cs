@@ -84,13 +84,15 @@ namespace Reko.ScannerV2
 
         public override bool MarkVisited(Address addr)
         {
-            var oldValue = Interlocked.Exchange(ref blockNos[addr - this.Address], 1);
+            var index = addr - this.Address;
+            if (index >= blockNos.Length)
+                return false;
+            var oldValue = Interlocked.Exchange(ref blockNos[index], 1);
             return oldValue == 0;
         }
 
         protected override void ProcessCall(RtlBlock block, Edge edge, ProcessorState state)
         {
-            throw new NotImplementedException();
         }
 
         protected override void ProcessReturn()
