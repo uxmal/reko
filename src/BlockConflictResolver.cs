@@ -193,9 +193,23 @@ namespace Reko.ScannerV2
             {
                 RemoveDirectlyCalledAddress(i);
             }
-            sr.Successors.TryRemove(n, out _);
-            sr.Predecessors.TryRemove(n, out _);
+            if (sr.Predecessors.TryGetValue(n, out var pp))
+            {
+                foreach (var p in pp)
+                {
+                    sr.Predecessors[p.From].RemoveAll(e => e.To == n);
+                }
+                sr.Predecessors.TryRemove(n, out _);
+            }
             sr.Blocks.TryRemove(n, out _);
+            if (sr.Successors.TryGetValue(n, out var ss))
+            {
+                foreach (var s in ss)
+                {
+                    sr.Predecessors[s.To].RemoveAll(e => e.From == n);
+                }
+                sr.Successors.TryRemove(n, out _);
+            }
         }
 
         private void RemoveDirectlyCalledAddress(RtlInstructionCluster i)

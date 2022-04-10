@@ -171,7 +171,8 @@ namespace Reko.UnitTests.Decompiler.Scanning
             Given_NoImportedProcedures();
 
             When_DisassembleProcedure();
-            var hps = new BlockConflictResolver(program, CreateScanResults(proc.Cfg), proc.IsValidAddress, host.Object);
+            var sr = CreateScanResults(proc.Cfg);
+            var hps = new BlockConflictResolver(program, sr, proc.IsValidAddress, host.Object);
             hps.ResolveBlockConflicts(new[] { proc.BeginAddress });
 
             var sExp =
@@ -189,7 +190,7 @@ l00010009:  // pred: l00010008
 ";
             #endregion
 
-            AssertBlocks(sExp, proc.Cfg);
+            AssertBlocks(sExp, sr);
         }
 
         [Test(Description =
@@ -240,7 +241,8 @@ l00010009:  // pred: l00010008
             Given_NoImportedProcedures();
 
             When_DisassembleProcedure();
-            var hps = new BlockConflictResolver(program, CreateScanResults(proc.Cfg), proc.IsValidAddress, host.Object);
+            var sr = CreateScanResults(proc.Cfg);
+            var hps = new BlockConflictResolver(program, sr, proc.IsValidAddress, host.Object);
             hps.ResolveBlockConflicts(new[] { proc.BeginAddress });
 
             var sExp =
@@ -269,7 +271,7 @@ l0001001C:  // pred: l0001001B
     ret 
 ";
             #endregion
-            AssertBlocks(sExp, proc.Cfg);
+            AssertBlocks(sExp, sr);
         }
     }
 }
