@@ -126,9 +126,9 @@ namespace Reko.ScannerV2.UnitTests
 
         protected class CfgGraph : DirectedGraph<RtlBlock>
         {
-            private Cfg cfg;
+            private ScanResultsV2 cfg;
 
-            public CfgGraph(Cfg cfg)
+            public CfgGraph(ScanResultsV2 cfg)
             {
                 this.cfg = cfg;
             }

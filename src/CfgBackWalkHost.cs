@@ -9,13 +9,13 @@ namespace Reko.ScannerV2
 {
     public class CfgBackWalkHost : IBackWalkHost<RtlBlock, RtlInstruction>
     {
-        private readonly Cfg cfg;
+        private readonly ScanResultsV2 cfg;
         private readonly Dictionary<Address,List<Address>> backEdges;
 
         public CfgBackWalkHost(
             Core.Program program,
             IProcessorArchitecture arch,
-            Cfg cfg, 
+            ScanResultsV2 cfg, 
             Dictionary<Address, List<Address>> backEdges)
         {
             this.Program = program;

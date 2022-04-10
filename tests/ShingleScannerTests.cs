@@ -15,13 +15,13 @@ namespace Reko.ScannerV2.UnitTests
     [TestFixture]
     public class ShingleScannerTests : AbstractScannerTests
     {
-        private Cfg cfg = default!;
+        private ScanResultsV2 cfg = default!;
 
         [SetUp]
         public void Setup()
         {
             base.Setup(0x10, 16); // block of 0x10 bytes, with 16-bit instruction granularity.
-            this.cfg = new Cfg();
+            this.cfg = new ScanResultsV2();
         }
 
         private void Given_Block(uint uAddr, int length)
@@ -60,7 +60,7 @@ namespace Reko.ScannerV2.UnitTests
             }
         }
 
-        private void DumpCfg(Cfg cfg, StringWriter sw)
+        private void DumpCfg(ScanResultsV2 cfg, StringWriter sw)
         {
             var g = new CfgGraph(cfg);
             var cfgs = cfg.Blocks.Values.OrderBy(b => b.Address);
@@ -144,6 +144,40 @@ l00001000: // l:16; ft:00001010
         public void ShScanner_Branch()
         {
             // No previous discoveries in the block, all instructions 4 bytes.
+            Given_Trace(new RtlTrace(0x1000)
+            {
+                m => m.Branch(m.Eq0(r1), Address.Ptr32(0x1008)),
+                m => m.Assign(r2, m.UDiv(Constant.UInt32(1000), r1)),
+                m => m.Assign(r1, m.Mem32(r2)),
+                m => m.Return(0, 0)
+            });
+
+            string sExpected =
+            #region Expected
+@"
+l00001000: // l:4; ft:00001004
+    // pred:
+    if (r1 == 0<32>) branch 00001008
+    // succ: l00001004 l00001008
+l00001004: // l:4; ft:00001008
+    // pred: l00001000
+    r2 = 0x3E8<u32> /u r1
+    // succ: l00001008
+l00001008: // l:8; ft:00001010
+    // pred: l00001000 l00001004
+    r1 = Mem0[r2:word32]
+    return (0,0)
+    // succ:
+";
+            #endregion
+
+            RunTest(sExpected);
+        }
+
+        [Test]
+        public void ShScanner_Mips_call()
+        {
+            // The call address is built dynamically.
             Given_Trace(new RtlTrace(0x1000)
             {
                 m => m.Branch(m.Eq0(r1), Address.Ptr32(0x1008)),

@@ -8,6 +8,10 @@ using RtlBlock = Reko.Scanning.RtlBlock;
 
 namespace Reko.ScannerV2
 {
+    /// <summary>
+    /// This class processes a linear sequence of instructions, resulting in
+    /// an <see cref="RtlBlock"/>
+    /// </summary>
     public abstract class AbstractBlockWorker
     {
         private static readonly TraceSwitch trace = new TraceSwitch(nameof(BlockWorker), "");
@@ -36,16 +40,14 @@ namespace Reko.ScannerV2
         public Address Address { get; }
 
         /// <summary>
-        /// Trace of RTL instructions.
+        /// Trace of RTL instructions being read from the binary.
         /// </summary>
         public IEnumerator<RtlInstructionCluster> Trace { get; }
-
 
         /// <summary>
         /// Performs a linear scan, stopping when a CTI is encountered, or we
         /// run off the edge of the world.
         /// </summary>
-        /// <param name="work">Work item to use</param>
         /// <returns>
         /// A pair of a completed <see cref="Block"/> and an updated <see cref="ProcessorState"/>.
         /// If parsing runs off the end of memory, the returned block will be marked

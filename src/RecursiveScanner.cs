@@ -14,18 +14,14 @@ namespace Reko.ScannerV2
     public class RecursiveScanner : AbstractScanner
     {
         private readonly WorkList<ProcedureWorker> wl;
-        private readonly ConcurrentDictionary<Address, Address> blockStarts;
-        private readonly ConcurrentDictionary<Address, Address> blockEnds;
         private readonly ConcurrentDictionary<Address, ProcedureWorker> activeWorkers;
         private readonly ConcurrentDictionary<Address, ProcedureWorker> suspendedWorkers; 
         private readonly ConcurrentDictionary<Address, ReturnStatus> procReturnStatus;
 
         public RecursiveScanner(Reko.Core.Program program, DecompilerEventListener listener)
-            : base(program, new Cfg(), listener)
+            : base(program, new ScanResultsV2(), listener)
         {
             this.wl = new WorkList<ProcedureWorker>();
-            this.blockStarts = new ConcurrentDictionary<Address, Address>();
-            this.blockEnds = new ConcurrentDictionary<Address, Address>();
             this.activeWorkers = new();
             this.suspendedWorkers = new();
             this.procReturnStatus = new();
@@ -39,7 +35,7 @@ namespace Reko.ScannerV2
                 listener);
         }
 
-        public Cfg ScanProgram()
+        public ScanResultsV2 ScanProgram()
         {
             var seeds = CollectSeeds();
             EnqueueWorkers(seeds.Select(MakeSeedWorker));
@@ -56,7 +52,7 @@ namespace Reko.ScannerV2
 
 
 
-        private object? FindGaps(Cfg cfg)
+        private object? FindGaps(ScanResultsV2 cfg)
         {
             return null;
         }
@@ -133,17 +129,6 @@ namespace Reko.ScannerV2
             {
                 worker.Run();
             }
-        }
-
-        public bool TryRegisterBlockStart(Address addrBlock, Address addrProc)
-        {
-            return this.blockStarts.TryAdd(addrBlock, addrProc);
-        }
-
-
-        public override bool TryRegisterBlockEnd(Address addrBlockStart, Address addrBlockLast)
-        {
-            return this.blockEnds.TryAdd(addrBlockLast, addrBlockStart);
         }
 
         public bool TryStartProcedureWorker(

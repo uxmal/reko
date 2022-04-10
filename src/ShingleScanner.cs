@@ -11,12 +11,12 @@ namespace Reko.ScannerV2
 {
     public class ShingleScanner : AbstractScanner
 	{
-        public ShingleScanner(Core.Program program, Cfg cfg, DecompilerEventListener listener)
+        public ShingleScanner(Core.Program program, ScanResultsV2 cfg, DecompilerEventListener listener)
             : base(program, cfg, listener)
         {
         }
 
-        public Cfg ScanProgram()
+        public ScanResultsV2 ScanProgram()
         {
             var chunks = MakeScanChunks();
             var cfg = ExecuteChunks(chunks);
@@ -39,7 +39,7 @@ namespace Reko.ScannerV2
 
         /// <summary>
         /// Break up an <see cref="ImageSegment"/> into blocks that
-        /// aren't present in the <see cref="Cfg"/>.
+        /// aren't present in the <see cref="ScanResultsV2"/>.
         /// </summary>
         /// <param name="segment"></param>
         /// <param name="sortedBlocks"></param>
@@ -103,13 +103,7 @@ namespace Reko.ScannerV2
             throw new NotImplementedException();
         }
 
-        public override bool TryRegisterBlockEnd(Address addrStart, Address addrLast)
-        {
-            //$TODO: when two ShingleScanners are leapfrogging.
-            return true;
-        }
-
-        private Cfg ExecuteChunks(List<ChunkWorker> chunks)
+        private ScanResultsV2 ExecuteChunks(List<ChunkWorker> chunks)
         {
             //$TODO: this should be parallelizable, but we
             // do it first in series to make it correct.
@@ -133,7 +127,7 @@ namespace Reko.ScannerV2
         /// <summary>
         /// Ensure there are <see cref="Block"/>s at 
         /// </summary>
-        private (Cfg, int) EnsureBlocks(Cfg cfg)
+        private (ScanResultsV2, int) EnsureBlocks(ScanResultsV2 cfg)
         {
             var blocks = Time("EnsureBlocks (BTree)", () => 
                 new BTreeDictionary<Address, RtlBlock>(cfg.Blocks));

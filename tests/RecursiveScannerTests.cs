@@ -35,7 +35,7 @@ namespace Reko.ScannerV2.UnitTests
             }
         }
 
-        private void DumpCfg(Cfg cfg, TextWriter w)
+        private void DumpCfg(ScanResultsV2 cfg, TextWriter w)
         {
             var g = new CfgGraph(cfg);
             foreach (var proc in cfg.Procedures.Values.OrderBy(p => p.Address))

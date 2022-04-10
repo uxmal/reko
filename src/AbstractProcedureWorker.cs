@@ -237,7 +237,7 @@ namespace Reko.ScannerV2
 
         public abstract AbstractBlockWorker AddJob(Address addr, IEnumerator<RtlInstructionCluster> trace, ProcessorState state);
 
-        protected abstract void ProcessCall(RtlBlock block, Edge edge, ProcessorState state);
+        protected abstract void ProcessCall(RtlBlock blockCaller, Edge edge, ProcessorState state);
 
         protected abstract void ProcessReturn();
 

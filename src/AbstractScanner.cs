@@ -5,6 +5,7 @@ using Reko.Core.Serialization;
 using Reko.Core.Services;
 using Reko.Core.Types;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -17,16 +18,20 @@ namespace Reko.ScannerV2
     public abstract class AbstractScanner
     {
         protected readonly Core.Program program;
-        protected readonly Cfg cfg;
+        protected readonly ScanResultsV2 cfg;
         protected readonly DecompilerEventListener listener;
+        protected readonly ConcurrentDictionary<Address, Address> blockStarts;
+        protected readonly ConcurrentDictionary<Address, Address> blockEnds;
         private readonly IRewriterHost host;
 
-        protected AbstractScanner(Core.Program program, Cfg cfg, DecompilerEventListener listener)
+        protected AbstractScanner(Core.Program program, ScanResultsV2 cfg, DecompilerEventListener listener)
         {
             this.program = program;
             this.cfg = cfg;
             this.listener = listener;
             this.host = new RewriterHost(program);
+            this.blockStarts = new ConcurrentDictionary<Address, Address>();
+            this.blockEnds = new ConcurrentDictionary<Address, Address>();
         }
 
         /// <summary>
@@ -106,6 +111,11 @@ namespace Reko.ScannerV2
             }
         }
 
+        public void RegisterSpeculativeProcedure(Address addrProc)
+        {
+            cfg.SpeculativeProcedures.AddOrUpdate(addrProc, 1, (a, v) => v+1);
+        }
+
         protected void StealEdges(Address from, Address to)
         {
             if (cfg.Successors.TryGetValue(from, out var edges))
@@ -114,6 +124,16 @@ namespace Reko.ScannerV2
                 var newEges = edges.Select(e => new Edge(to, e.To, e.Type)).ToList();
                 cfg.Successors.TryAdd(to, newEges);
             }
+        }
+
+        public bool TryRegisterBlockStart(Address addrBlock, Address addrProc)
+        {
+            return this.blockStarts.TryAdd(addrBlock, addrProc);
+        }
+
+        public virtual bool TryRegisterBlockEnd(Address addrBlockStart, Address addrBlockLast)
+        {
+            return this.blockEnds.TryAdd(addrBlockLast, addrBlockStart);
         }
 
         /// <summary>
@@ -142,8 +162,6 @@ namespace Reko.ScannerV2
         }
 
         public abstract void SplitBlockEndingAt(RtlBlock block, Address lastAddr);
-
-        public abstract bool TryRegisterBlockEnd(Address addrStart, Address addrLast);
 
 
 

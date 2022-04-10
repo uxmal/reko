@@ -7,18 +7,21 @@ using RtlBlock = Reko.Scanning.RtlBlock;
 namespace Reko.ScannerV2
 {
     /// <summary>
-    /// The Control Flow Graph of a program.
+    /// The informationg collected by scanning a binary.
     /// </summary>
-    public class Cfg
+    public class ScanResultsV2
     {
-        public Cfg()
+        public ScanResultsV2()
         {
             this.Blocks = new();
             this.Successors = new();
             this.Predecessors = new();
             this.Procedures = new();
+            this.SpeculativeBlocks = new();
+            this.SpeculativeProcedures = new();
             this.Stubs = new();
             this.NoDecompiles = new();
+            this.ICFG = new ScanResultsGraph(this);
         }
 
         /// <summary>
@@ -41,7 +44,31 @@ namespace Reko.ScannerV2
         /// <summary>
         /// Maps the entry point address to <see cref="Proc"/>s.
         /// </summary>
+        /// <remarks>
+        /// These procedures were found either from the binary or during
+        /// recursive scanning, and are considered "reliable".
+        /// </remarks>
         public ConcurrentDictionary<Address, Proc> Procedures { get; }
+
+        /// <summary>
+        /// Addresses of blocks that were discovered during speculative scanning.
+        /// </summary>
+        /// <remarks>
+        /// These blocks were found during speculative scaning, and aren't 
+        /// considered "reliable" without more information.
+        /// </remarks>
+        public ConcurrentDictionary<Address, int> SpeculativeBlocks { get; }
+
+        /// <summary>
+        /// Addresses of possible procedures that were discovered during 
+        /// speculative scanning. The dictionary maintains a count of how many
+        /// times the address was called.
+        /// </summary>
+        /// <remarks>
+        /// These procedures were found during speculative scanning, and aren't
+        /// considered "reliable" without more information.
+        /// </remarks>
+        public ConcurrentDictionary<Address, int> SpeculativeProcedures { get; }
 
         /// <summary>
         /// Short sequences of instructions identified as dynamic link stubs
@@ -49,6 +76,15 @@ namespace Reko.ScannerV2
         /// </summary>
         public ConcurrentDictionary<Address, ExternalProcedure> Stubs { get; }
         public ConcurrentDictionary<Address, ExternalProcedure> NoDecompiles { get; }
+        public ScanResultsGraph ICFG { get; }
+    }
+
+    public enum BlockFlags
+    {
+        Valid = 1,      // Contains valid instructions.
+        Invalid = 2,    // Contains invalid instructions.
+        Privileged = 3, // Contains privileged instructions.
+        Padding = 4,    // Consists only of padding instructions.
     }
 
     public record Proc(
@@ -138,7 +174,7 @@ namespace Reko.ScannerV2
     }
 
     /// <summary>
-    /// Represents an edge in the <see cref="Cfg"/>.
+    /// Represents an edge in the <see cref="ScanResultsV2"/>.
     /// </summary>
     /// <param name="From">The address from which the edge goes.</param>
     /// <param name="To">The address to which the edge goes.</param>

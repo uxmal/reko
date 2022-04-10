@@ -91,8 +91,9 @@ namespace Reko.ScannerV2
             return oldValue == 0;
         }
 
-        protected override void ProcessCall(RtlBlock block, Edge edge, ProcessorState state)
+        protected override void ProcessCall(RtlBlock blockCaller, Edge edge, ProcessorState state)
         {
+            shScanner.RegisterSpeculativeProcedure(edge.To);
         }
 
         protected override void ProcessReturn()
