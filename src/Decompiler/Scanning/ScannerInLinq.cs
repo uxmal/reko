@@ -76,6 +76,7 @@ namespace Reko.Scanning
             Probe(sr);
             sr.Dump("After shingle scan");
 
+            var sr2 = MakeScanResults(sr);
             // On processors with variable length instructions,
             // there may be many blocks that partially overlap the 
             // "real" blocks that would actually have been executed
@@ -84,7 +85,7 @@ namespace Reko.Scanning
 
             var hsc = new BlockConflictResolver(
                 program,
-                sr,
+                sr2,
                 program.SegmentMap.IsValidAddress,
                 host);
             hsc.ResolveBlockConflicts(sr.KnownProcedures.Concat(sr.DirectlyCalledAddresses.Keys));
@@ -98,11 +99,33 @@ namespace Reko.Scanning
             ppf.Remove(pads);
 
             // Detect procedures from the "soup" of basic blocks in sr.
-            var pd = new ProcedureDetector(sr, this.eventListener);
+            var pd = new ProcedureDetector(sr2, this.eventListener);
             var procs = pd.DetectProcedures();
             sr.Procedures = procs;
             sr.RemovedPadding = pads;
             return sr;
+        }
+
+        private ScanResultsV2 MakeScanResults(ScanResults sr)
+        {
+            var sr2 = new ScanResultsV2();
+            foreach (var block in sr.ICFG.Nodes)
+            {
+                sr2.Blocks.TryAdd(block.Address, block);
+                var succs = sr.ICFG.Successors(block);
+                if (succs.Count > 0)
+                {
+                    foreach (var s in succs)
+                    {
+                        sr2.ICFG.AddEdge(block.Address, s.Address);
+                    }
+                }
+                foreach (var de in sr.DirectlyCalledAddresses)
+                {
+                    sr2.SpeculativeProcedures.TryAdd(de.Key, de.Value);
+                }
+            }
+            return sr2;
         }
 
         /// <summary>

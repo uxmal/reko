@@ -1,7 +1,7 @@
 #region License
 /* 
  * Copyright (C) 1999-2022 John Källén.
- *
+ .
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2, or (at your option)
@@ -45,17 +45,17 @@ namespace Reko.Scanning
     {
         private static readonly TraceSwitch trace = new TraceSwitch("HeuristicProcedureScanner", "Display progress of scanner") { Level = TraceLevel.Error };
 
-        private readonly Program program;
+        private readonly Core.Program program;
         private readonly IRewriterHost host;
-        private readonly ScanResults sr;
-        private readonly DiGraph<RtlBlock> blocks;
+        private readonly ScanResultsV2 sr;
+        private readonly DirectedGraph<Address> blocks;
         private readonly Func<Address, bool> isAddressValid;
-        private HashSet<(RtlBlock, RtlBlock)> conflicts;
+        private HashSet<(Address, Address)> conflicts;
 
         public BlockConflictResolver(
-            Program program,
-            ScanResults sr,
-            Func<Address,bool> isAddressValid,
+            Core.Program program,
+            ScanResultsV2 sr,
+            Func<Address, bool> isAddressValid,
             IRewriterHost host)
         {
             this.program = program;
@@ -63,7 +63,7 @@ namespace Reko.Scanning
             this.sr = sr;
             this.blocks = sr.ICFG;
             this.isAddressValid = isAddressValid;
-            this.conflicts = BuildConflictGraph(blocks.Nodes);
+            this.conflicts = BuildConflictGraph(blocks.Nodes.Select(n => sr.Blocks[n]));
         }
 
         /// <summary>
@@ -92,22 +92,22 @@ namespace Reko.Scanning
         private void Dump(string message)
         {
             trace.Inform(message);
-            trace.Inform("  icfg nodes: {0}, conflicts: {1}", sr.ICFG.Nodes.Count, conflicts.Count);
+            trace.Inform("  icfg nodes: {0}, conflicts: {1}", sr.Blocks.Count, conflicts.Count);
         }
 
         /// <summary>
         /// Trace the reachable blocks using DFS; call them 'reachable'.
         /// </summary>
         /// <returns>A set of blocks considered "valid".</returns>
-        private HashSet<RtlBlock> TraceReachableBlocks(IEnumerable<Address> procstarts)
+        private HashSet<Address> TraceReachableBlocks(IEnumerable<Address> procstarts)
         {
-            var reachable = new HashSet<RtlBlock>();
-            var mpAddrToBlock = blocks.Nodes.ToDictionary(k => k.Address);
+            var reachable = new HashSet<Address>();
+            var mpAddrToBlock = sr.Blocks;
             foreach (var addrProcStart in procstarts)
             {
-                if (mpAddrToBlock.TryGetValue(addrProcStart,out var entry))
+                if (mpAddrToBlock.TryGetValue(addrProcStart, out var entry))
                 {
-                    var r = new DfsIterator<RtlBlock>(blocks).PreOrder(entry).ToHashSet();
+                    var r = new DfsIterator<Address>(blocks).PreOrder(entry.Address).ToHashSet();
                     reachable.UnionWith(r);
                 }
             }
@@ -129,7 +129,7 @@ namespace Reko.Scanning
             if (cmp == null)
                 return;
             //$REVIEW: to what use can we put this?
-            var trie = new Trie<MachineInstruction>(cmp);
+            var trie = new Reko.Scanning.Trie<MachineInstruction>(cmp);
             foreach (var item in valid.OrderBy(i => i.Address))
             {
                 var dasm = program.CreateDisassembler(program.Architecture, item.Address);
@@ -144,9 +144,10 @@ namespace Reko.Scanning
         /// </summary>
         /// <param name="blocks"></param>
         /// <returns></returns>
-        public static HashSet<(RtlBlock, RtlBlock)> BuildConflictGraph(IEnumerable<RtlBlock> blocks)
+        public static HashSet<(Address, Address)> BuildConflictGraph(
+            IEnumerable<RtlBlock> blocks)
         {
-            var conflicts = new HashSet<(RtlBlock, RtlBlock)>(new CollisionComparer());
+            var conflicts = new HashSet<(Address, Address)>(new CollisionComparer());
             // Find all conflicting blocks: pairs that overlap.
             var blockMap = blocks.OrderBy(n => n.Address).ToList();
             for (int i = 0; i < blockMap.Count; ++i)
@@ -158,7 +159,7 @@ namespace Reko.Scanning
                     var v = blockMap[j];
                     if (v.Address >= uEnd)
                         break;
-                    conflicts.Add((u, v));
+                    conflicts.Add((u.Address, v.Address));
                 }
             }
             return conflicts;
@@ -166,7 +167,7 @@ namespace Reko.Scanning
 
         private void RemoveBlocksEndingWithInvalidInstruction()
         {
-            foreach (var n in blocks.Nodes.Where(n => !n.IsValid).ToList())
+            foreach (var n in blocks.Nodes.Where(n => !sr.Blocks[n].IsValid).ToList())
             {
                 RemoveBlockFromGraph(n);
             }
@@ -176,7 +177,7 @@ namespace Reko.Scanning
         /// Any node that is in conflict with a valid node must be removed.
         /// </summary>
         /// <param name="valid"></param>
-        private void RemoveBlocksConflictingWithValidBlocks(HashSet<RtlBlock> valid)
+        private void RemoveBlocksConflictingWithValidBlocks(HashSet<Address> valid)
         {
             // `nodes` are all blocks that weren't reachable by DFS.
             var nodes = blocks.Nodes.Where(nn => !valid.Contains(nn)).ToHashSet();
@@ -188,7 +189,7 @@ namespace Reko.Scanning
                 nodes.Remove(cc);
                 RemoveBlockFromGraph(cc);
             }
-            foreach (var cc in 
+            foreach (var cc in
                 (from c in conflicts
                  where nodes.Contains(c.Item2) && valid.Contains(c.Item1)
                  select c.Item2))
@@ -198,13 +199,30 @@ namespace Reko.Scanning
             }
         }
 
-        private void RemoveBlockFromGraph(RtlBlock n)
+        private void RemoveBlockFromGraph(Address n)
         {
-            trace.Verbose("Removing block: {0}", n.Address);
-            blocks.Nodes.Remove(n);
-            foreach (var i in n.Instructions)
+            trace.Verbose("Removing block: {0}", n);
+            var block = sr.Blocks[n];
+            foreach (var i in block.Instructions)
             {
                 RemoveDirectlyCalledAddress(i);
+            }
+            if (sr.Predecessors.TryGetValue(n, out var pp))
+            {
+                foreach (var p in pp)
+                {
+                    sr.Predecessors[p.From].RemoveAll(e => e.To == n);
+                }
+                sr.Predecessors.TryRemove(n, out _);
+            }
+            sr.Blocks.TryRemove(n, out _);
+            if (sr.Successors.TryGetValue(n, out var ss))
+            {
+                foreach (var s in ss)
+                {
+                    sr.Predecessors[s.To].RemoveAll(e => e.From == n);
+                }
+                sr.Successors.TryRemove(n, out _);
             }
         }
 
@@ -216,12 +234,12 @@ namespace Reko.Scanning
             var addrDest = DestinationAddress(i);
             if (addrDest is null)
                 return;
-            if (!this.sr.DirectlyCalledAddresses.ContainsKey(addrDest))
+            if (!this.sr.SpeculativeProcedures.ContainsKey(addrDest))
                 return;
-            this.sr.DirectlyCalledAddresses[addrDest]--;
-            if (this.sr.DirectlyCalledAddresses[addrDest] == 0)
+            this.sr.SpeculativeProcedures[addrDest]--;
+            if (this.sr.SpeculativeProcedures[addrDest] == 0)
             {
-                this.sr.DirectlyCalledAddresses.Remove(addrDest);
+                this.sr.SpeculativeProcedures.TryRemove(addrDest, out _);
             }
         }
 
@@ -233,7 +251,7 @@ namespace Reko.Scanning
         private Address? DestinationAddress(RtlInstructionCluster i)
         {
             var rtl = i.Instructions[i.Instructions.Length - 1];
-            for (;;)
+            for (; ; )
             {
                 if (!(rtl is RtlIf rif))
                     break;
@@ -282,7 +300,7 @@ namespace Reko.Scanning
 
         private void RemoveBlocksWithFewAncestors()
         {
-            conflicts = BuildConflictGraph(blocks.Nodes);
+            conflicts = BuildConflictGraph(blocks.Nodes.Select(n => sr.Blocks[n]));
             foreach (var conflict in conflicts.Where(c => Remaining(c)))
             {
                 var uCount = GetAncestors(conflict.Item1).Count;
@@ -298,10 +316,10 @@ namespace Reko.Scanning
             }
         }
 
-        private bool Remaining((RtlBlock, RtlBlock) c)
+        private bool Remaining((Address, Address) c)
         {
             var nodes = blocks.Nodes;
-            return 
+            return
                 nodes.Contains(c.Item1) &&
                 nodes.Contains(c.Item2);
         }
@@ -323,13 +341,16 @@ namespace Reko.Scanning
 
         private IEnumerable<(Address, Address)> GetGaps()
         {
-            var blockMap = blocks.Nodes.OrderBy(n => n.Address).ToList();
-            var addrLastEnd = blockMap[0].Address;
+            var blockMap = blocks.Nodes
+                .Select(b => sr.Blocks[b])
+                .OrderBy(n => n)
+                .ToList();
+            var addrLastEnd = blockMap[0].FallThrough;
             foreach (var b in blockMap)
             {
                 if (addrLastEnd < b.Address)
                     yield return (addrLastEnd, b.Address);
-                addrLastEnd = b.GetEndAddress();
+                addrLastEnd = b.FallThrough;
             }
         }
 
@@ -367,7 +388,7 @@ namespace Reko.Scanning
         /// (ii) its last instruction is a non intra-procedural control 
         /// transfer instruction.
         /// </summary>
-        private IEnumerable<(Address,Address)> GetValidSequences((Address, Address) gap)
+        private IEnumerable<(Address, Address)> GetValidSequences((Address, Address) gap)
         {
             int instrGranularity = program.Architecture.InstructionBitSize / program.Architecture.MemoryGranularity;
             for (Address addr = gap.Item1; addr < gap.Item2; addr += instrGranularity)
@@ -410,7 +431,7 @@ namespace Reko.Scanning
         /// calculate instruction scores using statistical techniques
         /// and heuristics to identify improbable instructions.
         /// </summary>    
-        private int ScoreSequence((Address,Address) sequence)
+        private int ScoreSequence((Address, Address) sequence)
         {
             return 0;
         }
@@ -423,7 +444,7 @@ namespace Reko.Scanning
                 arch.CreateProcessorState(),
                 arch.CreateFrame(),
                 host);
-            return new RobustRewriter(rw, program.Architecture.InstructionBitSize / program.Architecture.MemoryGranularity);
+            return rw;
         }
 
         private bool NonLocalTransferInstruction(RtlInstructionCluster cluster)
@@ -447,9 +468,9 @@ namespace Reko.Scanning
         /// </summary>
         /// <param name="n"></param>
         /// <returns></returns>
-        public ISet<RtlBlock> GetAncestors(RtlBlock n)
+        public ISet<Address> GetAncestors(Address n)
         {
-            var anc = new HashSet<RtlBlock>();
+            var anc = new HashSet<Address>();
             foreach (var p in blocks.Predecessors(n))
             {
                 GetAncestorsAux(p, n, anc);
@@ -457,30 +478,33 @@ namespace Reko.Scanning
             return anc;
         }
 
-        ISet<RtlBlock> GetAncestorsAux(
-            RtlBlock n,
-            RtlBlock orig,
-            ISet<RtlBlock> ancestors)
-                {
+        ISet<Address> GetAncestorsAux(
+            Address n,
+            Address orig,
+            ISet<Address> ancestors)
+        {
             if (ancestors.Contains(n) || n == orig)
                 return ancestors;
             ancestors.Add(n);
-            foreach (var p in blocks.Predecessors(n))
+            if (sr.Predecessors.TryGetValue(n, out var preds))
             {
-                GetAncestorsAux(p, orig, ancestors);
+                foreach (var p in preds)
+                {
+                    GetAncestorsAux(p.From, orig, ancestors);
                 }
-            return ancestors;
             }
+            return ancestors;
+        }
 
-        private class CollisionComparer : IEqualityComparer<(RtlBlock, RtlBlock)>
+        private class CollisionComparer : IEqualityComparer<(Address, Address)>
         {
-            public bool Equals((RtlBlock, RtlBlock) x, (RtlBlock, RtlBlock) y)
+            public bool Equals((Address, Address) x, (Address, Address) y)
             {
                 return x.Item1 == y.Item1 && x.Item2 == y.Item2 ||
                        x.Item1 == y.Item2 && x.Item2 == y.Item1;
             }
 
-            public int GetHashCode((RtlBlock, RtlBlock) obj)
+            public int GetHashCode((Address, Address) obj)
             {
                 return obj.Item1.GetHashCode() ^ obj.Item2.GetHashCode();
             }

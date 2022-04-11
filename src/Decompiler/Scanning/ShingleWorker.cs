@@ -1,7 +1,7 @@
 #region License
 /* 
  * Copyright (C) 1999-2022 John Källén.
- *
+ .
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2, or (at your option)
@@ -19,7 +19,7 @@
 #endregion
 
 using Reko.Core;
-using Reko.Core.Types;
+using Reko.Core.Rtl;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -28,24 +28,21 @@ using System.Threading.Tasks;
 
 namespace Reko.Scanning
 {
-    public class LinearScanner
+    public class ShingleWorker : AbstractBlockWorker
     {
-        private readonly Program program;
-        private readonly ISet<Address> symbols;
-
-        public LinearScanner(Program program, ISet<Address> symbols)
+        public ShingleWorker(
+            ShingleScanner scanner,
+            ChunkWorker worker,
+            Address address, 
+            IEnumerator<RtlInstructionCluster> trace,
+            ProcessorState state)
+            : base(scanner, worker, address, trace, state)
         {
-            this.program = program;
-            this.symbols = symbols;
         }
 
-        //$TODO: islands.
-        public void Scan()
+        protected override void EmulateState(RtlAssignment ass)
         {
-            var items = (program.ImageMap.Items.Values.Where(i => i.DataType != null && i.DataType is UnknownType));
-            {
-
-            }
+            // We don't emulate state in the shingle worker.
         }
     }
 }

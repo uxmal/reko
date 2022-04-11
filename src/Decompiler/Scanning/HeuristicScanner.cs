@@ -114,6 +114,8 @@ namespace Reko.Scanning
             Probe(sr);
             sr.Dump("After shingle scan");
 
+            ScanResultsV2 sr2 = MakeResults(sr);
+
             // On processors with variable length instructions,
             // there may be many blocks that partially overlap the 
             // "real" blocks that would actually have been executed
@@ -122,7 +124,7 @@ namespace Reko.Scanning
 
             var hsc = new BlockConflictResolver(
                 program,
-                sr,
+                sr2,
                 program.SegmentMap.IsValidAddress,
                 host);
             RemoveInvalidBlocks(sr);
@@ -130,10 +132,15 @@ namespace Reko.Scanning
             hsc.ResolveBlockConflicts(sr.KnownProcedures.Concat(sr.DirectlyCalledAddresses.Keys));
             Probe(sr);
             sr.Dump("After block conflict resolution");
-            var pd = new ProcedureDetector(sr, this.eventListener);
+            var pd = new ProcedureDetector(sr2, this.eventListener);
             var procs = pd.DetectProcedures();
             sr.Procedures = procs;
             return sr;
+        }
+
+        private ScanResultsV2 MakeResults(ScanResults sr)
+        {
+            throw new NotImplementedException();
         }
 
         /// <summary>

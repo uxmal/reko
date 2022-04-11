@@ -30,13 +30,15 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
+using RtlBlock = Reko.Scanning.RtlBlock;
+using HeuristicProcedure = Reko.Scanning.HeuristicProcedure;
 
 namespace Reko.UnitTests.Decompiler.Scanning
 {
     [TestFixture]
     public class BlockConflictResolverTests : HeuristicTestBase
     {
-        private HeuristicProcedure proc;
+        private HeuristicProcedure proc = default!;
 
         [SetUp]
         public override void Setup()
@@ -44,14 +46,14 @@ namespace Reko.UnitTests.Decompiler.Scanning
             base.Setup();
         }
 
-        private void AssertConflicts(string sExp, IEnumerable<(RtlBlock, RtlBlock)> conflicts)
+        private void AssertConflicts(string sExp, IEnumerable<(Address, Address)> conflicts)
         {
             var sActual = conflicts
-                .OrderBy(c => c.Item1.Address.ToLinear())
-                .ThenBy(c => c.Item2.Address.ToLinear())
+                .OrderBy(c => c.Item1.ToLinear())
+                .ThenBy(c => c.Item2.ToLinear())
                 .Aggregate(
                     new StringBuilder(),
-                    (s, c) => s.AppendFormat("({0}-{1})", c.Item1.Name, c.Item2.Name).AppendLine())
+                    (s, c) => s.AppendFormat("({0}-{1})", c.Item1.ToString(), c.Item2.ToString()).AppendLine())
                 .ToString();
             if (sExp != sActual)
             {
@@ -60,17 +62,23 @@ namespace Reko.UnitTests.Decompiler.Scanning
             }
         }
 
-        private ScanResults CreateScanResults(DiGraph<RtlBlock> icfg)
+        private ScanResultsV2 CreateScanResults(DiGraph<RtlBlock> icfg)
         {
-            return new ScanResults
+            var sr = new ScanResultsV2();
+            foreach (var node in icfg.Nodes)
             {
-                ICFG = icfg
-            };
+                sr.Blocks.TryAdd(node.Address, node);
+                foreach (var s in icfg.Successors(node))
+                {
+                    sr.ICFG.AddEdge(node.Address, s.Address);
+                }
+            }
+            return sr;
         }
 
         private void When_DisassembleProcedure()
         {
-            var hsc = new HeuristicScanner(null, program, host.Object, eventListener.Object);
+            var hsc = new Reko.Scanning.HeuristicScanner(default!, program, host.Object, eventListener.Object);
             var mem = program.SegmentMap.Segments.Values.First().MemoryArea;
             //$BUG: danger of overflow
             this.proc = hsc.DisassembleProcedure(
@@ -104,7 +112,7 @@ namespace Reko.UnitTests.Decompiler.Scanning
                 });
         }
 
-        private void ResolveBlockConflicts(ScanResults sr)
+        private void ResolveBlockConflicts(ScanResultsV2 sr)
         {
             var hps = new BlockConflictResolver(null, sr, null, null);
             hps.ResolveBlockConflicts(new Address[0]);
@@ -122,8 +130,8 @@ namespace Reko.UnitTests.Decompiler.Scanning
             When_DisassembleProcedure();
             var conflicts = BlockConflictResolver.BuildConflictGraph(proc.Cfg.Nodes);
             var sExp =
-@"(l00010001-l00010002)
-(l00010002-l00010003)
+@"(00010001-00010002)
+(00010002-00010003)
 ";
             AssertConflicts(sExp, conflicts);
         }
@@ -140,14 +148,14 @@ namespace Reko.UnitTests.Decompiler.Scanning
             When_DisassembleProcedure();
             var conflicts = BlockConflictResolver.BuildConflictGraph(proc.Cfg.Nodes);
             var sExp =
-@"(l00010001-l00010002)
-(l00010001-l00010003)
-(l00010001-l00010004)
-(l00010001-l00010005)
-(l00010002-l00010003)
-(l00010003-l00010004)
-(l00010004-l00010005)
-(l00010005-l00010006)
+@"(00010001-00010002)
+(00010001-00010003)
+(00010001-00010004)
+(00010001-00010005)
+(00010002-00010003)
+(00010003-00010004)
+(00010004-00010005)
+(00010005-00010006)
 ";
             AssertConflicts(sExp, conflicts);
         }
@@ -157,13 +165,14 @@ namespace Reko.UnitTests.Decompiler.Scanning
         {
             Given_Image32(
                 0x0010000,
-                "55 8B EC  a1 32 12 1a 12 5D c3");
+                "55 8B EC a1 32 12 1a 12 5D c3");
             Given_x86_32();
             Given_RewriterHost();
             Given_NoImportedProcedures();
 
             When_DisassembleProcedure();
-            var hps = new BlockConflictResolver(program,CreateScanResults(proc.Cfg), proc.IsValidAddress, host.Object);
+            var sr = CreateScanResults(proc.Cfg);
+            var hps = new BlockConflictResolver(program, sr, proc.IsValidAddress, host.Object);
             hps.ResolveBlockConflicts(new[] { proc.BeginAddress });
 
             var sExp =
@@ -181,7 +190,7 @@ l00010009:  // pred: l00010008
 ";
             #endregion
 
-            AssertBlocks(sExp, proc.Cfg);
+            AssertBlocks(sExp, sr);
         }
 
         [Test(Description =
@@ -211,11 +220,11 @@ l00010009:  // pred: l00010008
             cfg.AddNode(lastBlock);
             cfg.AddEdge(firstBlock, lastBlock);
             var sr = CreateScanResults(cfg);
-            sr.DirectlyCalledAddresses.Add(calledAddr, 1);
+            sr.SpeculativeProcedures.TryAdd(calledAddr, 1);
 
             ResolveBlockConflicts(sr);
 
-            Assert.AreEqual(0, sr.DirectlyCalledAddresses.Count);
+            Assert.AreEqual(0, sr.SpeculativeProcedures.Count);
         }
 
         [Test]
@@ -232,7 +241,8 @@ l00010009:  // pred: l00010008
             Given_NoImportedProcedures();
 
             When_DisassembleProcedure();
-            var hps = new BlockConflictResolver(program, CreateScanResults(proc.Cfg), proc.IsValidAddress, host.Object);
+            var sr = CreateScanResults(proc.Cfg);
+            var hps = new BlockConflictResolver(program, sr, proc.IsValidAddress, host.Object);
             hps.ResolveBlockConflicts(new[] { proc.BeginAddress });
 
             var sExp =
@@ -261,7 +271,7 @@ l0001001C:  // pred: l0001001B
     ret 
 ";
             #endregion
-            AssertBlocks(sExp, proc.Cfg);
+            AssertBlocks(sExp, sr);
         }
     }
 }

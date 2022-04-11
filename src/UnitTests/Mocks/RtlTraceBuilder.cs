@@ -67,11 +67,21 @@ namespace Reko.UnitTests.Mocks
 
         public void Add(Action<RtlEmitter> generator)
         {
+            Add(4, generator);
+        }
+
+        public void Add(int byteSize, Action<RtlEmitter> generator)
+        {
             var rtls = new List<RtlInstruction>();
             generator(new RtlEmitter(rtls));
-            clusters.Add(new RtlInstructionCluster(addr, 4, rtls.ToArray()));
-            addr += 4;
+            var artls = rtls.ToArray();
+            clusters.Add(new RtlInstructionCluster(addr, byteSize, artls)
+            {
+                Class = artls[^1].Class,
+            });
+            addr += byteSize;
         }
+
 
         public IEnumerator<RtlInstructionCluster> GetEnumerator()
         {

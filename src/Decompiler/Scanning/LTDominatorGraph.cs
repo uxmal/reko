@@ -18,11 +18,9 @@
  */
 #endregion
 
-using System;
+using Reko.Core.Graphs;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using Reko.Core.Lib;
 
 namespace Reko.ScannerV2
 {

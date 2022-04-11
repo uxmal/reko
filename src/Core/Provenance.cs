@@ -39,6 +39,7 @@ namespace Reko.Core
     {
         None,
         Image,              // reached here because image file "said so".
+        ImageEntrypoint,
         Environment,        // this object is dictated by the environment/platform.
         UserInput,          // reached here because users input "said so".
         Scanning,           // reached here as part of the scanning process.

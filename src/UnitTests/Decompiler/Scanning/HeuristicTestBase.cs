@@ -173,15 +173,15 @@ namespace Reko.UnitTests.Decompiler.Scanning
             };
         }
 
-        protected void AssertBlocks(string sExpected, DirectedGraph<RtlBlock> cfg)
+        protected void AssertBlocks(string sExpected, ScanResultsV2 sr)
         {
             var sb = new StringBuilder();
-            foreach (var hblock in cfg.Nodes.OrderBy(hb => hb.Address))
+            foreach (var hblock in sr.Blocks.Values.OrderBy(hb => hb.Address))
             {
                 sb.AppendFormat("{0}:  // pred:", hblock.Name);
-                foreach (var pred in cfg.Predecessors(hblock).OrderBy(hb => hb.Address))
+                foreach (var pred in sr.ICFG.Predecessors(hblock.Address).OrderBy(hb => hb))
                 {
-                    sb.AppendFormat(" {0}", pred.Name);
+                    sb.AppendFormat(" {0}", sr.Blocks[pred].Name);
                 }
                 sb.AppendLine();
                 var lastAddr = hblock.GetEndAddress();

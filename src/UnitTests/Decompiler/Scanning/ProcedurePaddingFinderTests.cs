@@ -28,23 +28,18 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+#if NYI // Disabled until ScanResultsV2 is merged into ScanResults
 namespace Reko.UnitTests.Decompiler.Scanning
 {
     [TestFixture]
     public class ProcedurePaddingFinderTests
     {
-        private ScanResults sr;
+        private ScanResultsV2 sr;
 
         [SetUp]
         public void Setup()
         {
-            this.sr = new ScanResults
-            {
-                FlatInstructions = new Dictionary<ulong, ScanResults.instr>(),
-                FlatEdges = new List<ScanResults.link>(),
-                KnownProcedures = new HashSet<Address>(),
-                DirectlyCalledAddresses = new Dictionary<Address, int>(),
-            };
+            this.sr = new ScanResultsV2();
         }
 
         private void Bra( uint uAddr, uint uOtherAddr, int byteSize)
@@ -52,8 +47,9 @@ namespace Reko.UnitTests.Decompiler.Scanning
             var addr = Address.Ptr32(uAddr);
             var otherAddr = Address.Ptr32(uOtherAddr);
             Instr(addr, byteSize, InstrClass.Transfer, new RtlBranch(null, otherAddr,  InstrClass.ConditionalTransfer));
-            sr.FlatEdges.Add(new ScanResults.link { first = addr, second = addr + byteSize });
-            sr.FlatEdges.Add(new ScanResults.link { first = addr, second = otherAddr });
+            var e1 = new Edge(addr, addr + byteSize, EdgeType.Fallthrough);
+            var e2 = new Edge(addr, otherAddr, EdgeType.Jump);
+            sr.Successors.TryAdd(addr, new List<Edge> { e1, e2});
         }
 
         private void Ret(uint uAddr, int byteSize)
@@ -220,3 +216,4 @@ namespace Reko.UnitTests.Decompiler.Scanning
 
     }
 }
+#endif

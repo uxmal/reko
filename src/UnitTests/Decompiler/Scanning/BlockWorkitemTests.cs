@@ -249,7 +249,7 @@ namespace Reko.UnitTests.Decompiler.Scanning
         public void Bwi_RewriteReturn()
         {
             trace.Add(m => { m.Return(4, 0); });
-            trace.Add(m => { m.Fn(m.Int32(0x49242)); });
+            trace.Add(m => { m.SideEffect(m.Fn(m.Int32(0x49242))); });
 
             scanner.Setup(x => x.FindContainingBlock(
                 It.IsAny<Address>())).Returns(block);

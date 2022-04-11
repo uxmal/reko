@@ -1,7 +1,7 @@
 #region License
 /* 
- * Copyright (C) 1999-2022 John KÃ¤llÃ©n.
- *
+ * Copyright (C) 1999-2022 John Källén.
+ .
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2, or (at your option)
@@ -29,7 +29,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Text;
+using RtlBlock = Reko.Scanning.RtlBlock;
 
 namespace Reko.UnitTests.Decompiler.Scanning
 {
@@ -45,7 +45,7 @@ namespace Reko.UnitTests.Decompiler.Scanning
         const uint Fused3 = 0x30;
         const uint FusedExit = 0x13;
 
-        private ScanResults sr;
+        private ScanResultsV2 sr;
         private Program program;
         private FakeDecompilerEventListener listener;
         private ProcedureDetector prdet;
@@ -54,14 +54,9 @@ namespace Reko.UnitTests.Decompiler.Scanning
         [SetUp]
         public void Setup()
         {
-            sr = new ScanResults
-            {
-                ICFG = new DiGraph<RtlBlock>(),
-                DirectlyCalledAddresses = new Dictionary<Address, int>(),
-                KnownProcedures = new HashSet<Address>(),
-            };
+            sr = new ScanResultsV2();
             this.program = new Program();
-            this.listener = new FakeDecompilerEventListener();
+            this.listener = new();
             this.mpIntBlock = new Dictionary<uint, RtlBlock>();
         }
 
@@ -79,10 +74,9 @@ namespace Reko.UnitTests.Decompiler.Scanning
 
         public void Given_Blocks(params uint [] addrs)
         {
-            sr.ICFG = new DiGraph<RtlBlock>();
             foreach (var uAddr in addrs)
             {
-                sr.ICFG.Nodes.Add(Block(uAddr));
+                sr.ICFG.Nodes.Add(Block(uAddr).Address);
             }
         }
 
@@ -90,22 +84,22 @@ namespace Reko.UnitTests.Decompiler.Scanning
         {
             var aFrom = Block(from);
             var aTo = Block(to);
-            sr.ICFG.Nodes.Add(aFrom);
-            sr.ICFG.Nodes.Add(aTo);
-            sr.ICFG.AddEdge(aFrom, aTo);
+            sr.Blocks.TryAdd(aFrom.Address, aFrom);
+            sr.Blocks.TryAdd(aTo.Address, aTo);
+            sr.ICFG.AddEdge(aFrom.Address, aTo.Address);
         }
 
         public void Given_DirectCall(uint from, uint to)
         {
             var aFrom = Block(from);
             var aTo = Block(to);
-            sr.DirectlyCalledAddresses.Add(aTo.Address, 1);
+            sr.SpeculativeProcedures.TryAdd(aTo.Address, 1);
         }
 
         public void Given_DirectCall(uint to)
         {
             var aTo = Block(to);
-            sr.DirectlyCalledAddresses.Add(aTo.Address, 1);
+            sr.SpeculativeProcedures.TryAdd(aTo.Address, 1);
         }
 
         public void Given_Instrs(uint iBlock, Action<RtlEmitter> b)
@@ -148,19 +142,19 @@ namespace Reko.UnitTests.Decompiler.Scanning
             foreach (var node in cluster.Blocks.OrderBy(n => n.Address))
             {
                 sw.WriteLine("{0} {1}", cluster.Entries.Contains(node) ? "*" : " ", node.Address);
-                var succs = sr.ICFG.Successors(node).OrderBy(n => n.Address).ToList();
+                var succs = sr.ICFG.Successors(node.Address).OrderBy(n => n).ToList();
                 if (succs.Count > 0)
                 {
                     sw.Write("     ");
                     foreach (var s in succs)
                     {
                         sw.Write(" ");
-                        if (!cluster.Blocks.Contains(s))
+                        if (!cluster.Blocks.Contains(sr.Blocks[s]))
                         {
                             // cross procedure tail call.
                             sw.Write("*");
                         }
-                        sw.Write(s.Address);
+                        sw.Write(s);
                     }
                     sw.WriteLine();
                 }
@@ -245,8 +239,8 @@ namespace Reko.UnitTests.Decompiler.Scanning
             // ...and all addresses that the Scanner was able to
             //   detect as being called directly.
             knownProcedureAddresses.UnionWith(
-                sr.DirectlyCalledAddresses.Keys);
-            this.sr.KnownProcedures = knownProcedureAddresses;
+                sr.Procedures.Keys);
+            //this.sr.Procedures.KnownProcedures = knownProcedureAddresses;
         }
 
         [Test]
@@ -392,7 +386,7 @@ namespace Reko.UnitTests.Decompiler.Scanning
 
             prdet.RemoveJumpsToKnownProcedures();
 
-            Assert.False(sr.ICFG.ContainsEdge(Block(4), Block(10)), "Should have removed tail call to 10");
+            Assert.False(sr.ICFG.ContainsEdge(Block(4).Address, Block(10).Address), "Should have removed tail call to 10");
         }
 
         [Test(Description = "Partition a graph with two entries that don't dominate all of the blocks into three subgraphs")]

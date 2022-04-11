@@ -1,7 +1,7 @@
 #region License
 /* 
  * Copyright (C) 1999-2022 John Källén.
- *
+ .
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2, or (at your option)
@@ -39,18 +39,22 @@ namespace Reko.Scanning
     /// </remarks>
     public class ProcedureDetector
     {
-        private readonly ScanResults sr;
+        private static readonly TraceSwitch trace = new TraceSwitch(nameof(ProcedureDetector), "");
+
+        private readonly ScanResultsV2 sr;
+        private readonly ScanResultsGraph srGraph;
         private readonly DecompilerEventListener listener;
         private readonly HashSet<Address> procedures;
-        private readonly Dictionary<Address, RtlBlock> mpAddrToBlock;
+        private readonly IDictionary<Address, RtlBlock> mpAddrToBlock;
 
-        public ProcedureDetector(ScanResults sr, DecompilerEventListener listener)
+        public ProcedureDetector(ScanResultsV2 sr, DecompilerEventListener listener)
         {
             this.sr = sr;
+            this.srGraph = sr.ICFG;
             this.listener = listener;
-            this.procedures = sr.KnownProcedures.Concat(sr.DirectlyCalledAddresses.Keys).ToHashSet();
-            DumpDuplicates(sr.ICFG.Nodes);
-            this.mpAddrToBlock = sr.ICFG.Nodes.ToDictionary(de => de.Address);
+            this.procedures = sr.Procedures.Keys.Concat(sr.SpeculativeProcedures.Keys).ToHashSet();
+            DumpDuplicates(sr.Blocks.Values);
+            this.mpAddrToBlock = sr.Blocks;
         }
 
         [Conditional("DEBUG")]
@@ -68,8 +72,9 @@ namespace Reko.Scanning
         }
 
         /// <summary>
-        /// Master function to locate "Clusters" of RtlBlocks from the ICFG
-        /// passed in the ScanResults.
+        /// Master function to locate <see cref="Cluster"/>s of <see cref="RtlBlock"/> 
+        /// from the ICFG passed in the ScanResults. These clusters are then refined
+        /// to <see cref="Procedure"/>s ready for data flow analysis.
         /// </summary>
         /// <returns></returns>
         public List<RtlProcedure> DetectProcedures()
@@ -82,7 +87,6 @@ namespace Reko.Scanning
         private void PreprocessIcfg()
         {
             RemoveJumpsToKnownProcedures();
-            ProcessIndirectJumps();
         }
 
         /// <summary>
@@ -95,27 +99,11 @@ namespace Reko.Scanning
             {
                 if (listener.IsCanceled())
                     break;
-                if (!mpAddrToBlock.TryGetValue(calldest, out var node))
-                    continue;
-                var preds = sr.ICFG.Predecessors(node).ToList();
+                var preds = sr.ICFG.Predecessors(calldest);
                 foreach (var p in preds)
                 {
-                    sr.ICFG.RemoveEdge(p, node);
+                    srGraph.RemoveEdge(p, calldest);
                 }
-            }
-        }
-
-        private void ProcessIndirectJumps()
-        {
-            foreach (var address in sr.IndirectJumps)
-            {
-                /*
-                if (!mpAddrToBlock.TryGetValue(address, out var rtlBlock))
-                    continue;
-                var host = new BackwardSlicerHost(this.program);
-                var bws = new BackwardSlicer(host, rtlBlock, program.Architecture.CreateProcessorState());
-                var te = bws.DiscoverTableExtent(address, (RtlTransfer)rtlBlock.Instructions.Last().Instructions.Last(), listener);
-                */
             }
         }
 
@@ -200,13 +188,13 @@ namespace Reko.Scanning
         /// </summary>
         public List<Cluster> FindClusters()
         {
-            var nodesLeft = new HashSet<RtlBlock>(sr.ICFG.Nodes);
+            var nodesLeft = new HashSet<RtlBlock>(sr.Blocks.Values);
             var clusters = new List<Cluster>();
             int totalCount = nodesLeft.Count;
             if (totalCount > 0)
             {
                 listener.Progress.ShowProgress("Finding procedure candidates", 0, totalCount);
-                var wl = WorkList.Create(nodesLeft);
+                var wl = WorkList.Create(nodesLeft.Select(n => n.Address));
                 while (wl.TryGetWorkItem(out var node))
                 {
                     if (listener.IsCanceled())
@@ -216,10 +204,15 @@ namespace Reko.Scanning
 
                     BuildWCC(node, cluster, wl);
                     sr.BreakOnWatchedAddress(cluster.Blocks.Select(b => b.Address));
-                    listener.Progress.ShowProgress("Finding procedure candidates", totalCount - nodesLeft.Count, totalCount);
+                    listener.Progress.ShowProgress("Finding procedure candidates", totalCount - wl.Count, totalCount);
                 }
             }
             return clusters;
+        }
+
+        [Conditional("DEBUG")]
+        private void BreakOnWatchedAddress(IEnumerable<Address> enumerable)
+        {
         }
 
         /// <summary>
@@ -229,47 +222,49 @@ namespace Reko.Scanning
         /// and we never follow successors that are marked directly called
         /// (tail calls).
         /// </summary>
-        /// <param name="node"></param>
+        /// <param name="startNode"></param>
         /// <param name="cluster"></param>
-        /// <param name="wl"></param>
+        /// <param name="unvisited"></param>
         private void BuildWCC(
-            RtlBlock node,
+            Address startNode,
             Cluster cluster,
-            Core.Collections.WorkList<RtlBlock> wl)
+            WorkList<Address> unvisited)
         {
-            wl.Remove(node);
-            cluster.Blocks.Add(node);
-            foreach (var s in sr.ICFG.Successors(node))
+            var queue = new Queue<Address>();
+            cluster.Blocks.Add(sr.Blocks[startNode]);
+            if (sr.Successors.TryGetValue(startNode, out var succ))
             {
-                if (wl.Contains(s))
+                queue.EnqueueRange(succ
+                    .Where(e => !procedures.Contains(e.To))
+                    .Select(e => e.To));
+            }
+            while (queue.TryDequeue(out var node))
                 {
-                    // Only add if successor is not CALLed.
-                    if (!procedures.Contains(s.Address))
+                if (!unvisited.Contains(node))
+                    continue;
+                unvisited.Remove(node);
+                cluster.Blocks.Add(sr.Blocks[node]);
+                if (sr.Successors.TryGetValue(node, out succ))
                     {
-                        BuildWCC(s, cluster, wl);
+                    queue.EnqueueRange(succ
+                        .Where(e => !procedures.Contains(e.To))
+                        .Select(e => e.To));
+                    }
+                if (!procedures.Contains(node) && 
+                    sr.Predecessors.TryGetValue(node, out var preds))
+            {
+                    var pred = sr.Predecessors[node]
+                        .Select(e => e.From);
+                    queue.EnqueueRange(pred);
+                } 
                     }
                 }
-            }
-            if (!procedures.Contains(node.Address))
-            {
-                // Only backtrack through predecessors if the node
-                // is not CALLed.
-                foreach (var p in sr.ICFG.Predecessors(node))
-                {
-                    if (wl.Contains(p))
-                    {
-                        BuildWCC(p, cluster, wl);
-                    }
-                }
-            }
-        }
 
         /// <summary>
-        /// Given a set of clusters, finds all the entries for each cluster 
+        /// For each of the given clusters, finds all the entries for the cluster 
         /// and tries to partition each cluster into procedures with single
         /// entries and exits.
         /// </summary>
-        /// <param name="sr"></param>
         /// <param name="clusters"></param>
         private List<RtlProcedure> BuildProcedures(IList<Cluster> clusters)
         {
@@ -279,6 +274,7 @@ namespace Reko.Scanning
             listener.Progress.ShowProgress("Building procedures", 0, clusters.Count);
             foreach (var cluster in clusters)
             {
+                //$PERF each cluster could be processed in parallel.
                 if (listener.IsCanceled())
                     break;
                 FuseLinearBlocks(cluster);
@@ -299,28 +295,34 @@ namespace Reko.Scanning
         /// <param name="cluster"></param>
         public void FuseLinearBlocks(Cluster cluster)
         {
+            //$PERF: validate that this can be done w/o breaking other 
+            // threads
             var wl = WorkList.Create(cluster.Blocks);
             while (wl.TryGetWorkItem(out var block))
             {
-                if (sr.ICFG.Successors(block).Count != 1)
+                if (!sr.Successors.TryGetValue(block.Address, out var succs) ||
+                    succs.Count != 1)
                     continue;
-                var succ = sr.ICFG.Successors(block).First();
-                if (sr.ICFG.Predecessors(succ).Count != 1)
+                var succ = sr.Blocks[succs[0].To];
+                if (!sr.Predecessors.TryGetValue(succ.Address, out var preds) ||
+                    preds.Count != 1)
                     continue;
-                Debug.Assert(sr.ICFG.Predecessors(succ).First() == block, "Inconsistent graph");
+                Debug.Assert(preds[0].From == block.Address, "Inconsistent graph");
                 if (block.Instructions.Last().Instructions.Last() is not RtlAssignment)
                     continue;
 
                 // Move all instructions into predecessor.
                 block.Instructions.AddRange(succ.Instructions);
-                sr.ICFG.RemoveEdge(block, succ);
-                var succSuccs = sr.ICFG.Successors(succ).ToList();
+                block.Length += succ.Length;
+                block.FallThrough = succ.FallThrough;
+                srGraph.RemoveEdge(block.Address, succ.Address);
+                var succSuccs = sr.ICFG.Successors(succ.Address);
                 foreach (var ss in succSuccs)
                 {
-                    sr.ICFG.RemoveEdge(succ, ss);
-                    sr.ICFG.AddEdge(block, ss);
+                    srGraph.RemoveEdge(succ.Address, ss);
+                    srGraph.AddEdge(block.Address, ss);
                 }
-                cluster.Blocks.Remove(succ);
+                cluster.Blocks.Remove(sr.Blocks[succ.Address]);
                 // May be more blocks.
                 wl.Add(block);
             }
@@ -340,7 +342,8 @@ namespace Reko.Scanning
                 {
                     cluster.Entries.Add(block);
                 }
-                if (sr.ICFG.Predecessors(block).Count == 0)
+                if (!sr.Predecessors.TryGetValue(block.Address, out var preds) ||
+                    preds.Count == 0)
                 {
                     nopreds.Add(block);
                 }
@@ -393,7 +396,9 @@ namespace Reko.Scanning
 
             // Remove all nodes with no predecessors which haven't been marked as entries.
             var deadNodes = cluster.Blocks
-                .Where(b => !entries.Contains(b) && sr.ICFG.Predecessors(b).Count == 0)
+                .Where(b => !entries.Contains(b) && 
+                            (!sr.Predecessors.TryGetValue(b.Address, out var preds) ||
+                             preds.Count == 0))
                 .ToHashSet();
             cluster.Blocks.ExceptWith(deadNodes);
             if (cluster.Blocks.Count == 0 || entries.Count == 0)
@@ -435,35 +440,36 @@ namespace Reko.Scanning
             // Create a fake node that will serve as the parent of all the 
             // existing entries. That node will be used to compute all
             // immediate dominators of all reachable blocks.
-            var auxNode = new RtlBlock(null!, "<root>");
-            sr.ICFG.AddNode(auxNode);
+            var auxNode = new RtlBlock(Address.Ptr64(~0ul), "<root>");
+            sr.Blocks.TryAdd(auxNode.Address, auxNode);
+            var xxxx = sr.ICFG.Nodes.Count;
             var allEntries =
                 cluster.Entries.Concat(
                 cluster.Blocks
-                    .Where(b => sr.ICFG.Predecessors(b).Count == 0))
+                    .Where(b => srGraph.Predecessors(b.Address).Count == 0))
                 .Distinct()
                 .OrderBy(b => b.Address)
                 .ToList();
             foreach (var entry in allEntries)
             {
-                sr.ICFG.AddEdge(auxNode, entry);
+                srGraph.AddEdge(auxNode.Address, entry.Address);
             }
-            var idoms = LTDominatorGraph<RtlBlock>.Create(sr.ICFG, auxNode);
+            var idoms = LTDominatorGraph<Address>.Create(srGraph, auxNode.Address);
             // DumpDominatorTrees(idoms);
             // Find all nodes whose immediate dominator is "<root>". 
             // Those are the entries to new clusters and may contain blocks
             // that are shared between procedures in the source program.
-            var newEntries = cluster.Blocks.Where(b => idoms[b] == auxNode).ToList();
-            var dominatedEntries = newEntries.ToDictionary(k => k, v => new HashSet<RtlBlock> { v });
+            var newEntries = cluster.Blocks.Where(b => idoms[b.Address] == auxNode.Address).ToList();
+            var dominatedEntries = newEntries.ToDictionary(k => k.Address, v => new HashSet<Address> { v.Address });
 
             // Partition the nodes in the cluster into categories depending on which
             // one of the newEntries they are dominated by.
             foreach (var b in cluster.Blocks)
             {
-                if (dominatedEntries.ContainsKey(b))
+                if (dominatedEntries.ContainsKey(b.Address))
                     continue; // already there.
-                var n = b;
-                for (;;)
+                var n = b.Address;
+                for (; ; )
                 {
                     var i = idoms[n];
                     if (i == null)
@@ -471,7 +477,7 @@ namespace Reko.Scanning
                     if (dominatedEntries.ContainsKey(i))
                     {
                         // If my idom is already in the set, add me too.
-                        dominatedEntries[i].Add(b);
+                        dominatedEntries[i].Add(b.Address);
                         break;
                     }
                     n = i;
@@ -479,24 +485,26 @@ namespace Reko.Scanning
             }
 
             // Now remove the fake node 
-            sr.ICFG.RemoveNode(auxNode);
+            sr.Blocks.TryRemove(auxNode.Address, out _);
 
             // Handle the special case with new entries that weren't there before,
             // and only consist of a linear sequence of blocks. Mark such nodes as "shared".
             // Later stages will copy these nodes into their respective procedures.
             foreach (var newEntry in dominatedEntries.Keys
-                .Where(e => !cluster.Entries.Contains(e)).ToList())
+                .Where(e => !cluster.Entries.Contains(sr.Blocks[e])).ToList())
             {
-                if (sr.ICFG.Successors(newEntry).Count == 0)
+                if (srGraph.Successors(newEntry).Count == 0)
                 {
-                    newEntry.IsSharedExitBlock = true;
+                    sr.Blocks[newEntry].IsSharedExitBlock = true;
                     dominatedEntries.Remove(newEntry);
                 }
             }
 
             return dominatedEntries
-                .OrderBy(e => e.Key.Address)
-                .Select(e => new RtlProcedure(e.Key, e.Value))
+                .OrderBy(e => e.Key)
+                .Select(e => new RtlProcedure(
+                    sr.Blocks[e.Key],
+                    e.Value.Select(a => sr.Blocks[a]).ToHashSet()))
                 .ToList();
         }
 
@@ -559,34 +567,34 @@ namespace Reko.Scanning
         {
             foreach (var block in Enumerable.Reverse(cluster.Blocks).ToList())
             {
-                var succs = sr.ICFG.Successors(block);
+                var succs = srGraph.Successors(block.Address);
                 if (succs.Count == 1)
                 {
                     var s = succs.First();
-                    var preds = sr.ICFG.Predecessors(s);
-                    if (preds.Count != 1 || preds.First() != block)
+                    var sBlock = sr.Blocks[s];
+                    var preds = srGraph.Predecessors(s);
+                    if (preds.Count != 1 || preds.First() != block.Address)
                         continue;
 
-                    if (block.GetEndAddress() != s.Address)
+                    if (block.FallThrough != s)
                         continue;
-                    var ss = sr.ICFG.Successors(s).ToList();
-                    sr.ICFG.RemoveEdge(block, s);
-                    block.Instructions.AddRange(s.Instructions);
-                    sr.ICFG.RemoveNode(s);
-                    cluster.Blocks.Remove(s);
+                    var ss = srGraph.Successors(s).ToList();
+                    srGraph.RemoveEdge(block.Address, s);
+                    block.Instructions.AddRange(sBlock.Instructions);
+                    srGraph.Nodes.Remove(s);
+                    cluster.Blocks.Remove(sBlock);
                     foreach (var n in ss)
                     {
-                        sr.ICFG.AddEdge(block, n);
+                        srGraph.AddEdge(block.Address, n);
                     }
-                    Debug.Print("Fused {0} {1}", block.Address, s.Address);
+                    Debug.Print("Fused {0} {1}", block.Address, s);
                 }
             }
         }
 
         [Conditional("DEBUG")]
-        private static void DumpClusters(List<Cluster> clusters, ScanResults sr)
+        private void DumpClusters(List<Cluster> clusters, ScanResultsV2 sr)
         {
-            var ICFG = sr.ICFG;
             // Sort clusters by their earliest address
             foreach (var cc in
                 (from c in clusters
@@ -599,37 +607,35 @@ namespace Reko.Scanning
         }
 
         [Conditional("DEBUG")]
-        private static void DumpCluster(Cluster cc, ScanResults sr)
+        private void DumpCluster(Cluster cc, ScanResultsV2 sr)
         {
             Debug.Print("-- Cluster -----------------------------");
             Debug.Print("{0} nodes", cc.Blocks.Count);
             foreach (var block in cc.Blocks.OrderBy(n => n.Address))
             {
                 var addrEnd = block.GetEndAddress();
-                if (sr.KnownProcedures.Contains(block.Address))
+                if (sr.Procedures.ContainsKey(block.Address))
                 {
                     Debug.WriteLine("");
                     Debug.Print("-- {0}: known procedure ----------", block.Address);
                 }
-                else if (sr.DirectlyCalledAddresses.ContainsKey(block.Address))
+                else if (sr.SpeculativeProcedures.ContainsKey(block.Address))
                 {
                     Debug.WriteLine("");
                     Debug.Print("-- {0}: possible procedure, called {1} time(s) ----------",
                         block.Address,
-                        sr.DirectlyCalledAddresses[block.Address]);
+                        sr.SpeculativeProcedures[block.Address]);
                 }
                 Debug.Print("{0}:  //  pred: {1}",
                     block.Name,
-                    string.Join(" ", sr.ICFG.Predecessors(block)
-                        .OrderBy(n => n.Address)
-                        .Select(n => n.Address)));
+                    string.Join(" ", srGraph.Predecessors(block.Address)
+                        .OrderBy(n => n)));
                 foreach (var instr in block.Instructions.SelectMany(c => c.Instructions))
                 {
                     Debug.Print("    {0}", instr);
                 }
-                Debug.Print("  // succ: {0}", string.Join(" ",sr.ICFG.Successors(block)
-                    .OrderBy(n => n.Address)
-                    .Select(n => n.Address)));
+                Debug.Print("  // succ: {0}", string.Join(" ", srGraph.Successors(block.Address)
+                    .OrderBy(n => n)));
             }
             Debug.Print("");
         }

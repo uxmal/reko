@@ -1,10 +1,31 @@
-ï»¿using Reko.Core;
+#region License
+/* 
+ * Copyright (C) 1999-2022 John Källén.
+ .
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2, or (at your option)
+ * any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; see the file COPYING.  If not, write to
+ * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
+ */
+#endregion
+
+using Reko.Core;
 using Reko.Core.Rtl;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Diagnostics;
 using RtlBlock = Reko.Scanning.RtlBlock;
 
-namespace Reko.ScannerV2
+namespace Reko.Scanning
 {
     /// <summary>
     /// The information collected by scanning a binary.
@@ -77,6 +98,52 @@ namespace Reko.ScannerV2
         public ConcurrentDictionary<Address, ExternalProcedure> Stubs { get; }
         public ConcurrentDictionary<Address, ExternalProcedure> NoDecompiles { get; }
         public ScanResultsGraph ICFG { get; }
+
+        [Conditional("DEBUG")]
+        public void Dump(string caption = "Dump")
+        {
+            //BreakOnWatchedAddress(ICFG.Nodes.Select(n => n.Address));
+
+            return;     // This is horribly verbose, so only use it when debugging unit tests.
+#if VERBOSE
+            Debug.Print("== {0} =====================", caption);
+            Debug.Print("{0} nodes", ICFG.Nodes.Count);
+            foreach (var block in ICFG.Nodes.OrderBy(n => n.Address))
+            {
+                var addrEnd = block.GetEndAddress();
+                if (KnownProcedures.Contains(block.Address))
+                {
+                    Debug.WriteLine("");
+                    Debug.Print("-- {0}: known procedure ----------", block.Address);
+                }
+                else if (DirectlyCalledAddresses.ContainsKey(block.Address))
+                {
+                    Debug.WriteLine("");
+                    Debug.Print("-- {0}: possible procedure, called {1} time(s) ----------",
+                        block.Address,
+                        DirectlyCalledAddresses[block.Address]);
+                }
+                Debug.Print("{0}:  //  pred: {1}",
+                    block.Name,
+                    string.Join(" ", ICFG.Predecessors(block)
+                        .OrderBy(n => n.Address)
+                        .Select(n => n.Address)));
+                foreach (var cluster in block.Instructions)
+                {
+                    Debug.Print("  {0}", cluster);
+                    foreach (var instr in cluster.Instructions)
+                    {
+                        Debug.Print("    {0}", instr);
+                    }
+                }
+                Debug.Print("  // succ: {0}", string.Join(" ", ICFG.Successors(block)
+                    .OrderBy(n => n.Address)
+                    .Select(n => n.Address)));
+            }
+#endif
+        }
+
+
     }
 
     public enum BlockFlags
