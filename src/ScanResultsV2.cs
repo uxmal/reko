@@ -7,7 +7,7 @@ using RtlBlock = Reko.Scanning.RtlBlock;
 namespace Reko.ScannerV2
 {
     /// <summary>
-    /// The informationg collected by scanning a binary.
+    /// The information collected by scanning a binary.
     /// </summary>
     public class ScanResultsV2
     {
@@ -92,78 +92,6 @@ namespace Reko.ScannerV2
         ProvenanceType Provenance,
         IProcessorArchitecture Architecture,
         string Name);
-
-    /// <summary>
-    /// This class models a basic block consisting of <see cref="RtlInstruction"/>s.
-    /// </summary>
-    public class BlockQ
-    { 
-        public BlockQ(
-            IProcessorArchitecture arch,
-            Address addr,
-            string id,
-            int length,
-            Address addrFallThrough,
-            List<RtlInstructionCluster> instructions)
-        {
-            this.Architecture = arch;
-            this.Name = id;
-            this.Address = addr;
-            this.Length = length;
-            this.FallThrough = addrFallThrough;
-            this.Instructions = instructions;
-            this.IsValid = true;
-        }
-
-        public BlockQ(Address addr, string id) : this(
-            default!,
-            addr,
-            id,
-            0,
-            default!,
-            new List<RtlInstructionCluster>())
-        {
-        }
-
-        /// <summary>
-        /// Address at which the block starts.
-        /// </summary>
-        public Address Address { get; }
-
-        /// <summary>
-        /// CPU architecture used to disassemble this block.
-        /// </summary>
-        public IProcessorArchitecture Architecture { get; }
-
-        /// <summary>
-        /// The address after the block if control flow falls through.
-        /// Note that this is not necessarily <see cref="Address"/> + <see cref="Length"/>, because
-        /// control instructions with delay slots may require skipping one extra instruction.
-        /// </summary>
-        public Address FallThrough { get; }
-
-        /// <summary>
-        /// Invariant identifier used for this block.
-        /// </summary>
-        public string Name { get; }
-
-        /// <summary>
-        /// <param name="Length">The size of the basic block starting 
-        /// at <see cref="Address"/> and including the length of the final
-        /// instruction.
-        /// </summary>
-        public int Length { get; }
-
-        /// <summary>
-        /// Indicates whether this block is valid or not.
-        /// </summary>
-        public bool IsValid { get; set; }
-
-        /// <summary>
-        /// The instructions this block consists of.</param>
-        /// <summary>
-        public List<RtlInstructionCluster> Instructions { get; }
-    }
 
     public enum EdgeType
     {

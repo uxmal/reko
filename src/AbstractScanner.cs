@@ -95,7 +95,7 @@ namespace Reko.ScannerV2
             edges.Add(edge);
         }
 
-        public void RegisterPredecessors()
+        public ScanResultsV2 RegisterPredecessors()
         {
             foreach (var (from, succs) in cfg.Successors)
             {
@@ -109,6 +109,7 @@ namespace Reko.ScannerV2
                     edges.Add(edge);
                 }
             }
+            return cfg;
         }
 
         public void RegisterSpeculativeProcedure(Address addrProc)

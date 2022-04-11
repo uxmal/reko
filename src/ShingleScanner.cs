@@ -144,11 +144,14 @@ namespace Reko.ScannerV2
                     Debug.Fail("Edge going to hyperspace");
                     continue; 
                 }
+
                 long offset = e.To - block.Address;
                 if (0 < offset && offset < block.Length)
                 {
-                    if (SplitBlockAt(block, e.To) is not null)
+                    var newBlock = SplitBlockAt(block, e.To);
+                    if (newBlock is not null)
                     {
+                        blocks.Add(newBlock.Address, newBlock);
                         ++blocksSplit;
                     }
                 }

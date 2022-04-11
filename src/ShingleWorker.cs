@@ -20,7 +20,6 @@ namespace Reko.ScannerV2
         {
         }
 
-
         protected override void EmulateState(RtlAssignment ass)
         {
             // We don't emulate state in the shingle worker.

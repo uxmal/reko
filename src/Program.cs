@@ -49,19 +49,32 @@ namespace Reko.ScannerV2
             Console.WriteLine("{0} symbols", program.ImageSymbols.Count);
 
             var scanner = new RecursiveScanner(program, listener);
-            var (cfg, recTime) = Time(() => scanner.ScanProgram());
             Console.WriteLine("= Recursive scan ======");
+            var (cfg, recTime) = Time(() => scanner.ScanProgram());
             Console.WriteLine("Found {0} procs", cfg.Procedures.Count);
             Console.WriteLine("      {0} basic blocks", cfg.Blocks.Count);
             Console.WriteLine("      in {0} msec", (int)recTime.TotalMilliseconds);
 
             var shScanner = new ShingleScanner(program, cfg, listener);
-            var (cfg2, shTime) = Time(() => shScanner.ScanProgram());
             Console.WriteLine("= Shingle scan ======");
+            var (cfg2, shTime) = Time(() => shScanner.ScanProgram());
             Console.WriteLine("Found {0} procs", cfg2.Procedures.Count);
-            Console.WriteLine("      {0} basic blocks", cfg2.Blocks.Count);
-            Console.WriteLine("      in {0} msec", (int)shTime.TotalMilliseconds);
+            Console.WriteLine("    {0} basic blocks", cfg2.Blocks.Count);
+            Console.WriteLine("    in {0} msec", (int)shTime.TotalMilliseconds);
+            cfg = null;
 
+            Console.WriteLine("= Predecessor edges ======");
+            var (cfg3, predTime) = Time(shScanner.RegisterPredecessors);
+            Console.WriteLine("Graph has {0} predecessors", cfg3.Predecessors.Count);
+            Console.WriteLine("    {0} successors", cfg2.Successors .Count);
+            Console.WriteLine("    in {0} msec", (int)predTime.TotalMilliseconds);
+            cfg2 = null;
+
+            var procDetector = new ProcedureDetector(program, cfg3, listener);
+            Console.WriteLine("= Procedure detector ======");
+            var (procs, pdTime) = Time(() => procDetector.DetectProcedures());
+            Console.WriteLine("      Found a total of {0} procs", procs.Count);
+            Console.WriteLine("      in {0} msec", (int)pdTime.TotalMilliseconds);
 
             //var dec = new Reko.Decompiler(project, sc);
             //var stopw = new Stopwatch();

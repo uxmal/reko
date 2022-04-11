@@ -30,14 +30,14 @@ namespace Reko.ScannerV2
         private readonly HashSet<Address> procedures;
         private readonly IDictionary<Address, RtlBlock> mpAddrToBlock;
 
-        public ProcedureDetector(Core.Program program, ScanResultsV2 cfg, DecompilerEventListener listener)
+        public ProcedureDetector(Core.Program program, ScanResultsV2 sr, DecompilerEventListener listener)
         {
-            this.sr = cfg;
-            this.srGraph = cfg.ICFG;
+            this.sr = sr;
+            this.srGraph = sr.ICFG;
             this.listener = listener;
-            this.procedures = cfg.Procedures.Keys.Concat(cfg.SpeculativeProcedures.Keys).ToHashSet();
-            DumpDuplicates(cfg.Blocks.Values);
-            this.mpAddrToBlock = cfg.Blocks;
+            this.procedures = sr.Procedures.Keys.Concat(sr.SpeculativeProcedures.Keys).ToHashSet();
+            DumpDuplicates(sr.Blocks.Values);
+            this.mpAddrToBlock = sr.Blocks;
         }
 
         [Conditional("DEBUG")]
@@ -55,8 +55,9 @@ namespace Reko.ScannerV2
         }
 
         /// <summary>
-        /// Master function to locate "Clusters" of RtlBlocks from the ICFG
-        /// passed in the ScanResults.
+        /// Master function to locate <see cref="Cluster"/>s of <see cref="RtlBlock"/> 
+        /// from the ICFG passed in the ScanResults. These clusters are then refined
+        /// to <see cref="Procedure"/>s ready for data flow analysis.
         /// </summary>
         /// <returns></returns>
         public List<RtlProcedure> DetectProcedures()
@@ -192,6 +193,7 @@ namespace Reko.ScannerV2
             return clusters;
         }
 
+        [Conditional("DEBUG")]
         private void BreakOnWatchedAddress(IEnumerable<Address> enumerable)
         {
         }
@@ -203,7 +205,7 @@ namespace Reko.ScannerV2
         /// and we never follow successors that are marked directly called
         /// (tail calls).
         /// </summary>
-        /// <param name="node"></param>
+        /// <param name="startNode"></param>
         /// <param name="cluster"></param>
         /// <param name="unvisited"></param>
         private void BuildWCC(
@@ -213,16 +215,19 @@ namespace Reko.ScannerV2
         {
             var queue = new Queue<Address>();
             cluster.Blocks.Add(sr.Blocks[startNode]);
-            queue.EnqueueRange(sr.Successors[startNode]
-                .Where(e => !procedures.Contains(e.To))
-                .Select(e => e.To));
+            if (sr.Successors.TryGetValue(startNode, out var succ))
+            {
+                queue.EnqueueRange(succ
+                    .Where(e => !procedures.Contains(e.To))
+                    .Select(e => e.To));
+            }
             while (queue.TryDequeue(out var node))
             {
                 if (!unvisited.Contains(node))
                     continue;
                 unvisited.Remove(node);
                 cluster.Blocks.Add(sr.Blocks[node]);
-                if (sr.Successors.TryGetValue(node, out var succ))
+                if (sr.Successors.TryGetValue(node, out succ))
                 {
                     queue.EnqueueRange(succ
                         .Where(e => !procedures.Contains(e.To))
@@ -239,11 +244,10 @@ namespace Reko.ScannerV2
         }
 
         /// <summary>
-        /// Given a set of clusters, finds all the entries for each cluster 
+        /// For each of the given clusters, finds all the entries for the cluster 
         /// and tries to partition each cluster into procedures with single
         /// entries and exits.
         /// </summary>
-        /// <param name="sr"></param>
         /// <param name="clusters"></param>
         private List<RtlProcedure> BuildProcedures(IList<Cluster> clusters)
         {
@@ -253,6 +257,7 @@ namespace Reko.ScannerV2
             listener.ShowProgress("Building procedures", 0, clusters.Count);
             foreach (var cluster in clusters)
             {
+                //$PERF each cluster could be processed in parallel.
                 if (listener.IsCanceled())
                     break;
                 FuseLinearBlocks(cluster);
@@ -273,6 +278,8 @@ namespace Reko.ScannerV2
         /// <param name="cluster"></param>
         public void FuseLinearBlocks(Cluster cluster)
         {
+            //$PERF: validate that this can be done w/o breaking other 
+            // threads
             var wl = WorkList.Create(cluster.Blocks);
             while (wl.TryGetWorkItem(out var block))
             {
@@ -372,7 +379,9 @@ namespace Reko.ScannerV2
 
             // Remove all nodes with no predecessors which haven't been marked as entries.
             var deadNodes = cluster.Blocks
-                .Where(b => !entries.Contains(b) && sr.Predecessors[b.Address].Count == 0)
+                .Where(b => !entries.Contains(b) && 
+                            (!sr.Predecessors.TryGetValue(b.Address, out var preds) ||
+                             preds.Count == 0))
                 .ToHashSet();
             cluster.Blocks.ExceptWith(deadNodes);
             if (cluster.Blocks.Count == 0 || entries.Count == 0)
