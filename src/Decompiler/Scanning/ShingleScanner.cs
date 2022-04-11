@@ -40,8 +40,8 @@ namespace Reko.Scanning
     /// </remarks>
     public class ShingleScanner : AbstractScanner
 	{
-        public ShingleScanner(Program program, ScanResultsV2 cfg, DecompilerEventListener listener)
-            : base(program, cfg, listener)
+        public ShingleScanner(Program program, ScanResultsV2 sr, DecompilerEventListener listener)
+            : base(program, sr, listener)
         {
         }
 
@@ -56,7 +56,7 @@ namespace Reko.Scanning
         public List<ChunkWorker> MakeScanChunks()
         {
             var sortedBlocks = new BTreeDictionary<Address, RtlBlock>();
-            foreach (var block in cfg.Blocks.Values)
+            foreach (var block in sr.Blocks.Values)
             {
                 sortedBlocks.Add(block.Address, block);
             }
@@ -140,17 +140,7 @@ namespace Reko.Scanning
             {
                 chunk.Run();
             }
-            return cfg;
-        }
-
-        private T Time<T>(string caption, Func<T> fn)
-        {
-            var sw = new Stopwatch();
-            sw.Start();
-            var result = fn();
-            sw.Stop();
-            Console.WriteLine("{0}: {1} msec", caption, sw.ElapsedMilliseconds);
-            return result; 
+            return sr;
         }
 
         /// <summary>
@@ -158,8 +148,7 @@ namespace Reko.Scanning
         /// </summary>
         private (ScanResultsV2, int) EnsureBlocks(ScanResultsV2 cfg)
         {
-            var blocks = Time("EnsureBlocks (BTree)", () => 
-                new BTreeDictionary<Address, RtlBlock>(cfg.Blocks));
+            var blocks = new BTreeDictionary<Address, RtlBlock>(cfg.Blocks);
 
             var succs = cfg.Successors.Values
                 .SelectMany(e => e)
@@ -216,30 +205,5 @@ namespace Reko.Scanning
             // scans every possible byte.
             return null;
         }
-
-        //if (at zero)
-        //	eatzeros until done
-        //if (at unc jump or call)
-        //	if (next instr is zeros)
-        //		add_zeros_to_block();
-        //	if (next inst is pad)
-        //		add_padding_to_block(Core.Program program)
-        //		block_type(padded)
-
-
-        //- ShingleScan
-        //	- Break image into[block..blockend)
-        //	-InParallel(
-        //		BlocksInParallel,
-        //		AsciiStrings / TextStrings)
-        //        all speculative
-        //	- Gather "soup" of all possible blocks and edges
-        //		remember indirects
-
-        //	- Find protoprocedures(ICFG)
-        //		- use recursive algorithm first on blocks. (see above)
-        //			yields: callees_traced
-        //		- for remaining blocks, use Nucleus algorithm
-        //			- pick start blocks by private object gaps;
     }
 }

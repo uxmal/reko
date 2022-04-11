@@ -19,11 +19,9 @@
 #endregion
 
 using Reko.Core;
-using Reko.Core.Rtl;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
-using RtlBlock = Reko.Scanning.RtlBlock;
 
 namespace Reko.Scanning
 {

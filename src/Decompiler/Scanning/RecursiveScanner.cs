@@ -59,7 +59,7 @@ namespace Reko.Scanning
             var seeds = CollectSeeds();
             EnqueueWorkers(seeds.Select(MakeSeedWorker));
             ProcessWorkers();
-            return cfg;
+            return sr;
         }
 
         private void EnqueueWorkers(IEnumerable<ProcedureWorker?> workers)
@@ -102,7 +102,7 @@ namespace Reko.Scanning
         {
             var name = program.NamingPolicy.ProcedureName(seed.Key);
             var proc = new Proc(seed.Key, ProvenanceType.ImageEntrypoint, seed.Value.Architecture, name);
-            if (cfg.Procedures.TryAdd(proc.Address, proc))
+            if (sr.Procedures.TryAdd(proc.Address, proc))
             {
                 var state = seed.Value.ProcessorState ?? seed.Value.Architecture.CreateProcessorState();
                 return new ProcedureWorker(this, proc, state, listener);
@@ -117,7 +117,7 @@ namespace Reko.Scanning
         {
             var name = program.NamingPolicy.ProcedureName(de.Key);
             var proc = new Proc(de.Key, ProvenanceType.Scanning, de.Value.Architecture, name);
-            if (cfg.Procedures.TryAdd(proc.Address, proc))
+            if (sr.Procedures.TryAdd(proc.Address, proc))
             {
                 var state = proc.Architecture.CreateProcessorState();
                 return new ProcedureWorker(this, proc, state, listener);
@@ -142,11 +142,11 @@ namespace Reko.Scanning
             [MaybeNullWhen(false)] out ProcedureWorker worker)
         {
             Proc? proc;
-            while (!cfg.Procedures.TryGetValue(addrProc, out proc))
+            while (!sr.Procedures.TryGetValue(addrProc, out proc))
             {
                 var name = program.NamingPolicy.ProcedureName(addrProc);
                 proc = new Proc(addrProc, ProvenanceType.Scanning, state.Architecture, name);
-                if (cfg.Procedures.TryAdd(proc.Address, proc))
+                if (sr.Procedures.TryAdd(proc.Address, proc))
                     break;
             }
             if (this.suspendedWorkers.TryGetValue(addrProc, out worker))
@@ -242,7 +242,7 @@ namespace Reko.Scanning
                 if (addrA == addrB)
                     continue;
 
-                var blockA = cfg.Blocks[addrA];
+                var blockA = sr.Blocks[addrA];
 
                 // Find the indices where both blocks have the same instructions: "shared tails"
                 // Because both blocks end at addrEnd, we're guaranteed at least one shared instruction.
@@ -284,8 +284,8 @@ namespace Reko.Scanning
                     RegisterEdge(new Edge(addrB, addrS, EdgeType.Jump));
                     var newA = Chop(blockA, 0, a, addrS - addrA);
                     var newB = Chop(blockB, 0, b, addrS - addrB);
-                    cfg.Blocks.TryUpdate(addrA, newA, blockA);
-                    cfg.Blocks.TryUpdate(addrB, newB, blockB);
+                    sr.Blocks.TryUpdate(addrA, newA, blockA);
+                    sr.Blocks.TryUpdate(addrB, newB, blockB);
                     blockEnds.TryUpdate(newA.Address, addrS, addrEnd);
                     blockEnds.TryUpdate(newB.Address, addrS, addrEnd);
                 }
@@ -300,7 +300,7 @@ namespace Reko.Scanning
                     //
                     // We split block B so that it falls through to block A
                     var newB = Chop(blockB, 0, b, addrA - addrB);
-                    cfg.Blocks.TryUpdate(addrB, newB, blockB);
+                    sr.Blocks.TryUpdate(addrB, newB, blockB);
                     RegisterEdge(new Edge(blockB.Address, addrA, EdgeType.Jump));
                     var newBEnd = newB.Instructions[^1].Address;
                     if (!TryRegisterBlockEnd(newB.Address, newBEnd))
@@ -322,7 +322,7 @@ namespace Reko.Scanning
                     // B be the new block end, and move the out edges of block
                     // A to block B.
                     var newA = Chop(blockA, 0, a, addrB - addrA);
-                    cfg.Blocks.TryUpdate(addrA, newA, blockA);
+                    sr.Blocks.TryUpdate(addrA, newA, blockA);
                     //$TODO: check for race conditions.
                     if (!blockEnds.TryUpdate(addrEnd, addrB, addrA))
                     {

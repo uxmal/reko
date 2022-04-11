@@ -120,6 +120,11 @@ namespace Reko.Scanning
                         sr2.ICFG.AddEdge(block.Address, s.Address);
                     }
                 }
+                foreach (var addrProc in sr.KnownProcedures)
+                {
+                    sr2.Procedures.TryAdd(addrProc, new Proc(addrProc, ProvenanceType.Scanning,
+                        program.Architecture, program.NamingPolicy.ProcedureName(addrProc)));
+                }
                 foreach (var de in sr.DirectlyCalledAddresses)
                 {
                     sr2.SpeculativeProcedures.TryAdd(de.Key, de.Value);
