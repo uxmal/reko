@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2022 John Källén.
+ * Copyright (C) 1999-2022 John KÃ¤llÃ©n.
  .
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -51,16 +51,16 @@ namespace Reko.Scanning
         public ConcurrentDictionary<Address, RtlBlock> Blocks { get; }
 
         /// <summary>
-        /// Maps start ("from") addresses to <see cref="Edge"/>s leaving those
-        /// addresses.
+        /// Maps start ("from") addresses to destination <see cref="Address"/>es
+        /// reached by edges those addresses.
         /// </summary>
-        public ConcurrentDictionary<Address, List<Edge>> Successors { get; }
+        public ConcurrentDictionary<Address, List<Address>> Successors { get; }
 
         /// <summary>
-        /// Maps end ("to") addresses to <see cref="Edge"/>s arriving at those
+        /// Maps end ("to") addresses to edges arriving at those
         /// addresses.
         /// </summary>
-        public ConcurrentDictionary<Address, List<Edge>> Predecessors { get; }
+        public ConcurrentDictionary<Address, List<Address>> Predecessors { get; }
 
         /// <summary>
         /// Maps the entry point address to <see cref="Proc"/>s.

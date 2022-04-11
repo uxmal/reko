@@ -168,9 +168,9 @@ namespace Reko.UnitTests.Decompiler.Scanning
 
             public ICollection<RtlBlock> Predecessors(RtlBlock node)
             {
-                return cfg.Predecessors.TryGetValue(node.Address, out var edges)
-                    ? edges
-                        .Select(e => cfg.Blocks[e.From])
+                return cfg.Predecessors.TryGetValue(node.Address, out var preds)
+                    ? preds
+                        .Select(e => cfg.Blocks[e])
                         .ToArray()
                     : Array.Empty<RtlBlock>();
             }
@@ -182,16 +182,16 @@ namespace Reko.UnitTests.Decompiler.Scanning
 
             public ICollection<RtlBlock> Successors(RtlBlock node)
             {
-                return cfg.Successors.TryGetValue(node.Address, out var edges)
-                    ? edges
-                        .Select(e => Get(e))
+                return cfg.Successors.TryGetValue(node.Address, out var succs)
+                    ? succs
+                        .Select(s => Get(s))
                         .ToArray()
                     : Array.Empty<RtlBlock>();
             }
 
-            private RtlBlock Get(Edge e)
+            private RtlBlock Get(Address e)
             {
-                var b = cfg.Blocks[e.To];
+                var b = cfg.Blocks[e];
                 return b;
             }
         }

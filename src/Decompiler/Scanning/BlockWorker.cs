@@ -26,6 +26,10 @@ using System.Collections.Generic;
 
 namespace Reko.Scanning
 {
+    /// <summary>
+    /// This class is a specialization of <see cref="AbstractBlockWorker"/> for 
+    /// use with the <see cref="RecursiveScanner"/>.
+    /// </summary>
     public class BlockWorker : AbstractBlockWorker
     {
         private readonly ProcessorState state;

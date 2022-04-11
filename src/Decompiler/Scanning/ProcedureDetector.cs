@@ -99,7 +99,7 @@ namespace Reko.Scanning
             {
                 if (listener.IsCanceled())
                     break;
-                var preds = sr.ICFG.Predecessors(calldest);
+                var preds = sr.ICFG.Predecessors(calldest).ToList();
                 foreach (var p in preds)
                 {
                     srGraph.RemoveEdge(p, calldest);
@@ -235,8 +235,7 @@ namespace Reko.Scanning
             if (sr.Successors.TryGetValue(startNode, out var succ))
             {
                 queue.EnqueueRange(succ
-                    .Where(e => !procedures.Contains(e.To))
-                    .Select(e => e.To));
+                    .Where(s => !procedures.Contains(s)));
             }
             while (queue.TryDequeue(out var node))
                 {
@@ -247,14 +246,12 @@ namespace Reko.Scanning
                 if (sr.Successors.TryGetValue(node, out succ))
                     {
                     queue.EnqueueRange(succ
-                        .Where(e => !procedures.Contains(e.To))
-                        .Select(e => e.To));
+                        .Where(s => !procedures.Contains(s)));
                     }
                 if (!procedures.Contains(node) && 
                     sr.Predecessors.TryGetValue(node, out var preds))
             {
-                    var pred = sr.Predecessors[node]
-                        .Select(e => e.From);
+                    var pred = sr.Predecessors[node];
                     queue.EnqueueRange(pred);
                 } 
                     }
@@ -303,11 +300,11 @@ namespace Reko.Scanning
                 if (!sr.Successors.TryGetValue(block.Address, out var succs) ||
                     succs.Count != 1)
                     continue;
-                var succ = sr.Blocks[succs[0].To];
+                var succ = sr.Blocks[succs[0]];
                 if (!sr.Predecessors.TryGetValue(succ.Address, out var preds) ||
                     preds.Count != 1)
                     continue;
-                Debug.Assert(preds[0].From == block.Address, "Inconsistent graph");
+                Debug.Assert(preds[0] == block.Address, "Inconsistent graph");
                 if (block.Instructions.Last().Instructions.Last() is not RtlAssignment)
                     continue;
 
@@ -316,7 +313,7 @@ namespace Reko.Scanning
                 block.Length += succ.Length;
                 block.FallThrough = succ.FallThrough;
                 srGraph.RemoveEdge(block.Address, succ.Address);
-                var succSuccs = sr.ICFG.Successors(succ.Address);
+                var succSuccs = sr.ICFG.Successors(succ.Address).ToList();
                 foreach (var ss in succSuccs)
                 {
                     srGraph.RemoveEdge(succ.Address, ss);

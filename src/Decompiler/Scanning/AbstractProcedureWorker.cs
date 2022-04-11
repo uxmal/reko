@@ -31,6 +31,9 @@ using System.Threading.Tasks;
 
 namespace Reko.Scanning
 {
+    /// <summary>
+    /// This class provides services for building control flow graph edges.
+    /// </summary>
     public abstract class AbstractProcedureWorker
     {
         private static readonly TraceSwitch trace = new TraceSwitch(nameof(AbstractProcedureWorker), "AbstractProcedureWorker tracing")

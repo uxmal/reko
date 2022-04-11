@@ -28,9 +28,19 @@ using System.Linq;
 
 namespace Reko.Scanning
 {
+    /// <summary>
+    /// This scanner disassembles all possible instruction locations of 
+    /// an image, and discards instructions that (transitively) result 
+    /// in conflicts.
+    /// </summary>
+    /// <remarks>
+    /// Inspired by the paper "Shingled Graph Disassembly:
+    /// Finding the Undecidable Path" by Richard Wartell, Yan Zhou, 
+    /// Kevin W.Hamlen, and Murat Kantarcioglu.
+    /// </remarks>
     public class ShingleScanner : AbstractScanner
 	{
-        public ShingleScanner(Core.Program program, ScanResultsV2 cfg, DecompilerEventListener listener)
+        public ShingleScanner(Program program, ScanResultsV2 cfg, DecompilerEventListener listener)
             : base(program, cfg, listener)
         {
         }
@@ -151,23 +161,22 @@ namespace Reko.Scanning
             var blocks = Time("EnsureBlocks (BTree)", () => 
                 new BTreeDictionary<Address, RtlBlock>(cfg.Blocks));
 
-            var edges = cfg.Successors.Values
+            var succs = cfg.Successors.Values
                 .SelectMany(e => e)
-                .OrderBy(e => e.To)
                 .ToList();
             int blocksSplit = 0;
-            foreach (var e in edges)
+            foreach (var s in succs)
             {
-                if (!blocks.TryGetLowerBound(e.To, out var block))
+                if (!blocks.TryGetLowerBound(s, out var block))
                 {
                     Debug.Fail("Edge going to hyperspace");
                     continue; 
                 }
 
-                long offset = e.To - block.Address;
+                long offset = s - block.Address;
                 if (0 < offset && offset < block.Length)
                 {
-                    var newBlock = SplitBlockAt(block, e.To);
+                    var newBlock = SplitBlockAt(block, s);
                     if (newBlock is not null)
                     {
                         blocks.Add(newBlock.Address, newBlock);

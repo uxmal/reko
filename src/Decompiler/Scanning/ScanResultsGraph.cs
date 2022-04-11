@@ -39,29 +39,28 @@ namespace Reko.Scanning
 
         public void AddEdge(Address nodeFrom, Address nodeTo)
         {
-            List<Edge>? succs;
+            List<Address>? succs;
             while (!cfg.Successors.TryGetValue(nodeFrom, out succs))
             {
-                succs = new List<Edge>();
+                succs = new List<Address>();
                 if (cfg.Successors.TryAdd(nodeFrom, succs))
                     break;
             }
-            var e = new Edge(nodeFrom, nodeTo, EdgeType.Jump);
             lock (succs)
             {
-                succs.Add(e);
+                succs.Add(nodeTo);
             }
 
-            List<Edge>? preds;
+            List<Address>? preds;
             while (!cfg.Predecessors.TryGetValue(nodeTo, out preds))
             {
-                preds = new List<Edge>();
+                preds = new List<Address>();
                 if (cfg.Predecessors.TryAdd(nodeTo, preds))
                     break;
             }
             lock (preds)
             {
-                preds.Add(e);
+                preds.Add(nodeFrom);
             }
         }
 
@@ -71,7 +70,7 @@ namespace Reko.Scanning
             {
                 foreach (var e in succs)
                 {
-                    if (e.To == nodeTo)
+                    if (e == nodeTo)
                         return true;
                 }
             }
@@ -81,7 +80,7 @@ namespace Reko.Scanning
         public ICollection<Address> Predecessors(Address node)
         {
             if (cfg.Predecessors.TryGetValue(node, out var preds))
-                return preds.Select(s => s.From).ToArray();
+                return preds;
             else
                 return Array.Empty<Address>();
         }
@@ -91,7 +90,7 @@ namespace Reko.Scanning
         {
             if (cfg.Successors.TryGetValue(nodeFrom, out var succs))
             {
-                var i = succs.FindIndex(e => e.To == nodeTo);
+                var i = succs.FindIndex(e => e == nodeTo);
                 if (i != -1)
                 {
                     succs.RemoveAt(i);
@@ -99,7 +98,7 @@ namespace Reko.Scanning
             }
             if (cfg.Predecessors.TryGetValue(nodeTo, out var preds))
             {
-                var i = preds.FindIndex(e => e.From == nodeFrom);
+                var i = preds.FindIndex(e => e == nodeFrom);
                 if (i != -1)
                 {
                     preds.RemoveAt(i);
@@ -110,7 +109,7 @@ namespace Reko.Scanning
         public ICollection<Address> Successors(Address node)
         {
             if (cfg.Successors.TryGetValue(node, out var succs))
-                return succs.Select(s => s.To).ToArray();
+                return succs;
             else
                 return Array.Empty<Address>();
         }

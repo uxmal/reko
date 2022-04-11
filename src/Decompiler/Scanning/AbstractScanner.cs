@@ -108,24 +108,24 @@ namespace Reko.Scanning
         {
             if (!cfg.Successors.TryGetValue(edge.From, out var edges))
             {
-                edges = new List<Edge>();
+                edges = new List<Address>();
                 cfg.Successors.TryAdd(edge.From, edges);
             }
-            edges.Add(edge);
+            edges.Add(edge.To);
         }
 
         public ScanResultsV2 RegisterPredecessors()
         {
-            foreach (var (from, succs) in cfg.Successors)
+            foreach (var (pred, succs) in cfg.Successors)
             {
-                foreach (var edge in succs)
+                foreach (var succ in succs)
                 {
-                    if (!cfg.Predecessors.TryGetValue(edge.To, out var edges))
+                    if (!cfg.Predecessors.TryGetValue(succ, out var sps))
                     {
-                        edges = new List<Edge>();
-                        cfg.Predecessors.TryAdd(edge.To, edges);
+                        sps = new List<Address>();
+                        cfg.Predecessors.TryAdd(succ, sps);
                     }
-                    edges.Add(edge);
+                    sps.Add(pred);
                 }
             }
             return cfg;
@@ -138,10 +138,10 @@ namespace Reko.Scanning
 
         protected void StealEdges(Address from, Address to)
         {
-            if (cfg.Successors.TryGetValue(from, out var edges))
+            if (cfg.Successors.TryGetValue(from, out var succs))
             {
                 cfg.Successors.TryRemove(from, out _);
-                var newEges = edges.Select(e => new Edge(to, e.To, e.Type)).ToList();
+                var newEges = succs.ToList();
                 cfg.Successors.TryAdd(to, newEges);
             }
         }
@@ -182,8 +182,6 @@ namespace Reko.Scanning
         }
 
         public abstract void SplitBlockEndingAt(RtlBlock block, Address lastAddr);
-
-
 
         private class RewriterHost : IRewriterHost
         {

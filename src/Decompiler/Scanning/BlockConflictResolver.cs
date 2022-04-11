@@ -211,7 +211,7 @@ namespace Reko.Scanning
             {
                 foreach (var p in pp)
                 {
-                    sr.Predecessors[p.From].RemoveAll(e => e.To == n);
+                    sr.Predecessors[p].RemoveAll(e => e == n);
                 }
                 sr.Predecessors.TryRemove(n, out _);
             }
@@ -220,7 +220,7 @@ namespace Reko.Scanning
             {
                 foreach (var s in ss)
                 {
-                    sr.Predecessors[s.To].RemoveAll(e => e.From == n);
+                    sr.Predecessors[s].RemoveAll(e => e == n);
                 }
                 sr.Successors.TryRemove(n, out _);
             }
@@ -490,7 +490,7 @@ namespace Reko.Scanning
             {
                 foreach (var p in preds)
                 {
-                    GetAncestorsAux(p.From, orig, ancestors);
+                    GetAncestorsAux(p, orig, ancestors);
                 }
             }
             return ancestors;

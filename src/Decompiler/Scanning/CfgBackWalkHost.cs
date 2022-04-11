@@ -27,13 +27,17 @@ using System.Linq;
 
 namespace Reko.Scanning
 {
+    /// <summary>
+    /// Implmentation of the <see cref="IBackWalkHost{TBlock, TInstr}"/> 
+    /// interface for use with the <see cref="ScanResultsV2"/> class.
+    /// </summary>
     public class CfgBackWalkHost : IBackWalkHost<RtlBlock, RtlInstruction>
     {
         private readonly ScanResultsV2 cfg;
         private readonly Dictionary<Address,List<Address>> backEdges;
 
         public CfgBackWalkHost(
-            Core.Program program,
+            Program program,
             IProcessorArchitecture arch,
             ScanResultsV2 cfg, 
             Dictionary<Address, List<Address>> backEdges)
