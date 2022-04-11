@@ -68,7 +68,6 @@ namespace Reko.ScannerV2
                     var block = MakeFallthroughBlock(addrLast, instrs);
                     return (block, state);
                 }
-                bool clusterHadControlInstrs = false;
                 foreach (var rtl in cluster.Instructions)
                 {
                     trace_Verbose("      {0}: {1}", cluster.Address, rtl);
@@ -90,7 +89,6 @@ namespace Reko.ScannerV2
                         //Expand sub-instruction statements in a later pass.
                         if (branch.NextStatementRequiresLabel)
                         {
-                            clusterHadControlInstrs = true;
                             continue;
                         }
                         break;
@@ -105,12 +103,6 @@ namespace Reko.ScannerV2
                     return MakeBlock(instrs, state, rtl);
                 }
                 instrs.Add(cluster);
-                if (clusterHadControlInstrs)
-                {
-                    var addrFallthrough = cluster.Address + cluster.Length;
-                    RtlBlock block = MakeFallthroughBlock(addrFallthrough, instrs);
-                    return (block, state);
-                }
             }
             // Fell off the end, mark as bad.
             return (MakeInvalidBlock(instrs, addrLast - this.Address), state);

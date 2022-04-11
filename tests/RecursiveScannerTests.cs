@@ -496,14 +496,11 @@ l00001000: // l:4; ft:00001004 (INVALID)
             #region Expected
 @"
 define fn00001000
-l00001000: // l:8; ft:00001008
+l00001000: // l:16; ft:00001010
     // pred:
     r1 = Mem0[0x00003000<p32>:word32]
     if (r1 == 0<32>) branch 00001008
     r2 = r2 / r1
-    // succ: l00001008
-l00001008: // l:8; ft:00001010
-    // pred: l00001000
     Mem0[0x00004000<p32>:word32] = r2
     return (0,0)
     // succ:
