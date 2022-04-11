@@ -37,16 +37,16 @@ namespace Reko.Scanning
     public abstract class AbstractScanner
     {
         protected readonly Program program;
-        protected readonly ScanResultsV2 cfg;
+        protected readonly ScanResultsV2 sr;
         protected readonly DecompilerEventListener listener;
         protected readonly ConcurrentDictionary<Address, Address> blockStarts;
         protected readonly ConcurrentDictionary<Address, Address> blockEnds;
         private readonly IRewriterHost host;
 
-        protected AbstractScanner(Core.Program program, ScanResultsV2 cfg, DecompilerEventListener listener)
+        protected AbstractScanner(Core.Program program, ScanResultsV2 sr, DecompilerEventListener listener)
         {
             this.program = program;
-            this.cfg = cfg;
+            this.sr = sr;
             this.listener = listener;
             this.host = new RewriterHost(program);
             this.blockStarts = new ConcurrentDictionary<Address, Address>();
@@ -67,7 +67,7 @@ namespace Reko.Scanning
             IProcessorArchitecture arch,
             Dictionary<Address, List<Address>> backEdges)
         {
-            return new CfgBackWalkHost(program, arch, cfg, backEdges);
+            return new CfgBackWalkHost(program, arch, sr, backEdges);
         }
 
         public IEnumerable<RtlInstructionCluster> MakeTrace(Address addr, ProcessorState state, IStorageBinder binder)
@@ -99,50 +99,50 @@ namespace Reko.Scanning
         {
             var id = program.NamingPolicy.BlockName(addrBlock);
             var block = new RtlBlock(arch, addrBlock, id, (int)length, addrFallthrough, instrs);
-            var success = cfg.Blocks.TryAdd(addrBlock, block);
+            var success = sr.Blocks.TryAdd(addrBlock, block);
             Debug.Assert(success);
             return block;
         }
 
         public void RegisterEdge(Edge edge)
         {
-            if (!cfg.Successors.TryGetValue(edge.From, out var edges))
+            if (!sr.Successors.TryGetValue(edge.From, out var edges))
             {
                 edges = new List<Address>();
-                cfg.Successors.TryAdd(edge.From, edges);
+                sr.Successors.TryAdd(edge.From, edges);
             }
             edges.Add(edge.To);
         }
 
         public ScanResultsV2 RegisterPredecessors()
         {
-            foreach (var (pred, succs) in cfg.Successors)
+            foreach (var (pred, succs) in sr.Successors)
             {
                 foreach (var succ in succs)
                 {
-                    if (!cfg.Predecessors.TryGetValue(succ, out var sps))
+                    if (!sr.Predecessors.TryGetValue(succ, out var sps))
                     {
                         sps = new List<Address>();
-                        cfg.Predecessors.TryAdd(succ, sps);
+                        sr.Predecessors.TryAdd(succ, sps);
                     }
                     sps.Add(pred);
                 }
             }
-            return cfg;
+            return sr;
         }
 
         public void RegisterSpeculativeProcedure(Address addrProc)
         {
-            cfg.SpeculativeProcedures.AddOrUpdate(addrProc, 1, (a, v) => v+1);
+            sr.SpeculativeProcedures.AddOrUpdate(addrProc, 1, (a, v) => v+1);
         }
 
         protected void StealEdges(Address from, Address to)
         {
-            if (cfg.Successors.TryGetValue(from, out var succs))
+            if (sr.Successors.TryGetValue(from, out var succs))
             {
-                cfg.Successors.TryRemove(from, out _);
+                sr.Successors.TryRemove(from, out _);
                 var newEges = succs.ToList();
-                cfg.Successors.TryAdd(to, newEges);
+                sr.Successors.TryAdd(to, newEges);
             }
         }
 
