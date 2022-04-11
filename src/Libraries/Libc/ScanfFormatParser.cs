@@ -75,6 +75,12 @@ namespace Reko.Libraries.Libc
                 char ch = format[++i];
                 if (ch == '%')
                     continue;
+                bool ignoreArgument = false;
+                if (ch == '*')
+                {
+                    ignoreArgument = true;
+                    ++i;
+                }
                 // Possible flag?
                 SkipFlag();
                 SkipNumber();
@@ -87,9 +93,12 @@ namespace Reko.Libraries.Libc
 
                 char domain = CollectDataType();
 
-                DataType dt = MakeDataType(byteSize, domain);
-                if (dt != null)
-                    ArgumentTypes.Add(dt);
+                if (!ignoreArgument)
+                {
+                    DataType dt = MakeDataType(byteSize, domain);
+                    if (dt != null)
+                        ArgumentTypes.Add(dt);
+                }
             }
         }
 

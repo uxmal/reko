@@ -160,5 +160,13 @@ namespace Reko.UnitTests.Core.Analysis
             Assert.AreEqual(1, parser.ArgumentTypes.Count);
             Assert.AreEqual("(ptr32 char)", parser.ArgumentTypes[0].ToString());
         }
+
+        [Test]
+        public void SFP_IgnoreArg()
+        {
+            ParseChar32("%*c %d");
+            Assert.AreEqual(1, parser.ArgumentTypes.Count);
+            Assert.AreEqual("(ptr32 int32)", parser.ArgumentTypes[0].ToString());
+        }
     }
 }
