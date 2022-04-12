@@ -115,17 +115,20 @@ namespace Reko.Scanning
         {
             public readonly SortedSet<RtlBlock> Blocks;
             public readonly SortedSet<RtlBlock> Entries;
+            public readonly Dictionary<RtlBlock, List<RtlBlock>> Successors;
 
             public Cluster()
             {
                 this.Entries = new SortedSet<RtlBlock>(Cmp.Instance);
                 this.Blocks = new SortedSet<RtlBlock>(Cmp.Instance);
+                this.Successors = new Dictionary<RtlBlock, List<RtlBlock>>();
             }
 
             public Cluster(IEnumerable<RtlBlock> entries, IEnumerable<RtlBlock> blocks)
             {
                 this.Entries = new SortedSet<RtlBlock>(entries, Cmp.Instance);
                 this.Blocks = new SortedSet<RtlBlock>(blocks, Cmp.Instance);
+                this.Successors = new Dictionary<RtlBlock, List<RtlBlock>>();
             }
 
             private class Cmp : Comparer<RtlBlock>
@@ -438,34 +441,23 @@ namespace Reko.Scanning
             // existing entries. That node will be used to compute all
             // immediate dominators of all reachable blocks.
             var auxNode = new RtlBlock(Address.Ptr64(~0ul), "<root>");
-            sr.Blocks.TryAdd(auxNode.Address, auxNode);
-            var xxxx = sr.ICFG.Nodes.Count;
-            var allEntries =
-                cluster.Entries.Concat(
-                cluster.Blocks
-                    .Where(b => srGraph.Predecessors(b.Address).Count == 0))
-                .Distinct()
-                .OrderBy(b => b.Address)
-                .ToList();
-            foreach (var entry in allEntries)
-            {
-                srGraph.AddEdge(auxNode.Address, entry.Address);
-            }
-            var idoms = LTDominatorGraph<Address>.Create(srGraph, auxNode.Address);
+
+            var srGraph = MakeGraph(cluster, auxNode);
+            var idoms = LTDominatorGraph<RtlBlock>.Create(srGraph, auxNode);
             // DumpDominatorTrees(idoms);
             // Find all nodes whose immediate dominator is "<root>". 
             // Those are the entries to new clusters and may contain blocks
             // that are shared between procedures in the source program.
-            var newEntries = cluster.Blocks.Where(b => idoms[b.Address] == auxNode.Address).ToList();
-            var dominatedEntries = newEntries.ToDictionary(k => k.Address, v => new HashSet<Address> { v.Address });
+            var newEntries = cluster.Blocks.Where(b => idoms[b] == auxNode).ToList();
+            var dominatedEntries = newEntries.ToDictionary(k => k, v => new HashSet<RtlBlock> { v });
 
             // Partition the nodes in the cluster into categories depending on which
             // one of the newEntries they are dominated by.
             foreach (var b in cluster.Blocks)
             {
-                if (dominatedEntries.ContainsKey(b.Address))
+                if (dominatedEntries.ContainsKey(b))
                     continue; // already there.
-                var n = b.Address;
+                var n = b;
                 for (; ; )
                 {
                     var i = idoms[n];
@@ -474,7 +466,7 @@ namespace Reko.Scanning
                     if (dominatedEntries.ContainsKey(i))
                     {
                         // If my idom is already in the set, add me too.
-                        dominatedEntries[i].Add(b.Address);
+                        dominatedEntries[i].Add(b);
                         break;
                     }
                     n = i;
@@ -482,27 +474,58 @@ namespace Reko.Scanning
             }
 
             // Now remove the fake node 
-            sr.Blocks.TryRemove(auxNode.Address, out _);
+            srGraph.AdjacencyList.Remove(auxNode);
 
             // Handle the special case with new entries that weren't there before,
             // and only consist of a linear sequence of blocks. Mark such nodes as "shared".
             // Later stages will copy these nodes into their respective procedures.
             foreach (var newEntry in dominatedEntries.Keys
-                .Where(e => !cluster.Entries.Contains(sr.Blocks[e])).ToList())
+                .Where(e => !cluster.Entries.Contains(e)).ToList())
             {
                 if (srGraph.Successors(newEntry).Count == 0)
                 {
-                    sr.Blocks[newEntry].IsSharedExitBlock = true;
+                    newEntry.IsSharedExitBlock = true;
                     dominatedEntries.Remove(newEntry);
                 }
             }
 
             return dominatedEntries
-                .OrderBy(e => e.Key)
+                .OrderBy(e => e.Key.Address)
                 .Select(e => new RtlProcedure(
-                    sr.Blocks[e.Key],
-                    e.Value.Select(a => sr.Blocks[a]).ToHashSet()))
+                    e.Key,
+                    e.Value))
                 .ToList();
+        }
+
+        private AdjacencyListGraph<RtlBlock> MakeGraph(Cluster cluster, RtlBlock auxNode)
+        {
+            var adj = cluster.Blocks.ToDictionary(k => k, v => new List<RtlBlock>(2));
+            var allEntries =
+                cluster.Entries.Concat(
+                cluster.Blocks
+                    .Where(b => srGraph.Predecessors(b.Address).Count == 0))
+                .Distinct()
+                .OrderBy(b => b.Address)
+                .ToList();
+            adj.Add(auxNode, allEntries);
+
+            var visited = new HashSet<RtlBlock>();
+            var stack = new Stack<RtlBlock>();
+            foreach (var n in adj.Keys)
+            {
+                if (visited.Contains(n))
+                    continue;
+                visited.Add(n);
+                if (sr.Successors.TryGetValue(n.Address, out var succs))
+                {
+                    adj[n].AddRange(succs.Select(s => sr.Blocks[s]));
+                }
+                foreach (var s in adj[n])
+                {
+                    stack.Push(s);
+                }
+            }
+            return new AdjacencyListGraph<RtlBlock>(adj);
         }
 
         private void DumpDominatorTrees(Dictionary<RtlBlock, RtlBlock> idoms)
