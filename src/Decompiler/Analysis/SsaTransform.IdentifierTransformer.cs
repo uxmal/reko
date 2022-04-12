@@ -70,8 +70,6 @@ namespace Reko.Analysis
             /// <returns>The SSA name of the identifier that was read.</returns>
             public virtual SsaIdentifier ReadVariable(SsaBlockState bs)
             {
-                if (id.Name == "tLoc01F8" && bs.Block.Address.ToLinear() == 0x520F)
-                    _ = this;   //$DEBUG
                 trace.Verbose("ReadVariable {0} in block {1}", this.id, bs.Block.DisplayName);
                 if (bs.Terminates)
                 {
@@ -118,9 +116,6 @@ namespace Reko.Analysis
 
             public SsaIdentifier? ReadVariableRecursive(SsaBlockState bs)
             {
-                if (id.Name == "tLoc01F8" && bs.Block.Address.ToLinear() == 0x520F)
-                    _ = this;   //$DEBUG
-
                 SsaIdentifier val;
                 if (bs.Block.Pred.Any(p => !blockstates[p].Visited))
                 {
