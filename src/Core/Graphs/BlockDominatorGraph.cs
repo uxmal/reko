@@ -22,7 +22,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Reko.Core.Lib
+namespace Reko.Core.Graphs
 {
     /// <summary>
     /// Maintains the dominator graph of the blocks in a procedure, along with

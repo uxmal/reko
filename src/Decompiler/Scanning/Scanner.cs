@@ -23,6 +23,7 @@ using UserSignatureBuilder = Reko.Core.Hll.C.UserSignatureBuilder;
 using Reko.Core.Code;
 using Reko.Core.Configuration;
 using Reko.Core.Expressions;
+using Reko.Core.Graphs;
 using Reko.Core.Lib;
 using Reko.Core.Rtl;
 using Reko.Core.Serialization;

@@ -20,19 +20,17 @@
 
 using NUnit.Framework;
 using Reko.Core;
+using Reko.Core.Expressions;
+using Reko.Core.Graphs;
+using Reko.Core.Memory;
 using Reko.Core.Rtl;
+using Reko.Core.Types;
 using Reko.Scanning;
+using Reko.UnitTests.Mocks;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Reko.UnitTests.Mocks;
-using Reko.Core.Expressions;
-using Reko.Core.Lib;
-using Reko.Core.Types;
 using System.ComponentModel.Design;
-using Reko.Core.Memory;
+using System.Linq;
 
 namespace Reko.UnitTests.Decompiler.Scanning
 {

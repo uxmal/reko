@@ -25,7 +25,7 @@ using Reko.Arch.X86;
 using Reko.Arch.X86.Assembler;
 using Reko.Core;
 using Reko.Core.Expressions;
-using Reko.Core.Lib;
+using Reko.Core.Graphs;
 using Reko.Core.Memory;
 using Reko.Core.Rtl;
 using Reko.Core.Services;

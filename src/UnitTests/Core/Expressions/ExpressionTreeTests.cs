@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2022 John Källén.
  *
@@ -21,7 +21,7 @@
 using NUnit.Framework;
 using Reko.Core;
 using Reko.Core.Expressions;
-using Reko.Core.Lib;
+using Reko.Core.Graphs;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;

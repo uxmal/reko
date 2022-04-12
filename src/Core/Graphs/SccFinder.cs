@@ -22,7 +22,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Reko.Core.Lib
+namespace Reko.Core.Graphs
 {
 	/// <summary>
 	/// Implementation of Tarjan's algorithm for finding strongly connected

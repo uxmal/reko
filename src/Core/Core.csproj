@@ -52,8 +52,7 @@
       </AssemblyAttributes>
     </ItemGroup>
     <!-- writes the attribute to the customAssemblyInfo file -->
-    <WriteCodeFragment Language="C#" OutputFile="$(CustomAssemblyInfoFile)"
-                       AssemblyAttributes="@(AssemblyAttributes)" />
+    <WriteCodeFragment Language="C#" OutputFile="$(CustomAssemblyInfoFile)" AssemblyAttributes="@(AssemblyAttributes)" />
   </Target>
 
 

@@ -23,7 +23,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Reko.Core.Lib
+namespace Reko.Core.Graphs
 {
     // Impleented after pseudocode on https://en.wikipedia.org/wiki/Biconnected_component
     public class ArticulationPointFinder<T>

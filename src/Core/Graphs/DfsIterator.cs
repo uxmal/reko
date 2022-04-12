@@ -22,7 +22,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Reko.Core.Lib
+namespace Reko.Core.Graphs
 {
     /// <summary>
     /// Iterates through a directed graph in Depth-First order.

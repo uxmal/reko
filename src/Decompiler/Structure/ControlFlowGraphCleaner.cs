@@ -21,7 +21,7 @@
 using Reko.Core;
 using Reko.Core.Code;
 using Reko.Core.Expressions;
-using Reko.Core.Lib;
+using Reko.Core.Graphs;
 using System;
 using System.Diagnostics;
 using System.Linq;

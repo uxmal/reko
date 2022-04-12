@@ -19,15 +19,13 @@
 #endregion
 
 using Reko.Core;
+using Reko.Core.Expressions;
+using Reko.Core.Graphs;
 using Reko.Core.Rtl;
 using Reko.Scanning;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Reko.Core.Expressions;
-using Reko.Core.Lib;
 
 namespace Reko.UnitTests.Decompiler.Scanning
 {

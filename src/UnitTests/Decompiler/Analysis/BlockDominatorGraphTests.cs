@@ -21,7 +21,7 @@
 using Reko.Analysis;
 using Reko.Core;
 using Reko.Core.Expressions;
-using Reko.Core.Lib;
+using Reko.Core.Graphs;
 using Reko.UnitTests.Mocks;
 using NUnit.Framework;
 using System;

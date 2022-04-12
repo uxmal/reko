@@ -19,7 +19,7 @@
 
 using Reko.Analysis;
 using Reko.Core;
-using Reko.Core.Lib;
+using Reko.Core.Graphs;
 using Reko.Core.Output;
 using Reko.Core.Scripts;
 using Reko.Core.Serialization;

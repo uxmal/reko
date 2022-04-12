@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2022 John Källén.
+ * Copyright (C) 1999-2022 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,13 +18,13 @@
  */
 #endregion
 
-using Reko.Core.Lib;
+using Reko.Core.Graphs;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Reko.UnitTests.Core.Lib
+namespace Reko.UnitTests.Core.Graphs
 {
 	[TestFixture]
 	public class DfsIteratorTests

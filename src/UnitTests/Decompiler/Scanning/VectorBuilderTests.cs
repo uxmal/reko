@@ -21,7 +21,7 @@
 using Moq;
 using NUnit.Framework;
 using Reko.Core;
-using Reko.Core.Lib;
+using Reko.Core.Graphs;
 using Reko.Core.Memory;
 using Reko.Core.Services;
 using Reko.Scanning;

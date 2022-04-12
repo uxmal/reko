@@ -19,7 +19,7 @@
 #endregion
 
 using Reko.Core.Absyn;
-using Reko.Core.Lib;
+using Reko.Core.Graphs;
 using Reko.Core.Output;
 using Reko.Core.Serialization;
 using Reko.Core.Types;

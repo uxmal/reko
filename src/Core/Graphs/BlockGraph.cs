@@ -24,7 +24,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Reko.Core
+namespace Reko.Core.Graphs
 {
     public class BlockGraph : DirectedGraph<Block>
     {

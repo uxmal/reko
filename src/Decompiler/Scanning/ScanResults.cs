@@ -21,7 +21,7 @@
 #nullable disable
 
 using Reko.Core;
-using Reko.Core.Lib;
+using Reko.Core.Graphs;
 using Reko.Core.Machine;
 using Reko.Core.Rtl;
 using Reko.Core.Types;

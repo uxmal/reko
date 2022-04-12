@@ -19,16 +19,12 @@
 #endregion
 
 using Reko.Core;
-using Reko.Core.Lib;
-using Reko.Core.Machine;
+using Reko.Core.Graphs;
 using Reko.Gui;
-using Reko.Gui.Forms;
 using Reko.Scanning;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Linq;
-using System.Text;
 using System.Windows.Forms;
 
 namespace Reko.UserInterfaces.WindowsForms.Forms

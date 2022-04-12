@@ -18,17 +18,16 @@
  */
 #endregion
 
+using NUnit.Framework;
 using Reko.Analysis;
 using Reko.Core;
-using Reko.Core.Lib;
-using NUnit.Framework;
-using System;
-using System.Linq;
+using Reko.Core.Graphs;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Reko.UnitTests.Decompiler.Analysis
 {
-	[TestFixture]
+    [TestFixture]
 	public class DeclarationInserterTests
 	{
 		private Procedure proc;

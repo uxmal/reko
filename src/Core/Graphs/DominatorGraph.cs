@@ -25,7 +25,8 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-namespace Reko.Core.Lib
+
+namespace Reko.Core.Graphs
 {
     /// <summary>
     /// Describes the dominator structure of a particular graph.
