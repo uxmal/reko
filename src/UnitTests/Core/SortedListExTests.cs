@@ -19,14 +19,13 @@
 #endregion
 
 using NUnit.Framework;
-using Reko.Core.Lib;
-using System;
-using StringBuilder = System.Text.StringBuilder;
+using Reko.Core.Collections;
 using System.Collections.Generic;
+using StringBuilder = System.Text.StringBuilder;
 
 namespace Reko.UnitTests.Core
 {
-	[TestFixture]
+    [TestFixture]
 	public class SortedListExTests
 	{
 		public SortedListExTests()

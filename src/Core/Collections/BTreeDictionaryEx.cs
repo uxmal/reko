@@ -22,7 +22,7 @@ using System;
 using System.Diagnostics;
 using System.Collections.Generic;
 
-namespace Reko.Core.Lib
+namespace Reko.Core.Collections
 {
     /// <summary>
     /// Extension methods on BTreeDictionary that provide support for lower- and

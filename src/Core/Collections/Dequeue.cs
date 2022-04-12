@@ -23,7 +23,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Reko.Core.Lib
+namespace Reko.Core.Collections
 {
     /// <summary>
     /// Defines the main interface to a dequeue.

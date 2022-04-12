@@ -19,9 +19,9 @@
 #endregion
 
 using Reko.Core;
+using Reko.Core.Collections;
 using Reko.Core.Configuration;
 using Reko.Core.Diagnostics;
-using Reko.Core.Lib;
 using Reko.Core.Memory;
 using Reko.Core.Types;
 using Reko.ImageLoaders.Elf.Relocators;

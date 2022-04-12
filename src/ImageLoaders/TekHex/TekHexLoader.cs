@@ -18,15 +18,15 @@
  */
 #endregion
 
+using Reko.Core;
+using Reko.Core.Collections;
+using Reko.Core.Loading;
+using Reko.Core.Services;
 using System;
-using System.IO;
-using System.Linq;
 using System.Collections.Generic;
 using System.Diagnostics;
-using Reko.Core;
-using Reko.Core.Lib;
-using Reko.Core.Services;
-using Reko.Core.Loading;
+using System.IO;
+using System.Linq;
 
 namespace Reko.ImageLoaders.TekHex
 {

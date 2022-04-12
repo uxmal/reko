@@ -19,7 +19,7 @@
 #endregion
  
 using DocoptNet;
-using Reko.Core;
+using Reko.Core.Collections;
 using Reko.ImageLoaders.Hunk;
 using System;
 using System.Collections.Generic;

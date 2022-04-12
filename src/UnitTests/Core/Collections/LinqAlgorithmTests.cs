@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2022 John Källén.
  *
@@ -19,16 +19,13 @@
 #endregion
 
 using NUnit.Framework;
-using Reko.Core.Lib;
-using System;
+using Reko.Core.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Item = Reko.Core.Lib.LinqAlgorithms.Item;
-using Link = Reko.Core.Lib.LinqAlgorithms.Link;
+using Item = Reko.Core.Collections.LinqAlgorithms.Item;
+using Link = Reko.Core.Collections.LinqAlgorithms.Link;
 
-namespace Reko.UnitTests.Core.Lib
+namespace Reko.UnitTests.Core.Collections
 {
     [TestFixture]
     public class LinqAlgorithmTests

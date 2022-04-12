@@ -18,6 +18,7 @@
  */
 #endregion
 
+using Reko.Core.Collections;
 using Reko.Core.Serialization;
 using Reko.Core.Types;
 using System;

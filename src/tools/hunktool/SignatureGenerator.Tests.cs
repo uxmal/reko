@@ -19,7 +19,7 @@
 #endregion
 #if DEBUG
 using DocoptNet;
-using Reko.Core;
+using Reko.Core.Collections;
 using Reko.ImageLoaders.Hunk;
 using NUnit.Framework;
 using System;

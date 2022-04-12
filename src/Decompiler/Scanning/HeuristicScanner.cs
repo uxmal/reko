@@ -19,6 +19,7 @@
 #endregion
 
 using Reko.Core;
+using Reko.Core.Collections;
 using Reko.Core.Graphs;
 using Reko.Core.Memory;
 using Reko.Core.Services;

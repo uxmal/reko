@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2022 John Källén.
+ * Copyright (C) 1999-2022 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,10 +19,9 @@
 #endregion
 
 using NUnit.Framework;
-using System;
-using Reko.Core.Lib;
+using Reko.Core.Collections;
 
-namespace Reko.UnitTests.Core.Lib
+namespace Reko.UnitTests.Core.Collections
 {
     [TestFixture]
     public class DisjointPartitionTests

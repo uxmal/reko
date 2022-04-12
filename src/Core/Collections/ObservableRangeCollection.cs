@@ -24,7 +24,7 @@ using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.Linq;
 
-namespace Reko.Core.Lib
+namespace Reko.Core.Collections
 {
     /// <summary> 
     /// Represents a dynamic data collection that provides notifications

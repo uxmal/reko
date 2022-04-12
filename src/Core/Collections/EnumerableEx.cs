@@ -17,14 +17,12 @@
  * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
  */
 #endregion
- 
-using Reko.Core.Lib;
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
-namespace Reko.Core
+namespace Reko.Core.Collections
 {
     /// <summary>
     /// Extension methods for Enumerable classes

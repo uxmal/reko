@@ -8,7 +8,7 @@
 
 #nullable enable
 
-namespace Reko.Core.Lib
+namespace Reko.Core.Collections
 {
     using System;
     using System.Collections;

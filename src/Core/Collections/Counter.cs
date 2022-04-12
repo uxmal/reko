@@ -22,7 +22,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Reko.Core.Lib
+namespace Reko.Core.Collections
 {
     /// <summary>
     /// A <see cref="Counter{T}"/> is a wrapper around a <see cref="Dictionary{TKey, int}"/>

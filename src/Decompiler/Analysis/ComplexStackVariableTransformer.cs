@@ -20,16 +20,14 @@
 
 using Reko.Core;
 using Reko.Core.Code;
+using Reko.Core.Collections;
 using Reko.Core.Expressions;
-using Reko.Core.Lib;
 using Reko.Core.Operators;
 using Reko.Core.Services;
 using Reko.Core.Types;
-using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
-using System.Text;
 
 namespace Reko.Analysis
 {

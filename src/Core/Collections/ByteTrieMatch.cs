@@ -22,7 +22,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Reko.Core.Lib
+namespace Reko.Core.Collections
 {
     /// <summary>
     /// Represents a match from using a <see cref="ByteTrie{TValue}"/> on a

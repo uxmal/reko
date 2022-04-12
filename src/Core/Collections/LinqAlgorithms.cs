@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 #nullable enable
 
-namespace Reko.Core.Lib
+namespace Reko.Core.Collections
 {
 
     //        https://github.com/bjornharrtell/pggraph/blob/master/dijkstra.sql

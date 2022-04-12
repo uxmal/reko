@@ -20,8 +20,8 @@
 
 using Reko.Core;
 using Reko.Core.Code;
+using Reko.Core.Collections;
 using Reko.Core.Expressions;
-using Reko.Core.Lib;
 using Reko.Core.Operators;
 using Reko.Core.Rtl;
 using Reko.Core.Services;

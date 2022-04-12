@@ -20,7 +20,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace Reko.Core.Lib
+namespace Reko.Core.Collections
 {
     /// <summary>
     /// Implementation of the priority queue ADT.

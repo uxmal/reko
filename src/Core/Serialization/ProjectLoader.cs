@@ -18,22 +18,22 @@
  */
 #endregion
 
+using Reko.Core.Collections;
 using Reko.Core.Configuration;
+using Reko.Core.Expressions;
+using Reko.Core.Loading;
+using Reko.Core.Memory;
 using Reko.Core.Scripts;
+using Reko.Core.Services;
+using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
-using System.Linq;
+using System.Globalization;
 using System.IO;
+using System.Linq;
+using System.Text;
 using System.Xml;
 using System.Xml.Serialization;
-using Reko.Core.Services;
-using System.Diagnostics;
-using System.Text;
-using Reko.Core.Types;
-using Reko.Core.Expressions;
-using System.Globalization;
-using Reko.Core.Memory;
-using Reko.Core.Loading;
 
 namespace Reko.Core.Serialization
 {

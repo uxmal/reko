@@ -21,6 +21,7 @@
 using Moq;
 using NUnit.Framework;
 using Reko.Core;
+using Reko.Core.Collections;
 using Reko.Core.Configuration;
 using Reko.Core.Memory;
 using Reko.Core.Types;

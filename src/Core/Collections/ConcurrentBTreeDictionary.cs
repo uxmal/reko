@@ -25,7 +25,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 
-namespace Reko.Core.Lib
+namespace Reko.Core.Collections
 {
     /// <summary>
     /// Represents a collection of key/value pairs that are sorted by the keys

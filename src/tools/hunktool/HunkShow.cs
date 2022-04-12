@@ -1,5 +1,5 @@
 using Reko.Arch.M68k;
-using Reko.Core;
+using Reko.Core.Collections;
 using Reko.Core.Memory;
 using Reko.ImageLoaders.Hunk;
 using System;
@@ -390,7 +390,5 @@ namespace Reko.Tools.HunkTool
                     string.Join(" ", line.Select(b => string.Format("{0:X2}", (int)b))));
             }
         }
-
-
     }
 }

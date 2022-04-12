@@ -19,8 +19,8 @@
 #endregion
 
 using Reko.Core;
+using Reko.Core.Collections;
 using Reko.Core.Code;
-using Reko.Core.Lib;
 using Reko.Core.Expressions;
 using System;
 using System.Collections.Generic;
@@ -423,7 +423,7 @@ namespace Reko.Analysis
                         .Select(a => new CallBinding(
                             phi.Dst.Storage,
                             a.Value)).ToArray()).ToArray();
-                var arrs = Reko.Core.EnumerableEx.ZipMany(
+                var arrs = EnumerableEx.ZipMany(
                     phis,
                     ids => ids.ToArray()).ToArray();
                 if (arrs.Length == 0)

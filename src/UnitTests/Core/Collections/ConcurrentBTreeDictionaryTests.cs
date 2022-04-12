@@ -19,20 +19,20 @@
 #endregion
 
 using NUnit.Framework;
-using Reko.Core.Lib;
+using Reko.Core.Collections;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
 
-namespace Reko.UnitTests.Core.Lib
+namespace Reko.UnitTests.Core.Collections
 {
-    public class BTreeDictionaryTests
+    public class ConcurrentBTreeDictionaryTests
     {
-        private BTreeDictionary<string, int> Given_Dictionary(IEnumerable<int> items)
+        private ConcurrentBTreeDictionary<string, int> Given_Dictionary(IEnumerable<int> items)
         {
-            var btree = new BTreeDictionary<string, int>();
+            var btree = new ConcurrentBTreeDictionary<string, int>();
             foreach (var item in items)
             {
                 btree.Add(item.ToString(), item);
@@ -41,13 +41,13 @@ namespace Reko.UnitTests.Core.Lib
         }
 
         [Test]
-        public void BTree_Create()
+        public void CBTree_Create()
         {
             var btree = new BTreeDictionary<string, int>();
         }
 
         [Test]
-        public void BTree_AddItem()
+        public void CBTree_AddItem()
         {
             var btree = new BTreeDictionary<string, int>();
             btree.Add("3", 3);
@@ -55,7 +55,7 @@ namespace Reko.UnitTests.Core.Lib
         }
 
         [Test]
-        public void BTree_AddTwoItems()
+        public void CBTree_AddTwoItems()
         {
             var btree = new BTreeDictionary<string, int>();
             btree.Add("3", 3);
@@ -64,7 +64,7 @@ namespace Reko.UnitTests.Core.Lib
         }
 
         [Test]
-        public void BTree_Enumerate()
+        public void CBTree_Enumerate()
         {
             var btree = new BTreeDictionary<string, int>();
             btree.Add("3", 3);
@@ -80,7 +80,7 @@ namespace Reko.UnitTests.Core.Lib
         }
 
         [Test]
-        public void BTree_Get()
+        public void CBTree_Get()
         {
             var btree = new BTreeDictionary<string, int>();
             btree.Add("3", 3);
@@ -88,7 +88,7 @@ namespace Reko.UnitTests.Core.Lib
         }
 
         [Test]
-        public void BTree_EnumeratorThrowIfMutated()
+        public void CBTree_EnumeratorThrowIfMutated()
         {
             var btree = new BTreeDictionary<string, int>();
             btree.Add("3", 3);
@@ -106,7 +106,7 @@ namespace Reko.UnitTests.Core.Lib
         }
 
         [Test]
-        public void BTree_SetNonExisting()
+        public void CBTree_SetNonExisting()
         {
             var btree = new BTreeDictionary<string, int>();
             btree["3"] = 3;
@@ -114,7 +114,7 @@ namespace Reko.UnitTests.Core.Lib
         }
 
         [Test]
-        public void BTree_SetExisting()
+        public void CBTree_SetExisting()
         {
             var btree = new BTreeDictionary<string, int>();
             btree["3"] = 3;
@@ -123,7 +123,7 @@ namespace Reko.UnitTests.Core.Lib
         }
 
         [Test]
-        public void BTree_ForceInternalNode()
+        public void CBTree_ForceInternalNode()
         {
             var btree = new BTreeDictionary<string, int>();
             foreach (var i in Enumerable.Range(0, 256))
@@ -134,7 +134,7 @@ namespace Reko.UnitTests.Core.Lib
         }
 
         [Test]
-        public void BTree_GetFromDeepTree()
+        public void CBTree_GetFromDeepTree()
         {
             var btree = new BTreeDictionary<string, int>();
             foreach (var i in Enumerable.Range(0, 1000))
@@ -147,7 +147,7 @@ namespace Reko.UnitTests.Core.Lib
         }
 
         [Test]
-        public void BTree_ItemsSorted()
+        public void CBTree_ItemsSorted()
         {
             var rnd = new Random(42);
             var btree = new BTreeDictionary<string, int>();
@@ -168,7 +168,7 @@ namespace Reko.UnitTests.Core.Lib
         }
 
         [Test]
-        public void BTree_IndexOf_Empty()
+        public void CBTree_IndexOf_Empty()
         {
             var btree = new BTreeDictionary<string, int>();
             int i = btree.Keys.IndexOf("3");
@@ -176,7 +176,7 @@ namespace Reko.UnitTests.Core.Lib
         }
 
         [Test]
-        public void BTree_IndexOf_existing_leaf_item()
+        public void CBTree_IndexOf_existing_leaf_item()
         {
             var btree = new BTreeDictionary<string, int> { { "3", 3 } };
             int i = btree.Keys.IndexOf("3");
@@ -185,7 +185,7 @@ namespace Reko.UnitTests.Core.Lib
 
 
         [Test]
-        public void BTree_IndexOf_existing_leaf_item_2()
+        public void CBTree_IndexOf_existing_leaf_item_2()
         {
             var btree = new BTreeDictionary<string, int> {
                 { "3", 3 },
@@ -196,7 +196,7 @@ namespace Reko.UnitTests.Core.Lib
         }
 
         [Test]
-        public void BTree_IndexOf_nonexisting_small_leafitem()
+        public void CBTree_IndexOf_nonexisting_small_leafitem()
         {
             var btree = new BTreeDictionary<string, int> {
                 { "3", 3 },
@@ -207,7 +207,7 @@ namespace Reko.UnitTests.Core.Lib
         }
 
         [Test]
-        public void BTree_IndexOf_nonexisting_middle_leafitem()
+        public void CBTree_IndexOf_nonexisting_middle_leafitem()
         {
             var btree = new BTreeDictionary<string, int> {
                 { "4", 4 },
@@ -218,7 +218,7 @@ namespace Reko.UnitTests.Core.Lib
         }
 
         [Test]
-        public void BTree_IndexOf_nonexisting_large_leafitem()
+        public void CBTree_IndexOf_nonexisting_large_leafitem()
         {
             var btree = new BTreeDictionary<string, int> {
                 { "4", 4 },
@@ -229,7 +229,7 @@ namespace Reko.UnitTests.Core.Lib
         }
 
         [Test]
-        public void BTree_IndexOf_existing_item_1_ply_tree()
+        public void CBTree_IndexOf_existing_item_1_ply_tree()
         {
             var btree = Given_Dictionary(Enumerable.Range(0, 20).Select(n => 1 + n * 2));
             int i = btree.Keys.IndexOf("1");
@@ -237,7 +237,7 @@ namespace Reko.UnitTests.Core.Lib
         }
 
         [Test]
-        public void BTree_IndexOf_nonexisting_small_item_1_ply_tree()
+        public void CBTree_IndexOf_nonexisting_small_item_1_ply_tree()
         {
             var btree = Given_Dictionary(Enumerable.Range(0, 20).Select(n => 1 + n * 2));
             int i = btree.Keys.IndexOf("0");
@@ -245,7 +245,7 @@ namespace Reko.UnitTests.Core.Lib
         }
 
         [Test]
-        public void BTree_IndexOf_nonexisting_middle_item_1_ply_tree()
+        public void CBTree_IndexOf_nonexisting_middle_item_1_ply_tree()
         {
             var btree = Given_Dictionary(Enumerable.Range(0, 20).Select(n => 1 + n * 2));
             int i = btree.Keys.IndexOf("14");
@@ -253,7 +253,7 @@ namespace Reko.UnitTests.Core.Lib
         }
 
         [Test]
-        public void BTree_IndexOf_nonexisting_middle_item_1_ply_tree_2()
+        public void CBTree_IndexOf_nonexisting_middle_item_1_ply_tree_2()
         {
             var btree = Given_Dictionary(Enumerable.Range(0, 20).Select(n => 1 + n * 2));
             int i = btree.Keys.IndexOf("30");
@@ -261,7 +261,7 @@ namespace Reko.UnitTests.Core.Lib
         }
 
         [Test]
-        public void BTree_IndexOf_nonexisting_last_item_1_ply_tree_2()
+        public void CBTree_IndexOf_nonexisting_last_item_1_ply_tree_2()
         {
             var btree = Given_Dictionary(Enumerable.Range(0, 20).Select(n => 1 + n * 2));
             int i = btree.Keys.IndexOf("9999");
@@ -269,7 +269,7 @@ namespace Reko.UnitTests.Core.Lib
         }
 
         [Test]
-        public void BTree_IndexOf()
+        public void CBTree_IndexOf()
         {
             var rnd = new Random(42);
             var btree = new BTreeDictionary<string, int>();
@@ -287,7 +287,7 @@ namespace Reko.UnitTests.Core.Lib
         }
 
         [Test]
-        public void BTree_GetItemByIndex()
+        public void CBTree_GetItemByIndex()
         {
             var btree = Given_Dictionary(new[] {
                 5,6,9,1,3, 4,2,7,8,0,
@@ -295,12 +295,12 @@ namespace Reko.UnitTests.Core.Lib
             var items = btree.Keys.ToArray();
             for (int i = 0; i < btree.Count; ++i)
             {
-                Assert.AreEqual(items[i], btree.Keys[i]);
+                Assert.AreEqual(items[i], btree.Keys[i], $"Failed at index {i}");
             }
         }
 
         [Test]
-        public void BTree_Remove_existing_leaf()
+        public void CBTree_Remove_existing_leaf()
         {
             var btree = Given_Dictionary(new[] { 3 });
             bool removed = btree.Remove("3");
@@ -315,7 +315,7 @@ namespace Reko.UnitTests.Core.Lib
         }
 
         [Test]
-        public void BTree_Remove_existing_leaf2()
+        public void CBTree_Remove_existing_leaf2()
         {
             var btree = Given_Dictionary(new[] { 3, 4 });
             bool removed = btree.Remove("3");
@@ -330,7 +330,7 @@ namespace Reko.UnitTests.Core.Lib
         }
 
         [Test]
-        public void BTree_Remove_existing_deep_leaf()
+        public void CBTree_Remove_existing_deep_leaf()
         {
             var btree = Given_Dictionary(Enumerable.Range(0, 40));
             bool removed = btree.Remove("3");
@@ -345,18 +345,19 @@ namespace Reko.UnitTests.Core.Lib
         }
 
         [Test]
-        public void BTree_Remove_Exercise()
+        public void CBTree_Remove_Exercise()
         {
-            var btree = Given_Dictionary(Enumerable.Range(0, 40));
-            foreach (var n in Enumerable.Range(0, 40))
+            const int Number = 300;
+            var btree = Given_Dictionary(Enumerable.Range(0, Number));
+            foreach (var n in Enumerable.Range(0, Number))
             {
-                Assert.IsTrue(btree.Remove(n.ToString()));
+                Assert.IsTrue(btree.Remove(n.ToString()), $"Failed to remove key \"{n}\"");
             }
-            foreach (var n in Enumerable.Range(0, 40))
+            foreach (var n in Enumerable.Range(0, Number))
             {
                 btree.Add(n.ToString(), n);
             }
-            Assert.AreEqual(40, btree.Count);
+            Assert.AreEqual(Number, btree.Count);
         }
     }
 }

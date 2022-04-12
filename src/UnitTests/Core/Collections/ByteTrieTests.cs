@@ -20,14 +20,9 @@
 
 using NUnit.Framework;
 using Reko.Core;
-using Reko.Core.Lib;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Reko.Core.Collections;
 
-namespace Reko.UnitTests.Core.Lib
+namespace Reko.UnitTests.Core.Collections
 {
     [TestFixture]
     public class ByteTrieTests

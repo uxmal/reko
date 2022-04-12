@@ -24,12 +24,10 @@
  * 
  */
 
-#nullable enable
-
 using System;
 using System.Collections.Generic;
 
-namespace Reko.Core.Lib
+namespace Reko.Core.Collections
 {
 
     /**

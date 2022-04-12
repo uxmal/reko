@@ -25,7 +25,7 @@ using System.Collections.Specialized;
 using System.Linq;
 using System.Text;
 
-namespace Reko.Core.Lib
+namespace Reko.Core.Collections
 {
     /// <summary>
     /// Represents thread-safe collection that provides notifications

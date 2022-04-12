@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2022 John Källén.
  *
@@ -18,13 +18,12 @@
  */
 #endregion
 
-using Reko.Core.Lib;
 using NUnit.Framework;
+using Reko.Core.Collections;
 using System;
 using System.Collections.Generic;
-using System.Text;
 
-namespace Reko.UnitTests.Core.Lib
+namespace Reko.UnitTests.Core.Collections
 {
     [TestFixture]
     public class DequeueTests

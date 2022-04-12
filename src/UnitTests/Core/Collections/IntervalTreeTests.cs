@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2022 John Källén.
  *
@@ -19,13 +19,9 @@
 #endregion
 
 using NUnit.Framework;
-using Reko.Core.Lib;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using Reko.Core.Collections;
 
-namespace Reko.UnitTests.Core.Lib
+namespace Reko.UnitTests.Core.Collections
 {
     [TestFixture]
     public class IntervalTreeTests

@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* Copyright (C) 1999-2022 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
@@ -17,13 +17,10 @@
  */
 #endregion
 
-using Reko.Core.Lib;
 using NUnit.Framework;
-using System;
-using System.Collections.Generic;
-using System.Text;
+using Reko.Core.Collections;
 
-namespace Reko.UnitTests.Core.Lib
+namespace Reko.UnitTests.Core.Collections
 {
     [TestFixture]
     public class PriorityQueueTests
