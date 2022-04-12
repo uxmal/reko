@@ -46,14 +46,14 @@ namespace Reko.UnitTests.Decompiler.Scanning
             base.Setup();
         }
 
-        private void AssertConflicts(string sExp, IEnumerable<(Address, Address)> conflicts)
+        private void AssertConflicts(string sExp, IEnumerable<(RtlBlock, RtlBlock)> conflicts)
         {
             var sActual = conflicts
-                .OrderBy(c => c.Item1.ToLinear())
-                .ThenBy(c => c.Item2.ToLinear())
+                .OrderBy(c => c.Item1.Address.ToLinear())
+                .ThenBy(c => c.Item2.Address.ToLinear())
                 .Aggregate(
                     new StringBuilder(),
-                    (s, c) => s.AppendFormat("({0}-{1})", c.Item1.ToString(), c.Item2.ToString()).AppendLine())
+                    (s, c) => s.AppendFormat("({0}-{1})", c.Item1.Address, c.Item2.Address).AppendLine())
                 .ToString();
             if (sExp != sActual)
             {

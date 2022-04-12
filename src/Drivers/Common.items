@@ -46,6 +46,7 @@ by the PreBuild.targets file.
     <ProjectReference Include="$(SolutionDir)Arch\MSP430\MSP430.csproj" />
     <ProjectReference Include="$(SolutionDir)Arch\OpenRISC\OpenRISC.csproj" />
     <ProjectReference Include="$(SolutionDir)Arch\PaRisc\PaRisc.csproj" />
+    <ProjectReference Include="$(SolutionDir)Arch\Pdp10\Pdp10.csproj" />
     <ProjectReference Include="$(SolutionDir)Arch\Pdp11\Pdp11.csproj" />
     <ProjectReference Include="$(SolutionDir)Arch\PowerPC\PowerPC.csproj" />
     <ProjectReference Include="$(SolutionDir)Arch\Qualcomm\Qualcomm.csproj" />
