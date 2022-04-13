@@ -36201,7 +36201,7 @@ T_7464: (in 0<8> @ 00408C57 : byte)
   Class: Eq_7436
   DataType: int8
   OrigDataType: byte
-T_7465: (in v82_2141 @ 0040806D : bool)
+T_7465: (in v83_2141 @ 0040806D : bool)
   Class: Eq_7465
   DataType: bool
   OrigDataType: bool
@@ -36369,7 +36369,7 @@ T_7506: (in 0xA<u64> @ 0040809F : uint64)
   Class: Eq_7505
   DataType: uint64
   OrigDataType: uint64
-T_7507: (in CONVERT(v82_2141, bool, int8) @ 004080A6 : int8)
+T_7507: (in CONVERT(v83_2141, bool, int8) @ 004080A6 : int8)
   Class: Eq_7436
   DataType: int8
   OrigDataType: int8

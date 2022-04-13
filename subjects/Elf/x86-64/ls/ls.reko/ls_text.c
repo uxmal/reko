@@ -3673,11 +3673,11 @@ l00000000004080EF:
 								r13b_n = 0x00;
 								goto l00000000004080AA;
 							}
-							bool v82_n;
+							bool v83_n;
 							if (sil_n != 0x00)
 							{
 								int32 eax_n = fn0000000000411820(r14_n + 21, r12_n);
-								v82_n = eax_n != 0x00;
+								v83_n = eax_n != 0x00;
 								if (eax_n >= 0x00)
 								{
 l0000000000408093:
@@ -3686,7 +3686,7 @@ l0000000000408093:
 									uint64 rcx_n = 0x0A;
 									while (rcx_n != 0x00)
 									{
-										v82_n = *rsi_n != *rdi_n;
+										v83_n = *rsi_n != *rdi_n;
 										rsi_n = rsi_n + 1;
 										rdi_n = (word64) rdi_n + 1;
 										--rcx_n;
@@ -3695,14 +3695,14 @@ l0000000000408093:
 										if (*rsi_n == *rdi_n)
 											break;
 									}
-									r13b_n = (int8) v82_n;
+									r13b_n = (int8) v83_n;
 									goto l00000000004080AA;
 								}
 							}
 							else
 							{
 								int32 eax_n = fn0000000000411840(r14_n + 21, r12_n);
-								v82_n = eax_n != 0x00;
+								v83_n = eax_n != 0x00;
 								if (eax_n >= 0x00)
 									goto l0000000000408093;
 							}

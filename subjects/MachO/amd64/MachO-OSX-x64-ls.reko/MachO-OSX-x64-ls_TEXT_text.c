@@ -799,7 +799,7 @@ l0000000100002D4C:
 						{
 							getbsize();
 							Eq_n rax_n = g_t6548;
-							Mem590[0x0000000100006548<p64>:word64] = (rax_n >> 0x3F >>u 55) + rax_n >> 0x09;
+							Mem591[0x0000000100006548<p64>:word64] = (rax_n >> 0x3F >>u 55) + rax_n >> 0x09;
 						}
 					}
 					ptr64 rax_n;

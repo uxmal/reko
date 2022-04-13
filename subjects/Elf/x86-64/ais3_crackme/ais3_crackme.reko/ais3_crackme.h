@@ -74,9 +74,9 @@ Eq_148: (union "Eq_148" (int64 u0) (ptr64 u1))
 Eq_149: (union "Eq_149" (int64 u0) (ptr64 u1))
 	T_149 (in 0000000000600DF8 @ 00400650 : ptr64)
 Eq_155: (union "Eq_155" (int64 u0) (uint64 u1))
-	T_155 (in rbx_38 @ 0040066A : Eq_155)
+	T_155 (in rbx_39 @ 0040066A : Eq_155)
 	T_156 (in 0<u64> @ 0040066A : uint64)
-	T_162 (in rbx_38 + 1<64> @ 0040067D : word64)
+	T_162 (in rbx_39 + 1<64> @ 0040067D : word64)
 	T_163 (in rbp_19 >> 3<64> @ 00000000 : word64)
 // Type Variables ////////////
 globals_t: (in globals @ 00000000 : (ptr64 (struct "Globals")))
@@ -695,7 +695,7 @@ T_154: (in rbp_19 >> 3<64> == 0<64> @ 00000000 : bool)
   Class: Eq_154
   DataType: bool
   OrigDataType: bool
-T_155: (in rbx_38 @ 0040066A : Eq_155)
+T_155: (in rbx_39 @ 0040066A : Eq_155)
   Class: Eq_155
   DataType: Eq_155
   OrigDataType: word64
@@ -711,11 +711,11 @@ T_158: (in 8<64> @ 00400679 : word64)
   Class: Eq_158
   DataType: ui64
   OrigDataType: ui64
-T_159: (in rbx_38 * 8<64> @ 00000000 : word64)
+T_159: (in rbx_39 * 8<64> @ 00000000 : word64)
   Class: Eq_159
   DataType: ui64
   OrigDataType: ui64
-T_160: (in 0x0000000000600DF8<p64>[rbx_38 * 8<64>] @ 00400679 : word64)
+T_160: (in 0x0000000000600DF8<p64>[rbx_39 * 8<64>] @ 00400679 : word64)
   Class: Eq_160
   DataType: (ptr64 code)
   OrigDataType: (ptr64 code)
@@ -723,7 +723,7 @@ T_161: (in 1<64> @ 0040067D : word64)
   Class: Eq_161
   DataType: word64
   OrigDataType: word64
-T_162: (in rbx_38 + 1<64> @ 0040067D : word64)
+T_162: (in rbx_39 + 1<64> @ 0040067D : word64)
   Class: Eq_155
   DataType: Eq_155
   OrigDataType: uint64
@@ -731,7 +731,7 @@ T_163: (in rbp_19 >> 3<64> @ 00000000 : word64)
   Class: Eq_155
   DataType: Eq_155
   OrigDataType: int64
-T_164: (in rbx_38 != rbp_19 >> 3<64> @ 00000000 : bool)
+T_164: (in rbx_39 != rbp_19 >> 3<64> @ 00000000 : bool)
   Class: Eq_164
   DataType: bool
   OrigDataType: bool
