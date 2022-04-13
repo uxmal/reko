@@ -540,6 +540,14 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
+        public void ArmDasm_revsh()
+        {
+            // Note: this decoding is not strictly conforming with the
+            // ARM manual but ARM processors will execute it correctly.
+            AssertCode("revshhi\tr8,r9", "B9 86 FA 86");
+        }
+
+        [Test]
         public void ArmDasm_uxth()
         {
             Disassemble32(0xE6FF8070);

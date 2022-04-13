@@ -2448,7 +2448,7 @@ namespace Reko.Arch.Arm.AArch32
                 invalid,
                 Select(16, 0xF, n => n != 0xF, Instr(Mnemonic.uxtab, r(3),r(4),r(0),ShR(10,2)), Instr(Mnemonic.uxtb, r(3),r(0),ShR(10,2))),
                 Select(16, 0xF, n => n != 0xF, Instr(Mnemonic.uxtah, r(3),r(4),r(0),ShR(10,2)), Instr(Mnemonic.uxth, r(3),r(0),ShR(10,2))));
-            var ReverseBitByte = Mask(22, 1,
+            var ReverseBitByte = Mask(22, 1, "  Reverse bit/byte",
                 Mask(7, 1,
                     Instr(Mnemonic.rev, r(3),r(0)),
                     Instr(Mnemonic.rev16, r(3),r(0))),
@@ -2596,7 +2596,7 @@ namespace Reko.Arch.Arm.AArch32
                         invalid,
                         Saturate32Bit,
                         invalid),
-                    Mask(5, 3,
+                    Mask(5, 3, "  op1=01111",
                         Saturate32Bit,
                         ReverseBitByte,
                         Saturate32Bit,

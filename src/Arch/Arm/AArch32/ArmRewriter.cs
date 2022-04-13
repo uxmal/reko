@@ -1089,8 +1089,8 @@ namespace Reko.Arch.Arm.AArch32
             .Returns("T");
         private static readonly IntrinsicProcedure rev_intrinsic = new IntrinsicBuilder("__rev", false)
             .GenericTypes("T")
-            .Param(PrimitiveType.Word32)
-            .Returns(PrimitiveType.Word32);
+            .Param("T")
+            .Returns("T");
 
         private static readonly IntrinsicProcedure ssat16_intrinsic;
         private static readonly IntrinsicProcedure stc_intrinsic = new IntrinsicBuilder("__stc", true)
