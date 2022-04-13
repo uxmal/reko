@@ -986,15 +986,16 @@ namespace Reko.UnitTests.Arch.X86
                 m.Sar(m.dx, 4);
             });
             AssertCode(
-                "0|L--|0C00:0000(2): 2 instructions",
+                "0|L--|0C00:0000(2): 3 instructions",
                 "1|L--|ax = ax >> 1<16>",
-                "2|L--|SCZO = cond(ax)",
-                "3|L--|0C00:0002(2): 2 instructions",
-                "4|L--|bx = bx >> cl",
-                "5|L--|SCZO = cond(bx)",
-                "6|L--|0C00:0004(3): 2 instructions",
-                "7|L--|dx = dx >> 4<16>",
-                "8|L--|SCZO = cond(dx)");
+                "2|L--|SCZ = cond(ax)",
+                "3|L--|O = false",
+                "4|L--|0C00:0002(2): 2 instructions",
+                "5|L--|bx = bx >> cl",
+                "6|L--|SCZ = cond(bx)",
+                "7|L--|0C00:0004(3): 2 instructions",
+                "8|L--|dx = dx >> 4<16>",
+                "9|L--|SCZ = cond(dx)");
         }
 
         [Test]

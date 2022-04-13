@@ -10,12 +10,12 @@ l0C00_0005:
 	ax = ax - 3<16> >> 1<16>
 	// succ:  l0C00_000A
 l0C00_000A:
-	word16 ax_13 = ax *s ax
-	ax = ax_13
-	branch ax_13 != 0<16> l0C00_0005
+	word16 ax_14 = ax *s ax
+	ax = ax_14
+	branch ax_14 != 0<16> l0C00_0005
 	// succ:  l0C00_0011 l0C00_0005
 l0C00_0011:
-	Mem21[ds:0x200<16>:word16] = ax_13
+	Mem22[ds:0x200<16>:word16] = ax_14
 	return
 	// succ:  fn0C00_0000_exit
 fn0C00_0000_exit:
@@ -27,11 +27,11 @@ void fn0C00_0000(word16 ax, selector ds)
 l0C00_0005:
 		ax = ax - 3<16> >> 1<16>;
 	}
-	word16 ax_13 = ax *s ax;
-	ax = ax_13;
-	if (ax_13 == 0<16>)
+	word16 ax_14 = ax *s ax;
+	ax = ax_14;
+	if (ax_14 == 0<16>)
 	{
-		Mem21[ds:0x200<16>:word16] = ax_13;
+		Mem22[ds:0x200<16>:word16] = ax_14;
 		return;
 	}
 	goto l0C00_0005;

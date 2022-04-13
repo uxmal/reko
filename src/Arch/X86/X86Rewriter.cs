@@ -555,7 +555,7 @@ namespace Reko.Arch.X86
                 case Mnemonic.rsm: RewriteRsm(); break;
                 case Mnemonic.rsqrtps: RewritePackedUnaryop(rsqrtp_intrinsic, PrimitiveType.Real32); break;
                 case Mnemonic.sahf: m.Assign(binder.EnsureFlagGroup(X86Instruction.DefCc(instrCur.Mnemonic)!), orw.AluRegister(Registers.ah)); break;
-                case Mnemonic.sar: RewriteBinOp(m.Sar); break;
+                case Mnemonic.sar: RewriteSar(); break;
                 case Mnemonic.sarx: RewriteBinOp(m.Sar); break;
                 case Mnemonic.sbb: RewriteAdcSbb(m.ISub); break;
                 case Mnemonic.scas: RewriteStringInstruction(); break;
@@ -674,7 +674,7 @@ namespace Reko.Arch.X86
         /// This makes analysis easier for the subsequent phases of the 
         /// decompiler.
         /// </remarks>
-        public void EmitCopy(MachineOperand opDst, Expression src, CopyFlags flags)
+        public Expression EmitCopy(MachineOperand opDst, Expression src, CopyFlags flags)
         {
             Expression dst = SrcOp(opDst);
             if (dst is Identifier idDst)
@@ -693,6 +693,7 @@ namespace Reko.Arch.X86
             {
                 EmitCcInstr(dst, X86Instruction.DefCc(instrCur.Mnemonic));
             }
+            return dst;
         }
 
         private void AssignToRegister(Identifier idDst, Expression src)

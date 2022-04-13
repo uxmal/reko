@@ -360,7 +360,7 @@ namespace Reko.Arch.X86
                 m.Convert(orw.AluRegister(Registers.ax), PrimitiveType.Int16, PrimitiveType.Int32));
         }
 
-        public void EmitBinOp(Func<Expression,Expression,Expression> binOp, MachineOperand dst, DataType dtDst, Expression left, Expression right, CopyFlags flags)
+        public Expression EmitBinOp(Func<Expression,Expression,Expression> binOp, MachineOperand dst, DataType dtDst, Expression left, Expression right, CopyFlags flags)
         {
             if (right is Constant c)
             {
@@ -371,7 +371,7 @@ namespace Reko.Arch.X86
             }
             var bin = binOp(left, right);
             bin.DataType = dtDst;
-            EmitCopy(dst, bin, flags);
+            return EmitCopy(dst, bin, flags);
         }
 
         /// <summary>
@@ -1102,6 +1102,18 @@ namespace Reko.Arch.X86
             var dst = SrcOp(0);
             var rotation = Core.Intrinsics.CommonOps.Ror.MakeInstance(src1.DataType, src2.DataType);
             m.Assign(dst, m.Fn(rotation, src1, src2));
+        }
+
+        private void RewriteSar()
+        {
+            var src = SrcOp(1);
+            var dst = SrcOp(0);
+            var value = EmitBinOp(m.Sar, instrCur!.Operands[0], instrCur.dataWidth, dst, src, 0);
+            EmitCcInstr(value, Registers.SCZ);
+            if (src is Constant c && c.ToInt32() == 1)
+            {
+                m.Assign(binder.EnsureFlagGroup(Registers.O), Constant.False());
+            }
         }
 
         private void RewriteSet(ConditionCode cc)
