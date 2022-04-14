@@ -450,6 +450,7 @@ namespace Reko.Analysis
             // Go 'backwards' through aliasing slices until instruction
             // defining the carry flag is found.
             var sidCarry = ssaIds[(Identifier)rorc.Arguments[2]];
+            var sidOrigCarry = sidCarry;
             var sidsToKill = new HashSet<SsaIdentifier> { sidCarry };
             while (sidCarry.DefExpression is Slice slice)
             {
@@ -493,64 +494,24 @@ namespace Reko.Analysis
             var expShrSrc = shift.Left;
             var expRorSrc = rorc.Arguments[0];
 
-            foreach (var sid in sidsToKill)
-            {
-                ssa.DeleteStatement(sid.DefStatement!);
-                ssa.Identifiers.Remove(sid);
-            }
-
-            var tmpHi = ssa.Procedure.Frame.CreateTemporary(expShrSrc.DataType);
-            var sidTmpHi = ssaIds.Add(tmpHi, sidOrigHi.DefStatement, expShrSrc, false);
-            sidOrigHi.DefStatement!.Instruction = new Assignment(sidTmpHi.Identifier, expShrSrc);
-            sidOrigHi.DefExpression = expShrSrc;
-
-            var tmpLo = ssa.Procedure.Frame.CreateTemporary(expRorSrc.DataType);
-            var sidTmpLo = ssaIds.Add(tmpLo, sidOrigLo.DefStatement, expRorSrc, false);
-            sidOrigLo.DefStatement.Instruction = new Assignment(sidTmpLo.Identifier, expRorSrc);
-            sidOrigLo.DefExpression = expRorSrc;
-
-            var iRorc = block.Statements.IndexOf(sidOrigLo.DefStatement);
+            // inject a 'tmp = SEQ(hi, lo) >> 1' statement
+            var ssam = new SsaMutator(ssa);
             var dt = PrimitiveType.Create(domain, expShrSrc.DataType.BitSize + expRorSrc.DataType.BitSize);
             var tmp = ssa.Procedure.Frame.CreateTemporary(dt);
-            var expMkLongword = m.Shr(m.Seq(sidTmpHi.Identifier, sidTmpLo.Identifier), 1);
-            var sidTmp = ssaIds.Add(tmp, sidGrf!.DefStatement!, expMkLongword, false);
-            var stmTmp = block.Statements.Insert(iRorc + 1, sidOrigLo.DefStatement.LinearAddress,
-                new Assignment(sidTmp.Identifier, expMkLongword));
-            sidTmp.DefStatement = stmTmp;
-            sidTmpHi.Uses.Add(stmTmp);
-            sidTmpLo.Uses.Add(stmTmp);
+            var sidTmp = ssam.InsertAssignmentBefore(
+                tmp,
+                m.Shr(m.Seq(expShrSrc, expRorSrc), shift.Right),
+                sidOrigHi.DefStatement!);
 
-            ssa.RemoveUses(sidCarry.DefStatement!);
-            block.Statements.Remove(sidCarry.DefStatement!);
-            ssaIds.Remove(sidCarry);
+            // Replace the 'hi = SHR(...)' with 'hi = SLICE(...)'
+            var expHi = m.Slice(sidTmp.Identifier, sidOrigHi.Identifier.DataType, expRorSrc.DataType.BitSize);
+            ssam.ReplaceAssigment(sidOrigHi, new Assignment(sidOrigHi.Identifier, expHi));
+            sidOrigHi.DefExpression = expHi;
 
-            var expNewHi = m.Slice(
-                PrimitiveType.CreateWord(tmpHi.DataType.BitSize),
-                sidTmp.Identifier,
-                tmpLo.DataType.BitSize);
-            var stmNewHi = block.Statements.Insert(
-                iRorc + 2,
-                sidOrigHi.DefStatement.LinearAddress,
-                new Assignment(sidOrigHi.Identifier, expNewHi));
-            sidTmp.Uses.Add(stmNewHi);
-            sidOrigHi.DefStatement = stmNewHi;
-            sidOrigHi.DefExpression = expNewHi;
-
-            var expNewLo = m.Slice(
-                PrimitiveType.CreateWord(tmpLo.DataType.BitSize),
-                sidTmp.Identifier,
-                0);
-            var stmNewLo = block.Statements.Insert(
-                iRorc + 3,
-                sidOrigLo.DefStatement.LinearAddress,
-                new Assignment(sidOrigLo.Identifier, expNewLo));
-            sidTmp.Uses.Add(stmNewLo);
-            sidOrigLo.DefStatement = stmNewLo;
-            sidOrigLo.DefExpression = expNewLo;
-
-            sidGrf.DefExpression = null;
-            sidGrf.DefStatement = null;
-             
+            // Replace the 'lo = SHR(...)' with 'lo = SLICE(...)'
+            var expLo = m.Slice(sidTmp.Identifier, sidOrigLo.Identifier.DataType, 0);
+            ssam.ReplaceAssigment(sidOrigLo, new Assignment(sidOrigLo.Identifier, expLo));
+            sidOrigLo.DefExpression = expLo;
             return sidOrigLo.DefStatement.Instruction;
         }
 

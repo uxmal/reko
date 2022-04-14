@@ -1576,12 +1576,12 @@ byte fn1326(byte c, word16 hl, ptr16 & lOut)
 // Trashed: SZPC a c h l
 // Preserved: sp
 fn1326_entry:
-	word16 hl_28 = hl
+	word16 hl_26 = hl
 l1326:
-	uint16 v13 = hl_28 >>u 1<8>
-	byte l_14 = SLICE(v13, byte, 0)
+	uint16 v11_22 = hl_26 >>u 1<8>
+	byte l_14 = SLICE(v11_22, byte, 0)
 	c = c - 1<8>
-	hl_28 = v13 (alias)
+	hl_26 = v11_22 (alias)
 	branch c != 0<8> l1326
 l1331:
 	lOut = l_14

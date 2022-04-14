@@ -160,7 +160,7 @@ namespace Reko.UnitTests.Decompiler.Analysis
                 ssa.Procedure.Write(false, writer);
                 writer.WriteLine();
 
-                ssa.Validate(s => { ssa.Dump(true); Assert.Fail(s); });
+                ssa.Validate(s => { ssa.Write(Console.Out); ssa.Dump(true); Assert.Fail(s); });
             }
         }
 
@@ -674,10 +674,10 @@ m1Loop:
 	c_16 = PHI((c, l1), (c_17, m1Loop))
 	l_11 = PHI((l, l1), (l_15, m1Loop))
 	h_3 = PHI((h, l1), (h_10, m1Loop))
+	v11_25 = SEQ(h_3, l_11) >>u 1<8>
+	a_8 = SLICE(v11_25, byte, 8)
 	h_10 = a_8
-	v13 = SEQ(h_3, l_11) >>u 1<8>
-	a_8 = SLICE(v13, byte, 8)
-	a_13 = SLICE(v13, byte, 0)
+	a_13 = SLICE(v11_25, byte, 0)
 	l_15 = a_13
 	c_17 = c_16 - 1<8>
 	branch c_17 != 0<8> m1Loop
@@ -864,19 +864,19 @@ ProcedureBuilder_exit:
 	def c
 	// succ:  l1
 l1:
-	v9_16 = h
-	v10_17 = l
-	v12_19 = SEQ(v9_16, v10_17)
-	h_1 = SLICE(v11, byte, 8)
-	l_1 = SLICE(v11, byte, 0)
-	v13_20 = b
-	v15_22 = SEQ(v12_19, v13_20)
-	v11 = SLICE(v14, word16, 8)
-	b = SLICE(v14, byte, 0)
-	v16_23 = c
-	v17 = SEQ(v15_22, v16_23) >>u 1<8>
-	v14 = SLICE(v17, word24, 8)
-	c_1 = SLICE(v17, byte, 0)
+	v11_18 = SEQ(SEQ(SEQ(h, l), b), c) >>u 1<8>
+	v10_17 = SLICE(v11_18, uint24, 8)
+	v9_16 = SLICE(v10_17, uint16, 8)
+	h_1 = SLICE(v9_16, byte, 8)
+	SZC_1 = cond(h_1)
+	C_1 = SLICE(SZC_1, bool, 0) (alias)
+	l_1 = SLICE(v9_16, byte, 0)
+	SZC_2 = cond(l_1)
+	C_2 = SLICE(SZC_2, bool, 0) (alias)
+	b = SLICE(v10_17, byte, 0)
+	SZC_3 = cond(b)
+	C_3 = SLICE(SZC_3, bool, 0) (alias)
+	c_1 = SLICE(v11_18, byte, 0)
 	SZC_4 = cond(c_1)
 	return
 	// succ:  SsaProcedureBuilder_exit
@@ -1068,6 +1068,53 @@ ProcedureBuilder_exit:
                 m.Return();
 
                 m.Use(SCZO);
+            });
+        }
+
+        [Test]
+        public void CceForceFlagAlive()
+        {
+            var sExp =
+            #region Expected
+@"// ProcedureBuilder
+// Return size: 0
+define ProcedureBuilder
+ProcedureBuilder_entry:
+	def dx
+	def ax
+	// succ:  l1
+l1:
+	v7_9 = SEQ(dx, ax) >>u 1<16>
+	dx_2 = SLICE(v7_9, word16, 16)
+	ax_6 = SLICE(v7_9, word16, 0)
+	Mem7[0x1234<16>:word16] = ax_6
+	Mem8[0x1236<16>:word16] = dx_2
+	return
+	// succ:  ProcedureBuilder_exit
+ProcedureBuilder_exit:
+
+";
+            #endregion
+
+            RunStringTest(sExp, m =>
+            {
+                var ax = m.Reg16("ax", 0);
+                var dx = m.Reg16("dx", 2);
+                var psw = new RegisterStorage("psw", 2, 0, PrimitiveType.Word16);
+                var CF = m.Frame.EnsureFlagGroup(new FlagGroupStorage(psw, 1, "C", PrimitiveType.Bool));
+                var SF = m.Frame.EnsureFlagGroup(new FlagGroupStorage(psw, 8, "S", PrimitiveType.Bool));
+                var SCZO = m.Frame.EnsureFlagGroup(new FlagGroupStorage(psw, 0xF, "SCZO", PrimitiveType.Word16));
+
+                m.Assign(dx, m.Sar(dx, 1));
+                m.Assign(SCZO, m.Cond(dx));
+                m.Assign(ax, RorC(ax, m.Word16(1), CF));
+                m.MStore(m.Word16(0x1234), ax);
+                m.MStore(m.Word16(0x1236), dx);
+                m.Return();
+
+                m.Use(ax);
+                m.Use(dx);
+                m.Use(SF);
             });
         }
     }

@@ -767,7 +767,7 @@ l06B0:
 	{
 		uint32 r2_r3_n;
 		r1_n <<= 1;
-		r4_r5_n >>= 0x01;
+		r4_r5_n >>= 1;
 		bool C_n = (bool) cond(r1_n);
 		if (r1_n == 0x00)
 			break;
@@ -789,7 +789,7 @@ l0700:
 		wArg04 = r4_n;
 		Eq_n r3_n = (word16) r2_r3_n;
 		Eq_n r2_n = SLICE(r2_r3_n, word16, 16);
-		r4_r5_n >>= 0x01;
+		r4_r5_n >>= 1;
 		r0_n <<= 1;
 		if (r0_n < 0x00)
 			goto l0700;

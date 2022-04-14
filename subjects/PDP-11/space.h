@@ -343,7 +343,7 @@ Eq_18: (union "Eq_18" (byte u0) ((ptr16 (ptr16 (ptr16 code))) u1) ((ptr16 Eq_486
 	T_329 (in r0_43 @ 00000694 : Eq_18)
 	T_330 (in SLICE(v48_257, word16, 16) @ 00000694 : word16)
 	T_331 (in r5_46 @ 00000696 : Eq_18)
-	T_339 (in __rcl<word16,byte>(r5, 1<8>, (SLICE(r0_r1_323, word16, 16) & 0x8000<16>) != 0<16>) @ 00000696 : word16)
+	T_339 (in __rcl<word16,byte>(r5, 1<8>, (SLICE(r0_r1_319, word16, 16) & 0x8000<16>) != 0<16>) @ 00000696 : word16)
 	T_340 (in 0<16> @ 0000069A : word16)
 	T_345 (in r2_53 @ 0000069C : Eq_18)
 	T_347 (in r2_18 << 1<i16> @ 00000000 : word16)
@@ -368,9 +368,9 @@ Eq_18: (union "Eq_18" (byte u0) ((ptr16 (ptr16 (ptr16 code))) u1) ((ptr16 Eq_486
 	T_420 (in r1_104 @ 000006E2 : Eq_18)
 	T_423 (in SEQ(SLICE(r1_99, byte, 8), 0<8>) @ 000006E2 : word16)
 	T_438 (in r0_124 @ 000006FC : Eq_18)
-	T_440 (in r0_338 @ 000006FC : word16)
-	T_443 (in __rcl<word16,byte>(r0_338, 1<8>, C_123) @ 000006FC : word16)
-	T_450 (in __rcl<word16,byte>(r0_338, 1<8>, C_123) @ 000006F0 : word16)
+	T_440 (in r0_334 @ 000006FC : word16)
+	T_443 (in __rcl<word16,byte>(r0_334, 1<8>, C_123) @ 000006FC : word16)
+	T_450 (in __rcl<word16,byte>(r0_334, 1<8>, C_123) @ 000006F0 : word16)
 	T_457 (in r1_104 << 1<i16> @ 00000000 : word16)
 	T_462 (in 0<16> @ 000006EE : word16)
 	T_473 (in r3_166 @ 00000706 : Eq_18)
@@ -2907,7 +2907,7 @@ T_317: (in r3_19 @ 00000680 : Eq_18)
   Class: Eq_18
   DataType: Eq_18
   OrigDataType: word16
-T_318: (in r0_r1_323 @ 0000068E : ui32)
+T_318: (in r0_r1_319 @ 0000068E : ui32)
   Class: Eq_318
   DataType: ui32
   OrigDataType: ui32
@@ -2939,7 +2939,7 @@ T_325: (in 1<8> @ 00000692 : byte)
   Class: Eq_325
   DataType: byte
   OrigDataType: byte
-T_326: (in r0_r1_323 << 1<8> @ 00000000 : uipr32)
+T_326: (in r0_r1_319 << 1<8> @ 00000000 : uipr32)
   Class: Eq_324
   DataType: ui32
   OrigDataType: ui32
@@ -2971,7 +2971,7 @@ T_333: (in 1<8> @ 00000696 : byte)
   Class: Eq_93
   DataType: byte
   OrigDataType: byte
-T_334: (in SLICE(r0_r1_323, word16, 16) @ 00000696 : word16)
+T_334: (in SLICE(r0_r1_319, word16, 16) @ 00000696 : word16)
   Class: Eq_334
   DataType: cui16
   OrigDataType: cui16
@@ -2979,7 +2979,7 @@ T_335: (in 0x8000<16> @ 00000696 : word16)
   Class: Eq_335
   DataType: cui16
   OrigDataType: cui16
-T_336: (in SLICE(r0_r1_323, word16, 16) & 0x8000<16> @ 00000000 : word16)
+T_336: (in SLICE(r0_r1_319, word16, 16) & 0x8000<16> @ 00000000 : word16)
   Class: Eq_336
   DataType: cui16
   OrigDataType: cui16
@@ -2987,11 +2987,11 @@ T_337: (in 0<16> @ 00000696 : word16)
   Class: Eq_336
   DataType: cui16
   OrigDataType: word16
-T_338: (in (SLICE(r0_r1_323, word16, 16) & 0x8000<16>) != 0<16> @ 00000000 : bool)
+T_338: (in (SLICE(r0_r1_319, word16, 16) & 0x8000<16>) != 0<16> @ 00000000 : bool)
   Class: Eq_74
   DataType: bool
   OrigDataType: bool
-T_339: (in __rcl<word16,byte>(r5, 1<8>, (SLICE(r0_r1_323, word16, 16) & 0x8000<16>) != 0<16>) @ 00000696 : word16)
+T_339: (in __rcl<word16,byte>(r5, 1<8>, (SLICE(r0_r1_319, word16, 16) & 0x8000<16>) != 0<16>) @ 00000696 : word16)
   Class: Eq_18
   DataType: Eq_18
   OrigDataType: word16
@@ -3331,7 +3331,7 @@ T_423: (in SEQ(SLICE(r1_99, byte, 8), 0<8>) @ 000006E2 : word16)
   Class: Eq_18
   DataType: Eq_18
   OrigDataType: word16
-T_424: (in r4_r5_326 @ 000006E8 : uint32)
+T_424: (in r4_r5_322 @ 000006E8 : uint32)
   Class: Eq_424
   DataType: uint32
   OrigDataType: uint32
@@ -3395,7 +3395,7 @@ T_439: (in __rcl<word16,byte> @ 000006FC : ptr32)
   Class: Eq_90
   DataType: (ptr32 Eq_90)
   OrigDataType: (ptr32 (fn T_443 (T_440, T_441, T_442)))
-T_440: (in r0_338 @ 000006FC : word16)
+T_440: (in r0_334 @ 000006FC : word16)
   Class: Eq_18
   DataType: Eq_18
   OrigDataType: cui16
@@ -3407,7 +3407,7 @@ T_442: (in C_123 @ 000006FC : bool)
   Class: Eq_74
   DataType: bool
   OrigDataType: bool
-T_443: (in __rcl<word16,byte>(r0_338, 1<8>, C_123) @ 000006FC : word16)
+T_443: (in __rcl<word16,byte>(r0_334, 1<8>, C_123) @ 000006FC : word16)
   Class: Eq_18
   DataType: Eq_18
   OrigDataType: word16
@@ -3415,7 +3415,7 @@ T_444: (in 0x8000<16> @ 000006FE : word16)
   Class: Eq_444
   DataType: cui16
   OrigDataType: cui16
-T_445: (in r0_338 & 0x8000<16> @ 00000000 : word16)
+T_445: (in r0_334 & 0x8000<16> @ 00000000 : word16)
   Class: Eq_445
   DataType: cui16
   OrigDataType: cui16
@@ -3423,7 +3423,7 @@ T_446: (in 0<16> @ 000006FE : word16)
   Class: Eq_445
   DataType: cui16
   OrigDataType: word16
-T_447: (in (r0_338 & 0x8000<16>) != 0<16> @ 00000000 : bool)
+T_447: (in (r0_334 & 0x8000<16>) != 0<16> @ 00000000 : bool)
   Class: Eq_447
   DataType: bool
   OrigDataType: bool
@@ -3435,7 +3435,7 @@ T_449: (in 1<8> @ 000006F0 : byte)
   Class: Eq_93
   DataType: byte
   OrigDataType: byte
-T_450: (in __rcl<word16,byte>(r0_338, 1<8>, C_123) @ 000006F0 : word16)
+T_450: (in __rcl<word16,byte>(r0_334, 1<8>, C_123) @ 000006F0 : word16)
   Class: Eq_18
   DataType: Eq_18
   OrigDataType: word16
@@ -3447,7 +3447,7 @@ T_452: (in 0x8000<16> @ 000006F2 : word16)
   Class: Eq_452
   DataType: cui16
   OrigDataType: cui16
-T_453: (in r0_338 & 0x8000<16> @ 00000000 : word16)
+T_453: (in r0_334 & 0x8000<16> @ 00000000 : word16)
   Class: Eq_453
   DataType: cui16
   OrigDataType: cui16
@@ -3455,7 +3455,7 @@ T_454: (in 0<16> @ 000006F2 : word16)
   Class: Eq_453
   DataType: cui16
   OrigDataType: word16
-T_455: (in (r0_338 & 0x8000<16>) != 0<16> @ 00000000 : bool)
+T_455: (in (r0_334 & 0x8000<16>) != 0<16> @ 00000000 : bool)
   Class: Eq_455
   DataType: bool
   OrigDataType: bool
@@ -3467,11 +3467,11 @@ T_457: (in r1_104 << 1<i16> @ 00000000 : word16)
   Class: Eq_18
   DataType: Eq_18
   OrigDataType: ui16
-T_458: (in 1<8> @ 000006EA : byte)
+T_458: (in 1<i16> @ 000006E8 : int16)
   Class: Eq_458
-  DataType: byte
-  OrigDataType: byte
-T_459: (in r4_r5_326 >> 1<8> @ 00000000 : uipr32)
+  DataType: int16
+  OrigDataType: int16
+T_459: (in r4_r5_322 >> 1<i16> @ 00000000 : uipr32)
   Class: Eq_424
   DataType: uint32
   OrigDataType: uint32
@@ -3491,7 +3491,7 @@ T_463: (in r1_104 == 0<16> @ 00000000 : bool)
   Class: Eq_463
   DataType: bool
   OrigDataType: bool
-T_464: (in r2_r3_252 + r4_r5_326 @ 00000000 : ui32)
+T_464: (in r2_r3_252 + r4_r5_322 @ 00000000 : ui32)
   Class: Eq_428
   DataType: uint32
   OrigDataType: uint32
@@ -3543,11 +3543,11 @@ T_476: (in SLICE(r2_r3_252, word16, 16) @ 00000706 : word16)
   Class: Eq_18
   DataType: Eq_18
   OrigDataType: word16
-T_477: (in 1<8> @ 00000708 : byte)
+T_477: (in 1<i16> @ 00000706 : int16)
   Class: Eq_477
-  DataType: byte
-  OrigDataType: byte
-T_478: (in r4_r5_326 >> 1<8> @ 00000000 : uipr32)
+  DataType: int16
+  OrigDataType: int16
+T_478: (in r4_r5_322 >> 1<i16> @ 00000000 : uipr32)
   Class: Eq_424
   DataType: uint32
   OrigDataType: uint32
@@ -3567,7 +3567,7 @@ T_482: (in r0_124 < 0<16> @ 00000000 : bool)
   Class: Eq_482
   DataType: bool
   OrigDataType: bool
-T_483: (in r2_r3_252 + r4_r5_326 @ 00000000 : ui32)
+T_483: (in r2_r3_252 + r4_r5_322 @ 00000000 : ui32)
   Class: Eq_428
   DataType: uint32
   OrigDataType: uint32
