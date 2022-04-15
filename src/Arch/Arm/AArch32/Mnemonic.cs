@@ -257,6 +257,7 @@ namespace Reko.Arch.Arm.AArch32
         vqneg,
         vqrdmlah,
         vqrdmlsh,
+        vqrdmulh,
         vqrshl,
         vqrshrn,
         vqrshrun,

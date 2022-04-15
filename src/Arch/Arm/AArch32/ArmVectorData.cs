@@ -46,6 +46,9 @@ namespace Reko.Arch.Arm.AArch32
         F32,
         F64,
 
+        P8,
+        P64,
+
         S16F16,
         S16F32,
         S16F64,

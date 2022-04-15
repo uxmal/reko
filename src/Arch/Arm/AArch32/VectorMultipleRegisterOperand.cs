@@ -66,7 +66,7 @@ namespace Reko.Arch.Arm.AArch32
         {
             renderer.WriteChar('{');
             var sep = "";
-            if (Repeat >= 3 && iRegStart + Repeat <= 0x20)
+            if (Repeat >= 3 && iRegStart + Repeat <= 0x20 && Increment == 1)
             {
                 WriteName(registers[iRegStart], AllLanes, renderer, options);
                 renderer.WriteChar('-');
