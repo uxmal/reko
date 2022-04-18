@@ -40,7 +40,6 @@ namespace Reko.ImageLoaders.MzExe.Pe
         public override void ApplyRelocation(Address baseOfImage, uint page, EndianImageReader rdr, RelocationDictionary relocations)
         {
             rdr.ReadUInt16();
-            return;
         }
     }
 }

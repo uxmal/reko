@@ -648,7 +648,7 @@ void applyRelX86(uint8_t* Off, uint16_t Type, Defined* Sym,
                 if (page == 0 || cbBlock == 0)
                     break;
 				uint offBlockEnd = (uint)((int)rdr.Offset + cbBlock - 8);
-				while (rdr.Offset < offBlockEnd)
+				while (rdr.IsValidOffset(rdr.Offset) && rdr.Offset < offBlockEnd)
 				{
 					relocator.ApplyRelocation(baseOfImage, page, rdr, relocations);
 				}
@@ -678,13 +678,17 @@ void applyRelX86(uint8_t* Off, uint16_t Type, Defined* Sym,
             if (rvaILT == 0 && dllName == null)
                 return false;
 
-            EndianImageReader rdrIlt = imgLoaded.CreateLeReader(rvaILT!=0 ? rvaILT:rvaIAT);
+            var iatOffset = rvaILT != 0 ? rvaILT : rvaIAT;
+            EndianImageReader rdrIlt = imgLoaded.CreateLeReader(iatOffset);
+            if (!rdrIlt.IsValidOffset(iatOffset))
+            {
+                return false;
+            }
             EndianImageReader rdrIat = imgLoaded.CreateLeReader(rvaIAT);
             while (true)
             {
                 var addrIat = rdrIat.Address;
                 var addrIlt = rdrIlt.Address;
-
                 var (impRef, bitSize) = innerLoader.ResolveImportDescriptorEntry(imgLoaded, dllName!, rdrIlt, rdrIat);
                 if (impRef == null)
                     break;
