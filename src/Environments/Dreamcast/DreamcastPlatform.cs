@@ -52,11 +52,6 @@ namespace Reko.Environments.Dreamcast
             throw new NotImplementedException();
         }
 
-        public override ProcedureBase GetTrampolineDestination(Address addrInstr, IEnumerable<RtlInstruction> instrs, IRewriterHost host)
-        {
-            throw new NotImplementedException();
-        }
-
         public override ExternalProcedure LookupProcedureByName(string? moduleName, string procName)
         {
             throw new NotImplementedException();

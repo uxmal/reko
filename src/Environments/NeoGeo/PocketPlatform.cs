@@ -51,11 +51,6 @@ namespace Reko.Environments.NeoGeo
             throw new NotImplementedException();
         }
 
-        public override ProcedureBase? GetTrampolineDestination(Address addrInstr, IEnumerable<RtlInstruction> instrs, IRewriterHost host)
-        {
-            return null;
-        }
-
         public override ExternalProcedure LookupProcedureByName(string? moduleName, string procName)
         {
             throw new NotImplementedException();

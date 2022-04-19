@@ -75,11 +75,6 @@ namespace Reko.Environments.Windows
             throw new NotImplementedException("INT services are not supported by " + this.GetType().Name);
         }
 
-        public override ProcedureBase? GetTrampolineDestination(Address addrInstr, IEnumerable<RtlInstruction> rtls, IRewriterHost host)
-        {
-            return null;
-        }
-
         public override int GetBitSizeFromCBasicType(CBasicType cb)
         {
             switch (cb)

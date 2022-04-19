@@ -67,11 +67,6 @@ namespace Reko.Environments.Windows
 			return null;
 		}
 
-		public override ProcedureBase? GetTrampolineDestination(Address addrInstr, IEnumerable<RtlInstruction> rtls, IRewriterHost host)
-		{
-			return null;
-		}
-
 		public override int GetBitSizeFromCBasicType(CBasicType cb)
 		{
 			switch (cb)

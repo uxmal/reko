@@ -137,6 +137,32 @@ namespace Reko.Environments.Windows
         /// <param name="insts"></param>
         /// <param name="host"></param>
         /// <returns></returns>
+        public override ProcedureBase? GetTrampolineDestination(Address addrInstr, List<RtlInstructionCluster> instrs, IRewriterHost host)
+        {
+            if (instrs.Count < 3)
+                return null;
+
+            for (int i = 0; i < 3; ++i)
+            {
+                if (!trampPattern[i].Match(instrs[instrs.Count-3 + i].Instructions[0]))
+                    return null;
+            }
+            if (trampPattern[0].CapturedExpressions("r0d") != trampPattern[1].CapturedExpressions("r1s"))
+                return null;
+            if (trampPattern[1].CapturedExpressions("r1d") != trampPattern[2].CapturedExpressions("r2s"))
+                return null;
+            var hi = (Constant)trampPattern[0].CapturedExpressions("hi")!;
+            var lo = (Constant)trampPattern[1].CapturedExpressions("lo")!;
+            var c = Operator.IAdd.ApplyConstants(hi, lo);
+            var addrTarget = MakeAddressFromConstant(c, false);
+            if (addrTarget is null)
+                return null;
+            ProcedureBase? proc = host.GetImportedProcedure(this.Architecture, addrTarget, addrInstr);
+            if (proc is not null)
+                return proc;
+            return host.GetInterceptedCall(this.Architecture, addrTarget);
+        }
+
         public override ProcedureBase? GetTrampolineDestination(Address addrInstr, IEnumerable<RtlInstruction> rtls, IRewriterHost host)
         {
             var instrs = rtls

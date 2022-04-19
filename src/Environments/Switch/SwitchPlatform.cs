@@ -61,12 +61,6 @@ namespace Reko.Environments.Switch
             throw new NotImplementedException();
         }
 
-        public override ProcedureBase? GetTrampolineDestination(Address addrInstr, IEnumerable<RtlInstruction> rdr, IRewriterHost host)
-        {
-            //$TODO: for now we don't attempt to locate trampolines.
-            return null;
-        }
-
         public override ExternalProcedure? LookupProcedureByName(string? moduleName, string procName)
         {
             throw new NotImplementedException();

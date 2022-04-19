@@ -40,6 +40,18 @@ namespace Reko.Environments.MacOS.OSX.ArchSpecific
             return new X86_64CallingConvention(arch);
         }
 
+        public override Expression? GetTrampolineDestination(Address addrInstr, List<RtlInstructionCluster> instrs, IRewriterHost host)
+        {
+            if (instrs.Count < 1)
+                return null;
+            if (instrs[^1].Instructions[0] is RtlGoto jmp &&
+                jmp.Target is ProcedureConstant con)
+            {
+                return con;
+            }
+            return null;
+        }
+
         public override Expression? GetTrampolineDestination(Address addrInstr, IEnumerable<RtlInstruction> instrs, IRewriterHost host)
         {
             var rtl = instrs.Take(1).ToArray();

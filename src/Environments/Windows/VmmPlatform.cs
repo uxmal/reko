@@ -85,11 +85,6 @@ namespace Reko.Environments.Windows
             throw new NotImplementedException();
         }
 
-        public override ProcedureBase? GetTrampolineDestination(Address addrInstr, IEnumerable<RtlInstruction> instrs, IRewriterHost host)
-        {
-            return base.GetTrampolineDestination(addrInstr, instrs, host);
-        }
-
         public override ExternalProcedure LookupProcedureByName(string? moduleName, string procName)
         {
             throw new NotImplementedException();

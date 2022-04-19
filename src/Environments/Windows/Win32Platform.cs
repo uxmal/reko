@@ -254,6 +254,33 @@ namespace Reko.Environments.Windows
             return null;
         }
 
+        public override ProcedureBase? GetTrampolineDestination(Address addrInstr, List<RtlInstructionCluster> instrs, IRewriterHost host)
+        {
+            if (instrs.Count < 1)
+                return null;
+            if (instrs[^1].Instructions[^1] is not RtlGoto jump)
+                return null;
+            if (jump.Target is ProcedureConstant pc)
+                return pc.Procedure;
+            if (jump.Target is not MemoryAccess access)
+                return null;
+            var addrTarget = access.EffectiveAddress as Address;
+            if (addrTarget is null)
+            {
+                if (access.EffectiveAddress is not Constant wAddr)
+                {
+                    return null;
+                }
+                addrTarget = MakeAddressFromConstant(wAddr, true);
+                if (addrTarget is null)
+                    return null;
+            }
+            ProcedureBase? proc = host.GetImportedProcedure(this.Architecture, addrTarget,  addrInstr);
+            if (proc is not null)
+                return proc;
+            return host.GetInterceptedCall(this.Architecture, addrTarget);
+        }
+
         public override ProcedureBase? GetTrampolineDestination(Address addrInstr, IEnumerable<RtlInstruction> rdr, IRewriterHost host)
         {
             var instr = rdr.FirstOrDefault();

@@ -107,9 +107,29 @@ namespace Reko.Environments.SysV
             }
         }
 
-        public override ProcedureBase? GetTrampolineDestination(Address addrInstr, IEnumerable<RtlInstruction> rw, IRewriterHost host)
+        public override ProcedureBase? GetTrampolineDestination(Address addrInstr, List<RtlInstructionCluster> rw, IRewriterHost host)
         {
             var finder = archSpecificFactory.CreateTrampolineDestinationFinder(this.Architecture);
+            var target = finder(Architecture, addrInstr, rw, host);
+            if (target is ProcedureConstant pc)
+            {
+                return pc.Procedure;
+            }
+            else if (target is Address addrTarget)
+            {
+                var arch = this.Architecture;
+                ProcedureBase? proc = host.GetImportedProcedure(arch, addrTarget, addrInstr);
+                if (proc != null)
+                    return proc;
+                return host.GetInterceptedCall(arch, addrTarget);
+            }
+            else
+                return null;
+        }
+
+        public override ProcedureBase? GetTrampolineDestination(Address addrInstr, IEnumerable<RtlInstruction> rw, IRewriterHost host)
+        {
+            var finder = archSpecificFactory.CreateTrampolineDestinationFinderOld(this.Architecture);
             var target = finder(Architecture, addrInstr, rw, host);
             if (target is ProcedureConstant pc)
             {

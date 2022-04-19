@@ -82,7 +82,7 @@ namespace Reko.Environments.Ps3
             }
         }
 
-        public override ProcedureBase? GetTrampolineDestination(Address addrInstr, IEnumerable<RtlInstruction> rdr, IRewriterHost host)
+        public override ProcedureBase? GetTrampolineDestination(Address addrInstr, List<RtlInstructionCluster> rdr, IRewriterHost host)
         {
             var dasm = rdr.Take(8).ToArray();
             if (dasm.Length < 8)

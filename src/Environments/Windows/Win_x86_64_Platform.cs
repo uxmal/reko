@@ -158,6 +158,36 @@ namespace Reko.Environments.Windows
             }
         }
 
+        public override ProcedureBase? GetTrampolineDestination(Address addrInstr, List<RtlInstructionCluster> instrs, IRewriterHost host)
+        {
+            if (instrs.Count < 1)
+                return null;
+            var instr = instrs[0].Instructions[0];
+            if (instr is not RtlGoto jump)
+                return null;
+            if (jump.Target is ProcedureConstant pc)
+                return pc.Procedure;
+            if (jump.Target is not MemoryAccess access)
+                return null;
+
+            //$REFACTOR: the following code is identical to Win32MipsPlatform / Win32Platform
+            var addrTarget = access.EffectiveAddress as Address;
+            if (addrTarget is null)
+            {
+                if (access.EffectiveAddress is not Constant wAddr)
+                {
+                    return null;
+                }
+                addrTarget = MakeAddressFromConstant(wAddr, false);
+                if (addrTarget is null)
+                    return null;
+            }
+            ProcedureBase? proc = host.GetImportedProcedure(this.Architecture, addrTarget, addrInstr);
+            if (proc is not null)
+                return proc;
+            return host.GetInterceptedCall(this.Architecture, addrTarget);
+        }
+
         public override ProcedureBase? GetTrampolineDestination(Address addrInstr, IEnumerable<RtlInstruction> rw, IRewriterHost host)
         {
             var instr = rw.FirstOrDefault();

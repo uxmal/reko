@@ -40,6 +40,8 @@ namespace Reko.Environments.MacOS.OSX.ArchSpecific
             throw new NotSupportedException($"A MacOS X handler for the {arch.Description} has not been implemented yet.");
         }
 
+        public abstract Expression? GetTrampolineDestination(Address addrInstr, List<RtlInstructionCluster> instrs, IRewriterHost host);
+
         public abstract Expression? GetTrampolineDestination(Address addrInstr, IEnumerable<RtlInstruction> instrs, IRewriterHost host);
 
         public abstract CallingConvention? GetCallingConvention(string? ccName);

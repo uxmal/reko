@@ -185,7 +185,7 @@ namespace Reko.Environments.Windows
             }
         }
 
-        public override ProcedureBase? GetTrampolineDestination(Address addrInstr, IEnumerable<RtlInstruction> instrs, IRewriterHost host)
+        public override ProcedureBase? GetTrampolineDestination(Address addrInstr, List<RtlInstructionCluster> instrs, IRewriterHost host)
         {
             //00011644 E59FC000 ldr ip,[0001164C]                                                           ;[pc]
             //00011648 E59CF000 ldr pc,[ip]
@@ -215,6 +215,10 @@ namespace Reko.Environments.Windows
             var cl = instrs.Take(3).ToArray();
             return null;
         }
+
+        public override ProcedureBase? GetTrampolineDestination(Address addrInstr, IEnumerable<RtlInstruction> instrs, IRewriterHost host)
+            => null;
+
 
         public override ExternalProcedure? LookupProcedureByName(string? moduleName, string procName)
         {

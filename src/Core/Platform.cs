@@ -422,7 +422,7 @@ namespace Reko.Core
         /// </summary>
         /// <param name="ccName">Name of the calling convention.</param>
         public abstract CallingConvention? GetCallingConvention(string? ccName);
-        
+
         /// <summary>
         /// Creates an empty imagemap based on the absolute memory map. It is 
         /// the caller's responsibility to fill in the MemoryArea properties
@@ -553,8 +553,11 @@ namespace Reko.Core
         /// trampoline, returns the procedure where the destination is located, otherwise
         /// returns null.
         /// </summary>
-        /// <param name="imageReader"></param>
-        /// <returns></returns>
+        public virtual ProcedureBase? GetTrampolineDestination(Address addrInstr, List<RtlInstructionCluster> clusters, IRewriterHost host)
+        {
+            return null;
+        }
+
         public virtual ProcedureBase? GetTrampolineDestination(Address addrInstr, IEnumerable<RtlInstruction> instrs, IRewriterHost host)
         {
             return null;

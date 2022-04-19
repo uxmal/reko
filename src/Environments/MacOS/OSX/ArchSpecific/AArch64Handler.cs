@@ -41,6 +41,53 @@ namespace Reko.Environments.MacOS.OSX.ArchSpecific
             return arch.GetCallingConvention(ccName);
         }
 
+        public override Expression? GetTrampolineDestination(Address addrInstr, List<RtlInstructionCluster> instrs, IRewriterHost host)
+        {
+            // adrp x16,#&100004000
+            // ldr x16,[x16+8]
+            // br x16
+            if (instrs.Count < 3)
+                return null;
+
+            if (instrs[^3].Instructions[0] is RtlAssignment ass &&
+                ass.Dst is Identifier idPage &&
+                ass.Src is Address addrPage &&
+                idPage.Name == "x16")
+            {
+            }
+            else return null;
+
+            Address addr;
+            if (instrs[^2].Instructions[0] is RtlAssignment load &&
+                load.Dst is Identifier ptrGotSlot &&
+                load.Src is MemoryAccess gotslot)
+            {
+                if (gotslot.EffectiveAddress is BinaryExpression bin &&
+                    bin.Operator == Operator.IAdd &&
+                    bin.Left == idPage &&
+                    bin.Right is Constant offset)
+                {
+                    addr = addrPage + offset.ToInt64();
+                }
+                else if (gotslot.EffectiveAddress is Identifier idEa &&
+                     idEa == idPage)
+                {
+                    addr = addrPage;
+                }
+                else
+                    return null;
+            }
+            else
+                return null;
+
+            if (instrs[^1].Instructions[0] is RtlGoto g &&
+                g.Target == ptrGotSlot)
+            {
+                return addr;
+            }
+            return null;
+        }
+
         public override Expression? GetTrampolineDestination(Address addrInstr, IEnumerable<RtlInstruction> instrs, IRewriterHost host)
         {
             // adrp x16,#&100004000
@@ -87,9 +134,7 @@ namespace Reko.Environments.MacOS.OSX.ArchSpecific
                 return addr;
             }
             return null;
-
-
-            throw new System.NotImplementedException();
         }
+
     }
 }
