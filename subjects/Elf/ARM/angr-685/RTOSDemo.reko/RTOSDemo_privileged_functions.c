@@ -513,8 +513,8 @@ void xQueueGenericSendFromISR(Eq_n r0, Eq_n r1, Eq_n r2, Eq_n r3, Eq_n lr, ptr32
 	if (*((word32) r0 + 56) < *((word32) r0 + 60) || r3 == 0x02)
 	{
 		int32 r4_n = (int32) *((word32) r0 + 69);
-		word32 r0_n;
 		word32 * r7_n;
+		word32 r0_n;
 		word32 lr_n;
 		if (!prvCopyDataToQueue(r0, r1, r3, r2, lr, out r0_n, out r7_n, out lr_n))
 			*((word32) r0 + 69) = (int8) r4_n + 1;

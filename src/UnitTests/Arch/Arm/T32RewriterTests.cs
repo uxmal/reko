@@ -5478,10 +5478,11 @@ namespace Reko.UnitTests.Arch.Arm
         {
             Given_UInt16s(0xE8BD, 0x8800); // pop.w\t{fp,pc}
             AssertCode(
-                "0|T--|00100000(4): 3 instructions",
+                "0|T--|00100000(4): 4 instructions",
                 "1|L--|fp = Mem0[sp:word32]",
-                "2|L--|sp = sp + 8<i32>",
-                "3|R--|return (0,0)");
+                "2|L--|v4 = Mem0[sp + 4<i32>:word32]",
+                "3|L--|sp = sp + 8<i32>",
+                "4|R--|return (0,0)");
         }
 
         [Test]

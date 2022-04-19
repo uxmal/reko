@@ -502,32 +502,32 @@ l00008388:
 	__msr(cpsr, 0xBF<32>)
 	__isb_sy()
 	__dsb_sy()
-	word32 r2_65 = Mem11[r0 + 56<i32>:word32]
-	word32 r3_66 = Mem11[r0 + 60<i32>:word32]
-	word32 r0_136 = 0<32>
-	bool Z_157 = SLICE(cond(r2_65 - r3_66), bool, 2)
-	branch r2_65 <u r3_66 l000083C0
+	word32 r2_67 = Mem11[r0 + 56<i32>:word32]
+	word32 r3_68 = Mem11[r0 + 60<i32>:word32]
+	word32 r0_142 = 0<32>
+	bool Z_163 = SLICE(cond(r2_67 - r3_68), bool, 2)
+	branch r2_67 <u r3_68 l000083C0
 l000083C0:
-	word32 r0_161
-	word32 r7_162
-	word32 lr_163
-	Z_157 = prvCopyDataToQueue(r0, r1, 0<32>, r7, lr, out r0_161, out r7_162, out lr_163)
+	word32 r0_167
+	word32 r7_168
+	word32 lr_169
+	Z_163 = prvCopyDataToQueue(r0, r1, 0<32>, r7, lr, out r0_167, out r7_168, out lr_169)
 	branch Mem11[r0 + 36<i32>:word32] != 0<32> l000083EE
 l000083EE:
-	word32 r0_85
-	xCoRoutineRemoveFromEventList(r0 + 0x24<32>, out r0_85)
-	Z_157 = SLICE(cond(r0_85), bool, 2) (alias)
-	branch r0_85 == 0<32> l000083CE
+	word32 r0_87
+	xCoRoutineRemoveFromEventList(r0 + 0x24<32>, out r0_87)
+	Z_163 = SLICE(cond(r0_87), bool, 2) (alias)
+	branch r0_87 == 0<32> l000083CE
 l000083FA:
-	r0_136 = 0xFFFFFFFB<32>
+	r0_142 = 0xFFFFFFFB<32>
 l000083CE:
 	__msr(cpsr, 0<32>)
 	r0Out = 1<32>
-	return Z_157
+	return Z_163
 l000083AA:
 	__msr(cpsr, 0<32>)
-	r0Out = r0_136
-	return Z_157
+	r0Out = r0_142
+	return Z_163
 xQueueCRSend_exit:
 
 
@@ -549,7 +549,7 @@ l00008400:
 	word32 r5_16 = Mem11[r0 + 56<i32>:word32]
 	branch r5_16 != 0<32> l00008424
 l00008424:
-	word32 r0_158
+	word32 r0_166
 	__msr(cpsr, 0<32>)
 	__msr(cpsr, 0xBF<32>)
 	__isb_sy()
@@ -574,8 +574,8 @@ l00008464_1:
 	Mem37[r0 + 12<i32>:word32] = r1_30
 l00008466:
 	word32 r4_59
-	word32 r5_189
-	Z = memcpy(r1, r1_30, r2_22, r0, r5_16, r6, r7, lr, out r4_59, out r5_189, out r6, out r7, out lr)
+	word32 r5_197
+	Z = memcpy(r1, r1_30, r2_22, r0, r5_16, r6, r7, lr, out r4_59, out r5_197, out r6, out r7, out lr)
 	branch Mem67[r4_59 + 16<i32>:word32] != 0<32> l00008478
 l00008478:
 	word32 r0_70
@@ -583,7 +583,7 @@ l00008478:
 	Z = SLICE(cond(r0_70), bool, 2) (alias)
 	branch r0_70 == 0<32> l0000846E
 l00008484:
-	r0_158 = 0xFFFFFFFB<32>
+	r0_166 = 0xFFFFFFFB<32>
 l0000846E:
 	__msr(cpsr, 0<32>)
 	r0Out = 1<32>
@@ -592,32 +592,32 @@ l0000846E:
 	lrOut = lr
 	return Z
 l0000843E:
-	r0_158 = r2_19
+	r0_166 = r2_19
 l00008440:
 	__msr(cpsr, 0<32>)
-	r0Out = r0_158
+	r0Out = r0_166
 	r6Out = r6
 	r7Out = r7
 	lrOut = lr
 	return Z
 l00008418:
-	bool Z_105 = SLICE(cond(r2), bool, 2)
+	bool Z_107 = SLICE(cond(r2), bool, 2)
 	branch r2 != 0<32> l0000848A
 l0000848A:
-	bool Z_113 = vCoRoutineAddToDelayedList(r2, r0 + 0x24<32>)
+	bool Z_115 = vCoRoutineAddToDelayedList(r2, r0 + 0x24<32>)
 	__msr(cpsr, r5_16)
 	r0Out = 0xFFFFFFFC<32>
 	r6Out = r6
 	r7Out = r7
 	lrOut = lr
-	return Z_113
+	return Z_115
 l0000841C:
 	__msr(cpsr, r2)
 	r0Out = r2
 	r6Out = r6
 	r7Out = r7
 	lrOut = lr
-	return Z_105
+	return Z_107
 xQueueCRReceive_exit:
 
 
@@ -632,16 +632,16 @@ xQueueCRSendFromISR_entry:
 l000084A0:
 	branch Mem11[r0 + 56<i32>:word32] <u Mem11[r0 + 60<i32>:word32] l000084B0
 l000084B0:
-	word32 lr_99
-	word32 r7_98
-	word32 r0_97
-	prvCopyDataToQueue(r0, r1, 0<32>, r7, lr, out r0_97, out r7_98, out lr_99)
+	word32 lr_102
+	word32 r7_101
+	word32 r0_100
+	prvCopyDataToQueue(r0, r1, 0<32>, r7, lr, out r0_100, out r7_101, out lr_102)
 	branch r2 != 0<32> l000084AC
 l000084BC:
 	branch Mem11[r0 + 36<i32>:word32] == 0<32> l000084AC
 l000084C2:
-	word32 r0_100
-	branch xCoRoutineRemoveFromEventList(r0 + 0x24<32>, out r0_100) l000084D0
+	word32 r0_103
+	branch xCoRoutineRemoveFromEventList(r0 + 0x24<32>, out r0_103) l000084D0
 l000084CE_1:
 l000084D0:
 l000084AC:
@@ -662,37 +662,37 @@ l000084D4:
 l00008514:
 	return
 l000084DA:
-	word32 r3_38
-	word32 lr_26 = Mem15[r0 + 64<i32>:word32]
-	word32 r4_27 = Mem15[r0 + 4<i32>:word32]
-	word32 r3_28 = Mem15[r0 + 12<i32>:word32] + lr_26
-	word32 r7_35 = Mem15[r0 + 56<i32>:word32]
-	Mem36[r0 + 12<i32>:word32] = r3_28
-	r3_38 = r3_28
-	branch r3_28 <u r4_27 l000084F4
+	word32 r3_39
+	word32 lr_27 = Mem15[r0 + 64<i32>:word32]
+	word32 r4_28 = Mem15[r0 + 4<i32>:word32]
+	word32 r3_29 = Mem15[r0 + 12<i32>:word32] + lr_27
+	word32 r7_36 = Mem15[r0 + 56<i32>:word32]
+	Mem37[r0 + 12<i32>:word32] = r3_29
+	r3_39 = r3_29
+	branch r3_29 <u r4_28 l000084F4
 l000084F2_1:
-	r3_38 = Mem36[r0:word32]
+	r3_39 = Mem37[r0:word32]
 l000084F4:
-	branch r3_28 <u r4_27 l000084FC
+	branch r3_29 <u r4_28 l000084FC
 l000084FA_1:
-	Mem44[r0 + 12<i32>:word32] = r3_38
+	Mem45[r0 + 12<i32>:word32] = r3_39
 l000084FC:
-	Mem56[r0 + 56<i32>:word32] = r7_35 + 0xFFFFFFFF<32>
-	word32 r6_153
-	word32 r4_64
-	word32 r5_65
-	word32 r7_154
-	word32 lr_155
-	memcpy(r1, r3_38, lr_26, r0, r2, r1, r7_35 + 0xFFFFFFFF<32>, lr_26, out r4_64, out r5_65, out r6_153, out r7_154, out lr_155)
-	branch Mem56[r5_65:word32] != 0<32> l00008510
+	Mem57[r0 + 56<i32>:word32] = r7_36 + 0xFFFFFFFF<32>
+	word32 r4_65
+	word32 r5_66
+	word32 r6_159
+	word32 r7_160
+	word32 lr_161
+	memcpy(r1, r3_39, lr_27, r0, r2, r1, r7_36 + 0xFFFFFFFF<32>, lr_27, out r4_65, out r5_66, out r6_159, out r7_160, out lr_161)
+	branch Mem57[r5_66:word32] != 0<32> l00008510
 l0000850C:
-	branch Mem56[r4_64 + 16<i32>:word32] != 0<32> l00008518
+	branch Mem57[r4_65 + 16<i32>:word32] != 0<32> l00008518
 l00008518:
-	word32 r0_75
-	xCoRoutineRemoveFromEventList(r4_64 + 0x10<32>, out r0_75)
-	branch r0_75 == 0<32> l00008510
+	word32 r0_76
+	xCoRoutineRemoveFromEventList(r4_65 + 0x10<32>, out r0_76)
+	branch r0_76 == 0<32> l00008510
 l00008524:
-	Mem86[r5_65:word32] = 1<32>
+	Mem87[r5_66:word32] = 1<32>
 	return
 l00008510:
 	return
@@ -981,26 +981,26 @@ prvFlashCoRoutine_entry:
 	ptr32 fp
 	word32 dwLoc14
 l00008670:
-	word32 r5_107
-	word32 r6_105
+	word32 r5_109
+	word32 r6_107
 	word32 r0_26
 	word32 r3_13 = CONVERT(Mem11[r0 + 52<i32>:word16], word16, word32)
 	branch r3_13 == 0x1C2<32> l000086B6
 l000086B6:
-	r5_107 = Mem11[0x000086E0<p32>:word32]
-	branch xQueueCRReceive(Mem11[r5_107:word32], fp - 20<i32>, 0<32>, fp - 20<i32>, r7, lr, cpsr, out r0_26, out r6_105, out r7, out lr) l000086AA
+	r5_109 = Mem11[0x000086E0<p32>:word32]
+	branch xQueueCRReceive(Mem11[r5_109:word32], fp - 20<i32>, 0<32>, fp - 20<i32>, r7, lr, cpsr, out r0_26, out r6_107, out r7, out lr) l000086AA
 l0000867E:
 	branch r3_13 == 0x1C3<32> l0000868C
 l0000868C:
-	r5_107 = Mem11[0x000086E0<p32>:word32]
-	r6_105 = fp - 20<i32>
+	r5_109 = Mem11[0x000086E0<p32>:word32]
+	r6_107 = fp - 20<i32>
 l00008686:
 	branch r3_13 == 0<32> l000086D2
 l000086D2:
-	r5_107 = Mem11[0x000086E0<p32>:word32]
-	r6_105 = fp - 20<i32>
+	r5_109 = Mem11[0x000086E0<p32>:word32]
+	r6_107 = fp - 20<i32>
 l00008696:
-	bool Z_59 = xQueueCRReceive(Mem47[r5_107:word32], r6_105, 0xFFFFFFFF<32>, r6_105, r7, lr, cpsr, out r0_26, out r6_105, out r7, out lr)
+	bool Z_59 = xQueueCRReceive(Mem47[r5_109:word32], r6_107, 0xFFFFFFFF<32>, r6_107, r7, lr, cpsr, out r0_26, out r6_107, out r7, out lr)
 	branch Z_59 l000086D8
 l000086D8:
 	Mem65[r0 + 52<i32>:word16] = 0x1C2<u16>
@@ -1014,7 +1014,7 @@ l000086AA:
 l00008690:
 	vParTestToggleLED(dwLoc14, cpsr)
 l000086AE:
-	Mem97[Mem83[0x000086E4<p32>:word32]:word32] = 0<32>
+	Mem98[Mem84[0x000086E4<p32>:word32]:word32] = 0<32>
 l00008688:
 	return
 prvFlashCoRoutine_exit:
@@ -1030,13 +1030,13 @@ void prvFixedDelayCoRoutine(word32 r0, word32 r1, word32 r7, word32 lr, word32 c
 prvFixedDelayCoRoutine_entry:
 	ptr32 fp
 l000086E8:
-	bool v18_111
-	word32 r0_81
+	bool v20_113
+	word32 r0_82
 	word32 r0_22
 	word32 r3_9 = CONVERT(Mem7[r0 + 52<i32>:word16], word16, word32)
 	branch r3_9 == 0x182<32> l00008750
 l00008750:
-	v18_111 = xQueueCRSend(Mem14[Mem14[0x0000877C<p32>:word32]:word32], fp - 12<i32>, 0<32>, r7, lr, cpsr, out r0_22)
+	v20_113 = xQueueCRSend(Mem14[Mem14[0x0000877C<p32>:word32]:word32], fp - 12<i32>, 0<32>, r7, lr, cpsr, out r0_22)
 l000086F8:
 	branch r3_9 <=u 0x182<32> l00008748
 l00008748:
@@ -1048,28 +1048,28 @@ l000086FA:
 l00008716:
 	branch r3_9 != 0x196<32> l00008712
 l0000871C:
-	v18_111 = xQueueCRSend(Mem14[Mem14[0x0000877C<p32>:word32]:word32], fp - 12<i32>, 0<32>, r7, lr, cpsr, out r0_22)
-	branch v18_111 l0000876E
+	v20_113 = xQueueCRSend(Mem14[Mem14[0x0000877C<p32>:word32]:word32], fp - 12<i32>, 0<32>, r7, lr, cpsr, out r0_22)
+	branch v20_113 l0000876E
 l0000876E:
-	Mem65[r0 + 52<i32>:word16] = 0x182<u16>
+	Mem66[r0 + 52<i32>:word16] = 0x182<u16>
 l0000872C:
-	branch v18_111 l00008766
+	branch v20_113 l00008766
 l00008766:
-	Mem71[r0 + 52<i32>:word16] = 0x183<u16>
+	Mem72[r0 + 52<i32>:word16] = 0x183<u16>
 l00008730:
 	branch r0_22 == 1<32> l00008702
 l00008734:
-	Mem77[Mem14[0x00008780<p32>:word32]:word32] = 0<32>
-	r0_81 = Mem77[Mem77[0x00008778<p32>:word32] + (r1 << 2<i32>):word32]
-	branch r0_81 == 0<32> l0000870C
+	Mem78[Mem14[0x00008780<p32>:word32]:word32] = 0<32>
+	r0_82 = Mem78[Mem78[0x00008778<p32>:word32] + (r1 << 2<i32>):word32]
+	branch r0_82 == 0<32> l0000870C
 l00008746:
 l00008702:
-	r0_81 = Mem14[Mem14[0x00008778<p32>:word32] + (r1 << 2<i32>):word32]
-	branch r0_81 != 0<32> l0000875E
+	r0_82 = Mem14[Mem14[0x00008778<p32>:word32] + (r1 << 2<i32>):word32]
+	branch r0_82 != 0<32> l0000875E
 l0000875E:
-	vCoRoutineAddToDelayedList(r0_81, 0<32>)
+	vCoRoutineAddToDelayedList(r0_82, 0<32>)
 l0000870C:
-	Mem103[r0 + 52<i32>:word16] = 0x196<u16>
+	Mem104[r0 + 52<i32>:word16] = 0x196<u16>
 l00008712:
 	return
 prvFixedDelayCoRoutine_exit:
@@ -1096,16 +1096,16 @@ l000087C2:
 l0000879E:
 	branch r0 == 0<32> l000087B4
 l000087A0:
-	word32 r4_40 = 0<32>
-	word32 r6_41 = Mem35[0x000087C8<p32>:word32]
+	word32 r4_41 = 0<32>
+	word32 r6_42 = Mem35[0x000087C8<p32>:word32]
 l000087A4:
-	xCoRoutineCreate(r6_41, 0<32>, r4_40, cpsr)
-	r4_40 = r4_40 + 1<32>
-	branch r4_40 != r0 l000087A4
+	xCoRoutineCreate(r6_42, 0<32>, r4_41, cpsr)
+	r4_41 = r4_41 + 1<32>
+	branch r4_41 != r0 l000087A4
 l000087B4:
-	word32 r0_71 = Mem35[0x000087CC<p32>:word32]
+	word32 r0_72 = Mem35[0x000087CC<p32>:word32]
 l000087BE_thunk_xCoRoutineCreate:
-	xCoRoutineCreate(r0_71, 1<32>, 0<32>, cpsr)
+	xCoRoutineCreate(r0_72, 1<32>, 0<32>, cpsr)
 	return
 vStartFlashCoRoutines_exit:
 
@@ -1885,39 +1885,39 @@ l00008E40:
 l00008EE4:
 	return
 l00008E54:
-	word32 r7_53 = Mem23[0x00008EEC<p32>:word32]
-	branch Mem23[r7_53:word32] == 0<32> l00008EAC
+	word32 r7_54 = Mem23[0x00008EEC<p32>:word32]
+	branch Mem23[r7_54:word32] == 0<32> l00008EAC
 l00008EAC:
-	Mem57[r7_53:word32] = r0_32
-	vListInitialise(r7_53 + 4<i32>)
-	vListInitialise(r7_53 + 0x18<32>)
-	vListInitialise(r7_53 + 0x2C<32>)
-	vListInitialise(r7_53 + 0x40<32>)
-	vListInitialise(r7_53 + 0x54<32>)
-	Mem81[r7_53 + 104<i32>:word32] = r7_53 + 0x2C<32>
-	Mem82[r7_53 + 108<i32>:word32] = r7_53 + 0x40<32>
+	Mem58[r7_54:word32] = r0_32
+	vListInitialise(r7_54 + 4<i32>)
+	vListInitialise(r7_54 + 0x18<32>)
+	vListInitialise(r7_54 + 0x2C<32>)
+	vListInitialise(r7_54 + 0x40<32>)
+	vListInitialise(r7_54 + 0x54<32>)
+	Mem82[r7_54 + 104<i32>:word32] = r7_54 + 0x2C<32>
+	Mem83[r7_54 + 108<i32>:word32] = r7_54 + 0x40<32>
 l00008E5C:
 l00008E60:
 	branch r1 <u 1<32> l00008E66
 l00008E64_1:
 	r5_28 = 1<32>
 l00008E66:
-	Mem92[r0_32 + 52<i32>:word16] = 0<u16>
-	Mem94[r0_32 + 44<i32>:word32] = r5_28
-	Mem97[r0_32 + 48<i32>:word32] = r2
-	Mem100[r0_32:word32] = r0
+	Mem93[r0_32 + 52<i32>:word16] = 0<u16>
+	Mem95[r0_32 + 44<i32>:word32] = r5_28
+	Mem98[r0_32 + 48<i32>:word32] = r2
+	Mem101[r0_32:word32] = r0
 	vListInitialiseItem(r0_32 + 4<i32>)
 	vListInitialiseItem(r0_32 + 0x18<32>)
-	word32 r0_106 = Mem100[r0_32 + 44<i32>:word32]
-	word32 r5_110 = 2<32> - r5_28
-	branch r0_106 <=u Mem100[r7_53 + 112<i32>:word32] l00008E92
+	word32 r0_107 = Mem101[r0_32 + 44<i32>:word32]
+	word32 r5_111 = 2<32> - r5_28
+	branch r0_107 <=u Mem101[r7_54 + 112<i32>:word32] l00008E92
 l00008E90_1:
-	Mem113[r7_53 + 112<i32>:word32] = r0_106
+	Mem114[r7_54 + 112<i32>:word32] = r0_107
 l00008E92:
-	Mem122[r0_32 + 24<i32>:word32] = r5_110
-	Mem123[r0_32 + 16<i32>:word32] = r0_32
-	Mem124[r0_32 + 36<i32>:word32] = r0_32
-	vListInsertEnd(r7_53 + 4<32> + r0_106 * 0x14<32>, r0_32 + 4<i32>)
+	Mem123[r0_32 + 24<i32>:word32] = r5_111
+	Mem124[r0_32 + 16<i32>:word32] = r0_32
+	Mem125[r0_32 + 36<i32>:word32] = r0_32
+	vListInsertEnd(r7_54 + 4<32> + r0_107 * 0x14<32>, r0_32 + 4<i32>)
 	return
 xCoRoutineCreate_exit:
 
@@ -1949,9 +1949,9 @@ l00008F0E:
 l00008F26:
 	return Z_44
 l00008F18:
-	word32 r1_53 = Mem32[r4_14:word32]
+	word32 r1_54 = Mem32[r4_14:word32]
 l00008F22_thunk_vListInsert:
-	return vListInsert(r1, r1_53 + 0x18<32>)
+	return vListInsert(r1, r1_54 + 0x18<32>)
 vCoRoutineAddToDelayedList_exit:
 
 
@@ -2065,35 +2065,35 @@ l00009038:
 	r2_197 = r1_186 - 2<32>
 	branch Mem190[r5_16 + (r3_191 + (r1_186 - 2<32>) << 2<u32>) + 4<i32>:word32] != 0<32> l00009056
 l00009056:
-	Mem226[r5_16 + 112<i32>:word32] = r2_197
+	Mem227[r5_16 + 112<i32>:word32] = r2_197
 l00009058:
-	word32 r2_242
-	word32 r3_230 = r3_191 + r2_197
-	word32 r1_233 = r5_16 + (r3_230 << 2<i32>)
-	word32 r2_237 = Mem234[Mem234[r1_233 + 8<i32>:word32] + 4<i32>:word32]
-	word32 r3_238 = (r3_230 << 2<i32>) + Mem234[0x0000908C<p32>:word32]
-	Mem240[r1_233 + 8<i32>:word32] = r2_237
-	r2_242 = r2_237
-	branch r2_237 != r3_238 l0000906E
+	word32 r2_243
+	word32 r3_231 = r3_191 + r2_197
+	word32 r1_234 = r5_16 + (r3_231 << 2<i32>)
+	word32 r2_238 = Mem235[Mem235[r1_234 + 8<i32>:word32] + 4<i32>:word32]
+	word32 r3_239 = (r3_231 << 2<i32>) + Mem235[0x0000908C<p32>:word32]
+	Mem241[r1_234 + 8<i32>:word32] = r2_238
+	r2_243 = r2_238
+	branch r2_238 != r3_239 l0000906E
 l0000906C_1:
-	r2_242 = Mem240[r2_237 + 4<i32>:word32]
+	r2_243 = Mem241[r2_238 + 4<i32>:word32]
 l0000906E:
-	word32 r0_245 = Mem240[r2_242 + 12<i32>:word32]
-	branch r2_237 != r3_238 l00009074
+	word32 r0_246 = Mem241[r2_243 + 12<i32>:word32]
+	branch r2_238 != r3_239 l00009074
 l00009072_1:
-	Mem248[r1_233 + 8<i32>:word32] = r2_242
+	Mem249[r1_234 + 8<i32>:word32] = r2_243
 l00009074:
-	Mem252[r5_16:word32] = r0_245
-	word32 lr_280
-	word32 pc_281
-	word32 cpsr_283
-	call Mem252[r0_245:word32] (retsize: 0;)
-		uses: cpsr:cpsr,lr:lr,pc:pc_281,r0:r0_245,r1:Mem252[r0_245 + 48<i32>:word32],r4:r4,r5:r5,r6:r6,r7:r7,r8:r8
-		defs: cpsr:cpsr_283,lr:lr_280,pc:pc_281
-	cpsrOut = cpsr_283
-	return lr_280
+	Mem253[r5_16:word32] = r0_246
+	word32 lr_281
+	word32 pc_282
+	word32 cpsr_284
+	call Mem253[r0_246:word32] (retsize: 0;)
+		uses: cpsr:cpsr,lr:lr,pc:pc_282,r0:r0_246,r1:Mem253[r0_246 + 48<i32>:word32],r4:r4,r5:r5,r6:r6,r7:r7,r8:r8
+		defs: cpsr:cpsr_284,lr:lr_281,pc:pc_282
+	cpsrOut = cpsr_284
+	return lr_281
 l00009046:
-	Mem290[r5_16 + 112<i32>:word32] = r2_197
+	Mem291[r5_16 + 112<i32>:word32] = r2_197
 	cpsrOut = cpsr
 	return lr
 vCoRoutineSchedule_exit:
@@ -2120,12 +2120,12 @@ l00009094:
 	vListInsertEnd(r5_16 + 0x54<32>, r4_15 + 0x18<32>)
 	word32 r0_36 = Mem14[r4_15 + 44<i32>:word32]
 	word32 r3_37 = Mem14[Mem14[r5_16:word32] + 44<i32>:word32]
-	bool Z_64 = SLICE(cond(r0_36 - r3_37), bool, 2)
+	bool Z_66 = SLICE(cond(r0_36 - r3_37), bool, 2)
 	branch r0_36 >=u r3_37 l000090BC
 l000090BA_1:
 l000090BC:
 	r0Out = 1<32>
-	return Z_64
+	return Z_66
 xCoRoutineRemoveFromEventList_exit:
 
 
@@ -3152,8 +3152,8 @@ void OSRAMStringDraw(word32 r0, word32 r1, word32 r2)
 OSRAMStringDraw_entry:
 l000097CC:
 	OSRAMWriteFirst(0x80<32>)
-	word32 r4_100 = r1
-	word32 r5_104 = r0
+	word32 r4_101 = r1
+	word32 r5_105 = r0
 	branch r2 != 0<32> l000097E0
 l000097DE_1:
 l000097E0:
@@ -3163,40 +3163,40 @@ l000097E0:
 	OSRAMWriteByte(0x80<32>)
 	OSRAMWriteByte(CONVERT(SLICE(r1 + 0x24<32>, ui4, 4), ui4, uint32) | 0x10<32>)
 	OSRAMWriteByte(0x40<32>)
-	word32 r3_117 = CONVERT(Mem11[r0:byte], byte, word32)
-	branch r3_117 == 0<32> l00009876
+	word32 r3_118 = CONVERT(Mem11[r0:byte], byte, word32)
+	branch r3_118 == 0<32> l00009876
 l00009876:
 	return
 l00009814:
-	word32 r6_85 = Mem11[0x00009878<p32>:word32]
+	word32 r6_86 = Mem11[0x00009878<p32>:word32]
 	branch r1 <=u 0x5A<32> l00009830
 l00009830:
-	OSRAMWriteArray(r6_85 + (r3_117 - 0x20<32>) * 5<32>, 5<32>)
-	branch r4_100 != 0x5A<32> l0000981C
+	OSRAMWriteArray(r6_86 + (r3_118 - 0x20<32>) * 5<32>, 5<32>)
+	branch r4_101 != 0x5A<32> l0000981C
 l0000981C:
-	r5_104 = r5_104 + 1<i32>
-	r4_100 = r4_100 + 6<32>
-	branch CONVERT(Mem11[r5_104:byte], byte, word32) == 0<32> l00009846
+	r5_105 = r5_105 + 1<i32>
+	r4_101 = r4_101 + 6<32>
+	branch CONVERT(Mem11[r5_105:byte], byte, word32) == 0<32> l00009846
 l00009824:
 	OSRAMWriteByte(0<32>)
-	r3_117 = CONVERT(Mem11[r5_104:byte], byte, word32)
-	branch r3_117 == 0<32> l00009874
+	r3_118 = CONVERT(Mem11[r5_105:byte], byte, word32)
+	branch r3_118 == 0<32> l00009874
 l00009874:
 	return
 l0000982C:
-	branch r4_100 >u 0x5A<32> l0000984C
+	branch r4_101 >u 0x5A<32> l0000984C
 l00009846:
 l0000984A_thunk_OSRAMWriteFinal:
 	OSRAMWriteFinal(0<32>)
 	return
 l0000981A:
 l0000984C:
-	word32 r4_144 = 0x5F<32> - r4_100
-	OSRAMWriteArray(r6_85 + (r3_117 - 0x20<32>) * 5<32>, r4_144)
-	word32 r3_156 = CONVERT(Mem11[r5_104:byte], byte, word32)
-	word32 r0_163 = CONVERT(Mem11[r3_156 - 0x20<32> + (r3_156 - 0x20<32> << 2<u32>) + Mem11[0x0000987C<p32>:word32] + r4_144 + 16<i32>:byte], byte, word32)
+	word32 r4_146 = 0x5F<32> - r4_101
+	OSRAMWriteArray(r6_86 + (r3_118 - 0x20<32>) * 5<32>, r4_146)
+	word32 r3_158 = CONVERT(Mem11[r5_105:byte], byte, word32)
+	word32 r0_165 = CONVERT(Mem11[r3_158 - 0x20<32> + (r3_158 - 0x20<32> << 2<u32>) + Mem11[0x0000987C<p32>:word32] + r4_146 + 16<i32>:byte], byte, word32)
 l00009872_thunk_OSRAMWriteFinal:
-	OSRAMWriteFinal(r0_163)
+	OSRAMWriteFinal(r0_165)
 	return
 OSRAMStringDraw_exit:
 

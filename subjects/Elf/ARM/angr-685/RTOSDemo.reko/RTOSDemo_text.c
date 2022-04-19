@@ -553,9 +553,9 @@ void xQueueCRReceiveFromISR(Eq_n r0, Eq_n r1, Eq_n r2)
 	if (r3_n >= r4_n)
 		*((word32) r0 + 0x0C) = r3_n;
 	*((word32) r0 + 56) = (word32) r7_n - 1;
-	word32 r6_n;
 	struct Eq_n * r4_n;
 	word32 * r5_n;
+	word32 r6_n;
 	word32 r7_n;
 	word32 lr_n;
 	memcpy(r1, r3_n, lr_n, r0, r2, r1, (word32) r7_n - 1, lr_n, out r4_n, out r5_n, out r6_n, out r7_n, out lr_n);
@@ -846,7 +846,7 @@ word32 * g_ptr86E4 = &g_dw200000C0; // 000086E4
 void prvFixedDelayCoRoutine(struct Eq_n * r0, ui32 r1, Eq_n r7, Eq_n lr, ptr32 cpsr)
 {
 	ptr32 fp;
-	bool v18_n;
+	bool v20_n;
 	Eq_n r0_n;
 	word32 r0_n;
 	up32 r3_n = (word32) r0->w0034;
@@ -861,16 +861,16 @@ void prvFixedDelayCoRoutine(struct Eq_n * r0, ui32 r1, Eq_n r7, Eq_n lr, ptr32 c
 		}
 		else if (r3_n != 0x00)
 			return;
-		v18_n = xQueueCRSend(*g_ptr877C, fp - 0x0C, 0x00, r7, lr, cpsr, out r0_n);
-		if (v18_n)
+		v20_n = xQueueCRSend(*g_ptr877C, fp - 0x0C, 0x00, r7, lr, cpsr, out r0_n);
+		if (v20_n)
 		{
 			r0->w0034 = 0x0182;
 			return;
 		}
 	}
 	else
-		v18_n = xQueueCRSend(*g_ptr877C, fp - 0x0C, 0x00, r7, lr, cpsr, out r0_n);
-	if (v18_n)
+		v20_n = xQueueCRSend(*g_ptr877C, fp - 0x0C, 0x00, r7, lr, cpsr, out r0_n);
+	if (v20_n)
 	{
 		r0->w0034 = 0x0183;
 		return;

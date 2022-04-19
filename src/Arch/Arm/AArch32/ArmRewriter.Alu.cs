@@ -335,6 +335,8 @@ namespace Reko.Arch.Arm.AArch32
             if (!mem.PreIndex && instr.Writeback)
             {
                 // Post-index operand.
+                var tmp = binder.CreateTemporary(dtDst);
+                m.Assign(tmp, src);
                 var baseReg = binder.EnsureRegister(mem.BaseRegister!);
                 if (isJump && instr.IsSinglePop())
                 {
@@ -349,8 +351,6 @@ namespace Reko.Arch.Arm.AArch32
                     m.Return(0, 0);
                     return;
                 }
-                var tmp = binder.CreateTemporary(dtDst);
-                m.Assign(tmp, src);
                 Expression ea = baseReg;
                 if (mem.Offset != null)
                 {
@@ -490,15 +490,19 @@ namespace Reko.Arch.Arm.AArch32
                 Expression ea = offset != 0
                     ? op(dst, m.Int32(offset))
                     : dst;
+                Identifier dstReg;
                 if (r == Registers.pc)
                 {
                     pcRestored = true;
+                    // We must simulate the effect of reading the PC out of memory,
+                    // even though we don't use the PC register explicitly
+                    dstReg = binder.CreateTemporary(PrimitiveType.Word32);
                 }
                 else
                 {
-                    var dstReg = Reg(r);
-                    m.Assign(dstReg, m.Mem32(ea));
+                    dstReg = Reg(r);
                 }
+                m.Assign(dstReg, m.Mem32(ea));
                 offset += 4;
             }
             if (writeback)

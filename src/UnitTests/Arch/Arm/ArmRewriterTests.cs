@@ -482,6 +482,32 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
+        public void ArmRw_pop_pc()
+        {
+            Given_UInt32s(0xE49DF004);  //  pop pc
+            AssertCode(
+                "0|T--|00100000(4): 3 instructions",
+                "1|L--|v4 = Mem0[sp:word32]",
+                "2|L--|sp = sp + 4<i32>",
+                "3|R--|return (0,0)");
+        }
+
+        [Test]
+        public void ArmRw_pop_many_including_pc()
+        {
+            Given_UInt32s(0xE8BD80F0);
+            AssertCode(     // pop { r4 - r7,pc}
+                "0|T--|00100000(4): 7 instructions",
+                "1|L--|r4 = Mem0[sp:word32]",
+                "2|L--|r5 = Mem0[sp + 4<i32>:word32]",
+                "3|L--|r6 = Mem0[sp + 8<i32>:word32]",
+                "4|L--|r7 = Mem0[sp + 12<i32>:word32]",
+                "5|L--|v7 = Mem0[sp + 16<i32>:word32]",
+                "6|L--|sp = sp + 20<i32>",
+                "7|R--|return (0,0)");
+        }
+
+        [Test]
         public void ArmRw_clz()
         {
             Given_UInt32s(0xE16F4F13);
@@ -1520,7 +1546,7 @@ means
         {
             Given_UInt32s(0xB811EB85);  // ldmdalt r1, {r0, r2, r7, r8, sb, fp, sp, lr, pc} ^
             AssertCode(
-                "0|T--|00100000(4): 10 instructions",
+                "0|T--|00100000(4): 11 instructions",
                 "1|T--|if (Test(GE,NZV)) branch 00100004",
                 "2|L--|r0 = Mem0[r1:word32]",
                 "3|L--|r2 = Mem0[r1 - 4<i32>:word32]",
@@ -1530,7 +1556,8 @@ means
                 "7|L--|fp = Mem0[r1 - 20<i32>:word32]",
                 "8|L--|sp = Mem0[r1 - 24<i32>:word32]",
                 "9|L--|lr = Mem0[r1 - 28<i32>:word32]",
-                "10|R--|return (0,0)");
+                "10|L--|v12 = Mem0[r1 - 32<i32>:word32]",
+                "11|R--|return (0,0)");
         }
 
         [Test]
@@ -1732,15 +1759,6 @@ means
                 "1|L--|__set_bigendian(true)");
         }
 
-        [Test]
-        public void ArmRw_pop_pc()
-        {
-            Given_UInt32s(0xE49DF004);  //  pop pc
-            AssertCode(
-                "0|T--|00100000(4): 2 instructions",
-                "1|L--|sp = sp + 4<i32>",
-                "2|R--|return (0,0)");
-        }
 
         [Test]
         public void ArmRw_rev()
