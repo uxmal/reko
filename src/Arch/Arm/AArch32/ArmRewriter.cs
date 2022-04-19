@@ -144,7 +144,6 @@ namespace Reko.Arch.Arm.AArch32
                 case Mnemonic.vacge:
                 case Mnemonic.vacgt:
                 case Mnemonic.vaddhn:
-                case Mnemonic.vbsl:
                 case Mnemonic.vcls:
                 case Mnemonic.vclz:
                 case Mnemonic.vcnt:
@@ -156,10 +155,6 @@ namespace Reko.Arch.Arm.AArch32
                 case Mnemonic.vcvtt:
                 case Mnemonic.vfnma:
                 case Mnemonic.vfnms:
-                case Mnemonic.vld1:
-                case Mnemonic.vld2:
-                case Mnemonic.vld3:
-                case Mnemonic.vld4:
                 case Mnemonic.vldmdb:
                 case Mnemonic.vmaxnm:
                 case Mnemonic.vminnm:
@@ -200,13 +195,8 @@ namespace Reko.Arch.Arm.AArch32
                 case Mnemonic.vrsqrte:
                 case Mnemonic.vrsqrts:
                 case Mnemonic.vshrn:
-                case Mnemonic.vst1:
-                case Mnemonic.vst2:
-                case Mnemonic.vst3:
-                case Mnemonic.vst4:
                 case Mnemonic.vsubhn:
                 case Mnemonic.vswp:
-                case Mnemonic.vtbl:
                 case Mnemonic.vtbx:
                 case Mnemonic.vtrn:
                 case Mnemonic.vuzp:
@@ -460,6 +450,7 @@ namespace Reko.Arch.Arm.AArch32
                 case Mnemonic.vaddw: RewriteVectorBinOp("__vaddw_{0}"); break;
                 case Mnemonic.vand: RewriteVecBinOp(m.And); break;
                 case Mnemonic.vbic: RewriteVbic(); break;
+                case Mnemonic.vbsl: RewriteVbsl(); break;
                 case Mnemonic.vcmp: RewriteVcmp(); break;
                 case Mnemonic.vbif: RewriteIntrinsic("__vbif", false, Domain.UnsignedInt); break;
                 case Mnemonic.vbit: RewriteIntrinsic("__vbit", false, Domain.UnsignedInt); break;
@@ -479,6 +470,10 @@ namespace Reko.Arch.Arm.AArch32
                 case Mnemonic.vfms: RewriteVfmas("__vfms", m.FSub); break;
                 case Mnemonic.vhadd: RewriteVectorBinOp("__vhadd_{0}"); break;
                 case Mnemonic.vhsub: RewriteVectorBinOp("__vhsub_{0}"); break;
+                case Mnemonic.vld1: RewriteVldN(vld1_multi_intrinsic); break; ;
+                case Mnemonic.vld2: RewriteVldN(vld2_multi_intrinsic); break;
+                case Mnemonic.vld3: RewriteVldN(vld3_multi_intrinsic); break;
+                case Mnemonic.vld4: RewriteVldN(vld4_multi_intrinsic); break;
                 case Mnemonic.vldmia: RewriteVldmia(); break;
                 case Mnemonic.vldr: RewriteVldr(); break;
                 case Mnemonic.vmax: RewriteVectorBinOp("__vmax_{0}"); break;
@@ -525,10 +520,15 @@ namespace Reko.Arch.Arm.AArch32
                 case Mnemonic.vsli: RewriteVectorBinOp("__vsli_{0}"); break;
                 case Mnemonic.vsra: RewriteVectorBinOp("__vsra_{0}"); break;
                 case Mnemonic.vsri: RewriteVectorBinOp("__vsri_{0}"); break;
+                case Mnemonic.vst1: RewriteVstN(vst1_multi_intrinsic); break;
+                case Mnemonic.vst2: RewriteVstN(vst2_multi_intrinsic); break;
+                case Mnemonic.vst3: RewriteVstN(vst3_multi_intrinsic); break;
+                case Mnemonic.vst4: RewriteVstN(vst4_multi_intrinsic); break;
                 case Mnemonic.vstr: RewriteVstr(); break;
                 case Mnemonic.vsub: RewriteVectorBinOp("__vsub_{0}"); break;
                 case Mnemonic.vsubl: RewriteVectorBinOp("__vsubl_{0}"); break;
                 case Mnemonic.vsubw: RewriteVectorBinOp("__vsubw_{0}"); break;
+                case Mnemonic.vtbl: RewriteVtbl(); break;
                 case Mnemonic.vtst: RewriteVectorBinOp("__vtst_{0}"); break;
                 }
                 yield return m.MakeCluster(instr.Address, instr.Length, iclass);
@@ -1135,6 +1135,48 @@ namespace Reko.Arch.Arm.AArch32
         private static readonly IntrinsicProcedure usat16_intrinsic;
         private static readonly IntrinsicProcedure yield_intrinsic = new IntrinsicBuilder("__yield", true)
             .Void();
+        private static readonly IntrinsicProcedure vbsl_intrinsic = IntrinsicBuilder.GenericBinary("__vbsl");
+        private static readonly IntrinsicProcedure vld1_multi_intrinsic = new IntrinsicBuilder("__vld1_multiple", true)
+            .GenericTypes("T")
+            .PtrParam("T")
+            .Returns("T");
+        private static readonly IntrinsicProcedure vld2_multi_intrinsic = new IntrinsicBuilder("__vld2_multiple", true)
+            .GenericTypes("T")
+            .PtrParam("T")
+            .Returns(new UnknownType(16));
+        private static readonly IntrinsicProcedure vld3_multi_intrinsic = new IntrinsicBuilder("__vld3_multiple", true)
+            .GenericTypes("T")
+            .PtrParam("T")
+            .Returns(new UnknownType(24));
+        private static readonly IntrinsicProcedure vld4_multi_intrinsic = new IntrinsicBuilder("__vld4_multiple", true)
+            .GenericTypes("T")
+            .PtrParam("T")
+            .Returns(new UnknownType(32));
+        private static readonly IntrinsicProcedure vst1_multi_intrinsic = new IntrinsicBuilder("__vst1_multiple", true)
+            .GenericTypes("TElem","TVec")
+            .PtrParam("TVec")
+            .Param("TVec")
+            .Void();
+        private static readonly IntrinsicProcedure vst2_multi_intrinsic = new IntrinsicBuilder("__vst2_multiple", true)
+            .GenericTypes("TElem", "TVec")
+            .PtrParam("TVec")
+            .Param("TVec")
+            .Void();
+        private static readonly IntrinsicProcedure vst3_multi_intrinsic = new IntrinsicBuilder("__vst3_multiple", true)
+            .GenericTypes("TElem", "TVec")
+            .PtrParam("TVec")
+            .Param("TVec")
+            .Void();
+        private static readonly IntrinsicProcedure vst4_multi_intrinsic = new IntrinsicBuilder("__vst4_multiple", true)
+            .GenericTypes("TElem", "TVec")
+            .PtrParam("TVec")
+            .Param("TVec")
+            .Void();
+        private static readonly IntrinsicProcedure vtbl_intrinsic = new IntrinsicBuilder("__vtbl", true)
+            .GenericTypes("TArray")
+            .Param("TArray")
+            .Param(new ArrayType(PrimitiveType.Byte, 8))
+            .Returns(new ArrayType(PrimitiveType.Byte, 8));
 
         static ArmRewriter()
         {

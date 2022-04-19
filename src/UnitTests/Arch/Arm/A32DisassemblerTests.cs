@@ -1759,7 +1759,7 @@ namespace Reko.UnitTests.Arch.Arm
         public void ArmDasm_vld2_8()
         {
             Disassemble32(0xF4663303);
-            Expect_Code("vld2.i8\t{d19-d22},[r6],r3");
+            Expect_Code("vld2.i8\t{d19,d21},[r6],r3");
         }
 
         [Test]

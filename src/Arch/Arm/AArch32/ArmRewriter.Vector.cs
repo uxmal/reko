@@ -40,6 +40,14 @@ namespace Reko.Arch.Arm.AArch32
             }
         }
 
+        private void RewriteVbsl()
+        {
+            var src1 = Operand(1);
+            var src2 = Operand(2);
+            var dst = Operand(0);
+            m.Assign(dst, m.Fn(vbsl_intrinsic.MakeInstance(dst.DataType), src1, src2));
+        }
+
         private void RewriteVecBinOp(Func<Expression, Expression, Expression> fn)
         {
             if (instr.Operands.Length == 3)
@@ -145,6 +153,89 @@ namespace Reko.Arch.Arm.AArch32
             if (instr.Writeback)
             {
                 m.Assign(rSrc, m.IAddS(rSrc, offset));
+            }
+        }
+
+        private void RewriteVld1()
+        {
+            RegisterStorage[] regs;
+            if (instr.Operands[0] is VectorMultipleRegisterOperand vopDst)
+            {
+                regs = vopDst.GetRegisters().ToArray();
+            }
+            else
+            {
+                var opDst = (MultiRegisterOperand) instr.Operands[0];
+                regs = opDst.GetRegisters().ToArray();
+            }
+
+            var opSrc = (MemoryOperand) instr.Operands[1];
+            if (opSrc.BaseRegister is null)
+            {
+                iclass = InstrClass.Invalid;
+                m.Invalid();
+                return;
+            }
+            var tmp = binder.CreateTemporary(PrimitiveType.CreateWord(32));
+            var dt = Arm32Architecture.VectorElementDataType(instr.vector_data);
+            var reg = binder.EnsureRegister(opSrc.BaseRegister);
+
+            var nRegs = regs.Length;
+            m.Assign(tmp, m.Fn(vld1_multi_intrinsic.MakeInstance(32, dt), reg));
+            int bitOffset = 64 * (nRegs - 1);
+            foreach (var dreg in regs)
+            {
+                m.Assign(
+                    binder.EnsureRegister(dreg),
+                    m.Slice(tmp, dreg.DataType, bitOffset));
+                bitOffset -= 64;
+            }
+            if (instr.Writeback)
+            {
+                if (opSrc.Index is not null)
+                    throw new NotImplementedException();
+                m.Assign(reg, m.IAddS(reg, nRegs * 8));
+            }
+        }
+
+        private void RewriteVldN(IntrinsicProcedure intrinsic)
+        {
+            RegisterStorage[] regs;
+            if (instr.Operands[0] is VectorMultipleRegisterOperand vopDst)
+            {
+                regs = vopDst.GetRegisters().ToArray();
+            }
+            else
+            {
+                var opDst = (MultiRegisterOperand) instr.Operands[0];
+                regs = opDst.GetRegisters().ToArray();
+            }
+            var opSrc = (MemoryOperand) instr.Operands[1];
+            if (opSrc.BaseRegister is null)
+            {
+                iclass = InstrClass.Invalid;
+                m.Invalid();
+                return;
+            }
+            var tmp = binder.CreateTemporary(PrimitiveType.CreateWord(32));
+            var dt = Arm32Architecture.VectorElementDataType(instr.vector_data);
+            var reg = binder.EnsureRegister(opSrc.BaseRegister);
+
+            int nRegs = regs.Length;
+             m.Assign(tmp, m.Fn(intrinsic.MakeInstance(32, dt), reg));
+            int bitOffset = 64 * (nRegs - 1);
+            foreach (var dreg in regs)
+            {
+                m.Assign(
+                    binder.EnsureRegister(dreg),
+                    m.Slice(tmp, dreg.DataType, bitOffset));
+                bitOffset -= 64;
+            }
+            if (instr.Writeback)
+            {
+                if (opSrc.Index is not null)
+                    throw new NotImplementedException();
+                m.Assign(reg, m.IAddS(reg, nRegs * 8));
             }
         }
 
@@ -438,11 +529,57 @@ namespace Reko.Arch.Arm.AArch32
             m.Assign(dst, intrinsic);
         }
 
+        private void RewriteVstN(IntrinsicProcedure intrinsic)
+        {
+            RegisterStorage[] regs;
+            if (instr.Operands[0] is VectorMultipleRegisterOperand vopDst)
+            {
+                regs = vopDst.GetRegisters().ToArray();
+            }
+            else
+            {
+                var opDst = (MultiRegisterOperand) instr.Operands[0];
+                regs = opDst.GetRegisters().ToArray();
+            }
+            var opSrc = (MemoryOperand) instr.Operands[1];
+            if (opSrc.BaseRegister is null)
+            {
+                iclass = InstrClass.Invalid;
+                m.Invalid();
+                return;
+            }
+            var seq = binder.EnsureSequence(
+                PrimitiveType.CreateWord(64 * regs.Length),
+                regs);
+            var reg = binder.EnsureRegister(opSrc.BaseRegister);
+
+            int nRegs = regs.Length;
+            var dtElem = Arm32Architecture.VectorElementDataType(instr.vector_data);
+            m.SideEffect(m.Fn(intrinsic.MakeInstance(32, dtElem, seq.DataType), seq, reg));
+            if (instr.Writeback)
+            {
+                if (opSrc.Index is not null)
+                    throw new NotImplementedException();
+                m.Assign(reg, m.IAddS(reg, nRegs * 8));
+            }
+        }
+
         private void RewriteVstr()
         {
             var src = this.Operand(0, PrimitiveType.Word32, true);
             var dst = this.Operand(1);
             m.Assign(dst, src);
+        }
+
+        private void RewriteVtbl()
+        {
+            var idxs = this.Operand(2);
+            var table = (MultiRegisterOperand) instr.Operands[1];
+            var regs = table.GetRegisters().ToArray();
+            var dt = PrimitiveType.CreateWord(regs.Length * regs[0].DataType.BitSize);
+            var seqTable = binder.EnsureSequence(dt, regs);
+            var dst = this.Operand(0);
+            m.Assign(dst, m.Fn(vtbl_intrinsic.MakeInstance(dt), seqTable, idxs));
         }
 
         PrimitiveType VectorElementType(ArmVectorData elemType)

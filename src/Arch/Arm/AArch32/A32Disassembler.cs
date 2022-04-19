@@ -3948,7 +3948,7 @@ namespace Reko.Arch.Arm.AArch32
                     Instr(Mnemonic.vld4, vi6_ld4, Vel(4,1), Mve),
                     Instr(Mnemonic.vld4, vi6_ld4, Vel(4,1), Mve),
                     nyi("VLD1(multiple single elements)"),
-                    Instr(Mnemonic.vld2, vi_ld2, Vel(4, 1), Mve),
+                    Instr(Mnemonic.vld2, vi_ld2, Vel(2,2), Mve),
 
                     Instr(Mnemonic.vld3, vi6_ld3, Vel(3,1), Mve),
                     Instr(Mnemonic.vld3, vi6_ld3, Vel(3,2), Mve),
