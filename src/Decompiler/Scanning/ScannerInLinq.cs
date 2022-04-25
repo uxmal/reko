@@ -18,18 +18,15 @@
  */
 #endregion
 
+using Reko.Core;
+using Reko.Core.Graphs;
+using Reko.Core.Memory;
+using Reko.Core.Services;
+using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Text;
-using Reko.Core;
-using Reko.Core.Expressions;
-using Reko.Core.Graphs;
-using Reko.Core.Memory;
-using Reko.Core.Rtl;
-using Reko.Core.Services;
-using Reko.Core.Types;
 
 namespace Reko.Scanning
 {

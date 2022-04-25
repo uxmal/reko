@@ -24,6 +24,7 @@ using Reko.Core.Rtl;
 using Reko.Core.Serialization;
 using Reko.Core.Services;
 using Reko.Core.Types;
+using Reko.Evaluation;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -43,12 +44,12 @@ namespace Reko.Scanning
         protected readonly ConcurrentDictionary<Address, Address> blockEnds;
         private readonly IRewriterHost host;
 
-        protected AbstractScanner(Core.Program program, ScanResultsV2 sr, DecompilerEventListener listener)
+        protected AbstractScanner(Program program, ScanResultsV2 sr, DecompilerEventListener listener)
         {
             this.program = program;
             this.sr = sr;
             this.listener = listener;
-            this.host = new RewriterHost(program);
+            this.host = new RewriterHost(program, listener);
             this.blockStarts = new ConcurrentDictionary<Address, Address>();
             this.blockEnds = new ConcurrentDictionary<Address, Address>();
         }
@@ -70,7 +71,10 @@ namespace Reko.Scanning
             return new CfgBackWalkHost(program, arch, sr, backEdges);
         }
 
-        public IEnumerable<RtlInstructionCluster> MakeTrace(Address addr, ProcessorState state, IStorageBinder binder)
+        public IEnumerable<RtlInstructionCluster> MakeTrace(
+            Address addr,
+            ProcessorState state,
+            IStorageBinder binder)
         {
             var arch = state.Architecture;
             var rdr = program.CreateImageReader(arch, addr);
@@ -90,6 +94,20 @@ namespace Reko.Scanning
         }
 
 
+        /// <summary>
+        /// Register a block starting at address <paramref name="addrBlock"/>.
+        /// </summary>
+        /// <remarks>
+        /// A precondition is that a successful call to <see cref="TryRegisterBlockStart(Address, Address)"/>
+        /// was done first; no other thread will attempt to register a block
+        /// after that.
+        /// </remarks>
+        /// <param name="arch"><see cref="IProcessorArchitecture"/> for this block.</param>
+        /// <param name="addrBlock">The <see cref="Address"/> at which the block is located.</param>
+        /// <param name="length">The length of the block, excludng</param>
+        /// <param name="addrFallthrough"></param>
+        /// <param name="instrs"></param>
+        /// <returns></returns>
         public RtlBlock RegisterBlock(
             IProcessorArchitecture arch,
             Address addrBlock,
@@ -100,7 +118,7 @@ namespace Reko.Scanning
             var id = program.NamingPolicy.BlockName(addrBlock);
             var block = new RtlBlock(arch, addrBlock, id, (int)length, addrFallthrough, instrs);
             var success = sr.Blocks.TryAdd(addrBlock, block);
-            Debug.Assert(success);
+            Debug.Assert(success, $"Failed registering block at {addrBlock}");
             return block;
         }
 
@@ -111,6 +129,7 @@ namespace Reko.Scanning
                 edges = new List<Address>();
                 sr.Successors.TryAdd(edge.From, edges);
             }
+            //$TODO: make this concurrent safe.
             edges.Add(edge.To);
         }
 
@@ -181,15 +200,63 @@ namespace Reko.Scanning
             return new RtlBlock(block.Architecture, addr, id, (int)blockSize, addrFallthrough, instrs);
         }
 
+        public ExpressionSimplifier CreateEvaluator(ProcessorState state)
+        {
+            return new ExpressionSimplifier(
+                program.SegmentMap,
+                state,
+                listener);
+        }
+
         public abstract void SplitBlockEndingAt(RtlBlock block, Address lastAddr);
+
+        private void DumpBlocks(ScanResultsV2 sr, IDictionary<Address, RtlBlock> blocks)
+        {
+            DumpBlocks(sr, blocks, s => Debug.WriteLine(s));
+        }
+
+        // Writes the start and end addresses, size, and successor edges of each block, 
+        public void DumpBlocks(ScanResultsV2 sr, IDictionary<Address, RtlBlock> blocks, Action<string> writeLine)
+        {
+            writeLine(
+               string.Join(Environment.NewLine,
+               from b in blocks.Values
+               orderby b.Address
+               select string.Format(
+                   "{0:X8}-{1:X8} ({2}): {3}{4}",
+                       b.Address,
+                       b.FallThrough,
+                       b.Length,
+                       RenderType(b.Instructions[^1].Class),
+                       string.Join(", ",sr.Successors.TryGetValue(b.Address, out var succ)
+                            ? succ
+                            : new List<Address>()))));
+
+            string RenderType(InstrClass t)
+            {
+                if ((t & InstrClass.Zero) != 0)
+                    return "Zer ";
+                if ((t & InstrClass.Padding) != 0)
+                    return "Pad ";
+                if ((t & InstrClass.Call) != 0)
+                    return "Cal ";
+                if ((t & InstrClass.ConditionalTransfer) == InstrClass.ConditionalTransfer)
+                    return "Bra ";
+                if ((t & InstrClass.Transfer) != 0)
+                    return "End";
+                return "Lin ";
+            }
+        }
 
         private class RewriterHost : IRewriterHost
         {
-            private Reko.Core.Program program;
+            private readonly Program program;
+            private readonly DecompilerEventListener listener;
 
-            public RewriterHost(Reko.Core.Program program)
+            public RewriterHost(Program program, DecompilerEventListener listener)
             {
                 this.program = program;
+                this.listener = listener;
             }
 
             public Constant? GlobalRegisterValue => program.GlobalRegisterValue;
@@ -221,15 +288,6 @@ namespace Reko.Scanning
                 return intrinsic;
             }
 
-            public Expression CallIntrinsic(string name, bool hasSideEffect, FunctionType fnType, params Expression[] args)
-            {
-                var intrinsic = program.EnsureIntrinsicProcedure(name, hasSideEffect, fnType);
-                return new Application(
-                    new ProcedureConstant(program.Architecture.PointerType, intrinsic),
-                    fnType.ReturnValue.DataType,
-                    args);
-            }
-
             public Expression Intrinsic(string name, bool hasSideEffect, DataType returnType, params Expression[] args)
             {
                 var intrinsic = program.EnsureIntrinsicProcedure(name, hasSideEffect, returnType, args);
@@ -238,7 +296,6 @@ namespace Reko.Scanning
                     returnType,
                     args);
             }
-
 
             public Expression Intrinsic(string name, bool hasSideEffect, ProcedureCharacteristics c, DataType returnType, params Expression[] args)
             {
@@ -257,13 +314,14 @@ namespace Reko.Scanning
 
             public void Error(Address address, string format, params object[] args)
             {
-                var msg = string.Format(format, args);
-                Debug.WriteLine($"E: {address}: {msg}");
+                var location = listener.CreateAddressNavigator(program, address);
+                listener.Error(location, format, args);
             }
 
             public void Warn(Address address, string format, params object[] args)
             {
-                throw new NotImplementedException();
+                var location = listener.CreateAddressNavigator(program, address);
+                listener.Error(location, format, args);
             }
         }
     }

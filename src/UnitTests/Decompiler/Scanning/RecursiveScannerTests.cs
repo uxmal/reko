@@ -123,7 +123,7 @@ l00001000: // l:12; ft:0000100C
         {
             Given_EntryPoint(0x001000);
             Given_Trace(new RtlTrace(0x1000)
-            {  
+            {
                 m => m.Assign(r2, m.ISub(r2, 1)),
                 m => m.Branch(m.Ne0(r2), Address.Ptr32(0x1010)),
                 m => m.Assign(r1, 0),
@@ -267,7 +267,7 @@ l00001020: // l:8; ft:00001028
                 m => m.Return(0, 0)
             });
             Given_Trace(new RtlTrace(0x1014)
-            { 
+            {
                 m => m.Branch(m.Ne0(r2), Address.Ptr32(0x100C)),
                 m => m.Return(0, 0)
             });
@@ -579,7 +579,7 @@ l0000100A: // l:4; ft:0000100E
         public void RecScan_Switch()
         {
             Given_EntryPoint(0x1000);
-            Given_JumpTable(0x1020, 
+            Given_JumpTable(0x1020,
                 0x1030, 0x1038, 0x1030, 0x1038);
             Given_Trace(new RtlTrace(0x1000)
             {
@@ -639,6 +639,57 @@ l00001040: // l:4; ft:00001044
             #endregion
 
             RunTest(sExpected);
+        }
+
+        [Test]
+        public void RecScan_Padding()
+        {
+            Given_EntryPoint(0x1000);
+            Given_Trace(new RtlTrace(0x1000)
+            {
+                m => m.Assign(r2, 1),
+                m => m.Nop(),
+                m => m.Nop(),
+                m => m.Return(0, 0)
+            });
+
+            var sExpected =
+            #region Expected
+                @"
+define fn00001000
+l00001000: // l:8; ft:00001008
+    // pred:
+    C = cond(r1 - 3<32>)
+    if (Test(UGT,C)) branch 00001040
+    // succ: l00001008 l00001040
+l00001008: // l:4; ft:0000100C
+    // pred: l00001000
+    switch (r1) {
+        00001030,
+        00001038,
+        00001030,
+        00001038
+    }
+    // succ: l00001030 l00001038 l00001030 l00001038
+l00001030: // l:8; ft:00001038
+    // pred: l00001008 l00001008
+    r2 = 1<32>
+    goto 00001040
+    // succ: l00001040
+l00001038: // l:8; ft:00001040
+    // pred: l00001008 l00001008
+    r2 = 1<32>
+    r1 = 0xFFFFFFFF<32>
+    // succ: l00001040
+l00001040: // l:4; ft:00001044
+    // pred: l00001000 l00001030 l00001038
+    return (0,0)
+    // succ:
+";
+            #endregion
+
+            RunTest(sExpected);
+
         }
     }
 }

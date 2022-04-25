@@ -1107,14 +1107,26 @@ namespace Reko.Scanning
                 // 
                 // When this gets merged into analyis-development phase, fold 
                 // Procedure construction into SSA construction.
-                foreach (var rtlProc in procs.Where(FilterRtlProcedure))
+                foreach (var rtlProc in procs.Where(FilterRtlProcedure)
+                    .OrderBy(a => a.Entry.Address.ToLinear()))
                 {
+                    Dump(rtlProc);
                     var addrProc = rtlProc.Entry.Address;
                     TerminateAnyBlockAt(addrProc);
                     EnqueueProcedure(Program.Architecture, addrProc);
                 }
                 ProcessQueue();
             }
+        }
+
+        [Conditional("DEBUG")]
+        private void Dump(RtlProcedure rtlProc)
+        {
+            Debug.Print("== {0} ===============", rtlProc.Entry.Address);
+            Debug.Print("    {0}",
+                string.Join(",\r\n    ", rtlProc.Blocks
+                    .OrderBy(b => b.Address.ToLinear())
+                    .Select(b => b.Address)));
         }
 
 

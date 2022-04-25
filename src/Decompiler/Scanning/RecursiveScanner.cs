@@ -31,6 +31,13 @@ using System.Linq;
 
 namespace Reko.Scanning
 {
+    /// <summary>
+    /// This class implements a recursive traversal strategy to discover code
+    /// in a binary. The algorithm creates a <see cref="ProcedureWorkder"/>
+    /// for each known "seed". Seeds are obtained from the binary itself (such
+    /// as entry points and exported functions) and from the user (such as
+    /// user-specified functions). 
+    /// </summary>
     public class RecursiveScanner : AbstractScanner
     {
         private readonly WorkList<ProcedureWorker> wl;
@@ -38,21 +45,13 @@ namespace Reko.Scanning
         private readonly ConcurrentDictionary<Address, ProcedureWorker> suspendedWorkers; 
         private readonly ConcurrentDictionary<Address, ReturnStatus> procReturnStatus;
 
-        public RecursiveScanner(Reko.Core.Program program, DecompilerEventListener listener)
+        public RecursiveScanner(Program program, DecompilerEventListener listener)
             : base(program, new ScanResultsV2(), listener)
         {
             this.wl = new WorkList<ProcedureWorker>();
             this.activeWorkers = new();
             this.suspendedWorkers = new();
             this.procReturnStatus = new();
-        }
-
-        public ExpressionSimplifier CreateEvaluator(ProcessorState state)
-        {
-            return new ExpressionSimplifier(
-                program.SegmentMap,
-                state,
-                listener);
         }
 
         public ScanResultsV2 ScanProgram()
@@ -96,13 +95,14 @@ namespace Reko.Scanning
                     result.TryAdd(sym.Key, sym.Value);
                 }
             }
+            //$TODO: user-provided entry points.
             return result;
         }
 
         private ProcedureWorker? MakeSeedWorker(KeyValuePair<Address, ImageSymbol> seed)
         {
             var name = program.NamingPolicy.ProcedureName(seed.Key);
-            var proc = new Proc(seed.Key, ProvenanceType.ImageEntrypoint, seed.Value.Architecture, name);
+            var proc = new Proc(seed.Key, ProvenanceType.Image, seed.Value.Architecture, name);
             if (sr.Procedures.TryAdd(proc.Address, proc))
             {
                 var state = seed.Value.ProcessorState ?? seed.Value.Architecture.CreateProcessorState();
@@ -114,7 +114,7 @@ namespace Reko.Scanning
             }
         }
 
-        private ProcedureWorker? MakeProcWorker(KeyValuePair<Address, Proc> de)
+        private ProcedureWorker? MakeProcedureWorker(KeyValuePair<Address, Proc> de)
         {
             var name = program.NamingPolicy.ProcedureName(de.Key);
             var proc = new Proc(de.Key, ProvenanceType.Scanning, de.Value.Architecture, name);

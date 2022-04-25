@@ -43,6 +43,8 @@ namespace Reko.Scanning
             this.Length = length;
             this.FallThrough = addrFallThrough;
             this.Instructions = instructions;
+            if (instructions.Count == 0)
+                _ = this; //$DEBUG
             this.IsValid = true;
         }
 
@@ -81,7 +83,7 @@ namespace Reko.Scanning
         /// <summary>
         /// <param name="Length">The size of the basic block starting 
         /// at <see cref="Address"/> and including the length of the final
-        /// instruction.
+        /// instruction, but not including any "stolen" delay slots.
         /// </summary>
         public int Length { get; set; }
 

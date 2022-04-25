@@ -28,7 +28,7 @@ using System.Threading.Tasks;
 namespace Reko.Core.Rtl
 {
     /// <summary>
-    /// A RtlInstructionCluster contains the RtlInstructions that are generated when 
+    /// A RtlInstructionCluster contains the <see cref="RtlInstruction"/> that are generated when 
     /// a machine instruction is rewritten.
     /// </summary>
     public sealed class RtlInstructionCluster

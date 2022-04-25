@@ -20,14 +20,20 @@
 
 using Moq;
 using NUnit.Framework;
+using Reko.Arch.X86;
+using Reko.Arch.X86.Assembler;
 using Reko.Core;
 using Reko.Core.Expressions;
+using Reko.Core.Memory;
 using Reko.Core.Rtl;
 using Reko.Core.Services;
+using Reko.Core.Types;
 using Reko.Scanning;
 using Reko.UnitTests.Mocks;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 
@@ -36,13 +42,29 @@ namespace Reko.UnitTests.Decompiler.Scanning
     [TestFixture]
     public class ShingleScannerTests : AbstractScannerTests
     {
+        private string nl = Environment.NewLine;
+
         private ScanResultsV2 cfg = default!;
+        private ServiceContainer sc = default!;
+        private ShingleScanner scanner = default!;
+        private Dictionary<uint, RtlInstructionCluster> clusters = default!;
+        private RelocationDictionary rd;
+        private readonly Identifier id;
+        private readonly DecompilerEventListener listener;
+
+        public ShingleScannerTests()
+        {
+            this.id = Identifier.Create(new RegisterStorage("r1", 1, 0, PrimitiveType.Word32));
+            this.listener = new FakeDecompilerEventListener();
+        }
 
         [SetUp]
         public void Setup()
         {
-            base.Setup(0x10, 16); // block of 0x10 bytes, with 16-bit instruction granularity.
+            base.Setup(0x10, 16); // text segment of 0x10 bytes, with 16-bit instruction granularity.
             this.cfg = new ScanResultsV2();
+            this.sc = new ServiceContainer();
+            this.clusters = new Dictionary<uint, RtlInstructionCluster>();
         }
 
         private void Given_Block(uint uAddr, int length)
@@ -90,6 +112,236 @@ namespace Reko.UnitTests.Decompiler.Scanning
             {
                 DumpBlock(block, g, sw);
             }
+        }
+
+        private void Given_x86_Image(params byte[] bytes)
+        {
+            var image = new ByteMemoryArea(
+                Address.Ptr32(0x10000),
+                bytes);
+            this.rd = image.Relocations;
+            var arch = new X86ArchitectureFlat32(sc, "x86-protected-32", new Dictionary<string, object>());
+            CreateProgram(image, arch);
+        }
+
+        private void Given_Image(IProcessorArchitecture arch, params byte[] bytes)
+        {
+            var image = new ByteMemoryArea(
+                Address.Ptr32(0x10000),
+                bytes);
+            this.rd = image.Relocations;
+            CreateProgram(image, arch);
+        }
+
+        private void Given_x86_Image(Action<X86Assembler> asm)
+        {
+            var addrBase = Address.Ptr32(0x100000);
+            var arch = new X86ArchitectureFlat32(sc, "x86-protected-32", new Dictionary<string, object>());
+            var entry = ImageSymbol.Procedure(arch, addrBase);
+            var m = new X86Assembler(arch, addrBase, new List<ImageSymbol> { entry });
+            asm(m);
+            this.program = m.GetImage();
+            this.program.Platform = new DefaultPlatform(null, arch);
+        }
+
+        private void CreateProgram(ByteMemoryArea bmem, IProcessorArchitecture arch)
+        {
+            var segmentMap = new SegmentMap(bmem.BaseAddress);
+            var seg = segmentMap.AddSegment(new ImageSegment(
+                ".text",
+                bmem,
+                AccessMode.ReadExecute)
+            {
+                Size = (uint) bmem.Bytes.Length
+            });
+            seg.Access = AccessMode.ReadExecute;
+            var platform = new DefaultPlatform(null, arch);
+            program = new Program(
+                segmentMap,
+                arch,
+                platform);
+        }
+
+        private void Given_CodeBlock(IProcessorArchitecture arch, uint uAddr, int len)
+        {
+            var addr = Address.Ptr32(uAddr);
+            var id = program.NamingPolicy.BlockName(addr);
+            cfg.Blocks.TryAdd(addr, new RtlBlock(arch, addr, id, len, addr + len,
+                new List<RtlInstructionCluster>()));
+        }
+
+        private void Given_UnknownBlock(uint uAddr, uint len)
+        {
+            var addr = Address.Ptr32(uAddr);
+            var item = new ImageMapItem(addr) { Size = len };
+            program.ImageMap.AddItem(addr, item);
+        }
+
+        private void Given_DataBlock(uint uAddr, uint len)
+        {
+            var addr = Address.Ptr32(uAddr);
+            var item = new ImageMapItem(addr)
+            {
+                Size = len,
+                DataType = new ArrayType(PrimitiveType.Byte, 0)
+            };
+            program.ImageMap.AddItem(addr, item);
+
+        }
+
+        private void Lin(uint uAddr, int len, int next)
+        {
+            var addr = Address.Ptr32((uint) uAddr);
+            clusters.Add(uAddr, new RtlInstructionCluster(addr, len,
+                new RtlAssignment(id, Constant.Word32(uAddr)))
+                {
+                    Class = InstrClass.Linear
+                });
+        }
+
+        private void Call(uint uAddr, int len, int next, int uAddrDst)
+        {
+            var addr = Address.Ptr32((uint) uAddr);
+            clusters.Add(
+                uAddr,
+                new RtlInstructionCluster(addr, len,
+                    new RtlCall(
+                        Address.Ptr32((uint)uAddrDst),
+                        0,
+                        InstrClass.Transfer|InstrClass.Call))
+            {
+                Class = InstrClass.Transfer|InstrClass.Call
+            });
+        }
+
+        private void Bra(uint uAddr, int len, int a, uint b)
+        {
+            var addr = Address.Ptr32((uint) uAddr);
+            clusters.Add(
+                uAddr,
+                new RtlInstructionCluster(addr, len,
+                    new RtlBranch(
+                        id,
+                        Address.Ptr32(b),
+                        InstrClass.ConditionalTransfer))
+                {
+                    Class = InstrClass.ConditionalTransfer
+                });
+        }
+
+        private void Bad(uint uAddr, int len)
+        {
+            var addr = Address.Ptr32((uint) uAddr);
+            clusters.Add(
+                uAddr,
+                new RtlInstructionCluster(addr, len,
+                    new RtlInvalid())
+                {
+                    Class = InstrClass.Invalid
+                });
+        }
+
+        private void End(uint uAddr, int len)
+        {
+            var addr = Address.Ptr32((uint) uAddr);
+            clusters.Add(
+                uAddr,
+                new RtlInstructionCluster(addr, len,
+                    new RtlReturn(0, 0, InstrClass.Transfer|InstrClass.Return))
+                {
+                    Class = InstrClass.Transfer | InstrClass.Return
+                });
+        }
+
+        private void Pad(uint uAddr, int len, int next)
+        {
+            var addr = Address.Ptr32((uint) uAddr);
+            clusters.Add(
+                uAddr,
+                new RtlInstructionCluster(addr, len,
+                    new RtlNop())
+                {
+                    Class = InstrClass.Linear | InstrClass.Padding,
+                });
+        }
+
+        private void Given_OverlappingLinearTraces()
+        {
+            Lin(0x100, 2, 0x102);
+            Lin(0x101, 2, 0x103);
+            Lin(0x102, 2, 0x104);
+            Bad(0x103, 2);
+            End(0x104, 2);
+        }
+
+        private class TestRewriter : IEnumerable<RtlInstructionCluster>
+        {
+            private readonly ShingleScannerTests outer;
+            private Address addr;
+            private readonly Address addrMax;
+
+            public TestRewriter(ShingleScannerTests outer, Address addr)
+            {
+                this.outer = outer;
+                this.addr = addr;
+                this.addrMax = outer.clusters.OrderByDescending(c => c.Key)
+                    .Select(c => c.Value.Address + c.Value.Length)
+                    .First();
+            }
+
+            public IEnumerator<RtlInstructionCluster> GetEnumerator()
+            {
+                while (addr < addrMax)
+                {
+                    if (!outer.clusters.TryGetValue(addr.ToUInt32(), out var cluster))
+                    {
+                        cluster = new RtlInstructionCluster(addr, 1, new RtlInvalid())
+                        {
+                            Class = InstrClass.Invalid
+                        };
+                    }
+                    yield return cluster;
+                    addr += cluster.Length;
+                }
+            }
+
+            System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() =>
+                GetEnumerator();
+        }
+
+        private void CreateX86Scanner()
+        {
+            this.scanner = new ShingleScanner(program, cfg, listener);
+        }
+
+        private void CreateScanner(uint uAddr)
+        {
+            this.program = new Program();
+            var mem = new ByteMemoryArea(Address.Ptr32(uAddr), new byte[256]);
+            this.program.SegmentMap = new SegmentMap(new ImageSegment(
+                ".text",
+                mem,
+                AccessMode.ReadExecute));
+            var arch = new Mock<IProcessorArchitecture>();
+            arch.Setup(a => a.Name).Returns("A");
+            arch.Setup(a => a.Endianness).Returns(EndianServices.Little);
+            arch.Setup(a => a.InstructionBitSize).Returns(8);
+            arch.Setup(a => a.MemoryGranularity).Returns(8);
+            arch.Setup(a => a.CreateProcessorState()).Returns(new Func<ProcessorState>(() =>
+                new DefaultProcessorState(arch.Object)));
+            arch.Setup(a => a.CreateImageReader(
+                It.IsNotNull<MemoryArea>(),
+                It.IsNotNull<Address>())).Returns(new Func<MemoryArea, Address, EndianImageReader>((m, a) =>
+                    new LeImageReader((ByteMemoryArea) m, a)));
+            arch.Setup(a => a.CreateRewriter(
+                It.IsNotNull<EndianImageReader>(),
+                It.IsNotNull<ProcessorState>(),
+                It.IsNotNull<IStorageBinder>(),
+                It.IsNotNull<IRewriterHost>())).Returns(
+                new Func<EndianImageReader, ProcessorState, IStorageBinder, IRewriterHost, IEnumerable<RtlInstructionCluster>>(
+                    (r, s, b, h) => new TestRewriter(this, r.Address)));
+            this.program.Architecture = arch.Object;
+            this.scanner = new ShingleScanner(program, cfg, listener);
         }
 
         [Test]
@@ -227,6 +479,325 @@ l00001008: // l:8; ft:00001010
             #endregion
 
             RunTest(sExpected);
+        }
+
+
+        [Test]
+        public void Siq_Blocks()
+        {
+            Given_OverlappingLinearTraces();
+
+            CreateScanner(0x100);
+            var sr = scanner.ScanProgram();
+
+            Assert.AreEqual(1, sr.Blocks.Count);
+        }
+
+        [Test]
+        public void Siq_InvalidBlocks()
+        {
+            Given_OverlappingLinearTraces();
+
+            CreateScanner(0x100);
+            var sr = scanner.ScanProgram();
+
+            var sExp =
+            #region Expected
+@"00000100-00000106 (6): End
+";
+            #endregion
+
+            AssertBlocks(sExp, sr.Blocks);
+        }
+
+        [Test]
+        public void Siq_ShingledBlocks()
+        {
+            Lin(0x0001B0D7, 2, 0x0001B0D9);
+            Lin(0x0001B0D8, 6, 0x0001B0DE);
+            Lin(0x0001B0D9, 1, 0x0001B0DA);
+            Lin(0x0001B0DA, 1, 0x0001B0DB);
+            Bra(0x0001B0DB, 2, 0x0001B0DD, 0x0001B0DE);
+
+            Lin(0x0001B0DC, 2, 0x0001B0DE);
+            Lin(0x0001B0DD, 1, 0x0001B0DE);
+
+            End(0x0001B0DE, 2);
+
+            CreateScanner(0x0001B0D7);
+            var blocks = scanner.ScanProgram().Blocks;
+            var sExp =
+            #region Expected
+@"0001B0D7-0001B0DD (6): Bra 0001B0DD, 0001B0DE
+0001B0D8-0001B0DE (6): Lin 0001B0DE
+0001B0DC-0001B0DE (2): Lin 0001B0DE
+0001B0DD-0001B0DE (1): Lin 0001B0DE
+0001B0DE-0001B0E0 (2): End
+";
+            #endregion
+            AssertBlocks(sExp, blocks);
+        }
+
+        private void AssertBlocks(string sExp, IDictionary<Address, RtlBlock> blocks)
+        {
+            var sw = new StringWriter();
+            this.scanner.DumpBlocks(cfg, blocks, sw.WriteLine);
+            var sActual = sw.ToString();
+            if (sExp != sActual)
+            {
+                Debug.WriteLine("* Failed AssertBlocks ***");
+                Debug.Write(sActual);
+                Assert.AreEqual(sExp, sActual);
+            }
+        }
+
+        [Test]
+        public void Siq_Overlapping()
+        {
+            // At offset 0, we have 0x33, 0xC0, garbage.
+            // At offset 1, we have rol al,0x90, ret.
+            Lin(0x00010000, 2, 0x00010002);
+            Lin(0x00010001, 3, 0x00010004);
+            Bad(0x00010002, 3);
+            End(0x00010004, 1);
+            CreateScanner(0x00010000);
+            var blocks = scanner.ScanProgram();
+            var sExp =
+            #region Expected
+@"00010001-00010005 (4): End
+";
+            #endregion
+            AssertBlocks(sExp, cfg.Blocks);
+        }
+
+        [Test]
+        public void Siq_Regression_0001()
+        {
+            Given_x86_Image(
+                0x55,                               // 0000
+                0x8B, 0xEC,                         // 0001
+                0x81, 0xEC, 0x68, 0x01, 0x00, 0x00, // 0003
+                0x53,                               // 0009
+                0x56,                               // 000A
+                0x57,                               // 000B
+                0x8D, 0xBD, 0x98, 0xFE, 0xFF, 0xFF, // 000C
+                0xB9, 0x5A, 0x00, 0x00, 0x00,       // 0012
+                0xC3,                               // 0017
+                0xC3,
+                0xC3);
+            CreateScanner(0x10000);
+            var seg = program.SegmentMap.Segments.Values.First();
+            cfg = scanner.ScanProgram();
+            var sExp =
+                "00010000-00010003 (3): Lin 00010003" + nl +
+                "00010002-00010003 (1): Lin 00010003" + nl +
+                "00010003-00010009 (6): Lin 00010009" + nl +
+                "00010004-0001000A (6): Lin 0001000A" + nl +
+                "00010006-00010008 (2): Lin 00010008" + nl +
+                "00010007-00010009 (2): Zer 00010009" + nl +
+                "00010008-0001000B (3): Zer 0001000B" + nl +
+                "00010009-0001000A (1): Lin 0001000A" + nl +
+                "0001000A-0001000B (1): Lin 0001000B" + nl +
+                "0001000B-00010012 (7): Lin 00010012" + nl +
+                "0001000D-00010012 (5): Lin 00010012" + nl +
+                "00010012-00010017 (5): Lin 00010017" + nl +
+                "00010013-00010014 (1): Lin 00010014" + nl +
+                "00010014-00010018 (4): Zer 00010018" + nl +
+                "00010015-00010017 (2): Zer 00010017" + nl +
+                "00010017-00010018 (1): End" + nl +
+                "00010018-00010019 (1): End" + nl +
+                "00010019-0001001A (1): End" + nl;
+            AssertBlocks(sExp, cfg.Blocks);
+        }
+
+        [Test]
+        public void Siq_Terminate()
+        {
+            Given_x86_Image(m =>
+            {
+                m.Hlt();
+                m.Mov(m.eax, 0);
+                m.Ret();
+            });
+            CreateX86Scanner();
+
+            var src = scanner.ScanProgram();
+
+            var from = src.Blocks.Values.Single(n => n.Address == Address.Ptr32(0x00100000));
+            var to = src.Blocks.Values.Single(n => n.Address == Address.Ptr32(0x00100001));
+            Assert.IsFalse(src.Successors.ContainsKey(from.Address));
+            Assert.IsFalse(src.Successors.ContainsKey(to.Address));
+        }
+
+        [Test(Description = "Stop tracing invalid blocks at call boundaries")]
+        public void Siq_Call_TerminatesBlock()
+        {
+            Lin(0x1000, 3, 0x1003);
+            Lin(0x1003, 2, 0x1005);
+            Call(0x1005, 5, 0x100A, 0x1010);
+            End(0x100A, 1);
+
+            CreateScanner(0x1000);
+            var blocks = scanner.ScanProgram();
+
+            var sExp =
+            #region Expected
+@"00001000-0000100A (10): Cal 0000100A
+0000100A-0000100B (1): End
+";
+            #endregion
+            AssertBlocks(sExp, blocks.Blocks);
+        }
+
+        [Test(Description = "Stop tracing invalid blocks at call boundaries")]
+        public void Siq_CallThen_Invalid()
+        {
+            Lin(0x1000, 3, 0x1003);
+            Lin(0x1003, 2, 0x1005);
+            Call(0x1005, 5, 0x100A, 0x1010);
+            Bad(0x100A, 1);
+
+            CreateScanner(0x1000);
+            var cfg = scanner.ScanProgram();
+
+            var sExp =
+            #region Expected
+@"00001000-0000100A (10): Cal 
+";
+            #endregion
+            AssertBlocks(sExp, cfg.Blocks);
+        }
+
+        [Test(Description = "Don't make blocks containing a possible call target")]
+        public void Siq_CallTargetInBlock()
+        {
+            Lin(0x1000, 3, 0x1003);
+            Lin(0x1003, 5, 0x1008);
+            Lin(0x1008, 4, 0x100C);
+            End(0x100C, 4);
+
+            CreateScanner(0x1000);
+            cfg.SpeculativeProcedures.TryAdd(Address.Ptr32(0x1008), 2);
+            cfg = scanner.ScanProgram();
+            Assert.IsTrue(cfg.Blocks.ContainsKey(Address.Ptr32(0x1008)));
+        }
+
+        [Test]
+        public void Siq_PaddingBlocks()
+        {
+            Lin(0x1000, 4, 0x1004);
+            End(0x1004, 4);
+            Pad(0x1008, 4, 0x100C);
+            Pad(0x100C, 4, 0x1010);
+            Lin(0x1010, 4, 0x1014);
+            End(0x1014, 4);
+
+            CreateScanner(0x1000);
+            var blocks = scanner.ScanProgram();
+            var sExp =
+            #region Expected
+@"00001000-00001008 (8): End
+00001008-00001010 (8): Pad 00001010
+00001010-00001018 (8): End
+";
+            #endregion
+
+            AssertBlocks(sExp, blocks.Blocks);
+        }
+
+        [Test]
+        public void Shsc_FindUnscannedRanges_AUA()
+        {
+            var A = new Mock<IProcessorArchitecture>();
+            A.Setup(a => a.Name).Returns("A");
+            Given_Image(A.Object, new byte[100]);
+            Given_CodeBlock(A.Object, 0x1000, 20);
+            Given_UnknownBlock(0x1020, 20);
+            Given_CodeBlock(A.Object, 0x1040, 60);
+            CreateScanner(0x1000);
+
+            var ranges = scanner.FindUnscannedRanges().ToArray();
+
+            Assert.AreEqual(1, ranges.Length);
+            Assert.AreSame(A.Object, ranges[0].Item1);
+        }
+
+        [Test]
+        public void Shsc_FindUnscannedRanges_UA()
+        {
+            var A = new Mock<IProcessorArchitecture>();
+            A.Setup(a => a.Name).Returns("A");
+            Given_Image(A.Object, new byte[100]);
+            Given_UnknownBlock(0x1020, 20);
+            Given_CodeBlock(A.Object, 0x1040, 80);
+            CreateScanner(0x1000);
+
+            var ranges = scanner.FindUnscannedRanges().ToArray();
+
+            Assert.AreEqual(1, ranges.Length);
+            Assert.AreSame(A.Object, ranges[0].Item1);
+        }
+
+        [Test]
+        public void Shsc_FindUnscannedRanges_BUB()
+        {
+            var A = new Mock<IProcessorArchitecture>();
+            var B = new Mock<IProcessorArchitecture>();
+            A.Setup(a => a.Name).Returns("A");
+            B.Setup(a => a.Name).Returns("B");
+
+            Given_Image(A.Object, new byte[100]);
+            Given_CodeBlock(B.Object, 0x1000, 20);
+            Given_UnknownBlock(0x1020, 20);
+            Given_CodeBlock(B.Object, 0x1040, 60);
+            CreateScanner(0x1000);
+
+            var ranges = scanner.FindUnscannedRanges().ToArray();
+
+            Assert.AreEqual(1, ranges.Length);
+            Assert.AreSame(B.Object, ranges[0].Item1);
+        }
+
+        [Test]
+        public void Shsc_FindUnscannedRanges_AUBB()
+        {
+            var A = new Mock<IProcessorArchitecture>();
+            var B = new Mock<IProcessorArchitecture>();
+            A.Setup(a => a.Name).Returns("A");
+            B.Setup(a => a.Name).Returns("B");
+
+            Given_Image(A.Object, new byte[100]);
+            Given_CodeBlock(A.Object, 0x1000, 20);
+            Given_UnknownBlock(0x1020, 20);
+            Given_CodeBlock(B.Object, 0x1040, 60);
+            CreateScanner(0x1000);
+
+            var ranges = scanner.FindUnscannedRanges().ToArray();
+
+            Assert.AreEqual(1, ranges.Length);
+            Assert.AreSame(B.Object, ranges[0].Item1);
+        }
+
+        [Test(Description = "Stop tracing invalid blocks at call boundaries")]
+        public void Siq_CallThen_()
+        {
+            Call(0x1000, 4, 0x1004, 0x1010);
+            Bra(0x1004, 4, 0x1008, 0x100C);
+            Bad(0x1008, 4);
+            Bad(0x100C, 4);
+
+            Lin(0x1010, 4, 0x1014);
+            Bad(0x1014, 4);
+
+            CreateScanner(0x1000);
+            var cfg = scanner.ScanProgram();
+
+            var sExp =
+            #region Expected
+@"00001000-00001004 (4): Cal 
+";
+            #endregion
+            AssertBlocks(sExp, cfg.Blocks);
         }
     }
 }

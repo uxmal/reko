@@ -20,7 +20,9 @@
 
 using Reko.Core;
 using Reko.Core.Collections;
+using Reko.Core.Memory;
 using Reko.Core.Services;
+using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -48,9 +50,10 @@ namespace Reko.Scanning
         public ScanResultsV2 ScanProgram()
         {
             var chunks = MakeScanChunks();
-            var cfg = ExecuteChunks(chunks);
-            var (cfg2, blocksSplit) = EnsureBlocks(cfg);
-            return cfg2;
+            var sr = ExecuteChunks(chunks);
+            var sr2 = RemoveInvalidBlocks(sr);
+            var (sr3, blocksSplit) = EnsureBlocks(sr2);
+            return sr3;
         }
 
         public List<ChunkWorker> MakeScanChunks()
@@ -64,6 +67,120 @@ namespace Reko.Scanning
                 .Where(s => s.IsExecutable)
                 .SelectMany(s => PartitionSegment(s, sortedBlocks))
                 .ToList();
+        }
+
+        /// <summary>
+        /// Scans the Program object looking for address ranges that have not
+        /// been identified as code/data yet.
+        /// </summary>
+        /// <returns></returns>
+        public IEnumerable<(IProcessorArchitecture, MemoryArea, Address, long)> FindUnscannedRanges()
+        {
+            var gaps = sr.Blocks.Values
+                    .Select(b => new MemoryGap(
+                        b.Address,
+                        b.FallThrough - b.Address,
+                        b.Architecture));
+            if (program.ImageMap is not null)
+            {
+                gaps = gaps.Concat(program.ImageMap.Items.Values
+                    .Select(b => new MemoryGap(
+                        b.Address,
+                        b.Size,
+                        null)));
+            }
+            return MakeTriples(gaps.OrderBy(b => b.Address))
+                .Select(triple => CreateUnscannedArea(triple))
+                .Where(triple => triple.HasValue)
+                .Select(triple => triple!.Value);
+        }
+
+        private record MemoryGap(Address Address, long Length, IProcessorArchitecture? Architecture);
+
+        /// <summary>
+        /// From an <see cref="IEnumerable{T}"/> of items, generate an <see cref="IEnumerable{T}"/> of 
+        /// triples, where the middle item of each triple corresponds to the items from <paramref name="items"/>.
+        /// </summary>
+        /// <remarks>
+        /// Consider the sequence A B C D..X Y Z. The output of this method is:
+        /// (_ A B)
+        /// (A B C)
+        /// (B C D)
+        /// ...
+        /// (X Y Z)
+        /// (Y Z _)
+        /// (where '_' is the default element.
+        /// </remarks>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="items"></param>
+        /// <returns>A sequence of triples</returns>
+        private static IEnumerable<(T, T, T)> MakeTriples<T>(IEnumerable<T> items)
+        {
+            T prev = default(T)!;
+            var e = items.GetEnumerator();
+            if (!e.MoveNext())
+                yield break;
+            T item = e.Current;
+            while (e.MoveNext())
+            {
+                var next = e.Current;
+                yield return (prev!, item, next);
+                prev = item;
+                item = next;
+            }
+            yield return (prev!, item, default(T)!);
+        }
+
+        /// <summary>
+        /// Given a triple of blocks, decides whether the middle block is an unscanned area
+        /// that could be fed to the shingle scanner.
+        /// </summary>
+        /// <param name="triple"></param>
+        /// <returns></returns>
+        private (IProcessorArchitecture, MemoryArea, Address, long)? CreateUnscannedArea((MemoryGap, MemoryGap, MemoryGap) triple)
+        {
+            var (prev, item, next) = triple;
+            if (!this.program.SegmentMap.TryFindSegment(item.Address, out ImageSegment? seg))
+                return null;
+            if (!seg.IsExecutable)
+                return null;
+
+            // Determine an architecture for the item
+            var prevArch = prev?.Architecture;
+            var nextArch = next?.Architecture;
+            IProcessorArchitecture arch;
+            if (prevArch is null)
+            {
+                arch = nextArch ?? program.Architecture;
+            }
+            else if (nextArch is null)
+            {
+                arch = prevArch ?? program.Architecture;
+            }
+            else
+            {
+                // Both prev and next have an architecture.
+                if (prevArch == nextArch)
+                {
+                    arch = prevArch;
+                }
+                else
+                {
+                    // Different architectures on both sides. 
+                    // Arbitrarily pick the architecture of the largest 
+                    // adjacent block. If they're the same size, default 
+                    // to the predecessor.
+                    arch = (prev!.Length < next!.Length)
+                        ? nextArch
+                        : prevArch;
+                }
+            }
+
+            return (
+                arch,
+                seg.MemoryArea,
+                item.Address,
+                item.Length);
         }
 
         /// <summary>
@@ -92,7 +209,7 @@ namespace Reko.Scanning
                 if (!sortedBlocks.TryGetUpperBound(addrGapStart, out var nextBlock))
                     break;
                 var gapSize = nextBlock.Address - addrGapStart;
-                chunk = MakeChunkWorker(segment, addrGapStart, gapSize);
+                chunk = MakeChunkWorker(addrGapStart, gapSize);
                 if (chunk is not null)
                 {
                     yield return chunk;
@@ -102,29 +219,26 @@ namespace Reko.Scanning
 
             // Consume the remainder of the segment.
             length = segment.Size - iGapOffset;
-            chunk = MakeChunkWorker(segment, segment.Address + iGapOffset, length);
+            chunk = MakeChunkWorker(segment.Address + iGapOffset, length);
             if (chunk is not null)
             {
                 yield return chunk;
             }
         }
 
-        private ChunkWorker? MakeChunkWorker(ImageSegment segment, Address addr, long length)
+        private ChunkWorker? MakeChunkWorker(Address addr, long length)
         {
             if (length <= 0)
-            {
                 return null;
-            }
-            else
-            {
-                return new ChunkWorker(
-                   this,
-                   program.Architecture,
-                   segment.MemoryArea,
-                   addr,
-                   (int)length,
-                   listener);
-            }
+            if (!program.SegmentMap.TryFindSegment(addr, out var segment))
+                return null;
+            return new ChunkWorker(
+                this,
+                program.Architecture,
+                segment.MemoryArea,
+                addr,
+                (int) length,
+                listener);
         }
 
         public override void SplitBlockEndingAt(RtlBlock block, Address lastAddr)
@@ -152,6 +266,7 @@ namespace Reko.Scanning
 
             var succs = cfg.Successors.Values
                 .SelectMany(e => e)
+                .Concat(cfg.SpeculativeProcedures.Keys)
                 .ToList();
             int blocksSplit = 0;
             foreach (var s in succs)
@@ -175,6 +290,86 @@ namespace Reko.Scanning
             }
             return (cfg, blocksSplit);
         }
+
+        /// <summary>
+        /// From the candidate set of <paramref name="blocks"/>, remove blocks that 
+        /// are invalid.
+        /// </summary>
+        /// <returns>A (hopefully smaller) set of blocks.</returns>
+        public static ScanResultsV2 RemoveInvalidBlocks(ScanResultsV2 sr)
+        {
+            // Find transitive closure of bad blocks 
+
+            var bad_blocks = new HashSet<Address>(
+                (from b in sr.Blocks.Values
+                 where !b.IsValid || b.Instructions[^1].Class == InstrClass.Invalid
+                 select b.Address));
+            var new_bad = bad_blocks;
+            //Debug.Print("Bad {0}",
+
+            //    string.Join(
+            //        "\r\n      ",
+            //        bad_blocks
+            //            .OrderBy(x => x)
+            //            .Select(x => string.Format("{0:X8}", x))));
+            for (; ; )
+            {
+                // Find all blocks that are reachable from blocks
+                // that already are known to be "bad", but that don't
+                // end in a call.
+                //$TODO: delay slots. @#$#@
+                new_bad = new HashSet<Address>(new_bad
+                    .SelectMany(bad => sr.Predecessors.TryGetValue(bad, out var badPreds)
+                        ? badPreds
+                        : (IEnumerable<Address>) Array.Empty<Address>())
+                    .Where(l =>
+                        !bad_blocks.Contains(l)
+                        &&
+                        !BlockEndsWithCall(sr.Blocks[l])));
+
+                if (new_bad.Count == 0)
+                    break;
+
+                //Debug.Print("new {0}",
+                //    string.Join(
+                //        "\r\n      ",
+                //        bad_blocks
+                //            .OrderBy(x => x)
+                //            .Select(x => string.Format("{0:X8}", x))));
+
+                bad_blocks.UnionWith(new_bad);
+            }
+            Debug.Print("Bad blocks: {0} of {1}", bad_blocks.Count, sr.Blocks.Count);
+            //DumpBadBlocks(sr, blocks, sr.FlatEdges, bad_blocks);
+
+            // Remove edges to bad blocks and bad blocks.
+            foreach (var bad in bad_blocks)
+            {
+                if (sr.Predecessors.TryGetValue(bad, out var preds))
+                {
+                    foreach (var pred in preds)
+                    {
+                        if (sr.Successors.TryGetValue(bad, out var pss))
+                        {
+                            pss.Remove(bad);
+                        }
+                    }
+                }
+                sr.Blocks.TryRemove(bad, out _);
+            }
+            return sr;
+        }
+
+        private static bool BlockEndsWithCall(RtlBlock block)
+        {
+            int len = block.Instructions.Count;
+            if (len < 1)
+                return false;
+            if (block.Instructions[len - 1].Class == (InstrClass.Call | InstrClass.Transfer))
+                return true;
+            return false;
+        }
+
 
         private RtlBlock? SplitBlockAt(RtlBlock block, Address to)
         {
