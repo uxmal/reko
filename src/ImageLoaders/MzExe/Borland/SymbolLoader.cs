@@ -20,6 +20,7 @@
 
 using Reko.Core;
 using Reko.Core.Diagnostics;
+using Reko.Core.IO;
 using Reko.Core.Memory;
 using Reko.Core.Serialization;
 using System;
