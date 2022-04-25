@@ -339,8 +339,17 @@ namespace Reko.ImageLoaders.Xex
             foreach(var s in sections)
             {
                 var source = (int)s.VirtualAddress;
-                if (source >= peMem.Length || source + s.VirtualSize >= peMem.Length) continue;
-                var sectionData = peMem.Slice(source, (int)s.VirtualSize).ToArray();
+                byte[] sectionData;
+
+                bool outOfBounds = (source >= peMem.Length || source + s.VirtualSize >= peMem.Length);
+                if (outOfBounds)
+                {
+                    // section is not provided by PE, zero-fill it
+                    sectionData = new byte[s.VirtualSize];
+                } else
+                {
+                    sectionData = peMem.Slice(source, (int) s.VirtualSize).ToArray();
+                }
 
                 var prot = (AccessMode) 0;
                 if (s.IsReadable) prot |= AccessMode.Read;
