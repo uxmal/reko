@@ -144,13 +144,11 @@ namespace Reko.ImageLoaders.Xex
 
         private uint GetBaseAddress()
         {
-            var opt_image_base = GetOptHeader(xex2_header_keys.IMAGE_BASE_ADDRESS)?.Let(it =>
-            {
-                var view = mem.Slice((int)it);
-                return new SpanStream(view, Endianness.BigEndian).ReadUInt32();
-            });
-            if (opt_image_base.HasValue) return opt_image_base.Value;
-            return security_info.load_address;
+            var opt_image_base = GetOptHeader(xex2_header_keys.IMAGE_BASE_ADDRESS);
+            if(opt_image_base == null) return security_info.load_address;
+
+            var view = mem.Slice((int)opt_image_base);
+            return new SpanStream(view, Endianness.BigEndian).ReadUInt32();
         }
 
         private uint? GetEntryPointAddress()
@@ -518,6 +516,23 @@ namespace Reko.ImageLoaders.Xex
             return total_size;
         }
 
+        private xex2_opt_execution_info? GetExecutionInfo()
+        {
+            var exec_info = GetOptHeader<xex2_opt_execution_info>(xex2_header_keys.EXECUTION_INFO);
+            if (exec_info == null) return null;
+            return new xex2_opt_execution_info(exec_info.Value);
+        }
+
+        private xex2_opt_file_format_info? GetFileFormatInfo(out int opt_file_format_info_offset)
+        {
+            var file_format_info = GetOptHeader<xex2_opt_file_format_info>(
+                    xex2_header_keys.FILE_FORMAT_INFO,
+                    out opt_file_format_info_offset);
+            
+            if (file_format_info == null) return null;
+            return new xex2_opt_file_format_info(file_format_info.Value);
+        }
+
         public IEnumerable<ImageSegment> ExtractInnerPE()
         {
             header = new xex2_header(mem);
@@ -529,10 +544,7 @@ namespace Reko.ImageLoaders.Xex
                 throw new NotImplementedException("XEX2 Patches not supported yet");
             }
 
-            var exec_info = GetOptHeader<xex2_opt_execution_info>(xex2_header_keys.EXECUTION_INFO)?.Let(it =>
-            {
-                return new xex2_opt_execution_info(it);
-            });
+            var exec_info = GetExecutionInfo();
 
             // $FIXME?: xenia logic is to try both keys and see if the decryption is valid
             // we instead use RexDex logic to look at the title_id
@@ -549,12 +561,7 @@ namespace Reko.ImageLoaders.Xex
 
             session_key = AesDecryptECB(security_info.aes_key, keyToUse);
             {
-                var opt_file_format_info = GetOptHeader<xex2_opt_file_format_info>(
-                    xex2_header_keys.FILE_FORMAT_INFO,
-                    out var opt_file_format_info_offset)?.Let(it =>
-                    {
-                        return new xex2_opt_file_format_info(it);
-                    });
+                var opt_file_format_info = GetFileFormatInfo(out var opt_file_format_info_offset);
                 if(opt_file_format_info == null)
                 {
                     throw new InvalidDataException("Missing FILE_FORMAT_INFO");
@@ -581,6 +588,15 @@ namespace Reko.ImageLoaders.Xex
             return ProcessPE();
         }
 
+        private (Address, ImageSymbol)? GetEntryPoint(IProcessorArchitecture arch)
+        {
+            var entry = GetEntryPointAddress();
+            if (entry == null) return null;
+            
+            var addr = Address.Ptr32(entry.Value);
+            return (addr, ImageSymbol.Procedure(arch, addr));
+        }
+
         public override Program LoadProgram(Address? address)
         {
             var cfgSvc = Services.RequireService<IConfigurationService>();
@@ -595,10 +611,7 @@ namespace Reko.ImageLoaders.Xex
             var segments = ExtractInnerPE().ToArray();
             var segmentMap = new SegmentMap(addrLoad, segments);
 
-            var ep = GetEntryPointAddress()?.Let(it => {
-                var addr = Address.Ptr32(it);
-                return (addr, ImageSymbol.Procedure(arch, addr));
-            });
+            var ep = GetEntryPoint(arch);
 
             var program = new Program(
                 segmentMap,
