@@ -15484,17 +15484,17 @@ l0800_9AC5:
 l0800_9AE2:
 	es_di_139 = Mem134[ds:wArg02_1229:segptr32]
 	wArg02_1239 = wArg02_1229 + 4<16>
-	v70_1206 = es_di_139 != 0<16>
+	v71_1207 = es_di_139 != 0<16>
 l0800_9AD5:
 	di_148 = Mem134[ss:wArg02_1229:word16]
 	sp_151 = sp_1175 - 2<i16>
 	Mem152[ss:sp_151:word16] = ds
 	wArg02_1240 = wArg02_1229 + 2<16>
-	v69_1205 = di_148 != 0<16>
+	v70_1206 = di_148 != 0<16>
 	es_di_1976 = SEQ(Mem152[ss:sp_151:selector], di_148) (alias)
 l0800_9AED:
 	es_di_1970 = es_di_1977 (alias)
-	branch v71_1207 l0800_9AF4
+	branch v69_1205 l0800_9AF4
 l0800_9AEF:
 	sp_162 = sp_1175 - 2<i16>
 	Mem165[ss:sp_162:word16] = ds

@@ -8302,14 +8302,14 @@ T_1469: (in o1_65 == 0<32> @ 00000000 : bool)
   Class: Eq_1469
   DataType: bool
   OrigDataType: bool
-T_1470: (in i0_210 @ 000121B8 : Eq_31)
+T_1470: (in v31_354 @ 000121B8 : bool)
+  Class: Eq_1470
+  DataType: bool
+  OrigDataType: bool
+T_1471: (in i0_210 @ 000121B8 : Eq_31)
   Class: Eq_31
   DataType: Eq_31
   OrigDataType: word32
-T_1471: (in v31_354 @ 000121B8 : bool)
-  Class: Eq_1471
-  DataType: bool
-  OrigDataType: bool
 T_1472: (in 0<32> @ 000121BC : word32)
   Class: Eq_1467
   DataType: int32
@@ -8419,7 +8419,7 @@ T_1498: (in 0<32> @ 000121F8 : word32)
   DataType: ui32
   OrigDataType: word32
 T_1499: (in o1_90 == 0<32> @ 00000000 : bool)
-  Class: Eq_1471
+  Class: Eq_1470
   DataType: bool
   OrigDataType: bool
 T_1500: (in o0_95 @ 000121C8 : int32)
@@ -8503,7 +8503,7 @@ T_1519: (in 0<32> @ 000121DC : word32)
   DataType: ui32
   OrigDataType: word32
 T_1520: (in o1_93 == 0<32> @ 00000000 : bool)
-  Class: Eq_1471
+  Class: Eq_1470
   DataType: bool
   OrigDataType: bool
 T_1521: (in 0x17168<32> @ 000121F0 : word32)

@@ -1312,8 +1312,8 @@ l00012190:
 l000121B4:
 	o0_74 = CONVERT(Mem0[l0_113:int8], int8, int32)
 l000121B8:
-	word32 i0_210
 	bool v31_354
+	word32 i0_210
 	branch o0_74 != 0<32> l000121C0_ds_t
 l000121C0_ds_t:
 	word32 o1_90 = CONVERT(Mem0[i0_120:byte], byte, ui32)
@@ -2100,10 +2100,10 @@ l00013034:
 	word32 l4_138 = sp_100 + 0x60<32>
 	word32 l2_205 = 0<32>
 l00013074:
+	bool v34_493
 	word32 sp_456
 	word32 o1_473
 	word32 o0_472
-	bool v34_493
 	branch access(l4_138, 4<32>) != 0xFFFFFFFF<32> l00013088_ds_t
 l00013088_ds_t:
 	v34_493 = l2_205 == 0<32>

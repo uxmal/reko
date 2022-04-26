@@ -2869,9 +2869,9 @@ void fn0000000000406B70(Eq_n rdi, struct Eq_n * fs)
 	Eq_n tLoc1298;
 	Eq_n tLoc1278;
 	char bLoc0E88;
+	bool v52_n;
 	int64 qwLoc12B8_n;
 	word64 qwLoc12B0_n;
-	bool v52_n;
 	up32 eax_n;
 	word64 rax_n = fs->qw0028;
 	if (*((word64) rdi + 0x00B0) != 0x00)

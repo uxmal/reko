@@ -1529,17 +1529,17 @@ l0800_n:
 							sp_n = sp_n - 2;
 							ss->*sp_n = ds;
 							wArg02_n = (union Eq_n Eq_n::*) &wArg02_n->t0002;
-							v71_n = di_n != 0x00;
+							v72_n = di_n != 0x00;
 							es_di_n = SEQ(ss->*sp_n, di_n);
 						}
 						else
 						{
 							es_di_n = (ds->*wArg02_n).t0000;
 							wArg02_n = (union Eq_n Eq_n::*) ((char *) &wArg02_n->t0002 + 2);
-							v72_n = es_di_n != 0x00;
+							v73_n = es_di_n != 0x00;
 						}
 						es_di_n = es_di_n;
-						if (!v73_n)
+						if (!v71_n)
 						{
 							sp_n = sp_n - 2;
 							ss->*sp_n = ds;

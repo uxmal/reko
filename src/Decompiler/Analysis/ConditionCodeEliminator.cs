@@ -232,8 +232,8 @@ namespace Reko.Analysis
             return m.ISub(e, 0);
 		}
 
-		public Expression UseGrfConditionally(SsaIdentifier sid, ConditionCode cc, bool forceIdentifier)
-		{
+        public Expression UseGrfConditionally(SsaIdentifier sid, ConditionCode cc, bool forceIdentifier)
+        {
             var defs = ClosureOfReachingDefinitions(sid);
 			var gf = new GrfDefinitionFinder(ssaIds);
 			gf.FindDefiningExpression(sid);
@@ -276,6 +276,17 @@ namespace Reko.Analysis
         {
             if (this.generatedIds.TryGetValue((sidDef.Identifier, cc), out var existingId))
                 return existingId.Identifier;
+
+            // Create a dummy PHI node to stop recursion.
+            var idNew = ssa.Procedure.Frame.CreateTemporary(new UnknownType());
+            var tmpPhi = new PhiAssignment(idNew);
+            var stmPhi = mutator.InsertStatementAfter(tmpPhi, sidDef.DefStatement!);
+            var sidPhi = ssaIds.Add(idNew, stmPhi, null, false);
+            tmpPhi.Dst = sidPhi.Identifier;
+            generatedIds.Add((sidDef.Identifier, cc), sidPhi);
+
+            // Chase all the arguments of the PHI function to obtain their
+            // respective variables.
             var newArgs = new List<PhiArgument>();
             foreach (var arg in phi.Arguments)
             {
@@ -283,13 +294,12 @@ namespace Reko.Analysis
                 var id = (Identifier) UseGrfConditionally(sidArg, cc, true);
                 newArgs.Add(new PhiArgument(arg.Block, id));
             }
-            var idNew = ssa.Procedure.Frame.CreateTemporary(newArgs[0].Value.DataType);
-            var newPhi = new PhiAssignment(idNew, newArgs.ToArray());
-            var stmPhi = mutator.InsertStatementAfter(newPhi, sidDef.DefStatement!);
-            var sidPhi = ssaIds.Add(idNew, stmPhi, newPhi.Src, false);
-            newPhi.Dst = sidPhi.Identifier;
-            Use(newPhi.Src, stmPhi);
-            generatedIds.Add((sidDef.Identifier, cc), sidPhi);
+
+            var phiNew = new PhiAssignment(sidPhi.Identifier, newArgs.ToArray());
+            stmPhi.Instruction = phiNew;
+            sidPhi.Identifier.DataType = newArgs[0].Value.DataType;
+            sidPhi.DefExpression = phiNew.Src;
+            Use(phiNew.Src, stmPhi);
             return sidPhi.Identifier;
         }
 

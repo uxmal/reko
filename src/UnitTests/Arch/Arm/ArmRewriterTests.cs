@@ -28,8 +28,8 @@ namespace Reko.UnitTests.Arch.Arm
     [TestFixture]
     public partial class ArmRewriterTests : RewriterTestBase
     {
-        private readonly Arm32Architecture arch = new Arm32Architecture(CreateServiceContainer(), "arm32", new Dictionary<string, object>());
-        private readonly Address baseAddress = Address.Ptr32(0x00100000);
+        private readonly Arm32Architecture arch;
+        private readonly Address baseAddress;
 
         public override IProcessorArchitecture Architecture => arch;
 
@@ -37,7 +37,8 @@ namespace Reko.UnitTests.Arch.Arm
 
         public ArmRewriterTests()
         {
-            Reko.Core.Machine.Decoder.trace.Level = System.Diagnostics.TraceLevel.Verbose;
+            arch = new Arm32Architecture(CreateServiceContainer(), "arm32", new Dictionary<string, object>());
+            baseAddress = Address.Ptr32(0x00100000);
         }
 
         [Test]

@@ -756,24 +756,24 @@ l1:
 	// succ:  m0 m1
 m0:
 	r0_5 = r0 + r2
-	v12_18 = r0_5 == 0<32>
-	v9_15 = r0_5 <=u 0<32>
-	v6_12 = r0_5 >u 0<32>
+	v13_19 = r0_5 == 0<32>
+	v10_16 = r0_5 <=u 0<32>
+	v7_13 = r0_5 >u 0<32>
 	goto m2
 	// succ:  m2
 m1:
 	r0_3 = r2 - r0
-	v13_19 = r0_3 == 0<32>
-	v10_16 = r0_3 <=u 0<32>
-	v7_13 = r0_3 >u 0<32>
+	v14_20 = r0_3 == 0<32>
+	v11_17 = r0_3 <=u 0<32>
+	v8_14 = r0_3 >u 0<32>
 	// succ:  m2
 m2:
-	v11_17 = PHI((v9_15, m0), (v10_16, m1))
-	v8_14 = PHI((v6_12, m0), (v7_13, m1))
-	v14_20 = PHI((v12_18, m0), (v13_19, m1))
-	Mem8[0x123400<32>:int8] = CONVERT(v8_14, bool, int8)
-	Mem9[0x123402<32>:int8] = CONVERT(v11_17, bool, int8)
-	Mem11[0x123404<32>:int8] = CONVERT(v14_20, bool, int8)
+	v9_15 = PHI((v10_16, m0), (v11_17, m1))
+	v6_12 = PHI((v7_13, m0), (v8_14, m1))
+	v12_18 = PHI((v13_19, m0), (v14_20, m1))
+	Mem8[0x123400<32>:int8] = CONVERT(v6_12, bool, int8)
+	Mem9[0x123402<32>:int8] = CONVERT(v9_15, bool, int8)
+	Mem11[0x123404<32>:int8] = CONVERT(v12_18, bool, int8)
 	return
 	// succ:  ProcedureBuilder_exit
 ProcedureBuilder_exit:
@@ -1116,6 +1116,84 @@ ProcedureBuilder_exit:
                 m.Use(dx);
                 m.Use(SF);
             });
+        }
+
+        [Test]
+        public void CceGithub1168()
+        {
+            var sExp =
+            #region Expected
+@"// ProcedureBuilder
+// Return size: 0
+define ProcedureBuilder
+ProcedureBuilder_entry:
+	def r2
+	def Mem0
+	def ctr
+	// succ:  m1
+m1:
+	r2_2 = r2 & 0x7F<32>
+	v6_20 = (r2 & 0x7F<32>) == 0<32>
+	// succ:  m2C
+m2C:
+	ctr_12 = PHI((ctr, m1), (ctr_12, m2C), (ctr_13, m80))
+	v5_19 = PHI((v6_20, m1), (v5_19, m2C), (v7_21, m80))
+	r2_4 = PHI((r2_2, m1), (r2_5, m2C), (r2_14, m80))
+	r2_5 = r2_4 >>u 1<8>
+	branch r2_5 == 0<32> m2C
+	// succ:  m3 m2C
+m3:
+	branch v5_19 m80
+	// succ:  m4 m80
+m4:
+	r2_8 = Mem0[0x123400<32>:word32]
+	r2_9 = r2_8 & 0x7F<32>
+	v8_22 = (r2_8 & 0x7F<32>) == 0<32>
+	// succ:  m80
+m80:
+	v7_21 = PHI((v5_19, m3), (v8_22, m4))
+	r2_14 = PHI((r2_5, m3), (r2_9, m4))
+	ctr_13 = ctr_12 - 1<i32>
+	branch ctr_13 != 0<32> m2C
+	// succ:  m9 m2C
+m9:
+	return
+	// succ:  ProcedureBuilder_exit
+ProcedureBuilder_exit:
+
+";
+            #endregion
+
+            RunStringTest(sExp, m =>
+            {
+                var r2 = m.Reg32("r2", 2);
+                var ctr = m.Reg32("ctr", 12);
+                var psw = new RegisterStorage("psw", 2, 0, PrimitiveType.Word16);
+                var SCZO = m.Frame.EnsureFlagGroup(new FlagGroupStorage(psw, 0xF, "SCZO", PrimitiveType.Word16));
+
+                m.Label("m1");
+                m.Assign(r2, m.And(r2, 0x7F));
+                m.Assign(SCZO, m.Cond(r2));
+
+                m.Label("m2C");
+                m.Assign(r2, m.Shr(r2, 1));
+                m.BranchIf(m.Eq0(r2), "m2C");
+
+                m.Label("m3");
+                m.BranchIf(m.Test(ConditionCode.EQ, SCZO), "m80");
+
+                m.Label("m4");
+                m.Assign(r2, m.Mem32(m.Word32(0x00123400)));
+                m.Assign(r2, m.And(r2, 0x7F));
+                m.Assign(SCZO, m.Cond(r2));
+
+                m.Label("m80");
+                m.Assign(ctr, m.ISubS(ctr, 1));
+                m.BranchIf(m.Ne0(ctr), "m2C");
+                m.Label("m9");
+                m.Return();
+            });
+
         }
     }
 }

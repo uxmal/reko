@@ -13946,17 +13946,17 @@ l0800_nB86:
 						sp_n = sp_n - 2;
 						ss->*sp_n = ds;
 						wArg02_n = (union Eq_n Eq_n::*) &wArg02_n->w0002;
-						v69_n = di_n != 0x00;
+						v70_n = di_n != 0x00;
 						es_di_n = SEQ(ss->*sp_n, di_n);
 					}
 					else
 					{
 						es_di_n = (ds->*wArg02_n).t0000;
 						wArg02_n = (union Eq_n Eq_n::*) (&wArg02_n->w0002 + 1);
-						v70_n = es_di_n != 0x00;
+						v71_n = es_di_n != 0x00;
 					}
 					es_di_n = es_di_n;
-					if (!v71_n)
+					if (!v69_n)
 					{
 						sp_n = sp_n - 2;
 						ss->*sp_n = ds;

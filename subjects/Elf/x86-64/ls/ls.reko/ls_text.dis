@@ -2853,9 +2853,9 @@ fn0000000000406B70_entry:
 	struct <anonymous> tLoc1278
 	char bLoc0E88
 l0000000000406B70:
+	bool v52_1222
 	word64 qwLoc12B8_1237
 	word64 qwLoc12B0_1236
-	bool v52_1222
 	word32 eax_105
 	word64 rax_26 = Mem21[fs:0x28<32>:word64]
 	branch Mem27[rdi + 176<i64>:byte] == 0<8> l0000000000406E00

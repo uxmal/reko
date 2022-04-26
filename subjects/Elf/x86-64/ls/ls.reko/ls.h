@@ -29160,18 +29160,18 @@ T_5764: (in bLoc0E88 @ 00406B70 : char)
   Class: Eq_5764
   DataType: char
   OrigDataType: char
-T_5765: (in qwLoc12B8_1237 @ 00406B70 : int64)
+T_5765: (in v52_1222 @ 00406B70 : bool)
+  Class: Eq_5765
+  DataType: bool
+  OrigDataType: bool
+T_5766: (in qwLoc12B8_1237 @ 00406B70 : int64)
   Class: Eq_54
   DataType: int64
   OrigDataType: int64
-T_5766: (in qwLoc12B0_1236 @ 00406B70 : word64)
-  Class: Eq_5766
+T_5767: (in qwLoc12B0_1236 @ 00406B70 : word64)
+  Class: Eq_5767
   DataType: word64
   OrigDataType: word64
-T_5767: (in v52_1222 @ 00406B70 : bool)
-  Class: Eq_5767
-  DataType: bool
-  OrigDataType: bool
 T_5768: (in eax_105 @ 00406B70 : up32)
   Class: Eq_107
   DataType: up32
@@ -29585,7 +29585,7 @@ T_5831: (in rdi + 128<i64> @ 00406E7B : word64)
   DataType: ptr64
   OrigDataType: ptr64
 T_5832: (in Mem88[rdi + 128<i64>:word64] @ 00406E7B : word64)
-  Class: Eq_5766
+  Class: Eq_5767
   DataType: word64
   OrigDataType: word64
 T_5833: (in 120<i64> @ 00406E80 : int64)
@@ -29609,7 +29609,7 @@ T_5837: (in rdi + 112<i64> @ 00407048 : word64)
   DataType: ptr64
   OrigDataType: ptr64
 T_5838: (in Mem99[rdi + 112<i64>:word64] @ 00407048 : word64)
-  Class: Eq_5766
+  Class: Eq_5767
   DataType: word64
   OrigDataType: word64
 T_5839: (in 104<i64> @ 0040704D : int64)
@@ -29649,7 +29649,7 @@ T_5847: (in rdi + 96<i64> @ 00406BED : word64)
   DataType: ptr64
   OrigDataType: ptr64
 T_5848: (in Mem99[rdi + 96<i64>:word64] @ 00406BED : word64)
-  Class: Eq_5766
+  Class: Eq_5767
   DataType: word64
   OrigDataType: word64
 T_5849: (in 88<i64> @ 00406BF2 : int64)
@@ -29997,7 +29997,7 @@ T_5928: (in 1<32> @ 00406BCD : word32)
   DataType: up32
   OrigDataType: up32
 T_5929: (in eax_105 < 1<32> @ 00000000 : bool)
-  Class: Eq_5767
+  Class: Eq_5765
   DataType: bool
   OrigDataType: bool
 T_5930: (in eax_105 == 1<32> @ 00000000 : bool)
@@ -30061,7 +30061,7 @@ T_5938: (in 1<32> @ 00406E64 : word32)
   DataType: up32
   OrigDataType: up32
 T_5939: (in eax_105 < 1<32> @ 00000000 : bool)
-  Class: Eq_5767
+  Class: Eq_5765
   DataType: bool
   OrigDataType: bool
 T_5940: (in eax_105 != 1<32> @ 00000000 : bool)
@@ -31343,7 +31343,7 @@ T_6258: (in rax_766 == 0<64> @ 00000000 : bool)
 T_6259: (in fn000000000040CCD0 @ 0040736E : ptr64)
   Class: Eq_6259
   DataType: (ptr64 Eq_6259)
-  OrigDataType: (ptr64 (fn T_6264 (T_6263, T_5765)))
+  OrigDataType: (ptr64 (fn T_6264 (T_6263, T_5766)))
 T_6260: (in signature of fn000000000040CCD0 @ 0040CCD0 : void)
   Class: Eq_6259
   DataType: (ptr64 Eq_6259)

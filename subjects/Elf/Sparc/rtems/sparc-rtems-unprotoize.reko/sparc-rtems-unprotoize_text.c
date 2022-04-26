@@ -1033,8 +1033,8 @@ Eq_n shortpath(Eq_n o0, Eq_n o1, union Eq_n & l0Out, union Eq_n & l1Out, struct 
 	}
 	o0_n = (int32) *l0_n;
 l000121B8:
-	Eq_n i0_n;
 	bool v31_n;
+	Eq_n i0_n;
 	if (o0_n == 0x00)
 	{
 		ui32 o1_n = (ui32) *i0_n;
@@ -1696,10 +1696,10 @@ char * process_aux_info_file(Eq_n o0, word32 o2, union Eq_n & l1Out)
 	word32 l2_n = 0x00;
 	while (true)
 	{
+		bool v34_n;
 		struct Eq_n * sp_n;
 		Eq_n o1_n;
 		char * o0_n;
-		bool v34_n;
 		if (access(l4_n, 0x04) == ~0x00)
 		{
 			if (errno != (char *) 0x02)
