@@ -176,6 +176,12 @@ namespace Reko.UnitTests.Arch.PowerPC
         }
 
         [Test]
+        public void PPCDis_beq_cr1()
+        {
+            AssertCode("beq\tcr1,$00100010", "41860010");
+        }
+
+        [Test]
         public void PPCDis_bl()
         {
             var instr = DisassembleWord(0x4BFFFFFD);
@@ -183,11 +189,21 @@ namespace Reko.UnitTests.Arch.PowerPC
         }
 
         [Test]
+        public void PPCDis_bl_largeOffsets()
+        {
+            AssertCode("bl\t$FF7F42E0", "4B6F42E1");
+            AssertCode("bl\t$010FFFE0", "48FFFFE1");
+            AssertCode("bl\t$020FFFE0", "49FFFFE1");
+            AssertCode("bl\t$FF0FFFE0", "4AFFFFE1");
+            AssertCode("bl\t$000FFFE0", "4BFFFFE1");
+        }
+
+        [Test]
         public void PPCDis_bl_64()
         {
             Given_PowerPcBe64();
             addrLoad = Address.Ptr64(0x82BBE130);
-            AssertCode("bl\t$00000000832C0890", "4B702761");
+            AssertCode("bl\t$00000000822C0890", "4B702761");
         }
 
         [Test]

@@ -249,7 +249,7 @@ namespace Reko.Arch.PowerPC
             {
                 var mnemonic = (wInstr & 1) == 1 ? Mnemonic.bl : Mnemonic.b;
                 var iclass = (wInstr & 1) == 1 ? InstrClass.Transfer | InstrClass.Call : InstrClass.Transfer;
-                var sOffset = (int) Bits.SignExtend(wInstr & 0x03FF_FFFC, 24);
+                var sOffset = (int) Bits.SignExtend(wInstr & 0x03FF_FFFC, 26);
                 var baseAddr = (wInstr & 2) != 0 ? Address.Create(dasm.defaultWordWidth, 0) : dasm.rdr.Address - 4;
                 return new PowerPcInstruction(mnemonic)
                 {
