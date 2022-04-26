@@ -20,6 +20,7 @@
 
 using Reko.Core;
 using Reko.Core.Configuration;
+using Reko.Core.IO;
 using Reko.Core.Loading;
 using Reko.Core.Memory;
 using Reko.Environments.Wii;

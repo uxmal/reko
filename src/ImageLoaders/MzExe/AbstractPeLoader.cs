@@ -212,6 +212,8 @@ namespace Reko.ImageLoaders.MzExe
             if (rva == 0)
                 return null;
             EndianImageReader rdr = imgLoaded.CreateLeReader(rva);
+            if (!rdr.IsValidOffset(rva))
+                return null;
             var bytes = new List<byte>();
             byte b;
             while ((b = rdr.ReadByte()) != 0)
