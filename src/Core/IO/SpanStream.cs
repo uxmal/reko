@@ -20,16 +20,18 @@
  */
 #endregion
 using System;
+using System.Buffers.Binary;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Numerics;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Text;
 
 namespace Reko.Core.IO
 {
-	public class SpanStream : Stream
+    public class SpanStream : Stream
 	{
 
 		delegate T ReaderDelegate<T>() where T : unmanaged;
@@ -48,7 +50,10 @@ namespace Reko.Core.IO
 
 		public override long Position {
 			get => pos;
-			set => pos = (int)value;
+            set
+            {
+                pos = (int) value;
+            }
 		}
 
 		public void Mark() {
@@ -74,25 +79,94 @@ namespace Reko.Core.IO
 		public override bool CanSeek { get; } = true;
 		public override bool CanWrite { get; } = true;
 
-		private void SetDelegates() {
-			if (
-				BitConverter.IsLittleEndian && Endianness == Endianness.LittleEndian ||
-				!BitConverter.IsLittleEndian && Endianness == Endianness.BigEndian
-			) {
-				u16Reader = new ReaderDelegate<ushort>(Read<ushort>);
-				u16Writer = new WriterDelegate<ushort>(Write<ushort>);
-				u32Reader = new ReaderDelegate<uint>(Read<uint>);
-				u32Writer = new WriterDelegate<uint>(Write<uint>);
-				u64Reader = new ReaderDelegate<ulong>(Read<ulong>);
-				u64Writer = new WriterDelegate<ulong>(Write<ulong>);
+        private ushort ReadUInt16LittleEndian()
+        {
+            var value = BinaryPrimitives.ReadUInt16LittleEndian(SliceHereMemory().Span);
+            pos += sizeof(ushort);
+            return value;
+        }
+        private uint ReadUInt32LittleEndian()
+        {
+            var value = BinaryPrimitives.ReadUInt32LittleEndian(SliceHereMemory().Span);
+            pos += sizeof(uint);
+            return value;
+        }
+        private ulong ReadUInt64LittleEndian()
+        {
+            var value = BinaryPrimitives.ReadUInt64LittleEndian(SliceHereMemory().Span);
+            pos += sizeof(ulong);
+            return value;
+        }
+
+        private ushort ReadUInt16BigEndian()
+        {
+            var value = BinaryPrimitives.ReadUInt16BigEndian(SliceHereMemory().Span);
+            pos += sizeof(ushort);
+            return value;
+        }
+
+        private uint ReadUInt32BigEndian()
+        {
+            var value = BinaryPrimitives.ReadUInt32BigEndian(SliceHereMemory().Span);
+            pos += sizeof(uint);
+            return value;
+
+        }
+        private ulong ReadUInt64BigEndian()
+        {
+            var value = BinaryPrimitives.ReadUInt64BigEndian(SliceHereMemory().Span);
+            pos += sizeof(ulong);
+            return value;
+        }
+
+        private void WriteUInt16LittleEndian(ushort value)
+        {
+            BinaryPrimitives.WriteUInt16LittleEndian(SliceHereMemory().Span, value);
+            pos += sizeof(ushort);
+        }
+        private void WriteUInt32LittleEndian(uint value)
+        {
+            BinaryPrimitives.WriteUInt32LittleEndian(SliceHereMemory().Span, value);
+            pos += sizeof(uint);
+        }
+        private void WriteUInt64LittleEndian(ulong value)
+        {
+            BinaryPrimitives.WriteUInt64LittleEndian(SliceHereMemory().Span, value);
+            pos += sizeof(ulong);
+        }
+
+        private void WriteUInt16BigEndian(ushort value)
+        {
+            BinaryPrimitives.WriteUInt16BigEndian(SliceHereMemory().Span, value);
+            pos += sizeof(ushort);
+        }
+        private void WriteUInt32BigEndian(uint value)
+        {
+            BinaryPrimitives.WriteUInt32BigEndian(SliceHereMemory().Span, value);
+            pos += sizeof(uint);
+        }
+        private void WriteUInt64BigEndian(ulong value)
+        {
+            BinaryPrimitives.WriteUInt64BigEndian(SliceHereMemory().Span, value);
+            pos += sizeof(ulong);
+        }
+
+        private void SetDelegates() {
+			if(Endianness == Endianness.LittleEndian){
+				u16Reader = new ReaderDelegate<ushort>(ReadUInt16LittleEndian);
+				u16Writer = new WriterDelegate<ushort>(WriteUInt16LittleEndian);
+				u32Reader = new ReaderDelegate<uint>(ReadUInt32LittleEndian);
+				u32Writer = new WriterDelegate<uint>(WriteUInt32LittleEndian);
+				u64Reader = new ReaderDelegate<ulong>(ReadUInt64LittleEndian);
+				u64Writer = new WriterDelegate<ulong>(WriteUInt64LittleEndian);
 			} else {
-				u16Reader = new ReaderDelegate<ushort>(ReadUInt16Swapped);
-				u16Writer = new WriterDelegate<ushort>(WriteUInt16Swapped);
-				u32Reader = new ReaderDelegate<uint>(ReadUInt32Swapped);
-				u32Writer = new WriterDelegate<uint>(WriteUInt32Swapped);
-				u64Reader = new ReaderDelegate<ulong>(ReadUInt64Swapped);
-				u64Writer = new WriterDelegate<ulong>(WriteUInt64Swapped);
-			}
+                u16Reader = new ReaderDelegate<ushort>(ReadUInt16BigEndian);
+                u16Writer = new WriterDelegate<ushort>(WriteUInt16BigEndian);
+                u32Reader = new ReaderDelegate<uint>(ReadUInt32BigEndian);
+                u32Writer = new WriterDelegate<uint>(WriteUInt32BigEndian);
+                u64Reader = new ReaderDelegate<ulong>(ReadUInt64BigEndian);
+                u64Writer = new WriterDelegate<ulong>(WriteUInt64BigEndian);
+            }
 		}
 
 		public string ReadString(int length, Encoding? encoding = null) {
@@ -107,60 +181,6 @@ namespace Reko.Core.IO
 			pos += count;
 			return ret;
 		}
-
-		private ushort ReadUInt16Swapped() {
-			return ByteSwap16(Read<ushort>());
-		}
-
-		private void WriteUInt16Swapped(ushort value) {
-			Write<ushort>(ByteSwap16(value));
-		}
-
-		private void WriteUInt32Swapped(uint value) {
-			Write<uint>(ByteSwap32(value));
-		}
-
-		private void WriteUInt64Swapped(ulong value) {
-			Write<ulong>(ByteSwap64(value));
-		}
-
-		private uint ReadUInt32Swapped() {
-			return ByteSwap32(Read<uint>());
-		}
-
-		private ulong ReadUInt64Swapped() {
-			return ByteSwap64(Read<ulong>());
-		}
-
-		private static ushort ByteSwap16(ushort num) {
-			return (ushort)(
-				((num & 0xFF00) >> 8) |
-				((num & 0x00FF) << 8)
-			);
-		}
-
-		private static uint ByteSwap32(uint num) {
-			return (
-				((num & 0xFF000000) >> 24) |
-				((num & 0x00FF0000) >> 8) |
-				((num & 0x0000FF00) << 8) |
-				((num & 0x000000FF) << 24)
-			);
-		}
-
-		private static ulong ByteSwap64(ulong num) {
-			return (
-				((num & 0xFF00000000000000) >> 56) |
-				((num & 0x00FF000000000000) >> 40) |
-				((num & 0x0000FF0000000000) >> 24) |
-				((num & 0x000000FF00000000) >> 8) |
-				((num & 0x00000000FF000000) << 8) |
-				((num & 0x0000000000FF0000) << 24) |
-				((num & 0x000000000000FF00) << 40) |
-				((num & 0x00000000000000FF) << 56)
-			);
-		}
-
 
 		private int FieldSize(FieldInfo field) {
 			if (field.FieldType.IsArray) {
@@ -231,38 +251,9 @@ namespace Reko.Core.IO
 			return data;
 		}
 
-		private T AdjustFieldEndianness<T>(T value) where T : unmanaged {
-			switch (value) {
-				case sbyte num:
-					return (T)(object)num;
-				case byte num:
-					return (T)(object)num;
-			}
-
-			if (BitConverter.IsLittleEndian && Endianness == Endianness.LittleEndian)
-				return value;
-
-			switch (value) {
-				case short num:
-					return (T)(object)ByteSwap16((ushort)num);
-				case ushort num:
-					return (T)(object)ByteSwap16(num);
-				case int num:
-					return (T)(object)ByteSwap32((uint)num);
-				case uint num:
-					return (T)(object)ByteSwap32(num);
-				case long num:
-					return (T)(object)ByteSwap64((ulong)num);
-				case ulong num:
-					return (T)(object)ByteSwap64(num);
-				default:
-					throw new NotImplementedException(typeof(T).Name);
-			}
-		}
-
 		public unsafe T Read<T>() where T : unmanaged {
 			var start = Memory.Span.Slice(pos, sizeof(T));
-			T ret = MemoryMarshal.Cast<byte, T>(start)[0];
+            T ret = MemoryMarshal.Read<T>(start);
 			pos += sizeof(T);
 			return ret;
 		}
@@ -278,12 +269,12 @@ namespace Reko.Core.IO
 
 		public unsafe void Write<T>(T value) where T : unmanaged {
 			var start = Memory.Span.Slice(pos, sizeof(T));
-			MemoryMarshal.Cast<byte, T>(start)[0] = value;
+            MemoryMarshal.Write(start, ref value);
 			pos += sizeof(T);
 		}
 
 		public unsafe void WriteAt<T>(long offset, T value) where T : unmanaged {
-			Memory.Span.Write<T>((int)offset, value);
+			Memory.Span.Write((int)offset, value);
 		}
 
 		public void WriteMemory<T>(Memory<T> data) where T : unmanaged {
@@ -341,7 +332,7 @@ namespace Reko.Core.IO
 			var start = Memory.Span.Slice(pos, length);
 
 			T ret;
-			ret = MemoryMarshal.Cast<byte, T>(start)[0];
+            ret = MemoryMarshal.Read<T>(start);
 			ret = RespectEndianness(ret);
 
 			pos += length;
@@ -460,12 +451,22 @@ namespace Reko.Core.IO
 			return Position;
 		}
 
+        public Memory<byte> SliceHereMemory()
+        {
+            return this.Memory.Slice(this.pos);
+        }
+
+        public Memory<byte> SliceHereMemory(int length)
+        {
+            return this.Memory.Slice(this.pos, length);
+        }
+
 		public SpanStream SliceHere() {
-			return new SpanStream(this.Memory.Slice(this.pos), this.endianness);
+			return new SpanStream(SliceHereMemory(), this.endianness);
 		}
 
 		public SpanStream SliceHere(int length) {
-			return new SpanStream(this.Memory.Slice(this.pos, length), this.endianness);
+			return new SpanStream(SliceHereMemory(length), this.endianness);
 		}
 
 		public virtual byte[] ReadRemaining() {
