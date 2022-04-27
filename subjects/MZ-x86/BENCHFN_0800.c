@@ -612,10 +612,10 @@ ci16 fn0800-065B(struct Eq_n * ds, struct Eq_n Eq_n::* wArg02)
 	return ax_n;
 }
 
-// 0800:06A2: void _fseek(Register (ptr16 Eq_n) ds, Stack (memptr (ptr16 Eq_n) Eq_n) wArg02, Stack ui32 dwArg04, Stack word16 wArg08)
+// 0800:06A2: void _fseek(Register (ptr16 Eq_n) ds, Stack (memptr (ptr16 Eq_n) Eq_n) wArg02, Stack (ptr32 int32) dwArg04, Stack word16 wArg08)
 // Called from:
 //      _setvbuf
-void _fseek(struct Eq_n * ds, struct Eq_n Eq_n::* wArg02, ui32 dwArg04, word16 wArg08)
+void _fseek(struct Eq_n * ds, struct Eq_n Eq_n::* wArg02, int32 * dwArg04, word16 wArg08)
 {
 	if (_fflush(ds, wArg02) == 0x00)
 	{
@@ -947,13 +947,13 @@ Eq_n __write(struct Eq_n * ds, int16 wArg02, Eq_n wArg04, Eq_n wArg06)
 	return ax_n;
 }
 
-// 0800:0C28: Register Eq_n _lseek(Register (ptr16 Eq_n) ds, Stack int16 wArg02, Stack ui32 dwArg04, Stack byte bArg08, Register out ptr16 dxOut)
+// 0800:0C28: Register Eq_n _lseek(Register (ptr16 Eq_n) ds, Stack int16 wArg02, Stack (ptr32 int32) dwArg04, Stack byte bArg08, Register out ptr16 dxOut)
 // Called from:
 //      _fseek
 //      _read
 //      __write
 //      _tell
-Eq_n _lseek(struct Eq_n * ds, int16 wArg02, ui32 dwArg04, byte bArg08, ptr16 & dxOut)
+Eq_n _lseek(struct Eq_n * ds, int16 wArg02, int32 * dwArg04, byte bArg08, ptr16 & dxOut)
 {
 	ptr16 wArg04 = (word16) dwArg04;
 	ds->a0482[wArg02] &= ~0x0200;
@@ -961,7 +961,7 @@ Eq_n _lseek(struct Eq_n * ds, int16 wArg02, ui32 dwArg04, byte bArg08, ptr16 & d
 	ptr16 dx_n = wArg04;
 	if (msdos_set_file_position(wArg02, dwArg04, bArg08, SEQ(wArg04, ax_n)))
 	{
-		word32 dx_ax_n = (word32) __IOERROR(ds, ax_n);
+		int32 * dx_ax_n = (int32 *) __IOERROR(ds, ax_n);
 		ax_n = (word16) dx_ax_n;
 		dx_n = SLICE(dx_ax_n, word16, 16);
 	}
@@ -1055,13 +1055,13 @@ l0800_nDBF:
 			return ax_n;
 		}
 		ax_n.u0 = 0x4201;
-		if (!msdos_set_file_position(wArg02, 0x00, 0x01, 0x4201))
+		if (!msdos_set_file_position(wArg02, 0x00, 0x01, (int32 *) 0x4201))
 		{
 			ax_n.u0 = 0x4202;
-			if (!msdos_set_file_position(wArg02, 0x00, 0x02, 0x4202))
+			if (!msdos_set_file_position(wArg02, 0x00, 0x02, (int32 *) 0x4202))
 			{
 				ax_n.u0 = 0x4200;
-				if (!msdos_set_file_position(wArg02, 0x4201, 0x00, 0x42014200))
+				if (!msdos_set_file_position(wArg02, (int32 *) 0x4201, 0x00, (int32 *) 0x42014200))
 				{
 					if (true && (false || true))
 					{

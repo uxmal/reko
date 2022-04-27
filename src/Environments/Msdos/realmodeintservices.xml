@@ -425,6 +425,21 @@
 	</signature>
   </service>
   
+  <service name="msdos_direct_console_input">
+	<syscallinfo>
+	  <vector>21</vector>
+	  <regvalue reg="ah">06</regvalue>
+	  <regvalue reg="dl">FF</regvalue>
+	</syscallinfo>
+	<signature>
+      <return><flag>Z</flag></return>
+      <arg out="true">
+          <prim domain="Character" size="1" />
+          <reg>al</reg>
+      </arg>
+	</signature>
+  </service>
+    
   <service name="msdos_direct_console_output">
 	<syscallinfo>
 	  <vector>21</vector>
@@ -471,7 +486,7 @@
 	</syscallinfo>
 	<signature>
 	  <arg>
-      <ptr><prim domain="Character" size="1" /></ptr>
+      <segptr><prim domain="Character" size="1" /></segptr>
       <seq><reg>ds</reg><reg>dx</reg></seq>  
 	  </arg>
 	</signature>
@@ -530,6 +545,7 @@
 	</syscallinfo>
 	<signature>
 	  <arg>
+      <ptr><prim domain="Character" size="1" /></ptr>
       <seq><reg>ds</reg><reg>dx</reg></seq>
     </arg>
 	</signature>
@@ -646,6 +662,7 @@
 	</syscallinfo>
 	<signature>
 	  <return>
+        <ptr><prim domain="Character" size="1" /></ptr>
 		<seq><reg>es</reg><reg>bx</reg></seq>
 	  </return>
 	</signature>
@@ -882,12 +899,14 @@
 		<reg>bx</reg>
 	  </arg>
 	  <arg>
-		<seq><reg>cx</reg><reg>dx</reg></seq>
+          <ptr><prim domain="SignedInt" size="4" /></ptr>
+          <seq><reg>cx</reg><reg>dx</reg></seq>
 	  </arg>
 	  <arg>
 		<reg>al</reg>
 	  </arg>
 	  <arg out="true">
+        <ptr><prim domain="SignedInt" size="4" /></ptr>
 	    <seq><reg>dx</reg><reg>ax</reg></seq>
 	  </arg>
 	</signature>
@@ -1122,12 +1141,10 @@
 	  <arg>
 		<reg>cx</reg>
 	  </arg>
-	  <arg>
-		<reg>ds</reg>
-	  </arg>
-	  <arg>
-		<reg>dx</reg>
-	  </arg>
+      <arg>
+        <ptr><prim domain="Character" size="1" /></ptr>
+        <seq><reg>ds</reg><reg>dx</reg></seq>
+      </arg>
 	</signature>
   </service>
   <service name="msdos_find_next_file">
@@ -1186,8 +1203,14 @@
       <return>
         <flag>C</flag>
       </return>
-      <arg name="oldName"><seq><reg>ds</reg><reg>dx</reg></seq></arg>
-      <arg name="newName"><seq><reg>es</reg><reg>di</reg></seq></arg>
+      <arg name="oldName">
+        <ptr><prim domain="Character" size="1" /></ptr>
+        <seq><reg>ds</reg><reg>dx</reg></seq>
+      </arg>
+      <arg name="newName">
+        <ptr><prim domain="Character" size="1" /></ptr>
+        <seq><reg>es</reg><reg>di</reg></seq>
+      </arg>
       <arg name="errorCode" out="true"><reg>ax</reg></arg>
     </signature>
   </service>

@@ -1273,7 +1273,7 @@ l0800_0C28:
 	word16 dx_19 = wArg04
 	branch msdos_set_file_position(wArg02, dwArg04, bArg08, SEQ(wArg04, ax_21)) l0800_0C4A
 l0800_0C4A:
-	word32 dx_ax_32 = CONVERT(__IOERROR(ds, ax_21), word16, word32)
+	int32 * dx_ax_32 = CONVERT(__IOERROR(ds, ax_21), word16, int32 *)
 	ax_21 = SLICE(dx_ax_32, word16, 0) (alias)
 	dx_19 = SLICE(dx_ax_32, word16, 16) (alias)
 l0800_0C48:
@@ -1376,13 +1376,13 @@ l0800_0D82:
 	branch (dl_20 & 0x80<8>) != 0<8> l0800_0DBF
 l0800_0D87:
 	ax_16 = 0x4201<16>
-	branch msdos_set_file_position(wArg02, 0<32>, 1<8>, 0x4201<32>) l0800_0DC3
+	branch msdos_set_file_position(wArg02, null, 1<8>, 0x00004201<p32>) l0800_0DC3
 l0800_0D92:
 	ax_16 = 0x4202<16>
-	branch msdos_set_file_position(wArg02, 0<32>, 2<8>, 0x4202<32>) l0800_0DC3
+	branch msdos_set_file_position(wArg02, null, 2<8>, 0x00004202<p32>) l0800_0DC3
 l0800_0DA7:
 	ax_16 = 0x4200<16>
-	branch msdos_set_file_position(wArg02, 0x4201<32>, 0<8>, 0x42014200<32>) l0800_0DC3
+	branch msdos_set_file_position(wArg02, 0x00004201<p32>, 0<8>, 0x42014200<p32>) l0800_0DC3
 l0800_0DC3:
 	ax_101 = __IOERROR(ds, ax_16)
 l0800_0DAE:

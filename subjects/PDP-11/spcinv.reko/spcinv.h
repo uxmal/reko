@@ -298,8 +298,8 @@ Eq_14: (fn bool (Eq_16))
 	T_24 (in TTYIN @ 00000218 : ptr16)
 	T_147 (in TTYIN @ 0000023E : ptr16)
 	T_270 (in TTYIN @ 000002A8 : ptr16)
-Eq_16: (union "Eq_16" (byte u0) (ptr16 u1))
-	T_16 (in chOut @ 0000020E : ptr16)
+Eq_16: (union "Eq_16" (byte u0) ((ptr16 char) u1))
+	T_16 (in chOut @ 0000020E : (ptr16 char))
 	T_17 (in out r0_9 @ 0000020E : ptr16)
 	T_21 (in out r0_14 @ 00000214 : ptr16)
 	T_25 (in out r0_16 @ 00000218 : ptr16)
@@ -927,14 +927,14 @@ T_15: (in signature of TTYIN @ 00000000 : void)
   Class: Eq_14
   DataType: (ptr16 Eq_14)
   OrigDataType: 
-T_16: (in chOut @ 0000020E : ptr16)
+T_16: (in chOut @ 0000020E : (ptr16 char))
   Class: Eq_16
   DataType: Eq_16
   OrigDataType: 
 T_17: (in out r0_9 @ 0000020E : ptr16)
   Class: Eq_16
   DataType: Eq_16
-  OrigDataType: ptr16
+  OrigDataType: (ptr16 char)
 T_18: (in TTYIN(out r0_9) @ 0000020E : bool)
   Class: Eq_18
   DataType: bool
@@ -950,7 +950,7 @@ T_20: (in TTYIN @ 00000214 : ptr16)
 T_21: (in out r0_14 @ 00000214 : ptr16)
   Class: Eq_16
   DataType: Eq_16
-  OrigDataType: ptr16
+  OrigDataType: (ptr16 char)
 T_22: (in TTYIN(out r0_14) @ 00000214 : bool)
   Class: Eq_18
   DataType: bool
@@ -966,7 +966,7 @@ T_24: (in TTYIN @ 00000218 : ptr16)
 T_25: (in out r0_16 @ 00000218 : ptr16)
   Class: Eq_16
   DataType: Eq_16
-  OrigDataType: ptr16
+  OrigDataType: (ptr16 char)
 T_26: (in TTYIN(out r0_16) @ 00000218 : bool)
   Class: Eq_18
   DataType: bool
@@ -1458,7 +1458,7 @@ T_147: (in TTYIN @ 0000023E : ptr16)
 T_148: (in out r0_26 @ 0000023E : ptr16)
   Class: Eq_16
   DataType: Eq_16
-  OrigDataType: ptr16
+  OrigDataType: (ptr16 char)
 T_149: (in TTYIN(out r0_26) @ 0000023E : bool)
   Class: Eq_18
   DataType: bool
@@ -1950,7 +1950,7 @@ T_270: (in TTYIN @ 000002A8 : ptr16)
 T_271: (in out r0_92 @ 000002A8 : ptr16)
   Class: Eq_16
   DataType: Eq_16
-  OrigDataType: (union (byte u1) (ptr16 u0))
+  OrigDataType: (union (byte u1) ((ptr16 char) u0))
 T_272: (in TTYIN(out r0_92) @ 000002A8 : bool)
   Class: Eq_18
   DataType: bool
@@ -10183,7 +10183,7 @@ typedef bool (Eq_14)(Eq_16);
 
 typedef union Eq_16 {
 	byte u0;
-	ptr16 u1;
+	char * u1;
 } Eq_16;
 
 typedef void (Eq_52)(char *);

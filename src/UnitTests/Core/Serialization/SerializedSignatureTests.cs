@@ -116,7 +116,7 @@ namespace Reko.UnitTests.Core.Serialization
 			sig.Arguments = new Argument_v1[] { arg };
             Given_X86ProcedureSerializer();
             FunctionType ps = sser.Deserialize(sig, arch.CreateFrame());
-			Assert.AreEqual("void foo(Register out ptr16 bpOut)", ps.ToString("foo"));
+			Assert.AreEqual("void foo(Register out (ptr16 word16) bpOut)", ps.ToString("foo"));
 		}
 
 		public static SerializedSignature BuildSsigAxBxCl()

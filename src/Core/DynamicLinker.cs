@@ -314,7 +314,7 @@ namespace Reko.Core
                 var dt = PrimitiveType.CreateWord(impref.ReferenceAddress.DataType.BitSize);
                 if (!program.Architecture.TryRead(seg.MemoryArea, impref.ReferenceAddress, dt, out Constant cIndirect))
                     return InvalidConstant.Create(program.Architecture.WordWidth);
-                return Constant.Create(program.Architecture.WordWidth, cIndirect.ToInt64());
+                return Constant.Create(program.Platform.PointerType, cIndirect.ToInt64());
             }
             else
             {

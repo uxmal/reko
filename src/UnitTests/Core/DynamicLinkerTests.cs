@@ -341,7 +341,7 @@ VarargsParserClass: FakeParser";
 
             var result = dynlink.ResolveToImportedValue(stm, Constant.Word32(0x00200000));
 
-            Assert.AreEqual("0x300000<64>", result.ToString());     //$LIT: pointer? p64?
+            Assert.AreEqual("0x0000000000300000<p64>", result.ToString());
         }
     }
 }

@@ -250,7 +250,7 @@ Eq_n fn1483-0D06(struct Eq_n * ds_bx, ui16 dx, struct Eq_n * fs, Eq_n wArg00, st
 	ds_bx->wE209 = ds_bx->wE209 - dx - (word16) C;
 	if (bx != dx)
 	{
-		msdos_display_string(&ds->b0D21);
+		msdos_display_string((char *) ds + 3361);
 		Mem42[fs:wArg04 + 82 + wArg00:byte] = Mem10[fs:wArg04 + 82 + wArg00:byte] & SLICE(wArg0E, byte, 0);
 		di = wArg00;
 	}

@@ -33,7 +33,7 @@ void deregister_tm_clones()
 // Preserved: sp
 deregister_tm_clones_entry:
 l00000670:
-	branch Mem0[0x10AA4<32>:word32] == 0x10A84<32> l0000068C_ds_t
+	branch Mem0[0x10AA4<32>:word32] == 0x00010A84<p32> l0000068C_ds_t
 l0000068C_ds_t:
 l0000068C_ds_f:
 	word32 r25_12 = Mem0[0x10AE4<32>:word32]
@@ -58,7 +58,7 @@ void register_tm_clones()
 // Preserved: sp
 register_tm_clones_entry:
 l000006A8:
-	word32 r5_12 = Mem0[0x10AA4<32>:word32] - 0x10A84<32> >> 2<8>
+	word32 r5_12 = Mem0[0x10AA4<32>:word32] - 0x00010A84<p32> >> 2<8>
 	branch (r5_12 >>u 0x1F<8>) + r5_12 >> 1<8> == 0<32> l000006D8_ds_t
 l000006D8_ds_t:
 l000006D8_ds_f:
@@ -82,7 +82,7 @@ void __do_global_dtors_aux()
 // Preserved: r16 r17 r18 r19 ra sp
 __do_global_dtors_aux_entry:
 l000006F4:
-	branch CONVERT(Mem19[0x10AF0<32>:byte], byte, word32) != 0<32> l00000728_ds_t
+	branch CONVERT(Mem19[0x00010AF0<p32>:byte], byte, word32) != 0<32> l00000728_ds_t
 l00000728_ds_t:
 l00000728_ds_f:
 l0000072C:
@@ -93,27 +93,27 @@ l00000730_ds_f:
 l00000734:
 	__cxa_finalize(Mem19[r2_24:word32])
 l00000744:
-	word32 r2_40 = Mem19[0x10AF4<32>:word32]
-	word32 r16_42 = (Mem19[0x10AB0<32>:word32] - 0x10A68<32> >> 2<8>) + -1<i32>
+	word32 r2_40 = Mem19[0x00010AF4<p32>:word32]
+	word32 r16_42 = (Mem19[0x10AB0<32>:word32] - 0x00010A68<p32> >> 2<8>) + -1<i32>
 	branch CONVERT(r2_40 <u r16_42, bool, word32) == 0<32> l00000770_ds_t
 l00000770_ds_t:
 l00000770_ds_f:
 l00000774:
 	word32 r2_47 = r2_40 + 1<i32>
-	Mem50[0x10AF4<32>:word32] = r2_47
-	word32 r2_52 = (r2_47 << 2<8>) + 0x10A68<32>
+	Mem50[0x00010AF4<p32>:word32] = r2_47
+	word32 r2_52 = (r2_47 << 2<8>) + 0x00010A68<p32>
 	word32 r4_60
 	call Mem50[r2_52:word32] (retsize: 0;)
 		uses: r2:r2_52,r3:r2_47 << 2<8>,r4:r4_60
 		defs: r4:r4_60
-	r2_40 = Mem50[0x10AF4<32>:word32]
+	r2_40 = Mem50[0x00010AF4<p32>:word32]
 	branch CONVERT(r2_40 <u r16_42, bool, word32) != 0<32> l0000079C_ds_t
 l0000079C_ds_t:
 l0000079C_ds_f:
 l000007A0:
 l000007A4:
 	deregister_tm_clones()
-	Mem76[0x10AF0<32>:byte] = 1<8>
+	Mem76[0x00010AF0<p32>:byte] = 1<8>
 l000007B8:
 	return
 __do_global_dtors_aux_exit:
@@ -213,12 +213,12 @@ void __do_global_ctors_aux()
 // Preserved: r16 r17 ra sp
 __do_global_ctors_aux_entry:
 l00000970:
-	word32 r25_18 = Mem17[0x10A60<32>:word32]
+	word32 r25_18 = Mem17[0x00010A60<p32>:word32]
 	branch r25_18 == -1<i32> l000009A0_ds_t
 l000009A0_ds_t:
 l000009A0_ds_f:
 l000009A4:
-	word32 r16_21 = 0x10A60<32>
+	word32 r16_21 = 0x00010A60<p32>
 l000009A8:
 	call r25_18 (retsize: 0;)
 	r16_21 = r16_21 + -4<i32>

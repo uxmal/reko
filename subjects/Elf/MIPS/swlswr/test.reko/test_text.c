@@ -25,7 +25,7 @@ void __start(word32 r2, word32 dwArg00)
 //      __do_global_dtors_aux
 void deregister_tm_clones()
 {
-	if (g_dw10AA4 == 68228)
+	if (g_t10AA4 == 68228)
 		return;
 	<anonymous> * r25_n = g_ptr10AE4;
 	if (r25_n == null)
@@ -38,7 +38,7 @@ void deregister_tm_clones()
 //      frame_dummy
 void register_tm_clones()
 {
-	Eq_n r5_n = g_dw10AA4 - 68228 >> 0x02;
+	Eq_n r5_n = g_t10AA4 - 68228 >> 0x02;
 	if ((r5_n >>u 0x1F) + r5_n >> 0x01 == 0x00)
 		return;
 	<anonymous> * r25_n = g_ptr10AD4;

@@ -162,7 +162,7 @@ Eq_125: (fn void (byte, (ptr32 code)))
 Eq_133: (fn void (byte, (ptr32 code)))
 	T_133 (in msdos_set_interrupt_vector @ 000081CE : segptr32)
 	T_134 (in signature of msdos_set_interrupt_vector @ 00000000 : void)
-Eq_142: (fn bool (word16, word16, (ptr32 char), ptr16))
+Eq_142: (fn bool (word16, word16, (ptr32 char), (ptr16 word16)))
 	T_142 (in msdos_write_file @ 000081DF : segptr32)
 	T_143 (in signature of msdos_write_file @ 00000000 : void)
 Eq_153: (segment "Eq_153" (56 Eq_154 t0056))
@@ -866,7 +866,7 @@ Eq_993: (struct "Eq_993" (0 ci16 w0000) (2 cui16 w0002))
 	T_993 (in wArg02 + 8<i16> @ 000086D9 : word16)
 Eq_996: (struct "Eq_996" (0 ci16 w0000) (2 cui16 w0002) (8 Eq_646 t0008))
 	T_996 (in wArg02 + 10<i16> @ 000086D9 : word16)
-Eq_1000: (fn word16 ((ptr16 Eq_342), int16, ui32, byte, ptr16))
+Eq_1000: (fn word16 ((ptr16 Eq_342), int16, (ptr32 int32), byte, ptr16))
 	T_1000 (in _lseek @ 000086EA : segptr32)
 	T_1001 (in signature of _lseek @ 00008C28 : void)
 	T_1466 (in _lseek @ 00008A95 : segptr32)
@@ -992,14 +992,14 @@ Eq_1300: (struct "Eq_1300" (0 ci16 w0000) (2 cui16 w0002) (4 byte b0004) (6 cu16
 	T_1300 (in wArg02 + 2<i16> @ 000088D6 : word16)
 Eq_1303: (struct "Eq_1303" (0 ci16 w0000) (2 cui16 w0002) (4 byte b0004) (6 cu16 w0006) (A Eq_646 t000A))
 	T_1303 (in wArg02 + 2<i16> @ 000088D4 : word16)
-Eq_1311: (fn bool (int16, ptr16))
+Eq_1311: (fn bool (int16, (ptr16 word16)))
 	T_1311 (in msdos_ioctl_get_device_info @ 000088FB : segptr32)
 	T_1312 (in signature of msdos_ioctl_get_device_info @ 00000000 : void)
 Eq_1341: (struct "Eq_1341" (E (memptr (ptr16 Eq_342) Eq_935) ptr000E))
 	T_1341 (in wArg02 + 0<16> @ 00008955 : word16)
 Eq_1346: (struct "Eq_1346" (0 ci16 w0000) (E (memptr (ptr16 Eq_342) Eq_935) ptr000E))
 	T_1346 (in wArg02 + 2<i16> @ 0000896B : word16)
-Eq_1352: (fn void ((ptr16 Eq_342), (memptr (ptr16 Eq_342) Eq_935), ui32, word16))
+Eq_1352: (fn void ((ptr16 Eq_342), (memptr (ptr16 Eq_342) Eq_935), (ptr32 int32), word16))
 	T_1352 (in _fseek @ 00008960 : segptr32)
 	T_1353 (in signature of _fseek @ 000086A2 : void)
 Eq_1363: (struct "Eq_1363" (0 ci16 w0000) (2 cui16 w0002) (E (memptr (ptr16 Eq_342) Eq_935) ptr000E))
@@ -1031,7 +1031,7 @@ Eq_1425: (struct "Eq_1425" (0 ci16 w0000) (2 cui16 w0002) (6 cu16 w0006) (8 Eq_6
 	T_1425 (in wArg02 + 2<i16> @ 000089C9 : word16)
 Eq_1430: (struct "Eq_1430" (0 ci16 w0000) (2 cui16 w0002) (6 cu16 w0006) (8 Eq_646 t0008) (A Eq_646 t000A) (E (memptr (ptr16 Eq_342) Eq_935) ptr000E))
 	T_1430 (in wArg02 + 2<i16> @ 000089C9 : word16)
-Eq_1526: (fn bool (int16, cu16, word32, ptr16))
+Eq_1526: (fn bool (int16, cu16, word32, (ptr16 word16)))
 	T_1526 (in msdos_read_file @ 00008AC3 : segptr32)
 	T_1527 (in signature of msdos_read_file @ 00000000 : void)
 Eq_1535: (fn Eq_343 ((ptr16 Eq_342), Eq_343))
@@ -1115,10 +1115,10 @@ Eq_1633: (union "Eq_1633" (int16 u0) ((memptr (ptr16 Eq_342) byte) u1))
 	T_1633 (in 0x84<16> @ 00008B64 : word16)
 Eq_1637: (union "Eq_1637" (int16 u0) ((memptr (ptr16 Eq_342) byte) u1))
 	T_1637 (in 0x84<16> @ 00008B8D : word16)
-Eq_1657: (fn bool (int16, Eq_1538, (ptr32 char), ptr16))
+Eq_1657: (fn bool (int16, Eq_1538, (ptr32 char), (ptr16 word16)))
 	T_1657 (in msdos_write_file @ 00008C0F : segptr32)
 	T_1658 (in signature of msdos_write_file @ 00000000 : void)
-Eq_1705: (fn bool (int16, ui32, byte, word32))
+Eq_1705: (fn bool (int16, (ptr32 int32), byte, (ptr32 int32)))
 	T_1705 (in msdos_set_file_position @ 00008C46 : segptr32)
 	T_1706 (in signature of msdos_set_file_position @ 00000000 : void)
 Eq_1720: (union "Eq_1720" (ci16 u0) (byte u1))
@@ -1173,16 +1173,16 @@ Eq_1726: (union "Eq_1726" (int16 u0) (mp16 u1))
 	T_1726 (in fp @ 00008C53 : Eq_1726)
 Eq_1758: (union "Eq_1758" (bool u0) (ci16 u1))
 	T_1758 (in wArg0A != 0<16> @ 00000000 : bool)
-Eq_1835: (fn bool (int16, ptr16))
+Eq_1835: (fn bool (int16, (ptr16 word16)))
 	T_1835 (in msdos_ioctl_get_device_info @ 00008D80 : segptr32)
 	T_1836 (in signature of msdos_ioctl_get_device_info @ 00000000 : void)
-Eq_1850: (fn bool (int16, uipr32, byte, uipr32))
+Eq_1850: (fn bool (int16, (ptr32 int32), byte, (ptr32 int32)))
 	T_1850 (in msdos_set_file_position @ 00008D90 : segptr32)
 	T_1851 (in signature of msdos_set_file_position @ 00000000 : void)
-Eq_1861: (fn bool (int16, uipr32, byte, uipr32))
+Eq_1861: (fn bool (int16, (ptr32 int32), byte, (ptr32 int32)))
 	T_1861 (in msdos_set_file_position @ 00008DA5 : segptr32)
 	T_1862 (in signature of msdos_set_file_position @ 00000000 : void)
-Eq_1872: (fn bool (int16, uipr32, byte, uipr32))
+Eq_1872: (fn bool (int16, (ptr32 int32), byte, (ptr32 int32)))
 	T_1872 (in msdos_set_file_position @ 00008DAC : segptr32)
 	T_1873 (in signature of msdos_set_file_position @ 00000000 : void)
 Eq_1893: (struct "Eq_1893" (E (memptr (ptr16 Eq_342) Eq_935) ptr000E))
@@ -2790,9 +2790,9 @@ T_146: (in ds_dx @ 000081DF : (ptr32 char))
   Class: Eq_45
   DataType: (ptr32 char)
   OrigDataType: 
-T_147: (in axOut @ 000081DF : ptr16)
+T_147: (in axOut @ 000081DF : (ptr16 word16))
   Class: Eq_147
-  DataType: ptr16
+  DataType: (ptr16 word16)
   OrigDataType: 
 T_148: (in 2<16> @ 000081DF : word16)
   Class: Eq_144
@@ -2800,8 +2800,8 @@ T_148: (in 2<16> @ 000081DF : word16)
   OrigDataType: word16
 T_149: (in out ax_10 @ 000081DF : mp16)
   Class: Eq_147
-  DataType: ptr16
-  OrigDataType: ptr16
+  DataType: (ptr16 word16)
+  OrigDataType: (ptr16 word16)
 T_150: (in msdos_write_file(2<16>, cx, ds_dx, out ax_10) @ 000081DF : bool)
   Class: Eq_150
   DataType: bool
@@ -6078,9 +6078,9 @@ T_968: (in wArg02 @ 0000868B : (memptr (ptr16 Eq_342) Eq_935))
   Class: Eq_935
   DataType: (memptr (ptr16 Eq_342) Eq_935)
   OrigDataType: (memptr T_967 (struct (0 T_988 t0000) (2 T_982 t0002) (4 T_1009 t0004) (8 T_994 t0008) (A T_997 t000A)))
-T_969: (in dwArg04 @ 0000868B : ui32)
+T_969: (in dwArg04 @ 0000868B : (ptr32 int32))
   Class: Eq_969
-  DataType: ui32
+  DataType: (ptr32 int32)
   OrigDataType: ui32
 T_970: (in wArg08 @ 0000868B : word16)
   Class: Eq_970
@@ -6225,10 +6225,10 @@ T_1003: (in wArg02 @ 000086EA : int16)
   Class: Eq_1003
   DataType: int16
   OrigDataType: ui16
-T_1004: (in dwArg04 @ 000086EA : ui32)
+T_1004: (in dwArg04 @ 000086EA : (ptr32 int32))
   Class: Eq_969
-  DataType: ui32
-  OrigDataType: word32
+  DataType: (ptr32 int32)
+  OrigDataType: (ptr32 int32)
 T_1005: (in bArg08 @ 000086EA : byte)
   Class: Eq_1005
   DataType: byte
@@ -6311,7 +6311,7 @@ T_1024: (in CONVERT(fn0800_065B(ds, wArg02), word16, int32) @ 000086CD : int32)
   OrigDataType: int32
 T_1025: (in dwArg04 - (int32) fn0800_065B(ds, wArg02) @ 00000000 : ui32)
   Class: Eq_969
-  DataType: ui32
+  DataType: (ptr32 int32)
   OrigDataType: ui32
 T_1026: (in 0xFFFF<16> @ 000086F8 : word16)
   Class: Eq_999
@@ -7465,14 +7465,14 @@ T_1313: (in bx @ 000088FB : word16)
   Class: Eq_1198
   DataType: int16
   OrigDataType: 
-T_1314: (in dxOut @ 000088FB : ptr16)
+T_1314: (in dxOut @ 000088FB : (ptr16 word16))
   Class: Eq_1314
-  DataType: ptr16
+  DataType: (ptr16 word16)
   OrigDataType: 
 T_1315: (in out dx_10 @ 000088FB : mp16)
   Class: Eq_1314
-  DataType: ptr16
-  OrigDataType: ptr16
+  DataType: (ptr16 word16)
+  OrigDataType: (ptr16 word16)
 T_1316: (in msdos_ioctl_get_device_info(wArg02, out dx_10) @ 000088FB : bool)
   Class: Eq_1316
   DataType: bool
@@ -7627,7 +7627,7 @@ T_1353: (in signature of _fseek @ 000086A2 : void)
   OrigDataType: 
 T_1354: (in 0<32> @ 00008960 : ui32)
   Class: Eq_969
-  DataType: ui32
+  DataType: (ptr32 int32)
   OrigDataType: ui32
 T_1355: (in 1<16> @ 00008960 : word16)
   Class: Eq_970
@@ -8103,7 +8103,7 @@ T_1472: (in -cx_112 @ 00008A95 : word16)
   OrigDataType: cup16
 T_1473: (in SEQ(0<16> - CONVERT(cx_112 != 0<16>, bool, word16), -cx_112) @ 00008A95 : word32)
   Class: Eq_969
-  DataType: ui32
+  DataType: (ptr32 int32)
   OrigDataType: word32
 T_1474: (in 2<8> @ 00008A95 : byte)
   Class: Eq_1005
@@ -8333,9 +8333,9 @@ T_1530: (in ds_dx @ 00008AC3 : word32)
   Class: Eq_1530
   DataType: word32
   OrigDataType: 
-T_1531: (in axOut @ 00008AC3 : ptr16)
+T_1531: (in axOut @ 00008AC3 : (ptr16 word16))
   Class: Eq_1531
-  DataType: ptr16
+  DataType: (ptr16 word16)
   OrigDataType: 
 T_1532: (in SEQ(ds, wArg04) @ 00008AC3 : word32)
   Class: Eq_1530
@@ -8343,8 +8343,8 @@ T_1532: (in SEQ(ds, wArg04) @ 00008AC3 : word32)
   OrigDataType: word32
 T_1533: (in out ax_15 @ 00008AC3 : mp16)
   Class: Eq_1531
-  DataType: ptr16
-  OrigDataType: ptr16
+  DataType: (ptr16 word16)
+  OrigDataType: (ptr16 word16)
 T_1534: (in msdos_read_file(wArg02, wArg06, wArg04, out ax_15) @ 00008AC3 : bool)
   Class: Eq_1534
   DataType: bool
@@ -8857,9 +8857,9 @@ T_1661: (in ds_dx @ 00008C0F : (ptr32 char))
   Class: Eq_1661
   DataType: (ptr32 char)
   OrigDataType: 
-T_1662: (in axOut @ 00008C0F : ptr16)
+T_1662: (in axOut @ 00008C0F : (ptr16 word16))
   Class: Eq_1662
-  DataType: ptr16
+  DataType: (ptr16 word16)
   OrigDataType: 
 T_1663: (in SEQ(ds, wArg04) @ 00008C0F : (ptr32 char))
   Class: Eq_1661
@@ -8867,8 +8867,8 @@ T_1663: (in SEQ(ds, wArg04) @ 00008C0F : (ptr32 char))
   OrigDataType: (ptr32 char)
 T_1664: (in out ax_46 @ 00008C0F : mp16)
   Class: Eq_1662
-  DataType: ptr16
-  OrigDataType: ptr16
+  DataType: (ptr16 word16)
+  OrigDataType: (ptr16 word16)
 T_1665: (in msdos_write_file(wArg02, wArg06, wArg04, out ax_46) @ 00008C0F : bool)
   Class: Eq_1665
   DataType: bool
@@ -8883,7 +8883,7 @@ T_1667: (in _lseek @ 00008BFD : segptr32)
   OrigDataType: (ptr32 (fn T_1671 (T_1576, T_1577, T_1668, T_1669, T_1670)))
 T_1668: (in 0<32> @ 00008BFD : uipr32)
   Class: Eq_969
-  DataType: ui32
+  DataType: (ptr32 int32)
   OrigDataType: uipr32
 T_1669: (in 2<8> @ 00008BFD : byte)
   Class: Eq_1005
@@ -9041,30 +9041,30 @@ T_1707: (in bx @ 00008C46 : word16)
   Class: Eq_1003
   DataType: int16
   OrigDataType: 
-T_1708: (in cx_dx @ 00008C46 : word32)
+T_1708: (in cx_dx @ 00008C46 : (ptr32 int32))
   Class: Eq_969
-  DataType: ui32
+  DataType: (ptr32 int32)
   OrigDataType: 
 T_1709: (in al @ 00008C46 : byte)
   Class: Eq_1005
   DataType: byte
   OrigDataType: 
-T_1710: (in dx_ax @ 00008C46 : word32)
+T_1710: (in dx_ax @ 00008C46 : (ptr32 int32))
   Class: Eq_1710
-  DataType: word32
+  DataType: (ptr32 int32)
   OrigDataType: 
-T_1711: (in SEQ(wArg04, ax_21) @ 00008C46 : word32)
+T_1711: (in SEQ(wArg04, ax_21) @ 00008C46 : (ptr32 int32))
   Class: Eq_1710
-  DataType: word32
-  OrigDataType: word32
+  DataType: (ptr32 int32)
+  OrigDataType: (ptr32 int32)
 T_1712: (in msdos_set_file_position(wArg02, dwArg04, bArg08, SEQ(wArg04, ax_21)) @ 00008C46 : bool)
   Class: Eq_1712
   DataType: bool
   OrigDataType: bool
-T_1713: (in dx_ax_32 @ 00008C4E : word32)
+T_1713: (in dx_ax_32 @ 00008C4E : (ptr32 int32))
   Class: Eq_1713
-  DataType: word32
-  OrigDataType: word32
+  DataType: (ptr32 int32)
+  OrigDataType: (ptr32 int32)
 T_1714: (in __IOERROR @ 00008C4E : segptr32)
   Class: Eq_1535
   DataType: (ptr32 Eq_1535)
@@ -9073,10 +9073,10 @@ T_1715: (in __IOERROR(ds, ax_21) @ 00008C4E : word16)
   Class: Eq_343
   DataType: Eq_343
   OrigDataType: word16
-T_1716: (in CONVERT(__IOERROR(ds, ax_21), word16, word32) @ 00008C4E : word32)
+T_1716: (in CONVERT(__IOERROR(ds, ax_21), word16, int32 *) @ 00008C4E : (ptr32 int32))
   Class: Eq_1713
-  DataType: word32
-  OrigDataType: word32
+  DataType: (ptr32 int32)
+  OrigDataType: (ptr32 int32)
 T_1717: (in SLICE(dx_ax_32, word16, 0) @ 00008C4E : word16)
   Class: Eq_343
   DataType: Eq_343
@@ -9561,14 +9561,14 @@ T_1837: (in bx @ 00008D80 : word16)
   Class: Eq_1268
   DataType: int16
   OrigDataType: 
-T_1838: (in dxOut @ 00008D80 : ptr16)
+T_1838: (in dxOut @ 00008D80 : (ptr16 word16))
   Class: Eq_1838
-  DataType: ptr16
+  DataType: (ptr16 word16)
   OrigDataType: 
 T_1839: (in out dx_18 @ 00008D80 : mp16)
   Class: Eq_1838
-  DataType: ptr16
-  OrigDataType: ptr16
+  DataType: (ptr16 word16)
+  OrigDataType: (ptr16 word16)
 T_1840: (in msdos_ioctl_get_device_info(wArg02, out dx_18) @ 00008D80 : bool)
   Class: Eq_1840
   DataType: bool
@@ -9621,31 +9621,31 @@ T_1852: (in bx @ 00008D90 : word16)
   Class: Eq_1268
   DataType: int16
   OrigDataType: 
-T_1853: (in cx_dx @ 00008D90 : word32)
+T_1853: (in cx_dx @ 00008D90 : (ptr32 int32))
   Class: Eq_1853
-  DataType: uipr32
+  DataType: (ptr32 int32)
   OrigDataType: 
 T_1854: (in al @ 00008D90 : byte)
   Class: Eq_1854
   DataType: byte
   OrigDataType: 
-T_1855: (in dx_ax @ 00008D90 : word32)
+T_1855: (in dx_ax @ 00008D90 : (ptr32 int32))
   Class: Eq_1855
-  DataType: uipr32
+  DataType: (ptr32 int32)
   OrigDataType: 
-T_1856: (in 0<32> @ 00008D90 : uipr32)
+T_1856: (in 00000000 @ 00008D90 : (ptr32 int32))
   Class: Eq_1853
-  DataType: uipr32
-  OrigDataType: uipr32
+  DataType: (ptr32 int32)
+  OrigDataType: (ptr32 int32)
 T_1857: (in 1<8> @ 00008D90 : byte)
   Class: Eq_1854
   DataType: byte
   OrigDataType: byte
-T_1858: (in 0x4201<32> @ 00008D90 : uipr32)
+T_1858: (in 00004201 @ 00008D90 : (ptr32 int32))
   Class: Eq_1855
-  DataType: uipr32
-  OrigDataType: uipr32
-T_1859: (in msdos_set_file_position(wArg02, 0<32>, 1<8>, 0x4201<32>) @ 00008D90 : bool)
+  DataType: (ptr32 int32)
+  OrigDataType: (ptr32 int32)
+T_1859: (in msdos_set_file_position(wArg02, 0<u32>, 1<8>, (int32 *) 0x4201<u32>) @ 00008D90 : bool)
   Class: Eq_1859
   DataType: bool
   OrigDataType: bool
@@ -9665,31 +9665,31 @@ T_1863: (in bx @ 00008DA5 : word16)
   Class: Eq_1268
   DataType: int16
   OrigDataType: 
-T_1864: (in cx_dx @ 00008DA5 : word32)
+T_1864: (in cx_dx @ 00008DA5 : (ptr32 int32))
   Class: Eq_1864
-  DataType: uipr32
+  DataType: (ptr32 int32)
   OrigDataType: 
 T_1865: (in al @ 00008DA5 : byte)
   Class: Eq_1865
   DataType: byte
   OrigDataType: 
-T_1866: (in dx_ax @ 00008DA5 : word32)
+T_1866: (in dx_ax @ 00008DA5 : (ptr32 int32))
   Class: Eq_1866
-  DataType: uipr32
+  DataType: (ptr32 int32)
   OrigDataType: 
-T_1867: (in 0<32> @ 00008DA5 : uipr32)
+T_1867: (in 00000000 @ 00008DA5 : (ptr32 int32))
   Class: Eq_1864
-  DataType: uipr32
-  OrigDataType: uipr32
+  DataType: (ptr32 int32)
+  OrigDataType: (ptr32 int32)
 T_1868: (in 2<8> @ 00008DA5 : byte)
   Class: Eq_1865
   DataType: byte
   OrigDataType: byte
-T_1869: (in 0x4202<32> @ 00008DA5 : uipr32)
+T_1869: (in 00004202 @ 00008DA5 : (ptr32 int32))
   Class: Eq_1866
-  DataType: uipr32
-  OrigDataType: uipr32
-T_1870: (in msdos_set_file_position(wArg02, 0<32>, 2<8>, 0x4202<32>) @ 00008DA5 : bool)
+  DataType: (ptr32 int32)
+  OrigDataType: (ptr32 int32)
+T_1870: (in msdos_set_file_position(wArg02, 0<u32>, 2<8>, (int32 *) 0x4202<u32>) @ 00008DA5 : bool)
   Class: Eq_1870
   DataType: bool
   OrigDataType: bool
@@ -9709,31 +9709,31 @@ T_1874: (in bx @ 00008DAC : word16)
   Class: Eq_1268
   DataType: int16
   OrigDataType: 
-T_1875: (in cx_dx @ 00008DAC : word32)
+T_1875: (in cx_dx @ 00008DAC : (ptr32 int32))
   Class: Eq_1875
-  DataType: uipr32
+  DataType: (ptr32 int32)
   OrigDataType: 
 T_1876: (in al @ 00008DAC : byte)
   Class: Eq_1876
   DataType: byte
   OrigDataType: 
-T_1877: (in dx_ax @ 00008DAC : word32)
+T_1877: (in dx_ax @ 00008DAC : (ptr32 int32))
   Class: Eq_1877
-  DataType: uipr32
+  DataType: (ptr32 int32)
   OrigDataType: 
-T_1878: (in 0x4201<32> @ 00008DAC : uipr32)
+T_1878: (in 00004201 @ 00008DAC : (ptr32 int32))
   Class: Eq_1875
-  DataType: uipr32
-  OrigDataType: uipr32
+  DataType: (ptr32 int32)
+  OrigDataType: (ptr32 int32)
 T_1879: (in 0<8> @ 00008DAC : byte)
   Class: Eq_1876
   DataType: byte
   OrigDataType: byte
-T_1880: (in 0x42014200<32> @ 00008DAC : uipr32)
+T_1880: (in 42014200 @ 00008DAC : (ptr32 int32))
   Class: Eq_1877
-  DataType: uipr32
-  OrigDataType: uipr32
-T_1881: (in msdos_set_file_position(wArg02, 0x4201<32>, 0<8>, 0x42014200<32>) @ 00008DAC : bool)
+  DataType: (ptr32 int32)
+  OrigDataType: (ptr32 int32)
+T_1881: (in msdos_set_file_position(wArg02, (int32 *) 0x4201<u32>, 0<8>, (int32 *) 0x42014200<u32>) @ 00008DAC : bool)
   Class: Eq_1881
   DataType: bool
   OrigDataType: bool
@@ -21201,7 +21201,7 @@ T_4722: (in _lseek @ 00009D5C : segptr32)
   OrigDataType: (ptr32 (fn T_4726 (T_4719, T_4720, T_4723, T_4724, T_4725)))
 T_4723: (in 0<32> @ 00009D5C : uipr32)
   Class: Eq_969
-  DataType: ui32
+  DataType: (ptr32 int32)
   OrigDataType: uipr32
 T_4724: (in 1<8> @ 00009D5C : byte)
   Class: Eq_1005
@@ -21765,7 +21765,7 @@ typedef void (Eq_125)(byte, code *);
 
 typedef void (Eq_133)(byte, code *);
 
-typedef bool (Eq_142)(word16, word16, char *, ptr16);
+typedef bool (Eq_142)(word16, word16, char *, word16 *);
 
 typedef struct Eq_153 {
 	Eq_154 t0056;	// 56
@@ -22278,7 +22278,7 @@ typedef struct Eq_996 {
 	Eq_646 t0008;	// 8
 } Eq_996;
 
-typedef word16 (Eq_1000)(Eq_342 *, int16, ui32, byte, ptr16);
+typedef word16 (Eq_1000)(Eq_342 *, int16, int32 *, byte, ptr16);
 
 typedef struct Eq_1008 {
 	ci16 w0000;	// 0
@@ -22584,7 +22584,7 @@ typedef struct Eq_1303 {
 	Eq_646 t000A;	// A
 } Eq_1303;
 
-typedef bool (Eq_1311)(int16, ptr16);
+typedef bool (Eq_1311)(int16, word16 *);
 
 typedef struct Eq_1341 {
 	struct Eq_935 Eq_342::* ptr000E;	// E
@@ -22595,7 +22595,7 @@ typedef struct Eq_1346 {
 	struct Eq_935 Eq_342::* ptr000E;	// E
 } Eq_1346;
 
-typedef void (Eq_1352)(Eq_342 *, Eq_935 Eq_342::*, ui32, word16);
+typedef void (Eq_1352)(Eq_342 *, Eq_935 Eq_342::*, int32 *, word16);
 
 typedef struct Eq_1363 {
 	ci16 w0000;	// 0
@@ -22704,7 +22704,7 @@ typedef struct Eq_1430 {
 	struct Eq_935 Eq_342::* ptr000E;	// E
 } Eq_1430;
 
-typedef bool (Eq_1526)(int16, cu16, word32, ptr16);
+typedef bool (Eq_1526)(int16, cu16, word32, word16 *);
 
 typedef Eq_343 (Eq_1535)(Eq_342 *, Eq_343);
 
@@ -22786,9 +22786,9 @@ typedef union Eq_1637 {
 	byte Eq_342::* u1;
 } Eq_1637;
 
-typedef bool (Eq_1657)(int16, Eq_1538, char *, ptr16);
+typedef bool (Eq_1657)(int16, Eq_1538, char *, word16 *);
 
-typedef bool (Eq_1705)(int16, ui32, byte, word32);
+typedef bool (Eq_1705)(int16, int32 *, byte, int32 *);
 
 typedef union Eq_1720 {
 	ci16 u0;
@@ -22815,13 +22815,13 @@ typedef union Eq_1758 {
 	ci16 u1;
 } Eq_1758;
 
-typedef bool (Eq_1835)(int16, ptr16);
+typedef bool (Eq_1835)(int16, word16 *);
 
-typedef bool (Eq_1850)(int16, uipr32, byte, uipr32);
+typedef bool (Eq_1850)(int16, int32 *, byte, int32 *);
 
-typedef bool (Eq_1861)(int16, uipr32, byte, uipr32);
+typedef bool (Eq_1861)(int16, int32 *, byte, int32 *);
 
-typedef bool (Eq_1872)(int16, uipr32, byte, uipr32);
+typedef bool (Eq_1872)(int16, int32 *, byte, int32 *);
 
 typedef struct Eq_1893 {
 	struct Eq_935 Eq_342::* ptr000E;	// E

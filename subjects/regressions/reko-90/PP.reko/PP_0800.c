@@ -12444,7 +12444,7 @@ Eq_n fn0800-8E29(Eq_n ds, Eq_n wArg02, Eq_n dwArg04, byte bArg08, ptr16 & cxOut,
 	Eq_n dx_n = wArg04;
 	if (msdos_set_file_position(wArg02, dwArg04, bArg08, SEQ(wArg04, ax_n)))
 	{
-		word32 dx_ax_n = (word32) fn0800-8D2B(ds, ax_n);
+		int32 * dx_ax_n = (int32 *) fn0800-8D2B(ds, ax_n);
 		ax_n = (word16) dx_ax_n;
 		dx_n = SLICE(dx_ax_n, word16, 16);
 	}
@@ -15035,14 +15035,14 @@ l0800_A610:
 		}
 		ax_n.u0 = 0x4201;
 		dx = 0x00;
-		if (!msdos_set_file_position(wArg02, 0x00, 0x01, 0x4201))
+		if (!msdos_set_file_position(wArg02, 0x00, 0x01, (int32 *) 0x4201))
 		{
 			ax_n.u0 = 0x4202;
 			dx = 0x4201;
-			if (!msdos_set_file_position(wArg02, 0x00, 0x02, 0x4202))
+			if (!msdos_set_file_position(wArg02, 0x00, 0x02, (int32 *) 0x4202))
 			{
 				ax_n.u0 = 0x4200;
-				if (!msdos_set_file_position(wArg02, 0x4201, 0x00, 0x42014200))
+				if (!msdos_set_file_position(wArg02, (int32 *) 0x4201, 0x00, (int32 *) 0x42014200))
 				{
 					if (true && (false || true))
 						goto l0800_A5BF;
@@ -15261,18 +15261,18 @@ word16 fn0800_A77D(Eq_n ds, byte * dwArg02, ci16 wArg06, Eq_n ptrArg08, ptr16 & 
 	return ax_n;
 }
 
-// 0800:A817: Register Eq_n fn0800_A817(Register byte al, Register Eq_n ds, Stack Eq_n ptrArg02, Stack segptr32 ptrArg06, Stack cui16 wArg0A, Register out Eq_n cxOut, Register out ptr16 dxOut)
+// 0800:A817: Register Eq_n fn0800_A817(Register byte al, Register Eq_n ds, Stack Eq_n ptrArg02, Stack (ptr32 char) ptrArg06, Stack cui16 wArg0A, Register out Eq_n cxOut, Register out ptr16 dxOut)
 // Called from:
 //      fn0800-33CD
 //      fn0800-363D
-Eq_n fn0800_A817(byte al, Eq_n ds, Eq_n ptrArg02, segptr32 ptrArg06, cui16 wArg0A, union Eq_n & cxOut, ptr16 & dxOut)
+Eq_n fn0800_A817(byte al, Eq_n ds, Eq_n ptrArg02, char * ptrArg06, cui16 wArg0A, union Eq_n & cxOut, ptr16 & dxOut)
 {
 	Eq_n fp;
 	Eq_n SCZDOP;
 	Eq_n ax_n;
-	word32 es_bx_n = msdos_get_disk_transfer_area_address();
+	char * es_bx_n = msdos_get_disk_transfer_area_address();
 	msdos_set_DTA(ptrArg06);
-	Eq_n cx_n = msdos_find_first_file(wArg0A, SLICE(ptrArg02, selector, 16), (word16) ptrArg02) | SCZDOP;
+	Eq_n cx_n = msdos_find_first_file(wArg0A, ptrArg02) | SCZDOP;
 	msdos_set_DTA(es_bx_n);
 	Eq_n ax_n = SEQ(0x4E, al);
 	ptr16 dx_n = (word16) es_bx_n;
@@ -15285,15 +15285,15 @@ Eq_n fn0800_A817(byte al, Eq_n ds, Eq_n ptrArg02, segptr32 ptrArg06, cui16 wArg0
 	return ax_n;
 }
 
-// 0800:A84A: Register Eq_n fn0800_A84A(Register byte al, Register Eq_n ds, Stack segptr32 ptrArg02, Register out Eq_n cxOut, Register out ptr16 dxOut)
+// 0800:A84A: Register Eq_n fn0800_A84A(Register byte al, Register Eq_n ds, Stack (ptr32 char) ptrArg02, Register out Eq_n cxOut, Register out ptr16 dxOut)
 // Called from:
 //      fn0800-3479
-Eq_n fn0800_A84A(byte al, Eq_n ds, segptr32 ptrArg02, union Eq_n & cxOut, ptr16 & dxOut)
+Eq_n fn0800_A84A(byte al, Eq_n ds, char * ptrArg02, union Eq_n & cxOut, ptr16 & dxOut)
 {
 	Eq_n fp;
 	Eq_n SCZDOP;
 	Eq_n ax_n;
-	word32 es_bx_n = msdos_get_disk_transfer_area_address();
+	char * es_bx_n = msdos_get_disk_transfer_area_address();
 	msdos_set_DTA(ptrArg02);
 	Eq_n cx_n = msdos_find_next_file() | SCZDOP;
 	msdos_set_DTA(es_bx_n);

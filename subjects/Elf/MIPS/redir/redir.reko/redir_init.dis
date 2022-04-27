@@ -7,10 +7,10 @@ void _init()
 // Preserved: ra sp
 _init_entry:
 l004001BC:
-	call 0x40072C<32> (retsize: 0;)
-		uses: r25:0x40072C<32>,Stack +0010:0x10008860<32>,Stack +0018:0x10008860<32>
-	call 0x409C10<32> (retsize: 0;)
-		uses: r25:0x409C10<32>
+	call 0x0040072C<p32> (retsize: 0;)
+		uses: r25:0x0040072C<p32>,Stack +0010:0x10008860<32>,Stack +0018:0x10008860<32>
+	call 0x00409C10<p32> (retsize: 0;)
+		uses: r25:0x00409C10<p32>
 	return
 _init_exit:
 

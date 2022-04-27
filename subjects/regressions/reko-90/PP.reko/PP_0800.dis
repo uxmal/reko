@@ -14003,7 +14003,7 @@ l0800_8E29:
 	word16 dx_19 = wArg04
 	branch msdos_set_file_position(wArg02, dwArg04, bArg08, SEQ(wArg04, ax_21)) l0800_8E4B
 l0800_8E4B:
-	word32 dx_ax_32 = CONVERT(fn0800_8D2B(ds, ax_21), word16, word32)
+	int32 * dx_ax_32 = CONVERT(fn0800_8D2B(ds, ax_21), word16, int32 *)
 	ax_21 = SLICE(dx_ax_32, word16, 0) (alias)
 	dx_19 = SLICE(dx_ax_32, word16, 16) (alias)
 l0800_8E49:
@@ -17024,14 +17024,14 @@ l0800_A5CE:
 l0800_A5D3:
 	ax_19 = 0x4201<16>
 	dx = 0<16>
-	branch msdos_set_file_position(wArg02, 0<32>, 1<8>, 0x4201<32>) l0800_A60C
+	branch msdos_set_file_position(wArg02, null, 1<8>, 0x00004201<p32>) l0800_A60C
 l0800_A5DE:
 	ax_19 = 0x4202<16>
 	dx = 0x4201<16>
-	branch msdos_set_file_position(wArg02, 0<32>, 2<8>, 0x4202<32>) l0800_A60C
+	branch msdos_set_file_position(wArg02, null, 2<8>, 0x00004202<p32>) l0800_A60C
 l0800_A5F3:
 	ax_19 = 0x4200<16>
-	branch msdos_set_file_position(wArg02, 0x4201<32>, 0<8>, 0x42014200<32>) l0800_A60C
+	branch msdos_set_file_position(wArg02, 0x00004201<p32>, 0<8>, 0x42014200<p32>) l0800_A60C
 l0800_A60C:
 	wLoc08_109 = ax_19
 l0800_A5FA:
@@ -17281,9 +17281,9 @@ fn0800_A817_entry:
 	byte SCZDOP
 l0800_A817:
 	word16 ax_54
-	word32 es_bx_12 = msdos_get_disk_transfer_area_address()
+	char * es_bx_12 = msdos_get_disk_transfer_area_address()
 	msdos_set_DTA(ptrArg06)
-	word16 cx_32 = msdos_find_first_file(wArg0A, SLICE(ptrArg02, selector, 16), SLICE(ptrArg02, word16, 0)) | SCZDOP
+	word16 cx_32 = msdos_find_first_file(wArg0A, ptrArg02) | SCZDOP
 	msdos_set_DTA(es_bx_12)
 	word16 ax_36 = SEQ(0x4E<8>, al)
 	word16 dx_40 = SLICE(es_bx_12, word16, 0)
@@ -17313,7 +17313,7 @@ fn0800_A84A_entry:
 	byte SCZDOP
 l0800_A84A:
 	word16 ax_50
-	word32 es_bx_12 = msdos_get_disk_transfer_area_address()
+	char * es_bx_12 = msdos_get_disk_transfer_area_address()
 	msdos_set_DTA(ptrArg02)
 	word16 cx_28 = msdos_find_next_file() | SCZDOP
 	msdos_set_DTA(es_bx_12)
