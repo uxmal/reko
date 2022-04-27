@@ -36,6 +36,12 @@ using System.Text;
 
 namespace Reko.ImageLoaders.Xex
 {
+    public class XEXPeData
+    {
+        public IEnumerable<ImageSegment> ImageSegments = Enumerable.Empty<ImageSegment>();
+        public (Address, ImportReference)[] Thunks = Array.Empty<(Address, ImportReference)>();
+    }
+
     /// <summary>
     /// References:
     /// https://github.com/xenia-project/xenia/blob/f540c188bf16abf3b3be4ffd00d1154fb12e5254/src/xenia/cpu/xex_module.cc
@@ -155,7 +161,24 @@ namespace Reko.ImageLoaders.Xex
         {
             return GetOptHeader(xex2_header_keys.ENTRY_POINT);
         }
-        
+
+
+        private xex2_opt_import_libraries? GetImportLibraries()
+        {
+            Memory<byte> xex_implibs_data;
+            {
+                var maybe_xex_implibs_data = GetOptHeader<xex2_opt_import_libraries>(xex2_header_keys.IMPORT_LIBRARIES);
+                if (maybe_xex_implibs_data == null)
+                {
+                    return null;
+                }
+                xex_implibs_data = maybe_xex_implibs_data.Value;
+            }
+
+            var xex_implibs = new xex2_opt_import_libraries(xex_implibs_data);
+            return xex_implibs;
+        }
+
         private bool IsPatch()
         {
             var flags = header.module_flags;
@@ -358,36 +381,37 @@ namespace Reko.ImageLoaders.Xex
             }
         }
 
-        private IEnumerable<(Address, ImportReference)> ReadXEXImports()
+        private IEnumerable<(Address, ImportReference)> RewriteThunks(IMAGE_SECTION_HEADER[] sections)
         {
-            Memory<byte> xex_implibs_data;
+            var xex_implibs = GetImportLibraries();
+            if (xex_implibs == null)
             {
-                var maybe_xex_implibs_data = GetOptHeader<xex2_opt_import_libraries>(xex2_header_keys.IMPORT_LIBRARIES);
-                if (maybe_xex_implibs_data == null)
-                {
-                    yield break;
-                }
-                xex_implibs_data = maybe_xex_implibs_data.Value;
+                yield break;
             }
 
-            var xex_implibs = new xex2_opt_import_libraries(xex_implibs_data);
-
-            // import descriptors (including trailing NULL descriptor)
-            var size_descr = IMAGE_IMPORT_DESCRIPTOR.SIZEOF * (xex_implibs.import_libraries.Length + 1);
-            var size_strings = xex_implibs.string_table.size;
-            // import entries (including trailing NULL entry for each lib)
-            var size_entries = IMAGE_THUNK_DATA32.SIZEOF * xex_implibs.import_libraries.Sum(lib => lib.import_table.Length + 1);
-
             var base_addr = GetBaseAddress();
-            var iatReader = new SpanStream(peMem, Endianness.BigEndian);
+            var peView = new SpanStream(peMem, Endianness.BigEndian);
+
+            /**
+             * we're going to process data and code thunks
+             * both start with structures that describe the import (type, library index, ordinal)
+             * since the structures aren't valid pointers (in case or data) or valid instructions (in case of code)
+             * we will rewrite them to point to fake data
+             */
+
+            // find a place suitable for the fake data (add some arbitrary padding)
+            var maxSection = sections.Aggregate((a, b) => a.VirtualAddress > b.VirtualAddress ? a : b);
+            var fakeAddr = base_addr + maxSection.VirtualAddress + maxSection.VirtualSize + 0x10000;
 
             foreach (var lib in xex_implibs.import_libraries)
             {
                 var lib_name = xex_implibs.string_table.table[lib.name_index];
 
-                foreach(var thunk_addr in lib.import_table)
+                foreach (var thunk_addr in lib.import_table)
                 {
-                    var thunk_value = iatReader.PerformAt(thunk_addr - base_addr, () => iatReader.ReadUInt32());
+                    var thunk_offset = thunk_addr - base_addr;
+
+                    var thunk_value = peView.PerformAt(thunk_offset, () => peView.ReadUInt32());
                     var thunk = new xex2_thunk_data(thunk_value);
 
                     var symType = thunk.Type switch
@@ -397,23 +421,57 @@ namespace Reko.ImageLoaders.Xex
                         _ => throw new BadImageFormatException("Unrecognized import type")
                     };
 
-                    if(thunk.LibIndex >= xex_implibs.import_libraries.Length)
+                    if (thunk.LibIndex >= xex_implibs.import_libraries.Length)
                     {
                         throw new BadImageFormatException("Bad thunk");
                     }
 
+                    // rewrite the thunk
+                    switch (thunk.Type)
+                    {
+                    case xex2_thunk_type.data:
+                        // write data pointer
+                        peView.PerformAt(thunk_offset, () =>
+                        {
+                            peView.WriteUInt32(fakeAddr);
+                        });
+                        break;
+                    case xex2_thunk_type.function:
+                        /**
+                         * lis r11, user_export_addr
+                         * ori r11, r11, user_export_addr
+                         **/
+                        var hi = (fakeAddr >> 16) & 0xFFFF;
+                        var lo = fakeAddr & 0xFFFF;
+                        peView.PerformAt(thunk_offset, () =>
+                        {
+                            peView.WriteUInt32(0x3D600000 | hi);
+                            peView.WriteUInt32(0x616B0000 | lo);
+                        });
+                        break;
+                    }
+                    // arbitrary value
+                    fakeAddr += 64;
+
+                    // create and return a symbol reference (can't be done later as we just overwrote the metadata)
                     var imp_addr = Address.Ptr32(thunk_addr);
                     var imp_ref = new OrdinalImportReference(imp_addr, lib_name, thunk.Ordinal, symType);
                     yield return (imp_addr, imp_ref);
-
                 }
             }
         }
 
-        private IEnumerable<ImageSegment> ProcessPE()
+        private XEXPeData ProcessPE()
         {
             var (nthdr, sections) = ReadPEHeaders();
-            return ProcessPESections(sections);
+            var thunks = RewriteThunks(sections).ToArray();
+
+            var result = new XEXPeData()
+            {
+                ImageSegments = ProcessPESections(sections),
+                Thunks = thunks
+            };
+            return result;
         }
 
         private void ReadImageCompressed()
@@ -533,7 +591,7 @@ namespace Reko.ImageLoaders.Xex
             return new xex2_opt_file_format_info(file_format_info.Value);
         }
 
-        public IEnumerable<ImageSegment> ExtractInnerPE()
+        public XEXPeData ExtractInnerPE()
         {
             header = new xex2_header(mem);
             security_info = header.security_info;
@@ -608,8 +666,8 @@ namespace Reko.ImageLoaders.Xex
             });
 
             var addrLoad = Address.Ptr32(GetBaseAddress());
-            var segments = ExtractInnerPE().ToArray();
-            var segmentMap = new SegmentMap(addrLoad, segments);
+            var peData = ExtractInnerPE();
+            var segmentMap = new SegmentMap(addrLoad, peData.ImageSegments.ToArray());
 
             var ep = GetEntryPoint(arch);
 
@@ -626,8 +684,7 @@ namespace Reko.ImageLoaders.Xex
                 program.ImageSymbols.Add(epAddr, epSym);
             }
 
-            var imports = ReadXEXImports().ToArray();
-            foreach(var imp in imports)
+            foreach(var imp in peData.Thunks)
             {
                 program.ImportReferences.Add(imp.Item1, imp.Item2);
             }
