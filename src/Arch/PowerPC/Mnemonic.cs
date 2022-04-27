@@ -636,6 +636,7 @@ namespace Reko.Arch.PowerPC
         xsrqpix,
         xssubdp,
         xststdcqp,
+        xvadddp,
         xvsubdp,
         xvsubsp,
         xxsel,

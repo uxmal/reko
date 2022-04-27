@@ -416,6 +416,9 @@ namespace Reko.Arch.PowerPC
                 case Mnemonic.vaddeuqm: RewriteTernaryOp(vaddeuqm); break;
                 case Mnemonic.vaddfp:
                 case Mnemonic.vaddfp128: RewriteVectorBinOp(vaddfp, PrimitiveType.Real32); break;
+                case Mnemonic.vaddsbs: RewriteVectorBinOp(vadds, PrimitiveType.Int8); break;
+                case Mnemonic.vaddshs: RewriteVectorBinOp(vadds, PrimitiveType.Int16); break;
+                case Mnemonic.vaddsws: RewriteVectorBinOp(vadds, PrimitiveType.Int32); break;
                 case Mnemonic.vaddubm: RewriteVectorBinOp(vaddm, PrimitiveType.UInt8); break;
                 case Mnemonic.vaddubs: RewriteVectorBinOp(vadds, PrimitiveType.UInt8); break;
                 case Mnemonic.vadduhm: RewriteVectorBinOp(vaddm, PrimitiveType.UInt8); break;
@@ -428,6 +431,10 @@ namespace Reko.Arch.PowerPC
                 case Mnemonic.vandc128: RewriteAndc(); break;
                 case Mnemonic.vavgsb: RewriteVectorBinOp(vavg, PrimitiveType.Int8); break;
                 case Mnemonic.vavgsh: RewriteVectorBinOp(vavg, PrimitiveType.Int16); break;
+                case Mnemonic.vavgsw: RewriteVectorBinOp(vavg, PrimitiveType.Int32); break;
+                case Mnemonic.vavgub: RewriteVectorBinOp(vavg, PrimitiveType.UInt8); break;
+                case Mnemonic.vavguh: RewriteVectorBinOp(vavg, PrimitiveType.UInt16); break;
+                case Mnemonic.vavguw: RewriteVectorBinOp(vavg, PrimitiveType.UInt32); break;
                 case Mnemonic.vbpermd: RewriteVbperm(PrimitiveType.UInt64); break;
                 case Mnemonic.vcfsx: RewriteVctfixed(vcfp, PrimitiveType.Int32); break;
                 case Mnemonic.vcfux: RewriteVctfixed(vcfp, PrimitiveType.UInt32); break;
@@ -513,6 +520,7 @@ namespace Reko.Arch.PowerPC
                 case Mnemonic.vpkd3d128: RewriterVpkD3d(); break;
                 case Mnemonic.vpksdss: RewriterVpks(PrimitiveType.Int64, PrimitiveType.Int32); break;
                 case Mnemonic.vpksdus: RewriterVpks(PrimitiveType.Int64, PrimitiveType.UInt32); break;
+                case Mnemonic.vpkshus: RewriterVpks(PrimitiveType.Int16, PrimitiveType.UInt8); break;
                 case Mnemonic.vpkswss: RewriterVpks(PrimitiveType.Int32, PrimitiveType.Int16); break;
                 case Mnemonic.vpmsumb: RewriteVpmsum(PrimitiveType.Byte, PrimitiveType.UInt16); break;
                 case Mnemonic.vpmsumd: RewriteVpmsum(PrimitiveType.Word64, PrimitiveType.Word128); break;
@@ -524,9 +532,10 @@ namespace Reko.Arch.PowerPC
                 case Mnemonic.vrefp128: RewriteVrefp(); break;
                 case Mnemonic.vrfim:
                 case Mnemonic.vrfim128: RewriteVectorUnary(vrfim, PrimitiveType.Real32); break;
-                case Mnemonic.vrfin128: RewriteVectorUnary("__vrfin", true); break;
-                case Mnemonic.vrfip128: RewriteVectorUnary("__vrfip", true); break;
-                case Mnemonic.vrfiz128: RewriteVectorUnary("__vrfiz", true); break;
+                case Mnemonic.vrfin:
+                case Mnemonic.vrfin128: RewriteVectorUnary(vrfin, PrimitiveType.Real32); break;
+                case Mnemonic.vrfip128: RewriteVectorUnary(vrfip, PrimitiveType.Real32); break;
+                case Mnemonic.vrfiz128: RewriteVectorUnary(vrfiz, PrimitiveType.Real32); break;
                 case Mnemonic.vrlimi128: RewriteVrlimi(); break;
                 case Mnemonic.vrsqrtefp: 
                 case Mnemonic.vrsqrtefp128: RewriteVrsqrtefp(); break;
@@ -583,6 +592,7 @@ namespace Reko.Arch.PowerPC
                 case Mnemonic.xori: RewriteXor(false); break;
                 case Mnemonic.xoris: RewriteXoris(); break;
                 case Mnemonic.xsaddsp: RewriteXsaddsp(); break;
+                case Mnemonic.xvadddp: RewriteVectorBinOp(vaddfp, PrimitiveType.Real64); break;
                 }
                 yield return m.MakeCluster(addr, 4, iclass);
             }
@@ -899,6 +909,11 @@ namespace Reko.Arch.PowerPC
             .Returns("TResult");
         private static readonly IntrinsicProcedure vpopcnt = IntrinsicBuilder.GenericUnary("__vector_popcnt");
         private static readonly IntrinsicProcedure vrfim = IntrinsicBuilder.GenericUnary("__vector_floor");
+        private static readonly IntrinsicProcedure vrfin = IntrinsicBuilder.GenericUnary("__vector_round");
+        private static readonly IntrinsicProcedure vrfip = IntrinsicBuilder.GenericUnary("__vector_ceil");
+        private static readonly IntrinsicProcedure vrfiz = IntrinsicBuilder.GenericUnary("__vector_round_toward_zero");
+
+
         private static readonly IntrinsicProcedure vsbox = IntrinsicBuilder.Unary("__aes_subbytes", PrimitiveType.Word128);
         private static readonly IntrinsicProcedure vsl = new IntrinsicBuilder("__vector_shift_left", false)
             .GenericTypes("T")

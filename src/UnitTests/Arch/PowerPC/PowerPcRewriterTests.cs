@@ -2456,6 +2456,15 @@ namespace Reko.UnitTests.Arch.PowerPC
         }
 
         [Test]
+        public void PPCRw_vaddshs()
+        {
+            Given_HexString("114A4B40");
+            AssertCode(     // vaddshs	v10,v10,v9
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|v10 = __vector_add_saturate<int16[8]>(v10, v9)");
+        }
+
+        [Test]
         public void PPCRw_vaddubm()
         {
             Given_Xenon();
@@ -2508,6 +2517,15 @@ namespace Reko.UnitTests.Arch.PowerPC
             AssertCode(     // vavgsh	v9,v0,v9
                 "0|L--|00100000(4): 1 instructions",
                 "1|L--|v9 = __vector_average<int16[8]>(v0, v9)");
+        }
+
+        [Test]
+        public void PPCRw_vavgub()
+        {
+            Given_HexString("100D0402");
+            AssertCode(     // vavgub	v0,v13,v0
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|v0 = __vector_average<uint8[16]>(v13, v0)");
         }
 
         [Test]
@@ -3201,12 +3219,21 @@ namespace Reko.UnitTests.Arch.PowerPC
         }
 
         [Test]
+        public void PPCRw_vrfin()
+        {
+            Given_HexString("12E0BA0A");
+            AssertCode(     // vrfin	v23,v23
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|v23 = __vector_round<real32[4]>(v23)");
+        }
+
+        [Test]
         public void PPCRw_vrfip128()
         {
             Given_Xenon();
             AssertCode(0x19ACFF91,   // vrfip128	v13,v63
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|v13 = __vrfip(v63)");
+                "1|L--|v13 = __vector_ceil<real32[4]>(v63)");
         }
 
         [Test]
@@ -3398,6 +3425,15 @@ namespace Reko.UnitTests.Arch.PowerPC
         }
 
         [Test]
+        public void PPCRw_vpkshus()
+        {
+            Given_HexString("100D010E");
+            AssertCode(     // vpkshus	v0,v13,v0
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|v0 = __vector_pack_sat<int16[8],uint8[16]>(v13, v0)");
+        }
+
+        [Test]
         public void PPCRw_vpkswss()
         {
             Given_HexString("10B631CE");
@@ -3430,7 +3466,7 @@ namespace Reko.UnitTests.Arch.PowerPC
             Given_Xenon();
             AssertCode(0x1BC0DB75,   // vrfin128	v62,v59
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|v62 = __vrfin(v59)");
+                "1|L--|v62 = __vector_round<real32[4]>(v59)");
         }
 
         [Test]
@@ -3439,7 +3475,7 @@ namespace Reko.UnitTests.Arch.PowerPC
             Given_Xenon();
             AssertCode(0x1AC0FBF5,   // vrfiz128	v54,v63
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|v54 = __vrfiz(v63)");
+                "1|L--|v54 = __vector_round_toward_zero<real32[4]>(v63)");
         }
 
         [Test]
@@ -3889,6 +3925,15 @@ namespace Reko.UnitTests.Arch.PowerPC
                 "2|L--|v5 = SLICE(v49, real64, 64)",
                 "3|L--|v6 = CONVERT(v4 + v5, real64, real32)",
                 "4|L--|v49 = SEQ(SLICE(v49, word32, 96), v6, SLICE(v49, word64, 0))");
+        }
+
+        [Test]
+        public void PPCDis_xvadddp()
+        {
+            Given_HexString("F2010B00");
+            AssertCode(     // xvadddp	v32,v2,v2"
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|v32 = __vector_fp_add<real64[2]>(v2, v2)");
         }
     }
 }

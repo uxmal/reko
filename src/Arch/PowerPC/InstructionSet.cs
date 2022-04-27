@@ -329,26 +329,26 @@ namespace Reko.Arch.PowerPC
                                 (0b11111, Instr(Mnemonic.bcdsetsgn, CC, v1, v3))),  // v3.0 bcdsetsgn.Decimal Set Sign & record
                             Instr(Mnemonic.bcdsr, CC, v1, v2, v3))),                // v3.0 Decimal Shift &Round & record
                     Mask(21, 5, "Opc=04, Subop=000010",
-                        Instr(Mnemonic.vmaxub, v1, v2, v3),             // v2.03Vector Maximum Unsigned Byte
-                        Instr(Mnemonic.vmaxuh, v1, v2, v3),             // v2.03Vector Maximum Unsigned Hword
-                        Instr(Mnemonic.vmaxuw, v1, v2, v3),             // v2.03Vector Maximum Unsigned Word
-                        Instr(Mnemonic.vmaxud, v1, v2, v3),             // v2.07Vector Maximum Unsigned Dword
-                        Instr(Mnemonic.vmaxsb, v1, v2, v3),             // v2.03Vector Maximum Signed Byte
-                        Instr(Mnemonic.vmaxsh, v1, v2, v3),             // v2.03Vector Maximum Signed Hword
-                        Instr(Mnemonic.vmaxsw, v1, v2, v3),             // v2.03Vector Maximum Signed Word
-                        Instr(Mnemonic.vmaxsd, v1, v2, v3),             // v2.07Vector Maximum Signed Dword
-                        Instr(Mnemonic.vminub, v1, v2, v3),             // v2.03Vector Minimum Unsigned Byte
-                        Instr(Mnemonic.vminuh, v1, v2, v3),             // v2.03Vector Minimum Unsigned Hword
-                        Instr(Mnemonic.vminuw, v1, v2, v3),             // v2.03Vector Minimum Unsigned Word
-                        Instr(Mnemonic.vminud, v1, v2, v3),             // v2.07Vector Minimum Unsigned Dword
-                        Instr(Mnemonic.vminsb, v1, v2, v3),             // v2.03Vector Minimum Signed Byte
-                        Instr(Mnemonic.vminsh, v1, v2, v3),             // v2.03Vector Minimum Signed Hword
-                        Instr(Mnemonic.vminsw, v1, v2, v3),             // v2.03Vector Minimum Signed Word
-                        Instr(Mnemonic.vminsd, v1, v2, v3),             // v2.07Vector Minimum Signed Dword
+                        Instr(Mnemonic.vmaxub, v1, v2, v3),             // v2.03 Vector Maximum Unsigned Byte
+                        Instr(Mnemonic.vmaxuh, v1, v2, v3),             // v2.03 Vector Maximum Unsigned Hword
+                        Instr(Mnemonic.vmaxuw, v1, v2, v3),             // v2.03 Vector Maximum Unsigned Word
+                        Instr(Mnemonic.vmaxud, v1, v2, v3),             // v2.07 Vector Maximum Unsigned Dword
+                        Instr(Mnemonic.vmaxsb, v1, v2, v3),             // v2.03 Vector Maximum Signed Byte
+                        Instr(Mnemonic.vmaxsh, v1, v2, v3),             // v2.03 Vector Maximum Signed Hword
+                        Instr(Mnemonic.vmaxsw, v1, v2, v3),             // v2.03 Vector Maximum Signed Word
+                        Instr(Mnemonic.vmaxsd, v1, v2, v3),             // v2.07 Vector Maximum Signed Dword
+                        Instr(Mnemonic.vminub, v1, v2, v3),             // v2.03 Vector Minimum Unsigned Byte
+                        Instr(Mnemonic.vminuh, v1, v2, v3),             // v2.03 Vector Minimum Unsigned Hword
+                        Instr(Mnemonic.vminuw, v1, v2, v3),             // v2.03 Vector Minimum Unsigned Word
+                        Instr(Mnemonic.vminud, v1, v2, v3),             // v2.07 Vector Minimum Unsigned Dword
+                        Instr(Mnemonic.vminsb, v1, v2, v3),             // v2.03 Vector Minimum Signed Byte
+                        Instr(Mnemonic.vminsh, v1, v2, v3),             // v2.03 Vector Minimum Signed Hword
+                        Instr(Mnemonic.vminsw, v1, v2, v3),             // v2.03 Vector Minimum Signed Word
+                        Instr(Mnemonic.vminsd, v1, v2, v3),             // v2.07 Vector Minimum Signed Dword
 
-                        Instr(Mnemonic.vavgub, v1, v2, v3),             // v2.03Vector Average Unsigned Byte
-                        Instr(Mnemonic.vavguh, v1, v2, v3),             // v2.03Vector Average Unsigned Hword
-                        Instr(Mnemonic.vavguw, v1, v2, v3),             // v2.03Vector Average Unsigned Word
+                        Instr(Mnemonic.vavgub, v1, v2, v3),             // v2.03 Vector Average Unsigned Byte
+                        Instr(Mnemonic.vavguh, v1, v2, v3),             // v2.03 Vector Average Unsigned Hword
+                        Instr(Mnemonic.vavguw, v1, v2, v3),             // v2.03 Vector Average Unsigned Word
                         invalid,
                         Instr(Mnemonic.vavgsb, v1, v2, v3),             // v2.03 Vector Average Signed Byte
                         Instr(Mnemonic.vavgsh, v1, v2, v3),             // v2.03 Vector Average Signed Hword
@@ -1111,7 +1111,7 @@ namespace Reko.Arch.PowerPC
                     Instr(Mnemonic.xvsubsp, vsr1,vsr2,vsr3),        // 111100 ..... ..... ..... 01001 000... XX3 I 759 v2.06 xvsubsp VSX Vector Subtract SP
                     Nyi("xvmulsp"),    // 111100 ..... ..... ..... 01010 000... XX3 I 727 v2.06 xvmulsp VSX Vector Multiply SP
                     Nyi("xvdivsp"),    // 111100 ..... ..... ..... 01011 000... XX3 I 702 v2.06 xvdivsp VSX Vector Divide SP
-                    Nyi("xvadddp"),    // 111100 ..... ..... ..... 01100 000... XX3 I 661 v2.06 xvadddp VSX Vector Add DP
+                    Instr(Mnemonic.xvadddp, vsr1, vsr2, vsr3),      // 111100 ..... ..... ..... 01100 000... XX3 I 661 v2.06 xvadddp VSX Vector Add DP
                     Instr(Mnemonic.xvsubdp, vsr1, vsr2, vsr3),      // 111100 ..... ..... ..... 01101 000... XX3 I 757 v2.06 xvsubdp VSX Vector Subtract DP
                     Nyi("xvmuldp"),    // 111100 ..... ..... ..... 01110 000... XX3 I 725 v2.06 xvmuldp VSX Vector Multiply DP
                     Nyi("xvdivdp"),    // 111100 ..... ..... ..... 01111 000... XX3 I 700 v2.06 xvdivdp VSX Vector Divide DP

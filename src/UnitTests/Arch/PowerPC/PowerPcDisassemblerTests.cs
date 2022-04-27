@@ -1319,15 +1319,21 @@ namespace Reko.UnitTests.Arch.PowerPC
         }
 
         [Test]
-        public void PPCDis_xvsubsp()
+        public void PPCDis_xvadddp()
         {
-            AssertCode("xvsubsp\tv28,v40,v57", "F1D4E242");
+            AssertCode("xvadddp\tv32,v2,v2", "F2010B00");
         }
 
         [Test]
         public void PPCDis_xvsubdp()
         {
             AssertCode("xvsubdp\tv0,v31,v36", "F00F9344");
+        }
+
+        [Test]
+        public void PPCDis_xvsubsp()
+        {
+            AssertCode("xvsubsp\tv28,v40,v57", "F1D4E242");
         }
 
         [Test]
