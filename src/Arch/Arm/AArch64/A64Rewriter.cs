@@ -26,6 +26,7 @@ using System.Linq;
 using System.Numerics;
 using Reko.Core;
 using Reko.Core.Expressions;
+using Reko.Core.Intrinsics;
 using Reko.Core.Lib;
 using Reko.Core.Machine;
 using Reko.Core.Memory;
@@ -147,13 +148,15 @@ namespace Reko.Arch.Arm.AArch64
                     case Mnemonic.fcvtps: RewriteFcvtps(); break;
                     case Mnemonic.fcvtzs: RewriteFcvtzs(); break;
                     case Mnemonic.fdiv: RewriteMaybeSimdBinary(m.FDiv, "__fdiv_{0}", Domain.Real); break;
-                    case Mnemonic.fmadd: RewriteIntrinsicFTernary("__fmaddf", "__fmadd"); break;
-                    case Mnemonic.fmsub: RewriteIntrinsicFTernary("__fmsubf", "__fmsub"); break;
+                    case Mnemonic.fmadd: RewriteIntrinsicFTernary(__fmadd); break;
+                    case Mnemonic.fmsub: RewriteIntrinsicFTernary(__fmsub); break;
                     case Mnemonic.fmax: RewriteIntrinsicFBinary("fmaxf", "fmax"); break;
                     case Mnemonic.fmin: RewriteIntrinsicFBinary("fminf", "fmin"); break;
                     case Mnemonic.fmov: RewriteFmov(); break;
                     case Mnemonic.fmul: RewriteFmul(); break;
                     case Mnemonic.fneg: RewriteUnary(m.FNeg); break;
+                    case Mnemonic.fnmadd: RewriteIntrinsicFTernary(__fnmadd); break;
+                    case Mnemonic.fnmsub: RewriteIntrinsicFTernary(__fnmsub); break;
                     case Mnemonic.fnmul: RewriteFnmul(); break;
                     case Mnemonic.fsqrt: RewriteFsqrt(); break;
                     case Mnemonic.fsub: RewriteMaybeSimdBinary(m.FSub, "__fsub_{0}", Domain.Real); break;
@@ -244,6 +247,7 @@ namespace Reko.Arch.Arm.AArch64
                     case Mnemonic.scvtf: RewriteIcvtf("s", Domain.SignedInt); break;
                     case Mnemonic.sdiv: RewriteBinary(m.SDiv); break;
                     case Mnemonic.shadd: RewriteSimdBinary("__shadd_{0}", Domain.SignedInt); break;
+                    case Mnemonic.sha1c: RewriteSha1c(); break;
                     case Mnemonic.shl: RewriteSimdBinary("__shl_{0}", Domain.None); break;
                     case Mnemonic.shll: RewriteSimdBinary("__shll_{0}", Domain.None); break;
                     case Mnemonic.shll2: RewriteSimdBinary("__shll2_{0}", Domain.None); break;
@@ -317,6 +321,7 @@ namespace Reko.Arch.Arm.AArch64
                     case Mnemonic.st4: RewriteStN("__st4"); break;
                     case Mnemonic.stlr: RewriteStlr(instr.Operands[0].Width); break;
                     case Mnemonic.stlrh: RewriteStlr(PrimitiveType.Word16); break;
+                    case Mnemonic.stnp: RewriteLoadStorePair(false); break; //$REVIEW: does the non-temporality matter?
                     case Mnemonic.stp: RewriteLoadStorePair(false); break;
                     case Mnemonic.str: RewriteStr(null); break;
                     case Mnemonic.strb: RewriteStr(PrimitiveType.Byte); break;
@@ -613,6 +618,15 @@ namespace Reko.Arch.Arm.AArch64
             }
             return ArmCondition.Invalid;
         }
+
+        private static readonly IntrinsicProcedure __fmadd = IntrinsicBuilder.GenericTernary("__fmadd");
+        private static readonly IntrinsicProcedure __fmsub = IntrinsicBuilder.GenericTernary("__fmsub");
+        private static readonly IntrinsicProcedure __fnmadd = IntrinsicBuilder.GenericTernary("__fnmadd");
+        private static readonly IntrinsicProcedure __fnmsub = IntrinsicBuilder.GenericTernary("__fnmsub");
+        private static readonly IntrinsicProcedure __sha1c = new IntrinsicBuilder("__sha1c", false)
+            .Param(PrimitiveType.Word32)
+            .Param(PrimitiveType.Word128)
+            .Returns(PrimitiveType.Word128);
 
     }
 }

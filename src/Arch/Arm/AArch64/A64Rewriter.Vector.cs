@@ -434,6 +434,14 @@ namespace Reko.Arch.Arm.AArch64
             }
         }
 
+        private void RewriteSha1c()
+        {
+            var op1 = RewriteOp(1);
+            var op2 = RewriteOp(2);
+            var dst = RewriteOp(0);
+            m.Assign(dst, m.Fn(__sha1c, op1, op2));
+        }
+
         private void RewriteShrn()
         {
             RewriteSimdWithScalar("__shrn_{0}", Domain.None);

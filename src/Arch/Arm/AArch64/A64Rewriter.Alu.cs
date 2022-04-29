@@ -159,9 +159,11 @@ namespace Reko.Arch.Arm.AArch64
                 case Mnemonic.sxtb: right = MaybeShift(SignExtend(toBitSize, PrimitiveType.SByte, right), amt); break;
                 case Mnemonic.sxth: right = MaybeShift(SignExtend(toBitSize, PrimitiveType.Int16, right), amt); break;
                 case Mnemonic.sxtw: right = MaybeShift(SignExtend(toBitSize, PrimitiveType.Int32, right), amt); break;
+                case Mnemonic.sxtx: right = MaybeShift(SignExtend(toBitSize, PrimitiveType.Int64, right), amt); break;
                 case Mnemonic.uxtb: right = MaybeShift(ZeroExtend(toBitSize, PrimitiveType.Byte, right), amt); break;
                 case Mnemonic.uxth: right = MaybeShift(ZeroExtend(toBitSize, PrimitiveType.Word16, right), amt); break;
                 case Mnemonic.uxtw: right = MaybeShift(ZeroExtend(toBitSize, PrimitiveType.Word32, right), amt); break;
+                case Mnemonic.uxtx: right = MaybeShift(ZeroExtend(toBitSize, PrimitiveType.Word64, right), amt); break;
                 default:
                     EmitUnitTest();
                     break;

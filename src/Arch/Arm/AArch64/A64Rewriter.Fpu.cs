@@ -18,6 +18,7 @@
  */
 #endregion
 
+using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Machine;
 using Reko.Core.Types;
@@ -194,27 +195,24 @@ namespace Reko.Arch.Arm.AArch64
                 "__max_{0}", Domain.Real);
         }
 
-        private void RewriteIntrinsicFTernary(string name32, string name64)
+        private void RewriteIntrinsicFTernary(IntrinsicProcedure intrinsic)
         {
-            var src1 = RewriteOp(instr.Operands[1]);
-            var src2 = RewriteOp(instr.Operands[2]);
-            var src3 = RewriteOp(instr.Operands[3]);
-            var dst = RewriteOp(instr.Operands[0]);
-            DataType dt;
-            string fname;
+            var src1 = RewriteOp(1);
+            var src2 = RewriteOp(2);
+            var src3 = RewriteOp(3);
+            var dst = RewriteOp(0);
+            IntrinsicProcedure fname;
             if (instr.Operands[0].Width.BitSize == 64)
             {
-                dt = PrimitiveType.Real64;
-                fname = name64;
+                fname = intrinsic.MakeInstance(PrimitiveType.Real64);
             }
             else
             {
-                dt = PrimitiveType.Real32;
-                fname = name32;
+                fname = intrinsic.MakeInstance(PrimitiveType.Real32);
             }
-            m.Assign(dst, host.Intrinsic(fname, true, dt, src1, src2, src3));
-
+            m.Assign(dst, m.Fn(fname, src1, src2, src3));
         }
+
         private void RewriteFmov()
         {
             RewriteMaybeSimdUnary(n => n, "__fmov_{0}", Domain.Real);

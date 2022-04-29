@@ -121,6 +121,16 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
+        public void AArch64Rw_adds()
+        {
+            Given_HexString("656E202B");
+            AssertCode(     // adds	w5,w19,x0,uxtx #3
+                "0|L--|0000000000100000(4): 2 instructions",
+                "1|L--|w5 = w19 + (CONVERT(x0, word64, uint32) << 3<i32>)",
+                "2|L--|NZCV = cond(w5)");
+        }
+
+        [Test]
         public void AArch64Rw_adds_Xn_imm()
         {
             Given_Instruction("101 10001 00 011111111111 10001 10011");
@@ -180,6 +190,17 @@ namespace Reko.UnitTests.Arch.Arm
                 "1|L--|x1 = 0000000000101000");
         }
 
+
+        [Test]
+        public void AArch64Rw_and_imm()
+        {
+            Given_HexString("84F86492");
+            AssertCode(     // and\tx4,x4,#&FFFFFFFFF7FFFFFF
+                "0|L--|0000000000100000(4): 1 instructions",
+                "1|L--|x4 = x4 & 0xFFFFFFFFF7FFFFFF<64>");
+        }
+
+
         [Test]
         public void AArch64Rw_ands()
         {
@@ -230,6 +251,15 @@ namespace Reko.UnitTests.Arch.Arm
             AssertCode(
                 "0|T--|00100000(4): 1 instructions",
                 "1|T--|goto 000FFC00");
+        }
+
+        [Test]
+        public void AArch64Rw_bic()
+        {
+            Given_HexString("ACF4F98A");
+            AssertCode(     // bic	x12,x5,x25,ror #&3D
+                "0|L--|0000000000100000(4): 1 instructions",
+                "1|L--|x12 = x5 & ~__ror<word64,int32>(x25, 61<i32>)");
         }
 
         [Test]
@@ -680,6 +710,15 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
+        public void AArch64Rw_st1()
+        {
+            Given_Instruction(0x0D0041B5);	// st1	{v21.h}[0],[x13]
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|Mem0[x13:word16] = v21[0<i32>]");
+        }
+
+        [Test]
         public void AArch64Rw_st4_post()
         {
             Given_HexString("60059F4C");
@@ -697,6 +736,17 @@ namespace Reko.UnitTests.Arch.Arm
                 "0|L--|0000000000100000(4): 2 instructions",
                 "1|L--|v3 = &Mem0[x0:word16]",
                 "2|L--|__store_release_16(v3, w1)");
+        }
+
+        [Test]
+        public void AArch64Rw_stnp()
+        {
+            Given_HexString("00000028");
+            AssertCode(     // stnp	w0,w0,[x0]
+                "0|L--|0000000000100000(4): 3 instructions",
+                "1|L--|v4 = x0",
+                "2|L--|Mem0[v4:word32] = w0",
+                "3|L--|Mem0[v4 + 4<i64>:word32] = w0");
         }
 
         [Test]
@@ -1813,6 +1863,15 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
+        public void AArch64Rw_dmb()
+        {
+            Given_HexString("BF3F03D5");
+            AssertCode(     // dmb	sy
+                "0|L--|0000000000100000(4): 1 instructions",
+                "1|L--|__dmb_sy()");
+        }
+
+        [Test]
         public void AArch64Rw_dsb()
         {
             Given_Instruction(0xD5033F9F);	// dsb	#&F
@@ -2219,22 +2278,31 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
+        public void AArch64Rw_fnmadd()
+        {
+            Given_HexString("FF0FFF1F");
+            AssertCode(     // fnmadd	h31,h31,h31,h3
+                "0|L--|0000000000100000(4): 1 instructions",
+                "1|L--|h31 = __fnmadd<real32>(h31, h31, h3)");
+        }
+
+        [Test]
+        public void AArch64Rw_fnmsub()
+        {
+            Given_HexString("E8DD741F");
+            AssertCode(     // fnmsub	d8,d15,d20,d23
+                "0|L--|0000000000100000(4): 1 instructions",
+                "1|L--|d8 = __fnmsub<real64>(d15, d20, d23)");
+        }
+
+
+        [Test]
         public void AArch64Rw_fnmul()
         {
             Given_Instruction(0x1E227800);	// fnmul	s0,s0,s2
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
                 "1|L--|s0 = -(s0 * s2)");
-        }
-
-
-        [Test]
-        public void AArch64Rw_st1()
-        {
-            Given_Instruction(0x0D0041B5);	// st1	{v21.h}[0],[x13]
-            AssertCode(
-                "0|L--|00100000(4): 1 instructions",
-                "1|L--|Mem0[x13:word16] = v21[0<i32>]");
         }
 
         [Test]
@@ -2290,9 +2358,8 @@ namespace Reko.UnitTests.Arch.Arm
             Given_Instruction(0x1F0000B9);
             AssertCode(     // fmadd\ts25,s5,s0,s0
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|s25 = __fmaddf(s5, s0, s0)");
+                "1|L--|s25 = __fmadd<real32>(s5, s0, s0)");
         }
-
 
         [Test]
         public void AArch64Rw_fmsub_f32()
@@ -2300,9 +2367,8 @@ namespace Reko.UnitTests.Arch.Arm
             Given_Instruction(0x1F00A08B);
             AssertCode(     // fmsub\ts11,s16,s0,s8
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|s11 = __fmsubf(s4, s0, s8)");
+                "1|L--|s11 = __fmsub<real32>(s4, s0, s8)");
         }
-
 
         [Test]
         public void AArch64Rw_fmadd_f16()
@@ -2310,7 +2376,7 @@ namespace Reko.UnitTests.Arch.Arm
             Given_Instruction(0x1FD61F00);
             AssertCode(     // fmadd\th0,h24,h22,h7
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|h0 = __fmaddf(h24, h22, h7)");
+                "1|L--|h0 = __fmadd<real32>(h24, h22, h7)");
         }
 
         [Test]
@@ -2885,6 +2951,15 @@ namespace Reko.UnitTests.Arch.Arm
                 "1|L--|v2 = q1",
                 "2|L--|v3 = q17",
                 "3|L--|q31 = __saddw2_i16(v2, v3)");
+        }
+
+        [Test]
+        public void AArch64Rw_sha1c()
+        {
+            Given_HexString("0000005E");
+            AssertCode(     // sha1c	q0,s0,v0.4s
+                "0|L--|0000000000100000(4): 1 instructions",
+                "1|L--|q0 = __sha1c(s0, q0)");
         }
 
         [Test]
@@ -4356,14 +4431,18 @@ namespace Reko.UnitTests.Arch.Arm
                 "3|L--|d17 = __zip2_i8(v2, v3)");
         }
 
-        [Test]
-        public void AArch64Rw_and_imm()
-        {
-            Given_HexString("84F86492");
-            AssertCode(     // and\tx4,x4,#&FFFFFFFFF7FFFFFF
-                "0|L--|0000000000100000(4): 1 instructions",
-                "1|L--|x4 = x4 & 0xFFFFFFFFF7FFFFFF<64>");
-        }
+        // This file contains unit tests automatically generated by Reko decompiler.
+        // Please copy the contents of this file and report it on GitHub, using the 
+        // following URL: https://github.com/uxmal/reko/issues
+
+
+
+
+
+
+
+
+
 
         /*
         // This file contains unit tests automatically generated by Reko decompiler.

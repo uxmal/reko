@@ -165,6 +165,12 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
+        public void AArch64Dis_adds_uxtw()
+        {
+            AssertCode("adds\tw5,w19,x0,uxtx #3", "656E202B");
+        }
+
+        [Test]
         public void AArch64Dis_addv_i32()
         {
             Given_Instruction(0x4EB1B821);
