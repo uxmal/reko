@@ -89,6 +89,7 @@ namespace Reko.Arch.PowerPC
                         string.Format("PowerPC instruction '{0}' is not supported yet.", instr));
                     EmitUnitTest();
                     goto case Mnemonic.illegal;
+                case Mnemonic.nyi:
                 case Mnemonic.illegal: iclass = InstrClass.Invalid; m.Invalid(); break;
                 case Mnemonic.add: RewriteAdd(); break;
                 case Mnemonic.addc: RewriteAddc(); break;
@@ -255,7 +256,8 @@ namespace Reko.Arch.PowerPC
                 case Mnemonic.lq: RewriteLq(); break;
                 case Mnemonic.lswi: RewriteLswi(); break;
                 case Mnemonic.lswx: RewriteLswx(); break;
-                case Mnemonic.lvewx: RewriteLvewx(); break;
+                case Mnemonic.lvewx:
+                case Mnemonic.lvewx128: RewriteLvewx(PrimitiveType.Word32); break;
                 case Mnemonic.lvlx:
                 case Mnemonic.lvlx128: RewriteLvlx(); break;
                 case Mnemonic.lvrx128: RewriteLvrx(); break;
@@ -385,7 +387,8 @@ namespace Reko.Arch.PowerPC
                 case Mnemonic.stswi: RewriteStswi(); break;
                 case Mnemonic.stvebx: RewriteStvex(PrimitiveType.Byte); break;
                 case Mnemonic.stvehx: RewriteStvex(PrimitiveType.Word16); break;
-                case Mnemonic.stvewx: RewriteStvex(PrimitiveType.Word32); break;
+                case Mnemonic.stvewx:
+                case Mnemonic.stvewx128: RewriteStvex(PrimitiveType.Word32); break;
                 case Mnemonic.stvx:
                 case Mnemonic.stvxl:
                 case Mnemonic.stvx128: RewriteStx(PrimitiveType.Word128); break;
@@ -798,6 +801,11 @@ namespace Reko.Arch.PowerPC
             .Param(PrimitiveType.Byte)
             .Void();
         private static readonly IntrinsicProcedure fre = IntrinsicBuilder.GenericUnary("__fp_reciprocal_estimate");
+        private static readonly IntrinsicProcedure lve = new IntrinsicBuilder("__load_vector_element", true)
+            .GenericTypes("T")
+            .PtrParam("T")
+            .Param(PrimitiveType.Word128)
+            .Returns(PrimitiveType.Word128);
         private static readonly IntrinsicProcedure lvsl = new IntrinsicBuilder("__lvsl", true)
             .Param(PrimitiveType.Word64)
             .Returns(PrimitiveType.Word128);

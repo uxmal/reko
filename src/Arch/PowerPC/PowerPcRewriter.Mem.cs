@@ -249,29 +249,25 @@ namespace Reko.Arch.PowerPC
                 binder.EnsureRegister(arch.xer)));
         }
 
-        private void RewriteLvewx()
+        private void RewriteLvewx(PrimitiveType dtElem)
         {
-            var vrt = RewriteOperand(instr.Operands[0]);
-            var ra = RewriteOperand(instr.Operands[1], true);
-            var rb = RewriteOperand(instr.Operands[2]);
+            var vrt = RewriteOperand(0);
+            var ra = RewriteOperand(1, true);
+            var rb = RewriteOperand(2);
             if (!ra.IsZero)
             {
                 rb = m.IAdd(ra, rb);
             }
             m.Assign(
                 vrt,
-                host.Intrinsic(
-                    "__lvewx",
-                    true,
-                    PrimitiveType.Word128,
-                    rb));
+                m.Fn(lve.MakeInstance(arch.PointerType.BitSize, dtElem), rb, vrt));
         }
 
         private void RewriteStvex(PrimitiveType dt)
         {
-            var vrs = RewriteOperand(instr.Operands[0]);
-            var ra = RewriteOperand(instr.Operands[1], true);
-            var rb = RewriteOperand(instr.Operands[2]);
+            var vrs = RewriteOperand(0);
+            var ra = RewriteOperand(1, true);
+            var rb = RewriteOperand(2);
             if (!ra.IsZero)
             {
                 rb = m.IAdd(ra, rb);

@@ -446,9 +446,9 @@ namespace Reko.Arch.PowerPC
 
         private void RewriteOr(bool negate)
         {
-            var opL = RewriteOperand(instr.Operands[1]);
-            var opR = RewriteOperand(instr.Operands[2]);
-            var opD = RewriteOperand(instr.Operands[0]);
+            var opL = RewriteOperand(1);
+            var opR = RewriteOperand(2);
+            var opD = RewriteOperand(0);
             RewriteOr(opD, opL, opR, negate);
         }
 
@@ -459,7 +459,9 @@ namespace Reko.Arch.PowerPC
             {
                 var c = negate ? ~0ul : 0ul;
                 s = Constant.Create(opD.DataType, c);
-            } else {
+            }
+            else 
+            {
                 if (opR.IsZero || opL == opR)
                 {
                     s = opL;
@@ -1005,9 +1007,9 @@ namespace Reko.Arch.PowerPC
 
         public void RewriteSubfic()
         {
-            var opL = RewriteOperand(instr.Operands[1]);
-            var opR = RewriteOperand(instr.Operands[2]);
-            var opD = RewriteOperand(instr.Operands[0]);
+            var opL = RewriteOperand(1);
+            var opR = RewriteOperand(2);
+            var opD = RewriteOperand(0);
             m.Assign(opD, m.ISub(opR, opL));
             MaybeEmitCr0(opD);
         }
