@@ -451,10 +451,7 @@ namespace Reko.Arch.PowerPC
             var vrt = RewriteOperand(0);
             m.Assign(
                 vrt,
-                host.Intrinsic(
-                    "__vsel",
-                    false,
-                    PrimitiveType.Word128,
+                m.Fn(vsel,
                     vra,
                     vrb,
                     vrc));

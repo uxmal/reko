@@ -29,6 +29,7 @@ namespace Reko.Arch.PowerPC
     using Decoder = Decoder<PowerPcDisassembler, Mnemonic, PowerPcInstruction>;
 
     // https://github.com/yui-konnu/PPC-Altivec-IDA/blob/master/plugin.cpp
+    // https://github.com/xenia-project/xenia/blob/master/src/xenia/cpu/ppc/ppc_opcode_lookup_gen.cc
     public class XenonInstructionSet : InstructionSet
     {
 
@@ -78,10 +79,11 @@ namespace Reko.Arch.PowerPC
                     Sparse(21, 7, invalid,
                         (0b0000000, Instr(Mnemonic.lvsl128, Wd, r2, r3)),
                         (0b0000100, Instr(Mnemonic.lvsr128, Wd, r2, r3)),
+                        (0b0001000, Instr(Mnemonic.lvewx128, Wd, r2, r3)),
                         (0b0001100, Instr(Mnemonic.lvx128, Wd, r2, r3)),
+                        (0b0011000, Instr(Mnemonic.stvewx128, Wd, r2, r3)),
                         (0b0011100, Instr(Mnemonic.stvx128, Wd, r2, r3)),
                         (0b0101100, Instr(Mnemonic.lvxl128, Wd, r2, r3)),
-                        (0b0110000, Instr(Mnemonic.stvewx128, Wd, r2, r3)),
                         (0b0111100, Instr(Mnemonic.stvxl128, Wd, r2, r3)),
                         (0b1000000, Instr(Mnemonic.lvlx128, Wd, r2, r3)),
                         (0b1000100, Instr(Mnemonic.lvrx128, Wd, r2, r3)),
@@ -91,10 +93,11 @@ namespace Reko.Arch.PowerPC
                         (0b1100100, Instr(Mnemonic.lvrxl128, Wd, r2, r3)),
                         (0b1110000, Instr(Mnemonic.lvlxl128, Wd, r2, r3)),
                         (0b1110100, Instr(Mnemonic.stvrxl128, Wd, r2, r3)))),
-                 /*
-                 |0 0 0 1 0 0|  VD128  |  VA128  |  VB128  |A|  SHB  |a|1|VDh|VBh|    vsldoi128     vr(VD128), vr(VA128), vr(VB128), SHB
-                 */
-                 Instr(Mnemonic.vsldoi128, Wd, Wa, Wb, u6_4));
+
+            /*
+            |0 0 0 1 0 0|  VD128  |  VA128  |  VB128  |A|  SHB  |a|1|VDh|VBh|    vsldoi128     vr(VD128), vr(VA128), vr(VB128), SHB
+            */
+            Instr(Mnemonic.vsldoi128, Wd, Wa, Wb, u6_4));
             return decoder;
         }
 
@@ -384,6 +387,26 @@ namespace Reko.Arch.PowerPC
             return decoder;
         }
 
+        public override Decoder<PowerPcDisassembler, Mnemonic, PowerPcInstruction> Ext3BDecoder()
+        {
+            var decoder = Sparse(26, 5, invalid, "  Xenon Ext3B",
+                (0b10010, Nyi(Mnemonic.fdivs)),
+                (0b10100, Nyi(Mnemonic.fsubs)),
+                (0b10101, Nyi(Mnemonic.fadds)),
+                (0b10110, Nyi(Mnemonic.fsqrts)),
+                (0b11000, Nyi(Mnemonic.fres)),
+                (0b11001, Nyi(Mnemonic.fmuls)),
+                (0b11100, Nyi(Mnemonic.fmsubs)),
+                (0b11101, Nyi(Mnemonic.fmadds)),
+                (0b11110, Nyi(Mnemonic.fnmsubs)),
+                (0b11111, Nyi(Mnemonic.fnmadds)));
+            return decoder;
+        }
+
+        public override Decoder<PowerPcDisassembler, Mnemonic, PowerPcInstruction> Ext3CDecoder()
+        {
+            return invalid;
+        }
 
         /*
 

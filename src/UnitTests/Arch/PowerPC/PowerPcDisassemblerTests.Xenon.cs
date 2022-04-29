@@ -38,7 +38,7 @@ namespace Reko.UnitTests.Arch.PowerPC
         {
             this.arch = new PowerPcBe32Architecture(CreateServiceContainer(), "ppc-be-32", new Dictionary<string, object>
             {
-                { "Model", "Xenon" }
+                { ProcessorOption.Model, "Xenon" }
             });
         }
 
@@ -55,7 +55,10 @@ namespace Reko.UnitTests.Arch.PowerPC
         private void AssertCode(string sExpected, string hexBytes)
         {
             var i = base.DisassembleHexBytes(hexBytes);
-            Assert.AreEqual(sExpected, i.ToString());
+            if (sExpected != i.ToString()) // && i.Mnemonic == Mnemonic.nyi)
+            {
+                Assert.AreEqual(sExpected, i.ToString());
+            }
         }
 
         [Test]
@@ -82,6 +85,12 @@ namespace Reko.UnitTests.Arch.PowerPC
         }
 
         [Test]
+        public void PPCDis_Xenon_mfvsrd()
+        {
+            AssertCode(0x7C7C2066, "mffpsrd\tr28,f3");
+        }
+
+        [Test]
         public void PPCDis_Xenon_regression8()
         {
             AssertCode(0x13E058C7, "lvx128\tv63,r0,r11");
@@ -105,6 +114,33 @@ namespace Reko.UnitTests.Arch.PowerPC
             AssertCode(0x10601a8c, "vspltw\tv3,v3,00");
             AssertCode(0x10010401, "bcdadd.\tv0,v1,v0,00");
             AssertCode(0x117d9406, "vcmpequb.\tv11,v29,v18");
+        }
+
+        [Test]
+        public void PPCDis_Xenon_upkhsb128()
+        {
+            AssertCode(0x1B003B84, "vupkhsb128\tv56,v7");
+        }
+
+        [Test]
+        public void PPCDis_Xenon_vaddfp128()
+        {
+            //| 0 0 0 1 0 1 | VD128 | VA128 | VB128 | A | 0 0 0 0 | a | 1 | VDh | VBh |
+            // 000101 01010 11111 10101 1 0000 1 1 10 01
+            // 0001 0101 0101 1111 1010 1100 0011 1001
+            AssertCode(0x155FAC39, "vaddfp128\tv74,v127,v53");
+        }
+
+        [Test]
+        public void PPCDis_Xenon_vaddudm()
+        {
+            AssertCode(0x104810C0, "vaddudm\tv2,v8,v2");
+        }
+
+        [Test]
+        public void PPCDis_Xenon_vandc128()
+        {
+            AssertCode(0x15BAAA71, "vandc128\tv13,v58,v53");
         }
 
         [Test]
@@ -184,32 +220,9 @@ namespace Reko.UnitTests.Arch.PowerPC
         }
 
         [Test]
-        public void PPCDis_vcuxwfp128()
+        public void vcfpuxws128_Xenon_vcfpuxws128()
         {
-            AssertCode(0x1AE1D2D5, "vcuxwfp128\tv55,v58,01");
-        }
-
-        [Test]
-        public void PPCDis_vupkd3d128()
-        {
-            AssertCode(0x18ADA3D1, "vupkd3d128\tv5,v52,0D");
-        }
-
-        [Test]
-        public void PPCDis_vrfip128()
-        {
-            AssertCode(0x18069391, "vrfip128\tv0,v50");
-        }
-
-
-
-
-
-
-        [Test]
-        public void PPCDis_Xenon_vcuxwfp128()
-        {
-            AssertCode(0x1BD2AAD5, "vcuxwfp128\tv62,v53,12");
+            AssertCode(0x18F4D251, "vcfpuxws128\tv7,v58,14");
         }
 
         [Test]
@@ -219,42 +232,11 @@ namespace Reko.UnitTests.Arch.PowerPC
         }
 
         [Test]
-        public void vcfpuxws128_Xenon_vcfpuxws128()
+        public void PPCDis_Xenon_vcuxwfp128()
         {
-            AssertCode(0x18F4D251, "vcfpuxws128\tv7,v58,14");
+            AssertCode(0x1AE1D2D5, "vcuxwfp128\tv55,v58,01");
+            AssertCode(0x1BD2AAD5, "vcuxwfp128\tv62,v53,12");
         }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        [Test]
-        public void PPCDis_Xenon_vspltw128()
-        {
-            AssertCode(0x1BCFFB15, "vspltw128\tv62,v63,0F");
-        }
-
-
-
-
-
-
-
-
-
-
-
-
-
 
         [Test]
         public void PPCDis_Xenon_vrfim128()
@@ -262,33 +244,23 @@ namespace Reko.UnitTests.Arch.PowerPC
             AssertCode(0x1BA0AB35, "vrfim128\tv61,v53");
         }
 
-
-
         [Test]
-        public void PPCDis_Xenon_vandc128()
+        public void PPCDis_Xenon_vrfip128()
         {
-            AssertCode(0x15BAAA71, "vandc128\tv13,v58,v53");
+            AssertCode(0x18069391, "vrfip128\tv0,v50");
         }
 
-
-
-
-
-
-
-
         [Test]
-        public void PPCDis_vsububm()
+        public void PPCDis_Xenon_vsububm()
         {
             AssertCode(0x12000400, "vsububm\tv16,v0,v0");
         }
 
         [Test]
-        public void PPCDis_vsubcuq()
+        public void PPCDis_Xenon_vsubcuq()
         {
             AssertCode(0x12000540, "vsubcuq\tv16,v0,v0");
         }
-
 
         [Test]
         public void PPCDis_Xenon_vpkshss128()
@@ -298,49 +270,30 @@ namespace Reko.UnitTests.Arch.PowerPC
 
 
         [Test]
-        public void PPCDis_7D0A656C()
+        public void PPCDis_Xenon_7D0A656C()
         {
             AssertCode(0x7D0A656C, "stbcx.\tr8,r10,r12");
         }
 
-
-
-
-
         [Test]
-        public void PPCDis_vcmpgtsb()
+        public void PPCDis_Xenon_vcmpgtsb()
         {
             AssertCode(0x10000306, "vcmpgtsb\tv0,v0,v0");
         }
 
 
         [Test]
-        public void PPCDis_vmhaddshs()
+        public void PPCDis_Xenon_vexptefp()
+        {
+            AssertCode(0x1268018A, "vexptefp\tv19,v0");
+        }
+
+
+        [Test]
+        public void PPCDis_Xenon_vmhaddshs()
         {
             AssertCode(0x12161D20, "vmhaddshs\tv16,v22,v3,v20");
         }
-
-
-
-
-        [Test]
-        public void PPCDis_Xenon_vpkuwum128()
-        {
-            AssertCode(0x176D5BAD, "vpkuwum128\tv123,v45,v43");
-        }
-
-        [Test]
-        public void PPCDis_vpkshus128()
-        {
-            AssertCode(0x16181A6C, "vpkshus128\tv112,v56,v3");
-        }
-
-
-
-
-
-
-
 
         [Test]
         public void PPCDis_Xenon_vmaddfp128()
@@ -348,11 +301,8 @@ namespace Reko.UnitTests.Arch.PowerPC
             AssertCode(0x153200F9, "vmaddfp128\tv73,v50,v32,v73");
         }
 
-
-
-
         [Test]
-        public void PPCDis_vmsumuhm()
+        public void PPCDis_Xenon_vmsumuhm()
         {
             AssertCode(0x1268FFE6, "vmsumuhm\tv19,v8,v31,v31");
         }
@@ -364,82 +314,46 @@ namespace Reko.UnitTests.Arch.PowerPC
         }
 
         [Test]
-        public void PPCDis_vexptefp()
+        public void PPCDis_Xenon_vpkuwum128()
         {
-            AssertCode(0x1268018A, "vexptefp\tv19,v0");
-        }
-
-
- 
-
-        [Test]
-        public void PPCDis_vmuleuw()
-        {
-            AssertCode(0x13A40288, "vmuleuw\tv29,v4,v0");
-        }
-
-
-
-        [Test]
-        public void PPCDis_vmsumubm()
-        {
-            AssertCode(0x107413A4, "vmsumubm\tv3,v20,v2,v14");
-        }
-
-
-        
-
-
-        [Test]
-        public void PPCDis_vmulesb()
-        {
-            AssertCode(0x13A41308, "vmulesb\tv29,v4,v2");
-        }
-
-
-
-
-
-
-        [Test]
-        public void PPCDis_vaddudm()
-        {
-            AssertCode(0x104810C0, "vaddudm\tv2,v8,v2");
-        }
-
-
-
-
-
-
-
-
-        
-        [Test]
-        public void PPCDis_vspltisb()
-        {
-            AssertCode(0x12F8130C, "vspltisb\tv23,-00000008");
-        }
-
-        [Test]
-        public void PPCDis_vsrah()
-        {
-            AssertCode(0x13201344, "vsrah\tv25,v0,v2");
-        }
-
-
-
-
-        [Test]
-        public void PPCDis_Xenon_vslo128()
-        {
-            AssertCode(0x152823BC, "vslo128\tv105,v40,v4");
+            AssertCode(0x176D5BAD, "vpkuwum128\tv123,v45,v43");
         }
 
         [Test]
         public void PPCDis_Xenon_vpkshus128()
         {
+            AssertCode(0x16181A6C, "vpkshus128\tv112,v56,v3");
             AssertCode(0x16481660, "vpkshus128\tv18,v104,v2");
+        }
+
+        [Test]
+        public void PPCDis_Xenon_vmsumubm()
+        {
+            AssertCode(0x107413A4, "vmsumubm\tv3,v20,v2,v14");
+        }
+
+        [Test]
+        public void PPCDis_Xenon_vmulesb()
+        {
+            AssertCode(0x13A41308, "vmulesb\tv29,v4,v2");
+        }
+
+        [Test]
+        public void PPCDis_Xenon_vmuleuw()
+        {
+            AssertCode(0x13A40288, "vmuleuw\tv29,v4,v0");
+        }
+
+        [Test]
+        public void PPCDis_Xenon_vmulosh()
+        {
+            AssertCode(0x113C1148, "vmulosh\tv9,v28,v2");
+        }
+
+        [Test]
+        public void PPCDis_Xenon_vmuloub()
+        {
+            AssertCode(0x10100008, "vmuloub\tv0,v16,v0");
         }
 
         [Test]
@@ -454,62 +368,16 @@ namespace Reko.UnitTests.Arch.PowerPC
             AssertCode(0x16A816C4, "vpkswus128\tv53,v72,v2");
         }
 
-
-
-
-
-
-
-
-
-
-
-
         [Test]
-        public void PPCDis_vrlh()
-        {
-            AssertCode(0x10381044, "vrlh\tv1,v24,v2");
-        }
-
-
-
-
-
-
- 
-        [Test]
-        public void PPCDis_vmulosh()
-        {
-            AssertCode(0x113C1148, "vmulosh\tv9,v28,v2");
-        }
-
-
-
-
-
-
-
-
-        [Test]
-        public void PPCDis_vsrb()
-        {
-            AssertCode(0x11FC1204, "vsrb\tv15,v28,v2");
-        }
-
-        [Test]
-        public void PPCDis_Xenon_vsldoi128_‭allbitsset‬()
-        {
-            // ‭000100 11111 11111 11111 1 1011 1 1 11 11‬
-            AssertCode(0x13FFFEFF, "vsldoi128\tv127,v127,v127,0B");
-        }
-
-
-
-
-        [Test]
-        public void PPCDis_vpmsumh()
+        public void PPCDis_Xenon_vpmsumh()
         {
             AssertCode(0x11901448, "vpmsumh\tv12,v16,v2");
+        }
+
+        [Test]
+        public void PPCDis_Xenon_vrlh()
+        {
+            AssertCode(0x10381044, "vrlh\tv1,v24,v2");
         }
 
         [Test]
@@ -519,34 +387,46 @@ namespace Reko.UnitTests.Arch.PowerPC
         }
 
         [Test]
-        public void PPCDis_mfvsrd()
+        public void PPCDis_Xenon_vslo128()
         {
-            AssertCode(0x7C7C2066, "mffpsrd\tr28,f3");
+            AssertCode(0x152823BC, "vslo128\tv105,v40,v4");
         }
 
         [Test]
-        public void PPCDis_vmuloub()
+        public void PPCDis_Xenon_vsldoi128_allbitsset()
         {
-            AssertCode(0x10100008, "vmuloub\tv0,v16,v0");
+            // 000100 11111 11111 11111 1 1011 1 1 11 11
+            AssertCode(0x13FFFEFF, "vsldoi128\tv127,v127,v127,0B");
         }
 
         [Test]
-        public void PPCDis_Xenon_vaddfp128()
+        public void PPCDis_Xenon_vspltisb()
         {
-            //| 0 0 0 1 0 1 | VD128 | VA128 | VB128 | A | 0 0 0 0 | a | 1 | VDh | VBh |
-            // 000101 01010 11111 10101 1 0000 1 1 10 01
-            // 0001 0101 0101 1111 1010 1100 0011 1001
-            AssertCode(0x155FAC39, "vaddfp128\tv74,v127,v53");
+            AssertCode(0x12F8130C, "vspltisb\tv23,-00000008");
         }
 
-        // Reko: a decoder for the instruction 1B003B84 at address 831FAE98 has not been implemented. (vupkhsb128)
         [Test]
-        public void PPCDis_Xenon_upkhsb128()
+        public void PPCDis_Xenon_vspltw128()
         {
-            AssertCode(0x1B003B84, "vupkhsb128\tv56,v7");
+            AssertCode(0x1BCFFB15, "vspltw128\tv62,v63,0F");
         }
 
-        // Reko: a decoder for the instruction 7C00504C at address 822C1970 has not been implemented. (lvsr)
+        [Test]
+        public void PPCDis_Xenon_vsrah()
+        {
+            AssertCode(0x13201344, "vsrah\tv25,v0,v2");
+        }
 
+        [Test]
+        public void PPCDis_Xenon_vsrb()
+        {
+            AssertCode(0x11FC1204, "vsrb\tv15,v28,v2");
+        }
+
+        [Test]
+        public void PPCDis_Xenon_vupkd3d128()
+        {
+            AssertCode(0x18ADA3D1, "vupkd3d128\tv5,v52,0D");
+        }
     }
 }

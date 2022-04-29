@@ -28,6 +28,7 @@ using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using System.Net;
 using System.Text;
 
@@ -36,7 +37,7 @@ using System.Text;
 namespace Reko.Arch.PowerPC
 {
     using Decoder = Decoder<PowerPcDisassembler, Mnemonic, PowerPcInstruction>;
- 
+
     public partial class PowerPcDisassembler : DisassemblerBase<PowerPcInstruction, Mnemonic>
     {
         private readonly PowerPcArchitecture arch;
@@ -47,7 +48,7 @@ namespace Reko.Arch.PowerPC
         private bool allowSetCR0;
         private readonly List<MachineOperand> ops;
 
-        public PowerPcDisassembler(PowerPcArchitecture arch, Decoder [] primaryDecoders, EndianImageReader rdr, PrimitiveType defaultWordWidth)
+        public PowerPcDisassembler(PowerPcArchitecture arch, Decoder[] primaryDecoders, EndianImageReader rdr, PrimitiveType defaultWordWidth)
         {
             this.arch = arch;
             this.rdr = rdr;
@@ -215,6 +216,9 @@ namespace Reko.Arch.PowerPC
         internal static readonly Mutator<PowerPcDisassembler> C1 = Cr(23);
         internal static readonly Mutator<PowerPcDisassembler> C2 = Cr(18);
 
+        /// <summary>
+        /// Floating point register encoded by the 5 bits at offset <paramref name="offset"/>.
+        /// </summary>
         internal static Mutator<PowerPcDisassembler> f(int offset)
         {
             return (u, d) =>
@@ -297,6 +301,21 @@ namespace Reko.Arch.PowerPC
         internal static readonly Mutator<PowerPcDisassembler> vsr3 = vsr(11, 1);
         internal static readonly Mutator<PowerPcDisassembler> vsr4 = vsr(6, 3);
 
+        internal static Mutator<PowerPcDisassembler> Xt(int bitpos_hi, int bitpos_lo)
+        {
+            var bitfields = BeFields((bitpos_hi, 1), (bitpos_lo, 5));
+            return (u, d) =>
+            {
+                var iReg = Bitfield.ReadFields(bitfields, u);
+                var op = d.VRegFromBits(iReg);
+                d.ops.Add(op);
+                return true;
+            };
+        }
+        internal static readonly Mutator<PowerPcDisassembler> xt29_11 = Xt(29, 11);
+        internal static readonly Mutator<PowerPcDisassembler> xt30_16 = Xt(30, 16);
+        internal static readonly Mutator<PowerPcDisassembler> xt31_6 = Xt(31, 6);
+
         ///<summary>
         /// vector register using only 3 bits of encoding
         /// </summary>
@@ -376,8 +395,12 @@ namespace Reko.Arch.PowerPC
         internal static readonly Mutator<PowerPcDisassembler> u6_5 = u(6, 5);
         internal static readonly Mutator<PowerPcDisassembler> u9_1 = u(9, 1);
         internal static readonly Mutator<PowerPcDisassembler> u9_2 = u(9, 2);
+        internal static readonly Mutator<PowerPcDisassembler> u9_3 = u(9, 3);
         internal static readonly Mutator<PowerPcDisassembler> u10_6 = u(10, 6);
+        internal static readonly Mutator<PowerPcDisassembler> u11_1 = u(11, 1);
         internal static readonly Mutator<PowerPcDisassembler> u11_5 = u(11, 5);
+        internal static readonly Mutator<PowerPcDisassembler> u11_10 = u(11, 10);
+        internal static readonly Mutator<PowerPcDisassembler> u12_4 = u(12, 4);
         internal static readonly Mutator<PowerPcDisassembler> u14_2 = u(14, 2);
         internal static readonly Mutator<PowerPcDisassembler> u16_1 = u(16, 1);
         internal static readonly Mutator<PowerPcDisassembler> u16_2 = u(16, 2);
@@ -386,10 +409,14 @@ namespace Reko.Arch.PowerPC
         internal static readonly Mutator<PowerPcDisassembler> u16_5 = u(16, 5);
         internal static readonly Mutator<PowerPcDisassembler> u16_6 = u(16, 6);
         internal static readonly Mutator<PowerPcDisassembler> u16_7 = u(16, 7);
+        internal static readonly Mutator<PowerPcDisassembler> u17_1 = u(17, 1);
         internal static readonly Mutator<PowerPcDisassembler> u17_8 = u(17, 8);
+        internal static readonly Mutator<PowerPcDisassembler> u18_2 = u(18, 2);
         internal static readonly Mutator<PowerPcDisassembler> u18_3 = u(18, 3);
+        internal static readonly Mutator<PowerPcDisassembler> u20_1 = u(20, 1);
         internal static readonly Mutator<PowerPcDisassembler> u21_1 = u(21, 1);
         internal static readonly Mutator<PowerPcDisassembler> u21_4 = u(21, 4);
+        internal static readonly Mutator<PowerPcDisassembler> u21_5 = u(21, 5);
         internal static readonly Mutator<PowerPcDisassembler> u22_3 = u(22, 3);
         internal static readonly Mutator<PowerPcDisassembler> u22_5 = u(22, 5);
         internal static readonly Mutator<PowerPcDisassembler> u23_3 = u(23, 3);
@@ -459,7 +486,7 @@ namespace Reko.Arch.PowerPC
         internal static bool SPR(uint wInstr, PowerPcDisassembler dasm)
         {
             var nSpr = ((wInstr >> 16) & 0x1F) | ((wInstr >> 6) & 0x3E0);
-            if (dasm.arch.SpRegisters.TryGetValue((int)nSpr, out var spr))
+            if (dasm.arch.SpRegisters.TryGetValue((int) nSpr, out var spr))
             {
                 dasm.ops.Add(spr);
             }
@@ -483,7 +510,128 @@ namespace Reko.Arch.PowerPC
             return dasm.defaultWordWidth.BitSize == 64;
         }
 
+        internal static Mutator<PowerPcDisassembler> FnCode(int ppcBitPos, int bitLength, params FunctionCode[] codes)
+        {
+            var bitfield = BeField(ppcBitPos, bitLength);
+            return (u, d) =>
+            {
+                var c = bitfield.Read(u);
+                var fc = codes[c];
+                if (fc == FunctionCode.Invalid)
+                    return false;
+                d.ops.Add(new FunctionCodeOperand(fc));
+                return true;
+
+            };
+        }
+        internal static Mutator<PowerPcDisassembler> fc_atomic_load = FnCode(16, 5,
+            FunctionCode.add,
+            FunctionCode.xor,
+            FunctionCode.or,
+            FunctionCode.and,
+
+            FunctionCode.umax,
+            FunctionCode.smax,
+            FunctionCode.umin,
+            FunctionCode.smin,
+
+            FunctionCode.swap,
+            FunctionCode.Invalid,
+            FunctionCode.Invalid,
+            FunctionCode.Invalid,
+
+            FunctionCode.Invalid,
+            FunctionCode.Invalid,
+            FunctionCode.Invalid,
+            FunctionCode.Invalid,
+
+            FunctionCode.casne,
+            FunctionCode.Invalid,
+            FunctionCode.Invalid,
+            FunctionCode.Invalid,
+
+            FunctionCode.Invalid,
+            FunctionCode.Invalid,
+            FunctionCode.Invalid,
+            FunctionCode.Invalid,
+
+            FunctionCode.incb,
+            FunctionCode.ince,
+            FunctionCode.Invalid,
+            FunctionCode.Invalid,
+
+            FunctionCode.decb,
+            FunctionCode.Invalid,
+            FunctionCode.Invalid,
+            FunctionCode.Invalid);
+
+        internal static Mutator<PowerPcDisassembler> fc_atomic_store = FnCode(16, 5,
+            FunctionCode.add,
+            FunctionCode.xor,
+            FunctionCode.or,
+            FunctionCode.and,
+
+            FunctionCode.umax,
+            FunctionCode.smax,
+            FunctionCode.umin,
+            FunctionCode.smin,
+
+            FunctionCode.Invalid,
+            FunctionCode.Invalid,
+            FunctionCode.Invalid,
+            FunctionCode.Invalid,
+
+            FunctionCode.Invalid,
+            FunctionCode.Invalid,
+            FunctionCode.Invalid,
+            FunctionCode.Invalid,
+
+
+            FunctionCode.Invalid,
+            FunctionCode.Invalid,
+            FunctionCode.Invalid,
+            FunctionCode.Invalid,
+
+            FunctionCode.Invalid,
+            FunctionCode.Invalid,
+            FunctionCode.Invalid,
+            FunctionCode.Invalid,
+
+            FunctionCode.twin,
+            FunctionCode.Invalid,
+            FunctionCode.Invalid,
+            FunctionCode.Invalid,
+
+            FunctionCode.Invalid,
+            FunctionCode.Invalid,
+            FunctionCode.Invalid,
+            FunctionCode.Invalid
+            );
+
         #endregion
+
+        /// <summary>
+        /// Create a Reko <see cref="Bitfield"/> using big-endian bit position and bit length.
+        /// </summary>
+        /// <remarks>
+        /// PowerPC instruction bits are numbered from the MSB to LSB, but 
+        /// Reko bitfields are numbered from LSB to MSB.
+        /// </summary>
+        internal static Bitfield BeField(int bitPos, int bitLength)
+        {
+            return new Bitfield(32 - (bitPos + bitLength), bitLength);
+        }
+
+        internal static Bitfield[] BeFields(params (int bitPos, int bitLength)[] fieldDescs)
+        {
+            var bitfields = new Bitfield[fieldDescs.Length];
+            for (int i = 0; i < fieldDescs.Length; ++i)
+            {
+                var (bitPos, bitLength) = fieldDescs[i];
+                bitfields[i] = BeField(bitPos, bitLength);
+            }
+            return bitfields;
+        }
 
         private MachineOperand MemOff(uint reg, uint wInstr)
         {
@@ -528,7 +676,11 @@ namespace Reko.Arch.PowerPC
         {
             var testGenSvc = arch.Services.GetService<ITestGenerationService>();
             testGenSvc?.ReportMissingDecoder("PPCDis", this.addr, this.rdr, message);
-            return CreateInvalidInstruction();
+            return new PowerPcInstruction(Mnemonic.nyi)
+            {
+                InstructionClass = InstrClass.Invalid,
+                Operands = MachineInstruction.NoOperands
+            };
         }
     }
 }
