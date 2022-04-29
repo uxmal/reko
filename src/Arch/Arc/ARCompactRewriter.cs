@@ -40,8 +40,9 @@ namespace Reko.Arch.Arc
         private readonly IStorageBinder binder;
         private readonly IRewriterHost host;
         private readonly IEnumerator<ArcInstruction> dasm;
+        private readonly List<RtlInstruction> instrs;
+        private readonly RtlEmitter m;
         private ArcInstruction instr;
-        private RtlEmitter m;
         private InstrClass iclass;
 
         public ARCompactRewriter(ARCompactArchitecture arch, EndianImageReader rdr, ProcessorState state, IStorageBinder binder, IRewriterHost host)
@@ -52,8 +53,9 @@ namespace Reko.Arch.Arc
             this.binder = binder;
             this.host = host;
             this.dasm = new ArcDisassembler(arch, rdr).GetEnumerator();
-            this.instr = null!;
-            this.m = null!;
+            this.instrs = new List<RtlInstruction>();
+            this.m = new RtlEmitter(instrs);
+            this.instr = default!;
         }
 
         public IEnumerator<RtlInstructionCluster> GetEnumerator()
@@ -62,8 +64,6 @@ namespace Reko.Arch.Arc
             {
                 this.instr = dasm.Current;
                 this.iclass = instr.InstructionClass;
-                var instrs = new List<RtlInstruction>();
-                m = new RtlEmitter(instrs);
                 switch (instr.Mnemonic)
                 {
                 case Mnemonic.abs:
@@ -309,11 +309,8 @@ namespace Reko.Arch.Arc
                 }
 
                 TryHandlingZeroOverheadLoop();
-                yield return new RtlInstructionCluster(instr.Address, instr.Length, instrs.ToArray())
-                {
-                    Class = iclass
-                };
-
+                yield return m.MakeCluster(instr.Address, instr.Length, iclass);
+                instrs.Clear();
             }
         }
 

@@ -43,8 +43,10 @@ namespace Reko.Arch.M6800.M6812
         private readonly IStorageBinder binder;
         private readonly IRewriterHost host;
         private readonly IEnumerator<M6812Instruction> dasm;
+        private readonly List<RtlInstruction> rtlInstrs;
+        private readonly RtlEmitter m;
         private M6812Instruction instr;
-        private RtlEmitter m;
+
         private InstrClass iclass;
 
         public M6812Rewriter(M6812Architecture arch, EndianImageReader rdr, M6812State state, IStorageBinder binder, IRewriterHost host)
@@ -55,8 +57,9 @@ namespace Reko.Arch.M6800.M6812
             this.binder = binder;
             this.host = host;
             this.dasm = new M6812Disassembler(arch, rdr).GetEnumerator();
-            this.instr = null!;
-            this.m = null!;
+            this.rtlInstrs = new List<RtlInstruction>();
+            this.m = new RtlEmitter(rtlInstrs);
+            this.instr = default!;
         }
 
         public IEnumerator<RtlInstructionCluster> GetEnumerator()
@@ -64,8 +67,6 @@ namespace Reko.Arch.M6800.M6812
             while (dasm.MoveNext())
             {
                 this.instr = dasm.Current;
-                var rtlInstrs = new List<RtlInstruction>();
-                this.m = new RtlEmitter(rtlInstrs);
                 this.iclass = instr.InstructionClass;
                 switch (instr.Mnemonic)
                 {
@@ -261,6 +262,7 @@ namespace Reko.Arch.M6800.M6812
                 case Mnemonic.wav: RewriteWav(); break;
                 }
                 yield return m.MakeCluster(instr.Address, instr.Length, iclass);
+                this.rtlInstrs.Clear();
             }
         }
 

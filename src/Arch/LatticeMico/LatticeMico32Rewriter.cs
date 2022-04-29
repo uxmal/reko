@@ -42,9 +42,10 @@ namespace Reko.Arch.LatticeMico
         private readonly IStorageBinder binder;
         private readonly IRewriterHost host;
         private readonly IEnumerator<LatticeMico32Instruction> dasm;
+        private readonly List<RtlInstruction> rtls;
+        private readonly RtlEmitter m;
         private LatticeMico32Instruction instr;
         private InstrClass iclass;
-        private RtlEmitter m;
 
         public LatticeMico32Rewriter(LatticeMico32Architecture arch, EndianImageReader rdr, ProcessorState state, IStorageBinder binder, IRewriterHost host)
         {
@@ -55,7 +56,8 @@ namespace Reko.Arch.LatticeMico
             this.host = host;
             this.dasm = new LatticeMico32Disassembler(arch, rdr).GetEnumerator();
             this.instr = null!;
-            this.m = null!;
+            this.rtls = new List<RtlInstruction>();
+            this.m = new RtlEmitter(rtls);
         }
 
         public IEnumerator<RtlInstructionCluster> GetEnumerator()
@@ -64,8 +66,6 @@ namespace Reko.Arch.LatticeMico
             {
                 this.instr = dasm.Current;
                 this.iclass = instr.InstructionClass;
-                var rtls = new List<RtlInstruction>();
-                this.m = new RtlEmitter(rtls);
                 switch (instr.Mnemonic)
                 {
                 default:
@@ -135,10 +135,8 @@ namespace Reko.Arch.LatticeMico
                 case Mnemonic.xor: RewriteBinop(m.Xor); break;
                 case Mnemonic.xori: RewriteBinop(m.Xor); break;
                 }
-                yield return new RtlInstructionCluster(instr.Address, instr.Length, rtls.ToArray())
-                {
-                    Class = iclass
-                };
+                yield return m.MakeCluster(instr.Address, instr.Length, iclass);
+                rtls.Clear();
             }
         }
 

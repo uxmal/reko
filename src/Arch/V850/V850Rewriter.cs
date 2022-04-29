@@ -36,8 +36,9 @@ namespace Reko.Arch.V850
         private readonly IStorageBinder binder;
         private readonly IRewriterHost host;
         private readonly IEnumerator<V850Instruction> dasm;
+        private readonly List<RtlInstruction> rtls;
+        private readonly RtlEmitter m;
         private V850Instruction instr;
-        private RtlEmitter m;
         private InstrClass iclass;
 
         public V850Rewriter(V850Architecture arch, EndianImageReader rdr, ProcessorState state, IStorageBinder binder, IRewriterHost host)
@@ -48,8 +49,9 @@ namespace Reko.Arch.V850
             this.binder = binder;
             this.host = host;
             this.dasm = new V850Disassembler(arch, rdr).GetEnumerator();
+            this.rtls = new List<RtlInstruction>();
+            this.m = new RtlEmitter(rtls);
             this.instr = null!;
-            this.m = null!;
         }
 
         public IEnumerator<RtlInstructionCluster> GetEnumerator()
@@ -58,8 +60,6 @@ namespace Reko.Arch.V850
             {
                 this.instr = dasm.Current;
                 this.iclass = instr.InstructionClass;
-                var rtls = new List<RtlInstruction>();
-                this.m = new RtlEmitter(rtls);
                 switch (instr.Mnemonic)
                 {
                 default:
@@ -69,6 +69,7 @@ namespace Reko.Arch.V850
                 case Mnemonic.invalid: m.Invalid(); iclass = InstrClass.Invalid; break;
                 }
                 yield return m.MakeCluster(instr.Address, instr.Length, this.iclass);
+                rtls.Clear();
             }
         }
 

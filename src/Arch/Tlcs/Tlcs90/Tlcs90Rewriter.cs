@@ -40,9 +40,10 @@ namespace Reko.Arch.Tlcs.Tlcs90
         private readonly ProcessorState state;
         private readonly Tlcs90Architecture arch;
         private readonly IEnumerator<Tlcs90Instruction> dasm;
+        private readonly List<RtlInstruction> instrs;
+        private readonly RtlEmitter m;
         private Tlcs90Instruction instr;
         private InstrClass iclass;
-        private RtlEmitter m;
 
         public Tlcs90Rewriter(Tlcs90Architecture arch, EndianImageReader rdr, ProcessorState state, IStorageBinder binder, IRewriterHost host)
         {
@@ -52,8 +53,9 @@ namespace Reko.Arch.Tlcs.Tlcs90
             this.binder = binder;
             this.host = host;
             this.dasm = new Tlcs90Disassembler(arch, rdr).GetEnumerator();
-            this.instr = null!;
-            this.m = null!;
+            this.instrs = new List<RtlInstruction>();
+            this.m = new RtlEmitter(instrs);
+            this.instr = default!;
         }
 
         public IEnumerator<RtlInstructionCluster> GetEnumerator()
@@ -62,8 +64,6 @@ namespace Reko.Arch.Tlcs.Tlcs90
             {
                 this.instr = dasm.Current;
                 iclass = instr.InstructionClass;
-                var instrs = new List<RtlInstruction>();
-                this.m = new RtlEmitter(instrs);
                 switch (instr.Mnemonic)
                 {
                 default:
@@ -132,6 +132,7 @@ namespace Reko.Arch.Tlcs.Tlcs90
                 case Mnemonic.xor: RewriteBinOp(m.Xor, "**-10*00"); break;
                 }
                 yield return m.MakeCluster(instr.Address, instr.Length, iclass);
+                instrs.Clear();
             }
         }
 

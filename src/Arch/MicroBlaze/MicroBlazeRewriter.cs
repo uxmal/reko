@@ -40,10 +40,11 @@ namespace Reko.Arch.MicroBlaze
         private readonly ProcessorState state;
         private readonly IStorageBinder binder;
         private readonly IRewriterHost host;
-        private IEnumerator<MicroBlazeInstruction> dasm;
+        private readonly IEnumerator<MicroBlazeInstruction> dasm;
+        private readonly List<RtlInstruction> instrs;
+        private readonly RtlEmitter m;
         private MicroBlazeInstruction instrCur;
         private InstrClass iclass;
-        private RtlEmitter m;
         private Address addrInstr;
         private int immHiBits;
 
@@ -55,9 +56,10 @@ namespace Reko.Arch.MicroBlaze
             this.binder = binder;
             this.host = host;
             this.dasm = new MicroBlazeDisassembler(arch, rdr).GetEnumerator();
-            this.instrCur = null!;
-            this.addrInstr = null!;
-            this.m = null!;
+            this.instrs = new List<RtlInstruction>();
+            this.m = new RtlEmitter(instrs);
+            this.instrCur = default!;
+            this.addrInstr = default!;
         }
 
         public IEnumerator<RtlInstructionCluster> GetEnumerator()
@@ -66,8 +68,6 @@ namespace Reko.Arch.MicroBlaze
             {
                 this.instrCur = dasm.Current;
                 this.iclass = instrCur.InstructionClass;
-                var instrs = new List<RtlInstruction>();
-                this.m = new RtlEmitter(instrs);
                 switch (instrCur.Mnemonic)
                 {
                 default:
@@ -140,6 +140,7 @@ namespace Reko.Arch.MicroBlaze
                 var length = (int) (rdr.Address - addr);
                 this.addrInstr = null!;
                 yield return m.MakeCluster(addr, length, iclass);
+                this.instrs.Clear();
                 this.immHiBits = 0;
                 addrInstr = null!;
             }

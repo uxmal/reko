@@ -43,10 +43,10 @@ namespace Reko.Arch.Vax
         private readonly ProcessorState state;
         private readonly VaxArchitecture arch;
         private readonly IEnumerator<VaxInstruction> dasm;
+        private readonly List<RtlInstruction> rtlInstructions;
+        private readonly RtlEmitter m;
         private InstrClass iclass;
         private VaxInstruction instr;
-        private RtlEmitter m;
-        private List<RtlInstruction> rtlInstructions;
 
         public VaxRewriter(VaxArchitecture arch, EndianImageReader rdr, ProcessorState state, IStorageBinder binder, IRewriterHost host)
         {
@@ -56,9 +56,9 @@ namespace Reko.Arch.Vax
             this.binder = binder;
             this.host = host;
             this.dasm = new VaxDisassembler(arch, rdr).GetEnumerator();
-            this.instr = null!;
-            this.m = null!;
-            this.rtlInstructions = null!;
+            this.rtlInstructions = new List<RtlInstruction>();
+            this.m = new RtlEmitter(rtlInstructions);
+            this.instr = default!;
         }
 
         public IEnumerator<RtlInstructionCluster> GetEnumerator()
@@ -68,9 +68,7 @@ namespace Reko.Arch.Vax
                 instr = dasm.Current;
                 var addr = this.instr.Address;
                 var len = this.instr.Length;
-                this.rtlInstructions = new List<RtlInstruction>();
                 this.iclass = this.instr.InstructionClass;
-                this.m = new RtlEmitter(rtlInstructions);
                 switch (this.instr.Mnemonic)
                 {
                 default:
@@ -473,6 +471,7 @@ namespace Reko.Arch.Vax
                 case Mnemonic.bugw: goto default;
                 }
                 yield return m.MakeCluster(addr, len, iclass);
+                this.rtlInstructions.Clear();
             }
         }
 

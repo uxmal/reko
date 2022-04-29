@@ -42,8 +42,9 @@ namespace Reko.Arch.Msp430
         private readonly ProcessorState state;
         private readonly EndianImageReader rdr;
         private readonly IEnumerator<Msp430Instruction> dasm;
+        private readonly List<RtlInstruction> instrs;
+        private readonly RtlEmitter m;
         private Msp430Instruction instr;
-        private RtlEmitter m;
         private InstrClass iclass;
 
         public Msp430Rewriter(Msp430Architecture arch, EndianImageReader rdr, ProcessorState state, IStorageBinder binder, IRewriterHost host)
@@ -54,8 +55,9 @@ namespace Reko.Arch.Msp430
             this.host = host;
             this.rdr = rdr;
             this.dasm = new Msp430Disassembler(arch, rdr).GetEnumerator();
+            this.instrs = new List<RtlInstruction>();
+            this.m = new RtlEmitter(instrs);
             this.instr = null!;
-            this.m = null!;
         }
 
         public IEnumerator<RtlInstructionCluster> GetEnumerator()
@@ -63,8 +65,6 @@ namespace Reko.Arch.Msp430
             while (dasm.MoveNext())
             {
                 this.instr = dasm.Current;
-                var instrs = new List<RtlInstruction>();
-                this.m = new RtlEmitter(instrs);
                 this.iclass = instr.InstructionClass;
                 switch (instr.Mnemonic)
                 {
@@ -111,6 +111,7 @@ namespace Reko.Arch.Msp430
                 case Mnemonics.xor: RewriteBinop(m.Xor, Registers.VNZC); break;
                 }
                 yield return m.MakeCluster(instr.Address, instr.Length, iclass);
+                this.instrs.Clear();
             }
         }
 

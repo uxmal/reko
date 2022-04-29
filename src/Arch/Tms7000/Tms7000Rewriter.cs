@@ -53,7 +53,7 @@ namespace Reko.Arch.Tms7000
             this.dasm = new Tms7000Disassembler(arch, rdr).GetEnumerator();
             this.rtls = new List<RtlInstruction>();
             this.m = new RtlEmitter(rtls);
-            this.instr = null!;
+            this.instr = default!;
         }
 
         public IEnumerator<RtlInstructionCluster> GetEnumerator()

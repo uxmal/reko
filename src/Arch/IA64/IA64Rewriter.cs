@@ -35,7 +35,9 @@ namespace Reko.Arch.IA64
         private readonly IStorageBinder binder;
         private readonly IRewriterHost host;
         private readonly IEnumerator<IA64Instruction> dasm;
-        private RtlEmitter m;
+        private readonly List<RtlInstruction> rtls;
+        private readonly RtlEmitter m;
+
         private IA64Instruction instr;
         private InstrClass iclass;
 
@@ -47,8 +49,9 @@ namespace Reko.Arch.IA64
             this.binder = binder;
             this.host = host;
             this.dasm =  new IA64Disassembler(arch, rdr).GetEnumerator();
+            this.rtls = new List<RtlInstruction>();
+            this.m = new RtlEmitter(rtls);
             this.instr = null!;
-            this.m = null!;
         }
 
         public IEnumerator<RtlInstructionCluster> GetEnumerator()
@@ -56,8 +59,6 @@ namespace Reko.Arch.IA64
             while (dasm.MoveNext())
             {
                 this.instr = dasm.Current;
-                var rtls = new List<RtlInstruction>();
-                this.m = new RtlEmitter(rtls);
                 switch (instr.Mnemonic)
                 {
                 default:

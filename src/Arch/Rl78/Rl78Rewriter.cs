@@ -41,7 +41,8 @@ namespace Reko.Arch.Rl78
         private readonly IStorageBinder binder;
         private readonly IRewriterHost host;
         private readonly LookaheadEnumerator<Rl78Instruction> dasm;
-        private RtlEmitter m;
+        private readonly List<RtlInstruction> instrs;
+        private readonly RtlEmitter m;
         private InstrClass iclass;
         private Rl78Instruction instr;
 
@@ -53,8 +54,9 @@ namespace Reko.Arch.Rl78
             this.binder = binder;
             this.host = host;
             this.dasm = new LookaheadEnumerator<Rl78Instruction>(new Rl78Disassembler(arch, rdr));
+            this.instrs = new List<RtlInstruction>();
+            this.m = new RtlEmitter(instrs);
             this.instr = null!;
-            this.m = null!;
         }
 
         public IEnumerator<RtlInstructionCluster> GetEnumerator()
@@ -62,8 +64,6 @@ namespace Reko.Arch.Rl78
             while (dasm.MoveNext())
             {
                 this.instr = dasm.Current;
-                var instrs = new List<RtlInstruction>();
-                this.m = new RtlEmitter(instrs);
                 this.iclass = dasm.Current.InstructionClass;
                 switch (instr.Mnemonic)
                 {
@@ -149,6 +149,7 @@ namespace Reko.Arch.Rl78
                 case Mnemonic.xor1: RewriteLogical1(m.Xor); break;
                 }
                 yield return m.MakeCluster(instr.Address, instr.Length, iclass);
+                this.instrs.Clear();
             }
         }
 

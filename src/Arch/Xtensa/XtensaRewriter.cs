@@ -46,9 +46,10 @@ namespace Reko.Arch.Xtensa
         private readonly ProcessorState state;
         private readonly XtensaArchitecture arch;
         private readonly IEnumerator<XtensaInstruction> dasm;
+        private readonly List<RtlInstruction> rtlInstructions;
+        private readonly RtlEmitter m;
         private XtensaInstruction instr;
         private InstrClass iclass;
-        private RtlEmitter m;
         private Address? lbegin;
         private Address? lend;
 
@@ -60,8 +61,9 @@ namespace Reko.Arch.Xtensa
             this.binder = binder;
             this.host = host;
             this.dasm = new XtensaDisassembler(this.arch, rdr).GetEnumerator();
-            this.instr = null!;
-            this.m = null!;
+            this.rtlInstructions = new List<RtlInstruction>();
+            this.m = new RtlEmitter(rtlInstructions);
+            this.instr = default!;
         }
 
         public IEnumerator<RtlInstructionCluster> GetEnumerator()
@@ -70,8 +72,6 @@ namespace Reko.Arch.Xtensa
             {
                 var addr = dasm.Current.Address;
                 var len = dasm.Current.Length;
-                var rtlInstructions = new List<RtlInstruction>();
-                m = new RtlEmitter(rtlInstructions);
                 this.instr = dasm.Current;
                 this.iclass = instr.InstructionClass;
                 switch (instr.Mnemonic)
@@ -348,6 +348,7 @@ namespace Reko.Arch.Xtensa
                 }
                 CheckForLoopExit();
                 yield return m.MakeCluster(addr, len, iclass);
+                this.rtlInstructions.Clear();
             }
         }
 

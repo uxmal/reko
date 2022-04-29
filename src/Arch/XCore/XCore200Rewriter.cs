@@ -41,9 +41,10 @@ namespace Reko.Arch.XCore
         private readonly IStorageBinder binder;
         private readonly IRewriterHost host;
         private readonly IEnumerator<XCoreInstruction> dasm;
+        private readonly List<RtlInstruction> rtls;
+        private readonly RtlEmitter m;
         private XCoreInstruction instr;
         private InstrClass iclass;
-        private RtlEmitter m;
 
         public XCore200Rewriter(XCore200Architecture arch, EndianImageReader rdr, ProcessorState state, IStorageBinder binder, IRewriterHost host)
         {
@@ -53,8 +54,9 @@ namespace Reko.Arch.XCore
             this.binder = binder;
             this.host = host;
             this.dasm = new XCore200Disassembler(arch, rdr).GetEnumerator();
-            this.instr = null!;
-            this.m = null!;
+            this.rtls = new List<RtlInstruction>();
+            this.m = new RtlEmitter(rtls);
+            this.instr = default!;
         }
 
         public IEnumerator<RtlInstructionCluster> GetEnumerator()
@@ -63,8 +65,6 @@ namespace Reko.Arch.XCore
             {
                 this.instr = dasm.Current;
                 this.iclass = instr.InstructionClass;
-                var rtls = new List<RtlInstruction>();
-                this.m = new RtlEmitter(rtls);
                 switch (instr.Mnemonic)
                 {
                 default:
@@ -79,10 +79,8 @@ namespace Reko.Arch.XCore
                 case Mnemonic.bla: RewriteBla(); break;
                 case Mnemonic.eq: RewriteBinOp(m.Eq); break;
                 }
-                yield return new RtlInstructionCluster(instr.Address, instr.Length, rtls.ToArray())
-                {
-                    Class = iclass
-                };
+                yield return m.MakeCluster(instr.Address, instr.Length, iclass);
+                rtls.Clear();
             }
         }
 

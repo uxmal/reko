@@ -41,8 +41,9 @@ namespace Reko.Arch.i8051
         private readonly IStorageBinder binder;
         private readonly IRewriterHost host;
         private readonly IEnumerator<i8051Instruction> dasm;
+        private readonly List<RtlInstruction> rtls;
+        private readonly RtlEmitter m;
         private i8051Instruction instr;
-        private RtlEmitter m;
         private InstrClass iclass;
 
         public i8051Rewriter(i8051Architecture arch, EndianImageReader rdr, ProcessorState state, IStorageBinder binder, IRewriterHost host)
@@ -53,8 +54,9 @@ namespace Reko.Arch.i8051
             this.binder = binder;
             this.host = host;
             this.dasm = new i8051Disassembler(arch, rdr).GetEnumerator();
-            this.instr = null!;
-            this.m = null!;
+            this.rtls = new List<RtlInstruction>();
+            this.m = new RtlEmitter(rtls);
+            this.instr = default!;
         }
 
         public IEnumerator<RtlInstructionCluster> GetEnumerator()
@@ -62,8 +64,6 @@ namespace Reko.Arch.i8051
             while (dasm.MoveNext())
             {
                 this.instr = dasm.Current;
-                var rtls = new List<RtlInstruction>();
-                this.m = new RtlEmitter(rtls);
                 this.iclass = InstrClass.Linear;
                 switch (instr.Mnemonic)
                 {
@@ -128,6 +128,7 @@ namespace Reko.Arch.i8051
                     break;
                 }
                 yield return m.MakeCluster(instr.Address, instr.Length, iclass);
+                rtls.Clear();
             }
         }
 

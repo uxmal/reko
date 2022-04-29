@@ -37,9 +37,10 @@ namespace Reko.Arch.Sparc
         private readonly SparcArchitecture arch;
         private readonly IStorageBinder binder;
         private readonly IRewriterHost host;
-        private readonly LookaheadEnumerator<SparcInstruction> dasm;
         private readonly EndianImageReader rdr;
-        private RtlEmitter m;
+        private readonly LookaheadEnumerator<SparcInstruction> dasm;
+        private readonly List<RtlInstruction> rtlInstructions;
+        private readonly RtlEmitter m;
         private SparcInstruction instrCur;
         private InstrClass iclass;
 
@@ -50,8 +51,9 @@ namespace Reko.Arch.Sparc
             this.host = host;
             this.rdr = rdr;
             this.dasm = new LookaheadEnumerator<SparcInstruction>(CreateDisassemblyStream(rdr));
-            this.instrCur = null!;
-            this.m = null!;
+            this.rtlInstructions = new List<RtlInstruction>();
+            this.m = new RtlEmitter(rtlInstructions);
+            this.instrCur = default!;
         }
 
         public SparcRewriter(SparcArchitecture arch, IEnumerator<SparcInstruction> instrs, SparcProcessorState state, IStorageBinder binder, IRewriterHost host)
@@ -60,9 +62,10 @@ namespace Reko.Arch.Sparc
             this.binder = binder;
             this.host = host;
             this.dasm = new LookaheadEnumerator<SparcInstruction>(instrs);
-            this.instrCur = null!;
-            this.m = null!;
-            this.rdr = null!;
+            this.rtlInstructions = new List<RtlInstruction>();
+            this.m = new RtlEmitter(rtlInstructions);
+            this.instrCur = default!;
+            this.rdr = default!;
         }
 
         private IEnumerable<SparcInstruction> CreateDisassemblyStream(EndianImageReader rdr)
@@ -76,9 +79,7 @@ namespace Reko.Arch.Sparc
             {
                 instrCur = dasm.Current;
                 var addr = instrCur.Address;
-                var rtlInstructions = new List<RtlInstruction>();
                 iclass = instrCur.InstructionClass;
-                m = new RtlEmitter(rtlInstructions);
                 switch (instrCur.Mnemonic)
                 {
                 default:
@@ -233,6 +234,7 @@ namespace Reko.Arch.Sparc
                 case Mnemonic.xnorcc: RewriteAlu(XNor, true); break;
                 }
                 yield return m.MakeCluster(addr, 4, iclass);
+                this.rtlInstructions.Clear();
             }
         }
 

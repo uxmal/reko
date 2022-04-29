@@ -41,7 +41,8 @@ namespace Reko.Arch.Blackfin
         private readonly IStorageBinder binder;
         private readonly IRewriterHost host;
         private readonly IEnumerator<BlackfinInstruction> dasm;
-        private RtlEmitter m;
+        private readonly List<RtlInstruction> rtls;
+        private readonly RtlEmitter m;
         private InstrClass iclass;
         private BlackfinInstruction instr;
 
@@ -53,8 +54,9 @@ namespace Reko.Arch.Blackfin
             this.binder = binder;
             this.host = host;
             this.dasm = new BlackfinDisassembler(arch, rdr).GetEnumerator();
-            this.instr = null!;
-            this.m = null!;
+            this.rtls = new List<RtlInstruction>();
+            this.m = new RtlEmitter(rtls);
+            this.instr = default!;
         }
 
         public IEnumerator<RtlInstructionCluster> GetEnumerator()
@@ -62,8 +64,6 @@ namespace Reko.Arch.Blackfin
             while (dasm.MoveNext())
             {
                 this.instr = dasm.Current;
-                var rtls = new List<RtlInstruction>();
-                this.m = new RtlEmitter(rtls);
                 this.iclass = instr.InstructionClass;
                 switch (instr.Mnemonic)
                 {
@@ -88,6 +88,7 @@ namespace Reko.Arch.Blackfin
                 case Mnemonic.xor3: RewriteBinop(m.Xor); break;
                 }
                 yield return m.MakeCluster(instr.Address, instr.Length, iclass);
+                rtls.Clear();
             }
         }
 

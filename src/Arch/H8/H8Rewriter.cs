@@ -52,7 +52,8 @@ namespace Reko.Arch.H8
         private readonly IStorageBinder binder;
         private readonly IRewriterHost host;
         private readonly IEnumerator<H8Instruction> dasm;
-        private RtlEmitter m;
+        private readonly List<RtlInstruction> instrs;
+        private readonly RtlEmitter m;
         private InstrClass iclass;
 
         public H8Rewriter(H8Architecture arch, EndianImageReader rdr, ProcessorState state, IStorageBinder binder, IRewriterHost host)
@@ -63,7 +64,8 @@ namespace Reko.Arch.H8
             this.binder = binder;
             this.host = host;
             this.dasm = new H8Disassembler(arch, rdr).GetEnumerator();
-            this.m = new RtlEmitter(new List<RtlInstruction>());
+            this.instrs = new List<RtlInstruction>();
+            this.m = new RtlEmitter(instrs);
         }
 
         public IEnumerator<RtlInstructionCluster> GetEnumerator()
@@ -150,7 +152,7 @@ namespace Reko.Arch.H8
                 case Mnemonic.xorc: RewriteLogicalC(instr, m.Xor); break;
                 }
                 yield return m.MakeCluster(instr.Address, instr.Length, iclass);
-                this.m = new RtlEmitter(new List<RtlInstruction>());
+                this.instrs.Clear();
             }
         }
 

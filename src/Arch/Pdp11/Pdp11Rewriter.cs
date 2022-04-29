@@ -35,13 +35,13 @@ namespace Reko.Arch.Pdp11
     public partial class Pdp11Rewriter : IEnumerable<RtlInstructionCluster>
     {
         private readonly Pdp11Architecture arch;
-        private readonly IEnumerator<Pdp11Instruction> dasm;
         private readonly IStorageBinder binder;
         private readonly IRewriterHost host;
+        private readonly IEnumerator<Pdp11Instruction> dasm;
+        private readonly List<RtlInstruction> rtlInstructions;
+        private readonly RtlEmitter m;
         private Pdp11Instruction instr;
         private InstrClass iclass;
-        private List<RtlInstruction> rtlInstructions;
-        private RtlEmitter m;
 
         public Pdp11Rewriter(
             Pdp11Architecture arch,
@@ -53,9 +53,9 @@ namespace Reko.Arch.Pdp11
             this.dasm = instrs.GetEnumerator();
             this.binder = binder;
             this.host = host;
-            this.instr = null!;
-            this.m = null!;
-            this.rtlInstructions = null!;
+            this.rtlInstructions = new List<RtlInstruction>();
+            this.m = new RtlEmitter(this.rtlInstructions);
+            this.instr = default!;
         }
 
         public IEnumerator<RtlInstructionCluster> GetEnumerator()
@@ -63,9 +63,7 @@ namespace Reko.Arch.Pdp11
             while (dasm.MoveNext())
             {
                 this.instr = dasm.Current;
-                this.rtlInstructions = new List<RtlInstruction>();
                 this.iclass = instr.InstructionClass;
-                m = new RtlEmitter(this.rtlInstructions);
                 switch (instr.Mnemonic)
                 {
                 default:
@@ -158,6 +156,7 @@ namespace Reko.Arch.Pdp11
                 case Mnemonic.xor: RewriteXor(); break;
                 }
                 yield return m.MakeCluster(instr.Address, instr.Length, iclass);
+                this.rtlInstructions.Clear();
             }
         }
 

@@ -43,8 +43,9 @@ namespace Reko.Arch.Tlcs.Tlcs900
         private readonly IStorageBinder binder;
         private readonly IRewriterHost host;
         private readonly IEnumerator<Tlcs900Instruction> dasm;
+        private readonly List<RtlInstruction> instrs;
+        private readonly RtlEmitter m;
         private InstrClass iclass;
-        private RtlEmitter m;
         private Tlcs900Instruction instr;
 
         public Tlcs900Rewriter(Tlcs900Architecture arch, EndianImageReader rdr, ProcessorState state, IStorageBinder binder, IRewriterHost host)
@@ -55,8 +56,9 @@ namespace Reko.Arch.Tlcs.Tlcs900
             this.binder = binder;
             this.host = host;
             this.dasm = new Tlcs900Disassembler(this.arch, rdr).GetEnumerator();
-            this.instr = null!;
-            this.m = null!;
+            this.instrs = new List<RtlInstruction>();
+            this.m = new RtlEmitter(instrs);
+            this.instr = default!;
         }
 
         public IEnumerator<RtlInstructionCluster> GetEnumerator()
@@ -64,8 +66,6 @@ namespace Reko.Arch.Tlcs.Tlcs900
             while (dasm.MoveNext())
             {
                 iclass = InstrClass.Linear;
-                var instrs = new List<RtlInstruction>();
-                m = new RtlEmitter(instrs);
                 this.instr = dasm.Current;
                 switch (instr.Mnemonic)
                 {
@@ -133,6 +133,7 @@ namespace Reko.Arch.Tlcs.Tlcs900
                 case Mnemonic.zcf: RewriteZcf(); break;
                 }
                 yield return m.MakeCluster(instr.Address, instr.Length, iclass);
+                this.instrs.Clear();
             }
         }
 

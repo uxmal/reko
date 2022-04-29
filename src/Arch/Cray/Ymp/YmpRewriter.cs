@@ -44,9 +44,10 @@ namespace Reko.Arch.Cray.Ymp
         private readonly IStorageBinder binder;
         private readonly IRewriterHost host;
         private readonly IEnumerator<CrayInstruction> dasm;
+        private readonly List<RtlInstruction> instrs;
+        private readonly RtlEmitter m;
         private CrayInstruction instrCur;
         private InstrClass iclass;
-        private RtlEmitter m;
 
         public YmpRewriter(CrayYmpArchitecture arch, Decoder<YmpDisassembler, Mnemonic, CrayInstruction> decoder, EndianImageReader rdr, ProcessorState state, IStorageBinder binder, IRewriterHost host)
         {
@@ -56,8 +57,9 @@ namespace Reko.Arch.Cray.Ymp
             this.binder = binder;
             this.host = host;
             this.dasm = new YmpDisassembler(arch, decoder, rdr).GetEnumerator();
+            this.instrs = new List<RtlInstruction>();
+            this.m = new RtlEmitter(instrs);
             this.instrCur = null!;
-            this.m = null!;
         }
 
         public IEnumerator<RtlInstructionCluster> GetEnumerator()
@@ -66,8 +68,6 @@ namespace Reko.Arch.Cray.Ymp
             {
                 this.instrCur = dasm.Current;
                 this.iclass = instrCur.InstructionClass;
-                var instrs = new List<RtlInstruction>();
-                this.m = new RtlEmitter(instrs);
                 switch (instrCur.Mnemonic)
                 {
                 default:
@@ -104,6 +104,7 @@ namespace Reko.Arch.Cray.Ymp
                 case Mnemonic._xor: Rewrite3(m.Xor); break;
                 }
                 yield return m.MakeCluster(instrCur.Address, instrCur.Length, iclass);
+                instrs.Clear();
             }
         }
 

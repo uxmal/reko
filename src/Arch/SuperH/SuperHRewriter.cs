@@ -40,8 +40,9 @@ namespace Reko.Arch.SuperH
         private readonly SuperHState state;
         private readonly EndianImageReader rdr;
         private readonly IEnumerator<SuperHInstruction> dasm;
+        private readonly List<RtlInstruction> instrs;
+        private readonly RtlEmitter m;
         private SuperHInstruction instr;
-        private RtlEmitter m;
         private InstrClass iclass;
 
         public SuperHRewriter(SuperHArchitecture arch, EndianImageReader rdr, SuperHState state, IStorageBinder binder, IRewriterHost host)
@@ -52,8 +53,9 @@ namespace Reko.Arch.SuperH
             this.binder = binder;
             this.host = host;
             this.dasm = new SuperHDisassembler(arch, rdr).GetEnumerator();
-            this.instr = null!;
-            this.m = null!;
+            this.instrs = new List<RtlInstruction>();
+            this.m = new RtlEmitter(instrs);
+            this.instr = default!;
         }
 
         public IEnumerator<RtlInstructionCluster> GetEnumerator()
@@ -62,8 +64,6 @@ namespace Reko.Arch.SuperH
             {
                 this.instr = dasm.Current;
                 this.iclass = this.instr.InstructionClass;
-                var instrs = new List<RtlInstruction>();
-                this.m = new RtlEmitter(instrs);
                 switch (instr.Mnemonic)
                 {
                 default:
@@ -179,6 +179,7 @@ namespace Reko.Arch.SuperH
                 case Mnemonic.xtrct: RewriteXtrct(); break;
                 }
                 yield return m.MakeCluster(instr.Address, instr.Length, this.iclass);
+                this.instrs.Clear();
             }
         }
 

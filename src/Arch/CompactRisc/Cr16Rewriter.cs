@@ -36,8 +36,9 @@ namespace Reko.Arch.CompactRisc
         private readonly IStorageBinder binder;
         private readonly IRewriterHost host;
         private readonly IEnumerator<Cr16Instruction> dasm;
+        private readonly List<RtlInstruction> rtls;
+        private readonly RtlEmitter m;
         private Cr16Instruction instr;
-        private RtlEmitter m;
         private InstrClass iclass;
 
         public Cr16Rewriter(Cr16Architecture arch, EndianImageReader rdr, ProcessorState state, IStorageBinder binder, IRewriterHost host)
@@ -48,8 +49,9 @@ namespace Reko.Arch.CompactRisc
             this.binder = binder;
             this.host = host;
             this.dasm = new Cr16cDisassembler(arch, rdr).GetEnumerator();
-            this.instr = null!;
-            this.m = null!;
+            this.rtls = new List<RtlInstruction>();
+            this.m = new RtlEmitter(rtls);
+            this.instr = default!;
         }
 
         public IEnumerator<RtlInstructionCluster> GetEnumerator()
@@ -58,8 +60,6 @@ namespace Reko.Arch.CompactRisc
             {
                 this.instr = dasm.Current;
                 this.iclass = instr.InstructionClass;
-                var rtls = new List<RtlInstruction>();
-                this.m = new RtlEmitter(rtls);
                 switch (instr.Mnemonic)
                 {
                 default:
@@ -69,6 +69,7 @@ namespace Reko.Arch.CompactRisc
                 case Mnemonic.Invalid: m.Invalid(); iclass = InstrClass.Invalid; break;
                 }
                 yield return m.MakeCluster(instr.Address, instr.Length, this.iclass);
+                rtls.Clear();
             }
         }
 

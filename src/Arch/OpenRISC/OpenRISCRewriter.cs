@@ -42,9 +42,10 @@ namespace Reko.Arch.OpenRISC
         private readonly IStorageBinder binder;
         private readonly IRewriterHost host;
         private readonly IEnumerator<OpenRISCInstruction> dasm;
+        private readonly List<RtlInstruction> rtls;
+        private readonly RtlEmitter m;
         private InstrClass iclass;
         private OpenRISCInstruction instrCur;
-        private RtlEmitter m;
 
         public OpenRISCRewriter(OpenRISCArchitecture arch, EndianImageReader rdr, ProcessorState state, IStorageBinder binder, IRewriterHost host)
         {
@@ -54,8 +55,9 @@ namespace Reko.Arch.OpenRISC
             this.binder = binder;
             this.host = host;
             this.dasm = new OpenRISCDisassembler(arch, rdr).GetEnumerator();
-            this.instrCur = null!;
-            this.m = null!;
+            this.rtls = new List<RtlInstruction>();
+            this.m = new RtlEmitter(rtls);
+            this.instrCur = default!;
         }
 
         public IEnumerator<RtlInstructionCluster> GetEnumerator()
@@ -64,8 +66,6 @@ namespace Reko.Arch.OpenRISC
             {
                 this.instrCur = dasm.Current;
                 this.iclass = instrCur.InstructionClass;
-                var rtls = new List<RtlInstruction>();
-                this.m = new RtlEmitter(rtls);
                 switch (instrCur.Mnemonic)
                 {
                 default:
@@ -146,6 +146,7 @@ namespace Reko.Arch.OpenRISC
                 case Mnemonic.l_xori: RewriteBinOpImm(m.Xor); break;
                 }
                 yield return m.MakeCluster(instrCur.Address, instrCur.Length, iclass);
+                rtls.Clear();
             }
         }
 

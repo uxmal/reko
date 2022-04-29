@@ -41,9 +41,10 @@ namespace Reko.Arch.M6800.M6809
         private readonly IStorageBinder binder;
         private readonly IRewriterHost host;
         private readonly IEnumerator<M6809Instruction> dasm;
+        private readonly List<RtlInstruction> instrs;
+        private readonly RtlEmitter m;
         private M6809Instruction instr;
         private InstrClass iclass;
-        private RtlEmitter m;
 
         public M6809Rewriter(M6809Architecture arch, EndianImageReader rdr, ProcessorState state, IStorageBinder binder, IRewriterHost host)
         {
@@ -53,19 +54,17 @@ namespace Reko.Arch.M6800.M6809
             this.binder = binder;
             this.host = host;
             this.dasm = new M6809Disassembler(arch, rdr).GetEnumerator();
+            this.instrs = new List<RtlInstruction>();
+            this.m = new RtlEmitter(instrs);
             this.instr = null!;
-            this.m = null!;
         }
 
         public IEnumerator<RtlInstructionCluster> GetEnumerator()
         {
-            var instrs = new List<RtlInstruction>();
             while (dasm.MoveNext())
             {
                 this.instr = dasm.Current;
                 this.iclass = instr.InstructionClass;
-                instrs.Clear();
-                this.m = new RtlEmitter(instrs);
                 switch (instr.Mnemonic)
                 {
                 default:
@@ -186,10 +185,8 @@ namespace Reko.Arch.M6800.M6809
                 case Mnemonic.tfr: RewriteTfr(); break;
                 case Mnemonic.tst: RewriteTst(); break;
                 }
-                yield return new RtlInstructionCluster(instr.Address, instr.Length, instrs.ToArray())
-                {
-                    Class = iclass,
-                };
+                yield return m.MakeCluster(instr.Address, instr.Length, iclass);
+                instrs.Clear();
             }
         }
 

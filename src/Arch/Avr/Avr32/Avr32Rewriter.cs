@@ -54,10 +54,10 @@ namespace Reko.Arch.Avr.Avr32
         private readonly IStorageBinder binder;
         private readonly IRewriterHost host;
         private readonly IEnumerator<Avr32Instruction> dasm;
+        private readonly List<RtlInstruction> instrs;
+        private readonly RtlEmitter m;
         private Avr32Instruction instr;
         private InstrClass iclass;
-        private RtlEmitter m;
-
 
         public Avr32Rewriter(Avr32Architecture arch, EndianImageReader rdr, ProcessorState state, IStorageBinder binder, IRewriterHost host)
         {
@@ -67,8 +67,9 @@ namespace Reko.Arch.Avr.Avr32
             this.binder = binder;
             this.host = host;
             this.dasm = new Avr32Disassembler(arch, rdr).GetEnumerator();
-            this.instr = null!;
-            this.m = null!;
+            this.instrs = new List<RtlInstruction>();
+            this.m = new RtlEmitter(instrs);
+            this.instr = default!;
         }
 
         public IEnumerator<RtlInstructionCluster> GetEnumerator()
@@ -77,8 +78,6 @@ namespace Reko.Arch.Avr.Avr32
             {
                 this.instr = dasm.Current;
                 this.iclass = this.instr.InstructionClass;
-                var instrs = new List<RtlInstruction>();
-                this.m = new RtlEmitter(instrs);
                 switch (this.instr.Mnemonic)
                 {
                 default:
@@ -174,6 +173,7 @@ namespace Reko.Arch.Avr.Avr32
                 case Mnemonic.tst: RewriteTst(); break;
                 }
                 yield return m.MakeCluster(instr.Address, instr.Length, iclass);
+                instrs.Clear();
             }
         }
 
