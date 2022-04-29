@@ -1634,6 +1634,15 @@ namespace Reko.UnitTests.Arch.X86
         }
 
         [Test]
+        public void X86Rw_cldemote()
+        {
+            Run64bitTest("0F1C78CB");
+            AssertCode(     // cldemote	byte ptr [rax-35h]
+                "0|L--|0000000140000000(4): 1 instructions",
+                "1|L--|__cache_line_demote(&Mem0[rax - 53<i64>:byte])");
+        }
+
+        [Test]
         public void X86Rw_tzcnt()
         {
             Run64bitTest("F30FBCCA");
@@ -1888,6 +1897,18 @@ namespace Reko.UnitTests.Arch.X86
             AssertCode(     // fninit
                 "0|L--|10000000(2): 1 instructions",
                 "1|L--|__fninit()");
+        }
+
+        /// <summary>
+        /// This appears to be an obsolete 286 whose net effect is negligible.
+        /// </summary>
+        [Test]
+        public void X86Rw_fnsetpm()
+        {
+            Run32bitTest("DBE4");	// fnsetpm
+            AssertCode(
+                "0|L--|10000000(2): 1 instructions",
+                "1|L--|nop");
         }
 
         [Test]
@@ -3035,6 +3056,15 @@ namespace Reko.UnitTests.Arch.X86
         }
 
         [Test]
+        public void X86Rw_rdtscp()
+        {
+            Run32bitTest("0F01F9");
+            AssertCode(     // rdtscp
+                "0|L--|10000000(3): 1 instructions",
+                "1|L--|edx_eax = __rdtscp(out ecx)");
+        }
+
+        [Test]
         public void X86rw_rsqrtps()
         {
             Run32bitTest("0F524242");    // rsqrtps\txmm0,[edx+42]
@@ -3928,6 +3958,17 @@ namespace Reko.UnitTests.Arch.X86
         }
 
         [Test]
+        public void X86Rw_movbe()
+        {
+            Run32bitTest("0F38F1C3");
+            AssertCode(
+                "0|L--|10000000(4): 1 instructions",
+                "1|L--|ebx = __movbe<word32>(eax)");
+        }
+
+
+
+        [Test]
         public void X86Rw_sha1msg2()
         {
             Run32bitTest("0F38CA75E8");	// sha1msg2	xmm6,[ebp-18]
@@ -3939,24 +3980,14 @@ namespace Reko.UnitTests.Arch.X86
         }
 
         [Test]
-        public void X86Rw_movbe()
+        public void X86Rw_sha256mds2()
         {
-            Run32bitTest("0F38F1C3");
-            AssertCode(
-                "0|L--|10000000(4): 1 instructions",
-                "1|L--|ebx = __movbe<word32>(eax)");
-        }
-
-        /// <summary>
-        /// This appears to be an obsolete 286 whose net effect is negligible.
-        /// </summary>
-        [Test]
-        public void X86Rw_fnsetpm()
-        {
-            Run32bitTest("DBE4");	// fnsetpm
-            AssertCode(
-                "0|L--|10000000(2): 1 instructions",
-                "1|L--|nop");
+            Run64bitTest("0F38CB00");
+            AssertCode(     // sha256mds2	xmm0,[rax]
+                "0|L--|0000000140000000(4): 3 instructions",
+                "1|L--|v4 = Mem0[rax:word128]",
+                "2|L--|v5 = xmm0",
+                "3|L--|xmm0 = __sha256mds2(v5, v4)");
         }
 
         [Test]
@@ -4719,6 +4750,9 @@ namespace Reko.UnitTests.Arch.X86
                 "15|L--|ymm14 = CONVERT(xmm14, word128, word256)",
                 "16|L--|ymm15 = CONVERT(xmm15, word128, word256)");
         }
+
+
+
 
         /*
         [Test]

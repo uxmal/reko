@@ -22,7 +22,6 @@ using Reko.Core;
 using Reko.Core.Collections;
 using Reko.Core.Expressions;
 using Reko.Core.Intrinsics;
-using Reko.Core.Lib;
 using Reko.Core.Machine;
 using Reko.Core.Memory;
 using Reko.Core.Rtl;
@@ -140,6 +139,7 @@ namespace Reko.Arch.X86
                 case Mnemonic.cld: RewriteSetFlag(Registers.D, Constant.False()); break;
                 case Mnemonic.cli: RewriteCli(); break;
                 case Mnemonic.clts: RewriteClts(); break;
+                case Mnemonic.cldemote: RewriteCldemote(); break;
                 case Mnemonic.cmc: m.Assign(binder.EnsureFlagGroup(Registers.C), m.Not(binder.EnsureFlagGroup(Registers.C))); break;
                 case Mnemonic.cmova: RewriteConditionalMove(ConditionCode.UGT, instrCur.Operands[0], instrCur.Operands[1]); break;
                 case Mnemonic.cmovbe: RewriteConditionalMove(ConditionCode.ULE, instrCur.Operands[0], instrCur.Operands[1]); break;
@@ -546,6 +546,7 @@ namespace Reko.Arch.X86
                 case Mnemonic.rdpmc: RewriteRdpmc(); break;
                 case Mnemonic.rdrand: RewriteRdrand(); break;
                 case Mnemonic.rdtsc: RewriteRdtsc(); break;
+                case Mnemonic.rdtscp: RewriteRdtscp(); break;
                 case Mnemonic.ret: RewriteRet(); break;
                 case Mnemonic.retf: RewriteRet(); break;
                 case Mnemonic.roundsd: RewriteRoundsx(false, PrimitiveType.Real64); break;
@@ -579,6 +580,7 @@ namespace Reko.Arch.X86
                 case Mnemonic.sfence: RewriteSfence(); break;
                 case Mnemonic.sgdt: RewriteSxdt(sgdt_intrinsic); break;
                 case Mnemonic.sha1msg2: RewriteSha1msg2(); break;
+                case Mnemonic.sha256mds2: RewriteSha256mds2(); break;
                 case Mnemonic.shl: RewriteBinOp(m.Shl); break;
                 case Mnemonic.shlx: RewriteBinOp(m.Shl); break;
                 case Mnemonic.shld: RewriteShxd(shld_intrinsic); break;
@@ -1355,7 +1357,11 @@ namespace Reko.Arch.X86
         private static readonly IntrinsicProcedure ceil_intrinsic = UnaryIntrinsic("ceil", PrimitiveType.Real64);
         private static readonly IntrinsicProcedure ceilf_intrinsic = UnaryIntrinsic("ceilf", PrimitiveType.Real32);
         private static readonly IntrinsicProcedure cli_intrinsic;
+        private static readonly IntrinsicProcedure cldemote_intrinsic = new IntrinsicBuilder("__cache_line_demote", true)
+            .PtrParam(PrimitiveType.Byte)
+            .Void();
         private static readonly IntrinsicProcedure clts_intrinsic;
+
         private static readonly IntrinsicProcedure cmpp_intrinsic;
         private static readonly IntrinsicProcedure cmpxchg_intrinsic;
         private static readonly IntrinsicProcedure cmpxchgN_intrinsic;
@@ -1490,6 +1496,10 @@ namespace Reko.Arch.X86
         private static readonly IntrinsicProcedure rdpmc_intrinsic;
         private static readonly IntrinsicProcedure rdrand_intrinsic;
         private static readonly IntrinsicProcedure rdtsc_intrinsic;
+        private static readonly IntrinsicProcedure rdtscp_intrinsic = new IntrinsicBuilder("__rdtscp", true)
+                .OutParam(PrimitiveType.Word32)
+                .Returns(PrimitiveType.Word64);
+
         private static readonly IntrinsicProcedure rndint_intrinsic = UnaryIntrinsic("__rndint", PrimitiveType.Real64);
         private static readonly IntrinsicProcedure round_intrinsic = UnaryIntrinsic("round", PrimitiveType.Real64);
         private static readonly IntrinsicProcedure roundf_intrinsic = UnaryIntrinsic("roundf", PrimitiveType.Real32);
@@ -1498,6 +1508,7 @@ namespace Reko.Arch.X86
         private static readonly IntrinsicProcedure sfence_intrinsic;
         private static readonly IntrinsicProcedure sgdt_intrinsic;
         private static readonly IntrinsicProcedure sha1msg2_intrinsic = BinaryIntrinsic("__sha1msg2", PrimitiveType.Word128);
+        private static readonly IntrinsicProcedure sha256mds2_intrinsic = BinaryIntrinsic("__sha256mds2", PrimitiveType.Word128);
         private static readonly IntrinsicProcedure shld_intrinsic;
         private static readonly IntrinsicProcedure shrd_intrinsic;
         private static readonly IntrinsicProcedure shufp_intrinsic = GenericTernaryIntrinsic("__shufp");

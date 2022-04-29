@@ -96,7 +96,7 @@ namespace Reko.Arch.X86
                 d[0x1A] = Instr(Mnemonic.nop, InstrClass.Linear|InstrClass.Padding, Ev);
                 d[0x1B] = Instr(Mnemonic.nop, InstrClass.Linear|InstrClass.Padding, Ev);
 
-                d[0x1C] = Instr(Mnemonic.cldemote, Eb);
+                d[0x1C] = Instr(Mnemonic.cldemote, Mb);
                 d[0x1D] = Instr(Mnemonic.nop, InstrClass.Linear|InstrClass.Padding, Ev);
                 d[0x1E] = new PrefixedDecoder(
                     dec: reservedNop,

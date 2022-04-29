@@ -231,6 +231,16 @@ namespace Reko.Arch.X86
             m.Assign(edx_eax, m.Fn(rdtsc_intrinsic));
         }
 
+        private void RewriteRdtscp()
+        {
+            Identifier edx_eax = binder.EnsureSequence(
+                PrimitiveType.Word64,
+                Registers.edx,
+                Registers.eax);
+            var ecx = binder.EnsureRegister(Registers.ecx);
+            m.Assign(edx_eax, m.Fn(rdtscp_intrinsic, m.Out(arch.PointerType, ecx)));
+        }
+
         public void RewriteBinOp(Func<Expression,Expression,Expression> opr)
         {
             Expression opL, opR;

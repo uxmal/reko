@@ -43,6 +43,12 @@ namespace Reko.Arch.X86
             m.Assign(cr0, m.Fn(clts_intrinsic, cr0));
         }
 
+        private void RewriteCldemote()
+        {
+            var mem = SrcOp(0);
+            m.SideEffect(m.Fn(cldemote_intrinsic, m.AddrOf(arch.PointerType, mem)));
+
+        }
         public void RewriteEmms()
         {
             m.SideEffect(m.Fn(emms_intrinsic));

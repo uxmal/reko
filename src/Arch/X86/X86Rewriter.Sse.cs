@@ -498,6 +498,17 @@ namespace Reko.Arch.X86
             m.Assign(dst, m.Fn(sha1msg2_intrinsic, tmpDst, tmpSrc));
         }
 
+        private void RewriteSha256mds2()
+        {
+            var src = SrcOp(1);
+            var dst = SrcOp(0);
+            var tmpSrc = binder.CreateTemporary(PrimitiveType.Word128);
+            var tmpDst = binder.CreateTemporary(PrimitiveType.Word128);
+            m.Assign(tmpSrc, src);
+            m.Assign(tmpDst, dst);
+            m.Assign(dst, m.Fn(sha256mds2_intrinsic, tmpDst, tmpSrc));
+        }
+
         private void RewriteSqrtsd(IntrinsicProcedure intrinsic, PrimitiveType dt)
         {
             var src = MaybeSlice(dt, SrcOp(1));

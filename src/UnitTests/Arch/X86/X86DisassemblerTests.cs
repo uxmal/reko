@@ -1007,6 +1007,12 @@ movzx	ax,byte ptr [bp+4h]
         }
 
         [Test]
+        public void X86Dis_cldemote_invalid()
+        {
+            AssertCode64("illegal", 0x0f, 0x1c, 0xC3);
+        }
+
+        [Test]
         public void X86Dis_pshufb_0f38004154()
         {
             AssertCode64("pshufb\tmm0,[rcx+54h]", 0x0f, 0x38, 0x00, 0x41, 0x54);
