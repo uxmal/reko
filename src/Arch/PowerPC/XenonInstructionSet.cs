@@ -390,16 +390,17 @@ namespace Reko.Arch.PowerPC
         public override Decoder<PowerPcDisassembler, Mnemonic, PowerPcInstruction> Ext3BDecoder()
         {
             var decoder = Sparse(26, 5, invalid, "  Xenon Ext3B",
-                (0b10010, Nyi(Mnemonic.fdivs)),
-                (0b10100, Nyi(Mnemonic.fsubs)),
-                (0b10101, Nyi(Mnemonic.fadds)),
-                (0b10110, Nyi(Mnemonic.fsqrts)),
-                (0b11000, Nyi(Mnemonic.fres)),
-                (0b11001, Nyi(Mnemonic.fmuls)),
-                (0b11100, Nyi(Mnemonic.fmsubs)),
-                (0b11101, Nyi(Mnemonic.fmadds)),
-                (0b11110, Nyi(Mnemonic.fnmsubs)),
-                (0b11111, Nyi(Mnemonic.fnmadds)));
+                (0b10010, Instr(Mnemonic.fdivs, C,f1,f2,f3)),       // A I 154 PPC fdivs[.] Floating Divide Single
+                (0b10100, Instr(Mnemonic.fsubs, C, f1, f2, f3)),    // A I 153 PPC fsubs[.] Floating Subtract Single
+                (0b10101, Instr(Mnemonic.fadds, C, f1, f2, f3)),    // A I 153 PPC fadds[.] Floating Add Single
+                (0b10110, Instr(Mnemonic.fsqrts, C, f1, f3)),       // A I 155 PPC fsqrts[.] Floating Square Root Single
+                (0b11000, Instr(Mnemonic.fres, C, f1, f3)),         // A I 155 PPC fres[.] Floating Reciprocal Estimate Single
+                (0b11001, Instr(Mnemonic.fmuls, C, f1, f2, f4)),    // A I 154 PPC fmuls[.] Floating Multiply Single
+                (0b11010, Instr(Mnemonic.frsqrtes, C, f1, f3)),     // A I 156 v2.02 frsqrtes[.] Floating Reciprocal Square Root Estimate Single
+                (0b11100, Instr(Mnemonic.fmsubs, C,f1,f2,f4,f3)),   // A I 159 PPC fmsubs[.] Floating Multiply-Subtract Single
+                (0b11101, Instr(Mnemonic.fmadds, C,f1,f2,f4,f3)),   // A I 158 PPC fmadds[.] Floating Multiply-Add Single
+                (0b11110, Instr(Mnemonic.fnmsubs, C,f1,f2,f3,f4)),  // A I 159 PPC fnmsubs[.] Floating Negative Multiply-Subtract Single
+                (0b11111, Instr(Mnemonic.fnmadds, C,f1,f2,f3,f4))); // A I 159 PPC fnmadds[.] Floating Negative Multiply-Add Single
             return decoder;
         }
 

@@ -464,6 +464,7 @@ namespace Reko.Arch.PowerPC
                 case Mnemonic.vcmpequd: RewriteVcmp(vcmpeq, PrimitiveType.UInt64); break;
                 case Mnemonic.vcmpequw:
                 case Mnemonic.vcmpequw128: RewriteVcmp(vcmpeq, PrimitiveType.UInt32); break;
+                case Mnemonic.vcmpnew: RewriteVcmp(vcmpne, PrimitiveType.UInt32); break;
                 case Mnemonic.vcmpnezh: RewriteVcmp(vcmpnez, PrimitiveType.Word16); break;
                 case Mnemonic.vcsxwfp128: RewriteVcsxwfp("__vcsxwfp"); break;
                 case Mnemonic.vcuxwfp128: RewriteVcsxwfp("__vcuxwfp"); break;
@@ -869,6 +870,7 @@ namespace Reko.Arch.PowerPC
         private static readonly IntrinsicProcedure vcmpgefp = IntrinsicBuilder.GenericBinary("__vector_fp_cmpge");
         private static readonly IntrinsicProcedure vcmpgt = IntrinsicBuilder.GenericBinary("__vector_cmpgt");
         private static readonly IntrinsicProcedure vcmpgtfp = IntrinsicBuilder.GenericBinary("__vector_fp_cmpgt");
+        private static readonly IntrinsicProcedure vcmpne = IntrinsicBuilder.GenericBinary("__vector_cmpne");
         private static readonly IntrinsicProcedure vcmpnez = IntrinsicBuilder.GenericBinary("__vector_cmpne_or_0");
         private static readonly IntrinsicProcedure vexptefp = IntrinsicBuilder.GenericUnary("__vector_2_exp_estimate");
         private static readonly IntrinsicProcedure vextract = new IntrinsicBuilder("__vector_extract", false)
