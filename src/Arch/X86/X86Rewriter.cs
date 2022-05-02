@@ -476,6 +476,7 @@ namespace Reko.Arch.X86
                 case Mnemonic.pminub: RewritePackedBinop(false, pminu_intrinsic, PrimitiveType.UInt8); break;
                 case Mnemonic.pmovmskb: RewriteMovmsk(false, pmovmskb_intrinsic, PrimitiveType.Byte); break;
                 case Mnemonic.vpmovmskb: RewriteMovmsk(true, pmovmskb_intrinsic, PrimitiveType.Byte); break;
+                case Mnemonic.pmulhrsw: RewritePackedBinop(false, pmulhrs_intrinsic, PrimitiveType.Int16); break;
                 case Mnemonic.pmulhuw: RewritePackedBinop(false, pmulhu_intrinsic, PrimitiveType.UInt16, PrimitiveType.UInt16); break;
                 case Mnemonic.pmulhw: RewritePackedBinop(false, pmulh_intrinsic, PrimitiveType.Int16, PrimitiveType.Int16); break;
                 case Mnemonic.pmullw: RewritePackedBinop(false, pmull_intrinsic, PrimitiveType.Int16, PrimitiveType.Int16); break;
@@ -1462,6 +1463,7 @@ namespace Reko.Arch.X86
         private static readonly IntrinsicProcedure pmins_intrinsic = GenericBinaryIntrinsic("__pmins");
         private static readonly IntrinsicProcedure pmovmskb_intrinsic;
         private static readonly IntrinsicProcedure pmulh_intrinsic = GenericBinaryIntrinsic_DifferentTypes("__pmulh");
+        private static readonly IntrinsicProcedure pmulhrs_intrinsic = GenericBinaryIntrinsic("__pmulhrs");
         private static readonly IntrinsicProcedure pmulhu_intrinsic = GenericBinaryIntrinsic_DifferentTypes("__pmulhu");
         private static readonly IntrinsicProcedure pmull_intrinsic = GenericBinaryIntrinsic_DifferentTypes("__pmull");
         private static readonly IntrinsicProcedure pmulu_intrinsic = GenericBinaryIntrinsic_DifferentTypes("__pmulu");

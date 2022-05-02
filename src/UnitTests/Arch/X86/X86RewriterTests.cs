@@ -3226,14 +3226,26 @@ namespace Reko.UnitTests.Arch.X86
         }
 
         [Test]
+        public void X86rw_pmulhrsw()
+        {
+            Run32bitTest("0F 38 0B 0B");    // pmulhrsw mm1,[ebx]
+            AssertCode(
+                "0|L--|10000000(4): 3 instructions",
+                "1|L--|v4 = mm1",
+                "2|L--|v5 = Mem0[ebx:word64]",
+                "3|L--|mm1 = __pmulhrs<int16[4]>(v4, v5)");
+        }
+
+        [Test]
         public void X86rw_pmullw()
         {
             Run32bitTest("0FD54242");    // pmullw\tmm0,[edx+42]
             AssertCode(
                 "0|L--|10000000(4): 3 instructions",
-                "1|L--|v4 = mm0");
+                "1|L--|v4 = mm0",
+                "2|L--|v5 = Mem0[edx + 66<i32>:word64]",
+                "3|L--|mm0 = __pmull<int16[4],int16[4]>(v4, v5)");
         }
-
         [Test]
         public void X86rw_pmovmskb()
         {
