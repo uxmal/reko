@@ -266,6 +266,7 @@ namespace Reko.Arch.PowerPC
                 case Mnemonic.lvx:
                 case Mnemonic.lvxl:
                 case Mnemonic.lvx128: RewriteLzx(PrimitiveType.Word128, PrimitiveType.Word128); break;
+                case Mnemonic.lwa: RewriteLwa(); break;
                 case Mnemonic.lwarx: RewriteLarx("__lwarx", PrimitiveType.Word32); break;
                 case Mnemonic.lwax: RewriteLax(PrimitiveType.Int32, arch.SignedWord); break;
                 case Mnemonic.lwbrx: RewriteLwbrx(); break;
@@ -384,6 +385,7 @@ namespace Reko.Arch.PowerPC
                 case Mnemonic.sthu: RewriteStu(PrimitiveType.Word16); break;
                 case Mnemonic.sthx: RewriteStx(PrimitiveType.Word16); break;
                 case Mnemonic.stmw: RewriteStmw(); break;
+                case Mnemonic.stq: RewriteStq(); break;
                 case Mnemonic.stswi: RewriteStswi(); break;
                 case Mnemonic.stvebx: RewriteStvex(PrimitiveType.Byte); break;
                 case Mnemonic.stvehx: RewriteStvex(PrimitiveType.Word16); break;

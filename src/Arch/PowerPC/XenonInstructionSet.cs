@@ -30,6 +30,7 @@ namespace Reko.Arch.PowerPC
 
     // https://github.com/yui-konnu/PPC-Altivec-IDA/blob/master/plugin.cpp
     // https://github.com/xenia-project/xenia/blob/master/src/xenia/cpu/ppc/ppc_opcode_lookup_gen.cc
+    // http://biallas.net/doc/vmx128/vmx128.txt
     public class XenonInstructionSet : InstructionSet
     {
 

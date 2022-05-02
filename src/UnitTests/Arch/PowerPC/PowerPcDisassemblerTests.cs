@@ -455,6 +455,13 @@ namespace Reko.UnitTests.Arch.PowerPC
         }
 
         [Test]
+        public void PPCDis_lwa()
+        {
+            this.Given_PowerPcBe64();
+            AssertCode("lwa\tr5,-8(r11)", "E8ABFFFA");
+        }
+
+        [Test]
         public void PPCDis_lwarx()
         {
             var instr = DisassembleWord(0x7C720028);

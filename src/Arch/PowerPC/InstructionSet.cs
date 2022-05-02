@@ -140,7 +140,7 @@ namespace Reko.Arch.PowerPC
 
                 Mask(30, 1, "  Ext3A",
                     new DSDecoder(Mnemonic.ld, Mnemonic.ldu, r1,E2),    // 3A
-                    Nyi(Mnemonic.lwa)),
+                    new DSDecoder(Mnemonic.lwa, Mnemonic.lwa, Is64Bit, r1,E2)),
 //111010 ..... ..... ..... ..... ....00 DS I 53 PPC ld Load Dword
 //111010 ..... ..... ..... ..... ....01 DS I 53 PPC ldu Load Dword with Update
 //111010 ..... ..... ..... ..... ....10 DS I 52 PPC lwa Load Word Algebraic
@@ -150,7 +150,7 @@ namespace Reko.Arch.PowerPC
                 Ext3DDecoder(),
                 Mask(30, 1, "  Ext3E",
                     new DSDecoder(Mnemonic.std, Mnemonic.stdu, r1,E2),          // 3E
-                    Nyi(Mnemonic.stq)),
+                    new DSDecoder(Mnemonic.stq, Mnemonic.stq, Is64Bit, rp1,E2)),
 // 111110 ..... ..... ..... ..... ....00 DS I 58 PPC std Store Dword
 // 111110 ..... ..... ..... ..... ....01 DS I 58 PPC stdu Store Dword with Update
 // 111110 ..... ..... ..... ..... ....10 DS I 60 v2.03 stq Store Qword
@@ -1003,7 +1003,7 @@ namespace Reko.Arch.PowerPC
 
         public virtual Decoder Ext38Decoder()
         {
-            return Instr(Mnemonic.lq, Is64Bit, r1,E2);
+            return Instr(Mnemonic.lq, Is64Bit, rp1,E2);
         }
 
         public virtual Decoder Ext39Decoder()

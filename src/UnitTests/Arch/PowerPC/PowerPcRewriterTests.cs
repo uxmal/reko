@@ -172,6 +172,49 @@ namespace Reko.UnitTests.Arch.PowerPC
         }
 
         [Test]
+        public void PPCRw_addi_r0()
+        {
+            AssertCode(0x38008045,
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|r0 = 0xFFFF8045<32>");
+        }
+
+        [Test]
+        public void PPCRw_addi_r0_64bit()
+        {
+            Given_PowerPcBe64();
+            AssertCode(0x38008045,
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|r0 = 0xFFFFFFFFFFFF8045<64>");
+        }
+
+
+        [Test]
+        public void PPCRw_addis_r0()
+        {
+            AssertCode(0x3C000045,
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|r0 = 0x450000<32>");
+        }
+
+        [Test]
+        public void PPCRw_addis_r0_64()
+        {
+            Given_PowerPcBe64();
+            AssertCode(0x3C000045,
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|r0 = 0x450000<64>");
+        }
+
+        [Test]
+        public void PPCRw_addis()
+        {
+            AssertCode(0x3C810045,
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|r4 = r1 + 0x450000<32>");
+        }
+
+        [Test]
         public void PPCRw_addpcis()
         {
             Given_HexString("4D43D645");
@@ -304,11 +347,21 @@ namespace Reko.UnitTests.Arch.PowerPC
         }
 
         [Test]
-        public void PPCRw_lwzx()
+        public void PPCRw_srd()
         {
-            AssertCode(0x7c9c002e, // "lwzx\tr4,r28,r0");
+            AssertCode(0x7CC84436,   // srd	r8,r6,r8
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|r4 = Mem0[r28 + r0:word32]");
+                "1|L--|r8 = r6 >>u r8");
+        }
+
+        [Test]
+        public void PPCRw_stq()
+        {
+            this.Given_PowerPcBe64();
+            Given_HexString("F8F9FAFB");
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|Mem0[r25 + -1288<i64>:word128] = r7_r8");
         }
 
         [Test]
@@ -403,58 +456,6 @@ namespace Reko.UnitTests.Arch.PowerPC
                 "1|L--|r0 = r0 >> 4<32>");
         }
 
-        [Test]
-        public void PPCRw_bcds()
-        {
-            Given_HexString("1143AEC1");
-            AssertCode(     // bcds.	v10,v3,v21
-                "0|L--|00100000(4): 1 instructions",
-                "1|L--|v10 = __bcd_shift(v3, v21)");
-        }
-
-        [Test]
-        public void PPCRw_bcdtrunc()
-        {
-            Given_HexString("11544F01");
-            AssertCode(     // bcdtrunc.	v10,v20,v9
-                "0|L--|00100000(4): 1 instructions",
-                "1|L--|v10 = __bcd_truncate(v20, v9)");
-        }
-
-        [Test]
-        public void PPCRw_bcdus()
-        {
-            Given_HexString("135C9681");
-            AssertCode(     // bcdus.	v26,v28,v18
-                "0|L--|00100000(4): 1 instructions",
-                "1|L--|v26 = __bcd_unsigned_shift(v28, v18)");
-        }
-
-        [Test]
-        public void PPCRw_bctr()
-        {
-            AssertCode(0x4e800420, //"bcctr\t14,00");
-                "0|T--|00100000(4): 1 instructions",
-                "1|T--|goto ctr");
-        }
-
-        [Test]
-        public void PPCRw_bnelr()
-        {
-            AssertCode(0x4c820020, // bnelr	
-                "0|R--|00100000(4): 2 instructions",
-                "1|T--|if (Test(EQ,cr0)) branch 00100004",
-                "2|R--|return (0,0)");
-        }
-
-        [Test]
-        public void PPCRw_bsolr()
-        {
-            AssertCode(0x4D830020,   // bsolr	cr0
-                "0|R--|00100000(4): 2 instructions",
-                "1|T--|if (Test(NO,cr0)) branch 00100004",
-                "2|R--|return (0,0)");
-        }
 
         [Test]
         public void PPCRw_fmr()
@@ -581,6 +582,41 @@ namespace Reko.UnitTests.Arch.PowerPC
         }
 
         [Test]
+        public void PPCRw_bcds()
+        {
+            Given_HexString("1143AEC1");
+            AssertCode(     // bcds.	v10,v3,v21
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|v10 = __bcd_shift(v3, v21)");
+        }
+
+        [Test]
+        public void PPCRw_bcdtrunc()
+        {
+            Given_HexString("11544F01");
+            AssertCode(     // bcdtrunc.	v10,v20,v9
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|v10 = __bcd_truncate(v20, v9)");
+        }
+
+        [Test]
+        public void PPCRw_bcdus()
+        {
+            Given_HexString("135C9681");
+            AssertCode(     // bcdus.	v26,v28,v18
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|v26 = __bcd_unsigned_shift(v28, v18)");
+        }
+
+        [Test]
+        public void PPCRw_bctr()
+        {
+            AssertCode(0x4e800420, //"bcctr\t14,00");
+                "0|T--|00100000(4): 1 instructions",
+                "1|T--|goto ctr");
+        }
+
+        [Test]
         public void PPCRw_bctrl()
         {
             AssertCode(0x4e800421, // "bctrl\t14,00");
@@ -589,11 +625,64 @@ namespace Reko.UnitTests.Arch.PowerPC
         }
 
         [Test]
-        public void PPCRw_rlwimi()
+        public void PPCRw_bdzt()
         {
-            AssertCode(0x5120f042, // "rlwimi\tr0,r9,1E,01,01");
-                "0|L--|00100000(4): 1 instructions",
-                "1|L--|r0 = __rlwimi(r9, 0x1E<8>, 1<8>, 1<8>)");
+            Given_750();
+            AssertCode(0x41700000,   // bdzt	cr4+lt,$803CDB28
+                "0|T--|00100000(4): 2 instructions",
+                "1|L--|ctr = ctr - 1<32>",
+                "2|T--|if (ctr == 0<32> && Test(LT,cr4)) branch 00100000");
+        }
+
+        [Test]
+        public void PPCRw_bdzfl()
+        {
+            Given_750();
+            AssertCode(0x40490FDB,   // bdzfl	cr2+gt,$00000FD8
+                "0|T--|00100000(4): 3 instructions",
+                "1|L--|ctr = ctr - 1<32>",
+                "2|T--|if (ctr != 0<32> || Test(GT,cr2)) branch 00100004",
+                "3|T--|call 00000FD8 (0)");
+        }
+
+        [Test]
+        public void PPCRw_bdnzfl()
+        {
+            Given_HexString("401D26CF");
+            AssertCode(     // bdnzfl	cr7+gt,$000026CC
+                "0|T--|00100000(4): 3 instructions",
+                "1|L--|ctr = ctr - 1<32>");
+        }
+
+        [Test]
+        public void PPCRw_bdnztl()
+        {
+            Given_750();
+            AssertCode(0x412F6C6F,   // bdnztl	cr3+so,$00006C6C
+                "0|T--|00100000(4): 3 instructions",
+                "1|L--|ctr = ctr - 1<32>",
+                "2|T--|if (ctr == 0<32> || Test(NO,cr3)) branch 00100004",
+                "3|T--|call 00006C6C (0)");
+        }
+        [Test]
+        public void PPCRw_bdztl()
+        {
+            Given_750();
+            AssertCode(0x41747461,   // bdztl	cr5+lt,$80273FB0
+                "0|T--|00100000(4): 3 instructions",
+                "1|L--|ctr = ctr - 1<32>",
+                "2|T--|if (ctr != 0<32> || Test(GE,cr5)) branch 00100004",
+                "3|T--|call 00107460 (0)");
+        }
+
+
+        [Test]
+        public void PPCRw_bnelr()
+        {
+            AssertCode(0x4c820020, // bnelr	
+                "0|R--|00100000(4): 2 instructions",
+                "1|T--|if (Test(EQ,cr0)) branch 00100004",
+                "2|R--|return (0,0)");
         }
 
         [Test]
@@ -605,46 +694,21 @@ namespace Reko.UnitTests.Arch.PowerPC
         }
 
         [Test]
-        public void PPCRw_addi_r0()
+        public void PPCRw_bltlr()
         {
-            AssertCode(0x38008045,
-                "0|L--|00100000(4): 1 instructions",
-                "1|L--|r0 = 0xFFFF8045<32>");
+            AssertCode(0x4D980020,   // bltlr	cr6
+                "0|R--|00100000(4): 2 instructions",
+                "1|T--|if (Test(GE,cr6)) branch 00100004",
+                "2|R--|return (0,0)");
         }
 
         [Test]
-        public void PPCRw_addi_r0_64bit()
+        public void PPCRw_bsolr()
         {
-            Given_PowerPcBe64();
-            AssertCode(0x38008045,
-                "0|L--|00100000(4): 1 instructions",
-                "1|L--|r0 = 0xFFFFFFFFFFFF8045<64>");
-        }
-
-
-        [Test]
-        public void PPCRw_addis_r0()
-        {
-            AssertCode(0x3C000045,
-                "0|L--|00100000(4): 1 instructions",
-                "1|L--|r0 = 0x450000<32>");
-        }
-
-        [Test]
-        public void PPCRw_addis_r0_64()
-        {
-            Given_PowerPcBe64();
-            AssertCode(0x3C000045,
-                "0|L--|00100000(4): 1 instructions",
-                "1|L--|r0 = 0x450000<64>");
-        }
-
-        [Test]
-        public void PPCRw_addis()
-        {
-            AssertCode(0x3C810045,
-                "0|L--|00100000(4): 1 instructions",
-                "1|L--|r4 = r1 + 0x450000<32>");
+            AssertCode(0x4D830020,   // bsolr	cr0
+                "0|R--|00100000(4): 2 instructions",
+                "1|T--|if (Test(NO,cr0)) branch 00100004",
+                "2|R--|return (0,0)");
         }
 
         [Test]
@@ -767,6 +831,14 @@ namespace Reko.UnitTests.Arch.PowerPC
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
                 "1|L--|r4 = r0 | 0x12340000<64>");
+        }
+
+        [Test]
+        public void PPCRw_rlwimi()
+        {
+            AssertCode(0x5120f042, // "rlwimi\tr0,r9,1E,01,01");
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|r0 = __rlwimi(r9, 0x1E<8>, 1<8>, 1<8>)");
         }
 
         [Test]
@@ -946,12 +1018,11 @@ namespace Reko.UnitTests.Arch.PowerPC
         }
 
         [Test]
-        public void PPCrw_lbzux()
+        public void PPCRw_eieio()
         {
-            AssertCode(0x7c1ee8ee, // "lbzux\tr0,r30,r29");
-                    "0|L--|00100000(4): 2 instructions",
-                    "1|L--|r0 = CONVERT(Mem0[r30 + r29:byte], byte, word32)",
-                    "2|L--|r30 = r30 + r29");
+            AssertCode(0x7C0006AC,   // eieio
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|__eieio()");
         }
 
         [Test]
@@ -1598,57 +1669,6 @@ namespace Reko.UnitTests.Arch.PowerPC
         }
 
         [Test]
-        public void PPCRw_bdzt()
-        {
-            Given_750();
-            AssertCode(0x41700000,   // bdzt	cr4+lt,$803CDB28
-                "0|T--|00100000(4): 2 instructions",
-                "1|L--|ctr = ctr - 1<32>",
-                "2|T--|if (ctr == 0<32> && Test(LT,cr4)) branch 00100000");
-        }
-
-        [Test]
-        public void PPCRw_bdzfl()
-        {
-            Given_750();
-            AssertCode(0x40490FDB,   // bdzfl	cr2+gt,$00000FD8
-                "0|T--|00100000(4): 3 instructions",
-                "1|L--|ctr = ctr - 1<32>",
-                "2|T--|if (ctr != 0<32> || Test(GT,cr2)) branch 00100004",
-                "3|T--|call 00000FD8 (0)");
-        }
-
-        [Test]
-        public void PPCRw_bdnzfl()
-        {
-            Given_HexString("401D26CF");
-            AssertCode(     // bdnzfl	cr7+gt,$000026CC
-                "0|T--|00100000(4): 3 instructions",
-                "1|L--|ctr = ctr - 1<32>");
-        }
-
-        [Test]
-        public void PPCRw_bdnztl()
-        {
-            Given_750();
-            AssertCode(0x412F6C6F,   // bdnztl	cr3+so,$00006C6C
-                "0|T--|00100000(4): 3 instructions",
-                "1|L--|ctr = ctr - 1<32>",
-                "2|T--|if (ctr == 0<32> || Test(NO,cr3)) branch 00100004",
-                "3|T--|call 00006C6C (0)");
-        }
-        [Test]
-        public void PPCRw_bdztl()
-        {
-            Given_750();
-            AssertCode(0x41747461,   // bdztl	cr5+lt,$80273FB0
-                "0|T--|00100000(4): 3 instructions",
-                "1|L--|ctr = ctr - 1<32>",
-                "2|T--|if (ctr != 0<32> || Test(GE,cr5)) branch 00100004",
-                "3|T--|call 00107460 (0)");
-        }
-
-        [Test]
         public void PPCRw_fmuls()
         {
             AssertCode(0xec000072, // fmuls   f0,f0,f1
@@ -2176,14 +2196,6 @@ namespace Reko.UnitTests.Arch.PowerPC
         }
 
         [Test]
-        public void PPCRw_srd()
-        {
-            AssertCode(0x7CC84436,   // srd	r8,r6,r8
-                "0|L--|00100000(4): 1 instructions",
-                "1|L--|r8 = r6 >>u r8");
-        }
-
-        [Test]
         public void PPCRw_twi()
         {
             AssertCode(0x0CCA0000,   // twi	06,r10,+0000
@@ -2193,12 +2205,51 @@ namespace Reko.UnitTests.Arch.PowerPC
         }
 
         [Test]
-        public void PPCRw_bltlr()
+        public void PPCrw_lbzux()
         {
-            AssertCode(0x4D980020,   // bltlr	cr6
-                "0|R--|00100000(4): 2 instructions",
-                "1|T--|if (Test(GE,cr6)) branch 00100004",
-                "2|R--|return (0,0)");
+            AssertCode(0x7c1ee8ee, // "lbzux\tr0,r30,r29");
+                    "0|L--|00100000(4): 2 instructions",
+                    "1|L--|r0 = CONVERT(Mem0[r30 + r29:byte], byte, word32)",
+                    "2|L--|r30 = r30 + r29");
+        }
+
+        [Test]
+        public void PPCRw_ldarx()
+        {
+            Given_PowerPcBe64();
+            AssertCode(0x7D0018A8,     // ldarx\tr8,r0,r3
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|r8 = __ldarx(&Mem0[r3:word64])");
+        }
+
+        [Test]
+        public void PPCRw_ldux()
+        {
+            Given_PowerPcBe64();
+            Given_HexString("7EA0286B");
+            AssertCode(     // ldux	r21,r0,r5
+                "0|L--|00100000(4): 2 instructions",
+                "1|L--|r21 = Mem0[r0 + r5:word64]",
+                "2|L--|r0 = r0 + r5");
+        }
+
+        [Test]
+        public void PPCRw_ldx()
+        {
+            Given_PowerPcBe64();
+            AssertCode(0x7C6BF82A,     // ldx\tr3,r11,r31
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|r3 = Mem0[r11 + r31:word64]");
+        }
+
+        [Test]
+        public void PPCRw_lwa()
+        {
+            this.Given_PowerPcBe64();
+            Given_HexString("E8ABFFFA");    // lwa\tr5,-8(r11)
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|r5 = CONVERT(Mem0[r11 + -8<i64>:word32], word32, int64)");
         }
 
         [Test]
@@ -2210,20 +2261,11 @@ namespace Reko.UnitTests.Arch.PowerPC
         }
 
         [Test]
-        public void PPCRw_eieio()
+        public void PPCRw_lwzx()
         {
-            AssertCode(0x7C0006AC,   // eieio
+            AssertCode(0x7c9c002e, // "lwzx\tr4,r28,r0");
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|__eieio()");
-        }
-
-        [Test]
-        public void PPCRw_stfsu()
-        {
-            AssertCode(0xD41C0010,   // stfsu	f0,16(r28)
-                "0|L--|00100000(4): 2 instructions",
-                "1|L--|Mem0[r28 + 16<i32>:real32] = CONVERT(f0, real64, real32)",
-                "2|L--|r28 = r28 + 16<i32>");
+                "1|L--|r4 = Mem0[r28 + r0:word32]");
         }
 
         [Test]
@@ -2371,6 +2413,14 @@ namespace Reko.UnitTests.Arch.PowerPC
                 );
         }
 
+        [Test]
+        public void PPCRw_stfsu()
+        {
+            AssertCode(0xD41C0010,   // stfsu	f0,16(r28)
+                "0|L--|00100000(4): 2 instructions",
+                "1|L--|Mem0[r28 + 16<i32>:real32] = CONVERT(f0, real64, real32)",
+                "2|L--|r28 = r28 + 16<i32>");
+        }
 
         [Test]
         public void PPCRw_stvlx128()
@@ -2379,35 +2429,6 @@ namespace Reko.UnitTests.Arch.PowerPC
             AssertCode(0x1001350B,     // stvlx128\tv0,r1,r6
                 "0|L--|00100000(4): 1 instructions",
                 "1|L--|Mem0[r1 + r6:word128] = v64");
-        }
-
-        [Test]
-        public void PPCRw_ldarx()
-        {
-            Given_PowerPcBe64();
-            AssertCode(0x7D0018A8,     // ldarx\tr8,r0,r3
-                "0|L--|00100000(4): 1 instructions",
-                "1|L--|r8 = __ldarx(&Mem0[r3:word64])");
-        }
-
-        [Test]
-        public void PPCRw_ldux()
-        {
-            Given_PowerPcBe64();
-            Given_HexString("7EA0286B");
-            AssertCode(     // ldux	r21,r0,r5
-                "0|L--|00100000(4): 2 instructions",
-                "1|L--|r21 = Mem0[r0 + r5:word64]",
-                "2|L--|r0 = r0 + r5");
-        }
-
-        [Test]
-        public void PPCRw_ldx()
-        {
-            Given_PowerPcBe64();
-            AssertCode(0x7C6BF82A,     // ldx\tr3,r11,r31
-                "0|L--|00100000(4): 1 instructions",
-                "1|L--|r3 = Mem0[r11 + r31:word64]");
         }
 
         [Test]

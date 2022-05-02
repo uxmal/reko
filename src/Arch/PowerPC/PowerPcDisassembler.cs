@@ -264,6 +264,27 @@ namespace Reko.Arch.PowerPC
         internal static readonly Mutator<PowerPcDisassembler> r3 = r(11);
         internal static readonly Mutator<PowerPcDisassembler> r4 = r(6);
 
+        /// <summary>
+        /// Register pair; if the register number is odd the instruction is invalid.
+        /// </summary>
+        internal static Mutator<PowerPcDisassembler> rp(int offset)
+        {
+            return (u, d) =>
+            {
+                var ireg = u >> offset;
+                if ((ireg & 1) == 1)
+                    return false;
+                var op = d.RegFromBits(ireg);
+                d.ops.Add(op);
+                return true;
+            };
+        }
+        internal static readonly Mutator<PowerPcDisassembler> rp1 = r(21);
+        internal static readonly Mutator<PowerPcDisassembler> rp2 = r(16);
+        internal static readonly Mutator<PowerPcDisassembler> rp3 = r(11);
+        internal static readonly Mutator<PowerPcDisassembler> rp4 = r(6);
+
+
         internal static Mutator<PowerPcDisassembler> v(int offset)
         {
             return (u, d) =>

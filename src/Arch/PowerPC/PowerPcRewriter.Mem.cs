@@ -207,12 +207,6 @@ namespace Reko.Arch.PowerPC
         private void RewriteLq()
         {
             var rDst = (RegisterStorage)instr.Operands[0];
-            if ((rDst.Number & 1) == 1)
-            {
-                iclass = InstrClass.Invalid;
-                m.Invalid();
-                return;
-            }
             var rDstNext = arch.GetRegister(rDst.Number + 1)!;
             var regPair = binder.EnsureSequence(PrimitiveType.Word128, rDst, rDstNext);
             var ea = EffectiveAddress_r0(1);
@@ -303,6 +297,15 @@ namespace Reko.Arch.PowerPC
             m.Assign(
                 dst,
                 host.Intrinsic(intrinsic, true, dt, m.AddrOf(arch.PointerType, m.Mem(dt, rb))));
+        }
+
+        private void RewriteLwa()
+        {
+            var op1 = RewriteOperand(0);
+            var ea = EffectiveAddress_r0(1);
+            Expression src = m.Mem(PrimitiveType.Word32, ea);
+            src = m.Convert(src, src.DataType, PrimitiveType.Int64);
+            m.Assign(op1, src);
         }
 
         private void RewriteLwbrx()
@@ -440,6 +443,15 @@ namespace Reko.Arch.PowerPC
                 m.Assign(tmp, m.IAddS(tmp, 4));
                 ++r;
             }
+        }
+
+        private void RewriteStq()
+        {
+            var rSrc = (RegisterStorage) instr.Operands[0];
+            var rSrcNext = arch.GetRegister(rSrc.Number + 1)!;
+            var regPair = binder.EnsureSequence(PrimitiveType.Word128, rSrc, rSrcNext);
+            var ea = EffectiveAddress_r0(1);
+            m.Assign(m.Mem(regPair.DataType, ea), regPair);
         }
 
         private void RewriteStswi()
