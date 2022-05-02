@@ -631,7 +631,7 @@ namespace Reko.Scanning
 
         private StridedInterval MakeInterval_ISub(Expression left, Constant? right)
         {
-            if (right == null)
+            if (right == null || right.IsZero)
                 return StridedInterval.Empty;
             var cc = this.ccNext;
             if (this.invertCondition)

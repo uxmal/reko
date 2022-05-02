@@ -56,6 +56,7 @@ namespace Reko.Core
             this.BaseAddress = addrBase ?? throw new ArgumentNullException("addrBase");
             this.Segments = new SortedList<Address, ImageSegment>();
             this.SegmentByLinAddress = new SortedList<ulong, ImageSegment>();
+            this.Selectors = new Dictionary<ushort, ImageSegment>();
             foreach (var seg in segments)
             {
                 this.AddSegment(seg);
@@ -66,6 +67,8 @@ namespace Reko.Core
 
         public SortedList<Address, ImageSegment> Segments { get; }
         private SortedList<ulong, ImageSegment> SegmentByLinAddress { get; }
+
+        public Dictionary<ushort, ImageSegment> Selectors { get; }
 
         /// <summary>
         /// Adds a segment to the segment map. The segment is assumed to be disjoint
@@ -180,7 +183,8 @@ namespace Reko.Core
         }
 
         /// <summary>
-        /// Given a linear address, returns an address whose selector, if any, contains the linear address.
+        /// Given a linear address, returns an address whose selector, if any,
+        /// contains the linear address.
         /// </summary>
         /// <param name="linearAddress"></param>
         /// <returns></returns>
@@ -199,7 +203,6 @@ namespace Reko.Core
                 string.Format("Linear address {0:X8} is not in known segment.",
                 linearAddress));
         }
-
 
         /// <summary>
         /// Returns the segment that contains the specified address.

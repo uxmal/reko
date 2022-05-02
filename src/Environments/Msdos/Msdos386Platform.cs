@@ -186,5 +186,42 @@ namespace Reko.Environments.Msdos
             return svc;
         }
 
+        /// Translated from Japanese text at:
+        /// https://raw.githubusercontent.com/nabe-abk/free386/main/doc-ja/api.txt
+        /*
+GDT:
+　　Selector value Base address Size attribute
+	000h 00000000h 0 B-Null Selector
+	008h LOW-In memory      64KB    R / X Free386 CS
+	010h (same as 08h)      64KB    R / W Free386 DS
+	018h (same as 08h)      64KB    R / X: 286 Free386 CS (unused)
+	020h (same as 08h)      64KB    R / W: 286 Free386 DS (unused)
+	028h Free386 Internal   512 B   LDT LDT (Selector to be LLDT)
+	030h Free386 For        512 B   R / W LDT access inside the main unit
+	038h Free386 For        512 B   R / W GDT access in the main unit
+	040h 00000000h          --- MB  R / W Mounted memory (RAM) as a whole (*)
+	050h Free386 For        512 B   R / X IDT access inside the main unit
+	060h 00000000h         1088 KB  R / X DOS entire memory
+	068h --------           --- KB  R / X VCPI Server CS
+	070h --------           --- KB  R / W VCPI server data area
+	078h -------- --- KB? /? By VCPI server
+	080h Free386 Inside 128 B TSS In use TSS
+	088h (same as 80h) 128 BR / W for TSS access
+
+	(*) Although it is arranged, the page is not always pasted to the end.
+	    Correctness depends on VCPI because it gets the size from the VCPI server.
+
+LDT:
+　　Selector value Base address Size attribute
+	004h (same as 08h) 256 B    R / W PSP
+	00ch (1MB or more) --- MB   R / X User Program CS
+	014h (same as 0ch) 〃  MB   R / W user program DS
+	024h (same as 04h) 256 B    R / W PSP
+	02ch LOW-In memory --- B    R / W ENV / DOS environment memory
+	034h 00000000h     1088KB   R / W DOS entire memory
+
+	(*) Do not apply 0ch or 14h to the selector of your program.
+	    It will be an obstacle when trying to multitask.
+*/
     }
 }

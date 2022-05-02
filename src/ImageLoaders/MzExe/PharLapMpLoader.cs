@@ -62,7 +62,8 @@ namespace Reko.ImageLoaders.MzExe
                 Math.Min(RawImage.Length, image.Bytes.Length));
             var loadseg = new ImageSegment("DOSX_PROG", image, AccessMode.ReadWriteExecute);
             var segmentMap = new SegmentMap(addrLoad);
-            var seg = segmentMap.AddSegment(loadseg);
+            segmentMap.AddSegment(loadseg);
+            AddEnvironmentSegments(segmentMap);
             var program = new Program(segmentMap, arch, platform);
             var ep = ImageSymbol.Procedure(
                 arch,
@@ -70,6 +71,15 @@ namespace Reko.ImageLoaders.MzExe
                 "_start");
             program.EntryPoints.Add(ep.Address, ep);
             return program;
+        }
+
+        private void AddEnvironmentSegments(SegmentMap map)
+        {
+            var psp = MakeProgramSegmentPrefix(Address.ProtectedSegPtr(0x0004, 0), 0);
+            map.AddSegment(psp);
+            map.Selectors.Add(0x0004, psp);
+            map.Selectors.Add(0x0008, psp);
+            map.Selectors.Add(0x0024, psp);
         }
 
         private uint FileSize(ref ExpHeader hdr)
@@ -80,6 +90,26 @@ namespace Reko.ImageLoaders.MzExe
                 size += hdr.cbLastPage - (uint) ExeImageLoader.CbPageSize;
             }
             return size - hdr.cpHeader * 0x10u;
+        }
+
+        /// <summary>
+        /// Create a segment for the MS-DOS program segment prefix (PSP).
+        /// </summary>
+        /// <param name="addrPsp">The address of the PSP</param>
+        /// <param name="segMemTop">The segment address (paragraph) of the first byte
+        /// beyond the image.</param>
+        /// <returns>
+        /// An <see cref="ImageSegment"/> that can be added to a <see cref="SegmentMap"/>.
+        /// </returns>
+        private ImageSegment MakeProgramSegmentPrefix(Address addrPsp, ushort segMemTop)
+        {
+            var mem = new ByteMemoryArea(addrPsp, new byte[0x100]);
+            var w = new LeImageWriter(mem, 0);
+            w.WriteByte(0xCD);
+            w.WriteByte(0x20);
+            w.WriteLeUInt16(segMemTop); // Some unpackers rely on this value.
+
+            return new ImageSegment("PSP", mem, AccessMode.ReadWriteExecute);
         }
 
         // http://fd.lod.bz/rbil/interrup/dos_kernel/214b.html#table-01619

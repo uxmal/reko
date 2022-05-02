@@ -98,7 +98,7 @@ namespace Reko.Typing
         {
             if (addr.Selector.HasValue)
             {
-                if (!mpSelectorToSegId.TryGetValue(addr.Selector.Value, out Identifier? segId))
+                if (!TryGetIdentifierForSelector(addr.Selector.Value, out Identifier? segId))
                 {
                     eventListener.Warn(
                         "Selector {0:X4} has no known segment.",
@@ -156,7 +156,18 @@ namespace Reko.Typing
             }
         }
 
-		private StructureType? GlobalVars
+        private bool TryGetIdentifierForSelector(ushort selector, [MaybeNullWhen(false)] out Identifier segId)
+        {
+            if (this.program.SegmentMap is not null &&
+                this.program.SegmentMap.Selectors.TryGetValue(selector, out var segment))
+            {
+                segId = segment.Identifier;
+                return true;
+            }
+            return mpSelectorToSegId.TryGetValue(selector, out segId);
+        }
+
+        private StructureType? GlobalVars
 		{
             get
             {
@@ -176,9 +187,9 @@ namespace Reko.Typing
 		}
 
         //$REVIEW: special cased code; we need to handle segments appropriately and remove this function.
-        private bool IsSegmentPointer(Pointer ptr)
+        private static bool IsSegmentPointer(Pointer ptr)
         {
-            if (!(ptr.Pointee is EquivalenceClass eq))
+            if (ptr.Pointee is not EquivalenceClass eq)
                 return false;
             if (eq.DataType is StructureType str)
                 return str.IsSegment;

@@ -38,7 +38,8 @@ namespace Reko.Core
     public enum ProvenanceType
     {
         None,
-        ImageEntrypoint,    // reached here because image file "said so".
+        Image,              // reached here because image file "said so".
+        Environment,        // this object is dictated by the environment/platform.
         UserInput,          // reached here because users input "said so".
         Scanning,           // reached here as part of the scanning process.
         Heuristic,          // reached here as a guess.

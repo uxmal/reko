@@ -139,7 +139,10 @@ namespace Reko.Core
         /// </summary>
         public bool IsHidden { get; set; }
 
-        public bool IsExecutable { get { return (this.Access & AccessMode.Execute) != 0; } }
+        /// <summary>
+        /// If true, the image segment contains executable code.
+        /// </summary>
+        public bool IsExecutable => (this.Access & AccessMode.Execute) != 0;
 
         /// <summary>
         /// If true, the segment's contents may change over the execution of
@@ -157,6 +160,8 @@ namespace Reko.Core
         /// leading '.' are illegal.
         /// </remarks>
         public Identifier Identifier { get; set; }
+
+        public ProvenanceType Provenance { get; set; }
 
         private StructureType CreateFields(int size)
         {
