@@ -69,7 +69,7 @@ namespace Reko.Scanning
                         continue;
                     trace_Verbose("    {0}: Parsing block at {1}", proc.Address, work.Address);
                     var (block,state) = work.ParseBlock();
-                    if (block.IsValid)
+                    if (block is not null && block.IsValid)
                     {
                         HandleBlockEnd(block, work.Trace, state);
                     }
@@ -92,7 +92,7 @@ namespace Reko.Scanning
             return worker;
         }
 
-        public override bool MarkVisited(Address addr) => true;
+        public override bool TryMarkVisited(Address addr) => true;
 
         protected override void ProcessCall(RtlBlock block, Edge edge, ProcessorState state)
         {

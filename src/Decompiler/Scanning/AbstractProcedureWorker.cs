@@ -164,7 +164,10 @@ namespace Reko.Scanning
             case RtlAssignment:
             case RtlSideEffect:
             case RtlNop:
-                result.Add(new Edge(block.Address, block.FallThrough, EdgeType.Fallthrough));
+                if (!instr.Class.HasFlag(InstrClass.Terminates))
+                {
+                    result.Add(new Edge(block.Address, block.FallThrough, EdgeType.Fallthrough));
+                }
                 break;
             default:
                 throw new NotImplementedException();
@@ -240,9 +243,9 @@ namespace Reko.Scanning
             return new RtlAssignment(tmp, e);
         }
 
-        public IEnumerable<RtlInstructionCluster> MakeTrace(Address addr, ProcessorState state)
+        public IEnumerator<RtlInstructionCluster> MakeTrace(Address addr, ProcessorState state)
         {
-            return scanner.MakeTrace(addr, state, binder);
+            return scanner.MakeTrace(addr, state, binder).GetEnumerator();
         }
 
         /// <summary>
@@ -264,12 +267,11 @@ namespace Reko.Scanning
 
         /// <summary>
         /// Attempt to mark the address <paramref name="addr"/> as visited.
-        /// </summary>
-        /// <param name="addr">Address to mark as visited.</param>
+        /// </summary>        /// <param name="addr">Address to mark as visited.</param>
         /// <returns>True if the address hadn't been visited before, false
         /// if the address had been visited before.
         /// </returns>
-        public abstract bool MarkVisited(Address addr);
+        public abstract bool TryMarkVisited(Address addr);
 
         [Conditional("DEBUG")]
         protected void trace_Inform(string format, params object[] args)

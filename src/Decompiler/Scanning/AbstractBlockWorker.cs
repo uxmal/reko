@@ -19,8 +19,10 @@
 #endregion
 
 using Reko.Core;
+using Reko.Core.Diagnostics;
 using Reko.Core.Expressions;
 using Reko.Core.Rtl;
+using Reko.Evaluation;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -33,11 +35,15 @@ namespace Reko.Scanning
     /// </summary>
     public abstract class AbstractBlockWorker
     {
-        private static readonly TraceSwitch trace = new TraceSwitch(nameof(BlockWorker), "");
+        private static readonly TraceSwitch log = new TraceSwitch(nameof(BlockWorker), "")
+        {
+            Level = TraceLevel.Verbose
+        };
 
         private readonly AbstractScanner scanner;
         private readonly AbstractProcedureWorker worker;
         private ProcessorState state;
+        private readonly ExpressionSimplifier eval;
 
         protected AbstractBlockWorker(
             AbstractScanner scanner,
@@ -51,12 +57,13 @@ namespace Reko.Scanning
             this.Address = address;
             this.Trace = trace;
             this.state = state;
+            this.eval = scanner.CreateEvaluator(state);
         }
 
         /// <summary>
         /// Address of the start of the current block being parsed.
         /// </summary>
-        public Address Address { get; }
+        public Address Address { get; private set; }
 
         /// <summary>
         /// Trace of RTL instructions being read from the binary.
@@ -69,34 +76,38 @@ namespace Reko.Scanning
         /// </summary>
         /// <returns>
         /// A pair of a completed <see cref="Block"/> and an updated <see cref="ProcessorState"/>.
-        /// If parsing runs off the end of memory, the returned block will be marked
-        /// as invalid.
+        /// If parsing runs off the end of memory, the returned block will be
+        /// marked as invalid.
         /// </returns>
-        public (RtlBlock, ProcessorState) ParseBlock()
+        public (RtlBlock?, ProcessorState) ParseBlock()
         {
             var instrs = new List<RtlInstructionCluster>();
             var trace = this.Trace;
             var state = this.state;
             var addrLast = this.Address;
+            log.Inform("ParseBlock({0})", this.Address);
             while (trace.MoveNext())
             {
                 var cluster = trace.Current;
                 addrLast = cluster.Address;
-                if (!worker.MarkVisited(addrLast))
+                if (!worker.TryMarkVisited(addrLast))
                 {
                     var block = MakeFallthroughBlock(addrLast, instrs);
                     return (block, state);
                 }
                 foreach (var rtl in cluster.Instructions)
                 {
-                    trace_Verbose("      {0}: {1}", cluster.Address, rtl);
+                    log.Verbose("      {0}: {1}", cluster.Address, rtl);
                     switch (rtl)
                     {
                     case RtlAssignment ass:
                         EmulateState(ass);
                         continue;
                     case RtlSideEffect side:
-                        //$TODO: emulate side effect.
+                        if (HandleSideEffect(side, state))
+                        { 
+                            return MakeBlock(instrs, state, side);
+                        }
                         continue;
                     case RtlNop _:
                         continue;
@@ -119,12 +130,52 @@ namespace Reko.Scanning
                         throw new NotImplementedException($"{rtl.GetType()} - not implemented");
                     }
                     Debug.Assert(rtl.Class.HasFlag(InstrClass.Transfer));
+                    if (IsPaddingBoundary(cluster, instrs))
+                    {
+                        var block = MakeFallthroughBlock(cluster.Address, instrs);
+                        scanner.RegisterEdge(new Edge(this.Address, cluster.Address, EdgeType.Fallthrough));
+                        if (!scanner.TryRegisterBlockStart(cluster.Address, this.Address))
+                            return (block, state);
+                        this.Address = cluster.Address;
+                        instrs = new List<RtlInstructionCluster>();
+                    }
                     return MakeBlock(instrs, state, rtl);
+                }
+                if (IsPaddingBoundary(cluster, instrs))
+                {
+                    var block = MakeFallthroughBlock(cluster.Address, instrs);
+                    scanner.RegisterEdge(new Edge(this.Address, cluster.Address, EdgeType.Fallthrough));
+                    if (!scanner.TryRegisterBlockStart(cluster.Address, this.Address))
+                        return (block, state);
+                    this.Address = cluster.Address;
+                    instrs = new List<RtlInstructionCluster>();
                 }
                 instrs.Add(cluster);
             }
-            // Fell off the end, mark as bad.
-            return (MakeInvalidBlock(instrs, addrLast - this.Address), state);
+            // Fell off the end of the trace, mark as bad.
+            var length = addrLast - this.Address;
+            return (MakeInvalidBlock(instrs, length), state);
+        }
+
+        /// <summary>
+        /// Returns true if there is a boundary between padding instructions
+        /// and non-padding instructions between the last RTL cluster in 
+        /// <paramref name="instrs"/> and <paramref name="cluster"/> .
+        /// </summary>
+        private bool IsPaddingBoundary(RtlInstructionCluster cluster, List<RtlInstructionCluster> instrs)
+        {
+            if (instrs.Count == 0)
+                return false;
+            return ((cluster.Class ^ instrs[^1].Class) & InstrClass.Padding) != 0;
+        }
+
+        // Return true if the <paramref name="side" /> instruction
+        // diverges.
+        private bool HandleSideEffect(RtlSideEffect side, ProcessorState state)
+        {
+            //$TODO: emulate side effect.
+
+            return side.Class.HasFlag(InstrClass.Terminates);
         }
 
         private RtlBlock MakeFallthroughBlock(Address addrFallthrough, List<RtlInstructionCluster> instrs)
@@ -137,7 +188,36 @@ namespace Reko.Scanning
                 instrs);
         }
 
-        protected abstract void EmulateState(RtlAssignment ass);
+        private void EmulateState(RtlAssignment ass)
+        {
+            try
+            {
+                var value = GetValue(ass.Src);
+                switch (ass.Dst)
+                {
+                case Identifier id:
+                    state.SetValue(id, value);
+                    return;
+                case SegmentedAccess smem:
+                    state.SetValueEa(smem.BasePointer, GetValue(smem.EffectiveAddress), value);
+                    return;
+                case MemoryAccess mem:
+                    state.SetValueEa(GetValue(mem.EffectiveAddress), value);
+                    return;
+                }
+            }
+            catch
+            {
+                // Drop all on the floor.
+            }
+        }
+
+        private Expression GetValue(Expression e)
+        {
+            var (value, _) = e.Accept(eval);
+            return value;
+        }
+
 
         /// <summary>
         /// The <see cref="Trace"/> is positioned on a CTI with a delay slot.
@@ -146,11 +226,12 @@ namespace Reko.Scanning
         /// </summary>
         /// <param name="rtlTransfer">The CTI instruction.</param>
         /// <param name="instrs"></param>
-        /// <returns>False if another CTI was found in the first CTI delay 
-        /// slot. Reko currently doesn't handle this rare idiom, although 
+        /// <returns>False if there was no next instruction, or if another CTI
+        /// was found in the first CTI delay slot. Reko currently doesn't
+        /// handle this rare idiom, although 
         /// SPARC does allow it.
         /// </returns>
-        protected bool StealDelaySlot(
+        protected bool TryStealDelaySlot(
             RtlInstructionCluster rtlTransfer,
             List<RtlInstructionCluster> instrs)
         {
@@ -169,7 +250,7 @@ namespace Reko.Scanning
             // can ignore it.
             if (!rtlDelayed.Class.HasFlag(InstrClass.Padding))
             {
-                // Delay slot instruction does real work, so we will insert it
+                // Delay slot instruction does actual work, so we will insert it
                 // before the CTI instruction.
                 switch (rtlTransfer.Instructions[^1])
                 {
@@ -209,17 +290,18 @@ namespace Reko.Scanning
         /// <summary>
         /// After reaching a CTI, make a <see cref="Block"/>.
         /// </summary>
-        /// <param name="instrs">The instuctions of the resulting <see cref="Block"/>.</param>
+        /// <param name="instrs">The instructions of the resulting <see cref="Block"/>.</param>
         /// <param name="state">The current <see cref="ProcessorState"/>.</param>
-        /// <param name="rtlTransfer">The transfer instruction that triggers the creation
-        /// of the block.</param>
+        /// <param name="rtlLast">The instruction that triggered
+        /// the creation of the block.</param>
+        /// <returns>
         /// A pair of a completed <see cref="Block"/> and an updated <see cref="ProcessorState"/>.
         /// If parsing runs off the end of memory, the block reference will be null.
         /// </returns>
-        private (RtlBlock, ProcessorState) MakeBlock(
+        private (RtlBlock?, ProcessorState) MakeBlock(
             List<RtlInstructionCluster> instrs,
             ProcessorState state,
-            RtlInstruction rtlTransfer)
+            RtlInstruction rtlLast)
         {
             // We are positioned at the CTI.
             var cluster = this.Trace.Current;
@@ -227,7 +309,7 @@ namespace Reko.Scanning
             var size = cluster.Address - this.Address + cluster.Length;
 
             // Make sure we're not heading to hyperspace.
-            if (rtlTransfer is RtlTransfer xfer &&
+            if (rtlLast is RtlTransfer xfer &&
                 xfer.Target is Address addrTarget &&
                 !scanner.IsExecutableAddress(addrTarget))
             {
@@ -235,9 +317,9 @@ namespace Reko.Scanning
                 return (MakeInvalidBlock(instrs, size), state);
             }
 
-            if (rtlTransfer.Class.HasFlag(InstrClass.Delay))
+            if (rtlLast.Class.HasFlag(InstrClass.Delay))
             {
-                if (!StealDelaySlot(cluster, instrs))
+                if (!TryStealDelaySlot(cluster, instrs))
                     return (MakeInvalidBlock(instrs, size), state);
             }
             else
@@ -256,10 +338,19 @@ namespace Reko.Scanning
             return (block, state);
         }
 
-        private RtlBlock MakeInvalidBlock(
+        /// <summary>
+        /// Creates an invalid block, but only if the <paramref name="size"/> 
+        /// is larger than zero.
+        /// </summary>
+        /// <returns>Null if the size was zero, otherwise a block ending 
+        /// with the invalid instruction.
+        /// </returns>
+        private RtlBlock? MakeInvalidBlock(
             List<RtlInstructionCluster> instrs,
             long size)
         {
+            if (size <= 0)
+                return null;
             var block = scanner.RegisterBlock(
                 this.state.Architecture,
                 this.Address,
@@ -269,20 +360,5 @@ namespace Reko.Scanning
             block.IsValid = false;
             return block;
         }
-
-        [Conditional("DEBUG")]
-        protected void trace_Inform(string format, params object[] args)
-        {
-            if (trace.TraceInfo)
-                Debug.Print(format, args);
-        }
-
-        [Conditional("DEBUG")]
-        protected void trace_Verbose(string format, params object[] args)
-        {
-            if (trace.TraceVerbose)
-                Debug.Print(format, args);
-        }
-
     }
 }

@@ -39,10 +39,5 @@ namespace Reko.Scanning
             : base(scanner, worker, address, trace, state)
         {
         }
-
-        protected override void EmulateState(RtlAssignment ass)
-        {
-            // We don't emulate state in the shingle worker.
-        }
     }
 }

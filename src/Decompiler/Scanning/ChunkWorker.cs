@@ -19,30 +19,25 @@
 #endregion
 
 using Reko.Core;
-using Reko.Core.Memory;
 using Reko.Core.Rtl;
 using Reko.Core.Services;
-using System;
 using System.Collections.Generic;
 using System.Threading;
 
 namespace Reko.Scanning
 {
     /// <summary>
-    /// Performs scan of a chunk of memory that wasn't reached
-    /// by the <see cref="RecursiveScanner"/>, finding blocks
-    /// by doing linear scan.
+    /// Performs scan of a chunk of memory that wasn't reached by the
+    /// <see cref="RecursiveScanner"/>, finding blocks by doing linear scan.
     /// </summary>
     public class ChunkWorker : AbstractProcedureWorker
     {
         private readonly ShingleScanner shScanner;
-        private readonly MemoryArea mem;
         private readonly int[] blockNos; // 0 = not owned by anyone.
 
         public ChunkWorker(
             ShingleScanner scanner,
             IProcessorArchitecture arch,
-            MemoryArea mem,
             Address addrStart,
             int chunkUnits,
             DecompilerEventListener listener)
@@ -50,7 +45,6 @@ namespace Reko.Scanning
         {
             this.shScanner = scanner;
             this.Architecture = arch;
-            this.mem = mem;
             this.Address = addrStart;
             this.Length = chunkUnits;
             this.blockNos = new int[chunkUnits];
@@ -64,16 +58,20 @@ namespace Reko.Scanning
 
         public void Run()
         {
-            var addrNext = this.Address;
             var stepsize = Architecture.InstructionBitSize / Architecture.MemoryGranularity;
-            //for (int i = 0; i < chunkUnits; i += stepsize)
+            for (int i = 0; i < Length; i += stepsize)
             {
+                if (this.blockNos[i] != 0)
+                    continue;
+                var addrNext = this.Address + i;
                 var state = Architecture.CreateProcessorState();
-                var trace = MakeTrace(addrNext, state).GetEnumerator();
+                var trace = MakeTrace(addrNext, state);
                 while (IsValid(addrNext))
                 {
                     var job = AddJob(addrNext, trace, state);
                     var (block, newState) = job.ParseBlock();
+                    if (block is null)
+                        break;
                     if (block.IsValid)
                     {
                         HandleBlockEnd(block, job.Trace, newState);
@@ -81,6 +79,8 @@ namespace Reko.Scanning
                     else
                     {
                         HandleBadBlock(block.Address);
+                        if (block.Length == 0)
+                            break;
                     }
                     // Don't use block.Fallthrough, because that would
                     // skip any instructions in delay slots.
@@ -101,7 +101,7 @@ namespace Reko.Scanning
             return new ShingleWorker(shScanner, this, addr, trace, state);
         }
 
-        public override bool MarkVisited(Address addr)
+        public override bool TryMarkVisited(Address addr)
         {
             var index = addr - this.Address;
             if (index >= blockNos.Length)

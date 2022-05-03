@@ -657,39 +657,59 @@ l00001040: // l:4; ft:00001044
             #region Expected
                 @"
 define fn00001000
-l00001000: // l:8; ft:00001008
+l00001000: // l:4; ft:00001004
     // pred:
-    C = cond(r1 - 3<32>)
-    if (Test(UGT,C)) branch 00001040
-    // succ: l00001008 l00001040
-l00001008: // l:4; ft:0000100C
+    r2 = 1<32>
+    // succ: l00001004
+l00001004: // l:8; ft:0000100C
     // pred: l00001000
-    switch (r1) {
-        00001030,
-        00001038,
-        00001030,
-        00001038
-    }
-    // succ: l00001030 l00001038 l00001030 l00001038
-l00001030: // l:8; ft:00001038
-    // pred: l00001008 l00001008
-    r2 = 1<32>
-    goto 00001040
-    // succ: l00001040
-l00001038: // l:8; ft:00001040
-    // pred: l00001008 l00001008
-    r2 = 1<32>
-    r1 = 0xFFFFFFFF<32>
-    // succ: l00001040
-l00001040: // l:4; ft:00001044
-    // pred: l00001000 l00001030 l00001038
+    nop
+    nop
+    // succ: l0000100C
+l0000100C: // l:4; ft:00001010
+    // pred: l00001004
     return (0,0)
     // succ:
 ";
             #endregion
 
             RunTest(sExpected);
+        }
 
+        [Test]
+        public void RecScan_Padding_DelaySlot()
+        {
+            Given_EntryPoint(0x1000);
+            Given_Trace(new RtlTrace(0x1000)
+            {
+                m => m.Assign(r2, 1),
+                m => m.Nop(),
+                m => m.Nop(),
+                m => m.ReturnD(0, 0),
+                m => m.Nop(),
+            });
+
+            var sExpected =
+            #region Expected
+                @"
+define fn00001000
+l00001000: // l:4; ft:00001004
+    // pred:
+    r2 = 1<32>
+    // succ: l00001004
+l00001004: // l:8; ft:0000100C
+    // pred: l00001000
+    nop
+    nop
+    // succ: l0000100C
+l0000100C: // l:4; ft:00001014
+    // pred: l00001004
+    return (0,0)
+    // succ:
+";
+            #endregion
+
+            RunTest(sExpected);
         }
     }
 }
