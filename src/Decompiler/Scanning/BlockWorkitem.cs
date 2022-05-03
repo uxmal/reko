@@ -47,7 +47,7 @@ namespace Reko.Scanning
     /// </list></remarks>
     public class BlockWorkitem : WorkItem, RtlInstructionVisitor<bool>
     {
-        private readonly IScanner scanner;
+        private readonly IScannerServices scanner;
         private readonly Program program;
         private readonly IProcessorArchitecture arch;
         private readonly Address addrStart;
@@ -63,7 +63,7 @@ namespace Reko.Scanning
         private VarargsFormatScanner? vaScanner;
 
         public BlockWorkitem(
-            IScanner scanner,
+            IScannerServices scanner,
             Program program,
             IProcessorArchitecture arch,
             ProcessorState state,

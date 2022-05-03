@@ -46,7 +46,11 @@ namespace Reko.Scanning
         private readonly ConcurrentDictionary<Address, ReturnStatus> procReturnStatus;
 
         public RecursiveScanner(Program program, DecompilerEventListener listener)
-            : base(program, new ScanResultsV2(), listener)
+            : this(program, new ScanResultsV2(), listener)
+        { }
+
+        public RecursiveScanner(Program program, ScanResultsV2 sr, DecompilerEventListener listener)
+            : base(program, sr, listener)
         {
             this.wl = new WorkList<ProcedureWorker>();
             this.activeWorkers = new();
@@ -58,6 +62,16 @@ namespace Reko.Scanning
         {
             var seeds = CollectSeeds();
             EnqueueWorkers(seeds.Select(MakeSeedWorker));
+            ProcessWorkers();
+            return sr;
+        }
+
+        public ScanResultsV2 ScanProcedure(IProcessorArchitecture arch, Address addr, string? procedureName, ProcessorState state)
+        {
+            var symbol = ImageSymbol.Create(SymbolType.Code, arch, addr, procedureName);
+            symbol.ProcessorState = state;
+            var worker = MakeSeedWorker(new(addr, symbol));
+            EnqueueWorkers(new[] { worker });
             ProcessWorkers();
             return sr;
         }

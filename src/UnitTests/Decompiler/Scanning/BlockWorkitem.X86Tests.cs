@@ -46,7 +46,7 @@ namespace Reko.UnitTests.Decompiler.Scanning
     {
         private Procedure proc;
         private Block block;
-        private Mock<IScanner> scanner;
+        private Mock<IScannerServices> scanner;
         private RewriterHost host;
         private ProcessorState state;
         private BlockWorkitem wi;
@@ -199,7 +199,7 @@ namespace Reko.UnitTests.Decompiler.Scanning
             proc = new Procedure(arch, "test", addr, arch.CreateFrame());
             block = proc.AddBlock(addr, "testblock");
             var asm = new X86Assembler(arch, addr, new List<ImageSymbol>());
-            scanner = new Mock<IScanner>();
+            scanner = new Mock<IScannerServices>();
             scanner.Setup(s => s.Services).Returns(sc);
             this.state = arch.CreateProcessorState();
             m(asm);

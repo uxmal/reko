@@ -26,6 +26,9 @@ using System.Linq;
 
 namespace Reko.Scanning
 {
+    /// <summary>
+    /// Directed graph wrapper around a <see cref="ScannerV2" /> object
+    /// </summary>
     public class ScanResultsGraph : DirectedGraph<Address>
     {
         private ScanResultsV2 cfg;

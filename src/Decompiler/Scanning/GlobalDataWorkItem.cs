@@ -34,16 +34,17 @@ namespace Reko.Scanning
     /// </summary>
     public class GlobalDataWorkItem : WorkItem, IDataTypeVisitor
     {
-        private readonly IScannerQueue scanner;
+        private readonly IScannerServices scanner;
         private readonly Program program;
         private readonly DataType dt;
         private readonly EndianImageReader rdr;
 
         public GlobalDataWorkItem(
-            IScannerQueue scanner,
+            IScannerServices scanner,
             Program program,
             Address addr,
-            DataType dt) : base(addr)
+            DataType dt,
+            string? name) : base(addr)
         {
             this.scanner = scanner;
             this.program = program;

@@ -113,6 +113,11 @@ namespace Reko.Scanning
         protected override void ProcessCall(RtlBlock blockCaller, Edge edge, ProcessorState state)
         {
             shScanner.RegisterSpeculativeProcedure(edge.To);
+            // Assume that the call returns. This is true the majority of the time. Users
+            // can always override this if needed.
+            var lastInstr = blockCaller.Instructions[^1];
+            var fallThrough = new Edge(blockCaller.Address, blockCaller.FallThrough, EdgeType.Fallthrough);
+            shScanner.RegisterEdge(fallThrough);
         }
 
         protected override void ProcessReturn()

@@ -51,7 +51,7 @@ namespace Reko.Scanning
     /// Callers feed the scanner by calling EnqueueXXX methods before calling ProcessQueue().
     /// ProcessQueue() then processes the queues.
     /// </remarks>
-    public class Scanner : ScannerBase, IScanner, IRewriterHost
+    public class Scanner : ScannerBase, IScanner, IScannerServices, IRewriterHost
     {
         private const int PriorityEntryPoint = 5;
         private const int PriorityJumpTarget = 6;
@@ -92,7 +92,7 @@ namespace Reko.Scanning
             this.cancelSvc = services.GetService<CancellationTokenSource>();
             if (segmentMap == null)
                 throw new InvalidOperationException("Program must have an segment map.");
-            if (program.ImageMap == null)
+            if (program.ImageMap is null)
             {
                 program.ImageMap = segmentMap.CreateImageMap();
             }
@@ -639,7 +639,7 @@ namespace Reko.Scanning
             if (scannedGlobalData.Contains(addr))
                 return;
             scannedGlobalData.Add(addr);
-            procQueue.Enqueue(PriorityGlobalData, new GlobalDataWorkItem(this, Program, addr, dt));
+            procQueue.Enqueue(PriorityGlobalData, new GlobalDataWorkItem(this, Program, addr, dt, name));
         }
 
         public Block? FindContainingBlock(Address address)

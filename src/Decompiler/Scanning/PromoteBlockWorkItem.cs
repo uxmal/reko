@@ -34,12 +34,12 @@ namespace Reko.Scanning
 
         public Block Block;
         public Procedure ProcNew;
-        public IScanner Scanner;
+        public IScannerServices  Scanner;
         public Program Program;
 
         public PromoteBlockWorkItem(
             Address addr,
-            IScanner scanner,
+            IScannerServices scanner,
             Program program,
             Block  block,
             Procedure procNew) : base(addr)

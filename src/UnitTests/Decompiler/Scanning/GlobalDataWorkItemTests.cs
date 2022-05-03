@@ -33,7 +33,7 @@ namespace Reko.UnitTests.Decompiler.Scanning
     [TestFixture]
     public class GlobalDataWorkItemTests
     {
-        private Mock<IScannerQueue> scanner;
+        private Mock<IScannerServices> scanner;
         private Mock<IProcessorArchitecture> arch;
         private Mock<IPlatform> platform;
         private Program program;
@@ -41,7 +41,7 @@ namespace Reko.UnitTests.Decompiler.Scanning
         [SetUp]
         public void Setup()
         {
-            this.scanner = new Mock<IScannerQueue>();
+            this.scanner = new Mock<IScannerServices>();
             this.arch = new Mock<IProcessorArchitecture>();
             this.platform = new Mock<IPlatform>();
             arch.Setup(a => a.Name).Returns("FakeArch");
@@ -115,7 +115,7 @@ namespace Reko.UnitTests.Decompiler.Scanning
             Expect_ScannerGlobalData(0x43210038, ft1);
             Expect_ScannerGlobalData(0x43210073, ft2);
 
-            var gdwi = new GlobalDataWorkItem(scanner.Object, program, program.ImageMap.BaseAddress, arrayType);
+            var gdwi = new GlobalDataWorkItem(scanner.Object, program, program.ImageMap.BaseAddress, arrayType, null);
             gdwi.Process();
 
             scanner.Verify();
@@ -153,7 +153,7 @@ namespace Reko.UnitTests.Decompiler.Scanning
             Expect_ScannerGlobalData(0x43210017, ft);
             Expect_ScannerGlobalData(0x43210000, str);
 
-            var gdwi = new GlobalDataWorkItem(scanner.Object, program, program.ImageMap.BaseAddress, str);
+            var gdwi = new GlobalDataWorkItem(scanner.Object, program, program.ImageMap.BaseAddress, str, null);
             gdwi.Process();
 
             scanner.Verify();
@@ -185,7 +185,7 @@ namespace Reko.UnitTests.Decompiler.Scanning
             });
             Expect_ScannerGlobalData(0x43210008, ft);
 
-            var gdwi = new GlobalDataWorkItem(scanner.Object, program, program.ImageMap.BaseAddress, str);
+            var gdwi = new GlobalDataWorkItem(scanner.Object, program, program.ImageMap.BaseAddress, str, null);
             gdwi.Process();
 
             scanner.Verify();
@@ -206,7 +206,7 @@ namespace Reko.UnitTests.Decompiler.Scanning
                 It.IsAny<string>()))
                 .Verifiable();
 
-            var gdwi = new GlobalDataWorkItem(scanner.Object, program, program.ImageMap.BaseAddress, ft);
+            var gdwi = new GlobalDataWorkItem(scanner.Object, program, program.ImageMap.BaseAddress, ft, null);
             gdwi.Process();
 
             scanner.Verify();

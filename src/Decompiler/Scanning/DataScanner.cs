@@ -19,6 +19,7 @@
 #endregion 
 
 using Reko.Core;
+using Reko.Core.Rtl;
 using Reko.Core.Services;
 using Reko.Core.Types;
 using System;
@@ -26,7 +27,7 @@ using System.Collections.Generic;
 
 namespace Reko.Scanning
 {
-    public class DataScanner : ScannerBase, IScannerQueue
+    public class DataScanner : ScannerBase, IScannerServices
     {
         private readonly DecompilerEventListener listener;
         private readonly Queue<WorkItem> queue;
@@ -42,6 +43,8 @@ namespace Reko.Scanning
         }
 
         public Dictionary<Address, ImageSymbol> Procedures { get; private set; }
+
+        IServiceProvider IScannerServices.Services => throw new NotImplementedException();
 
         public void ProcessQueue()
         {
@@ -68,7 +71,7 @@ namespace Reko.Scanning
         {
             if (Program.SegmentMap.IsValidAddress(addr))
             {
-                var wi = new GlobalDataWorkItem(this, Program, addr, dt);
+                var wi = new GlobalDataWorkItem(this, Program, addr, dt, name);
                 queue.Enqueue(wi);
             }
         }
@@ -85,6 +88,71 @@ namespace Reko.Scanning
             sr.KnownProcedures.Add(addr);
             var proc = Program.EnsureProcedure(arch, addr, name);
             proc.Signature = sig;
+        }
+
+        ProcedureBase IScannerServices.ScanProcedure(IProcessorArchitecture arch, Address addr, string? procedureName, ProcessorState state)
+        {
+            throw new NotImplementedException();
+        }
+
+        void IScannerServices.TerminateBlock(Block block, Address addrEnd)
+        {
+            throw new NotImplementedException();
+        }
+
+        Block? IScannerServices.EnqueueJumpTarget(Address addrSrc, Address addrDst, Procedure proc, ProcessorState state)
+        {
+            throw new NotImplementedException();
+        }
+
+        Address? IScannerServices.EnqueueUserProcedure(IProcessorArchitecture arch, UserProcedure sp)
+        {
+            throw new NotImplementedException();
+        }
+
+        Block? IScannerServices.FindContainingBlock(Address addr)
+        {
+            throw new NotImplementedException();
+        }
+
+        Block? IScannerServices.FindExactBlock(Address addr)
+        {
+            throw new NotImplementedException();
+        }
+
+        Block IScannerServices.SplitBlock(Block block, Address addr)
+        {
+            throw new NotImplementedException();
+        }
+
+        Block IScannerServices.CreateCallRetThunk(Address addrFrom, Procedure procOld, Procedure procNew)
+        {
+            throw new NotImplementedException();
+        }
+
+        void IScannerServices.SetProcedureStackDelta(Procedure proc, int stackDelta, Address address)
+        {
+            throw new NotImplementedException();
+        }
+
+        void IScannerServices.SetProcedureReturnAddressBytes(Procedure proc, int returnAddressBytes, Address address)
+        {
+            throw new NotImplementedException();
+        }
+
+        IEnumerable<RtlInstructionCluster> IScannerServices.GetTrace(IProcessorArchitecture arch, Address addrStart, ProcessorState state, IStorageBinder binder)
+        {
+            throw new NotImplementedException();
+        }
+
+        ExternalProcedure? IScannerServices.GetImportedProcedure(IProcessorArchitecture arch, Address addrImportThunk, Address addrInstruction)
+        {
+            throw new NotImplementedException();
+        }
+
+        ProcedureBase? IScannerServices.GetTrampoline(IProcessorArchitecture arch, Address addr)
+        {
+            throw new NotImplementedException();
         }
     }
 }

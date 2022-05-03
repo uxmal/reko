@@ -79,7 +79,7 @@ namespace Reko.UnitTests.Decompiler.Scanning
                 0xCC, 0xCC, 0xCC, 0xCC,
                 0xC3, 0xC3, 0xC3, 0xCC,
             });
-            var scanner = new Mock<IScanner>();
+            var scanner = new Mock<IScannerServices>();
             scanner.Setup(s => s.Services).Returns(sc);
             arch.Setup(s => s.CreateImageReader(this.mem, this.program.ImageMap.BaseAddress))
                 .Returns(this.mem.CreateLeReader(0));

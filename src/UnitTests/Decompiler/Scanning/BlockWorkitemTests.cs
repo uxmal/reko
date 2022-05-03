@@ -43,7 +43,7 @@ namespace Reko.UnitTests.Decompiler.Scanning
     [TestFixture]
     public class BlockWorkitemTests
     {
-        private Mock<IScanner> scanner;
+        private Mock<IScannerServices> scanner;
         private Mock<IProcessorArchitecture> arch;
         private Program program;
         private Procedure proc;
@@ -66,7 +66,7 @@ namespace Reko.UnitTests.Decompiler.Scanning
             sp = new Identifier("sp", PrimitiveType.Word32, RegisterStorage.Reg32("sp", 15));
             var sc = new ServiceContainer();
             var listener = new Mock<DecompilerEventListener>();
-            scanner = new Mock<IScanner>();
+            scanner = new Mock<IScannerServices>();
             arch = new Mock<IProcessorArchitecture>();
             arch.Setup(a => a.Name).Returns("FakeArch");
             proc = new Procedure(arch.Object, "testProc", Address.Ptr32(0x00100000), new Frame(arch.Object, PrimitiveType.Word32));

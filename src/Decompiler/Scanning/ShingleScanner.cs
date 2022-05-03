@@ -51,8 +51,9 @@ namespace Reko.Scanning
         {
             var chunks = MakeScanChunks();
             var sr = ExecuteChunks(chunks);
-            var sr2 = RemoveInvalidBlocks(sr);
-            var (sr3, blocksSplit) = EnsureBlocks(sr2);
+            sr = RegisterPredecessors();
+            sr = RemoveInvalidBlocks(sr);
+            var (sr3, blocksSplit) = EnsureBlocks(sr);
             return sr3;
         }
 
@@ -67,32 +68,6 @@ namespace Reko.Scanning
                 .Where(s => s.IsExecutable)
                 .SelectMany(s => PartitionSegment(s, sortedBlocks))
                 .ToList();
-        }
-
-        /// <summary>
-        /// Scans the Program object looking for address ranges that have not
-        /// been identified as code/data yet.
-        /// </summary>
-        /// <returns></returns>
-        public IEnumerable<(IProcessorArchitecture, MemoryArea, Address, long)> FindUnscannedRanges()
-        {
-            var gaps = sr.Blocks.Values
-                    .Select(b => new MemoryGap(
-                        b.Address,
-                        b.FallThrough - b.Address,
-                        b.Architecture));
-            if (program.ImageMap is not null)
-            {
-                gaps = gaps.Concat(program.ImageMap.Items.Values
-                    .Select(b => new MemoryGap(
-                        b.Address,
-                        b.Size,
-                        null)));
-            }
-            return MakeTriples(gaps.OrderBy(b => b.Address))
-                .Select(triple => CreateUnscannedArea(triple))
-                .Where(triple => triple.HasValue)
-                .Select(triple => triple!.Value);
         }
 
         private record MemoryGap(Address Address, long Length, IProcessorArchitecture? Architecture);
@@ -230,12 +205,9 @@ namespace Reko.Scanning
         {
             if (length <= 0)
                 return null;
-            if (!program.SegmentMap.TryFindSegment(addr, out var segment))
-                return null;
             return new ChunkWorker(
                 this,
                 program.Architecture,
-                segment.MemoryArea,
                 addr,
                 (int) length,
                 listener);
@@ -349,12 +321,13 @@ namespace Reko.Scanning
                 {
                     foreach (var pred in preds)
                     {
-                        if (sr.Successors.TryGetValue(bad, out var pss))
+                        if (sr.Successors.TryGetValue(pred, out var pss))
                         {
                             pss.Remove(bad);
                         }
                     }
                 }
+                sr.Successors.TryRemove(bad, out _);
                 sr.Blocks.TryRemove(bad, out _);
             }
             return sr;

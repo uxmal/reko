@@ -186,7 +186,6 @@ namespace Reko.UnitTests.Decompiler.Scanning
                 DataType = new ArrayType(PrimitiveType.Byte, 0)
             };
             program.ImageMap.AddItem(addr, item);
-
         }
 
         private void Lin(uint uAddr, int len, int next)
@@ -483,7 +482,7 @@ l00001008: // l:8; ft:00001010
 
 
         [Test]
-        public void Siq_Blocks()
+        public void Shsc_Blocks()
         {
             Given_OverlappingLinearTraces();
 
@@ -494,7 +493,7 @@ l00001008: // l:8; ft:00001010
         }
 
         [Test]
-        public void Siq_InvalidBlocks()
+        public void Shsc_InvalidBlocks()
         {
             Given_OverlappingLinearTraces();
 
@@ -511,7 +510,7 @@ l00001008: // l:8; ft:00001010
         }
 
         [Test]
-        public void Siq_ShingledBlocks()
+        public void Shsc_ShingledBlocks()
         {
             Lin(0x0001B0D7, 2, 0x0001B0D9);
             Lin(0x0001B0D8, 6, 0x0001B0DE);
@@ -552,7 +551,7 @@ l00001008: // l:8; ft:00001010
         }
 
         [Test]
-        public void Siq_Overlapping()
+        public void Shsc_Overlapping()
         {
             // At offset 0, we have 0x33, 0xC0, garbage.
             // At offset 1, we have rol al,0x90, ret.
@@ -571,7 +570,7 @@ l00001008: // l:8; ft:00001010
         }
 
         [Test]
-        public void Siq_Regression_0001()
+        public void Shsc_Regression_0001()
         {
             Given_x86_Image(
                 0x55,                               // 0000
@@ -585,7 +584,7 @@ l00001008: // l:8; ft:00001010
                 0xC3,                               // 0017
                 0xC3,
                 0xC3);
-            CreateScanner(0x10000);
+            CreateX86Scanner();
             var seg = program.SegmentMap.Segments.Values.First();
             cfg = scanner.ScanProgram();
             var sExp =
@@ -611,7 +610,7 @@ l00001008: // l:8; ft:00001010
         }
 
         [Test]
-        public void Siq_Terminate()
+        public void Shsc_Terminate()
         {
             Given_x86_Image(m =>
             {
@@ -630,7 +629,7 @@ l00001008: // l:8; ft:00001010
         }
 
         [Test(Description = "Stop tracing invalid blocks at call boundaries")]
-        public void Siq_Call_TerminatesBlock()
+        public void Shsc_Call_TerminatesBlock()
         {
             Lin(0x1000, 3, 0x1003);
             Lin(0x1003, 2, 0x1005);
@@ -650,7 +649,7 @@ l00001008: // l:8; ft:00001010
         }
 
         [Test(Description = "Stop tracing invalid blocks at call boundaries")]
-        public void Siq_CallThen_Invalid()
+        public void Shsc_CallThen_Invalid()
         {
             Lin(0x1000, 3, 0x1003);
             Lin(0x1003, 2, 0x1005);
@@ -669,7 +668,7 @@ l00001008: // l:8; ft:00001010
         }
 
         [Test(Description = "Don't make blocks containing a possible call target")]
-        public void Siq_CallTargetInBlock()
+        public void Shsc_CallTargetInBlock()
         {
             Lin(0x1000, 3, 0x1003);
             Lin(0x1003, 5, 0x1008);
@@ -683,7 +682,7 @@ l00001008: // l:8; ft:00001010
         }
 
         [Test]
-        public void Siq_PaddingBlocks()
+        public void Shsc_PaddingBlocks()
         {
             Lin(0x1000, 4, 0x1004);
             End(0x1004, 4);
@@ -710,16 +709,16 @@ l00001008: // l:8; ft:00001010
         {
             var A = new Mock<IProcessorArchitecture>();
             A.Setup(a => a.Name).Returns("A");
-            Given_Image(A.Object, new byte[100]);
+            Given_Image(A.Object, new byte[0x100]);
             Given_CodeBlock(A.Object, 0x1000, 20);
             Given_UnknownBlock(0x1020, 20);
-            Given_CodeBlock(A.Object, 0x1040, 60);
+            Given_CodeBlock(A.Object, 0x1040, 0xC0);
             CreateScanner(0x1000);
 
-            var ranges = scanner.FindUnscannedRanges().ToArray();
+            var ranges = scanner.MakeScanChunks().ToArray();
 
             Assert.AreEqual(1, ranges.Length);
-            Assert.AreSame(A.Object, ranges[0].Item1);
+            Assert.AreEqual(A.Object.Name, ranges[0].Architecture.Name);
         }
 
         [Test]
@@ -729,13 +728,13 @@ l00001008: // l:8; ft:00001010
             A.Setup(a => a.Name).Returns("A");
             Given_Image(A.Object, new byte[100]);
             Given_UnknownBlock(0x1020, 20);
-            Given_CodeBlock(A.Object, 0x1040, 80);
+            Given_CodeBlock(A.Object, 0x1040, 0xC0);
             CreateScanner(0x1000);
 
-            var ranges = scanner.FindUnscannedRanges().ToArray();
+            var ranges = scanner.MakeScanChunks().ToArray();
 
             Assert.AreEqual(1, ranges.Length);
-            Assert.AreSame(A.Object, ranges[0].Item1);
+            Assert.AreEqual(A.Object.Name, ranges[0].Architecture.Name);
         }
 
         [Test]
@@ -749,13 +748,13 @@ l00001008: // l:8; ft:00001010
             Given_Image(A.Object, new byte[100]);
             Given_CodeBlock(B.Object, 0x1000, 20);
             Given_UnknownBlock(0x1020, 20);
-            Given_CodeBlock(B.Object, 0x1040, 60);
+            Given_CodeBlock(B.Object, 0x1040, 0xC0);
             CreateScanner(0x1000);
 
-            var ranges = scanner.FindUnscannedRanges().ToArray();
+            var ranges = scanner.MakeScanChunks().ToArray();
 
             Assert.AreEqual(1, ranges.Length);
-            Assert.AreSame(B.Object, ranges[0].Item1);
+            Assert.AreEqual(B.Object.Name, ranges[0].Architecture.Name);
         }
 
         [Test]
@@ -769,17 +768,17 @@ l00001008: // l:8; ft:00001010
             Given_Image(A.Object, new byte[100]);
             Given_CodeBlock(A.Object, 0x1000, 20);
             Given_UnknownBlock(0x1020, 20);
-            Given_CodeBlock(B.Object, 0x1040, 60);
+            Given_CodeBlock(B.Object, 0x1040, 0xC0);
             CreateScanner(0x1000);
 
-            var ranges = scanner.FindUnscannedRanges().ToArray();
+            var ranges = scanner.MakeScanChunks().ToArray();
 
             Assert.AreEqual(1, ranges.Length);
-            Assert.AreSame(B.Object, ranges[0].Item1);
+            Assert.AreEqual(B.Object.Name, ranges[0].Architecture.Name);
         }
 
         [Test(Description = "Stop tracing invalid blocks at call boundaries")]
-        public void Siq_CallThen_()
+        public void Shsc_CallThenInvalid()
         {
             Call(0x1000, 4, 0x1004, 0x1010);
             Bra(0x1004, 4, 0x1008, 0x100C);

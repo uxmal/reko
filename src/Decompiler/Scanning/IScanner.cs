@@ -38,10 +38,8 @@ namespace Reko.Scanning
     /// procedures that constituted the original source program. Any 
     /// discoveries made are added to the Program instance.
     /// </summary>
-    public interface IScanner : IScannerQueue
+    public interface IScanner
     {
-        IServiceProvider Services { get; }
-
         /// <summary>
         /// Scans the image, locating blobs of data and procedures.
         /// After completion, the program.ImageMap is populated with
@@ -67,31 +65,5 @@ namespace Reko.Scanning
         /// <param name="sym"></param>
         /// <param name="isEntryPoint"></param>
         void ScanImageSymbol(ImageSymbol sym, bool isEntryPoint);
-
-        Block? EnqueueJumpTarget(Address addrSrc, Address addrDst, Procedure proc, ProcessorState state);
-        Address? EnqueueUserProcedure(IProcessorArchitecture arch, UserProcedure sp);
-
-        ExternalProcedure? GetImportedProcedure(IProcessorArchitecture arch, Address addrImportThunk, Address addrInstruction);
-
-        ProcedureBase? GetTrampoline(IProcessorArchitecture arch, Address addr);
-
-        void TerminateBlock(Block block, Address addrEnd);
-
-        /// <summary>
-        /// Find the block that contains the address <paramref name="addr"/>, or return null if there
-        /// is no such block.
-        /// </summary>
-        /// <param name="addrStart"></param>
-        /// <returns></returns>
-        Block? FindContainingBlock(Address addr);
-        Block? FindExactBlock(Address addr);
-        Block SplitBlock(Block block, Address addr);
-
-        Block CreateCallRetThunk(Address addrFrom, Procedure procOld, Procedure procNew);
-        void SetProcedureStackDelta(
-            Procedure proc, int stackDelta, Address address);
-        void SetProcedureReturnAddressBytes(Procedure proc, int returnAddressBytes, Address address);
-
-        IEnumerable<RtlInstructionCluster> GetTrace(IProcessorArchitecture arch, Address addrStart, ProcessorState state, IStorageBinder binder);
     }
 }
