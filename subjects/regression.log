@@ -105,7 +105,6 @@ l0800_17AE: warning: Non-integral switch expression
 === OpenRISC\sunxi\blob
 00003CA8: warning: Expected sizes of arrays to have been determined by now
 000100B8: warning: Expected sizes of arrays to have been determined by now
-00012478: warning: Expected sizes of arrays to have been determined by now
 00012490: warning: Expected sizes of arrays to have been determined by now
 00012510: warning: Expected sizes of arrays to have been determined by now
 00012590: warning: Expected sizes of arrays to have been determined by now
@@ -118,7 +117,6 @@ l0800_17AE: warning: Non-integral switch expression
 00013984: warning: Expected sizes of arrays to have been determined by now
 00003CA8: warning: Expected sizes of arrays to have been determined by now
 000100B8: warning: Expected sizes of arrays to have been determined by now
-00012478: warning: Expected sizes of arrays to have been determined by now
 00012490: warning: Expected sizes of arrays to have been determined by now
 00012510: warning: Expected sizes of arrays to have been determined by now
 00012590: warning: Expected sizes of arrays to have been determined by now
@@ -194,8 +192,8 @@ d:\dev\uxmal\reko\master\subjects\Elf\IA64\bash\elf-Linux-ia64-bash: error: An i
    at System.Collections.Generic.Dictionary`2.Add(TKey key, TValue value)
    at Reko.Scanning.ShingledScanner.AddInstruction(RtlInstructionCluster i) in d:\dev\uxmal\reko\master\src\Decompiler\Scanning\ShingledScanner.cs:line 287
    at Reko.Scanning.ShingledScanner.ScanRange(IProcessorArchitecture arch, MemoryArea mem, Address addrStart, UInt32 cbAlloc, UInt64 workToDo) in d:\dev\uxmal\reko\master\src\Decompiler\Scanning\ShingledScanner.cs:line 200
-   at Reko.Scanning.ScannerInLinq.ScanInstructions(ScanResults sr) in d:\dev\uxmal\reko\master\src\Decompiler\Scanning\ScannerInLinq.cs:line 130
-   at Reko.Scanning.ScannerInLinq.ScanImage(ScanResults sr) in d:\dev\uxmal\reko\master\src\Decompiler\Scanning\ScannerInLinq.cs:line 65
+   at Reko.Scanning.ScannerInLinq.ScanInstructions(ScanResults sr) in d:\dev\uxmal\reko\master\src\Decompiler\Scanning\ScannerInLinq.cs:line 155
+   at Reko.Scanning.ScannerInLinq.ScanImage(ScanResults sr) in d:\dev\uxmal\reko\master\src\Decompiler\Scanning\ScannerInLinq.cs:line 62
    at Reko.Scanning.Scanner.ShingleScanProcedures() in d:\dev\uxmal\reko\master\src\Decompiler\Scanning\Scanner.cs:line 1094
    at Reko.Scanning.Scanner.ScanImage() in d:\dev\uxmal\reko\master\src\Decompiler\Scanning\Scanner.cs:line 807
    at Reko.Decompiler.ScanProgram(Program program) in d:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 474
@@ -800,8 +798,8 @@ fn0000000100003AA8: error: An error occurred while rewriting procedure to high-l
        at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
    at Reko.Core.Graphs.DominatorGraph`1.BuildDominanceFrontiers(DirectedGraph`1 graph, Dictionary`2 idoms) in d:\dev\uxmal\reko\master\src\Core\Graphs\DominatorGraph.cs:line 193
    at Reko.Core.Graphs.DominatorGraph`1..ctor(DirectedGraph`1 graph, T entryNode) in d:\dev\uxmal\reko\master\src\Core\Graphs\DominatorGraph.cs:line 46
-   at Reko.Structure.StructureAnalysis.Execute() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 144
-   at Reko.Structure.StructureAnalysis.Structure() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 81
+   at Reko.Structure.StructureAnalysis.Execute() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 145
+   at Reko.Structure.StructureAnalysis.Structure() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 82
    at Reko.Decompiler.StructureProgram() in d:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 543
 
 === Hunk-m68k\MATRIXMU
@@ -824,13 +822,13 @@ fn0000EE14: error: An internal error occurred while building the expressions of 
     The given key 'l0000EE2C' was not present in the dictionary.
        at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
    at Reko.Core.Graphs.DominatorGraph`1.BuildDominanceFrontiers(DirectedGraph`1 graph, Dictionary`2 idoms) in d:\dev\uxmal\reko\master\src\Core\Graphs\DominatorGraph.cs:line 193
-   at Reko.Core.Graphs.DominatorGraph`1..ctor(DirectedGraph`1 graph, T entryNode) in d:\dev\uxmal\reko\master\src\Core\Graphs\DominatorGraph.cs:line 47
+   at Reko.Core.Graphs.DominatorGraph`1..ctor(DirectedGraph`1 graph, T entryNode) in d:\dev\uxmal\reko\master\src\Core\Graphs\DominatorGraph.cs:line 46
    at Reko.Analysis.DataFlowAnalysis.BuildExpressionTrees(List`1 ssts) in d:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 225
 fn0000CE88: error: An internal error occurred while building the expressions of fn0000CE88
     The given key 'l0000CEAC' was not present in the dictionary.
        at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
    at Reko.Core.Graphs.DominatorGraph`1.BuildDominanceFrontiers(DirectedGraph`1 graph, Dictionary`2 idoms) in d:\dev\uxmal\reko\master\src\Core\Graphs\DominatorGraph.cs:line 193
-   at Reko.Core.Graphs.DominatorGraph`1..ctor(DirectedGraph`1 graph, T entryNode) in d:\dev\uxmal\reko\master\src\Core\Graphs\DominatorGraph.cs:line 47
+   at Reko.Core.Graphs.DominatorGraph`1..ctor(DirectedGraph`1 graph, T entryNode) in d:\dev\uxmal\reko\master\src\Core\Graphs\DominatorGraph.cs:line 46
    at Reko.Analysis.DataFlowAnalysis.BuildExpressionTrees(List`1 ssts) in d:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 225
 l0000CEAC: warning: Phi functions will be ignored by type analysis. This may be caused by a failure in a previous stage of the decompilation.
 fn0000CE88: error: An error occurred while rewriting procedure to high-level language.
@@ -838,16 +836,16 @@ fn0000CE88: error: An error occurred while rewriting procedure to high-level lan
        at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
    at Reko.Core.Graphs.DominatorGraph`1.BuildDominanceFrontiers(DirectedGraph`1 graph, Dictionary`2 idoms) in d:\dev\uxmal\reko\master\src\Core\Graphs\DominatorGraph.cs:line 193
    at Reko.Core.Graphs.DominatorGraph`1..ctor(DirectedGraph`1 graph, T entryNode) in d:\dev\uxmal\reko\master\src\Core\Graphs\DominatorGraph.cs:line 47
-   at Reko.Structure.StructureAnalysis.Execute() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 144
-   at Reko.Structure.StructureAnalysis.Structure() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 81
+   at Reko.Structure.StructureAnalysis.Execute() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 145
+   at Reko.Structure.StructureAnalysis.Structure() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 82
    at Reko.Decompiler.StructureProgram() in d:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 543
 fn0000EE14: error: An error occurred while rewriting procedure to high-level language.
     The given key 'l0000EE2C' was not present in the dictionary.
        at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
    at Reko.Core.Graphs.DominatorGraph`1.BuildDominanceFrontiers(DirectedGraph`1 graph, Dictionary`2 idoms) in d:\dev\uxmal\reko\master\src\Core\Graphs\DominatorGraph.cs:line 193
    at Reko.Core.Graphs.DominatorGraph`1..ctor(DirectedGraph`1 graph, T entryNode) in d:\dev\uxmal\reko\master\src\Core\Graphs\DominatorGraph.cs:line 47
-   at Reko.Structure.StructureAnalysis.Execute() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 144
-   at Reko.Structure.StructureAnalysis.Structure() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 81
+   at Reko.Structure.StructureAnalysis.Execute() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 145
+   at Reko.Structure.StructureAnalysis.Structure() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 82
    at Reko.Decompiler.StructureProgram() in d:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 543
 00000007: warning: Expected sizes of arrays to have been determined by now
 0000000D: warning: Expected sizes of arrays to have been determined by now
@@ -966,7 +964,6 @@ Warning: Recursion too deep in PtrPrimitiveReplacer
 Warning: Recursion too deep in PtrPrimitiveReplacer
 Warning: Recursion too deep in PtrPrimitiveReplacer
 Warning: Recursion too deep in PtrPrimitiveReplacer
-l0040478C: warning: Non-integral switch expression
 00412060: warning: Expected sizes of arrays to have been determined by now
 00412170: warning: Expected sizes of arrays to have been determined by now
 004122D0: warning: Expected sizes of arrays to have been determined by now
@@ -1046,10 +1043,7 @@ l0040478C: warning: Non-integral switch expression
 0000000000400CB0: warning: Unable to resolve imported reference png_get_PLTE.
 0000000000400CC0: warning: Unable to resolve imported reference __gmon_start__.
 l0000000000400E2D: warning: Non-integral switch expression
-l0000000000400F4C: warning: Non-integral switch expression
-0000000000401958: warning: Expected sizes of arrays to have been determined by now
 0000000000601E00: warning: Expected sizes of arrays to have been determined by now
-0000000000401958: warning: Expected sizes of arrays to have been determined by now
 0000000000601E00: warning: Expected sizes of arrays to have been determined by now
 
 *** regressions\reko-90\PP
@@ -1079,6 +1073,10 @@ fn0800_8F97: error: An internal error occurred while building the expressions of
    at Reko.Core.Graphs.DominatorGraph`1..ctor(DirectedGraph`1 graph, T entryNode) in d:\dev\uxmal\reko\master\src\Core\Graphs\DominatorGraph.cs:line 44
    at Reko.Analysis.DataFlowAnalysis.BuildExpressionTrees(List`1 ssts) in d:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 225
 l0800_8FD8: warning: Phi functions will be ignored by type analysis. This may be caused by a failure in a previous stage of the decompilation.
+l0800_031A: warning: Non-integral switch expression
+l0800_0663: warning: Non-integral switch expression
+l0800_0EE8: warning: Non-integral switch expression
+l0800_11D8: warning: Non-integral switch expression
 
 === scripting\pyFuncNames
 IronPython 3.4.0b1
@@ -1258,11 +1256,9 @@ Warning: Recursion too deep in PtrPrimitiveReplacer
 46C4: warning: Expected sizes of arrays to have been determined by now
 47E2: warning: Expected sizes of arrays to have been determined by now
 541C: warning: Expected sizes of arrays to have been determined by now
-5898: warning: Expected sizes of arrays to have been determined by now
 46C4: warning: Expected sizes of arrays to have been determined by now
 47E2: warning: Expected sizes of arrays to have been determined by now
 541C: warning: Expected sizes of arrays to have been determined by now
-5898: warning: Expected sizes of arrays to have been determined by now
 
 *** Elf\Sparc\rtems\sparc-rtems-unprotoize
 00011610: warning: Unable to resolve imported reference __register_frame_info.
@@ -1287,8 +1283,10 @@ Warning: Recursion too deep in PtrPrimitiveReplacer
 00011F6C: error: An error occurred while processing the statement word32 sp_37 = fp + 0xFFFFFF90<32> - (CONVERT(strlen(i0_25) + strlen(o1), size_t, size_t) + 9<32> & 0xFFFFFFF8<32>).
     Specified argument was out of the range of valid values. (Parameter 'bitSize')
        at Reko.Core.Types.PrimitiveType.CreateWord(Int32 bitSize) in d:\dev\uxmal\reko\master\src\Core\Types\PrimitiveType.cs:line 129
-   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in d:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 130
+   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in d:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 128
+   at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 57
    at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in d:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 97
+   at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 57
    at Reko.Typing.TypeCollector.VisitDeclaration(Declaration decl) in d:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 225
    at Reko.Core.Code.Declaration.Accept(InstructionVisitor v) in d:\dev\uxmal\reko\master\src\Core\Code\Declaration.cs:line 55
    at Reko.Typing.TypeCollector.CollectTypes() in d:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 75
@@ -1298,7 +1296,7 @@ safe_read: error: An error occurred while rewriting procedure to high-level lang
    at Reko.Core.Block.get_ThenBlock() in d:\dev\uxmal\reko\master\src\Core\Block.cs:line 91
    at Reko.Structure.CompoundConditionCoalescer.MaybeCoalesce(Block block) in d:\dev\uxmal\reko\master\src\Decompiler\Structure\CompoundConditionCoalescer.cs:line 96
    at Reko.Structure.CompoundConditionCoalescer.Transform() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\CompoundConditionCoalescer.cs:line 62
-   at Reko.Structure.StructureAnalysis.Structure() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 79
+   at Reko.Structure.StructureAnalysis.Structure() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 80
    at Reko.Decompiler.StructureProgram() in d:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 543
 00017540: warning: Expected sizes of arrays to have been determined by now
 0002B411: warning: Expected sizes of arrays to have been determined by now
@@ -1385,7 +1383,7 @@ Error: Unable to load metadata file windows32.xml.
    at Reko.Core.TypeLibraryLoader.Load(IPlatform platform, TypeLibrary dstLib) in d:\dev\uxmal\reko\master\src\Core\TypeLibraryLoader.cs:line 42
    at Reko.Core.MetadataLoader.Load(IPlatform platform, String moduleName, TypeLibrary dstLib) in d:\dev\uxmal\reko\master\src\Core\MetadataLoader.cs:line 55
    at Reko.Core.Services.TypeLibraryLoaderServiceImpl.LoadMetadataIntoLibrary(IPlatform platform, TypeLibraryDefinition tlElement, TypeLibrary libDst) in d:\dev\uxmal\reko\master\src\Core\Services\ITypeLibraryLoaderService.cs:line 72
-       at Reko.Environments.Windows.MipsCallingConvention.SetReturnRegister(ICallingConventionEmitter ccr, DataType dtArg) in d:\dev\uxmal\reko\master\src\Environments\Windows\Arch\MipsCallingConvention.cs:line 151
+       at Reko.Environments.Windows.MipsCallingConvention.SetReturnRegister(ICallingConventionEmitter ccr, DataType dtArg) in d:\dev\uxmal\reko\master\src\Environments\Windows\Arch\MipsCallingConvention.cs:line 165
    at Reko.Environments.Windows.MipsCallingConvention.Generate(ICallingConventionEmitter ccr, Int32 retAddressOnStack, DataType dtRet, DataType dtThis, List`1 dtParams) in d:\dev\uxmal\reko\master\src\Environments\Windows\Arch\MipsCallingConvention.cs:line 91
    at Reko.Core.Serialization.ProcedureSerializer.Deserialize(SerializedSignature ss, Frame frame) in d:\dev\uxmal\reko\master\src\Core\Serialization\ProcedureSerializer.cs:line 175
    at Reko.Core.TypeLibraryDeserializer.LoadProcedure(Procedure_v1 sp) in d:\dev\uxmal\reko\master\src\Core\TypeLibraryDeserializer.cs:line 141
@@ -1896,20 +1894,20 @@ Error: Unable to load metadata file windows32.xml.
 00011A1F: error: Instruction acbf	@-081E(r0),+0000(r5),r1,00017BC3 too complex to rewrite.
 000145BC: error: Instruction acbf	#2.5,@(pc)+,+05EB(r5),000149BF too complex to rewrite.
 00015E51: error: Instruction acbf	#7.0,@D0060D57,+0088(r6),0001670B too complex to rewrite.
-0000ACAB: warning: Call target address 00000003 is invalid.
-0000AC4E: warning: Call target address 00000003 is invalid.
-00013E26: warning: Call target address 00000002 is invalid.
-00014418: warning: Call target address 00000002 is invalid.
 00011B27: warning: Call target address 00000002 is invalid.
 00011B34: warning: Call target address 00000002 is invalid.
 00011B41: warning: Call target address 00000002 is invalid.
 00011B4E: warning: Call target address 00000002 is invalid.
 00011B7D: warning: Call target address 00000002 is invalid.
+0000ACAB: warning: Call target address 00000003 is invalid.
+0000AC4E: warning: Call target address 00000003 is invalid.
+00013E26: warning: Call target address 00000002 is invalid.
+00014418: warning: Call target address 00000002 is invalid.
 000101A8: warning: Call target address 4000E3D8 is invalid.
-0000A9E4: warning: Call target address 40009A48 is invalid.
 0000E747: warning: Call target address 00000003 is invalid.
 0000E793: warning: Call target address 00000003 is invalid.
 0000C35C: warning: Call target address 40009A48 is invalid.
+0000A9E4: warning: Call target address 40009A48 is invalid.
 fn0000802E: error: An internal error occurred while building the expressions of fn0000802E
     The given key 'fn0000802E_exit' was not present in the dictionary.
        at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
@@ -1935,17 +1933,17 @@ fn0000802E: error: An error occurred while rewriting procedure to high-level lan
     The given key 'l00008318' was not present in the dictionary.
        at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
    at Reko.Core.Graphs.DominatorGraph`1.BuildDominanceFrontiers(DirectedGraph`1 graph, Dictionary`2 idoms) in d:\dev\uxmal\reko\master\src\Core\Graphs\DominatorGraph.cs:line 193
-   at Reko.Core.Graphs.DominatorGraph`1..ctor(DirectedGraph`1 graph, T entryNode) in d:\dev\uxmal\reko\master\src\Core\Graphs\DominatorGraph.cs:line 47
-   at Reko.Structure.StructureAnalysis.Execute() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 144
-   at Reko.Structure.StructureAnalysis.Structure() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 81
+   at Reko.Core.Graphs.DominatorGraph`1..ctor(DirectedGraph`1 graph, T entryNode) in d:\dev\uxmal\reko\master\src\Core\Graphs\DominatorGraph.cs:line 46
+   at Reko.Structure.StructureAnalysis.Execute() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 145
+   at Reko.Structure.StructureAnalysis.Structure() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 82
    at Reko.Decompiler.StructureProgram() in d:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 543
 fn00009746: error: An error occurred while rewriting procedure to high-level language.
     The given key 'l0000985B' was not present in the dictionary.
        at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
    at Reko.Core.Graphs.DominatorGraph`1.BuildDominanceFrontiers(DirectedGraph`1 graph, Dictionary`2 idoms) in d:\dev\uxmal\reko\master\src\Core\Graphs\DominatorGraph.cs:line 193
-   at Reko.Core.Graphs.DominatorGraph`1..ctor(DirectedGraph`1 graph, T entryNode) in d:\dev\uxmal\reko\master\src\Core\Graphs\DominatorGraph.cs:line 47
-   at Reko.Structure.StructureAnalysis.Execute() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 144
-   at Reko.Structure.StructureAnalysis.Structure() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 81
+   at Reko.Core.Graphs.DominatorGraph`1..ctor(DirectedGraph`1 graph, T entryNode) in d:\dev\uxmal\reko\master\src\Core\Graphs\DominatorGraph.cs:line 46
+   at Reko.Structure.StructureAnalysis.Execute() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 145
+   at Reko.Structure.StructureAnalysis.Structure() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 82
    at Reko.Decompiler.StructureProgram() in d:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 543
 fn000125CA: warning: Structure analysis stopped making progress, quitting. Please report this issue at https://github.com/uxmal/reko
 
@@ -1998,4 +1996,4 @@ Signature of 'Microsoft Visual C++ 8' detected.
 0040120B: warning: Unable to determine the upper bound of an indirect call or jump; there may be more than 2 entries.
 004011A5: warning: Unable to determine the upper bound of an indirect call or jump; there may be more than 2 entries.
 
-Decompiled 87 binaries in 74.82 seconds.
+Decompiled 87 binaries in 56.54 seconds.

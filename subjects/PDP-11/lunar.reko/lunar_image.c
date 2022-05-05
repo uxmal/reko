@@ -813,7 +813,7 @@ void fn0D66()
 cui16 * fn0D78(word16 * r4, cui16 * r5)
 {
 	cui16 wLoc02_n = 0x0200;
-	if (0x0400 - r4 <= 0x0400)
+	if (r4 <= (char *) (&g_t021C) + 484)
 	{
 		r4 = (word16 *) ((char *) &g_t021C + 483);
 		if (g_ptr0082 == (char *) (&g_t021C) + 483)
@@ -986,7 +986,7 @@ void fn0F04(int16 r0)
 	word16 * r4_n = fn100C(*r0_n);
 	if (r4_n <= null)
 		r4_n = null;
-	else if (0x0400 - r4_n <= 0x0400)
+	else if (r4_n <= (char *) (&g_t021C) + 484)
 		r4_n = (word16 *) ((char *) &g_t021C + 483);
 	r5_n->ptr0000 = r4_n;
 	g_ptr0082 = r4_n;
@@ -1793,11 +1793,8 @@ struct Eq_n * fn15F2(struct Eq_n * r0, struct Eq_n * r1)
 	{
 		r1->b0001 = 0x30;
 		ptrLoc02_n = 0x163C;
-		while (10000 - r0 <= 10000)
-		{
+		for (; r0 <= &g_t2710; r0 -= 10000)
 			++r1->b0001;
-			r0 -= 10000;
-		}
 	}
 	struct Eq_n * r2_n;
 	byte * r3_n;

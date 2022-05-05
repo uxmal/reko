@@ -68,6 +68,8 @@ namespace Reko.Scanning
                 var trace = MakeTrace(addrNext, state);
                 while (IsValid(addrNext))
                 {
+                    if (!shScanner.TryRegisterBlockStart(addrNext, addrNext))
+                        break;
                     var job = AddJob(addrNext, trace, state);
                     var (block, newState) = job.ParseBlock();
                     if (block is null)
@@ -96,9 +98,9 @@ namespace Reko.Scanning
                 blockNos[offset] == 0;
         }
 
-        public override AbstractBlockWorker AddJob(Address addr, IEnumerator<RtlInstructionCluster> trace, ProcessorState state)
+        public override BlockWorker AddJob(Address addr, IEnumerator<RtlInstructionCluster> trace, ProcessorState state)
         {
-            return new ShingleWorker(shScanner, this, addr, trace, state);
+            return new BlockWorker(shScanner, this, addr, trace, state);
         }
 
         public override bool TryMarkVisited(Address addr)

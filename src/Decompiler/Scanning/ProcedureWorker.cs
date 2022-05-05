@@ -20,6 +20,7 @@
 
 using Reko.Core;
 using Reko.Core.Collections;
+using Reko.Core.Diagnostics;
 using Reko.Core.Rtl;
 using Reko.Core.Services;
 using System;
@@ -60,14 +61,14 @@ namespace Reko.Scanning
         /// </summary>
         public void Run()
         {
-            trace_Inform("PW: {0} Processing", proc.Name);
+            log.Inform("PW: {0} Processing", proc.Name);
             for (;;)
             {
                 while (workList.TryGetWorkItem(out var work))
                 {
                     if (!recScanner.TryRegisterBlockStart(work.Address, proc.Address))
                         continue;
-                    trace_Verbose("    {0}: Parsing block at {1}", proc.Address, work.Address);
+                    log.Verbose("    {0}: Parsing block at {1}", proc.Address, work.Address);
                     var (block,state) = work.ParseBlock();
                     if (block is not null && block.IsValid)
                     {
@@ -80,12 +81,12 @@ namespace Reko.Scanning
                 }
                 //$TODO: Check for indirects
                 //$TODO: Check for calls.
-                trace_Inform("    {0}: Finished", proc.Name);
+                log.Inform("    {0}: Finished", proc.Name);
                 return;
             }
         }
 
-        public override AbstractBlockWorker AddJob(Address addr, IEnumerator<RtlInstructionCluster> trace, ProcessorState state)
+        public override BlockWorker AddJob(Address addr, IEnumerator<RtlInstructionCluster> trace, ProcessorState state)
         {
             var worker = new BlockWorker(recScanner, this, addr, trace, state);
             this.workList.Add(worker);
@@ -103,7 +104,7 @@ namespace Reko.Scanning
             if (recScanner.TryStartProcedureWorker(edge.To, state, out var calleeWorker))
             {
                 calleeWorker.TryEnqueueCaller(this, edge.From, block.Address + block.Length, state);
-                trace_Verbose("    {0}: suspended, waiting for {1} to return", proc.Address, calleeWorker.Procedure.Address);
+                log.Verbose("    {0}: suspended, waiting for {1} to return", proc.Address, calleeWorker.Procedure.Address);
             }
             else
                 throw new NotImplementedException("Couldn't start procedure worker");
@@ -118,7 +119,7 @@ namespace Reko.Scanning
             {
                 foreach (var (addrFallThrough, (addrCaller, caller, state)) in callers)
                 {
-                    trace_Verbose("   {0}: resuming worker {1} at {2}", proc.Address, caller.Procedure.Address, addrFallThrough);
+                    log.Verbose("   {0}: resuming worker {1} at {2}", proc.Address, caller.Procedure.Address, addrFallThrough);
                     recScanner.ResumeWorker(caller, addrCaller, addrFallThrough, state);
                 }
                 empty = new Dictionary<Address, (Address, ProcedureWorker, ProcessorState)>();

@@ -6223,13 +6223,13 @@ void fn0000E6E4(uint32 VR)
 // 0000E718: Register word32 fn0000E718(Register uint32 VR, Register out Eq_n r11Out)
 // Called from:
 //      fn00008834
-//      fn0000B4D4
 //      fn0000C48C
 //      fn0000CCA8
 //      fn0000EDF4
 //      fn0000F250
 //      fn0000F368
 //      fn0000F444
+//      fn0000F8E8
 word32 fn0000E718(uint32 VR, union Eq_n & r11Out)
 {
 	word32 dwLoc0C;
@@ -6243,16 +6243,23 @@ word32 fn0000E718(uint32 VR, union Eq_n & r11Out)
 // Called from:
 //      fn00008834
 //      fn000088FC
-//      fn0000B4D4
 //      fn0000C48C
 //      fn0000CCA8
 //      fn0000EDF4
 //      fn0000F250
 //      fn0000F368
 //      fn0000F444
+//      fn0000F8E8
 void fn0000E740(int32 r3, uint32 VR)
 {
 	__mtspr(VR, r3);
+}
+
+// 0000E750: void fn0000E750()
+void fn0000E750()
+{
+	while (true)
+		;
 }
 
 // 0000E758: void fn0000E758(Register word32 r3, Register word32 r4, Register word32 r5, Register Eq_n r15, Register uint32 VR)

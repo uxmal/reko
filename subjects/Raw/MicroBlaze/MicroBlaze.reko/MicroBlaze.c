@@ -4606,6 +4606,27 @@ Eq_n fn000087FC(Eq_n r0, Eq_n r19, Eq_n r23, ptr32 & r4Out, ptr32 & r5Out, ptr32
 	return r3_n;
 }
 
+// 00008800: Register word32 fn00008800(Register out ptr32 r15Out, Register out ptr32 r19Out, Register out ptr32 r21Out, Register out ptr32 r22Out, Register out ptr32 r23Out, Register out ptr32 r24Out)
+// Called from:
+//      fn00008920
+word32 fn00008800(ptr32 & r15Out, ptr32 & r19Out, ptr32 & r21Out, ptr32 & r22Out, ptr32 & r23Out, ptr32 & r24Out)
+{
+	word32 r22;
+	ptr32 dwArg00;
+	ptr32 dwArg1C;
+	ptr32 dwArg20;
+	ptr32 dwArg24;
+	ptr32 dwArg28;
+	ptr32 dwArg2C;
+	r15Out = dwArg00;
+	r19Out = dwArg1C;
+	r21Out = dwArg20;
+	r22Out = dwArg24;
+	r23Out = dwArg28;
+	r24Out = dwArg2C;
+	return r22;
+}
+
 // 00008824: Register Eq_n fn00008824(Register Eq_n r0, Register Eq_n r7, Register Eq_n r19, Register Eq_n r22, Register out ptr32 r4Out, Register out ptr32 r6Out, Register out ptr32 r7Out, Register out ptr32 r8Out, Register out (ptr32 Eq_n) r9Out, Register out ptr32 r19Out, Register out ptr32 r21Out, Register out ptr32 r22Out, Register out ptr32 r23Out, Register out ptr32 r24Out)
 // Called from:
 //      fn00000248
@@ -4857,27 +4878,42 @@ Eq_n fn00008918(Eq_n r0, Eq_n r4, Eq_n r19, Eq_n r22, Eq_n r23, ptr32 & r4Out, p
 	}
 }
 
-// 00008920: Register Eq_n fn00008920(Register Eq_n r0, Register Eq_n r19, Register Eq_n r22, Register Eq_n r23, Register out Eq_n r4Out, Register out ptr32 r5Out, Register out ptr32 r6Out, Register out ptr32 r7Out, Register out Eq_n r8Out, Register out ptr32 r15Out, Register out ptr32 r19Out, Register out ptr32 r21Out, Register out ptr32 r22Out, Register out ptr32 r23Out, Register out ptr32 r24Out)
+// 00008920: Register word32 fn00008920(Register Eq_n r0, Register Eq_n r19, Register Eq_n r22, Register Eq_n r23, Register out Eq_n r4Out, Register out ptr32 r5Out, Register out ptr32 r6Out, Register out ptr32 r7Out, Register out Eq_n r8Out, Register out ptr32 r15Out, Register out ptr32 r19Out, Register out ptr32 r21Out, Register out ptr32 r22Out, Register out ptr32 r23Out, Register out ptr32 r24Out)
 // Called from:
 //      fn00008824
 //      fn00008874
 //      fn0000889C
 //      fn00008918
-Eq_n fn00008920(Eq_n r0, Eq_n r19, Eq_n r22, Eq_n r23, union Eq_n & r4Out, ptr32 & r5Out, ptr32 & r6Out, ptr32 & r7Out, union Eq_n & r8Out, ptr32 & r15Out, ptr32 & r19Out, ptr32 & r21Out, ptr32 & r22Out, ptr32 & r23Out, ptr32 & r24Out)
+word32 fn00008920(Eq_n r0, Eq_n r19, Eq_n r22, Eq_n r23, union Eq_n & r4Out, ptr32 & r5Out, ptr32 & r6Out, ptr32 & r7Out, union Eq_n & r8Out, ptr32 & r15Out, ptr32 & r19Out, ptr32 & r21Out, ptr32 & r22Out, ptr32 & r23Out, ptr32 & r24Out)
 {
-	ptr32 dwArg00;
-	ptr32 dwArg1C;
-	ptr32 dwArg20;
-	ptr32 dwArg24;
-	ptr32 dwArg28;
-	ptr32 dwArg2C;
 	ptr32 r5;
 	ptr32 r6;
 	ptr32 r7;
 	Eq_n r8;
-	Eq_n r3_n;
 	Eq_n r4_n = *((word32) r19 + 5796);
-	if (r4_n - ((word32) (*((word32) r19 + 16)) + 2) >= 0x00)
+	if (r4_n - ((word32) (*((word32) r19 + 16)) + 2) < 0x00)
+	{
+		ptr32 r15_n;
+		ptr32 r19_n;
+		ptr32 r21_n;
+		ptr32 r22_n;
+		ptr32 r23_n;
+		ptr32 r24_n;
+		word32 r3_n = fn00008800(out r15_n, out r19_n, out r21_n, out r22_n, out r23_n, out r24_n);
+		r4Out = r4_n;
+		r5Out = r5;
+		r6Out = r6;
+		r7Out = r7;
+		r8Out = r8;
+		r15Out = r15_n;
+		r19Out = r19_n;
+		r21Out = r21_n;
+		r22Out = r22_n;
+		r23Out = r23_n;
+		r24Out = r24_n;
+		return r3_n;
+	}
+	else
 	{
 		while (true)
 		{
@@ -4906,11 +4942,11 @@ Eq_n fn00008920(Eq_n r0, Eq_n r19, Eq_n r22, Eq_n r23, union Eq_n & r4Out, ptr32
 			else
 				r8_n = 0x01;
 			Eq_n r3_n;
-			r8 = r8_n + ~0x00 & r23;
+			Eq_n r8_n = r8_n + ~0x00 & r23;
 			ui32 r18_n = r4_n & 0x1F;
 			if (Test(NE,r4_n & 0x1F))
 			{
-				Eq_n r3_n = r8;
+				Eq_n r3_n = r8_n;
 				while (true)
 				{
 					r18_n += ~0x00;
@@ -4921,26 +4957,30 @@ Eq_n fn00008920(Eq_n r0, Eq_n r19, Eq_n r22, Eq_n r23, union Eq_n & r4Out, ptr32
 				r3_n = r3_n * 0x02;
 			}
 			else
-				r3_n = r8;
+				r3_n = r8_n;
 			Eq_n r3_n;
 			Eq_n r3_n = r3_n | r6_n;
 			((word32) r19 + 5816)->u1 = (word16) r3_n;
 			*((word32) r19 + 5820) = (word32) r21_n + r4_n;
-			word32 r10_n;
-			word32 r26_n;
-			word32 r8_n;
+			word32 r31_n;
+			word32 r30_n;
+			word32 r9_n;
+			word32 r27_n;
+			word32 r29_n;
 			word32 r28_n;
+			word32 r8_n;
 			ui32 r21_n;
 			word32 r22_n;
 			Eq_n r23_n;
-			word32 r27_n;
-			word32 r29_n;
-			word32 r30_n;
-			word32 r31_n;
-			word32 r9_n;
-			word32 r25_n;
+			Eq_n r4_n;
+			ptr32 r5_n;
+			ptr32 r6_n;
+			ptr32 r7_n;
 			word32 r24_n;
-			fn00003990(r0, r3_n, r19, r23, out r4_n, out r5, out r6, out r7, out r8_n, out r9_n, out r10_n, out r19, out r21_n, out r22_n, out r23_n, out r24_n, out r25_n, out r26_n, out r27_n, out r28_n, out r29_n, out r30_n, out r31_n);
+			word32 r10_n;
+			word32 r25_n;
+			word32 r26_n;
+			fn00003990(r0, r3_n, r19, r23, out r4_n, out r5_n, out r6_n, out r7_n, out r8_n, out r9_n, out r10_n, out r19, out r21_n, out r22_n, out r23_n, out r24_n, out r25_n, out r26_n, out r27_n, out r28_n, out r29_n, out r30_n, out r31_n);
 			r22 = r22_n - r21_n;
 			ui32 r18_n = r21_n & 0x1F;
 			if (Test(NE,r21_n & 0x1F))
@@ -4961,22 +5001,26 @@ Eq_n fn00008920(Eq_n r0, Eq_n r19, Eq_n r22, Eq_n r23, union Eq_n & r4Out, ptr32
 				break;
 			r23 = r3_n;
 		}
-		r3_n = r22;
+		ptr32 r15_n;
+		ptr32 r19_n;
+		ptr32 r21_n;
+		ptr32 r22_n;
+		ptr32 r23_n;
+		ptr32 r24_n;
+		word32 r3_n = fn00008800(out r15_n, out r19_n, out r21_n, out r22_n, out r23_n, out r24_n);
+		r4Out = r4_n;
+		r5Out = r5_n;
+		r6Out = r6_n;
+		r7Out = r7_n;
+		r8Out = r8_n;
+		r15Out = r15_n;
+		r19Out = r19_n;
+		r21Out = r21_n;
+		r22Out = r22_n;
+		r23Out = r23_n;
+		r24Out = r24_n;
+		return r3_n;
 	}
-	else
-		r3_n.u0 = ~0x04;
-	r4Out = r4_n;
-	r5Out = r5;
-	r6Out = r6;
-	r7Out = r7;
-	r8Out = r8;
-	r15Out = dwArg00;
-	r19Out = dwArg1C;
-	r21Out = dwArg20;
-	r22Out = dwArg24;
-	r23Out = dwArg28;
-	r24Out = dwArg2C;
-	return r3_n;
 }
 
 // 00008BB4: Register Eq_n fn00008BB4(Register Eq_n r3, Register Eq_n r5, Register Eq_n r6, Register Eq_n r7, Register Eq_n r8, Register out Eq_n r4Out, Register out ptr32 r9Out, Register out ptr32 r10Out, Register out Eq_n r11Out, Register out Eq_n r20Out)
@@ -17796,6 +17840,11 @@ void fn000181D0()
 
 // 0001831C: void fn0001831C()
 void fn0001831C()
+{
+}
+
+// 00018670: void fn00018670()
+void fn00018670()
 {
 }
 

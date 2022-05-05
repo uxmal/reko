@@ -2244,7 +2244,7 @@ l57AE:
 l57E6:
 	word16 v135_186 = Mem176[r5_112:word16]
 	r5_112 = r5_112 + 2<16>
-	dwLoc1C_2077 = SEQ(~(0<16> - CONVERT(v135_186 * 2<16> <u v135_186, bool, word16)), v135_186) (alias)
+	dwLoc1C_2077 = SEQ(~(0<16> - CONVERT(v135_186 * 2<16> <u 0<16>, bool, word16)), v135_186) (alias)
 l57B4:
 	r5_112 = r5_112 + 4<16>
 	dwLoc1C_2077 = Mem209[r5_112:word32] (alias)
@@ -2885,15 +2885,15 @@ l00005B4E:
 	word20 r9_18 = 0x21<16>
 l00005B6C:
 	r12 = r12 * 2<20>
-	r13 = r13 * 2<20> + CONVERT(r12 <u r12 * 2<20>, bool, word20)
+	r13 = r13 * 2<20> + CONVERT(r12 <u 0<20>, bool, word20)
 	r9_18 = r9_18 - 1<16>
-	word20 r8_17 = r8 * 2<20> + CONVERT(r13 <u r13 * 2<20>, bool, word20)
+	word20 r8_17 = r8 * 2<20> + CONVERT(r13 <u 0<20>, bool, word20)
 	bool C_22 = SLICE(cond(r9_18), bool, 0)
 	branch r9_18 != 0<20> l00005B58
 l00005B58:
 	r8 = __rcr<word20,byte>(r8_17, 1<8>, C_22)
 	r14_25 = r14_25 * 2<20> + CONVERT(r8 <u 0<20>, bool, word20)
-	r15_29 = r15_29 * 2<20> + CONVERT(r14_25 <u r14_25 * 2<20>, bool, word20)
+	r15_29 = r15_29 * 2<20> + CONVERT(r14_25 <u 0<20>, bool, word20)
 	branch r15_29 >=u r11 l00005B6C
 l00005B62:
 	branch r15_29 != r11 l00005B68

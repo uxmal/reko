@@ -43,8 +43,6 @@ namespace Reko.Scanning
             this.Length = length;
             this.FallThrough = addrFallThrough;
             this.Instructions = instructions;
-            if (instructions.Count == 0)
-                _ = this; //$DEBUG
             this.IsValid = true;
         }
 

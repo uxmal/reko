@@ -116,7 +116,11 @@ l034A:
 fn034E proc
 	ld	(ix-0x06),a
 
-l0350:
+;; fn0350: 0350
+;;   Called from:
+;;     0430 (in fn03B2)
+;;     0B51 (in fn0914)
+fn0350 proc
 	ld	a,a
 	ld	a,b
 	adc	a,(ix-0x21)
@@ -172,6 +176,7 @@ fn03AA proc
 ;; fn03B2: 03B2
 ;;   Called from:
 ;;     034E (in fn034E)
+;;     03AF (in fn0350)
 ;;     03B0 (in fn039D)
 fn03B2 proc
 	srl	h
@@ -619,57 +624,386 @@ fn0823 proc
 08E0 1A 00 FE 70 08 38 04 00 FE 59 59 F0 06 29 F0 07 ...p.8...YY..)..
 08F0 28 51 50 F9 33 F8 32 3A 10 00 FE 70 08 38 04 00 (QP.3.2:...p.8..
 0900 FE 59 58 59 3A 04 00 F8 70 51 50 08 3A 0C 00 FE .YXY:...pQP.:...
-0910 70 08 38 04 00 FE 59 58 59 3A 08 00 F8 70 51 50 p.8...YXY:...pQP
-0920 08 3A 08 00 FE 70 08 38 04 00 FE 59 58 59 3A 0C .:...p.8...YXY:.
-0930 00 F8 70 51 08 3A 02 00 FE 70 08 38 04 00 FE 59 ..pQ.:...p.8...Y
-0940 59 F4 EA 37 20 FE 65 F4 EB 26 F4 EC 26 F4 ED 26 Y..7 .e..&..&..&
-0950 FE 65 F4 EE 26 F4 EF 26 F4 F0 26 F4 F1 26 F0 EE .e..&..&..&..&..
-0960 2E 68 B9 F4 EE 26 F0 EF 2E 69 79 F4 EF 26 F0 F0 .h...&...iy..&..
-0970 2E 69 37 F4 F0 26 F0 F1 2E 69 9E F4 F1 26 56 F0 .i7..&...i...&V.
-0980 F2 29 F0 F3 28 F0 F4 2D F0 F5 2C 5E 36 04 F9 A4 .)..(..-..,^6...
-0990 F8 A2 FA 71 8E CE F7 21 F0 E6 60 F4 FA 26 20 F0 ...q...!..`..& .
-09A0 E7 61 F4 FB 26 25 F0 E8 61 F4 FC 26 24 F0 E9 61 .a..&%..a..&$..a
-09B0 F4 FD 26 F0 F2 2E F0 EE 60 29 F0 F3 2E F0 EF 61 ..&.....`).....a
-09C0 28 F0 F4 2E F0 F0 61 2D F0 F5 2E F0 F1 61 2C F0 (.....a-.....a,.
-09D0 FA 2E F9 65 F4 FA 26 F0 FB 2E F8 65 F4 FB 26 F0 ...e..&....e..&.
-09E0 FC 2E FD 65 F4 FC 26 F0 FD 2E FC 65 F4 FD 26 56 ...e..&....e..&V
-09F0 F0 F2 29 F0 F3 28 F0 F4 2D F0 F5 2C 5E 36 05 FC ..)..(..-..,^6..
-0A00 A7 FD A3 F8 A3 F9 A3 8E CE F5 21 F0 E2 60 29 20 ..........!..`) 
-0A10 F0 E3 61 28 25 F0 E4 61 2D 24 F0 E5 61 2C 21 F0 ..a(%..a-$..a,!.
-0A20 FA 65 29 20 F0 FB 65 28 25 F0 FC 65 2D 24 F0 FD .e) ..e(%..e-$..
-0A30 65 2C F0 F6 2E F9 60 F4 F6 26 F0 F7 2E F8 61 F4 e,....`..&....a.
-0A40 F7 26 F0 F8 2E FD 61 F4 F8 26 F0 F9 2E FC 61 F4 .&....a..&....a.
-0A50 F9 26 56 F0 F6 29 F0 F7 28 F0 F8 2D F0 F9 2C 5E .&V..)..(..-..,^
-0A60 36 04 F9 A4 F8 A2 FA 71 8E CE F7 21 F0 DE 60 F4 6......q...!..`.
-0A70 FA 26 20 F0 DF 61 F4 FB 26 25 F0 E0 61 F4 FC 26 .& ..a..&%..a..&
-0A80 24 F0 E1 61 F4 FD 26 F0 F6 2E F0 EE 60 29 F0 F7 $..a..&.....`)..
-0A90 2E F0 EF 61 28 F0 F8 2E F0 F0 61 2D F0 F9 2E F0 ...a(.....a-....
-0AA0 F1 61 2C F0 FA 2E F9 65 F4 FA 26 F0 FB 2E F8 65 .a,....e..&....e
-0AB0 F4 FB 26 F0 FC 2E FD 65 F4 FC 26 F0 FD 2E FC 65 ..&....e..&....e
-0AC0 F4 FD 26 56 F0 F6 29 F0 F7 28 F0 F8 2D F0 F9 2C ..&V..)..(..-..,
-0AD0 5E 36 05 FC A7 FD A3 F8 A3 F9 A3 8E CE F5 21 F0 ^6............!.
-0AE0 DA 60 29 20 F0 DB 61 28 25 F0 DC 61 2D 24 F0 DD .`) ..a(%..a-$..
-0AF0 61 2C 21 F0 FA 65 29 20 F0 FB 65 28 25 F0 FC 65 a,!..e) ..e(%..e
-0B00 2D 24 F0 FD 65 2C F0 F2 2E F9 60 F4 F2 26 F0 F3 -$..e,....`..&..
-0B10 2E F8 61 F4 F3 26 F0 F4 2E FD 61 F4 F4 26 F0 F5 ..a..&....a..&..
-0B20 2E FC 61 F4 F5 26 F0 EA 2E 68 FF 29 F0 EB 2E 69 ..a..&...h.)...i
-0B30 FF 28 F0 EC 2E 69 FF 2D F0 ED 2E 69 FF 2C F4 EA .(...i.-...i.,..
-0B40 21 F4 EB 20 F4 EC 25 F4 ED 24 24 FD 66 F8 66 F9 !.. ..%..$$.f.f.
-0B50 66 EB 50 03 CE 3A 1C 00 FE 70 38 04 00 FE 59 08 f.P..:...p8...Y.
-0B60 F2 24 4A 08 3A 18 00 FE 70 38 04 00 FE 59 FC 3E .$J.:...p8...Y.>
-0B70 5C 1E 54 3C 00 00 FE 14 16 DA FF 08 F2 2A 4A 08 \.T<.........*J.
+0910 70 08 38 04                                     p.8.            
+
+;; fn0914: 0914
+fn0914 proc
+	nop
+
+l0915:
+	ldir
+
+l0917:
+	pop	bc
+	pop	de
+	ld	hl,0008
+	add	hl,bc
+	push	de
+	push	bc
+	ex	de,hl
+	ld	hl,0008
+	add	hl,sp
+	ex	de,hl
+	ld	bc,0004
+
+l092A:
+	ldir
+
+l092C:
+	pop	bc
+	pop	de
+	ld	hl,000C
+	add	hl,bc
+	push	de
+	ex	de,hl
+	ld	hl,0002
+	add	hl,sp
+	ex	de,hl
+	ld	bc,0004
+
+l093E:
+	ldir
+
+l0940:
+	pop	de
+	ld	(ix-0x16),20
+	xor	a,a
+	ld	(ix-0x15),a
+	ld	(ix-0x14),a
+	ld	(ix-0x13),a
+	xor	a,a
+	ld	(ix-0x12),a
+	ld	(ix-0x11),a
+	ld	(ix-0x10),a
+	ld	(ix-0x0F),a
+	ld	a,(ix-0x12)
+	add	a,B9
+	ld	(ix-0x12),a
+	ld	a,(ix-0x11)
+	adc	a,79
+	ld	(ix-0x11),a
+	ld	a,(ix-0x10)
+	adc	a,37
+	ld	(ix-0x10),a
+	ld	a,(ix-0x0F)
+	adc	a,9E
+	ld	(ix-0x0F),a
+	push	af
+	ld	c,(ix-0x0E)
+	ld	b,(ix-0x0D)
+	ld	l,(ix-0x0C)
+	ld	h,(ix-0x0B)
+	pop	af
+	ld	a,04
+
+l098E:
+	sla	c
+	rl	b
+	adc	hl,hl
+	dec	a
+	jr	NZ,098E
+
+l0997:
+	ld	a,c
+	add	a,(ix-0x1A)
+	ld	(ix-0x06),a
+	ld	a,b
+	adc	a,(ix-0x19)
+	ld	(ix-0x05),a
+	ld	a,l
+	adc	a,(ix-0x18)
+	ld	(ix-0x04),a
+	ld	a,h
+	adc	a,(ix-0x17)
+	ld	(ix-0x03),a
+	ld	a,(ix-0x0E)
+	add	a,(ix-0x12)
+	ld	c,a
+	ld	a,(ix-0x0D)
+	adc	a,(ix-0x11)
+	ld	b,a
+	ld	a,(ix-0x0C)
+	adc	a,(ix-0x10)
+	ld	l,a
+	ld	a,(ix-0x0B)
+	adc	a,(ix-0x0F)
+	ld	h,a
+	ld	a,(ix-0x06)
+	xor	a,c
+	ld	(ix-0x06),a
+	ld	a,(ix-0x05)
+	xor	a,b
+	ld	(ix-0x05),a
+	ld	a,(ix-0x04)
+	xor	a,l
+	ld	(ix-0x04),a
+	ld	a,(ix-0x03)
+	xor	a,h
+	ld	(ix-0x03),a
+	push	af
+	ld	c,(ix-0x0E)
+	ld	b,(ix-0x0D)
+	ld	l,(ix-0x0C)
+	ld	h,(ix-0x0B)
+	pop	af
+	ld	a,05
+
+l09FF:
+	srl	h
+	rr	l
+	rr	b
+	rr	c
+	dec	a
+	jr	NZ,09FF
+
+l0A0A:
+	ld	a,c
+	add	a,(ix-0x1E)
+	ld	c,a
+	ld	a,b
+	adc	a,(ix-0x1D)
+	ld	b,a
+	ld	a,l
+	adc	a,(ix-0x1C)
+	ld	l,a
+	ld	a,h
+	adc	a,(ix-0x1B)
+	ld	h,a
+	ld	a,c
+	xor	a,(ix-0x06)
+	ld	c,a
+	ld	a,b
+	xor	a,(ix-0x05)
+	ld	b,a
+	ld	a,l
+	xor	a,(ix-0x04)
+	ld	l,a
+	ld	a,h
+	xor	a,(ix-0x03)
+	ld	h,a
+	ld	a,(ix-0x0A)
+	add	a,c
+	ld	(ix-0x0A),a
+	ld	a,(ix-0x09)
+	adc	a,b
+	ld	(ix-0x09),a
+	ld	a,(ix-0x08)
+	adc	a,l
+	ld	(ix-0x08),a
+	ld	a,(ix-0x07)
+	adc	a,h
+	ld	(ix-0x07),a
+	push	af
+	ld	c,(ix-0x0A)
+	ld	b,(ix-0x09)
+	ld	l,(ix-0x08)
+	ld	h,(ix-0x07)
+	pop	af
+	ld	a,04
+
+l0A62:
+	sla	c
+	rl	b
+	adc	hl,hl
+	dec	a
+	jr	NZ,0A62
+
+l0A6B:
+	ld	a,c
+	add	a,(ix-0x22)
+	ld	(ix-0x06),a
+	ld	a,b
+	adc	a,(ix-0x21)
+	ld	(ix-0x05),a
+	ld	a,l
+	adc	a,(ix-0x20)
+	ld	(ix-0x04),a
+	ld	a,h
+	adc	a,(ix-0x1F)
+	ld	(ix-0x03),a
+	ld	a,(ix-0x0A)
+	add	a,(ix-0x12)
+	ld	c,a
+	ld	a,(ix-0x09)
+	adc	a,(ix-0x11)
+	ld	b,a
+	ld	a,(ix-0x08)
+	adc	a,(ix-0x10)
+	ld	l,a
+	ld	a,(ix-0x07)
+	adc	a,(ix-0x0F)
+	ld	h,a
+	ld	a,(ix-0x06)
+	xor	a,c
+	ld	(ix-0x06),a
+	ld	a,(ix-0x05)
+	xor	a,b
+	ld	(ix-0x05),a
+	ld	a,(ix-0x04)
+	xor	a,l
+	ld	(ix-0x04),a
+	ld	a,(ix-0x03)
+	xor	a,h
+	ld	(ix-0x03),a
+	push	af
+	ld	c,(ix-0x0A)
+	ld	b,(ix-0x09)
+	ld	l,(ix-0x08)
+	ld	h,(ix-0x07)
+	pop	af
+	ld	a,05
+
+l0AD3:
+	srl	h
+	rr	l
+	rr	b
+	rr	c
+	dec	a
+	jr	NZ,0AD3
+
+l0ADE:
+	ld	a,c
+	add	a,(ix-0x26)
+	ld	c,a
+	ld	a,b
+	adc	a,(ix-0x25)
+	ld	b,a
+	ld	a,l
+	adc	a,(ix-0x24)
+	ld	l,a
+	ld	a,h
+	adc	a,(ix-0x23)
+	ld	h,a
+	ld	a,c
+	xor	a,(ix-0x06)
+	ld	c,a
+	ld	a,b
+	xor	a,(ix-0x05)
+	ld	b,a
+	ld	a,l
+	xor	a,(ix-0x04)
+	ld	l,a
+	ld	a,h
+	xor	a,(ix-0x03)
+	ld	h,a
+	ld	a,(ix-0x0E)
+	add	a,c
+	ld	(ix-0x0E),a
+	ld	a,(ix-0x0D)
+	adc	a,b
+	ld	(ix-0x0D),a
+	ld	a,(ix-0x0C)
+	adc	a,l
+	ld	(ix-0x0C),a
+	ld	a,(ix-0x0B)
+	adc	a,h
+	ld	(ix-0x0B),a
+	ld	a,(ix-0x16)
+	add	a,FF
+	ld	c,a
+	ld	a,(ix-0x15)
+	adc	a,FF
+	ld	b,a
+	ld	a,(ix-0x14)
+	adc	a,FF
+	ld	l,a
+	ld	a,(ix-0x13)
+	adc	a,FF
+	ld	h,a
+	ld	(ix-0x16),c
+	ld	(ix-0x15),b
+	ld	(ix-0x14),l
+	ld	(ix-0x13),h
+	ld	a,h
+	or	a,l
+	or	a,b
+	or	a,c
+	jp	NZ,0350
+
+l0B55:
+	ld	hl,001C
+	add	hl,sp
+	ld	bc,0004
+
+l0B5D:
+	ldir
+
+l0B5F:
+	ex	de,hl
+	ld	hl,(sp+0x24)
+	ex	de,hl
+	ld	hl,0018
+	add	hl,sp
+	ld	bc,0004
+
+l0B6C:
+	ldir
+
+l0B6E:
+	ld	sp,ix
+	pop	ix
+	ret
+0B72       54 3C 00 00 FE 14 16 DA FF 08 F2 2A 4A 08   T<.........*J.
 0B80 51 3A 0E 00 FE 70 08 38 04 00 FE 59 59 3A 04 00 Q:...p.8...YY:..
 0B90 F9 70 F6 20 42 51 08 F2 22 4A 08 3A 06 00 FE 70 .p. BQ.."J.:...p
 0BA0 08 38 04 00 FE 59 59 F0 06 29 F0 07 28 51 50 F9 .8...YY..)..(QP.
 0BB0 33 F8 32 3A 18 00 FE 70 08 38 04 00 FE 59 58 59 3.2:...p.8...YXY
 0BC0 3A 04 00 F8 70 51 50 08 3A 1C 00 FE 70 08 38 04 :...pQP.:...p.8.
-0BD0 00 FE 59 58 59 3A 08 00 F8 70 51 50 08 3A 20 00 ..YXY:...pQP.: .
-0BE0 FE 70 08 38 04 00 FE 59 58 59 3A 0C 00 F8 70 51 .p.8...YXY:...pQ
-0BF0 08 3A 12 00 FE 70 08 38 04 00 FE 59 59 F4 E2 37 .:...p.8...YY..7
-0C00 20 FE 65 F4 E3 26 F4 E4 26 F4 E5 26 F4 DA 37 20  .e..&..&..&..7 
-0C10 F4 DB 37 37 F4 DC 37 EF F4 DD 37 C6 56          ..77..7...7.V   
+
+;; fn0BD0: 0BD0
+fn0BD0 proc
+	nop
+
+l0BD1:
+	ldir
+
+l0BD3:
+	pop	bc
+	pop	de
+	ld	hl,0008
+	add	hl,bc
+	push	de
+	push	bc
+	ex	de,hl
+	ld	hl,0020
+	add	hl,sp
+	ex	de,hl
+	ld	bc,0004
+
+l0BE6:
+	ldir
+
+l0BE8:
+	pop	bc
+	pop	de
+	ld	hl,000C
+	add	hl,bc
+	push	de
+	ex	de,hl
+	ld	hl,0012
+	add	hl,sp
+	ex	de,hl
+	ld	bc,0004
+
+l0BFA:
+	ldir
+
+l0BFC:
+	pop	de
+	ld	(ix-0x1E),20
+	xor	a,a
+	ld	(ix-0x1D),a
+	ld	(ix-0x1C),a
+	ld	(ix-0x1B),a
+	ld	(ix-0x26),20
+	ld	(ix-0x25),37
+	ld	(ix-0x24),EF
+	ld	(ix-0x23),C6
+	push	af
 
 ;; fn0C1D: 0C1D
+;;   Called from:
+;;     0C1C (in fn0BD0)
 fn0C1D proc
 	ld	c,(ix-0x1A)
 	ld	b,(ix-0x19)

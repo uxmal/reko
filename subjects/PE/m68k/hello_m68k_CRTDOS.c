@@ -19,7 +19,7 @@ void fn00003340(struct Eq_n * a5, word16 wArg06)
 		}
 		++d0_n;
 		++d2_n;
-	} while (d0_n - (a5 + -0x044C) >u d0_n);
+	} while (d0_n - (a5 + -0x044C) <u 0x00);
 	a5->tFFFFF93C.u0 = 22;
 }
 

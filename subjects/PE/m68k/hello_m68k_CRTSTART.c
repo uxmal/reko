@@ -207,7 +207,7 @@ Eq_n fn0000243C(Eq_n a5, ptr32 dwArg04, ptr32 & a6Out)
 	{
 		++d2_n;
 		++d1_n;
-		if (d2_n - (a5 + -1012) <=u d2_n)
+		if (d2_n - (a5 + -1012) >=u 0x00)
 			break;
 	}
 	if (dwArg04 - *((word32) a5 + (d1_n * 8 - 0x044C)) == 0x00)

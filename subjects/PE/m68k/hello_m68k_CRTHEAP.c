@@ -296,8 +296,7 @@ l00002882:
 				a0 = a2_n->dw0000;
 				Eq_n d0_n = a0->t0004;
 				ui32 d1_n = *a3_n;
-				up32 d0_n = SEQ(SLICE(d0_n, word16, 16), (word16) d0_n & ~0x03) - SEQ(SLICE(d1_n, word16, 16), (word16) d1_n & ~0x03);
-				if (d0_n - 0x04 - dwArg04 <= d0_n - 0x04)
+				if (SEQ(SLICE(d0_n, word16, 16), (word16) d0_n & ~0x03) - SEQ(SLICE(d1_n, word16, 16), (word16) d1_n & ~0x03) - 0x04 - dwArg04 >= 0x00)
 					goto l00002880;
 				goto l00002882;
 			}
@@ -572,8 +571,7 @@ void fn00002B18(struct Eq_n * a5, struct Eq_n * dwArg04)
 		if (a5->tFFFFFAE4 != -1 && d0_n - (a5->ptrFFFFFACC)->t0004 < 0x00)
 		{
 			word32 d1_n = a2_n->dw0000 + 4;
-			up32 d1_n = SEQ(SLICE(d1_n, word16, 16), (word16) d1_n & ~0x03) - SEQ(SLICE(d0_n, word16, 16), (word16) d0_n & ~0x03);
-			if (d1_n - 0x04 - a5->tFFFFFAE4 <= d1_n - 0x04)
+			if (SEQ(SLICE(d1_n, word16, 16), (word16) d1_n & ~0x03) - SEQ(SLICE(d0_n, word16, 16), (word16) d0_n & ~0x03) - 0x04 - a5->tFFFFFAE4 >= 0x00)
 				a5->ptrFFFFFACC = a2_n;
 		}
 	}
@@ -599,7 +597,7 @@ int32 fn00002BB4(struct Eq_n * a5, Eq_n dwArg04, up32 dwArg08, struct Eq_n & a5O
 		if (fn0000273C(a0_n, a5, out a0_n) != null)
 		{
 			struct Eq_n * a3_n;
-			Eq_n d0_n = fn00002EA8(a5, dwArg04, &tLoc08);
+			up32 d0_n = fn00002EA8(a5, dwArg04, &tLoc08);
 			if (d0_n == 0x00)
 			{
 				struct Eq_n * a0_n = tLoc08;
@@ -619,7 +617,7 @@ int32 fn00002BB4(struct Eq_n * a5, Eq_n dwArg04, up32 dwArg08, struct Eq_n & a5O
 			__bset<word16>(d1_n, 0x00, out d1_n);
 			a3_n->t0004 = d1_n;
 			*dwArg04 = a3_n;
-			if (3 - ((word32) d0_n + 3) <= 3)
+			if (d0_n <= 0x00)
 			{
 				word16 v24_n = g_a2C58[(int32) ((int16) d0_n + 3) * 2];
 				ptr32 a6_n;
@@ -653,8 +651,7 @@ int32 fn00002BB4(struct Eq_n * a5, Eq_n dwArg04, up32 dwArg08, struct Eq_n & a5O
 				{
 					word32 d0_n = a3_n->dw0000 + 4;
 					Eq_n d1_n = a3_n->t0004;
-					up32 d0_n = SEQ(SLICE(d0_n, word16, 16), (word16) d0_n & ~0x03) - SEQ(SLICE(d1_n, word16, 16), (word16) d1_n & ~0x03);
-					if (d0_n - 0x04 - a5->tFFFFFAE4 <= d0_n - 0x04)
+					if (SEQ(SLICE(d0_n, word16, 16), (word16) d0_n & ~0x03) - SEQ(SLICE(d1_n, word16, 16), (word16) d1_n & ~0x03) - 0x04 - a5->tFFFFFAE4 >= 0x00)
 						a5->ptrFFFFFACC = a3_n;
 				}
 				a5Out = a5;

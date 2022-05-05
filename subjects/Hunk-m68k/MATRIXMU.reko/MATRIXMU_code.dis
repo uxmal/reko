@@ -172,10 +172,9 @@ l00001148:
 	Mem396[0x000014A8<p32>:word32] = execPrivate4()
 	word32 d0_397 = execPrivate5()
 	Mem398[0x000014AC<p32>:word32] = d0_397
-	word32 a6_399 = Mem398[0x00001498<p32>:word32]
 	dwLoc0C_528 = d0_110 + 16<i32>
 	dwLoc10 = d3_254
-	branch Mem398[a6_399 + 20<i32>:word16] - 0x24<16> >u Mem398[a6_399 + 20<i32>:word16] l0000117A
+	branch Mem398[Mem398[0x00001498<p32>:word32] + 20<i32>:word16] <u 0x24<16> l0000117A
 l00001172:
 	word32 v64_408 = Mem398[d0_34 + 224<i32>:word32]
 	Mem409[0x000014B0<p32>:word32] = v64_408

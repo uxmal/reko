@@ -25,19 +25,17 @@ word16 fn02F4(byte a, byte c, byte b, word16 de, byte h, word16 ix, word16 wArg2
 fn02F4_entry:
 	bool C
 l02F4:
-	byte v4_5 = Mem0[ix + -28<i16>:byte]
-	byte a_8 = a + v4_5 + CONVERT(C, bool, byte)
+	byte a_8 = a + Mem0[ix + -28<i16>:byte] + CONVERT(C, bool, byte)
 	ui16 a_a_117 = SEQ(v22_40, Mem0[ix + -10<i16>:byte]) + (SEQ(b, c) ^ Mem0[ix - 6<i16>:ui16])
 	byte a_29 = a_8 ^ Mem0[ix + -4<i16>:byte]
-	byte a_33 = h + Mem0[ix + -27<i16>:byte] + CONVERT(a_8 <u a + v4_5, bool, byte) ^ Mem0[ix + -3<i16>:byte]
+	byte a_33 = h + Mem0[ix + -27<i16>:byte] + CONVERT(a_8 <u 0<8>, bool, byte) ^ Mem0[ix + -3<i16>:byte]
 	Mem39[ix + -10<i16>:byte] = SLICE(a_a_117, byte, 0)
 	byte a_43 = SLICE(a_a_117, byte, 8)
 	byte v22_40 = Mem39[ix + -9<i16>:byte]
 	Mem45[ix + -9<i16>:byte] = a_43
-	byte v23_46 = Mem45[ix + -8<i16>:byte]
-	byte a_49 = v23_46 + a_29 + CONVERT(a_43 <u 0<8>, bool, byte)
+	byte a_49 = Mem45[ix + -8<i16>:byte] + a_29 + CONVERT(a_43 <u 0<8>, bool, byte)
 	Mem51[ix + -8<i16>:byte] = a_49
-	Mem58[ix + -7<i16>:byte] = Mem51[ix + -7<i16>:byte] + a_33 + CONVERT(a_49 <u v23_46 + a_29, bool, byte)
+	Mem58[ix + -7<i16>:byte] = Mem51[ix + -7<i16>:byte] + a_33 + CONVERT(a_49 <u 0<8>, bool, byte)
 	byte a_73 = 4<8>
 	word16 hl_114 = Mem62[ix - 8<i16>:word16]
 	word16 bc_124 = Mem62[ix - 10<i16>:word16]
@@ -86,6 +84,52 @@ l034E_thunk_fn03B2:
 fn034E_exit:
 
 
+word16 fn0350(byte b, byte l, byte h, word16 ix, ptr32 & deOut, ptr32 & hlOut, ptr32 & ixOut)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// Called from:
+//      fn03B2
+//      fn0914
+// MayUse:  b:[0..7] h:[0..7] ix:[0..15] l:[0..7]
+// LiveOut: bc de hl ix
+// Trashed: SZHVNC af b c f h ix l
+// Preserved: sp
+fn0350_entry:
+	bool C
+	byte c
+	byte a
+	word16 de
+l0350:
+	byte a_9 = b + Mem0[ix + -33<i16>:byte] + CONVERT(C, bool, byte)
+	Mem11[ix + -5<i16>:byte] = a_9
+	byte a_16 = l + Mem11[ix + -32<i16>:byte] + CONVERT(a_9 <u 0<8>, bool, byte)
+	Mem18[ix + -4<i16>:byte] = a_16
+	Mem24[ix + -3<i16>:byte] = h + Mem18[ix + -31<i16>:byte] + CONVERT(a_16 <u 0<8>, bool, byte)
+	ui16 a_a_98 = SEQ(v17_31, Mem24[ix + -10<i16>:byte]) + SEQ(v18_33, Mem24[ix + -18<i16>:byte])
+	byte a_35 = SLICE(a_a_98, byte, 8)
+	byte a_42 = Mem24[ix + -8<i16>:byte] + Mem24[ix + -16<i16>:byte] + CONVERT(a_35 <u 0<8>, bool, byte)
+	byte v17_31 = Mem24[ix + -9<i16>:byte]
+	byte v18_33 = Mem24[ix + -17<i16>:byte]
+	byte a_49 = Mem24[ix + -7<i16>:byte] + Mem24[ix + -15<i16>:byte] + CONVERT(a_42 <u 0<8>, bool, byte)
+	Mem54[ix + -6<i16>:byte] = Mem24[ix + -6<i16>:byte] ^ SLICE(a_a_98, byte, 0)
+	Mem58[ix + -5<i16>:byte] = Mem54[ix + -5<i16>:byte] ^ a_35
+	Mem62[ix + -4<i16>:byte] = Mem58[ix + -4<i16>:byte] ^ a_42
+	Mem71[ix + -3<i16>:byte] = Mem62[ix + -3<i16>:byte] ^ a_49
+l03AF_thunk_fn03B2:
+	// Failed to bind call argument.
+	// Please report this issue at https://github.com/uxmal/reko
+	word16 stackArg36 = <invalid>
+	word16 ix_91
+	word16 de_116
+	word16 hl_117
+	fn03B2(SEQ(h, l, b, c), a, de, ix, stackArg36, out de_116, out hl_117, out ix_91)
+	deOut = <invalid>
+	hlOut = <invalid>
+	ixOut = ix_91
+	return <invalid>
+fn0350_exit:
+
+
 void fn039D(byte a, word16 de, byte h, word16 ix, word16 wArg24)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
@@ -130,6 +174,7 @@ word16 fn03B2(word32 h_l_b_c, byte a, word16 de, word16 ix, word16 wArg24, ptr32
 
 // Called from:
 //      fn034E
+//      fn0350
 //      fn039D
 // MayUse:  a:[0..7] de:[0..15] ix:[0..15] Sequence h:l:b:c:[0..31] Stack +0024:[0..15]
 // LiveOut: bc de hl ix
@@ -137,91 +182,76 @@ word16 fn03B2(word32 h_l_b_c, byte a, word16 de, word16 ix, word16 wArg24, ptr32
 // Preserved:
 fn03B2_entry:
 	ptr32 fp
-	word32 h_l_b_c_307 = h_l_b_c
+	word32 h_l_b_c_242 = h_l_b_c
 l03B2:
-	uint32 v71_269 = h_l_b_c_307 >>u 1<i8>
-	uint24 v70_268 = SLICE(v71_269, uint24, 8)
-	uint16 v69_267 = SLICE(v70_268, uint16, 8)
-	byte h_4 = SLICE(v69_267, byte, 8)
-	byte l_8 = SLICE(v69_267, byte, 0)
-	byte b_12 = SLICE(v70_268, byte, 0)
-	byte c_16 = SLICE(v71_269, byte, 0)
+	uint32 v69_191 = h_l_b_c_242 >>u 1<i8>
+	uint24 v68_190 = SLICE(v69_191, uint24, 8)
+	uint16 v67_189 = SLICE(v68_190, uint16, 8)
+	byte h_4 = SLICE(v67_189, byte, 8)
+	byte l_8 = SLICE(v67_189, byte, 0)
+	byte b_12 = SLICE(v68_190, byte, 0)
+	byte c_16 = SLICE(v69_191, byte, 0)
 	a = a - 1<i8>
-	h_l_b_c_307 = v71_269 (alias)
+	h_l_b_c_242 = v69_191 (alias)
 	branch a != 0<8> l03B2
 l03BD:
-	ui16 a_a_255 = SEQ(b_12, c_16) + SEQ(v17_31, Mem25[ix + -38<i16>:byte])
-	byte a_33 = SLICE(a_a_255, byte, 8)
-	byte v18_37 = Mem25[ix + -36<i16>:byte]
-	byte a_39 = l_8 + v18_37 + CONVERT(a_33 <u 0<8>, bool, byte)
-	ui16 a_a_258 = SEQ(v27_68, Mem25[ix + -14<i16>:byte]) + (a_a_255 ^ Mem25[ix - 6<i16>:ui16])
-	byte v17_31 = Mem25[ix + -37<i16>:byte]
-	byte a_57 = a_39 ^ Mem25[ix + -4<i16>:byte]
-	byte a_61 = h_4 + Mem25[ix + -35<i16>:byte] + CONVERT(a_39 <u l_8 + v18_37, bool, byte) ^ Mem25[ix + -3<i16>:byte]
-	Mem67[ix + -14<i16>:byte] = SLICE(a_a_258, byte, 0)
-	byte a_71 = SLICE(a_a_258, byte, 8)
-	byte v27_68 = Mem67[ix + -13<i16>:byte]
-	Mem73[ix + -13<i16>:byte] = a_71
-	byte v28_74 = Mem73[ix + -12<i16>:byte]
-	byte a_77 = v28_74 + a_57 + CONVERT(a_71 <u 0<8>, bool, byte)
-	Mem79[ix + -12<i16>:byte] = a_77
-	Mem84[ix + -11<i16>:byte] = Mem79[ix + -11<i16>:byte] + a_61 + CONVERT(a_77 <u v28_74 + a_57, bool, byte)
-	byte v30_85 = Mem84[ix + -22<i16>:byte]
-	byte a_93 = SLICE(SEQ(Mem84[ix + -21<i16>:byte], v30_85) + 0xFFFF<16>, byte, 8)
-	byte v32_96 = Mem84[ix + -20<i16>:byte]
-	byte a_99 = v32_96 + 0xFF<8> + CONVERT(a_93 <u 0<8>, bool, byte)
-	byte a_105 = Mem84[ix + -19<i16>:byte] + 0xFF<8> + CONVERT(a_99 <u v32_96 + 0xFF<8>, bool, byte)
-	Mem107[ix + -22<i16>:byte] = v30_85 + 0xFF<8>
-	Mem108[ix + -21<i16>:byte] = a_93
-	Mem109[ix + -20<i16>:byte] = a_99
-	Mem110[ix + -19<i16>:byte] = a_105
-	branch (a_105 | a_99 | a_93 | v30_85 + 0xFF<8>) != 0<8> l0350
-l0350:
-	ui16 a_a_266 = SEQ(a_99, a_93) + SEQ(v44_127, Mem110[ix + -33<i16>:byte])
-	Mem125[ix + -5<i16>:byte] = SLICE(a_a_266, byte, 0)
-	byte a_129 = SLICE(a_a_266, byte, 8)
-	byte v44_127 = Mem125[ix + -32<i16>:byte]
-	Mem131[ix + -4<i16>:byte] = a_129
-	Mem136[ix + -3<i16>:byte] = a_105 + Mem131[ix + -31<i16>:byte] + CONVERT(a_129 <u 0<8>, bool, byte)
-	ui16 a_a_263 = SEQ(v48_143, Mem136[ix + -10<i16>:byte]) + SEQ(v49_145, Mem136[ix + -18<i16>:byte])
-	byte a_147 = SLICE(a_a_263, byte, 8)
-	byte v50_150 = Mem136[ix + -8<i16>:byte]
-	byte v51_152 = Mem136[ix + -16<i16>:byte]
-	byte a_154 = v50_150 + v51_152 + CONVERT(a_147 <u 0<8>, bool, byte)
-	byte v48_143 = Mem136[ix + -9<i16>:byte]
-	byte v49_145 = Mem136[ix + -17<i16>:byte]
-	byte a_161 = Mem136[ix + -7<i16>:byte] + Mem136[ix + -15<i16>:byte] + CONVERT(a_154 <u v50_150 + v51_152, bool, byte)
-	Mem166[ix + -6<i16>:byte] = Mem136[ix + -6<i16>:byte] ^ SLICE(a_a_263, byte, 0)
-	Mem170[ix + -5<i16>:byte] = Mem166[ix + -5<i16>:byte] ^ a_147
-	Mem174[ix + -4<i16>:byte] = Mem170[ix + -4<i16>:byte] ^ a_154
-	Mem183[ix + -3<i16>:byte] = Mem174[ix + -3<i16>:byte] ^ a_161
-	a = 5<8>
-	h_l_b_c_307 = SEQ(Mem188[ix + -7<i16>:byte], Mem188[ix + -8<i16>:byte], Mem188[ix + -9<i16>:byte], Mem188[ix + -10<i16>:byte]) (alias)
+	ui16 a_a_183 = SEQ(b_12, c_16) + SEQ(v17_33, Mem0[ix + -38<i16>:byte])
+	byte a_35 = SLICE(a_a_183, byte, 8)
+	byte a_41 = l_8 + Mem0[ix + -36<i16>:byte] + CONVERT(a_35 <u 0<8>, bool, byte)
+	ui16 a_a_186 = SEQ(v27_70, Mem0[ix + -14<i16>:byte]) + (a_a_183 ^ Mem0[ix - 6<i16>:ui16])
+	byte v17_33 = Mem0[ix + -37<i16>:byte]
+	byte a_59 = a_41 ^ Mem0[ix + -4<i16>:byte]
+	byte a_63 = h_4 + Mem0[ix + -35<i16>:byte] + CONVERT(a_41 <u 0<8>, bool, byte) ^ Mem0[ix + -3<i16>:byte]
+	Mem69[ix + -14<i16>:byte] = SLICE(a_a_186, byte, 0)
+	byte a_73 = SLICE(a_a_186, byte, 8)
+	byte v27_70 = Mem69[ix + -13<i16>:byte]
+	Mem75[ix + -13<i16>:byte] = a_73
+	byte a_79 = Mem75[ix + -12<i16>:byte] + a_59 + CONVERT(a_73 <u 0<8>, bool, byte)
+	Mem81[ix + -12<i16>:byte] = a_79
+	Mem86[ix + -11<i16>:byte] = Mem81[ix + -11<i16>:byte] + a_63 + CONVERT(a_79 <u 0<8>, bool, byte)
+	byte v30_87 = Mem86[ix + -22<i16>:byte]
+	byte a_95 = SLICE(SEQ(Mem86[ix + -21<i16>:byte], v30_87) + 0xFFFF<16>, byte, 8)
+	byte a_101 = Mem86[ix + -20<i16>:byte] + 0xFF<8> + CONVERT(a_95 <u 0<8>, bool, byte)
+	byte a_107 = Mem86[ix + -19<i16>:byte] + 0xFF<8> + CONVERT(a_101 <u 0<8>, bool, byte)
+	Mem109[ix + -22<i16>:byte] = v30_87 + 0xFF<8>
+	Mem110[ix + -21<i16>:byte] = a_95
+	Mem111[ix + -20<i16>:byte] = a_101
+	Mem112[ix + -19<i16>:byte] = a_107
+	branch (a_107 | a_101 | a_95 | v30_87 + 0xFF<8>) != 0<8> l0350
+l0430_thunk_fn0350:
+	word16 hl_125
+	word16 ix_128
+	word16 de_129
+	word16 bc_126 = fn0350(b, l, SLICE(hl_125, byte, 8), ix, out de_129, out hl_125, out ix_128)
+	deOut = de_129
+	hlOut = hl_125
+	ixOut = ix_128
+	return bc_126
 l0434:
-	word16 hl_201 = fp + 0x1C<16>
-	word16 bc_204 = 4<16>
+	word16 hl_132 = fp + 0x1C<16>
+	word16 bc_135 = 4<16>
 l043C:
-	Mem209[de:byte] = Mem206[hl_201:byte]
-	hl_201 = hl_201 + 1<i16>
+	Mem140[de:byte] = Mem137[hl_132:byte]
+	hl_132 = hl_132 + 1<i16>
 	de = de + 1<i16>
-	bc_204 = bc_204 - 1<16>
-	branch bc_204 != 0<16> l043C
+	bc_135 = bc_135 - 1<16>
+	branch bc_135 != 0<16> l043C
 l043E:
-	word16 de_220 = wArg24
-	word16 hl_222 = fp + 0x18<16>
-	word16 bc_225 = 4<16>
+	word16 de_151 = wArg24
+	word16 hl_153 = fp + 0x18<16>
+	word16 bc_156 = 4<16>
 l044B:
-	Mem230[de_220:byte] = Mem227[hl_222:byte]
-	hl_222 = hl_222 + 1<i16>
-	de_220 = de_220 + 1<i16>
-	bc_225 = bc_225 - 1<16>
-	branch bc_225 != 0<16> l044B
+	Mem161[de_151:byte] = Mem158[hl_153:byte]
+	hl_153 = hl_153 + 1<i16>
+	de_151 = de_151 + 1<i16>
+	bc_156 = bc_156 - 1<16>
+	branch bc_156 != 0<16> l044B
 l044D:
-	word16 ix_241 = Mem230[ix:word16]
-	deOut = de_220
-	hlOut = hl_222
-	ixOut = ix_241
-	return bc_225
+	word16 ix_172 = Mem161[ix:word16]
+	deOut = de_151
+	hlOut = hl_153
+	ixOut = ix_172
+	return bc_156
 fn03B2_exit:
 
 
@@ -253,18 +283,15 @@ l0514:
 	byte a_50 = SLICE(a_a_301, byte, 8)
 	byte v23_48 = Mem46[ix + -9<i16>:byte]
 	Mem52[ix + -3<i16>:byte] = a_50
-	byte v24_55 = Mem52[ix + -8<i16>:byte]
-	byte a_57 = l_53 + v24_55 + CONVERT(a_50 <u 0<8>, bool, byte)
+	byte a_57 = l_53 + Mem52[ix + -8<i16>:byte] + CONVERT(a_50 <u 0<8>, bool, byte)
 	Mem59[ix + -2<i16>:byte] = a_57
-	Mem65[ix + -1<i16>:byte] = h_60 + Mem59[ix + -7<i16>:byte] + CONVERT(a_57 <u l_53 + v24_55, bool, byte)
+	Mem65[ix + -1<i16>:byte] = h_60 + Mem59[ix + -7<i16>:byte] + CONVERT(a_57 <u 0<8>, bool, byte)
 	ui16 a_a_304 = SEQ(v28_72, Mem65[ix + -26<i16>:byte]) + SEQ(v29_74, Mem65[ix + -38<i16>:byte])
 	byte a_76 = SLICE(a_a_304, byte, 8)
-	byte v30_79 = Mem65[ix + -24<i16>:byte]
-	byte v31_81 = Mem65[ix + -36<i16>:byte]
-	byte a_83 = v30_79 + v31_81 + CONVERT(a_76 <u 0<8>, bool, byte)
+	byte a_83 = Mem65[ix + -24<i16>:byte] + Mem65[ix + -36<i16>:byte] + CONVERT(a_76 <u 0<8>, bool, byte)
 	byte v28_72 = Mem65[ix + -25<i16>:byte]
 	byte v29_74 = Mem65[ix + -37<i16>:byte]
-	byte a_90 = Mem65[ix + -23<i16>:byte] + Mem65[ix + -35<i16>:byte] + CONVERT(a_83 <u v30_79 + v31_81, bool, byte)
+	byte a_90 = Mem65[ix + -23<i16>:byte] + Mem65[ix + -35<i16>:byte] + CONVERT(a_83 <u 0<8>, bool, byte)
 	Mem95[ix + -4<i16>:byte] = Mem65[ix + -4<i16>:byte] ^ SLICE(a_a_304, byte, 0)
 	Mem99[ix + -3<i16>:byte] = Mem95[ix + -3<i16>:byte] ^ a_76
 	Mem103[ix + -2<i16>:byte] = Mem99[ix + -2<i16>:byte] ^ a_83
@@ -285,20 +312,18 @@ l057C:
 l0587:
 	ui16 a_a_307 = SEQ(b_138, c_142) + SEQ(v45_157, Mem117[ix + -22<i16>:byte])
 	byte a_159 = SLICE(a_a_307, byte, 8)
-	byte v46_163 = Mem117[ix + -20<i16>:byte]
-	byte a_165 = l_134 + v46_163 + CONVERT(a_159 <u 0<8>, bool, byte)
+	byte a_165 = l_134 + Mem117[ix + -20<i16>:byte] + CONVERT(a_159 <u 0<8>, bool, byte)
 	ui16 a_a_310 = SEQ(v53_194, Mem117[ix + -34<i16>:byte]) - (a_a_307 ^ Mem117[ix - 4<i16>:ui16])
 	byte v45_157 = Mem117[ix + -21<i16>:byte]
 	byte a_183 = a_165 ^ Mem117[ix + -2<i16>:byte]
-	byte a_187 = h_130 + Mem117[ix + -19<i16>:byte] + CONVERT(a_165 <u l_134 + v46_163, bool, byte) ^ Mem117[ix + -1<i16>:byte]
+	byte a_187 = h_130 + Mem117[ix + -19<i16>:byte] + CONVERT(a_165 <u 0<8>, bool, byte) ^ Mem117[ix + -1<i16>:byte]
 	Mem193[ix + -34<i16>:byte] = SLICE(a_a_310, byte, 0)
 	byte a_197 = SLICE(a_a_310, byte, 8)
 	byte v53_194 = Mem193[ix + -33<i16>:byte]
 	Mem199[ix + -33<i16>:byte] = a_197
-	byte v54_200 = Mem199[ix + -32<i16>:byte]
-	byte a_203 = v54_200 - a_183 - CONVERT(a_197 <u 0<8>, bool, byte)
+	byte a_203 = Mem199[ix + -32<i16>:byte] - a_183 - CONVERT(a_197 <u 0<8>, bool, byte)
 	Mem205[ix + -32<i16>:byte] = a_203
-	Mem212[ix + -31<i16>:byte] = Mem205[ix + -31<i16>:byte] - a_187 - CONVERT(a_203 >u v54_200 - a_183, bool, byte)
+	Mem212[ix + -31<i16>:byte] = Mem205[ix + -31<i16>:byte] - a_187 - CONVERT(a_203 <u 0<8>, bool, byte)
 	byte a_228 = 4<8>
 	word16 hl_236 = Mem217[ix - 32<i16>:word16]
 	word16 bc_368 = Mem217[ix - 34<i16>:word16]
@@ -315,10 +340,9 @@ l05E8:
 	byte a_255 = SLICE(a_a_313, byte, 8)
 	byte v61_253 = Mem251[ix + -17<i16>:byte]
 	Mem257[ix + -3<i16>:byte] = a_255
-	byte v62_260 = Mem257[ix + -16<i16>:byte]
-	byte a_262 = l_258 + v62_260 + CONVERT(a_255 <u 0<8>, bool, byte)
+	byte a_262 = l_258 + Mem257[ix + -16<i16>:byte] + CONVERT(a_255 <u 0<8>, bool, byte)
 	Mem264[ix + -2<i16>:byte] = a_262
-	Mem270[ix + -1<i16>:byte] = h_265 + Mem264[ix + -15<i16>:byte] + CONVERT(a_262 <u l_258 + v62_260, bool, byte)
+	Mem270[ix + -1<i16>:byte] = h_265 + Mem264[ix + -15<i16>:byte] + CONVERT(a_262 <u 0<8>, bool, byte)
 	byte a_274 = Mem270[ix + -34<i16>:byte] + Mem270[ix + -38<i16>:byte]
 	byte v66_278 = Mem270[ix + -33<i16>:byte]
 l060B_thunk_fn060E:
@@ -350,8 +374,8 @@ void fn060E(byte a, byte c, word16 de, word16 ix, word16 wArg20)
 // Called from:
 //      fn04EE
 //      fn0607
-//      fn0C1D
 //      fn0DFC
+//      fn164F
 // MayUse:  a:[0..7] c:[0..7] de:[0..15] ix:[0..15] Stack +0020:[0..15]
 // LiveOut:
 // Trashed: SZHVNC af bc de hl ix sp
@@ -360,12 +384,9 @@ fn060E_entry:
 	ptr32 fp
 	bool C
 l060E:
-	byte v4_5 = Mem4[ix + -37<i16>:byte]
-	byte a_8 = a + v4_5 + CONVERT(C, bool, byte)
-	byte v10_11 = Mem4[ix + -32<i16>:byte]
-	byte v11_13 = Mem4[ix + -36<i16>:byte]
-	byte a_15 = v10_11 + v11_13 + CONVERT(a_8 <u a + v4_5, bool, byte)
-	byte a_22 = Mem4[ix + -31<i16>:byte] + Mem4[ix + -35<i16>:byte] + CONVERT(a_15 <u v10_11 + v11_13, bool, byte)
+	byte a_8 = a + Mem4[ix + -37<i16>:byte] + CONVERT(C, bool, byte)
+	byte a_15 = Mem4[ix + -32<i16>:byte] + Mem4[ix + -36<i16>:byte] + CONVERT(a_8 <u 0<8>, bool, byte)
+	byte a_22 = Mem4[ix + -31<i16>:byte] + Mem4[ix + -35<i16>:byte] + CONVERT(a_15 <u 0<8>, bool, byte)
 	Mem28[ix + -4<i16>:byte] = Mem4[ix + -4<i16>:byte] ^ c
 	Mem32[ix + -3<i16>:byte] = Mem28[ix + -3<i16>:byte] ^ a_8
 	Mem36[ix + -2<i16>:byte] = Mem32[ix + -2<i16>:byte] ^ a_15
@@ -386,33 +407,29 @@ l0650:
 l065B:
 	ui16 a_a_258 = SEQ(b_71, c_75) + SEQ(v33_90, Mem50[ix + -14<i16>:byte])
 	byte a_92 = SLICE(a_a_258, byte, 8)
-	byte v34_96 = Mem50[ix + -12<i16>:byte]
-	byte a_98 = l_67 + v34_96 + CONVERT(a_92 <u 0<8>, bool, byte)
+	byte a_98 = l_67 + Mem50[ix + -12<i16>:byte] + CONVERT(a_92 <u 0<8>, bool, byte)
 	ui16 a_a_261 = SEQ(v41_127, Mem50[ix + -26<i16>:byte]) - (a_a_258 ^ Mem50[ix - 4<i16>:ui16])
 	byte v33_90 = Mem50[ix + -13<i16>:byte]
 	byte a_116 = a_98 ^ Mem50[ix + -2<i16>:byte]
-	byte a_120 = h_63 + Mem50[ix + -11<i16>:byte] + CONVERT(a_98 <u l_67 + v34_96, bool, byte) ^ Mem50[ix + -1<i16>:byte]
+	byte a_120 = h_63 + Mem50[ix + -11<i16>:byte] + CONVERT(a_98 <u 0<8>, bool, byte) ^ Mem50[ix + -1<i16>:byte]
 	Mem126[ix + -26<i16>:byte] = SLICE(a_a_261, byte, 0)
 	byte a_130 = SLICE(a_a_261, byte, 8)
 	byte v41_127 = Mem126[ix + -25<i16>:byte]
 	Mem132[ix + -25<i16>:byte] = a_130
-	byte v42_133 = Mem132[ix + -24<i16>:byte]
-	byte a_136 = v42_133 - a_116 - CONVERT(a_130 <u 0<8>, bool, byte)
+	byte a_136 = Mem132[ix + -24<i16>:byte] - a_116 - CONVERT(a_130 <u 0<8>, bool, byte)
 	Mem138[ix + -24<i16>:byte] = a_136
-	Mem143[ix + -23<i16>:byte] = Mem138[ix + -23<i16>:byte] - a_120 - CONVERT(a_136 >u v42_133 - a_116, bool, byte)
+	Mem143[ix + -23<i16>:byte] = Mem138[ix + -23<i16>:byte] - a_120 - CONVERT(a_136 <u 0<8>, bool, byte)
 	byte v44_144 = Mem143[ix + -38<i16>:byte]
 	Mem148[ix + -38<i16>:byte] = v44_144 + 0x47<8>
 	byte a_152 = SLICE(SEQ(Mem148[ix + -37<i16>:byte], v44_144) + 0x8647<16>, byte, 8)
 	Mem154[ix + -37<i16>:byte] = a_152
-	byte v46_155 = Mem154[ix + -36<i16>:byte]
-	byte a_158 = v46_155 + 0xC8<8> + CONVERT(a_152 <u 0<8>, bool, byte)
+	byte a_158 = Mem154[ix + -36<i16>:byte] + 0xC8<8> + CONVERT(a_152 <u 0<8>, bool, byte)
 	Mem160[ix + -36<i16>:byte] = a_158
-	Mem165[ix + -35<i16>:byte] = Mem160[ix + -35<i16>:byte] + 0x61<8> + CONVERT(a_158 <u v46_155 + 0xC8<8>, bool, byte)
+	Mem165[ix + -35<i16>:byte] = Mem160[ix + -35<i16>:byte] + 0x61<8> + CONVERT(a_158 <u 0<8>, bool, byte)
 	byte v48_166 = Mem165[ix + -30<i16>:byte]
 	byte a_174 = SLICE(SEQ(Mem165[ix + -29<i16>:byte], v48_166) + 0xFFFF<16>, byte, 8)
-	byte v50_177 = Mem165[ix + -28<i16>:byte]
-	byte a_180 = v50_177 + 0xFF<8> + CONVERT(a_174 <u 0<8>, bool, byte)
-	byte a_186 = Mem165[ix + -27<i16>:byte] + 0xFF<8> + CONVERT(a_180 <u v50_177 + 0xFF<8>, bool, byte)
+	byte a_180 = Mem165[ix + -28<i16>:byte] + 0xFF<8> + CONVERT(a_174 <u 0<8>, bool, byte)
+	byte a_186 = Mem165[ix + -27<i16>:byte] + 0xFF<8> + CONVERT(a_180 <u 0<8>, bool, byte)
 	Mem188[ix + -30<i16>:byte] = v48_166 + 0xFF<8>
 	Mem189[ix + -29<i16>:byte] = a_174
 	Mem190[ix + -28<i16>:byte] = a_180
@@ -497,9 +514,268 @@ l0823:
 fn0823_exit:
 
 
+void fn0914(word16 bc, word16 de, word16 hl, word16 ix, word16 wArg00, word16 wArg02, word16 wArg28)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  bc:[0..15] de:[0..15] hl:[0..15] ix:[0..15] Stack +0000:[0..15] Stack +0002:[0..15] Stack +0028:[0..15]
+// LiveOut:
+// Trashed: SZHVNC af bc de f hl ix sp
+// Preserved:
+fn0914_entry:
+	ptr32 fp
+l0914:
+l0915:
+	Mem7[de:byte] = Mem4[hl:byte]
+	hl = hl + 1<i16>
+	de = de + 1<i16>
+	bc = bc - 1<16>
+	branch bc != 0<16> l0915
+l0917:
+	word16 de_30 = fp + 8<16>
+	word16 hl_31 = wArg00 + 8<16>
+	word16 bc_32 = 4<16>
+l092A:
+	Mem37[de_30:byte] = Mem34[hl_31:byte]
+	hl_31 = hl_31 + 1<i16>
+	de_30 = de_30 + 1<i16>
+	bc_32 = bc_32 - 1<16>
+	branch bc_32 != 0<16> l092A
+l092C:
+	word16 de_58 = fp + 4<16>
+	word16 hl_59 = wArg00 + 0xC<16>
+	word16 bc_60 = 4<16>
+l093E:
+	Mem65[de_58:byte] = Mem62[hl_59:byte]
+	hl_59 = hl_59 + 1<i16>
+	de_58 = de_58 + 1<i16>
+	bc_60 = bc_60 - 1<16>
+	branch bc_60 != 0<16> l093E
+l0940:
+	Mem77[ix + -22<i16>:byte] = 0x20<8>
+	Mem79[ix + -21<i16>:byte] = 0<8>
+	Mem80[ix + -20<i16>:byte] = 0<8>
+	Mem81[ix + -19<i16>:byte] = 0<8>
+	Mem83[ix + -18<i16>:byte] = 0<8>
+	Mem84[ix + -17<i16>:byte] = 0<8>
+	Mem85[ix + -16<i16>:byte] = 0<8>
+	Mem86[ix + -15<i16>:byte] = 0<8>
+	byte v22_87 = Mem86[ix + -18<i16>:byte]
+	Mem91[ix + -18<i16>:byte] = v22_87 + 0xB9<8>
+	byte a_95 = SLICE(SEQ(Mem91[ix + -17<i16>:byte], v22_87) + 0x79B9<16>, byte, 8)
+	Mem97[ix + -17<i16>:byte] = a_95
+	byte a_101 = Mem97[ix + -16<i16>:byte] + 0x37<8> + CONVERT(a_95 <u 0<8>, bool, byte)
+	Mem103[ix + -16<i16>:byte] = a_101
+	Mem110[ix + -15<i16>:byte] = Mem103[ix + -15<i16>:byte] + 0x9E<8> + CONVERT(a_101 <u 0<8>, bool, byte)
+	word16 de_579 = wArg02
+	byte a_128 = 4<8>
+	word16 hl_136 = Mem117[ix - 12<i16>:word16]
+	word16 bc_846 = Mem117[ix - 14<i16>:word16]
+l098E:
+	bc_846 = bc_846 << 1<8>
+	hl_136 = hl_136 * 2<16> + CONVERT(SLICE(bc_846, byte, 8) <u 0<8>, bool, word16)
+	byte l_158 = SLICE(hl_136, byte, 0)
+	byte h_165 = SLICE(hl_136, byte, 8)
+	a_128 = a_128 - 1<i8>
+	branch a_128 != 0<8> l098E
+l0997:
+	ui16 a_a_628 = bc_846 + SEQ(v39_153, Mem117[ix + -26<i16>:byte])
+	Mem151[ix + -6<i16>:byte] = SLICE(a_a_628, byte, 0)
+	byte a_155 = SLICE(a_a_628, byte, 8)
+	byte v39_153 = Mem151[ix + -25<i16>:byte]
+	Mem157[ix + -5<i16>:byte] = a_155
+	byte a_162 = l_158 + Mem157[ix + -24<i16>:byte] + CONVERT(a_155 <u 0<8>, bool, byte)
+	Mem164[ix + -4<i16>:byte] = a_162
+	Mem170[ix + -3<i16>:byte] = h_165 + Mem164[ix + -23<i16>:byte] + CONVERT(a_162 <u 0<8>, bool, byte)
+	ui16 a_a_631 = SEQ(v44_177, Mem170[ix + -14<i16>:byte]) + SEQ(v45_179, Mem170[ix + -18<i16>:byte])
+	byte a_181 = SLICE(a_a_631, byte, 8)
+	byte a_188 = Mem170[ix + -12<i16>:byte] + Mem170[ix + -16<i16>:byte] + CONVERT(a_181 <u 0<8>, bool, byte)
+	byte v44_177 = Mem170[ix + -13<i16>:byte]
+	byte v45_179 = Mem170[ix + -17<i16>:byte]
+	byte a_195 = Mem170[ix + -11<i16>:byte] + Mem170[ix + -15<i16>:byte] + CONVERT(a_188 <u 0<8>, bool, byte)
+	Mem200[ix + -6<i16>:byte] = Mem170[ix + -6<i16>:byte] ^ SLICE(a_a_631, byte, 0)
+	Mem204[ix + -5<i16>:byte] = Mem200[ix + -5<i16>:byte] ^ a_181
+	Mem208[ix + -4<i16>:byte] = Mem204[ix + -4<i16>:byte] ^ a_188
+	Mem217[ix + -3<i16>:byte] = Mem208[ix + -3<i16>:byte] ^ a_195
+	byte a_233 = 5<8>
+	word32 h_l_b_c_848 = SEQ(Mem222[ix + -11<i16>:byte], Mem222[ix + -12<i16>:byte], Mem222[ix + -13<i16>:byte], Mem222[ix + -14<i16>:byte])
+l09FF:
+	uint32 v130_657 = h_l_b_c_848 >>u 1<i8>
+	uint24 v129_656 = SLICE(v130_657, uint24, 8)
+	uint16 v128_655 = SLICE(v129_656, uint16, 8)
+	byte h_235 = SLICE(v128_655, byte, 8)
+	byte l_239 = SLICE(v128_655, byte, 0)
+	byte b_243 = SLICE(v129_656, byte, 0)
+	byte c_247 = SLICE(v130_657, byte, 0)
+	a_233 = a_233 - 1<i8>
+	h_l_b_c_848 = v130_657 (alias)
+	branch a_233 != 0<8> l09FF
+l0A0A:
+	ui16 a_a_634 = SEQ(b_243, c_247) + SEQ(v59_262, Mem222[ix + -30<i16>:byte])
+	byte a_264 = SLICE(a_a_634, byte, 8)
+	byte a_270 = l_239 + Mem222[ix + -28<i16>:byte] + CONVERT(a_264 <u 0<8>, bool, byte)
+	ui16 a_a_637 = SEQ(v67_299, Mem222[ix + -10<i16>:byte]) + (a_a_634 ^ Mem222[ix - 6<i16>:ui16])
+	byte v59_262 = Mem222[ix + -29<i16>:byte]
+	byte a_288 = a_270 ^ Mem222[ix + -4<i16>:byte]
+	byte a_292 = h_235 + Mem222[ix + -27<i16>:byte] + CONVERT(a_270 <u 0<8>, bool, byte) ^ Mem222[ix + -3<i16>:byte]
+	Mem298[ix + -10<i16>:byte] = SLICE(a_a_637, byte, 0)
+	byte a_302 = SLICE(a_a_637, byte, 8)
+	byte v67_299 = Mem298[ix + -9<i16>:byte]
+	Mem304[ix + -9<i16>:byte] = a_302
+	byte a_308 = Mem304[ix + -8<i16>:byte] + a_288 + CONVERT(a_302 <u 0<8>, bool, byte)
+	Mem310[ix + -8<i16>:byte] = a_308
+	Mem317[ix + -7<i16>:byte] = Mem310[ix + -7<i16>:byte] + a_292 + CONVERT(a_308 <u 0<8>, bool, byte)
+	byte a_333 = 4<8>
+	word16 hl_341 = Mem322[ix - 8<i16>:word16]
+	word16 bc_851 = Mem322[ix - 10<i16>:word16]
+l0A62:
+	bc_851 = bc_851 << 1<8>
+	hl_341 = hl_341 * 2<16> + CONVERT(SLICE(bc_851, byte, 8) <u 0<8>, bool, word16)
+	byte l_363 = SLICE(hl_341, byte, 0)
+	byte h_370 = SLICE(hl_341, byte, 8)
+	a_333 = a_333 - 1<i8>
+	branch a_333 != 0<8> l0A62
+l0A6B:
+	ui16 a_a_640 = bc_851 + SEQ(v75_358, Mem322[ix + -34<i16>:byte])
+	Mem356[ix + -6<i16>:byte] = SLICE(a_a_640, byte, 0)
+	byte a_360 = SLICE(a_a_640, byte, 8)
+	byte v75_358 = Mem356[ix + -33<i16>:byte]
+	Mem362[ix + -5<i16>:byte] = a_360
+	byte a_367 = l_363 + Mem362[ix + -32<i16>:byte] + CONVERT(a_360 <u 0<8>, bool, byte)
+	Mem369[ix + -4<i16>:byte] = a_367
+	Mem375[ix + -3<i16>:byte] = h_370 + Mem369[ix + -31<i16>:byte] + CONVERT(a_367 <u 0<8>, bool, byte)
+	ui16 a_a_643 = SEQ(v80_382, Mem375[ix + -10<i16>:byte]) + SEQ(v81_384, Mem375[ix + -18<i16>:byte])
+	byte a_386 = SLICE(a_a_643, byte, 8)
+	byte a_393 = Mem375[ix + -8<i16>:byte] + Mem375[ix + -16<i16>:byte] + CONVERT(a_386 <u 0<8>, bool, byte)
+	byte v80_382 = Mem375[ix + -9<i16>:byte]
+	byte v81_384 = Mem375[ix + -17<i16>:byte]
+	byte a_400 = Mem375[ix + -7<i16>:byte] + Mem375[ix + -15<i16>:byte] + CONVERT(a_393 <u 0<8>, bool, byte)
+	Mem405[ix + -6<i16>:byte] = Mem375[ix + -6<i16>:byte] ^ SLICE(a_a_643, byte, 0)
+	Mem409[ix + -5<i16>:byte] = Mem405[ix + -5<i16>:byte] ^ a_386
+	Mem413[ix + -4<i16>:byte] = Mem409[ix + -4<i16>:byte] ^ a_393
+	Mem422[ix + -3<i16>:byte] = Mem413[ix + -3<i16>:byte] ^ a_400
+	byte a_438 = 5<8>
+	word32 h_l_b_c_853 = SEQ(Mem427[ix + -7<i16>:byte], Mem427[ix + -8<i16>:byte], Mem427[ix + -9<i16>:byte], Mem427[ix + -10<i16>:byte])
+l0AD3:
+	uint32 v136_663 = h_l_b_c_853 >>u 1<i8>
+	uint24 v135_662 = SLICE(v136_663, uint24, 8)
+	uint16 v134_661 = SLICE(v135_662, uint16, 8)
+	byte h_440 = SLICE(v134_661, byte, 8)
+	byte l_444 = SLICE(v134_661, byte, 0)
+	byte b_448 = SLICE(v135_662, byte, 0)
+	byte c_452 = SLICE(v136_663, byte, 0)
+	a_438 = a_438 - 1<i8>
+	h_l_b_c_853 = v136_663 (alias)
+	branch a_438 != 0<8> l0AD3
+l0ADE:
+	ui16 a_a_646 = SEQ(b_448, c_452) + SEQ(v95_467, Mem427[ix + -38<i16>:byte])
+	byte a_469 = SLICE(a_a_646, byte, 8)
+	byte a_475 = l_444 + Mem427[ix + -36<i16>:byte] + CONVERT(a_469 <u 0<8>, bool, byte)
+	ui16 a_a_649 = SEQ(v103_504, Mem427[ix + -14<i16>:byte]) + (a_a_646 ^ Mem427[ix - 6<i16>:ui16])
+	byte v95_467 = Mem427[ix + -37<i16>:byte]
+	byte a_493 = a_475 ^ Mem427[ix + -4<i16>:byte]
+	byte a_497 = h_440 + Mem427[ix + -35<i16>:byte] + CONVERT(a_475 <u 0<8>, bool, byte) ^ Mem427[ix + -3<i16>:byte]
+	Mem503[ix + -14<i16>:byte] = SLICE(a_a_649, byte, 0)
+	byte a_507 = SLICE(a_a_649, byte, 8)
+	byte v103_504 = Mem503[ix + -13<i16>:byte]
+	Mem509[ix + -13<i16>:byte] = a_507
+	byte a_513 = Mem509[ix + -12<i16>:byte] + a_493 + CONVERT(a_507 <u 0<8>, bool, byte)
+	Mem515[ix + -12<i16>:byte] = a_513
+	Mem520[ix + -11<i16>:byte] = Mem515[ix + -11<i16>:byte] + a_497 + CONVERT(a_513 <u 0<8>, bool, byte)
+	byte v106_521 = Mem520[ix + -22<i16>:byte]
+	byte a_529 = SLICE(SEQ(Mem520[ix + -21<i16>:byte], v106_521) + 0xFFFF<16>, byte, 8)
+	byte a_535 = Mem520[ix + -20<i16>:byte] + 0xFF<8> + CONVERT(a_529 <u 0<8>, bool, byte)
+	byte a_541 = Mem520[ix + -19<i16>:byte] + 0xFF<8> + CONVERT(a_535 <u 0<8>, bool, byte)
+	Mem543[ix + -22<i16>:byte] = v106_521 + 0xFF<8>
+	Mem544[ix + -21<i16>:byte] = a_529
+	Mem545[ix + -20<i16>:byte] = a_535
+	Mem546[ix + -19<i16>:byte] = a_541
+	branch (a_541 | a_535 | a_529 | v106_521 + 0xFF<8>) != 0<8> l0B51_thunk_fn0350
+l0B51_thunk_fn0350:
+	word16 ix_860
+	word16 de_858
+	word16 hl_859
+	fn0350(a_529, a_535, a_541, ix, out de_858, out hl_859, out ix_860)
+	return
+l0B55:
+	word16 hl_572 = fp + 0x20<16>
+	word16 bc_575 = 4<16>
+l0B5D:
+	Mem580[de_579:byte] = Mem577[hl_572:byte]
+	hl_572 = hl_572 + 1<i16>
+	de_579 = de_579 + 1<i16>
+	bc_575 = bc_575 - 1<16>
+	branch bc_575 != 0<16> l0B5D
+l0B5F:
+	word16 de_591 = wArg28
+	word16 hl_593 = fp + 0x1C<16>
+	word16 bc_596 = 4<16>
+l0B6C:
+	Mem601[de_591:byte] = Mem598[hl_593:byte]
+	hl_593 = hl_593 + 1<i16>
+	de_591 = de_591 + 1<i16>
+	bc_596 = bc_596 - 1<16>
+	branch bc_596 != 0<16> l0B6C
+l0B6E:
+	return
+fn0914_exit:
+
+
+void fn0BD0(word16 bc, word16 de, word16 hl, word16 ix, word16 wArg00, word16 wArg02, word16 wArg24)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  bc:[0..15] de:[0..15] hl:[0..15] ix:[0..15] Stack +0000:[0..15] Stack +0002:[0..15] Stack +0024:[0..15]
+// LiveOut:
+// Trashed: SZHVNC af bc de hl ix
+// Preserved: sp
+fn0BD0_entry:
+	ptr32 fp
+l0BD0:
+l0BD1:
+	Mem7[de:byte] = Mem4[hl:byte]
+	hl = hl + 1<i16>
+	de = de + 1<i16>
+	bc = bc - 1<16>
+	branch bc != 0<16> l0BD1
+l0BD3:
+	word16 de_30 = fp + 0x20<16>
+	word16 hl_31 = wArg00 + 8<16>
+	word16 bc_32 = 4<16>
+l0BE6:
+	Mem37[de_30:byte] = Mem34[hl_31:byte]
+	hl_31 = hl_31 + 1<i16>
+	de_30 = de_30 + 1<i16>
+	bc_32 = bc_32 - 1<16>
+	branch bc_32 != 0<16> l0BE6
+l0BE8:
+	word16 de_58 = fp + 0x14<16>
+	word16 hl_59 = wArg00 + 0xC<16>
+	word16 bc_60 = 4<16>
+l0BFA:
+	Mem65[de_58:byte] = Mem62[hl_59:byte]
+	hl_59 = hl_59 + 1<i16>
+	de_58 = de_58 + 1<i16>
+	bc_60 = bc_60 - 1<16>
+	branch bc_60 != 0<16> l0BFA
+l0BFC:
+	Mem77[ix + -30<i16>:byte] = 0x20<8>
+	Mem84[ix + -29<i16>:byte] = 0<8>
+	Mem85[ix + -28<i16>:byte] = 0<8>
+	Mem86[ix + -27<i16>:byte] = 0<8>
+	Mem87[ix + -38<i16>:byte] = 0x20<8>
+	Mem88[ix + -37<i16>:byte] = 0x37<8>
+	Mem89[ix + -36<i16>:byte] = 0xEF<8>
+	Mem90[ix + -35<i16>:byte] = 0xC6<8>
+l0C1C_thunk_fn0C1D:
+	fn0C1D(wArg02, ix, wArg24)
+	return
+fn0BD0_exit:
+
+
 void fn0C1D(word16 de, word16 ix, word16 wArg22)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
+// Called from:
+//      fn0BD0
 // MayUse:  de:[0..15] ix:[0..15] Stack +0022:[0..15]
 // LiveOut:
 // Trashed: SZHVNC af bc de hl ix sp
@@ -540,18 +816,15 @@ l0C35:
 	byte a_15 = SLICE(a_a_108, byte, 8)
 	byte v10_13 = Mem10[ix + -9<i16>:byte]
 	Mem17[ix + -3<i16>:byte] = a_15
-	byte v13_20 = Mem17[ix + -8<i16>:byte]
-	byte a_22 = l + v13_20 + CONVERT(a_15 <u 0<8>, bool, byte)
+	byte a_22 = l + Mem17[ix + -8<i16>:byte] + CONVERT(a_15 <u 0<8>, bool, byte)
 	Mem24[ix + -2<i16>:byte] = a_22
-	Mem30[ix + -1<i16>:byte] = h + Mem24[ix + -7<i16>:byte] + CONVERT(a_22 <u l + v13_20, bool, byte)
+	Mem30[ix + -1<i16>:byte] = h + Mem24[ix + -7<i16>:byte] + CONVERT(a_22 <u 0<8>, bool, byte)
 	ui16 a_a_111 = SEQ(v18_37, Mem30[ix + -26<i16>:byte]) + SEQ(v19_39, Mem30[ix + -38<i16>:byte])
 	byte a_41 = SLICE(a_a_111, byte, 8)
-	byte v20_44 = Mem30[ix + -24<i16>:byte]
-	byte v21_46 = Mem30[ix + -36<i16>:byte]
-	byte a_48 = v20_44 + v21_46 + CONVERT(a_41 <u 0<8>, bool, byte)
+	byte a_48 = Mem30[ix + -24<i16>:byte] + Mem30[ix + -36<i16>:byte] + CONVERT(a_41 <u 0<8>, bool, byte)
 	byte v18_37 = Mem30[ix + -25<i16>:byte]
 	byte v19_39 = Mem30[ix + -37<i16>:byte]
-	byte a_55 = Mem30[ix + -23<i16>:byte] + Mem30[ix + -35<i16>:byte] + CONVERT(a_48 <u v20_44 + v21_46, bool, byte)
+	byte a_55 = Mem30[ix + -23<i16>:byte] + Mem30[ix + -35<i16>:byte] + CONVERT(a_48 <u 0<8>, bool, byte)
 	Mem60[ix + -4<i16>:byte] = Mem30[ix + -4<i16>:byte] ^ SLICE(a_a_111, byte, 0)
 	Mem64[ix + -3<i16>:byte] = Mem60[ix + -3<i16>:byte] ^ a_41
 	Mem68[ix + -2<i16>:byte] = Mem64[ix + -2<i16>:byte] ^ a_48
@@ -577,21 +850,17 @@ fn0C39_entry:
 	bool C
 l0C39:
 	Mem5[ix + -4<i16>:byte] = a
-	byte v6_8 = Mem5[ix + -9<i16>:byte]
-	byte a_10 = b + v6_8 + CONVERT(C, bool, byte)
+	byte a_10 = b + Mem5[ix + -9<i16>:byte] + CONVERT(C, bool, byte)
 	Mem12[ix + -3<i16>:byte] = a_10
-	byte v11_15 = Mem12[ix + -8<i16>:byte]
-	byte a_17 = l + v11_15 + CONVERT(a_10 <u b + v6_8, bool, byte)
+	byte a_17 = l + Mem12[ix + -8<i16>:byte] + CONVERT(a_10 <u 0<8>, bool, byte)
 	Mem19[ix + -2<i16>:byte] = a_17
-	Mem25[ix + -1<i16>:byte] = h + Mem19[ix + -7<i16>:byte] + CONVERT(a_17 <u l + v11_15, bool, byte)
+	Mem25[ix + -1<i16>:byte] = h + Mem19[ix + -7<i16>:byte] + CONVERT(a_17 <u 0<8>, bool, byte)
 	ui16 a_a_81 = SEQ(v17_32, Mem25[ix + -26<i16>:byte]) + SEQ(v18_34, Mem25[ix + -38<i16>:byte])
 	byte a_36 = SLICE(a_a_81, byte, 8)
-	byte v19_39 = Mem25[ix + -24<i16>:byte]
-	byte v20_41 = Mem25[ix + -36<i16>:byte]
-	byte a_43 = v19_39 + v20_41 + CONVERT(a_36 <u 0<8>, bool, byte)
+	byte a_43 = Mem25[ix + -24<i16>:byte] + Mem25[ix + -36<i16>:byte] + CONVERT(a_36 <u 0<8>, bool, byte)
 	byte v17_32 = Mem25[ix + -25<i16>:byte]
 	byte v18_34 = Mem25[ix + -37<i16>:byte]
-	byte a_50 = Mem25[ix + -23<i16>:byte] + Mem25[ix + -35<i16>:byte] + CONVERT(a_43 <u v19_39 + v20_41, bool, byte)
+	byte a_50 = Mem25[ix + -23<i16>:byte] + Mem25[ix + -35<i16>:byte] + CONVERT(a_43 <u 0<8>, bool, byte)
 	Mem55[ix + -4<i16>:byte] = Mem25[ix + -4<i16>:byte] ^ SLICE(a_a_81, byte, 0)
 	Mem64[ix + -3<i16>:byte] = Mem55[ix + -3<i16>:byte] ^ a_36
 	byte v28_65 = Mem64[ix + -2<i16>:byte]
@@ -628,7 +897,7 @@ void fn0C9D(word32 h_l_b_c, byte a, word16 de, word16 ix, word16 wArg20)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
-//      fn0C1D
+//      fn0C35
 //      fn0C80
 // MayUse:  a:[0..7] de:[0..15] ix:[0..15] Sequence h:l:b:c:[0..31] Stack +0020:[0..15]
 // LiveOut:
@@ -650,20 +919,18 @@ l0C9D:
 l0CA8:
 	ui16 a_a_128 = SEQ(b_12, c_16) + SEQ(v17_33, Mem0[ix + -22<i16>:byte])
 	byte a_35 = SLICE(a_a_128, byte, 8)
-	byte v18_39 = Mem0[ix + -20<i16>:byte]
-	byte a_41 = l_8 + v18_39 + CONVERT(a_35 <u 0<8>, bool, byte)
+	byte a_41 = l_8 + Mem0[ix + -20<i16>:byte] + CONVERT(a_35 <u 0<8>, bool, byte)
 	ui16 a_a_131 = SEQ(v27_70, Mem0[ix + -34<i16>:byte]) - (a_a_128 ^ Mem0[ix - 4<i16>:ui16])
 	byte v17_33 = Mem0[ix + -21<i16>:byte]
 	byte a_59 = a_41 ^ Mem0[ix + -2<i16>:byte]
-	byte a_63 = h_4 + Mem0[ix + -19<i16>:byte] + CONVERT(a_41 <u l_8 + v18_39, bool, byte) ^ Mem0[ix + -1<i16>:byte]
+	byte a_63 = h_4 + Mem0[ix + -19<i16>:byte] + CONVERT(a_41 <u 0<8>, bool, byte) ^ Mem0[ix + -1<i16>:byte]
 	Mem69[ix + -34<i16>:byte] = SLICE(a_a_131, byte, 0)
 	byte a_73 = SLICE(a_a_131, byte, 8)
 	byte v27_70 = Mem69[ix + -33<i16>:byte]
 	Mem75[ix + -33<i16>:byte] = a_73
-	byte v28_76 = Mem75[ix + -32<i16>:byte]
-	byte a_79 = v28_76 - a_59 - CONVERT(a_73 <u 0<8>, bool, byte)
+	byte a_79 = Mem75[ix + -32<i16>:byte] - a_59 - CONVERT(a_73 <u 0<8>, bool, byte)
 	Mem81[ix + -32<i16>:byte] = a_79
-	Mem88[ix + -31<i16>:byte] = Mem81[ix + -31<i16>:byte] - a_63 - CONVERT(a_79 >u v28_76 - a_59, bool, byte)
+	Mem88[ix + -31<i16>:byte] = Mem81[ix + -31<i16>:byte] - a_63 - CONVERT(a_79 <u 0<8>, bool, byte)
 	word16 bc_106 = Mem94[ix - 34<i16>:word16]
 	word16 hl_109 = Mem94[ix - 32<i16>:word16]
 l0CFE_thunk_fn0D00:
@@ -689,10 +956,9 @@ l0CB7:
 	byte a_38 = SLICE(a_a_85, byte, 8)
 	byte v21_35 = Mem34[ix + -33<i16>:byte]
 	Mem40[ix + -33<i16>:byte] = a_38
-	byte v22_41 = Mem40[ix + -32<i16>:byte]
-	byte a_44 = v22_41 - a_24 - CONVERT(a_38 <u 0<8>, bool, byte)
+	byte a_44 = Mem40[ix + -32<i16>:byte] - a_24 - CONVERT(a_38 <u 0<8>, bool, byte)
 	Mem46[ix + -32<i16>:byte] = a_44
-	Mem53[ix + -31<i16>:byte] = Mem46[ix + -31<i16>:byte] - a_28 - CONVERT(a_44 >u v22_41 - a_24, bool, byte)
+	Mem53[ix + -31<i16>:byte] = Mem46[ix + -31<i16>:byte] - a_28 - CONVERT(a_44 <u 0<8>, bool, byte)
 	word16 bc_69 = Mem57[ix - 34<i16>:word16]
 	word16 hl_71 = Mem57[ix - 32<i16>:word16]
 l0CFE_thunk_fn0D00:
@@ -705,7 +971,7 @@ void fn0D00(byte a, word16 bc, word16 de, word16 hl, word16 ix, word16 wArg20)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
-//      fn0C1D
+//      fn0C35
 //      fn0CB7
 // MayUse:  a:[0..7] bc:[0..15] de:[0..15] hl:[0..15] ix:[0..15] Stack +0020:[0..15]
 // LiveOut:
@@ -726,18 +992,15 @@ l0D09:
 	byte a_31 = SLICE(a_a_284, byte, 8)
 	byte v16_29 = Mem27[ix + -17<i16>:byte]
 	Mem33[ix + -3<i16>:byte] = a_31
-	byte v18_36 = Mem33[ix + -16<i16>:byte]
-	byte a_38 = l_34 + v18_36 + CONVERT(a_31 <u 0<8>, bool, byte)
+	byte a_38 = l_34 + Mem33[ix + -16<i16>:byte] + CONVERT(a_31 <u 0<8>, bool, byte)
 	Mem40[ix + -2<i16>:byte] = a_38
-	Mem46[ix + -1<i16>:byte] = h_41 + Mem40[ix + -15<i16>:byte] + CONVERT(a_38 <u l_34 + v18_36, bool, byte)
+	Mem46[ix + -1<i16>:byte] = h_41 + Mem40[ix + -15<i16>:byte] + CONVERT(a_38 <u 0<8>, bool, byte)
 	ui16 a_a_287 = SEQ(v23_53, Mem46[ix + -34<i16>:byte]) + SEQ(v24_55, Mem46[ix + -38<i16>:byte])
 	byte a_57 = SLICE(a_a_287, byte, 8)
-	byte v25_60 = Mem46[ix + -32<i16>:byte]
-	byte v26_62 = Mem46[ix + -36<i16>:byte]
-	byte a_64 = v25_60 + v26_62 + CONVERT(a_57 <u 0<8>, bool, byte)
+	byte a_64 = Mem46[ix + -32<i16>:byte] + Mem46[ix + -36<i16>:byte] + CONVERT(a_57 <u 0<8>, bool, byte)
 	byte v23_53 = Mem46[ix + -33<i16>:byte]
 	byte v24_55 = Mem46[ix + -37<i16>:byte]
-	byte a_71 = Mem46[ix + -31<i16>:byte] + Mem46[ix + -35<i16>:byte] + CONVERT(a_64 <u v25_60 + v26_62, bool, byte)
+	byte a_71 = Mem46[ix + -31<i16>:byte] + Mem46[ix + -35<i16>:byte] + CONVERT(a_64 <u 0<8>, bool, byte)
 	Mem76[ix + -4<i16>:byte] = Mem46[ix + -4<i16>:byte] ^ SLICE(a_a_287, byte, 0)
 	Mem80[ix + -3<i16>:byte] = Mem76[ix + -3<i16>:byte] ^ a_57
 	Mem84[ix + -2<i16>:byte] = Mem80[ix + -2<i16>:byte] ^ a_64
@@ -745,46 +1008,42 @@ l0D09:
 	byte a_110 = 5<8>
 	word32 h_l_b_c_348 = SEQ(Mem99[ix + -31<i16>:byte], Mem99[ix + -32<i16>:byte], Mem99[ix + -33<i16>:byte], Mem99[ix + -34<i16>:byte])
 l0D71:
-	uint32 v80_303 = h_l_b_c_348 >>u 1<i8>
-	uint24 v79_302 = SLICE(v80_303, uint24, 8)
-	uint16 v78_301 = SLICE(v79_302, uint16, 8)
-	byte h_112 = SLICE(v78_301, byte, 8)
-	byte l_116 = SLICE(v78_301, byte, 0)
-	byte b_120 = SLICE(v79_302, byte, 0)
-	byte c_124 = SLICE(v80_303, byte, 0)
+	uint32 v75_303 = h_l_b_c_348 >>u 1<i8>
+	uint24 v74_302 = SLICE(v75_303, uint24, 8)
+	uint16 v73_301 = SLICE(v74_302, uint16, 8)
+	byte h_112 = SLICE(v73_301, byte, 8)
+	byte l_116 = SLICE(v73_301, byte, 0)
+	byte b_120 = SLICE(v74_302, byte, 0)
+	byte c_124 = SLICE(v75_303, byte, 0)
 	a_110 = a_110 - 1<i8>
-	h_l_b_c_348 = v80_303 (alias)
+	h_l_b_c_348 = v75_303 (alias)
 	branch a_110 != 0<8> l0D71
 l0D7C:
 	ui16 a_a_290 = SEQ(b_120, c_124) + SEQ(v41_139, Mem99[ix + -14<i16>:byte])
 	byte a_141 = SLICE(a_a_290, byte, 8)
-	byte v42_145 = Mem99[ix + -12<i16>:byte]
-	byte a_147 = l_116 + v42_145 + CONVERT(a_141 <u 0<8>, bool, byte)
+	byte a_147 = l_116 + Mem99[ix + -12<i16>:byte] + CONVERT(a_141 <u 0<8>, bool, byte)
 	ui16 a_a_293 = SEQ(v49_176, Mem99[ix + -26<i16>:byte]) - (a_a_290 ^ Mem99[ix - 4<i16>:ui16])
 	byte v41_139 = Mem99[ix + -13<i16>:byte]
 	byte a_165 = a_147 ^ Mem99[ix + -2<i16>:byte]
-	byte a_169 = h_112 + Mem99[ix + -11<i16>:byte] + CONVERT(a_147 <u l_116 + v42_145, bool, byte) ^ Mem99[ix + -1<i16>:byte]
+	byte a_169 = h_112 + Mem99[ix + -11<i16>:byte] + CONVERT(a_147 <u 0<8>, bool, byte) ^ Mem99[ix + -1<i16>:byte]
 	Mem175[ix + -26<i16>:byte] = SLICE(a_a_293, byte, 0)
 	byte a_179 = SLICE(a_a_293, byte, 8)
 	byte v49_176 = Mem175[ix + -25<i16>:byte]
 	Mem181[ix + -25<i16>:byte] = a_179
-	byte v50_182 = Mem181[ix + -24<i16>:byte]
-	byte a_185 = v50_182 - a_165 - CONVERT(a_179 <u 0<8>, bool, byte)
+	byte a_185 = Mem181[ix + -24<i16>:byte] - a_165 - CONVERT(a_179 <u 0<8>, bool, byte)
 	Mem187[ix + -24<i16>:byte] = a_185
-	Mem192[ix + -23<i16>:byte] = Mem187[ix + -23<i16>:byte] - a_169 - CONVERT(a_185 >u v50_182 - a_165, bool, byte)
+	Mem192[ix + -23<i16>:byte] = Mem187[ix + -23<i16>:byte] - a_169 - CONVERT(a_185 <u 0<8>, bool, byte)
 	byte v52_193 = Mem192[ix + -38<i16>:byte]
 	Mem197[ix + -38<i16>:byte] = v52_193 + 0x47<8>
 	byte a_201 = SLICE(SEQ(Mem197[ix + -37<i16>:byte], v52_193) + 0x8647<16>, byte, 8)
 	Mem203[ix + -37<i16>:byte] = a_201
-	byte v54_204 = Mem203[ix + -36<i16>:byte]
-	byte a_207 = v54_204 + 0xC8<8> + CONVERT(a_201 <u 0<8>, bool, byte)
+	byte a_207 = Mem203[ix + -36<i16>:byte] + 0xC8<8> + CONVERT(a_201 <u 0<8>, bool, byte)
 	Mem209[ix + -36<i16>:byte] = a_207
-	Mem214[ix + -35<i16>:byte] = Mem209[ix + -35<i16>:byte] + 0x61<8> + CONVERT(a_207 <u v54_204 + 0xC8<8>, bool, byte)
+	Mem214[ix + -35<i16>:byte] = Mem209[ix + -35<i16>:byte] + 0x61<8> + CONVERT(a_207 <u 0<8>, bool, byte)
 	byte v56_215 = Mem214[ix + -30<i16>:byte]
 	byte a_223 = SLICE(SEQ(Mem214[ix + -29<i16>:byte], v56_215) + 0xFFFF<16>, byte, 8)
-	byte v58_226 = Mem214[ix + -28<i16>:byte]
-	byte a_229 = v58_226 + 0xFF<8> + CONVERT(a_223 <u 0<8>, bool, byte)
-	byte a_235 = Mem214[ix + -27<i16>:byte] + 0xFF<8> + CONVERT(a_229 <u v58_226 + 0xFF<8>, bool, byte)
+	byte a_229 = Mem214[ix + -28<i16>:byte] + 0xFF<8> + CONVERT(a_223 <u 0<8>, bool, byte)
+	byte a_235 = Mem214[ix + -27<i16>:byte] + 0xFF<8> + CONVERT(a_229 <u 0<8>, bool, byte)
 	Mem237[ix + -30<i16>:byte] = v56_215 + 0xFF<8>
 	Mem238[ix + -29<i16>:byte] = a_223
 	Mem239[ix + -28<i16>:byte] = a_229
@@ -828,7 +1087,7 @@ void fn0E13(word16 de, word16 wArg20)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
-//      fn0D00
+//      fn0C35
 //      fn0DFC
 // MayUse:  de:[0..15] Stack +0020:[0..15]
 // LiveOut:

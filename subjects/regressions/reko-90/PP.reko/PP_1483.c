@@ -269,7 +269,7 @@ segptr32 fn1483-0D3F(struct Eq_n * ds_di, struct Eq_n * ss_bp, Eq_n ax, Eq_n cx,
 	byte al_n = (byte) ax;
 	byte ah_n = SLICE(ax, byte, 8);
 	struct Eq_n * ss = SLICE(ss_bp, selector, 16);
-	cu8 ch_n = SLICE(cx, byte, 8);
+	byte ch_n = SLICE(cx, byte, 8);
 	struct Eq_n Eq_n::* bp = (word16) ss_bp;
 	struct Eq_n * ds = SLICE(ds_di, selector, 16);
 	byte dh_n = SLICE(dx, byte, 8);
@@ -282,7 +282,7 @@ segptr32 fn1483-0D3F(struct Eq_n * ds_di, struct Eq_n * ss_bp, Eq_n ax, Eq_n cx,
 	}
 	struct Eq_n Eq_n::* bx_n = SEQ(bh, 0xB4);
 	byte ch_n = ch_n - Mem7[ds:(bx_n + 2) + si:byte];
-	word16 ax_n = SEQ(ah_n, al_n + ch_n) + 64616 + (word16) (ch_n > ch_n);
+	word16 ax_n = SEQ(ah_n, al_n + ch_n) + 64616 + (word16) (ch_n < 0x00);
 	ui16 dx_n = SEQ(dh_n ^ 0x17, dl_n);
 	if ((dh_n ^ 0x17) < 0x00)
 	{
@@ -315,7 +315,7 @@ segptr32 fn1483-0D3F(struct Eq_n * ds_di, struct Eq_n * ss_bp, Eq_n ax, Eq_n cx,
 	ss->*((word16) sp_n - 16) = di;
 	word16 bx_n = bx_n + Mem133[ds:(bx_n - 121) + di:word16] + CONVERT(SCZDOP_n, byte, word16);
 	byte dh_n = SLICE(dx_n, byte, 8);
-	Mem140[ss:v19_n + 0xF512 + di:byte] = Mem133[ss:v19_n + 0xF512 + di:byte] + dh_n + CONVERT(bx_n <u bx_n + Mem133[ds:(bx_n - 121) + di:word16], bool, byte);
+	Mem140[ss:v19_n + 0xF512 + di:byte] = Mem133[ss:v19_n + 0xF512 + di:byte] + dh_n + CONVERT(bx_n <u 0x00, bool, byte);
 	ds->*((word16) bx_n + 0x007D) &= (byte) ax_n;
 	byte ch_n = SLICE(cx_n, byte, 8);
 	word16 ax_n = __aad(si);
@@ -325,7 +325,7 @@ segptr32 fn1483-0D3F(struct Eq_n * ds_di, struct Eq_n * ss_bp, Eq_n ax, Eq_n cx,
 	ss->*((word16) sp_n - 18) = sp_n - 16;
 	word16 bx_n = bx_n + Mem163[ds:bx_n + v32_n:word16];
 	cu8 al_n = (byte) ax_n;
-	cu8 ah_n = SLICE(ax_n, byte, 8);
+	byte ah_n = SLICE(ax_n, byte, 8);
 	Eq_n si_n = v32_n;
 	byte bl_n = (byte) bx_n;
 	byte bh_n = SLICE(bx_n, byte, 8);
@@ -339,7 +339,7 @@ segptr32 fn1483-0D3F(struct Eq_n * ds_di, struct Eq_n * ss_bp, Eq_n ax, Eq_n cx,
 	{
 		Eq_n v37_n = ds->*((word32) di + ((word16) bx_n + 40)) - ah_n - (sp_n - 18);
 		ds->*((word32) di + ((word16) bx_n + 40)) = v37_n;
-		ds->*((word32) v32_n + 90) = ds->*((word32) v32_n + 90) - bh_n - (byte) (v37_n > ds->*((word32) di + ((word16) bx_n + 40)) - ah_n);
+		ds->*((word32) v32_n + 90) = ds->*((word32) v32_n + 90) - bh_n - (byte) (v37_n < 0x00);
 	}
 	else
 	{

@@ -2488,6 +2488,8 @@ fn1353 proc
 	ld	h,00
 
 ;; fn1356: 1356
+;;   Called from:
+;;     1354 (in fn1353)
 fn1356 proc
 	ld	a,(de)
 	sub	a,l

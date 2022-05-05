@@ -8038,13 +8038,13 @@ word32 fn0000E718(word32 VR, ptr32 & r11Out)
 
 // Called from:
 //      fn00008834
-//      fn0000B4D4
 //      fn0000C48C
 //      fn0000CCA8
 //      fn0000EDF4
 //      fn0000F250
 //      fn0000F368
 //      fn0000F444
+//      fn0000F8E8
 // MayUse:  VR:[0..31]
 // LiveOut: r1 r11 r2
 // Trashed: CV r1 r11 r2 r3 r4
@@ -8065,13 +8065,13 @@ void fn0000E740(word32 r3, word32 VR)
 // Called from:
 //      fn00008834
 //      fn000088FC
-//      fn0000B4D4
 //      fn0000C48C
 //      fn0000CCA8
 //      fn0000EDF4
 //      fn0000F250
 //      fn0000F368
 //      fn0000F444
+//      fn0000F8E8
 // MayUse:  r3:[0..31] VR:[0..31]
 // LiveOut:
 // Trashed: CV r4
@@ -8081,6 +8081,19 @@ l0000E740:
 	__mtspr(VR, r3)
 	return
 fn0000E740_exit:
+
+
+void fn0000E750()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
+fn0000E750_exit:
+fn0000E750_entry:
+l0000E750:
 
 
 void fn0000E758(word32 r3, word32 r4, word32 r5, word32 r15, word32 VR)

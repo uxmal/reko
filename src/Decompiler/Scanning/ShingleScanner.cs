@@ -20,6 +20,7 @@
 
 using Reko.Core;
 using Reko.Core.Collections;
+using Reko.Core.Diagnostics;
 using Reko.Core.Memory;
 using Reko.Core.Services;
 using Reko.Core.Types;
@@ -213,11 +214,6 @@ namespace Reko.Scanning
                 listener);
         }
 
-        public override void SplitBlockEndingAt(RtlBlock block, Address lastAddr)
-        {
-            throw new NotImplementedException();
-        }
-
         private ScanResultsV2 ExecuteChunks(List<ChunkWorker> chunks)
         {
             //$TODO: this should be parallelizable, but we
@@ -230,7 +226,8 @@ namespace Reko.Scanning
         }
 
         /// <summary>
-        /// Ensure there are <see cref="Block"/>s at 
+        /// Ensure there are <see cref="Block"/>s at all successor
+        /// target addresses.
         /// </summary>
         private (ScanResultsV2, int) EnsureBlocks(ScanResultsV2 cfg)
         {
@@ -239,6 +236,8 @@ namespace Reko.Scanning
             var succs = cfg.Successors.Values
                 .SelectMany(e => e)
                 .Concat(cfg.SpeculativeProcedures.Keys)
+                .Distinct()
+                .OrderBy(a => a)
                 .ToList();
             int blocksSplit = 0;
             foreach (var s in succs)
@@ -311,7 +310,7 @@ namespace Reko.Scanning
 
                 bad_blocks.UnionWith(new_bad);
             }
-            Debug.Print("Bad blocks: {0} of {1}", bad_blocks.Count, sr.Blocks.Count);
+            trace.Inform("Bad blocks: {0} of {1}", bad_blocks.Count, sr.Blocks.Count);
             //DumpBadBlocks(sr, blocks, sr.FlatEdges, bad_blocks);
 
             // Remove edges to bad blocks and bad blocks.

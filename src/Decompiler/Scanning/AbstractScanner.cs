@@ -19,6 +19,7 @@
 #endregion
 
 using Reko.Core;
+using Reko.Core.Diagnostics;
 using Reko.Core.Expressions;
 using Reko.Core.Rtl;
 using Reko.Core.Serialization;
@@ -37,6 +38,11 @@ namespace Reko.Scanning
 {
     public abstract class AbstractScanner
     {
+        protected static readonly TraceSwitch trace = new(nameof(AbstractScanner), "")
+        {
+            Level = TraceLevel.Verbose
+        };
+
         protected readonly Program program;
         protected readonly ScanResultsV2 sr;
         protected readonly DecompilerEventListener listener;
@@ -93,7 +99,6 @@ namespace Reko.Scanning
             program.ImageMap.AddItemWithSize(addr, item);
         }
 
-
         /// <summary>
         /// Register a block starting at address <paramref name="addrBlock"/>.
         /// </summary>
@@ -104,7 +109,7 @@ namespace Reko.Scanning
         /// </remarks>
         /// <param name="arch"><see cref="IProcessorArchitecture"/> for this block.</param>
         /// <param name="addrBlock">The <see cref="Address"/> at which the block is located.</param>
-        /// <param name="length">The length of the block, excludng</param>
+        /// <param name="length">The length of the block, excluding</param>
         /// <param name="addrFallthrough"></param>
         /// <param name="instrs"></param>
         /// <returns></returns>
@@ -115,6 +120,7 @@ namespace Reko.Scanning
             Address addrFallthrough,
             List<RtlInstructionCluster> instrs)
         {
+            Debug.Assert(this.blockStarts.ContainsKey(addrBlock));
             var id = program.NamingPolicy.BlockName(addrBlock);
             var block = new RtlBlock(arch, addrBlock, id, (int)length, addrFallthrough, instrs);
             var success = sr.Blocks.TryAdd(addrBlock, block);
@@ -197,6 +203,7 @@ namespace Reko.Scanning
             var instrLast = instrs[^1];
             var id = program.NamingPolicy.BlockName(addr);
             var addrFallthrough = addr + blockSize;
+            trace.Verbose("      new block at {0}", addr);
             return new RtlBlock(block.Architecture, addr, id, (int)blockSize, addrFallthrough, instrs);
         }
 
@@ -208,7 +215,145 @@ namespace Reko.Scanning
                 listener);
         }
 
-        public abstract void SplitBlockEndingAt(RtlBlock block, Address lastAddr);
+        public void SplitBlockEndingAt(RtlBlock block, Address addrEnd)
+        {
+            var wl = new Queue<(RtlBlock block, Address addrEnd)>();
+            wl.Enqueue((block, addrEnd));
+            while (wl.TryDequeue(out var item))
+            {
+                trace.Verbose("    Splitting block {0} at {1}", block.Address, addrEnd);
+                RtlBlock blockB;
+                (blockB, addrEnd) = item;
+                // Invariant: we arrive here if blockB ends at the same
+                // address as some other block A. Get the address of that
+                // block.
+
+                var addrA = this.blockEnds[addrEnd];
+                var addrB = block.Address;
+
+                // If both addresses are the same, we have a self-loop. No need for splitting.
+                if (addrA == addrB)
+                    continue;
+
+                var blockA = sr.Blocks[addrA];
+
+                // Find the indices where both blocks have the same instructions: "shared tails"
+                // Because both blocks end at addrEnd, we're guaranteed at least one shared instruction.
+                var (a, b) = FindSharedInstructions(blockA, blockB);
+
+                if (a > 0 && b > 0)
+                {
+                    // The shared instructions S do not fully take up either of the
+                    // two blocks. One of the blocks starts in the middle of an
+                    // instruction in the other block:
+                    //
+                    //  addrA     S
+                    //  +-+--+--+-+-----+
+                    //      +--+--+-----+
+                    //      addrB
+                    //
+                    // We want to create a new block S with the shared instructions:
+                    //  addrA       S
+                    //  +-+--+--+-+ +-----+
+                    //      +--+--+
+                    var addrS = blockA.Instructions[a].Address;
+                    if (TryRegisterBlockStart(addrS, blockA.Address))
+                    {
+                        // S didn't exist already.
+                        var sSize = blockA.Length - (addrS - blockA.Address);
+                        var instrs = blockA.Instructions.Skip(a).ToList();
+                        var blockS = RegisterBlock(
+                            blockA.Architecture,
+                            addrS,
+                            sSize,
+                            blockA.FallThrough,
+                            instrs);
+                        trace.Verbose("      new block at {0}", addrS);
+                        StealEdges(addrA, addrS);
+                    }
+                    // Trim off the last instructions of A and B, then
+                    // replace their original values
+                    //$REVIEW: the below code is not thread safe.
+                    RegisterEdge(new Edge(addrA, addrS, EdgeType.Jump));
+                    RegisterEdge(new Edge(addrB, addrS, EdgeType.Jump));
+                    var newA = Chop(blockA, 0, a, addrS - addrA);
+                    var newB = Chop(blockB, 0, b, addrS - addrB);
+                    sr.Blocks.TryUpdate(addrA, newA, blockA);
+                    sr.Blocks.TryUpdate(addrB, newB, blockB);
+                    blockEnds.TryUpdate(newA.Address, addrS, addrEnd);
+                    blockEnds.TryUpdate(newB.Address, addrS, addrEnd);
+                }
+                else if (a == 0)
+                {
+                    // Block B falls through into block A
+                    // 
+                    //       addrA
+                    //       +-----------+
+                    //  +----------------+
+                    //  addrB
+                    //
+                    // We split block B so that it falls through to block A
+                    var newB = Chop(blockB, 0, b, addrA - addrB);
+                    sr.Blocks.TryUpdate(addrB, newB, blockB);
+                    RegisterEdge(new Edge(blockB.Address, addrA, EdgeType.Jump));
+                    var newBEnd = newB.Instructions[^1].Address;
+                    if (!TryRegisterBlockEnd(newB.Address, newBEnd))
+                    {
+                        // There is already a block ending at newBEnd.
+                        wl.Enqueue((newB, newBEnd));
+                    }
+                }
+                else
+                {
+                    Debug.Assert(b == 0);
+                    // Block A falls through into B
+                    //
+                    // addrA
+                    // +----------------+
+                    //       +----------+
+                    //       addrB
+                    // We split block A so that it falls through to B. We make
+                    // B be the new block end, and move the out edges of block
+                    // A to block B.
+                    var newA = Chop(blockA, 0, a, addrB - addrA);
+                    sr.Blocks.TryUpdate(addrA, newA, blockA);
+                    //$TODO: check for race conditions.
+                    if (!blockEnds.TryUpdate(addrEnd, addrB, addrA))
+                    {
+                        throw new Exception("Who stole it?");
+                    }
+                    StealEdges(blockA.Address, blockB.Address);
+                    RegisterEdge(new Edge(newA.Address, blockB.Address, EdgeType.Jump));
+                    var newAEnd = newA.Instructions[^1].Address;
+                    if (!TryRegisterBlockEnd(newA.Address, newAEnd))
+                    {
+                        // There is already a block ending at newAEnd
+                        wl.Enqueue((newA, newAEnd));
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// Starting at the end of two blocks, walk towards their respective beginnings
+        /// while the addresses match. 
+        /// </summary>
+        /// <param name="blockA">First block</param>
+        /// <param name="blockB">Second block</param>
+        /// <returns>A pair of indices into the respective instruction lists where the 
+        /// instruction addresses start matching.
+        /// </returns>
+        private (int, int) FindSharedInstructions(RtlBlock blockA, RtlBlock blockB)
+        {
+            int a = blockA.Instructions.Count - 1;
+            int b = blockB.Instructions.Count - 1;
+            for (; a >= 0 && b >= 0; --a, --b)
+            {
+                if (blockA.Instructions[a].Address != blockB.Instructions[b].Address)
+                    break;
+            }
+            return (a + 1, b + 1);
+        }
 
         private void DumpBlocks(ScanResultsV2 sr, IDictionary<Address, RtlBlock> blocks)
         {

@@ -19337,14 +19337,14 @@ l0000BFB2:
 
 ;; fn0000BFB8: 0000BFB8
 ;;   Called from:
-;;     0000C1C4 (in fn0000C0E4)
-;;     0000C1EE (in fn0000C0E4)
-;;     0000C210 (in fn0000C0E4)
-;;     0000C236 (in fn0000C0E4)
-;;     0000C25A (in fn0000C0E4)
-;;     0000C280 (in fn0000C0E4)
-;;     0000C2A6 (in fn0000C0E4)
-;;     0000C2CC (in fn0000C0E4)
+;;     0000C1C4 (in fn0000C058)
+;;     0000C1EE (in fn0000C058)
+;;     0000C210 (in fn0000C058)
+;;     0000C236 (in fn0000C058)
+;;     0000C25A (in fn0000C058)
+;;     0000C280 (in fn0000C058)
+;;     0000C2A6 (in fn0000C058)
+;;     0000C2CC (in fn0000C058)
 ;;     0000C2CC (in fn0000C2C8)
 fn0000BFB8 proc
 	pushm	r0-r3,r4-r7,lr
@@ -19527,12 +19527,7 @@ l0000C0DC:
 	cp.w	r12,000010FF
 	brls	0000C190
 
-;; fn0000C0E4: 0000C0E4
-;;   Called from:
-;;     0000C0B4 (in fn0000C058)
-;;     0000C0E0 (in fn0000C058)
-;;     0000C0E0 (in fn0000C058)
-fn0000C0E4 proc
+l0000C0E4:
 	cp.w	r12,0000115F
 	brls	0000C2DA
 
@@ -19776,28 +19771,28 @@ fn0000C2C8 proc
 
 ;; fn0000C2D4: 0000C2D4
 ;;   Called from:
-;;     0000C0E8 (in fn0000C0E4)
-;;     0000C0F2 (in fn0000C0E4)
-;;     0000C110 (in fn0000C0E4)
-;;     0000C120 (in fn0000C0E4)
-;;     0000C130 (in fn0000C0E4)
-;;     0000C13E (in fn0000C0E4)
-;;     0000C14E (in fn0000C0E4)
-;;     0000C15E (in fn0000C0E4)
-;;     0000C16C (in fn0000C0E4)
-;;     0000C17C (in fn0000C0E4)
-;;     0000C18C (in fn0000C0E4)
-;;     0000C198 (in fn0000C0E4)
-;;     0000C1A0 (in fn0000C0E4)
-;;     0000C1CC (in fn0000C0E4)
-;;     0000C1F6 (in fn0000C0E4)
-;;     0000C218 (in fn0000C0E4)
-;;     0000C23E (in fn0000C0E4)
-;;     0000C262 (in fn0000C0E4)
-;;     0000C288 (in fn0000C0E4)
-;;     0000C2AE (in fn0000C0E4)
+;;     0000C0E8 (in fn0000C058)
+;;     0000C0F2 (in fn0000C058)
+;;     0000C110 (in fn0000C058)
+;;     0000C120 (in fn0000C058)
+;;     0000C130 (in fn0000C058)
+;;     0000C13E (in fn0000C058)
+;;     0000C14E (in fn0000C058)
+;;     0000C15E (in fn0000C058)
+;;     0000C16C (in fn0000C058)
+;;     0000C17C (in fn0000C058)
+;;     0000C18C (in fn0000C058)
+;;     0000C198 (in fn0000C058)
+;;     0000C1A0 (in fn0000C058)
+;;     0000C1CC (in fn0000C058)
+;;     0000C1F6 (in fn0000C058)
+;;     0000C218 (in fn0000C058)
+;;     0000C23E (in fn0000C058)
+;;     0000C262 (in fn0000C058)
+;;     0000C288 (in fn0000C058)
+;;     0000C2AE (in fn0000C058)
 ;;     0000C2D2 (in fn0000C2C8)
-;;     0000C2D2 (in fn0000C0E4)
+;;     0000C2D2 (in fn0000C058)
 fn0000C2D4 proc
 	brne	0000C2DA
 

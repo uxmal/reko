@@ -174,10 +174,9 @@ l00001148:
 			g_dw13DC = execPrivate4();
 			ui32 d0_n = execPrivate5();
 			*(ui32 *) 5088 = d0_n;
-			struct Eq_n * a6_n = g_ptr13CC;
 			dwLoc0C_n = (struct Eq_n *) &d0_n->ptr0010;
 			dwLoc10 = d3_n;
-			if (a6_n->w0014 - 0x24 <= a6_n->w0014)
+			if (g_ptr13CC->w0014 >= 0x24)
 			{
 				ui32 v64_n = d0_n->dw00E0;
 				*(ui32 *) 0x13E4 = v64_n;

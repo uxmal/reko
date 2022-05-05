@@ -823,11 +823,11 @@ word16 fn0800-09A3(Eq_n ds, union Eq_n & bpOut, struct Eq_n & dsOut)
 		Eq_n es_di_n = (ss->*bp_n).tFFFFFFF8;
 		struct Eq_n * ds_n = (ss->*bp_n).ptr0006;
 		struct Eq_n * es_n = SLICE(es_di_n, selector, 16);
-		Eq_n di_n = (word16) es_di_n;
+		byte Eq_n::* di_n = (word16) es_di_n;
 		word16 cx_n = ~0x00;
 		while (cx_n != 0x00)
 		{
-			di_n = (word16) di_n + 1;
+			++di_n;
 			--cx_n;
 			if (es_n->*di_n != 0x00)
 				break;
@@ -851,8 +851,8 @@ word16 fn0800-09A3(Eq_n ds, union Eq_n & bpOut, struct Eq_n & dsOut)
 		} while (ds_n->*si_n != es_n->*di_n);
 		if (!v39_n)
 		{
-			cup16 ax_n = 0x00 - (word16) (di_n > di_n);
-			ax_n = ax_n - ~0x00 - (word16) (ax_n > 0x00);
+			cup16 ax_n = 0x00 - (word16) (di_n < 0x00);
+			ax_n = ax_n - ~0x00 - (word16) (ax_n < 0x00);
 		}
 		ds_n = ss->*((word32) sp_n + 2);
 		if (ax_n == 0x00)
@@ -1114,11 +1114,11 @@ word16 fn0800-0C93(Eq_n ds, Eq_n dwArg02, union Eq_n & dxOut)
 	Eq_n bx_n;
 	Eq_n dx_n = fn0800-3509(fp - 0x0068, ss, dwArg02, out bx_n);
 	word16 si_n = 10004;
-	Eq_n di_n = fp - 0x0068;
+	byte Eq_n::* di_n = fp - 0x0068;
 	word16 cx_n = ~0x00;
 	while (cx_n != 0x00)
 	{
-		di_n = (word16) di_n + 1;
+		++di_n;
 		--cx_n;
 		if (ss->*di_n != 0x00)
 			break;
@@ -1142,8 +1142,8 @@ word16 fn0800-0C93(Eq_n ds, Eq_n dwArg02, union Eq_n & dxOut)
 	} while (ds->*si_n != ss->*di_n);
 	if (!v29_n)
 	{
-		cup16 ax_n = 0x00 - (word16) (di_n > di_n);
-		ax_n = ax_n - ~0x00 - (word16) (ax_n > 0x00);
+		cup16 ax_n = 0x00 - (word16) (di_n < 0x00);
+		ax_n = ax_n - ~0x00 - (word16) (ax_n < 0x00);
 	}
 	if (ax_n != 0x00)
 	{
@@ -3741,11 +3741,11 @@ word16 fn0800-283D(Eq_n ds, Eq_n ptrArg02, union Eq_n & dxOut)
 			break;
 		byte Eq_n::* si_n = wLoc0A_n + 0x02;
 		struct Eq_n * es_n = SLICE(ptrArg02, selector, 16);
-		Eq_n di_n = (word16) ptrArg02;
+		byte Eq_n::* di_n = (word16) ptrArg02;
 		word16 cx_n = ~0x00;
 		while (cx_n != 0x00)
 		{
-			di_n = (word16) di_n + 1;
+			++di_n;
 			--cx_n;
 			if (es_n->*di_n != 0x00)
 				break;
@@ -3769,8 +3769,8 @@ word16 fn0800-283D(Eq_n ds, Eq_n ptrArg02, union Eq_n & dxOut)
 		} while (wLoc08_n->*si_n != es_n->*di_n);
 		if (!v33_n)
 		{
-			cup16 ax_n = 0x00 - (word16) (di_n > di_n);
-			ax_n = ax_n - ~0x00 - (word16) (ax_n > 0x00);
+			cup16 ax_n = 0x00 - (word16) (di_n < 0x00);
+			ax_n = ax_n - ~0x00 - (word16) (ax_n < 0x00);
 		}
 		if (ax_n == 0x00)
 		{
@@ -3823,11 +3823,11 @@ byte * fn0800-2931(Eq_n ptrArg02, Eq_n ptrArg06)
 			break;
 		byte Eq_n::* si_n = wArg06_n;
 		struct Eq_n * es_n = SLICE(ptrArg02, selector, 16);
-		Eq_n di_n = (word16) ptrArg02;
+		byte Eq_n::* di_n = (word16) ptrArg02;
 		word16 cx_n = ~0x00;
 		while (cx_n != 0x00)
 		{
-			di_n = (word16) di_n + 1;
+			++di_n;
 			--cx_n;
 			if (es_n->*di_n != 0x00)
 				break;
@@ -3851,8 +3851,8 @@ byte * fn0800-2931(Eq_n ptrArg02, Eq_n ptrArg06)
 		} while (wArg08_n->*si_n != es_n->*di_n);
 		if (!v26_n)
 		{
-			cup16 ax_n = 0x00 - (word16) (di_n > di_n);
-			ax_n = ax_n - ~0x00 - (word16) (ax_n > 0x00);
+			cup16 ax_n = 0x00 - (word16) (di_n < 0x00);
+			ax_n = ax_n - ~0x00 - (word16) (ax_n < 0x00);
 		}
 		if (ax_n == 0x00)
 			return ptrArg06_n;
@@ -4086,11 +4086,11 @@ word16 fn0800-29C5(Eq_n cx, Eq_n dx, Eq_n si, Eq_n ds, Eq_n ptrArg02, Eq_n ptrAr
 			{
 				si = (word32) *((word32) ds + 17838) + 2;
 				Eq_n ds_n = *((word32) ds + 0x000045B0);
-				Eq_n di_n = fp - 0x006C;
+				byte Eq_n::* di_n = fp - 0x006C;
 				word16 cx_n = ~0x00;
 				while (cx_n != 0x00)
 				{
-					di_n = (word16) di_n + 1;
+					++di_n;
 					--cx_n;
 					if (ss->*di_n != 0x00)
 						break;
@@ -4113,8 +4113,8 @@ word16 fn0800-29C5(Eq_n cx, Eq_n dx, Eq_n si, Eq_n ds, Eq_n ptrArg02, Eq_n ptrAr
 				} while (ds_n->*si != ss->*di_n);
 				if (!v51_n)
 				{
-					cup16 ax_n = 0x00 - (word16) (di_n > di_n);
-					ax_n = ax_n - ~0x00 - (word16) (ax_n > 0x00);
+					cup16 ax_n = 0x00 - (word16) (di_n < 0x00);
+					ax_n = ax_n - ~0x00 - (word16) (ax_n < 0x00);
 				}
 				if (ax_n == 0x00)
 					break;
@@ -4624,11 +4624,11 @@ word16 fn0800-2DE2(Eq_n cx, Eq_n dx, Eq_n si, Eq_n ds, Eq_n ptrArg02, union Eq_n
 	}
 	Eq_n dx_n = fn0800-0C6C(ds, ptrArg02);
 	Eq_n si_n = wArg02_n;
-	Eq_n di_n = 0x4348;
+	word16 di_n = 0x4348;
 	word16 cx_n = ~0x00;
 	while (cx_n != 0x00)
 	{
-		di_n = (word16) di_n + 1;
+		++di_n;
 		--cx_n;
 		if (ds->*di_n != 0x00)
 			break;
@@ -4651,17 +4651,17 @@ word16 fn0800-2DE2(Eq_n cx, Eq_n dx, Eq_n si, Eq_n ds, Eq_n ptrArg02, union Eq_n
 	} while (wArg04_n->*si_n != ds->*di_n);
 	if (!v67_n)
 	{
-		cup16 ax_n = 0x00 - (word16) (di_n > di_n);
-		ax_n = ax_n - ~0x00 - (word16) (ax_n > 0x00);
+		cup16 ax_n = 0x00 - (word16) (di_n < 0x00);
+		ax_n = ax_n - ~0x00 - (word16) (ax_n < 0x00);
 	}
 	if (ax_n != 0x00)
 	{
 		si_n = wArg02_n;
-		Eq_n di_n = 0x4477;
+		word16 di_n = 0x4477;
 		word16 cx_n = ~0x00;
 		while (cx_n != 0x00)
 		{
-			di_n = (word16) di_n + 1;
+			++di_n;
 			--cx_n;
 			if (ds->*di_n != 0x00)
 				break;
@@ -4684,8 +4684,8 @@ word16 fn0800-2DE2(Eq_n cx, Eq_n dx, Eq_n si, Eq_n ds, Eq_n ptrArg02, union Eq_n
 		} while (wArg04_n->*si_n != ds->*di_n);
 		if (!v71_n)
 		{
-			cup16 ax_n = 0x00 - (word16) (di_n > di_n);
-			ax_n = ax_n - ~0x00 - (word16) (ax_n > 0x00);
+			cup16 ax_n = 0x00 - (word16) (di_n < 0x00);
+			ax_n = ax_n - ~0x00 - (word16) (ax_n < 0x00);
 		}
 		if (ax_n != 0x00)
 		{
@@ -4870,11 +4870,11 @@ word16 fn0800-335C(Eq_n ds, Eq_n ptrArg02)
 	{
 		fn0800-35A3(fp - 30, ss, ptrArg02, out dx_n);
 		byte Eq_n::* si_n = fp - 16;
-		Eq_n di_n = fp - 30;
+		byte Eq_n::* di_n = fp - 30;
 		word16 cx_n = ~0x00;
 		while (cx_n != 0x00)
 		{
-			di_n = (word16) di_n + 1;
+			++di_n;
 			--cx_n;
 			if (ss->*di_n != 0x00)
 				break;
@@ -4898,8 +4898,8 @@ word16 fn0800-335C(Eq_n ds, Eq_n ptrArg02)
 		} while (ss->*si_n != ss->*di_n);
 		if (!v30_n)
 		{
-			cup16 ax_n = 0x00 - (word16) (di_n > di_n);
-			ax_n = ax_n - ~0x00 - (word16) (ax_n > 0x00);
+			cup16 ax_n = 0x00 - (word16) (di_n < 0x00);
+			ax_n = ax_n - ~0x00 - (word16) (ax_n < 0x00);
 		}
 		if (ax_n == 0x00)
 		{
@@ -4943,6 +4943,7 @@ Eq_n fn0800-33CD(Eq_n ds, Eq_n ptrArg02, cui16 wArg06, Eq_n dwArg08, union Eq_n 
 		word16 di_n = 0x0A3B;
 		word16 si_n = 0x4641;
 		word16 cx_n = 0x02;
+		word16 ax_n = 0x00;
 		bool v32_n = true;
 		while (cx_n != 0x00)
 		{
@@ -4955,11 +4956,14 @@ Eq_n fn0800-33CD(Eq_n ds, Eq_n ptrArg02, cui16 wArg06, Eq_n dwArg08, union Eq_n 
 			if (ds->*si_n == ds->*di_n)
 				break;
 		}
-		if (false)
+		if (!v32_n)
+			ax_n = 0x01;
+		if (ax_n != 0x00)
 		{
 			word16 di_n = 2621;
 			word16 si_n = 0x4641;
 			Eq_n cx_n = 0x03;
+			word16 ax_n = 0x00;
 			bool v36_n = true;
 			while (cx_n != 0x00)
 			{
@@ -4972,7 +4976,9 @@ Eq_n fn0800-33CD(Eq_n ds, Eq_n ptrArg02, cui16 wArg06, Eq_n dwArg08, union Eq_n 
 				if (ds->*si_n == ds->*di_n)
 					break;
 			}
-			if (false && ((int16) (*((word32) ds + 17976)) & wArg06) == wArg06)
+			if (!v36_n)
+				ax_n = 0x01;
+			if (ax_n != 0x00 && ((int16) (*((word32) ds + 17976)) & wArg06) == wArg06)
 			{
 				if (ptrArg02 != 0x00)
 				{
@@ -5044,6 +5050,7 @@ word16 fn0800-3479(Eq_n ds, Eq_n ptrArg02, cui16 wArg06, union Eq_n & cxOut, uni
 		word16 di_n = 0x0A3B;
 		word16 si_n = 0x4641;
 		word16 cx_n = 0x02;
+		word16 ax_n = 0x00;
 		bool v26_n = true;
 		while (cx_n != 0x00)
 		{
@@ -5056,11 +5063,14 @@ word16 fn0800-3479(Eq_n ds, Eq_n ptrArg02, cui16 wArg06, union Eq_n & cxOut, uni
 			if (ds->*si_n == ds->*di_n)
 				break;
 		}
-		if (true)
+		if (!v26_n)
+			ax_n = 0x01;
+		if (ax_n == 0x00)
 			continue;
 		word16 di_n = 2621;
 		word16 si_n = 0x4641;
 		Eq_n cx_n = 0x03;
+		word16 ax_n = 0x00;
 		bool v30_n = true;
 		while (cx_n != 0x00)
 		{
@@ -5073,7 +5083,9 @@ word16 fn0800-3479(Eq_n ds, Eq_n ptrArg02, cui16 wArg06, union Eq_n & cxOut, uni
 			if (ds->*si_n == ds->*di_n)
 				break;
 		}
-	} while (true || ((int16) (*((word32) ds + 17976)) & wArg06) != wArg06);
+		if (!v30_n)
+			ax_n = 0x01;
+	} while (ax_n == 0x00 || ((int16) (*((word32) ds + 17976)) & wArg06) != wArg06);
 	if (ptrArg02 != 0x00)
 	{
 		word16 di_n = 0x4641;
@@ -8682,6 +8694,7 @@ word16 fn0800-5E64(Eq_n ds, ptr16 & dxOut, union Eq_n & dsOut)
 	word16 cx_n = 0x04;
 	if (false)
 		cx_n = 0x03;
+	word16 ax_n = 0x00;
 	bool v195_n = true;
 	while (cx_n != 0x00)
 	{
@@ -8694,7 +8707,9 @@ word16 fn0800-5E64(Eq_n ds, ptr16 & dxOut, union Eq_n & dsOut)
 		if (ds->*si_n == ds->*di_n)
 			break;
 	}
-	if (false)
+	if (!v195_n)
+		ax_n = 0x01;
+	if (ax_n != 0x00)
 	{
 		word16 di_n = 17009;
 		word16 si_n = 0x2202;
@@ -9311,6 +9326,7 @@ word16 fn0800-669C(Eq_n ds, ptr16 & dxOut, union Eq_n & dsOut)
 		word16 cx_n = 0x04;
 		if (false)
 			cx_n = 0x03;
+		word16 ax_n = 0x00;
 		bool v42_n = true;
 		while (cx_n != 0x00)
 		{
@@ -9323,7 +9339,9 @@ word16 fn0800-669C(Eq_n ds, ptr16 & dxOut, union Eq_n & dsOut)
 			if (ds->*si_n == ds->*di_n)
 				break;
 		}
-		if (false)
+		if (!v42_n)
+			ax_n = 0x01;
+		if (ax_n != 0x00)
 		{
 			word16 di_n = 17009;
 			word16 si_n = 0x2206;
@@ -11463,10 +11481,9 @@ l0800_n:
 l0800_n:
 		if (v30_n)
 		{
-			bui8 al_n = ds_n->*si_n;
 			si_n = (word16) si_n + 1;
-			al_n = al_n * 0x02 + (byte) (al_n < 0x00);
-			if (al_n >= al_n * 0x02)
+			al_n = ds_n->*si_n *8 0x02 + (byte) (al_n < 0x00);
+			if (al_n >= 0x00)
 				goto l0800_n;
 		}
 		uint8 al_n = al_n * 0x02;
@@ -11593,10 +11610,9 @@ l0800_n:
 				bool v51_n = al_n < 0x00;
 				if (al_n == 0x00)
 				{
-					bui8 al_n = ds_n->*si_n;
-					al_n = al_n * 0x02 + (byte) (al_n < 0x00);
+					al_n = ds_n->*si_n *8 0x02 + (byte) (al_n < 0x00);
 					si_n = (word16) si_n + 1;
-					v51_n = al_n < al_n * 0x02;
+					v51_n = al_n < 0x00;
 				}
 				if (!v51_n)
 				{
@@ -11620,10 +11636,9 @@ l0800_n:
 				bool v54_n = al_n < 0x00;
 				if (al_n == 0x00)
 				{
-					bui8 al_n = ds_n->*si_n;
-					al_n = al_n * 0x02 + (byte) (al_n < 0x00);
+					al_n = ds_n->*si_n *8 0x02 + (byte) (al_n < 0x00);
 					si_n = (word16) si_n + 1;
-					v54_n = al_n < al_n * 0x02;
+					v54_n = al_n < 0x00;
 				}
 				if (!v54_n)
 				{
@@ -14883,7 +14898,7 @@ l0800_A4D6:
 			}
 			cu8 bl_n = bl_n - 0x30;
 			uint16 bx_n = (uint16) bl_n;
-			if (bl_n > bl_n)
+			if (bl_n < 0x00)
 				goto l0800_A4D6;
 			Eq_n dx_ax_n = ax_n *32 0x0A;
 			ui8 dh_n = SLICE(dx_ax_n, byte, 24);

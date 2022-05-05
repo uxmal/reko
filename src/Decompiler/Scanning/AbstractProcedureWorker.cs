@@ -19,6 +19,7 @@
 #endregion
 
 using Reko.Core;
+using Reko.Core.Diagnostics;
 using Reko.Core.Expressions;
 using Reko.Core.Rtl;
 using Reko.Core.Services;
@@ -36,7 +37,7 @@ namespace Reko.Scanning
     /// </summary>
     public abstract class AbstractProcedureWorker
     {
-        private static readonly TraceSwitch trace = new TraceSwitch(nameof(AbstractProcedureWorker), "AbstractProcedureWorker tracing")
+        protected static readonly TraceSwitch log = new TraceSwitch(nameof(AbstractProcedureWorker), "AbstractProcedureWorker tracing")
         {
             Level = TraceLevel.Warning,
         };
@@ -59,7 +60,7 @@ namespace Reko.Scanning
             IEnumerator<RtlInstructionCluster> trace,
             ProcessorState state)
         {
-            trace_Verbose("    {0}: Finished block", block.Address);
+            log.Verbose("    {0}: Finished block", block.Address);
             var lastCluster = block.Instructions[^1];
             var lastInstr = lastCluster.Instructions[^1];
             var lastAddr = lastCluster.Address;
@@ -75,13 +76,13 @@ namespace Reko.Scanning
                         // ARM Thumb IT instruction, which puts state in the trace.
                         RegisterEdge(edge);
                         AddJob(edge.To, trace, state);
-                        trace_Verbose("    {0}: added edge to {1}", edge.From, edge.To);
+                        log.Verbose("    {0}: added edge to {1}", edge.From, edge.To);
                         break;
                     case EdgeType.Jump:
                         // Start a new trace somewhere else.
                         RegisterEdge(edge);
                         AddJob(edge.To, state);
-                        trace_Verbose("    {0}: added edge to {1}", edge.From, edge.To);
+                        log.Verbose("    {0}: added edge to {1}", edge.From, edge.To);
                         break;
                     case EdgeType.Call:
                         ProcessCall(block, edge, state);
@@ -96,7 +97,7 @@ namespace Reko.Scanning
             }
             else
             {
-                trace_Verbose("    {0}: Splitting block at [{1}-{2}]", block.Address, block.Address, lastAddr);
+                log.Verbose("    {0}: Splitting block at [{1}-{2}]", block.Address, block.Address, lastAddr);
                 scanner.SplitBlockEndingAt(block, lastAddr);
             }
             return block;
@@ -104,7 +105,7 @@ namespace Reko.Scanning
 
         protected void HandleBadBlock(Address addrBadBlock)
         {
-            trace_Verbose("    {0}: Bad block", addrBadBlock);
+            log.Verbose("    {0}: Bad block", addrBadBlock);
             //$TODO: enqueue low-prio item for throw new NotImplementedException($"Bad block at {addrBadBlock}");
         }
 
@@ -253,13 +254,13 @@ namespace Reko.Scanning
         /// </summary>
         /// <param name="addr">The address at which to start.</param>
         /// <param name="state">The state to use.</param>
-        public AbstractBlockWorker AddJob(Address addr, ProcessorState state)
+        public BlockWorker AddJob(Address addr, ProcessorState state)
         {
             var trace = scanner.MakeTrace(addr, state, binder).GetEnumerator();
             return AddJob(addr, trace, state);
         }
 
-        public abstract AbstractBlockWorker AddJob(Address addr, IEnumerator<RtlInstructionCluster> trace, ProcessorState state);
+        public abstract BlockWorker AddJob(Address addr, IEnumerator<RtlInstructionCluster> trace, ProcessorState state);
 
         protected abstract void ProcessCall(RtlBlock blockCaller, Edge edge, ProcessorState state);
 
@@ -272,19 +273,5 @@ namespace Reko.Scanning
         /// if the address had been visited before.
         /// </returns>
         public abstract bool TryMarkVisited(Address addr);
-
-        [Conditional("DEBUG")]
-        protected void trace_Inform(string format, params object[] args)
-        {
-            if (trace.TraceInfo)
-                Debug.Print(format, args);
-        }
-
-        [Conditional("DEBUG")]
-        protected void trace_Verbose(string format, params object[] args)
-        {
-            if (trace.TraceVerbose)
-                Debug.Print(format, args);
-        }
     }
 }
