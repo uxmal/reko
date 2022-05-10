@@ -1087,6 +1087,18 @@ movzx	ax,byte ptr [bp+4h]
         }
 
         [Test]
+        public void X86Dis_kmovb_kk()
+        {
+            AssertCode64("kmovb\tk2,k1", "C5 F9 90 D1");
+        }
+
+        [Test]
+        public void X86Dis_kmovb_kr()
+        {
+            AssertCode64("kmovb\tk1,edx", "C5F992CA");
+        }
+
+        [Test]
         public void X86Dis_ud1()
         {
             AssertCode64("ud1\tesp,[rax+0F000001h]", 0x0f, 0xb9, 0xa0, 0x01, 0x00, 0x00, 0x0f);
@@ -1803,6 +1815,13 @@ movzx	ax,byte ptr [bp+4h]
         public void X86Dis_shufps()
         {
             AssertCode64("shufps\txmm5,xmm6,0DEh", "0FC6EEDE");
+        }
+
+        [Test]
+        public void X86Dis_vrsqrt14ps()
+        {
+            AssertCode64("vrsqrt14ps\tymm0,ymm0", 0x62, 0xf2, 0x7d, 0x28, 0x4e, 0xc0);
+            AssertCode64("vrsqrt14ps\tymm0{k3},ymm0", 0x62, 0xf2, 0x7d, 0x2B, 0x4e, 0xc0);
         }
 
         [Test]

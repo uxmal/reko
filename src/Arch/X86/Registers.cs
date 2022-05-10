@@ -174,6 +174,23 @@ namespace Reko.Arch.X86
         public static readonly RegisterStorage ymm14;
         public static readonly RegisterStorage ymm15;
 
+        public static readonly RegisterStorage zmm0;
+        public static readonly RegisterStorage zmm1;
+        public static readonly RegisterStorage zmm2;
+        public static readonly RegisterStorage zmm3;
+        public static readonly RegisterStorage zmm4;
+        public static readonly RegisterStorage zmm5;
+        public static readonly RegisterStorage zmm6;
+        public static readonly RegisterStorage zmm7;
+        public static readonly RegisterStorage zmm8;
+        public static readonly RegisterStorage zmm9;
+        public static readonly RegisterStorage zmm10;
+        public static readonly RegisterStorage zmm11;
+        public static readonly RegisterStorage zmm12;
+        public static readonly RegisterStorage zmm13;
+        public static readonly RegisterStorage zmm14;
+        public static readonly RegisterStorage zmm15;
+
         public static readonly RegisterStorage mm0;
         public static readonly RegisterStorage mm1;
         public static readonly RegisterStorage mm2;
@@ -191,8 +208,17 @@ namespace Reko.Arch.X86
         public static readonly RegisterStorage mm14;
         public static readonly RegisterStorage mm15;
 
-        public static readonly RegisterStorage rip;     
-        public static readonly RegisterStorage eip;     
+        public static readonly RegisterStorage k0;
+        public static readonly RegisterStorage k1;
+        public static readonly RegisterStorage k2;
+        public static readonly RegisterStorage k3;
+        public static readonly RegisterStorage k4;
+        public static readonly RegisterStorage k5;
+        public static readonly RegisterStorage k6;
+        public static readonly RegisterStorage k7;
+
+        public static readonly RegisterStorage rip;
+        public static readonly RegisterStorage eip;
         public static readonly RegisterStorage ip;
         public static readonly RegisterStorage riz;
         public static readonly RegisterStorage eiz;
@@ -209,6 +235,8 @@ namespace Reko.Arch.X86
         internal static readonly RegisterStorage[] Gp64BitRegisters;
         internal static readonly RegisterStorage[] XmmRegisters;
         internal static readonly RegisterStorage[] YmmRegisters;
+        internal static readonly RegisterStorage[] ZmmRegisters;
+        internal static readonly RegisterStorage[] MaskRegisters;
 
         public const int ControlRegisterMin = 80;
         public const int DebugRegisterMin = 89;
@@ -349,22 +377,39 @@ namespace Reko.Arch.X86
             mm14 = factory.Reg64("mm14");
             mm15 = factory.Reg64("mm15");
 
-            ymm0 = factory.Reg("ymm0", PrimitiveType.Word256);
-            ymm1 = factory.Reg("ymm1", PrimitiveType.Word256);
-            ymm2 = factory.Reg("ymm2", PrimitiveType.Word256);
-            ymm3 = factory.Reg("ymm3", PrimitiveType.Word256);
-            ymm4 = factory.Reg("ymm4", PrimitiveType.Word256);
-            ymm5 = factory.Reg("ymm5", PrimitiveType.Word256);
-            ymm6 = factory.Reg("ymm6", PrimitiveType.Word256);
-            ymm7 = factory.Reg("ymm7", PrimitiveType.Word256);
-            ymm8 = factory.Reg("ymm8", PrimitiveType.Word256);
-            ymm9 = factory.Reg("ymm9", PrimitiveType.Word256);
-            ymm10 = factory.Reg("ymm10", PrimitiveType.Word256);
-            ymm11 = factory.Reg("ymm11", PrimitiveType.Word256);
-            ymm12 = factory.Reg("ymm12", PrimitiveType.Word256);
-            ymm13 = factory.Reg("ymm13", PrimitiveType.Word256);
-            ymm14 = factory.Reg("ymm14", PrimitiveType.Word256);
-            ymm15 = factory.Reg("ymm15", PrimitiveType.Word256);
+            zmm0 = factory.Reg("zmm0", PrimitiveType.Word512);
+            zmm1 = factory.Reg("zmm1", PrimitiveType.Word512);
+            zmm2 = factory.Reg("zmm2", PrimitiveType.Word512);
+            zmm3 = factory.Reg("zmm3", PrimitiveType.Word512);
+            zmm4 = factory.Reg("zmm4", PrimitiveType.Word512);
+            zmm5 = factory.Reg("zmm5", PrimitiveType.Word512);
+            zmm6 = factory.Reg("zmm6", PrimitiveType.Word512);
+            zmm7 = factory.Reg("zmm7", PrimitiveType.Word512);
+            zmm8 = factory.Reg("zmm8", PrimitiveType.Word512);
+            zmm9 = factory.Reg("zmm9", PrimitiveType.Word512);
+            zmm10 = factory.Reg("zmm10", PrimitiveType.Word512);
+            zmm11 = factory.Reg("zmm11", PrimitiveType.Word512);
+            zmm12 = factory.Reg("zmm12", PrimitiveType.Word512);
+            zmm13 = factory.Reg("zmm13", PrimitiveType.Word512);
+            zmm14 = factory.Reg("zmm14", PrimitiveType.Word512);
+            zmm15 = factory.Reg("zmm15", PrimitiveType.Word512);
+
+            ymm0 = new RegisterStorage("ymm0", zmm0.Number, 0, PrimitiveType.Word256);
+            ymm1 = new RegisterStorage("ymm1", zmm1.Number, 0, PrimitiveType.Word256);
+            ymm2 = new RegisterStorage("ymm2", zmm2.Number, 0, PrimitiveType.Word256);
+            ymm3 = new RegisterStorage("ymm3", zmm3.Number, 0, PrimitiveType.Word256);
+            ymm4 = new RegisterStorage("ymm4", zmm4.Number, 0, PrimitiveType.Word256);
+            ymm5 = new RegisterStorage("ymm5", zmm5.Number, 0, PrimitiveType.Word256);
+            ymm6 = new RegisterStorage("ymm6", zmm6.Number, 0, PrimitiveType.Word256);
+            ymm7 = new RegisterStorage("ymm7", zmm7.Number, 0, PrimitiveType.Word256);
+            ymm8 = new RegisterStorage("ymm8", zmm8.Number, 0, PrimitiveType.Word256);
+            ymm9 = new RegisterStorage("ymm9", zmm9.Number, 0, PrimitiveType.Word256);
+            ymm10 = new RegisterStorage("ymm10", zmm10.Number, 0, PrimitiveType.Word256);
+            ymm11 = new RegisterStorage("ymm11", zmm11.Number, 0, PrimitiveType.Word256);
+            ymm12 = new RegisterStorage("ymm12", zmm12.Number, 0, PrimitiveType.Word256);
+            ymm13 = new RegisterStorage("ymm13", zmm13.Number, 0, PrimitiveType.Word256);
+            ymm14 = new RegisterStorage("ymm14", zmm14.Number, 0, PrimitiveType.Word256);
+            ymm15 = new RegisterStorage("ymm15", zmm15.Number, 0, PrimitiveType.Word256);
 
             xmm0 = new RegisterStorage("xmm0", ymm0.Number, 0, PrimitiveType.Word128);
             xmm1 = new RegisterStorage("xmm1", ymm1.Number, 0, PrimitiveType.Word128);
@@ -382,6 +427,15 @@ namespace Reko.Arch.X86
             xmm13 = new RegisterStorage("xmm13", ymm13.Number, 0, PrimitiveType.Word128);
             xmm14 = new RegisterStorage("xmm14", ymm14.Number, 0, PrimitiveType.Word128);
             xmm15 = new RegisterStorage("xmm15", ymm15.Number, 0, PrimitiveType.Word128);
+
+            k0 = factory.Reg64("k0");
+            k1 = factory.Reg64("k1");
+            k2 = factory.Reg64("k2");
+            k3 = factory.Reg64("k3");
+            k4 = factory.Reg64("k4");
+            k5 = factory.Reg64("k5");
+            k6 = factory.Reg64("k6");
+            k7 = factory.Reg64("k7");
 
             // Pseudo registers used to reify the x87 FPU stack. Top is the 
             // index into the FPU stack, while ST is the memory identifier that
@@ -532,6 +586,23 @@ namespace Reko.Arch.X86
                  ymm13,
                  ymm14,
                  ymm15,
+
+                 zmm0,
+                 zmm1,
+                 zmm2,
+                 zmm3,
+                 zmm4,
+                 zmm5,
+                 zmm6,
+                 zmm7,
+                 zmm8,
+                 zmm9,
+                 zmm10,
+                 zmm11,
+                 zmm12,
+                 zmm13,
+                 zmm14,
+                 zmm15,
             };
 
             // For each register storage domain, arrange the registers in order of size.
@@ -553,22 +624,22 @@ namespace Reko.Arch.X86
                 { r13.Domain, new [] { r13, r13d, r13w, r13b, } },
                 { r14.Domain, new [] { r14, r14d, r14w, r14b, } },
                 { r15.Domain, new [] { r15, r15d, r15w, r15b, } },
-                { ymm0.Domain, new [] { ymm0, xmm0 } },
-                { ymm1.Domain, new [] { ymm1, xmm1 } },
-                { ymm2.Domain, new [] { ymm2, xmm2 } },
-                { ymm3.Domain, new [] { ymm3, xmm3 } },
-                { ymm4.Domain, new [] { ymm4, xmm4 } },
-                { ymm5.Domain, new [] { ymm5, xmm5 } },
-                { ymm6.Domain, new [] { ymm6, xmm6 } },
-                { ymm7.Domain, new [] { ymm7, xmm7 } },
-                { ymm8.Domain, new [] { ymm8, xmm8 } },
-                { ymm9.Domain, new [] { ymm9, xmm9 } },
-                { ymm10.Domain, new [] { ymm10, xmm10 } },
-                { ymm11.Domain, new [] { ymm11, xmm11 } },
-                { ymm12.Domain, new [] { ymm12, xmm12 } },
-                { ymm13.Domain, new [] { ymm13, xmm13 } },
-                { ymm14.Domain, new [] { ymm14, xmm14 } },
-                { ymm15.Domain, new [] { ymm15, xmm15 } },
+                { zmm0.Domain, new [] { zmm0, ymm0, xmm0 } },
+                { zmm1.Domain, new [] { zmm1, ymm1, xmm1 } },
+                { zmm2.Domain, new [] { zmm2, ymm2, xmm2 } },
+                { zmm3.Domain, new [] { zmm3, ymm3, xmm3 } },
+                { zmm4.Domain, new [] { zmm4, ymm4, xmm4 } },
+                { zmm5.Domain, new [] { zmm5, ymm5, xmm5 } },
+                { zmm6.Domain, new [] { zmm6, ymm6, xmm6 } },
+                { zmm7.Domain, new [] { zmm7, ymm7, xmm7 } },
+                { zmm8.Domain, new [] { zmm8, ymm8, xmm8 } },
+                { zmm9.Domain, new [] { zmm9, ymm9, xmm9 } },
+                { zmm10.Domain, new [] { zmm10, ymm10, xmm10 } },
+                { zmm11.Domain, new [] { zmm11, ymm11, xmm11 } },
+                { zmm12.Domain, new [] { zmm12, ymm12, xmm12 } },
+                { zmm13.Domain, new [] { zmm13, ymm13, xmm13 } },
+                { zmm14.Domain, new [] { zmm14, ymm14, xmm14 } },
+                { zmm15.Domain, new [] { zmm15, ymm15, xmm15 } },
             };
 
             Gp64BitRegisters = new[]
@@ -587,6 +658,14 @@ namespace Reko.Arch.X86
                 ymm0, ymm1, ymm2, ymm3, ymm4, ymm5, ymm6, ymm7,
                 ymm8, ymm9, ymm10, ymm11, ymm12, ymm13, ymm14, ymm15
             };
+
+            ZmmRegisters = new[]
+            {
+                zmm0, zmm1, zmm2, zmm3, zmm4, zmm5, zmm6, zmm7,
+                zmm8, zmm9, zmm10, zmm11, zmm12, zmm13, zmm14, zmm15
+            };
+
+            MaskRegisters = new[] { k0, k1, k2, k3, k4, k5, k6, k7 };
         }
 
         private static FlagGroupStorage FlagRegister(string name, RegisterStorage freg, FlagM grf)

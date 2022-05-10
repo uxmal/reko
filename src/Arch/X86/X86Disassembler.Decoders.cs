@@ -77,7 +77,7 @@ namespace Reko.Arch.X86
 
             public override X86Instruction Decode(uint op, X86Disassembler disasm)
             {
-                var decoder = disasm.decodingContext.VexLong
+                var decoder = disasm.decodingContext.VexLongCode != 0
                     ? longDecoder
                     : notLongDecoder;
                 return decoder.Decode(op, disasm);
@@ -337,7 +337,7 @@ namespace Reko.Arch.X86
                 ctx.IsVex = true;
                 ctx.VexRegister = (byte) vvvv;
                 ctx.RegisterExtensionPrefixByte = (byte) r;
-                ctx.VexLong = (op2 & 4) != 0;
+                ctx.VexLongCode = (byte)((op2 & 4) >> 2);
                 ctx.F2Prefix = pp == 3;
                 ctx.F3Prefix = pp == 2;
                 ctx.SizeOverridePrefix = pp == 1;
@@ -384,7 +384,7 @@ namespace Reko.Arch.X86
 
                 ctx.IsVex = true;
                 ctx.VexRegister = (byte) vvvv;
-                ctx.VexLong = (evex2 & 4) != 0;
+                ctx.VexLongCode = (byte)((evex2 & 4) >> 2);
                 ctx.RegisterExtension.FlagWideValue = w != 0;
                 ctx.RegisterExtension.FlagTargetModrmRegister = (rxb & 4) == 0;
                 ctx.RegisterExtension.FlagTargetSIBIndex = (rxb & 2) == 0;
@@ -431,7 +431,7 @@ namespace Reko.Arch.X86
             public override X86Instruction Decode(uint op, X86Disassembler disasm)
             {
                 // 62 must be the first byte. The presence of previous
-                // prefixes is an error (according to Intel manual 2.6, vol 2A.
+                // prefixes is an error (according to Intel manual 2.6, vol 2A).
                 var ctx = disasm.decodingContext;
                 if (ctx.F2Prefix |
                     ctx.F3Prefix |
@@ -449,13 +449,17 @@ namespace Reko.Arch.X86
                 {
                     return disasm.CreateInvalidInstruction();
                 }
-                var pp = p1 & 3;
+                var mm = p0 & 3;
                 var rxb = p0 >> 5;
+                var pp = p1 & 3;
                 var w = p1 >> 7;
                 var vvvv = p1Vvvv.Read(p1);
                 ctx.IsVex = true;
                 ctx.VexRegister = (byte) vvvv;
-                ctx.VexLong = (op & 4) != 0;
+                ctx.VexLongCode = (byte)((p2 >> 5) & 3);
+                if (ctx.VexLongCode == 0b11)    // 0b11 is reserved.
+                    return disasm.CreateInvalidInstruction();
+                ctx.OpMask = (byte)(p2 & 7);
                 ctx.RegisterExtension.FlagWideValue = w != 0;
                 ctx.RegisterExtension.FlagTargetModrmRegister = (rxb & 4) == 0;
                 ctx.RegisterExtension.FlagTargetSIBIndex = (rxb & 2) == 0;
@@ -465,7 +469,7 @@ namespace Reko.Arch.X86
                 ctx.SizeOverridePrefix = pp == 1;
 
                 Decoder[] decoders;
-                switch (pp)
+                switch (mm)
                 {
                 case 2: decoders = decoders0F38; break;
                 case 3: decoders = decoders0F3A; break;

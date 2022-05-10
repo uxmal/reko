@@ -198,7 +198,9 @@ namespace Reko.Arch.X86
                 d[0x4B] = s_invalid;
                 d[0x4C] = s_invalid;
                 d[0x4D] = s_invalid;
-                d[0x4E] = s_invalid;
+                d[0x4E] = new PrefixedDecoder(
+                    dec66: VexInstr(Mnemonic.vrsqrt14ps, Vx, Wx),
+                    dec66Wide: VexInstr(Mnemonic.vrsqrt14pd, Vx, Wx));
                 d[0x4F] = s_invalid;
 
                     // 50

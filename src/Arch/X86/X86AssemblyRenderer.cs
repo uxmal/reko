@@ -101,6 +101,12 @@ namespace Reko.Arch.X86
         {
             var flags = options.Flags;
             RenderOperand(instr.Operands[0], instr, renderer, options);
+            if (instr.OpMask != 0)
+            {
+                renderer.WriteString("{k");
+                renderer.WriteUInt32(instr.OpMask);
+                renderer.WriteChar('}');
+            }
             for (int i = 1; i < instr.Operands.Length; ++i)
             {
                 renderer.WriteString(options.OperandSeparator ?? ",");

@@ -33,6 +33,7 @@ namespace Reko.Arch.X86
         public int repPrefix;                   // 0 = no prefix, 2 = repnz, 3 = repz
 		public DataType dataWidth;	            // Width of the data (if it's a word).
 		public PrimitiveType addrWidth;	        // width of the address mode.	// TODO: belongs in MemoryOperand
+        public byte OpMask { get; set; }        // VEX Mask register to use.
 
 		public X86Instruction(Mnemonic mnemonic, InstrClass iclass, DataType dataWidth, PrimitiveType addrWidth, params MachineOperand [] ops)
 		{

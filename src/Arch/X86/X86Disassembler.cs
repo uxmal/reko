@@ -173,7 +173,8 @@ namespace Reko.Arch.X86
                 this.SizeOverridePrefix = false;
                 this.IsVex = false;
                 this.VexRegister = 0;
-                this.VexLong = false;
+                this.VexLongCode = 0;
+                this.OpMask = 0;
 
                 this.ops.Clear();
             }
@@ -186,7 +187,8 @@ namespace Reko.Arch.X86
                         ? 0
                         : this.F2Prefix 
                             ? 2 :
-                            this.F3Prefix ? 3 : 0
+                            this.F3Prefix ? 3 : 0,
+                    OpMask = this.OpMask,
                 };
             }
 
@@ -265,7 +267,16 @@ namespace Reko.Arch.X86
 
             public byte VexRegister { get; set; }
 
-            public bool VexLong { get; set; } // If true, use YMM or 256-bit memory access.
+            // Encoding for vector register size.
+            // (Intel manual: Table 2-36. EVEX Embedded Broadcast/Rounding/SAE and Vector Length on Vector Instructions)
+            //   0b00: 128 bit 
+            //   0b01: 256 bit 
+            //   0b10: 512 bit 
+            //   0b11: reserved 
+            public byte VexLongCode { get; set; }
+
+            // EVEX op mask
+            public byte OpMask { get; set; }
         }
 
         //$REVIEW: Instructions longer than this cause exceptions on modern x86 processors.
@@ -570,6 +581,19 @@ namespace Reko.Arch.X86
             throw new InvalidOperationException();
         }
 
+        private RegisterStorage MaskRegFromBits(int bits, PrimitiveType _)
+        {
+            return Registers.MaskRegisters[bits & 7];
+        }
+
+        private readonly PrimitiveType[] VexVectorLength =
+        {
+            PrimitiveType.Word128,
+            PrimitiveType.Word256,
+            PrimitiveType.Word512,
+            PrimitiveType.Create(Domain.None, 0)    // Invalid size
+        };
+
 		public static RegisterStorage SegFromBits(int bits)
 		{
 			switch (bits&0x7)
@@ -661,6 +685,26 @@ namespace Reko.Arch.X86
         private static readonly Mutator<X86Disassembler> Ev = E(OperandType.v);
         private static readonly Mutator<X86Disassembler> Ey = E(OperandType.y);
         private static readonly Mutator<X86Disassembler> Ew = E(OperandType.w);
+
+        /// <summary>
+        /// Memory or mask register operand specified by the mod & r/m fields.
+        /// </summary>
+        private static Mutator<X86Disassembler> EK(OperandType opType)
+        {
+            return (u, d) =>
+            {
+                var width = d.OperandWidth(opType);
+                d.decodingContext.iWidth = width;
+                var op = d.DecodeModRM(width, d.decodingContext.SegmentOverride, d.MaskRegFromBits);
+                if (op is null)
+                    return false;
+                d.decodingContext.ops.Add(op);
+                return true;
+            };
+        }
+        private static readonly Mutator<X86Disassembler> EKb = EK(OperandType.b);
+        private static readonly Mutator<X86Disassembler> EKq = EK(OperandType.q);
+        private static readonly Mutator<X86Disassembler> EKw = EK(OperandType.w);
 
         /// <summary>
         /// Hybrid decoding: if effective memory address, use word16 size, if register 
@@ -771,6 +815,27 @@ namespace Reko.Arch.X86
         private static readonly Mutator<X86Disassembler> Hss = H(OperandType.ss);
         private static readonly Mutator<X86Disassembler> Hq = H(OperandType.q);
         private static readonly Mutator<X86Disassembler> Hx = H(OperandType.x);
+
+
+        /// <summary>
+        /// Mask register
+        /// </summary>
+        private static Mutator<X86Disassembler> K(OperandType opType)
+        {
+            return (u, d) =>
+            {
+                if (!d.TryEnsureModRM(out byte modRm))
+                    return false;
+                var width = d.OperandWidth(opType);
+                var op = d.MaskRegFromBits(modRm >> 3, width);
+                d.decodingContext.ops.Add(op);
+                return true;
+            };
+        }
+        private static readonly Mutator<X86Disassembler> Kb = K(OperandType.b);
+        private static readonly Mutator<X86Disassembler> Kq = K(OperandType.q);
+        private static readonly Mutator<X86Disassembler> Kw = K(OperandType.w);
+
 
         /// <summary>
         /// Immediate operand.
@@ -1345,7 +1410,7 @@ namespace Reko.Arch.X86
                 return PrimitiveType.Word32;
             case OperandType.ps:
             case OperandType.pd:
-                return this.decodingContext.VexLong ? PrimitiveType.Word256 : PrimitiveType.Word128;
+                return VexVectorLength[this.decodingContext.VexLongCode];
             case OperandType.p:
 				//$BUG: should be SegPtr48 in 32-bit mode.
 				return PrimitiveType.SegPtr32;     // Far pointer.
@@ -1360,9 +1425,7 @@ namespace Reko.Arch.X86
             case OperandType.s:
                 return this.decodingContext.dataWidth.BitSize == 64 ? PrimitiveType.CreateWord(80) : PrimitiveType.CreateWord(48);
             case OperandType.x:
-                return this.decodingContext.VexLong
-                    ? PrimitiveType.Word256
-                    : PrimitiveType.Word128;
+                return VexVectorLength[this.decodingContext.VexLongCode];
             case OperandType.y:
                 return (this.isRegisterExtensionEnabled && this.decodingContext.RegisterExtension.FlagWideValue) ? PrimitiveType.Word64: PrimitiveType.Word32;
             case OperandType.z:
@@ -1381,11 +1444,11 @@ namespace Reko.Arch.X86
             case OperandType.d:
                 return PrimitiveType.Word32;
             case OperandType.pd:
-                return this.decodingContext.VexLong ? PrimitiveType.Word256 : PrimitiveType.Word128; //$TODO: this should be array[2] of double32
+                return VexVectorLength[this.decodingContext.VexLongCode];
             case OperandType.pi:
-                return this.decodingContext.VexLong ? PrimitiveType.Word256 : PrimitiveType.Word128; //$TODO: this should be array[4] of int32
+                return VexVectorLength[this.decodingContext.VexLongCode];
             case OperandType.ps:
-                return this.decodingContext.VexLong ? PrimitiveType.Word256 : PrimitiveType.Word128; //$TODO: this should be array[4] of real32
+                return VexVectorLength[this.decodingContext.VexLongCode];
             case OperandType.qq:
                 return PrimitiveType.Word256;
             case OperandType.q:
@@ -1397,9 +1460,7 @@ namespace Reko.Arch.X86
             case OperandType.ss:
                 return PrimitiveType.Real32;
             case OperandType.x:
-                return this.decodingContext.VexLong
-                    ? PrimitiveType.Word256
-                    : PrimitiveType.Word128;
+                return VexVectorLength[this.decodingContext.VexLongCode];
             case OperandType.y:
                 return this.decodingContext.SizeOverridePrefix
                     ? PrimitiveType.Word128

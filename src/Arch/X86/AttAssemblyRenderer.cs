@@ -268,6 +268,12 @@ namespace Reko.Arch.X86
                 {
                     renderer.WriteString(options.OperandSeparator ?? ",");
                     RenderOperand(instr.Operands[i], instr, renderer, options);
+                    if (i == 0 && instr.OpMask != 0)
+                    {
+                        renderer.WriteString("{k");
+                        renderer.WriteUInt32(instr.OpMask);
+                        renderer.WriteFormat("}");
+                    }
                 }
             }
         }

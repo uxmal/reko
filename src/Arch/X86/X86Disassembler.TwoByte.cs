@@ -396,11 +396,26 @@ namespace Reko.Arch.X86
 				d[0x8E] = Instr(Mnemonic.jle, InstrClass.ConditionalTransfer, Jv);
 				d[0x8F] = Instr(Mnemonic.jg,  InstrClass.ConditionalTransfer, Jv);
 
-				// 0F 90
-				d[0x90] = Instr(Mnemonic.seto, Eb);
-				d[0x91] = Instr(Mnemonic.setno,Eb);
-				d[0x92] = Instr(Mnemonic.setc, Eb);
-				d[0x93] = Instr(Mnemonic.setnc,Eb);
+                // 0F 90
+                d[0x90] = VexInstr(
+                    Instr(Mnemonic.seto, Eb),
+                    new PrefixedDecoder(
+                        dec: Instr(Mnemonic.kmovw, Kw, EKw),
+                        dec66: Instr(Mnemonic.kmovb, Kb, EKb),
+                        dec66Wide: Instr(Mnemonic.kmovq, Kq, EKq)));
+                d[0x91] = VexInstr(
+                    Instr(Mnemonic.setno, Eb),
+                    s_nyi);
+				d[0x92] = VexInstr(
+                    Instr(Mnemonic.setc, Eb),
+                    new PrefixedDecoder(
+                        dec: Instr(Mnemonic.kmovw, Kw, Rd),
+                        dec66: Instr(Mnemonic.kmovb, Kw, Rd),
+                        dec66Wide: Instr(Mnemonic.kmovq, Kw, Ry),
+                        decF2: Instr(Mnemonic.kmovd, Kw, Rd)));
+				d[0x93] = VexInstr(
+                    Instr(Mnemonic.setnc,Eb),
+                    s_nyi);
 				d[0x94] = Instr(Mnemonic.setz, Eb);
 				d[0x95] = Instr(Mnemonic.setnz,Eb);
 				d[0x96] = Instr(Mnemonic.setbe,Eb);

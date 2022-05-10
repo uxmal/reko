@@ -42,6 +42,7 @@ namespace Reko.Core.Serialization.Json
             { PrimitiveType.Word64, "w64" },
             { PrimitiveType.Word128, "w128" },
             { PrimitiveType.Word256, "w256" },
+            { PrimitiveType.Word512, "w512" },
 
             { PrimitiveType.SByte, "i8" },
             { PrimitiveType.Int16, "i16" },

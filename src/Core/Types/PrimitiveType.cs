@@ -333,9 +333,11 @@ namespace Reko.Core.Types
             Real128 = Create(Domain.Real, 128);
 
             Word256 = CreateWord(256);
+
+            Word512 = CreateWord(512);
         }
 
-		public static PrimitiveType Bool { get; private set; }
+        public static PrimitiveType Bool { get; private set; }
 
 		public static PrimitiveType Byte { get; private set; }
         // 8-bit character
@@ -378,6 +380,8 @@ namespace Reko.Core.Types
         public static PrimitiveType Real128 { get; private set; }
 
         public static PrimitiveType Word256 { get; private set; }
+
+        public static PrimitiveType Word512 { get; private set; }
 
         public static PrimitiveType WChar { get; private set; }
     }
