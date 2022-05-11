@@ -389,7 +389,6 @@ namespace Reko.Arch.X86
                 ctx.RegisterExtension.FlagTargetModrmRegister = (rxb & 4) == 0;
                 ctx.RegisterExtension.FlagTargetSIBIndex = (rxb & 2) == 0;
                 ctx.RegisterExtension.FlagTargetModrmRegOrMem = (rxb & 1) == 0;
-
                 ctx.F2Prefix = pp == 3;
                 ctx.F3Prefix = pp == 2;
                 ctx.SizeOverridePrefix = pp == 1;
@@ -453,7 +452,9 @@ namespace Reko.Arch.X86
                 var rxb = p0 >> 5;
                 var pp = p1 & 3;
                 var w = p1 >> 7;
-                var vvvv = p1Vvvv.Read(p1);
+                var vvvv = p1Vvvv.Read(~(uint)p1);
+                if (!Bits.IsBitSet(p2, 3))
+                    vvvv |= 0x10;
                 ctx.IsVex = true;
                 ctx.VexRegister = (byte) vvvv;
                 ctx.VexLongCode = (byte)((p2 >> 5) & 3);
@@ -464,6 +465,7 @@ namespace Reko.Arch.X86
                 ctx.RegisterExtension.FlagTargetModrmRegister = (rxb & 4) == 0;
                 ctx.RegisterExtension.FlagTargetSIBIndex = (rxb & 2) == 0;
                 ctx.RegisterExtension.FlagTargetModrmRegOrMem = (rxb & 1) == 0;
+                ctx.EvexR = !Bits.IsBitSet(p0, 4);
                 ctx.F2Prefix = pp == 3;
                 ctx.F3Prefix = pp == 2;
                 ctx.SizeOverridePrefix = pp == 1;

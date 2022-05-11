@@ -175,6 +175,7 @@ namespace Reko.Arch.X86
                 this.VexRegister = 0;
                 this.VexLongCode = 0;
                 this.OpMask = 0;
+                this.EvexR = false;
 
                 this.ops.Clear();
             }
@@ -277,6 +278,9 @@ namespace Reko.Arch.X86
 
             // EVEX op mask
             public byte OpMask { get; set; }
+
+            // EVEX R' bit
+            public bool EvexR { get; set; }
         }
 
         //$REVIEW: Instructions longer than this cause exceptions on modern x86 processors.
@@ -350,7 +354,7 @@ namespace Reko.Arch.X86
 
             X86Instruction instr = rootDecoders[op].Decode(op, this);
             instr.Address = addr;
-            instr.Length = (int)(rdr.Address - addr);
+            instr.Length = (int)(rdr.Offset - rdrOffset);
             return instr;
         }
 
@@ -439,6 +443,7 @@ namespace Reko.Arch.X86
         {
             int reg_bits = bits & 7;
             reg_bits |= this.decodingContext.RegisterExtension.FlagTargetModrmRegOrMem ? 8 : 0;
+            reg_bits |= this.decodingContext.EvexR ? 16 : 0;
             return fnReg(reg_bits, dataWidth);
         }
 
@@ -539,46 +544,13 @@ namespace Reko.Arch.X86
         {
             if (dataWidth.BitSize == 256)
             {
-                switch (bits)
-                {
-                case 0: return Registers.ymm0;
-                case 1: return Registers.ymm1;
-                case 2: return Registers.ymm2;
-                case 3: return Registers.ymm3;
-                case 4: return Registers.ymm4;
-                case 5: return Registers.ymm5;
-                case 6: return Registers.ymm6;
-                case 7: return Registers.ymm7;
-                case 8: return Registers.ymm8;
-                case 9: return Registers.ymm9;
-                case 10: return Registers.ymm10;
-                case 11: return Registers.ymm11;
-                case 12: return Registers.ymm12;
-                case 13: return Registers.ymm13;
-                case 14: return Registers.ymm14;
-                case 15: return Registers.ymm15;
-                }
+                return Registers.YmmRegisters[bits];
             }
-            switch (bits)
+            else if (dataWidth.BitSize == 512)
             {
-            case 0: return Registers.xmm0;
-            case 1: return Registers.xmm1;
-            case 2: return Registers.xmm2;
-            case 3: return Registers.xmm3;
-            case 4: return Registers.xmm4;
-            case 5: return Registers.xmm5;
-            case 6: return Registers.xmm6;
-            case 7: return Registers.xmm7;
-            case 8: return Registers.xmm8;
-            case 9: return Registers.xmm9;
-            case 10: return Registers.xmm10;
-            case 11: return Registers.xmm11;
-            case 12: return Registers.xmm12;
-            case 13: return Registers.xmm13;
-            case 14: return Registers.xmm14;
-            case 15: return Registers.xmm15;
+                return Registers.ZmmRegisters[bits];
             }
-            throw new InvalidOperationException();
+            return Registers.XmmRegisters[bits];
         }
 
         private RegisterStorage MaskRegFromBits(int bits, PrimitiveType _)

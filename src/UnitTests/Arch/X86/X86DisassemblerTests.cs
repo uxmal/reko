@@ -724,6 +724,7 @@ movzx	ax,byte ptr [bp+4h]
         public void X86dis_vaddpd()
         {
             AssertCode64("vaddpd\tymm0,ymm0,[rbp-90h]", 0xC5, 0xFD, 0x58, 0x85, 0x70, 0xFF, 0xFF, 0xFF);
+            AssertCode64("vaddpd\tzmm14,zmm29,zmm28", "62 01 95 40 58 F4");
         }
 
         [Test]
