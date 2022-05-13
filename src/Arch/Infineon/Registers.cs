@@ -20,6 +20,7 @@
 
 using Reko.Core;
 using Reko.Core.Types;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -31,7 +32,22 @@ namespace Reko.Arch.Infineon
         public static readonly RegisterStorage[] DataRegisters;
         public static readonly SequenceStorage[] ExtendedARegisters;
         public static readonly SequenceStorage[] ExtendedDRegisters;
+        public static readonly FlagGroupStorage[] PswFlags;
+
         public static readonly Dictionary<uint, RegisterStorage> CoreRegisters;
+        public static readonly Dictionary<StorageDomain, RegisterStorage> RegistersByDomain;
+
+        public static readonly RegisterStorage a11;
+        public static readonly RegisterStorage psw;
+
+        public static readonly FlagGroupStorage C;
+        public static readonly FlagGroupStorage V;
+        public static readonly FlagGroupStorage SV;
+        public static readonly FlagGroupStorage AV;
+        public static readonly FlagGroupStorage SAV;
+        public static readonly FlagGroupStorage V_SV;
+        public static readonly FlagGroupStorage V_SV_AV_SAV;
+        public static readonly FlagGroupStorage C_V_SV_AV_SAV;
 
         static Registers()
         {
@@ -68,65 +84,37 @@ namespace Reko.Arch.Infineon
 { 0xFE38, factory.Reg32("FCX") },           // Free Context List Head Pointer Register.
 { 0xFE3C, factory.Reg32("LCX") },           // Free Context List Limit Pointer Register.
 { 0x9400, factory.Reg32("COMPAT") },        // Compatibility Mode Register.
-{ 0xC000, factory.Reg32("DPR0_L") },        // Data Segment Protection Range x, Lower
-{ 0xC004, factory.Reg32("DPR0_U") },        // Data Segment Protection Range x, Lower
-{ 0xC008, factory.Reg32("DPR1_L") },        // Data Segment Protection Range x, Lower
-{ 0xC00C, factory.Reg32("DPR1_U") },        // Data Segment Protection Range x, Lower
-{ 0xC010, factory.Reg32("DPR2_L") },        // Data Segment Protection Range x, Lower
-{ 0xC014, factory.Reg32("DPR2_U") },        // Data Segment Protection Range x, Lower
-{ 0xC018, factory.Reg32("DPR3_L") },        // Data Segment Protection Range x, Lower
-{ 0xC01C, factory.Reg32("DPR3_U") },        // Data Segment Protection Range x, Lower
-{ 0xC020, factory.Reg32("DPR4_L") },        // Data Segment Protection Range x, Lower
-{ 0xC024, factory.Reg32("DPR4_U") },        // Data Segment Protection Range x, Lower
-{ 0xC028, factory.Reg32("DPR5_L") },        // Data Segment Protection Range x, Lower
-{ 0xC02C, factory.Reg32("DPR5_U") },        // Data Segment Protection Range x, Lower
-{ 0xC030, factory.Reg32("DPR6_L") },        // Data Segment Protection Range x, Lower
-{ 0xC034, factory.Reg32("DPR6_U") },        // Data Segment Protection Range x, Lower
-{ 0xC038, factory.Reg32("DPR7_L") },        // Data Segment Protection Range x, Lower
-{ 0xC03C, factory.Reg32("DPR7_U") },        // Data Segment Protection Range x, Lower
-{ 0xC040, factory.Reg32("DPR8_L") },        // Data Segment Protection Range x, Lower
-{ 0xC044, factory.Reg32("DPR8_U") },        // Data Segment Protection Range x, Lower
-{ 0xC048, factory.Reg32("DPR9_L") },        // Data Segment Protection Range x, Lower
-{ 0xC04C, factory.Reg32("DPR9_U") },        // Data Segment Protection Range x, Lower
-{ 0xC050, factory.Reg32("DPR10_L") },       // Data Segment Protection Range x, Lower
-{ 0xC054, factory.Reg32("DPR10_U") },       // Data Segment Protection Range x, Lower
-{ 0xC058, factory.Reg32("DPR11_L") },       // Data Segment Protection Range x, Lower
-{ 0xC05C, factory.Reg32("DPR11_U") },       // Data Segment Protection Range x, Lower
+{ 0xC000, factory.Reg32("DPR0_L") },        // Data Segment Protection Range 0, Lower.
+{ 0xC004, factory.Reg32("DPR0_U") },        // Data Segment Protection Range 0, Upper.
+{ 0xC008, factory.Reg32("DPR1_L") },        // Data Segment Protection Range 1, Lower.
+{ 0xC00C, factory.Reg32("DPR1_U") },        // Data Segment Protection Range 1, Upper.
+{ 0xC010, factory.Reg32("DPR2_L") },        // Data Segment Protection Range 2, Lower.
+{ 0xC014, factory.Reg32("DPR2_U") },        // Data Segment Protection Range 2, Upper.
+{ 0xC018, factory.Reg32("DPR3_L") },        // Data Segment Protection Range 3, Lower.
+{ 0xC01C, factory.Reg32("DPR3_U") },        // Data Segment Protection Range 3, Upper.
+{ 0xC020, factory.Reg32("DPR4_L") },        // Data Segment Protection Range 4, Lower.
+{ 0xC024, factory.Reg32("DPR4_U") },        // Data Segment Protection Range 4, Upper.
+{ 0xC028, factory.Reg32("DPR5_L") },        // Data Segment Protection Range 5, Lower.
+{ 0xC02C, factory.Reg32("DPR5_U") },        // Data Segment Protection Range 5, Upper.
+{ 0xC030, factory.Reg32("DPR6_L") },        // Data Segment Protection Range 6, Lower.
+{ 0xC034, factory.Reg32("DPR6_U") },        // Data Segment Protection Range 6, Upper.
+{ 0xC038, factory.Reg32("DPR7_L") },        // Data Segment Protection Range 7, Lower.
+{ 0xC03C, factory.Reg32("DPR7_U") },        // Data Segment Protection Range 7, Upper.
+{ 0xC040, factory.Reg32("DPR8_L") },        // Data Segment Protection Range 8, Lower.
+{ 0xC044, factory.Reg32("DPR8_U") },        // Data Segment Protection Range 8, Upper.
+{ 0xC048, factory.Reg32("DPR9_L") },        // Data Segment Protection Range 9, Lower.
+{ 0xC04C, factory.Reg32("DPR9_U") },        // Data Segment Protection Range 9, Upper.
+{ 0xC050, factory.Reg32("DPR10_L") },       // Data Segment Protection Range 10, Lower.
+{ 0xC054, factory.Reg32("DPR10_U") },       // Data Segment Protection Range 10, Upper.
+{ 0xC058, factory.Reg32("DPR11_L") },       // Data Segment Protection Range 11, Lower.
+{ 0xC05C, factory.Reg32("DPR11_U") },       // Data Segment Protection Range 11, Upper.
 
-
-
-
-
-//Data Segment Protection Range 0, Lower.
-//Data Segment Protection Range 0, Upper.
-//Data Segment Protection Range 1, Lower.
-//Data Segment Protection Range 1, Upper.
-//Data Segment Protection Range 2, Lower.
-//Data Segment Protection Range 2, Upper.
-//Data Segment Protection Range 3, Lower.
-//Data Segment Protection Range 3, Upper.
-//Data Segment Protection Range 4, Lower.
-//Data Segment Protection Range 4, Upper.
-//Data Segment Protection Range 5, Lower.
-//Data Segment Protection Range 5, Upper.
-//Data Segment Protection Range 6, Lower.
-//Data Segment Protection Range 6, Upper.
-//Data Segment Protection Range 7, Lower.
-//Data Segment Protection Range 7, Upper.
-//Data Segment Protection Range 8, Lower.
-//Data Segment Protection Range 8, Upper.
-//Data Segment Protection Range 9, Lower.
-//Data Segment Protection Range 9, Upper.
-//Data Segment Protection Range 10, Lower.
-//Data Segment Protection Range 10, Upper.
-//Data Segment Protection Range 11, Lower.
-//Data Segment Protection Range 11, Upper.
-{ 0xC060, factory.Reg32("DPR12_L") },
-{ 0xC064, factory.Reg32("DPR12_U") },
-{ 0xC068, factory.Reg32("DPR13_L") },
-{ 0xC06C, factory.Reg32("DPR13_U") },
-{ 0xC070, factory.Reg32("DPR14_L") },
-{ 0xC074, factory.Reg32("DPR14_U") },
+{ 0xC060, factory.Reg32("DPR12_L") },       //Data Segment Protection Range 12, Lower.
+{ 0xC064, factory.Reg32("DPR12_U") },       //Data Segment Protection Range 12, Upper.
+{ 0xC068, factory.Reg32("DPR13_L") },       //Data Segment Protection Range 13, Lower.
+{ 0xC06C, factory.Reg32("DPR13_U") },       //Data Segment Protection Range 13, Upper.
+{ 0xC070, factory.Reg32("DPR14_L") },       //Data Segment Protection Range 14, Lower.
+{ 0xC074, factory.Reg32("DPR14_U") },       //Data Segment Protection Range 14, Upper.
 { 0xC078, factory.Reg32("DPR15_L") },
 { 0xC07C, factory.Reg32("DPR15_U") },
 { 0xD000, factory.Reg32("CPR0_L") },
@@ -165,12 +153,7 @@ namespace Reko.Arch.Infineon
 { 0xE004, factory.Reg32("CPXE_1") },
 { 0xE008, factory.Reg32("CPXE_2") },
 { 0xE00C, factory.Reg32("CPXE_3") },
-//Data Segment Protection Range 12, Lower.
-//Data Segment Protection Range 12, Upper.
-//Data Segment Protection Range 13, Lower.
-//Data Segment Protection Range 13, Upper.
-//Data Segment Protection Range 14, Lower.
-//Data Segment Protection Range 14, Upper.
+
 //Data Segment Protection Range 15, Lower.
 //Data Segment Protection Range 15, Upper.
 //Code Segment Protection Range 0, Lower.
@@ -384,6 +367,31 @@ namespace Reko.Arch.Infineon
 { 0xA018, factory.Reg32("FPU_TRAP_SRC3") },
 
             };
+            psw = CoreRegisters[0xFE04];
+            a11 = AddrRegisters[11];
+
+            C = new FlagGroupStorage(psw, (uint)FlagM.CF, "C", PrimitiveType.Bool);
+            V = new FlagGroupStorage(psw, (uint) FlagM.CF, "V", PrimitiveType.Bool);
+            SV = new FlagGroupStorage(psw, (uint) FlagM.CF, "SV", PrimitiveType.Bool);
+            AV = new FlagGroupStorage(psw, (uint) FlagM.CF, "AV", PrimitiveType.Bool);
+            SAV = new FlagGroupStorage(psw, (uint) FlagM.CF, "AV", PrimitiveType.Bool);
+            PswFlags = new[] { C, V, SV, AV, SAV };
+
+            V_SV = new FlagGroupStorage(psw, (uint) (FlagM.VF|FlagM.SVF), "V_SV", PrimitiveType.Byte);
+            V_SV_AV_SAV = new FlagGroupStorage(psw, (uint) (FlagM.VF|FlagM.SVF|FlagM.AVF|FlagM.SAVF), "V_SV_AV_SAV", PrimitiveType.Byte);
+            C_V_SV_AV_SAV = new FlagGroupStorage(psw, (uint) (FlagM.CF|FlagM.VF|FlagM.SVF|FlagM.AVF|FlagM.SAVF), "C_V_SV_AV_SAV", PrimitiveType.Byte);
+
+            RegistersByDomain = factory.DomainsToRegisters;
         }
+    }
+
+    [Flags]
+    public enum FlagM : uint
+    {
+        CF = 1u << 31,
+        VF = 1u << 30,
+        SVF = 1u << 29,
+        AVF = 1u << 28,
+        SAVF = 1u << 27,
     }
 }

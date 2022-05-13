@@ -122,13 +122,13 @@ namespace Reko.UnitTests.Arch.TriCore
         [Test]
         public void TriCoreDis_addsc_a_RR()
         {
-            AssertCode("addsc.a\ta3,a8,a4,#0x1", "01480136");
+            AssertCode("addsc.a\ta3,a4,d8,#0x1", "01480136");
         }
 
         [Test]
         public void TriCoreDis_addsc_a_SRRS()
         {
-            AssertCode("addsc.a\ta8,a0,#0x0", "1008");
+            AssertCode("addsc.a\ta8,a0,d15,#0x0", "1008");
         }
 
         [Test]
@@ -158,7 +158,7 @@ namespace Reko.UnitTests.Arch.TriCore
         [Test]
         public void TriCoreDis_and_ne_RC()
         {
-            AssertCode("and.ne\td15,d2,#0x4200", "8B0220F4");
+            AssertCode("and.ne\td15,d2,#0xF", "8BF220F4");
         }
 
         [Test]
@@ -170,7 +170,7 @@ namespace Reko.UnitTests.Arch.TriCore
         [Test]
         public void TriCoreDis_call()
         {
-            AssertCode("call\t00100000", "6D00420F");
+            AssertCode("call\t00101E84", "6D00420F");
         }
 
         [Test]
@@ -409,6 +409,12 @@ namespace Reko.UnitTests.Arch.TriCore
         }
 
         [Test]
+        public void TriCoreDis_ld_d_postinc()
+        {
+            AssertCode("ld.d\te14,[a15+]8", "09FE4801");
+        }
+
+        [Test]
         public void TriCoreDis_ld_h_short()
         {
             AssertCode("ld.h\td15,[a8]30", "8C8F");
@@ -418,6 +424,12 @@ namespace Reko.UnitTests.Arch.TriCore
         public void TriCoreDis_ld_h_BOL()
         {
             AssertCode("ld.h\td12,[a15]10080", "C9FC60D2");
+        }
+
+        [Test]
+        public void TriCoreDis_ldh_SLR_post()
+        {
+            AssertCode("ld.h\td14,[a15+]", "84FE");
         }
 
         [Test]
@@ -502,13 +514,13 @@ namespace Reko.UnitTests.Arch.TriCore
         [Test]
         public void TriCoreDis_madd_u_RCR()
         {
-            AssertCode("madd.u\td4,d2,d5,#0x2401", "13154042");
+            AssertCode("madd.u\td4,d2,d5,#0x2", "13254042");
         }
 
         [Test]
         public void TriCoreDis_madds_u()
         {
-            AssertCode("madds.u\td1,d2,d14,#0x282F", "13FE8212");
+            AssertCode("madds.u\td1,d2,d14,#0x2F", "13FE8212");
         }
 
         [Test]
@@ -646,7 +658,7 @@ namespace Reko.UnitTests.Arch.TriCore
         [Test]
         public void TriCoreDis_sel_RCR()
         {
-            AssertCode("sel\td7,d2,d7,#0x2802", "AB278072");
+            AssertCode("sel\td7,d2,d7,#0x2", "AB278072");
         }
 
         [Test]

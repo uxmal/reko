@@ -18,26 +18,20 @@
  */
 #endregion
 
+using Reko.Arch.Arm.AArch32;
 using Reko.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Reko.Core.Expressions;
+using Reko.Core.Lib;
 using Reko.Core.Machine;
 using Reko.Core.Memory;
 using Reko.Core.Rtl;
 using Reko.Core.Types;
-using System.Runtime.InteropServices;
-using Reko.Core.NativeInterface;
-using System.Diagnostics;
-using System.Collections;
-using Reko.Core.Lib;
-using Reko.Core.Operators;
-using Reko.Arch.Arm.AArch32;
-using Reko.Core.Emulation;
+using System;
+using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using System.Linq;
+using System.Runtime.InteropServices;
+using System.Text;
 
 namespace Reko.Arch.Arm
 {

@@ -20,6 +20,7 @@
 
 using Reko.Core;
 using Reko.Core.Expressions;
+using Reko.Core.Lib;
 using Reko.Core.Machine;
 using Reko.Core.Memory;
 using Reko.Core.Rtl;
@@ -71,9 +72,13 @@ namespace Reko.Arch.Infineon
             return new TriCoreRewriter(this, rdr, state, binder, host);
         }
 
-        public override FlagGroupStorage GetFlagGroup(RegisterStorage flagRegister, uint grf)
+        public override FlagGroupStorage? GetFlagGroup(RegisterStorage flagRegister, uint grf)
         {
-            throw new NotImplementedException();
+            if (flagRegister != Registers.psw)
+                return null;
+            var dt = Bits.IsSingleBitSet(grf) ? PrimitiveType.Bool : PrimitiveType.Byte;
+            var f = new FlagGroupStorage(flagRegister, grf, GrfToString(flagRegister, "", grf), dt);
+            return f;
         }
 
         public override FlagGroupStorage GetFlagGroup(string name)
@@ -96,9 +101,12 @@ namespace Reko.Arch.Infineon
             throw new NotImplementedException();
         }
 
-        public override RegisterStorage GetRegister(StorageDomain domain, BitRange range)
+        public override RegisterStorage? GetRegister(StorageDomain domain, BitRange range)
         {
-            throw new NotImplementedException();
+            if (Registers.RegistersByDomain.TryGetValue(domain, out var reg))
+                return reg;
+            else
+                return null;
         }
 
         public override RegisterStorage[] GetRegisters()
@@ -106,14 +114,35 @@ namespace Reko.Arch.Infineon
             throw new NotImplementedException();
         }
 
+        public override IEnumerable<FlagGroupStorage> GetSubFlags(FlagGroupStorage flags)
+        {
+            uint grf = flags.FlagGroupBits;
+            if ((grf & Registers.C.FlagGroupBits) != 0) yield return Registers.C;
+            if ((grf & Registers.V.FlagGroupBits) != 0) yield return Registers.V;
+            if ((grf & Registers.SV.FlagGroupBits) != 0) yield return Registers.SV;
+            if ((grf & Registers.AV.FlagGroupBits) != 0) yield return Registers.AV;
+            if ((grf & Registers.SAV.FlagGroupBits) != 0) yield return Registers.SAV;
+        }
+
         public override string GrfToString(RegisterStorage flagRegister, string prefix, uint grf)
         {
-            throw new NotImplementedException();
+            var sep = "";
+            var sb = new StringBuilder();
+            foreach (var f in Registers.PswFlags)
+            {
+                if ((f.FlagGroupBits & grf) != 0)
+                {
+                    sb.Append(sep);
+                    sb.Append(f.Name);
+                    sep = "_";
+                }
+            }
+            return sb.ToString();
         }
 
         public override Address MakeAddressFromConstant(Constant c, bool codeAlign)
         {
-            throw new NotImplementedException();
+            return Address.Ptr32(c.ToUInt32());
         }
 
         public override Address ReadCodeAddress(int size, EndianImageReader rdr, ProcessorState? state)

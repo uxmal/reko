@@ -372,7 +372,7 @@ namespace Reko.Arch.Infineon
             };
         }
         private static readonly Mutator<TriCoreDisassembler> simm12_4 = SImmediate(PrimitiveType.Word32, 12, 4);
-        private static readonly Mutator<TriCoreDisassembler> simm12_9 = SImmediate(PrimitiveType.Word16, 12, 16);
+        private static readonly Mutator<TriCoreDisassembler> simm12_9 = SImmediate(PrimitiveType.Word16, 12, 9);
         private static readonly Mutator<TriCoreDisassembler> simm12_16 = SImmediate(PrimitiveType.Word16, 12, 16);
 
         private static Mutator<TriCoreDisassembler> UImmediate(PrimitiveType dt, params Bitfield[] fields)
@@ -483,12 +483,14 @@ namespace Reko.Arch.Infineon
             var invalid = Instr(Mnemonic.Invalid, InstrClass.Invalid);
             var nyi = Instr(Mnemonic.Nyi, InstrClass.Invalid);
 
+            var addsc_a_SRRS = Instr(Mnemonic.addsc_a, A8, A12, d15, uimm6_2);
+            
             rootDecoder = Sparse(0, 8, "TriCore", Instr32(nyi),
                 (0x00, Sparse(12, 4, "  0x00", nyi,
                     (0x0, Instr(Mnemonic.nop, InstrClass.Linear | InstrClass.Padding)),
-                    (0x7, Instr(Mnemonic.fret)),
-                    (0x8, Instr(Mnemonic.rfe)),
-                    (0x9, Instr(Mnemonic.ret)),
+                    (0x7, Instr(Mnemonic.fret, InstrClass.Transfer | InstrClass.Return)),
+                    (0x8, Instr(Mnemonic.rfe, InstrClass.Transfer | InstrClass.Return)),
+                    (0x9, Instr(Mnemonic.ret, InstrClass.Transfer | InstrClass.Return)),
                     (0xA, Instr(Mnemonic.debug)))),
                 (0x01, Instr32(Sparse(20, 8, "  0x01", invalid,
                     (0x00, Instr(Mnemonic.mov_aa, A28, A12)),
@@ -501,7 +503,7 @@ namespace Reko.Arch.Infineon
                     (0x48, Instr(Mnemonic.eqz_a, D28, A8)),
                     (0x49, Instr(Mnemonic.nez_a, D28, A8)),
                     (0x4C, Instr(Mnemonic.mov_d, D28, A12)),
-                    (0x60, Instr(Mnemonic.addsc_a, A28, A8, A12, uimm16_2)),
+                    (0x60, Instr(Mnemonic.addsc_a, A28, A12, D8, uimm16_2)),
                     (0x62, nyi), // addsc.at
                     (0x63, Instr(Mnemonic.mov_a, A28, D12))
                     ))),
@@ -525,6 +527,7 @@ namespace Reko.Arch.Infineon
 
                 (0x08, Instr(Mnemonic.ld_bu, D8, Ma15_bo)),
                 (0x09, Instr32(Sparse(22, 6, "  0x09", nyi,
+                    (0x05, Instr(Mnemonic.ld_d, E8, Mw_12_soff28_4_16_6_post)),
                     (0x14, Instr(Mnemonic.ld_w, D8, Mw_12_soff28_4_16_6_pre)),
                     (0x26, nyi)))),
                 (0x0A, invalid),
@@ -559,7 +562,7 @@ namespace Reko.Arch.Infineon
                     (0x23, Instr(Mnemonic.and_lt_u, D28, D8, D12)),
                     (0x24, Instr(Mnemonic.and_ge, D28, D8, D12)),
                     (0x25, Instr(Mnemonic.and_ge_u, D28, D8, D12)),
-                    
+
                     (0x27, Instr(Mnemonic.or_eq, D28, D8, D12)),
                     (0x28, Instr(Mnemonic.or_ne, D28, D8, D12)),
                     (0x29, Instr(Mnemonic.or_lt, D28, D8, D12)),
@@ -626,11 +629,11 @@ namespace Reko.Arch.Infineon
                 (0x0C, Instr(Mnemonic.ld_bu, d15, Mub_12_off8_4)),
                 (0x0D, Instr32(Sparse(22, 6, "  0x0D", nyi,
                     (0x00, Instr(Mnemonic.nop)),
-                    (0x03, Instr(Mnemonic.fret)),
+                    (0x03, Instr(Mnemonic.fret, InstrClass.Transfer | InstrClass.Return)),
                     (0x04, Instr(Mnemonic.debug)),
-                    (0x05, Instr(Mnemonic.rfm, LinPri)),
-                    (0x06, Instr(Mnemonic.ret)),
-                    (0x07, Instr(Mnemonic.rfe)),
+                    (0x05, Instr(Mnemonic.rfm, InstrClass.Transfer | InstrClass.Return | InstrClass.Privileged)),
+                    (0x06, Instr(Mnemonic.ret, InstrClass.Transfer | InstrClass.Return)),
+                    (0x07, Instr(Mnemonic.rfe, InstrClass.Transfer | InstrClass.Return)),
                     (0x08, Instr(Mnemonic.svlcx)),
                     (0x09, Instr(Mnemonic.rslcx)),
                     (0x0C, Instr(Mnemonic.enable, LinPri)),
@@ -667,7 +670,7 @@ namespace Reko.Arch.Infineon
                     (0x7E, nyi/*CLS.H*/)
                     ))),
 
-                (0x10, Instr(Mnemonic.addsc_a, A8, A12, uimm6_2)),
+                (0x10, addsc_a_SRRS),
                 (0x11, Instr32(Instr(Mnemonic.addih_a, A28, A8, uimm12_16))),
                 (0x12, Instr(Mnemonic.add, D8, d15, D12)),
                 (0x13, Instr32(Mask(21, 3, "  0x13",
@@ -720,10 +723,10 @@ namespace Reko.Arch.Infineon
                     (0x05, Instr(Mnemonic.seln, D28, D24, D8, D12))))),
                 (0x2C, Instr(Mnemonic.st_b, Mub_12_off8_4, d15)),
                 (0x2D, Instr32(Sparse(20, 8, "  0x2D", nyi,
-                    (0x00, Instr(Mnemonic.calli, InstrClass.Transfer|InstrClass.Call, A8)),
-                    (0x02, Instr(Mnemonic.jli, InstrClass.Transfer|InstrClass.Call, A8)),
+                    (0x00, Instr(Mnemonic.calli, InstrClass.Transfer | InstrClass.Call | InstrClass.Indirect, A8)),
+                    (0x02, Instr(Mnemonic.jli, InstrClass.Transfer | InstrClass.Call | InstrClass.Indirect, A8)),
                     (0x31, invalid)))),
-                (0x2E, Instr(Mnemonic.jz_t, d15, uimm12_4, udisp8_4)),
+                (0x2E, Instr(Mnemonic.jz_t, InstrClass.ConditionalTransfer, d15, uimm12_4, udisp8_4)),
 
                 (0x30, Instr(Mnemonic.add_a, A8, A12)),
                 (0x31, invalid),
@@ -770,7 +773,7 @@ namespace Reko.Arch.Infineon
                     (0x25, Instr(Mnemonic.lducx, Mw_12_soff28_4_16_6)),
                     (0x26, Instr(Mnemonic.stlcx, Mw_12_soff28_4_16_6)),
                     (0x27, Instr(Mnemonic.stucx, Mw_12_soff28_4_16_6)),
-                    (0x28, Instr(Mnemonic.lea, A8, Mw_12_soff28_4_16_6_post))))),
+                    (0x28, Instr(Mnemonic.lea, A8, Mb_12_soff28_4_16_6_post))))),
                 (0x4A, invalid),
                 (0x4B, Instr32(Sparse(20, 8, "  0x4B", nyi,
                     (0x08, Instr(Mnemonic.unpack, E28, D8)),
@@ -779,10 +782,10 @@ namespace Reko.Arch.Infineon
                     (0x28, invalid),
                     (0xF8, invalid)))),
                 (0x4C, Instr(Mnemonic.ld_w, d15, Mw_12_off8_4)),
-                (0x4E, Instr(Mnemonic.jgtz, D12, udisp8_4)),
+                (0x4E, Instr(Mnemonic.jgtz, InstrClass.ConditionalTransfer, D12, udisp8_4)),
                 (0x4D, Instr32(Instr(Mnemonic.mfcr, D8, CR))),
 
-                (0x50, Instr(Mnemonic.addsc_a, A8, A12, uimm6_2)),
+                (0x50, addsc_a_SRRS),
                 (0x53, Instr32(Sparse(20, 8, "  0x4B", nyi,
                     (0x01, Instr(Mnemonic.mul, D28, D8, simm12_9)),
                     (0x02, Instr(Mnemonic.mul_u, E28, D8, simm12_9)),
@@ -797,8 +800,10 @@ namespace Reko.Arch.Infineon
                 (0x5B, invalid),
                 (0x5C, Instr(Mnemonic.call, InstrClass.Transfer | InstrClass.Call, sdisp8_8)),
                 (0x5D, Instr32(Instr(Mnemonic.jl, InstrClass.Transfer | InstrClass.Call, B))),
-                (0x5E, invalid),
-                (0x5F, invalid),
+                (0x5E, Instr(Mnemonic.jne, InstrClass.ConditionalTransfer, d15, simm12_4, udisp8_4)),
+                (0x5F, Instr32(Mask(31, 1, "  0x5F",
+                    Instr(Mnemonic.jeq, InstrClass.ConditionalTransfer, D8, D12, sdisp16_15),
+                    Instr(Mnemonic.jne, InstrClass.ConditionalTransfer, D8, D12, sdisp16_15)))),
 
                 (0x60, Instr(Mnemonic.mov_a, A8, D12)),
                 (0x61, Instr32(Instr(Mnemonic.fcall, B))),
@@ -811,11 +816,11 @@ namespace Reko.Arch.Infineon
                 (0x69, Instr32(Sparse(22, 6, "  0x69", nyi))),
                 (0x6A, Instr(Mnemonic.cmovn, D8, d15, D12)),
                 (0x6C, Instr(Mnemonic.st_w, Mw_12_off8_4, d15)),
-                (0x6D, Instr(Mnemonic.call, B)),
-                (0x6E, Instr(Mnemonic.jz, d15, sdisp8_8)),
+                (0x6D, Instr32(Instr(Mnemonic.call, InstrClass.Transfer | InstrClass.Call, B))),
+                (0x6E, Instr(Mnemonic.jz, InstrClass.ConditionalTransfer, d15, sdisp8_8)),
                 (0x6F, Instr32(Mask(31, 1, "  0x6F",
-                    Instr(Mnemonic.jz_t, D8, u8_7_1_12_4, sdisp16_15),
-                    Instr(Mnemonic.jnz_t, D8, u8_7_1_12_4, sdisp16_15)))),
+                    Instr(Mnemonic.jz_t, InstrClass.ConditionalTransfer, D8, u8_7_1_12_4, sdisp16_15),
+                    Instr(Mnemonic.jnz_t, InstrClass.ConditionalTransfer, D8, u8_7_1_12_4, sdisp16_15)))),
 
                 (0x70, invalid),
                 (0x74, Instr(Mnemonic.st_w, Mw_12, D8)),
@@ -831,17 +836,19 @@ namespace Reko.Arch.Infineon
                 (0x7B, Instr32(Instr(Mnemonic.movh, D28, uimm12_16))),
                 (0x7C, Instr(Mnemonic.jnz_a, InstrClass.ConditionalTransfer, A12, udisp8_4)),
                 (0x7D, Instr32(Mask(31, 1, "  0x7D",
-                    Instr(Mnemonic.jeq_a, A8, A12, sdisp16_15),
-                    nyi))),
-
-                (0x7E, invalid),
-                (0x7F, invalid),
+                    Instr(Mnemonic.jeq_a, InstrClass.ConditionalTransfer, A8, A12, sdisp16_15),
+                    Instr(Mnemonic.jne_a, InstrClass.ConditionalTransfer, A8, A12, sdisp16_15)))),
+                (0x7E, Instr(Mnemonic.jne, InstrClass.ConditionalTransfer, d15, D8, udisp8_4)),
+                (0x7F, Instr32(Mask(31, 1, "  0x7F",
+                    Instr(Mnemonic.jge, InstrClass.ConditionalTransfer, D8, D12, sdisp16_15),
+                    Instr(Mnemonic.jge_u, InstrClass.ConditionalTransfer, D8, D12, sdisp16_15)))),
 
                 (0x80, Instr(Mnemonic.mov_d, D8, A12)),
                 (0x82, Instr(Mnemonic.mov, D8, simm12_4)),
                 (0x83, Instr32(Sparse(18, 8, "  0x83", nyi,
                     (0x9B, invalid),
                     (0xE1, invalid)))),
+                (0x84, Instr(Mnemonic.ld_h, D8, Mh_pi12)),
                 (0x85, Instr32(Mask(26, 2, "  0x85",
                     Instr(Mnemonic.ld_w, D8, ABS),
                     Instr(Mnemonic.ld_d, E8, ABS),
@@ -917,7 +924,7 @@ namespace Reko.Arch.Infineon
                     (0x40, Instr(Mnemonic.sh_h, D28, D8, uimm12_9)),
                     (0x41, Instr(Mnemonic.sha_h, D28, D8, uimm12_9))))),
 
-                (0x90, Instr(Mnemonic.addsc_a, A8, A12, uimm6_2)),
+                (0x90, addsc_a_SRRS),
                 (0x91, Instr32(Instr(Mnemonic.movh_a, A28, uimm12_16))),
                 (0x92, Instr(Mnemonic.add, D8, d15, simm12_4)),
                 (0x94, Instr(Mnemonic.ld_h, D8, Mh_12)),
@@ -944,7 +951,7 @@ namespace Reko.Arch.Infineon
                     nyi,
                     nyi))),
                 (0xAC, Instr(Mnemonic.st_h, Mh_12_off8_4, d15)),
-                (0xAE, Instr(Mnemonic.jnz_t, d15, uimm12_4, udisp8_4)),
+                (0xAE, Instr(Mnemonic.jnz_t, InstrClass.ConditionalTransfer, d15, uimm12_4, udisp8_4)),
                 (0xAF, invalid),
 
                 (0xB0, Instr(Mnemonic.add_a, A8, simm12_4)),
@@ -956,11 +963,13 @@ namespace Reko.Arch.Infineon
                     nyi,
                     nyi))),
                 (0xB9, Instr32(Instr(Mnemonic.ld_hu, D8, Mhu_12_soff22_6_28_4_16_6))),
-                (0xBA, Instr(Mnemonic.eq, d15,D8,simm12_4)),
+                (0xBA, Instr(Mnemonic.eq, d15, D8, simm12_4)),
                 (0xBB, Instr32(Instr(Mnemonic.mov_u, D28, uimm12_16))),
-                (0xBC, Instr(Mnemonic.jz_a, A12, udisp8_4)),
-                (0xBE, Instr(Mnemonic.jeq, d15,D12,udisp8_4)),
-                (0xBF, invalid),
+                (0xBC, Instr(Mnemonic.jz_a, InstrClass.ConditionalTransfer, A12, udisp8_4)),
+                (0xBE, Instr(Mnemonic.jeq, InstrClass.ConditionalTransfer, d15, D12, udisp8_4)),
+                (0xBF, Instr32(Mask(31, 1, "  0xBF",
+                    Instr(Mnemonic.jlt, InstrClass.ConditionalTransfer, D8, simm12_4, sdisp16_15),
+                    Instr(Mnemonic.jlt_u, InstrClass.ConditionalTransfer, D8, simm12_4, sdisp16_15)))),
 
                 (0xC0, invalid),
                 (0xC2, Instr(Mnemonic.add, D8, simm12_4)),
@@ -970,29 +979,34 @@ namespace Reko.Arch.Infineon
                 (0xC9, Instr32(Instr(Mnemonic.ld_h, D8, Mh_12_soff22_6_28_4_16_6))),
                 (0xC8, Instr(Mnemonic.ld_a, A8, Ma15_wo)),
                 (0xCD, Instr32(Instr(Mnemonic.mtcr, LinPri, CR, D8))),
+                (0xCE, Instr(Mnemonic.jgez, InstrClass.ConditionalTransfer, D12, udisp8_4)),
                 (0xCF, invalid),
-                (0xD0, Instr(Mnemonic.addsc_a, A8, A12, uimm6_2)),
+
+                (0xD0, addsc_a_SRRS),
                 (0xD1, invalid),
                 (0xD4, Instr(Mnemonic.ld_a, A8, Mw_12)),
+                (0xD6, invalid),
                 (0xD8, Instr(Mnemonic.ld_a, a15, Msp_wo8)),
                 (0xD9, Instr32(Instr(Mnemonic.lea, A8, Mw_12_soff22_6_28_4_16_6))),
                 (0xDA, Instr(Mnemonic.mov, d15, uimm8_8)),
                 (0xDC, If(12, 4, u => u == 0,
                     Instr(Mnemonic.ji, InstrClass.Transfer | InstrClass.Indirect, A8))),
-                (0xDF, invalid),
+                (0xDF, Instr32(Mask(31, 1, "  0xDF",
+                    Instr(Mnemonic.jeq, InstrClass.ConditionalTransfer, D8, simm12_4, sdisp16_15),
+                    Instr(Mnemonic.jne, InstrClass.ConditionalTransfer, D8, simm12_4, sdisp16_15)))),
 
                 (0xE0, Instr(Mnemonic.bisr, LinPri, D8, uimm8_8)),
-                (0xE1, Instr32(Instr(Mnemonic.fcalla, InstrClass.Transfer|InstrClass.Call, B))),
+                (0xE1, Instr32(Instr(Mnemonic.fcalla, InstrClass.Transfer | InstrClass.Call, B))),
                 (0xE2, Instr(Mnemonic.mul, D8, D12)),
                 (0xE4, Instr(Mnemonic.st_a, Mw_pi12, D8)),
                 (0xE5, Instr32(Instr(Mnemonic.ldmst, ABS, E8))),
                 (0xE6, invalid),
                 (0xE8, Instr(Mnemonic.st_a, Ma15_wo, A8)),
                 (0xE9, Instr32(Instr(Mnemonic.st_b, Mub_12_soff22_6_28_4_16_6, D8))),
-                (0xEA, Instr(Mnemonic.cmovn, D8,d15,simm12_4)),
+                (0xEA, Instr(Mnemonic.cmovn, D8, d15, simm12_4)),
                 (0xEB, invalid),
                 (0xED, Instr32(Instr(Mnemonic.calla, Babs))),
-                (0xEE, Instr(Mnemonic.jnz, d15, sdisp8_8)),
+                (0xEE, Instr(Mnemonic.jnz, InstrClass.ConditionalTransfer, d15, sdisp8_8)),
                 (0xEF, invalid),
 
                 (0xF0, invalid),
@@ -1000,15 +1014,17 @@ namespace Reko.Arch.Infineon
                 (0xF2, invalid),
                 (0xF3, invalid),
                 (0xF4, Instr(Mnemonic.st_a, Mw_12, A8)),
-                (0xF6, Instr(Mnemonic.jnz, D12, udisp8_4)),
-                (0xFC, Instr(Mnemonic.loop, D12, ndisp8_4)),
+                (0xF6, Instr(Mnemonic.jnz, InstrClass.ConditionalTransfer, D12, udisp8_4)),
+                (0xFC, Instr(Mnemonic.loop, InstrClass.ConditionalTransfer, D12, ndisp8_4)),
                 (0xF9, Instr32(Instr(Mnemonic.st_h, Mh_12_soff22_6_28_4_16_6, D8))),
-                (0xFB, Instr32(Instr(Mnemonic.mov, E28, simm12_16))), 
-                (0xFD, Instr32(Mask(31, 1, "  0xFD", 
-                    Instr(Mnemonic.loop, A12, sdisp16_15),
+                (0xFB, Instr32(Instr(Mnemonic.mov, E28, simm12_16))),
+                (0xFD, Instr32(Mask(31, 1, "  0xFD",
+                    Instr(Mnemonic.loop, InstrClass.ConditionalTransfer, A12, sdisp16_15),
                     invalid))),
-                (0xFE, Instr(Mnemonic.jne, d15, D12, udisp8_4_plus16)),
-                (0xFF, invalid));
+                (0xFE, Instr(Mnemonic.jne, InstrClass.ConditionalTransfer, d15, D12, udisp8_4_plus16)),
+                (0xFF, Instr32(Mask(31, 1, "  0xFF",
+                    Instr(Mnemonic.jge, InstrClass.ConditionalTransfer, D8, simm12_4, sdisp16_15),
+                    Instr(Mnemonic.jge_u, InstrClass.ConditionalTransfer, D8, simm12_4, sdisp16_15)))));
         }
     }
 }
