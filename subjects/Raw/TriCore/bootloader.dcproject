@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://schemata.jklnet.org/Reko/v5">
+  <arch>tricore</arch>
+  <input>
+    <location>bootloader.bin</location>
+    <asmDir>bootloader.reko</asmDir>
+    <srcDir>bootloader.reko</srcDir>
+    <includeDir>bootloader.reko</includeDir>
+    <resources>bootloader.reko\resources</resources>
+    <user>
+      <address>00000000</address>
+      <loader>raw</loader>
+      <processor name="tricore" />
+      <procedure name="fn00000000">
+        <address>00000000</address>
+      </procedure>
+      <procedure name="fn000000A8">
+        <address>000000A8</address>
+      </procedure>
+      <procedure name="fn00000690">
+        <address>00000690</address>
+      </procedure>
+      <procedure name="fn00000792">
+        <address>00000792</address>
+      </procedure>
+      <procedure name="fn000007AE">
+        <address>000007AE</address>
+      </procedure>
+      <procedure name="fn000007E2">
+        <address>000007E2</address>
+      </procedure>
+      <procedure name="fn000007F8">
+        <address>000007F8</address>
+      </procedure>
+      <procedure name="fn000008BE">
+        <address>000008BE</address>
+      </procedure>
+      <procedure name="fn000009BA">
+        <address>000009BA</address>
+      </procedure>
+      <procedure name="fn00000A0C">
+        <address>00000A0C</address>
+      </procedure>
+      <procedure name="fn00000CE8">
+        <address>00000CE8</address>
+      </procedure>
+      <procedure name="fn00000EB6">
+        <address>00000EB6</address>
+      </procedure>
+      <procedure name="fn00000F40">
+        <address>00000F40</address>
+      </procedure>
+      <procedure name="fn00000FBE">
+        <address>00000FBE</address>
+      </procedure>
+      <procedure name="fn0000101C">
+        <address>0000101C</address>
+      </procedure>
+      <procedure name="fn000010B0">
+        <address>000010B0</address>
+      </procedure>
+      <procedure name="fn000010F0">
+        <address>000010F0</address>
+      </procedure>
+      <procedure name="fn0000132C">
+        <address>0000132C</address>
+      </procedure>
+      <registerValues />
+      <extractResources>false</extractResources>
+      <outputFilePolicy>Segment</outputFilePolicy>
+    </user>
+  </input>
+</project>
