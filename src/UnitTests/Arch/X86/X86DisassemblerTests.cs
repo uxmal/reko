@@ -455,6 +455,12 @@ movzx	ax,byte ptr [bp+4h]
         }
 
         [Test]
+        public void X86Dis_movabs()
+        {
+            AssertCode64("mov\trsi,0F4B4BE4855F26231h", "48 BE 31 62 F2 55 48 BE B4 F4");
+        }
+
+        [Test]
         public void X86Dis_64_movaps()
         {
             AssertCode64("movaps\txmm0,[rsp+20h]", 0x0f, 0x28, 0x44, 0x24, 0x20);
@@ -1246,7 +1252,7 @@ movzx	ax,byte ptr [bp+4h]
         [Test]
         public void X86Dis_vfnmsub132ss()
         {
-            AssertCode64("vfnmsub132ss@@@", "C4E2499F C4");
+            AssertCode64("vfnmsub132ss\txmm0,xmm6,xmm4", "C4E2499F C4");
         }
 
         [Test]
@@ -1372,7 +1378,7 @@ movzx	ax,byte ptr [bp+4h]
         [Test]
         public void X86Dis_vfmadd132ss()
         {
-            AssertCode64("vfmadd132ss@@@", "62F2550F99 C4");
+            AssertCode64("vfmadd132ss\ttxmm0{k7},xmm5,xmm4", "62F2550F99 C4");
         }
 
         [Test]
@@ -2187,6 +2193,7 @@ movzx	ax,byte ptr [bp+4h]
             AssertCode64("pextrq\trbx,xmm0,4h",             "66 48 0f 3a 16 c3 04");
             AssertCode64("pextrq\tqword ptr [rbx],xmm0,4h", "66 48 0f 3a 16 03 04");
         }
+
 
     }
 }
