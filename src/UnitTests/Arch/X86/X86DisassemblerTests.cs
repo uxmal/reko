@@ -1378,7 +1378,7 @@ movzx	ax,byte ptr [bp+4h]
         [Test]
         public void X86Dis_vfmadd132ss()
         {
-            AssertCode64("vfmadd132ss\ttxmm0{k7},xmm5,xmm4", "62F2550F99 C4");
+            AssertCode64("vfmadd132ss\txmm0{k7},xmm5,xmm4", "62F2550F99 C4");
         }
 
         [Test]
