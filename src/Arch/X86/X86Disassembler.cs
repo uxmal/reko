@@ -760,6 +760,7 @@ namespace Reko.Arch.X86
         private static readonly Mutator<X86Disassembler> Gv = G(OperandType.v);
         private static readonly Mutator<X86Disassembler> Gw = G(OperandType.w);
         private static readonly Mutator<X86Disassembler> Gy = G(OperandType.y);
+        private static readonly Mutator<X86Disassembler> Gq = G(OperandType.q);
 
         /// <summary>
         /// If VEX encoding, use vvvv register, otherwise ignore.

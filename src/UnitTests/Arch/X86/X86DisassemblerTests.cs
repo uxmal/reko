@@ -1100,6 +1100,12 @@ movzx	ax,byte ptr [bp+4h]
         }
 
         [Test]
+        public void X86Dis_kmovd_rax()
+        {
+            AssertCode64("kmovd\trax,k4", "C4E1FB 93 c4");
+        }
+
+        [Test]
         public void X86Dis_ud1()
         {
             AssertCode64("ud1\tesp,[rax+0F000001h]", 0x0f, 0xb9, 0xa0, 0x01, 0x00, 0x00, 0x0f);
@@ -1184,9 +1190,63 @@ movzx	ax,byte ptr [bp+4h]
         }
 
         [Test]
-        public void X86Dis_vfnmsub231ps_c40241beff()
+        public void X86Dis_vfnmadd213ps_masked()
+        {
+            AssertCode64("vfnmadd213ps\txmm0{k7},xmm5,xmm4", "62F2550FAC C4");
+        }
+
+        [Test]
+        public void X86Dis_vfnmadd213ss_masked()
+        {
+            AssertCode64("vfnmadd213ss\txmm0{k7},xmm5,xmm4", "62F2550FAD C4");
+        }
+
+        [Test]
+        public void X86Dis_vfnmadd231pd()
+        {
+            AssertCode64("vfnmadd231pd\tymm0,ymm5,ymm4", "62F2D538BC C4");
+        }
+
+        [Test]
+        public void X86Dis_vfnmadd231ss_masked()
+        {
+            AssertCode64("vfnmadd231ss\txmm0{k7},xmm5,xmm4", "62F2550FBD C4");
+        }
+
+        [Test]
+        public void X86Dis_vfnmsub132ps()
+        {
+            AssertCode64("vfnmsub132ps\txmm0{k7},xmm5,xmm4", "62F2550F9E C4");
+        }
+
+        [Test]
+        public void X86Dis_vfnmsub132ss_masked()
+        {
+            AssertCode64("vfnmsub132ss\txmm0{k7},xmm5,xmm4", "62F2550F9F C4");
+        }
+
+        [Test]
+        public void X86Dis_vfnmsub213ps_masked()
+        {
+            AssertCode64("vfnmsub213ps\txmm0{k7},xmm5,xmm4", "62F2550FAE C4");
+        }
+
+        [Test]
+        public void X86Dis_vfnmsub213ss_masked()
+        {
+            AssertCode64("vfnmsub213ss\txmm0{k7},xmm5,xmm4", "62F2550FAF C4");
+        }
+
+        [Test]
+        public void X86Dis_vfnmsub231ps()
         {
             AssertCode64("vfnmsub231ps\txmm15,xmm7,xmm15", 0xc4, 0x02, 0x41, 0xbe, 0xff);
+        }
+
+        [Test]
+        public void X86Dis_vfnmsub132ss()
+        {
+            AssertCode64("vfnmsub132ss@@@", "C4E2499F C4");
         }
 
         [Test]
@@ -1286,6 +1346,126 @@ movzx	ax,byte ptr [bp+4h]
         }
 
         [Test]
+        public void X86Dis_vaesenc()
+        {
+            AssertCode64("vaesenc\txmm8,xmm1,[r11-20h]", 0xc4, 0x02, 0x75, 0xdc, 0x43, 0xe0, 0xf7, 0x00);
+        }
+
+        [Test]
+        public void X86Dis_vpbroadcastb()
+        {
+            AssertCode64("vpbroadcastb\tymm9,byte ptr [r9+r9*4-19h]", 0xc4, 0x02, 0x75, 0x78, 0x4c, 0x89, 0xe7);
+        }
+
+        [Test]
+        public void X86Dis_verr_sp()
+        {
+            AssertCode64("verr\tsp", 0xc4, 0x61, 0x29, 0x00, 0xE4);
+        }
+
+        [Test]
+        public void X86Dis_vfmadd132ps_masked()
+        {
+            AssertCode64("vfmadd132ps\txmm0{k7},xmm5,xmm4", "62F2550F98 C4");
+        }
+
+        [Test]
+        public void X86Dis_vfmadd132ss()
+        {
+            AssertCode64("vfmadd132ss@@@", "62F2550F99 C4");
+        }
+
+        [Test]
+        public void X86Dis_vfmadd213ps()
+        {
+            AssertCode64("vfmadd213ps\tymm9,ymm1,[r8+63h]", 0xc4, 0x02, 0x75, 0xa8, 0x48, 0x63);
+        }
+
+        [Test]
+        public void X86Dis_vfmadd213ss_masked()
+        {
+            AssertCode64("vfmadd213ss\txmm0{k7},xmm5,xmm4", "62F2550FA9 C4");
+        }
+
+        [Test]
+        public void X86Dis_vfmadd231ps_masked()
+        {
+            AssertCode64("vfmadd231ps\txmm0{k7},xmm5,xmm4", "62F2550FB8 C4");
+        }
+
+        [Test]
+        public void X86Dis_vfmadd231ss_masked()
+        {
+            AssertCode64("vfmadd231ss\txmm0{k7},xmm5,xmm4", "62F2550FB9 C4");
+        }
+
+        [Test]
+        public void X86Dis_vfmaddsub213pd()
+        {
+            AssertCode64("vfmaddsub213pd\tzmm0,zmm5,zmm4", "62F2D548A6 C4");
+        }
+
+        [Test]
+        public void X86Dis_vfmaddsub213ps_masked()
+        {
+            AssertCode64("vfmaddsub213ps\txmm0{k7},xmm5,xmm4", "62F2550FA6 C4");
+        }
+
+        [Test]
+        public void X86Dis_vfmaddsub231ps_masked()
+        {
+            AssertCode64("vfmaddsub231ps\txmm0{k7},xmm5,xmm4", "62F2550FB6 C4");
+        }
+
+        [Test]
+        public void X86Dis_vfmsub132ps_masked()
+        {
+            AssertCode64("vfmsub132ps\txmm0{k7},xmm5,xmm4", "62F2550F9A C4");
+        }
+
+        [Test]
+        public void X86Dis_vfmsub132ss_masked()
+        {
+            AssertCode64("vfmsub132ss\txmm0{k7},xmm5,xmm4", "62F2550F9B C4");
+        }
+
+        [Test]
+        public void X86Dis_vfmsub213ps_masked()
+        {
+            AssertCode64("vfmsub213ps\txmm0{k7},xmm5,xmm4", "62F2550FAA C4");
+        }
+
+        [Test]
+        public void X86Dis_vfmsub213ss_masked()
+        {
+            AssertCode64("vfmsub213ss\txmm0{k7},xmm5,xmm4", "62F2550FAB C4");
+        }
+
+        [Test]
+        public void X86Dis_vfmsub231ps_masked()
+        {
+            AssertCode64("vfmsub231ps\txmm0{k7},xmm5,xmm4", "62F2550FBA C4");
+        }
+
+        [Test]
+        public void X86Dis_vfmsub231ss_masked()
+        {
+            AssertCode64("vfmsub231ss\txmm0{k7},xmm5,xmm4", "62F2550FBB C4");
+        }
+
+        [Test]
+        public void X86Dis_vfmsubadd213pd_masked()
+        {
+            AssertCode64("vfmsubadd213pd\txmm0{k7},xmm5,xmm4", "62F2D50FA7 C4");
+        }
+
+        [Test]
+        public void X86Dis_vfmsubadd231ps()
+        {
+            AssertCode64("vfmsubadd231ps\txmm0{k7},xmm5,xmm4", "62F2550FB7 C4");
+        }
+
+        [Test]
         public void X86Dis_vpmovsxwq()
         {
             AssertCode64("vpmovsxwq\tymm9,qword ptr [r8+39h]", 0xc4, 0x02, 0x75, 0x24, 0x48, 0x39);
@@ -1353,6 +1533,12 @@ movzx	ax,byte ptr [bp+4h]
         }
 
         [Test]
+        public void X86Dis_vpmaskmovd_mem()
+        {
+            AssertCode64("vpmaskmovd\t[rdx+10h],xmm0,xmm6", "C4E2498E 42 10");
+        }
+
+        [Test]
         public void X86Dis_vpmaxuw()
         {
             AssertCode64("vpmaxuw\tymm8,ymm1,[r8+70h]", 0xc4, 0x02, 0x75, 0x3e, 0x40, 0x70);
@@ -1368,29 +1554,6 @@ movzx	ax,byte ptr [bp+4h]
             AssertCode64("vpsllvd\tymm9,ymm1,[r15]", 0xc4, 0x02, 0x75, 0x47, 0x0f);
         }
 
-        [Test]
-        public void X86Dis_vpbroadcastb()
-        {
-            AssertCode64("vpbroadcastb\tymm9,byte ptr [r9+r9*4-19h]", 0xc4, 0x02, 0x75, 0x78, 0x4c, 0x89, 0xe7);
-        }
-
-        [Test]
-        public void X86Dis_verr_sp()
-        {
-            AssertCode64("verr\tsp", 0xc4, 0x61, 0x29, 0x00, 0xE4);
-        }
-
-        [Test]
-        public void X86Dis_vfmadd213ps()
-        {
-            AssertCode64("vfmadd213ps\tymm9,ymm1,[r8+63h]", 0xc4, 0x02, 0x75, 0xa8, 0x48, 0x63);
-        }
-
-        [Test]
-        public void X86Dis_vaesenc()
-        {
-            AssertCode64("vaesenc\txmm8,xmm1,[r11-20h]", 0xc4, 0x02, 0x75, 0xdc, 0x43, 0xe0, 0xf7, 0x00);
-        }
 
         [Test]
         public void X86Dis_vpgatherqq()
@@ -2024,5 +2187,6 @@ movzx	ax,byte ptr [bp+4h]
             AssertCode64("pextrq\trbx,xmm0,4h",             "66 48 0f 3a 16 c3 04");
             AssertCode64("pextrq\tqword ptr [rbx],xmm0,4h", "66 48 0f 3a 16 03 04");
         }
+
     }
 }

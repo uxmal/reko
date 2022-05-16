@@ -382,9 +382,13 @@ namespace Reko.Arch.X86
 				d[0x81] = Instr(Mnemonic.jno, InstrClass.ConditionalTransfer, Jv);
 				d[0x82] = Instr(Mnemonic.jc,	InstrClass.ConditionalTransfer, Jv);
 				d[0x83] = Instr(Mnemonic.jnc,	InstrClass.ConditionalTransfer, Jv);
-				d[0x84] = Instr(Mnemonic.jz,	InstrClass.ConditionalTransfer, Jv);
-				d[0x85] = Instr(Mnemonic.jnz, InstrClass.ConditionalTransfer, Jv);
-				d[0x86] = Instr(Mnemonic.jbe, InstrClass.ConditionalTransfer, Jv);
+                d[0x84] = VexInstr(
+                    Instr(Mnemonic.jz, InstrClass.ConditionalTransfer, Jv),
+                    nyi("jkz"));
+                d[0x85] = VexInstr(
+                    Instr(Mnemonic.jnz, InstrClass.ConditionalTransfer, Jv),
+                    nyi("jknz"));
+                d[0x86] = Instr(Mnemonic.jbe, InstrClass.ConditionalTransfer, Jv);
 				d[0x87] = Instr(Mnemonic.ja,  InstrClass.ConditionalTransfer, Jv);
 
 				d[0x88] = Instr(Mnemonic.js,  InstrClass.ConditionalTransfer, Jv);
@@ -405,7 +409,11 @@ namespace Reko.Arch.X86
                         dec66Wide: Instr(Mnemonic.kmovq, Kq, EKq)));
                 d[0x91] = VexInstr(
                     Instr(Mnemonic.setno, Eb),
-                    s_nyi);
+                    new PrefixedDecoder(
+                        dec: Instr(Mnemonic.kmovw, Mw, Kw),
+                        decWide: Instr(Mnemonic.kmovq, Mq, Kw),
+                        dec66: Instr(Mnemonic.kmovb, Mb, Kw),
+                        dec66Wide: Instr(Mnemonic.kmovd, Md, Kw)));
 				d[0x92] = VexInstr(
                     Instr(Mnemonic.setc, Eb),
                     new PrefixedDecoder(
@@ -415,8 +423,12 @@ namespace Reko.Arch.X86
                         decF2: Instr(Mnemonic.kmovd, Kw, Rd)));
 				d[0x93] = VexInstr(
                     Instr(Mnemonic.setnc,Eb),
-                    s_nyi);
-				d[0x94] = Instr(Mnemonic.setz, Eb);
+                    new PrefixedDecoder(
+                        dec: Instr(Mnemonic.kmovw, Gy, EKw),
+                        dec66: Instr(Mnemonic.kmovb, Gy, EKw),
+                        dec66Wide: Instr(Mnemonic.kmovq, Gq, EKw),
+                        decF2: Instr(Mnemonic.kmovd, Gy, EKw)));
+                d[0x94] = Instr(Mnemonic.setz, Eb);
 				d[0x95] = Instr(Mnemonic.setnz,Eb);
 				d[0x96] = Instr(Mnemonic.setbe,Eb);
 				d[0x97] = Instr(Mnemonic.seta, Eb);
