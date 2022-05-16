@@ -47,7 +47,6 @@ namespace Reko.UnitTests.Arch.TriCore
 
         private void AssertCode(string sExpected, string hexBytes)
         {
-            Reko.Core.Machine.Decoder.trace.Level = System.Diagnostics.TraceLevel.Verbose;
             var instr = DisassembleHexBytes(hexBytes);
             if (sExpected != instr.ToString()) // && instr.Mnemonic == Mnemonic.Nyi)
                 Assert.AreEqual(sExpected, instr.ToString());

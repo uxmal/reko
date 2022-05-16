@@ -283,6 +283,9 @@ namespace Reko.ImageLoaders.Elf
             case ElfMachine.EM_ALTERA_NIOS2:
                 arch = "nios2";
                 break;
+            case ElfMachine.EM_TRICORE:
+                arch = "tricore";
+                break;
             default:
                 throw new NotSupportedException($"Processor format {machine} is not supported.");
             }
