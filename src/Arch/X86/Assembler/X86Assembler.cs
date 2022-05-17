@@ -1205,7 +1205,7 @@ namespace Reko.Arch.X86.Assembler
 
         public void Call(ParsedOperand parsedOperand)
         {
-            var far = (parsedOperand.Operand is MemoryOperand && parsedOperand.Operand.Width.Size == 4);
+            var far = (parsedOperand.Operand is MemoryOperand && parsedOperand.Operand.Width.BitSize == 32 && SegmentDataWidth.BitSize == 16);
             ProcessCallJmp(far, 0x02, parsedOperand);
         }
 
