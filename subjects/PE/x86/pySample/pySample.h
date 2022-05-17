@@ -494,20 +494,20 @@ Eq_863: (union "Eq_863" (ptr32 u0) ((memptr (ptr32 Eq_858) word32) u1))
 	T_863 (in 0x00000000<p32> @ 10001830 : ptr32)
 Eq_868: LARGE_INTEGER
 	T_868 (in tLoc14 @ 10001864 : Eq_868)
-Eq_869: (struct "_FILETIME" (0 DWORD dwLowDateTime) (4 DWORD dwHighDateTime))
+Eq_869: (struct "_FILETIME" 0008 (0 DWORD dwLowDateTime) (4 DWORD dwHighDateTime))
 	T_869 (in tLoc0C @ 10001864 : Eq_869)
 Eq_873: DWORD
 	T_873 (in 0<32> @ 1000186F : word32)
 	T_877 (in Mem11[&tLoc0C + 0<32>:word32] @ 1000186F : word32)
-Eq_874: (struct "_FILETIME" (0 DWORD dwLowDateTime) (4 DWORD dwHighDateTime))
-	T_874 (in &tLoc0C @ 1000186F : (ptr32 (struct "_FILETIME")))
+Eq_874: (struct "_FILETIME" 0008 (0 DWORD dwLowDateTime) (4 DWORD dwHighDateTime))
+	T_874 (in &tLoc0C @ 1000186F : (ptr32 (struct "_FILETIME" 0008)))
 Eq_876: DWORD
 	T_876 (in &tLoc0C + 0<32> @ 1000186F : word32)
 Eq_878: DWORD
 	T_878 (in 0<32> @ 10001873 : word32)
 	T_882 (in Mem14[&tLoc0C + 4<i32>:word32] @ 10001873 : word32)
-Eq_879: (struct "_FILETIME" (0 DWORD dwLowDateTime) (4 DWORD dwHighDateTime))
-	T_879 (in &tLoc0C @ 10001873 : (ptr32 (struct "_FILETIME")))
+Eq_879: (struct "_FILETIME" 0008 (0 DWORD dwLowDateTime) (4 DWORD dwHighDateTime))
+	T_879 (in &tLoc0C @ 10001873 : (ptr32 (struct "_FILETIME" 0008)))
 Eq_881: DWORD
 	T_881 (in &tLoc0C + 4<i32> @ 10001873 : word32)
 Eq_885: (fn void (Eq_887))
@@ -515,15 +515,15 @@ Eq_885: (fn void (Eq_887))
 	T_886 (in signature of GetSystemTimeAsFileTime @ 00000000 : void)
 Eq_887: LPFILETIME
 	T_887 (in lpSystemTimeAsFileTime @ 10001899 : LPFILETIME)
-	T_888 (in &tLoc0C @ 10001899 : (ptr32 (struct "_FILETIME")))
-Eq_891: (struct "_FILETIME" (0 DWORD dwLowDateTime) (4 DWORD dwHighDateTime))
-	T_891 (in &tLoc0C @ 100018BB : (ptr32 (struct "_FILETIME")))
+	T_888 (in &tLoc0C @ 10001899 : (ptr32 (struct "_FILETIME" 0008)))
+Eq_891: (struct "_FILETIME" 0008 (0 DWORD dwLowDateTime) (4 DWORD dwHighDateTime))
+	T_891 (in &tLoc0C @ 100018BB : (ptr32 (struct "_FILETIME" 0008)))
 Eq_893: DWORD
 	T_893 (in &tLoc0C + 4<i32> @ 100018BB : word32)
 Eq_894: DWORD
 	T_894 (in Mem37[&tLoc0C + 4<i32>:word32] @ 100018BB : word32)
-Eq_895: (struct "_FILETIME" (0 DWORD dwLowDateTime) (4 DWORD dwHighDateTime))
-	T_895 (in &tLoc0C @ 100018BB : (ptr32 (struct "_FILETIME")))
+Eq_895: (struct "_FILETIME" 0008 (0 DWORD dwLowDateTime) (4 DWORD dwHighDateTime))
+	T_895 (in &tLoc0C @ 100018BB : (ptr32 (struct "_FILETIME" 0008)))
 Eq_897: DWORD
 	T_897 (in &tLoc0C + 0<32> @ 100018BB : word32)
 Eq_898: DWORD
@@ -4023,7 +4023,7 @@ T_868: (in tLoc14 @ 10001864 : Eq_868)
 T_869: (in tLoc0C @ 10001864 : Eq_869)
   Class: Eq_869
   DataType: Eq_869
-  OrigDataType: (struct "_FILETIME" (0 DWORD dwLowDateTime) (4 DWORD dwHighDateTime))
+  OrigDataType: (struct "_FILETIME" 0008 (0 DWORD dwLowDateTime) (4 DWORD dwHighDateTime))
 T_870: (in eax_9 @ 1000186A : ui32)
   Class: Eq_842
   DataType: ui32
@@ -4040,10 +4040,10 @@ T_873: (in 0<32> @ 1000186F : word32)
   Class: Eq_873
   DataType: Eq_873
   OrigDataType: word32
-T_874: (in &tLoc0C @ 1000186F : (ptr32 (struct "_FILETIME")))
+T_874: (in &tLoc0C @ 1000186F : (ptr32 (struct "_FILETIME" 0008)))
   Class: Eq_874
   DataType: (ptr32 Eq_874)
-  OrigDataType: (ptr32 (struct "_FILETIME"))
+  OrigDataType: (ptr32 (struct "_FILETIME" 0008))
 T_875: (in 0<32> @ 1000186F : word32)
   Class: Eq_875
   DataType: word32
@@ -4060,10 +4060,10 @@ T_878: (in 0<32> @ 10001873 : word32)
   Class: Eq_878
   DataType: Eq_878
   OrigDataType: word32
-T_879: (in &tLoc0C @ 10001873 : (ptr32 (struct "_FILETIME")))
+T_879: (in &tLoc0C @ 10001873 : (ptr32 (struct "_FILETIME" 0008)))
   Class: Eq_879
   DataType: (ptr32 Eq_879)
-  OrigDataType: (ptr32 (struct "_FILETIME"))
+  OrigDataType: (ptr32 (struct "_FILETIME" 0008))
 T_880: (in 4<i32> @ 10001873 : int32)
   Class: Eq_880
   DataType: int32
@@ -4096,7 +4096,7 @@ T_887: (in lpSystemTimeAsFileTime @ 10001899 : LPFILETIME)
   Class: Eq_887
   DataType: Eq_887
   OrigDataType: 
-T_888: (in &tLoc0C @ 10001899 : (ptr32 (struct "_FILETIME")))
+T_888: (in &tLoc0C @ 10001899 : (ptr32 (struct "_FILETIME" 0008)))
   Class: Eq_887
   DataType: Eq_887
   OrigDataType: LPFILETIME
@@ -4108,10 +4108,10 @@ T_890: (in esi_46 @ 100018BB : ui32)
   Class: Eq_890
   DataType: ui32
   OrigDataType: ui32
-T_891: (in &tLoc0C @ 100018BB : (ptr32 (struct "_FILETIME")))
+T_891: (in &tLoc0C @ 100018BB : (ptr32 (struct "_FILETIME" 0008)))
   Class: Eq_891
   DataType: (ptr32 Eq_891)
-  OrigDataType: (ptr32 (struct "_FILETIME"))
+  OrigDataType: (ptr32 (struct "_FILETIME" 0008))
 T_892: (in 4<i32> @ 100018BB : int32)
   Class: Eq_892
   DataType: int32
@@ -4124,10 +4124,10 @@ T_894: (in Mem37[&tLoc0C + 4<i32>:word32] @ 100018BB : word32)
   Class: Eq_894
   DataType: Eq_894
   OrigDataType: DWORD
-T_895: (in &tLoc0C @ 100018BB : (ptr32 (struct "_FILETIME")))
+T_895: (in &tLoc0C @ 100018BB : (ptr32 (struct "_FILETIME" 0008)))
   Class: Eq_895
   DataType: (ptr32 Eq_895)
-  OrigDataType: (ptr32 (struct "_FILETIME"))
+  OrigDataType: (ptr32 (struct "_FILETIME" 0008))
 T_896: (in 0<32> @ 100018BB : word32)
   Class: Eq_896
   DataType: word32
@@ -4812,14 +4812,14 @@ typedef union Eq_863 {
 
 typedef LARGE_INTEGER Eq_868;
 
-typedef struct _FILETIME {
+typedef struct _FILETIME {	// size: 8 8
 	DWORD dwLowDateTime;	// 0
 	DWORD dwHighDateTime;	// 4
 } Eq_869;
 
 typedef DWORD Eq_873;
 
-typedef struct _FILETIME {
+typedef struct _FILETIME {	// size: 8 8
 	DWORD dwLowDateTime;	// 0
 	DWORD dwHighDateTime;	// 4
 } Eq_874;
@@ -4828,7 +4828,7 @@ typedef DWORD Eq_876;
 
 typedef DWORD Eq_878;
 
-typedef struct _FILETIME {
+typedef struct _FILETIME {	// size: 8 8
 	DWORD dwLowDateTime;	// 0
 	DWORD dwHighDateTime;	// 4
 } Eq_879;
@@ -4839,7 +4839,7 @@ typedef void (Eq_885)(LPFILETIME);
 
 typedef LPFILETIME Eq_887;
 
-typedef struct _FILETIME {
+typedef struct _FILETIME {	// size: 8 8
 	DWORD dwLowDateTime;	// 0
 	DWORD dwHighDateTime;	// 4
 } Eq_891;
@@ -4848,7 +4848,7 @@ typedef DWORD Eq_893;
 
 typedef DWORD Eq_894;
 
-typedef struct _FILETIME {
+typedef struct _FILETIME {	// size: 8 8
 	DWORD dwLowDateTime;	// 0
 	DWORD dwHighDateTime;	// 4
 } Eq_895;

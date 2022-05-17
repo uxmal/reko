@@ -577,20 +577,20 @@ Eq_1012: (union "Eq_1012" (ptr32 u0) ((memptr (ptr32 Eq_1007) word32) u1))
 	T_1012 (in 0x00000000<p32> @ 10001830 : ptr32)
 Eq_1017: LARGE_INTEGER
 	T_1017 (in tLoc14 @ 10001864 : Eq_1017)
-Eq_1018: (struct "_FILETIME" (0 DWORD dwLowDateTime) (4 DWORD dwHighDateTime))
+Eq_1018: (struct "_FILETIME" 0008 (0 DWORD dwLowDateTime) (4 DWORD dwHighDateTime))
 	T_1018 (in tLoc0C @ 10001864 : Eq_1018)
 Eq_1022: DWORD
 	T_1022 (in 0<32> @ 1000186F : word32)
 	T_1026 (in Mem11[&tLoc0C + 0<32>:word32] @ 1000186F : word32)
-Eq_1023: (struct "_FILETIME" (0 DWORD dwLowDateTime) (4 DWORD dwHighDateTime))
-	T_1023 (in &tLoc0C @ 1000186F : (ptr32 (struct "_FILETIME")))
+Eq_1023: (struct "_FILETIME" 0008 (0 DWORD dwLowDateTime) (4 DWORD dwHighDateTime))
+	T_1023 (in &tLoc0C @ 1000186F : (ptr32 (struct "_FILETIME" 0008)))
 Eq_1025: DWORD
 	T_1025 (in &tLoc0C + 0<32> @ 1000186F : word32)
 Eq_1027: DWORD
 	T_1027 (in 0<32> @ 10001873 : word32)
 	T_1031 (in Mem14[&tLoc0C + 4<i32>:word32] @ 10001873 : word32)
-Eq_1028: (struct "_FILETIME" (0 DWORD dwLowDateTime) (4 DWORD dwHighDateTime))
-	T_1028 (in &tLoc0C @ 10001873 : (ptr32 (struct "_FILETIME")))
+Eq_1028: (struct "_FILETIME" 0008 (0 DWORD dwLowDateTime) (4 DWORD dwHighDateTime))
+	T_1028 (in &tLoc0C @ 10001873 : (ptr32 (struct "_FILETIME" 0008)))
 Eq_1030: DWORD
 	T_1030 (in &tLoc0C + 4<i32> @ 10001873 : word32)
 Eq_1034: (fn void (Eq_1036))
@@ -598,15 +598,15 @@ Eq_1034: (fn void (Eq_1036))
 	T_1035 (in signature of GetSystemTimeAsFileTime @ 00000000 : void)
 Eq_1036: LPFILETIME
 	T_1036 (in lpSystemTimeAsFileTime @ 10001899 : LPFILETIME)
-	T_1037 (in &tLoc0C @ 10001899 : (ptr32 (struct "_FILETIME")))
-Eq_1040: (struct "_FILETIME" (0 DWORD dwLowDateTime) (4 DWORD dwHighDateTime))
-	T_1040 (in &tLoc0C @ 100018BB : (ptr32 (struct "_FILETIME")))
+	T_1037 (in &tLoc0C @ 10001899 : (ptr32 (struct "_FILETIME" 0008)))
+Eq_1040: (struct "_FILETIME" 0008 (0 DWORD dwLowDateTime) (4 DWORD dwHighDateTime))
+	T_1040 (in &tLoc0C @ 100018BB : (ptr32 (struct "_FILETIME" 0008)))
 Eq_1042: DWORD
 	T_1042 (in &tLoc0C + 4<i32> @ 100018BB : word32)
 Eq_1043: DWORD
 	T_1043 (in Mem37[&tLoc0C + 4<i32>:word32] @ 100018BB : word32)
-Eq_1044: (struct "_FILETIME" (0 DWORD dwLowDateTime) (4 DWORD dwHighDateTime))
-	T_1044 (in &tLoc0C @ 100018BB : (ptr32 (struct "_FILETIME")))
+Eq_1044: (struct "_FILETIME" 0008 (0 DWORD dwLowDateTime) (4 DWORD dwHighDateTime))
+	T_1044 (in &tLoc0C @ 100018BB : (ptr32 (struct "_FILETIME" 0008)))
 Eq_1046: DWORD
 	T_1046 (in &tLoc0C + 0<32> @ 100018BB : word32)
 Eq_1047: DWORD
@@ -4704,7 +4704,7 @@ T_1017: (in tLoc14 @ 10001864 : Eq_1017)
 T_1018: (in tLoc0C @ 10001864 : Eq_1018)
   Class: Eq_1018
   DataType: Eq_1018
-  OrigDataType: (struct "_FILETIME" (0 DWORD dwLowDateTime) (4 DWORD dwHighDateTime))
+  OrigDataType: (struct "_FILETIME" 0008 (0 DWORD dwLowDateTime) (4 DWORD dwHighDateTime))
 T_1019: (in eax_9 @ 1000186A : ui32)
   Class: Eq_991
   DataType: ui32
@@ -4721,10 +4721,10 @@ T_1022: (in 0<32> @ 1000186F : word32)
   Class: Eq_1022
   DataType: Eq_1022
   OrigDataType: word32
-T_1023: (in &tLoc0C @ 1000186F : (ptr32 (struct "_FILETIME")))
+T_1023: (in &tLoc0C @ 1000186F : (ptr32 (struct "_FILETIME" 0008)))
   Class: Eq_1023
   DataType: (ptr32 Eq_1023)
-  OrigDataType: (ptr32 (struct "_FILETIME"))
+  OrigDataType: (ptr32 (struct "_FILETIME" 0008))
 T_1024: (in 0<32> @ 1000186F : word32)
   Class: Eq_1024
   DataType: word32
@@ -4741,10 +4741,10 @@ T_1027: (in 0<32> @ 10001873 : word32)
   Class: Eq_1027
   DataType: Eq_1027
   OrigDataType: word32
-T_1028: (in &tLoc0C @ 10001873 : (ptr32 (struct "_FILETIME")))
+T_1028: (in &tLoc0C @ 10001873 : (ptr32 (struct "_FILETIME" 0008)))
   Class: Eq_1028
   DataType: (ptr32 Eq_1028)
-  OrigDataType: (ptr32 (struct "_FILETIME"))
+  OrigDataType: (ptr32 (struct "_FILETIME" 0008))
 T_1029: (in 4<i32> @ 10001873 : int32)
   Class: Eq_1029
   DataType: int32
@@ -4777,7 +4777,7 @@ T_1036: (in lpSystemTimeAsFileTime @ 10001899 : LPFILETIME)
   Class: Eq_1036
   DataType: Eq_1036
   OrigDataType: 
-T_1037: (in &tLoc0C @ 10001899 : (ptr32 (struct "_FILETIME")))
+T_1037: (in &tLoc0C @ 10001899 : (ptr32 (struct "_FILETIME" 0008)))
   Class: Eq_1036
   DataType: Eq_1036
   OrigDataType: LPFILETIME
@@ -4789,10 +4789,10 @@ T_1039: (in esi_46 @ 100018BB : ui32)
   Class: Eq_1039
   DataType: ui32
   OrigDataType: ui32
-T_1040: (in &tLoc0C @ 100018BB : (ptr32 (struct "_FILETIME")))
+T_1040: (in &tLoc0C @ 100018BB : (ptr32 (struct "_FILETIME" 0008)))
   Class: Eq_1040
   DataType: (ptr32 Eq_1040)
-  OrigDataType: (ptr32 (struct "_FILETIME"))
+  OrigDataType: (ptr32 (struct "_FILETIME" 0008))
 T_1041: (in 4<i32> @ 100018BB : int32)
   Class: Eq_1041
   DataType: int32
@@ -4805,10 +4805,10 @@ T_1043: (in Mem37[&tLoc0C + 4<i32>:word32] @ 100018BB : word32)
   Class: Eq_1043
   DataType: Eq_1043
   OrigDataType: DWORD
-T_1044: (in &tLoc0C @ 100018BB : (ptr32 (struct "_FILETIME")))
+T_1044: (in &tLoc0C @ 100018BB : (ptr32 (struct "_FILETIME" 0008)))
   Class: Eq_1044
   DataType: (ptr32 Eq_1044)
-  OrigDataType: (ptr32 (struct "_FILETIME"))
+  OrigDataType: (ptr32 (struct "_FILETIME" 0008))
 T_1045: (in 0<32> @ 100018BB : word32)
   Class: Eq_1045
   DataType: word32
@@ -5545,14 +5545,14 @@ typedef union Eq_1012 {
 
 typedef LARGE_INTEGER Eq_1017;
 
-typedef struct _FILETIME {
+typedef struct _FILETIME {	// size: 8 8
 	DWORD dwLowDateTime;	// 0
 	DWORD dwHighDateTime;	// 4
 } Eq_1018;
 
 typedef DWORD Eq_1022;
 
-typedef struct _FILETIME {
+typedef struct _FILETIME {	// size: 8 8
 	DWORD dwLowDateTime;	// 0
 	DWORD dwHighDateTime;	// 4
 } Eq_1023;
@@ -5561,7 +5561,7 @@ typedef DWORD Eq_1025;
 
 typedef DWORD Eq_1027;
 
-typedef struct _FILETIME {
+typedef struct _FILETIME {	// size: 8 8
 	DWORD dwLowDateTime;	// 0
 	DWORD dwHighDateTime;	// 4
 } Eq_1028;
@@ -5572,7 +5572,7 @@ typedef void (Eq_1034)(LPFILETIME);
 
 typedef LPFILETIME Eq_1036;
 
-typedef struct _FILETIME {
+typedef struct _FILETIME {	// size: 8 8
 	DWORD dwLowDateTime;	// 0
 	DWORD dwHighDateTime;	// 4
 } Eq_1040;
@@ -5581,7 +5581,7 @@ typedef DWORD Eq_1042;
 
 typedef DWORD Eq_1043;
 
-typedef struct _FILETIME {
+typedef struct _FILETIME {	// size: 8 8
 	DWORD dwLowDateTime;	// 0
 	DWORD dwHighDateTime;	// 4
 } Eq_1044;
