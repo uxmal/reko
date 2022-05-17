@@ -18,6 +18,7 @@
  */
 #endregion
 
+using Reko.Core.Machine;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -40,6 +41,11 @@ namespace Reko.Core.Emulation
             return false;
         }
 
+        public bool EmulateSystemCall(IProcessorEmulator emulator, params MachineOperand[] operands)
+        {
+            return false;
+        }
+
         public ImageSegment? InitializeStack(IProcessorEmulator emulator, ProcessorState state)
         {
             return null;
@@ -48,5 +54,7 @@ namespace Reko.Core.Emulation
         public void TearDownStack(ImageSegment? stackSeg)
         {
         }
+
+        
     }
 }

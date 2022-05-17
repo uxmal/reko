@@ -20,6 +20,7 @@
 
 using Reko.Core;
 using Reko.Core.Emulation;
+using Reko.Core.Machine;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -47,7 +48,12 @@ namespace Reko.Environments.C64
 
         public bool InterceptCall(IProcessorEmulator emulator, uint calledAddress)
         {
-            throw new NotImplementedException();
+            return false;
+        }
+
+        public bool EmulateSystemCall(IProcessorEmulator emulator, params MachineOperand[] operands)
+        {
+            return false;
         }
 
         public void TearDownStack(ImageSegment? stackSeg)

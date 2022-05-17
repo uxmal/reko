@@ -31,6 +31,7 @@ using Reko.Core.Expressions;
 using Reko.Core.Types;
 using Reko.Core.Memory;
 using Reko.Core.Emulation;
+using Reko.Core.Machine;
 
 namespace Reko.Environments.Windows
 {
@@ -304,6 +305,12 @@ namespace Reko.Environments.Windows
             ((SimulatedProc)epProc).Emulator(emu);
             return true;
         }
+
+        public bool EmulateSystemCall(IProcessorEmulator emulator, params MachineOperand[] operands)
+        {
+            return false;
+        }
+
 
         public Expression ResolveToImportedValue(Statement stm, Constant c)
         {

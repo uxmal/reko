@@ -18,6 +18,7 @@
  */
 #endregion
 
+using Reko.Core.Machine;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -46,6 +47,14 @@ namespace Reko.Core.Emulation
         /// <returns>True if the platform emulator intercepted the call and simulated it.
         /// False otherwise.</returns>
         bool InterceptCall(IProcessorEmulator emulator, TWord calledAddress);
+
+        /// <summary>
+        /// When called, emulates a system call.
+        /// </summary>
+        /// <param name="operands"></param>
+        /// <returns>True if the platform emulator emulated the system call.
+        /// False otherwise.</returns>
+        bool EmulateSystemCall(IProcessorEmulator emulator, params MachineOperand[] operands);
 
         ImageSegment? InitializeStack(IProcessorEmulator emulator, ProcessorState state);
 

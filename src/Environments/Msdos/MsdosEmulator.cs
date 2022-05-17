@@ -22,6 +22,7 @@ using Reko.Arch.X86;
 using Reko.Core;
 using Reko.Core.Emulation;
 using Reko.Core.Expressions;
+using Reko.Core.Machine;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -40,6 +41,11 @@ namespace Reko.Environments.Msdos
         public Dictionary<Address, ExternalProcedure> InterceptedCalls { get; }
 
         public bool InterceptCall(IProcessorEmulator emulator, uint calledAddress)
+        {
+            return false;
+        }
+
+        public bool EmulateSystemCall(IProcessorEmulator emulator, params MachineOperand[] operands)
         {
             return false;
         }
