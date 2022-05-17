@@ -1088,6 +1088,12 @@ movzx	ax,byte ptr [bp+4h]
         }
 
         [Test]
+        public void X86Dis_jmp_far_indirect()
+        {
+            AssertCode64("jmp\tfword ptr[0000h+rdi*4]", "FF 2C BD 00 00 00 00");
+        }
+
+        [Test]
         public void X86Dis_jmpe()
         {
             AssertCode64("jmpe", 0x0f, 0xb8);
@@ -2193,7 +2199,6 @@ movzx	ax,byte ptr [bp+4h]
             AssertCode64("pextrq\trbx,xmm0,4h",             "66 48 0f 3a 16 c3 04");
             AssertCode64("pextrq\tqword ptr [rbx],xmm0,4h", "66 48 0f 3a 16 03 04");
         }
-
 
     }
 }

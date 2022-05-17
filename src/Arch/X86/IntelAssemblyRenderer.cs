@@ -54,6 +54,8 @@ namespace Reko.Arch.X86
                 s = "xmmword ptr ";
             else if (width == PrimitiveType.Word256)
                 s = "ymmword ptr ";
+            else if (width == PrimitiveType.SegPtr48)
+                s = "fword ptr";
             else
                 s = "";
             return s;

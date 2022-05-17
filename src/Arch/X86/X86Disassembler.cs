@@ -495,7 +495,8 @@ namespace Reko.Arch.X86
 				}
 			    break;
             case 32:
-				switch (bits)
+            case 48:        // 48-bit far pointer
+                switch (bits)
 				{
 				case 0: return Registers.eax;
 				case 1: return Registers.ecx;
@@ -1385,8 +1386,10 @@ namespace Reko.Arch.X86
             case OperandType.pd:
                 return VexVectorLength[this.decodingContext.VexLongCode];
             case OperandType.p:
-				//$BUG: should be SegPtr48 in 32-bit mode.
-				return PrimitiveType.SegPtr32;     // Far pointer.
+                if (this.decodingContext.dataWidth.BitSize == 16)
+                    return PrimitiveType.SegPtr32;     // Far pointer.
+                else
+                    return PrimitiveType.SegPtr48;
             case OperandType.f:
                 return PrimitiveType.Real32;
             case OperandType.g:
