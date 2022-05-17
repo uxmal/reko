@@ -67,7 +67,7 @@ Eq_8: (union "Eq_8" (int32 u0) (size_t u1))
 	T_386 (in Mem42[sp_3 + 0x18<32>:word32] @ 0001160C : word32)
 	T_388 (in Mem42[sp_3 + 0x18<32>:word32] + 512<i32> @ 0001160C : word32)
 	T_391 (in Mem47[sp_3 + 0x20<32>:word32] @ 0001160C : word32)
-	T_400 (in _NewSize @ 00011634 : size_t)
+	T_400 (in _Size @ 00011634 : size_t)
 	T_406 (in Mem49[sp_3 + 0x20<32>:word32] @ 00011634 : word32)
 	T_413 (in Mem58[sp_3 + 0x18<32>:word32] @ 00011650 : word32)
 	T_416 (in Mem58[sp_3 + 0x24<32>:word32] @ 00011650 : word32)
@@ -865,7 +865,7 @@ T_172: (in signature of free @ 00000000 : void)
   Class: Eq_171
   DataType: (ptr32 Eq_171)
   OrigDataType: 
-T_173: (in _Memory @ 00011354 : (ptr32 void))
+T_173: (in _Block @ 00011354 : (ptr32 void))
   Class: Eq_150
   DataType: (ptr32 (ptr32 code))
   OrigDataType: 
@@ -1777,11 +1777,11 @@ T_398: (in signature of realloc @ 00000000 : void)
   Class: Eq_397
   DataType: (ptr32 Eq_397)
   OrigDataType: 
-T_399: (in _Memory @ 00011634 : (ptr32 void))
+T_399: (in _Block @ 00011634 : (ptr32 void))
   Class: Eq_150
   DataType: (ptr32 (ptr32 code))
   OrigDataType: 
-T_400: (in _NewSize @ 00011634 : size_t)
+T_400: (in _Size @ 00011634 : size_t)
   Class: Eq_8
   DataType: Eq_8
   OrigDataType: 

@@ -129,8 +129,8 @@ l00401172:
 			if (fn0040153F(ebx_n, eax_n, edi_n, out edx_n, out ebx_n, out ebp_n, out esi_n, out edi_n) != 0x00)
 				register_thread_local_exe_atexit_callback(*esi_n);
 		}
-		word32 * eax_n = _p___argv();
-		word32 * eax_n = _p___argc();
+		char *** eax_n = __p___argv();
+		int32 * eax_n = __p___argc();
 		esp_n->tFFFFFFFC = get_initial_narrow_environment();
 		esp_n->dwFFFFFFF8 = *eax_n;
 		esp_n->dwFFFFFFF4 = *eax_n;
@@ -365,7 +365,7 @@ int8 fn0040188B()
 	Eq_n eax_n = GetModuleHandleW(null);
 	if (eax_n == null || eax_n->unused != 23117)
 		return 0x00;
-	struct Eq_n * eax_n = eax_n + eax_n->dw003C / 64;
+	word32 eax_n = Mem5[eax_n + 60:word32] + eax_n;
 	if (eax_n->dw0000 != 0x4550 || (eax_n->w0018 != 0x010B || eax_n->dw0074 <= 0x0E))
 		return 0x00;
 	return (int8) (eax_n->dw00E8 != 0x00);

@@ -47,8 +47,7 @@ PyMethodDef methods[5] = // 10003010
 	};
 int32 g_dw10003070 = 0; // 10003070
 word32 g_dw100033A4 = 0x00; // 100033A4
-word32 g_dw100033A8 = 0x00; // 100033A8
-Eq_n g_t100033AC = 0; // 100033AC
-void * g_ptr100033B0 = null; // 100033B0
-void * g_ptr100033B4 = null; // 100033B4
+Eq_n g_t100033A8 = 0x00; // 100033A8
+Eq_n g_t100033B0 = 0x00; // 100033B0
+Eq_n g_t100033B4 = 0x00; // 100033B4
 <anonymous> * g_ptr100033B8 = null; // 100033B8
