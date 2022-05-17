@@ -29,11 +29,30 @@ namespace Reko.Arch.X86
 {
 	public class MemoryOperand : AbstractMachineOperand
 	{
+        /// <summary>
+        /// Optional segment override.
+        /// </summary>
 		public RegisterStorage SegOverride { get; set; }
+
+        /// <summary>
+        /// Optional base register of the memory access.
+        /// </summary>
         public RegisterStorage Base { get; set; }
+
+        /// <summary>
+        /// Optional index register of the memory access.
+        /// </summary>
         public RegisterStorage Index { get; set; }
+
+        /// <summary>
+        /// The scaling value if a SIB byte was present. Otherwise zero.
+        /// </summary>
         public byte Scale { get; set; }
-		public Constant? Offset {get;set;}
+
+        /// <summary>
+        /// Optional offset value.
+        /// </summary>
+		public Constant? Offset { get; set; }
 
 		public MemoryOperand(DataType width) : base(width)
 		{

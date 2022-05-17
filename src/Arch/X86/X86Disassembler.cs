@@ -1485,7 +1485,7 @@ namespace Reko.Arch.X86
 
 			RegisterStorage b;
             RegisterStorage idx;
-			byte scale = 1;
+			byte scale = 0;
 			PrimitiveType? offsetWidth = null;
 
 			if (decodingContext.addressWidth == PrimitiveType.Word16)
