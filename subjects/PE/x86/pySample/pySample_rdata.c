@@ -39,8 +39,10 @@
 <anonymous> * __imp__PyArg_ParseTuple = &g_t2356; // 10002088
 <anonymous> * __imp___Py_NoneStruct = &g_t2344; // 1000208C
 <anonymous> * __imp__Py_BuildValue = &g_t2334; // 10002090
-PVFV g_t10002098 = null; // 10002098
-PVFV g_t100020A0 = null; // 100020A0
+Eq_n g_t10002098 = null; // 10002098
+Eq_n g_t1000209C = null; // 1000209C
+Eq_n g_t100020A0 = null; // 100020A0
+Eq_n g_t100020A8 = null; // 100020A8
 word32 g_dw100020CC = 0x00; // 100020CC
 char g_str100020E0[] = "fdiv(a, b) = a / b"; // 100020E0
 char g_str100020F4[] = "fdiv"; // 100020F4
