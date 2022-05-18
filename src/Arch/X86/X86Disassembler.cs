@@ -680,24 +680,28 @@ namespace Reko.Arch.X86
         private static readonly Mutator<X86Disassembler> EKw = EK(OperandType.w);
 
         /// <summary>
-        /// Hybrid decoding: if effective memory address, use word16 size, if register 
-        /// use the current GP register size.
+        /// Hybrid decoding: if effective memory address, use the given <paramref name="memWidth"/>
+        /// size, if register use the current GP register size.
         /// </summary>
-        public static bool Ewv(uint top, X86Disassembler dasm)
+        public static Mutator<X86Disassembler> Ehybrid(PrimitiveType memWidth)
         {
-            if (!dasm.TryEnsureModRM(out byte modRm))
-                return false;
-            PrimitiveType width;
-            if ((modRm & 0xC0) == 0xC0)
-                width = dasm.decodingContext.dataWidth;
-            else
-                width = PrimitiveType.Word16;
-            var op = dasm.DecodeModRM(width, dasm.decodingContext.SegmentOverride, dasm.GpRegFromBits);
-            if (op is null)
-                return false;
-            dasm.decodingContext.ops.Add(op);
-            return true;
+            return (u, d) =>
+            {
+                if (!d.TryEnsureModRM(out byte modRm))
+                    return false;
+                PrimitiveType width;
+                if ((modRm & 0xC0) == 0xC0)
+                    width = d.decodingContext.dataWidth;
+                else
+                    width = memWidth;
+                var op = d.DecodeModRM(width, d.decodingContext.SegmentOverride, d.GpRegFromBits);
+                if (op is null)
+                    return false;
+                d.decodingContext.ops.Add(op);
+                return true;
+            };
         }
+        private static readonly Mutator<X86Disassembler> Ewv = Ehybrid(PrimitiveType.Word16);
 
         /// <summary>
         /// B: The VEX.vvvv field of the VEX prefix selects a general purpose register

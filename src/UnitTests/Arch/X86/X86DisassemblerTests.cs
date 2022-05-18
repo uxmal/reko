@@ -510,6 +510,7 @@ movzx	ax,byte ptr [bp+4h]
             AssertCode64("movd\tesi,mm1", 0x0F, 0x7E, 0xCE);
             AssertCode64("movd\tesi,xmm1", 0x66, 0x0F, 0x7E, 0xCE);
             AssertCode64("movq\txmm1,xmm6", 0xF3, 0x0F, 0x7E, 0xCE);
+            AssertCode64("vmovq\txmm6,xmm4","C5 F9 D6 E6");
         }
 
         [Test]
@@ -888,6 +889,14 @@ movzx	ax,byte ptr [bp+4h]
         }
 
         [Test]
+        [Ignore("Weird bug")]
+
+        public void x86Dis_vcvttps2dq()
+        {
+            AssertCode64("vcvttps2dq\tymm4,ymmword ptr [rcx]", "C5 FE 5B 21");
+        }
+
+        [Test]
         public void X86Dis_nop_0f19c0()
         {
             AssertCode64("nop\teax", 0x0f, 0x19, 0xc0);
@@ -1205,6 +1214,18 @@ movzx	ax,byte ptr [bp+4h]
         public void X86Dis_vfnmadd213ps_masked()
         {
             AssertCode64("vfnmadd213ps\txmm0{k7},xmm5,xmm4", "62F2550FAC C4");
+        }
+
+        [Test]
+        public void X86Dis_vfnmadd132sd()
+        {
+            AssertCode64("vfnmadd132sd\txmm2,xmm6,double ptr [rcx]", "C4 E2 C9 9D 11");
+        }
+
+        [Test]
+        public void X86Dis_vfnmadd132ss()
+        {
+            AssertCode64("vfnmadd132ss\txmm2,xmm6,dword ptr [rcx]", "C4 E2 4D 9D 11");
         }
 
         [Test]
@@ -2008,6 +2029,12 @@ movzx	ax,byte ptr [bp+4h]
         }
 
         [Test]
+        public void X86Dis_vsqrtpd()
+        {
+            AssertCode64("vsqrtpd\tymm6{k7},[rcx]", "62 F1 FD 2F 51 31");
+        }
+
+        [Test]
         public void X86Dis_pmulhw()
         {
             AssertCode64("pmulhw\tmm5,[rbx]", "0FE52B");
@@ -2037,7 +2064,7 @@ movzx	ax,byte ptr [bp+4h]
         public void X86Dis_cmpss()
         {
             AssertCode64("cmpss\txmm2,dword ptr [rdi+27h],69h", "F30FC2572769");
-            AssertCode64("vcmpss\txmm10,xmm10,[rdi+27h],69h", "C52EC2572769");
+            AssertCode64("vcmpss\txmm10,xmm10,dword ptr [rdi+27h],69h", "C52EC2572769");
         }
 
         [Test]
@@ -2200,5 +2227,7 @@ movzx	ax,byte ptr [bp+4h]
             AssertCode64("pextrq\tqword ptr [rbx],xmm0,4h", "66 48 0f 3a 16 03 04");
         }
 
+
+ 
     }
 }

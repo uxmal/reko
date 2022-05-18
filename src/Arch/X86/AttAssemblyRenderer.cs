@@ -155,8 +155,9 @@ namespace Reko.Arch.X86
             return "0x" + string.Format(format ?? "{0:X}", n);
         }
 
-        protected override void RenderOperand(MachineOperand operand, X86Instruction instr, MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
+        protected override void RenderOperand(X86Instruction instr, int iop, MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
         {
+            MachineOperand operand = instr.Operands[iop];
             switch (operand)
             {
             case RegisterStorage reg:
@@ -263,11 +264,11 @@ namespace Reko.Arch.X86
             {
                 var flags = options.Flags;
                 int i = instr.Operands.Length - 1;
-                RenderOperand(instr.Operands[i], instr, renderer, options);
+                RenderOperand(instr, i, renderer, options);
                 for (--i; i >= 0; --i)
                 {
                     renderer.WriteString(options.OperandSeparator ?? ",");
-                    RenderOperand(instr.Operands[i], instr, renderer, options);
+                    RenderOperand(instr, i, renderer, options);
                     if (i == 0 && instr.OpMask != 0)
                     {
                         renderer.WriteString("{k");

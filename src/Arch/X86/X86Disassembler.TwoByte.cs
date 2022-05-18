@@ -542,7 +542,7 @@ namespace Reko.Arch.X86
                 d[0xD5] = new PrefixedDecoder(
                     Instr(Mnemonic.pmullw, Pq,Qq),
                     VexInstr(Mnemonic.pmullw, Mnemonic.vpmullw, Vx,Hx,Wx));
-				d[0xD6] = Instr(Mnemonic.movq, Wx,Vx);
+				d[0xD6] = VexInstr(Mnemonic.movq, Mnemonic.vmovq, Wx,Vx);
                 d[0xD7] = new PrefixedDecoder(
                     Instr(Mnemonic.pmovmskb, Gd,Nq),
                     VexInstr(Mnemonic.pmovmskb, Mnemonic.vpmovmskb, Gd,Ux));

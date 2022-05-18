@@ -329,10 +329,10 @@ namespace Reko.Arch.X86
                     dec66: VexInstr(Mnemonic.vfnmadd132ps, Vx, Hx, Wx),
                     dec66Wide: VexInstr(Mnemonic.vfnmadd132pd, Vx, Hx, Wx));
                 d[0x9D] = new PrefixedDecoder(
-                    dec66: VexInstr(Mnemonic.vfnmadd132ss, Vx, Hx, Wx),
-                    dec66Wide: VexInstr(Mnemonic.vfnmadd132sd, Vx, Hx, Wx));
+                    dec66: VexInstr(Mnemonic.vfnmadd132ss, Vss, Hss, Wss),
+                    dec66Wide: VexInstr(Mnemonic.vfnmadd132sd, Vsd, Hsd, Wsd));
                 d[0x9E] = new PrefixedDecoder(
-                    dec66: VexInstr(Mnemonic.vfnmsub132ps, Vx, Hx, Wx),
+                    dec66: VexInstr(Mnemonic.vfnmsub132ps, Vx, Hx, Wss),
                     dec66Wide: VexInstr(Mnemonic.vfnmsub132pd, Vx, Hx, Wx));
                 d[0x9F] = new PrefixedDecoder(
                     dec66: VexInstr(Mnemonic.vfnmsub132ss, Vx, Hx, Wx),

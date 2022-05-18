@@ -100,7 +100,7 @@ namespace Reko.Arch.X86
         protected virtual void RenderOperands(X86Instruction instr, MachineInstructionRendererOptions options, MachineInstructionRenderer renderer)
         {
             var flags = options.Flags;
-            RenderOperand(instr.Operands[0], instr, renderer, options);
+            RenderOperand(instr, 0, renderer, options);
             if (instr.OpMask != 0)
             {
                 renderer.WriteString("{k");
@@ -110,7 +110,7 @@ namespace Reko.Arch.X86
             for (int i = 1; i < instr.Operands.Length; ++i)
             {
                 renderer.WriteString(options.OperandSeparator ?? ",");
-                RenderOperand(instr.Operands[i], instr, renderer, options);
+                RenderOperand(instr, i, renderer, options);
             }
         }
 
@@ -130,11 +130,12 @@ namespace Reko.Arch.X86
         }
 
         protected virtual void RenderOperand(
-            MachineOperand operand, 
             X86Instruction instr,
+            int iop,
             MachineInstructionRenderer renderer,
             MachineInstructionRendererOptions options)
         {
+            var operand = instr.Operands[iop];
             switch (operand)
             {
             case RegisterStorage reg:
@@ -319,8 +320,10 @@ namespace Reko.Arch.X86
                     return false;
                 if (ops.Length >= 2 && ops[0].Width.Size != ops[1].Width.Size)
                     return true;
+                if (ops.Length >= 3 && ops[2] is MemoryOperand mop && ops[0].Width.Size != mop.Width.Size)
+                    return true;
                 return
-                     (ops.Length < 1 || !HasImplicitWidth(ops[0])) &&
+                         (ops.Length < 1 || !HasImplicitWidth(ops[0])) &&
                      (ops.Length < 2 || !HasImplicitWidth(ops[1])) &&
                      (ops.Length < 3 || !HasImplicitWidth(ops[2]));
             }
