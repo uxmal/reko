@@ -16,11 +16,11 @@
     <typedef name="SOCKET">
       <type>UINT_PTR</type>
     </typedef>
-    <struct name="fd_set">
+    <struct name="fd_set" size="260">
       <field offset="0" name="fd_count">
         <type>u_int</type>
       </field>
-      <field offset="8" name="fd_array">
+      <field offset="4" name="fd_array">
         <arr length="64">
           <type>SOCKET</type>
         </arr>
@@ -29,7 +29,7 @@
     <typedef name="fd_set">
       <struct name="fd_set" />
     </typedef>
-    <struct name="timeval">
+    <struct name="timeval" size="8">
       <field offset="0" name="tv_sec">
         <prim domain="SignedInt" size="4" />
       </field>
@@ -37,7 +37,7 @@
         <prim domain="SignedInt" size="4" />
       </field>
     </struct>
-    <struct name="hostent">
+    <struct name="hostent" size="16">
       <field offset="0" name="h_name">
         <ptr>
           <prim domain="Character" size="1" />
@@ -64,7 +64,7 @@
         </ptr>
       </field>
     </struct>
-    <struct name="netent">
+    <struct name="netent" size="14">
       <field offset="0" name="n_name">
         <ptr>
           <prim domain="Character" size="1" />
@@ -80,11 +80,11 @@
       <field offset="8" name="n_addrtype">
         <prim domain="SignedInt" size="2" />
       </field>
-      <field offset="12" name="n_net">
+      <field offset="10" name="n_net">
         <type>u_long</type>
       </field>
     </struct>
-    <struct name="servent">
+    <struct name="servent" size="14">
       <field offset="0" name="s_name">
         <ptr>
           <prim domain="Character" size="1" />
@@ -100,13 +100,13 @@
       <field offset="8" name="s_port">
         <prim domain="SignedInt" size="2" />
       </field>
-      <field offset="12" name="s_proto">
+      <field offset="10" name="s_proto">
         <ptr>
           <prim domain="Character" size="1" />
         </ptr>
       </field>
     </struct>
-    <struct name="protoent">
+    <struct name="protoent" size="10">
       <field offset="0" name="p_name">
         <ptr>
           <prim domain="Character" size="1" />
@@ -123,7 +123,7 @@
         <prim domain="SignedInt" size="2" />
       </field>
     </struct>
-    <struct name="struct_106">
+    <struct name="struct_154" size="4">
       <field offset="0" name="s_b1">
         <type>UCHAR</type>
       </field>
@@ -137,7 +137,7 @@
         <type>UCHAR</type>
       </field>
     </struct>
-    <struct name="struct_107">
+    <struct name="struct_155" size="4">
       <field offset="0" name="s_w1">
         <type>USHORT</type>
       </field>
@@ -145,14 +145,14 @@
         <type>USHORT</type>
       </field>
     </struct>
-    <struct name="in_addr">
+    <struct name="in_addr" size="4">
       <field offset="0" name="S_un">
-        <union>
+        <union size="4">
           <alt name="S_un_b">
-            <struct name="struct_106" />
+            <struct name="struct_154" />
           </alt>
           <alt name="S_un_w">
-            <struct name="struct_107" />
+            <struct name="struct_155" />
           </alt>
           <alt name="S_addr">
             <type>ULONG</type>
@@ -173,7 +173,7 @@
         <struct name="in_addr" />
       </ptr>
     </typedef>
-    <struct name="sockaddr_in">
+    <struct name="sockaddr_in" size="16">
       <field offset="0" name="sin_family">
         <prim domain="SignedInt" size="2" />
       </field>
@@ -189,30 +189,30 @@
         </arr>
       </field>
     </struct>
-    <struct name="WSAData">
+    <struct name="WSAData" size="398">
       <field offset="0" name="wVersion">
         <type>WORD</type>
       </field>
       <field offset="2" name="wHighVersion">
         <type>WORD</type>
       </field>
-      <field offset="8" name="szDescription">
+      <field offset="4" name="szDescription">
         <arr length="257">
           <prim domain="Character" size="1" />
         </arr>
       </field>
-      <field offset="272" name="szSystemStatus">
+      <field offset="261" name="szSystemStatus">
         <arr length="129">
           <prim domain="Character" size="1" />
         </arr>
       </field>
-      <field offset="402" name="iMaxSockets">
+      <field offset="390" name="iMaxSockets">
         <prim domain="UnsignedInt" size="2" />
       </field>
-      <field offset="404" name="iMaxUdpDg">
+      <field offset="392" name="iMaxUdpDg">
         <prim domain="UnsignedInt" size="2" />
       </field>
-      <field offset="408" name="lpVendorInfo">
+      <field offset="394" name="lpVendorInfo">
         <ptr>
           <prim domain="Character" size="1" />
         </ptr>
@@ -226,7 +226,7 @@
         <type>WSADATA</type>
       </ptr>
     </typedef>
-    <struct name="ip_mreq">
+    <struct name="ip_mreq" size="8">
       <field offset="0" name="imr_multiaddr">
         <struct name="in_addr" />
       </field>
@@ -234,17 +234,17 @@
         <struct name="in_addr" />
       </field>
     </struct>
-    <struct name="sockaddr">
+    <struct name="sockaddr" size="16">
       <field offset="0" name="sa_family">
         <type>u_short</type>
       </field>
-      <field offset="8" name="sa_data">
+      <field offset="2" name="sa_data">
         <arr length="14">
           <prim domain="Character" size="1" />
         </arr>
       </field>
     </struct>
-    <struct name="sockproto">
+    <struct name="sockproto" size="4">
       <field offset="0" name="sp_family">
         <type>u_short</type>
       </field>
@@ -252,7 +252,7 @@
         <type>u_short</type>
       </field>
     </struct>
-    <struct name="linger">
+    <struct name="linger" size="4">
       <field offset="0" name="l_onoff">
         <type>u_short</type>
       </field>
@@ -260,7 +260,7 @@
         <type>u_short</type>
       </field>
     </struct>
-    <struct name="_TRANSMIT_FILE_BUFFERS">
+    <struct name="_TRANSMIT_FILE_BUFFERS" size="16">
       <field offset="0" name="Head">
         <type>PVOID</type>
       </field>
