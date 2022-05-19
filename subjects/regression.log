@@ -210,8 +210,6 @@ Evaluating d:\dev\uxmal\reko\master\subjects\scripting\exceptions.py
 === PE\x86\ExeDll\Executable
 Signature of 'Microsoft Visual C++ 8' detected.
 00401C0C: warning: Unable to guess parameters of api-ms-win-crt-runtime-l1-1-0.dll!_register_thread_local_exe_atexit_callback.
-00401BFA: warning: Unable to guess parameters of api-ms-win-crt-runtime-l1-1-0.dll!__p___argv.
-00401BF4: warning: Unable to guess parameters of api-ms-win-crt-runtime-l1-1-0.dll!__p___argc.
 00401BD0: warning: Unable to guess parameters of api-ms-win-crt-runtime-l1-1-0.dll!_get_initial_narrow_environment.
 00401069: warning: Unable to guess parameters of api-ms-win-crt-stdio-l1-1-0.dll!__acrt_iob_func.
 00401084: warning: Unable to guess parameters of api-ms-win-crt-stdio-l1-1-0.dll!__stdio_common_vfprintf.
@@ -222,8 +220,6 @@ Signature of 'Microsoft Visual C++ 8' detected.
 00401BC4: warning: Unable to guess parameters of api-ms-win-crt-runtime-l1-1-0.dll!_configure_narrow_argv.
 00401BCA: warning: Unable to guess parameters of api-ms-win-crt-runtime-l1-1-0.dll!_initialize_narrow_environment.
 00401BD0: warning: Unable to guess parameters of api-ms-win-crt-runtime-l1-1-0.dll!_get_initial_narrow_environment.
-00401BF4: warning: Unable to guess parameters of api-ms-win-crt-runtime-l1-1-0.dll!__p___argc.
-00401BFA: warning: Unable to guess parameters of api-ms-win-crt-runtime-l1-1-0.dll!__p___argv.
 00401C00: warning: Unable to guess parameters of api-ms-win-crt-runtime-l1-1-0.dll!_cexit.
 00401C06: warning: Unable to guess parameters of api-ms-win-crt-runtime-l1-1-0.dll!_c_exit.
 00401C0C: warning: Unable to guess parameters of api-ms-win-crt-runtime-l1-1-0.dll!_register_thread_local_exe_atexit_callback.
@@ -423,8 +419,6 @@ Warning: Checksum error in line 1.
 === PE\x86\import-ordinals\import-ordinals
 Signature of 'Microsoft Visual C++ 8' detected.
 00401C0A: warning: Unable to guess parameters of api-ms-win-crt-runtime-l1-1-0.dll!_register_thread_local_exe_atexit_callback.
-00401BF8: warning: Unable to guess parameters of api-ms-win-crt-runtime-l1-1-0.dll!__p___argv.
-00401BF2: warning: Unable to guess parameters of api-ms-win-crt-runtime-l1-1-0.dll!__p___argc.
 00401BCE: warning: Unable to guess parameters of api-ms-win-crt-runtime-l1-1-0.dll!_get_initial_narrow_environment.
 00401047: warning: Unable to resolve imported reference driver.dll!Ordinal_1.
 00401047: warning: Unable to resolve imported reference driver.dll!Ordinal_1.
@@ -1984,4 +1978,4 @@ Signature of 'Microsoft Visual C++ 8' detected.
 0040120B: warning: Unable to determine the upper bound of an indirect call or jump; there may be more than 2 entries.
 004011A5: warning: Unable to determine the upper bound of an indirect call or jump; there may be more than 2 entries.
 
-Decompiled 86 binaries in 54.13 seconds.
+Decompiled 86 binaries in 54.81 seconds.

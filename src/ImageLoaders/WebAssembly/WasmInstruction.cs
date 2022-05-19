@@ -20,6 +20,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -241,7 +242,7 @@ namespace Reko.ImageLoaders.WebAssembly
                 if (imm.Width.IsIntegral || imm.Width.IsWord)
                     renderer.WriteFormat("0x{0:X}", imm.Value.ToUInt64());
                 else if (imm.Width.IsReal)
-                    renderer.WriteFormat("{0}", imm.Value.ToReal64());
+                    renderer.WriteString(imm.Value.ToReal64().ToString(CultureInfo.InvariantCulture));
                 return;
             }
             base.RenderOperand(operand, renderer, options);
