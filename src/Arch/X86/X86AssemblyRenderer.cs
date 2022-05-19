@@ -107,6 +107,10 @@ namespace Reko.Arch.X86
                 renderer.WriteUInt32(instr.OpMask);
                 renderer.WriteChar('}');
             }
+            if (instr.MergingMode != 0)
+            {
+                renderer.WriteString("{z}");
+            }
             for (int i = 1; i < instr.Operands.Length; ++i)
             {
                 renderer.WriteString(options.OperandSeparator ?? ",");
@@ -170,6 +174,12 @@ namespace Reko.Arch.X86
                 else
                 {
                     RenderMemory(memOp, renderer, flags);
+                }
+                if (instr.Broadcast)
+                {
+                    renderer.WriteString("{1to");
+                    renderer.WriteUInt32((uint) (instr.Operands[0].Width.BitSize / memOp.Width.BitSize));
+                    renderer.WriteChar('}');
                 }
                 break;
             case AddressOperand addrOp:

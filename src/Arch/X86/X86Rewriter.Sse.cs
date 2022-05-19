@@ -548,7 +548,7 @@ namespace Reko.Arch.X86
             if (dstElemType is null)
             {
                 VexAssign(isVex, dst, m.Fn(fnName.MakeInstance(arrayType), tmp1, tmp2));
-        }
+            }
             else
             {
                 var dtDst = CreatePackedArrayType(dstElemType, dst.DataType);

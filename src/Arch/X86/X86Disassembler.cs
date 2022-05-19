@@ -176,6 +176,9 @@ namespace Reko.Arch.X86
                 this.VexLongCode = 0;
                 this.OpMask = 0;
                 this.EvexR = false;
+                this.EvexMergeMode = 0;
+                this.EvexBroadcast = false;
+                this.Disp8Scale = 0;
 
                 this.ops.Clear();
             }
@@ -186,10 +189,12 @@ namespace Reko.Arch.X86
                 {
                     repPrefix = iclass.HasFlag(InstrClass.Invalid)
                         ? 0
-                        : this.F2Prefix 
+                        : this.F2Prefix
                             ? 2 :
                             this.F3Prefix ? 3 : 0,
                     OpMask = this.OpMask,
+                    MergingMode = (byte) this.EvexMergeMode,
+                    Broadcast = this.EvexBroadcast,
                 };
             }
 
@@ -281,6 +286,15 @@ namespace Reko.Arch.X86
 
             // EVEX R' bit
             public bool EvexR { get; set; }
+
+            // EVEX merge mode
+            public int EvexMergeMode { get; set; }
+
+            // EVEX broadcast bit
+            public bool EvexBroadcast{ get; set; }
+
+            // Amount by which the disp8 displacement is scaled.
+            public int Disp8Scale { get; set; }
         }
 
         //$REVIEW: Instructions longer than this cause exceptions on modern x86 processors.
@@ -559,7 +573,7 @@ namespace Reko.Arch.X86
             return Registers.MaskRegisters[bits & 7];
         }
 
-        private readonly PrimitiveType[] VexVectorLength =
+        private static readonly PrimitiveType[] VexVectorLength =
         {
             PrimitiveType.Word128,
             PrimitiveType.Word256,
@@ -567,7 +581,15 @@ namespace Reko.Arch.X86
             PrimitiveType.Create(Domain.None, 0)    // Invalid size
         };
 
-		public static RegisterStorage SegFromBits(int bits)
+        private static readonly int[] VexVectorDisp8Shifts =
+        {
+            4,
+            5,
+            6,
+            0    // Invalid size
+        };
+
+        public static RegisterStorage SegFromBits(int bits)
 		{
 			switch (bits&0x7)
 			{
@@ -1612,6 +1634,10 @@ namespace Reko.Arch.X86
             {
                 if (!TryReadLe(offsetWidth, out offset))
                     return null;
+                if (offsetWidth.BitSize == 8 && decodingContext.Disp8Scale > 0)
+                {
+                    offset = Constant.Int32(offset.ToInt32() << decodingContext.Disp8Scale);
+                }
             }
             else
             {

@@ -178,8 +178,10 @@ namespace Reko.Arch.X86
                 d[0x3E] = new PrefixedDecoder(dec66: Instr(Mnemonic.vpmaxuw, Vx,Hx,Wx));
                 d[0x3F] = new PrefixedDecoder(dec66: Instr(Mnemonic.vpmaxud, Vx,Hx,Wx));
 
-                    // 40
-                d[0x40] = new PrefixedDecoder(dec66: Instr(Mnemonic.vpmulld, Vx,Hx,Wx));
+                // 40
+                d[0x40] = new PrefixedDecoder(
+                    dec66: Instr(Mnemonic.vpmulld, Vx, Hx, Wx),
+                    dec66Wide: Instr(Mnemonic.vpmullq, Vx, Hx, Wx));
                 d[0x41] = new PrefixedDecoder(dec66: Instr(Mnemonic.vphminposuw, Vdq,Wdq));
                 d[0x42] = s_invalid;
                 d[0x43] = s_invalid;
@@ -189,7 +191,7 @@ namespace Reko.Arch.X86
                         dec66Wide: Instr(Mnemonic.vpsrlvq, Vx,Hx,Wx));
                 d[0x46] = new PrefixedDecoder(dec66: Instr(Mnemonic.vpsravd, Vx,Hx,Wx));
                 d[0x47] = new PrefixedDecoder(
-                        dec66: Instr(Mnemonic.vpsllvd, Vx,Hx,Wx),
+                        dec66: Instr(Mnemonic.vpsllvd, Vx,Hx,Wss),
                         dec66Wide: Instr(Mnemonic.vpsllvq, Vx,Hx,Wx));
 
                 d[0x48] = s_invalid;
@@ -449,7 +451,7 @@ namespace Reko.Arch.X86
                 d[0xD8] = s_invalid;
                 d[0xD9] = s_invalid;
                 d[0xDA] = s_invalid;
-                d[0xDB] = new PrefixedDecoder(dec66: Instr(Mnemonic.aesimc, Vdq,Wdq));
+                d[0xDB] = new PrefixedDecoder(dec66: VexInstr(Mnemonic.aesimc, Mnemonic.vaesimc, Vdq,Wdq));
 
                 d[0xDC] = new PrefixedDecoder(dec66: VexInstr(Mnemonic.aesenc, Mnemonic.vaesenc, Vdq,Hdq,Wdq));
                 d[0xDD] = new PrefixedDecoder(dec66: VexInstr(Mnemonic.aesenclast, Mnemonic.vaesenclast, Vdq,Hdq,Wdq));

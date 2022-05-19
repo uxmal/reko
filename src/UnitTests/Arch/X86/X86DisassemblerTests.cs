@@ -680,6 +680,12 @@ movzx	ax,byte ptr [bp+4h]
         }
 
         [Test]
+        public void X86dis_vaesimc()
+        {
+            AssertCode64("vaesimc\txmm6,xmm4","C4 E2 79 DB F4");
+        }
+
+        [Test]
         public void X86dis_vcvtsi2ss()
         {
             AssertCode64("vcvtsi2ss\txmm0,xmm0,rax", 0xC4, 0xE1, 0xFA, 0x2A, 0xC0);
@@ -707,6 +713,7 @@ movzx	ax,byte ptr [bp+4h]
         public void X86dis_vmovapd()
         {
             AssertCode64("vmovapd\tymm1,[rax]", 0xC5, 0xFD, 0x28, 0x08);
+            AssertCode64("vmovapd\txmm6{k7}{z},xmm5", "62 F1 FD 8F 29 EE");
         }
 
         [Test]
@@ -930,6 +937,12 @@ movzx	ax,byte ptr [bp+4h]
         public void X86Dis_invlpg()
         {
             AssertCode64("invlpg\tbyte ptr [rax+16h]", 0x0f, 0x01, 0x78, 0x16);
+        }
+
+        [Test]
+        public void X86Dis_vmread()
+        {
+            AssertCode64("vmread\t[rbx],rax", "0F 78 03");
         }
 
         [Test]
@@ -1223,6 +1236,12 @@ movzx	ax,byte ptr [bp+4h]
         }
 
         [Test]
+        public void X86Dis_vfnmadd132pd()
+        {
+            AssertCode64("vfnmadd132pd\tzmm6,zmm5,[rdx-40h]", "62 F2 D5 48 9C 72 FF");
+        }
+
+        [Test]
         public void X86Dis_vfnmadd132ss()
         {
             AssertCode64("vfnmadd132ss\txmm2,xmm6,dword ptr [rcx]", "C4 E2 4D 9D 11");
@@ -1338,6 +1357,18 @@ movzx	ax,byte ptr [bp+4h]
         public void X86Dis_vpmulhrsw_c402750b4883()
         {
             AssertCode64("vpmulhrsw\tymm9,ymm1,[r8-7Dh]", 0xc4, 0x02, 0x75, 0x0b, 0x48, 0x83);
+        }
+
+        [Test]
+        public void X86Dis_vpmulld_evex()
+        {
+            AssertCode64("vpmulld\tzmm6,zmm5,[rcx]", "62 F2 55 48 40 31");
+        }
+
+        [Test]
+        public void X86Dis_vpmullq_evex()
+        {
+            AssertCode64("vpmullq\tzmm6,zmm5,[rcx]","62 F2 D5 48 40 31");
         }
 
         [Test]
@@ -1511,6 +1542,12 @@ movzx	ax,byte ptr [bp+4h]
         }
 
         [Test]
+        public void X86Dis_vpcmpeqb()
+        {
+            AssertCode64("vpcmpeqb\txmm6,xmm6,xmm4", "C5 C9 74 F4");
+        }
+
+        [Test]
         public void X86Dis_vpcmpeqq()
         {
             AssertCode64("vpcmpeqq\tymm9,ymm1,[r11+15h]", 0xc4, 0x02, 0x75, 0x29, 0x4b, 0x15);
@@ -1581,12 +1618,19 @@ movzx	ax,byte ptr [bp+4h]
         {
             AssertCode64("vpmaxud\tymm9,ymm1,[r9-75h]", 0xc4, 0x02, 0x75, 0x3f, 0x49, 0x8b);
         }
+
         [Test]
         public void X86Dis_vpsllvd()
         {
-            AssertCode64("vpsllvd\tymm9,ymm1,[r15]", 0xc4, 0x02, 0x75, 0x47, 0x0f);
+            AssertCode64("vpsllvd\tymm9,ymm1,dword ptr [r15]", 0xc4, 0x02, 0x75, 0x47, 0x0f);
+            AssertCode64("vpsllvd\txmm6{k7},xmm5,dword ptr [rdx-200h]{1to4}", "62 F2 55 1F 47 72 80");
         }
 
+        [Test]
+        public void X86Dis_vpsllq()
+        {
+            AssertCode64("vpsllq\tymm6{k7},ymm5,xmmword ptr [rdx+800h]","62 F1 D5 2F F3 B2 00 08 00 00");
+        }
 
         [Test]
         public void X86Dis_vpgatherqq()
@@ -1742,6 +1786,12 @@ movzx	ax,byte ptr [bp+4h]
         public void X86Dis_vlddqu_c583f001()
         {
             AssertCode64("vlddqu\txmm0,[rcx]", 0xc5, 0x83, 0xf0, 0x01);
+        }
+
+        [Test]
+        public void X86Dis_vldmxcsr()
+        {
+            AssertCode64("vldmxcsr\tdword ptr [rcx]", "C5 F8 AE 11");
         }
 
         [Test]

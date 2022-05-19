@@ -466,6 +466,11 @@ namespace Reko.Arch.X86
                 ctx.RegisterExtension.FlagTargetSIBIndex = (rxb & 2) == 0;
                 ctx.RegisterExtension.FlagTargetModrmRegOrMem = (rxb & 1) == 0;
                 ctx.EvexR = !Bits.IsBitSet(p0, 4);
+                ctx.EvexMergeMode = p2 >> 7;
+                ctx.EvexBroadcast = (p2 & 0x10) != 0;
+                ctx.Disp8Scale = ctx.EvexBroadcast
+                    ? 2
+                    : VexVectorDisp8Shifts[ctx.VexLongCode];
                 ctx.F2Prefix = pp == 3;
                 ctx.F3Prefix = pp == 2;
                 ctx.SizeOverridePrefix = pp == 1;

@@ -2117,11 +2117,11 @@ namespace Reko.UnitTests.Arch.X86
         public void X86Rw_vpcmpeqb()
         {
             Run64bitTest("C5ED74D8");
-            AssertCode(     // vpcmpeqb	ymm3,ymm0
+            AssertCode(     // vpcmpeqb	ymm3,ymm2,ymm0
                 "0|L--|0000000140000000(4): 3 instructions",
-                "1|L--|v4 = ymm3",
-                "2|L--|v5 = ymm0",
-                "3|L--|ymm3 = __pcmpeq<byte[32]>(v4, v5)");
+                "1|L--|v5 = ymm2",
+                "2|L--|v6 = ymm0",
+                "3|L--|ymm3 = __pcmpeq<byte[32]>(v5, v6)");
         }
 
         [Test]

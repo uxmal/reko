@@ -476,6 +476,7 @@ namespace Reko.UnitTests.Arch.X86
             AssertCode32("movlhps\txmm3,xmm3", 0x0f, 0x16, 0xdb);
             AssertCode32("pshuflw\txmm3,xmm3,0h", 0xf2, 0x0f, 0x70, 0xdb, 0x00);
         }
+
         [Test]
         public void X86Dis_more3()
         {
@@ -485,6 +486,7 @@ namespace Reko.UnitTests.Arch.X86
             AssertCode32("ldmxcsr\tdword ptr [ebp+8h]", 0x0F, 0xAE, 0x55, 0x08);
             AssertCode32("pcmpistri\txmm0,[edi-10h],40h", 0x66, 0x0F, 0x3A, 0x63, 0x47, 0xF0, 0x40);
         }
+
         [Test]
         public void X86Dis_movd_32()
         {

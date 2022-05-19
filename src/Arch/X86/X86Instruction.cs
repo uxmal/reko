@@ -33,7 +33,10 @@ namespace Reko.Arch.X86
         public int repPrefix;                   // 0 = no prefix, 2 = repnz, 3 = repz
 		public DataType dataWidth;	            // Width of the data (if it's a word).
 		public PrimitiveType addrWidth;	        // width of the address mode.	// TODO: belongs in MemoryOperand
-        public byte OpMask { get; set; }        // VEX Mask register to use.
+        public byte OpMask { get; set; }        // EVEX Mask register to use.
+        public byte MergingMode { get; set; }   // EVEX merging mode
+        public bool Broadcast { get; set; }     // EVEX broadcast flag
+        //$PERF: is it worth it to pack the rarely used bit- and byte-sized fields into a single word?
 
 		public X86Instruction(Mnemonic mnemonic, InstrClass iclass, DataType dataWidth, PrimitiveType addrWidth, params MachineOperand [] ops)
 		{

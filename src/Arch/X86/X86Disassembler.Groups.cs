@@ -293,8 +293,8 @@ namespace Reko.Arch.X86
                 // 0F AE
                 Grp15[0] = new Group7Decoder(Instr(Mnemonic.fxsave));
                 Grp15[1] = new Group7Decoder(Instr(Mnemonic.fxrstor));
-                Grp15[2] = Instr(Mnemonic.ldmxcsr, Md);
-                Grp15[3] = Instr(Mnemonic.stmxcsr, Md);
+                Grp15[2] = VexInstr(Mnemonic.ldmxcsr, Mnemonic.vldmxcsr, Md);
+                Grp15[3] = VexInstr(Mnemonic.stmxcsr, Mnemonic.vstmxcsr, Md);
 
                 Grp15[4] = Amd64Instr(
                     Instr(Mnemonic.xsave, Mb),

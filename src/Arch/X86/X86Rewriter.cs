@@ -454,7 +454,8 @@ namespace Reko.Arch.X86
                 case Mnemonic.pavgb: RewritePavg(pavg_intrinsic, PrimitiveType.Byte); break;
                 case Mnemonic.pavgw: RewritePavg(pavg_intrinsic, PrimitiveType.Byte); break;
                 case Mnemonic.vpbroadcastb: RewritePbroadcast(true, pbroadcast_intrinsic, PrimitiveType.Byte); break;
-                case Mnemonic.pcmpeqb: case Mnemonic.vpcmpeqb: RewritePcmp(pcmpeq_intrinsic, PrimitiveType.Byte); break;
+                case Mnemonic.pcmpeqb: RewritePackedBinop(false, pcmpeq_intrinsic, PrimitiveType.Byte); break;
+                case Mnemonic.vpcmpeqb: RewritePackedBinop(true, pcmpeq_intrinsic, PrimitiveType.Byte); break;
                 case Mnemonic.pcmpeqd: RewritePcmp(pcmpeq_intrinsic, PrimitiveType.Word32); break;
                 case Mnemonic.pcmpeqw: RewritePcmp(pcmpeq_intrinsic, PrimitiveType.Word16); break;
                 case Mnemonic.pcmpgtb: RewritePcmp(pcmpgt_intrinsic, PrimitiveType.Byte); break;
