@@ -67,7 +67,7 @@ namespace Reko.UnitTests.Arch.X86
         [Test]
         public void X86_8086_fadd_DC_C3()
         {
-            AssertCode("fadd\tst(3),st", "DC C3");
+            AssertCode("fadd\tst(3),st(0)", "DC C3");
         }
     }
 }
