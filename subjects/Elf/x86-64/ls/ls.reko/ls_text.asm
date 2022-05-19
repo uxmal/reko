@@ -11772,7 +11772,7 @@ l000000000040C655:
 l000000000040C660:
 	fstcw	word ptr [rsp+66h]
 	movzx	eax,word ptr [rsp+66h]
-	fsub	st(0),st(1)
+	fsubr	st(1),st(0)
 	fxch	st(0),st(1)
 	mov	rdx,8000000000000000h
 	or	ah,0Ch
@@ -11788,7 +11788,7 @@ l000000000040C660:
 l000000000040C6A0:
 	fstcw	word ptr [rsp+66h]
 	movzx	eax,word ptr [rsp+66h]
-	fsub	st(0),st(1)
+	fsubr	st(1),st(0)
 	fxch	st(0),st(1)
 	mov	rdx,8000000000000000h
 	or	ah,0Ch
@@ -11830,7 +11830,7 @@ l000000000040C710:
 l000000000040C720:
 	fstcw	word ptr [rsp+66h]
 	movzx	eax,word ptr [rsp+66h]
-	fsub	st(0),st(1)
+	fsubr	st(1),st(0)
 	fxch	st(0),st(1)
 	mov	rdx,8000000000000000h
 	or	ah,0Ch

@@ -5645,65 +5645,49 @@ l000000000040BE7D:
 				break;
 			rLoc3_n = rLoc4_n;
 		}
-		Eq_n rLoc2_n;
 		Eq_n rLoc1_n = rLoc1_n / rLoc3_n;
-		if ((edx & 0x03) != 0x01)
+		if ((edx & 0x03) != 0x01 && (real64) g_r415F90 > rLoc1_n)
 		{
-			if ((real64) g_r415F90 > rLoc1_n)
+			int64 rax_n;
+			Eq_n rLoc2_n = (real64) g_t415F0C;
+			if (rLoc1_n < rLoc2_n)
 			{
-				Eq_n rLoc1_n;
-				int64 rax_n;
-				Eq_n rLoc2_n = (real64) g_t415F0C;
-				if (rLoc1_n < rLoc2_n)
-				{
-					Eq_n wLoc82_n = __fstcw();
-					uint64 rax_n = (uint64) wLoc82_n;
-					__fldcw(SEQ(SLICE(rax_n, byte, 8) | 0x0C, (byte) rax_n));
-					__fldcw(wLoc82_n);
-					rLoc1_n = rLoc1_n;
-					rax_n = (int64) rLoc1_n;
-				}
-				else
-				{
-					Eq_n wLoc82_n = __fstcw();
-					uint64 rax_n = (uint64) wLoc82_n;
-					__fldcw(SEQ(SLICE(rax_n, byte, 8) | 0x0C, (byte) rax_n));
-					__fldcw(wLoc82_n);
-					rLoc1_n = rLoc1_n - rLoc2_n;
-					rax_n = (int64) rLoc2_n ^ 0x8000000000000000;
-				}
-				uint64 rdx_n = 0x00;
-				if ((edx & 0x03) == 0x00)
-				{
-					Eq_n rLoc2_n = (real64) rax_n;
-					if (rax_n < 0x00)
-						rLoc2_n += (real64) g_t415F08;
-					rdx_n = 0x01;
-					uint64 rcx_n = (uint64) (int8) PARITY_EVEN(rLoc2_n - rLoc1_n);
-					if (rLoc2_n == rLoc1_n)
-						rdx_n = rcx_n;
-				}
-				if (rax_n + rdx_n >= 0x00)
-					rLoc2_n = rLoc1_n;
-				else
-					rLoc2_n = rLoc1_n;
+				Eq_n wLoc82_n = __fstcw();
+				uint64 rax_n = (uint64) wLoc82_n;
+				__fldcw(SEQ(SLICE(rax_n, byte, 8) | 0x0C, (byte) rax_n));
+				__fldcw(wLoc82_n);
+				rax_n = (int64) rLoc1_n;
 			}
 			else
-				rLoc2_n = rLoc1_n;
+			{
+				Eq_n wLoc82_n = __fstcw();
+				uint64 rax_n = (uint64) wLoc82_n;
+				__fldcw(SEQ(SLICE(rax_n, byte, 8) | 0x0C, (byte) rax_n));
+				__fldcw(wLoc82_n);
+				rax_n = (int64) (rLoc1_n - rLoc2_n) ^ 0x8000000000000000;
+			}
+			uint64 rdx_n = 0x00;
+			if ((edx & 0x03) == 0x00)
+			{
+				Eq_n rLoc2_n = (real64) rax_n;
+				if (rax_n < 0x00)
+					rLoc2_n += (real64) g_t415F08;
+				rdx_n = 0x01;
+				uint64 rcx_n = (uint64) (int8) PARITY_EVEN(rLoc2_n - rLoc1_n);
+				if (rLoc2_n == rLoc1_n)
+					rdx_n = rcx_n;
+			}
 		}
-		else
-			rLoc2_n = rLoc1_n;
 		__sprintf_chk(rsi, 1, ~0x00, "%.1Lf", 0x00);
 		Eq_n rax_n = strlen(rsi);
 		r15_n = rax_n;
 		r14_n = (word32) r11_n.u0 + 1;
 		if (rax_n > ((word32) r11_n.u0 + 2) + (uint64) ((int8) ((edx & 0x20) == 0x00)) || (bLocC8_n & 0x08) != 0x00 && Mem962[(rsi - 1) + rax_n:byte] == 0x30)
 		{
-			Eq_n rLoc1_n = rLoc2_n * (real64) 10.0F;
+			Eq_n rLoc1_n = rLoc1_n * (real64) 10.0F;
 			if ((edx & 0x03) != 0x01 && (real64) g_r415F90 > rLoc1_n)
 			{
 				Eq_n rax_n;
-				Eq_n rLoc1_n;
 				Eq_n rLoc2_n = (real64) g_t415F0C;
 				if (rLoc1_n < rLoc2_n)
 				{
@@ -5711,7 +5695,6 @@ l000000000040BE7D:
 					uint64 rax_n = (uint64) wLoc82_n;
 					__fldcw(SEQ(SLICE(rax_n, byte, 8) | 0x0C, (byte) rax_n));
 					__fldcw(wLoc82_n);
-					rLoc1_n = rLoc1_n;
 					rax_n.u0 = (int64) rLoc1_n;
 				}
 				else
@@ -5720,8 +5703,7 @@ l000000000040BE7D:
 					uint64 rax_n = (uint64) wLoc82_n;
 					__fldcw(SEQ(SLICE(rax_n, byte, 8) | 0x0C, (byte) rax_n));
 					__fldcw(wLoc82_n);
-					rLoc1_n = rLoc1_n - rLoc2_n;
-					rax_n = (int64) rLoc2_n ^ 0x8000000000000000;
+					rax_n = (int64) (rLoc1_n - rLoc2_n) ^ 0x8000000000000000;
 				}
 				Eq_n rdx_n = 0x00;
 				if ((edx & 0x03) == 0x00)
@@ -5744,7 +5726,6 @@ l000000000040BE7D:
 	{
 		if ((edx & 0x03) != 0x01 && (real64) g_r415F90 > rLoc1_n)
 		{
-			Eq_n rLoc1_n;
 			Eq_n rax_n;
 			Eq_n rLoc2_n = (real64) g_t415F0C;
 			if (rLoc1_n < rLoc2_n)
@@ -5753,7 +5734,6 @@ l000000000040BE7D:
 				uint64 rax_n = (uint64) wLoc82_n;
 				__fldcw(SEQ(SLICE(rax_n, byte, 8) | 0x0C, (byte) rax_n));
 				__fldcw(wLoc82_n);
-				rLoc1_n = rLoc1_n;
 				rax_n.u0 = (int64) rLoc1_n;
 			}
 			else
@@ -5762,8 +5742,7 @@ l000000000040BE7D:
 				uint64 rax_n = (uint64) wLoc82_n;
 				__fldcw(SEQ(SLICE(rax_n, byte, 8) | 0x0C, (byte) rax_n));
 				__fldcw(wLoc82_n);
-				rLoc1_n = rLoc1_n - rLoc2_n;
-				rax_n = (int64) rLoc2_n ^ 0x8000000000000000;
+				rax_n = (int64) (rLoc1_n - rLoc2_n) ^ 0x8000000000000000;
 			}
 			Eq_n rdx_n = 0x00;
 			if ((edx & 0x03) == 0x00)
