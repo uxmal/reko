@@ -173,6 +173,7 @@ namespace Reko.Core.Hll.C
                     case ' ':
                     case '\t':
                     case '\v':
+                    case '\f':
                         break;
                     case '\r':
                         if (rdr.Peek() != '\n')

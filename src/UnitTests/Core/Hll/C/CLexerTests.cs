@@ -186,6 +186,13 @@ namespace Reko.UnitTests.Core.Hll.C
         }
 
         [Test]
+        public void CLexer_Ignore_FormFeed()
+        {
+            Lex("\f,");
+            AssertToken(CTokenType.Comma);
+        }
+
+        [Test]
         public void CLexer_Float_Double()
         {
             Lex(" float double ");
