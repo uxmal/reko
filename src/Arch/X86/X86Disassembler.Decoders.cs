@@ -64,6 +64,35 @@ namespace Reko.Arch.X86
             }
         }
 
+        /// <summary>
+        /// Decodes an instruction that has a different mnemonic when using an EVER or VEX prefix.
+        /// </summary>
+        public class EvexInstructionDecoder : Decoder
+        {
+            private readonly Decoder legacy;
+            private readonly Decoder vex;
+            private readonly Decoder evex;
+
+            public EvexInstructionDecoder(Decoder legacy, Decoder vex, Decoder evex)
+            {
+                this.legacy = legacy;
+                this.vex = vex;
+                this.evex = evex;
+            }
+
+            public override X86Instruction Decode(uint op, X86Disassembler disasm)
+            {
+                Decoder decoder;
+                if (!disasm.decodingContext.IsVex)
+                    decoder = legacy;
+                else if (!disasm.decodingContext.IsEvex)
+                    decoder = vex;
+                else
+                    decoder = evex;
+                return decoder.Decode(op, disasm);
+            }
+        }
+
         public class VexLongDecoder : Decoder
         {
             private readonly Decoder notLongDecoder;
@@ -456,6 +485,7 @@ namespace Reko.Arch.X86
                 if (!Bits.IsBitSet(p2, 3))
                     vvvv |= 0x10;
                 ctx.IsVex = true;
+                ctx.IsEvex = true;
                 ctx.VexRegister = (byte) vvvv;
                 ctx.VexLongCode = (byte)((p2 >> 5) & 3);
                 if (ctx.VexLongCode == 0b11)    // 0b11 is reserved.
@@ -468,9 +498,6 @@ namespace Reko.Arch.X86
                 ctx.EvexR = !Bits.IsBitSet(p0, 4);
                 ctx.EvexMergeMode = p2 >> 7;
                 ctx.EvexBroadcast = (p2 & 0x10) != 0;
-                ctx.Disp8Scale = ctx.EvexBroadcast
-                    ? 2
-                    : VexVectorDisp8Shifts[ctx.VexLongCode];
                 ctx.F2Prefix = pp == 3;
                 ctx.F3Prefix = pp == 2;
                 ctx.SizeOverridePrefix = pp == 1;
@@ -544,7 +571,7 @@ namespace Reko.Arch.X86
             public override X86Instruction Decode(uint op, X86Disassembler disasm)
             {
                 disasm.decodingContext.SizeOverridePrefix = true;
-                disasm.decodingContext.dataWidth = (disasm.decodingContext.dataWidth == PrimitiveType.Word16)
+                disasm.decodingContext.dataWidth = (disasm.defaultDataWidth == PrimitiveType.Word16)
                     ? PrimitiveType.Word32
                     : PrimitiveType.Word16;
                 disasm.decodingContext.iWidth = disasm.decodingContext.dataWidth;
@@ -782,5 +809,50 @@ namespace Reko.Arch.X86
                 return this.decoders[modRm].Decode(op, disasm);
             }
         }
+
+        /// <summary>
+        /// Predicated decoder uses the last operand (an immediate)
+        /// to further refine the opcode.
+        /// </summary>
+        public class PredicatedDecoder : Decoder
+        {
+            private Mnemonic mnemonic;
+            private Mutator<X86Disassembler>[] mutators;
+            private Dictionary<byte, Mnemonic> predicateMnemonics;
+
+            public PredicatedDecoder(
+                Mnemonic mnemonic,
+                Dictionary<byte, Mnemonic> predicateMnemonics,
+                params Mutator<X86Disassembler>[] mutators)
+            {
+                this.mnemonic = mnemonic;
+                this.predicateMnemonics = predicateMnemonics;
+                this.mutators = mutators;
+            }
+
+            public override X86Instruction Decode(uint wInstr, X86Disassembler dasm)
+            {
+                DumpMaskedInstruction(wInstr, 0, this.mnemonic);
+                foreach (var m in mutators)
+                {
+                    if (!m(wInstr, dasm))
+                        return dasm.CreateInvalidInstruction();
+                }
+                var ops = dasm.decodingContext.ops;
+                var predicateOpcode = ((ImmediateOperand) ops[^1]).Value.ToByte();
+                if (predicateMnemonics.TryGetValue(predicateOpcode, out var mnemonic))
+                {
+                    ops.RemoveAt(ops.Count - 1);
+                }
+                else
+                {
+                    mnemonic = this.mnemonic;
+                }
+                return dasm.MakeInstruction(InstrClass.Linear, mnemonic);
+            }
+        }
+
     }
+
+
 }

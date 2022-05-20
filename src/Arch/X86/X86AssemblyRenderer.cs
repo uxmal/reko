@@ -178,7 +178,8 @@ namespace Reko.Arch.X86
                 if (instr.Broadcast)
                 {
                     renderer.WriteString("{1to");
-                    renderer.WriteUInt32((uint) (instr.Operands[0].Width.BitSize / memOp.Width.BitSize));
+                    var xmmSize = instr.Operands[1].Width.BitSize;
+                    renderer.WriteUInt32((uint) (xmmSize / memOp.Width.BitSize));
                     renderer.WriteChar('}');
                 }
                 break;

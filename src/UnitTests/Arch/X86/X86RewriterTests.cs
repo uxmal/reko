@@ -286,7 +286,7 @@ namespace Reko.UnitTests.Arch.X86
         public void X86Rw_cmpss()
         {
             Run64bitTest("F30FC2C805");
-            AssertCode(     // cmpss	xmm1,xmm0,5h
+            AssertCode(     // cmpnltss	xmm1,xmm0,5h
                 "0|L--|0000000140000000(5): 1 instructions",
                 "1|L--|xmm1 = SLICE(xmm1, real32, 0) >= SLICE(xmm0, real32, 0) ? 0x0FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF<128> : 0<128>");
         }
@@ -2234,7 +2234,7 @@ namespace Reko.UnitTests.Arch.X86
                "0|L--|10000000(4): 3 instructions",
                "1|L--|v4 = xmm0",
                "2|L--|v5 = Mem0[edx + 66<i32>:word128]",
-               "3|L--|xmm0 = __andp<real32[4]>(v4, v5)");
+               "3|L--|xmm0 = __andp<word32[4]>(v4, v5)");
         }
 
         [Test]
@@ -2299,7 +2299,7 @@ namespace Reko.UnitTests.Arch.X86
             Run32bitTest("0FBB4242");    // btc\teax,[edx+42]
             AssertCode(
                 "0|L--|10000000(4): 1 instructions",
-                "1|L--|C = __btc<word32>(eax, Mem0[edx + 66<i32>:word32], out eax)");
+                "1|L--|C = __btc<word32>(Mem0[edx + 66<i32>:word32], eax, out Mem0[edx + 66<i32>:word32])");
         }
 
         [Test]
@@ -3665,7 +3665,7 @@ namespace Reko.UnitTests.Arch.X86
                 "0|L--|10000000(8): 3 instructions",
                 "1|L--|v3 = xmm0",
                 "2|L--|v4 = Mem0[0x00575950<p32>:word128]",
-                "3|L--|xmm0 = __andp<real64[2]>(v3, v4)");
+                "3|L--|xmm0 = __andp<word64[2]>(v3, v4)");
         }
 
         [Test]
@@ -4544,19 +4544,19 @@ namespace Reko.UnitTests.Arch.X86
         }
 
         [Test]
-        public void X86Rw_cmpsd()
+        public void X86Rw_vcmplesd()
         {
             Run64bitTest("F20FC2E806");
-            AssertCode(     // cmpsd	xmm5,xmm0,6h
+            AssertCode(     // vcmplesd	xmm5,xmm0,6h
                 "0|L--|0000000140000000(5): 1 instructions",
                 "1|L--|xmm5 = SLICE(xmm5, real64, 0) > SLICE(xmm0, real64, 0) ? 0x0FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF<128> : 0<128>");
         }
 
         [Test]
-        public void X86Rw_cmpsd_x()
+        public void X86Rw_vcmpeqsd()
         {
             Run64bitTest("F20FC244241800");
-            AssertCode(     // cmpsd	xmm0,[esp+18],00
+            AssertCode(     // vcmpeqsd	xmm0,[esp+18]
                 "0|L--|0000000140000000(7): 1 instructions",
                 "1|L--|xmm0 = SLICE(xmm0, real64, 0) == Mem0[rsp + 24<i64>:real64] ? 0x0FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF<128> : 0<128>");
         }

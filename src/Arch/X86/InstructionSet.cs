@@ -247,6 +247,13 @@ namespace Reko.Arch.X86
                 return new VexInstructionDecoder(legacy, vex);
             }
 
+            public static EvexInstructionDecoder EvexInstr(Decoder legacy, Decoder? vex = null, Decoder? evex = null)
+            {
+                vex ??= legacy;
+                evex ??= vex;
+                return new EvexInstructionDecoder(legacy, vex, evex);
+            }
+
             public static VexInstructionDecoder VexInstr(Mnemonic legacy, Mnemonic vex, params Mutator<X86Disassembler>[] mutators)
             {
                 var legDec = legacy != Mnemonic.illegal

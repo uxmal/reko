@@ -34,8 +34,197 @@ namespace Reko.Arch.X86
             {
                 var reservedNop = Instr(Mnemonic.nop, InstrClass.Linear | InstrClass.Padding, Ev);
 
-				// 0F 00
-				d[0x00] = new GroupDecoder(Grp6);
+                var cmppsMnemonics = new Dictionary<byte, Mnemonic>
+                {
+                    { 0, Mnemonic.cmpeqps },
+                    { 1, Mnemonic.cmpltps },
+                    { 2, Mnemonic.cmpleps },
+                    { 3, Mnemonic.cmpunordps },
+                    { 4, Mnemonic.cmpneqps },
+                    { 5, Mnemonic.cmpnltps },
+                    { 6, Mnemonic.cmpnleps },
+                    { 7, Mnemonic.cmpordps },
+                };
+                var vcmppsMnemonics = new Dictionary<byte, Mnemonic>
+                {
+                    { 0, Mnemonic.vcmpeqps },
+                    { 1, Mnemonic.vcmpltps },
+                    { 2, Mnemonic.vcmpleps },
+                    { 3, Mnemonic.vcmpunordps },
+                    { 4, Mnemonic.vcmpneqps },
+                    { 5, Mnemonic.vcmpnltps },
+                    { 6, Mnemonic.vcmpnleps },
+                    { 7, Mnemonic.vcmpordps },
+                    { 8, Mnemonic.vcmpeq_uqps },
+                    { 9, Mnemonic.vcmpngeps },
+                    { 0x0A, Mnemonic.vcmpngtps },
+                    { 0x0B, Mnemonic.vcmpfalseps },
+                    { 0x0C, Mnemonic.vcmpneq_oqps },
+                    { 0x0D, Mnemonic.vcmpgeps },
+                    { 0x0E, Mnemonic.vcmpgtps },
+                    { 0x0F, Mnemonic.vcmptrueps },
+                    { 0x10, Mnemonic.vcmpeq_osps },
+                    { 0x11, Mnemonic.vcmplt_oqps },
+                    { 0x12, Mnemonic.vcmple_oqps },
+                    { 0x13, Mnemonic.vcmpunord_sps },
+                    { 0x14, Mnemonic.vcmpneq_usps },
+                    { 0x15, Mnemonic.vcmpnlt_uqps },
+                    { 0x16, Mnemonic.vcmpnle_uqps },
+                    { 0x17, Mnemonic.vcmpord_sps },
+                    { 0x18, Mnemonic.vcmpeq_usps },
+                    { 0x19, Mnemonic.vcmpnge_uqps },
+                    { 0x1A, Mnemonic.vcmpngt_uqps },
+                    { 0x1B, Mnemonic.vcmpfalse_osps },
+                    { 0x1C, Mnemonic.vcmpneq_osps },
+                    { 0x1D, Mnemonic.vcmpge_oqps },
+                    { 0x1E, Mnemonic.vcmpgt_oqps },
+                    { 0x1F, Mnemonic.vcmptrue_usps }
+                };
+
+                var cmppdMnemonics = new Dictionary<byte, Mnemonic>
+                {
+                    { 0, Mnemonic.cmpeqpd },
+                    { 1, Mnemonic.cmpltpd },
+                    { 2, Mnemonic.cmplepd },
+                    { 3, Mnemonic.cmpunordpd },
+                    { 4, Mnemonic.cmpneqpd },
+                    { 5, Mnemonic.cmpnltpd },
+                    { 6, Mnemonic.cmpnlepd },
+                    { 7, Mnemonic.cmpordpd },
+                };
+
+                var vcmppdMnemonics = new Dictionary<byte, Mnemonic>
+                {
+                    { 0, Mnemonic.vcmpeqpd },
+                    { 1, Mnemonic.vcmpltpd },
+                    { 2, Mnemonic.vcmplepd },
+                    { 3, Mnemonic.vcmpunordpd },
+                    { 4, Mnemonic.vcmpneqpd },
+                    { 5, Mnemonic.vcmpnltpd },
+                    { 6, Mnemonic.vcmpnlepd },
+                    { 7, Mnemonic.vcmpordpd },
+                    { 8, Mnemonic.vcmpeq_uqpd },
+                    { 9, Mnemonic.vcmpngepd },
+                    { 0x0A, Mnemonic.vcmpngtpd },
+                    { 0x0B, Mnemonic.vcmpfalsepd },
+                    { 0x0C, Mnemonic.vcmpneq_oqpd },
+                    { 0x0D, Mnemonic.vcmpgepd },
+                    { 0x0E, Mnemonic.vcmpgtpd },
+                    { 0x0F, Mnemonic.vcmptruepd },
+                    { 0x10, Mnemonic.vcmpeq_ospd },
+                    { 0x11, Mnemonic.vcmplt_oqpd },
+                    { 0x12, Mnemonic.vcmple_oqpd },
+                    { 0x13, Mnemonic.vcmpunord_spd },
+                    { 0x14, Mnemonic.vcmpneq_uspd },
+                    { 0x15, Mnemonic.vcmpnlt_uqpd },
+                    { 0x16, Mnemonic.vcmpnle_uqpd },
+                    { 0x17, Mnemonic.vcmpord_spd },
+                    { 0x18, Mnemonic.vcmpeq_uspd },
+                    { 0x19, Mnemonic.vcmpnge_uqpd },
+                    { 0x1A, Mnemonic.vcmpngt_uqpd },
+                    { 0x1B, Mnemonic.vcmpfalse_ospd },
+                    { 0x1C, Mnemonic.vcmpneq_ospd },
+                    { 0x1D, Mnemonic.vcmpge_oqpd },
+                    { 0x1E, Mnemonic.vcmpgt_oqpd },
+                    { 0x1F, Mnemonic.vcmptrue_uspd }
+                };
+
+                var cmpssMnemonics = new Dictionary<byte, Mnemonic>
+                {
+                    { 0, Mnemonic.cmpeqss },
+                    { 1, Mnemonic.cmpltss },
+                    { 2, Mnemonic.cmpless },
+                    { 3, Mnemonic.cmpunordss },
+                    { 4, Mnemonic.cmpneqss },
+                    { 5, Mnemonic.cmpnltss },
+                    { 6, Mnemonic.cmpnless },
+                    { 7, Mnemonic.cmpordss },
+                };
+                var vcmpssMnemonics = new Dictionary<byte, Mnemonic>
+                {
+                    { 0, Mnemonic.vcmpeqss },
+                    { 1, Mnemonic.vcmpltss },
+                    { 2, Mnemonic.vcmpless },
+                    { 3, Mnemonic.vcmpunordss },
+                    { 4, Mnemonic.vcmpneqss },
+                    { 5, Mnemonic.vcmpnltss },
+                    { 6, Mnemonic.vcmpnless },
+                    { 7, Mnemonic.vcmpordss },
+                    { 8, Mnemonic.vcmpeq_uqss },
+                    { 9, Mnemonic.vcmpngess },
+                    { 0x0A, Mnemonic.vcmpngtss },
+                    { 0x0B, Mnemonic.vcmpfalsess },
+                    { 0x0C, Mnemonic.vcmpneq_oqss },
+                    { 0x0D, Mnemonic.vcmpgess },
+                    { 0x0E, Mnemonic.vcmpgtss },
+                    { 0x0F, Mnemonic.vcmptruess },
+                    { 0x10, Mnemonic.vcmpeq_osss },
+                    { 0x11, Mnemonic.vcmplt_oqss },
+                    { 0x12, Mnemonic.vcmple_oqss },
+                    { 0x13, Mnemonic.vcmpunord_sss },
+                    { 0x14, Mnemonic.vcmpneq_usss },
+                    { 0x15, Mnemonic.vcmpnlt_uqss },
+                    { 0x16, Mnemonic.vcmpnle_uqss },
+                    { 0x17, Mnemonic.vcmpord_sss },
+                    { 0x18, Mnemonic.vcmpeq_usss },
+                    { 0x19, Mnemonic.vcmpnge_uqss },
+                    { 0x1A, Mnemonic.vcmpngt_uqss },
+                    { 0x1B, Mnemonic.vcmpfalse_osss },
+                    { 0x1C, Mnemonic.vcmpneq_osss },
+                    { 0x1D, Mnemonic.vcmpge_oqss },
+                    { 0x1E, Mnemonic.vcmpgt_oqss },
+                    { 0x1F, Mnemonic.vcmptrue_usss }
+                };
+
+                var cmpsdMnemonics = new Dictionary<byte, Mnemonic>
+                {
+                    { 0, Mnemonic.cmpeqsd },
+                    { 1, Mnemonic.cmpltsd },
+                    { 2, Mnemonic.cmplesd },
+                    { 3, Mnemonic.cmpunordsd },
+                    { 4, Mnemonic.cmpneqsd },
+                    { 5, Mnemonic.cmpnltsd },
+                    { 6, Mnemonic.cmpnlesd },
+                    { 7, Mnemonic.cmpordsd },
+                };
+                var vcmpsdMnemonics = new Dictionary<byte, Mnemonic>
+                {
+                    { 0, Mnemonic.vcmpeqsd },
+                    { 1, Mnemonic.vcmpltsd },
+                    { 2, Mnemonic.vcmplesd },
+                    { 3, Mnemonic.vcmpunordsd },
+                    { 4, Mnemonic.vcmpneqsd },
+                    { 5, Mnemonic.vcmpnltsd },
+                    { 6, Mnemonic.vcmpnlesd },
+                    { 7, Mnemonic.vcmpordsd },
+                    { 8, Mnemonic.vcmpeq_uqsd },
+                    { 9, Mnemonic.vcmpngesd },
+                    { 0x0A, Mnemonic.vcmpngtsd },
+                    { 0x0B, Mnemonic.vcmpfalsesd },
+                    { 0x0C, Mnemonic.vcmpneq_oqsd },
+                    { 0x0D, Mnemonic.vcmpgesd },
+                    { 0x0E, Mnemonic.vcmpgtsd },
+                    { 0x0F, Mnemonic.vcmptruesd },
+                    { 0x10, Mnemonic.vcmpeq_ossd },
+                    { 0x11, Mnemonic.vcmplt_oqsd },
+                    { 0x12, Mnemonic.vcmple_oqsd },
+                    { 0x13, Mnemonic.vcmpunord_ssd },
+                    { 0x14, Mnemonic.vcmpneq_ussd },
+                    { 0x15, Mnemonic.vcmpnlt_uqsd },
+                    { 0x16, Mnemonic.vcmpnle_uqsd },
+                    { 0x17, Mnemonic.vcmpord_ssd },
+                    { 0x18, Mnemonic.vcmpeq_ussd },
+                    { 0x19, Mnemonic.vcmpnge_uqsd },
+                    { 0x1A, Mnemonic.vcmpngt_uqsd },
+                    { 0x1B, Mnemonic.vcmpfalse_ossd },
+                    { 0x1C, Mnemonic.vcmpneq_ossd },
+                    { 0x1D, Mnemonic.vcmpge_oqsd },
+                    { 0x1E, Mnemonic.vcmpgt_oqsd },
+                    { 0x1F, Mnemonic.vcmptrue_ussd }
+                };
+
+                // 0F 00
+                d[0x00] = new GroupDecoder(Grp6);
                 d[0x01] = new GroupDecoder(Grp7);
                 d[0x02] = Instr(Mnemonic.lar, InstrClass.Linear | InstrClass.Privileged, Gv,Ew);
                 d[0x03] = Instr(Mnemonic.lsl, InstrClass.Linear | InstrClass.Privileged, Gv,Ew);
@@ -61,13 +250,29 @@ namespace Reko.Arch.X86
                 d[0x10] = new PrefixedDecoder(
                     VexInstr(Mnemonic.movups,Mnemonic.vmovups, Vps,Wps),
                     VexInstr(Mnemonic.movupd,Mnemonic.vmovupd, Vpd,Wpd),
-                    VexInstr(Mnemonic.movss, Mnemonic.vmovss,  Vx,Wss),
-                    VexInstr(Mnemonic.movsd, Mnemonic.vmovsd,  Vx,Wsd));
+                    VexInstr(
+                        Instr(Mnemonic.movss, Vx, Wss),
+                        MemReg(
+                            Instr(Mnemonic.vmovss, Vx,Wss),
+                            Instr(Mnemonic.vmovss, Vx,Hx,Wss))),
+                    VexInstr(
+                        Instr(Mnemonic.movsd, Vx, Wsd),
+                        MemReg(
+                            Instr(Mnemonic.vmovsd, Vx, Wsd),
+                            Instr(Mnemonic.vmovsd, Vx,Hx,Wsd))));
                 d[0x11] = new PrefixedDecoder(
-                    VexInstr(Mnemonic.movups, Mnemonic.vmovups, Wps,Vps),
-                    VexInstr(Mnemonic.movupd, Mnemonic.vmovupd, Wpd,Vpd),
-                    VexInstr(Mnemonic.movss,  Mnemonic.vmovss, Wss,Vss),
-                    VexInstr(Mnemonic.movsd,  Mnemonic.vmovsd, Wsd,Vsd));
+                    VexInstr(Mnemonic.movups, Mnemonic.vmovups, Wps, Vps),
+                    VexInstr(Mnemonic.movupd, Mnemonic.vmovupd, Wpd, Vpd),
+                    VexInstr(
+                        Instr(Mnemonic.movss, Wss, Vss),
+                        MemReg(
+                            Instr(Mnemonic.vmovss, Wss, Vss),
+                            Instr(Mnemonic.vmovss, Wss, Hx, Vss))),
+                    VexInstr(
+                        Instr(Mnemonic.movsd, Wsd, Vsd),
+                        MemReg(
+                            Instr(Mnemonic.vmovsd, Wsd, Vsd),
+                            Instr(Mnemonic.vmovsd, Wsd, Hx, Vsd))));
                 d[0x12] = new PrefixedDecoder(
                     VexInstr(Mnemonic.movlps,   Mnemonic.vmovlps,   Vq,Hq,Mq),
                     VexInstr(Mnemonic.movlpd,   Mnemonic.vmovlpd,   Vq,Hq,Mq),
@@ -84,9 +289,9 @@ namespace Reko.Arch.X86
                     VexInstr(Mnemonic.unpckhps, Mnemonic.vunpckhps, Vx,Hx,Wx),
                     VexInstr(Mnemonic.unpckhpd, Mnemonic.vunpckhpd, Vx,Hx,Wx));
                 d[0x16] = new PrefixedDecoder(
-                    VexInstr(Mnemonic.movlhps, Mnemonic.vmovlhps, Vx,Wx),
-                    VexInstr(Mnemonic.movhpd, Mnemonic.vmovhpd, Vx,Wx),
-                    VexInstr(Mnemonic.movshdup, Mnemonic.vmovshdup, Vx,Wx));
+                    VexInstr(Mnemonic.movlhps, Mnemonic.vmovlhps, Vx,Hx,Wx),
+                    VexInstr(Mnemonic.movhpd, Mnemonic.vmovhpd, Vx,Hx,Wx),
+                    VexInstr(Mnemonic.movshdup, Mnemonic.vmovshdup, Vx,Hx,Wx));
                 d[0x17] = new PrefixedDecoder(
                     VexInstr(Mnemonic.movhps, Mnemonic.vmovhps, Mq,Vq),
                     VexInstr(Mnemonic.movhpd, Mnemonic.vmovhpd, Mq,Vq));
@@ -191,8 +396,20 @@ namespace Reko.Arch.X86
 
                 d[0x48] = Instr(Mnemonic.cmovs,  InstrClass.Linear|InstrClass.Conditional, Gv,Ev);
                 d[0x49] = Instr(Mnemonic.cmovns, InstrClass.Linear|InstrClass.Conditional, Gv,Ev);
-                d[0x4A] = Instr(Mnemonic.cmovpe, InstrClass.Linear|InstrClass.Conditional, Gv,Ev);
-                d[0x4B] = Instr(Mnemonic.cmovpo, InstrClass.Linear|InstrClass.Conditional, Gv,Ev);
+                d[0x4A] = VexInstr(
+                    Instr(Mnemonic.cmovpe, InstrClass.Linear|InstrClass.Conditional, Gv,Ev),
+                    new PrefixedDecoder(
+                        dec: Instr(Mnemonic.kaddw, rK, vK, mK),
+                        dec66: Instr(Mnemonic.kaddb, rK, vK, mK),
+                        decWide: Instr(Mnemonic.kaddq, rK, vK, mK),
+                        dec66Wide: Instr(Mnemonic.kadd, rK, vK, mK)));
+
+                d[0x4B] = VexInstr(
+                    Instr(Mnemonic.cmovpo, InstrClass.Linear | InstrClass.Conditional, Gv, Ev),
+                    new PrefixedDecoder(
+                        dec: Instr(Mnemonic.kunpckwd, rK, vK, mK),
+                        dec66: Instr(Mnemonic.kunpckbw, rK, vK, mK),
+                        decWide: Instr(Mnemonic.kunpckdq, rK, vK, mK)));
                 d[0x4C] = Instr(Mnemonic.cmovl,  InstrClass.Linear|InstrClass.Conditional, Gv,Ev);
                 d[0x4D] = Instr(Mnemonic.cmovge, InstrClass.Linear|InstrClass.Conditional, Gv,Ev);
                 d[0x4E] = Instr(Mnemonic.cmovle, InstrClass.Linear|InstrClass.Conditional, Gv,Ev);
@@ -220,7 +437,9 @@ namespace Reko.Arch.X86
 
                 d[0x54] = new PrefixedDecoder(
                     dec: VexInstr(Mnemonic.andps, Mnemonic.vandps, Vps,Hps,Wps),
-                    dec66:VexInstr(Mnemonic.andpd, Mnemonic.vandpd, Vpd,Hpd,Wpd));
+                    dec66:VexInstr(
+                        Instr(Mnemonic.andpd, Vpd, Hpd, Wpd),
+                        Instr(Mnemonic.vandpd, Vpd,Hpd,Wq)));
                 d[0x55] = new PrefixedDecoder(
                     dec:  VexInstr(Mnemonic.andnps, Mnemonic.vandnps, Vps,Hps,Wps),
                     dec66:VexInstr(Mnemonic.andnpd, Mnemonic.vandnpd, Vpd,Hpd,Wpd));
@@ -245,9 +464,9 @@ namespace Reko.Arch.X86
                     dec:  VexInstr(Mnemonic.cvtps2pd, Mnemonic.vcvtps2pd, Vpd,Wps),
                     dec66:VexInstr(Mnemonic.cvtpd2ps, Mnemonic.vcvtpd2ps, Vps,Wpd),
                     decF3:VexInstr(Mnemonic.cvtss2sd, Mnemonic.vcvtss2sd, Vsd,Hx,Wss),
-                    decF2:VexInstr(Mnemonic.cvtsd2ss, Mnemonic.vcvtsd2ss, Vss,Hx,Wsd));
+                    decF2:VexInstr(Mnemonic.cvtsd2ss, Mnemonic.vcvtsd2ss, Vss,Hss,Wsd));
                 d[0x5B] = new PrefixedDecoder(
-                    dec:  VexInstr(Mnemonic.cvtdq2ps, Mnemonic.vcvtdq2ps, Vps,Wdq),
+                    dec:  VexInstr(Mnemonic.cvtdq2ps, Mnemonic.vcvtdq2ps, Vx,Wx),
                     dec66:VexInstr(Mnemonic.cvtps2dq, Mnemonic.vcvtps2dq, Vdq,Wps),
                     decF3:VexInstr(Mnemonic.cvttps2dq, Mnemonic.vcvttps2dq, Vdq,Wps),
                     decF2:s_invalid);
@@ -275,10 +494,10 @@ namespace Reko.Arch.X86
 				// 0F 60
 				d[0x60] = new PrefixedDecoder(
                     Instr(Mnemonic.punpcklbw, Pq,Qd),
-                    dec66:VexInstr(Mnemonic.punpcklbw, Mnemonic.vpunpcklbw, Vx,Wx));
+                    dec66:VexInstr(Mnemonic.punpcklbw, Mnemonic.vpunpcklbw, Vx,Hx,Wx));
 				d[0x61] = new PrefixedDecoder(
                     Instr(Mnemonic.punpcklwd, Pq,Qd),
-                    VexInstr(Mnemonic.punpcklwd, Mnemonic.vpunpcklwd, Vx,Wx));
+                    VexInstr(Mnemonic.punpcklwd, Mnemonic.vpunpcklwd, Vx,Hx,Wx));
                 d[0x62] = new PrefixedDecoder(
                     Instr(Mnemonic.punpckldq, Pq,Qd),
                     VexInstr(Mnemonic.punpckldq, Mnemonic.vpunpckldq, Vx,Hx,Wx));
@@ -288,13 +507,13 @@ namespace Reko.Arch.X86
 
                 d[0x64] = new PrefixedDecoder(
                     Instr(Mnemonic.pcmpgtb, Pq,Qd),
-                    VexInstr(Mnemonic.pcmpgtb, Mnemonic.vpcmpgtb, Vx,Hx,Wx));
+                    VexInstr(Mnemonic.pcmpgtb, Mnemonic.vpcmpgtb, Vkx,Hx,Wx));
                 d[0x65] = new PrefixedDecoder(
                     Instr(Mnemonic.pcmpgtw, Pq,Qd),
-                    VexInstr(Mnemonic.pcmpgtw, Mnemonic.vpcmpgtw, Vx,Hx,Wx));
+                    VexInstr(Mnemonic.pcmpgtw, Mnemonic.vpcmpgtw, Vkx,Hx,Wx));
                 d[0x66] = new PrefixedDecoder(
                     Instr(Mnemonic.pcmpgtd, Pq,Qd),
-                    VexInstr(Mnemonic.pcmpgtd, Mnemonic.vpcmpgtd, Vx,Hx,Wx));
+                    VexInstr(Mnemonic.pcmpgtd, Mnemonic.vpcmpgtd, Vkx,Hx,Wx));
                 d[0x67] = new PrefixedDecoder(
                     Instr(Mnemonic.packuswb, Pq,Qd),
                     VexInstr(Mnemonic.punpckhbw, Mnemonic.vpunpckhbw, Vx,Hx,Wx));
@@ -338,13 +557,13 @@ namespace Reko.Arch.X86
 
 				d[0x74] = new PrefixedDecoder(
                     Instr(Mnemonic.pcmpeqb, Pq,Qq),
-                    dec66:VexInstr(Mnemonic.pcmpeqb, Mnemonic.vpcmpeqb, Vx,Hx,Wx));
+                    dec66:VexInstr(Mnemonic.pcmpeqb, Mnemonic.vpcmpeqb, Vkx,Hx,Wx));
                 d[0x75] = new PrefixedDecoder(
                     Instr(Mnemonic.pcmpeqw, Pq,Qq),
-                    dec66:VexInstr(Mnemonic.pcmpeqw, Mnemonic.vpcmpeqw, Vx,Wx));
+                    dec66:VexInstr(Mnemonic.pcmpeqw, Mnemonic.vpcmpeqw, Vkx,Hx,Wx));
                 d[0x76] = new PrefixedDecoder(
                     Instr(Mnemonic.pcmpeqd, Pq,Qq),
-                    dec66:VexInstr(Mnemonic.pcmpeqd, Mnemonic.vpcmpeqd, Vx,Wx));
+                    dec66:VexInstr(Mnemonic.pcmpeqd, Mnemonic.vpcmpeqd, Vkx,Hx,Wx));
                 d[0x77] = VexInstr(
                     Instr(Mnemonic.emms, InstrClass.Privileged),
                     VexLong(
@@ -408,7 +627,8 @@ namespace Reko.Arch.X86
                     new PrefixedDecoder(
                         dec: Instr(Mnemonic.kmovw, Kw, EKw),
                         dec66: Instr(Mnemonic.kmovb, Kb, EKb),
-                        dec66Wide: Instr(Mnemonic.kmovq, Kq, EKq)));
+                        decWide: Instr(Mnemonic.kmovq, Kb, EKb),
+                        dec66Wide: Instr(Mnemonic.kmovd, Kq, EKq)));
                 d[0x91] = VexInstr(
                     Instr(Mnemonic.setno, Eb),
                     new PrefixedDecoder(
@@ -478,7 +698,7 @@ namespace Reko.Arch.X86
                     decF3:Instr(Mnemonic.popcnt, Gv,Ev));
 				d[0xB9] = new GroupDecoder(Grp10, Gv,Ev); 
 				d[0xBA] = new GroupDecoder(Grp8, Ev,Ib);
-				d[0xBB] = Instr(Mnemonic.btc, Gv,Ev);
+				d[0xBB] = Instr(Mnemonic.btc, Ev,Gv);
 
                 d[0xBC] = new PrefixedDecoder(
                     dec: Instr(Mnemonic.bsf, Gv,Ev),
@@ -494,12 +714,20 @@ namespace Reko.Arch.X86
 				// 0F C0
 				d[0xC0] = Instr(Mnemonic.xadd, Eb,Gb);
 				d[0xC1] = Instr(Mnemonic.xadd, Ev,Gv);
-				d[0xC2] = new PrefixedDecoder(
-                    dec:  VexInstr(Mnemonic.cmpps, Mnemonic.vcmpps, Vps,Hps,Wps,Ib),
-                    dec66:VexInstr(Mnemonic.cmppd, Mnemonic.vcmppd, Vpd,Hpd,Wpd,Ib),
-                    decF3:VexInstr(Mnemonic.cmpss, Mnemonic.vcmpss, Vss,Hss,Wss,Ib),
-                    decF2:VexInstr(Mnemonic.cmpsd, Mnemonic.vcmpsd, Vpd,Hpd,Wpd,Ib));
-				d[0xC3] = new PrefixedDecoder(
+                d[0xC2] = new PrefixedDecoder(
+                    dec: VexInstr(
+                        new PredicatedDecoder(Mnemonic.cmpps, cmppsMnemonics, Vkps, Wps, Ib),
+                        new PredicatedDecoder(Mnemonic.vcmpps, vcmppsMnemonics, Vkps, Hps, Wps, Ib)),
+                    dec66: VexInstr(
+                        new PredicatedDecoder(Mnemonic.cmppd, cmppdMnemonics, Vkpd, Wpd, Ib),
+                        new PredicatedDecoder(Mnemonic.vcmppd, vcmppdMnemonics, Vkpd, Hpd, Wpd, Ib)),
+                    decF3: VexInstr(
+                        new PredicatedDecoder(Mnemonic.cmpss, vcmpssMnemonics, Vkss, Hss, Wss, Ib),
+                        new PredicatedDecoder(Mnemonic.vcmpss, vcmpssMnemonics, Vkss, Hss, Wss, Ib)),
+                    decF2: VexInstr(
+                        new PredicatedDecoder(Mnemonic.cmpsd, vcmpsdMnemonics, Vksd, Hsd, Wsd, Ib),
+                        new PredicatedDecoder(Mnemonic.vcmpsd, vcmpsdMnemonics, Vksd, Hsd, Wsd, Ib)));
+                d[0xC3] = new PrefixedDecoder(
                     Instr(Mnemonic.movnti, My,Gy),
                     s_invalid);
                 d[0xC4] = new PrefixedDecoder(
@@ -583,7 +811,10 @@ namespace Reko.Arch.X86
                     VexInstr(Mnemonic.psraw, Mnemonic.vpsraw, Vx,Hx,Wx));
                 d[0xE2] = new PrefixedDecoder(
                     Instr(Mnemonic.psrad, Pq,Qq),
-                    VexInstr(Mnemonic.psrad, Mnemonic.vpsrad, Vx,Hx,Wx));
+                    EvexInstr(
+                        Instr(Mnemonic.psrad, Pq,Qq),
+                        Instr(Mnemonic.vpsrad, Vx,Hx,Wx_d),
+                        Instr(Mnemonic.vpsraq, Vx,Hx,Wx_d)));
                 d[0xE3] = new PrefixedDecoder(
                     Instr(Mnemonic.pavgw, Pq,Qq),
                     VexInstr(Mnemonic.pavgw, Mnemonic.vpavgw, Vx,Hx,Wx));
@@ -595,9 +826,12 @@ namespace Reko.Arch.X86
                     Instr(Mnemonic.pmulhw, Pq,Qq),
                     VexInstr(Mnemonic.pmulhw, Mnemonic.vpmulhw, Vx,Hx,Wx));
                 d[0xE6] = new PrefixedDecoder(
-                    dec:  s_invalid,
-                    dec66:VexInstr(Mnemonic.cvttpd2dq, Mnemonic.vcvttpd2dq, Vdq,Wpd),
-                    decF3:VexInstr(Mnemonic.cvtdq2pd, Mnemonic.vcvtdq2pd, Vx,Wpd),
+                    dec: s_invalid,
+                    dec66: VexInstr(Mnemonic.cvttpd2dq, Mnemonic.vcvttpd2dq, Vdq, Wpd),
+                    decF3: EvexInstr(
+                        Instr(Mnemonic.cvtdq2pd, Vx, Wpd),
+                        Instr(Mnemonic.vcvtdq2pd, Vx, Wpd),
+                        Instr(Mnemonic.vcvtqq2pd, Vx, Wpd)),
                     decF2:VexInstr(Mnemonic.cvtpd2dq, Mnemonic.vcvtpd2dq, Vdq,Wpd));
                 d[0xE7] = new PrefixedDecoder(
                     Instr(Mnemonic.movntq, Mq,Pq),
@@ -635,20 +869,20 @@ namespace Reko.Arch.X86
                     decF2:VexInstr(Mnemonic.lddqu, Mnemonic.vlddqu, Vx,Mx));
                 d[0xF1] = new PrefixedDecoder(
                     Instr(Mnemonic.psllw, Pq,Qq),
-                    dec66:VexInstr(Mnemonic.psllw, Mnemonic.vpsllw, Vx,Hx,Wx));
+                    dec66:VexInstr(Mnemonic.psllw, Mnemonic.vpsllw, Vx,Hx,Wx_w));
                 d[0xF2] = new PrefixedDecoder(
                     Instr(Mnemonic.pslld, Pq,Qq),
-                    dec66:VexInstr(Mnemonic.pslld, Mnemonic.vpslld, Vx,Hx,Wx));
+                    dec66:VexInstr(Mnemonic.pslld, Mnemonic.vpslld, Vx,Hx,Wx_d));
                 d[0xF3] = new PrefixedDecoder(
                     Instr(Mnemonic.psllq, Pq,Qq),
                     dec66:VexInstr(Mnemonic.psllq, Mnemonic.vpsllq, Vx,Hx,Wdq),
                     dec66Wide:VexInstr(Mnemonic.psllq, Mnemonic.vpsllq, Vx,Hx,Wdq));
                 d[0xF4] = new PrefixedDecoder(
                     Instr(Mnemonic.pmuludq, Pq,Qq),
-                    dec66:VexInstr(Mnemonic.pmuludq, Mnemonic.vpmuludq, Vx,Hx,Wx));
+                    dec66:VexInstr(Mnemonic.pmuludq, Mnemonic.vpmuludq, Vx,Hx,Wx_q));
                 d[0xF5] = new PrefixedDecoder(
                     Instr(Mnemonic.pmaddwd, Pq,Qq),
-                    dec66:VexInstr(Mnemonic.pmaddwd, Mnemonic.vpmaddwd, Vx,Hx,Wx));
+                    dec66:VexInstr(Mnemonic.pmaddwd, Mnemonic.vpmaddwd, Vx,Hx,Wx_d));
                 d[0xF6] = new PrefixedDecoder(
                     Instr(Mnemonic.psadbw, Pq,Qq),
                     dec66:VexInstr(Mnemonic.psadbw, Mnemonic.vpsadbw, Vx,Hx,Wx));
@@ -664,19 +898,19 @@ namespace Reko.Arch.X86
                     VexInstr(Mnemonic.psubw, Mnemonic.vpsubw, Vx,Hx,Wx));
                 d[0xFA] = new PrefixedDecoder(
                     Instr(Mnemonic.psubd, Pq,Qq),
-                    VexInstr(Mnemonic.psubd, Mnemonic.vpsubd, Vx,Hx,Wx));
+                    VexInstr(Mnemonic.psubd, Mnemonic.vpsubd, Vx,Hx,Wx_d));
                 d[0xFB] = new PrefixedDecoder(
                     Instr(Mnemonic.psubq, Pq,Qq),
-                    VexInstr(Mnemonic.psubq, Mnemonic.vpsubq, Vx,Hx,Wx));
+                    VexInstr(Mnemonic.psubq, Mnemonic.vpsubq, Vx,Hx,Wx_q));
                 d[0xFC] = new PrefixedDecoder(
                     Instr(Mnemonic.paddb, Pq,Qq),
-                    VexInstr(Mnemonic.paddb, Mnemonic.vpaddb, Vx,Hx,Wx));
+                    VexInstr(Mnemonic.paddb, Mnemonic.vpaddb, Vx,Hx,Wx_b));
                 d[0xFD] = new PrefixedDecoder(
                     Instr(Mnemonic.paddw, Pq,Qq),
-                    VexInstr(Mnemonic.paddw, Mnemonic.vpaddw, Vx,Hx,Wx));
+                    VexInstr(Mnemonic.paddw, Mnemonic.vpaddw, Vx,Hx,Wx_w));
                 d[0xFE] = new PrefixedDecoder(
                     Instr(Mnemonic.paddd, Pq,Qq),
-                    VexInstr(Mnemonic.paddd, Mnemonic.vpaddd, Vx,Hx,Wx));
+                    VexInstr(Mnemonic.paddd, Mnemonic.vpaddd, Vx,Hx,Wx_d));
                 d[0xFF] = Instr(Mnemonic.ud0, InstrClass.Invalid, Gv, Ev);
 			}
         }

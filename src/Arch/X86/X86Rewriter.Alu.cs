@@ -771,29 +771,39 @@ namespace Reko.Arch.X86
             EmitCopy(instrCur.Operands[0], src, 0);
         }
 
-        private void RewriteMovssd(PrimitiveType dt)
+        private void RewriteMovssd(PrimitiveType dt, IntrinsicProcedure intrinsic)
         {
-            var dst = SrcOp(0);
-            var src = SrcOp(1);
-            if (src is Identifier)
+            if (instrCur.Operands.Length == 3)
             {
-                src = m.Slice(dt, src, 0);
-            }
-            if (dst is Identifier idDst)
-            {
-                if (src is MemoryAccess mem)
-                {
-                    var dtHigh = PrimitiveType.CreateWord(idDst.DataType.BitSize - mem.DataType.BitSize);
-                    m.Assign(idDst, m.Seq(Constant.Zero(dtHigh), mem));
-                }
-                else
-                {
-                    m.Assign(idDst, m.Dpb(idDst, src, 0));
-                }
+                var src1 = SrcOp(1);
+                var src2 = SrcOp(2);
+                var dst = SrcOp(0);
+                m.Assign(dst, m.Fn(intrinsic.MakeInstance(dt), src1, src2));
             }
             else
             {
-                m.Assign(dst, src);
+                var dst = SrcOp(0);
+                var src = SrcOp(1);
+                if (src is Identifier)
+                {
+                    src = m.Slice(dt, src, 0);
+                }
+                if (dst is Identifier idDst)
+                {
+                    if (src is MemoryAccess mem)
+                    {
+                        var dtHigh = PrimitiveType.CreateWord(idDst.DataType.BitSize - mem.DataType.BitSize);
+                        m.Assign(idDst, m.Seq(Constant.Zero(dtHigh), mem));
+                    }
+                    else
+                    {
+                        m.Assign(idDst, m.Dpb(idDst, src, 0));
+                    }
+                }
+                else
+                {
+                    m.Assign(dst, src);
+                }
             }
         }
 

@@ -305,6 +305,13 @@ movzx	ax,byte ptr [bp+4h]
             Assert.AreEqual(PrimitiveType.Word16, instr.dataWidth);
         }
 
+
+        [Test]
+        public void X86Dis_lea_eip()
+        {
+            AssertCode64("lea\trax,[eip+0CFh]", "67 48 8D 05 CF 00 00 00");
+        }
+
         [Test]
         public void X86Dis_LesBxStackArg()
         {
@@ -455,6 +462,12 @@ movzx	ax,byte ptr [bp+4h]
         }
 
         [Test]
+        public void X86Dis_mov_addrsizeoverride()
+        {
+            AssertCode64("mov\teax,[eip+47h]", "67 8B 05 47 00 00 00");
+        }
+
+        [Test]
         public void X86Dis_movabs()
         {
             AssertCode64("mov\trsi,0F4B4BE4855F26231h", "48 BE 31 62 F2 55 48 BE B4 F4");
@@ -478,6 +491,12 @@ movzx	ax,byte ptr [bp+4h]
             var instr = Disassemble16(0xE9, 0x78, 0x56);
             var addrOp = (ImmediateOperand) instr.Operands[0];
             Assert.AreEqual("567B", addrOp.ToString());
+        }
+
+        [Test]
+        public void X86Dis_crc32()
+        {
+            AssertCode64("crc32\teax,eax", "F2 0F 38 F1 C0");
         }
 
         [Test]
@@ -725,7 +744,8 @@ movzx	ax,byte ptr [bp+4h]
         [Test]
         public void X86dis_vmovsd()
         {
-            AssertCode64("vmovsd\tdouble ptr [rcx],xmm0", 0xC5, 0xFB, 0x11, 0x01);
+            AssertCode64("vmovsd\txmm0,double ptr [rbp-48h]", "C5 FB 10 45 B8");
+            AssertCode64("vmovsd\tdouble ptr [rcx],xmm0", "C5 FB 11 01");
         }
 
         [Test]
@@ -789,6 +809,15 @@ movzx	ax,byte ptr [bp+4h]
             AssertCode64("andn\teax,eax,ebx", "C4E278F2C3");
         }
 
+
+        [Test]
+        public void X86Dis_andnpd()
+        {
+            AssertCode64("andnpd\txmm3,[rbx]", "660F551B");
+            AssertCode64("vandnpd\tymm3,ymm4,[rbx]", "C5DD551B");
+        }
+
+
         [Test]
         public void X86Dis_pdep()
         {
@@ -847,6 +876,12 @@ movzx	ax,byte ptr [bp+4h]
         }
 
         [Test]
+        public void X86Dis_vprorvd()
+        {
+            AssertCode64("vprorvd\tzmm6{k7},zmm5,zmm4", "62 F2 55 4F 14 F4");
+        }
+
+        [Test]
         public void X86Dis_vpunpcklqdq()
         {
             AssertCode64("punpcklqdq\txmm0,xmm3", 0x66, 0x0f, 0x6c, 0xC3);
@@ -877,6 +912,14 @@ movzx	ax,byte ptr [bp+4h]
         }
 
         [Test]
+        public void X86Dis_rdseed()
+        {
+            AssertCode64("rdseed\tr11w", "66 41 0F C7 FB ");
+            AssertCode64("rdseed\tr11d", "41 0F C7 FB");
+            AssertCode64("rdseed\tr11",  "49 0F C7 FB");
+        }
+
+        [Test]
         public void X86Dis_fcomi()
         {
             AssertCode64("fcomi\tst(0),st(1)", 0xdb, 0xf1);
@@ -890,10 +933,18 @@ movzx	ax,byte ptr [bp+4h]
         }
 
         [Test]
+        public void X86Dis_vcvtqq2pd()
+        {
+            AssertCode64("vcvtqq2pd\txmm6{k7},xmm5", "62 F1 FE 0F E6 F5");
+        }
+
+        [Test]
         public void X86Dis_vcvttpd2dq()
         {
             AssertCode64("vcvttpd2dq\txmm6,xmm5", 0xc5, 0xe9, 0xe6, 0xf5);
         }
+
+
 
         [Test]
         [Ignore("Weird bug")]
@@ -1140,6 +1191,12 @@ movzx	ax,byte ptr [bp+4h]
         }
 
         [Test]
+        public void X86Dis_kunpckwd()
+        {
+            AssertCode64("kunpckwd\tk5,k6,k7", "C5 CC 4B EF");
+        }
+
+        [Test]
         public void X86Dis_ud1()
         {
             AssertCode64("ud1\tesp,[rax+0F000001h]", 0x0f, 0xb9, 0xa0, 0x01, 0x00, 0x00, 0x0f);
@@ -1221,6 +1278,18 @@ movzx	ax,byte ptr [bp+4h]
         public void X86Dis_vpshufb()
         {
             AssertCode64("vpshufb\txmm9,xmm7,[r8-75h]", 0xc4, 0x02, 0x41, 0x00, 0x48, 0x8b);
+        }
+
+        [Test]
+        public void X86Dis_vpsraq()
+        {
+            AssertCode64("vpsraq\txmm6{k7}{z},xmm5,xmm4", "62 F1 D5 8F E2 F4");
+        }
+
+        [Test]
+        public void X86Dis_vpsravd()
+        {
+            AssertCode64("vpsravd\txmm6{k7},xmm5,dword ptr [rdx-200h]{1to4}", "62 F2 55 1F 46 72 80");
         }
 
         [Test]
@@ -1542,18 +1611,6 @@ movzx	ax,byte ptr [bp+4h]
         }
 
         [Test]
-        public void X86Dis_vpcmpeqb()
-        {
-            AssertCode64("vpcmpeqb\txmm6,xmm6,xmm4", "C5 C9 74 F4");
-        }
-
-        [Test]
-        public void X86Dis_vpcmpeqq()
-        {
-            AssertCode64("vpcmpeqq\tymm9,ymm1,[r11+15h]", 0xc4, 0x02, 0x75, 0x29, 0x4b, 0x15);
-        }
-
-        [Test]
         public void X86Dis_vmaskmovpd_toreg()
         {
             AssertCode64("vmaskmovpd\tymm11,ymm1,[r11+48h]", 0xc4, 0x02, 0x75, 0x2d, 0x5b, 0x48);
@@ -1597,6 +1654,12 @@ movzx	ax,byte ptr [bp+4h]
         }
 
         [Test]
+        public void X86Dis_vpminsq()
+        {
+            AssertCode64("vpminsq\tzmm6,zmm5,[rcx]", "62 F2 D5 48 39 31");
+        }
+
+        [Test]
         public void X86Dis_vpminuw()
         {
             AssertCode64("vpminuw\tymm14,ymm1,ymm14", 0xc4, 0x02, 0x75, 0x3a, 0xf6);
@@ -1606,6 +1669,12 @@ movzx	ax,byte ptr [bp+4h]
         public void X86Dis_vpmaskmovd_mem()
         {
             AssertCode64("vpmaskmovd\t[rdx+10h],xmm0,xmm6", "C4E2498E 42 10");
+        }
+
+        [Test]
+        public void X86Dis_vpmaxsq()
+        {
+            AssertCode64("vpmaxsq\txmm6{k7},xmm5,[rcx]", "62 F2 D5 0F 3D 31");
         }
 
         [Test]
@@ -1690,6 +1759,12 @@ movzx	ax,byte ptr [bp+4h]
         public void X86Dis_vcvtdq2pd()
         {
             AssertCode64("vcvtdq2pd\txmm8,[rcx+5C415D5Bh]", 0xc5, 0x3a, 0xe6, 0x81, 0x5b, 0x5d, 0x41, 0x5C);
+        }
+
+        [Test]
+        public void X86Dis_vcvtdq2ps()
+        {
+            AssertCode64("vcvtdq2ps\tymm6{k7},[rdx+0FE0h]","62 F1 7C 2F 5B 72 7F");
         }
 
         [Test]
@@ -2098,6 +2173,12 @@ movzx	ax,byte ptr [bp+4h]
         }
 
         [Test]
+        public void X86Dis_vandpd()
+        {
+            AssertCode64("vandpd\tzmm6,zmm5,qword ptr [rdx+3F8h]{1to8}", "62 F1 D5 58 54 72 7F");
+        }
+
+        [Test]
         public void X86Dis_vandps()
         {
             AssertCode64("vandps\txmm6,xmm9,[rdi-1Dh]", "C5B05477E3");
@@ -2146,17 +2227,35 @@ movzx	ax,byte ptr [bp+4h]
         }
 
         [Test]
-        public void X86Dis_andnpd()
+        public void X86Dis_vpcmpeqb()
         {
-            AssertCode64("andnpd\txmm3,[rbx]", "660F551B");
-            AssertCode64("vandnpd\tymm3,ymm4,[rbx]", "C5DD551B");
+            AssertCode64("vpcmpeqb\txmm6,xmm6,xmm4", "C5 C9 74 F4");
+        }
+
+        [Test]
+        public void X86Dis_vpcmpeqq()
+        {
+            AssertCode64("vpcmpeqq\tymm9,ymm1,[r11+15h]", 0xc4, 0x02, 0x75, 0x29, 0x4b, 0x15);
+            AssertCode64("vpcmpeqd\tk5{k7},zmm6,zmm5", "62 F1 4D 4F 76 ED");
+        }
+
+        [Test]
+        public void X86Dis_vpcmpeqq_mask()
+        {
+            AssertCode64("vpcmpeqq\tk5,zmm6,qword ptr [eax]{1to8}", "67 62 F2 CD 58 29 28");
+        }
+
+        [Test]
+        public void X86Dis_vcmptrue_usss()
+        {
+            AssertCode64("vcmptrue_usss\tk5{k7},xmm5,dword ptr [rdx+1FCh]", "62 F1 56 2F C2 6A 7F 1F");
         }
 
         [Test]
         public void X86Dis_vcmpneqpd()
         {
-            AssertCode64("cmpps\txmm4,[rsi],4h", "0FC22604");
-            AssertCode64("vcmppd\txmm12,xmm3,[rsi],4h", "C561C22604");
+            AssertCode64("cmpneqps\txmm4,[rsi]", "0FC22604");
+            AssertCode64("vcmpneqpd\txmm12,xmm3,[rsi]", "C561C22604");
         }
 
         [Test]
@@ -2183,6 +2282,12 @@ movzx	ax,byte ptr [bp+4h]
         public void X86Dis_vpaddsb()
         {
             AssertCode64("vpaddsb\txmm8,xmm10,[rdi]", "C529EC07");
+        }
+
+        [Test]
+        public void X86Dis_vpaddd()
+        {
+            AssertCode64("vpaddd\txmm6{k7},xmm5,dword ptr [rax]{1to4}", "62 F1 55 1F FE 30");
         }
 
         [Test]

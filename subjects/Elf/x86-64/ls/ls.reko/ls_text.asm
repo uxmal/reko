@@ -15854,7 +15854,7 @@ l0000000000410CE4:
 l0000000000410CED:
 	push	rax
 	call	410E50h
-	nop	dword ptr cs:[rax+rax+0h]
+	nop	word ptr cs:[rax+rax+0h]
 	test	rdi,rdi
 	mov	r8,rdx
 	mov	rcx,[rsi]

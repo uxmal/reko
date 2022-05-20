@@ -58,27 +58,33 @@ namespace Reko.Arch.X86
         private void RewriteCmpsd(PrimitiveType size)
         {
             var fourOps = instrCur.Operands.Length == 4;
-            var op1 = MaybeSlice(size, SrcOp(fourOps ? 1 : 0));
-            var op2 = MaybeSlice(size, SrcOp(fourOps ? 2 : 1));
             var opc = ((ImmediateOperand) instrCur.Operands[fourOps ? 3 : 2]).Value.ToUInt32();
-            var dst = SrcOp(0);
-            Expression cmp;
+            Func<Expression,Expression,Expression> cmp;
             switch (opc)
             {
-            case 0: cmp = m.FEq(op1, op2); break;
-            case 1: cmp = m.FLt(op1, op2); break;
-            case 2: cmp = m.FLe(op1, op2); break;
-            case 3: cmp = m.Fn(isunordered_intrinsic.MakeInstance(op1.DataType), op1, op2); break;
-            case 4: cmp = m.FNe(op1, op2); break;
-            case 5: cmp = m.FGe(op1, op2); break;
-            case 6: cmp = m.FGt(op1, op2); break;
-            case 7: cmp = m.Not(m.Fn(isunordered_intrinsic.MakeInstance(op1.DataType), op1, op2)); break;
+            case 0: cmp = m.FEq; break;
+            case 1: cmp = m.FLt; break;
+            case 2: cmp = m.FLe; break;
+            case 3: cmp = (op1, op2) => m.Fn(isunordered_intrinsic.MakeInstance(op1.DataType), op1, op2); break;
+            case 4: cmp = m.FNe; break;
+            case 5: cmp = m.FGe; break;
+            case 6: cmp = m.FGt; break;
+            case 7: cmp = (op1, op2) => m.Not(m.Fn(isunordered_intrinsic.MakeInstance(op1.DataType), op1, op2)); break;
             default: EmitUnitTest(); iclass = InstrClass.Invalid; m.Invalid(); return;
             }
+            RewriteCmpsd(size, cmp); 
+        }
+
+        private void RewriteCmpsd(PrimitiveType size, Func<Expression, Expression, Expression> cmp)
+        {
+            var fourOps = instrCur.Operands.Length == 4;
+            var op1 = MaybeSlice(size, SrcOp(fourOps ? 1 : 0));
+            var op2 = MaybeSlice(size, SrcOp(fourOps ? 2 : 1));
+            var dst = SrcOp(0);
             m.Assign(dst, m.Conditional(
-                dst.DataType, 
-                cmp,
-                Constant.Create(dst.DataType, -1), 
+                dst.DataType,
+                cmp(op1, op2),
+                Constant.Create(dst.DataType, -1),
                 Constant.Zero(dst.DataType)));
         }
 

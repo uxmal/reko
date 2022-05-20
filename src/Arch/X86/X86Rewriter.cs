@@ -114,8 +114,8 @@ namespace Reko.Arch.X86
                 case Mnemonic.andn: RewriteLogical((a, b) => m.And(b, m.Comp(a))); break;
                 case Mnemonic.andnpd: RewriteAndnp_(andnpd_intrinsic); break;
                 case Mnemonic.andnps: RewriteAndnp_(andnps_intrinsic); break;
-                case Mnemonic.andpd: RewritePackedBinop(false, andp_intrinsic, PrimitiveType.Real64); break;
-                case Mnemonic.andps: RewritePackedBinop(false, andp_intrinsic, PrimitiveType.Real32); break;
+                case Mnemonic.andpd: RewritePackedBinop(false, andp_intrinsic, PrimitiveType.Word64); break;
+                case Mnemonic.andps: RewritePackedBinop(false, andp_intrinsic, PrimitiveType.Word32); break;
                 case Mnemonic.arpl: RewriteArpl(); break;
                 case Mnemonic.bextr: RewriteBextr(); break;
                 case Mnemonic.blsi: RewriteBlsi(); break;
@@ -167,8 +167,13 @@ namespace Reko.Arch.X86
                 case Mnemonic.cmpsb: RewriteStringInstruction(); break;
                 case Mnemonic.cmpsd:
                 case Mnemonic.vcmpsd: RewriteCmpsd(PrimitiveType.Real64); break;
+                case Mnemonic.vcmpeqsd: RewriteCmpsd(PrimitiveType.Real64, m.FEq); break;
+                case Mnemonic.vcmplesd: RewriteCmpsd(PrimitiveType.Real64, m.FLe); break;
+                case Mnemonic.vcmpnlesd: RewriteCmpsd(PrimitiveType.Real64, m.FGt); break;
                 case Mnemonic.cmpss:
+                case Mnemonic.cmpnltss: RewriteCmpsd(PrimitiveType.Real32, m.FGe); break;
                 case Mnemonic.vcmpss: RewriteCmpsd(PrimitiveType.Real32); break;
+                case Mnemonic.vcmpnltss: RewriteCmpsd(PrimitiveType.Real32, m.FGe); break;
                 case Mnemonic.comisd: RewriteComis(PrimitiveType.Real64); break;
                 case Mnemonic.comiss: RewriteComis(PrimitiveType.Real32); break;
                 case Mnemonic.cpuid: RewriteCpuid(); break;
@@ -407,9 +412,9 @@ namespace Reko.Arch.X86
                 case Mnemonic.movs: RewriteStringInstruction(); break;
                 case Mnemonic.movsb: RewriteStringInstruction(); break;
                 case Mnemonic.movsd:
-                case Mnemonic.vmovsd: RewriteMovssd(PrimitiveType.Real64); break;
+                case Mnemonic.vmovsd: RewriteMovssd(PrimitiveType.Real64, vmerge_intrinsic); break;
                 case Mnemonic.movss:
-                case Mnemonic.vmovss: RewriteMovssd(PrimitiveType.Real32); break;
+                case Mnemonic.vmovss: RewriteMovssd(PrimitiveType.Real32, vmerge_intrinsic); break;
                 case Mnemonic.movsx: RewriteMovsx(); break;
                 case Mnemonic.movsxd: RewriteMovsx(); break;
                     //$REVIEW: these are unaligned moves, do we want an intrinsic for them?
@@ -1537,6 +1542,7 @@ namespace Reko.Arch.X86
         private static readonly IntrinsicProcedure unpcklp_intrinsic = GenericBinaryIntrinsic("__unpcklp");
         private static readonly IntrinsicProcedure verr_intrinsic;
         private static readonly IntrinsicProcedure verw_intrinsic;
+        private static readonly IntrinsicProcedure vmerge_intrinsic = GenericBinaryIntrinsic("__vmerge");
         private static readonly IntrinsicProcedure vmread_intrinsic;
         private static readonly IntrinsicProcedure vmwrite_intrinsic;
         private static readonly IntrinsicProcedure wait_intrinsic;

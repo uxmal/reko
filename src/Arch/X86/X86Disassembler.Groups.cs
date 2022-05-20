@@ -198,12 +198,12 @@ namespace Reko.Arch.X86
                             Instr(Mnemonic.vmptrld, Mq),
                             dec66: Instr(Mnemonic.vmclear, InstrClass.Linear|InstrClass.Privileged, Mq),
                             decF3: Instr(Mnemonic.vmxon, InstrClass.Linear | InstrClass.Privileged, Mq)),
-                        Instr(Mnemonic.rdrand, Rv));
+                        Instr(Mnemonic.rdrand, RBv));
                 Grp9[7] = MemReg(
                         new PrefixedDecoder(
                             dec:Instr(Mnemonic.vmptrst, InstrClass.Linear | InstrClass.Privileged, Mq),
                             decF3:Instr(Mnemonic.vmptrst, InstrClass.Linear | InstrClass.Privileged, Mq)),
-                        Instr(Mnemonic.rdseed, Rv));
+                        Instr(Mnemonic.rdseed, RBv));
 
                 // 0F B9
                 Grp10[0] = Instr(Mnemonic.ud1, InstrClass.Invalid);

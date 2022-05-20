@@ -78,7 +78,7 @@ namespace Reko.UnitTests.Arch.X86
         [Test]
         public void X86dis_btc()
         {
-            AssertCode32("btc\teax,[edx+42h]", 0x0F, 0xBB, 0x42, 0x42);
+            AssertCode32("btc\t[edx+42h],eax", "0FBB4242");
         }
 
         [Test]
