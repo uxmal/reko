@@ -148,7 +148,10 @@ namespace Reko.UnitTests.Core.Serialization
         public class TestPlatform : Platform
         {
             public Dictionary<string, object> Test_Options;
-            public TestPlatform(IServiceProvider services) : base(services, null, "testOS") { }
+            public TestPlatform(IServiceProvider services) : base(services, null, "testOS") 
+            {
+                this.StructureMemberAlignment = 4;
+            }
 
             public override string DefaultCallingConvention
             {

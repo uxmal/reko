@@ -30,6 +30,7 @@ namespace Reko.Environments.Trs80
         public ColorComputer(IServiceProvider services, IProcessorArchitecture arch) 
             : base(services, arch, "coco")
         {
+            this.StructureMemberAlignment = 1;
         }
 
         public override string DefaultCallingConvention => throw new NotImplementedException();

@@ -16,6 +16,7 @@ namespace Reko.Environments.OS2
     {
         public OS2Platform32(IServiceProvider services, IProcessorArchitecture arch) : base(services, arch, "os2-32")
         {
+            this.StructureMemberAlignment = 8;
         }
 
         public override string DefaultCallingConvention => "__cdecl";

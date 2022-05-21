@@ -32,10 +32,10 @@ namespace Reko.Environments.Hpux
         public HpuxPlatform(IServiceProvider services, IProcessorArchitecture arch) : base(services, arch, "hpux")
         {
             this.r27 = Architecture.GetRegister("r27") ?? throw new InvalidOperationException("Expected architecture to have r27.");
+            this.StructureMemberAlignment = arch.WordWidth.Size;
         }
 
         public override string DefaultCallingConvention => "";
-
 
         public override bool IsImplicitArgumentRegister(RegisterStorage reg)
         {

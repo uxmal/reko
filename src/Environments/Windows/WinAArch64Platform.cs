@@ -43,6 +43,7 @@ namespace Reko.Environments.Windows
             {
                 framePointer, linkRegister
             };
+            this.StructureMemberAlignment = 8;
         }
 
         public override string DefaultCallingConvention => "";

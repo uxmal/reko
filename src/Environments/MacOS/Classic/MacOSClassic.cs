@@ -43,6 +43,7 @@ namespace Reko.Environments.MacOS.Classic
             encoding = new MacOsRomanEncoding();
             ptrA5World = null!;
             A5World = null!;
+            this.StructureMemberAlignment = 2;
         }
 
         public override bool IsImplicitArgumentRegister(RegisterStorage reg)

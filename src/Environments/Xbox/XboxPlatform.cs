@@ -34,6 +34,7 @@ namespace Reko.Environments.Xbox
             : base(services, arch, "xbox")
         {
             EnsureTypeLibraries(this.PlatformIdentifier);
+            this.StructureMemberAlignment = 8;
         }
 
         public override string DefaultCallingConvention

@@ -34,7 +34,8 @@ namespace Reko.UnitTests.Mocks
         public FakePlatform(IServiceProvider services, IProcessorArchitecture arch)
             : base(services, arch, "fake")
         {
-            Metadata = new TypeLibrary();
+            this.Metadata = new TypeLibrary();
+            this.StructureMemberAlignment = 4;
         }
 
         public Func<RegisterStorage, bool> Test_IsImplicitArgumentRegister;

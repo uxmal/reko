@@ -42,6 +42,7 @@ namespace Reko.Environments.Windows
         public Win32PpcPlatform(IServiceProvider services, IProcessorArchitecture arch) : 
             base(services, arch, "winPpc")
         {
+            this.StructureMemberAlignment = 8;
         }
 
         public override string DefaultCallingConvention

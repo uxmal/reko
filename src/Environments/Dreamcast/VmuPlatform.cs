@@ -16,6 +16,7 @@ namespace Reko.Environments.Dreamcast
         public VmuPlatform(IServiceProvider services, IProcessorArchitecture arch, string platformId) 
             : base(services, arch, platformId)
         {
+            this.StructureMemberAlignment = 1;
         }
 
         //$TODO: convert this to typelib file format.

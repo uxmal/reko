@@ -34,12 +34,13 @@ namespace Reko.Environments.ZX81
     /// </summary>
     public class ZX81Environment : Platform
     {
-        private ZX81Encoding encoding;
+        private readonly ZX81Encoding encoding;
 
         public ZX81Environment(IServiceProvider services, IProcessorArchitecture arch)
             : base(services, arch, "zx81")
         {
             encoding = new ZX81Encoding();
+            this.StructureMemberAlignment = 1;
         }
 
         public override HashSet<RegisterStorage> CreateTrashedRegisters()

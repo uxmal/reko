@@ -58,6 +58,13 @@ namespace Reko.Core
         MemoryMap_v1? MemoryMap { get; set; }
         string PlatformIdentifier { get; }
         PrimitiveType PointerType { get; }
+        /// <summary>
+        /// The structure member alignment for this platform, measured in
+        /// storage units (e.g. bytes). Objects larger than or equal to this
+        /// size will be aligned at multiples of this size, smaller objects 
+        /// are aligned to their natural positions.
+        /// </summary>
+        int StructureMemberAlignment { get; }
 
         Address AdjustProcedureAddress(Address addrCode);
 
@@ -281,7 +288,7 @@ namespace Reko.Core
         /// Initializes a Platform instance
         /// </summary>
         /// <param name="arch"></param>
-        #nullable disable
+#nullable disable
         protected Platform(IServiceProvider services, IProcessorArchitecture arch, string platformId)
         {
             this.Services = services;
@@ -291,10 +298,10 @@ namespace Reko.Core
             this.DefaultTextEncoding = Encoding.ASCII;
             this.PlatformProcedures = new Dictionary<Address, ExternalProcedure>();
         }
-        #nullable enable
+#nullable enable
 
-        public IProcessorArchitecture Architecture { get; private set; }
-        public IServiceProvider Services { get; private set; }
+        public IProcessorArchitecture Architecture { get; }
+        public IServiceProvider Services { get; }
         public virtual TypeLibrary Metadata { get; protected set; }
         public CharacteristicsLibrary[] CharacteristicsLibs { get; protected set; }
         public string Description { get; set; }
@@ -303,6 +310,7 @@ namespace Reko.Core
         public virtual MemoryMap_v1? MemoryMap { get; set; }
         public virtual PrimitiveType FramePointerType { get { return Architecture.FramePointerType; } }
         public virtual PrimitiveType PointerType { get { return Architecture.PointerType; } }
+        public int StructureMemberAlignment { get; protected set; }
 
         /// <summary>
         /// String identifier used by Reko to locate platform-specfic information from the 
@@ -681,9 +689,10 @@ namespace Reko.Core
         {
             this.TypeLibraries = new List<TypeLibrary>();
             this.Description = description;
+            this.StructureMemberAlignment = 8;
         }
 
-        public List<TypeLibrary> TypeLibraries { get; private set; }
+        public List<TypeLibrary> TypeLibraries { get; }
 
         public override string DefaultCallingConvention
         {

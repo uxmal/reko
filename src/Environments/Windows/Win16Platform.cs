@@ -41,6 +41,7 @@ namespace Reko.Environments.Windows
         public Win16Platform(IServiceProvider services, IProcessorArchitecture arch)
             : base(services, arch, "win16")
         {
+            this.StructureMemberAlignment = 2;
         }
 
         public override string DefaultCallingConvention => "pascal";

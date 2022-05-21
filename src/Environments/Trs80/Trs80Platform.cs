@@ -31,8 +31,9 @@ namespace Reko.Environments.Trs80
     {
         public Trs80Platform(IServiceProvider services, IProcessorArchitecture arch) : base(services,  arch, "trs80")
         {
+            this.StructureMemberAlignment = 1;
         }
-
+        
         // http://fjkraan.home.xs4all.nl/comp/trs80-4p/dmkeilImages/trstech.htm
         public override string DefaultCallingConvention => "";
 

@@ -36,6 +36,7 @@ namespace Reko.Environments.AtariTOS
     {
         public AtariTOSPlatform(IServiceProvider services, IProcessorArchitecture arch) : base(services, arch, "atariTOS")
         {
+            StructureMemberAlignment = 4;
         }
 
         public override string DefaultCallingConvention

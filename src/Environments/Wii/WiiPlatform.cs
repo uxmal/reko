@@ -29,9 +29,10 @@ namespace Reko.Environments.Wii
 
 		public WiiPlatform(IServiceProvider services, IProcessorArchitecture arch) : base(services, arch, "wii")
         {
+            this.StructureMemberAlignment = 4;
 		}
 
-		public override string DefaultCallingConvention { get { return ""; } }
+        public override string DefaultCallingConvention { get { return ""; } }
 
         public override CallingConvention GetCallingConvention(string? ccName)
         {

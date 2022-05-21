@@ -55,6 +55,7 @@ namespace Reko.Environments.Msdos
                 Registers.esp,
                 Registers.Top,
             };
+            this.StructureMemberAlignment = 1;
         }
 
         public override CParser CreateCParser(TextReader rdr, ParserState? state)

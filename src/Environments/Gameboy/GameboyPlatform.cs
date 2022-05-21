@@ -35,6 +35,7 @@ namespace Reko.Environments.Gameboy
         public GameboyPlatform(IServiceProvider services, IProcessorArchitecture arch) 
             : base(services, arch, "gameboy")
         {
+            this.StructureMemberAlignment = 1;
         }
 
         public override string DefaultCallingConvention

@@ -39,15 +39,10 @@ namespace Reko.Environments.Windows
         public VmmPlatform(IServiceProvider services, IProcessorArchitecture arch) : 
             base(services, arch, "win-vmm")
         {
+            this.StructureMemberAlignment = 4;
         }
 
-        public override string DefaultCallingConvention
-        {
-            get
-            {
-                throw new NotImplementedException();
-            }
-        }
+        public override string DefaultCallingConvention => "";
 
         public override CParser CreateCParser(TextReader rdr, ParserState? state)
         {

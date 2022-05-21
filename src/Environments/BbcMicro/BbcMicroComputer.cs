@@ -29,15 +29,10 @@ namespace Reko.Environments.BbcMicro
     {
         public BbcMicroComputer(IServiceProvider services, IProcessorArchitecture arch) : base(services, arch, "bbcMicro")
         {
+            this.StructureMemberAlignment = 1;
         }
 
-        public override string DefaultCallingConvention
-        {
-            get
-            {
-                throw new NotImplementedException();
-            }
-        }
+        public override string DefaultCallingConvention => "";
 
         public override HashSet<RegisterStorage> CreateTrashedRegisters()
         {

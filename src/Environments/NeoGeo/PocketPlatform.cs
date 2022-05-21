@@ -31,12 +31,10 @@ namespace Reko.Environments.NeoGeo
     {
         public PocketPlatform(IServiceProvider services, Tlcs900Architecture arch) : base(services, arch, "neo-geo-pocket")
         {
+            this.StructureMemberAlignment = 1;
         }
 
-        public override string DefaultCallingConvention
-        {
-            get { return ""; }
-        }
+        public override string DefaultCallingConvention => "";
 
         public override CallingConvention GetCallingConvention(string? ccName)
         {

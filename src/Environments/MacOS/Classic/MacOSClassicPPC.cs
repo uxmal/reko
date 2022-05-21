@@ -33,6 +33,7 @@ namespace Reko.Environments.MacOS.Classic
         public MacOSClassicPPC(IServiceProvider services, IProcessorArchitecture arch) :
             base(services, arch, "macOsPpc")
         {
+            this.StructureMemberAlignment = 4;
         }
 
         public override string DefaultCallingConvention => "";

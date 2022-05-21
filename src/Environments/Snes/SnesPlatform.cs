@@ -29,6 +29,7 @@ namespace Reko.Environments.Snes
     {
         public SnesPlatform(IServiceProvider services, IProcessorArchitecture arch, string platformId) : base(services, arch, platformId)
         {
+            this.StructureMemberAlignment = 1;
         }
 
         public override string DefaultCallingConvention => "";

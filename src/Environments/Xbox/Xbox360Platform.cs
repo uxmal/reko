@@ -41,6 +41,7 @@ namespace Reko.Environments.Xbox
         public Xbox360Platform(IServiceProvider services, IProcessorArchitecture arch) : base(services, arch, "xbox360")
         {
             EnsureTypeLibraries(this.PlatformIdentifier);
+            this.StructureMemberAlignment = 8;
         }
 
         public override string DefaultCallingConvention { get { return ""; } }

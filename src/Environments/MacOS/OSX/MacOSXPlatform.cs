@@ -37,6 +37,7 @@ namespace Reko.Environments.MacOS.OSX
         {
             trashedRegisters = GenerateTrashedRegisters(arch);
             archHandler = ArchSpecificHandler.Create(arch);
+            this.StructureMemberAlignment = arch.WordWidth.Size;    //$REVIEW: correct?
         }
 
         public override string DefaultCallingConvention

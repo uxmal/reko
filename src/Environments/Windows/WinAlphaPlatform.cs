@@ -37,12 +37,10 @@ namespace Reko.Environments.Windows
         {
             arch.StackRegister = arch.GetRegister("r30")!;
             cc = null!;
+            this.StructureMemberAlignment = 8;
         }
 
-        public override string DefaultCallingConvention
-        {
-            get { return null!; }
-        }
+        public override string DefaultCallingConvention => "";
 
         public override CParser CreateCParser(TextReader rdr, ParserState? state)
         {

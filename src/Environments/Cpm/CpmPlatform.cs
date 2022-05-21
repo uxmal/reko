@@ -39,12 +39,10 @@ namespace Reko.Environments.Cpm
         {
             this.dispatchProcedures = new Dictionary<Address, DispatchProcedure>();
             EnsureTypeLibraries(this.PlatformIdentifier);
+            StructureMemberAlignment = 1;
         }
 
-        public override string DefaultCallingConvention
-        {
-            get { return ""; }
-        }
+        public override string DefaultCallingConvention => "";
 
         public override MemoryMap_v1? MemoryMap
         {

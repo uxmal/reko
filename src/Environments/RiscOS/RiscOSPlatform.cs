@@ -32,12 +32,10 @@ namespace Reko.Environments.RiscOS
     {
         public RiscOSPlatform(IServiceProvider services, IProcessorArchitecture arch) : base(services, arch, "riscOS")
         {
+            this.StructureMemberAlignment = 8;
         }
 
-        public override string DefaultCallingConvention
-        {
-            get { return ""; }
-        }
+        public override string DefaultCallingConvention => "";
 
         public override HashSet<RegisterStorage> CreateTrashedRegisters()
         {

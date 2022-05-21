@@ -33,9 +33,10 @@ namespace Reko.Environments.Windows
 		public Win32M68kPlatform(IServiceProvider services, IProcessorArchitecture arch) : 
             base(services, arch, "winM68k")
         {
+            this.StructureMemberAlignment = 2;
 		}
 
-		public override string DefaultCallingConvention
+        public override string DefaultCallingConvention
 		{
 			get { return ""; }
 		}

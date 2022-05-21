@@ -42,7 +42,7 @@ namespace Reko.Environments.AmigaOS
     [Designer("Reko.Environments.AmigaOS.Design.AmigaOSPlatformDesigner,Reko.Environments.AmigaOS.Design")]
     public class AmigaOSPlatform : Platform
     {
-        private RtlInstructionMatcher a6Pattern;
+        private readonly RtlInstructionMatcher a6Pattern;
         private Dictionary<int, SystemService>? funcs; //$TODO: This should take a type of base pointer the reference is from ?
         private static Dictionary<string, object>? mapKickstartToListOfLibraries;
 
@@ -58,6 +58,7 @@ namespace Reko.Environments.AmigaOS
                         ExpressionMatcher.AnyConstant("offset")),
                     4,
                     InstrClass.Transfer));
+            this.StructureMemberAlignment = 4;
         }
 
         public Dictionary<string, object> MapKickstartToListOfLibraries

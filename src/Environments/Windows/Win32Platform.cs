@@ -98,6 +98,7 @@ namespace Reko.Environments.Windows
                     }
                 }
             };
+            this.StructureMemberAlignment = 8;
         }
 
         public override CParser CreateCParser(TextReader rdr, ParserState? state)

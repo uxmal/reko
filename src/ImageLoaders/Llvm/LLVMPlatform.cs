@@ -42,6 +42,7 @@ namespace Reko.ImageLoaders.LLVM
         {
             this.services = services;
             this.Name = "LLVM";
+            this.StructureMemberAlignment = 4;  //$BUG: is arch-specific.
         }
 #nullable enable
 
@@ -64,7 +65,9 @@ namespace Reko.ImageLoaders.LLVM
         public string PlatformIdentifier { get; set; }
 
         public PrimitiveType PointerType { get; set; }
-        
+
+        public int StructureMemberAlignment { get; set; }
+
         public Address AdjustProcedureAddress(Address addrCode)
         {
             throw new NotImplementedException();

@@ -30,6 +30,7 @@ namespace Reko.Environments.OS2
                  Vector = 3,
             }
         };
+
         private static readonly HashSet<RegisterStorage> implicitRegs = new HashSet<RegisterStorage>
         {
             Registers.cs,
@@ -40,6 +41,7 @@ namespace Reko.Environments.OS2
 
         public OS2Platform16(IServiceProvider services, IProcessorArchitecture arch) : base(services, arch, "os2-16")
         {
+            this.StructureMemberAlignment = 4;
         }
 
         public override string DefaultCallingConvention => "pascal";

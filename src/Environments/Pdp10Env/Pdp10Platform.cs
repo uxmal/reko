@@ -31,9 +31,10 @@ namespace Reko.Environments.Pdp10Env
     {
         public Pdp10Platform(IServiceProvider services, IProcessorArchitecture arch) : base(services, arch, "pdp10")
         {
+            this.StructureMemberAlignment = 1;
         }
 
-        public override string DefaultCallingConvention => throw new NotImplementedException();
+        public override string DefaultCallingConvention => "";
 
         public override HashSet<RegisterStorage> CreateTrashedRegisters()
         {

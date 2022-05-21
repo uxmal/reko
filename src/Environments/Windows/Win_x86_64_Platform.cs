@@ -74,6 +74,7 @@ namespace Reko.Environments.Windows
                     Terminates = true
                 }
             };
+            this.StructureMemberAlignment = 16;
         }
 
         public override string DefaultCallingConvention

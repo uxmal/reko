@@ -46,6 +46,8 @@ namespace Reko.Environments.SysV
             this.trashedRegs = LoadTrashedRegisters();
             archSpecificFactory = new ArchSpecificFactory(services, arch);
             this.defaultCc = archSpecificFactory.CreateCallingConvention(arch, "");
+            //$REVIEW: examine this carefully! It may well be arch-dependent
+            this.StructureMemberAlignment = 8; 
         }
 
         public override string DefaultCallingConvention => "";

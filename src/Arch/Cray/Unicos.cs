@@ -31,10 +31,10 @@ namespace Reko.Arch.Cray
     {
         public Unicos(IServiceProvider services, IProcessorArchitecture arch) : base(services, arch, "unicos")
         {
+            this.StructureMemberAlignment = 1;
         }
 
         public override string DefaultCallingConvention => "";
-
 
         public override HashSet<RegisterStorage> CreateTrashedRegisters()
         {

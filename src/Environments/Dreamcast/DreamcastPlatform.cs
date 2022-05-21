@@ -32,15 +32,10 @@ namespace Reko.Environments.Dreamcast
     {
         public DreamcastPlatform(IServiceProvider services, IProcessorArchitecture arch, string platformId) : base(services, arch, platformId)
         {
+            this.StructureMemberAlignment = 4;
         }
 
-        public override string DefaultCallingConvention
-        {
-            get
-            {
-                throw new NotImplementedException();
-            }
-        }
+        public override string DefaultCallingConvention => "";
 
         public override CallingConvention GetCallingConvention(string? ccName)
         {

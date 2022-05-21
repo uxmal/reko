@@ -38,12 +38,10 @@ namespace Reko.Environments.RT11
         {
             this.services = services;
             this.arch = arch;
+            this.StructureMemberAlignment = 2;
         }
 
-        public override string DefaultCallingConvention
-        {
-            get { return "";  }
-        }
+        public override string DefaultCallingConvention => "";
 
         public override HashSet<RegisterStorage> CreateTrashedRegisters()
         {

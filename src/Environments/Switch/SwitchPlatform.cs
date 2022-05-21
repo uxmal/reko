@@ -32,10 +32,10 @@ namespace Reko.Environments.Switch
     {
         public SwitchPlatform(IServiceProvider services, IProcessorArchitecture arch) : base(services, arch, "switch")
         {
+            this.StructureMemberAlignment = 4;
         }
 
         public override string DefaultCallingConvention => "";
-
 
         public override HashSet<RegisterStorage> CreateTrashedRegisters()
         {

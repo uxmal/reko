@@ -44,9 +44,10 @@ namespace Reko.Environments.Ps3
         public Ps3Platform(IServiceProvider services, IProcessorArchitecture arch)
             : base(services, arch, "ps3") 
         {
+            this.StructureMemberAlignment = 4;
         }
 
-        public override string DefaultCallingConvention { get { return ""; } }
+        public override string DefaultCallingConvention => "";
 
         public override PrimitiveType PointerType { get { return PrimitiveType.Ptr32; } }
 

@@ -36,6 +36,7 @@ namespace Reko.Environments.C64
         public C64Platform(IServiceProvider services, IProcessorArchitecture arch)
             : base(services, arch, "c64")
         {
+            this.StructureMemberAlignment = 1;
         }
 
         public override string DefaultCallingConvention

@@ -50,6 +50,7 @@ namespace Reko.Environments.Msdos
         public Msdos386Platform(IServiceProvider services, IProcessorArchitecture arch) : base(services, arch, "ms-dos-386")
         {
             interruptServices = null!;
+            this.StructureMemberAlignment = 1;
         }
 
         public override string DefaultCallingConvention => "cdecl";

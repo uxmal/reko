@@ -115,6 +115,7 @@ namespace Reko.Environments.Windows
             this.implicitRegs = new[] { "r11", "sp", "lr", "pc" }
                 .Select(r => Architecture.GetRegister(r)!)
                 .ToHashSet();
+            this.StructureMemberAlignment = 8;
         }
 
         public override string DefaultCallingConvention

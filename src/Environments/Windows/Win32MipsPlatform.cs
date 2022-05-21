@@ -51,12 +51,10 @@ namespace Reko.Environments.Windows
             {
                 gp, sp
             };
+            this.StructureMemberAlignment = 8;
         }
 
-        public override string DefaultCallingConvention
-        {
-            get { return ""; }
-        }
+        public override string DefaultCallingConvention => "";
 
         public override CParser CreateCParser(TextReader rdr, ParserState? state)
         {
