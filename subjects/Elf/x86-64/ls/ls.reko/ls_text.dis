@@ -2427,7 +2427,7 @@ l0000000000406219:
 l000000000040621D_1:
 	rax_108 = rax_108 + 2<i64>
 l0000000000406221:
-	rdx_127 = CONVERT(SLICE(SLICE(SEQ(rax_108, dl_110) + SEQ(3<64>, dl_110), word64, 8), word32, 0) - ebx_125, word32, uint64)
+	rdx_127 = CONVERT(SLICE(SEQ(rax_108, dl_110) + SEQ(3<64>, dl_110), word32, 8) - ebx_125, word32, uint64)
 l000000000040622B:
 	word64 rax_153 = CONVERT(SLICE(rdx_127, word32, 0), word32, uint64)
 	branch (rax_15 ^ Mem16[fs:0x28<32>:word64]) != 0<64> l0000000000406269
@@ -3929,7 +3929,7 @@ l0000000000408AE4:
 l0000000000408AE8_1:
 	rdx_1601 = rdx_1601 + 2<i64>
 l0000000000408AEC:
-	edx_1581 = SLICE(SLICE(SEQ(rdx_1601, al_1638) + SEQ(3<64>, al_1638), word64, 8), word32, 0) - r15d_1650 (alias)
+	edx_1581 = SLICE(SEQ(rdx_1601, al_1638) + SEQ(3<64>, al_1638), word32, 8) - r15d_1650 (alias)
 l0000000000408AF5:
 	branch Mem1539[0x000000000061B164<p64>:word32] >= edx_1581 l0000000000408194
 l0000000000408B01:

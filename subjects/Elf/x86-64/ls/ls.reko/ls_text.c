@@ -2499,7 +2499,7 @@ l000000000040622B:
 		dl_n = (byte) (edx_n >> 0x10);
 	if ((edx_n & 0x8080) == 0x00)
 		rax_n = (union Eq_n *) ((char *) rax_n + 2);
-	rdx_n = (uint64) ((word32) SLICE(dl_n + SEQ(0x03, dl_n), word64, 8) - ebx_n);
+	rdx_n = (uint64) (SLICE(dl_n + SEQ(0x03, dl_n), word32, 8) - ebx_n);
 	goto l000000000040622B;
 }
 
@@ -3951,7 +3951,7 @@ l0000000000408AF5:
 									al_n = (byte) (eax_n >> 0x10);
 								if ((eax_n & 0x8080) == 0x00)
 									rdx_n = (struct Eq_n *) ((char *) &rdx_n->t0000 + 2);
-								edx_n = (word32) SLICE(al_n + SEQ(0x03, al_n), word64, 8) - r15d_n;
+								edx_n = SLICE(al_n + SEQ(0x03, al_n), word32, 8) - r15d_n;
 								goto l0000000000408AF5;
 							}
 							else

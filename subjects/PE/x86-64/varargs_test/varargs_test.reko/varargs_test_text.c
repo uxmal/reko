@@ -744,7 +744,7 @@ l0000000140001CE9:
 		if (!__bt<word32>(0x00, 0x1B) && !__bt<word32>(0x00, 0x1C))
 		{
 			word64 edx_eax_n = __xgetbv(0x00);
-			if ((((byte) SLICE(edx_eax_n, word32, 32) << 0x20 | (byte) edx_eax_n) & 0x06) == 0x06)
+			if (((SLICE(edx_eax_n, byte, 32) << 0x20 | (byte) edx_eax_n) & 0x06) == 0x06)
 			{
 				ui32 eax_n = g_dw4000301C | 0x08;
 				g_dw40003018 = 0x03;

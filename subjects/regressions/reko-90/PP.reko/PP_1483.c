@@ -709,7 +709,7 @@ Eq_n fn1483-1BB9(Eq_n ax, ui16 cx, Eq_n dx, Eq_n bx, Eq_n bp, Eq_n si, Eq_n di, 
 		sp_n = sp_n + 4;
 		di = v34_n;
 		C = false;
-		ax = SEQ(SLICE(SLICE(SEQ(~0x50, cl_n, al_n) - 10848217, word16, 8), byte, 8), __in<byte>(dx) - ~0x07 & 0x0A);
+		ax = SEQ(SLICE(SEQ(~0x50, cl_n, al_n) - 10848217, byte, 16), __in<byte>(dx) - ~0x07 & 0x0A);
 	}
 }
 

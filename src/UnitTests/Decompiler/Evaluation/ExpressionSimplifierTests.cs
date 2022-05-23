@@ -1002,5 +1002,19 @@ namespace Reko.UnitTests.Decompiler.Evaluation
             Assert.AreEqual("dx_ax_3 == 0<32>", result.ToString());
             Assert.IsTrue(changed);
         }
+
+        [Test]
+        public void Exs_Slice_of_slice()
+        {
+            Given_ExpressionSimplifier();
+            var exp = m.Slice(
+                m.Slice(foo, PrimitiveType.Word16, 0),
+                PrimitiveType.Byte,
+                8);
+            var (result, changed) = exp.Accept(simplifier);
+
+            Assert.AreEqual("SLICE(foo_1, byte, 8)", result.ToString());
+            Assert.IsTrue(changed);
+        }
     }
 }

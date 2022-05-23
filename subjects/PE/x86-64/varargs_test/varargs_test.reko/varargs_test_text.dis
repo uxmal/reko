@@ -1085,7 +1085,7 @@ l0000000140001D5D:
 	branch __bt<word32>(0<32>, 0x1C<8>) l0000000140001DB0
 l0000000140001D64:
 	word64 edx_eax_193 = __xgetbv(0<32>)
-	branch ((SLICE(SLICE(edx_eax_193, word32, 32), byte, 0) << 0x20<8> | SLICE(edx_eax_193, byte, 0)) & 6<8>) != 6<8> l0000000140001DB0
+	branch ((SLICE(edx_eax_193, byte, 32) << 0x20<8> | SLICE(edx_eax_193, byte, 0)) & 6<8>) != 6<8> l0000000140001DB0
 l0000000140001D7E:
 	word32 eax_222 = Mem208[0x000000014000301C<p64>:word32] | 8<32>
 	Mem219[0x0000000140003018<p64>:word32] = 3<32>

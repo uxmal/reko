@@ -3644,7 +3644,7 @@ void fn0800-2688(Eq_n ds, Eq_n dwArg02, Eq_n wArg06, Eq_n wArg08)
 				int32 dx_ax_n = (int32) SLICE((word32) dwArg02 + ax_dx_n, word16, 16);
 				word16 dx_n;
 				ptrLoc06_n->b0000 = (byte) fn0800-8C8A((word16) dx_ax_n, 0x08, SLICE(dx_ax_n, word16, 16), out dx_n);
-				ptrLoc06_n->b0001 = (byte) SLICE((word32) dwArg02 + ax_dx_n, word16, 16);
+				ptrLoc06_n->b0001 = SLICE((word32) dwArg02 + ax_dx_n, byte, 16);
 				Eq_n dx_ax_n = (word32) dwArg02 + ax_dx_n;
 				word16 dx_n;
 				ptrLoc06_n->b0002 = (byte) fn0800-8C8A((word16) dx_ax_n, 0x08, SLICE(dx_ax_n, word16, 16), out dx_n);
@@ -6160,7 +6160,7 @@ word16 fn0800-3E9A(Eq_n ds, Eq_n ptrArg02, ptr16 & dxOut, union Eq_n & dsOut)
 	int32 dx_ax_n = fn0800_ACB3(ds, ptrArg02, ~0x00, 0x01, out cx_n);
 	dxOut = SLICE(dx_ax_n, word16, 16);
 	dsOut = ds;
-	return SEQ(SLICE((word16) dx_ax_n, byte, 8), bLoc04_n);
+	return SEQ(SLICE(dx_ax_n, byte, 8), bLoc04_n);
 }
 
 // 0800:3F0A: Register uint16 fn0800-3F0A(Register Eq_n ds, Stack Eq_n dwArg02, Register out ptr16 dxOut, Register out Eq_n dsOut)
@@ -8495,7 +8495,7 @@ word16 fn0800-5B15(Eq_n ds, union Eq_n & siOut, ptr16 & diOut, union Eq_n & dsOu
 		}
 		fn0800-4110(ds_n, SEQ(Mem162[ds_n:11891:word16], Mem162[ds_n:11889:word16] + ax_n), wLoc06_n, wLoc04_n, Mem146[ds_n:0x29E3:word32], out si, out di, out ds);
 		word16 cx_n;
-		ah_n = SLICE((word16) fn0800_ACB3(ds, *((word32) ds + 0x000029E3), SEQ(-wLoc04_n - (wLoc06_n != 0x00), -wLoc06_n), 0x01, out cx_n), byte, 8);
+		ah_n = SLICE(fn0800_ACB3(ds, *((word32) ds + 0x000029E3), SEQ(-wLoc04_n - (wLoc06_n != 0x00), -wLoc06_n), 0x01, out cx_n), byte, 8);
 	}
 	Eq_n es_bx_n = *((word32) ds + 11885);
 	*((word32) ds + 11885) = (word32) *((word32) ds + 11885) + 1;
@@ -8971,7 +8971,7 @@ word16 fn0800-5E64(Eq_n ds, ptr16 & dxOut, union Eq_n & dsOut)
 				ss->*((word32) sp_n - 4) = *((word32) ds_n + 10721);
 				ss->*((word32) sp_n - 6) = *((word32) ds_n + 10719);
 				word16 cx_n;
-				byte ah_n = SLICE((word16) fn0800_ACB3(ds_n, ss->*((word32) sp_n - 6), ss->*((word32) sp_n - 2), ss->*((word32) sp_n + 2), out cx_n), byte, 8);
+				byte ah_n = SLICE(fn0800_ACB3(ds_n, ss->*((word32) sp_n - 6), ss->*((word32) sp_n - 2), ss->*((word32) sp_n + 2), out cx_n), byte, 8);
 				ss->*((word32) sp_n + 2) = *((word32) ds_n + 10721);
 				ss->*sp_n = *((word32) ds_n + 10719);
 				ss->*((word32) sp_n - 2) = SEQ(ah_n, (ss->*bp_n).tFFFFFFDE);
@@ -12274,7 +12274,7 @@ Eq_n fn0800-8CCB(Eq_n ax, ci16 cx, Eq_n dx, Eq_n bx, union Eq_n & chOut, ptr16 &
 	else
 	{
 		uint16 bx_n = ~bx;
-		byte cl_n = (byte) SLICE(SEQ(~cx, bx_n) + 0x01, word16, 16);
+		byte cl_n = SLICE(SEQ(~cx, bx_n) + 0x01, byte, 16);
 		cu16 ax_n = ax - (bx_n + 0x01);
 		byte al_n = (byte) ax_n;
 		if (ax_n < 0x00)

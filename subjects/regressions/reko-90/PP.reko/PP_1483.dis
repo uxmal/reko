@@ -814,7 +814,7 @@ l1483_1B7F:
 	sp_115 = sp_207 + 4<i16>
 	di = v34_213
 	C = false
-	ax = SEQ(SLICE(SLICE(SEQ(0xAF<8>, cl_185, al_193) - 0xA587D9<24>, word16, 8), byte, 8), __in<byte>(dx) - 0xF8<8> & 0xA<8>) (alias)
+	ax = SEQ(SLICE(SEQ(0xAF<8>, cl_185, al_193) - 0xA587D9<24>, byte, 16), __in<byte>(dx) - 0xF8<8> & 0xA<8>) (alias)
 
 
 void fn1483_1C50(byte ah, word16 dx)

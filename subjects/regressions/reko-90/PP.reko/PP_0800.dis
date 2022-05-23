@@ -3980,7 +3980,7 @@ l0800_272E:
 	int32 dx_ax_182 = CONVERT(SLICE(ax_dx_257 + dwArg02, word16, 16), word16, int32)
 	word16 dx_410
 	Mem199[ptrLoc06_284:byte] = SLICE(fn0800_8C8A(SLICE(dx_ax_182, word16, 0), 8<8>, SLICE(dx_ax_182, word16, 16), out dx_410), byte, 0)
-	Mem208[ptrLoc06_284 + 1<i16>:byte] = SLICE(SLICE(ax_dx_257 + dwArg02, word16, 16), byte, 0)
+	Mem208[ptrLoc06_284 + 1<i16>:byte] = SLICE(ax_dx_257 + dwArg02, byte, 16)
 	int32 dx_ax_263 = ax_dx_257 + dwArg02
 	word16 dx_411
 	Mem230[ptrLoc06_284 + 2<i16>:byte] = SLICE(fn0800_8C8A(SLICE(dx_ax_263, word16, 0), 8<8>, SLICE(dx_ax_263, word16, 16), out dx_411), byte, 0)
@@ -6790,7 +6790,7 @@ l0800_3EEA:
 	word32 dx_ax_178 = fn0800_ACB3(ds, ptrArg02, 0xFFFFFFFF<32>, 1<16>, out cx_179)
 	dxOut = SLICE(dx_ax_178, word16, 16)
 	dsOut = ds
-	return SEQ(SLICE(SLICE(dx_ax_178, word16, 0), byte, 8), bLoc04_154)
+	return SEQ(SLICE(dx_ax_178, byte, 8), bLoc04_154)
 fn0800_3E9A_exit:
 
 
@@ -9441,7 +9441,7 @@ l0800_5BC1:
 l0800_5BCB:
 	fn0800_4110(ds_114, SEQ(Mem162[ds_114:0x2E73<16>:word16], Mem162[ds_114:0x2E71<16>:word16] + ax_83), wLoc06_260, wLoc04_261, Mem146[ds_114:0x29E3<16>:word32], out si, out di, out ds)
 	word16 cx_337
-	ah_289 = SLICE(SLICE(fn0800_ACB3(ds, Mem197[ds:0x29E3<16>:word32], SEQ(-wLoc04_261 - (wLoc06_260 != 0<16>), -wLoc06_260), 1<16>, out cx_337), word16, 0), byte, 8) (alias)
+	ah_289 = SLICE(fn0800_ACB3(ds, Mem197[ds:0x29E3<16>:word32], SEQ(-wLoc04_261 - (wLoc06_260 != 0<16>), -wLoc06_260), 1<16>, out cx_337), byte, 8) (alias)
 l0800_5B34:
 l0800_5B2B:
 l0800_5C0B:
@@ -9997,7 +9997,7 @@ l0800_61B9:
 	Mem916[ss:sp_790 - 4<16>:word16] = Mem912[ds_801:0x29E1<16>:word16]
 	Mem919[ss:sp_790 - 6<16>:word16] = Mem916[ds_801:0x29DF<16>:word16]
 	word16 cx_2890
-	byte ah_939 = SLICE(SLICE(fn0800_ACB3(ds_801, Mem919[ss:sp_790 - 6<16>:segptr32], Mem919[ss:sp_790 - 2<16>:ui32], Mem919[ss:sp_790 + 2<16>:word16], out cx_2890), word16, 0), byte, 8)
+	byte ah_939 = SLICE(fn0800_ACB3(ds_801, Mem919[ss:sp_790 - 6<16>:segptr32], Mem919[ss:sp_790 - 2<16>:ui32], Mem919[ss:sp_790 + 2<16>:word16], out cx_2890), byte, 8)
 	Mem933[ss:sp_790 + 2<16>:word16] = Mem919[ds_801:0x29E1<16>:word16]
 	Mem936[ss:sp_790:word16] = Mem933[ds_801:0x29DF<16>:word16]
 	Mem941[ss:sp_790 - 2<16>:word16] = SEQ(ah_939, Mem936[ss:bp_1036 - 34<i16>:byte])
@@ -13792,7 +13792,7 @@ l0800_8CE6:
 	return SEQ(SLICE(ax_20 >>u 4<8>, byte, 8), al_36) & 0xF<16>
 l0800_8CD2:
 	word16 bx_53 = ~bx
-	byte cl_66 = SLICE(SLICE(SEQ(~cx, bx_53) + 1<32>, word16, 16), byte, 0)
+	byte cl_66 = SLICE(SEQ(~cx, bx_53) + 1<32>, byte, 16)
 l0800_8D0D:
 	word16 ax_60 = ax - (bx_53 + 1<16>)
 	byte al_75 = SLICE(ax_60, byte, 0)

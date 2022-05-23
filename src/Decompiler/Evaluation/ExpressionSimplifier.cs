@@ -1575,11 +1575,10 @@ namespace Reko.Evaluation
         private Slice? SlicedSlice(Slice outerSlice)
         {
             if (outerSlice.Expression is Slice innerSlice &&
-                outerSlice.Offset == 0 &&
-                innerSlice.DataType.BitSize >= outerSlice.DataType.BitSize &&
-                innerSlice.Offset == 0)
+                innerSlice.DataType.BitSize >= outerSlice.DataType.BitSize)
             {
-                return m.Slice(innerSlice.Expression, outerSlice.DataType, 0);
+                var offset = outerSlice.Offset + innerSlice.Offset;
+                return m.Slice(innerSlice.Expression, outerSlice.DataType, offset);
             }
             else
             {
