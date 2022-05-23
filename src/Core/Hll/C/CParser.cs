@@ -689,7 +689,7 @@ IGNORE tab + cr + lf
             case CTokenType.Struct:
             case CTokenType.Union:
                 lexer.Read();
-                int alignment = 0;
+                int alignment = ParserState.Alignment;
                 string tag = null;
                 List<StructDecl> decls = null;
                 if (PeekThenDiscard(CTokenType.__Declspec))

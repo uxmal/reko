@@ -44,6 +44,7 @@ namespace Reko.UnitTests.Environments.MacOS.Classic
             var arch = new Mocks.FakeArchitecture(null);
             platform.Setup(p => p.PointerType).Returns(Reko.Core.Types.PrimitiveType.Ptr32);
             platform.Setup(p => p.Architecture).Returns(arch);
+            platform.Setup(p => p.StructureMemberAlignment).Returns(2);
         }
 
         /// <summary>

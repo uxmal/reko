@@ -176,7 +176,7 @@ namespace Reko.Core.Hll.C
                 var cstate = new ParserState(symbols);
                 var cParser = new CParser(cstate, lexer);
                 var decl = cParser.Parse_ExternalDecl();
-                if (decl == null)
+                if (decl is null)
                     return null;
 
                 //$HACK: Relying on a side effect here to

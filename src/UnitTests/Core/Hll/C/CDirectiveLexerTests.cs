@@ -92,7 +92,7 @@ namespace Reko.UnitTests.Core.Hll.C
         [Test]
         public void CDirectiveLexer_Pack_Push()
         {
-            Assert.AreEqual(8, state.Alignment);
+            Assert.AreEqual(0, state.Alignment);
             Lex("#pragma pack(push,4)");
             Assert.AreEqual(CTokenType.EOF, lexer.Read().Type);
             Assert.AreEqual(4, state.Alignment);
@@ -101,12 +101,12 @@ namespace Reko.UnitTests.Core.Hll.C
         [Test]
         public void CDirectiveLexer_Pack_Push_Pop()
         {
-            Assert.AreEqual(8, state.Alignment);
+            Assert.AreEqual(0, state.Alignment);
             Lex("#pragma pack(push,4)\nx\n#pragma pack(pop)");
             Assert.AreEqual(CTokenType.Id, lexer.Read().Type);
             Assert.AreEqual(4, state.Alignment);
             Assert.AreEqual(CTokenType.EOF, lexer.Read().Type);
-            Assert.AreEqual(8, state.Alignment);
+            Assert.AreEqual(0, state.Alignment);
         }
 
         [Test]

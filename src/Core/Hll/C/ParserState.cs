@@ -34,7 +34,7 @@ namespace Reko.Core.Hll.C
         {
             Typedefs = new HashSet<string>();
             alignments = new Stack<int>();
-            alignments.Push(8);
+            alignments.Push(0); // A value of 0 means 'use the platform default'.
             Typedefs.Add("size_t");
             Typedefs.Add("va_list");
         }

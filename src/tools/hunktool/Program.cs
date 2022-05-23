@@ -17,21 +17,16 @@
  * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
  */
 #endregion
- 
-using System.Collections;
+
+using DocoptNet;
+using Reko.Core;
+using Reko.Core.Configuration;
+using Reko.ImageLoaders.Hunk;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-using Reko.ImageLoaders.Hunk;
-using DocoptNet;
+using System.ComponentModel.Design;
 using System.Globalization;
 using System.IO;
-using Reko.Core;
-using System.ComponentModel.Design;
-using Reko.Core.Configuration;
 
 namespace Reko.Tools.HunkTool
 {

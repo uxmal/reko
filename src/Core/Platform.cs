@@ -680,6 +680,7 @@ namespace Reko.Core
         {
             this.TypeLibraries = new List<TypeLibrary>();
             this.Description = "(Unknown operating environment)";
+            this.StructureMemberAlignment = 8;
         }
 
         public DefaultPlatform(

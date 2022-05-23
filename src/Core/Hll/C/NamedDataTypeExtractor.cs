@@ -224,7 +224,7 @@ namespace Reko.Core.Hll.C
 
         private bool FirstParameterVoid(Argument_v1[] parameters)
         {
-            if (parameters == null || parameters.Length != 1)
+            if (parameters is null || parameters.Length != 1)
                 return false;
             return parameters[0].Type is VoidType_v1;
         }
@@ -261,12 +261,12 @@ namespace Reko.Core.Hll.C
         /// <returns></returns>
         public SerializedKind? GetArgumentKindFromAttributes(string paramType, List<CAttribute>? attrs)
         {
-            if (attrs == null)
+            if (attrs is null)
                 return null;
             SerializedKind? kind = null;
             foreach (var attr in attrs)
             {
-                if (attr.Name.Components == null || attr.Name.Components.Length != 2 ||
+                if (attr.Name.Components is null || attr.Name.Components.Length != 2 ||
                     attr.Name.Components[0] != "reko" || attr.Name.Components[1] != paramType)
                     continue;
                 if (attr.Tokens[0].Type == CTokenType.Register &&
@@ -447,7 +447,7 @@ namespace Reko.Core.Hll.C
                         "Type name {0} not defined.",
                         typeDefName.Name ?? "(null)"));
             }
-            byteSize = type.Accept(symbolTable.Sizer);
+            (byteSize, _) = type.Accept(symbolTable.Sizer);
             return new TypeReference_v1(typeDefName.Name);
         }
 
@@ -470,7 +470,7 @@ namespace Reko.Core.Hll.C
                 if (!complexType.IsForwardDeclaration() && str.Fields == null)
                 {
                     str.Fields = ExpandStructFields(complexType.DeclList).ToArray();
-                    symbolTable.Sizer.SetSize(str);
+                    symbolTable.Sizer.SetSize(str, AlignmentOf(complexType));
                     symbolTable.Types.Add(str);
                     str = new StructType_v1 { Name = str.Name };
                 }
@@ -489,7 +489,7 @@ namespace Reko.Core.Hll.C
                 if (!complexType.IsForwardDeclaration() && un.Alternatives == null)
                 {
                     un.Alternatives = ExpandUnionFields(complexType.DeclList).ToArray();
-                    symbolTable.Sizer.SetSize(un);
+                    symbolTable.Sizer.SetSize(un, AlignmentOf(complexType));
                     if (un.Name != null)
                     {
                         symbolTable.Types.Add(un);
@@ -500,6 +500,14 @@ namespace Reko.Core.Hll.C
             }
             else
                 throw new NotImplementedException();
+        }
+
+        private int AlignmentOf(ComplexTypeSpec c)
+        {
+            if (c.Alignment == 0)
+                return platform.StructureMemberAlignment;
+            else
+                return c.Alignment;
         }
 
         public SerializedType VisitEnum(EnumeratorTypeSpec e)
@@ -541,10 +549,10 @@ namespace Reko.Core.Hll.C
                 foreach (var declarator in decl.FieldDeclarators)
                 {
                     var nt = ntde.GetNameAndType(declarator);
-                    var rawSize = (nt.DataType != null)
+                    var (rawSize, alignment) = (nt.DataType != null)
                         ? nt.DataType.Accept(symbolTable.Sizer)
-                        : 0;
-                    offset = Align(offset, rawSize, 8);     //$BUG: disregards temp. alignment changes. (__declspec(align))
+                        : (0, 1);
+                    offset = Align(offset, alignment, 8);     //$BUG: disregards temp. alignment changes. (__declspec(align))
                     yield return new StructField_v1
                     {
                         Offset = offset,
@@ -573,12 +581,12 @@ namespace Reko.Core.Hll.C
             }
         }
 
-        private int Align(int offset, int size, int maxAlign)
+        private int Align(int offset, int rawAlign, int maxAlign)
         {
-            size = Math.Min(maxAlign, size);
-            if (size == 0)
-                size = maxAlign;
-            return size * ((offset + (size - 1)) / size);
+            rawAlign = Math.Min(maxAlign, rawAlign);
+            if (rawAlign == 0)
+                rawAlign = maxAlign;
+            return rawAlign * ((offset + (rawAlign - 1)) / rawAlign);
         }
 
         public SerializedType? VisitStorageClass(StorageClassSpec storageClassSpec)

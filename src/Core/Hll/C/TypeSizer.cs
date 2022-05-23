@@ -28,19 +28,21 @@ using System.Text;
 namespace Reko.Core.Hll.C
 {
     /// <summary>
-    /// Returns the size of a type in bytes.
+    /// Returns the size and alignment requirement of a type in bytes.
     /// </summary>
-    public class TypeSizer : ISerializedTypeVisitor<int>
+    public class TypeSizer : ISerializedTypeVisitor<(int, int)>
     {
         private readonly IPlatform platform;
         private readonly IDictionary<string, SerializedType> typedefs;
-        private readonly Dictionary<SerializedTaggedType, int> tagSizes;
+        private readonly Dictionary<SerializedTaggedType, (int,int)> tagSizes;
+        private int structureAlignment;
 
         public TypeSizer(IPlatform platform, IDictionary<string, SerializedType> typedefs)
         {
             this.platform = platform;
             this.typedefs = typedefs;
-            this.tagSizes = new Dictionary<SerializedTaggedType, int>(new SerializedTypeComparer());
+            this.tagSizes = new Dictionary<SerializedTaggedType, (int,int)>(new SerializedTypeComparer());
+            this.structureAlignment = platform.StructureMemberAlignment;
         }
 
         private int Align(int size)
@@ -48,114 +50,144 @@ namespace Reko.Core.Hll.C
             return size;
         }
 
-        public int VisitCode(CodeType_v1 code)
+        public (int, int) VisitCode(CodeType_v1 code)
         {
             throw new NotImplementedException();
         }
 
-        public int VisitPrimitive(PrimitiveType_v1 primitive)
+        public (int, int) VisitPrimitive(PrimitiveType_v1 primitive)
         {
-            return primitive.ByteSize;
+            var size = primitive.ByteSize;
+            return (size, size);
         }
 
-        public int VisitPointer(PointerType_v1 pointer)
+        public (int, int) VisitPointer(PointerType_v1 pointer)
         {
-            return platform.PointerType.Size;
+            var ptrSize = platform.PointerType.Size;
+            return (ptrSize, ptrSize);
         }
 
-        public int VisitReference(ReferenceType_v1 pointer)
+        public (int, int) VisitReference(ReferenceType_v1 pointer)
         {
-            return platform.PointerType.Size;
+            var refSize = platform.PointerType.Size;
+            return (refSize, refSize);
         }
 
-        public int VisitMemberPointer(MemberPointer_v1 memptr)
+        public (int, int) VisitMemberPointer(MemberPointer_v1 memptr)
         {
-            return platform.FramePointerType.Size;
+            var mpSize = platform.FramePointerType.Size;
+            return (mpSize, mpSize);
         }
 
-        public int VisitArray(ArrayType_v1 array)
+        public (int, int) VisitArray(ArrayType_v1 array)
         {
-            return Align(array.ElementType!.Accept(this)) * array.Length;
+            var (elemSize, elemAlign) = array.ElementType!.Accept(this);
+            return (Align(elemSize) * array.Length, elemAlign);
         }
 
-        public int VisitEnum(SerializedEnumType e)
+        public (int, int) VisitEnum(SerializedEnumType e)
         {
             //$BUGBUG: at most sizeof int according to the C lang def, but varies widely among compilers.
-            return 4;
+            return (4, 4);
         }
 
-        public int VisitSignature(SerializedSignature signature)
+        public (int, int) VisitSignature(SerializedSignature signature)
         {
-            return 0;
+            return (0, 1);
         }
 
-        public int VisitString(StringType_v2 str)
+        public (int, int) VisitString(StringType_v2 str)
         {
-            return platform.PointerType.Size;
+            var pstrSize = platform.PointerType.Size;
+            return (pstrSize, pstrSize);
         }
 
-        public int VisitStructure(StructType_v1 structure)
+        public (int, int) VisitStructure(StructType_v1 structure)
         {
             var size = 0;
+            var alignment = 1;
             if (structure.Fields == null)
             {
-                this.tagSizes.TryGetValue(structure, out size);
-                return size;
+                this.tagSizes.TryGetValue(structure, out var sizeAlign);
+                return sizeAlign;
             }
             foreach (var field in structure.Fields)
             {
-                field.Offset = size;
-                size += field.Type!.Accept(this);
+                var (fieldSize, fieldAlignment) = field.Type!.Accept(this);
+                field.Offset = AlignFieldOffset(size, fieldAlignment);
+                size = field.Offset + fieldSize;
+                alignment = Math.Max(alignment, fieldAlignment);
             }
             structure.ByteSize = size;
-            return size;
+            return (size, alignment);
         }
 
-        public int VisitTypedef(SerializedTypedef typedef)
+        private int AlignFieldOffset(int offset, int preferredAlignment)
+        {
+            int alignment;
+            if (preferredAlignment < this.structureAlignment)
+            {
+                var floor = 1 << System.Numerics.BitOperations.Log2((uint) preferredAlignment);
+                if (floor < preferredAlignment)
+                    floor <<= 1;
+                alignment = floor;
+            }
+            else
+            {
+                alignment = this.structureAlignment;
+            }
+            return alignment * ((offset + (alignment - 1)) / alignment);
+        }
+
+        public (int, int) VisitTypedef(SerializedTypedef typedef)
         {
             //int size = typedef.DataType.Accept(this);
             //namedTypeSizes[typedef.Name] = size;
             //return size;
 
-            int size = typedef.DataType!.Accept(this);
+            var size = typedef.DataType!.Accept(this);
             return size;
         }
 
-        public int VisitTypeReference(TypeReference_v1 typeReference)
+        public (int, int) VisitTypeReference(TypeReference_v1 typeReference)
         {
             if (!typedefs.TryGetValue(typeReference.TypeName!, out var dataType))
             {
                 Debug.WriteLine("Unable to determine size of {0}", typeReference.TypeName!);
-                return 4;
+                return (4, 4);
             }
             return dataType.Accept(this);
         }
 
-        public int VisitUnion(UnionType_v1 union)
+        public (int, int) VisitUnion(UnionType_v1 union)
         {
             if (union.Alternatives == null)
                 return tagSizes[union];
             var size = 0;
+            var alignment = 1;
             foreach (var field in union.Alternatives)
             {
-                size = Math.Max(size, field.Type!.Accept(this));
+                var (fieldSize, fieldAlignment) = field.Type!.Accept(this);
+                size = Math.Max(size, fieldSize);
+                alignment = Math.Max(size, fieldAlignment);
             }
             union.ByteSize = size;
-            return size;
+            return (size, alignment);
         }
 
-        public int VisitVoidType(VoidType_v1 voidType)
+        public (int, int) VisitVoidType(VoidType_v1 voidType)
         {
-            return 0;
+            return (0,1);
         }
 
-        public int VisitTemplate(SerializedTemplate template)
+        public (int, int) VisitTemplate(SerializedTemplate template)
         {
             throw new NotImplementedException();
         }
 
-        public void SetSize(SerializedTaggedType str)
+        public void SetSize(SerializedTaggedType str, int structureAlignment)
         {
+            this.structureAlignment = structureAlignment;
             var size = str.Accept(this);
             tagSizes[str] = size;
         }

@@ -1071,6 +1071,30 @@ namespace Reko.Tools.C2Xml.UnitTests
                 "[[reko::convention(amd64kernel)]] int read(int fd, char * buffer, size_t length);",
                 sExp, "");
         }
+
+        [Test(Description="https://github.com/uxmal/reko/issues/1178")]
+        public void C2x_struct_alignment()
+        {
+            var sExp =
+@"<?xml version=""1.0"" encoding=""utf-16""?>
+<library xmlns=""http://schemata.jklnet.org/Decompiler"">
+  <Types>
+    <struct name=""test"" size=""8"">
+      <field offset=""0"" name=""c"">
+        <prim domain=""Character"" size=""1"" />
+      </field>
+      <field offset=""4"" name=""i"">
+        <prim domain=""SignedInt"" size=""4"" />
+      </field>
+    </struct>
+  </Types>
+</library>";
+            RunTest(
+@"struct test {
+    char c;
+    int i;
+};", sExp, "");
+        }
     }
 }
 
