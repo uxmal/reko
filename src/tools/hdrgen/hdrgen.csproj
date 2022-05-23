@@ -4,12 +4,15 @@
     <TargetFramework>net5.0</TargetFramework>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <RootNamespace>Reko.Tools.HdrGen</RootNamespace>
+	<StartupObject>Reko.Tools.HdrGen.HeaderGenerator</StartupObject>
     <AssemblyName>hdrgen</AssemblyName>
     <OutputType>Exe</OutputType>
     <Configurations>Debug;Release</Configurations>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="NUnit" Version="3.13.2" />
+    <PackageReference Include="NUnit3TestAdapter" Version="4.0.0" />
+    <PackageReference Include="Microsoft.NET.Test.SDK" Version="16.11.0" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Core\Core.csproj" />
