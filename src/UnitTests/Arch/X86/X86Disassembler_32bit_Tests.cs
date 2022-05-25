@@ -166,7 +166,7 @@ namespace Reko.UnitTests.Arch.X86
         [Test]
         public void X86Dis_cvttsd2si()
         {
-            AssertCode32("cvttsd2si\teax,xmm3", 0xF2, 0x0F, 0x2C, 0xC3);
+            AssertCode32("cvttsd2si\teax,xmm3", "F2 0F 2C C3");
         }
 
         [Test]
@@ -482,7 +482,7 @@ namespace Reko.UnitTests.Arch.X86
         {
             AssertCode32("stmxcsr\tdword ptr [ebp-0Ch]", 0x0f, 0xae, 0x5d, 0xf4);
             AssertCode32("palignr\txmm3,xmm1,0h", 0x66, 0x0f, 0x3a, 0x0f, 0xd9, 0x00);
-            AssertCode32("movq\t[edi],xmm1", 0x66, 0x0f, 0xd6, 0x0f);
+            AssertCode32("movq\tqword ptr [edi],xmm1", 0x66, 0x0f, 0xd6, 0x0f);
             AssertCode32("ldmxcsr\tdword ptr [ebp+8h]", 0x0F, 0xAE, 0x55, 0x08);
             AssertCode32("pcmpistri\txmm0,[edi-10h],40h", 0x66, 0x0F, 0x3A, 0x63, 0x47, 0xF0, 0x40);
         }
@@ -635,7 +635,7 @@ namespace Reko.UnitTests.Arch.X86
         [Test]
         public void X86dis_pcmpgtb()
         {
-            AssertCode32("pcmpgtb\tmm0,dword ptr [edx+42h]", 0x0F, 0x64, 0x42, 0x42);
+            AssertCode32("pcmpgtb\tmm0,[edx+42h]", 0x0F, 0x64, 0x42, 0x42);
         }
 
         [Test]
@@ -951,6 +951,12 @@ namespace Reko.UnitTests.Arch.X86
         }
 
         [Test]
+        public void X86dis_str()
+        {
+            AssertCode32("str\teax", "0F 00 C8");
+        }
+
+        [Test]
         public void X86Dis_StringOps()
         {
             X86TextAssembler asm = new X86TextAssembler(arch);
@@ -1053,7 +1059,7 @@ namespace Reko.UnitTests.Arch.X86
         public void X86dis_vpmovsxbw()
         {
             AssertCode32("illegal", 0x0F, 0x38, 0x30, 0x42, 0x42);
-            AssertCode32("vpmovzxbw\txmm0,qword ptr [edx+42h]", 0x66, 0x0F, 0x38, 0x30, 0x42, 0x42);
+            AssertCode32("pmovzxbw\txmm0,qword ptr [edx+42h]", 0x66, 0x0F, 0x38, 0x30, 0x42, 0x42);
         }
 
         [Test]
@@ -1117,10 +1123,7 @@ namespace Reko.UnitTests.Arch.X86
         [Test]
         public void X86Dis_xsave()
         {
-            AssertCode32("xsave\tbyte ptr [edi]", 0x0f, 0xae, 0x27);
+            AssertCode32("xsave\t[edi]", 0x0f, 0xae, 0x27);
         }
-
-        
-
     }
 }

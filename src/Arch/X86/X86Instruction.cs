@@ -21,6 +21,7 @@
 using Reko.Core;
 using Reko.Core.Types;
 using Reko.Core.Machine;
+using System;
 
 namespace Reko.Arch.X86
 {
@@ -36,6 +37,7 @@ namespace Reko.Arch.X86
         public byte OpMask { get; set; }        // EVEX Mask register to use.
         public byte MergingMode { get; set; }   // EVEX merging mode
         public bool Broadcast { get; set; }     // EVEX broadcast flag
+        public EvexRoundMode RoundMode { get; set; }
         //$PERF: is it worth it to pack the rarely used bit- and byte-sized fields into a single word?
 
 		public X86Instruction(Mnemonic mnemonic, InstrClass iclass, DataType dataWidth, PrimitiveType addrWidth, params MachineOperand [] ops)

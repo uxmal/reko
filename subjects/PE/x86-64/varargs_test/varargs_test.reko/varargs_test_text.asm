@@ -1123,7 +1123,7 @@ l0000000140001B33:
 
 l0000000140001B39:
 	mov	ecx,[rax+20h]
-	lea	eax,[rcx+0E66CFAE0h]
+	lea	eax,[rcx-19930520h]
 	cmp	eax,2h
 	jbe	140001B56h
 

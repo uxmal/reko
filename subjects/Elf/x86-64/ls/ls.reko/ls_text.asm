@@ -4496,7 +4496,7 @@ l00000000004061D1:
 l00000000004061F3:
 	mov	ecx,[rax]
 	add	rax,4h
-	lea	edx,[rcx+0FEFEFEFFh]
+	lea	edx,[rcx-1010101h]
 	not	ecx
 	and	edx,ecx
 	and	edx,80808080h
@@ -5578,7 +5578,7 @@ l0000000000406EEC:
 	mov	r8,rdi
 
 l0000000000406EEF:
-	lea	rdi,[rdx+0FF0F3D54h]
+	lea	rdi,[rdx-0F0C2ACh]
 	cmp	rdi,rsi
 	jge	407268h
 
@@ -5732,7 +5732,7 @@ l0000000000407085:
 l00000000004070B0:
 	mov	ecx,[rdx]
 	add	rdx,4h
-	lea	eax,[rcx+0FEFEFEFFh]
+	lea	eax,[rcx-1010101h]
 	not	ecx
 	and	eax,ecx
 	and	eax,80808080h
@@ -7611,7 +7611,7 @@ l0000000000408AA1:
 l0000000000408AC0:
 	mov	ecx,[rdx]
 	add	rdx,4h
-	lea	eax,[rcx+0FEFEFEFFh]
+	lea	eax,[rcx-1010101h]
 	not	ecx
 	and	eax,ecx
 	and	eax,80808080h
@@ -10099,7 +10099,7 @@ l000000000040B496:
 l000000000040B4A3:
 	subss	xmm0,[0000000000415F0C]                              ; [rip+0000AA61]
 	mov	rax,8000000000000000h
-	cvttss2si	r15d,xmm0
+	cvttss2si	r15,xmm0
 	xor	r15,rax
 	nop	dword ptr [rax]
 
@@ -10165,7 +10165,7 @@ l000000000040B548:
 000000000040B561    0F 1F 80 00 00 00 00                          .......        
 
 l000000000040B568:
-	cvttss2si	r15d,xmm0
+	cvttss2si	r15,xmm0
 	jmp	40B4C0h
 000000000040B572       66 0F 1F 44 00 00                           f..D..        
 
@@ -10341,7 +10341,7 @@ l000000000040B749:
 l000000000040B756:
 	subss	xmm0,[0000000000415F0C]                              ; [rip+0000A7AE]
 	mov	rax,8000000000000000h
-	cvttss2si	esi,xmm0
+	cvttss2si	rsi,xmm0
 	xor	rsi,rax
 
 l000000000040B770:
@@ -10438,7 +10438,7 @@ l000000000040B870:
 000000000040B87D                                        0F 1F 00              ...
 
 l000000000040B880:
-	cvttss2si	esi,xmm0
+	cvttss2si	rsi,xmm0
 	jmp	40B770h
 000000000040B88A                               66 0F 1F 44 00 00           f..D..
 
@@ -10615,7 +10615,7 @@ l000000000040BA2A:
 	jnc	40BAC8h
 
 l000000000040BA37:
-	cvttss2si	esi,xmm0
+	cvttss2si	rsi,xmm0
 
 l000000000040BA3C:
 	mov	rdi,rbx
@@ -10666,7 +10666,7 @@ l000000000040BAB0:
 l000000000040BAC8:
 	subss	xmm0,[0000000000415F0C]                              ; [rip+0000A43C]
 	mov	rax,8000000000000000h
-	cvttss2si	esi,xmm0
+	cvttss2si	rsi,xmm0
 	xor	rsi,rax
 	jmp	40BA3Ch
 
@@ -10829,7 +10829,7 @@ l000000000040BC66:
 	jnc	40BD10h
 
 l000000000040BC73:
-	cvttss2si	esi,xmm0
+	cvttss2si	rsi,xmm0
 
 l000000000040BC78:
 	mov	rdi,rbx
@@ -10891,7 +10891,7 @@ l000000000040BD08:
 l000000000040BD10:
 	subss	xmm0,[0000000000415F0C]                              ; [rip+0000A1F4]
 	mov	rax,8000000000000000h
-	cvttss2si	esi,xmm0
+	cvttss2si	rsi,xmm0
 	xor	rsi,rax
 	jmp	40BC78h
 
@@ -16903,7 +16903,7 @@ l0000000000411B07:
 l0000000000411B0A:
 	mov	ecx,[rdx]
 	add	rdx,4h
-	lea	eax,[rcx+0FEFEFEFFh]
+	lea	eax,[rcx-1010101h]
 	not	ecx
 	and	eax,ecx
 	and	eax,80808080h
@@ -16928,7 +16928,7 @@ l0000000000411B3B:
 l0000000000411B44:
 	mov	ecx,[r10]
 	add	r10,4h
-	lea	eax,[rcx+0FEFEFEFFh]
+	lea	eax,[rcx-1010101h]
 	not	ecx
 	and	eax,ecx
 	and	eax,80808080h

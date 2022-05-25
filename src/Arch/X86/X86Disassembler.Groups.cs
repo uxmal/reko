@@ -37,7 +37,7 @@ namespace Reko.Arch.X86
                 Grp1[6] = Instr386(Mnemonic.xor);
                 Grp1[7] = Instr(Mnemonic.cmp);
 
-                Grp1A[0] = Instr(Mnemonic.pop, Ev);
+                Grp1A[0] = Instr(Mnemonic.pop, EV);
                 Grp1A[1] = s_invalid;
                 Grp1A[2] = s_invalid;
                 Grp1A[3] = s_invalid;
@@ -86,18 +86,18 @@ namespace Reko.Arch.X86
                 Grp5[5] = Instr(Mnemonic.jmp, InstrClass.Transfer, Ep);
                 Grp5[6] = Amd64Instr(
                         Instr(Mnemonic.push, Ev),
-                        Instr(Mnemonic.push, Eq));
+                        Instr(Mnemonic.push, EV));
                 Grp5[7] = s_invalid;
 
                 // 0F 00
                 Grp6[0] = MemReg(
-                        Instr(Mnemonic.sldt, InstrClass.Linear | InstrClass.Privileged, Ms),
+                        Instr(Mnemonic.sldt, InstrClass.Linear | InstrClass.Privileged, Mw),
                         Instr(Mnemonic.sldt, InstrClass.Linear | InstrClass.Privileged, Rv));
                 Grp6[1] = MemReg(
-                        Instr(Mnemonic.str, InstrClass.Linear | InstrClass.Privileged, Ew),
-                        Instr(Mnemonic.str, InstrClass.Linear | InstrClass.Privileged, Rw));
+                        Instr(Mnemonic.str, InstrClass.Linear | InstrClass.Privileged, Mw),
+                        Instr(Mnemonic.str, InstrClass.Linear | InstrClass.Privileged, Rv));
                 Grp6[2] = MemReg(
-                        Instr(Mnemonic.lldt, InstrClass.Linear | InstrClass.Privileged, Ms),
+                        Instr(Mnemonic.lldt, InstrClass.Linear | InstrClass.Privileged, Mw),
                         Instr(Mnemonic.lldt, InstrClass.Linear | InstrClass.Privileged, Rw));
                 Grp6[3] = Instr(Mnemonic.ltr, InstrClass.Linear | InstrClass.Privileged, Ew);
                 Grp6[4] = Instr(Mnemonic.verr, Ew);
@@ -284,24 +284,32 @@ namespace Reko.Arch.X86
                 Grp14[4] = s_invalid;
                 Grp14[5] = s_invalid;
                 Grp14[6] = new PrefixedDecoder(
-                    Instr(Mnemonic.psllq, Nq,Ib),
-                    VexInstr(Mnemonic.psllq, Mnemonic.vpsllq, Hx,Ux,Ib));
+                    Instr(Mnemonic.psllq, Nq, Ib),
+                    EvexInstr(
+                        Instr(Mnemonic.psllq, Wx, Ib),
+                        Instr(Mnemonic.vpsllq, Hx, Ux, Ib),
+                        Instr(Mnemonic.vpsllq, Hx, Wx, Ib)));
                 Grp14[7] = new PrefixedDecoder(
                         s_invalid,
                         VexInstr(Mnemonic.pslldq, Mnemonic.vpslldq, Hx,Ux,Ib));
 
                 // 0F AE
-                Grp15[0] = new Group7Decoder(Instr(Mnemonic.fxsave));
-                Grp15[1] = new Group7Decoder(Instr(Mnemonic.fxrstor));
+                Grp15[0] = new Group7Decoder(Instr(Mnemonic.fxsave, Md));
+                Grp15[1] = new Group7Decoder(Instr(Mnemonic.fxrstor, Md));
                 Grp15[2] = VexInstr(Mnemonic.ldmxcsr, Mnemonic.vldmxcsr, Md);
                 Grp15[3] = VexInstr(Mnemonic.stmxcsr, Mnemonic.vstmxcsr, Md);
 
-                Grp15[4] = Amd64Instr(
-                    Instr(Mnemonic.xsave, Mb),
-                    Instr(Mnemonic.xsave64, Mb));
+                Grp15[4] = VexInstr(
+                    new PrefixedDecoder(
+                        dec: Instr(Mnemonic.xsave, Md),
+                        decWide: Instr(Mnemonic.xsave64, Mq)),
+                    s_invalid);
                 Grp15[5] = new Group7Decoder(
-                    Instr(Mnemonic.xrstor, Md),
-
+                    VexInstr(
+                        new PrefixedDecoder(
+                            dec:Instr(Mnemonic.xrstor, Md),
+                            decWide: Instr(Mnemonic.xrstor64, Mq)),
+                        s_invalid),
                     Instr(Mnemonic.lfence),
                     Instr(Mnemonic.lfence),
                     Instr(Mnemonic.lfence),
@@ -312,8 +320,11 @@ namespace Reko.Arch.X86
                     Instr(Mnemonic.lfence),
                     Instr(Mnemonic.lfence));
                 Grp15[6] = new Group7Decoder(
-                    Instr(Mnemonic.xsaveopt, Md),
-
+                    VexInstr(
+                        new PrefixedDecoder(
+                            dec: Instr(Mnemonic.xsaveopt, Md),
+                            decWide: Instr(Mnemonic.xsaveopt64, Mq)),
+                        s_invalid),
                     Instr(Mnemonic.mfence),
                     Instr(Mnemonic.mfence),
                     Instr(Mnemonic.mfence),
@@ -324,7 +335,7 @@ namespace Reko.Arch.X86
                     Instr(Mnemonic.mfence),
                     Instr(Mnemonic.mfence));
                 Grp15[7] = new Group7Decoder(
-                    Instr(Mnemonic.clflush, Md),
+                    Instr(Mnemonic.clflush, Mb),
 
                     Instr(Mnemonic.sfence),
                     Instr(Mnemonic.sfence),

@@ -167,10 +167,13 @@ namespace Reko.Arch.X86
                 case Mnemonic.cmpsb: RewriteStringInstruction(); break;
                 case Mnemonic.cmpsd:
                 case Mnemonic.vcmpsd: RewriteCmpsd(PrimitiveType.Real64); break;
+                case Mnemonic.cmpeqsd:
                 case Mnemonic.vcmpeqsd: RewriteCmpsd(PrimitiveType.Real64, m.FEq); break;
+                case Mnemonic.cmplesd:
                 case Mnemonic.vcmplesd: RewriteCmpsd(PrimitiveType.Real64, m.FLe); break;
+                case Mnemonic.cmpnlesd:
                 case Mnemonic.vcmpnlesd: RewriteCmpsd(PrimitiveType.Real64, m.FGt); break;
-                case Mnemonic.cmpss:
+                case Mnemonic.cmpss: RewriteCmpsd(PrimitiveType.Real32); break;
                 case Mnemonic.cmpnltss: RewriteCmpsd(PrimitiveType.Real32, m.FGe); break;
                 case Mnemonic.vcmpss: RewriteCmpsd(PrimitiveType.Real32); break;
                 case Mnemonic.vcmpnltss: RewriteCmpsd(PrimitiveType.Real32, m.FGe); break;
@@ -473,6 +476,7 @@ namespace Reko.Arch.X86
                 case Mnemonic.vpinsrd: RewritePinsr(true, pinsr_intrinsic, PrimitiveType.Word32); break;
                 case Mnemonic.pinsrw: RewritePinsr(false, pinsr_intrinsic, PrimitiveType.Word16); break;
                 case Mnemonic.vpinsrw: RewritePinsr(true, pinsr_intrinsic, PrimitiveType.Word16); break;
+                case Mnemonic.pmaddubsw: RewritePmaddUbSw(false, pmaddubsw_intrinsic); break;
                 case Mnemonic.vpmaddubsw: RewritePmaddUbSw(true, pmaddubsw_intrinsic); break;
                 case Mnemonic.pmaddwd: RewritePackedBinop(false, pmaddwd_intrinsic, PrimitiveType.Word16, PrimitiveType.Word32); break;
                 case Mnemonic.pmaxsw: RewritePackedBinop(false, pmaxs_intrinsic, PrimitiveType.Int16); break;
@@ -541,6 +545,7 @@ namespace Reko.Arch.X86
                 case Mnemonic.push: RewritePush(); break;
                 case Mnemonic.pusha: RewritePusha(); break;
                 case Mnemonic.pushf: RewritePushf(); break;
+                case Mnemonic.pushw: RewritePush(PrimitiveType.Word16, SrcOp(0)); break;
                 case Mnemonic.pxor: RewritePxor(false); break;
                 case Mnemonic.vpxor: RewritePxor(true); break;
                 case Mnemonic.rcl: RewriteRotation(CommonOps.RolC, true, true); break;

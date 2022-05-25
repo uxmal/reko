@@ -95,20 +95,16 @@ namespace Reko.Arch.X86
 
         public class VexLongDecoder : Decoder
         {
-            private readonly Decoder notLongDecoder;
-            private readonly Decoder longDecoder;
+            private readonly Decoder[] decoders;
 
-            public VexLongDecoder(Decoder notLongDecoder, Decoder longDecoder)
+            public VexLongDecoder(params Decoder[] decoders)
             {
-                this.notLongDecoder = notLongDecoder;
-                this.longDecoder = longDecoder;
+                this.decoders = decoders;
             }
 
             public override X86Instruction Decode(uint op, X86Disassembler disasm)
             {
-                var decoder = disasm.decodingContext.VexLongCode != 0
-                    ? longDecoder
-                    : notLongDecoder;
+                var decoder = decoders[disasm.decodingContext.VexLongCode];
                 return decoder.Decode(op, disasm);
             }
         }
@@ -375,6 +371,7 @@ namespace Reko.Arch.X86
                 {
                     return disasm.CreateInvalidInstruction();
                 }
+                TraceEvex(ctx, 1, op2);
                 return decoders0F[op2].Decode(op2, disasm);
             }
         }
@@ -400,20 +397,20 @@ namespace Reko.Arch.X86
                 var ctx = disasm.decodingContext;
                 if (ctx.RegisterExtension.ByteValue != 0 || ctx.SizeOverridePrefix || ctx.F2Prefix || ctx.F3Prefix)
                     return disasm.CreateInvalidInstruction();
-                if (!disasm.TryReadByte(out byte evex1))
+                if (!disasm.TryReadByte(out byte vex1))
                     return disasm.CreateInvalidInstruction();
-                var rxb = evex1 >> 5;
-                var mmmmm = evex1 & 0x1F;
+                var rxb = vex1 >> 5;
+                var mmmmm = vex1 & 0x1F;
 
-                if (!disasm.TryReadByte(out byte evex2))
+                if (!disasm.TryReadByte(out byte vex2))
                     return disasm.CreateInvalidInstruction();
-                var w = evex2 >> 7;
-                var vvvv = (~evex2 >> 3) & 0xF;
-                var pp = evex2 & 0x3;
+                var w = vex2 >> 7;
+                var vvvv = (~vex2 >> 3) & 0xF;
+                var pp = vex2 & 0x3;
 
                 ctx.IsVex = true;
                 ctx.VexRegister = (byte) vvvv;
-                ctx.VexLongCode = (byte)((evex2 & 4) >> 2);
+                ctx.VexLongCode = (byte)((vex2 & 4) >> 2);
                 ctx.RegisterExtension.FlagWideValue = w != 0;
                 ctx.RegisterExtension.FlagTargetModrmRegister = (rxb & 4) == 0;
                 ctx.RegisterExtension.FlagTargetSIBIndex = (rxb & 2) == 0;
@@ -430,9 +427,10 @@ namespace Reko.Arch.X86
                 case 3: decoders = decoders0F3A; break;
                 default: return disasm.CreateInvalidInstruction();
                 }
-                if (!disasm.TryReadByte(out byte evex3))
+                if (!disasm.TryReadByte(out byte vex3))
                     return disasm.CreateInvalidInstruction();
-                return decoders[evex3].Decode(evex3, disasm);
+                TraceEvex(ctx, mmmmm, vex3);
+                return decoders[vex3].Decode(vex3, disasm);
             }
         }
 
@@ -488,14 +486,13 @@ namespace Reko.Arch.X86
                 ctx.IsEvex = true;
                 ctx.VexRegister = (byte) vvvv;
                 ctx.VexLongCode = (byte)((p2 >> 5) & 3);
-                if (ctx.VexLongCode == 0b11)    // 0b11 is reserved.
-                    return disasm.CreateInvalidInstruction();
                 ctx.OpMask = (byte)(p2 & 7);
                 ctx.RegisterExtension.FlagWideValue = w != 0;
                 ctx.RegisterExtension.FlagTargetModrmRegister = (rxb & 4) == 0;
                 ctx.RegisterExtension.FlagTargetSIBIndex = (rxb & 2) == 0;
                 ctx.RegisterExtension.FlagTargetModrmRegOrMem = (rxb & 1) == 0;
                 ctx.EvexR = !Bits.IsBitSet(p0, 4);
+                ctx.EvexX = !Bits.IsBitSet(p0, 6);
                 ctx.EvexMergeMode = p2 >> 7;
                 ctx.EvexBroadcast = (p2 & 0x10) != 0;
                 ctx.F2Prefix = pp == 3;
@@ -511,6 +508,7 @@ namespace Reko.Arch.X86
                 }
                 if (!disasm.TryReadByte(out byte op2))
                     return disasm.CreateInvalidInstruction();
+                TraceEvex(ctx, mm, op2);
                 return decoders[op2].Decode(op2, disasm);
             }
         }
@@ -624,7 +622,9 @@ namespace Reko.Arch.X86
             private readonly Decoder decoder66;
             private readonly Decoder decoder66Wide;
             private readonly Decoder decoderF3;
+            private readonly Decoder decoderF3Wide;
             private readonly Decoder decoderF2;
+            private readonly Decoder decoderF2Wide;
 
             public PrefixedDecoder(
                 Decoder? dec = null,
@@ -633,51 +633,55 @@ namespace Reko.Arch.X86
                 Decoder? decF2 = null,
                 Decoder? decWide = null,
                 Decoder? dec66Wide = null,
-                InstrClass iclass = InstrClass.Linear)
+                Decoder? decF3Wide = null,
+                Decoder? decF2Wide = null)
             {
                 this.decoderBase = dec ?? InstructionSet.s_invalid;
                 this.decoderWide = decWide ?? decoderBase;
                 this.decoder66 = dec66 ?? InstructionSet.s_invalid;
                 this.decoder66Wide = dec66Wide ?? decoder66;
                 this.decoderF3 = decF3 ?? InstructionSet.s_invalid;
+                this.decoderF3Wide = decF3Wide ?? decoderF3;
                 this.decoderF2 = decF2 ?? InstructionSet.s_invalid;
+                this.decoderF2Wide = decF2Wide ?? decoderF2;
             }
 
-            public override X86Instruction Decode(uint op, X86Disassembler disasm)
+            public override X86Instruction Decode(uint op, X86Disassembler dasm)
             {
-                if (disasm.decodingContext.F2Prefix)
+                bool isWide = (dasm.isRegisterExtensionEnabled &&
+                               dasm.decodingContext.RegisterExtension.FlagWideValue);
+
+                if (dasm.decodingContext.F2Prefix)
                 {
-                    disasm.decodingContext.F2Prefix = false;
-                    disasm.decodingContext.F3Prefix = false;
-                    var instr = decoderF2.Decode(op, disasm);
+                    dasm.decodingContext.F2Prefix = false;
+                    dasm.decodingContext.F3Prefix = false;
+                    var instr = (isWide ? decoderF2Wide : decoderF2).Decode(op, dasm);
                     return instr;
                 }
-                else if (disasm.decodingContext.F3Prefix)
+                else if (dasm.decodingContext.F3Prefix)
                 {
-                    disasm.decodingContext.F2Prefix = false;
-                    disasm.decodingContext.F3Prefix = false;
-                    var instr = decoderF3.Decode(op, disasm);
+                    dasm.decodingContext.F2Prefix = false;
+                    dasm.decodingContext.F3Prefix = false;
+                    var instr = (isWide ? decoderF3Wide : decoderF3).Decode(op, dasm);
                     return instr;
                 }
-                else if (disasm.decodingContext.SizeOverridePrefix)
+                else if (dasm.decodingContext.SizeOverridePrefix)
                 {
-                    if (disasm.isRegisterExtensionEnabled && disasm.decodingContext.RegisterExtension.FlagWideValue)
+                    if (isWide)
                     {
-                        disasm.decodingContext.dataWidth = PrimitiveType.Word64;
-                        return decoder66Wide.Decode(op, disasm);
+                        dasm.decodingContext.dataWidth = PrimitiveType.Word64;
+                        return decoder66Wide.Decode(op, dasm);
                     }
                     else
                     {
-                        disasm.decodingContext.dataWidth = disasm.defaultDataWidth;
-                        return decoder66.Decode(op, disasm);
+                        dasm.decodingContext.dataWidth = dasm.defaultDataWidth;
+                        return decoder66.Decode(op, dasm);
                     }
                 }
                 else
                 {
-                    if (disasm.isRegisterExtensionEnabled && disasm.decodingContext.RegisterExtension.FlagWideValue)
-                        return decoderWide.Decode(op, disasm);
-                    else
-                        return this.decoderBase.Decode(op, disasm);
+                    var instr = (isWide ? decoderWide : decoderBase).Decode(op, dasm);
+                    return instr;
                 }
             }
         }

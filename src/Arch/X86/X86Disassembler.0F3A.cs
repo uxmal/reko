@@ -45,10 +45,24 @@ namespace Reko.Arch.X86
                 d[0x06] = new PrefixedDecoder(dec66: VexInstr(Mnemonic.vperm2f128, Vqq,Hqq,Wqq,Ib));
                 d[0x07] = s_invalid;
 
-                d[0x08] = new PrefixedDecoder(dec66: VexInstr(Mnemonic.roundps, Mnemonic.vroundps, Vx,Wx,Ib));
-                d[0x09] = new PrefixedDecoder(dec66: VexInstr(Mnemonic.roundpd, Mnemonic.vroundpd, Vx,Wx,Ib));
-                d[0x0A] = new PrefixedDecoder(dec66: VexInstr(Mnemonic.roundss, Mnemonic.vroundss, Vss,Wss,Ib));
-                d[0x0B] = new PrefixedDecoder(dec66: VexInstr(Mnemonic.roundsd, Mnemonic.vroundsd, Vsd,Wsd,Ib));
+                d[0x08] = new PrefixedDecoder(dec66: EvexInstr(
+                    Instr(Mnemonic.roundps, Vx,Ib),
+                    Instr(Mnemonic.vroundps, Vx,Wx,Ib),
+                    MemReg(
+                        Instr(Mnemonic.vrndscaleps, Vx,Md,Sae,Ib),
+                        Instr(Mnemonic.vrndscaleps, Vx,WBx_q,Sae,Ib))));
+                d[0x09] = new PrefixedDecoder(dec66: EvexInstr(
+                    Instr(Mnemonic.roundpd, Vx,Ib),
+                    Instr(Mnemonic.vroundpd, Vx,Wx,Ib),
+                    Instr(Mnemonic.vrndscalepd, Vx,WBx_q,Sae,Ib)));
+                d[0x0A] = new PrefixedDecoder(dec66: EvexInstr(
+                    Instr(Mnemonic.roundss, Vss,Wss,Ib),
+                    Instr(Mnemonic.vroundss, Vss,Wss,Ib),
+                    Instr(Mnemonic.vrndscaless, Vss,Wss,Sae,Ib)));
+                d[0x0B] = new PrefixedDecoder(dec66: EvexInstr(
+                    Instr(Mnemonic.roundsd, Vsd,Ib),
+                    Instr(Mnemonic.vroundsd, Vsd,Wsd,Ib),
+                    Instr(Mnemonic.vrndscalesd, Vsd,Wsd,Sae,Ib)));
 
                 d[0x0C] = new PrefixedDecoder(dec66: VexInstr(Mnemonic.blendps, Mnemonic.vblendps, Vx,Hx,Wx,Ib));
                 d[0x0D] = new PrefixedDecoder(dec66: VexInstr(Mnemonic.blendpd, Mnemonic.vblendpd, Vx,Hx,Wx,Ib));
@@ -73,7 +87,19 @@ namespace Reko.Arch.X86
                     bit64: VexInstr(Mnemonic.pextrq, Mnemonic.vpextrq, Ey,Vdq,Ib)));
                 d[0x17] = new PrefixedDecoder(dec66: VexInstr(Mnemonic.extractps, Mnemonic.vextractps, Ed,Vdq,Ib));
 
-                d[0x18] = new PrefixedDecoder(dec66: VexInstr(Mnemonic.vinsertf128, Vqq,Hqq,Wqq,Ib));
+                d[0x18] = new PrefixedDecoder(
+                    dec66: EvexInstr(
+                        s_invalid,
+                        Instr(Mnemonic.vinsertf128, Vqq,Hqq,Wqq,Ib),
+                        VexLong(
+                            s_invalid,
+                            Instr(Mnemonic.vinsertf32x4, Vx,Hx,Wdq,Ib))),
+                    dec66Wide: EvexInstr(
+                        s_invalid,
+                        Instr(Mnemonic.vinsertf128, Vqq,Hqq,Wqq,Ib),
+                        VexLong(
+                            s_invalid,
+                            Instr(Mnemonic.vinsertf64x2, Vx,Hx,Wqq,Ib))));
                 d[0x19] = new PrefixedDecoder(dec66: VexInstr(Mnemonic.vextractf128, Wdq,Vqq,Ib));
                 d[0x1A] = s_invalid;
                 d[0x1B] = s_invalid;
@@ -119,7 +145,21 @@ namespace Reko.Arch.X86
                 d[0x36] = s_invalid;
                 d[0x37] = s_invalid;
 
-                d[0x38] = new PrefixedDecoder(dec66: VexInstr(Mnemonic.vinserti128, Vqq,Hqq,Wqq,Ib));
+                d[0x38] = new PrefixedDecoder(
+                    dec66: EvexInstr(
+                        s_invalid,
+                        Instr(Mnemonic.vinserti128, Vqq,Hqq,Wqq,Ib),
+                        VexLong(
+                            s_invalid,
+                            Instr(Mnemonic.vinserti32x4, Vx,Hx,Wdq,Ib),
+                            Instr(Mnemonic.vinserti32x4, Vx,Hx,Wdq,Ib))),
+                    dec66Wide: EvexInstr(
+                        s_invalid,
+                        s_invalid,
+                        VexLong(
+                            s_invalid,
+                            Instr(Mnemonic.vinserti64x2, Vx, Hx, Wx, Ib),
+                            Instr(Mnemonic.vinserti64x2, Vx, Hx, Wx, Ib))));
                 d[0x39] = new PrefixedDecoder(dec66: VexInstr(Mnemonic.vextracti128, Wdq,Vqq,Ib));
                 d[0x3A] = s_invalid;
                 d[0x3B] = s_invalid;

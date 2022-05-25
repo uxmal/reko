@@ -215,6 +215,11 @@ namespace Reko.Arch.X86
                 return instr386(Instr(mnemonic, Core.InstrClass.Linear, mutators));
             }
 
+            public Decoder Instr386(Mnemonic mnemonic, InstrClass iclass, params Mutator<X86Disassembler>[] mutators)
+            {
+                return instr386(Instr(mnemonic, iclass, mutators));
+            }
+
             public Decoder Instr386(Decoder decoder)
             {
                 return instr386(decoder);
@@ -247,28 +252,35 @@ namespace Reko.Arch.X86
                 return new VexInstructionDecoder(legacy, vex);
             }
 
-            public static EvexInstructionDecoder EvexInstr(Decoder legacy, Decoder? vex = null, Decoder? evex = null)
-            {
-                vex ??= legacy;
-                evex ??= vex;
-                return new EvexInstructionDecoder(legacy, vex, evex);
-            }
-
             public static VexInstructionDecoder VexInstr(Mnemonic legacy, Mnemonic vex, params Mutator<X86Disassembler>[] mutators)
             {
                 var legDec = legacy != Mnemonic.illegal
-                        ? Instr(legacy, mutators)
-                        : s_invalid;
+                    ? Instr(legacy, mutators)
+                    : s_invalid;
                 var vexDec = Instr(vex, mutators);
                 return new VexInstructionDecoder(legDec, vexDec);
             }
 
             /// <summary>
-            /// Selects a decoder based on the VEX 'L' (long bit)
+            /// Selects a decoder based on the VEX 'L' (long bit(s))
             /// </summary>
             public static Decoder VexLong(Decoder instrNotLong, Decoder instrLong)
             {
-                return new VexLongDecoder(instrNotLong, instrLong);
+                return new VexLongDecoder(instrNotLong, instrLong, instrLong);
+            }
+
+            public static Decoder VexLong(params Decoder [] decoders)
+            {
+                return new VexLongDecoder(decoders);
+            }
+
+            public static EvexInstructionDecoder EvexInstr(Decoder? legacy = null, Decoder? vex = null, Decoder? evex = null)
+            {
+                Debug.Assert(s_invalid is not null);
+                legacy ??= s_invalid;
+                vex ??= legacy;
+                evex ??= vex;
+                return new EvexInstructionDecoder(legacy, vex, evex);
             }
 
             public Decoder X87Instr()

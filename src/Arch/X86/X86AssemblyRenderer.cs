@@ -178,7 +178,7 @@ namespace Reko.Arch.X86
                 if (instr.Broadcast)
                 {
                     renderer.WriteString("{1to");
-                    var xmmSize = instr.Operands[1].Width.BitSize;
+                    var xmmSize = instr.Operands[iop-1].Width.BitSize;
                     renderer.WriteUInt32((uint) (xmmSize / memOp.Width.BitSize));
                     renderer.WriteChar('}');
                 }
@@ -200,7 +200,9 @@ namespace Reko.Arch.X86
             case FpuOperand fpu:
                 renderer.WriteFormat("st({0})", fpu.StNumber);
                 break;
-
+            case SaeOperand sae:
+                sae.Render(renderer, options);
+                break;
             default: throw new NotImplementedException(operand.GetType().Name);
             }
         }
@@ -272,7 +274,7 @@ namespace Reko.Arch.X86
             }
             if (mem.Base != RegisterStorage.None && mem.Offset != null && mem.Offset.IsValid)
             {
-                if (mem.Offset.DataType == PrimitiveType.Byte || mem.Offset.DataType == PrimitiveType.SByte)
+                if (mem.Offset.DataType == PrimitiveType.Byte || mem.Offset.DataType.Domain == Domain.SignedInt)
                 {
                     renderer.WriteString(FormatSignedValue(mem.Offset.ToInt64(), true));
                 }
@@ -318,12 +320,23 @@ namespace Reko.Arch.X86
             case Mnemonic.movzx:
             case Mnemonic.movsxd:
                 return true;
+            case Mnemonic.fxrstor:
+            case Mnemonic.fxsave:
             case Mnemonic.lea:
             case Mnemonic.lds:
             case Mnemonic.les:
             case Mnemonic.lfs:
+            case Mnemonic.lgdt:
+            case Mnemonic.lidt:
             case Mnemonic.lgs:
             case Mnemonic.lss:
+            case Mnemonic.sgdt:
+            case Mnemonic.sidt:
+            case Mnemonic.xrstor:
+            case Mnemonic.xrstor64:
+            case Mnemonic.xsave:
+            case Mnemonic.xsave64:
+            case Mnemonic.xsaveopt64:
                 return false;
             default:
                 var ops = instr.Operands;

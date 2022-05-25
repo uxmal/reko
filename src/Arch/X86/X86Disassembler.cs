@@ -29,6 +29,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
+using System.Text;
 
 namespace Reko.Arch.X86
 {
@@ -39,6 +40,8 @@ namespace Reko.Arch.X86
     /// </summary>
     public partial class X86Disassembler : DisassemblerBase<X86Instruction, Mnemonic>
 	{
+        public static readonly TraceSwitch traceVex = new TraceSwitch(nameof(traceVex), "Trace decoding of VEX and EVEX bytes");
+
 #pragma warning disable IDE1006
         private class X86LegacyCodeRegisterExtension
         {
@@ -181,6 +184,7 @@ namespace Reko.Arch.X86
                 this.VexLongCode = 0;
                 this.OpMask = 0;
                 this.EvexR = false;
+                this.EvexX = false;
                 this.EvexMergeMode = 0;
                 this.EvexBroadcast = false;
 
@@ -295,6 +299,9 @@ namespace Reko.Arch.X86
 
             // EVEX R' bit
             public bool EvexR { get; set; }
+
+            // EVEX X bit
+            public bool EvexX { get; set; }
 
             // EVEX merge mode
             public int EvexMergeMode { get; set; }
@@ -431,6 +438,7 @@ namespace Reko.Arch.X86
         {
             int reg_bits = bits & 7;
             reg_bits |= this.decodingContext.RegisterExtension.FlagTargetModrmRegister ? 8 : 0;
+            reg_bits |= this.decodingContext.EvexR ? 16 : 0;
             return fnReg(reg_bits, dataWidth);
         }
 
@@ -463,13 +471,14 @@ namespace Reko.Arch.X86
         {
             int reg_bits = bits & 7;
             reg_bits |= this.decodingContext.RegisterExtension.FlagTargetModrmRegOrMem ? 8 : 0;
-            reg_bits |= this.decodingContext.EvexR ? 16 : 0;
+            reg_bits |= this.decodingContext.EvexX ? 16 : 0;
             return fnReg(reg_bits, dataWidth);
         }
 
         private RegisterStorage GpRegFromBits(int bits, DataType dataWidth)
 		{
             int bitSize = dataWidth.BitSize;
+            bits &= 0xF;
 			switch (bitSize)
             {
             case 8:
@@ -688,6 +697,25 @@ namespace Reko.Arch.X86
         private static readonly Mutator<X86Disassembler> Ew = E(OperandType.w);
 
         /// <summary>
+        /// Memory or register operand specified by mod & r/m fiels,
+        /// but where the default in 64-bit mode is 64 bits (no REX prefix)
+        /// </summary>
+        private static bool EV(uint uInstr, X86Disassembler dasm)
+        {
+            PrimitiveType width;
+            if (dasm.decodingContext.SizeOverridePrefix)
+                width = dasm.decodingContext.dataWidth;
+            else
+                width = dasm.mode.WordWidth;
+            dasm.decodingContext.iWidth = width;
+            var op = dasm.DecodeModRM(OperandType.v, width, dasm.GpRegFromBits);
+            if (op is null)
+                return false;
+            dasm.decodingContext.ops.Add(op);
+            return true;
+        }
+
+        /// <summary>
         /// Memory or mask register operand specified by the mod & r/m fields.
         /// </summary>
         private static Mutator<X86Disassembler> EK(OperandType opType)
@@ -800,10 +828,13 @@ namespace Reko.Arch.X86
         /// </summary>
         private static Mutator<X86Disassembler> H(OperandType opType)
         {
-            return (u, d) => {
+            return (u, d) =>
+            {
                 if (d.decodingContext.IsVex)
                 {
                     var width = d.SseOperandWidth(opType);
+                    if (width.BitSize == 0)
+                        return false;
                     var op = d.XmmRegFromBits(
                         d.decodingContext.VexRegister,
                         width);
@@ -976,6 +1007,7 @@ namespace Reko.Arch.X86
         private static readonly Mutator<X86Disassembler> Mpd = M(OperandType.pd);
         private static readonly Mutator<X86Disassembler> Mps = M(OperandType.ps);
         private static readonly Mutator<X86Disassembler> Mq = M(OperandType.q);
+        private static readonly Mutator<X86Disassembler> Mqq = M(OperandType.qq);
         private static readonly Mutator<X86Disassembler> Ms = M(OperandType.s);
         private static readonly Mutator<X86Disassembler> Mv = M(OperandType.v);
         private static readonly Mutator<X86Disassembler> Mw = M(OperandType.w);
@@ -990,6 +1022,8 @@ namespace Reko.Arch.X86
             return (u, d) =>
             {
                 var width = d.SseOperandWidth(opType);
+                if (width.BitSize == 0)
+                    return false;
                 if (!d.TryEnsureModRM(out byte modRm))
                     return false;
                 var op = d.RegFromBitsRexR(modRm, width, d.MmxRegFromBits);
@@ -1028,6 +1062,8 @@ namespace Reko.Arch.X86
         {
             return (u, d) => {
                 var width = d.SseOperandWidth(opType);
+                if (width.BitSize == 0)
+                    return false;
                 if (!d.TryEnsureModRM(out byte modRm))
                     return false;
                 var op = d.RegFromBitsRexR(modRm >> 3, width, d.MmxRegFromBits);
@@ -1049,6 +1085,8 @@ namespace Reko.Arch.X86
             return (u, d) =>
             {
                 var width = d.SseOperandWidth(opType);
+                if (width.BitSize == 0)
+                    return false;
                 var op = d.DecodeModRM(opType, width, d.MmxRegFromBits);
                 if (op == null)
                     return false;
@@ -1142,6 +1180,8 @@ namespace Reko.Arch.X86
                 if (!d.TryEnsureModRM(out byte modRm))
                     return false;
                 var width = d.SseOperandWidth(opType);
+                if (width.BitSize == 0)
+                    return false;
                 var op = d.RegFromBitsRexR(modRm >> 3,
                     width,
                     d.XmmRegFromBits);
@@ -1178,6 +1218,8 @@ namespace Reko.Arch.X86
                 else
                 {
                     var width = d.SseOperandWidth(opType);
+                    if (width.BitSize == 0)
+                        return false;
                     op = d.RegFromBitsRexR(modRm >> 3,
                         width,
                         d.XmmRegFromBits);
@@ -1200,6 +1242,8 @@ namespace Reko.Arch.X86
             return (u, d) =>
             {
                 var width = d.SseOperandWidth(opType);
+                if (width.BitSize == 0)
+                    return false;
                 var op = d.DecodeModRM(opType, width, d.XmmRegFromBits);
                 if (op == null)
                     return false;
@@ -1217,6 +1261,7 @@ namespace Reko.Arch.X86
         private static readonly Mutator<X86Disassembler> Wqq = W(OperandType.qq);
         private static readonly Mutator<X86Disassembler> Wsd = W(OperandType.sd);
         private static readonly Mutator<X86Disassembler> Wss = W(OperandType.ss);
+        private static readonly Mutator<X86Disassembler> Ww = W(OperandType.w);
         private static readonly Mutator<X86Disassembler> Wx = W(OperandType.x);
         private static readonly Mutator<X86Disassembler> Wy = W(OperandType.y);
 
@@ -1224,14 +1269,18 @@ namespace Reko.Arch.X86
         /// Memory or XMM operand specified by mod & r/m fields, taking
         /// into account EVEX broadcast bit
         /// </summary>
-        private static Mutator<X86Disassembler> W(
+        private static Mutator<X86Disassembler> WBroadcast(
             OperandType opType, OperandType opBroadcast)
         {
             return (u, d) =>
             {
-                var width = d.SseOperandWidth(d.decodingContext.EvexBroadcast
+                if (!d.TryEnsureModRM(out byte modrm))
+                    return false;
+                var width = d.SseOperandWidth(((modrm & 0xC0) != 0xC0) && d.decodingContext.EvexBroadcast
                     ? opBroadcast
                     : opType);
+                if (width.BitSize == 0)
+                    return false;
                 var op = d.DecodeModRM(opType, width, d.XmmRegFromBits);
                 if (op == null)
                     return false;
@@ -1239,11 +1288,11 @@ namespace Reko.Arch.X86
                 return true;
             };
         }
-        private static readonly Mutator<X86Disassembler> Wx_b = W(OperandType.x, OperandType.b);
-        private static readonly Mutator<X86Disassembler> Wx_w = W(OperandType.x, OperandType.w);
-        private static readonly Mutator<X86Disassembler> Wx_d = W(OperandType.x, OperandType.d);
-        private static readonly Mutator<X86Disassembler> Wx_q = W(OperandType.x, OperandType.q);
-
+        private static readonly Mutator<X86Disassembler> WBdq_q = WBroadcast(OperandType.dq, OperandType.q);
+        private static readonly Mutator<X86Disassembler> WBx_b = WBroadcast(OperandType.x, OperandType.b);
+        private static readonly Mutator<X86Disassembler> WBx_w = WBroadcast(OperandType.x, OperandType.w);
+        private static readonly Mutator<X86Disassembler> WBx_d = WBroadcast(OperandType.x, OperandType.d);
+        private static readonly Mutator<X86Disassembler> WBx_q = WBroadcast(OperandType.x, OperandType.q);
 
         /// <summary>
         /// Segment register encoded by reg field of modRM byte.
@@ -1433,14 +1482,43 @@ namespace Reko.Arch.X86
             return new MemRegDecoder(mem, reg);
         }
 
-        /// <summary>
-        /// Use the <see cref="NyiDecoder{TDasm, TMnemonic, TInstr}"/> to mark instructions for which no decoder has 
-        /// been written yet.
-        /// </summary>
-        /// <remarks>
-        /// The x86 instruction set is large and keeps growing....
-        /// </remarks>
-        public static NyiDecoder<X86Disassembler, Mnemonic, X86Instruction> nyi(string message)
+        private static bool RnSae(uint op, X86Disassembler dasm)
+        {
+            if (dasm.decodingContext.EvexBroadcast)
+            {
+                if (dasm.decodingContext.ops[^1] is MemoryOperand)
+                    return true;
+                dasm.decodingContext.ops.Add(new SaeOperand(dasm.decodingContext.VexLongCode switch
+                {
+                    0 => EvexRoundMode.RnSae,
+                    1 => EvexRoundMode.RdSae,
+                    2 => EvexRoundMode.RuSae,
+                    3 => EvexRoundMode.RzSae,
+                    _ => EvexRoundMode.None,
+                }));
+            }
+            return true;
+        }
+
+        private static bool Sae(uint op, X86Disassembler dasm)
+        {
+            if (dasm.decodingContext.EvexBroadcast)
+            {
+                if (dasm.decodingContext.ops[^1] is MemoryOperand)
+                    return true;
+                dasm.decodingContext.ops.Add(new SaeOperand(EvexRoundMode.Sae));
+            }
+            return true;
+        }
+
+/// <summary>
+/// Use the <see cref="NyiDecoder{TDasm, TMnemonic, TInstr}"/> to mark instructions for which no decoder has 
+/// been written yet.
+/// </summary>
+/// <remarks>
+/// The x86 instruction set is large and keeps growing....
+/// </remarks>
+public static NyiDecoder<X86Disassembler, Mnemonic, X86Instruction> nyi(string message)
         {
             return new NyiDecoder<X86Disassembler, Mnemonic, X86Instruction>(message);
         }
@@ -1536,6 +1614,8 @@ namespace Reko.Arch.X86
                 return PrimitiveType.Real80;
             case OperandType.q:
                 return PrimitiveType.Word64;
+            case OperandType.qq:
+                return PrimitiveType.Word256;
             case OperandType.s:
                 return this.decodingContext.dataWidth.BitSize == 64 ? PrimitiveType.CreateWord(80) : PrimitiveType.CreateWord(48);
             case OperandType.x:
@@ -1573,6 +1653,8 @@ namespace Reko.Arch.X86
                 return PrimitiveType.Int32;
             case OperandType.ss:
                 return PrimitiveType.Real32;
+            case OperandType.w:
+                return PrimitiveType.Word16;
             case OperandType.x:
                 return VexVectorLength[this.decodingContext.VexLongCode];
             case OperandType.y:
@@ -1694,7 +1776,9 @@ namespace Reko.Arch.X86
 					break;
 				case 2:
                     b = RegFromBitsRexB(rm, decodingContext.addressWidth, GpRegFromBits);
-                    offsetWidth = PrimitiveType.Word32;
+                    offsetWidth = b.BitSize == 64
+                        ? PrimitiveType.Int32
+                        : PrimitiveType.Word32;
 					break;
 				case 3:
 					return RegFromBitsRexB(rm, dataWidth, regFn);
@@ -1753,20 +1837,22 @@ namespace Reko.Arch.X86
                 if (offsetWidth.BitSize == 8 && decodingContext.IsEvex)
                 {
                     int disp8Scale;
-                    if (opType == OperandType.ss)
+                    if (opType == OperandType.ss || opType == OperandType.d)
                     {
                         disp8Scale = 2;
                     }
-                    else if (opType == OperandType.sd)
+                    else if (opType == OperandType.sd || opType == OperandType.q)
                     {
                         disp8Scale = 3;
+                    }
+                    else if (opType == OperandType.qq)
+                    {
+                        disp8Scale = 5;
                     }
                     else
                     {
                         disp8Scale = decodingContext.EvexBroadcast
-                            ? (decodingContext.RegisterExtension.FlagWideValue
-                                ? 3
-                                : 2)
+                            ? (decodingContext.RegisterExtension.FlagWideValue ? 3 : 2)
                             : VexVectorDisp8Shifts[decodingContext.VexLongCode];
                     }
                     offset = Constant.Int32(offset.ToInt32() << disp8Scale);
@@ -1791,5 +1877,46 @@ namespace Reko.Arch.X86
 		{
 		}
 #nullable enable
+
+        [Conditional("DEBUG")]
+        private static void TraceEvex(X86InstructionDecodeInfo ctx, int mm, byte op)
+        {
+            if (!traceVex.TraceVerbose)
+                return;
+            var fragments = new List<string>();
+            if (ctx.IsVex)
+            {
+                if (ctx.IsEvex)
+                    fragments.Add("EVEX");
+                else
+                    fragments.Add("VEX");
+                fragments.Add(ctx.VexLongCode switch
+                {
+                    0 => "128",
+                    1 => "256",
+                    2 => "512",
+                    _ => "invalid"
+                });
+            }
+
+            if (ctx.SizeOverridePrefix)
+                fragments.Add("66");
+            else if (ctx.F2Prefix)
+                fragments.Add("F2");
+            else if (ctx.F3Prefix)
+                fragments.Add("F3");
+            fragments.Add(mm switch
+            {
+                2 => "0F38",
+                3 => "0F3A",
+                _ => "0F"
+            });
+            fragments.Add((ctx.RegisterExtension.FlagWideValue) ? "W1" : "W0");
+            var msg = string.Format("{0} {1:X2}",
+                string.Join('.', fragments),
+                (uint) op);
+            Debug.WriteLineIf(traceVex.TraceVerbose, msg);
+            Console.WriteLine(msg);
+        }
     }
 }

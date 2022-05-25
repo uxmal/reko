@@ -190,9 +190,13 @@ namespace Reko.Arch.X86
 				d[0x66] = Instr386(new ChangeDataWidth(this.rootDecoders));
 				d[0x67] = Instr386(new ChangeAddressWidth(this.rootDecoders));
 
-				d[0x68] = Instr186(Mnemonic.push, Iz);
+				d[0x68] = new PrefixedDecoder(
+                    dec: Instr186(Mnemonic.push, Iz),
+                    dec66: Instr186(Mnemonic.pushw, Iw));
 				d[0x69] = Instr186(Mnemonic.imul, Gv,Ev,Iz);
-				d[0x6A] = Instr186(Mnemonic.push, Ib);
+				d[0x6A] = new PrefixedDecoder(
+                    dec: Instr186(Mnemonic.push, Ib),
+                    dec66:Instr186(Mnemonic.pushw, Ib));
 				d[0x6B] = Instr186(Mnemonic.imul, Gv,Ev,Ib);
 				d[0x6C] = Instr186(Mnemonic.insb, InstrClass.Linear|InstrClass.Privileged, b);
 				d[0x6D] = Instr186(Mnemonic.ins, InstrClass.Linear | InstrClass.Privileged);
@@ -243,10 +247,9 @@ namespace Reko.Arch.X86
 
 				// 90
 				d[0x90] = new PrefixedDecoder(
-                    iclass:InstrClass.Linear|InstrClass.Padding,
-                    dec:Instr(Mnemonic.nop),
-                    dec66:Instr386(Mnemonic.nop),
-                    decF3:Instr(Mnemonic.pause));
+                    dec:Instr(Mnemonic.nop, InstrClass.Linear | InstrClass.Padding),
+                    dec66:Instr386(Mnemonic.nop, InstrClass.Linear | InstrClass.Padding),
+                    decF3:Instr386(Mnemonic.pause, InstrClass.Linear | InstrClass.Padding));
 				d[0x91] = Instr(Mnemonic.xchg, rv,rAX);
 				d[0x92] = Instr(Mnemonic.xchg, rv,rAX);
 				d[0x93] = Instr(Mnemonic.xchg, rv,rAX);
@@ -268,7 +271,9 @@ namespace Reko.Arch.X86
                     s_invalid);
 				d[0x9B] = Instr(Mnemonic.wait);
 				d[0x9C] = Instr(Mnemonic.pushf);
-				d[0x9D] = Instr(Mnemonic.popf);
+                d[0x9D] = new PrefixedDecoder(
+                    dec: Instr(Mnemonic.popf),
+                    dec66: Instr386(Mnemonic.popfw));
 				d[0x9E] = Instr(Mnemonic.sahf);
 				d[0x9F] = Instr(Mnemonic.lahf);
 
@@ -328,7 +333,9 @@ namespace Reko.Arch.X86
                     Instr(Mnemonic.mov, Ev,Iz),
                     new GroupDecoder(Grp11z));
 
-                d[0xC8] = Instr186(Mnemonic.enter, Iw, Ib);
+                d[0xC8] = new PrefixedDecoder(
+                    dec: Instr186(Mnemonic.enter, Iw, Ib),
+                    dec66: Instr186(Mnemonic.enterw, Iw, Ib));
 				d[0xC9] = Instr186(Mnemonic.leave);
 				d[0xCA] = Instr(Mnemonic.retf, InstrClass.Transfer | InstrClass.Return, Iw);
 				d[0xCB] = Instr(Mnemonic.retf, InstrClass.Transfer | InstrClass.Return);
