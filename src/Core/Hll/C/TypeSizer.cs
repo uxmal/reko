@@ -169,7 +169,7 @@ namespace Reko.Core.Hll.C
             {
                 var (fieldSize, fieldAlignment) = field.Type!.Accept(this);
                 size = Math.Max(size, fieldSize);
-                alignment = Math.Max(size, fieldAlignment);
+                alignment = Math.Max(alignment, fieldAlignment);
             }
             union.ByteSize = size;
             return (size, alignment);

@@ -64,7 +64,7 @@
         </ptr>
       </field>
     </struct>
-    <struct name="netent" size="14">
+    <struct name="netent" size="16">
       <field offset="0" name="n_name">
         <ptr>
           <prim domain="Character" size="1" />
@@ -80,11 +80,11 @@
       <field offset="8" name="n_addrtype">
         <prim domain="SignedInt" size="2" />
       </field>
-      <field offset="10" name="n_net">
+      <field offset="12" name="n_net">
         <type>u_long</type>
       </field>
     </struct>
-    <struct name="servent" size="14">
+    <struct name="servent" size="16">
       <field offset="0" name="s_name">
         <ptr>
           <prim domain="Character" size="1" />
@@ -100,7 +100,7 @@
       <field offset="8" name="s_port">
         <prim domain="SignedInt" size="2" />
       </field>
-      <field offset="10" name="s_proto">
+      <field offset="12" name="s_proto">
         <ptr>
           <prim domain="Character" size="1" />
         </ptr>
@@ -189,7 +189,7 @@
         </arr>
       </field>
     </struct>
-    <struct name="WSAData" size="398">
+    <struct name="WSAData" size="400">
       <field offset="0" name="wVersion">
         <type>WORD</type>
       </field>
@@ -212,7 +212,7 @@
       <field offset="392" name="iMaxUdpDg">
         <prim domain="UnsignedInt" size="2" />
       </field>
-      <field offset="394" name="lpVendorInfo">
+      <field offset="396" name="lpVendorInfo">
         <ptr>
           <prim domain="Character" size="1" />
         </ptr>

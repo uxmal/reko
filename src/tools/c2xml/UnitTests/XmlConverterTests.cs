@@ -1095,6 +1095,61 @@ namespace Reko.Tools.C2Xml.UnitTests
     int i;
 };", sExp, "");
         }
+
+        [Test]
+        public void C2x_union_alignment()
+        {
+            var sExp =
+@"<?xml version=""1.0"" encoding=""utf-16""?>
+<library xmlns=""http://schemata.jklnet.org/Decompiler"">
+  <Types>
+    <struct name=""s1"" size=""8"">
+      <field offset=""0"" name=""c"">
+        <prim domain=""Character"" size=""1"" />
+      </field>
+      <field offset=""4"" name=""i"">
+        <prim domain=""SignedInt"" size=""4"" />
+      </field>
+    </struct>
+    <struct name=""s2"" size=""4"">
+      <field offset=""0"" name=""i"">
+        <prim domain=""SignedInt"" size=""4"" />
+      </field>
+    </struct>
+    <union name=""u"" size=""8"">
+      <alt name=""alt1"">
+        <struct name=""s1"" />
+      </alt>
+      <alt name=""alt2"">
+        <struct name=""s2"" />
+      </alt>
+    </union>
+    <struct name=""test"" size=""12"">
+      <field offset=""0"" name=""c"">
+        <prim domain=""Character"" size=""1"" />
+      </field>
+      <field offset=""4"" name=""u"">
+        <union name=""u"" />
+      </field>
+    </struct>
+  </Types>
+</library>";
+            RunTest(
+@"struct test {
+    char c;
+    union u {
+        struct s1
+        {
+            char c;
+            int i;
+        } alt1;
+        struct s2
+        {
+            int i;
+        } alt2;
+    } u;
+};", sExp, "");
+        }
     }
 }
 
