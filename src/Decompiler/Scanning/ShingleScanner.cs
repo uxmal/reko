@@ -22,6 +22,7 @@ using Reko.Core;
 using Reko.Core.Collections;
 using Reko.Core.Diagnostics;
 using Reko.Core.Memory;
+using Reko.Core.Rtl;
 using Reko.Core.Services;
 using Reko.Core.Types;
 using System;
@@ -51,7 +52,7 @@ namespace Reko.Scanning
         public ScanResultsV2 ScanProgram()
         {
             var chunks = MakeScanChunks();
-            var sr = ExecuteChunks(chunks);
+            var sr = ProcessChunks(chunks);
             sr = RegisterPredecessors();
             sr = RemoveInvalidBlocks(sr);
             var (sr3, blocksSplit) = EnsureBlocks(sr);
@@ -214,7 +215,7 @@ namespace Reko.Scanning
                 listener);
         }
 
-        private ScanResultsV2 ExecuteChunks(List<ChunkWorker> chunks)
+        private ScanResultsV2 ProcessChunks(List<ChunkWorker> chunks)
         {
             //$TODO: this should be parallelizable, but we
             // do it first in series to make it correct.
@@ -353,9 +354,9 @@ namespace Reko.Scanning
                 var addrInstr = block.Instructions[i].Address;
                 if (addrInstr == to)
                 {
-                    var newInstrs = block.Instructions.Skip(i).ToList();
-                    var offset = (int)(to - block.Address);
+                    var newInstrs = block.Instructions.GetRange(i, c - i);
                     block.Instructions.RemoveRange(i, c - i);
+                    var offset = (int)(to - block.Address);
                     var newBlock = RegisterBlock(
                         block.Architecture,
                         to,

@@ -18,16 +18,11 @@
  */
 #endregion
 
- // "Power ISA(tm) Version 3.0 - November 30, 2015 - IBM
+// "Power ISA(tm) Version 3.0 - November 30, 2015 - IBM
 using Reko.Core;
-using Reko.Core.Code;
-using Reko.Core.Lib;
 using Reko.Core.Machine;
-using Reko.Core.Types;
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
 using static Reko.Arch.PowerPC.PowerPcDisassembler;
 
 namespace Reko.Arch.PowerPC
@@ -45,7 +40,7 @@ namespace Reko.Arch.PowerPC
 
         public static InstructionSet Create(string? model)
         {
-            model = model ?? "";
+            model ??= "";
             switch (model.ToLowerInvariant())
             {
             case "750cl": return new PPC750clInstructionSet();

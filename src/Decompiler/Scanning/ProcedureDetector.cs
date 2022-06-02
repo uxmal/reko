@@ -445,6 +445,7 @@ namespace Reko.Scanning
             var srGraph = MakeGraph(cluster, auxNode);
             var idoms = LTDominatorGraph<RtlBlock>.Create(srGraph, auxNode);
             // DumpDominatorTrees(idoms);
+
             // Find all nodes whose immediate dominator is "<root>". 
             // Those are the entries to new clusters and may contain blocks
             // that are shared between procedures in the source program.

@@ -30,11 +30,18 @@ using System.Threading.Tasks;
 
 namespace Reko.Scanning
 {
+    /// <summary>
+    /// This scanner worker will discover <see cref="RtlBlock"/>s by tracing
+    /// their execution flow statically. The tracing stops when <see cref="RtlReturn"/>
+    /// instructions are encountered, or function calls to provably diverging
+    /// procedures (like exit() or ExitProcess()).
+    /// </summary>
     public class ProcedureWorker : AbstractProcedureWorker
     {
         private readonly RecursiveScanner recScanner;
         private readonly Proc proc;
         private readonly WorkList<BlockWorker> workList;
+        //$REVIEW: Mutable shared state. Should use a ConcurrentDictionary.
         private Dictionary<Address, (Address, ProcedureWorker, ProcessorState)> callersWaitingForReturn;
 
         public ProcedureWorker(
@@ -93,17 +100,23 @@ namespace Reko.Scanning
             return worker;
         }
 
+        public override BlockWorker AddFallthroughJob(Address addr, IEnumerator<RtlInstructionCluster> trace, ProcessorState state)
+        {
+            return AddJob(addr, trace, state);
+        }
+
         public override bool TryMarkVisited(Address addr) => true;
 
         protected override void ProcessCall(RtlBlock block, Edge edge, ProcessorState state)
         {
             if (recScanner.GetProcedureReturnStatus(edge.To) != ReturnStatus.Unknown)
                 return;
-            //$TODO: won't work with delay slots.
+            // The target procedure has not been processed yet, so try to suspend
+            // this worker waiting for the target procedure to finish.
             recScanner.TrySuspendWorker(this);
             if (recScanner.TryStartProcedureWorker(edge.To, state, out var calleeWorker))
             {
-                calleeWorker.TryEnqueueCaller(this, edge.From, block.Address + block.Length, state);
+                calleeWorker.TryEnqueueCaller(this, edge.From, block.FallThrough, state);
                 log.Verbose("    {0}: suspended, waiting for {1} to return", proc.Address, calleeWorker.Procedure.Address);
             }
             else

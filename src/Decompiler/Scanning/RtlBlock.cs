@@ -95,9 +95,21 @@ namespace Reko.Scanning
         /// <summary>
         public List<RtlInstructionCluster> Instructions { get; init; }
 
-        // True if this block has been identified as a shared exit block
+        /// <summary>
+        /// True if this block has been identified as a shared exit block
+        /// of a procedure.
+        /// </summary>
         public bool IsSharedExitBlock { get; set; }
 
+        /// <summary>
+        /// Get the address of the instruction immediately 
+        /// following this basic block, including any
+        /// stolen delay slot.
+        /// </summary>
+        /// <returns>The <see cref="Address"/> following
+        /// the basic block.
+        /// </returns>
+        //$REVIEW: isn't this th same as FallThrough?
         public Address GetEndAddress()
         {
             int iLast = Instructions.Count - 1;

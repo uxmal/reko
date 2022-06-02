@@ -42,7 +42,7 @@ namespace Reko.Scanning
 
         private readonly AbstractScanner scanner;
         private readonly AbstractProcedureWorker worker;
-        private ProcessorState state;
+        private readonly ProcessorState state;
         private readonly ExpressionSimplifier eval;
 
         public BlockWorker(
@@ -72,11 +72,11 @@ namespace Reko.Scanning
 
         /// <summary>
         /// Performs a linear scan, stopping when a CTI is encountered, or we
-        /// run off the edge of the world.
+        /// run off the end of a trace (denoting invalid code).
         /// </summary>
         /// <returns>
-        /// A pair of a completed <see cref="Block"/> and an updated <see cref="ProcessorState"/>.
-        /// If parsing runs off the end of memory, the returned block will be
+        /// A pair of a completed <see cref="RtlBlock"/> and an updated <see cref="ProcessorState"/>.
+        /// If parsing runs off the end of the trace, the returned block will be
         /// marked as invalid.
         /// </returns>
         public (RtlBlock?, ProcessorState) ParseBlock()
@@ -85,8 +85,6 @@ namespace Reko.Scanning
             var trace = this.Trace;
             var state = this.state;
             var addrLast = this.Address;
-            if (this.Address.ToLinear() == 0x10002)
-                _ = this; //$DEBUG
             log.Inform("ParseBlock({0})", this.Address);
             while (trace.MoveNext())
             {
@@ -94,8 +92,10 @@ namespace Reko.Scanning
                 addrLast = cluster.Address;
                 if (!worker.TryMarkVisited(addrLast))
                 {
-                    var block = MakeFallthroughBlock(addrLast, instrs);
-                    scanner.RegisterEdge(new Edge(this.Address, block.FallThrough, EdgeType.Fallthrough));
+                    // If the instruction has already been visited, we
+                    // stop the current block and make it fall through
+                    // to the next block.
+                    var block = MakeFallthroughBlock(this.Address, addrLast, instrs);
                     log.Verbose("    Fell through to {0}, stopping", cluster.Address);
                     return (block, state);
                 }
@@ -136,20 +136,18 @@ namespace Reko.Scanning
                     Debug.Assert(rtl.Class.HasFlag(InstrClass.Transfer));
                     if (IsPaddingBoundary(cluster, instrs))
                     {
-                        var block = MakeFallthroughBlock(cluster.Address, instrs);
+                        var block = MakeFallthroughBlock(this.Address, cluster.Address, instrs);
                         scanner.RegisterEdge(new Edge(this.Address, cluster.Address, EdgeType.Fallthrough));
                         if (!scanner.TryRegisterBlockStart(cluster.Address, this.Address))
                             return (block, state);
                         this.Address = cluster.Address;
                         instrs = new List<RtlInstructionCluster>();
                     }
-                    if (cluster.Address.ToLinear() == 0x00010018)
-                        _ = this; //$DEBUG
                     return MakeBlock(instrs, state, rtl);
                 }
                 if (IsPaddingBoundary(cluster, instrs))
                 {
-                    var block = MakeFallthroughBlock(cluster.Address, instrs);
+                    var block = MakeFallthroughBlock(this.Address, cluster.Address, instrs);
                     scanner.RegisterEdge(new Edge(this.Address, cluster.Address, EdgeType.Fallthrough));
                     if (!scanner.TryRegisterBlockStart(cluster.Address, this.Address))
                         return (block, state);
@@ -164,11 +162,11 @@ namespace Reko.Scanning
         }
 
         /// <summary>
-        /// Returns true if there is a boundary between padding instructions
+        /// Returns true if there is a transition between padding instructions
         /// and non-padding instructions between the last RTL cluster in 
         /// <paramref name="instrs"/> and <paramref name="cluster"/> .
         /// </summary>
-        private bool IsPaddingBoundary(RtlInstructionCluster cluster, List<RtlInstructionCluster> instrs)
+        private static bool IsPaddingBoundary(RtlInstructionCluster cluster, List<RtlInstructionCluster> instrs)
         {
             if (instrs.Count == 0)
                 return false;
@@ -179,8 +177,10 @@ namespace Reko.Scanning
             return (change & (InstrClass.Padding | InstrClass.Zero)) != 0;
         }
 
-        // Return true if the <paramref name="side" /> instruction
-        // diverges.
+        /// <summary>
+        /// Return true if the <paramref name="side" /> instruction
+        /// diverges.
+        /// </summary>
         private bool HandleSideEffect(RtlSideEffect side, ProcessorState state)
         {
             //$TODO: emulate side effect.
@@ -188,11 +188,18 @@ namespace Reko.Scanning
             return side.Class.HasFlag(InstrClass.Terminates);
         }
 
-        private RtlBlock MakeFallthroughBlock(Address addrFallthrough, List<RtlInstructionCluster> instrs)
+        /// <summary>
+        /// Creates an <see cref="RtlBlock"/> that falls through to whatever
+        /// instruction is at <paramref name="addrFallthrough"/>.
+        /// </summary>
+        /// <param name="addrFallthrough">The address at which the block ends.
+        /// <param name="instrs"></param>
+        /// <returns>A block to fall through to.</returns>
+        private RtlBlock MakeFallthroughBlock(Address addrBegin, Address addrFallthrough, List<RtlInstructionCluster> instrs)
         {
             return scanner.RegisterBlock(
                 this.state.Architecture,
-                this.Address,
+                addrBegin,
                 addrFallthrough - this.Address,
                 addrFallthrough,
                 instrs);
@@ -218,7 +225,7 @@ namespace Reko.Scanning
             }
             catch
             {
-                // Drop all on the floor.
+                // Drop all exceptions on the floor.
             }
         }
 
@@ -238,8 +245,7 @@ namespace Reko.Scanning
         /// <param name="instrs"></param>
         /// <returns>False if there was no next instruction, or if another CTI
         /// was found in the first CTI delay slot. Reko currently doesn't
-        /// handle this rare idiom, although 
-        /// SPARC does allow it.
+        /// handle this rare idiom, although SPARC does allow it.
         /// </returns>
         protected bool TryStealDelaySlot(
             RtlInstructionCluster rtlTransfer,
@@ -306,7 +312,7 @@ namespace Reko.Scanning
         /// the creation of the block.</param>
         /// <returns>
         /// A pair of a completed <see cref="Block"/> and an updated <see cref="ProcessorState"/>.
-        /// If parsing runs off the end of memory, the block reference will be null.
+        /// If parsing runs off the end of the trace, the block reference will be null.
         /// </returns>
         private (RtlBlock?, ProcessorState) MakeBlock(
             List<RtlInstructionCluster> instrs,

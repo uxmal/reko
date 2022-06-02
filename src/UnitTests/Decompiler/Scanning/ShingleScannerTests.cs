@@ -545,7 +545,7 @@ l00001008: // l:8; ft:00001010
             if (sExp != sActual)
             {
                 Debug.WriteLine("* Failed AssertBlocks ***");
-                Debug.Write(sActual);
+                Console.Write(sActual);
                 Assert.AreEqual(sExp, sActual);
             }
         }
@@ -573,15 +573,15 @@ l00001008: // l:8; ft:00001010
         public void Shsc_Regression_0001()
         {
             Given_x86_Image(
-                0x55,                               // 0000
-                0x8B, 0xEC,                         // 0001
-                0x81, 0xEC, 0x68, 0x01, 0x00, 0x00, // 0003
-                0x53,                               // 0009
-                0x56,                               // 000A
-                0x57,                               // 000B
-                0x8D, 0xBD, 0x98, 0xFE, 0xFF, 0xFF, // 000C
-                0xB9, 0x5A, 0x00, 0x00, 0x00,       // 0012
-                0xC3,                               // 0017
+                0x55,                               // 0000: push ebp
+                0x8B, 0xEC,                         // 0001: mov ebp,esp
+                0x81, 0xEC, 0x68, 0x01, 0x00, 0x00, // 0003: sub esp,168h
+                0x53,                               // 0009: push ebx
+                0x56,                               // 000A: push esi
+                0x57,                               // 000B: push edi
+                0x8D, 0xBD, 0x98, 0xFE, 0xFF, 0xFF, // 000C: lea edi,[ebp-168h]
+                0xB9, 0x5A, 0x00, 0x00, 0x00,       // 0012: mov ecx,5ah
+                0xC3,                               // 0017: ret
                 0xC3,
                 0xC3);
             CreateX86Scanner();

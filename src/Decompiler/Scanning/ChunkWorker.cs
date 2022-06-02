@@ -27,13 +27,14 @@ using System.Threading;
 namespace Reko.Scanning
 {
     /// <summary>
-    /// Performs scan of a chunk of memory that wasn't reached by the
-    /// <see cref="RecursiveScanner"/>, finding blocks by doing linear scan.
+    /// Performs a shingle scan of a chunk of memory that wasn't reached by
+    /// the <see cref="RecursiveScanner"/> to find any possible blocks.
     /// </summary>
     public class ChunkWorker : AbstractProcedureWorker
     {
         private readonly ShingleScanner shScanner;
         private readonly int[] blockNos; // 0 = not owned by anyone.
+        private BlockWorker? fallThroughJob;
 
         public ChunkWorker(
             ShingleScanner scanner,
@@ -62,14 +63,16 @@ namespace Reko.Scanning
             for (int i = 0; i < Length; i += stepsize)
             {
                 if (this.blockNos[i] != 0)
+                {
                     continue;
+                }
                 var addrNext = this.Address + i;
                 var state = Architecture.CreateProcessorState();
-                var trace = MakeTrace(addrNext, state);
-                while (IsValid(addrNext))
+                while (IsInsideChunk(addrNext))
                 {
                     if (!shScanner.TryRegisterBlockStart(addrNext, addrNext))
                         break;
+                    var trace = MakeTrace(addrNext, state); //$BUG: we should be reusing the trace if at all possible
                     var job = AddJob(addrNext, trace, state);
                     var (block, newState) = job.ParseBlock();
                     if (block is null)
@@ -91,7 +94,7 @@ namespace Reko.Scanning
             }
         }
 
-        private bool IsValid(Address addr)
+        private bool IsInsideChunk(Address addr)
         {
             var offset = addr - this.Address;
             return 0 <= offset && offset < blockNos.Length &&
@@ -100,7 +103,20 @@ namespace Reko.Scanning
 
         public override BlockWorker AddJob(Address addr, IEnumerator<RtlInstructionCluster> trace, ProcessorState state)
         {
+            if (fallThroughJob is not null && fallThroughJob.Address == addr)
+            {
+                var job = fallThroughJob;
+                fallThroughJob = null;
+                return job;
+            }
             return new BlockWorker(shScanner, this, addr, trace, state);
+        }
+
+        public override BlockWorker AddFallthroughJob(Address addr, IEnumerator<RtlInstructionCluster> trace, ProcessorState state)
+        {
+            this.fallThroughJob = new BlockWorker(shScanner, this, addr, trace, state);
+            return fallThroughJob;
+
         }
 
         public override bool TryMarkVisited(Address addr)
@@ -116,7 +132,7 @@ namespace Reko.Scanning
         {
             shScanner.RegisterSpeculativeProcedure(edge.To);
             // Assume that the call returns. This is true the majority of the time. Users
-            // can always override this if needed.
+            // can always override this by adding user annotations like [[noreturn]]
             var lastInstr = blockCaller.Instructions[^1];
             var fallThrough = new Edge(blockCaller.Address, blockCaller.FallThrough, EdgeType.Fallthrough);
             shScanner.RegisterEdge(fallThrough);

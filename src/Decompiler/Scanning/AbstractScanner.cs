@@ -36,6 +36,9 @@ using System.Threading.Tasks;
 
 namespace Reko.Scanning
 {
+    /// <summary>
+    /// Abstract base class for Scanner classes.
+    /// </summary>
     public abstract class AbstractScanner
     {
         protected static readonly TraceSwitch trace = new(nameof(AbstractScanner), "")
@@ -112,7 +115,7 @@ namespace Reko.Scanning
         /// <param name="length">The length of the block, excluding</param>
         /// <param name="addrFallthrough"></param>
         /// <param name="instrs"></param>
-        /// <returns></returns>
+        /// <returns>A new <see cref="RtlBlock"/>.</returns>
         public RtlBlock RegisterBlock(
             IProcessorArchitecture arch,
             Address addrBlock,
@@ -120,7 +123,6 @@ namespace Reko.Scanning
             Address addrFallthrough,
             List<RtlInstructionCluster> instrs)
         {
-            Debug.Assert(this.blockStarts.ContainsKey(addrBlock));
             var id = program.NamingPolicy.BlockName(addrBlock);
             var block = new RtlBlock(arch, addrBlock, id, (int)length, addrFallthrough, instrs);
             var success = sr.Blocks.TryAdd(addrBlock, block);
@@ -141,6 +143,7 @@ namespace Reko.Scanning
 
         public ScanResultsV2 RegisterPredecessors()
         {
+            sr.Predecessors.Clear();
             foreach (var (pred, succs) in sr.Successors)
             {
                 foreach (var succ in succs)
