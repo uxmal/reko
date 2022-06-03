@@ -228,7 +228,7 @@ namespace Reko.Core
             string name;
             if (addr.Selector.HasValue)
             {
-                name = string.Format("seg{0:X4}", addr.Selector.Value);
+                name = $"seg{addr.Selector.Value:X4}";
             }
             else
             {

@@ -38,6 +38,7 @@ namespace Reko.Environments.Windows
     /// http://www.kegel.com/mangle.html
     /// http://www.agner.org/optimize/calling_conventions.pdf
     /// https://github.com/wine-mirror/wine/dlls/msvcrt/undname.c
+    /// https://mearie.org/documents/mscmangle/
     /// </remarks>
     public class MsMangledNameParser
     {

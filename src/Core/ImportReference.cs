@@ -34,10 +34,6 @@ namespace Reko.Core
     /// </summary>
     public abstract class ImportReference : IComparable<ImportReference>
     {
-        public Address ReferenceAddress;
-        public string? ModuleName;
-        public readonly string EntryName;
-
         public ImportReference(Address addr, string? moduleName, string entryName, SymbolType symType)
         {
             this.ReferenceAddress = addr;
@@ -45,6 +41,11 @@ namespace Reko.Core
             this.EntryName = entryName;
             this.SymbolType = symType;
         }
+
+        public Address ReferenceAddress { get; }
+        public string? ModuleName { get; }
+        public string EntryName { get; }
+
 
         public SymbolType SymbolType { get; }
 
@@ -71,13 +72,13 @@ namespace Reko.Core
 
     public class NamedImportReference : ImportReference
     {
-        public string ImportName;
-
         public NamedImportReference(Address addr, string? moduleName, string importName, SymbolType symType)
             : base(addr, moduleName, importName, symType)
         {
             this.ImportName = importName;
         }
+
+        public string ImportName { get; }
 
         public override int CompareTo(ImportReference? that)
         {

@@ -24,6 +24,7 @@ using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 
 namespace Reko.Core
@@ -207,7 +208,7 @@ namespace Reko.Core
         /// <summary>
         /// Returns the segment that contains the specified address.
         /// </summary>
-        public bool TryFindSegment(Address addr, out ImageSegment segment)
+        public bool TryFindSegment(Address addr, [MaybeNullWhen(false)] out ImageSegment segment)
         {
             if (!Segments.TryGetLowerBound(addr, out segment))
                 return false;
@@ -219,13 +220,29 @@ namespace Reko.Core
         /// <summary>
         /// Returns the segments that contains the specified linear address.
         /// </summary>
-        public bool TryFindSegment(ulong linAddress, out ImageSegment segment)
+        public bool TryFindSegment(ulong linAddress, [MaybeNullWhen(false)] out ImageSegment segment)
         {
             if (!this.SegmentByLinAddress.TryGetLowerBound(linAddress, out segment))
                 return false;
             if (segment.Address.ToLinear() == linAddress)
                 return true;
             return segment.IsInRange(linAddress);
+        }
+
+        /// <summary>
+        /// Returns the segment named <paramref name="segmentName"/>.
+        /// </summary>
+        /// <param name="segmentName">Name of the <see cref="ImageSegment"/> being sought.
+        /// </param>
+        /// <param name="segment">The <see cref="ImageSegment"/> of that name, if present.</param>
+        /// <returns>True if a segment with that name exists, false if not.
+        /// </returns>
+        public bool TryFindSegment(
+            string segmentName, 
+            [MaybeNullWhen(false)] out ImageSegment segment)
+        {
+            segment = this.Segments.Values.FirstOrDefault(s => s.Name == segmentName);
+            return segment is not null;
         }
 
         [Conditional("DEBUG")]

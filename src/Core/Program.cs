@@ -439,6 +439,18 @@ namespace Reko.Core
         public (int, int) DebugProcedureRange { get; set; }
 
         // Convenience functions.
+
+        /// <summary>
+        /// Creates an <see cref="EndianByteImageReader"/> of the appropriate
+        /// endianness for the given <see cref="IProcessorArchitecture"/>.
+        /// </summary>
+        /// <param name="arch"><see cref="IProcessorArchitecture"/> whose endianness
+        /// is used.</param>
+        /// <param name="addr"><see cref="Address"/> at which to start reading.</param>
+        /// <returns>An <see cref="EndianByteImageReader"/> spanning the memory area 
+        /// starting at <paramref name="addr"> and ending at the end of the segment in which
+        /// the address is located.
+        /// </returns>
         public EndianImageReader CreateImageReader(IProcessorArchitecture arch, Address addr)
         {
             if (!SegmentMap.TryFindSegment(addr, out var segment))
@@ -446,6 +458,19 @@ namespace Reko.Core
             return arch.CreateImageReader(segment.MemoryArea, addr);
         }
 
+        public EndianImageReader CreateImageReader(Address addr) =>
+            CreateImageReader(this.Architecture, addr);
+
+        /// <summary>
+        /// Creates an <see cref="EndianByteImageReader"/> of the appropriate
+        /// endianness for the given <see cref="IProcessorArchitecture"/>.
+        /// </summary>
+        /// <param name="arch"><see cref="IProcessorArchitecture"/> whose endianness
+        /// is used.</param>
+        /// <param name="addrBegin"><see cref="Address"/> at which to start reading.</param>
+        /// <returns>An <see cref="EndianByteImageReader"/> spanning the memory area 
+        /// starting at <paramref name="addrBegin"> and ending at <paramref name="addrEnd" />.
+        /// </returns>
         public EndianImageReader CreateImageReader(
             IProcessorArchitecture arch,
             Address addrBegin,
@@ -455,6 +480,9 @@ namespace Reko.Core
                 throw new ArgumentException($"The address {addrBegin} is invalid.");
             return arch.CreateImageReader(segment.MemoryArea, addrBegin, addrEnd - addrBegin);
         }
+
+        public EndianImageReader CreateImageReader(Address addrBegin, Address addrEnd) =>
+            CreateImageReader(this.Architecture, addrBegin, addrEnd);
 
         public ImageWriter CreateImageWriter(IProcessorArchitecture arch, Address addr)
         {
