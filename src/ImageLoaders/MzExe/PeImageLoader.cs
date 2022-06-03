@@ -26,6 +26,7 @@ using Reko.Core.Memory;
 using Reko.Core.Serialization;
 using Reko.Core.Services;
 using Reko.Core.Types;
+using Reko.ImageLoaders.MzExe.Msvc;
 using Reko.ImageLoaders.MzExe.Pe;
 using System;
 using System.Collections.Generic;
@@ -52,6 +53,7 @@ namespace Reko.ImageLoaders.MzExe
         private IPlatform platform;
         private SizeSpecificLoader innerLoader;
         private Program program;
+        private DecompilerEventListener listener;
 
         private ushort machine;
 		private short optionalHeaderSize;
@@ -79,6 +81,7 @@ namespace Reko.ImageLoaders.MzExe
         public PeImageLoader(IServiceProvider services, ImageLocation imageLocation, byte [] img, uint peOffset) 
             : base(services, imageLocation, img)
 		{
+            listener = services.RequireService<DecompilerEventListener>();
             EndianImageReader rdr = new LeImageReader(RawImage, peOffset);
 			if (rdr.ReadByte() != 'P' ||
 				rdr.ReadByte() != 'E' ||
@@ -196,6 +199,8 @@ namespace Reko.ImageLoaders.MzExe
                 program.Resources.AddRange(items);
             }
             Relocate(program, addrLoad);
+            var rtti = new RttiScanner(program, listener);
+            rtti.Scan();
             return program;
         }
 
@@ -826,8 +831,9 @@ void applyRelX86(uint8_t* Off, uint16_t Type, Defined* Sym,
             switch (machine)
             {
             default: 
-                Services.RequireService<DecompilerEventListener>()
-                    .Warn(new NullCodeLocation(ImageLocation.FilesystemPath), "Exception table reading not supported for machine #{0}.", machine);
+                listener.Warn(
+                    new NullCodeLocation(ImageLocation.FilesystemPath),
+                    "Exception table reading not supported for machine #{0}.", machine);
                 break;
             case MACHINE_x86_64:
                 while (rdr.Offset < rvaTableEnd)
