@@ -35,4 +35,14 @@ namespace Reko.Core.Graphs
         void RemoveEdge(T nodeFrom, T nodeTo);
         bool ContainsEdge(T nodeFrom, T nodeTo);
     }
+
+    public interface DirectedGraph<T, E>
+    {
+        ICollection<(T, E)> Predecessors(T node);
+        ICollection<(T, E)> Successors(T node);
+        ICollection<T> Nodes { get; }
+        void AddEdge(T nodeFrom, T nodeTo, E edgeData);
+        void RemoveEdge(T nodeFrom, T nodeTo);
+        bool ContainsEdge(T nodeFrom, T nodeTo);
+    }
 }

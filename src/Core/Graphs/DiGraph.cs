@@ -27,7 +27,7 @@ using System.Text;
 namespace Reko.Core.Graphs
 {
     /// <summary>
-    /// Simple implementation of DirectedGraph&lt;T&gt;. 
+    /// Simple implementation of <see cref="DirectedGraph{T}"/>.
     /// </summary>
     /// <typeparam name="T"></typeparam>
     public class DiGraph<T> : DirectedGraph<T>
@@ -248,6 +248,87 @@ namespace Reko.Core.Graphs
         public override string ToString()
         {
             return string.Format("Nodes = {0}", nodes.Count);
+        }
+    }
+
+    /// <summary>
+    /// Directed graph with edge annotations
+    /// </summary>
+    public class DiGraph<V, E> : DirectedGraph<V, E>
+        where V : notnull
+    {
+        private readonly Dictionary<V, List<(V, E)>> inEdges;
+        private readonly Dictionary<V, List<(V, E)>> outEdges;
+        private readonly IEqualityComparer<V> cmp;
+
+        public DiGraph()
+        {
+            this.Nodes = new HashSet<V>();
+            this.inEdges = new Dictionary<V, List<(V, E)>>();
+            this.outEdges = new Dictionary<V, List<(V, E)>>();
+            this.cmp = EqualityComparer<V>.Default;
+        }
+
+        public ICollection<V> Nodes { get; }
+
+
+        public void AddEdge(V nodeFrom, V nodeTo, E edgeData)
+        {
+            if (!outEdges.TryGetValue(nodeFrom, out var succs))
+            {
+                succs = new List<(V, E)>();
+                outEdges.Add(nodeFrom, succs);
+            }
+            succs.Add((nodeTo, edgeData));
+            if (!inEdges.TryGetValue(nodeTo, out var preds))
+            {
+                preds = new List<(V, E)>();
+                inEdges.Add(nodeTo, preds);
+            }
+            preds.Add((nodeFrom, edgeData));
+        }
+
+        public bool ContainsEdge(V nodeFrom, V nodeTo)
+        {
+            if (!outEdges.TryGetValue(nodeFrom, out var succs))
+                return false;
+            if (succs.FindIndex(s => cmp.Equals(s.Item1, nodeTo)) < 0)
+                return false;
+            if (!inEdges.TryGetValue(nodeTo, out var preds))
+                return false;
+            return (preds.FindIndex(p => cmp.Equals(p.Item1, nodeFrom)) >= 0);
+        }
+
+        public ICollection<(V, E)> Predecessors(V node)
+        {
+            if (!inEdges.TryGetValue(node, out var preds))
+                return Array.Empty<(V, E)>();
+            return preds;
+        }
+
+        public void RemoveEdge(V nodeFrom, V nodeTo)
+        {
+            if (outEdges.TryGetValue(nodeFrom, out var succs))
+            {
+                var idx = succs.FindIndex(s => cmp.Equals(s.Item1, nodeTo));
+                if (idx < 0)
+                    return;
+                succs.RemoveAt(idx);
+            }
+            if (inEdges.TryGetValue(nodeTo, out var preds))
+            {
+                var idx = preds.FindIndex(p => cmp.Equals(p.Item1, nodeFrom));
+                if (idx < 0)
+                    return;
+                preds.RemoveAt(idx);
+            }
+        }
+
+        public ICollection<(V, E)> Successors(V node)
+        {
+            if (!inEdges.TryGetValue(node, out var preds))
+                return Array.Empty<(V, E)>();
+            return preds;
         }
     }
 }
