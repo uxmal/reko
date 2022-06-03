@@ -216,6 +216,11 @@ namespace Reko.Arch.Pdp10
             throw new NotImplementedException();
         }
 
+        public bool TryPeekLeUInt32(int offset, out uint value)
+        {
+            throw new NotImplementedException();
+        }
+
         public bool TryReadBe(DataType dataType, out Constant value)
         {
             switch (dataType.BitSize)

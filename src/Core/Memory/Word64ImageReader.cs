@@ -245,6 +245,12 @@ namespace Reko.Core.Memory
             throw new NotImplementedException();
         }
 
+
+        public bool TryPeekLeUInt32(int offset, out uint value)
+        {
+            throw new NotImplementedException();
+        }
+
         public bool TryReadBe(DataType dataType, out Constant value)
         {
             throw new NotImplementedException();

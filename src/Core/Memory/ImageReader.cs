@@ -84,6 +84,7 @@ namespace Reko.Core.Memory
         bool TryPeekBeUInt32(int offset, out uint value);
         bool TryPeekBeUInt64(int offset, out ulong value);
         bool TryPeekLeUInt16(int offset, out ushort value);
+        bool TryPeekLeUInt32(int offset, out uint value);
 
         bool TryReadBe(DataType dataType, out Constant value);
         bool TryReadBeInt16(out short value);

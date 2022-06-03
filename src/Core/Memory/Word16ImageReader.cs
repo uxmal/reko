@@ -229,6 +229,11 @@ namespace Reko.Core.Memory
             throw new NotImplementedException();
         }
 
+        public bool TryPeekLeUInt32(int offset, out uint value)
+        {
+            return mem.TryReadLeUInt32(this.Offset + offset, out value);
+        }
+
         public bool TryReadBe(DataType dataType, out Constant value)
         {
             switch (dataType.BitSize)

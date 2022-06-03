@@ -124,7 +124,15 @@ namespace Reko.Core.Memory
 
         public override bool TryReadLeUInt32(long off, out uint retvalue)
         {
-            throw new NotImplementedException();
+            if (off + 1 >= Words.Length)
+            {
+                retvalue = 0;
+                return false;
+            }
+            var hi = (uint) Words[off];
+            var lo = (uint) Words[off + 1];
+            retvalue = (hi << 16) | lo;
+            return true;
         }
 
         public override bool TryReadLeUInt64(long off, out ulong retvalue)
