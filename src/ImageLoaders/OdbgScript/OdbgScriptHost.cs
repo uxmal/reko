@@ -135,7 +135,7 @@ namespace Reko.ImageLoaders.OdbgScript
         public virtual bool TE_GetMemoryInfo(Address addr, out MEMORY_BASIC_INFORMATION MemInfo)
         {
             SegmentMap map = loader.ImageMap;
-            if (map.TryFindSegment(addr, out ImageSegment segment))
+            if (map.TryFindSegment(addr, out ImageSegment? segment))
             {
                 MemInfo = new MEMORY_BASIC_INFORMATION
                 {
@@ -154,7 +154,7 @@ namespace Reko.ImageLoaders.OdbgScript
 
         public virtual bool TryReadBytes(Address addr, int memlen, byte[] membuf)
         {
-            if (!SegmentMap.TryFindSegment(addr, out ImageSegment seg))
+            if (!SegmentMap.TryFindSegment(addr, out ImageSegment? seg))
                 return false;
             if (seg.MemoryArea is ByteMemoryArea bmem)
             {
@@ -229,7 +229,7 @@ namespace Reko.ImageLoaders.OdbgScript
 
         public virtual MachineInstruction? Disassemble(Address addr)
         {
-            if (!SegmentMap.TryFindSegment(addr, out ImageSegment segment))
+            if (!SegmentMap.TryFindSegment(addr, out ImageSegment? segment))
                 throw new AccessViolationException();
             var rdr = loader.Architecture.CreateImageReader(segment.MemoryArea, addr);
             var dasm = (X86Disassembler)loader.Architecture.CreateDisassembler(rdr);

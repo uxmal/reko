@@ -179,7 +179,8 @@ namespace Reko.Environments.Windows
             // For now, return the protection of the segment.
             if (!this.map.TryFindSegment(Address.Ptr32(uAddress), out var seg))
             {
-                var prot = MapProtectionToWin32(seg.Access);
+                //$BUG seg is null here. How is this expected to work?
+                var prot = MapProtectionToWin32(seg!.Access);
                 WriteLeUInt32(Address.Ptr32(pOldProtect), prot);
                 emulator.WriteRegister(Registers.eax, 0u);
             }
@@ -239,7 +240,7 @@ namespace Reko.Environments.Windows
             // per memory fetch. TryFindSegment needs an overload
             // that accepts ulongs / linear addresses.
             var addr = Address.Ptr32(ea);
-            if (!map.TryFindSegment(addr, out ImageSegment segment))
+            if (!map.TryFindSegment(addr, out ImageSegment? segment))
                 throw new AccessViolationException();
             return ((ByteMemoryArea)segment.MemoryArea).ReadLeUInt32(addr);
         }
@@ -250,7 +251,7 @@ namespace Reko.Environments.Windows
             // per memory fetch. TryFindSegment needs an overload
             // that accepts ulongs / linear addresses.
             var addr = Address.Ptr32(ea);
-            if (!map.TryFindSegment(addr, out ImageSegment segment))
+            if (!map.TryFindSegment(addr, out ImageSegment? segment))
                 throw new AccessViolationException();
             segment.MemoryArea.WriteLeUInt32(addr, value);
         }
@@ -260,7 +261,7 @@ namespace Reko.Environments.Windows
             //$PERF: wow this is inefficient; an allocation
             // per memory fetch. TryFindSegment needs an overload
             // that accepts ulongs / linear addresses.
-            if (!map.TryFindSegment(ea, out ImageSegment segment))
+            if (!map.TryFindSegment(ea, out ImageSegment? segment))
                 throw new AccessViolationException();
             segment.MemoryArea.WriteLeUInt32(ea, value);
         }
@@ -268,7 +269,7 @@ namespace Reko.Environments.Windows
         private string ReadMbString(TWord pstrLibName)
         {
             var addr = Address.Ptr32(pstrLibName);
-            if (!map.TryFindSegment(addr, out ImageSegment segment))
+            if (!map.TryFindSegment(addr, out ImageSegment? segment))
                 throw new AccessViolationException();
             var rdr = segment.MemoryArea.CreateLeReader(addr);
             var ab = new List<byte>();

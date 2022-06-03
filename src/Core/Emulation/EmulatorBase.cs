@@ -147,7 +147,7 @@ namespace Reko.Core.Emulation
 
         public bool TryReadByte(ulong ea, out byte b)
         {
-            if (!map.TryFindSegment(ea, out ImageSegment segment))
+            if (!map.TryFindSegment(ea, out ImageSegment? segment))
                 throw new AccessViolationException();
             var mem = segment.MemoryArea;
             var off = ea - mem.BaseAddress.ToLinear();
@@ -156,7 +156,7 @@ namespace Reko.Core.Emulation
 
         public ushort ReadLeUInt16(ulong ea)
         {
-            if (!map.TryFindSegment(ea, out ImageSegment segment))
+            if (!map.TryFindSegment(ea, out ImageSegment? segment))
                 throw new AccessViolationException();
             var mem = segment.MemoryArea;
             var off = ea - mem.BaseAddress.ToLinear();
@@ -167,7 +167,7 @@ namespace Reko.Core.Emulation
 
         public uint ReadLeUInt32(ulong ea)
         {
-            if (!map.TryFindSegment(ea, out ImageSegment segment))
+            if (!map.TryFindSegment(ea, out ImageSegment? segment))
                 throw new AccessViolationException();
             var mem = segment.MemoryArea;
             var off = ea - mem.BaseAddress.ToLinear();
@@ -178,7 +178,7 @@ namespace Reko.Core.Emulation
 
         public void WriteByte(ulong ea, byte value)
         {
-            if (!map.TryFindSegment(ea, out ImageSegment segment))
+            if (!map.TryFindSegment(ea, out ImageSegment? segment))
                 throw new AccessViolationException();
             var mem = segment.MemoryArea;
             mem.WriteByte((long) (ea - mem.BaseAddress.ToLinear()), value);
@@ -186,7 +186,7 @@ namespace Reko.Core.Emulation
 
         public void WriteLeUInt16(ulong ea, ushort value)
         {
-            if (!map.TryFindSegment(ea, out ImageSegment segment))
+            if (!map.TryFindSegment(ea, out ImageSegment? segment))
                 throw new AccessViolationException();
             var mem = segment.MemoryArea;
             var off = ea - mem.BaseAddress.ToLinear();
@@ -195,7 +195,7 @@ namespace Reko.Core.Emulation
 
         public void WriteLeUInt32(ulong ea, uint value)
         {
-            if (!map.TryFindSegment(ea, out ImageSegment segment))
+            if (!map.TryFindSegment(ea, out ImageSegment? segment))
                 throw new AccessViolationException();
             var mem = segment.MemoryArea;
             var off = ea - mem.BaseAddress.ToLinear();

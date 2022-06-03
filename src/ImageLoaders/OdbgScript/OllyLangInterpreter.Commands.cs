@@ -1163,7 +1163,7 @@ rulong hwnd;
                     memlen = (int)maxsize;
 
                 var ea = addr;
-                if (!Host.SegmentMap.TryFindSegment(ea, out ImageSegment segment))
+                if (!Host.SegmentMap.TryFindSegment(ea, out ImageSegment? segment))
                     throw new AccessViolationException();
                 byte[] membuf = new byte[memlen];
                 if (segment.MemoryArea is ByteMemoryArea bmem && bmem.TryReadBytes(ea, memlen, membuf))
@@ -3329,7 +3329,7 @@ string param;
                 if (args.Length == 1)
                 {
                     var ea = Address.Ptr32((uint) CSP);
-                    if (!Host.SegmentMap.TryFindSegment(ea, out ImageSegment segment))
+                    if (!Host.SegmentMap.TryFindSegment(ea, out ImageSegment? segment))
                         throw new AccessViolationException();
                     if (!segment.MemoryArea.TryReadLeUInt32(ea, out var value))
                         throw new AccessViolationException();

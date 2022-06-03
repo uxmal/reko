@@ -223,7 +223,7 @@ namespace Reko.Scanning
                 return null;
             if (unk.Size > 0)
                 return null;
-            if (!this.program.SegmentMap.TryFindSegment(item.Address, out ImageSegment seg))
+            if (!this.program.SegmentMap.TryFindSegment(item.Address, out ImageSegment? seg))
                 return null;
             if (!seg.IsExecutable)
                 return null;

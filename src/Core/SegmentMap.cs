@@ -113,7 +113,7 @@ namespace Reko.Core
 
         public ImageSegment AddSegment(ImageSegment segNew)
         {
-            if (!TryFindSegment(segNew.Address, out ImageSegment seg))
+            if (!TryFindSegment(segNew.Address, out ImageSegment? seg))
             {
                 EnsureSegmentSize(segNew);
                 Segments.Add(segNew.Address, segNew);

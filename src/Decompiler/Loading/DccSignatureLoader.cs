@@ -488,7 +488,7 @@ static char [] buf = new char[100];          /* A general purpose buffer */
             // i, j, arg;
             uint Idx;
 
-            if (!program.SegmentMap.TryFindSegment(addr, out ImageSegment segment))
+            if (!program.SegmentMap.TryFindSegment(addr, out ImageSegment? segment))
                 return false;
 
             var mem = (ByteMemoryArea) segment.MemoryArea;
@@ -690,8 +690,8 @@ static char [] buf = new char[100];          /* A general purpose buffer */
 
             /* Check the Turbo Pascal signatures first, since they involve only the
                         first 3 bytes, and false positives may be founf with the others later */
-            ImageSegment segment;
-            program.SegmentMap.TryFindSegment(start, out segment);
+            if (!program.SegmentMap.TryFindSegment(start, out ImageSegment? segment))
+                return;
             var image = (ByteMemoryArea) segment.MemoryArea;
             var startOff = (uint)(start - image.BaseAddress);   /* Offset into the Image of the initial CS:IP */
             if (locatePattern(image.Bytes,

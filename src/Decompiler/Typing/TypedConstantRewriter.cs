@@ -346,7 +346,7 @@ namespace Reko.Typing
 
         private bool IsPtrToReadonlySection(Address addr)
         {
-            if (!program.SegmentMap.TryFindSegment(addr, out ImageSegment seg))
+            if (!program.SegmentMap.TryFindSegment(addr, out ImageSegment? seg))
                 return false;
             return (seg.Access & AccessMode.ReadWrite) == AccessMode.Read;
         }

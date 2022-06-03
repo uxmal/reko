@@ -62,7 +62,7 @@ namespace Reko.Arch.PowerPC
             set
             {
                 this.uInstrPointer = value.ToLinear();
-                if (!map.TryFindSegment(value, out ImageSegment segment))
+                if (!map.TryFindSegment(value, out ImageSegment? segment))
                     throw new AccessViolationException();
                 var rdr = arch.CreateImageReader(segment.MemoryArea, value);
                 dasm = arch.CreateDisassemblerImpl(rdr).GetEnumerator();

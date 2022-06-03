@@ -239,7 +239,7 @@ namespace Reko.Scanning
         private (MemoryArea, Address, uint) CreateUnscannedArea(KeyValuePair<Address, ImageMapItem> de)
         {
             this.program.SegmentMap.TryFindSegment(de.Key, out var seg);
-            return (seg.MemoryArea,
+            return (seg!.MemoryArea,
                 de.Key,
                 de.Value.Size);
         }

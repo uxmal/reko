@@ -1214,7 +1214,7 @@ namespace Reko.ImageLoaders.OdbgScript
                     else
                     {
                         var ea = src;
-                        if (!Host.SegmentMap.TryFindSegment(ea, out ImageSegment segment))
+                        if (!Host.SegmentMap.TryFindSegment(ea, out ImageSegment? segment))
                             throw new AccessViolationException();
                         byte[] buffer = new byte[STRING_READSIZE];
                         if (segment.MemoryArea is ByteMemoryArea bmem && 
@@ -1327,7 +1327,7 @@ namespace Reko.ImageLoaders.OdbgScript
                 if (GetAddress(mem.EffectiveAddress, out Address ea))
                 {
                     //$TODO: add a method IHost.TryReadLeUint32.
-                    if (!Host.SegmentMap.TryFindSegment(ea, out ImageSegment segment))
+                    if (!Host.SegmentMap.TryFindSegment(ea, out ImageSegment? segment))
                         throw new AccessViolationException();
                     bool ret = segment.MemoryArea.TryReadLeUInt32(ea, out uint dw);
                     value = dw;
@@ -1409,7 +1409,7 @@ namespace Reko.ImageLoaders.OdbgScript
             {
                 if (GetAddress(mem.EffectiveAddress, out Address ea))
                 {
-                    if (!Host.SegmentMap.TryFindSegment(ea, out ImageSegment segment))
+                    if (!Host.SegmentMap.TryFindSegment(ea, out ImageSegment? segment))
                         throw new AccessViolationException();
                     var offset = ea - segment.MemoryArea.BaseAddress;
                     return segment.MemoryArea.TryReadLeDouble(offset, out value);

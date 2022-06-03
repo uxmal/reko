@@ -142,7 +142,7 @@ namespace Reko.Typing
         public IEnumerable<WorkItem>? VisitPointer(Pointer ptr)
         {
             Debug.Print("Iterating pointer at {0:X}", gOffset);
-            if (!segmentMap.TryFindSegment(segmentMap.MapLinearAddressToAddress((ulong) gOffset), out ImageSegment segment))
+            if (!segmentMap.TryFindSegment(segmentMap.MapLinearAddressToAddress((ulong) gOffset), out ImageSegment? segment))
                 return null;
             var rdr = arch.CreateImageReader(segment.MemoryArea, gOffset - (long)segment.MemoryArea.BaseAddress.ToLinear());
             if (!rdr.TryRead(PrimitiveType.Create(Domain.Pointer, ptr.BitSize), out var c))

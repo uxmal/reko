@@ -115,7 +115,7 @@ namespace Reko.Arch.X86
             set
             {
                 UpdateIp(value);
-                if (!map.TryFindSegment(ip, out ImageSegment segment))
+                if (!map.TryFindSegment(ip, out ImageSegment? segment))
                     throw new AccessViolationException();
                 var rdr = arch.CreateImageReader(segment.MemoryArea, value);
                 dasm = arch.CreateDisassemblerImpl(rdr).GetEnumerator();

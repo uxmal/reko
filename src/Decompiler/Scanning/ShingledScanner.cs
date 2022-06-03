@@ -607,7 +607,7 @@ namespace Reko.Scanning
 
         private bool IsExecutable(Address address)
         {
-            if (!program.SegmentMap.TryFindSegment(address, out ImageSegment seg))
+            if (!program.SegmentMap.TryFindSegment(address, out ImageSegment? seg))
                 return false;
             return seg.IsExecutable;
         }
@@ -647,7 +647,7 @@ namespace Reko.Scanning
             Address addr, 
             IDictionary<ImageSegment, byte[]> map)
         {
-            if (!program.SegmentMap.TryFindSegment(addr, out ImageSegment seg))
+            if (!program.SegmentMap.TryFindSegment(addr, out ImageSegment? seg))
                 throw new InvalidOperationException(string.Format("Address {0} doesn't belong to any segment.", addr));
             return map[seg][addr - seg.Address] == MaybeCode;
         }

@@ -137,7 +137,7 @@ namespace Reko.Environments.Windows
             uint idx;
 
             // Start at program entry point
-            if (!program.SegmentMap.TryFindSegment(this.addrStart, out ImageSegment seg))
+            if (!program.SegmentMap.TryFindSegment(this.addrStart, out ImageSegment? seg))
                 return null;
             var offsetStart = this.addrStart - seg.MemoryArea.BaseAddress;
             var offsetMax = Math.Min(seg.MemoryArea.Length, offsetStart + MaxDistanceFromEntry);
@@ -169,7 +169,7 @@ namespace Reko.Environments.Windows
                         return null;
                     var iMainInfo = idx + 0x0E;
                     var addrMainInfo = Address.Ptr32(bmem.ReadLeUInt32(iMainInfo));
-                    if (!program.SegmentMap.TryFindSegment(addrMainInfo, out ImageSegment segMainInfo))
+                    if (!program.SegmentMap.TryFindSegment(addrMainInfo, out ImageSegment? segMainInfo))
                         return null;
                     var addrMain = Address.Ptr32(
                         ((ByteMemoryArea)segMainInfo.MemoryArea).ReadLeUInt32(addrMainInfo + 0x18));

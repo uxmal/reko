@@ -309,7 +309,7 @@ namespace Reko.Core
             else if (impref.SymbolType == SymbolType.Data)
             {
                 // Read an address sized value at the given address.
-                if (!program.SegmentMap.TryFindSegment(impref.ReferenceAddress, out ImageSegment seg))
+                if (!program.SegmentMap.TryFindSegment(impref.ReferenceAddress, out ImageSegment? seg))
                     return null;
                 var dt = PrimitiveType.CreateWord(impref.ReferenceAddress.DataType.BitSize);
                 if (!program.Architecture.TryRead(seg.MemoryArea, impref.ReferenceAddress, dt, out Constant cIndirect))

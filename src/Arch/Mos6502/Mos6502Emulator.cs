@@ -73,7 +73,7 @@ namespace Reko.Arch.Mos6502
             set
             {
                 UpdatePc(value);
-                if (!map.TryFindSegment(value, out ImageSegment segment))
+                if (!map.TryFindSegment(value, out ImageSegment? segment))
                     throw new AccessViolationException();
                 var rdr = arch.CreateImageReader(segment.MemoryArea, value);
                 dasm = new Disassembler(arch, rdr).GetEnumerator();
@@ -121,7 +121,7 @@ namespace Reko.Arch.Mos6502
             this.regs[reg.Number] = v;
             if (reg == Registers.pc)
             {
-                if (!map.TryFindSegment(value, out ImageSegment segment))
+                if (!map.TryFindSegment(value, out ImageSegment? segment))
                     throw new AccessViolationException();
                 var rdr = arch.CreateImageReader(segment.MemoryArea, Address.Ptr16(v));
                 dasm = new Disassembler(arch, rdr).GetEnumerator();

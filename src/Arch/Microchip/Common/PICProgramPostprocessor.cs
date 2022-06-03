@@ -165,7 +165,7 @@ namespace Reko.Arch.MicrochipPIC.Common
             if (dcf != null)
             {
                 var dcr = PICMemoryDescriptor.GetDCR(dcf.RegAddress);
-                if (dcr != null && program.SegmentMap.TryFindSegment(dcr.Address, out ImageSegment xinstsegt))
+                if (dcr != null && program.SegmentMap.TryFindSegment(dcr.Address, out ImageSegment? xinstsegt))
                 {
                     var mem = (ByteMemoryArea) xinstsegt.MemoryArea;
                     uint xinstval;

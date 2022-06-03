@@ -186,7 +186,7 @@ namespace Reko.Core
                 //$TODO: we can't represent integer constants larger than 64 bits yet.
                 return InvalidConstant.Create(dt);
             }
-            if (!segmentMap.TryFindSegment(addr, out ImageSegment seg) || seg.IsWriteable)
+            if (!segmentMap.TryFindSegment(addr, out ImageSegment? seg) || seg.IsWriteable)
                 return InvalidConstant.Create(dt);
             if (!Architecture.TryRead(seg.MemoryArea, addr, pt, out Constant c))
                 return InvalidConstant.Create(dt);
