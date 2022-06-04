@@ -38,6 +38,7 @@ namespace Reko.UserInterfaces.AvaloniaUI.Services
             this.mainViewModel = mainViewModel;
         }
 
+        public DiagnosticFilters Filter { get; set; }
         public void ClearDiagnostics()
         {
             return; //$TODO

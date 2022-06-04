@@ -97,7 +97,7 @@ namespace Reko.WindowsItp
             throw new NotImplementedException();
         }
 
-        public ValueTask<T> ShowModalDialog<T>(IDialog dlg)
+        public ValueTask<T> ShowModalDialog<T>(IDialog<T> dlg)
         {
             throw new NotImplementedException();
         }

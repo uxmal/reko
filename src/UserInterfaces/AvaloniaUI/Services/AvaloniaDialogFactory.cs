@@ -22,6 +22,7 @@ using Reko.Core;
 using Reko.Core.Machine;
 using Reko.Gui;
 using Reko.Gui.Forms;
+using Reko.Gui.Services;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
@@ -160,7 +161,7 @@ namespace Reko.UserInterfaces.AvaloniaUI.Services
             throw new NotImplementedException();
         }
 
-        public IDiagnosticFilterDialog CreateDiagnosticFilterDialog()
+        public IDiagnosticFilterDialog CreateDiagnosticFilterDialog(DiagnosticFilters filters)
         {
             throw new NotImplementedException();
         }

@@ -32,6 +32,7 @@ namespace Reko.UnitTests.Mocks
 {
     public class FakeDiagnosticsService : IDiagnosticsService
     {
+        public DiagnosticFilters Filter { get; set; }
         public void Error(string message)
         {
             Debug.Print(message);
