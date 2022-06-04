@@ -80,7 +80,7 @@ namespace Reko.UserInterfaces.WindowsForms
         public IDiagnosticsService CreateDiagnosticsService()
         {
             var d = new DiagnosticsInteractor();
-            d.Attach(mainForm.DiagnosticsList);
+            d.Attach(mainForm.DiagnosticsList, mainForm.DiagnosticsFilter);
             return d;
         }
 

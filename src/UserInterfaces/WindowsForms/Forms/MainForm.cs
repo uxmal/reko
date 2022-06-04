@@ -189,6 +189,11 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
             get { return listDiagnostics; }
         }
 
+        public ToolStripButton DiagnosticsFilter
+        {
+            get { return btnDiagnosticFilter; }
+        }
+
         public new Gui.Forms.FormWindowState WindowState
         {
             get { return (Gui.Forms.FormWindowState)base.WindowState;  }

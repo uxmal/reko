@@ -38,14 +38,24 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
     /// </summary>
     public class DiagnosticsInteractor : IDiagnosticsService, IWindowPane, ICommandTarget
     {
+        private const string FilterSetting = "Diagnostics/Filter";
+
         private IServiceProvider services;
         private ListView listView;
+        private List<(ICodeLocation, Diagnostic)> diagnosticItems;
         private List<KeyValuePair<ICodeLocation, Diagnostic>> pending;
         private SynchronizationContext syncCtx;
 
+        public DiagnosticsInteractor()
+        {
+            this.diagnosticItems = new();
+        }
+
         public IWindowFrame Frame { get; set; }
 
-        public void Attach(ListView listView)
+        public DiagnosticFilters Filter { get; set; }
+
+        public void Attach(ListView listView, ToolStripButton? btnFilter)
         {
             if (listView == null)
                 throw new ArgumentNullException("listView");
@@ -53,6 +63,10 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
             this.listView = listView;
             listView.DoubleClick += listView_DoubleClick;
             listView.HandleCreated += listView_HandleCreated;
+            if (btnFilter is not null)
+            {
+                btnFilter.Click += btnFilter_Click;
+            }
         }
 
         public object CreateControl()
@@ -68,6 +82,8 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
                 var uiUser = services.RequireService<IUiPreferencesService>();
                 uiUser.UiPreferencesChanged += delegate { uiUser.UpdateControlStyle(UiStyles.List, listView); };
                 uiUser.UpdateControlStyle(UiStyles.List, listView);
+                var settings = services.RequireService<ISettingsService>();
+                this.Filter  = (DiagnosticFilters) settings.Get(FilterSetting, -1);
             }
         }
 
@@ -84,13 +100,39 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
             }
         }
 
+        async void btnFilter_Click(object sender, EventArgs e)
+        {
+            var dlgFactory = services.RequireService<IDialogFactory>();
+            var dlg = dlgFactory.CreateDiagnosticFilterDialog(this.Filter);
+            var uiSvc = services.RequireService<IDecompilerShellUiService>();
+            var newFilterSettings = await uiSvc.ShowModalDialog<DiagnosticFilters>(dlg);
+            if (newFilterSettings != this.Filter)
+            {
+                var settings = services.RequireService<ISettingsService>();
+                settings.Set(FilterSetting, (int)newFilterSettings);
+                this.Filter = newFilterSettings;
+                this.ReloadDiagnostics();
+            }
+        }
+
         #region IDiagnosticsService Members
 
         public void AddDiagnostic(ICodeLocation location, Diagnostic d)
         {
+            lock (diagnosticItems)
+            {
+                diagnosticItems.Add((location, d));
+            }
+            AddDiagnosticToList(location, d);
+        }
+
+        private void AddDiagnosticToList(ICodeLocation location, Diagnostic d)
+        {
+            if (!AllowVisibleItem(d))
+                return;
             if (!listView.IsHandleCreated)
             {
-                if (pending == null)
+                if (pending is null)
                     pending = new List<KeyValuePair<ICodeLocation, Diagnostic>>();
                 pending.Add(new KeyValuePair<ICodeLocation, Diagnostic>(location, d));
                 return;
@@ -102,23 +144,25 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
             {
                 this.syncCtx.Post((a) =>
                 {
-                    AddDiagnosticImpl(location, d);
+                    listView.Items.Add(CreateListViewItem(location, d));
                 }, null);
             }
             else
             {
-                AddDiagnosticImpl(location, d);
+                listView.Items.Add(CreateListViewItem(location, d));
             }
         }
 
-        private void AddDiagnosticImpl(ICodeLocation location, Diagnostic d)
+        private ListViewItem CreateListViewItem(ICodeLocation location, Diagnostic d)
         {
-            var li = new ListViewItem();
-            li.Text = location.Text;
-            li.Tag = location;
-            li.ImageKey = d.ImageKey;
-            li.SubItems.Add(d.Message);
-            listView.Items.Add(li);
+            var item = new ListViewItem
+            {
+                Text = location.Text,
+                Tag = location,
+                ImageKey = d.ImageKey,
+            };
+            item.SubItems.Add(d.Message);
+            return item;
         }
 
         public void Error(string message)
@@ -204,7 +248,22 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
         public void ClearDiagnostics()
         {
             listView.Items.Clear();
+            diagnosticItems.Clear();
         }
+
+
+        public void ReloadDiagnostics()
+        {
+            listView.Items.Clear();
+            foreach (var item in diagnosticItems)
+            {
+                if (AllowVisibleItem(item.Item2))
+                {
+                    AddDiagnosticToList(item.Item1, item.Item2);
+                }
+            }
+        }
+
         #endregion
 
         public virtual ListViewItem FocusedListItem
@@ -218,8 +277,7 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
             var item = FocusedListItem;
             if (item == null)
                 return;
-            var location = item.Tag as ICodeLocation;
-            if (location != null)
+            if (item.Tag is ICodeLocation location)
                 location.NavigateTo();
         }
 
@@ -273,6 +331,21 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
             for (int i = 0; i < listView.Items.Count; ++i)
                 listView.SelectedIndices.Add(i);
             return ValueTask.FromResult(true);
+        }
+
+        private bool AllowVisibleItem(Diagnostic diagnostic)
+        {
+            switch (diagnostic)
+            {
+            case ErrorDiagnostic _:
+                return this.Filter.HasFlag(DiagnosticFilters.Errors);
+            case WarningDiagnostic _:
+                return this.Filter.HasFlag(DiagnosticFilters.Warnings);
+            case InformationalDiagnostic _:
+                return this.Filter.HasFlag(DiagnosticFilters.Information);
+            default:
+                return true;
+            }
         }
     }
 }

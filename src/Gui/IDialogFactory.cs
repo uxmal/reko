@@ -21,6 +21,7 @@
 using Reko.Core;
 using Reko.Core.Machine;
 using Reko.Gui.Forms;
+using Reko.Gui.Services;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -55,5 +56,6 @@ namespace Reko.Gui
         ISegmentEditorDialog CreateSegmentEditorDialog();
         IRegisterValuesDialog CreateRegisterValuesDialog(IProcessorArchitecture architecture, List<UserRegisterValue> regValues);
         IBlockNameDialog CreateBlockNameDialog(Procedure proc, Block block);
+        IDiagnosticFilterDialog CreateDiagnosticFilterDialog(DiagnosticFilters filterSettings);
     }
 }

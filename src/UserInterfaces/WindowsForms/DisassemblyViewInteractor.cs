@@ -131,7 +131,7 @@ namespace Reko.UserInterfaces.WindowsForms
 			var dlgFactory = sp.RequireService<IDialogFactory>();
             using (IAddressPromptDialog dlg = dlgFactory.CreateAddressPromptDialog())
             {
-                if (await sp.GetService<IDecompilerShellUiService>().ShowModalDialog<Gui.Services.DialogResult>(dlg) == Gui.Services.DialogResult.OK)
+                if (await sp.GetService<IDecompilerShellUiService>().ShowModalDialog(dlg) == Gui.Services.DialogResult.OK)
                 {
                     StartAddress = dlg.Address;
                     DumpAssembler();

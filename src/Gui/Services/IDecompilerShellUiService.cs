@@ -44,7 +44,7 @@ namespace Reko.Gui.Services
         IWindowFrame FindDocumentWindow(string documentType, object docItem);
         void SetContextMenu(object control, int menuID);
         ValueTask<DialogResult> ShowModalDialog(IDialog dlg);
-        ValueTask<TResult> ShowModalDialog<TResult>(IDialog dlg);
+        ValueTask<TResult> ShowModalDialog<TResult>(IDialog<TResult> dlg);
         void WithWaitCursor(Action p);
     }
 

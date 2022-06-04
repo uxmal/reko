@@ -34,9 +34,9 @@ namespace Reko.UserInterfaces.WindowsForms
     /// </summary>
     public class DecompilerUiService : IDecompilerUIService
     {
-        private Form form;
-        private OpenFileDialog ofd;
-        private SaveFileDialog sfd;
+        private readonly Form form;
+        private readonly OpenFileDialog ofd;
+        private readonly SaveFileDialog sfd;
 
         public DecompilerUiService(Form form, OpenFileDialog ofd, SaveFileDialog sfd)
         {
@@ -69,9 +69,10 @@ namespace Reko.UserInterfaces.WindowsForms
             return ShowModalDialog((Form)dlg);
         }
 
-        public virtual ValueTask<T> ShowModalDialog<T>(IDialog dlg)
+        public virtual async ValueTask<T> ShowModalDialog<T>(IDialog<T> dlg)
         {
-            throw new NotImplementedException();
+            await ShowModalDialog((Form) dlg);
+            return dlg.Value;
         }
 
         public virtual ValueTask<string> ShowOpenFileDialog(string fileName)

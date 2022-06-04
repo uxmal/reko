@@ -80,7 +80,8 @@ namespace Reko.UserInterfaces.WindowsForms
             {
                 this.stackTraceInteractor = new DiagnosticsInteractor();
                 stackTraceInteractor.Attach(
-                    stackTraceDialog.StackTraceListView);
+                    stackTraceDialog.StackTraceListView,
+                    null);
             }
             stackTraceDialog.Focus();
             return stackTraceInteractor;

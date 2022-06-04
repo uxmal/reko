@@ -31,6 +31,8 @@ namespace Reko.Gui.Services
     /// </summary>
     public interface IDiagnosticsService
     {
+        DiagnosticFilters Filter { get; set; }
+
         void Error(string message);
         void Error(string message, params object[] args);
         void Error(Exception ex, string message);
@@ -47,5 +49,13 @@ namespace Reko.Gui.Services
         void Inform(ICodeLocation location, string message);
         void Inform(ICodeLocation location, string message, params object[] args);
         void ClearDiagnostics();
+    }
+
+    [Flags]
+    public enum DiagnosticFilters
+    {
+        Errors = 1,
+        Warnings = 2,
+        Information = 4,
     }
 }

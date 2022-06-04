@@ -159,5 +159,10 @@ namespace Reko.UserInterfaces.AvaloniaUI.Services
         {
             throw new NotImplementedException();
         }
+
+        public IDiagnosticFilterDialog CreateDiagnosticFilterDialog()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

@@ -36,6 +36,8 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
             this.imlBrowser = new System.Windows.Forms.ImageList(this.components);
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabDiagnostics = new System.Windows.Forms.TabPage();
+            this.diagnosticsToolstrip = new System.Windows.Forms.ToolStrip();
+            this.btnDiagnosticFilter = new System.Windows.Forms.ToolStripButton();
             this.listDiagnostics = new System.Windows.Forms.ListView();
             this.columnHeader1 = new System.Windows.Forms.ColumnHeader();
             this.columnHeader2 = new System.Windows.Forms.ColumnHeader();
@@ -65,6 +67,7 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
             this.statusStrip.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tabDiagnostics.SuspendLayout();
+            this.diagnosticsToolstrip.SuspendLayout();
             this.tabFindResults.SuspendLayout();
             this.tabCallHierarchy.SuspendLayout();
             this.tabOutput.SuspendLayout();
@@ -150,6 +153,7 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
             // tabDiagnostics
             // 
             this.tabDiagnostics.Controls.Add(this.listDiagnostics);
+            this.tabDiagnostics.Controls.Add(this.diagnosticsToolstrip);
             this.tabDiagnostics.Location = new System.Drawing.Point(4, 24);
             this.tabDiagnostics.Margin = new System.Windows.Forms.Padding(4);
             this.tabDiagnostics.Name = "tabDiagnostics";
@@ -159,6 +163,25 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
             this.tabDiagnostics.Text = "Diagnostics";
             this.tabDiagnostics.UseVisualStyleBackColor = true;
             // 
+            // diagnosticsToolstrip
+            // 
+            this.diagnosticsToolstrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.btnDiagnosticFilter});
+            this.diagnosticsToolstrip.Location = new System.Drawing.Point(4, 4);
+            this.diagnosticsToolstrip.Name = "diagnosticsToolstrip";
+            this.diagnosticsToolstrip.Size = new System.Drawing.Size(898, 25);
+            this.diagnosticsToolstrip.TabIndex = 3;
+            this.diagnosticsToolstrip.Text = "toolStrip1";
+            // 
+            // btnDiagnosticFilter
+            // 
+            this.btnDiagnosticFilter.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.btnDiagnosticFilter.Image = ((System.Drawing.Image)(resources.GetObject("btnDiagnosticFilter.Image")));
+            this.btnDiagnosticFilter.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.btnDiagnosticFilter.Name = "btnDiagnosticFilter";
+            this.btnDiagnosticFilter.Size = new System.Drawing.Size(23, 22);
+            this.btnDiagnosticFilter.Text = "Filter messages";
+            // 
             // listDiagnostics
             // 
             this.listDiagnostics.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
@@ -167,10 +190,10 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
             this.listDiagnostics.Dock = System.Windows.Forms.DockStyle.Fill;
             this.listDiagnostics.FullRowSelect = true;
             this.listDiagnostics.HideSelection = false;
-            this.listDiagnostics.Location = new System.Drawing.Point(4, 4);
+            this.listDiagnostics.Location = new System.Drawing.Point(4, 29);
             this.listDiagnostics.Margin = new System.Windows.Forms.Padding(4);
             this.listDiagnostics.Name = "listDiagnostics";
-            this.listDiagnostics.Size = new System.Drawing.Size(898, 160);
+            this.listDiagnostics.Size = new System.Drawing.Size(898, 135);
             this.listDiagnostics.SmallImageList = this.imageList;
             this.listDiagnostics.TabIndex = 2;
             this.listDiagnostics.UseCompatibleStateImageBehavior = false;
@@ -441,6 +464,9 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
             this.statusStrip.PerformLayout();
             this.tabControl1.ResumeLayout(false);
             this.tabDiagnostics.ResumeLayout(false);
+            this.tabDiagnostics.PerformLayout();
+            this.diagnosticsToolstrip.ResumeLayout(false);
+            this.diagnosticsToolstrip.PerformLayout();
             this.tabFindResults.ResumeLayout(false);
             this.tabCallHierarchy.ResumeLayout(false);
             this.tabOutput.ResumeLayout(false);
@@ -497,6 +523,8 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
         private System.Windows.Forms.ToolStrip outputWindowToolstrip;
         private System.Windows.Forms.ToolStripComboBox ddlOutputWindowSources;
         private System.Windows.Forms.Panel outputWindowPanel;
+        private System.Windows.Forms.ToolStrip diagnosticsToolstrip;
+        private System.Windows.Forms.ToolStripButton btnDiagnosticFilter;
     }
 }
 

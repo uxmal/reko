@@ -18,29 +18,16 @@
  */
 #endregion
 
+using Reko.Gui.Services;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
-namespace Reko.Gui
+namespace Reko.Gui.Forms
 {
-    /// <summary>
-    /// Abstracts the notion of a dialog for assistance when unit testing.
-    /// </summary>
-    public interface IDialog : IDisposable
+    public interface IDiagnosticFilterDialog : IDialog<DiagnosticFilters>
     {
-        string Text { get; set; }
-    }
-
-    /// <summary>
-    /// Implemented by dialogs that return a value of type <typeparamref name="T"/>.
-    /// </summary>
-    /// <typeparam name="T"></typeparam>
-    public interface IDialog<T> : IDialog
-    {
-        /// <summary>
-        /// The value returned by the dialog.
-        /// </summary>
-        T Value { get; }
     }
 }

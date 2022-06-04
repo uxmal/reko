@@ -22,6 +22,7 @@ using Reko.Core;
 using Reko.Core.Machine;
 using Reko.Gui;
 using Reko.Gui.Forms;
+using Reko.Gui.Services;
 using Reko.UserInterfaces.WindowsForms.Forms;
 using System;
 using System.Collections.Generic;
@@ -233,6 +234,16 @@ namespace Reko.UserInterfaces.WindowsForms
         public IBlockNameDialog CreateBlockNameDialog(Procedure proc, Block block)
         {
             var dlg = new BlockNameDialog(proc, block);
+            return dlg;
+        }
+
+        public IDiagnosticFilterDialog CreateDiagnosticFilterDialog(DiagnosticFilters filter)
+        {
+            var svc = this.services.RequireService<ISettingsService>();
+            var dlg = new DiagnosticFilterDialog
+            {
+                Value  = filter,
+            };
             return dlg;
         }
     }
