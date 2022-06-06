@@ -827,7 +827,9 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
                     return selectTheme;
                 if (item is ImageMapBlock)
                     return codeTheme;
-                if (item.DataType != null && !(item.DataType is UnknownType))
+                if (item.DataType != null &&
+                    (item.DataType is not UnknownType ut ||
+                     ut.Size > 0))
                     return dataTheme;
                 if (item is ImageMapVectorTable)
                     return dataTheme;

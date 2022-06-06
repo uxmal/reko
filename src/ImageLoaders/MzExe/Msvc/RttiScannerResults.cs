@@ -28,5 +28,9 @@ namespace Reko.ImageLoaders.MzExe.Msvc
         public readonly Dictionary<Address, CompleteObjectLocator> CompleteObjectLocators = new();
 
         public readonly Dictionary<Address, TypeDescriptor> TypeDescriptors = new();
+
+        public readonly List<ImageSymbol> Symbols = new();
+
+        public readonly Dictionary<Address, List<Address>> VFTables = new();
     }
 }

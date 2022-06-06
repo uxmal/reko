@@ -199,12 +199,26 @@ namespace Reko.ImageLoaders.MzExe
                 program.Resources.AddRange(items);
             }
             Relocate(program, addrLoad);
-            var rtti = new RttiScanner(program, listener);
-            rtti.Scan();
+            CollectRttiInformation();
             return program;
         }
 
-		public void LoadSectionBytes(Section s, byte [] rawImage, byte [] loadedImage)
+        private void CollectRttiInformation()
+        {
+            var rtti = new RttiScanner(program, listener);
+            var results = rtti.Scan();
+            foreach (var symbol in results.Symbols)
+            {
+                program.ImageSymbols.TryAdd(symbol.Address, symbol);
+            }
+            foreach (var pfn in results.VFTables.Values.SelectMany(t => t))
+            {
+                var fnSym = ImageSymbol.Procedure(program.Architecture, pfn);
+                program.ImageSymbols.TryAdd(pfn, fnSym);
+            }
+        }
+
+        public void LoadSectionBytes(Section s, byte [] rawImage, byte [] loadedImage)
 		{
 			Array.Copy(rawImage, s.OffsetRawData, loadedImage, s.VirtualAddress,
                 s.SizeRawData);

@@ -93,7 +93,7 @@ namespace Reko.UnitTests.ImageLoaders.MzExe
 
         private void Given_i386_Architecture()
         {
-            this.arch_386 = new Mock<IProcessorArchitecture>();
+            this.arch_386 = new Mock<IProcessorArchitecture>(MockBehavior.Strict);
             arch_386.Setup(a => a.Name).Returns("x86-protected-32");
             arch_386.Setup(a => a.CreateFrame()).Returns(new Frame(PrimitiveType.Ptr32));
             arch_386.Setup(a => a.WordWidth).Returns(PrimitiveType.Word32);
@@ -102,8 +102,14 @@ namespace Reko.UnitTests.ImageLoaders.MzExe
             var state = new Mocks.FakeProcessorState(this.arch_386.Object);
             arch_386.Setup(a => a.CreateProcessorState()).Returns(state);
             arch_386.Setup(a => a.CreateImageReader(
-                It.IsNotNull<MemoryArea>(), It.IsNotNull<Address>()))
+                It.IsNotNull<MemoryArea>(), 
+                It.IsNotNull<Address>()))
                 .Returns(new Func<MemoryArea, Address, EndianImageReader>((m, a) => m.CreateLeReader(a)));
+            arch_386.Setup(a => a.CreateImageReader(
+                It.IsNotNull<MemoryArea>(),
+                It.IsNotNull<Address>(),
+                It.IsAny<long>()))
+                .Returns(new Func<MemoryArea, Address, long, EndianImageReader>((m, a, b) => m.CreateLeReader(a, b)));
         }
 
         // PE section headers are always 40 bytes.

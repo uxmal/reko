@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2022 John Källén.
  *
@@ -215,7 +215,12 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
                 if (item is ImageMapVectorTable)
                     return brData;
                 if (item.DataType is UnknownType)
-                    return brBack;
+                {
+                    if (item.DataType.Size > 0)
+                        return brData;
+                    else
+                        return brBack;
+                }
                 if (item is ImageMapBlock)
                     return brCode;
                 else

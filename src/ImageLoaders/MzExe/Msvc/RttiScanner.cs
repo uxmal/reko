@@ -23,6 +23,7 @@ using Reko.Core.Diagnostics;
 using Reko.Core.Memory;
 using Reko.Core.Services;
 using Reko.Core.Types;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
@@ -41,12 +42,15 @@ namespace Reko.ImageLoaders.MzExe.Msvc
         };
 
         private readonly Program program;
+        private readonly IProcessorArchitecture arch;
         private readonly DecompilerEventListener listener;
         private readonly ImageSegment[] roSegments;
 
         public RttiScanner(Program program, DecompilerEventListener listener)
         {
             this.program = program;
+            this.arch = program.Architecture;
+
             this.listener = listener;
             this.roSegments = program.SegmentMap.Segments.Values.Where(s => !s.IsWriteable).ToArray();
         }
@@ -54,6 +58,92 @@ namespace Reko.ImageLoaders.MzExe.Msvc
         public RttiScannerResults Scan()
         {
             var results = new RttiScannerResults();
+            ScanCompleteObjectLocators(results);
+            ScanVFTables(results);
+            Report(results);
+            return results;
+        }
+
+        /// <summary>
+        /// Scans the given image segments for MSVC VFTables, placing any discovered
+        /// VFTable address in <see cref="RttiScannerResults.VFTables"/> and also generates
+        /// image symbols for the VFtables in <see cref="RttiScannerResults.Symbols"/>.
+        /// </summary>
+        /// <remarks>
+        /// This method must be called after the <see cref="CompleteObjectLocator"/>s have 
+        /// been found.
+        /// MSVC lays out vtables as arrays of (pointer-to-procedure), and at position
+        /// -1 of these arrays, it places a pointer to a <see cref="CompleteObjectLocator"/>.
+        /// The algorithm is crude but effective: scan the memory area for a pointer to a complete
+        /// object locator, after which there may be 0 or more pointers to executable memory.
+        /// These pointers are assumed to be the members of the vtable.
+        /// </remarks>
+        public void ScanVFTables(RttiScannerResults results)
+        {
+            foreach (var seg in roSegments)
+            {
+                trace.Inform("MSVC RTTI: Scanning segment {0} ({1}) for vtables.", seg.Name, seg.Address);
+                var rdr = program.CreateImageReader(seg.Address, seg.EndAddress);
+                while (rdr.TryReadLeUInt32(out uint u))
+                {
+                    var addr = Address.Ptr32(u);
+                    if (!results.CompleteObjectLocators.TryGetValue(addr, out var col))
+                        continue;
+                    if (!results.TypeDescriptors.TryGetValue(col.TypeDescriptorAddress, out var td))
+                    {
+                        trace.Warn("*** Couldn't find type descriptor at {0} from COL at {1}", col.TypeDescriptorAddress, col.Address);
+                        continue;
+                    }
+                    var vftableEntries = new List<Address>();
+                    // We're past the COL, the following entries are pointers to functions.
+                    var addrVFTable = rdr.Address;
+                    while (rdr.TryReadUInt32(out var pfn))
+                    {
+                        var addrFn = Address.Ptr32(pfn);
+                        if (!program.SegmentMap.IsExecutableAddress(addrFn))
+                        {
+                            rdr.Seek(addrFn.DataType.Size);   // Might be the COL of the next vtable.
+                            break;
+                        }
+                        vftableEntries.Add(Address.Ptr32(pfn));
+                    }
+                    MakeSymbolsForVftable(results, col, td, addrVFTable, vftableEntries);
+                }
+            }
+        }
+
+        private void MakeSymbolsForVftable(
+            RttiScannerResults results,
+            CompleteObjectLocator col,
+            TypeDescriptor td,
+            Address addrVFTable,
+            List<Address> vftableEntries)
+        {
+            if (vftableEntries.Count == 0 || results.VFTables.ContainsKey(addrVFTable))
+                return;
+
+            // Make a symbol for the vftable itself.
+            trace.Verbose("VFTable for {0} at {1} - {2} entries", td.Name, addrVFTable, vftableEntries.Count);
+            results.VFTables.Add(addrVFTable, vftableEntries);
+            var vftableName = $"??_7{td.Name.Substring(4)}6B@";
+            var vftableType = new ArrayType(
+                    new Pointer(new CodeType(), program.Architecture.PointerType.BitSize),
+                    vftableEntries.Count);
+            var vftableSymbol = ImageSymbol.DataObject(
+                arch,
+                addrVFTable,
+                vftableName,
+                vftableType);
+            results.Symbols.Add(vftableSymbol);
+
+            foreach (var pfn in vftableEntries)
+            {
+                results.Symbols.Add(ImageSymbol.Procedure(arch, pfn));
+            }
+        }
+
+        private void ScanCompleteObjectLocators(RttiScannerResults results)
+        {
             foreach (var seg in roSegments)
             {
                 trace.Inform("MSVC RTTI: Scanning segment {0} ({1})", seg.Name, seg.Address);
@@ -73,8 +163,6 @@ namespace Reko.ImageLoaders.MzExe.Msvc
                     }
                 }
             }
-            Report(results);
-            return results;
         }
 
         private void ScanCompleteObjectLocator(EndianImageReader rdr, RttiScannerResults results)
@@ -91,7 +179,8 @@ namespace Reko.ImageLoaders.MzExe.Msvc
                 return;
             }
             results.CompleteObjectLocators.Add(col.Address, col);
-            CreateImageMapItem(col.Address, rdr.Address - col.Address);
+            results.Symbols.Add(
+                CreateImageSymbol(col.Address, rdr.Address - col.Address));
 
             if (results.TypeDescriptors.ContainsKey(col.TypeDescriptorAddress))
                 return;
@@ -103,14 +192,24 @@ namespace Reko.ImageLoaders.MzExe.Msvc
                 listener.Warn(loc, "Found a complete object locator but was unable to parse it.");
                 return;
             }
+            trace.Verbose("   vftable at: {0}", typedesc.VFTableAddress);
             results.TypeDescriptors.Add(col.TypeDescriptorAddress, typedesc);
-            CreateImageMapItem(typedesc.Address, rdr.Address - typedesc.Address);
+            var typedescName = $"??_R0{typedesc.Name}@8";
+            results.Symbols.Add(
+                CreateImageSymbol(
+                    typedesc.Address,
+                    rdr.Address - typedesc.Address,
+                    typedescName));
         }
 
-        private void CreateImageMapItem(Address addr, long size)
+        private ImageSymbol CreateImageSymbol(Address addr, long size, string? name = null)
         {
-            var item = new ImageMapItem(addr, (uint)size);
-            program.ImageMap.AddItemWithSize(addr, item);
+            var sym = ImageSymbol.DataObject(
+                program.Architecture,
+                addr,
+                name,
+                new UnknownType((int)size));
+            return sym;
         }
 
         private Address? ReadOffsetPointer(EndianImageReader rdr)

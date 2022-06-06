@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2022 John Källén.
+ * Copyright (C) 1999-2022 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,6 +23,7 @@ using NUnit.Framework;
 using Reko.Core;
 using Reko.Core.Memory;
 using Reko.Core.Services;
+using Reko.Core.Types;
 using Reko.ImageLoaders.MzExe.Msvc;
 using Reko.UnitTests.Mocks;
 using System;
@@ -52,6 +53,12 @@ namespace Reko.UnitTests.ImageLoaders.MzExe.Msvc
                 It.IsAny<MemoryArea>(),
                 It.IsAny<Address>())).Returns(new Func<MemoryArea, Address, EndianImageReader>(
                     (m, a) => mem.CreateLeReader(a)));
+            arch.Setup(a => a.CreateImageReader(
+                It.IsAny<MemoryArea>(),
+                It.IsAny<Address>(),
+                It.IsAny<long>())).Returns(new Func<MemoryArea, Address, long, EndianImageReader>(
+                    (m, a, b) => mem.CreateLeReader(a, b)));
+            arch.Setup(a => a.PointerType).Returns(PrimitiveType.Ptr32);
             this.program = new Program(segments, arch.Object, platform.Object);
             this.listener = new FakeDecompilerEventListener();
         }
@@ -82,6 +89,15 @@ namespace Reko.UnitTests.ImageLoaders.MzExe.Msvc
             w.WriteByte(0);
         }
 
+        private void Given_VFTable_At(uint uAddr, params uint[] fnptrs)
+        {
+            var w = CreateWriterAt(uAddr);
+            foreach (var ptr in fnptrs)
+            {
+                w.WriteLeUInt32(ptr);
+            }
+        }
+
         [Test]
         public void Rttis_col_sniff()
         {
@@ -96,6 +112,32 @@ namespace Reko.UnitTests.ImageLoaders.MzExe.Msvc
 
             var rttis = new RttiScanner(program, listener);
             var result =  rttis.Scan();
+        }
+
+        [Test]
+        public void Rttis_scan_vtable_ending_in_junk()
+        {
+            const uint ptrCol = 0x1030;
+            const uint ptrTypeDesc = 0x1040;
+
+            Given_VFTable_At(0x1010,
+                ptrCol,
+                0x1042,
+                0x1047,
+                0x1043,
+                0x64322121);        // junk following vtable.
+            var rttis = new RttiScanner(program, listener);
+            var col = new CompleteObjectLocator(
+                Address.Ptr32(ptrCol), 4, 4, Address.Ptr32(ptrTypeDesc), Address.Ptr32(0x1020));
+            var td = new TypeDescriptor(
+                Address.Ptr32(ptrTypeDesc), Address.Ptr32(0x1008), "bob.class");
+            var result = new RttiScannerResults
+            {
+                CompleteObjectLocators = { { col.Address, col } },
+                TypeDescriptors = { { td.Address, td} }
+            };
+            rttis.ScanVFTables(result);
+            Assert.AreEqual(3, result.VFTables[Address.Ptr32(0x1014)].Count);
         }
     }
 }

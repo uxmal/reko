@@ -618,7 +618,9 @@ namespace Reko.Gui.Forms
                         program,
                         program.SegmentMap.MapLinearAddressToAddress(
                             linBaseAddr + (ulong) offset),
-                        0));
+                        0))
+                    .OrderBy(f => f.Address)
+                    .Distinct();
             }
             else
             {

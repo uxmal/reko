@@ -549,7 +549,7 @@ namespace Reko.Scanning
             if (!sr.LiveExprs.Keys.OfType<Identifier>().Any())
             {
                 // Couldn't find any indirect registers, so there is no work to do.
-                BackwardSlicer.trace.Warn("Bwslc: No indirect registers?");
+                BackwardSlicer.trace.Warn("Bwslc: No indirect registers in {0}?", indirectJump);
                 return false;
             }
             BackwardSlicer.trace.Verbose("  live: {0}", DumpLive(this.Live));
