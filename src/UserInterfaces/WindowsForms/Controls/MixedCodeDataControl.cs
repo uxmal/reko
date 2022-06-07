@@ -19,6 +19,7 @@
 #endregion
 
 using Reko.Core;
+using Reko.Gui;
 using Reko.Gui.Services;
 using System;
 
@@ -73,9 +74,10 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
         {
             try
             {
-                if (program != null)
+                if (program is not null && Services is not null)
                 {
-                    Model = new MixedCodeDataModel(program, program.ImageMap.Clone());
+                    var selSvc = Services.RequireService<ISelectedAddressService>();
+                    Model = new MixedCodeDataModel(program, program.ImageMap.Clone(), selSvc);
                     var currentPos = Model.CurrentPosition;
                     addrTop = MixedCodeDataModel.PositionAddress(currentPos);
                     return;
@@ -118,7 +120,8 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
         private void RefreshModel()
         {
             var currentPos = Model.CurrentPosition;
-            var model = new MixedCodeDataModel(program, program.ImageMap.Clone());
+            var selSvc = Services.RequireService<ISelectedAddressService>();
+            var model = new MixedCodeDataModel(program, program.ImageMap.Clone(), selSvc);
             model.MoveToLine(currentPos, 0);
             currentPos = Model.CurrentPosition;
             this.addrTop = MixedCodeDataModel.PositionAddress(currentPos);

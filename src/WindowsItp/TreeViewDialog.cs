@@ -107,7 +107,7 @@ namespace Reko.WindowsItp
                 .Select(o =>
                 {
                     var tyName = ((DesignerAttribute) o.dd.First()).DesignerTypeName;
-                    throw new NotImplementedException("Services need to be introduced into WindowsItp");
+                    //throw new NotImplementedException("Services need to be introduced into WindowsItp");
                     //var des = Type.GetType(tyName, true).CreateInstance<TreeNodeDesigner>();
                     var node = wrappedTree.CreateNode();
                     //des.TreeNode = node;

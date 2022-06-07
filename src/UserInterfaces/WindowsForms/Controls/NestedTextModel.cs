@@ -103,7 +103,10 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
                 spans.AddRange(sub.Select(ls => new LineSpan(
                     new Location(i, ls.Position),
                     ls.Tag,
-                    ls.TextSpans)));
+                    ls.TextSpans)
+                    {
+                        Style = ls.Style
+                    }));
                 position = new Location(i, model.CurrentPosition);
             }
             return spans.ToArray();

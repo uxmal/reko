@@ -158,7 +158,7 @@ namespace Reko.UserInterfaces.WindowsForms
             if (currentLine == null)
             {
                 currentLine = new List<TextSpan>();
-                this.textLines.Add((this.textLines.Count, currentLine));
+                this.textLines.Add((currentLineTag, currentLine));
             }
             if (currentSpan == null)
             {

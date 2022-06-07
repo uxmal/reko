@@ -21,6 +21,8 @@
 using Reko.Core;
 using Reko.Core.Collections;
 using Reko.Core.Machine;
+using Reko.Gui;
+using Reko.Gui.Services;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -38,17 +40,20 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
 
         private readonly Program program;
         private readonly ImageMap imageMap;
+        private readonly ISelectedAddressService selSvc;
         private ModelPosition curPos;
         private readonly ModelPosition endPos;
         private readonly Dictionary<ImageMapBlock, MachineInstruction[]> instructions;
         private readonly IDictionary<Address, string[]> comments;
 
-        public MixedCodeDataModel(Program program, ImageMap imageMap)
+        public MixedCodeDataModel(Program program, ImageMap imageMap, ISelectedAddressService selSvc)
         {
             this.program = program;
             this.imageMap = imageMap;
+            this.selSvc = selSvc;
+
             var firstSeg = program.SegmentMap.Segments.Values.FirstOrDefault();
-            if (firstSeg == null)
+            if (firstSeg is null)
             {
                 this.curPos = Pos(imageMap.BaseAddress);
                 this.StartPosition = Pos(imageMap.BaseAddress);

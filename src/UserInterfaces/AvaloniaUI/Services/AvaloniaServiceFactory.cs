@@ -168,6 +168,11 @@ namespace Reko.UserInterfaces.AvaloniaUI.Services
             return new AvaloniaSearchResultService(services);
         }
 
+        public ISelectedAddressService CreateSelectedAddressService()
+        {
+            return new SelectedAddressService();
+        }
+
         public ISelectionService CreateSelectionService()
         {
             return new SelectionService();

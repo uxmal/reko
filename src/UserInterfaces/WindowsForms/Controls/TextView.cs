@@ -336,6 +336,7 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
         public void ClearSelection()
         {
             anchorPos = cursorPos;
+            ChangeLayout();
             Invalidate();
         }
 

@@ -33,6 +33,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
 using System.Diagnostics;
+using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -41,6 +42,14 @@ using System.Windows.Forms;
 
 namespace Reko.UserInterfaces.WindowsForms
 {
+    /// <summary>
+    /// Handles events on the <see cref="CombinedCodeView"/> control.
+    /// </summary>
+    /// <remarks>
+    /// The left side of the control is the <see cref="MixedCodeDataControl"/>,
+    /// while the right side of the control can be switched between a view of
+    /// IR code or a Graph viewer.
+    /// </remarks>
     public class CombinedCodeViewInteractor : IWindowPane, ICommandTarget
     {
         private IServiceProvider services;
@@ -141,7 +150,7 @@ namespace Reko.UserInterfaces.WindowsForms
         {
             this.nestedTextModel = new NestedTextModel();
 
-            if (!(combinedCodeView.MixedCodeDataView.Model is MixedCodeDataModel mixedCodeDataModel))
+            if (combinedCodeView.MixedCodeDataView.Model is not MixedCodeDataModel mixedCodeDataModel)
                 return;
 
             var dataItemNodes = mixedCodeDataModel.GetDataItemNodes();
@@ -157,7 +166,8 @@ namespace Reko.UserInterfaces.WindowsForms
                 {
                     if (proc != null)
                     {
-                        var model = new ProcedureCodeModel(proc);
+                        var selSvc = services.RequireService<ISelectedAddressService>();
+                        var model = new ProcedureCodeModel(proc, selSvc);
                         //$TODO: make spacing between globals / procedures user adjustable
                         model.NumEmptyLinesAfter = 2;
                         nestedTextModel.Nodes.Add(model);
@@ -188,7 +198,6 @@ namespace Reko.UserInterfaces.WindowsForms
                     this.nodeByAddress[curAddr] = dataItemNode;
                 }
             }
-
             combinedCodeView.CodeView.Model = nestedTextModel;
         }
 
@@ -520,12 +529,31 @@ namespace Reko.UserInterfaces.WindowsForms
 
         private void MixedCodeDataView_MouseDown(object sender, MouseEventArgs e)
         {
+            var mixedViewTag = combinedCodeView.MixedCodeDataView.GetLineTagFromPoint(new Point(e.X, e.Y));
+            UpdateSelectedAddress(mixedViewTag);
             combinedCodeView.CodeView.ClearSelection();
+            combinedCodeView.MixedCodeDataView.ClearSelection();
         }
 
         private void CodeView_MouseDown(object sender, MouseEventArgs e)
         {
+            var codeViewTag = combinedCodeView.CodeView.GetLineTagFromPoint(new Point(e.X, e.Y));
+            UpdateSelectedAddress(codeViewTag);
+            combinedCodeView.CodeView.ClearSelection();
             combinedCodeView.MixedCodeDataView.ClearSelection();
+        }
+
+        private void UpdateSelectedAddress(object tag)
+        {
+            if (tag is not Address addr)
+            {
+                if (tag is ulong uAddr)
+                    addr = this.program.SegmentMap.MapLinearAddressToAddress(uAddr);
+                else
+                    return;
+            }
+            var selSvc = services.RequireService<ISelectedAddressService>();
+            selSvc.SelectedAddress = addr;
         }
 
         public void ViewGraph()

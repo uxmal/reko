@@ -204,6 +204,11 @@ namespace Reko.UserInterfaces.WindowsForms
             return new SelectionService();
         }
 
+        public ISelectedAddressService CreateSelectedAddressService()
+        {
+            return new SelectedAddressService();
+        }
+
         public IProcedureListService CreateProcedureListService()
         {
             return new ProcedureListService(services, mainForm.ProcedureListTab, mainForm.ProcedureFilter, mainForm.ProcedureList);

@@ -97,6 +97,7 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
         private void PaintLine(LayoutLine line)
         {
             this.line = line;
+            this.styleStack.PushStyle(line.Style);
 
             // Paint the last piece of the line
             RectangleF rcTrailer = line.Extent;
@@ -202,6 +203,7 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
 #endif
                 styleStack.PopStyle();
             }
+            styleStack.PopStyle();
         }
 
         private void PaintUnusedBackground()

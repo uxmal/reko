@@ -244,7 +244,7 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
                 float cyLine = MeasureLineHeight(line);
                 rcLine.Height = cyLine;
                 var spans = ComputeSpanLayouts(line.TextSpans, rcLine);
-                var ll = new LayoutLine(line.Position, line.Tag)
+                var ll = new LayoutLine(line.Position, line.Tag, line.Style)
                 {
                     Extent = LineExtent(rcLine, spans),
                     Spans = spans,
@@ -349,13 +349,15 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
     /// </summary>
     public class LayoutLine
     {
-        public LayoutLine(object Position, object tag) {
+        public LayoutLine(object Position, object tag, string style) {
             this.Position = Position;
             this.Tag = tag;
+            this.Style = style;
         }
 
         public object Position;
         public object Tag;                  // extra object for this line.
+        public string Style;
         public RectangleF Extent;
         public LayoutSpan[] Spans;
     }

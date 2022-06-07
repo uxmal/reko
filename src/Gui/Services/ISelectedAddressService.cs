@@ -19,7 +19,6 @@
 #endregion
 
 using Reko.Core;
-using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -28,37 +27,30 @@ using System.Threading.Tasks;
 
 #nullable enable
 
-namespace Reko.UnitTests.Mocks
+namespace Reko.Gui.Services
 {
-    public class FakeCallingConvention : CallingConvention
+    /// <summary>
+    /// This service is used by components that are interested
+    /// in the currently selected address.
+    /// </summary>
+    public interface ISelectedAddressService
     {
-        private Storage[] argRegisters;
-        private Storage[] returnRegisters;
+        /// <summary>
+        /// This event is raised when the selected address is changed.
+        /// </summary>
+        event EventHandler? SelectedAddressChanged;
 
-        public FakeCallingConvention(Storage[] argRegisters, Storage[] returnRegisters)
-        {
-            this.argRegisters = argRegisters;
-            this.returnRegisters = returnRegisters;
-        }
+        /// <summary>
+        /// If not null, indicates the address the user has 
+        /// selected.
+        /// </summary>
+        public Address? SelectedAddress { get; set; }
 
-        public void Generate(
-            ICallingConventionEmitter ccr,
-            int retAddressOnStack,
-            DataType? dtRet,
-            DataType? dtThis,
-            List<DataType> dtParams)
-        {
-            throw new NotImplementedException();
-        }
-
-        public bool IsArgument(Storage stg)
-        {
-            return argRegisters.Contains(stg);
-        }
-        
-        public bool IsOutArgument(Storage stg)
-        {
-            return returnRegisters.Contains(stg);
-        }
+        /// <summary>
+        /// Indicates the length of the selection the user has 
+        /// made. A length of 0 indicates that only the address
+        /// has been selected, not a range of bytes.
+        /// </summary>
+        public long Length { get; }
     }
 }

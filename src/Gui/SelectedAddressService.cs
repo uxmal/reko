@@ -18,47 +18,54 @@
  */
 #endregion
 
+#nullable enable
+
 using Reko.Core;
-using Reko.Core.Types;
+using Reko.Gui.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-#nullable enable
-
-namespace Reko.UnitTests.Mocks
+namespace Reko.Gui
 {
-    public class FakeCallingConvention : CallingConvention
+    public class SelectedAddressService : ISelectedAddressService
     {
-        private Storage[] argRegisters;
-        private Storage[] returnRegisters;
+        public event EventHandler? SelectedAddressChanged;
 
-        public FakeCallingConvention(Storage[] argRegisters, Storage[] returnRegisters)
+
+        private Address? address;
+        private long length;
+
+        public SelectedAddressService()
         {
-            this.argRegisters = argRegisters;
-            this.returnRegisters = returnRegisters;
         }
 
-        public void Generate(
-            ICallingConventionEmitter ccr,
-            int retAddressOnStack,
-            DataType? dtRet,
-            DataType? dtThis,
-            List<DataType> dtParams)
+        public Address? SelectedAddress
         {
-            throw new NotImplementedException();
+            get => address;
+            set
+            {
+                if (object.Equals(this.address, value))
+                    return;
+                this.address = value;
+                SelectedAddressChanged?.Invoke(this, EventArgs.Empty);
+            }
         }
 
-        public bool IsArgument(Storage stg)
+        public long Length
         {
-            return argRegisters.Contains(stg);
-        }
-        
-        public bool IsOutArgument(Storage stg)
-        {
-            return returnRegisters.Contains(stg);
+            get => length;
+            set
+            {
+                if (value < 0)
+                    throw new ArgumentOutOfRangeException();
+                if (this.length == value)
+                    return;
+                this.length = value;
+                SelectedAddressChanged?.Invoke(this, EventArgs.Empty);
+            }
         }
     }
 }

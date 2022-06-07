@@ -220,6 +220,9 @@ namespace Reko.Gui.Forms
             var selSvc = svcFactory.CreateSelectionService();
             sc.AddService<ISelectionService>(selSvc);
 
+            var selAddrSvc = svcFactory.CreateSelectedAddressService();
+            sc.AddService<ISelectedAddressService>(selAddrSvc);
+
             var testGenSvc = svcFactory.CreateTestGenerationService();
             sc.AddService<ITestGenerationService>(testGenSvc);
 

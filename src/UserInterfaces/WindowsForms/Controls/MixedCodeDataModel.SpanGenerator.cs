@@ -34,7 +34,7 @@ using System.Text;
 namespace Reko.UserInterfaces.WindowsForms.Controls
 {
     public partial class MixedCodeDataModel
-   {
+    {
         private bool TryReadComment(out LineSpan line)
         {
             if (comments.TryGetValue(curPos.Address, out var commentLines) &&
@@ -131,7 +131,12 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
             SpanGenerator sp;
             if (item is ImageMapBlock b && b.Block.Procedure != null)
             {
-                sp = new AsmSpanifyer(program, b.Block.Procedure.Architecture, instructions[b], pos);
+                sp = new AsmSpanifyer(
+                    program, 
+                    b.Block.Procedure.Architecture,
+                    instructions[b], 
+                    pos,
+                    this.selSvc?.SelectedAddress);
             }
             else
             {
@@ -159,17 +164,19 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
 
         private class AsmSpanifyer : SpanGenerator
         {
-            private Program program;
-            private IProcessorArchitecture arch;
-            private MachineInstruction[] instrs;
+            private readonly Program program;
+            private readonly IProcessorArchitecture arch;
+            private readonly MachineInstruction[] instrs;
             private int offset;
             private ModelPosition position;
+            private readonly Address addrSelected;
 
             public AsmSpanifyer(
                 Program program,
                 IProcessorArchitecture arch,
                 MachineInstruction[] instrs,
-                ModelPosition pos)
+                ModelPosition pos,
+                Address addrSelected)
             {
                 this.instrs = instrs;
                 this.arch = arch;
@@ -177,6 +184,7 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
                 this.offset = FindIndexOfInstructionAddress(instrs, addr);
                 this.position = pos;
                 this.program = program;
+                this.addrSelected = addrSelected;
             }
 
             public override (ModelPosition, LineSpan)? GenerateSpan()
@@ -193,6 +201,8 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
                     arch,
                     instr,
                     options);
+                if (instr.Address == addrSelected)
+                    asmLine.Style = "mirrored";
                 if (offset == instrs.Length)
                 {
                     DecorateLastLine(asmLine);

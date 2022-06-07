@@ -63,6 +63,7 @@ namespace Reko.Gui
         IViewImportsService CreateViewImportService();
         ISymbolLoadingService CreateSymbolLoadingService();
         ISelectionService CreateSelectionService();
+        ISelectedAddressService CreateSelectedAddressService();
         IProcedureListService CreateProcedureListService();
         ICallHierarchyService CreateCallHierarchyService();
         IDecompiledFileService CreateDecompiledFileService();

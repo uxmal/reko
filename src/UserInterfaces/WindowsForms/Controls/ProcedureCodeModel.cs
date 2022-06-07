@@ -20,6 +20,7 @@
 
 using Reko.Core;
 using Reko.Core.Output;
+using Reko.Gui.Services;
 using System;
 using System.Diagnostics;
 
@@ -34,11 +35,13 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
         private int position;
         private LineSpan[] lines;      // The procedure, rendered into line spans
         private int numLines;
+        private readonly ISelectedAddressService selSvc;
 
-        public ProcedureCodeModel(Procedure proc)
+        public ProcedureCodeModel(Procedure proc, ISelectedAddressService selSvc)
         {
             this.proc = proc;
             this.numLines = CountLines();
+            this.selSvc = selSvc;
         }
 
         public object CurrentPosition { get { return position; } }
@@ -68,7 +71,15 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
             {
                 LineSpan line;
                 if ((p + i) < lines.Length)
+                {
                     line = lines[p + i];
+                    if (line.Tag is ulong uAddr && 
+                        this.selSvc.SelectedAddress is not null &&
+                        uAddr == this.selSvc.SelectedAddress.ToLinear())
+                    {
+                        line.Style = "mirrored";
+                    }
+                }
                 else
                     line = new LineSpan(p + i, null, new TextSpan[] { new EmptyTextSpan() });
                 Debug.Assert((int) line.Position == p + i);
