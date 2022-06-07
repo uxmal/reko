@@ -140,7 +140,7 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
             var dfmt = new DisassemblyFormatter(program, arch, instr, line);
             instr.Render(dfmt, options);
             dfmt.NewLine();
-            return new LineSpan(position, line.ToArray());
+            return new LineSpan(position, addr, line.ToArray());
         }
 
         private Address Align(Address addr)

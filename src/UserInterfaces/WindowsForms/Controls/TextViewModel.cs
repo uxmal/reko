@@ -173,11 +173,15 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
     {
         public readonly object Position;
         public readonly TextSpan[] TextSpans;
+        public readonly object Tag;
 
-        public LineSpan(object position, params TextSpan[] textSpans)
+        public LineSpan(object position, object tag, params TextSpan[] textSpans)
         {
             this.Position = position;
             this.TextSpans = textSpans;
+            if (textSpans is null || textSpans.Length == 0)
+                _ = textSpans; //$DEBUG
+            this.Tag = tag;
         }
     }
 }

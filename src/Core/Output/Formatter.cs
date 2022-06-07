@@ -64,6 +64,12 @@ namespace Reko.Core.Output
         public bool UseTabs { get; set; }
 
         /// <summary>
+        /// Begin a new line.
+        /// </summary>
+        /// <param name="tag">Optional line-specific data object.</param>
+        public abstract void Begin(object? tag);
+
+        /// <summary>
         /// Terminate a line.
         /// </summary>
         public abstract void Terminate();
@@ -133,6 +139,10 @@ namespace Reko.Core.Output
 
     public class NullFormatter : Formatter
     {
+        public override void Begin(object? tag)
+        {
+        }
+
         public override void Terminate()
         {
         }

@@ -444,7 +444,7 @@ namespace Reko.UserInterfaces.WindowsForms
                 {
                     addr = blockItem.Block.Procedure.EntryAddress;
                 }
-                else if (!(item.DataType is UnknownType))
+                else if (item.DataType is not UnknownType)
                 {
                     addr = item.Address;
                 }
@@ -558,7 +558,7 @@ namespace Reko.UserInterfaces.WindowsForms
 
         private void MixedCodeDataView_TopAddressChanged()
         {
-            if (!(combinedCodeView.MixedCodeDataView.Model is MixedCodeDataModel mixedCodeDataModel))
+            if (combinedCodeView.MixedCodeDataView.Model is not MixedCodeDataModel mixedCodeDataModel)
                 return;
 
             var topAddress = combinedCodeView.MixedCodeDataView.TopAddress;

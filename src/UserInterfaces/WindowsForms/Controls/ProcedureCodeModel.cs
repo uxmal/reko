@@ -21,6 +21,7 @@
 using Reko.Core;
 using Reko.Core.Output;
 using System;
+using System.Diagnostics;
 
 namespace Reko.UserInterfaces.WindowsForms.Controls
 {
@@ -29,9 +30,9 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
     /// </summary>
     public class ProcedureCodeModel : TextViewModel
     {
-        private Procedure proc;
-        int position;
-        private TextSpan[][] lines;
+        private readonly Procedure proc;
+        private int position;
+        private LineSpan[] lines;      // The procedure, rendered into line spans
         private int numLines;
 
         public ProcedureCodeModel(Procedure proc)
@@ -65,12 +66,13 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
             var spans = new LineSpan[c];
             for (int i = 0; i < c; ++i)
             {
-                TextSpan[] line;
+                LineSpan line;
                 if ((p + i) < lines.Length)
                     line = lines[p + i];
                 else
-                    line = new TextSpan[] { new EmptyTextSpan() };
-                spans[i] = new LineSpan(p + i, line);
+                    line = new LineSpan(p + i, null, new TextSpan[] { new EmptyTextSpan() });
+                Debug.Assert((int) line.Position == p + i);
+                spans[i] = line;
             }
             position = p + c;
             return spans;

@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2022 John Källén.
  *
@@ -36,6 +36,7 @@ namespace Reko.Gui.Controls
         IButton BackButton { get; }
         IButton ForwardButton { get; }
         T CurrentAddress { get; set; }
+
         event EventHandler CurrentAddressChanged;   // This event is fired when Back/Forward is pressed.
     }
 }

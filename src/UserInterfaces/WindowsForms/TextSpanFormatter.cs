@@ -35,30 +35,38 @@ namespace Reko.UserInterfaces.WindowsForms
     /// </summary>
     public class TextSpanFormatter : Formatter
     {
-        private List<List<TextSpan>> textLines;
+        private List<(object, List<TextSpan>)> textLines;
         private List<TextSpan> currentLine;
+        private object currentLineTag;
         private FixedTextSpan currentSpan;
         
         public TextSpanFormatter()
         {
-            this.textLines = new List<List<TextSpan>>();
+            this.textLines = new List<(object, List<TextSpan>)>();
+            this.currentLineTag = null;
         }
 
-        public TextSpan[][] GetLines()
+        public LineSpan[] GetLines()
         {
-            return textLines.Select(l => l.ToArray()).ToArray();
+            return textLines.Select((l, i) => new LineSpan(i, l.Item1, l.Item2.ToArray()))
+                .ToArray();
         }
 
         public TextViewModel GetModel()
         {
-            return new TextSpanModel(textLines.Select(l => l.ToArray())
-                .ToArray());
+            return new TextSpanModel(GetLines());
+        }
+
+        public override void Begin(object tag)
+        {
+            this.currentLineTag = tag;
         }
 
         public override void Terminate()
         {
             currentSpan = null;
             currentLine = null;
+            currentLineTag = null;
         }
 
         public override void Write(string s)
@@ -150,7 +158,7 @@ namespace Reko.UserInterfaces.WindowsForms
             if (currentLine == null)
             {
                 currentLine = new List<TextSpan>();
-                this.textLines.Add(currentLine);
+                this.textLines.Add((this.textLines.Count, currentLine));
             }
             if (currentSpan == null)
             {
@@ -162,10 +170,10 @@ namespace Reko.UserInterfaces.WindowsForms
 
         private class TextSpanModel : TextViewModel
         {
-            private TextSpan[][] lines;
+            private LineSpan[] lines;
             private int position;
 
-            public TextSpanModel(TextSpan[][] lines)
+            public TextSpanModel(LineSpan[] lines)
             {
                 this.lines = lines;
             }
@@ -203,7 +211,7 @@ namespace Reko.UserInterfaces.WindowsForms
                 var spans = new LineSpan[c];
                 for (int i = 0; i < c; ++i)
                 {
-                    spans[i] = new LineSpan(p+i, lines[p+i]);
+                    spans[i] = lines[p+i];
                 }
                 position = p + c;
                 return spans;

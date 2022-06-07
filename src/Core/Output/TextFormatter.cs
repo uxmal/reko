@@ -42,6 +42,15 @@ namespace Reko.Core.Output
         public string Terminator { get; set; }
 
         /// <summary>
+        /// Signals the start of a line with an object (which is ignored)
+        /// </summary>
+        /// <param name="tag"></param>
+        public override void Begin(object? tag)
+        {
+        }
+
+
+        /// <summary>
         /// Terminate a line using the terminator string.
         /// </summary>
         public override void Terminate()

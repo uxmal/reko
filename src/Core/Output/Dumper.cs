@@ -387,6 +387,10 @@ namespace Reko.Core.Output
                 this.needPrefix = true;
             }
 
+            public override void Begin(object? tag)
+            {
+            }
+
             public override void Terminate()
             {
                 WritePrefix();

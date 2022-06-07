@@ -42,6 +42,7 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
             {
                 line = new LineSpan(
                     curPos,
+                    curPos.Address,
                     new MemoryTextSpan(
                         $"; {commentLines[curPos.Offset]}",
                         UiStyles.CodeComment));
@@ -228,7 +229,7 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
                 var addr = this.position.Address;
                 var rdr = program.CreateImageReader(program.Architecture, addr, item.EndAddress);
                 mem.Formatter.RenderLine(rdr, program.TextEncoding, this);
-                var memLine = new LineSpan(position, line.ToArray());
+                var memLine = new LineSpan(position, addr, line.ToArray());
                 line.Clear();
 
                 this.position = Pos(rdr.Address);

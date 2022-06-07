@@ -43,7 +43,6 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
         public event EventHandler<SpanEventArgs> SpanEnter;
         public event EventHandler<SpanEventArgs> SpanLeave;
 
-
         private StringFormat stringFormat;
         private TextViewLayout layout;
         private bool ignoreScroll;
@@ -231,12 +230,12 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
                 {
                     if (spanHover != null)
                     {
-                        SpanLeave.Fire(this, new SpanEventArgs(spanHover));
+                        SpanLeave?.Invoke(this, new SpanEventArgs(spanHover));
                     }
                     spanHover = span;
                     if (span != null)
                     {
-                        SpanEnter.Fire(this, new SpanEventArgs(span));
+                        SpanEnter?.Invoke(this, new SpanEventArgs(span));
                     }
                 }
             }
@@ -265,7 +264,7 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
                         var span = GetSpan(e.Location);
                         if (span != null && span.Tag != null)
                         {
-                            Navigate.Fire(this, new EditorNavigationArgs(span.Tag));
+                            Navigate?.Invoke(this, new EditorNavigationArgs(span.Tag));
                         }
                     }
                     SelectionChanged.Fire(this);
@@ -406,13 +405,28 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
         /// Returns the span located at the point <paramref name="pt"/>.
         /// </summary>
         /// <param name="pt">Location specified in client coordinates.</param>
-        /// <returns></returns>
+        /// <returns>The span containing the given point.</returns>
         protected LayoutSpan GetSpan(Point pt)
         {
             foreach (var line in this.layout.LayoutLines)
             {
                 if (line.Extent.Contains(pt))
                     return FindSpan(pt, line);
+            }
+            return null;
+        }
+
+        /// <summary>
+        /// Returns the LayoutLine containing the point <paramref name="pt"/>.
+        /// </summary>
+        /// <param name="pt">Location specified in client coordinates.</param>
+        /// <returns>The span containing the given point.</returns>
+        protected LayoutLine GetLine(Point pt)
+        {
+            foreach (var line in this.layout.LayoutLines)
+            {
+                if (line.Extent.Contains(pt))
+                    return line;
             }
             return null;
         }
@@ -480,9 +494,13 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
         public object GetTagFromPoint(Point ptClient)
         {
             var span = GetSpan(ptClient);
-            if (span == null)
-                return null;
-            return span.Tag;
+            return span?.Tag;
+        }
+
+        public object GetLineTagFromPoint(Point ptClient)
+        {
+            var line = GetLine(ptClient);
+            return line?.Tag;
         }
 
         private int GetFullyVisibleLines()

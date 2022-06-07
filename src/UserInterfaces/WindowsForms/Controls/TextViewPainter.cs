@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2022 John Källén.
  *
@@ -125,6 +125,7 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
                     outer.ComparePositions(selStart, pos) <= 0 &&
                     outer.ComparePositions(pos, selEnd) < 0;
 
+                var hasTag = line.Tag != null;
                 this.fg = styleStack.GetForegroundColor(defaultFgColor);
                 this.bg = styleStack.GetBackground(defaultBgColor);
                 this.font = styleStack.GetFont(defaultFont);

@@ -55,10 +55,10 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
 
         public DiagnosticFilters Filter { get; set; }
 
-        public void Attach(ListView listView, ToolStripButton? btnFilter)
+        public void Attach(ListView listView, ToolStripButton btnFilter)
         {
             if (listView == null)
-                throw new ArgumentNullException("listView");
+                throw new ArgumentNullException(nameof(listView));
             syncCtx = SynchronizationContext.Current;
             this.listView = listView;
             listView.DoubleClick += listView_DoubleClick;

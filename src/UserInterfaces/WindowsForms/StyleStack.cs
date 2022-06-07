@@ -82,8 +82,7 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
         {
             foreach (var styleName in styles)
             {
-                UiStyle style;
-                if (uiPrefSvc.Styles.TryGetValue(styleName, out style))
+                if (uiPrefSvc.Styles.TryGetValue(styleName, out UiStyle style))
                     yield return style;
             }
         }
@@ -142,9 +141,9 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
             for (int i = stack.Count - 1; i >= 0; --i)
             {
                 var styles = GetStyles(stack[i]);
-                var font = styles.Select(s => s.Font).LastOrDefault(f => f != null);
-                if (font != null)
-                    return (Font)font;
+                var oFont = styles.Select(s => s.Font).LastOrDefault(f => f != null);
+                if (oFont is Font font)
+                    return font;
             }
             return defaultFont;
         }

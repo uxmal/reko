@@ -106,6 +106,7 @@ namespace Reko.Core.Output
             }
             foreach (var stm in block.Statements)
             {
+                writer.InnerFormatter.Begin(stm.LinearAddress);
                 stm.Instruction.Accept(writer);
             }
         }

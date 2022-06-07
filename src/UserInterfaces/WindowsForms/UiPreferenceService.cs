@@ -220,7 +220,7 @@ namespace Reko.UserInterfaces.WindowsForms
 
         private Font GetFont(string fontName)
         {
-            if (fontName == null)
+            if (fontName is null)
                 return null;
             var fontCvt = TypeDescriptor.GetConverter(typeof(Font));
             var font = ConvertFrom<Font>(fontCvt, fontName);
