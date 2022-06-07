@@ -170,7 +170,7 @@ namespace Reko.Core
 
         public bool IsValidAddress(Address address)
         {
-            return TryFindSegment(address, out var seg);
+            return TryFindSegment(address, out var _);
         }
 
         public bool IsReadOnlyAddress(Address addr)

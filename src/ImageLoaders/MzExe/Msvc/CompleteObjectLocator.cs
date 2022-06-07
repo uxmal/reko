@@ -33,21 +33,23 @@ namespace Reko.ImageLoaders.MzExe.Msvc
     {
         public static CompleteObjectLocator? Read(
             EndianImageReader rdr,
-            Func<uint, Address> addrGen)
+            IRttiHelper rttiHelper)
         {
             var addr = rdr.Address;
             if (!rdr.TryReadLeUInt32(out uint signature))
                 return null;
-            if (signature != 0)
+            if (signature != rttiHelper.ColSignature)
                 return null;
 
             if (!rdr.TryReadLeUInt32(out uint offset))
                 return null;
             if (!rdr.TryReadLeUInt32(out uint cdOffset))
                 return null;
-            if (!rdr.TryReadLeUInt32(out uint pTypeDescriptor))
+            var pTypeDescriptor = rttiHelper.ReadOffsetPointer(rdr);
+            if (pTypeDescriptor is null)
                 return null;
-            if (!rdr.TryReadLeUInt32(out uint pClassDescriptor))
+            var pClassDescriptor = rttiHelper.ReadOffsetPointer(rdr);
+            if (pClassDescriptor is null)
                 return null;
             // Only Win64, apparently.
             //if (!rdr.TryReadLeUInt32(out uint pSelf))
@@ -56,8 +58,8 @@ namespace Reko.ImageLoaders.MzExe.Msvc
                 addr,
                 offset,
                 cdOffset,
-                addrGen(pTypeDescriptor),
-                addrGen(pClassDescriptor));
+                pTypeDescriptor,
+                pClassDescriptor);
         }
     }
 }

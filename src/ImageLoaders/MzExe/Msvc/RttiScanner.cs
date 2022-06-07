@@ -43,6 +43,7 @@ namespace Reko.ImageLoaders.MzExe.Msvc
 
         private readonly Program program;
         private readonly IProcessorArchitecture arch;
+        private readonly IRttiHelper rttiHelper;
         private readonly DecompilerEventListener listener;
         private readonly ImageSegment[] roSegments;
 
@@ -50,6 +51,9 @@ namespace Reko.ImageLoaders.MzExe.Msvc
         {
             this.program = program;
             this.arch = program.Architecture;
+            this.rttiHelper = program.Architecture.PointerType.BitSize == 64
+                ? new RttiHelper64(program.SegmentMap.BaseAddress)
+                : new RttiHelper32();
 
             this.listener = listener;
             this.roSegments = program.SegmentMap.Segments.Values.Where(s => !s.IsWriteable).ToArray();
@@ -84,9 +88,8 @@ namespace Reko.ImageLoaders.MzExe.Msvc
             {
                 trace.Inform("MSVC RTTI: Scanning segment {0} ({1}) for vtables.", seg.Name, seg.Address);
                 var rdr = program.CreateImageReader(seg.Address, seg.EndAddress);
-                while (rdr.TryReadLeUInt32(out uint u))
+                while (rttiHelper.TryReadPointer(rdr, out Address? addr))
                 {
-                    var addr = Address.Ptr32(u);
                     if (!results.CompleteObjectLocators.TryGetValue(addr, out var col))
                         continue;
                     if (!results.TypeDescriptors.TryGetValue(col.TypeDescriptorAddress, out var td))
@@ -97,15 +100,14 @@ namespace Reko.ImageLoaders.MzExe.Msvc
                     var vftableEntries = new List<Address>();
                     // We're past the COL, the following entries are pointers to functions.
                     var addrVFTable = rdr.Address;
-                    while (rdr.TryReadUInt32(out var pfn))
+                    while (rttiHelper.TryReadPointer(rdr, out var addrFn))
                     {
-                        var addrFn = Address.Ptr32(pfn);
                         if (!program.SegmentMap.IsExecutableAddress(addrFn))
                         {
                             rdr.Seek(addrFn.DataType.Size);   // Might be the COL of the next vtable.
                             break;
                         }
-                        vftableEntries.Add(Address.Ptr32(pfn));
+                        vftableEntries.Add(addrFn);
                     }
                     MakeSymbolsForVftable(results, col, td, addrVFTable, vftableEntries);
                 }
@@ -171,7 +173,7 @@ namespace Reko.ImageLoaders.MzExe.Msvc
             if (results.CompleteObjectLocators.ContainsKey(addrCol))
                 return;
 
-            var col = CompleteObjectLocator.Read(rdr, Address.Ptr32);
+            var col = CompleteObjectLocator.Read(rdr, rttiHelper);
             if (col is null)
             {
                 var loc = listener.CreateAddressNavigator(program, addrCol);
@@ -185,7 +187,7 @@ namespace Reko.ImageLoaders.MzExe.Msvc
             if (results.TypeDescriptors.ContainsKey(col.TypeDescriptorAddress))
                 return;
             rdr = program.CreateImageReader(col.TypeDescriptorAddress);
-            var typedesc = TypeDescriptor.Read(rdr, Address.Ptr32);
+            var typedesc = TypeDescriptor.Read(rdr, rttiHelper);
             if (typedesc is null)
             {
                 var loc = listener.CreateAddressNavigator(program, col.TypeDescriptorAddress);
@@ -212,13 +214,6 @@ namespace Reko.ImageLoaders.MzExe.Msvc
             return sym;
         }
 
-        private Address? ReadOffsetPointer(EndianImageReader rdr)
-        {
-            if (!rdr.TryReadLeUInt32(out uint ptr))
-                return null;
-            return Address.Ptr32(ptr);
-        }
-
         private bool IsValidPointer([NotNullWhen(true)] Address? ptr)
         {
             if (ptr is null)
@@ -231,11 +226,13 @@ namespace Reko.ImageLoaders.MzExe.Msvc
             var addr = rdr.Address;
             if (!rdr.TryReadLeUInt32(out uint signature))
                 return false;
-            if (signature != 0)     // 32-bit COL's start with 0x00000000
+            // 32-bit COL's start with 0x00000000
+            // 64-bit COL's start with 0x00000001
+            if (signature != rttiHelper.ColSignature)
                 return false;
             rdr.Offset += 8;        // Skip to type descriptor ptr.
-            var ptrTypeDescriptor = ReadOffsetPointer(rdr);
-            var ptrClassDescriptor = ReadOffsetPointer(rdr);
+            var ptrTypeDescriptor = rttiHelper.ReadOffsetPointer(rdr);
+            var ptrClassDescriptor = rttiHelper.ReadOffsetPointer(rdr);
             if (!IsValidPointer(ptrTypeDescriptor) || !IsValidPointer(ptrClassDescriptor))
                 return false;
 
@@ -243,10 +240,12 @@ namespace Reko.ImageLoaders.MzExe.Msvc
             // always is prefixed with ".?A"
 
             var rdrTd = program.CreateImageReader(ptrTypeDescriptor);
-            var ptrVftable = ReadOffsetPointer(rdrTd);
+            if (!rttiHelper.TryReadPointer(rdrTd, out var ptrVftable))
+                return false;
             if (!IsValidPointer(ptrVftable))
                 return false;
-            rdrTd.Offset += 4;
+            rdrTd.Seek(ptrVftable.DataType.Size);
+
             // Read the first 3 bytes
             if (!rdrTd.TryPeekLeUInt32(0, out uint sName))
                 return false;

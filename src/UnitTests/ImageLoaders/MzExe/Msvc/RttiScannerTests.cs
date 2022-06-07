@@ -46,8 +46,8 @@ namespace Reko.UnitTests.ImageLoaders.MzExe.Msvc
         {
             this.mem = new ByteMemoryArea(Address.Ptr32(0x1000), new byte[256]);
             var segments = new SegmentMap(new ImageSegment(".text", mem, AccessMode.ReadExecute));
-            var arch = new Mock<IProcessorArchitecture>(MockBehavior.Strict);
             var platform = new Mock<IPlatform>(MockBehavior.Strict);
+            var arch = new Mock<IProcessorArchitecture>(MockBehavior.Strict);
             arch.Setup(a => a.Name).Returns("fakeArch");
             arch.Setup(a => a.CreateImageReader(
                 It.IsAny<MemoryArea>(),

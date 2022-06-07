@@ -34,15 +34,14 @@ namespace Reko.ImageLoaders.MzExe.Msvc
         Address VFTableAddress,
         string Name)
     {
-        public static TypeDescriptor? Read(EndianImageReader rdr, Func<uint, Address> addrGen)
+        public static TypeDescriptor? Read(EndianImageReader rdr, IRttiHelper rttiHelper)
         {
             var addr = rdr.Address;
-            if (!rdr.TryReadLeUInt32(out uint pVFTable))
+            if (!rttiHelper.TryReadPointer(rdr, out var pVFTable))
                 return null;
-            if (!rdr.TryReadLeUInt32(out _))
-                return null;
+            rdr.Seek(pVFTable.DataType.Size);
             var str = rdr.ReadCString(PrimitiveType.Char, Encoding.UTF8).ToString();
-            return new TypeDescriptor(addr, addrGen(pVFTable), str);
+            return new TypeDescriptor(addr, pVFTable, str);
         }
     }
 }

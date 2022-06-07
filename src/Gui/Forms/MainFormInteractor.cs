@@ -650,7 +650,7 @@ namespace Reko.Gui.Forms
                 return (o, program) =>
                     {
                         var addr = program.SegmentMap.MapLinearAddressToAddress(
-                              (uint)((long) program.SegmentMap.BaseAddress.ToLinear() + o));
+                              (ulong)((long) program.SegmentMap.BaseAddress.ToLinear() + o));
                         return program.ImageMap.TryFindItem(addr, out var item)
                             && item.DataType == null ||
                             item.DataType is UnknownType;
