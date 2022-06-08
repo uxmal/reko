@@ -1210,6 +1210,7 @@ int32 g_dw1F0280C; // 01F0280C
 ui32 g_dw1F0287C; // 01F0287C
 word32 g_dw1F02880; // 01F02880
 Eq_n g_t1F028A4;
+Eq_n g_a1F02BEC[];
 Eq_n g_a1F02DF4[];
 int32 g_dw1F02E18; // 01F02E18
 int32 g_dw1F02E38; // 01F02E38

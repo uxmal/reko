@@ -18619,7 +18619,7 @@ void fn0001B238(struct Eq_n * r5)
 		word32 r7_n = r5->dw0040;
 		struct Eq_n * r4_n = r7_n + 0x0C;
 		struct Eq_n * r3_n = r7_n + 0x08;
-		word32 r7_n = r7_n + ((r4_n * 0x18 - r4_n * 0x03) * 0x04 + 0x08);
+		word32 r7_n = r7_n + (r4_n * 0x54 + 0x08);
 		while (true)
 		{
 			word32 r6_n = r3_n->dw0000;
@@ -21269,14 +21269,13 @@ void fn0001F8C4(word32 r0, struct Eq_n * r5)
 		{
 			r5->dw0128 = r4_n;
 			word32 r10_n = r5->dw0040;
-			word32 * r8_n = (char *) r9_n + 4;
+			ui32 * r8_n = (char *) r9_n + 4;
 			struct Eq_n * r5_n = &r5->dw0128 + 1;
 			ptr32 r7_n = r5 + ((r4_n + 0x4B) * 0x04) / 388;
 			while (true)
 			{
-				ui32 r4_n = *r8_n;
 				++r5_n;
-				r5_n->dwFFFFFFFC = r10_n + (r4_n * 0x18 - r4_n * 0x03) * 0x04;
+				r5_n->dwFFFFFFFC = r10_n + *r8_n * 0x54;
 				if (Test(EQ,r5_n ^ r7_n))
 					break;
 				++r8_n;

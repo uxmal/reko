@@ -13711,7 +13711,7 @@ l0800_nDD:
 					if (ch_n >= 0x04)
 						goto l0800_n;
 					ch_n = 0x04;
-					wLoc0C_n = (word16) wLoc0C_n.u0 + 1;
+					wLoc0C_n = (word16) wLoc0C_n + 1;
 					goto l0800_nDB;
 				case 0x05:
 					goto l0800_n;
@@ -13745,7 +13745,7 @@ l0800_n:
 							wLoc0A_n = ax_n;
 							if (wLoc0A_n >= 0x00)
 							{
-								wLoc0A_n = ax_n + ((wLoc0A_n << 0x03) + (wLoc0A_n << 0x01));
+								wLoc0A_n = ax_n + wLoc0A_n * 0x0A;
 								goto l0800_nDB;
 							}
 						}
@@ -13760,7 +13760,7 @@ l0800_n:
 							wLoc0C_n = ax_n;
 							if (wLoc0C_n != 0x00)
 							{
-								wLoc0C_n = ax_n + ((wLoc0C_n << 0x03) + (wLoc0C_n << 0x01));
+								wLoc0C_n = ax_n + wLoc0C_n * 0x0A;
 								goto l0800_nDB;
 							}
 						}

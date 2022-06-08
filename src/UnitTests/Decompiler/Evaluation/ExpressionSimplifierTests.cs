@@ -1016,5 +1016,41 @@ namespace Reko.UnitTests.Decompiler.Evaluation
             Assert.AreEqual("SLICE(foo_1, byte, 8)", result.ToString());
             Assert.IsTrue(changed);
         }
+
+        [Test]
+        public void Exs_Sum_of_left_shifts()
+        {
+            Given_ExpressionSimplifier();
+            var exp = m.IAdd(
+                m.Shl(foo, m.Word16(3)), m.Shl(foo, m.Word16(1)));
+            var (result, changed) = exp.Accept(simplifier);
+
+            Assert.AreEqual("foo_1 * 0xA<32>", result.ToString());
+            Assert.IsTrue(changed);
+        }
+
+        [Test]
+        public void Exs_diff_of_left_shifts()
+        {
+            Given_ExpressionSimplifier();
+            var exp = m.ISub(
+                m.Shl(foo, m.Word16(3)), m.Shl(foo, m.Word16(1)));
+            var (result, changed) = exp.Accept(simplifier);
+
+            Assert.AreEqual("foo_1 * 6<32>", result.ToString());
+            Assert.IsTrue(changed);
+        }
+
+        [Test]
+        public void Exs_sum_of_left_multiplications()
+        {
+            Given_ExpressionSimplifier();
+            var exp = m.ISub(
+                m.SMul(foo, m.Word16(16)), m.SMul(foo, m.Word16(2)));
+            var (result, changed) = exp.Accept(simplifier);
+
+            Assert.AreEqual("foo_1 *s 14<i32>", result.ToString());
+            Assert.IsTrue(changed);
+        }
     }
 }

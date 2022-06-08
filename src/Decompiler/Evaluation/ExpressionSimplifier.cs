@@ -591,6 +591,16 @@ namespace Reko.Evaluation
                 return (eNew, true);
             }
 
+            // (e << c1) + (e << c2) => e * c3
+            eNew = SumDiffOfShifts(binExp);
+            if (eNew is not null)
+                return (eNew, true);
+
+            // (e * c1) + (e * c2) => e * (c1 + c2)
+            eNew = SumDiffProducts(binExp);
+            if (eNew is not null)
+                return (eNew, true);
+
             // (-exp == 0) => (exp == 0)
             if (unaryNegEqZero.Match(binExp))
             {
@@ -732,6 +742,53 @@ namespace Reko.Evaluation
                     var slice = new Slice(dtSlice, binInner.Left, 0);
                     return new Conversion(slice, slice.DataType, dtConvert);
                 }
+            }
+            return null;
+        }
+
+        private Expression? SumDiffOfShifts(BinaryExpression bin)
+        {
+            if (IsAddOrSub(bin.Operator) &&
+                bin.Left is BinaryExpression left &&
+                left.Operator == Operator.Shl &&
+                left.Right is Constant cLeft &&
+                bin.Right is BinaryExpression right &&
+                right.Operator == Operator.Shl &&
+                right.Right is Constant cRight &&
+                cmp.Equals(left.Left, right.Left))
+            {
+                var shLeft = 1 << cLeft.ToInt32();
+                var shRight = 1 << cRight.ToInt32();
+                ctx.RemoveExpressionUse(right.Left);
+                return m.IMul(left.Left,
+                    bin.Operator == Operator.IAdd
+                        ? shLeft + shRight
+                        : shLeft - shRight);
+            }
+            return null;
+        }
+
+        private Expression? SumDiffProducts(BinaryExpression bin)
+        {
+            if (IsAddOrSub(bin.Operator) &&
+                bin.Left is BinaryExpression left &&
+                left.Operator is IMulOperator &&
+                left.Right is Constant cLeft &&
+                bin.Right is BinaryExpression right &&
+                right.Operator == left.Operator &&
+                right.Right is Constant cRight &&
+                cmp.Equals(left.Left, right.Left))
+            {
+                var mLeft = cLeft.ToInt32();
+                var mRight = cRight.ToInt32();
+                ctx.RemoveExpressionUse(right.Left);
+                return new BinaryExpression(left.Operator, left.DataType, 
+                    left.Left,
+                    Constant.Create(
+                        left.DataType,
+                        bin.Operator == Operator.IAdd
+                            ? mLeft + mRight
+                            : mLeft - mRight));
             }
             return null;
         }

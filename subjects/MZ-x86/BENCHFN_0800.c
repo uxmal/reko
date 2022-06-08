@@ -1318,7 +1318,7 @@ l0800_n:
 								wLoc94_n = ax_n;
 								if (wLoc94_n < 0x00)
 									goto l0800_nE5;
-								wLoc94_n = ax_n + ((wLoc94_n << 0x03) + (wLoc94_n << 0x01));
+								wLoc94_n = ax_n + wLoc94_n * 0x0A;
 							}
 							else
 							{
@@ -1330,7 +1330,7 @@ l0800_nCE:
 								}
 								wLoc92_n = ax_n;
 								if (wLoc92_n >= 0x00)
-									wLoc92_n = ax_n + ((wLoc92_n << 0x03) + (wLoc92_n << 0x01));
+									wLoc92_n = ax_n + wLoc92_n * 0x0A;
 								else
 								{
 l0800_nE5:
