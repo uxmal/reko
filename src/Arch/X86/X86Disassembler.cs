@@ -617,7 +617,7 @@ namespace Reko.Arch.X86
 			case 6: return Registers.ss;
 			case 7: return Registers.ds;
 			}
-			throw new ArgumentOutOfRangeException("bits", string.Format("{0} doesn't correspond to a segment register.", bits));
+			throw new ArgumentOutOfRangeException(nameof(bits), string.Format("{0} doesn't correspond to a segment register.", bits));
 		}
 
         // Operand decoders //////
@@ -911,7 +911,7 @@ namespace Reko.Arch.X86
                 var ops = d.decodingContext.ops;
                 if (opType == OperandType.x)
                 {
-                    width = (PrimitiveType) ops[ops.Count - 1].Width;
+                    width = (PrimitiveType) ops[^1].Width;
                     d.decodingContext.iWidth = width;
                 }
                 else
@@ -969,7 +969,7 @@ namespace Reko.Arch.X86
             if (!d.TryReadByte(out var lReg))
                 return false;
             var ops = d.decodingContext.ops;
-            var width =  ops[ops.Count-1].Width; // Use width of the previous operand.
+            var width =  ops[^1].Width; // Use width of the previous operand.
             d.decodingContext.iWidth = width;
             //width = OperandWidth(strFormat, ref i); //  Don't use the width of the previous operand.
             var operand = d.XmmRegFromBits(lReg >> 4 & 0xF, width);

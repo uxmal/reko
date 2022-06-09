@@ -337,7 +337,7 @@ namespace Reko.UnitTests.Decompiler.Typing
         [Test(Description = "According to C/C++ rules, adding signed + unsigned yields an unsigned value.")]
         public void TycoStructMembers()
         {
-            ProgramBuilder pp = new ProgramBuilder();
+            var pp = new ProgramBuilder();
             pp.Add("Fn", m =>
             {
                 Identifier ptr = m.Local32("ptr");

@@ -66,12 +66,12 @@ namespace Reko.ImageLoaders.Hunk
 
     public partial class Hunk
     {
-        public static int HUNKF_ADVISORY = 1 << 29;
-        public static int HUNKF_CHIP = 1 << 30;
-        public static int HUNKF_FAST = 1 << 31;
-        public static int HUNKF_ALL = HUNKF_ADVISORY | HUNKF_CHIP | HUNKF_FAST;
-        public static int HUNK_TYPE_MASK = 65535;
-        public static int HUNK_FLAGS_MASK = -65536;
+        public const int HUNKF_ADVISORY = 1 << 29;
+        public const int HUNKF_CHIP = 1 << 30;
+        public const int HUNKF_FAST = 1 << 31;
+        public const int HUNKF_ALL = HUNKF_ADVISORY | HUNKF_CHIP | HUNKF_FAST;
+        public const int HUNK_TYPE_MASK = 65535;
+        public const int HUNK_FLAGS_MASK = -65536;
 
         public HunkType HunkType;
         public uint FileOffset;

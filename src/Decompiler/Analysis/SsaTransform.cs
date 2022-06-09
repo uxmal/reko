@@ -863,7 +863,7 @@ namespace Reko.Analysis
             HashSet<RegisterStorage> trashedRegisters,
             Storage stg)
         {
-            if (!(stg is RegisterStorage) || stg is TemporaryStorage)
+            if (stg is not RegisterStorage || stg is TemporaryStorage)
                 return false;
             // If the platform has no clue what registers may be affected by call,
             // assume all are.

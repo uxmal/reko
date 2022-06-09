@@ -57,10 +57,8 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
 
         public void Attach(ListView listView, ToolStripButton btnFilter)
         {
-            if (listView == null)
-                throw new ArgumentNullException(nameof(listView));
+            this.listView = listView ?? throw new ArgumentNullException(nameof(listView));
             syncCtx = SynchronizationContext.Current;
-            this.listView = listView;
             listView.DoubleClick += listView_DoubleClick;
             listView.HandleCreated += listView_HandleCreated;
             if (btnFilter is not null)

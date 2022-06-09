@@ -32,8 +32,8 @@ namespace Reko.UserInterfaces.WindowsForms
 
     public class CallGraphGenerator
     {
-        private Graph graph;
-        private HashSet<Procedure> visited;
+        private readonly Graph graph;
+        private readonly HashSet<Procedure> visited;
         private readonly C2 fillColor = new C2(0xFF, 0xE0, 0xE0);
 
         public CallGraphGenerator(Graph graph)

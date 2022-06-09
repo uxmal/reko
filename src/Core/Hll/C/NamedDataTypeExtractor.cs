@@ -56,7 +56,7 @@ namespace Reko.Core.Hll.C
         /// <exception cref="ArgumentNullException"></exception>
         public NamedDataTypeExtractor(IPlatform platform, IEnumerable<DeclSpec> specs, SymbolTable symbolTyable, int pointerSize)
         {
-            this.platform = platform ?? throw new ArgumentNullException("platform");
+            this.platform = platform ?? throw new ArgumentNullException(nameof(platform));
             this.specs = specs;
             this.symbolTable = symbolTyable;
             this.pointerSize = pointerSize;
@@ -199,7 +199,7 @@ namespace Reko.Core.Hll.C
                 // Special case for C, where foo(void) means a function with no parameters,
                 // not a function with one parameter of type "void".
                 if (FirstParameterVoid(parameters))
-                    parameters = new Argument_v1[0];
+                    parameters = Array.Empty<Argument_v1>();
 
                 Argument_v1? ret = null;
                 if (nt.DataType != null)
@@ -455,8 +455,10 @@ namespace Reko.Core.Hll.C
         {
             if (complexType.Type == CTokenType.Struct)
             {
-                if (complexType.Name == null || symbolTable.StructsSeen.TryGetValue(complexType.Name, out var str))
+                StructType_v1 str;
+                if (complexType.Name == null || symbolTable.StructsSeen.ContainsKey(complexType.Name))
                 {
+                    // Generate a unique name.
                     str = new StructType_v1
                     {
                         Name = complexType.Name ?? $"struct_{symbolTable.StructsSeen.Count}"
@@ -467,7 +469,7 @@ namespace Reko.Core.Hll.C
                 {
                     str = new StructType_v1 { Name = complexType.Name };
                 }
-                if (!complexType.IsForwardDeclaration() && str.Fields == null)
+                if (!complexType.IsForwardDeclaration() && str.Fields is null)
                 {
                     str.Fields = ExpandStructFields(complexType.DeclList).ToArray();
                     symbolTable.Sizer.SetSize(str, AlignmentOf(complexType));

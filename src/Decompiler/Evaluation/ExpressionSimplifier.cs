@@ -80,7 +80,7 @@ namespace Reko.Evaluation
 
         public ExpressionSimplifier(SegmentMap segmentMap, EvaluationContext ctx, DecompilerEventListener listener)
         {
-            this.segmentMap = segmentMap ?? throw new ArgumentNullException(nameof(SegmentMap));
+            this.segmentMap = segmentMap ?? throw new ArgumentNullException(nameof(segmentMap));
             this.ctx = ctx;
             this.cmp = new ExpressionValueComparer();
             this.m = new ExpressionEmitter();
@@ -795,7 +795,7 @@ namespace Reko.Evaluation
 
         private Expression? ShiftRightShiftLeft(BinaryExpression bin)
         {
-            if (bin.Operator != Operator.Shl || !(bin.Right is Constant cRight))
+            if (bin.Operator != Operator.Shl || bin.Right is not Constant cRight)
                 return null;
             if (bin.Left is Identifier idLeft)
             {
@@ -855,7 +855,7 @@ namespace Reko.Evaluation
                             else if (ptSrc.IsWord)
                             {
                                 // Raw bit pattern reinterpretation.
-                                return (CastRawBitsToReal(ptCvt, c), true);
+                                return (ReinterpretBitsAsReal(ptCvt, c), true);
                             }
                             else
                             {
@@ -885,7 +885,7 @@ namespace Reko.Evaluation
                 {
                     // If we are converting a SEQ, and the corresponding element is >= 
                     // the size of the cast, then use deposited part directly.
-                    var lsbElem = seq.Expressions[seq.Expressions.Length - 1];
+                    var lsbElem = seq.Expressions[^1];
                     int sizeDiff = lsbElem.DataType.Size - conversion.DataType.Size;
                     if (sizeDiff >= 0)
                     {
@@ -935,7 +935,7 @@ namespace Reko.Evaluation
         /// <returns>A floating-point constant, possibly with a <see cref="Cast"/> wrapped around it
         /// if the constant is not 32- or 64-bit.
         /// </returns>
-        private Expression CastRawBitsToReal(DataType ptCast, Constant rawBits)
+        private Expression ReinterpretBitsAsReal(DataType ptCast, Constant rawBits)
         {
             var bitSize = Math.Min(rawBits.DataType.BitSize, 64);
             var dtImm = PrimitiveType.Create(Domain.Real, bitSize);
@@ -1292,7 +1292,7 @@ namespace Reko.Evaluation
             for (int i = 1; i < elems.Length; ++i)
             {
                 Slice? slNext = AsSlice(elems[i]);
-                if (fused[fused.Count - 1] is Slice slPrev && slNext != null &&
+                if (fused[^1] is Slice slPrev && slNext != null &&
                     cmp.Equals(slPrev.Expression, slNext.Expression) &&
                     slPrev.Offset == slNext.Offset + slNext.DataType.BitSize)
                 {
@@ -1301,7 +1301,7 @@ namespace Reko.Evaluation
                         PrimitiveType.CreateWord(slPrev.DataType.BitSize + slNext.DataType.BitSize),
                         slNext.Expression,
                         slNext.Offset);
-                    (fused[fused.Count - 1], _) = newSlice.Accept(this);
+                    (fused[^1], _) = newSlice.Accept(this);
                     changed = true;
                 }
                 else
@@ -1634,7 +1634,7 @@ namespace Reko.Evaluation
             {
                 // If we are slicing a SEQ, and the corresponding element is >= 
                 // the size of the slice, then use deposited part directly.
-                var lsbElem = seq2.Expressions[seq2.Expressions.Length - 1];
+                var lsbElem = seq2.Expressions[^1];
                 int sizeDiff = lsbElem.DataType.BitSize - slice.DataType.BitSize;
                 if (sizeDiff >= 0)
                 {

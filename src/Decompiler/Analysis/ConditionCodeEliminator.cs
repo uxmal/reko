@@ -255,7 +255,7 @@ namespace Reko.Analysis
                 }
 				return e;
             case ConditionOf cof:
-                if (!(cof.Expression is BinaryExpression condBinDef))
+                if (cof.Expression is not BinaryExpression condBinDef)
                     condBinDef = CmpExpressionToZero(cof.Expression);
                 Expression newCond = ComparisonFromConditionCode(cc, condBinDef, gf.IsNegated);
                 if (forceIdentifier)

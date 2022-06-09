@@ -198,7 +198,7 @@ namespace Reko.Analysis
             var src = ssaIds[id].DefStatement;
             if (src == null)
                 return false;
-            if (!(src.Instruction is Assignment assSrc))
+            if (src.Instruction is not Assignment assSrc)
                 return false;
             return ExpressionIdentifierUseFinder.Find(ssaIds, assSrc.Src)
                 .Select(c => ssaIds[c].DefStatement)
