@@ -50,6 +50,11 @@ namespace Reko.Core.Code
             return visitor.VisitGotoInstruction(this);
         }
 
+        public override T Accept<T, C>(InstructionVisitor<T, C> visitor, C ctx)
+        {
+            return visitor.VisitGotoInstruction(this, ctx);
+        }
+
         public override void Accept(InstructionVisitor v)
         {
             v.VisitGotoInstruction(this);

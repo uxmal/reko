@@ -50,7 +50,12 @@ namespace Reko.Core.Code
             return visitor.VisitBranch(this);
         }
 
-		public override void Accept(InstructionVisitor v)
+        public override T Accept<T, C>(InstructionVisitor<T, C> visitor, C ctx)
+        {
+            return visitor.VisitBranch(this, ctx);
+        }
+
+        public override void Accept(InstructionVisitor v)
 		{
 			v.VisitBranch(this);
 		}

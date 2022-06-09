@@ -46,7 +46,12 @@ namespace Reko.Core.Code
             return visitor.VisitSideEffect(this);
         }
 
-		public override void Accept(InstructionVisitor v)
+        public override T Accept<T, C>(InstructionVisitor<T, C> visitor, C ctx)
+        {
+            return visitor.VisitSideEffect(this, ctx);
+        }
+
+        public override void Accept(InstructionVisitor v)
 		{
 			v.VisitSideEffect(this);
 		}

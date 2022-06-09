@@ -154,10 +154,10 @@ namespace Reko.UnitTests.Mocks
         }
 
         public Statement Call(
-               string procedureName,
-               int retSizeOnStack,
-               IEnumerable<Identifier> uses,
-               IEnumerable<Identifier> definitions)
+            string procedureName,
+            int retSizeOnStack,
+            IEnumerable<Identifier> uses,
+            IEnumerable<Identifier> definitions)
         {
             var tmp = InvalidConstant.Create(PrimitiveType.Word32);
             var ci = new CallInstruction(tmp, new CallSite(retSizeOnStack, 0));

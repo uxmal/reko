@@ -172,7 +172,7 @@ namespace Reko.Analysis
 				}
 			}
 
-            // We have now marked all the useful instructions in the code. Any non-marked
+			// We have now marked all the useful instructions in the code. Any non-marked
             // instruction is now useless and should be deleted. Now remove all uses; 
             // we just proved that no-one uses the non-marked instructions.
             foreach (var sid in ssa.Identifiers)
@@ -181,26 +181,26 @@ namespace Reko.Analysis
                 if (sid.DefStatement != null && !marks.Contains(sid.DefStatement))
                     sid.DefStatement = null;
             }
-            foreach (Block b in ssa.Procedure.ControlGraph.Blocks)
+			foreach (Block b in ssa.Procedure.ControlGraph.Blocks)
 			{
                 int iTo = 0;
-                for (int iStm = 0; iStm < b.Statements.Count; ++iStm)
-                {
-                    Statement stm = b.Statements[iStm];
+				for (int iStm = 0; iStm < b.Statements.Count; ++iStm)
+				{
+					Statement stm = b.Statements[iStm];
                     if (stm.Instruction is CallInstruction call)
                     {
                         AdjustCallWithDeadDefinitions(call);
                     }
                     if (marks.Contains(stm))
-                    {
+					{
                         b.Statements[iTo] = stm;
                         ++iTo;
-                    }
+					}
                     else
                     {
                         trace.Inform("Deleting: {0}", stm.Instruction);
-                    }
-                }
+				}
+			}
                 b.Statements.RemoveRange(iTo, b.Statements.Count - iTo);
 			}
 

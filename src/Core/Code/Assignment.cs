@@ -49,7 +49,13 @@ namespace Reko.Core.Code
             return visitor.VisitAssignment(this);
         }
 
-		public override void Accept(InstructionVisitor v)
+
+        public override T Accept<T, C>(InstructionVisitor<T, C> visitor, C ctx)
+        {
+            return visitor.VisitAssignment(this, ctx);
+        }
+
+        public override void Accept(InstructionVisitor v)
 		{
 			v.VisitAssignment(this);
 		}
@@ -82,11 +88,17 @@ namespace Reko.Core.Code
             return visitor.VisitStore(this);
         }
 
-		public override void Accept(InstructionVisitor v)
+        public override T Accept<T, C>(InstructionVisitor<T, C> visitor, C ctx)
+        {
+            return visitor.VisitStore(this, ctx);
+        }
+
+        public override void Accept(InstructionVisitor v)
 		{
 			v.VisitStore(this);
 		}
-	}
+
+    }
 
     /// <summary>
     /// Represents an assignment due to alias expansion. It exists to denote

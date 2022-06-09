@@ -1376,6 +1376,33 @@ namespace Reko.Evaluation
             return mul;
         }
 
+        private Expression? FuseSequenceOfSlicedMultiplications(Expression[] seq)
+        {
+            BinaryExpression? mul = null;
+            for (int i = seq.Length -1; i >= 0; --i)
+            {
+                if (seq[i] is Slice slice && 
+                    slice.Expression is BinaryExpression bin && 
+                    bin.Operator is IMulOperator)
+                {
+                    if (mul is null)
+                        mul = bin;
+                    else if (!cmp.Equals(mul.Left, bin.Left) ||
+                            !cmp.Equals(mul.Right, bin.Right))
+                        return null;
+                    else
+                        mul = bin;
+                }
+            }
+            if (mul is null)
+                return null;
+            foreach (var e in seq)
+                ctx.RemoveExpressionUse(e);
+            ctx.UseExpression(mul);
+            return mul;
+        }
+
+
         private Slice? AsSlice(Expression? e)
         {
             if (e is Identifier id)

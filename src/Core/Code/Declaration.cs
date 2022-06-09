@@ -34,6 +34,12 @@ namespace Reko.Core.Code
 			this.Expression = init;
 		}
 
+        public override bool IsControlFlow => false;
+
+		public Identifier Identifier { get; set; }
+
+		public Expression? Expression { get; set; }
+
 		public override Instruction Accept(InstructionTransformer xform)
 		{
 			return xform.TransformDeclaration(this);
@@ -49,10 +55,9 @@ namespace Reko.Core.Code
 			v.VisitDeclaration(this);
 		}
 
-		public Expression? Expression { get; set; }
-
-        public override bool IsControlFlow => false;
-
-		public Identifier Identifier { get; set; }
+        public override T Accept<T, C>(InstructionVisitor<T, C> visitor, C ctx)
+        {
+            return visitor.VisitDeclaration(this, ctx);
+        }
 	}
 }
