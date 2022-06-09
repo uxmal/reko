@@ -783,7 +783,7 @@ namespace Reko.Analysis
                 this.flagGroup = outer.arch.GetFlagGroup(grfFrom.FlagRegister, elem.mask)!;
                 var idSlice = outer.ssa.Procedure.Frame.EnsureFlagGroup(this.flagGroup);
                 var ass = new AliasAssignment(idSlice, e);
-                var sidSlice = outer.InsertAfterDefinition(elem.sid.DefStatement!, ass);
+                var sidSlice = outer.ssa.InsertAfterDefinition(elem.sid.DefStatement!, ass);
                 elem.sid.Uses.Add(sidSlice.DefStatement!);
                 return sidSlice;
             }
@@ -965,7 +965,7 @@ namespace Reko.Analysis
                 var sidUse = sidFrom;
 
                 var ass = new AliasAssignment(idSlice, e);
-                var sidAlias = outer.InsertAfterDefinition(sidFrom.DefStatement!, ass);
+                var sidAlias = outer.ssa.InsertAfterDefinition(sidFrom.DefStatement!, ass);
                 sidUse.Uses.Add(sidAlias.DefStatement!);
                 return sidAlias;
             }

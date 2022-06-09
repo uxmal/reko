@@ -288,6 +288,30 @@ namespace Reko.Analysis
         }
 
         /// <summary>
+        /// Inserts the statement <paramref name="ass"/> after the statement
+        /// <paramref name="stmBefore"/>, skipping any AliasAssignments that
+        /// statements that may have been added after.
+        /// <paramref name="stmBefore"/>.
+        /// </summary>
+        /// <param name="stmBefore"></param>
+        /// <param name="ass"></param>
+        /// <returns>The SSA identifier.</returns>
+        public SsaIdentifier InsertAfterDefinition(Statement stmBefore, AliasAssignment ass)
+        {
+            var b = stmBefore.Block;
+            int i = b.Statements.IndexOf(stmBefore);
+            // Skip alias statements
+            while (i < b.Statements.Count - 1 && b.Statements[i + 1].Instruction is AliasAssignment)
+                ++i;
+            var stm = new Statement(stmBefore.LinearAddress, ass, b);
+            b.Statements.Insert(i + 1, stm);
+
+            var sidTo = this.Identifiers.Add(ass.Dst, stm, ass.Src, false);
+            ass.Dst = sidTo.Identifier;
+            return sidTo;
+        }
+
+        /// <summary>
         /// Deletes a statement by removing all the ids it references 
         /// from SSA state, then removes the statement itself from code.
         /// </summary>
