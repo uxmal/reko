@@ -15299,7 +15299,7 @@ T_3247: (in -85<i16> @ 0000909C : int16)
   Class: Eq_3247
   DataType: int16
   OrigDataType: int16
-T_3248: (in ss_bp + -85<i16> @ 0000909C : word16)
+T_3248: (in ss_bp + -85<i16> @ 0000909C : segptr32)
   Class: Eq_3248
   DataType: segptr32
   OrigDataType: segptr32
@@ -15319,7 +15319,7 @@ T_3252: (in -85<i16> @ 0000909C : int16)
   Class: Eq_3252
   DataType: int16
   OrigDataType: int16
-T_3253: (in ss_bp + -85<i16> @ 0000909C : word16)
+T_3253: (in ss_bp + -85<i16> @ 0000909C : segptr32)
   Class: Eq_3253
   DataType: (ptr32 byte)
   OrigDataType: (ptr32 byte)
@@ -15387,7 +15387,7 @@ T_3269: (in 10<i16> @ 000090B2 : int16)
   Class: Eq_3269
   DataType: int16
   OrigDataType: int16
-T_3270: (in ss_bp + 10<i16> @ 000090B2 : word16)
+T_3270: (in ss_bp + 10<i16> @ 000090B2 : segptr32)
   Class: Eq_3270
   DataType: segptr32
   OrigDataType: segptr32
@@ -19119,7 +19119,7 @@ T_4202: (in 6<i16> @ 00009AF2 : int16)
   Class: Eq_4202
   DataType: int16
   OrigDataType: int16
-T_4203: (in ss_bp + 6<i16> @ 00009AF2 : word16)
+T_4203: (in ss_bp + 6<i16> @ 00009AF2 : segptr32)
   Class: Eq_4203
   DataType: segptr32
   OrigDataType: segptr32
@@ -19135,7 +19135,7 @@ T_4206: (in -40<i16> @ 00009AFB : int16)
   Class: Eq_4206
   DataType: int16
   OrigDataType: int16
-T_4207: (in ss_bp + -40<i16> @ 00009AFB : word16)
+T_4207: (in ss_bp + -40<i16> @ 00009AFB : segptr32)
   Class: Eq_4207
   DataType: ptr32
   OrigDataType: ptr32
@@ -19147,7 +19147,7 @@ T_4209: (in -40<i16> @ 00009AFB : int16)
   Class: Eq_4209
   DataType: int16
   OrigDataType: int16
-T_4210: (in ss_bp + -40<i16> @ 00009AFB : word16)
+T_4210: (in ss_bp + -40<i16> @ 00009AFB : segptr32)
   Class: Eq_4210
   DataType: ptr32
   OrigDataType: ptr32
@@ -19175,7 +19175,7 @@ T_4216: (in -40<i16> @ 00009AFB : int16)
   Class: Eq_4216
   DataType: int16
   OrigDataType: int16
-T_4217: (in ss_bp + -40<i16> @ 00009AFB : word16)
+T_4217: (in ss_bp + -40<i16> @ 00009AFB : segptr32)
   Class: Eq_4217
   DataType: (ptr32 word16)
   OrigDataType: (ptr32 word16)
@@ -19247,7 +19247,7 @@ T_4234: (in -38<i16> @ 00009B06 : int16)
   Class: Eq_4234
   DataType: int16
   OrigDataType: int16
-T_4235: (in ss_bp + -38<i16> @ 00009B06 : word16)
+T_4235: (in ss_bp + -38<i16> @ 00009B06 : segptr32)
   Class: Eq_4235
   DataType: segptr32
   OrigDataType: segptr32
@@ -19267,7 +19267,7 @@ T_4239: (in -38<i16> @ 00009B06 : int16)
   Class: Eq_4239
   DataType: int16
   OrigDataType: int16
-T_4240: (in ss_bp + -38<i16> @ 00009B06 : word16)
+T_4240: (in ss_bp + -38<i16> @ 00009B06 : segptr32)
   Class: Eq_4240
   DataType: (ptr32 word16)
   OrigDataType: (ptr32 word16)
@@ -19279,7 +19279,7 @@ T_4242: (in 8<i16> @ 00009B09 : int16)
   Class: Eq_4242
   DataType: int16
   OrigDataType: int16
-T_4243: (in ss_bp + 8<i16> @ 00009B09 : word16)
+T_4243: (in ss_bp + 8<i16> @ 00009B09 : segptr32)
   Class: Eq_4243
   DataType: ptr32
   OrigDataType: ptr32
@@ -19311,7 +19311,7 @@ T_4250: (in 4<i16> @ 00009B0C : int16)
   Class: Eq_4250
   DataType: int16
   OrigDataType: int16
-T_4251: (in ss_bp + 4<i16> @ 00009B0C : word16)
+T_4251: (in ss_bp + 4<i16> @ 00009B0C : segptr32)
   Class: Eq_4251
   DataType: ptr32
   OrigDataType: ptr32
@@ -19339,7 +19339,7 @@ T_4257: (in 4<16> @ 00009B10 : word16)
   Class: Eq_4257
   DataType: word16
   OrigDataType: word16
-T_4258: (in ss_bp + 4<16> @ 00009B10 : word16)
+T_4258: (in ss_bp + 4<16> @ 00009B10 : segptr32)
   Class: Eq_4258
   DataType: (ptr32 (memptr Eq_3 code))
   OrigDataType: (ptr32 (memptr T_3 code))
@@ -19359,7 +19359,7 @@ T_4262: (in ax_47 @ 00009B14 : Eq_4252)
   Class: Eq_4252
   DataType: Eq_4252
   OrigDataType: (memptr T_3 (struct (0 code t0000) (55A T_4269 t055A)))
-T_4263: (in ss_bp + 4<i16> @ 00009B14 : word16)
+T_4263: (in ss_bp + 4<i16> @ 00009B14 : segptr32)
   Class: Eq_4263
   DataType: (ptr32 (memptr Eq_3 code))
   OrigDataType: (ptr32 (memptr T_3 code))
@@ -19499,7 +19499,7 @@ T_4297: (in -38<i16> @ 00009B38 : int16)
   Class: Eq_4297
   DataType: int16
   OrigDataType: int16
-T_4298: (in ss_bp + -38<i16> @ 00009B38 : word16)
+T_4298: (in ss_bp + -38<i16> @ 00009B38 : segptr32)
   Class: Eq_4298
   DataType: segptr32
   OrigDataType: segptr32
@@ -19519,7 +19519,7 @@ T_4302: (in -38<i16> @ 00009B38 : int16)
   Class: Eq_4302
   DataType: int16
   OrigDataType: int16
-T_4303: (in ss_bp + -38<i16> @ 00009B38 : word16)
+T_4303: (in ss_bp + -38<i16> @ 00009B38 : segptr32)
   Class: Eq_4303
   DataType: (ptr32 word16)
   OrigDataType: (ptr32 word16)
@@ -19531,7 +19531,7 @@ T_4305: (in 8<i16> @ 00009B3B : int16)
   Class: Eq_4305
   DataType: int16
   OrigDataType: int16
-T_4306: (in ss_bp + 8<i16> @ 00009B3B : word16)
+T_4306: (in ss_bp + 8<i16> @ 00009B3B : segptr32)
   Class: Eq_4306
   DataType: ptr32
   OrigDataType: ptr32
@@ -19563,7 +19563,7 @@ T_4313: (in 4<i16> @ 00009B3E : int16)
   Class: Eq_4313
   DataType: int16
   OrigDataType: int16
-T_4314: (in ss_bp + 4<i16> @ 00009B3E : word16)
+T_4314: (in ss_bp + 4<i16> @ 00009B3E : segptr32)
   Class: Eq_4314
   DataType: ptr32
   OrigDataType: ptr32
@@ -19623,7 +19623,7 @@ T_4328: (in 4<16> @ 00009B44 : word16)
   Class: Eq_4328
   DataType: word16
   OrigDataType: word16
-T_4329: (in ss_bp + 4<16> @ 00009B44 : word16)
+T_4329: (in ss_bp + 4<16> @ 00009B44 : segptr32)
   Class: Eq_4329
   DataType: (ptr32 (memptr Eq_3 code))
   OrigDataType: (ptr32 (memptr T_3 code))
@@ -19783,7 +19783,7 @@ T_4368: (in -34<i16> @ 00009B31 : int16)
   Class: Eq_4368
   DataType: int16
   OrigDataType: int16
-T_4369: (in ss_bp + -34<i16> @ 00009B31 : word16)
+T_4369: (in ss_bp + -34<i16> @ 00009B31 : segptr32)
   Class: Eq_4369
   DataType: ptr32
   OrigDataType: ptr32
@@ -19803,7 +19803,7 @@ T_4373: (in -34<i16> @ 00009B31 : int16)
   Class: Eq_4373
   DataType: int16
   OrigDataType: int16
-T_4374: (in ss_bp + -34<i16> @ 00009B31 : word16)
+T_4374: (in ss_bp + -34<i16> @ 00009B31 : segptr32)
   Class: Eq_4374
   DataType: (ptr32 word16)
   OrigDataType: (ptr32 word16)
