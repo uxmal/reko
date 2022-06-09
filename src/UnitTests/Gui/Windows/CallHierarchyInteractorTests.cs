@@ -51,12 +51,12 @@ namespace Reko.UnitTests.Gui.Windows
         [SetUp]
         public void Setup()
         {
-            this.arch = new Mock<IProcessorArchitecture>();
+            this.arch = new Mock<IProcessorArchitecture>(MockBehavior.Strict);
             this.program = new Program();
             // Create a program graph where proc1 calls proc2, and proc2 calls proc3.
-            this.proc1 = new Procedure(arch.Object, "proc1", Address.Ptr32(0x00123400), new Frame(PrimitiveType.Ptr32));
-            this.proc2 = new Procedure(arch.Object, "proc2", Address.Ptr32(0x00123500), new Frame(PrimitiveType.Ptr32));
-            this.proc3 = new Procedure(arch.Object, "proc3", Address.Ptr32(0x00123600), new Frame(PrimitiveType.Ptr32));
+            this.proc1 = new Procedure(arch.Object, "proc1", Address.Ptr32(0x00123400), new Frame(arch.Object, PrimitiveType.Ptr32));
+            this.proc2 = new Procedure(arch.Object, "proc2", Address.Ptr32(0x00123500), new Frame(arch.Object, PrimitiveType.Ptr32));
+            this.proc3 = new Procedure(arch.Object, "proc3", Address.Ptr32(0x00123600), new Frame(arch.Object, PrimitiveType.Ptr32));
             var stm1 = proc1.EntryBlock.Statements.Add(proc1.EntryAddress.ToLinear(), new CallInstruction(
                 new ProcedureConstant(PrimitiveType.Ptr32, proc2),
                 new CallSite(0, 0)));

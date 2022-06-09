@@ -35,11 +35,11 @@ namespace Reko.UnitTests.Core
         [Test]
         public void EndSvc_SliceStackIdentifier()
         {
-            var stk = new StackLocalStorage(-16, PrimitiveType.Word32);
+            var stk = new StackStorage(-16, PrimitiveType.Word32);
             var leSlice = EndianServices.Little.SliceStackStorage(stk, new BitRange(0, 8), 8);
             var beSlice = EndianServices.Big.SliceStackStorage(stk, new BitRange(0, 8), 8);
-            Assert.AreEqual("Stack +FFFFFFF0", leSlice.ToString());
-            Assert.AreEqual("Stack +FFFFFFF3", beSlice.ToString());
+            Assert.AreEqual("Stack -0010", leSlice.ToString());
+            Assert.AreEqual("Stack -000D", beSlice.ToString());
         }
     }
 }

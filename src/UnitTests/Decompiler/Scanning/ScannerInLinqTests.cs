@@ -117,7 +117,7 @@ namespace Reko.UnitTests.Decompiler.Scanning
         private void Given_CodeBlock(IProcessorArchitecture arch, uint uAddr, uint len)
         {
             var addr = Address.Ptr32(uAddr);
-            var proc = Procedure.Create(arch, addr, new Frame(PrimitiveType.Ptr32));
+            var proc = Procedure.Create(arch, addr, arch.CreateFrame());
             var block = new Block(proc, addr, $"l{addr}");
             program.ImageMap.AddItem(addr, new ImageMapBlock(addr)
             { 

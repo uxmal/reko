@@ -69,7 +69,7 @@ namespace Reko.UnitTests.Decompiler.Scanning
             scanner = new Mock<IScanner>();
             arch = new Mock<IProcessorArchitecture>();
             arch.Setup(a => a.Name).Returns("FakeArch");
-            proc = new Procedure(arch.Object, "testProc", Address.Ptr32(0x00100000), new Frame(PrimitiveType.Word32));
+            proc = new Procedure(arch.Object, "testProc", Address.Ptr32(0x00100000), new Frame(arch.Object, PrimitiveType.Word32));
             block = proc.AddBlock(proc.EntryAddress, "l00100000");
             grf = proc.Frame.EnsureFlagGroup(Registers.eflags, 3, "SCZ", PrimitiveType.Byte);
             program.Architecture = arch.Object;
@@ -375,7 +375,11 @@ namespace Reko.UnitTests.Decompiler.Scanning
                 It.Is<Address>(arg => arg.Offset == 0x102000),
                 null,
                 It.IsAny<ProcessorState>()))
-                        .Returns(new Procedure(program.Architecture, "fn102000", Address.Ptr32(0x00102000), new Frame(PrimitiveType.Word32)))
+                        .Returns(new Procedure(
+                            program.Architecture,
+                            "fn102000",
+                            Address.Ptr32(0x00102000),
+                            new Frame(program.Architecture, PrimitiveType.Word32)))
                         .Verifiable();
                 //scanner.Setup(x => x.TerminateBlock(null, null)).IgnoreArguments();
                 scanner.Setup(x => x.SetProcedureReturnAddressBytes(
@@ -458,8 +462,9 @@ namespace Reko.UnitTests.Decompiler.Scanning
         [Test]
         public void Bwi_CallTerminatingProcedure_StopScanning()
         {
-            proc = Procedure.Create(program.Architecture, "proc", Address.Ptr32(0x102000), new Frame(PrimitiveType.Ptr32));
-            var terminator = Procedure.Create(program.Architecture, "terminator", Address.Ptr32(0x0001000), new Frame(PrimitiveType.Ptr32));
+            var frame = new Frame(program.Architecture, PrimitiveType.Ptr32);
+            proc = Procedure.Create(program.Architecture, "proc", Address.Ptr32(0x102000), frame);
+            var terminator = Procedure.Create(program.Architecture, "terminator", Address.Ptr32(0x0001000), program.Architecture.CreateFrame());
             terminator.Characteristics = new ProcedureCharacteristics {
                 Terminates = true,
             };
@@ -492,7 +497,8 @@ namespace Reko.UnitTests.Decompiler.Scanning
         [Test]
         public void Bwi_CallProcedureWithSignature()
         {
-            var proc2 = new Procedure(program.Architecture, "fn2000", Address.Ptr32(0x2000), new Frame(PrimitiveType.Ptr32));
+            var frame = new Frame(program.Architecture, PrimitiveType.Ptr32);
+            var proc2 = new Procedure(program.Architecture, "fn2000", Address.Ptr32(0x2000), frame);
             var sig = FunctionType.Func(
                 proc2.Frame.EnsureRegister(new RegisterStorage("r1", 1, 0, PrimitiveType.Word32)),
                 proc2.Frame.EnsureRegister(new RegisterStorage("r2", 2, 0, PrimitiveType.Word32)),
@@ -816,7 +822,7 @@ testProc_exit:
             var addrCall = Address.Ptr32(0x00100000);
             var addrCallee = Address.Ptr32(0x00102000);
             var l00100000 = new Block(proc, addrCall, "l00100000");
-            var procCallee = new Procedure(program.Architecture, null, addrCallee, new Frame(PrimitiveType.Ptr32))
+            var procCallee = new Procedure(program.Architecture, null, addrCallee, program.Architecture.CreateFrame())
             {
                 Name = "testFn",
                 Signature = FunctionType.Func(
@@ -923,7 +929,8 @@ testProc_exit:
                 It.IsAny<Procedure>(),
                 It.IsAny<Procedure>()))
                 .Returns(blockCallRet);
-            program.Procedures.Add(addrStart + 4, Procedure.Create(program.Architecture, addrStart + 4, new Frame(PrimitiveType.Ptr32)));
+            var frame = program.Architecture.CreateFrame();
+            program.Procedures.Add(addrStart + 4, Procedure.Create(program.Architecture, addrStart + 4, frame));
 
             var wi = CreateWorkItem(addrStart);
             wi.Process();
@@ -946,7 +953,8 @@ testProc_exit:
                 It.IsAny<Address>(),
                 It.IsAny<string>(),
                 It.IsAny<object[]>()));
-            program.Procedures.Add(addrStart + 4, Procedure.Create(program.Architecture, addrStart + 4, new Frame(PrimitiveType.Ptr32)));
+            var frame = program.Architecture.CreateFrame();
+            program.Procedures.Add(addrStart + 4, Procedure.Create(program.Architecture, addrStart + 4, frame));
 
             var wi = CreateWorkItem(addrStart);
             wi.Process();
@@ -1004,7 +1012,7 @@ testProc_exit:
                 It.IsNotNull<ProcessorState>()))
                 .Returns(new ExternalProcedure("fn00123400", new FunctionType()))
                 .Verifiable();
-            program.Procedures.Add(addrStart + 4, Procedure.Create(arch.Object, addrStart + 4, new Frame(PrimitiveType.Ptr32)));
+            program.Procedures.Add(addrStart + 4, Procedure.Create(arch.Object, addrStart + 4, new Frame(arch.Object, PrimitiveType.Ptr32)));
 
             var wi = CreateWorkItem(addrStart);
             wi.Process();

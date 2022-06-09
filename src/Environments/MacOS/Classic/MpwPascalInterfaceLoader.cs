@@ -123,7 +123,7 @@ namespace Reko.Environments.MacOS.Classic
             case RegisterStorage reg:
                 return reg;
             case StackStorage stk:
-                return new StackArgumentStorage(stk.StackOffset, dt);
+                return new StackStorage(stk.StackOffset, dt);
             }
             throw new NotImplementedException();
         }

@@ -19,8 +19,8 @@ void fn0C00_0000(Register selector ds)
 // rRet0:rRet0
 // rLoc1:FPU -1
 // rLoc2:FPU -2
-// wLoc02:Local -0002
-// wLoc04:Local -0004
+// wLoc02:Stack -0002
+// wLoc04:Stack -0004
 // S:S
 // C:C
 // Z:Z
@@ -62,7 +62,7 @@ void fn0C00_0024(Register selector ds, Stack word16 wArg02, FpuStack real64 rArg
 // bx:bx
 // Top:Top
 // ds:ds
-// wLoc02:Local -0002
+// wLoc02:Stack -0002
 // wArg02:Stack +0002
 // rArg0:FPU +0
 // rArg1:FPU +1
@@ -98,7 +98,7 @@ FpuStack real64 fn0C00_0031(Register selector ds, Stack word16 wArg02)
 // bx:bx
 // ds:ds
 // Top:Top
-// wLoc02:Local -0002
+// wLoc02:Stack -0002
 // wArg02:Stack +0002
 // rLoc1:FPU -1
 // return address size: 2

@@ -51,7 +51,7 @@ namespace Reko.Scanning
 		private Expression EffectiveAddress(Identifier id)
 		{
 			Identifier fp = proc.Frame.FramePointer;
-			StackLocalStorage? local = id.Storage as StackLocalStorage;
+			StackStorage? local = id.Storage as StackStorage;
 
 			int offset = local!.StackOffset + proc.Frame.FrameOffset;
 			BinaryOperator op;
@@ -95,7 +95,8 @@ namespace Reko.Scanning
 
 		private bool IsLocal(Identifier id)
 		{
-			return id.Storage is StackLocalStorage;
+			return id.Storage is StackStorage stack &&
+                !proc.Architecture.IsStackArgumentOffset(stack.StackOffset);
 		}
 
 		public void Transform()

@@ -168,7 +168,7 @@ namespace Reko.Core
 
         public void ImplicitThisStack(DataType dt)
         {
-            this.ImplicitThis = new StackArgumentStorage(stackOffset, dt);
+            this.ImplicitThis = new StackStorage(stackOffset, dt);
             stackOffset += Align(dt.Size, stackAlignment);
         }
 
@@ -220,14 +220,14 @@ namespace Reko.Core
         }
         public void StackParam(DataType dt)
         {
-            var stg = new StackArgumentStorage(stackOffset, dt);
+            var stg = new StackStorage(stackOffset, dt);
             stackOffset += Align(dt.Size, stackAlignment);
             Parameters.Add(stg);
         }
 
         public void StackReturn(DataType dt)
         {
-            var stg = new StackArgumentStorage(stackOffset, dt);
+            var stg = new StackStorage(stackOffset, dt);
             stackOffset += Align(dt.Size, stackAlignment);
             this.Return = stg;
         }

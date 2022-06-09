@@ -56,7 +56,7 @@ namespace Reko.UnitTests.Decompiler
 
             this.dfSvc = new DecompiledFileService(sc, fsSvc.Object, new FakeDecompilerEventListener());
 
-            this.proc1 = Procedure.Create(arch.Object, Address.Ptr32(0x00123400), new Frame(PrimitiveType.Ptr32));
+            this.proc1 = Procedure.Create(arch.Object, Address.Ptr32(0x00123400), new Frame(arch.Object, PrimitiveType.Ptr32));
         }
 
         private void Expect_FileCreated(params string [] expectedPathComponents)

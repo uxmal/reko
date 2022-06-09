@@ -20,7 +20,7 @@ void fn0C00_0000(Sequence segptr32 ds_di)
 // C:C
 // Z:Z
 // O:O
-// wLoc02:Local -0002
+// wLoc02:Stack -0002
 // return address size: 2
 void fn0C00_0000(segptr32 ds_di)
 fn0C00_0000_entry:

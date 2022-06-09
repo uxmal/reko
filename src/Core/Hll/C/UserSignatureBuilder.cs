@@ -86,55 +86,6 @@ namespace Reko.Core.Hll.C
             return null;
         }
 
-        /// <summary>
-        /// Given a decompiled procedure `proc` and a function signature `sig`, introduce
-        /// copy instructions that copy the formal parameters into the body of the procedure.
-        /// </summary>
-        /// <param name="addr"></param>
-        /// <param name="sig"></param>
-        /// <param name="proc"></param>
-        [Obsolete("This now happens inside of SSA Transformation.")]
-        public void ApplySignatureToProcedure(Address addr, FunctionType sig, Procedure proc)
-        {
-            proc.Signature = sig;
-            // The copy instructions have to happen before any of the 
-            // "real" code, so they have to live in the entry block.
-            var stmts = proc.EntryBlock.Statements;
-            int i = stmts.Count;
-
-            var linAddr = addr.ToLinear();
-            var m = new ExpressionEmitter();
-            foreach (var param in sig.Parameters!)
-            {
-                if (param.Storage is StackArgumentStorage starg)
-                {
-                    proc.Frame.EnsureStackArgument(
-                        starg.StackOffset,
-                        param.DataType,
-                        param.Name);
-                    var fp = proc.Frame.FramePointer;
-                    stmts.Insert(i, linAddr, new Store(
-                        m.Mem(param.DataType, m.IAdd(fp, starg.StackOffset)),
-                        param));
-                }
-                else
-                {
-                    var paramId = proc.Frame.EnsureIdentifier(param.Storage);
-
-                    // Need to take an extra step with parameters being passed
-                    // in a register. It's perfectly possible for a user to 
-                    // create a variable which they want to call 'r2' but which
-                    // the calling convention of the machine wants to call 'r1'.
-                    // To avoid this, we create a temporary identifier for 
-                    // the formal parameter, and inject an copy statement in the
-                    // entry block that moves the parameter value into the 
-                    // register.
-                    stmts.Insert(i, linAddr, new Assignment(param, paramId));
-                }
-                ++i;
-            }
-        }
-
         public ProcedureBase_v1? ParseFunctionDeclaration(string? fnDecl)
         {
             if (string.IsNullOrEmpty(fnDecl))

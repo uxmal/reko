@@ -52,7 +52,7 @@ namespace Reko.UnitTests.Gui
         public void WriteProcedureConstant()
         {
             var addr = Address.Ptr32(0x42);
-            var proc = Procedure.Create(arch.Object, "proc", addr, new Frame(PrimitiveType.Word32));
+            var proc = Procedure.Create(arch.Object, "proc", addr, new Frame(arch.Object, PrimitiveType.Word32));
             var pc = new ProcedureConstant(PrimitiveType.Word32, proc);
             map.Add(addr, proc);
 

@@ -60,7 +60,7 @@ namespace Reko.UnitTests.Decompiler.Analysis
             this.sbExpected = new StringBuilder();
             this.fnExit = new ExternalProcedure(
                 "exit",
-                FunctionType.Action(new Identifier("code", PrimitiveType.Int32, new StackArgumentStorage(4, PrimitiveType.Int32))),
+                FunctionType.Action(new Identifier("code", PrimitiveType.Int32, new StackStorage(4, PrimitiveType.Int32))),
                 new ProcedureCharacteristics
                 {
                     Terminates = true,

@@ -73,7 +73,7 @@ namespace Reko.UnitTests.Environments.AmigaOS
             this.services.AddService(typeof(IFileSystemService), fsSvc.Object);
             this.services.AddService(typeof(ITypeLibraryLoaderService), tllSvc.Object);
             this.arch = new M68kArchitecture(services, "m68k", new Dictionary<string, object>());
-            this.binder = new Frame(arch.FramePointerType);
+            this.binder = arch.CreateFrame();
         }
 
         [Test]

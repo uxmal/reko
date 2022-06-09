@@ -175,11 +175,6 @@ namespace Reko.Core
             throw new NotImplementedException();
         }
 
-        Identifier StorageVisitor<Identifier>.VisitStackLocalStorage(StackLocalStorage local)
-        {
-            throw new NotImplementedException();
-        }
-
         Identifier StorageVisitor<Identifier>.VisitOutArgumentStorage(OutArgumentStorage arg)
         {
             throw new NotImplementedException();
@@ -195,7 +190,7 @@ namespace Reko.Core
             return EnsureSequence(PrimitiveType.CreateWord((int)seq.BitSize), seq.Elements);
         }
 
-        Identifier StorageVisitor<Identifier>.VisitStackArgumentStorage(StackArgumentStorage stack)
+        Identifier StorageVisitor<Identifier>.VisitStackStorage(StackStorage stack)
         {
             throw new NotImplementedException();
         }

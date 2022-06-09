@@ -104,7 +104,7 @@ namespace Reko.Core.Serialization
             var idArg = procSer.CreateId(
                 name,
                 dt,
-                new StackArgumentStorage(procSer.StackOffset + retAddressOnStack, dt));
+                new StackStorage(procSer.StackOffset + retAddressOnStack, dt));
             int words = (dt.Size + (stackAlignment - 1)) / stackAlignment;
             procSer.StackOffset += words * stackAlignment;
             return idArg;

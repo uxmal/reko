@@ -741,7 +741,8 @@ namespace Reko.Analysis
                 if (calleeStg is not null &&
                     !existingUses.Contains(calleeStg) &&
                     (calleeStg is RegisterStorage ||
-                     calleeStg is StackArgumentStorage))
+                     calleeStg is StackStorage stack &&
+                     arch.IsStackArgumentOffset(stack.StackOffset)))
                 {
                     var idNew = NewUse(id, stmCur!, true);
                     ci.Uses.Add(new CallBinding(calleeStg, idNew));
@@ -852,7 +853,7 @@ namespace Reko.Analysis
                 // We can not bind stack variables if offset is unknown
                 if (!spDepth.HasValue)
                     return null;
-                return new StackArgumentStorage(
+                return new StackStorage(
                     stgArg.StackOffset - spDepth.Value + call.CallSite.SizeOfReturnAddressOnStack,
                     stgArg.DataType);
             }
@@ -1345,12 +1346,7 @@ namespace Reko.Analysis
                 return new SequenceTransformer(id!, seq, stm!, transform);
             }
 
-            public IdentifierTransformer VisitStackArgumentStorage(StackArgumentStorage stack)
-            {
-                return new StackTransformer(id!, stack.StackOffset, stm!, transform);
-            }
-
-            public IdentifierTransformer VisitStackLocalStorage(StackLocalStorage local)
+            public IdentifierTransformer VisitStackStorage(StackStorage local)
             {
                 return new StackTransformer(id!, local.StackOffset, stm!, transform);
             }

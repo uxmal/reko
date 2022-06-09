@@ -245,24 +245,17 @@ namespace Reko.Analysis
 
         private bool IsDead(Identifier id)
         {
-            if (id.Storage is RegisterStorage reg)
+            return id.Storage switch
             {
-                //Debug.Print("deadReg: {0}, F:{1}", reg, deadRegs.Contains(reg));
-                return deadRegs.Contains(reg);
-            }
-            if (id.Storage is FlagGroupStorage flags)
-            {
-                //Debug.Print("deadFlags: {0}, F:{1}", deadFlags, flags.FlagGroupBits);
-                return (flags.FlagGroupBits & deadFlags) == flags.FlagGroupBits;
-            }
-            if (id.Storage is FpuStackStorage || id.Storage is StackLocalStorage ||
-                id.Storage is StackArgumentStorage || id.Storage is SequenceStorage)
-                return false;
-            if (id.Storage is MemoryStorage)
-                return false;
-            if (id.Storage is TemporaryStorage)
-                return false;
-            throw new NotImplementedException(id.Storage.GetType().Name);
+                RegisterStorage reg => deadRegs.Contains(reg),
+                FlagGroupStorage flags => (flags.FlagGroupBits & deadFlags) == flags.FlagGroupBits,
+                FpuStackStorage => false,
+                StackStorage => false,
+                SequenceStorage => false,
+                MemoryStorage => false,
+                TemporaryStorage => false,
+                _ => throw new NotImplementedException(id.Storage.GetType().Name)
+            };
         }
 
         public bool VisitAssignment(Assignment ass)
@@ -367,11 +360,6 @@ namespace Reko.Analysis
             return false;
         }
 
-        public bool VisitStackLocalStorage(StackLocalStorage local, bool defining)
-        {
-            return true;
-        }
-
         public bool VisitOutArgumentStorage(OutArgumentStorage arg, bool defining)
         {
             throw new NotImplementedException();
@@ -399,7 +387,7 @@ namespace Reko.Analysis
             return true;
         }
 
-        public bool VisitStackArgumentStorage(StackArgumentStorage stack, bool defining)
+        public bool VisitStackStorage(StackStorage stack, bool defining)
         {
             return true;
         }

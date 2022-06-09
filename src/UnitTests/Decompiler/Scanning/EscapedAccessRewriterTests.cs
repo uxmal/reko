@@ -61,7 +61,8 @@ namespace Reko.UnitTests.Decompiler.Scanning
 		[Test]
 		public void EarInsertFrameReference()
 		{
-			Procedure proc = new Procedure(null,"foo", Address.Ptr32(0x00123400), new Frame(PrimitiveType.Word32));
+            var arch = new Mocks.FakeArchitecture();
+			Procedure proc = new Procedure(null, "foo", Address.Ptr32(0x00123400), new Frame(arch, PrimitiveType.Word32));
 			Block b = new Block(proc, proc.EntryAddress, "foo_1");
 			proc.ControlGraph.AddEdge(proc.EntryBlock, b);
             proc.ControlGraph.AddEdge(b, proc.ExitBlock);

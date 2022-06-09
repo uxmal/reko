@@ -30,6 +30,7 @@ using Reko.Core.Rtl;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.Text;
 
 namespace Reko.UnitTests.Mocks
@@ -53,6 +54,11 @@ namespace Reko.UnitTests.Mocks
 		private const int iStackRegister = 63;
 		private const int iReturnRegister = 62;
         private bool ignoreUnknownTraces;
+
+        public FakeArchitecture() 
+            : this(new ServiceContainer(), "fake", new())
+        {
+        }
 
         public FakeArchitecture(IServiceProvider services)
             : this(services, "fake", new Dictionary<string, object>())

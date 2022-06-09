@@ -19,9 +19,9 @@ void fn0C00_0000(Register selector ds)
 // C:C
 // Z:Z
 // O:O
-// wLoc02:Local -0002
-// wLoc04:Local -0004
-// wLoc06:Local -0006
+// wLoc02:Stack -0002
+// wLoc04:Stack -0004
+// wLoc06:Stack -0006
 // return address size: 2
 void fn0C00_0000(selector ds)
 fn0C00_0000_entry:
@@ -52,7 +52,7 @@ Register word16 fn0C00_0011(Stack word16 wArg02, Stack word16 wArg04, Stack word
 // ax:ax
 // SCZO:SCZO
 // Top:Top
-// wLoc02:Local -0002
+// wLoc02:Stack -0002
 // wArg02:Stack +0002
 // wArg04:Stack +0004
 // wArg06:Stack +0006

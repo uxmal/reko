@@ -253,7 +253,7 @@ namespace Reko.UnitTests.Decompiler.Analysis
             var r2 = m.Reg32("r2", 2);
             var foo = new ExternalProcedure("foo", new FunctionType(
                 new Identifier("", VoidType.Instance, null),
-                new Identifier("arg1", PrimitiveType.Int32, new StackArgumentStorage(4, PrimitiveType.Int32))));
+                new Identifier("arg1", PrimitiveType.Int32, new StackStorage(4, PrimitiveType.Int32))));
             m.Assign(sp, m.Frame.FramePointer);
             m.Assign(r1, m.Mem32(m.IAdd(sp, 4)));
             m.BranchIf(m.Ugt(r1, m.Word32(0x5)), "m4_default");

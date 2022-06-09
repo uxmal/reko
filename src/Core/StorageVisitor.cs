@@ -32,11 +32,10 @@ namespace Reko.Core
 		T VisitFlagGroupStorage(FlagGroupStorage grf);
 		T VisitFpuStackStorage(FpuStackStorage fpu);
 		T VisitMemoryStorage(MemoryStorage global);
-		T VisitStackLocalStorage(StackLocalStorage local);
 		T VisitOutArgumentStorage(OutArgumentStorage arg);
 		T VisitRegisterStorage(RegisterStorage reg);
 		T VisitSequenceStorage(SequenceStorage seq);
-		T VisitStackArgumentStorage(StackArgumentStorage stack);
+		T VisitStackStorage(StackStorage stack);
 		T VisitTemporaryStorage(TemporaryStorage temp);
     }
 
@@ -45,11 +44,10 @@ namespace Reko.Core
         T VisitFlagGroupStorage(FlagGroupStorage grf, C context);
         T VisitFpuStackStorage(FpuStackStorage fpu, C context);
         T VisitMemoryStorage(MemoryStorage global, C context);
-        T VisitStackLocalStorage(StackLocalStorage local, C context);
         T VisitOutArgumentStorage(OutArgumentStorage arg, C context);
         T VisitRegisterStorage(RegisterStorage reg, C context);
         T VisitSequenceStorage(SequenceStorage seq, C context);
-        T VisitStackArgumentStorage(StackArgumentStorage stack, C context);
+        T VisitStackStorage(StackStorage stack, C context);
         T VisitTemporaryStorage(TemporaryStorage temp, C context);
     }
 }

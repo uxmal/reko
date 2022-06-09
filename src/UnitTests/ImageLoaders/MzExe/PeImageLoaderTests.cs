@@ -95,7 +95,7 @@ namespace Reko.UnitTests.ImageLoaders.MzExe
         {
             this.arch_386 = new Mock<IProcessorArchitecture>(MockBehavior.Strict);
             arch_386.Setup(a => a.Name).Returns("x86-protected-32");
-            arch_386.Setup(a => a.CreateFrame()).Returns(new Frame(PrimitiveType.Ptr32));
+            arch_386.Setup(a => a.CreateFrame()).Returns(new Frame(arch_386.Object, PrimitiveType.Ptr32));
             arch_386.Setup(a => a.WordWidth).Returns(PrimitiveType.Word32);
             arch_386.Setup(a => a.PointerType).Returns(PrimitiveType.Ptr32);
             var map = new SegmentMap(addrLoad);

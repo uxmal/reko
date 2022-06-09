@@ -49,8 +49,8 @@ namespace Reko.UnitTests.Core.Serialization.Json
         public void Jprjs_Programs()
         {
             var arch = new FakeArchitecture(new ServiceContainer());
-            var proc1 = new Procedure(arch, "fn00123400", Address.Ptr32(0x00123400), new Frame(PrimitiveType.Ptr32));
-            var proc2 = new Procedure(arch, "fn00123500", Address.Ptr32(0x00123500), new Frame(PrimitiveType.Ptr32));
+            var proc1 = new Procedure(arch, "fn00123400", Address.Ptr32(0x00123400), arch.CreateFrame());
+            var proc2 = new Procedure(arch, "fn00123500", Address.Ptr32(0x00123500), arch.CreateFrame());
             var project = new Project
             {
                 Programs =

@@ -2,7 +2,7 @@
 // fp:fp
 // ax:ax
 // cx:cx
-// wLoc02:Local -0002
+// wLoc02:Stack -0002
 // wArg00:Stack +0000
 // return address size: 0
 ax = bar(cx, wArg00)

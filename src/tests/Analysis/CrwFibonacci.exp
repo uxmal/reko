@@ -16,15 +16,15 @@ Register word32 fn10000000(Stack word32 dwArg04)
 // eax:eax
 // edi:edi
 // Top:Top
-// dwLoc04:Local -0004
+// dwLoc04:Stack -0004
 // dwArg04:Stack +0004
-// dwLoc08:Local -0008
-// dwLoc0C:Local -000C
+// dwLoc08:Stack -0008
+// dwLoc0C:Stack -000C
 // S:S
 // C:C
 // Z:Z
 // O:O
-// dwLoc10:Local -0010
+// dwLoc10:Stack -0010
 // return address size: 4
 word32 fn10000000(word32 dwArg04)
 fn10000000_entry:

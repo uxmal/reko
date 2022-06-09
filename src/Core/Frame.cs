@@ -61,6 +61,7 @@ namespace Reko.Core
     /// </remarks>
     public class Frame : IStorageBinder
 	{
+        private readonly IProcessorArchitecture arch;
 		private readonly List<Identifier> identifiers;	// Identifiers for each access.
         private readonly NamingPolicy namingPolicy;
 		
@@ -69,9 +70,11 @@ namespace Reko.Core
         /// </summary>
         /// <param name="framePointerSize">The size of the frame pointer must match the size of the 
         /// stack register, if any, or at the least the size of a pointer.</param>
-		public Frame(PrimitiveType framePointerSize)
+		public Frame(IProcessorArchitecture arch, PrimitiveType framePointerSize)
 		{
-            if (framePointerSize is null) throw new ArgumentNullException(nameof(framePointerSize));
+            if (framePointerSize is null)
+                throw new ArgumentNullException(nameof(framePointerSize));
+            this.arch = arch;
 			identifiers = new List<Identifier>();
             this.namingPolicy = NamingPolicy.Instance;
 
@@ -270,7 +273,7 @@ namespace Reko.Core
 			Identifier? id = FindStackLocal(cbOffset, type);
 			if (id == null)
 			{
-				id = new Identifier(namingPolicy.StackLocalName(type, cbOffset, name), type, new StackLocalStorage(cbOffset, type));
+				id = new Identifier(namingPolicy.StackLocalName(type, cbOffset, name), type, new StackStorage(cbOffset, type));
 				identifiers.Add(id);
 			}
 			return id;
@@ -289,7 +292,7 @@ namespace Reko.Core
 				id = new Identifier(
 					namingPolicy.StackArgumentName(type, cbOffset, argName), 
 					type, 
-					new StackArgumentStorage(cbOffset, type));
+					new StackStorage(cbOffset, type));
 				identifiers.Add(id);
 			}			
 			return id;
@@ -310,27 +313,10 @@ namespace Reko.Core
 
         public Identifier EnsureStackVariable(int byteOffset, DataType type)
         {
-            return (byteOffset >= 0)
+            return arch.IsStackArgumentOffset(byteOffset)
                 ? EnsureStackArgument(byteOffset, type)
                 : EnsureStackLocal(byteOffset, type);
         }
-
-        /// <summary>
-        /// The offset of a variable from the return address, as seen from a caller.
-        /// </summary>
-        /// <param name="var"></param>
-        /// <returns></returns>
-        public int ExternalOffset(Identifier id)
-		{
-			if (id == null)
-				return 0;
-            if (id.Storage is StackArgumentStorage stVar)
-                return stVar.StackOffset;
-            if (id.Storage is FpuStackStorage fstVar)
-                return fstVar.FpuStackOffset;
-
-            throw new ArgumentOutOfRangeException("id", "Identifier must be an argument.");
-		}
 
         public Identifier? FindSequence(Storage[] elements)
         {
@@ -350,22 +336,6 @@ namespace Reko.Core
             }
             return null;
         }
-
-		/// <summary>
-		/// Returns the number of bytes the stack arguments consume on the stack.
-		/// </summary>
-		/// <returns></returns>
-		public int GetStackArgumentSpace()
-		{
-			int cbMax = 0;
-			foreach (Identifier id in identifiers)
-			{
-                if (!(id.Storage is StackArgumentStorage sa))
-                    continue;
-                cbMax = Math.Max(cbMax, sa.StackOffset + sa.DataType.Size);
-			}
-			return cbMax;
-		}
 
 		public Identifier? FindFlagGroup(RegisterStorage reg, uint grfMask)
 		{
@@ -417,7 +387,7 @@ namespace Reko.Core
 		{
 			foreach (Identifier id in identifiers)
 			{
-                if (id.Storage is StackArgumentStorage s && s.StackOffset == offset && id.DataType.Size == size)
+                if (id.Storage is StackStorage s && s.StackOffset == offset && id.DataType.Size == size)
                 {
                     return id;
                 }
@@ -429,7 +399,7 @@ namespace Reko.Core
 		{
 			foreach (Identifier id in identifiers)
 			{
-                if (id.Storage is StackLocalStorage loc &&
+                if (id.Storage is StackStorage loc &&
                     loc.StackOffset == offset &&
                     (id.DataType.Size == dt.Size))
                 {

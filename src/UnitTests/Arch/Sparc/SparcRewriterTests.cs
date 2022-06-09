@@ -80,7 +80,7 @@ namespace Reko.UnitTests.Arch.Sparc
                     addr += 4;
                     return i;
                 });
-            e = new SparcRewriter(arch, exts.GetEnumerator(), state, new Frame(arch.WordWidth), host.Object);
+            e = new SparcRewriter(arch, exts.GetEnumerator(), state, arch.CreateFrame(), host.Object);
         }
 
         private SparcInstruction Instr(Mnemonic mnemonic, params object[] ops)

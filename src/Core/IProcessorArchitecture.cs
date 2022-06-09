@@ -328,6 +328,13 @@ namespace Reko.Core
         /// instructions.</returns>
         List<RtlInstruction>? InlineCall(Address addrCallee, Address addrContinuation, EndianImageReader rdr, IStorageBinder binder);
 
+
+        /// <summary>
+        /// Returns true if <paramref name="frameOffset"/> refers to a location that could be
+        /// an argument to a called procedure.
+        /// </summary>
+        bool IsStackArgumentOffset(long frameOffset);
+
         Address? ReadCodeAddress(int size, EndianImageReader rdr, ProcessorState? state);
         Address MakeSegmentedAddress(Constant seg, Constant offset);
 
@@ -487,7 +494,7 @@ namespace Reko.Core
 
         public virtual IAssembler CreateAssembler(string? asmDialect) => throw new NotSupportedException("This architecture doesn't support assembly language.");
         public abstract IEnumerable<MachineInstruction> CreateDisassembler(EndianImageReader imageReader);
-        public Frame CreateFrame() { return new Frame(FramePointerType); }
+        public Frame CreateFrame() { return new Frame(this, FramePointerType); }
         public EndianImageReader CreateImageReader(MemoryArea mem, Address addr) => this.Endianness.CreateImageReader(mem, addr);
         public EndianImageReader CreateImageReader(MemoryArea mem, Address addr, long cbUnits) => this.Endianness.CreateImageReader(mem, addr, cbUnits);
         public EndianImageReader CreateImageReader(MemoryArea mem, long offsetBegin, long offsetEnd) => Endianness.CreateImageReader(mem, offsetBegin, offsetEnd);
@@ -574,6 +581,14 @@ namespace Reko.Core
         public virtual IEnumerable<FlagGroupStorage> GetSubFlags(FlagGroupStorage flags)
         {
             throw new NotImplementedException($"Your architecture must implement {nameof(GetSubFlags)}.");
+        }
+
+        public virtual bool IsStackArgumentOffset(long frameOffset)
+        {
+            // In the majority of architectures, the stack grows towards lower
+            // addresses. Items on the stack previous to a call with have
+            // non-negative offsets with respect to the stack/frame pointer.
+            return frameOffset >= 0;
         }
 
         public virtual string RenderInstructionOpcode(MachineInstruction instr, EndianImageReader rdr)

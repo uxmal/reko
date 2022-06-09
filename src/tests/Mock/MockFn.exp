@@ -2,8 +2,8 @@
 // Return size: 0
 // Mem0:Mem
 // fp:fp
-// r1:Local -0004
-// r2:Local -0008
+// r1:Stack -0004
+// r2:Stack -0008
 // return address size: 0
 define FnMock
 FnMock_entry:

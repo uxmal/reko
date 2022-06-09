@@ -118,9 +118,9 @@ namespace Reko.UnitTests.Decompiler.Analysis
             m.MStore(m.IAdd(sp, 4), m.Word32(0x5678ABCD));
             var sigCallee = FunctionType.Action(
                     new Identifier("arg04", PrimitiveType.Word32,
-                        new StackArgumentStorage(4, PrimitiveType.Word32)),
+                        new StackStorage(4, PrimitiveType.Word32)),
                     new Identifier("arg08", PrimitiveType.Word32,
-                        new StackArgumentStorage(8, PrimitiveType.Word32)));
+                        new StackStorage(8, PrimitiveType.Word32)));
             sigCallee.ReturnAddressOnStack = 4;
             var callee = new ProcedureConstant(
                 PrimitiveType.Ptr32,

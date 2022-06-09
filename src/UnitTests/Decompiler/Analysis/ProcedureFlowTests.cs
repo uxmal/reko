@@ -83,8 +83,8 @@ namespace Reko.UnitTests.Decompiler.Analysis
         [Test]
         public void Pflow_IntersectBinding_StackArgument_ExactMatch()
         {
-            var stCallee = new StackArgumentStorage(4, PrimitiveType.Word32);
-            var stCaller = new StackArgumentStorage(4, PrimitiveType.Word32);
+            var stCallee = new StackStorage(4, PrimitiveType.Word32);
+            var stCaller = new StackStorage(4, PrimitiveType.Word32);
             var idCaller = new Identifier("local", stCaller.DataType, stCaller);
             var cbs = new[]
             {
@@ -104,7 +104,7 @@ namespace Reko.UnitTests.Decompiler.Analysis
         public void Pflow_IntersectBinding_NotFoundUses()
         {
             var reg = new RegisterStorage("r1", 1, 0, PrimitiveType.Word32);
-            var stCallee = new StackArgumentStorage(4, PrimitiveType.Word32);
+            var stCallee = new StackStorage(4, PrimitiveType.Word32);
             var id = new Identifier("r1", reg.DataType, reg);
             var cbs = new CallBinding[] { } ;
             var uses = new Dictionary<Storage, BitRange>

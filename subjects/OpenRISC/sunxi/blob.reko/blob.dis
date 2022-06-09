@@ -5210,7 +5210,7 @@ l0000AF30:
 	word32 r2_25
 	word32 r11_27
 	call r3_23 (retsize: 0;)
-		uses: r2:0x12490<32>,r3:r3_23,Stack +FFFFFFF8:dwLoc0C
+		uses: r2:0x12490<32>,r3:r3_23
 		defs: r11:r11_27,r2:r2_25
 	r11Out = r11_27
 	return r2_25
@@ -5414,7 +5414,7 @@ l0000B264:
 	word32 r2_24
 	word32 r11_26
 	call r3_22 (retsize: 0;)
-		uses: r2:0x12510<32>,r3:r3_22,Stack +FFFFFFF4:dwLoc14
+		uses: r2:0x12510<32>,r3:r3_22
 		defs: r11:r11_26,r2:r2_24
 	r11Out = r11_26
 	return r2_24
@@ -5451,7 +5451,7 @@ l0000B334:
 	word32 r3_22 = Mem4[(r3 - 14<i32> << 2<32>) + 0x12590<32>:word32]
 	word32 r2_24
 	call r3_22 (retsize: 0;)
-		uses: r2:0x12590<32>,r3:r3_22,Stack +FFFFFFF8:dwLoc0C
+		uses: r2:0x12590<32>,r3:r3_22
 		defs: r2:r2_24
 	return r2_24
 fn0000B320_exit:
@@ -5807,7 +5807,7 @@ l0000B964:
 	word32 r3_22 = Mem4[(r3 - 1<i32> << 2<32>) + 0x12B68<32>:word32]
 	word32 r2_24
 	call r3_22 (retsize: 0;)
-		uses: r2:0x12B68<32>,r3:r3_22,Stack +FFFFFFF8:dwLoc0C
+		uses: r2:0x12B68<32>,r3:r3_22
 		defs: r2:r2_24
 	return r2_24
 fn0000B950_exit:
@@ -5924,7 +5924,7 @@ l0000BC4C:
 	word32 r3_22 = Mem4[(r3 - 14<i32> << 2<32>) + 0x12BA4<32>:word32]
 	word32 r2_24
 	call r3_22 (retsize: 0;)
-		uses: r2:0x12BA4<32>,r3:r3_22,Stack +FFFFFFF8:dwLoc0C
+		uses: r2:0x12BA4<32>,r3:r3_22
 		defs: r2:r2_24
 	return r2_24
 fn0000BC38_exit:
@@ -7919,7 +7919,7 @@ l0000E4F0:
 	word32 r9_14
 	word32 r5_15
 	call r3 (retsize: 0;)
-		uses: r3:r4,r4:r4,r5:r5_15,r9:dwLoc0C,Stack +0004:r9,Stack +FFFFFFFC:dwLoc0C
+		uses: r3:r4,r4:r4,r5:r5_15,r9:dwLoc0C,Stack +0004:r9
 		defs: r5:r5_15,r9:r9_14
 	return r9_14
 fn0000E4F0_exit:
@@ -11238,7 +11238,7 @@ l00018F10:
 	word32 r9_14
 	word32 r5_15
 	call r3 (retsize: 0;)
-		uses: r3:r4,r4:r4,r5:r5_15,r9:dwLoc0C,Stack +0004:r9,Stack +FFFFFFFC:dwLoc0C
+		uses: r3:r4,r4:r4,r5:r5_15,r9:dwLoc0C,Stack +0004:r9
 		defs: r5:r5_15,r9:r9_14
 	return r9_14
 fn00018F10_exit:
