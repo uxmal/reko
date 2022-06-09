@@ -1,8 +1,8 @@
-a:Local -0004
+a:Stack -0004
     def:  def a
     uses: Mem5[0x10000004<32>:word32] = a
           Mem4[0x10000000<32>:word32] = a + b
-b:Local -0008
+b:Stack -0008
     def:  def b
     uses: Mem4[0x10000000<32>:word32] = a + b
 c_3: orig: c

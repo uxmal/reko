@@ -495,7 +495,7 @@ namespace Reko.ImageLoaders.WebAssembly
                 args.Add(new Identifier(
                     "arg" + i,
                     dt,
-                    new StackArgumentStorage(cbOffset, dt)));
+                    new StackStorage(cbOffset, dt)));
                 cbOffset += dt.Size;
             }
             if (!rdr.TryReadVarUInt7(out return_count))
@@ -508,7 +508,7 @@ namespace Reko.ImageLoaders.WebAssembly
                 ret = new Identifier(
                     "",
                     dt,
-                    new StackArgumentStorage(0, dt));
+                    new StackStorage(0, dt));
             }
             return new FunctionType(
                 ret!,

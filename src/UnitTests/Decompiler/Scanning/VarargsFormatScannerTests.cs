@@ -139,7 +139,7 @@ namespace Reko.UnitTests.Decompiler.Scanning
             return new Identifier(
                 name,
                 dt,
-                new StackArgumentStorage(offset, dt));
+                new StackStorage(offset, dt));
         }
 
         private Identifier RegId(

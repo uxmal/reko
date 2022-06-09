@@ -43,7 +43,7 @@ namespace Reko.UnitTests.Decompiler.Structure
         private void RunTest(string sExp, Action<AbsynCodeEmitter> gen)
         {
             var arch = new FakeArchitecture(new ServiceContainer());
-            var proc = new Procedure(arch, "test", Address.Ptr32(0x00123400), new Frame(PrimitiveType.Ptr32));
+            var proc = new Procedure(arch, "test", Address.Ptr32(0x00123400), arch.CreateFrame());
             proc.Body = new List<AbsynStatement>();
             var m = new AbsynCodeEmitter(proc.Body);
             gen(m);

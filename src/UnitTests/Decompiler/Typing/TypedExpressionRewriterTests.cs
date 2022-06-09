@@ -205,7 +205,7 @@ namespace Reko.UnitTests.Decompiler.Typing
                 argTypes.Select((argType, i) => new Identifier(
                         "arg" + i, 
                         argType,
-                        new StackArgumentStorage(i * 4, argType)))
+                        new StackStorage(i * 4, argType)))
                     .ToArray());
             return new ExternalProcedure(name, sig);
         }

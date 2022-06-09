@@ -85,14 +85,9 @@ namespace Reko.Scanning
                 return id!;
         }
 
-        public Identifier VisitStackArgumentStorage(StackArgumentStorage arg)
+        public Identifier VisitStackStorage(StackStorage arg)
         {
-            return frameNew.EnsureStackArgument(arg.StackOffset, arg.DataType);
-        }
-
-        public Identifier VisitStackLocalStorage(StackLocalStorage loc)
-        {
-            return frameNew.EnsureStackLocal(loc.StackOffset, loc.DataType);
+            return frameNew.EnsureStackVariable(arg.StackOffset, arg.DataType);
         }
 
         public Identifier VisitTemporaryStorage(TemporaryStorage tmp)

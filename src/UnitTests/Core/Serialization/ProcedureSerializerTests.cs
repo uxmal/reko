@@ -133,7 +133,7 @@ namespace Reko.UnitTests.Core.Serialization
                 Signature = new FunctionType(
                     new Identifier("eax", PrimitiveType.Word32, Registers.eax),
                     new Identifier[] {
-                        new Identifier("arg00", PrimitiveType.Word32, new StackArgumentStorage(0, PrimitiveType.Word32))
+                        new Identifier("arg00", PrimitiveType.Word32, new StackStorage(0, PrimitiveType.Word32))
                     })
             };
 

@@ -80,22 +80,20 @@ namespace Reko.Analysis
         /// <param name="ssaState"></param>
         public ProcedureFlow ComputeLiveIn(SsaState ssaState, bool ignoreUse)
         {
-            this.procFlow = flow[ssaState.Procedure];
+            var proc = ssaState.Procedure;
+            this.procFlow = flow[proc];
             this.ssa = ssaState;
             this.useLiveness = ignoreUse;
             var store = new TypeStore();
             var desc = new LocalTypeDescender(program, store, new TypeFactory());
             desc.BuildEquivalenceClasses(ssa);
-            foreach (var stm in ssa.Procedure.EntryBlock.Statements)
+            foreach (var stm in proc.EntryBlock.Statements)
             {
                 if (stm.Instruction is not DefInstruction def)
                     continue;
                 var sid = ssa.Identifiers[def.Identifier];
                 var stg = sid.Identifier.Storage;
-                if ((stg is RegisterStorage ||
-                     stg is StackArgumentStorage ||
-                     stg is FpuStackStorage ||
-                     stg is SequenceStorage))
+                if (IsProcedureArgumentStorage(stg, proc))
                      //$REVIEW: flag groups could theoretically be live in
                      // although it's uncommon.
                 {
@@ -110,6 +108,22 @@ namespace Reko.Analysis
             return procFlow;
         }
 
+
+        /// <summary>
+        /// Returns true if the provided storage could be an argument.
+        /// </summary>
+        private bool IsProcedureArgumentStorage(Storage stg, Procedure proc)
+        {
+            return stg switch
+            {
+                RegisterStorage _ => true,
+                StackStorage stk => proc.Architecture.IsStackArgumentOffset(stk.StackOffset),
+                SequenceStorage _ => true,
+                FpuStackStorage _ => true,
+                _ => false
+            };
+        }
+
         public BitRange Classify(
             SsaState ssa, 
             SsaIdentifier sid,
@@ -120,7 +134,7 @@ namespace Reko.Analysis
             this.ssa = ssa;
             this.useLiveness = ignoreUseInstructions;
             if (storage is RegisterStorage ||
-                storage is StackArgumentStorage ||
+                storage is StackStorage ||
                 storage is FpuStackStorage ||
                 storage is FlagGroupStorage ||
                 storage is SequenceStorage)

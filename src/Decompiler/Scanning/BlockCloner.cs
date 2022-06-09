@@ -341,11 +341,6 @@ namespace Reko.Scanning
             return procCalling.Frame.Memory;
         }
 
-        public Identifier VisitStackLocalStorage(StackLocalStorage local)
-        {
-            throw new NotImplementedException();
-        }
-
         public Identifier VisitOutArgumentStorage(OutArgumentStorage arg)
         {
             throw new NotImplementedException();
@@ -363,7 +358,7 @@ namespace Reko.Scanning
             return procCalling.Frame.EnsureSequence(dt, clones.ToArray());
         }
 
-        public Identifier VisitStackArgumentStorage(StackArgumentStorage stack)
+        public Identifier VisitStackStorage(StackStorage stack)
         {
             throw new NotImplementedException();
         }

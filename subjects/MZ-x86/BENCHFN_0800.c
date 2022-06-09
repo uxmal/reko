@@ -1957,10 +1957,9 @@ l0800_n:
 					{
 						do
 						{
-							Eq_n v49_n = (word16) wLoc28_n.u1 + 1;
 							ci16 ax_n;
 							SEQ(0x0800, wArg02)();
-							wLoc28_n = v49_n;
+							wLoc28_n.u1 = (word16) wLoc28_n.u1 + 1;
 							wLoc04 = wArg06;
 							Eq_n al_n = (ss->*fp).t0002;
 							if ((bLoc2B_n & 0x01) == 0x00)
@@ -2089,11 +2088,10 @@ l0800_nA23:
 								ci16 si_n = si_n - 0x01;
 								if (si_n < 0x00)
 									break;
-								Eq_n v66_n = (word16) wLoc28_n.u1 + 1;
 								wchar_t ax_n;
 								Eq_n bx_n;
 								SEQ(0x0800, wArg02)();
-								wLoc28_n = v66_n;
+								wLoc28_n.u1 = (word16) wLoc28_n.u1 + 1;
 								wLoc04 = wArg06;
 								if (ax_n < 0x00)
 								{
@@ -2250,12 +2248,11 @@ l0800_nE6:
 			return dx;
 		}
 l0800_nF:
-		Eq_n v17_n = (word16) wLoc28_n.u1 + 1;
 		struct Eq_n Eq_n::* sp_n;
 		Eq_n ax_n;
 		SEQ(0x0800, wArg02)();
 		Eq_n ax_n = (int16) al_n;
-		wLoc28_n = v17_n;
+		wLoc28_n.u1 = (word16) wLoc28_n.u1 + 1;
 		Eq_n cx_n = (ss->*sp_n).t0000;
 		struct Eq_n Eq_n::* sp_n = (char *) &sp_n->t0000 + 2;
 		Eq_n ax_n = ax_n;
@@ -2392,7 +2389,6 @@ word16 fn0800-1AFF(struct Eq_n * ss_bp)
 word16 fn0800-1B06(struct Eq_n * ss_bp, Eq_n ds, ptr16 & bpOut)
 {
 	struct Eq_n Eq_n::* fp;
-	word16 wLoc04;
 	Eq_n wLoc02;
 	struct Eq_n * ss = SLICE(ss_bp, selector, 16);
 	ptr16 bp = (word16) ss_bp;

@@ -186,7 +186,7 @@ namespace Reko.Analysis
                 case RegisterStorage reg:
                     callBinding = IntersectRegisterBinding(reg, callBindings);
                     break;
-                case StackArgumentStorage stArg:
+                case StackStorage stArg:
                     callBinding = IntersectStackRegisterBinding(stArg, callBindings);
                     break;
                 }
@@ -195,11 +195,11 @@ namespace Reko.Analysis
             }
         }
 
-        private static CallBinding? IntersectStackRegisterBinding(StackArgumentStorage stArg, IEnumerable<CallBinding> callBindings)
+        private static CallBinding? IntersectStackRegisterBinding(StackStorage stArg, IEnumerable<CallBinding> callBindings)
         {
             foreach (var binding in callBindings)
             {
-                if (binding.Storage is StackArgumentStorage)
+                if (binding.Storage is StackStorage)
                 {
                     if (binding.Storage.Equals(stArg))
                         return binding;

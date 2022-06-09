@@ -141,7 +141,7 @@ namespace Reko.UnitTests.Gui.Forms
             Procedure p = new Procedure(program.Architecture, "foo_proc", Address.Ptr32(0x12346), program.Architecture.CreateFrame());
             p.Signature = FunctionType.Func(
                 Identifier.Create(Registers.eax),
-                new Identifier("arg04", PrimitiveType.Word32, new StackArgumentStorage(4, PrimitiveType.Word32)));
+                new Identifier("arg04", PrimitiveType.Word32, new StackStorage(4, PrimitiveType.Word32)));
             var p2 = new Procedure(program.Architecture, "bar", Address.Ptr32(0x12345), program.Architecture.CreateFrame());
             program.Procedures.Add(p.EntryAddress, p);
             program.Procedures.Add(p2.EntryAddress, p2);

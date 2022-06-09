@@ -12987,10 +12987,9 @@ l0800_nFD8:
 		si_n = ϕ(si_n, si_n);
 		di_n = ϕ(di_n, di_n);
 		al_n = ϕ(al_n, al_n);
-		v17_n.u1 = (word16) wLoc08_n.u1 + 1;
 		SEQ(0x0800, wArg02)();
 		ax_n.u0 = (int16) al_n;
-		wLoc08_n = v17_n;
+		wLoc08_n.u1 = (word16) wLoc08_n.u1 + 1;
 		cx_n = (ss->*sp_n).ptr0002;
 		sp_n = (struct Eq_n Eq_n::*) ((char *) &sp_n->ptr0002 + 2);
 		al_n = (ss->*fp).t0002;
@@ -13133,8 +13132,6 @@ word16 fn0800-93C5(struct Eq_n * ss_bp, Eq_n ds, ptr16 & diOut)
 {
 	mp16 fp;
 	ptr16 di;
-	word16 wLoc06;
-	word16 wLoc04;
 	Eq_n wLoc02;
 	struct Eq_n * ss = SLICE(ss_bp, selector, 16);
 	word16 bp = (word16) ss_bp;

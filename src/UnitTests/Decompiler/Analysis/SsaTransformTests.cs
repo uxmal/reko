@@ -109,8 +109,10 @@ namespace Reko.UnitTests.Decompiler.Analysis
             var arch = new Mock<IProcessorArchitecture>();
             arch.Setup(a => a.Endianness).Returns(EndianServices.Big);
             arch.Setup(a => a.Name).Returns("fake-be-arch");
-            arch.Setup(a => a.CreateFrame()).Returns(() => new Frame(PrimitiveType.Ptr32));
+            arch.Setup(a => a.CreateFrame()).Returns(() => new Frame(arch.Object, PrimitiveType.Ptr32));
             arch.Setup(a => a.MemoryGranularity).Returns(8);
+            arch.Setup(a => a.IsStackArgumentOffset(It.IsAny<long>())).Returns(
+                new Func<long, bool>(off => off >= 0));
             Given_Architecture(arch.Object);
         }
 
@@ -839,7 +841,7 @@ proc1_exit:
                 var procSubFlow = new ProcedureFlow(m.Procedure)
                 {
                     BitsUsed = {
-                        { new StackArgumentStorage(4, PrimitiveType.Word32), new BitRange(0,32) },
+                        { new StackStorage(4, PrimitiveType.Word32), new BitRange(0,32) },
                         { r1.Storage, new BitRange(0, 32) }
                     },
                     Trashed = { r1.Storage }
@@ -3386,7 +3388,7 @@ test_exit:
                 new Identifier(
                     "doubleArg",
                     PrimitiveType.Real64,
-                    new StackArgumentStorage(4, PrimitiveType.Real64))
+                    new StackStorage(4, PrimitiveType.Real64))
             );
 
             When_RunSsaTransform();
@@ -3436,7 +3438,7 @@ proc_exit:
                 new Identifier(
                     "byteArg",
                     PrimitiveType.Byte,
-                    new StackArgumentStorage(4, PrimitiveType.Byte))
+                    new StackStorage(4, PrimitiveType.Byte))
             );
 
             When_RunSsaTransform();
@@ -4490,7 +4492,7 @@ proc1_exit:
             RunTest_FrameAccesses(sExp, m =>
             {
                 m.Procedure.Signature = FunctionType.Action(
-                    new Identifier("rArg08", PrimitiveType.Real64, new StackArgumentStorage(8, PrimitiveType.Word64)));
+                    new Identifier("rArg08", PrimitiveType.Real64, new StackStorage(8, PrimitiveType.Word64)));
                 // Slices the little-endian high word of rArg08
                 m.MStore(m.Word32(0x00123400), m.Mem32(m.IAddS(m.Procedure.Frame.FramePointer, 8)));
                 m.MStore(m.Word32(0x00123404), m.Mem32(m.IAddS(m.Procedure.Frame.FramePointer, 12)));

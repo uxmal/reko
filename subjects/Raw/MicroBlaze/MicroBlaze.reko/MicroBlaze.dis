@@ -10679,10 +10679,6 @@ word32 fn0000BA7C(word32 r4, word32 r5, word32 r6, word32 r8, ptr32 & r3Out, ptr
 // Preserved: r1
 fn0000BA7C_entry:
 	word32 r0
-	word32 dwLoc28
-	word32 dwLoc0C
-	word32 dwLoc08
-	word32 dwLoc04
 l0000BA7C:
 	word32 r8_105
 	word32 r3_296
@@ -10735,7 +10731,7 @@ l0000BB84:
 	word32 r11_394
 	word32 r10_393
 	call 0x0000BB8C<p32> + r3_63 (retsize: 0;)
-		uses: r0:r0_116,r10:r10_393,r11:r11_394,r12:r12_395,r15:0x0000BB8C<p32>,r18:r18_111,r4:9<32>,r5:Mem88[r5 + 40<i32>:word32],r6:1<32>,r7:0x16C4<32>,r8:r8_25,r9:r9_115,Stack +FFFFFFD8:dwLoc28,Stack +FFFFFFF4:dwLoc0C,Stack +FFFFFFF8:dwLoc08,Stack +FFFFFFFC:dwLoc04
+		uses: r0:r0_116,r10:r10_393,r11:r11_394,r12:r12_395,r15:0x0000BB8C<p32>,r18:r18_111,r4:9<32>,r5:Mem88[r5 + 40<i32>:word32],r6:1<32>,r7:0x16C4<32>,r8:r8_25,r9:r9_115
 		defs: r0:r0_116,r10:r10_393,r11:r11_394,r12:r12_395,r18:r18_111,r21:r21_108,r3:r3_106,r4:r4_104,r8:r8_105,r9:r9_115
 	branch Test(EQ,r3_106) l0000BB98_ds_t
 l0000BB98_ds_t:
@@ -22666,9 +22662,6 @@ void fn0001E530(word32 r7, word32 r19)
 // Trashed: r0 r15 r19 r21 r3 r4 r5 r6 r7
 // Preserved: r1
 fn0001E530_entry:
-	word32 dwLoc24
-	word32 dwLoc08
-	word32 dwLoc04
 l0001E530:
 	Mem5[r19 + 56<i32>:word32] = r7
 	word32 r3_6 = Mem5[r19:word32]
@@ -22679,7 +22672,7 @@ l0001E530:
 	word32 r19_17
 	word32 r0_23
 	call 0x0001E550<p32> + r4_10 (retsize: 0;)
-		uses: r15:0x0001E550<p32>,r19:r19,r3:r3_6,r4:r4_10,r5:r19,r6:0xA<32>,r7:r7,Stack +FFFFFFDC:dwLoc24,Stack +FFFFFFF8:dwLoc08,Stack +FFFFFFFC:dwLoc04
+		uses: r15:0x0001E550<p32>,r19:r19,r3:r3_6,r4:r4_10,r5:r19,r6:0xA<32>,r7:r7
 		defs: r0:r0_23,r19:r19_17
 	word32 r7_25 = Mem14[r19_17 + 56<i32>:word32]
 	branch Test(LE,r7_25) l0001E560_ds_t
@@ -24481,7 +24474,7 @@ l0001F678:
 	word32 r31_376
 	word32 r9_377
 	call 0x0001F690<p32> + r6_348 (retsize: 0;)
-		uses: r0:r0,r10:r10_371,r11:r11_372,r12:r12_373,r15:0x0001F690<p32>,r20:r20_374,r21:r21,r22:r22,r23:r23,r24:r24,r26:r26,r27:r27,r28:r28,r29:r29,r30:r30_375,r31:r31_376,r4:r4_343,r5:r5,r6:r6_348,r9:r9_377,Stack +001C:dwArg1C,Stack +0030:dwArg30,Stack +FFFFFFD8:dwLoc28,Stack +FFFFFFDC:dwLoc24,Stack +FFFFFFE0:dwLoc20,Stack +FFFFFFE4:dwLoc1C,Stack +FFFFFFE8:dwLoc18,Stack +FFFFFFEC:dwLoc14,Stack +FFFFFFF0:dwLoc10,Stack +FFFFFFF4:dwLoc0C,Stack +FFFFFFF8:dwLoc08,Stack +FFFFFFFC:dwLoc04
+		uses: r0:r0,r10:r10_371,r11:r11_372,r12:r12_373,r15:0x0001F690<p32>,r20:r20_374,r21:r21,r22:r22,r23:r23,r24:r24,r26:r26,r27:r27,r28:r28,r29:r29,r30:r30_375,r31:r31_376,r4:r4_343,r5:r5,r6:r6_348,r9:r9_377,Stack +001C:dwArg1C,Stack +0030:dwArg30
 		defs: r10:r10_371,r11:r11_372,r12:r12_373,r20:r20_374,r30:r30_375,r31:r31_376,r9:r9_377
 
 
@@ -26388,15 +26381,13 @@ word32 fn000255C0(word32 r3, word32 r5)
 // Trashed: r0 r15 r19 r3 r4 r5 r6 r7
 // Preserved: r1
 fn000255C0_entry:
-	word32 dwLoc20
-	word32 dwLoc04
 l000255C0:
 	word32 r3_5 = Mem0[r3:word32]
 	word32 r3_12
 	word32 r19_16
 	word32 r0_19
 	call 0x000255CC<p32> + r3_5 (retsize: 0;)
-		uses: r15:0x000255CC<p32>,r19:r5,r3:r3_5,r5:r5,r6:1<32>,r7:0x6C<32>,Stack +FFFFFFE0:dwLoc20,Stack +FFFFFFFC:dwLoc04
+		uses: r15:0x000255CC<p32>,r19:r5,r3:r3_5,r5:r5,r6:1<32>,r7:0x6C<32>
 		defs: r0:r0_19,r19:r19_16,r3:r3_12
 	Mem21[r19_16 + 416<i32>:word32] = r3_12
 	Mem22[r3_12 + 76<i32>:word32] = r0_19
@@ -26482,7 +26473,6 @@ word32 fn00025A6C(word32 r0, word32 r3, word32 r7, word32 r8, word32 r9, word32 
 // Trashed: r0 r10 r15 r19 r3 r4 r5 r6 r7 r8 r9
 // Preserved: r1
 fn00025A6C_entry:
-	word32 dwLoc24
 	word32 dwLoc04
 l00025A6C:
 	branch Test(LT,-(r9 ^ 0x42<32>) | r9 ^ 0x42<32>) l00025A7C_ds_t
@@ -26496,7 +26486,7 @@ l000259D0:
 	Mem19[r4_10 + 32<i32>:word32] = r9
 	word32 r1_24
 	call 0x000259F4<p32> + r10_14 (retsize: 0;)
-		uses: r0:r0_35,r10:r10_14,r15:0x000259F4<p32>,r19:r19,r3:r3,r4:r4_10,r5:r19,r6:1<32>,r7:r7,r8:r8,r9:r9,Stack +001C:r3,Stack +FFFFFFDC:dwLoc24,Stack +FFFFFFFC:dwLoc04
+		uses: r0:r0_35,r10:r10_14,r15:0x000259F4<p32>,r19:r19,r3:r3,r4:r4_10,r5:r19,r6:1<32>,r7:r7,r8:r8,r9:r9,Stack +001C:r3
 		defs: r0:r0_35,r1:r1_24,r19:r19_28
 	Mem37[r19 + 40<i32>:word32] = 3<32>
 	r3 = Mem37[r1_24 + 28<i32>:word32]
@@ -29253,11 +29243,10 @@ word32 fn0002CFE4(word32 r3)
 // Preserved: r1
 fn0002CFE4_entry:
 	ptr32 fp
-	word32 dwLocE4
 l0002CFE4:
 	word32 r3_8
 	call 0x0002CFE4<p32> + r3 (retsize: 0;)
-		uses: r15:0x0002CFE4<p32>,r3:r3,r6:fp + 0x1C<32>,Stack +FFFFFF1C:dwLocE4
+		uses: r15:0x0002CFE4<p32>,r3:r3,r6:fp + 0x1C<32>
 		defs: r3:r3_8
 	fn0002EB28()
 	return r3_8

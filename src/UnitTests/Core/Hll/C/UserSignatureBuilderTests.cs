@@ -91,7 +91,7 @@ namespace Reko.UnitTests.Core.Hll.C
 
         private void Given_UnscannedProcedure(uint address)
         {
-            this.proc = Procedure.Create(program.Architecture, "fnTest", Address.Ptr32(address), new Frame(PrimitiveType.Ptr32));
+            this.proc = Procedure.Create(program.Architecture, "fnTest", Address.Ptr32(address), program.Architecture.CreateFrame());
             this.program.Procedures[Address.Ptr32(address)] = this.proc;
         }
 

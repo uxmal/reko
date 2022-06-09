@@ -135,7 +135,9 @@ namespace Reko.Environments.Msdos
                         return null;
                 }
             }
-            if (signature.Parameters!.Any(p => p.Storage is not StackArgumentStorage))
+            if (signature.Parameters!.Any(p => 
+                p.Storage is not StackStorage stk || 
+                !Architecture.IsStackArgumentOffset(stk.StackOffset)))
                 return null;
             if (signature.FpuStackDelta != 0 || signature.FpuStackArgumentMax >= 0)
                 return null;

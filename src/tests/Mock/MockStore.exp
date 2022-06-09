@@ -2,7 +2,7 @@
 // Return size: 0
 // Mem0:Mem
 // fp:fp
-// r0:Local -0004
+// r0:Stack -0004
 // return address size: 0
 define StoreMock
 StoreMock_entry:

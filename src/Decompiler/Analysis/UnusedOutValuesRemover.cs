@@ -250,7 +250,7 @@ namespace Reko.Analysis
                 DeadCode.Eliminate(ssa);
                 foreach (Statement stm in program.CallGraph.CallerStatements(ssa.Procedure))
                 {
-                    if (!(stm.Instruction is CallInstruction ci))
+                    if (stm.Instruction is not CallInstruction ci)
                         continue;
                     var ssaCaller = this.procToSsa[stm.Block.Procedure];
                     if (RemoveDeadCallDefinitions(ssaCaller, ci, deadStgs))

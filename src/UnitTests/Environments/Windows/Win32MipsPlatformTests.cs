@@ -38,8 +38,11 @@ namespace Reko.UnitTests.Environments.Windows
         [Test]
         public void W32Mips_Trampoline()
         {
+            var host = new Mock<IRewriterHost>();
+            var services = new Mock<IServiceProvider>();
+            var arch = new Mock<IProcessorArchitecture>();
             var instrs = new List<RtlInstructionCluster>();
-            var frame = new Frame(PrimitiveType.Ptr32);
+            var frame = new Frame(arch.Object, PrimitiveType.Ptr32);
             var r9 = frame.EnsureRegister(new RegisterStorage("r9", 9, 0, PrimitiveType.Word32));
             var rtl = new RtlTrace(0x123460)
             {
@@ -48,9 +51,6 @@ namespace Reko.UnitTests.Environments.Windows
                 m => m.Goto(r9)
             };
 
-            var host = new Mock<IRewriterHost>();
-            var services = new Mock<IServiceProvider>();
-            var arch = new Mock<IProcessorArchitecture>();
             var addr = Address.Ptr32(0x00031234);
             arch.Setup(a => a.MakeAddressFromConstant(It.IsNotNull<Constant>(), It.IsAny<bool>())).Returns(addr);
             host.Setup(h => h.GetImportedProcedure(

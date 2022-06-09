@@ -131,10 +131,7 @@ namespace Reko.Analysis
                 return id.Storage;
             var bin = (BinaryExpression) e;
             int offset = ((Constant)bin.Right).ToInt32();
-            if (offset < 0)
-                return new StackLocalStorage(offset, e.DataType);
-            else 
-                return new StackArgumentStorage(offset, e.DataType);
+            return new StackStorage(offset, e.DataType);
         }
 
         // The following methods are part of ICollection. Either no code in the

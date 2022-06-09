@@ -51,7 +51,7 @@ namespace Reko.UnitTests.Arch.M68k
             var orw = new OperandRewriter(
                 arch,
                 new RtlEmitter(new List<RtlInstruction>()),
-                new Frame(arch.FramePointerType),
+                arch.CreateFrame(),
                 PrimitiveType.Byte);
             var exp = orw.RewriteSrc(new MemoryOperand(PrimitiveType.Byte, Registers.a1, Constant.Int16(4)), addrInstr);
 

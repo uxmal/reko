@@ -55,8 +55,8 @@ namespace Reko.UnitTests.Gui
             var addr1 = Address.Ptr32(0x00001);
             var addr2 = Address.Ptr32(0x00002);
 
-            procs.Add(new ProcedureSearchHit(program, addr1, new Procedure(program.Architecture, "foo", addr1, new Frame(PrimitiveType.Word32))));
-            procs.Add(new ProcedureSearchHit(program, addr2, new Procedure(program.Architecture, "bar", addr2, new Frame(PrimitiveType.Word32))));
+            procs.Add(new ProcedureSearchHit(program, addr1, new Procedure(program.Architecture, "foo", addr1, program.Architecture.CreateFrame())));
+            procs.Add(new ProcedureSearchHit(program, addr2, new Procedure(program.Architecture, "bar", addr2, program.Architecture.CreateFrame())));
 
             var view = new Mock<ISearchResultView>();
             view.Setup(s => s.AddColumn(
@@ -82,8 +82,8 @@ namespace Reko.UnitTests.Gui
 
             var addr1 = Address.Ptr32(0x00001);
             var addr2 = Address.Ptr32(0x00002);
-            procs.Add(new ProcedureSearchHit(program, addr1, new Procedure(program.Architecture, "foo", addr1, new Frame(PrimitiveType.Word32))));
-            procs.Add(new ProcedureSearchHit(program, addr2, new Procedure(program.Architecture, "bar", addr2, new Frame(PrimitiveType.Word32))));
+            procs.Add(new ProcedureSearchHit(program, addr1, new Procedure(program.Architecture, "foo", addr1, new Frame(program.Architecture, PrimitiveType.Word32))));
+            procs.Add(new ProcedureSearchHit(program, addr2, new Procedure(program.Architecture, "bar", addr2, new Frame(program.Architecture, PrimitiveType.Word32))));
 
             Assert.AreEqual(-1, psr.GetItem(0).ImageIndex);
             string [] str = psr.GetItem(0).Items;
@@ -123,7 +123,7 @@ namespace Reko.UnitTests.Gui
             var addr = Address.Ptr32(0x4234);
             procs.Add(new ProcedureSearchHit(
                 program, addr,
-                new Procedure(program.Architecture, "foo", addr, new Frame(PrimitiveType.Word32))));
+                new Procedure(program.Architecture, "foo", addr, program.Architecture.CreateFrame())));
             psr.NavigateTo(0);
 
             mvs.VerifyAll();

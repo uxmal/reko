@@ -24,13 +24,13 @@ void fn0C00_0000(Register selector ds, Stack segptr32 ptrArg04)
 // C:C
 // Z:Z
 // O:O
-// wLoc02:Local -0002
+// wLoc02:Stack -0002
 // ptrArg04:Stack +0004
-// wLoc04:Local -0004
-// wLoc06:Local -0006
-// ptrLoc06:Local -0006
-// wLoc08:Local -0008
-// ptrLoc08:Local -0008
+// wLoc04:Stack -0004
+// wLoc06:Stack -0006
+// ptrLoc06:Stack -0006
+// wLoc08:Stack -0008
+// ptrLoc08:Stack -0008
 // return address size: 2
 void fn0C00_0000(selector ds, segptr32 ptrArg04)
 fn0C00_0000_entry:
@@ -63,7 +63,7 @@ Register word16 fn0C00_0020(Stack segptr32 ptrArg02)
 // bx:bx
 // es:es
 // Top:Top
-// wLoc02:Local -0002
+// wLoc02:Stack -0002
 // ptrArg02:Stack +0002
 // return address size: 2
 word16 fn0C00_0020(segptr32 ptrArg02)
@@ -96,7 +96,7 @@ Register word16 fn0C00_002E(Stack segptr32 ptrArg02, Stack word16 wArg06)
 // es:es
 // SCZO:SCZO
 // Top:Top
-// wLoc02:Local -0002
+// wLoc02:Stack -0002
 // ptrArg02:Stack +0002
 // wArg06:Stack +0006
 // S:S

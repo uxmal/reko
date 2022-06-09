@@ -28,12 +28,8 @@ using Reko.Structure;
 using Reko.UnitTests.Mocks;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.Design;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Reko.UnitTests.Decompiler.Structure
 {
@@ -42,7 +38,8 @@ namespace Reko.UnitTests.Decompiler.Structure
     {
         private void RunTest(string sExp, Action<AbsynCodeEmitter> gen)
         {
-            var proc = new Procedure(new FakeArchitecture(new ServiceContainer()), "test", Address.Ptr32(0x00123400), new Frame(PrimitiveType.Ptr32));
+            var arch = new FakeArchitecture();
+            var proc = new Procedure(arch, "test", Address.Ptr32(0x00123400), arch.CreateFrame());
             proc.Body = new List<AbsynStatement>();
             var m = new AbsynCodeEmitter(proc.Body);
             gen(m);

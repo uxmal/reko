@@ -101,7 +101,7 @@ namespace Reko.UnitTests.Decompiler.Typing
         public void EqbProcedureSignature()
         {
             var sig = FunctionType.Action(
-                new Identifier("dwArg00", PrimitiveType.Word32, new StackArgumentStorage(0, PrimitiveType.Word32)));
+                new Identifier("dwArg00", PrimitiveType.Word32, new StackStorage(0, PrimitiveType.Word32)));
             eqb.EnsureSignatureTypeVariables(sig);
             Assert.IsNotNull(sig.Parameters[0].TypeVariable);
         }

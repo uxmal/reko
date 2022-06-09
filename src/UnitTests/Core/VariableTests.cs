@@ -26,6 +26,7 @@ using Reko.Core.Types;
 using NUnit.Framework;
 using System;
 using System.IO;
+using System.ComponentModel.Design;
 
 namespace Reko.UnitTests.Core
 {
@@ -55,7 +56,8 @@ namespace Reko.UnitTests.Core
 		[SetUp]
 		public void Setup()
 		{
-			f = new Frame(PrimitiveType.Word16);
+            var arch = new Mocks.FakeArchitecture(new ServiceContainer());
+			f = new Frame(arch, PrimitiveType.Word16);
 			argOff = f.EnsureStackArgument(4, PrimitiveType.Word16);
 			argSeg = f.EnsureStackArgument(6, PrimitiveType.SegmentSelector);
 			arg_alias = f.EnsureStackArgument(4, PrimitiveType.Ptr32);
@@ -80,17 +82,17 @@ namespace Reko.UnitTests.Core
 	public class StackLocalTests
 	{
 		private Frame f;
-		private StackLocalStorage varOff;
-		private StackLocalStorage varSeg;
-		private StackLocalStorage varPointer;
+		private StackStorage varOff;
+		private StackStorage varSeg;
+		private StackStorage varPointer;
 
 		[SetUp]
 		public void Setup()
 		{
-			f = new Frame(PrimitiveType.Word16);
-			varOff = (StackLocalStorage) f.EnsureStackLocal(-4, PrimitiveType.Word16).Storage;
-			varSeg = (StackLocalStorage) f.EnsureStackLocal(-2, PrimitiveType.SegmentSelector).Storage;
-			varPointer = (StackLocalStorage) f.EnsureStackLocal(-4, PrimitiveType.Ptr32).Storage;
+			f = new Frame(new Mocks.FakeArchitecture(), PrimitiveType.Word16);
+			varOff = (StackStorage) f.EnsureStackLocal(-4, PrimitiveType.Word16).Storage;
+			varSeg = (StackStorage) f.EnsureStackLocal(-2, PrimitiveType.SegmentSelector).Storage;
+			varPointer = (StackStorage) f.EnsureStackLocal(-4, PrimitiveType.Ptr32).Storage;
 		}
 
 		[Test]

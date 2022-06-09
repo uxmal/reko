@@ -103,11 +103,6 @@ namespace Reko.Core
             throw new NotSupportedException(string.Format("A {0} can't be used as a formal parameter.", global.GetType().FullName));
         }
 
-        public Expression VisitStackLocalStorage(StackLocalStorage local)
-        {
-            throw new NotSupportedException(string.Format("A {0} can't be used as a formal parameter.", local.GetType().FullName));
-        }
-
         public Expression VisitOutArgumentStorage(OutArgumentStorage arg)
         {
             return arg.OriginalIdentifier.Storage.Accept(this);
@@ -126,8 +121,10 @@ namespace Reko.Core
             throw new NotImplementedException("Handle case when stack parameter is passed.");
         }
 
-        public Expression VisitStackArgumentStorage(StackArgumentStorage stack)
+        public Expression VisitStackStorage(StackStorage stack)
         {
+            if (!arch.IsStackArgumentOffset(stack.StackOffset))
+                throw new InvalidOperationException("A local stack variable can't be used as a parameter.");
             if (ensureVariables)
             {
                 return binder.EnsureStackVariable(

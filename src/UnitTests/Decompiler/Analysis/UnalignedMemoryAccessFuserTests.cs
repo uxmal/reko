@@ -570,7 +570,7 @@ ProcedureBuilder_exit:
             var ssa = RunTest(m);
             var sExp =
             #region Expected
-@"loc40:Local -0040
+@"loc40:Stack -0040
     def:  def loc40
 r8:r8
     def:  def r8
@@ -578,7 +578,7 @@ r8:r8
 loc40_3: orig: loc40
     def:  loc40_3 = __swl(loc40, r8)
     uses: bLoc3D_5 = SLICE(loc40_3, byte, 24) (alias)
-nLoc3C:Local -003C
+nLoc3C:Stack -003C
     def:  def nLoc3C
     uses: loc3D_6 = SEQ(nLoc3C, bLoc3D_5) (alias)
 bLoc3D_5: orig: bLoc3D

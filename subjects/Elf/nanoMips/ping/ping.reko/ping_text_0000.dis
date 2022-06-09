@@ -274,7 +274,7 @@ l004007B0:
 l004001C8:
 	word32 r7_434 = Mem91[0x00412060<p32> + (r4_73 + 0xFFFFFFCC<32>) * 4<32>:word32]
 	call r7_434 (retsize: 0;)
-		uses: r4:r4_73 + 0xFFFFFFCC<32>,r5:r5_75,r7:r7_434,Stack +FFFFFFA4:dwLoc5C,Stack +FFFFFFC0:tLoc40,Stack +FFFFFFC4:dwLoc3C_603
+		uses: r4:r4_73 + 0xFFFFFFCC<32>,r5:r5_75,r7:r7_434
 	return
 main_exit:
 

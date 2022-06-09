@@ -108,8 +108,8 @@ namespace Reko.UnitTests.Core
         public void Stg_StackStorageCover()
         {
             // Mimic a big endian copy of the low 8 bits of a stack word.
-            var argLarge = new StackArgumentStorage(4, PrimitiveType.Word32);
-            var argSmall = new StackArgumentStorage(7, PrimitiveType.Byte);
+            var argLarge = new StackStorage(4, PrimitiveType.Word32);
+            var argSmall = new StackStorage(7, PrimitiveType.Byte);
             Assert.IsTrue(argLarge.Covers(argSmall), $"{argLarge} should cover {argSmall}.");
             Assert.False(argSmall.Covers(argLarge), $"{argSmall} shouldn't cover {argLarge}.");
         }

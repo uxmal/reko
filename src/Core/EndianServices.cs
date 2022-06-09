@@ -229,10 +229,7 @@ namespace Reko.Core
             {
                 var byteOffset = bitRange.Lsb / granularity;
                 var dt = PrimitiveType.CreateWord(bitRange.Extent);
-                if (byteOffset < 0)
-                    return new StackLocalStorage(stg.StackOffset + byteOffset, dt);
-                else
-                    return new StackArgumentStorage(stg.StackOffset + byteOffset, dt);
+                return new StackStorage(stg.StackOffset + byteOffset, dt);
             }
 
             public override bool TryRead(MemoryArea mem, Address addr, PrimitiveType dt, out Constant value)
@@ -311,10 +308,7 @@ namespace Reko.Core
             {
                 var byteOffset = (stg.DataType.BitSize - bitRange.Msb) / granularity;
                 var dt = PrimitiveType.CreateWord(bitRange.Extent);
-                if (byteOffset < 0)
-                    return new StackLocalStorage(stg.StackOffset +  byteOffset, dt);
-                else
-                    return new StackArgumentStorage(stg.StackOffset + byteOffset, dt);
+                return new StackStorage(stg.StackOffset +  byteOffset, dt);
             }
 
             public override bool TryRead(MemoryArea mem, Address addr, PrimitiveType dt, out Constant value)

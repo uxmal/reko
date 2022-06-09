@@ -9519,10 +9519,6 @@ word32 fn0000B9E0(ptr32 & r19Out, ptr32 & r21Out, ptr32 & r22Out, ptr32 & r23Out
 Eq_n fn0000BA7C(uint32 r4, struct Eq_n * r5, Eq_n r6, word32 r8, union Eq_n & r3Out, union Eq_n & r4Out, union Eq_n & r8Out, struct Eq_n & r19Out, struct Eq_n & r22Out)
 {
 	Eq_n r0;
-	word32 dwLoc28;
-	word32 dwLoc0C;
-	word32 dwLoc08;
-	word32 dwLoc04;
 	Eq_n r8_n;
 	Eq_n r3_n;
 	Eq_n r22_n;
@@ -19648,9 +19644,6 @@ void fn0001E384(word32 r0, struct Eq_n * r5, int32 r6, word32 r15)
 // 0001E530: void fn0001E530(Register word32 r7, Register (ptr32 Eq_n) r19)
 void fn0001E530(word32 r7, struct Eq_n * r19)
 {
-	word32 dwLoc24;
-	word32 dwLoc08;
-	word32 dwLoc04;
 	r19->dw0038 = r7;
 	struct Eq_n * r3_n = r19->ptr0000;
 	r3_n->dw0014 = 0x1A;
@@ -22865,8 +22858,6 @@ void fn000255B0(struct Eq_n * r5)
 //      fn0002FFD0
 struct Eq_n * fn000255C0(struct Eq_n * r3, struct Eq_n * r5)
 {
-	word32 dwLoc20;
-	word32 dwLoc04;
 	int32 r3_n = r3->dw0000;
 	struct Eq_n * r3_n;
 	struct Eq_n * r19_n;
@@ -22933,7 +22924,6 @@ void fn00025768(struct Eq_n * r5, word32 r15)
 //      fn0002FFD0
 word32 fn00025A6C(word32 r0, ptr32 r3, word32 r7, word32 r8, word32 r9, struct Eq_n * r19, ptr32 & r3Out, ptr32 & r4Out, ptr32 & r7Out, ptr32 & r19Out)
 {
-	word32 dwLoc24;
 	ptr32 dwLoc04;
 	if (Test(GE,-(r9 ^ 66) | r9 ^ 66))
 		r19->dw0028 = 0x02;
@@ -25213,7 +25203,6 @@ void fn0002CE14()
 int32 fn0002CFE4(int32 r3)
 {
 	ptr32 fp;
-	word32 dwLocE4;
 	int32 r3_n;
 	(184292 + r3)();
 	fn0002EB28();

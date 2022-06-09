@@ -47,9 +47,9 @@ namespace Reko.UnitTests.Core
 			arch = new X86ArchitectureFlat32(new ServiceContainer(), "x86-protected-32", new Dictionary<string, object>());
             frame = arch.CreateFrame();
 			ret = frame.EnsureRegister(Registers.eax);
-			arg04 = new Identifier("arg04",   PrimitiveType.Word32, new StackArgumentStorage(4, PrimitiveType.Word32));
-			arg08 = new Identifier("arg08",   PrimitiveType.Word16, new StackArgumentStorage(8, PrimitiveType.Word16));
-			arg0C = new Identifier("arg0C",   PrimitiveType.Byte, new StackArgumentStorage(0x0C, PrimitiveType.Byte));
+			arg04 = new Identifier("arg04",   PrimitiveType.Word32, new StackStorage(4, PrimitiveType.Word32));
+			arg08 = new Identifier("arg08",   PrimitiveType.Word16, new StackStorage(8, PrimitiveType.Word16));
+			arg0C = new Identifier("arg0C",   PrimitiveType.Byte, new StackStorage(0x0C, PrimitiveType.Byte));
 			regOut = new Identifier("edxOut", PrimitiveType.Word32, new OutArgumentStorage(frame.EnsureRegister(Registers.edx)));
             sig = FunctionType.Func(
                 ret,
@@ -84,11 +84,11 @@ namespace Reko.UnitTests.Core
         [Test]
         public void AppBld_BindToCallingFrame()
         {
-            var caller = new Procedure(arch, "caller", Address.Ptr32(0x00123400), new Frame(PrimitiveType.Word16));
+            var caller = new Procedure(arch, "caller", Address.Ptr32(0x00123400), new Frame(arch, PrimitiveType.Word16));
             caller.Frame.EnsureStackLocal(-4, PrimitiveType.Word32, "bindToArg04");
             caller.Frame.EnsureStackLocal(-6, PrimitiveType.Word16, "bindToArg02");
 
-            var callee = new Procedure(arch,"callee", Address.Ptr32(0x00123400), new Frame(PrimitiveType.Word16));
+            var callee = new Procedure(arch,"callee", Address.Ptr32(0x00123400), new Frame(arch, PrimitiveType.Word16));
             var wArg = callee.Frame.EnsureStackArgument(0, PrimitiveType.Word16);
             var dwArg = callee.Frame.EnsureStackArgument(2, PrimitiveType.Word32);
             callee.Signature = FunctionType.Action(wArg, dwArg);
@@ -104,7 +104,7 @@ namespace Reko.UnitTests.Core
         [Test(Description="The byte is smaller than the target register, so we expect a 'SEQ' instruction")]
         public void AppBld_BindByteToRegister()
         {
-            var callee = new Procedure(arch, "callee", Address.Ptr32(0x00123400), new Frame(PrimitiveType.Ptr32));
+            var callee = new Procedure(arch, "callee", Address.Ptr32(0x00123400), new Frame(arch, PrimitiveType.Ptr32));
             var ab = arch.CreateFrameApplicationBuilder(
                 callee.Frame,
                 new CallSite(4, 0),
@@ -117,8 +117,8 @@ namespace Reko.UnitTests.Core
         [Test(Description ="Variadic signature specified, but no way of parsing the parameters.")]
         public void AppBld_NoVariadic_Characteristics()
         {
-            var caller = new Procedure(arch, "caller", Address.Ptr32(0x00123400), new Frame(PrimitiveType.Ptr32));
-            var callee = new Procedure(arch, "callee", Address.Ptr32(0x00123500), new Frame(PrimitiveType.Ptr32));
+            var caller = new Procedure(arch, "caller", Address.Ptr32(0x00123400), new Frame(arch, PrimitiveType.Ptr32));
+            var callee = new Procedure(arch, "callee", Address.Ptr32(0x00123500), new Frame(arch, PrimitiveType.Ptr32));
             var ab = arch.CreateFrameApplicationBuilder(
                 caller.Frame,
                 new CallSite(4, 0),
@@ -133,14 +133,14 @@ namespace Reko.UnitTests.Core
         [Test(Description = "Calling convention returns values in a reserved slot on the stack.")]
         public void AppBld_BindStackReturnValue()
         {
-            var caller = new Procedure(arch, "caller", Address.Ptr32(0x00123400), new Frame(PrimitiveType.Ptr32));
-            var rand = new Procedure(arch, "rand", Address.Ptr32(0x00123500), new Frame(PrimitiveType.Ptr32));
+            var caller = new Procedure(arch, "caller", Address.Ptr32(0x00123400), new Frame(arch, PrimitiveType.Ptr32));
+            var rand = new Procedure(arch, "rand", Address.Ptr32(0x00123500), new Frame(arch, PrimitiveType.Ptr32));
             var ab = arch.CreateFrameApplicationBuilder(
                 caller.Frame,
                 new CallSite(4, 0),
                 new ProcedureConstant(PrimitiveType.Ptr32, rand));
 
-            var sig = FunctionType.Func(new Identifier("", PrimitiveType.Int32, new StackArgumentStorage(4, PrimitiveType.Int32)));
+            var sig = FunctionType.Func(new Identifier("", PrimitiveType.Int32, new StackStorage(4, PrimitiveType.Int32)));
             var instr = ab.CreateInstruction(sig, null);
             Assert.AreEqual("Mem0[esp:int32] = rand()", instr.ToString());
         }
@@ -148,16 +148,16 @@ namespace Reko.UnitTests.Core
         [Test(Description = "Calling convention returns values in a reserved slot on the stack.")]
         public void AppBld_BindStackReturnValue_WithArgs()
         {
-            var caller = new Procedure(arch, "caller", Address.Ptr32(0x00123400), new Frame(PrimitiveType.Ptr32));
-            var fputs = new Procedure(arch, "fputs", Address.Ptr32(0x00123500), new Frame(PrimitiveType.Ptr32));
+            var caller = new Procedure(arch, "caller", Address.Ptr32(0x00123400), new Frame(arch, PrimitiveType.Ptr32));
+            var fputs = new Procedure(arch, "fputs", Address.Ptr32(0x00123500), new Frame(arch, PrimitiveType.Ptr32));
             var ab = arch.CreateFrameApplicationBuilder(
                 caller.Frame,
                 new CallSite(4, 0),
                 new ProcedureConstant(PrimitiveType.Ptr32, fputs));
             var sig = FunctionType.Func(
-                    new Identifier("", PrimitiveType.Int32, new StackArgumentStorage(12, PrimitiveType.Int32)),
-                    new Identifier("str", PrimitiveType.Ptr32, new StackArgumentStorage(8, PrimitiveType.Int32)),
-                    new Identifier("stm", PrimitiveType.Ptr32, new StackArgumentStorage(4, PrimitiveType.Int32)));
+                    new Identifier("", PrimitiveType.Int32, new StackStorage(12, PrimitiveType.Int32)),
+                    new Identifier("str", PrimitiveType.Ptr32, new StackStorage(8, PrimitiveType.Int32)),
+                    new Identifier("stm", PrimitiveType.Ptr32, new StackStorage(4, PrimitiveType.Int32)));
             var instr = ab.CreateInstruction(sig, null);
             Assert.AreEqual("Mem0[esp + 8<i32>:int32] = fputs(Mem0[esp + 4<i32>:int32], Mem0[esp:int32])", instr.ToString());
         }
@@ -165,8 +165,8 @@ namespace Reko.UnitTests.Core
         [Test(Description = "Argument in register wider than the API states")]
         public void AppBld_SmallValueInWideRegister()
         {
-            var caller = new Procedure(arch, "caller", Address.Ptr32(0x00123400), new Frame(PrimitiveType.Ptr32));
-            var testfn = new Procedure(arch, "testfn", Address.Ptr32(0x00123500), new Frame(PrimitiveType.Ptr32));
+            var caller = new Procedure(arch, "caller", Address.Ptr32(0x00123400), new Frame(arch, PrimitiveType.Ptr32));
+            var testfn = new Procedure(arch, "testfn", Address.Ptr32(0x00123500), new Frame(arch, PrimitiveType.Ptr32));
             var ab = arch.CreateFrameApplicationBuilder(
                 caller.Frame,
                 new CallSite(4, 0),

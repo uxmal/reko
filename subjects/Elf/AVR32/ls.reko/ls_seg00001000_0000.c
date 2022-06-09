@@ -8582,14 +8582,6 @@ Eq_n fn00008FEC(Eq_n r2, struct Eq_n * r3, Eq_n r4, struct Eq_n * r6, Eq_n lr, p
 word32 fn00008FF2(struct Eq_n * r3, struct Eq_n * r6)
 {
 	word32 dwLoc24;
-	word32 dwLoc20;
-	word32 dwLoc1C;
-	word32 dwLoc18;
-	word32 dwLoc14;
-	word32 dwLoc10;
-	word32 dwLoc0C;
-	word32 dwLoc08;
-	word32 dwLoc04;
 	struct Eq_n * r3_n;
 	struct Eq_n * r6_n;
 	struct Eq_n * r4_n;

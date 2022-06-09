@@ -187,7 +187,8 @@ namespace Reko.Analysis
 
         private SsaIdentifier? AssignmentToStackLocal(Statement stmCall, Assignment ass)
         {
-            if (ass.Dst.Storage is StackLocalStorage)
+            if (ass.Dst.Storage is StackStorage stg &&
+               !ssa.Procedure.Architecture.IsStackArgumentOffset(stg.StackOffset))
             {
                 var sid = ssa.Identifiers[ass.Dst];
                 if (sid.Uses.Count == 0 ||

@@ -134,6 +134,15 @@ namespace Reko.Arch.PaRisc
                 wordSize == 64;
         }
 
+        public override bool IsStackArgumentOffset(long frameOffset)
+        {
+            // On PA-RISC, the stack grows toward higher memory accesses. Items
+            // on the stack previous to a call with have
+            // non-positive offsets with respect to the stack/frame pointer.
+            // http://www.3kranger.com/HP3000/mpeix/en-hard/09740-90015/ch02s02.html
+            return frameOffset <= 0;
+        }
+
         public override void LoadUserOptions(Dictionary<string, object>? options)
         {
             if (options != null)

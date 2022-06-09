@@ -25,6 +25,7 @@ using Reko.Core.Operators;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 
 namespace Reko.Analysis
@@ -177,14 +178,15 @@ namespace Reko.Analysis
             }
         }
 
-        public Expression VisitStackArgumentStorage(StackArgumentStorage stack, (BindingDictionary map, ApplicationBindingType bindUses) ctx)
+        public Expression VisitStackStorage(StackStorage stack, (BindingDictionary map, ApplicationBindingType bindUses) ctx)
         {
+            Debug.Assert(ssaCaller.Procedure.Architecture.IsStackArgumentOffset(stack.StackOffset));
             int localOff = stack.StackOffset - stackDepthOnEntry;
-            foreach (var de in ctx.map
-                .Where(d => d.Value.Storage is StackStorage))
+            foreach (var de in ctx.map.Values
+                .Where(d => d.Storage is StackStorage))
             {
-                if (((StackStorage) de.Value.Storage).StackOffset == localOff)
-                    return de.Value.Expression;
+                if (((StackStorage) de.Storage).StackOffset == localOff)
+                    return de.Expression;
             }
 
             // Attempt to inject a Mem[sp_xx + offset] expression if possible.
@@ -222,11 +224,6 @@ namespace Reko.Analysis
             }
             memId = null!;
             return false;
-        }
-
-        public Expression VisitStackLocalStorage(StackLocalStorage local, (BindingDictionary map, ApplicationBindingType bindUses) ctx)
-        {
-            throw new NotImplementedException();
         }
 
         public Expression VisitTemporaryStorage(TemporaryStorage temp, (BindingDictionary map, ApplicationBindingType bindUses) ctx)

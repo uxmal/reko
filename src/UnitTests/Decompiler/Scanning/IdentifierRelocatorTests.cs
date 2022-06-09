@@ -41,7 +41,7 @@ namespace Reko.UnitTests.Decompiler.Scanning
 
         private Instruction RunIdentifierRelocator(Instruction instr)
         {
-            var frameNew = new Frame(PrimitiveType.Word32);
+            var frameNew = new Frame(default!, PrimitiveType.Word32);
             var replacer = new IdentifierRelocator(m.Frame, frameNew);
             return replacer.ReplaceIdentifiers(instr);
         }

@@ -109,7 +109,7 @@ namespace Reko.Environments.Windows
                 SkipToEndOfLine();
 
                 var deser = new ProcedureSerializer(platform, tlLoader, ssig.Convention);
-                var sig = deser.Deserialize(ssig, new Frame(platform.FramePointerType));
+                var sig = deser.Deserialize(ssig, new Frame(platform.Architecture, platform.FramePointerType));
                 var svc = new SystemService
                 {
                     ModuleName = moduleName.ToUpper(),

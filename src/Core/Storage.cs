@@ -837,10 +837,14 @@ namespace Reko.Core
         }
     }
 
-    public abstract class StackStorage : Storage
+    /// <summary>
+    /// Represents a value that has been stored at a known location
+    /// in the call frame of a procedre.
+    /// </summary>
+    public class StackStorage : Storage
     {
-        public StackStorage(string kind, string name, int offset, DataType dt)
-            : base(kind, StorageDomain.Stack + offset, name, dt)
+        public StackStorage(int offset, DataType dt)
+            : base("Stack", StorageDomain.Stack + offset, "stack", dt)
         {
             this.StackOffset = offset;
             this.BitSize = (uint)dt.BitSize;
@@ -857,6 +861,39 @@ namespace Reko.Core
         /// general purpose processors (x86, PPC, m68K) grown their stacks down toward lower memory addresses.
         /// </remarks>
         public int StackOffset { get; }
+
+        public override T Accept<T>(StorageVisitor<T> visitor)
+        {
+            return visitor.VisitStackStorage(this);
+        }
+
+        public override T Accept<T, C>(StorageVisitor<T, C> visitor, C context)
+        {
+            return visitor.VisitStackStorage(this, context);
+        }
+
+        public override bool Equals(object? obj)
+        {
+            if (obj is not StackStorage that)
+                return false;
+            return this.StackOffset == that.StackOffset;
+        }
+
+        public override int GetHashCode()
+        {
+            return StackOffset.GetHashCode();
+        }
+
+        public override int OffsetOf(Storage stgSub)
+        {
+            if (stgSub is not StackStorage that)
+                return -1;
+            if (that.StackOffset >= this.StackOffset &&
+                that.StackOffset + that.DataType.Size <= this.StackOffset + DataType.Size)
+                return (that.StackOffset - this.StackOffset) * DataType.BitsPerByte;
+            return -1;
+        }
+
 
         public override bool OverlapsWith(Storage other)
         {
@@ -879,45 +916,6 @@ namespace Reko.Core
             var thatEnd = thatStart + (int)that.BitSize;
             return thisStart <= thatStart && thatEnd <= thisEnd;
         }
-    }
-
-    public class StackArgumentStorage : StackStorage
-    {
-        public StackArgumentStorage(int cbOffset, DataType dataType) 
-            : base("Stack", "stack", cbOffset, dataType)
-        {
-        }
-
-        public override T Accept<T>(StorageVisitor<T> visitor)
-        {
-            return visitor.VisitStackArgumentStorage(this);
-        }
-
-        public override T Accept<T, C>(StorageVisitor<T, C> visitor, C context)
-        {
-            return visitor.VisitStackArgumentStorage(this, context);
-        }
-
-        public override bool Equals(object? obj)
-        {
-            if (obj is not StackArgumentStorage that)
-                return false;
-            return this.StackOffset == that.StackOffset;
-        }
-
-        public override int GetHashCode()
-        {
-            return GetType().GetHashCode() ^ StackOffset;
-        }
-
-        public override int OffsetOf(Storage stgSub)
-        {
-            if (stgSub is not StackArgumentStorage that)
-                return -1;
-            if (that.StackOffset >= this.StackOffset && that.StackOffset + that.DataType.Size <= StackOffset + DataType.Size)
-                return (that.StackOffset - this.StackOffset) * DataType.BitsPerByte;
-            return -1;
-        }
 
         public override SerializedKind Serialize()
         {
@@ -926,52 +924,8 @@ namespace Reko.Core
 
         public override void Write(TextWriter writer)
         {
-            writer.Write("{0} +{1:X4}", Kind, StackOffset);
-        }
-    }
-
-    public class StackLocalStorage : StackStorage
-    {
-        public StackLocalStorage(int cbOffset, DataType dataType)
-            : base("Local", "local", cbOffset, dataType)
-        {
-        }
-
-        public override T Accept<T>(StorageVisitor<T> visitor)
-        {
-            return visitor.VisitStackLocalStorage(this);
-        }
-
-        public override T Accept<T, C>(StorageVisitor<T, C> visitor, C context)
-        {
-            return visitor.VisitStackLocalStorage(this, context);
-        }
-
-        public override bool Equals(object? obj)
-        {
-            if (obj is not StackLocalStorage that)
-                return false;
-            return this.StackOffset == that.StackOffset;
-        }
-
-        public override int GetHashCode()
-        {
-            return GetType().GetHashCode() ^ StackOffset;
-        }
-
-        public override int OffsetOf(Storage stgSub)
-        {
-            if (stgSub is not StackLocalStorage that)
-                return -1;
-            if (that.StackOffset >= this.StackOffset &&
-                that.StackOffset + that.DataType.Size <= this.StackOffset + DataType.Size)
-                return (that.StackOffset - this.StackOffset) * DataType.BitsPerByte;
-            return -1;
-        }
-
-        public override void Write(TextWriter writer)
-        {
-            writer.Write("{0} -{1:X4}", base.Kind, Math.Abs(StackOffset));
+            var sign = StackOffset >= 0 ? "+" : "-";
+            writer.Write("{0} {1}{2:X4}", Kind, sign, Math.Abs(StackOffset));
         }
     }
 

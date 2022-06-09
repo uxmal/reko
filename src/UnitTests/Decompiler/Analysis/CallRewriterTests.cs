@@ -422,9 +422,9 @@ namespace Reko.UnitTests.Decompiler.Analysis
 
             var uses = new List<KeyValuePair<Storage, BitRange>>
             {
-                new KeyValuePair<Storage,BitRange>(new StackArgumentStorage(8, PrimitiveType.Word16), new BitRange(0, 16)),
-                new KeyValuePair<Storage,BitRange>(new StackArgumentStorage(6, PrimitiveType.Word16), new BitRange(0, 16)),
-                new KeyValuePair<Storage,BitRange>(new StackArgumentStorage(0xE, PrimitiveType.Word32), new BitRange(0, 32))
+                new KeyValuePair<Storage,BitRange>(new StackStorage(8, PrimitiveType.Word16), new BitRange(0, 16)),
+                new KeyValuePair<Storage,BitRange>(new StackStorage(6, PrimitiveType.Word16), new BitRange(0, 16)),
+                new KeyValuePair<Storage,BitRange>(new StackStorage(0xE, PrimitiveType.Word32), new BitRange(0, 32))
             };
 
             CallRewriter gcr = new CallRewriter(null, null, new FakeDecompilerEventListener());
@@ -808,8 +808,7 @@ fnOutParam_exit:
                     new Identifier(
                         "arg04",
                         PrimitiveType.Word32,
-                        new StackArgumentStorage(
-                            4, PrimitiveType.Word32))));
+                        new StackStorage(4, PrimitiveType.Word32))));
 
             When_RewriteCalls(ssa);
 

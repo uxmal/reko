@@ -51,7 +51,7 @@ Register word16 fn0C00_000B(Register word16 cx)
 // dx_ax:Sequence dx:ax
 // Top:Top
 // dx:dx
-// wLoc02:Local -0002
+// wLoc02:Stack -0002
 // S:S
 // C:C
 // Z:Z

@@ -2,10 +2,10 @@
 // Return size: 0
 // Mem0:Mem
 // fp:fp
-// r2:Local -0004
-// r3:Local -0008
+// r2:Stack -0004
+// r3:Stack -0008
 // Z:Z
-// r1:Local -000C
+// r1:Stack -000C
 // return address size: 0
 define FactorialMock
 FactorialMock_entry:

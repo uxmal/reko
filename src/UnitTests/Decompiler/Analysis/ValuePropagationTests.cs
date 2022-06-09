@@ -100,7 +100,7 @@ namespace Reko.UnitTests.Decompiler.Analysis
             return new Identifier(
                 string.Format("arg{0:X2}", offset),
                 PrimitiveType.Word32,
-                new StackArgumentStorage(offset, PrimitiveType.Word32));
+                new StackStorage(offset, PrimitiveType.Word32));
         }
 
         protected override void RunTest(Program program, TextWriter writer)

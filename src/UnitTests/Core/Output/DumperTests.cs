@@ -61,7 +61,7 @@ namespace Reko.UnitTests.Core.Output
                 arch.Object,
                 platform.Object);
             arch.Setup(a => a.CreateFrame()).Returns(
-                () => new Frame(PrimitiveType.Ptr32));
+                () => new Frame(arch.Object, PrimitiveType.Ptr32));
             arch.Setup(a => a.CreateImageReader(
                 It.IsNotNull<ByteMemoryArea>(),
                 It.IsNotNull<Address>()))

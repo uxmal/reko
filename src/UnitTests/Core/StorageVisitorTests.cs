@@ -97,14 +97,9 @@ namespace Reko.UnitTests.Core
 			return "seq";
 		}
 
-		public string VisitStackArgumentStorage(StackArgumentStorage stack)
+		public string VisitStackStorage(StackStorage stack)
 		{
 			return "stack";
-		}
-
-		public string VisitStackLocalStorage(StackLocalStorage local)
-		{
-			return "local";
 		}
 
 		public string VisitTemporaryStorage(TemporaryStorage temp)

@@ -125,7 +125,7 @@ namespace Reko.UnitTests.Decompiler.Analysis
                 new Identifier(
                     "a", 
                     new Pointer(argType, 32),
-                    new StackArgumentStorage(4, PrimitiveType.Word32)));
+                    new StackStorage(4, PrimitiveType.Word32)));
         }
 
         private void Given_Typedef(string name, DataType dt)
@@ -188,7 +188,7 @@ namespace Reko.UnitTests.Decompiler.Analysis
             return new Identifier(
                 "",
                 dt,
-                new StackArgumentStorage(offset, dt));
+                new StackStorage(offset, dt));
         }
 
         private DataType VtblStr(params DataType[] methods)
