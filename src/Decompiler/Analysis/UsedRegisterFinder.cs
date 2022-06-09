@@ -425,7 +425,7 @@ namespace Reko.Analysis
         public BitRange VisitIdentifier(Identifier id)
         {
             if (id == idCur)
-                return new BitRange(0, (int)id.Storage.BitSize);
+                return new BitRange(0, id.DataType.BitSize);
             else
                 return BitRange.Empty;
         }
