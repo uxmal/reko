@@ -92,7 +92,7 @@ namespace Reko.Evaluation
             this.idCopyPropagation = new IdCopyPropagationRule(ctx);
             this.idBinIdc = new IdBinIdc_Rule(ctx);
             this.sliceConst = new SliceConstant_Rule();
-            this.sliceMem = new SliceMem_Rule();
+            this.sliceMem = new SliceMem_Rule(ctx);
             this.sliceSegPtr = new SliceSegmentedPointer_Rule(ctx);
             this.negSub = new NegSub_Rule();
             this.constConstBin = new ConstConstBin_Rule();

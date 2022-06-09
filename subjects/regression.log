@@ -607,7 +607,7 @@ Error: An error occurred while writing assembly language output.
    at Reko.Core.Memory.EndianByteImageReader..ctor(ByteMemoryArea img, Address addr, Int64 cUnits) in d:\dev\uxmal\reko\master\src\Core\Memory\EndianImageReader.cs:line 70
    at Reko.Core.Memory.BeImageReader..ctor(ByteMemoryArea image, Address addr, Int64 cUnits) in d:\dev\uxmal\reko\master\src\Core\Memory\EndianImageReader.cs:line 253
    at Reko.Core.Memory.ByteMemoryArea.CreateBeReader(Address addr, Int64 cUnits) in d:\dev\uxmal\reko\master\src\Core\Memory\ByteMemoryArea.cs:line 79
-   at Reko.Core.EndianServices.BeServices.CreateImageReader(MemoryArea mem, Address addr, Int64 cUnits) in d:\dev\uxmal\reko\master\src\Core\EndianServices.cs:line 239
+   at Reko.Core.EndianServices.BeServices.CreateImageReader(MemoryArea mem, Address addr, Int64 cUnits) in d:\dev\uxmal\reko\master\src\Core\EndianServices.cs:line 258
    at Reko.Core.ProcessorArchitecture.CreateImageReader(MemoryArea mem, Address addr, Int64 cbUnits) in d:\dev\uxmal\reko\master\src\Core\IProcessorArchitecture.cs:line 492
    at Reko.Core.Output.Dumper.DumpData(IProcessorArchitecture arch, MemoryArea mem, Address address, Int64 cUnits, Formatter stm) in d:\dev\uxmal\reko\master\src\Core\Output\Dumper.cs:line 181
    at Reko.Core.Output.Dumper.DumpItem(ImageSegment segment, ImageMapItem i, Formatter formatter) in d:\dev\uxmal\reko\master\src\Core\Output\Dumper.cs:line 75
@@ -1990,4 +1990,4 @@ Signature of 'Microsoft Visual C++ 8' detected.
 0040120B: warning: Unable to determine the upper bound of an indirect call or jump; there may be more than 2 entries.
 004011A5: warning: Unable to determine the upper bound of an indirect call or jump; there may be more than 2 entries.
 
-Decompiled 86 binaries in 57.76 seconds.
+Decompiled 86 binaries in 59.16 seconds.

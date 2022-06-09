@@ -51,6 +51,7 @@ namespace Reko.UnitTests.Decompiler.Evaluation
             m = new ProcedureBuilder();
             this.rolc_8 = CommonOps.RolC.MakeInstance(PrimitiveType.Word32, PrimitiveType.Byte);
             arch = new Mock<IProcessorArchitecture>();
+            arch.Setup(a => a.MemoryGranularity).Returns(8);
         }
 
         private void Given_LittleEndianArchitecture()

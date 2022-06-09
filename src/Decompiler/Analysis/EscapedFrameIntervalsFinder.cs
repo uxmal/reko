@@ -381,6 +381,8 @@ namespace Reko.Analysis
                 return arch.MakeSegmentedAddress(seg, off);
             }
 
+            public int MemoryGranularity => arch.MemoryGranularity;
+
             public Constant ReinterpretAsFloat(Constant rawBits)
             {
                 return arch.ReinterpretAsFloat(rawBits);

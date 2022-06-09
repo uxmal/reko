@@ -30,11 +30,13 @@ namespace Reko.Evaluation
 	/// </summary>
 	public class SliceMem_Rule
 	{
+        private readonly EvaluationContext ctx;
 		private Expression? b;
 
-		public SliceMem_Rule()
+		public SliceMem_Rule(EvaluationContext ctx)
 		{
-		}
+            this.ctx = ctx;
+        }
 
 		public bool Match(Slice slice)
 		{
@@ -60,7 +62,8 @@ namespace Reko.Evaluation
 			int bitEnd = bitBegin + slice.DataType.BitSize;
 			if (0 <= bitBegin && bitEnd <= acc.DataType.BitSize)
 			{
-				offset = op.ApplyConstants(offset, Constant.Create(acc.EffectiveAddress.DataType, slice.Offset / 8));
+                //$REVIEW: endianness?
+                offset = op.ApplyConstants(offset, Constant.Create(acc.EffectiveAddress.DataType, slice.Offset / ctx.MemoryGranularity));
                 var newEa = new BinaryExpression(op, offset.DataType, b, offset);
                 if (acc is SegmentedAccess seg)
                 {

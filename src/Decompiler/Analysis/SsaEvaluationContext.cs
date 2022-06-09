@@ -47,6 +47,7 @@ namespace Reko.Analysis
 
         public EndianServices Endianness => arch.Endianness;
 
+        public int MemoryGranularity => arch.MemoryGranularity;
 
         public Statement? Statement { get; set; }
 

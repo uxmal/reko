@@ -48,6 +48,7 @@ namespace Reko.Core
     public interface EvaluationContext
     {
         EndianServices Endianness { get; }
+        int MemoryGranularity { get; }
 
         /// <summary>
         /// Gets the symbolic value of the identifier <paramref name="id"/>.

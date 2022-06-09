@@ -648,11 +648,14 @@ namespace Reko.Analysis
                 this.IdState = idState;
                 this.ProcFlow = procFlow;
                 this.StackState = stack;
-                this.Endianness = ssa.Procedure.Architecture.Endianness;
+                var arch = ssa.Procedure.Architecture;
+                this.Endianness = arch.Endianness;
+                this.MemoryGranularity = arch.MemoryGranularity;
                 this.cmp = cmp;
             }
 
             public EndianServices Endianness { get; }
+            public int MemoryGranularity { get; }
 
             public bool IsDirty { get; set; }
 

@@ -24,19 +24,29 @@ using Reko.Core.Expressions;
 using Reko.Core.Types;
 using NUnit.Framework;
 using System;
+using Moq;
 
 namespace Reko.UnitTests.Decompiler.Evaluation
 {
 	[TestFixture]
 	public class SliceMem_RuleTest
 	{
+        private Mock<EvaluationContext> ctx;
+
+        [SetUp]
+        public void Setup()
+        {
+            this.ctx = new Mock<EvaluationContext>();
+            this.ctx.Setup(c => c.MemoryGranularity).Returns(8);
+        }
+
 		[Test]
 		public void SliceMem()
 		{
 			var s = new Slice(PrimitiveType.Byte,
 				new MemoryAccess(MemoryIdentifier.GlobalMemory, 
 				new Identifier("ptr", PrimitiveType.Word32, null), PrimitiveType.Word32), 16);
-			var r = new SliceMem_Rule();
+			var r = new SliceMem_Rule(ctx.Object);
 			Assert.IsTrue(r.Match(s));
 			var e = r.Transform();
 			Assert.AreEqual("Mem0[ptr + 2<32>:byte]", e.ToString());
@@ -48,7 +58,7 @@ namespace Reko.UnitTests.Decompiler.Evaluation
 			var s = new Slice(PrimitiveType.Word16,
 				new MemoryAccess(MemoryIdentifier.GlobalMemory,
 				new Identifier("ptr", PrimitiveType.Word32, null), PrimitiveType.Word32), 0);
-			var r = new SliceMem_Rule();
+			var r = new SliceMem_Rule(ctx.Object);
 			Assert.IsTrue(r.Match(s));
 			var e = r.Transform();
 			Assert.AreEqual("Mem0[ptr + 0<32>:word16]", e.ToString());

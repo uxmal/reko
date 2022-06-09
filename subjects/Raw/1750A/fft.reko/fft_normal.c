@@ -382,7 +382,7 @@ struct Eq_n * cvia(struct Eq_n * gp0, struct Eq_n * gp1)
 		struct Eq_n * gp1_n = gp1_n / 0x0A;
 		gp13_n |= 0x30;
 		if ((gp9_n & 0x8000) != 0x00)
-			gp11_n[2] = (struct Eq_n) SEQ(gp11_n[3], (byte) gp13_n);
+			gp11_n[2] = (struct Eq_n) SEQ(gp11_n[2], (byte) gp13_n);
 		else
 		{
 			gp11_n[2] = (struct Eq_n) SEQ((byte) gp13_n, gp11_n[2]);
@@ -393,7 +393,7 @@ struct Eq_n * cvia(struct Eq_n * gp0, struct Eq_n * gp1)
 	if ((gp9_n & 0x8000) != 0x00)
 		gp11_n[2] = (struct Eq_n) SEQ((byte) gp10_n, gp11_n[2]);
 	else
-		gp11_n[2] = (struct Eq_n) SEQ(gp11_n[3], (byte) gp10_n);
+		gp11_n[2] = (struct Eq_n) SEQ(gp11_n[2], (byte) gp10_n);
 	return gp1;
 }
 
@@ -409,8 +409,8 @@ struct Eq_n * cvla(int32 gp12_gp13, struct Eq_n * gp0, struct Eq_n * gp1, uint16
 		gp11_n->w0000 = 0x2020;
 		++gp11_n;
 	}
-	gp11_n->wFFFFFFFF = SEQ(gp11_n[2], (byte) gp9_n);
-	struct Eq_n * gp11_n = gp11_n - 0x01;
+	gp11_n->wFFFFFFFF = SEQ(gp11_n[1], (byte) gp9_n);
+	byte * gp11_n = gp11_n - 0x01;
 	word16 gp10_n = 0x20;
 	struct Eq_n * gp1_n = gp1;
 	if (gp1 < null)
@@ -431,18 +431,18 @@ struct Eq_n * cvla(int32 gp12_gp13, struct Eq_n * gp0, struct Eq_n * gp1, uint16
 		uint16 gp5_n = gp2 - (word16) gp2_gp3_n;
 		if ((gp9_n & 0x8000) != 0x00)
 		{
-			gp11_n->w0000 = SEQ((byte) gp5_n + 0x30, gp11_n->w0000);
+			*gp11_n = (byte) SEQ((byte) gp5_n + 0x30, *gp11_n);
 			--gp11_n;
 		}
 		else
-			gp11_n->w0000 = SEQ(gp11_n[1], (byte) gp5_n + 0x30);
+			*gp11_n = (byte) SEQ(*gp11_n, (byte) gp5_n + 0x30);
 		gp12_gp13_n = gp12_gp13_n / 0x0A;
 		gp12_gp13_n = gp12_gp13_n;
 	} while (gp12_gp13_n / 0x0A != 0x00);
 	if (Test(EQ,(gp9_n + 0x01 & 0x8000) == 0x00))
-		gp11_n->w0000 = SEQ(gp11_n[1], (byte) gp10_n);
+		*gp11_n = (byte) SEQ(*gp11_n, (byte) gp10_n);
 	else
-		gp11_n->w0000 = SEQ((byte) gp10_n, gp11_n->w0000);
+		*gp11_n = (byte) SEQ((byte) gp10_n, *gp11_n);
 	return gp1;
 }
 
@@ -532,7 +532,7 @@ l0458:
 		else
 			gp11[6] = (struct Eq_n) (gp2_n | 0x3030);
 		int32 gp2_gp3_n = (int32) SEQ(gp12_gp13_n, gp14_n);
-		gp11->t0000.u1 = SEQ(gp11[1], (byte) gp2_gp3_n + 0x30);
+		gp11->t0000.u1 = SEQ(gp11->t0000, (byte) gp2_gp3_n + 0x30);
 		gp11[1] = (struct Eq_n) SEQ(0x2E, gp11[1]);
 		cui16 gp7_n = 0x00;
 		real48 gp12_gp13_gp14_n = SEQ(gp12_gp13_n, gp14_n) - (real48) gp2_gp3_n;
@@ -548,7 +548,7 @@ l0458:
 				gp11[1] = (struct Eq_n) SEQ((byte) gp3_n + 0x30, gp11[1]);
 			else
 			{
-				gp11[1] = (struct Eq_n) SEQ(gp11[2], (byte) gp3_n + 0x30);
+				gp11[1] = (struct Eq_n) SEQ(gp11[1], (byte) gp3_n + 0x30);
 				++gp11;
 			}
 			--gp1;

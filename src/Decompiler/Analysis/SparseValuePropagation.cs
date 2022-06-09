@@ -121,6 +121,8 @@ namespace Reko.Analysis
 
             public EndianServices Endianness => arch.Endianness;
 
+            public int MemoryGranularity => arch.MemoryGranularity;
+
             public Expression GetDefiningExpression(Identifier id)
             {
                 return values[id];

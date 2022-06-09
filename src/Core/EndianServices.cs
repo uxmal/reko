@@ -143,9 +143,18 @@ namespace Reko.Core
         /// <param name="size">Spacing between offsets</param>
         public abstract bool OffsetsAdjacent(long oLsb, long oMsb, long size);
 
+
+        /// <summary>
+        /// Given a stack storage, generate a slice of said storage.
+        /// </summary>
+        /// <param name="stg">The storage to slice.</param>
+        /// <param name="bitRange">The bit range to slice out of the storage.</param>
+        /// <param name="granularity">The memory granularity of the processor.</param>
+        public abstract StackStorage SliceStackStorage(StackStorage stg, BitRange bitRange, int granularity);
+
         /// <summary>
         /// Reads a value from memory, respecting the processor's endianness. Use this
-        /// instead of ImageWriter when random access of memory is requored.
+        /// instead of ImageWriter when random access of memory is required.
         /// </summary>
         /// <param name="mem">Memory area to read from</param>
         /// <param name="addr">Address to read from</param>
@@ -214,6 +223,16 @@ namespace Reko.Core
             public override bool OffsetsAdjacent(long oLsb, long oMsb, long size)
             {
                 return oLsb + size == oMsb;
+            }
+
+            public override StackStorage SliceStackStorage(StackStorage stg, BitRange bitRange, int granularity)
+            {
+                var byteOffset = bitRange.Lsb / granularity;
+                var dt = PrimitiveType.CreateWord(bitRange.Extent);
+                if (byteOffset < 0)
+                    return new StackLocalStorage(stg.StackOffset + byteOffset, dt);
+                else
+                    return new StackArgumentStorage(stg.StackOffset + byteOffset, dt);
             }
 
             public override bool TryRead(MemoryArea mem, Address addr, PrimitiveType dt, out Constant value)
@@ -286,6 +305,16 @@ namespace Reko.Core
             public override bool OffsetsAdjacent(long oLsb, long oMsb, long size)
             {
                 return oMsb + size == oLsb;
+            }
+
+            public override StackStorage SliceStackStorage(StackStorage stg, BitRange bitRange, int granularity)
+            {
+                var byteOffset = (stg.DataType.BitSize - bitRange.Msb) / granularity;
+                var dt = PrimitiveType.CreateWord(bitRange.Extent);
+                if (byteOffset < 0)
+                    return new StackLocalStorage(stg.StackOffset +  byteOffset, dt);
+                else
+                    return new StackArgumentStorage(stg.StackOffset + byteOffset, dt);
             }
 
             public override bool TryRead(MemoryArea mem, Address addr, PrimitiveType dt, out Constant value)
