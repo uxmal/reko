@@ -115,7 +115,6 @@ namespace Reko.Typing
             }
         }
 
-
         /// <subject>
         /// Make sure fields are present for all the image symbols.
         /// </subject>

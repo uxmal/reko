@@ -519,7 +519,7 @@ namespace Reko.Core.Serialization
             if (!arch!.TryParseAddress(sGlobal.Address, out var address))
                 return null; // TODO: Emit warning?
 
-            if (sGlobal.DataType == null)
+            if (sGlobal.DataType is null)
                 throw new ArgumentException("Missing required field DataType");
 
             string name = GlobalNameOrDefault(sGlobal, address);
@@ -528,7 +528,6 @@ namespace Reko.Core.Serialization
             {
                 Comment = sGlobal.Comment,
             };
-
             return ug;
         }
 

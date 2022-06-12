@@ -123,11 +123,7 @@ namespace Reko.Core.Hll.C
                 }
                 else if (!isTypedef)
                 {
-                    var variable = new GlobalDataItem_v2
-                    {
-                        Name = nt.Name,
-                        DataType = serType,
-                    };
+                    GlobalDataItem_v2 variable = MakeGlobalVariable(nt, serType, decl.attribute_list);
                     Variables.Add(variable);
                     types.Add(serType);
                 }
@@ -184,18 +180,7 @@ namespace Reko.Core.Hll.C
             }
             else
             {
-                string? addr = null;
-                var attrAddress = attributes?.Find(a =>
-                    a.Name.Components.Length == 2 &&
-                    a.Name.Components[0] == "reko" &&
-                    a.Name.Components[1] == "address");
-                if (attrAddress != null)
-                {
-                    if (attrAddress.Tokens.Count != 1 ||
-                        attrAddress.Tokens[0].Type != CTokenType.StringLiteral)
-                        throw new FormatException("[[reko::address]] attribute is malformed. Expected a string constant.");
-                    addr = (string?) attrAddress.Tokens[0].Value;
-                }
+                string? addr = FindRekoAddressAttribute(attributes);
                 return new Procedure_v1
                 {
                     Name = name,
@@ -204,6 +189,34 @@ namespace Reko.Core.Hll.C
                     Characteristics = c,
                 };
             }
+        }
+
+        private static GlobalDataItem_v2 MakeGlobalVariable(NamedDataType nt, SerializedType serType, List<CAttribute>? attributes)
+        {
+            var sAddr = FindRekoAddressAttribute(attributes);
+            return new GlobalDataItem_v2
+            {
+                Name = nt.Name,
+                DataType = serType,
+                Address = sAddr
+            };
+        }
+
+        private static string? FindRekoAddressAttribute(List<CAttribute>? attributes)
+        {
+            string? addr = null;
+            var attrAddress = attributes?.Find(a =>
+                a.Name.Components.Length == 2 &&
+                a.Name.Components[0] == "reko" &&
+                a.Name.Components[1] == "address");
+            if (attrAddress != null)
+            {
+                if (attrAddress.Tokens.Count != 1 ||
+                    attrAddress.Tokens[0].Type != CTokenType.StringLiteral)
+                    throw new FormatException("[[reko::address]] attribute is malformed. Expected a string constant.");
+                addr = (string?) attrAddress.Tokens[0].Value;
+            }
+            return addr;
         }
 
         private SerializedService MakeService(string name, SerializedSignature sSig, CAttribute attrService)
