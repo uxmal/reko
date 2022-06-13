@@ -34,7 +34,11 @@ namespace Reko.UnitTests.Arch.Tlcs
     {
         public SuperHDisassemblerTests()
         {
-            this.Architecture = new SuperHLeArchitecture(new ServiceContainer(), "superH", new Dictionary<string, object>());
+            var options = new Dictionary<string, object>
+            {
+                { ProcessorOption.Endianness, "le" }
+            };
+            this.Architecture = new SuperHArchitecture(new ServiceContainer(), "superH", options);
             this.LoadAddress = Address.Ptr32(0x00010000);
         }
 
@@ -328,6 +332,12 @@ namespace Reko.UnitTests.Arch.Tlcs
         public void SHDis_mov_I_r()
         {
             AssertCode("mov\t#FF,r1", "FFE1");
+        }
+
+        [Test]
+        public void SHDis_mov_b_disp12()
+        {
+            AssertCode("mov.b\tRm,@(disp12,Rn)", "5134 FF0F");
         }
 
         [Test]

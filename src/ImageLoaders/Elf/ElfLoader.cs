@@ -257,7 +257,7 @@ namespace Reko.ImageLoaders.Elf
             case ElfMachine.EM_AVR: arch = "avr8"; break;
             case ElfMachine.EM_MSP430: arch = "msp430"; break;
             case ElfMachine.EM_SH:
-                arch = endianness == EndianServices.Little ? "superH-le" : "superH-be";
+                arch = "superH";
                 if (superHModels.TryGetValue((SuperHFlags)this.flags & SuperHFlags.EF_MODEL_MASK, out var model))
                 {
                     options[ProcessorOption.Model] = model;
@@ -300,11 +300,11 @@ namespace Reko.ImageLoaders.Elf
                 arch = "tricore";
                 break;
             default:
-                throw new NotSupportedException($"Processor format {machine} is not supported.");
+                throw new NotImplementedException($"ELF machine type {machine} is not implemented yet.");
             }
             var a = cfgSvc.GetArchitecture(arch, options);
             if (a is null)
-                throw new InvalidOperationException($"Unknown architecture '{arch}'.");
+                throw new InvalidOperationException($"Unable to load architecture '{arch}'.");
             if (stackRegName != null)
             {
                 var sp = a.GetRegister(stackRegName);

@@ -130,8 +130,7 @@ namespace Reko.Environments.SysV.ArchSpecific
                     this.ccRiscV = (CallingConvention) Activator.CreateInstance(t, arch)!;
                 }
                 return this.ccRiscV;
-            case "superH-le":
-            case "superH-be":
+            case "superH":
                 return new SuperHCallingConvention(arch);
             case "alpha":
                 return new AlphaCallingConvention(arch);

@@ -33,7 +33,10 @@ namespace Reko.UnitTests.Arch.SuperH
     [TestFixture]
     public class SuperHArchitectureTests
     {
-        private SuperHArchitecture arch = new SuperHBeArchitecture(new ServiceContainer(), "sh4", new Dictionary<string, object>());
+        private SuperHArchitecture arch = new (new ServiceContainer(), "superH", new ()
+        {
+            { ProcessorOption.Endianness, "be" }
+        });
         
         [Test]
         public void ShArch_GetRegister_Real32()

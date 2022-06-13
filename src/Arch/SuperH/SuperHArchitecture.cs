@@ -34,20 +34,21 @@ namespace Reko.Arch.SuperH
 {
     // NetBSD for dreamcast? http://ftp.netbsd.org/pub/pkgsrc/packages/NetBSD/dreamcast/7.0/All/
     // RaymondC says: https://devblogs.microsoft.com/oldnewthing/20190820-00/?p=102792
-    public abstract class SuperHArchitecture : ProcessorArchitecture
+    public class SuperHArchitecture : ProcessorArchitecture
     {
         private readonly Dictionary<uint, FlagGroupStorage> grfs;
 
-        public SuperHArchitecture(IServiceProvider services, string archId, EndianServices endianness, Dictionary<string, object> options)
+        public SuperHArchitecture(IServiceProvider services, string archId, Dictionary<string, object> options)
             : base(services, archId, options)
         {
-            this.Endianness = endianness;
+            this.Endianness = EndianServices.Big;   // Pick one at random.
             this.FramePointerType = PrimitiveType.Ptr32;
             this.InstructionBitSize = 16;
             this.PointerType = PrimitiveType.Ptr32;
             this.WordWidth = PrimitiveType.Word32;
             // No architecture-defined stack register -- defined by platform.
             this.grfs = new Dictionary<uint, FlagGroupStorage>();
+            LoadUserOptions(options);
         }
 
         public override IEnumerable<MachineInstruction> CreateDisassembler(EndianImageReader rdr)
@@ -158,6 +159,15 @@ namespace Reko.Arch.SuperH
             return s.ToString();
         }
 
+        public override void LoadUserOptions(Dictionary<string, object>? options)
+        {
+            Endianness = (options != null && options.TryGetValue(ProcessorOption.Endianness, out var oEndian)
+                && oEndian is string sEndian
+                && string.Compare(sEndian, "be") == 0)
+                ? EndianServices.Big
+                : EndianServices.Little;
+        }
+
         public override Address MakeAddressFromConstant(Constant c, bool codeAlign)
         {
             var uAddr = c.ToUInt32();
@@ -179,22 +189,6 @@ namespace Reko.Arch.SuperH
         public override bool TryParseAddress(string? txtAddr, out Address addr)
         {
             return Address.TryParse32(txtAddr, out addr);
-        }
-    }
-
-    public class SuperHLeArchitecture : SuperHArchitecture
-    {
-        public SuperHLeArchitecture(IServiceProvider services, string archId, Dictionary<string, object> options)
-            : base(services, archId, EndianServices.Little, options)
-        {
-        }
-    }
-
-    public class SuperHBeArchitecture : SuperHArchitecture
-    {
-        public SuperHBeArchitecture(IServiceProvider services, string arch, Dictionary<string, object> options) :
-            base(services, arch, EndianServices.Big, options)
-        {
         }
     }
 }

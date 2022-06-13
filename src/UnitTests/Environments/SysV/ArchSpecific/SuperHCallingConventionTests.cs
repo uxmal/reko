@@ -57,7 +57,10 @@ namespace Reko.UnitTests.Environments.SysV.ArchSpecific
 
         public SuperHCallingConventionTests()
         {
-            this.arch = new SuperHLeArchitecture(new ServiceContainer(), "superH-le", new Dictionary<string, object>());
+            this.arch = new SuperHArchitecture(new ServiceContainer(), "superH", new()
+            {
+                { ProcessorOption.Endianness, "le" }
+            });
         }
 
         private void Given_CallingConvention()
