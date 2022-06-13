@@ -1,0 +1,25 @@
+;;; Segment .dynamic (004150B8)
+; DT_NEEDED            libutil.so.7
+; DT_NEEDED            libgcc_s.so.1
+; DT_NEEDED            libc.so.12
+; DT_RPATH             000002B9
+; DT_INIT              00401700
+; DT_DEBUG             00404550
+; DT_HASH              00400154
+; DT_STRTAB            00400BF0
+; DT_SYMTAB            004004B0
+; DT_STRSZ             00000466
+; DT_SYMENT                  16
+; DT_DEBUG             00000000
+; DT_PLTGOT            004151E0
+; DT_PLTRELSZ               684
+; DT_PLTREL            00000007
+; DT_JMPREL            00401454
+; DT_RELA              00401160
+; DT_RELASZ                 756
+; DT_RELAENT                 12
+; DT_FLAGS_1           08000000
+; DT_VERNEED           00401140
+; DT_VERNEEDNUM               1
+; DT_VERSYM            00401056
+; DT_RELACOUNT               56
