@@ -180,7 +180,7 @@ namespace Reko.Core.Hll.C
             }
             else
             {
-                string? addr = FindRekoAddressAttribute(attributes);
+                var addr = FindRekoAddressAttribute(attributes);
                 return new Procedure_v1
                 {
                     Name = name,

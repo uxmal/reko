@@ -980,12 +980,27 @@ namespace Reko.Scanning
             // Enqueue known data items, then process them. If we find code
             // pointers, they will be added to sr.KnownProcedures.
 
+            foreach (var global in metadata.GlobalsByAddress)
+            {
+                var addr = global.Key;
+                var dt = global.Value.DataType!.Accept(tlDeser);
+                this.imageMap.AddItemWithSize(
+                    addr,
+                    new ImageMapItem(addr)
+                    {
+                        DataType = dt,
+                        Size = (uint) dt.MeasureSize(),
+                    });
+                dataScanner.EnqueueUserGlobalData(addr, dt, global.Value.Name!);
+                Program.User.Globals[addr] = global.Value;
+            }
             foreach (var global in Program.User.Globals)
             {
                 var addr = global.Key;
                 var dt = global.Value.DataType!.Accept(tlDeser);
                 dataScanner.EnqueueUserGlobalData(addr, dt, global.Value.Name!);
             }
+            
             foreach (var sym in Program.ImageSymbols.Values.Where(
                 s => s.Type == SymbolType.Data && s.DataType != null))
             {
@@ -1034,7 +1049,6 @@ namespace Reko.Scanning
                     sr.KnownProcedures.Add(proc.EntryAddress);
                 }
             }
-
             EnqueueImageSymbolProcedures(Program.EntryPoints.Values, noDecompiles);
             EnqueueImageSymbolProcedures(Program.ImageSymbols.Values
                 .Where(sym => sym.Type == SymbolType.Procedure ||

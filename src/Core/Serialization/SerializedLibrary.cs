@@ -134,7 +134,10 @@ namespace Reko.Core.Serialization
         [XmlAttribute("ordinal")]
         [DefaultValue(NoOrdinal)]
         public int Ordinal;
-    
+
+        [XmlAttribute("addr")]
+        public string? Address;
+        
         public SerializedType? Type;
     }
 }

@@ -157,9 +157,9 @@ namespace Reko.UnitTests.Core
             CreateTypeLibraryLoader("c:\\bar\\foo.xml", contents);
             var lib = tlldr.Load(platform, new TypeLibrary());
             Assert.AreEqual(1, lib.Types.Count);
-            Assert.AreEqual(1, lib.Globals.Count);
+            Assert.AreEqual(1, lib.ImportedGlobals.Count);
             var sExp = @"foo";
-            Assert.AreEqual(sExp, lib.Globals["g_foo"].ToString());
+            Assert.AreEqual(sExp, lib.ImportedGlobals["g_foo"].ToString());
         }
     }
 }

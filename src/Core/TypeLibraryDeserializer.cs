@@ -84,14 +84,27 @@ namespace Reko.Core
                 {
                     var globalType = g.Type!;
                     var globalName = g.Name!;
-                    var dt = this.LoadType(globalType);
-                    var sym = ImageSymbol.Create(SymbolType.Data, platform.Architecture, null!, globalName);
-                    mod.GlobalsByName[globalName] = sym;
-                    if (g.Ordinal != GlobalVariable_v1.NoOrdinal)
+                    if (platform.Architecture.TryParseAddress(g.Address, out var addr))
                     {
-                        mod.GlobalsByOrdinal[g.Ordinal] = sym;
+                        //$HACK: we are extracting user variables from an .inc file.
+                        //$BUG: This really should belong to a specific program.
+                        // Most users are only looking at a single binary, but this will
+                        // fail if 2 or more binaries are loaded.
+                        // Implementing it correctly will require changes to project format.
+                        library.GlobalsByAddress[addr] = new UserGlobal(addr, globalName, globalType);
                     }
-                    library.Globals[globalName] = dt;       //$REVIEW: How to cope with colissions MODULE1!foo and MODULE2!foo?
+                    else
+                    {
+                        var dt = this.LoadType(globalType);
+                        var sym = ImageSymbol.Create(SymbolType.Data, platform.Architecture, null!, globalName);
+                        mod.GlobalsByName[globalName] = sym;
+                        if (g.Ordinal != GlobalVariable_v1.NoOrdinal)
+                        {
+                            mod.GlobalsByOrdinal[g.Ordinal] = sym;
+                        }
+                        //$REVIEW: How to cope with colissions MODULE1!foo and MODULE2!foo?
+                        library.ImportedGlobals[globalName] = dt;
+                    }
                 }
             }
         }

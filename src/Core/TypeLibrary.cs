@@ -51,22 +51,24 @@ namespace Reko.Core
             IDictionary<string,DataType> types,
             IDictionary<string, FunctionType> procedures,
             IDictionary<string, ProcedureCharacteristics> characteristics,
-            IDictionary<string, DataType> globals)
+            IDictionary<string, DataType> importedGlobals)
         {
             this.isCaseInsensitive = caseInsensitive;
             this.Types = types;
             this.Signatures = procedures;
             this.Characteristics = characteristics;
-            this.Globals = globals;
+            this.ImportedGlobals = importedGlobals;
             this.Procedures = new Dictionary<Address, (string, FunctionType)>();
+            this.GlobalsByAddress = new Dictionary<Address, UserGlobal>();
             this.Modules = new Dictionary<string, ModuleDescriptor>();
         }
 
         public IDictionary<Address, (string Name, FunctionType Signature)> Procedures { get; private set; }
+        public IDictionary<Address, UserGlobal> GlobalsByAddress { get; private set; }
         public IDictionary<string, DataType> Types { get; private set; }
         public IDictionary<string, FunctionType> Signatures { get; private set; }
         public IDictionary<string, ProcedureCharacteristics> Characteristics { get; private set; }
-        public IDictionary<string, DataType> Globals { get; private set; }
+        public IDictionary<string, DataType> ImportedGlobals { get; private set; }
         public IDictionary<string, ModuleDescriptor> Modules { get; private set; }
 
         private static StringComparer Comparer(bool caseSensitive) =>
@@ -76,11 +78,12 @@ namespace Reko.Core
 
         public TypeLibrary Clone()
         {
-            var clone = new TypeLibrary(false)
+            var clone = new TypeLibrary(this.isCaseInsensitive)
             {
                 Types = new Dictionary<string, DataType>(this.Types),
                 Signatures = new Dictionary<string, FunctionType>(this.Signatures, Comparer(this.isCaseInsensitive)),
-                Globals = new Dictionary<string, DataType>(this.Globals),
+                GlobalsByAddress = new Dictionary<Address, UserGlobal>(this.GlobalsByAddress),
+                ImportedGlobals = new Dictionary<string, DataType>(this.ImportedGlobals),
                 Procedures = new Dictionary<Address, (string, FunctionType)>(this.Procedures),
                 Modules = this.Modules.ToDictionary(k => k.Key, v => v.Value.Clone(), StringComparer.InvariantCultureIgnoreCase),
                 isCaseInsensitive = this.isCaseInsensitive
@@ -90,7 +93,7 @@ namespace Reko.Core
 
 		public void Write(TextWriter writer)
 		{
-            TextFormatter f = new TextFormatter(writer);
+            var f = new TextFormatter(writer);
 			foreach (var de in Signatures.OrderBy(d => d.Key, StringComparer.InvariantCulture))
 			{
 				string name = de.Key;
@@ -99,7 +102,7 @@ namespace Reko.Core
 			}
 
             var tf = new TypeReferenceFormatter(f);
-            foreach (var de in Globals.OrderBy(d => d.Key, StringComparer.InvariantCulture))
+            foreach (var de in ImportedGlobals.OrderBy(d => d.Key, StringComparer.InvariantCulture))
             {
                 tf.WriteDeclaration(de.Value, de.Key);
             }

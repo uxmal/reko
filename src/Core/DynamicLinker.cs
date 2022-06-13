@@ -227,7 +227,7 @@ namespace Reko.Core
 
             foreach (var program in project.Programs)
             {
-                if (program.EnvironmentMetadata.Globals.TryGetValue(name, out var dt))
+                if (program.EnvironmentMetadata.ImportedGlobals.TryGetValue(name, out var dt))
                 {
                     return Identifier.Global(name, dt);
                 }

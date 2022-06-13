@@ -33,7 +33,7 @@ namespace Reko.Scanning
         private readonly ScanResults sr;
 
         public DataScanner(Program program, ScanResults sr, DecompilerEventListener listener)
-            :base(program, listener)
+            : base(program, listener)
         {
             this.sr = sr;
             this.listener = listener;

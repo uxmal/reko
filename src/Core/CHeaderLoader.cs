@@ -52,10 +52,22 @@ namespace Reko.Core
             {
                 Types = symbolTable.Types.ToArray(),
                 Procedures = symbolTable.Procedures.ToList(),
+                Globals = symbolTable.Variables.Select(ConvertToGlobalVariable).ToList()
             };
             var tldser = new TypeLibraryDeserializer(platform, true, dstLib);
             var tlib = tldser.Load(slib);
             return tlib;
+        }
+
+        private static GlobalVariable_v1 ConvertToGlobalVariable(GlobalDataItem_v2 item)
+        {
+            return new GlobalVariable_v1
+            {
+                Name = item.Name,
+                Type = item.DataType,
+                Ordinal = GlobalVariable_v1.NoOrdinal,
+                Address = item.Address,
+            };
         }
 
         private SymbolTable CreateSymbolTable(

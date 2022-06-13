@@ -1,24 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<project xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://schemata.jklnet.org/Reko/v5">
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://schemata.jklnet.org/Reko/v5">
   <arch>x86-real-16</arch>
   <platform>ms-dos</platform>
   <input>
-    <filename>dsbug.exe</filename>
+    <location>dsbug.exe</location>
     <asmDir>dsbug.reko</asmDir>
     <srcDir>dsbug.reko</srcDir>
     <includeDir>dsbug.reko</includeDir>
     <resources>dsbug.reko\resources</resources>
     <user>
+      <address>1000:0000</address>
       <processor />
-	  <address>1000:0000</address>
       <procedure name="function">
-        <characteristics />
         <address>1000:0007</address>
         <CSignature>void function();</CSignature>
-		<!--<assume reg="ds" value="1046" />-->
       </procedure>
       <procedure name="main">
-        <characteristics />
         <address>1000:0010</address>
         <decompile>false</decompile>
         <CSignature>void main();</CSignature>
@@ -26,11 +23,11 @@
       <registerValues>
         <assume addr="1000:0007" reg="ds" value="1046" />
       </registerValues>
-	  <global>
-        <Address>1046:0060</Address>
-        <prim domain="UnsignedInt" size="2" />
-        <Name>theGlobal</Name>
-      </global>
+      <extractResources>false</extractResources>
+      <outputFilePolicy>SingleFile</outputFilePolicy>
     </user>
   </input>
+  <metadata>
+    <location>dsbug.inc</location>
+  </metadata>
 </project>
