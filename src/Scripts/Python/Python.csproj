@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
-  <Import Project="$(ProjectDir)../../Drivers/CommonBuildProperties.items"/>
+  <Import Project="$(ProjectDir)../../Drivers/CommonBuildProperties.items" />
   <PropertyGroup>
     <ProjectGuid>{383C909A-9214-4769-AD9A-12489D51E2EC}</ProjectGuid>
     <AssemblyName>Reko.Scripts.Python</AssemblyName>
@@ -11,7 +11,7 @@
     <Configurations>Debug;Release</Configurations>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="IronPython" Version="3.4.0-alpha1" />
+    <PackageReference Include="IronPython" Version="3.4.0-beta1" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Core\Core.csproj" />
