@@ -38,9 +38,9 @@ namespace Reko.ImageLoaders.Elf
     {
         // Object file type
         public const short ET_NONE = 0;             // No file type
-        public const short ET_REL =  1;             // Relocatable file
+        public const short ET_REL = 1;             // Relocatable file
         public const short ET_EXEC = 2;             // Executable file
-        public const short ET_DYN =  3;             // Shared object file
+        public const short ET_DYN = 3;             // Shared object file
         public const short ET_CORE = 4;             // Core file
 
         public const int ELFOSABI_NONE = 0x00;      // No specific ABI specified.
@@ -88,15 +88,22 @@ namespace Reko.ImageLoaders.Elf
         public const uint PF_X = 1;
 
         protected ElfMachine machine;
+        protected uint flags;
         protected EndianServices endianness;
         protected IPlatform? platform;
         protected byte[] rawImage;
         private SegmentMap? segmentMap;
 
-        protected ElfLoader(IServiceProvider services, ElfMachine machine, EndianServices endianness, byte[] rawImage) : this()
+        protected ElfLoader(
+            IServiceProvider services,
+            ElfMachine machine,
+            uint flags,
+            EndianServices endianness,
+            byte[] rawImage) : this()
         {
             this.Services = services;
             this.machine = machine;
+            this.flags = flags;
             this.endianness = endianness;
             this.rawImage = rawImage;
         }
@@ -158,7 +165,7 @@ namespace Reko.ImageLoaders.Elf
 
         public IEnumerable<ElfDynamicEntry> GetDynamicEntries(ulong offsetDynamic)
         {
-            var rdr = endianness!.CreateImageReader(this.rawImage!, (long)offsetDynamic);
+            var rdr = endianness!.CreateImageReader(this.rawImage!, (long) offsetDynamic);
             return GetDynamicEntries(rdr);
         }
 
@@ -200,7 +207,7 @@ namespace Reko.ImageLoaders.Elf
                 }
                 else if (addrEnd! < pair.Item1)
                 {
-                    var size = (uint)(addrEnd! - addr);
+                    var size = (uint) (addrEnd! - addr);
                     mems.Add(addr, new ByteMemoryArea(addr, new byte[size]));
                     addr = pair.Item1;
                     addrEnd = pair.Item1 + pair.Item2;
@@ -212,7 +219,7 @@ namespace Reko.ImageLoaders.Elf
             }
             if (addr != null)
             {
-                var size = (uint)(addrEnd! - addr);
+                var size = (uint) (addrEnd! - addr);
                 mems.Add(addr, new ByteMemoryArea(addr, new byte[size]));
             }
             return mems;
@@ -228,6 +235,8 @@ namespace Reko.ImageLoaders.Elf
             var cfgSvc = Services.RequireService<IConfigurationService>();
             var options = new Dictionary<string, object>();
             string arch;
+            options[ProcessorOption.Endianness] = endianness == EndianServices.Little ? "le" : "be";
+
             string? stackRegName = null;
             switch (this.machine)
             {
@@ -249,6 +258,10 @@ namespace Reko.ImageLoaders.Elf
             case ElfMachine.EM_MSP430: arch = "msp430"; break;
             case ElfMachine.EM_SH:
                 arch = endianness == EndianServices.Little ? "superH-le" : "superH-be";
+                if (superHModels.TryGetValue((SuperHFlags)this.flags & SuperHFlags.EF_MODEL_MASK, out var model))
+                {
+                    options[ProcessorOption.Model] = model;
+                }
                 // SuperH stack pointer is not defined by the architecture,
                 // but by the application itself. It appears r15 has been
                 // chosen by at least the NetBSD folks.
@@ -456,7 +469,7 @@ namespace Reko.ImageLoaders.Elf
             var dynSeg = Segments.FirstOrDefault(p => p.p_type == ProgramHeaderType.PT_DYNAMIC);
             if (dynSeg == null)
                 return;
-            var rdr = this.endianness!.CreateImageReader(rawImage!, (long)dynSeg.p_offset);
+            var rdr = this.endianness!.CreateImageReader(rawImage!, (long) dynSeg.p_offset);
             var (deps, entries) = LoadDynamicSegment(rdr);
             this.Dependencies.AddRange(deps);
             foreach (var de in entries)
@@ -488,7 +501,7 @@ namespace Reko.ImageLoaders.Elf
                     dynamicEntries.Add(de);
                 }
             }
-            return (dependencies, dynamicEntries); 
+            return (dependencies, dynamicEntries);
         }
 
         public SortedList<Address, ImageSymbol> CreateSymbolDictionaries(bool isExecutable)
@@ -575,13 +588,13 @@ namespace Reko.ImageLoaders.Elf
                         {
                             program.ImportReferences.TryGetValue(addrGot, out var oldImpRef);
                             if (oldImpRef is null)
-                            program.ImportReferences.Add(
-                                addrGot,
-                                new NamedImportReference(
+                                program.ImportReferences.Add(
                                     addrGot,
-                                    null,
-                                    name,
-                                    symbol.Type));
+                                    new NamedImportReference(
+                                        addrGot,
+                                        null,
+                                        name,
+                                        symbol.Type));
                         }
                     }
                 }
@@ -620,7 +633,7 @@ namespace Reko.ImageLoaders.Elf
         {
             if (0 <= shidx && shidx < sections.Count)
             {
-                return sections[(int)shidx];
+                return sections[(int) shidx];
             }
             else
             {
@@ -635,7 +648,7 @@ namespace Reko.ImageLoaders.Elf
 
         protected string ReadSectionName(List<ElfSection> sections, uint idxString)
         {
-            ulong offset = (ulong)GetSectionNameOffset(sections, idxString);
+            ulong offset = (ulong) GetSectionNameOffset(sections, idxString);
             return ReadAsciiString(offset);
         }
 
@@ -647,7 +660,7 @@ namespace Reko.ImageLoaders.Elf
                 ElfSymbolBinding.STB_LOCAL => "locl",
                 ElfSymbolBinding.STB_WEAK => "weak",
                 ElfSymbolBinding.STB_GNU_UNIQUE => "uniq",
-                _ => ((int)binding).ToString("X4")
+                _ => ((int) binding).ToString("X4")
             };
         }
 
@@ -742,7 +755,7 @@ namespace Reko.ImageLoaders.Elf
             }
             if (!symList.TryGetValue(i, out var sym))
             {
-                sym = LoadSymbol(offSymtab, (ulong)i, symentrysize, offStrtab);
+                sym = LoadSymbol(offSymtab, (ulong) i, symentrysize, offStrtab);
                 if (sym is null)
                 {
                     ElfImageLoader.trace.Warn("Unable to load ELF image symbol {0} (0x{0:X}).", i);
@@ -784,9 +797,9 @@ namespace Reko.ImageLoaders.Elf
         public string ReadAsciiString(ulong fileOffset)
         {
             var bytes = this.rawImage!;
-            if (fileOffset >= (ulong)bytes.Length)
+            if (fileOffset >= (ulong) bytes.Length)
                 return "";
-            int u = (int)fileOffset;
+            int u = (int) fileOffset;
             while (bytes[u] != 0)
             {
                 ++u;
@@ -846,5 +859,20 @@ namespace Reko.ImageLoaders.Elf
             sb.Append((flags & 1) != 0 ? 'x' : '-');
             return sb.ToString();
         }
+
+        private static readonly Dictionary<Relocators.SuperHFlags, string> superHModels = new()
+        {
+            { Relocators.SuperHFlags.EF_SH1, "sh1" },
+            { Relocators.SuperHFlags.EF_SH2, "sh2" },
+            { Relocators.SuperHFlags.EF_SH3, "sh3" },
+            { Relocators.SuperHFlags.EF_SH_DSP, "sh_dsp" },
+            { Relocators.SuperHFlags.EF_SH3_DSP, "sh3_dsp" },
+            { Relocators.SuperHFlags.EF_SH4AL_DSP, "sh4_dsp" },
+            { Relocators.SuperHFlags.EF_SH3E, "sh3e" },
+            { Relocators.SuperHFlags.EF_SH4, "sh4" },
+            { Relocators.SuperHFlags.EF_SH2E, "sh2e" },
+            { Relocators.SuperHFlags.EF_SH4A, "sh4a" },
+            { Relocators.SuperHFlags.EF_SH2A, "sh2a" },
+        };
     }
 }

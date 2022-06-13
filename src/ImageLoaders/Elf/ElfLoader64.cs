@@ -36,7 +36,7 @@ namespace Reko.ImageLoaders.Elf
         private readonly byte osAbi;
 
         public ElfLoader64(IServiceProvider services, Elf64_EHdr elfHeader, byte osAbi, EndianServices endianness, byte[] rawImage)
-            : base(services, (ElfMachine) elfHeader.e_machine, endianness, rawImage)
+            : base(services, (ElfMachine) elfHeader.e_machine, elfHeader.e_flags, endianness, rawImage)
         {
             this.Header64 = elfHeader;
             this.osAbi = osAbi;
@@ -75,6 +75,7 @@ namespace Reko.ImageLoaders.Elf
         protected override IProcessorArchitecture? CreateArchitecture(EndianServices endianness)
         {
             var options = new Dictionary<string, object>();
+            options[ProcessorOption.Endianness] = endianness == EndianServices.Little ? "le" : "be";
             string archName;
             switch (machine)
             {

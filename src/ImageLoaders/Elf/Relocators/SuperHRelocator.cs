@@ -58,6 +58,35 @@ namespace Reko.ImageLoaders.Elf.Relocators
         }
     }
 
+    [Flags]
+    public enum SuperHFlags
+    {
+        EF_MODEL_MASK = 0xF,
+
+        EF_SH1 = 1,
+        EF_SH2 = 2,
+        EF_SH3 = 3,
+        EF_SH_DSP = 4,
+        EF_SH3_DSP = 5,
+        EF_SH4AL_DSP = 6,
+        EF_SH3E = 8,
+        EF_SH4 = 9,
+        EF_SH2E = 11,
+        EF_SH4A = 12,
+        EF_SH2A = 13,
+
+        EF_SH4_NOFPU = 16,
+        EF_SH4A_NOFPU = 17,
+        EF_SH4_NOMMU_NOFPU = 18,
+        EF_SH2A_NOFPU = 19,
+        EF_SH3_NOMMU = 20,
+
+        EF_SH2A_SH4_NOFPU = 21,
+        EF_SH2A_SH3_NOFPU = 22,
+        EF_SH2A_SH4 = 23,
+        EF_SH2A_SH3E = 24,
+        EF_SH5 = 10,
+    }
     public enum SuperHrt
     {
         R_SH_NONE = 0,

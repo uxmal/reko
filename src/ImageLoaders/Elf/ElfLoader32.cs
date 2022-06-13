@@ -35,7 +35,7 @@ namespace Reko.ImageLoaders.Elf
     public class ElfLoader32 : ElfLoader
     {
         public ElfLoader32(IServiceProvider services, Elf32_EHdr header32, byte osAbi, EndianServices endianness, byte[] rawImage)
-            : base(services, (ElfMachine) header32.e_machine, endianness, rawImage)
+            : base(services, (ElfMachine) header32.e_machine, header32.e_flags, endianness, rawImage)
         {
             this.Header = header32 ?? throw new ArgumentNullException(nameof(header32));
         }
@@ -85,9 +85,7 @@ namespace Reko.ImageLoaders.Elf
             string arch;
             var options = new Dictionary<string, object>();
             string? stackRegName = null;
-            options[ProcessorOption.Endianness] = (endianness == EndianServices.Little)
-                ? "le"
-                : "be";
+            options[ProcessorOption.Endianness] = endianness == EndianServices.Little ? "le" : "be";
             switch (machine)
             {
             case ElfMachine.EM_MIPS:
