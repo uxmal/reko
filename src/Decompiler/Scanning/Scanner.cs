@@ -980,19 +980,19 @@ namespace Reko.Scanning
             // Enqueue known data items, then process them. If we find code
             // pointers, they will be added to sr.KnownProcedures.
 
-            foreach (var global in metadata.GlobalsByAddress)
+            foreach (var (addr, global) in metadata.GlobalsByAddress)
             {
-                var addr = global.Key;
-                var dt = global.Value.DataType!.Accept(tlDeser);
+                var dt = global.DataType!.Accept(tlDeser);
                 this.imageMap.AddItemWithSize(
                     addr,
                     new ImageMapItem(addr)
                     {
+                        Name = global.Name,
                         DataType = dt,
                         Size = (uint) dt.MeasureSize(),
                     });
-                dataScanner.EnqueueUserGlobalData(addr, dt, global.Value.Name!);
-                Program.User.Globals[addr] = global.Value;
+                dataScanner.EnqueueUserGlobalData(addr, dt, global.Name);
+                Program.User.Globals[addr] = global;
             }
             foreach (var global in Program.User.Globals)
             {
