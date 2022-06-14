@@ -52,5 +52,13 @@ namespace Reko.Core.Intrinsics
         public static readonly IntrinsicProcedure TanGeneric = IntrinsicBuilder.GenericUnary("tan");
         public static readonly IntrinsicProcedure TanhGeneric = IntrinsicBuilder.GenericUnary("tanh");
         public static readonly IntrinsicProcedure TruncGeneric = IntrinsicBuilder.GenericUnary("trunc");
+        //$REVIEW: math.h
+        public static readonly IntrinsicProcedure fabs = IntrinsicBuilder.Unary("fabs", PrimitiveType.Real64);
+        public static readonly IntrinsicProcedure fabsf = IntrinsicBuilder.Unary("fabsf", PrimitiveType.Real32);
+        public static readonly IntrinsicProcedure floor = IntrinsicBuilder.Unary("floor", PrimitiveType.Real64);
+        public static readonly IntrinsicProcedure floorf = IntrinsicBuilder.Unary("floorf", PrimitiveType.Real32);
+        public static readonly IntrinsicProcedure sqrt = IntrinsicBuilder.Unary("sqrt", PrimitiveType.Real64);
+        public static readonly IntrinsicProcedure sqrtf = IntrinsicBuilder.Unary("sqrtf", PrimitiveType.Real32);
+
     }
 }

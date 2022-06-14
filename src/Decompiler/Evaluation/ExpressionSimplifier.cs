@@ -1099,7 +1099,10 @@ namespace Reko.Evaluation
                     else if (tTail.Domain != Domain.Real)
                     {
                         t = PrimitiveType.Create(tHead.Domain, tHead.BitSize + tTail.BitSize);
-                        return (Constant.Create(t, (c1.ToUInt64() << tTail.BitSize) | c2.ToUInt64()), true);
+                        if (tHead.BitSize + tTail.BitSize <= 64)
+                            return (Constant.Create(t, (c1.ToUInt64() << tTail.BitSize) | c2.ToUInt64()), true);
+                        else
+                            return (Constant.Create(t, (c1.ToBigInteger() << tTail.BitSize) | c2.ToBigInteger()), true);
                     }
                 }
             }

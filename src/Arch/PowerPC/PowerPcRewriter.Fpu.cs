@@ -172,7 +172,7 @@ namespace Reko.Arch.PowerPC
         {
             var opS = RewriteOperand(1);
             var opD = RewriteOperand(0);
-            m.Assign(opD, m.FNeg(m.Fn(FpuOps.fabs, opS)));
+            m.Assign(opD, m.FNeg(m.Fn(FpOps.fabs, opS)));
             MaybeEmitCr1(opD);
         }
 
@@ -222,7 +222,7 @@ namespace Reko.Arch.PowerPC
         {
             var src = RewriteOperand(1);
             var dst = RewriteOperand(0);
-            m.Assign(dst, m.Fn(FpuOps.sqrt, src));
+            m.Assign(dst, m.Fn(FpOps.sqrt, src));
             MaybeEmitCr1(dst);
         }
 
@@ -231,7 +231,7 @@ namespace Reko.Arch.PowerPC
             var src = RewriteOperand(1);
             var dst = RewriteOperand(0);
             var tmp = binder.CreateTemporary(PrimitiveType.Real32);
-            m.Assign(tmp, m.Fn(FpuOps.sqrtf, m.Convert(src, PrimitiveType.Real64, PrimitiveType.Real32)));
+            m.Assign(tmp, m.Fn(FpOps.sqrtf, m.Convert(src, PrimitiveType.Real64, PrimitiveType.Real32)));
             m.Assign(dst, m.Convert(tmp, tmp.DataType, PrimitiveType.Real64));
             MaybeEmitCr1(tmp);
         }

@@ -96,6 +96,22 @@ namespace Reko.Arch.Arm.AArch64
 
         private void RewriteMaybeSimdUnary(
             Func<Expression, Expression> fn,
+            IntrinsicProcedure simdGeneric,
+            Domain domain = Domain.None)
+        {
+            if (instr.VectorData != VectorData.Invalid ||
+                (instr.Operands[0] is VectorRegisterOperand vr && vr.Index < 0))
+            {
+                RewriteSimdUnary(simdGeneric, domain);
+            }
+            else
+            {
+                RewriteUnary(fn);
+            }
+        }
+
+        private void RewriteMaybeSimdUnary(
+            Func<Expression, Expression> fn,
             string simdFormat,
             Domain domain = Domain.None)
         {
@@ -456,7 +472,28 @@ namespace Reko.Arch.Arm.AArch64
 
         private void RewriteMov()
         {
-            RewriteUnary(n => n);
+            if (instr.Operands[0] is VectorRegisterOperand v && v.Index >= 0)
+            {
+                RewriteVectorElementStore(v);
+            }
+            else
+            {
+                RewriteUnary(n => n);
+            }
+        }
+
+        private void RewriteVectorElementStore(VectorRegisterOperand v)
+        {
+            var src = RewriteOp(1, true);
+            var dst = binder.EnsureRegister(v.VectorRegister);
+            var eType = PrimitiveType.CreateWord(Bitsize(v.ElementType));
+            if (eType.BitSize < src.DataType.BitSize)
+            {
+                var t = binder.CreateTemporary(eType);
+                m.Assign(t, m.Slice(src, eType, 0));
+                src = t;
+            }
+            m.Assign(dst, m.Dpb(dst, src, v.Index * eType.BitSize));
         }
 
         private void RewriteMovk()
@@ -728,8 +765,8 @@ namespace Reko.Arch.Arm.AArch64
 
         private void RewriteUnary(Func<Expression, Expression> fn)
         {
-            var src = RewriteOp(instr.Operands[1], true);
-            var dst = RewriteOp(instr.Operands[0]);
+            var src = RewriteOp(1, true);
+            var dst = RewriteOp(0);
             m.Assign(dst, fn(src));
         }
 

@@ -29,8 +29,15 @@ namespace Reko.Core.Operators
 		{
             if (!ValidArgs(c1, c2))
                 return InvalidConstant.Create(c1.DataType);
-            return BuildConstant(c1.DataType, c2.DataType, c1.ToInt64() | c2.ToInt64());
-		}
+            if (c2.DataType.BitSize <= 64 && c2.DataType.BitSize <= 64)
+            {
+                return BuildConstant(c1.DataType, c2.DataType, c1.ToInt64() | c2.ToInt64());
+            }
+            else
+            {
+                return BuildConstant(c1.DataType, c2.DataType, c1.ToBigInteger() | c2.ToBigInteger());
+            }
+        }
 
         public override string AsCompound()
         {

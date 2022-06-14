@@ -322,7 +322,7 @@ namespace Reko.ImageLoaders.MachO
             while (rdr.Offset < endoff)
             {
                 uint fn = rdr.ReadUInt32();
-                Debug.Print("  fn: {0:X}", fn);
+                Debug.Print("  fn start: {0:X}", fn);
             }
         }
 

@@ -144,9 +144,16 @@ namespace Reko.Arch.Arm.AArch64
                     case Mnemonic.fcmpe: RewriteFcmp(); break;  //$REVIEW: this leaves out the 'e'xception part. 
                     case Mnemonic.fcsel: RewriteFcsel(); break;
                     case Mnemonic.fcvt: RewriteFcvt(); break;
-                    case Mnemonic.fcvtms: RewriteFcvtms(); break;
-                    case Mnemonic.fcvtps: RewriteFcvtps(); break;
-                    case Mnemonic.fcvtzs: RewriteFcvtzs(); break;
+                    case Mnemonic.fcvtas: RewriteFcvta(Domain.SignedInt); break;
+                    case Mnemonic.fcvtau: RewriteFcvta(Domain.UnsignedInt); break;
+                    case Mnemonic.fcvtms: RewriteFcvtm(Domain.SignedInt); break;
+                    case Mnemonic.fcvtmu: RewriteFcvtm(Domain.UnsignedInt); break;
+                    case Mnemonic.fcvtns: RewriteFcvtn(Domain.SignedInt); break;
+                    case Mnemonic.fcvtnu: RewriteFcvtn(Domain.UnsignedInt); break;
+                    case Mnemonic.fcvtps: RewriteFcvtp(Domain.SignedInt); break;
+                    case Mnemonic.fcvtpu: RewriteFcvtp(Domain.UnsignedInt); break;
+                    case Mnemonic.fcvtzs: RewriteFcvtz(Domain.SignedInt); break;
+                    case Mnemonic.fcvtzu: RewriteFcvtz(Domain.UnsignedInt); break;
                     case Mnemonic.fdiv: RewriteMaybeSimdBinary(m.FDiv, "__fdiv_{0}", Domain.Real); break;
                     case Mnemonic.fmadd: RewriteIntrinsicFTernary(__fmadd); break;
                     case Mnemonic.fmsub: RewriteIntrinsicFTernary(__fmsub); break;
@@ -203,7 +210,7 @@ namespace Reko.Arch.Arm.AArch64
                     case Mnemonic.msub: RewriteMaddSub(m.ISub); break;
                     case Mnemonic.mul: RewriteMaybeSimdBinary(m.IMul, "__mul_{0}"); break;
                     case Mnemonic.mvn: RewriteUnary(m.Comp); break;
-                    case Mnemonic.mvni: RewriteLogical((a, b) => ((BigConstant) b).Complement()); break;
+                    case Mnemonic.mvni: RewriteLogical((a, b) => ((Constant) b).Complement()); break;
                     case Mnemonic.neg: RewriteSimdUnary("__neg_{0}", Domain.SignedInt); break;
                     case Mnemonic.nop: m.Nop(); break;
                     case Mnemonic.not: RewriteMaybeSimdUnary(m.Comp, "__not_{0}"); break;

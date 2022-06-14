@@ -151,25 +151,66 @@ namespace Reko.Arch.Arm.AArch64
             return m.Convert(src, dtSrc, dtDst);
         }
 
-        private void RewriteFcvtms()
+        private Expression RewriteFcvt(
+            Expression src, 
+            Domain domain,
+            IntrinsicProcedure fnSingle,
+            IntrinsicProcedure fnDouble)
+        {
+            //$TODO: #include <math.h>
+            var dtSrc = MakeReal(src.DataType);
+            var dtDst = MakeInteger(domain, instr.Operands[0].Width);
+            var fn = dtSrc.BitSize == 32 ? fnSingle : fnDouble;
+            src = m.Fn(fn, src);
+            return m.Convert(src, dtSrc, dtDst);
+        }
+
+        private void RewriteFcvt(
+            IntrinsicProcedure fnSingle,
+            IntrinsicProcedure fnDouble,
+            IntrinsicProcedure fnVector)
         {
             RewriteMaybeSimdUnary(
-                n => RewriteFcvt(n, Domain.SignedInt, "floorf", "floor"),
+                n => RewriteFcvt(n, Domain.SignedInt, fnSingle, fnDouble),
+                fnVector,
+                Domain.Real);
+        }
+
+        private void RewriteFcvta(Domain domain)
+        {
+            RewriteMaybeSimdUnary(
+                n => RewriteFcvt(n, domain, "roundf", "round"),
+                "__round_{0}",
+                Domain.Real);
+        }
+
+        private void RewriteFcvtm(Domain domain)
+        {
+            RewriteMaybeSimdUnary(
+                n => RewriteFcvt(n, domain, "floorf", "floor"),
                 "__floor_{0}",
                 Domain.Real);
         }
 
-        private void RewriteFcvtps()
+        private void RewriteFcvtn(Domain domain)
         {
             RewriteMaybeSimdUnary(
-                n => RewriteFcvt(n, Domain.SignedInt, "ceilf", "ceil"),
-                "__floor_{0}", Domain.Real);
+                n => RewriteFcvt(n, domain, "roundf", "round"),
+                "__nearest_{0}",
+                Domain.Real);
         }
 
-        private void RewriteFcvtzs()
+        private void RewriteFcvtp(Domain domain)
         {
             RewriteMaybeSimdUnary(
-                n => RewriteFcvt(n, Domain.SignedInt, "truncf", "trunc"),
+                n => RewriteFcvt(n, domain, "ceilf", "ceil"),
+                "__ceil_{0}", Domain.Real);
+        }
+
+        private void RewriteFcvtz(Domain domain)
+        {
+            RewriteMaybeSimdUnary(
+                n => RewriteFcvt(n, domain, "truncf", "trunc"),
                 "__trunc_{0}", Domain.Real);
         }
 
@@ -215,7 +256,14 @@ namespace Reko.Arch.Arm.AArch64
 
         private void RewriteFmov()
         {
-            RewriteMaybeSimdUnary(n => n, "__fmov_{0}", Domain.Real);
+            if (instr.Operands[0] is VectorRegisterOperand v && v.Index >= 0)
+            {
+                RewriteVectorElementStore(v);
+            }
+            else
+            {
+                RewriteMaybeSimdUnary(n => n, "__fmov_{0}", Domain.Real);
+            }
         }
 
         private void RewriteFmul()

@@ -634,6 +634,25 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
+        public void AArch64Rw_mov_vector_element_i16()
+        {
+            Given_Instruction(0x6E0A5633);
+            AssertCode(     // mov\tv19.h[2],v17.h[5]
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|v19 = SEQ(SLICE(v19, word80, 48), q17[5<i32>], SLICE(v19, word32, 0))");
+        }
+
+        [Test]
+        public void AArch64Rw_mov_vector_element_from_general()
+        {
+            Given_Instruction(0x4E011CCD);
+            AssertCode(     // mov v13.b[0],w6
+                "0|L--|00100000(4): 2 instructions",
+                "1|L--|v4 = SLICE(w6, byte, 0)",
+                "2|L--|v13 = SEQ(SLICE(v13, word120, 8), v4)");
+        }
+
+        [Test]
         public void AArch64Rw_movz_imm32()
         {
             Given_Instruction(0x528000C0);
@@ -643,7 +662,7 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        public void AArch64Rw_mvni()
+        public void AArch64Rw_mvni_word128()
         {
             Given_HexString("7F86016F");
             AssertCode(     // mvni	v31.8h,#&330033
@@ -651,13 +670,22 @@ namespace Reko.UnitTests.Arch.Arm
                 "1|L--|q31 = 0x0FFCCFFCCFFCCFFCCFFCCFFCCFFCCFFCC<128>");
         }
 
-        [Test]
-        public void AArch64Rw_mvni_2()
+                [Test]
+        public void AArch64Rw_mvni_word64()
         {
             Given_HexString("4AC6070F");
             AssertCode(     // mvni	v10.2s,#&F2000000F2,lsl #&10
                 "0|L--|0000000000100000(4): 1 instructions",
                 "1|L--|d10 = 0xF2FF0000F2FF<64>");
+        }
+
+        [Test]
+        public void AArch64Rw_mvni()
+        {
+            Given_HexString("2107072F");
+            AssertCode(     // mvni	v1.2s,#&F9
+                "0|L--|0000000000100000(4): 1 instructions",
+                "1|L--|d1 = 0xFFFFFF06FFFFFF06<64>");
         }
 
         [Test]
@@ -1644,6 +1672,85 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
+        public void AArch64Rw_fcvtas()
+        {
+            Given_HexString("F1CB614E");
+            AssertCode(     // fcvtas	v17.2d,v31.2d
+                "0|L--|0000000000100000(4): 2 instructions",
+                "1|L--|v2 = q31",
+                "2|L--|q17 = __round_f64(v2)");
+        }
+
+        [Test]
+        public void AArch64Rw_fcvtau()
+        {
+            Given_HexString("1FC8616E");
+            AssertCode(     // fcvtau	v31.2d,v0.2d
+                "0|L--|0000000000100000(4): 2 instructions",
+                "1|L--|v2 = q0",
+                "2|L--|q31 = __round_f64(v2)");
+        }
+
+        [Test]
+        public void AArch64Rw_fcvtmu()
+        {
+            Given_HexString("21BA616E");
+            AssertCode(     // fcvtmu	v1.2d,v17.2d
+                "0|L--|0000000000100000(4): 2 instructions",
+                "1|L--|v2 = q17",
+                "2|L--|q1 = __floor_f64(v2)");
+        }
+
+        [Test]
+        public void AArch64Rw_fcvtns()
+        {
+            Given_HexString("20AA614E");
+            AssertCode(     // fcvtns	v0.2d,v17.2d
+                "0|L--|0000000000100000(4): 2 instructions",
+                "1|L--|v2 = q17",
+                "2|L--|q0 = __nearest_f64(v2)");
+        }
+
+        [Test]
+        public void AArch64Rw_fcvtnu()
+        {
+            Given_HexString("6AA9616E");
+            AssertCode(     // fcvtnu	v10.2d,v11.2d
+                "0|L--|0000000000100000(4): 2 instructions",
+                "1|L--|v2 = q11",
+                "2|L--|q10 = __nearest_f64(v2)");
+        }
+
+        [Test]
+        public void AArch64Rw_fcvtpu()
+        {
+            Given_HexString("0BA8E16E");
+            AssertCode(     // fcvtpu	v11.2d,v0.2d
+                "0|L--|0000000000100000(4): 2 instructions",
+                "1|L--|v2 = q0",
+                "2|L--|q11 = __ceil_f64(v2)");
+        }
+
+        [Test]
+        public void AArch64Rw_fcvtzu()
+        {
+            Given_HexString("2CBAE16E");
+            AssertCode(     // fcvtzu	v12.2d,v17.2d
+                "0|L--|0000000000100000(4): 2 instructions",
+                "1|L--|v2 = q17",
+                "2|L--|q12 = __trunc_f64(v2)");
+        }
+
+        [Test]
+        public void AArch64Rw_fmov_to_vector_element()
+        {
+            Given_HexString("0D00AF9E");
+            AssertCode(     // fmov v13.d[1],x0
+                "0|L--|0000000000100000(4): 1 instructions",
+                "1|L--|v13 = SEQ(x0, SLICE(v13, word64, 0))");
+        }
+
+        [Test]
         public void AArch64Rw_udiv_w32()
         {
             Given_Instruction(0x1ADA0908);
@@ -1963,15 +2070,6 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        public void AArch64Rw_mov_vector_element_i16()
-        {
-            Given_Instruction(0x6E0A5633);
-            AssertCode(     // mov\tv19.h[2],v17.h[5]
-                "0|L--|00100000(4): 1 instructions",
-                "1|L--|q19[2<i32>] = q17[5<i32>]");
-        }
-
-        [Test]
         public void AArch64Rw_add_vector_s64()
         {
             Given_HexString("6384EB4E");
@@ -2114,7 +2212,7 @@ namespace Reko.UnitTests.Arch.Arm
             Given_Instruction(0x9EAF0060);
             AssertCode(     // fmov\tq0.d[1],x3
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|q0[1<i32>] = x3");
+                "1|L--|v0 = SEQ(x3, SLICE(v0, word64, 0))");
         }
 
         [Test]
@@ -4444,73 +4542,9 @@ namespace Reko.UnitTests.Arch.Arm
 
 
 
-        /*
-        // This file contains unit tests automatically generated by Reko decompiler.
-        // Please copy the contents of this file and report it on GitHub, using the 
-        // following URL: https://github.com/uxmal/reko/issues
 
-        [Test]
-        public void AArch64Rw_fcvtas()
-        {
-            Given_HexString("F1CB614E");
-            AssertCode(     // fcvtas	v17.2d,v31.2d
-                "0|L--|0000000100012F68(4): 1 instructions",
-                "1|L--|@@@");
-        }
 
-        [Test]
-        public void AArch64Rw_fcvtau()
-        {
-            Given_HexString("1FC8616E");
-            AssertCode(     // fcvtau	v31.2d,v0.2d
-                "0|L--|0000000100013300(4): 1 instructions",
-                "1|L--|@@@");
-        }
+        // Unable to cast object of type 'Reko.Core.Expressions.ConstantUInt64' to type 'Reko.Core.Expressions.BigConstant'.
 
-        [Test]
-        public void AArch64Rw_fcvtmu()
-        {
-            Given_HexString("21BA616E");
-            AssertCode(     // fcvtmu	v1.2d,v17.2d
-                "0|L--|0000000100013A04(4): 1 instructions",
-                "1|L--|@@@");
-        }
-
-        [Test]
-        public void AArch64Rw_fcvtns()
-        {
-            Given_HexString("20AA614E");
-            AssertCode(     // fcvtns	v0.2d,v17.2d
-                "0|L--|0000000100013D9C(4): 1 instructions",
-                "1|L--|@@@");
-        }
-
-        [Test]
-        public void AArch64Rw_fcvtnu()
-        {
-            Given_HexString("6AA9616E");
-            AssertCode(     // fcvtnu	v10.2d,v11.2d
-                "0|L--|0000000100014108(4): 1 instructions",
-                "1|L--|@@@");
-        }
-
-        [Test]
-        public void AArch64Rw_fcvtpu()
-        {
-            Given_HexString("0BA8E16E");
-            AssertCode(     // fcvtpu	v11.2d,v0.2d
-                "0|L--|000000010001480C(4): 1 instructions",
-                "1|L--|@@@");
-        }
-
-        [Test]
-        public void AArch64Rw_fcvtzu()
-        {
-            Given_HexString("2CBAE16E");
-            AssertCode(     // fcvtzu	v12.2d,v17.2d
-                "0|L--|000000010001527C(4): 1 instructions",
-                "1|L--|@@@");
-        }
-        */
     }
 }

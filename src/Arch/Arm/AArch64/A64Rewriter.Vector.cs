@@ -155,6 +155,18 @@ namespace Reko.Arch.Arm.AArch64
             setFlags?.Invoke(dst);
         }
 
+        private void RewriteSimdUnary(IntrinsicProcedure simdGeneric, Domain domain)
+        {
+            var dtSrc = MakeOperandType(instr.Operands[1], domain);
+            var tmpSrc = binder.CreateTemporary(dtSrc);
+            var src = RewriteOp(instr.Operands[1], true);
+            var dst = RewriteOp(instr.Operands[0]);
+            var dtDst = MakeOperandType(instr.Operands[0], domain);
+            var dtElem = ElementDataType(dtSrc) ?? ElementDataType(dtDst) ?? PrimitiveType.Byte;
+            m.Assign(tmpSrc, src);
+            m.Assign(dst, m.Fn(simdGeneric.MakeInstance(dtElem), tmpSrc));
+        }
+
         private void RewriteSimdUnary(string simdFormat, Domain domain)
         {
             var dtSrc = MakeOperandType(instr.Operands[1], domain);

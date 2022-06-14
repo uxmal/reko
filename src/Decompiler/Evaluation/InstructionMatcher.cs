@@ -53,8 +53,7 @@ namespace Reko.Evaluation
 
         public bool VisitAssignment(Assignment ass)
         {
-            var assPat = pattern as Assignment;
-            if (assPat == null)
+            if (pattern is not Assignment assPat)
                 return false;
             matcher.Pattern = assPat.Src;
             if (!matcher.Match(ass.Src))
@@ -65,8 +64,7 @@ namespace Reko.Evaluation
 
         public bool VisitBranch(Branch branch)
         {
-            var branchPat = pattern as Branch;
-            if (branchPat == null)
+            if (pattern is not Branch branchPat)
                 return false;
             matcher.Pattern = branchPat.Condition;
             return matcher.Match(branch.Condition);
@@ -74,10 +72,7 @@ namespace Reko.Evaluation
 
         public bool VisitCallInstruction(CallInstruction ci)
         {
-            var callPat = pattern as CallInstruction;
-            if (callPat == null)
-                return false;
-            return true;
+            return pattern is CallInstruction;
         }
 
         public bool VisitComment(CodeComment comment)
