@@ -204,7 +204,7 @@ d:\dev\uxmal\reko\master\subjects\Elf\IA64\bash\elf-Linux-ia64-bash: error: An i
 === Elf\zSeries\fib\example
 
 === scripting\Exceptions
-IronPython 3.4.0
+IronPython 3.4.0b1
 Evaluating d:\dev\uxmal\reko\master\subjects\scripting\exceptions.py
 
 === PE\x86\ExeDll\Executable
@@ -566,6 +566,13 @@ l00009F1C: warning: Non-integral switch expression
 0000C2E0: warning: Expected sizes of arrays to have been determined by now
 000099B4: warning: Expected sizes of arrays to have been determined by now
 0000C2E0: warning: Expected sizes of arrays to have been determined by now
+
+=== Elf\superH\netbsd-ls\ls
+0040426A: warning: Call target address 605D4F22 is invalid.
+00402AC0: warning: Expected sizes of arrays to have been determined by now
+00402D6C: warning: Expected sizes of arrays to have been determined by now
+00402AC0: warning: Expected sizes of arrays to have been determined by now
+00402D6C: warning: Expected sizes of arrays to have been determined by now
 
 === PDP-11\lunar
 0896: warning: Unable to determine size of call or jump table; there may be more than 2 entries.
@@ -1073,7 +1080,7 @@ fn0800_8F97: error: An internal error occurred while building the expressions of
 l0800_8FD8: warning: Phi functions will be ignored by type analysis. This may be caused by a failure in a previous stage of the decompilation.
 
 === scripting\pyFuncNames
-IronPython 3.4.0
+IronPython 3.4.0b1
 Evaluating d:\dev\uxmal\reko\master\subjects\scripting\py_func_names.py
 
 === PE\x86\pySample\pySample
@@ -1175,7 +1182,7 @@ Signature of 'Borland C++ for Win32 1999' detected.
 === wasm\sample
 
 === scripting\segmented
-IronPython 3.4.0
+IronPython 3.4.0b1
 Evaluating d:\dev\uxmal\reko\master\subjects\scripting\segmented.py
 
 === PE\x86\pySample\shingledPySample
@@ -1990,4 +1997,4 @@ Signature of 'Microsoft Visual C++ 8' detected.
 0040120B: warning: Unable to determine the upper bound of an indirect call or jump; there may be more than 2 entries.
 004011A5: warning: Unable to determine the upper bound of an indirect call or jump; there may be more than 2 entries.
 
-Decompiled 86 binaries in 53.34 seconds.
+Decompiled 87 binaries in 69.09 seconds.

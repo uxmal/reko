@@ -30,7 +30,8 @@ namespace Reko.UnitTests.Arch.Tlcs
     {
         private readonly SuperHArchitecture arch = new (CreateServiceContainer(), "superH", new()
         {
-            { ProcessorOption.Endianness, "le" }
+            { ProcessorOption.Endianness, "le" },
+            { ProcessorOption.Model, "sh4a" }
         });
         private readonly Address baseAddr = Address.Ptr32(0x00100000);
 
@@ -765,21 +766,21 @@ namespace Reko.UnitTests.Arch.Tlcs
         }
 
         [Test]
+        public void SHRw_shlr2()
+        {
+            Given_HexString("0942");	// shlr2	r2
+            AssertCode(
+                "0|L--|00100000(2): 1 instructions",
+                "1|L--|r2 = r2 >>u 2<i32>");
+        }
+
+        [Test]
         public void SHRw_shlr8()
         {
             Given_HexString("1940");	// shlr8	r0
             AssertCode(
                 "0|L--|00100000(2): 1 instructions",
                 "1|L--|r0 = r0 >>u 8<i32>");
-        }
-
-        [Test]
-        public void SHRw_shlr()
-        {
-            Given_HexString("0942");	// shlr	r2
-            AssertCode(
-                "0|L--|00100000(2): 1 instructions",
-                "1|L--|r2 = r2 >>u 1<i32>");
         }
 
         [Test]
@@ -885,7 +886,7 @@ namespace Reko.UnitTests.Arch.Tlcs
         {
             Given_HexString("0200");	// stc	sr,r0
             AssertCode(
-                "0|L--|00100000(2): 1 instructions",
+                "0|S--|00100000(2): 1 instructions",
                 "1|L--|r0 = sr");
         }
 

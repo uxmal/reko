@@ -9,6 +9,10 @@
     <includeDir>ls.reko</includeDir>
     <resources>ls.reko\resources</resources>
     <user>
+      <processor>
+        <item key="Endianness">le</item>
+        <item key="Model">sh4_dsp</item>
+      </processor>
       <registerValues />
       <outputFilePolicy>Segment</outputFilePolicy>
     </user>

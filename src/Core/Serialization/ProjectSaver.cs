@@ -220,7 +220,7 @@ namespace Reko.Core.Serialization
 
         private ProcessorOptions_v4? SerializeProcessorOptions(UserData user, IProcessorArchitecture architecture)
         {
-            if (architecture == null)
+            if (architecture is null)
                 return null;
             var options = architecture.SaveUserOptions();
             if (string.IsNullOrEmpty(user.Processor) && options == null)

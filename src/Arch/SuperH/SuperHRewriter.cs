@@ -45,14 +45,20 @@ namespace Reko.Arch.SuperH
         private SuperHInstruction instr;
         private InstrClass iclass;
 
-        public SuperHRewriter(SuperHArchitecture arch, EndianImageReader rdr, SuperHState state, IStorageBinder binder, IRewriterHost host)
+        public SuperHRewriter(
+            SuperHArchitecture arch,
+            Decoder<SuperHDisassembler, Mnemonic, SuperHInstruction> rootDecoder, 
+            EndianImageReader rdr, 
+            SuperHState state, 
+            IStorageBinder binder,
+            IRewriterHost host)
         {
             this.arch = arch;
             this.rdr = rdr;
             this.state = state;
             this.binder = binder;
             this.host = host;
-            this.dasm = new SuperHDisassembler(arch, rdr).GetEnumerator();
+            this.dasm = new SuperHDisassembler(arch, rootDecoder, rdr).GetEnumerator();
             this.instrs = new List<RtlInstruction>();
             this.m = new RtlEmitter(instrs);
             this.instr = default!;

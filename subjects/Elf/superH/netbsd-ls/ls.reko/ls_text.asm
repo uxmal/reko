@@ -3557,24 +3557,24 @@ l00403AA4:
 	invalid
 	invalid
 	invalid
-	fadd	dr12,dr10
 	invalid
 	invalid
 	invalid
-	fmov	dr14,dr4
-	fmac	fr0,fr15,fr15
+	invalid
+	invalid
+	invalid
 	mov.l	(00403B28),r15                                       ; @(58,pc)
 	invalid
 	invalid
 	invalid
 	invalid
 	invalid
-	fadd	fr15,fr3
-	fmac	fr0,fr15,fr15
+	invalid
+	invalid
 	mov	#8A,r0
 	invalid
-	fmov	dr10,dr4
-	fmac	fr0,fr15,fr15
+	invalid
+	invalid
 	mov.l	(00403DC0),r15                                       ; @(2D8,pc)
 	invalid
 

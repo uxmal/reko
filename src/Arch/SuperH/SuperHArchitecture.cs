@@ -37,6 +37,7 @@ namespace Reko.Arch.SuperH
     public class SuperHArchitecture : ProcessorArchitecture
     {
         private readonly Dictionary<uint, FlagGroupStorage> grfs;
+        private Decoder<SuperHDisassembler, Mnemonic, SuperHInstruction> rootDecoder;
 
         public SuperHArchitecture(IServiceProvider services, string archId, Dictionary<string, object> options)
             : base(services, archId, options)
@@ -48,12 +49,13 @@ namespace Reko.Arch.SuperH
             this.WordWidth = PrimitiveType.Word32;
             // No architecture-defined stack register -- defined by platform.
             this.grfs = new Dictionary<uint, FlagGroupStorage>();
+            this.rootDecoder = default!;
             LoadUserOptions(options);
         }
 
         public override IEnumerable<MachineInstruction> CreateDisassembler(EndianImageReader rdr)
         {
-            return new SuperHDisassembler(this, rdr);
+            return new SuperHDisassembler(this, rootDecoder, rdr);
         }
 
         public override IEqualityComparer<MachineInstruction>? CreateInstructionComparer(Normalize norm)
@@ -73,7 +75,7 @@ namespace Reko.Arch.SuperH
 
         public override IEnumerable<RtlInstructionCluster> CreateRewriter(EndianImageReader rdr, ProcessorState state, IStorageBinder binder, IRewriterHost host)
         {
-            return new SuperHRewriter(this, rdr, (SuperHState)state, binder, host);
+            return new SuperHRewriter(this, rootDecoder, rdr, (SuperHState)state, binder, host);
         }
 
         // SuperH uses a link register
@@ -166,6 +168,7 @@ namespace Reko.Arch.SuperH
                 && string.Compare(sEndian, "be") == 0)
                 ? EndianServices.Big
                 : EndianServices.Little;
+            rootDecoder = new SuperHDisassembler.InstructionSet(options).CreateDecoder();
         }
 
         public override Address MakeAddressFromConstant(Constant c, bool codeAlign)
@@ -179,6 +182,11 @@ namespace Reko.Arch.SuperH
         public override Address ReadCodeAddress(int size, EndianImageReader rdr, ProcessorState? state)
         {
             throw new NotImplementedException();
+        }
+
+        public override Dictionary<string, object>? SaveUserOptions()
+        {
+            return Options;
         }
 
         public override bool TryGetRegister(string name, out RegisterStorage reg)

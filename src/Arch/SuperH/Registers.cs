@@ -208,10 +208,18 @@ namespace Reko.Arch.SuperH
             fv0, fv4, fv8, fv12,
         };
 
+        public static readonly RegisterStorage a0;
+        public static readonly RegisterStorage re;
+        public static readonly RegisterStorage x0;
+        public static readonly RegisterStorage x1;
+        public static readonly RegisterStorage y0;
+        public static readonly RegisterStorage y1;
+
         public static readonly Dictionary<StorageDomain, RegisterStorage> RegistersByDomain;
 
         public static RegisterStorage[] XdRegisters { get; }
         public static RegisterStorage[] XfRegisters { get; }
+        public static RegisterStorage[] DspRegisters { get; }
 
         static Registers()
         {
@@ -223,6 +231,21 @@ namespace Reko.Arch.SuperH
                 new RegisterStorage($"xf{2*(r.Number-n)}", r.Number, 0, PrimitiveType.Word32),
                 new RegisterStorage($"xf{2*(r.Number-n)+1}", r.Number, 32, PrimitiveType.Word32),
             }).ToArray();
+
+            a0 = factory.Reg32("a0");
+            re = factory.Reg32("re");
+            x0 = factory.Reg32("x0");
+            x1 = factory.Reg32("x1");
+            y0 = factory.Reg32("y0");
+            y1 = factory.Reg32("y1");
+            DspRegisters = new RegisterStorage[] { 
+                a0,
+                re,
+                x0,
+                x1,
+                y0,
+                y1,
+            };
 
             RegistersByDomain = gpregs.ToDictionary(r => r.Domain);
         }

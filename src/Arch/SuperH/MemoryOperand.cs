@@ -50,19 +50,21 @@ namespace Reko.Arch.SuperH
         public static MemoryOperand GbrIndirectDisplacement(PrimitiveType w, int d)     { return new MemoryOperand(w) { mode = AddressingMode.GbrIndirectDisplacement, disp = d }; }
         public static MemoryOperand GbrIndexedIndirect(PrimitiveType w)                 { return new MemoryOperand(w) { mode = AddressingMode.GbrIndexedIndirect }; }
         public static MemoryOperand PcRelativeDisplacement(PrimitiveType w, int d)      { return new MemoryOperand(w) { mode = AddressingMode.PcRelativeDisplacement, disp = d }; }
-        public static MemoryOperand PcRelative(PrimitiveType w, int d)                  { return new MemoryOperand(w) { mode = AddressingMode.PcRelative, disp = d }; }
+        public static MemoryOperand DoubleIndirect(PrimitiveType w, Reg r, int d)       { return new MemoryOperand(w) { mode = AddressingMode.DoubleIndirect, reg = r, disp = d }; }
 
         protected override void DoRender(MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
         {
             switch(mode)
             {
-            case AddressingMode.Indirect: renderer.WriteString(string.Format("@{0}", this.reg.Name)); break;
-            case AddressingMode.IndirectDisplacement: renderer.WriteString(string.Format("@({0},{1})", disp, this.reg.Name)); break;
+            case AddressingMode.Indirect: renderer.WriteString($"@{reg.Name}"); break;
+            case AddressingMode.IndirectDisplacement: renderer.WriteString($"@({disp},{reg.Name})"); break;
             case AddressingMode.IndirectPreDecr: renderer.WriteString(string.Format("@-{0}", reg.Name)); break;
             case AddressingMode.IndirectPostIncr: renderer.WriteString(string.Format("@{0}+", reg.Name)); break;
             case AddressingMode.IndexedIndirect: renderer.WriteString(string.Format("@(r0,{0})", reg.Name)); break;
+            case AddressingMode.GbrIndirectDisplacement: renderer.WriteString($"@({disp},gbr)"); break;
             case AddressingMode.GbrIndexedIndirect: renderer.WriteString("@(r0,gbr)"); break;
             case AddressingMode.PcRelativeDisplacement: renderer.WriteString(string.Format("@({0:X2},pc)", disp)); break;
+            case AddressingMode.DoubleIndirect: renderer.WriteString(string.Format("@@({0},{1})", disp, this.reg.Name)); break;
             default: throw new NotImplementedException(string.Format("AddressingMode.{0}", mode));
             }
         }
@@ -78,6 +80,6 @@ namespace Reko.Arch.SuperH
         GbrIndirectDisplacement,
         GbrIndexedIndirect,
         PcRelativeDisplacement,
-        PcRelative,
+        DoubleIndirect,
     }
 }
