@@ -36,30 +36,30 @@ namespace Reko.Core.Configuration
     /// </summary>
     public interface IConfigurationService
     {
-         ICollection<LoaderDefinition> GetImageLoaders();
-         ICollection<ArchitectureDefinition> GetArchitectures();
-         ICollection<PlatformDefinition> GetEnvironments();
-         ICollection<SignatureFileDefinition> GetSignatureFiles();
-         ICollection<RawFileDefinition> GetRawFiles();
+        ICollection<LoaderDefinition> GetImageLoaders();
+        ICollection<ArchitectureDefinition> GetArchitectures();
+        ICollection<PlatformDefinition> GetEnvironments();
+        ICollection<SignatureFileDefinition> GetSignatureFiles();
+        ICollection<RawFileDefinition> GetRawFiles();
 
-         PlatformDefinition GetEnvironment(string envName);
-         IProcessorArchitecture? GetArchitecture(string archLabel);
+        PlatformDefinition GetEnvironment(string envName);
+        IProcessorArchitecture? GetArchitecture(string archLabel);
         IProcessorArchitecture? GetArchitecture(string archLabel, string? modelName);
         IProcessorArchitecture? GetArchitecture(string archLabel, Dictionary<string, object>? options);
 
-         ICollection<SymbolSourceDefinition> GetSymbolSources();
-         RawFileDefinition? GetRawFile(string rawFileFormat);
+        ICollection<SymbolSourceDefinition> GetSymbolSources();
+        RawFileDefinition? GetRawFile(string rawFileFormat);
 
         IEnumerable<UiStyleDefinition> GetDefaultPreferences();
 
-         /// <summary>
-         /// Given a relative path with respect to the installation directory, 
-         /// returns the absolute path.
-         /// </summary>
-         /// <param name="path"></param>
-         /// <returns></returns>
+        /// <summary>
+        /// Given a relative path with respect to the installation directory, 
+        /// returns the absolute path.
+        /// </summary>
+        /// <param name="path"></param>
+        /// <returns></returns>
         string GetInstallationRelativePath(params string[] pathComponents);
-         LoaderDefinition? GetImageLoader(string loader);
+        LoaderDefinition? GetImageLoader(string loader);
     }
 
     public class RekoConfigurationService : IConfigurationService
