@@ -63,6 +63,8 @@ namespace Reko.Arch.PowerPC
             this.addr = rdr.Address;
             if (!rdr.TryReadUInt32(out uint wInstr))
                 return null;
+            if (addr.ToLinear() == 0x82E7BD20)
+                _ = this;//$DEBUG
             this.allowSetCR0 = false;
             this.ops.Clear();
             var instrCur = primaryDecoders[wInstr >> 26].Decode(wInstr, this);

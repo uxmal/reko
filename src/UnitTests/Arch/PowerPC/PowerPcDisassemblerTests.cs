@@ -1879,5 +1879,6 @@ namespace Reko.UnitTests.Arch.PowerPC
         {
             AssertCode("xxsel\tv31,v36,v61,v6", "F1F2F0F3");
         }
+
     }
 }

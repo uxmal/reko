@@ -117,6 +117,12 @@ namespace Reko.UnitTests.Arch.PowerPC
         }
 
         [Test]
+        public void PPCDis_Xenon_stbcx()
+        {
+            AssertCode(0x7D0A656C, "stbcx.\tr8,r10,r12");
+        }
+
+        [Test]
         public void PPCDis_Xenon_upkhsb128()
         {
             AssertCode(0x1B003B84, "vupkhsb128\tv56,v7");
@@ -268,13 +274,6 @@ namespace Reko.UnitTests.Arch.PowerPC
             AssertCode(0x1487020F, "vpkshss128\tv100,v7,v96");
         }
 
-
-        [Test]
-        public void PPCDis_Xenon_7D0A656C()
-        {
-            AssertCode(0x7D0A656C, "stbcx.\tr8,r10,r12");
-        }
-
         [Test]
         public void PPCDis_Xenon_vcmpgtsb()
         {
@@ -306,7 +305,7 @@ namespace Reko.UnitTests.Arch.PowerPC
         {
             AssertCode(0x1268FFE6, "vmsumuhm\tv19,v8,v31,v31");
         }
-  
+
         [Test]
         public void PPCDis_Xenon_vpkuhus128()
         {
@@ -427,6 +426,12 @@ namespace Reko.UnitTests.Arch.PowerPC
         public void PPCDis_Xenon_vupkd3d128()
         {
             AssertCode(0x18ADA3D1, "vupkd3d128\tv5,v52,0D");
+        }
+
+        [Test]
+        public void PPCDis_Xenon_vnmsubfp()
+        {
+            AssertCode(0x118C682F, "vnmsubfp\tv12,v12,v0,v13");
         }
     }
 }

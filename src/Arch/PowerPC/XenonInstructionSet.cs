@@ -36,6 +36,7 @@ namespace Reko.Arch.PowerPC
 
         public override Decoder Ext4Decoder()
         {
+            var baseDecoder = base.Ext4Decoder();
             /*
                VD128, VS128:  5 lower bits of a VMX128 vector register 
                               number
@@ -76,8 +77,8 @@ namespace Reko.Arch.PowerPC
                     |0 0 0 1 0 0|  VS128  |   RA    |   RB    |0 1 1 1 1 0 0|VDh|1 1|    stvxl128      vr(VS128), r(RA), r(RB)
                     */
                  Select(30, 2, u => u != 3,
-                    base.Ext4Decoder(),
-                    Sparse(21, 7, invalid,
+                    baseDecoder,
+                    Sparse(21, 7, baseDecoder,
                         (0b0000000, Instr(Mnemonic.lvsl128, Wd, r2, r3)),
                         (0b0000100, Instr(Mnemonic.lvsr128, Wd, r2, r3)),
                         (0b0001000, Instr(Mnemonic.lvewx128, Wd, r2, r3)),
