@@ -159,6 +159,12 @@ namespace Reko.Scanning
 
         public override ValueSet Shl(Constant cRight)
         {
+            if (SI.IsEmpty)
+            {
+                return new IntervalValueSet(
+                    this.DataType,
+                    StridedInterval.Empty);
+            }
             int v = (int) cRight.ToInt64();
             return new IntervalValueSet(
                 this.DataType,
