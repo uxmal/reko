@@ -882,7 +882,7 @@ namespace Reko.Analysis
                 else
                 {
                      var seq = outer.arch.Endianness.MakeSequence(
-                        PrimitiveType.CreateWord(this.id.DataType.BitSize), 
+                        PrimitiveType.CreateWord(MeasureBitSize(this.id.DataType)), 
                         sequence.Select(e => (Expression) MakeSequenceElement(e).Identifier)
                                 .ToArray());
                     var assSeq = new AliasAssignment(id, seq);

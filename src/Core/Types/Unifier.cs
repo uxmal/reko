@@ -723,13 +723,13 @@ namespace Reko.Core.Types
                 {
                     fNestedStruct = fa;
                     fOther = fb;
-                    strSize = strFa.GetInferredSize();
+                    strSize = strFa.MeasureSize();
                 }
                 else
                 {
                     fNestedStruct = fb;
                     fOther = fa;
-                    strSize = strFb!.GetInferredSize();
+                    strSize = strFb!.MeasureSize();
                 }
 
                 // check if other field is inside nested structure

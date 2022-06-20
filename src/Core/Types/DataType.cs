@@ -120,6 +120,8 @@ namespace Reko.Core.Types
                         return st.Size; // Trust the user/metadata
                     if (st.Fields.Count == 0)
                         return 0;
+                    var firstField = st.Fields[0];
+                    offset -= Math.Min(0, firstField.Offset);
                     var field = st.Fields[^1];
                     offset += field.Offset;
                     dt = field.DataType;
@@ -188,6 +190,8 @@ namespace Reko.Core.Types
                         return st.Size * bitsPerUnit; // Trust the user/metadata
                     if (st.Fields.Count == 0)
                         return 0;
+                    var firstField = st.Fields[0];
+                    bitOffset -= Math.Min(0, bitsPerUnit * firstField.Offset);
                     var field = st.Fields[^1];
                     bitOffset += field.Offset * bitsPerUnit;
                     dt = field.DataType;

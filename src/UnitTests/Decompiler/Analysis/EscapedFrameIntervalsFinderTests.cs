@@ -165,5 +165,39 @@ namespace Reko.UnitTests.Decompiler.Analysis
 [[-16, -8], (struct (0 T_1 t0000) (4 T_2 t0004))]";
             AssertIntervals(expected);
         }
+
+        [Test]
+        public void Efif_Use_ProcedureFlow_with_negative_offset_variables()
+        {
+            // Minicode on certain platforms saves registers to the stack
+            // at _negative_ offsets from the pointer. This results in structures
+            // with negative field offsets -- and a negative size
+            var ecx = m.Reg32("ecx");
+            var str = new StructureType
+            {
+                Fields =
+                {
+                    { -12, PrimitiveType.Word32 },
+                    { -8, PrimitiveType.Word32 }
+                }
+            };
+            var procCallee = new Procedure(m.Architecture, "callee", Address.Ptr32(0x00123400), m.Architecture.CreateFrame());
+            var procFlow = new ProcedureFlow(procCallee);
+            procFlow.BitsUsed.Add(ecx.Storage, ecx.Storage.GetBitRange());
+            procFlow.LiveInDataTypes.Add(ecx.Storage, new Pointer(str, 32));
+            pb.Add(procCallee);
+            flow.ProcedureFlows.Add(procCallee, procFlow);
+
+            m.Call(procCallee, 0,
+                new (Storage, Expression)[] { (ecx.Storage, m.ISubS(fp, 16)) },
+                new (Storage, Identifier)[] { });
+
+            RunEscapedFrameIntervalsFinder();
+
+            var expected = @"
+[[-16, -8], (struct (FFFFFFF4 word32 dwFFFFFFF4) (FFFFFFF8 word32 dwFFFFFFF8))]";
+            AssertIntervals(expected);
+
+        }
     }
 }

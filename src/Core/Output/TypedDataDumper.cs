@@ -224,7 +224,7 @@ namespace Reko.Core.Output
                 fmt.Indent();
                 str.Fields[i].DataType.Accept(this);
             }
-            WritePadBytes(structOffset + str.GetInferredSize());
+            WritePadBytes(structOffset + str.MeasureSize());
         }
 
         private void WritePadBytes(long fieldOffset)
