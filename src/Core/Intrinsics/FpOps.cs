@@ -40,6 +40,10 @@ namespace Reko.Core.Intrinsics
         public static readonly IntrinsicProcedure ExpGeneric = IntrinsicBuilder.GenericUnary("exp");
         public static readonly IntrinsicProcedure FAbs64 = IntrinsicBuilder.Unary("fabs", PrimitiveType.Real64);
         public static readonly IntrinsicProcedure FAbs32 = IntrinsicBuilder.Unary("fabsf", PrimitiveType.Real32);
+        public static readonly IntrinsicProcedure FMax32 = IntrinsicBuilder.Binary("fmaxf", PrimitiveType.Real32);
+        public static readonly IntrinsicProcedure FMax64 = IntrinsicBuilder.Binary("fmax", PrimitiveType.Real64);
+        public static readonly IntrinsicProcedure FMin32 = IntrinsicBuilder.Binary("fminf", PrimitiveType.Real32);
+        public static readonly IntrinsicProcedure FMin64 = IntrinsicBuilder.Binary("fmin", PrimitiveType.Real64);
         public static readonly IntrinsicProcedure FModGeneric = IntrinsicBuilder.GenericBinary("fmod");
         public static readonly IntrinsicProcedure FRemGeneric = IntrinsicBuilder.GenericBinary("frem");
         public static readonly IntrinsicProcedure IsUnordered_f32 = IntrinsicBuilder.Predicate("isunordered", PrimitiveType.Real32, PrimitiveType.Real32);

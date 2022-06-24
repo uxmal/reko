@@ -299,6 +299,9 @@ namespace Reko.ImageLoaders.Elf
             case ElfMachine.EM_TRICORE:
                 arch = "tricore";
                 break;
+            case ElfMachine.EM_LOONGARCH:
+                arch = "loongaArch";
+                break;
             default:
                 throw new NotImplementedException($"ELF machine type {machine} is not implemented yet.");
             }

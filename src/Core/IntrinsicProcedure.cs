@@ -137,7 +137,7 @@ namespace Reko.Core
         /// Makes a concrete instance of this <see cref="IntrinsicProcedure"/> instance, using
         /// the provided <paramref name="concreteTypes" />.
         /// </summary>
-        /// <param name="ptrSizeparams">The size of a pointer in the current architecture.</param>
+        /// <param name="ptrSizeparams">The bit size of a pointer in the current architecture.</param>
         /// <param name="concreteTypes">Concrete </param>
         /// <returns>A newly minted or previously cached concrete instance.
         /// </returns>

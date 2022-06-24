@@ -124,6 +124,7 @@
 <file src="../../Arch/IA64/bin/$Configuration$/net5.0/Reko.Arch.IA64.dll" target="lib\netstandard2.0" />
 <file src="../../Arch/Infineon/bin/$Configuration$/net5.0/Reko.Arch.Infineon.dll" target="lib\netstandard2.0" />
 <file src="../../Arch/LatticeMico/bin/$Configuration$/net5.0/Reko.Arch.LatticeMico.dll" target="lib\netstandard2.0" />
+<file src="../../Arch/Loongson/bin/$Configuration$/net5.0/Reko.Arch.Loongson.dll" target="lib\netstandard2.0" />
 <file src="../../Arch/M6800/bin/$Configuration$/net5.0/Reko.Arch.M6800.dll" target="lib\netstandard2.0" />
 <file src="../../Arch/M68k/bin/$Configuration$/net5.0/Reko.Arch.M68k.dll" target="lib\netstandard2.0" />
 <file src="../../Arch/M68k.Design/bin/$Configuration$/netcoreapp3.1/Reko.Arch.M68k.Design.dll" target="lib\netstandard2.0" />

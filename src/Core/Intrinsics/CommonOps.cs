@@ -40,6 +40,22 @@ namespace Reko.Core.Intrinsics
             .GenericTypes("TData", "TBit")
             .Param("TData").Param("TBit")
             .Returns("TData");
+        public static readonly IntrinsicProcedure CountLeadingOnes = new IntrinsicBuilder("__count_leading_ones", false)
+            .GenericTypes("T")
+            .Param("T")
+            .Returns("T");
+        public static readonly IntrinsicProcedure CountLeadingZeros = new IntrinsicBuilder("__count_leading_zeros", false)
+            .GenericTypes("T")
+            .Param("T")
+            .Returns("T");
+        public static readonly IntrinsicProcedure CountTrailingOnes = new IntrinsicBuilder("__count_trailing_ones", false)
+            .GenericTypes("T")
+            .Param("T")
+            .Returns("T");
+        public static readonly IntrinsicProcedure CountTrailingZeros = new IntrinsicBuilder("__count_trailing_zeros", false)
+            .GenericTypes("T")
+            .Param("T")
+            .Returns("T");
         public static readonly IntrinsicProcedure InvertBit = new IntrinsicBuilder("__invert_bit", false)
             .GenericTypes("TData", "TBit")
             .Param("TData").Param("TBit")
