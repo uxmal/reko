@@ -270,7 +270,7 @@ Eq_551: (union "Eq_551" (real32 u0) (real48 u1))
 Eq_635: (union "Eq_635" (ui32 u0) (word16 u1))
 	T_635 (in gp2_96 @ 00000428 : Eq_635)
 	T_640 (in __xbr(gp2_93) | gp2_93 % 0xA<16> @ 00000000 : word16)
-Eq_639: (union "Eq_639" (ui16 u0) (ui32 u1))
+Eq_639: (union "Eq_639" (int16 u0) (ui32 u1))
 	T_639 (in gp2_93 % 0xA<16> @ 00000000 : word16)
 Eq_646: (union "Eq_646" (ui32 u0) (word16 u1))
 	T_646 (in 0x3030<16> @ 00000430 : word16)
@@ -2854,12 +2854,12 @@ T_637: (in __xbr(gp2_93) @ 00000428 : word32)
   OrigDataType: ui32
 T_638: (in 0xA<16> @ 00000428 : word16)
   Class: Eq_638
-  DataType: ui16
-  OrigDataType: ui16
+  DataType: int16
+  OrigDataType: int16
 T_639: (in gp2_93 % 0xA<16> @ 00000000 : word16)
   Class: Eq_639
   DataType: Eq_639
-  OrigDataType: (union (ui16 u0) (ui32 u1))
+  OrigDataType: (union (int16 u0) (ui32 u1))
 T_640: (in __xbr(gp2_93) | gp2_93 % 0xA<16> @ 00000000 : word16)
   Class: Eq_635
   DataType: Eq_635
@@ -3619,7 +3619,7 @@ typedef union Eq_635 {
 } Eq_635;
 
 typedef union Eq_639 {
-	ui16 u0;
+	int16 u0;
 	ui32 u1;
 } Eq_639;
 

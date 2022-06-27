@@ -356,6 +356,19 @@ namespace Reko.Core.Expressions
         }
 
         /// <summary>
+        /// Generate a floating point modulus operation.
+        /// </summary>
+        /// <param name="dtProduct">Datatype of the result.</param>
+        /// <param name="a">Dividend.</param>
+        /// <param name="b">Divisor.</param>
+        /// <returns>A floating point modulies operation.</returns>
+        public Expression FMod(Expression a, Expression b)
+        {
+            var dtMod = PrimitiveType.Create(Domain.Real, a.DataType.BitSize);
+            return new BinaryExpression(Operator.FMod, dtMod, a, b);
+        }
+
+        /// <summary>
         /// Generate a floating point multiplication.
         /// </summary>
         /// <param name="a">Multiplicand.</param>
@@ -849,6 +862,54 @@ namespace Reko.Core.Expressions
         }
 
         /// <summary>
+        /// Generate the modulus ('%' in the C language family) of signed integers.
+        /// </summary>
+        /// <param name="opLeft">Dividend.</param>
+        /// <param name="opRight">Divisor.</param>
+        /// <returns>A modulus expression.</returns>
+        public Expression SMod(Expression opLeft, Expression opRight)
+        {
+            return new BinaryExpression(Operator.SMod, opLeft.DataType, opLeft, opRight);
+        }
+
+        /// <summary>
+        /// Generate the modulus ('%' in the C language family) of unsigned integers.
+        /// </summary>
+        /// <param name="opLeft">Dividend.</param>
+        /// <param name="opRight">Divisor.</param>
+        /// <returns>A modulus expression.</returns>
+        public Expression UMod(Expression opLeft, Expression opRight)
+        {
+            return new BinaryExpression(Operator.UMod, opLeft.DataType, opLeft, opRight);
+        }
+
+        /// <summary>
+        /// Generate the modulus ('%' in the C language family) of signed integers 
+        /// where the size of the modulus is not the same as the dividend.
+        /// </summary>
+        /// <param name="dt">Size of modulus.</param>
+        /// <param name="opLeft">Dividend.</param>
+        /// <param name="opRight">Divisor.</param>
+        /// <returns>A modulus expression.</returns>
+        public Expression SMod(DataType dt, Expression opLeft, Expression opRight)
+        {
+            return new BinaryExpression(Operator.SMod, dt, opLeft, opRight);
+        }
+
+        /// <summary>
+        /// Generate the modulus ('%' in the C language family) of unsigned integers 
+        /// where the size of the modulus is not the same as the dividend.
+        /// </summary>
+        /// <param name="dt">Size of modulus.</param>
+        /// <param name="opLeft">Dividend.</param>
+        /// <param name="opRight">Divisor.</param>
+        /// <returns>A modulus expression.</returns>
+        public Expression UMod(DataType dt, Expression opLeft, Expression opRight)
+        {
+            return new BinaryExpression(Operator.UMod, dt, opLeft, opRight);
+        }
+
+        /// <summary>
         /// Generates an integer inequality comparison ('!=' in the C language family).
         /// </summary>
         /// <returns>An integer comparison expression.</returns>
@@ -934,20 +995,6 @@ namespace Reko.Core.Expressions
         }
 
         /// <summary>
-        /// Generate the integer remainder ('%' in the C language family).
-        /// </summary>
-        /// <param name="opLeft">Dividend.</param>
-        /// <param name="opRight">Divisor.</param>
-        /// <returns>A modulus expression.</returns>
-        public Expression Remainder(Expression a, Expression b)
-        {
-            return new BinaryExpression(
-                Operator.IMod,
-                b.DataType,
-                a, b);
-        }
-
-        /// <summary>
         /// Generate a signed integer division.
         /// </summary>
         /// <param name="a">Dividend.</param>
@@ -956,6 +1003,11 @@ namespace Reko.Core.Expressions
         public BinaryExpression SDiv(Expression a, Expression b)
         {
             return new BinaryExpression(Operator.SDiv, b.DataType, a, b);
+        }
+
+        public BinaryExpression SDiv(DataType dt, Expression a, Expression b)
+        {
+            return new BinaryExpression(Operator.SDiv, dt, a, b);
         }
 
         /// <summary>

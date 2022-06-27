@@ -308,7 +308,7 @@ namespace Reko.Arch.X86
         {
             Expression src = FpuRegister(1);
             Expression dst = FpuRegister(0);
-            m.Assign(dst, m.Mod(dst, src));
+            m.Assign(dst, m.FMod(dst, src));
             m.Assign(binder.EnsureFlagGroup(Registers.C2), m.Fn(fprem_incomplete_intrinsic, FpuRegister(0)));
         }
 

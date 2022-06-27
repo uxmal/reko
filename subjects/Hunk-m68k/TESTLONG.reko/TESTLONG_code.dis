@@ -1562,7 +1562,7 @@ l0000252A:
 	word32 d6_94 = SLICE(d5_d6_565, word32, 0)
 	branch SLICE(d2_73 - d3_74, word16, 0) != 0<16> l0000253C
 l0000253C:
-	d1_104 = __swap(SEQ(SLICE(__swap(SEQ(d5_71 % SLICE(d3_74, uint16, 0), d5_71 /u SLICE(d3_74, uint16, 0))), word16, 16), 0<16>))
+	d1_104 = __swap(SEQ(SLICE(__swap(SEQ(d5_71 %u SLICE(d3_74, uint16, 0), d5_71 /u SLICE(d3_74, uint16, 0))), word16, 16), 0<16>))
 l00002536:
 	d1_104 = 0xFFFF<32>
 l00002546:
@@ -1626,9 +1626,9 @@ l000024EA:
 	word32 d0_281 = __swap(d0)
 	word32 d1_282 = __swap(d1)
 	word32 d0_285 = SEQ(SLICE(d0_281, word16, 16), SLICE(d1_282, word16, 0))
-	word32 d0_295 = SEQ(d0_285 % SLICE(d2, uint16, 0), SLICE(__swap(d1_282), word16, 0))
+	word32 d0_295 = SEQ(d0_285 %u SLICE(d2, uint16, 0), SLICE(__swap(d1_282), word16, 0))
 	d2 = SEQ(SLICE(__swap(CONVERT(d0_285 /u SLICE(d2, uint16, 0), uint16, uint32)), word16, 16), d0_295 /u SLICE(d2, uint16, 0))
-	d1 = __swap(SEQ(d0_295 % SLICE(d2, uint16, 0), 0<16>))
+	d1 = __swap(SEQ(d0_295 %u SLICE(d2, uint16, 0), 0<16>))
 	d0 = d2
 l000024CA:
 	branch d1 == 0<32> l00002602
@@ -1720,7 +1720,7 @@ l000026CA:
 	uint16 v49_77 = d0_69 /u SLICE(d1_20, uint16, 0)
 	word32 d1_88 = __swap(d1_20)
 	word32 d3_100 = SEQ(v51_80, v49_77)
-	word32 d0_106 = SEQ(d0_69 % SLICE(d1_20, uint16, 0), SLICE(d2_73, word16, 0)) - SEQ(SLICE(d2_73, word16, 16), v49_77) *u32 SLICE(d1_88, word16, 0)
+	word32 d0_106 = SEQ(d0_69 %u SLICE(d1_20, uint16, 0), SLICE(d2_73, word16, 0)) - SEQ(SLICE(d2_73, word16, 16), v49_77) *u32 SLICE(d1_88, word16, 0)
 	branch d0_106 >=u 0<32> l000026EC
 l000026E6:
 	d3_100 = SEQ(v51_80, v49_77 - 1<16>)
@@ -1738,13 +1738,13 @@ l00002682:
 	branch v13_135 == 0<16> l00002690
 l0000268C:
 	uint16 v16_141 = d2_137 /u SLICE(d1_133, uint16, 0)
-	d2_137 = SEQ(d2_137 % SLICE(d1_133, uint16, 0), v16_141)
+	d2_137 = SEQ(d2_137 %u SLICE(d1_133, uint16, 0), v16_141)
 	d0_132 = SEQ(SLICE(d0_132, word16, 16), v16_141)
 l00002690:
 	word32 d0_148 = __swap(d0_132)
 	word32 d2_152 = SEQ(SLICE(d2_137, word16, 16), SLICE(d0_148, word16, 0))
 	uint16 v32_155 = d2_152 /u SLICE(d1_133, uint16, 0)
-	d1Out = SEQ(SLICE(d1_133, word16, 16), SLICE(__swap(SEQ(d2_152 % SLICE(d1_133, uint16, 0), v32_155)), word16, 0))
+	d1Out = SEQ(SLICE(d1_133, word16, 16), SLICE(__swap(SEQ(d2_152 %u SLICE(d1_133, uint16, 0), v32_155)), word16, 0))
 	return SEQ(SLICE(d0_148, word16, 16), v32_155)
 fn0000267A_exit:
 

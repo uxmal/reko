@@ -282,8 +282,8 @@ namespace Reko.Arch.Xtensa
                 case Mnemonic.quou: RewriteBinOp(m.UDiv); break;
                 case Mnemonic.rdtlb0: RewriteUnaryFn(rdtlb0_intrinsic); break;
                 case Mnemonic.rdtlb1: RewriteUnaryFn(rdtlb1_intrinsic); break;
-                case Mnemonic.rems: RewriteBinOp(m.Mod); break;
-                case Mnemonic.remu: RewriteBinOp(m.Mod); break;
+                case Mnemonic.rems: RewriteBinOp(m.SMod); break;
+                case Mnemonic.remu: RewriteBinOp(m.UMod); break;
                 case Mnemonic.ret:
                 case Mnemonic.ret_n: RewriteRet(); break;
                 case Mnemonic.rfe: RewriteRet(); break;      //$REVIEW: emit some hint this is a return from exception?

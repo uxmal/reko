@@ -1446,7 +1446,7 @@ namespace Reko.UnitTests.Arch.Loongson
             Given_HexString("A6D92200");
             AssertCode(     // mod.d	$r6,$r13,$r22
                 "0|L--|0000000000100000(4): 1 instructions",
-                "1|L--|r6 = r13 % r22");
+                "1|L--|r6 = r13 %s r22");
         }
 
         [Test]
@@ -1455,7 +1455,7 @@ namespace Reko.UnitTests.Arch.Loongson
             Given_HexString("8C942300");
             AssertCode(     // mod.du	$r12,$r4,$r5
                 "0|L--|0000000000100000(4): 1 instructions",
-                "1|L--|r12 = r4 % r5");
+                "1|L--|r12 = r4 %u r5");
         }
 
         [Test]
@@ -1466,7 +1466,7 @@ namespace Reko.UnitTests.Arch.Loongson
                 "0|L--|0000000000100000(4): 4 instructions",
                 "1|L--|v3 = SLICE(r5, word32, 0)",
                 "2|L--|v5 = SLICE(r13, word32, 0)",
-                "3|L--|v7 = v3 % v5",
+                "3|L--|v7 = v3 %s v5",
                 "4|L--|r12 = CONVERT(v7, word32, int64)");
         }
 
@@ -1478,7 +1478,7 @@ namespace Reko.UnitTests.Arch.Loongson
                 "0|L--|0000000000100000(4): 4 instructions",
                 "1|L--|v3 = SLICE(r12, word32, 0)",
                 "2|L--|v5 = SLICE(r13, word32, 0)",
-                "3|L--|v7 = v3 % v5",
+                "3|L--|v7 = v3 %u v5",
                 "4|L--|r14 = CONVERT(v7, word32, int64)");
         }
 

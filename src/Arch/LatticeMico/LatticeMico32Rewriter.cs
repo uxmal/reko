@@ -108,8 +108,8 @@ namespace Reko.Arch.LatticeMico
                 case Mnemonic.lh: RewriteLoad(PrimitiveType.Int32); break;
                 case Mnemonic.lhu: RewriteLoad(PrimitiveType.Word32); break;
                 case Mnemonic.lw: RewriteLoad(PrimitiveType.Word32); break;
-                case Mnemonic.mod: RewriteBinop(m.Mod); break;
-                case Mnemonic.modu: RewriteBinop(m.Mod); break;
+                case Mnemonic.mod: RewriteBinop(m.SMod); break;
+                case Mnemonic.modu: RewriteBinop(m.UMod); break;
                 case Mnemonic.mul: RewriteBinop(m.IMul); break;
                 case Mnemonic.muli: RewriteBinop(m.IMul); break;
                 case Mnemonic.nor: RewriteBinop(Nor); break;

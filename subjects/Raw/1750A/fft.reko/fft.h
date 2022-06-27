@@ -334,7 +334,7 @@ Eq_1060: (union "Eq_1060" (uint16 u0) (ui32 u1))
 	T_1216 (in __xbr(gp0) @ 000004DE : word32)
 	T_1217 (in pr_hex_byte(__xbr(gp0)) @ 000004DE : word16)
 	T_1218 (in pr_hex_byte(pr_hex_byte(__xbr(gp0))) @ 000004DE : word16)
-Eq_1062: (union "Eq_1062" (ui16 u0) (ui32 u1))
+Eq_1062: (union "Eq_1062" (int16 u0) (ui32 u1))
 	T_1062 (in gp2_93 % 0xA<16> @ 00000000 : word16)
 Eq_1069: (union "Eq_1069" (ui32 u0) (word16 u1))
 	T_1069 (in 0x3030<16> @ 00000482 : word16)
@@ -4682,12 +4682,12 @@ T_1060: (in __xbr(gp2_93) @ 0000047A : word32)
   OrigDataType: ui32
 T_1061: (in 0xA<16> @ 0000047A : word16)
   Class: Eq_1061
-  DataType: ui16
-  OrigDataType: ui16
+  DataType: int16
+  OrigDataType: int16
 T_1062: (in gp2_93 % 0xA<16> @ 00000000 : word16)
   Class: Eq_1062
   DataType: Eq_1062
-  OrigDataType: (union (ui16 u0) (ui32 u1))
+  OrigDataType: (union (int16 u0) (ui32 u1))
 T_1063: (in __xbr(gp2_93) | gp2_93 % 0xA<16> @ 00000000 : word16)
   Class: Eq_1056
   DataType: Eq_1056
@@ -5886,7 +5886,7 @@ typedef union Eq_1060 {
 } Eq_1060;
 
 typedef union Eq_1062 {
-	ui16 u0;
+	int16 u0;
 	ui32 u1;
 } Eq_1062;
 

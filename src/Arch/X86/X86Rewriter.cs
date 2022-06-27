@@ -206,7 +206,7 @@ namespace Reko.Arch.X86
                 case Mnemonic.daa: EmitDaaDas(daa_intrinsic); break;
                 case Mnemonic.das: EmitDaaDas(das_intrinsic); break;
                 case Mnemonic.dec: RewriteIncDec(-1); break;
-                case Mnemonic.div: RewriteDivide(m.UDiv, Domain.UnsignedInt); break;
+                case Mnemonic.div: RewriteDivide(m.UDiv, m.UMod, Domain.UnsignedInt); break;
                 case Mnemonic.divpd: RewritePackedBinop(false, divp_intrinsic, PrimitiveType.Real64); break;
                 case Mnemonic.divps: RewritePackedBinop(false, divp_intrinsic, PrimitiveType.Real32); break;
                 case Mnemonic.divsd: RewriteScalarBinop(m.FDiv, PrimitiveType.Real64, false); break;
@@ -313,7 +313,7 @@ namespace Reko.Arch.X86
                 case Mnemonic.getsec: RewriteGetsec(); break;
                 case Mnemonic.hlt: RewriteHlt(); break;
                 case Mnemonic.icebp: RewriteIcebp(); break;
-                case Mnemonic.idiv: RewriteDivide(m.SDiv, Domain.SignedInt); break;
+                case Mnemonic.idiv: RewriteDivide(m.SDiv, m.SMod, Domain.SignedInt); break;
                 case Mnemonic.@in: RewriteIn(); break;
                 case Mnemonic.imul: RewriteMultiply(m.SMul, Domain.SignedInt); break;
                 case Mnemonic.inc: RewriteIncDec(1); break;

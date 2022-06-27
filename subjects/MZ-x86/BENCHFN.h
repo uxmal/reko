@@ -9256,9 +9256,9 @@ T_1761: (in CONVERT(ax_31, word16, uint32) @ 00008C9F : uint32)
   OrigDataType: uint32
 T_1762: (in dx_ax_82 % wArg06 @ 00000000 : word32)
   Class: Eq_1762
-  DataType: ui32
-  OrigDataType: ui32
-T_1763: (in SLICE(dx_ax_82 % wArg06, byte, 0) @ 00008CA1 : byte)
+  DataType: uint32
+  OrigDataType: uint32
+T_1763: (in SLICE(dx_ax_82 %u wArg06, byte, 0) @ 00008CA1 : byte)
   Class: Eq_1763
   DataType: byte
   OrigDataType: byte
@@ -9304,21 +9304,21 @@ T_1773: (in dx_ax_63 @ 00008C94 : uint32)
   OrigDataType: uint32
 T_1774: (in dx_ax_55 % wArg06 @ 00000000 : word32)
   Class: Eq_1774
-  DataType: ui32
-  OrigDataType: ui32
-T_1775: (in CONVERT(dx_ax_55 % wArg06, word32, uint16) @ 00008C94 : uint16)
+  DataType: uint32
+  OrigDataType: uint32
+T_1775: (in CONVERT(dx_ax_55 %u wArg06, word32, uint16) @ 00008C94 : uint16)
   Class: Eq_1775
   DataType: uint16
   OrigDataType: uint16
-T_1776: (in SEQ(CONVERT(dx_ax_55 % wArg06, word32, uint16), ax_31) @ 00008C94 : word32)
+T_1776: (in SEQ(CONVERT(dx_ax_55 %u wArg06, word32, uint16), ax_31) @ 00008C94 : word32)
   Class: Eq_1773
   DataType: uint32
   OrigDataType: uint32
 T_1777: (in dx_ax_63 % wArg06 @ 00000000 : word32)
   Class: Eq_1777
-  DataType: ui32
-  OrigDataType: ui32
-T_1778: (in SLICE(dx_ax_63 % wArg06, byte, 0) @ 00008C96 : byte)
+  DataType: uint32
+  OrigDataType: uint32
+T_1778: (in SLICE(dx_ax_63 %u wArg06, byte, 0) @ 00008C96 : byte)
   Class: Eq_1778
   DataType: byte
   OrigDataType: byte

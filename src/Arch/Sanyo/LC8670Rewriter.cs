@@ -238,7 +238,7 @@ namespace Reko.Arch.Sanyo
             var tmp = binder.CreateTemporary(acc_c.DataType);
             m.Assign(tmp, acc_c);
             m.Assign(acc_c, m.UDiv(tmp, b));
-            m.Assign(b, m.Mod(tmp, b));
+            m.Assign(b, m.UMod(tmp, b));
             m.Assign(binder.EnsureFlagGroup(C), Constant.False());
             m.Assign(binder.EnsureFlagGroup(V), m.Eq0(b));
         }

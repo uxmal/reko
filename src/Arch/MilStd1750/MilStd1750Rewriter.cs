@@ -384,7 +384,7 @@ namespace Reko.Arch.MilStd1750
             var rem = binder.EnsureRegister(ra1);
             m.Assign(divisor, Op(1));
             m.Assign(quo, m.SDiv(dividend, divisor));
-            m.Assign(rem, m.Remainder(dividend, divisor));
+            m.Assign(rem, m.SMod(dividend, divisor));
             AssignFlags(PZN, m.Cond(quo));
         }
 
@@ -414,7 +414,7 @@ namespace Reko.Arch.MilStd1750
             var rem = binder.EnsureRegister(ra1);
             m.Assign(divisor, Op(1));
             m.Assign(quo, m.SDiv(dividend, divisor));
-            m.Assign(rem, m.Remainder(dividend, divisor));
+            m.Assign(rem, m.SMod(dividend, divisor));
             AssignFlags(PZN, m.Cond(quo));
         }
 
@@ -428,7 +428,7 @@ namespace Reko.Arch.MilStd1750
             var quo = binder.EnsureRegister(ra0);
             var rem = binder.EnsureRegister(ra1);
             m.Assign(quo, m.SDiv(dividend, divisor));
-            m.Assign(rem, m.Remainder(dividend, divisor));
+            m.Assign(rem, m.SMod(dividend, divisor));
             AssignFlags(PZN, m.Cond(quo));
         }
 

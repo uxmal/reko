@@ -822,7 +822,7 @@ namespace Reko.UnitTests.Arch.X86
             AssertCode(
                 "0|L--|0C00:0000(2): 4 instructions",
                 "1|L--|v5 = dx_ax",
-                "2|L--|dx = CONVERT(v5 % cx, word32, uint16)",
+                "2|L--|dx = CONVERT(v5 %u cx, word32, uint16)",
                 "3|L--|ax = CONVERT(v5 /u cx, word16, uint16)",
                 "4|L--|SCZO = cond(ax)");
         }
@@ -837,7 +837,7 @@ namespace Reko.UnitTests.Arch.X86
             AssertCode(
                     "0|L--|0C00:0000(2): 4 instructions",
                     "1|L--|v5 = dx_ax",
-                    "2|L--|dx = CONVERT(v5 % cx, word32, int16)",
+                    "2|L--|dx = CONVERT(v5 %s cx, word32, int16)",
                     "3|L--|ax = CONVERT(v5 /16 cx, word16, int16)",
                     "4|L--|SCZO = cond(ax)");
         }
@@ -1472,7 +1472,7 @@ namespace Reko.UnitTests.Arch.X86
             AssertCode(
                   "0|L--|10000000(4): 4 instructions",
                   "1|L--|v5 = edx_eax",
-                  "2|L--|edx = CONVERT(v5 % Mem0[esp + 4<i32>:word32], word64, int32)",
+                  "2|L--|edx = CONVERT(v5 %s Mem0[esp + 4<i32>:word32], word64, int32)",
                   "3|L--|eax = CONVERT(v5 /32 Mem0[esp + 4<i32>:word32], word32, int32)",
                   "4|L--|SCZO = cond(eax)");
         }

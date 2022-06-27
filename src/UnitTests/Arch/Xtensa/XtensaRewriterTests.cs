@@ -1109,7 +1109,7 @@ namespace Reko.UnitTests.Arch.Xtensa
             Given_UInt32s(0xF23100);
             AssertCode(
                 "0|L--|00010000(3): 1 instructions",
-                "1|L--|a3 = a1 % a0");
+                "1|L--|a3 = a1 %s a0");
         }
 
         [Test]

@@ -227,7 +227,7 @@ namespace Reko.UnitTests.Arch.MilStd1750
                 "0|L--|0100(1): 4 instructions",
                 "1|L--|v3 = 0x43<16>",
                 "2|L--|gp12 = gp0_gp1 /16 v3",
-                "3|L--|gp13 = gp0_gp1 % v3",
+                "3|L--|gp13 = gp0_gp1 %s v3",
                 "4|L--|PZN = cond(gp12)");
         }
 
@@ -248,7 +248,7 @@ namespace Reko.UnitTests.Arch.MilStd1750
                 "0|L--|0100(1): 4 instructions",
                 "1|L--|v3 = 0xA<16>",
                 "2|L--|gp1 = gp1 / v3",
-                "3|L--|gp2 = gp1 % v3",
+                "3|L--|gp2 = gp1 %s v3",
                 "4|L--|PZN = cond(gp1)");
         }
 

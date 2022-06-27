@@ -133,21 +133,24 @@ namespace Reko.Arch.Mips
             m.Assign(dst, src);
         }
 
-        private void RewriteDiv(MipsInstruction instr, Func<Expression, Expression, Expression> ctor)
+        private void RewriteDiv(
+            MipsInstruction instr, 
+            Func<Expression, Expression, Expression> div,
+            Func<Expression, Expression, Expression> mod)
         {
             var op1 = RewriteOperand(instr.Operands[0]);
             var op2 = RewriteOperand(instr.Operands[1]);
             if (instr.Operands.Length > 3)
             {
                 var op3 = RewriteOperand(instr.Operands[2]);
-                m.Assign(op1, ctor(op2, op3));
+                m.Assign(op1, div(op2, op3));
             }
             else
             {
                 var hi = binder.EnsureRegister(arch.hi);
                 var lo = binder.EnsureRegister(arch.lo);
-                m.Assign(lo, ctor(op1, op2));
-                m.Assign(hi, m.Mod(op1, op2));
+                m.Assign(lo, div(op1, op2));
+                m.Assign(hi, mod(op1, op2));
             }
         }
 

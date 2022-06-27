@@ -74,7 +74,7 @@ namespace Reko.ImageLoaders.LLVM
             case TokenType.sub: fn = m.ISub; break;
             case TokenType.mul: fn = m.IMul; break;
             case TokenType.sdiv: fn = m.SDiv; break;
-            case TokenType.srem: fn = m.Remainder; break;
+            case TokenType.srem: fn = m.SMod; break;
             }
             m.Assign(dst, fn(left, right));
             return 0;

@@ -219,10 +219,10 @@ namespace Reko.Arch.Loongson
                 case Mnemonic.ldx_wu: RewriteLoad(PrimitiveType.Word32); break;
                 case Mnemonic.maskeqz: RewriteMask(m.Eq0); break;
                 case Mnemonic.masknez: RewriteMask(m.Ne0); break;
-                case Mnemonic.mod_d: RewriteBinaryOp(m.Mod, false); break;
-                case Mnemonic.mod_du: RewriteBinaryOp(m.Mod, false); break;
-                case Mnemonic.mod_w: RewriteBinaryOp(m.Mod, true); break;
-                case Mnemonic.mod_wu: RewriteBinaryOp(m.Mod, true); break;
+                case Mnemonic.mod_d: RewriteBinaryOp(m.SMod, false); break;
+                case Mnemonic.mod_du: RewriteBinaryOp(m.UMod, false); break;
+                case Mnemonic.mod_w: RewriteBinaryOp(m.SMod, true); break;
+                case Mnemonic.mod_wu: RewriteBinaryOp(m.UMod, true); break;
                 case Mnemonic.mul_d: RewriteMul(false); break;
                 case Mnemonic.mul_w: RewriteMul(true); break;
                 case Mnemonic.mulh_d: RewriteMulh_d(); break;

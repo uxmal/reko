@@ -513,13 +513,13 @@ Eq_586: (union "Eq_586" (byte u0) (word16 u1) ((ptr32 Eq_5808) u2))
 	T_2661 (in CONVERT(d0_285 /u SLICE(d2, uint16, 0), uint16, uint32) @ 0000259A : uint32)
 	T_2662 (in __swap((uint32) (d0_285 /u (uint16) d2)) @ 0000259A : word32)
 	T_2666 (in SEQ(SLICE(__swap((uint32) (d0_285 /u (uint16) d2)), word16, 16), d0_295 /u SLICE(d2, uint16, 0)) @ 0000259A : uipr32)
-	T_2671 (in SEQ(d0_295 % SLICE(d2, uint16, 0), 0<16>) @ 000025A0 : uipr32)
+	T_2671 (in SEQ(d0_295 %u SLICE(d2, uint16, 0), 0<16>) @ 000025A0 : uipr32)
 	T_2672 (in __swap(SEQ(d0_295 % (uint16) d2, 0<16>)) @ 000025A0 : word32)
 	T_2684 (in d7_13 * 2<32> @ 00000000 : word32)
 	T_2685 (in 0<32> @ 000025C2 : word32)
 	T_2689 (in d5_71 @ 000025E0 : Eq_586)
 	T_2690 (in d3_74 @ 000025E0 : Eq_586)
-	T_2695 (in SEQ(d5_71 % SLICE(d3_74, uint16, 0), d5_71 /u SLICE(d3_74, uint16, 0)) @ 000025E0 : uint32)
+	T_2695 (in SEQ(d5_71 %u SLICE(d3_74, uint16, 0), d5_71 /u SLICE(d3_74, uint16, 0)) @ 000025E0 : uint32)
 	T_2696 (in __swap(SEQ(d5_71 % (uint16) d3_74, d5_71 /u (uint16) d3_74)) @ 000025E0 : word32)
 	T_2699 (in SEQ(SLICE(__swap(SEQ(d5_71 % (uint16) d3_74, d5_71 /u (uint16) d3_74)), word16, 16), 0<16>) @ 000025E0 : uipr32)
 	T_2700 (in __swap(SEQ(SLICE(__swap(SEQ(d5_71 % (uint16) d3_74, d5_71 /u (uint16) d3_74)), word16, 16), 0<16>)) @ 000025E0 : word32)
@@ -608,7 +608,7 @@ Eq_586: (union "Eq_586" (byte u0) (word16 u1) ((ptr32 Eq_5808) u2))
 	T_2937 (in __swap(d2_10) @ 00002724 : word32)
 	T_2942 (in d0_148 @ 0000272C : Eq_586)
 	T_2944 (in __swap(d0_132) @ 0000272C : word32)
-	T_2956 (in SEQ(d2_152 % SLICE(d1_133, uint16, 0), v32_155) @ 0000273A : uint32)
+	T_2956 (in SEQ(d2_152 %u SLICE(d1_133, uint16, 0), v32_155) @ 0000273A : uint32)
 	T_2957 (in __swap(SEQ(d2_152 % (uint16) d1_133, v32_155)) @ 0000273A : word32)
 	T_2959 (in SEQ(SLICE(d1_133, word16, 16), SLICE(__swap(SEQ(d2_152 % (uint16) d1_133, v32_155)), word16, 0)) @ 0000273A : uipr32)
 	T_2961 (in SEQ(SLICE(d0_148, word16, 16), v32_155) @ 0000273A : uipr32)
@@ -12588,8 +12588,8 @@ T_2652: (in SLICE(d2, uint16, 0) @ 00002594 : uint16)
   OrigDataType: uint16
 T_2653: (in d0_285 % (uint16) d2 @ 00000000 : uint16)
   Class: Eq_2653
-  DataType: ui16
-  OrigDataType: ui16
+  DataType: uint16
+  OrigDataType: uint16
 T_2654: (in __swap @ 00002594 : ptr32)
   Class: Eq_834
   DataType: (ptr32 Eq_834)
@@ -12602,10 +12602,10 @@ T_2656: (in SLICE(__swap(d1_282), word16, 0) @ 00002594 : word16)
   Class: Eq_2656
   DataType: uint16
   OrigDataType: uint16
-T_2657: (in SEQ(d0_285 % SLICE(d2, uint16, 0), SLICE(__swap(d1_282), word16, 0)) @ 00002594 : uipr32)
+T_2657: (in SEQ(d0_285 %u SLICE(d2, uint16, 0), SLICE(__swap(d1_282), word16, 0)) @ 00002594 : uipr32)
   Class: Eq_2651
   DataType: uint32
-  OrigDataType: ui32
+  OrigDataType: uint32
 T_2658: (in __swap @ 0000259A : ptr32)
   Class: Eq_834
   DataType: (ptr32 Eq_834)
@@ -12652,16 +12652,16 @@ T_2668: (in SLICE(d2, uint16, 0) @ 000025A0 : uint16)
   OrigDataType: uint16
 T_2669: (in d0_295 % (uint16) d2 @ 00000000 : uint16)
   Class: Eq_2669
-  DataType: ui16
-  OrigDataType: ui16
+  DataType: uint16
+  OrigDataType: uint16
 T_2670: (in 0<16> @ 000025A0 : word16)
   Class: Eq_2670
   DataType: uint16
   OrigDataType: uint16
-T_2671: (in SEQ(d0_295 % SLICE(d2, uint16, 0), 0<16>) @ 000025A0 : uipr32)
+T_2671: (in SEQ(d0_295 %u SLICE(d2, uint16, 0), 0<16>) @ 000025A0 : uipr32)
   Class: Eq_586
   DataType: Eq_586
-  OrigDataType: ui32
+  OrigDataType: uint32
 T_2672: (in __swap(SEQ(d0_295 % (uint16) d2, 0<16>)) @ 000025A0 : word32)
   Class: Eq_586
   DataType: Eq_586
@@ -12744,8 +12744,8 @@ T_2691: (in SLICE(d3_74, uint16, 0) @ 000025E0 : uint16)
   OrigDataType: uint16
 T_2692: (in d5_71 % (uint16) d3_74 @ 00000000 : uint16)
   Class: Eq_2692
-  DataType: ui16
-  OrigDataType: ui16
+  DataType: uint16
+  OrigDataType: uint16
 T_2693: (in SLICE(d3_74, uint16, 0) @ 000025E0 : uint16)
   Class: Eq_2693
   DataType: uint16
@@ -12754,10 +12754,10 @@ T_2694: (in d5_71 /u (uint16) d3_74 @ 00000000 : uint16)
   Class: Eq_2694
   DataType: uint16
   OrigDataType: uint16
-T_2695: (in SEQ(d5_71 % SLICE(d3_74, uint16, 0), d5_71 /u SLICE(d3_74, uint16, 0)) @ 000025E0 : uint32)
+T_2695: (in SEQ(d5_71 %u SLICE(d3_74, uint16, 0), d5_71 /u SLICE(d3_74, uint16, 0)) @ 000025E0 : uint32)
   Class: Eq_586
   DataType: Eq_586
-  OrigDataType: ui32
+  OrigDataType: uint32
 T_2696: (in __swap(SEQ(d5_71 % (uint16) d3_74, d5_71 /u (uint16) d3_74)) @ 000025E0 : word32)
   Class: Eq_586
   DataType: Eq_586
@@ -13796,12 +13796,12 @@ T_2954: (in SLICE(d1_133, uint16, 0) @ 0000273A : uint16)
   OrigDataType: uint16
 T_2955: (in d2_152 % (uint16) d1_133 @ 00000000 : uint16)
   Class: Eq_2955
-  DataType: ui16
-  OrigDataType: ui16
-T_2956: (in SEQ(d2_152 % SLICE(d1_133, uint16, 0), v32_155) @ 0000273A : uint32)
+  DataType: uint16
+  OrigDataType: uint16
+T_2956: (in SEQ(d2_152 %u SLICE(d1_133, uint16, 0), v32_155) @ 0000273A : uint32)
   Class: Eq_586
   DataType: Eq_586
-  OrigDataType: ui32
+  OrigDataType: uint32
 T_2957: (in __swap(SEQ(d2_152 % (uint16) d1_133, v32_155)) @ 0000273A : word32)
   Class: Eq_586
   DataType: Eq_586
@@ -13840,12 +13840,12 @@ T_2965: (in SLICE(d1_133, uint16, 0) @ 00002728 : uint16)
   OrigDataType: uint16
 T_2966: (in d2_137 % (uint16) d1_133 @ 00000000 : uint16)
   Class: Eq_2966
-  DataType: ui16
-  OrigDataType: ui16
-T_2967: (in SEQ(d2_137 % SLICE(d1_133, uint16, 0), v16_141) @ 00002728 : uint32)
+  DataType: uint16
+  OrigDataType: uint16
+T_2967: (in SEQ(d2_137 %u SLICE(d1_133, uint16, 0), v16_141) @ 00002728 : uint32)
   Class: Eq_2935
   DataType: uint32
-  OrigDataType: ui32
+  OrigDataType: uint32
 T_2968: (in SLICE(d0_132, word16, 16) @ 0000272A : word16)
   Class: Eq_2968
   DataType: word16
@@ -14072,16 +14072,16 @@ T_3023: (in SLICE(d1_20, uint16, 0) @ 0000277E : uint16)
   OrigDataType: uint16
 T_3024: (in d0_69 % (uint16) d1_20 @ 00000000 : uint16)
   Class: Eq_3024
-  DataType: ui16
-  OrigDataType: ui16
+  DataType: uint16
+  OrigDataType: uint16
 T_3025: (in SLICE(d2_73, word16, 0) @ 0000277E : word16)
   Class: Eq_3025
   DataType: uint16
   OrigDataType: uint16
-T_3026: (in SEQ(d0_69 % SLICE(d1_20, uint16, 0), SLICE(d2_73, word16, 0)) @ 0000277E : uipr32)
+T_3026: (in SEQ(d0_69 %u SLICE(d1_20, uint16, 0), SLICE(d2_73, word16, 0)) @ 0000277E : uipr32)
   Class: Eq_3026
-  DataType: ui32
-  OrigDataType: ui32
+  DataType: uint32
+  OrigDataType: uint32
 T_3027: (in SLICE(d2_73, word16, 16) @ 0000277E : word16)
   Class: Eq_3027
   DataType: uint16
@@ -14101,7 +14101,7 @@ T_3030: (in SEQ(SLICE(d2_73, word16, 16), v49_77) *32 (word16) d1_88 @ 00000000 
 T_3031: (in SEQ(d0_69 % (uint16) d1_20, (word16) d2_73) - SEQ(SLICE(d2_73, word16, 16), v49_77) *32 (word16) d1_88 @ 00000000 : word32)
   Class: Eq_586
   DataType: Eq_586
-  OrigDataType: ui32
+  OrigDataType: uint32
 T_3032: (in 0<32> @ 00002780 : word32)
   Class: Eq_586
   DataType: byte

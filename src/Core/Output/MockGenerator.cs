@@ -64,6 +64,8 @@ namespace Reko.Core.Output
                 { Operator.SMul, "SMul" },
                 { Operator.UMul, "UMul" },
                 { Operator.IMod, "Mod" },
+                { Operator.SMod, "SMod" },
+                { Operator.UMod, "UMod" },
                 { Operator.Or, "Or" },
                 { Operator.ISub, "ISub" },
                 { Operator.USub, "USub" },

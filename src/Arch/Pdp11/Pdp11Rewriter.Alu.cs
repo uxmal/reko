@@ -187,7 +187,7 @@ namespace Reko.Arch.Pdp11
             var remainder = binder.EnsureRegister(reg1);
             m.Assign(dividend, reg_reg);
             m.Assign(quotient, m.SDiv(dividend, divisor));
-            m.Assign(remainder, m.Mod(dividend, divisor));
+            m.Assign(remainder, m.SMod(dividend, divisor));
             SetFlags(quotient, Registers.NZVC);
         }
 

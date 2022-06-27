@@ -91,7 +91,10 @@ namespace Reko.Arch.Tlcs.Tlcs900
             EmitCc(src, flags);
         }
 
-        private void RewriteDiv(Func<Expression, Expression, Expression> fn, string flags)
+        private void RewriteDiv(
+            Func<Expression, Expression, Expression> divFn,
+            Func<Expression, Expression, Expression> modFn,
+            string flags)
         {
             var reg = (RegisterStorage)this.instr.Operands[0];
             var op2 = RewriteSrc(this.instr.Operands[1]);
@@ -108,8 +111,8 @@ namespace Reko.Arch.Tlcs.Tlcs900
             var quo = binder.EnsureRegister(q);
             var rem = binder.EnsureRegister(r);
             m.Assign(tmp, div);
-            m.Assign(quo, fn(tmp, op2));
-            m.Assign(rem, m.Remainder(tmp, op2));
+            m.Assign(quo, divFn(tmp, op2));
+            m.Assign(rem, modFn(tmp, op2));
             EmitCc(quo, flags);
         }
 

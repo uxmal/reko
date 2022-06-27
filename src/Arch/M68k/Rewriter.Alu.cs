@@ -377,7 +377,10 @@ namespace Reko.Arch.M68k
             }
         }
 
-        private void RewriteDiv(Func<Expression,Expression,Expression> op, DataType dt)
+        private void RewriteDiv(
+            Func<DataType, Expression,Expression,Expression> div,
+            Func<DataType, Expression,Expression,Expression> mod,
+            DataType dt)
         {
             var src = orw.RewriteSrc(instr.Operands[0], instr.Address);
             Expression dividend;
@@ -389,12 +392,12 @@ namespace Reko.Arch.M68k
                 rem = binder.CreateTemporary(dt);
                 quot = binder.CreateTemporary(dt);
                 dividend = binder.EnsureRegister((RegisterStorage) instr.Operands[1]);
-                var r = m.Remainder(dividend, src);
+                var r = mod(dt, dividend, src);
                 if (r.DataType.BitSize != rem.DataType.BitSize)
                 {
                     r = m.Convert(r, r.DataType, rem.DataType);
                 }
-                var q = op(dividend, src);
+                var q = div(dt, dividend, src);
                 if (q.DataType.BitSize != quot.DataType.BitSize)
                 {
                     q = m.Convert(q, q.DataType, quot.DataType);
@@ -418,8 +421,8 @@ namespace Reko.Arch.M68k
                         var dtDividend = PrimitiveType.CreateWord((int) (dreg.Register1.BitSize + dreg.Register2.BitSize));
                         dividend = binder.EnsureSequence(dtDividend, dreg.Register1, dreg.Register2);
                     }
-                    m.Assign(rem, m.Remainder(dividend, src));
-                    m.Assign(quot, op(dividend, src));
+                    m.Assign(rem, mod(dt, dividend, src));
+                    m.Assign(quot, div(dt, dividend, src));
                 }
                 else
                 {
@@ -427,8 +430,8 @@ namespace Reko.Arch.M68k
                     quot = orw.RewriteSrc(instr.Operands[1], instr.Address);
                     var divisor = binder.CreateTemporary(rem.DataType);
                     m.Assign(divisor, rem);
-                    m.Assign(rem, m.Remainder(quot, divisor));
-                    m.Assign(quot, op(quot, divisor));
+                    m.Assign(rem, mod(dt, quot, divisor));
+                    m.Assign(quot, div(dt, quot, divisor));
                 }
             }
             m.Assign(

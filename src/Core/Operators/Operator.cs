@@ -34,13 +34,15 @@ namespace Reko.Core.Operators
         public static readonly BinaryOperator SDiv = new SDivOperator();
         public static readonly BinaryOperator UDiv = new UDivOperator();
 
-
         public static readonly BinaryOperator IMod = new IModOperator();
+        public static readonly BinaryOperator SMod = new SModOperator();
+        public static readonly BinaryOperator UMod = new UModOperator();
 
         public static readonly BinaryOperator FAdd = new FAddOperator();
         public static readonly BinaryOperator FSub = new FSubOperator();
         public static readonly BinaryOperator FMul = new FMulOperator();
         public static readonly BinaryOperator FDiv = new FDivOperator();
+        public static readonly BinaryOperator FMod = new FModOperator();
         public static readonly UnaryOperator FNeg = new FNegOperator();
 
         public static readonly BinaryOperator And = new AndOperator();

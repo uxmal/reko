@@ -351,7 +351,7 @@ namespace Reko.UnitTests.Arch.Pdp11
                 "0|L--|0200(4): 4 instructions",
                 "1|L--|v3 = r0_r1",
                 "2|L--|r0 = v3 /16 0xC8<16>",
-                "3|L--|r1 = v3 % 0xC8<16>",
+                "3|L--|r1 = v3 %s 0xC8<16>",
                 "4|L--|NZVC = cond(r0)");
         }
 

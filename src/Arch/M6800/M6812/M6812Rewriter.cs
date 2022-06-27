@@ -142,8 +142,8 @@ namespace Reko.Arch.M6800.M6812
                 case Mnemonic.decb: RewriteIncDec(Registers.b, m.ISub); break;
                 case Mnemonic.dex: RewriteIncDecXY(Registers.x, m.ISub); break;
                 case Mnemonic.dey: RewriteIncDecXY(Registers.y, m.ISub); break;
-                case Mnemonic.ediv: RewriteEdiv(m.UDiv, m.Remainder); break;
-                case Mnemonic.edivs: RewriteEdiv(m.SDiv, m.Remainder); break;
+                case Mnemonic.ediv: RewriteEdiv(m.UDiv, m.UMod); break;
+                case Mnemonic.edivs: RewriteEdiv(m.SDiv, m.SMod); break;
                 case Mnemonic.emacs: RewriteEmacs(); break;
                 case Mnemonic.emaxd: RewriteEmaxmind(CommonOps.Max); break;
                 case Mnemonic.emaxm: RewriteEmaxminm(CommonOps.Max); break;
@@ -157,8 +157,8 @@ namespace Reko.Arch.M6800.M6812
                 case Mnemonic.fdiv: RewriteFdiv(); break;
                 case Mnemonic.ibeq: RewriteIb(m.Eq0); break;
                 case Mnemonic.ibne: RewriteIb(m.Ne0); break;
-                case Mnemonic.idiv: RewriteIdiv(m.UDiv); break;
-                case Mnemonic.idivs: RewriteIdiv(m.SDiv); break;
+                case Mnemonic.idiv: RewriteIdiv(m.UDiv, m.UMod); break;
+                case Mnemonic.idivs: RewriteIdiv(m.SDiv, m.SMod); break;
                 case Mnemonic.inc: RewriteIncDec(m.IAdd); break;
                 case Mnemonic.inca: RewriteIncDec(Registers.a, m.IAdd); break;
                 case Mnemonic.incb: RewriteIncDec(Registers.b, m.IAdd); break;
@@ -668,19 +668,21 @@ namespace Reko.Arch.M6800.M6812
             var x = binder.EnsureRegister(Registers.x);
             var tmp = binder.CreateTemporary(PrimitiveType.UInt32);
             m.Assign(tmp, m.Shl(m.Convert(d, d.DataType, tmp.DataType), 16));
-            m.Assign(d, m.Remainder(tmp, x));
+            m.Assign(d, m.UMod(tmp, x));
             m.Assign(x, m.UDiv(tmp, x));
             _ZVC(x);
         }
 
-        private void RewriteIdiv(Func<Expression,Expression,Expression> fn)
+        private void RewriteIdiv(
+            Func<Expression,Expression,Expression> div,
+            Func<Expression,Expression,Expression> mod)
         {
             var d = binder.EnsureRegister(Registers.d);
             var x = binder.EnsureRegister(Registers.x);
             var tmp = binder.CreateTemporary(d.DataType);
             m.Assign(tmp, d);
-            m.Assign(d, m.Remainder(tmp, x));
-            m.Assign(x, fn(tmp, x));
+            m.Assign(d, mod(tmp, x));
+            m.Assign(x, div(tmp, x));
             _Z_C(x);
             AssignFlag(Registers.V, false);
         }

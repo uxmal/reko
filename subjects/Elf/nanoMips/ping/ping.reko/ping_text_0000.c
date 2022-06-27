@@ -5350,7 +5350,7 @@ void __moddi3(Eq_n r4, Eq_n r5, Eq_n r6, Eq_n r7, int32 r14)
 					if (r6_n >= r9_n && r6_n < r10_n)
 						r6_n += r9_n;
 				}
-				ui32 r6_n = (r6_n - r10_n) % (r9_n >> 0x10);
+				uint32 r6_n = (r6_n - r10_n) % (r9_n >> 0x10);
 				Eq_n r4_n = (r7_n >> 0x10) *s r5_n;
 				r6 = r6_n << 0x10;
 				Eq_n r5_n = r7_n & 0xFFFF | r6_n << 0x10;
@@ -15089,7 +15089,7 @@ l00409732:
 					goto l004097B0;
 				if (r23 < r30)
 				{
-					ui32 r6_n = *((word32) r30 - 4);
+					uint32 r6_n = *((word32) r30 - 4);
 					r7_n = (struct Eq_n *) 0x0A;
 					if (r6_n != 0x00)
 					{
@@ -15123,13 +15123,13 @@ l00409784:
 	Eq_n r6_n = ((word32) r7_n + 0x00002400) % 0x09;
 	Eq_n r8_n = 0x0A;
 	Eq_n r20_n = r6_n * 0x09 + (r20_n + 0x3FFFFC01 << 0x02);
-	ui32 r7_n;
+	int32 r7_n;
 	for (r7_n = (word32) r6_n + 1; r7_n != 0x09; ++r7_n)
 	{
 		r6_n.u0 = 0x0A;
 		r8_n *= 0x0A;
 	}
-	ui32 r2_n = *r20_n;
+	uint32 r2_n = *r20_n;
 	Eq_n r7_n = r2_n % r8_n;
 	if (r7_n == 0x00)
 	{
@@ -19007,11 +19007,11 @@ l0040B668:
 							__trap_code(0x07);
 						do
 						{
-							ui32 r4_n = (fp - 0x0230)[r7_n];
+							uint32 r4_n = (fp - 0x0230)[r7_n];
 							if (r16_n == r0)
 								__trap_code(0x07);
 							ptr32 r6_n = fp - 0x0230 + r5_n;
-							int32 r5_n = r4_n % r16_n;
+							Eq_n r5_n = r4_n % r16_n;
 							if (r16_n == r0)
 								__trap_code(0x07);
 							(fp - 0x0230)[r7_n] = r6_n;
@@ -25110,7 +25110,7 @@ l0040EB48:
 					r6_n += r9_n;
 				}
 			}
-			ui32 r4_n = (r6_n - r4_n) % r2;
+			uint32 r4_n = (r6_n - r4_n) % r2;
 			r8_n = r8_n *s r11_n;
 			r6 = r4_n << 0x10;
 			Eq_n r10_n = r4_n << 0x10 | __ext<word32,word32>(r10_n, 0x00, 0x10);
@@ -25184,7 +25184,7 @@ l0040EB48:
 					r6_n += r9_n;
 				}
 			}
-			ui32 r4_n = (r6_n - r4_n) % r2;
+			uint32 r4_n = (r6_n - r4_n) % r2;
 			r8_n = r11_n *s r3;
 			r6 = r4_n << 0x10;
 			Eq_n r10_n = r4_n << 0x10 | __ext<word32,word32>(r10_n, 0x00, 0x10);
@@ -25219,7 +25219,7 @@ Eq_n __umoddi3(Eq_n r4, Eq_n r5, Eq_n r6, Eq_n r7, int32 r13, union Eq_n & r3Out
 	{
 		Eq_n r11_n;
 		Eq_n r4_n;
-		ui32 r6_n;
+		uint32 r6_n;
 		if (r5 < r6)
 		{
 			r11_n = __clz(r6);

@@ -164,7 +164,7 @@ namespace Reko.UnitTests.Arch.TriCore
             AssertCode(     // div	e4,d4,d15
                 "0|L--|00100000(4): 5 instructions",
                 "1|L--|v2 = d4 / d15",
-                "2|L--|v3 = d4 % d15",
+                "2|L--|v3 = d4 %s d15",
                 "3|L--|e4 = SEQ(v3, v2)",
                 "4|L--|V_SV = cond(v2)",
                 "5|L--|AV = false");

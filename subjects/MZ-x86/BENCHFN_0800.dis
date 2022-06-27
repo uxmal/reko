@@ -1316,8 +1316,8 @@ l0800_0C89:
 	branch cx_33 == 0<16> l0800_0C9D
 l0800_0C8E:
 	word32 dx_ax_55 = CONVERT(cx_33, word16, uint32)
-	word32 dx_ax_63 = SEQ(CONVERT(dx_ax_55 % wArg06, word32, uint16), ax_31)
-	Mem71[ds:si_107:byte] = SLICE(dx_ax_63 % wArg06, byte, 0)
+	word32 dx_ax_63 = SEQ(CONVERT(dx_ax_55 %u wArg06, word32, uint16), ax_31)
+	Mem71[ds:si_107:byte] = SLICE(dx_ax_63 %u wArg06, byte, 0)
 	word16 ax_59 = CONVERT(dx_ax_55 /u wArg06, word16, uint16)
 	cx_33 = ax_59
 	ax_31 = CONVERT(dx_ax_63 /u wArg06, word16, uint16)
@@ -1327,7 +1327,7 @@ l0800_0CA4:
 	branch ax_31 != 0<16> l0800_0C9D
 l0800_0C9D:
 	word32 dx_ax_82 = CONVERT(ax_31, word16, uint32)
-	Mem96[ds:si_107:byte] = SLICE(dx_ax_82 % wArg06, byte, 0)
+	Mem96[ds:si_107:byte] = SLICE(dx_ax_82 %u wArg06, byte, 0)
 	ax_31 = CONVERT(dx_ax_82 /u wArg06, word16, uint16)
 	si_107 = si_107 + 1<16>
 l0800_0CA8:

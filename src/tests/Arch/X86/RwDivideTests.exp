@@ -10,14 +10,14 @@ l0C00_0000:
 	eax = 0x64<32>
 	edx_eax = CONVERT(eax, int32, int64)
 	v7 = edx_eax
-	edx = CONVERT(v7 % ebx, int64, int32)
+	edx = CONVERT(v7 %s ebx, int64, int32)
 	eax = CONVERT(v7 /32 ebx, word32, int32)
 	SCZO = cond(eax)
 	cx = Mem0[ds:si:word16]
 	ax = Mem0[ds:si + 2<i16>:word16]
 	dx = Mem0[ds:si + 4<i16>:word16]
 	v15 = dx_ax
-	dx = CONVERT(v15 % cx, word32, uint16)
+	dx = CONVERT(v15 %u cx, word32, uint16)
 	ax = CONVERT(v15 /u cx, word16, uint16)
 	SCZO = cond(ax)
 	return

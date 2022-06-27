@@ -381,7 +381,7 @@ namespace Reko.Arch.Pdp10.Rewriter
             var dst = Ac();
             var acp1 = Ac_plus_1();
             m.Assign(dst, m.SDiv(dst, src));
-            m.Assign(acp1, m.Mod(dst, src));
+            m.Assign(acp1, m.SMod(dst, src));
             m.Assign(binder.EnsureFlagGroup(VTND), m.Cond(dst));
         }
 
@@ -394,7 +394,7 @@ namespace Reko.Arch.Pdp10.Rewriter
             m.Assign(tmp, m.SDiv(dst, src));
             m.Assign(dst, tmp);
             Assign(RewriteEa(1), tmp);
-            m.Assign(acp1, m.Mod(dst, src));
+            m.Assign(acp1, m.SMod(dst, src));
             m.Assign(binder.EnsureFlagGroup(VTND), m.Cond(dst));
         }
 
@@ -404,7 +404,7 @@ namespace Reko.Arch.Pdp10.Rewriter
             var dst = Ac();
             var acp1 = Ac_plus_1();
             m.Assign(dst, m.SDiv(dst, src));
-            m.Assign(acp1, m.Mod(dst, src));
+            m.Assign(acp1, m.SMod(dst, src));
             m.Assign(binder.EnsureFlagGroup(VTND), m.Cond(dst));
         }
 

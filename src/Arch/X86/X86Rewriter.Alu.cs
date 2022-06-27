@@ -459,7 +459,10 @@ namespace Reko.Arch.X86
                 orw.AddrOf(orw.AluRegister(Registers.al))));
         }
 
-        private void RewriteDivide(Func<Expression, Expression, Expression> op, Domain domain)
+        private void RewriteDivide(
+            Func<Expression, Expression, Expression> div,
+            Func<Expression, Expression, Expression> rem,
+            Domain domain)
         {
             if (instrCur.Operands.Length != 1)
                 throw new ArgumentOutOfRangeException("X86 DIV/IDIV instructions only take one operand.");
@@ -495,9 +498,9 @@ namespace Reko.Arch.X86
             PrimitiveType p = ((PrimitiveType)regRemainder.DataType).MaskDomain(domain);
             var tmp = binder.CreateTemporary(regDividend.DataType);
             m.Assign(tmp, regDividend);
-            var r = m.Mod(tmp, SrcOp(0));
+            var r = rem(tmp, SrcOp(0));
             var divisor = SrcOp(0);
-            var q = op(tmp, divisor);
+            var q = div(tmp, divisor);
             m.Assign(
                 regRemainder,
                 m.Convert(r, r.DataType, p));

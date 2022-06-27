@@ -88,7 +88,7 @@ namespace Reko.Arch.Infineon
                 case Mnemonic.cmov: RewriteCmov(m.Ne0); break;
                 case Mnemonic.debug: RewriteDebug(); break;
                 case Mnemonic.disable: RewriteDisable(); break;
-                case Mnemonic.div: RewriteDiv(m.SDiv, m.Remainder); break;
+                case Mnemonic.div: RewriteDiv(m.SDiv, m.SMod); break;
                 case Mnemonic.eq: RewriteBool(m.Eq); break;
                 case Mnemonic.extr: RewriteExtr(PrimitiveType.Int32); break;
                 case Mnemonic.extr_u: RewriteExtr(PrimitiveType.UInt32); break;

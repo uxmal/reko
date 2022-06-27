@@ -354,7 +354,7 @@ namespace Reko.UnitTests.Arch.Tlcs
                 "0|L--|00010000(4): 4 instructions",
                 "1|L--|v3 = xbc",
                 "2|L--|c = v3 /u 0xA<16>",
-                "3|L--|b = v3 % 0xA<16>",
+                "3|L--|b = v3 %u 0xA<16>",
                 "4|L--|V = cond(c)");
         }
 
@@ -369,7 +369,7 @@ namespace Reko.UnitTests.Arch.Tlcs
             "3|L--|v4 = Mem0[v3:word32]",
             "4|L--|v6 = xwa",
             "5|L--|a = v6 /u v4",
-            "6|L--|w = v6 % v4",
+            "6|L--|w = v6 %u v4",
             "7|L--|V = cond(a)");
         }
 
@@ -556,7 +556,7 @@ namespace Reko.UnitTests.Arch.Tlcs
                 "0|L--|00010000(2): 4 instructions",
                 "1|L--|v4 = xhl",
                 "2|L--|l = v4 / wa",
-                "3|L--|h = v4 % wa",
+                "3|L--|h = v4 %s wa",
                 "4|L--|V = cond(l)");
         }
 

@@ -1726,7 +1726,7 @@ l000000000040524D:
 	Mem52[rdi_43 + 40<i64>:word64] = rax_44 + 1<i64>
 	Mem53[rax_44:byte] = 9<8>
 l0000000000405258:
-	rbx_13 = rbx_13 + rcx_18 - CONVERT(CONVERT(rbx_13, word64, uint128) % rcx_18, word128, uint64)
+	rbx_13 = rbx_13 + rcx_18 - CONVERT(CONVERT(rbx_13, word64, uint128) %u rcx_18, word128, uint64)
 l0000000000405277:
 	rbx_13 = rbx_13 + 1<64>
 l000000000040527B:
@@ -2342,7 +2342,7 @@ l00000000004060B3:
 l0000000000406050:
 	r10_229 = CONVERT(CONVERT(rbp_162, word64, uint128) /u CONVERT(CONVERT((r14_192 - 1<i64>) + rcx_565, word64, uint128) /u rcx_565, word64, uint64), word64, uint64)
 l00000000004060B8:
-	r10_229 = CONVERT(CONVERT(rbp_162, word64, uint128) % rcx_565, word128, uint64)
+	r10_229 = CONVERT(CONVERT(rbp_162, word64, uint128) %u rcx_565, word128, uint64)
 l000000000040606A:
 	word64 rax_255 = Mem200[rsi_195 + 16<i64>:word64] + r10_229 * 8<64>
 	word64 rdx_251 = rax_179 + CONVERT(CONVERT(r9_203 != r10_229, bool, int8), int8, uint64) * 2<64>
@@ -3310,7 +3310,7 @@ l0000000000407A48:
 	word64 rcx_210 = rax_177
 	branch Mem186[0x000000000061B1B0<p64>:word64] >u 1<64> l0000000000407B0D
 l0000000000407B0D:
-	word64 rdx_219 = CONVERT(CONVERT(rbx_195, word64, uint128) % rax_158, word128, uint64)
+	word64 rdx_219 = CONVERT(CONVERT(rbx_195, word64, uint128) %u rax_158, word128, uint64)
 	branch rdx_219 == 0<64> l0000000000407AB0
 l0000000000407AB0:
 	word64 rdi_226 = Mem225[0x000000000061A610<p64>:word64]
@@ -3349,7 +3349,7 @@ l0000000000407CDA:
 	word64 rax_342 = fn0000000000405ED0(1<32>, fs)
 	word128 rdx_rax_357 = CONVERT(Mem24[0x000000000061B1B0<p64>:word64], word64, uint128)
 	word64 r15_353 = Mem24[0x000000000061B028<p64>:word64] - 24<i64> + rax_342 * 0x18<64>
-	word64 rdx_366 = CONVERT(CONVERT(rdx_rax_357 % rax_342, word128, uint64) != 0<64>, bool, uint64) + CONVERT(rdx_rax_357 /u rax_342, word64, uint64)
+	word64 rdx_366 = CONVERT(CONVERT(rdx_rax_357 %u rax_342, word128, uint64) != 0<64>, bool, uint64) + CONVERT(rdx_rax_357 /u rax_342, word64, uint64)
 	branch rdx_366 == 0<64> l0000000000407A38
 l0000000000407D1A:
 	word64 qwLoc40_678 = 0<64>
@@ -4790,9 +4790,9 @@ l000000000040AC21:
 	branch rsi_29 <u rdi_11 l000000000040AC10
 l000000000040AC10:
 	r8_27 = r8_27 + 8<64>
-	branch CONVERT(CONVERT(rdi_11, word64, uint128) % rcx_17, word128, uint64) == 0<64> l000000000040AC3A
+	branch CONVERT(CONVERT(rdi_11, word64, uint128) %u rcx_17, word128, uint64) == 0<64> l000000000040AC3A
 l000000000040AC2D:
-	branch CONVERT(CONVERT(rdi_11, word64, uint128) % rcx_17, word128, uint64) != 0<64> l000000000040AC44
+	branch CONVERT(CONVERT(rdi_11, word64, uint128) %u rcx_17, word128, uint64) != 0<64> l000000000040AC44
 l000000000040AC3A:
 	rdi_11 = rdi_11 + 2<64>
 	branch rdi_11 != 0xFFFFFFFFFFFFFFFF<64> l000000000040ABE0
@@ -5595,12 +5595,12 @@ l000000000040C0E0:
 l000000000040C0E9:
 	word128 rdx_rax_110 = CONVERT(r8, word64, uint128)
 	word64 rax_113 = CONVERT(rdx_rax_110 /u rcx, word64, uint64)
-	branch CONVERT(rdx_rax_110 % rcx, word128, uint64) != 0<64> l000000000040BE59
+	branch CONVERT(rdx_rax_110 %u rcx, word128, uint64) != 0<64> l000000000040BE59
 l000000000040C0FF:
 	word128 rdx_rax_123 = CONVERT(rdi, word64, uint128)
-	word128 rdx_rax_132 = CONVERT(CONVERT(rdx_rax_123 % rax_113, word128, uint64) * 0xA<64>, word64, uint128)
+	word128 rdx_rax_132 = CONVERT(CONVERT(rdx_rax_123 %u rax_113, word128, uint64) * 0xA<64>, word64, uint128)
 	r10_128 = CONVERT(rdx_rax_123 /u rax_113, word64, uint64)
-	word64 rdx_134 = CONVERT(rdx_rax_132 % rax_113, word128, uint64)
+	word64 rdx_134 = CONVERT(rdx_rax_132 %u rax_113, word128, uint64)
 	rdi_139 = CONVERT(SLICE(rdx_rax_132 /u rax_113, word32, 0), word32, uint64)
 	branch rax_113 <=u rdx_134 * 2<64> l000000000040C6E0
 l000000000040C6E0:
@@ -5610,7 +5610,7 @@ l000000000040C125:
 l000000000040BE43:
 	word128 rdx_rax_162 = CONVERT(rcx, word64, uint128)
 	word64 rax_165 = CONVERT(rdx_rax_162 /u r8, word64, uint64)
-	branch CONVERT(rdx_rax_162 % r8, word128, uint64) == 0<64> l000000000040C2F0
+	branch CONVERT(rdx_rax_162 %u r8, word128, uint64) == 0<64> l000000000040C2F0
 l000000000040C2F0:
 	r10_128 = rax_165 *s rdi
 	branch CONVERT(CONVERT(r10_128, word64, uint128) /u rax_165, word64, uint64) != rdi l000000000040BE59
@@ -5635,10 +5635,10 @@ l000000000040C153:
 	ebx_1288 = 0<32> (alias)
 l000000000040C17D:
 	word128 rdx_rax_224 = CONVERT(r10_128, word64, uint128)
-	word64 rdx_227 = CONVERT(rdx_rax_224 % rsi_203, word128, uint64)
+	word64 rdx_227 = CONVERT(rdx_rax_224 %u rsi_203, word128, uint64)
 	word64 edx_eax_246 = CONVERT(SLICE(rdi_1510, word32, 0) + (SLICE(rdx_227, word32, 0) + SLICE(rdx_227, word32, 0) * 4<32>) * 2<32>, word32, uint64)
 	word32 eax_250 = CONVERT(edx_eax_246 /u v22_62, word32, uint32)
-	word32 edx_249 = CONVERT(edx_eax_246 % v22_62, word64, uint32)
+	word32 edx_249 = CONVERT(edx_eax_246 %u v22_62, word64, uint32)
 	word64 rax_228 = CONVERT(rdx_rax_224 /u rsi_203, word64, uint64)
 	word64 rdi_256 = CONVERT(eax_250, word32, uint64)
 	word32 r14d_257 = (ecx_151 >> 1<32>) + edx_249 * 2<32>

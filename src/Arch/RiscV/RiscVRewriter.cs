@@ -206,9 +206,8 @@ namespace Reko.Arch.RiscV
                 case Mnemonic.mret: RewriteRet(mret_intrinsic); break;
                 case Mnemonic.or: RewriteOr(); break;
                 case Mnemonic.ori: RewriteOr(); break;
-                    //$TODO: Reko has no unsigned modulus operator
-                case Mnemonic.remuw: RewriteBinOp(m.Mod, PrimitiveType.Word32); break;
-                case Mnemonic.remw: RewriteBinOp(m.Mod, PrimitiveType.Word32); break;
+                case Mnemonic.remuw: RewriteBinOp(m.UMod, PrimitiveType.Word32); break;
+                case Mnemonic.remw: RewriteBinOp(m.SMod, PrimitiveType.Word32); break;
                 case Mnemonic.sb: RewriteStore(PrimitiveType.Byte); break;
                 case Mnemonic.sd: RewriteStore(PrimitiveType.Word64); break;
                 case Mnemonic.sh: RewriteStore(PrimitiveType.Word16); break;

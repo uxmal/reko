@@ -147,10 +147,10 @@ namespace Reko.Arch.Mips
                     RewriteAdd(instr, PrimitiveType.Word64); break;
                 case Mnemonic.daddiu:
                 case Mnemonic.daddu: RewriteAdd(instr, PrimitiveType.Word64); break;
-                case Mnemonic.ddiv: RewriteDiv(instr, m.SDiv); break;
-                case Mnemonic.ddivu: RewriteDiv(instr, m.UDiv); break;
-                case Mnemonic.div: RewriteDiv(instr, m.SDiv); break;
-                case Mnemonic.divu: RewriteDiv(instr, m.UDiv); break;
+                case Mnemonic.ddiv: RewriteDiv(instr, m.SDiv, m.SMod); break;
+                case Mnemonic.ddivu: RewriteDiv(instr, m.UDiv, m.UDiv); break;
+                case Mnemonic.div: RewriteDiv(instr, m.SDiv, m.SMod); break;
+                case Mnemonic.divu: RewriteDiv(instr, m.UDiv, m.UDiv); break;
                 case Mnemonic.div_d: RewriteFpuBinopD(instr, m.FDiv); break;
                 case Mnemonic.dmfc0: RewriteMfc0(instr); break;
                 case Mnemonic.dmfc1: RewriteMfc1(instr); break;
@@ -328,8 +328,8 @@ namespace Reko.Arch.Mips
                 case Mnemonic.lsa: RewriteLsa(instr); break;
                 case Mnemonic.lwm: RewriteLwm(instr); break;
                 case Mnemonic.lwxs: RewriteLwxs(instr); break;
-                case Mnemonic.mod: RewriteMod(instr, m.Mod); break;
-                case Mnemonic.modu: RewriteMod(instr, m.Mod); break;    //$TODO: unsigned modulus.
+                case Mnemonic.mod: RewriteMod(instr, m.SMod); break;
+                case Mnemonic.modu: RewriteMod(instr, m.UMod); break;
                 case Mnemonic.move: RewriteMove(instr); break;
                 case Mnemonic.move_balc: RewriteMoveBalc(instr); break;
                 case Mnemonic.movep: RewriteMovep(instr); break;

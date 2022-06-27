@@ -288,7 +288,8 @@ namespace Reko.Typing
             }
             else if (
                 binExp.Operator == Operator.SMul ||
-                binExp.Operator == Operator.SDiv)
+                binExp.Operator == Operator.SDiv ||
+                binExp.Operator == Operator.SMod)
             {
                 var dt = PrimitiveType.CreateWord(DataTypeOf(eLeft).BitSize).MaskDomain(Domain.Boolean | Domain.SignedInt);
                 MeetDataType(eLeft, dt);
@@ -297,7 +298,8 @@ namespace Reko.Typing
             }
             else if (
                 binExp.Operator == Operator.UMul ||
-                binExp.Operator == Operator.UDiv)
+                binExp.Operator == Operator.UDiv ||
+                binExp.Operator == Operator.UMod)
             {
                 var dt = PrimitiveType.CreateWord(DataTypeOf(eLeft).BitSize).MaskDomain(Domain.Boolean | Domain.UnsignedInt);
                 MeetDataType(eLeft, dt);

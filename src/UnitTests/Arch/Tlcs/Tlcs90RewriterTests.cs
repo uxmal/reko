@@ -740,7 +740,7 @@ namespace Reko.UnitTests.Arch.Tlcs
                 "0|L--|0100(2): 4 instructions",
                 "1|L--|v5 = hl",
                 "2|L--|l = v5 /8 0x4A<8>",
-                "3|L--|h = v5 % 0x4A<8>",
+                "3|L--|h = v5 %s 0x4A<8>",
                 "4|L--|V = cond(l)");
         }
 

@@ -217,7 +217,7 @@ namespace Reko.UnitTests.Arch.Sanyo
                 "0|L--|0100(1): 5 instructions",
                 "1|L--|v4 = ACC_C",
                 "2|L--|ACC_C = v4 /u B",
-                "3|L--|B = v4 % B",
+                "3|L--|B = v4 %u B",
                 "4|L--|C = false",
                 "5|L--|V = B == 0<8>");
         }

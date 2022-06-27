@@ -239,7 +239,9 @@ namespace Reko.Typing
                 }
             }
             var binOp = binExp.Operator;
-            if (binOp == Operator.Uge)
+            if (binOp == Operator.SMod)
+                binOp = Operator.IMod;
+            else if (binOp == Operator.Uge)
                 binOp = Operator.Ge;
             else if (binOp == Operator.Ugt)
                 binOp = Operator.Gt;
@@ -249,6 +251,8 @@ namespace Reko.Typing
                 binOp = Operator.Lt;
             else if (binOp == Operator.UMul)
                 binOp = Operator.IMul;
+            else if (binOp == Operator.UMod)
+                binOp = Operator.IMod;
             else if (binOp == Operator.USub)
                 binOp = Operator.ISub;
             else if (binOp == Operator.Shr)

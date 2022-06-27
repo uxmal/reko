@@ -161,10 +161,10 @@ VS Overflow Set 1001 V
                 case Mnemonic.dbvc: RewriteDbcc(ConditionCode.NO, Registers.V); break;
                 case Mnemonic.dbvs: RewriteDbcc(ConditionCode.OV, Registers.V); break;
                 case Mnemonic.dbra: RewriteDbcc(ConditionCode.None, null); break;
-                case Mnemonic.divs: RewriteDiv(m.SDiv, PrimitiveType.Int16); break;
-                case Mnemonic.divsl: RewriteDiv(m.SDiv, PrimitiveType.Int32); break;
-                case Mnemonic.divu: RewriteDiv(m.UDiv, PrimitiveType.UInt16); break;
-                case Mnemonic.divul: RewriteDiv(m.UDiv, PrimitiveType.UInt32); break;
+                case Mnemonic.divs: RewriteDiv(m.SDiv, m.SMod, PrimitiveType.Int16); break;
+                case Mnemonic.divsl: RewriteDiv(m.SDiv, m.SMod, PrimitiveType.Int32); break;
+                case Mnemonic.divu: RewriteDiv(m.UDiv, m.UMod, PrimitiveType.UInt16); break;
+                case Mnemonic.divul: RewriteDiv(m.UDiv, m.UMod, PrimitiveType.UInt32); break;
                 case Mnemonic.eor: RewriteLogical((s, d) => m.Xor(d, s)); break;
                 case Mnemonic.eori: RewriteLogical((s, d) => m.Xor(d, s)); break;
                 case Mnemonic.exg: RewriteExg(); break;

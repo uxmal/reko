@@ -48,8 +48,10 @@ namespace Reko.Structure
             Operator.SDiv,
             Operator.Shl,
             Operator.Shr,
+            Operator.SMod,
             Operator.SMul,
             Operator.UDiv,
+            Operator.UMod,
             Operator.USub,
         };
 

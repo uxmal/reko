@@ -947,7 +947,7 @@ namespace Reko.UnitTests.Arch.M68k
             Given_UInt16s(0x80C1);
             AssertCode(
                 "0|L--|00010000(2): 5 instructions",
-                "1|L--|v3 = d0 % SLICE(d1, uint16, 0)",
+                "1|L--|v3 = d0 %u SLICE(d1, uint16, 0)",
                 "2|L--|v4 = d0 /u SLICE(d1, uint16, 0)",
                 "3|L--|d0 = SEQ(v3, v4)",
                 "4|L--|VZN = cond(v4)",
@@ -1231,7 +1231,7 @@ namespace Reko.UnitTests.Arch.M68k
             Given_UInt16s(0x81C1);                // divs
             AssertCode(
                 "0|L--|00010000(2): 5 instructions",
-                "1|L--|v3 = d0 % SLICE(d1, word16, 0)",
+                "1|L--|v3 = d0 %s SLICE(d1, word16, 0)",
                 "2|L--|v4 = d0 /16 SLICE(d1, word16, 0)",
                 "3|L--|d0 = SEQ(v3, v4)",
                 "4|L--|VZN = cond(v4)",
@@ -1615,7 +1615,7 @@ namespace Reko.UnitTests.Arch.M68k
             Given_UInt16s(0x4C40, 0x3801);        // divsl d0,d1,d3
             AssertCode(
                 "0|L--|00010000(4): 4 instructions",
-                "1|L--|d1 = d3 % d0",
+                "1|L--|d1 = d3 %s d0",
                 "2|L--|d3 = d3 / d0",
                 "3|L--|VZN = cond(d3)",
                 "4|L--|C = false");
@@ -1825,7 +1825,7 @@ namespace Reko.UnitTests.Arch.M68k
             AssertCode(
                 "0|L--|00010000(4): 5 instructions",
                 "1|L--|v4 = d4",
-                "2|L--|d4 = d0 % v4",
+                "2|L--|d4 = d0 %u v4",
                 "3|L--|d0 = d0 /u v4",
                 "4|L--|VZN = cond(d0)",
                 "5|L--|C = false");

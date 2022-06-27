@@ -94,7 +94,7 @@ namespace Reko.UnitTests.Arch.Mips
             Given_HexString("8821D829");
             AssertCode(     // modu	r5,r8,r12
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|r5 = r8 % r12");
+                "1|L--|r5 = r8 %u r12");
         }
 
         [Test]
@@ -187,7 +187,7 @@ namespace Reko.UnitTests.Arch.Mips
             Given_HexString("06215839");
             AssertCode(     // mod	r7,r6,r8
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|r7 = r6 % r8");
+                "1|L--|r7 = r6 %s r8");
         }
 
         [Test]

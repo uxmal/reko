@@ -84,7 +84,7 @@ namespace Reko.Arch.Tlcs.Tlcs90
             var v = binder.EnsureFlagGroup(Registers.V);
             m.Assign(tmp, num);
             m.Assign(quo, m.SDiv(tmp, den));
-            m.Assign(rem, m.Remainder(tmp, den));
+            m.Assign(rem, m.SMod(tmp, den));
             m.Assign(v, m.Cond(quo));
         }
 

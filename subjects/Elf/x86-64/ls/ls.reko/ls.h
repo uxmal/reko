@@ -1243,7 +1243,7 @@ Eq_16: (union "Eq_16"
 	T_3882 (in rbx_13 + 1<i64> @ 00405225 : word64)
 	T_3891 (in rbx_13 + 1<64> @ 00405277 : word64)
 	T_3923 (in Mem17[0x000000000061B0D8<p64>:word64] @ 004052C3 : word64)
-	T_3946 (in rbx_13 + rcx_18 - CONVERT(CONVERT(rbx_13, word64, uint128) % rcx_18, word128, uint64) @ 00405263 : word64)
+	T_3946 (in rbx_13 + rcx_18 - CONVERT(CONVERT(rbx_13, word64, uint128) %u rcx_18, word128, uint64) @ 00405263 : word64)
 	T_3953 (in rax_50 @ 00405320 : Eq_16)
 	T_3956 (in rcx @ 00405320 : Eq_16)
 	T_3957 (in rdx @ 00405320 : Eq_16)
@@ -21816,15 +21816,15 @@ T_3943: (in CONVERT(rbx_13, word64, uint128) @ 00405263 : uint128)
   Class: Eq_3943
   DataType: uint128
   OrigDataType: uint128
-T_3944: (in CONVERT(rbx_13, word64, uint128) % rcx_18 @ 00405263 : word128)
+T_3944: (in CONVERT(rbx_13, word64, uint128) %u rcx_18 @ 00405263 : word128)
   Class: Eq_3944
-  DataType: ui128
-  OrigDataType: ui128
-T_3945: (in CONVERT(CONVERT(rbx_13, word64, uint128) % rcx_18, word128, uint64) @ 00405263 : uint64)
+  DataType: uint128
+  OrigDataType: uint128
+T_3945: (in CONVERT(CONVERT(rbx_13, word64, uint128) %u rcx_18, word128, uint64) @ 00405263 : uint64)
   Class: Eq_3945
   DataType: uint64
   OrigDataType: uint64
-T_3946: (in rbx_13 + rcx_18 - CONVERT(CONVERT(rbx_13, word64, uint128) % rcx_18, word128, uint64) @ 00405263 : word64)
+T_3946: (in rbx_13 + rcx_18 - CONVERT(CONVERT(rbx_13, word64, uint128) %u rcx_18, word128, uint64) @ 00405263 : word64)
   Class: Eq_16
   DataType: Eq_16
   OrigDataType: up64
@@ -25649,9 +25649,9 @@ T_4899: (in CONVERT(rbp_162, word64, uint128) @ 004060C3 : uint128)
   OrigDataType: uint128
 T_4900: (in (uint128) rbp_162 % rcx_565 @ 00000000 : word128)
   Class: Eq_4900
-  DataType: ui128
-  OrigDataType: ui128
-T_4901: (in CONVERT(CONVERT(rbp_162, word64, uint128) % rcx_565, word128, uint64) @ 004060C3 : uint64)
+  DataType: uint128
+  OrigDataType: uint128
+T_4901: (in CONVERT(CONVERT(rbp_162, word64, uint128) %u rcx_565, word128, uint64) @ 004060C3 : uint64)
   Class: Eq_4873
   DataType: uint64
   OrigDataType: uint64
@@ -33014,9 +33014,9 @@ T_6679: (in rdx_366 @ 00407D0C : Eq_16)
   OrigDataType: uint64
 T_6680: (in rdx_rax_357 % rax_342 @ 00000000 : word128)
   Class: Eq_6680
-  DataType: ui128
-  OrigDataType: ui128
-T_6681: (in CONVERT(rdx_rax_357 % rax_342, word128, uint64) @ 00407D0C : uint64)
+  DataType: uint128
+  OrigDataType: uint128
+T_6681: (in CONVERT(rdx_rax_357 %u rax_342, word128, uint64) @ 00407D0C : uint64)
   Class: Eq_6681
   DataType: uint64
   OrigDataType: uint64
@@ -33028,7 +33028,7 @@ T_6683: (in (uint64) (rdx_rax_357 % rax_342) != 0<64> @ 00000000 : bool)
   Class: Eq_6683
   DataType: bool
   OrigDataType: bool
-T_6684: (in CONVERT(CONVERT(rdx_rax_357 % rax_342, word128, uint64) != 0<64>, bool, uint64) @ 00407D0C : uint64)
+T_6684: (in CONVERT(CONVERT(rdx_rax_357 %u rax_342, word128, uint64) != 0<64>, bool, uint64) @ 00407D0C : uint64)
   Class: Eq_6684
   DataType: uint64
   OrigDataType: uint64
@@ -33055,7 +33055,7 @@ T_6689: (in rdx_366 == 0<64> @ 00000000 : bool)
 T_6690: (in rax_158 @ 00407A4D : uint64)
   Class: Eq_6662
   DataType: uint64
-  OrigDataType: ui64
+  OrigDataType: uint64
 T_6691: (in fn0000000000405ED0 @ 00407A4D : ptr64)
   Class: Eq_6663
   DataType: (ptr64 Eq_6663)
@@ -33690,9 +33690,9 @@ T_6848: (in CONVERT(rbx_195, word64, uint128) @ 00407B12 : uint128)
   OrigDataType: uint128
 T_6849: (in (uint128) rbx_195 % rax_158 @ 00000000 : word128)
   Class: Eq_6849
-  DataType: ui128
-  OrigDataType: ui128
-T_6850: (in CONVERT(CONVERT(rbx_195, word64, uint128) % rax_158, word128, uint64) @ 00407B12 : uint64)
+  DataType: uint128
+  OrigDataType: uint128
+T_6850: (in CONVERT(CONVERT(rbx_195, word64, uint128) %u rax_158, word128, uint64) @ 00407B12 : uint64)
   Class: Eq_6847
   DataType: uint64
   OrigDataType: uint64
@@ -44390,9 +44390,9 @@ T_9509: (in CONVERT(rdi_11, word64, uint128) @ 0040AC1F : uint128)
   OrigDataType: uint128
 T_9510: (in (uint128) rdi_11 % rcx_17 @ 00000000 : word128)
   Class: Eq_9510
-  DataType: ui128
-  OrigDataType: ui128
-T_9511: (in CONVERT(CONVERT(rdi_11, word64, uint128) % rcx_17, word128, uint64) @ 0040AC1F : uint64)
+  DataType: uint128
+  OrigDataType: uint128
+T_9511: (in CONVERT(CONVERT(rdi_11, word64, uint128) %u rcx_17, word128, uint64) @ 0040AC1F : uint64)
   Class: Eq_9511
   DataType: uint64
   OrigDataType: uint64
@@ -44410,9 +44410,9 @@ T_9514: (in CONVERT(rdi_11, word64, uint128) @ 0040AC38 : uint128)
   OrigDataType: uint128
 T_9515: (in (uint128) rdi_11 % rcx_17 @ 00000000 : word128)
   Class: Eq_9515
-  DataType: ui128
-  OrigDataType: ui128
-T_9516: (in CONVERT(CONVERT(rdi_11, word64, uint128) % rcx_17, word128, uint64) @ 0040AC38 : uint64)
+  DataType: uint128
+  OrigDataType: uint128
+T_9516: (in CONVERT(CONVERT(rdi_11, word64, uint128) %u rcx_17, word128, uint64) @ 0040AC38 : uint64)
   Class: Eq_9516
   DataType: uint64
   OrigDataType: uint64
@@ -49973,9 +49973,9 @@ T_10900: (in CONVERT(rdx_rax_162 /u r8, word64, uint64) @ 0040BE48 : uint64)
   OrigDataType: uint64
 T_10901: (in rdx_rax_162 % r8 @ 00000000 : word128)
   Class: Eq_10901
-  DataType: ui128
-  OrigDataType: ui128
-T_10902: (in CONVERT(rdx_rax_162 % r8, word128, uint64) @ 0040BE53 : uint64)
+  DataType: uint128
+  OrigDataType: uint128
+T_10902: (in CONVERT(rdx_rax_162 %u r8, word128, uint64) @ 0040BE53 : uint64)
   Class: Eq_10902
   DataType: uint64
   OrigDataType: uint64
@@ -50225,9 +50225,9 @@ T_10963: (in CONVERT(rdx_rax_110 /u rcx, word64, uint64) @ 0040C0F0 : uint64)
   OrigDataType: uint64
 T_10964: (in rdx_rax_110 % rcx @ 00000000 : word128)
   Class: Eq_10964
-  DataType: ui128
-  OrigDataType: ui128
-T_10965: (in CONVERT(rdx_rax_110 % rcx, word128, uint64) @ 0040C0F9 : uint64)
+  DataType: uint128
+  OrigDataType: uint128
+T_10965: (in CONVERT(rdx_rax_110 %u rcx, word128, uint64) @ 0040C0F9 : uint64)
   Class: Eq_10965
   DataType: uint64
   OrigDataType: uint64
@@ -50253,9 +50253,9 @@ T_10970: (in rdx_rax_132 @ 0040C114 : uint128)
   OrigDataType: uint128
 T_10971: (in rdx_rax_123 % rax_113 @ 00000000 : word128)
   Class: Eq_10971
-  DataType: ui128
-  OrigDataType: ui128
-T_10972: (in CONVERT(rdx_rax_123 % rax_113, word128, uint64) @ 0040C114 : uint64)
+  DataType: uint128
+  OrigDataType: uint128
+T_10972: (in CONVERT(rdx_rax_123 %u rax_113, word128, uint64) @ 0040C114 : uint64)
   Class: Eq_10972
   DataType: uint64
   OrigDataType: uint64
@@ -50267,7 +50267,7 @@ T_10974: (in (uint64) (rdx_rax_123 % rax_113) * 0xA<64> @ 00000000 : word64)
   Class: Eq_10974
   DataType: ui64
   OrigDataType: ui64
-T_10975: (in CONVERT(CONVERT(rdx_rax_123 % rax_113, word128, uint64) * 0xA<64>, word64, uint128) @ 0040C114 : uint128)
+T_10975: (in CONVERT(CONVERT(rdx_rax_123 %u rax_113, word128, uint64) * 0xA<64>, word64, uint128) @ 0040C114 : uint128)
   Class: Eq_10970
   DataType: uint128
   OrigDataType: uint128
@@ -50285,9 +50285,9 @@ T_10978: (in rdx_134 @ 0040C114 : uint64)
   OrigDataType: uint64
 T_10979: (in rdx_rax_132 % rax_113 @ 00000000 : word128)
   Class: Eq_10979
-  DataType: ui128
-  OrigDataType: ui128
-T_10980: (in CONVERT(rdx_rax_132 % rax_113, word128, uint64) @ 0040C114 : uint64)
+  DataType: uint128
+  OrigDataType: uint128
+T_10980: (in CONVERT(rdx_rax_132 %u rax_113, word128, uint64) @ 0040C114 : uint64)
   Class: Eq_10978
   DataType: uint64
   OrigDataType: uint64
@@ -50437,9 +50437,9 @@ T_11016: (in rdx_227 @ 0040C182 : uint64)
   OrigDataType: uint64
 T_11017: (in rdx_rax_224 % rsi_203 @ 00000000 : word128)
   Class: Eq_11017
-  DataType: ui128
-  OrigDataType: ui128
-T_11018: (in CONVERT(rdx_rax_224 % rsi_203, word128, uint64) @ 0040C182 : uint64)
+  DataType: uint128
+  OrigDataType: uint128
+T_11018: (in CONVERT(rdx_rax_224 %u rsi_203, word128, uint64) @ 0040C182 : uint64)
   Class: Eq_11016
   DataType: uint64
   OrigDataType: uint64
@@ -50505,9 +50505,9 @@ T_11033: (in edx_249 @ 0040C197 : uint32)
   OrigDataType: uint32
 T_11034: (in edx_eax_246 % v22_62 @ 00000000 : word64)
   Class: Eq_11034
-  DataType: ui64
-  OrigDataType: ui64
-T_11035: (in CONVERT(edx_eax_246 % v22_62, word64, uint32) @ 0040C197 : uint32)
+  DataType: uint64
+  OrigDataType: uint64
+T_11035: (in CONVERT(edx_eax_246 %u v22_62, word64, uint32) @ 0040C197 : uint32)
   Class: Eq_11033
   DataType: uint32
   OrigDataType: uint32

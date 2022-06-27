@@ -764,7 +764,7 @@ namespace Reko.UnitTests.Arch.RiscV
             Given_RiscVInstructions(0x02C8783B);    // remuw\ta6,a6,a2
             AssertCode(
                 "0|L--|0000000000010000(4): 1 instructions",
-                "1|L--|a6 = CONVERT(SLICE(a6 % a2, word32, 0), word32, int64)");
+                "1|L--|a6 = CONVERT(SLICE(a6 %u a2, word32, 0), word32, int64)");
         }
 
         [Test]
@@ -1256,7 +1256,7 @@ namespace Reko.UnitTests.Arch.RiscV
             Given_RiscVInstructions(0x02D7E6BB);    // remw\ta3,a5,a3
             AssertCode(
                 "0|L--|0000000000010000(4): 1 instructions",
-                "1|L--|a3 = CONVERT(SLICE(a5 % a3, word32, 0), word32, int64)");
+                "1|L--|a3 = CONVERT(SLICE(a5 %s a3, word32, 0), word32, int64)");
         }
 
         [Test]

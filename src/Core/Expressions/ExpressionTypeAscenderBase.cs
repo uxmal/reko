@@ -138,13 +138,15 @@ namespace Reko.Core.Expressions
             }
             else if (
                 binExp.Operator == Operator.SMul ||
-                binExp.Operator == Operator.SDiv)
+                binExp.Operator == Operator.SDiv ||
+                binExp.Operator == Operator.SMod)
             {
                 dt = PrimitiveType.CreateWord(binExp.DataType.BitSize).MaskDomain(Domain.SignedInt);
             }
             else if (
                 binExp.Operator == Operator.UMul ||
-                binExp.Operator == Operator.UDiv)
+                binExp.Operator == Operator.UDiv ||
+                binExp.Operator == Operator.UMod)
             {
                 dt = PrimitiveType.CreateWord(binExp.DataType.BitSize).MaskDomain(Domain.UnsignedInt);
             }

@@ -341,7 +341,8 @@ namespace Reko.Typing
                 return handler.DataTypeTrait(binExp, binExp.DataType);
 			} 
 			else if (binExp.Operator == Operator.SMul ||
-				binExp.Operator == Operator.SDiv)
+				binExp.Operator == Operator.SDiv ||
+				binExp.Operator == Operator.SMod)
 			{
                 handler.DataTypeTrait(binExp, MakeNonPointer(binExp.DataType)!);
                 var dt = handler.DataTypeTrait(binExp, binExp.DataType);
@@ -351,7 +352,8 @@ namespace Reko.Typing
 			}
 			else if (binExp.Operator == Operator.UMul ||
 				binExp.Operator == Operator.UDiv ||
-				binExp.Operator == Operator.Shr)
+				binExp.Operator == Operator.UMod ||
+                binExp.Operator == Operator.Shr)
 			{
                 handler.DataTypeTrait(binExp, MakeNonPointer(binExp.DataType));
                 var dt = handler.DataTypeTrait(binExp, MakeUnsigned(binExp.DataType));

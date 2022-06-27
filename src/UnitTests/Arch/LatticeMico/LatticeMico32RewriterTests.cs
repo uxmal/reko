@@ -358,7 +358,7 @@ namespace Reko.UnitTests.Arch.LatticeMico
             Given_HexString("D6DCB000"); // mod	r22,r22,sp
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|r22 = r22 % sp");
+                "1|L--|r22 = r22 %s sp");
         }
 
         [Test]
@@ -367,7 +367,7 @@ namespace Reko.UnitTests.Arch.LatticeMico
             Given_HexString("C44B1800"); // modu	r3,r2,r11
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|r3 = r2 % r11");
+                "1|L--|r3 = r2 %u r11");
         }
 
         [Test]

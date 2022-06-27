@@ -1875,7 +1875,7 @@ void fn0000000000405200(Eq_n rsi, Eq_n rdi)
 					__overflow(rdi_n, 9);
 					rcx_n = g_t61B0D8;
 				}
-				rbx_n = rbx_n + rcx_n - CONVERT(CONVERT(rbx_n, word64, uint128) % rcx_n, word128, uint64);
+				rbx_n = rbx_n + rcx_n - CONVERT(CONVERT(rbx_n, word64, uint128) %u rcx_n, word128, uint64);
 				goto l0000000000405266;
 			}
 			rbx_n = rsi_n;

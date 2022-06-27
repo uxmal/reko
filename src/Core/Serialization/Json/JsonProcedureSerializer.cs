@@ -20,15 +20,11 @@
 
 using Reko.Core.Code;
 using Reko.Core.Expressions;
-using Reko.Core.Operators;
-using Reko.Core.Output;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Reko.Core.Serialization.Json
 {

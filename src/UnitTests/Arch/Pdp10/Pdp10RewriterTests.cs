@@ -737,7 +737,7 @@ namespace Reko.UnitTests.Arch.Pdp10
                 "2|L--|r11 = v5",
                 "3|L--|v6 = v5",
                 "4|L--|Mem0[r13 + 123136<i36>:word36] = v6",
-                "5|L--|r12 = r11 % Mem0[r13 + 123136<i36>:word36]",
+                "5|L--|r12 = r11 %s Mem0[r13 + 123136<i36>:word36]",
                 "6|L--|VTND = cond(r11)");
         }
 
@@ -748,7 +748,7 @@ namespace Reko.UnitTests.Arch.Pdp10
             AssertCode(     // idivi	1,2000
                 "0|L--|200000(1): 3 instructions",
                 "1|L--|r1 = r1 / 0x400<36>",
-                "2|L--|r2 = r1 % 0x400<36>",
+                "2|L--|r2 = r1 %s 0x400<36>",
                 "3|L--|VTND = cond(r1)");
         }
 

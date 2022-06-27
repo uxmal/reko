@@ -94,8 +94,8 @@ namespace Reko.Arch.Tlcs.Tlcs900
                 case Mnemonic.daa: RewriteDaa("****-*"); break;
                 case Mnemonic.dec: RewriteIncDec(m.ISub, "****1-"); break;
                 case Mnemonic.decf: RewriteDecf(); break;
-                case Mnemonic.div: RewriteDiv(m.UDiv, "---V--");break;
-                case Mnemonic.divs: RewriteDiv(m.SDiv, "---V--");break;
+                case Mnemonic.div: RewriteDiv(m.UDiv, m.UMod, "---V--");break;
+                case Mnemonic.divs: RewriteDiv(m.SDiv, m.SMod, "---V--");break;
                 case Mnemonic.djnz: RewriteDjnz(); break;
                 case Mnemonic.ei: RewriteEi(); break;
                 case Mnemonic.ex: RewriteEx(); break;
