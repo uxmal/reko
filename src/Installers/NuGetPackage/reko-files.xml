@@ -27,7 +27,7 @@
         <var id="var.IA64.TargetPath" >$SolutionDir$/Arch/IA64/$TargetDir$/Reko.Arch.IA64.dll</var>
         <var id="var.Infineon.TargetPath" >$SolutionDir$/Arch/Infineon/$TargetDir$/Reko.Arch.Infineon.dll</var>
         <var id="var.LatticeMico.TargetPath" >$SolutionDir$/Arch/LatticeMico/$TargetDir$/Reko.Arch.LatticeMico.dll</var>
-        <var id="var.Loongson.TargetPath" >$SolutionDir$/Arch/LatticeMico/$TargetDir$/Reko.Arch.Loongson.dll</var>
+        <var id="var.Loongson.TargetPath" >$SolutionDir$/Arch/Loongson/$TargetDir$/Reko.Arch.Loongson.dll</var>
         <var id="var.M6800.TargetPath" >$SolutionDir$/Arch/M6800/$TargetDir$/Reko.Arch.M6800.dll</var>
         <var id="var.M68k.Design.TargetPath" >$SolutionDir$/Arch/M68k.Design/$TargetFwkWindowsDir$/Reko.Arch.M68k.Design.dll</var>
         <var id="var.M68k.TargetPath" >$SolutionDir$/Arch/M68k/$TargetDir$/Reko.Arch.M68k.dll</var>
