@@ -7,9 +7,6 @@
 		<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
 		<Configurations>Debug;Release</Configurations>
 	</PropertyGroup>
-	<ItemGroup>
-	  <PackageReference Include="NUnit" Version="3.13.2" />
-	</ItemGroup>
 
 	<ItemGroup>
 		<ProjectReference Include="..\..\Core\Core.csproj" />
