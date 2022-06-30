@@ -333,7 +333,7 @@ namespace Reko.Core.Configuration
             }
 
             using var stm = File.Open(configFileName, FileMode.Open, FileAccess.Read, FileShare.Read);
-            var ser = new XmlSerializer(typeof(RekoConfiguration_v1));
+             var ser = new XmlSerializer(typeof(RekoConfiguration_v1));
             var sConfig = (RekoConfiguration_v1) ser.Deserialize(stm)!;
             var cfg = new RekoConfigurationService(services, configFileName, sConfig);
             return cfg;

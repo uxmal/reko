@@ -28,6 +28,7 @@ by the PreBuild.targets file.
     <ProjectReference Include="$(SolutionDir)Arch\CompactRisc\CompactRisc.csproj" />
     <ProjectReference Include="$(SolutionDir)Arch\Cray\Cray.csproj" />
     <ProjectReference Include="$(SolutionDir)Arch\Etrax\Etrax.csproj" />
+    <ProjectReference Include="$(SolutionDir)Arch\Fujitsu\Fujitsu.csproj" />
     <ProjectReference Include="$(SolutionDir)Arch\H8\H8.csproj" />
     <ProjectReference Include="$(SolutionDir)Arch\i8051\i8051.csproj" />
     <ProjectReference Include="$(SolutionDir)Arch\IA64\IA64.csproj" />
@@ -134,6 +135,7 @@ by the PreBuild.targets file.
     <Architectures Include="$(SolutionDir)Arch\CompactRisc\bin\$(StandardOutputDir)\Reko.Arch.CompactRisc.*" />
     <Architectures Include="$(SolutionDir)Arch\Cray\bin\$(StandardOutputDir)\Reko.Arch.Cray.*" />
     <Architectures Include="$(SolutionDir)Arch\Etrax\bin\$(StandardOutputDir)\Reko.Arch.Etrax.*" />
+    <Architectures Include="$(SolutionDir)Arch\Fujitsu\bin\$(StandardOutputDir)\Reko.Arch.Fujitsu.*" />
     <Architectures Include="$(SolutionDir)Arch\H8\bin\$(StandardOutputDir)\Reko.Arch.H8.*" />
     <Architectures Include="$(SolutionDir)Arch\i8051\bin\$(StandardOutputDir)\Reko.Arch.i8051.*" />
     <Architectures Include="$(SolutionDir)Arch\IA64\bin\$(StandardOutputDir)\Reko.Arch.IA64.*" />
