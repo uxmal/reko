@@ -681,14 +681,14 @@ namespace Reko.Arch.Fujitsu.F2MC16FX
                 (0x3C, Instr(Mnemonic.movw, rl_disp8, a)),
                 (0x3E, Instr(Mnemonic.movw, rl_disp8, a)),
 
-                (0x30, Instr(Mnemonic.mov, a, rl_disp8)),
-                (0x32, Instr(Mnemonic.mov, a, rl_disp8)),
-                (0x34, Instr(Mnemonic.mov, a, rl_disp8)),
-                (0x36, Instr(Mnemonic.mov, a, rl_disp8)),
-                (0x38, Instr(Mnemonic.movw, a, rl_disp8)),
-                (0x3A, Instr(Mnemonic.movw, a, rl_disp8)),
-                (0x3C, Instr(Mnemonic.movw, a, rl_disp8)),
-                (0x3E, Instr(Mnemonic.movw, a, rl_disp8)));
+                (0x40, Instr(Mnemonic.mov, a, rl_disp8)),
+                (0x42, Instr(Mnemonic.mov, a, rl_disp8)),
+                (0x44, Instr(Mnemonic.mov, a, rl_disp8)),
+                (0x46, Instr(Mnemonic.mov, a, rl_disp8)),
+                (0x48, Instr(Mnemonic.movw, a, rl_disp8)),
+                (0x4A, Instr(Mnemonic.movw, a, rl_disp8)),
+                (0x4C, Instr(Mnemonic.movw, a, rl_disp8)),
+                (0x4E, Instr(Mnemonic.movw, a, rl_disp8)));
 
             rootDecoder = Mask(0, 8, "F2MC16FX", new Decoder[]
             {
