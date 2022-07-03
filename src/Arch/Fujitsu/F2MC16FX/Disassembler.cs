@@ -226,7 +226,7 @@ namespace Reko.Arch.Fujitsu.F2MC16FX
         {
             if (!dasm.rdr.TryReadLeUInt16(out var imm16))
                 return false;
-            dasm.ops.Add(ImmediateOperand.UInt16(imm16));
+            dasm.ops.Add(ImmediateOperand.Word16(imm16));
             return true;
         }
 
@@ -384,7 +384,7 @@ namespace Reko.Arch.Fujitsu.F2MC16FX
         {
             if (!dasm.rdr.TryReadLeUInt16(out ushort addr16))
                 return false;
-            dasm.ops.Add(MemoryOperand.Addr16(addr16));
+            dasm.ops.Add(AddressOperand.Ptr16(addr16));
             return true;
         }
 
@@ -693,7 +693,7 @@ namespace Reko.Arch.Fujitsu.F2MC16FX
             rootDecoder = Mask(0, 8, "F2MC16FX", new Decoder[]
             {
                 // 00
-                Instr(Mnemonic.nop),
+                Instr(Mnemonic.nop, InstrClass.Linear|InstrClass.Zero|InstrClass.Padding),
                 Instr(Mnemonic.int9),
                 Instr(Mnemonic.adddc, a),
                 Instr(Mnemonic.neg, a),

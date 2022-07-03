@@ -23,6 +23,7 @@ using Reko.Core.Expressions;
 using Reko.Core.Machine;
 using Reko.Core.Types;
 using System;
+using System.Diagnostics;
 
 namespace Reko.Arch.Fujitsu.F2MC16FX
 {
@@ -48,13 +49,28 @@ namespace Reko.Arch.Fujitsu.F2MC16FX
 
         protected override void DoRender(MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
         {
-            if (Displacement is not null)
+            if (Base is { })
             {
+                renderer.WriteChar('@');
+                renderer.WriteString(Base.Name);
+                if (PostIncrement)
+                {
+                    renderer.WriteChar('+');
+                    return;
+                }
+                if (Displacement is { })
+                {
+                    Instruction.RenderSignedConstant(Displacement, renderer);
+                }
+            }
+            else
+            {
+                Debug.Assert(Displacement is not null);
                 if (IsIoAddress)
                 {
                     renderer.WriteString("I:");
                 }
-                renderer.WriteString(Displacement.ToString());
+                Instruction.RenderUnsignedConstant(Displacement, renderer);
             }
         }
 

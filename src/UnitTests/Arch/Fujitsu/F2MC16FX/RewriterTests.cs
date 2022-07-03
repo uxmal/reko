@@ -20,7 +20,6 @@
 
 using NUnit.Framework;
 using Reko.Arch.Fujitsu;
-using Reko.Arch.Fujitsu.F2MC16FX;
 using Reko.Core;
 using System;
 using System.Collections.Generic;
@@ -31,36 +30,56 @@ using System.Threading.Tasks;
 namespace Reko.UnitTests.Arch.Fujitsu.F2MC16FX
 {
     [TestFixture]
-    public class DisassemblerTests : DisassemblerTestBase<Instruction>
+    public class RewriterTests : RewriterTestBase
     {
-        private readonly F2MC16FXArchitecture arch;
+        private F2MC16FXArchitecture arch;
 
-        public DisassemblerTests()
+        public RewriterTests()
         {
             this.arch = new F2MC16FXArchitecture(CreateServiceContainer(), "f2mc16fx", new());
             this.LoadAddress = Address.Ptr32(0x0010_0000);
         }
-        public override IProcessorArchitecture Architecture => arch;
 
+        public override IProcessorArchitecture Architecture => arch;
 
         public override Address LoadAddress { get; }
 
-        private void AssertCode(string sExpected, string hexBytes)
+        [Test]
+        public void F2MC16FXRw_movx()
         {
-            var instr = base.DisassembleHexBytes(hexBytes);
-            Assert.AreEqual(sExpected, instr.ToString());
+            Given_HexString("576FB0");
+            AssertCode(     // movx	a,0B06Fh
+                "0|L--|00100000(3): 2 instructions",
+                "1|L--|ah = al",
+                "2|L--|al = CONVERT(Mem0[0xB06F<16>:byte], byte, int16)");
         }
 
         [Test]
-        public void F2MC16FXDis_jmp_indirect_post()
+        public void F2MC16FXRw_call()
         {
-            AssertCode("jmp\t@rw3+", "730F");
+            Given_HexString("648576");
+            AssertCode(     // call	7685h
+                "0|T--|00100000(3): 1 instructions",
+                "1|T--|call 7685 (2)");
         }
 
         [Test]
-        public void F2MC16FXDis_nop()
+        public void F2MC16FXRw_nop()
         {
-            AssertCode("nop", "00");
+            Given_HexString("00");
+            AssertCode(     // nop
+                "0|L--|00100000(1): 1 instructions",
+                "1|L--|nop");
+        }
+
+        [Test]
+        public void F2MC16FXRw_mulu()
+        {
+            Given_HexString("7804");
+            AssertCode(     // mulu a,r4
+                "0|L--|00100000(2): 2 instructions",
+                "1|L--|v2 = SLICE(a, uint8, 0)",
+                "2|L--|al = v2 *u16 r4");
         }
     }
 }

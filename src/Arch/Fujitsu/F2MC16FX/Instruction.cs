@@ -18,6 +18,7 @@
  */
 #endregion
 
+using Reko.Core.Expressions;
 using Reko.Core.Machine;
 using System;
 using System.Collections.Generic;
@@ -38,6 +39,43 @@ namespace Reko.Arch.Fujitsu.F2MC16FX
         {
             renderer.WriteMnemonic(MnemonicAsString);
             base.RenderOperands(renderer, options);
+        }
+
+        protected override void RenderOperand(MachineOperand operand, MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
+        {
+            switch (operand)
+            {
+            case ImmediateOperand imm:
+                renderer.WriteChar('#');
+                RenderUnsignedConstant(imm.Value, renderer);
+                return;
+            }
+            base.RenderOperand(operand, renderer, options);
+        }
+
+        internal static void RenderSignedConstant(
+            Constant value, 
+            MachineInstructionRenderer renderer)
+        {
+            var v = value.ToInt32();
+            var sValue = Math.Abs(v).ToString("X");
+            renderer.WriteChar(v >= 0 ? '+' : '-');
+            if (!char.IsDigit(sValue[0]))
+                renderer.WriteChar('0');
+            renderer.WriteString(sValue);
+            renderer.WriteChar('h');
+        }
+
+        internal static void RenderUnsignedConstant(
+            Constant value,
+            MachineInstructionRenderer renderer)
+        {
+            var v = value.ToUInt32();
+            var sValue = v.ToString("X");
+            if (!char.IsDigit(sValue[0]))
+                renderer.WriteChar('0');
+            renderer.WriteString(sValue);
+            renderer.WriteChar('h');
         }
     }
 }
