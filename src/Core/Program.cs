@@ -681,7 +681,7 @@ namespace Reko.Core
                 {
                     var loader = this.CreateTypeLibraryDeserializer();
                     var exp = loader.LoadExternalProcedure(sProc);
-                    if (!(exp is null))
+                    if (exp is {})
                     {
                         proc.Name = exp.Name;
                         proc.Signature = exp.Signature;

@@ -434,8 +434,8 @@ namespace Reko.Scanning
                     site = state.OnBeforeCall(stackReg!, 0);
                     var sig = impProc.Signature;
                     var chr = impProc.Characteristics;
-                    if (chr != null && chr.IsAlloca)
-                        return ProcessAlloca(site, impProc);
+                    if (ProcessAlloca(site, impProc, chr))
+                        return true;
                     EmitCall(CreateProcedureConstant(impProc), sig, chr, site);
                     Emit(new ReturnInstruction());
                     blockCur!.Procedure.ControlGraph.AddEdge(blockCur, blockCur.Procedure.ExitBlock);
@@ -549,10 +549,8 @@ namespace Reko.Scanning
                 {
                     sig = impProc.Signature;
                     chr = impProc.Characteristics;
-                    if (chr != null && chr.IsAlloca)
-                    {
-                        return ProcessAlloca(site, impProc);
-                    }
+                    if (ProcessAlloca(site, impProc, chr))
+                        return true;
                     EmitCall(CreateProcedureConstant(impProc), sig, chr, site);
                     return OnAfterCall(sig, chr);
                 }
@@ -571,6 +569,12 @@ namespace Reko.Scanning
                 if (InlineCall(addr))
                 {
                     return true;
+                }
+                if (program.Procedures.TryGetValue(addr, out var maybeAlloca) && 
+                    maybeAlloca.Characteristics.IsAlloca)
+                {
+                    if (ProcessAlloca(site, maybeAlloca, maybeAlloca.Characteristics))
+                        return true;
                 }
 
                 var arch = call.Architecture ?? blockCur!.Procedure.Architecture;
@@ -925,19 +929,30 @@ namespace Reko.Scanning
             // ("thiscall" in x86 µsoft world).
         }
 
-        public bool ProcessAlloca(CallSite site, ExternalProcedure impProc)
+        public bool ProcessAlloca(CallSite site, ProcedureBase impProc, ProcedureCharacteristics chr)
         {
-            if (impProc.Signature == null)
-                throw new ApplicationException(string.Format("You must specify a procedure signature for {0} since it has been marked as 'alloca'.", impProc.Name));
+            if (chr is null || !chr.IsAlloca)
+                return false;
+            if (impProc.Signature is null || !impProc.Signature.ParametersValid)
+            {
+                this.scanner.Warn(ric!.Address, $"You must specify a procedure signature for {impProc.Name} since it has been marked as 'alloca'.");
+                return false;
+            }
+            var sig = impProc.Signature;
+            if (sig.Parameters!.Length != 1)
+            {
+                this.scanner.Warn(ric!.Address, $"An alloca function must have exactly one parameter, but {impProc.Name} has {sig.Parameters.Length}.");
+            }
             var ab = arch.CreateFrameApplicationBuilder(
                 frame!,
                 site,
                 new ProcedureConstant(program.Platform.PointerType, impProc));
-            if (impProc.Signature.Parameters!.Length != 1)
-                throw new ApplicationException(string.Format("An alloca function must have exactly one parameter, but {0} has {1}.", impProc.Name, impProc.Signature.Parameters.Length));
-            var target = ab.Bind(impProc.Signature.Parameters[0]);
-            if (!(target is Identifier id))
-                throw new ApplicationException(string.Format("The parameter of {0} wasn't a register.", impProc.Name));
+            var target = ab.Bind(sig.Parameters[0]);
+            if (target is not Identifier id)
+            {
+                this.scanner.Warn(ric!.Address, $"The parameter of {impProc.Name} wasn't a register.");
+                return false;
+            }
             if (state.GetValue(id) is Constant c && c.IsValid)
             {
                 Emit(new Assignment(stackReg!, new BinaryExpression(Operator.ISub, stackReg!.DataType, stackReg, c)));

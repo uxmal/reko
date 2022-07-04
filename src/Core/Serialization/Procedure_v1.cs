@@ -45,8 +45,8 @@ namespace Reko.Core.Serialization
         public int Ordinal = NoOrdinal;
 
         /// <summary>
-        /// Procedure signature. If non-null, the user has specified a signature. If null, the
-        /// signature is unknown.
+        /// Procedure signature. If non-null, the user has specified a
+        /// signature. If null, the signature is unknown.
         /// </summary>
         [XmlElement("signature")]
         public SerializedSignature? Signature;
@@ -64,8 +64,9 @@ namespace Reko.Core.Serialization
         public string? Address;
 
         /// <summary>
-        /// Property that indicated whether the procedure body is to be decompiled 
-        /// or not. If false, it is recommended that the Signature property be set.
+        /// Indicates whether the procedure body is to be decompiled 
+        /// or not. If false, it is recommended that the <see cref="ProcedureBase_v1.Signature"/>
+        /// property be set.
         /// </summary>
         [XmlElement("decompile")]
         [DefaultValue(true)]
@@ -80,16 +81,17 @@ namespace Reko.Core.Serialization
         public RegisterValue_v2[]? Assume;
 
         /// <summary>
-        /// The signature of the function as specified by the user. It is written
-        /// in C syntax, with the [[reko::arg(register,{name})]] extension for specifying
-        /// values passed or returned in parameters.
+        /// The signature of the function as specified by the user. It is
+        /// written in C syntax, with the [[reko::arg(register,{name})]] 
+        /// extension for specifying values passed or returned in parameters.
         /// </summary>
         [XmlElement("CSignature")]
         public string? CSignature;
 
         /// <summary>
-        /// Project-relative path into which this procedure should be written. If 
-        /// no path is specified, the procedure is written into a default output file.
+        /// Project-relative path into which this procedure should be written.
+        /// If no path is specified, the procedure is written into a default
+        /// output file.
         /// </summary>
         [XmlElement("OutputFile")]
         public string? OutputFile;

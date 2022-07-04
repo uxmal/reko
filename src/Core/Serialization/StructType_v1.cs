@@ -51,8 +51,7 @@ namespace Reko.Core.Serialization
 
 		public override string ToString()
 		{
-			StringBuilder sb = new StringBuilder();
-            sb.Append("struct(");
+			var sb = new StringBuilder("struct(");
             if (!string.IsNullOrEmpty(Name))
                 sb.AppendFormat("{0}, ", Name);
             if (ByteSize > 0)
