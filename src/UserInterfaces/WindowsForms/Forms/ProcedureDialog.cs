@@ -18,6 +18,8 @@
  */
 #endregion
 
+using Reko.Core;
+using Reko.Gui;
 using Reko.Gui.Forms;
 using System;
 using System.Collections.Generic;
@@ -29,7 +31,7 @@ using System.Windows.Forms;
 
 namespace Reko.UserInterfaces.WindowsForms.Forms
 {
-    public partial class ProcedureDialog : Form, IProcedureDialog
+    public partial class ProcedureDialog : Form, IDialog<UserProcedure>
     {
         private ProcedureDialogInteractor interactor;
 
@@ -59,6 +61,11 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
             get { return chkMalloc; }
         }
 
+        public CheckBox IsAlloca
+        {
+            get { return chkIsAlloca; }
+        }
+
         public CheckBox Terminates
         {
             get { return chkTerminates; }
@@ -66,9 +73,9 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
 
         public Button OkButton { get { return btnOK; } }
 
-        public void ApplyChanges()
+        public UserProcedure Value
         {
-            this.interactor.ApplyChanges();
+            get { return this.interactor.ApplyChanges(); }
         }
     }
 }

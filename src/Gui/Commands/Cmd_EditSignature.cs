@@ -46,17 +46,22 @@ namespace Reko.Gui.Commands
         {
             var dlgFactory = Services.RequireService<IDialogFactory>();
             var uiSvc = Services.RequireService<IDecompilerShellUiService>();
-            if (!program.User.Procedures.TryGetValue(address, out var proc))
-                proc = new UserProcedure(address, procedure.Name);
-            using (IProcedureDialog dlg = dlgFactory.CreateProcedureDialog(program, proc))
+            if (!program.User.Procedures.TryGetValue(address, out var userproc))
+                userproc = new UserProcedure(address, procedure.Name);
+            using (IDialog<UserProcedure> dlg = dlgFactory.CreateProcedureDialog(program, userproc))
             {
-                if (DialogResult.OK == await uiSvc.ShowModalDialog(dlg))
+                var newProc = await uiSvc.ShowModalDialog(dlg);
+                if (newProc is { })
                 {
-                    //$TODO: move applychanges out!
-                    dlg.ApplyChanges();
-                    program.User.Procedures[address] = proc;
+                    program.User.Procedures[address] = newProc;
                     if (procedure != null)
-                        procedure.Name = proc.Name;
+                        procedure.Name = userproc.Name;
+                    if (newProc.Signature is { })
+                    {
+                        var proc = program.Procedures[address];
+                        var ser = program.CreateProcedureSerializer();
+                        proc.Signature = ser.Deserialize(newProc.Signature, proc.Frame)!;
+                    }
                 }
             }
         }

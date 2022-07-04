@@ -114,11 +114,12 @@ namespace Reko.UserInterfaces.WindowsForms
             return dlg;
         }
 
-        public IProcedureDialog CreateProcedureDialog(Program program, Core.UserProcedure proc)
+        public IDialog<UserProcedure> CreateProcedureDialog(Program program, Core.UserProcedure proc)
         {
             var i = new ProcedureDialogInteractor(program, proc);
             return i.CreateDialog();
         }
+
         public IProgramPropertiesDialog CreateProgramPropertiesDialog(Program program)
         {
             return new ProgramPropertiesDialog

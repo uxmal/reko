@@ -415,6 +415,9 @@ namespace Reko.Gui.Forms
             IOpenAsDialog dlg = null;
             try
             {
+                await From(uiSvc, dlgFactory);
+                return false;
+
                 dlg = dlgFactory.CreateOpenAsDialog(initialFilename);
                 if (await uiSvc.ShowModalDialog(dlg) != DialogResult.OK)
                     return false;
@@ -436,6 +439,22 @@ namespace Reko.Gui.Forms
             }
             return true;
         }
+
+        private async Task From(IDecompilerShellUiService uiSvc, IDialogFactory dlgFactory)
+        {
+            var cfgSvc = Services.RequireService<IConfigurationService>();
+            var arch = cfgSvc.GetArchitecture("z80")!;
+            var platform = new DefaultPlatform(Services, arch);
+            var program = new Program
+            {
+                Architecture = arch,
+                Platform = platform
+            };
+            var proc = new UserProcedure(Address.Ptr32(0x0010_0000), "");
+            var dlgTest = dlgFactory.CreateProcedureDialog(program, proc);
+            var userNew = await uiSvc.ShowModalDialog(dlgTest);
+        }
+
 
         public async ValueTask CloseProject()
         {

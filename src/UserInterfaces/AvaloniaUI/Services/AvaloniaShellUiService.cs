@@ -138,9 +138,10 @@ namespace Reko.UserInterfaces.AvaloniaUI.Services
             throw new NotImplementedException();
         }
 
-        public ValueTask<TResult> ShowModalDialog<TResult>(IDialog<TResult> dlg)
-        { 
-            throw new NotImplementedException();
+        public async ValueTask<TResult> ShowModalDialog<TResult>(IDialog<TResult> dlg)
+        {
+            await ((Window) dlg).ShowDialog(mainWindow);
+            return dlg.Value;
         }
 
         public async ValueTask<string?> ShowOpenFileDialog(string fileName)

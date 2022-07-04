@@ -1,0 +1,57 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+		xmlns:vm="using:Reko.UserInterfaces.AvaloniaUI.ViewModels"
+        mc:Ignorable="d" d:DesignWidth="400" d:DesignHeight="450"
+        x:Class="Reko.UserInterfaces.AvaloniaUI.Views.ProcedureDialog"
+		x:DataType="vm:ProcedureDialogModel"
+		x:CompileBindings="True"
+		Width="400" Height="450"
+		ShowInTaskbar="False"
+		Padding="6"
+        Title="Procedure properties">
+	<StackPanel>
+		<StackPanel.Styles>
+			<Style Selector="TextBox.error">
+				<Setter Property="Foreground" Value="Red" />
+			</Style>
+		</StackPanel.Styles>
+		<StackPanel.Spacing>5</StackPanel.Spacing>
+		<Label>_Name</Label>
+		<TextBox
+			Name="txtName"
+			Text="{Binding Name}"
+			IsEnabled="{Binding NameEnabled}" />
+		<Label>_Signature</Label>
+		<TextBox
+			Name="txtSignature"
+			Height="90"
+			Text="{Binding Signature}"
+			Classes.error="{Binding SignatureError}" />
+		<Label>_Comment</Label>
+		<TextBox Name="txtComment" Height="60" Text="{Binding Comment}"/>
+		<Border>
+			<StackPanel>
+				<CheckBox Name="chkAllocator" IsChecked="{Binding IsAllocator}">
+					Allocates _heap memory (like malloc, calloc)
+				</CheckBox>
+				<CheckBox Name="chkDecompiler" IsChecked="{Binding Decompile}">
+					_Decompile the body of this procedure
+				</CheckBox>
+				<CheckBox Name="chkTerminates" IsChecked="{Binding Terminates}">
+					Procedure _terminates process or thread
+				</CheckBox>
+				<CheckBox Name="chkAlloca" IsChecked="{Binding IsAlloca}">
+					_Allocates stack memory (like alloca)
+				</CheckBox>
+			</StackPanel>
+		</Border>
+		<StackPanel HorizontalAlignment="Right"
+					Orientation="Horizontal"
+					Spacing="6">
+			<Button Click="btnOK_Click" HotKey="Enter">OK</Button>
+			<Button HotKey="Cancel">Cancel</Button>
+		</StackPanel>
+	</StackPanel>
+</Window>

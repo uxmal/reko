@@ -23,6 +23,8 @@ using Reko.Core.Machine;
 using Reko.Gui;
 using Reko.Gui.Forms;
 using Reko.Gui.Services;
+using Reko.UserInterfaces.AvaloniaUI.ViewModels;
+using Reko.UserInterfaces.AvaloniaUI.Views;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
@@ -34,7 +36,7 @@ namespace Reko.UserInterfaces.AvaloniaUI.Services
 {
     public class AvaloniaDialogFactory : IDialogFactory
     {
-        private IServiceContainer services;
+        private readonly IServiceContainer services;
 
         public AvaloniaDialogFactory(IServiceContainer services)
         {
@@ -106,9 +108,14 @@ namespace Reko.UserInterfaces.AvaloniaUI.Services
             throw new NotImplementedException();
         }
 
-        public IProcedureDialog CreateProcedureDialog(Program program, UserProcedure proc)
+        public IDialog<UserProcedure?> CreateProcedureDialog(Program program, UserProcedure proc)
         {
-            throw new NotImplementedException();
+            var procDlgModel = new ProcedureDialogModel(program, proc);
+            var procDlg = new ProcedureDialog()
+            {
+                DataContext = procDlgModel
+            };
+            return procDlg;
         }
 
         public IProgramPropertiesDialog CreateProgramPropertiesDialog(Program program)

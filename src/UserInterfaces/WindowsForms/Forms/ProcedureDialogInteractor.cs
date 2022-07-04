@@ -34,13 +34,15 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
     {
         protected ProcedureDialog dlg;
 
-        private Program program;
-        private UserProcedure proc;
+        private readonly Program program;
+        private readonly UserProcedure proc;
 
-        public ProcedureDialogInteractor(Program program, UserProcedure proc)
+        public ProcedureDialogInteractor(
+            Program program,
+            UserProcedure userProc)
         {
             this.program = program;
-            this.proc = proc;
+            this.proc = userProc;
         }
 
         public ProcedureDialog CreateDialog()
@@ -58,27 +60,41 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
             EnableProcedureName();
             dlg.Decompile.Checked = proc.Decompile;
             dlg.Allocator.Checked = proc.Characteristics.Allocator;
+            dlg.IsAlloca.Checked = proc.Characteristics.IsAlloca;
             dlg.Terminates.Checked = proc.Characteristics.Terminates;
         }
 
         private void EnableProcedureName()
         {
-            dlg.ProcedureName.Enabled = string.IsNullOrEmpty(dlg.Signature.Text) ?
-                true: false;
+            dlg.ProcedureName.Enabled = string.IsNullOrEmpty(dlg.Signature.Text);
         }
 
-        public void ApplyChanges()
+        public UserProcedure ApplyChanges()
         {
+            if (dlg.DialogResult != DialogResult.OK)
+                return null;
             var CSignature = dlg.Signature.Text.Trim();
             if (string.IsNullOrEmpty(CSignature))
                 CSignature = null;
-            proc.CSignature = CSignature;
-            proc.Name = dlg.ProcedureName.Text;
-            proc.Decompile = dlg.Decompile.Checked;
-            if (proc.Characteristics == null)
-                proc.Characteristics = new ProcedureCharacteristics();
-            proc.Characteristics.Allocator = dlg.Allocator.Checked;
-            proc.Characteristics.Terminates = dlg.Terminates.Checked;
+
+            var procName = dlg.ProcedureName.Text;
+            if (string.IsNullOrEmpty(procName))
+            {
+                procName = program.NamingPolicy.ProcedureName(proc.Address);
+            }
+            var usb = new UserSignatureBuilder(program);
+            var procNew = new UserProcedure(proc.Address, procName);
+            procNew.CSignature = CSignature;
+            procNew.Signature = usb.ParseFunctionDeclaration(CSignature)?.Signature;
+            procNew.Decompile = dlg.Decompile.Checked;
+
+            procNew.Characteristics = new ProcedureCharacteristics
+            {
+                Allocator = dlg.Allocator.Checked,
+                Terminates = dlg.Terminates.Checked,
+                IsAlloca = dlg.IsAlloca.Checked
+            };
+            return procNew;
         }
 
         private void EnableControls(bool signatureIsValid)

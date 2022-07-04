@@ -62,6 +62,7 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
             this.chkMalloc = new System.Windows.Forms.CheckBox();
             this.label3 = new System.Windows.Forms.Label();
             this.txtComment = new System.Windows.Forms.TextBox();
+            this.chkIsAlloca = new System.Windows.Forms.CheckBox();
             this.tabControl1.SuspendLayout();
             this.tabProcedure.SuspendLayout();
             this.groupBox1.SuspendLayout();
@@ -71,10 +72,11 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
             // 
             this.btnOK.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnOK.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.btnOK.Location = new System.Drawing.Point(247, 419);
+            this.btnOK.Location = new System.Drawing.Point(288, 483);
+            this.btnOK.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.btnOK.Name = "btnOK";
-            this.btnOK.Size = new System.Drawing.Size(75, 23);
-            this.btnOK.TabIndex = 0;
+            this.btnOK.Size = new System.Drawing.Size(88, 27);
+            this.btnOK.TabIndex = 10;
             this.btnOK.Text = "OK";
             this.btnOK.UseVisualStyleBackColor = true;
             // 
@@ -82,19 +84,21 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
             // 
             this.btnCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnCancel.Location = new System.Drawing.Point(331, 419);
+            this.btnCancel.Location = new System.Drawing.Point(386, 483);
+            this.btnCancel.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.btnCancel.Name = "btnCancel";
-            this.btnCancel.Size = new System.Drawing.Size(75, 23);
-            this.btnCancel.TabIndex = 1;
+            this.btnCancel.Size = new System.Drawing.Size(88, 27);
+            this.btnCancel.TabIndex = 11;
             this.btnCancel.Text = "Cancel";
             this.btnCancel.UseVisualStyleBackColor = true;
             // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(6, 12);
+            this.label1.Location = new System.Drawing.Point(7, 14);
+            this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(38, 13);
+            this.label1.Size = new System.Drawing.Size(42, 15);
             this.label1.TabIndex = 0;
             this.label1.Text = "&Name:";
             // 
@@ -102,18 +106,20 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
             // 
             this.txtName.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.txtName.Location = new System.Drawing.Point(6, 28);
+            this.txtName.Location = new System.Drawing.Point(7, 32);
+            this.txtName.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.txtName.Name = "txtName";
-            this.txtName.Size = new System.Drawing.Size(394, 20);
+            this.txtName.Size = new System.Drawing.Size(459, 23);
             this.txtName.TabIndex = 1;
             // 
             // tabControl1
             // 
             this.tabControl1.Controls.Add(this.tabProcedure);
             this.tabControl1.Location = new System.Drawing.Point(1, 3);
+            this.tabControl1.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(415, 410);
+            this.tabControl1.Size = new System.Drawing.Size(484, 473);
             this.tabControl1.TabIndex = 10;
             // 
             // tabProcedure
@@ -125,10 +131,11 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
             this.tabProcedure.Controls.Add(this.txtComment);
             this.tabProcedure.Controls.Add(this.txtName);
             this.tabProcedure.Controls.Add(this.label1);
-            this.tabProcedure.Location = new System.Drawing.Point(4, 22);
+            this.tabProcedure.Location = new System.Drawing.Point(4, 24);
+            this.tabProcedure.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.tabProcedure.Name = "tabProcedure";
-            this.tabProcedure.Padding = new System.Windows.Forms.Padding(3);
-            this.tabProcedure.Size = new System.Drawing.Size(407, 384);
+            this.tabProcedure.Padding = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            this.tabProcedure.Size = new System.Drawing.Size(476, 445);
             this.tabProcedure.TabIndex = 1;
             this.tabProcedure.Text = "Procedure";
             this.tabProcedure.UseVisualStyleBackColor = true;
@@ -136,28 +143,33 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(6, 55);
+            this.label4.Location = new System.Drawing.Point(7, 63);
+            this.label4.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(55, 13);
+            this.label4.Size = new System.Drawing.Size(60, 15);
             this.label4.TabIndex = 2;
             this.label4.Text = "&Signature:";
             // 
             // txtSignature
             // 
-            this.txtSignature.Location = new System.Drawing.Point(6, 71);
+            this.txtSignature.Location = new System.Drawing.Point(7, 82);
+            this.txtSignature.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.txtSignature.Multiline = true;
             this.txtSignature.Name = "txtSignature";
-            this.txtSignature.Size = new System.Drawing.Size(391, 78);
+            this.txtSignature.Size = new System.Drawing.Size(455, 89);
             this.txtSignature.TabIndex = 3;
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.chkIsAlloca);
             this.groupBox1.Controls.Add(this.chkTerminates);
             this.groupBox1.Controls.Add(this.chkDecompile);
             this.groupBox1.Controls.Add(this.chkMalloc);
-            this.groupBox1.Location = new System.Drawing.Point(6, 219);
+            this.groupBox1.Location = new System.Drawing.Point(7, 253);
+            this.groupBox1.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(392, 150);
+            this.groupBox1.Padding = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            this.groupBox1.Size = new System.Drawing.Size(457, 173);
             this.groupBox1.TabIndex = 7;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "C&haracteristics";
@@ -165,60 +177,76 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
             // chkTerminates
             // 
             this.chkTerminates.AutoSize = true;
-            this.chkTerminates.Location = new System.Drawing.Point(7, 67);
+            this.chkTerminates.Location = new System.Drawing.Point(8, 77);
+            this.chkTerminates.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.chkTerminates.Name = "chkTerminates";
-            this.chkTerminates.Size = new System.Drawing.Size(211, 17);
+            this.chkTerminates.Size = new System.Drawing.Size(233, 19);
             this.chkTerminates.TabIndex = 8;
-            this.chkTerminates.Text = "Procedure terminates process or thread";
+            this.chkTerminates.Text = "Procedure &terminates process or thread";
             this.chkTerminates.UseVisualStyleBackColor = true;
             // 
             // chkDecompile
             // 
             this.chkDecompile.AutoSize = true;
-            this.chkDecompile.Location = new System.Drawing.Point(6, 43);
+            this.chkDecompile.Location = new System.Drawing.Point(7, 50);
+            this.chkDecompile.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.chkDecompile.Name = "chkDecompile";
-            this.chkDecompile.Size = new System.Drawing.Size(102, 17);
+            this.chkDecompile.Size = new System.Drawing.Size(206, 19);
             this.chkDecompile.TabIndex = 7;
-            this.chkDecompile.Text = "Decompile body of this procedure";
+            this.chkDecompile.Text = "&Decompile body of this procedure";
             this.chkDecompile.UseVisualStyleBackColor = true;
             // 
             // chkMalloc
             // 
             this.chkMalloc.AutoSize = true;
-            this.chkMalloc.Location = new System.Drawing.Point(6, 19);
+            this.chkMalloc.Location = new System.Drawing.Point(7, 22);
+            this.chkMalloc.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.chkMalloc.Name = "chkMalloc";
-            this.chkMalloc.Size = new System.Drawing.Size(254, 17);
+            this.chkMalloc.Size = new System.Drawing.Size(256, 19);
             this.chkMalloc.TabIndex = 6;
-            this.chkMalloc.Text = "Memory allocating procedure (like malloc, calloc)";
+            this.chkMalloc.Text = "Allocates &heap memory (like malloc, calloc)";
             this.chkMalloc.UseVisualStyleBackColor = true;
             // 
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(6, 152);
+            this.label3.Location = new System.Drawing.Point(7, 175);
+            this.label3.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(54, 13);
+            this.label3.Size = new System.Drawing.Size(64, 15);
             this.label3.TabIndex = 4;
             this.label3.Text = "&Comment:";
             // 
             // txtComment
             // 
-            this.txtComment.Location = new System.Drawing.Point(6, 168);
+            this.txtComment.Location = new System.Drawing.Point(7, 194);
+            this.txtComment.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.txtComment.Multiline = true;
             this.txtComment.Name = "txtComment";
-            this.txtComment.Size = new System.Drawing.Size(395, 45);
+            this.txtComment.Size = new System.Drawing.Size(460, 51);
             this.txtComment.TabIndex = 5;
+            // 
+            // chkIsAlloca
+            // 
+            this.chkIsAlloca.AutoSize = true;
+            this.chkIsAlloca.Location = new System.Drawing.Point(8, 102);
+            this.chkIsAlloca.Name = "chkIsAlloca";
+            this.chkIsAlloca.Size = new System.Drawing.Size(215, 19);
+            this.chkIsAlloca.TabIndex = 9;
+            this.chkIsAlloca.Text = "&Allocates stack memory (like alloca)";
+            this.chkIsAlloca.UseVisualStyleBackColor = true;
             // 
             // ProcedureDialog
             // 
             this.AcceptButton = this.btnOK;
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.btnCancel;
-            this.ClientSize = new System.Drawing.Size(415, 454);
+            this.ClientSize = new System.Drawing.Size(484, 524);
             this.Controls.Add(this.btnCancel);
             this.Controls.Add(this.btnOK);
             this.Controls.Add(this.tabControl1);
+            this.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "ProcedureDialog";
@@ -251,5 +279,6 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
         private System.Windows.Forms.TextBox txtSignature;
         private System.Windows.Forms.CheckBox chkDecompile;
         private System.Windows.Forms.CheckBox chkTerminates;
+        private System.Windows.Forms.CheckBox chkIsAlloca;
     }
 }
