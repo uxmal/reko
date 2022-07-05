@@ -1047,6 +1047,10 @@ namespace Reko.Scanning
                 if (proc != null)
                 {
                     sr.KnownProcedures.Add(proc.EntryAddress);
+                    if (metadata.Characteristics.TryGetValue(proc.Name, out var chr))
+                    {
+                        proc.Characteristics = chr;
+                    }
                 }
             }
             EnqueueImageSymbolProcedures(Program.EntryPoints.Values, noDecompiles);

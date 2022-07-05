@@ -57,5 +57,15 @@ namespace Reko.UnitTests.Core.Serialization
 
             Assert.IsTrue(result.Terminates);
         }
+
+        [Test]
+        public void Chp_Parse_alloca()
+        {
+            Given_Parser("[[reko::characteristics({alloca:true})]]");
+
+            var result = chp.Parse();
+
+            Assert.IsTrue(result.IsAlloca);
+        }
     }
 }
