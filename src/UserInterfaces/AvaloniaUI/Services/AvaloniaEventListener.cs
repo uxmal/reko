@@ -21,11 +21,14 @@
 using Reko.Core;
 using Reko.Core.Scripts;
 using Reko.Core.Services;
+using Reko.Gui;
 using Reko.Gui.Services;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Reko.UserInterfaces.AvaloniaUI.Services
@@ -33,85 +36,109 @@ namespace Reko.UserInterfaces.AvaloniaUI.Services
     public class AvaloniaEventListener : DecompilerEventListener, IWorkerDialogService
     {
         private IServiceProvider services;
+        private IDiagnosticsService diagnosticSvc;
+        private IStatusBarService sbSvc;
+        private SynchronizationContext? uiSyncCtx;
+
+        private CancellationTokenSource cancellationSvc;
+        private bool isCanceled;
+        private int position;
+        private int total;
 
         public AvaloniaEventListener(IServiceProvider services)
         {
             this.services = services;
+            diagnosticSvc = services.RequireService<IDiagnosticsService>();
         }
+
+        public bool IsBackgroundWorkerRunning { get; private set; }
+
 
         public void Advance(int count)
         {
-            throw new NotImplementedException();
+            uiSyncCtx?.Post(delegate
+            {
+                this.position += count;
+                if (total > 0)
+                {
+                    var percentDone = Math.Min(
+                        100,
+                        (int) ((position * 100L) / total));
+                }
+            },
+            null);
         }
-
-        public ICodeLocation CreateAddressNavigator(Program program, Address address)
+        public ICodeLocation CreateAddressNavigator(Program program, Address addr)
         {
-            throw new NotImplementedException();
+            return new AddressNavigator(program, addr, services);
         }
 
         public ICodeLocation CreateBlockNavigator(Program program, Block block)
         {
-            throw new NotImplementedException();
+            return new BlockNavigator(program, block, services);
         }
 
         public ICodeLocation CreateJumpTableNavigator(Program program, IProcessorArchitecture arch, Address addrIndirectJump, Address? addrVector, int stride)
         {
-            throw new NotImplementedException();
+            return new JumpVectorNavigator(program, arch, addrIndirectJump, addrVector, stride, services);
         }
 
         public ICodeLocation CreateProcedureNavigator(Program program, Procedure proc)
         {
-            throw new NotImplementedException();
+            return new ProcedureNavigator(program, proc, services);
         }
 
         public ICodeLocation CreateStatementNavigator(Program program, Statement stm)
         {
-            throw new NotImplementedException();
+            return new StatementNavigator(program, stm, services);
         }
 
         public void Error(string message)
         {
-            throw new NotImplementedException();
+            diagnosticSvc.Error(new NullCodeLocation(""), message);
         }
 
         public void Error(string message, params object[] args)
         {
-            throw new NotImplementedException();
+            diagnosticSvc.Error(new NullCodeLocation(""), message, args);
         }
 
         public void Error(Exception ex, string message)
         {
-            throw new NotImplementedException();
+            diagnosticSvc.Error(ex, message);
         }
 
         public void Error(Exception ex, string message, params object[] args)
         {
-            throw new NotImplementedException();
+            diagnosticSvc.Error(new NullCodeLocation(""), ex, message, args);
         }
 
         public void Error(ICodeLocation location, string message)
         {
-            throw new NotImplementedException();
+            diagnosticSvc.Error(location, message);
         }
 
         public void Error(ICodeLocation location, string message, params object[] args)
         {
-            throw new NotImplementedException();
+            diagnosticSvc.Error(location, message, args);
         }
 
         public void Error(ICodeLocation location, Exception ex, string message)
         {
-            throw new NotImplementedException();
+            diagnosticSvc.Error(location, ex, message);
         }
 
         public void Error(ICodeLocation location, Exception ex, string message, params object[] args)
         {
-            throw new NotImplementedException();
+            diagnosticSvc.Error(location, ex, message, args);
         }
 
         public void Error(ScriptError scriptError)
         {
-            throw new NotImplementedException();
+            diagnosticSvc.Error(
+                new ScriptErrorNavigator(scriptError, services),
+                scriptError.Exception,
+                scriptError.Message);
         }
 
         public void FinishBackgroundWork()
@@ -121,22 +148,22 @@ namespace Reko.UserInterfaces.AvaloniaUI.Services
 
         public void Info(string message)
         {
-            throw new NotImplementedException();
+            diagnosticSvc.Inform(new NullCodeLocation(""), message);
         }
 
         public void Info(string message, params object[] args)
         {
-            throw new NotImplementedException();
+            diagnosticSvc.Inform(new NullCodeLocation(""), message, args);
         }
 
         public void Info(ICodeLocation location, string message)
         {
-            throw new NotImplementedException();
+            diagnosticSvc.Inform(location, message);
         }
 
         public void Info(ICodeLocation location, string message, params object[] args)
         {
-            throw new NotImplementedException();
+            diagnosticSvc.Inform(location, message, args);
         }
 
         public bool IsCanceled()
@@ -144,49 +171,152 @@ namespace Reko.UserInterfaces.AvaloniaUI.Services
             throw new NotImplementedException();
         }
 
+        /// <summary>
+        /// Intended to be call by a worker thread; uses Invoke to make sure the delegate is invoked
+        /// on the UI thread.
+        /// </summary>
+        /// <param name="newCaption"></param>
         public void SetCaption(string newCaption)
         {
-            throw new NotImplementedException();
+            uiSyncCtx?.Post(delegate
+            {
+                sbSvc.SetText(newCaption);
+                sbSvc.HideProgress();
+            }, null);
         }
 
-        public void ShowError(string p, Exception ex)
+        public void ShowError(string failedOperation, Exception ex)
         {
-            throw new NotImplementedException();
+            //$TODO: should log this in DecompilerEventListener.
+            uiSyncCtx?.Post(delegate
+            {
+                var loc = new NullCodeLocation("");
+                Error(loc, ex, failedOperation);
+            }, null);
         }
 
         public void ShowProgress(string caption, int numerator, int denominator)
         {
-            throw new NotImplementedException();
+            uiSyncCtx?.Post(delegate
+            {
+                sbSvc.SetSubtext(caption);
+                this.position = numerator;
+                this.total = denominator;
+                if (denominator > 0)
+                {
+                    var percentDone = Math.Min(
+                        100,
+                        (int) ((numerator * 100L) / denominator));
+                    sbSvc.ShowProgress(percentDone);
+                }
+            },
+            null);
         }
 
-        public void ShowStatus(string caption)
+        public void ShowStatus(string newStatus)
         {
-            throw new NotImplementedException();
+            uiSyncCtx?.Post(delegate
+            {
+                sbSvc.SetSubtext(newStatus);
+            }, null);
         }
 
-        public ValueTask<bool> StartBackgroundWork(string caption, Action backgroundWork)
+        /// <summary>
+        /// The UI thread requests a background operation by calling this method.
+        /// </summary>
+        /// <param name="caption"></param>
+        /// <param name="backgroundTask"></param>
+        /// <returns></returns>
+        public async ValueTask<bool> StartBackgroundWork(string caption, Action backgroundTask)
         {
-            return ValueTask.FromResult(false);   //$TODO
+            if (this.IsBackgroundWorkerRunning)
+                throw new InvalidOperationException("A background task is already running.");
+            var uiSyncCtx = SynchronizationContext.Current;
+            if (uiSyncCtx is null)
+                throw new InvalidOperationException("No SynchronizationContext.");
+            this.uiSyncCtx = uiSyncCtx;
+            var sc = new ServiceContainer(services);
+            this.sbSvc = sc.RequireService<IStatusBarService>();
+
+            this.cancellationSvc = new CancellationTokenSource();
+            sc.AddService<CancellationTokenSource>(cancellationSvc);
+
+            this.IsBackgroundWorkerRunning = true;
+            try
+            {
+                await Task.Run(backgroundTask);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                // The background task should be catching exceptions,
+                // so if one leaks out here, we have a programming
+                // error.
+                var a = new NullCodeLocation("");
+                Error(a, ex, "An internal error occurred.");
+                return false;
+            }
+            finally
+            {
+                this.IsBackgroundWorkerRunning = false;
+                this.uiSyncCtx = null;
+                sbSvc.HideProgress();
+                sbSvc.SetSubtext("");
+            }
         }
 
         public void Warn(string message)
         {
-            throw new NotImplementedException();
+            diagnosticSvc.Warn(new NullCodeLocation(""), message);
         }
 
         public void Warn(string message, params object[] args)
         {
-            throw new NotImplementedException();
+            diagnosticSvc.Warn(new NullCodeLocation(""), message, args);
         }
 
         public void Warn(ICodeLocation location, string message)
         {
-            throw new NotImplementedException();
+            diagnosticSvc.Warn(location, message);
         }
 
         public void Warn(ICodeLocation location, string message, params object[] args)
         {
-            throw new NotImplementedException();
+            diagnosticSvc.Warn(location, message, args);
         }
+
+
+        // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@   
+
+
+        private void dlg_Cancelled(object sender, EventArgs e)
+        {
+            cancellationSvc.Cancel();
+            this.isCanceled = true;
+            Warn(new NullCodeLocation(""), "User canceled the decompiler.");
+        }
+
+        //void Worker_ProgressChanged(object sender, ProgressChangedEventArgs e)
+        //{
+        //    if (dlg == null)
+        //        return;
+        //    if (e.ProgressPercentage != STATUS_UPDATE_ONLY)
+        //    {
+        //        dlg.ProgressBar.Value = e.ProgressPercentage;
+        //        sbSvc.ShowProgress(e.ProgressPercentage);
+        //    }
+        //    dlg.Detail.Text = status;
+        //    sbSvc.SetSubtext(status);
+        //}
+
+        #region DecompilerEventListener Members
+
+        // Is usually called on a worker thread.
+        bool DecompilerEventListener.IsCanceled()
+        {
+            return this.isCanceled;
+        }
+
+        #endregion
     }
 }

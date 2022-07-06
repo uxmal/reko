@@ -15,8 +15,10 @@
   <Design.DataContext>
     <vm:MainViewModel />
   </Design.DataContext>
-  <Grid RowDefinitions="Auto,*,25" ColumnDefinitions="Auto,*" Background="Transparent">
-	  <Menu Items="{Binding MainMenu}" Grid.Column="0" VerticalAlignment="Top">
+  <Grid RowDefinitions="Auto,*,25"
+		ColumnDefinitions="Auto,*"
+		Background="Transparent">
+	<Menu Name="mainMenu" Items="{Binding MainMenu}" Grid.Column="0" VerticalAlignment="Top">
 		  <Menu.Styles>
 			  <Style Selector="MenuItem" x:DataType="vm:CommandItem">
 				  <Setter Property="Header" Value="{Binding Text}" />
@@ -28,7 +30,7 @@
 			  </Style>
 		  </Menu.Styles>
 	  </Menu>
-	  <!--
+	<!--
 	  <Menu Grid.Row="0" Grid.Column="0" VerticalAlignment="Top">
       <MenuItem Header="_File">
         <MenuItem Header="_Open" Command="{Binding FileOpen}" />
@@ -107,6 +109,7 @@
     <DockControl x:Name="DockControl" Layout="{Binding Layout}" Margin="4"
         Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" />
 	  
+	<!--
     <Panel DataContext="{Binding Layout.ActiveDockable}"
            Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2">
 		
@@ -115,5 +118,15 @@
         x:DataType="dm:IDock"
         x:CompileBindings="True" />
     </Panel>
+	-->
+	  <StackPanel Grid.Row="2" Name="statusbar" Orientation="Horizontal">
+		  <TextBlock Text="{Binding Status.Text}" MinWidth="100" />
+		  <TextBlock Text="{Binding Status.Subtext}" MinWidth="160" />
+		  <ProgressBar
+			  Minimum="0"
+			  Maximum="100"
+			  IsVisible="{Binding Status.IsProgressVisible}"
+			  Value="{Binding Status.ProgressPercentage}" />
+	  </StackPanel>
   </Grid>
 </UserControl>

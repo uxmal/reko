@@ -18,18 +18,25 @@ namespace Reko.UserInterfaces.AvaloniaUI
     {
         public bool SupportsRecycling => false;
 
+
+        /// <summary>
+        /// Given a view model object <see cref="data"/>, creates an instance
+        /// of the corresponding View class. 
+        /// </summary>
+        /// <param name="data"></param>
+        /// <returns></returns>
         public IControl Build(object data)
         {
             var name = data.GetType().FullName!.Replace("ViewModel", "View");
             var type = Type.GetType(name);
 
-            if (type != null)
+            if (type is { })
             {
                 return (Control)Activator.CreateInstance(type)!;
             }
             else
             {
-                return new TextBlock { Text = "Not Found: " + name };
+                return new TextBlock { Text = "Not found: " + name };
             }
         }
 

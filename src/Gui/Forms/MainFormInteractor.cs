@@ -89,7 +89,7 @@ namespace Reko.Gui.Forms
         }
 #nullable enable
 
-        public IServiceProvider Services { get { return sc; } }
+        public IServiceProvider Services => sc;
 
         public string? ProjectFileName { get; set; }
 
@@ -123,8 +123,8 @@ namespace Reko.Gui.Forms
                 form.WindowState = uiPrefsSvc.WindowState;
             }
             catch { };
-            //$REVIEW: how harmful is this? Initial page does no heavy lifting.
-            SwitchInteractor(pageInitial).AsTask().Wait();  
+
+            this.currentPhase = pageInitial;
             form.UpdateToolbarState();
 
             form.Closed += this.MainForm_Closed;
@@ -318,9 +318,9 @@ namespace Reko.Gui.Forms
         private async ValueTask AddScriptFile()
         {
             var fileName = await uiSvc.ShowOpenFileDialog(null);
-            if (fileName == null)
+            if (fileName is null)
                 return;
-            AddScriptFile(fileName);
+            await AddScriptFile(fileName);
         }
 
         /// <summary>
@@ -336,7 +336,7 @@ namespace Reko.Gui.Forms
             try
             {
                 fsSvc.CopyFile(GetScriptTemplatePath(), fileName, true);
-                AddScriptFile(fileName);
+                await AddScriptFile(fileName);
             }
             catch (Exception e)
             {
@@ -365,7 +365,7 @@ namespace Reko.Gui.Forms
         /// <summary>
         /// Adds scripts file to the project.
         /// </summary>
-        private void AddScriptFile(string fileName)
+        private async ValueTask AddScriptFile(string fileName)
         {
             try
             {
@@ -380,7 +380,7 @@ namespace Reko.Gui.Forms
             }
             catch (Exception e)
             {
-                uiSvc.ShowError(
+                await uiSvc.ShowError(
                     e,
                     "An error occured while parsing the script file {0}.",
                     fileName);
@@ -588,11 +588,11 @@ namespace Reko.Gui.Forms
             form.LayoutMdi(layout);
         }
 
-        public void ShowAboutBox()
+        public async ValueTask ShowAboutBox()
         {
             using (IAboutDialog dlg = dlgFactory.CreateAboutDialog())
             {
-                uiSvc.ShowModalDialog(dlg);
+                await uiSvc.ShowModalDialog(dlg);
             }
         }
 
@@ -638,7 +638,7 @@ namespace Reko.Gui.Forms
             }
             else
             {
-                return new AddressSearchHit[0];
+                return Array.Empty<AddressSearchHit>();
             }
         }
 
@@ -1019,7 +1019,7 @@ namespace Reko.Gui.Forms
                 case CmdIds.WindowsTileHorizontal: LayoutMdi(DocumentWindowLayout.TiledHorizontal); retval = true; break;
                 case CmdIds.WindowsCloseAll: CloseAllDocumentWindows(); retval = true; break;
 
-                case CmdIds.HelpAbout: ShowAboutBox(); retval = true; break;
+                case CmdIds.HelpAbout: await ShowAboutBox(); retval = true; break;
                 }
                 form.UpdateToolbarState();
                 return retval;

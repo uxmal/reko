@@ -45,7 +45,7 @@ namespace Reko.UserInterfaces.AvaloniaUI.Services
 
         public void ViewImage(Program program)
         {
-            throw new NotImplementedException();
+            //$TODO
         }
     }
 }

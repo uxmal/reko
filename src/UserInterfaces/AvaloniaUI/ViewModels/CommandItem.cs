@@ -33,10 +33,8 @@ namespace Reko.UserInterfaces.AvaloniaUI.ViewModels
     /// <summary>
     /// View model class for menu items, toolbar buttons, etc.
     /// </summary>
-    public class CommandItem : INotifyPropertyChanged
+    public class CommandItem : Reko.Gui.Components.ReactingObject
     {
-        public event PropertyChangedEventHandler? PropertyChanged;
-        
         public CommandItem()
         {
             this.Items = new ObservableCollection<CommandItem>();
@@ -45,42 +43,42 @@ namespace Reko.UserInterfaces.AvaloniaUI.ViewModels
         public string? Text
         {
             get { return text; }
-            set { text = value; Notify(nameof(Text)); }
+            set { this.RaiseAndSetIfChanged(ref text, value); }
         }
         private string? text;
 
         public bool IsChecked
         {
             get { return isChecked; }
-            set { isChecked = value; }
+            set { this.RaiseAndSetIfChanged(ref isChecked, value); }
         }
         private bool isChecked;
 
         public bool IsDynamic
         {
             get { return isDynamic; }
-            set { isDynamic = value; }
+            set { this.RaiseAndSetIfChanged(ref isDynamic, value); }
         }
         private bool isDynamic;
 
         public bool IsEnabled
         {
             get { return isEnabled; }
-            set { isEnabled = value; Notify(nameof(IsEnabled)); }
+            set { this.RaiseAndSetIfChanged(ref isEnabled, value); }
         }
         private bool isEnabled;
 
         public bool IsTemporary
         {
             get { return isTemp; }
-            set { isTemp = value; }
+            set { this.RaiseAndSetIfChanged(ref isTemp, value); }
         }
         private bool isTemp;
 
         public bool IsVisible
         {
             get { return isVisible; }
-            set { isVisible = value; Notify(nameof(IsVisible)); }
+            set { this.RaiseAndSetIfChanged(ref isVisible, value); }
         }
         private bool isVisible;
 
@@ -91,10 +89,5 @@ namespace Reko.UserInterfaces.AvaloniaUI.ViewModels
         public string? ToolTipText { get; set; }
 
         public ObservableCollection<CommandItem> Items { get; }
-        
-        private void Notify(string propertyName)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
     }
 }

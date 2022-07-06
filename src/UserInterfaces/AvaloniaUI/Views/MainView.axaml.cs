@@ -25,6 +25,7 @@ using Avalonia.Markup.Xaml;
 using Avalonia.Markup.Xaml.Styling;
 using Avalonia.Styling;
 using Dock.Avalonia;
+using Reko.UserInterfaces.AvaloniaUI.ViewModels;
 
 namespace Reko.UserInterfaces.AvaloniaUI.Views
 {
@@ -65,6 +66,19 @@ namespace Reko.UserInterfaces.AvaloniaUI.Views
 
         private void InitializeMenu()
         {
+            var menu = this.FindControl<Menu>("mainMenu");
+            menu.AddHandler(MenuItem.SubmenuOpenedEvent, (_, e) =>
+            {
+                if (e.Source is not MenuItem mi)
+                    return;
+                if (mi.DataContext is not CommandItem item)
+                    return;
+                var n = mi.DataContext?.GetType()?.Name;
+                if (this.DataContext is MainViewModel vm)
+                {
+                    vm.SetMenuStatus(item.Items);
+                };
+            });
             /*
             this.FindControl<MenuItem>("OptionsIsDragEnabled")?.Click += (_, _) =>
             {

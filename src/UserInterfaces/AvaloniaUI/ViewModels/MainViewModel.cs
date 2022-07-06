@@ -30,6 +30,9 @@ using System.ComponentModel.Design;
 using System.Diagnostics;
 using Reko.Core.Diagnostics;
 using Reko.Gui.Services;
+using System.Collections;
+using System;
+using System.Collections.Generic;
 
 namespace Reko.UserInterfaces.AvaloniaUI.ViewModels
 {
@@ -76,6 +79,7 @@ namespace Reko.UserInterfaces.AvaloniaUI.ViewModels
             get => layout;
             set => this.RaiseAndSetIfChanged(ref layout, value, nameof(Layout));
         }
+
         private IRootDock? layout;
 
         public ObservableCollection<CommandItem> MainMenu => this.menus.GetMenu(MenuIds.MainMenu);
@@ -213,6 +217,12 @@ namespace Reko.UserInterfaces.AvaloniaUI.ViewModels
                 Layout = layout;
                 dockFactory?.InitLayout(layout);
             }
+        }
+
+
+        public void SetMenuStatus(IList<CommandItem> items)
+        {
+            menus.SetStatusForMenuItems(items);
         }
 
     }

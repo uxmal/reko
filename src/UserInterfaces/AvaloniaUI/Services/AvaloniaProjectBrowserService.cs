@@ -62,7 +62,7 @@ namespace Reko.UserInterfaces.AvaloniaUI.Services
 
         public void Load(Project project)
         {
-            throw new NotImplementedException();
+            //$TODO: implement this.
         }
 
         public bool QueryStatus(CommandID cmdId, CommandStatus status, CommandText text)
@@ -77,7 +77,7 @@ namespace Reko.UserInterfaces.AvaloniaUI.Services
 
         public void Show()
         {
-            throw new NotImplementedException();
+            //$TODO: "BringToFront"
         }
     }
 }

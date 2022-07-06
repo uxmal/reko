@@ -35,29 +35,62 @@ namespace Reko.UserInterfaces.AvaloniaUI.Services
     /// <see cref="IStatusBarService"/>, used by the GUI-agnostic parts to show
     /// status messages etc. The other are the properties it exposes as a ViewModel.
     /// </summary>
-    public class AvaloniaStatusBarService : ReactiveObject, IStatusBarService, INotifyPropertyChanged
+    public class AvaloniaStatusBarService : 
+        ReactiveObject,
+        IStatusBarService
     {
-        private MainViewModel mvvm;
-
         public AvaloniaStatusBarService(MainViewModel mvvm)
         {
-            this.mvvm = mvvm;
             mvvm.Status = this;
         }
 
+        public bool IsProgressVisible
+        {
+            get => isProgressVisible;
+            set => this.RaiseAndSetIfChanged(ref isProgressVisible, value);
+        }
+        private bool isProgressVisible;
+
+        public int ProgressPercentage
+        {
+            get => progressPercentage;
+            set => this.RaiseAndSetIfChanged(ref progressPercentage, value);
+        }
+        private int progressPercentage;
 
         public string? Text
         {
             get { return text; }
-            set { this.text = value; this.RaiseAndSetIfChanged(ref text, value, nameof(Text)); }
+            set { this.RaiseAndSetIfChanged(ref text, value, nameof(Text)); }
         }
         private string? text;
+
+        public string? Subtext
+        {
+            get { return subtext; }
+            set { this.RaiseAndSetIfChanged(ref subtext, value); }
+        }
+        private string? subtext;
 
         public void SetText(string text)
         {
             this.Text = text;
         }
 
+        public void SetSubtext(string text)
+        {
+            this.Subtext = text;
+        }
 
+        public void ShowProgress(int percentage)
+        {
+            this.IsProgressVisible = true;
+            this.ProgressPercentage = percentage;
+        }
+
+        public void HideProgress()
+        {
+            this.IsProgressVisible = false;
+        }
     }
 }

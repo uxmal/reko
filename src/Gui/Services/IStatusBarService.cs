@@ -27,5 +27,8 @@ namespace Reko.Gui.Services
     public interface IStatusBarService
     {
         void SetText(string text);
+        void HideProgress();
+        void SetSubtext(string v);
+        void ShowProgress(int percentDone);
     }
 }

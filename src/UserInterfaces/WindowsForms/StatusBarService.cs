@@ -34,9 +34,24 @@ namespace Reko.UserInterfaces.WindowsForms
             this.statusStrip = statusStrip;
         }
 
+        public void HideProgress()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void SetSubtext(string v)
+        {
+            throw new NotImplementedException();
+        }
+
         public void SetText(string text)
         {
             statusStrip.Items[0].Text = text;
+        }
+
+        public void ShowProgress(int percentDone)
+        {
+            throw new NotImplementedException();
         }
     }
 }
