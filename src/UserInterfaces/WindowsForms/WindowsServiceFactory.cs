@@ -254,5 +254,10 @@ namespace Reko.UserInterfaces.WindowsForms
         {
             return new HexDisassemblerService(services);
         }
+
+        public ISegmentListService CreateSegmentListService()
+        {
+            return new SegmentListService(services);
+        }
     }
 }

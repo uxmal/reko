@@ -92,7 +92,7 @@ namespace Reko.UserInterfaces.WindowsForms
         {
             if (cmdId.Guid == CmdSets.GuidReko)
             {
-                switch (cmdId.ID)
+                switch ((CmdIds) cmdId.ID)
                 {
                 case CmdIds.EditCopy:
                 case CmdIds.EditSelectAll:
@@ -108,7 +108,7 @@ namespace Reko.UserInterfaces.WindowsForms
             bool result = false;
             if (cmdId.Guid == CmdSets.GuidReko)
             {
-                switch (cmdId.ID)
+                switch ((CmdIds) cmdId.ID)
                 {
                 case CmdIds.EditCopy:
                     var ms = new MemoryStream();

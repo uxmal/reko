@@ -125,7 +125,7 @@ namespace Reko.UserInterfaces.AvaloniaUI.ViewModels
                 {
                     var btnNew = new CommandItem { Text = cmi.text };
                     btnNew.Command = null; //$BUG: command target needed.
-                    btnNew.CommandID = new CommandID(cmi.cmdSet, cmi.id);
+                    btnNew.CommandID = new CommandID(cmi.cmdSet, (int)cmi.id);
 #if NYI
                     if (!string.IsNullOrEmpty(cmi.imageKey))
                         btnNew.ImageKey = cmi.ImageKey;

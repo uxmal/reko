@@ -28,20 +28,24 @@ using System.Text;
 
 namespace Reko.Gui
 {
+    /// <summary>
+    /// Base class to use for services that display a document view in the 
+    /// user interface.
+    /// </summary>
     public class ViewService
     {
-        private readonly IServiceProvider sp;
+        private readonly IServiceProvider services;
 
-        public ViewService(IServiceProvider sp)
+        public ViewService(IServiceProvider services)
         {
-            this.sp = sp;
+            this.services = services;
         }
 
         protected IWindowFrame ShowWindow(string windowType, string windowTitle, object docItem, IWindowPane innerPane)
         {
-            var shellUiSvc = sp.RequireService<IDecompilerShellUiService>();
+            var shellUiSvc = services.RequireService<IDecompilerShellUiService>();
             var windowFrame = shellUiSvc.FindDocumentWindow(windowType, docItem);
-            if (windowFrame == null)
+            if (windowFrame is null)
             {
                 windowFrame = shellUiSvc.CreateDocumentWindow(windowType, docItem, windowTitle, innerPane);
             }

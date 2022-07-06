@@ -18,40 +18,47 @@
  */
 #endregion
 
-#nullable enable
-
+using ReactiveUI;
 using Reko.Core;
+using Reko.Gui;
+using Reko.UserInterfaces.AvaloniaUI.Views.Documents;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
-namespace Reko.Gui.Services
+namespace Reko.UserInterfaces.AvaloniaUI.ViewModels.Documents
 {
-    public interface IProjectBrowserService : ICommandTarget
+    public class SegmentListViewModel : ReactiveObject, IWindowPane
     {
-        event EventHandler<FileDropEventArgs> FileDropped;
+        private readonly Program program;
+        private IServiceProvider? services;
 
-        Program? CurrentProgram { get; }
-        bool ContainsFocus { get; }
+        public SegmentListViewModel(Program program)
+        {
+            this.program = program;
+        }
 
-        /// <summary>
-        /// The currently selected object in the project browser tree.
-        /// </summary>
-        object? SelectedObject { get; set; }
+        public IWindowFrame? Frame { get; set; }
 
+        public void Close()
+        {
+            throw new NotImplementedException();
+        }
 
-        /// <summary>
-        /// Loads a project into the project browser and starts listening to changes. 
-        /// Loading a null project clears the project browser.
-        /// </summary>
-        /// <param name="project"></param>
-        void Load(Project project);
+        public object CreateControl()
+        {
+            var view = new SegmentListView
+            {
+                DataContext = this
+            };
+            return view;
+        }
 
-        void Clear();
-
-        void Reload();
-
-        void Show();
+        public void SetSite(IServiceProvider services)
+        {
+            this.services = services;
+        }
     }
 }

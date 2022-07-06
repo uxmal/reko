@@ -171,16 +171,35 @@ namespace Reko.Core
     /// </summary>
     public class UserSegment
     {
-        public Address? Address { get; set; } // the start address of the segment.
+        /// <summary>
+        /// The start address of the segment.
+        /// </summary>
+        public Address? Address { get; set; } 
 
-        public ulong Offset { get; set; }   // the file offset from which this segment was loaded.
+        /// <summary>
+        /// The file offset from which this segment was loaded.
+        /// </summary>
+        public ulong Offset { get; set; }
 
-        public uint Length { get; set; }    // The length of the segment in addressable units (bytes on a byte oriented machine)
+        /// <summary>
+        /// The length of the segment in addressable units (bytes on a byte oriented machine)
+        /// </summary>
+        public uint Length { get; set; }
 
-        public string? Name { get; set; }    // User provided name
+        /// <summary>
+        /// User provided name
+        /// </summary>
+        public string? Name { get; set; }
 
+        /// <summary>
+        /// Optional processor architecture, overriding that of the 
+        /// <see cref="Program"/> insstance.
+        /// </summary>
         public IProcessorArchitecture? Architecture { get; set; }
 
+        /// <summary>
+        /// The access mode to use for this segment.
+        /// </summary>
         public AccessMode AccessMode { get; set; }
     }
 }

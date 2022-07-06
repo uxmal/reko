@@ -237,6 +237,9 @@ namespace Reko.Gui.Forms
 
             var hexDasmSvc = svcFactory.CreateHexDisassemblerService();
             sc.AddService<IHexDisassemblerService>(hexDasmSvc);
+
+            var segListSvc = svcFactory.CreateSegmentListService();
+            sc.AddService<ISegmentListService>(segListSvc);
         }
 
         public virtual TextWriter CreateTextWriter(string filename)
@@ -415,9 +418,6 @@ namespace Reko.Gui.Forms
             IOpenAsDialog dlg = null;
             try
             {
-                await From(uiSvc, dlgFactory);
-                return false;
-
                 dlg = dlgFactory.CreateOpenAsDialog(initialFilename);
                 if (await uiSvc.ShowModalDialog(dlg) != DialogResult.OK)
                     return false;
@@ -439,22 +439,6 @@ namespace Reko.Gui.Forms
             }
             return true;
         }
-
-        private async Task From(IDecompilerShellUiService uiSvc, IDialogFactory dlgFactory)
-        {
-            var cfgSvc = Services.RequireService<IConfigurationService>();
-            var arch = cfgSvc.GetArchitecture("z80")!;
-            var platform = new DefaultPlatform(Services, arch);
-            var program = new Program
-            {
-                Architecture = arch,
-                Platform = platform
-            };
-            var proc = new UserProcedure(Address.Ptr32(0x0010_0000), "");
-            var dlgTest = dlgFactory.CreateProcedureDialog(program, proc);
-            var userNew = await uiSvc.ShowModalDialog(dlgTest);
-        }
-
 
         public async ValueTask CloseProject()
         {
@@ -664,7 +648,7 @@ namespace Reko.Gui.Forms
                              ((long)program.SegmentMap.BaseAddress.ToLinear() + o));
                         return program.ImageMap.TryFindItem(addr, out var item)
                             && item.DataType != null &&
-                            !(item.DataType is UnknownType);
+                            item.DataType is not UnknownType;
                     };
             }
             else if (dlg.UnscannedMemory.Checked)
@@ -674,7 +658,7 @@ namespace Reko.Gui.Forms
                         var addr = program.SegmentMap.MapLinearAddressToAddress(
                               (ulong)((long) program.SegmentMap.BaseAddress.ToLinear() + o));
                         return program.ImageMap.TryFindItem(addr, out var item)
-                            && item.DataType == null ||
+                            && item.DataType is null ||
                             item.DataType is UnknownType;
                     };
             }
@@ -685,6 +669,18 @@ namespace Reko.Gui.Forms
         public void ViewProjectBrowser()
         {
             this.projectBrowserSvc.Show();
+        }
+
+        public void ViewSegmentList()
+        {
+            var segmentListSvc = sc.RequireService<ISegmentListService>();
+            //$TODO: need a better "currently selected program" service
+            var projectBrowser = sc.RequireService<IProjectBrowserService>();
+            var program = projectBrowser.CurrentProgram;
+            if (program is { })
+            {
+                segmentListSvc.ShowSegments(program);
+            }
         }
 
         public void ViewProcedureList()
@@ -753,27 +749,23 @@ namespace Reko.Gui.Forms
 
         public async ValueTask ToolsOptions()
         {
-            using (var dlg = dlgFactory.CreateUserPreferencesDialog())
+            var dlg = dlgFactory.CreateUserPreferencesDialog();
+            if (await uiSvc.ShowModalDialog(dlg) == DialogResult.OK)
             {
-                if (await uiSvc.ShowModalDialog(dlg) == DialogResult.OK)
-                {
-                    var uiPrefsSvc = Services.RequireService<IUiPreferencesService>();
-                    uiPrefsSvc.WindowSize = form.Size;
-                    uiPrefsSvc.WindowState = form.WindowState;
-                    uiPrefsSvc.Save();
-                }
+                var uiPrefsSvc = Services.RequireService<IUiPreferencesService>();
+                uiPrefsSvc.WindowSize = form.Size;
+                uiPrefsSvc.WindowState = form.WindowState;
+                uiPrefsSvc.Save();
             }
         }
 
         public async ValueTask ToolsKeyBindings()
         {
-            using (var dlg = dlgFactory.CreateKeyBindingsDialog(uiSvc.KeyBindings))
+            var dlg = dlgFactory.CreateKeyBindingsDialog(uiSvc.KeyBindings);
+            if (await uiSvc.ShowModalDialog(dlg) == DialogResult.OK)
             {
-                if (await uiSvc.ShowModalDialog(dlg) == DialogResult.OK)
-                {
-                    uiSvc.KeyBindings = dlg.KeyBindings; 
-                    //$TODO: save in user settings.
-                }
+                uiSvc.KeyBindings = dlg.KeyBindings; 
+                //$TODO: save in user settings.
             }
         }
 
@@ -891,7 +883,7 @@ namespace Reko.Gui.Forms
                 if (QueryMruItem(cmdId.ID, cmdStatus, cmdText))
                     return true;
 
-                switch (cmdId.ID)
+                switch ((CmdIds) cmdId.ID)
                 {
                 case CmdIds.FileOpen:
                 case CmdIds.FileExit:
@@ -933,6 +925,7 @@ namespace Reko.Gui.Forms
                 case CmdIds.ViewCallGraph:
                 case CmdIds.ViewFindAllProcedures:
                 case CmdIds.ViewFindStrings:
+                case CmdIds.ViewSegmentList:
                     cmdStatus.Status = IsDecompilerLoaded
                         ? MenuStatus.Enabled | MenuStatus.Visible
                         : MenuStatus.Visible;
@@ -944,7 +937,7 @@ namespace Reko.Gui.Forms
 
         private bool QueryMruItem(int cmdId, CommandStatus cmdStatus, CommandText cmdText)
         {
-            int iMru = cmdId - CmdIds.FileMru;
+            int iMru = cmdId - (int)CmdIds.FileMru;
             if (0 <= iMru && iMru < mru.Items.Count)
             {
                 cmdStatus.Status = MenuStatus.Visible | MenuStatus.Enabled;
@@ -982,7 +975,7 @@ namespace Reko.Gui.Forms
                 }
 
                 bool retval = false;
-                switch (cmdId.ID)
+                switch ((CmdIds)cmdId.ID)
                 {
                 case CmdIds.FileOpen: await OpenBinaryWithPrompt(); retval = true; break;
                 case CmdIds.FileOpenAs: retval = await OpenBinaryAs(""); break;
@@ -1007,6 +1000,7 @@ namespace Reko.Gui.Forms
                 case CmdIds.ViewCallGraph: ViewCallGraph(); retval = true; break;
                 case CmdIds.ViewFindAllProcedures: FindProcedures(srSvc); retval = true; break;
                 case CmdIds.ViewFindStrings: await FindStrings(srSvc); retval = true; break;
+                case CmdIds.ViewSegmentList: ViewSegmentList(); retval = true; break;
 
                 case CmdIds.ToolsHexDisassembler: ToolsHexDisassembler(); retval = true; break;
                 case CmdIds.ToolsOptions: await ToolsOptions(); retval = true; break;
@@ -1027,7 +1021,7 @@ namespace Reko.Gui.Forms
 
         private async ValueTask<bool> ExecuteMruFile(int cmdId)
         {
-            int iMru = cmdId - CmdIds.FileMru;
+            int iMru = cmdId - (int)CmdIds.FileMru;
             if (0 <= iMru && iMru < mru.Items.Count)
             {
                 string file = mru.Items[iMru];

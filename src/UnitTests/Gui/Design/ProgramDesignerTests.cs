@@ -55,7 +55,7 @@ namespace Reko.UnitTests.Gui.Design
             this.node = new Mock<ITreeNode>();
             this.host = new Mock<ITreeNodeDesignerHost>();
             this.uiSvc = new Mock<IDecompilerShellUiService>();
-            this.cmdidLoadSymbols = new CommandID(CmdSets.GuidReko, CmdIds.LoadSymbols);
+            this.cmdidLoadSymbols = new CommandID(CmdSets.GuidReko, (int)CmdIds.LoadSymbols);
             this.slSvc = new Mock<ISymbolLoadingService>();
             this.symSrc = new Mock<ISymbolSource>();
 

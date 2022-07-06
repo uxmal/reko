@@ -30,7 +30,6 @@ namespace Reko.UserInterfaces.WindowsForms
     public class LowLevelViewServiceImpl : ViewService, ILowLevelViewService
     {
 
-        public const string ViewWindowType = "memoryViewWindow";
 
         public LowLevelViewServiceImpl(IServiceProvider sp) : base(sp)
         {
@@ -68,7 +67,7 @@ namespace Reko.UserInterfaces.WindowsForms
         {
             var llvi = CreateMemoryViewInteractor();
             llvi.SelectionChanged += new EventHandler<SelectionChangedEventArgs>(mvi_SelectionChanged);
-            var frame = base.ShowWindow(ViewWindowType, "Memory View", program, llvi);
+            var frame = base.ShowWindow(ILowLevelViewService.ViewWindowType, "Memory View", program, llvi);
             llvi = (LowLevelViewInteractor)frame.Pane ?? llvi;
             llvi.Program = program;
             return llvi;

@@ -18,40 +18,34 @@
  */
 #endregion
 
-#nullable enable
-
 using Reko.Core;
+using Reko.Gui;
+using Reko.UserInterfaces.AvaloniaUI.ViewModels.Documents;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
-namespace Reko.Gui.Services
+namespace Reko.UserInterfaces.AvaloniaUI.Services
 {
-    public interface IProjectBrowserService : ICommandTarget
+    public class AvaloniaWindowPaneFactory : IWindowPaneFactory
     {
-        event EventHandler<FileDropEventArgs> FileDropped;
+        private readonly IServiceProvider services;
 
-        Program? CurrentProgram { get; }
-        bool ContainsFocus { get; }
+        public AvaloniaWindowPaneFactory(IServiceProvider services)
+        {
+            this.services = services;
+        }
 
-        /// <summary>
-        /// The currently selected object in the project browser tree.
-        /// </summary>
-        object? SelectedObject { get; set; }
+        public IWindowPane CreateHexDisassemblerPane()
+        {
+            return new HexDisassemblerViewModel(services);
+        }
 
-
-        /// <summary>
-        /// Loads a project into the project browser and starts listening to changes. 
-        /// Loading a null project clears the project browser.
-        /// </summary>
-        /// <param name="project"></param>
-        void Load(Project project);
-
-        void Clear();
-
-        void Reload();
-
-        void Show();
+        public IWindowPane CreateSegmentListPane(Program program)
+        {
+            return new SegmentListViewModel(program);
+        }
     }
 }

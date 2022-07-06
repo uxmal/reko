@@ -49,8 +49,8 @@ namespace Reko.Gui.Forms
             memSvc = services.RequireService<ILowLevelViewService>();
 
             mpCmdidToCommand = new Dictionary<int, MenuCommand>();
-            AddCommand(new CommandID(CmdSets.GuidReko, CmdIds.ViewShowAllFragments));
-            AddCommand(new CommandID(CmdSets.GuidReko, CmdIds.ViewShowUnscanned));
+            AddCommand(new CommandID(CmdSets.GuidReko, (int)CmdIds.ViewShowAllFragments));
+            AddCommand(new CommandID(CmdSets.GuidReko, (int)CmdIds.ViewShowUnscanned));
         }
 
         protected MenuCommand AddCommand(CommandID cmdId)
@@ -64,7 +64,7 @@ namespace Reko.Gui.Forms
         {
             if (cmdId.Guid == CmdSets.GuidReko)
             {
-                switch (cmdId.ID)
+                switch ((CmdIds)cmdId.ID)
                 {
                 case CmdIds.ViewShowUnscanned:
                     return ValueTask.FromResult(ViewUnscannedBlocks());
@@ -119,7 +119,7 @@ namespace Reko.Gui.Forms
         {
             if (cmdId.Guid == CmdSets.GuidReko)
             {
-                switch (cmdId.ID)
+                switch ((CmdIds)cmdId.ID)
                 {
                 case CmdIds.ActionFinishDecompilation:
                 case CmdIds.ActionRestartDecompilation:

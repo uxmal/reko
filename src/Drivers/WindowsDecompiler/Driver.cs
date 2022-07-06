@@ -40,6 +40,7 @@ namespace Reko.WindowsDecompiler
             var mainForm = new MainForm();
             services.AddService<IServiceFactory>(new WindowsServiceFactory(services, mainForm));
             services.AddService<IDialogFactory>(new WindowsFormsDialogFactory(services));
+            services.AddService<IWindowPaneFactory>(new WindowsFormsPaneFactory(services));
             services.AddService<IRegistryService>(new WindowsFormsRegistryService());
             services.AddService<ISettingsService>(new WindowsFormsSettingsService(services));
             services.AddService<IFileSystemService>(new FileSystemServiceImpl());

@@ -19,31 +19,34 @@
 #endregion
 
 using Reko.Core;
-using Reko.Gui.Services;
-using Reko.UserInterfaces.WindowsForms.Forms;
+using Reko.Gui;
 using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace Reko.UserInterfaces.WindowsForms
+namespace Reko.Gui.Services
 {
-    public class HexDisassemblerService : IHexDisassemblerService
+    public class SegmentListService : ViewService, ISegmentListService
     {
         private readonly IServiceProvider services;
 
-        public HexDisassemblerService(IServiceProvider services)
+        public SegmentListService(IServiceProvider services)
+            : base(services)
         {
             this.services = services;
         }
 
-        public void Show()
+        public void ShowSegments(Program program)
         {
-            var uiSvc = services.RequireService<IDecompilerShellUiService>();
-            var window = uiSvc.FindDocumentWindow("hexDisassembler", this);
-            if (window is null)
-            {
-                var pane = new HexDisassemblerController();
-                window = uiSvc.CreateDocumentWindow("hexDisassembler", this, "Hex disassembler", pane);
-            }
-            window.Show();
+            var paneFactory = services.RequireService<IWindowPaneFactory>();
+            var pane = paneFactory.CreateSegmentListPane(program);
+            ShowWindow(
+                ISegmentListService.ViewWindowType,
+                $"Segments in {program.Name}",
+                program,
+                pane);
         }
     }
 }

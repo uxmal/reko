@@ -115,7 +115,7 @@ namespace Reko.UserInterfaces.AvaloniaUI.Services
 
         public IHexDisassemblerService CreateHexDisassemblerService()
         {
-            return new AvaloniaHexDisassemblerService(this.services);
+            return new HexDisassemblerService(this.services);
         }
 
         public ImageSegmentService CreateImageSegmentService()
@@ -231,6 +231,11 @@ namespace Reko.UserInterfaces.AvaloniaUI.Services
         public IViewImportsService CreateViewImportService()
         {
             return new AvaloniaViewImportsService(this.services);
+        }
+
+        public ISegmentListService CreateSegmentListService()
+        {
+            return new AvaloniaSegmentListService(this.services);
         }
     }
 }

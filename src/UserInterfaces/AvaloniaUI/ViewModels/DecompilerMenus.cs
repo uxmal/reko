@@ -58,9 +58,9 @@ namespace Reko.UserInterfaces.AvaloniaUI.ViewModels
             var cmdsById = new SortedList<int, CommandItem>();
             foreach (var command in cmdDefs.Commands)
             {
-                var cmdid = new CommandID(command.cmdSet, command.id);
+                var cmdid = new CommandID(command.cmdSet, (int)command.id);
                 var cmd = new CommandItem { CommandID = cmdid, Text = command.text };
-                cmdsById.Add(command.id, cmd);
+                cmdsById.Add((int)command.id, cmd);
                 cmd.Command = ExecuteCommand;
                 cmd.IsDynamic = command.dynamicItemId != 0;
                 cmd.ImageKey = command.imageKey;
@@ -100,7 +100,7 @@ namespace Reko.UserInterfaces.AvaloniaUI.ViewModels
             // Build accelerators.
             foreach (var binding in cmdDefs.KeyBindings)
             {
-                AddBinding(binding.editor, binding.cmdSet, binding.id, binding.key1, binding.alt1);
+                AddBinding(binding.editor, binding.cmdSet, (int)binding.id, binding.key1, binding.alt1);
             }
 
             foreach (var menu in cmdDefs.Menus)

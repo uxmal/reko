@@ -102,7 +102,7 @@ namespace Reko.Gui.Design
         {
             if (cmdId.Guid == CmdSets.GuidReko)
             {
-                switch (cmdId.ID)
+                switch ((CmdIds)cmdId.ID)
                 {
                 case CmdIds.EditProperties:
                 case CmdIds.LoadSymbols:
@@ -117,7 +117,7 @@ namespace Reko.Gui.Design
         {
             if (cmdId.Guid == CmdSets.GuidReko)
             {
-                switch (cmdId.ID)
+                switch ((CmdIds)cmdId.ID)
                 {
                 case CmdIds.EditProperties:
                     var dlgFactory = Services!.RequireService<IDialogFactory>();

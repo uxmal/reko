@@ -79,7 +79,7 @@ namespace Reko.Gui.Forms
         {
             if (cmdId.Guid == CmdSets.GuidReko)
             {
-                switch (cmdId.ID)
+                switch ((CmdIds)cmdId.ID)
                 {
                 case CmdIds.ActionRestartDecompilation:
                     status.Status = MenuStatus.Visible | MenuStatus.Enabled;

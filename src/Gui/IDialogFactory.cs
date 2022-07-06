@@ -30,6 +30,10 @@ using System.Linq;
 
 namespace Reko.Gui
 {
+    /// <summary>
+    /// This interface abstracts the creation of dialog windows between
+    /// different GUI environments.
+    /// </summary>
     public interface IDialogFactory
     {
         IAboutDialog CreateAboutDialog();

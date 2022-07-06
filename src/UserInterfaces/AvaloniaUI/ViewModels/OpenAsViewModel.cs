@@ -18,40 +18,27 @@
  */
 #endregion
 
-#nullable enable
-
-using Reko.Core;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
+using ReactiveUI;
 
-namespace Reko.Gui.Services
+namespace Reko.UserInterfaces.AvaloniaUI.ViewModels
 {
-    public interface IProjectBrowserService : ICommandTarget
+    public class OpenAsViewModel : ReactiveObject
     {
-        event EventHandler<FileDropEventArgs> FileDropped;
+        public OpenAsViewModel()
+        {
+            this.filename = "";
+        }
 
-        Program? CurrentProgram { get; }
-        bool ContainsFocus { get; }
-
-        /// <summary>
-        /// The currently selected object in the project browser tree.
-        /// </summary>
-        object? SelectedObject { get; set; }
-
-
-        /// <summary>
-        /// Loads a project into the project browser and starts listening to changes. 
-        /// Loading a null project clears the project browser.
-        /// </summary>
-        /// <param name="project"></param>
-        void Load(Project project);
-
-        void Clear();
-
-        void Reload();
-
-        void Show();
+        public string Filename
+        {
+            get => filename;
+            set => this.RaiseAndSetIfChanged(ref filename, value, nameof(Filename));
+        }
+        private string filename;
     }
 }

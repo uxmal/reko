@@ -51,12 +51,12 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
 
 
 
-        public void AddBinding(string windowKey, Guid cmdSet, int id, int key, int modifiers)
+        public void AddBinding(string windowKey, Guid cmdSet, CmdIds id, int key, int modifiers)
         {
             AddBinding(windowKey, cmdSet, id, key | modifiers);
         }
 
-        public void AddBinding(string windowKey, Guid cmdSet, int id, int key)
+        public void AddBinding(string windowKey, Guid cmdSet, CmdIds id, int key)
         {
             Dictionary<int, CommandID> bindingList;
             if (!KeyBindings.TryGetValue(windowKey, out bindingList))
@@ -64,7 +64,7 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
                 bindingList = new Dictionary<int,CommandID>();
                 KeyBindings.Add(windowKey, bindingList);
             }
-            bindingList[key] = new CommandID(cmdSet, id);
+            bindingList[key] = new CommandID(cmdSet, (int)id);
         }
 
         public void BuildMenu(SortedList menu, IList m)

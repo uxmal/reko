@@ -1,0 +1,17 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        x:Class="Reko.UserInterfaces.AvaloniaUI.Views.OpenAsDialog"
+        Title="OpenAsDialog">
+	<StackPanel>
+		<Label>File name</Label>
+		<StackPanel Orientation="Horizontal">
+			<TextBox Name="fileName" Text="{Binding FileName}" />
+			<Button Name="btnBrowseFile">...</Button>
+		</StackPanel>
+		<Label>File format</Label>
+		<ComboBox Name="ddlFormats" Items="{Binding FileFormats}" />
+	</StackPanel>
+</Window>

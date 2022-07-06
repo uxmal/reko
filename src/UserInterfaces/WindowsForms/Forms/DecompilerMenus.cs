@@ -63,12 +63,12 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
             var cmdsById = new Dictionary<int, CommandMenuItem>();
             foreach (var cmdDef in commandDefs.Commands)
             {
-                var cmi = new CommandMenuItem(cmdDef.text, cmdDef.cmdSet, cmdDef.id);
+                var cmi = new CommandMenuItem(cmdDef.text, cmdDef.cmdSet, (int)cmdDef.id);
                 cmi.IsDynamic = cmdDef.dynamicItemId != 0;
                 cmi.ImageIndex = cmdDef.image;
                 if (cmdDef.imageKey != null) cmi.ImageKey = cmdDef.imageKey;
                 if (cmdDef.tip != null) cmi.ToolTipText = cmdDef.tip;
-                cmdsById.Add(cmdDef.id, cmi);
+                cmdsById.Add((int)cmdDef.id, cmi);
                 if (cmdDef.container != 0)
                 {
                     groupSorters[cmdDef.container].Add(cmdDef.priority, cmi);

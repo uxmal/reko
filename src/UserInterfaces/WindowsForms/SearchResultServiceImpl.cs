@@ -284,7 +284,7 @@ namespace Reko.UserInterfaces.WindowsForms
                 return true;
             if (cmdId.Guid == CmdSets.GuidReko)
             {
-                switch (cmdId.ID)
+                switch ((CmdIds)cmdId.ID)
                 {
                 case CmdIds.ActionNextSearchHit: Advance(1); return true;
                 case CmdIds.ActionPrevSearchHit: Advance(-1); return true;

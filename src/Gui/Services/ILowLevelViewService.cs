@@ -41,6 +41,8 @@ namespace Reko.Gui.Services
     /// </summary>
     public interface ILowLevelViewService
     {
+        const string ViewWindowType = "memoryViewWindow";
+
         /// <summary>
         /// Show a low level window for the specified <paramref name="program"/>.
         /// If the window is already visible, bring it to the foreground.
@@ -48,6 +50,7 @@ namespace Reko.Gui.Services
         /// <param name="program">Program whose low-level details are to 
         /// be shown.</param>
         void ShowWindow(Program program);
+
         /// <summary>
         /// Show a low level window for the specified <paramref name="program"/>, and
         /// display the first few bytes.

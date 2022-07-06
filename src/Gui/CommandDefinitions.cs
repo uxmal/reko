@@ -134,6 +134,7 @@ namespace Reko.Gui
 
             new CmdDefinition { id = CmdIds.ViewProjectBrowser, cmdSet = Reko, container = GroupIds.GrpView, text = "Project _browser" },
             new CmdDefinition { id = CmdIds.ViewProcedureList, cmdSet = Reko, container = GroupIds.GrpView, text = "_Procedure list" },
+            new CmdDefinition { id = CmdIds.ViewSegmentList, cmdSet = Reko, container = GroupIds.GrpView, text = "_Segment list" },
             new CmdDefinition { id = CmdIds.ViewMemory, cmdSet = Reko, container = GroupIds.GrpLowLevel, text = "_Memory" },
             new CmdDefinition { id = CmdIds.ViewDisassembly, cmdSet = Reko, container = GroupIds.GrpLowLevel, text = "_Disassembly" },
             new CmdDefinition { id = CmdIds.TextEncodingChoose, cmdSet = Reko, container = GroupIds.GrpTextEncoding, text = "_Choose..." },
@@ -194,68 +195,68 @@ namespace Reko.Gui
 
         public readonly Placement[] Placements = new[]
         {
-            new Placement { item=CmdIds.FileOpen, container=GroupIds.GrpFile },
+            new Placement { item=(int)CmdIds.FileOpen, container=GroupIds.GrpFile },
 
-            new Placement { item=CmdIds.FileOpenAs, container=GroupIds.GrpFile },
+            new Placement { item=(int)CmdIds.FileOpenAs, container=GroupIds.GrpFile },
 
-            new Placement { item=CmdIds.FileSave, container=GroupIds.GrpFile },
-            new Placement { item=CmdIds.FileCloseProject, container=GroupIds.GrpFile },
-            new Placement { item=CmdIds.FileNewScript, container=GroupIds.GrpFile },
-            new Placement { item=CmdIds.FileAddBinary, container=GroupIds.GrpFile },
-            new Placement { item=CmdIds.FileAddMetadata, container=GroupIds.GrpFile },
-            new Placement { item=CmdIds.FileAddScript, container=GroupIds.GrpFile },
-            new Placement { item=CmdIds.FileAssemble, container=GroupIds.GrpFile },
+            new Placement { item=(int)CmdIds.FileSave, container=GroupIds.GrpFile },
+            new Placement { item=(int)CmdIds.FileCloseProject, container=GroupIds.GrpFile },
+            new Placement { item=(int)CmdIds.FileNewScript, container=GroupIds.GrpFile },
+            new Placement { item=(int)CmdIds.FileAddBinary, container=GroupIds.GrpFile },
+            new Placement { item=(int)CmdIds.FileAddMetadata, container=GroupIds.GrpFile },
+            new Placement { item=(int)CmdIds.FileAddScript, container=GroupIds.GrpFile },
+            new Placement { item=(int)CmdIds.FileAssemble, container=GroupIds.GrpFile },
 
             new Placement { item=GroupIds.GrpBrowserProc, container=MenuIds.CtxBrowser },
             new Placement { item=GroupIds.GrpBrowserProc, container=MenuIds.CtxProcedureList },
             // new Placement { item=GroupIds.GrpProcedureListDebug, container=CtxProcedureList },
 
-            new Placement { item=CmdIds.FileOpen, container=GroupIds.GrpToolbarFileOps },
-            new Placement { item=CmdIds.FileSave, container=GroupIds.GrpToolbarFileOps },
+            new Placement { item=(int)CmdIds.FileOpen, container=GroupIds.GrpToolbarFileOps },
+            new Placement { item=(int)CmdIds.FileSave, container=GroupIds.GrpToolbarFileOps },
 
-            new Placement { item=CmdIds.EditCopy, container=GroupIds.GrpEdit },
-            new Placement { item=CmdIds.EditProperties, container=GroupIds.GrpEdit },
+            new Placement { item=(int)CmdIds.EditCopy, container=GroupIds.GrpEdit },
+            new Placement { item=(int)CmdIds.EditProperties, container=GroupIds.GrpEdit },
 
-            new Placement { item=CmdIds.ActionRestartDecompilation, container=GroupIds.GrpToolbarActions },
-            new Placement { item=CmdIds.ActionNextPhase, container=GroupIds.GrpToolbarActions },
-            new Placement { item=CmdIds.ActionFinishDecompilation, container=GroupIds.GrpToolbarActions },
+            new Placement { item=(int)CmdIds.ActionRestartDecompilation, container=GroupIds.GrpToolbarActions },
+            new Placement { item=(int)CmdIds.ActionNextPhase, container=GroupIds.GrpToolbarActions },
+            new Placement { item=(int)CmdIds.ActionFinishDecompilation, container=GroupIds.GrpToolbarActions },
 
-            new Placement { item=CmdIds.ActionMarkProcedure, container=GroupIds.GrpActionsScanned },
-            new Placement { item=CmdIds.ActionScanHeuristically, container=GroupIds.GrpActionsScanned },
-            new Placement { item=CmdIds.ActionMarkType, container=GroupIds.GrpActionsScanned },
+            new Placement { item=(int)CmdIds.ActionMarkProcedure, container=GroupIds.GrpActionsScanned },
+            new Placement { item=(int)CmdIds.ActionScanHeuristically, container=GroupIds.GrpActionsScanned },
+            new Placement { item=(int)CmdIds.ActionMarkType, container=GroupIds.GrpActionsScanned },
 
-            new Placement { item=CmdIds.EditCopy, container=GroupIds.GrpMemoryControl },
-            new Placement { item=CmdIds.EditCopy, container=GroupIds.GrpCodeView, priority=2 },
-            new Placement { item=CmdIds.ViewGoToAddress, container=GroupIds.GrpMemoryControl },
-            new Placement { item=CmdIds.ActionMarkProcedure, container=GroupIds.GrpMemoryControl },
-            new Placement { item=CmdIds.ActionMarkType, container=GroupIds.GrpMemoryControl },
-            new Placement { item=CmdIds.ViewFindPattern, container=GroupIds.GrpMemoryControl },
-            new Placement { item=CmdIds.ViewFindWhatPointsHere, container=GroupIds.GrpMemoryControl },
+            new Placement { item=(int)CmdIds.EditCopy, container=GroupIds.GrpMemoryControl },
+            new Placement { item=(int)CmdIds.EditCopy, container=GroupIds.GrpCodeView, priority=2 },
+            new Placement { item=(int)CmdIds.ViewGoToAddress, container=GroupIds.GrpMemoryControl },
+            new Placement { item=(int)CmdIds.ActionMarkProcedure, container=GroupIds.GrpMemoryControl },
+            new Placement { item=(int)CmdIds.ActionMarkType, container=GroupIds.GrpMemoryControl },
+            new Placement { item=(int)CmdIds.ViewFindPattern, container=GroupIds.GrpMemoryControl },
+            new Placement { item=(int)CmdIds.ViewFindWhatPointsHere, container=GroupIds.GrpMemoryControl },
 
-            new Placement { item=CmdIds.OpenLink, container=GroupIds.GrpDisassemblerNav },
-            new Placement { item=CmdIds.OpenLinkInNewWindow, container=GroupIds.GrpDisassemblerNav },
-            new Placement { item=CmdIds.ViewPcRelative, container=GroupIds.GrpDisassemblerShow },
-            new Placement { item=CmdIds.EditCopy, container=GroupIds.GrpDisassemblerEdit },
-            new Placement { item=CmdIds.EditRename, container=GroupIds.GrpDisassemblerEdit },
-            new Placement { item=CmdIds.EditRegisterValues, container=GroupIds.GrpDisassemblerEdit },
-            new Placement { item=CmdIds.EditAnnotation, container=GroupIds.GrpDisassemblerEdit },
+            new Placement { item=(int)CmdIds.OpenLink, container=GroupIds.GrpDisassemblerNav },
+            new Placement { item=(int)CmdIds.OpenLinkInNewWindow, container=GroupIds.GrpDisassemblerNav },
+            new Placement { item=(int)CmdIds.ViewPcRelative, container=GroupIds.GrpDisassemblerShow },
+            new Placement { item=(int)CmdIds.EditCopy, container=GroupIds.GrpDisassemblerEdit },
+            new Placement { item=(int)CmdIds.EditRename, container=GroupIds.GrpDisassemblerEdit },
+            new Placement { item=(int)CmdIds.EditRegisterValues, container=GroupIds.GrpDisassemblerEdit },
+            new Placement { item=(int)CmdIds.EditAnnotation, container=GroupIds.GrpDisassemblerEdit },
 
-            new Placement { item=CmdIds.ActionEditSignature, container=GroupIds.GrpProcedure },
-            new Placement { item=CmdIds.ViewGoToAddress, container=GroupIds.GrpProcedure },
-            new Placement { item=CmdIds.ActionEditSignature, container=GroupIds.GrpActionsRewritten },
+            new Placement { item=(int)CmdIds.ActionEditSignature, container=GroupIds.GrpProcedure },
+            new Placement { item=(int)CmdIds.ViewGoToAddress, container=GroupIds.GrpProcedure },
+            new Placement { item=(int)CmdIds.ActionEditSignature, container=GroupIds.GrpActionsRewritten },
 
-            new Placement { item=CmdIds.EditProperties, container=GroupIds.GrpBrowser },
-            new Placement { item=CmdIds.ViewGoToAddress, container=GroupIds.GrpBrowserProc },
-            new Placement { item=CmdIds.ViewFindWhatPointsHere, container=GroupIds.GrpBrowserProc },
-            new Placement { item=CmdIds.ShowProcedureCallHierarchy, container=GroupIds.GrpBrowserProc },
-            new Placement { item=CmdIds.ActionEditSignature, container=GroupIds.GrpBrowserProc },
-            new Placement { item=CmdIds.ActionAssumeRegisterValues, container=GroupIds.GrpBrowserProc },
+            new Placement { item=(int)CmdIds.EditProperties, container=GroupIds.GrpBrowser },
+            new Placement { item=(int)CmdIds.ViewGoToAddress, container=GroupIds.GrpBrowserProc },
+            new Placement { item=(int)CmdIds.ViewFindWhatPointsHere, container=GroupIds.GrpBrowserProc },
+            new Placement { item=(int)CmdIds.ShowProcedureCallHierarchy, container=GroupIds.GrpBrowserProc },
+            new Placement { item=(int)CmdIds.ActionEditSignature, container=GroupIds.GrpBrowserProc },
+            new Placement { item=(int)CmdIds.ActionAssumeRegisterValues, container=GroupIds.GrpBrowserProc },
 
-            new Placement { item=CmdIds.ViewFindWhatPointsHere, container=GroupIds.GrpAddressSearch },
-            new Placement { item=CmdIds.ActionMarkProcedure, container=GroupIds.GrpAddressSearch },
-            new Placement { item=CmdIds.ActionMarkType, container=GroupIds.GrpAddressSearch },
-            new Placement { item=CmdIds.ActionMarkStrings, container=GroupIds.GrpAddressSearch },
-            new Placement { item=CmdIds.ActionScanHeuristically, container=GroupIds.GrpAddressSearch },
+            new Placement { item=(int)CmdIds.ViewFindWhatPointsHere, container=GroupIds.GrpAddressSearch },
+            new Placement { item=(int)CmdIds.ActionMarkProcedure, container=GroupIds.GrpAddressSearch },
+            new Placement { item=(int)CmdIds.ActionMarkType, container=GroupIds.GrpAddressSearch },
+            new Placement { item=(int)CmdIds.ActionMarkStrings, container=GroupIds.GrpAddressSearch },
+            new Placement { item=(int)CmdIds.ActionScanHeuristically, container=GroupIds.GrpAddressSearch },
         };
 
         // Accelerators ==================================================
@@ -283,7 +284,7 @@ namespace Reko.Gui
 
     public class CmdDefinition
     {
-        public int id;
+        public CmdIds id;
         public Guid cmdSet;
         public int container;
         public int priority;
@@ -313,7 +314,7 @@ namespace Reko.Gui
 
     public class KeyBinding
     {
-        public int id;
+        public CmdIds id;
         public Guid cmdSet;
         public string key1;
         public KeyModifiers alt1;

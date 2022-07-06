@@ -91,77 +91,79 @@ namespace Reko.Gui
 		public const int GrpAddressSearch = 30 + 1000;
 	}
 	
-	public class CmdIds
+	public enum CmdIds
 	{
-		public const int FileOpen = 1 + 2000;
-		public const int FileOpenAs = 2 + 2000;
-		public const int FileSave = 3 + 2000;
-		public const int FileNewScript = 4 + 2000;
-		public const int FileAddBinary = 5 + 2000;
-		public const int FileAddMetadata = 6 + 2000;
-		public const int FileAddScript = 7 + 2000;
-		public const int FileAssemble = 8 + 2000;
-		public const int FileCloseProject = 9 + 2000;
-		public const int FileExit = 10 + 2000;
-		public const int EditFind = 11 + 2000;
-		public const int EditCopy = 12 + 2000;
-		public const int EditCopyAll = 13 + 2000;
-		public const int EditRename = 14 + 2000;
-		public const int EditRegisterValues = 15 + 2000;
-		public const int EditAnnotation = 16 + 2000;
-		public const int EditSelectAll = 17 + 2000;
-		public const int EditProperties = 18 + 2000;
-		public const int ViewProjectBrowser = 19 + 2000;
-		public const int ViewProcedureList = 20 + 2000;
-		public const int ViewMemory = 21 + 2000;
-		public const int ViewDisassembly = 22 + 2000;
-		public const int TextEncodingChoose = 23 + 2000;
-		public const int ViewCallGraph = 24 + 2000;
-		public const int OpenLink = 25 + 2000;
-		public const int OpenLinkInNewWindow = 26 + 2000;
-		public const int ViewGoToAddress = 27 + 2000;
-		public const int ViewFindAllProcedures = 28 + 2000;
-		public const int ViewShowAllFragments = 29 + 2000;
-		public const int ViewShowUnscanned = 30 + 2000;
-		public const int ViewFindPattern = 31 + 2000;
-		public const int ViewFindStrings = 32 + 2000;
-		public const int ViewFindWhatPointsHere = 33 + 2000;
-		public const int ViewAsCode = 34 + 2000;
-		public const int ViewAsStrings = 35 + 2000;
-		public const int ViewAsData = 36 + 2000;
-		public const int ViewCfgCode = 37 + 2000;
-		public const int ViewCfgGraph = 38 + 2000;
-		public const int ViewPcRelative = 39 + 2000;
-		public const int OpenInNewTab = 40 + 2000;
-		public const int EditDeclaration = 41 + 2000;
-		public const int EditComment = 42 + 2000;
-		public const int EditLabel = 43 + 2000;
-		public const int ActionNextSearchHit = 44 + 2000;
-		public const int ActionPrevSearchHit = 45 + 2000;
-		public const int ActionRestartDecompilation = 46 + 2000;
-		public const int ActionNextPhase = 47 + 2000;
-		public const int ActionFinishDecompilation = 48 + 2000;
-		public const int ActionMarkProcedure = 49 + 2000;
-		public const int ActionCallTerminates = 50 + 2000;
-		public const int ActionScanHeuristically = 51 + 2000;
-		public const int ActionEditSignature = 52 + 2000;
-		public const int ActionMarkType = 53 + 2000;
-		public const int ActionMarkStrings = 54 + 2000;
-		public const int ActionAssumeRegisterValues = 55 + 2000;
-		public const int ToolsHexDisassembler = 56 + 2000;
-		public const int ToolsOptions = 57 + 2000;
-		public const int ToolsKeyBindings = 58 + 2000;
-		public const int WindowsCascade = 59 + 2000;
-		public const int WindowsTileVertical = 60 + 2000;
-		public const int WindowsTileHorizontal = 61 + 2000;
-		public const int WindowsCloseAll = 62 + 2000;
-		public const int HelpAbout = 63 + 2000;
-		public const int ShowProcedureCallHierarchy = 64 + 2000;
-		public const int ProcedureDebugTrace = 65 + 2000;
-		public const int CollapseAllNodes = 66 + 2000;
-		public const int CreateUserSegment = 67 + 2000;
-		public const int LoadSymbols = 68 + 2000;
-		public const int FileMru = 2200;
+		FileOpen = 2001,
+		FileOpenAs,
+		FileSave,
+		FileNewScript,
+		FileAddBinary,
+		FileAddMetadata,
+		FileAddScript,
+		FileAssemble,
+		FileCloseProject,
+		FileExit,
+		EditFind,
+		EditCopy,
+		EditCopyAll,
+		EditRename,
+		EditRegisterValues,
+		EditAnnotation,
+		EditSelectAll,
+		EditProperties,
+		ViewProjectBrowser,
+		ViewProcedureList,
+        ViewSegmentList,
+		ViewMemory,
+		ViewDisassembly,
+		TextEncodingChoose,
+		ViewCallGraph,
+		OpenLink,
+		OpenLinkInNewWindow,
+		ViewGoToAddress,
+		ViewFindAllProcedures,
+		ViewShowAllFragments,
+		ViewShowUnscanned,
+		ViewFindPattern,
+		ViewFindStrings,
+		ViewFindWhatPointsHere,
+		ViewAsCode,
+		ViewAsStrings,
+		ViewAsData,
+		ViewCfgCode,
+		ViewCfgGraph,
+		ViewPcRelative,
+		OpenInNewTab,
+		EditDeclaration,
+		EditComment,
+		EditLabel,
+		ActionNextSearchHit,
+		ActionPrevSearchHit,
+		ActionRestartDecompilation,
+		ActionNextPhase,
+		ActionFinishDecompilation,
+		ActionMarkProcedure,
+		ActionCallTerminates,
+		ActionScanHeuristically,
+		ActionEditSignature,
+		ActionMarkType,
+		ActionMarkStrings,
+		ActionAssumeRegisterValues,
+		ToolsHexDisassembler,
+		ToolsOptions,
+		ToolsKeyBindings,
+		WindowsCascade,
+		WindowsTileVertical,
+		WindowsTileHorizontal,
+		WindowsCloseAll,
+		HelpAbout,
+		ShowProcedureCallHierarchy,
+		ProcedureDebugTrace,
+		CollapseAllNodes,
+		CreateUserSegment,
+		LoadSymbols,
+
+		FileMru = 2200
 	}
 }
   

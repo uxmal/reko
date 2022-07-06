@@ -137,7 +137,7 @@ namespace Reko.Gui
             }
             if (cmdId.Guid == CmdSets.GuidReko) 
             {
-                switch (cmdId.ID)
+                switch ((CmdIds)cmdId.ID)
                 {
                 case CmdIds.ActionEditSignature:
                 case CmdIds.ViewGoToAddress:
@@ -168,7 +168,7 @@ namespace Reko.Gui
         {
             if (cmdId.Guid == CmdSets.GuidReko)
             {
-                switch (cmdId.ID)
+                switch ((CmdIds)cmdId.ID)
                 {
                 case CmdIds.ActionEditSignature:
                     await EditProcedureSignature();

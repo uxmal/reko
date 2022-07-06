@@ -72,5 +72,6 @@ namespace Reko.Gui
         IOutputService CreateOutputService();
         IStackTraceService CreateStackTraceService();
         IHexDisassemblerService CreateHexDisassemblerService();
+        ISegmentListService CreateSegmentListService();
     }
 }

@@ -19,31 +19,33 @@
 #endregion
 
 using Reko.Core;
-using Reko.Gui.Services;
-using Reko.UserInterfaces.AvaloniaUI.ViewModels.Documents;
+using Reko.Gui;
+using Reko.UserInterfaces.WindowsForms.Forms;
 using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace Reko.UserInterfaces.AvaloniaUI.Services
+namespace Reko.UserInterfaces.WindowsForms.Forms
 {
-    public class AvaloniaHexDisassemblerService : IHexDisassemblerService
+    public class WindowsFormsPaneFactory : IWindowPaneFactory
     {
-        private readonly IServiceProvider services;
+        private IServiceProvider services;
 
-        public AvaloniaHexDisassemblerService(IServiceProvider services)
+        public WindowsFormsPaneFactory(IServiceProvider services)
         {
             this.services = services;
         }
 
-        public void Show()
+        public IWindowPane CreateHexDisassemblerPane()
         {
-            var uiSvc = services.RequireService<IDecompilerShellUiService>();
-            var window = uiSvc.FindDocumentWindow("hexDisassembler", this);
-            if (window is null)
-            {
-                var pane = new HexDisassemblerViewModel(services);
-                window = uiSvc.CreateDocumentWindow("hexDisassembler", this, "Hex disassembler", pane);
-            }
-            window.Show();
+            return new HexDisassemblerController();
+        }
+
+        public IWindowPane CreateSegmentListPane(Program program)
+        {
+            return new SegmentListViewInteractor(program);
         }
     }
 }

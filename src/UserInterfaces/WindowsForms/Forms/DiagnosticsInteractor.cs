@@ -283,7 +283,7 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
         {
             if (cmdId.Guid == CmdSets.GuidReko)
             {
-                switch (cmdId.ID)
+                switch ((CmdIds) cmdId.ID)
                 {
                 case CmdIds.EditCopy:
                     status.Status = listView.SelectedIndices.Count > 0
@@ -302,7 +302,7 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
         {
             if (cmdId.Guid == CmdSets.GuidReko)
             {
-                switch (cmdId.ID)
+                switch ((CmdIds) cmdId.ID)
                 {
                 case CmdIds.EditCopy: return CopyDiagnosticsToClipboard();
                 case CmdIds.EditSelectAll: return SelectAll();

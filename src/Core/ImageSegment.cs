@@ -90,6 +90,10 @@ namespace Reko.Core
         /// </summary>
         public Address Address { get; private set; }
 
+        /// <summary>
+        /// The offset within a file other other source of data from
+        /// which this segment is loaded.
+        /// </summary>
         public ulong FileOffset { get; set; }
 
         /// <summary>

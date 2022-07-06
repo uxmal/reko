@@ -156,7 +156,7 @@ namespace Reko.Gui
         {
             if (cmdID.Guid == CmdSets.GuidReko)
             {
-                switch (cmdID.ID)
+                switch ((CmdIds)cmdID.ID)
                 {
                 case CmdIds.ViewFindWhatPointsHere:
                     status.Status = MenuStatus.Enabled | MenuStatus.Visible;
@@ -203,7 +203,7 @@ namespace Reko.Gui
             if (View is null || !View.IsFocused)
                 return false;
             bool result = true;
-            switch (cmdID.ID)
+            switch ((CmdIds)cmdID.ID)
             {
             case CmdIds.ViewFindWhatPointsHere: await ViewFindWhatPointsHere(); break;
             case CmdIds.ViewAsCode: details = new CodeSearchDetails(); View.Invalidate(); break;

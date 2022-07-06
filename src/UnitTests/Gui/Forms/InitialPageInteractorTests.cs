@@ -204,7 +204,7 @@ namespace Reko.UnitTests.Gui.Forms
 
             var status = new CommandStatus();
             var text = new CommandText("&");
-            Assert.IsTrue(i.QueryStatus(new CommandID(CmdSets.GuidReko, CmdIds.ActionNextPhase), status, text));
+            Assert.IsTrue(i.QueryStatus(new CommandID(CmdSets.GuidReko, (int)CmdIds.ActionNextPhase), status, text));
             Assert.AreEqual("A&nalyze dataflow", text.Text);
         }
 
@@ -217,7 +217,7 @@ namespace Reko.UnitTests.Gui.Forms
             browserSvc.Setup(b => b.Load(project));
             var status = new CommandStatus();
             var cmd = new CommandID(
-                CmdSets.GuidReko, CmdIds.ActionFinishDecompilation);
+                CmdSets.GuidReko, (int)CmdIds.ActionFinishDecompilation);
 
             Assert.IsTrue(i.QueryStatus(cmd, status, null));
             Assert.AreEqual(MenuStatus.Visible, status.Status);

@@ -184,7 +184,7 @@ namespace Reko.UserInterfaces.WindowsForms
         {
             if (cmdId.Guid == CmdSets.GuidReko)
             {
-                switch (cmdId.ID)
+                switch ((CmdIds) cmdId.ID)
                 {
                 case CmdIds.ViewGoToAddress: status.Status = MenuStatus.Enabled | MenuStatus.Visible; return true;
                 case CmdIds.ActionMarkProcedure: status.Status = MenuStatus.Enabled | MenuStatus.Visible; return true;
@@ -197,7 +197,7 @@ namespace Reko.UserInterfaces.WindowsForms
         {
             if (cmdId.Guid == CmdSets.GuidReko)
             {
-                switch (cmdId.ID)
+                switch ((CmdIds) cmdId.ID)
                 {
                 case CmdIds.ViewGoToAddress: await GotoAddress(); return true;
                 }

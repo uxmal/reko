@@ -18,40 +18,38 @@
  */
 #endregion
 
-#nullable enable
-
 using Reko.Core;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace Reko.Gui.Services
 {
-    public interface IProjectBrowserService : ICommandTarget
+    //$REFACTOR: use ViewService
+    public class HexDisassemblerService : IHexDisassemblerService
     {
-        event EventHandler<FileDropEventArgs> FileDropped;
 
-        Program? CurrentProgram { get; }
-        bool ContainsFocus { get; }
+        public HexDisassemblerService(IServiceProvider services)
+        {
+            this.Services = services;
+        }
 
-        /// <summary>
-        /// The currently selected object in the project browser tree.
-        /// </summary>
-        object? SelectedObject { get; set; }
+        public IServiceProvider Services { get; }
 
 
-        /// <summary>
-        /// Loads a project into the project browser and starts listening to changes. 
-        /// Loading a null project clears the project browser.
-        /// </summary>
-        /// <param name="project"></param>
-        void Load(Project project);
-
-        void Clear();
-
-        void Reload();
-
-        void Show();
+        public void Show()
+        {
+            var uiSvc = Services.RequireService<IDecompilerShellUiService>();
+            var paneFactory = Services.RequireService<IWindowPaneFactory>();
+            var window = uiSvc.FindDocumentWindow("hexDisassembler", this);
+            if (window is null)
+            {
+                var pane = paneFactory.CreateHexDisassemblerPane();
+                window = uiSvc.CreateDocumentWindow("hexDisassembler", this, "Hex disassembler", pane);
+            }
+            window.Show();
+        }
     }
 }

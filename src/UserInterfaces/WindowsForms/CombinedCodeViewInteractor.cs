@@ -311,7 +311,7 @@ namespace Reko.UserInterfaces.WindowsForms
             {
                 if (!ShowAllItems())
                 {
-                    switch (cmdId.ID)
+                    switch ((CmdIds) cmdId.ID)
                     {
                     case CmdIds.EditDeclaration:
                     case CmdIds.EditComment:
@@ -321,7 +321,7 @@ namespace Reko.UserInterfaces.WindowsForms
                         return true;
                     }
                 }
-                switch (cmdId.ID)
+                switch ((CmdIds) cmdId.ID)
                 {
                 case CmdIds.TextEncodingChoose:
                     status.Status = MenuStatus.Enabled | MenuStatus.Visible;
@@ -373,7 +373,7 @@ namespace Reko.UserInterfaces.WindowsForms
         {
             if (cmdId.Guid == CmdSets.GuidReko)
             {
-                switch (cmdId.ID)
+                switch ((CmdIds) cmdId.ID)
                 {
                 case CmdIds.EditCopy:
                     Copy();

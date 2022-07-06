@@ -89,7 +89,7 @@ namespace Reko.Gui.Design
         {
             if (cmdId.Guid == CmdSets.GuidReko)
             {
-                switch (cmdId.ID)
+                switch ((CmdIds)cmdId.ID)
                 {
                 case CmdIds.ViewGoToAddress:
                 case CmdIds.ActionEditSignature:
@@ -115,7 +115,7 @@ namespace Reko.Gui.Design
             bool result = true;
             if (cmdId.Guid == CmdSets.GuidReko)
             {
-                switch (cmdId.ID)
+                switch ((CmdIds)cmdId.ID)
                 {
                 case CmdIds.ViewGoToAddress:
                     Services!.RequireService<ILowLevelViewService>().ShowMemoryAtAddress(program, Address);

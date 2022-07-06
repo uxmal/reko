@@ -185,7 +185,7 @@ namespace Reko.UserInterfaces.WindowsForms
             {
                 if (cmdId.Guid == CmdSets.GuidReko)
                 {
-                    switch (cmdId.ID)
+                    switch ((CmdIds) cmdId.ID)
                     {
                     case CmdIds.ViewGoToAddress:
                     case CmdIds.ActionMarkType:
@@ -209,7 +209,7 @@ namespace Reko.UserInterfaces.WindowsForms
                 
                 if (cmdId.Guid == CmdSets.GuidReko)
                 {
-                    switch (cmdId.ID)
+                    switch ((CmdIds) cmdId.ID)
                     {
                     case CmdIds.EditCopy:
                         status.Status = ValidDisassemblerSelection()
@@ -259,7 +259,7 @@ namespace Reko.UserInterfaces.WindowsForms
             {
                 if (cmdId.Guid == CmdSets.GuidReko)
                 {
-                    switch (cmdId.ID)
+                    switch ((CmdIds)cmdId.ID)
                     {
                     case CmdIds.EditCopy: return CopySelectionToClipboard();
                     case CmdIds.ViewGoToAddress: GotoAddress(); return true;
@@ -275,7 +275,7 @@ namespace Reko.UserInterfaces.WindowsForms
             {
                 if (cmdId.Guid == CmdSets.GuidReko)
                 {
-                    switch (cmdId.ID)
+                    switch ((CmdIds)cmdId.ID)
                     {
                     case CmdIds.EditCopy: return CopyDisassemblerSelectionToClipboard();
                     case CmdIds.EditAnnotation: return EditDasmAnnotation();

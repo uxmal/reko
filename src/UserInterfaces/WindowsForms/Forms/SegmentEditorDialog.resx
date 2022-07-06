@@ -117,21 +117,4 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="memView.Encoding" mimetype="application/x-microsoft.net.object.binary.base64">
-    <value>
-        AAEAAAD/////AQAAAAAAAAAEAQAAABlTeXN0ZW0uVGV4dC5BU0NJSUVuY29kaW5nCQAAAAptX2NvZGVQ
-        YWdlCGRhdGFJdGVtD2VuY29kZXJGYWxsYmFjaw9kZWNvZGVyRmFsbGJhY2sTRW5jb2RpbmcrbV9jb2Rl
-        UGFnZRFFbmNvZGluZytkYXRhSXRlbRVFbmNvZGluZyttX2lzUmVhZE9ubHkYRW5jb2RpbmcrZW5jb2Rl
-        ckZhbGxiYWNrGEVuY29kaW5nK2RlY29kZXJGYWxsYmFjawADAwMAAwADAwglU3lzdGVtLkdsb2JhbGl6
-        YXRpb24uQ29kZVBhZ2VEYXRhSXRlbSZTeXN0ZW0uVGV4dC5FbmNvZGVyUmVwbGFjZW1lbnRGYWxsYmFj
-        ayZTeXN0ZW0uVGV4dC5EZWNvZGVyUmVwbGFjZW1lbnRGYWxsYmFjawglU3lzdGVtLkdsb2JhbGl6YXRp
-        b24uQ29kZVBhZ2VEYXRhSXRlbQEmU3lzdGVtLlRleHQuRW5jb2RlclJlcGxhY2VtZW50RmFsbGJhY2sm
-        U3lzdGVtLlRleHQuRGVjb2RlclJlcGxhY2VtZW50RmFsbGJhY2ufTgAACgkCAAAACQMAAACfTgAACgEJ
-        AgAAAAkDAAAABAIAAAAmU3lzdGVtLlRleHQuRW5jb2RlclJlcGxhY2VtZW50RmFsbGJhY2sDAAAACnN0
-        ckRlZmF1bHQbYklzTWljcm9zb2Z0QmVzdEZpdEZhbGxiYWNrK0VuY29kZXJGYWxsYmFjaytiSXNNaWNy
-        b3NvZnRCZXN0Rml0RmFsbGJhY2sBAAABAQYGAAAAAT8AAAQDAAAAJlN5c3RlbS5UZXh0LkRlY29kZXJS
-        ZXBsYWNlbWVudEZhbGxiYWNrAwAAAApzdHJEZWZhdWx0G2JJc01pY3Jvc29mdEJlc3RGaXRGYWxsYmFj
-        aytEZWNvZGVyRmFsbGJhY2srYklzTWljcm9zb2Z0QmVzdEZpdEZhbGxiYWNrAQAAAQEJBgAAAAAACw==
-</value>
-  </data>
 </root>

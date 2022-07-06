@@ -18,40 +18,23 @@
  */
 #endregion
 
-#nullable enable
-
 using Reko.Core;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace Reko.Gui.Services
 {
-    public interface IProjectBrowserService : ICommandTarget
+    /// <summary>
+    /// Implementations of this service show a document window with an editable 
+    /// list of the <see cref="Reko.Core.ImageSegment"/>s of a program.
+    /// </summary>
+    public interface ISegmentListService
     {
-        event EventHandler<FileDropEventArgs> FileDropped;
+        const string ViewWindowType = "segmentListView";
 
-        Program? CurrentProgram { get; }
-        bool ContainsFocus { get; }
-
-        /// <summary>
-        /// The currently selected object in the project browser tree.
-        /// </summary>
-        object? SelectedObject { get; set; }
-
-
-        /// <summary>
-        /// Loads a project into the project browser and starts listening to changes. 
-        /// Loading a null project clears the project browser.
-        /// </summary>
-        /// <param name="project"></param>
-        void Load(Project project);
-
-        void Clear();
-
-        void Reload();
-
-        void Show();
+        void ShowSegments(Program program);
     }
 }

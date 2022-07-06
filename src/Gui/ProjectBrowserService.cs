@@ -159,7 +159,7 @@ namespace Reko.Gui
                 return des.QueryStatus(cmdId, status, text);
             if (cmdId.Guid == CmdSets.GuidReko)
             {
-                switch (cmdId.ID)
+                switch ((CmdIds)cmdId.ID)
                 {
                 case CmdIds.CollapseAllNodes: status.Status = MenuStatus.Visible | MenuStatus.Enabled; return true;
                 case CmdIds.CreateUserSegment: status.Status = 
@@ -182,7 +182,7 @@ namespace Reko.Gui
             }
             if (cmdId.Guid == CmdSets.GuidReko)
             {
-                switch (cmdId.ID)
+                switch ((CmdIds)cmdId.ID)
                 {
                 case CmdIds.CollapseAllNodes: tree.CollapseAll(); return true;
                 case CmdIds.CreateUserSegment: await CreateUserSegment(); return true;
