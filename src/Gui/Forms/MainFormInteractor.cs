@@ -25,6 +25,7 @@ using Reko.Core.Memory;
 using Reko.Core.Serialization;
 using Reko.Core.Services;
 using Reko.Core.Types;
+using Reko.Gui.Components;
 using Reko.Gui.Services;
 using Reko.Scanning;
 using Reko.Services;
@@ -46,11 +47,9 @@ namespace Reko.Gui.Forms
     /// code. This will make it easier to port to other GUI platforms.
     /// </summary>
     public class MainFormInteractor :
-        ICommandTarget,
-        INotifyPropertyChanged
+        ReactingObject,
+        ICommandTarget
     {
-        public event PropertyChangedEventHandler PropertyChanged;
-        
         private IDecompilerShellUiService uiSvc;
         private IMainForm form;
         private IDecompilerService decompilerSvc;
@@ -93,7 +92,7 @@ namespace Reko.Gui.Forms
         public string TitleText
         {
             get { return titleText; }
-            set { titleText = value; PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(TitleText))); }
+            set { RaiseAndSetIfChanged(ref titleText, value); }
         }
         private string titleText;
 
