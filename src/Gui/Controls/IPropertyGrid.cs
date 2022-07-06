@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2022 John Källén.
  *
@@ -28,6 +28,6 @@ namespace Reko.Gui.Controls
 {
     public interface IPropertyGrid : IControl
     {
-        object SelectedObject { get; set; }
+        object? SelectedObject { get; set; }
     }
 }

@@ -80,7 +80,7 @@ namespace Reko.UnitTests.Gui.Windows
 
         private void Given_CallHierarchyInteractor()
         {
-            this.interactor = new CallHierarchyInteractor(this.view.Object); ;
+            this.interactor = new CallHierarchyInteractor(default!, this.view.Object); ;
         }
 
         private void When_AddProcedure(Procedure proc)

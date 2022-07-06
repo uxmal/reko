@@ -76,12 +76,12 @@ namespace Reko.Gui.Forms
         public override void PerformWork(IWorkerDialogService workerDialogSvc)
         {
             workerDialogSvc.SetCaption("Scanning source program.");
-            Decompiler.ScanPrograms();
+            Decompiler!.ScanPrograms();
         }
 
         public override void EnterPage()
         {
-            if (Decompiler.Project.Programs.Any(p => p.NeedsScanning))
+            if (Decompiler!.Project.Programs.Any(p => p.NeedsScanning))
             {
                 memSvc.ViewImage(Decompiler.Project.Programs.First());
             }
@@ -103,7 +103,7 @@ namespace Reko.Gui.Forms
         public bool ViewUnscannedBlocks()
         {
             var srSvc = Services.RequireService<ISearchResultService>();
-            var hits = Decompiler.Project.Programs
+            var hits = Decompiler!.Project.Programs
                 .SelectMany(p => p.ImageMap.Items
                         .Where(i => i.Value.DataType is UnknownType)
                         .Select(i => new AddressSearchHit(p, i.Key, 1)));
@@ -130,8 +130,7 @@ namespace Reko.Gui.Forms
                     text.Text = Resources.AnalyzeDataflow;
                     return true;
                 default:
-                    MenuCommand cmd;
-                    if (!mpCmdidToCommand.TryGetValue(cmdId.ID, out cmd))
+                    if (!mpCmdidToCommand.TryGetValue(cmdId.ID, out var cmd))
                         return false;
                     status.Status = (MenuStatus)cmd.OleStatus;
                     return true;

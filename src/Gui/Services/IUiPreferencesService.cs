@@ -27,12 +27,12 @@ namespace Reko.Gui.Services
 {
     public class UiStyle
     {
-        public string Name { get; set; }     // Name of this style
-        public object Font { get; set; }
-        public object Foreground { get; set; }
-        public object Background { get; set; }
-        public object Cursor { get; set; }
-        public string TextAlign { get; set; }
+        public string? Name { get; set; }     // Name of this style
+        public object? Font { get; set; }
+        public object? Foreground { get; set; }
+        public object? Background { get; set; }
+        public object? Cursor { get; set; }
+        public string? TextAlign { get; set; }
         public int? Width { get; set; } // If set, the width is fixed at a certain size.
         public float PaddingTop { get; set; }
         public float PaddingLeft { get; set; }

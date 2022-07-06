@@ -18,8 +18,6 @@
  */
 #endregion
 
-#nullable enable
-
 using Reko.Core;
 using Reko.Gui.Services;
 using System;
@@ -62,16 +60,15 @@ namespace Reko.Gui
 
         public SearchResultItem GetItem(int i)
         {
-            return new SearchResultItem
-            {
-                Items = new[] {
+            return new SearchResultItem(
+                new[] {
                     hits[i].Program.Name,
                     hits[i].Address.ToString(),
                     hits[i].Procedure.Name
                 },
-                ImageIndex = -1,
-                BackgroundColor = -1,
-            };
+                ImageIndex:-1,
+                BackgroundColor: -1
+            );
         }
 
         public void NavigateTo(int i)

@@ -18,8 +18,6 @@
  */
 #endregion
 
-#nullable enable
-
 using Reko.Core;
 using Reko.Core.Types;
 using Reko.Gui.Services;
@@ -102,32 +100,28 @@ namespace Reko.Gui
             program.ImageMap.TryFindItem(addr, out var item);
             if (program.Architecture == null)
             {
-                return new SearchResultItem
-                {
-                    Items = new string[] {
+                return new SearchResultItem(
+                    new string[] {
                         "",
                         addr.ToString(),
                         ""
                     },
-                    ImageIndex = 0,
-                    BackgroundColor = -1,
-                };
+                    ImageIndex: 0,
+                    BackgroundColor: -1);
             }
             int bgColor = SelectBgColor(item);
 
             string sData = details.RenderHit(hit);
 
-            return new SearchResultItem
-            {
-                Items = new string[] {
+            return new SearchResultItem(
+                new string[] {
                         program.Name ?? "<Program>",
                         addr.ToString(),
                         item.DataType != null ? item.DataType.ToString() : "<null>",
                         sData,
-                    },
-                ImageIndex = 0,
-                BackgroundColor = bgColor,
-            };
+                },
+                ImageIndex: 0,
+                BackgroundColor: bgColor);
         }
 
 

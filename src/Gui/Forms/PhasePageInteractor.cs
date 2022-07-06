@@ -53,7 +53,7 @@ namespace Reko.Gui.Forms
     public abstract class PhasePageInteractorImpl : 
         IPhasePageInteractor
     {
-        public event EventHandler Disposed;
+        public event EventHandler? Disposed;
 
         private IDecompilerService decompilerSvc;
         private IDecompilerShellUiService decompilerUiSvc;
@@ -73,13 +73,13 @@ namespace Reko.Gui.Forms
         }
 
 
-        public virtual IDecompiler Decompiler
+        public virtual IDecompiler? Decompiler
         {
             get { return decompilerSvc.Decompiler; }
             set { decompilerSvc.Decompiler = value; }
         }
 
-        public IServiceProvider Services { get; private set; }
+        public IServiceProvider Services { get; }
 
         /// <summary>
         /// Derived classes should copy populate editable controls with initial values.

@@ -48,7 +48,7 @@ namespace Reko.Gui.Forms
         public override void PerformWork(IWorkerDialogService workerDlgSvc)
         {
             workerDlgSvc.SetCaption("Generating intermediate code");
-            Decompiler.AnalyzeDataFlow();
+            Decompiler?.AnalyzeDataFlow();
         }
 
         public override bool CanAdvance
@@ -70,7 +70,7 @@ namespace Reko.Gui.Forms
         {
             get
             {
-                return new KeyValuePair<Address, Procedure>(null, null);
+                return new KeyValuePair<Address, Procedure>(null!, null!);
             }
         }
 

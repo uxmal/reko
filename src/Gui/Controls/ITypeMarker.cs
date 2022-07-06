@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2022 John Källén.
  *
@@ -35,6 +35,6 @@ namespace Reko.Gui.Controls
     {
         public TypeMarkerEventArgs(string userText) { UserText = userText; }
         public string UserText { get; private set; }
-        public string FormattedType { get; set; }
+        public string? FormattedType { get; set; }
     }
 }

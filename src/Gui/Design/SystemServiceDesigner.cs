@@ -18,8 +18,6 @@
  */
 #endregion
 
-#nullable enable
-
 using Reko.Core;
 
 namespace Reko.Gui.Design
@@ -35,7 +33,7 @@ namespace Reko.Gui.Design
 
         public void SetTreeNodeProperties(SystemService svc)
         {
-            TreeNode!.Text = svc.Name;
+            TreeNode!.Text = svc.Name ?? "";
             TreeNode.ImageName = "Binary.ico";
         }
     }

@@ -18,8 +18,6 @@
  */
 #endregion
 
-#nullable enable
-
 using Reko.Core;
 using System;
 using System.Collections.Generic;
@@ -40,7 +38,7 @@ namespace Reko.Gui.Design
         {
             var arch = (IProcessorArchitecture)Component!;
 
-            TreeNode!.Text = arch.Description;
+            TreeNode!.Text = arch.Description ?? arch.Name;
             TreeNode.ImageName = "Cpu.ico";
         }
     }

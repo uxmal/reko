@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2022 John Källén.
  *
@@ -29,7 +29,7 @@ namespace Reko.Gui.Forms
 {
     public class CallSiteInteractor
     {
-        private ICallSiteDialog dlg;
+        private ICallSiteDialog dlg = default!;
 
         public void Attach(ICallSiteDialog dlg)
         {

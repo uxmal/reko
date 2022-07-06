@@ -33,6 +33,6 @@ namespace Reko.Gui.Services
     /// </summary>
     public interface ImageSegmentService
     {
-        void DisplayImageSegment(ImageSegment segment, Program program);
+        void DisplayImageSegment(ImageSegment? segment, Program? program);
     }
 }

@@ -27,7 +27,7 @@ namespace Reko.Gui.Forms
 {
     public class TextEncodingInteractor
     {
-        private ITextEncodingDialog dlg;
+        private ITextEncodingDialog dlg = default!;
 
         public void Attach(ITextEncodingDialog dlg)
         {
@@ -40,13 +40,13 @@ namespace Reko.Gui.Forms
                     e.Name)));
         }
 
-        public Encoding GetSelectedTextEncoding()
+        public Encoding? GetSelectedTextEncoding()
         {
             var item = (ListOption)dlg.EncodingList.SelectedItem;
-            if (item == null)
+            if (item is null)
                 return null;
             else
-                return Encoding.GetEncoding((string)item.Value);
+                return Encoding.GetEncoding((string)item.Value!);
         }
     }
 }

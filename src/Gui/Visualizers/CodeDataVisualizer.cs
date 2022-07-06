@@ -47,11 +47,7 @@ namespace Reko.Gui.Visualizers
             var addrEnd = addrStart + length;
             var procs = program.Procedures
                 .Where(p => addrStart < p.Key && p.Key < addrEnd)
-                .Select(p => new VisualAnnotation
-                {
-                    Address = p.Key,
-                    Text = p.Value.Name
-                })
+                .Select(p => new VisualAnnotation(p.Key, p.Value.Name))
                 .ToArray();
             return procs;
         }

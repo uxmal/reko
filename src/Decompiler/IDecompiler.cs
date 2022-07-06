@@ -39,7 +39,7 @@ namespace Reko
         /// The current <see cref="Project"/> used by the decompiler, or
         /// null if no project has been loaded.
         /// </summary>
-        Project? Project { get; }
+        Project Project { get; }
 
         void ScanPrograms();
         ProcedureBase ScanProcedure(ProgramAddress paddr, IProcessorArchitecture arch);

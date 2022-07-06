@@ -62,7 +62,7 @@ namespace Reko.Gui
 
 	public class CommandText
 	{
-		public string Text;
+		public string? Text;
         public readonly string MnemonicPrefix;
 
         public CommandText(string mnemonicPrefix)

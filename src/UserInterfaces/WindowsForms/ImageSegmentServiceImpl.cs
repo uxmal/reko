@@ -37,9 +37,9 @@ namespace Reko.UserInterfaces.WindowsForms
             pane = new ImageSegmentPane();
         }
 
-        public void DisplayImageSegment(ImageSegment segment, Program program)
+        public void DisplayImageSegment(ImageSegment? segment, Program program)
         {
-            if (segment == null)
+            if (segment is null)
                 return;
             ShowWindow("imageSegmentViewer", "Segment: " + segment.Name, program, pane);
             pane.DisplaySegment(segment, program);

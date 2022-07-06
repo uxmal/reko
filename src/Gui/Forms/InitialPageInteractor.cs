@@ -29,8 +29,6 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 
-#nullable enable
-
 namespace Reko.Gui.Forms
 {
     public interface InitialPageInteractor : IPhasePageInteractor
@@ -192,7 +190,7 @@ namespace Reko.Gui.Forms
                 return false;
             var browserSvc = Services.RequireService<IProjectBrowserService>();
             var procListSvc = Services.RequireService<IProcedureListService>();
-            if (Decompiler.Project is not null)
+            if (Decompiler?.Project is not null)
             {
                 browserSvc.Load(Decompiler.Project);
                 browserSvc.Show();
@@ -244,7 +242,7 @@ namespace Reko.Gui.Forms
 
         private void ShowLowLevelWindow()
         {
-            if (Decompiler.Project is null)
+            if (Decompiler?.Project is null)
                 return;
             if (Decompiler.Project.Programs.Any(p => p.NeedsScanning))
             {
@@ -268,7 +266,7 @@ namespace Reko.Gui.Forms
                 this.Decompiler.ExtractResources();
                 eventListener.ShowStatus("Assembled program.");
             });
-            if (Decompiler.Project is null)
+            if (Decompiler?.Project is null)
                 return false;
             var browserSvc = Services.RequireService<IProjectBrowserService>();
             browserSvc.Load(Decompiler.Project);

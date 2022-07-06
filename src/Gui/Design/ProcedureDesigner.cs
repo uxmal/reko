@@ -18,8 +18,6 @@
  */
 #endregion
 
-#nullable enable
-
 using Reko.Core;
 using Reko.Gui.Services;
 using System;
@@ -71,9 +69,9 @@ namespace Reko.Gui.Design
 
         private void SetTreeNodeText()
         {
-            if (TreeNode == null)
+            if (TreeNode is null)
                 return;
-            TreeNode.Text = name;
+            TreeNode.Text = name ?? "(None)";
             TreeNode.ToolTipText = Address.ToString();
             TreeNode.ImageName = userProc != null
                 ? (isEntryPoint ? "UserEntryProcedure.ico" : "Userproc.ico")

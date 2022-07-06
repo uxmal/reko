@@ -211,8 +211,10 @@ namespace Reko.Core.IO
 		private Endianness defaultEndianess = Endianness.LittleEndian;
 
 		/* Adapted from http://stackoverflow.com/a/2624377 */
-		private T RespectEndianness<T>(T data) {
-			var structEndianness = this.defaultEndianess;
+		private T RespectEndianness<T>(T data)
+            where T : notnull
+        {
+            var structEndianness = this.defaultEndianess;
 			var type = typeof(T);
 			if (type.IsDefined(typeof(EndianAttribute), false)) {
 				EndianAttribute attr = (EndianAttribute)type
@@ -473,8 +475,8 @@ namespace Reko.Core.IO
 			return ReadBytes((int)Remaining);
 		}
 
-		public byte ReadByte() => Read<byte>();
-		public void WriteByte(byte value) => Write(value);
+		public new byte ReadByte() => Read<byte>();
+		public new void WriteByte(byte value) => Write(value);
 
 		public void WriteBytes(byte[] data) {
 			var start = Memory.Span.Slice(pos, data.Length);

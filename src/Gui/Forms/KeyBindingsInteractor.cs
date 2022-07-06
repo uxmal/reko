@@ -31,9 +31,9 @@ namespace Reko.Gui.Forms
 {
     public class KeyBindingsInteractor
     {
-        private IKeyBindingsDialog dlg;
-        private Dictionary<CommandID, string> cmdNames;
-        private List<ListOption> windowNames;
+        private IKeyBindingsDialog dlg = default!;
+        private Dictionary<CommandID, string> cmdNames = default!;
+        private List<ListOption> windowNames = default!;
 
         public void Attach(IKeyBindingsDialog keyBindingsDialog)
         {
@@ -47,12 +47,12 @@ namespace Reko.Gui.Forms
             get
             {
                 var option = ((ListOption)dlg.Commands.SelectedItem);
-                var cmdID = (CommandID)option?.Value;
+                var cmdID = (CommandID)option?.Value!;
                 return cmdID;
             }
         }
 
-        private void dlg_Load(object sender, EventArgs e)
+        private void dlg_Load(object? sender, EventArgs e)
         {
             this.windowNames = GetWindowNames();
             PopulateCommands();
@@ -65,7 +65,7 @@ namespace Reko.Gui.Forms
             dlg.Shortcut.KeyUp += Shortcut_KeyUp;
         }
 
-        private void Shortcut_KeyUp(object sender, KeyEventArgs e)
+        private void Shortcut_KeyUp(object? sender, KeyEventArgs e)
         {
             e.Handled = true;
             if (e.KeyData == Keys.ControlKey ||
@@ -84,7 +84,7 @@ namespace Reko.Gui.Forms
         {
             return typeof(CmdIds).GetFields(BindingFlags.Public|BindingFlags.Static)
                 .ToDictionary(
-                    field => new CommandID(CmdSets.GuidReko, (int)field.GetValue(null)),
+                    field => new CommandID(CmdSets.GuidReko, (int)field.GetValue(null)!),
                     field => field.Name);
         }
 
@@ -143,12 +143,12 @@ namespace Reko.Gui.Forms
         {
         }
 
-        private void CommandName_TextChanged(object sender, EventArgs e)
+        private void CommandName_TextChanged(object? sender, EventArgs e)
         {
             PopulateCommands();
         }
 
-        private void Commands_SelectedIndexChanged(object sender, EventArgs e)
+        private void Commands_SelectedIndexChanged(object? sender, EventArgs e)
         {
             PopulateCommandKeys();
         }

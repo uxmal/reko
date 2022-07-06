@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2022 John Källén.
  *
@@ -29,7 +29,7 @@ namespace Reko.Gui
         /// <summary>
         /// The WindowFrame that encloses this pane.
         /// </summary>
-        IWindowFrame Frame { get; set; }
+        IWindowFrame? Frame { get; set; }
 
         /// <summary>
         /// Creates the UI widget handled by this pane.

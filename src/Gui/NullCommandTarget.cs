@@ -18,37 +18,28 @@
  */
 #endregion
 
-using Reko.Core;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Reko.Gui.Services
+namespace Reko.Gui
 {
     /// <summary>
-    /// This service is used by components that are interested
-    /// in the currently selected address.
+    /// An implementation of <see cref="ICommandTarget"/> that does nothing.
     /// </summary>
-    public interface ISelectedAddressService
+    public class NullCommandTarget : ICommandTarget
     {
-        /// <summary>
-        /// This event is raised when the selected address is changed.
-        /// </summary>
-        event EventHandler? SelectedAddressChanged;
+        public ValueTask<bool> ExecuteAsync(CommandID cmdId)
+        {
+            return ValueTask.FromResult(false);
+        }
 
-        /// <summary>
-        /// If not null, indicates the address the user has 
-        /// selected.
-        /// </summary>
-        public Address? SelectedAddress { get; set; }
-
-        /// <summary>
-        /// Indicates the length of the selection the user has 
-        /// made. A length of 0 indicates that only the address
-        /// has been selected, not a range of bytes.
-        /// </summary>
-        public long Length { get; }
+        public bool QueryStatus(CommandID cmdId, CommandStatus status, CommandText text)
+        {
+            return false;
+        }
     }
 }

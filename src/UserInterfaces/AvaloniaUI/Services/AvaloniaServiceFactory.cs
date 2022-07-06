@@ -235,7 +235,7 @@ namespace Reko.UserInterfaces.AvaloniaUI.Services
 
         public ISegmentListService CreateSegmentListService()
         {
-            return new AvaloniaSegmentListService(this.services);
+            return new SegmentListService(this.services);
         }
     }
 }

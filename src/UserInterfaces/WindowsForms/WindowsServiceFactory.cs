@@ -216,7 +216,7 @@ namespace Reko.UserInterfaces.WindowsForms
 
         public ICallHierarchyService CreateCallHierarchyService()
         {
-            var svc = new CallHierarchyInteractor(mainForm.CallHierarchy);
+            var svc = new CallHierarchyInteractor(this.services, mainForm.CallHierarchy);
             return svc;
         }
 

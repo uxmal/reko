@@ -52,11 +52,11 @@ namespace Reko.Gui.Forms
                 if (listener.IsCanceled())
                     return;
                 workerDialogSvc.SetCaption("Reconstructing datatypes.");
-                Decompiler.ReconstructTypes();
+                Decompiler?.ReconstructTypes();
                 if (listener.IsCanceled())
                     return;
                 workerDialogSvc.SetCaption("Structuring program.");
-                Decompiler.StructureProgram();
+                Decompiler?.StructureProgram();
             }
             catch (Exception ex)
             {

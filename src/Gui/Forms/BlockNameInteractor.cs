@@ -45,7 +45,7 @@ namespace Reko.Gui.Forms
             dlg.BlockName.TextChanged += BlockName_TextChanged;
         }
 
-        private void BlockName_TextChanged(object sender, EventArgs e)
+        private void BlockName_TextChanged(object? sender, EventArgs e)
         {
             var newName = dlg.BlockName.Text;
             if (IsNameAcceptable(newName))

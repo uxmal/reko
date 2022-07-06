@@ -80,6 +80,12 @@ namespace Reko.Gui.Visualizers
         public string Text;
         public int LineColor;
         public int TextColor;
+
+        public VisualAnnotation(Address addr, string text)
+        {
+            this.Address = addr;
+            this.Text = text;
+        }
     }
 
 }

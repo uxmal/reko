@@ -9,6 +9,7 @@
     <AssemblyName>Reko.Gui</AssemblyName>
     <Configurations>Debug;Release</Configurations>
     <LangVersion>9.0</LangVersion>
+    <Nullable>enable</Nullable>
   </PropertyGroup>
   <ItemGroup>
     <None Remove=".gitignore" />

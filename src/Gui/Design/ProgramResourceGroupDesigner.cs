@@ -18,8 +18,6 @@
  */
 #endregion
 
-#nullable enable
-
 using Reko.Core;
 
 namespace Reko.Gui.Design
@@ -30,7 +28,7 @@ namespace Reko.Gui.Design
         {
             base.Initialize(obj);
             var grp = ((ProgramResourceGroup)obj);
-            TreeNode!.Text = grp.Name;
+            TreeNode!.Text = grp.Name ?? grp.GetType().Name;
             Host!.AddComponents(grp, grp.Resources);
         }
     }

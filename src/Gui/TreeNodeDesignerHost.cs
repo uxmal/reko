@@ -18,8 +18,6 @@
  */
 #endregion
 
-#nullable enable
-
 using Reko.Core;
 using Reko.Core.Services;
 using Reko.Gui.Controls;
@@ -31,8 +29,6 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
-#nullable enable
 
 namespace Reko.Gui
 {
@@ -71,12 +67,12 @@ namespace Reko.Gui
             tree.Nodes.AddRange(nodes);
         }
 
-        public void AddComponent(object parent, object component)
+        public void AddComponent(object? parent, object component)
         {
             AddComponents(parent, new[] { component });
         }
 
-        public void AddComponents(object parent, IEnumerable components)
+        public void AddComponents(object? parent, IEnumerable components)
         {
             TreeNodeDesigner? parentDes = GetDesigner(parent);
             if (parentDes == null)
@@ -97,9 +93,9 @@ namespace Reko.Gui
             this.mpitemToDesigner = new Dictionary<object, TreeNodeDesigner>();
         }
 
-        public TreeNodeDesigner? GetDesigner(object o)
+        public TreeNodeDesigner? GetDesigner(object? o)
         {
-            if (o == null)
+            if (o is null)
                 return null;
             if (mpitemToDesigner.TryGetValue(o, out TreeNodeDesigner? des))
                 return des;

@@ -32,7 +32,7 @@ namespace Reko.Gui.Forms
 {
     public class OpenAsInteractor
     {
-        private IOpenAsDialog dlg;
+        private IOpenAsDialog dlg = default!;
 
         public void Attach(IOpenAsDialog dlg)
         {
@@ -54,7 +54,7 @@ namespace Reko.Gui.Forms
 
         }
 
-        private void dlg_Load(object sender, EventArgs e)
+        private void dlg_Load(object? sender, EventArgs e)
         {
             var dcCfg = dlg.Services.RequireService<IConfigurationService>();
             PopulateArchitectures(dcCfg);
@@ -68,15 +68,15 @@ namespace Reko.Gui.Forms
         {
             var rawfile = dlg.GetSelectedRawFile();
             var arch = ((ListOption) dlg.Architectures.SelectedValue)?.Value as string;
-            var unknownRawFileFormat = rawfile == null;
+            var unknownRawFileFormat = rawfile is null;
             bool platformRequired = unknownRawFileFormat;
             bool archRequired = unknownRawFileFormat;
             bool addrRequired = unknownRawFileFormat;
             if (!unknownRawFileFormat)
             {
-                platformRequired = string.IsNullOrEmpty(rawfile.Environment);
-                archRequired = string.IsNullOrEmpty(rawfile.Architecture);
-                addrRequired = string.IsNullOrEmpty(rawfile.BaseAddress);
+                platformRequired = string.IsNullOrEmpty(rawfile?.Environment);
+                archRequired = string.IsNullOrEmpty(rawfile?.Architecture);
+                addrRequired = string.IsNullOrEmpty(rawfile?.BaseAddress);
             }
             dlg.Platforms.Enabled = platformRequired;
             dlg.Architectures.Enabled = archRequired;
@@ -94,7 +94,7 @@ namespace Reko.Gui.Forms
                     .OfType<PlatformDefinition>()
                     .OrderBy(p => p.Description)
                     .Where(p => !string.IsNullOrEmpty(p.Name))
-                    .Select(p => new ListOption(p.Description, p)));
+                    .Select(p => new ListOption(p.Description ?? p.Name ?? "?", p)));
             dlg.Platforms.DataSource = new ArrayList(platforms.ToArray());
         }
 
@@ -104,7 +104,7 @@ namespace Reko.Gui.Forms
                     .OfType<RawFileDefinition>()
                     .OrderBy(p => p.Description)
                     .Where(p => !string.IsNullOrEmpty(p.Name))
-                    .Select(p => new ListOption(p.Description, p));
+                    .Select(p => new ListOption(p.Description ?? p.Name ?? "?", p));
             dlg.RawFileTypes.DataSource = new ArrayList(rawFiles.ToArray());
         }
 
@@ -113,7 +113,7 @@ namespace Reko.Gui.Forms
             var archs = dcCfg.GetArchitectures()
                 .OfType<ArchitectureDefinition>()
                 .OrderBy(a => a.Description)
-                .Select(a => new ListOption(a.Description, a));
+                .Select(a => new ListOption(a.Description ?? a.Name ?? "?", a));
             dlg.Architectures.DataSource = new ArrayList(archs.ToArray());
         }
 
@@ -121,7 +121,7 @@ namespace Reko.Gui.Forms
         {
             var models = arch.Models.Values
                 .OrderBy(m => m.Name)
-                .Select(m => new ListOption(m.Name, m))
+                .Select(m => new ListOption(m.Name ?? "?", m))
                 .ToArray();
             Debug.Print("PopulateModels: models: {0}", models.Length);
             if (models.Length > 0)
@@ -136,7 +136,7 @@ namespace Reko.Gui.Forms
             }
         }
 
-        private async void BrowseButton_Click(object sender, EventArgs e)
+        private async void BrowseButton_Click(object? sender, EventArgs e)
         {
             var uiSvc = dlg.Services.RequireService<IDecompilerShellUiService>();
             var fileName = await uiSvc.ShowOpenFileDialog("");
@@ -147,12 +147,12 @@ namespace Reko.Gui.Forms
             }
         }
 
-        void AddressTextBox_TextChanged(object sender, EventArgs e)
+        void AddressTextBox_TextChanged(object? sender, EventArgs e)
         {
             EnableControls();
         }
 
-        private void RawFileTypes_TextChanged(object sender, EventArgs e)
+        private void RawFileTypes_TextChanged(object? sender, EventArgs e)
         {
             try
             {
@@ -164,26 +164,26 @@ namespace Reko.Gui.Forms
             }
         }
 
-        private void Architectures_TextChanged(object sender, EventArgs e)
+        private void Architectures_TextChanged(object? sender, EventArgs e)
         {
             OnArchitectureChanged();
             EnableControls();
         }
 
-        private void ArchitectureModels_TextChanged(object sender, EventArgs e)
+        private void ArchitectureModels_TextChanged(object? sender, EventArgs e)
         {
             OnArchitectureModelChanged();
             EnableControls();
         }
 
-        private void Architectures_GotFocus(object sender, EventArgs e)
+        private void Architectures_GotFocus(object? sender, EventArgs e)
         {
             OnArchitectureChanged();
             EnableControls();
         }
 
 
-        private void ArchitectureModels_GotFocus(object sender, EventArgs e)
+        private void ArchitectureModels_GotFocus(object? sender, EventArgs e)
         {
             OnArchitectureModelChanged();
             EnableControls();
@@ -201,7 +201,7 @@ namespace Reko.Gui.Forms
                 .FirstOrDefault();
             if (arch is null)
                 return;
-            dlg.SetSelectedArchitecture(arch.Name);
+            dlg.SetSelectedArchitecture(arch.Name!);
         }
 
         private void OnArchitectureChanged()
@@ -229,7 +229,7 @@ namespace Reko.Gui.Forms
                     dlg.ArchitectureOptions = new Dictionary<string, object>();
                     foreach (var modelOption in model.Options)
                     {
-                        dlg.ArchitectureOptions[modelOption.Text] = modelOption.Value;
+                        dlg.ArchitectureOptions[modelOption.Text!] = modelOption.Value!;
                     }
                     dlg.SetPropertyGrid(dlg.ArchitectureOptions, arch.Options);
                     return;
@@ -238,19 +238,19 @@ namespace Reko.Gui.Forms
             dlg.PropertyGrid.SelectedObject = null;
         }
 
-        private void Platforms_GotFocus(object sender, EventArgs e)
+        private void Platforms_GotFocus(object? sender, EventArgs e)
         {
             dlg.PropertyGrid.SelectedObject = null;
             EnableControls();
         }
 
-        private void RawFileTypes_GotFocus(object sender, EventArgs e)
+        private void RawFileTypes_GotFocus(object? sender, EventArgs e)
         {
             dlg.PropertyGrid.SelectedObject = null;
             EnableControls();
         }
 
-        private void AddressTextBox_GotFocus(object sender, EventArgs e)
+        private void AddressTextBox_GotFocus(object? sender, EventArgs e)
         {
             EnableControls();
         }

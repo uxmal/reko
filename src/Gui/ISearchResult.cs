@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2022 John Källén.
  *
@@ -34,7 +34,7 @@ namespace Reko.Gui
     /// </summary>
     public interface ISearchResult : ICommandTarget
     {
-        ISearchResultView View { get; set; }
+        ISearchResultView? View { get; set; }
         int Count { get; }
         int ContextMenuID { get; }      // Context menu to use.
         int SortedColumn { get; }
@@ -49,12 +49,10 @@ namespace Reko.Gui
 
     public enum SortDirection { None, Up, Down } 
 
-    public class SearchResultItem
-    {
-        public string [] Items;
-        public int ImageIndex;
-        public int BackgroundColor;
-    }
+    public record SearchResultItem(
+        string[] Items,
+        int ImageIndex,
+        int BackgroundColor);
 
     public interface ISearchResultView
     {

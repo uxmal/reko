@@ -39,7 +39,7 @@ namespace Reko.Gui.Controls
         event MouseEventHandler MouseWheel;
 
         bool Focused { get; }
-        ITreeNode SelectedNode { get; set; }
+        ITreeNode? SelectedNode { get; set; }
         bool ShowNodeToolTips { get; set; }
         bool ShowRootLines { get; set; }
 
@@ -63,7 +63,7 @@ namespace Reko.Gui.Controls
         string ImageName { get; set; }
         object Tag { get; set; }
         string Text { get; set; }
-        string ToolTipText { get; set; }
+        string? ToolTipText { get; set; }
 
         void Collapse();
         void Expand();

@@ -47,16 +47,16 @@ namespace Reko
 
         public Decompiler(Project project, IServiceProvider services)
         {
-            this.Project = project;
+            this.project = project;
             this.services = services ?? throw new ArgumentNullException("services");
             this.host = services.RequireService<IDecompiledFileService>();
             this.eventListener = services.RequireService<DecompilerEventListener>();
             BuildImageMaps();
         }
 
-        public Project? Project { get { return project; } set { project = value; ProjectChanged?.Fire(this); } }
+        public Project Project { get { return project; } set { project = value; ProjectChanged?.Fire(this); } }
         public event EventHandler? ProjectChanged;
-        private Project? project;
+        private Project project;
 
         /// <summary>
         /// Main entry point of the decompiler. Decompiles, and outputs the results.

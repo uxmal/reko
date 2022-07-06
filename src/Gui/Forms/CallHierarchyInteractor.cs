@@ -29,29 +29,30 @@ namespace Reko.Gui.Forms
 {
     public class CallHierarchyInteractor : ICallHierarchyService, ICommandTarget, IWindowPane
     {
-        private ICallHierarchyView view;
-        private ITreeNodeDesignerHost host;
+        private ICallHierarchyView view = default!;
+        private ITreeNodeDesignerHost host = default!;
+        private IServiceProvider services;
 
-        public CallHierarchyInteractor(ICallHierarchyView view)
+        public CallHierarchyInteractor(IServiceProvider services, ICallHierarchyView view)
         {
+            this.services = services;
             this.view = view;
             this.view.DeleteButton.Click += DeleteButton_Click;
         }
 
-        public IServiceProvider Services { get; private set; }
 
-        public IWindowFrame Frame { get; set; }
+        public IWindowFrame? Frame { get; set; }
 
-        public ITreeNodeDesignerHost Host { get { return host ?? (host = new TreeNodeDesignerHost(view.CallTree, Services)); } }
+        public ITreeNodeDesignerHost Host { 
+            get { return host ?? (host = new TreeNodeDesignerHost(view.CallTree, services)); } }
 
         public void Close()
         {
-            this.view = null;
         }
 
         public object CreateControl()
         {
-            view.Services = this.Services;
+            view.Services = this.services;
             return view;
         }
 
@@ -67,7 +68,7 @@ namespace Reko.Gui.Forms
 
         public void SetSite(IServiceProvider services)
         {
-            this.Services = services;
+            this.services = services;
         }
 
         public void Show(Program program, Procedure proc)
@@ -87,7 +88,7 @@ namespace Reko.Gui.Forms
             Host.AddComponent(null, new CHProcedureDesigner(program, proc));
         }
 
-        private void DeleteButton_Click(object sender, EventArgs e)
+        private void DeleteButton_Click(object? sender, EventArgs e)
         {
             var des = Host.GetSelectedDesigner();
             if (des != null)
@@ -110,12 +111,12 @@ namespace Reko.Gui.Forms
             public override void Initialize(object obj)
             {
                 base.Initialize(obj);
-                base.TreeNode.Text = proc.Name;
-                this.Host.AddComponent(this, new CHCallsDesigner(program, proc));
-                this.Host.AddComponent(this, new CHCalleesDesigner(program, proc));
+                base.TreeNode!.Text = proc.Name;
+                this.Host!.AddComponent(this, new CHCallsDesigner(program, proc));
+                this.Host!.AddComponent(this, new CHCalleesDesigner(program, proc));
             }
 
-            public override bool Equals(object obj)
+            public override bool Equals(object? obj)
             {
                 if (obj is CHProcedureDesigner that)
                     return this.proc == that.proc;
@@ -132,7 +133,7 @@ namespace Reko.Gui.Forms
         {
             private readonly Program program;
             private readonly Procedure proc;
-            private object dummy;
+            private object? dummy;
 
             public CHCallsDesigner(Program program, Procedure proc)
             {
@@ -144,7 +145,7 @@ namespace Reko.Gui.Forms
             public override void Initialize(object obj)
             {
                 base.Initialize(obj);
-                base.TreeNode.Text = $"Calls to '{proc.Name}'";
+                base.TreeNode!.Text = $"Calls to '{proc.Name}'";
             }
 
             public override void OnExpanded()
@@ -156,8 +157,8 @@ namespace Reko.Gui.Forms
                     var designers = callStms
                         .Select(s => new CHCallStatementDesigner(program, s))
                         .ToArray();
-                    Host.AddComponents(this, designers);
-                    TreeNode.Expand();
+                    Host?.AddComponents(this, designers);
+                    TreeNode?.Expand();
                 }
             }
         }
@@ -166,7 +167,7 @@ namespace Reko.Gui.Forms
         {
             private readonly Program program;
             private readonly Procedure proc;
-            private object dummy;
+            private object? dummy;
 
             public CHCalleesDesigner(Program program, Procedure proc)
             {
@@ -178,7 +179,7 @@ namespace Reko.Gui.Forms
             public override void Initialize(object obj)
             {
                 base.Initialize(obj);
-                base.TreeNode.Text = $"Calls from '{proc.Name}'";
+                base.TreeNode!.Text = $"Calls from '{proc.Name}'";
             }
 
             public override void OnExpanded()
@@ -190,8 +191,8 @@ namespace Reko.Gui.Forms
                     var designers = callees
                         .Select(p => new CHProcedureDesigner(program, p))
                         .ToArray();
-                    Host.AddComponents(this, designers);
-                    TreeNode.Expand();
+                    Host!.AddComponents(this, designers);
+                    TreeNode!.Expand();
                 }
             }
 
@@ -201,7 +202,7 @@ namespace Reko.Gui.Forms
         {
             private readonly Program program;
             private readonly Statement stm;
-            private object dummy;
+            private object? dummy;
 
             public CHCallStatementDesigner(Program program, Statement stm)
             {
@@ -215,7 +216,7 @@ namespace Reko.Gui.Forms
                 base.Initialize(obj);
                 var proc = stm.Block.Procedure;
                 var offset = stm.LinearAddress - proc.EntryAddress.ToLinear();
-                this.TreeNode.Text = string.Format("{0}+{1} {2}", proc, offset, stm.Instruction);
+                this.TreeNode!.Text = string.Format("{0}+{1} {2}", proc, offset, stm.Instruction);
             }
 
             public override void OnExpanded()
@@ -223,11 +224,11 @@ namespace Reko.Gui.Forms
                 if (dummy != null)
                 {
                     dummy = null;
-                    var procDes = Host.GetDesigner(stm.Block.Procedure);
+                    var procDes = Host?.GetDesigner(stm.Block.Procedure);
                     if (procDes != null)
                         return;
                     procDes = new CHCallsDesigner(program, stm.Block.Procedure);
-                    this.Host.AddComponent(this, procDes);
+                    this.Host?.AddComponent(this, procDes);
                 }
             }
 

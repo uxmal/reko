@@ -18,8 +18,6 @@
  */
 #endregion
 
-#nullable enable
-
 using Reko.Gui.Controls;
 using System;
 using System.Collections.Generic;
@@ -35,7 +33,7 @@ namespace Reko.Gui
     /// </summary>
     public class TreeNodeDesigner : ICommandTarget
     {
-        public IServiceProvider? Services { get; set; }
+        public IServiceProvider Services { get; set; } = default!;
         public ITreeNode? TreeNode { get; set; }
         public ITreeNodeDesignerHost? Host { get ; set; }
         public object? Component { get; set; }
@@ -43,7 +41,7 @@ namespace Reko.Gui
 
         public virtual void Initialize(object obj)
         {
-            TreeNode!.Text = obj.ToString();
+            TreeNode!.Text = obj.ToString()!;
         }
 
         public virtual void DoDefaultAction()
@@ -68,9 +66,21 @@ namespace Reko.Gui
 
     public interface ITreeNodeDesignerHost
     {
+        /// <summary>
+        /// Adds a range of components to the tree designer host.
+        /// </summary>
+        /// <param name="components"></param>
         void AddComponents(System.Collections.IEnumerable components);
-        void AddComponent(object parent, object component);
-        void AddComponents(object parent, System.Collections.IEnumerable components);
+
+        /// <summary>
+        /// Adds a new <paramref name="component" /> as a child of
+        /// <paramref name="parent"/>.
+        /// </summary>
+        /// <param name="parent">Parent component, or null if the component is
+        /// a root item.</param>
+        /// <param name="component">Component to add</param>
+        void AddComponent(object? parent, object component);
+        void AddComponents(object? parent, System.Collections.IEnumerable components);
         void RemoveComponent(object component);
         TreeNodeDesigner? GetDesigner(object component);
         TreeNodeDesigner? GetSelectedDesigner();

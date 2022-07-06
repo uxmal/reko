@@ -73,21 +73,25 @@ namespace Reko.Gui.Forms
         private ProjectFilesWatcher projectFilesWatcher;
         private IConfigurationService config;
         private ICommandTarget subWindowCommandTarget;
-        private static string dirSettings;
+
+        private static string? dirSettings;     //$REFACTOR: this belongs elsewhere
 
         private const int MaxMruItems = 9;
 
+#nullable disable
         public MainFormInteractor(IServiceProvider services)
         {
             this.dlgFactory = services.RequireService<IDialogFactory>();
             this.mru = new MruList(MaxMruItems);
             this.mru.Load(services.RequireService<IFileSystemService>(), MruListFile);
             this.sc = services.RequireService<IServiceContainer>();
+            this.subWindowCommandTarget = new NullCommandTarget();
         }
+#nullable enable
 
         public IServiceProvider Services { get { return sc; } }
 
-        public string ProjectFileName { get; set; }
+        public string? ProjectFileName { get; set; }
 
         public string TitleText
         {
@@ -293,13 +297,13 @@ namespace Reko.Gui.Forms
             var projectLoader = new ProjectLoader(
                 Services,
                 loader,
-                this.decompilerSvc.Decompiler.Project,
+                this.decompilerSvc.Decompiler!.Project!,
                 Services.RequireService<DecompilerEventListener>());
             var metadataUri = ImageLocation.FromUri(fileName);
             try
             {
                 var metadata = projectLoader.LoadMetadataFile(metadataUri);
-                decompilerSvc.Decompiler.Project.MetadataFiles.Add(metadata);
+                decompilerSvc.Decompiler.Project!.MetadataFiles.Add(metadata);
                 RememberFilenameInMru(fileName);
             }
             catch (Exception e)
@@ -343,11 +347,11 @@ namespace Reko.Gui.Forms
             }
         }
 
-        private string GetDefaultScriptPath()
+        private string? GetDefaultScriptPath()
         {
             var defaultFileName = "new_script.py";
             return ProjectPersister.ConvertToAbsolutePath(
-                ProjectFileName, defaultFileName);
+                ProjectFileName!, defaultFileName);
         }
 
         private string GetScriptTemplatePath()
@@ -369,7 +373,7 @@ namespace Reko.Gui.Forms
                 var script = loader.LoadScript(scriptLocation);
                 if (script is null)
                     return;
-                var project = decompilerSvc.Decompiler.Project;
+                var project = decompilerSvc.Decompiler!.Project;
                 if (project is null)
                     return;
                 project.ScriptFiles.Add(script);
@@ -385,20 +389,21 @@ namespace Reko.Gui.Forms
 
         public async ValueTask<bool> AssembleFile()
         {
-            IAssembleFileDialog dlg = null;
+            using IAssembleFileDialog dlg = dlgFactory.CreateAssembleFileDialog();
+            dlg.Services = sc;
+            if (await uiSvc.ShowModalDialog(dlg) != DialogResult.OK)
+                return true;
+            string fileName = dlg.FileName.Text;
             try
             {
-                dlg = dlgFactory.CreateAssembleFileDialog();
-                dlg.Services = sc;
-                if (await uiSvc.ShowModalDialog(dlg) != DialogResult.OK)
-                    return true;
-
-                string fileName = dlg.FileName.Text;
                 var arch = this.config.GetArchitecture(dlg.SelectedArchitectureName);
+                if (arch is null)
+                    return true;
+                var platform = new DefaultPlatform(Services, arch);
                 var asm = arch.CreateAssembler(null);
                 await CloseProject();
                 await SwitchInteractor(InitialPageInteractor);
-                await InitialPageInteractor.Assemble(fileName, asm, null);
+                await InitialPageInteractor.Assemble(fileName, asm, platform);
                 RememberFilenameInMru(fileName);
                 if (fileName.EndsWith(Project_v5.FileExtension))
                 {
@@ -407,20 +412,20 @@ namespace Reko.Gui.Forms
             }
             catch (Exception e)
             {
-                await uiSvc.ShowError(e, "An error occurred while assembling {0}.", dlg.FileName.Text);
+                await uiSvc.ShowError(e, "An error occurred while assembling {0}.", fileName);
             }
             return true;
         }
 
         public async ValueTask<bool> OpenBinaryAs(string initialFilename)
         {
-            IOpenAsDialog dlg = null;
+            using IOpenAsDialog? dlg = dlgFactory.CreateOpenAsDialog(initialFilename);
+            if (await uiSvc.ShowModalDialog(dlg) != DialogResult.OK)
+                    return false;
+            
+            string fileName = dlg.FileName.Text;
             try
             {
-                dlg = dlgFactory.CreateOpenAsDialog(initialFilename);
-                if (await uiSvc.ShowModalDialog(dlg) != DialogResult.OK)
-                    return false;
-                string fileName = dlg.FileName.Text;
                 LoadDetails details = dlg.GetLoadDetails();
                 await CloseProject();
                 await SwitchInteractor(InitialPageInteractor);
@@ -435,6 +440,10 @@ namespace Reko.Gui.Forms
                await uiSvc.ShowError(
                     ex,
                     string.Format("An error occurred when opening the file {0}.", dlg.FileName.Text));
+            }
+            finally
+            {
+                dlg?.Dispose();
             }
             return true;
         }
@@ -497,7 +506,7 @@ namespace Reko.Gui.Forms
             if (!IsDecompilerLoaded)
                 return;
 
-            foreach (var program in decompilerSvc.Decompiler.Project.Programs)
+            foreach (var program in decompilerSvc.Decompiler!.Project.Programs)
             {
                 program.Reset();
             }
@@ -514,9 +523,9 @@ namespace Reko.Gui.Forms
         {
             try
             {
-                IPhasePageInteractor next = NextPage(CurrentPhase);
+                IPhasePageInteractor? next = NextPage(CurrentPhase);
 
-                if (next != null)
+                if (next is { })
                 {
                     await SwitchInteractor(next);
                 }
@@ -528,9 +537,9 @@ namespace Reko.Gui.Forms
             workerDlgSvc.FinishBackgroundWork();
         }
 
-        private IPhasePageInteractor NextPage(IPhasePageInteractor phase)
+        private IPhasePageInteractor? NextPage(IPhasePageInteractor phase)
         {
-            IPhasePageInteractor next = null;
+            IPhasePageInteractor? next = null;
             if (phase == pageInitial)
             {
                 next = pageScanned;
@@ -556,7 +565,7 @@ namespace Reko.Gui.Forms
                     for (;;)
                     {
                         var next = NextPage(prev);
-                        if (next == null)
+                        if (next is null)
                             break;
                         next.PerformWork(workerDlgSvc);
                         prev = next;
@@ -565,7 +574,7 @@ namespace Reko.Gui.Forms
                 prev.EnterPage();
                 CurrentPhase = prev;
                 projectBrowserSvc.Reload();
-                procedureListSvc.Load(decompilerSvc.Decompiler.Project);
+                procedureListSvc.Load(decompilerSvc.Decompiler!.Project!);
             }
             catch (Exception ex)
             {
@@ -597,7 +606,7 @@ namespace Reko.Gui.Forms
                     var re = Core.Dfa.Automaton.CreateFromPattern(dlg.Patterns.Text);
                     if (re == null)
                         return;
-                    var hits = this.decompilerSvc.Decompiler.Project.Programs
+                    var hits = this.decompilerSvc.Decompiler!.Project!.Programs
                         .SelectMany(program => 
                             program.SegmentMap.Segments.Values.SelectMany(seg =>
                             {
@@ -689,7 +698,7 @@ namespace Reko.Gui.Forms
 
         public void FindProcedures(ISearchResultService svc)
         {
-            var hits = this.decompilerSvc.Decompiler.Project.Programs
+            var hits = this.decompilerSvc.Decompiler!.Project.Programs
                 .SelectMany(program => program.Procedures.Select(proc =>
                     new ProcedureSearchHit(program, proc.Key, proc.Value)))
                 .ToList();
@@ -703,7 +712,7 @@ namespace Reko.Gui.Forms
                 if (await uiSvc.ShowModalDialog(dlgStrings) == DialogResult.OK)
                 {
                     var criteria = dlgStrings.GetCriteria();
-                    var hits = this.decompilerSvc.Decompiler.Project.Programs
+                    var hits = this.decompilerSvc.Decompiler!.Project.Programs
                         .SelectMany(p => new StringFinder(p).FindStrings(criteria));
                     srSvc.ShowAddressSearchResults(
                        hits,
@@ -729,7 +738,7 @@ namespace Reko.Gui.Forms
 
         public void ViewCallGraph()
         {
-            var project = decompilerSvc.Decompiler.Project;
+            var project = decompilerSvc.Decompiler!.Project;
             //$TODO: what about mutiple programs in project?
             if (project is null || project.Programs.Count != 1)
                 return;
@@ -779,7 +788,7 @@ namespace Reko.Gui.Forms
             if (string.IsNullOrEmpty(this.ProjectFileName))
             {
                 var filename = decompilerSvc.Decompiler.Project.Programs[0].Location.FilesystemPath;
-                string newName = await uiSvc.ShowSaveFileDialog(
+                string? newName = await uiSvc.ShowSaveFileDialog(
                     Path.ChangeExtension(filename, Project_v5.FileExtension));
                 if (newName == null)
                     return false;
@@ -803,7 +812,7 @@ namespace Reko.Gui.Forms
         {
             get
             {
-                if (dirSettings == null)
+                if (dirSettings is null)
                 {
                     string dir = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
                     dir = Path.Combine(dir, "reko");
@@ -910,7 +919,7 @@ namespace Reko.Gui.Forms
                     cmdStatus.Status = MenuStatus.Enabled | MenuStatus.Visible;
                     break;
                 case CmdIds.ActionNextPhase:
-                    cmdStatus.Status = currentPhase.CanAdvance
+                    cmdStatus.Status = currentPhase!.CanAdvance
                         ? MenuStatus.Enabled | MenuStatus.Visible
                         : MenuStatus.Visible;
                     return true;
@@ -1067,7 +1076,7 @@ namespace Reko.Gui.Forms
             form.Close();
         }
 
-        private void MainForm_Closed(object sender, System.EventArgs e)
+        private void MainForm_Closed(object? sender, System.EventArgs e)
         {
             var uiPrefsSvc = sc.RequireService<IUiPreferencesService>();
             // It's OK if we can't save settings, just discard them.

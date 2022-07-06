@@ -18,8 +18,6 @@
  */
 #endregion
 
-#nullable enable
-
 using Reko.Core;
 using Reko.Gui.Services;
 
@@ -30,7 +28,7 @@ namespace Reko.Gui.Design
         public override void Initialize(object obj)
         {
             base.Initialize(obj);
-            TreeNode!.Text = ((ProgramResourceInstance)obj).Name;
+            TreeNode!.Text = ((ProgramResourceInstance)obj).Name ?? "";
         }
 
         public override void DoDefaultAction()

@@ -234,12 +234,10 @@ namespace Reko.UserInterfaces.WindowsForms
 
             public SearchResultItem GetItem(int i)
             {
-                return new SearchResultItem
-                {
-                    Items = new string[] { "No items found." },
-                    ImageIndex = -1,
-                    BackgroundColor = -1,
-                };
+                return new SearchResultItem(
+                    new string[] { "No items found." },
+                    ImageIndex: -1,
+                    BackgroundColor: -1);
             }
 
             public bool QueryStatus(CommandID cmdId, CommandStatus status, CommandText text)

@@ -32,8 +32,8 @@ namespace Reko.Core.Services
     public interface IDecompilerUIService
     {
         ValueTask ShowError(Exception ex, string format, params object[] args);
-        ValueTask<string?> ShowOpenFileDialog(string fileName);
-        ValueTask<string?> ShowSaveFileDialog(string fileName);
+        ValueTask<string?> ShowOpenFileDialog(string? fileName);
+        ValueTask<string?> ShowSaveFileDialog(string? fileName);
         ValueTask<bool> Prompt(string prompt);
 
         ValueTask ShowMessage(string msg);

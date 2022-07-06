@@ -18,8 +18,6 @@
  */
 #endregion
 
-#nullable enable
-
 using Reko.Gui.Controls;
 using Reko.Gui.Services;
 using System;

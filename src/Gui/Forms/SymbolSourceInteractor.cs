@@ -31,9 +31,8 @@ namespace Reko.Gui.Forms
 {
     public class SymbolSourceInteractor
     {
-        private ISymbolSourceDialog dlg;
-        private IFileSystemService fsSvc;
-        private IDecompilerShellUiService uiSvc;
+        private ISymbolSourceDialog dlg = default!;
+        private IDecompilerShellUiService uiSvc = default!;
 
         public void Attach(ISymbolSourceDialog dlg)
         {
@@ -46,25 +45,24 @@ namespace Reko.Gui.Forms
         }
 
        
-        private void Dlg_Load(object sender, EventArgs e)
+        private void Dlg_Load(object? sender, EventArgs e)
         {
-            this.fsSvc = dlg.Services.RequireService<IFileSystemService>();
             this.uiSvc = dlg.Services.RequireService<IDecompilerShellUiService>();
             PopulateSymbolSources();
             EnableControls();
         }
 
-        private void SymbolFileUrl_LostFocus(object sender, EventArgs e)
+        private void SymbolFileUrl_LostFocus(object? sender, EventArgs e)
         {
             EnableControls();
         }
 
-        private void CustomSourceCheckbox_CheckedChanged(object sender, EventArgs e)
+        private void CustomSourceCheckbox_CheckedChanged(object? sender, EventArgs e)
         {
             EnableControls();
         }
 
-        private void AssemblyFile_TextChanged(object sender, EventArgs e)
+        private void AssemblyFile_TextChanged(object? sender, EventArgs e)
         {
             var asmFilename = dlg.AssemblyFile.Text;
             if (asmFilename.Length == 0)
@@ -72,6 +70,7 @@ namespace Reko.Gui.Forms
                 dlg.SymbolSourceClasses.Items.Clear();
                 return;
             }
+            var fsSvc = dlg.Services.RequireService<IFileSystemService>();
             if (!fsSvc.FileExists(asmFilename))
             {
                 return;
@@ -89,7 +88,7 @@ namespace Reko.Gui.Forms
             }
         }
 
-        private async void BrowseAssemblyFile_Click(object sender, EventArgs e)
+        private async void BrowseAssemblyFile_Click(object? sender, EventArgs e)
         {
             var newFile = await uiSvc.ShowOpenFileDialog(dlg.AssemblyFile.Text);
             if (newFile is not null)
@@ -106,7 +105,7 @@ namespace Reko.Gui.Forms
                 var ass = Assembly.LoadFrom(asmFilename);
                 var typeNames = ass.DefinedTypes
                     .Where(t => t.ImplementedInterfaces.Contains(type))
-                    .Select(t => t.AssemblyQualifiedName)
+                    .Select(t => t.AssemblyQualifiedName ?? "")
                     .ToArray();
                 return typeNames;
             }
@@ -122,7 +121,7 @@ namespace Reko.Gui.Forms
             var items = cfgSvc.GetSymbolSources();
             //dlg.SymbolSourceList.DataSource = 
             dlg.SymbolSourceList.DataSource = (object)items
-                .Select(ss => new string[] { ss.Name, ss.Description });
+                .Select(ss => new string[] { ss.Name!, ss.Description! });
         }
 
         private void EnableControls()

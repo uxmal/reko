@@ -289,10 +289,10 @@ namespace Reko.Gui
         public int container;
         public int priority;
         public int image = -1;
-        public string text;
-        public string imageKey;
+        public string? text;
+        public string? imageKey;
         public int dynamicItemId;
-        public string tip;
+        public string? tip;
     }
 
     public class Placement
@@ -307,7 +307,7 @@ namespace Reko.Gui
         public MenuType type;
         public int id;
         public Guid cmdSet;
-        public string Text;
+        public string? Text;
         public int priority;
         public int container;
     }
@@ -316,9 +316,9 @@ namespace Reko.Gui
     {
         public CmdIds id;
         public Guid cmdSet;
-        public string key1;
+        public string? key1;
         public KeyModifiers alt1;
-        public string key2;
+        public string? key2;
         public KeyModifiers alt2;
         public string editor = "";
     }

@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2022 John Källén.
  *
@@ -31,7 +31,7 @@ namespace Reko.Gui.Controls
         event EventHandler TextChanged;
         event EventHandler SelectedIndexChanged;
 
-        object DataSource { get; set; }
+        object? DataSource { get; set; }
         IList Items { get; }
         int SelectedIndex { get; set; }
         object SelectedItem { get; set; }
