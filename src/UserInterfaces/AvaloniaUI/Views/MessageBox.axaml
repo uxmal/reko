@@ -1,0 +1,27 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" d:DesignWidth="400" d:DesignHeight="90"
+        x:Class="Reko.UserInterfaces.AvaloniaUI.Views.MessageBox"
+		ShowInTaskbar="False"
+		MinWidth="400"
+		MinHeight="90"
+		Width="400"
+		Height="90"
+        Title="MessageBox">
+	<StackPanel HorizontalAlignment="Center">
+		<Label
+			HorizontalAlignment="Left"
+			Width="300"
+			Name="Text"
+			Padding="6,6,0,6" />
+		<StackPanel HorizontalAlignment="Center" Orientation="Horizontal" Name="Buttons">
+			<StackPanel.Styles>
+				<Style Selector="Button">
+					<Setter Property="Margin" Value="5"/>
+				</Style>
+			</StackPanel.Styles>
+		</StackPanel>
+	</StackPanel>
+</Window>

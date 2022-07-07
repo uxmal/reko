@@ -38,7 +38,7 @@ namespace Reko.UserInterfaces.AvaloniaUI.Services
 {
     public class AvaloniaShellUiService : IDecompilerShellUiService
     {
-        private static TraceSwitch trace = new TraceSwitch(nameof(AvaloniaShellUiService), "");
+        private static readonly TraceSwitch trace = new TraceSwitch(nameof(AvaloniaShellUiService), "");
 
         private readonly IServiceContainer services;
         private readonly MainWindow mainWindow;
@@ -101,11 +101,10 @@ namespace Reko.UserInterfaces.AvaloniaUI.Services
             throw new NotImplementedException();
         }
 
-        public ValueTask<bool> Prompt(string prompt)
+        public async ValueTask<bool> Prompt(string prompt)
         {
-            // https://stackoverflow.com/questions/55706291/how-to-show-a-message-box-in-avaloniaui-beta
-            trace.Warn("WIP: Implement prompt");
-            return ValueTask.FromResult(false);
+            var result = await MessageBox.Show(mainWindow, prompt, "Reko Decompiler", MessageBox.MessageBoxButtons.YesNo);
+            return result == DialogResult.OK;
         }
 
         public bool QueryStatus(CommandID cmdId, CommandStatus status, CommandText text)
