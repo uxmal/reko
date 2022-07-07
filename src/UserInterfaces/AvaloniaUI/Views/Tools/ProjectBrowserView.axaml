@@ -11,25 +11,29 @@
     
     <StackPanel>
       <ScrollViewer>
-      <TreeView Items="{Binding ProjectBrowser}" >
-        <TreeView.DataTemplates>
-          <TreeDataTemplate DataType="vm:Node"
-                            ItemsSource="{Binding Nodes}">
-            <TextBlock Text="{Binding Text}" />
-          </TreeDataTemplate>
-        </TreeView.DataTemplates>
-        
-        <TreeView.Styles>
-          <Style Selector="TreeViewItem">
-            <Setter Property="Margin" Value="0" />
-            <Setter Property="Padding" Value="0" />
-            <Setter Property="FontSize" Value="12" />
-          </Style>
-          <Style Selector="TreeViewItem ContentPresenter">
-            <Setter Property="Padding" Value="2" />
-          </Style>
-        </TreeView.Styles>
-      </TreeView>
+		  <TreeView Name="projectItems"
+					Items="{Binding TreeView.Nodes}"
+					DragDrop.AllowDrop="True"
+					SelectedItem="{Binding TreeView.SelectedNode}">
+			  <TreeView.DataTemplates>
+				  <TreeDataTemplate DataType="vm:TreeNode"
+									ItemsSource="{Binding Nodes}">
+					  <TextBlock Text="{Binding Text}" />
+				  </TreeDataTemplate>
+			  </TreeView.DataTemplates>
+
+			  <TreeView.Styles>
+				  <Style Selector="TreeViewItem">
+					  <Setter Property="Margin" Value="0" />
+					  <Setter Property="Padding" Value="0" />
+					  <Setter Property="FontSize" Value="10.5" />
+					  <Setter Property="IsExpanded" Value="{Binding IsExpanded, Mode=TwoWay}"/>
+				  </Style>
+				  <Style Selector="TreeViewItem ContentPresenter">
+					  <Setter Property="Padding" Value="1" />
+				  </Style>
+			  </TreeView.Styles>
+		  </TreeView>
       </ScrollViewer>
     </StackPanel>
   </Grid>

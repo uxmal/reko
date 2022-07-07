@@ -39,9 +39,8 @@ namespace Reko.UserInterfaces.AvaloniaUI.Services
         ReactiveObject,
         IStatusBarService
     {
-        public AvaloniaStatusBarService(MainViewModel mvvm)
+        public AvaloniaStatusBarService()
         {
-            mvvm.Status = this;
         }
 
         public bool IsProgressVisible

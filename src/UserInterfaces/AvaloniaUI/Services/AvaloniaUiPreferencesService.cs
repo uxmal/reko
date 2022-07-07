@@ -80,7 +80,7 @@ namespace Reko.UserInterfaces.AvaloniaUI.Services
 
         public void UpdateControlStyle(string styleName, IControl ctrl)
         {
-            throw new NotImplementedException();
+            //$TODO: WIP: this may need to change to UpdateClasses
         }
     }
 }

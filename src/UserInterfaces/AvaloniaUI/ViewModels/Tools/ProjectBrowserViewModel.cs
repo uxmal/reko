@@ -20,7 +20,14 @@
 
 using Dock.Model.ReactiveUI.Controls;
 using Reko.Core;
+using Reko.Gui.Controls;
 using System.Collections.Generic;
+using ReactiveUI;
+using System.Drawing;
+using System;
+using System.Collections;
+using System.Collections.ObjectModel;
+using Avalonia.Collections;
 
 namespace Reko.UserInterfaces.AvaloniaUI.ViewModels.Tools
 {
@@ -28,32 +35,172 @@ namespace Reko.UserInterfaces.AvaloniaUI.ViewModels.Tools
     {
         public ProjectBrowserViewModel()
         {
-            this.ProjectBrowser = new List<Node>
-            {
-                new Node("Arch"),
-                new Node("Dependencies",
-                    new Node("foo.dll"),
-                    new Node("bar.dll")),
-                new Node("EntryPoints",
-                    new Node("_start"),
-                    new Node("WinMain")),
-            };
+            this.TreeView = new TreeViewModel();
         }
+
         public Project? Project { get; set; }
 
-        public List<Node> ProjectBrowser { get; set; }
+        public TreeViewModel TreeView { get; set; }
+
+        public void BringToFront()
+        {
+            var x = base.Owner;
+        }
     }
 
-    public class Node
+    public class TreeViewModel : ReactiveObject, ITreeView
     {
-        public Node(string name, params Node[] nodes)
+        public TreeViewModel()
         {
-            this.Text = name;
-            this.Nodes = new(nodes);
+            this.Nodes = new TreeNodeCollection();
         }
-            
-        public string? Text { get; set; }
-        public List<Node> Nodes { get; set; }
+
+        public bool Focused
+        {
+            get => focused;
+            set => this.RaiseAndSetIfChanged(ref focused, value);
+        }
+        private bool focused;
+
+        public ITreeNode? SelectedNode
+        {
+            get { return selectedNode; }
+            set
+            {
+                this.RaiseAndSetIfChanged(ref selectedNode, value);
+                this.AfterSelect?.Invoke(this, EventArgs.Empty);
+            }
+        }
+        private ITreeNode? selectedNode;
+
+        //$TODO: these are very WinForms specific
+        public bool ShowNodeToolTips { get => false; set { } }
+        public bool ShowRootLines { get => false; set { } }
+
+        public ITreeNodeCollection Nodes { get; }
+
+        public object ContextMenuStrip { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public Color ForeColor { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public Color BackColor { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public bool Enabled { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+
+        public event EventHandler? AfterSelect;
+        public event EventHandler<TreeViewEventArgs>? AfterExpand;
+        public event EventHandler<TreeViewEventArgs>? BeforeExpand;
+        public event DragEventHandler? DragEnter;
+        public event DragEventHandler? DragOver;
+        public event DragEventHandler? DragDrop;
+        public event EventHandler? DragLeave;
+        public event MouseEventHandler? MouseWheel;
+        public event EventHandler? GotFocus;
+        public event EventHandler? LostFocus;
+
+        public void BringToFront()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void CollapseAll()
+        {
+            throw new NotImplementedException();
+        }
+
+        public ITreeNode CreateNode()
+        {
+            return new TreeNode();
+        }
+
+        public ITreeNode CreateNode(string text)
+        {
+            return new TreeNode
+            {
+                Text = text
+            };
+        }
+
+        public void Focus()
+        {
+            //$TODO: how to make the tree take the kbd focus.
+        }
+
+        public class TreeNodeCollection : AvaloniaList<ITreeNode>, ITreeNodeCollection
+        {
+            public TreeNodeCollection()
+            {
+            }
+
+            public bool IsReadOnly => throw new NotImplementedException();
+
+            public ITreeNode Add(string text)
+            {
+                var node = new TreeNode { Text = text };
+                this.Add(node);
+                return node;
+            }
+        }
+    }
+
+    public class TreeNode : ReactiveObject, ITreeNode
+    {
+        public TreeNode()
+        {
+            this.text = "";
+            this.Nodes = new TreeViewModel.TreeNodeCollection();
+        }
+
+        public TreeNode(string text, params TreeNode[] nodes)
+        {
+            this.text = text;
+            this.Nodes = new TreeViewModel.TreeNodeCollection();
+            this.Nodes.AddRange(nodes);
+        }
+
+        public ITreeNodeCollection Nodes { get; }
+
+        public string? ImageName { get; set; }
+
+        public object? Tag { get; set; }
+
+        public bool IsExpanded
+        {
+            get => isExpanded;
+            set => this.RaiseAndSetIfChanged(ref isExpanded, value);
+        }
+        private bool isExpanded;
+
+        public string Text
+        {
+            get => text;
+            set => this.RaiseAndSetIfChanged(ref text, value);
+        }
+        private string text;
+
+        public string? ToolTipText
+        {
+            get => toolTipText;
+            set => this.RaiseAndSetIfChanged(ref toolTipText, value);
+        }
+        private string? toolTipText;
+
+        public void Collapse()
+        {
+            this.IsExpanded = false;
+        }
+
+        public void Expand()
+        {
+            this.IsExpanded = true;
+        }
+
+        public void Invoke(Action action)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Remove()
+        {
+            throw new NotImplementedException();
+        }
     }
 
 }

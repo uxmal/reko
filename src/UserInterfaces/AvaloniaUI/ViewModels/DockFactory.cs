@@ -38,14 +38,18 @@ namespace Reko.UserInterfaces.AvaloniaUI.ViewModels
     /// </summary>
     public class DockFactory : Factory
     {
+        private readonly IServiceProvider services;
         private readonly object _context;
         private IRootDock? _rootDock;
         private IDocumentDock? _documentDock;
 
-        public DockFactory(object context)
+        public DockFactory(IServiceProvider services, object context)
         {
+            this.services = services;
             _context = context;
         }
+
+        public ProjectBrowserViewModel? ProjectBrowserTool { get; private set; }
 
         public override IDocumentDock CreateDocumentDock() => new CustomDocumentDock();
 
@@ -55,7 +59,7 @@ namespace Reko.UserInterfaces.AvaloniaUI.ViewModels
             var document2 = new DocumentViewModel {Id = "Document2", Title = "Document2"};
             var document3 = new DocumentViewModel {Id = "Document3", Title = "Document3", CanClose = true};
             
-            var toolProjectBrowser = new ProjectBrowserViewModel {Id = "Tool1", Title = "Project browser"};
+            this.ProjectBrowserTool =  new ProjectBrowserViewModel {Id = "Tool1", Title = "Project browser"};
             var toolProcedureList = new ProcedureListViewModel {Id = "Tool2", Title = "Procedures"};
 
             var toolDiagnostics = new DiagnosticsViewModel {Id = "Tool3", Title = "Diagnostics"};
@@ -77,8 +81,8 @@ namespace Reko.UserInterfaces.AvaloniaUI.ViewModels
                 (
                     new ToolDock
                     {
-                        ActiveDockable = toolProjectBrowser,
-                        VisibleDockables = CreateList<IDockable>(toolProjectBrowser, toolProcedureList),
+                        ActiveDockable = ProjectBrowserTool,
+                        VisibleDockables = CreateList<IDockable>(ProjectBrowserTool, toolProcedureList),
                         Alignment = Alignment.Left
                     }
                 )
@@ -186,7 +190,7 @@ namespace Reko.UserInterfaces.AvaloniaUI.ViewModels
                 //["Document1"] = () => new DemoDocument(),
                 //["Document2"] = () => new DemoDocument(),
                 //["Document3"] = () => new DemoDocument(),
-                //["Tool1"] = () => new Tool1(),
+                ["Tool1"] = () => this.ProjectBrowserTool!,
                 //["Tool2"] = () => new Tool2(),
                 //["Tool3"] = () => new Tool3(),
                 //["Tool4"] = () => new Tool4(),

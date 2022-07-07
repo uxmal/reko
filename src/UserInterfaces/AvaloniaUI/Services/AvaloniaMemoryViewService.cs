@@ -33,7 +33,7 @@ namespace Reko.UserInterfaces.AvaloniaUI.Services
             this.services = services;
         }
 
-        public void ShowMemoryAtAddress(Program program, Address addr)
+        public void ShowMemoryAtAddress(Program? program, Address addr)
         {
             throw new NotImplementedException();
         }

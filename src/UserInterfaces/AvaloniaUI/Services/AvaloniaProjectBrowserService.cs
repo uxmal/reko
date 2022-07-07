@@ -21,6 +21,7 @@
 using Reko.Core;
 using Reko.Gui;
 using Reko.Gui.Services;
+using Reko.UserInterfaces.AvaloniaUI.ViewModels.Tools;
 using System;
 using System.ComponentModel.Design;
 using System.Threading.Tasks;
@@ -32,10 +33,14 @@ namespace Reko.UserInterfaces.AvaloniaUI.Services
         public event EventHandler<FileDropEventArgs>? FileDropped;
 
         private IServiceProvider services;
+        private ProjectBrowserViewModel viewModel;
 
-        public AvaloniaProjectBrowserService(IServiceProvider services)
+        public AvaloniaProjectBrowserService(
+            IServiceProvider services, 
+            ProjectBrowserViewModel viewModel)
         {
             this.services = services;
+            this.viewModel = viewModel;
         }
 
         public Program CurrentProgram => throw new NotImplementedException();

@@ -18,21 +18,51 @@
  */
 #endregion
 
+using System;
 using Avalonia.Controls;
+using Avalonia.Input;
 using Avalonia.Markup.Xaml;
+using Reko.UserInterfaces.AvaloniaUI.ViewModels.Tools;
 
 namespace Reko.UserInterfaces.AvaloniaUI.Views.Tools
 {
     public class ProjectBrowserView : UserControl
     {
+        private TreeView tree;
+
         public ProjectBrowserView()
         {
             InitializeComponent();
+            this.tree = this.FindControl<TreeView>("projectItems");
+            tree.AddHandler(DragDrop.DragEnterEvent, tree_DragEnter);
+            tree.AddHandler(Control.GotFocusEvent, tree_GotFocus);
+            tree.AddHandler(Control.LostFocusEvent, tree_LostFocus);
         }
 
         private void InitializeComponent()
         {
             AvaloniaXamlLoader.Load(this);
+        }
+
+        protected void tree_DragEnter(object? sender, DragEventArgs e)
+        {
+            //$TODO: handle dropping files.
+        }
+
+        protected void tree_GotFocus(object? sender, EventArgs e)
+        {
+            if (DataContext is ProjectBrowserViewModel viewModel)
+            {
+                viewModel.TreeView.Focused = true;
+            }
+        }
+
+        protected void tree_LostFocus(object? sender, EventArgs e)
+        {
+            if (DataContext is ProjectBrowserViewModel viewModel)
+            {
+                viewModel.TreeView.Focused = false;
+            }
         }
     }
 }

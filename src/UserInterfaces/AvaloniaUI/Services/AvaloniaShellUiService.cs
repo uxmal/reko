@@ -20,6 +20,7 @@
 
 using Avalonia.Controls;
 using Dock.Model.Core;
+using Reko.Core.Diagnostics;
 using Reko.Gui;
 using Reko.Gui.Services;
 using Reko.UserInterfaces.AvaloniaUI.ViewModels;
@@ -29,6 +30,7 @@ using Reko.UserInterfaces.AvaloniaUI.Views;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -36,6 +38,8 @@ namespace Reko.UserInterfaces.AvaloniaUI.Services
 {
     public class AvaloniaShellUiService : IDecompilerShellUiService
     {
+        private static TraceSwitch trace = new TraceSwitch(nameof(AvaloniaShellUiService), "");
+
         private readonly IServiceContainer services;
         private readonly MainWindow mainWindow;
         private readonly DockFactory dockFactory;
@@ -99,7 +103,9 @@ namespace Reko.UserInterfaces.AvaloniaUI.Services
 
         public ValueTask<bool> Prompt(string prompt)
         {
-            throw new NotImplementedException();
+            // https://stackoverflow.com/questions/55706291/how-to-show-a-message-box-in-avaloniaui-beta
+            trace.Warn("WIP: Implement prompt");
+            return ValueTask.FromResult(false);
         }
 
         public bool QueryStatus(CommandID cmdId, CommandStatus status, CommandText text)
@@ -120,7 +126,7 @@ namespace Reko.UserInterfaces.AvaloniaUI.Services
 
         public void SetContextMenu(object control, int menuID)
         {
-            throw new NotImplementedException();
+            trace.Warn("WIP: Need to implement", nameof(SetContextMenu));
         }
 
         public ValueTask ShowError(Exception ex, string format, params object[] args)
@@ -144,7 +150,7 @@ namespace Reko.UserInterfaces.AvaloniaUI.Services
             return dlg.Value;
         }
 
-        public async ValueTask<string?> ShowOpenFileDialog(string fileName)
+        public async ValueTask<string?> ShowOpenFileDialog(string? fileName)
         {
             var ofd = new OpenFileDialog();
             ofd.Filters.Add(new FileDialogFilter { Name = "All files", Extensions = new List<string> { "*.*" } });
@@ -157,7 +163,7 @@ namespace Reko.UserInterfaces.AvaloniaUI.Services
                 return files[0];
         }
 
-        public ValueTask<string?> ShowSaveFileDialog(string fileName)
+        public ValueTask<string?> ShowSaveFileDialog(string? fileName)
         {
             throw new NotImplementedException();
         }

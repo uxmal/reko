@@ -33,6 +33,7 @@ using Reko.Gui.Services;
 using System.Collections;
 using System;
 using System.Collections.Generic;
+using Reko.UserInterfaces.AvaloniaUI.ViewModels.Tools;
 
 namespace Reko.UserInterfaces.AvaloniaUI.ViewModels
 {
@@ -54,8 +55,7 @@ namespace Reko.UserInterfaces.AvaloniaUI.ViewModels
             var svcFactory = new AvaloniaServiceFactory(services, this);
             services.AddService<IServiceFactory>(svcFactory);
 
-
-            Layout = dockFactory.CreateLayout();
+            this.Layout = dockFactory.CreateLayout();
             if (Layout is not null)
             {
                 dockFactory.InitLayout(Layout);
@@ -64,6 +64,8 @@ namespace Reko.UserInterfaces.AvaloniaUI.ViewModels
                     root.Navigate.Execute("Home");
                 }
             }
+
+            this.ProjectBrowser = dockFactory.ProjectBrowserTool!;
 
             var cmdDefs = new CommandDefinitions();
             this.interactor = new MainFormInteractor(services);
@@ -83,6 +85,8 @@ namespace Reko.UserInterfaces.AvaloniaUI.ViewModels
         private IRootDock? layout;
 
         public ObservableCollection<CommandItem> MainMenu => this.menus.GetMenu(MenuIds.MainMenu);
+
+        public ProjectBrowserViewModel ProjectBrowser { get; set; }
 
         public AvaloniaStatusBarService? Status { get; set; }
         
@@ -224,6 +228,5 @@ namespace Reko.UserInterfaces.AvaloniaUI.ViewModels
         {
             menus.SetStatusForMenuItems(items);
         }
-
     }
 }

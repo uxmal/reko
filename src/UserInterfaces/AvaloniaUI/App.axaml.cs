@@ -27,10 +27,10 @@ namespace Reko.UserInterfaces.AvaloniaUI
         public override void OnFrameworkInitializationCompleted()
         {
             var sc = new ServiceContainer();
-            var docFactory = new DockFactory(new Project());
+            var docFactory = new DockFactory(sc, new Project());
             var mainWindow = new MainWindow();
-            MakeServices(sc, docFactory, mainWindow);
 
+            MakeServices(sc, docFactory, mainWindow);
             var mvvm = new MainViewModel(sc, docFactory, mainWindow);
             mainWindow.DataContext = mvvm;
             switch (ApplicationLifetime)

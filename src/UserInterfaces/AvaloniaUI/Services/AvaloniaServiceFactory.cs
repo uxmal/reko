@@ -150,7 +150,7 @@ namespace Reko.UserInterfaces.AvaloniaUI.Services
 
         public IProjectBrowserService CreateProjectBrowserService()
         {
-            return new AvaloniaProjectBrowserService(services);
+            return new ProjectBrowserService(services, null, mainViewModel.ProjectBrowser?.TreeView);
         }
 
         public IResourceEditorService CreateResourceEditorService()
@@ -185,7 +185,11 @@ namespace Reko.UserInterfaces.AvaloniaUI.Services
 
         public IStatusBarService CreateStatusBarService()
         {
-            return new AvaloniaStatusBarService(this.mainViewModel);
+            if (this.mainViewModel.Status is null)
+            {
+                mainViewModel.Status = new AvaloniaStatusBarService();
+            }
+            return this.mainViewModel.Status;
         }
 
         public ISymbolLoadingService CreateSymbolLoadingService()

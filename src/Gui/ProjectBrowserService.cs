@@ -19,11 +19,13 @@
 #endregion
 
 using Reko.Core;
+using Reko.Core.Diagnostics;
 using Reko.Gui.Controls;
 using Reko.Gui.Services;
 using System;
 using System.Collections.Specialized;
 using System.ComponentModel.Design;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -34,6 +36,8 @@ namespace Reko.Gui
     /// </summary>
     public class ProjectBrowserService : TreeNodeDesignerHost, IProjectBrowserService, ICommandTarget
     {
+        private static TraceSwitch trace = new TraceSwitch(nameof(ProjectBrowserService), "");
+
         /// <summary>
         /// This event is raised when a file is dropped on the browser service.
         /// </summary>
@@ -43,7 +47,10 @@ namespace Reko.Gui
         protected readonly ITreeView tree;
         private Project? project;
 
-        public ProjectBrowserService(IServiceProvider services, ITabPage tabPage, ITreeView treeView)
+        public ProjectBrowserService(
+            IServiceProvider services,
+            ITabPage tabPage,
+            ITreeView treeView)
             : base(treeView, services)
         {
             this.tabPage = tabPage;
@@ -67,7 +74,7 @@ namespace Reko.Gui
             uiPrefsSvc.UiPreferencesChanged += delegate { uiPrefsSvc.UpdateControlStyle(UiStyles.Browser, tree); };
             Services.RequireService<IDecompilerShellUiService>().SetContextMenu(tree, MenuIds.CtxBrowser);
             base.Clear();
-            if (project == null)
+            if (project is null)
             {
                 tree.ShowRootLines = false;
                 tree.ShowNodeToolTips = false;
@@ -96,7 +103,8 @@ namespace Reko.Gui
 
         public void Show()
         {
-            tabPage.Select();
+            trace.Warn("WIP: Implement tabPage");
+            tabPage?.Select();
             tree.Focus();
         }
 
