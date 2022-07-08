@@ -13,7 +13,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="K4os.Compression.LZ4" Version="1.2.12" />
+    <PackageReference Include="K4os.Compression.LZ4" Version="1.2.16" />
   </ItemGroup>
 
   <ItemGroup>
