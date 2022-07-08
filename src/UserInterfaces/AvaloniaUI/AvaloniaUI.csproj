@@ -9,16 +9,17 @@
   </PropertyGroup>
 
   <ItemGroup>
-	<PackageReference Include="Avalonia" Version="0.10.10" />
-	<PackageReference Include="Avalonia.Desktop" Version="0.10.10" />
+	<PackageReference Include="Avalonia" Version="0.10.15" />
+	<PackageReference Include="Avalonia.Desktop" Version="0.10.15" />
 
 	<!--Condition below is needed to remove Avalonia.Diagnostics package from build output in Release configuration.-->
-	<PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" Version="0.10.10" />
+	<PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" Version="0.10.15" />
 
-    <PackageReference Include="Avalonia.ReactiveUI" Version="0.10.10" />
+    <PackageReference Include="Avalonia.ReactiveUI" Version="0.10.15" />
     <PackageReference Include="Dock.Avalonia" Version="0.10.10" />
     <PackageReference Include="Dock.Model.ReactiveUI" Version="0.10.10" />
-    <PackageReference Include="Markdown.Avalonia" Version="0.10.7" />
+    <PackageReference Include="Markdown.Avalonia" Version="0.10.11" />
+    <PackageReference Include="MessageBox.Avalonia" Version="2.0.1" />
     <PackageReference Include="Microsoft.Toolkit.Mvvm" Version="7.1.2" />
 
   </ItemGroup>

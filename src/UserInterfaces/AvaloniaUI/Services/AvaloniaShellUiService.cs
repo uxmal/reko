@@ -20,6 +20,7 @@
 
 using Avalonia.Controls;
 using Dock.Model.Core;
+using MessageBox.Avalonia.Enums;
 using Reko.Core.Diagnostics;
 using Reko.Gui;
 using Reko.Gui.Services;
@@ -32,6 +33,7 @@ using System.Collections.Generic;
 using System.ComponentModel.Design;
 using System.Diagnostics;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace Reko.UserInterfaces.AvaloniaUI.Services
@@ -103,8 +105,12 @@ namespace Reko.UserInterfaces.AvaloniaUI.Services
 
         public async ValueTask<bool> Prompt(string prompt)
         {
-            var result = await MessageBox.Show(mainWindow, prompt, "Reko Decompiler", MessageBox.MessageBoxButtons.YesNo);
-            return result == DialogResult.OK;
+            var msgBox = MessageBox.Avalonia.MessageBoxManager.GetMessageBoxStandardWindow(
+                "Reko Decompiler",
+                prompt,
+                ButtonEnum.YesNo);
+            var result = await msgBox.Show(mainWindow);
+            return result == ButtonResult.Yes;
         }
 
         public bool QueryStatus(CommandID cmdId, CommandStatus status, CommandText text)
@@ -128,14 +134,33 @@ namespace Reko.UserInterfaces.AvaloniaUI.Services
             trace.Warn("WIP: Need to implement", nameof(SetContextMenu));
         }
 
-        public ValueTask ShowError(Exception ex, string format, params object[] args)
+        public async ValueTask ShowError(Exception ex, string format, params object[] args)
         {
-            throw new NotImplementedException();
+            var sb = new StringBuilder();
+            sb.AppendFormat(format, args);
+            Exception? e = ex;
+            while (e is { })
+            {
+                sb.Append(" ");
+                sb.Append(e.Message);
+                e = e.InnerException;
+            }
+            var msgBox = MessageBox.Avalonia.MessageBoxManager.GetMessageBoxStandardWindow(
+                "Reko Decompiler",
+                sb.ToString(),
+                ButtonEnum.YesNo,
+                Icon.Error);
+            await msgBox.Show(mainWindow);
         }
 
-        public ValueTask ShowMessage(string msg)
+        public async ValueTask ShowMessage(string msg)
         {
-            throw new NotImplementedException();
+            var msgBox = MessageBox.Avalonia.MessageBoxManager.GetMessageBoxStandardWindow(
+                "Reko Decompiler",
+                msg,
+                ButtonEnum.YesNo,
+                Icon.Info);
+            await msgBox.Show(mainWindow);
         }
 
         public ValueTask<DialogResult> ShowModalDialog(IDialog dlg)
