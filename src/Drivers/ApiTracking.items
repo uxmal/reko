@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project>
+	<!-- The public API analyzers help track the API surface of the project -->
+	<ItemGroup>
+		<AdditionalFiles Remove="PublicAPI.Shipped.txt" />
+		<AdditionalFiles Remove="PublicAPI.txt" />
+		<AdditionalFiles Remove="PublicAPI.Unshipped.txt" />
+	</ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="Microsoft.CodeAnalysis.PublicApiAnalyzers" Version="3.3.2">
+			<PrivateAssets>all</PrivateAssets>
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
+	</ItemGroup>
+</Project>
+

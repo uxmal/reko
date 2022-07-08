@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
   <Import Project="$(ProjectDir)../Drivers/CommonBuildProperties.items" />
-  <PropertyGroup>
+	<!-- Public API tracking slows down the build by a lot. 
+  <Import Project="$(ProjectDir)../Drivers/ApiTracking.items "/>
+  -->
+	<PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
     <AssemblyName>Reko</AssemblyName>
     <RootNamespace>Reko</RootNamespace>

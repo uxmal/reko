@@ -115,7 +115,7 @@ namespace Reko.Gui
 
         private TreeNodeDesigner? CreateDesigner(object? o)
         {
-            if (o == null)
+            if (o is null)
                 return null;
             if (o is TreeNodeDesigner des)
             {
@@ -182,21 +182,21 @@ namespace Reko.Gui
 
         private void tree_BeforeExpand(object? sender, TreeViewEventArgs e)
         {
-            var des = (TreeNodeDesigner) e.Node.Tag;
+            var des = (TreeNodeDesigner?) e.Node.Tag;
             des?.OnExpanded();
         }
 
         private void tree_AfterExpand(object? sender, TreeViewEventArgs e)
         {
-            var des = (TreeNodeDesigner) e.Node.Tag;
+            var des = (TreeNodeDesigner?) e.Node.Tag;
             des?.OnExpanded();
         }
 
         public TreeNodeDesigner? GetSelectedDesigner()
         {
-            if (tree.SelectedNode == null)
+            if (tree.SelectedNode is null)
                 return null;
-            return (TreeNodeDesigner) tree.SelectedNode.Tag;
+            return (TreeNodeDesigner?) tree.SelectedNode.Tag;
         }
 
         private object? GetSelectedObject()

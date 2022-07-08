@@ -170,6 +170,7 @@ Project("{930C7802-8A8C-48F9-8165-68863BCCD9DD}") = "WixInstaller", "Installers\
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Drivers", "Drivers", "{583D1273-7630-480B-9020-D16B3A15D15D}"
 	ProjectSection(SolutionItems) = preProject
+		Drivers\ApiTracking.items = Drivers\ApiTracking.items
 		Drivers\Common.items = Drivers\Common.items
 		Drivers\CommonBuildProperties.items = Drivers\CommonBuildProperties.items
 		Drivers\PreBuild.targets = Drivers\PreBuild.targets
@@ -524,7 +525,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Etrax", "Arch\Etrax\Etrax.c
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Altera", "Arch\Altera\Altera.csproj", "{02CA5C70-1AA3-4F10-81F8-47B9BB122EE8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fujitsu", "Arch\Fujitsu\Fujitsu.csproj", "{5D970ABA-822D-4A35-8354-C82DA425EF6A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fujitsu", "Arch\Fujitsu\Fujitsu.csproj", "{5D970ABA-822D-4A35-8354-C82DA425EF6A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
