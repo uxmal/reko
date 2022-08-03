@@ -225,24 +225,13 @@ namespace Reko.UnitTests.Arch.i8051
                 "1|L--|C = false");
         }
 
-
         [Test]
-        public void I8051_rw_reti()
+        public void i8051_rw_cpl_bit()
         {
-            Given_Bytes(0x32); // reti
-            AssertCode(
-                "0|R--|0000(1): 1 instructions",
-                "1|R--|return (2,0)");
-        }
-
-        [Test]
-        public void I8051_rw_pop()
-        {
-            Given_Bytes(0xD0, 0x82); // pop\t[0082]
-            AssertCode(
-                "0|L--|0000(2): 2 instructions",
-                "1|L--|DPL = Mem0[__data:SP:byte]",
-                "2|L--|SP = SP - 1<8>");
+            Given_HexString("B232");
+            AssertCode(     // cpl	/SFR30.2
+                "0|L--|0000(2): 1 instructions",
+                "1|L--|SFR30 = SFR30 ^ 4<8>");
         }
 
         [Test]
@@ -257,6 +246,57 @@ namespace Reko.UnitTests.Arch.i8051
             AssertCode(
                 "0|L--|0000(1): 1 instructions",
                 "1|L--|Mem0[__data:R0:byte] = A");
+        }
+
+        [Test]
+        public void I8051_rw_orl()
+        {
+            Given_Bytes(0x44, 0x42); // orl\tA,42
+            AssertCode(
+                "0|L--|0000(2): 2 instructions",
+                "1|L--|A = A | 0x42<8>",
+                "2|L--|P = cond(A)");
+        }
+
+        [Test]
+        public void I8051_rw_pop()
+        {
+            Given_Bytes(0xD0, 0x82); // pop\t[0082]
+            AssertCode(
+                "0|L--|0000(2): 2 instructions",
+                "1|L--|DPL = Mem0[__data:SP:byte]",
+                "2|L--|SP = SP - 1<8>");
+        }
+
+        [Test]
+        public void I8051_rw_reti()
+        {
+            Given_Bytes(0x32); // reti
+            AssertCode(
+                "0|R--|0000(1): 1 instructions",
+                "1|R--|return (2,0)");
+        }
+
+        [Test]
+        public void i8051_rw_rlc()
+        {
+            Given_HexString("33");
+            AssertCode(     // rlc	A
+                "0|L--|0000(1): 3 instructions",
+                "1|L--|v4 = (A & 0x80<8>) != 0<8>",
+                "2|L--|A = __rcl<byte,byte>(A, 1<8>, C)",
+                "3|L--|C = v4");
+        }
+
+        [Test]
+        public void i8051_rw_rrc()
+        {
+            Given_HexString("13");
+            AssertCode(     // rrc	A
+                "0|L--|0000(1): 3 instructions",
+                "1|L--|v4 = (A & 1<8>) != 0<8>",
+                "2|L--|A = __rcr<byte,byte>(A, 1<8>, C)",
+                "3|L--|C = v4");
         }
 
         [Test]
@@ -346,13 +386,12 @@ namespace Reko.UnitTests.Arch.i8051
         }
 
         [Test]
-        public void I8051_rw_orl()
+        public void i8051_rw_da()
         {
-            Given_Bytes(0x44, 0x42); // orl\tA,42
-            AssertCode(
-                "0|L--|0000(2): 2 instructions",
-                "1|L--|A = A | 0x42<8>",
-                "2|L--|P = cond(A)");
+            Given_HexString("D4");
+            AssertCode(     // da	A
+                "0|L--|0000(1): 1 instructions",
+                "1|L--|C = __decimal_adjust_addition(A, out A)");
         }
 
         [Test]
@@ -362,6 +401,20 @@ namespace Reko.UnitTests.Arch.i8051
             AssertCode(
                 "0|L--|0000(1): 2 instructions",
                 "1|L--|R0 = R0 - 1<8>");
+        }
+
+        [Test]
+        public void I8051_rw_div()
+        {
+            Given_HexString("84");
+            AssertCode(     // div	AB
+                "0|L--|0000(1): 6 instructions",
+                "1|L--|v4 = A /u B",
+                "2|L--|v5 = A %u B",
+                "3|L--|A = v4",
+                "4|L--|B = v5",
+                "5|L--|C = false",
+                "6|L--|O = false");
         }
 
         [Test]
@@ -496,6 +549,19 @@ namespace Reko.UnitTests.Arch.i8051
                 "1|L--|v2 = A << 4<8>",
                 "2|L--|A = A >>u 4<8>",
                 "3|L--|A = A | v2");
+        }
+
+        [Test]
+        public void i8051_rw_xchd()
+        {
+            Given_HexString("D6");
+            AssertCode(     // xchd	A,@R0
+                "0|L--|0000(1): 5 instructions",
+                "1|L--|v2 = SLICE(A, word4, 0)",
+                "2|L--|v3 = Mem0[__data:R0:byte]",
+                "3|L--|A = SEQ(SLICE(A, word4, 4), SLICE(v3, word4, 0))",
+                "4|L--|v3 = SEQ(SLICE(v3, word4, 4), v2)",
+                "5|L--|Mem0[__data:R0:byte] = v3");
         }
     }
 }

@@ -155,7 +155,9 @@ namespace Reko.Arch.i8051
             return true;
         }
 
-        // A direct addressed bit in internal data RAM or SFR memory.
+        /// <summary>
+        /// A direct addressed bit in internal data RAM or SFR memory.
+        /// </summary>
         private static bool B(uint uInstr, i8051Disassembler dasm)
         {
             if (!dasm.rdr.TryReadByte(out byte b))

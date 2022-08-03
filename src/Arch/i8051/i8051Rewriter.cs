@@ -85,7 +85,10 @@ namespace Reko.Arch.i8051
                 case Mnemonic.anl: RewriteLogical(m.And); break;
                 case Mnemonic.cjne: RewriteCjne(); break;
                 case Mnemonic.clr: RewriteClr(); break;
+                case Mnemonic.cpl: RewriteCpl(); break;
+                case Mnemonic.da: RewriteDa(da_intrinsic); break;
                 case Mnemonic.dec: RewriteIncDec(m.ISub); break;
+                case Mnemonic.div: RewriteDiv(); break;
                 case Mnemonic.djnz: RewriteDjnz(); break;
                 case Mnemonic.inc: RewriteIncDec(m.IAdd); break;
                 case Mnemonic.jb: RewriteJb(m.Ne0); break;
@@ -109,23 +112,16 @@ namespace Reko.Arch.i8051
                 case Mnemonic.ret: RewriteRet(); break;
                 case Mnemonic.reti: RewriteRet(); break;
                 case Mnemonic.rl: RewriteRotate(CommonOps.Rol); break;
+                case Mnemonic.rlc: RewriteRotateC(CommonOps.RolC, 0x80); break;
                 case Mnemonic.rr: RewriteRotate(CommonOps.Ror); break;
+                case Mnemonic.rrc: RewriteRotateC(CommonOps.RorC, 1); break;
                 case Mnemonic.setb: RewriteSetb(); break;
                 case Mnemonic.sjmp: RewriteJump(); break;
                 case Mnemonic.subb: RewriteAddcSubb(m.ISub); break;
                 case Mnemonic.swap: RewriteSwap(); break;
                 case Mnemonic.xrl: RewriteLogical(m.Xor); break;
                 case Mnemonic.xch: RewriteXch(); break;
-
-                case Mnemonic.cpl:
-                case Mnemonic.da:
-                case Mnemonic.div:
-                case Mnemonic.rrc:
-                case Mnemonic.rlc:
-                case Mnemonic.xchd:
-                    EmitUnitTest();
-                    Invalid();
-                    break;
+                case Mnemonic.xchd: RewriteXchd(); break;
                 }
                 yield return m.MakeCluster(instr.Address, instr.Length, iclass);
                 rtls.Clear();
@@ -198,6 +194,54 @@ namespace Reko.Arch.i8051
             {
                 m.Assign(binder.EnsureFlagGroup(Registers.PFlag), m.Cond(dst));
             }
+        }
+
+        private void RewriteCpl()
+        {
+            var dst = OpSrc(instr.Operands[0], arch.DataMemory);
+            switch (instr.Operands[0])
+            {
+            case RegisterStorage r:
+                var reg = binder.EnsureRegister(r);
+                m.Assign(reg, m.Comp(reg));
+                break;
+            case FlagGroupStorage f:
+                var grf = binder.EnsureFlagGroup(f);
+                m.Assign(grf, m.Comp(grf));
+                break;
+            case BitOperand b:
+                var breg = binder.EnsureRegister(b.Register);
+                m.Assign(breg, m.Xor(breg, 1 << b.Bit));
+                break;
+            default:
+                throw new NotSupportedException(
+                    $"Impossible operand type {instr.Operands[0].GetType().Name}.");
+            }
+        }
+
+        private void RewriteDa(IntrinsicProcedure intrinsic)
+        {
+            var acc = binder.EnsureRegister(Registers.A);
+            m.Assign(
+                binder.EnsureFlagGroup(Registers.CFlag), 
+                m.Fn(
+                intrinsic,
+                    acc,
+                    m.Out(PrimitiveType.Byte, acc)));
+        }
+
+        private void RewriteDiv()
+        {
+            var a = binder.EnsureRegister(Registers.A);
+            var b = binder.EnsureRegister(Registers.B);
+            var q = binder.CreateTemporary(PrimitiveType.UInt8);
+            var r = binder.CreateTemporary(PrimitiveType.UInt8);
+            m.Assign(q, m.UDiv(a, b));
+            m.Assign(r, m.UMod(a, b));
+            m.Assign(a, q);
+            m.Assign(b, r);
+            m.Assign(binder.EnsureFlagGroup(Registers.CFlag), Constant.False());
+            m.Assign(binder.EnsureFlagGroup(Registers.OFlag), Constant.False());
         }
 
         private void RewriteDjnz()
@@ -320,6 +364,16 @@ namespace Reko.Arch.i8051
             m.Assign(dst, m.Fn(rot, dst, m.Byte(1)));
         }
 
+        private void RewriteRotateC(IntrinsicProcedure rot, uint maskOut)
+        {
+            var dst = OpSrc(instr.Operands[0], arch.DataMemory);
+            var c = binder.EnsureFlagGroup(Registers.CFlag);
+            var t = binder.CreateTemporary(PrimitiveType.Bool);
+            m.Assign(t, m.Ne0(m.And(dst, maskOut)));
+            m.Assign(dst, m.Fn(rot.MakeInstance(dst.DataType, dst.DataType), dst, m.Byte(1), c));
+            m.Assign(c, t);
+        }
+
         private void RewriteRet()
         {
             iclass = InstrClass.Transfer|InstrClass.Return;
@@ -348,6 +402,19 @@ namespace Reko.Arch.i8051
             m.Assign(tmp, a);
             m.Assign(a, b);
             m.Assign(b, tmp);
+        }
+
+        private void RewriteXchd()
+        {
+            var tmpA = binder.CreateTemporary(PrimitiveType.CreateWord(4));
+            var tmpB = binder.CreateTemporary(PrimitiveType.Byte);
+            var a = OpSrc(instr.Operands[0], arch.DataMemory);
+            var b = OpSrc(instr.Operands[1], arch.DataMemory);
+            m.Assign(tmpA, m.Slice(a, tmpA.DataType));
+            m.Assign(tmpB, b);
+            m.Assign(a, m.Dpb(a, m.Slice(tmpB, tmpA.DataType), 0));
+            m.Assign(tmpB, m.Dpb(tmpB, tmpA, 0));
+            m.Assign(b, tmpB);
         }
 
         private void EmitUnitTest()
@@ -531,5 +598,9 @@ namespace Reko.Arch.i8051
             }
         }
 
+        private static readonly IntrinsicProcedure da_intrinsic = new IntrinsicBuilder("__decimal_adjust_addition", false)
+                .Param(PrimitiveType.Byte)
+                .OutParam(PrimitiveType.Byte)
+                .Returns(PrimitiveType.Bool);
     }
 }
