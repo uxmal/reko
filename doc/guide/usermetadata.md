@@ -35,7 +35,7 @@ On the SysV platform, the calling convention `i386kernel` is used to indicate th
 
 ### Specifying non-standard argument and return registers
 Some executables will contain hand-written machine code procedures that do not conform with any calling convention.
-You can specify parameters and return values to use custom registers with the `[[reko::arg]]` attribute. This attribute specifies the kind of storage used for the parameter -- register or fpu (for 8087 FPU stack) -- and the particular storage used for a parameter. 
+You can specify parameters and return values to use custom registers with the `[[reko::arg]]` attribute. This attribute specifies the kind of storage used for the parameter -- single register, sequence of registers, or fpu (for 8087 FPU stack) -- and the particular storage used for a parameter.
 
 To specify a non-standard return register, use the `[[reko::returns]]` attribute and specify the name of the register as a string literal.
 
@@ -43,11 +43,16 @@ Note that if an non-standard argument or return value is present, appropriate `[
 
 Here are some examples:
 ```C++
-// A procedure taking non-standard registers as input variables and returns
+// A procedure taking non-standard registers as input argument and returns
 // a value in a non-standard register
 [[reko::returns(register, "ah")]] char odd_msdos_procedure(
     [[reko::arg(register, "bx")]] char __near * stringPtr,
     [[reko::arg(register, "si")]] int intArg);
+
+// A procedure taking the non-standard register sequence es:bx as input argument
+// and returns a 32-bit value in the ds:ax register sequence.
+[[reko::returns(seq, "dx", "ax")]] long read_int32_value(
+    [[reko::arg(seq, "es", "bx")]] char __far * es_bx);
 
 // A procedure taking two arguments on the 8087 FPU stack and returning a single value on the FPU stack.
 // The net effect is shrinking the FPU stack by one item.

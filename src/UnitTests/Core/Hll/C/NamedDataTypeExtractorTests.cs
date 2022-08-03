@@ -242,6 +242,32 @@ namespace Reko.UnitTests.Core.Hll.C
             Assert.IsInstanceOf<FpuStackVariable_v1>(kind);
         }
 
+        [Test(Description = "Handle the presence of [[reko::arg(seq,'dx','ax')]]")]
+        public void NamedDataTypeExtractor_GetArgumentKindFromAttributes_reko_seq()
+        {
+            var ndte = new NamedDataTypeExtractor(platform, new DeclSpec[0], symbolTable, platform.PointerType.Size);
+            var kind = ndte.GetArgumentKindFromAttributes(
+                "arg",
+                new List<CAttribute>
+                {
+                    new CAttribute {
+                         Name = new QualifiedName("reko", "arg"),
+                         Tokens = new List<CToken> {
+                             new CToken(CTokenType.Id, "seq"),
+                             new CToken(CTokenType.Comma),
+                             new CToken(CTokenType.StringLiteral, "dx"),
+                             new CToken(CTokenType.Comma),
+                             new CToken(CTokenType.StringLiteral, "ax"),
+                         }
+                    }
+                });
+            Assert.IsNotNull(kind);
+            Assert.IsInstanceOf<SerializedSequence>(kind);
+            var seq = (SerializedSequence) kind;
+            Assert.AreEqual("dx", seq.Registers[0].Name);
+            Assert.AreEqual("ax", seq.Registers[1].Name);
+        }
+
         [Test]
         public void NamedDataTypeExtractor_thiscall_declspec()
         {

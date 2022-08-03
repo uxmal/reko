@@ -277,12 +277,31 @@ namespace Reko.Core.Hll.C
                         attr.Tokens[2].Value is null ||
                         attr.Tokens[2].Type != CTokenType.StringLiteral)
                         throw new FormatException("[[reko::arg(register,<name>)]] attribute expects a register name and a value.");
-                    kind = new Register_v1 { Name = (string)attr.Tokens[2].Value! };
-                } else if (attr.Tokens[0].Type == CTokenType.Id &&
-                           (string)attr.Tokens[0].Value! == "fpu")
+                    kind = new Register_v1 { Name = (string) attr.Tokens[2].Value! };
+                }
+                else if (attr.Tokens[0].Type == CTokenType.Id)
                 {
-                    // We have a reko::fpu prefix; mark as FPU
-                    kind = new FpuStackVariable_v1();
+                    var str = (string) attr.Tokens[0].Value!;
+                    if (str == "seq")
+                    {
+                        // We have a reko::arg(seq) attribute.
+                        var regs = new List<Register_v1>();
+                        for (int i = 1; i < attr.Tokens.Count; i += 2)
+                        {
+                            if (attr.Tokens[i].Type != CTokenType.Comma)
+                                throw new FormatException("[[reko::arg(seq)]] attribute expectes a comma.");
+                            var aReg = attr.Tokens[i + 1];
+                            if (aReg.Type != CTokenType.StringLiteral)
+                                throw new FormatException("[[reko::arg(seq)]] attribute expects a register name.");
+                            regs.Add(new Register_v1 { Name = (string) aReg.Value! });
+                        }
+                        kind = new SerializedSequence { Registers = regs.ToArray() };
+                    }
+                    else if (str == "fpu")
+                    {
+                        // We have a reko::fpu prefix; mark as FPU
+                        kind = new FpuStackVariable_v1();
+                    }
                 }
             }
             return kind;
