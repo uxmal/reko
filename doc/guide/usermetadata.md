@@ -95,8 +95,7 @@ The following example specifies a non-returning procedure:
     [[reko::characteristics({terminates:true})]]
 exit(int exit_code);
 ```
-Reko is sensitive to this characteristic and will use it during both the scanning phase and the data flow analysis phase.
-**Note:**: C++ 11 defines the standard attribute `[[noreturn]]` which has the same semantics as `[[reko::characteristics({terminates:true})]]`. A future version of Reko will support `[[noreturn]]`.
+Reko is sensitive to this characteristic and will use it during both the scanning phase and the data flow analysis phase. C++ 11 defines the standard attribute `[[noreturn]]` which Reko treats as having the same semantics as `[[reko::characteristics({terminates:true})]]`.
 
 ### Specifying service procedures
 A service procedure is a procedure where one or more of the input parameters are used to choose different functionality. The MS-DOS `int 21h` service vector is a well-known example of this technique. To specify a service procedure based on an interrupt or system call, use the `[[reko::service]]` attribute. This attribute specifies the interrupt or system call number, and the register(s) used to select a particular function.

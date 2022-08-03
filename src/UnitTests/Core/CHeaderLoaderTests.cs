@@ -27,6 +27,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
 using System.IO;
+using System.Linq;
 using System.Text;
 
 namespace Reko.UnitTests.Core
@@ -34,20 +35,23 @@ namespace Reko.UnitTests.Core
     [TestFixture]
     public class CHeaderLoaderTests
     {
+        private Mock<IPlatform> platform = default!;
+
+        [SetUp]
+        public void Setup()
+        {
+            this.platform = default!;
+        }
+
         private byte[] Given_File(string filecontents)
         {
             return Encoding.UTF8.GetBytes(filecontents);
         }
 
-        [Test]
-        public void Chl_Address_Attribute()
+        private void Given_Platform()
         {
-            var file = Given_File(
-@"[[reko::address(""0123:4567"")]] int foo(char * bar);
-");
-            var sc = new ServiceContainer();
             var arch = new Mock<IProcessorArchitecture>();
-            var platform = new Mock<IPlatform>();
+            this.platform = new Mock<IPlatform>();
             arch.Setup(a => a.MemoryGranularity).Returns(8);
             platform.Setup(p => p.PointerType).Returns(PrimitiveType.Ptr32);
             platform.Setup(p => p.GetBitSizeFromCBasicType(CBasicType.Int)).Returns(32);
@@ -58,6 +62,16 @@ namespace Reko.UnitTests.Core
                     var lex = new CLexer(r, CLexer.StdKeywords);
                     return new CParser(s ?? new ParserState(), lex);
                 }));
+        }
+
+        [Test]
+        public void Chl_Address_Attribute()
+        {
+            Given_Platform();
+            var file = Given_File(
+@"[[reko::address(""0123:4567"")]] int foo(char * bar);
+");
+            var sc = new ServiceContainer();
             var addr = Address.SegPtr(0123, 4567);
             platform.Setup(p => p.TryParseAddress("0123:4567", out addr)).Returns(true);
 
@@ -67,6 +81,21 @@ namespace Reko.UnitTests.Core
             Assert.IsTrue(typelib.Procedures.TryGetValue(addr, out var proc));
             Assert.AreEqual(proc.Name, "foo");
             Assert.AreEqual(proc.Signature.ToString(), "(fn void ())");
+        }
+
+        [Test]
+        public void Chl_noreturn_attribute()
+        {
+            Given_Platform();
+            var file = Given_File(
+@"[[noreturn]] void exit(int);
+");
+            var sc = new ServiceContainer();
+            var chl = new CHeaderLoader(sc, ImageLocation.FromUri("file:foo.inc"), file);
+            var typelib = chl.Load(platform.Object, new TypeLibrary());
+
+            Assert.IsTrue(typelib.Characteristics.TryGetValue("exit", out var chr));
+            Assert.IsTrue(chr.Terminates);
         }
     }
 }

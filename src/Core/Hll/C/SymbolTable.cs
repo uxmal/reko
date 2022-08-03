@@ -172,6 +172,16 @@ namespace Reko.Core.Hll.C
                 a.Name.Components.Length == 2 && 
                 a.Name.Components[0] == "reko" &&
                 a.Name.Components[1] == "service");
+            var noreturn = attributes?.Find(a =>
+                a.Name.Components.Length == 1 &&
+                a.Name.Components[0] == "noreturn")
+                is not null;
+            if (noreturn)
+            {
+                if (c is null)
+                    c = new ProcedureCharacteristics();
+                c.Terminates = true;
+            }
             if (attrService != null)
             {
                 var sService = MakeService(name, sSig, attrService);

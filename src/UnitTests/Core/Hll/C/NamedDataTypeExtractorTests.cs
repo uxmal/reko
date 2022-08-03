@@ -25,6 +25,7 @@ using Reko.Core.Hll.C;
 using Reko.Core.Serialization;
 using Reko.Core.Types;
 using Reko.UnitTests.Mocks;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
 
@@ -64,7 +65,7 @@ namespace Reko.UnitTests.Core.Hll.C
             this.nt = ndte.GetNameAndType(decl);
         }
 
-        private TypeSpec SType(CTokenType type)
+        private static TypeSpec SType(CTokenType type)
         {
             return new SimpleTypeSpec { Type = type };
         }
@@ -181,7 +182,7 @@ namespace Reko.UnitTests.Core.Hll.C
         [Test(Description = "If no reko attributes are present, don't explicitly state the kind, but let the ABI rules decide.")]
         public void NamedDataTypeExtractor_GetArgumentKindFromAttributes_OtherAttrs()
         {
-            var ndte = new NamedDataTypeExtractor(platform, new DeclSpec[0], symbolTable, platform.PointerType.Size);
+            var ndte = new NamedDataTypeExtractor(platform, Array.Empty<DeclSpec>(), symbolTable, platform.PointerType.Size);
             var kind = ndte.GetArgumentKindFromAttributes("arg", null);
             Assert.IsNull(kind);
         }
@@ -189,7 +190,7 @@ namespace Reko.UnitTests.Core.Hll.C
         [Test(Description = "If no reko attributes are present, don't explicitly state the kind, but let the ABI rules decide.")]
         public void NamedDataTypeExtractor_GetArgumentKindFromAttributes_null()
         {
-            var ndte = new NamedDataTypeExtractor(platform, new DeclSpec[0], symbolTable, platform.PointerType.Size);
+            var ndte = new NamedDataTypeExtractor(platform, Array.Empty<DeclSpec>(), symbolTable, platform.PointerType.Size);
             var kind = ndte.GetArgumentKindFromAttributes(
                 "arg",
                 new List<CAttribute>
@@ -204,7 +205,7 @@ namespace Reko.UnitTests.Core.Hll.C
         [Test(Description = "If there is a reko::arg attribute present, use it to determine kind.")]
         public void NamedDataTypeExtractor_GetArgumentKindFromAttributes_reko_reg()
         {
-            var ndte = new NamedDataTypeExtractor(platform, new DeclSpec[0], symbolTable, platform.PointerType.Size);
+            var ndte = new NamedDataTypeExtractor(platform, Array.Empty<DeclSpec>(), symbolTable, platform.PointerType.Size);
             var kind = ndte.GetArgumentKindFromAttributes(
                 "arg", 
                 new List<CAttribute>
@@ -226,7 +227,7 @@ namespace Reko.UnitTests.Core.Hll.C
         [Test(Description = "If there is a reko::fpu attribute present, use it to determine kind.")]
         public void NamedDataTypeExtractor_GetArgumentKindFromAttributes_reko_x87_fpu()
         {
-            var ndte = new NamedDataTypeExtractor(platform, new DeclSpec[0], symbolTable, platform.PointerType.Size);
+            var ndte = new NamedDataTypeExtractor(platform, Array.Empty<DeclSpec>(), symbolTable, platform.PointerType.Size);
             var kind = ndte.GetArgumentKindFromAttributes(
                 "arg",
                 new List<CAttribute>
@@ -245,7 +246,7 @@ namespace Reko.UnitTests.Core.Hll.C
         [Test(Description = "Handle the presence of [[reko::arg(seq,'dx','ax')]]")]
         public void NamedDataTypeExtractor_GetArgumentKindFromAttributes_reko_seq()
         {
-            var ndte = new NamedDataTypeExtractor(platform, new DeclSpec[0], symbolTable, platform.PointerType.Size);
+            var ndte = new NamedDataTypeExtractor(platform, Array.Empty<DeclSpec>(), symbolTable, platform.PointerType.Size);
             var kind = ndte.GetArgumentKindFromAttributes(
                 "arg",
                 new List<CAttribute>
