@@ -62,18 +62,18 @@ namespace Reko.Scanning
 
         protected DecompilerEventListener eventListener;
 
+        private readonly TypeLibrary metadata;
+        private readonly SegmentMap segmentMap;
+        private readonly ImageMap imageMap;
+        private readonly IDynamicLinker dynamicLinker;
+        private readonly BTreeDictionary<Address, BlockRange> blocks;
+        private readonly Dictionary<Block, Address> blockStarts;
+        private readonly Dictionary<Address, ImportReference> importReferences;
+        private readonly HashSet<Procedure> visitedProcs;
+        private readonly CancellationTokenSource? cancelSvc;
+        private readonly HashSet<Address> scannedGlobalData = new();
+        private readonly CommentInjector cinj;
         private PriorityQueue<WorkItem> procQueue;
-        private TypeLibrary metadata;
-        private SegmentMap segmentMap;
-        private ImageMap imageMap;
-        private IDynamicLinker dynamicLinker;
-        private BTreeDictionary<Address, BlockRange> blocks;
-        private Dictionary<Block, Address> blockStarts;
-        private Dictionary<Address, ImportReference> importReferences;
-        private HashSet<Procedure> visitedProcs;
-        private CancellationTokenSource? cancelSvc;
-        private HashSet<Address> scannedGlobalData = new HashSet<Address>();
-        private CommentInjector cinj;
         private ScanResults sr;
         
         public Scanner(
@@ -128,7 +128,7 @@ namespace Reko.Scanning
             /// <param name="end">Linear address of the byte/word beyond the block's end.</param>
             public BlockRange(Block block, ulong start, ulong end)
             {
-                this.Block = block ?? throw new ArgumentNullException("block");
+                this.Block = block ?? throw new ArgumentNullException(nameof(block));
                 this.Start = start;
                 this.End = end;
                 Debug.Assert(start < end);
@@ -153,7 +153,7 @@ namespace Reko.Scanning
         /// <returns></returns>
         public Block AddBlock(Address addr, Procedure proc, string blockName)
         {
-            Block b = new Block(proc, addr, blockName);
+            var b = new Block(proc, addr, blockName);
             if (Program.User.BlockLabels.TryGetValue(blockName, out var userLabel))
                 b.UserLabel = userLabel;
             if (!blocks.TryGetUpperBound(addr, out var br))
@@ -177,7 +177,7 @@ namespace Reko.Scanning
         /// </summary>
         /// <param name="blocks"></param>
         [Conditional("DEBUG")]
-        private void SanityCheck(SortedList<Address, BlockRange> blocks)
+        private static void SanityCheck(SortedList<Address, BlockRange> blocks)
         {
             for (int i = 1; i < blocks.Count; ++i)
             {
@@ -398,20 +398,20 @@ namespace Reko.Scanning
 
         protected Procedure? EnsureProcedure(IProcessorArchitecture arch, Address addr, string name, FunctionType signature)
         {
-            if (Program.Procedures.TryGetValue(addr, out var proc))
+            if (Program.Procedures.ContainsKey(addr))
                 return null; // Already scanned. Do nothing.
-            proc = Program.EnsureProcedure(arch, addr, name);
+            var proc = Program.EnsureProcedure(arch, addr, name);
             proc.Signature = signature;
             return proc;
         }
 
         protected KeyValuePair<Address, Procedure>? EnsureUserProcedure(IProcessorArchitecture arch, UserProcedure sp)
         {
-            if (Program.Procedures.TryGetValue(sp.Address, out var proc))
+            if (Program.Procedures.ContainsKey(sp.Address))
                 return null; // Already scanned. Do nothing.
             if (!sp.Decompile)
                 return null;
-            proc = Program.EnsureProcedure(arch, sp.Address, sp.Name);
+            var proc = Program.EnsureProcedure(arch, sp.Address, sp.Name);
             if (sp.Signature != null)
             {
                 var sser = Program.CreateProcedureSerializer();
@@ -424,7 +424,7 @@ namespace Reko.Scanning
             return new KeyValuePair<Address, Procedure>(sp.Address, proc);
         }
 
-        public bool IsBlockLinearProcedureExit(Block block)
+        public static bool IsBlockLinearProcedureExit(Block block)
         {
             if (block.Statements.Count == 0)
                 return false;
@@ -489,7 +489,7 @@ namespace Reko.Scanning
         /// </summary>
         /// <param name="block"></param>
         /// <returns></returns>
-        public bool IsLinearReturning(Block block)
+        public static bool IsLinearReturning(Block block)
         {
             for (;;)
             {
@@ -636,7 +636,7 @@ namespace Reko.Scanning
             if (scannedGlobalData.Contains(addr))
                 return;
             scannedGlobalData.Add(addr);
-            procQueue.Enqueue(PriorityGlobalData, new GlobalDataWorkItem(this, Program, addr, dt, name));
+            procQueue.Enqueue(PriorityGlobalData, new GlobalDataWorkItem(this, Program, addr, dt));
         }
 
         public Block? FindContainingBlock(Address address)
@@ -809,7 +809,7 @@ namespace Reko.Scanning
 
 
         [Conditional("DEBUG")]
-        private void Dump(string title, IEnumerable<Block> blocks)
+        private static void Dump(string title, IEnumerable<Block> blocks)
         {
             Debug.WriteLine(title);
             foreach (var block in blocks.OrderBy(b => b.Id))
@@ -924,10 +924,10 @@ namespace Reko.Scanning
 
         private class StatementInjector : CodeEmitter
         {
-            private Address addr;
-            private Block block;
+            private readonly Address addr;
+            private readonly Block block;
+            private readonly Procedure proc;
             private int iStm;
-            private Procedure proc;
 
             public StatementInjector(Procedure proc, Block block, Address addr)
             {
@@ -957,7 +957,7 @@ namespace Reko.Scanning
             }
         }
 
-        private void RemoveRedundantGotos(Block block)
+        private static void RemoveRedundantGotos(Block block)
         {
             if (block.Statements.Count == 0)
                 return;

@@ -310,16 +310,16 @@ namespace Reko.Scanning
         /// <returns>The `index` expression if detected, otherwise null.</returns>
         public Expression? FindIndexWithPatternMatch(Expression? jumpTableFormat)
         {
-            if (!(jumpTableFormat is MemoryAccess mem))
+            if (jumpTableFormat is not MemoryAccess mem)
                 return null;
-            if (!(mem.EffectiveAddress is BinaryExpression sum) ||
+            if (mem.EffectiveAddress is not BinaryExpression sum ||
                 sum.Operator != Operator.IAdd)
                 return null;
-            if (!(sum.Right is Constant cTable))
+            if (sum.Right is not Constant)
                 return null;
-            if (!(sum.Left is BinaryExpression mul))
+            if (sum.Left is not BinaryExpression mul)
                 return null;
-            if (!(mul.Right is Constant cScale))
+            if (mul.Right is not Constant cScale)
                 return null;
             int scale;
             switch (mul.Operator)
@@ -380,7 +380,7 @@ namespace Reko.Scanning
                 return appl;
             }
 
-            public bool IsFramePointer(Expression e)
+            public static bool IsFramePointer(Expression e)
             {
                 return false;
             }
@@ -595,7 +595,7 @@ namespace Reko.Scanning
                 BackwardSlicer.trace.Verbose("  expr:  {0}", this.JumpTableFormat!);
                 return false;
             }
-            BackwardSlicer.trace.Verbose("  live: {0}", this.DumpLive(this.Live));
+            BackwardSlicer.trace.Verbose("  live: {0}", DumpLive(this.Live));
             return true;
         }
 
@@ -604,7 +604,7 @@ namespace Reko.Scanning
             return iInstr < 0;
         }
 
-        private StorageDomain DomainOf(Expression? e)
+        private static StorageDomain DomainOf(Expression? e)
         {
             if (e is Identifier id)
             {
@@ -662,7 +662,7 @@ namespace Reko.Scanning
 
         private StridedInterval MakeInterval_And(Expression left, Constant? right)
         {
-            if (right == null)
+            if (right is null)
                 return StridedInterval.Empty;
             long n = right.ToInt64();
             if (Bits.IsEvenPowerOfTwo(n + 1))
@@ -699,7 +699,7 @@ namespace Reko.Scanning
 
         public SlicerResult? VisitAssignment(RtlAssignment ass)
         {
-            if (!(ass.Dst is Identifier id))
+            if (ass.Dst is not Identifier id)
             {
                 // Ignore writes to memory.
                 return null;
@@ -858,7 +858,7 @@ namespace Reko.Scanning
         public SlicerResult? VisitBranch(RtlBranch branch)
         {
             var se = branch.Condition.Accept(this, BackwardSlicerContext.Cond(new BitRange(0, 0)));
-            if (!(branch.Target is Address addrTarget))
+            if (branch.Target is not Address addrTarget)
                 throw new NotImplementedException();    //$REVIEW: do we ever see this?
             if (this.addrSucc! != addrTarget)
             {
@@ -935,7 +935,7 @@ namespace Reko.Scanning
             return sr;
         }
 
-        private BitRange RangeOf(Expression expr)
+        private static BitRange RangeOf(Expression expr)
         {
             return new BitRange(0, (short)expr.DataType.BitSize);
         }
@@ -983,7 +983,7 @@ namespace Reko.Scanning
             var srExprs = seq.Expressions
                 .Select(e => e.Accept(this, ctx))
                 .ToArray();
-            var srLast = srExprs[srExprs.Length - 1]!;
+            var srLast = srExprs[^1]!;
             if (RangeOf(srLast.SrcExpr!) == ctx.BitRange)
             {
                 return new SlicerResult
@@ -1099,7 +1099,7 @@ namespace Reko.Scanning
             return sb.ToString();
         }
 
-        private string DumpLive(Dictionary<Expression, BackwardSlicerContext> live)
+        private static string DumpLive(Dictionary<Expression, BackwardSlicerContext> live)
         {
             return string.Format("{{ {0} }}",
                 string.Join(
@@ -1155,7 +1155,7 @@ namespace Reko.Scanning
     public class SlicerResult
     {
         // Live storages are involved in the computation of the jump destinations.
-        public Dictionary<Expression, BackwardSlicerContext> LiveExprs = new Dictionary<Expression, BackwardSlicerContext>();
+        public Dictionary<Expression, BackwardSlicerContext> LiveExprs = new();
         public Expression? SrcExpr;
         public bool Stop;       // Set to true if the analysis should stop.
     }

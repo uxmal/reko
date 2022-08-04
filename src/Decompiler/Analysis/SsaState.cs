@@ -55,7 +55,7 @@ namespace Reko.Analysis
         /// <param name="renameVariables"></param>
         public void ConvertBack(bool renameVariables)
 		{
-			UnSSA unssa = new UnSSA(this);
+			var unssa = new UnSSA(this);
 			foreach (Block block in Procedure.ControlGraph.Blocks)
 			{
 				for (int st = 0; st < block.Statements.Count; ++st)
@@ -81,11 +81,11 @@ namespace Reko.Analysis
 
         /// <summary>
         /// Returns the index of the last <see cref="DefInstruction"/> in the 
-        /// <paramref name="stmts"/> statement list.
+        /// <paramref name="stmts"/> statement list, or -1 if there was none.
         /// </summary>
         /// <param name="stmts"></param>
         /// <returns></returns>
-        private int LastDefPosition(StatementList stmts)
+        private static int LastDefPosition(StatementList stmts)
         {
             for (int i = stmts.Count - 1; i >= 0; --i)
             {
@@ -133,7 +133,7 @@ namespace Reko.Analysis
 		{
 			if (trace)
 			{
-				StringWriter sb = new StringWriter();
+				var sb = new StringWriter();
 				Write(sb);
 				Procedure.Write(false, sb);
 				Debug.WriteLineIf(trace, sb.ToString());

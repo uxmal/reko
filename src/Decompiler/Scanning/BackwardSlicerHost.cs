@@ -32,8 +32,8 @@ namespace Reko.Scanning
 {
     public class BackwardSlicerHost : IBackWalkHost<RtlBlock, RtlInstruction>
     {
-        private Dictionary<Block, RtlBlock> cache;
-        private Dictionary<RtlBlock, Block> invCache;
+        private readonly Dictionary<Block, RtlBlock> cache;
+        private readonly Dictionary<RtlBlock, Block> invCache;
 
         public BackwardSlicerHost(Program program, IProcessorArchitecture arch)
         {

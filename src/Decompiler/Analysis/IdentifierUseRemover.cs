@@ -6,8 +6,8 @@ namespace Reko.Analysis
 {
     internal class IdentifierUseRemover : InstructionUseVisitorBase
     {
-        private Statement stm;
-        private SsaIdentifierCollection identifiers;
+        private readonly Statement stm;
+        private readonly SsaIdentifierCollection identifiers;
 
         public IdentifierUseRemover(Statement stm, SsaIdentifierCollection identifiers)
         {

@@ -98,7 +98,7 @@ namespace Reko.Scanning
             ppf.Remove(pads);
 
             // Detect procedures from the "soup" of basic blocks in sr.
-            var pd = new ProcedureDetector(program, sr, this.eventListener);
+            var pd = new ProcedureDetector(sr, this.eventListener);
             var procs = pd.DetectProcedures();
             sr.Procedures = procs;
             sr.RemovedPadding = pads;
@@ -149,7 +149,7 @@ namespace Reko.Scanning
         }
 
         [Conditional("DEBUG")]
-        private void DumpRanges(List<(IProcessorArchitecture, MemoryArea, Address, uint)> ranges)
+        private static void DumpRanges(List<(IProcessorArchitecture, MemoryArea, Address, uint)> ranges)
         {
             foreach (var range in ranges)
             {
@@ -158,7 +158,7 @@ namespace Reko.Scanning
         }
 
         [Conditional("DEBUG")]
-        public void Probe(ScanResults sr)
+        public static void Probe(ScanResults sr)
         {
             sr.BreakOnWatchedAddress(sr.ICFG.Nodes.Select(n => n.Address));
         }
@@ -195,7 +195,7 @@ namespace Reko.Scanning
         /// <returns>A sequence of triples</returns>
         private static IEnumerable<(T, T, T)> MakeTriples<T>(IEnumerable<T> items)
         {
-            T prev = default(T)!;
+            T prev = default!;
             var e = items.GetEnumerator();
             if (!e.MoveNext())
                 yield break;
@@ -219,7 +219,7 @@ namespace Reko.Scanning
         private (IProcessorArchitecture, MemoryArea, Address, uint)? CreateUnscannedArea((ImageMapItem, ImageMapItem, ImageMapItem) triple)
         {
             var (prev, item, next) = triple;
-            if (!(item.DataType is UnknownType unk))
+            if (item.DataType is not UnknownType unk)
                 return null;
             if (unk.Size > 0)
                 return null;
@@ -271,52 +271,6 @@ namespace Reko.Scanning
             return (item is ImageMapBlock imb)
                 ? imb.Block!.Procedure.Architecture
                 : null;
-        }
-
-        private void BuildWeaklyConnectedComponents(ScanResults sr, Dictionary<long, block> the_blocks)
-        {
-            while (true)
-            {
-                // Find all links that connect instructions that have
-                // different components
-                var components_to_merge_raw =
-                    (from link in sr.FlatEdges
-                     join t1 in the_blocks.Values on link.first equals t1.id
-                     join t2 in the_blocks.Values on link.second equals t2.id
-                     where t1.component_id != t2.component_id
-                     select new link { first = t1.component_id, second = t2.component_id })
-                    .Distinct();
-                // Ensure symmetry (only for WCC, SCC should remove this)
-                var components_to_merge =
-                    components_to_merge_raw
-                    .Concat(components_to_merge_raw.Select(c => new link { first = c.second, second = c.first }))
-                    .Distinct()
-                    .ToList();
-
-                if (components_to_merge.Count == 0)
-                    break;
-
-                foreach (var bc in
-                    (from bb in the_blocks.Values
-                     join cc in (
-                        from c in components_to_merge
-                        group c by c.first into g
-                        select new
-                        {
-                            source = g.Key,
-                            target = g.Min(gg => gg.second)
-                        }) on bb.component_id equals cc.source
-                     select new { block = bb, cc.target }))
-                {
-                    bc.block.component_id = Address.Min(bc.block.component_id, bc.target);
-                }
-            }
-            Debug.Print("comp: {0}",
-                string.Join("\r\n      ",
-                from b in the_blocks.Values
-                group b by b.component_id into g
-                orderby g.Key
-                select string.Format("{0:X8}:{1}", g.Key, g.Count())));
         }
 
         /// <summary>
@@ -503,7 +457,7 @@ namespace Reko.Scanning
             return icfg;
         }
 
-        void DumpInstructions(ScanResults sr)
+        private static void DumpInstructions(ScanResults sr)
         {
             Debug.WriteLine(
                 string.Join("\r\n",
@@ -547,7 +501,7 @@ namespace Reko.Scanning
                        RenderType(b.instrs.Last().type),
                        e)));
 
-            string RenderType(ushort type)
+            static string RenderType(ushort type)
             {
                 var t = (InstrClass)type;
                 if ((t & InstrClass.Zero) != 0)
@@ -564,7 +518,7 @@ namespace Reko.Scanning
             }
         }
 
-        private void DumpBadBlocks(ScanResults sr, Dictionary<long, block> blocks, IEnumerable<link> edges, HashSet<Address> bad_blocks)
+        private static void DumpBadBlocks(ScanResults sr, Dictionary<long, block> blocks, IEnumerable<link> edges, HashSet<Address> bad_blocks)
         {
             Debug.Print(
                 "{0}",
@@ -588,7 +542,7 @@ namespace Reko.Scanning
         }
 
         [Conditional("DEBUG")]
-        private void Dump(Dictionary<long, block> the_blocks)
+        private static void Dump(Dictionary<long, block> the_blocks)
         {
             foreach (var block in the_blocks.Values)
             {
@@ -597,7 +551,7 @@ namespace Reko.Scanning
         }
 
         [Conditional("DEBUG")]
-        private void Dump(IEnumerable<link> edges)
+        private static void Dump(IEnumerable<link> edges)
         {
             foreach (var link in edges)
             {
@@ -606,7 +560,7 @@ namespace Reko.Scanning
         }
 
         [Conditional("DEBUG")]
-        private void Dump(IEnumerable<instr> blocks)
+        private static void Dump(IEnumerable<instr> blocks)
         {
             foreach (var i in blocks)
             {

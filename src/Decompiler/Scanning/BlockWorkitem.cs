@@ -187,7 +187,7 @@ namespace Reko.Scanning
         private Block? FallenThroughNextBlock(Address addr)
         {
             var cont = scanner.FindContainingBlock(addr);
-            if (cont == null || cont == blockCur)
+            if (cont is null || cont == blockCur)
                 return null;
             return BlockFromAddress(ric!.Address, addr, blockCur!.Procedure, state);
         }
@@ -346,7 +346,7 @@ namespace Reko.Scanning
                 return false;
             if (ricDelayed!.Instructions.Length <= 0)
                 return false;
-            return !(ricDelayed.Instructions[0] is RtlNop);
+            return ricDelayed.Instructions[0] is not RtlNop;
         }
 
         /// <summary>
@@ -398,7 +398,7 @@ namespace Reko.Scanning
             return scanner.EnqueueJumpTarget(addrSrc, addrDst, proc, state)!;
         }
 
-        private void EnsureEdge(Procedure proc, Block blockFrom, Block blockTo)
+        private static void EnsureEdge(Procedure proc, Block blockFrom, Block blockTo)
         {
             if (!proc.ControlGraph.ContainsEdge(blockFrom, blockTo))
                 proc.ControlGraph.AddEdge(blockFrom, blockTo);
@@ -1168,7 +1168,7 @@ namespace Reko.Scanning
                 visited.Add(block);
                 for (int i = block.Statements.Count - 1; i >= 0; --i)
                 {
-                    if (!(block.Statements[i].Instruction is Assignment ass))
+                    if (block.Statements[i].Instruction is not Assignment ass)
                         continue;
                     var idAss = ass.Dst ;
                     if (idAss != null && idAss == id)
@@ -1215,13 +1215,13 @@ namespace Reko.Scanning
 
         public ExternalProcedure? ImportedProcedureName(Expression callTarget)
         {
-            if (!(callTarget is MemoryAccess mem))
+            if (callTarget is not MemoryAccess mem)
                 return null;
             if (mem.EffectiveAddress.DataType.Size != this.program.Platform.PointerType.Size)
                 return null;
-            if (!(mem.EffectiveAddress is Address addrTarget))
+            if (mem.EffectiveAddress is not Address addrTarget)
             {
-                if (!(mem.EffectiveAddress is Constant offset))
+                if (mem.EffectiveAddress is not Constant offset)
                     return null;
                 addrTarget = program.Platform.MakeAddressFromConstant(offset, true)!;
             }
@@ -1272,7 +1272,7 @@ namespace Reko.Scanning
         /// resolve it, fall back on the dispatch procedure 
         /// directly.
         /// </summary>
-        private ProcedureBase ResolveDispatchProcedureCall(DispatchProcedure disp, ProcessorState state)
+        private static ProcedureBase ResolveDispatchProcedureCall(DispatchProcedure disp, ProcessorState state)
         {
             var callable = disp.FindService(state);
             if (callable is null)
@@ -1283,22 +1283,22 @@ namespace Reko.Scanning
 
         private SystemService? MatchSyscallToService(RtlSideEffect side)
         {
-            if (!(side.Expression is Application fn))
+            if (side.Expression is not Application fn)
                 return null;
-            if (!(fn.Procedure is ProcedureConstant pc))
+            if (fn.Procedure is not ProcedureConstant pc)
                 return null;
-            if (!(pc.Procedure is IntrinsicProcedure intrinsic))
+            if (pc.Procedure is not IntrinsicProcedure intrinsic)
                 return null;
             if (intrinsic.Name != IntrinsicProcedure.Syscall || fn.Arguments.Length == 0)
                 return null;
 
-            if (!(fn.Arguments[0] is Constant vector))
+            if (fn.Arguments[0] is not Constant vector)
                 return null;
             var svc = program.Platform.FindService((int)vector.ToUInt32(), state, program.SegmentMap);
             //$TODO if SVC is null (and not-speculating) report the error.
             if (svc != null && svc.Signature == null)
             {
-                scanner.Error(ric!.Address, string.Format("System service '{0}' didn't specify a signature.", svc.Name));
+                scanner.Error(ric!.Address, $"System service '{svc.Name}' didn't specify a signature.");
             }
             return svc;
         }

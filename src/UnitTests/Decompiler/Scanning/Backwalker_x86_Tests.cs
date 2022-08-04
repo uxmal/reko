@@ -392,7 +392,7 @@ namespace Reko.UnitTests.Decompiler.Scanning
             var bw = new Backwalker<Block, Instruction>(host, new RtlGoto(new MemoryAccess(di, di.DataType), InstrClass.Transfer),
                 new ExpressionSimplifier(map, state, new FakeDecompilerEventListener()));
             var instrs = new StatementList(new Block(null!, null!, "foo"));
-            bw.BackwalkInstructions(Registers.di, new Instruction[] {
+            bw.BackwalkInstructions(new Instruction[] {
                 new Assignment(di, new BinaryExpression(Operator.IAdd, di.DataType, di, Constant.Word16(1)))
                 });
 			Assert.AreSame(Registers.di, bw.Index);
@@ -434,13 +434,13 @@ namespace Reko.UnitTests.Decompiler.Scanning
 
             var block1 = m.CurrentBlock;
             var bw = new Backwalker<Block,Instruction>(host, xfer, expSimp);
-            var ret = bw.BackwalkInstructions(Registers.eax, block1);
+            var ret = bw.BackwalkInstructions(block1);
             Assert.AreEqual("None", bw.Index!.ToString());
             Assert.AreEqual("Mem0[ebp - 0xC4<32>:word32]", bw.IndexExpression!.ToString());
             Assert.AreEqual(4, bw.JumpSize);
             Assert.IsTrue(ret);
 
-            ret = bw.BackwalkInstructions(null, block0);
+            ret = bw.BackwalkInstructions(block0);
         }
 
         [Test]

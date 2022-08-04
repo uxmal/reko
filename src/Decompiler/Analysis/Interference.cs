@@ -27,7 +27,7 @@ namespace Reko.Analysis
 	/// Represents an edge between two identifiers that intefere in an
 	/// interference graph.
 	/// </summary>
-	public class Interference : IComparable<Interference>
+	public struct Interference : IComparable<Interference>
 	{
 		public Interference(Identifier id1, Identifier id2)
 		{
@@ -61,14 +61,12 @@ namespace Reko.Analysis
 
 		#region IComparable Members
 
-		public int CompareTo(Interference? i)
+		public int CompareTo(Interference that)
 		{
-            if (i == null)
-                return 1;
-            int d = string.Compare(Identifier1.Name, i.Identifier1.Name);
+            int d = string.Compare(Identifier1.Name, that.Identifier1.Name);
 			if (d != 0)
 				return d;
-            return string.Compare(Identifier2.Name, i.Identifier2.Name);
+            return string.Compare(Identifier2.Name, that.Identifier2.Name);
 		}
 
 		#endregion

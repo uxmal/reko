@@ -230,19 +230,23 @@ namespace Reko.Analysis
             }
         }
 
-        // Prefer using the data type from the signature, but if the procedure is 
-        // varargs or has no signature, fall back on the argument types.
-        private DataType GetArgumentDataType(Expression[] arguments, FunctionType? sig, int i)
+        /// <summary>
+        /// Get the data type of the i'th parameter, preferring the data type
+        /// from the signature parameters. If the procedure is varargs or has
+        /// no signature, fall back on the argument types.
+        private static DataType GetArgumentDataType(Expression[] arguments, FunctionType? sig, int i)
         {
             if (sig is not null && sig.ParametersValid && i < sig.Parameters!.Length)
             {
                 return sig.Parameters[i].DataType;
             }
             else
+            {
                 return arguments[i].DataType;
+            }
         }
 
-        private FunctionType? GetSignature(Expression callee)
+        private static FunctionType? GetSignature(Expression callee)
         {
             if (callee is ProcedureConstant pc &&
                 pc.Procedure is ProcedureBase proc)
@@ -435,7 +439,9 @@ namespace Reko.Analysis
             }
 
             private bool IsIdentifierOffset(
-                Expression ea, out Identifier? @base, out int offset)
+                Expression ea,
+                out Identifier? @base,
+                out int offset)
             {
                 if (ea is Identifier id)
                 {

@@ -150,7 +150,7 @@ namespace Reko.Analysis
             return null;
         }
 
-        private (MemoryAccess? mem, int offset) StackStore(Expression dst, Storage stg)
+        private static (MemoryAccess? mem, int offset) StackStore(Expression dst, Storage stg)
         {
             if (dst is not MemoryAccess mem)
                 return (null, 0);
@@ -161,7 +161,7 @@ namespace Reko.Analysis
                 return (null, 0);
         }
 
-        private (Identifier?, int) StackOffset(Expression e, Storage stg)
+        private static (Identifier?, int) StackOffset(Expression e, Storage stg)
         {
             if (e is BinaryExpression bin &&
                 bin.Left is Identifier sp &&
@@ -302,7 +302,7 @@ namespace Reko.Analysis
             ssa.AddUses(stmCall);
         }
 
-        private Identifier MatchingReturnIdentifier(CallInstruction call, Storage gret)
+        private static Identifier MatchingReturnIdentifier(CallInstruction call, Storage gret)
         {
             foreach (var def in call.Definitions)
             {

@@ -35,8 +35,8 @@ namespace Reko.Analysis
 	{
 		public SsaIdentifier(Identifier id, Identifier idOrig, Statement? stmDef, Expression? exprDef, bool isSideEffect)
 		{
-            this.Identifier = id ?? throw new ArgumentNullException("id");
-			this.OriginalIdentifier = idOrig ?? throw new ArgumentNullException("idOrig");
+            this.Identifier = id ?? throw new ArgumentNullException(nameof(id));
+			this.OriginalIdentifier = idOrig ?? throw new ArgumentNullException(nameof(idOrig));
 			this.DefStatement = stmDef;
             this.DefExpression = exprDef;
             this.IsSideEffect = isSideEffect;
@@ -77,7 +77,7 @@ namespace Reko.Analysis
 
 		public override string ToString()
 		{
-			StringWriter sb = new StringWriter();
+			var sb = new StringWriter();
 			Write(sb);
 			return sb.ToString();
 		}

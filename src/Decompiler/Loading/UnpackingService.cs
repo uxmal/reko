@@ -57,7 +57,7 @@ namespace Reko.Loading
         public void LoadSignatureFiles()
         {
             var cfgSvc = Services.GetService<IConfigurationService>();
-            if (cfgSvc == null)
+            if (cfgSvc is null)
                 return;
             foreach (SignatureFileDefinition sfe in cfgSvc.GetSignatureFiles())
             {

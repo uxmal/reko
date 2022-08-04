@@ -76,7 +76,7 @@ namespace Reko.Analysis
             {
                 if (listener.IsCanceled())
                     return;
-                if (!(sid.DefStatement!.Instruction is CallInstruction ci))
+                if (sid.DefStatement!.Instruction is not CallInstruction ci)
                     continue;
                 var callStm = sid.DefStatement;
                 // If FPU stack variable was not used after call then assume
@@ -90,7 +90,7 @@ namespace Reko.Analysis
             }
         }
 
-        private bool WasUsed(SsaIdentifier sid)
+        private static bool WasUsed(SsaIdentifier sid)
         {
             var fpuStackFinder = new FpuStackUsesFinder();
             foreach (var stm in sid.Uses)

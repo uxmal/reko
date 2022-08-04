@@ -44,7 +44,7 @@ namespace Reko.UnitTests.Decompiler.Analysis
             {
                 SegmentMap = new SegmentMap(Address.Ptr32(0x00123400))
             };
-            var svp = new SparseValuePropagation(ssa, program, null, new FakeDecompilerEventListener());
+            var svp = new SparseValuePropagation(ssa, program, new FakeDecompilerEventListener());
             svp.Transform();
             var sw = new StringWriter();
             svp.Write(sw);

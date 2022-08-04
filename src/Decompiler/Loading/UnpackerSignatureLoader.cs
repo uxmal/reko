@@ -41,12 +41,12 @@ namespace Reko.Loading
             {
                 var serializer = new XmlSerializer(typeof(UnpackerSignatureFile_v1));
                 var sigs = (UnpackerSignatureFile_v1) serializer.Deserialize(txtRdr)!;
-                if (sigs != null && sigs.Signatures != null)
+                if (sigs?.Signatures is not null)
                 {
                     return sigs.Signatures.Select(s => CreateSignature(s));
                 }
                 else
-                    return new ImageSignature[0];
+                    return Array.Empty<ImageSignature>();
             }
         }
 

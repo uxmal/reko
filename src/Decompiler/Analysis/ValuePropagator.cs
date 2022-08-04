@@ -150,7 +150,7 @@ namespace Reko.Analysis
                 changed |= c;
             }
             foreach (var def in ci.Definitions
-                .Where(d => !( d.Expression is Identifier)))
+                .Where(d => d.Expression is not Identifier))
             {
                 var (e, c) = def.Expression.Accept(eval);
                 def.Expression = e;
@@ -210,7 +210,7 @@ namespace Reko.Analysis
             bool srcChanged;
             bool dstChanged = false;
             (store.Src, srcChanged) = store.Src.Accept(eval);
-            if (store.Dst is not Identifier idDst || (!(idDst.Storage is OutArgumentStorage)))
+            if (store.Dst is not Identifier idDst || (idDst.Storage is not OutArgumentStorage))
             {
                 (store.Dst, dstChanged) = store.Dst.Accept(eval);
             }

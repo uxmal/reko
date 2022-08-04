@@ -26,8 +26,6 @@ using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Reko.Scanning
 {
@@ -238,7 +236,7 @@ namespace Reko.Scanning
     /// </summary>
     public class ConcreteValueSet : ValueSet
     {
-        private Expression[] values;
+        private readonly Expression[] values;
 
         public ConcreteValueSet(DataType dt, params Expression[] values) : base(dt)
         {
@@ -286,14 +284,14 @@ namespace Reko.Scanning
             return Map(DataType, v => MulValue(v, cRight));
         }
 
-        private Expression AddValue(Expression eLeft, Constant cRight)
+        private static Expression AddValue(Expression eLeft, Constant cRight)
         {
             if (eLeft is Constant cLeft)
                 return Operator.IAdd.ApplyConstants(cLeft, cRight);
             throw new NotImplementedException();
         }
 
-        private Expression MulValue(Expression eLeft, Constant cRight)
+        private static Expression MulValue(Expression eLeft, Constant cRight)
         {
             if (eLeft is Constant cLeft)
                 return Operator.IMul.ApplyConstants(cLeft, cRight);
@@ -305,7 +303,7 @@ namespace Reko.Scanning
             return Map(DataType, v => ShlValue(v, cRight));
         }
 
-        private Expression ShlValue(Expression eLeft, Constant cRight)
+        private static Expression ShlValue(Expression eLeft, Constant cRight)
         {
             if (eLeft is Constant cLeft)
                 return Operator.Shl.ApplyConstants(cLeft, cRight);
@@ -332,7 +330,7 @@ namespace Reko.Scanning
             return Map(DataType, v => SubValue(v, cRight));
         }
 
-        private Expression SubValue(Expression eLeft, Constant cRight)
+        private static Expression SubValue(Expression eLeft, Constant cRight)
         {
             if (eLeft is Constant cLeft)
             {
@@ -349,7 +347,7 @@ namespace Reko.Scanning
             return Map(dt, v => TruncateValue(dt, v));
         }
 
-        private Expression TruncateValue(DataType dt, Expression value)
+        private static Expression TruncateValue(DataType dt, Expression value)
         {
             if (value is Constant c)
             {

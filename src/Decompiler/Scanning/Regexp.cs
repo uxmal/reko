@@ -28,10 +28,10 @@ namespace Reko.Scanning
 	/// </summary>
 	public class Regexp
 	{
-		private int [] mpbytecls;
-		private State [] states;
-		private int [] next;
-		private int [] check;
+		private readonly int [] mpbytecls;
+		private readonly State [] states;
+		private readonly int [] next;
+		private readonly int [] check;
 
 		private int pos;		// where the scanner is right now.
 
@@ -50,7 +50,7 @@ namespace Reko.Scanning
 		/// <returns>A scanner ready to use</returns>
 		public static Regexp Compile(string s)
 		{
-			RegexpBuilder b = new RegexpBuilder(s);
+			var b = new RegexpBuilder(s);
 			return b.Build();
 		}
 
@@ -113,7 +113,7 @@ namespace Reko.Scanning
 				}
 				sb.AppendLine();
 			}
-			sb.Append("}");
+			sb.Append('}');
 			return sb.ToString();
 		}
 

@@ -23,6 +23,7 @@ using Reko.Core.Code;
 using Reko.Core.Expressions;
 using Reko.Core.Operators;
 using Reko.Core.Services;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -121,18 +122,18 @@ namespace Reko.Analysis
             (Identifier?, int) noMatch = (null, 0);
             var sid = ssa.Identifiers[sp];
             var def = sid.DefStatement!;
-            if (def is null || !(def.Instruction is Assignment ass))
+            if (def is null || def.Instruction is not Assignment ass)
                 return noMatch;
-            if (!(ass.Src is BinaryExpression bin))
+            if (ass.Src is not BinaryExpression bin)
                 return noMatch;
-            if ((bin.Operator != Operator.IAdd &&
-                bin.Operator != Operator.ISub))
+            if (bin.Operator != Operator.IAdd &&
+                bin.Operator != Operator.ISub)
                 return noMatch;
-            if (!(bin.Left is Identifier id))
+            if (bin.Left is not Identifier id)
                 return noMatch;
             if (id.Storage != sp.Storage)
                 return noMatch;
-            if (!(bin.Right is Constant c))
+            if (bin.Right is not Constant c)
                 return noMatch;
             var offset = c.ToInt32();
             if (bin.Operator == Operator.ISub)
@@ -198,7 +199,7 @@ namespace Reko.Analysis
         /// Finds a use of the architecture stack pointer in the synthetic exit
         /// block of the procedure
         /// </summary>
-        private Identifier? FindStackUseAtExit(Procedure proc)
+        private static Identifier? FindStackUseAtExit(Procedure proc)
         {
             return proc.ExitBlock.Statements
                 .Select(s => s.Instruction)
@@ -212,8 +213,8 @@ namespace Reko.Analysis
         private IEnumerable<Identifier> FindStackUsesAtExit(Procedure proc)
         {
             var sp = FindStackUseAtExit(proc);
-            if (sp == null)
-                return new Identifier[] { };
+            if (sp is null)
+                return Array.Empty<Identifier>();
             var def = ssa.Identifiers[sp].DefStatement;
             if (def?.Instruction is PhiAssignment phi)
                 return phi.Src.Arguments

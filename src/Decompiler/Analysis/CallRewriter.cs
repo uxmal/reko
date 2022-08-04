@@ -54,7 +54,7 @@ namespace Reko.Analysis
             ProgramDataFlow summaries,
             DecompilerEventListener eventListener)
 		{
-			CallRewriter crw = new CallRewriter(platform, summaries, eventListener);
+			var crw = new CallRewriter(platform, summaries, eventListener);
 			foreach (SsaTransform sst in ssts)
 			{
                 if (eventListener.IsCanceled())
@@ -224,7 +224,7 @@ namespace Reko.Analysis
         /// </summary>
         /// <param name="liveOut"></param>
         /// <returns></returns>
-        private Dictionary<Storage, BitRange> RemoveSequenceOverlaps(
+        private static Dictionary<Storage, BitRange> RemoveSequenceOverlaps(
             Dictionary<Storage, BitRange> liveOut)
         {
             var regsInSequences = SequenceRegisters(liveOut);
@@ -317,7 +317,9 @@ namespace Reko.Analysis
         /// Returns a list of all stack arguments accessed, indexed by their offsets
         /// as seen by a caller. I.e. the first argument is at offset 0, &c.
         /// </summary>
-        public IEnumerable<(int, Identifier)> GetSortedStackArguments(Frame frame, IEnumerable<KeyValuePair<Storage, BitRange>> mayuse)
+        public IEnumerable<(int, Identifier)> GetSortedStackArguments(
+            Frame frame,
+            IEnumerable<KeyValuePair<Storage, BitRange>> mayuse)
         {
             return mayuse
                 .Select(kv => (stg: kv.Key as StackStorage, range: kv.Value))
@@ -339,7 +341,7 @@ namespace Reko.Analysis
 		/// <param name="r"></param>
 		/// <param name="regs"></param>
 		/// <returns></returns>
-		private bool IsSubRegisterOfRegisters(RegisterStorage rr, Dictionary<RegisterStorage, BitRange> regs)
+		private static bool IsSubRegisterOfRegisters(RegisterStorage rr, Dictionary<RegisterStorage, BitRange> regs)
 		{
             //$TODO: move to sanitizer method RemoveSequenceOverlaps,
             // and call it RemoveStorageOverlaps
@@ -352,7 +354,7 @@ namespace Reko.Analysis
 			return false;
 		}
 
-        private ApplicationBuilder CreateApplicationBuilder(SsaState ssaCaller, Statement stmCaller, CallInstruction call, Expression fn)
+        private static ApplicationBuilder CreateApplicationBuilder(SsaState ssaCaller, Statement stmCaller, CallInstruction call, Expression fn)
         {
             return new CallApplicationBuilder(ssaCaller, stmCaller, call, fn, false);
         }
@@ -418,28 +420,6 @@ namespace Reko.Analysis
             }
         }
 
-        private static void InsertAliasStatements(
-            SsaState ssa,
-            Statement stmCall,
-            MkSequence seq,
-            SsaIdentifier sidWide)
-        {
-            int i = stmCall.Block.Statements.IndexOf(stmCall);
-            Debug.Assert(i >= 0);
-            int bitOffset = seq.DataType.BitSize;
-            foreach (Identifier id in seq.Expressions)
-            {
-                bitOffset -= seq.Expressions[0].DataType.BitSize;
-                var sid = ssa.Identifiers[id];
-                var slice = new Slice(id.DataType, sidWide.Identifier, bitOffset);
-                var ass = new Assignment(id, slice);
-                var stm = stmCall.Block.Statements.Insert(i, stmCall.LinearAddress, ass);
-                sid.DefStatement = stm;
-                sid.DefExpression = slice;
-                sidWide.Uses.Add(stm);
-            }
-        }
-
         /// <summary>
         // Statements of the form:
         //		call	<ssaCaller-operand>
@@ -493,7 +473,7 @@ namespace Reko.Analysis
                     }
                     else
                     {
-                        e = this.MakeReturnExpression(bindings, idRet.Storage, idRet);
+                        e = MakeReturnExpression(bindings, idRet.Storage, idRet);
                     }
                     stm.Instruction = new ReturnInstruction(e);
                     ssa.AddUses(stm);
@@ -511,7 +491,7 @@ namespace Reko.Analysis
             }
         }
 
-        private Expression MakeReturnExpression(
+        private static Expression MakeReturnExpression(
             CallBinding [] bindings,
             Storage reg,
             Identifier idRet)
@@ -524,13 +504,13 @@ namespace Reko.Analysis
 
             if (idStg != null && idRet.DataType.BitSize < e.DataType.BitSize)
             {
-                int offset = idStg!.Storage.OffsetOf(idRet.Storage);
+                int offset = idStg.Storage.OffsetOf(idRet.Storage);
                 e = new Slice(idRet.DataType, e, offset);
             }
             return e;
         }
 
-        private Expression MakeReturnSequence(
+        private static Expression MakeReturnSequence(
             CallBinding[] bindings,
             SequenceStorage seq,
             Identifier idRet)
@@ -543,7 +523,7 @@ namespace Reko.Analysis
             return new MkSequence(idRet.DataType, elements);
         }
 
-        private Store MakeOutParameterStore(
+        private static Store MakeOutParameterStore(
             CallBinding[] bindings,
             OutArgumentStorage outStg,
             Identifier param)

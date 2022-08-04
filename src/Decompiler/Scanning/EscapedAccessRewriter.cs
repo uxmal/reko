@@ -84,7 +84,7 @@ namespace Reko.Scanning
             proc.ControlGraph.RemoveEdge(proc.EntryBlock, s);
             proc.ControlGraph.AddEdge(proc.EntryBlock, b);
             proc.ControlGraph.AddEdge(b, s);
-			StructureType st = new StructureType(proc.Name + "_frame_t", 0);
+			var st = new StructureType(proc.Name + "_frame_t", 0);
 			Identifier frame = proc.Frame.CreateTemporary(proc.Name + "_frame", st);
 			b.Statements.Add(
                 0,

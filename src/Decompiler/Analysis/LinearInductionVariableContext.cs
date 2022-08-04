@@ -56,7 +56,7 @@ namespace Reko.Analysis
             return new LinearInductionVariable(InitialValue, DeltaValue, TestValue, IsSignedOperator(TestOperator));
         }
 
-        private bool IsSignedOperator(Operator? op)
+        private static bool IsSignedOperator(Operator? op)
         {
             if (op == null)
                 return false;

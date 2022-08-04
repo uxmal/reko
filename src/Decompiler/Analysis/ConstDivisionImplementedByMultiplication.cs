@@ -101,12 +101,12 @@ namespace Reko.Analysis
         public bool Match(Instruction instr)
         {
             // Look for hi:lo = a * C
-            if (!(instr is Assignment ass) ||
-                !(ass.Dst.Storage is SequenceStorage dst) ||
+            if (instr is not Assignment ass ||
+                ass.Dst.Storage is not SequenceStorage dst ||
                 dst.Elements.Length != 2 ||
-                !(ass.Src is BinaryExpression bin) ||
-                !(bin.Operator is IMulOperator) ||
-                !(bin.Right is Constant cRight) ||
+                ass.Src is not BinaryExpression bin ||
+                bin.Operator is not IMulOperator ||
+                bin.Right is not Constant cRight ||
                 ass.Dst.DataType.Size <= bin.Left.DataType.Size)
             {
                 return false;
@@ -123,13 +123,13 @@ namespace Reko.Analysis
             // the divisor.
 
             var idSlice = idDst;
-            Constant? rShift = null;
+            Constant? rShift;
             if (idSlice != null)
             {
                 rShift = FindShiftUse(idSlice);
                 if (rShift != null)
                 {
-                    best = best / (1 << rShift.ToInt32());
+                    best /= (1 << rShift.ToInt32());
                 }
             }
             this.bestRational = best;
@@ -165,23 +165,6 @@ namespace Reko.Analysis
                     {
                         return null;
                     }
-                })
-                .Where(x => x != null)
-                .FirstOrDefault();
-        }
-
-        private Identifier? FindSliceUse(Identifier id)
-        {
-            return ssa.Identifiers[id]
-                .Uses.Select(u => u.Instruction)
-                .OfType<Assignment>()
-                .Select(a =>
-                {
-                    var s = a.Src as Slice;
-                    if (s == null || s.Expression != id)
-                        return null;
-                    else
-                        return a.Dst;
                 })
                 .Where(x => x != null)
                 .FirstOrDefault();

@@ -340,7 +340,7 @@ namespace Reko.Arch.M68k
         private void RewriteClr()
         {
             var src = Constant.Create(instr.DataWidth!, 0);
-            var opDst = orw.RewriteMoveDst(instr.Operands[0], instr.Address, instr.DataWidth!, src);
+            orw.RewriteMoveDst(instr.Operands[0], instr.Address, instr.DataWidth!, src);
             m.Assign(binder.EnsureFlagGroup(Registers.Z), Constant.True());
             m.Assign(binder.EnsureFlagGroup(Registers.C), Constant.False());
             m.Assign(binder.EnsureFlagGroup(Registers.N), Constant.False());
@@ -446,10 +446,10 @@ namespace Reko.Arch.M68k
             return RewriteDstOperand(mop, null!, (s, d) => { })!;
         }
 
-        private bool NeedsSpilling(Expression op)
+        private static bool NeedsSpilling(Expression op)
         {
             //$REVIEW: May not need to spill here if opSrc is immediate / register other than reg
-            if (op == null)
+            if (op is null)
                 return false;
             if (op is Constant)
                 return false;
@@ -552,16 +552,14 @@ namespace Reko.Arch.M68k
                 ea = orw.Combine(ea, indop.OuterDisplacement);
                 return ea;
             }
-            var indIdx = instr.Operands[0] as IndirectIndexedOperand;
-            if (indIdx != null)
+            if (instr.Operands[0] is IndirectIndexedOperand indIdx)
             {
                 var a = binder.EnsureRegister(indIdx.ARegister);
                 var x = binder.EnsureRegister(indIdx.XRegister);
                 return m.IAdd(a, x);        //$REVIEW: woefully incomplete...
             }
-            throw new NotImplementedException(string.Format("{0} ({1})", op, op.GetType().Name));
+            throw new NotImplementedException($"{op} ({op.GetType().Name})");
         }
-
 
         public void RewriteLea()
         {
@@ -684,8 +682,7 @@ namespace Reko.Arch.M68k
                 }
                 else
                 {
-                    var src = orw.RewriteSrc(instr.Operands[0], instr.Address) as MemoryAccess;
-                    if (src == null)
+                    if (orw.RewriteSrc(instr.Operands[0], instr.Address) is not MemoryAccess src)
                     {
                         EmitInvalid();
                         return;

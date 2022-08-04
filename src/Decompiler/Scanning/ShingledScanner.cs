@@ -379,7 +379,7 @@ namespace Reko.Scanning
             }
         }
 
-        private void SaveRewriter(
+        private static void SaveRewriter(
             Address addr,
             IEnumerator<RtlInstructionCluster> e,
             IDictionary<Address, IEnumerator<RtlInstructionCluster>> pool)
@@ -528,7 +528,7 @@ namespace Reko.Scanning
             }
         }
 
-        private bool IsInvalid(MemoryArea mem, RtlInstructionCluster instr)
+        private static bool IsInvalid(MemoryArea mem, RtlInstructionCluster instr)
         {
             if (instr.Class == InstrClass.Invalid)
                 return true;
@@ -544,7 +544,7 @@ namespace Reko.Scanning
         /// </summary>
         /// <param name="i"></param>
         /// <returns></returns>
-        private bool MayFallThrough(RtlInstructionCluster i)
+        private static bool MayFallThrough(RtlInstructionCluster i)
         {
             return 
                 (i.Class & InstrClass.Terminates) == 0
@@ -594,7 +594,6 @@ namespace Reko.Scanning
         public IEnumerable<Address> GetPossiblePointers(ImageSegment seg)
         {
             //$TODO: this assumes pointers must be aligned. Not the case for older machines.
-            uint ptrSize = (uint)program.Platform.PointerType.Size;
             var arch = program.Architecture;
             var rdr = program.CreateImageReader(arch, seg.Address);
             while (rdr.TryRead(program.Platform.PointerType, out Constant c))
@@ -617,12 +616,12 @@ namespace Reko.Scanning
         /// </summary>
         /// <param name="i"></param>
         /// <returns></returns>
-        private Address? DestinationAddress(RtlInstructionCluster i)
+        private static Address? DestinationAddress(RtlInstructionCluster i)
         {
-            var rtl = i.Instructions[i.Instructions.Length - 1];
+            var rtl = i.Instructions[^1];
             for (;;)
             {
-                if (!(rtl is RtlIf rif))
+                if (rtl is not RtlIf rif)
                     break;
                 rtl = rif.Instruction;
             }

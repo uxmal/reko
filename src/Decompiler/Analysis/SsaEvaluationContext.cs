@@ -200,7 +200,7 @@ namespace Reko.Analysis
                 return false;
             if (src.Instruction is not Assignment assSrc)
                 return false;
-            return ExpressionIdentifierUseFinder.Find(ssaIds, assSrc.Src)
+            return ExpressionIdentifierUseFinder.Find(assSrc.Src)
                 .Select(c => ssaIds[c].DefStatement)
                 .Where(d => d != null)
                 .Select(ph => ph!.Instruction as PhiAssignment)
@@ -213,7 +213,7 @@ namespace Reko.Analysis
                 //.Any();
             /*
              function shouldPropagateInto(r )
-src := the assignment defining r
+src := the assignment defining r
 for each subscripted component c of the RHS of r
   if the definition for c is a phi-function ph then
     for each operand op of ph

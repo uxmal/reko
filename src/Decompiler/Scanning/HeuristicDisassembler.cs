@@ -201,10 +201,9 @@ namespace Reko.Scanning
             var addrNextInstr = instr.Address + instr.Length;
             if (!isAddrValid(addrNextInstr))
                 return true;
-            ImageMapItem item;
-            if (!program.ImageMap.TryFindItem(addrNextInstr, out item))
+            if (!program.ImageMap.TryFindItem(addrNextInstr, out var item))
                 return false;
-            return !(item.DataType is UnknownType);
+            return item.DataType is not UnknownType;
         }
 
         /// <summary>
@@ -212,14 +211,13 @@ namespace Reko.Scanning
         /// </summary>
         /// <param name="i"></param>
         /// <returns></returns>
-        private Address? DestinationAddress(RtlInstructionCluster i)
+        private static Address? DestinationAddress(RtlInstructionCluster i)
         {
-            var last = i.Instructions[i.Instructions.Length - 1];
+            var last = i.Instructions[^1];
             var xfer = last as RtlTransfer;
             if (xfer is null)
             {
-                var cond = last as RtlIf;
-                if (cond == null)
+                if (last is not RtlIf cond)
                     return null;
                 xfer = cond.Instruction as RtlGoto;
                 if (xfer == null)

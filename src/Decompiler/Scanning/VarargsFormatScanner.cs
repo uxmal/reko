@@ -158,7 +158,7 @@ namespace Reko.Scanning
             return c.ToString();
         }
 
-        private bool VarargsParserSet(ProcedureCharacteristics chr)
+        private static bool VarargsParserSet(ProcedureCharacteristics chr)
         {
             return !string.IsNullOrEmpty(chr.VarargsParserClass);
         }

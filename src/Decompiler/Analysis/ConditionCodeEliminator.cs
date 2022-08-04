@@ -192,7 +192,7 @@ namespace Reko.Analysis
             return uses;
         }
 
-        private bool IsLocallyDefinedFlagGroup(SsaIdentifier sid)
+        private static bool IsLocallyDefinedFlagGroup(SsaIdentifier sid)
         {
             if (sid.DefStatement == null)
                 return false;
@@ -213,7 +213,7 @@ namespace Reko.Analysis
         /// <param name="grf"></param>
         /// <param name="stm"></param>
         /// <returns></returns>
-        private bool IsCopyWithOptionalCast(Identifier grf, Statement stm)
+        private static bool IsCopyWithOptionalCast(Identifier grf, Statement stm)
         {
             if (stm.Instruction is not Assignment ass)
                 return false;
@@ -232,7 +232,10 @@ namespace Reko.Analysis
             return m.ISub(e, 0);
 		}
 
-        public Expression UseGrfConditionally(SsaIdentifier sid, ConditionCode cc, bool forceIdentifier)
+        public Expression UseGrfConditionally(
+            SsaIdentifier sid,
+            ConditionCode cc,
+            bool forceIdentifier)
         {
             var defs = ClosureOfReachingDefinitions(sid);
 			var gf = new GrfDefinitionFinder(ssaIds);
@@ -460,7 +463,6 @@ namespace Reko.Analysis
             // Go 'backwards' through aliasing slices until instruction
             // defining the carry flag is found.
             var sidCarry = ssaIds[(Identifier)rorc.Arguments[2]];
-            var sidOrigCarry = sidCarry;
             var sidsToKill = new HashSet<SsaIdentifier> { sidCarry };
             while (sidCarry.DefExpression is Slice slice)
             {
@@ -500,7 +502,6 @@ namespace Reko.Analysis
             else 
                 return a;
 
-            var block = sidOrigLo.DefStatement!.Block;
             var expShrSrc = shift.Left;
             var expRorSrc = rorc.Arguments[0];
 
@@ -522,7 +523,7 @@ namespace Reko.Analysis
             var expLo = m.Slice(sidTmp.Identifier, sidOrigLo.Identifier.DataType, 0);
             ssam.ReplaceAssigment(sidOrigLo, new Assignment(sidOrigLo.Identifier, expLo));
             sidOrigLo.DefExpression = expLo;
-            return sidOrigLo.DefStatement.Instruction;
+            return sidOrigLo.DefStatement!.Instruction;
         }
 
         public override Expression VisitTestCondition(TestCondition tc)

@@ -72,9 +72,9 @@ namespace Reko.Analysis
             sids.Add(sid);
         }
 
-        private bool IsAssignmentToInvalidConstant(Statement stm)
+        private static bool IsAssignmentToInvalidConstant(Statement stm)
         {
-            if (!(stm.Instruction is Assignment ass))
+            if (stm.Instruction is not Assignment ass)
                 return false;
             return ass.Src is InvalidConstant;
         }
@@ -173,7 +173,7 @@ namespace Reko.Analysis
             }
         }
 
-		private bool MoveAssignment(int initPos, int newPos, Block block)
+		private static bool MoveAssignment(int initPos, int newPos, Block block)
 		{
 			if (initPos + 1 == newPos)
 				return false;

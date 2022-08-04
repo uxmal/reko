@@ -58,7 +58,7 @@ namespace Reko.Analysis
 
         public override Instruction TransformAssignment(Assignment ass)
         {
-            if (!(ass.Dst.Storage is SequenceStorage seq))
+            if (ass.Dst.Storage is not SequenceStorage seq)
                 return ass;
             var sid = ssa.Identifiers[ass.Dst];
             var stores = sid.Uses
@@ -118,7 +118,7 @@ namespace Reko.Analysis
             }
         }
 
-        private Slice? GetSliceRhs(Store store)
+        private static Slice? GetSliceRhs(Store store)
         {
             var slice = store.Src as Slice;
             return slice;
@@ -140,7 +140,7 @@ namespace Reko.Analysis
 
         private StoreOffset? ClassifyStore(Statement stm)
         {
-            if (!(stm.Instruction is Store store))
+            if (stm.Instruction is not Store store)
                 return null;
             Expression ea;
             if (store.Dst is MemoryAccess access)

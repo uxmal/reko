@@ -29,8 +29,7 @@ namespace Reko.Analysis
 {
 	public class SsaIdentifierCollection : ICollection<SsaIdentifier>
 	{
-        private readonly Dictionary<Identifier, SsaIdentifier> sids =
-            new Dictionary<Identifier, SsaIdentifier>();
+        private readonly Dictionary<Identifier, SsaIdentifier> sids = new();
         private int serialNumber = 0;
 
 		public SsaIdentifier Add(Identifier idOld, Statement? stmDef, Expression? exprDef, bool isSideEffect)
@@ -105,7 +104,7 @@ namespace Reko.Analysis
             return sids.TryGetValue(id, out sid);
         }
 
-		private string FormatSsaName(Identifier id, int v)
+		private static string FormatSsaName(Identifier id, int v)
 		{
             return string.Format("{0}_{1}", id.Name, v);
 		}
@@ -125,7 +124,7 @@ namespace Reko.Analysis
             return "" + newSuffix;
         }
 
-        private Storage StorageOf(Expression e)
+        private static Storage StorageOf(Expression e)
         {
             if (e is Identifier id)
                 return id.Storage;

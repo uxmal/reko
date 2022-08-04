@@ -65,7 +65,7 @@ namespace Reko.Analysis
 			return sidNew.Identifier;
 		}
 
-		public Identifier InsertAssignment(Identifier idDst, Identifier idSrc, Block b, int i)
+		public static Identifier InsertAssignment(Identifier idDst, Identifier idSrc, Block b, int i)
 		{
             b.Statements.Insert(
                 i,
@@ -92,7 +92,7 @@ namespace Reko.Analysis
 
 		public void RenameDominatedIdentifiers(SsaIdentifier sidOld, SsaIdentifier sidNew)
 		{
-			DominatedUseRenamer dur = new DominatedUseRenamer(doms);
+			var dur = new DominatedUseRenamer(doms);
 			dur.Transform(sidOld, sidNew);
 		}
 
@@ -116,7 +116,7 @@ namespace Reko.Analysis
 			{
                 Block pred = phi.Src.Arguments[i].Block;
                 if (phi.Src.Arguments[i].Value is Identifier id &&
-                    !(id is MemoryIdentifier) &&
+                    id is not MemoryIdentifier &&
                     idDst != id)
 				{
 					if (IsLiveAtCopyPoint(idDst, pred))
@@ -167,7 +167,7 @@ namespace Reko.Analysis
 			}
 
 
-			public int Index(Statement stm)
+			public static int Index(Statement stm)
 			{
 				return stm.Block.Statements.IndexOf(stm);
 			}

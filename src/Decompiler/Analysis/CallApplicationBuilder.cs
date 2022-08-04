@@ -249,7 +249,7 @@ namespace Reko.Analysis
             return sid.Identifier;
         }
 
-        private void DefineUninitializedIdentifier(
+        private static void DefineUninitializedIdentifier(
             Statement stm,
             SsaIdentifier sid)
         {
@@ -271,7 +271,7 @@ Please report this issue at https://github.com/uxmal/reko";
         /// <param name="instr"></param>
         /// <param name="stmBefore"></param>
         /// <returns></returns>
-        private Statement InsertStatementBefore(Instruction instr, Statement stmBefore)
+        private static Statement InsertStatementBefore(Instruction instr, Statement stmBefore)
         {
             var block = stmBefore.Block;
             var iPos = block.Statements.IndexOf(stmBefore);

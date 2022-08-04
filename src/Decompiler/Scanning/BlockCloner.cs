@@ -81,9 +81,10 @@ namespace Reko.Scanning
                 StatementNew = new Statement(
                     stm.LinearAddress,
                     null!,
-                    blockNew);
-                StatementNew.Instruction = stm.Instruction.Accept(this);
-                
+                    blockNew)
+                {
+                    Instruction = stm.Instruction.Accept(this)
+                };
                 blockNew.Statements.Add(StatementNew);
             }
             procCalling.AddBlock(blockNew);
@@ -148,7 +149,7 @@ namespace Reko.Scanning
 
         public Instruction VisitReturnInstruction(ReturnInstruction ret)
         {
-            var exp = ret.Expression != null ? ret.Expression.Accept(this) : null;
+            var exp = ret.Expression?.Accept(this);
             return new ReturnInstruction(exp);
         }
 

@@ -123,7 +123,7 @@ namespace Reko.Analysis
             {
                 foreach (Statement stm in program.CallGraph.CallerStatements(proc))
                 {
-                    if (!(stm.Instruction is CallInstruction ci))
+                    if (stm.Instruction is not CallInstruction ci)
                         continue;
                     var ssaCaller = this.procToSsa[stm.Block.Procedure];
                     if (RemoveDeadCallUses(ssaCaller, stm, ci, deadStgs))
@@ -168,7 +168,7 @@ namespace Reko.Analysis
             }
         }
 
-        private Dictionary<Storage, BitRange> SummarizeStorageBitranges(
+        private static Dictionary<Storage, BitRange> SummarizeStorageBitranges(
             IEnumerable<KeyValuePair<Storage, BitRange>> items)
         {
             var registerDomains = new Dictionary<StorageDomain, KeyValuePair<Storage, BitRange>>();
@@ -210,7 +210,8 @@ namespace Reko.Analysis
                 .ToDictionary(k => k.Key, v => v.Value);
         }
 
-        private Dictionary<RegisterStorage, uint> SummarizeFlagGroups(Dictionary<Storage, BitRange> liveOut)
+        private static Dictionary<RegisterStorage, uint> SummarizeFlagGroups(
+            Dictionary<Storage, BitRange> liveOut)
         {
             var results = new Dictionary<RegisterStorage, uint>();
             foreach (var de in liveOut)
@@ -271,9 +272,9 @@ namespace Reko.Analysis
 
             foreach (var stm in ssa.Procedure.ExitBlock.Statements)
             {
-                if (!(stm.Instruction is UseInstruction use))
+                if (stm.Instruction is not UseInstruction use)
                     continue;
-                var ids = ExpressionIdentifierUseFinder.Find(ssa.Identifiers, use.Expression);
+                var ids = ExpressionIdentifierUseFinder.Find(use.Expression);
                 foreach (var id in ids)
                 {
                     var stg = id.Storage;
@@ -314,16 +315,20 @@ namespace Reko.Analysis
             }
             else
             {
-                var urf = new UsedRegisterFinder(program, dataFlow, new Procedure[0], eventListener);
+                var urf = new UsedRegisterFinder(
+                    program,
+                    dataFlow,
+                    Array.Empty<Procedure>(),
+                    eventListener);
                 foreach (Statement stm in program.CallGraph.CallerStatements(procCallee))
                 {
-                    if (!(stm.Instruction is CallInstruction ci))
+                    if (stm.Instruction is not CallInstruction ci)
                         continue;
                     trace.Verbose("  {0}", ci);
                     var ssaCaller = this.procToSsa[stm.Block.Procedure];
                     foreach (var def in ci.Definitions)
                     {
-                        if (!(def.Expression is Identifier id))
+                        if (def.Expression is not Identifier id)
                             continue;
                         var sid = ssaCaller.Identifiers[id];
                         if (sid.Uses.Count > 0)
@@ -346,7 +351,9 @@ namespace Reko.Analysis
             return liveOutStorages;
         }
 
-        private bool MergeLiveOut(ProcedureFlow flow, Dictionary<Storage, BitRange> newLiveOut)
+        private static bool MergeLiveOut(
+            ProcedureFlow flow,
+            Dictionary<Storage, BitRange> newLiveOut)
         {
             bool change = false;
             foreach (var de in newLiveOut)
@@ -378,7 +385,10 @@ namespace Reko.Analysis
         /// <param name="ci">The call instruction to mutate.</param>
         /// <param name="deadStgs">Set of dead storages to remove.</param>
         /// <returns>True if any 'def's were removed.</returns>
-        private bool RemoveDeadCallDefinitions(SsaState ssa, CallInstruction ci, HashSet<Storage> deadStgs)
+        private static bool RemoveDeadCallDefinitions(
+            SsaState ssa,
+            CallInstruction ci,
+            HashSet<Storage> deadStgs)
         {
             //$REVIEW: this code is similar to DeadCode.AdjustCallWithDeadDefinitions
             // Move it to SsaState? Somewhere else?
@@ -403,7 +413,11 @@ namespace Reko.Analysis
         /// From the call instruction <paramref name="ci"/>, in statement <paramref name="stmCall"/>,
         /// removes those 'use's that have been marked as dead in <paramref name="deadStgs"/>.
         /// </summary>
-        private bool RemoveDeadCallUses(SsaState ssa, Statement stmCall, CallInstruction ci, HashSet<Storage> deadStgs)
+        private static bool RemoveDeadCallUses(
+            SsaState ssa,
+            Statement stmCall,
+            CallInstruction ci,
+            HashSet<Storage> deadStgs)
         {
             //$REVIEW: this code is similar to DeadCode.AdjustCallWithDeadDefinitions
             // Move it to SsaState? Somewhere else?

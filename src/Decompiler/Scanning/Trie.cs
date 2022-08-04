@@ -33,7 +33,7 @@ namespace Reko.Scanning
 	public class Trie<T>
         where T : notnull
 	{
-		private TrieNode root;
+		private readonly TrieNode root;
 
 		public Trie(IEqualityComparer<T> hasher)
 		{

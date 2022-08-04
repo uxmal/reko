@@ -260,9 +260,9 @@ namespace Reko.Analysis
                 .Where(sid => sid.DefStatement != null &&
                               reachingBlocks.Contains(sid.DefStatement.Block) &&
                               sid.Identifier.Name != sid.OriginalIdentifier.Name &&
-                              !(sid.Identifier.Storage is MemoryStorage) &&
-                              !(sid.Identifier.Storage is StackStorage) &&
-                              !(sid.Identifier.Storage is TemporaryStorage) &&
+                              sid.Identifier.Storage is not MemoryStorage &&
+                              sid.Identifier.Storage is not StackStorage &&
+                              sid.Identifier.Storage is not TemporaryStorage &&
                               !existing.Contains(sid.Identifier))
                 .Select(sid => sid.OriginalIdentifier);
             reachingIds = SeparateSequences(reachingIds);
@@ -350,7 +350,7 @@ namespace Reko.Analysis
             }
         }
 
-        private ISet<Block> FindPredecessorClosure(Block start)
+        private static ISet<Block> FindPredecessorClosure(Block start)
         {
             var wl = new WorkList<Block>();
             var preds = new HashSet<Block>();
@@ -433,7 +433,7 @@ namespace Reko.Analysis
         /// </summary>
         /// <param name="ids"></param>
         /// <returns></returns>
-        public IEnumerable<Identifier> CollectFlagGroups(
+        public static IEnumerable<Identifier> CollectFlagGroups(
             IEnumerable<Identifier> ids, 
             IStorageBinder binder,
             IProcessorArchitecture arch)
@@ -491,7 +491,7 @@ namespace Reko.Analysis
         /// </summary>
         /// <param name="block"></param>
         /// <param name="stm"></param>
-        private void TerminateBlockAfterStatement(Block block, Statement stm)
+        private static void TerminateBlockAfterStatement(Block block, Statement stm)
         {
             int iStm = block.Statements.IndexOf(stm);
             Debug.Assert(iStm >= 0);
@@ -710,7 +710,7 @@ namespace Reko.Analysis
                 .Select(d => d.Storage)
                 .ToHashSet();
             var trashedRegisters = program.Platform.CreateTrashedRegisters();
-            var stackDepth = this.GetStackDepthAtCall(ssa.Procedure, ci);
+            var stackDepth = GetStackDepthAtCall(ssa.Procedure, ci);
             var frame = ssa.Procedure.Frame;
 
             // Hell node implementation - use and define all variables.
@@ -808,7 +808,7 @@ namespace Reko.Analysis
                     case SequenceStorage _:
                         ids.Add(ass.Dst);
                         break;
-                    case StackStorage stk:
+                    case StackStorage _:
                         ids.Add(ass.Dst);
                         break;
                     }
@@ -822,7 +822,7 @@ namespace Reko.Analysis
             return ids;
         }
 
-        private int? GetStackDepthAtCall(Procedure proc, CallInstruction call)
+        private static int? GetStackDepthAtCall(Procedure proc, CallInstruction call)
         {
             var sp = call.Uses.FirstOrDefault(u => u.Storage == proc.Architecture.StackRegister);
             if (sp is null)
@@ -846,7 +846,10 @@ namespace Reko.Analysis
             return null;
         }
 
-        private Storage? FrameShift(CallInstruction call, Storage callerStorage, int? spDepth)
+        private static Storage? FrameShift(
+            CallInstruction call,
+            Storage callerStorage,
+            int? spDepth)
         {
             if (callerStorage is StackStorage stgArg)
             {
@@ -860,7 +863,7 @@ namespace Reko.Analysis
             return callerStorage;
         }
 
-        private bool IsTrashed(
+        private static bool IsTrashed(
             HashSet<RegisterStorage> trashedRegisters,
             Storage stg)
         {
@@ -1167,14 +1170,14 @@ namespace Reko.Analysis
         {
             if (e == proc.Frame.FramePointer)
                 return true;
-            if (!(e is BinaryExpression bin))
+            if (e is not BinaryExpression bin)
                 return false;
             if (bin.Left != proc.Frame.FramePointer)
                 return false;
             return bin.Right is Constant;
         }
 
-        private bool IsConstFpuStackAccess(MemoryAccess acc)
+        private static bool IsConstFpuStackAccess(MemoryAccess acc)
         {
             if (!acc.MemoryId.Name.StartsWith("ST"))  //$HACK: gross hack but we have to start somewhere.
                 return false;

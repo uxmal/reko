@@ -66,7 +66,7 @@ namespace Reko.Analysis
 		{
 			foreach (SsaIdentifier sid in ssaIds)
 			{
-				Web w = new Web();
+				var w = new Web();
 				w.Add(sid);
 				webOf[sid.Identifier] = w;
 				webs.Add(w);
@@ -105,13 +105,13 @@ namespace Reko.Analysis
 
                 foreach (SsaIdentifier id in ssaIds)
                 {
-                    if (id.DefStatement != null && !(id.Identifier is MemoryIdentifier))
+                    if (id.DefStatement != null && id.Identifier is not MemoryIdentifier)
                         VisitStatement(id.DefStatement);
                 }
 
                 InsertDeclarations();
 
-                WebReplacer replacer = new WebReplacer(this);
+                var replacer = new WebReplacer(this);
                 foreach (Block bl in ssa.Procedure.ControlGraph.Blocks)
                 {
                     for (int i = bl.Statements.Count - 1; i >= 0; --i)
@@ -144,7 +144,7 @@ namespace Reko.Analysis
 
 		private void Merge(Web a, Web b)
 		{
-			Web c = new Web();
+			var c = new Web();
 			foreach (SsaIdentifier sid in a.Members)
 			{
 				c.Add(sid);

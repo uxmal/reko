@@ -193,7 +193,8 @@ namespace Reko.Analysis
             ssa.AddUses(stmR);
         }
 
-        private List<(UnalignedAccess, UnalignedAccess)> GroupUnalignedStorePairs(Dictionary<Identifier, List<UnalignedAccess>> unalignedStores)
+        private static List<(UnalignedAccess, UnalignedAccess)> GroupUnalignedStorePairs(
+            Dictionary<Identifier, List<UnalignedAccess>> unalignedStores)
         {
             var pairs = new List<(UnalignedAccess, UnalignedAccess)>();
             foreach (var de in unalignedStores)
@@ -241,7 +242,7 @@ namespace Reko.Analysis
                 }
                 else
                 {
-                    if (!(stm.Instruction is Assignment ass))
+                    if (stm.Instruction is not Assignment ass)
                         continue;
                     src = ass.Src;
                 }
@@ -272,7 +273,7 @@ namespace Reko.Analysis
             return dict;
         }
 
-        private Expression GetModifiedMemory(Instruction instruction)
+        private static Expression GetModifiedMemory(Instruction instruction)
         {
             if (instruction is Assignment ass)
                 return ass.Dst;
@@ -295,7 +296,7 @@ namespace Reko.Analysis
             }
         }
 
-        private int GetOffsetOf(Expression e)
+        private static int GetOffsetOf(Expression e)
         {
             if (e is Identifier id)
             {
@@ -323,7 +324,7 @@ namespace Reko.Analysis
             }
         }
 
-        private Tuple<string, Application>? MatchIntrinsicApplication(Expression? e, string [] names)
+        private static Tuple<string, Application>? MatchIntrinsicApplication(Expression? e, string [] names)
         {
             if (e is Application app &&
                 app.Procedure is ProcedureConstant pc &&

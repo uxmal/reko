@@ -33,8 +33,8 @@ namespace Reko.Arch.X86
     /// </summary>
     public class ThisCallConvention : CallingConvention
     {
-        private RegisterStorage ecxThis;
-        private int stackAlignment;
+        private readonly RegisterStorage ecxThis;
+        private readonly int stackAlignment;
 
         public ThisCallConvention(RegisterStorage ecxThis, int stackAlignment)
         {

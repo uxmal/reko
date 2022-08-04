@@ -165,8 +165,8 @@ namespace Reko.Analysis
             this.dst = ReplaceDstWithSsaIdentifier(this.dst, expSum, stmLong);
 
             var sidDst = GetSsaIdentifierOf(dst);
-            var sidLeft = GetSsaIdentifierOf(left);
-            var sidRight = GetSsaIdentifierOf(right);
+            //var sidLeft = GetSsaIdentifierOf(left);
+            //var sidRight = GetSsaIdentifierOf(right);
             if (stmMkLeft is not null)
                 ssa.AddUses(stmMkLeft);
             if (stmMkRight is not null)
@@ -233,12 +233,12 @@ namespace Reko.Analysis
             return dst;
         }
 
-        private Instruction CreateMkSeq(Expression dst, Expression hi, Expression lo)
+        private static Instruction CreateMkSeq(Expression dst, Expression hi, Expression lo)
         {
             return Assign(dst, new MkSequence(dst.DataType, hi, lo));
         }
 
-        private Instruction Assign(Expression dst, Expression src)
+        private static Instruction Assign(Expression dst, Expression src)
         {
             if (dst is Identifier idDst)
             {
@@ -402,7 +402,7 @@ namespace Reko.Analysis
             return new MkSequence(totalSize, expHi, expLo);
         }
 
-        private Expression CreateMemoryAccess(MemoryAccess mem, DataType totalSize)
+        private static Expression CreateMemoryAccess(MemoryAccess mem, DataType totalSize)
         {
             if (mem is SegmentedAccess segmem)
             {
@@ -434,7 +434,7 @@ namespace Reko.Analysis
             public readonly int StatementIndex;
         }
 
-        public bool MemoryOperandsAdjacent(IProcessorArchitecture arch, MemoryAccess m1, MemoryAccess m2)
+        public static bool MemoryOperandsAdjacent(IProcessorArchitecture arch, MemoryAccess m1, MemoryAccess m2)
         {
             var off1 = GetOffset(m1);
             var off2 = GetOffset(m2);
@@ -443,7 +443,7 @@ namespace Reko.Analysis
             return arch.Endianness.OffsetsAdjacent(off1.ToInt64(), off2.ToInt64(), m1.DataType.Size);
         }
 
-        private Constant? GetOffset(MemoryAccess access)
+        private static Constant? GetOffset(MemoryAccess access)
         {
             if (memOffset.Match(access))
             {

@@ -43,7 +43,7 @@ namespace Reko.Analysis
 		{
 			if (id1 != id2)
 			{
-				Interference i = new Interference(id1, id2);
+				var i = new Interference(id1, id2);
 				if (!intf.ContainsKey(i))
 					intf.Add(i, i);
 			}

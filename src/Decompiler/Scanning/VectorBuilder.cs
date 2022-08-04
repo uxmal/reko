@@ -114,7 +114,7 @@ namespace Reko.Scanning
             int[] map = new int[limit];
             var addrTableStart = Address.Ptr32((uint)deref.TableOffset); //$BUG: breaks on 64- and 16-bit platforms.
             if (!program.SegmentMap.IsValidAddress(addrTableStart))
-                return new int[0];      //$DEBUG: look into this case.
+                return Array.Empty<int>();      //$DEBUG: look into this case.
             var rdr = program.CreateImageReader(program.Architecture, addrTableStart);
             for (int i = 0; i < limit; ++i)
             {
@@ -139,7 +139,7 @@ namespace Reko.Scanning
             int stride,
             ProcessorState state)
         {
-            List<Address> vector = new List<Address>();
+            var vector = new List<Address>();
 
             var arch = program.Architecture;
             if (permutation != null)
@@ -226,9 +226,9 @@ namespace Reko.Scanning
             return stg == program.Architecture.StackRegister;
         }
 
-        private List<Address> PostError(string err, Address addrInstr, Address addrTable)
+        private static List<Address> PostError(string err, Address addrInstr, Address addrTable)
         {
-            Debug.WriteLine(string.Format("Instruction at {0}, table at {1}: {2}", addrInstr, addrTable, err));
+            Debug.WriteLine($"Instruction at {addrInstr}, table at {addrTable}: {err}");
             return new List<Address>();
         }
 

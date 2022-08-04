@@ -450,7 +450,7 @@ fn0C00_0000_exit:
             var addr = Address.Ptr32(0x00001000);
             var proc = new Procedure(program.Architecture, "fn1000", addr, arch.CreateFrame());
             var block = new Block(proc, addr, "l1000");
-            Assert.IsFalse(scanner.IsLinearReturning(block));
+            Assert.IsFalse(TestScanner.IsLinearReturning(block));
         }
 
         [Test]
@@ -461,7 +461,7 @@ fn0C00_0000_exit:
             m.Return();
 
             var block = m.Procedure.ControlGraph.Blocks[2];
-            Assert.IsTrue(scanner.IsLinearReturning(block));
+            Assert.IsTrue(TestScanner.IsLinearReturning(block));
         }
 
         [Test]
@@ -472,7 +472,7 @@ fn0C00_0000_exit:
             m.Assign(m.Register("r0"), m.Register("r1"));
 
             var block = m.Block;
-            Assert.IsFalse(scanner.IsLinearReturning(block));
+            Assert.IsFalse(TestScanner.IsLinearReturning(block));
         }
 
         [Test]

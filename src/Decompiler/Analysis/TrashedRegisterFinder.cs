@@ -141,7 +141,9 @@ namespace Reko.Analysis
             }
         }
 
-        private Dictionary<Procedure, int?> CollectStackPointers(ProgramDataFlow flow, Storage stackRegister)
+        private static Dictionary<Procedure, int?> CollectStackPointers(
+            ProgramDataFlow flow,
+            Storage stackRegister)
         {
             if (stackRegister == null)
                 return new Dictionary<Procedure, int?>();
@@ -343,7 +345,7 @@ namespace Reko.Analysis
         public bool VisitCallInstruction(CallInstruction ci)
         {
             var ctx = this.ctx!;
-            if (!(ci.Callee is ProcedureConstant pc))
+            if (ci.Callee is not ProcedureConstant pc)
             {
                 foreach (var d in ci.Definitions)
                 {
@@ -362,7 +364,7 @@ namespace Reko.Analysis
                 // anything, so we leave early.
                 return true;
             }
-            if (!(pc.Procedure is Procedure callee))
+            if (pc.Procedure is not Procedure callee)
                 throw new NotImplementedException();
 
             if (sccGroup.Any(s => s.SsaState.Procedure == callee))
@@ -507,7 +509,7 @@ namespace Reko.Analysis
         /// </summary>
         public bool VisitUseInstruction(UseInstruction use)
         {
-            if (!(use.Expression is Identifier id))
+            if (use.Expression is not Identifier id)
                 return true;
             var sid = ssas[block!.Procedure].Identifiers[id];
             var ctx = this.ctx!;
@@ -679,7 +681,7 @@ namespace Reko.Analysis
                         changed = true;
                         this.StackState.Add(de.Key, de.Value);
                     }
-                    else if (!(oldValue is InvalidConstant) && !cmp.Equals(oldValue, de.Value))
+                    else if (oldValue is not InvalidConstant && !cmp.Equals(oldValue, de.Value))
                     {
                         changed = true;
                         this.StackState[de.Key] = InvalidConstant.Create(oldValue.DataType);
@@ -713,7 +715,7 @@ namespace Reko.Analysis
                 var args = appl.Arguments;
                 for (int i = 0; i < args.Length; ++i)
                 {
-                    if (!(args[i] is OutArgument outArg))
+                    if (args[i] is not OutArgument outArg)
                         continue;
                     if (outArg.Expression is Identifier outId)
                     {
@@ -757,9 +759,9 @@ namespace Reko.Analysis
                 var src = ssa.Identifiers[id].DefStatement;
                 if (src == null)
                     return false;
-                if (!(src.Instruction is Assignment assSrc))
+                if (src.Instruction is not Assignment assSrc)
                     return false;
-                return ExpressionIdentifierUseFinder.Find(ssa.Identifiers, assSrc.Src)
+                return ExpressionIdentifierUseFinder.Find(assSrc.Src)
                     .Select(c => ssa.Identifiers[c].DefStatement)
                     .Where(d => d != null)
                     .Select(ph => ph!.Instruction as PhiAssignment)
@@ -800,7 +802,7 @@ namespace Reko.Analysis
                         IsDirty = true;
                         StackState.Add(stack.StackOffset, value);
                     }
-                    else if (!(oldValue is InvalidConstant) && !cmp.Equals(oldValue, value))
+                    else if (oldValue is not InvalidConstant && !cmp.Equals(oldValue, value))
                     {
                         trace.Verbose("Trf: Stack offset {0:X4} now has value {1}, was {2}", stack.StackOffset, value, oldValue);
                         IsDirty = true;
@@ -815,7 +817,7 @@ namespace Reko.Analysis
                         IsDirty = true;
                         IdState.Add(id, (value, range));
                     }
-                    else if (!(oldValue.Item1 is InvalidConstant) && !cmp.Equals(oldValue.Item1, value))
+                    else if (oldValue.Item1 is not InvalidConstant && !cmp.Equals(oldValue.Item1, value))
                     {
                         trace.Verbose("Trf: id {0} now has value {1}, was {2}", id, value, oldValue);
                         IsDirty = true;
@@ -836,7 +838,7 @@ namespace Reko.Analysis
                     trace.Verbose("Trf: Stack offset {0:X4} now has value {1}", offset.Value, value);
                     StackState.Add(offset.Value, value);
                 }
-                else if (!cmp.Equals(oldValue, value) && !(oldValue is InvalidConstant))
+                else if (!cmp.Equals(oldValue, value) && oldValue is not InvalidConstant)
                 {
                     IsDirty = true;
                     trace.Verbose("Trf: Stack offset {0:X4} now has value {1}, was {2}", offset.Value, value, oldValue);
@@ -847,9 +849,9 @@ namespace Reko.Analysis
 
             private int? GetFrameOffset(Expression effectiveAddress)
             {
-                if (!(effectiveAddress is BinaryExpression ea) || ea.Left != FramePointer)
+                if (effectiveAddress is not BinaryExpression ea || ea.Left != FramePointer)
                     return null;
-                if (!(ea.Right is Constant o))
+                if (ea.Right is not Constant o)
                     return null;
                 if (ea.Operator == Operator.IAdd)
                 {

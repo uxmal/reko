@@ -21,8 +21,8 @@
 using Reko.Core;
 using Reko.Core.Code;
 using Reko.Core.Expressions;
-using Reko.Core.Hll.C;
 using Reko.Core.Graphs;
+using Reko.Core.Hll.C;
 using Reko.Core.Output;
 using Reko.Core.Services;
 using Reko.Core.Types;
@@ -72,9 +72,9 @@ namespace Reko.Analysis
 		{
 			foreach (Procedure proc in program.Procedures.Values)
 			{
-				StringWriter output = new StringWriter();
+				var output = new StringWriter();
                 ProcedureFlow pf = this.flow[proc];
-                TextFormatter f = new TextFormatter(output);
+                var f = new TextFormatter(output);
 				if (pf.Signature != null)
 					pf.Signature.Emit(proc.Name, FunctionType.EmitFlags.None, f);
 				else
@@ -267,7 +267,7 @@ namespace Reko.Analysis
                 return;
             if (ci.Callee is ProcedureConstant pc)
             {
-                if (!(pc.Procedure is ExternalProcedure))
+                if (pc.Procedure is not ExternalProcedure)
                     return;
             }
             var trashedRegisters = program.Platform.CreateTrashedRegisters();
@@ -288,7 +288,7 @@ namespace Reko.Analysis
             }
         }
 
-        private bool IsStackStorageOfPreservedRegister(
+        private static bool IsStackStorageOfPreservedRegister(
             SsaState ssa,
             HashSet<RegisterStorage> trashedRegisters,
             CallBinding use)
@@ -304,7 +304,7 @@ namespace Reko.Analysis
             return true;
         }
 
-        private bool IsPreservedRegister(
+        private static bool IsPreservedRegister(
             HashSet<RegisterStorage> trashedRegisters,
             Storage stg)
         {

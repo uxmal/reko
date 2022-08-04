@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2022 John Källén.
  *
@@ -39,10 +39,9 @@ namespace Reko.UserInterfaces.WindowsForms
             this.list = list;
         }
 
-
         public object DataSource
         {
-            get { throw new NotImplementedException();  }
+            get { throw new NotImplementedException(); }
             set
             {
                 list.Items.Clear();

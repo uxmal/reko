@@ -70,7 +70,7 @@ namespace Reko.Scanning
 
 	public class BackwalkDereference : BackwalkOperation
 	{
-		private int entrySize;
+		private readonly int entrySize;
 
 		public BackwalkDereference(int tableOffset, int tableEntrySize) : base(BackwalkOperator.deref, tableOffset)
 		{
@@ -90,7 +90,7 @@ namespace Reko.Scanning
 
 	public class BackwalkBranch : BackwalkOperation
 	{
-		private ConditionCode cc;
+		private readonly ConditionCode cc;
 
 		public BackwalkBranch(ConditionCode cc) : base(BackwalkOperator.branch, 0)
 		{
@@ -119,7 +119,7 @@ namespace Reko.Scanning
 
 	public class BackwalkError : BackwalkOperation
 	{
-		private string errorMsg;
+		private readonly string errorMsg;
 
 		public BackwalkError(string errorMsg) : base(BackwalkOperator.err, 0)
 		{

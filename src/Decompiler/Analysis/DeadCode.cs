@@ -140,7 +140,7 @@ namespace Reko.Analysis
 
 		private void Eliminate()
 		{
-			HashSet<Statement> marks = new HashSet<Statement>();
+			var marks = new HashSet<Statement>();
 
 			// Initially, just mark those statements that contain critical statements.
 			// These are calls to other functions, functions (which have side effects) and use statements.
@@ -230,12 +230,12 @@ namespace Reko.Analysis
 
 		public override void VisitStore(Store store)
 		{
-            var idDst = store.Dst as Identifier;
-            if (idDst == null || (!(idDst.Storage is OutArgumentStorage)))
+            if (store.Dst is not Identifier idDst ||
+                idDst.Storage is not OutArgumentStorage)
             {
                 store.Dst.Accept(this);
             }
-			store.Src.Accept(this);
+            store.Src.Accept(this);
 		}
 	}
 }

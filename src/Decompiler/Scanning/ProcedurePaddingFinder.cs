@@ -34,7 +34,7 @@ namespace Reko.Scanning
     /// </summary>
     public class ProcedurePaddingFinder
     {
-        private ScanResults sr;
+        private readonly ScanResults sr;
 
         public ProcedurePaddingFinder(ScanResults sr)
         {

@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2022 John Källén.
  *
@@ -43,19 +43,19 @@ namespace Reko.UnitTests.Decompiler.Analysis
         [Test]
         public void FindNone()
         {
-            Assert.AreEqual(0, ExpressionIdentifierUseFinder.Find(null, m.Int32(3)).Count);
+            Assert.AreEqual(0, ExpressionIdentifierUseFinder.Find(m.Int32(3)).Count);
         }
 
         [Test]
         public void FindId()
         {
-            Assert.AreEqual(1, ExpressionIdentifierUseFinder.Find(null, m.Local(PrimitiveType.Word16, "loc3")).Count);
+            Assert.AreEqual(1, ExpressionIdentifierUseFinder.Find(m.Local(PrimitiveType.Word16, "loc3")).Count);
         }
 
         [Test]
         public void FindIdsInBinOp()
         {
-            Assert.AreEqual(2, ExpressionIdentifierUseFinder.Find(null, m.IAdd(
+            Assert.AreEqual(2, ExpressionIdentifierUseFinder.Find(m.IAdd(
                 m.Local32("loc2"),
                 m.Local32("loc1"))).Count);
         }
@@ -63,7 +63,7 @@ namespace Reko.UnitTests.Decompiler.Analysis
         [Test]
         public void FindNoOutParams()
         {
-            Assert.AreEqual(0, ExpressionIdentifierUseFinder.Find(null, m.Fn("foo", m.Out(PrimitiveType.Ptr32, m.Local32("tmp")))).Count);
+            Assert.AreEqual(0, ExpressionIdentifierUseFinder.Find(m.Fn("foo", m.Out(PrimitiveType.Ptr32, m.Local32("tmp")))).Count);
         }
     }
 }

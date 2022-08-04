@@ -31,7 +31,6 @@ namespace Reko.UserInterfaces.WindowsForms
 {
     public class CallGraphPane : IWindowPane
     {
-        private IServiceProvider services;
         private Program program;
 
         public CallGraphPane(Program program)
@@ -64,7 +63,6 @@ namespace Reko.UserInterfaces.WindowsForms
 
         public void SetSite(IServiceProvider sp)
         {
-            this.services = sp;
         }
     }
 }

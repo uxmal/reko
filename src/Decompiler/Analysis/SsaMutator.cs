@@ -202,7 +202,7 @@ namespace Reko.Analysis
         {
             var value = InvalidConstant.Create(sid.Identifier.DataType);
             var ass = new Assignment(sid.Identifier, value);
-            var newStm = InsertStatementAfter(ass, stm);
+            var newStm = this.InsertStatementAfter(ass, stm);
             sid.DefExpression = value;
             sid.DefStatement = newStm;
         }

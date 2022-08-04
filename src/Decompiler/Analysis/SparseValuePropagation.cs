@@ -42,7 +42,10 @@ namespace Reko.Analysis
         private readonly SparseEvaluationContext ctx;
         private readonly Evaluation.ExpressionSimplifier eval;
 
-        public SparseValuePropagation(SsaState ssa, Program program, IDynamicLinker resolver, DecompilerEventListener listener)
+        public SparseValuePropagation(
+            SsaState ssa,
+            Program program,
+            DecompilerEventListener listener)
         {
             this.ssa = ssa;
             this.listener = listener;

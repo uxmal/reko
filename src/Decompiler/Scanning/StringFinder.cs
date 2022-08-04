@@ -34,7 +34,7 @@ namespace Reko.Scanning
     /// </summary>
     public class StringFinder
     {
-        private Program program;
+        private readonly Program program;
 
         public StringFinder(Program program)
         {
@@ -45,7 +45,7 @@ namespace Reko.Scanning
         {
             foreach (var segment in program.SegmentMap.Segments.Values)
             {
-                if (!(segment.MemoryArea is ByteMemoryArea mem))
+                if (segment.MemoryArea is not ByteMemoryArea mem)
                     continue; //$TODO: what to do with odd archs?
                 Address segEnd = Address.Min(
                     segment.Address + segment.Size,
@@ -78,7 +78,7 @@ namespace Reko.Scanning
 
         //$TODO: This assumes only ASCII values are valid.
         // How to deal with Swedish? Cyrillic? Chinese?
-        public bool IsValid(char ch)
+        public static bool IsValid(char ch)
         {
             return (' ' <= ch && ch < 0x7F);
         }

@@ -62,7 +62,7 @@ namespace Reko.Scanning
             }
         }
 
-        private int[] BuildFailureTable(C[] W)
+        private static int[] BuildFailureTable(C[] W)
         {
             int[] T = new int[W.Length+2];
             T[0] = -1;

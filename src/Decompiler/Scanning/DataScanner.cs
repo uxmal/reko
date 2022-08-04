@@ -68,7 +68,7 @@ namespace Reko.Scanning
         {
             if (Program.SegmentMap.IsValidAddress(addr))
             {
-                var wi = new GlobalDataWorkItem(this, Program, addr, dt, name);
+                var wi = new GlobalDataWorkItem(this, Program, addr, dt);
                 queue.Enqueue(wi);
             }
         }

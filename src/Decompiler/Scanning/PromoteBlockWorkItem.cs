@@ -32,7 +32,7 @@ namespace Reko.Scanning
     {
         private static readonly TraceSwitch trace = new TraceSwitch(nameof(PromoteBlockWorkItem), "Trace the workings of PromoteBlockWorkItem") { Level = TraceLevel.Info };
 
-        public Block Block; 
+        public Block Block;
         public Procedure ProcNew;
         public IScanner Scanner;
         public Program Program;
@@ -171,7 +171,7 @@ namespace Reko.Scanning
             }
         }
 
-        private void ReplaceSuccessorsWith(Block block, Block blockOld, Block blockNew)
+        private static void ReplaceSuccessorsWith(Block block, Block blockOld, Block blockNew)
         {
             for (int s = 0; s < block.Succ.Count; ++s)
             {

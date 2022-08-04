@@ -113,7 +113,7 @@ namespace Reko.Analysis
         {
             var ints = escapedFrameIntervals.GetIntervalsOverlappingWith(
                 Interval.Create(offset, offset + 1));
-            if (ints.Count() == 0)
+            if (!ints.Any())
             {
                 e = null;
                 return false;

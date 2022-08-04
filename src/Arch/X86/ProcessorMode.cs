@@ -155,8 +155,8 @@ namespace Reko.Arch.X86
                     try
                     {
                         addr = CreateSegmentedAddress(
-                            Convert.ToUInt16(txtAddress.Substring(0, c), 16),
-                            Convert.ToUInt32(txtAddress.Substring(c + 1), 16))!;
+                            Convert.ToUInt16(txtAddress[0..c], 16),
+                            Convert.ToUInt32(txtAddress[(c + 1)..], 16))!;
                         return true;
                     }
                     catch { }
@@ -300,8 +300,8 @@ namespace Reko.Arch.X86
         public override List<RtlInstruction>? InlineCall(
             IServiceProvider services,
             X86Disassembler dasm,
-            Address addrCallee, 
-            Address addrContinuation, 
+            Address addrCallee,
+            Address addrContinuation,
             IStorageBinder binder)
         {
             var instrs = dasm.Take(2).ToArray();
@@ -316,7 +316,7 @@ namespace Reko.Arch.X86
             if (instrs[0].Mnemonic == Mnemonic.mov && 
                 instrs[1].Mnemonic == Mnemonic.ret)
             {
-                if (!(instrs[0].Operands[1] is MemoryOperand mop))
+                if (instrs[0].Operands[1] is not MemoryOperand mop)
                     return null;
                 if (mop.Base != StackRegister)
                     return null;

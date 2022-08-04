@@ -95,7 +95,7 @@ namespace Reko.Scanning
             if (Stride > 1)
                 Operations.Add(new BackwalkOperation(BackwalkOperator.mul, Stride));
 
-            bool continueBackwalking = BackwalkInstructions(Index, block);
+            bool continueBackwalking = BackwalkInstructions(block);
             if ((Index == null || Index == RegisterStorage.None) && IndexExpression == null)
                 return null;	// unable to find guard.
 
@@ -106,7 +106,7 @@ namespace Reko.Scanning
                     return null;	// seems unguarded to me.
 
                 block = blockPrev;
-                BackwalkInstructions(Index, block);
+                BackwalkInstructions(block);
                 if (Index == null && IndexExpression == null)
                     return null;
             }
@@ -130,7 +130,7 @@ namespace Reko.Scanning
                         var immSrc = binSrc.Right as Constant;
                         if (binSrc.Operator == Operator.IAdd || binSrc.Operator == Operator.ISub)
                         {
-                            Index = HandleAddition(Index, Index, regSrc, immSrc!, binSrc.Operator == Operator.IAdd);
+                            Index = HandleAddition(Index, regSrc, immSrc!, binSrc.Operator == Operator.IAdd);
                             return true;
                         }
                         if (binSrc.Operator == Operator.And)
@@ -170,9 +170,8 @@ namespace Reko.Scanning
                         Index = host.GetSubregister(Index, new BitRange(0, 8));
                     }
                 }
-                var cSrc = assSrc as Constant;
                 if (Index != null &&
-                    cSrc != null &&
+                    assSrc is Constant cSrc &&
                     cSrc.IsIntegerZero &&
                     RegisterOf(assDst) == host.GetSubregister(Index, new BitRange(8, 16)))
                 {
@@ -239,7 +238,7 @@ namespace Reko.Scanning
                         return true;
                     }
 
-                    if (!(memSrc.EffectiveAddress is BinaryExpression binEa))
+                    if (memSrc.EffectiveAddress is not BinaryExpression binEa)
                     {
                         Index = RegisterStorage.None;
                         IndexExpression = null;
@@ -324,7 +323,7 @@ namespace Reko.Scanning
             return true;
         }
 
-        private BinaryExpression? NegateRight(BinaryExpression? bin)
+        private static BinaryExpression? NegateRight(BinaryExpression? bin)
         {
             if (bin != null &&
                 (bin.Operator == Operator.IAdd) &&
@@ -339,7 +338,7 @@ namespace Reko.Scanning
             return bin;
         }
 
-        private RegisterStorage RegisterOf(Expression? e)
+        private static RegisterStorage RegisterOf(Expression? e)
         {
             if (e is Conversion c)
                 e = c.Expression;
@@ -349,7 +348,6 @@ namespace Reko.Scanning
         }
 
         public bool BackwalkInstructions(
-            RegisterStorage? regIdx,
             IEnumerable<TInstr> backwardStatementSequence)
         {
             foreach (var instr in backwardStatementSequence)
@@ -360,11 +358,9 @@ namespace Reko.Scanning
             return true;
         }
 
-        public bool BackwalkInstructions(
-            RegisterStorage? regIdx,
-            TBlock block)
+        public bool BackwalkInstructions(TBlock block)
         {
-            return BackwalkInstructions(regIdx, host.GetBlockInstructions(block).Reverse()!);
+            return BackwalkInstructions(host.GetBlockInstructions(block).Reverse()!);
         }
 
         [Conditional("DEBUG")]
@@ -377,37 +373,34 @@ namespace Reko.Scanning
             }
         }
 
-        private RegisterStorage? GetBaseRegister(Expression ea)
+        private static RegisterStorage? GetBaseRegister(Expression ea)
         {
             if (ea is Identifier id)
                 return RegisterOf(id);
-            var bin = ea as BinaryExpression;
-            if (bin == null)
+            if (ea is not BinaryExpression bin)
                 return RegisterStorage.None;
             var e = bin.Left;
-            while (e != null && e is Cast)
+            while (e != null && e is Cast cast)
             {
-                e = ((Cast)e).Expression;
+                e = cast.Expression;
             }
-            if (e == null)
+            if (e is null)
                 return null;
             if (e is Identifier idBase)
                 return RegisterOf(idBase);
-            if (bin == null)
+            if (bin is null)
                 return RegisterStorage.None;
             var scaledExpr = bin.Left as BinaryExpression;
             return RegisterOf(scaledExpr!.Left as Identifier);
         }
 
-        private int GetMultiplier(Expression exp)
+        private static int GetMultiplier(Expression exp)
         {
-            var bin = exp as BinaryExpression;
-            if (bin == null)
+            if (exp is not BinaryExpression bin)
                 return 1;
             if (bin.Operator is IMulOperator)
             {
-                var scale = bin.Right as Constant;
-                if (scale == null)
+                if (bin.Right is not Constant scale)
                     return 1;
                 return scale.ToInt32();
             }
@@ -421,7 +414,7 @@ namespace Reko.Scanning
         }
 
         [Conditional("DEBUG")]
-        private void DumpInstructions(StatementList instrs, int idx)
+        private static void DumpInstructions(StatementList instrs, int idx)
         {
             for (int i = 0; i < instrs.Count; ++i)
             {
@@ -446,7 +439,7 @@ namespace Reko.Scanning
                 Stride = 1;
                 return RegisterOf(id);
             }
-            if (!(mem.EffectiveAddress is BinaryExpression bin))
+            if (mem.EffectiveAddress is not BinaryExpression bin)
                 return null;
 
             var idLeft = bin.Left as Identifier;
@@ -454,23 +447,21 @@ namespace Reko.Scanning
             if (idRight != null && idLeft == null)
             {
                 // Rearrange so that the effective address is [id + C]
-                var t = idLeft;
-                idLeft = idRight;
-                idRight = t;
+                (idRight, idLeft) = (idLeft, idRight);
             }
             if (idLeft != null && idRight != null)
             {
                 // Can't handle [id1 + id2] yet.
                 return null;
             }
-            if (idLeft != null)
+            if (idLeft is { })
             {
                 // We have [id + C]
                 Stride = 1;
                 if (host.IsStackRegister(idLeft.Storage))
                     return null;
                 DetermineVector(mem, bin.Right);
-                if (!(VectorAddress is null) && host.IsValidAddress(VectorAddress))
+                if (VectorAddress is not null && host.IsValidAddress(VectorAddress))
                     return RegisterOf(idLeft);
                 else
                     return null;
@@ -490,7 +481,7 @@ namespace Reko.Scanning
             return null;
         }
 
-        private bool IsScaledIndex(BinaryExpression? bin)
+        private static bool IsScaledIndex(BinaryExpression? bin)
         {
             return bin != null && bin.Operator is IMulOperator && bin.Right is Constant;
         }
@@ -523,7 +514,6 @@ namespace Reko.Scanning
         }
 
         private RegisterStorage? HandleAddition(
-			RegisterStorage? regIdx,
 			RegisterStorage? ropDst,
 			RegisterStorage? ropSrc, 
 			Constant immSrc, 

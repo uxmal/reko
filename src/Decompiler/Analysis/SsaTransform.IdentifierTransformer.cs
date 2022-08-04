@@ -607,7 +607,9 @@ namespace Reko.Analysis
             /// the first intersection of the read interval in <paramref name="bitLo"/> and 
             /// <paramref name="bitHi"> intersects the written register.
             /// </summary>
-            public (SsaIdentifier?, BitRange, BitRange) FindIntersectingRegister(List<(SsaIdentifier,BitRange,int)> definitions, BitRange useRange)
+            public static (SsaIdentifier?, BitRange, BitRange) FindIntersectingRegister(
+                List<(SsaIdentifier,BitRange,int)> definitions,
+                BitRange useRange)
             {
                 var result = ((SsaIdentifier?)null, useRange, default(BitRange));
                 for (int i = definitions.Count - 1; i >= 0; --i)
@@ -794,7 +796,9 @@ namespace Reko.Analysis
             /// after the defining statement.
             /// </summary>
             /// <returns></returns>
-            protected SsaIdentifier MaybeGenerateAliasStatement(SsaIdentifier sidFrom, FlagGroupStorage stgUse)
+            protected static SsaIdentifier MaybeGenerateAliasStatement(
+                SsaIdentifier sidFrom,
+                FlagGroupStorage stgUse)
             {
                 var stgFrom = (FlagGroupStorage) sidFrom.Identifier.Storage;
                 if (stgFrom == stgUse)

@@ -169,7 +169,7 @@ namespace Reko.UnitTests.Decompiler.Scanning
 
         private void Given_ProcedureDetector()
         {
-            this.prdet = new ProcedureDetector(this.program, this.sr, this.listener);
+            this.prdet = new ProcedureDetector(this.sr, this.listener);
         }
 
         private void Given_EvenOdd()
@@ -258,7 +258,7 @@ namespace Reko.UnitTests.Decompiler.Scanning
             Given_Edge(3, 4);
             Given_KnownProcedures();
 
-            var prdet = new ProcedureDetector(this.program, this.sr, this.listener);
+            var prdet = new ProcedureDetector(this.sr, this.listener);
             var clusters = prdet.FindClusters();
 
             Assert.AreEqual(1, clusters.Count);

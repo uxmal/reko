@@ -62,7 +62,7 @@ namespace Reko.Analysis
                     continue;
                 if (stm == ctx.TestStatement)
                     continue;
-                IncrementedUseFinder iuf = new IncrementedUseFinder(incrUses);
+                var iuf = new IncrementedUseFinder(incrUses);
                 iuf.Match(ctx.PhiIdentifier!, stm);
             }
         }
@@ -78,7 +78,7 @@ namespace Reko.Analysis
             if (incrUses.Count != 1)
                 return;
             IncrementedUse use = incrUses[0];
-            if (use.Increment == null)
+            if (use.Increment is null)
                 return;
             if (ModifyInitialAssigment(use))
             {
@@ -88,9 +88,9 @@ namespace Reko.Analysis
             }
         }
 
-        private void ModifyTest(LinearInductionVariableContext ctx, IncrementedUse use)
+        private static void ModifyTest(LinearInductionVariableContext ctx, IncrementedUse use)
         {
-            if (ctx.TestStatement == null)
+            if (ctx.TestStatement is null)
                 return;
             if (ctx.TestStatement.Instruction is Branch branch &&
                 branch.Condition is BinaryExpression exp &&
@@ -102,9 +102,9 @@ namespace Reko.Analysis
 
         private bool ModifyInitialAssigment(IncrementedUse use)
         {
-            if (ctx.InitialStatement == null)
+            if (ctx.InitialStatement is null)
                 return false;
-            if (!(ctx.InitialStatement.Instruction is Assignment ass))
+            if (ctx.InitialStatement.Instruction is not Assignment ass)
                 return false;
             if (ass.Src is Constant c)
             {

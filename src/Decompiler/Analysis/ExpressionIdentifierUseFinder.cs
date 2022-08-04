@@ -28,18 +28,16 @@ namespace Reko.Analysis
     /// </summary>
     public class ExpressionIdentifierUseFinder : ExpressionVisitorBase
     {
-        private readonly SsaIdentifierCollection ssaIds;
         private readonly List<Identifier> identifiers;
 
-        public ExpressionIdentifierUseFinder(SsaIdentifierCollection ssaIds)
+        public ExpressionIdentifierUseFinder()
         {
-            this.ssaIds = ssaIds;
             this.identifiers = new List<Identifier>();
         }
 
-        public static List<Identifier> Find(SsaIdentifierCollection ssaIds, Expression exp)
+        public static List<Identifier> Find(Expression exp)
         {
-            var inst = new ExpressionIdentifierUseFinder(ssaIds);
+            var inst = new ExpressionIdentifierUseFinder();
             exp.Accept(inst);
             return inst.identifiers;
         }

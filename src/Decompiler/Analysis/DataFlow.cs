@@ -107,19 +107,19 @@ namespace Reko.Analysis
                 .OrderBy(f => f.Name))
             {
                 sb.Write(" {0}", freg.Name);
-        }
+            }
         }
 
 		public string EmitRegisters(string caption, HashSet<Storage> regs)
 		{
-			StringWriter sw = new StringWriter();
+			var sw = new StringWriter();
 			EmitRegisters(caption, regs, sw);
 			return sw.ToString();
 		}
 
 		public string EmitFlagGroup(IProcessorArchitecture arch, string caption, Dictionary<RegisterStorage, uint> grfFlags)
 		{
-			StringWriter sw = new StringWriter();
+			var sw = new StringWriter();
 			EmitFlagGroup(arch, caption, grfFlags, sw);
 			return sw.ToString();
 		}

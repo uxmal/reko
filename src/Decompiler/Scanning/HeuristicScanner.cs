@@ -47,12 +47,12 @@ namespace Reko.Scanning
     /// </remarks>
     public class HeuristicScanner // : IScanner
     {
-        private Program program;
-        private IRewriterHost host;
-        private DecompilerEventListener eventListener;
-        private IStorageBinder storageBinder;
-        private RtlBlock invalidBlock;
-        private IStorageBinder binder;
+        private readonly Program program;
+        private readonly IRewriterHost host;
+        private readonly DecompilerEventListener eventListener;
+        private readonly IStorageBinder storageBinder;
+        private readonly RtlBlock invalidBlock;
+        private readonly IStorageBinder binder;
 
         public HeuristicScanner(
             IServiceProvider services,
@@ -69,7 +69,7 @@ namespace Reko.Scanning
             this.binder = program.Architecture.CreateFrame();
         }
 
-        public IServiceProvider Services { get; private set; }
+        public IServiceProvider Services { get; }
 
         public ScanResults? ScanImage(ScanResults sr)
         {
@@ -130,7 +130,7 @@ namespace Reko.Scanning
             hsc.ResolveBlockConflicts(sr.KnownProcedures.Concat(sr.DirectlyCalledAddresses.Keys));
             Probe(sr);
             sr.Dump("After block conflict resolution");
-            var pd = new ProcedureDetector(program, sr, this.eventListener);
+            var pd = new ProcedureDetector(sr, this.eventListener);
             var procs = pd.DetectProcedures();
             sr.Procedures = procs;
             return sr;
@@ -146,23 +146,7 @@ namespace Reko.Scanning
         {
         }
 
-        private HashSet<Address> FindKnownProcedures()
-        {
-            // Known procedures are...
-            var procs = new HashSet<Address>(
-                // ...all procedure symbols from the image metadata
-                program.ImageSymbols.Values
-                    .Where(s => s.Type == SymbolType.Procedure)
-                    .Select(s => s.Address)
-                // ...all entry points
-                .Concat(program.EntryPoints
-                    .Select(e => e.Key))
-                // ...and all user-specified metadata
-                .Concat(program.User.Procedures.Keys)!);
-            return procs;
-        }
-
-        private void RemoveInvalidBlocks(ScanResults sr)
+        private static void RemoveInvalidBlocks(ScanResults sr)
         {
             var revGraph = new DiGraph<RtlBlock>();
             var invalid = new RtlBlock(null!, "<invalid>");
@@ -193,26 +177,6 @@ namespace Reko.Scanning
                 sr.ICFG.RemoveNode(n);
                 sr.DirectlyCalledAddresses.Remove(n.Address);
                 // Debug.Print("Removed invalid node {0}", n.Address);  // commented out as this becomes very verbose.
-            }
-        }
-
-        private void AddBlocks(HeuristicProcedure hproc)
-        {
-            var name = program.NamingPolicy.ProcedureName(hproc.BeginAddress);
-            var proc = Procedure.Create(program.Architecture, name, hproc.BeginAddress, hproc.Frame);
-            foreach (var block in hproc.Cfg.Nodes.Where(bb => bb.Instructions.Count > 0))
-            {
-                var last = block.Instructions.Last();
-                var b = new Block(proc, block.Address, "l" + block.Address);
-                if (program.ImageMap.Items.ContainsKey(block.Address))
-                    continue;
-                program.ImageMap.AddItemWithSize(
-                    block.Address,
-                    new ImageMapBlock(block.Address)
-                    {
-                        Block = b,
-                        Size = (uint)(last.Address - block.Address) + (uint)last.Length
-                    });
             }
         }
 
@@ -250,11 +214,14 @@ namespace Reko.Scanning
         /// <param name="addrBegin"></param>
         /// <param name="addrEnd"></param>
         /// <returns></returns>
-        public IEnumerable<Address> FindPossibleProcedureEntries(ByteMemoryArea mem, Address addrBegin, Address addrEnd)
+        public IEnumerable<Address> FindPossibleProcedureEntries(
+            ByteMemoryArea mem,
+            Address addrBegin,
+            Address addrEnd)
         {
             var h = program.Platform.Heuristics;
             if (h.ProcedurePrologs == null || h.ProcedurePrologs.Length == 0)
-                return new Address[0];
+                return Array.Empty<Address>();
 
             byte[]? pattern = h.ProcedurePrologs[0].Bytes;
             if (pattern != null)
@@ -265,7 +232,7 @@ namespace Reko.Scanning
             }
             else
             {
-                return new Address[0];
+                return Array.Empty<Address>();
             }
         }
 
@@ -345,7 +312,7 @@ namespace Reko.Scanning
                 true,
                 host);
             int instrByteGranularity = program.Architecture.InstructionBitSize / program.Architecture.MemoryGranularity;
-            for (Address addr = addrStart; addr < addrEnd; addr = addr + instrByteGranularity)
+            for (Address addr = addrStart; addr < addrEnd; addr += instrByteGranularity)
             {
                 dasm.Disassemble(addr);
             }

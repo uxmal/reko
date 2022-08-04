@@ -132,7 +132,7 @@ namespace Reko.Analysis
 				if (ssaIds[id].DefStatement == s)
 					return false;
 
-				if (!(s.Instruction is PhiAssignment) && ssaIds[id].Uses.Contains(s))
+				if (s.Instruction is not PhiAssignment && ssaIds[id].Uses.Contains(s))
 					live = true;
 
 				if (s == stm)
@@ -158,7 +158,7 @@ namespace Reko.Analysis
 				if (ssaIds[id].DefStatement == s)
 					return false;
 
-				if (!(s.Instruction is PhiAssignment) && ssaIds[id].Uses.Contains(s))
+				if (s.Instruction is not PhiAssignment && ssaIds[id].Uses.Contains(s))
 					live = true;
 			}
 			return live;
@@ -236,14 +236,14 @@ namespace Reko.Analysis
             return (v.DefStatement != s);
         }
 
-		public PhiFunction? GetPhiFunction(Statement stm)
+		private static PhiFunction? GetPhiFunction(Statement stm)
 		{
             return (stm.Instruction is PhiAssignment ass)
                 ? ass.Src
                 : null;
 		}
 
-		private void Set(List<SsaIdentifier> s, SsaIdentifier v)
+		private static void Set(List<SsaIdentifier> s, SsaIdentifier v)
 		{
 			if (!s.Contains(v))
 				s.Add(v);
@@ -328,7 +328,7 @@ namespace Reko.Analysis
 
 		private Dictionary<SsaIdentifier,SsaIdentifier> VariablesDefinedByStatement(Statement stm)
 		{
-			Dictionary<SsaIdentifier,SsaIdentifier> W = new Dictionary<SsaIdentifier,SsaIdentifier>();
+			var W = new Dictionary<SsaIdentifier,SsaIdentifier>();
 			foreach (SsaIdentifier sid in ssa)
 			{
 				if (sid.DefStatement == stm)
@@ -339,7 +339,7 @@ namespace Reko.Analysis
 
 		private Block? PrecedingPhiBlock(Identifier u, Statement stm)
 		{
-            if (!(stm.Instruction is PhiAssignment phi))
+            if (stm.Instruction is not PhiAssignment phi)
                 return null;
             foreach (var arg in phi.Src.Arguments)
 			{

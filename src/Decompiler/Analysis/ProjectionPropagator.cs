@@ -178,7 +178,7 @@ namespace Reko.Analysis
                 return accessNew;
             }
 
-            private DataType? MakeSegPtr(DataType dtEa)
+            private static DataType? MakeSegPtr(DataType dtEa)
             {
                 if (dtEa is MemberPointer mptr)
                     return new Pointer(mptr.Pointee, 32);
@@ -505,7 +505,7 @@ namespace Reko.Analysis
             }
 
             //$REFACTOR: move this to SsaState
-            private Statement AddStatementToEndOfBlock(Block pred, ulong linearAddress, Instruction instr)
+            private static Statement AddStatementToEndOfBlock(Block pred, ulong linearAddress, Instruction instr)
             {
                 int i = pred.Statements.Count;
                 if (i > 0 && pred.Statements[i - 1].Instruction.IsControlFlow)

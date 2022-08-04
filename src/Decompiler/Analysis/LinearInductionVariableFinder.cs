@@ -34,12 +34,12 @@ namespace Reko.Analysis
 	/// </summary>
 	public class LinearInductionVariableFinder : InstructionVisitorBase
 	{
-        private SsaState ssa;
-		private ICollection<SsaIdentifier>? operands;
-        private List<LinearInductionVariable> ivs;
-        private Dictionary<LinearInductionVariable, LinearInductionVariableContext> contexts;
+        private readonly SsaState ssa;
+        private readonly List<LinearInductionVariable> ivs;
+        private readonly Dictionary<LinearInductionVariable, LinearInductionVariableContext> contexts;
+        private readonly BlockDominatorGraph doms;
         private LinearInductionVariableContext ctx;
-        private BlockDominatorGraph doms;
+        private ICollection<SsaIdentifier>? operands;
 
         public LinearInductionVariableFinder(SsaState ssa, BlockDominatorGraph doms)
 		{
@@ -125,7 +125,7 @@ namespace Reko.Analysis
         /// </summary>
         /// <param name="op"></param>
         /// <returns></returns>
-        private bool RelEq(Operator? op)
+        private static bool RelEq(Operator? op)
         {
             if (op is null)
                 return false;
@@ -165,7 +165,7 @@ namespace Reko.Analysis
 			{
 				foreach (Statement u in sid.Uses)
 				{
-                    if (!(u.Instruction is Branch b))
+                    if (u.Instruction is not Branch b)
                         continue;
                     if (b.Condition is BinaryExpression bin && 
                         bin.Left is Identifier && 
@@ -191,7 +191,7 @@ namespace Reko.Analysis
                 return null;
             var sid = doms.DominatesStrictly(sid1.DefStatement, sid0.DefStatement)
                 ? sid1 : sid0;
-            if (!(sid.DefStatement!.Instruction is Assignment ass))
+            if (sid.DefStatement!.Instruction is not Assignment ass)
                 return null;
 
             if (ass.Dst != sid.Identifier)
@@ -208,9 +208,10 @@ namespace Reko.Analysis
             {
                 if (sid.DefStatement == null)
                     continue;
-                if (!(sid.DefStatement.Instruction is Assignment ass))
+                if (sid.DefStatement.Instruction is not Assignment ass)
                     continue;
-                if (ass.Src is BinaryExpression bin && (bin.Operator == Operator.IAdd || bin.Operator == Operator.ISub))
+                if (ass.Src is BinaryExpression bin && 
+                    (bin.Operator == Operator.IAdd || bin.Operator == Operator.ISub))
                 {
                     if (bin.Left is Identifier idLeft && IsSccMember(idLeft, sids))
                     {
@@ -267,7 +268,7 @@ namespace Reko.Analysis
 			return true;
 		}
 
-		public bool IsSccMember(Identifier id, ICollection<SsaIdentifier> sids)
+		public static bool IsSccMember(Identifier id, ICollection<SsaIdentifier> sids)
 		{
 			foreach (SsaIdentifier sid in sids)
 			{
@@ -289,7 +290,7 @@ namespace Reko.Analysis
 
         public class SsaGraph : InstructionVisitorBase, DirectedGraph<SsaIdentifier>
         {
-            private SsaIdentifierCollection ssaIds;
+            private readonly SsaIdentifierCollection ssaIds;
             private ICollection<SsaIdentifier>? operands;
 
             public SsaGraph(SsaIdentifierCollection ssaIds)

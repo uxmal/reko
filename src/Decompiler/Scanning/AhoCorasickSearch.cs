@@ -110,7 +110,7 @@ namespace Reko.Scanning
             /// </summary>
             public static StringSearchResult<TSymbol> Empty
             {
-                get { return new StringSearchResult<TSymbol>(-1,new TSymbol[]{}); }
+                get { return new StringSearchResult<TSymbol>(-1, Array.Empty<TSymbol>()); }
             }
 
             #endregion
@@ -144,9 +144,9 @@ namespace Reko.Scanning
                 {
                     _char = c; _parent = parent;
                     _results = new List<TSymbol[]>();
-                    _resultsAr = new TSymbol[][] { };
+                    _resultsAr = Array.Empty<TSymbol[]>();
 
-                    _transitionsAr = new TreeNode[] { };
+                    _transitionsAr = Array.Empty<TreeNode>();
                     _transHash = new Hashtable();
                 }
 
@@ -199,13 +199,13 @@ namespace Reko.Scanning
                 #endregion
                 #region Properties
 
-                private TSymbol _char;
-                private TreeNode _parent;
+                private readonly TSymbol _char;
+                private readonly TreeNode _parent;
                 private TreeNode _failure;
-                private List<TSymbol[]> _results;
+                private readonly List<TSymbol[]> _results;
                 private TreeNode[] _transitionsAr;
                 private TSymbol[][] _resultsAr;
-                private Hashtable _transHash;
+                private readonly Hashtable _transHash;
 
                 /// <summary>
                 /// Character
@@ -290,7 +290,7 @@ namespace Reko.Scanning
             void BuildTree()
             {
                 // Build keyword tree and transition function
-                _root = new TreeNode(null, default(TSymbol));
+                _root = new TreeNode(null, default);
                 foreach (var p in _keywords)
                 {
                     // add pattern to tree
@@ -316,7 +316,7 @@ namespace Reko.Scanning
                 }
 
                 // Find failure functions
-                ArrayList nodes = new ArrayList();
+                var nodes = new List<TreeNode>();
                 // level 1 nodes - fail to root node
                 foreach (TreeNode nd in _root.Transitions)
                 {
@@ -327,14 +327,14 @@ namespace Reko.Scanning
                 // other nodes - using BFS
                 while (nodes.Count != 0)
                 {
-                    ArrayList newNodes = new ArrayList();
+                    var newNodes = new List<TreeNode>();
                     foreach (TreeNode nd in nodes)
                     {
                         var r = nd.Parent.Failure;
                         var c = nd.Char;
 
                         while (r != null && !r.ContainsTransition(c)) r = r.Failure;
-                        if (r == null)
+                        if (r is null)
                             nd.Failure = _root;
                         else
                         {
@@ -492,7 +492,7 @@ namespace Reko.Scanning
 
         private void BuildTree()
         {
-            root = new TreeNode(null, default(TSymbol));
+            root = new TreeNode(null, default);
             root.Failure = null;
             foreach (TSymbol[] p in keywords)
             {
@@ -608,8 +608,8 @@ namespace Reko.Scanning
 
         private class TreeNode
         {
-            private List<TSymbol[]> results;
-            private Dictionary<TSymbol,TreeNode> hash;
+            private readonly List<TSymbol[]> results;
+            private readonly Dictionary<TSymbol,TreeNode> hash;
 
             public TreeNode(TreeNode parent, TSymbol c)
             {
@@ -637,8 +637,7 @@ namespace Reko.Scanning
 
             public TreeNode GetTransition(TSymbol c)
             {
-                TreeNode  t;
-                if (hash.TryGetValue(c, out t))
+                if (hash.TryGetValue(c, out TreeNode t))
                     return t;
                 else
                     return null;
@@ -664,16 +663,6 @@ namespace Reko.Scanning
     // Matching with *-wildcards via Aho-Corasick. Matching with ?-wildcards via convolutions.
     //mport java.util.Arrays;
 
-    public static class ArrayEx
-    {
-        public static void Fill<T>(this T[] array, T value)
-        {
-            for (int i = 0; i < array.Length; i++)
-            {
-                array[i] = value;
-            }
-        }
-    }
     public class AhoCorasick
     {
 
@@ -693,8 +682,8 @@ namespace Reko.Scanning
 
             public Node()
             {
-                children.Fill(-1);
-                transitions.Fill(-1);
+                Array.Fill(children, -1);
+                Array.Fill(transitions, -1);
             }
         }
 
@@ -716,9 +705,11 @@ namespace Reko.Scanning
                 int c = ch;
                 if (nodes[cur].children[c] == -1)
                 {
-                    nodes[nodeCount] = new Node();
-                    nodes[nodeCount].parent = cur;
-                    nodes[nodeCount].charFromParent = ch;
+                    nodes[nodeCount] = new Node
+                    {
+                        parent = cur,
+                        charFromParent = ch,
+                    };
                     nodes[cur].children[c] = nodeCount++;
                 }
                 cur = nodes[cur].children[c];
@@ -746,7 +737,7 @@ namespace Reko.Scanning
         // Usage example
         public static void main(String[] args)
         {
-            AhoCorasick ahoCorasick = new AhoCorasick(1000);
+            var ahoCorasick = new AhoCorasick(1000);
             ahoCorasick.addString("bc");
             ahoCorasick.addString("abc");
 

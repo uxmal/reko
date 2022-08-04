@@ -39,7 +39,7 @@ namespace Reko.Scanning
             this.Frame = frame;
         }
         
-        public DiGraph<RtlBlock> Cfg = new DiGraph<RtlBlock>();
+        public DiGraph<RtlBlock> Cfg = new();
         public Frame Frame;
 
         public Address BeginAddress;

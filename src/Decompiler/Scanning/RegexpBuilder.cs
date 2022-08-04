@@ -47,14 +47,14 @@ namespace Reko.Scanning
 			Cut
 		}
 
-		private List<Node> positions;
+		private readonly string pattern;
+		private readonly StringReader rdr;
+		private readonly int [] alphabet;		// maps bytes to character classes.
+		private readonly List<Node> positions;
 		private byte b;
-		private string pattern;
-		private StringReader rdr;
 		private Token tok;
-		private int [] alphabet;		// maps bytes to character classes.
 		private int charClasses;
-		private bool fullTable;		
+		private bool fullTable;
 
 		private const int MaxAlphabet = 256;
 
@@ -110,36 +110,35 @@ namespace Reko.Scanning
 			n.ComputeFollowPos(this);
 
 #if DEBUG
-			StringBuilder sb = new StringBuilder();
+			var sb = new StringBuilder();
 			n.Dump(sb);
 			Debug.WriteLine(sb.ToString());
 #endif
 			State [] states = BuildDfaTable(n);
-			TableCompacter tc = new TableCompacter(states, charClasses);
+			var tc = new TableCompacter(states, charClasses);
 			tc.Compact();
 			return new Regexp(alphabet, tc.ReStates, tc.Next, tc.Check);
 		}
 
 		private State [] BuildDfaTable(Node n)
 		{
-			List<State> dStates = new List<State>();
+			var dStates = new List<State>();
 
 			// Create the default, error state.
 
-			State err = new State(new BitArray(n.FirstPos.Length), charClasses);
+			var err = new State(new BitArray(n.FirstPos.Length), charClasses);
 			AddState(dStates, err);
 
 			// Create the initial state.
 
-			State s0 = new State(n.FirstPos, charClasses);
+			var s0 = new State(n.FirstPos, charClasses);
 			AddState(dStates, s0);
 
 			// Start the worklist.
 
-            WorkList<State> worklist = new WorkList<State>();
+            var worklist = new WorkList<State>();
 			worklist.Add(s0);
-            State t;
-			while (worklist.TryGetWorkItem(out t))
+			while (worklist.TryGetWorkItem(out State t))
 			{
 				Debug.WriteLine(t.ToString());
 				for (int a = 0; a != charClasses; ++a)
@@ -148,7 +147,7 @@ namespace Reko.Scanning
 					// FollowPos(p) where p is any position in t that has 
 					// an 'a'.
 
-					State u = new State(new BitArray(positions.Count), charClasses);
+					var u = new State(new BitArray(positions.Count), charClasses);
 					for (int p = 0; p != t.Positions.Length; ++p)
 					{
 						if (!t.Positions[p])
@@ -185,14 +184,14 @@ namespace Reko.Scanning
             return dStates.ToArray(); 
 		}
 
-		private void AddState(List<State> dStates, State s)
+		private static void AddState(List<State> dStates, State s)
 		{
 			s.Index = dStates.Count;
 			dStates.Add(s);
 			Debug.WriteLine("add state " + s);
 		}
 
-		private State FindState(List<State> dStates, BitArray state)
+		private static State FindState(List<State> dStates, BitArray state)
 		{
 			foreach (State s in dStates)
 			{
@@ -204,8 +203,8 @@ namespace Reko.Scanning
 
 		public static string DumpSet(BitArray ba)
 		{
-			StringBuilder sb = new StringBuilder();
-			sb.Append("{");
+			var sb = new StringBuilder();
+			sb.Append('{');
 			for (int i = 0; i < ba.Length; ++i)
 			{
 				if (ba.Get(i))
@@ -217,9 +216,8 @@ namespace Reko.Scanning
 			sb.Append(" }");
 			return sb.ToString();
 		}
-			
-			
-		public bool IsEqualSet(BitArray s1, BitArray s2)
+
+		public static bool IsEqualSet(BitArray s1, BitArray s2)
 		{
 			int i;
 			for (i = 0; i < s1.Length && i < s2.Length; ++i)
@@ -240,7 +238,7 @@ namespace Reko.Scanning
 			return true;
 		}
 
-		public bool IsEmptySet(BitArray b)
+		public static bool IsEmptySet(BitArray b)
 		{
 			for (int i = 0; i != b.Length; ++i)
 			{
@@ -509,7 +507,7 @@ namespace Reko.Scanning
 
 				sb.AppendFormat(" pos: {1} ", startByte, Position);
 				sb.Append(Accepts ? " Accepts" : "");
-				sb.Append("\n");
+				sb.AppendLine();
 				DumpCore(sb);
 			}
 		}
@@ -762,13 +760,12 @@ namespace Reko.Scanning
 
 		private class TableCompacter
 		{
-			private State [] states;
-			private int alphabetSize;
+			private readonly State [] states;
+			private readonly int alphabetSize;
 
 			private int [] rowcnt;
 			private int [] rowMin;
 			private int [] rowMax;
-			private int defcnt;
 
 			private int min;
 			private int max;
@@ -797,7 +794,7 @@ namespace Reko.Scanning
 					Debug.WriteLine("");
 				}
 #endif
-				TallyRowCounts();	
+				TallyRowCounts();
 				InitOutputArrays();
 			}
 
@@ -845,9 +842,11 @@ namespace Reko.Scanning
 				restates = new Regexp.State[basePos.Length];
 				for (int i = 0; i < basePos.Length; ++i)
 				{
-					restates[i] = new Regexp.State();
-					restates[i].BasePosition = basePos[i] - min;
-					restates[i].Accepts = states[i].Accepts;
+                    restates[i] = new Regexp.State
+                    {
+                        BasePosition = basePos[i] - min,
+                        Accepts = states[i].Accepts
+                    };
 					Debug.WriteLine(
 						string.Format(
 							"s{0}{1} base:{2}", 
@@ -950,11 +949,7 @@ namespace Reko.Scanning
 					State s = states[i];
 					for (int j = 0; j != s.NextState.Length; ++j)
 					{
-						if (s.NextState[j] == null)
-						{
-							++defcnt;
-						}
-						else
+						if (s.NextState[j] is not null)
 						{
 							if (rowMin[i] == 0)
 								rowMin[i] = j;
@@ -981,7 +976,7 @@ namespace Reko.Scanning
 
 			public override string ToString()
 			{
-				StringBuilder sb = new StringBuilder();
+				var sb = new StringBuilder();
 				sb.AppendFormat("s{0} posn {1}", Index, RegexpBuilder.DumpSet(Positions));
 				if (Accepts)
 				{

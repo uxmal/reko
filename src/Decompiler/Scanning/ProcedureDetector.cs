@@ -45,7 +45,7 @@ namespace Reko.Scanning
         private readonly HashSet<Address> procedures;
         private readonly Dictionary<Address, RtlBlock> mpAddrToBlock;
 
-        public ProcedureDetector(Program program, ScanResults sr, DecompilerEventListener listener)
+        public ProcedureDetector(ScanResults sr, DecompilerEventListener listener)
         {
             this.sr = sr;
             this.listener = listener;
@@ -152,7 +152,7 @@ namespace Reko.Scanning
                     return x.Address.CompareTo(y.Address);
                 }
 
-                public static readonly Cmp Instance = new Cmp();
+                public static readonly Cmp Instance = new();
             }
 
             [Conditional("DEBUG")]
@@ -309,7 +309,7 @@ namespace Reko.Scanning
                 if (sr.ICFG.Predecessors(succ).Count != 1)
                     continue;
                 Debug.Assert(sr.ICFG.Predecessors(succ).First() == block, "Inconsistent graph");
-                if (!(block.Instructions.Last().Instructions.Last() is RtlAssignment))
+                if (block.Instructions.Last().Instructions.Last() is not RtlAssignment)
                     continue;
 
                 // Move all instructions into predecessor.

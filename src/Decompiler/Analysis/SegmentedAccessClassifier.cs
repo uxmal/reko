@@ -38,7 +38,7 @@ namespace Reko.Analysis
 		private readonly SsaState ssa;
 		private readonly Dictionary<Identifier,Identifier> assocs;
 		private readonly Dictionary<Identifier,Constant> consts;
-		private readonly Identifier overAssociatedId = new Identifier("overAssociated", VoidType.Instance, null!);
+		private readonly Identifier overAssociatedId = new("overAssociated", VoidType.Instance, null!);
         private readonly Constant overAssociatedConst = Constant.Real64(0.0);
 
 		public SegmentedAccessClassifier(SsaState  ssa)
@@ -117,7 +117,7 @@ namespace Reko.Analysis
 
 		public override void VisitSegmentedAccess(SegmentedAccess access)
 		{
-            if (!(access.BasePointer is Identifier pointer))
+            if (access.BasePointer is not Identifier pointer)
                 return;
             switch (access.EffectiveAddress)
             {

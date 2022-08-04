@@ -38,14 +38,16 @@ namespace Reko.Scanning
         private readonly Program program;
         private readonly DataType dt;
         private readonly EndianImageReader rdr;
-        private readonly string? name;
 
-        public GlobalDataWorkItem(IScannerQueue scanner, Program program, Address addr, DataType dt, string? name) : base(addr)
+        public GlobalDataWorkItem(
+            IScannerQueue scanner,
+            Program program,
+            Address addr,
+            DataType dt) : base(addr)
         {
             this.scanner = scanner;
             this.program = program;
             this.dt = dt;
-            this.name = name;
             var arch = program.Architecture;
             this.rdr = program.CreateImageReader(arch, addr);
         }

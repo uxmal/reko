@@ -33,7 +33,11 @@ namespace Reko.Scanning
         private readonly Address addr;
         private readonly string? name;
 
-        public ProcedureWorkItem(IScanner scanner, IProcessorArchitecture arch, Address addr, string? name) : base(addr)
+        public ProcedureWorkItem(
+            IScanner scanner,
+            IProcessorArchitecture arch,
+            Address addr,
+            string? name) : base(addr)
         {
             this.scanner = scanner;
             this.arch = arch;

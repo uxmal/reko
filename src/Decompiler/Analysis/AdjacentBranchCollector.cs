@@ -140,8 +140,8 @@ namespace Reko.Analysis
                 return null;
             if (block.Succ.Count != 2)
                 return null;
-            var blockTest = this.BlockTest(block, true);
-            if (blockTest == null)
+            var blockTest = BlockTest(block, true);
+            if (blockTest is null)
                 return null;
             // Determine the final blocks
             var final1 = block.Succ[1];
@@ -188,7 +188,7 @@ namespace Reko.Analysis
             };
         }
 
-        private bool BlockTrashesIdentifier(Block block, Identifier id)
+        private static bool BlockTrashesIdentifier(Block block, Identifier id)
         {
             bool ApplOutArgumentTrashesIdentifier(Expression e)
             {
@@ -224,7 +224,7 @@ namespace Reko.Analysis
             return false;
         }
 
-        private Identifier? DetermineConditionalIdentifier(Expression e)
+        private static Identifier? DetermineConditionalIdentifier(Expression e)
         {
             return (e is TestCondition predTest)
                 ? predTest.Expression as Identifier
@@ -236,7 +236,7 @@ namespace Reko.Analysis
         /// predecessor has <paramref name="block"/> as its single successor,
         /// return it.
         /// </summary>
-        private Block? ApplicablePredecessor(Block block)
+        private static Block? ApplicablePredecessor(Block block)
         {
             if (block.Pred.Count != 2)
                 return null;
@@ -253,7 +253,7 @@ namespace Reko.Analysis
             return pred;
         }
 
-        private Branch? BlockTest(Block block, bool singleStatement)
+        private static Branch? BlockTest(Block block, bool singleStatement)
         {
             var c = block.Statements.Count;
             if (c == 0 || (singleStatement && c != 1))

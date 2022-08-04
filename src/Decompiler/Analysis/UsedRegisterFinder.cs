@@ -101,7 +101,7 @@ namespace Reko.Analysis
                     if (!n.IsEmpty)
                     {
                         procFlow.BitsUsed[stg] = n;
-                        procFlow.LiveInDataTypes[stg] = DataTypeOf(sid, desc, store);
+                        procFlow.LiveInDataTypes[stg] = DataTypeOf(sid, desc);
                     }
                 }
             }
@@ -112,7 +112,7 @@ namespace Reko.Analysis
         /// <summary>
         /// Returns true if the provided storage could be an argument.
         /// </summary>
-        private bool IsProcedureArgumentStorage(Storage stg, Procedure proc)
+        private static bool IsProcedureArgumentStorage(Storage stg, Procedure proc)
         {
             return stg switch
             {
@@ -164,8 +164,7 @@ namespace Reko.Analysis
 
         private DataType DataTypeOf(
             SsaIdentifier sidParam,
-            LocalTypeDescender typeDescender,
-            TypeStore typeStore)
+            LocalTypeDescender typeDescender)
         {
             SsaIdentifier SidOf(PhiArgument a)
             {

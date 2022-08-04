@@ -29,8 +29,8 @@ namespace Reko.Scanning
 {
     public abstract class ScannerBase
     {
-        private DecompilerEventListener eventListener;
-        private Dictionary<Address, UserProcedure> noDecompiledProcs;
+        private readonly DecompilerEventListener eventListener;
+        private readonly Dictionary<Address, UserProcedure> noDecompiledProcs;
  
         public ScannerBase(Program program, DecompilerEventListener eventListener)
         {

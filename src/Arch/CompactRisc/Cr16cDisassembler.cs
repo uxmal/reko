@@ -36,7 +36,7 @@ namespace Reko.Arch.CompactRisc
 
         private readonly Cr16Architecture arch;
         private readonly EndianImageReader rdr;
-        private List<MachineOperand> ops;
+        private readonly List<MachineOperand> ops;
         private Address addr;
 
         public Cr16cDisassembler(Cr16Architecture arch, EndianImageReader rdr)
@@ -151,7 +151,6 @@ namespace Reko.Arch.CompactRisc
         }
 
         #endregion
-
 
         #region Decoders
 

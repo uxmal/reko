@@ -340,7 +340,7 @@ namespace Reko.Scanning
                     return ValueSet.Any;
             }
 
-            var vsTail = valuesets[valuesets.Count - 1];
+            var vsTail = valuesets[^1];
             return new ConcreteValueSet(
                 vsTail.DataType,
                 vsTail.Values
@@ -358,7 +358,7 @@ namespace Reko.Scanning
                 //$TODO: we really need a special MkSegmentedPointer expression type.
                 return arch.MakeSegmentedAddress(cSeg, (Constant) off); 
             }
-            exps[exps.Length - 1] = (Constant) off;
+            exps[^1] = (Constant) off;
             return new MkSequence(dataType, exps);
         }
 
@@ -410,7 +410,7 @@ namespace Reko.Scanning
             var segs = vaSeg.Values.ToArray();
             if (segs.Length != 1)
                 return ValueSet.Any;
-            if (!(segs[0] is Constant cSeg))
+            if (segs[0] is not Constant cSeg)
                 return ValueSet.Any;
 
             var vsOff = access.EffectiveAddress.Accept(this, bitRange);

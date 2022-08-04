@@ -79,7 +79,7 @@ namespace Reko.Analysis
             if (idOld == id)
             {
                 ssaIds[id].Uses.Remove(use);
-                var usedIds = ExpressionIdentifierUseFinder.Find(ssaIds, exprNew);
+                var usedIds = ExpressionIdentifierUseFinder.Find(exprNew);
                 foreach(var usedId in usedIds)
                 {
                     ssaIds[usedId].Uses.Add(use);
