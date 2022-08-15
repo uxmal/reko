@@ -39,8 +39,6 @@ namespace Reko.Arch.Arm.AArch64
     {
 #pragma warning disable IDE1006 // Naming Styles
 
-        private const uint RegisterMask = 0b11111;
-
         private static readonly Decoder rootDecoder;
         private static readonly Decoder invalid;
 
@@ -74,7 +72,7 @@ namespace Reko.Arch.Arm.AArch64
         {
             public Mnemonic mnemonic;
             public InstrClass iclass;
-            public List<MachineOperand> ops = new List<MachineOperand>();
+            public List<MachineOperand> ops = new();
             public Mnemonic shiftCode = Mnemonic.Invalid;
             public MachineOperand? shiftAmount = null;
             public bool useQ;
@@ -115,30 +113,27 @@ namespace Reko.Arch.Arm.AArch64
 
         private static int Bitsize(VectorData data)
         {
-            switch (data)
+            return data switch
             {
-            case VectorData.I8: return 8;
-            case VectorData.I16: return 16;
-            case VectorData.I32: return 32;
-            case VectorData.I64: return 64;
-            case VectorData.F16: return 16;
-            case VectorData.F32: return 32;
-            case VectorData.F64: return 64;
-            }
-            return 0;
+                VectorData.I8 => 8,
+                VectorData.I16 => 16,
+                VectorData.I32 => 32,
+                VectorData.I64 => 64,
+                VectorData.F16 => 16,
+                VectorData.F32 => 32,
+                VectorData.F64 => 64,
+                _ => 0,
+            };
         }
 
-        private ImmediateOperand DecodeSignedImmediateOperand(uint wInstr, Bitfield[] fields, DataType dt, int sh =0 )
+        private static ImmediateOperand DecodeSignedImmediateOperand(uint wInstr, Bitfield[] fields, DataType dt, int sh = 0)
         {
             int n = Bitfield.ReadSignedFields(fields, wInstr);
-            if (sh > 0)
-            {
-                n <<= sh;
-            }
+            n <<= sh;
             return new ImmediateOperand(Constant.Create(dt, n));
         }
 
-        private ImmediateOperand DecodeUnsignedImmediateOperand(uint wInstr, Bitfield[] fields, DataType dt, int sh = 0)
+        private static ImmediateOperand DecodeUnsignedImmediateOperand(uint wInstr, Bitfield[] fields, DataType dt, int sh = 0)
         {
             uint n = Bitfield.ReadFields(fields, wInstr);
             if (sh > 0)
@@ -152,7 +147,7 @@ namespace Reko.Arch.Arm.AArch64
         /// Decode a logical immediate value in the form
         /// "N:immr:imms" (where the immr and imms fields are each 6 bits) into the
         /// integer value it represents with regSize bits.
-        private ulong? DecodeLogicalImmediate(uint val, int bitSize)
+        private static ulong? DecodeLogicalImmediate(uint val, int bitSize)
         {
             static int HighestSetBit(uint u)
             {
@@ -218,7 +213,7 @@ namespace Reko.Arch.Arm.AArch64
 
         private static ulong DecodeSimdImmediate(uint op, uint cmode, uint w8)
         {
-            ulong Replicate(ulong n, int bits, int times)
+            static ulong Replicate(ulong n, int bits, int times)
             {
                 ulong result = 0;
                 for (int i =0; i < times; ++i)
@@ -317,10 +312,10 @@ namespace Reko.Arch.Arm.AArch64
                 return true;
             };
         }
-        private static Mutator<AArch64Disassembler> X_0 = X(0, 5);
-        private static Mutator<AArch64Disassembler> X_5 = X(5, 5);
-        private static Mutator<AArch64Disassembler> X_10 = X(10, 5);
-        private static Mutator<AArch64Disassembler> X_16 = X(16, 5);
+        private static readonly Mutator<AArch64Disassembler> X_0 = X(0, 5);
+        private static readonly Mutator<AArch64Disassembler> X_5 = X(5, 5);
+        private static readonly Mutator<AArch64Disassembler> X_10 = X(10, 5);
+        private static readonly Mutator<AArch64Disassembler> X_16 = X(16, 5);
 
         // Instructions that use sp rather than x31:
         //  autda
@@ -552,7 +547,7 @@ namespace Reko.Arch.Arm.AArch64
                 return true;
             };
         }
-        private static RegisterStorage[][]? Vs_BHS_ = new RegisterStorage[][]
+        private static readonly RegisterStorage[][]? Vs_BHS_ = new RegisterStorage[][]
         {
             Registers.SimdRegs8,
             Registers.SimdRegs16,
@@ -560,7 +555,7 @@ namespace Reko.Arch.Arm.AArch64
             null!
         };
 
-        private static RegisterStorage[][]? Vs_BHSD = new RegisterStorage[][]
+        private static readonly RegisterStorage[][] Vs_BHSD = new RegisterStorage[][]
         {
             Registers.SimdRegs8,
             Registers.SimdRegs16,
@@ -568,7 +563,7 @@ namespace Reko.Arch.Arm.AArch64
             Registers.SimdRegs64,
         };
 
-        private static RegisterStorage[][]? Vs_HSD_ = new RegisterStorage[][]
+        private static readonly RegisterStorage[][]? Vs_HSD_ = new RegisterStorage[][]
         {
             Registers.SimdRegs16,
             Registers.SimdRegs32,
@@ -576,7 +571,7 @@ namespace Reko.Arch.Arm.AArch64
             null!
         };
 
-        private static RegisterStorage[][]? Vs__HS_ = new RegisterStorage[][]
+        private readonly static RegisterStorage[][]? Vs__HS_ = new RegisterStorage[][]
         {
             null!,
             Registers.SimdRegs16,
@@ -584,13 +579,13 @@ namespace Reko.Arch.Arm.AArch64
             null!
         };
 
-        private static RegisterStorage[][]? Vs__SD_ = new RegisterStorage[][]
-{
+        private readonly static RegisterStorage[][]? Vs__SD_ = new RegisterStorage[][]
+        {
             null!,
             Registers.SimdRegs32,
             Registers.SimdRegs64,
             null!
-};
+        };
 
 
         /// <summary>
@@ -608,8 +603,9 @@ namespace Reko.Arch.Arm.AArch64
                 var et = elementArrangement[iArr];
                 if (et == VectorData.Invalid)
                     return false;
-                var vr = new VectorRegisterOperand(dt, Registers.SimdVectorReg128[iReg]);
-                vr.ElementType = et;
+                var vr = new VectorRegisterOperand(dt, Registers.SimdVectorReg128[iReg]) {
+                    ElementType = et
+                };
                 d.state.ops.Add(vr);
                 return true;
             };
@@ -779,9 +775,10 @@ namespace Reko.Arch.Arm.AArch64
             return (u, d) =>
             {
                 var iReg = field.Read(u);
-                var vr = new VectorRegisterOperand(dt, Registers.SimdVectorReg128[iReg]);
-                vr.Index = idx;
-                vr.ElementType = et;
+                var vr = new VectorRegisterOperand(dt, Registers.SimdVectorReg128[iReg]) {
+                    Index = idx,
+                    ElementType = et,
+                };
                 Debug.Assert(vr.ElementType != VectorData.Invalid);
                 d.state.ops.Add(vr);
                 return true;
@@ -978,7 +975,7 @@ namespace Reko.Arch.Arm.AArch64
             };
             return (u, d) =>
             {
-                var i = d.DecodeUnsignedImmediateOperand(u, fields, dt, sh);
+                var i = DecodeUnsignedImmediateOperand(u, fields, dt, sh);
                 d.state.ops.Add(i);
                 return true;
             };
@@ -991,7 +988,7 @@ namespace Reko.Arch.Arm.AArch64
         {
             return (u, d) =>
             {
-                var imm = d.DecodeLogicalImmediate(u >> offset, dt.BitSize);
+                var imm = DecodeLogicalImmediate(u >> offset, dt.BitSize);
                 if (imm is null)
                     return false;
                 var op = new ImmediateOperand(Constant.Create(dt, imm.Value));
@@ -1011,7 +1008,7 @@ namespace Reko.Arch.Arm.AArch64
             };
             return (u, d) =>
             {
-                var i = d.DecodeSignedImmediateOperand(u, fields, dt, sh);
+                var i = DecodeSignedImmediateOperand(u, fields, dt, sh);
                 d.state.ops.Add(i);
                 return true;
             };
@@ -1674,7 +1671,7 @@ namespace Reko.Arch.Arm.AArch64
             };
         }
 
-        private static readonly Bitfield barrierField = new Bitfield(8, 4);
+        private static readonly Bitfield barrierField = new(8, 4);
         private static bool Barrier(uint uInstr, AArch64Disassembler dasm)
         {
             var barrierType = new BarrierOperand((BarrierOption)barrierField.Read(uInstr));
@@ -2098,7 +2095,7 @@ namespace Reko.Arch.Arm.AArch64
             {
                 InstructionClass = InstrClass.Invalid,
                 Mnemonic = Mnemonic.Invalid,
-                Operands = new MachineOperand[0]
+                Operands = Array.Empty<MachineOperand>()
             };
         }
 
@@ -4806,7 +4803,7 @@ namespace Reko.Arch.Arm.AArch64
 
             Decoder AdvancedSimdCopy;
             {
-                bool isMovAlias(uint u) =>
+                static bool isMovAlias(uint u) =>
                     (u & 0b01111) == 0b01000 ||
                     (u & 0b00111) == 0b00100;
 

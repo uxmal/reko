@@ -130,7 +130,7 @@ namespace Reko.Arch.Arm.AArch32
             if (ShiftType != Mnemonic.Invalid)
             {
                 if (ShiftType != Mnemonic.lsl ||
-                    !(ShiftValue is ImmediateOperand imm) ||
+                    ShiftValue is not ImmediateOperand imm ||
                     !imm.Value.IsZero)
                 {
                     renderer.WriteChar(',');
@@ -202,7 +202,7 @@ namespace Reko.Arch.Arm.AArch32
                     var s = this.vector_data.ToString().ToLowerInvariant();
                     if (s.Length == 6)
                     {
-                        s = s.Substring(0, 3) + "." + s.Substring(3);
+                        s = s[..3] + "." + s.Substring(3);
                     }
                     sb.AppendFormat(".{0}", s);
                 }

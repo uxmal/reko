@@ -31,7 +31,7 @@ namespace Reko.Core.Rtl
     /// A RtlInstructionCluster contains the RtlInstructions that are generated when 
     /// a machine instruction is rewritten.
     /// </summary>
-    public class RtlInstructionCluster
+    public sealed class RtlInstructionCluster
     {
         public RtlInstructionCluster(Address addr, int instrLength, params RtlInstruction[] instrs)
         {

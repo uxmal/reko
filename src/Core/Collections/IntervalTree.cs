@@ -39,9 +39,8 @@ namespace Reko.Core.Collections
 
         public override bool Equals(object? obj)
         {
-            if (!(obj is Interval<T>))
+            if (obj is not Interval<T> that)
                 return false;
-            var that = (Interval<T>)obj;
             return this.Start.CompareTo(that.Start) ==0 &&
                    this.End.CompareTo(that.End)==0;
         }
@@ -1057,10 +1056,7 @@ namespace Reko.Core.Collections
 
                     if (this.Interval.OverlapsWith(toFind))
                     {
-                        if (list == null)
-                        {
-                            list = new List<KeyValuePair<Interval<T>, TypeValue>>();
-                        }
+                        list ??= new List<KeyValuePair<Interval<T>, TypeValue>>();
 
                         list.Add(new KeyValuePair<Interval<T>, TypeValue>(this.Interval, this.Value));
 
@@ -1071,10 +1067,7 @@ namespace Reko.Core.Collections
                             {
                                 if (kvp.Key.OverlapsWith(toFind))
                                 {
-                                    if (list == null)
-                                    {
-                                        list = new List<KeyValuePair<Interval<T>, TypeValue>>();
-                                    }
+                                    list ??= new List<KeyValuePair<Interval<T>, TypeValue>>();
                                     list.Add(kvp);
                                 }
                                 else
@@ -1350,10 +1343,7 @@ namespace Reko.Core.Collections
 
             private void AddIntervalValuePair(Interval<T> interval, TypeValue value)
             {
-                if (this.Range == null)
-                {
-                    this.Range = new List<KeyValuePair<T, TypeValue>>();
-                }
+                this.Range ??= new List<KeyValuePair<T, TypeValue>>();
 
                 ////always store the max End value in the node.Data itself .. store the Range list in decreasing order
                 if (interval.End.CompareTo(this.Interval.End) > 0)
@@ -1419,9 +1409,9 @@ namespace Reko.Core.Collections
             /// </returns>
             public override bool Equals(object? obj)
             {
-                if (obj is KeyValueComparer<TKey, TValue>)
+                if (obj is KeyValueComparer<TKey, TValue> that)
                 {
-                    return object.Equals(this.keyComparer, ((KeyValueComparer<TKey, TValue>)obj).keyComparer);
+                    return object.Equals(this.keyComparer, that.keyComparer);
                 }
                 else
                 {

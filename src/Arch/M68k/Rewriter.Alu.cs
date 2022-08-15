@@ -599,14 +599,14 @@ namespace Reko.Arch.M68k
 
         public void RewriteMove(bool setFlag)
         {
-            if (GetRegister(instr.Operands[0]) == Registers.ccr)
+            if (GetRegister(0) == Registers.ccr)
             {
                 // move from ccr.
                 var src = m.Convert(binder.EnsureRegister(Registers.ccr), PrimitiveType.Byte, PrimitiveType.UInt16);
                 var dst = orw.RewriteDst(instr.Operands[1], instr.Address, PrimitiveType.UInt16, src, (s, d) => s);
                 return;
             }
-            else if (GetRegister(instr.Operands[1]) == Registers.ccr)
+            else if (GetRegister(1) == Registers.ccr)
             {
                 var src = orw.RewriteSrc(instr.Operands[0], instr.Address);
                 var dst = orw.RewriteDst(instr.Operands[1], instr.Address, instr.DataWidth ?? (PrimitiveType)src.DataType, src, (s, d) => s);
@@ -619,7 +619,7 @@ namespace Reko.Arch.M68k
                 EmitInvalid();
                 return;
             }
-            var isSr = GetRegister(instr.Operands[0]) == Registers.sr || GetRegister(instr.Operands[1]) == Registers.sr;
+            var isSr = GetRegister(0) == Registers.sr || GetRegister(1) == Registers.sr;
             if (setFlag && !isSr)
             {
                 m.Assign(

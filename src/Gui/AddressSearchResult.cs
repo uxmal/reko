@@ -40,7 +40,7 @@ namespace Reko.Gui
     public class AddressSearchResult : ISearchResult
     {
         protected readonly IServiceProvider services;
-        private List<AddressSearchHit> hits;
+        private readonly List<AddressSearchHit> hits;
         private AddressSearchDetails details;
 
         public AddressSearchResult(
@@ -87,7 +87,7 @@ namespace Reko.Gui
             View.AddColumn("Details", 70);
         }
 
-        public int GetItemImageIndex(int i)
+        public static int GetItemImageIndex(int i)
         {
             return 0;
         }
@@ -125,7 +125,7 @@ namespace Reko.Gui
         }
 
 
-        private int SelectBgColor(ImageMapItem item)
+        private static int SelectBgColor(ImageMapItem item)
         {
             if (item.DataType is UnknownType)
                 return -1;
@@ -201,11 +201,12 @@ namespace Reko.Gui
             {
             case CmdIds.ViewFindWhatPointsHere: await ViewFindWhatPointsHere(); break;
             case CmdIds.ViewAsCode: details = new CodeSearchDetails(); View.Invalidate(); break;
-            case CmdIds.ViewAsStrings: details = new StringSearchDetails(new StringFinderCriteria
-            {
-                Encoding = Encoding.ASCII,
-                StringType = StringType.NullTerminated(PrimitiveType.Char),
-            }); View.Invalidate(); break;
+            case CmdIds.ViewAsStrings: details = new StringSearchDetails(new StringFinderCriteria(
+                StringType.NullTerminated(PrimitiveType.Char),
+                Encoding.ASCII,
+                0,
+                default!));
+                View.Invalidate(); break;
             case CmdIds.ViewAsData: details = new DataSearchDetails(); View.Invalidate(); break;
             case CmdIds.ActionMarkProcedure: await MarkProcedures(); break;
             case CmdIds.ActionMarkType: MarkType(); break;
@@ -256,7 +257,7 @@ namespace Reko.Gui
         public IEnumerable<AddressSearchHit> SelectedHits()
         {
             if (View is null)
-                return new AddressSearchHit[0];
+                return Array.Empty<AddressSearchHit>();
             else 
                 return View.SelectedIndices.Select(i => hits[i]);
         }

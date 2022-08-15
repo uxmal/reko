@@ -62,15 +62,15 @@ namespace Reko.Core.Dfa
                     (h, n) => h ^ n.GetHashCode());
             }
 
-            public SortedSet<TreeNode> Nodes;
+            public readonly SortedSet<TreeNode> Nodes;
             public int Number;
             public bool Starts;
             public bool Accepts;
-            private int hash;
+            private readonly int hash;
 
             public override bool Equals(object? obj)
             {
-                if (!(obj is IntermediateState that))
+                if (obj is not IntermediateState that)
                     return false;
                 if (Nodes.Count != that.Nodes.Count)
                     return false;
@@ -116,7 +116,7 @@ namespace Reko.Core.Dfa
         public void BuildAutomaton(TreeNode tree)
         {
             var unmarked = new Queue<IntermediateState>();
-            var state = CreateIntermediateState(ParseTree.FirstPos!);
+            var state = CreateIntermediateState(tree.FirstPos!);
             state.Starts = true;
             Dstates.Add(state, state);
             unmarked.Enqueue(state);
@@ -146,7 +146,7 @@ namespace Reko.Core.Dfa
         }
 
         [Conditional("DEBUG")]
-        private void DumpState(IntermediateState state)
+        private static void DumpState(IntermediateState state)
         {
             Debug.Print("Created state {0}{1}{2}", state.Number, state.Starts ? " Starts" : "", state.Accepts ? " Accepts" : "");
             Debug.Print("    {0}", string.Join(",", state.Nodes.Select(n => n.Number.ToString())));

@@ -108,7 +108,7 @@ namespace Reko.Core
             {
                 for (int i = 0; i < StackValues.Length; ++i)
                 {
-                    if (!(state!.GetStackValue(StackValues[i].Offset) is Constant c) || !c.IsValid)
+                    if (state!.GetStackValue(StackValues[i].Offset) is not Constant c || !c.IsValid)
                         return false;
                     if (c.ToUInt32() != StackValues[i].Value)
                         return false;

@@ -172,7 +172,7 @@ namespace Reko.Core
         /// Resolves any 0-sized pointers, which are used to indicate pointers
         /// of unknown size.
         /// </summary>
-        private DataType ResolvePointer(DataType dtGeneric, DataType dtConcrete, int ptrSize)
+        private static DataType ResolvePointer(DataType dtGeneric, DataType dtConcrete, int ptrSize)
         {
             if (dtGeneric is Pointer ptr && ptr.BitSize == 0)
             {
@@ -203,7 +203,7 @@ namespace Reko.Core
 
         public override string ToString()
         {
-            StringWriter sw = new StringWriter();
+            var sw = new StringWriter();
             var name = DecorateGenericName();
             Signature.Emit(name, FunctionType.EmitFlags.ArgumentKind, new TextFormatter(sw));
             return sw.ToString();

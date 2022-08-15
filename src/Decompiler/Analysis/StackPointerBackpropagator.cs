@@ -107,14 +107,11 @@ namespace Reko.Analysis
         private bool IsTrashed(Identifier sp)
         {
             var definition = ssa.Identifiers[sp].DefStatement;
-            switch (definition?.Instruction)
+            return (definition?.Instruction) switch
             {
-            case CallInstruction _:
-            case PhiAssignment _:
-                return true;
-            default:
-                return false;
-            }
+                CallInstruction _ or PhiAssignment _ => true,
+                _ => false,
+            };
         }
 
         private (Identifier?, int) MatchStackOffsetPattern(Identifier sp)

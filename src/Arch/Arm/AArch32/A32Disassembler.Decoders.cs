@@ -19,18 +19,13 @@
 #endregion
 
 using Reko.Core;
-using Reko.Core.Lib;
 using Reko.Core.Machine;
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Reko.Arch.Arm.AArch32
 {
-    using Decoder = Reko.Core.Machine.Decoder<A32Disassembler, Mnemonic, AArch32Instruction>;
+    using Decoder = Decoder<A32Disassembler, Mnemonic, AArch32Instruction>;
 
     public partial class A32Disassembler
     {

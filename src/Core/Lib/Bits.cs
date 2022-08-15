@@ -103,14 +103,7 @@ namespace Reko.Core.Lib
 
         public static int BitCount(ulong u)
         {
-            //$TODO: when porting to .NET 5.0, use BitOperations.PopCount()
-            u -= ((u >> 1) & 0x5555555555555555UL);
-            u = (u & 0x3333333333333333UL) + ((u >> 2) & 0x3333333333333333UL);
-            u = (u & 0x0F0F0F0F0F0F0F0FUL) + ((u >> 4) & 0x0F0F0F0F0F0F0F0FUL);
-            u = (u & 0x00FF00FF00FF00FFUL) + ((u >> 8) & 0x00FF00FF00FF00FFUL);
-            u = (u & 0x0000FFFF0000FFFFUL) + ((u >> 16) & 0x0000FFFF0000FFFFUL);
-            u = (u & 0x00000000FFFFFFFFUL) + ((u >> 32) & 0x0000000FFFFFFFFUL);
-            return (int)u;
+            return BitOperations.PopCount(u);
         }
 
         // http://stackoverflow.com/questions/11376288/fast-computing-of-log2-for-64-bit-integers

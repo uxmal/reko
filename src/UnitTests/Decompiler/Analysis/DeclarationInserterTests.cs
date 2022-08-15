@@ -38,7 +38,7 @@ namespace Reko.UnitTests.Decompiler.Analysis
 		public void DeciWeb()
 		{
 			Build(new DiamondMock().Procedure);
-			DeclarationInserter deci = new DeclarationInserter(ssaIds, doms);
+			DeclarationInserter deci = new DeclarationInserter(doms);
 			Web web = new Web();
 
 			SsaIdentifier r_2 = ssaIds.Where(s => s.Identifier.Name == "r_2").Single();

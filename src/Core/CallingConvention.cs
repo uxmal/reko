@@ -258,14 +258,14 @@ namespace Reko.Core
             {
                 sb.AppendFormat("[this {0}] ", this.ImplicitThis);
             }
-            sb.Append("(");
+            sb.Append('(');
             var sep = "";
             foreach (var dt in this.Parameters)
             {
                 sb.AppendFormat("{0}{1}", sep, dt);
                 sep = ", ";
             }
-            sb.Append(")");
+            sb.Append(')');
             return sb.ToString();
         }
     }

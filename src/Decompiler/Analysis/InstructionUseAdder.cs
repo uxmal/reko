@@ -31,7 +31,7 @@ namespace Reko.Analysis
 
         public InstructionUseAdder(Statement user, SsaIdentifierCollection ssaIds)
         {
-            this.user = user ?? throw new ArgumentNullException("user");
+            this.user = user ?? throw new ArgumentNullException(nameof(user));
             this.ssaIds = ssaIds;
         }
 

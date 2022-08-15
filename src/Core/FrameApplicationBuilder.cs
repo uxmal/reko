@@ -30,9 +30,9 @@ namespace Reko.Core
 {
     public class FrameApplicationBuilder : ApplicationBuilder, StorageVisitor<Expression>
     {
-        protected IProcessorArchitecture arch;
-        protected IStorageBinder binder;
-        protected bool ensureVariables;
+        protected readonly IProcessorArchitecture arch;
+        protected readonly IStorageBinder binder;
+        protected readonly bool ensureVariables;
 
         /// <summary>
         /// Creates an application builder that creates references

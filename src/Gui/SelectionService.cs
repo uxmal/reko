@@ -38,7 +38,7 @@ namespace Reko.Gui
 
         public SelectionService()
         {
-            selection = new object[0];
+            selection = Array.Empty<object>();
         }
 
         public object? PrimarySelection =>

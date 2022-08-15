@@ -337,7 +337,7 @@ namespace Reko.Analysis
 			return W;
 		}
 
-		private Block? PrecedingPhiBlock(Identifier u, Statement stm)
+		private static Block? PrecedingPhiBlock(Identifier u, Statement stm)
 		{
             if (stm.Instruction is not PhiAssignment phi)
                 return null;

@@ -601,7 +601,7 @@ namespace Reko.Core
 
         public uint GetDataSize(IProcessorArchitecture arch, Address addr, DataType dt)
         {
-            if (!(dt is StringType strDt))
+            if (dt is not StringType strDt)
                 return (uint) dt.Size;
             if (strDt.LengthPrefixType == null)
             {
@@ -627,10 +627,10 @@ namespace Reko.Core
         {
             return new FunctionType(
                 new Identifier("", returnType, null!),
-                args.Select((arg, i) => IdFromExpression(arg, i)).ToArray());
+                args.Select(arg => IdFromExpression(arg)).ToArray());
         }
 
-        private static Identifier IdFromExpression(Expression arg, int i)
+        private static Identifier IdFromExpression(Expression arg)
         {
             var id = arg as Identifier;
             var stg = id?.Storage;

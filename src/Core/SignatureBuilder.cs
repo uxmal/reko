@@ -35,12 +35,12 @@ namespace Reko.Core
 	/// </summary>
 	public class SignatureBuilder
 	{
-		private List<Identifier> args;
-		private Identifier? ret = null;
-		private IStorageBinder binder;
-		private IProcessorArchitecture arch;
+		private readonly List<Identifier> args;
+		private readonly IStorageBinder binder;
+		private readonly IProcessorArchitecture arch;
+        private Identifier? ret = null;
 
-		public SignatureBuilder(IStorageBinder binder, IProcessorArchitecture arch)
+        public SignatureBuilder(IStorageBinder binder, IProcessorArchitecture arch)
 		{
 			this.binder = binder;
 			this.arch = arch;

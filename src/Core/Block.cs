@@ -28,7 +28,7 @@ using System.Text;
 namespace Reko.Core
 {
 	/// <summary>
-	/// Represents a basic block of statements.
+	/// Represents a basic block of <see cref="Statement"/>s.
 	/// </summary>
 	public class Block
 	{
@@ -179,7 +179,7 @@ namespace Reko.Core
                 UseTabs = true,
                 TabSize = 4
             };
-            CodeFormatter cf = new CodeFormatter(f);
+            var cf = new CodeFormatter(f);
 			int i = 0;
 			foreach (Statement s in Statements)
 			{

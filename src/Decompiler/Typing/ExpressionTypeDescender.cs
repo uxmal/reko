@@ -39,13 +39,13 @@ namespace Reko.Typing
     public class ExpressionTypeDescender : ExpressionVisitor<bool, TypeVariable>
     {
         // Matches the effective address of Mem[p + c] where c is a constant.
-        private static readonly ExpressionMatcher fieldAccessPattern = new ExpressionMatcher(
+        private static readonly ExpressionMatcher fieldAccessPattern = new(
             new BinaryExpression(
                 Operator.IAdd,
                 ExpressionMatcher.AnyDataType(null),
                 ExpressionMatcher.AnyExpression("p"),
                 ExpressionMatcher.AnyConstant("c")));
-        private static readonly ExpressionMatcher segFieldAccessPattern = new ExpressionMatcher(
+        private static readonly ExpressionMatcher segFieldAccessPattern = new(
             new MkSequence(
                 ExpressionMatcher.AnyDataType(null),
                 ExpressionMatcher.AnyExpression("p"),
@@ -93,7 +93,7 @@ namespace Reko.Typing
             return false;
         }
 
-        private FunctionType? MatchFunctionPointer(DataType dt)
+        private static FunctionType? MatchFunctionPointer(DataType dt)
         {
             if (dt is Pointer ptr)
                 return ptr.Pointee as FunctionType;
@@ -405,7 +405,7 @@ namespace Reko.Typing
             return dtSum;
         }
 
-        private DataType PushMinuendDataType(DataType dtDiff, DataType dtSub)
+        private static DataType PushMinuendDataType(DataType dtDiff, DataType dtSub)
         {
             if (dtDiff.Domain == Domain.Pointer)
             {
@@ -420,7 +420,7 @@ namespace Reko.Typing
             return dtDiff;
         }
 
-        private DataType PushSubtrahendDataType(DataType dtDiff, DataType dtMin)
+        private static DataType PushSubtrahendDataType(DataType dtDiff, DataType dtMin)
         {
             if (dtDiff.Domain == Domain.Pointer)
             {
@@ -728,7 +728,7 @@ namespace Reko.Typing
             return MeetDataType(tStruct, ptr);
         }
 
-        private int OffsetOf(Constant c)
+        private static int OffsetOf(Constant c)
         {
             if ((c.DataType.Domain & Domain.Integer) == Domain.SignedInt)
                 return c.ToInt32();
@@ -736,7 +736,7 @@ namespace Reko.Typing
                 return (int) c.ToUInt32();
         }
 
-        private MemberPointer MemberPointerTo(DataType baseType, DataType fieldType, int bitSize)
+        private static MemberPointer MemberPointerTo(DataType baseType, DataType fieldType, int bitSize)
         {
             return new MemberPointer(baseType, fieldType, bitSize);
         }

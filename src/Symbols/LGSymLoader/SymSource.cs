@@ -62,10 +62,11 @@ namespace Reko.Symbols.LGSymLoader
 	public class LGSymSource : ISymbolSource
 	{
 		public const UInt32 SYM_MAGIC = 0xB12791EE;
+
 		private readonly MemoryMappedFile mf;
 		private readonly Stream stream;
 		private readonly BinaryReader rdr;
-        private long filesize;
+        private readonly long filesize;
 		private SymHeader hdr;
 
 		private UInt32 n_dwarf_lst;
@@ -95,10 +96,9 @@ namespace Reko.Symbols.LGSymLoader
 
         public void Dispose()
         {
-            if (stream != null)
-                stream.Dispose();
-            if (mf != null)
-                mf.Dispose();
+            GC.SuppressFinalize(this);
+            stream?.Dispose();
+            mf?.Dispose();
         }
 
 		public bool CanLoad(string filename, byte[]? fileContents = null)

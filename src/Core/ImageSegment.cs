@@ -48,7 +48,7 @@ namespace Reko.Core
 		public ImageSegment(string name, Address addr, MemoryArea mem, AccessMode access) : base() 
 		{
             this.Name = name ?? throw new ArgumentNullException(nameof(name), "Segments must have names.");
-            this.Address = addr ?? throw new ArgumentException(nameof(addr));
+            this.Address = addr ?? throw new ArgumentNullException(nameof(addr));
             this.MemoryArea = mem ?? throw new ArgumentNullException(nameof(mem));
 			this.Access = access;
             this.Fields = CreateFields(0);

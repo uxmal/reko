@@ -49,7 +49,7 @@ namespace Reko.Core
             for (int i = 0; i < sBytes.Length; ++i)
             {
                 char c = sBytes[i];
-                if (BytePattern.TryParseHexDigit(c, out byte b))
+                if (TryParseHexDigit(c, out byte b))
                 {
                     bb |= (b << shift);
                     shift -= 4;
@@ -63,7 +63,6 @@ namespace Reko.Core
             }
             return bytes.ToArray();
         }
-
 
         public static bool TryParseHexDigit(char c, out byte b)
         {

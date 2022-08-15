@@ -39,7 +39,7 @@ namespace Reko.Core.Collections
         public void AddRange(IEnumerable<T> collection)
         {
             if (collection == null) 
-                throw new ArgumentNullException("collection");
+                throw new ArgumentNullException(nameof(collection));
             var items = collection.ToList();        // Avoid iterating the collection twice.
             foreach (var i in items)
             {
@@ -53,8 +53,8 @@ namespace Reko.Core.Collections
         /// </summary> 
         public void RemoveRange(IEnumerable<T> collection)
         {
-            if (collection == null)
-                throw new ArgumentNullException("collection");
+            if (collection is null)
+                throw new ArgumentNullException(nameof(collection));
             foreach (var i in collection)
                 Items.Remove(i);
             OnCollectionChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Remove, collection.ToList()));
@@ -73,8 +73,8 @@ namespace Reko.Core.Collections
         /// </summary> 
         public void ReplaceRange(IEnumerable<T> collection)
         {
-            if (collection == null) 
-                throw new ArgumentNullException("collection");
+            if (collection is null) 
+                throw new ArgumentNullException(nameof(collection));
 
             Items.Clear();
             foreach (var i in collection) 

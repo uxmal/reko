@@ -59,8 +59,7 @@ namespace Reko.UnitTests.Decompiler.Loading
         [Test]
         public void Ldr_Match()
         {
-            Loader ldr = new Loader(sc);
-            Assert.IsTrue(ldr.ImageHasMagicNumber(new byte[] { 0x47, 0x11 }, "4711", 0));
+            Assert.IsTrue(Loader.ImageHasMagicNumber(new byte[] { 0x47, 0x11 }, "4711", 0));
         }
 
         [Test(Description="Unless otherwise specified, loading unknown file formats returns a Blob.")]

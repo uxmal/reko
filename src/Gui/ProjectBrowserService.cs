@@ -36,7 +36,7 @@ namespace Reko.Gui
     /// </summary>
     public class ProjectBrowserService : TreeNodeDesignerHost, IProjectBrowserService, ICommandTarget
     {
-        private static TraceSwitch trace = new TraceSwitch(nameof(ProjectBrowserService), "");
+        private static readonly TraceSwitch trace = new(nameof(ProjectBrowserService), "");
 
         /// <summary>
         /// This event is raised when a file is dropped on the browser service.
@@ -213,7 +213,7 @@ namespace Reko.Gui
             var program = FindCurrentProgram();
             if (program is null)
                 return;
-            if (!(des.Component is ImageSegment segment))
+            if (des.Component is not ImageSegment segment)
                 return;
             using (var dlg = Services.RequireService<IDialogFactory>().CreateSegmentEditorDialog())
             {

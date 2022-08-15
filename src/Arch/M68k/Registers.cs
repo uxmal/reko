@@ -30,32 +30,32 @@ namespace Reko.Arch.M68k
 {
     public static class Registers
     {
-        public static DataRegister d0;
-        public static DataRegister d1;
-        public static DataRegister d2;
-        public static DataRegister d3;
-        public static DataRegister d4;
-        public static DataRegister d5;
-        public static DataRegister d6;
-        public static DataRegister d7;
+        public static readonly DataRegister d0;
+        public static readonly DataRegister d1;
+        public static readonly DataRegister d2;
+        public static readonly DataRegister d3;
+        public static readonly DataRegister d4;
+        public static readonly DataRegister d5;
+        public static readonly DataRegister d6;
+        public static readonly DataRegister d7;
 
-        public static AddressRegister a0;
-        public static AddressRegister a1;
-        public static AddressRegister a2;
-        public static AddressRegister a3;
-        public static AddressRegister a4;
-        public static AddressRegister a5;
-        public static AddressRegister a6;
-        public static AddressRegister a7;
+        public static readonly AddressRegister a0;
+        public static readonly AddressRegister a1;
+        public static readonly AddressRegister a2;
+        public static readonly AddressRegister a3;
+        public static readonly AddressRegister a4;
+        public static readonly AddressRegister a5;
+        public static readonly AddressRegister a6;
+        public static readonly AddressRegister a7;
 
-        public static FpRegister fp0;
-        public static FpRegister fp1;
-        public static FpRegister fp2;
-        public static FpRegister fp3;
-        public static FpRegister fp4;
-        public static FpRegister fp5;
-        public static FpRegister fp6;
-        public static FpRegister fp7;
+        public static readonly FpRegister fp0;
+        public static readonly FpRegister fp1;
+        public static readonly FpRegister fp2;
+        public static readonly FpRegister fp3;
+        public static readonly FpRegister fp4;
+        public static readonly FpRegister fp5;
+        public static readonly FpRegister fp6;
+        public static readonly FpRegister fp7;
 
         public static readonly RegisterStorage ccr;
         public static readonly RegisterStorage sr;

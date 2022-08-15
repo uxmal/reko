@@ -125,7 +125,7 @@ namespace Reko.Core
         {
             if (id.Storage is TemporaryStorage)
                 return InvalidConstant.Create(id.DataType);
-            if (!(id.Storage is RegisterStorage reg))
+            if (id.Storage is not RegisterStorage reg)
                 return InvalidConstant.Create(id.DataType);
             return GetValue(reg);
         }
@@ -175,7 +175,7 @@ namespace Reko.Core
 
         public Expression GetMemoryValue(Address addr, DataType dt, SegmentMap segmentMap)
         {
-            if (!(dt is PrimitiveType pt))
+            if (dt is not PrimitiveType pt)
                 return InvalidConstant.Create(dt);
             else if (pt.Domain == Domain.Real && pt.BitSize > 80)
             {
@@ -243,7 +243,7 @@ namespace Reko.Core
         {
             if (id.Storage is TemporaryStorage)
                 return;
-            if (!(id.Storage is RegisterStorage reg))
+            if (id.Storage is not RegisterStorage reg)
                 return;
             SetValue(reg, value);
         }

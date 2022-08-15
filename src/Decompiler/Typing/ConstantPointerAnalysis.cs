@@ -39,7 +39,6 @@ namespace Reko.Typing
 	public class ConstantPointerAnalysis : InstructionVisitorBase
 	{
 		private readonly TypeFactory factory;
-		private readonly TypeStore store;
 		private readonly Program program;
 		private Identifier? globals;
 		private readonly Unifier unifier;
@@ -47,7 +46,6 @@ namespace Reko.Typing
 		public ConstantPointerAnalysis(TypeFactory factory, TypeStore store, Program program)
 		{
 			this.factory = factory;
-			this.store = store;
             this.unifier = new DataTypeBuilderUnifier(factory, store);
             this.program = program;
 		}
@@ -74,12 +72,12 @@ namespace Reko.Typing
 			}
 		}
 
-		private TypeVariable? GetTypeVariableForField(DataType fieldType)
+		private static TypeVariable? GetTypeVariableForField(DataType fieldType)
 		{
             if (fieldType is StructureType s)
             {
                 StructureField? f = s.Fields.AtOffset(0);
-                if (f == null)
+                if (f is null)
                     return null;
                 return f.DataType as TypeVariable;
             }
@@ -87,7 +85,7 @@ namespace Reko.Typing
             {
                 throw new NotImplementedException();
             }
-            throw new NotImplementedException(string.Format("Don't know how to handle pointers to {0}.", fieldType));
+            throw new NotImplementedException($"Don't know how to handle pointers to {fieldType}.");
 		}
 
 		public Identifier Globals
@@ -104,7 +102,7 @@ namespace Reko.Typing
 			set { globals = value; }
 		}
 
-        public T? ResolveAs<T>(DataType dt) where T : DataType
+        public static T? ResolveAs<T>(DataType dt) where T : DataType
         {
             for (; ; )
             {
@@ -151,7 +149,7 @@ namespace Reko.Typing
             case MemberPointer mptr:
                 // C is a constant offset into a segment.
                 var seg = ((Pointer) mptr.BasePointer).Pointee.ResolveAs<StructureType>();
-                if (seg != null && //$DEBUG
+                if (seg is not null && //$DEBUG
                     seg.Fields.AtOffset(offset.Value) == null)
                 {
                     seg.Fields.Add(offset.Value, mptr.Pointee);
@@ -164,7 +162,7 @@ namespace Reko.Typing
         public bool IsInsideArray(StructureType strGlobals, int offset, DataType dt)
         {
             var field = strGlobals.Fields.LowerBound(offset - 1);
-            if (field == null)
+            if (field is null)
                 return false;
             var array = field.DataType.ResolveAs<ArrayType>();
             if (array is null || array is StringType)
@@ -194,7 +192,7 @@ namespace Reko.Typing
         private void VisitConstantMemberPointer(int offset, MemberPointer mptr)
 		{
 			TypeVariable? tvField = GetTypeVariableForField(mptr.Pointee);
-			if (tvField == null)
+			if (tvField is null)
 				return;
 
 			TypeVariable tvBase = (TypeVariable) mptr.BasePointer;

@@ -33,7 +33,7 @@ namespace Reko.Scanning
 	/// </summary>
 	public class EscapedAccessRewriter : InstructionTransformer
 	{
-		private Procedure proc;
+		private readonly Procedure proc;
 
 		public EscapedAccessRewriter(Procedure proc)
 		{

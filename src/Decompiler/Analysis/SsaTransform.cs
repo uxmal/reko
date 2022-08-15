@@ -296,13 +296,10 @@ namespace Reko.Analysis
         /// </remarks>
         private void RemoveRedundantPhis(PhiAssignment[]? phis = null)
         {
-            if (phis == null)
-            {
-                phis = ssa.Procedure.Statements
+            phis ??= ssa.Procedure.Statements
                     .Select(stm => stm.Instruction as PhiAssignment)
                     .Where(p => p != null)
                     .ToArray()!;
-            }
 
             var sccs = SccFinder.FindAll(new PhiGraph(ssa, phis));
             foreach (var scc in sccs)

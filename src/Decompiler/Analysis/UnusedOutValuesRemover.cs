@@ -39,7 +39,7 @@ namespace Reko.Analysis
     /// </summary>
     public class UnusedOutValuesRemover
     {
-        public static TraceSwitch trace = new TraceSwitch(nameof(UnusedOutValuesRemover) , "Trace removal of unused out values")
+        public static readonly TraceSwitch trace = new (nameof(UnusedOutValuesRemover) , "Trace removal of unused out values")
         {
             Level = TraceLevel.Warning,
         };

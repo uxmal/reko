@@ -117,8 +117,8 @@ namespace Reko.Core
 
 		public override string ToString()
 		{
-			StringBuilder sb = new StringBuilder();
-			sb.Append("(");
+			var sb = new StringBuilder();
+			sb.Append('(');
 			if (Initial != null)
 			{
 				sb.Append(Initial.ToString());

@@ -216,7 +216,6 @@ namespace Reko.Analysis
             {
                 if (binding.Storage.Domain == dom)
                 {
-                    var isect = binding.BitRange | regRange;
                     if (binding.BitRange == regRange)
                         return binding;
                     if (binding.BitRange.Extent > regRange.Extent)

@@ -30,7 +30,7 @@ namespace Reko.Core.Code
 	/// </summary>
 	public class CriticalInstruction : InstructionVisitor<bool>, ExpressionVisitor<bool>
 	{
-        private static readonly CriticalInstruction instance = new CriticalInstruction();
+        private static readonly CriticalInstruction instance = new();
 
 		public static bool IsCritical(Instruction instr)
 		{

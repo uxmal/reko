@@ -43,7 +43,7 @@ namespace Reko.Analysis
     /// </remarks>
     public class ValuePropagator : InstructionVisitor<(Instruction, bool)>
     {
-        private static readonly TraceSwitch trace = new TraceSwitch("ValuePropagation", "Traces value propagation");
+        private static readonly TraceSwitch trace = new(nameof(ValuePropagator), "Traces value propagation");
 
         private readonly IProcessorArchitecture arch;
         private readonly SsaState ssa;

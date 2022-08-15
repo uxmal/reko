@@ -49,9 +49,12 @@ namespace Reko.Analysis
 			}
 		}
 
+        /// <summary>
+        /// Determine whether two identifiers interfere.
+        /// </summary>
 		public bool Interfere(Identifier id1, Identifier id2)
 		{
-			Interference i = new Interference(id1, id2);
+			var i = new Interference(id1, id2);
 			return intf.ContainsKey(i);
 		}
 

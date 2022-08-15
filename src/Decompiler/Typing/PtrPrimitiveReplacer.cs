@@ -43,7 +43,6 @@ namespace Reko.Typing
 		private readonly TypeStore store; 
         private readonly Program program;
         private readonly HashSet<EquivalenceClass> classesVisited;
-        private readonly HashSet<DataType> visitedTypes;
         private readonly DecompilerEventListener eventListener;
         private int recursionGuard;
         private int nestCount;
@@ -55,7 +54,6 @@ namespace Reko.Typing
 			this.store = store;
             this.program = program;
             this.eventListener = eventListener;
-            this.visitedTypes = new HashSet<DataType>();
             this.classesVisited = new HashSet<EquivalenceClass>();
         }
 

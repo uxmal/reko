@@ -57,7 +57,7 @@ namespace Reko.Analysis
     /// </remarks>
     public class LongAddRewriter
     {
-        private static TraceSwitch trace = new(nameof(LongAddRewriter), "Trace LongAddRewriter operations") { Level = TraceLevel.Verbose };
+        private static readonly TraceSwitch trace = new(nameof(LongAddRewriter), "Trace LongAddRewriter operations") { Level = TraceLevel.Verbose };
 
         private static readonly InstructionMatcher adcPattern;
         private static readonly InstructionMatcher addPattern;

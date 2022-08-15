@@ -36,7 +36,7 @@ namespace Reko.Analysis
 	{
 		private readonly BlockDominatorGraph doms;
 
-		public DeclarationInserter(SsaIdentifierCollection ssaIds, BlockDominatorGraph doms)
+		public DeclarationInserter(BlockDominatorGraph doms)
 		{
 			this.doms = doms;
 		}

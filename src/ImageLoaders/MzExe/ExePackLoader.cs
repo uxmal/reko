@@ -41,9 +41,9 @@ namespace Reko.ImageLoaders.MzExe
         private readonly IPlatform platform;
         private SegmentMap segmentMap;
 
-        private uint exeHdrSize;
-        private uint hdrOffset;
-        private uint relocationsOffset;
+        private readonly uint exeHdrSize;
+        private readonly uint hdrOffset;
+        private readonly uint relocationsOffset;
 
         private ushort ip;				// 0000
         private ushort cs;				// 0002
@@ -173,7 +173,7 @@ namespace Reko.ImageLoaders.MzExe
                     {
                         ushort relocOff = rdr.ReadLeUInt16();
                         ushort seg = imgU.FixupLeUInt16(relocBase + relocOff, segCode);
-                        var segment = segmentMap.AddSegment(new ImageSegment(
+                        segmentMap.AddSegment(new ImageSegment(
                             seg.ToString("X4"), 
                             Address.SegPtr(seg, 0),
                             imgU,

@@ -35,7 +35,7 @@ namespace Reko.Typing
     /// </remarks>
     public class ExpressionTypeAscender : ExpressionTypeAscenderBase
     {
-        private Unifier unifier;
+        private readonly Unifier unifier;
 
         public ExpressionTypeAscender(
             Program program,

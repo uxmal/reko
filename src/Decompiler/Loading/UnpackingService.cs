@@ -131,7 +131,7 @@ namespace Reko.Loading
         //$REVIEW: move to ImageSignature class?
         // See https://www.hex-rays.com/products/ida/tech/flirt/in_depth.shtml for implementation
         // ideas.
-        public bool Matches(ImageSignature sig, byte[] image, uint entryPointOffset)
+        public static bool Matches(ImageSignature sig, byte[] image, uint entryPointOffset)
         {
             try
             {
@@ -145,7 +145,10 @@ namespace Reko.Loading
                     var lsn = sig.EntryPointPattern[iPattern + 1];
                     if (msn != '?' && lsn != '?')
                     {
-                        var pat = Loader.HexDigit(msn) << 4 | Loader.HexDigit(lsn);
+                        if (!BytePattern.TryParseHexDigit(msn, out var ms) ||
+                            !BytePattern.TryParseHexDigit(lsn, out var ls))
+                            return false;
+                        var pat = ms << 4 | ls;
                         var img = image[iImage];
                         if (pat != img)
                             return false;

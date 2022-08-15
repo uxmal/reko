@@ -43,7 +43,7 @@ namespace Reko.Core
         private static Address MinBaseAddr(ImageSegment[] segments)
         {
             if (segments.Length == 0)
-                throw new ArgumentException("At least one ImageSegment must be provided.");
+                throw new ArgumentException("At least one ImageSegment must be provided.", nameof(segments));
             var addr = segments[0].Address;
             for (int i = 1; i < segments.Length; ++i)
             {
@@ -54,7 +54,7 @@ namespace Reko.Core
 
         public SegmentMap(Address addrBase, params ImageSegment[] segments)
         {
-            this.BaseAddress = addrBase ?? throw new ArgumentNullException("addrBase");
+            this.BaseAddress = addrBase ?? throw new ArgumentNullException(nameof(addrBase));
             this.Segments = new SortedList<Address, ImageSegment>();
             this.SegmentByLinAddress = new SortedList<ulong, ImageSegment>();
             this.Selectors = new Dictionary<ushort, ImageSegment>();

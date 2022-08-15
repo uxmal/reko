@@ -31,7 +31,7 @@ namespace Reko.Core
     /// </summary>
     public struct BitRange : IComparable<BitRange>
     {
-        public static readonly BitRange Empty = new BitRange(0, 0);
+        public static readonly BitRange Empty = new(0, 0);
 
         public BitRange(int lsb, int msb)
         {
@@ -45,7 +45,7 @@ namespace Reko.Core
         public short Lsb { get; }
 
         /// <summary>
-        /// Inclusive upper endpoint of the range.
+        /// Exclusive upper endpoint of the range.
         /// </summary>
         public short Msb { get; }
 

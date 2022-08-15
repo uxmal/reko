@@ -39,7 +39,7 @@ namespace Reko.Arch.M68k.Assembler
         private M68kArchitecture arch;
         private Address addrBase;
         private IEmitter emitter;
-        private List<ImageSymbol> entryPoints;
+        private readonly List<ImageSymbol> entryPoints;
         private Lexer lexer;
         private M68kAssembler asm ;
         private PrimitiveType dataWidth;
@@ -462,7 +462,7 @@ namespace Reko.Arch.M68k.Assembler
             }
         }
 
-        private MachineOperand ForwardEa(Symbol symbol)
+        private static MachineOperand ForwardEa(Symbol symbol)
         {
             //$TODO: remember me so we can backpatch.
             return new MemoryOperand(null!, Registers.a0);

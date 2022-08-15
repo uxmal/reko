@@ -46,12 +46,12 @@ namespace Reko.Core
 
         private static string GetExceptionString(Exception ex)
         {
-            StringBuilder sb = new StringBuilder();
+            var sb = new StringBuilder();
             Exception? e = ex;
             while (e is not null)
             {
                 sb.Append(e.Message);
-                sb.Append(" ");
+                sb.Append(' ');
                 e = e.InnerException;
             }
             return sb.ToString();

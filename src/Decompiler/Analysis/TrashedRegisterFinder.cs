@@ -36,7 +36,7 @@ namespace Reko.Analysis
 {
     public class TrashedRegisterFinder : InstructionVisitor<bool>
     {
-        private static readonly TraceSwitch trace = new TraceSwitch(nameof(TrashedRegisterFinder), "Trashed value propagation") { Level = TraceLevel.Error };
+        private static readonly TraceSwitch trace = new(nameof(TrashedRegisterFinder), "Trashed value propagation") { Level = TraceLevel.Error };
 
         private readonly SegmentMap segmentMap;
         private readonly ProgramDataFlow flow;
@@ -188,7 +188,7 @@ namespace Reko.Analysis
                 foreach (var stm in callStms)
                 {
                     var call = (CallInstruction)stm.Instruction;
-                    if (!((call.Callee as ProcedureConstant)?.Procedure is Procedure proc))
+                    if ((call.Callee as ProcedureConstant)?.Procedure is not Procedure proc)
                         continue;
                     if (savedSps.TryGetValue(proc, out var delta) &&
                         delta.HasValue)
@@ -239,7 +239,7 @@ namespace Reko.Analysis
             }
         }
 
-        private void ApplySignature(FunctionType sig, ProcedureFlow procFlow)
+        private static void ApplySignature(FunctionType sig, ProcedureFlow procFlow)
         {
             //$REVIEW: do we need this? if a procedure has a signature,
             // we will always trust that rather than the flow.

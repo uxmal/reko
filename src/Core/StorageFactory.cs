@@ -28,7 +28,7 @@ using System.Threading.Tasks;
 namespace Reko.Core
 {
     /// <summary>
-    /// Convenient utility class for making Storages.
+    /// Convenient utility class for making <see cref="Storage"/>s.
     /// </summary>
     public class StorageFactory
     {

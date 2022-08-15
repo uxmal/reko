@@ -32,7 +32,7 @@ namespace Reko.Core
 	/// </summary>
 	public class RelocationDictionary 
     {
-        private readonly SortedList<ulong, Constant> map = new SortedList<ulong, Constant>();
+        private readonly SortedList<ulong, Constant> map = new();
 
         /// <summary>
         /// Retrieves a relocated value at the <paramref name="linAddress"/>.

@@ -91,15 +91,15 @@ namespace Reko.Gui
         public static T GetAncestorOfType<T>(this ITreeNodeDesignerHost host, object component)
         {
             var des = host.GetDesigner(component);
-            if (des == null)
+            if (des is null)
                 return default!;
             for (;;)
             {
                 des = des.Parent;
-                if (des == null)
+                if (des is null)
                     return default!;
-                if (des.Component is T)
-                    return (T) des.Component;
+                if (des.Component is T t)
+                    return t;
             }
         }
     }

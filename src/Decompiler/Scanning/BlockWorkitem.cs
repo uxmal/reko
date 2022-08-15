@@ -192,7 +192,7 @@ namespace Reko.Scanning
             return BlockFromAddress(ric!.Address, addr, blockCur!.Procedure, state);
         }
 
-        private bool BlockHasBeenScanned(Block block)
+        private static bool BlockHasBeenScanned(Block block)
         {
             return block.Statements.Count > 0;
         }
@@ -921,7 +921,7 @@ namespace Reko.Scanning
             return true;
         }
 
-        private FunctionType GuessProcedureSignature(CallInstruction call)
+        private static FunctionType GuessProcedureSignature(CallInstruction call)
         {
             return new FunctionType(); //$TODO: attempt to detect parameters of procedure?
             // This would have to be arch-dependent + platform-dependent as some arch pass

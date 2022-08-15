@@ -39,7 +39,7 @@ namespace Reko.UnitTests.Decompiler.Analysis
         private SsaState ssa;
 		private SsaIdentifierCollection ssaIds;
 
-        private IProcessorArchitecture MkArch()
+        private static IProcessorArchitecture MkArch()
         {
             return new FakeArchitecture(new ServiceContainer());
         }
@@ -49,9 +49,9 @@ namespace Reko.UnitTests.Decompiler.Analysis
 		{
 			Build(new LiveLoopMock().Procedure, MkArch());
 			var lci = new LiveCopyInserter(ssa);
-			Assert.AreEqual(2, lci.IndexOfInsertedCopy(proc.ControlGraph.Blocks[0]));
-            Assert.AreEqual(0, lci.IndexOfInsertedCopy(proc.ControlGraph.Blocks[2].Succ[0]));
-            Assert.AreEqual(0, lci.IndexOfInsertedCopy(proc.ControlGraph.Blocks[2].Succ[0].Succ[0]));
+			Assert.AreEqual(2, LiveCopyInserter.IndexOfInsertedCopy(proc.ControlGraph.Blocks[0]));
+            Assert.AreEqual(0, LiveCopyInserter.IndexOfInsertedCopy(proc.ControlGraph.Blocks[2].Succ[0]));
+            Assert.AreEqual(0, LiveCopyInserter.IndexOfInsertedCopy(proc.ControlGraph.Blocks[2].Succ[0].Succ[0]));
 		}
 
 		[Test]
@@ -89,7 +89,7 @@ namespace Reko.UnitTests.Decompiler.Analysis
 			Build(new LiveCopyMock().Procedure, MkArch());
 			var lci = new LiveCopyInserter(ssa);
 
-			int i = lci.IndexOfInsertedCopy(proc.ControlGraph.Blocks[2]);
+			int i = LiveCopyInserter.IndexOfInsertedCopy(proc.ControlGraph.Blocks[2]);
 			Assert.AreEqual(i, 0);
             var idNew = lci.InsertAssignmentNewId(ssaIds.Where(s => s.Identifier.Name == "reg").Single().Identifier, proc.ControlGraph.Blocks[2], i);
             Assert.AreEqual("reg_6 = reg", proc.ControlGraph.Blocks[2].Statements[0].Instruction.ToString());

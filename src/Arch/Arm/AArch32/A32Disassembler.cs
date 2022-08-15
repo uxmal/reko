@@ -35,7 +35,7 @@ using static Reko.Arch.Arm.AArch32.ArmVectorData;
 
 namespace Reko.Arch.Arm.AArch32
 {
-    using Decoder = Reko.Core.Machine.Decoder<A32Disassembler, Mnemonic, AArch32Instruction>;
+    using Decoder = Decoder<A32Disassembler, Mnemonic, AArch32Instruction>;
 
     public partial class A32Disassembler : DisassemblerBase<AArch32Instruction, Mnemonic>
     {
@@ -300,7 +300,7 @@ namespace Reko.Arch.Arm.AArch32
             };
         }
 
-        private (Mnemonic, int) DecodeImmShift(uint wInstr)
+        private static (Mnemonic, int) DecodeImmShift(uint wInstr)
         {
             uint type = bitmask(wInstr, 5, 0x3);
             int shift_n = (int) bitmask(wInstr, 7, 0x1F);
@@ -721,7 +721,7 @@ namespace Reko.Arch.Arm.AArch32
 
         // Memory accesses //////
 
-        private (MemoryOperand, bool) MakeMemoryOperand(
+        private static (MemoryOperand, bool) MakeMemoryOperand(
             uint wInstr,
             RegisterStorage n,
             RegisterStorage? m,
@@ -757,7 +757,7 @@ namespace Reko.Arch.Arm.AArch32
                 var iReg = bitmask(u, offset * 4, 0xF);
                 var n = Registers.GpRegs[bitmask(u, 16, 0xF)];
                 // Writeback makes no sense for this addressing mode.
-                var (mem, ignoreWriteback) = d.MakeMemoryOperand(u, n, null, null, Mnemonic.Invalid, 0, dt);
+                var (mem, ignoreWriteback) = MakeMemoryOperand(u, n, null, null, Mnemonic.Invalid, 0, dt);
                 d.state.ops.Add(mem);
                 return true;
             };
@@ -772,7 +772,7 @@ namespace Reko.Arch.Arm.AArch32
             {
                 var n = Registers.GpRegs[bitmask(u, 16, 0xF)];
                 var offset = Constant.Int32((int) bitmask(u, 0, 0xFFF));
-                var (mem, wb) = d.MakeMemoryOperand(u, n, null, offset, Mnemonic.Invalid, 0, dt);
+                var (mem, wb) = MakeMemoryOperand(u, n, null, offset, Mnemonic.Invalid, 0, dt);
                 d.state.writeback = wb & allowWriteback;
                 d.state.ops.Add(mem);
                 return true;
@@ -786,7 +786,7 @@ namespace Reko.Arch.Arm.AArch32
                 var n = Registers.GpRegs[bitmask(u, 16, 0xF)];
                 var m = Registers.GpRegs[bitmask(u, 0, 0x0F)];
                 MemoryOperand mem;
-                (mem, d.state.writeback) = d.MakeMemoryOperand(u, n, m, null, Mnemonic.Invalid, 0, dt);
+                (mem, d.state.writeback) = MakeMemoryOperand(u, n, m, null, Mnemonic.Invalid, 0, dt);
                 d.state.ops.Add(mem);
                 return true;
             };
@@ -801,7 +801,7 @@ namespace Reko.Arch.Arm.AArch32
                 var offset = Constant.Int32(
                     (int) (((u >> 4) & 0xF0) | (u & 0x0F)));
                 MemoryOperand mem;
-                (mem, d.state.writeback) = d.MakeMemoryOperand(u, n, null, offset, Mnemonic.Invalid, 0, dt);
+                (mem, d.state.writeback) = MakeMemoryOperand(u, n, null, offset, Mnemonic.Invalid, 0, dt);
                 if (!allowWriteback && d.state.writeback)
                     return false;
                 d.state.ops.Add(mem);
@@ -818,9 +818,9 @@ namespace Reko.Arch.Arm.AArch32
                 var m = Registers.GpRegs[bitmask(wInstr, 0, 0x0F)];
                 int shiftAmt;
                 Mnemonic shiftType = Mnemonic.Invalid;
-                (shiftType, shiftAmt) = d.DecodeImmShift(wInstr);
+                (shiftType, shiftAmt) = DecodeImmShift(wInstr);
                 MemoryOperand mem;
-                (mem, d.state.writeback) = d.MakeMemoryOperand(wInstr, n, m, null, shiftType, shiftAmt, dt);
+                (mem, d.state.writeback) = MakeMemoryOperand(wInstr, n, m, null, shiftType, shiftAmt, dt);
                 d.state.ops.Add(mem);
                 return true;
             };
@@ -835,7 +835,7 @@ namespace Reko.Arch.Arm.AArch32
                 var n = Registers.GpRegs[bitmask(u, 16, 0xF)];
                 var offset = Constant.Int32((int) fieldOffset.Read(u) << shift);
                 MemoryOperand mem;
-                (mem, d.state.writeback) = d.MakeMemoryOperand(u, n, null, offset, Mnemonic.Invalid, 0, dt);
+                (mem, d.state.writeback) = MakeMemoryOperand(u, n, null, offset, Mnemonic.Invalid, 0, dt);
                 d.state.ops.Add(mem);
                 return true;
             };
@@ -1425,7 +1425,7 @@ namespace Reko.Arch.Arm.AArch32
         private static readonly Mutator<A32Disassembler> Imm0_r32 = Imm(Constant.Real32(0));
         private static readonly Mutator<A32Disassembler> Imm0_r64 = Imm(Constant.Real64(0));
 
-        private static ArmVectorData[] dtFromCmode =
+        private static readonly ArmVectorData[] dtFromCmode =
         {
             // See p. F6-4271
             ArmVectorData.I32,
@@ -1480,10 +1480,9 @@ namespace Reko.Arch.Arm.AArch32
 
         // '>i' immediate shift
         private static Mutator<A32Disassembler> Shi =>
-            (u, d) =>
-            {
+            (u, d) => {
                 int sh;
-                (d.state.shiftOp, sh) = d.DecodeImmShift(u);
+                (d.state.shiftOp, sh) = DecodeImmShift(u);
                 if (d.state.shiftOp != Mnemonic.Invalid)
                 {
                     d.state.shiftValue = ImmediateOperand.Int32(sh);
@@ -2767,7 +2766,7 @@ namespace Reko.Arch.Arm.AArch32
                 nyi("srs"),
                 invalid);
 
-            bool validRfe(uint n) => n == 0x0A00;
+            static bool validRfe(uint n) => n == 0x0A00;
 
             var ExceptionSaveRestore = Mask(22, 3, // PUS"Exception Save/Restore",
                 Mask(20, 1, // L

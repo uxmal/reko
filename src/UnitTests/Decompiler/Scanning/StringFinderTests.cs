@@ -67,12 +67,11 @@ namespace Reko.UnitTests.Decompiler.Scanning
             Given_Image(0x23, 0);
 
             var sf = new StringFinder(program);
-            Assert.AreEqual(0, sf.FindStrings(new StringFinderCriteria
-            {
-                StringType = StringType.NullTerminated(PrimitiveType.Char),
-                MinimumLength = 5,
-                CreateReader = (m, a, b) => new LeImageReader(m, a, b)
-            }).Count());
+            Assert.AreEqual(0, sf.FindStrings(new StringFinderCriteria(
+                StringType: StringType.NullTerminated(PrimitiveType.Char),
+                Encoding.ASCII,
+                MinimumLength: 5,
+                CreateReader: (m, a, b) => new LeImageReader(m, a, b))).Count());
         }
 
         [Test]
@@ -81,12 +80,11 @@ namespace Reko.UnitTests.Decompiler.Scanning
             Given_Image(0x41, 0);
 
             var sf = new StringFinder(program);
-            var hits = sf.FindStrings(new StringFinderCriteria
-            {
-                StringType= StringType.NullTerminated(PrimitiveType.Char),
-                MinimumLength= 1,
-                CreateReader = (m, a, b) => new LeImageReader(m, a, b)
-            }).ToArray();
+            var hits = sf.FindStrings(new StringFinderCriteria(
+                StringType: StringType.NullTerminated(PrimitiveType.Char),
+                Encoding: Encoding.ASCII,
+                MinimumLength: 1,
+                CreateReader: (m, a, b) => new LeImageReader(m, a, b))).ToArray();
             Assert.AreEqual(1, hits.Length);
             Assert.AreEqual(Address.Ptr32(0x00400000), hits[0].Address);
         }
@@ -97,12 +95,11 @@ namespace Reko.UnitTests.Decompiler.Scanning
             Given_Image(0x42, 0, 0x12, 0x43, 0x00);
 
             var sf = new StringFinder(program);
-            var hits = sf.FindStrings(new StringFinderCriteria
-            {
-                StringType = StringType.NullTerminated(PrimitiveType.Char),
-                MinimumLength = 1,
-                CreateReader = (m, a, b) => new LeImageReader(m, a, b)
-            }).ToArray();
+            var hits = sf.FindStrings(new StringFinderCriteria(
+                StringType: StringType.NullTerminated(PrimitiveType.Char),
+                Encoding: Encoding.ASCII,
+                MinimumLength: 1,
+                CreateReader: (m, a, b) => new LeImageReader(m, a, b))).ToArray();
             Assert.AreEqual(2, hits.Length);
             Assert.AreEqual(Address.Ptr32(0x00400000), hits[0].Address);
             Assert.AreEqual(Address.Ptr32(0x00400003), hits[1].Address);
@@ -111,15 +108,15 @@ namespace Reko.UnitTests.Decompiler.Scanning
         [Test]
         public void StrFind_FindUtf16Le()
         {
-            Given_Image(Encoding.GetEncoding("utf-16le").GetBytes("\0\0Hello\0"));
+            var enc = Encoding.GetEncoding("utf-16le");
+            Given_Image(enc.GetBytes("\0\0Hello\0"));
 
             var sf = new StringFinder(program);
-            var hits = sf.FindStrings(new StringFinderCriteria
-            {
-                StringType = StringType.NullTerminated(PrimitiveType.UInt16),
-                MinimumLength = 3,
-                CreateReader = (m, a, b) => new LeImageReader(m, a, b)
-            }).ToArray();
+            var hits = sf.FindStrings(new StringFinderCriteria(
+                StringType: StringType.NullTerminated(PrimitiveType.UInt16),
+                Encoding: enc,
+                MinimumLength: 3,
+                CreateReader: (m, a, b) => new LeImageReader(m, a, b))).ToArray();
             Assert.AreEqual(1, hits.Length);
             Assert.AreEqual(Address.Ptr32(0x00400004), hits[0].Address);
             Assert.AreEqual(10, hits[0].Length);

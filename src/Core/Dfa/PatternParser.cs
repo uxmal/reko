@@ -28,8 +28,8 @@ namespace Reko.Core.Dfa
     /// </summary>
     public class PatternParser
     {
+        private readonly string pattern;
         private int idx;
-        private string pattern;
         private int significantNodes;
 
         public PatternParser(string pattern)
@@ -60,11 +60,6 @@ namespace Reko.Core.Dfa
             if (idx >= pattern.Length || pattern[idx] != ch)
                 throw new FormatException(string.Format("Expected character '{0}' (U+{1:X4} at position {2}.", ch, (int) ch, idx));
             ++idx;
-        }
-
-        private bool AtEof()
-        {
-            return idx >= pattern.Length;
         }
 
         private TreeNode? ParseOr()

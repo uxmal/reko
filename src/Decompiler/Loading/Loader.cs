@@ -141,7 +141,11 @@ namespace Reko.Loading
         /// <param name="addrLoad">Address into which to load the file.</param>
         /// <returns>A <see cref="ILoadedImage"/> if the file format is recognized, or 
         /// an instance of <see cref="Blob"/> if the file cannot be recognized.</returns>
-        public ILoadedImage LoadBinaryImage(ImageLocation imageLocation, byte[] image, string? loader, Address? addrLoad)
+        public ILoadedImage LoadBinaryImage(
+            ImageLocation imageLocation,
+            byte[] image,
+            string? loader,
+            Address? addrLoad)
         {
             // Try to find a loader that knows how to deal with this format.
             ImageLoader? imgLoader;
@@ -152,10 +156,7 @@ namespace Reko.Loading
             else
             {
                 imgLoader = FindImageLoader<ImageLoader>(imageLocation, image);
-                if (imgLoader is null)
-                {
-                    imgLoader = CreateDefaultImageLoader(imageLocation, image);
-                }
+                imgLoader ??= CreateDefaultImageLoader(imageLocation, image);
             }
 
             if (imgLoader is null)
@@ -176,7 +177,7 @@ namespace Reko.Loading
             return loadedImage;
         }
 
-        private Program PostProcessProgram(ImageLocation imageLocation, Address addrLoad, ImageLoader imgLoader, Program program)
+        private static Program PostProcessProgram(ImageLocation imageLocation, Address addrLoad, ImageLoader imgLoader, Program program)
         {
             // Sanity check of the 'Needs' properties.
             if (program.NeedsScanning && !program.NeedsSsaTransform)
@@ -476,7 +477,7 @@ namespace Reko.Loading
             return default;
         }
 
-        public bool ImageHasMagicNumber(byte[] image, string magicNumber, long offset)
+        public static bool ImageHasMagicNumber(byte[] image, string magicNumber, long offset)
         {
             byte[] magic = BytePattern.FromHexBytes(magicNumber);
             if (image.Length < offset + magic.Length)
@@ -490,21 +491,6 @@ namespace Reko.Loading
             return true;
         }
 
-        public static uint HexDigit(char digit)
-        {
-            switch (digit)
-            {
-            case '0': case '1': case '2': case '3': case '4': 
-            case '5': case '6': case '7': case '8': case '9':
-                return (uint) (digit - '0');
-            case 'A': case 'B': case 'C': case 'D': case 'E': case 'F':
-                return (uint) ((digit - 'A') + 10);
-            case 'a': case 'b': case 'c': case 'd': case 'e': case 'f':
-                return (uint) ((digit - 'a') + 10);
-            default:
-                throw new ArgumentException(string.Format("Invalid hexadecimal digit '{0}'.", digit));
-            }
-        }
 
         /// <summary>
         /// Create an <see cref="ImageLoader"/> using the provided parameters.
@@ -565,7 +551,7 @@ namespace Reko.Loading
             return (ProgramImageLoader) Activator.CreateInstance(t, services, imageLocation, bytes)!;
         }
 
-        protected void CopyImportReferences(Dictionary<Address, ImportReference> importReference, Program program)
+        protected static void CopyImportReferences(Dictionary<Address, ImportReference> importReference, Program program)
         {
             if (importReference == null)
                 return;
@@ -576,7 +562,7 @@ namespace Reko.Loading
             }
         }
 
-        protected void CopyInterceptedCalls(Dictionary<Address, ExternalProcedure> interceptedCalls, Program program)
+        protected static void CopyInterceptedCalls(Dictionary<Address, ExternalProcedure> interceptedCalls, Program program)
         {
             foreach (var item in interceptedCalls)
             {

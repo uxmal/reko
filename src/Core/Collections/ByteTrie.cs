@@ -62,7 +62,7 @@ namespace Reko.Core.Collections
         public void Add(ReadOnlySpan<byte> pattern, TValue value, bool replace)
         {
             if (pattern.Length == 0)
-                throw new ArgumentException(nameof(pattern));
+                throw new ArgumentException("Patterns must be at least one byte long.", nameof(pattern));
             var hiNodes = root;
             for (int i = 0; i < pattern.Length; ++i)
             {
@@ -95,7 +95,7 @@ namespace Reko.Core.Collections
         public void Add(ReadOnlySpan<byte> pattern, ReadOnlySpan<byte> mask, TValue value)
         {
             if (pattern.Length == 0)
-                throw new ArgumentException(nameof(pattern));
+                throw new ArgumentException("Patterns must be at least one byte long.", nameof(pattern));
             if (pattern.Length != mask.Length)
                 throw new ArgumentException("The pattern and the mask have different lengths.");
 
@@ -116,8 +116,7 @@ namespace Reko.Core.Collections
                     }
                     else
                     {
-                        if (loNode.High is null)
-                            loNode.High = new HighNode[16];
+                        loNode.High ??= new HighNode[16];
                         AddRecursive(loNode.High, pattern, mask, i + 1);
                     }
                 }

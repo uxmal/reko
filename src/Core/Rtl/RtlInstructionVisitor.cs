@@ -39,4 +39,20 @@ namespace Reko.Core.Rtl
         T VisitSideEffect(RtlSideEffect side);
         T VisitSwitch(RtlSwitch sw);
     }
+
+    public interface RtlInstructionVisitor<T, C>
+    {
+        T VisitAssignment(RtlAssignment ass, C ctx);
+        T VisitBranch(RtlBranch branch, C ctx);
+        T VisitCall(RtlCall call, C ctx);
+        T VisitGoto(RtlGoto go, C ctx);
+        T VisitIf(RtlIf rtlIf, C ctx);
+        T VisitInvalid(RtlInvalid invalid, C ctx);
+        T VisitMicroGoto(RtlMicroGoto uGoto, C ctx);
+        T VisitMicroLabel(RtlMicroLabel uLabel, C ctx);
+        T VisitNop(RtlNop rtlNop, C ctx);
+        T VisitReturn(RtlReturn ret, C ctx);
+        T VisitSideEffect(RtlSideEffect side, C ctx);
+        T VisitSwitch(RtlSwitch sw, C ctx);
+    }
 }

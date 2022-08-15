@@ -88,7 +88,7 @@ namespace Reko.Typing
             }
         }
 
-        private IEnumerable<T> Single<T>(T dt)
+        private static IEnumerable<T> Single<T>(T dt)
         {
             yield return dt;
         }

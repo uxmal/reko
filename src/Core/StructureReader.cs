@@ -27,6 +27,7 @@ using System.Runtime.InteropServices;
 
 namespace Reko.Core
 {
+    [AttributeUsage(AttributeTargets.Field)]
     public class StructureMemberAttribute : Attribute
     {
 		/// <summary>
@@ -52,8 +53,8 @@ namespace Reko.Core
     /// </summary>
     public class StructureReader<T> where T : struct
     {
-		private Func<int, byte[]> readBytes;
-		private Endianness defaultEndianess = Endianness.LittleEndian;
+		private readonly Func<int, byte[]> readBytes;
+		private readonly Endianness defaultEndianess = Endianness.LittleEndian;
 
         public StructureReader(ByteImageReader reader) : this(reader.ReadBytes)
         {
@@ -78,17 +79,7 @@ namespace Reko.Core
 			return this.BytesToStruct(this.readBytes);
         }
 
-        private int GetAlignment(FieldInfo f)
-        {
-            var attrs = f.GetCustomAttributes(typeof(FieldAttribute), true);
-            if (attrs == null || attrs.Length == 0)
-            {
-				return 1;
-            }
-            return ((FieldAttribute)attrs[0]).Align; 
-        }
-
-		private int FieldSize(FieldInfo field) {
+		private static int FieldSize(FieldInfo field) {
 			if (field.FieldType.IsArray) {
 				MarshalAsAttribute attr = field.GetCustomAttribute<MarshalAsAttribute>(false)!;
 				return Marshal.SizeOf(field.FieldType.GetElementType()!) * attr.SizeConst;
@@ -100,7 +91,7 @@ namespace Reko.Core
 			}
 		}
 
-		private void SwapEndian(byte[] data, Type type, FieldInfo field) {
+		private static void SwapEndian(byte[] data, Type type, FieldInfo field) {
 			int offset = Marshal.OffsetOf(type, field.Name).ToInt32();
 			if (field.FieldType.IsArray) {
 				MarshalAsAttribute attr = field.GetCustomAttribute<MarshalAsAttribute>(false)!;
@@ -154,7 +145,7 @@ namespace Reko.Core
 		}
 
 		private T BytesToStruct(byte[] rawData) {
-			T result = default(T);
+			T result = default;
 
 			RespectEndianness(typeof(T), rawData);
 

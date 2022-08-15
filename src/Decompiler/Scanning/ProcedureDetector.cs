@@ -55,7 +55,7 @@ namespace Reko.Scanning
         }
 
         [Conditional("DEBUG")]
-        public void DumpDuplicates(IEnumerable<RtlBlock> blocks)
+        public static void DumpDuplicates(IEnumerable<RtlBlock> blocks)
         {
             var q = from b in blocks
                     orderby b.Address
@@ -533,7 +533,7 @@ namespace Reko.Scanning
             Debug.Print("{0}+ {1}", sIndent, node);
             if (tree.TryGetValue(node, out var kids))
             {
-                sIndent = sIndent + "  ";
+                sIndent += "  ";
                 foreach (var kid in kids)
                 {
                     DumpDominatorTree(kid, tree, sIndent);
@@ -542,7 +542,7 @@ namespace Reko.Scanning
         }
 
         [Conditional("DEBUG")]
-        private void DumpDomGraph(IEnumerable<RtlBlock> nodes, Dictionary<RtlBlock, RtlBlock> domGraph)
+        private static void DumpDomGraph(IEnumerable<RtlBlock> nodes, Dictionary<RtlBlock, RtlBlock> domGraph)
         {
             var q =
                 from n in nodes
@@ -585,7 +585,7 @@ namespace Reko.Scanning
         }
 
         [Conditional("DEBUG")]
-        private void DumpClusters(List<Cluster> clusters, ScanResults sr)
+        private static void DumpClusters(List<Cluster> clusters, ScanResults sr)
         {
             var ICFG = sr.ICFG;
             // Sort clusters by their earliest address
@@ -600,7 +600,7 @@ namespace Reko.Scanning
         }
 
         [Conditional("DEBUG")]
-        private void DumpCluster(Cluster cc, ScanResults sr)
+        private static void DumpCluster(Cluster cc, ScanResults sr)
         {
             Debug.Print("-- Cluster -----------------------------");
             Debug.Print("{0} nodes", cc.Blocks.Count);

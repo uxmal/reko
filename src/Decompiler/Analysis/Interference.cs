@@ -55,8 +55,7 @@ namespace Reko.Analysis
 
 		public override int GetHashCode()
 		{
-			return (Identifier1.Name.GetHashCode() << 8) |
-				Identifier2.Name.GetHashCode();
+			return HashCode.Combine(Identifier1.Name, Identifier2.Name);
 		}
 
 		#region IComparable Members

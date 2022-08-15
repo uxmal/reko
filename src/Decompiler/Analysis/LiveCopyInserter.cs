@@ -41,7 +41,7 @@ namespace Reko.Analysis
 			this.doms = ssa.Procedure.CreateBlockDominatorGraph();
 		}
 
-		public int IndexOfInsertedCopy(Block b)
+		public static int IndexOfInsertedCopy(Block b)
 		{
 			int i = b.Statements.Count;
 			if (i > 0)

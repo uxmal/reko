@@ -454,7 +454,7 @@ namespace Reko.Core
             ApplyCharacteristicsToServices(CharacteristicsLibs, Metadata);
         }
 
-        private void ApplyCharacteristicsToServices(CharacteristicsLibrary[] characteristicsLibs, TypeLibrary metadata)
+        private static void ApplyCharacteristicsToServices(CharacteristicsLibrary[] characteristicsLibs, TypeLibrary metadata)
         {
             foreach (var ch in characteristicsLibs.SelectMany(cl => cl.Entries))
             {

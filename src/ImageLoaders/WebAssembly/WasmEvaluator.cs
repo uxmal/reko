@@ -27,8 +27,8 @@ namespace Reko.ImageLoaders.WebAssembly
 {
     public class WasmEvaluator
     {
-        private WasmImageReader rdr;
-        private Stack<object> stack;
+        private readonly WasmImageReader rdr;
+        private readonly Stack<object> stack;
 
         public WasmEvaluator(WasmImageReader rdr)
         {
@@ -40,11 +40,10 @@ namespace Reko.ImageLoaders.WebAssembly
         {
             for (;;)
             {
-                byte b;
                 uint u;
                 long l;
                 int i;
-                if (!rdr.TryReadByte(out b))
+                if (!rdr.TryReadByte(out byte b))
                     throw new BadImageFormatException();
                 switch ((Mnemonic)b)
                 {
@@ -115,7 +114,7 @@ namespace Reko.ImageLoaders.WebAssembly
                 case Mnemonic.f32_const:
                     if (!rdr.TryReadLeInt32(out i))
                         throw new InvalidOperationException();
-                    stack.Push(Constant.Int32BitsToFloat(i));
+                    stack.Push(BitConverter.Int32BitsToSingle(i));
                     break;
                 case Mnemonic.f64_const:
                     if (!rdr.TryReadLeInt64(out l))

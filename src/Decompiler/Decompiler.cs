@@ -48,7 +48,7 @@ namespace Reko
         public Decompiler(Project project, IServiceProvider services)
         {
             this.project = project;
-            this.services = services ?? throw new ArgumentNullException("services");
+            this.services = services ?? throw new ArgumentNullException(nameof(services));
             this.host = services.RequireService<IDecompiledFileService>();
             this.eventListener = services.RequireService<DecompilerEventListener>();
             BuildImageMaps();
@@ -363,7 +363,7 @@ namespace Reko
         /// <summary>
         /// Writes the names of the procedures calling the procedure <paramref name="proc" />.
         /// </summary>
-        private void WriteProcedureCallers(Program program, Procedure proc, TextWriter w)
+        private static void WriteProcedureCallers(Program program, Procedure proc, TextWriter w)
         {
             var callers = program.CallGraph.CallerProcedures(proc)
                 .Distinct()
@@ -421,7 +421,8 @@ namespace Reko
         public ProcedureBase ScanProcedure(ProgramAddress paddr, IProcessorArchitecture arch)
         {
             var program = paddr.Program;
-            if (scanner == null)        //$TODO: it's unfortunate that we depend on the scanner of the Decompiler class.
+                //$TODO: it's unfortunate that we depend on the scanner of the Decompiler class.
+            if (scanner == null)       
                 scanner = CreateScanner(program);
             var procName = program.User.Procedures.TryGetValue(
                 paddr.Address, out var sProc) ? sProc.Name : null;

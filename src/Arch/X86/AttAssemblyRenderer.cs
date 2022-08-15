@@ -99,7 +99,7 @@ namespace Reko.Arch.X86
                 break;
             }
 
-            if (base.NeedsExplicitMemorySize(instr))
+            if (NeedsExplicitMemorySize(instr))
             {
                 char suffix = MnemonicSuffix(instr.Operands[0]);
                 sb.Append(suffix);
@@ -169,7 +169,7 @@ namespace Reko.Arch.X86
                 break;
             case ImmediateOperand imm:
                 renderer.WriteChar('$');
-                RenderImmediate(imm, instr, renderer);
+                RenderImmediate(imm, renderer);
                 break;
             case MemoryOperand mem:
                 if (mem.Width.Domain == Domain.SegPointer)
@@ -262,7 +262,6 @@ namespace Reko.Arch.X86
             }
             else
             {
-                var flags = options.Flags;
                 int i = instr.Operands.Length - 1;
                 RenderOperand(instr, i, renderer, options);
                 for (--i; i >= 0; --i)
@@ -273,7 +272,7 @@ namespace Reko.Arch.X86
                     {
                         renderer.WriteString("{k");
                         renderer.WriteUInt32(instr.OpMask);
-                        renderer.WriteFormat("}");
+                        renderer.WriteChar('}');
                     }
                 }
             }

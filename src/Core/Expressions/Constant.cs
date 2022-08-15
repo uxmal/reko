@@ -225,11 +225,6 @@ namespace Reko.Core.Expressions
             return ConstantReal32.CreateFromBits(PrimitiveType.Real32, (int)bits);
 		}
 
-        public static float Int32BitsToFloat(int bits)
-        {
-            return ConstantReal32.FloatToInt.ConvertFromBits(bits);
-        }
-
         public static Constant DoubleFromBitpattern(long bits)
 		{
             return Constant.Real64(BitConverter.Int64BitsToDouble(bits));
@@ -437,7 +432,7 @@ namespace Reko.Core.Expressions
         public virtual Constant Slice(DataType dt, int offset)
         {
             if (offset < 0 || offset + dt.BitSize > this.DataType.BitSize)
-                throw new ArgumentException(nameof(dt), "Invalid bit size.");
+                throw new ArgumentException("Invalid bit size.", nameof(dt));
             return DoSlice(dt, offset);
         }
 
@@ -1434,29 +1429,6 @@ namespace Reko.Core.Expressions
     {
         private readonly float value;
 
-        // .NET doesn't seem to have a way of doing this for 32-bit floats.
-        // Code from one of the answers to https://stackoverflow.com/questions/27237776/convert-int-bits-to-float-bits
-        [StructLayout(LayoutKind.Explicit)]
-        internal struct FloatToInt
-        {
-            [FieldOffset(0)] private float f;
-            [FieldOffset(0)] private int i;
-            public static int ConvertToBits(float value)
-            {
-                var inst = new FloatToInt();
-                inst.f = value;
-                return inst.i;
-            }
-
-            public static float ConvertFromBits(int bits)
-            {
-                var inst = new FloatToInt();
-                inst.i = bits;
-                return inst.f;
-            }
-
-        }
-
         public ConstantReal32(DataType dt, float value)
             : base(dt)
         {
@@ -1465,7 +1437,7 @@ namespace Reko.Core.Expressions
 
         public static ConstantReal32 CreateFromBits(DataType dt, int bits)
         {
-            var value = FloatToInt.ConvertFromBits(bits);
+            var value = BitConverter.Int32BitsToSingle(bits);
             return new ConstantReal32(dt, value);
         }
 
@@ -1481,7 +1453,7 @@ namespace Reko.Core.Expressions
 
         protected override Constant DoSlice(DataType dt, int offset)
         {
-            var bits = (uint) FloatToInt.ConvertToBits(this.value);
+            var bits = (uint)BitConverter.SingleToInt32Bits(this.value);
             var mask = Bits.Mask(0, dt.BitSize);
             return Constant.Create(dt, bits >> offset);
         }
@@ -1712,7 +1684,7 @@ namespace Reko.Core.Expressions
 
     public class StringConstant : Constant
     {
-        private string str;
+        private readonly string str;
 
         public StringConstant(DataType type, string str)
             : base(type)
@@ -1720,7 +1692,7 @@ namespace Reko.Core.Expressions
             this.str = str;
         }
 
-        public int Length { get { return str.Length; } }
+        public int Length => str.Length;
 
         public override Expression CloneExpression()
         {

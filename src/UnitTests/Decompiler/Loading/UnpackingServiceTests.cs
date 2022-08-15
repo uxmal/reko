@@ -119,9 +119,7 @@ namespace Reko.UnitTests.Decompiler.Loading
             {
                 EntryPointPattern = "1234"
             };
-            var upsvc = new UnpackingService(sc);
-
-            Assert.IsTrue(upsvc.Matches(sig, image, 4));
+            Assert.IsTrue(sig.Matches(image, 4));
         }
 
         [Test]
@@ -132,9 +130,7 @@ namespace Reko.UnitTests.Decompiler.Loading
             {
                 EntryPointPattern = "??34"
             };
-            var upsvc = new UnpackingService(sc);
-
-            Assert.IsTrue(upsvc.Matches(sig, image, 4));
+            Assert.IsTrue(sig.Matches(image, 4));
         }
 
         [Test(Description = "Verifies that the suffix array for the raw image is loaded if it exists on disk.")]

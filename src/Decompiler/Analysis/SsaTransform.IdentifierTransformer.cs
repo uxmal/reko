@@ -46,6 +46,7 @@ namespace Reko.Analysis
             protected readonly SsaIdentifierCollection ssaIds;
             protected readonly IDictionary<Block, SsaBlockState> blockstates;
             private Stack<Block> bloxx = new Stack<Block>();
+
             public IdentifierTransformer(Identifier id, Statement stm, SsaTransform outer)
             {
                 this.id = id;

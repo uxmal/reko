@@ -122,7 +122,7 @@ namespace Reko.Core.Types
             FunctionType ft;
             if (ParametersValid)
             {
-                Identifier ret = new Identifier("", ReturnValue!.DataType.Clone(clonedTypes), ReturnValue.Storage);
+                var ret = new Identifier("", ReturnValue!.DataType.Clone(clonedTypes), ReturnValue.Storage);
                 Identifier[] parameters = this.Parameters!
                     .Select(p => new Identifier(p.Name, p.DataType.Clone(clonedTypes), p.Storage))
                     .ToArray();

@@ -571,7 +571,7 @@ namespace Reko.Arch.Arm.AArch64
             switch (cond)
             {
             default:
-                throw new NotImplementedException(string.Format("ARM condition code {0} not implemented.", cond));
+                throw new NotImplementedException($"ARM condition code {cond} not implemented.");
             case ArmCondition.HS:
                 return m.Test(ConditionCode.UGE, FlagGroup(Registers.C));
             case ArmCondition.LO:
@@ -603,7 +603,7 @@ namespace Reko.Arch.Arm.AArch64
             }
         }
 
-        protected ArmCondition Invert(ArmCondition cc)
+        protected static ArmCondition Invert(ArmCondition cc)
         {
             switch (cc)
             {

@@ -75,7 +75,7 @@ namespace Reko.Analysis
 
 		public void InsertDeclarations()
 		{
-			var deci = new DeclarationInserter(ssaIds, doms);
+			var deci = new DeclarationInserter(doms);
 			foreach (Web web in this.webs)
 			{
                 bool isLive = web.Uses.Count > 0;

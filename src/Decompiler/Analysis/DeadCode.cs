@@ -36,7 +36,7 @@ namespace Reko.Analysis
 	/// </summary>
 	public class DeadCode : InstructionVisitorBase
 	{
-		private static readonly TraceSwitch trace = new TraceSwitch(nameof(DeadCode), "Traces dead code elimination");
+		private static readonly TraceSwitch trace = new(nameof(DeadCode), "Traces dead code elimination");
         
         private readonly SsaState ssa;
 		private readonly WorkList<SsaIdentifier> liveIds;

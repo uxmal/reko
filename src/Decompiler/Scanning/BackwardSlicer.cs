@@ -108,7 +108,7 @@ namespace Reko.Scanning
             {
                 // Weren't able to find the index register,
                 // try finding it by blind pattern matching.
-                index = this.FindIndexWithPatternMatch(this.JumpTableFormat);
+                index = FindIndexWithPatternMatch(this.JumpTableFormat);
                 if (index == null)
                 {
                     // This is likely an indirect call like a C++
@@ -308,7 +308,7 @@ namespace Reko.Scanning
         /// we assume `index` is an index into the jump table. 
         /// </remarks>
         /// <returns>The `index` expression if detected, otherwise null.</returns>
-        public Expression? FindIndexWithPatternMatch(Expression? jumpTableFormat)
+        public static Expression? FindIndexWithPatternMatch(Expression? jumpTableFormat)
         {
             if (jumpTableFormat is not MemoryAccess mem)
                 return null;
@@ -378,11 +378,6 @@ namespace Reko.Scanning
             public Expression GetValue(Application appl)
             {
                 return appl;
-            }
-
-            public static bool IsFramePointer(Expression e)
-            {
-                return false;
             }
 
             public bool IsUsedInPhi(Identifier id)
@@ -543,10 +538,7 @@ namespace Reko.Scanning
         public bool Start(Expression indirectJump)
         {
             var sr = indirectJump.Accept(this, BackwardSlicerContext.Jump(RangeOf(indirectJump)));
-            if (JumpTableFormat == null)
-            {
-                JumpTableFormat = indirectJump;
-            }
+            JumpTableFormat ??= indirectJump;
 
             this.Live = sr!.LiveExprs;
             if (!sr.LiveExprs.Keys.OfType<Identifier>().Any())

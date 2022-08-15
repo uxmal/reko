@@ -277,7 +277,7 @@ namespace Reko.Analysis
             }
         }
 
-        private Expression? FindDefinedId(CallInstruction call, Storage storage)
+        private static Expression? FindDefinedId(CallInstruction call, Storage storage)
         {
             return call.Definitions
                 .Where(d => d.Storage.Equals(storage))
@@ -285,7 +285,7 @@ namespace Reko.Analysis
                 .FirstOrDefault();
         }
 
-        private Expression? FindUsedId(CallInstruction call, Storage storage)
+        private static Expression? FindUsedId(CallInstruction call, Storage storage)
         {
             return call.Uses
                 .Where(u => u.Storage.Equals(storage))
@@ -308,7 +308,7 @@ namespace Reko.Analysis
             {
                 if (id is MemoryIdentifier memoryId)
                     return VisitMemoryIdentifier(memoryId);
-                var usedId = outer.FindUsedId(outer.call!, id.Storage);
+                var usedId = FindUsedId(outer.call!, id.Storage);
                 if (usedId != null)
                     usedId.Accept(outer);
                 return usedId ?? InvalidArgument(id.DataType);

@@ -42,7 +42,7 @@ namespace Reko.Core
         {
             switch (size.BitSize)
             {
-            default: throw new ArgumentException("size");
+            default: throw new ArgumentException(nameof(size));
             case 16: return Ptr16((ushort)bitPattern);
             case 32: return Ptr32((uint)bitPattern);
             case 64: return Ptr64(bitPattern);
@@ -153,9 +153,9 @@ namespace Reko.Core
         public static bool operator !=(Address? a, Address? b)
         {
             if (a is null)
-                return !(b is null);
+                return b is not null;
             if (b is null)
-                return !(a is null);
+                return a is not null;
             return a.ToLinear() != b.ToLinear();
         }
 
@@ -597,7 +597,7 @@ namespace Reko.Core
         public override Address Align(int alignment)
         {
             if (alignment <= 0)
-                throw new ArgumentOutOfRangeException("alignment");
+                throw new ArgumentOutOfRangeException(nameof(alignment));
             var uAl = (uint)alignment;
             return new Address64(uAl * ((uValue + uAl - 1) / uAl));
         }

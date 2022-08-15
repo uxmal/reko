@@ -54,10 +54,10 @@ namespace Reko.Gui
             {
                 var ret = ParseReturn();
                 var procName = ParseProcedureName();
-                if (procName == null)
+                if (procName is null)
                     return;
                 var procArgs = ParseProcedureArgs();
-                if (procArgs == null)
+                if (procArgs is null)
                     return;
 
                 ProcedureName = procName;
@@ -74,24 +74,24 @@ namespace Reko.Gui
 
         public static string UnparseSignature(SerializedSignature sig, string procName)
         {
-            StringBuilder sb = new StringBuilder();
-            if (sig.ReturnValue == null)
+            var sb = new StringBuilder();
+            if (sig.ReturnValue is null)
                 sb.Append("void");
             else
                 sb.Append(sig.ReturnValue.Name);
-            sb.Append(" ");
+            sb.Append(' ');
             sb.Append(procName);
-            sb.Append("(");
+            sb.Append('(');
             string sep = "";
             foreach (var arg in sig.Arguments!)
             {
                 sb.Append(sep);
                 sep = ", ";
                 sb.Append(arg.Type);
-                sb.Append(" ");
+                sb.Append(' ');
                 sb.Append(arg.Name);
             }
-            sb.Append(")");
+            sb.Append(')');
             return sb.ToString();
         }
 
@@ -244,17 +244,19 @@ namespace Reko.Gui
 				sizeInWords = 1;      // A reasonable guess, but is it a good one?
 			}
 
-			Argument_v1 arg = new Argument_v1();
-			arg.Name = argName;
-			arg.Type = new TypeReference_v1 { TypeName = typeName };
-			arg.Kind = new StackVariable_v1(); //  (sizeInWords * wordSize);
-			return arg;
+            Argument_v1 arg = new Argument_v1
+            {
+                Name = argName,
+                Type = new TypeReference_v1 { TypeName = typeName },
+                Kind = new StackVariable_v1() //  (sizeInWords * wordSize);
+            };
+            return arg;
 		}
 
         private string? GetNextWord()
         {
             EatWhiteSpace();
-            if (str == null || idx >= str.Length)
+            if (str is null || idx >= str.Length)
                 return null;
 
             int i = idx;

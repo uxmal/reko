@@ -52,6 +52,7 @@ namespace Reko.Core.Collections
 
         public void Dispose()
         {
+            GC.SuppressFinalize(this);
             e.Dispose();
         }
 

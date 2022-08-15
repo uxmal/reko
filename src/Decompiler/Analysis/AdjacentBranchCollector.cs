@@ -68,7 +68,7 @@ namespace Reko.Analysis
     /// </remarks>
     public class AdjacentBranchCollector
     {
-        private static TraceSwitch trace = new TraceSwitch(nameof(AdjacentBranchCollector), nameof(AdjacentBranchCollector)) { Level = TraceLevel.Error };
+        private static readonly TraceSwitch trace = new (nameof(AdjacentBranchCollector), nameof(AdjacentBranchCollector)) { Level = TraceLevel.Error };
 
         private readonly Procedure proc;
         private readonly DecompilerEventListener listener;

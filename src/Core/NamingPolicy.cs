@@ -170,6 +170,6 @@ namespace Reko.Core
         }
 
 
-        public static readonly NamingPolicy Instance = new NamingPolicy();
+        public static readonly NamingPolicy Instance = new();
     }
 }

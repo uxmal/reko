@@ -46,8 +46,8 @@ namespace Reko.Core.Collections
     {
         private Node? root;
         private int version;
-        private int InternalNodeChildren;
-        private int LeafNodeChildren;
+        private readonly int InternalNodeChildren;
+        private readonly int LeafNodeChildren;
         private readonly KeyCollection keyCollection;
         private readonly ValueCollection valueCollection;
 

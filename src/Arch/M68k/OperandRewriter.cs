@@ -42,13 +42,11 @@ namespace Reko.Arch.M68k
     /// </remarks>
     public class OperandRewriter
     {
-        private readonly M68kArchitecture arch;
         private readonly RtlEmitter m;
         private readonly IStorageBinder binder;
 
-        public OperandRewriter(M68kArchitecture arch, RtlEmitter emitter, IStorageBinder binder, PrimitiveType dataWidth)
+        public OperandRewriter(RtlEmitter emitter, IStorageBinder binder, PrimitiveType dataWidth)
         {
-            this.arch = arch;
             this.m = emitter;
             this.binder = binder;
             this.DataWidth = dataWidth;
@@ -407,7 +405,7 @@ namespace Reko.Arch.M68k
                         ea = m.Mem32(ea);
                     }
                     ea = Combine(ea, indop.OuterDisplacement);
-                    var access = m.Mem(DataWidth, ea);
+                    var access = m.Mem(dataWidth, ea);
                     return EmitStore(access, opGen(access));
                 }
             }

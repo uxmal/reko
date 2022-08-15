@@ -84,12 +84,9 @@ namespace Reko.Scanning
         }
     }
 
-#nullable disable   //$C# 9.0 record
-    public class StringFinderCriteria
-    {
-        public StringType StringType;
-        public int MinimumLength;
-        public Func<ByteMemoryArea, Address, Address, EndianImageReader> CreateReader;
-        public Encoding Encoding;
-    }
+    public record StringFinderCriteria(
+        StringType StringType,
+        Encoding Encoding,
+        int MinimumLength,
+        Func<ByteMemoryArea, Address, Address, EndianImageReader> CreateReader);
 }

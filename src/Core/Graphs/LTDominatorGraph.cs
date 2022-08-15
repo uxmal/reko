@@ -39,18 +39,18 @@ namespace Reko.Core.Graphs
 
         public class Builder
         {
-            private DirectedGraph<TNode> graph;
-            private TNode root;
-            private Dictionary<TNode, int> dfnum;
+            private readonly DirectedGraph<TNode> graph;
+            private readonly TNode root;
+            private readonly Dictionary<TNode, int> dfnum;
             private int N;
-            private Dictionary<TNode, TNode?> parent;
-            private Dictionary<int, TNode> vertex;
-            private Dictionary<TNode, HashSet<TNode>> bucket;
-            private Dictionary<TNode, TNode?> semi;
-            private Dictionary<TNode, TNode?> ancestor;
-            private Dictionary<TNode, TNode?> idom;
-            private Dictionary<TNode, TNode?> samedom;
-            private Dictionary<TNode, TNode?> best;
+            private readonly Dictionary<TNode, TNode?> parent;
+            private readonly Dictionary<int, TNode> vertex;
+            private readonly Dictionary<TNode, HashSet<TNode>> bucket;
+            private readonly Dictionary<TNode, TNode?> semi;
+            private readonly Dictionary<TNode, TNode?> ancestor;
+            private readonly Dictionary<TNode, TNode?> idom;
+            private readonly Dictionary<TNode, TNode?> samedom;
+            private readonly Dictionary<TNode, TNode?> best;
 
             public Builder(DirectedGraph<TNode> graph, TNode root)
             {

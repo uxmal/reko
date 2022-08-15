@@ -79,13 +79,11 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
             case 2: case 3: strType = StringType.LengthPrefixedStringType(charType, PrimitiveType.UInt16); break;
             }
 
-            return new StringFinderCriteria
-            {
-                StringType = strType,
-                Encoding = encoding,
-                MinimumLength = dlg.MinLength,
-                CreateReader = rdrCreator,
-            };
+            return new StringFinderCriteria(
+                StringType: strType,
+                Encoding: encoding,
+                MinimumLength: dlg.MinLength,
+                CreateReader: rdrCreator);
         }
     }
 }

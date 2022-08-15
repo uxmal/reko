@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2022 John Källén.
  *
@@ -47,6 +47,6 @@ namespace Reko.Core
             this.Statement = stm;
         }
 
-        public Statement Statement { get; private set; }
+        public Statement Statement { get; }
     }
 }

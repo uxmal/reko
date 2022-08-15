@@ -32,9 +32,11 @@ namespace Reko.Analysis
 	/// uses in this block as possible. 
 	/// </summary>
     /// <remarks>
-    /// This transformation is quite destabilizing and ineffective if long chains of expressions are still 
-    /// in their 3-address format. Before coalescing, call ValuePropagation to perform constant propagation
-    /// and other transformations that make the expression trees smaller.
+    /// This transformation is quite destabilizing and ineffective if long 
+    /// chains of expressions are still in their 3-address format. Before
+    /// coalescing, call <see cref="ValuePropagator"/> to perform constant
+    /// propagationand other transformations that make the expression trees
+    /// smaller.
     /// </remarks>
 	public class Coalescer : InstructionTransformer
 	{
@@ -42,7 +44,7 @@ namespace Reko.Analysis
 		private readonly SideEffectFinder sef;
         private readonly Dictionary<Statement, List<SsaIdentifier>> defsByStatement;
 
-		private static readonly TraceSwitch trace = new TraceSwitch(nameof(Coalescer), "Traces the progress of identifier coalescing");
+		private static readonly TraceSwitch trace = new(nameof(Coalescer), "Traces the progress of identifier coalescing");
 
 		public Coalescer(SsaState ssa)
 		{

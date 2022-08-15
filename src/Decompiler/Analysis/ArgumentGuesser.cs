@@ -41,7 +41,7 @@ namespace Reko.Analysis
     /// </summary>
     public class ArgumentGuesser
     {
-        private static readonly TraceSwitch trace = new TraceSwitch(nameof(ArgumentGuesser), "Trace ArgumentGuesser")
+        private static readonly TraceSwitch trace = new(nameof(ArgumentGuesser), "Trace ArgumentGuesser")
         {
             Level = TraceLevel.Info,
         };

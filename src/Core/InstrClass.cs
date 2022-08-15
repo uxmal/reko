@@ -45,7 +45,6 @@ namespace Reko.Core
         // Modifiers
         Conditional = 0x0008,   // Conditionally executed (like branches or CMOV instructions)
         Privileged =  0x0010,   // Privileged instruction
-        [Obsolete("Use 'Privileged' instead.")] System = 0x0010,           // Privileged instruction
 
         // Transfer instructions
         Call =        0x0020,   // Instruction saves its continuation, and may resume execution to the following instruction.

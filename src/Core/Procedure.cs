@@ -90,12 +90,9 @@ namespace Reko.Core
 		/// <param name="addr"></param>
 		/// <param name="f"></param>
 		/// <returns></returns>
-		public static Procedure Create(IProcessorArchitecture arch, string name, Address addr, Frame f)
+		public static Procedure Create(IProcessorArchitecture arch, string? name, Address addr, Frame f)
 		{
-			if (name == null)
-			{
-				name = NamingPolicy.Instance.ProcedureName(addr);
-			}
+			name ??= NamingPolicy.Instance.ProcedureName(addr);
 			return new Procedure(arch, name, addr, f);
 		}
 
@@ -243,7 +240,7 @@ namespace Reko.Core
 
         public Block AddBlock(Address addr, string name)
         {
-            Block block = new Block(this, addr, name);
+            var block = new Block(this, addr, name);
             blocks.Add(block);
             return block;
         }

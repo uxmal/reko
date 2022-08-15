@@ -91,7 +91,7 @@ namespace Reko.Arch.X86
                 case 2: s.Append('w'); break;
                 case 4: s.Append('d'); break;
                 case 8: s.Append('q'); break;
-                default: throw new ArgumentOutOfRangeException();
+                default: throw new ArgumentOutOfRangeException($"Unrecognized operand size {instr.dataWidth.Size}.");
                 }
                 break;
             }
@@ -99,7 +99,6 @@ namespace Reko.Arch.X86
 
         protected virtual void RenderOperands(X86Instruction instr, MachineInstructionRendererOptions options, MachineInstructionRenderer renderer)
         {
-            var flags = options.Flags;
             RenderOperand(instr, 0, renderer, options);
             if (instr.OpMask != 0)
             {
@@ -118,7 +117,7 @@ namespace Reko.Arch.X86
             }
         }
 
-        protected void RenderPrefix(X86Instruction instr, MachineInstructionRenderer renderer)
+        protected static void RenderPrefix(X86Instruction instr, MachineInstructionRenderer renderer)
         {
             //$TODO: make 'lock' a prefix
             if (instr.repPrefix == 3)
@@ -146,7 +145,7 @@ namespace Reko.Arch.X86
                 RenderRegister(reg.Name, renderer);
                 break;
             case ImmediateOperand imm:
-                RenderImmediate(imm, instr, renderer);
+                RenderImmediate(imm, renderer);
                 break;
             case MemoryOperand memOp:
                 var flags = options.Flags;
@@ -219,7 +218,6 @@ namespace Reko.Arch.X86
 
         protected void RenderImmediate(
             ImmediateOperand imm,
-            X86Instruction instr,
             MachineInstructionRenderer renderer)
         {
             var pt = imm.Value.DataType;
@@ -312,7 +310,7 @@ namespace Reko.Arch.X86
 
         protected abstract string ExplicitOperandPrefix(DataType width);
 
-        protected bool NeedsExplicitMemorySize(X86Instruction instr)
+        protected static bool NeedsExplicitMemorySize(X86Instruction instr)
         {
             switch (instr.Mnemonic)
             {
@@ -353,7 +351,7 @@ namespace Reko.Arch.X86
             }
         }
 
-        protected bool HasImplicitWidth(MachineOperand op)
+        protected static bool HasImplicitWidth(MachineOperand op)
         {
             return op is RegisterStorage || op is AddressOperand || op is FpuOperand;
         }

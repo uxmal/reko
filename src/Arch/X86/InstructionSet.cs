@@ -146,7 +146,7 @@ namespace Reko.Arch.X86
 
             private static Decoder Identity(Decoder d) => d;
 
-            private AddrWidthDecoder AddrWidthDependent(
+            private static AddrWidthDecoder AddrWidthDependent(
                 Decoder? bit16 = null,
                 Decoder? bit32 = null,
                 Decoder? bit64 = null)

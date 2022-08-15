@@ -190,9 +190,9 @@ namespace Reko.Core.Graphs
 
         public void AddNode(T item)
         {
-            if (!nodes.TryGetValue(item, out Node? node))
+            if (!nodes.ContainsKey(item))
             {
-                node = new Node(item);
+                var node = new Node(item);
                 nodes.Add(item, node);
             }
         }

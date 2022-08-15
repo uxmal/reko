@@ -43,7 +43,7 @@ namespace Reko.Scanning
         where TBlock : class
         where TInstr : class
 	{
-        private static readonly TraceSwitch trace = new TraceSwitch("BackWalker", "Traces the progress backward instruction walking");
+        private static readonly TraceSwitch trace = new("BackWalker", "Traces the progress backward instruction walking");
 
         private readonly IBackWalkHost<TBlock, TInstr> host;
         private readonly ExpressionSimplifier eval;

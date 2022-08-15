@@ -66,7 +66,7 @@ namespace Reko.Typing
 			{
 				if (eqs[i].DataType != null)
 				{
-					NestedComplexTypeExtractor nctr = new NestedComplexTypeExtractor(factory, store);
+					var nctr = new NestedComplexTypeExtractor(factory, store);
 					eqs[i].DataType = eqs[i].DataType.Accept(nctr);
 					changed |= nctr.Changed;
 				}

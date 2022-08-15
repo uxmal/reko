@@ -18,21 +18,19 @@
  */
 #endregion
 
-using Reko.Core;
 using Reko.Core.Code;
 using Reko.Core.Expressions;
-using Reko.Core.Operators;
+using Reko.Core.Serialization;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
-using Reko.Core.Serialization;
 using System.Diagnostics;
 
 namespace Reko.Core
 {
-	/// <summary>
-	/// Builds a function application from a call site and a callee.
-	/// </summary>
+    /// <summary>
+    /// Builds a function application from a call site and a callee.
+    /// </summary>
     /// <summary>
     /// <remarks>
     /// liveIn registers that are passed in and out are marked as 'out arguments'

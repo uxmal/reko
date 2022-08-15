@@ -60,7 +60,7 @@ namespace Reko.Core.Graphs
 
         public Dictionary<T, int> ReversePostorderNumbering(DirectedGraph<T> graph, T entry)
         {
-            Dictionary<T, int> postorder = new Dictionary<T, int>();
+            var postorder = new Dictionary<T, int>();
             foreach (T node in new DfsIterator<T>(graph).PostOrder(entry))
             {
                 postorder.Add(node, graph.Nodes.Count - (postorder.Count + 1));
@@ -136,7 +136,7 @@ namespace Reko.Core.Graphs
         {
             idoms[entryNode] = entryNode;
             reversePostOrder = ReversePostorderNumbering(graph);
-            SortedList<int, T> nodes = new SortedList<int, T>();
+            var nodes = new SortedList<int, T>();
             foreach (KeyValuePair<T, int> de in reversePostOrder)
             {
                 nodes.Add(de.Value, de.Key);
@@ -174,9 +174,9 @@ namespace Reko.Core.Graphs
             return idoms;
         }
 
-        private Dictionary<T, List<T>> BuildDominanceFrontiers(DirectedGraph<T> graph, Dictionary<T,T?> idoms)
+        private static Dictionary<T, List<T>> BuildDominanceFrontiers(DirectedGraph<T> graph, Dictionary<T,T?> idoms)
         {
-            Dictionary<T, List<T>> fronts = new Dictionary<T, List<T>>();
+            var fronts = new Dictionary<T, List<T>>();
             foreach (T node in graph.Nodes)
             {
                 fronts[node] = new List<T>();
@@ -204,11 +204,10 @@ namespace Reko.Core.Graphs
             return fronts;
         }
 
-
         [Conditional("DEBUG")]
         public void Dump()
         {
-            StringWriter sw = new StringWriter();
+            var sw = new StringWriter();
             Write(sw);
             Debug.Write(sw.ToString());
         }

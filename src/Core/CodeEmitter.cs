@@ -140,13 +140,13 @@ namespace Reko.Core
         /// <param name="src">R-Value.</param>
         public Statement MStore(Expression ea, Expression src)
         {
-            Store s = new Store(new MemoryAccess(MemoryIdentifier.GlobalMemory, ea, src.DataType), src);
+            var s = new Store(new MemoryAccess(MemoryIdentifier.GlobalMemory, ea, src.DataType), src);
             return Emit(s);
         }
 
         public Statement MStore(MemoryIdentifier mem, Expression ea, Expression src)
         {
-            Store s = new Store(new MemoryAccess(mem, ea, src.DataType), src);
+            var s = new Store(new MemoryAccess(mem, ea, src.DataType), src);
             return Emit(s);
         }
 
@@ -160,7 +160,7 @@ namespace Reko.Core
         /// <param name="src">R-Value.</param>
         public Statement SStore(Expression basePtr, Expression ea, Expression src)
         {
-            Store s = new Store(new SegmentedAccess(MemoryIdentifier.GlobalMemory, basePtr, ea, src.DataType), src);
+            var s = new Store(new SegmentedAccess(MemoryIdentifier.GlobalMemory, basePtr, ea, src.DataType), src);
             return Emit(s);
         }
 

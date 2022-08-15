@@ -40,8 +40,8 @@ namespace Reko.UnitTests.Decompiler.Analysis
     {
         private IStorageBinder binder;
         private LongAddRewriter rw;
-        private IProcessorArchitecture arch;
-        private Program program;
+        private readonly IProcessorArchitecture arch;
+        private readonly Program program;
         private Identifier ax;
         private Identifier bx;
         private Identifier cx;

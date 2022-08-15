@@ -149,8 +149,8 @@ namespace Reko.Core
             }
             else
             {
-                if (!(item.DataType is UnknownType) &&
-                    !(item.DataType is CodeType))
+                if (item.DataType is not UnknownType &&
+                    item.DataType is not CodeType)
                 {
                     var u = new Unifier();
                     if (u.AreCompatible(item.DataType, itemNew.DataType))
@@ -189,17 +189,17 @@ namespace Reko.Core
 
         private DataType ChopAfter(DataType type, int offset)
         {
-            if (type == null)
-                throw new ArgumentNullException("type");
+            if (type is null)
+                throw new ArgumentNullException(nameof(type));
             if (type is UnknownType || type is CodeType)
                 return type;
-            throw new NotImplementedException(string.Format("Cannot chop image map item of type {0}.", type));
+            throw new NotImplementedException($"Cannot chop image map item of type {type}.");
         }
 
         private DataType ChopBefore(DataType type, int offset)
         {
             if (type == null)
-                throw new ArgumentNullException("type");
+                throw new ArgumentNullException(nameof(type));
             if (type is UnknownType || type is CodeType)
                 return type;
             throw new NotImplementedException();
@@ -235,7 +235,7 @@ namespace Reko.Core
 
             // Merge with previous item
             if (Items.TryGetLowerBound((addr - 1), out ImageMapItem prevItem) &&
-                prevItem.DataType is UnknownType ut &&
+                prevItem.DataType is UnknownType &&
                 prevItem.DataType.Size == 0 &&
                 prevItem.EndAddress.Equals(item.Address))
             {

@@ -299,7 +299,7 @@ namespace Reko.Typing
                 }
                 else if (index != null && offset == 0)
                 {
-                    var idx = this.ScaleDownIndex(index, strSize);
+                    var idx = ScaleDownIndex(index, strSize);
                     index = null;
                     var exp = CreateArrayAccess(str, enclosingPtr, 0, idx);
                     --depth;
@@ -382,9 +382,9 @@ namespace Reko.Typing
             }
         }
 
-        Expression CreateOffsetExpression(int offset, Expression? index)
+        private static Expression CreateOffsetExpression(int offset, Expression? index)
         {
-            if (index == null)
+            if (index is null)
                 return Constant.Int32(offset); //$REVIEW: forcing 32-bit ints;
             if (offset == 0)
                 return index;
@@ -465,14 +465,27 @@ namespace Reko.Typing
                 return field.Name;
         }
 
-        private Expression? ScaleDownIndex(Expression? exp, int elementSize)
+        private static Expression? ScaleDownIndex(Expression? exp, int elementSize)
         {
             if (exp == null || elementSize <= 1)
                 return exp;
-            if (!(exp is BinaryExpression bin) ||
-                (bin.Operator != Operator.IMul && bin.Operator != Operator.UMul && bin.Operator != Operator.SMul) ||
-               !(bin.Right is Constant cRight) ||
-                cRight.ToInt32() % elementSize != 0)
+            if (exp is BinaryExpression bin &&
+                bin.Operator is IMulOperator &&
+                bin.Right is Constant cRight &&
+                cRight.ToInt32() % elementSize == 0)
+            {
+                // Expression is of the form (* x c) where c is a multiple of elementSize.
+
+                var scale = cRight.ToInt32() / elementSize;
+                if (scale == 1)
+                    return bin.Left;
+                return new BinaryExpression(
+                    bin.Operator,
+                    bin.DataType,
+                    bin.Left,
+                    Constant.Int32(scale));
+            }
+            else
             {
                 return new BinaryExpression(
                     Operator.SDiv,
@@ -480,17 +493,6 @@ namespace Reko.Typing
                     exp,
                     Constant.Int32(elementSize));
             }
-
-            // Expression is of the form (* x c) where c is a multiple of elementSize.
-
-            var scale = cRight.ToInt32() / elementSize;
-            if (scale == 1)
-                return bin.Left;
-            return new BinaryExpression(
-                bin.Operator,
-                bin.DataType,
-                bin.Left,
-                Constant.Int32(scale));
         }
     }
 }

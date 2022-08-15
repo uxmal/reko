@@ -56,7 +56,7 @@ namespace Reko.Arch.X86
             case ImmediateOperand imm: return CreateConstant(imm, (PrimitiveType) opWidth);
             case FpuOperand fpu: return FpuRegister(fpu.StNumber);
             case AddressOperand addr: return addr.Address;
-            default: throw new NotImplementedException(string.Format("Operand {0}", op));
+            default: throw new NotImplementedException($"Operand {op}");
             }
         }
 
@@ -139,8 +139,8 @@ namespace Reko.Arch.X86
         /// </summary>
         public Expression EffectiveAddressExpression(X86Instruction instr, MemoryOperand mem)
         {
-            Expression? eIndex = null;
-            Expression? eBase = null;
+            Expression? eIndex;
+            Expression? eBase;
             Expression? expr = null;
             bool ripRelative = false;
 

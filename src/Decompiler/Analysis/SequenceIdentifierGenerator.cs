@@ -138,7 +138,7 @@ namespace Reko.Analysis
             public readonly Constant Offset;
         }
 
-        private StoreOffset? ClassifyStore(Statement stm)
+        private static StoreOffset? ClassifyStore(Statement stm)
         {
             if (stm.Instruction is not Store store)
                 return null;
@@ -174,9 +174,8 @@ namespace Reko.Analysis
         {
             if (seq.Expressions.Length != 2)
                 return seq; //$TODO: do this for longer sequences?
-            var idHead = seq.Expressions[0] as Identifier;
-            var idTail = seq.Expressions[1] as Identifier;
-            if (idHead != null && idTail != null)
+            if (seq.Expressions[0] is Identifier idHead && 
+                seq.Expressions[1] is Identifier idTail)
             {
                 var sidHead = ssa.Identifiers[idHead];
                 var sidTail = ssa.Identifiers[idTail];

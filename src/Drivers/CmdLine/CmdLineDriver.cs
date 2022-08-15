@@ -128,7 +128,7 @@ namespace Reko.CmdLine
             this.listener.CancelDecompilation("User-specified time limit has expired.");
         }
 
-        public bool OverridesRequested(Dictionary<string,object> pArgs)
+        public static bool OverridesRequested(Dictionary<string,object> pArgs)
         {
             if (pArgs.ContainsKey("--arch") ||
                 pArgs.ContainsKey("--env") ||
@@ -244,7 +244,7 @@ namespace Reko.CmdLine
             return sExtractResources != "no" && sExtractResources != "false";
         }
 
-        private Address ParseAddress(Dictionary<string, object> pArgs, string key)
+        private static Address ParseAddress(Dictionary<string, object> pArgs, string key)
         {
             if (pArgs.TryGetValue(key, out var osAddr) &&
                 osAddr is string sAddr && 
@@ -333,7 +333,7 @@ namespace Reko.CmdLine
             return program;
         }
 
-        private ProcessorState CreateInitialState(IProcessorArchitecture arch, SegmentMap map, Dictionary<string, object> args)
+        private static ProcessorState CreateInitialState(IProcessorArchitecture arch, SegmentMap map, Dictionary<string, object> args)
         {
             var state = arch.CreateProcessorState();
             if (!args.ContainsKey("--reg"))
@@ -526,7 +526,7 @@ namespace Reko.CmdLine
             return parsedArgs;
         }
 
-        private (int, int) ParseIntRange(string sRange)
+        private static (int, int) ParseIntRange(string sRange)
         {
             int iColon = sRange.IndexOf(':');
             if (iColon <= 0)
@@ -556,7 +556,7 @@ namespace Reko.CmdLine
         /// and its value.</param>
         /// <param name="parsedArgs">The dictionary of values parsed so far.
         /// </param>
-        private void ParseArchitectureOption(string nameValue, Dictionary<string, object> parsedArgs)
+        private static void ParseArchitectureOption(string nameValue, Dictionary<string, object> parsedArgs)
         {
             Dictionary<string, object> archOptions;
             if (parsedArgs.TryGetValue("--arch-options", out object oArchOptions))

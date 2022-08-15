@@ -59,7 +59,7 @@ namespace Reko.Core
     public class NullMetadataLoader : MetadataLoader
     {
         public NullMetadataLoader()
-            : base(new ServiceContainer(), ImageLocation.FromUri(""), new byte[0])
+            : base(new ServiceContainer(), ImageLocation.FromUri(""), Array.Empty<byte>())
         {
         }
 

@@ -49,7 +49,6 @@ namespace Reko.UnitTests.Arch.M68k
         public void M68korw_MemOp()
         {
             var orw = new OperandRewriter(
-                arch,
                 new RtlEmitter(new List<RtlInstruction>()),
                 arch.CreateFrame(),
                 PrimitiveType.Byte);

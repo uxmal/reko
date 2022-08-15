@@ -70,8 +70,9 @@ namespace Reko.Core
             };
         }
 
-        private SymbolTable CreateSymbolTable(
-            IPlatform platform, TypeLibrary typeLib)
+        private static SymbolTable CreateSymbolTable(
+            IPlatform platform,
+            TypeLibrary typeLib)
         {
             var dtSer = new DataTypeSerializer();
             var primitiveTypes = PrimitiveType.AllTypes
