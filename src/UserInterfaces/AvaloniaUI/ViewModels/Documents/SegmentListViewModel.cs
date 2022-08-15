@@ -24,6 +24,7 @@ using Reko.Gui;
 using Reko.UserInterfaces.AvaloniaUI.Views.Documents;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -38,8 +39,14 @@ namespace Reko.UserInterfaces.AvaloniaUI.ViewModels.Documents
         public SegmentListViewModel(Program program)
         {
             this.program = program;
+            this.Segments = new ObservableCollection<SegmentListItemViewModel>(program.SegmentMap.Segments.Values
+                .Select(s => new SegmentListItemViewModel
+                {
+                    Name = s.Name
+                }));
         }
 
+        public ObservableCollection<SegmentListItemViewModel> Segments { get; }
         public IWindowFrame? Frame { get; set; }
 
         public void Close()
@@ -60,5 +67,10 @@ namespace Reko.UserInterfaces.AvaloniaUI.ViewModels.Documents
         {
             this.services = services;
         }
+    }
+
+    public class SegmentListItemViewModel
+    {
+        public string Name { get; set; }
     }
 }

@@ -143,12 +143,11 @@ namespace Reko.Environments.AmigaOS
             var offset = ((Constant?) a6Pattern.CapturedExpressions("offset")!).ToInt32();
             if (reg != Registers.a6)
                 return null;
-            if (funcs == null)
-                funcs = LoadLibraryDef("exec", 33, Metadata);
+            funcs ??= LoadLibraryDef("exec", 33, Metadata);
             return funcs.TryGetValue(offset, out SystemService? svc) ? svc : null;
         }
 
-        private string GetLibraryBaseName(string name_with_version) 
+        private static string GetLibraryBaseName(string name_with_version) 
         {
             int idx_of_version_str = name_with_version.IndexOf("_v");
             if (-1 == idx_of_version_str) // no version, assuming the base name of library is same as name_with_version

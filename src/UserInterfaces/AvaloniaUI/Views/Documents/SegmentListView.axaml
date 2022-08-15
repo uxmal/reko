@@ -8,8 +8,14 @@
 			 x:CompileBindings="True"
 	x:Class="Reko.UserInterfaces.AvaloniaUI.Views.Documents.SegmentListView">
 	<StackPanel>
-		<ListBox DataContext="Segments">
-
+		<ScrollViewer>
+		<ListBox Items="{Binding Segments}">
+			<ListBox.ItemTemplate>
+				<DataTemplate>
+					<TextBlock Text="{Binding Name}" />
+				</DataTemplate>
+			</ListBox.ItemTemplate>
 		</ListBox>
+		</ScrollViewer>
 	</StackPanel>
 </UserControl>

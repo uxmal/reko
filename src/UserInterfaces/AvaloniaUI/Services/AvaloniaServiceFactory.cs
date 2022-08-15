@@ -37,8 +37,8 @@ namespace Reko.UserInterfaces.AvaloniaUI.Services
 {
     public class AvaloniaServiceFactory : IServiceFactory
     {
-        private IServiceProvider services;
-        private MainViewModel mainViewModel;
+        private readonly IServiceProvider services;
+        private readonly MainViewModel mainViewModel;
 
         public AvaloniaServiceFactory(IServiceProvider services, MainViewModel mainViewModel)
         {
