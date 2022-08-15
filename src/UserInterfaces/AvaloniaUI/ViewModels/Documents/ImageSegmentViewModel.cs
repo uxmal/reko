@@ -18,33 +18,45 @@
  */
 #endregion
 
-#nullable enable
-
+using Dock.Model.ReactiveUI.Controls;
 using Reko.Core;
 using Reko.Gui;
-using Reko.Gui.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
-namespace Reko.UserInterfaces.WindowsForms
+namespace Reko.UserInterfaces.AvaloniaUI.ViewModels.Documents
 {
-    public class ImageSegmentServiceImpl : ViewService, ImageSegmentService
+    public class ImageSegmentViewModel : Document, IWindowPane
     {
-        private ImageSegmentPane pane;
-
-        public ImageSegmentServiceImpl(IServiceProvider sp) : base (sp)
+        public ImageSegmentViewModel(ImageSegment segment, Program program)
         {
-            pane = new ImageSegmentPane();
+            this.Segment = segment;
+            this.Program = program;
         }
 
-        public void DisplayImageSegment(ImageSegment? segment, Program program)
+        public IWindowFrame? Frame { get; set; }
+
+
+        public Program Program { get; }
+
+        public ImageSegment Segment { get; }
+
+        public void Close()
         {
-            if (segment is null)
-                return;
-            ShowWindow("imageSegmentViewer", "Segment: " + segment.Name, program, pane);
-            pane.DisplaySegment(segment, program);
+            throw new NotImplementedException();
+        }
+
+        public object CreateControl()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void SetSite(IServiceProvider services)
+        {
+            throw new NotImplementedException();
         }
     }
 }

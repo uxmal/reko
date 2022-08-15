@@ -18,6 +18,8 @@
  */
 #endregion
 
+#nullable enable
+
 using Reko.Core;
 using Reko.Gui;
 using Reko.Gui.Services;
@@ -25,22 +27,28 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
-namespace Reko.UserInterfaces.AvaloniaUI.Services
+namespace Reko.Gui.Services
 {
-    public class AvaloniaImageSegmentService : ImageSegmentService
+    public class ImageSegmentServiceImpl : ViewService, ImageSegmentService
     {
-        private IServiceProvider services;
+        private readonly Func<ImageSegment, Program, IWindowPane> ctor;
 
-        public AvaloniaImageSegmentService(IServiceProvider services)
+        public ImageSegmentServiceImpl(
+            IServiceProvider services,
+            Func<ImageSegment, Program, IWindowPane> ctor)
+            : base (services)
         {
-            this.services = services;
+            this.ctor = ctor;
         }
 
-        public void DisplayImageSegment(ImageSegment segment, Program program)
+        public void DisplayImageSegment(ImageSegment? segment, Program? program)
         {
-            throw new NotImplementedException();
+            if (segment is null || program is null)
+                return;
+            ShowWindow(ImageSegmentService.ViewWindowType, "Segment: " + segment.Name, program, ()
+                => ctor(segment, program));
+            //pane.DisplaySegment(segment, program);
         }
     }
 }

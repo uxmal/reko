@@ -18,20 +18,17 @@
  */
 #endregion
 
+using Avalonia.Collections;
 using Dock.Model.ReactiveUI.Controls;
+using ReactiveUI;
 using Reko.Core;
 using Reko.Gui.Controls;
-using System.Collections.Generic;
-using ReactiveUI;
-using System.Drawing;
 using System;
-using System.Collections;
-using System.Collections.ObjectModel;
-using Avalonia.Collections;
+using System.Drawing;
 
 namespace Reko.UserInterfaces.AvaloniaUI.ViewModels.Tools
 {
-    public class ProjectBrowserViewModel : Tool
+    public class ProjectBrowserViewModel : Tool, ITabPage
     {
         public ProjectBrowserViewModel()
         {
@@ -45,6 +42,11 @@ namespace Reko.UserInterfaces.AvaloniaUI.ViewModels.Tools
         public void BringToFront()
         {
             var x = base.Owner;
+        }
+
+        void ITabPage.Select()
+        {
+            //$TODO: 
         }
     }
 

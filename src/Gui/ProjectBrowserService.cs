@@ -32,7 +32,8 @@ using System.Threading.Tasks;
 namespace Reko.Gui
 {
     /// <summary>
-    /// Interactor class used to display the decompiler project as a tree view for user browsing.
+    /// Interactor class used to display the decompiler project as a tree view
+    /// for user browsing.
     /// </summary>
     public class ProjectBrowserService : TreeNodeDesignerHost, IProjectBrowserService, ICommandTarget
     {
@@ -111,7 +112,7 @@ namespace Reko.Gui
         private Program? FindCurrentProgram()
         {
             var obj = SelectedObject;
-            while (obj != null)
+            while (obj is not null)
             {
                 if (obj is Program program)
                     return program;

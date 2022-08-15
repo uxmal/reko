@@ -29,6 +29,7 @@ using Reko.Gui.Services;
 using Reko.Loading;
 using Reko.Services;
 using Reko.UserInterfaces.AvaloniaUI.ViewModels;
+using Reko.UserInterfaces.AvaloniaUI.ViewModels.Documents;
 using System;
 using System.ComponentModel.Design;
 
@@ -120,7 +121,9 @@ namespace Reko.UserInterfaces.AvaloniaUI.Services
 
         public ImageSegmentService CreateImageSegmentService()
         {
-            return new AvaloniaImageSegmentService(services);
+            return new ImageSegmentServiceImpl(
+                services,
+                (s, p) => new ImageSegmentViewModel(s, p));
         }
 
         public InitialPageInteractor CreateInitialPageInteractor()
@@ -150,7 +153,10 @@ namespace Reko.UserInterfaces.AvaloniaUI.Services
 
         public IProjectBrowserService CreateProjectBrowserService()
         {
-            return new ProjectBrowserService(services, null, mainViewModel.ProjectBrowser?.TreeView);
+            return new ProjectBrowserService(
+                services,
+                mainViewModel.ProjectBrowser,
+                mainViewModel.ProjectBrowser?.TreeView);
         }
 
         public IResourceEditorService CreateResourceEditorService()

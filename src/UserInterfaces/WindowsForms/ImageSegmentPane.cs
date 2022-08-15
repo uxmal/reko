@@ -33,9 +33,16 @@ namespace Reko.UserInterfaces.WindowsForms
 {
     public class ImageSegmentPane : IWindowPane, ICommandTarget
     {
+        private ImageSegment segment;
         private ImageSegmentView segmentView;
         private IServiceProvider services;
         private Program program;
+
+        public ImageSegmentPane(ImageSegment segment, Program program)
+        {
+            this.segment = segment;
+            this.program = program;
+        }
 
         public IWindowFrame Frame { get; set; }
 
@@ -44,6 +51,7 @@ namespace Reko.UserInterfaces.WindowsForms
             this.segmentView = new ImageSegmentView();
             this.segmentView.TextView.Services = services;
             this.segmentView.TextView.Navigate += TextView_Navigate;
+            DisplaySegment(segment, program);
             return this.segmentView;
         }
 

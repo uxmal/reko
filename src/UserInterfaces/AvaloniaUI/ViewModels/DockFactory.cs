@@ -59,7 +59,7 @@ namespace Reko.UserInterfaces.AvaloniaUI.ViewModels
             var document2 = new DocumentViewModel {Id = "Document2", Title = "Document2"};
             var document3 = new DocumentViewModel {Id = "Document3", Title = "Document3", CanClose = true};
             
-            this.ProjectBrowserTool =  new ProjectBrowserViewModel {Id = "Tool1", Title = "Project browser"};
+            this.ProjectBrowserTool =  new ProjectBrowserViewModel { Id = "Tool1", Title = "Project browser"};
             var toolProcedureList = new ProcedureListViewModel {Id = "Tool2", Title = "Procedures"};
 
             var toolDiagnostics = new DiagnosticsViewModel {Id = "Tool3", Title = "Diagnostics"};

@@ -39,7 +39,20 @@ namespace Reko.Gui
             this.services = services;
         }
 
-        protected IWindowFrame ShowWindow(string windowType, string windowTitle, object docItem, IWindowPane innerPane)
+        protected IWindowFrame ShowWindow(
+            string windowType,
+            string windowTitle,
+            object docItem,
+            Func<IWindowPane> paneMaker)
+        {
+            return ShowWindow(windowType, windowTitle, docItem, paneMaker());
+        }
+
+        protected IWindowFrame ShowWindow(
+            string windowType,
+            string windowTitle,
+            object docItem,
+            IWindowPane innerPane)
         {
             var shellUiSvc = services.RequireService<IDecompilerShellUiService>();
             var windowFrame = shellUiSvc.FindDocumentWindow(windowType, docItem);

@@ -27,12 +27,14 @@ using System.Text;
 namespace Reko.Gui.Services
 {
     /// <summary>
-    /// This service is used the GUI to display the contents of an image segments.
+    /// This service is used the GUI to display the contents of an image segment.
     /// Implementors are responsible for rendering the segment contents in an 
     /// appropriate manner.
     /// </summary>
     public interface ImageSegmentService
     {
+        const string ViewWindowType = "imageSegmentViewer";
+
         void DisplayImageSegment(ImageSegment? segment, Program? program);
     }
 }

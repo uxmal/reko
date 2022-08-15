@@ -14,7 +14,7 @@ using System.Diagnostics;
 
 namespace Reko.UserInterfaces.AvaloniaUI.Controls
 {
-    public partial class HexViewer2 : UserControl, ILogicalScrollable
+    public partial class HexViewer2 : UserControl // , ILogicalScrollable
     {
         public HexViewer2()
         {
@@ -104,6 +104,7 @@ namespace Reko.UserInterfaces.AvaloniaUI.Controls
             set { SetAndRaise(TopAddressProperty, ref this.addrTop, value); }
         }
 
+#if LOG
         bool ILogicalScrollable.CanHorizontallyScroll { get; set; }
         bool ILogicalScrollable.CanVerticallyScroll { get => vScroll; set { this.vScroll = value; } }
 
@@ -118,11 +119,16 @@ namespace Reko.UserInterfaces.AvaloniaUI.Controls
         Vector IScrollable.Offset { get; set; }
 
         Size IScrollable.Viewport => new Size(100, 30);
+#endif
 
         protected override Size MeasureOverride(Size availableSize)
         {
             trace.Verbose($"{nameof(HexViewer2)}.{nameof(MeasureOverride)}: {availableSize}");
-            return base.MeasureOverride(availableSize);
+            if (mem is null)
+                return new Size(0, 0);
+            var rc = MeasureSingleLetter();
+            long nLines = (mem.Length + cbLine - 1) / cbLine;
+            return new Size(rc.Width * 100, rc.Height * nLines);
         }
 
         public override void Render(DrawingContext context)
@@ -155,6 +161,7 @@ namespace Reko.UserInterfaces.AvaloniaUI.Controls
             }
         }
 
+        /*
         protected override Size MeasureCore(Size availableSize)
         {
             if (mem is null)
@@ -163,6 +170,7 @@ namespace Reko.UserInterfaces.AvaloniaUI.Controls
             long nLines = (mem.Length + cbLine - 1) / cbLine;
             return new Size(rc.Width * 100, rc.Height * nLines);
         }
+        */
         /*
         protected override Size MeasureCore(Size availableSize)
         {
@@ -278,6 +286,7 @@ namespace Reko.UserInterfaces.AvaloniaUI.Controls
         public event EventHandler ScrollInvalidated;
 
 
+#if LOGICAL_SCROLLABLE
         bool ILogicalScrollable.BringIntoView(IControl target, Rect targetRect)
         {
             throw new NotImplementedException();
@@ -292,5 +301,6 @@ namespace Reko.UserInterfaces.AvaloniaUI.Controls
         {
             throw new NotImplementedException();
         }
+#endif
     }
 }
