@@ -32,6 +32,7 @@ using Reko.UserInterfaces.AvaloniaUI.ViewModels;
 using Reko.UserInterfaces.AvaloniaUI.ViewModels.Documents;
 using System;
 using System.ComponentModel.Design;
+using System.Threading;
 
 namespace Reko.UserInterfaces.AvaloniaUI.Services
 {
@@ -96,7 +97,7 @@ namespace Reko.UserInterfaces.AvaloniaUI.Services
 
         public IDiagnosticsService CreateDiagnosticsService()
         {
-            return new AvaloniaDiagnosticsService(mainViewModel);
+            return new AvaloniaDiagnosticsService(mainViewModel.DiagnosticsList, SynchronizationContext.Current);
         }
 
         public IDisassemblyViewService CreateDisassemblyViewService()

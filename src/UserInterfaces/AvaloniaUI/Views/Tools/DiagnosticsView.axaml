@@ -8,10 +8,11 @@
              d:DesignWidth="300" d:DesignHeight="400"
              x:DataType="vm:DiagnosticsViewModel" x:CompileBindings="True">
   <Grid Focusable="True">
-    <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
-      <TextBlock Text="{Binding Id}" Padding="2" />
-      <TextBlock Text="{Binding Title}" Padding="2" />
-      <TextBlock Text="{Binding Context}" Padding="2" />
-    </StackPanel>
+      <DataGrid Items="{Binding FilteredDiagnostics}">
+		  <DataGrid.Columns>
+			  <DataGridTextColumn x:DataType="vm:DiagnosticItem" Header="Location" Binding="{Binding Location}"></DataGridTextColumn>
+			  <DataGridTextColumn x:DataType="vm:DiagnosticItem" Header="Description" Binding="{Binding Description}" Width="6*"></DataGridTextColumn>
+		  </DataGrid.Columns>
+	  </DataGrid>
   </Grid>
 </UserControl>

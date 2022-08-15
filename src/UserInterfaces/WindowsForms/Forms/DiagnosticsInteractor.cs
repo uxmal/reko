@@ -38,8 +38,6 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
     /// </summary>
     public class DiagnosticsInteractor : IDiagnosticsService, IWindowPane, ICommandTarget
     {
-        private const string FilterSetting = "Diagnostics/Filter";
-
         private IServiceProvider services;
         private ListView listView;
         private List<(ICodeLocation, Diagnostic)> diagnosticItems;
@@ -81,7 +79,7 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
                 uiUser.UiPreferencesChanged += delegate { uiUser.UpdateControlStyle(UiStyles.List, listView); };
                 uiUser.UpdateControlStyle(UiStyles.List, listView);
                 var settings = services.RequireService<ISettingsService>();
-                this.Filter  = (DiagnosticFilters) settings.Get(FilterSetting, -1);
+                this.Filter  = (DiagnosticFilters) settings.Get(IDiagnosticsService.FilterSetting, -1);
             }
         }
 
@@ -107,7 +105,7 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
             if (newFilterSettings != this.Filter)
             {
                 var settings = services.RequireService<ISettingsService>();
-                settings.Set(FilterSetting, (int)newFilterSettings);
+                settings.Set(IDiagnosticsService.FilterSetting, (int)newFilterSettings);
                 this.Filter = newFilterSettings;
                 this.ReloadDiagnostics();
             }
@@ -273,10 +271,10 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
         protected void listView_DoubleClick(object sender, EventArgs e)
         {
             var item = FocusedListItem;
-            if (item == null)
-                return;
-            if (item.Tag is ICodeLocation location)
+            if (item?.Tag is ICodeLocation location)
+            {
                 location.NavigateTo();
+            }
         }
 
         public bool QueryStatus(CommandID cmdId, CommandStatus status, CommandText text)

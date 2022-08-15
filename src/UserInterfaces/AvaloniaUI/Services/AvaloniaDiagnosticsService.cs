@@ -19,104 +19,118 @@
 #endregion
 
 using Reko.Core;
+using Reko.Core.Services;
 using Reko.Gui.Services;
 using Reko.UserInterfaces.AvaloniaUI.ViewModels;
+using Reko.UserInterfaces.AvaloniaUI.ViewModels.Tools;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Reko.UserInterfaces.AvaloniaUI.Services
 {
     public class AvaloniaDiagnosticsService : IDiagnosticsService
     {
-        private MainViewModel mainViewModel;
+        private readonly DiagnosticsViewModel diagnosticsVm;
+        private readonly SynchronizationContext syncCtx;
 
-        public AvaloniaDiagnosticsService(MainViewModel mainViewModel)
+        public AvaloniaDiagnosticsService(DiagnosticsViewModel diagnosticsVm, SynchronizationContext ctx)
         {
-            this.mainViewModel = mainViewModel;
+            this.diagnosticsVm = diagnosticsVm;
+            this.syncCtx = ctx;
         }
 
         public DiagnosticFilters Filter { get; set; }
+
+        private void AddDiagnostic(ICodeLocation location, Diagnostic d)
+        {
+            syncCtx.Post(x =>
+            {
+                diagnosticsVm.AddDiagnostic(location, d);
+            }, null);
+        }
+
         public void ClearDiagnostics()
         {
-            return; //$TODO
+            diagnosticsVm.ClearItems();
         }
 
         public void Error(string message)
         {
-            throw new NotImplementedException();
+            Error(new NullCodeLocation(""), message);
         }
 
         public void Error(string message, params object[] args)
         {
-            throw new NotImplementedException();
+            Error(string.Format(message, args));
         }
 
         public void Error(Exception ex, string message)
         {
-            throw new NotImplementedException();
+            AddDiagnostic(new NullCodeLocation(""), new ErrorDiagnostic(message, ex));
         }
 
         public void Error(ICodeLocation location, string message)
         {
-            throw new NotImplementedException();
+            AddDiagnostic(location, new ErrorDiagnostic(message));
         }
 
         public void Error(ICodeLocation location, string message, params object[] args)
         {
-            throw new NotImplementedException();
+            Error(location, string.Format(message, args));
         }
 
         public void Error(ICodeLocation location, Exception ex, string message)
         {
-            throw new NotImplementedException();
+            AddDiagnostic(location, new ErrorDiagnostic(message, ex));
         }
 
         public void Error(ICodeLocation location, Exception ex, string message, params object[] args)
         {
-            throw new NotImplementedException();
+            Error(location, ex, string.Format(message, args));
         }
 
         public void Inform(string message)
         {
-            throw new NotImplementedException();
+            AddDiagnostic(new NullCodeLocation(""), new InformationalDiagnostic(message));
         }
 
         public void Inform(string message, params object[] args)
         {
-            throw new NotImplementedException();
+            Inform(string.Format(message, args));
         }
 
         public void Inform(ICodeLocation location, string message)
         {
-            throw new NotImplementedException();
+            AddDiagnostic(location, new InformationalDiagnostic(message));
         }
 
         public void Inform(ICodeLocation location, string message, params object[] args)
         {
-            throw new NotImplementedException();
+            Inform(location, string.Format(message, args));
         }
 
         public void Warn(string message)
         {
-            throw new NotImplementedException();
+            AddDiagnostic(new NullCodeLocation(""), new WarningDiagnostic(message));
         }
 
         public void Warn(string message, params object[] args)
         {
-            throw new NotImplementedException();
+            Warn(string.Format(message, args));
         }
 
         public void Warn(ICodeLocation location, string message)
         {
-            throw new NotImplementedException();
+            AddDiagnostic(location, new WarningDiagnostic(message));
         }
 
         public void Warn(ICodeLocation location, string message, params object[] args)
         {
-            throw new NotImplementedException();
+            Warn(location, string.Format(message, args));
         }
     }
 }

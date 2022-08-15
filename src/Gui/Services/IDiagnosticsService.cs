@@ -31,6 +31,8 @@ namespace Reko.Gui.Services
     /// </summary>
     public interface IDiagnosticsService
     {
+        const string FilterSetting = "Diagnostics/Filter";
+
         DiagnosticFilters Filter { get; set; }
 
         void Error(string message);

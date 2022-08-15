@@ -44,7 +44,8 @@ namespace Reko.UserInterfaces.AvaloniaUI.Services
 
         public object Get(string settingName, object defaultValue)
         {
-            throw new NotImplementedException();
+            //$TODO: where do we store settings?
+            return defaultValue;
         }
 
         public string[] GetList(string settingName)

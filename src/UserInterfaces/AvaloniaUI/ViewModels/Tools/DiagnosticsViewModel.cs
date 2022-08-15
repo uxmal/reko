@@ -19,10 +19,84 @@
 #endregion
 
 using Dock.Model.ReactiveUI.Controls;
+using ReactiveUI;
+using Reko.Core;
+using Reko.Gui.Services;
+using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Threading;
 
 namespace Reko.UserInterfaces.AvaloniaUI.ViewModels.Tools
 {
     public class DiagnosticsViewModel : Tool
     {
+        private List<(ICodeLocation, Diagnostic)> diagnosticItems;
+        private List<KeyValuePair<ICodeLocation, Diagnostic>> pending;
+        private SynchronizationContext syncCtx;
+
+        public DiagnosticsViewModel(SynchronizationContext syncCtx, IServiceProvider services)
+        {
+            this.diagnosticItems = new();
+            this.pending = new();
+            this.FilteredDiagnostics = new();
+            this.syncCtx = syncCtx;
+            var settings = services.RequireService<ISettingsService>();
+            this.Filter = (DiagnosticFilters) settings.Get(IDiagnosticsService.FilterSetting, -1);
+        }
+
+        public ObservableCollection<DiagnosticItem> FilteredDiagnostics { get; }
+
+        public DiagnosticFilters Filter 
+        {
+            get { return filter; }
+            set { this.RaiseAndSetIfChanged(ref this.filter, value); }
+        }
+        private DiagnosticFilters filter;
+
+        public void ClearItems()
+        {
+            this.diagnosticItems.Clear();
+            this.FilteredDiagnostics.Clear();
+        }
+
+
+        private bool AllowVisibleItem(Diagnostic diagnostic)
+        {
+            switch (diagnostic)
+            {
+            case ErrorDiagnostic _:
+                return this.Filter.HasFlag(DiagnosticFilters.Errors);
+            case WarningDiagnostic _:
+                return this.Filter.HasFlag(DiagnosticFilters.Warnings);
+            case InformationalDiagnostic _:
+                return this.Filter.HasFlag(DiagnosticFilters.Information);
+            default:
+                return true;
+            }
+        }
+
+        public void AddDiagnostic(ICodeLocation location, Diagnostic d)
+        {
+            this.diagnosticItems.Add((location, d));
+            if (!AllowVisibleItem(d))
+                return;
+            this.FilteredDiagnostics.Add(CreateDiagnosticItem(location, d));
+        }
+
+        private DiagnosticItem CreateDiagnosticItem(ICodeLocation location, Diagnostic d)
+        {
+            return new DiagnosticItem
+            {
+                Location = location.Text,
+                Description = d.Message
+            };
+        }
+    }
+
+    public class DiagnosticItem
+    {
+        public string? Location { get; set; }
+        public string? Description { get; set; }
     }
 }

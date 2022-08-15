@@ -38,7 +38,7 @@ namespace Reko.UserInterfaces.AvaloniaUI.Services
         private IServiceProvider services;
         private IDiagnosticsService diagnosticSvc;
         private IStatusBarService sbSvc;
-        private SynchronizationContext? uiSyncCtx;
+        private SynchronizationContext uiSyncCtx;
 
         private CancellationTokenSource cancellationSvc;
         private bool isCanceled;
@@ -47,6 +47,10 @@ namespace Reko.UserInterfaces.AvaloniaUI.Services
 
         public AvaloniaEventListener(IServiceProvider services)
         {
+            var uiSyncCtx = SynchronizationContext.Current;
+            if (uiSyncCtx is null)
+                throw new InvalidOperationException("No SynchronizationContext.");
+            this.uiSyncCtx = uiSyncCtx;
             this.services = services;
             diagnosticSvc = services.RequireService<IDiagnosticsService>();
         }
@@ -231,10 +235,6 @@ namespace Reko.UserInterfaces.AvaloniaUI.Services
         {
             if (this.IsBackgroundWorkerRunning)
                 throw new InvalidOperationException("A background task is already running.");
-            var uiSyncCtx = SynchronizationContext.Current;
-            if (uiSyncCtx is null)
-                throw new InvalidOperationException("No SynchronizationContext.");
-            this.uiSyncCtx = uiSyncCtx;
             var sc = new ServiceContainer(services);
             this.sbSvc = sc.RequireService<IStatusBarService>();
 
@@ -259,7 +259,6 @@ namespace Reko.UserInterfaces.AvaloniaUI.Services
             finally
             {
                 this.IsBackgroundWorkerRunning = false;
-                this.uiSyncCtx = null;
                 sbSvc.HideProgress();
                 sbSvc.SetSubtext("");
             }

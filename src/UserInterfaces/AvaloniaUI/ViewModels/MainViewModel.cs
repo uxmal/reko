@@ -66,6 +66,7 @@ namespace Reko.UserInterfaces.AvaloniaUI.ViewModels
             }
 
             this.ProjectBrowser = dockFactory.ProjectBrowserTool!;
+            this.DiagnosticsList = dockFactory.DiagnosticsList!;
 
             var cmdDefs = new CommandDefinitions();
             this.interactor = new MainFormInteractor(services);
@@ -87,6 +88,8 @@ namespace Reko.UserInterfaces.AvaloniaUI.ViewModels
         public ObservableCollection<CommandItem> MainMenu => this.menus.GetMenu(MenuIds.MainMenu);
 
         public ProjectBrowserViewModel ProjectBrowser { get; set; }
+
+        public DiagnosticsViewModel DiagnosticsList { get; set; }
 
         public AvaloniaStatusBarService? Status { get; set; }
         

@@ -29,6 +29,7 @@ using Reko.UserInterfaces.AvaloniaUI.ViewModels.Tools;
 using Reko.UserInterfaces.AvaloniaUI.ViewModels.Views;
 using System;
 using System.Collections.Generic;
+using System.Threading;
 
 namespace Reko.UserInterfaces.AvaloniaUI.ViewModels
 {
@@ -50,11 +51,16 @@ namespace Reko.UserInterfaces.AvaloniaUI.ViewModels
         }
 
         public ProjectBrowserViewModel? ProjectBrowserTool { get; private set; }
+        public DiagnosticsViewModel? DiagnosticsList { get; private set; }
 
         public override IDocumentDock CreateDocumentDock() => new CustomDocumentDock();
 
         public override IRootDock CreateLayout()
         {
+            var syncCtx = SynchronizationContext.Current;
+            if (syncCtx is null)
+                throw new InvalidOperationException("Not running on UI thread.");
+
             var document1 = new MemoryViewModel {Id = "Document1", Title = "Memory View"};
             var document2 = new DocumentViewModel {Id = "Document2", Title = "Document2"};
             var document3 = new DocumentViewModel {Id = "Document3", Title = "Document3", CanClose = true};
@@ -62,7 +68,7 @@ namespace Reko.UserInterfaces.AvaloniaUI.ViewModels
             this.ProjectBrowserTool =  new ProjectBrowserViewModel { Id = "Tool1", Title = "Project browser"};
             var toolProcedureList = new ProcedureListViewModel {Id = "Tool2", Title = "Procedures"};
 
-            var toolDiagnostics = new DiagnosticsViewModel {Id = "Tool3", Title = "Diagnostics"};
+            this.DiagnosticsList = new DiagnosticsViewModel(syncCtx, services) {Id = "Tool3", Title = "Diagnostics"};
             var toolFindResults = new FindResultsViewModel {Id = "Tool4", Title = "Find Results"};
             var toolCallHierarchy = new CallHierarchyViewModel {Id = "Tool5", Title = "Call Hierarchy"};
             var toolConsole = new ConsoleViewModel {Id = "Tool7", Title = "Console", CanClose = false, CanPin = false};
@@ -97,9 +103,9 @@ namespace Reko.UserInterfaces.AvaloniaUI.ViewModels
                 (
                     new ToolDock
                     {
-                        ActiveDockable = toolDiagnostics,
+                        ActiveDockable = DiagnosticsList,
                         VisibleDockables = CreateList<IDockable>(
-                            toolDiagnostics, 
+                            DiagnosticsList, 
                             toolFindResults,
                             toolCallHierarchy,
                             toolConsole,
