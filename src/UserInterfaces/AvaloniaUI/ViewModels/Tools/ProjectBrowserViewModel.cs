@@ -86,6 +86,7 @@ namespace Reko.UserInterfaces.AvaloniaUI.ViewModels.Tools
         public Color BackColor { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
         public bool Enabled { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
+#pragma warning disable CS0067
         public event EventHandler? AfterSelect;
         public event EventHandler<TreeViewEventArgs>? AfterExpand;
         public event EventHandler<TreeViewEventArgs>? BeforeExpand;

@@ -9,13 +9,27 @@
 	x:Class="Reko.UserInterfaces.AvaloniaUI.Views.Documents.SegmentListView">
 	<StackPanel>
 		<ScrollViewer>
-		<ListBox Items="{Binding Segments}">
-			<ListBox.ItemTemplate>
-				<DataTemplate>
-					<TextBlock Text="{Binding Name}" />
-				</DataTemplate>
-			</ListBox.ItemTemplate>
-		</ListBox>
+			<DataGrid Name="segmentList"
+					  Items="{Binding Segments}"
+					  AutoGenerateColumns="False"
+					  CanUserResizeColumns="True"
+					  RowBackground="{Binding #segmentList.AlternatingRowBackground}">
+				<DataGrid.Columns>
+					<DataGridTextColumn x:DataType="vm:SegmentListItemViewModel" Header="Name" Binding="{Binding Name}" ></DataGridTextColumn>
+					<DataGridTextColumn x:DataType="vm:SegmentListItemViewModel" Header="Address" Binding="{Binding Address}"></DataGridTextColumn>
+					<DataGridTextColumn x:DataType="vm:SegmentListItemViewModel" Header="End" Binding="{Binding End}"></DataGridTextColumn>
+					<DataGridTemplateColumn Header="Length">
+						<DataGridTemplateColumn.CellTemplate>
+							<DataTemplate DataType="vm:SegmentListItemViewModel">
+								<TextBlock  Text="{Binding Length}" VerticalAlignment="Center" HorizontalAlignment="Right" />
+							</DataTemplate>
+						</DataGridTemplateColumn.CellTemplate>
+					</DataGridTemplateColumn>
+					<DataGridTextColumn x:DataType="vm:SegmentListItemViewModel" Header="R" Binding="{Binding Read}"></DataGridTextColumn>
+					<DataGridTextColumn x:DataType="vm:SegmentListItemViewModel" Header="W" Binding="{Binding Write}"></DataGridTextColumn>
+					<DataGridTextColumn x:DataType="vm:SegmentListItemViewModel" Header="X" Binding="{Binding Execute}"></DataGridTextColumn>
+				</DataGrid.Columns> 
+			</DataGrid>
 		</ScrollViewer>
 	</StackPanel>
 </UserControl>

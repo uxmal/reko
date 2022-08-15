@@ -45,7 +45,7 @@ namespace Reko.Gui
         IFindStringsDialog CreateFindStringDialog();
         IKeyBindingsDialog CreateKeyBindingsDialog(Dictionary<string, Dictionary<int, CommandID>> keyBindings);
         IOpenAsDialog CreateOpenAsDialog(string initialFilename);
-        IDialog<UserProcedure> CreateProcedureDialog(Program program, UserProcedure proc);
+        IDialog<UserProcedure?> CreateProcedureDialog(Program program, UserProcedure proc);
         IProgramPropertiesDialog CreateProgramPropertiesDialog(Program program);
         IResourceEditor CreateResourceEditor();
         ISearchDialog CreateSearchDialog();
