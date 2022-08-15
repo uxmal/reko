@@ -9,23 +9,25 @@
              x:DataType="vm:ProcedureListViewModel">
   <!--x:CompileBindings="True">-->
   <Panel Focusable="True" HorizontalAlignment="Stretch">
-    <Panel.Styles>
-      <StyleInclude Source="avares://Avalonia.Themes.Default/DefaultTheme.xaml"/>
-      <StyleInclude Source="avares://Avalonia.Themes.Default/Accents/BaseLight.xaml"/>
-      <StyleInclude Source="avares://Avalonia.Controls.DataGrid/Themes/Default.xaml"/>
-    </Panel.Styles>
+
     <DockPanel VerticalAlignment="Top"
-               HorizontalAlignment="Left"
-               Margin="12"
+               HorizontalAlignment="Stretch"
                LastChildFill="True">
       <TextBox Text="{Binding SearchCriterion}" DockPanel.Dock="Top"></TextBox>
       <TextBlock Text="{Binding Procedures.Count}" DockPanel.Dock="Top"/>
-      <DataGrid Name="slob" Items="{Binding Procedures}"  DockPanel.Dock="Top" AutoGenerateColumns="false">
+      <DataGrid
+		  Name="procList"
+		  Items="{Binding Procedures}"
+		  DockPanel.Dock="Top"
+		  RowBackground="{Binding #procList.AlternatingRowBackground}"
+		  CanUserResizeColumns="True"
+		  CanUserSortColumns="True"
+		  AutoGenerateColumns="false">
         <DataGrid.Columns>
-          <DataGridTextColumn Header="Name" Binding="{Binding Name}" />
-          <DataGridTextColumn Header="Address" />
+          <DataGridTextColumn Header="Name" Binding="{Binding Name}" Width="5*" />
+          <DataGridTextColumn Header="Address" Binding="{Binding Address}" />
         </DataGrid.Columns>
       </DataGrid>
-    </DockPanel>
+  </DockPanel>
   </Panel>
 </UserControl>

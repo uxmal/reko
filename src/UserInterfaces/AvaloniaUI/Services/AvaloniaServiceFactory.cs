@@ -149,7 +149,7 @@ namespace Reko.UserInterfaces.AvaloniaUI.Services
 
         public IProcedureListService CreateProcedureListService()
         {
-            return new AvaloniaProcedureListService(services);
+            return new AvaloniaProcedureListService(services, mainViewModel.ProcedureList);
         }
 
         public IProjectBrowserService CreateProjectBrowserService()

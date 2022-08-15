@@ -51,7 +51,9 @@ namespace Reko.UserInterfaces.AvaloniaUI.ViewModels
         }
 
         public ProjectBrowserViewModel? ProjectBrowserTool { get; private set; }
+        public ProcedureListViewModel? ProcedureList { get; private set; }
         public DiagnosticsViewModel? DiagnosticsList { get; private set; }
+
 
         public override IDocumentDock CreateDocumentDock() => new CustomDocumentDock();
 
@@ -66,7 +68,7 @@ namespace Reko.UserInterfaces.AvaloniaUI.ViewModels
             var document3 = new DocumentViewModel {Id = "Document3", Title = "Document3", CanClose = true};
             
             this.ProjectBrowserTool =  new ProjectBrowserViewModel { Id = "Tool1", Title = "Project browser"};
-            var toolProcedureList = new ProcedureListViewModel {Id = "Tool2", Title = "Procedures"};
+            this.ProcedureList = new ProcedureListViewModel {Id = "Tool2", Title = "Procedures"};
 
             this.DiagnosticsList = new DiagnosticsViewModel(syncCtx, services) {Id = "Tool3", Title = "Diagnostics"};
             var toolFindResults = new FindResultsViewModel {Id = "Tool4", Title = "Find Results"};
@@ -88,7 +90,7 @@ namespace Reko.UserInterfaces.AvaloniaUI.ViewModels
                     new ToolDock
                     {
                         ActiveDockable = ProjectBrowserTool,
-                        VisibleDockables = CreateList<IDockable>(ProjectBrowserTool, toolProcedureList),
+                        VisibleDockables = CreateList<IDockable>(ProjectBrowserTool, ProcedureList),
                         Alignment = Alignment.Left
                     }
                 )

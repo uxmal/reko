@@ -21,9 +21,12 @@
 using Reko.Core;
 using Reko.Gui;
 using Reko.Gui.Services;
+using Reko.UserInterfaces.AvaloniaUI.ViewModels.Tools;
 using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel.Design;
+using System.Diagnostics;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Reko.UserInterfaces.AvaloniaUI.Services
@@ -31,14 +34,13 @@ namespace Reko.UserInterfaces.AvaloniaUI.Services
     public class AvaloniaProcedureListService : IProcedureListService
     {
         private IServiceProvider services;
+        private ProcedureListViewModel procedureVm;
 
-        public AvaloniaProcedureListService(IServiceProvider services)
+        public AvaloniaProcedureListService(IServiceProvider services, ProcedureListViewModel procedureVm)
         {
             this.services = services;
-            this.Procedures = new ObservableCollection<string>();
+            this.procedureVm = procedureVm;
         }
-
-        public ObservableCollection<string> Procedures { get; }
 
         public bool ContainsFocus
         {
@@ -50,7 +52,7 @@ namespace Reko.UserInterfaces.AvaloniaUI.Services
 
         public void Clear()
         {
-            this.Procedures.Clear();
+            procedureVm.Procedures.Clear();
         }
 
         public ValueTask<bool> ExecuteAsync(CommandID cmdId)
@@ -60,7 +62,7 @@ namespace Reko.UserInterfaces.AvaloniaUI.Services
 
         public void Load(Project project)
         {
-            throw new NotImplementedException();
+            procedureVm.LoadProcedures(project.Programs.SelectMany(program => program.Procedures.Values));
         }
 
         public bool QueryStatus(CommandID cmdId, CommandStatus status, CommandText text)
@@ -70,7 +72,7 @@ namespace Reko.UserInterfaces.AvaloniaUI.Services
 
         public void Show()
         {
-            throw new NotImplementedException();
+            procedureVm.Show();
         }
     }
 }

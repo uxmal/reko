@@ -20,6 +20,8 @@
 
 using Dock.Model.ReactiveUI.Controls;
 using ReactiveUI;
+using Reko.Core;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -36,13 +38,8 @@ namespace Reko.UserInterfaces.AvaloniaUI.ViewModels.Tools
         public ProcedureListViewModel()
         {
             this.searchCriterion = "";
-            this.modelProcedures =
-                Enumerable.Range(1, 100_000)
-                    .Select(n => n + 0x4000_0000)
-                    .Select(n => new ProcedureItem($"fn{n:X8}", $"{n:X8}"))
-                    .ToList();
-
-            this.procedures = new List<ProcedureItem>(modelProcedures);
+            this.modelProcedures = new List<ProcedureItem>();
+            this.procedures = new ObservableCollection<ProcedureItem>(modelProcedures);
         }
 
         public string SearchCriterion
@@ -51,12 +48,12 @@ namespace Reko.UserInterfaces.AvaloniaUI.ViewModels.Tools
             set { 
                 if (string.IsNullOrEmpty(searchCriterion))
                 {
-                    this.Procedures = new List<ProcedureItem>(this.modelProcedures);
+                    this.Procedures = new ObservableCollection<ProcedureItem>(this.modelProcedures);
                 }
                 else
                 {
                     var criterion = searchCriterion.Trim();
-                    this.Procedures = new List<ProcedureItem>(
+                    this.Procedures = new ObservableCollection<ProcedureItem>(
                         modelProcedures.Where(p => p.Name.Contains(criterion)));
                 }
                 this.RaiseAndSetIfChanged(ref searchCriterion, value, nameof(SearchCriterion));
@@ -64,20 +61,35 @@ namespace Reko.UserInterfaces.AvaloniaUI.ViewModels.Tools
         }
         private string searchCriterion;
 
-        public List<ProcedureItem> Procedures
+        public ObservableCollection<ProcedureItem> Procedures
         {
             get { return procedures; }
             set { this.RaiseAndSetIfChanged(ref procedures, value, nameof(Procedures)); }
         }
-        private List<ProcedureItem> procedures;
+        private ObservableCollection<ProcedureItem> procedures;
 
-        public List<string> Dogs { get; set; } = new List<string>
+
+        public void LoadProcedures(IEnumerable<Procedure> procedures)
         {
-            "Laika",
-            "Debbie",
-            "Lassie",
-            "Rufus"
-        };
+            this.modelProcedures.Clear();
+            this.modelProcedures.AddRange(procedures.Select(CreateProcedureItem));
+            this.Procedures = new(modelProcedures.Where(p => p.Name.Contains(searchCriterion.Trim())));
+        }
+
+        private ProcedureItem CreateProcedureItem(Procedure proc)
+        {
+            return new ProcedureItem(proc.Name, proc.EntryAddress.ToString());
+        }
+
+        public void Show()
+        {
+            var ow = this.Owner;
+            if (ow is ToolDock toolDock)
+            {
+                toolDock.ActiveDockable = this;
+                toolDock.FocusedDockable = this;
+            }
+        }
 
         public class ProcedureItem
         {

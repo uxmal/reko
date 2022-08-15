@@ -147,7 +147,6 @@ namespace Reko.UserInterfaces.AvaloniaUI.Services
 
         public void FinishBackgroundWork()
         {
-            throw new NotImplementedException();
         }
 
         public void Info(string message)
