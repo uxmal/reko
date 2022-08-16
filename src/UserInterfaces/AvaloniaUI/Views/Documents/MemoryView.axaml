@@ -5,13 +5,16 @@
              xmlns:rc="using:Reko.UserInterfaces.AvaloniaUI.Controls"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="Reko.UserInterfaces.AvaloniaUI.Views.Documents.MemoryView">
-	<StackPanel>
+	<DockPanel LastChildFill="True">
 		<StackPanel Orientation="Horizontal"
-					VerticalAlignment="Center">
+					VerticalAlignment="Center"
+					DockPanel.Dock="Top">
 			<TextBlock>Address:</TextBlock>
 			<TextBox></TextBox>
+			<Button>Go</Button>
 		</StackPanel>
-		<StackPanel Orientation="Horizontal">
+		<StackPanel Orientation="Horizontal"
+					DockPanel.Dock="Top">
 			<TextBlock>Width:</TextBlock>
 			<TextBlock Text="{Binding #hexViewer.Width}" />
 			<TextBlock>Height:</TextBlock>
@@ -25,5 +28,5 @@
 						  FontSize="11">
 			</rc:HexViewer>
 		</ScrollViewer>
-	</StackPanel>
+	</DockPanel>
 </UserControl>
