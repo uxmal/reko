@@ -56,9 +56,9 @@ namespace Reko.UnitTests.Arch.Pdp10
                 sb.Append(addr);
             }
 
-            public void RenderFillerSpan(int nCells)
+            public void RenderFillerSpan(int nChunks, int nCharsPerChunk)
             {
-                sb.Append(' ', nCells);
+                sb.Append(' ', (1 + nCharsPerChunk) * nChunks);
             }
 
             public void RenderUnit(Address addr, string sUnit)
@@ -98,6 +98,37 @@ namespace Reko.UnitTests.Arch.Pdp10
             var sExp =
             #region Expected
 @"011064 221456633157 101676774554 310412025150 323632032363 Hello world! This is
+011070 100672670551 350404064703 223112040000 000000000000  7-bit ASCII!.......
+";
+            #endregion
+
+            Assert.AreEqual(sExp, output.Actual);
+        }
+
+        [Test]
+        public void W36Mem_Dump_offset_by_word()
+        {
+            var mem = new Word36MemoryArea(new Address18(0x1234), new ulong[]
+            {
+                Pdp10Architecture.Ascii7("Hello"),
+                Pdp10Architecture.Ascii7(" worl"),
+                Pdp10Architecture.Ascii7("d! Th"),
+                Pdp10Architecture.Ascii7("is is"),
+
+                Pdp10Architecture.Ascii7(" 7-bi"),
+                Pdp10Architecture.Ascii7("t ASC"),
+                Pdp10Architecture.Ascii7("II!"),
+                0
+            });
+
+            // start at one word past the beginning of the memory area.
+            var rdr = mem.CreateBeReader(1);
+            var output = new TestOutputDevice();
+            mem.Formatter.RenderMemory(rdr, Encoding.ASCII, output);
+
+            var sExp =
+            #region Expected
+@"011065              101676774554 310412025150 323632032363       world! This is
 011070 100672670551 350404064703 223112040000 000000000000  7-bit ASCII!.......
 ";
             #endregion

@@ -40,7 +40,7 @@ namespace Reko.Core.Memory
 	public class ByteMemoryArea : MemoryArea
 	{
 		public ByteMemoryArea(Address addrBase, byte [] bytes)
-            : base(addrBase, bytes.Length, 8, new MemoryFormatter(PrimitiveType.Byte, 16, 1))
+            : base(addrBase, bytes.Length, 8, new MemoryFormatter(PrimitiveType.Byte, 1, 16, 2, 1))
 		{
 			this.Bytes = bytes;
 		}

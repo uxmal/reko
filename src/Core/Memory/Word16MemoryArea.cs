@@ -33,7 +33,7 @@ namespace Reko.Core.Memory
     public class Word16MemoryArea : MemoryArea
     {
         public Word16MemoryArea(Address addrBase, ushort[] words)
-            : base(addrBase, words.Length, 16, new MemoryFormatter(PrimitiveType.Word16, 8, 2))
+            : base(addrBase, words.Length, 16, new MemoryFormatter(PrimitiveType.Word16, 1, 8, 4, 2))
         {
             this.Words = words;
         }

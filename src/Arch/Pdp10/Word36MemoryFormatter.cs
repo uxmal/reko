@@ -27,10 +27,13 @@ using System.Text;
 
 namespace Reko.Arch.Pdp10
 {
+    /// <summary>
+    /// Specialized class for rendering <see cref="Word36MemoryArea"/>s.
+    /// </summary>
     public class Word36MemoryFormatter : MemoryFormatter
     {
-        public Word36MemoryFormatter(int unitsPerLine, int charsPerUnit)
-            : base(Pdp10Architecture.Word36, unitsPerLine, charsPerUnit)
+        public Word36MemoryFormatter(int unitsPerLine, int charsPerHexChunk, int charsPerTextChunk)
+            : base(Pdp10Architecture.Word36, 1, unitsPerLine, charsPerHexChunk, charsPerTextChunk)
         {
         }
 

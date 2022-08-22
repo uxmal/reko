@@ -33,7 +33,7 @@ namespace Reko.Arch.Pdp10
     public class Word36MemoryArea : MemoryArea
     {
         public Word36MemoryArea(Address addrBase, ulong[] words)
-            : base(addrBase, words.Length, 36, new Word36MemoryFormatter(4, 6))
+            : base(addrBase, words.Length, 36, new Word36MemoryFormatter(4, 12, 5))
         {
             this.Words = words;
         }

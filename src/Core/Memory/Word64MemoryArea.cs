@@ -27,7 +27,7 @@ namespace Reko.Core.Memory
     public class Word64MemoryArea : MemoryArea
     {
         public Word64MemoryArea(Address addr, ulong[] words) :
-            base(addr, words.Length, 64, new MemoryFormatter(PrimitiveType.Word64, 2, 8))
+            base(addr, words.Length, 64, new MemoryFormatter(PrimitiveType.Word64, 1, 2, 16, 8))
         {
             this.Words = words;
         }

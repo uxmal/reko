@@ -27,36 +27,30 @@ namespace Reko.Core
 	/// </summary>
 	public class AddressRange
 	{
-		private readonly Address addrBegin;
-		private readonly Address addrEnd;
-
-        private static readonly AddressRange e = new AddressRange(Address.Ptr32(0), Address.Ptr32(0));
-
 		public AddressRange(Address addrBegin, Address addrEnd)
 		{
-            this.addrBegin = addrBegin ?? throw new ArgumentNullException(nameof(addrBegin));
-            this.addrEnd = addrEnd ?? throw new ArgumentNullException(nameof(addrEnd));
+            this.Begin = addrBegin ?? throw new ArgumentNullException(nameof(addrBegin));
+            this.End = addrEnd ?? throw new ArgumentNullException(nameof(addrEnd));
         }
 
         /// <summary>
         /// Gets the beginning address (inclusive) of the memory range.
         /// </summary>
-        public Address Begin => addrBegin; 
+        public Address Begin { get; }
 
         /// <summary>
         /// Gets the ending address (exclusive) of the memory range.
         /// </summary>
-		public Address End => addrEnd; 
+		public Address End { get; }
 
         /// <summary>
         /// Gets a value indicating whether this memory range is valid.
         /// </summary>
-        public bool IsValid => this != e; 
+        public bool IsValid => this != Empty; 
 
         /// <summary>
         /// Gets the empty/null memory range.
         /// </summary>
-        public static AddressRange Empty => e; 
-
+        public static AddressRange Empty { get; } = new AddressRange(Address.Ptr32(0), Address.Ptr32(0)); 
     }
 }

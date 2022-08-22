@@ -473,9 +473,10 @@ fn00010020 proc
                 0x00, 0x00, 0x01, 0x02,  0x03, 0x04, 0x05, 0x06,
                 0x07, 0x08, 0xFF, 0xFF,  0x48, 0x69, 0x42, 0x41
             });
-            mem.Formatter = new MemoryFormatter(PrimitiveType.Word16, 16, 1);
+            mem.Formatter = new MemoryFormatter(PrimitiveType.Word16, 2, 8, 4, 2);
             var dmp = new Dumper(program);
             var sw = new StringWriter();
+            sw.WriteLine();
             dmp.DumpData(
                 arch.Object,
                 mem,
@@ -485,13 +486,13 @@ fn00010020 proc
 
             var sExp =
             #region Expected
-@"00010002      0201 0403 0605 0807 FFFF 6948 4942   ..........HiBI
+@"
+00010002      0201 0403 0605 0807 FFFF 6948 4942   ..........HiBI
 00010010 0000 0201 0403 0605 0807 FFFF 6948 4142 ............HiBA
 ";
             #endregion
             AssertOutput(sExp, sw);
         }
-
 
         [Test]
         public void Dumper_Word16MemoryArea()
@@ -514,6 +515,7 @@ fn00010020 proc
             });
             var dmp = new Dumper(program);
             var sw = new StringWriter();
+            sw.WriteLine();
             dmp.DumpData(
                 arch.Object,
                 mem,
@@ -523,7 +525,8 @@ fn00010020 proc
 
             var sExp =
             #region Expected
-@"1001      0102 0304 0506 0708 FFFF 4869 4249   ..........HiBI
+@"
+1001      0102 0304 0506 0708 FFFF 4869 4249   ..........HiBI
 1008 0000 0102 0304 0506 0708 FFFF           ............    
 ";
             #endregion

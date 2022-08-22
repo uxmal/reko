@@ -215,8 +215,10 @@ namespace Reko.Core.Output
                 sbHex.AppendFormat("{0}", addr);
             }
 
-            public void RenderFillerSpan(int nCells)
+            public void RenderFillerSpan(int nChunks, int nCellsPerChunk)
             {
+                // Extra 1 cell for padding between chunks.
+                int nCells = (1 + nCellsPerChunk) * nChunks;
                 for (int i = 0; i < nCells; ++i)
                     sbHex.Append(' ');
             }

@@ -40,11 +40,12 @@ namespace Reko.Core.Output
         void RenderAddress(Address addr);
 
         /// <summary>
-        /// Requests blank space corresponding to <paramref name="nCells"/> 
-        /// letters or digits to be rendered.
+        /// Requests blank space corresponding to <paramref name="nChunks"/> 
+        /// chunks, each consisting of <paramref name="nCharsPerChunk"/> 
+        /// letters or digits.
         /// </summary>
         /// <param name="nCells"></param>
-        void RenderFillerSpan(int nCells);
+        void RenderFillerSpan(int nChunks, int nCharsPerChunk);
 
         /// <summary>
         /// Render a memory unit corresponding to the address <paramref name="addr"/>.
