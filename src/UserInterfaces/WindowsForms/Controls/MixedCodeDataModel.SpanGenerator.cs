@@ -265,9 +265,10 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
                 line.Add(new MemoryTextSpan(addr, sUnit, UiStyles.MemoryWindow));
             }
 
-            public void RenderFillerSpan(int cCells)
+            public void RenderFillerSpan(int nChunks, int nCellsPerChunk)
             {
-                line.Add(new MemoryTextSpan(new string(' ', cCells), UiStyles.MemoryWindow));
+                var nCells = (1 + nCellsPerChunk) * nChunks;
+                line.Add(new MemoryTextSpan(new string(' ', nCells), UiStyles.MemoryWindow));
             }
 
             public void RenderUnitsAsText(int prePadding, string sBytes, int postPadding)

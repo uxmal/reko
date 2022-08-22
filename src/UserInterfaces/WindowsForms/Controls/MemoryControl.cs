@@ -521,10 +521,9 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
 
         private ImageSegment GetSegmentFromAddress(Address addr)
         {
-            ImageSegment seg;
             if (ImageMap == null)
                 return null;
-            if (!SegmentMap.TryFindSegment(addr, out seg))
+            if (!SegmentMap.TryFindSegment(addr, out ImageSegment seg))
                 return null;
             return seg;
         }
@@ -736,11 +735,12 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
                     rc = new Rectangle(cx, rc.Top, rc.Width - cx, rc.Height);
                 }
 
-                public void RenderFillerSpan(int nCells)
+                public void RenderFillerSpan(int nChunks, int cellsPerChunk)
                 {
                     if (addrHit != null)
                         return;
-                    int cx = mcp.cellSize.Width * nCells;
+
+                    int cx = mcp.cellSize.Width * (1 + cellsPerChunk) * nChunks;
                     if (cx <= 0)
                         return;
                     var rcFiller = new Rectangle(
