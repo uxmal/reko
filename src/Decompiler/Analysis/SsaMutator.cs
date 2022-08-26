@@ -113,7 +113,7 @@ namespace Reko.Analysis
         {
             var block = stmAfter.Block;
             var iPos = block.Statements.IndexOf(stmAfter);
-            var linAddr = stmAfter.LinearAddress;
+            var linAddr = stmAfter.Address;
             return block.Statements.Insert(iPos + 1, linAddr, instr);
         }
 
@@ -138,7 +138,7 @@ namespace Reko.Analysis
         {
             var stmts = stmAfter.Block.Statements;
             var iPos = stmts.IndexOf(stmAfter);
-            var stm = stmts.Insert(iPos + 1, stmAfter.LinearAddress, null!);
+            var stm = stmts.Insert(iPos + 1, stmAfter.Address, null!);
             var sid = ssa.Identifiers.Add(dst, stm, src, false);
             stm.Instruction = new Assignment(sid.Identifier, src);
             ssa.AddUses(stm);
@@ -165,7 +165,7 @@ namespace Reko.Analysis
         {
             var stmts = stmBefore.Block.Statements;
             var iPos = stmts.IndexOf(stmBefore);
-            var stm =  stmts.Insert(iPos, stmBefore.LinearAddress, null!);
+            var stm =  stmts.Insert(iPos, stmBefore.Address, null!);
             var sid = ssa.Identifiers.Add(dst, stm, src, false);
             stm.Instruction = new Assignment(sid.Identifier, src);
             ssa.AddUses(stm);

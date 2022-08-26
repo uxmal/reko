@@ -67,7 +67,7 @@ namespace Reko.UnitTests.Decompiler.Typing
 
         private Expression EnsureTypeVariable(Expression e, DataType dt)
         {
-            var tv = store.EnsureExpressionTypeVariable(factory, 0, e);
+            var tv = store.EnsureExpressionTypeVariable(factory, null, e);
             tv.DataType = dt;
             return e;
         }

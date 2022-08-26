@@ -115,10 +115,10 @@ namespace Reko.Core
 				}
 			}
 
-            var st = graphStms.Nodes.OfType<Statement>().OrderBy(n => n.LinearAddress);
+            var st = graphStms.Nodes.OfType<Statement>().OrderBy(n => n.Address);
             foreach (var stm in st)
             {
-                wri.WriteLine("Statement {0:X8} {1} calls:", stm.LinearAddress, stm.Instruction);
+                wri.WriteLine("Statement {0:X8} {1} calls:", stm.Address, stm.Instruction);
                 foreach (Procedure p in graphStms.Successors(stm).OfType<Procedure>())
                 {
                     wri.WriteLine("\t{0}", p.Name);

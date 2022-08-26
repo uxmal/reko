@@ -75,7 +75,7 @@ namespace Reko.Analysis
                         pc.Procedure is ExternalProcedure extProc &&
                         !extProc.Signature.ParametersValid)
                     {
-                        trace.Verbose("ArgGuess: {0:X}: call to {1}", stm.LinearAddress, extProc);
+                        trace.Verbose("ArgGuess: {0:X}: call to {1}", stm.Address, extProc);
                         var gargs = GuessArguments(stm, call, block, i - 1);
                         var gret = GuessReturnValue(stm, call);
                         if (gargs is not null || gret is not null)

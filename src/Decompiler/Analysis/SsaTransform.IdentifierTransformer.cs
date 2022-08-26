@@ -157,12 +157,12 @@ namespace Reko.Analysis
                 if (stm.Block == block)
                 {
                     int i = stm.Block.Statements.IndexOf(stm);
-                    stmNew = new Statement(stm.LinearAddress, ass, stm.Block);
+                    stmNew = new Statement(stm.Address, ass, stm.Block);
                     stm.Block.Statements.Insert(i, stmNew);
                 }
                 else
                 {
-                    ulong uAddr = block.Address.ToLinear();
+                    Address addr = block.Address;
                     int i = -1;
                     if (block.Statements.Count > 0)
                     {
@@ -173,10 +173,10 @@ namespace Reko.Analysis
                         }
                         if (i >= 0)
                         {
-                            uAddr = block.Statements[i].LinearAddress;
+                            addr = block.Statements[i].Address;
                         }
                     }
-                    stmNew = block.Statements.Insert(i + 1, uAddr, ass);
+                    stmNew = block.Statements.Insert(i + 1, addr, ass);
                 }
 
                 var sidTo = ssaIds.Add(ass.Dst, stmNew, ass.Src, false);
@@ -194,7 +194,7 @@ namespace Reko.Analysis
             private SsaIdentifier NewPhi(Identifier id, Block b)
             {
                 var phiAss = new PhiAssignment(id);
-                var stm = new Statement(b.Address.ToLinear(), phiAss, b);
+                var stm = new Statement(b.Address, phiAss, b);
                 b.Statements.Insert(0, stm);
                 var sid = ssaIds.Add(phiAss.Dst, stm, phiAss.Src, false);
                 phiAss.Dst = sid.Identifier;
@@ -352,7 +352,7 @@ namespace Reko.Analysis
                 if (param != null)
                 {
                     var copy = new Assignment(id, param);
-                    var stmCopy = b.Statements.Add(b.Address.ToLinear(), copy);
+                    var stmCopy = b.Statements.Add(b.Address, copy);
                     var sidCopy = ssaIds.Add(id, stmCopy, null, false);
                     copy.Dst = sidCopy.Identifier;
                     sidCopy.DefExpression = param;
@@ -1080,7 +1080,7 @@ namespace Reko.Analysis
                     var seq = new MkSequence(this.id.DataType, sids.Select(s => s.Identifier).ToArray());
                     var ass = new AliasAssignment(id, seq);
                     var stm = sids[0].DefStatement!.Block.Statements.Add(
-                        sids[0].DefStatement!.LinearAddress,
+                        sids[0].DefStatement!.Address,
                         ass);
                     var sidTo = ssaIds.Add(ass.Dst, stm, ass.Src, false);
                     ass.Dst = sidTo.Identifier;
@@ -1114,7 +1114,7 @@ namespace Reko.Analysis
                 var seq = new MkSequence(this.id.DataType, sids.Select(s => s.Identifier).ToArray());
                 var ass = new AliasAssignment(this.id, seq);
                 var iStm = this.stm.Block.Statements.IndexOf(this.stm);
-                var stm = this.stm.Block.Statements.Insert(iStm, this.stm.LinearAddress, ass);
+                var stm = this.stm.Block.Statements.Insert(iStm, this.stm.Address, ass);
                 var sidTo = ssaIds.Add(ass.Dst, stm, ass.Src, false);
                 ass.Dst = sidTo.Identifier;
                 foreach (var sid in sids)

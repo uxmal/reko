@@ -5,7 +5,7 @@
 /*
 // Equivalence classes ////////////
 Eq_1: (struct "Globals" (800004FC real96 r800004FC) (80000508 real96 r80000508) (80000514 real96 r80000514) (80000520 real96 r80000520) (8000052C real96 r8000052C) (80000538 real96 r80000538))
-	globals_t (in globals @ 00000000 : (ptr32 (struct "Globals")))
+	globals_t (in globals : (ptr32 (struct "Globals")))
 Eq_2: (fn void ())
 	T_2 (in fn800003CC @ 80000000 : ptr32)
 	T_3 (in signature of fn800003CC @ 800003CC : void)
@@ -31,7 +31,7 @@ Eq_122: (fn void (real96))
 	T_122 (in fn8000036C @ 8000043A : ptr32)
 	T_123 (in signature of fn8000036C @ 8000036C : void)
 // Type Variables ////////////
-globals_t: (in globals @ 00000000 : (ptr32 (struct "Globals")))
+globals_t: (in globals : (ptr32 (struct "Globals")))
   Class: Eq_1
   DataType: (ptr32 Eq_1)
   OrigDataType: (ptr32 (struct "Globals"))
@@ -83,7 +83,7 @@ T_13: (in rLoc10_65 @ 80000160 : real96)
   Class: Eq_13
   DataType: real96
   OrigDataType: real96
-T_14: (in rLoc10_65 * rArg04 @ 00000000 : real96)
+T_14: (in rLoc10_65 * rArg04 @ 80000160 : real96)
   Class: Eq_5
   DataType: real96
   OrigDataType: real96
@@ -91,7 +91,7 @@ T_15: (in 1<32> @ 8000016C : word32)
   Class: Eq_15
   DataType: word32
   OrigDataType: word32
-T_16: (in dwLoc14_53 + 1<32> @ 00000000 : word32)
+T_16: (in dwLoc14_53 + 1<32> @ 8000016C : word32)
   Class: Eq_11
   DataType: word32
   OrigDataType: word32
@@ -115,7 +115,7 @@ T_21: (in CONVERT(dwLoc14_53, word32, real96) @ 80000156 : real96)
   Class: Eq_6
   DataType: real96
   OrigDataType: real96
-T_22: (in (real96) dwLoc14_53 >= rArg10 @ 00000000 : bool)
+T_22: (in (real96) dwLoc14_53 >= rArg10 @ 80000156 : bool)
   Class: Eq_22
   DataType: bool
   OrigDataType: bool
@@ -159,7 +159,7 @@ T_32: (in CONVERT(CONVERT(dwLoc14_52, word32, real96), real96, real80) @ 800001C
   Class: Eq_32
   DataType: real80
   OrigDataType: real80
-T_33: (in rLoc10_64 *96 (real80) ((real96) dwLoc14_52) @ 00000000 : real96)
+T_33: (in rLoc10_64 *96 (real80) ((real96) dwLoc14_52) @ 800001C4 : real96)
   Class: Eq_23
   DataType: real96
   OrigDataType: real96
@@ -167,7 +167,7 @@ T_34: (in 1<32> @ 800001CE : word32)
   Class: Eq_34
   DataType: word32
   OrigDataType: word32
-T_35: (in dwLoc14_52 + 1<32> @ 00000000 : word32)
+T_35: (in dwLoc14_52 + 1<32> @ 800001CE : word32)
   Class: Eq_28
   DataType: int32
   OrigDataType: int32
@@ -191,7 +191,7 @@ T_40: (in CONVERT(dwLoc14_52, word32, real96) @ 800001B4 : real96)
   Class: Eq_6
   DataType: real96
   OrigDataType: real96
-T_41: (in (real96) dwLoc14_52 > rArg04 @ 00000000 : bool)
+T_41: (in (real96) dwLoc14_52 > rArg04 @ 800001B4 : bool)
   Class: Eq_41
   DataType: bool
   OrigDataType: bool
@@ -267,11 +267,11 @@ T_59: (in CONVERT(fn8000018E((real96) dwLoc20_119), real96, real80) @ 80000262 :
   Class: Eq_59
   DataType: real80
   OrigDataType: real80
-T_60: (in fn80000132(rArg04, (real96) dwLoc20_119) /96 (real80) fn8000018E((real96) dwLoc20_119) @ 00000000 : real96)
+T_60: (in fn80000132(rArg04, (real96) dwLoc20_119) /96 (real80) fn8000018E((real96) dwLoc20_119) @ 80000262 : real96)
   Class: Eq_60
   DataType: real96
   OrigDataType: real96
-T_61: (in fn80000132(rArg04, (real96) dwLoc20_119) /96 (real80) fn8000018E((real96) dwLoc20_119) * rLoc1C_114 @ 00000000 : real96)
+T_61: (in fn80000132(rArg04, (real96) dwLoc20_119) /96 (real80) fn8000018E((real96) dwLoc20_119) * rLoc1C_114 @ 80000262 : real96)
   Class: Eq_44
   DataType: real96
   OrigDataType: real96
@@ -283,7 +283,7 @@ T_63: (in CONVERT(fp0_81, real96, real80) @ 8000026E : real80)
   Class: Eq_63
   DataType: real80
   OrigDataType: real80
-T_64: (in rLoc10_115 + (real80) fp0_81 @ 00000000 : real96)
+T_64: (in rLoc10_115 + (real80) fp0_81 @ 8000026E : real96)
   Class: Eq_6
   DataType: real96
   OrigDataType: real96
@@ -291,7 +291,7 @@ T_65: (in 2<32> @ 80000284 : word32)
   Class: Eq_65
   DataType: word32
   OrigDataType: word32
-T_66: (in dwLoc20_119 + 2<32> @ 00000000 : word32)
+T_66: (in dwLoc20_119 + 2<32> @ 80000284 : word32)
   Class: Eq_47
   DataType: int32
   OrigDataType: int32
@@ -315,7 +315,7 @@ T_71: (in 100<i32> @ 80000222 : int32)
   Class: Eq_47
   DataType: int32
   OrigDataType: int32
-T_72: (in dwLoc20_119 > 100<i32> @ 00000000 : bool)
+T_72: (in dwLoc20_119 > 100<i32> @ 80000222 : bool)
   Class: Eq_72
   DataType: bool
   OrigDataType: bool
@@ -391,11 +391,11 @@ T_90: (in CONVERT(fn8000018E((real96) dwLoc20_118), real96, real80) @ 80000320 :
   Class: Eq_90
   DataType: real80
   OrigDataType: real80
-T_91: (in fn80000132(rArg04, (real96) dwLoc20_118) /96 (real80) fn8000018E((real96) dwLoc20_118) @ 00000000 : real96)
+T_91: (in fn80000132(rArg04, (real96) dwLoc20_118) /96 (real80) fn8000018E((real96) dwLoc20_118) @ 80000320 : real96)
   Class: Eq_91
   DataType: real96
   OrigDataType: real96
-T_92: (in fn80000132(rArg04, (real96) dwLoc20_118) /96 (real80) fn8000018E((real96) dwLoc20_118) * rLoc1C_113 @ 00000000 : real96)
+T_92: (in fn80000132(rArg04, (real96) dwLoc20_118) /96 (real80) fn8000018E((real96) dwLoc20_118) * rLoc1C_113 @ 80000320 : real96)
   Class: Eq_78
   DataType: real96
   OrigDataType: real96
@@ -407,7 +407,7 @@ T_94: (in CONVERT(fp0_81, real96, real80) @ 8000032C : real80)
   Class: Eq_94
   DataType: real80
   OrigDataType: real80
-T_95: (in rLoc10_114 + (real80) fp0_81 @ 00000000 : real96)
+T_95: (in rLoc10_114 + (real80) fp0_81 @ 8000032C : real96)
   Class: Eq_73
   DataType: real96
   OrigDataType: real96
@@ -415,7 +415,7 @@ T_96: (in 2<32> @ 80000342 : word32)
   Class: Eq_96
   DataType: word32
   OrigDataType: word32
-T_97: (in dwLoc20_118 + 2<32> @ 00000000 : word32)
+T_97: (in dwLoc20_118 + 2<32> @ 80000342 : word32)
   Class: Eq_81
   DataType: int32
   OrigDataType: int32
@@ -439,7 +439,7 @@ T_102: (in 100<i32> @ 800002E0 : int32)
   Class: Eq_81
   DataType: int32
   OrigDataType: int32
-T_103: (in dwLoc20_118 > 100<i32> @ 00000000 : bool)
+T_103: (in dwLoc20_118 > 100<i32> @ 800002E0 : bool)
   Class: Eq_103
   DataType: bool
   OrigDataType: bool

@@ -54,7 +54,7 @@ namespace Reko.UnitTests.Core.Serialization.Json
                      "'succ':['l0010']}," +
                     "{'name':'JpsTest_exit','exit':true}," +
                     "{'name':'l0010'," +
-                     "'linaddr':0," +
+                     "'addr':'00123400'," +
                      "'stms':[" +
                          "[0,'=','r1',[1,'w32']]," +
                          "[1,'ret']]," +
@@ -92,15 +92,15 @@ namespace Reko.UnitTests.Core.Serialization.Json
                     "{'name':'JpsTest_entry'," +
                      "'succ':['l0010']}," +
                     "{'name':'JpsTest_exit','exit':true}," +
-                    "{'name':'l0010','linaddr':0,'stms':[" +
+                    "{'name':'l0010','addr':'00123400','stms':[" +
                           "[0,'=','SZ','cof',['-f','f1','f3']]," +
                           "[1,'bra',['test','GE','SZ'],'l_nonneg']]," +
                      "'succ':['l_neg','l_nonneg']}," +
-                    "{'name':'l_nonneg','linaddr':4,'stms':[" +
+                    "{'name':'l_nonneg','addr':'00123404','stms':[" +
                           "[0,['st',['m','Mem0',['+','r9',[8,'w32']],'r64'],['*f','f3',[2,'r64']]]]," +
                           "[1,'ret']]," +
                      "'succ':['JpsTest_exit']}," +
-                   "{'name':'l_neg','linaddr':2,'stms':[" +
+                    "{'name':'l_neg','addr':'00123402','stms':[" +
                           "[0,'=','f3',[0,'r64']]," +
                           "[1,'=','r1',['neg','r1']]]," +
                   "'succ':['l_nonneg']}]}";
@@ -136,7 +136,7 @@ namespace Reko.UnitTests.Core.Serialization.Json
                     "{'name':'main_entry'," +
                      "'succ':['l0010']}," +
                     "{'name':'main_exit','exit':true}," +
-                    "{'name':'l0010','linaddr':4096,'stms':[" +
+                    "{'name':'l0010','addr':'00001000','stms':[" +
                         "[0,'call','sub',0,0,['r1','r2']['f1']],[1,'ret','f1']]," +
                      "'succ':['main_exit']}]}";
 
@@ -150,7 +150,7 @@ namespace Reko.UnitTests.Core.Serialization.Json
                     "'blocks':["+ 
                         "{'name':'sub_entry','succ':['l1000']},"+ 
                         "{'name':'sub_exit','exit':true},"+ 
-                        "{'name':'l1000','linaddr':8192,'stms':["+
+                        "{'name':'l1000','addr':'00002000','stms':["+
                             "[0,'=','f1',['cos',['m','Mem0','r1','r64']],"+
                             "[1,'=','f1',['sin',['m','Mem0','r2','r64']],"+
                             "[2,'=','f1',['-f','f1','f1']],[3,'ret','f1']],"+

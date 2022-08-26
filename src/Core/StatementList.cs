@@ -33,16 +33,16 @@ namespace Reko.Core
 			this.block = block;
 		}
 
-        public Statement Add(ulong linearAddress, Instruction instr)
+        public Statement Add(Address address, Instruction instr)
         {
-            var stm = new Statement(linearAddress, instr, block);
+            var stm = new Statement(address, instr, block);
             Add(stm);
             return stm;
         }
 
-        public Statement Insert(int position, ulong linearAddress, Instruction instr)
+        public Statement Insert(int position, Address address, Instruction instr)
         {
-            var stm = new Statement(linearAddress, instr, block);
+            var stm = new Statement(address, instr, block);
             base.Insert(position, stm);
             return stm;
         }

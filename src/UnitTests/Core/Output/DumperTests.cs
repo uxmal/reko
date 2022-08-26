@@ -394,7 +394,7 @@ fn00010010 proc
             var label = program.NamingPolicy.BlockName(p1.EntryAddress);
             var b1 = p1.AddBlock(p1.EntryAddress, label);
             var stm = b1.Statements.Add(
-                p1.EntryAddress.ToLinear(),
+                p1.EntryAddress,
                 new CallInstruction(
                     new ProcedureConstant(PrimitiveType.Ptr32, p2), new CallSite(0, 0)));
             program.CallGraph.AddEdge(stm, p2);

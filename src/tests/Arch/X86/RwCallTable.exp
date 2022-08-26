@@ -53,9 +53,9 @@ Procedure fn0C00_0000 calls:
 Procedure fn0C00_0018 calls:
 Procedure fn0C00_0022 calls:
 Procedure fn0C00_002C calls:
-Statement 0000C000 call fn0C00_002C (retsize: 2;) calls:
+Statement 0C00:0000 call fn0C00_002C (retsize: 2;) calls:
 	fn0C00_002C
-Statement 0000C00A SCZO = cond(bx) calls:
+Statement 0C00:000A SCZO = cond(bx) calls:
 	fn0C00_0018
 	fn0C00_0022
 	fn0C00_002C

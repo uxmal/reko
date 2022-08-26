@@ -210,7 +210,7 @@ namespace Reko.UnitTests.Core.Serialization
   <input>
     <user>
       <global>
-        <Address>00100000</Address>
+        <addrCur>00100000</addrCur>
         <arr length=""10"">
           <ptr size=""4"">
             <code />

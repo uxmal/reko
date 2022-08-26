@@ -30,16 +30,16 @@ namespace Reko.Core
     /// </summary>
 	public class Statement
 	{
-        public Statement(ulong linearAddress, Instruction instr, Block block)
+        public Statement(Address address, Instruction instr, Block block)
         {
-            this.LinearAddress = linearAddress;
+            this.Address = address;
             this.Instruction = instr;
             this.Block = block;
         }
 
         public Block Block { get; set; }
         public Instruction Instruction { get; set; }
-        public ulong LinearAddress { get; }
+        public Address Address { get; }
 
 		public override string ToString()
 		{

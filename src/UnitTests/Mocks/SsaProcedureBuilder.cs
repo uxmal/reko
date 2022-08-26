@@ -219,14 +219,14 @@ namespace Reko.UnitTests.Mocks
         public void AddDefToEntryBlock(Identifier id)
         {
             var def = new DefInstruction(id);
-            var stm = Procedure.EntryBlock.Statements.Add(0, def);
+            var stm = Procedure.EntryBlock.Statements.Add(Procedure.EntryAddress, def);
             ProcessInstruction(def, stm);
         }
 
         public void AddUseToExitBlock(Identifier id)
         {
             var use = new UseInstruction(id);
-            var stm = Procedure.ExitBlock.Statements.Add(0, use);
+            var stm = Procedure.ExitBlock.Statements.Add(Address.Ptr32(0), use);
             ProcessInstruction(use, stm);
         }
 
@@ -237,7 +237,7 @@ namespace Reko.UnitTests.Mocks
                 .ToArray();
             var phiFunc = new PhiFunction(idDst.DataType, args);
             var phi = new PhiAssignment(idDst, phiFunc);
-            var stm = Procedure.ExitBlock.Statements.Add(0, phi);
+            var stm = Procedure.ExitBlock.Statements.Add(Address.Ptr32(0), phi);
             ProcessInstruction(phi, stm);
         }
 

@@ -173,7 +173,7 @@ namespace Reko.Analysis
             var src = m.AddSubSignedInt(fp, frameOffset);
             var newStm = stmAfter.Block.Statements.Insert(
                 pos + 1,
-                stmAfter.LinearAddress,
+                stmAfter.Address,
                 new Assignment(stack, src));
             ssa.Identifiers[stack].DefStatement = newStm;
             ssa.AddUses(newStm);

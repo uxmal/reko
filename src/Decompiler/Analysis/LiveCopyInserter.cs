@@ -56,7 +56,7 @@ namespace Reko.Analysis
 		public Identifier InsertAssignmentNewId(Identifier idOld, Block b, int i)
 		{
             var stm = new Statement(
-                b.Address.ToLinear(),
+                b.Address,
                 null!,
                 b);
             SsaIdentifier sidNew = ssaIds.Add((Identifier)ssaIds[idOld].OriginalIdentifier, stm, idOld, false);
@@ -69,7 +69,7 @@ namespace Reko.Analysis
 		{
             b.Statements.Insert(
                 i,
-                b.Address.ToLinear(),
+                b.Address,
                 new Assignment(idDst, idSrc));
 			return idDst;
 		}

@@ -140,12 +140,12 @@ namespace Reko.UnitTests.Decompiler.Scanning
         {
             var call = new CallInstruction(new ProcedureConstant(arch.PointerType, procCalling), new CallSite(0, 0));
             var block = new Block(procCalling, procCalling.EntryAddress, "test");
-            var stmOld = new Statement(42, call, block);
+            var stmOld = new Statement(Address.Ptr32(42), call, block);
             callgraph.AddEdge(stmOld, procCalling);
 
             var cloner = new BlockCloner(null, procCalling, callgraph);
             cloner.Statement = stmOld;
-            cloner.StatementNew = new Statement(42, null, block);
+            cloner.StatementNew = new Statement(Address.Ptr32(42), null, block);
             var newCall = (CallInstruction) call.Accept(cloner);
             cloner.StatementNew.Instruction = newCall;
             Assert.AreEqual(call.Callee, newCall.Callee);

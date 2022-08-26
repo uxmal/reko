@@ -37,11 +37,11 @@ namespace Reko.Scanning
     /// </remarks>
     public class CommentInjector
     {
-        private SortedList<ulong, Annotation> annotations;
+        private SortedList<Address, Annotation> annotations;
 
         public CommentInjector(IEnumerable<Annotation> annotations)
         {
-            this.annotations = annotations.ToSortedList(a => a.Address.ToLinear());
+            this.annotations = annotations.ToSortedList(a => a.Address);
         }
 
         /// <summary>
@@ -59,11 +59,11 @@ namespace Reko.Scanning
                 for (int i = 0; i < block.Statements.Count; ++i)
                 {
                     var stm = block.Statements[i];
-                    if (stmPrev == null || stm.LinearAddress != stmPrev.LinearAddress)
+                    if (stmPrev == null || stm.Address != stmPrev.Address)
                     {
-                        if (this.annotations.TryGetValue(stm.LinearAddress, out var ann))
+                        if (this.annotations.TryGetValue(stm.Address, out var ann))
                         {
-                            block.Statements.Insert(i, stm.LinearAddress, new CodeComment(ann.Text));
+                            block.Statements.Insert(i, stm.Address, new CodeComment(ann.Text));
                             ++i;
                         }
                     }

@@ -489,9 +489,10 @@ namespace Reko.Scanning
     /// the indirect jump whose table extent we're trying to discover.
     /// </summary>
     /// <remarks>
-    /// The visitor methods return a SlicerResult if they've discovered something
-    /// interesting. If the SlicerResult is null, it means the visited instruction
-    /// doesn't affect the outcome of the jump table and can be ignored.
+    /// The visitor methods return a <see cref="SlicerResult" /> if they've
+    /// discovered something interesting. If the SlicerResult is null, it 
+    /// means the visited instructiondoesn't affect the outcome of the jump
+    /// table and can be ignored.
     /// </remarks>
     public class SliceState :
         RtlInstructionVisitor<SlicerResult?>,
@@ -607,7 +608,7 @@ namespace Reko.Scanning
 
         private StridedInterval MakeInterval_IAdd(Expression left, Constant? right)
         {
-            if (right == null)
+            if (right is null)
                 return StridedInterval.Empty;
             var cc = this.ccNext;
             if (this.invertCondition)

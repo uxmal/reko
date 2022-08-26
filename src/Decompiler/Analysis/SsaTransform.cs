@@ -131,7 +131,7 @@ namespace Reko.Analysis
                 foreach (var s in b.Statements.ToList())
                 {
                     this.stmCur = s;
-                    trace.Verbose("SsaTransform:     {0:X4} {1}", s.LinearAddress, s);
+                    trace.Verbose("SsaTransform:     {0:X4} {1}", s.Address, s);
                     s.Instruction = s.Instruction.Accept(this);
                     if (blockstates[b].Terminates)
                     {
@@ -273,7 +273,7 @@ namespace Reko.Analysis
 
             var stms = sortedIds
                 .Select(id => new Statement(
-                    block.Address.ToLinear(),
+                    block.Address,
                     new UseInstruction(id),
                     block))
                 .ToList();
@@ -655,7 +655,7 @@ namespace Reko.Analysis
                 var src = m.AddSubSignedInt(fpuStackReg, fpuStackDelta);
                 var iCur = stmCur!.Block.Statements.IndexOf(stmCur);
                 stmCur = stmCur.Block.Statements.Insert(iCur + 1,
-                    stmCur.LinearAddress,
+                    stmCur.Address,
                     new Assignment(fpuStackReg, src));
 
                 stmCur.Instruction = stmCur.Instruction.Accept(this);
@@ -692,7 +692,7 @@ namespace Reko.Analysis
                 var iCur = stmCur!.Block.Statements.IndexOf(stmCur);
                 stmCur = stmCur.Block.Statements.Insert(
                     iCur + 1,
-                    stmCur.LinearAddress,
+                    stmCur.Address,
                     new Store(fpuAccess, fpuDef.Expression));
                 stmCur.Instruction = stmCur.Instruction.Accept(this);
             }

@@ -5,13 +5,13 @@
 /*
 // Equivalence classes ////////////
 Eq_1: (struct "Globals" (0 code t0000) (13 (ptr32 code) __imp__f))
-	globals_t (in globals @ 00000000 : (ptr32 (struct "Globals")))
+	globals_t (in globals : (ptr32 (struct "Globals")))
 // Type Variables ////////////
-globals_t: (in globals @ 00000000 : (ptr32 (struct "Globals")))
+globals_t: (in globals : (ptr32 (struct "Globals")))
   Class: Eq_1
   DataType: (ptr32 Eq_1)
   OrigDataType: (ptr32 (struct "Globals"))
-T_2: (in eax @ 00000000 : (ptr32 byte))
+T_2: (in eax : (ptr32 byte))
   Class: Eq_2
   DataType: (ptr32 byte)
   OrigDataType: (ptr32 (struct (0 T_7 t0000)))
@@ -35,7 +35,7 @@ T_7: (in Mem0[eax + 0<32>:byte] @ 00000004 : byte)
   Class: Eq_7
   DataType: byte
   OrigDataType: byte
-T_8: (in *eax + al_5 @ 00000000 : byte)
+T_8: (in *eax + al_5 @ 00000004 : byte)
   Class: Eq_7
   DataType: byte
   OrigDataType: byte
@@ -63,7 +63,7 @@ T_14: (in Mem7[eax + 0<32>:byte] @ 00000006 : byte)
   Class: Eq_7
   DataType: byte
   OrigDataType: byte
-T_15: (in *eax + al_5 @ 00000000 : byte)
+T_15: (in *eax + al_5 @ 00000006 : byte)
   Class: Eq_7
   DataType: byte
   OrigDataType: byte

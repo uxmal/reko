@@ -205,7 +205,7 @@ namespace Reko.Core.Services
 
         public ICodeLocation CreateStatementNavigator(Program program, Statement stm)
         {
-            return new NullCodeLocation(stm.LinearAddress.ToString());
+            return new NullCodeLocation(stm.Address.ToString());
         }
 
         public ICodeLocation CreateJumpTableNavigator(Program _, IProcessorArchitecture arch, Address addrIndirectJump, Address? addrVector, int stride)

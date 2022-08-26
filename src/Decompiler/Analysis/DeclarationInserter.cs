@@ -76,7 +76,7 @@ namespace Reko.Analysis
                             int idx = dominator.Statements.IndexOf(sid.DefStatement);
                             dominator.Statements.Insert(
                                 idx,
-                                sid.DefStatement.LinearAddress,
+                                sid.DefStatement.Address,
                                 new Declaration(web.Identifier!, null));
                         }
                         return;
@@ -84,7 +84,7 @@ namespace Reko.Analysis
 				}
 				dominator.Statements.Insert(
                     0,
-                    dominator.Address.ToLinear(),
+                    dominator.Address,
                     new Declaration(web.Identifier!, null));
 			}
 		}

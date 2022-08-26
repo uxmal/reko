@@ -130,7 +130,7 @@ namespace Reko.Core.Output
             formatter.WriteComment($";; {proc.Name}: {proc.EntryAddress}");
             formatter.WriteLine();
             var callerStms = program.CallGraph.CallerStatements(proc)
-                .OrderBy(c => c.LinearAddress)
+                .OrderBy(c => c.Address)
                 .ToArray();
             if (callerStms.Length > 0)
             {
@@ -138,7 +138,7 @@ namespace Reko.Core.Output
                 formatter.WriteLine();
                 foreach (var stm in callerStms)
                 {
-                    var addr = program.SegmentMap.MapLinearAddressToAddress(stm.LinearAddress);
+                    var addr = stm.Address;
                     formatter.WriteComment(";;     ");
                     formatter.WriteHyperlink(addr.ToString(), addr);
                     formatter.Write(" (in ");

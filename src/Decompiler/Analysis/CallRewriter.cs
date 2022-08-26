@@ -483,7 +483,7 @@ namespace Reko.Analysis
                     if (param.Storage is OutArgumentStorage outStg)
                     {
                         Store store = MakeOutParameterStore(bindings, outStg, param);
-                        var stmIns = block.Statements.Insert(insertPos, stm.LinearAddress, store);
+                        var stmIns = block.Statements.Insert(insertPos, stm.Address, store);
                         ssa.AddUses(stmIns);
                         ++insertPos;
                     }

@@ -40,7 +40,7 @@ namespace Reko.UnitTests.Mocks
         private Block lastBlock;
         private int numBlock;
         private List<ProcUpdater> unresolvedProcedures;
-        public uint LinearAddress;
+        public Address addrCur;
 
         public ProcedureBuilder()
         {
@@ -74,13 +74,12 @@ namespace Reko.UnitTests.Mocks
 
         private void Init(IProcessorArchitecture arch, string name, Address addr, Dictionary<string, Block> blocks)
         {
-            if (arch == null)
-                throw new ArgumentNullException("arch");
             this.InstructionSize = 1;
-            this.Architecture = arch;
+            this.Architecture = arch ?? throw new ArgumentNullException(nameof(arch));
             this.Procedure = new Procedure(arch, name, addr, arch.CreateFrame());
             this.blocks = blocks ?? new Dictionary<string, Block>();
             this.unresolvedProcedures = new List<ProcUpdater>();
+            this.addrCur = addr;
             BuildBody();
         }
 
@@ -225,8 +224,8 @@ namespace Reko.UnitTests.Mocks
         public override Statement Emit(Instruction instr)
         {
             EnsureBlock(null);
-            var stm = Block.Statements.Add(LinearAddress , instr);
-            LinearAddress += (uint)InstructionSize;
+            var stm = Block.Statements.Add(addrCur, instr);
+            addrCur += (uint)InstructionSize;
             return stm;
         }
 
@@ -268,7 +267,7 @@ namespace Reko.UnitTests.Mocks
                 name = string.Format("l{0}", ++numBlock);
             }
             Block = BlockOf(name);
-            Block.Address = Address.Ptr32(LinearAddress);
+            Block.Address = addrCur;
             if (Procedure.EntryBlock.Succ.Count == 0)
             {
                 Procedure.ControlGraph.AddEdge(Procedure.EntryBlock, Block);

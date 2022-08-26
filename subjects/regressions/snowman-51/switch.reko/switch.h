@@ -5,7 +5,7 @@
 /*
 // Equivalence classes ////////////
 Eq_1: (struct "Globals" (10072000 (str char) str10072000) (10072008 (str char) str10072008) (10072010 (str char) str10072010) (10072014 (str char) str10072014) (10072018 (str char) str10072018))
-	globals_t (in globals @ 00000000 : (ptr32 (struct "Globals")))
+	globals_t (in globals : (ptr32 (struct "Globals")))
 Eq_14: BOOL
 	T_14 (in eax @ 10071028 : Eq_14)
 	T_18 (in 1<32> @ 10071085 : word32)
@@ -16,15 +16,15 @@ Eq_16: DWORD
 Eq_17: LPVOID
 	T_17 (in lpReserved @ 10071028 : Eq_17)
 // Type Variables ////////////
-globals_t: (in globals @ 00000000 : (ptr32 (struct "Globals")))
+globals_t: (in globals : (ptr32 (struct "Globals")))
   Class: Eq_1
   DataType: (ptr32 Eq_1)
   OrigDataType: (ptr32 (struct "Globals"))
-T_2: (in eax @ 00000000 : (ptr32 char))
+T_2: (in eax : (ptr32 char))
   Class: Eq_2
   DataType: (ptr32 char)
   OrigDataType: (ptr32 char)
-T_3: (in n @ 00000000 : uint32)
+T_3: (in n : uint32)
   Class: Eq_3
   DataType: uint32
   OrigDataType: uint32
@@ -36,7 +36,7 @@ T_5: (in 2<32> @ 10071008 : word32)
   Class: Eq_4
   DataType: uint32
   OrigDataType: up32
-T_6: (in n > 2<32> @ 00000000 : bool)
+T_6: (in n > 2<32> @ 10071008 : bool)
   Class: Eq_6
   DataType: bool
   OrigDataType: bool
@@ -48,7 +48,7 @@ T_8: (in 1<32> @ 1007100A : word32)
   Class: Eq_8
   DataType: word32
   OrigDataType: word32
-T_9: (in n + 1<32> @ 00000000 : word32)
+T_9: (in n + 1<32> @ 1007100A : word32)
   Class: Eq_9
   DataType: uint32
   OrigDataType: uint32

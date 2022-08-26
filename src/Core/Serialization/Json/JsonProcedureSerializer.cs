@@ -144,9 +144,9 @@ namespace Reko.Core.Serialization.Json
             }
             if (block.Statements.Count > 0)
             {
-                var linaddr = block.Statements[0].LinearAddress;
-                js.WriteKeyValue("linaddr", linaddr);
-                js.WriteKeyValue("stms", () => js.WriteList(block.Statements, stm => WriteStatement(stm, linaddr)));
+                var addr = block.Statements[0].Address;
+                js.WriteKeyValue("addr", addr.ToString());
+                js.WriteKeyValue("stms", () => js.WriteList(block.Statements, stm => WriteStatement(stm, addr)));
             }
             if (block.Succ.Count > 0)
             {
@@ -155,10 +155,10 @@ namespace Reko.Core.Serialization.Json
             js.EndObject();
         }
 
-        private void WriteStatement(Statement stm, ulong linAddrBlock)
+        private void WriteStatement(Statement stm, Address addrBlock)
         {
             w.Write("[");
-            js.Write(stm.LinearAddress - linAddrBlock);
+            js.Write(stm.Address - addrBlock);
             w.Write(',');
             stm.Instruction.Accept(this);
             w.Write("]");

@@ -47,7 +47,7 @@ namespace Reko.UnitTests.Decompiler.Evaluation
         {
             BinaryExpression b = m.IAdd(m.SMul(id, 4), id);
             Assignment ass = new Assignment(x, b);
-            Statement stm = new Statement(0, ass, null);
+            Statement stm = new Statement(Address.Ptr32(0), ass, null);
             ssaIds[id].Uses.Add(stm);
             ssaIds[id].Uses.Add(stm);
 

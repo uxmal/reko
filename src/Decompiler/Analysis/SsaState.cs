@@ -111,7 +111,7 @@ namespace Reko.Analysis
                 return sid;
             sid = Identifiers.Add(id, null, null, false);
             var stm = new Statement(
-                b.Address.ToLinear(),
+                b.Address,
                 new DefInstruction(id),
                 b);
             sid.DefStatement = stm;
@@ -303,7 +303,7 @@ namespace Reko.Analysis
             // Skip alias statements
             while (i < b.Statements.Count - 1 && b.Statements[i + 1].Instruction is AliasAssignment)
                 ++i;
-            var stm = new Statement(stmBefore.LinearAddress, ass, b);
+            var stm = new Statement(stmBefore.Address, ass, b);
             b.Statements.Insert(i + 1, stm);
 
             var sidTo = this.Identifiers.Add(ass.Dst, stm, ass.Src, false);

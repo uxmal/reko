@@ -76,7 +76,7 @@ namespace Reko.Core.Collections
         /// </returns>
         public ByteTrieMatch<T> NextMatch(ReadOnlySpan<byte> bytes)
         {
-            if (trie is null)
+            if (trie is null) // This can only be the Empty match.
                 return this;
             return trie.Match(bytes, this.Index + 1);
         }

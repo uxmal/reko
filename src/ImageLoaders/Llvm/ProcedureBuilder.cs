@@ -38,7 +38,7 @@ namespace Reko.ImageLoaders.LLVM
         private Block? lastBlock;
         private int tmpCounter;
         private Dictionary<string, Identifier> llvmNametoId;
-        private ulong linearAddress;
+        private Address address;
         private int stackOffset;
 
         public ProcedureBuilder(Procedure proc)
@@ -47,6 +47,7 @@ namespace Reko.ImageLoaders.LLVM
             this.labelMap = new Dictionary<string, Block>();
             this.deferredBlocks = new Dictionary<string, Block>();
             this.llvmNametoId = new Dictionary<string, Identifier>();
+            this.address = proc.EntryAddress;
         }
 
         public override Frame Frame
@@ -59,7 +60,9 @@ namespace Reko.ImageLoaders.LLVM
         public override Statement Emit(IrInstruction instr)
         {
             EnsureBlock(null);
-            return block!.Statements.Add(linearAddress++, instr);
+            var stm = block!.Statements.Add(address, instr);
+            this.address += 1;
+            return stm;
         }
 
         public override void Return()
@@ -100,8 +103,9 @@ namespace Reko.ImageLoaders.LLVM
             EnsureBlock(null);
             var trueBlock = BlockOf(labelTrue, true);
             var falseBlock = BlockOf(labelFalse, true);
-            var stm = new Statement(0, new Branch(expr, trueBlock), b);
+            var stm = new Statement(address, new Branch(expr, trueBlock), b);
             b.Statements.Add(stm);
+            address += 1;
             proc.ControlGraph.AddEdge(b, falseBlock);
             proc.ControlGraph.AddEdge(b, trueBlock);
         }

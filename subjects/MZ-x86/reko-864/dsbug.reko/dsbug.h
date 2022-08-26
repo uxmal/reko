@@ -5,39 +5,39 @@
 /*
 // Equivalence classes ////////////
 Eq_1: (struct "Globals")
-	globals_t (in globals @ 00000000 : (ptr32 (struct "Globals")))
+	globals_t (in globals : (ptr32 (struct "Globals")))
 Eq_2: (segment "seg0FF0_t" 0100)
-	T_2 (in seg0FF0 @ 0000FF00 : selector)
+	T_2 (in seg0FF0 @ 0FF0:0000 : selector)
 Eq_3: (segment "seg1000_t")
-	T_3 (in seg1000 @ 00010000 : selector)
+	T_3 (in seg1000 @ 1000:0000 : selector)
 Eq_4: (segment "seg1046_t" (60 uint16 theGlobal))
-	T_4 (in seg1046 @ 00010460 : selector)
+	T_4 (in seg1046 @ 1046:0000 : selector)
 // Type Variables ////////////
-globals_t: (in globals @ 00000000 : (ptr32 (struct "Globals")))
+globals_t: (in globals : (ptr32 (struct "Globals")))
   Class: Eq_1
   DataType: (ptr32 Eq_1)
   OrigDataType: (ptr32 (struct "Globals"))
-T_2: (in seg0FF0 @ 0000FF00 : selector)
+T_2: (in seg0FF0 @ 0FF0:0000 : selector)
   Class: Eq_2
   DataType: (ptr16 Eq_2)
   OrigDataType: (ptr16 (segment "seg0FF0_t" 0100))
-T_3: (in seg1000 @ 00010000 : selector)
+T_3: (in seg1000 @ 1000:0000 : selector)
   Class: Eq_3
   DataType: (ptr16 Eq_3)
   OrigDataType: (ptr16 (segment "seg1000_t"))
-T_4: (in seg1046 @ 00010460 : selector)
+T_4: (in seg1046 @ 1046:0000 : selector)
   Class: Eq_4
   DataType: (ptr16 Eq_4)
   OrigDataType: (ptr16 (segment "seg1046_t"))
-T_5: (in 0x1337<16> @ 00010007 : word16)
+T_5: (in 0x1337<16> @ 1000:0007 : word16)
   Class: Eq_5
   DataType: word16
   OrigDataType: word16
-T_6: (in 1046:0060 @ 00010007 : segptr32)
+T_6: (in 1046:0060 @ 1000:0007 : segptr32)
   Class: Eq_6
   DataType: (ptr32 word16)
   OrigDataType: (ptr32 (struct (0 T_7 t0000)))
-T_7: (in Mem5[1046:0060:word16] @ 00010007 : word16)
+T_7: (in Mem5[1046:0060:word16] @ 1000:0007 : word16)
   Class: Eq_5
   DataType: word16
   OrigDataType: word16

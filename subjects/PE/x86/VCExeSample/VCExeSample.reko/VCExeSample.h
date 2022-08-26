@@ -101,7 +101,7 @@ Eq_1: (struct "Globals"
 		(40302C uint32 dw40302C)
 		(403030 uint32 dw403030)
 		(403034 (ptr32 thiscall_class) gbl_thiscall))
-	globals_t (in globals @ 00000000 : (ptr32 (struct "Globals")))
+	globals_t (in globals : (ptr32 (struct "Globals")))
 Eq_5: (fn void ((ptr32 char), int32, (ptr32 char), real32))
 	T_5 (in test1 @ 00401018 : ptr32)
 	T_6 (in signature of test1 @ 00401030 : void)
@@ -109,7 +109,7 @@ Eq_5: (fn void ((ptr32 char), int32, (ptr32 char), real32))
 	T_44 (in test1 @ 0040109D : ptr32)
 Eq_20: (fn int32 ((ptr32 char), (ptr32 char), int32, (ptr32 char), real64))
 	T_20 (in printf @ 0040104D : ptr32)
-	T_21 (in signature of printf @ 00000000 : void)
+	T_21 (in signature of printf : void)
 Eq_51: cdecl_class
 	T_51 (in c @ 0040109D : (ptr32 Eq_51))
 Eq_52: cdecl_class
@@ -286,19 +286,19 @@ Eq_320: (struct "nested_structs_type" 0010 (0 int32 a) (4 Eq_319 str) (C int32 d
 Eq_321: (struct "struct_0" 0008 (0 int32 b) (4 int32 c))
 	T_321
 // Type Variables ////////////
-globals_t: (in globals @ 00000000 : (ptr32 (struct "Globals")))
+globals_t: (in globals : (ptr32 (struct "Globals")))
   Class: Eq_1
   DataType: (ptr32 Eq_1)
   OrigDataType: (ptr32 (struct "Globals"))
-T_2: (in eax @ 00000000 : int32)
+T_2: (in eax : int32)
   Class: Eq_2
   DataType: int32
   OrigDataType: int32
-T_3: (in argc @ 00000000 : int32)
+T_3: (in argc : int32)
   Class: Eq_3
   DataType: int32
   OrigDataType: int32
-T_4: (in argv @ 00000000 : (ptr32 (ptr32 char)))
+T_4: (in argv : (ptr32 (ptr32 char)))
   Class: Eq_4
   DataType: (ptr32 (ptr32 char))
   OrigDataType: (ptr32 (ptr32 char))
@@ -366,7 +366,7 @@ T_20: (in printf @ 0040104D : ptr32)
   Class: Eq_20
   DataType: (ptr32 Eq_20)
   OrigDataType: (ptr32 (fn T_33 (T_27, T_28, T_29, T_30, T_32)))
-T_21: (in signature of printf @ 00000000 : void)
+T_21: (in signature of printf : void)
   Class: Eq_20
   DataType: (ptr32 Eq_20)
   OrigDataType: 
@@ -454,7 +454,7 @@ T_42: (in 0<32> @ 00401085 : word32)
   Class: Eq_34
   DataType: word32
   OrigDataType: word32
-T_43: (in dwArg04 != 0<32> @ 00000000 : bool)
+T_43: (in dwArg04 != 0<32> @ 00401085 : bool)
   Class: Eq_43
   DataType: bool
   OrigDataType: bool
@@ -714,7 +714,7 @@ T_107: (in 1.0 @ 00401168 : real64)
   Class: Eq_106
   DataType: real64
   OrigDataType: real64
-T_108: (in rArg04 <= 1.0 @ 00000000 : bool)
+T_108: (in rArg04 <= 1.0 @ 00401168 : bool)
   Class: Eq_108
   DataType: bool
   OrigDataType: bool
@@ -870,7 +870,7 @@ T_146: (in Mem15[0x00402100<p32>:real64] @ 004011DB : real64)
   Class: Eq_132
   DataType: real64
   OrigDataType: real64
-T_147: (in 123.0 == rArg04 @ 00000000 : bool)
+T_147: (in 123.0 == rArg04 @ 004011DB : bool)
   Class: Eq_147
   DataType: bool
   OrigDataType: bool
@@ -910,7 +910,7 @@ T_156: (in Mem15[0x004020F8<p32>:real64] @ 004011EB : real64)
   Class: Eq_132
   DataType: real64
   OrigDataType: real64
-T_157: (in 321.0 <= rArg04 @ 00000000 : bool)
+T_157: (in 321.0 <= rArg04 @ 004011EB : bool)
   Class: Eq_157
   DataType: bool
   OrigDataType: bool
@@ -1022,7 +1022,7 @@ T_184: (in CONVERT(dwLoc08_65, word32, real64) @ 00401271 : real64)
   Class: Eq_183
   DataType: real64
   OrigDataType: real64
-T_185: (in gbl_thiscall->vtbl->modify_double(gbl_thiscall, dwLoc08_65, (real64) rArg04) <= (real64) dwLoc08_65 @ 00000000 : bool)
+T_185: (in gbl_thiscall->vtbl->modify_double(gbl_thiscall, dwLoc08_65, (real64) rArg04) <= (real64) dwLoc08_65 @ 00401271 : bool)
   Class: Eq_185
   DataType: bool
   OrigDataType: bool
@@ -1078,7 +1078,7 @@ T_198: (in 1<32> @ 00401245 : word32)
   Class: Eq_198
   DataType: word32
   OrigDataType: word32
-T_199: (in dwLoc08_65 + 1<32> @ 00000000 : word32)
+T_199: (in dwLoc08_65 + 1<32> @ 00401245 : word32)
   Class: Eq_170
   DataType: int32
   OrigDataType: int32
@@ -1106,7 +1106,7 @@ T_205: (in 0<32> @ 004012B2 : word32)
   Class: Eq_200
   DataType: word32
   OrigDataType: word32
-T_206: (in dwArg04 == 0<32> @ 00000000 : bool)
+T_206: (in dwArg04 == 0<32> @ 004012B2 : bool)
   Class: Eq_206
   DataType: bool
   OrigDataType: bool
@@ -1154,11 +1154,11 @@ T_217: (in 0x80000001<32> @ 004012E6 : word32)
   Class: Eq_217
   DataType: ui32
   OrigDataType: ui32
-T_218: (in dwLoc08_100 & 0x80000001<32> @ 00000000 : word32)
+T_218: (in dwLoc08_100 & 0x80000001<32> @ 004012E6 : word32)
   Class: Eq_216
   DataType: ui32
   OrigDataType: ui32
-T_219: (in dwLoc08_100 & 0x80000001<32> @ 00000000 : word32)
+T_219: (in dwLoc08_100 & 0x80000001<32> @ 004012EB : word32)
   Class: Eq_219
   DataType: int32
   OrigDataType: int32
@@ -1166,7 +1166,7 @@ T_220: (in 0<32> @ 004012EB : word32)
   Class: Eq_219
   DataType: int32
   OrigDataType: int32
-T_221: (in (dwLoc08_100 & 0x80000001<32>) >= 0<32> @ 00000000 : bool)
+T_221: (in (dwLoc08_100 & 0x80000001<32>) >= 0<32> @ 004012EB : bool)
   Class: Eq_221
   DataType: bool
   OrigDataType: bool
@@ -1174,11 +1174,11 @@ T_222: (in 0<32> @ 004012F4 : word32)
   Class: Eq_216
   DataType: ui32
   OrigDataType: word32
-T_223: (in eax_19 != 0<32> @ 00000000 : bool)
+T_223: (in eax_19 != 0<32> @ 004012F4 : bool)
   Class: Eq_223
   DataType: bool
   OrigDataType: bool
-T_224: (in dwLoc08_100 & 0x80000001<32> @ 00000000 : word32)
+T_224: (in dwLoc08_100 & 0x80000001<32> @ 004012F1 : word32)
   Class: Eq_224
   DataType: ui32
   OrigDataType: ui32
@@ -1186,7 +1186,7 @@ T_225: (in 1<32> @ 004012F1 : word32)
   Class: Eq_225
   DataType: ui32
   OrigDataType: ui32
-T_226: (in (dwLoc08_100 & 0x80000001<32>) - 1<32> @ 00000000 : word32)
+T_226: (in (dwLoc08_100 & 0x80000001<32>) - 1<32> @ 004012F1 : word32)
   Class: Eq_226
   DataType: ui32
   OrigDataType: ui32
@@ -1194,7 +1194,7 @@ T_227: (in 0xFFFFFFFE<32> @ 004012F1 : word32)
   Class: Eq_227
   DataType: ui32
   OrigDataType: ui32
-T_228: (in (dwLoc08_100 & 0x80000001<32>) - 1<32> | 0xFFFFFFFE<32> @ 00000000 : word32)
+T_228: (in (dwLoc08_100 & 0x80000001<32>) - 1<32> | 0xFFFFFFFE<32> @ 004012F1 : word32)
   Class: Eq_228
   DataType: ui32
   OrigDataType: ui32
@@ -1202,7 +1202,7 @@ T_229: (in 1<32> @ 004012F1 : word32)
   Class: Eq_229
   DataType: word32
   OrigDataType: word32
-T_230: (in ((dwLoc08_100 & 0x80000001<32>) - 1<32> | 0xFFFFFFFE<32>) + 1<32> @ 00000000 : word32)
+T_230: (in ((dwLoc08_100 & 0x80000001<32>) - 1<32> | 0xFFFFFFFE<32>) + 1<32> @ 004012F1 : word32)
   Class: Eq_216
   DataType: ui32
   OrigDataType: ui32
@@ -1238,7 +1238,7 @@ T_238: (in 1<32> @ 00401324 : word32)
   Class: Eq_238
   DataType: ui32
   OrigDataType: ui32
-T_239: (in dwLoc08_100 - 1<32> @ 00000000 : word32)
+T_239: (in dwLoc08_100 - 1<32> @ 00401324 : word32)
   Class: Eq_214
   DataType: int32
   OrigDataType: ui32
@@ -1246,7 +1246,7 @@ T_240: (in 0<32> @ 004012E1 : word32)
   Class: Eq_214
   DataType: int32
   OrigDataType: int32
-T_241: (in dwLoc08_100 <= 0<32> @ 00000000 : bool)
+T_241: (in dwLoc08_100 <= 0<32> @ 004012E1 : bool)
   Class: Eq_241
   DataType: bool
   OrigDataType: bool

@@ -42,7 +42,7 @@ namespace Reko.Evaluation
     public class ExpressionSimplifier : ExpressionVisitor<(Expression, bool)>
     {
         private readonly SegmentMap segmentMap;
-        private EvaluationContext ctx;
+        private readonly EvaluationContext ctx;
         private readonly ExpressionValueComparer cmp;
         private readonly ExpressionEmitter m;
         private readonly Unifier unifier;
@@ -1199,7 +1199,7 @@ namespace Reko.Evaluation
         private Expression? FuseAdjacentMemoryAccesses(DataType dt, Expression[] elems)
         {
             var (access, seg, ea, offset) = AsMemoryAccess(elems[0]);
-            if (access == null)
+            if (access is null)
                 return null;
             var fused = new List<Expression>();
             var offsetFused = offset;

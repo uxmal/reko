@@ -390,7 +390,7 @@ namespace Reko.Analysis
                 var sidWide = ssa.Identifiers.Add(idWide, null, null, false);
                 sidWide.DefStatement = ssa.Procedure.EntryBlock.Statements.Insert(
                     0,
-                    ssa.Procedure.EntryAddress.ToLinear(),
+                    ssa.Procedure.EntryAddress,
                     new DefInstruction(sidWide.Identifier));
                 sidWide.Uses.Add(this.Statement);
 
@@ -427,7 +427,7 @@ namespace Reko.Analysis
                 // of the basic block.
                 var stmPhi = sids[0].DefStatement!.Block.Statements.Insert(
                     0,
-                    sids[0].DefStatement!.LinearAddress,
+                    sids[0].DefStatement!.Address,
                     null!);
 
                 // Generate fused identifiers for all phi slots.
@@ -488,7 +488,7 @@ namespace Reko.Analysis
                     }
                 }
 
-                var stmPred = AddStatementToEndOfBlock(pred, sids[0].DefStatement!.LinearAddress, null!);
+                var stmPred = AddStatementToEndOfBlock(pred, sids[0].DefStatement!.Address, null!);
                 sidPred = ssa.Identifiers.Add(idWide, stmPred, null, false);
                 var phiArgs = phis.Select(p => p.Src.Arguments[iBlock].Value).ToArray();
                 stmPred.Instruction =
@@ -505,12 +505,12 @@ namespace Reko.Analysis
             }
 
             //$REFACTOR: move this to SsaState
-            private static Statement AddStatementToEndOfBlock(Block pred, ulong linearAddress, Instruction instr)
+            private static Statement AddStatementToEndOfBlock(Block pred, Address addr, Instruction instr)
             {
                 int i = pred.Statements.Count;
                 if (i > 0 && pred.Statements[i - 1].Instruction.IsControlFlow)
                     --i;
-                var stmPred = pred.Statements.Insert(i, linearAddress, instr);
+                var stmPred = pred.Statements.Insert(i, addr, instr);
                 return stmPred;
             }
 
@@ -551,7 +551,7 @@ namespace Reko.Analysis
                 {
                     var stmAss = block.Statements.Insert(
                         iStm,
-                        callStm.LinearAddress,
+                        callStm.Address,
                         new AliasAssignment(
                             s.Identifier,
                             new Slice(s.Identifier.DataType, sidDst.Identifier, idWide.Storage.OffsetOf(s.Identifier.Storage))));

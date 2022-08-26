@@ -384,12 +384,12 @@ namespace Reko.UnitTests.Decompiler.Typing
                 Architecture = arch,
                 Platform = new DefaultPlatform(sc, arch)
             };
-            store.EnsureExpressionTypeVariable(factory, 0, program.Globals);
+            store.EnsureExpressionTypeVariable(factory, null, program.Globals);
 
             Identifier ds = m.Local16("ds");
             Expression e = m.SegMem(PrimitiveType.Byte, ds, m.Word16(0x0200));
 
-            TraitCollector coll = new TraitCollector(factory, store, dtb, program);
+            var coll = new TraitCollector(factory, store, dtb, program);
             e = e.Accept(aen);
             e.Accept(eqb);
             e.Accept(coll);

@@ -79,7 +79,7 @@ namespace Reko.Scanning
             {
                 Statement = stm;
                 StatementNew = new Statement(
-                    stm.LinearAddress,
+                    stm.Address,
                     null!,
                     blockNew)
                 {

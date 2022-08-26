@@ -87,7 +87,7 @@ namespace Reko.Scanning
 			var st = new StructureType(proc.Name + "_frame_t", 0);
 			Identifier frame = proc.Frame.CreateTemporary(proc.Name + "_frame", st);
 			b.Statements.Add(
-                0,
+                proc.EntryAddress,
 				new Assignment(
 				proc.Frame.FramePointer,
 				new UnaryExpression(Operator.AddrOf, arch.FramePointerType, frame)));

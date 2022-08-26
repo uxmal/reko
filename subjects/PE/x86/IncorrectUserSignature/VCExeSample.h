@@ -85,9 +85,9 @@ Eq_1: (struct "Globals"
 		(4022A8 word32 dw4022A8)
 		(4022AC word32 dw4022AC)
 		(4022B0 word32 dw4022B0))
-	globals_t (in globals @ 00000000 : (ptr32 (struct "Globals")))
+	globals_t (in globals : (ptr32 (struct "Globals")))
 Eq_2: cdecl_class
-	T_2 (in c @ 00000000 : (ptr32 Eq_2))
+	T_2 (in c : (ptr32 Eq_2))
 Eq_5: cdecl_class
 	T_5 (in c @ 00401138 : (ptr32 cdecl_class))
 Eq_7: cdecl_class_vtbl
@@ -103,19 +103,19 @@ Eq_19: (struct "Eq_19" (4 (ptr32 Eq_22) ptr0004))
 Eq_22: (fn void ((ptr32 Eq_5), word32))
 	T_22 (in Mem37[Mem37[c + 0<32>:word32] + 4<i32>:word32] @ 00401150 : word32)
 // Type Variables ////////////
-globals_t: (in globals @ 00000000 : (ptr32 (struct "Globals")))
+globals_t: (in globals : (ptr32 (struct "Globals")))
   Class: Eq_1
   DataType: (ptr32 Eq_1)
   OrigDataType: (ptr32 (struct "Globals"))
-T_2: (in c @ 00000000 : (ptr32 Eq_2))
+T_2: (in c : (ptr32 Eq_2))
   Class: Eq_2
   DataType: (ptr32 Eq_2)
   OrigDataType: (ptr32 cdecl_class)
-T_3: (in a @ 00000000 : int32)
+T_3: (in a : int32)
   Class: Eq_3
   DataType: int32
   OrigDataType: int32
-T_4: (in b @ 00000000 : int32)
+T_4: (in b : int32)
   Class: Eq_4
   DataType: int32
   OrigDataType: int32

@@ -56,7 +56,7 @@ namespace Reko.CmdLine
 
         public ICodeLocation CreateStatementNavigator(Program program, Statement stm)
         {
-            return new NullCodeLocation(program.SegmentMap.MapLinearAddressToAddress(stm.LinearAddress).ToString());
+            return new NullCodeLocation(stm.Address.ToString());
         }
 
         public ICodeLocation CreateJumpTableNavigator(Program program, IProcessorArchitecture _, Address addrIndirectJump, Address addrVector, int stride)

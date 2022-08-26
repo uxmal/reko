@@ -132,7 +132,7 @@ namespace Reko.UnitTests.Mocks
         {
             var mock = new ProcedureBuilder(Program.Architecture, GuessName(userProc));
             mock.ProgramBuilder = this;
-            mock.LinearAddress = (uint)userProc.Address.ToLinear();
+            mock.addrCur = userProc.Address;
             testCodeBuilder(mock);
             Add(mock.Procedure, userProc);
             unresolvedProcedures.AddRange(mock.UnresolvedProcedures);

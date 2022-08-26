@@ -124,9 +124,9 @@ namespace Reko.Scanning
             /// satisifies the conditions Start <= addr < End.
             /// </summary>
             /// <param name="block"></param>
-            /// <param name="start">Linear start address of the block</param>
-            /// <param name="end">Linear address of the byte/word beyond the block's end.</param>
-            public BlockRange(Block block, ulong start, ulong end)
+            /// <param name="start">Start address of the block</param>
+            /// <param name="end">Address of the byte/word beyond the block's end.</param>
+            public BlockRange(Block block, Address start, Address end)
             {
                 this.Block = block ?? throw new ArgumentNullException(nameof(block));
                 this.Start = start;
@@ -135,8 +135,8 @@ namespace Reko.Scanning
             }
 
             public Block Block { get; }
-            public ulong Start { get; set; }
-            public ulong End { get; set; }
+            public Address Start { get; set; }
+            public Address End { get; set; }
 
             public override string ToString()
             {
@@ -159,11 +159,11 @@ namespace Reko.Scanning
             if (!blocks.TryGetUpperBound(addr, out var br))
             {
                 var lastMem = segmentMap.Segments.Values.Last().MemoryArea;
-                blocks.Add(addr, new BlockRange(b, addr.ToLinear(), lastMem.BaseAddress.ToLinear() + (uint)lastMem.Length));
+                blocks.Add(addr, new BlockRange(b, addr, lastMem.BaseAddress + lastMem.Length));
             }
             else
             {
-                blocks.Add(addr, new BlockRange(b, addr.ToLinear(), br.Start));
+                blocks.Add(addr, new BlockRange(b, addr, br.Start));
             }
             blockStarts.Add(b, addr);
             proc.ControlGraph.Blocks.Add(b);
@@ -194,8 +194,8 @@ namespace Reko.Scanning
         /// <param name="addr"></param>
         public void TerminateBlock(Block block, Address addr)
         {
-            if (blocks.TryGetLowerBound(addr, out var range) && range.Start < addr.ToLinear())
-                range.End = addr.ToLinear();
+            if (blocks.TryGetLowerBound(addr, out var range) && range.Start < addr)
+                range.End = addr;
             imageMap.TerminateItem(addr);
         }
 
@@ -464,15 +464,14 @@ namespace Reko.Scanning
             if (Program.User.BlockLabels.TryGetValue(blockName, out var userLabel))
                 callRetThunkBlock.UserLabel = userLabel;
 
-            var linFrom = addrFrom.ToLinear();
             var stmLast = callRetThunkBlock.Statements.Add(
-                linFrom,
+                addrFrom,
                 new CallInstruction(
                     new ProcedureConstant(Program.Platform.PointerType, procNew),
                     new CallSite(0, 0)));
             Program.CallGraph.AddEdge(stmLast, procNew);
 
-            callRetThunkBlock.Statements.Add(linFrom, new ReturnInstruction());
+            callRetThunkBlock.Statements.Add(addrFrom, new ReturnInstruction());
             procOld.ControlGraph.AddEdge(callRetThunkBlock, procOld.ExitBlock);
             if (procNew.Frame.ReturnAddressKnown)
             {
@@ -641,7 +640,7 @@ namespace Reko.Scanning
 
         public Block? FindContainingBlock(Address address)
         {
-            if (blocks.TryGetLowerBound(address, out var b) && address.ToLinear() < b.End)
+            if (blocks.TryGetLowerBound(address, out var b) && address < b.End)
             {
                 if (b.Block.Succ.Count == 0)
                     return b.Block;
@@ -769,13 +768,12 @@ namespace Reko.Scanning
                 graph.RemoveEdge(blockToSplit, succ);
             }
 
-            var linAddr = addr.ToLinear();
-            var stmsToMove = blockToSplit.Statements.FindAll(s => s.LinearAddress >= linAddr).ToArray();
+            var stmsToMove = blockToSplit.Statements.FindAll(s => s.Address >= addr).ToArray();
 
-            if (blockToSplit.Statements.Count > 0 && blockToSplit.Statements[^1].LinearAddress >= linAddr)
+            if (blockToSplit.Statements.Count > 0 && blockToSplit.Statements[^1].Address >= addr)
             {
                 graph.AddEdge(blockToSplit, blockNew);
-                blockToSplit.Statements.RemoveAll(s => s.LinearAddress >= linAddr);
+                blockToSplit.Statements.RemoveAll(s => s.Address >= addr);
             }
             blockNew.Statements.AddRange(stmsToMove);
             foreach (var stm in stmsToMove)
@@ -783,7 +781,7 @@ namespace Reko.Scanning
                 stm.Block = blockNew;
             }
             blocks[addr].End = blocks[blockStarts[blockToSplit]].End;
-            blocks[blockStarts[blockToSplit]].End = linAddr;
+            blocks[blockStarts[blockToSplit]].End = addr;
 			// Calling SanityCheck while scanning large binaries is very slow
 			// resulting in a O(n^2) performance.
        		//     SanityCheck(blocks);
@@ -941,7 +939,7 @@ namespace Reko.Scanning
 
             public override Statement Emit(Instruction instr)
             {
-                var stm = block.Statements.Insert(iStm, addr.ToLinear(), instr);
+                var stm = block.Statements.Insert(iStm, addr, instr);
                 ++iStm;
                 return stm;
             }

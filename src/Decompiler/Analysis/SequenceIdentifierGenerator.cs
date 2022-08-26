@@ -65,7 +65,7 @@ namespace Reko.Analysis
                 .Select(u => ClassifyStore(u))
                 .Where(u => u != null);
             var grps = from u in stores
-                       orderby u.Statement.LinearAddress
+                       orderby u.Statement.Address
                        group u by u.Statement.Block;
             foreach (var grp in grps)
             {
@@ -206,7 +206,7 @@ namespace Reko.Analysis
             if (!ssa.Identifiers.TryGetValue(idSeq, out SsaIdentifier? sidSeq))
             {
                 var b = ssa.Procedure.EntryBlock;
-                var def = b.Statements.Add(b.Address.ToLinear(), null!);    //$REFACTOR this to SsaState.AddDefineStatement
+                var def = b.Statements.Add(b.Address, null!);    //$REFACTOR this to SsaState.AddDefineStatement
                 sidSeq = ssa.Identifiers.Add(idSeq, null, null, false);
                 sidSeq.DefStatement = def;
                 def.Instruction = new DefInstruction(sidSeq.Identifier);

@@ -141,7 +141,7 @@ namespace Reko.UnitTests.Decompiler.Analysis
 
         private void Given_ExitBlockStatement(Identifier id)
         {
-            proc.ExitBlock.Statements.Add(0x10020, new UseInstruction(id));
+            proc.ExitBlock.Statements.Add(Address.Ptr32(0x10020), new UseInstruction(id));
         }
 
         private SsaState Given_Procedure(

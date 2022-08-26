@@ -38,11 +38,19 @@ namespace Reko.Core
         {
         }
 
-        public static Address Create(DataType size, ulong bitPattern)
+        /// <summary>
+        /// Create a linear <see cref="Address"/> of the type <paramref name="dtAddress"/>
+        /// from the raw bit pattern <paramref name="bitPattern"/>.
+        /// </summary>
+        /// <param name="dtAddress"></param>
+        /// <param name="bitPattern"></param>
+        /// <returns></returns>
+        /// <exception cref="ArgumentException"></exception>
+        public static Address Create(DataType dtAddress, ulong bitPattern)
         {
-            switch (size.BitSize)
+            switch (dtAddress.BitSize)
             {
-            default: throw new ArgumentException(nameof(size));
+            default: throw new ArgumentException(nameof(dtAddress));
             case 16: return Ptr16((ushort)bitPattern);
             case 32: return Ptr32((uint)bitPattern);
             case 64: return Ptr64(bitPattern);

@@ -61,7 +61,7 @@ namespace Reko.Typing
         {
             // Special case for the global variables. In essence,
             // a memory map of all the globals.
-			var tvGlobals = store.EnsureExpressionTypeVariable(factory, 0, program.Globals, "globals_t");
+			var tvGlobals = store.EnsureExpressionTypeVariable(factory, null, program.Globals, "globals_t");
             tvGlobals.OriginalDataType = program.Globals.DataType;
 
             EnsureSegmentTypeVariables(program.SegmentMap.Segments.Values
@@ -92,7 +92,7 @@ namespace Reko.Typing
                 if (selector.HasValue)
                 {
                     segment.Identifier!.TypeVariable = null;
-                    var tvSelector = store.EnsureExpressionTypeVariable(factory, segment.Address.ToLinear(), segment.Identifier);
+                    var tvSelector = store.EnsureExpressionTypeVariable(factory, segment.Address, segment.Identifier);
                     this.segTypevars[selector.Value] = tvSelector;
                     tvSelector.OriginalDataType = factory.CreatePointer(
                         segment.Fields,
@@ -118,10 +118,7 @@ namespace Reko.Typing
 
         public TypeVariable EnsureTypeVariable(Expression e)
 		{
-            var uAddr = stmCur != null
-                ? stmCur.LinearAddress
-                : 0;
-            var tv = store.EnsureExpressionTypeVariable(factory, uAddr, e);
+            var tv = store.EnsureExpressionTypeVariable(factory, stmCur?.Address, e);
             var typeref = e.DataType.ResolveAs<TypeReference>();
             if (typeref != null)
             {
@@ -315,7 +312,7 @@ namespace Reko.Typing
             {
                 if (signature.ReturnValue.TypeVariable == null)
                 {
-                    trace.Warn("Eqb: {0:X}: Type variable for return value of signature of {1} is missing", stmCur!.LinearAddress, stmCur.Block.Procedure.Name);
+                    trace.Warn("Eqb: {0:X}: Type variable for return value of signature of {1} is missing", stmCur!.Address, stmCur.Block.Procedure.Name);
                     return;
                 }
                 store.MergeClasses(
@@ -363,13 +360,13 @@ namespace Reko.Typing
 		{
 			if (proc.Signature.TypeVariable == null)
 			{
-                var uAddr = (proc is Procedure userProc)
-                    ? userProc.EntryAddress.ToLinear()
-                    : 0;
+                var addr = (proc is Procedure userProc)
+                    ? userProc.EntryAddress
+                    : null;
 
 				proc.Signature.TypeVariable = store.EnsureExpressionTypeVariable(
 					factory,
-                    uAddr,
+                    addr,
                     new Identifier("signature of " + proc.Name, VoidType.Instance, null!),
 					null);
 			}

@@ -65,9 +65,9 @@ Eq_1: (struct "Globals"
 		(40511C (ptr32 code) __imp____wargv_default_expand)
 		(405120 (ptr32 code) __imp___memcpy)
 		(405124 (ptr32 code) __imp___printf))
-	globals_t (in globals @ 00000000 : (ptr32 (struct "Globals")))
+	globals_t (in globals : (ptr32 (struct "Globals")))
 Eq_2: (struct "Eq_2" (0 word32 dw0000) (4 (ptr32 void) ptr0004))
-	T_2 (in dwArg04 @ 00000000 : (ptr32 Eq_2))
+	T_2 (in dwArg04 : (ptr32 Eq_2))
 	T_5 (in dwArg04 @ 00401071 : (ptr32 Eq_2))
 	T_73 (in &tLoc0C @ 004011CE : (ptr32 (struct (0 T_4 t0000) (4 T_7 t0004))))
 Eq_3: (fn void ((ptr32 Eq_2)))
@@ -83,7 +83,7 @@ Eq_12: (fn Eq_11 (uint32))
 	T_12 (in __CRTL_TLS_GetValue @ 0040111A : ptr32)
 Eq_19: (fn Eq_28 (Eq_21, Eq_22, Eq_11))
 	T_19 (in HeapFree @ 0040112C : ptr32)
-	T_20 (in signature of HeapFree @ 00000000 : void)
+	T_20 (in signature of HeapFree : void)
 Eq_21: HANDLE
 	T_21 (in hHeap @ 0040112C : HANDLE)
 	T_26 (in GetProcessHeap() @ 0040112C : HANDLE)
@@ -92,7 +92,7 @@ Eq_22: DWORD
 	T_27 (in 8<32> @ 0040112C : word32)
 Eq_24: (fn Eq_21 ())
 	T_24 (in GetProcessHeap @ 0040112C : ptr32)
-	T_25 (in signature of GetProcessHeap @ 00000000 : void)
+	T_25 (in signature of GetProcessHeap : void)
 Eq_28: BOOL
 	T_28 (in HeapFree(GetProcessHeap(), 8<32>, eax_11) @ 0040112C : BOOL)
 Eq_29: (fn void (uint32))
@@ -101,12 +101,12 @@ Eq_35: (segment "Eq_35" (2C (ptr32 (arr word32)) ptr002C))
 	T_35 (in fs @ 00401158 : (ptr16 Eq_35))
 Eq_46: (fn int32 ((ptr32 char)))
 	T_46 (in printf @ 00401170 : ptr32)
-	T_47 (in signature of printf @ 00000000 : void)
+	T_47 (in signature of printf : void)
 Eq_53: (struct "Eq_53" (0 word32 dw0000) (4 (ptr32 void) ptr0004))
 	T_53 (in tLoc0C @ 004011B0 : Eq_53)
 Eq_57: (fn (ptr32 void) ((ptr32 void), (ptr32 void), Eq_61))
 	T_57 (in memcpy @ 004011E9 : ptr32)
-	T_58 (in signature of memcpy @ 00000000 : void)
+	T_58 (in signature of memcpy : void)
 Eq_61: size_t
 	T_61 (in _Size @ 004011E9 : size_t)
 	T_65 (in 0x9C<32> @ 004011E9 : word32)
@@ -116,15 +116,15 @@ Eq_62: (fn (ptr32 void) ())
 	T_79 (in fn00401158 @ 0040120E : ptr32)
 Eq_67: (fn void ())
 	T_67 (in _InitTermAndUnexPtrs @ 004011F1 : ptr32)
-	T_68 (in signature of _InitTermAndUnexPtrs @ 00000000 : void)
+	T_68 (in signature of _InitTermAndUnexPtrs : void)
 Eq_75: (struct "Eq_75" (0 word32 dw0000) (4 (ptr32 void) ptr0004))
 	T_75 (in &tLoc0C @ 004011D4 : (ptr32 (struct (0 T_4 t0000) (4 T_7 t0004))))
 // Type Variables ////////////
-globals_t: (in globals @ 00000000 : (ptr32 (struct "Globals")))
+globals_t: (in globals : (ptr32 (struct "Globals")))
   Class: Eq_1
   DataType: (ptr32 Eq_1)
   OrigDataType: (ptr32 (struct "Globals"))
-T_2: (in dwArg04 @ 00000000 : (ptr32 Eq_2))
+T_2: (in dwArg04 : (ptr32 Eq_2))
   Class: Eq_2
   DataType: (ptr32 Eq_2)
   OrigDataType: word32
@@ -156,7 +156,7 @@ T_9: (in 0<32> @ 00401112 : word32)
   Class: Eq_8
   DataType: uint32
   OrigDataType: up32
-T_10: (in g_dw40208B < 0<32> @ 00000000 : bool)
+T_10: (in g_dw40208B < 0<32> @ 00401112 : bool)
   Class: Eq_10
   DataType: bool
   OrigDataType: bool
@@ -168,7 +168,7 @@ T_12: (in __CRTL_TLS_GetValue @ 0040111A : ptr32)
   Class: Eq_12
   DataType: (ptr32 Eq_12)
   OrigDataType: (ptr32 (fn T_16 (T_15)))
-T_13: (in signature of __CRTL_TLS_GetValue @ 00000000 : void)
+T_13: (in signature of __CRTL_TLS_GetValue : void)
   Class: Eq_13
   DataType: Eq_13
   OrigDataType: 
@@ -188,7 +188,7 @@ T_17: (in 0<32> @ 00401121 : word32)
   Class: Eq_11
   DataType: Eq_11
   OrigDataType: word32
-T_18: (in eax_11 == null @ 00000000 : bool)
+T_18: (in eax_11 == null @ 00401121 : bool)
   Class: Eq_18
   DataType: bool
   OrigDataType: bool
@@ -196,7 +196,7 @@ T_19: (in HeapFree @ 0040112C : ptr32)
   Class: Eq_19
   DataType: (ptr32 Eq_19)
   OrigDataType: (ptr32 (fn T_28 (T_26, T_27, T_11)))
-T_20: (in signature of HeapFree @ 00000000 : void)
+T_20: (in signature of HeapFree : void)
   Class: Eq_19
   DataType: (ptr32 Eq_19)
   OrigDataType: 
@@ -216,7 +216,7 @@ T_24: (in GetProcessHeap @ 0040112C : ptr32)
   Class: Eq_24
   DataType: (ptr32 Eq_24)
   OrigDataType: (ptr32 (fn T_26 ()))
-T_25: (in signature of GetProcessHeap @ 00000000 : void)
+T_25: (in signature of GetProcessHeap : void)
   Class: Eq_24
   DataType: (ptr32 Eq_24)
   OrigDataType: 
@@ -236,7 +236,7 @@ T_29: (in __CRTL_TLS_ExitThread @ 00401137 : ptr32)
   Class: Eq_29
   DataType: (ptr32 Eq_29)
   OrigDataType: (ptr32 (fn T_33 (T_32)))
-T_30: (in signature of __CRTL_TLS_ExitThread @ 00000000 : void)
+T_30: (in signature of __CRTL_TLS_ExitThread : void)
   Class: Eq_30
   DataType: Eq_30
   OrigDataType: 
@@ -280,7 +280,7 @@ T_40: (in 4<32> @ 00401166 : word32)
   Class: Eq_40
   DataType: ui32
   OrigDataType: ui32
-T_41: (in g_dw40208B * 4<32> @ 00000000 : word32)
+T_41: (in g_dw40208B * 4<32> @ 00401166 : word32)
   Class: Eq_41
   DataType: ui32
   OrigDataType: ui32
@@ -304,7 +304,7 @@ T_46: (in printf @ 00401170 : ptr32)
   Class: Eq_46
   DataType: (ptr32 Eq_46)
   OrigDataType: (ptr32 (fn T_50 (T_49)))
-T_47: (in signature of printf @ 00000000 : void)
+T_47: (in signature of printf : void)
   Class: Eq_46
   DataType: (ptr32 Eq_46)
   OrigDataType: 
@@ -340,7 +340,7 @@ T_55: (in 0<32> @ 004011C4 : word32)
   Class: Eq_7
   DataType: (ptr32 void)
   OrigDataType: word32
-T_56: (in dwArg04 != null @ 00000000 : bool)
+T_56: (in dwArg04 != null @ 004011C4 : bool)
   Class: Eq_56
   DataType: bool
   OrigDataType: bool
@@ -348,7 +348,7 @@ T_57: (in memcpy @ 004011E9 : ptr32)
   Class: Eq_57
   DataType: (ptr32 Eq_57)
   OrigDataType: (ptr32 (fn T_66 (T_64, T_54, T_65)))
-T_58: (in signature of memcpy @ 00000000 : void)
+T_58: (in signature of memcpy : void)
   Class: Eq_57
   DataType: (ptr32 Eq_57)
   OrigDataType: 
@@ -388,7 +388,7 @@ T_67: (in _InitTermAndUnexPtrs @ 004011F1 : ptr32)
   Class: Eq_67
   DataType: (ptr32 Eq_67)
   OrigDataType: (ptr32 (fn T_69 ()))
-T_68: (in signature of _InitTermAndUnexPtrs @ 00000000 : void)
+T_68: (in signature of _InitTermAndUnexPtrs : void)
   Class: Eq_67
   DataType: (ptr32 Eq_67)
   OrigDataType: 
@@ -400,7 +400,7 @@ T_70: (in 0<32> @ 004011C8 : word32)
   Class: Eq_7
   DataType: (ptr32 void)
   OrigDataType: word32
-T_71: (in dwArg04 != null @ 00000000 : bool)
+T_71: (in dwArg04 != null @ 004011C8 : bool)
   Class: Eq_71
   DataType: bool
   OrigDataType: bool

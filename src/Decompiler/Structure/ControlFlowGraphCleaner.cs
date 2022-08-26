@@ -80,7 +80,7 @@ namespace Reko.Structure
             block.Statements.Remove(branch);
             if (CriticalInstruction.IsCritical(condition))
             {
-                var linearAddr = branch.LinearAddress;
+                var linearAddr = branch.Address;
                 block.Statements.Add(linearAddr, new SideEffect(condition));
             }
             proc.ControlGraph.RemoveEdge(block, block.Succ[0]);

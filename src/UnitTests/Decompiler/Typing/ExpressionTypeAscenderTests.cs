@@ -79,7 +79,7 @@ namespace Reko.UnitTests.Decompiler.Typing
         private void RunTest(Expression e, string outputFileName)
         {
             var globals = new Identifier("globals", PrimitiveType.Ptr32, RegisterStorage.None);
-            store.EnsureExpressionTypeVariable(factory, 0, globals, "globals_t");
+            store.EnsureExpressionTypeVariable(factory, null, globals, "globals_t");
             var eq = new EquivalenceClassBuilder(factory, store, new FakeDecompilerEventListener());
             e.Accept(eq);
 

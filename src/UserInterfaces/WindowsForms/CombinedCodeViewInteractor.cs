@@ -90,8 +90,7 @@ namespace Reko.UserInterfaces.WindowsForms
             ProgramChanged();
             if (program != null)
             {
-                var addr = program.SegmentMap.MapLinearAddressToAddress(stm.LinearAddress);
-                SelectedAddress = addr;
+                SelectedAddress = stm.Address;
             }
         }
 

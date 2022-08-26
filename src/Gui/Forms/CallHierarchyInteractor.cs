@@ -215,7 +215,7 @@ namespace Reko.Gui.Forms
             {
                 base.Initialize(obj);
                 var proc = stm.Block.Procedure;
-                var offset = stm.LinearAddress - proc.EntryAddress.ToLinear();
+                var offset = stm.Address - proc.EntryAddress;
                 this.TreeNode!.Text = string.Format("{0}+{1} {2}", proc, offset, stm.Instruction);
             }
 

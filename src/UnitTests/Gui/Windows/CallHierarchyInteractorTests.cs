@@ -57,10 +57,10 @@ namespace Reko.UnitTests.Gui.Windows
             this.proc1 = new Procedure(arch.Object, "proc1", Address.Ptr32(0x00123400), new Frame(arch.Object, PrimitiveType.Ptr32));
             this.proc2 = new Procedure(arch.Object, "proc2", Address.Ptr32(0x00123500), new Frame(arch.Object, PrimitiveType.Ptr32));
             this.proc3 = new Procedure(arch.Object, "proc3", Address.Ptr32(0x00123600), new Frame(arch.Object, PrimitiveType.Ptr32));
-            var stm1 = proc1.EntryBlock.Statements.Add(proc1.EntryAddress.ToLinear(), new CallInstruction(
+            var stm1 = proc1.EntryBlock.Statements.Add(proc1.EntryAddress, new CallInstruction(
                 new ProcedureConstant(PrimitiveType.Ptr32, proc2),
                 new CallSite(0, 0)));
-            var stm2 = proc2.EntryBlock.Statements.Add(proc2.EntryAddress.ToLinear(), new CallInstruction(
+            var stm2 = proc2.EntryBlock.Statements.Add(proc2.EntryAddress, new CallInstruction(
                 new ProcedureConstant(PrimitiveType.Ptr32, proc3),
                 new CallSite(0, 0)));
 

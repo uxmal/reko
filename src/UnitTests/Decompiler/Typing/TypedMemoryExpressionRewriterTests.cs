@@ -63,7 +63,7 @@ namespace Reko.UnitTests.Decompiler.Typing
 
         private Expression CreateTv(Expression e)
         {
-            store.EnsureExpressionTypeVariable(factory, 0, e);
+            store.EnsureExpressionTypeVariable(factory, null, e);
             e.TypeVariable.DataType = e.DataType;
             e.TypeVariable.OriginalDataType = e.DataType;
             return e;
@@ -71,7 +71,7 @@ namespace Reko.UnitTests.Decompiler.Typing
 
         private TypeVariable CreateTv(Expression e, DataType dt, DataType dtOrig)
         {
-            store.EnsureExpressionTypeVariable(factory, 0, e);
+            store.EnsureExpressionTypeVariable(factory, null, e);
             e.TypeVariable.DataType = dt;
             e.TypeVariable.OriginalDataType = dtOrig;
             return e.TypeVariable;
@@ -92,7 +92,7 @@ namespace Reko.UnitTests.Decompiler.Typing
 		public void Tmer_PointerToSecondItemOfPoint()
 		{
 			Identifier ptr = new Identifier("ptr", PrimitiveType.Word32, null);
-			store.EnsureExpressionTypeVariable(factory, 0, ptr);
+			store.EnsureExpressionTypeVariable(factory, null, ptr);
 			EquivalenceClass eqPtr = new EquivalenceClass(ptr.TypeVariable);
 			eqPtr.DataType = point;
 			ptr.TypeVariable.OriginalDataType = new Pointer(point, 32);

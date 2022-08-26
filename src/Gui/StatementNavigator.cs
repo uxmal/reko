@@ -41,7 +41,7 @@ namespace Reko.Gui
             this.program = program;
             this.Statement = stm;
             this.services = services;
-            this.Text = program.SegmentMap.MapLinearAddressToAddress(stm.LinearAddress).ToString();
+            this.Text = stm.Address.ToString();
         }
 
         public Statement Statement { get; private set; }

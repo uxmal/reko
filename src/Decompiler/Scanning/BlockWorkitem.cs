@@ -1111,12 +1111,12 @@ namespace Reko.Scanning
 
         private void Emit(Instruction instruction)
         {
-            blockCur!.Statements.Add(ric!.Address.ToLinear(), instruction);
+            blockCur!.Statements.Add(ric!.Address, instruction);
         }
 
         private void Emit(Instruction instruction, Block block)
         {
-            block.Statements.Add(ric!.Address.ToLinear(), instruction);
+            block.Statements.Add(ric!.Address, instruction);
         }
 
         private Block FallthroughBlock(Address addrSrc, Procedure proc, Address fallthruAddress)

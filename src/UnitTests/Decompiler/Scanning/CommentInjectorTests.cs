@@ -50,6 +50,7 @@ namespace Reko.UnitTests.Decompiler.Scanning
                 }
             };
             this.m = new ProcedureBuilder();
+            m.addrCur = Address.Ptr32(0);
         }
 
         private void Given_Comment(uint linAddress, string text)

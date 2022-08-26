@@ -183,7 +183,7 @@ namespace Reko.Core
 			int i = 0;
 			foreach (Statement s in Statements)
 			{
-                f.Begin(s.LinearAddress);
+                f.Begin(s.Address);
 				s.Instruction.Accept(cf);
 				++i;
 			}

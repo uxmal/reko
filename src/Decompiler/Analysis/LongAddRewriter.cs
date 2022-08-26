@@ -137,7 +137,7 @@ namespace Reko.Analysis
             var right = CreateWideExpression(loCandidate.Right, hiCandidate.Right, totalSize);
             this.dst = CreateWideExpression(loCandidate.Dst, hiCandidate.Dst, totalSize);
             var stmts = hiCandidate.Statement!.Block.Statements;
-            var linAddr = hiCandidate.Statement.LinearAddress;
+            var linAddr = hiCandidate.Statement.Address;
             var iStm = FindInsertPosition(loCandidate, hiCandidate, stmts);
             Statement? stmMkLeft = null;
             if (left is Identifier)

@@ -308,7 +308,7 @@ namespace Reko.UnitTests.Decompiler.Analysis
         private ExpressionSimplifier CreatePropagatorWithDummyStatement()
         {
             var ctx = new SsaEvaluationContext(arch.Object, m.Ssa.Identifiers, dynamicLinker.Object);
-            ctx.Statement = new Statement(0, new SideEffect(Constant.Word32(32)), null);
+            ctx.Statement = new Statement(Address.Ptr32(0), new SideEffect(Constant.Word32(32)), null);
             return new ExpressionSimplifier(segmentMap, ctx, listener);
         }
 

@@ -92,7 +92,7 @@ Eq_1: (struct "Globals"
 		(40229C word32 dw40229C)
 		(4022A0 word32 dw4022A0)
 		(403018 (ptr32 Eq_75) ptr403018))
-	globals_t (in globals @ 00000000 : (ptr32 (struct "Globals")))
+	globals_t (in globals : (ptr32 (struct "Globals")))
 Eq_5: (struct "Eq_5" (0 int32 dw0000) (8 real64 r0008))
 	T_5 (in tLoc2C @ 00401000 : Eq_5)
 Eq_6: (struct "Eq_6" (0 int32 dw0000) (8 real64 r0008))
@@ -122,7 +122,7 @@ Eq_37: (struct "Eq_37" (0 int32 dw0000) (8 real64 r0008))
 	T_37 (in &tLoc2C @ 00401035 : (ptr32 (struct (0 T_32 t0000) (8 T_36 t0008))))
 Eq_50: (fn int32 ((ptr32 char), int32, real64, int32, real64))
 	T_50 (in printf @ 00401070 : ptr32)
-	T_51 (in signature of printf @ 00000000 : void)
+	T_51 (in signature of printf : void)
 Eq_58: (struct "Eq_58" (0 int32 dw0000) (8 real64 r0008))
 	T_58 (in &tLoc2C @ 00401070 : (ptr32 (struct (0 T_32 t0000) (8 T_36 t0008))))
 Eq_62: (struct "Eq_62" (0 int32 dw0000) (8 real64 r0008))
@@ -142,25 +142,25 @@ Eq_85: (struct "Eq_85" (0 int32 dw0000) (8 real64 r0008))
 	T_85 (in &tLoc1C @ 0040108E : (ptr32 (struct (0 T_44 t0000) (8 T_52 t0008))))
 Eq_102: (fn int32 ((ptr32 char), int32, real64))
 	T_102 (in printf @ 004010BE : ptr32)
-	T_103 (in signature of printf @ 00000000 : void)
+	T_103 (in signature of printf : void)
 Eq_107: (struct "Eq_107" (0 int32 dw0000) (8 real64 r0008))
 	T_107 (in &tLoc1C @ 004010BE : (ptr32 (struct (0 T_44 t0000) (8 T_52 t0008))))
 Eq_111: (struct "Eq_111" (0 int32 dw0000) (8 real64 r0008))
 	T_111 (in &tLoc1C @ 004010BE : (ptr32 (struct (0 T_44 t0000) (8 T_52 t0008))))
 // Type Variables ////////////
-globals_t: (in globals @ 00000000 : (ptr32 (struct "Globals")))
+globals_t: (in globals : (ptr32 (struct "Globals")))
   Class: Eq_1
   DataType: (ptr32 Eq_1)
   OrigDataType: (ptr32 (struct "Globals"))
-T_2: (in eax @ 00000000 : int32)
+T_2: (in eax : int32)
   Class: Eq_2
   DataType: int32
   OrigDataType: int32
-T_3: (in argc @ 00000000 : int32)
+T_3: (in argc : int32)
   Class: Eq_3
   DataType: int32
   OrigDataType: int32
-T_4: (in argv @ 00000000 : (ptr32 (ptr32 char)))
+T_4: (in argv : (ptr32 (ptr32 char)))
   Class: Eq_4
   DataType: (ptr32 (ptr32 char))
   OrigDataType: (ptr32 (ptr32 char))
@@ -348,7 +348,7 @@ T_50: (in printf @ 00401070 : ptr32)
   Class: Eq_50
   DataType: (ptr32 Eq_50)
   OrigDataType: (ptr32 (fn T_74 (T_57, T_61, T_65, T_69, T_73)))
-T_51: (in signature of printf @ 00000000 : void)
+T_51: (in signature of printf : void)
   Class: Eq_50
   DataType: (ptr32 Eq_50)
   OrigDataType: 
@@ -556,7 +556,7 @@ T_102: (in printf @ 004010BE : ptr32)
   Class: Eq_102
   DataType: (ptr32 Eq_102)
   OrigDataType: (ptr32 (fn T_115 (T_106, T_110, T_114)))
-T_103: (in signature of printf @ 00000000 : void)
+T_103: (in signature of printf : void)
   Class: Eq_102
   DataType: (ptr32 Eq_102)
   OrigDataType: 
@@ -644,7 +644,7 @@ T_124: (in Mem6[dwArg08 + 0<32>:word32] @ 004010DD : word32)
   Class: Eq_7
   DataType: int32
   OrigDataType: int32
-T_125: (in dwArg04->dw0000 >= dwArg08->dw0000 @ 00000000 : bool)
+T_125: (in dwArg04->dw0000 >= dwArg08->dw0000 @ 004010DD : bool)
   Class: Eq_125
   DataType: bool
   OrigDataType: bool
@@ -672,7 +672,7 @@ T_131: (in Mem6[dwArg08 + 0<32>:word32] @ 004010EE : word32)
   Class: Eq_7
   DataType: int32
   OrigDataType: int32
-T_132: (in dwArg04->dw0000 >= dwArg08->dw0000 @ 00000000 : bool)
+T_132: (in dwArg04->dw0000 >= dwArg08->dw0000 @ 004010EE : bool)
   Class: Eq_132
   DataType: bool
   OrigDataType: bool
@@ -700,7 +700,7 @@ T_138: (in Mem6[dwArg04 + 8<i32>:real64] @ 00401101 : real64)
   Class: Eq_12
   DataType: real64
   OrigDataType: real64
-T_139: (in dwArg08->r0008 <= dwArg04->r0008 @ 00000000 : bool)
+T_139: (in dwArg08->r0008 <= dwArg04->r0008 @ 00401101 : bool)
   Class: Eq_139
   DataType: bool
   OrigDataType: bool

@@ -275,7 +275,7 @@ Please report this issue at https://github.com/uxmal/reko";
         {
             var block = stmBefore.Block;
             var iPos = block.Statements.IndexOf(stmBefore);
-            var linAddr = stmBefore.LinearAddress;
+            var linAddr = stmBefore.Address;
             return block.Statements.Insert(iPos, linAddr, instr);
         }
 

@@ -94,21 +94,21 @@ namespace Reko.UnitTests.Decompiler.Evaluation
 
             var coll = new SsaIdentifierCollection();
             var src = Constant.Word32(1);
-            foo = coll.Add(foo, new Statement(0, new Assignment(foo, src), null), src, false).Identifier;
-            foo64 = coll.Add(foo64, new Statement(0, new Assignment(foo64, Constant.Word64(1)), null), src, false).Identifier;
+            foo = coll.Add(foo, new Statement(Address.Ptr32(0), new Assignment(foo, src), null), src, false).Identifier;
+            foo64 = coll.Add(foo64, new Statement(Address.Ptr32(0), new Assignment(foo64, Constant.Word64(1)), null), src, false).Identifier;
             return coll;
         }
 
         private Identifier Given_Tmp(string name, DataType dt)
         {
             var tmp = m.Procedure.Frame.CreateTemporary(name, dt);
-            return ssaIds.Add(tmp, new Statement(0, new DefInstruction(tmp), null), null, false).Identifier;
+            return ssaIds.Add(tmp, new Statement(Address.Ptr32(0), new DefInstruction(tmp), null), null, false).Identifier;
         }
 
         private Identifier Given_Tmp(string name, Expression defExpr)
         {
             var tmp = m.Procedure.Frame.CreateTemporary(name, defExpr.DataType);
-            return ssaIds.Add(tmp, new Statement(0, new Assignment(tmp, defExpr), null), defExpr, false).Identifier;
+            return ssaIds.Add(tmp, new Statement(Address.Ptr32(0), new Assignment(tmp, defExpr), null), defExpr, false).Identifier;
         }
 
         private void AssertChanged(string expected, (Expression, bool) result)

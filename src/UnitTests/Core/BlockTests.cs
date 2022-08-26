@@ -36,11 +36,13 @@ namespace Reko.UnitTests.Core
 			using (FileUnitTester fut = new FileUnitTester("Core/BlockCreateStatements.txt"))
 			{
 				Block bl = new Block(null, null, "block0");
-				bl.Statements.Add(0,
+				bl.Statements.Add(
+                    Address.Ptr32(0),
 					new Assignment(
 					new Identifier("id3", PrimitiveType.Word16, null),
 					new Identifier("id4", PrimitiveType.Word16, null)));
-				bl.Statements.Add(4,
+				bl.Statements.Add(
+                    Address.Ptr32(4),
 					new Assignment(
 					new Identifier("id4", PrimitiveType.Word16, null),
 					Constant.Word16(3)));

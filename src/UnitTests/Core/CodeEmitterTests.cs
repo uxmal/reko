@@ -92,7 +92,7 @@ namespace Reko.UnitTests.Core
 
             public override Statement Emit(Instruction instr)
             {
-                return new Statement(0, instr, block);
+                return new Statement(Address.Ptr32(0), instr, block);
             }
 
             public override Frame Frame

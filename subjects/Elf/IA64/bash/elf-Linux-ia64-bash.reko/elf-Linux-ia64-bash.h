@@ -72,9 +72,9 @@ Eq_1: (struct "Globals"
 		(AFA0 word64 list_optarg)
 		(AFB0 word64 loptend)
 		(AFC0 word64 glob_error_return))
-	globals_t (in globals @ 00000000 : (ptr64 (struct "Globals")))
+	globals_t (in globals : (ptr64 (struct "Globals")))
 // Type Variables ////////////
-globals_t: (in globals @ 00000000 : (ptr64 (struct "Globals")))
+globals_t: (in globals : (ptr64 (struct "Globals")))
   Class: Eq_1
   DataType: (ptr64 Eq_1)
   OrigDataType: (ptr64 (struct "Globals"))

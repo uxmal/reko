@@ -45,13 +45,13 @@ namespace Reko.Core.Types
     public class TypeStore : ITypeStore
     {
         private readonly SortedList<int, EquivalenceClass> usedClasses;
-        private readonly Dictionary<TypeVariable, (ulong uAddr, Expression e)> tvSources;
+        private readonly Dictionary<TypeVariable, (Address? uAddr, Expression e)> tvSources;
 
         public TypeStore()
         {
             TypeVariables = new List<TypeVariable>();
             usedClasses = new SortedList<int, EquivalenceClass>();
-            tvSources = new Dictionary<TypeVariable, (ulong,Expression)>();
+            tvSources = new Dictionary<TypeVariable, (Address?,Expression)>();
             SegmentTypes = new Dictionary<ImageSegment, StructureType>();
         }
 
@@ -62,9 +62,9 @@ namespace Reko.Core.Types
 
         public Dictionary<ImageSegment, StructureType> SegmentTypes { get; private set; }
 
-        public TypeVariable EnsureExpressionTypeVariable(TypeFactory factory, ulong uAddr, Expression e)
+        public TypeVariable EnsureExpressionTypeVariable(TypeFactory factory, Address? addr, Expression e)
         {
-            return EnsureExpressionTypeVariable(factory, uAddr, e, null);
+            return EnsureExpressionTypeVariable(factory, addr, e, null);
         }
 
         //$TODO: pass dt and dtOriginal
@@ -77,13 +77,13 @@ namespace Reko.Core.Types
             return tv;
         }
 
-        public TypeVariable EnsureExpressionTypeVariable(TypeFactory factory, ulong uAddr, Expression e, string? name)
+        public TypeVariable EnsureExpressionTypeVariable(TypeFactory factory, Address? addr, Expression e, string? name)
         {
             if (e != null && e.TypeVariable != null)
                 return e.TypeVariable;
 
             TypeVariable tv = name != null ? factory.CreateTypeVariable(name) : factory.CreateTypeVariable();
-            AddDebugSource(tv, uAddr, e!);
+            AddDebugSource(tv, addr, e!);
             tv.Class = new EquivalenceClass(tv);
             if (e != null)
                 e.TypeVariable = tv;
@@ -92,12 +92,12 @@ namespace Reko.Core.Types
             return tv;
         }
 
-        public void SetTypeVariableExpression(TypeVariable typeVariable, ulong uAddr, Expression binExp)
+        public void SetTypeVariableExpression(TypeVariable typeVariable, Address? addr, Expression binExp)
         {
-            tvSources[typeVariable] = (uAddr, binExp);
+            tvSources[typeVariable] = (addr, binExp);
         }
 
-        private void AddDebugSource(TypeVariable tv, ulong uAddr, Expression e)
+        private void AddDebugSource(TypeVariable tv, Address? uAddr, Expression e)
         {
             if (e != null)
                 tvSources.Add(tv, (uAddr, e));
@@ -142,15 +142,15 @@ namespace Reko.Core.Types
 
         public Expression? ExpressionOf(TypeVariable tv)
         {
-            if (tvSources.TryGetValue(tv, out (ulong, Expression) dbg))
+            if (tvSources.TryGetValue(tv, out (Address?, Expression) dbg))
                 return dbg.Item2;
             else
                 return null;
         }
 
-        public ulong? LinearAddressOf(TypeVariable tv)
+        public Address? AddressOf(TypeVariable tv)
         {
-            if (tvSources.TryGetValue(tv, out (ulong, Expression) dbg))
+            if (tvSources.TryGetValue(tv, out (Address?, Expression) dbg))
                 return dbg.Item1;
             else
                 return null;
@@ -217,14 +217,15 @@ namespace Reko.Core.Types
 
         public void WriteExpressionOf(TypeVariable tvMember, bool showExprAddresses, Formatter writer)
         {
-            if (tvSources.TryGetValue(tvMember, out (ulong uAddr, Expression e) dbg) && dbg.e != null)
+            if (tvSources.TryGetValue(tvMember, out (Address? addr, Expression e) dbg) && 
+                dbg.e is { })
             {
                 writer.Write(" (in {0}", dbg.e);
-                if (showExprAddresses)
-                {
-                    writer.Write(" @ {0:X8}", dbg.uAddr);
+                if (showExprAddresses && dbg.addr is { })
+                { 
+                    writer.Write(" @ {0}", dbg.addr);
                 }
-                if (dbg.e.DataType != null)
+                if (dbg.e.DataType is { })
                 {
                     writer.Write(" : ");
                     writer.Write(dbg.e.DataType);

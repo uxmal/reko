@@ -258,7 +258,7 @@ namespace Reko.Typing
             else if (binOp == Operator.Shr)
                 binOp = Operator.Sar;
             binExp = new BinaryExpression(binOp, binExp.DataType, left, right) { TypeVariable = binExp.TypeVariable };
-            program.TypeStore.SetTypeVariableExpression(binExp.TypeVariable!, 0, binExp);
+            program.TypeStore.SetTypeVariableExpression(binExp.TypeVariable!, stmCur?.Address, binExp);
             return binExp;
         }
 
@@ -377,10 +377,7 @@ namespace Reko.Typing
         {
             var uNew = base.VisitUnaryExpression(unary);
             uNew.TypeVariable = unary.TypeVariable;
-            ulong uAddr = stmCur != null
-                ? stmCur.LinearAddress
-                : 0;
-            program.TypeStore.SetTypeVariableExpression(unary.TypeVariable!, uAddr, uNew);
+            program.TypeStore.SetTypeVariableExpression(unary.TypeVariable!, stmCur?.Address, uNew);
             return uNew;
         }
     }

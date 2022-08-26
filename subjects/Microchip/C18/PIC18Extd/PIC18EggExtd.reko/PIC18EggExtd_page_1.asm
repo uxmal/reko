@@ -7,7 +7,7 @@ fn00000000 proc
 
 ;; fn00000E: 00000E
 ;;   Called from:
-;;     00000144 (in fn00000000)
+;;     000144 (in fn00000000)
 fn00000E proc
 	MOVLW	0x06
 	MOVWF	TBLPTRL,ACCESS

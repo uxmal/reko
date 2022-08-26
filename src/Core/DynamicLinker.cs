@@ -291,7 +291,7 @@ namespace Reko.Core
 
         public Expression? ResolveToImportedValue(Statement stm, Constant c)
         {
-            var addrInstruction = program.SegmentMap.MapLinearAddressToAddress(stm.LinearAddress);
+            var addrInstruction = stm.Address;
             var addrImportThunk = program.Platform.MakeAddressFromConstant(c, true);
             if (addrImportThunk is null)
                 return null;
