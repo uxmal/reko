@@ -30,85 +30,85 @@ namespace Reko.Arch.Alpha
 {
     public static class Registers
     {
-        public static readonly RegisterStorage r0 = new RegisterStorage("r0", 0, 0, PrimitiveType.Word64);
-        public static readonly RegisterStorage r1 = new RegisterStorage("r1", 1, 0, PrimitiveType.Word64);
-        public static readonly RegisterStorage r2 = new RegisterStorage("r2", 2, 0, PrimitiveType.Word64);
-        public static readonly RegisterStorage r3 = new RegisterStorage("r3", 3, 0, PrimitiveType.Word64);
+        public static readonly RegisterStorage r0 = RegisterStorage.Reg64("r0", 0);
+        public static readonly RegisterStorage r1 = RegisterStorage.Reg64("r1", 1);
+        public static readonly RegisterStorage r2 = RegisterStorage.Reg64("r2", 2);
+        public static readonly RegisterStorage r3 = RegisterStorage.Reg64("r3", 3);
 
-        public static readonly RegisterStorage r4 = new RegisterStorage("r4", 4, 0, PrimitiveType.Word64);
-        public static readonly RegisterStorage r5 = new RegisterStorage("r5", 5, 0, PrimitiveType.Word64);
-        public static readonly RegisterStorage r6 = new RegisterStorage("r6", 6, 0, PrimitiveType.Word64);
-        public static readonly RegisterStorage r7 = new RegisterStorage("r7", 7, 0, PrimitiveType.Word64);
+        public static readonly RegisterStorage r4 = RegisterStorage.Reg64("r4", 4);
+        public static readonly RegisterStorage r5 = RegisterStorage.Reg64("r5", 5);
+        public static readonly RegisterStorage r6 = RegisterStorage.Reg64("r6", 6);
+        public static readonly RegisterStorage r7 = RegisterStorage.Reg64("r7", 7);
 
-        public static readonly RegisterStorage r8 = new RegisterStorage("r8", 8, 0, PrimitiveType.Word64);
-        public static readonly RegisterStorage r9 = new RegisterStorage("r9", 9, 0, PrimitiveType.Word64);
-        public static readonly RegisterStorage r10 = new RegisterStorage("r10", 10, 0, PrimitiveType.Word64);
-        public static readonly RegisterStorage r11 = new RegisterStorage("r11", 11, 0, PrimitiveType.Word64);
+        public static readonly RegisterStorage r8 = RegisterStorage.Reg64("r8", 8);
+        public static readonly RegisterStorage r9 = RegisterStorage.Reg64("r9", 9);
+        public static readonly RegisterStorage r10 = RegisterStorage.Reg64("r10", 10);
+        public static readonly RegisterStorage r11 = RegisterStorage.Reg64("r11", 11);
 
-        public static readonly RegisterStorage r12 = new RegisterStorage("r12", 12, 0, PrimitiveType.Word64);
-        public static readonly RegisterStorage r13 = new RegisterStorage("r13", 13, 0, PrimitiveType.Word64);
-        public static readonly RegisterStorage r14 = new RegisterStorage("r14", 14, 0, PrimitiveType.Word64);
-        public static readonly RegisterStorage r15 = new RegisterStorage("r15", 15, 0, PrimitiveType.Word64);
+        public static readonly RegisterStorage r12 = RegisterStorage.Reg64("r12", 12);
+        public static readonly RegisterStorage r13 = RegisterStorage.Reg64("r13", 13);
+        public static readonly RegisterStorage r14 = RegisterStorage.Reg64("r14", 14);
+        public static readonly RegisterStorage r15 = RegisterStorage.Reg64("r15", 15);
 
-        public static readonly RegisterStorage r16 = new RegisterStorage("r16", 16, 0, PrimitiveType.Word64);
-        public static readonly RegisterStorage r17 = new RegisterStorage("r17", 17, 0, PrimitiveType.Word64);
-        public static readonly RegisterStorage r18 = new RegisterStorage("r18", 18, 0, PrimitiveType.Word64);
-        public static readonly RegisterStorage r19 = new RegisterStorage("r19", 19, 0, PrimitiveType.Word64);
+        public static readonly RegisterStorage r16 = RegisterStorage.Reg64("r16", 16);
+        public static readonly RegisterStorage r17 = RegisterStorage.Reg64("r17", 17);
+        public static readonly RegisterStorage r18 = RegisterStorage.Reg64("r18", 18);
+        public static readonly RegisterStorage r19 = RegisterStorage.Reg64("r19", 19);
 
-        public static readonly RegisterStorage r20 = new RegisterStorage("r20", 20, 0, PrimitiveType.Word64);
-        public static readonly RegisterStorage r21 = new RegisterStorage("r21", 21, 0, PrimitiveType.Word64);
-        public static readonly RegisterStorage r22 = new RegisterStorage("r22", 22, 0, PrimitiveType.Word64);
-        public static readonly RegisterStorage r23 = new RegisterStorage("r23", 23, 0, PrimitiveType.Word64);
+        public static readonly RegisterStorage r20 = RegisterStorage.Reg64("r20", 20);
+        public static readonly RegisterStorage r21 = RegisterStorage.Reg64("r21", 21);
+        public static readonly RegisterStorage r22 = RegisterStorage.Reg64("r22", 22);
+        public static readonly RegisterStorage r23 = RegisterStorage.Reg64("r23", 23);
 
-        public static readonly RegisterStorage r24 = new RegisterStorage("r24", 24, 0, PrimitiveType.Word64);
-        public static readonly RegisterStorage r25 = new RegisterStorage("r25", 25, 0, PrimitiveType.Word64);
-        public static readonly RegisterStorage r26 = new RegisterStorage("r26", 26, 0, PrimitiveType.Word64);
-        public static readonly RegisterStorage r27 = new RegisterStorage("r27", 27, 0, PrimitiveType.Word64);
+        public static readonly RegisterStorage r24 = RegisterStorage.Reg64("r24", 24);
+        public static readonly RegisterStorage r25 = RegisterStorage.Reg64("r25", 25);
+        public static readonly RegisterStorage r26 = RegisterStorage.Reg64("r26", 26);
+        public static readonly RegisterStorage r27 = RegisterStorage.Reg64("r27", 27);
 
-        public static readonly RegisterStorage r28 = new RegisterStorage("r28", 28, 0, PrimitiveType.Word64);
-        public static readonly RegisterStorage r29 = new RegisterStorage("r29", 29, 0, PrimitiveType.Word64);
-        public static readonly RegisterStorage r30 = new RegisterStorage("r30", 30, 0, PrimitiveType.Word64);
-        public static readonly RegisterStorage zero = new RegisterStorage("zero", 31, 0, PrimitiveType.Word64);
+        public static readonly RegisterStorage r28 = RegisterStorage.Reg64("r28", 28);
+        public static readonly RegisterStorage r29 = RegisterStorage.Reg64("r29", 29);
+        public static readonly RegisterStorage r30 = RegisterStorage.Reg64("r30", 30);
+        public static readonly RegisterStorage zero = RegisterStorage.Reg64("zero", 31);
 
-        public static readonly RegisterStorage f0 = new RegisterStorage("f0", 32, 0, PrimitiveType.Word64);
-        public static readonly RegisterStorage f1 = new RegisterStorage("f1", 33, 0, PrimitiveType.Word64);
-        public static readonly RegisterStorage f2 = new RegisterStorage("f2", 34, 0, PrimitiveType.Word64);
-        public static readonly RegisterStorage f3 = new RegisterStorage("f3", 35, 0, PrimitiveType.Word64);
+        public static readonly RegisterStorage f0 = RegisterStorage.Reg64("f0", 32);
+        public static readonly RegisterStorage f1 = RegisterStorage.Reg64("f1", 33);
+        public static readonly RegisterStorage f2 = RegisterStorage.Reg64("f2", 34);
+        public static readonly RegisterStorage f3 = RegisterStorage.Reg64("f3", 35);
 
-        public static readonly RegisterStorage f4 = new RegisterStorage("f4", 36, 0, PrimitiveType.Word64);
-        public static readonly RegisterStorage f5 = new RegisterStorage("f5", 37, 0, PrimitiveType.Word64);
-        public static readonly RegisterStorage f6 = new RegisterStorage("f6", 38, 0, PrimitiveType.Word64);
-        public static readonly RegisterStorage f7 = new RegisterStorage("f7", 39, 0, PrimitiveType.Word64);
+        public static readonly RegisterStorage f4 = RegisterStorage.Reg64("f4", 36);
+        public static readonly RegisterStorage f5 = RegisterStorage.Reg64("f5", 37);
+        public static readonly RegisterStorage f6 = RegisterStorage.Reg64("f6", 38);
+        public static readonly RegisterStorage f7 = RegisterStorage.Reg64("f7", 39);
 
-        public static readonly RegisterStorage f8 = new RegisterStorage("f8", 40, 0, PrimitiveType.Word64);
-        public static readonly RegisterStorage f9 = new RegisterStorage("f9", 41, 0, PrimitiveType.Word64);
-        public static readonly RegisterStorage f10 = new RegisterStorage("f10", 42, 0, PrimitiveType.Word64);
-        public static readonly RegisterStorage f11 = new RegisterStorage("f11", 43, 0, PrimitiveType.Word64);
+        public static readonly RegisterStorage f8 = RegisterStorage.Reg64("f8", 40);
+        public static readonly RegisterStorage f9 = RegisterStorage.Reg64("f9", 41);
+        public static readonly RegisterStorage f10 = RegisterStorage.Reg64("f10", 42);
+        public static readonly RegisterStorage f11 = RegisterStorage.Reg64("f11", 43);
 
-        public static readonly RegisterStorage f12 = new RegisterStorage("f12", 44, 0, PrimitiveType.Word64);
-        public static readonly RegisterStorage f13 = new RegisterStorage("f13", 45, 0, PrimitiveType.Word64);
-        public static readonly RegisterStorage f14 = new RegisterStorage("f14", 46, 0, PrimitiveType.Word64);
-        public static readonly RegisterStorage f15 = new RegisterStorage("f15", 47, 0, PrimitiveType.Word64);
+        public static readonly RegisterStorage f12 = RegisterStorage.Reg64("f12", 44);
+        public static readonly RegisterStorage f13 = RegisterStorage.Reg64("f13", 45);
+        public static readonly RegisterStorage f14 = RegisterStorage.Reg64("f14", 46);
+        public static readonly RegisterStorage f15 = RegisterStorage.Reg64("f15", 47);
 
-        public static readonly RegisterStorage f16 = new RegisterStorage("f16", 48, 0, PrimitiveType.Word64);
-        public static readonly RegisterStorage f17 = new RegisterStorage("f17", 49, 0, PrimitiveType.Word64);
-        public static readonly RegisterStorage f18 = new RegisterStorage("f18", 50, 0, PrimitiveType.Word64);
-        public static readonly RegisterStorage f19 = new RegisterStorage("f19", 51, 0, PrimitiveType.Word64);
+        public static readonly RegisterStorage f16 = RegisterStorage.Reg64("f16", 48);
+        public static readonly RegisterStorage f17 = RegisterStorage.Reg64("f17", 49);
+        public static readonly RegisterStorage f18 = RegisterStorage.Reg64("f18", 50);
+        public static readonly RegisterStorage f19 = RegisterStorage.Reg64("f19", 51);
 
-        public static readonly RegisterStorage f20 = new RegisterStorage("f20", 52, 0, PrimitiveType.Word64);
-        public static readonly RegisterStorage f21 = new RegisterStorage("f21", 53, 0, PrimitiveType.Word64);
-        public static readonly RegisterStorage f22 = new RegisterStorage("f22", 54, 0, PrimitiveType.Word64);
-        public static readonly RegisterStorage f23 = new RegisterStorage("f23", 55, 0, PrimitiveType.Word64);
+        public static readonly RegisterStorage f20 = RegisterStorage.Reg64("f20", 52);
+        public static readonly RegisterStorage f21 = RegisterStorage.Reg64("f21", 53);
+        public static readonly RegisterStorage f22 = RegisterStorage.Reg64("f22", 54);
+        public static readonly RegisterStorage f23 = RegisterStorage.Reg64("f23", 55);
 
-        public static readonly RegisterStorage f24 = new RegisterStorage("f24", 56, 0, PrimitiveType.Word64);
-        public static readonly RegisterStorage f25 = new RegisterStorage("f25", 57, 0, PrimitiveType.Word64);
-        public static readonly RegisterStorage f26 = new RegisterStorage("f26", 58, 0, PrimitiveType.Word64);
-        public static readonly RegisterStorage f27 = new RegisterStorage("f27", 59, 0, PrimitiveType.Word64);
+        public static readonly RegisterStorage f24 = RegisterStorage.Reg64("f24", 56);
+        public static readonly RegisterStorage f25 = RegisterStorage.Reg64("f25", 57);
+        public static readonly RegisterStorage f26 = RegisterStorage.Reg64("f26", 58);
+        public static readonly RegisterStorage f27 = RegisterStorage.Reg64("f27", 59);
 
-        public static readonly RegisterStorage f28 = new RegisterStorage("f28", 60, 0, PrimitiveType.Word64);
-        public static readonly RegisterStorage f29 = new RegisterStorage("f29", 61, 0, PrimitiveType.Word64);
-        public static readonly RegisterStorage f30 = new RegisterStorage("f30", 62, 0, PrimitiveType.Word64);
-        public static readonly RegisterStorage f31 = new RegisterStorage("f31", 63, 0, PrimitiveType.Word64);
+        public static readonly RegisterStorage f28 = RegisterStorage.Reg64("f28", 60);
+        public static readonly RegisterStorage f29 = RegisterStorage.Reg64("f29", 61);
+        public static readonly RegisterStorage f30 = RegisterStorage.Reg64("f30", 62);
+        public static readonly RegisterStorage f31 = RegisterStorage.Reg64("f31", 63);
 
 
         public static readonly Dictionary<string, RegisterStorage> AllRegisters;

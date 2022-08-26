@@ -81,7 +81,7 @@ namespace Reko.Arch.PowerPC
             this.fpscr = new RegisterStorage("fpscr", 0x4B, 0, wordWidth);
 
             this.cr = new RegisterStorage("cr", 0x4C, 0, wordWidth);
-            this.acc = new RegisterStorage("acc", 0x4D, 0, PrimitiveType.Word64);
+            this.acc = RegisterStorage.Reg64("acc", 0x4D);
 
             // gp regs   0..1F
             // fpu regs 20..3F
@@ -121,8 +121,8 @@ namespace Reko.Arch.PowerPC
             {
                 { 8, new RegisterStorage("lr", 0x0100 + 8, 0, PointerType) },
                 { 9, new RegisterStorage("ctr", 0x0100 + 9, 0, WordWidth) },
-                { 26, new RegisterStorage("srr0", 0x0100 + 26, 0, PrimitiveType.Word32) },
-                { 27, new RegisterStorage("srr1", 0x0100 + 27, 0, PrimitiveType.Word32) },
+                { 26, RegisterStorage.Reg32("srr0", 0x0100 + 26) },
+                { 27, RegisterStorage.Reg32("srr1", 0x0100 + 27) },
             };
 
             //$REVIEW: using R1 as the stack register is a _convention_. It 

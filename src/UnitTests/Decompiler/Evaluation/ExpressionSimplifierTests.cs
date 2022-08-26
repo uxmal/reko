@@ -86,9 +86,9 @@ namespace Reko.UnitTests.Decompiler.Evaluation
 
         private SsaIdentifierCollection BuildSsaIdentifiers()
         {
-            var mrFoo = new RegisterStorage("foo", 1, 0, PrimitiveType.Word32);
-            var mrFoo64 = new RegisterStorage("foo64", 2, 0, PrimitiveType.Word64);
-            var mrBar = new RegisterStorage("bar", 3, 0, PrimitiveType.Word32);
+            var mrFoo = RegisterStorage.Reg32("foo", 1);
+            var mrFoo64 = RegisterStorage.Reg64("foo64", 2);
+            var mrBar = RegisterStorage.Reg32("bar", 3);
             foo = new Identifier(mrFoo.Name, mrFoo.DataType, mrFoo);
             foo64 = new Identifier(mrFoo64.Name, mrFoo64.DataType, mrFoo64);
 
@@ -658,8 +658,8 @@ namespace Reko.UnitTests.Decompiler.Evaluation
         public void Exs_Rol_rol()
         {
             Given_ExpressionSimplifier();
-            var r0 = new RegisterStorage("r0", 0, 0, PrimitiveType.Word32);
-            var r1 = new RegisterStorage("r1", 0, 0, PrimitiveType.Word32);
+            var r0 = RegisterStorage.Reg32("r0", 0);
+            var r1 = RegisterStorage.Reg32("r1", 0);
             var rol = CommonOps.Rol.MakeInstance(r0.DataType, r1.DataType);
             var (exp, _) = m.Fn(rol, m.Fn(rol, foo, m.Word32(1)), m.Word32(1)).Accept(simplifier);
             Assert.AreEqual("__rol<word32,word32>(foo_1, 2<32>)", exp.ToString());
@@ -669,8 +669,8 @@ namespace Reko.UnitTests.Decompiler.Evaluation
         public void Exs_Ror_ror()
         {
             Given_ExpressionSimplifier();
-            var r0 = new RegisterStorage("r0", 0, 0, PrimitiveType.Word32);
-            var r1 = new RegisterStorage("r1", 0, 0, PrimitiveType.Word32);
+            var r0 = RegisterStorage.Reg32("r0", 0);
+            var r1 = RegisterStorage.Reg32("r1", 0);
             var ror = CommonOps.Ror.MakeInstance(r0.DataType, r1.DataType);
             var (expr, _) = m.Fn(ror, m.Fn(ror, foo, m.Word32(2)), m.Word32(1)).Accept(simplifier);
             Assert.AreEqual("__ror<word32,word32>(foo_1, 3<32>)", expr.ToString());

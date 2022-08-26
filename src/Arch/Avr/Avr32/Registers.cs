@@ -34,9 +34,9 @@ namespace Reko.Arch.Avr.Avr32
         {
             var factory = new StorageFactory();
             var regs = factory.RangeOfReg32(16, "r{0}");
-            regs[13] = new RegisterStorage("sp", regs[13].Number, 0, PrimitiveType.Word32);
-            regs[14] = new RegisterStorage("lr", regs[14].Number, 0, PrimitiveType.Word32);
-            regs[15] = new RegisterStorage("pc", regs[15].Number, 0, PrimitiveType.Word32);
+            regs[13] = RegisterStorage.Reg32("sp", regs[13].Number);
+            regs[14] = RegisterStorage.Reg32("lr", regs[14].Number);
+            regs[15] = RegisterStorage.Reg32("pc", regs[15].Number);
             GpRegisters = regs;
             RegistersByName = regs.ToDictionary(r => r.Name);
             sp = regs[13];

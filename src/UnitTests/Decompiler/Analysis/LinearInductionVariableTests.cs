@@ -54,7 +54,7 @@ namespace Reko.UnitTests.Decompiler.Analysis
 		private List<SsaIdentifier> BuildScc()
 		{
             var m = new ProcedureBuilder("test");
-			Identifier a = new Identifier("a", PrimitiveType.Word32, new RegisterStorage("a", 1, 0, PrimitiveType.Word32));
+			Identifier a = new Identifier("a", PrimitiveType.Word32, RegisterStorage.Reg32("a", 1));
             m.Label("b1");
             m.Assign(a, Constant.Word32(0));
             m.Label("b2");

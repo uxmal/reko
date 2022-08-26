@@ -43,7 +43,7 @@ namespace Reko.UnitTests.Environments.Windows
             var arch = new Mock<IProcessorArchitecture>();
             var instrs = new List<RtlInstructionCluster>();
             var frame = new Frame(arch.Object, PrimitiveType.Ptr32);
-            var r9 = frame.EnsureRegister(new RegisterStorage("r9", 9, 0, PrimitiveType.Word32));
+            var r9 = frame.EnsureRegister(RegisterStorage.Reg32("r9", 9));
             var rtl = new RtlTrace(0x123460)
             {
                 m => m.Assign(r9, 0x00030000),

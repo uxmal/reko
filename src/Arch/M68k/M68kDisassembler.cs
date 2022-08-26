@@ -489,7 +489,7 @@ namespace Reko.Arch.M68k
 
         private RegisterStorage get_ctrl_reg(string regName, uint number)
         {
-            return new RegisterStorage(regName, (int)number, 0, PrimitiveType.Word16);
+            return RegisterStorage.Reg16(regName, (int)number);
         }
 
         private DoubleRegisterOperand get_double_data_reg(uint d1, uint d2)
@@ -1294,11 +1294,9 @@ namespace Reko.Arch.M68k
         private static bool d68040_cinv(uint uInstr, M68kDisassembler dasm)
         {
             dasm.LIMIT_CPU_TYPES(uInstr, M68040_PLUS);
-            var cache = new RegisterStorage(
+            var cache = RegisterStorage.Reg32(
                 g_caches[(uInstr >> 6) & 3],
-                0,
-                0,
-                PrimitiveType.Word32);
+                0);
             if (cache.Name == "")
                 return false;
             dasm.iclass = InstrClass.Linear | InstrClass.Privileged;

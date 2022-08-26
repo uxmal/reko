@@ -189,8 +189,8 @@ ProcedureBuilder_exit:
             #endregion
             RunTest(sExp, m =>
             {
-                var _r1 = new RegisterStorage("r1", 1, 0, PrimitiveType.Word32);
-                var _r2 = new RegisterStorage("r2", 2, 0, PrimitiveType.Word32);
+                var _r1 = RegisterStorage.Reg32("r1", 1);
+                var _r2 = RegisterStorage.Reg32("r2", 2);
                 var foo = Given_Procedure_With_Flow(m,
                     "foo",
                     new Storage[] { _r1 }, 

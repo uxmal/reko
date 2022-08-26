@@ -55,10 +55,10 @@ namespace Reko.UnitTests.Decompiler.Analysis
             this.eventListener = new Mock<DecompilerEventListener>();
             this.pb = new ProgramBuilder();
             this.ssaStates = new List<SsaState>();
-            this.regA = new RegisterStorage("regA", 0x1234, 0, PrimitiveType.Word32);
-            this.regB = new RegisterStorage("regB", 0x5678, 0, PrimitiveType.Word32);
-            this.lowA = new RegisterStorage("lowA", 0x1234, 0, PrimitiveType.Byte);
-            this.psw = new RegisterStorage("psw", 0x4242, 0, PrimitiveType.Word32);
+            this.regA = RegisterStorage.Reg32("regA", 0x1234);
+            this.regB = RegisterStorage.Reg32("regB", 0x5678);
+            this.lowA = RegisterStorage.Reg8("lowA", 0x1234);
+            this.psw = RegisterStorage.Reg32("psw", 0x4242);
             this.C = new FlagGroupStorage(psw, 0b01, "C", PrimitiveType.Bool);
         }
 
@@ -138,7 +138,7 @@ namespace Reko.UnitTests.Decompiler.Analysis
         public void Uvr_Simple()
         {
             var pb = new ProgramBuilder();
-            var _r1 = new RegisterStorage("r1", 1, 0, PrimitiveType.Word32);
+            var _r1 = RegisterStorage.Reg32("r1", 1);
 
             pb.Add("main", m =>
             {

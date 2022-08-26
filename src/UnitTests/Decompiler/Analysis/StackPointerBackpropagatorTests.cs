@@ -210,8 +210,8 @@ Spbp_TwoExits_exit:
             var sp_6 = m.Reg("sp_6", sp);
             var sp_7 = m.Reg("sp_7", sp);
             var sp_8 = m.Reg("sp_8", sp);
-            var a = m.Reg("a", new RegisterStorage("a", 1, 0, PrimitiveType.Word32));
-            var b = m.Reg("b", new RegisterStorage("b", 2, 0, PrimitiveType.Word32));
+            var a = m.Reg("a", RegisterStorage.Reg32("a", 1));
+            var b = m.Reg("b", RegisterStorage.Reg32("b", 2));
             var a_1 = m.Reg("a_1", (RegisterStorage) a.Storage);
             var b_1 = m.Reg("b_1", (RegisterStorage) b.Storage);
             m.AddDefToEntryBlock(fp);

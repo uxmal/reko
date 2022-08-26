@@ -30,16 +30,16 @@ namespace Reko.Arch.M6800.M6812
 {
     public static class Registers
     {
-        public static RegisterStorage d = new RegisterStorage("d", 0, 0, PrimitiveType.Word16);
-        public static RegisterStorage a = new RegisterStorage("a", 0, 8, PrimitiveType.Byte);
-        public static RegisterStorage b = new RegisterStorage("b", 0, 0, PrimitiveType.Byte);
+        public static RegisterStorage d = RegisterStorage.Reg16("d", 0);
+        public static RegisterStorage a = RegisterStorage.Reg8("a", 0, 8);
+        public static RegisterStorage b = RegisterStorage.Reg8("b", 0);
 
-        public static RegisterStorage x = new RegisterStorage("x", 1, 0, PrimitiveType.Word16);
-        public static RegisterStorage y = new RegisterStorage("y", 2, 0, PrimitiveType.Word16);
-        public static RegisterStorage sp = new RegisterStorage("sp", 3, 0, PrimitiveType.Word16);
-        public static RegisterStorage pc = new RegisterStorage("pc", 4, 0, PrimitiveType.Word16);
+        public static RegisterStorage x = RegisterStorage.Reg16("x", 1);
+        public static RegisterStorage y = RegisterStorage.Reg16("y", 2);
+        public static RegisterStorage sp = RegisterStorage.Reg16("sp", 3);
+        public static RegisterStorage pc = RegisterStorage.Reg16("pc", 4);
 
-        public static RegisterStorage ccr = new RegisterStorage("ccr", 5, 0, PrimitiveType.Byte);
+        public static RegisterStorage ccr = RegisterStorage.Reg8("ccr", 5);
 
         public static readonly FlagGroupStorage C = new FlagGroupStorage(ccr, (uint) FlagM.CF, "C", PrimitiveType.Bool);
         public static readonly FlagGroupStorage V = new FlagGroupStorage(ccr, (uint) FlagM.VF, "V", PrimitiveType.Bool);

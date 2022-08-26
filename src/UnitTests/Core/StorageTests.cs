@@ -44,12 +44,12 @@ namespace Reko.UnitTests.Core
 
         public StorageTests()
         {
-            this.eax = new RegisterStorage("eax", 0, 0, PrimitiveType.Word32);
-            this.ax = new RegisterStorage("ax", 0, 0, PrimitiveType.Word16);
-            this.al = new RegisterStorage("al", 0, 0, PrimitiveType.Byte);
-            this.ah = new RegisterStorage("ah", 0, 8, PrimitiveType.Byte);
+            this.eax = RegisterStorage.Reg32("eax", 0);
+            this.ax = RegisterStorage.Reg16("ax", 0);
+            this.al = RegisterStorage.Reg8("al", 0);
+            this.ah = RegisterStorage.Reg8("ah", 0, 8);
 
-            this.freg = new RegisterStorage("eflags", 70, 0, PrimitiveType.Word32);
+            this.freg = RegisterStorage.Reg32("eflags", 70);
             this.szc = new FlagGroupStorage(freg, 0x7, "szc", PrimitiveType.Byte);
             this.sz = new FlagGroupStorage(freg, 0x6, "sz", PrimitiveType.Byte);
             this.c = new FlagGroupStorage(freg, 0x1, "c", PrimitiveType.Bool);

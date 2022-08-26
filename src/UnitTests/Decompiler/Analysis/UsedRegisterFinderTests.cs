@@ -387,10 +387,10 @@ DataTypes:
 ";
             RunTest(sExp, m =>
             {
-                var _bx = new RegisterStorage("bx", 3, 0, PrimitiveType.Word16);
-                var _cx = new RegisterStorage("cx", 1, 0, PrimitiveType.Word16);
-                var _cl = new RegisterStorage("cl", 1, 0, PrimitiveType.Byte);
-                var _ch = new RegisterStorage("ch", 1, 8, PrimitiveType.Byte);
+                var _bx = RegisterStorage.Reg16("bx", 3);
+                var _cx = RegisterStorage.Reg16("cx", 1);
+                var _cl = RegisterStorage.Reg8("cl", 1);
+                var _ch = RegisterStorage.Reg8("ch", 1, 8);
                 var bx = m.Frame.EnsureRegister(_bx);
                 var cx = m.Frame.EnsureRegister(_cx);
                 var cl = m.Frame.EnsureRegister(_cl);
@@ -525,8 +525,8 @@ DataTypes:
         public void UrfAliasedSequence()
         {
             var sExp = "Used: [0..31]";
-            var regDx = new RegisterStorage("dx", 2, 0, PrimitiveType.Word16);
-            var regAx = new RegisterStorage("ax", 0, 0, PrimitiveType.Word16);
+            var regDx = RegisterStorage.Reg16("dx", 2);
+            var regAx = RegisterStorage.Reg16("ax", 0);
             var seqDxAx = new SequenceStorage(regDx, regAx);
             RunClassifyTest(
                 sExp,

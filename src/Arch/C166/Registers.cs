@@ -49,17 +49,17 @@ namespace Reko.Arch.C166
             var factory = new StorageFactory();
             GpRegs = factory.RangeOfReg(16, n => $"r{n}", PrimitiveType.Word16);
             LoByteRegs = GpRegs.Take(8)
-                .Select(r => new RegisterStorage($"rl{r.Number}", r.Number, 0, PrimitiveType.Byte))
+                .Select(r => RegisterStorage.Reg8($"rl{r.Number}", r.Number, 0))
                 .ToArray();
             HiByteRegs = GpRegs.Take(8)
-                .Select(r => new RegisterStorage($"rh{r.Number}", r.Number, 8, PrimitiveType.Byte))
+                .Select(r => RegisterStorage.Reg8($"rh{r.Number}", r.Number, 8))
                 .ToArray();
             ByteRegs = Enumerable.Range(0, 8)
                 .SelectMany(i => new[] { LoByteRegs[i], HiByteRegs[i] })
                 .ToArray();
 
             static RegisterStorage Sfr(string name, int regNo, string description) =>
-                new RegisterStorage(name, regNo | (int)StorageDomain.SystemRegister, 0, PrimitiveType.Word16);
+                RegisterStorage.Reg16(name, regNo | (int)StorageDomain.SystemRegister, 0);
 
             PSW = Sfr("PSW", 0xFF10, "CPU Program Status Word 0000");
             SP = Sfr("SP", 0xFE12, "CPU System Stack Pointer Register FC00");

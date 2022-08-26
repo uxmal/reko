@@ -179,8 +179,8 @@ namespace Reko.UnitTests.Core.Serialization
         {
             Given_Architecture();
             Given_TestOS_Platform();
-            var eax = new RegisterStorage("eax", 0, 0, PrimitiveType.Word32);
-            var ecx = new RegisterStorage("ecx", 1, 0, PrimitiveType.Word32);
+            var eax = RegisterStorage.Reg32("eax", 0);
+            var ecx = RegisterStorage.Reg32("ecx", 1);
             var jumpTable = new ImageMapVectorTable(
                 Address.SegPtr(0x1000, 0x400),
                 new Address[] {
@@ -268,7 +268,7 @@ namespace Reko.UnitTests.Core.Serialization
                                     new UserIndirectJump {
                                         Address = jumpTable.Address,
                                         Table = jumpTable,
-                                        IndexRegister = new RegisterStorage("R1", 1, 0, PrimitiveType.Word32)
+                                        IndexRegister = RegisterStorage.Reg32("R1", 1)
                                    }
                                 }
                             },
@@ -539,8 +539,8 @@ namespace Reko.UnitTests.Core.Serialization
             Given_TestOS_Platform();
             Expect_TryParseAddress("0041230", Address.Ptr32(0x0041230));
             Expect_TryParseAddress("00443210", Address.Ptr32(0x00443210));
-            Expect_TryGetRegister(arch, "eax", new RegisterStorage("eax", 0, 0, PrimitiveType.Word32));
-            Expect_TryGetRegister(arch, "ecx", new RegisterStorage("ecx", 1, 0, PrimitiveType.Word32));
+            Expect_TryGetRegister(arch, "eax", RegisterStorage.Reg32("eax", 0));
+            Expect_TryGetRegister(arch, "ecx", RegisterStorage.Reg32("ecx", 1));
             var loader = new Mock<ILoader>();
             loader.Setup(l => l.LoadFileBytes(It.IsAny<string>()))
                 .Returns(new byte[10]);

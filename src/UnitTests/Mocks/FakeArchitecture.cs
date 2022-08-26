@@ -44,9 +44,9 @@ namespace Reko.UnitTests.Mocks
     public class FakeArchitecture : ProcessorArchitecture
 	{
 		private static RegisterStorage [] registers;
-        private static RegisterStorage FlagRegister = new RegisterStorage("flags", 70, 0, PrimitiveType.Word32);
+        private static RegisterStorage FlagRegister = RegisterStorage.Reg32("flags", 70);
         private static MemoryIdentifier ST = new MemoryIdentifier("ST", PrimitiveType.Ptr32, new MemoryStorage("x87Stack", StorageDomain.Register + 400));
-        private static RegisterStorage Top = new RegisterStorage("Top", 76, 0, PrimitiveType.Byte);
+        private static RegisterStorage Top = RegisterStorage.Reg8("Top", 76);
 
         private RtlTraceBuilder rewriters;
 

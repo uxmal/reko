@@ -822,9 +822,9 @@ namespace Reko.UnitTests.Decompiler.Scanning
         [Test]
         public void Bwslc_Issue_826()
         {
-            var A = binder.EnsureRegister(new RegisterStorage("A", 0, 0, PrimitiveType.Byte));
-            var R7 = binder.EnsureRegister(new RegisterStorage("R7", 7, 0, PrimitiveType.Byte));
-            var DPTR = binder.EnsureRegister(new RegisterStorage("DPTR", 8, 0, PrimitiveType.Word16));
+            var A = binder.EnsureRegister(RegisterStorage.Reg8("A", 0));
+            var R7 = binder.EnsureRegister(RegisterStorage.Reg8("R7", 7));
+            var DPTR = binder.EnsureRegister(RegisterStorage.Reg16("DPTR", 8));
             var C = Cc("C");
             var b0082 = Given_Block(0x0082);
             Given_Instrs(b0082, m =>
@@ -867,7 +867,7 @@ namespace Reko.UnitTests.Decompiler.Scanning
             //  goto other
             var C = Cc("C");
             var b1000 = Given_Block(0x1000);
-            var r1 = binder.EnsureRegister(new RegisterStorage("r1", 1, 0, PrimitiveType.Word32));
+            var r1 = binder.EnsureRegister(RegisterStorage.Reg32("r1", 1));
             Given_Instrs(b1000, m =>
             {
                 m.Assign(C, m.Cond(m.ISub(r1, 4)));

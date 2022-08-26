@@ -105,12 +105,12 @@ namespace Reko.Arch.Xtensa
             a7 = new RegisterStorage( "a7", 7, 0, PrimitiveType.Word32);
             a8 = new RegisterStorage( "a8", 8, 0, PrimitiveType.Word32);
             a9 = new RegisterStorage( "a9", 9, 0, PrimitiveType.Word32);
-            a10 = new RegisterStorage("a10", 10, 0, PrimitiveType.Word32);
-            a11 = new RegisterStorage("a11", 11, 0, PrimitiveType.Word32);
-            a12 = new RegisterStorage("a12", 12, 0, PrimitiveType.Word32);
-            a13 = new RegisterStorage("a13", 13, 0, PrimitiveType.Word32);
-            a14 = new RegisterStorage("a14", 14, 0, PrimitiveType.Word32);
-            a15 = new RegisterStorage("a15", 15, 0, PrimitiveType.Word32);
+            a10 = RegisterStorage.Reg32("a10", 10);
+            a11 = RegisterStorage.Reg32("a11", 11);
+            a12 = RegisterStorage.Reg32("a12", 12);
+            a13 = RegisterStorage.Reg32("a13", 13);
+            a14 = RegisterStorage.Reg32("a14", 14);
+            a15 = RegisterStorage.Reg32("a15", 15);
 
             b0 = new RegisterStorage("b0", 0x10, 0, PrimitiveType.Bool);
             b1 = new RegisterStorage("b1", 0x11, 0, PrimitiveType.Bool);
@@ -146,18 +146,18 @@ namespace Reko.Arch.Xtensa
             f14 = new RegisterStorage("f14", 0x2E, 0, PrimitiveType.Real32);
             f15 = new RegisterStorage("f15", 0x2F, 0, PrimitiveType.Real32);
 
-            mr0 = new RegisterStorage("mr0", 0x30, 0, PrimitiveType.Word32);
-            mr1 = new RegisterStorage("mr1", 0x31, 0, PrimitiveType.Word32);
-            mr2 = new RegisterStorage("mr2", 0x32, 0, PrimitiveType.Word32);
-            mr3 = new RegisterStorage("mr3", 0x33, 0, PrimitiveType.Word32);
+            mr0 = RegisterStorage.Reg32("mr0", 0x30);
+            mr1 = RegisterStorage.Reg32("mr1", 0x31);
+            mr2 = RegisterStorage.Reg32("mr2", 0x32);
+            mr3 = RegisterStorage.Reg32("mr3", 0x33);
 
-            LBEG = new RegisterStorage("LBEG", 0x100, 0, PrimitiveType.Word32);
-            LEND = new RegisterStorage("LEND", 0x101, 0, PrimitiveType.Word32);
-            LCOUNT = new RegisterStorage("LCOUNT", 0x102, 0, PrimitiveType.Word32);
-            SAR = new RegisterStorage("SAR", 0x103, 0, PrimitiveType.Word32);
-            SCOMPARE1 = new RegisterStorage("SCOMPARE1", 0x10C, 0, PrimitiveType.Word32);
-            ACCLO = new RegisterStorage("ACCLO", 0x110, 0, PrimitiveType.Word32);
-            ACCHI = new RegisterStorage("ACCHI", 0x111, 0, PrimitiveType.Byte);
+            LBEG = RegisterStorage.Reg32("LBEG", 0x100);
+            LEND = RegisterStorage.Reg32("LEND", 0x101);
+            LCOUNT = RegisterStorage.Reg32("LCOUNT", 0x102);
+            SAR = RegisterStorage.Reg32("SAR", 0x103);
+            SCOMPARE1 = RegisterStorage.Reg32("SCOMPARE1", 0x10C);
+            ACCLO = RegisterStorage.Reg32("ACCLO", 0x110);
+            ACCHI = RegisterStorage.Reg8("ACCHI", 0x111);
         }
     }
 }

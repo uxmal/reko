@@ -75,28 +75,28 @@ namespace Reko.Arch.Fujitsu.F2MC16FX
             rl = factory.RangeOfReg32(4, "rl{0}");
             rw = Enumerable.Range(0, 4).SelectMany(i => new[]
             {
-                new RegisterStorage($"rw{i*2}", i, 0, PrimitiveType.Word16),
-                new RegisterStorage($"rw{i*2+1}", i, 16, PrimitiveType.Word16),
+                RegisterStorage.Reg16($"rw{i*2}", i, 0),
+                RegisterStorage.Reg16($"rw{i*2+1}", i, 16),
             }).ToArray();
             r = Enumerable.Range(2, 2).SelectMany(i =>
             {
                 int iReg = (i - 2) * 4;
                 return new[]
                 {
-                    new RegisterStorage($"r{iReg}",     i, 0, PrimitiveType.Byte),
-                    new RegisterStorage($"r{iReg + 1}", i, 8, PrimitiveType.Byte),
-                    new RegisterStorage($"r{iReg + 2}", i, 16, PrimitiveType.Byte),
-                    new RegisterStorage($"r{iReg + 3}", i, 24, PrimitiveType.Byte),
+                    RegisterStorage.Reg8($"r{iReg}",     i, 0),
+                    RegisterStorage.Reg8($"r{iReg + 1}", i, 8),
+                    RegisterStorage.Reg8($"r{iReg + 2}", i, 16),
+                    RegisterStorage.Reg8($"r{iReg + 3}", i, 24),
                 };
             }).ToArray();
 
-            al = new RegisterStorage("al", a.Number, 0, PrimitiveType.Word16);
-            ah = new RegisterStorage("ah", a.Number, 16, PrimitiveType.Word16);
+            al = RegisterStorage.Reg16("al", a.Number);
+            ah = RegisterStorage.Reg16("ah", a.Number, 16);
 
             var w3 = PrimitiveType.CreateWord(3);
             var w5 = PrimitiveType.CreateWord(5);
 
-            ccr = new RegisterStorage("ccr", ps.Number, 0, PrimitiveType.Byte);
+            ccr = RegisterStorage.Reg8("ccr", ps.Number);
             rp = new RegisterStorage("rp", ps.Number, 8, w5);
             ilm = new RegisterStorage("ilm", ps.Number, 13, w3);
 

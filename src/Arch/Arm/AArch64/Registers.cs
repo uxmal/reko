@@ -76,7 +76,7 @@ namespace Reko.Arch.Arm.AArch64
             // 'x' and 'w' registers share the same storage.
             GpRegs64 = stg.RangeOfReg64(32, "x{0}");
             GpRegs32 = GpRegs64
-                .Select((r, i) => new RegisterStorage($"w{i}", r.Number, 0, PrimitiveType.Word32))
+                .Select((r, i) => RegisterStorage.Reg32($"w{i}", r.Number))
                 .ToArray();
             AddrRegs64 = GpRegs64.ToArray();
             AddrRegs32 = GpRegs32.ToArray();
@@ -84,16 +84,16 @@ namespace Reko.Arch.Arm.AArch64
             // 'v', 'q', 'd', 's', 'h', b' regsters overlap
             SimdRegs128 = stg.RangeOfReg(32, n => $"q{n}", PrimitiveType.Word128);
             SimdRegs64 = SimdRegs128
-                .Select((r, i) => new RegisterStorage($"d{i}", r.Number, 0, PrimitiveType.Word64))
+                .Select((r, i) => RegisterStorage.Reg64($"d{i}", r.Number))
                 .ToArray();
             SimdRegs32 = SimdRegs128
-                .Select((r, i) => new RegisterStorage($"s{i}", r.Number, 0, PrimitiveType.Word32))
+                .Select((r, i) => RegisterStorage.Reg32($"s{i}", r.Number))
                 .ToArray();
             SimdRegs16 = SimdRegs128
-                .Select((r, i) => new RegisterStorage($"h{i}", r.Number, 0, PrimitiveType.Word16))
+                .Select((r, i) => RegisterStorage.Reg16($"h{i}", r.Number))
                 .ToArray();
             SimdRegs8 = SimdRegs128
-                .Select((r, i) => new RegisterStorage($"b{i}", r.Number, 0, PrimitiveType.Byte))
+                .Select((r, i) => RegisterStorage.Reg8($"b{i}", r.Number))
                 .ToArray();
 
             SimdVectorReg128 = SimdRegs128
@@ -102,7 +102,7 @@ namespace Reko.Arch.Arm.AArch64
 
             // The stack register can only be accessed via effective address.
             sp = stg.Reg64("sp");
-            wsp = new RegisterStorage("wsp", sp.Number, 0, PrimitiveType.Word32);
+            wsp = RegisterStorage.Reg32("wsp", sp.Number);
             AddrRegs64[31] = sp;
             AddrRegs32[31] = wsp;
 

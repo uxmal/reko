@@ -1043,11 +1043,11 @@ ProcedureBuilder_exit:
             var pb = new ProgramBuilder();
             pb.Add("sum", m =>
             {
-                var _ax = new RegisterStorage("ax", 0, 0, PrimitiveType.Word16);
-                var _al = new RegisterStorage("al", 0, 0, PrimitiveType.Byte);
-                var _ah = new RegisterStorage("ah", 0, 8, PrimitiveType.Byte);
-                var _dx = new RegisterStorage("dx", 2, 0, PrimitiveType.Word16);
-                var _si = new RegisterStorage("si", 6, 0, PrimitiveType.Word16);
+                var _ax = RegisterStorage.Reg16("ax", 0);
+                var _al = RegisterStorage.Reg8("al", 0);
+                var _ah = RegisterStorage.Reg8("ah", 0, 8);
+                var _dx = RegisterStorage.Reg16("dx", 2);
+                var _si = RegisterStorage.Reg16("si", 6);
                 var ax = m.Frame.EnsureRegister(_ax);
                 var ah = m.Frame.EnsureRegister(_ah);
                 var al = m.Frame.EnsureRegister(_al);
@@ -1108,9 +1108,9 @@ SsaProcedureBuilder_exit:
             #endregion
 
             var uAddrGotSlot = m.Word32(0x0040000);
-            var reg2 = new RegisterStorage("r2", 2, 0, PrimitiveType.Word32);
-            var reg4 = new RegisterStorage("r4", 4, 0, PrimitiveType.Word32);
-            var reg25 = new RegisterStorage("r25", 25, 0, PrimitiveType.Word32);
+            var reg2 = RegisterStorage.Reg32("r2", 2);
+            var reg4 = RegisterStorage.Reg32("r4", 4);
+            var reg25 = RegisterStorage.Reg32("r25", 25);
             var r2_1 = m.Reg("r2_1", reg2);
             var r2_2 = m.Reg("r2_2", reg2);
             var r4_1 = m.Reg("r4_1", reg4);
@@ -1494,7 +1494,7 @@ SsaProcedureBuilder_exit:
             var v1b = m.Reg8("v1b");
             var v1h = m.Temp(PrimitiveType.CreateWord(56), "v1h");
             var v2b = m.Reg8("v2b");
-            var flags = new RegisterStorage("flags", 42, 0, PrimitiveType.Word32);
+            var flags = RegisterStorage.Reg32("flags", 42);
             var C = m.Flags("S", new FlagGroupStorage(flags, 1, "S", PrimitiveType.Bool));
 
             m.Assign(v1, m.Word64(0x57DF836069B622E7));

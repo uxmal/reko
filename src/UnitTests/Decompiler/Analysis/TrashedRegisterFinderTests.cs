@@ -283,9 +283,9 @@ Constants: cl:0x00
 ";
             builder.Add(sExp, m =>
             {
-                var ax = m.Frame.EnsureRegister(new RegisterStorage("ax", 0, 0, PrimitiveType.Word16));
-                var cl = m.Frame.EnsureRegister(new RegisterStorage("cl", 1, 0, PrimitiveType.Byte));
-                var cx = m.Frame.EnsureRegister(new RegisterStorage("cx", 1, 0, PrimitiveType.Word16));
+                var ax = m.Frame.EnsureRegister(RegisterStorage.Reg16("ax", 0));
+                var cl = m.Frame.EnsureRegister(RegisterStorage.Reg8("cl", 1));
+                var cx = m.Frame.EnsureRegister(RegisterStorage.Reg16("cx", 1));
                 m.BranchIf(m.Eq0(ax), "zero");
                 m.Assign(cl, 0);
                 m.Assign(cx, m.Dpb(cx, cl, 0));
@@ -500,7 +500,7 @@ Constants: cl:0x00
             {
                 var sp = m.Frame.EnsureIdentifier(m.Architecture.StackRegister);
                 var ST = new MemoryIdentifier("ST", PrimitiveType.Ptr32, new MemoryStorage("x87Stack", StorageDomain.Register + 400));
-                var Top = m.Frame.EnsureRegister(new RegisterStorage("Top", 76, 0, PrimitiveType.Byte));
+                var Top = m.Frame.EnsureRegister(RegisterStorage.Reg8("Top", 76));
 
                 m.Assign(sp, m.Frame.FramePointer); // establish frame
                 m.Assign(Top, 0);
@@ -524,7 +524,7 @@ Constants: cl:0x00
             {
                 var sp = m.Frame.EnsureIdentifier(m.Architecture.StackRegister);
                 var ST = new MemoryIdentifier("ST", PrimitiveType.Ptr32, new MemoryStorage("x87Stack", StorageDomain.Register + 400));
-                var Top = m.Frame.EnsureRegister(new RegisterStorage("Top", 76, 0, PrimitiveType.Byte));
+                var Top = m.Frame.EnsureRegister(RegisterStorage.Reg8("Top", 76));
 
 
                 m.Assign(sp, m.Frame.FramePointer); // establish frame
@@ -550,7 +550,7 @@ Constants: cl:0x00
             {
                 var sp = m.Frame.EnsureIdentifier(m.Architecture.StackRegister);
                 var ST = new MemoryIdentifier("ST", PrimitiveType.Ptr32, new MemoryStorage("x87Stack", StorageDomain.Register + 400));
-                var Top = m.Frame.EnsureRegister(new RegisterStorage("Top", 76, 0, PrimitiveType.Byte));
+                var Top = m.Frame.EnsureRegister(RegisterStorage.Reg8("Top", 76));
                 var dt = PrimitiveType.Real64;
 
                 m.Assign(sp, m.Frame.FramePointer); // establish frame
@@ -793,9 +793,9 @@ Constants: cl:0x00
                 ssa, null, state, procFlow);
             var ctxOther = new TrashedRegisterFinder.Context(
                 ssa, null, state, procFlow);
-            var ebp = new Identifier("ebp", PrimitiveType.Word32, new RegisterStorage("ebp", 5, 0, PrimitiveType.Word32));
-            var esi = new Identifier("esi", PrimitiveType.Word32, new RegisterStorage("esi", 6, 0, PrimitiveType.Word32));
-            var edi = new Identifier("edi", PrimitiveType.Word32, new RegisterStorage("edi", 7, 0, PrimitiveType.Word32));
+            var ebp = new Identifier("ebp", PrimitiveType.Word32, RegisterStorage.Reg32("ebp", 5));
+            var esi = new Identifier("esi", PrimitiveType.Word32, RegisterStorage.Reg32("esi", 6));
+            var edi = new Identifier("edi", PrimitiveType.Word32, RegisterStorage.Reg32("edi", 7));
 
             ctx.StackState[-4] = ebp;
             ctx.StackState[-8] = esi;

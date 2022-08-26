@@ -97,29 +97,29 @@ namespace Reko.Arch.Tms320C28
             dbgier = factory.Reg16("dbgier");
             ifr = factory.Reg16("ifr");
 
-            t =  new RegisterStorage("t", xt.Number, 16, PrimitiveType.Word16);
-            tl = new RegisterStorage("tl", xt.Number, 0, PrimitiveType.Word16);
-            ph = new RegisterStorage("ph", p.Number, 16, PrimitiveType.Word16);
-            pl = new RegisterStorage("pl", p.Number, 0, PrimitiveType.Word16);
-            ah = new RegisterStorage("ah", acc.Number, 16, PrimitiveType.Word16);
-            al = new RegisterStorage("al", acc.Number, 0, PrimitiveType.Word16);
+            t =  RegisterStorage.Reg16("t", xt.Number, 16);
+            tl = RegisterStorage.Reg16("tl", xt.Number);
+            ph = RegisterStorage.Reg16("ph", p.Number, 16);
+            pl = RegisterStorage.Reg16("pl", p.Number);
+            ah = RegisterStorage.Reg16("ah", acc.Number, 16);
+            al = RegisterStorage.Reg16("al", acc.Number);
 
-            ar0h = new RegisterStorage("ar0h", acc.Number, 16, PrimitiveType.Word16);
-            ar0l = new RegisterStorage("ar0l", acc.Number, 0, PrimitiveType.Word16);
-            ar1h = new RegisterStorage("ar1h", acc.Number, 16, PrimitiveType.Word16);
-            ar1l = new RegisterStorage("ar1l", acc.Number, 0, PrimitiveType.Word16);
-            ar2h = new RegisterStorage("ar2h", acc.Number, 16, PrimitiveType.Word16);
-            ar2l = new RegisterStorage("ar2l", acc.Number, 0, PrimitiveType.Word16);
-            ar3h = new RegisterStorage("ar3h", acc.Number, 16, PrimitiveType.Word16);
-            ar3l = new RegisterStorage("ar3l", acc.Number, 0, PrimitiveType.Word16);
-            ar4h = new RegisterStorage("ar4h", acc.Number, 16, PrimitiveType.Word16);
-            ar4l = new RegisterStorage("ar4l", acc.Number, 0, PrimitiveType.Word16);
-            ar5h = new RegisterStorage("ar5h", acc.Number, 16, PrimitiveType.Word16);
-            ar5l = new RegisterStorage("ar5l", acc.Number, 0, PrimitiveType.Word16);
-            ar6h = new RegisterStorage("ar6h", acc.Number, 16, PrimitiveType.Word16);
-            ar6l = new RegisterStorage("ar6l", acc.Number, 0, PrimitiveType.Word16);
-            ar7h = new RegisterStorage("ar7h", acc.Number, 16, PrimitiveType.Word16);
-            ar7l = new RegisterStorage("ar7l", acc.Number, 0, PrimitiveType.Word16);
+            ar0h = RegisterStorage.Reg16("ar0h", acc.Number, 16);
+            ar0l = RegisterStorage.Reg16("ar0l", acc.Number);
+            ar1h = RegisterStorage.Reg16("ar1h", acc.Number, 16);
+            ar1l = RegisterStorage.Reg16("ar1l", acc.Number);
+            ar2h = RegisterStorage.Reg16("ar2h", acc.Number, 16);
+            ar2l = RegisterStorage.Reg16("ar2l", acc.Number);
+            ar3h = RegisterStorage.Reg16("ar3h", acc.Number, 16);
+            ar3l = RegisterStorage.Reg16("ar3l", acc.Number);
+            ar4h = RegisterStorage.Reg16("ar4h", acc.Number, 16);
+            ar4l = RegisterStorage.Reg16("ar4l", acc.Number);
+            ar5h = RegisterStorage.Reg16("ar5h", acc.Number, 16);
+            ar5l = RegisterStorage.Reg16("ar5l", acc.Number);
+            ar6h = RegisterStorage.Reg16("ar6h", acc.Number, 16);
+            ar6l = RegisterStorage.Reg16("ar6l", acc.Number);
+            ar7h = RegisterStorage.Reg16("ar7h", acc.Number, 16);
+            ar7l = RegisterStorage.Reg16("ar7l", acc.Number);
 
 
 

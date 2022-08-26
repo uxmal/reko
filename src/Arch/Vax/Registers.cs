@@ -49,7 +49,7 @@ namespace Reko.Arch.Vax
         public static RegisterStorage sp = RegisterStorage.Reg32("sp", 14);
         public static RegisterStorage pc = RegisterStorage.Reg32("pc", 15);
 
-        public static readonly RegisterStorage psw = new RegisterStorage("psw", 20, 0, PrimitiveType.UInt32);
+        public static readonly RegisterStorage psw = RegisterStorage.Reg32("psw", 20);
 
 
         public static readonly FlagGroupStorage C = new FlagGroupStorage(psw, (uint) FlagM.CF, "C", PrimitiveType.Bool);

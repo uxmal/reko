@@ -63,8 +63,8 @@ namespace Reko.Arch.M6800.M6809
             DP = factory.Reg("dp", PrimitiveType.Byte);
             CC = factory.Reg("cc", PrimitiveType.Byte);
 
-            A = new RegisterStorage("a", D.Number, 8, PrimitiveType.Byte);
-            B = new RegisterStorage("b", D.Number, 0, PrimitiveType.Byte);
+            A = RegisterStorage.Reg8("a", D.Number, 8);
+            B = RegisterStorage.Reg8("b", D.Number);
 
             AddrRegs = new RegisterStorage[] { X, Y, U, S };
             

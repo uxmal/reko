@@ -69,11 +69,11 @@ namespace Reko.UnitTests.Decompiler.Analysis
         {
             m = new ProcedureBuilder(arch);
             binder = m.Frame;
-            ax = binder.EnsureRegister(new RegisterStorage("ax", 0, 0, PrimitiveType.Word16));
-            bx = binder.EnsureRegister(new RegisterStorage("bx", 3, 0, PrimitiveType.Word16));
-            cx = binder.EnsureRegister(new RegisterStorage("cx", 1, 0, PrimitiveType.Word16));
-            dx = binder.EnsureRegister(new RegisterStorage("dx", 2, 0, PrimitiveType.Word16));
-            es = binder.EnsureRegister(new RegisterStorage("es", 14, 0, PrimitiveType.Word16));
+            ax = binder.EnsureRegister(RegisterStorage.Reg16("ax", 0));
+            bx = binder.EnsureRegister(RegisterStorage.Reg16("bx", 3));
+            cx = binder.EnsureRegister(RegisterStorage.Reg16("cx", 1));
+            dx = binder.EnsureRegister(RegisterStorage.Reg16("dx", 2));
+            es = binder.EnsureRegister(RegisterStorage.Reg16("es", 14));
             SCZ = binder.EnsureFlagGroup(arch.GetFlagGroup("SCZ"));
             CF = binder.EnsureFlagGroup(arch.GetFlagGroup("C"));
         }

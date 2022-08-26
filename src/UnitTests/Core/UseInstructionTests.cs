@@ -42,7 +42,7 @@ namespace Reko.UnitTests.Core
 		[Test]
 		public void UseCreateWithArg()
 		{
-			var reg_edx = new RegisterStorage("edx", 1, 0, PrimitiveType.Word32);
+			var reg_edx = RegisterStorage.Reg32("edx", 1);
 			var id2 = new Identifier("bar", PrimitiveType.Word32, new TemporaryStorage("bar", -1, PrimitiveType.Word32));
 			var r = new Identifier(reg_edx.Name, reg_edx.DataType, reg_edx);
 			var arg = new Identifier("barOut", PrimitiveType.Ptr32, new OutArgumentStorage(r));

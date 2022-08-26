@@ -575,10 +575,10 @@ namespace Reko.UnitTests.Decompiler.Typing
         [Test]
         public void TtranMalloc()
         {
-            var r1 = new RegisterStorage("r1", 1, 0, PrimitiveType.Word32);
+            var r1 = RegisterStorage.Reg32("r1", 1);
             var malloc = new ExternalProcedure("malloc", FunctionType.Func(
                 new Identifier("", new Pointer(new UnknownType(), 32), r1),
-                new Identifier("size", PrimitiveType.UInt32, new RegisterStorage("r2", 2, 0, PrimitiveType.Word32))),
+                new Identifier("size", PrimitiveType.UInt32, RegisterStorage.Reg32("r2", 2))),
                 new ProcedureCharacteristics
                 {
                     Allocator = true,

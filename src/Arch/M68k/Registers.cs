@@ -111,11 +111,11 @@ namespace Reko.Arch.M68k
             fp6 = new FpRegister("fp6", 22, PrimitiveType.Real96);
             fp7 = new FpRegister("fp7", 23, PrimitiveType.Real96);
 
-            ccr = new RegisterStorage("ccr", 24, 0, PrimitiveType.Byte);
-            sr = new RegisterStorage("sr", 25, 0, PrimitiveType.Word16);
-            usp = new RegisterStorage("usp", 26, 0, PrimitiveType.Word32);
+            ccr = RegisterStorage.Reg8("ccr", 24);
+            sr = RegisterStorage.Reg16("sr", 25);
+            usp = RegisterStorage.Reg32("usp", 26);
             pc = new AddressRegister("pc", 27, PrimitiveType.Ptr32);
-            fpsr = new RegisterStorage("fpsr", 28, 0, PrimitiveType.Word32);
+            fpsr = RegisterStorage.Reg32("fpsr", 28);
 
             C = new FlagGroupStorage(ccr, (uint) FlagM.CF, "C", PrimitiveType.Bool);
             V = new FlagGroupStorage(ccr, (uint) FlagM.VF, "V", PrimitiveType.Bool);

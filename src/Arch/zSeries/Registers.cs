@@ -45,7 +45,7 @@ namespace Reko.Arch.zSeries
             VecRegisters = factory.RangeOfReg(32, n => $"v{n}", PrimitiveType.Word128);
             FpRegisters = VecRegisters
                 .Take(16)
-                .Select((vr, i) => new RegisterStorage($"f{i}", vr.Number, 64, PrimitiveType.Word64))
+                .Select((vr, i) => RegisterStorage.Reg64($"f{i}", vr.Number, 64))
                 .ToArray();
 
             RegistersByDomain = GpRegisters

@@ -35,17 +35,17 @@ namespace Reko.Arch.Avr.Avr8
             var factory = new StorageFactory();
             ByteRegs = factory.RangeOfReg(32, i => $"r{i}", PrimitiveType.Byte);
 
-            sreg = new RegisterStorage("sreg", 36, 0, PrimitiveType.Byte);
+            sreg = RegisterStorage.Reg8("sreg", 36);
             code = new RegisterStorage("code", 100, 0, PrimitiveType.SegmentSelector);
-            StackRegister = new RegisterStorage("SP", 0x3D, 0, PrimitiveType.Word16);
+            StackRegister = RegisterStorage.Reg16("SP", 0x3D);
             x = factory.Reg("x", PrimitiveType.Word16);
             y = factory.Reg("y", PrimitiveType.Word16);
             z = factory.Reg("z", PrimitiveType.Word16);
             rampx = factory.Reg("rampx", PrimitiveType.Byte);
             rampy = factory.Reg("rampy", PrimitiveType.Byte);
             rampz = factory.Reg("rampz", PrimitiveType.Byte);
-            ByteRegs[30] = new RegisterStorage("r30", z.Number, 0, PrimitiveType.Byte);
-            ByteRegs[31] = new RegisterStorage("r31", z.Number, 8, PrimitiveType.Byte);
+            ByteRegs[30] = RegisterStorage.Reg8("r30", z.Number);
+            ByteRegs[31] = RegisterStorage.Reg8("r31", z.Number, 8);
             regs =
                 ByteRegs
                 .Concat(new[] {

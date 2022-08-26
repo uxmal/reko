@@ -224,7 +224,7 @@ namespace Reko.UnitTests.ImageLoaders.OdbgScript
                 "mov q,cs:ip\r\n" +
                 "add q,2\r\n");
             Given_ArchRegister(new RegisterStorage("cs", 3, 0, PrimitiveType.SegmentSelector));
-            Given_ArchRegister(new RegisterStorage("ip", 4, 0, PrimitiveType.Word16));
+            Given_ArchRegister(RegisterStorage.Reg16("ip", 4));
             emu.Setup(e => e.ReadRegister(
                 It.Is<RegisterStorage>(r => r.Name == "cs"))).Returns(0x800);
             emu.Setup(e => e.ReadRegister(
@@ -275,7 +275,7 @@ mov selector,[es:di],2
 ");
             Given_MakeSegmentedAddress();
             Given_ArchRegister(new RegisterStorage("es", 3, 0, PrimitiveType.SegmentSelector));
-            Given_ArchRegister(new RegisterStorage("di", 4, 0, PrimitiveType.Word16));
+            Given_ArchRegister(RegisterStorage.Reg16("di", 4));
             Given_Image(Address.SegPtr(0x0800, 0), 
                 new byte[] { 0x67, 0x45, 0x23, 0x01, 0xFF, 0xFE});
             emu.Setup(e => e.ReadRegister(

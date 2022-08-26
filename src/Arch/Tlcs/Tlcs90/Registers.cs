@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2022 John Källén.
  *
@@ -25,32 +25,32 @@ namespace Reko.Arch.Tlcs.Tlcs90
 {
     public static class Registers
     {
-        public static readonly RegisterStorage af = new RegisterStorage("af", 0, 0, PrimitiveType.Word16);
-        public static readonly RegisterStorage bc = new RegisterStorage("bc", 1, 0, PrimitiveType.Word16);
-        public static readonly RegisterStorage de = new RegisterStorage("de", 2, 0, PrimitiveType.Word16);
-        public static readonly RegisterStorage hl = new RegisterStorage("hl", 3, 0, PrimitiveType.Word16);
+        public static readonly RegisterStorage af = RegisterStorage.Reg16("af", 0);
+        public static readonly RegisterStorage bc = RegisterStorage.Reg16("bc", 1);
+        public static readonly RegisterStorage de = RegisterStorage.Reg16("de", 2);
+        public static readonly RegisterStorage hl = RegisterStorage.Reg16("hl", 3);
 
-        public static readonly RegisterStorage af_ = new RegisterStorage("af'", 4, 0, PrimitiveType.Word16);
-        public static readonly RegisterStorage bc_ = new RegisterStorage("bc'", 5, 0, PrimitiveType.Word16);
-        public static readonly RegisterStorage de_ = new RegisterStorage("de'", 6, 0, PrimitiveType.Word16);
-        public static readonly RegisterStorage hl_ = new RegisterStorage("hl'", 7, 0, PrimitiveType.Word16);
+        public static readonly RegisterStorage af_ = RegisterStorage.Reg16("af'", 4);
+        public static readonly RegisterStorage bc_ = RegisterStorage.Reg16("bc'", 5);
+        public static readonly RegisterStorage de_ = RegisterStorage.Reg16("de'", 6);
+        public static readonly RegisterStorage hl_ = RegisterStorage.Reg16("hl'", 7);
 
-        public static readonly RegisterStorage bx = new RegisterStorage("bx", 8, 0, PrimitiveType.Word32);
-        public static readonly RegisterStorage by = new RegisterStorage("by", 9, 0, PrimitiveType.Word32);
-        public static readonly RegisterStorage sp = new RegisterStorage("sp", 10, 0, PrimitiveType.Word16);
-        public static readonly RegisterStorage pc = new RegisterStorage("pc", 11, 0, PrimitiveType.Word16);
+        public static readonly RegisterStorage bx = RegisterStorage.Reg32("bx", 8);
+        public static readonly RegisterStorage by = RegisterStorage.Reg32("by", 9);
+        public static readonly RegisterStorage sp = RegisterStorage.Reg16("sp", 10);
+        public static readonly RegisterStorage pc = RegisterStorage.Reg16("pc", 11);
 
-        public static readonly RegisterStorage a = new RegisterStorage("a", 0, 8, PrimitiveType.Byte);
-        public static readonly RegisterStorage b = new RegisterStorage("b", 1, 8, PrimitiveType.Byte);
-        public static readonly RegisterStorage c = new RegisterStorage("c", 1, 0, PrimitiveType.Byte);
-        public static readonly RegisterStorage d = new RegisterStorage("d", 2, 8, PrimitiveType.Byte);
-        public static readonly RegisterStorage e = new RegisterStorage("e", 2, 0, PrimitiveType.Byte);
-        public static readonly RegisterStorage h = new RegisterStorage("h", 3, 8, PrimitiveType.Byte);
-        public static readonly RegisterStorage l = new RegisterStorage("l", 3, 0, PrimitiveType.Byte);
-        public static readonly RegisterStorage ix = new RegisterStorage("ix", 8, 0, PrimitiveType.Word16);
-        public static readonly RegisterStorage iy = new RegisterStorage("iy", 9, 0, PrimitiveType.Word16);
+        public static readonly RegisterStorage a = RegisterStorage.Reg8("a", 0, 8);
+        public static readonly RegisterStorage b = RegisterStorage.Reg8("b", 1, 8);
+        public static readonly RegisterStorage c = RegisterStorage.Reg8("c", 1);
+        public static readonly RegisterStorage d = RegisterStorage.Reg8("d", 2, 8);
+        public static readonly RegisterStorage e = RegisterStorage.Reg8("e", 2);
+        public static readonly RegisterStorage h = RegisterStorage.Reg8("h", 3, 8);
+        public static readonly RegisterStorage l = RegisterStorage.Reg8("l", 3);
+        public static readonly RegisterStorage ix = RegisterStorage.Reg16("ix", 8);
+        public static readonly RegisterStorage iy = RegisterStorage.Reg16("iy", 9);
 
-        public static readonly RegisterStorage f = new RegisterStorage("f", 32, 0, PrimitiveType.Byte);
+        public static readonly RegisterStorage f = RegisterStorage.Reg8("f", 32);
 
         public static readonly FlagGroupStorage S = new FlagGroupStorage(f, (uint)FlagM.SF, "S", PrimitiveType.Bool);
         public static readonly FlagGroupStorage Z = new FlagGroupStorage(f, (uint)FlagM.ZF, "Z", PrimitiveType.Bool);

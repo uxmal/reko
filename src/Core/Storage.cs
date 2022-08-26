@@ -60,7 +60,7 @@ namespace Reko.Core
         public virtual ulong BitSize { get; set; }
 
         /// <summary>
-        /// The size and domain of the storage.
+        /// The data type of the storage.
         /// </summary>
         public DataType DataType { get; }
 
@@ -501,24 +501,24 @@ namespace Reko.Core
             }
         }
 
-        public static RegisterStorage Reg8(string name, int number)
+        public static RegisterStorage Reg8(string name, int number, uint bitOffset = 0)
         {
-            return new RegisterStorage(name, number, 0, PrimitiveType.Byte);
+            return new RegisterStorage(name, number, bitOffset, PrimitiveType.Byte);
         }
 
-        public static RegisterStorage Reg16(string name, int number)
+        public static RegisterStorage Reg16(string name, int number, uint bitOffset = 0)
         {
-            return new RegisterStorage(name, number, 0, PrimitiveType.Word16);
+            return new RegisterStorage(name, number, bitOffset, PrimitiveType.Word16);
         }
 
-        public static RegisterStorage Reg32(string name, int number)
+        public static RegisterStorage Reg32(string name, int number, uint bitOffset = 0)
         {
-            return new RegisterStorage(name, number, 0, PrimitiveType.Word32);
+            return new RegisterStorage(name, number, bitOffset, PrimitiveType.Word32);
         }
 
-        public static RegisterStorage Reg64(string name, int number)
+        public static RegisterStorage Reg64(string name, int number, uint bitOffset = 0)
         {
-            return new RegisterStorage(name, number, 0, PrimitiveType.Word64);
+            return new RegisterStorage(name, number, bitOffset, PrimitiveType.Word64);
         }
 
         // Create a system register.

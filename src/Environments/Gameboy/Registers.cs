@@ -69,14 +69,14 @@ namespace Reko.Environments.Gameboy
             de = factory.Reg16("de");
             hl = factory.Reg16("hl");
             sp = factory.Reg16("sp");
-            a = new RegisterStorage("a", af.Number, 8, PrimitiveType.Byte);
-            f = new RegisterStorage("f", af.Number, 0, PrimitiveType.Byte);
-            b = new RegisterStorage("b", bc.Number, 8, PrimitiveType.Byte);
-            c = new RegisterStorage("c", bc.Number, 0, PrimitiveType.Byte);
-            d = new RegisterStorage("d", de.Number, 8, PrimitiveType.Byte);
-            e = new RegisterStorage("e", de.Number, 0, PrimitiveType.Byte);
-            h = new RegisterStorage("h", hl.Number, 8, PrimitiveType.Byte);
-            l = new RegisterStorage("l", hl.Number, 0, PrimitiveType.Byte);
+            a = RegisterStorage.Reg8("a", af.Number, 8);
+            f = RegisterStorage.Reg8("f", af.Number);
+            b = RegisterStorage.Reg8("b", bc.Number, 8);
+            c = RegisterStorage.Reg8("c", bc.Number);
+            d = RegisterStorage.Reg8("d", de.Number, 8);
+            e = RegisterStorage.Reg8("e", de.Number);
+            h = RegisterStorage.Reg8("h", hl.Number, 8);
+            l = RegisterStorage.Reg8("l", hl.Number);
 
             GpRegisters = new RegisterStorage[]
             {

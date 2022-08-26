@@ -831,8 +831,8 @@ main_exit:
         [Category(Categories.UnitTests)]
         public void CrwRegisterArgumentNotFound()
         {
-            var ret = new RegisterStorage("ret", 1, 0, PrimitiveType.Word32);
-            var arg = new RegisterStorage("arg", 2, 0, PrimitiveType.Word32);
+            var ret = RegisterStorage.Reg32("ret", 1);
+            var arg = RegisterStorage.Reg32("arg", 2);
             var ssa = Given_Procedure("main", m =>
             {
                 m.Label("body");
@@ -905,7 +905,7 @@ main_exit:
         [Category(Categories.UnitTests)]
         public void CrwExcessRegisterUse()
         {
-            var ret = new RegisterStorage("ret", 1, 0, PrimitiveType.Word32);
+            var ret = RegisterStorage.Reg32("ret", 1);
             var ssa = Given_Procedure("main", m =>
             {
                 var a = m.Reg32("a");
@@ -934,7 +934,7 @@ main_exit:
         [Category(Categories.UnitTests)]
         public void CrwExcessRegisterDefinition()
         {
-            var ret = new RegisterStorage("ret", 1, 0, PrimitiveType.Word32);
+            var ret = RegisterStorage.Reg32("ret", 1);
             var ssa = Given_Procedure("main", m =>
             {
                 var a = m.Reg32("a");
@@ -964,8 +964,8 @@ main_exit:
         [Category(Categories.UnitTests)]
         public void CrwReturnRegisterNotFound()
         {
-            var ret = new RegisterStorage("ret", 1, 0, PrimitiveType.Word32);
-            var rOut = new RegisterStorage("out", 1, 0, PrimitiveType.Word32);
+            var ret = RegisterStorage.Reg32("ret", 1);
+            var rOut = RegisterStorage.Reg32("out", 1);
             var ssa = Given_Procedure("main", m =>
             {
                 m.Label("body");
@@ -1002,8 +1002,8 @@ main_exit:
         [Category(Categories.UnitTests)]
         public void CrwSliceReturnRegister()
         {
-            var ret = new RegisterStorage("ret", 1, 0, PrimitiveType.Word32);
-            var reth = new RegisterStorage("reth", 1, 16, PrimitiveType.Word16);
+            var ret = RegisterStorage.Reg32("ret", 1);
+            var reth = RegisterStorage.Reg16("reth", 1, 16);
             var ssa = Given_Procedure("main", m =>
             {
                 var result = m.Reg("ret", ret);

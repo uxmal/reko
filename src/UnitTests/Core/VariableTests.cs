@@ -36,7 +36,7 @@ namespace Reko.UnitTests.Core
 		[Test]
 		public void CreateOutArgumentRegister()
 		{
-			RegisterStorage mr = new RegisterStorage("r1", 1, 0, PrimitiveType.Word32);
+			RegisterStorage mr = RegisterStorage.Reg32("r1", 1);
 			Identifier oarg = new Identifier("r1Out", PrimitiveType.Word32, new OutArgumentStorage(
 				new Identifier(mr.Name, PrimitiveType.Word32, mr)));
 			StringWriter w = new StringWriter();

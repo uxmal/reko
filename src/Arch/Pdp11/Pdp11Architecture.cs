@@ -35,16 +35,16 @@ namespace Reko.Arch.Pdp11
 {
     public class Registers
     {
-        public static RegisterStorage r0 = new RegisterStorage("r0", 0, 0, PrimitiveType.Word16);
-        public static RegisterStorage r1 = new RegisterStorage("r1", 1, 0, PrimitiveType.Word16);
-        public static RegisterStorage r2 = new RegisterStorage("r2", 2, 0, PrimitiveType.Word16);
-        public static RegisterStorage r3 = new RegisterStorage("r3", 3, 0, PrimitiveType.Word16);
-        public static RegisterStorage r4 = new RegisterStorage("r4", 4, 0, PrimitiveType.Word16);
-        public static RegisterStorage r5 = new RegisterStorage("r5", 5, 0, PrimitiveType.Word16);
-        public static RegisterStorage sp = new RegisterStorage("sp", 6, 0, PrimitiveType.Word16);
-        public static RegisterStorage pc = new RegisterStorage("pc", 7, 0, PrimitiveType.Word16);
+        public static RegisterStorage r0 = RegisterStorage.Reg16("r0", 0);
+        public static RegisterStorage r1 = RegisterStorage.Reg16("r1", 1);
+        public static RegisterStorage r2 = RegisterStorage.Reg16("r2", 2);
+        public static RegisterStorage r3 = RegisterStorage.Reg16("r3", 3);
+        public static RegisterStorage r4 = RegisterStorage.Reg16("r4", 4);
+        public static RegisterStorage r5 = RegisterStorage.Reg16("r5", 5);
+        public static RegisterStorage sp = RegisterStorage.Reg16("sp", 6);
+        public static RegisterStorage pc = RegisterStorage.Reg16("pc", 7);
 
-        public static RegisterStorage psw = new RegisterStorage("psw", 12, 0, PrimitiveType.Word16);
+        public static RegisterStorage psw = RegisterStorage.Reg16("psw", 12);
 
         public static RegisterStorage ac0 = new RegisterStorage("ac0", 16, 0, PrimitiveType.Real64);
         public static RegisterStorage ac1 = new RegisterStorage("ac1", 17, 0, PrimitiveType.Real64);

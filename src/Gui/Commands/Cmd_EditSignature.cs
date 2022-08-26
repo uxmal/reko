@@ -46,7 +46,7 @@ namespace Reko.Gui.Commands
             var uiSvc = Services.RequireService<IDecompilerShellUiService>();
             if (!program.User.Procedures.TryGetValue(address, out var userproc))
                 userproc = new UserProcedure(address, procedure.Name);
-            using (IDialog<UserProcedure> dlg = dlgFactory.CreateProcedureDialog(program, userproc))
+            using (IDialog<UserProcedure?> dlg = dlgFactory.CreateProcedureDialog(program, userproc))
             {
                 var newProc = await uiSvc.ShowModalDialog(dlg);
                 if (newProc is { })

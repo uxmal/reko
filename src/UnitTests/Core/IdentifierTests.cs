@@ -34,7 +34,7 @@ namespace Reko.UnitTests.Core
 
 		public IdentifierTests()
 		{
-			var reg_internal = new RegisterStorage("eax", 0, 0, PrimitiveType.Word32);
+			var reg_internal = RegisterStorage.Reg32("eax", 0);
 			reg = new Identifier("eax", PrimitiveType.Word32, reg_internal);
 			outReg = new Identifier("eaxOut", PrimitiveType.Ptr32, new OutArgumentStorage(reg));
 		}

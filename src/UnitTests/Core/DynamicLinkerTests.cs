@@ -165,18 +165,18 @@ VarargsParserClass: {ep.Characteristics.VarargsParserClass}";
                     new Identifier(
                         "res",
                         PrimitiveType.Word16,
-                        new RegisterStorage("ax", 0, 0, PrimitiveType.Word16)
+                        RegisterStorage.Reg16("ax", 0)
                     ),
                     new[] {
                         new Identifier(
                             "a",
                             PrimitiveType.Word16,
-                            new RegisterStorage("cx", 0, 0, PrimitiveType.Word16)
+                            RegisterStorage.Reg16("cx", 0)
                         ),
                         new Identifier(
                             "b",
                             PrimitiveType.Word16,
-                            new RegisterStorage("dx", 0, 0, PrimitiveType.Word16)
+                            RegisterStorage.Reg16("dx", 0)
                         )
                     }
                 );

@@ -10,22 +10,22 @@ namespace Reko.Arch.Arm.AArch32
 {
     public static class Registers
     {
-        public static readonly RegisterStorage r0 = new RegisterStorage("r0", 0, 0, PrimitiveType.Word32);
-        public static readonly RegisterStorage r1 = new RegisterStorage("r1", 1, 0, PrimitiveType.Word32);
-        public static readonly RegisterStorage r2 = new RegisterStorage("r2", 2, 0, PrimitiveType.Word32);
-        public static readonly RegisterStorage r3 = new RegisterStorage("r3", 3, 0, PrimitiveType.Word32);
-        public static readonly RegisterStorage r4 = new RegisterStorage("r4", 4, 0, PrimitiveType.Word32);
-        public static readonly RegisterStorage r5 = new RegisterStorage("r5", 5, 0, PrimitiveType.Word32);
-        public static readonly RegisterStorage r6 = new RegisterStorage("r6", 6, 0, PrimitiveType.Word32);
-        public static readonly RegisterStorage r7 = new RegisterStorage("r7", 7, 0, PrimitiveType.Word32);
-        public static readonly RegisterStorage r8 = new RegisterStorage("r8", 8, 0, PrimitiveType.Word32);
-        public static readonly RegisterStorage r9 = new RegisterStorage("r9", 9, 0, PrimitiveType.Word32);
-        public static readonly RegisterStorage r10 = new RegisterStorage("r10", 10, 0, PrimitiveType.Word32);
-        public static readonly RegisterStorage fp = new RegisterStorage("fp", 11, 0, PrimitiveType.Word32);
-        public static readonly RegisterStorage ip = new RegisterStorage("ip", 12, 0, PrimitiveType.Word32);
-        public static readonly RegisterStorage sp = new RegisterStorage("sp", 13, 0, PrimitiveType.Word32);
-        public static readonly RegisterStorage lr = new RegisterStorage("lr", 14, 0, PrimitiveType.Word32);
-        public static readonly RegisterStorage pc = new RegisterStorage("pc", 15, 0, PrimitiveType.Word32);
+        public static readonly RegisterStorage r0 = RegisterStorage.Reg32("r0", 0);
+        public static readonly RegisterStorage r1 = RegisterStorage.Reg32("r1", 1);
+        public static readonly RegisterStorage r2 = RegisterStorage.Reg32("r2", 2);
+        public static readonly RegisterStorage r3 = RegisterStorage.Reg32("r3", 3);
+        public static readonly RegisterStorage r4 = RegisterStorage.Reg32("r4", 4);
+        public static readonly RegisterStorage r5 = RegisterStorage.Reg32("r5", 5);
+        public static readonly RegisterStorage r6 = RegisterStorage.Reg32("r6", 6);
+        public static readonly RegisterStorage r7 = RegisterStorage.Reg32("r7", 7);
+        public static readonly RegisterStorage r8 = RegisterStorage.Reg32("r8", 8);
+        public static readonly RegisterStorage r9 = RegisterStorage.Reg32("r9", 9);
+        public static readonly RegisterStorage r10 = RegisterStorage.Reg32("r10", 10);
+        public static readonly RegisterStorage fp = RegisterStorage.Reg32("fp", 11);
+        public static readonly RegisterStorage ip = RegisterStorage.Reg32("ip", 12);
+        public static readonly RegisterStorage sp = RegisterStorage.Reg32("sp", 13);
+        public static readonly RegisterStorage lr = RegisterStorage.Reg32("lr", 14);
+        public static readonly RegisterStorage pc = RegisterStorage.Reg32("pc", 15);
 
         public static readonly RegisterStorage[] GpRegs = new[]
         {
@@ -35,59 +35,59 @@ namespace Reko.Arch.Arm.AArch32
                 Registers.ip, Registers.sp, Registers.lr, Registers.pc,
         };
 
-        public static readonly RegisterStorage cpsr = new RegisterStorage("cpsr", 16, 0, PrimitiveType.Word32);
-        public static readonly RegisterStorage fpscr = new RegisterStorage("fpscr", 17, 0, PrimitiveType.Word32);
-        public static readonly RegisterStorage spsr = new RegisterStorage("spsr", 18, 0, PrimitiveType.Word32);
-        public static readonly RegisterStorage fpsid = new RegisterStorage("fpsid", 19, 0, PrimitiveType.Word32);
-        public static readonly RegisterStorage mvfr2 = new RegisterStorage("mvfr2", 20, 0, PrimitiveType.Word32);
-        public static readonly RegisterStorage mvfr1 = new RegisterStorage("mvfr1", 21, 0, PrimitiveType.Word32);
-        public static readonly RegisterStorage mvfr0 = new RegisterStorage("mvfr0", 22, 0, PrimitiveType.Word32);
-        public static readonly RegisterStorage fpexc = new RegisterStorage("fpexc", 23, 0, PrimitiveType.Word32);
+        public static readonly RegisterStorage cpsr = RegisterStorage.Reg32("cpsr", 16);
+        public static readonly RegisterStorage fpscr = RegisterStorage.Reg32("fpscr", 17);
+        public static readonly RegisterStorage spsr = RegisterStorage.Reg32("spsr", 18);
+        public static readonly RegisterStorage fpsid = RegisterStorage.Reg32("fpsid", 19);
+        public static readonly RegisterStorage mvfr2 = RegisterStorage.Reg32("mvfr2", 20);
+        public static readonly RegisterStorage mvfr1 = RegisterStorage.Reg32("mvfr1", 21);
+        public static readonly RegisterStorage mvfr0 = RegisterStorage.Reg32("mvfr0", 22);
+        public static readonly RegisterStorage fpexc = RegisterStorage.Reg32("fpexc", 23);
 
-        public static readonly RegisterStorage r8_usr = new RegisterStorage("r8_usr", 40, 0, PrimitiveType.Word32);
-        public static readonly RegisterStorage r9_usr = new RegisterStorage("r9_usr", 41, 0, PrimitiveType.Word32);
-        public static readonly RegisterStorage r10_usr = new RegisterStorage("r10_usr", 42, 0, PrimitiveType.Word32);
-        public static readonly RegisterStorage r11_usr = new RegisterStorage("r11_usr", 43, 0, PrimitiveType.Word32);
-        public static readonly RegisterStorage r12_usr = new RegisterStorage("r12_usr", 44, 0, PrimitiveType.Word32);
-        public static readonly RegisterStorage sp_usr = new RegisterStorage("sp_usr", 45, 0, PrimitiveType.Word32);
-        public static readonly RegisterStorage lr_usr = new RegisterStorage("lr_usr", 46, 0, PrimitiveType.Word32);
+        public static readonly RegisterStorage r8_usr = RegisterStorage.Reg32("r8_usr", 40);
+        public static readonly RegisterStorage r9_usr = RegisterStorage.Reg32("r9_usr", 41);
+        public static readonly RegisterStorage r10_usr = RegisterStorage.Reg32("r10_usr", 42);
+        public static readonly RegisterStorage r11_usr = RegisterStorage.Reg32("r11_usr", 43);
+        public static readonly RegisterStorage r12_usr = RegisterStorage.Reg32("r12_usr", 44);
+        public static readonly RegisterStorage sp_usr = RegisterStorage.Reg32("sp_usr", 45);
+        public static readonly RegisterStorage lr_usr = RegisterStorage.Reg32("lr_usr", 46);
 
-        public static readonly RegisterStorage r8_fiq = new RegisterStorage("r8_fiq", 48, 0, PrimitiveType.Word32);
-        public static readonly RegisterStorage r9_fiq = new RegisterStorage("r9_fiq", 49, 0, PrimitiveType.Word32);
-        public static readonly RegisterStorage r10_fiq = new RegisterStorage("r10_fiq", 50, 0, PrimitiveType.Word32);
-        public static readonly RegisterStorage r11_fiq = new RegisterStorage("r11_fiq", 51, 0, PrimitiveType.Word32);
-        public static readonly RegisterStorage r12_fiq = new RegisterStorage("r12_fiq", 52, 0, PrimitiveType.Word32);
-        public static readonly RegisterStorage sp_fiq = new RegisterStorage("sp_fiq", 53, 0, PrimitiveType.Word32);
-        public static readonly RegisterStorage lr_fiq = new RegisterStorage("lr_fiq", 54, 0, PrimitiveType.Word32);
+        public static readonly RegisterStorage r8_fiq = RegisterStorage.Reg32("r8_fiq", 48);
+        public static readonly RegisterStorage r9_fiq = RegisterStorage.Reg32("r9_fiq", 49);
+        public static readonly RegisterStorage r10_fiq = RegisterStorage.Reg32("r10_fiq", 50);
+        public static readonly RegisterStorage r11_fiq = RegisterStorage.Reg32("r11_fiq", 51);
+        public static readonly RegisterStorage r12_fiq = RegisterStorage.Reg32("r12_fiq", 52);
+        public static readonly RegisterStorage sp_fiq = RegisterStorage.Reg32("sp_fiq", 53);
+        public static readonly RegisterStorage lr_fiq = RegisterStorage.Reg32("lr_fiq", 54);
 
-        public static readonly RegisterStorage lr_irq = new RegisterStorage("lr_irq", 55, 0, PrimitiveType.Word32);
-        public static readonly RegisterStorage sp_irq = new RegisterStorage("sp_irq", 56, 0, PrimitiveType.Word32);
+        public static readonly RegisterStorage lr_irq = RegisterStorage.Reg32("lr_irq", 55);
+        public static readonly RegisterStorage sp_irq = RegisterStorage.Reg32("sp_irq", 56);
 
-        public static readonly RegisterStorage lr_svc = new RegisterStorage("lr_svc", 57, 0, PrimitiveType.Word32);
-        public static readonly RegisterStorage sp_svc = new RegisterStorage("sp_svc", 58, 0, PrimitiveType.Word32);
-        public static readonly RegisterStorage lr_abt = new RegisterStorage("lr_abt", 59, 0, PrimitiveType.Word32);
-        public static readonly RegisterStorage sp_abt = new RegisterStorage("sp_abt", 60, 0, PrimitiveType.Word32);
-        public static readonly RegisterStorage lr_und = new RegisterStorage("lr_und", 61, 0, PrimitiveType.Word32);
-        public static readonly RegisterStorage sp_und = new RegisterStorage("sp_und", 62, 0, PrimitiveType.Word32);
-        public static readonly RegisterStorage lr_mon = new RegisterStorage("lr_mon", 63, 0, PrimitiveType.Word32);
-        public static readonly RegisterStorage sp_mon = new RegisterStorage("sp_mon", 64, 0, PrimitiveType.Word32);
-        public static readonly RegisterStorage elr_hyp = new RegisterStorage("elr_hyp", 65, 0, PrimitiveType.Word32);
-        public static readonly RegisterStorage sp_hyp = new RegisterStorage("sp_hyp", 66, 0, PrimitiveType.Word32);
-        public static readonly RegisterStorage spsr_fiq = new RegisterStorage("spsr_fiq", 67, 0, PrimitiveType.Word32);
-        public static readonly RegisterStorage spsr_irq = new RegisterStorage("spsr_irq", 68, 0, PrimitiveType.Word32);
-        public static readonly RegisterStorage spsr_svc = new RegisterStorage("spsr_svc", 69, 0, PrimitiveType.Word32);
-        public static readonly RegisterStorage spsr_abt = new RegisterStorage("spsr_abt", 70, 0, PrimitiveType.Word32);
-        public static readonly RegisterStorage spsr_und = new RegisterStorage("spsr_und", 71, 0, PrimitiveType.Word32);
-        public static readonly RegisterStorage spsr_mon = new RegisterStorage("spsr_mon", 72, 0, PrimitiveType.Word32);
-        public static readonly RegisterStorage spsr_hyp = new RegisterStorage("spsr_hyp", 73, 0, PrimitiveType.Word32);
+        public static readonly RegisterStorage lr_svc = RegisterStorage.Reg32("lr_svc", 57);
+        public static readonly RegisterStorage sp_svc = RegisterStorage.Reg32("sp_svc", 58);
+        public static readonly RegisterStorage lr_abt = RegisterStorage.Reg32("lr_abt", 59);
+        public static readonly RegisterStorage sp_abt = RegisterStorage.Reg32("sp_abt", 60);
+        public static readonly RegisterStorage lr_und = RegisterStorage.Reg32("lr_und", 61);
+        public static readonly RegisterStorage sp_und = RegisterStorage.Reg32("sp_und", 62);
+        public static readonly RegisterStorage lr_mon = RegisterStorage.Reg32("lr_mon", 63);
+        public static readonly RegisterStorage sp_mon = RegisterStorage.Reg32("sp_mon", 64);
+        public static readonly RegisterStorage elr_hyp = RegisterStorage.Reg32("elr_hyp", 65);
+        public static readonly RegisterStorage sp_hyp = RegisterStorage.Reg32("sp_hyp", 66);
+        public static readonly RegisterStorage spsr_fiq = RegisterStorage.Reg32("spsr_fiq", 67);
+        public static readonly RegisterStorage spsr_irq = RegisterStorage.Reg32("spsr_irq", 68);
+        public static readonly RegisterStorage spsr_svc = RegisterStorage.Reg32("spsr_svc", 69);
+        public static readonly RegisterStorage spsr_abt = RegisterStorage.Reg32("spsr_abt", 70);
+        public static readonly RegisterStorage spsr_und = RegisterStorage.Reg32("spsr_und", 71);
+        public static readonly RegisterStorage spsr_mon = RegisterStorage.Reg32("spsr_mon", 72);
+        public static readonly RegisterStorage spsr_hyp = RegisterStorage.Reg32("spsr_hyp", 73);
 
         // We need to provide the coprocessors as named register storages even though
         // they more appropriately should be treated as symbols.
         public static readonly RegisterStorage[] Coprocessors = Enumerable.Range(0, 16)
-            .Select(n => new RegisterStorage($"p{n}", 128 + n, 0, PrimitiveType.Byte))
+            .Select(n => RegisterStorage.Reg8($"p{n}", 128 + n, 0))
             .ToArray();
         public static readonly RegisterStorage[] CoprocessorRegisters = Enumerable.Range(0, 16)
-            .Select(n => new RegisterStorage($"cr{n}", 144 + n, 0, PrimitiveType.Word32))
+            .Select(n => RegisterStorage.Reg32($"cr{n}", 144 + n))
             .ToArray();
 
         // The 'S..' floating point registers alias the 'D..' double floating point registers
@@ -96,10 +96,10 @@ namespace Reko.Arch.Arm.AArch32
             .Select(n => new RegisterStorage($"q{n}", 160 + n, 0, PrimitiveType.Word128))
             .ToArray();
         public static readonly RegisterStorage[] DRegs = Enumerable.Range(0, 32)
-            .Select(n => new RegisterStorage($"d{n}", QRegs[n / 2].Number, (uint)(n & 1) * 64, PrimitiveType.Word64))
+            .Select(n => RegisterStorage.Reg64($"d{n}", QRegs[n / 2].Number, (uint)(n & 1) * 64))
             .ToArray();
         public static readonly RegisterStorage[] SRegs = Enumerable.Range(0, 32)
-            .Select(n => new RegisterStorage($"s{n}", QRegs[n / 4].Number, (uint)(n & 3) * 32, PrimitiveType.Word32))
+            .Select(n => RegisterStorage.Reg32($"s{n}", QRegs[n / 4].Number, (uint)(n & 3) * 32))
             .ToArray();
 
         public static readonly Dictionary<string, RegisterStorage> RegistersByName;

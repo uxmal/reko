@@ -53,10 +53,10 @@ namespace Reko.Arch.PaRisc
             GpRegs = factory.RangeOfReg(32, i => $"r{i}", gpRegSize);
             FpRegs = factory.RangeOfReg64(32, "fr{0}");
             FpLefts = FpRegs
-                .Select(fr => new RegisterStorage(fr.Name + "L", fr.Number, 32, PrimitiveType.Word32))
+                .Select(fr => RegisterStorage.Reg32(fr.Name + "L", fr.Number, 32))
                 .ToArray();
             FpRights = FpRegs
-                .Select(fr => new RegisterStorage(fr.Name + "R", fr.Number, 0, PrimitiveType.Word32))
+                .Select(fr => RegisterStorage.Reg32(fr.Name + "R", fr.Number, 0))
                 .ToArray();
             //$BUG: triple-check the formatting of 6-bit floating point
             // register identifiers.

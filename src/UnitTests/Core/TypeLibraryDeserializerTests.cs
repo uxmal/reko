@@ -276,9 +276,9 @@ namespace Reko.UnitTests.Core
         public void Tlldr_signature()
         {
             Given_ArchitectureStub();
-            arch.Setup(a => a.GetRegister("r3")).Returns(new RegisterStorage("r3", 3, 0, PrimitiveType.Word32));
+            arch.Setup(a => a.GetRegister("r3")).Returns(RegisterStorage.Reg32("r3", 3));
             arch.Setup(a => a.MemoryGranularity).Returns(8);
-            var r3 = new RegisterStorage("r3", 3, 0, PrimitiveType.Word32);
+            var r3 = RegisterStorage.Reg32("r3", 3);
             Given_ProcedureSignature(FunctionType.Func(
                 new Identifier("", PrimitiveType.Int32, r3),
                 new Identifier("", PrimitiveType.Real32, r3)));

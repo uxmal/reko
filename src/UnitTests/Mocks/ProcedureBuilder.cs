@@ -381,12 +381,12 @@ namespace Reko.UnitTests.Mocks
 
         public virtual Identifier Reg64(string name, int number)
         {
-            return Frame.EnsureRegister(new RegisterStorage(name, number, 0, PrimitiveType.Word64));
+            return Frame.EnsureRegister(RegisterStorage.Reg64(name, number));
         }
 
         public virtual Identifier Reg32(string name, int number)
         {
-            return Frame.EnsureRegister(new RegisterStorage(name, number, 0, PrimitiveType.Word32));
+            return Frame.EnsureRegister(RegisterStorage.Reg32(name, number));
         }
 
         public virtual Identifier Reg32(string name)
@@ -396,19 +396,19 @@ namespace Reko.UnitTests.Mocks
 
         public virtual Identifier Reg16(string name, int number)
         {
-            return Frame.EnsureRegister(new RegisterStorage(name, number, 0, PrimitiveType.Word16));
+            return Frame.EnsureRegister(RegisterStorage.Reg16(name, number));
         }
 
         public virtual Identifier Reg8(string name, int number)
         {
-            return Frame.EnsureRegister(new RegisterStorage(name, number, 0, PrimitiveType.Byte));
+            return Frame.EnsureRegister(RegisterStorage.Reg8(name, number));
         }
 
         // Use this method to model the x86 "ah" or the z80 "h" registers which are 
         // offset from the start of their word registers.
         public virtual Identifier Reg8(string name, int number, uint bitOffset)
         {
-            return Frame.EnsureRegister(new RegisterStorage(name, number, bitOffset, PrimitiveType.Byte));
+            return Frame.EnsureRegister(RegisterStorage.Reg8(name, number, bitOffset));
         }
     }
 }

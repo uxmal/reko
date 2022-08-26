@@ -37,8 +37,8 @@ namespace Reko.UnitTests.Decompiler.Analysis
     [TestFixture]
     public class CallApplicationBuilderTests
     {
-        private readonly RegisterStorage reg2 = new RegisterStorage("r2", 2, 0, PrimitiveType.Word32);
-        private readonly RegisterStorage reg3 = new RegisterStorage("r3", 3, 0, PrimitiveType.Word32);
+        private readonly RegisterStorage reg2 = RegisterStorage.Reg32("r2", 2);
+        private readonly RegisterStorage reg3 = RegisterStorage.Reg32("r3", 3);
 
         [Test]
         public void Cab_Sequence()

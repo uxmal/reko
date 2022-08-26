@@ -37,7 +37,7 @@ namespace Reko.Arch.CompactRisc
         {
             var factory = new StorageFactory();
             GpRegisters = factory.RangeOfReg(16, i => $"r{i}", PrimitiveType.Word16);
-            GpRegisters[15] = new RegisterStorage("sp", 15, 0, PrimitiveType.Word16);
+            GpRegisters[15] = RegisterStorage.Reg16("sp", 15);
 
             ByName = GpRegisters.ToDictionary(r => r.Name);
         }

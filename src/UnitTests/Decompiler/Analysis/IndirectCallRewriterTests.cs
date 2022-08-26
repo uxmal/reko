@@ -45,9 +45,9 @@ namespace Reko.UnitTests.Decompiler.Analysis
 
         public IndirectCallRewriterTests()
         {
-            this.eax = new Identifier("eax", PrimitiveType.Word32, new RegisterStorage("eax", 0, 0, PrimitiveType.Word32));
-            this.ecx = new Identifier("ecx", PrimitiveType.Word32, new RegisterStorage("ecx", 1, 0, PrimitiveType.Word32));
-            this.esp = new Identifier("esp", PrimitiveType.Word32, new RegisterStorage("esp", 5, 0, PrimitiveType.Word32));
+            this.eax = new Identifier("eax", PrimitiveType.Word32, RegisterStorage.Reg32("eax", 0));
+            this.ecx = new Identifier("ecx", PrimitiveType.Word32, RegisterStorage.Reg32("ecx", 1));
+            this.esp = new Identifier("esp", PrimitiveType.Word32, RegisterStorage.Reg32("esp", 5));
         }
 
         [SetUp]

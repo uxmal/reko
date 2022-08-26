@@ -38,7 +38,7 @@ namespace Reko.UnitTests.Decompiler.Analysis
         [Test]
         public void Pflow_IntersectBinding()
         {
-            var reg = new RegisterStorage("r1", 1, 0, PrimitiveType.Word32);
+            var reg = RegisterStorage.Reg32("r1", 1);
             var id = new Identifier("r1", reg.DataType, reg);
             var cbs = new[]
             {
@@ -60,8 +60,8 @@ namespace Reko.UnitTests.Decompiler.Analysis
         [Test]
         public void Pflow_IntersectBinding_WiderRegisterInCallBinding()
         {
-            var regCaller = new RegisterStorage("ebx", 1, 0, PrimitiveType.Word32);
-            var regCallee = new RegisterStorage("bx", 1, 0, PrimitiveType.Word16);
+            var regCaller = RegisterStorage.Reg32("ebx", 1);
+            var regCallee = RegisterStorage.Reg16("bx", 1);
             var idCaller = new Identifier("ebx", regCaller.DataType, regCaller);
             var cbs = new[]
             {
@@ -103,7 +103,7 @@ namespace Reko.UnitTests.Decompiler.Analysis
         [Test]
         public void Pflow_IntersectBinding_NotFoundUses()
         {
-            var reg = new RegisterStorage("r1", 1, 0, PrimitiveType.Word32);
+            var reg = RegisterStorage.Reg32("r1", 1);
             var stCallee = new StackStorage(4, PrimitiveType.Word32);
             var id = new Identifier("r1", reg.DataType, reg);
             var cbs = new CallBinding[] { } ;

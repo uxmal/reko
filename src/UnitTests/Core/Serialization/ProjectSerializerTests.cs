@@ -122,7 +122,7 @@ namespace Reko.UnitTests.Core.Serialization
             Given_Platform_Address("115000", 0x115000);
             Given_Platform_Address("115012", 0x115012);
             Given_Platform_Address("11504F", 0x11504F);
-            arch.Setup(a => a.GetRegister("r1")).Returns(new RegisterStorage("r1", 1, 0, PrimitiveType.Word32));
+            arch.Setup(a => a.GetRegister("r1")).Returns(RegisterStorage.Reg32("r1", 1));
 
             var sp = new Project_v4
             {
@@ -230,7 +230,7 @@ namespace Reko.UnitTests.Core.Serialization
             Given_Platform_Address("115000", 0x115000);
             Given_Platform_Address("115012", 0x115012);
             Given_Platform_Address("11504F", 0x11504F);
-            arch.Setup(a => a.GetRegister("r1")).Returns(new RegisterStorage("r1", 1, 0, PrimitiveType.Word32));
+            arch.Setup(a => a.GetRegister("r1")).Returns(RegisterStorage.Reg32("r1", 1));
 
             var sp = new Project_v5
             {

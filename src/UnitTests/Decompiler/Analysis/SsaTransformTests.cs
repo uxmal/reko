@@ -66,10 +66,10 @@ namespace Reko.UnitTests.Decompiler.Analysis
             this.sc = new ServiceContainer();
             this.addUseInstructions = false;
             this.dynamicLinker = new Mock<IDynamicLinker>();
-            this.r1 = new Identifier("r1", PrimitiveType.Word32, new RegisterStorage("r1", 1, 0, PrimitiveType.Word32));
-            this.r2 = new Identifier("r2", PrimitiveType.Word32, new RegisterStorage("r2", 2, 0, PrimitiveType.Word32));
-            this.r3 = new Identifier("r3", PrimitiveType.Word32, new RegisterStorage("r3", 3, 0, PrimitiveType.Word32));
-            this.r4 = new Identifier("r4", PrimitiveType.Word32, new RegisterStorage("r4", 4, 0, PrimitiveType.Word32));
+            this.r1 = new Identifier("r1", PrimitiveType.Word32, RegisterStorage.Reg32("r1", 1));
+            this.r2 = new Identifier("r2", PrimitiveType.Word32, RegisterStorage.Reg32("r2", 2));
+            this.r3 = new Identifier("r3", PrimitiveType.Word32, RegisterStorage.Reg32("r3", 3));
+            this.r4 = new Identifier("r4", PrimitiveType.Word32, RegisterStorage.Reg32("r4", 4));
 
             var arch = new FakeArchitecture(sc);
             Given_Architecture(arch);
@@ -1374,8 +1374,8 @@ proc1_exit:
 
             RunTestOld(sExp, m =>
             {
-                var regA = new RegisterStorage("a", 0, 0, PrimitiveType.Word32);
-                var regB = new RegisterStorage("b", 1, 0, PrimitiveType.Word32);
+                var regA = RegisterStorage.Reg32("a", 0);
+                var regB = RegisterStorage.Reg32("b", 1);
                 var a = m.Frame.EnsureRegister(regA);
                 var b = m.Frame.EnsureRegister(regB);
                 m.BranchIf(m.Eq0(a), "m_2");
@@ -1428,8 +1428,8 @@ proc1_exit:
 
             RunTest_FrameAccesses(sExp, m =>
             {
-                var regEax = new RegisterStorage("eax", 0, 0, PrimitiveType.Word32);
-                var regAh = new RegisterStorage("ah", 0, 8, PrimitiveType.Byte);
+                var regEax = RegisterStorage.Reg32("eax", 0);
+                var regAh = RegisterStorage.Reg8("ah", 0, 8);
                 var eax = m.Frame.EnsureRegister(regEax);
                 var ah = m.Frame.EnsureRegister(regAh);
                 m.Assign(eax, m.Mem32(eax));
@@ -1558,8 +1558,8 @@ proc1_exit:
 
             RunTestOld(sExp, m =>
             {
-                var edx = m.Frame.EnsureRegister(new RegisterStorage("edx", 2, 0, PrimitiveType.Word32));
-                var eax = m.Frame.EnsureRegister(new RegisterStorage("eax", 0, 0, PrimitiveType.Word32));
+                var edx = m.Frame.EnsureRegister(RegisterStorage.Reg32("edx", 2));
+                var eax = m.Frame.EnsureRegister(RegisterStorage.Reg32("eax", 0));
 
                 m.Assign(eax, m.Mem32(m.Word32(0x543200)));
                 m.Assign(edx, m.Mem32(m.Word32(0x543208)));
@@ -1616,8 +1616,8 @@ proc1_exit:
 
             RunTestOld(sExp, m =>
             {
-                var edx = m.Frame.EnsureRegister(new RegisterStorage("edx", 2, 0, PrimitiveType.Word32));
-                var dl = m.Frame.EnsureRegister(new RegisterStorage("dl", 2, 0, PrimitiveType.Byte));
+                var edx = m.Frame.EnsureRegister(RegisterStorage.Reg32("edx", 2));
+                var dl = m.Frame.EnsureRegister(RegisterStorage.Reg8("dl", 2));
 
                 m.Assign(edx, m.Mem32(m.Word32(0x543200)));
                 m.MStore(m.Word32(0x642300), dl);
@@ -1773,8 +1773,8 @@ proc1_exit:
 
             RunTestOld(sExp, m =>
             {
-                var eax = m.Frame.EnsureRegister(new RegisterStorage("eax", 0, 0, PrimitiveType.Word32));
-                var al = m.Frame.EnsureRegister(new RegisterStorage("al", 0, 0, PrimitiveType.Byte));
+                var eax = m.Frame.EnsureRegister(RegisterStorage.Reg32("eax", 0));
+                var al = m.Frame.EnsureRegister(RegisterStorage.Reg8("al", 0));
 
                 m.Assign(eax, m.Mem32(eax));
                 m.MStore(m.Ptr32(0x123100), al);            // store the low-order byte
@@ -2722,8 +2722,8 @@ proc1_exit:
 
             RunTestOld(sExp, m =>
             {
-                var al = m.Frame.EnsureRegister(new RegisterStorage("al", 0, 0, PrimitiveType.Byte));
-                var ah = m.Frame.EnsureRegister(new RegisterStorage("ah", 0, 8, PrimitiveType.Byte));
+                var al = m.Frame.EnsureRegister(RegisterStorage.Reg8("al", 0));
+                var ah = m.Frame.EnsureRegister(RegisterStorage.Reg8("ah", 0, 8));
 
                 m.Assign(al, m.Mem8(m.Word16(0x1234)));
                 m.Assign(ah, 3);
@@ -2767,7 +2767,7 @@ proc1_exit:
             RunTest_FrameAccesses(sExp, m =>
             {
                 var ST = new MemoryIdentifier("ST", PrimitiveType.Ptr32, new MemoryStorage("x87Stack", StorageDomain.Register + 400));
-                var Top = m.Frame.EnsureRegister(new RegisterStorage("Top", 76, 0, PrimitiveType.Byte));
+                var Top = m.Frame.EnsureRegister(RegisterStorage.Reg8("Top", 76));
 
                 m.Assign(Top, 0);
                 m.Assign(Top, m.ISub(Top, 1));
@@ -3001,9 +3001,9 @@ proc1_exit:
             RunTest_FrameAccesses(sExp, m =>
             {
                 var sp = m.Register(m.Architecture.StackRegister);
-                var ax = m.Frame.EnsureRegister(new RegisterStorage("ax", 0, 0, PrimitiveType.Word16));
-                var ah = m.Frame.EnsureRegister(new RegisterStorage("ah", 0, 8, PrimitiveType.Byte));
-                var al = m.Frame.EnsureRegister(new RegisterStorage("al", 0, 0, PrimitiveType.Byte));
+                var ax = m.Frame.EnsureRegister(RegisterStorage.Reg16("ax", 0));
+                var ah = m.Frame.EnsureRegister(RegisterStorage.Reg8("ah", 0, 8));
+                var al = m.Frame.EnsureRegister(RegisterStorage.Reg8("al", 0));
                 m.Assign(sp, m.Frame.FramePointer);
                 m.Assign(ax, m.Mem16(m.Word32(0x00123400)));
                 m.MStore(m.Word32(0x00123402), ax);

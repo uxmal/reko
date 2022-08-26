@@ -97,18 +97,18 @@ namespace Reko.Arch.Sparc
             {
                 return new[]
                 {
-                    new RegisterStorage($"d{i * 2}", q.Number, 64, PrimitiveType.Word64),
-                    new RegisterStorage($"d{i * 2 + 1}", q.Number, 0, PrimitiveType.Word64),
+                    RegisterStorage.Reg64($"d{i * 2}", q.Number, 64),
+                    RegisterStorage.Reg64($"d{i * 2 + 1}", q.Number, 0),
                 };
             }).ToArray();
             FFloatRegisters= QFloatRegisters.Take(8).SelectMany((q, i) =>
             {
                 return new[]
                 {
-                    new RegisterStorage($"f{i * 4}", q.Number, 96, PrimitiveType.Word32),
-                    new RegisterStorage($"f{i * 4 + 1}", q.Number, 64, PrimitiveType.Word32),
-                    new RegisterStorage($"f{i * 4 + 2}", q.Number, 32, PrimitiveType.Word32),
-                    new RegisterStorage($"f{i * 4 + 3}", q.Number, 0, PrimitiveType.Word32),
+                    RegisterStorage.Reg32($"f{i * 4}", q.Number, 96),
+                    RegisterStorage.Reg32($"f{i * 4 + 1}", q.Number, 64),
+                    RegisterStorage.Reg32($"f{i * 4 + 2}", q.Number, 32),
+                    RegisterStorage.Reg32($"f{i * 4 + 3}", q.Number, 0),
                 };
             }).ToArray();
 

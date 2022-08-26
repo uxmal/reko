@@ -36,7 +36,7 @@ namespace Reko.UnitTests.Decompiler.Scanning
 
         private void CreateIntraProceduralJumps()
         {
-            var regS = new RegisterStorage("reg", 1, 0, PrimitiveType.Word32);
+            var regS = RegisterStorage.Reg32("reg", 1);
             pb = new ProgramBuilder();
             pb.Add("main", (m) =>
             {
@@ -49,8 +49,8 @@ namespace Reko.UnitTests.Decompiler.Scanning
 
         private void Test()
         {
-            freg = new RegisterStorage("freg", 9, 70, PrimitiveType.Word32);
-            reg = new Identifier("reg", PrimitiveType.Word32, new RegisterStorage("reg", 1, 0, PrimitiveType.Word32));
+            freg = RegisterStorage.Reg32("freg", 9, 70);
+            reg = new Identifier("reg", PrimitiveType.Word32, RegisterStorage.Reg32("reg", 1));
             SCZO = new Identifier("SCZO", PrimitiveType.Byte, new FlagGroupStorage(freg, 0xF, "SCZO", PrimitiveType.Byte));
             new RtlTraceBuilder
             {

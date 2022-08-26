@@ -60,10 +60,10 @@ namespace Reko.UnitTests.Decompiler.Scanning
         {
             program = new Program();
             trace = new RtlTrace(0x00100000);
-            r0 = new Identifier("r0", PrimitiveType.Word32, new RegisterStorage("r0", 0, 0, PrimitiveType.Word32));
-            r1 = new Identifier("r1", PrimitiveType.Word32, new RegisterStorage("r1", 1, 0, PrimitiveType.Word32));
-            r2 = new Identifier("r2", PrimitiveType.Word32, new RegisterStorage("r2", 2, 0, PrimitiveType.Word32));
-            sp = new Identifier("sp", PrimitiveType.Word32, new RegisterStorage("sp", 15, 0, PrimitiveType.Word32));
+            r0 = new Identifier("r0", PrimitiveType.Word32, RegisterStorage.Reg32("r0", 0));
+            r1 = new Identifier("r1", PrimitiveType.Word32, RegisterStorage.Reg32("r1", 1));
+            r2 = new Identifier("r2", PrimitiveType.Word32, RegisterStorage.Reg32("r2", 2));
+            sp = new Identifier("sp", PrimitiveType.Word32, RegisterStorage.Reg32("sp", 15));
             var sc = new ServiceContainer();
             var listener = new Mock<DecompilerEventListener>();
             scanner = new Mock<IScanner>();
@@ -500,9 +500,9 @@ namespace Reko.UnitTests.Decompiler.Scanning
             var frame = new Frame(program.Architecture, PrimitiveType.Ptr32);
             var proc2 = new Procedure(program.Architecture, "fn2000", Address.Ptr32(0x2000), frame);
             var sig = FunctionType.Func(
-                proc2.Frame.EnsureRegister(new RegisterStorage("r1", 1, 0, PrimitiveType.Word32)),
-                proc2.Frame.EnsureRegister(new RegisterStorage("r2", 2, 0, PrimitiveType.Word32)),
-                proc2.Frame.EnsureRegister(new RegisterStorage("r3", 3, 0, PrimitiveType.Word32)));
+                proc2.Frame.EnsureRegister(RegisterStorage.Reg32("r1", 1)),
+                proc2.Frame.EnsureRegister(RegisterStorage.Reg32("r2", 2)),
+                proc2.Frame.EnsureRegister(RegisterStorage.Reg32("r3", 3)));
             proc2.Signature = sig;
             var block2 = new Block(proc, Address.Ptr32(0x0010008), "l00100008");
             var block3 = new Block(proc, Address.Ptr32(0x0010004), "l00100004");

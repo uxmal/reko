@@ -111,10 +111,10 @@ namespace Reko.Arch.Blackfin
             Ls = factory.RangeOfReg32(4, "L{0}");
             A0 = factory.Reg("A0", PrimitiveType.CreateWord(40));
             A1 = factory.Reg("A1", PrimitiveType.CreateWord(40));
-            A0_W = new RegisterStorage("A0.W", A0.Number, 0, PrimitiveType.Word32);
-            A0_X = new RegisterStorage("A0.X", A0.Number, 32, PrimitiveType.Byte);
-            A1_W = new RegisterStorage("A1.W", A1.Number, 0, PrimitiveType.Word32);
-            A1_X = new RegisterStorage("A1.X", A1.Number, 32, PrimitiveType.Byte);
+            A0_W = RegisterStorage.Reg32("A0.W", A0.Number);
+            A0_X = RegisterStorage.Reg8("A0.X", A0.Number, 32);
+            A1_W = RegisterStorage.Reg32("A1.W", A1.Number);
+            A1_X = RegisterStorage.Reg8("A1.X", A1.Number, 32);
             ASTAT = factory.Reg32("ASTAT");
             RETS = factory.Reg32("RETS");
             LC0 = factory.Reg32("LC0");
@@ -144,14 +144,14 @@ namespace Reko.Arch.Blackfin
                 .Concat(Ls)
                 .ToArray();
             RPIB_Lo = RPIB
-                .Select(r => new RegisterStorage(r.Name + ".L", r.Number, 0, PrimitiveType.Word16))
+                .Select(r => RegisterStorage.Reg16(r.Name + ".L", r.Number, 0))
                 .ToArray();
             RPI_Hi = Data
                 .Concat(Pointers)
                 .Concat(Indices)
                 .Concat(Enumerable.Range(0, 8).Select(i => (RegisterStorage) null!))
                 .Select(r => r != null
-                    ? new RegisterStorage(r.Name + ".H", r.Number, 16, PrimitiveType.Word16)
+                    ? RegisterStorage.Reg16(r.Name + ".H", r.Number, 16)
                     : null!)
                 .ToArray();
 

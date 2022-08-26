@@ -51,7 +51,7 @@ namespace Reko.UnitTests.Decompiler.Analysis
             m = new ProcedureBuilder();
             ssaState = new SsaState(m.Procedure);
             ssaIds = ssaState.Identifiers;
-            freg = new RegisterStorage("flags", 32, 0, PrimitiveType.Word32);
+            freg = RegisterStorage.Reg32("flags", 32);
             segmentMap = new SegmentMap(Address.Ptr32(0));
 		}
 
@@ -452,7 +452,7 @@ done:
                 var r2 = m.Reg32("r2", 2);
                 var r3 = m.Reg32("r3", 3);
                 var r4 = m.Reg32("r4", 4);
-                var flags = new RegisterStorage("flags", 0x0A, 0, PrimitiveType.Word32);
+                var flags = RegisterStorage.Reg32("flags", 0x0A);
                 var SCZ = m.Frame.EnsureFlagGroup(flags, 0x7, "SZC", PrimitiveType.Byte);
                 var C = m.Frame.EnsureFlagGroup(flags, 0x4, "C", PrimitiveType.Byte);
 
@@ -834,7 +834,7 @@ ProcedureBuilder_exit:
             {
                 var r1 = m.Reg16("r1", 1);
                 var r0 = m.Reg16("r0", 0);
-                var psw = new RegisterStorage("psw", 2, 0, PrimitiveType.Word16);
+                var psw = RegisterStorage.Reg16("psw", 2);
                 var C = m.Frame.EnsureFlagGroup(new FlagGroupStorage(psw, 1, "C", PrimitiveType.Bool));
                 var NZVC = m.Frame.EnsureFlagGroup(new FlagGroupStorage(psw, 0xF, "NZVC", PrimitiveType.Word16));
                 var tmp = m.Frame.CreateTemporary("tmp", PrimitiveType.Word16);
@@ -893,7 +893,7 @@ SsaProcedureBuilder_exit:
                 var b_1 = m.Reg8("b", 3);
                 var c = m.Reg8("c", 4);
                 var c_1 = m.Reg8("c_1", 4);
-                var flags = new RegisterStorage("flags", 42, 0, PrimitiveType.Word32);
+                var flags = RegisterStorage.Reg32("flags", 42);
                 var szc = new FlagGroupStorage(flags, 7, "SZC", PrimitiveType.Byte);
                 var cy = new FlagGroupStorage(flags, 1, "C", PrimitiveType.Bool);
                 var SZC_1 = m.Flags("SZC_1", szc);
@@ -969,7 +969,7 @@ SsaProcedureBuilder_exit:
 
             RunSsaTest(sExp, m =>
             {
-                var flags = new RegisterStorage("flags", 42, 0, PrimitiveType.Word32);
+                var flags = RegisterStorage.Reg32("flags", 42);
                 var sczo = new FlagGroupStorage(flags, 0xF, "SZCO", PrimitiveType.Byte);
                 var cy = new FlagGroupStorage(flags, 1, "C", PrimitiveType.Bool);
                 var fp = m.FramePointer();
@@ -1044,7 +1044,7 @@ ProcedureBuilder_exit:
                 var ax = m.Reg16("ax", 0);
                 var cx = m.Reg16("cx", 1);
                 var dx = m.Reg16("dx", 2);
-                var psw = new RegisterStorage("psw", 2, 0, PrimitiveType.Word16);
+                var psw = RegisterStorage.Reg16("psw", 2);
                 var CF = m.Frame.EnsureFlagGroup(new FlagGroupStorage(psw, 1, "C", PrimitiveType.Bool));
                 var SCZO = m.Frame.EnsureFlagGroup(new FlagGroupStorage(psw, 0xF, "SCZO", PrimitiveType.Word16));
                 var tmp = m.Frame.CreateTemporary(PrimitiveType.Bool);
@@ -1100,7 +1100,7 @@ ProcedureBuilder_exit:
             {
                 var ax = m.Reg16("ax", 0);
                 var dx = m.Reg16("dx", 2);
-                var psw = new RegisterStorage("psw", 2, 0, PrimitiveType.Word16);
+                var psw = RegisterStorage.Reg16("psw", 2);
                 var CF = m.Frame.EnsureFlagGroup(new FlagGroupStorage(psw, 1, "C", PrimitiveType.Bool));
                 var SF = m.Frame.EnsureFlagGroup(new FlagGroupStorage(psw, 8, "S", PrimitiveType.Bool));
                 var SCZO = m.Frame.EnsureFlagGroup(new FlagGroupStorage(psw, 0xF, "SCZO", PrimitiveType.Word16));
@@ -1168,7 +1168,7 @@ ProcedureBuilder_exit:
             {
                 var r2 = m.Reg32("r2", 2);
                 var ctr = m.Reg32("ctr", 12);
-                var psw = new RegisterStorage("psw", 2, 0, PrimitiveType.Word16);
+                var psw = RegisterStorage.Reg16("psw", 2);
                 var SCZO = m.Frame.EnsureFlagGroup(new FlagGroupStorage(psw, 0xF, "SCZO", PrimitiveType.Word16));
 
                 m.Label("m1");

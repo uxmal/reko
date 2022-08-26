@@ -98,7 +98,7 @@ namespace Reko.UnitTests.Decompiler.Analysis
         {
             RunTest(m =>
             {
-                var flags = new RegisterStorage("flags", 0x0A, 0, PrimitiveType.Word32);
+                var flags = RegisterStorage.Reg32("flags", 0x0A);
                 var CN = m.Frame.EnsureFlagGroup(flags, 0x3, "CN", PrimitiveType.Byte);
                 var C = m.Frame.EnsureFlagGroup(flags, 0x1, "C", PrimitiveType.Bool);
                 var N = m.Frame.EnsureFlagGroup(flags, 0x2, "N", PrimitiveType.Bool);
@@ -122,12 +122,12 @@ namespace Reko.UnitTests.Decompiler.Analysis
         {
             RunTest(m =>
             {
-                var flags = new RegisterStorage("flags", 0xA, 0, PrimitiveType.Word32);
+                var flags = RegisterStorage.Reg32("flags", 0xA);
                 var CN = m.Frame.EnsureFlagGroup(flags, 0x3, "CN", PrimitiveType.Byte);
                 var C = m.Frame.EnsureFlagGroup(flags, 0x1, "C", PrimitiveType.Bool);
                 var N = m.Frame.EnsureFlagGroup(flags, 0x2, "N", PrimitiveType.Bool);
                 var Z = m.Frame.EnsureFlagGroup(flags, 0x4, "Z", PrimitiveType.Bool);
-                var a = m.Frame.EnsureRegister(new RegisterStorage("a", 0, 0, PrimitiveType.Word32));
+                var a = m.Frame.EnsureRegister(RegisterStorage.Reg32("a", 0));
                 m.Assign(a, m.IAdd(a, 3));
                 m.Assign(N, m.Cond(a));
                 m.Assign(a, m.IAdd(a, a));
@@ -150,9 +150,9 @@ namespace Reko.UnitTests.Decompiler.Analysis
         {
             RunTest(m =>
             {
-                var al = m.Frame.EnsureRegister(new RegisterStorage("al", 0, 0, PrimitiveType.Byte));
-                var bx = m.Frame.EnsureRegister(new RegisterStorage("bx", 3, 0, PrimitiveType.Word16));
-                var bl = m.Frame.EnsureRegister(new RegisterStorage("bl", 3, 0, PrimitiveType.Byte));
+                var al = m.Frame.EnsureRegister(RegisterStorage.Reg8("al", 0));
+                var bx = m.Frame.EnsureRegister(RegisterStorage.Reg16("bx", 3));
+                var bl = m.Frame.EnsureRegister(RegisterStorage.Reg8("bl", 3));
                 m.Assign(bx, m.Convert(al, al.DataType, PrimitiveType.Word16));
                 m.SideEffect(m.Fn("foo", bl));
             });

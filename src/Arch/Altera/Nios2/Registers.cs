@@ -40,9 +40,9 @@ namespace Reko.Arch.Altera.Nios2
         {
             var factory = new StorageFactory();
             GpRegisters = factory.RangeOfReg32(32, "r{0}");
-            GpRegisters[0] = new RegisterStorage("zero", 0, 0, PrimitiveType.Word32);
-            sp = GpRegisters[27] = new RegisterStorage("sp", 27, 0, PrimitiveType.Word32);
-            ra = GpRegisters[31] = new RegisterStorage("ra", 31, 0, PrimitiveType.Word32);
+            GpRegisters[0] = RegisterStorage.Reg32("zero", 0);
+            sp = GpRegisters[27] = RegisterStorage.Reg32("sp", 27);
+            ra = GpRegisters[31] = RegisterStorage.Reg32("ra", 31);
 
             var ctrlFactory = new StorageFactory(StorageDomain.SystemRegister);
             ControlRegisters = new RegisterStorage?[]

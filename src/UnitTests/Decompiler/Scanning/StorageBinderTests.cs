@@ -37,8 +37,8 @@ namespace Reko.UnitTests.Decompiler.Scanning
         public void Stgb_FlagReg()
         {
             var stgb = new StorageBinder();
-            var flagReg1 = new RegisterStorage("flagreg1", 41, 0, PrimitiveType.Word32);
-            var flagReg2 = new RegisterStorage("flagreg2", 42, 0, PrimitiveType.Word32);
+            var flagReg1 = RegisterStorage.Reg32("flagreg1", 41);
+            var flagReg2 = RegisterStorage.Reg32("flagreg2", 42);
             var grf = stgb.EnsureFlagGroup(flagReg1, 0x05, "CZ", PrimitiveType.Byte);
             var grf2 = stgb.EnsureFlagGroup(flagReg1, 0x05, "CZ", PrimitiveType.Byte);
             Assert.AreSame(grf, grf2);

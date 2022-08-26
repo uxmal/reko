@@ -209,7 +209,7 @@ namespace Reko.UnitTests.Decompiler.Scanning
                     {
                         "GetDC",
                         new FunctionType(
-                            new Identifier("", new Pointer(VoidType.Instance, 32), new RegisterStorage("eax", 0, 0, PrimitiveType.Word32)),
+                            new Identifier("", new Pointer(VoidType.Instance, 32), RegisterStorage.Reg32("eax", 0)),
                             new [] {
                                 new Identifier("arg",
                                     new TypeReference(

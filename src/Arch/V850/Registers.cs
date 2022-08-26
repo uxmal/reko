@@ -32,7 +32,7 @@ namespace Reko.Arch.V850
         {
             var factory = new StorageFactory();
             var gpRegs = factory.RangeOfReg32(32, "r{0}");
-            gpRegs[30] = new RegisterStorage("ep", 30, 0, PrimitiveType.Word32);
+            gpRegs[30] = RegisterStorage.Reg32("ep", 30);
             GpRegs = gpRegs;
             ElementPtr = gpRegs[30];
         }

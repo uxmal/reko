@@ -33,10 +33,10 @@ namespace Reko.Arch.H8
             var factory = new StorageFactory();
             GpRegisters = factory.RangeOfReg32(8, "er{0}");
             GpRegisters[7] = new RegisterStorage("sp", 7, 0, PrimitiveType.Ptr32);
-            RRegisters = GpRegisters.Select((r, i) => new RegisterStorage($"r{i}", r.Number, 0, PrimitiveType.Word16)).ToArray();
-            ERegisters = GpRegisters.Select((r, i) => new RegisterStorage($"e{i}", r.Number, 16, PrimitiveType.Word16)).ToArray();
-            RlRegisters = GpRegisters.Select((r, i) => new RegisterStorage($"r{i}l", r.Number, 0, PrimitiveType.Byte)).ToArray();
-            RhRegisters = GpRegisters.Select((r, i) => new RegisterStorage($"r{i}h", r.Number, 8, PrimitiveType.Byte)).ToArray();
+            RRegisters = GpRegisters.Select((r, i) => RegisterStorage.Reg16($"r{i}", r.Number, 0)).ToArray();
+            ERegisters = GpRegisters.Select((r, i) => RegisterStorage.Reg16($"e{i}", r.Number, 16)).ToArray();
+            RlRegisters = GpRegisters.Select((r, i) => RegisterStorage.Reg8($"r{i}l", r.Number, 0)).ToArray();
+            RhRegisters = GpRegisters.Select((r, i) => RegisterStorage.Reg8($"r{i}h", r.Number, 8)).ToArray();
             Gp16Registers = RRegisters.Concat(ERegisters).ToArray();
             Gp8Registers = RhRegisters.Concat(RlRegisters).ToArray();
 

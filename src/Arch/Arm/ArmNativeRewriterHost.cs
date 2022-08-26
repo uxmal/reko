@@ -68,7 +68,7 @@ namespace Reko.Arch.Arm
         {
             if (!coprocregs.TryGetValue(coprocreg, out var reg))
             {
-                reg = new RegisterStorage($"p{coprocreg}", (int)StorageDomain.Register + 0x800, 0, PrimitiveType.Word32);
+                reg = RegisterStorage.Reg32($"p{coprocreg}", (int)StorageDomain.Register + 0x800);
                 coprocregs.Add(coprocreg, reg);
             }
             return reg;

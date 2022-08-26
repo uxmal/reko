@@ -46,8 +46,8 @@ namespace Reko.UnitTests.Decompiler.Analysis
         [SetUp]
         public void Setup()
         {
-            this.r1 = new Identifier("r1", PrimitiveType.Word32, new RegisterStorage("r1", 1, 0, PrimitiveType.Word32));
-            this.r2 = new Identifier("r2", PrimitiveType.Word32, new RegisterStorage("r2", 2, 0, PrimitiveType.Word32));
+            this.r1 = new Identifier("r1", PrimitiveType.Word32, RegisterStorage.Reg32("r1", 1));
+            this.r2 = new Identifier("r2", PrimitiveType.Word32, RegisterStorage.Reg32("r2", 2));
         }
 
         private Identifier EnsureRegister16(ProcedureBuilder m, string name)
@@ -331,7 +331,7 @@ ProcedureBuilder_exit:
 ";
             RunStringTest(sExp, m =>
             {
-                var eflags = new RegisterStorage("eflags", 9, 0, PrimitiveType.Word32);
+                var eflags = RegisterStorage.Reg32("eflags", 9);
                 var sz = m.Frame.EnsureFlagGroup(m.Architecture.GetFlagGroup("SZ"));
                 var cz = m.Frame.EnsureFlagGroup(m.Architecture.GetFlagGroup("SZ"));
                 var c = m.Frame.EnsureFlagGroup(m.Architecture.GetFlagGroup("C"));
