@@ -75,7 +75,7 @@ namespace Reko.ImageLoaders.Elf
         private readonly ElfSection shdr;
         private readonly ElfMachine machine;
 
-        private Dictionary<long, ElfDynamicEntry.TagInfo> machineSpecific;
+        private readonly Dictionary<long, ElfDynamicEntry.TagInfo> machineSpecific;
 
         public DynamicSectionRenderer32(ElfLoader loader, ElfSection shdr, ElfMachine machine)
         {

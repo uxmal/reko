@@ -470,7 +470,7 @@ namespace Reko.ImageLoaders.Elf
         public void LoadDynamicSegment()
         {
             var dynSeg = Segments.FirstOrDefault(p => p.p_type == ProgramHeaderType.PT_DYNAMIC);
-            if (dynSeg == null)
+            if (dynSeg is null)
                 return;
             var rdr = this.endianness!.CreateImageReader(rawImage!, (long) dynSeg.p_offset);
             var (deps, entries) = LoadDynamicSegment(rdr);

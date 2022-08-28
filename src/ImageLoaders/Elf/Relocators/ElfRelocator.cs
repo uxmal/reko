@@ -236,34 +236,43 @@ namespace Reko.ImageLoaders.Elf.Relocators
                     foreach (var (addrImport, elfSym, extraSym) in relTable.RelocateEntries(program, offStrtab, offSymtab, syment.UValue))
                     {
                         symbols.Add(elfSym);
-                        var imgSym = Loader.CreateImageSymbol(elfSym, true);
-                        if (imgSym != null && imgSym.Address!.ToLinear() != 0)
-                        {
-                            imageSymbols[imgSym.Address] = imgSym;
-                        }
-                        
-                        if (extraSym != null)
-                        {
+                        if (extraSym is { })
                             symbols.Add(extraSym);
-                            var extraImgSym = Loader.CreateImageSymbol(extraSym, true);
-                            if (extraImgSym != null)
-                            {
-                                imageSymbols[extraImgSym.Address!] = extraImgSym;
-                            }
-                        }
-                        if (elfSym.SectionIndex == ElfSection.SHN_UNDEF && imgSym != null)
-                        {
-                            program.ImportReferences[addrImport] =
-                                new NamedImportReference(
-                                    addrImport,
-                                    null,   // ELF imports don't specify which module to take the import from
-                                    imgSym.Name!,
-                                    imgSym.Type);
-                        }
+                        GenerateImageSymbol(program, addrImport, elfSym, extraSym);
                     }
                 }
             }
             return symbols;
+        }
+
+        /// <summary>
+        /// Generates a Reko <see cref="ImageSymbol"/> and records it in the <paramref name="program"/>.
+        /// </summary>
+        protected void GenerateImageSymbol(Program program, Address addrImport, ElfSymbol elfSym, ElfSymbol? extraSym)
+        {
+            var imgSym = Loader.CreateImageSymbol(elfSym, true);
+            if (imgSym != null && imgSym.Address!.ToLinear() != 0)
+            {
+                imageSymbols[imgSym.Address] = imgSym;
+            }
+
+            if (extraSym != null)
+            {
+                var extraImgSym = Loader.CreateImageSymbol(extraSym, true);
+                if (extraImgSym != null)
+                {
+                    imageSymbols[extraImgSym.Address!] = extraImgSym;
+                }
+            }
+            if (elfSym.SectionIndex == ElfSection.SHN_UNDEF && imgSym != null)
+            {
+                program.ImportReferences[addrImport] =
+                    new NamedImportReference(
+                        addrImport,
+                        null,   // ELF imports don't specify which module to take the import from
+                        imgSym.Name!,
+                        imgSym.Type);
+            }
         }
 
         private void LoadSymbolsFromDynamicSegment(ElfSegment dynSeg, ElfDynamicEntry symtab, ElfDynamicEntry syment, ulong offStrtab, ulong offSymtab)

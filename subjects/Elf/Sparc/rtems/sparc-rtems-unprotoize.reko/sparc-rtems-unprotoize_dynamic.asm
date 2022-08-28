@@ -1,7 +1,7 @@
 ;;; Segment .dynamic (00027BA0)
 ; DT_NEEDED            libc.so.1
 ; DT_INIT              00016EC8
-; DT_DEBUG             00016EE4
+; DT_FINI              00016EE4
 ; DT_VERNEED           000111E4
 ; DT_VERNEEDNUM               1
 ; DT_HASH              000100E8

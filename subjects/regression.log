@@ -1370,6 +1370,10 @@ l000084F0_1: warning: Non-integral switch expression
 === Elf\MIPS\swlswr\test
 000005A0: warning: Unable to resolve imported reference __gmon_start__.
 000005AC: warning: Unable to resolve imported reference __gmon_start__.
+0000068C: warning: Unable to resolve imported reference _ITM_deregisterTMCloneTable.
+0000068C: warning: Unable to resolve imported reference _ITM_deregisterTMCloneTable.
+000006D8: warning: Unable to resolve imported reference _ITM_registerTMCloneTable.
+000006D8: warning: Unable to resolve imported reference _ITM_registerTMCloneTable.
 00000728: warning: Unable to resolve imported reference __cxa_finalize.
 00000728: warning: Unable to resolve imported reference __cxa_finalize.
 00000734: warning: Unable to resolve imported reference __cxa_finalize.
@@ -1997,4 +2001,4 @@ Signature of 'Microsoft Visual C++ 8' detected.
 0040120B: warning: Unable to determine the upper bound of an indirect call or jump; there may be more than 2 entries.
 004011A5: warning: Unable to determine the upper bound of an indirect call or jump; there may be more than 2 entries.
 
-Decompiled 87 binaries in 41.30 seconds.
+Decompiled 87 binaries in 47.91 seconds.

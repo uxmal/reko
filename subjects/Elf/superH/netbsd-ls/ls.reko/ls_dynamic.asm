@@ -4,7 +4,7 @@
 ; DT_NEEDED            libc.so.12
 ; DT_RPATH             000002B9
 ; DT_INIT              00401700
-; DT_DEBUG             00404550
+; DT_FINI              00404550
 ; DT_HASH              00400154
 ; DT_STRTAB            00400BF0
 ; DT_SYMTAB            004004B0

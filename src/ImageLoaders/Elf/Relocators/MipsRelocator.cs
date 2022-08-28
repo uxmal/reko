@@ -73,11 +73,60 @@ namespace Reko.ImageLoaders.Elf.Relocators
 
         public override void Relocate(Program program)
         {
-            base.Relocate(program);
+            // MIPS relocation is really confusing, and doesn't follow
+            // the pattern of most other architectures. The code below follows
+            // the specification in "SYSTEM V APPLICATION BINARY INTERFACE, MIPS
+            // RISC Processor Supplement, 3rd Edition", figure 5-9.
 
-            var dynsect = loader.GetSectionInfoByName(".dynamic");
-            if (dynsect == null)
-                return;
+            foreach (var dynSeg in EnumerateDynamicSegments())
+            {
+                DumpDynamicSegment(dynSeg);
+
+                var dynent = Loader.DynamicEntries;
+                if (!dynent.TryGetValue(ElfDynamicEntry.Mips.DT_MIPS_BASE_ADDRESS, out var baseAddr) ||
+                    !dynent.TryGetValue(ElfDynamicEntry.DT_SYMTAB, out var dynsymtab) ||
+                    !dynent.TryGetValue(ElfDynamicEntry.DT_STRTAB, out var strtab) ||
+                    !dynent.TryGetValue(ElfDynamicEntry.DT_SYMENT, out var syment) ||
+                    !dynent.TryGetValue(ElfDynamicEntry.Mips.DT_MIPS_LOCAL_GOTNO, out var got_local_num) ||
+                    !dynent.TryGetValue(ElfDynamicEntry.Mips.DT_MIPS_GOTSYM, out var symtab_got_idx) ||
+                    !dynent.TryGetValue(ElfDynamicEntry.Mips.DT_MIPS_SYMTABNO, out var symbol_count) ||
+                    !dynent.TryGetValue(ElfDynamicEntry.DT_PLTGOT, out var gotaddr))
+                    continue;
+                var wordsize =(uint) program.Architecture.WordWidth.Size;
+
+                // "Local entries reside in the first part of the global offset table. The value of
+                // the dynamic tag DT_MIPS_LOCAL_GOTNO holds the number of local global offset
+                // table entries.These entries only require relocation if they occur in a shared object
+                // and the shared object memory load address differs from the virtual address of the
+                // loadable segments of the shared object. As with defined external entries in the
+                // //global offset table, these local entries contain actual addresses".
+
+                for (uint i = 2; i < got_local_num.UValue; ++i)
+                {
+                    //$TODO: not sure how to deal with these entries yet; they don't appear
+                    // to have symbols associated with them
+                    // gotaddr.UValue + i * wordsize;
+                }
+
+                // "External entries reside in the second part of the global offset table.
+                // Each entry in the external section corresponds to an entry in the global
+                // offset table mapped part of the .dynsym section The first symbol in the
+                // .dynsym section corresponds to the first word of the global offset table;
+                // the second symbol corresponds to the second word, and so on. Each word
+                // in the external entry part of the global offset table contains the
+                // actual address for its corresponding symbol."
+
+                var nGlobalSyms = symbol_count.UValue - symtab_got_idx.UValue;
+                for (uint i = 0; i < nGlobalSyms; ++i)
+                {
+                    var offStrtab = Loader.AddressToFileOffset(strtab.UValue);
+                    var offSymtab = Loader.AddressToFileOffset(dynsymtab.UValue);
+                    var symbol = this.loader.EnsureSymbol(offSymtab, (int)(i + symtab_got_idx.UValue), syment.UValue, offStrtab);
+                    ElfImageLoader.trace.Verbose("Mips Dynsym: {0:X8} - {1} {2:X4} {3}", symbol!.Value, symbol!.SectionIndex, symbol.Size, symbol!.Name);
+                    var addrGotSlot = loader.CreateAddress(gotaddr.UValue + (i + got_local_num.UValue) * wordsize);
+                    base.GenerateImageSymbol(program, addrGotSlot, symbol, null);
+                }
+            }
         }
 
         #region Long tirade about global pointer in MIPS ELF

@@ -25,12 +25,9 @@ void __start(word32 r2, word32 dwArg00)
 //      __do_global_dtors_aux
 void deregister_tm_clones()
 {
-	if (g_t10AA4 == 68228)
+	if (g_t10AA4 == 68228 || _ITM_deregisterTMCloneTable == null)
 		return;
-	<anonymous> * r25_n = g_ptr10AE4;
-	if (r25_n == null)
-		return;
-	r25_n();
+	_ITM_deregisterTMCloneTable();
 }
 
 // 000006A8: void register_tm_clones()
@@ -39,12 +36,9 @@ void deregister_tm_clones()
 void register_tm_clones()
 {
 	Eq_n r5_n = g_t10AA4 - 68228 >> 0x02;
-	if ((r5_n >>u 0x1F) + r5_n >> 0x01 == 0x00)
+	if ((r5_n >>u 0x1F) + r5_n >> 0x01 == 0x00 || _ITM_registerTMCloneTable == null)
 		return;
-	<anonymous> * r25_n = g_ptr10AD4;
-	if (r25_n == null)
-		return;
-	r25_n();
+	_ITM_registerTMCloneTable();
 }
 
 // 000006F4: void __do_global_dtors_aux()

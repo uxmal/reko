@@ -97,6 +97,13 @@ namespace Reko.ImageLoaders.Elf
             return null;
         }
 
+        public override string ToString()
+        {
+            string? tagname = TagInfos.TryGetValue(Tag, out var tagInfo)
+                ? tagInfo.Name
+                : Tag.ToString("X8");
+            return $"Tag:{tagname,-12}, Value: {UValue:X8}";
+        }
 
         public class TagInfo
         {
@@ -108,7 +115,7 @@ namespace Reko.ImageLoaders.Elf
         public static readonly Dictionary<long, TagInfo> TagInfos = new()
         {
             { DT_DEBUG,   new TagInfo { Name = "DT_DEBUG", Format= DtFormat.Hexadecimal } },
-            { DT_FINI,    new TagInfo { Name="DT_DEBUG", Format = DtFormat.Address } },
+            { DT_FINI,    new TagInfo { Name = "DT_FINI", Format = DtFormat.Address } },
             { DT_HASH,    new TagInfo { Name = "DT_HASH", Format = DtFormat.Address} },
             { DT_INIT,    new TagInfo { Name = "DT_INIT", Format = DtFormat.Address} },
             { DT_RELA,    new TagInfo { Name = "DT_RELA", Format = DtFormat.Address} },
