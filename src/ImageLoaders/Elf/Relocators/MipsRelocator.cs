@@ -124,7 +124,18 @@ namespace Reko.ImageLoaders.Elf.Relocators
                     var symbol = this.loader.EnsureSymbol(offSymtab, (int)(i + symtab_got_idx.UValue), syment.UValue, offStrtab);
                     ElfImageLoader.trace.Verbose("Mips Dynsym: {0:X8} - {1} {2:X4} {3}", symbol!.Value, symbol!.SectionIndex, symbol.Size, symbol!.Name);
                     var addrGotSlot = loader.CreateAddress(gotaddr.UValue + (i + got_local_num.UValue) * wordsize);
-                    base.GenerateImageSymbol(program, addrGotSlot, symbol, null);
+                    if (symbol.Value != 0)
+                    {
+                        base.GenerateImageSymbol(program, addrGotSlot, symbol, null);
+                        if (symbol.SectionIndex == ElfSection.SHN_UNDEF)
+                        {
+                            var ep = program.Platform.LookupProcedureByName(null, symbol.Name);
+                            if (ep is { })
+                            {
+                                program.InterceptedCalls.Add(loader.CreateAddress(symbol.Value), ep);
+                            }
+                        }
+                    }
                 }
             }
         }

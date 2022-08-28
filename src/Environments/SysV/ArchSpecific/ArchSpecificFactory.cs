@@ -53,6 +53,8 @@ namespace Reko.Environments.SysV.ArchSpecific
                 return TrampolineFinder.Arm32;
             case "arm-64":
                 return TrampolineFinder.AArch64;
+            case "mips-be-32":
+                return TrampolineFinder.Mips32;
             case "risc-v":
                 return TrampolineFinder.RiscV;
             case "x86-protected-32":

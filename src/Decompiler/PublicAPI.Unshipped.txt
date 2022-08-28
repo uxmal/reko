@@ -1149,7 +1149,6 @@ Reko.Loading.Loader
 Reko.Loading.Loader.AssembleExecutable(Reko.Core.ImageLocation! asmFileLocation, byte[]! image, Reko.Core.Assemblers.IAssembler! asm, Reko.Core.IPlatform! platform, Reko.Core.Address! addrLoad) -> Reko.Core.Program!
 Reko.Loading.Loader.AssembleExecutable(Reko.Core.ImageLocation! asmFileLocation, Reko.Core.Assemblers.IAssembler! asm, Reko.Core.IPlatform! platform, Reko.Core.Address! addrLoad) -> Reko.Core.Program!
 Reko.Loading.Loader.CopyImportReferences(System.Collections.Generic.Dictionary<Reko.Core.Address!, Reko.Core.ImportReference!>! importReference, Reko.Core.Program! program) -> void
-Reko.Loading.Loader.CopyInterceptedCalls(System.Collections.Generic.Dictionary<Reko.Core.Address!, Reko.Core.ExternalProcedure!>! interceptedCalls, Reko.Core.Program! program) -> void
 Reko.Loading.Loader.CreateDefaultImageLoader(Reko.Core.ImageLocation! imageLocation, byte[]! image) -> Reko.Core.Loading.ImageLoader?
 Reko.Loading.Loader.DefaultToFormat.get -> string?
 Reko.Loading.Loader.DefaultToFormat.set -> void

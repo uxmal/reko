@@ -48,6 +48,11 @@ namespace Reko.Core
         {
         }
 
+        /// <summary>
+        /// Creates a <see cref="Project"/> from a single <see cref="Program"/>.
+        /// </summary>
+        /// <param name="program">The <see cref="Program"/> from which to build the project.</param>
+        /// <returns>A <see cref="Project"/> instance.</returns>
         public static Project FromSingleProgram(Program program)
         {
             Debug.Assert(program.Location is not null, "Program is missing a location.");

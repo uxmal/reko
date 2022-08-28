@@ -213,6 +213,52 @@ namespace Reko.Environments.SysV.ArchSpecific
         }
 
         /// <summary>
+        /// Find the destination of a MIPS32 plt stub.
+        /// </summary>
+        public static Expression? Mips32(IProcessorArchitecture arch, Address addrInstr, IEnumerable<RtlInstruction> instrs, IRewriterHost host)
+        {
+            var stubInstrs = instrs.Take(4).ToArray();
+            if (stubInstrs.Length != 4)
+                return null;
+
+            if (addrInstr.ToLinear() == 0x401150)
+                _ = addrInstr;//$DEBUG
+            if (stubInstrs[0] is RtlAssignment load &&
+                load.Dst is Identifier idDst &&
+                idDst.Name == "r25" &&
+                load.Src is MemoryAccess)
+            {
+            }
+            else return null;
+
+            if (stubInstrs[1] is RtlAssignment copy &&
+                copy.Src is Identifier idSrc &&
+                idSrc.Name == "ra")
+            {
+            }
+            else return null;
+
+            if (stubInstrs[2] is RtlCall call &&
+                call.Class.HasFlag(InstrClass.Delay) &&
+                call.Target is Identifier idTarget &&
+                idTarget == idDst)
+            { }
+            else return null;
+
+            if (stubInstrs[3] is RtlAssignment init &&
+                init.Dst is Identifier &&
+                init.Src is Constant)
+            {
+                var impProc = host.GetInterceptedCall(arch, addrInstr);
+                if (impProc is { })
+                {
+                    return new ProcedureConstant(arch.PointerType, impProc);
+                }
+            }
+            return null;
+        }
+
+        /// <summary>
         /// Find the destination of a Risc-V PLT stub.
         /// </summary>
         /// <code>

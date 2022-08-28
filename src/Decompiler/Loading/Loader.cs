@@ -562,14 +562,6 @@ namespace Reko.Loading
             }
         }
 
-        protected static void CopyInterceptedCalls(Dictionary<Address, ExternalProcedure> interceptedCalls, Program program)
-        {
-            foreach (var item in interceptedCalls)
-            {
-                program.InterceptedCalls.Add(item.Key, item.Value);
-            }
-        }
-
         public void RunScriptOnProgramImage(Program program, Script_v2? script)
         {
             if (script == null || !script.Enabled || script.Script == null)
