@@ -18,13 +18,12 @@
  */
 #endregion
 
-using System;
 using Reko.Core.Code;
 
 namespace Reko.Core
 {
     /// <summary>
-    /// Statements constitute the contents basic blocks. They associate an
+    /// Statements constitute the contents of basic blocks. They associate an
     /// <see cref="Reko.Core.Code.Instruction"/> with an <see cref="Reko.Core.Address"/> and 
     /// the <see cref="Reko.Core.Block"/> in which the instrution is located.
     /// </summary>

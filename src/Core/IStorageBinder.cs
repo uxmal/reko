@@ -30,7 +30,7 @@ namespace Reko.Core
 {
     /// <summary>
     /// Objects implementing this interface know how to bind a storage
-    /// location to an identifier.
+    /// location to an <see cref="Identifier"/>.
     /// </summary>
     public interface IStorageBinder
     {

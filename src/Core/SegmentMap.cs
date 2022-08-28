@@ -80,7 +80,7 @@ namespace Reko.Core
         /// <param name="segmentName">The name of the segment.</param>
         /// <param name="mode">The access mode of the segment.</param>
         /// <returns>The resulting image segment.</returns>
-        public ImageSegment AddSegment(ByteMemoryArea mem, string segmentName, AccessMode mode)
+        public ImageSegment AddSegment(MemoryArea mem, string segmentName, AccessMode mode)
         {
             var segment = new ImageSegment(
                     segmentName,
