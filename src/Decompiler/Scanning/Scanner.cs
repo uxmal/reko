@@ -117,6 +117,8 @@ namespace Reko.Scanning
 
         public IServiceProvider Services { get; }
 
+        public Constant? GlobalRegisterValue => this.Program.GlobalRegisterValue;
+
         private class BlockRange
         {
             /// <summary>

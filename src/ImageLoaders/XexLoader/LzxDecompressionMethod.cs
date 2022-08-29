@@ -138,7 +138,7 @@ namespace Reko.ImageLoaders.Xex
       33161216, 33292288, 33423360
   };
 
-        private Stream? input;
+        private Stream input;
 
         private long offset; /* number of bytes actually output */
         private long length; /* overall decompressed length of stream */

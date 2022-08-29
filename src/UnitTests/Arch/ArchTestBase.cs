@@ -72,6 +72,8 @@ namespace Reko.UnitTests.Arch
                 this.intrinsics = new Dictionary<string, IntrinsicProcedure>();
             }
 
+            public Constant GlobalRegisterValue => null;
+
             public IntrinsicProcedure EnsureIntrinsic(string name, bool hasSideEffect, DataType returnType, int arity)
             {
                 if (intrinsics.TryGetValue(name, out var p))

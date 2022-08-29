@@ -38,6 +38,8 @@ namespace Reko.WindowsItp
                 this.intrinsics = new Dictionary<string, IntrinsicProcedure>();
             }
 
+            public Constant GlobalRegisterValue => null;
+
             public IntrinsicProcedure EnsureIntrinsic(string name, bool hasSideEffect, DataType returnType, int arity)
             {
                 if (intrinsics.TryGetValue(name, out var intrinsic))

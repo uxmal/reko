@@ -21,22 +21,22 @@
 using Reko.Core;
 using Reko.Core.Code;
 using Reko.Core.Collections;
+using Reko.Core.Diagnostics;
 using Reko.Core.Expressions;
 using Reko.Core.Graphs;
 using Reko.Core.Operators;
 using Reko.Core.Types;
-using System.Collections.Generic;
-using System.Linq;
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using System.Text;
-using Reko.Core.Diagnostics;
 
 namespace Reko.Analysis
 {
-	/// <summary>
-	/// Transforms a <see cref="Reko.Core.Procedure"/> to Static Single Assignment form.
-	/// </summary>
+    /// <summary>
+    /// Transforms a <see cref="Reko.Core.Procedure"/> to Static Single Assignment form.
+    /// </summary>
     /// <remarks>
     /// This class implements an SSA algorithm that does not require the
     /// calculation of the dominator graph. It is based on the algorithm
@@ -76,9 +76,9 @@ namespace Reko.Analysis
         {
             this.arch = proc.Architecture;
             this.program = program;
-            this.programFlow = programFlow;
-            this.dynamicLinker = dynamicLinker;
             this.sccProcs = sccProcs;
+            this.dynamicLinker = dynamicLinker;
+            this.programFlow = programFlow;
             this.ssa = new SsaState(proc);
             this.blockstates = ssa.Procedure.ControlGraph.Blocks.ToDictionary(k => k, v => new SsaBlockState(v));
             this.availableSlices = new Dictionary<(SsaIdentifier, BitRange), SsaIdentifier>();

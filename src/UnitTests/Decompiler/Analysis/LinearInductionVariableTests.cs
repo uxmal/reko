@@ -343,10 +343,11 @@ namespace Reko.UnitTests.Decompiler.Analysis
 
 		private void Prepare(Procedure proc)
 		{
+            var sc = new ServiceContainer();
             var listener = new FakeDecompilerEventListener();
             var dynamicLinker = new Mock<IDynamicLinker>().Object;
             doms = proc.CreateBlockDominatorGraph();
-            SsaTransform sst = new SsaTransform(
+            var sst = new SsaTransform(
                 new Program(),
                 proc,
                 new HashSet<Procedure>(),
@@ -355,7 +356,6 @@ namespace Reko.UnitTests.Decompiler.Analysis
             sst.Transform();
 			this.ssa = sst.SsaState;
 
-            var sc = new ServiceContainer();
             var arch = new FakeArchitecture(sc);
             var program = new Program { Platform = new DefaultPlatform(sc, arch) };
             var cce = new ConditionCodeEliminator(program, ssa, listener);

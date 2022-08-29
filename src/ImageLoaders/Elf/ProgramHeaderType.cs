@@ -42,5 +42,7 @@ namespace Reko.ImageLoaders.Elf
 
         PT_LOPROC = 0x70000000,
         PT_HIPROC = 0x7FFFFFFF,
+
+        PT_MIPS_REGINFO = 0x70000000,
     }
 }

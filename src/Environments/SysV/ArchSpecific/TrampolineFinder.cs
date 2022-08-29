@@ -215,18 +215,25 @@ namespace Reko.Environments.SysV.ArchSpecific
         /// <summary>
         /// Find the destination of a MIPS32 plt stub.
         /// </summary>
+        /// <code>
+        /// lw r25,-7FF0(r28)
+        /// addu r15,ra,r0
+        /// jalr ra,r25
+        /// addiu r24,r0,+00000010
+        /// </code>
         public static Expression? Mips32(IProcessorArchitecture arch, Address addrInstr, IEnumerable<RtlInstruction> instrs, IRewriterHost host)
         {
             var stubInstrs = instrs.Take(4).ToArray();
             if (stubInstrs.Length != 4)
                 return null;
 
-            if (addrInstr.ToLinear() == 0x401150)
-                _ = addrInstr;//$DEBUG
             if (stubInstrs[0] is RtlAssignment load &&
                 load.Dst is Identifier idDst &&
                 idDst.Name == "r25" &&
-                load.Src is MemoryAccess)
+                load.Src is MemoryAccess mem &&
+                mem.EffectiveAddress is BinaryExpression bin &&
+                bin.Left is Identifier gp &&
+                gp.Name == "r28")
             {
             }
             else return null;
@@ -247,13 +254,11 @@ namespace Reko.Environments.SysV.ArchSpecific
 
             if (stubInstrs[3] is RtlAssignment init &&
                 init.Dst is Identifier &&
-                init.Src is Constant)
+                init.Src is Constant &&
+                host.GlobalRegisterValue is { })
             {
-                var impProc = host.GetInterceptedCall(arch, addrInstr);
-                if (impProc is { })
-                {
-                    return new ProcedureConstant(arch.PointerType, impProc);
-                }
+                var sAddrGotSlot = host.GlobalRegisterValue.ToInt32() + ((Constant) bin.Right).ToInt32();
+                return Address.Ptr32((uint)sAddrGotSlot);
             }
             return null;
         }

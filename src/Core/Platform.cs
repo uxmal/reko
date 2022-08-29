@@ -145,6 +145,21 @@ namespace Reko.Core
         /// <returns></returns>
         string? GetPrimitiveTypeName(PrimitiveType t, string language);
 
+        /// <summary>
+        /// Determines whether the instructions <paramref name="instrs"/> 
+        /// starting at address <paramref name="addrInstr"/> are a "trampoline"
+        /// or program linkage table (PLT) stub. 
+        /// </summary>
+        /// <param name="addrInstr">The address at which the potential stub
+        /// starts.</param>
+        /// <param name="instrs">A sequence of rewritten instructions starting
+        /// at <paramref name="addrInstr">.</param>
+        /// <param name="host">An instance of <see cref="IRewriterHost"/> used
+        /// to get details from the hosting environment.
+        /// </param>
+        /// <returns>A <see cref="ProcedureBase"/> instance to the trampoline
+        /// "target", if a trampoline stub was identified, otherwise null.
+        /// </returns>
         ProcedureBase? GetTrampolineDestination(Address addrInstr, IEnumerable<RtlInstruction> instrs, IRewriterHost host);
 
         /// <summary>

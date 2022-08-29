@@ -26,6 +26,8 @@ using System.Diagnostics;
 using Reko.Core.Configuration;
 using Reko.Core.Lib;
 using Reko.Core.Diagnostics;
+using Reko.Core.Services;
+using Reko.Core.Expressions;
 
 namespace Reko.ImageLoaders.Elf.Relocators
 {
@@ -34,6 +36,8 @@ namespace Reko.ImageLoaders.Elf.Relocators
     public class MipsRelocator : ElfRelocator32
     {
         const int PointerByteSize = 4;
+        const int OFFSET_GP_GOT = 0x7FF0;
+
         private IProcessorArchitecture archMips16e;
 
         public MipsRelocator(ElfLoader32 loader, SortedList<Address, ImageSymbol> imageSymbols) : base(loader, imageSymbols)
@@ -91,8 +95,13 @@ namespace Reko.ImageLoaders.Elf.Relocators
                     !dynent.TryGetValue(ElfDynamicEntry.Mips.DT_MIPS_GOTSYM, out var symtab_got_idx) ||
                     !dynent.TryGetValue(ElfDynamicEntry.Mips.DT_MIPS_SYMTABNO, out var symbol_count) ||
                     !dynent.TryGetValue(ElfDynamicEntry.DT_PLTGOT, out var gotaddr))
+                {
+                    var listener = loader.Services.RequireService<DecompilerEventListener>();
+                    listener.Warn("Required MIPS .dynamic information is missing from this binary. This will degrade decompilation output.");
                     continue;
-                var wordsize =(uint) program.Architecture.WordWidth.Size;
+                }
+                program.GlobalRegisterValue = Constant.Word32((uint)gotaddr.UValue + OFFSET_GP_GOT);
+                var wordsize = (uint) program.Architecture.WordWidth.Size;
 
                 // "Local entries reside in the first part of the global offset table. The value of
                 // the dynamic tag DT_MIPS_LOCAL_GOTNO holds the number of local global offset
@@ -127,14 +136,6 @@ namespace Reko.ImageLoaders.Elf.Relocators
                     if (symbol.Value != 0)
                     {
                         base.GenerateImageSymbol(program, addrGotSlot, symbol, null);
-                        if (symbol.SectionIndex == ElfSection.SHN_UNDEF)
-                        {
-                            var ep = program.Platform.LookupProcedureByName(null, symbol.Name);
-                            if (ep is { })
-                            {
-                                program.InterceptedCalls.Add(loader.CreateAddress(symbol.Value), ep);
-                            }
-                        }
                     }
                 }
             }

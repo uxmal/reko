@@ -43,7 +43,7 @@ namespace Reko.UserInterfaces.AvaloniaUI.Views
             AvaloniaXamlLoader.Load(this);
         }
 
-        public string? Text { get; set; }
+        public string Text { get; set; }
 
         public UserProcedure? Value { get; set; }
 

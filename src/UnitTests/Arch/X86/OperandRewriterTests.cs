@@ -150,7 +150,9 @@ namespace Reko.UnitTests.Arch.X86
 			procedures = new Dictionary<Address,Procedure>();
 		}
 
-		public void AddCallSignature(Address addr, FunctionType sig)
+        public Constant GlobalRegisterValue => null;
+
+        public void AddCallSignature(Address addr, FunctionType sig)
 		{
 			callSignatures[addr] = sig;
 		}

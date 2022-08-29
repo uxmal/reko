@@ -102,6 +102,8 @@ namespace Reko.UnitTests.Decompiler.Scanning
                 this.globals = globals;
             }
 
+            public Constant GlobalRegisterValue => null;
+
             public IntrinsicProcedure EnsureIntrinsic(string name, bool hasSideEffect, DataType returnType, int arity)
             {
                 if (!pprocs.TryGetValue(name, out IntrinsicProcedure p))

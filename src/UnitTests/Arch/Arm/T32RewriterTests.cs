@@ -46,6 +46,8 @@ namespace Reko.UnitTests.Arch.Arm
 
         private class FakeRewriterHost : IRewriterHost
         {
+            public Constant GlobalRegisterValue => null;
+
             public IntrinsicProcedure EnsureIntrinsic(string name, bool hasSideEffect, DataType returnType, int arity)
             {
                 return new IntrinsicProcedure(name, hasSideEffect, returnType, arity);

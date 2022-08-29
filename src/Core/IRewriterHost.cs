@@ -26,6 +26,11 @@ namespace Reko.Core
 {
     public interface IRewriterHost
     {
+        /// <summary>
+        /// If the binary has a notion of a global register, this value is non-null.
+        /// </summary>
+        Constant? GlobalRegisterValue { get; }
+
         IntrinsicProcedure EnsureIntrinsic(string name, bool hasSideEffect, DataType returnType, int arity);
         /// <summary>
         /// Generates a call to an intrinsic procedure named <paramref name="name"/>.
@@ -71,6 +76,8 @@ namespace Reko.Core
         {
             throw new NotSupportedException();
         }
+
+        public Constant? GlobalRegisterValue => null;
 
         public void Error(Address address, string format, params object[] args)
         {
