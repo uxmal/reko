@@ -348,7 +348,7 @@ namespace Reko.UnitTests.Mocks
             FrameApplicationBuilder>
                 Test_CreateFrameApplicationBuilder =
                     (arch, binder, site, callee) =>
-                    new FrameApplicationBuilder(arch, binder, site, callee, false);
+                    new FrameApplicationBuilder(arch, binder, site, callee);
         public override FrameApplicationBuilder CreateFrameApplicationBuilder(IStorageBinder binder, CallSite site, Expression callee)
         {
             return Test_CreateFrameApplicationBuilder(this, binder, site, callee);

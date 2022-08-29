@@ -55,8 +55,7 @@ namespace Reko.UnitTests.Arch.X86
                 arch,
                 frame,
                 site,
-                callee,
-                false);
+                callee);
         }
 
         [Test(Description = "TOP + 0 is the first FPU argument to a function")]

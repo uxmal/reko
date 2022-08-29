@@ -37,7 +37,7 @@ namespace Reko.UnitTests.Mocks
             IProcessorArchitecture arch,
             IStorageBinder binder,
             CallSite site,
-            Expression callee) : base(arch, binder, site, callee, false)
+            Expression callee) : base(arch, binder, site, callee)
         {
             this.returnValues = new Dictionary<Identifier, Expression>();
         }

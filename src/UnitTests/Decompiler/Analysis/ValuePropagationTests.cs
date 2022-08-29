@@ -921,7 +921,7 @@ ProcedureBuilder_exit:
                 It.IsAny<CallSite>(),
                 It.IsAny<Expression>()))
                 .Returns((IStorageBinder binder, CallSite site, Expression c) =>
-                    new FrameApplicationBuilder(arch.Object, binder, site, c, false));
+                    new FrameApplicationBuilder(arch.Object, binder, site, c));
 
             var ssa = RunTest(m);
             var sExp =

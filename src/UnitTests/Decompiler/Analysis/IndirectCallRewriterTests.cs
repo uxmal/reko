@@ -94,7 +94,6 @@ namespace Reko.UnitTests.Decompiler.Analysis
             m.Assign(esp, m.ISub(esp, 4));
             m.MStore(esp, m.Word32(0x000A));
             var c = m.Call(m.Mem32(m.IAdd(ecx, 4)), 4);
-            c.CallSite.StackDepthOnEntry = 8;
             m.Return();
         }
 
@@ -114,7 +113,6 @@ namespace Reko.UnitTests.Decompiler.Analysis
             // We expect the following call to be resolved as
             // (Mem0[ecx + 8:ptr32])(arg1, arg2)
             var c = m.Call(m.Mem32(m.IAdd(ecx, 8)), 4);
-            c.CallSite.StackDepthOnEntry = 12;
             m.Return();
         }
 

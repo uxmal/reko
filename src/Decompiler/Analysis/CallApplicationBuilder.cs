@@ -43,7 +43,6 @@ namespace Reko.Analysis
         private readonly Statement stmCall;
         private readonly SsaMutator mutator;
         private readonly IProcessorArchitecture arch;
-        private readonly int stackDepthOnEntry;
         private readonly Dictionary<Storage, CallBinding> defs;
         private readonly Dictionary<Storage, CallBinding> uses;
         private readonly MemIdentifierFinder midFinder;
@@ -57,7 +56,6 @@ namespace Reko.Analysis
             this.arch = ssaCaller.Procedure.Architecture;
             this.defs = call.Definitions.ToDictionary(d => d.Storage);
             this.uses = call.Uses.ToDictionary(u => u.Storage);
-            this.stackDepthOnEntry = site.StackDepthOnEntry;
             this.midFinder = new MemIdentifierFinder();
             this.guessStackArgs = guessStackArgs;
         }
@@ -181,7 +179,7 @@ namespace Reko.Analysis
         public Expression VisitStackStorage(StackStorage stack, (BindingDictionary map, ApplicationBindingType bindUses) ctx)
         {
             Debug.Assert(ssaCaller.Procedure.Architecture.IsStackArgumentOffset(stack.StackOffset));
-            int localOff = stack.StackOffset - stackDepthOnEntry;
+            int localOff = stack.StackOffset;
             foreach (var de in ctx.map.Values
                 .Where(d => d.Storage is StackStorage))
             {

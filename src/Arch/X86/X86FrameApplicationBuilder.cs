@@ -35,9 +35,8 @@ namespace Reko.Arch.X86
             IntelArchitecture arch,
             IStorageBinder binder, 
             CallSite site,
-            Expression callee,
-            bool ensureVariables)
-            : base(arch, binder, site, callee, ensureVariables)
+            Expression callee)
+            : base(arch, binder, site, callee)
         {
         }
 

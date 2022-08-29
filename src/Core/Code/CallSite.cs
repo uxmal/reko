@@ -50,16 +50,10 @@ namespace Reko.Core.Code
         /// </summary>
         public int SizeOfReturnAddressOnStack { get; private set; }
 
-        public int StackDepthOnEntry { get; set; }
-
         public override string ToString()
         {
-            StringBuilder sb = new StringBuilder();
+            var sb = new StringBuilder();
             sb.AppendFormat("retsize: {0};", SizeOfReturnAddressOnStack);
-            if (StackDepthOnEntry != 0)
-            {
-                sb.AppendFormat(" depth: {0}", StackDepthOnEntry);
-            }
             if (FpuStackDepthBefore != 0)
             {
                 sb.AppendFormat(" FPU: {0};", FpuStackDepthBefore);

@@ -48,14 +48,12 @@ namespace Reko.Core
             IProcessorArchitecture arch,
             IStorageBinder binder,
             CallSite site,
-            Expression callee,
-            bool ensureVariables) : base(site, callee)
+            Expression callee) : base(site, callee)
         {
             this.arch = arch;
             this.site = site;
             this.binder = binder;
             this.callee = callee;
-            this.ensureVariables = ensureVariables;
         }
 
         public override Expression Bind(Identifier id)
@@ -128,7 +126,7 @@ namespace Reko.Core
             if (ensureVariables)
             {
                 return binder.EnsureStackVariable(
-                    stack.StackOffset - site.StackDepthOnEntry,
+                    stack.StackOffset,
                     stack.DataType);
             }
             else

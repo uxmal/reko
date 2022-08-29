@@ -87,7 +87,7 @@ namespace Reko.UnitTests.Decompiler.Scanning
                 It.IsAny<CallSite>(),
                 It.IsAny<Expression>()))
                 .Returns((IStorageBinder frame, CallSite site, Expression callee) =>
-                    new FrameApplicationBuilder(arch.Object, frame, site, callee, false));
+                    new FrameApplicationBuilder(arch.Object, frame, site, callee));
             scanner.Setup(s => s.Services).Returns(sc);
             sc.AddService<DecompilerEventListener>(listener.Object);
         }

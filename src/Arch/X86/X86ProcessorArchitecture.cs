@@ -102,7 +102,7 @@ namespace Reko.Arch.X86
 
         public override FrameApplicationBuilder CreateFrameApplicationBuilder(IStorageBinder binder, CallSite site, Expression callee)
         {
-            return new X86FrameApplicationBuilder(this, binder, site, callee, false);
+            return new X86FrameApplicationBuilder(this, binder, site, callee);
         }
 
         public override SortedList<string, int> GetMnemonicNames()

@@ -532,7 +532,7 @@ namespace Reko.Core
             CallSite site,
             Expression callee)
         {
-            return new FrameApplicationBuilder(this, binder, site, callee, false);
+            return new FrameApplicationBuilder(this, binder, site, callee);
         }
 
         public virtual MemoryArea CreateMemoryArea(Address addr, byte[] bytes)

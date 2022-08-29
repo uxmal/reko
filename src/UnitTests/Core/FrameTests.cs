@@ -158,7 +158,7 @@ namespace Reko.UnitTests.Core
                 new Identifier("arg0", PrimitiveType.Word16, new StackStorage(0, PrimitiveType.Word16)));
 			var cs = new CallSite(stack, 0);
 			var fn = new ProcedureConstant(PrimitiveType.Ptr32, new IntrinsicProcedure("bar", true, sig));
-			var ab = new FrameApplicationBuilder(arch, f, cs, fn, true);
+			var ab = new FrameApplicationBuilder(arch, f, cs, fn);
             Instruction instr = ab.CreateInstruction(sig, null);
 			using (FileUnitTester fut = new FileUnitTester("Core/FrBindMixedParameters.txt"))
 			{

@@ -92,13 +92,10 @@ namespace Reko.UnitTests.Core
             var wArg = callee.Frame.EnsureStackArgument(0, PrimitiveType.Word16);
             var dwArg = callee.Frame.EnsureStackArgument(2, PrimitiveType.Word32);
             callee.Signature = FunctionType.Action(wArg, dwArg);
-            var cs = new CallSite(0, 0)
-            {
-                StackDepthOnEntry = 6
-            };
-            ab = new FrameApplicationBuilder(arch, caller.Frame, cs, new ProcedureConstant(PrimitiveType.Ptr32, callee), true);
+            var cs = new CallSite(4, 0);
+            ab = new FrameApplicationBuilder(arch, caller.Frame, cs, new ProcedureConstant(PrimitiveType.Ptr32, callee));
             var instr = ab.CreateInstruction(callee.Signature, callee.Characteristics);
-            Assert.AreEqual("callee(bindToArg02, bindToArg04)", instr.ToString());
+            Assert.AreEqual("callee(Mem0[esp + -4<i32>:word16], Mem0[esp + -2<i32>:word32])", instr.ToString());
         }
 
         [Test(Description="The byte is smaller than the target register, so we expect a 'SEQ' instruction")]
