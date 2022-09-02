@@ -36,6 +36,7 @@ using Reko.Scanning;
 using Reko.UnitTests.Mocks;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
+using System.Security.Policy;
 using System.Text;
 
 namespace Reko.UnitTests.Decompiler.Scanning
@@ -49,6 +50,7 @@ namespace Reko.UnitTests.Decompiler.Scanning
         private SysVPlatform sysV_ppc;
         private Program program;
         private ProcessorState state;
+        private Frame frame;
         private VarargsFormatScanner vafs;
         private ProcedureCharacteristics printfChr;
         private FunctionType x86PrintfSig;
@@ -108,8 +110,8 @@ namespace Reko.UnitTests.Decompiler.Scanning
         private VarargsFormatScanner CreateVaScanner(Program program)
         {
             this.state = program.Architecture.CreateProcessorState();
-            var frame = program.Architecture.CreateFrame();
-            return new VarargsFormatScanner(program, frame, state, sc);
+            this.frame = program.Architecture.CreateFrame();
+            return new VarargsFormatScanner(program, program.Architecture, state, sc);
         }
 
         private void WriteString32(Program program, uint uiAddr, string str)
@@ -184,6 +186,12 @@ namespace Reko.UnitTests.Decompiler.Scanning
             this.vafs = CreateVaScanner(program);
         }
 
+        private ApplicationBuilder CreateApplicationBuilder(CallSite site, Expression callee)
+        {
+            return new FrameApplicationBuilder(program.Architecture, frame, site, callee);
+        }
+
+
         private void Given_StackString(int stackOffset, string str)
         {
             uint uiAddr = 0x13;
@@ -215,14 +223,15 @@ namespace Reko.UnitTests.Decompiler.Scanning
             Given_VaScanner(win32);
             var emptyChr = new ProcedureCharacteristics();
             var emptySig = new FunctionType();
-            Assert.IsFalse(vafs.TryScan(addrInstr, dummyPc,  null, null));
-            Assert.IsFalse(vafs.TryScan(addrInstr, dummyPc, emptySig, null));
-            Assert.IsFalse(vafs.TryScan(addrInstr, dummyPc, null, emptyChr));
-            Assert.IsFalse(vafs.TryScan(addrInstr, dummyPc, emptySig, emptyChr));
-            Assert.IsFalse(vafs.TryScan(addrInstr, dummyPc, x86PrintfSig, null));
-            Assert.IsFalse(vafs.TryScan(addrInstr, dummyPc, x86PrintfSig, emptyChr));
-            Assert.IsFalse(vafs.TryScan(addrInstr, dummyPc, null, printfChr));
-            Assert.IsFalse(vafs.TryScan(addrInstr, dummyPc, emptySig, printfChr));
+            var ab = CreateApplicationBuilder(new CallSite(4, 0), dummyPc);
+            Assert.IsFalse(vafs.TryScan(addrInstr, dummyPc, null, null, ab, out _));
+            Assert.IsFalse(vafs.TryScan(addrInstr, dummyPc, emptySig, null, ab, out _));
+            Assert.IsFalse(vafs.TryScan(addrInstr, dummyPc, null, emptyChr, ab, out _));
+            Assert.IsFalse(vafs.TryScan(addrInstr, dummyPc, emptySig, emptyChr, ab, out _));
+            Assert.IsFalse(vafs.TryScan(addrInstr, dummyPc, x86PrintfSig, null, ab, out _));
+            Assert.IsFalse(vafs.TryScan(addrInstr, dummyPc, x86PrintfSig, emptyChr, ab, out _));
+            Assert.IsFalse(vafs.TryScan(addrInstr, dummyPc, null, printfChr, ab, out _));
+            Assert.IsFalse(vafs.TryScan(addrInstr, dummyPc, emptySig, printfChr, ab, out _));
         }
 
         [Test]
@@ -230,9 +239,10 @@ namespace Reko.UnitTests.Decompiler.Scanning
         {
             Given_VaScanner(win32);
             Given_StackString(4, "%d %f");
-            Assert.IsTrue(vafs.TryScan(addrInstr, dummyPc, x86PrintfSig, printfChr));
             var c = Constant.Word32(666);
-            var instr = vafs.BuildInstruction(c, new CallSite(4, 0), printfChr);
+            var ab = win32.Architecture.CreateFrameApplicationBuilder(frame, new CallSite(4, 0), c);
+            Assert.IsTrue(vafs.TryScan(addrInstr, dummyPc, x86PrintfSig, printfChr, ab, out var newsig));
+            var instr = vafs.BuildInstruction(c, newsig, printfChr, ab);
             Assert.AreEqual(
                 "0x29A<32>(Mem0[esp:(ptr32 char)], Mem0[esp + 4<i32>:int32], " +
                            "Mem0[esp + 8<i32>:real64])",
@@ -244,10 +254,11 @@ namespace Reko.UnitTests.Decompiler.Scanning
         {
             Given_VaScanner(win32);
             Given_StackString(8, "%c");
-            Assert.IsTrue(vafs.TryScan(addrInstr, dummyPc, x86SprintfSig, printfChr));
             var ep = new ExternalProcedure("sprintf", x86SprintfSig);
             var pc = new ProcedureConstant(new CodeType(), ep);
-            var instr = vafs.BuildInstruction(pc, new CallSite(4, 0), printfChr);
+            var ab = win32.Architecture.CreateFrameApplicationBuilder(frame, new CallSite(4, 0), pc);
+            Assert.IsTrue(vafs.TryScan(addrInstr, dummyPc, x86SprintfSig, printfChr, ab, out var newsig));
+            var instr = vafs.BuildInstruction(pc, newsig, printfChr, ab);
             Assert.AreEqual(
                 "sprintf(Mem0[esp:(ptr32 char)], Mem0[esp + 4<i32>:(ptr32 char)], " +
                         "Mem0[esp + 8<i32>:char])",
@@ -264,9 +275,11 @@ namespace Reko.UnitTests.Decompiler.Scanning
         {
             Given_VaScanner(win_x86_64);
             Given_RegString64("rcx", "%d %f %s %u %x");
-            Assert.IsTrue(vafs.TryScan(addrInstr, dummyPc, win_x86_64PrintfSig, printfChr));
             var c = Constant.Word32(666);
-            var instr = vafs.BuildInstruction(c, new CallSite(8, 0), printfChr);
+            var ab = win_x86_64.Architecture.CreateFrameApplicationBuilder(frame, new CallSite(8, 0), c);
+
+            Assert.IsTrue(vafs.TryScan(addrInstr, dummyPc, win_x86_64PrintfSig, printfChr, ab, out var newsig));
+            var instr = vafs.BuildInstruction(c, newsig, printfChr, ab);
             Assert.AreEqual(
                 "0x29A<32>(rcx, SLICE(rdx, int32, 0), SLICE(xmm2, real64, 0), r9, Mem0[rsp + 32<i64>:uint32], Mem0[rsp + 40<i64>:uint32])",
                 instr.ToString());
@@ -277,9 +290,11 @@ namespace Reko.UnitTests.Decompiler.Scanning
         {
             Given_VaScanner(sysV_ppc);
             Given_RegString32("r3", "%d%d");
-            Assert.IsTrue(vafs.TryScan(addrInstr, dummyPc, ppcPrintfSig, printfChr));
             var c = Constant.Word32(0x123);
-            var instr = vafs.BuildInstruction(c, new CallSite(4, 0), printfChr);
+            var ab = sysV_ppc.Architecture.CreateFrameApplicationBuilder(frame, new CallSite(0, 0), c);
+
+            Assert.IsTrue(vafs.TryScan(addrInstr, dummyPc, ppcPrintfSig, printfChr, ab, out var newsig));
+            var instr = vafs.BuildInstruction(c, newsig, printfChr, ab);
             Assert.AreEqual(
                 "0x123<32>(r3, r4, r5)",
                 instr.ToString());
@@ -307,7 +322,8 @@ namespace Reko.UnitTests.Decompiler.Scanning
         public void Vafs_X86Printf_NoConstantFormatString()
         {
             Given_VaScanner(win32);
-            Assert.IsFalse(vafs.TryScan(addrInstr, dummyPc, x86PrintfSig, printfChr),
+            var ab = CreateApplicationBuilder(new CallSite(4, 0), dummyPc);
+            Assert.IsFalse(vafs.TryScan(addrInstr, dummyPc, x86PrintfSig, printfChr, ab, out _),
                 "Should fail because there is no constant-valued format string");
             Assert.AreEqual(
                 "WarningDiagnostic - 00123400 - Unable to determine format string for call to 'dummy'.", listener.LastDiagnostic);

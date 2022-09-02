@@ -168,7 +168,7 @@ namespace Reko.UnitTests.Decompiler.Analysis
 		{
 			Program program = RewriteFile(sourceFile);
 			Build(program.Procedures.Values[0], program.Architecture);
-			LiveCopyInserter lci = new LiveCopyInserter(ssa);
+			var lci = new LiveCopyInserter(ssa);
 			lci.Transform();
 			using (FileUnitTester fut = new FileUnitTester(outputFile))
 			{
@@ -184,6 +184,7 @@ namespace Reko.UnitTests.Decompiler.Analysis
             {
                 Architecture = arch,
                 Platform = platform,
+                SegmentMap = new SegmentMap(Address.Ptr32(0x00400000))
             };
             this.proc = proc;
             var dynamicLinker = new Mock<IDynamicLinker>().Object;
@@ -203,13 +204,11 @@ namespace Reko.UnitTests.Decompiler.Analysis
 			cce.Transform();
 			DeadCode.Eliminate(ssa);
 
-            var segmentMap = new SegmentMap(Address.Ptr32(0x00400000));
             ValuePropagator vp = new ValuePropagator(
-                segmentMap,
+                program,
                 ssa,
-                program.CallGraph,
                 null,
-                listener);
+                sc);
 			vp.Transform();
 
 			Coalescer coa = new Coalescer(ssa);

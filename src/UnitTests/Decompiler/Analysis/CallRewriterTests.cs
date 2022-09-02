@@ -114,7 +114,7 @@ namespace Reko.UnitTests.Decompiler.Analysis
                 ssts.Select(sst => sst.SsaState),
                 dfa.ProgramDataFlow,
                 dynamicLinker.Object,
-                eventListener);
+                sc);
             uvr.Transform();
 
             foreach (var p in program.Procedures.Values)

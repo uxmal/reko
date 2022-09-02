@@ -50,6 +50,7 @@ namespace Reko.Analysis
         private readonly Dictionary<Procedure, SsaState> procToSsa;
         private readonly ProgramDataFlow dataFlow;
         private readonly IDynamicLinker dynamicLinker;
+        private readonly IServiceProvider services;
         private readonly DecompilerEventListener eventListener;
 
         public UnusedOutValuesRemover(
@@ -57,13 +58,14 @@ namespace Reko.Analysis
             IEnumerable<SsaState> ssaStates,
             ProgramDataFlow dataFlow,
             IDynamicLinker dynamicLinker,
-            DecompilerEventListener eventListener)
+            IServiceProvider services)
         {
             this.dataFlow = dataFlow;
             this.program = program;
             this.ssaStates = ssaStates;
             this.dynamicLinker = dynamicLinker;
-            this.eventListener = eventListener;
+            this.services = services;
+            this.eventListener = services.RequireService<DecompilerEventListener>();
             this.wl = new WorkList<SsaState>();
             this.procToSsa = ssaStates
                 .ToDictionary(s => s.Procedure);
@@ -84,7 +86,7 @@ namespace Reko.Analysis
                 {
                     if (this.eventListener.IsCanceled())
                         return;
-                    var vp = new ValuePropagator(program.SegmentMap, ssa, program.CallGraph, dynamicLinker, eventListener);
+                    var vp = new ValuePropagator(program, ssa, dynamicLinker, services);
                     vp.Transform();
                     change |= RemoveUnusedDefinedValues(ssa, wl);
                     //DataFlowAnalysis.DumpWatchedProcedure("After RemoveUnusedDefinedValues", ssa.Procedure);

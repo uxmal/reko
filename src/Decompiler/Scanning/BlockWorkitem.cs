@@ -97,7 +97,7 @@ namespace Reko.Scanning
 
             frame = blockCur.Procedure.Frame;
             this.stackReg = frame.EnsureRegister(arch.StackRegister);
-            this.vaScanner = new VarargsFormatScanner(program, frame, state, scanner.Services);
+            this.vaScanner = new VarargsFormatScanner(program, arch, state, scanner.Services);
             rtlStream = scanner.GetTrace(arch, addrStart, state, frame)
                 .GetEnumerator();
 
@@ -703,13 +703,14 @@ namespace Reko.Scanning
             ProcedureCharacteristics? chr,
             CallSite site)
         {
-            if (vaScanner!.TryScan(ric!.Address, callee, sig, chr))
+            var ab = arch.CreateFrameApplicationBuilder(frame!, site, callee);
+            if (vaScanner!.TryScan(ric!.Address, callee, sig, chr, ab, out var newSig))
             {
-                Emit(vaScanner.BuildInstruction(callee, site, chr));
+                Emit(vaScanner.BuildInstruction(callee, newSig, chr, ab));
             }
             else if (sig != null && sig.ParametersValid)
             {
-                Emit(BuildApplication(callee, sig, chr, site));
+                Emit(ab.CreateInstruction(sig, chr));
             }
             else
             {
@@ -904,7 +905,8 @@ namespace Reko.Scanning
             if (svc.Signature != null)
             {
                 var site = state.OnBeforeCall(stackReg!, svc.Signature.ReturnAddressOnStack);
-                Emit(BuildApplication(fn, ep.Signature, ep.Characteristics, site));
+                var ab = arch.CreateFrameApplicationBuilder(frame!, site, fn);
+                Emit(ab.CreateInstruction(ep.Signature, ep.Characteristics));
                 if (svc.Characteristics != null && svc.Characteristics.Terminates)
                 {
                     scanner.TerminateBlock(blockCur!, ric!.Address + ric.Length);
@@ -947,7 +949,7 @@ namespace Reko.Scanning
                 frame!,
                 site,
                 new ProcedureConstant(program.Platform.PointerType, impProc));
-            var target = ab.Bind(sig.Parameters[0]);
+            var target = ab.BindInArg(sig.Parameters[0].Storage);
             if (target is not Identifier id)
             {
                 this.scanner.Warn(ric!.Address, $"The parameter of {impProc.Name} wasn't a register.");

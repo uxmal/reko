@@ -33,7 +33,7 @@ namespace Reko.Analysis
     using BindingDictionary = Dictionary<Storage, CallBinding>;
 
     /// <summary>
-    /// Builds an application from a call instruction, ussing a <see cref="SsaState"/> instance.
+    /// Builds an application from a call instruction, using a <see cref="SsaState"/> instance.
     /// </summary>
     /// <remarks>
     /// </remarks>
@@ -60,20 +60,22 @@ namespace Reko.Analysis
             this.guessStackArgs = guessStackArgs;
         }
 
-        public override Expression? Bind(Identifier id)
+        public override Expression? BindInArg(Storage stg)
         {
-            return id.Storage.Accept(this, (uses, ApplicationBindingType.In));
+            return stg.Accept(this, (uses, ApplicationBindingType.In));
         }
 
-        public override OutArgument BindOutArg(Identifier id)
+        public override OutArgument BindOutArg(Storage stg)
         {
-            var exp = id.Storage.Accept(this, (defs, ApplicationBindingType.Out));
+            var exp = stg.Accept(this, (defs, ApplicationBindingType.Out));
             return new OutArgument(arch.FramePointerType, exp!);
         }
 
-        public override Expression? BindReturnValue(Identifier id)
+        public override Expression? BindReturnValue(Storage? stg)
         {
-            return id.Storage.Accept(this, (defs, ApplicationBindingType.Return));
+            if (stg is null)
+                return null;
+            return stg.Accept(this, (defs, ApplicationBindingType.Return));
         }
 
         public Expression? VisitFlagGroupStorage(FlagGroupStorage grf, (BindingDictionary map, ApplicationBindingType bindUses) ctx)
@@ -178,9 +180,19 @@ namespace Reko.Analysis
 
         public Expression VisitStackStorage(StackStorage stack, (BindingDictionary map, ApplicationBindingType bindUses) ctx)
         {
+            return BindInStackArg(stack, sigCallee?.ReturnAddressOnStack ?? 0, uses);
+        }
+
+        public override Expression BindInStackArg(StackStorage stack, int returnAdjustment)
+        {
+            return BindInStackArg(stack, returnAdjustment, uses);
+        }
+
+        private Expression BindInStackArg(StackStorage stack, int returnAdjustment, BindingDictionary map)
+        {
             Debug.Assert(ssaCaller.Procedure.Architecture.IsStackArgumentOffset(stack.StackOffset));
             int localOff = stack.StackOffset;
-            foreach (var de in ctx.map.Values
+            foreach (var de in map.Values
                 .Where(d => d.Storage is StackStorage))
             {
                 if (((StackStorage) de.Storage).StackOffset == localOff)
@@ -189,8 +201,7 @@ namespace Reko.Analysis
 
             // Attempt to inject a Mem[sp_xx + offset] expression if possible.
             if (guessStackArgs &&
-                sigCallee != null &&
-                ctx.map.TryGetValue(arch.StackRegister, out var stackBinding) &&
+                map.TryGetValue(arch.StackRegister, out var stackBinding) &&
                 this.TryFindMemBeforeCall(out var memId))
             {
                 var sp_ssa = stackBinding.Expression;
@@ -198,7 +209,7 @@ namespace Reko.Analysis
                 {
                     var dt = PrimitiveType.Create(Domain.SignedInt, sp_ssa.DataType.BitSize);
                     var ea = sp_ssa;
-                    int nOffset = stack.StackOffset - sigCallee.ReturnAddressOnStack;
+                    int nOffset = stack.StackOffset - returnAdjustment;
                     if (nOffset != 0)
                     {
                         var offset = Constant.Create(dt, nOffset);

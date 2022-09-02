@@ -48,6 +48,7 @@ namespace Reko.UnitTests.Decompiler.Analysis
         private Mock<IPlatform> platform;
         private ProgramDataFlow dataFlow;
         private StringBuilder sbExpected;
+        private ServiceContainer services;
         private ExternalProcedure fnExit;
 
         [SetUp]
@@ -58,6 +59,8 @@ namespace Reko.UnitTests.Decompiler.Analysis
             this.builder = new ProgramBuilder(arch);
             this.dynamicLinker = new Mock<IDynamicLinker>();
             this.sbExpected = new StringBuilder();
+            this.services = new ServiceContainer();
+            this.services.AddService<DecompilerEventListener>(new FakeDecompilerEventListener());
             this.fnExit = new ExternalProcedure(
                 "exit",
                 FunctionType.Action(new Identifier("code", PrimitiveType.Int32, new StackStorage(4, PrimitiveType.Int32))),
@@ -127,11 +130,10 @@ namespace Reko.UnitTests.Decompiler.Analysis
                 sst.Transform();
                 sst.AddUsesToExitBlock();
                 var vp = new ValuePropagator(
-                    program.SegmentMap, 
+                    program, 
                     sst.SsaState,
-                    program.CallGraph,
                     dynamicLinker.Object,
-                    NullDecompilerEventListener.Instance);
+                    services);
                 vp.Transform();
                 sstSet.Add(sst);
             }

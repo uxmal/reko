@@ -184,6 +184,9 @@ namespace Reko.Core
 
         public Expression? ResolveImport(string? moduleName, string name, IPlatform platform)
         {
+            if (name.Contains("intf") ||
+                name.Contains("system"))
+                _ = this;//$DEBUG
             var global = LookupImport(moduleName, name, platform);
             if (global != null)
                 return global;

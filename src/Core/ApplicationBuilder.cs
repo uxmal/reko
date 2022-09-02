@@ -60,9 +60,10 @@ namespace Reko.Core
             this.callee = callee;
         }
 
-        public abstract OutArgument BindOutArg(Identifier id);
-        public abstract Expression? BindReturnValue(Identifier id);
-        public abstract Expression? Bind(Identifier id);
+        public abstract Expression? BindInArg(Storage stg);
+        public abstract Expression? BindInStackArg(StackStorage stg, int returnAdjustment);
+        public abstract OutArgument BindOutArg(Storage stg);
+        public abstract Expression? BindReturnValue(Storage? stg);
 
         /// <summary>
         /// Creates an instruction:
@@ -85,8 +86,8 @@ namespace Reko.Core
             DataType dtOut = VoidType.Instance;
             if (!sigCallee.HasVoidReturn)
             {
-                expOut = BindReturnValue(sigCallee.ReturnValue);
-                dtOut = sigCallee.ReturnValue.DataType;
+                expOut = BindReturnValue(sigCallee.ReturnValue?.Storage);
+                dtOut = sigCallee.ReturnValue!.DataType;
             }
             var actuals = BindArguments(parameters, sigCallee.IsVariadic, chr).ToArray();
             Expression appl = new Application(callee, dtOut, actuals);
@@ -98,7 +99,7 @@ namespace Reko.Core
             }
             else if (expOut is Identifier idOut)
             {
-                int extraBits = expOut.DataType.BitSize - sigCallee.ReturnValue.DataType.BitSize;
+                int extraBits = idOut.DataType.BitSize - sigCallee.ReturnValue.DataType.BitSize;
                 if (extraBits > 0)
                 {
                     // The non-live bits of expOut can safely be replaced with anything,
@@ -112,17 +113,6 @@ namespace Reko.Core
             }
             else if (expOut is MkSequence seq)
             {
-                //int bitOffset = seq.DataType.BitSize;
-                //foreach (var e in seq.Expressions)
-                //{
-                //    var elemSize = e.DataType.BitSize;
-                //    bitOffset -= elemSize;
-                //    if (e is Identifier idElement)
-                //    {
-                //        var slice = new Slice(idElement.DataType, appl, bitOffset);
-                //        return new Assignment(idElement, slice);
-                //    }
-                //}
                 return new Store(seq, appl);
             }
             else
@@ -144,14 +134,14 @@ namespace Reko.Core
             for (int i = 0; i < parameters.Length; ++i)
             {
                 var formalArg = parameters[i];
-                if (formalArg.Storage is OutArgumentStorage)
+                if (formalArg.Storage is OutArgumentStorage outStg)
                 {
-                    var outArg = BindOutArg(formalArg);
+                    var outArg = BindOutArg(outStg);
                     actuals.Add(outArg);
                 }
                 else
                 {
-                    var actualArg = Bind(formalArg);
+                    var actualArg = BindInArg(formalArg.Storage);
                     //$REVIEW: what does null mean here? Forcing an error here generates
                     // regressions in the unit tests.
                     if (actualArg is not null)

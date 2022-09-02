@@ -23,13 +23,13 @@ using System.Collections.Generic;
 using System.Linq;
 using Reko.Core;
 using Reko.Core.Analysis;
-using Reko.Core.Hll.C;
 using Reko.Core.Code;
 using Reko.Core.Expressions;
 using Reko.Core.Serialization;
 using Reko.Core.Types;
 using Reko.Evaluation;
 using Reko.Core.Services;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Reko.Scanning
 {
@@ -41,51 +41,57 @@ namespace Reko.Scanning
     {
         private readonly Program program;
         private readonly IProcessorArchitecture arch;
-        private readonly Frame frame;
         private readonly ExpressionSimplifier eval;
         private readonly IServiceProvider services;
-        private FunctionType? expandedSig;
 
         public VarargsFormatScanner(
             Program program,
-            Frame frame,
+            IProcessorArchitecture arch,
             EvaluationContext ctx,
             IServiceProvider services)
         {
             this.program = program;
-            this.arch = program.Architecture;
-            this.frame = frame;
+            this.arch = arch;
+            this.services = services;
             this.eval = new ExpressionSimplifier(
                 program.SegmentMap,
                 ctx,
                 services.RequireService<DecompilerEventListener>());
-            this.services = services;
         }
 
         public Instruction BuildInstruction(
-            Expression callee, 
-            CallSite site,
-            ProcedureCharacteristics? chr)
+            Expression callee,
+            FunctionType expandedSig,
+            ProcedureCharacteristics? chr,
+            ApplicationBuilder ab)
         {
             if (callee is ProcedureConstant pc)
-                pc.Procedure.Signature = this.expandedSig!;
-            var ab = arch.CreateFrameApplicationBuilder(frame, site, callee);
-            return ab.CreateInstruction(this.expandedSig!, chr);
+                pc.Procedure.Signature = expandedSig;
+            return ab.CreateInstruction(expandedSig, chr);
         }
 
-        public bool TryScan(Address addrInstr, Expression callee, FunctionType sig, ProcedureCharacteristics? chr)
+        public bool TryScan(
+            Address addrInstr,
+            Expression callee,
+            FunctionType sig,
+            ProcedureCharacteristics? chr,
+            ApplicationBuilder ab,
+            [MaybeNullWhen(false)] out FunctionType expandedSig)
         {
             if (sig is null || !sig.IsVariadic ||
                 chr is null || !VarargsParserSet(chr))
             {
-                this.expandedSig = null;    //$out parameter
+                expandedSig = null;
                 return false;
             }
-            var format = ReadVarargsFormat(addrInstr, callee, sig);
-            if (format == null)
+            var format = ReadVarargsFormat(addrInstr, callee, sig, ab);
+            if (format is null)
+            {
+                expandedSig = null;
                 return false;
+            }
             var argTypes = ParseVarargsFormat(chr.VarargsParserClass!, addrInstr, chr, format);
-            this.expandedSig = ReplaceVarargs(program.Platform, sig, argTypes);
+            expandedSig = ReplaceVarargs(program.Platform, sig, argTypes);
             return true;
         }
 
@@ -95,36 +101,40 @@ namespace Reko.Scanning
             return e;
         }
 
-        private string? ReadVarargsFormat(Address addrInstr, Expression callee, FunctionType sig)
+        private string? ReadVarargsFormat(Address addrInstr, Expression callee, FunctionType sig, ApplicationBuilder ab)
         {
             var formatIndex = sig.Parameters!.Length - 1;
             if (formatIndex < 0)
                 throw new ApplicationException("Expected variadic function to take at least one parameter.");
             var formatParam = sig.Parameters[formatIndex];
-            // $TODO: Issue #471: what about non-x86 architectures, like Sparc or PowerPC,
-            // there can be varargs functions where the first N parameters are
-            // passed in registers and the remaining are passed on the stack.
             if (formatParam.Storage is StackStorage stackStorage)
             {
-                var stackAccess = arch.CreateStackAccess(
-                    frame,
-                    stackStorage.StackOffset,
-                    stackStorage.DataType);
-                if (GetValue(stackAccess) is Constant c && c.IsValid)
+                var stackAccess = ab.BindInStackArg(stackStorage, 0);
+                if (stackAccess is { } && GetValue(stackAccess) is Constant c && c.IsValid)
                 {
                     var str = ReadCString(c);
-                    if (str != null)
+                    if (str is not null)
                         return str;
                 }
             }
             else
             {
-                var reg = GetValue(formatParam) as Address;
-                if (reg != null)
+                var reg = ab.BindInArg(formatParam.Storage)!;
+                switch (GetValue(reg))
                 {
-                    var str = ReadCString(reg);
+                case Address addrFormat:
+                    var str = ReadCString(addrFormat);
                     if (str != null)
                         return str;
+                    break;
+                case Constant c:
+                    if (c.IsValid)
+                    {
+                        str = ReadCString(c);
+                        if (str is not null)
+                            return str;
+                    }
+                    break;
                 }
             }
             WarnUnableToDetermineFormatString(addrInstr, callee);
@@ -153,7 +163,7 @@ namespace Reko.Scanning
             {
                 return null;
             }
-            var rdr = program.CreateImageReader(program.Architecture, addr);
+            var rdr = program.CreateImageReader(arch, addr);
             var c = rdr.ReadCString(PrimitiveType.Char, program.TextEncoding);
             return c.ToString();
         }
@@ -171,7 +181,7 @@ namespace Reko.Scanning
         {
             var svc = services.RequireService<IPluginLoaderService>();
             var type = svc.GetType(varargsParserTypename);
-            if (type == null)
+            if (type is null)
                 throw new TypeLoadException(
                     string.Format(
                         "Unable to load {0} varargs parser.",

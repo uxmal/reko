@@ -25,6 +25,7 @@ using Reko.Arch.X86;
 using Reko.Core;
 using Reko.Core.Code;
 using Reko.Core.Expressions;
+using Reko.Core.Services;
 using Reko.Core.Types;
 using Reko.UnitTests.Mocks;
 using System;
@@ -64,6 +65,7 @@ namespace Reko.UnitTests.Decompiler.Analysis
         public void Setup()
         {
             this.sc = new ServiceContainer();
+            sc.AddService<DecompilerEventListener>(new FakeDecompilerEventListener());
             this.addUseInstructions = false;
             this.dynamicLinker = new Mock<IDynamicLinker>();
             this.r1 = new Identifier("r1", PrimitiveType.Word32, RegisterStorage.Reg32("r1", 1));
@@ -236,11 +238,10 @@ namespace Reko.UnitTests.Decompiler.Analysis
                 //   mov [fp - 8],eax
 
                 var vp = new ValuePropagator(
-                    this.pb.Program.SegmentMap,
+                    this.pb.Program,
                     sst.SsaState,
-                    program.CallGraph,
                     dynamicLinker.Object,
-                    listener);
+                    sc);
                 vp.Transform();
 
                 sst.RenameFrameAccesses = true;

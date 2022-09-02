@@ -32,18 +32,15 @@ namespace Reko.Core
     {
         protected readonly IProcessorArchitecture arch;
         protected readonly IStorageBinder binder;
-        protected readonly bool ensureVariables;
 
         /// <summary>
         /// Creates an application builder that creates references
         /// to the identifiers in the frame.
         /// </summary>
         /// <param name="arch">The processor architecture to use.</param>
-        /// <param name="frame">The Frame of the calling procedure.</param>
+        /// <param name="binder">The <see cref="IStorageBinder"/> of the calling procedure.</param>
         /// <param name="site">The call site of the calling instruction.</param>
         /// <param name="callee">The procedure being called.</param>
-        /// <param name="sigCallee">The signature of the procedure being called.</param>
-        /// <param name="ensureVariables">If true, creates variables in the <paramref name="frame"/> if needed.</param>
         public FrameApplicationBuilder(
             IProcessorArchitecture arch,
             IStorageBinder binder,
@@ -51,29 +48,25 @@ namespace Reko.Core
             Expression callee) : base(site, callee)
         {
             this.arch = arch;
-            this.site = site;
             this.binder = binder;
             this.callee = callee;
         }
 
-        public override Expression Bind(Identifier id)
+        public override Expression BindInArg(Storage stg)
         {
-            return id.Storage.Accept(this);
+            return stg.Accept(this);
         }
 
-        public override Expression? BindReturnValue(Identifier id)
+        public override Expression? BindReturnValue(Storage? stg)
         {
-            Expression? expRet = null;
-            if (id != null)
-            {
-                expRet = id.Storage.Accept(this);
-            }
-            return expRet;
+            if (stg is null)
+                return null;
+            return stg.Accept(this);
         }
 
-        public override OutArgument BindOutArg(Identifier id)
+        public override OutArgument BindOutArg(Storage stg)
         {
-            var actualArg = id.Storage.Accept(this);
+            var actualArg = stg.Accept(this);
             return new OutArgument(arch.FramePointerType, actualArg);
         }
 
@@ -86,14 +79,7 @@ namespace Reko.Core
 
         public virtual Expression VisitFpuStackStorage(FpuStackStorage fpu)
         {
-            if (ensureVariables)
-            {
-                return binder.EnsureFpuStackVariable(fpu.FpuStackOffset, fpu.DataType);
-            }
-            else
-            {
-                return binder.EnsureFpuStackVariable(fpu.FpuStackOffset, fpu.DataType);
-            }
+            return binder.EnsureFpuStackVariable(fpu.FpuStackOffset, fpu.DataType);
         }
 
         public Expression VisitMemoryStorage(MemoryStorage global)
@@ -121,21 +107,18 @@ namespace Reko.Core
 
         public Expression VisitStackStorage(StackStorage stack)
         {
+            return BindInStackArg(stack, site.SizeOfReturnAddressOnStack);
+        }
+
+        public override Expression BindInStackArg(StackStorage stack, int returnAdjustment)
+        {
             if (!arch.IsStackArgumentOffset(stack.StackOffset))
                 throw new InvalidOperationException("A local stack variable can't be used as a parameter.");
-            if (ensureVariables)
-            {
-                return binder.EnsureStackVariable(
-                    stack.StackOffset,
-                    stack.DataType);
-            }
-            else
-            {
-                return arch.CreateStackAccess(
-                    binder,
-                    stack.StackOffset - site.SizeOfReturnAddressOnStack,
-                    stack.DataType);
-            }
+            var netOffset = stack.StackOffset - returnAdjustment;
+            return arch.CreateStackAccess(
+                binder,
+                netOffset,
+                stack.DataType);
         }
 
         public Expression VisitTemporaryStorage(TemporaryStorage temp)

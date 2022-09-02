@@ -283,7 +283,7 @@ namespace Reko.UnitTests.Decompiler.Analysis
                 dynamicLinker,
                 programFlow);
             var ssa = sst.Transform();
-            var vp = new ValuePropagator(program.SegmentMap, ssa, program.CallGraph, dynamicLinker, eventListener);
+            var vp = new ValuePropagator(program, ssa, dynamicLinker, sc);
             vp.Transform();
             sst.RenameFrameAccesses = true;
             sst.Transform();
@@ -320,7 +320,7 @@ namespace Reko.UnitTests.Decompiler.Analysis
                     var ab = new FakeFrameApplicationBuilder(
                         null, binder, site, callee);
                     var (ret, value) = returnBinder(m.Ssa.Procedure.Frame);
-                    ab.Test_AddReturnValue(ret, value);
+                    ab.Test_AddReturnValue(ret.Storage, value);
                     return ab;
                 };
         }

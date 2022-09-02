@@ -82,14 +82,15 @@ namespace Reko.UnitTests.Decompiler.Evaluation
             var m = new ProcedureBuilder();
             bld(m);
             var proc = m.Procedure;
+            var program = new Program { Architecture = m.Architecture };
             var ssa = new SsaTransform(
-                new Program { Architecture = m.Architecture },
+                program,
                 proc,
                 null,
                 null,
                 null).Transform();
             var segmentMap = new SegmentMap(Address.Ptr32(0));
-            var vp = new ValuePropagator(segmentMap, ssa, new CallGraph(), null, null);
+            var vp = new ValuePropagator(program, ssa, null, null);
             vp.Transform();
             var rule = new ConstDivisionImplementedByMultiplication(ssa);
             rule.Transform();

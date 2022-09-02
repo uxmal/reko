@@ -148,7 +148,7 @@ namespace Reko.Analysis
                 ssts.Select(sst => sst.SsaState),
                 this.flow,
                 dynamicLinker,
-                eventListener);
+                services);
             uvr.Transform();
             if (eventListener.IsCanceled())
                 return ssts;
@@ -213,7 +213,7 @@ namespace Reko.Analysis
             {
                 if (eventListener.IsCanceled())
                     return;
-                var vp = new ValuePropagator(program.SegmentMap, sst.SsaState, program.CallGraph, dynamicLinker, this.eventListener);
+                var vp = new ValuePropagator(program, sst.SsaState, dynamicLinker, services);
                 vp.Transform();
                 sst.RenameFrameAccesses = true;
                 sst.Transform();
@@ -405,7 +405,7 @@ namespace Reko.Analysis
                     coa.Transform();
                     DeadCode.Eliminate(ssa);
 
-                    var vp = new ValuePropagator(program.SegmentMap, ssa, program.CallGraph, dynamicLinker,  eventListener);
+                    var vp = new ValuePropagator(program, ssa, dynamicLinker, services);
                     vp.Transform();
 
                     DumpWatchedProcedure("postcoa", "After expression coalescing", ssa.Procedure);
@@ -484,7 +484,7 @@ namespace Reko.Analysis
                 // We also hope that procedure constants
                 // kept in registers are propagated to the corresponding call
                 // sites.
-                var vp = new ValuePropagator(program.SegmentMap, ssa, program.CallGraph, dynamicLinker, eventListener);
+                var vp = new ValuePropagator(program, ssa, dynamicLinker, services);
                 vp.Transform();
                 DumpWatchedProcedure("vp", "After first VP", ssa);
 

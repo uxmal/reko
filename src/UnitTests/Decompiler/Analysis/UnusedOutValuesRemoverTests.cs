@@ -40,6 +40,7 @@ namespace Reko.UnitTests.Decompiler.Analysis
     {
         private Mock<IDynamicLinker> import;
         private Mock<DecompilerEventListener> eventListener;
+        private ServiceContainer services;
         private ProgramBuilder pb;
         private List<SsaState> ssaStates;
         private RegisterStorage regA;
@@ -53,8 +54,10 @@ namespace Reko.UnitTests.Decompiler.Analysis
         {
             this.import = new Mock<IDynamicLinker>();
             this.eventListener = new Mock<DecompilerEventListener>();
+            this.services = new ServiceContainer();
             this.pb = new ProgramBuilder();
             this.ssaStates = new List<SsaState>();
+            services.AddService<DecompilerEventListener>(eventListener.Object);
             this.regA = RegisterStorage.Reg32("regA", 0x1234);
             this.regB = RegisterStorage.Reg32("regB", 0x5678);
             this.lowA = RegisterStorage.Reg8("lowA", 0x1234);
@@ -81,7 +84,7 @@ namespace Reko.UnitTests.Decompiler.Analysis
                 ssaStates,
                 dataFlow,
                 import.Object,
-                eventListener.Object);
+                services);
             uvr.Transform();
         }
 
@@ -117,7 +120,7 @@ namespace Reko.UnitTests.Decompiler.Analysis
                 ssts.Select(sst => sst.SsaState),
                 dfa.ProgramDataFlow,
                 import.Object,
-                eventListener.Object);
+                sc);
             uvr.Transform();
 
             var sb = new StringWriter();

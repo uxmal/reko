@@ -28,6 +28,7 @@ using Reko.Core.Types;
 using Reko.UnitTests.Mocks;
 using Moq;
 using NUnit.Framework;
+using Reko.Core.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -345,26 +346,33 @@ namespace Reko.UnitTests.Decompiler.Analysis
 		{
             var sc = new ServiceContainer();
             var listener = new FakeDecompilerEventListener();
+            sc.AddService<DecompilerEventListener>(listener);
             var dynamicLinker = new Mock<IDynamicLinker>().Object;
             doms = proc.CreateBlockDominatorGraph();
+
+
+            var arch = new FakeArchitecture(sc);
+            var segmentMap = new SegmentMap(Address.Ptr32(0x00123400));
+            var program = new Program { 
+                Platform = new DefaultPlatform(sc, arch),
+                SegmentMap = segmentMap
+            };
+
             var sst = new SsaTransform(
-                new Program(),
+                program,
                 proc,
                 new HashSet<Procedure>(),
                 dynamicLinker,
                 new ProgramDataFlow());
             sst.Transform();
 			this.ssa = sst.SsaState;
-
-            var arch = new FakeArchitecture(sc);
-            var program = new Program { Platform = new DefaultPlatform(sc, arch) };
+            
             var cce = new ConditionCodeEliminator(program, ssa, listener);
 			cce.Transform();
 
 			DeadCode.Eliminate(ssa);
 
-            var segmentMap = new SegmentMap(Address.Ptr32(0x00123400));
-			var vp = new ValuePropagator(segmentMap, ssa, new CallGraph(), dynamicLinker, listener);
+			var vp = new ValuePropagator(program, ssa, dynamicLinker, sc);
 			vp.Transform();
 
 			DeadCode.Eliminate(ssa);

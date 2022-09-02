@@ -144,7 +144,7 @@ namespace Reko.UnitTests.Decompiler.Analysis
                 cce.Transform();
                 ssa.Validate(s => { ssa.Dump(true); Assert.Fail(s); });
 
-                var vp = new ValuePropagator(program.SegmentMap, ssa, program.CallGraph, dynamicLinker, listener);
+                var vp = new ValuePropagator(program, ssa, dynamicLinker, sc);
                 vp.Transform();
                 ssa.Validate(s => { ssa.Dump(true); Assert.Fail(s); });
 
@@ -594,14 +594,19 @@ ProcedureBuilder_exit:
             m.Label("yay");
             m.Return(m.Word32(1));
 
+            var program = new Program {
+                Architecture = m.Architecture,
+                SegmentMap = segmentMap,
+            };
+            
             var ssa = new SsaTransform(
-                new Program { Architecture = m.Architecture }, 
+                program,
                 m.Procedure,
                 new HashSet<Procedure> { m.Procedure }, 
                 null, 
                 new ProgramDataFlow());
             this.ssaState = ssa.Transform();
-            var vp = new ValuePropagator(segmentMap, ssaState, new CallGraph(), null, new FakeDecompilerEventListener());
+            var vp = new ValuePropagator(program, ssaState, null, sc);
             vp.Transform();
             Given_ConditionCodeEliminator();
             cce.Transform();

@@ -31,7 +31,7 @@ namespace Reko.UnitTests.Mocks
 {
     public class FakeFrameApplicationBuilder : FrameApplicationBuilder
     {
-        private IDictionary<Identifier, Expression> returnValues;
+        private IDictionary<Storage, Expression> returnValues;
 
         public FakeFrameApplicationBuilder(
             IProcessorArchitecture arch,
@@ -39,29 +39,29 @@ namespace Reko.UnitTests.Mocks
             CallSite site,
             Expression callee) : base(arch, binder, site, callee)
         {
-            this.returnValues = new Dictionary<Identifier, Expression>();
+            this.returnValues = new Dictionary<Storage, Expression>();
         }
 
-        public override Expression Bind(Identifier id)
+        public override Expression BindInArg(Storage stg)
         {
             throw new NotImplementedException();
         }
 
-        public override OutArgument BindOutArg(Identifier id)
+        public override OutArgument BindOutArg(Storage stg)
         {
             throw new NotImplementedException();
         }
 
-        public override Expression BindReturnValue(Identifier id)
+        public override Expression BindReturnValue(Storage stg)
         {
-            if (returnValues.ContainsKey(id))
-                return returnValues[id];
-            return InvalidConstant.Create(id.DataType);
+            if (returnValues.ContainsKey(stg))
+                return returnValues[stg];
+            return InvalidConstant.Create(stg.DataType);
         }
 
-        public void Test_AddReturnValue(Identifier id, Expression returnValue)
+        public void Test_AddReturnValue(Storage stg, Expression returnValue)
         {
-            returnValues.Add(id, returnValue);
+            returnValues.Add(stg, returnValue);
         }
     }
 }

@@ -112,11 +112,10 @@ namespace Reko.UnitTests.Decompiler.Analysis
                     new ProgramDataFlow());
                 sst.Transform();
                 var vp = new ValuePropagator(
-                    program.SegmentMap,
+                    program,
                     sst.SsaState,
-                    program.CallGraph, 
                     null, 
-                    eventListener);
+                    sc);
                 vp.Transform();
                 sst.RenameFrameAccesses = true;
                 sst.Transform();

@@ -126,7 +126,7 @@ namespace Reko.UnitTests.Decompiler.Analysis
 				proc.Write(false, writer);
 				writer.WriteLine();
 
-				var vp = new ValuePropagator(program.SegmentMap, ssa, program.CallGraph, dynamicLinker.Object, listener);
+				var vp = new ValuePropagator(program, ssa, dynamicLinker.Object, sc);
 				vp.Transform();
                 sst.RenameFrameAccesses = true;
                 sst.Transform();
@@ -159,7 +159,7 @@ namespace Reko.UnitTests.Decompiler.Analysis
             var ssa = sst.SsaState;
             sst.Transform();
 
-            var vp = new ValuePropagator(segmentMap, ssa, program.CallGraph, dynamicLinker.Object, listener);
+            var vp = new ValuePropagator(program, ssa, dynamicLinker.Object, sc);
             vp.Transform();
             return ssa;
         }
@@ -185,7 +185,7 @@ namespace Reko.UnitTests.Decompiler.Analysis
 
         private void RunValuePropagator()
         {
-            var vp = new ValuePropagator(segmentMap, m.Ssa, program.CallGraph, dynamicLinker.Object, listener);
+            var vp = new ValuePropagator(program, m.Ssa, dynamicLinker.Object, sc);
             vp.Transform();
             m.Ssa.Validate(s => { m.Ssa.Dump(true); Assert.Fail(s); });
         }
@@ -272,11 +272,10 @@ namespace Reko.UnitTests.Decompiler.Analysis
             SsaState ssa = sst.SsaState;
 
 			ValuePropagator vp = new ValuePropagator(
-                segmentMap, 
+                program, 
                 ssa,
-                program.CallGraph,
                 dynamicLinker.Object,
-                listener);
+                sc);
 			vp.Transform();
 
 			using (FileUnitTester fut = new FileUnitTester("Analysis/VpDbp.txt"))
@@ -625,7 +624,7 @@ namespace Reko.UnitTests.Decompiler.Analysis
             sst.Transform();
 			var ssa = sst.SsaState;
 
-			var vp = new ValuePropagator(segmentMap, ssa, program.CallGraph, dynamicLinker.Object, listener);
+			var vp = new ValuePropagator(program, ssa, dynamicLinker.Object, sc);
 			vp.Transform();
 
 			using (FileUnitTester fut = new FileUnitTester("Analysis/VpDpbDpb.txt"))
@@ -1125,7 +1124,7 @@ SsaProcedureBuilder_exit:
             m.Return();
 
             // Initially we don't know what r2_2 is pointing to.
-            var vp = new ValuePropagator(segmentMap, m.Ssa, program.CallGraph, dynamicLinker.Object, listener);
+            var vp = new ValuePropagator(program, m.Ssa, dynamicLinker.Object, sc);
             vp.Transform();
 
             // Later, Reko discovers information about the pointer in 0x400000<32>!

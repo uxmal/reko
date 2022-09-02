@@ -60,7 +60,7 @@ namespace Reko.UnitTests.Core
         public void AppBld_BindReturnValue()
 		{
             ab  = arch.CreateFrameApplicationBuilder(frame, new CallSite(4, 0), new Identifier("foo", PrimitiveType.Word32, null));
-			var r = ab.Bind(ret);
+			var r = ab.BindInArg(ret.Storage);
 			Assert.AreEqual("eax", r.ToString());
 		}
 
@@ -68,7 +68,7 @@ namespace Reko.UnitTests.Core
         public void AppBld_BindOutParameter()
 		{
             ab = arch.CreateFrameApplicationBuilder(frame, new CallSite(4, 0), new Identifier("foo", PrimitiveType.Word32, null));
-            var o = ab.Bind(regOut);
+            var o = ab.BindInArg(regOut.Storage);
 			Assert.AreEqual("edx", o.ToString());
 		}
 

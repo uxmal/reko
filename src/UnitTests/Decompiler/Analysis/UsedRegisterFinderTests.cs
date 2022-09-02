@@ -101,7 +101,9 @@ namespace Reko.UnitTests.Decompiler.Analysis
             platform.Setup(p => p.CreateTrashedRegisters()).Returns(new HashSet<RegisterStorage>());
             platform.Setup(p => p.PointerType).Returns(arch.PointerType);
             progBuilder.Program.Platform = platform.Object;
-
+            progBuilder.Program.SegmentMap = segmentMap;
+            var sc = new ServiceContainer();
+            sc.AddService<DecompilerEventListener>(new FakeDecompilerEventListener());
             var sst = new SsaTransform(
                 progBuilder.Program,
                 proc,
@@ -111,11 +113,10 @@ namespace Reko.UnitTests.Decompiler.Analysis
             sst.Transform();
 
             var vp = new ValuePropagator(
-                segmentMap,
+                progBuilder.Program,
                 sst.SsaState,
-                new CallGraph(),
                 dynamicLinker.Object,
-                NullDecompilerEventListener.Instance);
+                sc);
             vp.Transform();
 
             sst.RenameFrameAccesses = true;

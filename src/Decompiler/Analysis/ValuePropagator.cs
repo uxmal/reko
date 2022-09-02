@@ -26,6 +26,7 @@ using Reko.Core.Serialization;
 using Reko.Core.Services;
 using Reko.Core.Types;
 using Reko.Evaluation;
+using System;
 using System.Diagnostics;
 using System.Linq;
 
@@ -53,25 +54,26 @@ namespace Reko.Analysis
         private readonly SsaEvaluationContext evalCtx;
         private readonly SsaMutator ssam;
         private readonly DecompilerEventListener eventListener;
+        private readonly Scanning.VarargsFormatScanner va;
         private Statement? stmCur;      //$REFACTOR: try to make this a context paramter.
 
         public ValuePropagator(
-            SegmentMap segmentMap,
+            Program program,
             SsaState ssa,
-            CallGraph callGraph,
             IDynamicLinker dynamicLinker,
-            DecompilerEventListener eventListener)
+            IServiceProvider services)
         {
             this.ssa = ssa;
-            this.callGraph = callGraph;
+            this.callGraph = program.CallGraph;
             this.arch = ssa.Procedure.Architecture;
             this.dynamicLinker = dynamicLinker;
-            this.eventListener = eventListener;
+            this.eventListener = services.RequireService<DecompilerEventListener>();
             this.ssam = new SsaMutator(ssa);
             this.evalCtx = new SsaEvaluationContext(arch, ssa.Identifiers, dynamicLinker);
-            this.eval = new ExpressionSimplifier(segmentMap, evalCtx, eventListener);
+            this.eval = new ExpressionSimplifier(program.SegmentMap, evalCtx, eventListener);
+            var ctx = new SsaEvaluationContext(arch, ssa.Identifiers, dynamicLinker);
+            this.va = new Scanning.VarargsFormatScanner(program, arch, ctx, services);
         }
-
 
         public void Transform()
         {
@@ -248,7 +250,14 @@ namespace Reko.Analysis
                 -sig.FpuStackDelta);
             ssa.RemoveUses(stm);
             var ab = new CallApplicationBuilder(this.ssa, stm, ci, ci.Callee, true);
-            stm.Instruction = ab.CreateInstruction(sig, chr);
+            if (va.TryScan(stmCur!.Address, ci.Callee, sig, chr, ab, out var expandedSig))
+            {
+                stm.Instruction = va.BuildInstruction(ci.Callee, expandedSig, chr, ab);
+            }
+            else
+            { 
+                stm.Instruction = ab.CreateInstruction(sig, chr);
+            }
             ssam.AdjustSsa(stm, ci);
         }
 
