@@ -36,12 +36,13 @@ l00000670:
 	branch Mem0[0x10AA4<32>:word32] == 0x00010A84<p32> l0000068C_ds_t
 l0000068C_ds_t:
 l0000068C_ds_f:
+	word32 r25_12 = Mem0[0x10AE4<32>:word32]
 l00000690:
-	branch _ITM_deregisterTMCloneTable == 0<32> l000006A0
+	branch r25_12 == 0<32> l000006A0
 l000006A0:
 	return
 l00000698:
-	_ITM_deregisterTMCloneTable()
+	call r25_12 (retsize: 0;)
 	return
 deregister_tm_clones_exit:
 
@@ -61,12 +62,13 @@ l000006A8:
 	branch (r5_12 >>u 0x1F<8>) + r5_12 >> 1<8> == 0<32> l000006D8_ds_t
 l000006D8_ds_t:
 l000006D8_ds_f:
+	word32 r25_17 = Mem0[0x10AD4<32>:word32]
 l000006DC:
-	branch _ITM_registerTMCloneTable == 0<32> l000006EC
+	branch r25_17 == 0<32> l000006EC
 l000006EC:
 	return
 l000006E4:
-	_ITM_registerTMCloneTable()
+	call r25_17 (retsize: 0;)
 	return
 register_tm_clones_exit:
 

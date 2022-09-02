@@ -626,8 +626,7 @@ void main(int32 r4, Eq_n r5[], word32 r16, word32 ra)
 		FILE * r2_n = fopen(&r2_n->b0695, "w");
 		if (r2_n != null)
 		{
-			getpid();
-			fprintf(r2_n, "%d\n", 0x00);
+			fprintf(r2_n, "%d\n", getpid());
 			fclose(r2_n);
 		}
 	}
@@ -2142,25 +2141,26 @@ l004061C8:
 Eq_n properties_print_usage(Eq_n r4)
 {
 	if (r4 != 0x00 && (word32) (*r4) != 0x00)
-		printf("Usage: %s -h ", 0x00);
+		printf("Usage: %s -h ", r4);
 	else
-		printf("Usage: redir -h ", 0x00);
+		printf("Usage: redir -h ");
 	ui32 dwLoc18_n = 0x00;
 	while ((word32) (g_ptr10000A40 + ((dwLoc18_n * 0x14 - dwLoc18_n << 0x03) + 8) / 0x0696)->a0004[0].ptr0000 != 32)
 	{
 		if (g_ptr10000A40->a0004[dwLoc18_n * 0x14 - dwLoc18_n].t0004 == 2)
 		{
+			word32 dwLoc14_n;
 			if (((word32) *((char *) *g_ptr10000A6C + (word32) (((g_ptr10000A40 + ((dwLoc18_n * 0x14 - dwLoc18_n << 0x03) + 8) / 0x0696)->a0004))[0].ptr0000 * 0x02) & 0x01 & 0xFFFF) != 0x00)
-				tolower((word32) (g_ptr10000A40 + ((dwLoc18_n * 0x14 - dwLoc18_n << 0x03) + 8) / 0x0696)->a0004[0].ptr0000);
+				dwLoc14_n = tolower((word32) (g_ptr10000A40 + ((dwLoc18_n * 0x14 - dwLoc18_n << 0x03) + 8) / 0x0696)->a0004[0].ptr0000);
 			else
-				toupper((word32) (g_ptr10000A40 + ((dwLoc18_n * 0x14 - dwLoc18_n << 0x03) + 8) / 0x0696)->a0004[0].ptr0000);
-			printf("-%c|%c ", 0x00);
+				dwLoc14_n = toupper((word32) (g_ptr10000A40 + ((dwLoc18_n * 0x14 - dwLoc18_n << 0x03) + 8) / 0x0696)->a0004[0].ptr0000);
+			printf("-%c|%c ", (g_ptr10000A40 + ((dwLoc18_n * 0x14 - dwLoc18_n << 0x03) + 8) / 0x0696)->a0004[0].ptr0000, (char) dwLoc14_n);
 		}
 		else
-			printf("-%c %s ", 0x00);
+			printf("-%c %s ", (g_ptr10000A40 + ((dwLoc18_n * 0x14 - dwLoc18_n << 0x03) + 8) / 0x0696)->a0004[0].ptr0000, g_ptr10000A40->a0004[dwLoc18_n * 0x14 - dwLoc18_n].ptr0000);
 		++dwLoc18_n;
 	}
-	printf("\n", 0x00);
+	printf("\n");
 	Eq_n r5_n = <invalid>;
 	return r5_n;
 }
@@ -2255,18 +2255,19 @@ void log_rotate(word32 ra)
 	open_log("w", ra);
 }
 
-// 0040697C: void log_string(Register (ptr32 Eq_n) r4, Register word32 r5, Register word32 r7, Register word32 ra)
-void log_string(FILE * r4, word32 r5, word32 r7, word32 ra)
+// 0040697C: void log_string(Register (ptr32 Eq_n) r4, Register ui32 r5, Register (ptr32 char) r7, Register word32 ra)
+void log_string(FILE * r4, ui32 r5, char * r7, word32 ra)
 {
 	ptr32 fp;
 	word32 dwLoc28;
+	int32 dwLoc24;
 	gettimeofday(&dwLoc28, null);
 	Eq_n r7_n = <invalid>;
 	Eq_n r6_n = <invalid>;
 	Eq_n r5_n = <invalid>;
 	Eq_n r4_n = <invalid>;
 	strftime(fp + -72, (size_t) 28, "%Y-%m-%d %H:%M:%S", gmtime(&dwLoc28, r4_n, &dwLoc28, 0x00, r5_n, r6_n, r7_n, 0x10008860));
-	fprintf(r4, "%s:%s.%03d:%s\n", 0x00);
+	fprintf(r4, "%s:%s.%03d:%s\n", g_ptr100008FC[r5], fp + -72, (SLICE(dwLoc24 *s 274877907, word32, 32) >> 0x06) - (dwLoc24 >> 0x1F), r7);
 	fflush(r4);
 	++g_ptr10000878->dw0824;
 	if (*g_ptr10000A28 != 0x00)

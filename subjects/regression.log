@@ -196,8 +196,8 @@ d:\dev\uxmal\reko\master\subjects\Elf\IA64\bash\elf-Linux-ia64-bash: error: An i
    at Reko.Scanning.ShingledScanner.ScanRange(IProcessorArchitecture arch, MemoryArea mem, Address addrStart, UInt32 cbAlloc, UInt64 workToDo) in d:\dev\uxmal\reko\master\src\Decompiler\Scanning\ShingledScanner.cs:line 200
    at Reko.Scanning.ScannerInLinq.ScanInstructions(ScanResults sr) in d:\dev\uxmal\reko\master\src\Decompiler\Scanning\ScannerInLinq.cs:line 130
    at Reko.Scanning.ScannerInLinq.ScanImage(ScanResults sr) in d:\dev\uxmal\reko\master\src\Decompiler\Scanning\ScannerInLinq.cs:line 65
-   at Reko.Scanning.Scanner.ShingleScanProcedures() in d:\dev\uxmal\reko\master\src\Decompiler\Scanning\Scanner.cs:line 1090
-   at Reko.Scanning.Scanner.ScanImage() in d:\dev\uxmal\reko\master\src\Decompiler\Scanning\Scanner.cs:line 803
+   at Reko.Scanning.Scanner.ShingleScanProcedures() in d:\dev\uxmal\reko\master\src\Decompiler\Scanning\Scanner.cs:line 1092
+   at Reko.Scanning.Scanner.ScanImage() in d:\dev\uxmal\reko\master\src\Decompiler\Scanning\Scanner.cs:line 805
    at Reko.Decompiler.ScanProgram(Program program) in d:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 472
    at Reko.Decompiler.ScanPrograms() in d:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 450
 
@@ -1120,8 +1120,10 @@ Evaluating d:\dev\uxmal\reko\master\subjects\scripting\py_func_names.py
 00406F18: warning: Unable to resolve imported reference listen.
 10000028: warning: Expected sizes of arrays to have been determined by now
 100007E0: warning: Expected sizes of arrays to have been determined by now
+10000810: warning: Expected sizes of arrays to have been determined by now
 10000028: warning: Expected sizes of arrays to have been determined by now
 100007E0: warning: Expected sizes of arrays to have been determined by now
+10000810: warning: Expected sizes of arrays to have been determined by now
 
 === PE\x86-64\array\reko_array
 reko_array.dll: warning: Win32 X86-64 main procedure finder not implemented yet.
@@ -1370,10 +1372,6 @@ l000084F0_1: warning: Non-integral switch expression
 === Elf\MIPS\swlswr\test
 000005A0: warning: Unable to resolve imported reference __gmon_start__.
 000005AC: warning: Unable to resolve imported reference __gmon_start__.
-0000068C: warning: Unable to resolve imported reference _ITM_deregisterTMCloneTable.
-0000068C: warning: Unable to resolve imported reference _ITM_deregisterTMCloneTable.
-000006D8: warning: Unable to resolve imported reference _ITM_registerTMCloneTable.
-000006D8: warning: Unable to resolve imported reference _ITM_registerTMCloneTable.
 00000728: warning: Unable to resolve imported reference __cxa_finalize.
 00000728: warning: Unable to resolve imported reference __cxa_finalize.
 00000734: warning: Unable to resolve imported reference __cxa_finalize.
@@ -2001,4 +1999,4 @@ Signature of 'Microsoft Visual C++ 8' detected.
 0040120B: warning: Unable to determine the upper bound of an indirect call or jump; there may be more than 2 entries.
 004011A5: warning: Unable to determine the upper bound of an indirect call or jump; there may be more than 2 entries.
 
-Decompiled 87 binaries in 47.91 seconds.
+Decompiled 87 binaries in 47.82 seconds.

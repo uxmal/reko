@@ -33,6 +33,7 @@ int32 * g_ptr100008C0 = &g_dw10000014; // 100008C0
 <anonymous> * exit_GOT = exit; // 100008F0
 int32 * g_ptr100008F4 = &g_dw10000018; // 100008F4
 <anonymous> * __errno_location_GOT = __errno_location; // 100008F8
+char * (* g_ptr100008FC)[] = &g_a10000810; // 100008FC
 <anonymous> * strftime_GOT = strftime; // 10000900
 <anonymous> * getsockopt_GOT = getsockopt; // 10000904
 <anonymous> * clist_new_GOT = clist_new; // 10000908

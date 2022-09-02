@@ -293,6 +293,7 @@ int sigprocmask(int how, const sigset_t *set, sigset_t *oldset);
 unsigned int sleep(unsigned int seconds);
 int socket(int dom, int type, int proto);
 int stat(const char *path, struct stat *buf);
+int system(const char *cmd);
 pid_t tcgetpgrp(int fd);
 int tcsetattr(int fd, int optional_actions, struct termios *termios_p);
 int tcsetpgrp(int fd, pid_t pgrp);

@@ -18,9 +18,11 @@ Eq_1: (struct "Globals"
 		(10AB8 (ptr32 code) _init_GOT)
 		(10ABC (ptr32 (ptr32 code)) ptr10ABC)
 		(10AD0 (ptr32 code) calloc_GOT)
+		(10AD4 (ptr32 code) ptr10AD4)
 		(10AD8 (ptr32 code) memset_GOT)
 		(10ADC (ptr32 code) __libc_start_main_GOT)
 		(10AE0 (ptr32 code) __gmon_start___GOT)
+		(10AE4 (ptr32 code) ptr10AE4)
 		(10AE8 (ptr32 code) __cxa_finalize_GOT)
 		(10AEC word32 dw10AEC)
 		(10AF0 byte b10AF0)
@@ -43,9 +45,6 @@ Eq_48: (union "Eq_48" (int32 u0) (ptr32 u1))
 	T_48 (in Mem0[0x10AA4<32>:word32] @ 00000688 : word32)
 	T_49 (in 0x00010A84<p32> @ 00000688 : ptr32)
 	T_58 (in Mem0[0x10AA4<32>:word32] @ 000006C4 : word32)
-Eq_51: (fn void ())
-	T_51 (in _ITM_deregisterTMCloneTable @ 00000690 : ptr32)
-	T_53 (in 0<32> @ 00000690 : word32)
 Eq_56: (union "Eq_56" (int32 u0) (uint32 u1))
 	T_56 (in r5_12 @ 000006C4 : Eq_56)
 	T_62 (in g_t10AA4 - 0x00010A84<p32> >> 2<8> @ 000006C4 : word32)
@@ -55,9 +54,6 @@ Eq_64: (union "Eq_64" (int32 u0) (uint32 u1))
 	T_64 (in r5_12 >> 0x1F<8> @ 000006D4 : word32)
 Eq_65: (union "Eq_65" (int32 u0) (uint32 u1))
 	T_65 (in (r5_12 >>u 0x1F<8>) + r5_12 @ 000006D4 : word32)
-Eq_70: (fn void ())
-	T_70 (in _ITM_registerTMCloneTable @ 000006DC : ptr32)
-	T_72 (in 0<32> @ 000006DC : word32)
 Eq_84: (union "Eq_84" (int32 u0) (uint32 u1))
 	T_84 (in r2_40 @ 0000075C : Eq_84)
 	T_86 (in Mem19[0x00010AF4<p32>:word32] @ 0000075C : word32)
@@ -317,26 +313,26 @@ T_50: (in g_t10AA4 == 0x00010A84<p32> @ 00000688 : bool)
   Class: Eq_50
   DataType: bool
   OrigDataType: bool
-T_51: (in _ITM_deregisterTMCloneTable @ 00000690 : ptr32)
+T_51: (in r25_12 @ 00000690 : (ptr32 code))
   Class: Eq_51
-  DataType: (ptr32 Eq_51)
-  OrigDataType: (ptr32 (fn T_55 ()))
-T_52: (in signature of _ITM_deregisterTMCloneTable : void)
-  Class: Eq_52
-  DataType: Eq_52
-  OrigDataType: 
-T_53: (in 0<32> @ 00000690 : word32)
+  DataType: (ptr32 code)
+  OrigDataType: (ptr32 code)
+T_52: (in 0<32> @ 00000690 : word32)
   Class: Eq_51
-  DataType: (ptr32 Eq_51)
+  DataType: (ptr32 code)
   OrigDataType: word32
-T_54: (in _ITM_deregisterTMCloneTable == null @ 00000690 : bool)
-  Class: Eq_54
+T_53: (in r25_12 == null @ 00000690 : bool)
+  Class: Eq_53
   DataType: bool
   OrigDataType: bool
-T_55: (in _ITM_deregisterTMCloneTable() @ 00000698 : void)
-  Class: Eq_55
-  DataType: void
-  OrigDataType: void
+T_54: (in 0x10AE4<32> @ 0000068C : word32)
+  Class: Eq_54
+  DataType: (ptr32 (ptr32 code))
+  OrigDataType: (ptr32 (struct (0 T_55 t0000)))
+T_55: (in Mem0[0x10AE4<32>:word32] @ 0000068C : word32)
+  Class: Eq_51
+  DataType: (ptr32 code)
+  OrigDataType: word32
 T_56: (in r5_12 @ 000006C4 : Eq_56)
   Class: Eq_56
   DataType: Eq_56
@@ -393,26 +389,26 @@ T_69: (in (r5_12 >>u 0x1F<8>) + r5_12 >> 1<8> == 0<32> @ 000006D4 : bool)
   Class: Eq_69
   DataType: bool
   OrigDataType: bool
-T_70: (in _ITM_registerTMCloneTable @ 000006DC : ptr32)
+T_70: (in r25_17 @ 000006D8 : (ptr32 code))
   Class: Eq_70
-  DataType: (ptr32 Eq_70)
-  OrigDataType: (ptr32 (fn T_74 ()))
-T_71: (in signature of _ITM_registerTMCloneTable : void)
+  DataType: (ptr32 code)
+  OrigDataType: (ptr32 code)
+T_71: (in 0x10AD4<32> @ 000006D8 : word32)
   Class: Eq_71
-  DataType: Eq_71
-  OrigDataType: 
-T_72: (in 0<32> @ 000006DC : word32)
+  DataType: (ptr32 (ptr32 code))
+  OrigDataType: (ptr32 (struct (0 T_72 t0000)))
+T_72: (in Mem0[0x10AD4<32>:word32] @ 000006D8 : word32)
   Class: Eq_70
-  DataType: (ptr32 Eq_70)
+  DataType: (ptr32 code)
   OrigDataType: word32
-T_73: (in _ITM_registerTMCloneTable == null @ 000006DC : bool)
-  Class: Eq_73
+T_73: (in 0<32> @ 000006DC : word32)
+  Class: Eq_70
+  DataType: (ptr32 code)
+  OrigDataType: word32
+T_74: (in r25_17 == null @ 000006DC : bool)
+  Class: Eq_74
   DataType: bool
   OrigDataType: bool
-T_74: (in _ITM_registerTMCloneTable() @ 000006E4 : void)
-  Class: Eq_74
-  DataType: void
-  OrigDataType: void
 T_75: (in 0x00010AF0<p32> @ 00000724 : ptr32)
   Class: Eq_75
   DataType: (ptr32 byte)
@@ -1172,9 +1168,11 @@ typedef struct Globals {
 	<anonymous> * _init_GOT;	// 10AB8
 	<anonymous> ** ptr10ABC;	// 10ABC
 	<anonymous> * calloc_GOT;	// 10AD0
+	<anonymous> * ptr10AD4;	// 10AD4
 	<anonymous> * memset_GOT;	// 10AD8
 	<anonymous> * __libc_start_main_GOT;	// 10ADC
 	<anonymous> * __gmon_start___GOT;	// 10AE0
+	<anonymous> * ptr10AE4;	// 10AE4
 	<anonymous> * __cxa_finalize_GOT;	// 10AE8
 	word32 dw10AEC;	// 10AEC
 	byte b10AF0;	// 10AF0
@@ -1204,8 +1202,6 @@ typedef union Eq_48 {
 	ptr32 u1;
 } Eq_48;
 
-typedef void (Eq_51)();
-
 typedef union Eq_56 {
 	int32 u0;
 	uint32 u1;
@@ -1225,8 +1221,6 @@ typedef union Eq_65 {
 	int32 u0;
 	uint32 u1;
 } Eq_65;
-
-typedef void (Eq_70)();
 
 typedef union Eq_84 {
 	int32 u0;
