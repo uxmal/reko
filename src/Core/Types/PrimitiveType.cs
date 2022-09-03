@@ -106,6 +106,8 @@ namespace Reko.Core.Types
             }
             if (cache.TryGetValue((dom, bitSize), out var shared))
                 return shared;
+            if (bitSize == 72)
+                _ = dom; //$DEBUG
             var p = new PrimitiveType(dom, bitSize, false, name ?? GenerateName(dom, bitSize));
             return Cache(p);
         }

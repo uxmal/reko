@@ -18080,12 +18080,12 @@ l0001A1B0:
 						Eq_n r5_n;
 						if (Test(EQ,0x15))
 						{
-							r5_n = (word32) dwLoc54 + ((dwLoc54 * 0x08 - dwLoc54) * 0x10 - dwLoc54) * 0x09;
-							dwLoc54 = r5_n;
+							r5_n = dwLoc54 * 1000;
+							dwLoc54 *= 1000;
 						}
 						else
 							r5_n = dwLoc54;
-						g_ptr0005->dw002C = (word32) r5_n + ((r5_n * 0x08 - r5_n) * 0x10 - r5_n) * 0x09;
+						g_ptr0005->dw002C = r5_n * 1000;
 						goto l0001A064;
 					}
 					word32 r18_n;
@@ -23543,8 +23543,7 @@ l00026C30:
 	else
 	{
 		ui32 r7_n = r3_n * 0x02;
-		ui32 r7_n = r7_n + r3_n;
-		ui32 r7_n = r7_n * 0x08 - r7_n;
+		word32 r7_n = r7_n + r3_n;
 		int32 r3_n = *r22_n->ptr0004;
 		struct Eq_n * r3_n;
 		(0x00026DE4 + r3_n)();
@@ -25739,14 +25738,10 @@ void fn0002E530(struct Eq_n * r0, struct Eq_n * r5)
 		if (Test(GT,0x78))
 		{
 			struct Eq_n * r3_n;
-			ui32 r4_n = (r3_n * 0x08 - r3_n) * 0x10 - r3_n;
 			if (Test(EQ,0x15))
-			{
-				ui32 r3_n = r3_n + (r4_n * 0x09) / 80;
-				r3_n = r3_n + ((r3_n * 0x08 - r3_n) * 0x10 - r3_n) * 0x09;
-			}
+				r3_n = r3_n * 1000000;
 			else
-				r3_n = r3_n + (r4_n * 0x09) / 80;
+				r3_n = r3_n * 1000;
 			r19_n->ptr002C = r3_n;
 		}
 	}

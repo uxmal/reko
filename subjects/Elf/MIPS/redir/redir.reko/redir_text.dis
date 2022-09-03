@@ -3173,7 +3173,7 @@ l00405920:
 	word32 dwLoc2C_567 = 0<32>
 	word32 dwLoc014C_568 = 0<32>
 l004059CC:
-	branch CONVERT(Mem293[Mem293[0x10000A40<32>:word32] + ((dwLoc014C_568 * 0x14<32> - dwLoc014C_568 << 3<8>) + 8<i32>) + 4<32>:int8], int8, word32) == 32<i32> l00405C40
+	branch CONVERT(Mem293[Mem293[0x10000A40<32>:word32] + (dwLoc014C_568 * 0x98<32> + 8<i32>) + 4<32>:int8], int8, word32) == 32<i32> l00405C40
 l00405A0C:
 	branch dwLoc2C_567 != 0<32> l00405C40
 l00405C40:
@@ -3185,25 +3185,25 @@ l00405C50:
 	word32 r6_632
 	print_log(1<i32>, 0x0040A5C4<p32>, out r5_631, out r6_632, out r7_633, out r25_634)
 l00405A1C:
-	branch strcasecmp(r2_212, Mem293[Mem293[0x10000A40<32>:word32] + 4<i32> + (dwLoc014C_568 * 0x14<32> - dwLoc014C_568 << 3<8>):word32]) != 0<32> l00405C2C
+	branch strcasecmp(r2_212, Mem293[Mem293[0x10000A40<32>:word32] + 4<i32> + dwLoc014C_568 * 0x98<32>:word32]) != 0<32> l00405C2C
 l00405A70:
 	dwLoc2C_567 = 1<i32>
-	word32 r2_366 = Mem355[Mem355[0x10000A40<32>:word32] + ((dwLoc014C_568 * 0x14<32> - dwLoc014C_568 << 3<8>) + 8<i32>):word32]
+	word32 r2_366 = Mem355[Mem355[0x10000A40<32>:word32] + (dwLoc014C_568 * 0x98<32> + 8<i32>):word32]
 	branch r2_366 == 1<i32> l00405B54
 l00405B54:
 	word32 r2_377
 	call 0x004053F0<p32> (retsize: 0;)
 		uses: r25:0x004053F0<p32>,r4:r2_266,r5:0<32>
 		defs: r2:r2_377
-	Mem394[Mem367[0x10000A40<32>:word32] + 4<i32> + ((dwLoc014C_568 * 0x14<32> - dwLoc014C_568 << 3<8>) + 144<i32>):word32] = r2_377
+	Mem394[Mem367[0x10000A40<32>:word32] + 4<i32> + (dwLoc014C_568 * 0x98<32> + 144<i32>):word32] = r2_377
 l00405AC8:
 	branch CONVERT(r2_366 <u 1<i32>, bool, word32) != 0<32> l00405AF8
 l00405AF8:
-	strncpy((dwLoc014C_568 * 0x14<32> - dwLoc014C_568 << 3<8>) + (Mem367[0x10000A40<32>:word32] + 13<i32>), r2_266, 20<i32>)
+	strncpy(dwLoc014C_568 * 0x98<32> + (Mem367[0x10000A40<32>:word32] + 13<i32>), r2_266, 20<i32>)
 l00405ADC:
 	branch r2_366 == 2<i32> l00405BBC
 l00405BBC:
-	Mem448[Mem367[0x10000A40<32>:word32] + 4<i32> + ((dwLoc014C_568 * 0x14<32> - dwLoc014C_568 << 3<8>) + 144<i32>):word32] = CONVERT(strchr(0x0040A5C0<p32>, Mem367[r2_266:int8]) >u 0<32>, bool, word32)
+	Mem448[Mem367[0x10000A40<32>:word32] + 4<i32> + (dwLoc014C_568 * 0x98<32> + 144<i32>):word32] = CONVERT(strchr(0x0040A5C0<p32>, Mem367[r2_266:int8]) >u 0<32>, bool, word32)
 l00405AF0:
 l00405C2C:
 	dwLoc014C_568 = dwLoc014C_568 + 1<i32>
@@ -3275,7 +3275,7 @@ l00405EA4:
 	word32 dwLoc20_382 = 0<32>
 	word32 dwLoc24_383 = 0<32>
 l00405EAC:
-	branch CONVERT(Mem116[Mem116[r28_125 - 0x7E20<32>:word32] + ((dwLoc24_383 * 0x14<32> - dwLoc24_383 << 3<8>) + 8<i32>) + 4<32>:int8], int8, word32) == 32<i32> l004061DC
+	branch CONVERT(Mem116[Mem116[r28_125 - 0x7E20<32>:word32] + (dwLoc24_383 * 0x98<32> + 8<i32>) + 4<32>:int8], int8, word32) == 32<i32> l004061DC
 l00405EEC:
 	branch dwLoc20_382 != 0<32> l004061DC
 l004061DC:
@@ -3288,9 +3288,9 @@ l004061EC:
 		uses: r2:r2_139,r4:1<i32>,r5:Mem142[r28_125 - 0x7FE0<32>:word32] + -22924<i32>,r6:Mem142[r28_125 - 0x7FE0<32>:word32] + -22900<i32>,r7:200<i32>,Stack +0010:r2_139
 	r5_168 = properties_print_usage(Mem142[r5:word32])
 l00405EFC:
-	branch CONVERT(bLoc1C_368, byte, word32) == CONVERT(Mem116[(Mem116[r28_125 - 0x7E20<32>:word32] + ((dwLoc24_383 * 0x14<32> - dwLoc24_383 << 3<8>) + 8<i32>)) + 4<32>:int8], int8, word32) l00406004
+	branch CONVERT(bLoc1C_368, byte, word32) == CONVERT(Mem116[(Mem116[r28_125 - 0x7E20<32>:word32] + (dwLoc24_383 * 0x98<32> + 8<i32>)) + 4<32>:int8], int8, word32) l00406004
 l00405F40:
-	branch Mem116[Mem116[r28_125 - 0x7E20<32>:word32] + ((dwLoc24_383 * 0x14<32> - dwLoc24_383 << 3<8>) + 8<i32>):word32] != 2<i32> l004061C8
+	branch Mem116[Mem116[r28_125 - 0x7E20<32>:word32] + (dwLoc24_383 * 0x98<32> + 8<i32>):word32] != 2<i32> l004061C8
 l00405F80:
 	word32 r2_199 = CONVERT(bLoc1C_368, byte, word32)
 	word32 r2_206
@@ -3299,10 +3299,10 @@ l00405F80:
 		defs: r2:r2_206
 	r28_125 = 0x10008860<32>
 	r5_168 = r5_227
-	branch r2_206 == toupper(CONVERT(Mem116[(Mem116[0x10000A40<32>:word32] + ((dwLoc24_383 * 0x14<32> - dwLoc24_383 << 3<8>) + 8<i32>)) + 4<32>:int8], int8, word32)) l00406004
+	branch r2_206 == toupper(CONVERT(Mem116[(Mem116[0x10000A40<32>:word32] + (dwLoc24_383 * 0x98<32> + 8<i32>)) + 4<32>:int8], int8, word32)) l00406004
 l00406004:
 	dwLoc20_382 = 1<i32>
-	word32 r2_247 = Mem235[Mem235[r28_125 - 0x7E20<32>:word32] + ((dwLoc24_383 * 0x14<32> - dwLoc24_383 << 3<8>) + 8<i32>):word32]
+	word32 r2_247 = Mem235[Mem235[r28_125 - 0x7E20<32>:word32] + (dwLoc24_383 * 0x98<32> + 8<i32>):word32]
 	branch r2_247 == 1<i32> l004060E8
 l004060E8:
 	word32 r25_253 = Mem248[r28_125 - 0x7FE4<32>:word32]
@@ -3312,22 +3312,21 @@ l004060E8:
 	call r25_253 + 21488<i32> (retsize: 0;)
 		uses: r25:r25_253 + 21488<i32>,r4:dwLoc18_460,r5:0<32>,r6:r6_263,r7:r7_264
 		defs: r2:r2_261,r5:r5_260,r6:r6_263,r7:r7_264
-	Mem278[Mem248[0x10000A40<32>:word32] + 4<i32> + ((dwLoc24_383 * 0x14<32> - dwLoc24_383 << 3<8>) + 144<i32>):word32] = r2_261
+	Mem278[Mem248[0x10000A40<32>:word32] + 4<i32> + (dwLoc24_383 * 0x98<32> + 144<i32>):word32] = r2_261
 	r28_125 = 0x10008860<32>
 l0040605C:
 	branch CONVERT(r2_247 <u 1<i32>, bool, word32) != 0<32> l0040608C
 l0040608C:
-	word32 r2_286 = dwLoc24_383 * 0x14<32> - dwLoc24_383
-	word32 r2_290 = (r2_286 << 3<8>) + (Mem248[r28_125 - 0x7E20<32>:word32] + 13<i32>)
+	word32 r2_290 = dwLoc24_383 * 0x98<32> + (Mem248[r28_125 - 0x7E20<32>:word32] + 13<i32>)
 	word32 r7_301
 	call Mem248[r28_125 - 0x7ED4<32>:word32] (retsize: 0;)
-		uses: r2:r2_290,r3:r2_286 << 3<8>,r4:r2_290,r5:dwLoc18_460,r6:20<i32>,r7:r7_301
+		uses: r2:r2_290,r3:dwLoc24_384 * 0x98<32>,r4:r2_290,r5:dwLoc18_460,r6:20<i32>,r7:r7_301
 		defs: r5:r5_297,r7:r7_301
 	r28_125 = 0x10008860<32>
 l00406070:
 	branch r2_247 == 2<i32> l00406150
 l00406150:
-	Mem324[Mem248[r28_125 - 0x7E20<32>:word32] + 4<i32> + ((dwLoc24_383 * 0x14<32> - dwLoc24_383 << 3<8>) + 144<i32>):word32] = CONVERT(Mem248[(CONVERT(bLoc1C_368, byte, word32) << 1<8>) + Mem248[Mem248[r28_125 - 0x7DF4<32>:word32]:word32]:uint16], uint16, word32) & 1<32> & 0xFFFF<32>
+	Mem324[Mem248[r28_125 - 0x7E20<32>:word32] + 4<i32> + (dwLoc24_383 * 0x98<32> + 144<i32>):word32] = CONVERT(Mem248[(CONVERT(bLoc1C_368, byte, word32) << 1<8>) + Mem248[Mem248[r28_125 - 0x7DF4<32>:word32]:word32]:uint16], uint16, word32) & 1<32> & 0xFFFF<32>
 	dwLoc28_364 = dwLoc28_364 + -1<i32>
 l00406084:
 l00405FFC:
@@ -3368,20 +3367,20 @@ l004062D8:
 l00406328:
 	word32 dwLoc18_226 = 0<32>
 l0040632C:
-	branch CONVERT(Mem48[Mem48[0x10000A40<32>:word32] + ((dwLoc18_226 * 0x14<32> - dwLoc18_226 << 3<8>) + 8<i32>) + 4<32>:int8], int8, word32) != 32<i32> l00406374
+	branch CONVERT(Mem48[Mem48[0x10000A40<32>:word32] + (dwLoc18_226 * 0x98<32> + 8<i32>) + 4<32>:int8], int8, word32) != 32<i32> l00406374
 l00406374:
-	branch Mem48[Mem48[0x10000A40<32>:word32] + ((dwLoc18_226 * 0x14<32> - dwLoc18_226 << 3<8>) + 8<i32>):word32] != 2<i32> l00406530
+	branch Mem48[Mem48[0x10000A40<32>:word32] + (dwLoc18_226 * 0x98<32> + 8<i32>):word32] != 2<i32> l00406530
 l00406530:
-	printf(0x0040A6D8<p32>, Mem48[Mem48[0x10000A40<32>:word32] + ((dwLoc18_226 * 0x14<32> - dwLoc18_226 << 3<8>) + 8<i32>) + 4<32>:int8], Mem48[Mem48[0x10000A40<32>:word32] + 4<i32> + (dwLoc18_226 * 0x14<32> - dwLoc18_226 << 3<8>):word32])
+	printf(0x0040A6D8<p32>, Mem48[Mem48[0x10000A40<32>:word32] + (dwLoc18_226 * 0x98<32> + 8<i32>) + 4<32>:int8], Mem48[Mem48[0x10000A40<32>:word32] + 4<i32> + dwLoc18_226 * 0x98<32>:word32])
 l004063B4:
 	word32 dwLoc14_229
-	branch (CONVERT(Mem48[(CONVERT(Mem48[Mem48[0x10000A40<32>:word32] + ((dwLoc18_226 * 0x14<32> - dwLoc18_226 << 3<8>) + 8<i32>) + 4<32>:int8], int8, word32) << 1<8>) + Mem48[Mem48[0x10000A6C<32>:word32]:word32]:uint16], uint16, word32) & 1<32> & 0xFFFF<32>) == 0<32> l00406474
+	branch (CONVERT(Mem48[(CONVERT(Mem48[Mem48[0x10000A40<32>:word32] + (dwLoc18_226 * 0x98<32> + 8<i32>) + 4<32>:int8], int8, word32) << 1<8>) + Mem48[Mem48[0x10000A6C<32>:word32]:word32]:uint16], uint16, word32) & 1<32> & 0xFFFF<32>) == 0<32> l00406474
 l00406474:
-	dwLoc14_229 = toupper(CONVERT(Mem48[Mem48[0x10000A40<32>:word32] + ((dwLoc18_226 * 0x14<32> - dwLoc18_226 << 3<8>) + 8<i32>) + 4<32>:int8], int8, word32))
+	dwLoc14_229 = toupper(CONVERT(Mem48[Mem48[0x10000A40<32>:word32] + (dwLoc18_226 * 0x98<32> + 8<i32>) + 4<32>:int8], int8, word32))
 l0040641C:
-	dwLoc14_229 = tolower(CONVERT(Mem48[Mem48[0x10000A40<32>:word32] + ((dwLoc18_226 * 0x14<32> - dwLoc18_226 << 3<8>) + 8<i32>) + 4<32>:int8], int8, word32))
+	dwLoc14_229 = tolower(CONVERT(Mem48[Mem48[0x10000A40<32>:word32] + (dwLoc18_226 * 0x98<32> + 8<i32>) + 4<32>:int8], int8, word32))
 l004064C8:
-	printf(0x0040A6D0<p32>, Mem169[Mem169[0x10000A40<32>:word32] + ((dwLoc18_226 * 0x14<32> - dwLoc18_226 << 3<8>) + 8<i32>) + 4<32>:int8], SLICE(dwLoc14_229, char, 0))
+	printf(0x0040A6D0<p32>, Mem169[Mem169[0x10000A40<32>:word32] + (dwLoc18_226 * 0x98<32> + 8<i32>) + 4<32>:int8], SLICE(dwLoc14_229, char, 0))
 l004065BC:
 	dwLoc18_226 = dwLoc18_226 + 1<i32>
 l0040636C:

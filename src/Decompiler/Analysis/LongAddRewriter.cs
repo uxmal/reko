@@ -323,6 +323,8 @@ namespace Reko.Analysis
                 var asc = MatchAdcSbc(use);
                 if (asc != null && asc.Statement != null && asc.Statement.Block == block)
                 {
+                    if (asc.Op != loInstr.Op)
+                        return null;
                     if (asc.Left.GetType() != loInstr.Left.GetType())
                         return null;
                     asc.Statement = use;

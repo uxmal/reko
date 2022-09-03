@@ -1204,9 +1204,9 @@ void fn0AF8(struct Eq_n * r3, <anonymous> ** r4, uint16 wArg00, word16 wArg04, s
 //      fn0AE6
 void fn0B02(struct Eq_n * r3, <anonymous> ** r4, uint16 wArg00, word16 wArg04, struct Eq_n * wArg06, struct Eq_n * wArg08, <anonymous> * wArg0A)
 {
-	uint8 bArg05 = SLICE(wArg04, byte, 8);
-	byte bArg04 = (byte) wArg04;
-	r3->w00A4 = SLICE(SEQ(wArg00, bArg05) - (uint24) bArg04, word16, 8);
+	cu8 bArg05 = SLICE(wArg04, byte, 8);
+	cu8 bArg04 = (byte) wArg04;
+	r3->w00A4 = wArg00 + (word16) (bArg05 - bArg04 < 0x00);
 	if (r3->b0074 == 0x00)
 	{
 		r3->w0052 = wArg04;
@@ -1241,8 +1241,8 @@ void fn0B44(struct Eq_n * r0, struct Eq_n * wArg00, struct Eq_n * wArg02, word16
 void fn0B60(struct Eq_n * r0, word16 wArg00, struct Eq_n * wArg02, struct Eq_n * wArg04, word16 * ptrArg06)
 {
 	ptr16 fp;
-	byte bArg00 = (byte) wArg00;
-	uint8 bArg01 = SLICE(wArg00, byte, 8);
+	cu8 bArg00 = (byte) wArg00;
+	cu8 bArg01 = SLICE(wArg00, byte, 8);
 	uint16 wLoc04_n;
 	struct Eq_n * r3_n = g_ptr5424;
 	if (bArg00 != 0x01)
@@ -1253,7 +1253,7 @@ void fn0B60(struct Eq_n * r0, word16 wArg00, struct Eq_n * wArg02, struct Eq_n *
 	}
 	word16 * sp_n;
 	<anonymous> ** sp_n;
-	r3_n->w00A4 = SLICE(SEQ(wLoc04_n, bArg01) - (uint24) bArg00, word16, 8);
+	r3_n->w00A4 = wLoc04_n + (word16) (bArg01 - bArg00 < 0x00);
 	if (r3_n->b0074 != 0x00)
 	{
 		r3_n->w0052 = wArg00;

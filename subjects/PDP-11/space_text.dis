@@ -644,7 +644,7 @@ fn0B02_entry:
 	byte bArg05 = SLICE(wArg04, byte, 8)
 	byte bArg04 = SLICE(wArg04, byte, 0)
 l0B02:
-	Mem12[r3 + 0xA4<16>:word16] = SLICE(SEQ(wArg00, bArg05) - CONVERT(bArg04, byte, uint24), word16, 8)
+	Mem12[r3 + 0xA4<16>:word16] = wArg00 + CONVERT(bArg05 - bArg04 <u 0<8>, bool, word16)
 	branch Mem12[r3 + 0x74<16>:byte] == 0<8> l0B22
 l0B22:
 	Mem20[r3 + 0x52<16>:word16] = wArg04
@@ -708,18 +708,18 @@ fn0B60_entry:
 	byte bArg00 = SLICE(wArg00, byte, 0)
 	byte bArg01 = SLICE(wArg00, byte, 8)
 l0B60:
-	word16 wLoc04_135
+	word16 wLoc04_134
 	word16 r3_111 = Mem5[0x5424<p16>:word16]
 	branch bArg00 == 1<8> l0B7C
 l0B72:
-	wLoc04_135 = CONVERT(bArg00, byte, uint16) (alias)
+	wLoc04_134 = CONVERT(bArg00, byte, uint16) (alias)
 	branch bArg00 == 8<8> l0B7C
 l0B78:
-	wLoc04_135 = wLoc04_135 + 3<16>
+	wLoc04_134 = wLoc04_134 + 3<16>
 l0B7C:
 	word16 sp_101
 	word16 sp_110
-	Mem30[r3_111 + 0xA4<16>:word16] = SLICE(SEQ(wLoc04_135, bArg01) - CONVERT(bArg00, byte, uint24), word16, 8)
+	Mem30[r3_111 + 0xA4<16>:word16] = wLoc04_134 + CONVERT(bArg01 - bArg00 <u 0<8>, bool, word16)
 	branch Mem30[r3_111 + 0x74<16>:byte] == 0<8> l0BA4
 l0BA4:
 	Mem49[r3_111 + 0x52<16>:word16] = wArg00

@@ -1053,5 +1053,20 @@ namespace Reko.UnitTests.Decompiler.Evaluation
             Assert.AreEqual("foo_1 *s 14<i32>", result.ToString());
             Assert.IsTrue(changed);
         }
+
+        [Test]
+        public void Exs_difference_of_product_and_shift()
+        {
+            Given_ExpressionSimplifier();
+
+            var exp = m.ISub(
+                m.SMul(foo, 0x14),
+                foo);
+            var (result, changed) = exp.Accept(simplifier);
+
+            Assert.AreEqual("foo_1 *s 0x13<32>", result.ToString());
+            Assert.IsTrue(changed);
+
+        }
     }
 }

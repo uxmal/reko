@@ -46,6 +46,7 @@ namespace Reko.UnitTests.Decompiler.Analysis
         private Identifier bx;
         private Identifier cx;
         private Identifier dx;
+        private Identifier rdx;
         private Identifier es;
         private Identifier SCZ;
         private Identifier CF;
@@ -73,6 +74,7 @@ namespace Reko.UnitTests.Decompiler.Analysis
             bx = binder.EnsureRegister(RegisterStorage.Reg16("bx", 3));
             cx = binder.EnsureRegister(RegisterStorage.Reg16("cx", 1));
             dx = binder.EnsureRegister(RegisterStorage.Reg16("dx", 2));
+            rdx = binder.EnsureRegister(RegisterStorage.Reg64("rdx", 2));
             es = binder.EnsureRegister(RegisterStorage.Reg16("es", 14));
             SCZ = binder.EnsureFlagGroup(arch.GetFlagGroup("SCZ"));
             CF = binder.EnsureFlagGroup(arch.GetFlagGroup("C"));
@@ -535,6 +537,28 @@ namespace Reko.UnitTests.Decompiler.Analysis
                 m.Assign(dx, m.IAdd(dx, bx));
                 this.block = m.Block;
             });
+        }
+
+        [Test]
+        public void Larw_Non_related_add_sbc()
+        {
+            var sExp =
+            #region Expected
+@"l1:
+	ax_2 = ax + ax
+	SCZ_3 = cond(ax_2)
+	C_4 = SLICE(SCZ_3, bool, 1)
+	rdx_6 = rdx - 3<64> - C_4
+";
+            #endregion
+            RunTest(sExp, m =>
+                {
+                    m.Assign(ax, m.IAdd(ax, ax));
+                    m.Assign(SCZ, m.Cond(ax));
+                    m.Assign(CF, m.Slice(SCZ, PrimitiveType.Bool, 1));
+                    m.Assign(rdx, m.ISub(m.ISub(rdx, 3), CF));
+                    this.block = m.Block;
+                });
         }
     }
 }

@@ -23674,7 +23674,7 @@ l0040C6CC:
 	r20_152 = CONVERT(Mem372[0x0041326D<p32> + r4_108:byte], byte, word32)
 	branch (r5 + 0xFFFFFFFF<32> & r5) == 0<32> l0040C9A2
 l0040C9A2:
-	r7_153 = __ext<word32,word32>(r5 * 0x18<32> - r5, 5<32>, 3<32>)
+	r7_153 = __ext<word32,word32>(r5 * 0x17<32>, 5<32>, 3<32>)
 l0040C9B0:
 	word32 r17_381 = 0<32>
 	r5_109 = CONVERT(Mem383[r7_153 + 0x00413260<p32>:byte], byte, word32)

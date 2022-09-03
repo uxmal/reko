@@ -1509,7 +1509,8 @@ l0800_n:
 						{
 							di_n = di_n - 0x01;
 							es_n->*di_n = bLoc8F_n;
-							wLoc8E_n = SLICE(SEQ(wLoc8E_n, wLoc8E_n) - 0x01, word16, 16);
+							v40_n = wLoc8E_n - 0x01;
+							wLoc8E_n = v40_n + (word16) (v40_n < 0x00);
 						}
 						cx_n = fn0800-108C(di_n, es_n);
 						es_di_n = &(es_n->*di_n);
@@ -1529,17 +1530,17 @@ l0800_n:
 							sp_n = sp_n - 2;
 							ss->*sp_n = ds;
 							wArg02_n = (union Eq_n Eq_n::*) &wArg02_n->t0002;
-							v72_n = di_n != 0x00;
+							v71_n = di_n != 0x00;
 							es_di_n = SEQ(ss->*sp_n, di_n);
 						}
 						else
 						{
 							es_di_n = (ds->*wArg02_n).t0000;
 							wArg02_n = (union Eq_n Eq_n::*) ((char *) &wArg02_n->t0002 + 2);
-							v73_n = es_di_n != 0x00;
+							v72_n = es_di_n != 0x00;
 						}
 						es_di_n = es_di_n;
-						if (!v71_n)
+						if (!v70_n)
 						{
 							sp_n = sp_n - 2;
 							ss->*sp_n = ds;

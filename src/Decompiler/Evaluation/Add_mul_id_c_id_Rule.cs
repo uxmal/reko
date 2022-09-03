@@ -23,11 +23,14 @@ using Reko.Core.Expressions;
 using Reko.Core.Operators;
 using Reko.Analysis;
 using System;
+using Reko.Core.Types;
 
 namespace Reko.Evaluation
 {
 	/// <summary>
-	/// Rule that matches (+ (* id c) id) and yields (* id (+ c 1))
+	/// Rule that matches:
+    ///     (+ (* id c) id) yielding (* id (+ c 1))
+    ///     (- (* id c) id) yielding (* id (- c 1))
 	/// </summary>
 	public class Add_mul_id_c_id_Rule
 	{
@@ -35,6 +38,8 @@ namespace Reko.Evaluation
 		private BinaryExpression? bin;
 		private Identifier? id;
 		private Constant? cInner;
+        private Constant? cOne;
+        private bool swapped;
 
 		public Add_mul_id_c_id_Rule(EvaluationContext ctx)
 		{
@@ -43,24 +48,43 @@ namespace Reko.Evaluation
 
 		public bool Match(BinaryExpression exp)
 		{
-			if (exp.Operator != Operator.IAdd)
-				return false;
+            var dt = exp.DataType.ResolveAs<PrimitiveType>();
+            if (dt is null)
+                return false;
+            var op = exp.Operator;
+            if (op == Operator.IAdd)
+            {
+                cOne = Constant.Create(dt, 1);
+            }
+            else if (op == Operator.ISub)
+            {
+                cOne = Constant.Create(dt, -1);
+            }
+            else
+            {
+                return false;
+            }
+
+            swapped = false;
 			id = exp.Left as Identifier;
-			
 			bin = exp.Right as BinaryExpression;
-			if ((id == null || bin == null) && exp.Operator  == Operator.IAdd)
+			if (id == null || bin == null)
 			{
+                // Swap the operands.
 				id = exp.Right as Identifier;
 				bin = exp.Left as BinaryExpression;
+                swapped = true;
 			}
 			if (id == null || bin == null)
 				return false;
 
-			if (bin.Operator != Operator.SMul && bin.Operator != Operator.UMul && bin.Operator != Operator.IMul)
+			if (bin.Operator != Operator.SMul &&
+                bin.Operator != Operator.UMul &&
+                bin.Operator != Operator.IMul)
 				return false;
 
             cInner = bin.Right as Constant;
-            if (!(bin.Left is Identifier idInner) || cInner == null)
+            if (bin.Left is not Identifier idInner || cInner == null)
 				return false;
 
 			if (idInner != id)
@@ -72,7 +96,12 @@ namespace Reko.Evaluation
 		public Expression Transform()
 		{
             ctx.RemoveIdentifierUse(id!);
-			return new BinaryExpression(bin!.Operator, id!.DataType, id, Operator.IAdd.ApplyConstants(cInner!, Constant.Create(cInner!.DataType, 1)));
+            var op = Operator.IAdd;
+            var c = swapped
+                ? op.ApplyConstants(cOne!, cInner!)
+                : op.ApplyConstants(cInner!, cOne!);
+
+            return new BinaryExpression(bin!.Operator, id!.DataType, id, c);
 		}
 	}
 }

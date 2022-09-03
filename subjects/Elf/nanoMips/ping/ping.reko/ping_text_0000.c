@@ -20951,7 +20951,7 @@ l0040C6CC:
 				}
 				goto l0040C846;
 			}
-			r7_n = __ext<word32,word32>(r5 * 0x18 - r5, 0x05, 0x03);
+			r7_n = __ext<word32,word32>(r5 * 0x17, 0x05, 0x03);
 l0040C9B0:
 			Eq_n r17_n = 0x00;
 			r5_n = (word32) *((word16) r7_n.u0 + 4272736);
