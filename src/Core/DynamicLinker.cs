@@ -63,14 +63,18 @@ namespace Reko.Core
                 .ToDictionary(g => g.Key!, g => g.First());
         }
 
-        private FunctionType? EnsureSignature(Program program, SystemService svc)
+        private FunctionType EnsureSignature(Program program, SystemService svc)
         {
             // If there is a signature in 'Signatures', it should override the signature in the service.
             if (program.EnvironmentMetadata.Signatures.TryGetValue(svc.Name!, out var fnc))
             {
                 return fnc;
             }
-            return svc.Signature;
+            if(svc.Signature != null)
+            {
+                return svc.Signature;
+            }
+            return new FunctionType();
         }
 
         public ExternalProcedure? ResolveProcedure(string? moduleName, string importName, IPlatform platform)
