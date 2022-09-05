@@ -114,7 +114,7 @@ namespace Reko.ImageLoaders.Xbe
             public UInt16 MajorVersion;
             public UInt16 MinorVersion;
             public UInt16 BuildVersion;
-            public UInt32 LibraryFlags;
+            public UInt16 LibraryFlags;
         }
 
         public struct XbeTls
