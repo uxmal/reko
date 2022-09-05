@@ -178,6 +178,11 @@ namespace Reko.ImageLoaders.Xbe
         private XbeImage ctx;
         private XbeImageHeader hdr;
 
+        private long FileOffset(Address addr)
+        {
+            return addr - ctx.BaseAddress;
+        }
+
         private List<ImageSegment> LoadPrimarySections() {
             List<ImageSegment> segments = new List<ImageSegment>((int) hdr.NumberOfSections + 1);
 
@@ -187,7 +192,7 @@ namespace Reko.ImageLoaders.Xbe
                 XbeSectionHeader sectionHeader = rdr.ReadStruct<XbeSectionHeader>();
                 XbeSection section = new XbeSection(sectionHeader);
 
-                string sectionName = rdr.ReadAt<string>(section.NameAddress - ctx.BaseAddress, (rdr) =>
+                string sectionName = rdr.ReadAt<string>(FileOffset(section.NameAddress), (rdr) =>
                 {
                     return rdr.ReadCString(PrimitiveType.Char, Encoding.ASCII).ToString();
                 });
@@ -237,21 +242,19 @@ namespace Reko.ImageLoaders.Xbe
             return null;
         }
 
-        private Dictionary<Address32, ImportReference> LoadImports()
+        private Dictionary<Address32, ImportReference> LoadImports(EndianImageReader importsReader)
         {
             Dictionary<Address32, ImportReference> imports = new Dictionary<Address32, ImportReference>();
 
-            XbeLibrary kernelLibrary = new XbeLibrary(rdr.ReadAt(ctx.KernelLibraryAddress - ctx.BaseAddress, (rdr) =>
+            XbeLibrary kernelLibrary = new XbeLibrary(rdr.ReadAt(FileOffset(ctx.KernelLibraryAddress), (rdr) =>
             {
                 return rdr.ReadStruct<XbeLibraryVersion>();
             }));
 
-            rdr.Seek(ctx.KernelThunkAddress - ctx.BaseAddress, System.IO.SeekOrigin.Begin);
-
             for (uint i = 0; i<XBE_MAX_THUNK; i++)
             {
                 Address32 ordinalAddress = (Address32) ctx.KernelThunkAddress.Add(i * 4);
-                if(!rdr.TryReadUInt32(out uint dword))
+                if(!importsReader.TryReadUInt32(out uint dword))
                 {
                     throw new BadImageFormatException("Unexpected EOF while reading import table.");
                 }
@@ -260,7 +263,7 @@ namespace Reko.ImageLoaders.Xbe
                     break;
                 } else if((dword >> 31) == 0)
                 {
-                    throw new NotSupportedException("Named ordinals not expected in XBE files.");
+                    throw new NotSupportedException("Named imports not expected in XBE files.");
                 }
                 int ordinalValue = (int) (dword & 0x7FFFFFFF);
                 imports.Add(ordinalAddress, new OrdinalImportReference(ordinalAddress, kernelLibrary.LibraryName, ordinalValue, SymbolType.ExternalProcedure));
@@ -294,11 +297,11 @@ namespace Reko.ImageLoaders.Xbe
                 segments.Add(tlsSegment);
             }
 
-            var imports = LoadImports();
+            SegmentMap segmentMap = new SegmentMap(ctx.EntryPointAddress, segments.ToArray());
+            var importsRdr = segmentMap.CreateImageReader(ctx.KernelThunkAddress, arch);
+            var imports = LoadImports(importsRdr);
 
             // build program
-
-            SegmentMap segmentMap = new SegmentMap(ctx.EntryPointAddress, segments.ToArray());
             ImageSymbol entryPoint = ImageSymbol.Procedure(arch, ctx.EntryPointAddress);
 
             Program program = new Program(segmentMap, arch, platform)
