@@ -66,6 +66,14 @@ namespace Reko.UnitTests.Arch.i8051
         }
 
         [Test]
+        public void I8051_rw_cpl_C() {
+            Given_Bytes(0xB3);  //  cpl C
+            AssertCode(
+                "0|L--|0000(1): 1 instructions",
+                "1|L--|C = ~C");
+        }
+
+        [Test]
         public void I8051_rw_ljmp()
         {
             Given_Bytes(0x02, 0x12, 0x34); // ljmp\t1234

@@ -205,8 +205,8 @@ namespace Reko.Arch.i8051
                 var reg = binder.EnsureRegister(r);
                 m.Assign(reg, m.Comp(reg));
                 break;
-            case FlagGroupStorage f:
-                var grf = binder.EnsureFlagGroup(f);
+            case FlagGroupOperand f:
+                var grf = binder.EnsureFlagGroup(f.FlagGroup);
                 m.Assign(grf, m.Comp(grf));
                 break;
             case BitOperand b:
