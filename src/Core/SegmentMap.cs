@@ -71,6 +71,17 @@ namespace Reko.Core
 
         public Dictionary<ushort, ImageSegment> Selectors { get; }
 
+        public EndianImageReader CreateImageReader(Address address, IProcessorArchitecture arch)
+        {
+            if (!TryFindSegment(address, out var segment))
+            {
+                throw new ArgumentException($"Address {address} not found in program segments.");
+            }
+            var rdr = segment.CreateImageReader(arch);
+            rdr.Seek(address - segment.Address);
+            return rdr;
+        }
+
         /// <summary>
         /// Adds a segment to the segment map. The segment is assumed to be disjoint
         /// from other segments already present, so the <paramref name="mem"/> memory
