@@ -73,9 +73,9 @@ namespace Reko.Core
 
         public EndianImageReader CreateImageReader(Address address, IProcessorArchitecture arch)
         {
-            if(!TryFindSegment(address, out var segment))
+            if (!TryFindSegment(address, out var segment))
             {
-                throw new InvalidOperationException($"Address {address} not found in program segments");
+                throw new ArgumentException($"Address {address} not found in program segments.");
             }
             var rdr = segment.CreateImageReader(arch);
             rdr.Seek(address - segment.Address);

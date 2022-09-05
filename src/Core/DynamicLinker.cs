@@ -70,11 +70,7 @@ namespace Reko.Core
             {
                 return fnc;
             }
-            if(svc.Signature != null)
-            {
-                return svc.Signature;
-            }
-            return new FunctionType();
+            return svc.Signature ?? new FunctionType();
         }
 
         public ExternalProcedure? ResolveProcedure(string? moduleName, string importName, IPlatform platform)

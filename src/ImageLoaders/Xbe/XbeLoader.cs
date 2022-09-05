@@ -297,7 +297,7 @@ namespace Reko.ImageLoaders.Xbe
                 segments.Add(tlsSegment);
             }
 
-            SegmentMap segmentMap = new SegmentMap(ctx.EntryPointAddress, segments.ToArray());
+            SegmentMap segmentMap = new SegmentMap(ctx.BaseAddress, segments.ToArray());
             var importsRdr = segmentMap.CreateImageReader(ctx.KernelThunkAddress, arch);
             var imports = LoadImports(importsRdr);
 
