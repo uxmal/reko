@@ -22,6 +22,7 @@ using Reko.Core.Expressions;
 using Reko.Core.Operators;
 using NUnit.Framework;
 using System;
+using Reko.Core.Types;
 
 namespace Reko.UnitTests.Core
 {
@@ -34,7 +35,16 @@ namespace Reko.UnitTests.Core
 			RunApply(1, 2, new IAddOperator(), 3);
 		}
 
-		[Test]
+        [Test]
+        public void AddApplyByteOffsetToPtr()
+        {
+            var c1 = Constant.Create(PrimitiveType.Ptr16, 0x402);
+            var c2 = Constant.Create(PrimitiveType.Byte, 0xFE);
+            Constant c3 = Operator.IAdd.ApplyConstants(c1, c2);
+            Assert.AreEqual(0x500, (int) c3.ToInt64());
+        }
+
+        [Test]
 		public void AndApplyConstants()
 		{
 			Constant c1 = Constant.Word32(1);

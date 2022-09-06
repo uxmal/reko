@@ -37,12 +37,12 @@ namespace Reko.Core.Operators
 		{
             if (!ValidArgs(c1, c2))
                 return InvalidConstant.Create(c1.DataType);
-            if (c1.DataType.IsPointer && c2.DataType.IsIntegral)
+            if (c1.DataType.IsPointer && (c2.DataType.Domain & Domain.Integer) != 0)
             {
                 var dt = PrimitiveType.Create(Domain.Pointer, c1.DataType.BitSize);
                 return Constant.Create(dt, c1.ToUInt64() + c2.ToUInt64());
             }
-            else if (c2.DataType.IsPointer && c1.DataType.IsIntegral)
+            else if (c2.DataType.IsPointer && (c1.DataType.Domain & Domain.Integer) != 0)
             {
                 var dt = PrimitiveType.Create(Domain.Pointer, c2.DataType.BitSize);
                 return Constant.Create(dt, c1.ToUInt64() + c2.ToUInt64());
