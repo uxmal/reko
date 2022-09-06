@@ -100,7 +100,8 @@ namespace Reko.Scanning
             this.blocks = new BTreeDictionary<Address, BlockRange>();
             this.blockStarts = new Dictionary<Block, Address>();
             this.importReferences = program.ImportReferences;
-            this.visitedProcs = new HashSet<Procedure>();
+            // The procedures in program.Procedures don't need to be revisited.
+            this.visitedProcs = new HashSet<Procedure>(program.Procedures.Values);
             this.cinj = new CommentInjector(program.User.Annotations);
             this.sr = new ScanResults
             {
