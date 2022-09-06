@@ -533,7 +533,7 @@ namespace Reko.UnitTests.Arch.i8051
             Given_Bytes(0xA4); // mul\tAB
             AssertCode(
                 "0|L--|0000(1): 4 instructions",
-                "1|L--|B_A = A *u B",
+                "1|L--|B_A = A *u16 B",
                 "2|L--|P = cond(B_A)",
                 "3|L--|O = B_A >u 0xFF<16>",
                 "4|L--|C = false");

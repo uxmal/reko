@@ -335,7 +335,7 @@ namespace Reko.Arch.i8051
             var a = binder.EnsureRegister(Registers.A);
             var b = binder.EnsureRegister(Registers.B);
             var ab = binder.EnsureSequence(PrimitiveType.Word16, Registers.B, Registers.A);
-            m.Assign(ab, m.UMul(a, b));
+            m.Assign(ab, m.UMul(PrimitiveType.Word16, a, b));
             m.Assign(binder.EnsureFlagGroup(arch.GetFlagGroup(Registers.PSW, (uint)FlagM.P)), m.Cond(ab));
             m.Assign(binder.EnsureFlagGroup(arch.GetFlagGroup(Registers.PSW, (uint)FlagM.OV)), m.Ugt(ab, m.Word16(0xFF)));
             m.Assign(binder.EnsureFlagGroup(arch.GetFlagGroup(Registers.PSW, (uint)FlagM.C)), Constant.False());
