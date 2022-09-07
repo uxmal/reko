@@ -41,7 +41,6 @@ namespace Reko.Typing
 
         public Expression? Index { get; set; }
 
-			
 		public Constant? ElementSize { get; private set; }
 
 		public bool MatchMul(BinaryExpression b)
@@ -49,7 +48,7 @@ namespace Reko.Typing
 			if (b.Operator == Operator.SMul || b.Operator == Operator.UMul || b.Operator == Operator.IMul)
 			{
                 Expression e = b.Right;
-                if (!(b.Left is Constant c))
+                if (b.Left is not Constant c)
                 {
                     c = (b.Right as Constant)!;
                     e = b.Left;
@@ -79,7 +78,7 @@ namespace Reko.Typing
 			Index = null;
 			ArrayPointer = null;
 
-            if (!(e is BinaryExpression b))
+            if (e is not BinaryExpression b)
                 return false;
             if (MatchMul(b))
             {
@@ -95,6 +94,15 @@ namespace Reko.Typing
                     if (MatchMul(bInner))
                     {
                         // (+ (* i c) ptr)
+                        ArrayPointer = b.Right;
+                        return true;
+                    }
+                }
+                if (b.Left is Conversion conv && conv.Expression is BinaryExpression bConverted)
+                {
+                    if (MatchMul(bConverted))
+                    {
+                        // (+ (CONVERT (* i c) ...) ptr)
                         ArrayPointer = b.Right;
                         return true;
                     }

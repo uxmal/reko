@@ -74,7 +74,19 @@ namespace Reko.UnitTests.Decompiler.Typing
             Assert.AreEqual(0x10, aem.ElementSize.ToInt32());
         }
 
-		[SetUp]
+        [Test]
+        public void Aem_Scaled_With_UnsignedExtension()
+        {
+            Expression e = m.IAdd(
+                m.Convert(m.UMul(i, 8), i.DataType, PrimitiveType.UInt64),
+                0x20);
+            Assert.IsTrue(aem.Match(e));
+            Assert.AreEqual("0x20<64>", aem.ArrayPointer.ToString());
+            Assert.AreEqual("i", aem.Index.ToString());
+            Assert.AreEqual(8, aem.ElementSize.ToInt32());
+        }
+
+        [SetUp]
 		public void Setup()
 		{
 			m = new ProcedureBuilder();
