@@ -155,9 +155,7 @@ namespace Reko.ImageLoaders.Elf
         {
             static bool IsUnresolved(ElfSymbol s)
             {
-                if (s.Type == ElfSymbolType.STT_NOTYPE && !string.IsNullOrEmpty(s.Name))
-                    return true;
-                if (s.Type == ElfSymbolType.STT_FUNC && s.SectionIndex == ElfSection.SHN_UNDEF)
+                if (s.Type != ElfSymbolType.STT_NOTYPE && s.SectionIndex == ElfSection.SHN_UNDEF)
                     return true;
                 return false;
             }
@@ -313,8 +311,7 @@ namespace Reko.ImageLoaders.Elf
         {
             var mpToSegment = new Dictionary<ulong, Elf32_PHdr>();
             var mpSectionToSegment = new Dictionary<ElfSection, Elf32_PHdr>();
-            foreach (var section in loader.Sections
-                .Where(s => (s.Flags & ElfLoader.SHF_ALLOC) != 0))
+            foreach (var section in loader.Sections)
             {
                 if (!mpToSegment.TryGetValue(section.Flags, out Elf32_PHdr? segment))
                 {

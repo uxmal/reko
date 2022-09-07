@@ -4,7 +4,7 @@
 
 #include "adddf3.h"
 
-// 08048000: void __adddf3(Register Eq_n r4, Register Eq_n r5, Register uint32 r6, Register Eq_n r7)
+// 0804D000: void __adddf3(Register Eq_n r4, Register Eq_n r5, Register uint32 r6, Register Eq_n r7)
 void __adddf3(Eq_n r4, Eq_n r5, uint32 r6, Eq_n r7)
 {
 	Eq_n r10_n = __ext<word32,word32>(r5, 0x00, 0x14);
@@ -26,7 +26,7 @@ void __adddf3(Eq_n r4, Eq_n r5, uint32 r6, Eq_n r7)
 			if (r10_n == 0x00)
 			{
 				if ((r9_n | r6 << 0x03) == 0x00)
-					goto l08048052;
+					goto l0804D052;
 				r7_n = (word32) r11_n.u0 - 1;
 				if (r11_n == ~0x00)
 				{
@@ -34,21 +34,21 @@ void __adddf3(Eq_n r4, Eq_n r5, uint32 r6, Eq_n r7)
 					r10_n.u0 = 0x01;
 					r8_n = r8_n + r9_n + CONVERT(r6_n <u r4 << 0x03, bool, word32);
 					r12_n = r6_n;
-					goto l080480CC;
+					goto l0804D0CC;
 				}
 				if (r11_n == 0x07FF)
 				{
-l080480FE:
+l0804D0FE:
 					if ((r8_n | r4 << 0x03) == 0x00)
 					{
 						r8_n.u0 = 0x00;
 						r12_n.u0 = 0x00;
 						r10_n = r11_n;
-						goto l08048064;
+						goto l0804D064;
 					}
-					goto l080482D2;
+					goto l0804D2D2;
 				}
-l0804812C:
+l0804D12C:
 				uint32 r7_n;
 				ui32 r6_n;
 				if (r7_n < 0x39)
@@ -58,7 +58,7 @@ l0804812C:
 						word32 r10_n = 0x20 - r7_n;
 						r7_n = r9_n >> r7_n;
 						r6_n = (word32) (r6 << 0x03 << r10_n > 0x00) | (r9_n << r10_n | (r6 << 0x03) >> r7_n);
-						goto l08048156;
+						goto l0804D156;
 					}
 					uint32 r4_n = r9_n >> r7_n;
 					ui32 r10_n = 0x00;
@@ -69,26 +69,26 @@ l0804812C:
 				else
 					r6_n = (word32) ((r9_n | r6 << 0x03) > 0x00);
 				r7_n = 0x00;
-l08048156:
+l0804D156:
 				Eq_n r6_n = r6_n + (r4 << 0x03);
 				r10_n = r13_n;
 				r8_n = (word32) (r6_n < r4 << 0x03) + ((word32) r8_n + r7_n);
 				r12_n = r6_n;
-				goto l080480CC;
+				goto l0804D0CC;
 			}
 			if (r13_n != 0x07FF)
 			{
 				r9_n |= 0x08000000;
 				r7_n = r11_n;
-				goto l0804812C;
+				goto l0804D12C;
 			}
-l08048112:
+l0804D112:
 			if ((r8_n | r4 << 0x03) != 0x00)
-				goto l080482D2;
+				goto l0804D2D2;
 			r8_n.u0 = 0x00;
 			r12_n.u0 = 0x00;
 			r10_n = r13_n;
-l08048064:
+l0804D064:
 			if (!__bit<word32,word32>(r8_n, 0x17))
 			{
 				r10_n = (word32) r10_n.u0 + 1;
@@ -120,17 +120,17 @@ l08048064:
 				if ((r8_n | r4 << 0x03) == 0x00)
 				{
 					if (r10_n != 0x07FF)
-						goto l080481AE;
-					goto l080481A4;
+						goto l0804D1AE;
+					goto l0804D1A4;
 				}
 				r11_n = ~r11_n;
 				if (r11_n == 0x00)
 				{
 					r12_n = (r4 << 0x03) + (r6 << 0x03);
 					r8_n = r8_n + r9_n;
-l080481C2:
+l0804D1C2:
 					r8_n = r8_n + (word32) (r12_n < r6 << 0x03);
-l080480CC:
+l0804D0CC:
 					if (!__bit<word32,word32>(r8_n, 0x17))
 					{
 						r10_n = (word32) r10_n.u0 + 1;
@@ -139,29 +139,29 @@ l080480CC:
 							Eq_n r6_n = __ins<word32,word32>(r8_n, 0x00, 0x07, 0x01);
 							r12_n = r6_n << 0x1F | (r12_n >> 0x01 | r12_n & 0x01);
 							r8_n = r6_n >> 0x01;
-							goto l0804827A;
+							goto l0804D27A;
 						}
-						goto l08048060;
+						goto l0804D060;
 					}
-					goto l0804827A;
+					goto l0804D27A;
 				}
 				if (r10_n == 0x07FF)
 				{
-l080481A4:
+l0804D1A4:
 					r12_n = r9_n | r6 << 0x03;
 					r8_n.u0 = 0x00;
 					if (r12_n == 0x00)
-						goto l08048064;
-l080481AE:
+						goto l0804D064;
+l0804D1AE:
 					r8_n = r9_n;
 					r12_n = r6 << 0x03;
-					goto l0804827A;
+					goto l0804D27A;
 				}
 			}
 			else
 			{
 				if (r10_n == 0x07FF)
-					goto l080481A4;
+					goto l0804D1A4;
 				r11_n = -r11_n;
 				r8_n |= 0x08000000;
 			}
@@ -174,7 +174,7 @@ l080481AE:
 					word32 r7_n = 0x20 - r11_n;
 					r11_n = r8_n >> r11_n;
 					r12_n = r8_n << r7_n | (r4 << 0x03) >> r11_n | (word32) ((r4 << 0x03) << r7_n > 0x00);
-					goto l080481F8;
+					goto l0804D1F8;
 				}
 				uint32 r4_n = r8_n >> r11_n;
 				ui32 r7_n = 0x00;
@@ -185,33 +185,33 @@ l080481AE:
 			else
 				r12_n = (word32) ((r8_n | r4 << 0x03) > 0x00);
 			r11_n = 0x00;
-l080481F8:
+l0804D1F8:
 			r12_n = r12_n + (r6 << 0x03);
 			r8_n = (word32) r9_n.u1 + r11_n;
-			goto l080481C2;
+			goto l0804D1C2;
 		}
 		r10_n = (word32) r13_n.u0 + 1;
 		if (((word32) r13_n.u0 + 1 & 0x07FF) >= 0x02)
 		{
 			if (r13_n == ~0x07FD)
 			{
-l08048060:
+l0804D060:
 				r8_n.u0 = 0x00;
 				r12_n.u0 = 0x00;
-				goto l08048064;
+				goto l0804D064;
 			}
 			uint32 r6_n = (r4 << 0x03) + (r6 << 0x03);
 			word32 r2_n = r8_n + r9_n + CONVERT(r6_n <u r4 << 0x03, bool, word32);
 			r12_n = r2_n << 0x1F | r6_n >> 0x01;
 			r8_n = r2_n >> 0x01;
-l0804827A:
+l0804D27A:
 			if ((r12_n & 0x07) != 0x00 && (r12_n & 0x0F) != 0x04)
 			{
 				Eq_n r6_n = (word32) r12_n.u0 + 4;
 				r12_n = r6_n;
 				r8_n = (word32) r8_n.u0 + (word32) (r6_n < r12_n);
 			}
-			goto l08048064;
+			goto l0804D064;
 		}
 		ui32 r7_n = r8_n | r4 << 0x03;
 		if (r13_n == 0x00)
@@ -230,13 +230,13 @@ l0804827A:
 						r10_n.u0 = 0x01;
 					}
 				}
-				goto l0804827A;
+				goto l0804D27A;
 			}
 			r8_n = r9_n;
 			r12_n = r6 << 0x03;
-l080484D2:
+l0804D4D2:
 			r10_n.u0 = 0x00;
-			goto l0804827A;
+			goto l0804D27A;
 		}
 		if (r7_n != 0x00)
 		{
@@ -257,15 +257,15 @@ l080484D2:
 				}
 				r8_n = r7_n >> 0x1D | r10_n << 0x03;
 				r12_n = r7_n << 0x03;
-				goto l080482D0;
+				goto l0804D2D0;
 			}
-			goto l0804827A;
+			goto l0804D27A;
 		}
 		r8_n = r9_n;
 		r12_n = r6 << 0x03;
-l080482D2:
+l0804D2D2:
 		r10_n.u0 = 0x07FF;
-		goto l0804827A;
+		goto l0804D27A;
 	}
 	Eq_n r11_n;
 	Eq_n r4_n;
@@ -277,11 +277,11 @@ l080482D2:
 		{
 			if ((r9_n | r6 << 0x03) == 0x00)
 			{
-l08048052:
+l0804D052:
 				r10_n = r11_n;
 				if (r11_n == 0x07FF && (r8_n | r4 << 0x03) == 0x00)
-					goto l08048060;
-				goto l0804827A;
+					goto l0804D060;
+				goto l0804D27A;
 			}
 			r7_n = (word32) r11_n.u0 - 1;
 			if (r11_n == ~0x00)
@@ -290,15 +290,15 @@ l08048052:
 				r10_n.u0 = 0x01;
 				r8_n = r8_n - r9_n - (word32) (r4 << 0x03 < r6_n);
 				r12_n = r6_n;
-				goto l08048332;
+				goto l0804D332;
 			}
 			if (r11_n == 0x07FF)
-				goto l080480FE;
+				goto l0804D0FE;
 		}
 		else
 		{
 			if (r13_n == 0x07FF)
-				goto l08048112;
+				goto l0804D112;
 			r9_n |= 0x08000000;
 			r7_n = r11_n;
 		}
@@ -311,7 +311,7 @@ l08048052:
 				word32 r10_n = 0x20 - r7_n;
 				r7_n = r9_n >> r7_n;
 				r6_n = (word32) (r6 << 0x03 << r10_n > 0x00) | (r9_n << r10_n | (r6 << 0x03) >> r7_n);
-				goto l0804836E;
+				goto l0804D36E;
 			}
 			uint32 r4_n = r9_n >> r7_n;
 			ui32 r10_n = 0x00;
@@ -322,12 +322,12 @@ l08048052:
 		else
 			r6_n = (word32) ((r9_n | r6 << 0x03) > 0x00);
 		r7_n = 0x00;
-l0804836E:
+l0804D36E:
 		Eq_n r6_n = (r4 << 0x03) - r6_n;
 		r10_n = r13_n;
 		r8_n = r8_n - r7_n - (word32) (r4 << 0x03 < r6_n);
 		r12_n = r6_n;
-		goto l08048332;
+		goto l0804D332;
 	}
 	if (r11_n != 0x00)
 	{
@@ -338,33 +338,33 @@ l0804836E:
 			if ((r8_n | r4 << 0x03) == 0x00)
 			{
 				if (r10_n != 0x07FF)
-					goto l080483D8;
-				goto l080483D0;
+					goto l0804D3D8;
+				goto l0804D3D0;
 			}
 			r11_n = ~r11_n;
 			if (r11_n == 0x00)
 			{
 				r12_n = (r6 << 0x03) - (r4 << 0x03);
 				r8_n = r9_n - r8_n;
-				goto l080483EE;
+				goto l0804D3EE;
 			}
 			if (r10_n == 0x07FF)
 			{
-l080483D0:
+l0804D3D0:
 				r12_n = r9_n | r6 << 0x03;
 				if (r12_n == 0x00)
 				{
 					r8_n.u0 = 0x00;
 					r5_n = r7 >> 0x1F;
-					goto l08048064;
+					goto l0804D064;
 				}
-				goto l080483D8;
+				goto l0804D3D8;
 			}
 		}
 		else
 		{
 			if (r10_n == 0x07FF)
-				goto l080483D0;
+				goto l0804D3D0;
 			r11_n = -r11_n;
 			r8_n |= 0x08000000;
 		}
@@ -377,7 +377,7 @@ l080483D0:
 				word32 r7_n = 0x20 - r11_n;
 				r11_n = r8_n >> r11_n;
 				r12_n = r8_n << r7_n | (r4 << 0x03) >> r11_n | (word32) ((r4 << 0x03) << r7_n > 0x00);
-				goto l08048426;
+				goto l0804D426;
 			}
 			uint32 r5_n = r8_n >> r11_n;
 			ui32 r7_n = 0x00;
@@ -388,19 +388,19 @@ l080483D0:
 		else
 			r12_n = (word32) ((r8_n | r4 << 0x03) > 0x00);
 		r11_n = 0x00;
-l08048426:
+l0804D426:
 		r12_n = (r6 << 0x03) - r12_n;
 		r8_n = r9_n - r11_n;
-l080483EE:
+l0804D3EE:
 		r5_n = r7 >> 0x1F;
 		r8_n = r8_n - (word32) (r6 << 0x03 < r12_n);
-l08048332:
+l0804D332:
 		if (__bit<word32,word32>(r8_n, 0x17))
-			goto l0804827A;
+			goto l0804D27A;
 		r4_n = __ext<word32,word32>(r8_n, 0x00, 0x17);
 		r11_n = r12_n;
 		r13_n = r10_n;
-l08048548:
+l0804D548:
 		int32 r7_n = __clz(r4_n);
 		if (r4_n == 0x00)
 			r7_n = __clz(r11_n) + 0x20;
@@ -420,7 +420,7 @@ l08048548:
 		{
 			r10_n = r13_n - r10_n;
 			r8_n = __ins<word32,word32>(r8_n, 0x00, 0x07, 0x01);
-			goto l0804827A;
+			goto l0804D27A;
 		}
 		int32 r10_n = r10_n - r13_n;
 		if (r10_n < ~0x1E)
@@ -438,7 +438,7 @@ l08048548:
 			r12_n = r10_n | (word32) ((r12_n | r7_n) > 0x00);
 			r8_n.u0 = 0x00;
 		}
-		goto l080484D2;
+		goto l0804D4D2;
 	}
 	if (((word32) r13_n.u0 + 1 & 0x07FF) < 0x02)
 	{
@@ -454,17 +454,17 @@ l08048548:
 					r8_n.u0 = 0x007FFFFF;
 					r12_n.u0 = ~0x07;
 					r10_n.u0 = 0x07FF;
-					goto l08048064;
+					goto l0804D064;
 				}
 				r8_n = r9_n;
 				r12_n = r6 << 0x03;
-l080482D0:
+l0804D2D0:
 				r5_n = r3_n;
-				goto l080482D2;
+				goto l0804D2D2;
 			}
 			r10_n.u0 = 0x07FF;
 			if (r7_n == 0x00)
-				goto l0804827A;
+				goto l0804D27A;
 			uint32 r4_n;
 			uint32 r7_n = r8_n >> 0x03;
 			if (__bit<word32,word32>(r9_n >> 0x03 | r8_n >> 0x03, 0x13))
@@ -480,26 +480,26 @@ l080482D0:
 			r8_n = r4_n >> 0x1D | r7_n << 0x03;
 			r12_n = r4_n << 0x03;
 			r5_n = r14_n;
-			goto l080482D2;
+			goto l0804D2D2;
 		}
 		if (r10_n == 0x00)
 		{
 			if (r7_n != 0x00)
 			{
-l080483D8:
+l0804D3D8:
 				r8_n = r9_n;
 				r12_n = r6 << 0x03;
-				goto l080484C2;
+				goto l0804D4C2;
 			}
 			r12_n.u0 = 0x00;
-l08048492:
+l0804D492:
 			r8_n.u0 = 0x00;
 			r10_n.u0 = 0x00;
 			r5_n.u0 = 0x00;
-			goto l08048064;
+			goto l0804D064;
 		}
 		if (r7_n == 0x00)
-			goto l080484D2;
+			goto l0804D4D2;
 		Eq_n r4_n = (r4 << 0x03) - (r6 << 0x03);
 		Eq_n r7_n = r8_n - r9_n - (word32) (r4 << 0x03 < r4_n);
 		if (!__bit<word32,word32>(r7_n, 0x17))
@@ -507,16 +507,16 @@ l08048492:
 			r12_n = (r6 << 0x03) - (r4 << 0x03);
 			r10_n.u0 = 0x00;
 			r8_n = r9_n - r8_n - (word32) (r6 << 0x03 < r12_n);
-l080484C2:
+l0804D4C2:
 			r5_n = r7 >> 0x1F;
-			goto l0804827A;
+			goto l0804D27A;
 		}
 		r12_n = r4_n | r7_n;
 		if (r12_n != 0x00)
 		{
 			r8_n = r7_n;
 			r12_n = r4_n;
-			goto l080484D2;
+			goto l0804D4D2;
 		}
 	}
 	else
@@ -528,12 +528,12 @@ l080484C2:
 			r11_n = (r6 << 0x03) - (r4 << 0x03);
 			r5_n = r7 >> 0x1F;
 			r4_n = r9_n - r8_n - (word32) (r6 << 0x03 < r11_n);
-			goto l08048548;
+			goto l0804D548;
 		}
 		r12_n = r11_n | r4_n;
 		if (r12_n != 0x00)
-			goto l08048548;
+			goto l0804D548;
 	}
-	goto l08048492;
+	goto l0804D492;
 }
 

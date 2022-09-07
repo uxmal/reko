@@ -26,6 +26,7 @@ using Reko.Core.Memory;
 using Reko.ImageLoaders.Elf.Relocators;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 
@@ -509,7 +510,30 @@ namespace Reko.ImageLoaders.Elf
                 section.LinkedSection = linkSection;
                 section.RelocatedSection = relSection;
             }
+
+            DumpSections(sections);
             return sections;
+        }
+
+        [Conditional("DEBUG")]
+        private void DumpSections(List<ElfSection> sections)
+        {
+            if (!ElfImageLoader.trace.TraceVerbose)
+                return;
+            ElfImageLoader.trace.Verbose("== ELF sections ======================");
+            foreach (var section in sections)
+            {
+                ElfImageLoader.trace.Verbose("  {0,3} {1,-40} {2,-14} {3:X8} {4:X8} {5:X8} {6:X8} {7} {8}",
+                    section.Number,
+                    section.Name,
+                    section.Type,
+                    section.Flags,
+                    section.Address,
+                    section.FileOffset,
+                    section.Size,
+                    section.LinkedSection?.Name ?? "",
+                    section.RelocatedSection?.Name ?? "");
+            }
         }
 
         public override ElfSymbol? LoadSymbol(ulong offsetSymtab, ulong symbolIndex, ulong entrySize, ulong offsetStringTable)

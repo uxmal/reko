@@ -28,6 +28,7 @@ using Reko.Core.Lib;
 using Reko.Core.Diagnostics;
 using Reko.Core.Services;
 using Reko.Core.Expressions;
+using Reko.Core.Memory;
 
 namespace Reko.ImageLoaders.Elf.Relocators
 {
@@ -39,6 +40,8 @@ namespace Reko.ImageLoaders.Elf.Relocators
         const int OFFSET_GP_GOT = 0x7FF0;
 
         private IProcessorArchitecture archMips16e;
+        private Address? addrHi;
+        private Address? addrHiPrev;
 
         public MipsRelocator(ElfLoader32 loader, SortedList<Address, ImageSymbol> imageSymbols) : base(loader, imageSymbols)
         {
@@ -139,6 +142,7 @@ namespace Reko.ImageLoaders.Elf.Relocators
                     }
                 }
             }
+            base.Relocate(program);
         }
 
         #region Long tirade about global pointer in MIPS ELF
@@ -284,28 +288,87 @@ namespace Reko.ImageLoaders.Elf.Relocators
                 return (null, null);
             Address addr;
             uint P;
+            uint S;
             if (referringSection?.Address != null)
             {
                 addr = referringSection.Address + rel.Offset;
                 P = (uint)addr.ToLinear();
+                S = (uint)(loader.Sections[(int)symbol.SectionIndex].Address.ToLinear() + symbol.Value);
             }
             else
             {
                 addr = Address.Ptr64(rel.Offset);
                 P = 0;
+                S = (uint) symbol.Value;
             }
-            var S = symbol.Value;
-            uint PP = P;
             int sh = 0;
             uint mask = 0;
-            uint A = 0;
+            var relR = program.CreateImageReader(program.Architecture, addr);
+            if (!relR.TryPeekBeUInt32(0, out uint w))
+                return (null, null);
+            uint A = (rel.Addend.HasValue)
+                ? (uint) rel.Addend.Value
+                : w;
 
-            switch ((MIPSrt)(rel.Info & 0xFF))
+            var mipsRt = (MIPSrt) (rel.Info & 0xFF);
+            switch (mipsRt)
             {
             case MIPSrt.R_MIPS_NONE: return (addr, null);
             case MIPSrt.R_MIPS_REL32:
                 break;
-                default:
+            case MIPSrt.R_MIPS_32:
+                P = 0;
+                break;
+            case MIPSrt.R_MIPS_HI16:
+                // Wait for the following R_MIPS_LO16 relocation.
+                addrHi = addr;
+                addrHiPrev = null;
+                return (addr, null);
+            case MIPSrt.R_MIPS_LO16:
+                if (addrHi is { })
+                {
+                    // This LO16 relocation had a HI16 just before.
+                    var relHiR = program.CreateImageReader(program.Architecture, addrHi);
+                    var relHiW = program.CreateImageWriter(program.Architecture, addrHi);
+                    var relLoR = program.CreateImageReader(program.Architecture, addr);
+                    var relLoW = program.CreateImageWriter(program.Architecture, addr);
+
+                    uint valueHi = relHiR!.ReadUInt32();
+                    uint valueLo = relLoR.ReadUInt32();
+
+                    uint ahl = (valueHi << 16) | (valueLo & 0xFFFF);
+                    ahl += S;
+
+                    valueHi = (valueHi & 0xFFFF0000u) | (ahl >> 16);
+                    valueLo = (valueLo & 0xFFFF0000u) | (ahl & 0xFFFF);
+                    relHiW!.WriteUInt32(valueHi);
+                    relLoW!.WriteUInt32(valueLo);
+
+                    // If there is another LO16 without a HI16 in-between use stash
+                    // the current HI16 address. 
+                    addrHiPrev = addrHi;
+                    addrHi = null;
+                    return (addr, null);
+                }
+                else
+                {
+                    // This LO16 relocation is "orphaned"; reuse the last HI16 if there is one.
+                    if (addrHiPrev is null)
+                        return (null, null);
+                    var relLoR = program.CreateImageReader(program.Architecture, addr);
+                    var relLoW = program.CreateImageWriter(program.Architecture, addr);
+                    uint valueLo = relLoR.ReadUInt32();
+                    uint ahl = (valueLo & 0xFFFF) + S;
+                    valueLo = (valueLo & 0xFFFF0000u) | (ahl & 0xFFFF);
+                    relLoW!.WriteUInt32(valueLo);
+                    return (addr, null);
+                }
+            case MIPSrt.R_MIPS_26:
+                uint value26 = ((A << 2) + (P & 0xF0000000) + S) >> 2;
+                var rel26W = program.CreateImageWriter(program.Architecture, addr);
+                rel26W.WriteUInt32(w  & ~0x3FFFFFFu | value26 & 0x3FFFFFFu);
+                return (addr, null);
+            default:
                     mask = 0;
                     break;
                 /*
@@ -341,9 +404,7 @@ namespace Reko.ImageLoaders.Elf.Relocators
                 R_MIPS_CALLHI16  30 T-hi16   external (G - (short)G) >> 16 + A
                 R_MIPS_CALLLO16  31 T-lo16   external G & 0xffff */
             }
-            var relR = program.CreateImageReader(program.Architecture, addr);
             var relW = program.CreateImageWriter(program.Architecture, addr);
-            var w = relR.ReadUInt32();
             w += ((uint)(S + A + P) >> sh) & mask;
             relW.WriteUInt32(w);
 

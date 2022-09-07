@@ -84,7 +84,7 @@ namespace Reko.UnitTests.ImageLoaders.Elf
             Given_Linker(false);
 
             var segs = linker.ComputeSegmentSizes();
-            Assert.AreEqual(4, segs.Count);
+            Assert.AreEqual(6, segs.Count);
         }
 
         [Test]
@@ -99,13 +99,13 @@ namespace Reko.UnitTests.ImageLoaders.Elf
 
             var segs = linker.ComputeSegmentSizes();
             var segmentMap = linker.CreateSegments(Address.Ptr32(0x00800000), segs);
-            Assert.AreEqual(3, segmentMap.Segments.Count);
-            Assert.AreEqual("00800000", segmentMap.Segments.ElementAt(0).Value.MemoryArea.BaseAddress.ToString());
-            Assert.AreEqual("00000001", segmentMap.Segments.ElementAt(0).Value.MemoryArea.Length.ToString("X8"));
+            Assert.AreEqual(4, segmentMap.Segments.Count);
             Assert.AreEqual("00801000", segmentMap.Segments.ElementAt(1).Value.MemoryArea.BaseAddress.ToString());
-            Assert.AreEqual("00000004", segmentMap.Segments.ElementAt(1).Value.MemoryArea.Length.ToString("X8"));
-            var bmem1 = (ByteMemoryArea) segmentMap.Segments.ElementAt(1).Value.MemoryArea;
-            Assert.AreEqual(0x1, bmem1.Bytes[0]);
+            Assert.AreEqual("00000001", segmentMap.Segments.ElementAt(1).Value.MemoryArea.Length.ToString("X8"));
+            Assert.AreEqual("00802000", segmentMap.Segments.ElementAt(2).Value.MemoryArea.BaseAddress.ToString());
+            Assert.AreEqual("00000004", segmentMap.Segments.ElementAt(2).Value.MemoryArea.Length.ToString("X8"));
+            var bmem1 = (ByteMemoryArea) segmentMap.Segments.ElementAt(2).Value.MemoryArea;
+            Assert.AreEqual(0x1, bmem1.Bytes[0x0]);
         }
 
         [Test(Description = "SHN_COMMON symbols should be added to the rw segment")]
@@ -126,7 +126,7 @@ namespace Reko.UnitTests.ImageLoaders.Elf
             linker.CollectUndefinedSymbolsIntoSection();
 
             linker.ComputeSegmentSizes();
-            Assert.AreEqual(0x4000, linker.Segments[3].p_pmemsz);
+            Assert.AreEqual(0x4000, linker.Segments[4].p_pmemsz);
         }
 
         [Test(Description = "Unresolved symbols of STT_NOTYPE should live in their own segment.")]
@@ -138,19 +138,19 @@ namespace Reko.UnitTests.ImageLoaders.Elf
             Given_Section(".data", SectionHeaderType.SHT_PROGBITS, ElfLoader.SHF_ALLOC | ElfLoader.SHF_WRITE, new byte[] { 0x01, 0x02, 0x03, 0x04 });
             Given_Symbol(
                 "unresolved_global1", 0, 0,
-                ElfLoader32.ELF32_ST_INFO(0, ElfSymbolType.STT_NOTYPE),
-                0);
+                ElfLoader32.ELF32_ST_INFO(0, ElfSymbolType.STT_FUNC),
+                ElfSection.SHN_UNDEF);
             Given_Symbol(
                 "unresolved_global2", 0, 0,
-                ElfLoader32.ELF32_ST_INFO(0, ElfSymbolType.STT_NOTYPE),
-                0);
+                ElfLoader32.ELF32_ST_INFO(0, ElfSymbolType.STT_FUNC),
+                ElfSection.SHN_UNDEF);
 
             Given_Linker(false);
             linker.CollectCommonSymbolsIntoSection();
             linker.CollectUndefinedSymbolsIntoSection();
 
             linker.ComputeSegmentSizes();
-            Assert.AreEqual(0x0030, linker.Segments[0].p_pmemsz, "Each external symbol is simulated with 16 bytes and added to executable section");
+            Assert.AreEqual(0x0030, linker.Segments[1].p_pmemsz, "Each external symbol is simulated with 16 bytes and added to executable section");
         }
     }
 }

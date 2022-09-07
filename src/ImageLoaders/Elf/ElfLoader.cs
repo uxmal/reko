@@ -771,7 +771,7 @@ namespace Reko.ImageLoaders.Elf
             return sym;
         }
 
-        protected bool IsLoadable(ulong p_pmemsz, ProgramHeaderType p_type)
+        protected static bool IsLoadable(ulong p_pmemsz, ProgramHeaderType p_type)
         {
             if (p_pmemsz == 0)
                 return false;
