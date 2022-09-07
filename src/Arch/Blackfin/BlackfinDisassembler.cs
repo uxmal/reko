@@ -271,7 +271,7 @@ namespace Reko.Arch.Blackfin
                 var flag = d.arch.GetFlagGroup(Registers.ASTAT, 1u<<bitNo);
                 if (flag is null)
                     return false;
-                d.ops.Add(new FlagGroupOperand(flag));
+                d.ops.Add(flag);
                 return true;
             };
         }

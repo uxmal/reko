@@ -421,7 +421,7 @@ namespace Reko.Arch.X86
                     {
                         var acc = nextInstr.Operands[0] as RegisterStorage;
                         var imm = nextInstr.Operands[1] as ImmediateOperand;
-                        if (imm == null || acc == null)
+                        if (imm is null || acc is null)
                             return false;
                         int mask = imm.Value.ToInt32();
                         if (acc == Registers.ax || acc == Registers.eax)

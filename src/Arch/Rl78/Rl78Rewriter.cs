@@ -217,8 +217,8 @@ namespace Reko.Arch.Rl78
                     PrimitiveType.Bool,
                     bitSrc,
                     Constant.Byte((byte) bit.BitPosition));
-            case FlagGroupOperand fop:
-                return binder.EnsureFlagGroup(fop.FlagGroup);
+            case FlagGroupStorage fop:
+                return binder.EnsureFlagGroup(fop);
             default:
                 throw new NotImplementedException($"Rl87Rewriter: operand type {op.GetType().Name} not implemented yet.");
             }
@@ -232,8 +232,8 @@ namespace Reko.Arch.Rl78
                 var rDst = binder.EnsureRegister(rop);
                 m.Assign(rDst, fn(rDst, src));
                 return rDst;
-            case FlagGroupOperand fop:
-                var grfDst = binder.EnsureFlagGroup(fop.FlagGroup);
+            case FlagGroupStorage fop:
+                var grfDst = binder.EnsureFlagGroup(fop);
                 m.Assign(grfDst, fn(grfDst, src));
                 return grfDst;
             case MemoryOperand mop:

@@ -85,7 +85,7 @@ abstract Reko.Core.Loading.ImageLoader.Load(Reko.Core.Address addrLoad) -> Reko.
 abstract Reko.Core.Loading.ProgramImageLoader.LoadProgram(Reko.Core.Address address) -> Reko.Core.Program
 abstract Reko.Core.Loading.ProgramImageLoader.PreferredBaseAddress.get -> Reko.Core.Address
 abstract Reko.Core.Loading.ProgramImageLoader.PreferredBaseAddress.set -> void
-abstract Reko.Core.Machine.AbstractMachineOperand.DoRender(Reko.Core.Machine.MachineInstructionRenderer renderer, Reko.Core.Machine.MachineInstructionRendererOptions options) -> void
+abstract Reko.Core.Machine.AbstractMachineOperand.DoRender(Reko.Core.Machine.MachineInstructionRenderer! renderer, Reko.Core.Machine.MachineInstructionRendererOptions! options) -> void
 abstract Reko.Core.Machine.Decoder<TDasm, TMnemonic, TInstr>.Decode(uint wInstr, TDasm dasm) -> TInstr
 abstract Reko.Core.Machine.DisassemblerBase<TInstr, TMnemonic>.CreateInvalidInstruction() -> TInstr
 abstract Reko.Core.Machine.DisassemblerBase<TInstr, TMnemonic>.DisassembleInstruction() -> TInstr
@@ -835,7 +835,7 @@ override Reko.Core.Machine.ConditionalDecoder<TDasm, TMnemonic, TInstr>.Decode(u
 override Reko.Core.Machine.FlagGroupOperand.DoRender(Reko.Core.Machine.MachineInstructionRenderer renderer, Reko.Core.Machine.MachineInstructionRendererOptions options) -> void
 override Reko.Core.Machine.FpuOperand.DoRender(Reko.Core.Machine.MachineInstructionRenderer renderer, Reko.Core.Machine.MachineInstructionRendererOptions options) -> void
 override Reko.Core.Machine.IfDecoder<TDasm, TMnemonic, TInstr>.Decode(uint wInstr, TDasm dasm) -> TInstr
-override Reko.Core.Machine.ImmediateOperand.DoRender(Reko.Core.Machine.MachineInstructionRenderer renderer, Reko.Core.Machine.MachineInstructionRendererOptions options) -> void
+override Reko.Core.Machine.ImmediateOperand.DoRender(Reko.Core.Machine.MachineInstructionRenderer! renderer, Reko.Core.Machine.MachineInstructionRendererOptions! options) -> void
 override Reko.Core.Machine.InstrDecoder<TDasm, TMnemonic, TInstr>.Decode(uint wInstr, TDasm dasm) -> TInstr
 override Reko.Core.Machine.InstrDecoder<TDasm, TMnemonic, TInstr>.ToString() -> string
 override Reko.Core.Machine.MaskDecoder<TDasm, TMnemonic, TInstr>.Decode(uint wInstr, TDasm dasm) -> TInstr
@@ -1310,7 +1310,7 @@ override Reko.Core.Serialization.UnionType_v1.Accept<T>(Reko.Core.Serialization.
 override Reko.Core.Serialization.UnionType_v1.ToString() -> string
 override Reko.Core.Serialization.VoidType_v1.Accept<T>(Reko.Core.Serialization.ISerializedTypeVisitor<T> visitor) -> T
 override Reko.Core.Serialization.VoidType_v1.ToString() -> string
-override Reko.Core.Services.NullCodeLocation.ToString() -> string
+override Reko.Core.Services.NullCodeLocation.ToString() -> string!
 override Reko.Core.StackStorage.Accept<T, C>(Reko.Core.StorageVisitor<T, C> visitor, C context) -> T
 override Reko.Core.StackStorage.Accept<T>(Reko.Core.StorageVisitor<T> visitor) -> T
 override Reko.Core.StackStorage.Covers(Reko.Core.Storage other) -> bool
@@ -1449,7 +1449,7 @@ override sealed Reko.Core.Expressions.ConstantReal.IsMaxUnsigned.get -> bool
 override sealed Reko.Core.Hll.C.CExpression.Accept<T>(Reko.Core.Hll.C.CSyntaxVisitor<T> visitor) -> T
 override sealed Reko.Core.Hll.C.DeclSpec.Accept<T>(Reko.Core.Hll.C.CSyntaxVisitor<T> visitor) -> T
 override sealed Reko.Core.Hll.Pascal.PascalSyntax.ToString() -> string
-override sealed Reko.Core.Machine.AbstractMachineOperand.ToString() -> string
+override sealed Reko.Core.Machine.AbstractMachineOperand.ToString() -> string!
 override sealed Reko.Core.Machine.MachineInstruction.ToString() -> string
 override sealed Reko.Core.Machine.WideDecoder<TDasm, TMnemonic, TInstr>.Decode(uint wInstr, TDasm dasm) -> TInstr
 override sealed Reko.Core.Types.DataType.ToString() -> string
@@ -4751,12 +4751,12 @@ Reko.Core.Loading.ISymbolSource
 Reko.Core.Loading.ISymbolSource.CanLoad(string filename, byte[] fileContents) -> bool
 Reko.Core.Loading.ISymbolSource.GetAllSymbols() -> System.Collections.Generic.List<Reko.Core.ImageSymbol>
 Reko.Core.Loading.LoadDetails
-Reko.Core.Loading.LoadDetails.ArchitectureName -> string
+Reko.Core.Loading.LoadDetails.ArchitectureName -> string?
 Reko.Core.Loading.LoadDetails.ArchitectureOptions -> System.Collections.Generic.Dictionary<string, object>
 Reko.Core.Loading.LoadDetails.EntryPoint -> Reko.Core.Configuration.EntryPointDefinition
 Reko.Core.Loading.LoadDetails.LoadAddress -> string
 Reko.Core.Loading.LoadDetails.LoadDetails() -> void
-Reko.Core.Loading.LoadDetails.LoaderName -> string
+Reko.Core.Loading.LoadDetails.LoaderName -> string?
 Reko.Core.Loading.LoadDetails.Offset -> long
 Reko.Core.Loading.LoadDetails.PlatformName -> string
 Reko.Core.Loading.ProgramImageLoader
@@ -4768,10 +4768,10 @@ Reko.Core.Loading.ResourceType.ResourceType() -> void
 Reko.Core.Loading.ResourceType.ResourceType(int id, string name, string fileExtension) -> void
 Reko.Core.Loading.ResourceType.Value.get -> int
 Reko.Core.Machine.AbstractMachineOperand
-Reko.Core.Machine.AbstractMachineOperand.AbstractMachineOperand(Reko.Core.Types.DataType width) -> void
-Reko.Core.Machine.AbstractMachineOperand.Render(Reko.Core.Machine.MachineInstructionRenderer renderer, Reko.Core.Machine.MachineInstructionRendererOptions options) -> void
-Reko.Core.Machine.AbstractMachineOperand.ToString(Reko.Core.Machine.MachineInstructionRendererOptions options) -> string
-Reko.Core.Machine.AbstractMachineOperand.Width.get -> Reko.Core.Types.DataType
+Reko.Core.Machine.AbstractMachineOperand.AbstractMachineOperand(Reko.Core.Types.DataType! width) -> void
+Reko.Core.Machine.AbstractMachineOperand.Render(Reko.Core.Machine.MachineInstructionRenderer! renderer, Reko.Core.Machine.MachineInstructionRendererOptions! options) -> void
+Reko.Core.Machine.AbstractMachineOperand.ToString(Reko.Core.Machine.MachineInstructionRendererOptions! options) -> string!
+Reko.Core.Machine.AbstractMachineOperand.Width.get -> Reko.Core.Types.DataType!
 Reko.Core.Machine.AbstractMachineOperand.Width.set -> void
 Reko.Core.Machine.AddressOperand
 Reko.Core.Machine.AddressOperand.Address -> Reko.Core.Address
@@ -4800,8 +4800,8 @@ Reko.Core.Machine.FpuOperand.StNumber.get -> int
 Reko.Core.Machine.IfDecoder<TDasm, TMnemonic, TInstr>
 Reko.Core.Machine.IfDecoder<TDasm, TMnemonic, TInstr>.IfDecoder(Reko.Core.Lib.Bitfield bf, System.Predicate<uint> predicate, Reko.Core.Machine.Decoder<TDasm, TMnemonic, TInstr> trueDecoder) -> void
 Reko.Core.Machine.ImmediateOperand
-Reko.Core.Machine.ImmediateOperand.ImmediateOperand(Reko.Core.Expressions.Constant c) -> void
-Reko.Core.Machine.ImmediateOperand.Value.get -> Reko.Core.Expressions.Constant
+Reko.Core.Machine.ImmediateOperand.ImmediateOperand(Reko.Core.Expressions.Constant! c) -> void
+Reko.Core.Machine.ImmediateOperand.Value.get -> Reko.Core.Expressions.Constant!
 Reko.Core.Machine.InstrDecoder<TDasm, TMnemonic, TInstr>
 Reko.Core.Machine.InstrDecoder<TDasm, TMnemonic, TInstr>.InstrDecoder(Reko.Core.InstrClass iclass, TMnemonic mnemonic, params Reko.Core.Machine.Mutator<TDasm>[] mutators) -> void
 Reko.Core.Machine.InstructionComparer
@@ -4850,9 +4850,9 @@ Reko.Core.Machine.MachineInstructionRendererOptions.SymbolResolver.get -> Reko.C
 Reko.Core.Machine.MachineInstructionRendererOptions.SymbolResolver.set -> void
 Reko.Core.Machine.MachineInstructionRendererOptions.Syntax.get -> string
 Reko.Core.Machine.MachineOperand
-Reko.Core.Machine.MachineOperand.Render(Reko.Core.Machine.MachineInstructionRenderer renderer, Reko.Core.Machine.MachineInstructionRendererOptions options) -> void
-Reko.Core.Machine.MachineOperand.ToString(Reko.Core.Machine.MachineInstructionRendererOptions options) -> string
-Reko.Core.Machine.MachineOperand.Width.get -> Reko.Core.Types.DataType
+Reko.Core.Machine.MachineOperand.Render(Reko.Core.Machine.MachineInstructionRenderer! renderer, Reko.Core.Machine.MachineInstructionRendererOptions! options) -> void
+Reko.Core.Machine.MachineOperand.ToString(Reko.Core.Machine.MachineInstructionRendererOptions! options) -> string!
+Reko.Core.Machine.MachineOperand.Width.get -> Reko.Core.Types.DataType!
 Reko.Core.Machine.MachineOperand.Width.set -> void
 Reko.Core.Machine.MaskDecoder<TDasm, TMnemonic, TInstr>
 Reko.Core.Machine.MaskDecoder<TDasm, TMnemonic, TInstr>.MaskDecoder(int bitPos, int bitSize, string tag, params Reko.Core.Machine.Decoder<TDasm, TMnemonic, TInstr>[] decoders) -> void
@@ -7123,31 +7123,31 @@ Reko.Core.Serialization.VoidType_v1
 Reko.Core.Serialization.VoidType_v1.VoidType_v1() -> void
 Reko.Core.Services.DecompilerEventListener
 Reko.Core.Services.DecompilerEventListener.Advance(int count) -> void
-Reko.Core.Services.DecompilerEventListener.CreateAddressNavigator(Reko.Core.Program program, Reko.Core.Address address) -> Reko.Core.ICodeLocation
-Reko.Core.Services.DecompilerEventListener.CreateBlockNavigator(Reko.Core.Program program, Reko.Core.Block block) -> Reko.Core.ICodeLocation
-Reko.Core.Services.DecompilerEventListener.CreateJumpTableNavigator(Reko.Core.Program program, Reko.Core.IProcessorArchitecture arch, Reko.Core.Address addrIndirectJump, Reko.Core.Address addrVector, int stride) -> Reko.Core.ICodeLocation
-Reko.Core.Services.DecompilerEventListener.CreateProcedureNavigator(Reko.Core.Program program, Reko.Core.Procedure proc) -> Reko.Core.ICodeLocation
-Reko.Core.Services.DecompilerEventListener.CreateStatementNavigator(Reko.Core.Program program, Reko.Core.Statement stm) -> Reko.Core.ICodeLocation
-Reko.Core.Services.DecompilerEventListener.Error(Reko.Core.ICodeLocation location, string message) -> void
-Reko.Core.Services.DecompilerEventListener.Error(Reko.Core.ICodeLocation location, string message, params object[] args) -> void
-Reko.Core.Services.DecompilerEventListener.Error(Reko.Core.ICodeLocation location, System.Exception ex, string message) -> void
-Reko.Core.Services.DecompilerEventListener.Error(Reko.Core.ICodeLocation location, System.Exception ex, string message, params object[] args) -> void
-Reko.Core.Services.DecompilerEventListener.Error(Reko.Core.Scripts.ScriptError scriptError) -> void
-Reko.Core.Services.DecompilerEventListener.Error(string message) -> void
-Reko.Core.Services.DecompilerEventListener.Error(string message, params object[] args) -> void
-Reko.Core.Services.DecompilerEventListener.Error(System.Exception ex, string message) -> void
-Reko.Core.Services.DecompilerEventListener.Error(System.Exception ex, string message, params object[] args) -> void
-Reko.Core.Services.DecompilerEventListener.Info(Reko.Core.ICodeLocation location, string message) -> void
-Reko.Core.Services.DecompilerEventListener.Info(Reko.Core.ICodeLocation location, string message, params object[] args) -> void
-Reko.Core.Services.DecompilerEventListener.Info(string message) -> void
-Reko.Core.Services.DecompilerEventListener.Info(string message, params object[] args) -> void
+Reko.Core.Services.DecompilerEventListener.CreateAddressNavigator(Reko.Core.Program! program, Reko.Core.Address! address) -> Reko.Core.ICodeLocation!
+Reko.Core.Services.DecompilerEventListener.CreateBlockNavigator(Reko.Core.Program! program, Reko.Core.Block! block) -> Reko.Core.ICodeLocation!
+Reko.Core.Services.DecompilerEventListener.CreateJumpTableNavigator(Reko.Core.Program! program, Reko.Core.IProcessorArchitecture! arch, Reko.Core.Address! addrIndirectJump, Reko.Core.Address? addrVector, int stride) -> Reko.Core.ICodeLocation!
+Reko.Core.Services.DecompilerEventListener.CreateProcedureNavigator(Reko.Core.Program! program, Reko.Core.Procedure! proc) -> Reko.Core.ICodeLocation!
+Reko.Core.Services.DecompilerEventListener.CreateStatementNavigator(Reko.Core.Program! program, Reko.Core.Statement! stm) -> Reko.Core.ICodeLocation!
+Reko.Core.Services.DecompilerEventListener.Error(Reko.Core.ICodeLocation! location, string! message) -> void
+Reko.Core.Services.DecompilerEventListener.Error(Reko.Core.ICodeLocation! location, string! message, params object![]! args) -> void
+Reko.Core.Services.DecompilerEventListener.Error(Reko.Core.ICodeLocation! location, System.Exception! ex, string! message) -> void
+Reko.Core.Services.DecompilerEventListener.Error(Reko.Core.ICodeLocation! location, System.Exception! ex, string! message, params object![]! args) -> void
+Reko.Core.Services.DecompilerEventListener.Error(Reko.Core.Scripts.ScriptError! scriptError) -> void
+Reko.Core.Services.DecompilerEventListener.Error(string! message) -> void
+Reko.Core.Services.DecompilerEventListener.Error(string! message, params object![]! args) -> void
+Reko.Core.Services.DecompilerEventListener.Error(System.Exception! ex, string! message) -> void
+Reko.Core.Services.DecompilerEventListener.Error(System.Exception! ex, string! message, params object![]! args) -> void
+Reko.Core.Services.DecompilerEventListener.Info(Reko.Core.ICodeLocation! location, string! message) -> void
+Reko.Core.Services.DecompilerEventListener.Info(Reko.Core.ICodeLocation! location, string! message, params object![]! args) -> void
+Reko.Core.Services.DecompilerEventListener.Info(string! message) -> void
+Reko.Core.Services.DecompilerEventListener.Info(string! message, params object![]! args) -> void
 Reko.Core.Services.DecompilerEventListener.IsCanceled() -> bool
-Reko.Core.Services.DecompilerEventListener.ShowProgress(string caption, int numerator, int denominator) -> void
-Reko.Core.Services.DecompilerEventListener.ShowStatus(string caption) -> void
-Reko.Core.Services.DecompilerEventListener.Warn(Reko.Core.ICodeLocation location, string message) -> void
-Reko.Core.Services.DecompilerEventListener.Warn(Reko.Core.ICodeLocation location, string message, params object[] args) -> void
-Reko.Core.Services.DecompilerEventListener.Warn(string message) -> void
-Reko.Core.Services.DecompilerEventListener.Warn(string message, params object[] args) -> void
+Reko.Core.Services.DecompilerEventListener.ShowProgress(string! caption, int numerator, int denominator) -> void
+Reko.Core.Services.DecompilerEventListener.ShowStatus(string! caption) -> void
+Reko.Core.Services.DecompilerEventListener.Warn(Reko.Core.ICodeLocation! location, string! message) -> void
+Reko.Core.Services.DecompilerEventListener.Warn(Reko.Core.ICodeLocation! location, string! message, params object![]! args) -> void
+Reko.Core.Services.DecompilerEventListener.Warn(string! message) -> void
+Reko.Core.Services.DecompilerEventListener.Warn(string! message, params object![]! args) -> void
 Reko.Core.Services.FileSystemServiceImpl
 Reko.Core.Services.FileSystemServiceImpl.AppendAllText(string path, string contents) -> void
 Reko.Core.Services.FileSystemServiceImpl.CopyFile(string sourceFileName, string destFileName, bool overwrite) -> void
@@ -7217,8 +7217,8 @@ Reko.Core.Services.IUnpackerService
 Reko.Core.Services.IUnpackerService.FindUnpackerBySignature(Reko.Core.Loading.ProgramImageLoader imageLoader, uint entryPointOffset) -> Reko.Core.Loading.ProgramImageLoader
 Reko.Core.Services.NullCodeLocation
 Reko.Core.Services.NullCodeLocation.NavigateTo() -> System.Threading.Tasks.ValueTask
-Reko.Core.Services.NullCodeLocation.NullCodeLocation(string text) -> void
-Reko.Core.Services.NullCodeLocation.Text.get -> string
+Reko.Core.Services.NullCodeLocation.NullCodeLocation(string! text) -> void
+Reko.Core.Services.NullCodeLocation.Text.get -> string!
 Reko.Core.Services.NullDecompilerEventListener
 Reko.Core.Services.NullDecompilerEventListener.AddDiagnostic(Reko.Core.Diagnostic d) -> void
 Reko.Core.Services.NullDecompilerEventListener.AddDiagnostic(Reko.Core.ICodeLocation location, Reko.Core.Diagnostic d) -> void
@@ -8309,13 +8309,13 @@ static Reko.Core.LinearInductionVariable.Merge(Reko.Core.LinearInductionVariable
 static Reko.Core.Loading.ResourceType.MakeDictionary(System.Type type) -> System.Collections.Generic.Dictionary<int, Reko.Core.Loading.ResourceType>
 static Reko.Core.Loading.ResourceType.operator !=(Reko.Core.Loading.ResourceType a, Reko.Core.Loading.ResourceType b) -> bool
 static Reko.Core.Loading.ResourceType.operator ==(Reko.Core.Loading.ResourceType a, Reko.Core.Loading.ResourceType b) -> bool
-static Reko.Core.Machine.AbstractMachineOperand.FormatSignedValue(Reko.Core.Expressions.Constant c, bool forceSign = true, string format = "{0}{1}") -> string
-static Reko.Core.Machine.AbstractMachineOperand.FormatUnsignedValue(Reko.Core.Expressions.Constant c, string format = "{0}{1}") -> string
-static Reko.Core.Machine.AbstractMachineOperand.FormatValue(Reko.Core.Expressions.Constant c, bool forceSignForSignedIntegers = true, string integerFormat = "{0}{1}") -> string
-static Reko.Core.Machine.AddressOperand.Create(Reko.Core.Address addr) -> Reko.Core.Machine.AddressOperand
-static Reko.Core.Machine.AddressOperand.Ptr16(ushort a) -> Reko.Core.Machine.AddressOperand
-static Reko.Core.Machine.AddressOperand.Ptr32(uint a) -> Reko.Core.Machine.AddressOperand
-static Reko.Core.Machine.AddressOperand.Ptr64(ulong a) -> Reko.Core.Machine.AddressOperand
+static Reko.Core.Machine.AbstractMachineOperand.FormatSignedValue(Reko.Core.Expressions.Constant! c, bool forceSign = true, string! format = "{0}{1}") -> string!
+static Reko.Core.Machine.AbstractMachineOperand.FormatUnsignedValue(Reko.Core.Expressions.Constant! c, string! format = "{0}{1}") -> string!
+static Reko.Core.Machine.AbstractMachineOperand.FormatValue(Reko.Core.Expressions.Constant! c, bool forceSignForSignedIntegers = true, string! integerFormat = "{0}{1}") -> string!
+static Reko.Core.Machine.AddressOperand.Create(Reko.Core.Address! addr) -> Reko.Core.Machine.AddressOperand!
+static Reko.Core.Machine.AddressOperand.Ptr16(ushort a) -> Reko.Core.Machine.AddressOperand!
+static Reko.Core.Machine.AddressOperand.Ptr32(uint a) -> Reko.Core.Machine.AddressOperand!
+static Reko.Core.Machine.AddressOperand.Ptr64(ulong a) -> Reko.Core.Machine.AddressOperand!
 static Reko.Core.Machine.Decoder.DumpMaskedInstruction(int instrBitSize, uint wInstr, Reko.Core.Lib.Bitfield[] bitfields, string tag) -> void
 static Reko.Core.Machine.Decoder.DumpMaskedInstruction(int instrBitSize, ulong wInstr, ulong shMask, string tag) -> void
 static Reko.Core.Machine.Decoder<TDasm, TMnemonic, TInstr>.DumpMaskedInstruction(uint wInstr, uint shMask, TMnemonic mnemonic) -> void
@@ -8338,18 +8338,18 @@ static Reko.Core.Machine.DisassemblerBase<TInstr, TMnemonic>.Select<TDasm>(Syste
 static Reko.Core.Machine.DisassemblerBase<TInstr, TMnemonic>.Sparse<TDasm>(int bitPosition, int bits, Reko.Core.Machine.Decoder<TDasm, TMnemonic, TInstr> defaultDecoder, params (uint, Reko.Core.Machine.Decoder<TDasm, TMnemonic, TInstr>)[] sparseDecoders) -> Reko.Core.Machine.MaskDecoder<TDasm, TMnemonic, TInstr>
 static Reko.Core.Machine.DisassemblerBase<TInstr, TMnemonic>.Sparse<TDasm>(int bitPosition, int bits, string tag, Reko.Core.Machine.Decoder<TDasm, TMnemonic, TInstr> defaultDecoder, params (uint, Reko.Core.Machine.Decoder<TDasm, TMnemonic, TInstr>)[] sparseDecoders) -> Reko.Core.Machine.MaskDecoder<TDasm, TMnemonic, TInstr>
 static Reko.Core.Machine.DisassemblerBase<TInstr, TMnemonic>.WideSparse<TDasm>(int bitPosition, int bits, string tag, Reko.Core.Machine.WideDecoder<TDasm, TMnemonic, TInstr> defaultDecoder, params (uint, Reko.Core.Machine.WideDecoder<TDasm, TMnemonic, TInstr>)[] sparseDecoders) -> Reko.Core.Machine.WideMaskDecoder<TDasm, TMnemonic, TInstr>
-static Reko.Core.Machine.ImmediateOperand.Byte(byte value) -> Reko.Core.Machine.ImmediateOperand
+static Reko.Core.Machine.ImmediateOperand.Byte(byte value) -> Reko.Core.Machine.ImmediateOperand!
 static Reko.Core.Machine.ImmediateOperand.Int16(short value) -> Reko.Core.Machine.AbstractMachineOperand
 static Reko.Core.Machine.ImmediateOperand.Int32(int value) -> Reko.Core.Machine.ImmediateOperand
-static Reko.Core.Machine.ImmediateOperand.SByte(sbyte value) -> Reko.Core.Machine.ImmediateOperand
-static Reko.Core.Machine.ImmediateOperand.UInt16(ushort value) -> Reko.Core.Machine.ImmediateOperand
-static Reko.Core.Machine.ImmediateOperand.UInt32(uint value) -> Reko.Core.Machine.ImmediateOperand
+static Reko.Core.Machine.ImmediateOperand.SByte(sbyte value) -> Reko.Core.Machine.ImmediateOperand!
+static Reko.Core.Machine.ImmediateOperand.UInt16(ushort value) -> Reko.Core.Machine.ImmediateOperand!
+static Reko.Core.Machine.ImmediateOperand.UInt32(uint value) -> Reko.Core.Machine.ImmediateOperand!
 static Reko.Core.Machine.ImmediateOperand.Word128(ulong value) -> Reko.Core.Machine.ImmediateOperand
-static Reko.Core.Machine.ImmediateOperand.Word16(ushort value) -> Reko.Core.Machine.AbstractMachineOperand
-static Reko.Core.Machine.ImmediateOperand.Word32(int value) -> Reko.Core.Machine.ImmediateOperand
-static Reko.Core.Machine.ImmediateOperand.Word32(uint value) -> Reko.Core.Machine.ImmediateOperand
-static Reko.Core.Machine.ImmediateOperand.Word64(long value) -> Reko.Core.Machine.ImmediateOperand
-static Reko.Core.Machine.ImmediateOperand.Word64(ulong value) -> Reko.Core.Machine.ImmediateOperand
+static Reko.Core.Machine.ImmediateOperand.Word16(ushort value) -> Reko.Core.Machine.AbstractMachineOperand!
+static Reko.Core.Machine.ImmediateOperand.Word32(int value) -> Reko.Core.Machine.ImmediateOperand!
+static Reko.Core.Machine.ImmediateOperand.Word32(uint value) -> Reko.Core.Machine.ImmediateOperand!
+static Reko.Core.Machine.ImmediateOperand.Word64(long value) -> Reko.Core.Machine.ImmediateOperand!
+static Reko.Core.Machine.ImmediateOperand.Word64(ulong value) -> Reko.Core.Machine.ImmediateOperand!
 static Reko.Core.Machine.MachineInstructionRendererOptions.Default.get -> Reko.Core.Machine.MachineInstructionRendererOptions
 static Reko.Core.MaskedPattern.Load(string sBytes, string sMask) -> Reko.Core.MaskedPattern
 static Reko.Core.Memory.ByteMemoryArea.CompareArrays(byte[] src, int iSrc, byte[] dst, int cb) -> bool
@@ -8446,7 +8446,7 @@ static Reko.Core.Serialization.SerializedLibrary.CreateSerializer_v4(System.Type
 static Reko.Core.Serialization.SerializedLibrary.CreateSerializer_v5(System.Type rootType) -> System.Xml.Serialization.XmlSerializer
 static Reko.Core.Serialization.SerializedLibrary.LoadFromStream(System.IO.Stream stm) -> Reko.Core.Serialization.SerializedLibrary
 static Reko.Core.Serialization.SerializedType.GetAttributeOverrides(System.Collections.Generic.IEnumerable<System.Type> typesToDecorate, string xmlNamespace) -> System.Xml.Serialization.XmlAttributeOverrides
-static Reko.Core.Services.NullDecompilerEventListener.Instance.get -> Reko.Core.Services.DecompilerEventListener
+static Reko.Core.Services.NullDecompilerEventListener.Instance.get -> Reko.Core.Services.DecompilerEventListener!
 static Reko.Core.StridedInterval.Constant(Reko.Core.Expressions.Constant c) -> Reko.Core.StridedInterval
 static Reko.Core.StridedInterval.Create(int stride, long low, long high) -> Reko.Core.StridedInterval
 static Reko.Core.TypedServiceProvider.AddService<T>(this System.ComponentModel.Design.IServiceContainer sc, T service) -> void

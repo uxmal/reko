@@ -87,8 +87,7 @@ namespace Reko.Arch.Tlcs.Tlcs90
             if (instr.Operands.Length >= 2)
             {
                 var cc = RewriteCondition((ConditionOperand)instr.Operands[0]);
-                var addrOp = instr.Operands[1] as AddressOperand;
-                if (addrOp != null)
+                if (instr.Operands[1] is AddressOperand addrOp)
                 {
                     m.Branch(cc, addrOp.Address, InstrClass.ConditionalTransfer);
                     return;

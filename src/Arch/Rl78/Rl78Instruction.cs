@@ -115,8 +115,8 @@ namespace Reko.Arch.Rl78
             case RegisterBankOperand rbop:
                 renderer.WriteFormat("rb{0}", rbop.Bank);
                 return;
-            case FlagGroupOperand grf:
-                renderer.WriteString(grf.FlagGroup.Name);
+            case FlagGroupStorage grf:
+                renderer.WriteString(grf.Name);
                 return;
             }
             throw new NotImplementedException($"Rl78Instruction - RenderOperand {op.GetType().Name}.");

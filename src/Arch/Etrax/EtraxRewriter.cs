@@ -232,8 +232,8 @@ namespace Reko.Arch.Etrax
 
         private void RewriteClearf()
         {
-            var grfOp = (FlagGroupOperand) instr.Operands[0];
-            foreach (var grfBit in arch.GetSubFlags(grfOp.FlagGroup))
+            var grfOp = (FlagGroupStorage) instr.Operands[0];
+            foreach (var grfBit in arch.GetSubFlags(grfOp))
             {
                 var id = binder.EnsureFlagGroup(grfBit);
                 m.Assign(id, 0);

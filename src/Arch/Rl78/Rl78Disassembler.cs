@@ -115,7 +115,7 @@ namespace Reko.Arch.Rl78
         {
             return (u, d) =>
             {
-                d.ops.Add(new FlagGroupOperand(grf));
+                d.ops.Add(grf);
                 return true;
             };
         }

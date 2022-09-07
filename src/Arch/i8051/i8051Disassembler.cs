@@ -169,7 +169,7 @@ namespace Reko.Arch.i8051
         // C flag of PSW
         private static bool C(uint uInstr, i8051Disassembler dasm)
         {
-            dasm.ops.Add(new FlagGroupOperand(Registers.CFlag));
+            dasm.ops.Add(Registers.CFlag);
             return true;
         }
 

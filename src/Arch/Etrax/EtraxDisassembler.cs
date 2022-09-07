@@ -310,7 +310,7 @@ namespace Reko.Arch.Etrax
             {
                 u &= mask;
                 var uFlag = ((u >> 8) & 0xF0u) | (u & 0xF);
-                d.ops.Add(new FlagGroupOperand(d.arch.GetFlagGroup(Registers.dccr, uFlag)!));
+                d.ops.Add(d.arch.GetFlagGroup(Registers.dccr, uFlag)!);
                 return true;
             };
         }

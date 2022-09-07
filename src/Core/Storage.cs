@@ -168,7 +168,7 @@ namespace Reko.Core
     /// Typically, these are the Carry, Zero, Overflow etc flags that are set
     /// after ALU operations.
     /// </summary>
-	public class FlagGroupStorage : Storage
+	public class FlagGroupStorage : Storage, MachineOperand
     {
         public FlagGroupStorage(RegisterStorage freg, uint grfMask, string name, DataType dataType) 
             : base("FlagGroup", freg.Domain, name, dataType)
@@ -176,6 +176,12 @@ namespace Reko.Core
             this.FlagRegister = freg;
             this.FlagGroupBits = grfMask;
             this.BitSize = (uint)dataType.BitSize;
+        }
+
+        public DataType Width
+        {
+            get => this.DataType;
+            set => throw new NotSupportedException();
         }
 
         /// <summary>
@@ -250,7 +256,22 @@ namespace Reko.Core
             return (this.FlagGroupBits & that.FlagGroupBits) != 0;
         }
 
-        public override SerializedKind Serialize()
+        string MachineOperand.ToString(MachineInstructionRendererOptions options)
+        {
+            var sr = new StringRenderer();
+            Render(sr, options);
+            return sr.ToString();
+        }
+
+        private void Render(MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
+        {
+            renderer.BeginOperand();
+            renderer.WriteString(this.Name);
+            renderer.EndOperand();
+        }
+
+        void MachineOperand.Render(MachineInstructionRenderer renderer, MachineInstructionRendererOptions options) =>
+            Render(renderer, options); public override SerializedKind Serialize()
         {
             return new FlagGroup_v1(Name);
         }
@@ -259,6 +280,8 @@ namespace Reko.Core
         {
             writer.Write(Name);
         }
+
+        public string ToString(MachineInstructionRendererOptions options) => Name;
     }
 
     /// <summary>

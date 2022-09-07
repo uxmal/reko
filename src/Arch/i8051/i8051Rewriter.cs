@@ -205,8 +205,8 @@ namespace Reko.Arch.i8051
                 var reg = binder.EnsureRegister(r);
                 m.Assign(reg, m.Comp(reg));
                 break;
-            case FlagGroupOperand f:
-                var grf = binder.EnsureFlagGroup(f.FlagGroup);
+            case FlagGroupStorage f:
+                var grf = binder.EnsureFlagGroup(f);
                 m.Assign(grf, m.Comp(grf));
                 break;
             case BitOperand b:
@@ -440,8 +440,8 @@ namespace Reko.Arch.i8051
             {
             case RegisterStorage reg:
                 return binder.EnsureRegister(reg);
-            case FlagGroupOperand flg:
-                return binder.EnsureFlagGroup(flg.FlagGroup);
+            case FlagGroupStorage flg:
+                return binder.EnsureFlagGroup(flg);
             case ImmediateOperand imm:
                 return imm.Value;
             case AddressOperand addr:
@@ -541,8 +541,8 @@ namespace Reko.Arch.i8051
             case RegisterStorage reg:
                 m.Assign(binder.EnsureRegister(reg), src);
                 break;
-            case FlagGroupOperand flg:
-                m.Assign(binder.EnsureFlagGroup(flg.FlagGroup), src);
+            case FlagGroupStorage flg:
+                m.Assign(binder.EnsureFlagGroup(flg), src);
                 break;
             case MemoryOperand mem:
                 Expression ea;
