@@ -1,11 +1,10 @@
 
 # reko - a general purpose decompiler.
 
-![GitHub workflow status](https://github.com/uxmal/reko/workflows/Reko/badge.svg)
-[![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/github/uxmal/reko?branch=master&svg=true)](https://ci.appveyor.com/project/uxmal/reko)
- [![Build Status](https://travis-ci.org/uxmal/reko.svg?branch=master)](https://travis-ci.org/uxmal/reko) 
- [![Join us on Discord](https://img.shields.io/static/v1?link=https://discord.gg/9PMWVxEjqr&message=Join%20Discord&logo=discord&style=flat&color=107090&labelColor=5E5E5E&label=&logoColor=white)](https://discord.gg/9PMWVxEjqr)
- [![Join the chat at https://gitter.im/uxmal/reko](https://badges.gitter.im/uxmal/reko.svg)](https://gitter.im/uxmal/reko?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+[![Cirrus CI Build Status](https://api.cirrus-ci.com/github/uxmal/reko.svg?branch=master)](https://cirrus-ci.com/github/uxmal/reko)
+[![GitHub workflow status](https://github.com/uxmal/reko/workflows/Reko/badge.svg)](https://github.com/uxmal/reko/actions/workflows/reko.yml)
+[![Join us on Discord](https://img.shields.io/static/v1?link=https://discord.gg/9PMWVxEjqr&message=Join%20Discord&logo=discord&style=flat&color=107090&labelColor=5E5E5E&label=&logoColor=white)](https://discord.gg/9PMWVxEjqr)
+[![Join the chat at https://gitter.im/uxmal/reko](https://badges.gitter.im/uxmal/reko.svg)](https://gitter.im/uxmal/reko?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
  
 <img align="right" src="web/images/reko.png" /> 
@@ -51,7 +50,7 @@ decompiler only if you have legal rights to decompile the binary
 Official releases are published every few months on [Github](https://github.com/uxmal/reko/releases)
 and [SourceForge](https://sourceforge.net/projects/decompiler/files/). 
 Users who can't or won't build Reko themselves can download the output
-of the [Cirrus CI integration builder](https://cirrus-ci.com/uxmal/reko) or the [Github Actions integration builder](https://github.com/uxmal/reko/actions/workflows/reko.yml).
+of the [Cirrus CI integration builder](https://cirrus-ci.com/github/uxmal/reko) or the [Github Actions integration builder](https://github.com/uxmal/reko/actions/workflows/reko.yml).
 Naturally you can build the project from the sources: see "Hacking" 
 below.
 
@@ -89,10 +88,9 @@ to compile. If you are an IDE user, use a recent version of Visual Studio 2019.
 If you wish to build using the command line, use the command
 
 ```cmd
-msbuild -p:Configuration={config} -p:Platform={platform} -v:m -m Reko-decompiler.sln
+dotnet msbuild -p:Platform={platform} -p:Configuration={config} -v:m -t:build_solution -m ./src/BuildTargets/BuildTargets.csproj
 ```
-(provided you have ```msbuild``` installed). Replace `{config}` with either
-`Debug` or `Release`, and `{platform}` with `x64` or `x86`.
+Replace `{config}` with either `Debug` or `Release`, and `{platform}` with `x64` or `x86`.
 
 **Note**: please let us know if you still are not able to compile,
 so we can help you fix the issue.
@@ -125,6 +123,12 @@ Having CMake installed as part of Visual Studio is sufficient to run msbuild
 from the `Developer Command Prompt` but not when building from inside VS,
 unless you've added that to your global PATH. Installing CMake externally allows
 you to add it to PATH during the installation.
+
+**NOTE**: there is an issue in certain version of Visual Studio that can manifest itself
+when loading the project. You'll notice it if Visual Studio is stuck "Running Background Tasks" 
+and won't let you build the project. A workaround is to right click the "NativeProxy" project in the
+solution explorer and choose "Unload Project". The project will then be able to load and build correctly.
+This issue doesn't occur when building from the command line
 
 ### How do I start Reko?
 
