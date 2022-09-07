@@ -154,6 +154,7 @@ namespace Reko.UnitTests.Decompiler.Analysis
 
         private void RunTest(string sExp, Action<ProcedureBuilder> builder)
         {
+            this.block = null;
             builder(m);
             var dynamicLinker = new Mock<IDynamicLinker>();
             var sst = new SsaTransform(
@@ -559,6 +560,53 @@ namespace Reko.UnitTests.Decompiler.Analysis
                     m.Assign(rdx, m.ISub(m.ISub(rdx, 3), CF));
                     this.block = m.Block;
                 });
+        }
+
+
+        [Test]
+        public void LarwZeroExtendSmallerAugend()
+        {
+            var sExp =
+            #region Expected
+@"l1:
+	a_2 = r7
+	b_3 = 6<8>
+	b_a_4 = a_2 *u16 b_3
+	a_5 = SLICE(b_a_4, byte, 0) (alias)
+	a_a_13 = CONVERT(a_5, byte, uint16) + 0x14<16>
+	a_6 = SLICE(a_a_13, byte, 0) (alias)
+	a_11 = SLICE(a_a_13, byte, 8) (alias)
+	SCZ_7 = cond(a_6)
+	C_10 = SLICE(SCZ_7, bool, 2) (alias)
+	DPL_8 = a_6
+	a_9 = 0<8>
+	DPH_12 = a_11
+";
+            #endregion
+
+            RunTest(sExp, m =>
+            {
+                var R7 = m.Reg8("r7", 0);
+                var A = m.Reg8("a", 1);
+                var B = m.Reg8("b", 2);
+                var B_A = m.Frame.EnsureSequence(PrimitiveType.Word16, B.Storage, A.Storage);
+                var psw = RegisterStorage.Reg16("psw", 3);
+                var DPTR = m.Reg16("DPTR", 4);
+                var DPL = m.Register(RegisterStorage.Reg8("DPL", 4, 0));
+                var DPH = m.Register(RegisterStorage.Reg8("DPH", 4, 8));
+
+                m.Assign(A, R7);
+                m.Assign(B, 6);
+                m.Assign(B_A, m.UMul(PrimitiveType.Word16, A, B));
+                m.Assign(A, m.IAdd(A, 0x14));
+                m.Assign(SCZ, m.Cond(A));
+                m.Assign(DPL, A);
+                m.Assign(A, 0);
+                m.Assign(A, m.IAdd(m.IAdd(A, 0), CF));
+                m.Assign(DPH, A);
+
+                this.block = m.Block;
+            });
         }
     }
 }

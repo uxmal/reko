@@ -390,6 +390,14 @@ namespace Reko.Analysis
         {
             if (expLo is Identifier idLo && expHi is Identifier idHi)
             {
+                // If the high part is a zeroed identifier, we are dealing with 
+                // a zero-extended value.
+                if (ssa.Identifiers[idHi].DefStatement?.Instruction is Assignment ass &&
+                    ass.Src.IsZero)
+                {
+                    var dt = PrimitiveType.Create(Domain.UnsignedInt, totalSize.BitSize);
+                    return new Conversion(idLo, idLo.DataType, dt);
+                }
                 return ssa.Procedure.Frame.EnsureSequence(totalSize, idHi.Storage, idLo.Storage);
             }
             if (expLo is MemoryAccess memDstLo && expHi is MemoryAccess memDstHi && 

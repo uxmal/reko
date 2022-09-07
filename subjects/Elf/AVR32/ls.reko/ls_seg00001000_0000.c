@@ -9934,8 +9934,8 @@ struct Eq_n * fn00009BC8(int32 r10, Eq_n r11, struct Eq_n * r12, ptr32 & lrOut)
 	ptr32 lr_n;
 	r12[20] = (struct Eq_n) 0x00;
 	struct Eq_n * r7_n = r12 + 20;
-	ui64 r5_r4_n = SEQ(r11, r10);
-	ui64 r5_r4_n = SEQ(r11, r10);
+	uint64 r5_r4_n = SEQ(r11, r10);
+	uint64 r5_r4_n = SEQ(r11, r10);
 	if (r11 < (bool) cond(r10))
 	{
 		do
@@ -20301,10 +20301,10 @@ word32 fn000101CC(Eq_n r10, Eq_n r11, struct Eq_n * pc, ptr32 & r9Out, ptr32 & r
 	return r8_n;
 }
 
-// 00010208: Register Eq_n __avr32_sdiv64(Sequence ui64 r11_r10, Sequence word64 r9_r8, Register out ptr32 r11Out, Register out Eq_n lrOut)
+// 00010208: Register Eq_n __avr32_sdiv64(Sequence uint64 r11_r10, Sequence uint64 r9_r8, Register out ptr32 r11Out, Register out Eq_n lrOut)
 // Called from:
 //      fn00009BC8
-Eq_n __avr32_sdiv64(ui64 r11_r10, word64 r9_r8, ptr32 & r11Out, union Eq_n & lrOut)
+Eq_n __avr32_sdiv64(uint64 r11_r10, uint64 r9_r8, ptr32 & r11Out, union Eq_n & lrOut)
 {
 	Eq_n lr;
 	Eq_n r11 = SLICE(r11_r10, word32, 32);
@@ -20324,7 +20324,7 @@ Eq_n __avr32_sdiv64(ui64 r11_r10, word64 r9_r8, ptr32 & r11Out, union Eq_n & lrO
 	}
 	else
 	{
-		ui64 r3_r2_n = 0x00 - r11_r10;
+		uint64 r3_r2_n = 0x00 - r11_r10;
 		r9_n.u0 = 0x00;
 		r2_n = (word32) r3_r2_n;
 		r3_n = SLICE(r3_r2_n, word32, 32);
@@ -20333,7 +20333,7 @@ Eq_n __avr32_sdiv64(ui64 r11_r10, word64 r9_r8, ptr32 & r11Out, union Eq_n & lrO
 	word32 dwLoc2C_n = r8_n;
 	if (r9 < 0x00)
 	{
-		ui64 r11_r10_n = 0x00 - r9_r8;
+		uint64 r11_r10_n = 0x00 - r9_r8;
 		r9_n.u0 = 0x00;
 		r10_n = (word32) r11_r10_n;
 		r11_n = SLICE(r11_r10_n, word32, 32);
@@ -20515,7 +20515,7 @@ l000104CE:
 			ptr32 r11_n = SLICE(r2_r12_n, word32, 32);
 			if (dwLoc2C_n != 0x00)
 			{
-				ui64 r11_r10_n = 0x00 - r2_r12_n;
+				uint64 r11_r10_n = 0x00 - r2_r12_n;
 				r10_n = (word32) r11_r10_n;
 				r11_n = SLICE(r11_r10_n, word32, 32);
 			}
@@ -20570,12 +20570,12 @@ l000104C6:
 	}
 }
 
-// 000104EA: Register word32 __moddi3(Sequence ui64 r11_r10, Sequence ui64 r9_r8)
+// 000104EA: Register word32 __moddi3(Sequence uint64 r11_r10, Sequence uint64 r9_r8)
 // Called from:
 //      fn00009BC8
-word32 __moddi3(ui64 r11_r10, ui64 r9_r8)
+word32 __moddi3(uint64 r11_r10, uint64 r9_r8)
 {
-	word64 qwLoc2C;
+	uint64 qwLoc2C;
 	int32 r9 = SLICE(r9_r8, word32, 32);
 	int32 r11 = SLICE(r11_r10, word32, 32);
 	word32 dwLoc40_n;
@@ -20588,7 +20588,7 @@ word32 __moddi3(ui64 r11_r10, ui64 r9_r8)
 	}
 	Eq_n r11_n = SLICE(r11_r10, word32, 32);
 	Eq_n r10_n = (word32) r11_r10;
-	ui64 r3_r2_n = r9_r8;
+	uint64 r3_r2_n = r9_r8;
 	if (r9 < 0x00)
 		r3_r2_n = 0x00 - r9_r8;
 	Eq_n r2_n = (word32) r3_r2_n;

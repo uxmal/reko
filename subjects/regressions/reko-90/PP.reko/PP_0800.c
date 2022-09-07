@@ -3184,7 +3184,7 @@ void fn0800-2201(Eq_n ds, Eq_n ptrArg02)
 	Eq_n wArg02_n = (word16) ptrArg02;
 	Eq_n wArg04_n = SLICE(ptrArg02, word16, 16);
 	Eq_n es_bx_n = *((word32) ds + 11857);
-	uint16 dx_n = (word32) *((word32) ds + 11857) + (((int16) (*ptrArg02) << 0x08) + (uint16) (*((word32) ptrArg02 + 1))) - wArg02_n;
+	uint16 dx_n = (word32) *((word32) ds + 11857) + (((int16) (*ptrArg02) << 8) + (uint16) (*((word32) ptrArg02 + 1))) - wArg02_n;
 	uint16 ax_n = ((uint16) *((word32) es_bx_n + 4) << 0x08) + (uint16) (*((word32) es_bx_n + 5));
 	word16 ax_n = (word32) wArg02_n + dx_n;
 	fn0800_B0F3(ptrArg02, SEQ(wArg04_n, ax_n), (word32) *((word32) ds + 11857) + ax_n - ax_n);
@@ -8624,7 +8624,7 @@ Eq_n fn0800-5D2F(Eq_n ds, Eq_n bArg02)
 	Eq_n dx_n = *((word32) ds + 11865);
 	if (*((word32) ds + 11867) == *((word32) ds + 11863) && dx_n - 0x01 == *((word32) ds + 11861))
 	{
-		ui32 ax_dx_n = 0xFFFF - (uint32) (*((word32) ds + 11825));
+		uint32 ax_dx_n = 0xFFFF - (uint32) (*((word32) ds + 11825));
 		word16 si_n;
 		fn0800-4152(ds, SEQ(Mem32[ds:11867:word16], Mem32[ds:11865:word16] + Mem32[ds:11825:word16]), SLICE(ax_dx_n, word16, 0), SLICE(ax_dx_n, word16, 16), Mem7[ds:10719:word32], out si_n, out ds);
 		fn0800_B0F3(*((word32) ds + 11865), SEQ(*((word32) ds + 11863), *((word32) ds + 11861) - *((word32) ds + 11825)), *((word32) ds + 11825));
@@ -8980,9 +8980,9 @@ word16 fn0800-5E64(Eq_n ds, ptr16 & dxOut, union Eq_n & dsOut)
 				word16 bx_n;
 				fn0800-4047(ds_n, ss->*((word32) sp_n - 2), ss->*sp_n, out cx_n, out dx_n, out bx_n, out di_n, out ds_n);
 				(ss->*((word32) sp_n + 2)).u0 = 0x01;
-				uint32 dx_ax_n = (uint32) (ss->*bp_n).tFFFFFFDE;
-				ss->*sp_n = SLICE(dx_ax_n + 0x02, word16, 16);
-				ss->*((word32) sp_n - 2) = (word16) dx_ax_n + 0x02;
+				uint32 dx_ax_n = (uint32) (ss->*bp_n).tFFFFFFDE + 0x02;
+				ss->*sp_n = SLICE(dx_ax_n, word16, 16);
+				ss->*((word32) sp_n - 2) = (word16) dx_ax_n;
 				ss->*((word32) sp_n - 4) = *((word32) ds_n + 10721);
 				ss->*((word32) sp_n - 6) = *((word32) ds_n + 10719);
 				word16 cx_n;
