@@ -155,9 +155,7 @@ namespace Reko.ImageLoaders.Elf
         {
             static bool IsUnresolved(ElfSymbol s)
             {
-                if (s.Type != ElfSymbolType.STT_NOTYPE && s.SectionIndex == ElfSection.SHN_UNDEF)
-                    return true;
-                return false;
+                return (s.SectionIndex == ElfSection.SHN_UNDEF);
             }
 
             foreach (var sym in loader.GetAllSymbols().Where(IsUnresolved))
