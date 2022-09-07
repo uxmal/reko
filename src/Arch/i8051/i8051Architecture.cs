@@ -36,6 +36,7 @@ namespace Reko.Arch.i8051
         public i8051Architecture(IServiceProvider services, string archId, Dictionary<string, object> options)
             : base(services, archId, options)
         {
+            this.CarryFlagMask = (uint) FlagM.C;
             this.Endianness = EndianServices.Big;
             this.StackRegister = Registers.SP;
             this.WordWidth = PrimitiveType.Byte;
