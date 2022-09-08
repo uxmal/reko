@@ -22,6 +22,7 @@ using Reko.Core;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -107,6 +108,7 @@ namespace Reko.Arch.i8051
 
         private static Dictionary<int, RegisterStorage> regsByNumber;
         private static Dictionary<StorageDomain, RegisterStorage> regsByDomain;
+        private static Dictionary<string, RegisterStorage> regsByName;
 
         static Registers()
         {
@@ -140,6 +142,8 @@ namespace Reko.Arch.i8051
             }.ToDictionary(k  => k.Number);
             regsByDomain = regsByNumber.Values
                 .ToDictionary(k => k.Domain);
+            regsByName = regsByNumber.Values
+                .ToDictionary(k => k.Name);
         }
 
         public static RegisterStorage GetRegister(int i)
@@ -154,6 +158,11 @@ namespace Reko.Arch.i8051
         public static RegisterStorage[] GetRegisters()
         {
             return regsByNumber.Values.OrderBy(r => r.Number).ToArray();
+        }
+
+        public static bool TryGetRegister(string regName, [MaybeNullWhen(false)] out RegisterStorage reg)
+        {
+            return regsByName.TryGetValue(regName, out reg);
         }
     }
 

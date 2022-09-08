@@ -27,6 +27,7 @@ using Reko.Core.Rtl;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Text;
 
 namespace Reko.Arch.i8051
@@ -157,9 +158,9 @@ namespace Reko.Arch.i8051
             return Address.Ptr16(uAddr);
         }
 
-        public override bool TryGetRegister(string name, out RegisterStorage reg)
+        public override bool TryGetRegister(string name, [MaybeNullWhen(false)] out RegisterStorage reg)
         {
-            throw new NotImplementedException();
+            return Registers.TryGetRegister(name, out reg);
         }
 
         public override bool TryParseAddress(string? txtAddr, out Address addr)

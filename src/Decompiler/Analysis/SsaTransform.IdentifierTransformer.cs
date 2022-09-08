@@ -98,7 +98,7 @@ namespace Reko.Analysis
                     {
                         Debug.Print("  {0}", block.DisplayName);
                     }
-                    throw new StackOverflowException($"Boundless recursion in {proc.Name}.");
+                    throw new StackOverflowException($"Boundless recursion in {proc.Name} while finding definitions of {this.id}.");
                 }
                 sid = ReadVariableRecursive(bs);
                 bloxx.Pop();
