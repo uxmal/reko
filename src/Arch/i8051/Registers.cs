@@ -88,7 +88,7 @@ namespace Reko.Arch.i8051
         public static readonly RegisterStorage SBUF = RegisterStorage.Reg8("SBUF", 0x99);
         public static readonly RegisterStorage P2 = RegisterStorage.Reg8("P2", 0xA0);
         public static readonly RegisterStorage IE = RegisterStorage.Reg8("IE", 0xA8);
-        public static readonly RegisterStorage P3 = RegisterStorage.Reg8("P2", 0xB0);
+        public static readonly RegisterStorage P3 = RegisterStorage.Reg8("P3", 0xB0);
         public static readonly RegisterStorage IP = RegisterStorage.Reg8("IP", 0xB8);
         public static readonly RegisterStorage PSW = RegisterStorage.Reg8("PSW", 0xD0);
         public static readonly RegisterStorage A = RegisterStorage.Reg8("A", 0xE0);
