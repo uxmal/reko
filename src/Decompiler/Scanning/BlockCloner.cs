@@ -81,10 +81,8 @@ namespace Reko.Scanning
                 StatementNew = new Statement(
                     stm.Address,
                     null!,
-                    blockNew)
-                {
-                    Instruction = stm.Instruction.Accept(this)
-                };
+                    blockNew);
+                StatementNew.Instruction = stm.Instruction.Accept(this);
                 blockNew.Statements.Add(StatementNew);
             }
             procCalling.AddBlock(blockNew);
