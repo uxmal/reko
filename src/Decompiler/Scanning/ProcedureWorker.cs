@@ -112,8 +112,12 @@ namespace Reko.Scanning
             if (recScanner.GetProcedureReturnStatus(edge.To) != ReturnStatus.Unknown)
                 return;
             // The target procedure has not been processed yet, so try to suspend
-            // this worker waiting for the target procedure to finish.
+            // this worker waiting for the target procedure to finish. Suspending
+            // this worker will always succeed.
+            
             recScanner.TrySuspendWorker(this);
+
+            // Try starting a worker for the callee.
             if (recScanner.TryStartProcedureWorker(edge.To, state, out var calleeWorker))
             {
                 calleeWorker.TryEnqueueCaller(this, edge.From, block.FallThrough, state);
