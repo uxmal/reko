@@ -422,14 +422,13 @@ namespace Reko.Gui.Forms
 
         public async ValueTask<bool> OpenBinaryAs(string initialFilename)
         {
-            using IOpenAsDialog? dlg = dlgFactory.CreateOpenAsDialog(initialFilename);
-            if (await uiSvc.ShowModalDialog(dlg) != DialogResult.OK)
-                    return false;
-            
-            string fileName = dlg.FileName.Text;
+            using IDialog<LoadDetails?> dlg = dlgFactory.CreateOpenAsDialog(initialFilename);
+            var details = await uiSvc.ShowModalDialog(dlg);
+            if (details?.Location is null)
+                return false;
+            string fileName = details.Location.GetFilename();
             try
             {
-                LoadDetails details = dlg.GetLoadDetails();
                 await CloseProject();
                 await SwitchInteractor(DecompilerPhases.Initial);
                 await DecompilerPhases.Initial.OpenBinaryAs(fileName, details);
@@ -440,9 +439,7 @@ namespace Reko.Gui.Forms
             }
             catch (Exception ex)
             {
-               await uiSvc.ShowError(
-                    ex,
-                    string.Format("An error occurred when opening the file {0}.", dlg.FileName.Text));
+               await uiSvc.ShowError(ex, $"An error occurred when opening the file {fileName}.");
             }
             finally
             {

@@ -19,6 +19,7 @@
 #endregion
 
 using Reko.Core;
+using Reko.Core.Loading;
 using Reko.Core.Machine;
 using Reko.Gui.Forms;
 using Reko.Gui.Services;
@@ -44,7 +45,7 @@ namespace Reko.Gui
         ICallSiteDialog CreateCallSiteDialog(Program program, UserCallData ucd);
         IFindStringsDialog CreateFindStringDialog();
         IKeyBindingsDialog CreateKeyBindingsDialog(Dictionary<string, Dictionary<int, CommandID>> keyBindings);
-        IOpenAsDialog CreateOpenAsDialog(string initialFilename);
+        IDialog<LoadDetails?> CreateOpenAsDialog(string initialFilename);
         IDialog<UserProcedure?> CreateProcedureDialog(Program program, UserProcedure proc);
         IProgramPropertiesDialog CreateProgramPropertiesDialog(Program program);
         IResourceEditor CreateResourceEditor();

@@ -19,6 +19,7 @@
 #endregion
 
 using Reko.Core;
+using Reko.Core.Loading;
 using Reko.Core.Machine;
 using Reko.Core.Services;
 using Reko.Gui;
@@ -103,8 +104,7 @@ namespace Reko.UserInterfaces.WindowsForms
             return dlg;
         }
 
-
-        public IOpenAsDialog CreateOpenAsDialog(string initialFilename)
+        public IDialog<LoadDetails?> CreateOpenAsDialog(string initialFilename)
         {
             var dlg = new OpenAsDialog
             {

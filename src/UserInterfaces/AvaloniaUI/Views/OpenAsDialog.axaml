@@ -2,16 +2,86 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+		xmlns:vm="using:Reko.UserInterfaces.AvaloniaUI.ViewModels"
+        mc:Ignorable="d" d:DesignWidth="500" d:DesignHeight="550"
+		x:CompileBindings="True"
         x:Class="Reko.UserInterfaces.AvaloniaUI.Views.OpenAsDialog"
-        Title="OpenAsDialog">
-	<StackPanel>
-		<Label>File name</Label>
-		<StackPanel Orientation="Horizontal">
-			<TextBox Name="fileName" Text="{Binding FileName}" />
-			<Button Name="btnBrowseFile">...</Button>
+	    x:DataType="vm:OpenAsViewModel"
+		Width="600" Height="500"
+        Title="Open Binary File">
+	<Grid ColumnDefinitions="50*,50*" RowDefinitions="auto,*,30">
+		<Grid.Styles>
+			<Style Selector="StackPanel.cell">
+				<Setter Property="Margin" Value="8" />
+			</Style>
+			<Style Selector="TextBlock">
+				<Setter Property="FontSize" Value="11" />
+			</Style>
+			<Style Selector="Label">
+				<Setter Property="FontSize" Value="11" />
+			</Style>
+			<Style Selector="AccessText">
+				<Setter Property="FontSize" Value="11" />
+			</Style>
+		</Grid.Styles>
+		<StackPanel Classes="cell" Grid.Row="0" Grid.ColumnSpan="2">
+			<Label>File name:</Label>
+			<Grid ColumnDefinitions="*,auto">
+				<TextBox Name="fileName" Text="{Binding FileName}" />
+				<Button Grid.Column="1" Name="btnBrowseFile" Click="btnBrowseFile_Click">...</Button>
+			</Grid>
 		</StackPanel>
-		<Label>File format</Label>
-		<ComboBox Name="ddlFormats" Items="{Binding FileFormats}" />
-	</StackPanel>
+
+		<StackPanel Classes="cell" Grid.Row="1" Grid.Column="0">
+			<Label>Raw file _type:</Label>
+			<ComboBox Name="ddlFormats"
+					  Items="{Binding FileFormats}"
+					  SelectedItem="{Binding SelectedFileFormat}" />
+			<Label>Operating _environment:</Label>
+			<ComboBox Name="ddlEnvironments"
+					  Items="{Binding Environments}"
+					  IsEnabled="{Binding EnvironmentsEnabled}"
+					  SelectedItem="{Binding SelectedEnvironment}" />
+			<Label>_Processor architecture:</Label>
+			<ComboBox Name="ddlArchictectures"
+					  Items="{Binding Architectures}"
+					  IsEnabled="{Binding ArchitecturesEnabled}"
+					  SelectedItem="{Binding SelectedArchitecture}" />
+			<Label>Processor _model:</Label>
+			<ComboBox Name="ddlModels"
+					  Items="{Binding ProcessorModels}"
+					  IsEnabled="{Binding ProcessorModelsEnabled}"
+					  SelectedItem="{Binding SelectedProcessorModel}" />
+			<Label>Load binary</Label>
+			<StackPanel Margin="12,0,0,0">
+				<StackPanel Orientation="Horizontal" Margin="0">
+					<RadioButton
+						GroupName="grpLoadAddress"
+						IsChecked="{Binding LoadAddressChecked}">at address</RadioButton>
+					<TextBox Name="txtAddress" Margin="8,0,0,0" Width="132"
+							 Text="{Binding Address}"
+							 IsEnabled="{Binding AddressEnabled}" />
+				</StackPanel>
+				<RadioButton
+					GroupName="grpLoadAddress"
+					IsChecked="{Binding !LoadAddressChecked}">at an address guessed by Reko</RadioButton>
+			</StackPanel>
+		</StackPanel>
+
+		<DockPanel Classes="cell" Grid.Row="1" Grid.Column="1" LastChildFill="True">
+			<Label DockPanel.Dock="Top">Options:</Label>
+			<Border DockPanel.Dock="Top" BorderBrush="Red" BorderThickness="1">
+				<TextBlock TextWrapping="Wrap">
+					Placeholder for property grid
+				</TextBlock>
+			</Border>
+		</DockPanel>
+
+		<StackPanel Classes="cell" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2">
+			<StackPanel Orientation="Horizontal" Spacing="8" HorizontalAlignment="Right">
+				<Button Click="btnOK_Click" IsDefault="True" IsEnabled="{Binding OKButtonEnabled}">OK</Button>
+				<Button Click="btnCancel_Click" IsCancel="True">Cancel</Button>
+			</StackPanel>
+		</StackPanel>
+	</Grid>
 </Window>

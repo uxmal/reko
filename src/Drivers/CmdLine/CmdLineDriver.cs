@@ -279,6 +279,7 @@ namespace Reko.CmdLine
                 pArgs.TryGetValue("--loader", out object sLoader);
                 var loadDetails = new LoadDetails
                 {
+                    Location = ImageLocation.FromUri((string) pArgs["filename"]),
                     LoaderName = (string) sLoader,
                     ArchitectureName = (string) pArgs["--arch"],
                     ArchitectureOptions = null, //$TODO: How do we handle options for command line?
@@ -325,9 +326,8 @@ namespace Reko.CmdLine
             }
             else
             {
-                var location = ImageLocation.FromUri((string) pArgs["filename"]);
-                program = ldr.LoadRawImage(location, loadDetails);
-                program.Location = location;
+                program = ldr.LoadRawImage(loadDetails);
+                program.Location = loadDetails.Location;
             }
             listener.ShowStatus("Raw bytes loaded.");
             return program;

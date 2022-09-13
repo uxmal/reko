@@ -45,14 +45,17 @@
             this.label6 = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
             this.ddlModels = new System.Windows.Forms.ComboBox();
+            this.rdbSpecifyAddress = new System.Windows.Forms.RadioButton();
+            this.rdbGuessAddress = new System.Windows.Forms.RadioButton();
             this.SuspendLayout();
             // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(8, 13);
+            this.label1.Location = new System.Drawing.Point(9, 15);
+            this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(52, 13);
+            this.label1.Size = new System.Drawing.Size(58, 15);
             this.label1.TabIndex = 0;
             this.label1.Text = "&Open file:";
             // 
@@ -61,17 +64,19 @@
             this.textBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.textBox1.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.FileSystem;
-            this.textBox1.Location = new System.Drawing.Point(8, 29);
+            this.textBox1.Location = new System.Drawing.Point(9, 33);
+            this.textBox1.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(530, 20);
+            this.textBox1.Size = new System.Drawing.Size(618, 23);
             this.textBox1.TabIndex = 1;
             // 
             // btnBrowse
             // 
             this.btnBrowse.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnBrowse.Location = new System.Drawing.Point(544, 27);
+            this.btnBrowse.Location = new System.Drawing.Point(635, 31);
+            this.btnBrowse.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.btnBrowse.Name = "btnBrowse";
-            this.btnBrowse.Size = new System.Drawing.Size(24, 23);
+            this.btnBrowse.Size = new System.Drawing.Size(28, 27);
             this.btnBrowse.TabIndex = 2;
             this.btnBrowse.Text = "...";
             this.btnBrowse.UseVisualStyleBackColor = true;
@@ -79,18 +84,20 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(8, 154);
+            this.label2.Location = new System.Drawing.Point(9, 178);
+            this.label2.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(117, 13);
+            this.label2.Size = new System.Drawing.Size(129, 15);
             this.label2.TabIndex = 7;
             this.label2.Text = "&Processor Architecture:";
             // 
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(8, 114);
+            this.label3.Location = new System.Drawing.Point(9, 132);
+            this.label3.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(118, 13);
+            this.label3.Size = new System.Drawing.Size(134, 15);
             this.label3.TabIndex = 5;
             this.label3.Text = "Operating &Environment:";
             // 
@@ -98,27 +105,30 @@
             // 
             this.ddlEnvironments.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.ddlEnvironments.FormattingEnabled = true;
-            this.ddlEnvironments.Location = new System.Drawing.Point(8, 130);
+            this.ddlEnvironments.Location = new System.Drawing.Point(9, 150);
+            this.ddlEnvironments.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.ddlEnvironments.Name = "ddlEnvironments";
-            this.ddlEnvironments.Size = new System.Drawing.Size(284, 21);
+            this.ddlEnvironments.Size = new System.Drawing.Size(331, 23);
             this.ddlEnvironments.TabIndex = 6;
             // 
             // ddlArchitectures
             // 
             this.ddlArchitectures.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.ddlArchitectures.FormattingEnabled = true;
-            this.ddlArchitectures.Location = new System.Drawing.Point(8, 170);
+            this.ddlArchitectures.Location = new System.Drawing.Point(9, 196);
+            this.ddlArchitectures.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.ddlArchitectures.Name = "ddlArchitectures";
-            this.ddlArchitectures.Size = new System.Drawing.Size(284, 21);
+            this.ddlArchitectures.Size = new System.Drawing.Size(331, 23);
             this.ddlArchitectures.TabIndex = 8;
             // 
             // btnOk
             // 
             this.btnOk.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnOk.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.btnOk.Location = new System.Drawing.Point(412, 285);
+            this.btnOk.Location = new System.Drawing.Point(481, 422);
+            this.btnOk.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.btnOk.Name = "btnOk";
-            this.btnOk.Size = new System.Drawing.Size(75, 23);
+            this.btnOk.Size = new System.Drawing.Size(88, 27);
             this.btnOk.TabIndex = 15;
             this.btnOk.Text = "OK";
             this.btnOk.UseVisualStyleBackColor = true;
@@ -127,9 +137,10 @@
             // 
             this.btnCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnCancel.Location = new System.Drawing.Point(493, 285);
+            this.btnCancel.Location = new System.Drawing.Point(575, 422);
+            this.btnCancel.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.btnCancel.Name = "btnCancel";
-            this.btnCancel.Size = new System.Drawing.Size(75, 23);
+            this.btnCancel.Size = new System.Drawing.Size(88, 27);
             this.btnCancel.TabIndex = 16;
             this.btnCancel.Text = "Cancel";
             this.btnCancel.UseVisualStyleBackColor = true;
@@ -137,25 +148,28 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(8, 240);
+            this.label4.Location = new System.Drawing.Point(9, 277);
+            this.label4.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(117, 13);
+            this.label4.Size = new System.Drawing.Size(69, 15);
             this.label4.TabIndex = 11;
-            this.label4.Text = "Load binary at &address:";
+            this.label4.Text = "Load binary";
             // 
             // txtAddress
             // 
-            this.txtAddress.Location = new System.Drawing.Point(8, 256);
+            this.txtAddress.Location = new System.Drawing.Point(115, 294);
+            this.txtAddress.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.txtAddress.Name = "txtAddress";
-            this.txtAddress.Size = new System.Drawing.Size(166, 20);
+            this.txtAddress.Size = new System.Drawing.Size(193, 23);
             this.txtAddress.TabIndex = 12;
             // 
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(8, 73);
+            this.label5.Location = new System.Drawing.Point(9, 84);
+            this.label5.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(71, 13);
+            this.label5.Size = new System.Drawing.Size(77, 15);
             this.label5.TabIndex = 3;
             this.label5.Text = "Raw file &type:";
             // 
@@ -163,9 +177,10 @@
             // 
             this.ddlRawFileTypes.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.ddlRawFileTypes.FormattingEnabled = true;
-            this.ddlRawFileTypes.Location = new System.Drawing.Point(8, 90);
+            this.ddlRawFileTypes.Location = new System.Drawing.Point(9, 104);
+            this.ddlRawFileTypes.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.ddlRawFileTypes.Name = "ddlRawFileTypes";
-            this.ddlRawFileTypes.Size = new System.Drawing.Size(283, 21);
+            this.ddlRawFileTypes.Size = new System.Drawing.Size(330, 23);
             this.ddlRawFileTypes.TabIndex = 4;
             // 
             // propertyGrid
@@ -173,28 +188,31 @@
             this.propertyGrid.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.propertyGrid.Location = new System.Drawing.Point(314, 89);
+            this.propertyGrid.Location = new System.Drawing.Point(366, 103);
+            this.propertyGrid.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.propertyGrid.Name = "propertyGrid";
             this.propertyGrid.PropertySort = System.Windows.Forms.PropertySort.Alphabetical;
-            this.propertyGrid.Size = new System.Drawing.Size(253, 181);
+            this.propertyGrid.Size = new System.Drawing.Size(295, 302);
             this.propertyGrid.TabIndex = 14;
             this.propertyGrid.ToolbarVisible = false;
             // 
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(311, 72);
+            this.label6.Location = new System.Drawing.Point(363, 83);
+            this.label6.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(46, 13);
+            this.label6.Size = new System.Drawing.Size(52, 15);
             this.label6.TabIndex = 13;
             this.label6.Text = "Op&tions:";
             // 
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(8, 198);
+            this.label7.Location = new System.Drawing.Point(9, 228);
+            this.label7.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(89, 13);
+            this.label7.Size = new System.Drawing.Size(98, 15);
             this.label7.TabIndex = 9;
             this.label7.Text = "Processor &Model:";
             // 
@@ -202,18 +220,43 @@
             // 
             this.ddlModels.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.ddlModels.FormattingEnabled = true;
-            this.ddlModels.Location = new System.Drawing.Point(8, 214);
+            this.ddlModels.Location = new System.Drawing.Point(9, 247);
+            this.ddlModels.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.ddlModels.Name = "ddlModels";
-            this.ddlModels.Size = new System.Drawing.Size(284, 21);
+            this.ddlModels.Size = new System.Drawing.Size(331, 23);
             this.ddlModels.TabIndex = 10;
+            // 
+            // rdbSpecifyAddress
+            // 
+            this.rdbSpecifyAddress.AutoSize = true;
+            this.rdbSpecifyAddress.Checked = true;
+            this.rdbSpecifyAddress.Location = new System.Drawing.Point(27, 295);
+            this.rdbSpecifyAddress.Name = "rdbSpecifyAddress";
+            this.rdbSpecifyAddress.Size = new System.Drawing.Size(81, 19);
+            this.rdbSpecifyAddress.TabIndex = 17;
+            this.rdbSpecifyAddress.TabStop = true;
+            this.rdbSpecifyAddress.Text = "&at address:";
+            this.rdbSpecifyAddress.UseVisualStyleBackColor = true;
+            // 
+            // rdbGuessAddress
+            // 
+            this.rdbGuessAddress.AutoSize = true;
+            this.rdbGuessAddress.Location = new System.Drawing.Point(27, 323);
+            this.rdbGuessAddress.Name = "rdbGuessAddress";
+            this.rdbGuessAddress.Size = new System.Drawing.Size(185, 19);
+            this.rdbGuessAddress.TabIndex = 18;
+            this.rdbGuessAddress.Text = "at an address &guessed by Reko";
+            this.rdbGuessAddress.UseVisualStyleBackColor = true;
             // 
             // OpenAsDialog
             // 
             this.AcceptButton = this.btnOk;
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.btnCancel;
-            this.ClientSize = new System.Drawing.Size(580, 319);
+            this.ClientSize = new System.Drawing.Size(677, 461);
+            this.Controls.Add(this.rdbGuessAddress);
+            this.Controls.Add(this.rdbSpecifyAddress);
             this.Controls.Add(this.ddlModels);
             this.Controls.Add(this.label7);
             this.Controls.Add(this.label6);
@@ -231,9 +274,10 @@
             this.Controls.Add(this.btnBrowse);
             this.Controls.Add(this.textBox1);
             this.Controls.Add(this.label1);
+            this.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.MaximizeBox = false;
             this.MinimizeBox = false;
-            this.MinimumSize = new System.Drawing.Size(320, 228);
+            this.MinimumSize = new System.Drawing.Size(371, 257);
             this.Name = "OpenAsDialog";
             this.ShowIcon = false;
             this.ShowInTaskbar = false;
@@ -263,5 +307,7 @@
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.ComboBox ddlModels;
+        private System.Windows.Forms.RadioButton rdbSpecifyAddress;
+        private System.Windows.Forms.RadioButton rdbGuessAddress;
     }
 }

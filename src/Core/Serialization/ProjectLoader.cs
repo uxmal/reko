@@ -269,8 +269,9 @@ namespace Reko.Core.Serialization
                 var archName = sUser.Processor?.Name;
                 var platform = sUser.PlatformOptions?.Name;
                 var bytes = loader.LoadFileBytes(binLocation.FilesystemPath);
-                program = loader.LoadRawImage(binLocation, bytes, address, new LoadDetails
+                program = loader.LoadRawImage(bytes, address, new LoadDetails
                 {
+                    Location = binLocation,
                     LoaderName = sUser.Loader,
                     ArchitectureName = archName,
                     ArchitectureOptions = archOptions,

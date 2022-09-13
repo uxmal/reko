@@ -36,12 +36,15 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
         {
             InitializeComponent();
 
-            AddressTextBox = new TextBoxWrapper(txtAddress);
+            FileName = new TextBoxWrapper(textBox1);
             RawFileTypes = new ComboBoxWrapper(ddlRawFileTypes);
             Architectures = new ComboBoxWrapper(ddlArchitectures);
             ArchitectureModels = new ComboBoxWrapper(ddlModels);
             Platforms = new ComboBoxWrapper(ddlEnvironments);
-            FileName = new TextBoxWrapper(textBox1);
+            SpecifyAddress = new RadioButtonWrapper(rdbSpecifyAddress);
+            GuessAddress = new RadioButtonWrapper(rdbGuessAddress);
+            AddressTextBox = new TextBoxWrapper(txtAddress);
+
             PropertyGrid = new PropertyGridWrapper(propertyGrid);
             BrowseButton = new ButtonWrapper(btnBrowse);
             OkButton = new ButtonWrapper(btnOk);
@@ -51,6 +54,8 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
 
         public IServiceProvider Services { get; set; }
 
+        public LoadDetails? Value { get; set; }
+        
         public ITextBox FileName { get; private set; }
 
         public ITextBox AddressTextBox { get; private set; }
@@ -58,6 +63,8 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
         public IComboBox Architectures { get; private set; }
         public IComboBox ArchitectureModels { get; private set; }
         public IComboBox Platforms { get; private set; }
+        public IRadioButton SpecifyAddress { get; }
+        public IRadioButton GuessAddress { get; }
         public IPropertyGrid PropertyGrid { get; private set; }
         public IButton BrowseButton { get; private set; }
         public IButton OkButton { get; private set; }
@@ -142,7 +149,7 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
                 throw new InvalidOperationException($"Unable to load {archName} architecture.");
             arch.LoadUserOptions(this.ArchitectureOptions);
             if (!arch.TryParseAddress(sAddr, out var addrBase))
-                throw new ApplicationException(string.Format("'{0}' doesn't appear to be a valid address.", sAddr));
+                throw new ApplicationException($"'{sAddr}' doesn't appear to be a valid address.");
             return new LoadDetails
             {
                 LoaderName = loader,

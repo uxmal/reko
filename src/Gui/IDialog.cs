@@ -29,7 +29,7 @@ namespace Reko.Gui
     /// </summary>
     public interface IDialog : IDisposable
     {
-        string Text { get; set; }
+        string? Text { get; set; }
     }
 
     /// <summary>

@@ -202,15 +202,18 @@ namespace Reko.Loading
 
         /// <summary>
         /// Loads a program from a file into memory using the additional information in 
-        /// <paramref name="raw"/>. Use this to open files with insufficient or
+        /// <paramref name="loadDetails"/>. Use this to open files with insufficient or
         /// no metadata.
         /// </summary>
         /// <param name="fileName">Name of the file to be loaded.</param>
-        /// <param name="raw">Extra metadata supllied by the user.</param>
-        public Program LoadRawImage(ImageLocation location, LoadDetails raw)
+        /// <param name="loadDetails">Extra metadata supllied by the user.</param>
+        public Program LoadRawImage(LoadDetails loadDetails)
         {
+            var location = loadDetails.Location;
+            if (location is null)
+                throw new ArgumentException("An image location must be provided.", nameof(loadDetails));
             byte[] image = this.LoadFileBytes(location.FilesystemPath);
-            var program = this.LoadRawImage(location, image, null, raw);
+            var program = this.LoadRawImage(image, null, loadDetails);
             return program;
         }
 
@@ -222,8 +225,8 @@ namespace Reko.Loading
         /// <param name="raw">Extra metadata supllied by the user.</param>
         public Program LoadRawImage(byte[] image, LoadDetails raw)
         {
-            var inventedLocation = ImageLocation.FromUri("file:image");
-            var program = this.LoadRawImage(inventedLocation, image, null, raw);
+            raw.Location = ImageLocation.FromUri("file:image");
+            var program = this.LoadRawImage(image, null, raw);
             return program;
         }
 
@@ -236,8 +239,10 @@ namespace Reko.Loading
         /// <param name="addrLoad"></param>
         /// <param name="details"></param>
         /// <returns></returns>
-        public Program LoadRawImage(ImageLocation imageLocation, byte[] image, Address? addrLoad, LoadDetails details)
+        public Program LoadRawImage(byte[] image, Address? addrLoad, LoadDetails details)
         {
+            if (details.Location is null)
+                throw new ApplicationException($"No image location was specified.");
             if (details.ArchitectureName is null)
                 throw new ApplicationException($"No processor architecture was specified.");
             var arch = cfgSvc.GetArchitecture(details.ArchitectureName, details.ArchitectureOptions);
@@ -258,13 +263,13 @@ namespace Reko.Loading
                 }
             }
 
-            if (imageLocation.HasFragments)
+            if (details.Location.HasFragments)
             {
                 // This raw file is inside an archive. We need to extract it first.
-                var newImage = ExtractRawFileFromArchives(imageLocation, image, addrLoad);
+                var newImage = ExtractRawFileFromArchives(details.Location, image, addrLoad);
                 if (newImage is null)
                     throw new ApplicationException(
-                        $"Unable to extract archived file {imageLocation}.");
+                        $"Unable to extract archived file {details.Location}.");
                 image = newImage;
             }
 
@@ -278,14 +283,14 @@ namespace Reko.Loading
                 image = newImage;
             }
 
-            var imgLoader = CreateCustomImageLoader(Services, details.LoaderName, imageLocation, image);
+            var imgLoader = CreateCustomImageLoader(Services, details.LoaderName, details.Location, image);
             var program = imgLoader.LoadProgram(addrLoad, arch, platform);
             if (details.EntryPoint is not null && arch.TryParseAddress(details.EntryPoint.Address, out Address? addrEp))
             {
                 program.EntryPoints.Add(addrEp, ImageSymbol.Procedure(arch, addrEp));
             }
-            program.Name = imageLocation.GetFilename();
-            program.Location = imageLocation;
+            program.Name = details.Location.GetFilename();
+            program.Location = details.Location;
             program.User.Processor = arch.Name;
             program.User.Environment = platform.Name;
             program.User.Loader = details.LoaderName;

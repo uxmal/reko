@@ -28,7 +28,7 @@ using System.Text;
 
 namespace Reko.Gui.Forms
 {
-    public interface IOpenAsDialog : IDialog
+    public interface IOpenAsDialog : IDialog<LoadDetails>
     {
         event EventHandler Load;
 
@@ -39,6 +39,9 @@ namespace Reko.Gui.Forms
         IComboBox Architectures { get; }
         IComboBox ArchitectureModels { get;  }
         IComboBox Platforms { get; }
+
+        IRadioButton SpecifyAddress { get; }
+        IRadioButton GuessAddress { get; }
         IPropertyGrid PropertyGrid { get; }
         IButton BrowseButton { get; }
         IButton OkButton { get; }

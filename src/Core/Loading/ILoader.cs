@@ -86,15 +86,14 @@ namespace Reko.Core.Loading
         /// <paramref name="details"/> to it. Use this method if the binary has no known file
         /// format.
         /// </summary>
-        /// <param name="imageLocation">The location from where the image was loaded.</param>
         /// <param name="image">The raw contents of the file.</param>
         /// <param name="loadAddress">The address at which the raw contents are to be loaded.</param>
         /// <param name="details">Details about the contents of the file.</param>
         /// <returns>A <see cref="Reko.Core.Program"/>.
         /// </returns>
-        Program LoadRawImage(ImageLocation imageLocation, byte[] image, Address? loadAddress, LoadDetails details);
+        Program LoadRawImage(byte[] image, Address? loadAddress, LoadDetails details);
 
-        Program LoadRawImage(ImageLocation imageLocation, LoadDetails raw);
+        Program LoadRawImage(LoadDetails raw);
 
         //$TODO: deprecate this method.
         Program LoadRawImage(byte[] bytes, LoadDetails raw);
@@ -130,6 +129,11 @@ namespace Reko.Core.Loading
     /// </summary>
     public class LoadDetails
     {
+        /// <summary>
+        /// The <see cref="ImageLocation"/>location of the image to be loaded.
+        /// </summary>
+        public ImageLocation? Location;
+
         /// <summary>
         /// Name of the loader to use. Loader names are found in the reko.config file.
         /// In addition, specifying a fully-qualified class name makes it possible to load

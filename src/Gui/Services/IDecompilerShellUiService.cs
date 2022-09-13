@@ -45,7 +45,7 @@ namespace Reko.Gui.Services
         void SetContextMenu(object control, int menuID);
         ValueTask<DialogResult> ShowModalDialog(IDialog dlg);
         ValueTask<TResult> ShowModalDialog<TResult>(IDialog<TResult> dlg);
-        void WithWaitCursor(Action p);
+        void WithWaitCursor(Action action);
     }
 
     public enum DialogResult

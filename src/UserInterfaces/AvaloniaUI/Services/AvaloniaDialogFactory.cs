@@ -19,6 +19,7 @@
 #endregion
 
 using Reko.Core;
+using Reko.Core.Loading;
 using Reko.Core.Machine;
 using Reko.Gui;
 using Reko.Gui.Forms;
@@ -100,9 +101,17 @@ namespace Reko.UserInterfaces.AvaloniaUI.Services
             throw new NotImplementedException();
         }
 
-        public IOpenAsDialog CreateOpenAsDialog(string initialFilename)
+        public IDialog<LoadDetails?> CreateOpenAsDialog(string initialFilename)
         {
-            throw new NotImplementedException();
+            var viewModel = new OpenAsViewModel(services)
+            {
+                FileName = initialFilename
+            };
+            var openAsView = new OpenAsDialog()
+            {
+                DataContext = viewModel
+            };
+            return openAsView;
         }
 
         public IDialog<UserProcedure?> CreateProcedureDialog(Program program, UserProcedure proc)

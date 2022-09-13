@@ -137,7 +137,8 @@ namespace Reko.Gui.Forms
                 var details = await ShowOpenBinaryAsDialog(file);
                 if (details is null)
                     return false;
-                var rawProgram = ldr.LoadRawImage(blob.Location, blob.Image, null, details);
+                details.Location = blob.Location;
+                var rawProgram = ldr.LoadRawImage(blob.Image, null, details);
                 loadedImage = Project.FromSingleProgram(rawProgram);
                 break;
             }
@@ -161,17 +162,8 @@ namespace Reko.Gui.Forms
         {
             var uiSvc = Services.RequireService<IDecompilerShellUiService>();
             var dlgFactory = Services.RequireService<IDialogFactory>();
-            using (IOpenAsDialog dlg = dlgFactory.CreateOpenAsDialog(file))
-            {
-                if (await uiSvc.ShowModalDialog(dlg) == DialogResult.OK)
-                {
-                    return dlg.GetLoadDetails();
-                }
-                else
-                {
-                    return null;
-                }
-            }
+            using var dlg = dlgFactory.CreateOpenAsDialog(file);
+            return await uiSvc.ShowModalDialog(dlg);
         }
 
         public async ValueTask<bool> OpenBinaryAs(string file, LoadDetails details)
@@ -184,7 +176,8 @@ namespace Reko.Gui.Forms
                 var eventListener = Services.RequireService<DecompilerEventListener>();
                 eventListener.ShowStatus("Loading source program.");
                 var imageUri = ImageLocation.FromUri(file);
-                Program program = ldr.LoadRawImage(imageUri, details);
+                details.Location = imageUri;
+                Program program = ldr.LoadRawImage(details);
                 var project = Project.FromSingleProgram(program);
                 this.Decompiler = CreateDecompiler(project);
                 Decompiler.ExtractResources();
@@ -231,7 +224,8 @@ namespace Reko.Gui.Forms
                     var loadDetails = await ShowOpenBinaryAsDialog(blob2.Location.FilesystemPath);
                     if (loadDetails is null)
                         return null;
-                    var rawProgram = loader.LoadRawImage(blob2.Location, blob2.Image, null, loadDetails);
+                    loadDetails.Location = blob2.Location;
+                    var rawProgram = loader.LoadRawImage(blob2.Image, null, loadDetails);
                     return Project.FromSingleProgram(rawProgram);
                 case IArchive nestedArchive:
                     archive = nestedArchive;

@@ -80,7 +80,7 @@ namespace Reko.Gui.Forms
             }
             dlg.Platforms.Enabled = platformRequired;
             dlg.Architectures.Enabled = archRequired;
-            dlg.AddressTextBox.Enabled = addrRequired;
+            dlg.AddressTextBox.Enabled = addrRequired && dlg.SpecifyAddress.Checked;
             dlg.PropertyGrid.Enabled = dlg.PropertyGrid.SelectedObject != null;
             dlg.OkButton.Enabled = dlg.FileName.Text.Length > 0 || !unknownRawFileFormat;
         }
