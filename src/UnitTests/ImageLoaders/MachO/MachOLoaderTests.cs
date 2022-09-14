@@ -29,6 +29,7 @@ using System.ComponentModel.Design;
 using System.Linq;
 using System.Text;
 using Reko.Core.Memory;
+using Reko.Core.Services;
 
 namespace Reko.UnitTests.ImageLoaders.MachO
 {

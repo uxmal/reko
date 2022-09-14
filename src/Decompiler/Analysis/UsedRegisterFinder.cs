@@ -18,17 +18,15 @@
  */
 #endregion
 
+using Reko.Core;
+using Reko.Core.Code;
+using Reko.Core.Collections;
+using Reko.Core.Expressions;
+using Reko.Core.Services;
+using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using Reko.Core;
-using Reko.Core.Services;
-using Reko.Core.Code;
-using Reko.Core.Expressions;
-using System.Diagnostics;
-using Reko.Core.Types;
-using Reko.Typing;
 
 namespace Reko.Analysis
 {

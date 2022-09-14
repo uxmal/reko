@@ -21,6 +21,7 @@
 using Reko.Core;
 using Reko.Core.Diagnostics;
 using Reko.Core.Memory;
+using Reko.Core.Services;
 using Reko.Gui.Visualizers;
 using System;
 using System.ComponentModel.Design;

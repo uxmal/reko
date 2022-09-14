@@ -19,13 +19,13 @@
 #endregion
 
 using Reko.Core;
+using Reko.Core.Services;
 using Reko.Gui.Services;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
 using System.Linq;
 using System.Threading.Tasks;
-using Procedure_v1 = Reko.Core.Serialization.Procedure_v1;
 
 namespace Reko.Gui.Design
 {

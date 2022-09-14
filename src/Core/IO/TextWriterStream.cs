@@ -23,7 +23,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 
-namespace Reko.Core.Lib
+namespace Reko.Core.IO
 {
     /// <summary>
     /// Redirects output to <see cref="TextWriter"/>

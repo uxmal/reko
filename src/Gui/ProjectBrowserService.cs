@@ -20,6 +20,7 @@
 
 using Reko.Core;
 using Reko.Core.Diagnostics;
+using Reko.Core.Services;
 using Reko.Gui.Controls;
 using Reko.Gui.Services;
 using System;

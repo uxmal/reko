@@ -19,16 +19,13 @@
 #endregion
 
 using Reko.Arch.X86;
-using Reko.Environments.Msdos;
 using Reko.Core;
-using Reko.Core.Expressions;
-using Reko.Core.Machine;
-using Reko.Core.Types;
-using System;
-using System.Collections.Generic;
 using Reko.Core.Configuration;
-using Reko.Core.Memory;
+using Reko.Core.Expressions;
 using Reko.Core.Loading;
+using Reko.Core.Memory;
+using Reko.Core.Services;
+using System;
 
 namespace Reko.ImageLoaders.MzExe
 {

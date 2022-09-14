@@ -24,6 +24,7 @@ using Reko.Core.Configuration;
 using Reko.Core.Loading;
 using Reko.Core.Memory;
 using Reko.Core.Serialization;
+using Reko.Core.Services;
 using Reko.Environments.Trs80.Dmk;
 using System;
 using System.Collections.Generic;

@@ -23,19 +23,16 @@ using Reko.Core;
 using Reko.Core.Configuration;
 using Reko.Core.Expressions;
 using Reko.Core.Loading;
-using Reko.Core.Machine;
 using Reko.Core.Memory;
-using Reko.Core.Types;
-using Reko.Environments.Msdos;
+using Reko.Core.Services;
 using System;
-using System.Collections.Generic;
 
 namespace Reko.ImageLoaders.MzExe
 {
-	/// <summary>
-	/// A loader that understands how to unpack a binary packed with PkLite.
-	/// </summary>
-	public class PkLiteUnpacker : ProgramImageLoader
+    /// <summary>
+    /// A loader that understands how to unpack a binary packed with PkLite.
+    /// </summary>
+    public class PkLiteUnpacker : ProgramImageLoader
 	{
         private readonly IProcessorArchitecture arch;
         private readonly IPlatform platform;

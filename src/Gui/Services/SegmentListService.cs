@@ -19,12 +19,8 @@
 #endregion
 
 using Reko.Core;
-using Reko.Gui;
+using Reko.Core.Services;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Reko.Gui.Services
 {

@@ -22,6 +22,7 @@ using Reko.Core;
 using Reko.Core.Configuration;
 using Reko.Core.Diagnostics;
 using Reko.Core.Memory;
+using Reko.Core.Services;
 using Reko.Core.Types;
 using Reko.ImageLoaders.MachO.Arch;
 using System;

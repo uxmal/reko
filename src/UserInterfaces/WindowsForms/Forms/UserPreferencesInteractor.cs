@@ -24,6 +24,7 @@ using Reko.Core.Configuration;
 using Reko.Core.Expressions;
 using Reko.Core.Memory;
 using Reko.Core.Output;
+using Reko.Core.Services;
 using Reko.Core.Types;
 using Reko.Gui.Services;
 using Reko.UserInterfaces.WindowsForms.Controls;

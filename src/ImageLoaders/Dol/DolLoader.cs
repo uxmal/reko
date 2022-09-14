@@ -23,17 +23,14 @@ using Reko.Core.Configuration;
 using Reko.Core.IO;
 using Reko.Core.Loading;
 using Reko.Core.Memory;
-using Reko.Environments.Wii;
+using Reko.Core.Services;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Reko.ImageLoaders.Dol
 {
-	[StructLayout(LayoutKind.Sequential, Pack = 1)]
+    [StructLayout(LayoutKind.Sequential, Pack = 1)]
 	[Endian(Endianness.BigEndian)]
 	public struct DolStructure {
 		[MarshalAs(UnmanagedType.ByValArray, SizeConst = 7)]

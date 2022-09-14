@@ -23,8 +23,8 @@ using Reko.Core.Configuration;
 using Reko.Core.IO;
 using Reko.Core.Loading;
 using Reko.Core.Memory;
+using Reko.Core.Services;
 using System;
-using System.Collections.Generic;
 using System.Runtime.InteropServices;
 
 namespace Reko.ImageLoaders.MzExe

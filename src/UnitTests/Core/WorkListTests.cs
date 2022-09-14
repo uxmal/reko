@@ -18,13 +18,12 @@
  */
 #endregion
 
-using Reko.Core;
 using NUnit.Framework;
-using System;
+using Reko.Core.Collections;
 
 namespace Reko.UnitTests.Core
 {
-	[TestFixture]
+    [TestFixture]
 	public class WorkListTests
 	{
 		[Test]
@@ -33,8 +32,7 @@ namespace Reko.UnitTests.Core
 			WorkList<int> w = new WorkList<int>();
 			w.Add(3);
 			Assert.IsFalse(w.IsEmpty);
-            int x;
-            Assert.IsTrue(w.TryGetWorkItem(out x));
+            Assert.IsTrue(w.TryGetWorkItem(out int x));
 			Assert.AreEqual(3, x);
 			Assert.IsTrue(w.IsEmpty);
 		}

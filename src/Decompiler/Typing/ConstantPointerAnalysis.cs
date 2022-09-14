@@ -28,7 +28,7 @@ using System;
 namespace Reko.Typing
 {
 	/// <summary>
-    /// Determines whether a constaint is a pointer, and if so adds it to 
+    /// Determines whether a constant is a pointer, and if so adds it to 
     /// the global data structure.
     /// </summary>
     /// <remarks>

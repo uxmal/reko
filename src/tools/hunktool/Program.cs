@@ -21,6 +21,7 @@
 using DocoptNet;
 using Reko.Core;
 using Reko.Core.Configuration;
+using Reko.Core.Services;
 using Reko.ImageLoaders.Hunk;
 using System;
 using System.Collections.Generic;

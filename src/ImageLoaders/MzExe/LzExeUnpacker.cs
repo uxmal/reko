@@ -28,6 +28,7 @@ using System.Diagnostics;
 using Reko.Core.Configuration;
 using Reko.Core.Memory;
 using Reko.Core.Loading;
+using Reko.Core.Services;
 
 namespace Reko.ImageLoaders.MzExe
 {
@@ -51,7 +52,7 @@ namespace Reko.ImageLoaders.MzExe
 		public LzExeUnpacker(MsdosImageLoader loader)
             : base(loader.Services, loader.ImageLocation, loader.RawImage)
         {
-            var cfgSvc = Services.RequireService<IConfigurationService>();
+            IConfigurationService cfgSvc = Services.RequireService<IConfigurationService>();
             this.arch = cfgSvc.GetArchitecture("x86-real-16")!;
             this.platform = cfgSvc.GetEnvironment("ms-dos")
                 .Load(Services, arch);

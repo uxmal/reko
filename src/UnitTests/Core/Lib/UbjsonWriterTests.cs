@@ -19,13 +19,10 @@
 #endregion
 
 using NUnit.Framework;
-using Reko.Core.Lib;
-using System;
+using Reko.Core.IO;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
 
 namespace Reko.UnitTests.Core.Lib
 {

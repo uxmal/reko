@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2022 John Källén.
  *
@@ -18,7 +18,7 @@
  */
 #endregion
  
-namespace Reko.Core.Lib
+namespace Reko.Core.IO
 {
     public enum UbjsonMarker
     {

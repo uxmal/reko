@@ -18,15 +18,14 @@
  */
 #endregion
 
-using System;
 using Reko.Core;
-using System.Collections.Generic;
+using Reko.Core.Configuration;
+using Reko.Core.Services;
 using Reko.Core.Types;
+using System;
+using System.Collections.Generic;
 using Expression = Reko.Core.Expressions.Expression;
 using Identifier = Reko.Core.Expressions.Identifier;
-using IrConstant = Reko.Core.Expressions.Constant;
-using IrDomain = Reko.Core.Types.Domain;
-using Reko.Core.Configuration;
 
 namespace Reko.ImageLoaders.LLVM
 {

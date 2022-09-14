@@ -25,7 +25,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 
-namespace Reko.Core.Lib
+namespace Reko.Core.IO
 {
     public class UbjsonWriter
     {

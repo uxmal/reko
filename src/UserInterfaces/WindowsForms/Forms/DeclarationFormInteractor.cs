@@ -22,6 +22,7 @@ using Reko.Core;
 using Reko.Core.Hll.C;
 using Reko.Core.Output;
 using Reko.Core.Serialization;
+using Reko.Core.Services;
 using Reko.Core.Types;
 using Reko.Gui;
 using Reko.Gui.Controls;

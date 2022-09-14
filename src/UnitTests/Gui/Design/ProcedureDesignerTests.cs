@@ -21,6 +21,7 @@
 using Moq;
 using NUnit.Framework;
 using Reko.Core;
+using Reko.Core.Services;
 using Reko.Core.Types;
 using Reko.Gui;
 using Reko.Gui.Design;

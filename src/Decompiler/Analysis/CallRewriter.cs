@@ -32,8 +32,8 @@ namespace Reko.Analysis
 {
     /// <summary>
     /// Rewrites a program, based on summary live-in and live-out
-    /// information, so that all CALL codes are converted into procedure 
-    /// calls, with the appropriate parameter lists.
+    /// information, so that all CALL codes are converted into 
+    /// <see cref="Application"/>s, with the appropriate parameter lists.
     /// </summary>
     public class CallRewriter
 	{

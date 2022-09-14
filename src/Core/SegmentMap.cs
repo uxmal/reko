@@ -71,6 +71,16 @@ namespace Reko.Core
 
         public Dictionary<ushort, ImageSegment> Selectors { get; }
 
+        /// <summary>
+        /// Creates an <see cref="EndianImageReader"/> that starts reading at the <see cref="Address"/>
+        /// <paramref name="address"/>. The endianness of the image reader is controlled by the
+        /// <see cref="arch"/>. 
+        /// </summary>
+        /// <param name="address">Address at which to start reading.</param>
+        /// <param name="arch"><see cref="IProcessorArchitecture"/> that determines the 
+        /// endianness, byte granularity and other processor-specific details.
+        /// </param>
+        /// <returns>The resulting <see cref="EndianImageReader"/> instance.</returns>
         public EndianImageReader CreateImageReader(Address address, IProcessorArchitecture arch)
         {
             if (!TryFindSegment(address, out var segment))
@@ -186,12 +196,12 @@ namespace Reko.Core
 
         public bool IsReadOnlyAddress(Address addr)
         {
-            return (TryFindSegment(addr, out var seg) && (seg.Access & AccessMode.Write) == 0);
+            return TryFindSegment(addr, out var seg) && seg.IsWriteable;
         }
 
         public bool IsExecutableAddress(Address addr)
         {
-            return (TryFindSegment(addr, out var seg) && (seg.Access & AccessMode.Execute) != 0);
+            return TryFindSegment(addr, out var seg) && seg.IsExecutable;
         }
 
         /// <summary>
@@ -229,7 +239,7 @@ namespace Reko.Core
         }
 
         /// <summary>
-        /// Returns the segments that contains the specified linear address.
+        /// Returns the segment that contains the specified linear address.
         /// </summary>
         public bool TryFindSegment(ulong linAddress, [MaybeNullWhen(false)] out ImageSegment segment)
         {

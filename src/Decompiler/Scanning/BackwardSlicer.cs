@@ -19,6 +19,7 @@
 #endregion
 
 using Reko.Core;
+using Reko.Core.Collections;
 using Reko.Core.Diagnostics;
 using Reko.Core.Expressions;
 using Reko.Core.Lib;
@@ -47,9 +48,9 @@ namespace Reko.Scanning
     /// those registers are computed and to see whether the registers are either
     /// compared with a constant or mask away the high bits. The first analysis
     /// gradually builds up a jump table expression, stored in the
-    /// `JumpTableFormat` property, while the second one
+    /// <see cref="JumpTableFormat" /> property, while the second one
     /// determines how many entries there are in the jump table, stored in the
-    /// `JumpTableIndexInterval` property.
+    /// <see cref="JumpTableIndexInterval" /> property.
     /// </remarks>
     public class BackwardSlicer
     {

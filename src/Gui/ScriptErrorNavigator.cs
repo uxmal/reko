@@ -20,11 +20,10 @@
 
 using Reko.Core;
 using Reko.Core.Scripts;
+using Reko.Core.Services;
 using Reko.Gui.Services;
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Reko.Gui

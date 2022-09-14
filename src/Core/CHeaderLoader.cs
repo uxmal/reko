@@ -28,6 +28,10 @@ using System.Linq;
 
 namespace Reko.Core
 {
+    /// <summary>
+    /// This class loads C header files -- with optional Reko-specific
+    /// attribute annotations -- into a <see cref="TypeLibrary"/>.
+    /// </summary>
     public class CHeaderLoader : MetadataLoader
     {
         private readonly Stream stream;
@@ -38,6 +42,15 @@ namespace Reko.Core
             this.stream = new MemoryStream(bytes);
         }
 
+        /// <summary>
+        /// Loads the contents of the header file into the given <see cref="TypeLibrary"/>.
+        /// </summary>
+        /// <param name="platform"><see cref="IPlatform"/> instance needed to resolve
+        /// C primitive types etc.</param>
+        /// <param name="dstLib">An existing <see cref="TypeLibrary"/> that will be 
+        /// augmented with metadata extracted from the C file.
+        /// </param>
+        /// <returns>The given typelibrary, mutated with the contents of the C file.</returns>
         public override TypeLibrary Load(IPlatform platform, TypeLibrary dstLib)
         {
             var rdr = new StreamReader(stream);

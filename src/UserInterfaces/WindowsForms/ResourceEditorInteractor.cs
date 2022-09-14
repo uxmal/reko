@@ -19,14 +19,15 @@
 #endregion
 
 using Reko.Core;
+using Reko.Core.Memory;
+using Reko.Core.Services;
 using Reko.Gui;
 using Reko.Gui.Forms;
-using System;
-using System.Windows.Forms;
-using System.IO;
-using System.Drawing;
 using Reko.UserInterfaces.WindowsForms.Controls;
-using Reko.Core.Memory;
+using System;
+using System.Drawing;
+using System.IO;
+using System.Windows.Forms;
 
 namespace Reko.UserInterfaces.WindowsForms
 {

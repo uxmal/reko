@@ -21,7 +21,7 @@
 using Microsoft.Scripting.Hosting;
 using Reko.Core;
 using Reko.Core.Configuration;
-using Reko.Core.Lib;
+using Reko.Core.IO;
 using Reko.Core.Scripts;
 using Reko.Core.Services;
 using System;
@@ -32,7 +32,7 @@ using System.Text;
 namespace Reko.Scripts.Python
 {
     /// <summary>
-    /// Class for execution of Python modules. Use IronPython
+    /// Class for execution of Python modules. Uses IronPython
     /// (https://ironpython.net) engine.
     /// </summary>
     public class PythonModule : ScriptFile

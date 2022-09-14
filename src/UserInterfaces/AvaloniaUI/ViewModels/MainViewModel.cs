@@ -21,19 +21,16 @@
 using Dock.Model.Controls;
 using Dock.Model.Core;
 using ReactiveUI;
-using Reko.Core;
+using Reko.Core.Diagnostics;
+using Reko.Core.Services;
 using Reko.Gui;
 using Reko.Gui.Forms;
 using Reko.UserInterfaces.AvaloniaUI.Services;
+using Reko.UserInterfaces.AvaloniaUI.ViewModels.Tools;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel.Design;
 using System.Diagnostics;
-using Reko.Core.Diagnostics;
-using Reko.Gui.Services;
-using System.Collections;
-using System;
-using System.Collections.Generic;
-using Reko.UserInterfaces.AvaloniaUI.ViewModels.Tools;
 
 namespace Reko.UserInterfaces.AvaloniaUI.ViewModels
 {

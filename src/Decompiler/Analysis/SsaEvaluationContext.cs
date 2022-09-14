@@ -26,6 +26,7 @@ using System;
 using System.Linq;
 using System.Collections.Generic;
 using System.Text;
+using Reko.Core.Collections;
 
 namespace Reko.Analysis
 {

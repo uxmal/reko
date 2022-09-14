@@ -22,14 +22,11 @@ using Moq;
 using NUnit.Framework;
 using Reko.Core;
 using Reko.Core.Memory;
-using Reko.Gui;
+using Reko.Core.Services;
 using Reko.Gui.Commands;
 using Reko.Gui.Services;
-using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Reko.UnitTests.Gui.Commands

@@ -20,6 +20,7 @@
 
 using Reko.Core;
 using Reko.Core.Code;
+using Reko.Core.Collections;
 using Reko.Core.Diagnostics;
 using Reko.Core.Expressions;
 using Reko.Core.Intrinsics;
@@ -33,23 +34,23 @@ using System.Linq;
 
 namespace Reko.Analysis
 {
-	/// <summary>
-	/// Removes any uses and definitions of condition codes.
-	/// </summary>
-	/// <remarks>
-	/// Removal of condition codes becomes exciting in situations like the following (x86 code):
-	///		add ax,bx
-	///		mov [si],ax
-	///		jnz foo
-	///	or
-	///	    cmp ax,0
-	///	    jl less
-	///	    jg greater
+    /// <summary>
+    /// Removes any uses and definitions of condition codes.
+    /// </summary>
+    /// <remarks>
+    /// Removal of condition codes becomes exciting in situations like the following (x86 code):
+    ///		add ax,bx
+    ///		mov [si],ax
+    ///		jnz foo
+    ///	or
+    ///	    cmp ax,0
+    ///	    jl less
+    ///	    jg greater
     ///	<para>
     ///	For best performance, preprocess the intermediate code with the ValuePropagator transformer.
     ///	</para>
-	/// </remarks>
-	public class ConditionCodeEliminator : InstructionTransformer
+    /// </remarks>
+    public class ConditionCodeEliminator : InstructionTransformer
 	{
         private static readonly TraceSwitch trace = new TraceSwitch("CcodeEliminator", "Traces the progress of the condition code eliminator")
         {

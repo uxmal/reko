@@ -20,13 +20,12 @@
 
 using Reko.Core;
 using Reko.Core.Configuration;
+using Reko.Core.Services;
 using Reko.Gui;
 using Reko.Gui.Controls;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Reko.Arch.PowerPC.Design
 {
@@ -64,8 +63,6 @@ namespace Reko.Arch.PowerPC.Design
         {
             control.Load += Control_Load;
         }
-
-      
 
         private void Control_Load(object sender, EventArgs e)
         {

@@ -19,7 +19,7 @@
 #endregion
 
 using Reko.Core;
-using Reko.Gui;
+using Reko.Core.Services;
 using Reko.Gui.Services;
 using System;
 
@@ -38,7 +38,7 @@ namespace Reko.UserInterfaces.WindowsForms
         {
             var uiSvc = services.RequireService<IDecompilerShellUiService>();
             var frame = uiSvc.FindDocumentWindow(typeof(CallGraph).FullName, program.CallGraph);
-            if (frame == null)
+            if (frame is null)
             {
                 frame = uiSvc.CreateDocumentWindow(
                     typeof(CallGraph).FullName,

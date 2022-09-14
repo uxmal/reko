@@ -20,13 +20,11 @@
 
 using Reko.Core;
 using Reko.Core.Configuration;
+using Reko.Core.Services;
 using Reko.Gui;
 using System;
-using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Reko.UserInterfaces.WindowsForms.Forms
 {

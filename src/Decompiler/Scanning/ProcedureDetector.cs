@@ -19,14 +19,13 @@
 #endregion
 
 using Reko.Core;
+using Reko.Core.Collections;
 using Reko.Core.Graphs;
 using Reko.Core.Rtl;
 using Reko.Core.Services;
-using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Text;
 
 namespace Reko.Scanning
 {
@@ -236,7 +235,7 @@ namespace Reko.Scanning
         private void BuildWCC(
             RtlBlock node,
             Cluster cluster,
-            WorkList<RtlBlock> wl)
+            Core.Collections.WorkList<RtlBlock> wl)
         {
             wl.Remove(node);
             cluster.Blocks.Add(node);

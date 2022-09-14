@@ -20,6 +20,7 @@
 
 using Reko.Core;
 using Reko.Core.Serialization;
+using Reko.Core.Services;
 using Reko.Gui.Services;
 using Reko.Services;
 using System;

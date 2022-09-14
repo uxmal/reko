@@ -21,6 +21,7 @@
 using Dock.Model.ReactiveUI.Controls;
 using ReactiveUI;
 using Reko.Core;
+using Reko.Core.Services;
 using Reko.Gui.Services;
 using System;
 using System.Collections.Generic;

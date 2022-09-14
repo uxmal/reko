@@ -877,11 +877,14 @@ namespace Reko.Core
         /// Offset from stack pointer as it was when the procedure was entered.
         /// </summary>
         /// <remarks>
-        /// If the architecture stores the return address on the stack, the return address will be at offset 0 and
-        /// any stack arguments will have offsets > 0. If the architecture passes the return address in a
-        /// register or a separate return stack, there may be stack arguments with offset 0. Depending on which
-        /// direction the stack grows, there may be negative stack offsets for parameters, although most popular
-        /// general purpose processors (x86, PPC, m68K) grown their stacks down toward lower memory addresses.
+        /// If the architecture stores the return address on the stack, the
+        /// return address will be at offset 0 and any stack arguments will
+        /// have offsets > 0. If the architecture passes the return address in
+        /// a register or a separate return stack, there may be stack
+        /// arguments with offset 0. Depending on which direction the stack
+        /// grows, there may be negative stack offsets for parameters,
+        /// although most populargeneral purpose processors (x86, PPC, m68K)
+        /// grow their stacks down toward lower memory addresses.
         /// </remarks>
         public int StackOffset { get; }
 
@@ -955,6 +958,8 @@ namespace Reko.Core
     /// <summary>
     /// Temporary storage is used for expressing intermediate results that become exposed
     /// when complex machine instructions are broken down into simpler RTL sequences.
+    /// These values are not stored in architectural registers, but may represent 
+    /// internal registers of the CPU.
     /// </summary>
     /// <remarks>
     /// An example is the x86 instruction <code>shr ds:[0x41],3</code> which is 

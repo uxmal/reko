@@ -19,7 +19,7 @@
 #endregion
 
 using Reko.Core;
-using Reko.Gui;
+using Reko.Core.Services;
 using Reko.Gui.Services;
 using System;
 

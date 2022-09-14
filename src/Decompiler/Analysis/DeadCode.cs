@@ -20,21 +20,21 @@
 
 using Reko.Core;
 using Reko.Core.Code;
+using Reko.Core.Collections;
 using Reko.Core.Diagnostics;
 using Reko.Core.Expressions;
-using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 
 namespace Reko.Analysis
 {
-	/// <summary>
-	/// Performs dead code elimination. Statements that define an identifier
+    /// <summary>
+    /// Performs dead code elimination. Statements that define an identifier
     /// that has no uses are removed, unless they are marked as critical.
     /// Critical statemets are always retained, even if they define dead 
     /// identifiers.
-	/// </summary>
-	public class DeadCode : InstructionVisitorBase
+    /// </summary>
+    public class DeadCode : InstructionVisitorBase
 	{
 		private static readonly TraceSwitch trace = new(nameof(DeadCode), "Traces dead code elimination");
         

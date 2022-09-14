@@ -19,6 +19,7 @@
 #endregion
 
 using Reko.Core;
+using Reko.Core.Services;
 using Reko.Gui;
 using Reko.Gui.Services;
 using Reko.UserInterfaces.WindowsForms.Controls;

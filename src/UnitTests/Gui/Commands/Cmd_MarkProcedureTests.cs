@@ -22,6 +22,7 @@ using Moq;
 using NUnit.Framework;
 using Reko.Core;
 using Reko.Core.Memory;
+using Reko.Core.Services;
 using Reko.Gui.Commands;
 using Reko.Gui.Services;
 using Reko.Services;

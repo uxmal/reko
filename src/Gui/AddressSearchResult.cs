@@ -19,13 +19,13 @@
 #endregion
 
 using Reko.Core;
+using Reko.Core.Services;
 using Reko.Core.Types;
 using Reko.Gui.Services;
 using Reko.Scanning;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
-using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
