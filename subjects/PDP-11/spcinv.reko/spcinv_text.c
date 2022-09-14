@@ -81,8 +81,7 @@ void fn0200(struct Eq_n * pc)
 	g_t0B5E.u0 = 0x00;
 	g_w1166 = 0x0101;
 	g_w1168 = 4446;
-	FnSubfn(&g_w1166);
-	if (Test(UGE,false))
+	if (!FnSubfn(&g_w1166))
 	{
 		g_w1166 = 0x0801;
 		g_w1168 = 0x00;
@@ -152,21 +151,18 @@ l0370:
 				goto l02A2;
 			}
 l03AE:
-			cup16 v50_n = g_t0B5A - g_t0B5A;
-			if (v50_n > 0x00)
+			if (g_t0B5A - g_t0B5A > 0x00)
 			{
 				g_t0B5E = g_t0B5A;
 				g_w1166 = 0x0101;
 				g_w1168 = 4446;
-				FnSubfn(&g_w1166);
-				if (v50_n < 0x00)
+				if (!FnSubfn(&g_w1166))
 				{
 					g_w1166 = 0x0201;
 					g_w1168 = 4446;
 					g_w116A = 0x01;
-					FnSubfn(&g_w1166);
 					r0_n.u0 = 4454;
-					if (v50_n >= 0x00)
+					if (!FnSubfn(&g_w1166))
 						goto l03E6;
 				}
 				else
@@ -191,8 +187,8 @@ l03E6:
 			word16 r5_n;
 			Eq_n r0_n = fn0AB6(r0_n, r4_n, out r4_n, out r5_n);
 			sp_n->wFFFFFFFD = r5_n;
-			word16 r0_n;
 			word16 r4_n;
+			word16 r0_n;
 			word16 r5_n;
 			fn0AE8(r0_n, r4_n, &g_ptr0420, out r0_n, out r4_n, out r5_n);
 			return;

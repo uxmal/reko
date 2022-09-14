@@ -1,8 +1,41 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
+<?xml version="1.0" encoding="utf-8" ?>
 <library xmlns="http://schemata.jklnet.org/Decompiler">
   
    <!-- http://www.ibiblio.org/pub/academic/computer-science/history/pdp-11/rsx/decus/rsx88b/373226/rt11.mac -->
-  <service name="TTYIN">    <!-- Read one character from TTY, Cy=1 if no char pending -->
+  <Types>
+      <struct name="tag_sys_info_FD">
+          <field offset="0" name="w0000">
+            <prim domain="UnsignedInt" size="2" />
+          </field>
+          <field offset="2" name="w0002">
+            <prim domain="UnsignedInt" size="2" />
+          </field>
+          <field offset="4" name="w0004">
+            <prim domain="UnsignedInt" size="2" />
+          </field>
+          <field offset="6" name="w0006">
+            <prim domain="UnsignedInt" size="2" />
+          </field>
+          <field offset="8" name="w0008">
+            <prim domain="UnsignedInt" size="2" />
+          </field>
+      </struct>
+      <typedef name="sys_info_FD">
+          <struct name="tag_sys_info_FD" />
+      </typedef>
+  </Types>
+
+  <service name="WAIT0"><syscallinfo><vector>88A0</vector></syscallinfo>
+        <signature>
+            <return>
+                <prim domain="Boolean" size="1" />
+                <flag>C</flag>
+            </return>
+        </signature>
+        <!-- Wait on channel 0 -->
+    </service>
+
+        <service name="TTYIN">    <!-- Read one character from TTY, Cy=1 if no char pending -->
     <syscallinfo><vector>88E0</vector></syscallinfo>
     <signature>
       <return>
@@ -110,8 +143,12 @@
   <service name="FnSubfn">   <!--  *r0 = function:subfunction -->
     <syscallinfo><vector>88FD</vector></syscallinfo>
     <signature>
+      <return>
+        <prim domain="Boolean" size="1" />
+        <flag>C</flag>
+      </return>
       <arg>
-        <ptr><prim domain="Character" size="1" /></ptr>
+        <ptr><type>sys_info_FD</type></ptr>
         <reg>r0</reg>
       </arg>      
     </signature>

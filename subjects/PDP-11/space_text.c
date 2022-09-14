@@ -490,8 +490,22 @@ Eq_n g_t0305 = // 0305
 	};
 char g_b0380 = '?'; // 0380
 char g_b0397 = '?'; // 0397
-char g_b03B8 = '\0'; // 03B8
-char g_b03BC = '\0'; // 03BC
+Eq_n g_t03B8 = // 03B8
+	{
+		0x1C00,
+		0xC0,
+		0x1C00,
+		0xB6,
+		0x1066,
+	};
+Eq_n g_t03BC = // 03BC
+	{
+		0x1C00,
+		0xB6,
+		0x1066,
+		0x1D81,
+		0x02,
+	};
 Eq_n g_t03FD = // 03FD
 	{
 		-0x00002DFD
@@ -659,7 +673,14 @@ void fn054C(Eq_n r0, struct Eq_n * r3)
 	r0_n->w0096 |= v16_n;
 }
 
-char g_b0592 = '\0'; // 0592
+Eq_n g_t0592 = // 0592
+	{
+		0x0300,
+		0x057A,
+		17727,
+		0x7272,
+		0x3620,
+	};
 char g_b05E1 = '\r'; // 05E1
 byte g_b05E4 = 0x20; // 05E4
 byte g_b05EF = 0x22; // 05EF
@@ -2026,7 +2047,7 @@ Eq_n g_t1396 = // 1396
 //      fn45F6
 void fn13FE()
 {
-	__syscall<word16>(0x88A0);
+	WAIT0();
 	__syscall<word16>(0x88A1);
 	__syscall<word16>(0x88A2);
 	__syscall<word16>(0x88A3);
@@ -2289,13 +2310,14 @@ Eq_n g_t15C5 = // 15C5
 //      fn0CF4
 void fn15CC(struct Eq_n * r5)
 {
-	char bLoc04;
+	Eq_n tLoc04;
 	if (r5->t0000 != 0x03)
 		__syscall<word16>(0x8990);
 	else
 	{
-		bLoc04 = (char) 0x1100;
-		FnSubfn(&bLoc04);
+		tLoc04.w0000 = 0x1100;
+		tLoc04.w0002 = &tLoc04;
+		FnSubfn(&tLoc04);
 		__syscall<word16>(0x88FC);
 		<anonymous> * r2_n = &g_t0A00;
 		if (true)
@@ -2749,7 +2771,7 @@ void fn1DAE()
 		r0_n();
 	struct Eq_n * sp_n = t0000.w0022;
 	sp_n->ptrFFFFFFFE = (struct Eq_n *) &g_t1DB2;
-	FnSubfn(&g_b0592);
+	FnSubfn(&g_t0592);
 	struct Eq_n * r5_n = t0000.w0028;
 	sp_n->ptrFFFFFFFC = r5_n;
 	sp_n->ptrFFFFFFFA = 0x00;
@@ -2759,7 +2781,7 @@ void fn1DAE()
 	word16 r4_n = sp_n->wFFFFFFEA;
 	if (g_ptr1DAA == null)
 	{
-		FnSubfn(&g_b03B8);
+		FnSubfn(&g_t03B8);
 		if (false)
 			t0000.w001E = 0xF000;
 		if (true)
@@ -2771,7 +2793,7 @@ void fn1DAE()
 					PRINT(&g_b0380);
 				else
 				{
-					FnSubfn(&g_b03BC);
+					FnSubfn(&g_t03BC);
 					t0000.w0026 = 0x00;
 					r4_n = 0x03BC;
 				}
@@ -2820,7 +2842,7 @@ void fn1DAE()
 			{
 				if (g_ptr1DAA != null)
 				{
-					FnSubfn(&g_b03B8);
+					FnSubfn(&g_t03B8);
 					if (false && (g_w53EA - sp_n->wFFFFFFE8 >= 0x00 && (t0000.w0022 + 0x1000) - (r4_n - 0x38) <= 0x00))
 						goto l0372;
 				}
@@ -4011,9 +4033,8 @@ l47DC:
 			struct Eq_n * sp_n = sp_n - 0x02;
 			sp_n->ptr0000 = r1;
 			sp_n->wFFFFFFFE = r0_n | r1->t000B;
-			FnSubfn(sp_n - 0x02);
 			r0_n = sp_n - 0x02;
-			if (Test(UGE,false))
+			if (FnSubfn(sp_n - 0x02))
 				break;
 			cui16 v32_n = r1->w0016 & 0x04;
 			r1->w0016 = v32_n;
