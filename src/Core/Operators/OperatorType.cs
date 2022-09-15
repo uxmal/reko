@@ -106,7 +106,7 @@ namespace Reko.Core.Operators
 
         public static bool IsShift(this OperatorType self)
         {
-            return self == OperatorType.Shl && self == OperatorType.Shr && self == OperatorType.Sar;
+            return self == OperatorType.Shl || self == OperatorType.Shr || self == OperatorType.Sar;
         }
     }
 }

@@ -40,8 +40,7 @@ namespace Reko.Evaluation
 		public bool Match(BinaryExpression b)
 		{
 			op = b.Operator;
-            //$TODO: implement OperatorTypeExtensions.IsShift
-			if (op.Type.IsShift())
+			if (!op.Type.IsShift())
 				return false;
 			c1 = b.Right as Constant;
 			if (c1 == null)

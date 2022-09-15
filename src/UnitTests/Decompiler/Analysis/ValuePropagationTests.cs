@@ -1506,5 +1506,50 @@ SsaProcedureBuilder_exit:
 
             AssertLastStatement("v2b = 1<8>");
         }
+
+        [Test]
+        public void VpRegression1()
+        {
+            string sExpected =
+            #region Expected
+@"r2: orig: r2
+    uses: r2_1 = r2 & 1<32>
+          r2_2 = r2 & 1<32> & 0xFFFF<32>
+r2_1: orig: r2_1
+    def:  r2_1 = r2 & 1<32>
+r2_2: orig: r2_2
+    def:  r2_2 = r2 & 1<32> & 0xFFFF<32>
+    uses: Mem4[r4:word32] = r2_2
+r4: orig: r4
+    uses: Mem4[r4:word32] = r2_2
+Mem4: orig: Mem0
+    def:  Mem4[r4:word32] = r2_2
+// SsaProcedureBuilder
+// Return size: 0
+define SsaProcedureBuilder
+SsaProcedureBuilder_entry:
+	// succ:  l1
+l1:
+	r2_1 = r2 & 1<32>
+	r2_2 = r2 & 1<32> & 0xFFFF<32>
+	Mem4[r4:word32] = r2_2
+SsaProcedureBuilder_exit:
+";
+            #endregion
+
+            var r2 = m.Reg32("r2");
+            var r2_1 = m.Reg32("r2_1");
+            var r2_2 = m.Reg32("r2_2");
+            var r4 = m.Reg32("r4");
+
+            m.Assign(r2_1, m.And(r2, 1));
+            m.Assign(r2_2, m.And(r2_1, 0xFFFF));
+            m.MStore(r4, r2_2);
+
+            RunValuePropagator();
+
+            AssertStringsEqual(sExpected, m.Ssa);
+
+        }
     }
 }
