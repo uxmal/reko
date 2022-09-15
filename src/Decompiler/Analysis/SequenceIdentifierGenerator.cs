@@ -159,7 +159,7 @@ namespace Reko.Analysis
             {
                 if (ea is BinaryExpression bin)
                 {
-                    if (bin.Operator == Operator.IAdd || bin.Operator == Operator.ISub)
+                    if (bin.Operator.Type.IsAddOrSub())
                     {
                         offset = bin.Right as Constant;
                     }

@@ -104,40 +104,27 @@ namespace Reko.Scanning
             if (cLeft == null && cRight != null)
             {
                 var left = binExp.Left.Accept(this, bitRange);
-                if (binExp.Operator == Operator.IAdd)
+                switch (binExp.Operator.Type)
                 {
-                    return left.Add(cRight);
-                }
-                else if (binExp.Operator == Operator.And)
-                {
-                    return left.And(cRight);
-                }
-                else if (binExp.Operator == Operator.Shl)
-                {
-                    return left.Shl(cRight);
-                }
-                else if (binExp.Operator == Operator.IMul)
-                {
-                    return left.IMul(cRight);
-                }
-                else if (binExp.Operator == Operator.ISub)
-                {
-                    return left.Sub(cRight);
+                case OperatorType.IAdd: return left.Add(cRight);
+                case OperatorType.And: return left.And(cRight);
+                case OperatorType.Shl: return left.Shl(cRight);
+                case OperatorType.IMul: return left.IMul(cRight);
+                case OperatorType.ISub:return left.Sub(cRight);
                 }
             }
             if (cRight == null && cLeft != null)
             {
                 var right = binExp.Right.Accept(this, bitRange);
-                if (binExp.Operator == Operator.IAdd)
+                switch (binExp.Operator.Type)
                 {
+                case OperatorType.IAdd:
                     return right.Add(cLeft);
-                }
-                else if (binExp.Operator == Operator.And)
-                {
+                case OperatorType.And:
                     return right.And(cLeft);
                 }
             }
-            if (binExp.Operator == Operator.IAdd)
+            if (binExp.Operator.Type == OperatorType.IAdd)
             {
                 if (cmp.Equals(binExp.Left, binExp.Right))
                 {

@@ -142,15 +142,9 @@ namespace Reko.UnitTests.Decompiler.Evaluation
         public void Exs_AddPositiveConstantToNegative()
         {
             Given_ExpressionSimplifier();
-            var expr = new BinaryExpression(
-                Operator.IAdd,
-                foo.DataType,
-                new BinaryExpression(
-                    Operator.ISub,
-                    foo.DataType,
-                    foo,
-                    Constant.Word32(4)),
-                Constant.Word32(1));
+            var expr = m.IAdd(
+                m.ISub(foo, m.Word32(4)),
+                m.Word32(1));
             var (result, _) = expr.Accept(simplifier);
             Assert.AreEqual("foo_1 - 3<32>", result.ToString());
         }

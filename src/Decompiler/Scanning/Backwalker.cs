@@ -128,13 +128,16 @@ namespace Reko.Scanning
                     {
                         regSrc = RegisterOf(binSrc.Left);
                         var immSrc = binSrc.Right as Constant;
-                        if (binSrc.Operator == Operator.IAdd || binSrc.Operator == Operator.ISub)
+                        //$TODO: AddOrSub
+                        switch (binSrc.Operator.Type)
                         {
-                            Index = HandleAddition(Index, regSrc, immSrc!, binSrc.Operator == Operator.IAdd);
+                        case OperatorType.IAdd:
+                            Index = HandleAddition(Index, regSrc, immSrc!, true);
                             return true;
-                        }
-                        if (binSrc.Operator == Operator.And)
-                        {
+                        case OperatorType.ISub:
+                            Index = HandleAddition(Index, regSrc, immSrc!, false);
+                            return true;
+                        case OperatorType.And:
                             if (immSrc != null && Bits.IsEvenPowerOfTwo(immSrc.ToInt32() + 1))
                             {
                                 Operations.Add(new BackwalkOperation(BackwalkOperator.cmp, immSrc.ToInt32() + 1));
@@ -144,24 +147,30 @@ namespace Reko.Scanning
                                 Index = null;
                             }
                             return false;
-                        }
-                        if (binSrc.Operator is IMulOperator && immSrc != null)
-                        {
-                            var m = immSrc.ToInt32();
-                            Operations.Add(new BackwalkOperation(BackwalkOperator.mul, m));
-                            Stride *= m;
-                            return true;
-                        }
-                        if (binSrc.Operator is ShlOperator && immSrc != null)
-                        {
-                            var m = 1 << immSrc.ToInt32();
-                            Operations.Add(new BackwalkOperation(BackwalkOperator.mul, m));
-                            Stride *= m;
-                            return true;
+                        case OperatorType.IMul:
+                        case OperatorType.SMul:
+                        case OperatorType.UMul:
+                            if (immSrc != null)
+                            {
+                                var m = immSrc.ToInt32();
+                                Operations.Add(new BackwalkOperation(BackwalkOperator.mul, m));
+                                Stride *= m;
+                                return true;
+                            }
+                            break;
+                        case OperatorType.Shl:
+                            if (immSrc != null)
+                            {
+                                var m = 1 << immSrc.ToInt32();
+                                Operations.Add(new BackwalkOperation(BackwalkOperator.mul, m));
+                                Stride *= m;
+                                return true;
+                            }
+                            break;
                         }
                     }
                     if (Index != null &&
-                        binSrc.Operator == Operator.Xor &&
+                        binSrc.Operator.Type == OperatorType.Xor &&
                         binSrc.Left == assDst &&
                         binSrc.Right == assDst &&
                         RegisterOf(assDst) == host.GetSubregister(Index, new BitRange(8, 16)))
@@ -246,7 +255,7 @@ namespace Reko.Scanning
                     }
                     var scale = GetMultiplier(binEa.Left);
                     var baseReg = GetBaseRegister(binEa.Left);
-                    if (binEa.Right is Constant memOffset && binEa.Operator == Operator.IAdd)
+                    if (binEa.Right is Constant memOffset && binEa.Operator.Type == OperatorType.IAdd)
                     {
                         var mOff = memOffset.ToInt32();
                         if (mOff > 0x200)
@@ -326,7 +335,7 @@ namespace Reko.Scanning
         private static BinaryExpression? NegateRight(BinaryExpression? bin)
         {
             if (bin != null &&
-                (bin.Operator == Operator.IAdd) &&
+                (bin.Operator.Type == OperatorType.IAdd) &&
                 bin.Right is Constant cRight)
             {
                 return new BinaryExpression(

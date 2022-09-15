@@ -29,9 +29,7 @@ namespace Reko.Core.Operators
     /// </summary>
 	public class IAddOperator : BinaryOperator
 	{
-		public IAddOperator()
-		{
-		}
+        internal IAddOperator() : base(OperatorType.IAdd) { }
 
 		public override Constant ApplyConstants(Constant c1, Constant c2)
 		{

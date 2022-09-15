@@ -30,7 +30,9 @@ namespace Reko.Core.Operators
     /// </summary>
 	public class ISubOperator : BinaryOperator
 	{
-		public override Constant ApplyConstants(Constant c1, Constant c2)
+        internal ISubOperator() : base(OperatorType.ISub) { }
+
+        public override Constant ApplyConstants(Constant c1, Constant c2)
 		{
             if (!ValidArgs(c1, c2))
                 return InvalidConstant.Create(c1.DataType);
@@ -71,6 +73,8 @@ namespace Reko.Core.Operators
     /// </summary>
     public class USubOperator : BinaryOperator
     {
+        internal USubOperator() : base(OperatorType.USub) { }
+
         public override Constant ApplyConstants(Constant c1, Constant c2)
         {
             if (!ValidArgs(c1, c2))

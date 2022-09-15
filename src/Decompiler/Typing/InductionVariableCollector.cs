@@ -57,11 +57,16 @@ namespace Reko.Typing
             var ivRight = binExp.Right.Accept(this);
             if (ivLeft != null)
             {
-                if (binExp.Operator == Operator.SMul ||
-                    binExp.Operator == Operator.UMul ||
-                    binExp.Operator == Operator.IMul || 
-                    binExp.Operator == Operator.Shl)
+                switch (binExp.Operator.Type)
+                {
+                    case OperatorType.SMul:
+                    case OperatorType.UMul:
+                    case OperatorType.IMul:
+                    case OperatorType.Shl:
                     return MergeInductionVariableConstant(ivLeft, binExp.Operator, binExp.Right as Constant);
+                default:
+                    return null;
+                }
             }
             return null;
         }

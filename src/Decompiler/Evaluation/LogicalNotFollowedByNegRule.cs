@@ -27,7 +27,7 @@ using System;
 namespace Reko.Evaluation
 {
     /// <summary>
-    /// Rule that reduce (!-Foo) into (!Foo).
+    /// Rule that reduces (!-Foo) into (!Foo).
     /// </summary>
     class LogicalNotFollowedByNegRule
     {
@@ -36,10 +36,10 @@ namespace Reko.Evaluation
 
         public bool Match(UnaryExpression unary)
         {
-            if (unary.Operator != Operator.Not)
+            if (unary.Operator.Type != OperatorType.Not)
                 return false;
 
-            if (!(unary.Expression is UnaryExpression subExpression) || subExpression.Operator != Operator.Neg)
+            if (!(unary.Expression is UnaryExpression subExpression) || subExpression.Operator.Type != OperatorType.Neg)
                 return false;
 
             dataType = unary.DataType;

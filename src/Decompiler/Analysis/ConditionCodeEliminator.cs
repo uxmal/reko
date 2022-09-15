@@ -223,7 +223,7 @@ namespace Reko.Analysis
                 Conversion conv => grf == conv.Expression,
                 Cast cast => grf == cast.Expression,
                 Slice s => grf == s.Expression,
-                BinaryExpression bin when bin.Operator == Operator.Or => bin.Left == grf || bin.Right == grf,
+                BinaryExpression bin when bin.Operator.Type == OperatorType.Or => bin.Left == grf || bin.Right == grf,
                 _ => false,
             };
             }
@@ -324,7 +324,7 @@ namespace Reko.Analysis
 		public override Instruction TransformAssignment(Assignment a)
         {
             a.Src = a.Src.Accept(this);
-            if (a.Src is BinaryExpression binUse && IsAddOrSub(binUse.Operator))
+            if (a.Src is BinaryExpression binUse && binUse.Operator.Type.IsAddOrSub())
             {
                 return TransformAddOrSub(a, binUse);
             }
@@ -405,7 +405,7 @@ namespace Reko.Analysis
             if (cond.Expression is not Identifier condId)
                 return assRolc;
             var sidOrigLo = ssaIds[condId];
-            if (sidOrigLo.DefExpression is not BinaryExpression shift || shift.Operator != Operator.Shl)
+            if (sidOrigLo.DefExpression is not BinaryExpression shift || shift.Operator.Type != OperatorType.Shl)
                 return assRolc;
 
             var expShlSrc = shift.Left;
@@ -496,9 +496,9 @@ namespace Reko.Analysis
             if (sidOrigHi.DefExpression is not BinaryExpression shift)
                 return a;
             Domain domain;
-            if (shift.Operator == Operator.Shr)
+            if (shift.Operator.Type == OperatorType.Shr)
                 domain = Domain.UnsignedInt;
-            else if (shift.Operator == Operator.Sar)
+            else if (shift.Operator.Type == OperatorType.Sar)
                 domain = Domain.SignedInt;
             else 
                 return a;
@@ -534,11 +534,6 @@ namespace Reko.Analysis
 			Expression c = UseGrfConditionally(sid, tc.ConditionCode, false);
 			Use(c, useStm!);
 			return c;
-		}
-
-		private static bool IsAddOrSub(Operator op)
-		{
-			return op == Operator.IAdd || op == Operator.ISub;
 		}
 
 		public Expression ComparisonFromConditionCode(ConditionCode cc, BinaryExpression bin, bool isNegated)
@@ -580,7 +575,7 @@ namespace Reko.Analysis
 			}
 
 			Expression e;
-            if (bin.Operator == Operator.ISub || bin.Operator == Operator.FSub)
+            if (bin.Operator.Type == OperatorType.ISub || bin.Operator.Type == OperatorType.FSub)
             {
                 e = new BinaryExpression(cmpOp, PrimitiveType.Bool, bin.Left, bin.Right);
             }

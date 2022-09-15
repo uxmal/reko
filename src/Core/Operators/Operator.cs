@@ -23,9 +23,9 @@ using System;
 
 namespace Reko.Core.Operators
 {
-	public class Operator
-	{
-		public static readonly BinaryOperator IAdd = new IAddOperator();
+    public abstract class Operator
+    {
+        public static readonly BinaryOperator IAdd = new IAddOperator();
         public static readonly BinaryOperator ISub = new ISubOperator();
         public static readonly BinaryOperator USub = new USubOperator();
         public static readonly BinaryOperator IMul = new IMulOperator();
@@ -46,42 +46,49 @@ namespace Reko.Core.Operators
         public static readonly UnaryOperator FNeg = new FNegOperator();
 
         public static readonly BinaryOperator And = new AndOperator();
-		public static readonly BinaryOperator Or = new OrOperator();
-		public static readonly BinaryOperator Shr = new ShrOperator();
-		public static readonly BinaryOperator Sar = new SarOperator();
+        public static readonly BinaryOperator Or = new OrOperator();
+        public static readonly BinaryOperator Shr = new ShrOperator();
+        public static readonly BinaryOperator Sar = new SarOperator();
 
-		public static readonly BinaryOperator Shl = new ShlOperator();
-		public static readonly BinaryOperator Xor = new XorOperator();
+        public static readonly BinaryOperator Shl = new ShlOperator();
+        public static readonly BinaryOperator Xor = new XorOperator();
 
-		public static readonly BinaryOperator Cand = new CandOperator();
-		public static readonly BinaryOperator Cor = new CorOperator();
+        public static readonly BinaryOperator Cand = new CandOperator();
+        public static readonly BinaryOperator Cor = new CorOperator();
 
-		public static readonly ConditionalOperator Lt = new LtOperator();
-		public static readonly ConditionalOperator Gt = new GtOperator();
-		public static readonly ConditionalOperator Le = new LeOperator();
-		public static readonly ConditionalOperator Ge = new GeOperator();
+        public static readonly ConditionalOperator Lt = new LtOperator();
+        public static readonly ConditionalOperator Gt = new GtOperator();
+        public static readonly ConditionalOperator Le = new LeOperator();
+        public static readonly ConditionalOperator Ge = new GeOperator();
 
         public static readonly ConditionalOperator Feq = new ReqOperator();
         public static readonly ConditionalOperator Fne = new RneOperator();
         public static readonly ConditionalOperator Flt = new RltOperator();
-		public static readonly ConditionalOperator Fgt = new RgtOperator();
-		public static readonly ConditionalOperator Fle = new RleOperator();
-		public static readonly ConditionalOperator Fge = new RgeOperator();
+        public static readonly ConditionalOperator Fgt = new RgtOperator();
+        public static readonly ConditionalOperator Fle = new RleOperator();
+        public static readonly ConditionalOperator Fge = new RgeOperator();
 
-		public static readonly ConditionalOperator Ult = new UltOperator();
-		public static readonly ConditionalOperator Ugt = new UgtOperator();
-		public static readonly ConditionalOperator Ule = new UleOperator();
-		public static readonly ConditionalOperator Uge = new UgeOperator();
+        public static readonly ConditionalOperator Ult = new UltOperator();
+        public static readonly ConditionalOperator Ugt = new UgtOperator();
+        public static readonly ConditionalOperator Ule = new UleOperator();
+        public static readonly ConditionalOperator Uge = new UgeOperator();
 
-		public static readonly ConditionalOperator Eq = new EqOperator();
-		public static readonly ConditionalOperator Ne = new NeOperator();
+        public static readonly ConditionalOperator Eq = new EqOperator();
+        public static readonly ConditionalOperator Ne = new NeOperator();
 
-		public static readonly UnaryOperator Not = new NotOperator();
-		public static readonly UnaryOperator Neg = new NegateOperator();
-		public static readonly UnaryOperator Comp = new ComplementOperator();
-		public static readonly UnaryOperator AddrOf = new AddressOfOperator();
+        public static readonly UnaryOperator Not = new NotOperator();
+        public static readonly UnaryOperator Neg = new NegateOperator();
+        public static readonly UnaryOperator Comp = new ComplementOperator();
+        public static readonly UnaryOperator AddrOf = new AddressOfOperator();
 
         public static readonly BinaryOperator Comma = new CommaOperator();
+
+        protected Operator(OperatorType type)
+        {
+            this.Type = type;
+        }
+
+        public OperatorType Type { get; }
 
         public virtual Constant ApplyConstants(Constant c1, Constant c2)
         {
@@ -93,7 +100,7 @@ namespace Reko.Core.Operators
             throw new NotSupportedException($"The {this} operator can't be used in a compound assignment.");
         }
 
-        public virtual Operator Invert()
+        public virtual OperatorType Invert()
 		{
 			throw new NotImplementedException();
 		}

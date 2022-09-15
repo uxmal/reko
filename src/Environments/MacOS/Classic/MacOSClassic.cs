@@ -149,9 +149,9 @@ namespace Reko.Environments.MacOS.Classic
         /// <returns>Null if the call wasn't to a valid A5 jumptable location.</returns>
         public override Address? ResolveIndirectCall(RtlCall instr)
         {
-            if (!(instr.Target is BinaryExpression bin))
+            if (instr.Target is not BinaryExpression bin)
                 return null;
-            if (bin.Operator != Operator.IAdd)
+            if (bin.Operator.Type != OperatorType.IAdd)
                 return null;
             if (!(bin.Left is Identifier idLeft) || idLeft.Storage != Registers.a5)
                 return null;

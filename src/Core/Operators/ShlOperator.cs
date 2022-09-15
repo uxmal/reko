@@ -26,7 +26,9 @@ namespace Reko.Core.Operators
 {
 	public class ShlOperator : BinaryOperator
 	{
-		public override Constant ApplyConstants(Constant c1, Constant c2)
+        internal ShlOperator() : base(OperatorType.Shl) { }
+
+        public override Constant ApplyConstants(Constant c1, Constant c2)
 		{
             if (!ValidArgs(c1, c2))
                 return InvalidConstant.Create(c1.DataType);

@@ -77,9 +77,9 @@ namespace Reko.Typing
             switch (ea)
             {
             case BinaryExpression bin:
-                if (bin.Operator == Operator.IAdd)
+                if (bin.Operator.Type == OperatorType.IAdd)
                     return ea;
-                if (bin.Operator == Operator.ISub)
+                if (bin.Operator.Type == OperatorType.ISub)
                 {
                     if (bin.Right is Constant offset)
                     {

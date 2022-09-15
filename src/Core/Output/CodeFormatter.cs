@@ -44,7 +44,7 @@ namespace Reko.Core.Output
         private readonly TypeGraphWriter typeWriter;
 
         //$TODO: move this to a language-specific class.
-        private static readonly Dictionary<Operator,int> precedences;
+        private static readonly Dictionary<OperatorType,int> precedences;
         private static readonly HashSet<Type> singleStatements;
 
         /// <summary>
@@ -71,54 +71,54 @@ namespace Reko.Core.Output
 
 		static CodeFormatter()
 		{
-            precedences = new Dictionary<Operator, int>
+            precedences = new Dictionary<OperatorType, int>
             {
-                [Operator.Not] = 2,         //$REFACTOR: precedence is a property of the output language; these are the C/C++ precedences
-                [Operator.Neg] = 2,
-                [Operator.FNeg] = 2,
-                [Operator.Comp] = 2,
-                [Operator.AddrOf] = 2,
-                [Operator.SMul] = 4,
-                [Operator.UMul] = 4,
-                [Operator.IMul] = 4,
-                [Operator.SDiv] = 4,
-                [Operator.UDiv] = 4,
-                [Operator.IMod] = 4,
-                [Operator.SMod] = 4,
-                [Operator.UMod] = 4,
-                [Operator.FMul] = 4,
-                [Operator.FDiv] = 4,
-                [Operator.FMod] = 4,
-                [Operator.IAdd] = 5,
-                [Operator.ISub] = 5,
-                [Operator.USub] = 5,
-                [Operator.FAdd] = 5,
-                [Operator.FSub] = 5,
-                [Operator.Sar] = 6,
-                [Operator.Shr] = 6,
-                [Operator.Shl] = 6,
-                [Operator.Lt] = 7,
-                [Operator.Le] = 7,
-                [Operator.Gt] = 7,
-                [Operator.Ge] = 7,
-                [Operator.Feq] = 7,
-                [Operator.Fne] = 7,
-                [Operator.Flt] = 7,
-                [Operator.Fle] = 7,
-                [Operator.Fgt] = 7,
-                [Operator.Fge] = 7,
-                [Operator.Fne] = 7,
-                [Operator.Ult] = 7,
-                [Operator.Ule] = 7,
-                [Operator.Ugt] = 7,
-                [Operator.Uge] = 7,
-                [Operator.Eq] = 8,
-                [Operator.Ne] = 8,
-                [Operator.And] = 9,
-                [Operator.Xor] = 10,
-                [Operator.Or] = 11,
-                [Operator.Cand] = 12,
-                [Operator.Cor] = 13
+                [OperatorType.Not] = 2,         //$REFACTOR: precedence is a property of the output language; these are the C/C++ precedences
+                [OperatorType.Neg] = 2,
+                [OperatorType.FNeg] = 2,
+                [OperatorType.Comp] = 2,
+                [OperatorType.AddrOf] = 2,
+                [OperatorType.SMul] = 4,
+                [OperatorType.UMul] = 4,
+                [OperatorType.IMul] = 4,
+                [OperatorType.SDiv] = 4,
+                [OperatorType.UDiv] = 4,
+                [OperatorType.IMod] = 4,
+                [OperatorType.SMod] = 4,
+                [OperatorType.UMod] = 4,
+                [OperatorType.FMul] = 4,
+                [OperatorType.FDiv] = 4,
+                [OperatorType.FMod] = 4,
+                [OperatorType.IAdd] = 5,
+                [OperatorType.ISub] = 5,
+                [OperatorType.USub] = 5,
+                [OperatorType.FAdd] = 5,
+                [OperatorType.FSub] = 5,
+                [OperatorType.Sar] = 6,
+                [OperatorType.Shr] = 6,
+                [OperatorType.Shl] = 6,
+                [OperatorType.Lt] = 7,
+                [OperatorType.Le] = 7,
+                [OperatorType.Gt] = 7,
+                [OperatorType.Ge] = 7,
+                [OperatorType.Feq] = 7,
+                [OperatorType.Fne] = 7,
+                [OperatorType.Flt] = 7,
+                [OperatorType.Fle] = 7,
+                [OperatorType.Fgt] = 7,
+                [OperatorType.Fge] = 7,
+                [OperatorType.Fne] = 7,
+                [OperatorType.Ult] = 7,
+                [OperatorType.Ule] = 7,
+                [OperatorType.Ugt] = 7,
+                [OperatorType.Uge] = 7,
+                [OperatorType.Eq] = 8,
+                [OperatorType.Ne] = 8,
+                [OperatorType.And] = 9,
+                [OperatorType.Xor] = 10,
+                [OperatorType.Or] = 11,
+                [OperatorType.Cand] = 12,
+                [OperatorType.Cor] = 13
             };
 
             singleStatements = new HashSet<Type>
@@ -198,7 +198,7 @@ namespace Reko.Core.Output
 
 		public void VisitBinaryExpression(BinaryExpression binExp)
 		{
-			int prec = SetPrecedence((int) precedences[binExp.Operator]);
+			int prec = SetPrecedence((int) precedences[binExp.Operator.Type]);
 			binExp.Left.Accept(this);
             FormatOperator(binExp);
             var old = forceParensIfSamePrecedence;
@@ -540,7 +540,7 @@ namespace Reko.Core.Output
 
 		public void VisitUnaryExpression(UnaryExpression unary)
 		{
-			int prec = SetPrecedence((int) precedences[unary.Operator]);
+			int prec = SetPrecedence((int) precedences[unary.Operator.Type]);
 			InnerFormatter.Write(unary.Operator.ToString()!);
 			unary.Expression.Accept(this);
 			ResetPresedence(prec);
@@ -643,12 +643,12 @@ namespace Reko.Core.Output
             if (compound.Src.Right is Constant c &&
                 !c.IsReal && c.ToInt64() == 1)
             {
-                if (compound.Src.Operator == Operator.IAdd)
+                if (compound.Src.Operator.Type == OperatorType.IAdd)
                 {
                     InnerFormatter.Write("++");
                     compound.Dst.Accept(this);
                     return;
-                } else if (compound.Src.Operator == Operator.ISub)
+                } else if (compound.Src.Operator.Type == OperatorType.ISub)
                 {
                     InnerFormatter.Write("--");
                     compound.Dst.Accept(this);

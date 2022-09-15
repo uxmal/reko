@@ -142,12 +142,12 @@ namespace Reko.Analysis
                 return false;
             if (bin.Right is not Constant c)
                 return false;
-            if (bin.Operator == Operator.ISub)
+            if (bin.Operator.Type == OperatorType.ISub)
             {
                 offset = -c.ToInt32();
                 return true;
             }
-            if (bin.Operator == Operator.IAdd)
+            if (bin.Operator.Type == OperatorType.IAdd)
             {
                 offset = c.ToInt32();
                 return true;

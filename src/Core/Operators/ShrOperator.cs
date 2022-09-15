@@ -24,9 +24,12 @@ using System;
 
 namespace Reko.Core.Operators
 {
-	public class ShrOperator : BinaryOperator
+
+    public class ShrOperator : BinaryOperator
 	{
-		public override Constant ApplyConstants(Constant c1, Constant c2)
+        internal ShrOperator() : base(OperatorType.Shr) { }
+
+        public override Constant ApplyConstants(Constant c1, Constant c2)
 		{
             if (!ValidArgs(c1, c2))
                 return InvalidConstant.Create(c1.DataType);

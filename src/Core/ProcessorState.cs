@@ -107,12 +107,12 @@ namespace Reko.Core
                 return true;
             }
 
-            if (ea is BinaryExpression bin && (bin.Operator == Operator.IAdd || bin.Operator == Operator.ISub) && IsStackRegister(bin.Left))
+            if (ea is BinaryExpression bin && (bin.Operator.Type == OperatorType.IAdd || bin.Operator.Type == OperatorType.ISub) && IsStackRegister(bin.Left))
             {
                 if (bin.Right is Constant cOffset)
                 {
                     offset = cOffset.ToInt32();
-                    if (bin.Operator == Operator.ISub)
+                    if (bin.Operator.Type == OperatorType.ISub)
                         offset = -offset;
                     return true;
                 }
@@ -265,7 +265,7 @@ namespace Reko.Core
             }
             if (value is BinaryExpression binVal)
             {
-                if ((binVal.Operator == Operator.IAdd || binVal.Operator == Operator.ISub) &&
+                if ((binVal.Operator.Type == OperatorType.IAdd || binVal.Operator.Type == OperatorType.ISub) &&
                     binVal.Left is Identifier &&
                     binVal.Right is Constant)
                 {

@@ -182,7 +182,7 @@ namespace Reko.Environments.SysV.ArchSpecific
                 load.Src is MemoryAccess gotslot)
             {
                 if (gotslot.EffectiveAddress is BinaryExpression bin &&
-                    bin.Operator == Operator.IAdd &&
+                    bin.Operator.Type == OperatorType.IAdd &&
                     bin.Left == idPage &&
                     bin.Right is Constant offset)
                 {
@@ -287,7 +287,7 @@ namespace Reko.Environments.SysV.ArchSpecific
             if (stubInstrs[1] is RtlAssignment ld &&
                 ld.Src is MemoryAccess mem &&
                 mem.EffectiveAddress is BinaryExpression bin &&
-                bin.Operator == Operator.IAdd &&
+                bin.Operator.Type == OperatorType.IAdd &&
                 bin.Left == ass.Dst &&
                 bin.Right is Constant offset)
             {

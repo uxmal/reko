@@ -853,11 +853,11 @@ namespace Reko.Analysis
                     return null;
                 if (ea.Right is not Constant o)
                     return null;
-                if (ea.Operator == Operator.IAdd)
+                if (ea.Operator.Type == OperatorType.IAdd)
                 {
                     return o.ToInt32();
                 }
-                else if (ea.Operator == Operator.ISub)
+                else if (ea.Operator.Type == OperatorType.ISub)
                 {
                     return -o.ToInt32();
                 }

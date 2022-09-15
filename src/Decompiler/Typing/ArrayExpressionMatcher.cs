@@ -45,8 +45,11 @@ namespace Reko.Typing
 
 		public bool MatchMul(BinaryExpression b)
 		{
-			if (b.Operator == Operator.SMul || b.Operator == Operator.UMul || b.Operator == Operator.IMul)
-			{
+			switch (b.Operator.Type)
+            {
+            case OperatorType.SMul:
+            case OperatorType.UMul:
+            case OperatorType.IMul:
                 Expression e = b.Right;
                 if (b.Left is not Constant c)
                 {
@@ -59,15 +62,15 @@ namespace Reko.Typing
 					Index = e;
 					return true;
 				}
-			}
-			if (b.Operator == Operator.Shl)
-			{
-                if (b.Right is Constant c)
+                break;
+            case OperatorType.Shl:
+                if (b.Right is Constant cShl)
                 {
-                    ElementSize = b.Operator.ApplyConstants(Constant.Create(b.Left.DataType, 1), c);
+                    ElementSize = b.Operator.ApplyConstants(Constant.Create(b.Left.DataType, 1), cShl);
                     Index = b.Left;
                     return true;
                 }
+                break;
             }
 			return false;
 		}
@@ -87,7 +90,7 @@ namespace Reko.Typing
             }
 
 			// (+ x y)
-			if (b.Operator == Operator.IAdd)
+			if (b.Operator.Type == OperatorType.IAdd)
 			{
                 if (b.Left is BinaryExpression bInner)
                 {
@@ -115,7 +118,7 @@ namespace Reko.Typing
                         ArrayPointer = b.Left;
                         return true;
                     }
-                    if (bInner2.Operator == Operator.IAdd)
+                    if (bInner2.Operator.Type == OperatorType.IAdd)
                     {
                         // (+ x (+ a b)) 
                         var bbInner = bInner2.Left as BinaryExpression;

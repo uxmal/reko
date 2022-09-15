@@ -32,7 +32,7 @@ namespace Reko.UnitTests.Core
 		[Test]
 		public void AddApplyConstants()
 		{
-			RunApply(1, 2, new IAddOperator(), 3);
+			RunApply(1, 2, Operator.IAdd, 3);
 		}
 
         [Test]
@@ -49,7 +49,7 @@ namespace Reko.UnitTests.Core
 		{
 			Constant c1 = Constant.Word32(1);
 			Constant c2 = Constant.Word32(2);
-			BinaryOperator op = new AndOperator();
+			BinaryOperator op = Operator.And;
 			Constant c3 = op.ApplyConstants(c1, c2);
 			Assert.AreEqual(0, c3.ToInt32());
 		}
@@ -59,7 +59,7 @@ namespace Reko.UnitTests.Core
 		{
 			Constant c1 = Constant.Word32(1);
 			Constant c2 = Constant.Word32(2);
-			BinaryOperator op = new OrOperator();
+			BinaryOperator op = Operator.Or;
 			Constant c3 = op.ApplyConstants(c1, c2);
 			Assert.AreEqual(3, c3.ToInt32());
 		}
@@ -67,217 +67,217 @@ namespace Reko.UnitTests.Core
 		[Test]
 		public void XorApplyConstants()
 		{
-			RunApply(0xC, 0xA, new XorOperator(), 6);
+			RunApply(0xC, 0xA, Operator.Xor, 6);
 		}
 
 		[Test]
 		public void SarApplyConstants()
 		{
-			RunApply(0x30, 2, new SarOperator(), 12);
+			RunApply(0x30, 2, Operator.Sar, 12);
 		}
 
 		[Test]
 		public void ShrApplyConstants()
 		{
-			RunApply(0x30, 2, new ShrOperator(), 12);
+			RunApply(0x30, 2, Operator.Shr, 12);
 		}
 
 		[Test]
 		public void ShlApplyConstants()
 		{
-			RunApply(0xC, 2, new ShlOperator(), 48);
+			RunApply(0xC, 2, Operator.Shl, 48);
 		}
 
 		[Test]
 		public void SubApplyConstants()
 		{
-			RunApply(0x1, 0x2, new ISubOperator(), -1);
+			RunApply(0x1, 0x2, Operator.ISub, -1);
 		}
 
 		[Test]
 		public void MulsApplyConstants()
 		{
-			RunApply(0x1, 0x2, new SMulOperator(), 2);
+			RunApply(0x1, 0x2, Operator.SMul, 2);
 		}
 
 		[Test]
 		public void DivuApplyConstants()
 		{
-			RunApply(10, 3, new UDivOperator(), 3);
+			RunApply(10, 3, Operator.UDiv, 3);
 		}
 
 		[Test]
 		public void ModApplyConstants()
 		{
-			RunApply(0x5, 0x3, new IModOperator(), 2);
+			RunApply(0x5, 0x3, Operator.IMod, 2);
 		}
 
 		[Test]
 		public void CandCreate()
 		{
-			Assert.IsNotNull(new CandOperator());
+			Assert.IsNotNull(Operator.Cand);
 		}
 
 		[Test]
 		public void CorCreate()
 		{
-			Assert.IsNotNull(new CorOperator());
+			Assert.IsNotNull(Operator.Cor);
 		}
 
 		[Test]
 		public void ltCreate()
 		{
-			Assert.IsNotNull(new LtOperator());
+			Assert.IsNotNull(Operator.Lt);
 		}
 		
 		[Test]
 		public void gtCreate()
 		{
-			Assert.IsNotNull(new GtOperator());
+			Assert.IsNotNull(Operator.Gt);
 		}
 		
 		[Test]
 		public void leCreate()
 		{
-			Assert.IsNotNull(new LeOperator());
+			Assert.IsNotNull(Operator.Le);
 		}
 		
 		[Test]
 		public void geCreate()
 		{
-			Assert.IsNotNull(new GeOperator());
+			Assert.IsNotNull(Operator.Ge);
 		}
 		
 		[Test]
 		public void ultCreate()
 		{
-			Assert.IsNotNull(new UltOperator());
+			Assert.IsNotNull(Operator.Ult);
 		}
 		
 		[Test]
 		public void ugtCreate()
 		{
-			Assert.IsNotNull(new UgtOperator());
+			Assert.IsNotNull(Operator.Ugt);
 		}
 		
 		[Test]
 		public void uleCreate()
 		{
-			Assert.IsNotNull(new UleOperator());
+			Assert.IsNotNull(Operator.Ule);
 		}
 		
 		[Test]
 		public void ugeCreate()
 		{
-			Assert.IsNotNull(new UgeOperator());
+			Assert.IsNotNull(Operator.Uge);
 		}
 		
 		[Test]
 		public void eqCreate()
 		{
-			Assert.IsNotNull(new EqOperator());
+			Assert.IsNotNull(Operator.Eq);
 		}
 		
 		[Test]
 		public void neCreate()
 		{
-			Assert.IsNotNull(new NeOperator());
+			Assert.IsNotNull(Operator.Ne);
 		}
 		
 		[Test]
 		public void NotCreate()
 		{
-			Assert.IsNotNull(new NotOperator());
+			Assert.IsNotNull(Operator.Not);
 		}
 
 		[Test]
 		public void NegApply()
 		{
-			RunApply(3, new NegateOperator(), -3);
+			RunApply(3, Operator.Neg, -3);
 		}
 
 		[Test]
 		public void ComplementApply()
 		{
-			RunApply(3, new ComplementOperator(), -4);
+			RunApply(3, Operator.Comp, -4);
 		}
 
 		[Test]
 		public void AddressOfCreate()
 		{
-			Assert.IsNotNull(new AddressOfOperator());
+			Assert.IsNotNull(Operator.AddrOf);
 		}
 
         [Test]
         public void LtApplyConstants1()
         {
-            RunApply(5, 3, new LtOperator(), 0);
+            RunApply(5, 3, Operator.Lt, 0);
         }
 
         [Test]
         public void LtApplyConstants2()
         {
-            RunApply(4, 5, new LtOperator(), 1);
+            RunApply(4, 5, Operator.Lt, 1);
         }
 
         [Test]
         public void LtApplyConstants3()
         {
-            RunApply(6, 6, new LtOperator(), 0);
+            RunApply(6, 6, Operator.Lt, 0);
         }
 
         [Test]
         public void GtApplyConstants1()
         {
-            RunApply(5, 3, new GtOperator(), 1);
+            RunApply(5, 3, Operator.Gt, 1);
         }
 
         [Test]
         public void GtApplyConstants2()
         {
-            RunApply(4, 5, new GtOperator(), 0);
+            RunApply(4, 5, Operator.Gt, 0);
         }
 
         [Test]
         public void GtApplyConstants3()
         {
-            RunApply(6, 6, new GtOperator(), 0);
+            RunApply(6, 6, Operator.Gt, 0);
         }
 
         [Test]
         public void LeApplyConstants1()
         {
-            RunApply(5, 3, new LeOperator(), 0);
+            RunApply(5, 3, Operator.Le, 0);
         }
 
         [Test]
         public void LeApplyConstants2()
         {
-            RunApply(4, 5, new LeOperator(), 1);
+            RunApply(4, 5, Operator.Le, 1);
         }
 
         [Test]
         public void LeApplyConstants3()
         {
-            RunApply(6, 6, new LeOperator(), 1);
+            RunApply(6, 6, Operator.Le, 1);
         }
 
         [Test]
         public void GeApplyConstants1()
         {
-            RunApply(5, 3, new GeOperator(), 1);
+            RunApply(5, 3, Operator.Ge, 1);
         }
 
         [Test]
         public void GeApplyConstants2()
         {
-            RunApply(4, 5, new GeOperator(), 0);
+            RunApply(4, 5, Operator.Ge, 0);
         }
 
         [Test]
         public void GeApplyConstants3()
         {
-            RunApply(6, 6, new GeOperator(), 1);
+            RunApply(6, 6, Operator.Ge, 1);
         }
 
 

@@ -131,7 +131,7 @@ namespace Reko.Core.Expressions
 
         bool ExpressionVisitor<bool>.VisitBinaryExpression(BinaryExpression binExp)
         {
-            if (!(p is BinaryExpression bP))
+            if (p is not BinaryExpression bP)
                 return false;
             if (!Match(bP.Operator, binExp.Operator))
                 return false;
@@ -466,7 +466,7 @@ namespace Reko.Core.Expressions
 
         private class WildOperator : Operator
         {
-            public WildOperator(string Label)
+            public WildOperator(string Label) : base((OperatorType)(-1))
             {
                 this.Label = Label;
             }

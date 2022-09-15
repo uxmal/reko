@@ -47,7 +47,7 @@ namespace Reko.Evaluation
 			idRight = binExp.Right as Identifier;
 			if (idRight == null)
 				return false;
-			return (idLeft == idRight && binExp.Operator == Operator.IAdd);
+			return (idLeft == idRight && binExp.Operator.Type == OperatorType.IAdd);
 		}
 
         public Expression Transform()

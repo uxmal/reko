@@ -60,9 +60,10 @@ namespace Reko.Analysis
         {
             if (op == null)
                 return false;
+            var opType = op.Type;
             return
-                op == Operator.Lt || op == Operator.Le ||
-                op == Operator.Gt || op == Operator.Ge;
+                opType == OperatorType.Lt || opType == OperatorType.Le ||
+                opType == OperatorType.Gt || opType == OperatorType.Ge;
         }
     }
 }

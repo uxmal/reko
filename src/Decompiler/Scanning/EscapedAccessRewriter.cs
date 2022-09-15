@@ -64,9 +64,8 @@ namespace Reko.Scanning
 			{
 				op = Operator.IAdd;
 			}
-			PrimitiveType p = (PrimitiveType) fp.DataType;
 			Expression ea = new BinaryExpression(op, fp.DataType,
-				fp, Constant.Create(PrimitiveType.Create(Domain.SignedInt, p.BitSize), offset));
+				fp, Constant.Create(PrimitiveType.Create(Domain.SignedInt, fp.DataType.BitSize), offset));
 			return ea;
 		}
 

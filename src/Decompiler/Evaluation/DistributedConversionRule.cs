@@ -44,7 +44,7 @@ namespace Reko.Evaluation
 
         public bool Match(BinaryExpression binExp)
         {
-            if (binExp.Operator == Operator.IAdd || binExp.Operator == Operator.ISub)
+            if (binExp.Operator.Type.IsAddOrSub())
             {
                 if (binExp.Left is Conversion cLeft && binExp.Right is Conversion cRight)
                 {

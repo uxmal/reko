@@ -830,11 +830,11 @@ namespace Reko.Analysis
                 bin.Left is Identifier fpLeft && fpLeft.Storage == proc.Frame.FramePointer.Storage &&
                 bin.Right is Constant cRight)
             {
-                if (bin.Operator == Operator.IAdd)
+                if (bin.Operator.Type == OperatorType.IAdd)
                 {
                     return cRight.ToInt32();
                 }
-                else if (bin.Operator == Operator.ISub)
+                else if (bin.Operator.Type == OperatorType.ISub)
                 {
                     return -cRight.ToInt32();
                 }
@@ -1005,7 +1005,7 @@ namespace Reko.Analysis
         {
             // Handling sub(R,R) and xor(R,R) specially, since they otherwise
             // introduce a false use of R.
-            if (binExp.Operator == Operator.ISub || binExp.Operator == Operator.Xor)
+            if (binExp.Operator.Type == OperatorType.ISub || binExp.Operator.Type == OperatorType.Xor)
             {
                 if (binExp.Left is Identifier id && binExp.Right == id)
                 {
@@ -1187,7 +1187,7 @@ namespace Reko.Analysis
                 return proc.Frame.EnsureStackVariable(0, dt);
             var bin = (BinaryExpression)effectiveAddress;
             var offset = ((Constant)bin.Right).ToInt32();
-            if (bin.Operator == Operator.ISub)
+            if (bin.Operator.Type == OperatorType.ISub)
                 offset = -offset;
             var idFrame = proc.Frame.EnsureStackVariable(offset, dt);
             return idFrame;

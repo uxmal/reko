@@ -28,7 +28,11 @@ namespace Reko.Core.Operators
 	/// </summary>
 	public class IMulOperator : BinaryOperator
 	{
-		public override Constant ApplyConstants(Constant c1, Constant c2)
+        internal IMulOperator() : base(OperatorType.IMul) { }
+
+        internal IMulOperator(OperatorType type) : base(type) { }
+
+        public override Constant ApplyConstants(Constant c1, Constant c2)
 		{
             if (!ValidArgs(c1, c2))
                 return InvalidConstant.Create(c1.DataType);

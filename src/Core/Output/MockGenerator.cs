@@ -42,60 +42,60 @@ namespace Reko.Core.Output
     public class MockGenerator : InstructionVisitor, IExpressionVisitor, IDataTypeVisitor<int>
     {
         private readonly IndentingTextWriter writer;
-        private readonly Dictionary<Operator, string> mpopstr;
+        private readonly Dictionary<OperatorType, string> mpopstr;
         private readonly string prefix;
 
         public MockGenerator(TextWriter writer, string prefix)
         {
             this.writer = new IndentingTextWriter(writer, false, 4);
-            this.mpopstr = new Dictionary<Operator, string> {
-                { Operator.IAdd, "IAdd" },
-                { Operator.And, "And" },
-                { Operator.Cand, "Cand" },
-                { Operator.Cor, "Cor" },
+            this.mpopstr = new Dictionary<OperatorType, string> {
+                { OperatorType.IAdd, "IAdd" },
+                { OperatorType.And, "And" },
+                { OperatorType.Cand, "Cand" },
+                { OperatorType.Cor, "Cor" },
 
-                { Operator.Eq, "Eq" },
-                { Operator.Ne, "Ne" },
-                { Operator.Ge, "Ge" },
-                { Operator.Gt, "Gt" },
-                { Operator.Le, "Le" },
-                { Operator.Lt, "Lt" },
-                { Operator.IMul, "IMul" },
-                { Operator.SMul, "SMul" },
-                { Operator.UMul, "UMul" },
-                { Operator.IMod, "Mod" },
-                { Operator.SMod, "SMod" },
-                { Operator.UMod, "UMod" },
-                { Operator.Or, "Or" },
-                { Operator.ISub, "ISub" },
-                { Operator.USub, "USub" },
-                { Operator.SDiv, "SDiv" },
-                { Operator.UDiv, "UDiv" },
+                { OperatorType.Eq, "Eq" },
+                { OperatorType.Ne, "Ne" },
+                { OperatorType.Ge, "Ge" },
+                { OperatorType.Gt, "Gt" },
+                { OperatorType.Le, "Le" },
+                { OperatorType.Lt, "Lt" },
+                { OperatorType.IMul, "IMul" },
+                { OperatorType.SMul, "SMul" },
+                { OperatorType.UMul, "UMul" },
+                { OperatorType.IMod, "Mod" },
+                { OperatorType.SMod, "SMod" },
+                { OperatorType.UMod, "UMod" },
+                { OperatorType.Or, "Or" },
+                { OperatorType.ISub, "ISub" },
+                { OperatorType.USub, "USub" },
+                { OperatorType.SDiv, "SDiv" },
+                { OperatorType.UDiv, "UDiv" },
 
-                { Operator.Shl, "Shl" },
-                { Operator.Shr, "Shr" },
-                { Operator.Sar, "Sar" },
-                { Operator.Uge, "Uge" },
-                { Operator.Ugt, "Ugt" },
-                { Operator.Ule, "Ule" },
-                { Operator.Ult, "Ult" },
-                { Operator.Xor, "Xor" },
+                { OperatorType.Shl, "Shl" },
+                { OperatorType.Shr, "Shr" },
+                { OperatorType.Sar, "Sar" },
+                { OperatorType.Uge, "Uge" },
+                { OperatorType.Ugt, "Ugt" },
+                { OperatorType.Ule, "Ule" },
+                { OperatorType.Ult, "Ult" },
+                { OperatorType.Xor, "Xor" },
 
-                { Operator.FAdd, "FAdd" },
-                { Operator.FSub, "FSub" },
-                { Operator.FMul, "FMul" },
-                { Operator.FDiv, "FDiv" },
-                { Operator.Feq, "FEq" },
-                { Operator.Fne, "FNe" },
-                { Operator.Flt, "FLt" },
-                { Operator.Fle, "FLe" },
-                { Operator.Fge, "FGe" },
-                { Operator.Fgt, "FGt" },
+                { OperatorType.FAdd, "FAdd" },
+                { OperatorType.FSub, "FSub" },
+                { OperatorType.FMul, "FMul" },
+                { OperatorType.FDiv, "FDiv" },
+                { OperatorType.Feq, "FEq" },
+                { OperatorType.Fne, "FNe" },
+                { OperatorType.Flt, "FLt" },
+                { OperatorType.Fle, "FLe" },
+                { OperatorType.Fge, "FGe" },
+                { OperatorType.Fgt, "FGt" },
 
-                { Operator.AddrOf, "AddrOf" },
-                { Operator.Comp, "Comp" },
-                { Operator.Neg, "Neg" },
-                { Operator.Not, "Not" }
+                { OperatorType.AddrOf, "AddrOf" },
+                { OperatorType.Comp, "Comp" },
+                { OperatorType.Neg, "Neg" },
+                { OperatorType.Not, "Not" }
 
             };
             this.prefix = prefix;
@@ -437,7 +437,7 @@ namespace Reko.Core.Output
 
         void IExpressionVisitor.VisitBinaryExpression(BinaryExpression binExp)
         {
-            if (!mpopstr.TryGetValue(binExp.Operator, out string? str))
+            if (!mpopstr.TryGetValue(binExp.Operator.Type, out string? str))
                 throw new NotImplementedException(binExp.Operator.ToString());
             Method(str);
             binExp.Left.Accept(this);
@@ -610,7 +610,7 @@ namespace Reko.Core.Output
 
         void IExpressionVisitor.VisitUnaryExpression(UnaryExpression unary)
         {
-            if (!mpopstr.TryGetValue(unary.Operator, out var methodName))
+            if (!mpopstr.TryGetValue(unary.Operator.Type, out var methodName))
                 throw new NotImplementedException(unary.ToString());
             Method(methodName);
             unary.Expression.Accept(this);

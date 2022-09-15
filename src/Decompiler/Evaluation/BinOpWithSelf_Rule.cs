@@ -32,26 +32,31 @@ namespace Reko.Evaluation
 
         public bool Match(BinaryExpression binExp)
         {
-            if (binExp.Operator != Operator.ISub &&
-                binExp.Operator != Operator.Xor && 
-                binExp.Operator != Operator.And &&
-                binExp.Operator != Operator.Or)
+            switch (binExp.Operator.Type)
+            {
+            case OperatorType.ISub:
+            case OperatorType.Xor:
+            case OperatorType.And:
+            case OperatorType.Or:
+                this.binExp = binExp;
+                id = binExp.Left as Identifier;
+                return (id != null && binExp.Left == binExp.Right);
+            default:
                 return false;
-            this.binExp = binExp;
-            id = binExp.Left as Identifier;
-            return (id != null && binExp.Left == binExp.Right);
+            }
         }
 
         public Expression Transform(EvaluationContext ctx)
         {
-            if (binExp!.Operator == Operator.ISub || binExp.Operator == Operator.Xor)
+            switch (binExp!.Operator.Type)
             {
+            case OperatorType.ISub:
+            case OperatorType.Xor:
                 ctx.RemoveIdentifierUse(id!);
                 ctx.RemoveIdentifierUse(id!);
                 return Constant.Zero(binExp.DataType);
-            }
-            if (binExp.Operator == Operator.And || binExp.Operator == Operator.Or)
-            {
+            case OperatorType.And:
+            case OperatorType.Or:
                 ctx.RemoveIdentifierUse(id!);
                 return id!;
             }

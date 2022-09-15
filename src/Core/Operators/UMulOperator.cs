@@ -29,7 +29,9 @@ namespace Reko.Core.Operators
 	/// </summary>
 	public class UMulOperator : IMulOperator
 	{
-		public override Constant ApplyConstants(Constant c1, Constant c2)
+        internal UMulOperator() : base(OperatorType.UMul) { }
+
+        public override Constant ApplyConstants(Constant c1, Constant c2)
 		{
             if (!ValidArgs(c1, c2))
                 return InvalidConstant.Create(PrimitiveType.Bool);

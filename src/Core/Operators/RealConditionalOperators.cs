@@ -26,10 +26,13 @@ namespace Reko.Core.Operators
 {
 	public abstract class RealConditionalOperator : ConditionalOperator
 	{
+        protected RealConditionalOperator(OperatorType type) : base(type) { }
 	}
 
     public class ReqOperator : RealConditionalOperator
     {
+        internal ReqOperator() : base(OperatorType.Feq) { }
+
         public override Constant ApplyConstants(Constant c1, Constant c2)
         {
             if (!ValidArgs(c1, c2))
@@ -44,6 +47,8 @@ namespace Reko.Core.Operators
 
     public class RneOperator : RealConditionalOperator
     {
+        internal RneOperator() : base(OperatorType.Fne) { }
+
         public override Constant ApplyConstants(Constant c1, Constant c2)
         {
             if (!ValidArgs(c1, c2))
@@ -52,11 +57,14 @@ namespace Reko.Core.Operators
         }
 
         public override Operator Negate() => Fne;
+
         public override string ToString() => " != ";
     }
 
     public class RltOperator : RealConditionalOperator
 	{
+        internal RltOperator() : base(OperatorType.Flt) { }
+
 		public override Constant ApplyConstants(Constant c1, Constant c2)
 		{
             if (!ValidArgs(c1, c2))
@@ -71,7 +79,9 @@ namespace Reko.Core.Operators
 
 	public class RgtOperator : RealConditionalOperator
 	{
-		public override Constant ApplyConstants(Constant c1, Constant c2)
+        internal RgtOperator() : base(OperatorType.Fgt) { }
+
+        public override Constant ApplyConstants(Constant c1, Constant c2)
 		{
             if (!ValidArgs(c1, c2))
                 return InvalidConstant.Create(PrimitiveType.Bool);
@@ -87,7 +97,9 @@ namespace Reko.Core.Operators
 
     public class RleOperator : RealConditionalOperator
 	{
-		public override Constant ApplyConstants(Constant c1, Constant c2)
+        internal RleOperator() : base(OperatorType.Fle) { }
+
+        public override Constant ApplyConstants(Constant c1, Constant c2)
 		{
             if (!ValidArgs(c1, c2))
                 return InvalidConstant.Create(PrimitiveType.Bool);
@@ -101,7 +113,9 @@ namespace Reko.Core.Operators
 
     public class RgeOperator : RealConditionalOperator
 	{
-		public override Constant ApplyConstants(Constant c1, Constant c2)
+        internal RgeOperator() : base(OperatorType.Fge) { }
+
+        public override Constant ApplyConstants(Constant c1, Constant c2)
 		{
             if (!ValidArgs(c1, c2))
                 return InvalidConstant.Create(c1.DataType);
@@ -113,5 +127,4 @@ namespace Reko.Core.Operators
         public override string ToString() => " >= ";
 
     }
-
 }

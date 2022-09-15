@@ -174,7 +174,7 @@ namespace Reko.Typing
                 offset = 0;
             }
             int stride = 1;
-            if (acc.Index is BinaryExpression bIndex && (bIndex.Operator == Operator.IMul || bIndex.Operator == Operator.SMul || bIndex.Operator == Operator.UMul))
+            if (acc.Index is BinaryExpression bIndex && (bIndex.Operator.Type == OperatorType.IMul || bIndex.Operator.Type == OperatorType.SMul || bIndex.Operator.Type == OperatorType.UMul))
             {
                 if (bIndex.Right is Constant c)
                 {
@@ -254,7 +254,9 @@ namespace Reko.Typing
             var tvBin = TypeVar(binExp);
             var tvLeft = TypeVar(eLeft);
             var tvRight = TypeVar(eRight);
-            if (binExp.Operator == Operator.IAdd)
+            switch (binExp.Operator.Type)
+            {
+            case OperatorType.IAdd:
             {
                 var dt = PushAddendDataType(tvBin.DataType, tvRight.DataType);
                 if (dt != null)
@@ -262,109 +264,136 @@ namespace Reko.Typing
                 dt = PushAddendDataType(tvBin.DataType, tvLeft.DataType);
                 if (dt != null)
                     MeetDataType(eRight, dt);
+                break;
             }
-            else if (binExp.Operator == Operator.ISub || binExp.Operator == Operator.USub)
+            case OperatorType.ISub:
+            case OperatorType.USub:
             {
                 var dt = PushMinuendDataType(tvBin.DataType, tvRight.DataType);
                 MeetDataType(eLeft, dt);
                 dt = PushSubtrahendDataType(tvBin.DataType, tvLeft.DataType);
                 MeetDataType(eRight, dt);
+                break;
             }
-            else if (binExp.Operator == Operator.And || binExp.Operator == Operator.Or)
+            case OperatorType.And:
+            case OperatorType.Or:
             {
                 //$REVIEW: need a push-logical-Data type to push [[a & 3]] = char into its left and right halves.
                 var dt = PrimitiveType.CreateWord(tv.DataType.BitSize).MaskDomain(Domain.Boolean | Domain.Integer | Domain.Character);
                 MeetDataType(eLeft, dt);
                 MeetDataType(eRight, dt);
+                break;
             }
-            else if (
-                binExp.Operator == Operator.IMul ||
-                binExp.Operator == Operator.IMod)
+            case OperatorType.IMul:
+            case OperatorType.IMod:
             {
                 var dt = PrimitiveType.CreateWord(DataTypeOf(eLeft).BitSize).MaskDomain(Domain.Boolean | Domain.Integer );
                 MeetDataType(eLeft, dt);
                 dt = PrimitiveType.CreateWord(DataTypeOf(eRight).BitSize).MaskDomain(Domain.Boolean | Domain.Integer);
                 MeetDataType(eRight, dt);
+                break;
             }
-            else if (
-                binExp.Operator == Operator.SMul ||
-                binExp.Operator == Operator.SDiv ||
-                binExp.Operator == Operator.SMod)
+            case OperatorType.SMul:
+            case OperatorType.SDiv:
+            case OperatorType.SMod:
             {
                 var dt = PrimitiveType.CreateWord(DataTypeOf(eLeft).BitSize).MaskDomain(Domain.Boolean | Domain.SignedInt);
                 MeetDataType(eLeft, dt);
                 dt = PrimitiveType.CreateWord(DataTypeOf(eRight).BitSize).MaskDomain(Domain.Boolean | Domain.SignedInt);
                 MeetDataType(eRight, dt);
+                break;
             }
-            else if (
-                binExp.Operator == Operator.UMul ||
-                binExp.Operator == Operator.UDiv ||
-                binExp.Operator == Operator.UMod)
+            case OperatorType.UMul:
+            case OperatorType.UDiv:
+            case OperatorType.UMod:
             {
                 var dt = PrimitiveType.CreateWord(DataTypeOf(eLeft).BitSize).MaskDomain(Domain.Boolean | Domain.UnsignedInt);
                 MeetDataType(eLeft, dt);
                 dt = PrimitiveType.CreateWord(DataTypeOf(eRight).BitSize).MaskDomain(Domain.Boolean | Domain.UnsignedInt);
                 MeetDataType(eRight, dt);
+                break;
             }
-            else if (binExp.Operator == Operator.FAdd ||
-                    binExp.Operator == Operator.FSub ||
-                    binExp.Operator == Operator.FMul ||
-                    binExp.Operator == Operator.FDiv)
+            case OperatorType.FAdd:
+            case OperatorType.FSub:
+            case OperatorType.FMul:
+            case OperatorType.FDiv:
             {
                 var dt = PrimitiveType.Create(Domain.Real, eLeft.DataType.BitSize);
                 MeetDataType(eLeft, dt);
                 dt = PrimitiveType.Create(Domain.Real, eRight.DataType.BitSize);
                 MeetDataType(eRight, dt);
+                break;
             }
-            else if (binExp.Operator is SignedIntOperator)
+            case OperatorType.Lt:
+            case OperatorType.Le:
+            case OperatorType.Ge:
+            case OperatorType.Gt:
             {
                 var dt = PrimitiveType.CreateWord(tvRight.DataType.BitSize).MaskDomain(Domain.SignedInt | Domain.Character);
                 MeetDataType(eLeft, dt);
                 dt = PrimitiveType.CreateWord(tvRight.DataType.BitSize).MaskDomain(Domain.SignedInt | Domain.Character);
                 MeetDataType(eRight, dt);
+                break;
             }
-            else if (binExp.Operator is UnsignedIntOperator)
+            case OperatorType.Ult:
+            case OperatorType.Ule:
+            case OperatorType.Uge:
+            case OperatorType.Ugt:
             {
                 var dt = PrimitiveType.CreateWord(tvRight.DataType.BitSize).MaskDomain(Domain.Pointer| Domain.UnsignedInt | Domain.Character);
                 MeetDataType(eLeft, dt);
                 dt = PrimitiveType.CreateWord(tvRight.DataType.BitSize).MaskDomain(Domain.Pointer | Domain.UnsignedInt|Domain.Character);
                 MeetDataType(eRight, dt);
+                break;
             }
-            else if (binExp.Operator == Operator.Eq || binExp.Operator == Operator.Ne||
-                binExp.Operator == Operator.Xor || binExp.Operator == Operator.Cand ||
-                binExp.Operator == Operator.Cor)
+            case OperatorType.Eq:
+            case OperatorType.Ne:
+            case OperatorType.Xor:
+            case OperatorType.Cand:
+            case OperatorType.Cor:
             {
                 // Not much can be deduced here, except that the operands should have the same size. Earlier passes
                 // already did that work, so just continue with the operands.
-            } 
-            else if (binExp.Operator is RealConditionalOperator)
+                break;
+            }
+            case OperatorType.Feq:
+            case OperatorType.Fne:
+            case OperatorType.Flt:
+            case OperatorType.Fle:
+            case OperatorType.Fge:
+            case OperatorType.Fgt:
             {
                 // We know leaves must be floats
                 var dt = PrimitiveType.Create(Domain.Real, eLeft.DataType.BitSize);
                 MeetDataType(eLeft, dt);
                 dt = PrimitiveType.Create(Domain.Real, eLeft.DataType.BitSize);
                 MeetDataType(eRight, dt);
+                break;
             }
-            else if (binExp.Operator == Operator.Shl)
+            case OperatorType.Shl:
             {
                 var dt = PrimitiveType.CreateWord(tv.DataType.BitSize).MaskDomain(Domain.Boolean | Domain.Integer | Domain.Character);
                 MeetDataType(eLeft, dt);
                 dt = PrimitiveType.Create(Domain.Integer, DataTypeOf(eRight).BitSize);
+                break;
             }
-            else if (binExp.Operator == Operator.Shr)
+            case OperatorType.Shr:
             {
                 var dt = PrimitiveType.CreateWord(tv.DataType.BitSize).MaskDomain(Domain.Boolean | Domain.UnsignedInt| Domain.Character);
                 MeetDataType(eLeft, dt);
                 dt = PrimitiveType.Create(Domain.Integer, DataTypeOf(eRight).BitSize);
+                break;
             }
-            else if (binExp.Operator == Operator.Sar)
+            case OperatorType.Sar:
             {
                 var dt = PrimitiveType.CreateWord(tv.DataType.BitSize).MaskDomain(Domain.Boolean | Domain.SignedInt | Domain.Character);
                 MeetDataType(eLeft, dt);
                 dt = PrimitiveType.Create(Domain.Integer, DataTypeOf(eRight).BitSize);
+                break;
             }
-            else
+            default:
                 throw new TypeInferenceException($"Unhandled binary operator {binExp.Operator} in expression {binExp}.");
+            }
             eLeft.Accept(this, tvLeft);
             eRight.Accept(this, tvRight);
             return false;
@@ -646,7 +675,7 @@ namespace Reko.Typing
         private bool IsArrayAccess(Expression effectiveAddress)
         {
             if (effectiveAddress is not BinaryExpression binEa ||
-                binEa.Operator != Operator.IAdd)
+                binEa.Operator.Type != OperatorType.IAdd)
                 return false;
             return TypeVar(binEa.Right).DataType.IsIntegral;
         }

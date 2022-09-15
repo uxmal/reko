@@ -1227,7 +1227,7 @@ namespace Reko.ImageLoaders.OdbgScript
                     }
                 }
             }
-            else if (op is BinaryExpression bin && bin.Operator == Operator.IAdd)
+            else if (op is BinaryExpression bin && bin.Operator.Type == OperatorType.IAdd)
             {
                 if (GetString(bin.Left, out var left) &&
                     GetString(bin.Right, out var right))

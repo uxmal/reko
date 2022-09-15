@@ -47,15 +47,17 @@ namespace Reko.Evaluation
 
         public bool Match(BinaryExpression binExp)
         {
-            if (binExp.Operator != Operator.IAdd)
+            if (binExp.Operator.Type != OperatorType.IAdd)
                 return false;
 
+            //$TODO: use Integer.IsIntegerOne
             if (binExp.Right is BigConstant bigR && bigR.Value != BigInteger.One)
                 return false;
             if (binExp.Right is not Constant rightConstant || rightConstant.ToInt64() != 1)
                 return false;
 
-            if (binExp.Left is not BinaryExpression leftExpression || leftExpression.Operator != Operator.ISub)
+            if (binExp.Left is not BinaryExpression leftExpression || 
+                leftExpression.Operator.Type != OperatorType.ISub)
                 return false;
 
             if (!leftExpression.Left.IsZero)
@@ -67,7 +69,7 @@ namespace Reko.Evaluation
                 return false;
 
             expression = middleExpression.Left;
-            if (expression is UnaryExpression un && un.Operator == Operator.Neg)
+            if (expression is UnaryExpression un && un.Operator.Type == OperatorType.Neg)
                 expression = un.Expression;
 
             dataType = binExp.DataType;
@@ -94,7 +96,7 @@ namespace Reko.Evaluation
                 if (bin is null)
                     return null;
             }
-            if (bin.Operator != Operator.Ne)
+            if (bin.Operator.Type != OperatorType.Ne)
                 return null;
             return bin;
         }

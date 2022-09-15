@@ -199,7 +199,7 @@ namespace Reko.Typing
         public override Expression VisitArrayAccess(ArrayAccess acc)
         {
             if (acc.Array is BinaryExpression bin &&
-                bin.Operator == Operator.IAdd &&
+                bin.Operator.Type == OperatorType.IAdd &&
                 bin.Right is Constant c)
             {
                 // (x + C)[...]
@@ -221,7 +221,7 @@ namespace Reko.Typing
             var left = Rewrite(binExp.Left, false);
             var right = Rewrite(binExp.Right, false);
 
-            if (binExp.Operator == Operator.IAdd)
+            if (binExp.Operator.Type == OperatorType.IAdd)
             {
                 if (DataTypeOf(left).IsComplex)
                 {
@@ -239,24 +239,19 @@ namespace Reko.Typing
                 }
             }
             var binOp = binExp.Operator;
-            if (binOp == Operator.SMod)
-                binOp = Operator.IMod;
-            else if (binOp == Operator.Uge)
-                binOp = Operator.Ge;
-            else if (binOp == Operator.Ugt)
-                binOp = Operator.Gt;
-            else if (binOp == Operator.Ule)
-                binOp = Operator.Le;
-            else if (binOp == Operator.Ult)
-                binOp = Operator.Lt;
-            else if (binOp == Operator.UMul)
-                binOp = Operator.IMul;
-            else if (binOp == Operator.UMod)
-                binOp = Operator.IMod;
-            else if (binOp == Operator.USub)
-                binOp = Operator.ISub;
-            else if (binOp == Operator.Shr)
-                binOp = Operator.Sar;
+            binOp = binOp.Type switch
+            {
+                OperatorType.SMod => Operator.IMod,
+                OperatorType.Uge => Operator.Ge,
+                OperatorType.Ugt => Operator.Gt,
+                OperatorType.Ule => Operator.Le,
+                OperatorType.Ult => Operator.Lt,
+                OperatorType.UMul => Operator.IMul,
+                OperatorType.UMod => Operator.IMod,
+                OperatorType.USub => Operator.ISub,
+                OperatorType.Shr => Operator.Sar,
+                _ => binOp,
+            };
             binExp = new BinaryExpression(binOp, binExp.DataType, left, right) { TypeVariable = binExp.TypeVariable };
             program.TypeStore.SetTypeVariableExpression(binExp.TypeVariable!, stmCur?.Address, binExp);
             return binExp;

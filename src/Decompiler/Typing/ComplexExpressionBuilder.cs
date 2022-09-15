@@ -399,7 +399,7 @@ namespace Reko.Typing
             this.dereferenceGenerated = true;
             if (basePtr != null)
                 return new MemberPointerSelector(dt, new Dereference(dt, basePtr), e);
-            if (e is UnaryExpression unary && unary.Operator == Operator.AddrOf)
+            if (e is UnaryExpression unary && unary.Operator.Type == OperatorType.AddrOf)
                 return unary.Expression;
             else if (e != null)
                 return new Dereference(dt, e);

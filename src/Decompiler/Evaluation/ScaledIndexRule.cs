@@ -51,7 +51,7 @@ namespace Reko.Evaluation
 
             if (ea is BinaryExpression bin)
             {
-                if (bin.Operator == Operator.IAdd || bin.Operator == Operator.ISub)
+                if (bin.Operator.Type.IsAddOrSub())
                 {
                     if (bin.Left is Identifier idLeft)
                     {

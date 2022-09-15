@@ -62,7 +62,7 @@ namespace Reko.Evaluation
 				}
 			}
             if (binExp.Left is Address a && cRight != null &&
-                (op == Operator.IAdd || op == Operator.ISub))
+                op.Type.IsAddOrSub())
             {
                 addr = a;
                 dtResult = a.DataType;

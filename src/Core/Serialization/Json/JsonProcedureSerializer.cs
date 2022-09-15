@@ -194,7 +194,7 @@ namespace Reko.Core.Serialization.Json
         public void VisitBinaryExpression(BinaryExpression binExp)
         {
             w.Write('[');
-            js.Write(JsonSymbols.OpNames[binExp.Operator]);
+            js.Write(JsonSymbols.OpNames[binExp.Operator.Type]);
             w.Write(',');
             binExp.Left.Accept(this);
             w.Write(',');
@@ -405,7 +405,7 @@ namespace Reko.Core.Serialization.Json
         public void VisitUnaryExpression(UnaryExpression unary)
         {
             w.Write('[');
-            js.Write(JsonSymbols.OpNames[unary.Operator]);
+            js.Write(JsonSymbols.OpNames[unary.Operator.Type]);
             w.Write(',');
             unary.Expression.Accept(this);
             w.Write(']');

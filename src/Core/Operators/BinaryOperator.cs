@@ -28,7 +28,8 @@ namespace Reko.Core.Operators
 {
 	public abstract class BinaryOperator : Operator
 	{
-		public BinaryOperator()
+		public BinaryOperator(OperatorType type)
+            : base(type)
 		{
 		}
 

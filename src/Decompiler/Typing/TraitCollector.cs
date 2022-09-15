@@ -279,7 +279,7 @@ namespace Reko.Typing
 		{
 			acc.Array.Accept(this);
 			acc.Index.Accept(this);
-            if (acc.Index is BinaryExpression b && (b.Operator == Operator.IMul || b.Operator == Operator.SMul || b.Operator == Operator.UMul))
+            if (acc.Index is BinaryExpression b && b.Operator.Type.IsIntMultiplication())
             {
                 if (b.Right is Constant c)
                 {
@@ -326,23 +326,26 @@ namespace Reko.Typing
 			ivCur = null;
 			if (ivLeft != null)
 			{
-				if (binExp.Operator == Operator.SMul || binExp.Operator == Operator.UMul || binExp.Operator == Operator.IMul || binExp.Operator == Operator.Shl)
+				if (binExp.Operator.Type.IsIntMultiplication() || binExp.Operator.Type == OperatorType.Shl)
 					ivCur = MergeInductionVariableConstant(ivLeft, binExp.Operator, binExp.Right as Constant);
 			} 
 
 			TypeVariable tvExp = binExp.TypeVariable!;
             //$BUGBUG: This needs to be redone because the domain of the operation is now in the OPERATOR, not the operands.
-			if (binExp.Operator == Operator.IAdd || 
-				binExp.Operator == Operator.ISub ||
-				binExp.Operator == Operator.And ||
-				binExp.Operator == Operator.Or  ||
-				binExp.Operator == Operator.Xor)
+			switch (binExp.Operator.Type)
+            {
+             
+                case OperatorType.IAdd:
+				case OperatorType.ISub:
+				case OperatorType.And:
+				case OperatorType.Or:
+				case OperatorType.Xor:
 			{
                 return handler.DataTypeTrait(binExp, binExp.DataType);
 			} 
-			else if (binExp.Operator == Operator.SMul ||
-				binExp.Operator == Operator.SDiv ||
-				binExp.Operator == Operator.SMod)
+			case OperatorType.SMul:
+			case OperatorType.SDiv:
+            case OperatorType.SMod:
 			{
                 handler.DataTypeTrait(binExp, MakeNonPointer(binExp.DataType)!);
                 var dt = handler.DataTypeTrait(binExp, binExp.DataType);
@@ -350,10 +353,10 @@ namespace Reko.Typing
 				handler.DataTypeTrait(binExp.Right, PrimitiveType.Create(DomainOf(binExp.DataType), binExp.Right.DataType.BitSize));
                 return dt;
 			}
-			else if (binExp.Operator == Operator.UMul ||
-				binExp.Operator == Operator.UDiv ||
-				binExp.Operator == Operator.UMod ||
-                binExp.Operator == Operator.Shr)
+			case OperatorType.UMul:
+			case OperatorType.UDiv:
+			case OperatorType.UMod:
+            case OperatorType.Shr:
 			{
                 handler.DataTypeTrait(binExp, MakeNonPointer(binExp.DataType));
                 var dt = handler.DataTypeTrait(binExp, MakeUnsigned(binExp.DataType));
@@ -361,40 +364,40 @@ namespace Reko.Typing
 				handler.DataTypeTrait(binExp.Right, MakeUnsigned(binExp.Right.DataType));
                 return dt;
 			}
-			else if (binExp.Operator == Operator.IMul)
+            case OperatorType.IMul:
 			{
                 handler.DataTypeTrait(binExp.Left, MakeIntegral(binExp.Left.DataType));
                 handler.DataTypeTrait(binExp.Right, MakeIntegral(binExp.Right.DataType));
                 return handler.DataTypeTrait(binExp, MakeIntegral(binExp.DataType));
 			}
-			else if (binExp.Operator == Operator.Sar)
+            case OperatorType.Sar:
 			{
 				var dt = handler.DataTypeTrait(binExp, MakeSigned(binExp.DataType));
 				handler.DataTypeTrait(binExp.Left, MakeSigned(binExp.Left.DataType));
 				handler.DataTypeTrait(binExp.Right, MakeUnsigned(binExp.Right.DataType));
                 return dt;
 			}
-			else if (binExp.Operator == Operator.Shl)
+            case OperatorType.Shl:
 			{
                 return handler.DataTypeTrait(binExp, MakeIntegral(binExp.DataType));
 			}
-			else if (binExp.Operator == Operator.IMod)
+            case OperatorType.IMod:
 			{
 				var dt = handler.DataTypeTrait(binExp, binExp.DataType);
 				handler.DataTypeTrait(binExp.Left, binExp.Left.DataType);
 				handler.DataTypeTrait(binExp.Right, binExp.Right.DataType);
                 return dt;
 			}
-			else if (binExp.Operator == Operator.Eq ||
-				binExp.Operator == Operator.Ne)
+            case OperatorType.Eq:
+            case OperatorType.Ne:
 			{
 				handler.EqualTrait(binExp.Left, binExp.Right);
 				return handler.DataTypeTrait(binExp, PrimitiveType.Bool);
 			}
-			else if (binExp.Operator == Operator.Ge ||
-				binExp.Operator == Operator.Gt ||
-				binExp.Operator == Operator.Le ||
-				binExp.Operator == Operator.Lt)
+			case OperatorType.Ge:
+			case OperatorType.Gt:
+			case OperatorType.Le:
+            case OperatorType.Lt:
 			{
 				handler.EqualTrait(binExp.Left, binExp.Right);
 				var dt = handler.DataTypeTrait(binExp, PrimitiveType.Bool);
@@ -402,7 +405,12 @@ namespace Reko.Typing
 				handler.DataTypeTrait(binExp.Right, MakeSigned(binExp.Right.DataType));
                 return dt;
 			}
-			else if (binExp.Operator is RealConditionalOperator)
+            case OperatorType.Feq:
+            case OperatorType.Fne:
+            case OperatorType.Flt:
+            case OperatorType.Fle:
+            case OperatorType.Fge:
+            case OperatorType.Fgt:
 			{
 				handler.EqualTrait(binExp.Left, binExp.Right);
 				var dt = handler.DataTypeTrait(binExp, PrimitiveType.Bool);
@@ -410,10 +418,10 @@ namespace Reko.Typing
 				handler.DataTypeTrait(binExp.Right, PrimitiveType.Create(Domain.Real, binExp.Right.DataType.BitSize));
                 return dt;
 			}
-			else if (binExp.Operator == Operator.Uge ||
-				binExp.Operator == Operator.Ugt ||
-				binExp.Operator == Operator.Ule ||
-				binExp.Operator == Operator.Ult)
+			case OperatorType.Uge:
+			case OperatorType.Ugt:
+			case OperatorType.Ule:
+            case OperatorType.Ult:
 			{
 				handler.EqualTrait(binExp.Left, binExp.Right);
 				var dt = handler.DataTypeTrait(binExp, PrimitiveType.Bool);
@@ -421,10 +429,10 @@ namespace Reko.Typing
 				handler.DataTypeTrait(binExp.Right, MakeNotSigned(binExp.Right.DataType)!);
                 return dt;
 			}
-            else if (binExp.Operator == Operator.FAdd ||
-                binExp.Operator == Operator.FSub ||
-                binExp.Operator == Operator.FMul ||
-                binExp.Operator == Operator.FDiv)
+            case OperatorType.FAdd:
+            case OperatorType.FSub:
+            case OperatorType.FMul:
+            case OperatorType.FDiv:
             {
                 var dt = PrimitiveType.Create(Domain.Real, binExp.DataType.BitSize);
                 handler.DataTypeTrait(binExp, dt);
@@ -432,8 +440,8 @@ namespace Reko.Typing
 				handler.DataTypeTrait(binExp.Right, dt);
                 return dt;
             }
-            else if (binExp.Operator == Operator.Cand ||
-                binExp.Operator == Operator.Cor)
+            case OperatorType.Cand:
+            case OperatorType.Cor:
             {
                 var dt = PrimitiveType.Bool;
                 handler.DataTypeTrait(binExp, dt);
@@ -441,7 +449,9 @@ namespace Reko.Typing
                 handler.DataTypeTrait(binExp.Right, dt);
                 return dt;
             }
-            throw new NotImplementedException("NYI: " + binExp.Operator + " in " + binExp);
+            default:
+                throw new NotImplementedException("NYI: " + binExp.Operator + " in " + binExp);
+            }
 		}
 
 		public DataType? VisitBranch(Branch b)
@@ -624,30 +634,33 @@ namespace Reko.Typing
 		public DataType VisitUnaryExpression(UnaryExpression unary)
 		{
 			unary.Expression.Accept(this);
-			if (unary.Operator == Operator.AddrOf)
+			switch (unary.Operator.Type)
+            {
+            case OperatorType.AddrOf:
 			{
 				return handler.PointerTrait(
                     unary, 
                     unary.DataType.Size,
                     unary.Expression);
 			}
-			else if (unary.Operator == Operator.Neg)
+            case OperatorType.Neg:
 			{
 				handler.DataTypeTrait(unary.Expression, MakeSigned(unary.Expression.DataType)!);
                 return handler.DataTypeTrait(unary, MakeSigned(unary.Expression.DataType)!);
             }
-			else if (unary.Operator == Operator.Comp)
+            case OperatorType.Comp:
 			{
 				return handler.DataTypeTrait(unary, unary.DataType);
 			}
-			else if (unary.Operator == Operator.Not)
+            case OperatorType.Not:
 			{
                 handler.DataTypeTrait(unary.Expression, PrimitiveType.Bool);
                 return handler.DataTypeTrait(unary, PrimitiveType.Bool);
 			}
-			else
+            default:
 				throw new NotImplementedException(string.Format("TraitCollection.UnaryExpression: {0}", unary));
-		}
+		    }
+        }
 
 		#endregion 
 	}

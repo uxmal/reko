@@ -32,27 +32,27 @@ namespace Reko.Structure
     /// </summary>
     public class ProcedurePrettifier : IAbsynVisitor<AbsynStatement>
     {
-        private static HashSet<Operator> compoundableOperators = new HashSet<Operator>
+        private static HashSet<OperatorType> compoundableOperators = new HashSet<OperatorType>
         {
-            Operator.And,
-            Operator.FAdd,
-            Operator.FDiv,
-            Operator.FMul,
-            Operator.FSub,
-            Operator.IAdd,
-            Operator.IMod,
-            Operator.IMul,
-            Operator.ISub,
-            Operator.Or,
-            Operator.Sar,
-            Operator.SDiv,
-            Operator.Shl,
-            Operator.Shr,
-            Operator.SMod,
-            Operator.SMul,
-            Operator.UDiv,
-            Operator.UMod,
-            Operator.USub,
+            OperatorType.And,
+            OperatorType.FAdd,
+            OperatorType.FDiv,
+            OperatorType.FMul,
+            OperatorType.FSub,
+            OperatorType.IAdd,
+            OperatorType.IMod,
+            OperatorType.IMul,
+            OperatorType.ISub,
+            OperatorType.Or,
+            OperatorType.Sar,
+            OperatorType.SDiv,
+            OperatorType.Shl,
+            OperatorType.Shr,
+            OperatorType.SMod,
+            OperatorType.SMul,
+            OperatorType.UDiv,
+            OperatorType.UMod,
+            OperatorType.USub,
         };
 
         private readonly Procedure proc;
@@ -71,7 +71,7 @@ namespace Reko.Structure
             if (ass.Src is BinaryExpression bin && 
                 cmp.Equals(ass.Dst, bin.Left))
             {
-                if (compoundableOperators.Contains(bin.Operator))
+                if (compoundableOperators.Contains(bin.Operator.Type))
                 {
                     return new AbsynCompoundAssignment(ass.Dst, bin);
                 }

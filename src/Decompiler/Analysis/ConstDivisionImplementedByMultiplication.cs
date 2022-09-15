@@ -157,7 +157,7 @@ namespace Reko.Analysis
                 {
                     if (a.Src is BinaryExpression b &&
                         b.Left == idSlice &&
-                        (b.Operator == Operator.Sar || b.Operator == Operator.Shr))
+                        (b.Operator.Type == OperatorType.Sar || b.Operator.Type == OperatorType.Shr))
                     {
                         return b.Right as Constant;
                     }

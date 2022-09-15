@@ -314,7 +314,7 @@ namespace Reko.Scanning
             if (jumpTableFormat is not MemoryAccess mem)
                 return null;
             if (mem.EffectiveAddress is not BinaryExpression sum ||
-                sum.Operator != Operator.IAdd)
+                sum.Operator.Type != OperatorType.IAdd)
                 return null;
             if (sum.Right is not Constant)
                 return null;
@@ -725,14 +725,15 @@ namespace Reko.Scanning
 
         public SlicerResult? VisitBinaryExpression(BinaryExpression binExp, BackwardSlicerContext ctx)
         {
-            if (binExp.Operator == Operator.Eq || binExp.Operator == Operator.Ne)
+            var opType = binExp.Operator.Type;
+            if (opType == OperatorType.Eq || opType == OperatorType.Ne)
             {
                 // Equality comparisons cannot contribute to determining the size
                 // of the jump table; stop processing this instruction.
                 return null;
             }
 
-            if ((binExp.Operator == Operator.Xor || binExp.Operator == Operator.ISub) &&
+            if ((opType == OperatorType.Xor || opType == OperatorType.ISub) &&
                 this.slicer.AreEqual(binExp.Left, binExp.Right))
             {
                 // XOR r,r (or SUB r,r) clears a register. Is it part of a live register?
@@ -763,7 +764,8 @@ namespace Reko.Scanning
             var seRight = binExp.Right.Accept(this, ctx);
             if (seLeft == null && seRight == null)
                 return null;
-            if ((binExp.Operator == Operator.ISub || binExp.Operator == Operator.IAdd) && 
+            //$TODO: addOrSub
+            if ((opType == OperatorType.ISub || opType == OperatorType.IAdd) && 
                 this.Live != null && (ctx.Type & ContextType.Condition) != 0)
             {
                 var domLeft = DomainOf(seLeft!.SrcExpr);
@@ -800,7 +802,7 @@ namespace Reko.Scanning
                     };
                 }
             }
-            else if (binExp.Operator == Operator.And)
+            else if (binExp.Operator.Type == OperatorType.And)
             {
                 this.JumpTableIndex = binExp.Left;
                 this.JumpTableIndexToUse = binExp.Left;
@@ -834,7 +836,7 @@ namespace Reko.Scanning
 
         private SlicerResult FoundBoundaryCheck(BinaryExpression binExp, Expression liveKey)
         {
-            var interval = binExp.Operator == Operator.ISub
+            var interval = binExp.Operator.Type == OperatorType.ISub
                 ? MakeInterval_ISub(liveKey, binExp.Right as Constant)
                 : MakeInterval_IAdd(liveKey, binExp.Right as Constant);
             //$TODO: if jmptableindex and jmptableindextouse not same, inject a statement.

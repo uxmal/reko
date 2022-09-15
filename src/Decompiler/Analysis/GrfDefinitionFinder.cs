@@ -126,7 +126,7 @@ namespace Reko.Analysis
 
         public override void VisitUnaryExpression(UnaryExpression unary)
 		{
-			if (unary != null && unary.Operator == Operator.Not && unary.Expression is Identifier id)
+			if (unary != null && unary.Operator.Type == OperatorType.Not && unary.Expression is Identifier id)
 			{
 				negated = !negated;
 

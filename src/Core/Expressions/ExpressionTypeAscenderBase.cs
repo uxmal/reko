@@ -96,8 +96,9 @@ namespace Reko.Core.Expressions
             DataType dtLeft = binExp.Left.Accept(this);
             DataType dtRight = binExp.Right.Accept(this);
             DataType dt;
-            if (binExp.Operator == Operator.IAdd)
+            switch (binExp.Operator.Type)
             {
+            case OperatorType.IAdd:
                 var dtField = GetPossibleFieldType(dtLeft, dtRight, binExp.Right);
                 if (dtField != null)
                 {
@@ -115,70 +116,70 @@ namespace Reko.Core.Expressions
                         dt = PullSumDataType(dtLeft, dtRight);
                     }
                 }
-            }
-            else if (binExp.Operator == Operator.ISub)
-            {
+                break;
+            case OperatorType.ISub:
                 dt = PullDiffDataType(dtLeft, dtRight, Domain.SignedInt);
-            }
-            else if (binExp.Operator == Operator.USub)
-            {
+                break;
+            case OperatorType.USub:
                 dt = PullDiffDataType(dtLeft, dtRight, Domain.UnsignedInt);
-            }
-            else if (binExp.Operator == Operator.And || 
-                binExp.Operator == Operator.Or)
-            {
+                break;
+            case OperatorType.And:
+            case OperatorType.Or:
                 dt = PrimitiveType.CreateWord(dtLeft.BitSize).MaskDomain(Domain.Boolean | Domain.Integer | Domain.Character);
-            }
-            else if (
-                binExp.Operator == Operator.IMul ||
-                binExp.Operator == Operator.Shl ||
-                binExp.Operator == Operator.IMod)
-            {
+                break;
+            case OperatorType.IMul:
+            case OperatorType.Shl:
+            case OperatorType.IMod:
                 dt = PrimitiveType.CreateWord(binExp.DataType.BitSize).MaskDomain(Domain.Integer);
-            }
-            else if (
-                binExp.Operator == Operator.SMul ||
-                binExp.Operator == Operator.SDiv ||
-                binExp.Operator == Operator.SMod)
-            {
+                break;
+            case OperatorType.SMul:
+            case OperatorType.SDiv:
+            case OperatorType.SMod:
                 dt = PrimitiveType.CreateWord(binExp.DataType.BitSize).MaskDomain(Domain.SignedInt);
-            }
-            else if (
-                binExp.Operator == Operator.UMul ||
-                binExp.Operator == Operator.UDiv ||
-                binExp.Operator == Operator.UMod)
-            {
+                break;
+            case OperatorType.UMul:
+            case OperatorType.UDiv:
+            case OperatorType.UMod:
                 dt = PrimitiveType.CreateWord(binExp.DataType.BitSize).MaskDomain(Domain.UnsignedInt);
-            }
-            else if (binExp.Operator is ConditionalOperator ||
-                binExp.Operator is CorOperator ||
-                binExp.Operator is CandOperator)
-            {
+                break;
+            case OperatorType.Eq:
+            case OperatorType.Ne:
+            case OperatorType.Lt:
+            case OperatorType.Le:
+            case OperatorType.Ge:
+            case OperatorType.Gt:
+            case OperatorType.Ult:
+            case OperatorType.Ule:
+            case OperatorType.Uge:
+            case OperatorType.Ugt:
+            case OperatorType.Feq:
+            case OperatorType.Fne:
+            case OperatorType.Flt:
+            case OperatorType.Fle:
+            case OperatorType.Fge:
+            case OperatorType.Fgt:
+            case OperatorType.Cand:
+            case OperatorType.Cor:
                 dt = PrimitiveType.Bool;
-            }
-            else if (
-                binExp.Operator == Operator.FAdd ||
-                binExp.Operator == Operator.FSub ||
-                binExp.Operator == Operator.FMul ||
-                binExp.Operator == Operator.FDiv)
-            {
+                break;
+            case OperatorType.FAdd:
+            case OperatorType.FSub:
+            case OperatorType.FMul:
+            case OperatorType.FDiv:
                 dt = PrimitiveType.Create(Domain.Real, binExp.DataType.BitSize);
-            }
-            else if (binExp.Operator == Operator.Shr)
-            {
+                break;
+            case OperatorType.Shr:
                 dt = PrimitiveType.Create(Domain.UnsignedInt, dtLeft.BitSize);
-            }
-            else if (binExp.Operator == Operator.Sar)
-            {
+                break;
+            case OperatorType.Sar:
                 dt = PrimitiveType.Create(Domain.SignedInt, dtLeft.BitSize);
-            }
-            else if (binExp.Operator == Operator.Xor ||
-                     binExp.Operator == Operator.Shl)
-            {
+                break;
+            case OperatorType.Xor:
                 dt = PrimitiveType.Create(Domain.Integer, dtLeft.BitSize);
-            }
-            else
+                break;
+            default:
                 throw NYI(binExp);
+            }
             return RecordDataType(dt, binExp);
         }
 
@@ -474,7 +475,7 @@ namespace Reko.Core.Expressions
         public DataType VisitUnaryExpression(UnaryExpression unary)
         {
             var dt = unary.Expression.Accept(this);
-            if (unary.Operator == Operator.AddrOf)
+            if (unary.Operator.Type == OperatorType.AddrOf)
             {
                 dt = factory.CreatePointer(dt, unary.DataType.BitSize);
             }

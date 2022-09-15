@@ -28,6 +28,8 @@ namespace Reko.Core.Operators
     /// </summary>
     public class FMulOperator : BinaryOperator
     {
+        internal FMulOperator() : base(OperatorType.FMul) { }
+
         public override Constant ApplyConstants(Constant c1, Constant c2)
         {
             if (!ValidArgs(c1, c2))

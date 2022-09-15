@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2022 John Källén.
  *
@@ -25,6 +25,8 @@ namespace Reko.Core.Operators
 {
     public class FNegOperator : UnaryOperator
     {
+        internal FNegOperator() : base(OperatorType.FNeg) { }
+
         public override Constant ApplyConstant(Constant c)
         {
             if (c.IsValid)

@@ -26,10 +26,13 @@ namespace Reko.Core.Operators
 {
 	public abstract class UnsignedIntOperator : ConditionalOperator
 	{
+        protected UnsignedIntOperator(OperatorType type) : base(type) { }
 	}
 
 	public class UltOperator : UnsignedIntOperator
 	{
+        internal UltOperator() : base(OperatorType.Ult) { }
+
 		public override Constant ApplyConstants(Constant c1, Constant c2)
 		{
             if (!ValidArgs(c1, c2))
@@ -46,7 +49,9 @@ namespace Reko.Core.Operators
 
     public class UgtOperator : UnsignedIntOperator
 	{
-		public override Constant ApplyConstants(Constant c1, Constant c2)
+        internal UgtOperator() : base(OperatorType.Ugt) { }
+
+        public override Constant ApplyConstants(Constant c1, Constant c2)
 		{
             if (!ValidArgs(c1, c2))
                 return InvalidConstant.Create(c1.DataType);
@@ -62,7 +67,9 @@ namespace Reko.Core.Operators
 
     public class UleOperator : UnsignedIntOperator
 	{
-		public override Constant ApplyConstants(Constant c1, Constant c2)
+        internal UleOperator() : base(OperatorType.Ule) { }
+
+        public override Constant ApplyConstants(Constant c1, Constant c2)
 		{
             if (!ValidArgs(c1, c2))
                 return InvalidConstant.Create(c1.DataType);
@@ -79,7 +86,9 @@ namespace Reko.Core.Operators
 
     public class UgeOperator : UnsignedIntOperator
 	{
-		public override Constant ApplyConstants(Constant c1, Constant c2)
+        internal UgeOperator() : base(OperatorType.Uge) { }
+
+        public override Constant ApplyConstants(Constant c1, Constant c2)
 		{
             if (!ValidArgs(c1, c2))
                 return InvalidConstant.Create(c1.DataType);

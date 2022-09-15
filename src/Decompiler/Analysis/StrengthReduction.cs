@@ -157,7 +157,7 @@ namespace Reko.Analysis
 
             public override void VisitBinaryExpression(BinaryExpression binExp)
             {
-                if (binExp.Operator == Operator.IAdd
+                if (binExp.Operator.Type == OperatorType.IAdd
                     &&
                     binExp.Left == id
                     &&

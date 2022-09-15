@@ -25,11 +25,18 @@ namespace Reko.Core.Operators
 {
 	public abstract class UnaryOperator : Operator
 	{
+        protected UnaryOperator(OperatorType type) : base(type) { }
+
 		public abstract Constant ApplyConstant(Constant c);
 	}
 
+    /// <summary>
+    /// Logical not operator ("!" in C/C++).
+    /// </summary>
 	public class NotOperator : UnaryOperator
 	{
+        internal NotOperator() : base(OperatorType.Not) { }
+
 		public override Constant ApplyConstant(Constant c)
 		{
             return c.IsZero
@@ -45,7 +52,9 @@ namespace Reko.Core.Operators
 
 	public class NegateOperator : UnaryOperator
 	{
-		public override Constant ApplyConstant(Constant c)
+        internal NegateOperator() : base(OperatorType.Neg) { }
+
+        public override Constant ApplyConstant(Constant c)
 		{
             return c.Negate();
 		}
@@ -58,7 +67,9 @@ namespace Reko.Core.Operators
 
 	public class ComplementOperator : UnaryOperator
 	{
-		public override Constant ApplyConstant(Constant c)
+        internal ComplementOperator() : base(OperatorType.Comp) { }
+
+        public override Constant ApplyConstant(Constant c)
 		{
             return c.Complement();
 		}
@@ -71,7 +82,9 @@ namespace Reko.Core.Operators
 
 	public class AddressOfOperator : UnaryOperator
 	{
-		public override Constant ApplyConstant(Constant c)
+        internal AddressOfOperator() : base(OperatorType.AddrOf) { }
+
+        public override Constant ApplyConstant(Constant c)
 		{
 			throw new NotImplementedException();
 		}

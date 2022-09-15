@@ -31,10 +31,10 @@ namespace Reko.Evaluation
 
 		public bool Match(UnaryExpression unary)
 		{
-			if (unary.Operator == Operator.Neg)
+			if (unary.Operator.Type == OperatorType.Neg)
 			{
 				bin = unary.Expression as BinaryExpression;
-				if (bin != null && bin.Operator == Operator.ISub)
+				if (bin != null && bin.Operator.Type == OperatorType.ISub)
 					return true;
 			}
 			return false;

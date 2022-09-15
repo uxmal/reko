@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2022 John Källén.
  *
@@ -27,5 +27,7 @@ namespace Reko.Core.Operators
 {
     public class CommaOperator : BinaryOperator
     {
+        internal CommaOperator() : base(OperatorType.Comma) { }
+
     }
 }

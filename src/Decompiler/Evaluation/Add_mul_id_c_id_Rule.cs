@@ -51,12 +51,12 @@ namespace Reko.Evaluation
             var dt = exp.DataType.ResolveAs<PrimitiveType>();
             if (dt is null)
                 return false;
-            var op = exp.Operator;
-            if (op == Operator.IAdd)
+            var opType = exp.Operator.Type;
+            if (opType== OperatorType.IAdd)
             {
                 cOne = Constant.Create(dt, 1);
             }
-            else if (op == Operator.ISub)
+            else if (opType == OperatorType.ISub)
             {
                 cOne = Constant.Create(dt, -1);
             }
@@ -78,9 +78,9 @@ namespace Reko.Evaluation
 			if (id == null || bin == null)
 				return false;
 
-			if (bin.Operator != Operator.SMul &&
-                bin.Operator != Operator.UMul &&
-                bin.Operator != Operator.IMul)
+			if (bin.Operator.Type != OperatorType.SMul &&
+                bin.Operator.Type != OperatorType.UMul &&
+                bin.Operator.Type != OperatorType.IMul)
 				return false;
 
             cInner = bin.Right as Constant;

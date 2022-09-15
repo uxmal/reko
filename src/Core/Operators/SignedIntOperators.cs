@@ -26,10 +26,13 @@ namespace Reko.Core.Operators
 {
 	public abstract class SignedIntOperator : ConditionalOperator
 	{
+        protected SignedIntOperator(OperatorType type) : base(type) { }
 	}
 
 	public class LtOperator : SignedIntOperator
 	{
+        internal LtOperator() : base(OperatorType.Lt) { }
+
 		public override Constant ApplyConstants(Constant c1, Constant c2)
 		{
             if (!ValidArgs(c1, c2))
@@ -45,7 +48,9 @@ namespace Reko.Core.Operators
 
     public class GtOperator : SignedIntOperator
 	{
-		public override Constant ApplyConstants(Constant c1, Constant c2)
+        internal GtOperator() : base(OperatorType.Gt) { }
+
+        public override Constant ApplyConstants(Constant c1, Constant c2)
 		{
             if (!ValidArgs(c1, c2))
                 return InvalidConstant.Create(c1.DataType);
@@ -60,7 +65,9 @@ namespace Reko.Core.Operators
 
     public class LeOperator : SignedIntOperator
 	{
-		public override Constant ApplyConstants(Constant c1, Constant c2)
+        internal LeOperator() : base(OperatorType.Le) { }
+
+        public override Constant ApplyConstants(Constant c1, Constant c2)
 		{
             if (!ValidArgs(c1, c2))
                 return InvalidConstant.Create(c1.DataType);
@@ -75,7 +82,9 @@ namespace Reko.Core.Operators
 
     public class GeOperator : SignedIntOperator
 	{
-		public override Constant ApplyConstants(Constant c1, Constant c2)
+        internal GeOperator() : base(OperatorType.Ge) { }
+
+        public override Constant ApplyConstants(Constant c1, Constant c2)
 		{
             if (!ValidArgs(c1, c2))
                 return InvalidConstant.Create(c1.DataType);

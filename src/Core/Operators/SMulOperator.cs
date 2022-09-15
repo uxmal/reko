@@ -28,6 +28,8 @@ namespace Reko.Core.Operators
 	/// </summary>
 	public class SMulOperator : IMulOperator
 	{
+        internal SMulOperator() : base(OperatorType.SMul) { }
+
 		public override Constant ApplyConstants(Constant c1, Constant c2)
 		{
             if (!ValidArgs(c1, c2))

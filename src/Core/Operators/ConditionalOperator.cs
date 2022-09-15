@@ -29,6 +29,8 @@ namespace Reko.Core.Operators
     /// </summary>
     public abstract class ConditionalOperator : BinaryOperator
     {
+        protected ConditionalOperator(OperatorType type) : base(type) { }
+
         /// <summary>
         /// Negating a conditional operator "flips" it around 0. Eg. 
         /// negating LT generates GT. This is not the
@@ -39,6 +41,8 @@ namespace Reko.Core.Operators
 
     public class CandOperator : BinaryOperator
 	{
+        internal CandOperator() : base(OperatorType.Cand) { }
+
         public override Constant ApplyConstants(Constant c1, Constant c2)
         {
             if (c1.IsZero)
@@ -54,7 +58,9 @@ namespace Reko.Core.Operators
 
 	public class CorOperator : BinaryOperator
 	{
-		public override Constant ApplyConstants(Constant c1, Constant c2)
+        internal CorOperator() : base(OperatorType.Cor) { }
+
+        public override Constant ApplyConstants(Constant c1, Constant c2)
 		{
 			throw new NotImplementedException();
 		}
@@ -67,7 +73,9 @@ namespace Reko.Core.Operators
 
 	public class EqOperator : ConditionalOperator
 	{
-		public override Constant ApplyConstants(Constant c1, Constant c2)
+        internal EqOperator() : base(OperatorType.Eq) { }
+
+        public override Constant ApplyConstants(Constant c1, Constant c2)
 		{
             if (!ValidArgs(c1, c2))
                 return InvalidConstant.Create(c1.DataType);
@@ -81,6 +89,8 @@ namespace Reko.Core.Operators
 
 	public class NeOperator : ConditionalOperator
 	{
+        internal NeOperator() : base(OperatorType.Ne) { }
+
 		public override Constant ApplyConstants(Constant c1, Constant c2)
 		{
             if (!ValidArgs(c1, c2))

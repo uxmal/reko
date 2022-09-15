@@ -481,7 +481,7 @@ namespace Reko.Analysis
                 if (!IsCarryFlag(adcPattern.CapturedExpressions("cf")))
                     return null;
                 var op = adcPattern.CapturedOperators("op2");
-                if (op is null || !IsIAddOrISub(op))
+                if (op is null || !op.Type.IsAddOrSub())
                     return null;
                 return new AddSubCandidate(
                     op,
@@ -497,7 +497,7 @@ namespace Reko.Analysis
                 if (!IsCarryFlag(addPattern.CapturedExpressions("right")))
                     return null;
                 var op = addPattern.CapturedOperators("op");
-                if (op is null || !IsIAddOrISub(op))
+                if (op is null || !op.Type.IsAddOrSub())
                     return null;
                 var dst = addPattern.CapturedExpressions("dst")!;
                 var left = addPattern.CapturedExpressions("left")!;
@@ -564,7 +564,7 @@ namespace Reko.Analysis
             if (!addPattern.Match(stm.Instruction))
                 return null;
             var op = addPattern.CapturedOperators("op")!;
-            if (!IsIAddOrISub(op))
+            if (!op.Type.IsAddOrSub())
                 return null;
             return new AddSubCandidate(
                 op,
@@ -573,11 +573,6 @@ namespace Reko.Analysis
             {
                 Dst = addPattern.CapturedExpressions("dst")!,
             };
-        }
-
-        private static bool IsIAddOrISub(Operator op)
-        {
-            return (op == Operator.IAdd || op == Operator.ISub);
         }
     }
 

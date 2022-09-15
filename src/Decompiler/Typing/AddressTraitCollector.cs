@@ -107,11 +107,11 @@ namespace Reko.Typing
 			handler.MemAccessTrait(basePointer, access, access.DataType.BitSize, eField!, 0);
 		}
 
-        public void VisitBinaryExpression(BinaryExpression bin) { VisitBinaryExpression(bin.Operator, bin.DataType, bin.Left, bin.Right); }
+        public void VisitBinaryExpression(BinaryExpression bin) { VisitBinaryExpression(bin.Operator.Type, bin.DataType, bin.Left, bin.Right); }
 
-		public void VisitBinaryExpression(Operator op, DataType dataType, Expression left, Expression right)
+		public void VisitBinaryExpression(OperatorType op, DataType dataType, Expression left, Expression right)
 		{
-			if (op == Operator.IAdd || op == Operator.ISub)
+			if (op == OperatorType.IAdd || op == OperatorType.ISub)
 			{
                 // Handle mem[x+const] case. Array accesses of the form
                 // mem[x + (i * const) + const] will have been converted
@@ -119,7 +119,7 @@ namespace Reko.Typing
 
                 if (right is Constant offset)
                 {
-                    if (op == Operator.ISub)
+                    if (op == OperatorType.ISub)
                         offset = offset.Negate();
                     var iv = GetInductionVariable(left);
                     if (iv != null)
@@ -284,7 +284,7 @@ namespace Reko.Typing
 		{
             if (seq.Expressions.Length == 2)
             {
-                VisitBinaryExpression(Operator.IAdd, seq.DataType, seq.Expressions[0], seq.Expressions[1]);
+                VisitBinaryExpression(OperatorType.IAdd, seq.DataType, seq.Expressions[0], seq.Expressions[1]);
             }
             else
             {

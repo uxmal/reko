@@ -82,62 +82,65 @@ namespace Reko.Core.Expressions
 
 		public bool Commutes()
 		{
-			return Commutes(Operator);
+			return Commutes(Operator.Type);
 		}
 
-		public static bool Commutes(Operator op)
+        //$TODO: move to extension class for OperatorType.
+		public static bool Commutes(OperatorType op)
 		{
 			return
-                op == Operators.Operator.IAdd ||
-                op == Operators.Operator.FAdd ||
-                op == Operators.Operator.And ||
-                op == Operators.Operator.SMul ||
-                op == Operators.Operator.UMul ||
-                op == Operators.Operator.IMul ||
-                op == Operators.Operator.FMul ||
-                op == Operators.Operator.Or ||
-                op == Operators.Operator.Xor;
+                op == Operators.OperatorType.IAdd ||
+                op == Operators.OperatorType.FAdd ||
+                op == Operators.OperatorType.And ||
+                op == Operators.OperatorType.SMul ||
+                op == Operators.OperatorType.UMul ||
+                op == Operators.OperatorType.IMul ||
+                op == Operators.OperatorType.FMul ||
+                op == Operators.OperatorType.Or ||
+                op == Operators.OperatorType.Xor;
 		}
 
 		public override Expression Invert()
 		{
-            if (Operator == Operators.Operator.Cand)
+            switch (Operator.Type)
+            {
+            case OperatorType.Cand:
                 return new BinaryExpression(Operators.Operator.Cor, this.DataType, Left.Invert(), Right.Invert());
-            if (Operator == Operators.Operator.Cor)
-                return new BinaryExpression(Operators.Operator.Cand, this.DataType, Left.Invert(), Right.Invert());
-            if (Operator == Operators.Operator.Le)
-                return new BinaryExpression(Operators.Operator.Gt, this.DataType, Left, Right);
-            if (Operator == Operators.Operator.Lt)
-                return new BinaryExpression(Operators.Operator.Ge, this.DataType, Left, Right);
-            if (Operator == Operators.Operator.Ge)
-                return new BinaryExpression(Operators.Operator.Lt, this.DataType, Left, Right);
-            if (Operator == Operators.Operator.Gt)
-                return new BinaryExpression(Operators.Operator.Le, this.DataType, Left, Right);
-            if (Operator == Operators.Operator.Ule)
-                return new BinaryExpression(Operators.Operator.Ugt, this.DataType, Left, Right);
-            if (Operator == Operators.Operator.Ult)
-                return new BinaryExpression(Operators.Operator.Uge, this.DataType, Left, Right);
-            if (Operator == Operators.Operator.Uge)
-                return new BinaryExpression(Operators.Operator.Ult, this.DataType, Left, Right);
-            if (Operator == Operators.Operator.Ugt)
-                return new BinaryExpression(Operators.Operator.Ule, this.DataType, Left, Right);
-            if (Operator == Operators.Operator.Eq)
-                return new BinaryExpression(Operators.Operator.Ne, this.DataType, Left, Right);
-            if (Operator == Operators.Operator.Ne)
-                return new BinaryExpression(Operators.Operator.Eq, this.DataType, Left, Right);
-            if (Operator == Operators.Operator.Feq)
-                return new BinaryExpression(Operators.Operator.Fne, this.DataType, Left, Right);
-            if (Operator == Operators.Operator.Fne)
-                return new BinaryExpression(Operators.Operator.Feq, this.DataType, Left, Right);
-            if (Operator == Operators.Operator.Fle)
-                return new BinaryExpression(Operators.Operator.Fgt, this.DataType, Left, Right);
-            if (Operator == Operators.Operator.Flt)
-                return new BinaryExpression(Operators.Operator.Fge, this.DataType, Left, Right);
-            if (Operator == Operators.Operator.Fge)
-                return new BinaryExpression(Operators.Operator.Flt, this.DataType, Left, Right);
-            if (Operator == Operators.Operator.Fgt)
-                return new BinaryExpression(Operators.Operator.Fle, this.DataType, Left, Right);
-
+            case OperatorType.Cor:
+                return new BinaryExpression(Operator.Cand, this.DataType, Left.Invert(), Right.Invert());
+            case OperatorType.Le:
+                return new BinaryExpression(Operator.Gt, this.DataType, Left, Right);
+            case OperatorType.Lt:
+                return new BinaryExpression(Operator.Ge, this.DataType, Left, Right);
+            case OperatorType.Ge:
+                return new BinaryExpression(Operator.Lt, this.DataType, Left, Right);
+            case OperatorType.Gt:
+                return new BinaryExpression(Operator.Le, this.DataType, Left, Right);
+            case OperatorType.Ule:
+                return new BinaryExpression(Operator.Ugt, this.DataType, Left, Right);
+            case OperatorType.Ult:
+                return new BinaryExpression(Operator.Uge, this.DataType, Left, Right);
+            case OperatorType.Uge:
+                return new BinaryExpression(Operator.Ult, this.DataType, Left, Right);
+            case OperatorType.Ugt:
+                return new BinaryExpression(Operator.Ule, this.DataType, Left, Right);
+            case OperatorType.Eq:
+                return new BinaryExpression(Operator.Ne, this.DataType, Left, Right);
+            case OperatorType.Ne:
+                return new BinaryExpression(Operator.Eq, this.DataType, Left, Right);
+            case OperatorType.Feq:
+                return new BinaryExpression(Operator.Fne, this.DataType, Left, Right);
+            case OperatorType.Fne:
+                return new BinaryExpression(Operator.Feq, this.DataType, Left, Right);
+            case OperatorType.Fle:
+                return new BinaryExpression(Operator.Fgt, this.DataType, Left, Right);
+            case OperatorType.Flt:
+                return new BinaryExpression(Operator.Fge, this.DataType, Left, Right);
+            case OperatorType.Fge:
+                return new BinaryExpression(Operator.Flt, this.DataType, Left, Right);
+            case OperatorType.Fgt:
+                return new BinaryExpression(Operator.Fle, this.DataType, Left, Right);
+            }
             return new UnaryExpression(Operator.Not, PrimitiveType.Bool, this);
         }
 	}

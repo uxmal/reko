@@ -41,16 +41,17 @@ namespace Reko.Evaluation
 
 		public bool Match(BinaryExpression b)
 		{
-			if (b.Operator != Operator.Shl)
+			if (b.Operator.Type != OperatorType.Shl)
 				return false;
 			cShift = b.Right as Constant;
 			if (cShift == null)
 				return false;
 
-            if (!(b.Left is BinaryExpression bLeft))
+            if (b.Left is not BinaryExpression bLeft)
                 return false;
 
-            if (bLeft.Operator != Operator.SMul && bLeft.Operator != Operator.UMul && bLeft.Operator != Operator.IMul)
+            //$TODO: make an OperatorTypeExtensions.IsIntMultiplication
+            if (!bLeft.Operator.Type.IsIntMultiplication())
 				return false;
 			op = bLeft.Operator;
 			cMul = bLeft.Right as Constant;

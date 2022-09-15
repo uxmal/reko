@@ -129,9 +129,9 @@ namespace Reko.Structure
                     !(doWhile.Condition is BinaryExpression doCondBin))
                     return null;
 
-                if (ifCondBin.Operator == Operator.Ne && 
+                if (ifCondBin.Operator.Type == OperatorType.Ne && 
                     ifCondBin.Right is Constant ifConst && ifConst.IsZero &&
-                    doCondBin.Operator == Operator.Gt)
+                    doCondBin.Operator.Type == OperatorType.Gt)
                 {
                     if (cmp.Equals(ifCondBin.Left, doCondBin.Left))
                     {

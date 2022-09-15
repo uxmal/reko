@@ -64,7 +64,7 @@ namespace Reko.Environments.MacOS.OSX.ArchSpecific
                 load.Src is MemoryAccess gotslot)
             {
                 if (gotslot.EffectiveAddress is BinaryExpression bin &&
-                    bin.Operator == Operator.IAdd &&
+                    bin.Operator.Type == OperatorType.IAdd &&
                     bin.Left == idPage &&
                     bin.Right is Constant offset)
                 {

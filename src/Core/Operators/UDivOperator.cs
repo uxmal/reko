@@ -28,7 +28,9 @@ namespace Reko.Core.Operators
 {
 	public class UDivOperator : BinaryOperator
 	{
-		public override Constant ApplyConstants(Constant c1, Constant c2)
+        internal UDivOperator() : base(OperatorType.UDiv) { }
+
+        public override Constant ApplyConstants(Constant c1, Constant c2)
 		{
             if (!ValidArgs(c1, c2))
                 return InvalidConstant.Create(c1.DataType);

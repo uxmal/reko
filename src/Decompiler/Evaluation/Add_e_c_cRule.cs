@@ -43,11 +43,6 @@ namespace Reko.Evaluation
 			this.ctx = ctx;
 		}
 
-		private bool IsAddOrSub(Operator op)
-		{
-			return op == Operator.IAdd || op == Operator.ISub;
-		}
-
 		public bool Match(BinaryExpression binExp, Expression left, Expression right)
 		{
 			bin = binExp;
@@ -60,20 +55,20 @@ namespace Reko.Evaluation
 			cRight = right as Constant;
 			if (cRight == null)
 				return false;
-			if (!IsAddOrSub(binExp.Operator))
+			if (!binExp.Operator.Type.IsAddOrSub())
 				return false;
 			return (!cRight.IsReal && !cRight.IsReal);
 		}
 
 		public Expression Transform(Statement stm)
 		{
-			if (binLeft!.Operator == Operator.ISub)
+			if (binLeft!.Operator.Type == OperatorType.ISub)
 				cLeftRight = cLeftRight!.Negate();
-			if (bin!.Operator == Operator.ISub)
+			if (bin!.Operator.Type == OperatorType.ISub)
 				cRight = cRight!.Negate();
 
 			BinaryOperator op = Operator.IAdd;
-			Constant c = ExpressionSimplifier.SimplifyTwoConstants(op, cLeftRight!, cRight!);
+			Constant c = op.ApplyConstants(cLeftRight!, cRight!);
 			if (c.IsNegative)
 			{
 				c = c.Negate();

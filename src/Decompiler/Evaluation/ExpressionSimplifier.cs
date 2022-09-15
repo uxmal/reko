@@ -117,28 +117,24 @@ namespace Reko.Evaluation
             this.scaledIndexRule = new ScaledIndexRule(ctx);
         }
 
-        private bool IsAddOrSub(Operator op)
+        //$REVIEW: consider moving these predicates to OperatorTypeExtensions
+        private bool IsIntComparison(OperatorType op)
         {
-            return op == Operator.IAdd || op == Operator.ISub;
+            return op == OperatorType.Eq || op == OperatorType.Ne ||
+                   op == OperatorType.Ge || op == OperatorType.Gt ||
+                   op == OperatorType.Le || op == OperatorType.Lt ||
+                   op == OperatorType.Uge || op == OperatorType.Ugt ||
+                   op == OperatorType.Ule || op == OperatorType.Ult;
         }
 
-        private bool IsIntComparison(Operator op)
+        private bool IsFloatComparison(OperatorType op)
         {
-            return op == Operator.Eq || op == Operator.Ne ||
-                   op == Operator.Ge || op == Operator.Gt ||
-                   op == Operator.Le || op == Operator.Lt ||
-                   op == Operator.Uge || op == Operator.Ugt ||
-                   op == Operator.Ule || op == Operator.Ult;
+            return op == OperatorType.Feq || op == OperatorType.Fne ||
+                   op == OperatorType.Fge || op == OperatorType.Fgt ||
+                   op == OperatorType.Fle || op == OperatorType.Flt;
         }
 
-        private bool IsFloatComparison(Operator op)
-        {
-            return op == Operator.Feq || op == Operator.Fne ||
-                   op == Operator.Fge || op == Operator.Fgt ||
-                   op == Operator.Fle || op == Operator.Flt;
-        }
-
-        public static Constant SimplifyTwoConstants(BinaryOperator op, Constant l, Constant r)
+        public static Constant ApplyConstants(BinaryOperator op, Constant l, Constant r)
         {
             return op.ApplyConstants(l, r);
         }
@@ -355,7 +351,7 @@ namespace Reko.Evaluation
             bool changed = lChanged | rChanged;
             Constant? cLeft = left as Constant;
             Constant? cRight = right as Constant;
-            if (cLeft != null && BinaryExpression.Commutes(binExp.Operator))
+            if (cLeft != null && BinaryExpression.Commutes(binExp.Operator.Type))
             {
                 cRight = cLeft; left = right; right = cLeft;
             }
@@ -368,7 +364,7 @@ namespace Reko.Evaluation
             {
                 // (- X 0) ==> X
                 // (+ X 0) ==> X
-                if (cRight.IsIntegerZero && IsAddOrSub(binExp.Operator))
+                if (cRight.IsIntegerZero && binExp.Operator.Type.IsAddOrSub())
                 {
                     //$HACK: we neglected to zero-extend Carry flags in adc/sbc
                     // type instructions, and here it bites us. Work around by
@@ -380,7 +376,7 @@ namespace Reko.Evaluation
                     }
                     return (left, true);
                 }
-                if (binExp.Operator == Operator.Or)
+                if (binExp.Operator.Type == OperatorType.Or)
                 {
                     if (cRight.IsIntegerZero)
                     {
@@ -393,7 +389,7 @@ namespace Reko.Evaluation
                         return (right, true);
                     }
                 }
-                if (binExp.Operator == Operator.And)
+                if (binExp.Operator.Type == OperatorType.And)
                 {
                     if (cRight.IsIntegerZero && sameBitsize && !CriticalInstruction.IsCritical(left))
                     {
@@ -405,7 +401,7 @@ namespace Reko.Evaluation
                         return (left, true);
                     }
                 }
-                if (binExp.Operator == Operator.Xor)
+                if (binExp.Operator.Type == OperatorType.Xor)
                 {
                     if (cRight.IsIntegerZero)
                     {
@@ -417,12 +413,12 @@ namespace Reko.Evaluation
                         return (e, true);
                     }
                 }
-                if (binExp.Operator == Operator.IAdd)
+                if (binExp.Operator.Type == OperatorType.IAdd)
                 {
                     if (!cRight.IsReal && cRight.IsIntegerOne)
                     {
                         if (left is UnaryExpression u &&
-                            u.Operator == Operator.Comp)
+                            u.Operator.Type == OperatorType.Comp)
                         {
                             var (e, _) = m.Neg(u.Expression).Accept(this);
                             return (e, true);
@@ -446,11 +442,11 @@ namespace Reko.Evaluation
 
             // (rel? id1 c) should just pass.
 
-            if (IsIntComparison(binExp.Operator) && cRight != null && idLeft != null)
+            if (IsIntComparison(binExp.Operator.Type) && cRight != null && idLeft != null)
                 return (binExp!, changed);
 
             // Floating point expressions with "integer" constants 
-            if (IsFloatComparison(binExp.Operator) && IsNonFloatConstant(cRight))
+            if (IsFloatComparison(binExp.Operator.Type) && IsNonFloatConstant(cRight))
             {
                 cRight = ctx.ReinterpretAsFloat(cRight!);
                 right = cRight;
@@ -472,8 +468,9 @@ namespace Reko.Evaluation
 
             if (binLeft != null && cLeftRight != null && cRight != null)
             {
-                if (IsAddOrSub(binExp.Operator) && IsAddOrSub(binLeft.Operator) &&
-                !cLeftRight.IsReal && !cRight.IsReal)
+                if (binExp.Operator.Type.IsAddOrSub() &&
+                    binLeft.Operator.Type.IsAddOrSub() &&
+                    !cLeftRight.IsReal && !cRight.IsReal)
                 {
                     var binOperator = binExp.Operator;
                     Constant c;
@@ -490,7 +487,7 @@ namespace Reko.Evaluation
                         else
                         {
                             binOperator =
-                                binOperator == Operator.IAdd
+                                binOperator.Type == OperatorType.IAdd
                                     ? Operator.ISub
                                     : Operator.IAdd;
                             c = Operator.ISub.ApplyConstants(cLeftRight, cRight);
@@ -500,7 +497,7 @@ namespace Reko.Evaluation
                         return (binLeft.Left, true);
                     return (new BinaryExpression(binOperator, binExp.DataType, binLeft.Left, c), true);
                 }
-                if (binExp.Operator == Operator.IMul && binLeft.Operator == Operator.IMul)
+                if (binExp.Operator.Type == OperatorType.IMul && binLeft.Operator.Type == OperatorType.IMul)
                 {
                     var c = Operator.IMul.ApplyConstants(cLeftRight, cRight);
                     if (c.IsIntegerZero && !CriticalInstruction.IsCritical(binLeft))
@@ -518,9 +515,9 @@ namespace Reko.Evaluation
             // (rel (- c e) 0 => (rel -c e) => (rel.Negate e c)
 
             if (binLeft != null && cRight != null && cRight.IsIntegerZero &&
-                IsIntComparison(binExp.Operator) &&
+                IsIntComparison(binExp.Operator.Type) &&
                 binLeft.Left is Constant cBinLeft &&
-                binLeft.Operator == Operator.ISub)
+                binLeft.Operator.Type == OperatorType.ISub)
             {
                 return (new BinaryExpression(
                     ((ConditionalOperator) binExp.Operator).Negate(),
@@ -532,26 +529,26 @@ namespace Reko.Evaluation
             // (rel (- e c1) c2) => (rel e c1+c2)
 
             if (binLeft != null && cLeftRight != null && cRight != null &&
-                IsIntComparison(binExp.Operator) && IsAddOrSub(binLeft.Operator) &&
+                IsIntComparison(binExp.Operator.Type) && binLeft.Operator.Type.IsAddOrSub() &&
                 !cLeftRight.IsReal && !cRight.IsReal)
             {
                 // (>u (- e c1) c2) => (>u e c1+c2) || (<u e c2)
-                if (binExp.Operator == Operator.Ugt &&
-                    binLeft.Operator == Operator.ISub &&
+                if (binExp.Operator.Type == OperatorType.Ugt &&
+                    binLeft.Operator.Type == OperatorType.ISub &&
                     !cRight.IsIntegerZero)
                 {
                     ctx.UseExpression(binLeft.Left);
-                    var c = ExpressionSimplifier.SimplifyTwoConstants(Operator.IAdd, cLeftRight, cRight);
+                    var c = Operator.IAdd.ApplyConstants(cLeftRight, cRight);
                     return (m.Cor(
                         new BinaryExpression(binExp.Operator, PrimitiveType.Bool, binLeft.Left, c),
-                        new BinaryExpression(Operator.Ult, PrimitiveType.Bool, binLeft.Left, cLeftRight)),
+                        m.Ult(binLeft.Left, cLeftRight)),
                         true);
                 }
                 else
                 {
                     ctx.RemoveIdentifierUse(idLeft!);
-                    var op = binLeft.Operator == Operator.IAdd ? Operator.ISub : Operator.IAdd;
-                    var c = ExpressionSimplifier.SimplifyTwoConstants(op, cLeftRight, cRight);
+                    var op = binLeft.Operator.Type == OperatorType.IAdd ? Operator.ISub : Operator.IAdd;
+                    var c = op.ApplyConstants(cLeftRight, cRight);
                     return (new BinaryExpression(binExp.Operator, PrimitiveType.Bool, binLeft.Left, c), true);
                 }
             }
@@ -630,7 +627,7 @@ namespace Reko.Evaluation
             {
                 if (right is Constant cRight && cRight.IsIntegerZero &&
                     left is BinaryExpression binLeft &&
-                    binLeft.Operator == Operator.Or)
+                    binLeft.Operator.Type == OperatorType.Or)
                 {
                     var leftSlice = AsSlice(binLeft.Left);
                     var rightSlice = AsSlice(binLeft.Right);
@@ -642,7 +639,7 @@ namespace Reko.Evaluation
                 return (null, null, null);
             }
 
-            if (binExp.Operator != Operator.Eq && binExp.Operator != Operator.Ne)
+            if (binExp.Operator.Type != OperatorType.Eq && binExp.Operator.Type != OperatorType.Ne)
                 return null;
             var (or, left, right) = MatchOr(binExp.Left, binExp.Right);
             if (or is null)
@@ -716,16 +713,16 @@ namespace Reko.Evaluation
 
         private Expression? ShiftLeftShiftRight(BinaryExpression bin, Constant? cRight)
         {
-            if (cRight == null)
+            if (cRight is null)
                 return null;
             if (bin.Left is BinaryExpression binInner)
             {
                 DataType dtConvert;
-                if (bin.Operator == Operator.Shr)
+                if (bin.Operator.Type == OperatorType.Shr)
                 {
                     dtConvert = binInner.DataType;
                 }
-                else if (bin.Operator == Operator.Sar)
+                else if (bin.Operator.Type == OperatorType.Sar)
                 {
                     dtConvert = PrimitiveType.Create(Domain.SignedInt, binInner.DataType.BitSize);
                 }
@@ -734,7 +731,7 @@ namespace Reko.Evaluation
                     return null;
                 }
 
-                if (binInner.Operator == Operator.Shl &&
+                if (binInner.Operator.Type == OperatorType.Shl &&
                     binInner.Right is Constant cInnerRight &&
                     cmp.Equals(cRight, cInnerRight))
                 {
@@ -748,12 +745,12 @@ namespace Reko.Evaluation
 
         private Expression? SumDiffOfShifts(BinaryExpression bin)
         {
-            if (IsAddOrSub(bin.Operator) &&
+            if (bin.Operator.Type.IsAddOrSub() &&
                 bin.Left is BinaryExpression left &&
-                left.Operator == Operator.Shl &&
+                left.Operator.Type == OperatorType.Shl &&
                 left.Right is Constant cLeft &&
                 bin.Right is BinaryExpression right &&
-                right.Operator == Operator.Shl &&
+                right.Operator.Type == OperatorType.Shl &&
                 right.Right is Constant cRight &&
                 cmp.Equals(left.Left, right.Left))
             {
@@ -761,7 +758,7 @@ namespace Reko.Evaluation
                 var shRight = 1 << cRight.ToInt32();
                 ctx.RemoveExpressionUse(right.Left);
                 return m.IMul(left.Left,
-                    bin.Operator == Operator.IAdd
+                    bin.Operator.Type == OperatorType.IAdd
                         ? shLeft + shRight
                         : shLeft - shRight);
             }
@@ -770,7 +767,7 @@ namespace Reko.Evaluation
 
         private Expression? SumDiffProducts(BinaryExpression bin)
         {
-            if (IsAddOrSub(bin.Operator) &&
+            if (bin.Operator.Type.IsAddOrSub() &&
                 bin.Left is BinaryExpression left &&
                 left.Operator is IMulOperator &&
                 left.Right is Constant cLeft &&
@@ -786,7 +783,7 @@ namespace Reko.Evaluation
                     left.Left,
                     Constant.Create(
                         left.DataType,
-                        bin.Operator == Operator.IAdd
+                        bin.Operator.Type == OperatorType.IAdd
                             ? mLeft + mRight
                             : mLeft - mRight));
             }
@@ -795,7 +792,7 @@ namespace Reko.Evaluation
 
         private Expression? ShiftRightShiftLeft(BinaryExpression bin)
         {
-            if (bin.Operator != Operator.Shl || bin.Right is not Constant cRight)
+            if (bin.Operator.Type != OperatorType.Shl || bin.Right is not Constant cRight)
                 return null;
             if (bin.Left is Identifier idLeft)
             {
@@ -803,7 +800,7 @@ namespace Reko.Evaluation
                 if (innerExp is null)
                     return null;
                 if (innerExp is BinaryExpression binInner && 
-                    (binInner.Operator == Operator.Shr || binInner.Operator == Operator.Sar) &&
+                    (binInner.Operator.Type == OperatorType.Shr || binInner.Operator.Type == OperatorType.Sar) &&
                     cmp.Equals(cRight, binInner.Right))
                 {
                     ctx.RemoveExpressionUse(idLeft);
@@ -820,6 +817,7 @@ namespace Reko.Evaluation
         }
 
 
+        //$TODO: rename to 'ApplyConstants'
         public static Constant SimplifyTwoConstants(Operator op, Constant l, Constant r)
         {
             PrimitiveType lType = (PrimitiveType) l.DataType;
@@ -1175,14 +1173,14 @@ namespace Reko.Evaluation
             if (seq.Expressions.Length < 2)
                 return null;
             var eLast = seq.Expressions[^1];
-            if (eLast is UnaryExpression un && un.Operator == Operator.Neg)
+            if (eLast is UnaryExpression un && un.Operator.Type == OperatorType.Neg)
             {
                 var eFirst = seq.Expressions[^2];
                 var negated = un.Expression;
                 if (eFirst is BinaryExpression bin && 
-                    bin.Operator == Operator.ISub &&
+                    bin.Operator.Type == OperatorType.ISub &&
                     (bin.Left.IsZero ||
-                     bin.Left is UnaryExpression un2 && un2.Operator == Operator.Neg && un2.Expression.IsZero) &&
+                     bin.Left is UnaryExpression un2 && un2.Operator.Type == OperatorType.Neg && un2.Expression.IsZero) &&
                     bin.Right is BinaryExpression binRight &&
                     binRight.Left == negated &&
                     binRight.Right.IsZero)
@@ -1273,12 +1271,12 @@ namespace Reko.Evaluation
             {
                 if (bin.Right is Constant c)
                 {
-                    if (bin.Operator == Operator.IAdd)
+                    if (bin.Operator.Type == OperatorType.IAdd)
                     {
                         offset = c.ToInt64();
                         eaStripped = bin.Left;
                     }
-                    else if (bin.Operator == Operator.ISub)
+                    else if (bin.Operator.Type == OperatorType.ISub)
                     {
                         offset = -c.ToInt64();
                         eaStripped = bin.Left;
@@ -1431,7 +1429,7 @@ namespace Reko.Evaluation
                 if (exps[i] is BinaryExpression bin)
                 {
                     var op = bin.Operator;
-                    if ((op == Operator.And || op == Operator.Or || op == Operator.Xor) &&
+                    if ((op.Type == OperatorType.And || op.Type == OperatorType.Or || op.Type == OperatorType.Xor) &&
                         (opPrev is null || opPrev == op))
                     {
                         bins[i] = bin;
@@ -1675,24 +1673,21 @@ namespace Reko.Evaluation
 
         private static bool CanBeSliced(Slice slice, BinaryExpression bin)
         {
-            if (
-                bin.Operator == Operator.And ||
-                bin.Operator == Operator.Or ||
-                bin.Operator == Operator.Xor)
+            return bin.Operator.Type switch
             {
-                return true;
-            }
+                OperatorType.And or
+                OperatorType.Or or
+                OperatorType.Xor => true,
 
-            if (bin.Operator == Operator.IAdd ||
-                bin.Operator == Operator.ISub ||
-                bin.Operator == Operator.Shl ||
-                bin.Operator == Operator.IMul ||
-                bin.Operator == Operator.UMul ||
-                bin.Operator == Operator.SMul)
-            {
-                return slice.Offset == 0;
-            }
-            return false;
+                OperatorType.IAdd or 
+                OperatorType.ISub or 
+                OperatorType.Shl or 
+                OperatorType.IMul or 
+                OperatorType.UMul or 
+                OperatorType.SMul => slice.Offset == 0,
+
+                _ => false,
+            };
         }
 
         public virtual (Expression, bool) VisitTestCondition(TestCondition tc)
@@ -1719,7 +1714,7 @@ namespace Reko.Evaluation
                 return (logicalNotFollowedByNeg.Transform(), true);
             }
 
-            if (unary.Expression is Constant c && c.IsValid && unary.Operator != Operator.AddrOf)
+            if (unary.Expression is Constant c && c.IsValid && unary.Operator.Type != OperatorType.AddrOf)
             {
                 var c2 = unary.Operator.ApplyConstant(c);
                 return (c2, true);

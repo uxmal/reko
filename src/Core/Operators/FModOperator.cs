@@ -25,6 +25,8 @@ namespace Reko.Core.Operators
 {
     public class FModOperator : BinaryOperator
     {
+        internal FModOperator() : base(OperatorType.FMod) { }
+
         public override Constant ApplyConstants(Constant c1, Constant c2)
         {
             if (!ValidArgs(c1, c2))

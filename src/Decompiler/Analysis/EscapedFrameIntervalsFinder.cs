@@ -301,12 +301,12 @@ namespace Reko.Analysis
                 return false;
             if (bin.Right is not Constant c)
                 return false;
-            if (bin.Operator == Operator.ISub)
+            if (bin.Operator.Type == OperatorType.ISub)
             {
                 offset = -c.ToInt32();
                 return true;
             }
-            if (bin.Operator == Operator.IAdd)
+            if (bin.Operator.Type == OperatorType.IAdd)
             {
                 offset = c.ToInt32();
                 return true;
@@ -452,15 +452,13 @@ namespace Reko.Analysis
 
                 if (
                     ea is BinaryExpression bin &&
-                    (
-                        bin.Operator == Operator.IAdd ||
-                        bin.Operator == Operator.ISub) &&
+                    bin.Operator.Type.IsAddOrSub() &&
                     bin.Left is Identifier idLeft)
                 {
                     if (bin.Right is Constant cOffset)
                     {
                         offset = cOffset.ToInt32();
-                        if (bin.Operator == Operator.ISub)
+                        if (bin.Operator.Type == OperatorType.ISub)
                             offset = -offset;
                         @base = idLeft;
                         return true;

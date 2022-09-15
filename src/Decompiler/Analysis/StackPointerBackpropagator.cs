@@ -123,8 +123,8 @@ namespace Reko.Analysis
                 return noMatch;
             if (ass.Src is not BinaryExpression bin)
                 return noMatch;
-            if (bin.Operator != Operator.IAdd &&
-                bin.Operator != Operator.ISub)
+            if (bin.Operator.Type != OperatorType.IAdd &&
+                bin.Operator.Type != OperatorType.ISub)
                 return noMatch;
             if (bin.Left is not Identifier id)
                 return noMatch;
@@ -133,7 +133,7 @@ namespace Reko.Analysis
             if (bin.Right is not Constant c)
                 return noMatch;
             var offset = c.ToInt32();
-            if (bin.Operator == Operator.ISub)
+            if (bin.Operator.Type == OperatorType.ISub)
                 offset = -offset;
             return (id, offset);
         }

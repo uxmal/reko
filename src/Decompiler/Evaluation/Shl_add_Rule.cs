@@ -48,9 +48,9 @@ namespace Reko.Evaluation
         public bool Match(BinaryExpression b)
         {
             this.op = b.Operator;
-            if (op == Operator.IAdd)
+            if (op.Type == OperatorType.IAdd)
                 factor = 1;
-            else if (op == Operator.ISub)
+            else if (op.Type == OperatorType.ISub)
                 factor = -1;
             else
                 return false;
@@ -61,7 +61,7 @@ namespace Reko.Evaluation
                 bin = b.Right as BinaryExpression;
                 id = b.Left as Identifier;
             }
-            if (bin == null || bin.Left != id || bin.Operator != Operator.Shl)
+            if (bin is null || bin.Left != id || bin.Operator.Type != OperatorType.Shl)
                 return false;
             this.c = bin.Right as Constant;
             this.dt = b.DataType;

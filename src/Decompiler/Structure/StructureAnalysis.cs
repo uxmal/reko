@@ -727,11 +727,11 @@ all other cases, together they constitute a Switch[].
                 bin.Right is Constant offset &&
                 offset.IsValid)
             {
-                if (bin.Operator == Operator.IAdd)
+                if (bin.Operator.Type == OperatorType.IAdd)
                 {
                     return (bin.Left, -offset.ToInt64());
                 }
-                else if (bin.Operator == Operator.ISub)
+                else if (bin.Operator.Type == OperatorType.ISub)
                 {
                     return (bin.Left, offset.ToInt64());
                 }

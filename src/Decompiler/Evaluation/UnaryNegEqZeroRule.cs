@@ -36,13 +36,13 @@ namespace Reko.Evaluation
 
         public bool Match(BinaryExpression binExp)
         {
-            if (binExp.Operator != Operator.Eq)
+            if (binExp.Operator.Type != OperatorType.Eq)
                 return false;
 
             if (!binExp.Right.IsZero)
                 return false;
 
-            if (!(binExp.Left is UnaryExpression unary) || unary.Operator != Operator.Neg)
+            if (binExp.Left is not UnaryExpression unary || unary.Operator.Type != OperatorType.Neg)
                 return false;
 
             expression = unary.Expression;

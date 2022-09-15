@@ -100,7 +100,7 @@ namespace Reko.Analysis
             {
                 testValue = Operator.IAdd.ApplyConstants(testValue, ctx.DeltaValue!);
             }
-            Identifier idNew = (Identifier) ((Assignment) ctx.DeltaStatement!.Instruction).Dst;
+            Identifier idNew = ((Assignment) ctx.DeltaStatement!.Instruction).Dst;
             if (!IsSingleUsingStatement(ctx.TestStatement!, idNew))
             {
                 if (!(IsSingleUsingStatement(ctx.PhiStatement!, idNew) &&
@@ -129,8 +129,9 @@ namespace Reko.Analysis
         {
             if (op is null)
                 return false;
-            return op == Operator.Le || op == Operator.Ge ||
-                   op == Operator.Ule || op == Operator.Uge;
+            var opType = op.Type;
+            return opType == OperatorType.Le || opType == OperatorType.Ge ||
+                   opType == OperatorType.Ule || opType == OperatorType.Uge;
         }
 
 		public bool DominatesAllUses(Statement? stm, Identifier id)
@@ -211,14 +212,14 @@ namespace Reko.Analysis
                 if (sid.DefStatement.Instruction is not Assignment ass)
                     continue;
                 if (ass.Src is BinaryExpression bin && 
-                    (bin.Operator == Operator.IAdd || bin.Operator == Operator.ISub))
+                    bin.Operator.Type.IsAddOrSub())
                 {
                     if (bin.Left is Identifier idLeft && IsSccMember(idLeft, sids))
                     {
                         if (bin.Right is Constant c)
                         {
                             ctx.DeltaStatement = sid.DefStatement;
-                            ctx.DeltaValue = (bin.Operator == Operator.ISub)
+                            ctx.DeltaValue = (bin.Operator.Type == OperatorType.ISub)
                                 ? c.Negate()
                                 : c;
                             return ctx.DeltaValue;
