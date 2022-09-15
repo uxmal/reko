@@ -577,8 +577,8 @@ T_4 (in SEQ(SLICE(a, word24, 8), b) : word32)
 
         public DataType DataTypeTrait(Expression exp, DataType p)
         {
-            if (p == null)
-                throw new ArgumentNullException("p");
+            if (p is null)
+                throw new ArgumentNullException(nameof(p));
             Traits.AddTrait(exp.TypeVariable, new TraitDataType(p));
             return p;
         }

@@ -61,7 +61,7 @@ namespace Reko.Arch.X86
             IStorageBinder binder)
         {
             this.arch = arch;
-            this.host = host ?? throw new ArgumentNullException("host");
+            this.host = host ?? throw new ArgumentNullException(nameof(host));
             this.state = state;
             this.rdr = rdr;
             this.binder = binder;

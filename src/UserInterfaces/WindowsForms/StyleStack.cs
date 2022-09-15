@@ -39,7 +39,7 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
 
         public StyleStack(IUiPreferencesService uiPrefSvc)
         {
-            if (uiPrefSvc == null) throw new ArgumentNullException("uiPrefSvc");
+            if (uiPrefSvc is null) throw new ArgumentNullException(nameof(uiPrefSvc));
             this.uiPrefSvc = uiPrefSvc;
             this.stack = new List<string[]>();
         }

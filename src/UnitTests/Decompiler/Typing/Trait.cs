@@ -149,8 +149,8 @@ namespace Reko.UnitTests.Decompiler.Typing
 			this.ElementSize = elementSize;
 			this.Length = length;
 			this.AccessType = tAccess;
-			if (tAccess == null) 
-				throw new ArgumentNullException("tAccess");
+			if (tAccess is null) 
+				throw new ArgumentNullException(nameof(tAccess));
 		}
 
 		public override string ToString()

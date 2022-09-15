@@ -254,8 +254,8 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
 
         public int MoveToLine(object position, int offset)
         {
-            if (position == null)
-                throw new ArgumentNullException("position");
+            if (position is null)
+                throw new ArgumentNullException(nameof(position));
             curPos = SanitizePosition((ModelPosition)position);
             if (offset == 0)
                 return 0;

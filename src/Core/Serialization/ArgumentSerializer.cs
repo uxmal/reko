@@ -40,10 +40,10 @@ namespace Reko.Core.Serialization
                 return null;
             if (arg.DataType == null)
                 throw new ArgumentNullException("arg.DataType");
-            Argument_v1 sarg = new Argument_v1 
+            var sarg = new Argument_v1 
             {
 			    Name = arg.Name,
-			    Kind = arg.Storage != null ? arg.Storage.Serialize() : null,
+			    Kind = arg.Storage?.Serialize(),
                 OutParameter = arg.Storage is OutArgumentStorage,
                 Type = arg.DataType.Accept(new DataTypeSerializer()),
             };

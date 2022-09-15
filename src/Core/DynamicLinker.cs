@@ -54,7 +54,7 @@ namespace Reko.Core
 
         public DynamicLinker(Project project, Program program, DecompilerEventListener eventListener)
         {
-            this.project = project ?? throw new ArgumentNullException("project");
+            this.project = project ?? throw new ArgumentNullException(nameof(project));
             this.program = program;
             this.eventListener = eventListener;
             this.localProcs = program.ImageSymbols.Values

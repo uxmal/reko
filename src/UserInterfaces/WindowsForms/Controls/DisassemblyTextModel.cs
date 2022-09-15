@@ -52,11 +52,11 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
 
         public DisassemblyTextModel(Program program, ImageSegment segment)
         {
-            this.program = program ?? throw new ArgumentNullException("program");
-            if (segment == null)
-                throw new ArgumentNullException("segment");
+            this.program = program ?? throw new ArgumentNullException(nameof(program));
+            if (segment is null)
+                throw new ArgumentNullException(nameof(segment));
             if (segment.MemoryArea == null)
-                throw new ArgumentException("segment", "ImageSegment must have a valid memory area.");
+                throw new ArgumentException(nameof(segment), "ImageSegment must have a valid memory area.");
             this.mem = segment.MemoryArea;
 
             this.addrStart = Address.Max(segment.Address, mem.BaseAddress);
@@ -179,9 +179,9 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
         public void SetPositionAsFraction(int numerator, int denominator)
         {
             if (denominator <= 0)
-                throw new ArgumentException("denominator");
+                throw new ArgumentOutOfRangeException(nameof(denominator));
             if (numerator < 0 || numerator > denominator)
-                throw new ArgumentException("numerator");
+                throw new ArgumentOutOfRangeException(nameof(numerator));
             long offset = offsetStart + Math.BigMul(numerator, (int)mem.Length) / denominator;
             offset = Math.Max(offsetStart, offset);
             offset = Math.Min(offsetEnd - 1, offset);
@@ -252,7 +252,7 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
 
         public class AddressTextSpan : TextSpan
         {
-            private string txtAddress;
+            private readonly string txtAddress;
 
             public AddressTextSpan(Address address, string addrAsText)
             {

@@ -37,7 +37,7 @@ namespace Reko.Core.Code
     {
         public CallInstruction(Expression callee, CallSite site)
         {
-            this.Callee = callee ?? throw new ArgumentNullException("callee");
+            this.Callee = callee ?? throw new ArgumentNullException(nameof(callee));
             this.CallSite = site;
             this.Definitions = new HashSet<CallBinding>();
             this.Uses = new HashSet<CallBinding>();

@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2019 John Källén.
+ * Copyright (C) 1999-2022 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -363,17 +363,16 @@ namespace Reko.UserInterfaces.WindowsForms
 
         public void UpdateControlStyle(string list, IControl ctrl)
         {
-            if (ctrl == null) throw new ArgumentNullException("ctrl");
-            UiStyle style;
-            if (Styles.TryGetValue(UiStyles.List, out style))
+            if (ctrl == null) throw new ArgumentNullException(nameof(ctrl));
+            if (Styles.TryGetValue(UiStyles.List, out UiStyle style))
             {
                 if (style.Background != null)
                 {
-                    ctrl.BackColor = ((SolidBrush)style.Background).Color;
+                    ctrl.BackColor = ((SolidBrush) style.Background).Color;
                 }
                 if (style.Foreground != null)
                 {
-                    ctrl.ForeColor = ((SolidBrush)style.Foreground).Color;
+                    ctrl.ForeColor = ((SolidBrush) style.Foreground).Color;
                 }
             }
         }

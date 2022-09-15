@@ -45,7 +45,7 @@ namespace Reko.ImageLoaders.Elf
         {
             this.loader = loader;
             this.arch = arch;
-            this.rawImage = rawImage ?? throw new ArgumentNullException("rawImage");
+            this.rawImage = rawImage ?? throw new ArgumentNullException(nameof(rawImage));
             this.rekoExtfn = new ElfSection
             {
                 Name = ".reko.externs",

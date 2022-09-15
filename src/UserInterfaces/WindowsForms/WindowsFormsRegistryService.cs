@@ -44,8 +44,8 @@ namespace Reko.UserInterfaces.WindowsForms
 
             public RegistryKey(Microsoft.Win32.RegistryKey key)
             {
-                if (key == null)
-                    throw new ArgumentNullException("key");
+                if (key is null)
+                    throw new ArgumentNullException(nameof(key));
                 this.key = key;
             }
 

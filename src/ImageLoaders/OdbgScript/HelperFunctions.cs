@@ -217,28 +217,28 @@ namespace Reko.ImageLoaders.OdbgScript
 
         public static int FindFirstNotOf(this string source, string chars)
         {
-            if (source == null) throw new ArgumentNullException("source");
-            if (chars == null) throw new ArgumentNullException("chars");
+            if (source is null) throw new ArgumentNullException(nameof(source));
+            if (chars is null) throw new ArgumentNullException(nameof(chars));
             if (source.Length == 0) return -1;
             if (chars.Length == 0) return 0;
 
             for (int i = 0; i < source.Length; i++)
             {
-                if (chars.IndexOf(source[i]) == -1) return i;
+                if (!chars.Contains(source[i])) return i;
             }
             return -1;
         }
 
         public static int FindLastNotOf(this string source, string chars)
         {
-            if (source == null) throw new ArgumentNullException("source");
-            if (chars == null) throw new ArgumentNullException("chars");
+            if (source is null) throw new ArgumentNullException(nameof(source));
+            if (chars is null) throw new ArgumentNullException(nameof(chars));
             if (source.Length == 0) return -1;
             if (chars.Length == 0) return source.Length - 1;
 
             for (int i = source.Length - 1; i >= 0; i--)
             {
-                if (chars.IndexOf(source[i]) == -1) return i;
+                if (!chars.Contains(source[i])) return i;
             }
             return -1;
         }
@@ -339,7 +339,7 @@ namespace Reko.ImageLoaders.OdbgScript
 
         public static IEnumerable<string> split(char delim, string str)
         {
-            List<int> pos = new List<int>();
+            var pos = new List<int>();
             bool inQuotes = false;
 
             for (int i = 0; i < str.Length; i++)

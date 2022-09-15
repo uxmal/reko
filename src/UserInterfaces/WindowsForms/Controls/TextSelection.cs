@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2022 John Källén.
  *
@@ -43,10 +43,10 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
 
         public void Save(Stream stream, string cfFormat)
         {
-            if (stream == null)
-                throw new ArgumentNullException("stream");
-            if (cfFormat == null)
-                throw new ArgumentNullException("cfFormat");
+            if (stream is null)
+                throw new ArgumentNullException(nameof(stream));
+            if (cfFormat is null)
+                throw new ArgumentNullException(nameof(cfFormat));
             if (cfFormat != System.Windows.Forms.DataFormats.UnicodeText)
                 throw new NotSupportedException();
 

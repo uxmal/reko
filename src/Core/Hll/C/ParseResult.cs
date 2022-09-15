@@ -37,7 +37,7 @@ namespace Reko.Core.Hll.C
 
         public ParseResult(string error)
         {
-            this.error = error ?? throw new ArgumentNullException("error");
+            this.error = error ?? throw new ArgumentNullException(nameof(error));
             this.result = default!;
         }
 

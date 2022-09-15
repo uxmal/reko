@@ -63,7 +63,7 @@ namespace Reko.Gui
         public override void Write(string format, params object[] arguments)
         {
             if (format == null)
-                throw new ArgumentNullException("format");
+                throw new ArgumentNullException(nameof(format));
             Write(string.Format(format, arguments));
         }
 

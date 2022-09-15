@@ -40,8 +40,8 @@ namespace Reko.UserInterfaces.WindowsForms
 
         public SearchResultServiceImpl(IServiceProvider services, ListView listView)
         {
-            if (services == null)
-                throw new ArgumentNullException("services");
+            if (services is null)
+                throw new ArgumentNullException(nameof(services));
             this.services = services;
             this.listView = listView;
             listView.VirtualMode = true;
