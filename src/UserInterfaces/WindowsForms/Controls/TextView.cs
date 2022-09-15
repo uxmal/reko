@@ -77,7 +77,7 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
         /// <summary>
         /// Performs the same function as the HTML "class" attribute.
         /// </summary>
-        public string StyleClass { get { return styleClass; } set { styleClass = value; StyleClassChanged.Fire(this); } }
+        public string StyleClass { get { return styleClass; } set { styleClass = value; StyleClassChanged?.Invoke(this, EventArgs.Empty); } }
         public event EventHandler StyleClassChanged;
         private string styleClass;
 
@@ -254,7 +254,7 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
                     var span = GetSpan(e.Location);
                     if (span != null && span.Tag != null)
                     {
-                        Navigate.Fire(this, new EditorNavigationArgs(span.Tag));
+                        Navigate?.Invoke(this, new EditorNavigationArgs(span.Tag));
                     }
                     Invalidate();
                 }
@@ -268,7 +268,7 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
                             Navigate?.Invoke(this, new EditorNavigationArgs(span.Tag));
                         }
                     }
-                    SelectionChanged.Fire(this);
+                    SelectionChanged?.Invoke(this, EventArgs.Empty);
                 }
                 Capture = false;
             }
@@ -454,7 +454,7 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
             this.anchorPos = cursorPos;
             ChangeLayout();
             UpdateScrollbar();
-            ModelChanged.Fire(this);
+            ModelChanged?.Invoke(this, EventArgs.Empty);
         }
 
         /// <summary>
@@ -536,7 +536,7 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
         /// </summary>
         protected virtual void OnScroll()
         {
-            VScrollValueChanged.Fire(this);
+            VScrollValueChanged?.Invoke(this, EventArgs.Empty);
         }
 
         public void RecomputeLayout()

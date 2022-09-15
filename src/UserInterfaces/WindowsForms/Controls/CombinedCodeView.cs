@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2022 Pavel Tomin.
  *
@@ -53,7 +53,7 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
         public Address CurrentAddress
         {
             get { return MixedCodeDataView.TopAddress; }
-            set { MixedCodeDataView.TopAddress = value; CurrentAddressChanged.Fire(this); }
+            set { MixedCodeDataView.TopAddress = value; CurrentAddressChanged?.Invoke(this, EventArgs.Empty); }
         }
         public event EventHandler CurrentAddressChanged;
     }

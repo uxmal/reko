@@ -593,7 +593,7 @@ namespace Reko.UserInterfaces.WindowsForms
                 this.Control.DisassemblyView.SelectedObject = addr;
                 this.control.DisassemblyView.TopAddress = addr;
             }
-            this.SelectionChanged.Fire(this, new SelectionChangedEventArgs(new AddressRange(addr, addr)));
+            this.SelectionChanged?.Invoke(this, new SelectionChangedEventArgs(new AddressRange(addr, addr)));
             UserNavigateToAddress(Control.MemoryView.TopAddress, addr);
             this.ignoreAddressChange = false;
         }
@@ -605,7 +605,7 @@ namespace Reko.UserInterfaces.WindowsForms
             this.ignoreAddressChange = true;
             this.Control.DisassemblyView.SelectedObject = e.AddressRange.Begin;
             this.Control.DisassemblyView.TopAddress = e.AddressRange.Begin;
-            this.SelectionChanged.Fire(this, e);
+            this.SelectionChanged?.Invoke(this, e);
             this.ignoreAddressChange = false;
         }
 

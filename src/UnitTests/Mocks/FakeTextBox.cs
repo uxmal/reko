@@ -33,7 +33,7 @@ namespace Reko.UnitTests.Mocks
         public string Text
         {
             get { return text == null ? "" : text; }
-            set { text = value; TextChanged.Fire(this); }
+            set { text = value; TextChanged?.Invoke(this, EventArgs.Empty); }
         }
         public Color BackColor { get; set; }
         public Color ForeColor { get; set; }
@@ -68,11 +68,11 @@ namespace Reko.UnitTests.Mocks
 
         public void FireLostFocus()
         {
-            LostFocus.Fire(this);
+            LostFocus?.Invoke(this, EventArgs.Empty);
         }
         public void FireGotFocus()
         {
-            GotFocus.Fire(this);
+            GotFocus?.Invoke(this, EventArgs.Empty);
         }
 
         public void FireKeyDown(KeyEventArgs e)

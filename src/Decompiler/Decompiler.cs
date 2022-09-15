@@ -54,7 +54,7 @@ namespace Reko
             BuildImageMaps();
         }
 
-        public Project Project { get { return project; } set { project = value; ProjectChanged?.Fire(this); } }
+        public Project Project { get { return project; } set { project = value; ProjectChanged?.Invoke(this, EventArgs.Empty); } }
         public event EventHandler? ProjectChanged;
         private Project project;
 

@@ -33,7 +33,7 @@ abstract Reko.Core.Collections.ConcurrentBTreeDictionary<TKey, TValue>.Collectio
 abstract Reko.Core.Emulation.EmulatorBase.CurrentInstruction.get -> Reko.Core.Machine.MachineInstruction
 abstract Reko.Core.Emulation.EmulatorBase.InstructionPointer.get -> Reko.Core.Address
 abstract Reko.Core.Emulation.EmulatorBase.InstructionPointer.set -> void
-abstract Reko.Core.Emulation.EmulatorBase.ReadRegister(Reko.Core.RegisterStorage reg) -> ulong
+abstract Reko.Core.Emulation.EmulatorBase.ReadRegister(Reko.Core.RegisterStorage! reg) -> ulong
 abstract Reko.Core.Emulation.EmulatorBase.Run() -> void
 abstract Reko.Core.Emulation.EmulatorBase.WriteRegister(Reko.Core.RegisterStorage reg, ulong value) -> ulong
 abstract Reko.Core.EndianServices.CreateImageReader(byte[] bytes, long off) -> Reko.Core.Memory.EndianImageReader
@@ -87,9 +87,9 @@ abstract Reko.Core.Loading.ProgramImageLoader.PreferredBaseAddress.get -> Reko.C
 abstract Reko.Core.Loading.ProgramImageLoader.PreferredBaseAddress.set -> void
 abstract Reko.Core.Machine.AbstractMachineOperand.DoRender(Reko.Core.Machine.MachineInstructionRenderer! renderer, Reko.Core.Machine.MachineInstructionRendererOptions! options) -> void
 abstract Reko.Core.Machine.Decoder<TDasm, TMnemonic, TInstr>.Decode(uint wInstr, TDasm dasm) -> TInstr
-abstract Reko.Core.Machine.DisassemblerBase<TInstr, TMnemonic>.CreateInvalidInstruction() -> TInstr
-abstract Reko.Core.Machine.DisassemblerBase<TInstr, TMnemonic>.DisassembleInstruction() -> TInstr
-abstract Reko.Core.Machine.DisassemblerBase<TInstr, TMnemonic>.NotYetImplemented(string message) -> TInstr
+abstract Reko.Core.Machine.DisassemblerBase<TInstr, TMnemonic>.CreateInvalidInstruction() -> TInstr!
+abstract Reko.Core.Machine.DisassemblerBase<TInstr, TMnemonic>.DisassembleInstruction() -> TInstr?
+abstract Reko.Core.Machine.DisassemblerBase<TInstr, TMnemonic>.NotYetImplemented(string! message) -> TInstr!
 abstract Reko.Core.Machine.InstructionComparer.CompareOperands(Reko.Core.Machine.MachineInstruction x, Reko.Core.Machine.MachineInstruction y) -> bool
 abstract Reko.Core.Machine.InstructionComparer.GetOperandsHash(Reko.Core.Machine.MachineInstruction instr) -> int
 abstract Reko.Core.Machine.MachineInstruction.MnemonicAsInteger.get -> int
@@ -262,18 +262,18 @@ const Reko.Core.Types.DataType.BitsPerByte = 8 -> int
 const Reko.Core.UserProcedure.NoOrdinal = -1 -> int
 override Reko.Core.Absyn.AbsynAssignment.Accept(Reko.Core.Absyn.IAbsynVisitor! visitor) -> void
 override Reko.Core.Absyn.AbsynAssignment.Accept<T>(Reko.Core.Absyn.IAbsynVisitor<T>! visitor) -> T
-override Reko.Core.Absyn.AbsynBreak.Accept(Reko.Core.Absyn.IAbsynVisitor visitor) -> void
-override Reko.Core.Absyn.AbsynBreak.Accept<T>(Reko.Core.Absyn.IAbsynVisitor<T> visitor) -> T
-override Reko.Core.Absyn.AbsynCase.Accept(Reko.Core.Absyn.IAbsynVisitor visitor) -> void
-override Reko.Core.Absyn.AbsynCase.Accept<T>(Reko.Core.Absyn.IAbsynVisitor<T> visitor) -> T
-override Reko.Core.Absyn.AbsynCompoundAssignment.Accept(Reko.Core.Absyn.IAbsynVisitor visitor) -> void
-override Reko.Core.Absyn.AbsynCompoundAssignment.Accept<T>(Reko.Core.Absyn.IAbsynVisitor<T> visitor) -> T
-override Reko.Core.Absyn.AbsynContinue.Accept(Reko.Core.Absyn.IAbsynVisitor visitor) -> void
-override Reko.Core.Absyn.AbsynContinue.Accept<T>(Reko.Core.Absyn.IAbsynVisitor<T> visitor) -> T
+override Reko.Core.Absyn.AbsynBreak.Accept(Reko.Core.Absyn.IAbsynVisitor! visitor) -> void
+override Reko.Core.Absyn.AbsynBreak.Accept<T>(Reko.Core.Absyn.IAbsynVisitor<T>! visitor) -> T
+override Reko.Core.Absyn.AbsynCase.Accept(Reko.Core.Absyn.IAbsynVisitor! visitor) -> void
+override Reko.Core.Absyn.AbsynCase.Accept<T>(Reko.Core.Absyn.IAbsynVisitor<T>! visitor) -> T
+override Reko.Core.Absyn.AbsynCompoundAssignment.Accept(Reko.Core.Absyn.IAbsynVisitor! visitor) -> void
+override Reko.Core.Absyn.AbsynCompoundAssignment.Accept<T>(Reko.Core.Absyn.IAbsynVisitor<T>! visitor) -> T
+override Reko.Core.Absyn.AbsynContinue.Accept(Reko.Core.Absyn.IAbsynVisitor! visitor) -> void
+override Reko.Core.Absyn.AbsynContinue.Accept<T>(Reko.Core.Absyn.IAbsynVisitor<T>! visitor) -> T
 override Reko.Core.Absyn.AbsynDeclaration.Accept(Reko.Core.Absyn.IAbsynVisitor visitor) -> void
 override Reko.Core.Absyn.AbsynDeclaration.Accept<T>(Reko.Core.Absyn.IAbsynVisitor<T> visitor) -> T
-override Reko.Core.Absyn.AbsynDefault.Accept(Reko.Core.Absyn.IAbsynVisitor visitor) -> void
-override Reko.Core.Absyn.AbsynDefault.Accept<T>(Reko.Core.Absyn.IAbsynVisitor<T> visitor) -> T
+override Reko.Core.Absyn.AbsynDefault.Accept(Reko.Core.Absyn.IAbsynVisitor! visitor) -> void
+override Reko.Core.Absyn.AbsynDefault.Accept<T>(Reko.Core.Absyn.IAbsynVisitor<T>! visitor) -> T
 override Reko.Core.Absyn.AbsynDoWhile.Accept(Reko.Core.Absyn.IAbsynVisitor visitor) -> void
 override Reko.Core.Absyn.AbsynDoWhile.Accept<T>(Reko.Core.Absyn.IAbsynVisitor<T> visitor) -> T
 override Reko.Core.Absyn.AbsynFor.Accept(Reko.Core.Absyn.IAbsynVisitor visitor) -> void
@@ -1161,7 +1161,7 @@ override Reko.Core.OutArgumentStorage.OffsetOf(Reko.Core.Storage stgSub) -> int
 override Reko.Core.OutArgumentStorage.OverlapsWith(Reko.Core.Storage that) -> bool
 override Reko.Core.OutArgumentStorage.Serialize() -> Reko.Core.Serialization.SerializedKind
 override Reko.Core.OutArgumentStorage.Write(System.IO.TextWriter writer) -> void
-override Reko.Core.Output.AbsynCodeFormatter.VisitConstant(Reko.Core.Expressions.Constant c) -> void
+override Reko.Core.Output.AbsynCodeFormatter.VisitConstant(Reko.Core.Expressions.Constant! c) -> void
 override Reko.Core.Output.CTypeReferenceFormatter.WritePrimitiveTypeName(Reko.Core.Types.PrimitiveType t) -> void
 override Reko.Core.Output.CTypeReferenceFormatter.WriteVoidType(Reko.Core.Types.VoidType t) -> void
 override Reko.Core.Output.NullFormatter.Begin(object tag) -> void
@@ -1497,11 +1497,11 @@ Reko.Core.Absyn.AbsynAssignment.Src.get -> Reko.Core.Expressions.Expression!
 Reko.Core.Absyn.AbsynBreak
 Reko.Core.Absyn.AbsynBreak.AbsynBreak() -> void
 Reko.Core.Absyn.AbsynCase
-Reko.Core.Absyn.AbsynCase.AbsynCase(Reko.Core.Expressions.Constant c) -> void
-Reko.Core.Absyn.AbsynCase.Constant.get -> Reko.Core.Expressions.Constant
+Reko.Core.Absyn.AbsynCase.AbsynCase(Reko.Core.Expressions.Constant! c) -> void
+Reko.Core.Absyn.AbsynCase.Constant.get -> Reko.Core.Expressions.Constant!
 Reko.Core.Absyn.AbsynCompoundAssignment
-Reko.Core.Absyn.AbsynCompoundAssignment.AbsynCompoundAssignment(Reko.Core.Expressions.Expression dst, Reko.Core.Expressions.BinaryExpression src) -> void
-Reko.Core.Absyn.AbsynCompoundAssignment.Src.get -> Reko.Core.Expressions.BinaryExpression
+Reko.Core.Absyn.AbsynCompoundAssignment.AbsynCompoundAssignment(Reko.Core.Expressions.Expression! dst, Reko.Core.Expressions.BinaryExpression! src) -> void
+Reko.Core.Absyn.AbsynCompoundAssignment.Src.get -> Reko.Core.Expressions.BinaryExpression!
 Reko.Core.Absyn.AbsynContinue
 Reko.Core.Absyn.AbsynContinue.AbsynContinue() -> void
 Reko.Core.Absyn.AbsynDeclaration
@@ -1637,13 +1637,13 @@ Reko.Core.Annotation.Address.get -> Reko.Core.Address
 Reko.Core.Annotation.Annotation(Reko.Core.Address address, string text) -> void
 Reko.Core.Annotation.Text.get -> string
 Reko.Core.AnnotationList
-Reko.Core.AnnotationList.AnnotationChanged -> System.EventHandler
+Reko.Core.AnnotationList.AnnotationChanged -> System.EventHandler?
 Reko.Core.AnnotationList.AnnotationList() -> void
-Reko.Core.AnnotationList.AnnotationList(System.Collections.Generic.IEnumerable<Reko.Core.Annotation> annotations) -> void
-Reko.Core.AnnotationList.GetEnumerator() -> System.Collections.Generic.IEnumerator<Reko.Core.Annotation>
-Reko.Core.AnnotationList.Remove(Reko.Core.Address addr) -> void
-Reko.Core.AnnotationList.this[Reko.Core.Address addr].get -> string
-Reko.Core.AnnotationList.this[Reko.Core.Address addr].set -> void
+Reko.Core.AnnotationList.AnnotationList(System.Collections.Generic.IEnumerable<Reko.Core.Annotation!>! annotations) -> void
+Reko.Core.AnnotationList.GetEnumerator() -> System.Collections.Generic.IEnumerator<Reko.Core.Annotation!>!
+Reko.Core.AnnotationList.Remove(Reko.Core.Address! addr) -> void
+Reko.Core.AnnotationList.this[Reko.Core.Address! addr].get -> string?
+Reko.Core.AnnotationList.this[Reko.Core.Address! addr].set -> void
 Reko.Core.ApplicationBuilder
 Reko.Core.ApplicationBuilder.ApplicationBuilder(Reko.Core.Code.CallSite site, Reko.Core.Expressions.Expression callee) -> void
 Reko.Core.ApplicationBuilder.BindVariadicArguments(Reko.Core.Serialization.ProcedureCharacteristics chr, System.Collections.Generic.List<Reko.Core.Expressions.Expression> actuals) -> System.Collections.Generic.List<Reko.Core.Expressions.Expression>
@@ -2144,8 +2144,8 @@ Reko.Core.Collections.Dequeue<T>.PushFront(T item) -> void
 Reko.Core.Collections.DisjointPartition<T>
 Reko.Core.Collections.DisjointPartition<T>.Add(T item) -> void
 Reko.Core.Collections.DisjointPartition<T>.DisjointPartition() -> void
-Reko.Core.Collections.DisjointPartition<T>.Find(T item) -> T
-Reko.Core.Collections.DisjointPartition<T>.Union(T x, T y) -> void
+Reko.Core.Collections.DisjointPartition<T>.Find(T! item) -> T!
+Reko.Core.Collections.DisjointPartition<T>.Union(T! x, T! y) -> void
 Reko.Core.Collections.EnumerableEx
 Reko.Core.Collections.FibonacciHeap<TKey, TValue>
 Reko.Core.Collections.FibonacciHeap<TKey, TValue>.Clear() -> void
@@ -2628,17 +2628,17 @@ Reko.Core.Emulation.DefaultPlatformEmulator.InterceptCall(Reko.Core.Emulation.IP
 Reko.Core.Emulation.DefaultPlatformEmulator.InterceptedCalls.get -> System.Collections.Generic.Dictionary<Reko.Core.Address, Reko.Core.ExternalProcedure>
 Reko.Core.Emulation.DefaultPlatformEmulator.TearDownStack(Reko.Core.ImageSegment stackSeg) -> void
 Reko.Core.Emulation.EmulatorBase
-Reko.Core.Emulation.EmulatorBase.BeforeStart -> System.EventHandler
+Reko.Core.Emulation.EmulatorBase.BeforeStart -> System.EventHandler?
 Reko.Core.Emulation.EmulatorBase.DeleteBreakpoint(ulong address) -> void
-Reko.Core.Emulation.EmulatorBase.EmulatorBase(Reko.Core.SegmentMap map) -> void
-Reko.Core.Emulation.EmulatorBase.ExceptionRaised -> System.EventHandler<Reko.Core.Emulation.EmulatorExceptionEventArgs>
+Reko.Core.Emulation.EmulatorBase.EmulatorBase(Reko.Core.SegmentMap! map) -> void
+Reko.Core.Emulation.EmulatorBase.ExceptionRaised -> System.EventHandler<Reko.Core.Emulation.EmulatorExceptionEventArgs!>?
 Reko.Core.Emulation.EmulatorBase.IsRunning.get -> bool
 Reko.Core.Emulation.EmulatorBase.ReadLeUInt16(ulong ea) -> ushort
 Reko.Core.Emulation.EmulatorBase.ReadLeUInt32(ulong ea) -> uint
-Reko.Core.Emulation.EmulatorBase.SetBreakpoint(ulong address, System.Action callback) -> void
+Reko.Core.Emulation.EmulatorBase.SetBreakpoint(ulong address, System.Action! callback) -> void
 Reko.Core.Emulation.EmulatorBase.Start() -> void
-Reko.Core.Emulation.EmulatorBase.StepInto(System.Action callback) -> void
-Reko.Core.Emulation.EmulatorBase.StepOver(System.Action callback) -> void
+Reko.Core.Emulation.EmulatorBase.StepInto(System.Action! callback) -> void
+Reko.Core.Emulation.EmulatorBase.StepOver(System.Action! callback) -> void
 Reko.Core.Emulation.EmulatorBase.Stop() -> void
 Reko.Core.Emulation.EmulatorBase.TestForBreakpoint(ulong linAddrInstr) -> bool
 Reko.Core.Emulation.EmulatorBase.TryReadByte(ulong ea, out byte b) -> bool
@@ -3144,19 +3144,19 @@ Reko.Core.FpuStackStorage
 Reko.Core.FpuStackStorage.FpuStackOffset.get -> int
 Reko.Core.FpuStackStorage.FpuStackStorage(int depth, Reko.Core.Types.DataType dataType) -> void
 Reko.Core.Frame
-Reko.Core.Frame.CreateSequence(Reko.Core.Types.DataType dt, params Reko.Core.Storage[] elements) -> Reko.Core.Expressions.Identifier
-Reko.Core.Frame.CreateSequence(Reko.Core.Types.DataType dt, string name, params Reko.Core.Storage[] elements) -> Reko.Core.Expressions.Identifier
-Reko.Core.Frame.CreateTemporary(Reko.Core.Types.DataType dt) -> Reko.Core.Expressions.Identifier
-Reko.Core.Frame.CreateTemporary(string name, Reko.Core.Types.DataType dt) -> Reko.Core.Expressions.Identifier
-Reko.Core.Frame.EnsureFlagGroup(Reko.Core.FlagGroupStorage grf) -> Reko.Core.Expressions.Identifier
-Reko.Core.Frame.EnsureFlagGroup(Reko.Core.RegisterStorage freg, uint grfMask, string name, Reko.Core.Types.DataType dt) -> Reko.Core.Expressions.Identifier
-Reko.Core.Frame.EnsureFpuStackVariable(int depth, Reko.Core.Types.DataType type) -> Reko.Core.Expressions.Identifier
-Reko.Core.Frame.EnsureIdentifier(Reko.Core.Storage stgForeign) -> Reko.Core.Expressions.Identifier
-Reko.Core.Frame.EnsureOutArgument(Reko.Core.Expressions.Identifier idOrig, Reko.Core.Types.DataType outArgumentPointer) -> Reko.Core.Expressions.Identifier
-Reko.Core.Frame.EnsureRegister(Reko.Core.RegisterStorage reg) -> Reko.Core.Expressions.Identifier
-Reko.Core.Frame.EnsureSequence(Reko.Core.SequenceStorage sequence) -> Reko.Core.Expressions.Identifier
-Reko.Core.Frame.EnsureSequence(Reko.Core.Types.DataType dt, params Reko.Core.Storage[] elements) -> Reko.Core.Expressions.Identifier
-Reko.Core.Frame.EnsureSequence(Reko.Core.Types.DataType dt, string name, params Reko.Core.Storage[] elements) -> Reko.Core.Expressions.Identifier
+Reko.Core.Frame.CreateSequence(Reko.Core.Types.DataType! dt, params Reko.Core.Storage![]! elements) -> Reko.Core.Expressions.Identifier!
+Reko.Core.Frame.CreateSequence(Reko.Core.Types.DataType! dt, string! name, params Reko.Core.Storage![]! elements) -> Reko.Core.Expressions.Identifier!
+Reko.Core.Frame.CreateTemporary(Reko.Core.Types.DataType! dt) -> Reko.Core.Expressions.Identifier!
+Reko.Core.Frame.CreateTemporary(string! name, Reko.Core.Types.DataType! dt) -> Reko.Core.Expressions.Identifier!
+Reko.Core.Frame.EnsureFlagGroup(Reko.Core.FlagGroupStorage! grf) -> Reko.Core.Expressions.Identifier!
+Reko.Core.Frame.EnsureFlagGroup(Reko.Core.RegisterStorage! freg, uint grfMask, string! name, Reko.Core.Types.DataType! dt) -> Reko.Core.Expressions.Identifier!
+Reko.Core.Frame.EnsureFpuStackVariable(int depth, Reko.Core.Types.DataType! type) -> Reko.Core.Expressions.Identifier!
+Reko.Core.Frame.EnsureIdentifier(Reko.Core.Storage! stgForeign) -> Reko.Core.Expressions.Identifier!
+Reko.Core.Frame.EnsureOutArgument(Reko.Core.Expressions.Identifier! idOrig, Reko.Core.Types.DataType! outArgumentPointer) -> Reko.Core.Expressions.Identifier!
+Reko.Core.Frame.EnsureRegister(Reko.Core.RegisterStorage! reg) -> Reko.Core.Expressions.Identifier!
+Reko.Core.Frame.EnsureSequence(Reko.Core.SequenceStorage! sequence) -> Reko.Core.Expressions.Identifier!
+Reko.Core.Frame.EnsureSequence(Reko.Core.Types.DataType! dt, params Reko.Core.Storage![]! elements) -> Reko.Core.Expressions.Identifier!
+Reko.Core.Frame.EnsureSequence(Reko.Core.Types.DataType! dt, string! name, params Reko.Core.Storage![]! elements) -> Reko.Core.Expressions.Identifier!
 Reko.Core.Frame.EnsureStackArgument(int cbOffset, Reko.Core.Types.DataType type) -> Reko.Core.Expressions.Identifier
 Reko.Core.Frame.EnsureStackArgument(int cbOffset, Reko.Core.Types.DataType type, string argName) -> Reko.Core.Expressions.Identifier
 Reko.Core.Frame.EnsureStackLocal(int cbOffset, Reko.Core.Types.DataType type) -> Reko.Core.Expressions.Identifier
@@ -3173,12 +3173,12 @@ Reko.Core.Frame.FindSequence(Reko.Core.Storage[] elements) -> Reko.Core.Expressi
 Reko.Core.Frame.FindStackArgument(int offset, int size) -> Reko.Core.Expressions.Identifier
 Reko.Core.Frame.FindStackLocal(int offset, Reko.Core.Types.DataType dt) -> Reko.Core.Expressions.Identifier
 Reko.Core.Frame.FindTemporary(string name) -> Reko.Core.Expressions.Identifier
-Reko.Core.Frame.Frame(Reko.Core.IProcessorArchitecture arch, Reko.Core.Types.PrimitiveType framePointerSize) -> void
+Reko.Core.Frame.Frame(Reko.Core.IProcessorArchitecture! arch, Reko.Core.Types.PrimitiveType! framePointerSize) -> void
 Reko.Core.Frame.FrameOffset.get -> int
 Reko.Core.Frame.FrameOffset.set -> void
-Reko.Core.Frame.FramePointer.get -> Reko.Core.Expressions.Identifier
-Reko.Core.Frame.Identifiers.get -> System.Collections.Generic.List<Reko.Core.Expressions.Identifier>
-Reko.Core.Frame.Memory.get -> Reko.Core.Expressions.Identifier
+Reko.Core.Frame.FramePointer.get -> Reko.Core.Expressions.Identifier!
+Reko.Core.Frame.Identifiers.get -> System.Collections.Generic.List<Reko.Core.Expressions.Identifier!>!
+Reko.Core.Frame.Memory.get -> Reko.Core.Expressions.Identifier!
 Reko.Core.Frame.ReturnAddressKnown.get -> bool
 Reko.Core.Frame.ReturnAddressKnown.set -> void
 Reko.Core.Frame.ReturnAddressSize.get -> int
@@ -3245,31 +3245,31 @@ Reko.Core.Graphs.DiGraph<V, E>.RemoveEdge(V nodeFrom, V nodeTo) -> void
 Reko.Core.Graphs.DiGraph<V, E>.Successors(V node) -> System.Collections.Generic.ICollection<(V, E)>
 Reko.Core.Graphs.Dijkstra<T>
 Reko.Core.Graphs.Dijkstra<T>.dist -> System.Collections.Generic.Dictionary<T, double>
-Reko.Core.Graphs.Dijkstra<T>.GetPath(T destination) -> System.Collections.Generic.List<T>
+Reko.Core.Graphs.Dijkstra<T>.GetPath(T destination) -> System.Collections.Generic.List<T>!
 Reko.Core.Graphs.Dijkstra<T>.prev -> System.Collections.Generic.Dictionary<T, T>
 Reko.Core.Graphs.DirectedGraph<T, E>
 Reko.Core.Graphs.DirectedGraph<T, E>.AddEdge(T nodeFrom, T nodeTo, E edgeData) -> void
 Reko.Core.Graphs.DirectedGraph<T, E>.ContainsEdge(T nodeFrom, T nodeTo) -> bool
-Reko.Core.Graphs.DirectedGraph<T, E>.Nodes.get -> System.Collections.Generic.ICollection<T>
-Reko.Core.Graphs.DirectedGraph<T, E>.Predecessors(T node) -> System.Collections.Generic.ICollection<(T, E)>
+Reko.Core.Graphs.DirectedGraph<T, E>.Nodes.get -> System.Collections.Generic.ICollection<T>!
+Reko.Core.Graphs.DirectedGraph<T, E>.Predecessors(T node) -> System.Collections.Generic.ICollection<(T, E)>!
 Reko.Core.Graphs.DirectedGraph<T, E>.RemoveEdge(T nodeFrom, T nodeTo) -> void
-Reko.Core.Graphs.DirectedGraph<T, E>.Successors(T node) -> System.Collections.Generic.ICollection<(T, E)>
+Reko.Core.Graphs.DirectedGraph<T, E>.Successors(T node) -> System.Collections.Generic.ICollection<(T, E)>!
 Reko.Core.Graphs.DirectedGraph<T>
 Reko.Core.Graphs.DirectedGraph<T>.AddEdge(T nodeFrom, T nodeTo) -> void
 Reko.Core.Graphs.DirectedGraph<T>.ContainsEdge(T nodeFrom, T nodeTo) -> bool
-Reko.Core.Graphs.DirectedGraph<T>.Nodes.get -> System.Collections.Generic.ICollection<T>
-Reko.Core.Graphs.DirectedGraph<T>.Predecessors(T node) -> System.Collections.Generic.ICollection<T>
+Reko.Core.Graphs.DirectedGraph<T>.Nodes.get -> System.Collections.Generic.ICollection<T>!
+Reko.Core.Graphs.DirectedGraph<T>.Predecessors(T node) -> System.Collections.Generic.ICollection<T>!
 Reko.Core.Graphs.DirectedGraph<T>.RemoveEdge(T nodeFrom, T nodeTo) -> void
-Reko.Core.Graphs.DirectedGraph<T>.Successors(T node) -> System.Collections.Generic.ICollection<T>
+Reko.Core.Graphs.DirectedGraph<T>.Successors(T node) -> System.Collections.Generic.ICollection<T>!
 Reko.Core.Graphs.DirectedGraphImpl<T>
-Reko.Core.Graphs.DirectedGraphImpl<T>.AddEdge(T from, T to) -> void
-Reko.Core.Graphs.DirectedGraphImpl<T>.AddNode(T n) -> void
-Reko.Core.Graphs.DirectedGraphImpl<T>.ContainsEdge(T from, T to) -> bool
+Reko.Core.Graphs.DirectedGraphImpl<T>.AddEdge(T! from, T! to) -> void
+Reko.Core.Graphs.DirectedGraphImpl<T>.AddNode(T! n) -> void
+Reko.Core.Graphs.DirectedGraphImpl<T>.ContainsEdge(T! from, T! to) -> bool
 Reko.Core.Graphs.DirectedGraphImpl<T>.DirectedGraphImpl() -> void
-Reko.Core.Graphs.DirectedGraphImpl<T>.Nodes.get -> System.Collections.Generic.ICollection<T>
-Reko.Core.Graphs.DirectedGraphImpl<T>.Predecessors(T o) -> System.Collections.Generic.ICollection<T>
-Reko.Core.Graphs.DirectedGraphImpl<T>.RemoveEdge(T from, T to) -> void
-Reko.Core.Graphs.DirectedGraphImpl<T>.Successors(T node) -> System.Collections.Generic.ICollection<T>
+Reko.Core.Graphs.DirectedGraphImpl<T>.Nodes.get -> System.Collections.Generic.ICollection<T!>!
+Reko.Core.Graphs.DirectedGraphImpl<T>.Predecessors(T! o) -> System.Collections.Generic.ICollection<T!>!
+Reko.Core.Graphs.DirectedGraphImpl<T>.RemoveEdge(T! from, T! to) -> void
+Reko.Core.Graphs.DirectedGraphImpl<T>.Successors(T! node) -> System.Collections.Generic.ICollection<T!>!
 Reko.Core.Graphs.DominatorGraph<T>
 Reko.Core.Graphs.DominatorGraph<T>.CommonDominator(System.Collections.Generic.IEnumerable<T> blocks) -> T
 Reko.Core.Graphs.DominatorGraph<T>.DominatesStrictly(T dominator, T d) -> bool
@@ -4686,18 +4686,18 @@ Reko.Core.LinearInductionVariable.IterationCount.get -> int
 Reko.Core.LinearInductionVariable.LinearInductionVariable(Reko.Core.Expressions.Constant initial, Reko.Core.Expressions.Constant delta, Reko.Core.Expressions.Constant final, bool isSigned) -> void
 Reko.Core.LinearInductionVariable.Scale(Reko.Core.Expressions.Constant c) -> Reko.Core.LinearInductionVariable
 Reko.Core.Loading.AbstractHierarchicalArchive
-Reko.Core.Loading.AbstractHierarchicalArchive.AbstractHierarchicalArchive(Reko.Core.ImageLocation location, char pathSeparator, System.Collections.Generic.IComparer<string> comparer) -> void
-Reko.Core.Loading.AbstractHierarchicalArchive.Accept<T, C>(Reko.Core.Loading.ILoadedImageVisitor<T, C> visitor, C context) -> T
+Reko.Core.Loading.AbstractHierarchicalArchive.AbstractHierarchicalArchive(Reko.Core.ImageLocation! location, char pathSeparator, System.Collections.Generic.IComparer<string!>! comparer) -> void
+Reko.Core.Loading.AbstractHierarchicalArchive.Accept<T, C>(Reko.Core.Loading.ILoadedImageVisitor<T, C>! visitor, C context) -> T
 Reko.Core.Loading.AbstractHierarchicalArchive.ArchiveDictionary
-Reko.Core.Loading.AbstractHierarchicalArchive.ArchiveDictionary.AddEntry(string name, Reko.Core.Loading.ArchiveDirectoryEntry entry) -> void
-Reko.Core.Loading.AbstractHierarchicalArchive.ArchiveDictionary.ArchiveDictionary(Reko.Core.Loading.AbstractHierarchicalArchive archive, string name, Reko.Core.Loading.ArchivedFolder parent) -> void
-Reko.Core.Loading.AbstractHierarchicalArchive.ArchiveDictionary.Entries.get -> System.Collections.Generic.ICollection<Reko.Core.Loading.ArchiveDirectoryEntry>
-Reko.Core.Loading.AbstractHierarchicalArchive.ArchiveDictionary.Name.get -> string
-Reko.Core.Loading.AbstractHierarchicalArchive.ArchiveDictionary.Parent.get -> Reko.Core.Loading.ArchiveDirectoryEntry
-Reko.Core.Loading.AbstractHierarchicalArchive.Load(System.IO.Stream stm) -> System.Collections.Generic.List<Reko.Core.Loading.ArchiveDirectoryEntry>
-Reko.Core.Loading.AbstractHierarchicalArchive.Location.get -> Reko.Core.ImageLocation
-Reko.Core.Loading.AbstractHierarchicalArchive.RootEntries.get -> System.Collections.Generic.List<Reko.Core.Loading.ArchiveDirectoryEntry>
-Reko.Core.Loading.AbstractHierarchicalArchive.this[string path].get -> Reko.Core.Loading.ArchiveDirectoryEntry
+Reko.Core.Loading.AbstractHierarchicalArchive.ArchiveDictionary.AddEntry(string! name, Reko.Core.Loading.ArchiveDirectoryEntry! entry) -> void
+Reko.Core.Loading.AbstractHierarchicalArchive.ArchiveDictionary.ArchiveDictionary(Reko.Core.Loading.AbstractHierarchicalArchive! archive, string! name, Reko.Core.Loading.ArchivedFolder? parent) -> void
+Reko.Core.Loading.AbstractHierarchicalArchive.ArchiveDictionary.Entries.get -> System.Collections.Generic.ICollection<Reko.Core.Loading.ArchiveDirectoryEntry!>!
+Reko.Core.Loading.AbstractHierarchicalArchive.ArchiveDictionary.Name.get -> string!
+Reko.Core.Loading.AbstractHierarchicalArchive.ArchiveDictionary.Parent.get -> Reko.Core.Loading.ArchiveDirectoryEntry?
+Reko.Core.Loading.AbstractHierarchicalArchive.Load(System.IO.Stream! stm) -> System.Collections.Generic.List<Reko.Core.Loading.ArchiveDirectoryEntry!>!
+Reko.Core.Loading.AbstractHierarchicalArchive.Location.get -> Reko.Core.ImageLocation!
+Reko.Core.Loading.AbstractHierarchicalArchive.RootEntries.get -> System.Collections.Generic.List<Reko.Core.Loading.ArchiveDirectoryEntry!>!
+Reko.Core.Loading.AbstractHierarchicalArchive.this[string! path].get -> Reko.Core.Loading.ArchiveDirectoryEntry?
 Reko.Core.Loading.ArchivedFile
 Reko.Core.Loading.ArchivedFile.GetBytes() -> byte[]
 Reko.Core.Loading.ArchivedFile.Length.get -> long
@@ -5773,7 +5773,7 @@ Reko.Core.OutArgumentStorage
 Reko.Core.OutArgumentStorage.OriginalIdentifier.get -> Reko.Core.Expressions.Identifier
 Reko.Core.OutArgumentStorage.OutArgumentStorage(Reko.Core.Expressions.Identifier originalId) -> void
 Reko.Core.Output.AbsynCodeFormatter
-Reko.Core.Output.AbsynCodeFormatter.AbsynCodeFormatter(Reko.Core.Output.Formatter writer) -> void
+Reko.Core.Output.AbsynCodeFormatter.AbsynCodeFormatter(Reko.Core.Output.Formatter! writer) -> void
 Reko.Core.Output.BlockDecorator
 Reko.Core.Output.BlockDecorator.BlockDecorator() -> void
 Reko.Core.Output.BlockDecorator.ShowEdges.get -> bool
@@ -6196,9 +6196,9 @@ Reko.Core.ProcedureBase.HasSideEffect.get -> bool
 Reko.Core.ProcedureBase.IsConcreteGeneric.get -> bool
 Reko.Core.ProcedureBase.IsGeneric.get -> bool
 Reko.Core.ProcedureBase.MakeConcreteSignature(int ptrSize, Reko.Core.Types.DataType[] concreteTypes) -> Reko.Core.Types.FunctionType
-Reko.Core.ProcedureBase.Name.get -> string
+Reko.Core.ProcedureBase.Name.get -> string!
 Reko.Core.ProcedureBase.Name.set -> void
-Reko.Core.ProcedureBase.NameChanged -> System.EventHandler
+Reko.Core.ProcedureBase.NameChanged -> System.EventHandler?
 Reko.Core.ProcedureBase.ProcedureBase(string name, bool hasSideEffect) -> void
 Reko.Core.ProcedureBase.ProcedureBase(string name, Reko.Core.Types.DataType[] genericArguments, bool isConcrete, bool hasSideEffect) -> void
 Reko.Core.ProcessorArchitecture
@@ -8230,7 +8230,7 @@ static Reko.Core.Expressions.MemoryAccess.Create(Reko.Core.Expressions.Expressio
 static Reko.Core.Expressions.MemoryAccess.CreateEffectiveAddress(Reko.Core.Expressions.Expression baseRegister, int offset) -> Reko.Core.Expressions.Expression
 static Reko.Core.Expressions.MemoryIdentifier.GlobalMemory.get -> Reko.Core.Expressions.MemoryIdentifier
 static Reko.Core.Expressions.SegmentedAccess.Create(Reko.Core.Expressions.Expression segRegister, Reko.Core.Expressions.Expression baseRegister, int offset, Reko.Core.Types.DataType dt) -> Reko.Core.Expressions.SegmentedAccess
-static Reko.Core.Graphs.Dijkstra<T>.ShortestPath(Reko.Core.Graphs.DirectedGraph<T> Graph, T source, System.Func<T, T, double> weight) -> Reko.Core.Graphs.Dijkstra<T>
+static Reko.Core.Graphs.Dijkstra<T>.ShortestPath(Reko.Core.Graphs.DirectedGraph<T>! Graph, T source, System.Func<T, T, double>! weight) -> Reko.Core.Graphs.Dijkstra<T>!
 static Reko.Core.Graphs.LTDominatorGraph<TNode>.Create(Reko.Core.Graphs.DirectedGraph<TNode> graph, TNode root) -> System.Collections.Generic.Dictionary<TNode, TNode>
 static Reko.Core.Graphs.SccFinder.FindAll<TNode>(Reko.Core.Graphs.DirectedGraph<TNode> graph) -> System.Collections.Generic.List<TNode[]>
 static Reko.Core.Graphs.SccFinder.RobustTopologicalSort<TNode>(Reko.Core.Graphs.DirectedGraph<TNode> graph) -> System.Collections.Generic.List<TNode[]>
@@ -8323,10 +8323,10 @@ static Reko.Core.Machine.Decoder<TDasm, TMnemonic, TInstr>.DumpMaskedInstruction
 static Reko.Core.Machine.DisassemblerBase.Bf(params (int pos, int len)[] fields) -> Reko.Core.Lib.Bitfield[]
 static Reko.Core.Machine.DisassemblerBase<TInstr, TMnemonic>.If<TDasm>(int bitpos, int bitlen, System.Predicate<uint> predicate, Reko.Core.Machine.Decoder<TDasm, TMnemonic, TInstr> decoderTrue) -> Reko.Core.Machine.IfDecoder<TDasm, TMnemonic, TInstr>
 static Reko.Core.Machine.DisassemblerBase<TInstr, TMnemonic>.If<TDasm>(System.Predicate<uint> predicate, Reko.Core.Machine.Decoder<TDasm, TMnemonic, TInstr> decoderTrue) -> Reko.Core.Machine.IfDecoder<TDasm, TMnemonic, TInstr>
-static Reko.Core.Machine.DisassemblerBase<TInstr, TMnemonic>.Instr<TDasm>(TMnemonic mnemonic, params Reko.Core.Machine.Mutator<TDasm>[] mutators) -> Reko.Core.Machine.Decoder<TDasm, TMnemonic, TInstr>
+static Reko.Core.Machine.DisassemblerBase<TInstr, TMnemonic>.Instr<TDasm>(TMnemonic mnemonic, params Reko.Core.Machine.Mutator<TDasm!>![]! mutators) -> Reko.Core.Machine.Decoder<TDasm!, TMnemonic, TInstr!>!
 static Reko.Core.Machine.DisassemblerBase<TInstr, TMnemonic>.Instr<TDasm>(TMnemonic mnemonic, Reko.Core.InstrClass iclass, params Reko.Core.Machine.Mutator<TDasm>[] mutators) -> Reko.Core.Machine.Decoder<TDasm, TMnemonic, TInstr>
-static Reko.Core.Machine.DisassemblerBase<TInstr, TMnemonic>.Mask<TDasm>(int bitPos, int bitLength, params Reko.Core.Machine.Decoder<TDasm, TMnemonic, TInstr>[] decoders) -> Reko.Core.Machine.MaskDecoder<TDasm, TMnemonic, TInstr>
-static Reko.Core.Machine.DisassemblerBase<TInstr, TMnemonic>.Mask<TDasm>(int bitPos, int bitLength, string tag, params Reko.Core.Machine.Decoder<TDasm, TMnemonic, TInstr>[] decoders) -> Reko.Core.Machine.MaskDecoder<TDasm, TMnemonic, TInstr>
+static Reko.Core.Machine.DisassemblerBase<TInstr, TMnemonic>.Mask<TDasm>(int bitPos, int bitLength, params Reko.Core.Machine.Decoder<TDasm!, TMnemonic, TInstr!>![]! decoders) -> Reko.Core.Machine.MaskDecoder<TDasm!, TMnemonic, TInstr!>!
+static Reko.Core.Machine.DisassemblerBase<TInstr, TMnemonic>.Mask<TDasm>(int bitPos, int bitLength, string! tag, params Reko.Core.Machine.Decoder<TDasm!, TMnemonic, TInstr!>![]! decoders) -> Reko.Core.Machine.MaskDecoder<TDasm!, TMnemonic, TInstr!>!
 static Reko.Core.Machine.DisassemblerBase<TInstr, TMnemonic>.Mask<TDasm>(int p1, int l1, int p2, int l2, string tag, params Reko.Core.Machine.Decoder<TDasm, TMnemonic, TInstr>[] decoders) -> Reko.Core.Machine.BitfieldDecoder<TDasm, TMnemonic, TInstr>
 static Reko.Core.Machine.DisassemblerBase<TInstr, TMnemonic>.Mask<TDasm>(Reko.Core.Lib.Bitfield[] bitfields, params Reko.Core.Machine.Decoder<TDasm, TMnemonic, TInstr>[] decoders) -> Reko.Core.Machine.BitfieldDecoder<TDasm, TMnemonic, TInstr>
 static Reko.Core.Machine.DisassemblerBase<TInstr, TMnemonic>.Mask<TDasm>(Reko.Core.Lib.Bitfield[] bitfields, string tag, params Reko.Core.Machine.Decoder<TDasm, TMnemonic, TInstr>[] decoders) -> Reko.Core.Machine.BitfieldDecoder<TDasm, TMnemonic, TInstr>
@@ -8663,13 +8663,13 @@ virtual Reko.Core.Hll.C.CDirectiveLexer.ReadPragma(string pragma) -> Reko.Core.H
 virtual Reko.Core.Hll.C.CGrammar.Bin(Reko.Core.Hll.C.CTokenType op, Reko.Core.Hll.C.CExpression left, Reko.Core.Hll.C.CExpression right) -> Reko.Core.Hll.C.CExpression
 virtual Reko.Core.ImageSegment.IsInRange(ulong linearAddress) -> bool
 virtual Reko.Core.IO.SpanStream.ReadRemaining() -> byte[]
-virtual Reko.Core.Loading.AbstractHierarchicalArchive.AddFile(string path, System.Func<Reko.Core.Loading.IArchive, Reko.Core.Loading.ArchiveDirectoryEntry, string, Reko.Core.Loading.ArchivedFile> fileCreator) -> Reko.Core.Loading.ArchivedFile
-virtual Reko.Core.Loading.AbstractHierarchicalArchive.GetRootPath(Reko.Core.Loading.ArchiveDirectoryEntry entry) -> string
+virtual Reko.Core.Loading.AbstractHierarchicalArchive.AddFile(string! path, System.Func<Reko.Core.Loading.IArchive!, Reko.Core.Loading.ArchiveDirectoryEntry?, string!, Reko.Core.Loading.ArchivedFile!>! fileCreator) -> Reko.Core.Loading.ArchivedFile!
+virtual Reko.Core.Loading.AbstractHierarchicalArchive.GetRootPath(Reko.Core.Loading.ArchiveDirectoryEntry? entry) -> string!
 virtual Reko.Core.Loading.ProgramImageLoader.AddSegmentReference(Reko.Core.Address addr, ushort seg) -> Reko.Core.ImageSegment
 virtual Reko.Core.Loading.ProgramImageLoader.LoadProgram(Reko.Core.Address addrLoad, Reko.Core.IProcessorArchitecture arch, Reko.Core.IPlatform platform) -> Reko.Core.Program
 virtual Reko.Core.Machine.DisassemblerBase.Dispose(bool disposing) -> void
-virtual Reko.Core.Machine.DisassemblerBase<TInstr, TMnemonic>.GetEnumerator() -> System.Collections.Generic.IEnumerator<TInstr>
-virtual Reko.Core.Machine.DisassemblerBase<TInstr, TMnemonic>.MakeInstruction(Reko.Core.InstrClass iclass, TMnemonic mnemonic) -> TInstr
+virtual Reko.Core.Machine.DisassemblerBase<TInstr, TMnemonic>.GetEnumerator() -> System.Collections.Generic.IEnumerator<TInstr!>!
+virtual Reko.Core.Machine.DisassemblerBase<TInstr, TMnemonic>.MakeInstruction(Reko.Core.InstrClass iclass, TMnemonic mnemonic) -> TInstr!
 virtual Reko.Core.Machine.InstructionComparer.Equals(Reko.Core.Machine.MachineInstruction x, Reko.Core.Machine.MachineInstruction y) -> bool
 virtual Reko.Core.Machine.MachineInstruction.DoRender(Reko.Core.Machine.MachineInstructionRenderer renderer, Reko.Core.Machine.MachineInstructionRendererOptions options) -> void
 virtual Reko.Core.Machine.MachineInstruction.RenderOperand(Reko.Core.Machine.MachineOperand operand, Reko.Core.Machine.MachineInstructionRenderer renderer, Reko.Core.Machine.MachineInstructionRendererOptions options) -> void

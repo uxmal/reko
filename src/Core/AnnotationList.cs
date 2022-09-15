@@ -58,14 +58,14 @@ namespace Reko.Core
                     this.annotations.Remove(addr);
                 else 
                     this.annotations[addr] = value;
-                AnnotationChanged?.Fire(this);
+                AnnotationChanged?.Invoke(this, EventArgs.Empty);
             }
         }
 
         public void Remove(Address addr)
         {
             this.annotations.Remove(addr);
-            AnnotationChanged?.Fire(this);
+            AnnotationChanged?.Invoke(this, EventArgs.Empty);
         }
 
         public IEnumerator<Annotation> GetEnumerator()

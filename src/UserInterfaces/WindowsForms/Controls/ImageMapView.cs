@@ -96,7 +96,7 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
 
 
         [Browsable(false)]
-        public Address SelectedAddress { get { return selectedAddress; } set { selectedAddress = value; SelectedAddressChanged.Fire(this); } }
+        public Address SelectedAddress { get { return selectedAddress; } set { selectedAddress = value; SelectedAddressChanged?.Invoke(this, EventArgs.Empty); } }
         public event EventHandler SelectedAddressChanged;
         private Address selectedAddress;
 
@@ -302,21 +302,21 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
         {
             CalculateLayout();
             Invalidate();
-            GranularityChanged.Fire(this);
+            GranularityChanged?.Invoke(this, EventArgs.Empty);
         }
 
         protected virtual void OnImageMapChanged()
         {
             BoundGranularity(granularity);
             Invalidate();
-            ImageMapChanged.Fire(this);
+            ImageMapChanged?.Invoke(this, EventArgs.Empty);
         }
 
         protected virtual void OnSegmentMapChanged()
         {
             BoundGranularity(granularity);
             Invalidate();
-            SegmentMapChanged.Fire(this);
+            SegmentMapChanged?.Invoke(this, EventArgs.Empty);
         }
 
         protected override void OnGotFocus(EventArgs e)
@@ -334,7 +334,7 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
         protected virtual void OnOffsetChanged()
         {
             Invalidate();
-            OffsetChanged.Fire(this);
+            OffsetChanged?.Invoke(this, EventArgs.Empty);
         }
 
         void scrollTimer_Tick(object sender, EventArgs e)

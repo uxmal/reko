@@ -51,17 +51,17 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
         }
 
         [Browsable(false)]
-        public Program Program { get { return program; } set { program = value; ProgramChanged.Fire(this); } }
+        public Program Program { get { return program; } set { program = value; ProgramChanged?.Invoke(this, EventArgs.Empty); } }
         public event EventHandler ProgramChanged;
         private Program program;
 
         [Browsable(false)]
-        public Address StartAddress { get { return startAddress; } set { startAddress = value; StartAddressChanged.Fire(this); } }
+        public Address StartAddress { get { return startAddress; } set { startAddress = value; StartAddressChanged?.Invoke(this, EventArgs.Empty); } }
         public event EventHandler StartAddressChanged;
         private Address startAddress;
 
         [Browsable(false)]
-        public Address TopAddress { get { return topAddress; } set { topAddress = value; TopAddressChanged.Fire(this); } }
+        public Address TopAddress { get { return topAddress; } set { topAddress = value; TopAddressChanged?.Invoke(this, EventArgs.Empty); } }
         public event EventHandler TopAddressChanged;
         private Address topAddress;
 
@@ -73,7 +73,7 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
             {
                 selectedObject = value;
                 Invalidate();
-                SelectedObjectChanged.Fire(this);
+                SelectedObjectChanged?.Invoke(this, EventArgs.Empty);
             }
         }
         public event EventHandler SelectedObjectChanged;
@@ -88,7 +88,7 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
                     return;
                 dasmModel.ShowPcRelative = value;
                 Invalidate();
-                ShowPcRelativeChanged.Fire(this);
+                ShowPcRelativeChanged?.Invoke(this, EventArgs.Empty);
             }
         }
         public event EventHandler ShowPcRelativeChanged;

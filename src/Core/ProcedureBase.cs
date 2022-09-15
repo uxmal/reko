@@ -81,7 +81,7 @@ namespace Reko.Core
         /// <summary>
         /// The name of the procedure.
         /// </summary>
-        public string Name { get { return name; } set { name = value; NameChanged?.Fire(this); } }
+        public string Name { get { return name; } set { name = value; NameChanged?.Invoke(this, EventArgs.Empty); } }
         public event EventHandler? NameChanged;
         private string name;
 

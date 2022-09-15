@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2022 John Källén.
  *
@@ -64,7 +64,7 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
         public IComboBox VisualizerList { get { return ddlVisualizerWrapped; } }
         IButton INavigableControl<Address>.BackButton { get { return btnBackWrapped; } }
         IButton INavigableControl<Address>.ForwardButton { get { return btnFwdWrapped; } }
-        public Address CurrentAddress { get { return addrCurrent; } set { addrCurrent = value; CurrentAddressChanged.Fire(this); } }
+        public Address CurrentAddress { get { return addrCurrent; } set { addrCurrent = value; CurrentAddressChanged?.Invoke(this, EventArgs.Empty); } }
 
         public event EventHandler CurrentAddressChanged;
     }

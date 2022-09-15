@@ -187,7 +187,7 @@ namespace Reko.UserInterfaces.WindowsForms
             this.WindowSize = ConvertFrom<Size>(sizeCvt, (string) settingsSvc.Get("WindowSize", null));
             this.WindowState = ConvertFrom<Gui.Forms.FormWindowState>(fwsCvt, (string) settingsSvc.Get("WindowState", "Normal"));
 
-            UiPreferencesChanged.Fire(this);
+            UiPreferencesChanged?.Invoke(this, EventArgs.Empty);
         }
 
         private void SetStyle(string name)
@@ -317,7 +317,7 @@ namespace Reko.UserInterfaces.WindowsForms
 
             settingsSvc.Set("WindowSize", sizeCvt.ConvertToInvariantString(WindowSize));
             settingsSvc.Set("WindowState", WindowState.ToString());
-            UiPreferencesChanged.Fire(this);
+            UiPreferencesChanged?.Invoke(this, EventArgs.Empty);
         }
 
         public void ResetStyle(string styleName)
@@ -328,7 +328,7 @@ namespace Reko.UserInterfaces.WindowsForms
             settingsSvc.Delete(snames.BackColor);
             settingsSvc.Delete(snames.FontName);
             SetStyle(styleName);
-            UiPreferencesChanged.Fire(this);
+            UiPreferencesChanged?.Invoke(this, EventArgs.Empty);
         }
 
         private T ConvertFrom<T>(TypeConverter conv, string value)
@@ -347,7 +347,7 @@ namespace Reko.UserInterfaces.WindowsForms
 
         public void UpdateControlStyle(string list, object oCtrl)
         {
-            if (!(oCtrl is Control ctrl)) throw new ArgumentNullException(nameof(oCtrl));
+            if (oCtrl is not Control ctrl) throw new ArgumentNullException(nameof(oCtrl));
             if (Styles.TryGetValue(UiStyles.List, out UiStyle style))
             {
                 if (style.Background != null)

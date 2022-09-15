@@ -139,7 +139,7 @@ namespace Reko.Core
                 EnsureSegmentSize(segNew);
                 Segments.Add(segNew.Address, segNew);
                 SegmentByLinAddress.Add(segNew.Address.ToLinear(), segNew);
-                MapChanged?.Fire(this);
+                MapChanged?.Invoke(this, EventArgs.Empty);
                 //DumpSections();
                 return segNew;
             }
@@ -158,7 +158,7 @@ namespace Reko.Core
 
                 // And split any items in the segment
 
-                MapChanged?.Fire(this);
+                MapChanged?.Invoke(this, EventArgs.Empty);
                 //DumpSections();
                 return segSplit;
             }

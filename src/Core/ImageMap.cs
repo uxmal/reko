@@ -291,7 +291,7 @@ namespace Reko.Core
 
         private void FireMapChanged()
         {
-            if (!mapChangedEventHandlerPaused) MapChanged?.Fire(this);
+            if (!mapChangedEventHandlerPaused) MapChanged?.Invoke(this, EventArgs.Empty);
             else mapChangedPendingEvents = true;
         }
 
@@ -303,7 +303,7 @@ namespace Reko.Core
         public void UnpauseEventHandler()
         {
             mapChangedEventHandlerPaused = false;
-            if (mapChangedPendingEvents) MapChanged?.Fire(this);
+            if (mapChangedPendingEvents) MapChanged?.Invoke(this, EventArgs.Empty);
             mapChangedPendingEvents = false;
         }
 

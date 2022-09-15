@@ -25,7 +25,7 @@ namespace Reko.WindowsItp
             }
             set
             {
-                UiPreferencesChanged.Fire(this);
+                UiPreferencesChanged?.Invoke(this, EventArgs.Empty);
                 throw new NotImplementedException();
             }
         }

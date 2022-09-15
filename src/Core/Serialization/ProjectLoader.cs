@@ -326,7 +326,7 @@ namespace Reko.Core.Serialization
             program.ResourcesDirectory = ConvertToAbsolutePath(projectPath, sInput.ResourcesDirectory)!;
             program.EnsureDirectoryNames(program.Location);
             program.User.LoadAddress = address;
-            ProgramLoaded?.Fire(this, new ProgramEventArgs(program));
+            ProgramLoaded?.Invoke(this, new ProgramEventArgs(program));
             return program;
         }
 

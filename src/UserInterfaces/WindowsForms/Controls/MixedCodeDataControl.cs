@@ -60,7 +60,7 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
                     program.User.Annotations
                         .AnnotationChanged += AnnotationChanged;
                 }
-                ProgramChanged.Fire(this);
+                ProgramChanged?.Invoke(this, EventArgs.Empty);
             }
         }
         private Program program;
