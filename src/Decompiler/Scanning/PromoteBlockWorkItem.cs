@@ -55,6 +55,7 @@ namespace Reko.Scanning
             var movedBlocks = new HashSet<Block>();
             var stack = new Stack<IEnumerator<Block>>();
             stack.Push(new Block[] { Block }.Cast<Block>().GetEnumerator());
+            var replacers = new Dictionary<Procedure, IdentifierRelocator>();
             while (stack.Count != 0)
             {
                 DumpBlocks(Block.Procedure);
@@ -69,7 +70,11 @@ namespace Reko.Scanning
                     continue;
 
                 trace.Verbose("PBW:     Visiting block {0}, stack depth {1}", b.DisplayName, stack.Count);
-                var replacer = new IdentifierRelocator(b.Procedure.Frame, ProcNew.Frame);
+                if (!replacers.TryGetValue(b.Procedure, out var replacer))
+                {
+                    replacer = new IdentifierRelocator(b.Procedure.Frame, ProcNew.Frame);
+                    replacers.Add(b.Procedure, replacer);
+                }
                 b.Procedure.RemoveBlock(b);
                 ProcNew.AddBlock(b);
                 b.Procedure = ProcNew;
