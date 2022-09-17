@@ -76,7 +76,7 @@ namespace Reko.Scanning
             return block.Statements.Count;
         }
 
-        public IEnumerable<RtlInstruction?> GetBlockInstructions(RtlBlock rtlBlock)
+        public IEnumerable<(Address?, RtlInstruction?)> GetBlockInstructions(RtlBlock rtlBlock)
         {
             var block = invCache[rtlBlock];
             if (block.Statements.Count < 1)
@@ -87,18 +87,19 @@ namespace Reko.Scanning
                 //$TODO: this a workaround; when we run this class on 
                 // "raw" RTL, we won't need to special case the SwitchInstruction
                 // as it won't exist.
-                yield return null;
+                yield return (null, null);
                 yield break;
             }
             foreach (var stm in block.Statements)
             {
+                RtlInstruction rtl;
                 switch (stm.Instruction)
                 {
                 case Assignment ass:
-                    yield return new RtlAssignment(ass.Dst, ass.Src);
+                    rtl = new RtlAssignment(ass.Dst, ass.Src);
                     break;
                 case Store store:
-                    yield return new RtlAssignment(store.Dst, store.Src);
+                    rtl = new RtlAssignment(store.Dst, store.Src);
                     break;
                 case Branch branch:
                     //$TODO: this is also a workaround; some blocks have
@@ -106,20 +107,21 @@ namespace Reko.Scanning
                     // after conversion from "raw" RTL.
                     if (branch.Target.Address is null)
                         yield break;
-                    yield return new RtlBranch(branch.Condition, branch.Target.Address, InstrClass.ConditionalTransfer);
+                    rtl = new RtlBranch(branch.Condition, branch.Target.Address, InstrClass.ConditionalTransfer);
                     break;
                 case CallInstruction call:
-                    yield return new RtlCall(call.Callee, (byte)call.CallSite.SizeOfReturnAddressOnStack, InstrClass.Call);
+                    rtl = new RtlCall(call.Callee, (byte)call.CallSite.SizeOfReturnAddressOnStack, InstrClass.Call);
                     break;
                 case SideEffect side:
-                    yield return new RtlSideEffect(side.Expression, InstrClass.Linear);
+                    rtl = new RtlSideEffect(side.Expression, InstrClass.Linear);
                     break;
                 case GotoInstruction go:
-                    yield return new RtlGoto(go.Target, InstrClass.Transfer);
+                    rtl = new RtlGoto(go.Target, InstrClass.Transfer);
                     break;
                 default:
                     throw new NotImplementedException($"Translation needed for {stm.Instruction}.");
                 }
+                yield return (stm.Address, rtl);
             }
         }
 

@@ -369,7 +369,8 @@ namespace Reko.Scanning
 
         public bool BackwalkInstructions(TBlock block)
         {
-            return BackwalkInstructions(host.GetBlockInstructions(block).Reverse()!);
+            return BackwalkInstructions(host.GetBlockInstructions(block)
+                .Select(p => p.Item2).Reverse()!);
         }
 
         [Conditional("DEBUG")]

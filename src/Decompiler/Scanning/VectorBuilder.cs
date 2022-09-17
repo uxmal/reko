@@ -237,9 +237,9 @@ namespace Reko.Scanning
             return program.SegmentMap.IsValidAddress(addr);
         }
 
-        public IEnumerable<Instruction> GetBlockInstructions(Block block)
+        public IEnumerable<(Address?, Instruction?)> GetBlockInstructions(Block block)
         {
-            return block.Statements.Select(s => s.Instruction);
+            return block.Statements.Select(s => (s.Address, s.Instruction))!;
         }
 
         public int BlockInstructionCount(Block block)

@@ -44,7 +44,7 @@ namespace Reko.Core
         bool IsValidAddress(Address addr);
         
         RegisterStorage GetSubregister(RegisterStorage rIdx, BitRange range);
-        IEnumerable<TInstr?> GetBlockInstructions(TBlock block);
+        IEnumerable<(Address?, TInstr?)> GetBlockInstructions(TBlock block);
 
         // Return [dst,src] tuple if TInstr is an assignment, null otherwise.
         (Expression?,Expression?) AsAssignment(TInstr instr);

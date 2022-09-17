@@ -20,6 +20,7 @@
 
 using NUnit.Framework;
 using Reko.Core;
+using Reko.Core.Code;
 using Reko.Core.Expressions;
 using Reko.Core.Graphs;
 using Reko.Core.Memory;
@@ -598,8 +599,7 @@ namespace Reko.UnitTests.Decompiler.Scanning
             Assert.AreEqual(2, bwslc.Live.Count);
             Console.WriteLine(bwslc.JumpTableFormat.ToString());
             Assert.AreEqual("CONVERT(Mem0[CONVERT(SLICE(d0, word16, 0) * 2<16>, word16, word32) + 0x10EC32<32>:word16], word16, int32) + 0x10EC30<32>", bwslc.JumpTableFormat.ToString());
-            Assert.AreEqual("d0", bwslc.JumpTableIndex.ToString());
-            Assert.AreEqual("SLICE(d0, byte, 0)", bwslc.JumpTableIndexToUse.ToString(), "Expression to use when indexing");
+            Assert.AreEqual("SLICE(d0, byte, 0)", bwslc.JumpTableIndex.ToString());
             Assert.AreEqual("1[0,17]", bwslc.JumpTableIndexInterval.ToString());
         }
 
@@ -683,8 +683,7 @@ namespace Reko.UnitTests.Decompiler.Scanning
                 ;
             Assert.AreEqual(2, bwslc.Live.Count);
             Assert.AreEqual("CONVERT(Mem0[CONVERT(SLICE(d0, word16, 0) * 2<16>, word16, word32) + 0x10EC32<32>:word16], word16, int32) + 0x10EC30<32>", bwslc.JumpTableFormat.ToString());
-            Assert.AreEqual("d0", bwslc.JumpTableIndex.ToString());
-            Assert.AreEqual("SLICE(d0, byte, 0)", bwslc.JumpTableIndexToUse.ToString(), "Expression to use when indexing");
+            Assert.AreEqual("SLICE(d0, byte, 0)", bwslc.JumpTableIndex.ToString());
             Assert.AreEqual("1[0,17]", bwslc.JumpTableIndexInterval.ToString());
         }
 
@@ -757,7 +756,6 @@ namespace Reko.UnitTests.Decompiler.Scanning
             Assert.AreEqual(2, bwslc.Live.Count);
             Assert.AreEqual("(int32) (int16) DPB(r1 * 0x00000002<32>, Mem0[r1 * 0x00000002<32> + 0x001066A4<32>:word16], 0) + 0x001066A2<32>", bwslc.JumpTableFormat.ToString());
             Assert.AreEqual("v80", bwslc.JumpTableIndex.ToString());
-            Assert.AreEqual("v80", bwslc.JumpTableIndexToUse.ToString(), "Expression to use when indexing");
             Assert.AreEqual("1[0,17]", bwslc.JumpTableIndexInterval.ToString());
         }
 
@@ -812,7 +810,6 @@ namespace Reko.UnitTests.Decompiler.Scanning
                 ;
             Assert.AreEqual("CONVERT(v3 * 4<16>, word16, int32) + 0xA8B4<32>", bwslc.JumpTableFormat.ToString());
             Assert.AreEqual("v3", bwslc.JumpTableIndex.ToString());
-            Assert.AreEqual("v3", bwslc.JumpTableIndexToUse.ToString(), "Expression to use when indexing");
             Assert.AreEqual("1[20,7FFFFFFFFFFFFFFF]", bwslc.JumpTableIndexInterval.ToString());
         }
 
@@ -854,7 +851,6 @@ namespace Reko.UnitTests.Decompiler.Scanning
                 ;
             Assert.AreEqual("SLICE(R7 * 2<8>, uint16, 0) + 0x8E<16>", bwslc.JumpTableFormat.ToString());
             Assert.AreEqual("A", bwslc.JumpTableIndex.ToString());
-            Assert.AreEqual("A", bwslc.JumpTableIndexToUse.ToString(), "Expression to use when indexing");
             Assert.AreEqual("1[0,3]", bwslc.JumpTableIndexInterval.ToString());
         }
 
@@ -880,9 +876,72 @@ namespace Reko.UnitTests.Decompiler.Scanning
                 ;
             Assert.AreEqual("Mem0[0x00001020<p32> + r1 * 4<32>:word32]", bwslc.JumpTableFormat.ToString());
             Assert.AreEqual("r1", bwslc.JumpTableIndex.ToString());
-            Assert.AreEqual("r1", bwslc.JumpTableIndexToUse.ToString(), "Expression to use when indexing");
             Assert.AreEqual("1[0,4]", bwslc.JumpTableIndexInterval.ToString());
         }
+
+        [Test]
+        public void Bwslc_X86_Swap()
+        {
+            // Problematic xchg instruction 
+            //    mov ax,[bp + 6h]
+            //    cmp ax,9h
+            //    jbe 0648h
+            //l0FDC_0645:
+            //    jmp 0883h
+            //l0FDC_0648:
+            //    add ax, ax
+            // xchg bx, ax
+            //    jmp word ptr cs:[bx+86Fh]
+            var ax = binder.EnsureRegister(RegisterStorage.Reg16("ax", 0));
+            var bx = binder.EnsureRegister(RegisterStorage.Reg16("bx", 3));
+            var bp = binder.EnsureRegister(RegisterStorage.Reg16("bp", 5));
+            var tmp = binder.CreateTemporary(PrimitiveType.Word16);
+            var flags = RegisterStorage.Reg16("FLAGS", 6);
+            var SCZ = binder.EnsureFlagGroup(new FlagGroupStorage(flags, 0x7, "SCZ", PrimitiveType.Word16));
+            var CZ = binder.EnsureFlagGroup(new FlagGroupStorage(flags, 1, "CZ", PrimitiveType.Word16));
+
+            var b1000 = Given_Block(0x1000);
+            var b1010 = Given_Block(0x1010);
+            var b1020 = Given_Block(0x1020);
+            var b1030 = Given_Block(0x1030);
+            Given_Instrs(b1000, m =>
+            {
+                m.Assign(ax, m.Mem16(m.IAdd(bp, 6)));
+            });
+            Given_Instrs(b1000, m =>
+            { 
+                m.Assign(SCZ, m.Cond(m.ISub(ax, 9)));
+                m.Branch(m.Test(ConditionCode.ULE, CZ), b1020.Address);
+            });
+            Given_Instrs(b1010, m =>
+            {
+                m.Goto(b1030.Address);
+            });
+            Given_Instrs(b1020, m =>
+            {
+                m.Assign(ax, m.IAdd(ax, ax));
+                m.Assign(SCZ, m.Cond(ax));
+                m.Assign(tmp, bx);
+                m.Assign(bx, ax);
+                m.Assign(ax, tmp);
+                m.Goto(m.Mem16(m.IAdd(bx, 0x400)));
+            });
+            graph.Nodes.Add(b1000);
+            graph.Nodes.Add(b1010);
+            graph.Nodes.Add(b1020);
+            graph.AddEdge(b1000, b1010);
+            graph.AddEdge(b1000, b1020);
+
+            var bwslc = new BackwardSlicer(host, b1000, processorState);
+            Assert.IsTrue(bwslc.Start(b1020, 5, Target(b1020)));
+            while (bwslc.Step())
+                ;
+            Assert.AreEqual("Mem0[ax * 2<16> + 0x400<16>:word16]", bwslc.JumpTableFormat.ToString());
+            Assert.AreEqual("ax", bwslc.JumpTableIndex.ToString());
+            Assert.AreEqual("1[0,9]", bwslc.JumpTableIndexInterval.ToString());
+            Assert.AreEqual("00001004", bwslc.GuardInstrAddress.ToString());
+        }
+
 
         [Test(Description = "MIPS switches are guarded by have explicit comparisons")]
         [Ignore("Get this working soon")]

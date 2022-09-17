@@ -59,9 +59,10 @@ namespace Reko.UnitTests.Decompiler.Scanning
             return block.Instructions.Sum(b => b.Instructions.Length);
         }
 
-        public IEnumerable<RtlInstruction> GetBlockInstructions(RtlBlock block)
+        public IEnumerable<(Address, RtlInstruction)> GetBlockInstructions(RtlBlock block)
         {
-            return block.Instructions.SelectMany(rtlc => rtlc.Instructions);
+            return block.Instructions.SelectMany(
+                rtlc => rtlc.Instructions.Select(i => (rtlc.Address, i)));
         }
 
         public RtlBlock GetSinglePredecessor(RtlBlock block)

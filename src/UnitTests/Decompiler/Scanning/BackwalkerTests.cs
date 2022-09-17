@@ -89,7 +89,7 @@ namespace Reko.UnitTests.Decompiler.Scanning
 
             public bool IsFallthrough(Instruction instr, Block block)
             {
-                if (!(instr is Branch bra))
+                if (instr is not Branch bra)
                     return false;
                 return bra.Target != block;
             }
@@ -135,9 +135,9 @@ namespace Reko.UnitTests.Decompiler.Scanning
                 throw new NotImplementedException();
             }
 
-            public IEnumerable<Instruction> GetBlockInstructions(Block block)
+            public IEnumerable<(Address?, Instruction?)> GetBlockInstructions(Block block)
             {
-                return block.Statements.Select(s => s.Instruction);
+                return block.Statements.Select(s => (s.Address, s.Instruction))!;
             }
 
             public int BlockInstructionCount(Block block)

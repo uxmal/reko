@@ -70,8 +70,8 @@ namespace Reko.UnitTests.Decompiler.Scanning
 
             public (Expression?, Expression?) AsAssignment(Instruction instr)
             {
-                if (!(instr is Assignment ass))
-                    return (null,null);
+                if (instr is not Assignment ass)
+                    return (null, null);
                 return (ass.Dst, ass.Src);
             }
 
@@ -120,9 +120,9 @@ namespace Reko.UnitTests.Decompiler.Scanning
                 throw new NotImplementedException();
             }
 
-            public IEnumerable<Instruction> GetBlockInstructions(Block block)
+            public IEnumerable<(Address?, Instruction?)> GetBlockInstructions(Block block)
             {
-                return block.Statements.Select(s => s.Instruction);
+                return block.Statements.Select(s => (s.Address, s.Instruction))!;
             }
 
             public int BlockInstructionCount(Block block)

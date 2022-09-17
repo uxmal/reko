@@ -88,8 +88,12 @@ namespace Reko.Scanning
         public Expression? JumpTableIndex { get { return state!.JumpTableIndex; } }
 
         // The set of values the index expression may have, expressed as strided interval.
-        public StridedInterval JumpTableIndexInterval { get { return state!.JumpTableIndexInterval; } }    
+        public StridedInterval JumpTableIndexInterval => state!.JumpTableIndexInterval;
+
         public Expression? JumpTableIndexToUse { get { return state!.JumpTableIndexToUse; } }
+
+        public Address? GuardInstrAddress => state?.GuardInstrAddress; 
+
 
         public TableExtent? DiscoverTableExtent(Address addrSwitch, RtlTransfer xfer, DecompilerEventListener listener)
         {
@@ -105,7 +109,7 @@ namespace Reko.Scanning
             var interval = this.JumpTableIndexInterval;
             var index = this.JumpTableIndexToUse;
             var ctx = new Dictionary<Expression, ValueSet>(new ExpressionValueComparer());
-            if (index == null)
+            if (index is null)
             {
                 // Weren't able to find the index register,
                 // try finding it by blind pattern matching.
@@ -147,7 +151,12 @@ namespace Reko.Scanning
             }
             else 
             {
-                ctx.Add(this.JumpTableIndex!, new IntervalValueSet(this.JumpTableIndex!.DataType, interval));
+                var idx = this.JumpTableIndex!;
+                if (idx is Slice slice)
+                {
+                    idx = slice.Expression;
+                }
+                ctx.Add(idx, new IntervalValueSet(this.JumpTableIndex!.DataType, interval));
             }
             var vse = new ValueSetEvaluator(host.Architecture, host.SegmentMap, ctx, this.processorState);
             var (values, accesses) = vse.Evaluate(jumpExpr!);
@@ -163,6 +172,7 @@ namespace Reko.Scanning
                 Targets = vector!,
                 Accesses = accesses,
                 Index = index,
+                GuardInstrAddress = this.GuardInstrAddress,
             };
         }
 
@@ -266,7 +276,7 @@ namespace Reko.Scanning
                         // Code instructions don't exist in "raw" RTL. We are 
                         // checking for a magic 1-length array of nulls as a 
                         // sentinel.
-                        if (stms.Length == 1 && stms[0] == null)
+                        if (stms.Length == 1 && stms[0].Item2 == null)
                             break;
                         SliceState pstate = state.CreateNew(pred,  state.block.Address);
                         worklist.Add(pstate);
@@ -502,7 +512,7 @@ namespace Reko.Scanning
         private readonly BackwardSlicer slicer;
         public RtlBlock block;
         public int iInstr;              // The current instruction
-        public RtlInstruction[] instrs; // The instructions of this block
+        public (Address, RtlInstruction)[] instrs; // The instructions of this block
         public Address? addrSucc;        // the block from which we traced.
         public ConditionCode ccNext;    // The condition code that is used in a branch.
         public Expression? assignLhs;    // current LHS
@@ -529,6 +539,8 @@ namespace Reko.Scanning
         public Expression? JumpTableIndexToUse { get; private set; }
         // the 'stride' of the jump/call table.
         public StridedInterval JumpTableIndexInterval { get; private set; }
+        // the address of the instruction at which the range check happens.
+        public Address? GuardInstrAddress { get; private set; }
 
         /// <summary>
         /// Start the analysis with the expression in the indirect jump.
@@ -555,11 +567,11 @@ namespace Reko.Scanning
 
         public bool Step()
         {
-            var instr = this.instrs[this.iInstr];
+            var (addr, instr) = this.instrs[this.iInstr];
             BackwardSlicer.trace.Inform("Bwslc: Stepping to instruction {0}", instr);
             var sr = instr.Accept(this);
             --this.iInstr;
-            if (sr == null)
+            if (sr is null)
             {
                 // Instruction had no effect on live registers.
                 return true;
@@ -577,9 +589,11 @@ namespace Reko.Scanning
             }
             if (sr.Stop)
             {
+                this.GuardInstrAddress = addr;
                 BackwardSlicer.trace.Verbose("  Was asked to stop, stopping.");
                 BackwardSlicer.trace.Verbose("  index: {0} ({1})", this.JumpTableIndex!, this.JumpTableIndexInterval);
                 BackwardSlicer.trace.Verbose("  expr:  {0}", this.JumpTableFormat!);
+                BackwardSlicer.trace.Verbose("  addr:  {0} (of range check instr)", this.GuardInstrAddress);
                 return false;
             }
             if (this.Live.Count == 0)
@@ -628,7 +642,7 @@ namespace Reko.Scanning
 
         private StridedInterval MakeInterval_ISub(Expression left, Constant? right)
         {
-            if (right == null || right.IsZero)
+            if (right is null || right.IsZero)
                 return StridedInterval.Empty;
             var cc = this.ccNext;
             if (this.invertCondition)
@@ -839,7 +853,6 @@ namespace Reko.Scanning
             var interval = binExp.Operator.Type == OperatorType.ISub
                 ? MakeInterval_ISub(liveKey, binExp.Right as Constant)
                 : MakeInterval_IAdd(liveKey, binExp.Right as Constant);
-            //$TODO: if jmptableindex and jmptableindextouse not same, inject a statement.
             this.JumpTableIndex = liveKey;
             this.JumpTableIndexToUse = binExp.Left;
             this.JumpTableIndexInterval = interval;
@@ -1111,10 +1124,10 @@ namespace Reko.Scanning
             if (!BackwardSlicer.trace.TraceVerbose)
                 return;
             var sw = new StringWriter();
-            foreach (var i in instrs)
+            foreach (var (_, instr) in instrs)
             {
                 sw.Write("    ");
-                i.Write(sw);
+                instr.Write(sw);
                 sw.WriteLine();
             }
             Debug.Write(sw.ToString());
@@ -1161,5 +1174,6 @@ namespace Reko.Scanning
         public List<Address>? Targets;
         public Dictionary<Address, DataType>? Accesses;
         public Expression? Index;
+        public Address? GuardInstrAddress;
     }
 }
