@@ -989,10 +989,33 @@ namespace Reko.Scanning
                 switchExp = this.frame!.EnsureIdentifier(indJump.IndexRegister!);
                 imgVector = indJump.Table;
             }
-            else if (!DiscoverTableExtent(addrSwitch, xfer, out vector, out imgVector, out switchExp))
+            else
             {
-                var navigator = eventListener.CreateJumpTableNavigator(program, this.arch, addrSwitch, null, 0);
-                return false;
+                var te = DiscoverTableExtent(addrSwitch, xfer);
+                if (te is null)
+                {
+                    var navigator = eventListener.CreateJumpTableNavigator(program, this.arch, addrSwitch, null, 0);
+                    return false;
+                }
+
+                foreach (var de in te.Accesses!)
+                {
+                    var item = new ImageMapItem(de.Key, (uint) de.Value.Size)
+                    {
+                        DataType = de.Value
+                    };
+                    program.ImageMap.AddItemWithSize(de.Key, item);
+                }
+
+                var idIndex = this.frame!.CreateTemporary(te.Index!.DataType);
+                InsertSwitchIndexPreservingStatement(te, idIndex);
+
+                imgVector = new ImageMapVectorTable(
+                    null!, // bw.VectorAddress,
+                    te.Targets!.ToArray(),
+                    4); // builder.TableByteSize);
+                vector = te.Targets;
+                switchExp = idIndex;
             }
 
             if (xfer is RtlCall)
@@ -1011,7 +1034,7 @@ namespace Reko.Scanning
                     blockSource.Procedure.ControlGraph.AddEdge(blockSource, dest);
                 }
               
-                if (switchExp == null)
+                if (switchExp is null)
                 {
                     scanner.Warn(addrSwitch, "Unable to determine index variable for indirect jump.");
                     return false;
@@ -1034,6 +1057,36 @@ namespace Reko.Scanning
         }
 
         /// <summary>
+        /// Injects an assignment instruction to keep the conditional 
+        /// expression of a switch statement alive.
+        /// </summary>
+        public void InsertSwitchIndexPreservingStatement(TableExtent te, Identifier idIndex)
+        {
+            var addr = te.GuardInstrAddress!;
+            if (addr is null)
+                return;
+            var block = scanner.FindContainingBlock(addr);
+            if (block is null)
+            {
+                // Weird, it should exist.
+                this.scanner.Warn(addr, "Unable to find basic block containing address {0}. " +
+                    "Switch statement reconstruction may be incorrect.",
+                    addr);
+                return;
+            }
+            var iStm = block.Statements.FindIndex(s => s.Address == te.GuardInstrAddress);
+            if (iStm < 0)
+            {
+                this.scanner.Warn(addr, "Unable to find instruction at address {0}. " +
+                   "Switch statement reconstruction may be incorrect.",
+                   addr);
+                return;
+            }
+            var ass = new Assignment(idIndex, te.Index!);
+            block.Statements.Insert(iStm, addr, ass);
+        }
+
+        /// <summary>
         /// Discovers the extent of a jump/call table by walking backwards from the 
         /// jump/call until some gating condition (index < value, index & bitmask etc)
         /// can be found.
@@ -1046,40 +1099,17 @@ namespace Reko.Scanning
         /// <param name="imgVector"></param>
         /// <param name="switchExp">The expression to use in the resulting switch / call.</param>
         /// <returns></returns>
-        private bool DiscoverTableExtent(
+        private TableExtent? DiscoverTableExtent(
             Address addrSwitch,
-            RtlTransfer xfer,
-            out List<Address> vector,
-            out ImageMapVectorTable imgVector,
-            out Expression switchExp)
+            RtlTransfer xfer)
         {
             Debug.Assert(!(xfer.Target is Address || xfer.Target is Constant), $"This should not be a constant {xfer}.");
             var listener = scanner.Services.RequireService<DecompilerEventListener>();
-            vector = null!;
-            imgVector = null!;
-            switchExp = null!;
 
             var bwsHost = new BackwardSlicerHost(program, this.arch);
             var rtlBlock = bwsHost.GetRtlBlock(blockCur!);
             var bws = new BackwardSlicer(bwsHost, rtlBlock, state);
-            var te = bws.DiscoverTableExtent(addrSwitch, xfer, listener);
-            if (te == null)
-                return false;
-            foreach (var de in te.Accesses!)
-            {
-                var item = new ImageMapItem(de.Key, (uint)de.Value.Size)
-                {
-                    DataType = de.Value
-                };
-                program.ImageMap.AddItemWithSize(de.Key, item);
-            }
-            imgVector = new ImageMapVectorTable(
-                null!, // bw.VectorAddress,
-                te.Targets!.ToArray(),
-                4); // builder.TableByteSize);
-            vector = te.Targets;
-            switchExp = te.Index!;
-            return true;
+            return bws.DiscoverTableExtent(addrSwitch, xfer, listener);
         }
 
 

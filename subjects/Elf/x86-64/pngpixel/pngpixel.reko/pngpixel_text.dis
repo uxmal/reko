@@ -121,20 +121,20 @@ l0000000000400DC6:
 	word64 v16_67 = rdi + (CONVERT(((esi >>u 6<32>) *s r8d) *s ecx, int32, uint64) << 3<64>) + CONVERT(eax_52 >>u 3<32>, word32, uint64)
 	branch ecx >u 0x10<32> l0000000000400EC1
 l0000000000400E2D:
-	word64 rax_107
+	word64 rax_100
 	switch (ecx) { l0000000000400EC1 l0000000000400E3A l0000000000400E5A l0000000000400EC1 l0000000000400E77 l0000000000400EC1 l0000000000400EC1 l0000000000400EC1 l0000000000400E94 l0000000000400EC1 l0000000000400EC1 l0000000000400EC1 l0000000000400EC1 l0000000000400EC1 l0000000000400EC1 l0000000000400EC1 l0000000000400EA0 }
 l0000000000400EA0:
-	rax_107 = CONVERT(CONVERT(Mem70[v16_67 + 1<64>:byte], byte, word32) + (CONVERT(Mem70[v16_67:byte], byte, word32) << 8<32>), word32, uint64)
+	rax_100 = CONVERT(CONVERT(Mem70[v16_67 + 1<64>:byte], byte, word32) + (CONVERT(Mem70[v16_67:byte], byte, word32) << 8<32>), word32, uint64)
 l0000000000400E94:
-	rax_107 = CONVERT(Mem70[v16_67:byte], byte, uint64)
+	rax_100 = CONVERT(Mem70[v16_67:byte], byte, uint64)
 l0000000000400E77:
-	rax_107 = CONVERT(CONVERT(Mem70[v16_67:byte], byte, word32) >> 4<8> - (SLICE(eax_52, byte, 0) & 7<8>) & 0xF<32>, word32, uint64)
+	rax_100 = CONVERT(CONVERT(Mem70[v16_67:byte], byte, word32) >> 4<8> - (SLICE(eax_52, byte, 0) & 7<8>) & 0xF<32>, word32, uint64)
 l0000000000400E5A:
-	rax_107 = CONVERT(CONVERT(Mem70[v16_67:byte], byte, word32) >> 6<8> - (SLICE(eax_52, byte, 0) & 7<8>) & 3<32>, word32, uint64)
+	rax_100 = CONVERT(CONVERT(Mem70[v16_67:byte], byte, word32) >> 6<8> - (SLICE(eax_52, byte, 0) & 7<8>) & 3<32>, word32, uint64)
 l0000000000400E3A:
-	rax_107 = CONVERT(CONVERT(Mem70[v16_67:byte], byte, word32) >> 7<8> - (SLICE(eax_52, byte, 0) & 7<8>) & 1<32>, word32, uint64)
+	rax_100 = CONVERT(CONVERT(Mem70[v16_67:byte], byte, word32) >> 7<8> - (SLICE(eax_52, byte, 0) & 7<8>) & 1<32>, word32, uint64)
 l0000000000400EE7:
-	return SLICE(rax_107, word32, 0)
+	return SLICE(rax_100, word32, 0)
 component_exit:
 l0000000000400EC1:
 	fprintf(Mem70[0x0000000000602100<p64>:word64], 0x401808<u64>, ecx)
@@ -159,7 +159,7 @@ l0000000000400EE9:
 	word32 eax_67 = CONVERT(SLICE(rax_60, byte, 0), byte, word32)
 	branch eax_67 >u 6<32> l00000000004012C9
 l0000000000400F4C:
-	switch (Mem50[CONVERT(eax_67, word32, uint64) * 8<64> + 0x401958<64>:word32]) { l0000000000400F58 l00000000004012C9 l0000000000401155 l0000000000400F8D l00000000004011D2 l00000000004012C9 l000000000040122A }
+	switch (eax_67) { l0000000000400F58 l00000000004012C9 l0000000000401155 l0000000000400F8D l00000000004011D2 l00000000004012C9 l000000000040122A }
 l000000000040122A:
 	printf(0x401926<u64>, component(eax_49, 0<32>, ecx, rdx, 4<32>), component(eax_49, 1<32>, ecx, rdx, 4<32>), component(eax_49, 2<32>, ecx, rdx, 4<32>), component(eax_49, 3<32>, ecx, rdx, 4<32>))
 l00000000004011D2:

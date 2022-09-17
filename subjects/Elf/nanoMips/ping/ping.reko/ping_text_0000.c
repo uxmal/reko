@@ -5902,25 +5902,25 @@ l00404830:
 			if (r7_n < (struct Eq_n *) 0x0A)
 			{
 				r7_n = (struct Eq_n *) *((char *) g_a412340 + r7_n * 0x04);
-				switch (r7_n)
+				switch ((word16) r4_n.u0)
 				{
-				case 0x00:
+				case 0x01:
 					r4_n.u0 = 200809;
 					break;
-				case 0x01:
+				case 0x02:
 					r4_n.u0 = 0x00200000;
 					goto l00404798;
-				case 0x02:
+				case 0x03:
 l00404798:
 					break;
-				case 0x03:
+				case 0x04:
 					r7_n = (struct Eq_n *) &g_t454430;
 					r4_n = g_t454454;
 					break;
-				case 0x04:
-					goto l00404830;
 				case 0x05:
+					goto l00404830;
 				case 0x06:
+				case 0x07:
 					word32 r10_n;
 					word32 r9_n;
 					word32 r8_n;
@@ -5941,17 +5941,17 @@ l00404798:
 					{
 						while (true)
 						{
-							word32 r6_n = CONVERT(Mem112[&tLoc0148 + r7_n:byte], byte, word32);
+							word32 r6_n = CONVERT(Mem113[&tLoc0148 + r7_n:byte], byte, word32);
 							if (r6_n == 0x00)
 								break;
-							Mem118[r7_n + &tLoc0148:byte] = SLICE(r6_n, byte, 0) & SLICE(r6_n, byte, 0) + ~0x00;
+							Mem119[r7_n + &tLoc0148:byte] = SLICE(r6_n, byte, 0) & SLICE(r6_n, byte, 0) + ~0x00;
 							r4_n = (word16) r4_n.u0 + 1;
 						}
 						++r7_n;
 					} while (r7_n != (struct Eq_n *) 0x80);
 					break;
-				case 0x07:
 				case 0x08:
+				case 0x09:
 					Eq_n r3_n;
 					word32 r6_n;
 					Eq_n r2_n = sysinfo(out r3_n, out r6_n);
@@ -5973,7 +5973,7 @@ l00404798:
 					if (r5_n != 0x00)
 						goto l00404830;
 					goto l0040477C;
-				case 0x09:
+				case 0x0A:
 					r4_n.u0 = 0x00;
 					break;
 				}
@@ -22535,7 +22535,7 @@ Eq_n __isoc99_vfscanf(Eq_n r0, Eq_n r4, struct Eq_n * r5, Eq_n r6, Eq_n r19, Eq_
 		r23_n = ϕ(r23_n, r23_n);
 		r21_n = ϕ(r21, r21_n);
 		r4_n = ϕ(r4_n, r4_n);
-		Mem82 = ϕ(Mem80, Mem1639);
+		Mem82 = ϕ(Mem80, Mem1640);
 		r16_n = ϕ(r16_n, r16_n);
 		r7_n = (word32) r16_n->b0000;
 		if (r7_n == 0x00)
@@ -22560,7 +22560,7 @@ Eq_n __isoc99_vfscanf(Eq_n r0, Eq_n r4, struct Eq_n * r5, Eq_n r6, Eq_n r19, Eq_
 				r11_n = ϕ(r11_n, r11_n, r11_n);
 				r12_n = ϕ(r12_n, r12_n, r12_n);
 				r8_n = ϕ(r8_n, r8_n, r8_n);
-				Mem1496 = ϕ(Mem82, Mem1518, Mem1518);
+				Mem1497 = ϕ(Mem82, Mem1519, Mem1519);
 				r7_n = *((word32) r4 + 4);
 				if (r7_n < *((word32) r4 + 0x0068))
 				{
@@ -22576,14 +22576,14 @@ Eq_n __isoc99_vfscanf(Eq_n r0, Eq_n r4, struct Eq_n * r5, Eq_n r6, Eq_n r19, Eq_
 				r11_n = ϕ(r11_n, r11_n);
 				r12_n = ϕ(r12_n, r12_n);
 				r8_n = ϕ(r8_n, r8_n);
-				Mem1518 = ϕ(Mem1513, Mem1496);
+				Mem1519 = ϕ(Mem1514, Mem1497);
 				r4_n = ϕ(r4_n, r4_n);
 			} while (r4_n == 0x20 || r4_n < ~0x0D);
 			if (*((word32) r4 + 0x0068) != 0x00)
 				*((word32) r4 + 4) = (word32) *((word32) r4 + 4) + 0x00FF;
-			Mem1524 = ϕ(Mem1518, Mem1522);
+			Mem1525 = ϕ(Mem1519, Mem1523);
 			r4_n = *((word32) r4 + 0x007C);
-			r23_n = Mem1524[r4 + 0x04:word32] - Mem1524[r4 + 0x08:word32] + Mem1524[r4 + 0x78:word32] + r23_n;
+			r23_n = Mem1525[r4 + 0x04:word32] - Mem1525[r4 + 0x08:word32] + Mem1525[r4 + 0x78:word32] + r23_n;
 			goto l0040DBC6;
 		}
 		if (r7_n == 0x25)
@@ -22645,7 +22645,7 @@ l0040D586:
 				dwLoc0184_n = ϕ(dwLoc0184_n, dwLoc0184_n);
 				r20_n = ϕ(r20_n, r20_n);
 				r19_n = ϕ(r19_n, r19_n);
-				Mem154 = ϕ(Mem1646, Mem152);
+				Mem154 = ϕ(Mem1647, Mem152);
 				r7_n = ϕ(r7_n, r7_n);
 				r6_n = (word32) r7_n->b0000;
 				r5_n = (struct Eq_n *) &r7_n->b0001;
@@ -22656,7 +22656,7 @@ l0040D586:
 				r7_n = r5_n;
 l0040D630:
 				dwLoc0184_n = ϕ(dwLoc0184_n, dwLoc0184_n);
-				Mem1646 = ϕ(Mem174, Mem164);
+				Mem1647 = ϕ(Mem174, Mem164);
 				r7_n = ϕ(r7_n, r7_n);
 				r20_n = ϕ(r20_n, r20_n);
 				r19_n = ϕ(r19_n, r19_n);
@@ -22674,77 +22674,78 @@ l0040D630:
 			r19_n = ϕ(r19_n, r19_n);
 			Mem174 = ϕ(Mem166, Mem170);
 			r7_n = ϕ(r7_n, r7_n);
+			r6_n = (word32) r7_n->b0000;
 			r16_n = (struct Eq_n *) &r7_n->b0001;
-			r6_n = (word32) r7_n->b0000 + ~0x40 & 0xFF;
+			r6_n = r6_n + ~0x40 & 0xFF;
 			if (r6_n < 0x3A)
 			{
 				r5_n.u1 = 0x00413454;
 				r6_n = *((char *) g_a413454 + r6_n * 0x04);
 				switch (r6_n)
 				{
-				case 0x00:
-				case 0x02:
-				case 0x04:
-				case 0x05:
-				case 0x06:
-				case 0x12:
-				case 0x17:
-				case 0x1A:
-				case 0x20:
-				case 0x22:
-				case 0x23:
-				case 0x24:
-				case 0x25:
-				case 0x26:
-				case 0x28:
-				case 0x2D:
-				case 0x2E:
-				case 0x2F:
-				case 0x32:
-				case 0x34:
-				case 55:
+				case 0x41:
+				case 0x43:
+				case 0x45:
+				case 0x46:
+				case 0x47:
+				case 0x53:
+				case 88:
+				case 0x5B:
+				case 0x61:
+				case 99:
+				case 100:
+				case 101:
+				case 0x66:
+				case 0x67:
+				case 0x69:
+				case 110:
+				case 111:
+				case 0x70:
+				case 115:
+				case 117:
+				case 0x78:
 					r16_n = r7_n;
 					r21_n.u0 = 0x00;
 					break;
-				case 0x01:
-				case 0x03:
-				case 0x07:
-				case 0x08:
-				case 0x09:
-				case 0x0A:
-				case 0x0C:
-				case 0x0D:
-				case 0x0E:
-				case 0x0F:
-				case 0x10:
-				case 0x11:
-				case 0x13:
-				case 0x14:
-				case 0x15:
-				case 22:
-				case 0x18:
-				case 0x19:
-				case 0x1B:
-				case 0x1C:
-				case 0x1D:
-				case 0x1E:
-				case 0x1F:
-				case 33:
-				case 0x2A:
-				case 44:
-				case 0x30:
-				case 0x31:
-				case 0x35:
-				case 0x36:
-				case 0x38:
+				case 66:
+				case 0x44:
+				case 0x48:
+				case 0x49:
+				case 0x4A:
+				case 0x4B:
+				case 77:
+				case 0x4E:
+				case 0x4F:
+				case 0x50:
+				case 0x51:
+				case 0x52:
+				case 0x54:
+				case 0x55:
+				case 0x56:
+				case 0x57:
+				case 0x59:
+				case 0x5A:
+				case 0x5C:
+				case 0x5D:
+				case 0x5E:
+				case 0x5F:
+				case 0x60:
+				case 0x62:
+				case 0x6B:
+				case 0x6D:
+				case 113:
+				case 114:
+				case 118:
+				case 0x77:
+				case 121:
 					goto l0040D7B4;
-				case 11:
+				case 0x4C:
 					goto l0040D704;
-				case 0x27:
+				case 0x68:
 					goto l0040D630;
-				case 0x29:
+				case 0x6A:
 					goto l0040D700;
-				case 0x2B:
+				case 0x6C:
 					r6_n.u0 = 0x0037366C;
 					r21_n.u0 = 0x01;
 					if (0x0037366C == 44)
@@ -22760,34 +22761,34 @@ l0040D704:
 						r16_n = ϕ(r16_n, r16_n);
 					}
 					goto l0040D644;
-				case 0x33:
-				case 0x39:
+				case 116:
+				case 122:
 					break;
-				case 0x3A:
-				case 0x41:
-				case 66:
+				case 0x7B:
+				case 0x82:
+				case 131:
 					goto l0040FA58;
-				case 0x3B:
-				case 0x3D:
-				case 0x3F:
-				case 0x3C:
+				case 0x7C:
+				case 0x7E:
+				case 0x80:
+				case 0x7D:
 					r4Out = fn0040F9A8(r6_n, r8_n, r10_n);
 					r18Out = r18_n;
 					r19Out = r19_n;
 					return r3_n;
-				case 0x3E:
-				case 0x43:
+				case 0x7F:
+				case 0x84:
 l0040FA58:
 					goto l0040F99C;
-				case 0x40:
-				case 0x44:
+				case 0x81:
+				case 133:
 					r4Out = fn0040F9A8(r6_n, r8_n, r10_n);
 					r18Out = r18_n;
 					r19Out = r19_n;
 					return r3_n;
-				case 0x45:
-				case 0x46:
-				case 0x47:
+				case 0x86:
+				case 0x87:
+				case 0x88:
 					if (r12_n == 0x02)
 					{
 						fn0040FA5A(out r5_n);
@@ -22813,7 +22814,7 @@ l0040FA58:
 						r19Out = r19_n;
 						return r3_n;
 					}
-				case 0x48:
+				case 0x89:
 					r4_n = r8_n | r6_n + ~0x2F;
 l0040F99C:
 					r4Out = fn0040F9A4(out r5_n);
@@ -22848,7 +22849,7 @@ l0040D644:
 								r3_n = ϕ(r3_n, r3_n, r3_n);
 								r2_n = ϕ(r2_n, r2_n, r2_n);
 								r12_n = ϕ(r12_n, r12_n, r12_n);
-								Mem368 = ϕ(Mem174, Mem390, Mem390);
+								Mem369 = ϕ(Mem174, Mem391, Mem391);
 								r7_n = *((word32) r4 + 4);
 								if (r7_n < *((word32) r4 + 0x0068))
 								{
@@ -22860,14 +22861,14 @@ l0040D644:
 								r3_n = ϕ(r3_n, r3_n);
 								r2_n = ϕ(r2_n, r2_n);
 								r12_n = ϕ(r12_n, r12_n);
-								Mem390 = ϕ(Mem385, Mem368);
+								Mem391 = ϕ(Mem386, Mem369);
 								r4_n = ϕ(r4_n, r4_n);
 							} while (r4_n == 0x20 || r4_n < ~0x0D);
 							if (*((word32) r4 + 0x0068) != 0x00)
 								*((word32) r4 + 4) = (word32) *((word32) r4 + 4) + 0x00FF;
-							Mem396 = ϕ(Mem390, Mem394);
+							Mem397 = ϕ(Mem391, Mem395);
 							r7_n = *((word32) r4 + 4) - *((word32) r4 + 8);
-							r6_n = r7_n + Mem396[r4 + 0x78:word32];
+							r6_n = r7_n + Mem397[r4 + 0x78:word32];
 							r4_n = *((word32) r4 + 0x007C);
 							r6_n = r6_n + r23_n;
 							r7_n = (word32) (r6_n < r23_n) + ((word32) r4_n + ((word32) (r6_n < r7_n) + ((word32) r4_n + (r7_n >> 0x1F))));
@@ -22910,10 +22911,10 @@ l0040D684:
 				r3_n = ϕ(r3_n, r3_n);
 				r2_n = ϕ(r2_n, r2_n);
 				r12_n = ϕ(r12_n, r12_n);
-				Mem463 = ϕ(Mem461, Mem430);
+				Mem464 = ϕ(Mem462, Mem431);
 				if (*((word32) r4 + 0x0068) != 0x00)
 					*((word32) r4 + 4) = (word32) *((word32) r4 + 4) + 0x00FF;
-				Mem564 = ϕ(Mem467, Mem463);
+				Mem565 = ϕ(Mem468, Mem464);
 				if (dwLoc0184_n == 0x24)
 				{
 l0040DAE6:
@@ -22922,7 +22923,7 @@ l0040D84C:
 					r5_n = ϕ(r5_n, r5_n, r5_n, r5_n);
 					r2_n = __intscan(r2_n, r3_n, r4, r5_n, 0x00, ~0x00, ~0x00, r12_n, out r3_n, out r4_n, out r5_n, out r6_n, out r7_n, out r8_n, out r9_n, out r10_n, out r11_n, out r12_n);
 					r22_n = *((word32) r4 + 4) - *((word32) r4 + 8);
-					r8_n = Mem564[r4 + 0x78:word32] + r22_n;
+					r8_n = Mem565[r4 + 0x78:word32] + r22_n;
 					r9_n = (word32) *((word32) r4 + 0x007C) + (r22_n >> 0x1F);
 					r7_n = r5_n;
 					if ((r8_n | (word32) r9_n + (word32) (r8_n < r22_n)) == 0x00)
@@ -22941,7 +22942,7 @@ l0040D6B4:
 					r8_n = ϕ(r8_n, r8_n, r8_n, r8_n, r8_n, r8_n, r8_n, r8_n, r8_n, r8_n, r8_n, r8_n, r8_n, r8_n, r8_n, r8_n);
 					r16_n = ϕ(r16_n, r16_n, r16_n, r16_n, r16_n, r16_n, r16_n, r16_n, r16_n, r16_n, r16_n, r16_n, r16_n, r16_n, r16_n, r16_n);
 					r18_n = ϕ(r18_n, r18_n, r18_n, r18_n, r18_n, r18_n, r18_n, r18_n, r18_n, r18_n, r18_n, r18_n, r18_n, r18_n, r18_n, r18_n);
-					Mem1345 = ϕ(Mem564, Mem564, Mem564, Mem564, Mem1337, Mem1328, Mem564, Mem615, Mem564, Mem1026, Mem1347, Mem1108, Mem1349, Mem564, Mem564, Mem564);
+					Mem1346 = ϕ(Mem565, Mem565, Mem565, Mem565, Mem1338, Mem1329, Mem565, Mem616, Mem565, Mem1027, Mem1348, Mem1109, Mem1350, Mem565, Mem565, Mem565);
 					r4_n = *((word32) r4 + 0x007C);
 					r23_n = (word32) r23_n + ((word32) (*((word32) r4 + 0x0078)) + (*((word32) r4 + 4) - *((word32) r4 + 8)));
 					goto l0040DBC8;
@@ -22992,7 +22993,7 @@ l0040D6B4:
 					while (true)
 					{
 						r6_n = ϕ(r6_n, r6_n, r6_n, r6_n);
-						Mem679 = ϕ(Mem677, Mem1144, Mem669, Mem673);
+						Mem680 = ϕ(Mem678, Mem1145, Mem670, Mem674);
 						r16_n = ϕ(r16_n, r16_n, r16_n, r16_n);
 						r7_n = (word32) r16_n->b0000;
 						if (r7_n == 0x1D)
@@ -23007,7 +23008,7 @@ l0040D6B4:
 								r7_n = (word32) r16_n->bFFFFFFFF;
 								while (true)
 								{
-									Mem1133 = ϕ(Mem679, Mem1128);
+									Mem1134 = ϕ(Mem680, Mem1129);
 									r7_n = ϕ(r7_n, r7_n);
 									r5_n = r22_n ^ 0x01;
 									if (r7_n >= r6_n)
@@ -23018,7 +23019,7 @@ l0040D6B4:
 								r16_n = (struct Eq_n *) &r16_n->b0001;
 							}
 						}
-						Mem1132 = ϕ(Mem679, Mem679, Mem679, Mem1133);
+						Mem1133 = ϕ(Mem680, Mem680, Mem680, Mem1134);
 						r16_n = ϕ(r16_n, r16_n, r16_n, r16_n);
 						r6_n = 0x01 - r22_n;
 						(fp + ~0x102F + (word32) r16_n->b0000)->b0EFD = (byte) r6_n;
@@ -23043,7 +23044,7 @@ l0040D6B4:
 l0040DAF8:
 					r2_n = __floatscan(r0, r2_n, r4, r21_n, 0x00, r12_n, out r3_n, out r4_n, out r5_n, out r6_n, out r7_n, out r10_n, out r11_n, out r12_n);
 					r7_n = *((word32) r4 + 4) - *((word32) r4 + 8);
-					r6_n = r7_n + Mem564[r4 + 0x78:word32];
+					r6_n = r7_n + Mem565[r4 + 0x78:word32];
 					r7_n = (word32) (r6_n < r7_n) + ((word32) (*((word32) r4 + 0x007C)) + (r7_n >> 0x1F)) | r6_n;
 					r8_n = r4_n;
 					r9_n = r5_n;
@@ -23091,7 +23092,7 @@ l0040D8DA:
 					r16_n = ϕ(r16_n, r16_n);
 					r18_n = ϕ(r18_n, r18_n);
 					r7_n = ϕ(r7_n, r7_n);
-					Mem690 = ϕ(Mem679, Mem637);
+					Mem691 = ϕ(Mem680, Mem638);
 					r22_n.u0 = 0x1F;
 				}
 				else
@@ -23106,7 +23107,7 @@ l0040D8DA:
 				r22_n = ϕ(r22_n, r22_n, r22_n);
 				r18_n = ϕ(r18_n, r18_n, r18_n);
 				r7_n = ϕ(r7_n, r7_n, r7_n);
-				Mem689 = ϕ(Mem690, Mem627, Mem627);
+				Mem690 = ϕ(Mem691, Mem628, Mem628);
 				if (r21_n != 0x01)
 				{
 					if (r7_n != 0x00)
@@ -23128,7 +23129,7 @@ l0040D8DA:
 							r22_n = ϕ(r22_n, r22_n);
 							r19_n = ϕ(r19_n, r19_n);
 							r8_n = ϕ(r8_n, r8_n);
-							Mem813 = ϕ(Mem689, Mem846);
+							Mem814 = ϕ(Mem690, Mem847);
 							r7_n = *((word32) r4 + 4);
 							if (r7_n < *((word32) r4 + 0x0068))
 							{
@@ -23148,11 +23149,11 @@ l0040D8DA:
 							r18_n = ϕ(r18_n, r18_n);
 							r11_n = ϕ(r11_n, r11_n);
 							r8_n = ϕ(r8_n, r8_n);
-							Mem840 = ϕ(Mem834, Mem819);
+							Mem841 = ϕ(Mem835, Mem820);
 							r4_n = ϕ(r4_n, r4_n);
 							if ((word32) (fp + ~0x102F + r4_n)->b0EFD == 0x00)
 								break;
-							Mem846[r8_n + r19_n:byte] = SLICE(r4_n, byte, 0);
+							Mem847[r8_n + r19_n:byte] = SLICE(r4_n, byte, 0);
 							r20_n = (word32) r8_n + 1;
 							r4_n = r19_n;
 							if (r22_n == r20_n)
@@ -23190,7 +23191,7 @@ l0040D8DA:
 							r9_n = ϕ(r9_n, r9_n);
 							r12_n = ϕ(r12_n, r12_n);
 							r11_n = ϕ(r11_n, r11_n);
-							Mem737 = ϕ(Mem689, Mem761);
+							Mem738 = ϕ(Mem690, Mem762);
 							r7_n = *((word32) r4 + 4);
 							if (r7_n < *((word32) r4 + 0x0068))
 							{
@@ -23205,7 +23206,7 @@ l0040D8DA:
 							r9_n = ϕ(r9_n, r9_n);
 							r12_n = ϕ(r12_n, r12_n);
 							r11_n = ϕ(r11_n, r11_n);
-							Mem761 = ϕ(Mem754, Mem737);
+							Mem762 = ϕ(Mem755, Mem738);
 							r4_n = ϕ(r4_n, r4_n);
 						} while ((word32) (fp + ~0x102F + r4_n)->b0EFD != 0x00);
 						r8_n.u0 = 0x00;
@@ -23224,7 +23225,7 @@ l0040D8DA:
 							r11_n = ϕ(r11_n, r11_n);
 							r18_n = ϕ(r18_n, r18_n);
 							r19_n = ϕ(r19_n, r19_n);
-							Mem700 = ϕ(Mem689, Mem733);
+							Mem701 = ϕ(Mem690, Mem734);
 							r7_n = *((word32) r4 + 4);
 							r8_n = r19_n;
 							if (r7_n < *((word32) r4 + 0x0068))
@@ -23245,11 +23246,11 @@ l0040D8DA:
 							r11_n = ϕ(r11_n, r11_n);
 							r8_n = ϕ(r8_n, r8_n);
 							r18_n = ϕ(r18_n, r18_n);
-							Mem728 = ϕ(Mem722, Mem707);
+							Mem729 = ϕ(Mem723, Mem708);
 							r4_n = ϕ(r4_n, r4_n);
 							if ((word32) (fp + ~0x102F + r4_n)->b0EFD == 0x00)
 								break;
-							Mem733[r19_n + r18_n:byte] = SLICE(r4_n, byte, 0);
+							Mem734[r19_n + r18_n:byte] = SLICE(r4_n, byte, 0);
 							r19_n = (word32) r19_n + 1;
 						}
 						r19_n = r18_n;
@@ -23263,7 +23264,7 @@ l0040DA46:
 						r8_n = ϕ(r8_n, r8_n);
 						r18_n = ϕ(r18_n, r18_n);
 						r19_n = ϕ(r19_n, r19_n);
-						Mem1020 = ϕ(Mem840, Mem728);
+						Mem1021 = ϕ(Mem841, Mem729);
 						r20_n.u0 = 0x00;
 					}
 l0040D930:
@@ -23277,14 +23278,14 @@ l0040D930:
 					r18_n = ϕ(r18_n, r18_n, r18_n);
 					r20_n = ϕ(r20_n, r20_n, r20_n);
 					r19_n = ϕ(r19_n, r19_n, r19_n);
-					Mem1019 = ϕ(Mem926, Mem1020, Mem761);
+					Mem1020 = ϕ(Mem927, Mem1021, Mem762);
 					r7_n = *((word32) r4 + 4);
 					if (*((word32) r4 + 0x0068) != 0x00)
 						*((word32) r4 + 4) = (byte) r7_n + ~0x00;
-					Mem1026 = ϕ(Mem1024, Mem1019);
+					Mem1027 = ϕ(Mem1025, Mem1020);
 					r7_n = *((word32) r4 + 4) - *((word32) r4 + 8);
 					r4_n = *((word32) r4 + 0x007C);
-					r6_n = r7_n + Mem1026[r4 + 0x78:word32];
+					r6_n = r7_n + Mem1027[r4 + 0x78:word32];
 					r7_n = (word32) (r6_n < r7_n) + ((word32) r4_n + (r7_n >> 0x1F));
 					r5_n = r6_n | r7_n;
 					if (r5_n == 0x00)
@@ -23302,19 +23303,19 @@ l0040D930:
 l0040DBD2:
 						if (r21_n == 0x01)
 							*r18_n = r20_n;
-						Mem1349 = ϕ(Mem1091, Mem1078);
+						Mem1350 = ϕ(Mem1092, Mem1079);
 						if (dwLoc017C_n != 0x23)
 							goto l0040DBDC;
 					}
 					else
 					{
 l0040DBDC:
-						Mem1348 = ϕ(Mem1026, Mem1349);
+						Mem1349 = ϕ(Mem1027, Mem1350);
 						if (r20_n != 0x00)
 							*((word32) r20_n + r8_n * 0x04) = 0x00;
-						Mem1347 = ϕ(Mem1348, Mem1103);
+						Mem1348 = ϕ(Mem1349, Mem1104);
 						if (r19_n != 0x00)
-							Mem1108[r19_n + r8_n:byte] = 0x00;
+							Mem1109[r19_n + r8_n:byte] = 0x00;
 					}
 					goto l0040D6B4;
 				}
@@ -23341,7 +23342,7 @@ l0040D8F6:
 						r22_n = ϕ(r22_n, r22_n, r22_n, r22_n, r22_n);
 						r20_n = ϕ(r20_n, r20_n, r20_n, r20_n, r20_n);
 						r8_n = ϕ(r8_n, r8_n, r8_n, r8_n, r8_n);
-						Mem900 = ϕ(Mem898, Mem931, Mem956, Mem956, Mem965);
+						Mem901 = ϕ(Mem899, Mem932, Mem957, Mem957, Mem966);
 						r7_n = *((word32) r4 + 4);
 						if (r7_n < *((word32) r4 + 0x0068))
 						{
@@ -23377,7 +23378,7 @@ l0040D8F6:
 							r8_n = (word32) r8_n + 1;
 						}
 						r8_n = ϕ(r8_n, r8_n);
-						Mem956 = ϕ(Mem931, Mem953);
+						Mem957 = ϕ(Mem932, Mem954);
 						if (false || r8_n != r22_n)
 							continue;
 						r22_n = r8_n << 0x01;
@@ -23461,7 +23462,7 @@ l0040D50E:
 		r8_n = ϕ(r8_n, r8_n);
 		r6_n = ϕ(r6_n, r6_n);
 		r4_n = ϕ(r4_n, r4_n);
-		Mem1450 = ϕ(Mem1447, Mem82);
+		Mem1451 = ϕ(Mem1448, Mem82);
 		if (r4_n != (word32) r16_n->b0000)
 		{
 			r7_n = *((word32) r4 + 0x0068);
@@ -23502,7 +23503,7 @@ l0040DBC8:
 		r12_n = ϕ(r12_n, r12_n, r12_n, r12_n);
 		r8_n = ϕ(r8_n, r8_n, r8_n, r8_n);
 		r4_n = ϕ(r4_n, r4_n, r4_n, r4_n);
-		Mem1639 = ϕ(Mem1553, Mem1408, Mem1415, Mem174);
+		Mem1640 = ϕ(Mem1554, Mem1409, Mem1416, Mem174);
 		r16_n = ϕ(r16_n, r16_n, r16_n, r16_n);
 		r16_n = (struct Eq_n *) &r16_n->b0001;
 	}

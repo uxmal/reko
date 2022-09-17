@@ -396,12 +396,13 @@ void fn00000001000023B0()
 					if (eax_n <= 0x0C)
 					{
 						rax_n = (uint64) (eax_n - 0x01);
-						if ((word32) rax_n <= 0x06)
+						up32 eax_n = (word32) rax_n;
+						if (eax_n <= 0x06)
 						{
 							rax_n = (int64) g_a2684[rax_n * 0x04] + 0x100002684;
 							word32 rax_32_32_n = SLICE(rax_n, word32, 32);
 							word56 rax_56_8_n = SLICE(rax_n, word56, 8);
-							switch ((word32) rax_n)
+							switch (eax_n)
 							{
 							case 0x00:
 								if (rax_n->w0056 != 0x00 && rax_n->b0068 == 0x2E)
@@ -532,11 +533,10 @@ l000000010000277D:
 		while (true)
 		{
 l0000000100002B5E:
-			int32 eax_n = getopt("1@ABCFGHLOPRSTUWabcdefghiklmnopqrstuvwx", rsi, edi);
+			Eq_n eax_n = getopt("1@ABCFGHLOPRSTUWabcdefghiklmnopqrstuvwx", rsi, edi);
 			if (eax_n <= 0x30)
 				break;
-			uint64 rcx_n = (uint64) (eax_n + ~0x30);
-			if ((word32) rcx_n > 0x47)
+			if (eax_n > ~0x77)
 				goto l0000000100002B56;
 			word32 * rax_n;
 			word32 * rax_n;
@@ -546,121 +546,121 @@ l0000000100002B5E:
 			word32 * rax_n;
 			eax_n = 0x01;
 			eax_n = eax_n;
-			switch (g_a2FA8[rcx_n * 0x04] + (word32) 4294979496)
+			switch ((word32) eax_n)
 			{
-			case 0x00:
+			case 0x31:
 				g_dw6578 = 0x00;
 				g_dw65A8 = 0x00;
 				ebx_n = 0x01;
 				break;
-			case 0x01:
-			case 0x02:
-			case 0x03:
-			case 0x04:
-			case 0x05:
-			case 0x06:
-			case 0x07:
-			case 0x08:
-			case 0x09:
-			case 0x0A:
-			case 11:
-			case 0x0C:
-			case 0x0D:
-			case 0x0E:
-			case 0x13:
-			case 0x14:
-			case 0x18:
-			case 0x19:
-			case 0x1A:
-			case 0x1C:
-			case 0x1D:
-			case 0x20:
-			case 0x25:
-			case 0x27:
-			case 0x28:
-			case 0x29:
-			case 0x2A:
-			case 0x2B:
-			case 44:
-			case 0x2D:
-			case 0x2E:
-			case 0x2F:
+			case 0x32:
+			case 0x33:
+			case 0x34:
+			case 0x35:
+			case 0x36:
+			case 55:
+			case 0x38:
 			case 0x39:
+			case 0x3A:
+			case 0x3B:
+			case 0x3C:
+			case 0x3D:
+			case 0x3E:
+			case 0x3F:
+			case 0x44:
+			case 0x45:
+			case 0x49:
+			case 0x4A:
+			case 0x4B:
+			case 77:
+			case 0x4E:
+			case 0x51:
+			case 0x56:
+			case 88:
+			case 0x59:
+			case 0x5A:
+			case 0x5B:
+			case 0x5C:
+			case 0x5D:
+			case 0x5E:
+			case 0x5F:
+			case 0x60:
+			case 0x6A:
 				goto l0000000100002B56;
-			case 0x0F:
+			case 0x40:
 				rax_n = &g_dw65B0;
 				goto l00000001000029DA;
-			case 0x10:
+			case 0x41:
 				goto l0000000100002958;
-			case 0x11:
+			case 66:
 				g_dw657C = 0x00;
 				g_dw6588 = 0x01;
 				goto l0000000100002A95;
-			case 0x12:
+			case 0x43:
 				g_dw6578 = 0x00;
 				rax_n = &g_dw65A0;
 				goto l0000000100002831;
-			case 0x15:
+			case 0x46:
 				g_dw65AC = 0x01;
 				rax_n = &g_dw659C;
 				goto l0000000100002A9C;
-			case 22:
+			case 0x47:
 				setenv();
 				break;
-			case 0x17:
+			case 0x48:
 				compat_mode();
 				break;
-			case 0x1B:
+			case 0x4C:
 				compat_mode();
 				break;
-			case 0x1E:
+			case 0x4F:
 				goto l0000000100002B4A;
-			case 0x1F:
+			case 0x50:
 				break;
-			case 33:
+			case 0x52:
 				g_b65E2 = 0x01;
 				break;
-			case 0x22:
+			case 0x53:
 				r15d_n = 0x01;
 				break;
-			case 0x23:
+			case 0x54:
 				rax_n = &g_dw6594;
 				goto l00000001000029DA;
-			case 0x24:
+			case 0x55:
 				g_dw6560 = 0x01;
 				rax_n = &g_dw6558;
 				goto l0000000100002878;
-			case 0x26:
+			case 0x57:
 				dwLoc0650_n = 0x01;
 				break;
-			case 0x30:
+			case 0x61:
 l0000000100002958:
 				g_b65D1 = 0x01;
 				break;
-			case 0x31:
+			case 0x62:
 				g_dw657C = 0x00;
 				g_dw6588 = 0x00;
 				rax_n = &g_dw658C;
 				goto l00000001000029DA;
-			case 0x32:
+			case 99:
 				g_dw65A4 = 0x01;
 				g_dw6560 = 0x00;
 				rax_n = &g_dw6558;
 				goto l0000000100002A9C;
-			case 0x33:
+			case 100:
 				g_b65C0 = 0x01;
 				g_b65E2 = 0x00;
 				break;
-			case 0x34:
+			case 101:
 				rax_n = &g_dw655C;
 				goto l00000001000029DA;
-			case 0x35:
+			case 0x66:
 				g_b65E1 = 0x01;
 				compat_mode();
 				if (true)
 					g_b65D1 = 0x01;
 				break;
-			case 0x36:
+			case 0x67:
 				compat_mode();
 				if (true)
 				{
@@ -668,26 +668,26 @@ l0000000100002958:
 					goto l00000001000029CB;
 				}
 				break;
-			case 55:
+			case 0x68:
 				rax_n = &g_dw6570;
 				goto l00000001000029DA;
-			case 0x38:
+			case 0x69:
 				rax_n = &g_dw6574;
 				goto l00000001000029DA;
-			case 0x3A:
+			case 0x6B:
 				goto l0000000100002B5E;
-			case 0x3B:
+			case 0x6C:
 				goto l0000000100002A22;
-			case 0x3C:
+			case 0x6D:
 				rax_n = &g_dw65A8;
 				goto l0000000100002824;
-			case 0x3D:
+			case 110:
 				g_dw6584 = 0x01;
 				compat_mode();
 				if ((byte) 0x100006584 != 0x00)
 					goto l0000000100002A22;
 				break;
-			case 0x3E:
+			case 111:
 				compat_mode();
 				if (false)
 				{
@@ -705,35 +705,35 @@ l0000000100002A22:
 					rax_n = &g_dw65A8;
 					goto l0000000100002831;
 				}
-			case 0x3F:
+			case 0x70:
 				g_dw659C = 0x01;
 				rax_n = &g_dw65AC;
 				goto l00000001000029DA;
-			case 0x40:
+			case 113:
 				g_dw657C = 0x01;
 				goto l0000000100002A88;
-			case 0x41:
+			case 114:
 				dwLoc0658_n = 0x01;
 				break;
-			case 66:
+			case 115:
 				rax_n = &g_dw6598;
 l00000001000029DA:
 				*rax_n = 0x01;
 				break;
-			case 0x43:
+			case 116:
 				dwLoc064C_n = 0x01;
 				break;
-			case 0x44:
+			case 117:
 				g_dw6558 = 0x01;
 				rax_n = &g_dw6560;
 l0000000100002878:
 				*rax_n = 0x00;
 				rax_n = &g_dw65A4;
 				goto l0000000100002A9C;
-			case 0x45:
+			case 118:
 				rax_n = &g_dw657C;
 				goto l0000000100002A9C;
-			case 0x46:
+			case 0x77:
 				g_dw657C = 0x00;
 l0000000100002A88:
 				g_dw6588 = 0x00;
@@ -742,7 +742,7 @@ l0000000100002A95:
 l0000000100002A9C:
 				*rax_n = 0x00;
 				break;
-			case 0x47:
+			case 0x78:
 				rax_n = &g_dw65A0;
 l0000000100002824:
 				*rax_n = 0x01;

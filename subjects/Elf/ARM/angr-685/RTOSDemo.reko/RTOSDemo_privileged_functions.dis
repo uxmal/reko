@@ -1206,23 +1206,23 @@ l00000A86:
 	branch r4_39 == 2<32> l00000AFE
 l00000AFE:
 l00000A8A:
-	Mem48[r0 + 96<i32>:word32] = r1
+	Mem49[r0 + 96<i32>:word32] = r1
 l00000A9A:
-	Mem52[r0 + 96<i32>:word32] = Mem38[r0 + 96<i32>:word32] + 1<32>
+	Mem53[r0 + 96<i32>:word32] = Mem38[r0 + 96<i32>:word32] + 1<32>
 	branch r4_39 != 1<32> l00000A90
 l00000AF6:
-	Mem57[r0 + 96<i32>:word32] = r1 | Mem38[r0 + 96<i32>:word32]
+	Mem58[r0 + 96<i32>:word32] = r1 | Mem38[r0 + 96<i32>:word32]
 l00000A8C:
 	branch r4_39 == 1<32> l00000AA6
 l00000AA6:
-	word32 r5_67 = Mem65[0x00000B04<p32>:word32]
+	word32 r5_68 = Mem66[0x00000B04<p32>:word32]
 	uxListRemove(r0 + 0x24<32>)
-	word32 r0_77 = Mem65[r0 + 76<i32>:word32]
-	Mem86[r5_67 + 124<i32>:word32] = r4_39 << r0_77 | Mem65[r5_67 + 124<i32>:word32]
-	vListInsertEnd(r5_67 + 8<32> + r0_77 * 0x14<32>, r0 + 0x24<32>)
-	branch Mem86[r0 + 76<i32>:word32] <=u Mem86[Mem86[r5_67 + 4<i32>:word32] + 76<i32>:word32] l00000A90
+	word32 r0_78 = Mem66[r0 + 76<i32>:word32]
+	Mem87[r5_68 + 124<i32>:word32] = r4_39 << r0_78 | Mem66[r5_68 + 124<i32>:word32]
+	vListInsertEnd(r5_68 + 8<32> + r0_78 * 0x14<32>, r0 + 0x24<32>)
+	branch Mem87[r0 + 76<i32>:word32] <=u Mem87[Mem87[r5_68 + 4<i32>:word32] + 76<i32>:word32] l00000A90
 l00000ADE:
-	Mem100[Mem86[0x00000B08<p32>:word32]:word32] = 0x10000000<32>
+	Mem101[Mem87[0x00000B08<p32>:word32]:word32] = 0x10000000<32>
 	__dsb_sy()
 	__isb_sy()
 	vPortExitCritical(cpsr)
@@ -1261,32 +1261,32 @@ l00000B44:
 	branch r4_31 == 2<32> l00000BC4
 l00000BC4:
 l00000B48:
-	Mem41[r0 + 96<i32>:word32] = r1
+	Mem42[r0 + 96<i32>:word32] = r1
 l00000B58:
-	Mem45[r0 + 96<i32>:word32] = Mem30[r0 + 96<i32>:word32] + 1<32>
+	Mem46[r0 + 96<i32>:word32] = Mem30[r0 + 96<i32>:word32] + 1<32>
 	branch r4_31 != 1<32> l00000B4E
 l00000B94:
-	Mem50[r0 + 96<i32>:word32] = r1 | Mem30[r0 + 96<i32>:word32]
+	Mem51[r0 + 96<i32>:word32] = r1 | Mem30[r0 + 96<i32>:word32]
 l00000B4A:
 	branch r4_31 == 1<32> l00000B64
 l00000B64:
-	word32 r6_57 = Mem55[0x00000BD0<p32>:word32]
-	branch Mem55[r6_57 + 140<i32>:word32] == 0<32> l00000B9C
+	word32 r6_58 = Mem56[0x00000BD0<p32>:word32]
+	branch Mem56[r6_58 + 140<i32>:word32] == 0<32> l00000B9C
 l00000B9C:
 	uxListRemove(r0 + 0x24<32>)
-	word32 r0_72 = Mem55[r0 + 76<i32>:word32]
-	Mem82[r6_57 + 124<i32>:word32] = r4_31 << r0_72 | Mem55[r6_57 + 124<i32>:word32]
-	vListInsertEnd(r6_57 + 8<32> + r0_72 * 0x14<32>, r0 + 0x24<32>)
+	word32 r0_73 = Mem56[r0 + 76<i32>:word32]
+	Mem83[r6_58 + 124<i32>:word32] = r4_31 << r0_73 | Mem56[r6_58 + 124<i32>:word32]
+	vListInsertEnd(r6_58 + 8<32> + r0_73 * 0x14<32>, r0 + 0x24<32>)
 l00000B6E:
-	vListInsertEnd(r6_57 + 0x58<32>, r0 + 0x38<32>)
+	vListInsertEnd(r6_58 + 0x58<32>, r0 + 0x38<32>)
 l00000B7A:
-	branch Mem98[r0 + 76<i32>:word32] <=u Mem98[Mem98[r6_57 + 4<i32>:word32] + 76<i32>:word32] l00000B4E
+	branch Mem99[r0 + 76<i32>:word32] <=u Mem99[Mem99[r6_58 + 4<i32>:word32] + 76<i32>:word32] l00000B4E
 l00000B84:
 	branch dwArg00 == 0<32> l00000BC8
 l00000BC8:
-	Mem112[r6_57 + 144<i32>:word32] = 1<32>
+	Mem113[r6_58 + 144<i32>:word32] = 1<32>
 l00000B8A:
-	Mem113[dwArg00:word32] = 1<32>
+	Mem114[dwArg00:word32] = 1<32>
 	__msr(cpsr, r5_17)
 	return
 l00000B4E:

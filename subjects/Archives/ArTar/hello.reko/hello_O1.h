@@ -123,9 +123,9 @@ Eq_200: (union "Eq_200" (int64 u0) (ptr64 u1))
 Eq_201: (union "Eq_201" (int64 u0) (ptr64 u1))
 	T_201 (in 0000000000003DD8 @ 00000000000012A1 : ptr64)
 Eq_207: (union "Eq_207" (int64 u0) (uint64 u1))
-	T_207 (in rbx_43 @ 00000000000012B3 : Eq_207)
+	T_207 (in rbx_44 @ 00000000000012B3 : Eq_207)
 	T_208 (in 0<u64> @ 00000000000012B3 : uint64)
-	T_214 (in rbx_43 + 1<64> @ 00000000000012C5 : word64)
+	T_214 (in rbx_44 + 1<64> @ 00000000000012C5 : word64)
 	T_215 (in rbp_31 >> 3<64> @ 00000000000012CC : word64)
 // Type Variables ////////////
 globals_t: (in globals : (ptr64 (struct "Globals")))
@@ -952,7 +952,7 @@ T_206: (in rbp_31 >> 3<64> == 0<64> @ 00000000000012B1 : bool)
   Class: Eq_206
   DataType: bool
   OrigDataType: bool
-T_207: (in rbx_43 @ 00000000000012B3 : Eq_207)
+T_207: (in rbx_44 @ 00000000000012B3 : Eq_207)
   Class: Eq_207
   DataType: Eq_207
   OrigDataType: word64
@@ -968,11 +968,11 @@ T_210: (in 8<64> @ 00000000000012C1 : word64)
   Class: Eq_210
   DataType: ui64
   OrigDataType: ui64
-T_211: (in rbx_43 * 8<64> @ 00000000000012C1 : word64)
+T_211: (in rbx_44 * 8<64> @ 00000000000012C1 : word64)
   Class: Eq_211
   DataType: ui64
   OrigDataType: ui64
-T_212: (in 0x0000000000003DD8<p64>[rbx_43 * 8<64>] @ 00000000000012C1 : word64)
+T_212: (in 0x0000000000003DD8<p64>[rbx_44 * 8<64>] @ 00000000000012C1 : word64)
   Class: Eq_212
   DataType: (ptr64 code)
   OrigDataType: (ptr64 code)
@@ -980,7 +980,7 @@ T_213: (in 1<64> @ 00000000000012C5 : word64)
   Class: Eq_213
   DataType: word64
   OrigDataType: word64
-T_214: (in rbx_43 + 1<64> @ 00000000000012C5 : word64)
+T_214: (in rbx_44 + 1<64> @ 00000000000012C5 : word64)
   Class: Eq_207
   DataType: Eq_207
   OrigDataType: uint64
@@ -988,7 +988,7 @@ T_215: (in rbp_31 >> 3<64> @ 00000000000012CC : word64)
   Class: Eq_207
   DataType: Eq_207
   OrigDataType: int64
-T_216: (in rbp_31 >> 3<64> != rbx_43 @ 00000000000012CC : bool)
+T_216: (in rbp_31 >> 3<64> != rbx_44 @ 00000000000012CC : bool)
   Class: Eq_216
   DataType: bool
   OrigDataType: bool

@@ -105,7 +105,6 @@ l0800_17AE: warning: Non-integral switch expression
 === OpenRISC\sunxi\blob
 00003CA8: warning: Expected sizes of arrays to have been determined by now
 000100B8: warning: Expected sizes of arrays to have been determined by now
-00012478: warning: Expected sizes of arrays to have been determined by now
 00012490: warning: Expected sizes of arrays to have been determined by now
 00012510: warning: Expected sizes of arrays to have been determined by now
 00012590: warning: Expected sizes of arrays to have been determined by now
@@ -118,7 +117,6 @@ l0800_17AE: warning: Non-integral switch expression
 00013984: warning: Expected sizes of arrays to have been determined by now
 00003CA8: warning: Expected sizes of arrays to have been determined by now
 000100B8: warning: Expected sizes of arrays to have been determined by now
-00012478: warning: Expected sizes of arrays to have been determined by now
 00012490: warning: Expected sizes of arrays to have been determined by now
 00012510: warning: Expected sizes of arrays to have been determined by now
 00012590: warning: Expected sizes of arrays to have been determined by now
@@ -965,7 +963,6 @@ Warning: Recursion too deep in PtrPrimitiveReplacer
 Warning: Recursion too deep in PtrPrimitiveReplacer
 Warning: Recursion too deep in PtrPrimitiveReplacer
 Warning: Recursion too deep in PtrPrimitiveReplacer
-l0040478C: warning: Non-integral switch expression
 00412060: warning: Expected sizes of arrays to have been determined by now
 00412170: warning: Expected sizes of arrays to have been determined by now
 004122D0: warning: Expected sizes of arrays to have been determined by now
@@ -1045,10 +1042,7 @@ l0040478C: warning: Non-integral switch expression
 0000000000400CB0: warning: Unable to resolve imported reference png_get_PLTE.
 0000000000400CC0: warning: Unable to resolve imported reference __gmon_start__.
 l0000000000400E2D: warning: Non-integral switch expression
-l0000000000400F4C: warning: Non-integral switch expression
-0000000000401958: warning: Expected sizes of arrays to have been determined by now
 0000000000601E00: warning: Expected sizes of arrays to have been determined by now
-0000000000401958: warning: Expected sizes of arrays to have been determined by now
 0000000000601E00: warning: Expected sizes of arrays to have been determined by now
 
 *** regressions\reko-90\PP
@@ -1078,6 +1072,10 @@ fn0800_8F97: error: An internal error occurred while building the expressions of
    at Reko.Core.Graphs.DominatorGraph`1..ctor(DirectedGraph`1 graph, T entryNode) in d:\dev\uxmal\reko\master\src\Core\Graphs\DominatorGraph.cs:line 44
    at Reko.Analysis.DataFlowAnalysis.BuildExpressionTrees() in d:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 409
 l0800_8FD8: warning: Phi functions will be ignored by type analysis. This may be caused by a failure in a previous stage of the decompilation.
+l0800_031A: warning: Non-integral switch expression
+l0800_0663: warning: Non-integral switch expression
+l0800_0EE8: warning: Non-integral switch expression
+l0800_11D8: warning: Non-integral switch expression
 
 === scripting\pyFuncNames
 IronPython 3.4.0b1
@@ -1999,4 +1997,4 @@ Signature of 'Microsoft Visual C++ 8' detected.
 0040120B: warning: Unable to determine the upper bound of an indirect call or jump; there may be more than 2 entries.
 004011A5: warning: Unable to determine the upper bound of an indirect call or jump; there may be more than 2 entries.
 
-Decompiled 87 binaries in 65.97 seconds.
+Decompiled 87 binaries in 58.58 seconds.

@@ -1161,10 +1161,10 @@ word32 fn000062BC(struct Eq_n * r3, Eq_n r15)
 {
 	word32 dwLoc18;
 	word32 r4_n;
-	uint32 r3_n = r3->t005C >> 0x14 & 0x07;
-	if (r3_n <= 0x05)
+	Eq_n r3_n = r3->t005C;
+	if ((r3_n >> 0x14 & 0x07) <= 0x05)
 	{
-		switch (g_a12478[r3_n * 0x04])
+		switch (r3_n >> 0x14)
 		{
 		case 0x00:
 			return dwLoc18;

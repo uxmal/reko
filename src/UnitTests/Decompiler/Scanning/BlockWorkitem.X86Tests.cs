@@ -414,12 +414,14 @@ namespace Reko.UnitTests.Decompiler.Scanning
             wi.Process();
             var sw = new StringWriter();
             block.WriteStatements(sw);
-            string sExp = "\tbx = bx & 3<16>" + nl +
+            string sExp =
+                "\tv7 = bx" + nl +
+                "\tbx = bx & 3<16>" + nl +
                 "\tSZO = cond(bx)" + nl +
                 "\tC = false" + nl +
                 "\tbx = bx + bx" + nl + 
                 "\tSCZO = cond(bx)" + nl +
-                "\tswitch (bx) { foo1 foo2 foo3 foo4 }" + nl;
+                "\tswitch (v7) { foo1 foo2 foo3 foo4 }" + nl;
             Assert.AreEqual(sExp, sw.ToString());
             Assert.IsTrue(proc.ControlGraph.Blocks.Contains(block));
             scanner.Verify();

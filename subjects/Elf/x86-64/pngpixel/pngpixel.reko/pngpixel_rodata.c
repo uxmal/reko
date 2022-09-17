@@ -12,9 +12,6 @@ char g_str4018EA[] = "INDEXED %u = invalid index\n"; // 00000000004018EA
 char g_str401906[] = "RGB %u %u %u\n"; // 0000000000401906
 char g_str401914[] = "GRAY+ALPHA %u %u\n"; // 0000000000401914
 char g_str401926[] = "RGBA %u %u %u %u\n"; // 0000000000401926
-Eq_n g_a401958[] = // 0000000000401958
-	{
-	};
 char g_str401990[] = "rb"; // 0000000000401990
 char g_str4019B6[] = "png_read_row"; // 00000000004019B6
 void g_v4019E8 = ??void??; // 00000000004019E8

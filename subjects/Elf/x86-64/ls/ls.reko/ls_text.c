@@ -658,12 +658,12 @@ l0000000000403A7C:
 			if (g_dw61B150 == 0x00)
 			{
 l000000000040380D:
-				bool v146_n = r12_n == 0x00;
+				bool v148_n = r12_n == 0x00;
 				if (r12_n == 0x00)
 				{
 					Eq_n rax_n = getenv("TIME_STYLE");
 					r12_n = rax_n;
-					v146_n = rax_n == 0x00;
+					v148_n = rax_n == 0x00;
 					if (rax_n == 0x00)
 						r12_n.u0 = 4274215;
 				}
@@ -674,7 +674,7 @@ l000000000040380D:
 					uint64 rcx_n = 0x06;
 					while (rcx_n != 0x00)
 					{
-						v146_n = *rsi_n == *rdi_n;
+						v148_n = *rsi_n == *rdi_n;
 						rsi_n = (word64) rsi_n + 1;
 						rdi_n = rdi_n + 1;
 						--rcx_n;
@@ -683,12 +683,12 @@ l000000000040380D:
 						if (*rsi_n == *rdi_n)
 							break;
 					}
-					if (!v146_n)
+					if (!v148_n)
 						break;
 					if (fn000000000040AB70(0x02) == 0x00)
 						goto l0000000000403301;
 					r12_n = (word32) r12_n.u0 + 6;
-					v146_n = r12_n == 0x00;
+					v148_n = r12_n == 0x00;
 				}
 				if (*r12_n.u0 == 0x2B)
 				{
@@ -1195,7 +1195,7 @@ l00000000004035FF:
 									if (rbx_n == 0x00)
 										rbx_n = r14_n;
 									fn00000000004052D0(null, rdx_n, rbx_n, rdi_n, rax_n, fs);
-									Mem2857[0x000000000061B018<p64>:word64] = Mem2797[0x000000000061B018<p64>:word64] + rax_n;
+									Mem2860[0x000000000061B018<p64>:word64] = Mem2800[0x000000000061B018<p64>:word64] + rax_n;
 									if (g_b61B130 != 0x00)
 									{
 										Eq_n rax_n = g_t61AF78;
@@ -1282,7 +1282,7 @@ l0000000000403770:
 									fputs_unlocked(rax_n, stdout);
 									Eq_n rax_n = strlen(rax_n);
 									FILE * rdi_n = stdout;
-									Mem3062[0x000000000061B018<p64>:word64] = Mem3053[0x000000000061B018<p64>:word64] + rax_n;
+									Mem3065[0x000000000061B018<p64>:word64] = Mem3056[0x000000000061B018<p64>:word64] + rax_n;
 									byte * rax_n = *((char *) rdi_n + 40);
 									if (rax_n < *((char *) rdi_n + 48))
 									{
@@ -1299,7 +1299,7 @@ l0000000000403770:
 									fputs_unlocked(rax_n, stdout);
 									Eq_n rax_n = strlen(rax_n);
 									FILE * rdi_n = stdout;
-									Mem3113[0x000000000061B018<p64>:word64] = Mem3085[0x000000000061B018<p64>:word64] + rax_n;
+									Mem3116[0x000000000061B018<p64>:word64] = Mem3088[0x000000000061B018<p64>:word64] + rax_n;
 									byte * rax_n = *((char *) rdi_n + 40);
 									if (rax_n < *((char *) rdi_n + 48))
 									{
@@ -3233,9 +3233,10 @@ void fn0000000000407870(Eq_n rsi, Eq_n rdi, struct Eq_n * fs)
 //      fn00000000004028C0
 void fn00000000004079F0(Eq_n r12, struct Eq_n * fs)
 {
+	up32 v13_n = g_dw61B150;
 	if (g_dw61B150 <= 0x04)
 	{
-		switch (g_dw61B150)
+		switch (v13_n)
 		{
 		case 0x00:
 			Eq_n rbx_n = 0x00;
@@ -3319,9 +3320,9 @@ void fn00000000004079F0(Eq_n r12, struct Eq_n * fs)
 					}
 					else
 						__overflow(rdi_n, 0x0A);
-					Eq_n v32_n = (word64) qwLoc40_n + 1;
-					qwLoc40_n = v32_n;
-				} while (v32_n != rdx_n);
+					Eq_n v33_n = (word64) qwLoc40_n + 1;
+					qwLoc40_n = v33_n;
+				} while (v33_n != rdx_n);
 				return;
 			}
 			break;
@@ -6825,9 +6826,9 @@ Eq_n fn000000000040D8A0(Eq_n rcx, Eq_n rdx, Eq_n rsi, Eq_n rdi, Eq_n r8d, uint32
 				word24 ecx_24_8_n = SLICE(ecx_n, word24, 8);
 				byte cl_n = (byte) ecx_n;
 				if (rbx_n < rsi)
-					Mem130[rdi + rbx_n:byte] = al_n;
+					Mem131[rdi + rbx_n:byte] = al_n;
 				rbx_n = (word32) rbx_n.u0 + 1;
-				al_n = Mem135[qwLoc88_n + rbx_n:byte];
+				al_n = Mem136[qwLoc88_n + rbx_n:byte];
 				rcx_n = SEQ(rcx_32_32_n, ecx_24_8_n, cl_n);
 			}
 		}
@@ -6875,7 +6876,7 @@ l000000000040DB86:
 							do
 							{
 								if (r14_n > rbx_n)
-									Mem1166[rdi + rbx_n:byte] = al_n;
+									Mem1167[rdi + rbx_n:byte] = al_n;
 								++rbx_n;
 								al_n = (byte) *((word64) rbx_n + rdx_n);
 							} while (al_n != 0x00);
@@ -6883,7 +6884,7 @@ l000000000040DB86:
 					}
 					rax_n = rbx_n;
 					if (rbx_n < r14_n)
-						Mem1191[rdi + rbx_n:byte] = 0x00;
+						Mem1192[rdi + rbx_n:byte] = 0x00;
 l000000000040DC86:
 					if ((rax_n ^ fs->qw0028) != 0x00)
 						__stack_chk_fail();
@@ -7007,11 +7008,11 @@ l000000000040D9A8:
 					rsi_n = r14_n;
 					rax_n = rbx_n;
 					r12_n.u0 = (uint64) r12b_n;
-					if (r15_n > r14_n && Mem419[r15_n + 0x00:byte] != 0x00)
+					if (r15_n > r14_n && Mem420[r15_n + 0x00:byte] != 0x00)
 					{
 						do
 							rax_n = (word64) rax_n.u0 + 1;
-						while (r15_n >u rbp_n + rax_n && Mem419[r13_n + rax_n:byte] != 0x00);
+						while (r15_n >u rbp_n + rax_n && Mem420[r13_n + rax_n:byte] != 0x00);
 					}
 					dl_n = 0x01;
 					rdx_56_8_n = 0x00;
@@ -7030,7 +7031,7 @@ l000000000040D9A8:
 							Eq_n rdx_n = 0x01;
 							do
 							{
-								rcx_n = CONVERT(CONVERT(Mem419[r15_n + rdx_n:byte], byte, word32) - 0x5B, word32, uint64);
+								rcx_n = CONVERT(CONVERT(Mem420[r15_n + rdx_n:byte], byte, word32) - 0x5B, word32, uint64);
 								cu8 cl_n = (byte) rcx_n;
 								if (cl_n <= 33 && (0x01 << cl_n & 0x20000002B) != 0x00)
 								{
@@ -7095,7 +7096,7 @@ l000000000040DEF0:
 					if (r11b_n != 0x00)
 					{
 						if (rbx_n < r14_n)
-							Mem838[rdi + rbx_n:byte] = 0x5C;
+							Mem839[rdi + rbx_n:byte] = 0x5C;
 						++rbx_n;
 						r11b_n = 0x00;
 						r12_n = SEQ(r12_56_8_n, r12b_n);
@@ -7105,18 +7106,18 @@ l000000000040DEF0:
 				if (dil_n != 0x00)
 					goto l000000000040DC40;
 				if (rbx_n < r14_n)
-					Mem779[rdi + rbx_n:byte] = 0x5C;
+					Mem780[rdi + rbx_n:byte] = 0x5C;
 				if (r14_n >u rbx_n + 1)
 				{
 					uint64 rsi_n = (uint64) r12d_n;
-					Mem799[rdi + 1 + rbx_n:byte] = (SLICE(rsi_n, byte, 0) >>u 0x06) + 0x30;
+					Mem800[rdi + 1 + rbx_n:byte] = (SLICE(rsi_n, byte, 0) >>u 0x06) + 0x30;
 				}
 				rsi_n = rbx_n + 2;
 				if (r14_n > rsi_n)
 				{
 					uint64 rsi_n = (uint64) r12d_n;
 					rsi_n = (uint64) ((SEQ(SLICE(rsi_n, word24, 8), (byte) rsi_n >> 0x03) & 0x07) + 0x30);
-					Mem821[rdi + 2 + rbx_n:byte] = SLICE(rsi_n, byte, 0);
+					Mem822[rdi + 2 + rbx_n:byte] = SLICE(rsi_n, byte, 0);
 				}
 				rbx_n += 0x03;
 				r12_n = (uint64) ((r12d_n & 0x07) + 0x30);
@@ -7129,8 +7130,8 @@ l000000000040DED1:
 				if (rax_n > rbp_n)
 				{
 					if (rbx_n < r14_n)
-						Mem1223[rdi + rbx_n:byte] = r12b_n;
-					r12_n = CONVERT(Mem1226[r8_n + rbp_n:byte], byte, uint64);
+						Mem1224[rdi + rbx_n:byte] = r12b_n;
+					r12_n = CONVERT(Mem1227[r8_n + rbp_n:byte], byte, uint64);
 					++rbx_n;
 					goto l000000000040DEF0;
 				}
@@ -7181,7 +7182,7 @@ l000000000040DC46:
 					goto l000000000040DC86;
 				}
 				if (rbx_n < r14_n)
-					Mem730[rdi + rbx_n:byte] = 0x5C;
+					Mem731[rdi + rbx_n:byte] = 0x5C;
 				rbx_n = rbx_n + 0x01;
 				rcx_n = rcx_n;
 			}
@@ -7191,7 +7192,7 @@ l000000000040DC46:
 l000000000040DB54:
 			byte r12b_n = (byte) r12_n;
 			if (rbx_n < r14_n)
-				Mem901[rdi + rbx_n:byte] = r12b_n;
+				Mem902[rdi + rbx_n:byte] = r12b_n;
 			rbx_n = rbx_n + 0x01;
 			al_n = (int8) (rbp_n != r15_n);
 			rcx_n = rcx_n;
@@ -7200,7 +7201,7 @@ l000000000040DB54:
 	}
 	ecx_24_8_n = SLICE(rcx_n, word24, 8);
 	rcx_32_32_n = SLICE(rcx_n, word32, 32);
-	if (CONVERT(Mem938[r8_n + rbp_n:byte] != 0x00, bool, int8) == 0x00)
+	if (CONVERT(Mem939[r8_n + rbp_n:byte] != 0x00, bool, int8) == 0x00)
 		goto l000000000040DB86;
 	goto l000000000040D9A8;
 }

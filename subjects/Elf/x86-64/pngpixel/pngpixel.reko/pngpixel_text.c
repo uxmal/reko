@@ -121,7 +121,7 @@ void print_pixel(uint32 ecx, word64 rdx, word64 rsi, word64 rdi, struct Eq_n * f
 	up32 eax_n = (word32) (byte) rax_n;
 	if (eax_n <= 0x06)
 	{
-		switch (g_a401958[(uint64) eax_n])
+		switch (eax_n)
 		{
 		case 0x00:
 			printf("GRAY %u\n", component(eax_n, 0x00, ecx, rdx, 0x01));

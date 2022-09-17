@@ -175,12 +175,12 @@ l0000000000001280:
 	word64 rbp_31 = 0x0000000000003DE0<p64> - 0x0000000000003DD8<p64>
 	branch rbp_31 >> 3<64> == 0<64> l00000000000012CE
 l00000000000012B3:
-	word64 rbx_43 = 0<u64>
+	word64 rbx_44 = 0<u64>
 l00000000000012B8:
-	call Mem30[0x0000000000003DD8<p64> + rbx_43 * 8<64>:word64] (retsize: 8;)
+	call Mem30[0x0000000000003DD8<p64> + rbx_44 * 8<64>:word64] (retsize: 8;)
 		uses: rdi:CONVERT(edi, word32, uint64),rdx:rdx,rsi:rsi
-	rbx_43 = rbx_43 + 1<64>
-	branch rbp_31 >> 3<64> != rbx_43 l00000000000012B8
+	rbx_44 = rbx_44 + 1<64>
+	branch rbp_31 >> 3<64> != rbx_44 l00000000000012B8
 l00000000000012CE:
 	return
 __libc_csu_init_exit:

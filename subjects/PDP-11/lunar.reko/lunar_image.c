@@ -390,10 +390,10 @@ struct Eq_n g_t07D0 = // 07D0
 	{
 		&g_w005F,
 	};
-// 0856: void fn0856(Register (ptr16 Eq_n) r4, Stack word16 wArg00)
+// 0856: void fn0856(Register (ptr16 Eq_n) r4)
 // Called from:
 //      fn053A
-void fn0856(struct Eq_n * r4, word16 wArg00)
+void fn0856(struct Eq_n * r4)
 {
 	int16 r3;
 	word16 * r5;
@@ -425,21 +425,21 @@ l0856:
 l0888:
 			int16 r0_n = g_w0078;
 			fn0CCA(r0_n);
-			switch (wArg00)
+			switch (r0_n)
 			{
-			case 0x00:
+			case 0:
 				fn0790();
 				return;
-			case 0x01:
+			case 1:
 				if (r5_n < 0x1A)
 				{
 					fn0790();
 					return;
 				}
-				ci16 v66_n = 64936 - r4;
-				if (v66_n <= 0x00)
+				ci16 v67_n = 64936 - r4;
+				if (v67_n <= 0x00)
 				{
-					if (v66_n <= 0x00)
+					if (v67_n <= 0x00)
 						goto l0904;
 					g_w34CA = 0x23FE;
 					fn0E32();

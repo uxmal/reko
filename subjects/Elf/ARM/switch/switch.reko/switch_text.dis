@@ -173,7 +173,7 @@ word32 switcheroo(word32 r0)
 // Preserved:
 switcheroo_entry:
 l000084D4:
-	word32 fp_35
+	word32 fp_36
 	branch r0 >u 6<32> l000084F4
 l000084F4:
 l000084F0_1:
@@ -181,13 +181,13 @@ l000084F0_1:
 l00008534:
 	bazulate(r0, r0)
 l00008520:
-	fp_35 = frobulate(r0 - 3<32>, r0)
+	fp_36 = frobulate(r0 - 3<32>, r0)
 l00008540:
-	fp_35 = bazulate(0<32>, 0<32>)
+	fp_36 = bazulate(0<32>, 0<32>)
 l00008514:
-	fp_35 = frobulate(r0, r0)
+	fp_36 = frobulate(r0, r0)
 l0000854C:
-	return Mem15[fp_35 - -4<i32>:word32]
+	return Mem15[fp_36 - -4<i32>:word32]
 switcheroo_exit:
 
 

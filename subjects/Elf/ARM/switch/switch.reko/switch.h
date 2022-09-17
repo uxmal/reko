@@ -122,7 +122,7 @@ Eq_116: (struct "Eq_116" (FFFFFFE8 Eq_103 tFFFFFFE8) (0 word32 dw0000) (4 word32
 	T_119 (in frobulate(r0, r1) @ 00008498 : word32)
 	T_130 (in fp_48 @ 000084B4 : (ptr32 Eq_116))
 	T_135 (in frobulate(r0_47, *sp_29) @ 000084B4 : word32)
-	T_143 (in fp_35 @ 000084D4 : (ptr32 Eq_116))
+	T_143 (in fp_36 @ 000084D4 : (ptr32 Eq_116))
 	T_147 (in frobulate(r0, r0) @ 00008518 : word32)
 	T_152 (in bazulate(0<32>, 0<32>) @ 00008548 : word32)
 	T_156 (in frobulate(r0 - 3<32>, r0) @ 0000852C : word32)
@@ -746,7 +746,7 @@ T_142: (in r0 @ 000084D0 : Eq_103)
   Class: Eq_103
   DataType: Eq_103
   OrigDataType: up32
-T_143: (in fp_35 @ 000084D4 : (ptr32 Eq_116))
+T_143: (in fp_36 @ 000084D4 : (ptr32 Eq_116))
   Class: Eq_116
   DataType: (ptr32 Eq_116)
   OrigDataType: (ptr32 (struct (4 T_161 t0004)))
@@ -814,11 +814,11 @@ T_159: (in 4<i32> @ 00008558 : int32)
   Class: Eq_159
   DataType: int32
   OrigDataType: int32
-T_160: (in fp_35 + 4<i32> @ 00008558 : word32)
+T_160: (in fp_36 + 4<i32> @ 00008558 : word32)
   Class: Eq_160
   DataType: word32
   OrigDataType: word32
-T_161: (in Mem15[fp_35 + 4<i32>:word32] @ 00008558 : word32)
+T_161: (in Mem15[fp_36 + 4<i32>:word32] @ 00008558 : word32)
   Class: Eq_141
   DataType: word32
   OrigDataType: word32
