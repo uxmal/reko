@@ -126,7 +126,7 @@ l00001722:
 l00001736:
 	word32 d0_104 = CONVERT(Mem56[a5 + -2040<i32> + ((d0_69 << 3<32>) + dwLoc0C_199):byte] >> 4<8>, byte, int32)
 	dwLoc0C_199 = d0_104
-	branch d0_104 >u 7<i32> l00001C24
+	branch 7<i32> - d0_104 >u 7<i32> l00001C24
 l00001C24:
 	byte v42_111 = Mem105[dwArg08_201:byte]
 	d6_115 = SEQ(SLICE(d6_115, word24, 8), v42_111)

@@ -942,8 +942,8 @@ l0800_0A64_2:
 l0800_0A66:
 	branch v39_390 l0800_0A6D
 l0800_0A68:
-	word16 ax_137 = 0<16> - CONVERT(di_117 <u 0<16>, bool, word16)
-	ax_140 = ax_137 - 0xFFFF<16> - CONVERT(ax_137 <u 0<16>, bool, word16)
+	word16 ax_137 = 0<16> - CONVERT(di_117 >u di_108, bool, word16)
+	ax_140 = ax_137 - 0xFFFF<16> - CONVERT(ax_137 >u 0<16>, bool, word16)
 l0800_0A6D:
 	ds_154 = Mem98[ss:sp_59 + 2<16>:selector]
 	branch ax_140 != 0<16> l0800_09FF
@@ -1281,8 +1281,8 @@ l0800_0CBF_2:
 l0800_0CC1:
 	branch v29_296 l0800_0CC8
 l0800_0CC3:
-	word16 ax_81 = 0<16> - CONVERT(di_61 <u 0<16>, bool, word16)
-	ax_84 = ax_81 - 0xFFFF<16> - CONVERT(ax_81 <u 0<16>, bool, word16)
+	word16 ax_81 = 0<16> - CONVERT(di_61 >u di_407, bool, word16)
+	ax_84 = ax_81 - 0xFFFF<16> - CONVERT(ax_81 >u 0<16>, bool, word16)
 l0800_0CC8:
 	branch ax_84 == 0<16> l0800_0D0D
 l0800_0CCC:
@@ -4098,8 +4098,8 @@ l0800_28DA_2:
 l0800_28DC:
 	branch v33_338 l0800_28E3
 l0800_28DE:
-	word16 ax_227 = 0<16> - CONVERT(di_207 <u 0<16>, bool, word16)
-	ax_230 = ax_227 - 0xFFFF<16> - CONVERT(ax_227 <u 0<16>, bool, word16)
+	word16 ax_227 = 0<16> - CONVERT(di_207 >u di_198, bool, word16)
+	ax_230 = ax_227 - 0xFFFF<16> - CONVERT(ax_227 >u 0<16>, bool, word16)
 l0800_28E3:
 	branch ax_230 != 0<16> l0800_28F4
 l0800_28F4:
@@ -4186,8 +4186,8 @@ l0800_2975_2:
 l0800_2977:
 	branch v26_281 l0800_297E
 l0800_2979:
-	word16 ax_125 = 0<16> - CONVERT(di_105 <u 0<16>, bool, word16)
-	ax_128 = ax_125 - 0xFFFF<16> - CONVERT(ax_125 <u 0<16>, bool, word16)
+	word16 ax_125 = 0<16> - CONVERT(di_105 >u di_104, bool, word16)
+	ax_128 = ax_125 - 0xFFFF<16> - CONVERT(ax_125 >u 0<16>, bool, word16)
 l0800_297E:
 	branch ax_128 != 0<16> l0800_298D
 l0800_298D:
@@ -4479,8 +4479,8 @@ l0800_2BDE_3:
 l0800_2BE0:
 	branch v51_936 l0800_2BE7
 l0800_2BE2:
-	word16 ax_671 = 0<16> - CONVERT(di_651 <u 0<16>, bool, word16)
-	ax_674 = ax_671 - 0xFFFF<16> - CONVERT(ax_671 <u 0<16>, bool, word16)
+	word16 ax_671 = 0<16> - CONVERT(di_651 >u di_1503, bool, word16)
+	ax_674 = ax_671 - 0xFFFF<16> - CONVERT(ax_671 >u 0<16>, bool, word16)
 l0800_2BE7:
 	branch ax_674 == 0<16> l0800_2C29
 l0800_2C29:
@@ -5074,8 +5074,8 @@ l0800_3160_2:
 l0800_3162:
 	branch v67_1416 l0800_3169
 l0800_3164:
-	word16 ax_1155 = 0<16> - CONVERT(di_1135 <u 0<16>, bool, word16)
-	ax_1158 = ax_1155 - 0xFFFF<16> - CONVERT(ax_1155 <u 0<16>, bool, word16)
+	word16 ax_1155 = 0<16> - CONVERT(di_1135 >u di_1115, bool, word16)
+	ax_1158 = ax_1155 - 0xFFFF<16> - CONVERT(ax_1155 >u 0<16>, bool, word16)
 l0800_3169:
 	branch ax_1158 == 0<16> l0800_3195
 l0800_316E:
@@ -5107,8 +5107,8 @@ l0800_3187_2:
 l0800_3189:
 	branch v71_1420 l0800_3190
 l0800_318B:
-	word16 ax_1237 = 0<16> - CONVERT(di_1217 <u 0<16>, bool, word16)
-	ax_1240 = ax_1237 - 0xFFFF<16> - CONVERT(ax_1237 <u 0<16>, bool, word16)
+	word16 ax_1237 = 0<16> - CONVERT(di_1217 >u di_1197, bool, word16)
+	ax_1240 = ax_1237 - 0xFFFF<16> - CONVERT(ax_1237 >u 0<16>, bool, word16)
 l0800_3190:
 	branch ax_1240 != 0<16> l0800_31A7
 l0800_31A7:
@@ -5354,8 +5354,8 @@ l0800_33A6_2:
 l0800_33A8:
 	branch v30_217 l0800_33AF
 l0800_33AA:
-	word16 ax_116 = 0<16> - CONVERT(di_96 <u 0<16>, bool, word16)
-	ax_119 = ax_116 - 0xFFFF<16> - CONVERT(ax_116 <u 0<16>, bool, word16)
+	word16 ax_116 = 0<16> - CONVERT(di_96 >u di_357, bool, word16)
+	ax_119 = ax_116 - 0xFFFF<16> - CONVERT(ax_116 >u 0<16>, bool, word16)
 l0800_33AF:
 	branch ax_119 != 0<16> l0800_33C7
 l0800_33B4:
@@ -5406,7 +5406,6 @@ l0800_33F1:
 	word16 di_51 = 0xA3B<16>
 	word16 si_52 = 0x4641<16>
 	word16 cx_53 = 2<16>
-	word16 ax_54 = 0<16>
 	bool v32_294 = true
 l0800_33FE:
 	branch cx_53 == 0<16> l0800_3400
@@ -5421,14 +5420,12 @@ l0800_33FE_1:
 l0800_3400:
 	branch v32_294 l0800_3407
 l0800_3402:
-	ax_54 = 1<16>
 l0800_3407:
-	branch ax_54 == 0<16> l0800_3431
+	branch true l0800_3431
 l0800_340B:
 	word16 di_109 = 0xA3D<16>
 	word16 si_106 = 0x4641<16>
 	word16 cx_100 = 3<16>
-	word16 ax_101 = 0<16>
 	bool v36_298 = true
 l0800_3418:
 	branch cx_100 == 0<16> l0800_341A
@@ -5443,9 +5440,8 @@ l0800_3418_1:
 l0800_341A:
 	branch v36_298 l0800_3421
 l0800_341C:
-	ax_101 = 1<16>
 l0800_3421:
-	branch ax_101 == 0<16> l0800_3431
+	branch true l0800_3431
 l0800_3425:
 	branch (CONVERT(Mem95[ds:0x4638<16>:byte], byte, int16) & wArg06) == wArg06 l0800_3444
 l0800_3444:
@@ -5522,7 +5518,6 @@ l0800_3494:
 	word16 di_44 = 0xA3B<16>
 	word16 si_45 = 0x4641<16>
 	word16 cx_46 = 2<16>
-	word16 ax_47 = 0<16>
 	bool v26_254 = true
 l0800_34A1:
 	branch cx_46 == 0<16> l0800_34A3
@@ -5537,14 +5532,12 @@ l0800_34A1_1:
 l0800_34A3:
 	branch v26_254 l0800_34AA
 l0800_34A5:
-	ax_47 = 1<16>
 l0800_34AA:
-	branch ax_47 == 0<16> l0800_347E
+	branch true l0800_347E
 l0800_34AE:
 	word16 di_102 = 0xA3D<16>
 	word16 si_104 = 0x4641<16>
 	word16 cx_106 = 3<16>
-	word16 ax_117 = 0<16>
 	bool v30_258 = true
 l0800_34BB:
 	branch cx_106 == 0<16> l0800_34BD
@@ -5559,9 +5552,8 @@ l0800_34BB_1:
 l0800_34BD:
 	branch v30_258 l0800_34C4
 l0800_34BF:
-	ax_117 = 1<16>
 l0800_34C4:
-	branch ax_117 == 0<16> l0800_347E
+	branch true l0800_347E
 l0800_34C8:
 	branch (CONVERT(Mem88[ds:0x4638<16>:byte], byte, int16) & wArg06) != wArg06 l0800_347E
 l0800_34D4:
@@ -9693,7 +9685,6 @@ l0800_5E64:
 l0800_5E7E:
 	cx_2142 = 3<16>
 l0800_5E80:
-	word16 ax_28 = 0<16>
 	bool v195_2220 = true
 l0800_5E82:
 	branch cx_2142 == 0<16> l0800_5E84
@@ -9708,9 +9699,8 @@ l0800_5E82_1:
 l0800_5E84:
 	branch v195_2220 l0800_5E8B
 l0800_5E86:
-	ax_28 = 1<16>
 l0800_5E8B:
-	branch ax_28 == 0<16> l0800_5EC3
+	branch true l0800_5EC3
 l0800_5E8F:
 	word16 di_2118 = 0x4271<16>
 	word16 si_2123 = 0x2202<16>
@@ -10380,7 +10370,6 @@ l0800_66BE:
 l0800_66D0:
 	cx_31 = 3<16>
 l0800_66D2:
-	word16 ax_36 = 0<16>
 	bool v42_353 = true
 l0800_66D4:
 	branch cx_31 == 0<16> l0800_66D6
@@ -10395,9 +10384,8 @@ l0800_66D4_1:
 l0800_66D6:
 	branch v42_353 l0800_66DD
 l0800_66D8:
-	ax_36 = 1<16>
 l0800_66DD:
-	branch ax_36 == 0<16> l0800_6715
+	branch true l0800_6715
 l0800_66E1:
 	word16 di_291 = 0x4271<16>
 	word16 si_296 = 0x2206<16>
@@ -12806,9 +12794,10 @@ l0800_8749:
 l0800_8751:
 	branch v30_564 l0800_873C
 l0800_873C:
+	byte al_62 = Mem61[ds_20:si_101:byte]
 	si_101 = si_101 + 1<i16>
-	al_115 = Mem61[ds_20:si_101:byte] * 2<8> + CONVERT(al_41 <u 0<8>, bool, byte)
-	branch al_115 <u 0<8> l0800_8753
+	al_115 = al_62 * 2<8> + CONVERT(al_41 <u 0<8>, bool, byte)
+	branch al_115 <u al_62 * 2<8> l0800_8753
 l0800_8741:
 l0800_8744:
 	Mem76[es_22:di_185:byte] = Mem70[ds_20:si_101:byte]
@@ -12961,9 +12950,10 @@ l0800_870E:
 	bool v51_585 = al_115 <u 0<8>
 	branch al_115 == 0<8> l0800_86DA
 l0800_86DA:
-	al_115 = Mem61[ds_20:si_101:byte] * 2<8> + CONVERT(al_115 <u 0<8>, bool, byte)
+	byte al_354 = Mem61[ds_20:si_101:byte]
+	al_115 = al_354 * 2<8> + CONVERT(al_115 <u 0<8>, bool, byte)
 	si_101 = si_101 + 1<i16>
-	v51_585 = al_115 <u 0<8>
+	v51_585 = al_115 <u al_354 * 2<8>
 l0800_8714:
 	branch v51_585 l0800_8784
 l0800_8784:
@@ -12981,9 +12971,10 @@ l0800_878B:
 	bool v54_588 = al_115 <u 0<8>
 	branch al_115 == 0<8> l0800_87AF
 l0800_87AF:
-	al_115 = Mem61[ds_20:si_101:byte] * 2<8> + CONVERT(al_115 <u 0<8>, bool, byte)
+	byte al_386 = Mem61[ds_20:si_101:byte]
+	al_115 = al_386 * 2<8> + CONVERT(al_115 <u 0<8>, bool, byte)
 	si_101 = si_101 + 1<i16>
-	v54_588 = al_115 <u 0<8>
+	v54_588 = al_115 <u al_386 * 2<8>
 l0800_8794:
 l0800_8797:
 	branch v54_588 l0800_8728
@@ -16860,7 +16851,7 @@ l0800_A4A2:
 l0800_A4A7:
 	byte bl_56 = bl_31 - 0x30<8>
 	word16 bx_70 = CONVERT(bl_56, byte, uint16)
-	branch bl_56 <u 0<8> l0800_A4D6
+	branch bl_56 >u bl_31 l0800_A4D6
 l0800_A4AC:
 	int32 dx_ax_66 = ax_113 *u32 0xA<16>
 	byte dh_74 = SLICE(dx_ax_66, byte, 24)

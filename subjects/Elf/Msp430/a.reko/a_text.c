@@ -1734,9 +1734,9 @@ l57AE:
 					}
 					else
 					{
-						ui16 v135_n = *r5_n;
+						uint16 v135_n = *r5_n;
 						r5_n += 0x02;
-						dwLoc1C_n = SEQ(~(0x00 - (word16) (v135_n * 0x02 < 0x00)), v135_n);
+						dwLoc1C_n = SEQ(~(0x00 - (word16) (v135_n * 0x02 < v135_n)), v135_n);
 					}
 					word16 wLoc1C_n = (word16) dwLoc1C_n;
 					ci16 wLoc1A_n = SLICE(dwLoc1C_n, word16, 16);
@@ -2271,15 +2271,15 @@ bool fn00005B4E(Eq_n r11_r10, Eq_n r8, Eq_n r12, Eq_n r13, union Eq_n & r13_r12O
 	while (true)
 	{
 		r12 *= 0x02;
-		r13 = r13 *20 0x02 + (word20) (r12 < 0x00);
+		r13 = r13 *20 0x02 + (word20) (r12 < r12 *20 0x02);
 		--r9_n;
-		Eq_n r8_n = r8 *20 0x02 + (word20) (r13 < 0x00);
+		Eq_n r8_n = r8 *20 0x02 + (word20) (r13 < r13 *20 0x02);
 		bool C_n = (bool) cond(r9_n);
 		if (r9_n == 0x00)
 			break;
 		r8 = __rcr<word20,byte>(r8_n, 0x01, C_n);
 		r14_n = r14_n * 0x02 + (word20) (r8 < 0x00);
-		r15_n = r15_n * 0x02 + (word20) (r14_n < 0x00);
+		r15_n = r15_n * 0x02 + (word20) (r14_n < r14_n * 0x02);
 		if (r15_n < r11 && (r15_n != r11 || r14_n < r10))
 		{
 			uint40 r15_r14_n = SEQ(r15_n, r14_n) - r11_r10;

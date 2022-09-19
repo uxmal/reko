@@ -19162,7 +19162,7 @@ Eq_n fn0000F80A(ui64 r11_r10, Eq_n r12, union Eq_n & r11Out, union Eq_n & lrOut)
 		}
 		r10_n = (word32) r10_n + 1;
 		C_n = (bool) cond(r10_n);
-		if (r10_n >= 0x00)
+		if (r10_n >= r10_n)
 			r11_n = (word32) r11_n + 1;
 	}
 l0000F89C:
@@ -20011,7 +20011,7 @@ Eq_n fn0000FF9C(ui32 r11, Eq_n r12)
 	int32 r11_n = r11 & 0x7FFFFFFF;
 	Eq_n r10_n = max<int32>(r12 & 0x7FFFFFFF, r11_n);
 	Eq_n r9_n = min<int32>(r12 & 0x7FFFFFFF, r11_n);
-	ui32 r8_n = r10_n << 0x08 | 0x80000000;
+	uint32 r8_n = r10_n << 0x08 | 0x80000000;
 	uint32 r10_n = r10_n >> 23;
 	if (r10_n >> 23 == 0xFF)
 	{
@@ -20038,7 +20038,7 @@ Eq_n fn0000FF9C(ui32 r11, Eq_n r12)
 		}
 		uint32 r12_n = r11_n >> __sat<uint32>((r10_n >> 23) - r9_n, 5);
 		Eq_n r11_n = SLICE(r12_n, int8, 24);
-		if (r8_n + r12_n < 0x00)
+		if (r8_n + r12_n < r8_n)
 		{
 			r10_n = (r10_n >> 23) + 0x01;
 			if (r10_n == 0xFF)

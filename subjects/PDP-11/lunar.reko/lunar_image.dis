@@ -951,7 +951,7 @@ word16 fn0D78(word16 r4, word16 r5)
 fn0D78_entry:
 l0D78:
 	word16 wLoc02_107 = 0x200<16>
-	branch r4 >u 0x400<16> l0D8C
+	branch 0x400<16> - r4 >u 0x400<16> l0D8C
 l0D82:
 	r4 = 0x3FF<16>
 	branch Mem4[0x0082<p16>:word16] == 0x3FF<16> l0D9C
@@ -1152,7 +1152,7 @@ l0F04:
 	word16 r4_129 = fn100C(Mem12[r0_110:word16])
 	branch r4_129 > 0<16> l0F24
 l0F24:
-	branch r4_129 >u 0x400<16> l0F2E
+	branch 0x400<16> - r4_129 >u 0x400<16> l0F2E
 l0F2A:
 	r4_129 = 0x3FF<16>
 l0F20:
@@ -1900,7 +1900,7 @@ l163A:
 	Mem12[r1 + 1<16>:byte] = 0x30<8>
 	ptrLoc02_100 = 0x163C<p16>
 l1640:
-	branch r0 >u 0x2710<16> l1602
+	branch 0x2710<16> - r0 >u 0x2710<16> l1602
 l1646:
 	Mem23[r1 + 1<16>:byte] = Mem21[r1 + 1<16>:byte] + 1<8>
 	r0 = r0 - 0x2710<16>

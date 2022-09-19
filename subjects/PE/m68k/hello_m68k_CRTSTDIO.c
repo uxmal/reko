@@ -101,7 +101,7 @@ void fn000016D0(word32 d6, struct Eq_n * a5, byte * dwArg08)
 				d0_n = 0;
 			word32 d0_n = CONVERT((a5 + -2040 + dwLoc0C_n)[d0_n * 0x08] >> 0x04, byte, int32);
 			dwLoc0C_n = d0_n;
-			if (d0_n <= 7)
+			if (7 - d0_n <= 7)
 			{
 				word16 v40_n = g_a1758[(int32) (int16) d0_n * 2];
 				word32 d2_n;

@@ -275,7 +275,7 @@ byte * fn04A0(byte * r4, struct Eq_n * pc)
 			if ((g_t0F02 > 0x00 || r0_n < 0x05) && r0_n != 0x03)
 			{
 				*((word32) r5_n + 0x0EF3) = r0_n - 0x01;
-				if (r0_n <= 0x17 && r0_n >= 0x01)
+				if (22 - (r0_n - 0x01) <= 22)
 				{
 					sp_n = (struct Eq_n *) <invalid>;
 					if (!fn067C(r0_n - 0x01, r3_n, r4_n + 1, out r0_n, out r4, out r5_n))
@@ -307,10 +307,10 @@ l0524:
 											{
 												if ((word16) r3_n + 4 - *((word32) r5_n + 0x0EF0) <= 0x00)
 												{
-													if (*r0_n - *((word32) r5_n + 0x0EF0) < 0x00)
+													if (*r0_n - *((word32) r5_n + 0x0EF0) > *r0_n)
 														break;
 													Eq_n r1_n = *r0_n;
-													*r0_n |= 0x8000;
+													r0_n->u0 = *r0_n | 0x8000;
 													Eq_n r0_n = r0_n - r2_n[0x06D6];
 													g_t0F0A = r0_n;
 													--*((word32) r0_n + 0x0DC4);
@@ -354,8 +354,8 @@ l0524:
 									}
 									break;
 								}
-								cup16 v38_n = r2_n[0x06DC] - r1_n;
-								if (v38_n < 0x00)
+								Eq_n v38_n = r2_n[0x06DC] - r1_n;
+								if (v38_n > r2_n[0x06DC])
 									break;
 								if (v38_n == 0x00)
 									goto l0524;
@@ -506,7 +506,7 @@ void fn06A2()
 			if (*((word32) r5_n + 0x0EF0) == 0x00)
 			{
 				wchar_t r0_n = g_w0F14;
-				if (r0_n <= 0x08)
+				if (0x08 - r0_n <= 0x08)
 				{
 					*((word32) r5_n + 0x0EF0) = r0_n + 0x02;
 					((word32) r5_n + 0x0EF3)->u0 = 0x18;
@@ -557,13 +557,13 @@ byte * fn06D6(byte * r4, struct Eq_n * pc)
 			{
 				if (r0_n != 0x18)
 				{
-					if (r0_n > 22)
+					if (22 - r0_n > 22)
 						goto l078A;
 					sp_n = (struct Eq_n *) <invalid>;
 					if (!fn067C(r0_n, r3_n, r4, out r0_n, out r4, out r5_n))
 						goto l0784;
 				}
-				else if (g_ptr0EFA == null && (g_w0F14 - r3_n >= 0x00 && g_w0F14 - (r3_n - 0x04) <= 0x00))
+				else if (g_ptr0EFA == null && (g_w0F14 - r3_n <= g_w0F14 && g_w0F14 - (r3_n - 0x04) <= 0x00))
 				{
 					byte * r4_n;
 					byte * r4_n;
@@ -646,11 +646,11 @@ Eq_n fn07A6(byte * r4, struct Eq_n * pc, byte & r4Out)
 					if (r1_n->t0000 > 0x00)
 					{
 						r1_n->t0000 = (word32) r1_n->t0000 + g_w0F20;
-						if (r1_n->t0000 >= 0x08 || r1_n->t0000 <= 0x48)
+						if (r1_n->t0000 >= 0x08 || 0x48 - r1_n->t0000 <= 0x48)
 							g_t0F00 = sp_n;
 						if (r0 == 0x17)
 							g_t0F02 = sp_n;
-						if (r0 <= 22)
+						if (22 - r0 <= 22)
 							fn093C(r0, r1_n);
 						struct Eq_n * sp_n = sp_n - 0x01;
 						sp_n->t0000 = r1_n->t0000;
@@ -1075,7 +1075,7 @@ void fn0B60(cup16 r0, ci16 r3, word16 * r4)
 			while (true)
 			{
 				r0 -= v16_n;
-				if (r0 < 0x00)
+				if (r0 > r0)
 					break;
 				++r5_n;
 			}
@@ -1145,7 +1145,7 @@ word16 fn0C20(struct Eq_n * pc)
 	{
 		*r1_n = (word16) r2_n;
 		++r1_n;
-		r2_n.u1 = (word16) r2_n.u1 + 2;
+		r2_n = (word32) r2_n + 2;
 	}
 	struct Eq_n * r1_n = null;
 	word16 r0_n;

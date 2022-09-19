@@ -74,9 +74,9 @@ namespace Reko.Scanning
             return rtlBlock.Instructions.Sum(i => i.Instructions.Length);
         }
 
-        public IEnumerable<RtlInstruction?> GetBlockInstructions(RtlBlock block)
+        public IEnumerable<(Address?, RtlInstruction?)> GetBlockInstructions(RtlBlock block)
         {
-            return block.Instructions.SelectMany(c => c.Instructions);
+            return block.Instructions.SelectMany(c => c.Instructions.Select(i => (c.Address, i)))!;
         }
 
         public List<RtlBlock> GetPredecessors(RtlBlock block)

@@ -389,8 +389,50 @@ namespace Reko.Environments.SysV.ArchSpecific
         /// jalr ra,r25
         /// addiu r24,r0,+00000010
         /// </code>
-        public static Expression? Mips32_Variant1(IProcessorArchitecture arch, IRewriterHost host, RtlInstruction[] stubInstrs)
+        public static Expression? Mips32(IProcessorArchitecture arch, Address addrInstr, List<RtlInstructionCluster> stubInstrs, IRewriterHost host)
         {
+            if (stubInstrs.Length != 4)
+                return null;
+
+            if (stubInstrs[^4].Instructions[0] is RtlAssignment load &&
+                load.Dst is Identifier idDst &&
+                idDst.Name == "r25" &&
+                load.Src is MemoryAccess mem &&
+                mem.EffectiveAddress is BinaryExpression bin &&
+                bin.Left is Identifier gp &&
+                gp.Name == "r28")
+            {
+            }
+            else return null;
+
+            if (stubInstrs[^3].Instructions[0] is RtlAssignment copy &&
+                copy.Src is Identifier idSrc &&
+                idSrc.Name == "ra")
+            {
+            }
+            else return null;
+
+            if (stubInstrs[^2].Instructions[0] is RtlCall call &&
+                call.Class.HasFlag(InstrClass.Delay) &&
+                call.Target is Identifier idTarget &&
+                idTarget == idDst)
+            { }
+            else return null;
+
+            if (stubInstrs[^1].Instructions[0] is RtlAssignment init &&
+                init.Dst is Identifier &&
+                init.Src is Constant &&
+                host.GlobalRegisterValue is { })
+            {
+                var sAddrGotSlot = host.GlobalRegisterValue.ToInt32() + ((Constant) bin.Right).ToInt32();
+                return Address.Ptr32((uint)sAddrGotSlot);
+            }
+            return null;
+        }
+
+        public static Expression? Mips32_Old(IProcessorArchitecture arch, Address addrInstr, IEnumerable<RtlInstruction> instrs, IRewriterHost host)
+        {
+            var stubInstrs = instrs.Take(4).ToArray();
             if (stubInstrs.Length != 4)
                 return null;
 

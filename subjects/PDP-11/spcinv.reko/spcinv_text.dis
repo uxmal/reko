@@ -253,7 +253,7 @@ l04D8:
 	branch r0_28 == 3<16> l0584
 l04DE:
 	Mem51[r5_10 + 0xEF3<16>:byte] = r0_28 - 1<16>
-	branch r0_28 >u 0x17<16> || r0_28 <u 1<16> l04EE
+	branch 0x16<8> - (r0_28 - 1<16>) >u 0x16<8> l04EE
 l04E8:
 	sp_135 = <invalid>
 	branch fn067C(r0_28 - 1<16>, r3_15, r4_29 + 1<16>, out r0_36, out r4, out r5_10) l0584
@@ -273,7 +273,7 @@ l050C:
 	branch Mem51[r2_104 + 0xDB8<16>:word16] - r0_122 == 0<16> l0524
 l0512:
 	word16 v38_116 = Mem51[r2_104 + 0xDB8<16>:word16] - r1_68
-	branch v38_116 <u 0<16> l05B4
+	branch v38_116 >u Mem51[r2_104 + 0xDB8<16>:word16] l05B4
 l0518:
 	branch v38_116 == 0<16> l0524
 l0524:
@@ -305,7 +305,7 @@ l05AE:
 	r1_123 = r1_123 - 1<16>
 	branch r1_123 != 0<16> l052C
 l053C:
-	branch Mem127[r0_122:byte] - Mem127[r5_10 + 0xEF0<16>:byte] <u 0<8> l05B4
+	branch Mem127[r0_122:byte] - Mem127[r5_10 + 0xEF0<16>:byte] >u Mem127[r0_122:byte] l05B4
 l0542:
 	word16 r1_192 = Mem127[r0_122:word16]
 	Mem194[r0_122:word16] = Mem127[r0_122:word16] | 0x8000<16>
@@ -507,7 +507,7 @@ l06D0:
 	branch r5_10 >= 0<16> l06AC
 l06B2:
 	word16 r0_24 = Mem0[0x0F14<p16>:word16]
-	branch r0_24 >u 8<16> l06D4
+	branch 8<16> - r0_24 >u 8<16> l06D4
 l06BC:
 	Mem29[r5_10 + 0xEF0<16>:byte] = r0_24 + 2<16>
 	Mem30[r5_10 + 0xEF3<16>:byte] = 0x18<8>
@@ -564,7 +564,7 @@ l0730:
 l0744:
 	branch Mem77[0x0EFA<p16>:word16] != 0<16> l078A
 l074A:
-	branch Mem77[0x0F14<p16>:word16] - r3_9 <u 0<16> l078A
+	branch Mem77[0x0F14<p16>:word16] - r3_9 >u Mem77[0x0F14<p16>:word16] l078A
 l0750:
 	branch Mem77[0x0F14<p16>:word16] - (r3_9 - 4<16>) >u 0<16> l078A
 l075A:
@@ -582,7 +582,7 @@ l077A_thunk_fn0AE8:
 	fn0AE8(r0_114, r4_115, 0x077E<p16>, out r0_233, out r4_130, out r5_234)
 	return r4_130
 l0736:
-	branch r0_140 >u 0x16<16> l078A
+	branch 0x16<16> - r0_140 >u 0x16<16> l078A
 l073C:
 	sp_101 = <invalid>
 	branch fn067C(r0_140, r3_9, r4, out r0_140, out r4, out r5_142) l078A
@@ -707,7 +707,7 @@ l0800:
 	Mem234[r1_146:word16] = Mem97[r1_146:word16] + Mem97[0x0F20<p16>:word16]
 	branch Mem234[r1_146:word16] >=u 8<16> l0810
 l080A:
-	branch Mem234[r1_146:word16] >u 0x48<16> l0814
+	branch 0x48<16> - Mem234[r1_146:word16] >u 0x48<16> l0814
 l0810:
 	Mem242[0x0F00<p16>:word16] = sp_118
 l0814:
@@ -715,7 +715,7 @@ l0814:
 l081A:
 	Mem251[0x0F02<p16>:word16] = sp_118
 l081E:
-	branch r0 >u 0x16<16> l0828
+	branch 0x16<16> - r0 >u 0x16<16> l0828
 l0824:
 	fn093C(r0, r1_146)
 l0828:
@@ -1167,7 +1167,7 @@ l0B88:
 	branch v16_41 == 0<16> l0BBE
 l0B8E:
 	r0 = r0 - v16_41
-	branch r0 <u 0<16> l0B96
+	branch r0 >u r0 l0B96
 l0B96:
 	word16 r5_79
 	r0 = r0 + v16_41
