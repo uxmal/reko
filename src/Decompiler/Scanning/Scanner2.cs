@@ -63,6 +63,8 @@ namespace Reko.Scanning
                     .Where(s => s.IsExecutable)
                     .Sum(s => s.MemoryArea.Length));
 
+            // First, traverse the image using a recursive algorithm.
+
             var scanner = new RecursiveScanner(program, listener);
             trace.Inform("= Recursive scan ======");
             var (cfg, recTime) = Time(() => scanner.ScanProgram());
@@ -70,6 +72,9 @@ namespace Reko.Scanning
             trace.Inform("      {0} basic blocks", cfg.Blocks.Count);
             trace.Inform("      {0} bytes", cfg.Blocks.Values.Sum(b => b.Length));
             trace.Inform("      in {0} msec", (int) recTime.TotalMilliseconds);
+
+            // There will be "islands" of unscanned bytes left over.
+            // Scan these using the ShingleScanner.
 
             var shScanner = new ShingleScanner(program, cfg, listener);
             trace.Inform("= Shingle scan ======");
@@ -80,12 +85,17 @@ namespace Reko.Scanning
             trace.Inform("      in {0} msec", (int) shTime.TotalMilliseconds);
             cfg = null;
 
+            // Build predecessor edges.
+
             trace.Inform("= Predecessor edges ======");
             var (cfg3, predTime) = Time(shScanner.RegisterPredecessors);
             trace.Inform("Graph has {0} predecessors", cfg3.Predecessors.Count);
             trace.Inform("    {0} successors", cfg3.Successors.Count);
             trace.Inform("    in {0} msec", (int) predTime.TotalMilliseconds);
             cfg2 = null;
+
+            // From the soup of basic blocks and edges, construct
+            // procedure candidates.
 
             var procDetector = new ProcedureDetector(cfg3, listener);
             trace.Inform("= Procedure detector ======");

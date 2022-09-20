@@ -92,11 +92,12 @@ namespace Reko.Scanning
                 addrLast = cluster.Address;
                 if (!worker.TryMarkVisited(addrLast))
                 {
-                    // If the instruction has already been visited, we
-                    // stop the current block and make it fall through
-                    // to the next block.
-                    var block = MakeFallthroughBlock(this.Address, addrLast, instrs);
+                    // Another trace has already visited this address.
+                    // Find the block that other trace resulted in, and 
+                    // split it at this address.
                     log.Verbose("    Fell through to {0}, stopping", cluster.Address);
+                    var blockNew  = worker.SplitExistingBlock(addrLast);
+                    var block = MakeFallthroughBlock(this.Address, addrLast, instrs);
                     return (block, state);
                 }
                 foreach (var rtl in cluster.Instructions)

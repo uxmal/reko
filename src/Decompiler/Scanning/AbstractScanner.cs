@@ -31,8 +31,6 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Reko.Scanning
 {
@@ -132,10 +130,16 @@ namespace Reko.Scanning
 
         public void RegisterEdge(Edge edge)
         {
-            if (!sr.Successors.TryGetValue(edge.From, out var edges))
+            List<Address>? edges;
+            while (!sr.Successors.TryGetValue(edge.From, out edges))
             {
-                edges = new List<Address>();
-                sr.Successors.TryAdd(edge.From, edges);
+                // The most common successor cardinality is 2.
+                edges = new List<Address>(2);
+                if (sr.Successors.TryAdd(edge.From, edges))
+                {
+                    edges.Add(edge.To);
+                    return;
+                }
             }
             //$TODO: make this concurrent safe.
             edges.Add(edge.To);
@@ -195,7 +199,7 @@ namespace Reko.Scanning
         /// <returns>A new, terminated but unregistered block. The caller is responsible for 
         /// registering it.
         /// </returns>
-        protected RtlBlock Chop(RtlBlock block, int iStart, int iEnd, long blockSize)
+        private RtlBlock Chop(RtlBlock block, int iStart, int iEnd, long blockSize)
         {
             var instrs = new List<RtlInstructionCluster>(iEnd - iStart);
             for (int i = iStart; i < iEnd; ++i)
@@ -364,6 +368,7 @@ namespace Reko.Scanning
         }
 
         // Writes the start and end addresses, size, and successor edges of each block, 
+        [Conditional("DEBUG")]
         public void DumpBlocks(ScanResultsV2 sr, IDictionary<Address, RtlBlock> blocks, Action<string> writeLine)
         {
             writeLine(
@@ -380,7 +385,7 @@ namespace Reko.Scanning
                             ? succ
                             : new List<Address>()))));
 
-            string RenderType(InstrClass t)
+            static string RenderType(InstrClass t)
             {
                 if ((t & InstrClass.Zero) != 0)
                     return "Zer ";
@@ -392,6 +397,8 @@ namespace Reko.Scanning
                     return "Bra ";
                 if ((t & InstrClass.Transfer) != 0)
                     return "End";
+                if ((t & InstrClass.Terminates) != 0)
+                    return "Trm";
                 return "Lin ";
             }
         }

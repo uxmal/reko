@@ -142,7 +142,19 @@ namespace Reko.UnitTests.Decompiler.Scanning
                 DataType = new ArrayType(PrimitiveType.Byte, 0)
             };
             program.ImageMap.AddItem(addr, item);
+        }
 
+        private void AssertBlocks(string sExp, Dictionary<Address, ScanResults.block> blocks)
+        {
+            var sw = new StringWriter();
+            this.siq.DumpBlocks(sr, blocks, sw.WriteLine);
+            var sActual = sw.ToString();
+            if (sExp != sActual)
+            {
+                Debug.WriteLine("* Failed AssertBlocks ***");
+                Debug.Write(sActual);
+                Assert.AreEqual(sExp, sActual);
+            }
         }
 
         private void Inst(int uAddr, int len, InstrClass rtlc)
@@ -309,19 +321,6 @@ namespace Reko.UnitTests.Decompiler.Scanning
 ";
             #endregion
             AssertBlocks(sExp, blocks);
-        }
-
-        private void AssertBlocks(string sExp, Dictionary<Address, ScanResults.block> blocks)
-        {
-            var sw = new StringWriter();
-            this.siq.DumpBlocks(sr, blocks, sw.WriteLine);
-            var sActual = sw.ToString();
-            if (sExp != sActual)
-            {
-                Debug.WriteLine("* Failed AssertBlocks ***");
-                Debug.Write(sActual);
-                Assert.AreEqual(sExp, sActual);
-            }
         }
 
         [Test]

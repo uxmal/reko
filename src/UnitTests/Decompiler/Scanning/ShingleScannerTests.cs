@@ -502,7 +502,8 @@ l00001008: // l:8; ft:00001010
 
             var sExp =
             #region Expected
-@"00000100-00000106 (6): End
+@"
+00000100-00000106 (6): End
 ";
             #endregion
 
@@ -527,7 +528,8 @@ l00001008: // l:8; ft:00001010
             var blocks = scanner.ScanProgram().Blocks;
             var sExp =
             #region Expected
-@"0001B0D7-0001B0DD (6): Bra 0001B0DD, 0001B0DE
+@"
+0001B0D7-0001B0DD (6): Bra 0001B0DD, 0001B0DE
 0001B0D8-0001B0DE (6): Lin 0001B0DE
 0001B0DC-0001B0DE (2): Lin 0001B0DE
 0001B0DD-0001B0DE (1): Lin 0001B0DE
@@ -540,6 +542,7 @@ l00001008: // l:8; ft:00001010
         private void AssertBlocks(string sExp, IDictionary<Address, RtlBlock> blocks)
         {
             var sw = new StringWriter();
+            sw.WriteLine();
             this.scanner.DumpBlocks(cfg, blocks, sw.WriteLine);
             var sActual = sw.ToString();
             if (sExp != sActual)
@@ -563,7 +566,8 @@ l00001008: // l:8; ft:00001010
             var blocks = scanner.ScanProgram();
             var sExp =
             #region Expected
-@"00010001-00010005 (4): End
+@"
+00010001-00010005 (4): End
 ";
             #endregion
             AssertBlocks(sExp, cfg.Blocks);
@@ -587,25 +591,24 @@ l00001008: // l:8; ft:00001010
             CreateX86Scanner();
             var seg = program.SegmentMap.Segments.Values.First();
             cfg = scanner.ScanProgram();
-            var sExp =
-                "00010000-00010003 (3): Lin 00010003" + nl +
-                "00010002-00010003 (1): Lin 00010003" + nl +
-                "00010003-00010009 (6): Lin 00010009" + nl +
-                "00010004-0001000A (6): Lin 0001000A" + nl +
-                "00010006-00010008 (2): Lin 00010008" + nl +
-                "00010007-00010009 (2): Zer 00010009" + nl +
-                "00010008-0001000B (3): Zer 0001000B" + nl +
-                "00010009-0001000A (1): Lin 0001000A" + nl +
-                "0001000A-0001000B (1): Lin 0001000B" + nl +
-                "0001000B-00010012 (7): Lin 00010012" + nl +
-                "0001000D-00010012 (5): Lin 00010012" + nl +
-                "00010012-00010017 (5): Lin 00010017" + nl +
-                "00010013-00010014 (1): Lin 00010014" + nl +
-                "00010014-00010018 (4): Zer 00010018" + nl +
-                "00010015-00010017 (2): Zer 00010017" + nl +
-                "00010017-00010018 (1): End" + nl +
-                "00010018-00010019 (1): End" + nl +
-                "00010019-0001001A (1): End" + nl;
+            var sExp = @"
+00010000-00010003 (3): Lin 00010003
+00010002-00010003 (1): Lin 00010003
+00010003-0001000A (7): Lin 0001000A
+00010004-0001000A (6): Lin 0001000A
+00010006-00010008 (2): Lin 00010008
+00010007-00010009 (2): Zer 00010009
+00010008-0001000B (3): Zer 0001000B
+0001000A-0001000B (1): Lin 0001000B
+0001000B-00010012 (7): Lin 00010012
+0001000D-00010012 (5): Lin 00010012
+00010012-00010018 (6): End
+00010013-00010014 (1): Lin 00010014
+00010014-00010018 (4): Zer 00010018
+00010015-00010017 (2): Zer 00010017
+00010018-00010019 (1): End
+00010019-0001001A (1): End
+";
             AssertBlocks(sExp, cfg.Blocks);
         }
 
@@ -620,12 +623,18 @@ l00001008: // l:8; ft:00001010
             });
             CreateX86Scanner();
 
-            var src = scanner.ScanProgram();
+            var sr = scanner.ScanProgram();
 
-            var from = src.Blocks.Values.Single(n => n.Address == Address.Ptr32(0x00100000));
-            var to = src.Blocks.Values.Single(n => n.Address == Address.Ptr32(0x00100001));
-            Assert.IsFalse(src.Successors.ContainsKey(from.Address));
-            Assert.IsFalse(src.Successors.ContainsKey(to.Address));
+            var sExp =
+            #region Expected
+@"
+00100000-00100001 (1): Trm
+00100001-00100006 (5): Lin 00100006
+00100002-00100006 (4): Zer 00100006
+00100006-00100007 (1): End
+";
+            #endregion
+            AssertBlocks(sExp, sr.Blocks);
         }
 
         [Test(Description = "Stop tracing invalid blocks at call boundaries")]
@@ -641,7 +650,8 @@ l00001008: // l:8; ft:00001010
 
             var sExp =
             #region Expected
-@"00001000-0000100A (10): Cal 0000100A
+@"
+00001000-0000100A (10): Cal 0000100A
 0000100A-0000100B (1): End
 ";
             #endregion
@@ -661,7 +671,8 @@ l00001008: // l:8; ft:00001010
 
             var sExp =
             #region Expected
-@"00001000-0000100A (10): Cal 
+@"
+00001000-0000100A (10): Cal 
 ";
             #endregion
             AssertBlocks(sExp, cfg.Blocks);
@@ -695,7 +706,8 @@ l00001008: // l:8; ft:00001010
             var blocks = scanner.ScanProgram();
             var sExp =
             #region Expected
-@"00001000-00001008 (8): End
+@"
+00001000-00001008 (8): End
 00001008-00001010 (8): Pad 00001010
 00001010-00001018 (8): End
 ";
@@ -795,10 +807,32 @@ l00001008: // l:8; ft:00001010
 
             var sExp =
             #region Expected
-@"00001000-00001004 (4): Cal 
+@"
+00001000-00001004 (4): Cal 
 ";
             #endregion
             AssertBlocks(sExp, cfg.Blocks);
+        }
+
+        [Test]
+        public void Shsc_MergingBlocks()
+        {
+            Lin(0x1000, 2, 0x1002);
+            Lin(0x1001, 1, 0x1002);
+            End(0x1002, 1);
+
+            CreateScanner(0x1000);
+            var sr = scanner.ScanProgram();
+
+            var sExp =
+            #region Expected
+@"
+00001000-00001002 (2): Lin 00001002
+00001001-00001002 (1): Lin 00001002
+00001002-00001003 (1): End
+";
+            #endregion
+            AssertBlocks(sExp, sr.Blocks);
         }
     }
 }

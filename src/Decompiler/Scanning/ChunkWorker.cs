@@ -19,10 +19,13 @@
 #endregion
 
 using Reko.Core;
+using Reko.Core.Collections;
+using Reko.Core.Diagnostics;
 using Reko.Core.Rtl;
 using Reko.Core.Services;
 using System.Collections.Generic;
 using System.Threading;
+using static Reko.Scanning.ProcedureDetector;
 
 namespace Reko.Scanning
 {
@@ -34,6 +37,7 @@ namespace Reko.Scanning
     {
         private readonly ShingleScanner shScanner;
         private readonly int[] blockNos; // 0 = not owned by anyone.
+        private readonly BTreeDictionary<Address, RtlBlock> blockStarts;
         private BlockWorker? fallThroughJob;
 
         public ChunkWorker(
@@ -49,6 +53,7 @@ namespace Reko.Scanning
             this.Address = addrStart;
             this.Length = chunkUnits;
             this.blockNos = new int[chunkUnits];
+            this.blockStarts = new();
         }
 
         public Address Address { get; }
@@ -64,6 +69,7 @@ namespace Reko.Scanning
             {
                 if (this.blockNos[i] != 0)
                 {
+                    // Some other block already starts at addrNext + i
                     continue;
                 }
                 var addrNext = this.Address + i;
@@ -77,6 +83,7 @@ namespace Reko.Scanning
                     var (block, newState) = job.ParseBlock();
                     if (block is null)
                         break;
+                    blockStarts.Add(addrNext, block);
                     if (block.IsValid)
                     {
                         HandleBlockEnd(block, job.Trace, newState);
@@ -91,6 +98,7 @@ namespace Reko.Scanning
                     // skip any instructions in delay slots.
                     addrNext = block.Address + block.Length;
                 }
+				//$TODO: handle crossing the chunk boundary.
             }
         }
 
@@ -116,11 +124,31 @@ namespace Reko.Scanning
         {
             this.fallThroughJob = new BlockWorker(shScanner, this, addr, trace, state);
             return fallThroughJob;
+        }
 
+        public override RtlBlock? SplitExistingBlock(Address addr)
+        {
+            if (!this.blockStarts.TryGetLowerBoundIndex(addr, out int iMin))
+                return null;
+            for (int i = iMin; i < this.blockStarts.Count; ++i)
+            {
+                var block = this.blockStarts.Values[i];
+                if (block.Address < addr)
+                {
+                    var blockNew = shScanner.SplitBlockAt(block, addr);
+                    if (blockNew is { })
+                    {
+                        blockStarts[addr] = blockNew;
+                        return blockNew;
+                    }
+                }
+            }
+            return null;
         }
 
         public override bool TryMarkVisited(Address addr)
         {
+            log.Verbose("        Marking {0} visited.", addr);
             var index = addr - this.Address;
             if (index >= blockNos.Length)
                 return false;

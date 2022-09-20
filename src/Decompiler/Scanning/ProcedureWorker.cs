@@ -24,6 +24,7 @@ using Reko.Core.Diagnostics;
 using Reko.Core.Rtl;
 using Reko.Core.Services;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
@@ -41,8 +42,7 @@ namespace Reko.Scanning
         private readonly RecursiveScanner recScanner;
         private readonly Proc proc;
         private readonly WorkList<BlockWorker> workList;
-        //$REVIEW: Mutable shared state. Should use a ConcurrentDictionary.
-        private Dictionary<Address, (Address, ProcedureWorker, ProcessorState)> callersWaitingForReturn;
+        private readonly ConcurrentQueue<WaitingCaller> callersWaitingForReturn;
 
         public ProcedureWorker(
             RecursiveScanner scanner,
@@ -120,7 +120,13 @@ namespace Reko.Scanning
             // Try starting a worker for the callee.
             if (recScanner.TryStartProcedureWorker(edge.To, state, out var calleeWorker))
             {
-                calleeWorker.TryEnqueueCaller(this, edge.From, block.FallThrough, state);
+                var waitingCaller = new WaitingCaller(
+                    this,
+                    edge.From,
+                    block.FallThrough,
+                    state);
+
+                calleeWorker.TryEnqueueCaller(waitingCaller);
                 log.Verbose("    {0}: suspended, waiting for {1} to return", proc.Address, calleeWorker.Procedure.Address);
             }
             else
@@ -129,32 +135,30 @@ namespace Reko.Scanning
 
         protected override void ProcessReturn()
         {
+            // By setting the procedure return status, other threads will
+            // no longer enqueue callers in callersWaitingForReturn since
+            // the return status of the procedure is known.
             recScanner.SetProcedureReturnStatus(proc.Address, ReturnStatus.Returns);
-            var empty = new Dictionary<Address, (Address, ProcedureWorker, ProcessorState)>();
-            var callers = Interlocked.Exchange(ref callersWaitingForReturn, empty);
-            while (callers.Count != 0)
+            while (callersWaitingForReturn.TryDequeue(out var wc))
             {
-                foreach (var (addrFallThrough, (addrCaller, caller, state)) in callers)
-                {
-                    log.Verbose("   {0}: resuming worker {1} at {2}", proc.Address, caller.Procedure.Address, addrFallThrough);
-                    recScanner.ResumeWorker(caller, addrCaller, addrFallThrough, state);
-                }
-                empty = new Dictionary<Address, (Address, ProcedureWorker, ProcessorState)>();
-                callers = Interlocked.Exchange(ref callersWaitingForReturn, empty);
+                log.Verbose("   {0}: resuming worker {1} at {2}", proc.Address, wc.Worker.Procedure.Address, wc.FallthroughAddress);
+                recScanner.ResumeWorker(
+                    wc.Worker, wc.CallAddress, wc.FallthroughAddress, wc.State);
             }
         }
 
-        public bool TryEnqueueCaller(
-            ProcedureWorker procedureWorker,
-            Address addrCall,
-            Address addrFallthrough,
-            ProcessorState state)
+        public override RtlBlock? SplitExistingBlock(Address addr)
         {
-            lock (callersWaitingForReturn)
-            {
-                callersWaitingForReturn.Add(addrFallthrough, (addrCall, procedureWorker, state));
-            }
+            // This overridden method is not expected to be called since
+            // this.TryMarkVisited always returns true.
+            throw new NotSupportedException();
+        }
+
+        public bool TryEnqueueCaller(WaitingCaller waitingCaller)
+        {
+            callersWaitingForReturn.Enqueue(waitingCaller);
             return true;
         }
+
     }
 }

@@ -239,6 +239,22 @@ namespace Reko.Scanning
         }
     }
 
+
+    /// <summary>
+    /// This class represents a <see cref="ProcedureWorker"/> that is 
+    /// waiting until another ProcedureWorker discoveres whether a callee
+    /// procedure returns or not.
+    /// </summary>
+    /// <param name="Worker"></param>
+    /// <param name="CallAddress"></param>
+    /// <param name="FallthroughAddress"></param>
+    /// <param name="State"></param>
+    public record WaitingCaller(
+        ProcedureWorker Worker,
+        Address CallAddress,
+        Address FallthroughAddress,
+        ProcessorState State);
+
     public enum ReturnStatus
     {
         Unknown,

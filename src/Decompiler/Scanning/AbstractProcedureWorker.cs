@@ -65,8 +65,7 @@ namespace Reko.Scanning
         /// <param name="block">The unsealed block we are currently building</param>
         /// <param name="trace">A source of <see cref="RtlInstructionCluster"/>s.</param>
         /// <param name="state">Current simulated processor state.</param>
-        /// <returns></returns>
-        /// <exception cref="NotImplementedException"></exception>
+        /// <returns>The completed basic block.</returns>
         public RtlBlock HandleBlockEnd(
             RtlBlock block,
             IEnumerator<RtlInstructionCluster> trace,
@@ -327,5 +326,13 @@ namespace Reko.Scanning
         /// so it has to be very fast.
         /// </remarks>
         public abstract bool TryMarkVisited(Address addr);
+        
+        /// <summary>
+        /// Splits any existing block that contains an instruction
+        /// exactly on the address <paramref name="addr"/>.
+        /// </summary>
+        /// <returns>The newly split block, or null if there is no
+        /// block with an instruction at address <paramref name="addr"/>.</returns>
+        public abstract RtlBlock? SplitExistingBlock(Address addr);
     }
 }

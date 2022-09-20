@@ -175,5 +175,11 @@ namespace Reko.Scanning
     public record Edge(
         Address From,
         Address To,
-        EdgeType Type);
+        EdgeType Type)
+    {
+        public override string ToString()
+        {
+            return $"{From} -> {To} ({Type})";
+        }
+    }
 }

@@ -343,8 +343,18 @@ namespace Reko.Scanning
             return false;
         }
 
-
-        private RtlBlock? SplitBlockAt(RtlBlock block, Address to)
+        /// <summary>
+        /// Splits the given <see cref="RtlBlock" /> <paramref name="block"/>
+        /// at the address <paramref name="addr"/> if the block contains
+        /// an instruction exactly at that address.
+        /// </summary>
+        /// <param name="block">Block to split.</param>
+        /// <param name="addr">Address at which to split the given <paramref name="block"/>.</param>
+        /// <returns>If an instruction exactly at <paramref name="addr"/> 
+        /// was found, returns a newly created <see cref="Block"/>, starting
+        /// at that address. If no such instruction was found, 
+        /// returns null.</returns>
+        public RtlBlock? SplitBlockAt(RtlBlock block, Address addr)
         {
             int c = block.Instructions.Count;
             for (int i = 0; i < c; ++i)
@@ -352,14 +362,14 @@ namespace Reko.Scanning
                 //$PERF Binary search only makes sense if blocks are 
                 // really large. Needs measurement
                 var addrInstr = block.Instructions[i].Address;
-                if (addrInstr == to)
+                if (addrInstr == addr)
                 {
                     var newInstrs = block.Instructions.GetRange(i, c - i);
                     block.Instructions.RemoveRange(i, c - i);
-                    var offset = (int)(to - block.Address);
+                    var offset = (int)(addr - block.Address);
                     var newBlock = RegisterBlock(
                         block.Architecture,
-                        to,
+                        addr,
                         block.Length - offset,
                         block.FallThrough,
                         newInstrs);
@@ -369,8 +379,6 @@ namespace Reko.Scanning
                     return newBlock;
                 }
             }
-            //$TODO this shouldn't happen, since shingle scanning
-            // scans every possible byte.
             return null;
         }
     }
