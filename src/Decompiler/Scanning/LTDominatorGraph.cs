@@ -22,7 +22,7 @@ using Reko.Core.Graphs;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Reko.ScannerV2
+namespace Reko.Scanning
 {
     /// <summary>
     /// Implements the Lengauer-Tarjan algorithm for finding dominators as
