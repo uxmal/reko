@@ -183,8 +183,8 @@ namespace Reko.Loading
             if (program.NeedsScanning && !program.NeedsSsaTransform)
                 throw new InvalidOperationException(
                     "A programming error has been detected. " +
-                    $"Image loader {imgLoader.GetType().FullName} has set the program.NeedsScanning " +
-                    "and program.NeedsSsaTransform to inconsistent values.");
+                    $"Image loader {imgLoader.GetType().FullName} has set the Program.NeedsScanning " +
+                    "and Program.NeedsSsaTransform to inconsistent values.");
 
             program.Name = imageLocation.GetFilename();
             program.Location = imageLocation;

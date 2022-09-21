@@ -48,7 +48,7 @@ namespace Reko.Structure
     /// </remarks>
     public class StructureAnalysis : IStructureAnalysis
     {
-        private static readonly TraceSwitch trace = new TraceSwitch(nameof(StructureAnalysis), "Control flow structuring")
+        private static readonly TraceSwitch trace = new TraceSwitch(nameof(StructureAnalysis), "Control ProgramFlow structuring")
         {
             Level = TraceLevel.Warning,
         };

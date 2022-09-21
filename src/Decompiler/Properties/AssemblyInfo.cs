@@ -27,7 +27,7 @@ using System.Runtime.CompilerServices;
 // associated with an assembly.
 //
 [assembly: AssemblyTitle("Reko Decompiler")]
-[assembly: AssemblyDescription("Decompiles binary program images")]
+[assembly: AssemblyDescription("Decompiles binary Program images")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany(Reko.AssemblyMetadata.Company)]
 [assembly: AssemblyProduct(Reko.AssemblyMetadata.Product)]

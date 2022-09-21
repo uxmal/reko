@@ -105,7 +105,7 @@ namespace Reko.Typing
 
 			Time("Transforming data types", trans.Transform);
 			Time("Renaming data types", () => ctn.RenameAllTypes(store));
-            Time("Rewriting program with type information", () => ter.RewriteProgram(program));
+            Time("Rewriting Program with type information", () => ter.RewriteProgram(program));
 		}
 
         private void Time(string message, Action action)
