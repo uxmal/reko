@@ -459,9 +459,8 @@ void fn075C(byte b, Eq_n c, byte d, Eq_n e)
 	fn056B(SEQ(SLICE((uint16) fn06CE(SLICE(hl_n, byte, 8), (byte) hl_n), byte, 8), 0x0D), out bc_n);
 	word16 bc_n;
 	fn056B(SEQ(SLICE(bc_n, byte, 8), 0x0A), out bc_n);
-	struct Eq_n * hl_n = (struct Eq_n *) <invalid>;
 	byte l_n;
-	if ((fn1353(0x00, &g_t1685, out l_n) | (byte) hl_n) != 0x00)
+	if ((fn1353(0x00, &g_t1685, out l_n) | l_n) != 0x00)
 	{
 		fn05CE(0x034E);
 		Eq_n hl_n = g_t1685;
@@ -1239,24 +1238,20 @@ bool fn1348(ui16 * de, ui16 * hl, ptr16 & deOut, union Eq_n & hlOut)
 	return (bool) cond(SLICE(a_a_n, byte, 8));
 }
 
-// 1353: Register byte fn1353(Register byte a, Register (ptr16 byte) de, Register out Eq_n lOut)
+// 1353: Register byte fn1353(Register byte a, Register (ptr16 ui16) de, Register out Eq_n lOut)
 // Called from:
 //      fn075C
 //      fn0E63
-byte fn1353(byte a, byte * de, union Eq_n & lOut)
+byte fn1353(byte a, ui16 * de, union Eq_n & lOut)
 {
-	uint16 hl_n = (uint16) a;
-	fn1356(de, hl_n);
-	lOut.u1 = <invalid>;
-	return a_n;
+	ui16 a_a_n = *de - (uint16) a;
+	lOut = (byte) a_a_n;
+	return SLICE(a_a_n, byte, 8);
 }
 
-// 1356: Register byte fn1356(Register (ptr16 byte) de, Register uint16 hl)
-// Called from:
-//      fn1353
-byte fn1356(byte * de, uint16 hl)
+// 1356: void fn1356()
+void fn1356()
 {
-	return *de - (byte) hl;
 }
 
 struct Eq_n * g_ptr1388 = null; // 1388

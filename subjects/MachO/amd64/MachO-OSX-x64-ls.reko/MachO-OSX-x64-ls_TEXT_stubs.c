@@ -16,7 +16,6 @@ void __error()
 // 0000000100004DB4: void __maskrune()
 // Called from:
 //      fn000000010000356F
-//      fn0000000100004715
 //      fn000000010000488B
 //      fn0000000100004AFA
 void __maskrune()
@@ -391,7 +390,6 @@ void mbr_uuid_to_string()
 // 0000000100004EBC: Register Eq_n mbrtowc(Register (ptr64 Eq_n) rcx, Register Eq_n rdx, Register Eq_n rsi, Register (ptr64 wchar_t) rdi)
 // Called from:
 //      fn000000010000356F
-//      fn0000000100004715
 //      fn000000010000488B
 //      fn0000000100004AFA
 Eq_n mbrtowc(mbstate_t * rcx, Eq_n rdx, Eq_n rsi, wchar_t * rdi)
@@ -419,10 +417,10 @@ char * nl_langinfo(word32 edi)
 // 0000000100004ECE: Register int32 printf(Register (ptr64 char) rdi)
 // Called from:
 //      fn00000001000023B0
+//      fn000000010000356F
 //      fn00000001000035A9
 //      fn0000000100003786
 //      fn0000000100003AA8
-//      fn0000000100004715
 int32 printf(char * rdi)
 {
 	return printf(rdi, 0x00);
@@ -433,7 +431,6 @@ int32 printf(char * rdi)
 //      fn0000000100003201
 //      fn000000010000356F
 //      fn0000000100003AA8
-//      fn0000000100004715
 //      fn000000010000488B
 int32 putchar(int32 edi)
 {
@@ -626,7 +623,6 @@ void warnx()
 // 0000000100004F5E: Register int32 wcwidth(Register word16 di)
 // Called from:
 //      fn000000010000356F
-//      fn0000000100004715
 //      fn000000010000488B
 int32 wcwidth(word16 di)
 {

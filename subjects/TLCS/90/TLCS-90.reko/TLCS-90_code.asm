@@ -430,7 +430,7 @@ fn0607 proc
 ;;   Called from:
 ;;     060B (in fn04EE)
 ;;     060B (in fn0607)
-;;     0E0F (in fn0D00)
+;;     0E0F (in fn0CB7)
 ;;     0E0F (in fn0DFC)
 fn060E proc
 	adc	a,(ix-0x25)
@@ -1002,8 +1002,6 @@ l0BFC:
 	push	af
 
 ;; fn0C1D: 0C1D
-;;   Called from:
-;;     0C1C (in fn0BD0)
 fn0C1D proc
 	ld	c,(ix-0x1A)
 	ld	b,(ix-0x19)
@@ -1012,7 +1010,11 @@ fn0C1D proc
 	pop	af
 	ld	a,04
 
-l0C2C:
+;; fn0C2C: 0C2C
+;;   Called from:
+;;     0C2A (in fn0C1D)
+;;     0C2C (in fn0BD0)
+fn0C2C proc
 	sla	c
 	rl	b
 	adc	hl,hl
@@ -1021,7 +1023,7 @@ l0C2C:
 
 ;; fn0C35: 0C35
 ;;   Called from:
-;;     0C33 (in fn0C1D)
+;;     0C33 (in fn0C2C)
 ;;     168F (in fn164F)
 ;;     1704 (in fn164F)
 ;;     1709 (in fn164F)
@@ -1031,6 +1033,8 @@ fn0C35 proc
 	add	a,(ix-0x0A)
 
 ;; fn0C39: 0C39
+;;   Called from:
+;;     0C36 (in fn0C35)
 fn0C39 proc
 	ld	(ix-0x04),a
 	ld	a,b
@@ -1079,11 +1083,7 @@ fn0C80 proc
 	pop	af
 	ld	a,05
 
-;; fn0C9D: 0C9D
-;;   Called from:
-;;     0C9B (in fn0C80)
-;;     0C9B (in fn0C35)
-fn0C9D proc
+l0C9D:
 	srl	h
 	rr	l
 	rr	b
@@ -1103,6 +1103,8 @@ l0CA8:
 	ld	l,a
 
 ;; fn0CB7: 0CB7
+;;   Called from:
+;;     0CB6 (in fn0C80)
 fn0CB7 proc
 	ld	a,h
 	adc	a,(ix-0x13)
@@ -1139,11 +1141,7 @@ fn0CB7 proc
 	pop	af
 	ld	a,04
 
-;; fn0D00: 0D00
-;;   Called from:
-;;     0CFE (in fn0CB7)
-;;     0CFE (in fn0C9D)
-fn0D00 proc
+l0D00:
 	sla	c
 	rl	b
 	adc	hl,hl
@@ -1280,7 +1278,7 @@ fn0DFC proc
 ;; fn0E13: 0E13
 ;;   Called from:
 ;;     0E0F (in fn0DFC)
-;;     0E0F (in fn0D00)
+;;     0E0F (in fn0CB7)
 fn0E13 proc
 	ld	hl,000C
 	add	hl,sp

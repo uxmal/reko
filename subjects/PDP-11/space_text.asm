@@ -850,7 +850,6 @@ fn0AE2 proc
 ;; fn0AE6: 0AE6
 ;;   Called from:
 ;;     0AC8 (in fn0AC4)
-;;     0AE2 (in fn0AE2)
 fn0AE6 proc
 	mov	r3,-(sp)
 	mov	@#5426,r3
@@ -859,14 +858,24 @@ fn0AE6 proc
 	cmpb	@sp,#0001
 	beq	0B02
 
-l0AF8:
+;; fn0AF8: 0AF8
+;;   Called from:
+;;     0AF6 (in fn0AE6)
+;;     0AF6 (in fn0AE2)
+fn0AF8 proc
 	cmpb	@sp,#0008
 	beq	0B02
 
 l0AFE:
 	add	#0003,@sp
 
-l0B02:
+;; fn0B02: 0B02
+;;   Called from:
+;;     0AF6 (in fn0AE6)
+;;     0AF6 (in fn0AE2)
+;;     0AFC (in fn0AF8)
+;;     0AFE (in fn0AF8)
+fn0B02 proc
 	cmpb	0004(sp),0005(sp)
 	adc	@sp
 	mov	(sp)+,00A4(r3)
@@ -2292,17 +2301,14 @@ fn1966 proc
 	movb	r0,@001C(r3)
 
 ;; fn196A: 196A
+;;   Called from:
+;;     1966 (in fn1966)
 fn196A proc
 	mov	001C(r3),r0
 	cmp	r0,0018(r3)
 	bcc	1978
 
-;; fn1974: 1974
-;;   Called from:
-;;     1972 (in fn196A)
-;;     1972 (in fn1966)
-;;     1972 (in fn1966)
-fn1974 proc
+l1974:
 	inc	001C(r3)
 
 l1978:
@@ -3094,47 +3100,80 @@ fn4030 proc
 ;; fn4072: 4072
 fn4072 proc
 	jsr	r4,@#0EF8
-4076                   44 53 FF 15 03 00 A8 13 F7 1F       DS........
-4080 56 17 5C 17 BF 0A 9E 13 F7 1F 4E 17 54 17 BF 0A V.\.......N.T...
-4090 94 13 F7 0B 4A 17 04 04 BF 0A 8A 13 37 0A 40 17 ....J.......7.@.
-40A0 FF 15 07 00 80 13 F7 0B 38 17 04 04 BF 0A 76 13 ........8.....v.
-40B0 37 0A 2E 17 FF 15 09 00 6C 13 D7 2D 22 17 4F 00 7.......l..-".O.
-40C0 05 07 BF 0A 60 13 F7 15 4F 00 14 17 FF 15 0B 00 ....`...O.......
-40D0 54 13 D7 2D 0C 17 17 00 05 07 BF 0A 48 13 F7 15 T..-........H...
-40E0 17 00 FE 16 FF 15 0D 00 3C 13 F7 65 20 00 F0 16 ........<..e ...
-40F0 BF 0A 32 13 37 0B EA 16 F7 65 37 00 E4 16 BF 0A ..2.7....e7.....
-4100 24 13 F7 95 9B 00 D4 16 BF 0A 1A 13 F7 95 59 00 $.............Y.
-4110 CB 16 BF 0A 10 13 C0 9D C8 16 37 90 C0 16 BF 0A ..........7.....
-4120 04 13 C0 9D BA 16 37 90 B5 16 BF 0A F8 12 C5 15 ......7.........
-4130 4E 53 F7 09 FE 03 BF 0A EC 12 87 00             NS..........    
+4076                   44 53                               DS        
+
+;; fn4078: 4078
+;;   Called from:
+;;     0F34 (in fn0EF8)
+fn4078 proc
+	mov	#0003,@(5424)
+	mov	@(57D8),@#57DE
+	inc	@(5426)
+	mov	@(57DA),@#57E0
+	inc	@(5426)
+	tst	@#57E0
+	bge	40A0
+
+l4098:
+	inc	@(5426)
+	clr	@#57E0
+
+l40A0:
+	mov	#0007,@(5424)
+	tst	@#57E2
+	bge	40B4
+
+l40AC:
+	inc	@(5426)
+	clr	@#57E2
+
+l40B4:
+	mov	#0009,@(5424)
+	cmp	@#57E0,#004F
+	ble	40CC
+
+l40C2:
+	inc	@(5426)
+	mov	#004F,@#57DE
+
+l40CC:
+	mov	#000B,@(5424)
+	cmp	@#57E2,#0017
+	ble	40E4
+
+l40DA:
+	inc	@(5426)
+	mov	#0017,@#57E0
+
+l40E4:
+	mov	#000D,@(5424)
+	add	#0020,@#57DE
+	inc	@(5426)
+	neg	@#57E2
+	add	#0037,@#57E0
+	inc	@(5426)
+	movb	#009B,@#57DA
+	inc	@(5426)
+	movb	#0059,@#57DB
+	inc	@(5426)
+	movb	@#57E2,r0
+	movb	r0,@#57DE
+	inc	@(5426)
+	movb	@#57E0,r0
+	movb	r0,@#57DF
+	inc	@(5426)
+	mov	#534E,r5
+	jsr	pc,@#4534
+	inc	@(5426)
+	rts	pc
 
 ;; fn413C: 413C
 fn413C proc
 	jsr	r4,@#0EF8
-4140 54 53                                           TS              
-
-;; fn4142: 4142
-;;   Called from:
-;;     0F34 (in fn0EF8)
-fn4142 proc
-	mov	#0003,@(5424)
-	movb	#009B,@#57E4
-	inc	@(5426)
-	movb	#0046,@#57E5
-	inc	@(5426)
-	tst	@(57E4)
-	bne	416C
-
-l4162:
-	inc	@(5426)
-	movb	#0047,@#57E5
-
-l416C:
-	mov	#0007,@(5424)
-	mov	#5362,r5
-	jsr	pc,@#4534
-	inc	@(5426)
-	rts	pc
+4140 54 53 FF 15 03 00 DE 12 F7 95 9B 00 98 16 BF 0A TS..............
+4150 D4 12 F7 95 46 00 8F 16 BF 0A CA 12 FF 0B 84 16 ....F...........
+4160 05 02 BF 0A C0 12 F7 95 47 00 7B 16 FF 15 07 00 ........G.{.....
+4170 B4 12 C5 15 62 53 F7 09 BA 03 BF 0A A8 12 87 00 ....bS..........
 
 ;; fn4180: 4180
 fn4180 proc
@@ -3206,7 +3245,7 @@ fn4230 proc
 
 ;; fn4534: 4534
 ;;   Called from:
-;;     4176 (in fn4142)
+;;     4132 (in fn4078)
 fn4534 proc
 	jsr	r4,@#0EF8
 4538                         B0 53 FF 15 03 00 E6 0E         .S......

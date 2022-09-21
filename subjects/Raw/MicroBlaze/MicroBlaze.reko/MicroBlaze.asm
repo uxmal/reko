@@ -132,10 +132,10 @@ fn0000022C proc
 ;;   Called from:
 ;;     00000360 (in fn000002CC)
 ;;     00000370 (in fn000002CC)
-;;     0000042C (in fn00000378)
-;;     0000043C (in fn00000378)
-;;     0000044C (in fn00000378)
-;;     0000045C (in fn00000378)
+;;     0000042C (in fn000003C4)
+;;     0000043C (in fn000003C4)
+;;     0000044C (in fn000003C4)
+;;     0000045C (in fn000003C4)
 fn00000248 proc
 	addk	r8,r5,r0
 	imm	00000001
@@ -155,7 +155,7 @@ fn00000248 proc
 
 ;; fn00000284: 00000284
 ;;   Called from:
-;;     000004EC (in fn00000378)
+;;     000004EC (in fn000003C4)
 fn00000284 proc
 	addik	r1,r1,FFFFBFCC
 	swi	r21,r1,00004024
@@ -244,7 +244,7 @@ l00000368:
 
 ;; fn00000378: 00000378
 ;;   Called from:
-;;     00000670 (in fn00000378)
+;;     00000670 (in fn000003C4)
 fn00000378 proc
 	addik	r1,r1,FFFFBFCC
 	swi	r21,r1,00004024
@@ -268,7 +268,11 @@ l000003A8:
 	xor	r3,r3,r19
 	bnei	r3,00000434
 
-l000003C4:
+;; fn000003C4: 000003C4
+;;   Called from:
+;;     000003A0 (in fn00000378)
+;;     000003A0 (in fn000002CC)
+fn000003C4 proc
 	addk	r7,r22,r0
 	addk	r5,r21,r0
 	brlid	r15,000023C8
@@ -544,7 +548,7 @@ l000006F8:
 ;; fn00000728: 00000728
 ;;   Called from:
 ;;     0000030C (in fn000002CC)
-;;     000003F4 (in fn00000378)
+;;     000003F4 (in fn000003C4)
 fn00000728 proc
 	beqi	r5,00000768
 
@@ -862,8 +866,8 @@ fn00000A64 proc
 
 ;; fn00000A7C: 00000A7C
 ;;   Called from:
-;;     000004DC (in fn00000378)
-;;     00000644 (in fn00000378)
+;;     000004DC (in fn000003C4)
+;;     00000644 (in fn000003C4)
 fn00000A7C proc
 	addk	r7,r6,r0
 	addik	r1,r1,FFFFFFE4
@@ -1099,7 +1103,7 @@ fn00000A7C proc
 ;; fn0000186C: 0000186C
 ;;   Called from:
 ;;     00000358 (in fn000002CC)
-;;     00000424 (in fn00000378)
+;;     00000424 (in fn000003C4)
 fn0000186C proc
 	beqi	r5,0000195C
 
@@ -1218,8 +1222,8 @@ l0000195C:
 ;;     00003A78 (in fn00003990)
 ;;     00003B38 (in fn00003AA4)
 ;;     00003C64 (in fn00003AA4)
-;;     00003D68 (in fn00003EAC)
-;;     00003E9C (in fn00003EAC)
+;;     00003D68 (in fn00003CC0)
+;;     00003E9C (in fn00003CC0)
 ;;     00004090 (in fn00003EC8)
 ;;     000041AC (in fn00003EC8)
 ;;     0000421C (in fn000041BC)
@@ -1921,7 +1925,7 @@ l00002258:
 ;;   Called from:
 ;;     000025A0 (in fn000023C8)
 ;;     00002744 (in fn000023C8)
-;;     00003730 (in fn00003720)
+;;     00003730 (in fn00003728)
 ;;     0000377C (in fn00003674)
 fn00002274 proc
 	addik	r1,r1,FFFFFFD4
@@ -2058,7 +2062,7 @@ l000023AC:
 
 ;; fn000023C8: 000023C8
 ;;   Called from:
-;;     000003CC (in fn00000378)
+;;     000003CC (in fn000003C4)
 fn000023C8 proc
 	beqi	r5,000027B0
 
@@ -2730,18 +2734,20 @@ l000036D4:
 fn0000371C proc
 	or	r22,r22,r6
 
-;; fn00003720: 00003720
-;;   Called from:
-;;     00003680 (in fn00003674)
-;;     0000368C (in fn00003674)
-;;     0000371C (in fn0000371C)
-;;     00003788 (in fn00003674)
-;;     00003814 (in fn00003674)
-fn00003720 proc
+l00003720:
 	bltid	r22,0000375C
 	xor	r3,r26,r25
 
-l00003728:
+;; fn00003728: 00003728
+;;   Called from:
+;;     0000368C (in fn00003674)
+;;     0000371C (in fn0000371C)
+;;     00003724 (in fn0000371C)
+;;     00003724 (in fn0000371C)
+;;     00003724 (in fn0000371C)
+;;     00003724 (in fn0000371C)
+;;     0000378C (in fn0000378C)
+fn00003728 proc
 	bneid	r4,00003694
 	addk	r5,r19,r0
 
@@ -2786,7 +2792,14 @@ l0000377C:
 	xori	r3,r3,FFFFFFFF
 	bnei	r3,000037CC
 
-l0000378C:
+;; fn0000378C: 0000378C
+;;   Called from:
+;;     00003740 (in fn00003728)
+;;     00003760 (in fn00003728)
+;;     00003764 (in fn00003728)
+;;     00003788 (in fn00003674)
+;;     00003814 (in fn00003674)
+fn0000378C proc
 	addk	r3,r0,r0
 
 l00003790:
@@ -2934,7 +2947,7 @@ l0000395C:
 ;; fn00003964: 00003964
 ;;   Called from:
 ;;     00003C18 (in fn00003AA4)
-;;     00003E40 (in fn00003EAC)
+;;     00003E40 (in fn00003CC0)
 ;;     00003FEC (in fn00003EC8)
 ;;     00004150 (in fn00003EC8)
 ;;     00005788 (in fn00005538)
@@ -3291,14 +3304,22 @@ fn00003C90 proc
 fn00003CA8 proc
 	addik	r25,r19,00000054
 
-l00003CAC:
+;; fn00003CAC: 00003CAC
+;;   Called from:
+;;     00003CA8 (in fn00003CA8)
+;;     00003EBC (in fn00003EAC)
+fn00003CAC proc
 	addik	r4,r0,00000001
 	imm	00004000
 	addik	r21,r0,00000000
 	beqid	r23,00003DD4
 	addk	r24,r0,r0
 
-l00003CC0:
+;; fn00003CC0: 00003CC0
+;;   Called from:
+;;     00003CBC (in fn00003CAC)
+;;     00003CBC (in fn00003CAC)
+fn00003CC0 proc
 	lwi	r3,r19,00000018
 	cmp	r18,r3,r23
 	blti	r18,00003DDC
@@ -3369,7 +3390,12 @@ l00003D5C:
 	addik	r6,r0,FFFFFFFF
 	addik	r3,r0,FFFFFFFF
 
-l00003D74:
+;; fn00003D74: 00003D74
+;;   Called from:
+;;     00003D70 (in fn00003CC0)
+;;     00003DD4 (in fn00003DD4)
+;;     00003EC0 (in fn00003EAC)
+fn00003D74 proc
 	lwi	r15,r1,00000000
 
 l00003D78:
@@ -3409,7 +3435,14 @@ l00003DC8:
 	bneid	r23,00003CC0
 	addk	r4,r24,r0
 
-l00003DD4:
+;; fn00003DD4: 00003DD4
+;;   Called from:
+;;     00003CBC (in fn00003CAC)
+;;     00003CBC (in fn00003CAC)
+;;     00003DD0 (in fn00003CC0)
+;;     00003E54 (in fn00003CC0)
+;;     00003EA4 (in fn00003CC0)
+fn00003DD4 proc
 	brid	00003D74
 	addk	r3,r0,r0
 
@@ -3499,7 +3532,6 @@ l00003E90:
 ;;   Called from:
 ;;     00003CA4 (in fn00003C90)
 ;;     00003CA4 (in fn00003C74)
-;;     00003CA8 (in fn00003CA8)
 fn00003EAC proc
 	brlid	r15,00003AA4
 	nop
@@ -6230,11 +6262,7 @@ l00006A08:
 00006DA0 E8 73 00 00 E8 63 00 10 BC 23 FC C0 10 60 00 00 .s...c...#...`..
 00006DB0 E9 E1 00 00                                     ....            
 
-;; fn00006DB4: 00006DB4
-;;   Called from:
-;;     00007128 (in fn00007044)
-;;     00007128 (in fn000070A4)
-fn00006DB4 proc
+l00006DB4:
 	lwi	r19,r1,0000001C
 	lwi	r21,r1,00000024
 	lwi	r22,r1,00000028
@@ -7103,8 +7131,8 @@ l000084F4:
 
 ;; fn000086C8: 000086C8
 ;;   Called from:
-;;     000004C4 (in fn00000378)
-;;     0000065C (in fn00000378)
+;;     000004C4 (in fn000003C4)
+;;     0000065C (in fn000003C4)
 fn000086C8 proc
 	or	r9,r9,r8
 	and	r10,r10,r11
@@ -7123,7 +7151,7 @@ l000086E8:
 ;; fn000086F4: 000086F4
 ;;   Called from:
 ;;     00000300 (in fn000002CC)
-;;     000003E4 (in fn00000378)
+;;     000003E4 (in fn000003C4)
 ;;     000086F0 (in fn000086C8)
 fn000086F4 proc
 	addk	r8,r0,r5
@@ -7140,6 +7168,7 @@ fn000086F4 proc
 ;; fn0000871C: 0000871C
 ;;   Called from:
 ;;     000002D8 (in fn000002CC)
+;;     00008718 (in fn000086F4)
 fn0000871C proc
 	srl	r8,r8
 	srl	r8,r8
@@ -7157,7 +7186,7 @@ fn0000871C proc
 
 ;; fn00008750: 00008750
 ;;   Called from:
-;;     000003B0 (in fn00000378)
+;;     000003B0 (in fn000003C4)
 fn00008750 proc
 	srl	r8,r8
 	srl	r8,r8
@@ -7173,10 +7202,9 @@ fn00008750 proc
 ;; fn00008778: 00008778
 ;;   Called from:
 ;;     000086E4 (in fn000086C8)
-;;     00008774 (in fn0000871C)
-;;     00008774 (in fn000086F4)
-;;     00008774 (in fn000086F4)
 ;;     00008774 (in fn00008750)
+;;     00008774 (in fn0000871C)
+;;     00008774 (in fn0000871C)
 fn00008778 proc
 	beqi	r6,00008784
 
@@ -7210,13 +7238,14 @@ l000087A4:
 
 ;; fn000087FC: 000087FC
 ;;   Called from:
-;;     0000891C (in fn00008918)
 ;;     0000891C (in fn0000889C)
+;;     0000891C (in fn00008918)
 fn000087FC proc
 	addik	r22,r0,FFFFFFFE
 
 ;; fn00008800: 00008800
 ;;   Called from:
+;;     000087FC (in fn000087FC)
 ;;     000089DC (in fn00008920)
 ;;     000089E4 (in fn00008920)
 fn00008800 proc
@@ -7260,8 +7289,8 @@ fn00008824 proc
 ;; fn00008874: 00008874
 ;;   Called from:
 ;;     00000340 (in fn000002CC)
-;;     00000578 (in fn00000378)
-;;     000006E0 (in fn00000378)
+;;     00000578 (in fn000003C4)
+;;     000006E0 (in fn000003C4)
 fn00008874 proc
 	or	r5,r5,r8
 	rsubk	r4,r7,r0
@@ -7284,13 +7313,13 @@ fn00008890 proc
 ;;   Called from:
 ;;     00000278 (in fn00000248)
 ;;     0000034C (in fn000002CC)
-;;     0000053C (in fn00000378)
+;;     0000053C (in fn000003C4)
 ;;     0000053C (in fn00000538)
-;;     0000056C (in fn00000378)
-;;     00000584 (in fn00000378)
-;;     000006D4 (in fn00000378)
-;;     000006EC (in fn00000378)
-;;     0000071C (in fn00000378)
+;;     0000056C (in fn000003C4)
+;;     00000584 (in fn000003C4)
+;;     000006D4 (in fn000003C4)
+;;     000006EC (in fn000003C4)
+;;     0000071C (in fn000003C4)
 ;;     00008898 (in fn00008890)
 fn0000889C proc
 	addk	r4,r0,r3
@@ -7335,7 +7364,6 @@ fn00008918 proc
 
 ;; fn00008920: 00008920
 ;;   Called from:
-;;     000087FC (in fn000087FC)
 ;;     0000888C (in fn00008824)
 ;;     0000888C (in fn00008874)
 ;;     0000891C (in fn0000889C)
@@ -7531,7 +7559,6 @@ l00008C3C:
 
 ;; fn00008C64: 00008C64
 ;;   Called from:
-;;     00008C60 (in fn00008C34)
 ;;     0000AF4C (in fn00009408)
 ;;     0000B1D4 (in fn0000B2D4)
 ;;     0000B8F0 (in fn0000B548)
@@ -7564,8 +7591,8 @@ fn00008C64 proc
 
 ;; fn00008CC4: 00008CC4
 ;;   Called from:
-;;     0000047C (in fn00000378)
-;;     000005A8 (in fn00000378)
+;;     0000047C (in fn000003C4)
+;;     000005A8 (in fn000003C4)
 ;;     0000086C (in fn00000770)
 fn00008CC4 proc
 	srl	r5,r5
@@ -7573,8 +7600,9 @@ fn00008CC4 proc
 
 ;; fn00008CCC: 00008CCC
 ;;   Called from:
-;;     00008CC8 (in fn00008CC4)
 ;;     00008CC8 (in fn00008C64)
+;;     00008CC8 (in fn00008C34)
+;;     00008CC8 (in fn00008CC4)
 fn00008CCC proc
 	addik	r3,r3,0000000B
 
@@ -7586,6 +7614,7 @@ l00008CD0:
 ;;   Called from:
 ;;     00008C38 (in fn00008C34)
 ;;     00008CC8 (in fn00008C64)
+;;     00008CC8 (in fn00008C34)
 ;;     00008CC8 (in fn00008CC4)
 ;;     00008CCC (in fn00008CCC)
 fn00008CD8 proc
@@ -7728,7 +7757,7 @@ l00008E54:
 
 ;; fn00008E58: 00008E58
 ;;   Called from:
-;;     000005FC (in fn00000378)
+;;     000005FC (in fn000003C4)
 fn00008E58 proc
 	beqi	r4,00008CF4
 
@@ -7753,8 +7782,8 @@ l00008E70:
 ;; fn00008E80: 00008E80
 ;;   Called from:
 ;;     00003B7C (in fn00003AA4)
-;;     00003DAC (in fn00003EAC)
-;;     00003E80 (in fn00003EAC)
+;;     00003DAC (in fn00003CC0)
+;;     00003E80 (in fn00003CC0)
 ;;     000040D0 (in fn00003EC8)
 ;;     0000418C (in fn00003EC8)
 ;;     0000547C (in fn00005318)
@@ -8021,8 +8050,8 @@ l0000913C:
 
 ;; fn00009178: 00009178
 ;;   Called from:
-;;     000004F4 (in fn00000378)
-;;     00000678 (in fn00000378)
+;;     000004F4 (in fn000003C4)
+;;     00000678 (in fn000003C4)
 fn00009178 proc
 	cmp	r18,r4,r3
 	bgeid	r18,00009B8C
@@ -12189,7 +12218,13 @@ l0000C3E8:
 0000CCD0 EA C5 00 1C BC 16 00 E8 E8 76 00 00 88 65 18 00 .........v...e..
 0000CCE0 BE 03 00 48 33 E0 FF FE                         ...H3...        
 
-l0000CCE8:
+;; fn0000CCE8: 0000CCE8
+;;   Called from:
+;;     0000CDBC (in fn0000EE14)
+;;     0000D3B4 (in fn0000D1CC)
+;;     0000D3BC (in fn0000D1CC)
+;;     0000D3C0 (in fn0000D1CC)
+fn0000CCE8 proc
 	addk	r3,r31,r0
 
 l0000CCEC:
@@ -12307,45 +12342,8 @@ fn0000CE64 proc
 
 ;; fn0000CE88: 0000CE88
 ;;   Called from:
-;;     0000CDBC (in fn0000EE14)
 ;;     0000CE84 (in fn0000CE64)
 ;;     0000CE84 (in fn0000EE14)
-;;     0000CFB4 (in fn0000CEF4)
-;;     0000D0B4 (in fn0000CEF4)
-;;     0000D3CC (in fn0000CEF4)
-;;     0000D474 (in fn0000CEF4)
-;;     0000DCB8 (in fn0000DB74)
-;;     0000DCCC (in fn0000DB74)
-;;     0000DE44 (in fn0000DB74)
-;;     0000E35C (in fn0000D9E8)
-;;     0000E390 (in fn0000D9E8)
-;;     0000E534 (in fn0000D9E8)
-;;     0000E798 (in fn0000D9E8)
-;;     0000E7CC (in fn0000D9E8)
-;;     0000EDA4 (in fn0000CEF4)
-;;     0000F130 (in fn0000CEF4)
-;;     0000F218 (in fn0000DB74)
-;;     0000F418 (in fn0000DB74)
-;;     0000F4DC (in fn0000DB74)
-;;     0000F4F0 (in fn0000DB74)
-;;     0000F4FC (in fn0000D9E8)
-;;     0000F51C (in fn0000CEF4)
-;;     0000F5F8 (in fn0000CEE4)
-;;     0000F704 (in fn0000D9E8)
-;;     0000F740 (in fn0000D9E8)
-;;     0000F770 (in fn0000D9E8)
-;;     0000F77C (in fn0000D9E8)
-;;     0000F7AC (in fn0000D9E8)
-;;     0000F7E8 (in fn0000EE14)
-;;     0000F844 (in fn0000D9E8)
-;;     0000F864 (in fn0000D9E8)
-;;     0000F960 (in fn0000EE14)
-;;     0000F97C (in fn0000EE14)
-;;     0000F9D8 (in fn0000EE14)
-;;     0000FA6C (in fn0000D9E8)
-;;     0000FA8C (in fn0000D9E8)
-;;     0000FAA8 (in fn0000EE14)
-;;     0000FAC4 (in fn0000EE14)
 fn0000CE88 proc
 	beqid	r21,0000D0B8
 	addk	r31,r21,r0
@@ -12572,10 +12570,48 @@ l0000D0A4:
 	swi	r3,r23,00000018
 	swi	r4,r22,00000004
 
-l0000D0B8:
+;; fn0000D0B8: 0000D0B8
+;;   Called from:
+;;     0000CE8C (in fn0000CE88)
+;;     0000CFB4 (in fn0000CEF4)
+;;     0000D0B4 (in fn0000CEF4)
+;;     0000D3CC (in fn0000CEF4)
+;;     0000D474 (in fn0000CEF4)
+;;     0000DE44 (in fn0000DE38)
+;;     0000E35C (in fn0000D9E8)
+;;     0000E390 (in fn0000D9E8)
+;;     0000E534 (in fn0000D9E8)
+;;     0000E798 (in fn0000D9E8)
+;;     0000E7CC (in fn0000D9E8)
+;;     0000EDA4 (in fn0000CEF4)
+;;     0000F130 (in fn0000CEF4)
+;;     0000F218 (in fn0000F218)
+;;     0000F4DC (in fn0000F4D8)
+;;     0000F4FC (in fn0000D9E8)
+;;     0000F51C (in fn0000CEF4)
+;;     0000F5F8 (in fn0000CEE4)
+;;     0000F704 (in fn0000D9E8)
+;;     0000F740 (in fn0000D9E8)
+;;     0000F770 (in fn0000D9E8)
+;;     0000F77C (in fn0000D9E8)
+;;     0000F7AC (in fn0000D9E8)
+;;     0000F7E8 (in fn0000EE14)
+;;     0000F844 (in fn0000D9E8)
+;;     0000F864 (in fn0000D9E8)
+;;     0000F960 (in fn0000EE14)
+;;     0000F97C (in fn0000EE14)
+;;     0000F9D8 (in fn0000EE14)
+;;     0000FA6C (in fn0000D9E8)
+;;     0000FA8C (in fn0000D9E8)
+;;     0000FAC4 (in fn0000EE14)
+fn0000D0B8 proc
 	lwi	r3,r22,0000002C
 
-l0000D0BC:
+;; fn0000D0BC: 0000D0BC
+;;   Called from:
+;;     0000D0B8 (in fn0000D0B8)
+;;     0000FAA8 (in fn0000EE14)
+fn0000D0BC proc
 	swi	r28,r23,0000000C
 	swi	r26,r23,00000010
 	swi	r24,r23,00000000
@@ -12584,7 +12620,11 @@ l0000D0BC:
 	bneid	r3,0000D18C
 	swi	r19,r22,00000040
 
-l0000D0D8:
+;; fn0000D0D8: 0000D0D8
+;;   Called from:
+;;     0000D0D4 (in fn0000D0BC)
+;;     0000D0D4 (in fn0000D0BC)
+fn0000D0D8 proc
 	xor	r3,r29,r26
 	beqid	r3,0000D24C
 	addik	r4,r0,00003F50
@@ -12641,16 +12681,17 @@ fn0000D120 proc
 ;; fn0000D184: 0000D184
 ;;   Called from:
 ;;     0000D180 (in fn0000D120)
-;;     0000D180 (in fn0000CE88)
+;;     0000D180 (in fn0000D0D8)
 fn0000D184 proc
 	cmpu	r18,r3,r4
 	blti	r18,0000D24C
 
 ;; fn0000D18C: 0000D18C
 ;;   Called from:
-;;     0000D0D4 (in fn0000CE88)
+;;     0000D0D4 (in fn0000D0BC)
+;;     0000D0D4 (in fn0000D0BC)
+;;     0000D180 (in fn0000D0D8)
 ;;     0000D180 (in fn0000D120)
-;;     0000D180 (in fn0000CE88)
 ;;     0000D188 (in fn0000D184)
 fn0000D18C proc
 	lwi	r19,r23,0000001C
@@ -12687,8 +12728,8 @@ fn0000D1C0 proc
 
 ;; fn0000D1CC: 0000D1CC
 ;;   Called from:
-;;     0000D0E0 (in fn0000CE88)
-;;     0000D0F0 (in fn0000CE88)
+;;     0000D0E0 (in fn0000D0D8)
+;;     0000D0F0 (in fn0000D0D8)
 ;;     0000D188 (in fn0000D184)
 ;;     0000D1A4 (in fn0000D18C)
 ;;     0000D1BC (in fn0000D1B0)
@@ -13235,22 +13276,7 @@ l0000DB64:
 
 ;; fn0000DB74: 0000DB74
 ;;   Called from:
-;;     0000CE0C (in fn0000CEE4)
-;;     0000D078 (in fn0000CEF4)
-;;     0000DA3C (in fn0000D9E8)
-;;     0000DA50 (in fn0000D9E8)
-;;     0000DB58 (in fn0000D9E8)
-;;     0000DB60 (in fn0000D9E8)
 ;;     0000DB70 (in fn0000D9E8)
-;;     0000DCC8 (in fn0000D9E8)
-;;     0000E208 (in fn0000D9E8)
-;;     0000E3CC (in fn0000D9E8)
-;;     0000E8B0 (in fn0000EE14)
-;;     0000ED78 (in fn0000D9E8)
-;;     0000EDD8 (in fn0000EDD8)
-;;     0000F360 (in fn0000EE14)
-;;     0000F42C (in fn0000EE14)
-;;     0000F7F8 (in fn0000D9E8)
 ;;     00030104 (in fn0002FFD0)
 fn0000DB74 proc
 	imm	00000000
@@ -13258,15 +13284,31 @@ fn0000DB74 proc
 	nop
 	lwi	r4,r22,0000000C
 
-l0000DB84:
+;; fn0000DB84: 0000DB84
+;;   Called from:
+;;     0000DB80 (in fn0000DB74)
+;;     0000F7F8 (in fn0000D9E8)
+fn0000DB84 proc
 	swi	r3,r22,0000001C
 	swi	r3,r23,00000030
 	andi	r3,r4,00000004
 
-l0000DB90:
+;; fn0000DB90: 0000DB90
+;;   Called from:
+;;     0000DB58 (in fn0000D9E8)
+;;     0000DB60 (in fn0000D9E8)
+;;     0000DB8C (in fn0000DB84)
+;;     0000DB8C (in fn0000DB84)
+fn0000DB90 proc
 	beqi	r3,0000DD00
 
-l0000DB94:
+;; fn0000DB94: 0000DB94
+;;   Called from:
+;;     0000DB90 (in fn0000DB90)
+;;     0000DB90 (in fn0000DB90)
+;;     0000DB90 (in fn0000DB90)
+;;     0000DD00 (in fn0000DD00)
+fn0000DB94 proc
 	lwi	r5,r22,00000014
 	bneid	r5,0000DC90
 	addk	r3,r25,r0
@@ -13354,7 +13396,18 @@ l0000DCC0:
 	addk	r19,r5,r0
 	addk	r24,r31,r0
 
-l0000DCCC:
+;; fn0000DCCC: 0000DCCC
+;;   Called from:
+;;     0000DA50 (in fn0000D9E8)
+;;     0000DCC8 (in fn0000D9E8)
+;;     0000DD3C (in fn0000DD20)
+;;     0000E208 (in fn0000D9E8)
+;;     0000E3CC (in fn0000D9E8)
+;;     0000E8B0 (in fn0000EE14)
+;;     0000EDD8 (in fn0000EDD8)
+;;     0000F360 (in fn0000EE14)
+;;     0000F42C (in fn0000EE14)
+fn0000DCCC proc
 	brid	0000D0B8
 	addk	r31,r21,r0
 
@@ -13373,19 +13426,32 @@ l0000DCDC:
 	brid	0000D24C
 	lwi	r26,r23,00000010
 
-l0000DD00:
+;; fn0000DD00: 0000DD00
+;;   Called from:
+;;     0000DB90 (in fn0000DB90)
+;;     0000DC9C (in fn0000DB94)
+fn0000DD00 proc
 	addk	r19,r3,r0
 	addk	r29,r26,r0
 	addk	r24,r31,r0
 	addk	r25,r3,r0
 	addik	r5,r0,00003F4F
 
-l0000DD14:
+;; fn0000DD14: 0000DD14
+;;   Called from:
+;;     0000DA3C (in fn0000D9E8)
+;;     0000DD10 (in fn0000DD00)
+fn0000DD14 proc
 	swi	r5,r22,00000004
 	beqid	r4,0000F4D8
 	addik	r8,r0,00003F50
 
-l0000DD20:
+;; fn0000DD20: 0000DD20
+;;   Called from:
+;;     0000DCCC (in fn0000DCCC)
+;;     0000DD1C (in fn0000DD14)
+;;     0000DD1C (in fn0000DD14)
+fn0000DD20 proc
 	lwi	r3,r22,00000014
 	beqid	r3,0000F4D8
 	addik	r3,r0,0000001F
@@ -13495,7 +13561,11 @@ l0000DE2C:
 	addik	r6,r0,FFFFA044
 	addk	r24,r4,r0
 
-l0000DE38:
+;; fn0000DE38: 0000DE38
+;;   Called from:
+;;     0000DE34 (in fn0000DD20)
+;;     0000ED78 (in fn0000D9E8)
+fn0000DE38 proc
 	swi	r6,r23,00000018
 	addik	r7,r0,00003F51
 	swi	r7,r22,00000004
@@ -14780,7 +14850,12 @@ l0000F20C:
 	addk	r21,r7,r0
 	addk	r24,r4,r0
 
-l0000F218:
+;; fn0000F218: 0000F218
+;;   Called from:
+;;     0000CE0C (in fn0000CEE4)
+;;     0000D078 (in fn0000CEF4)
+;;     0000F214 (in fn0000DD20)
+fn0000F218 proc
 	brid	0000D0B8
 	addk	r31,r0,r0
 
@@ -14956,7 +15031,20 @@ l0000F4C8:
 	addk	r25,r3,r0
 	addik	r8,r0,00003F50
 
-l0000F4D8:
+;; fn0000F4D8: 0000F4D8
+;;   Called from:
+;;     0000D0B8 (in fn0000D0B8)
+;;     0000DCB8 (in fn0000DB94)
+;;     0000DCCC (in fn0000DCCC)
+;;     0000DD1C (in fn0000DD14)
+;;     0000DD1C (in fn0000DD14)
+;;     0000DD28 (in fn0000DD20)
+;;     0000DE44 (in fn0000DE38)
+;;     0000F218 (in fn0000F218)
+;;     0000F418 (in fn0000DD20)
+;;     0000F4D4 (in fn0000DD20)
+;;     0000F4F0 (in fn0000DD20)
+fn0000F4D8 proc
 	swi	r8,r22,00000004
 	brid	0000D0B8
 	addik	r31,r0,00000001
@@ -22885,10 +22973,10 @@ fn000180F8 proc
 ;; fn00018150: 00018150
 ;;   Called from:
 ;;     0000026C (in fn00000248)
-;;     00000530 (in fn00000378)
-;;     00000560 (in fn00000378)
-;;     000006C8 (in fn00000378)
-;;     00000710 (in fn00000378)
+;;     00000530 (in fn000003C4)
+;;     00000560 (in fn000003C4)
+;;     000006C8 (in fn000003C4)
+;;     00000710 (in fn000003C4)
 fn00018150 proc
 	swi	r6,r1,00000008
 	swi	r7,r1,0000000C
@@ -22913,9 +23001,9 @@ fn00018150 proc
 
 ;; fn000181D0: 000181D0
 ;;   Called from:
-;;     000004B0 (in fn00000378)
-;;     000005D8 (in fn00000378)
-;;     00000630 (in fn00000378)
+;;     000004B0 (in fn000003C4)
+;;     000005D8 (in fn000003C4)
+;;     00000630 (in fn000003C4)
 ;;     000008A0 (in fn00000770)
 ;;     00001B70 (in fn00001A68)
 fn000181D0 proc
@@ -23188,7 +23276,7 @@ fn00018918 proc
 ;;   Called from:
 ;;     000021EC (in fn00001E88)
 ;;     00002500 (in fn000023C8)
-;;     000036DC (in fn00003720)
+;;     000036DC (in fn00003728)
 ;;     00003F50 (in fn00003EC8)
 ;;     00005BE8 (in fn00005B0C)
 ;;     00005DB4 (in fn00005B0C)
@@ -23220,7 +23308,7 @@ fn00018C34 proc
 
 ;; fn00018C64: 00018C64
 ;;   Called from:
-;;     00003CE0 (in fn00003EAC)
+;;     00003CE0 (in fn00003CC0)
 ;;     00005D68 (in fn00005B0C)
 ;;     00005ED8 (in fn00005B0C)
 ;;     00005F04 (in fn00005B0C)
@@ -23242,7 +23330,7 @@ fn00018C64 proc
 
 ;; fn00018C94: 00018C94
 ;;   Called from:
-;;     000036B0 (in fn00003720)
+;;     000036B0 (in fn00003728)
 fn00018C94 proc
 	addik	r1,r1,FFFFFFF8
 	swi	r19,r1,00000004
@@ -23371,8 +23459,8 @@ fn00018FBC proc
 ;;   Called from:
 ;;     00003B1C (in fn00003AA4)
 ;;     00003C04 (in fn00003AA4)
-;;     00003D4C (in fn00003EAC)
-;;     00003E2C (in fn00003EAC)
+;;     00003D4C (in fn00003CC0)
+;;     00003E2C (in fn00003CC0)
 ;;     00004070 (in fn00003EC8)
 ;;     0000413C (in fn00003EC8)
 ;;     00005430 (in fn00005318)
@@ -27631,11 +27719,7 @@ l0001EF90:
 l0001EF94:
 	addik	r25,r0,00000011
 
-;; fn0001EF98: 0001EF98
-;;   Called from:
-;;     0001EF94 (in fn0001EEC8)
-;;     0001F1E4 (in fn0001F0F4)
-fn0001EF98 proc
+l0001EF98:
 	lwi	r23,r27,00000000
 	addik	r4,r0,00000003
 	addik	r3,r23,FFFFFFFF
@@ -27768,7 +27852,6 @@ l0001F0D8:
 
 ;; fn0001F0F4: 0001F0F4
 ;;   Called from:
-;;     0001F0F0 (in fn0001EF98)
 ;;     00025F5C (in fn00025F38)
 fn0001F0F4 proc
 	swi	r3,r1,00000A54
@@ -27778,7 +27861,14 @@ fn0001F0F4 proc
 	addik	r26,r1,0000001C
 	swi	r3,r1,00000A4C
 
-l0001F10C:
+;; fn0001F10C: 0001F10C
+;;   Called from:
+;;     0001EF8C (in fn0001EEC8)
+;;     0001EF94 (in fn0001EEC8)
+;;     0001F108 (in fn0001F0F4)
+;;     0001F4BC (in fn0001EEC8)
+;;     0001F51C (in fn0001EEC8)
+fn0001F10C proc
 	lwi	r3,r30,00000000
 	addk	r3,r3,r3
 	addk	r3,r3,r3
@@ -27882,20 +27972,10 @@ l0001F208:
 l0001F210:
 	addk	r19,r0,r0
 
-;; fn0001F214: 0001F214
-;;   Called from:
-;;     0001EF8C (in fn0001EEC8)
-;;     0001F210 (in fn0001EF98)
-fn0001F214 proc
+l0001F214:
 	addik	r21,r0,0000002D
 
-;; fn0001F218: 0001F218
-;;   Called from:
-;;     0001F20C (in fn0001EF98)
-;;     0001F214 (in fn0001F214)
-;;     0001F214 (in fn0001F214)
-;;     0001F4CC (in fn0001EF98)
-fn0001F218 proc
+l0001F218:
 	lwi	r3,r26,00000000
 	addik	r19,r19,00000001
 	bgeid	r3,0001F240
@@ -27916,11 +27996,7 @@ l0001F240:
 l0001F248:
 	lwi	r15,r1,00000000
 
-;; fn0001F24C: 0001F24C
-;;   Called from:
-;;     0001F248 (in fn0001F218)
-;;     0001F51C (in fn0001EEC8)
-fn0001F24C proc
+l0001F24C:
 	lwi	r19,r1,00000A58
 
 l0001F250:
@@ -28134,19 +28210,10 @@ l0001F4C8:
 l0001F4D0:
 	addk	r21,r0,r0
 
-;; fn0001F4D4: 0001F4D4
-;;   Called from:
-;;     0001F4BC (in fn0001EEC8)
-;;     0001F4D0 (in fn0001EF98)
-fn0001F4D4 proc
+l0001F4D4:
 	addik	r22,r0,0000002D
 
-;; fn0001F4D8: 0001F4D8
-;;   Called from:
-;;     0001F24C (in fn0001F24C)
-;;     0001F4D4 (in fn0001F4D4)
-;;     0001F4D4 (in fn0001F4D4)
-fn0001F4D8 proc
+l0001F4D8:
 	lwi	r3,r19,00000000
 	addk	r5,r31,r0
 	addik	r21,r21,00000001

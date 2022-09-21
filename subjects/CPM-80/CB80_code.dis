@@ -596,8 +596,8 @@ l075C:
 l0773:
 	word16 bc_23
 	fn056B(SEQ(b, 0xD<8>), out bc_23)
-	word16 bc_129
-	fn056B(SEQ(SLICE(bc_23, byte, 8), 0xA<8>), out bc_129)
+	word16 bc_128
+	fn056B(SEQ(SLICE(bc_23, byte, 8), 0xA<8>), out bc_128)
 l077D:
 	fn05CE(0x260<16>)
 	word16 hl_48 = Mem16[0x1683<16>:word16]
@@ -605,9 +605,8 @@ l077D:
 	fn056B(SEQ(SLICE(CONVERT(fn06CE(SLICE(hl_48, byte, 8), SLICE(hl_48, byte, 0)), uint8, uint16), byte, 8), 0xD<8>), out bc_65)
 	word16 bc_127
 	fn056B(SEQ(SLICE(bc_65, byte, 8), 0xA<8>), out bc_127)
-	word16 hl_85 = <invalid>
-	byte l_128
-	branch (fn1353(0<8>, 0x1685<16>, out l_128) | SLICE(hl_85, byte, 0)) == 0<8> l07AF
+	byte l_86
+	branch (fn1353(0<8>, 0x1685<16>, out l_86) | l_86) == 0<8> l07AF
 l07A1:
 	fn05CE(0x34E<16>)
 	word16 hl_103 = Mem16[0x1685<16>:word16]
@@ -1218,9 +1217,9 @@ l0E63:
 	word16 hl_18 = bc_16 + 0x152C<16> + bc_16
 	Mem28[0x1521<16>:word16] = Mem5[hl_18:word16]
 l0E79:
-	word16 hl_33 = <invalid>
-	byte l_87
-	branch (fn1353(0<8>, 0x1521<16>, out l_87) | SLICE(hl_33, byte, 0)) == 0<8> l0EA8
+	word16 hl_88 = <invalid>
+	byte l_89
+	branch (fn1353(0<8>, 0x1521<16>, out l_89) | SLICE(hl_88, byte, 0)) == 0<8> l0EA8
 l0EA8:
 	return
 l0E85:
@@ -1664,30 +1663,26 @@ byte fn1353(byte a, word16 de, ptr16 & lOut)
 //      fn0E63
 // MayUse:  a:[0..7] de:[0..15]
 // LiveOut: a hl
-// Trashed: SZPC a de hl
+// Trashed: SZPC a de h l
 // Preserved: sp
 fn1353_entry:
 l1353:
-	word16 hl_6 = CONVERT(a, byte, uint16)
-l1354_thunk_fn1356:
-	fn1356(de, hl_6)
-	lOut = <invalid>
-	return a_8
+	ui16 a_a_19 = Mem0[de:ui16] - CONVERT(a, byte, uint16)
+	lOut = SLICE(a_a_19, byte, 0)
+	return SLICE(a_a_19, byte, 8)
 fn1353_exit:
 
 
-byte fn1356(word16 de, word16 hl)
+void fn1356()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// Called from:
-//      fn1353
-// MayUse:  de:[0..15] hl:[0..15]
-// LiveOut: hl
+// MayUse: 
+// LiveOut:
 // Trashed: SZPC a de h l
 // Preserved: sp
 fn1356_entry:
 l1356:
-	return Mem0[de:byte] - SLICE(hl, byte, 0)
+	return
 fn1356_exit:
 
 

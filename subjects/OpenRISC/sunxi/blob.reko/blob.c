@@ -1159,6 +1159,7 @@ l00005874:
 //      fn00006394
 word32 fn000062BC(struct Eq_n * r3, Eq_n r15)
 {
+	word32 dwLoc10;
 	word32 dwLoc18;
 	word32 r4_n;
 	Eq_n r3_n = r3->t005C;
@@ -1183,9 +1184,9 @@ word32 fn000062BC(struct Eq_n * r3, Eq_n r15)
 			r4_n = 0xF5860000;
 			break;
 		case 0x06:
-			return fn0000AF54();
+			return dwLoc10;
 		case 0x07:
-			return fn0000AF4C();
+			return dwLoc10;
 		}
 	}
 	else
@@ -4114,24 +4115,6 @@ word32 fn0000AF1C(Eq_n r3, union Eq_n & r11Out)
 	}
 }
 
-// 0000AF4C: Register word32 fn0000AF4C()
-// Called from:
-//      fn000062BC
-word32 fn0000AF4C()
-{
-	word32 dwLoc08;
-	return dwLoc08;
-}
-
-// 0000AF54: Register word32 fn0000AF54()
-// Called from:
-//      fn000062BC
-word32 fn0000AF54()
-{
-	word32 dwLoc08;
-	return dwLoc08;
-}
-
 // 0000B034: Register int32 fn0000B034(Register Eq_n r3, Register (ptr32 int32) r4, Register (ptr32 Eq_n) r5)
 // Called from:
 //      fn0000B0B8
@@ -6223,13 +6206,13 @@ void fn0000E6E4(uint32 VR)
 // 0000E718: Register word32 fn0000E718(Register uint32 VR, Register out Eq_n r11Out)
 // Called from:
 //      fn00008834
+//      fn0000B4D4
 //      fn0000C48C
 //      fn0000CCA8
 //      fn0000EDF4
 //      fn0000F250
 //      fn0000F368
 //      fn0000F444
-//      fn0000F8E8
 word32 fn0000E718(uint32 VR, union Eq_n & r11Out)
 {
 	word32 dwLoc0C;
@@ -6243,13 +6226,13 @@ word32 fn0000E718(uint32 VR, union Eq_n & r11Out)
 // Called from:
 //      fn00008834
 //      fn000088FC
+//      fn0000B4D4
 //      fn0000C48C
 //      fn0000CCA8
 //      fn0000EDF4
 //      fn0000F250
 //      fn0000F368
 //      fn0000F444
-//      fn0000F8E8
 void fn0000E740(int32 r3, uint32 VR)
 {
 	__mtspr(VR, r3);

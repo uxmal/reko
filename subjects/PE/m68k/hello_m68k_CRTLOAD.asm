@@ -44,8 +44,13 @@ l000014E2:
 ;; fn000014E8: 000014E8
 fn000014E8 proc
 	movem.l	a2-a3,-(a7)
-	subq.w	#$04,a7
-	move.l	#$44415441,-(a7)
+
+;; fn000014EA: 000014EA
+;;   Called from:
+;;     000014E6 (in fn0000149C)
+;;     000014E8 (in fn000014E8)
+fn000014EA proc
+	ori.b	#$4F,(44415441,a0,d2*8)
 	clr.w	-(a7)
 	illegal	#$A9A0
 	tst.l	(a7)

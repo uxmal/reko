@@ -2,9 +2,9 @@ void __exit()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
+//      _abort
 //      fn0800_01E9
 //      _exit
-//      __setenvp
 // MayUse:  ss:[0..15]
 // LiveOut:
 // Trashed:
@@ -86,8 +86,8 @@ void fn0800_01DA(char * ds_dx, word16 cx)
 
 // Called from:
 //      __exit
+//      _abort
 //      fn0800_01E9
-//      __setenvp
 // MayUse:  cx:[0..15] Sequence ds:dx:[0..31]
 // LiveOut:
 // Trashed: C ax bx Top
@@ -137,9 +137,9 @@ void _f3()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
+//      _abort
 //      fn0800_01E9
 //      _f2
-//      __setenvp
 // MayUse: 
 // LiveOut:
 // Trashed: Top

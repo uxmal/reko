@@ -10,9 +10,9 @@ Eq_n g_t8000 = // 00008000
 	};
 // 0800:0121: void __exit()
 // Called from:
+//      _abort
 //      fn0800-01E9
 //      _exit
-//      __setenvp
 void __exit()
 {
 	struct Eq_n * ss;
@@ -66,8 +66,8 @@ void __restorezero(struct Eq_n * ds)
 // 0800:01DA: void fn0800-01DA(Sequence (ptr32 char) ds_dx, Register word16 cx)
 // Called from:
 //      __exit
+//      _abort
 //      fn0800-01E9
-//      __setenvp
 void fn0800-01DA(char * ds_dx, word16 cx)
 {
 	word16 ax_n;
@@ -93,9 +93,9 @@ void fn0800-01E9(word16 cx, <unknown> Eq_n::* dx)
 
 // 0800:01FA: void _f3()
 // Called from:
+//      _abort
 //      fn0800-01E9
 //      _f2
-//      __setenvp
 void _f3()
 {
 }
