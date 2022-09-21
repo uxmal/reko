@@ -75,7 +75,7 @@
 #                 [SOURCES additional_file_dependencies... ])
 # 
 # For all the above functions, `RELEASE|DEBUG` overrides `CONFIG`, `X86|X64|ANYCPU` overrides PLATFORM.
-# For Unix systems, the target framework defaults to `net5.0`, unless `NETCOREAPP` is specified.
+# For Unix systems, the target framework defaults to `net6.0`, unless `NETCOREAPP` is specified.
 # For Windows, the project is built as-is, allowing multi-targeting.
 #
 #
@@ -271,12 +271,12 @@ FUNCTION(DOTNET_GET_DEPS _DN_PROJECT arguments)
     ENDIF()
 
     IF(_DN_NETCOREAPP)
-        SET(_DN_BUILD_OPTIONS -f net5.0)
-        SET(_DN_PACK_OPTIONS /p:TargetFrameworks=net5.0)
+        SET(_DN_BUILD_OPTIONS -f net6.0)
+        SET(_DN_PACK_OPTIONS /p:TargetFrameworks=net6.0)
     ELSEIF(UNIX)
-        # Unix builds default to net5.0
-        SET(_DN_BUILD_OPTIONS -f net5.0)
-        SET(_DN_PACK_OPTIONS /p:TargetFrameworks=net5.0)
+        # Unix builds default to net6.0
+        SET(_DN_BUILD_OPTIONS -f net6.0)
+        SET(_DN_PACK_OPTIONS /p:TargetFrameworks=net6.0)
     ENDIF()
 
     SET(_DN_IMPORT_PROP ${CMAKE_CURRENT_BINARY_DIR}/${_DN_projname}.imports.props)
@@ -452,7 +452,7 @@ FUNCTION(RUN_DOTNET DOTNET_PROJECT)
         DEPENDS ${DOTNET_deps}
         ${dotnet_run_cmds}
         # XXX tfm
-        COMMAND ${DOTNET_EXE} ${DOTNET_OUTPUT_PATH}/net5.0/${DOTNET_PROJNAME}.dll ${DOTNET_ARGUMENTS}
+        COMMAND ${DOTNET_EXE} ${DOTNET_OUTPUT_PATH}/net6.0/${DOTNET_PROJNAME}.dll ${DOTNET_ARGUMENTS}
         #COMMAND ${CMAKE_COMMAND} -E echo ${aio_run_command}
         #COMMAND ${aio_run_command}
         COMMAND ${CMAKE_COMMAND} -E touch ${CMAKE_CURRENT_BINARY_DIR}/${DOTNET_TARGETNAME}.runtimestamp
@@ -469,7 +469,7 @@ FUNCTION(TEST_DOTNET DOTNET_PROJECT)
     IF(WIN32)
         SET(test_framework_args "")
     ELSE()
-        SET(test_framework_args -f net5.0)
+        SET(test_framework_args -f net6.0)
     ENDIF()
 
     ADD_TEST(NAME              ${DOTNET_PROJNAME}

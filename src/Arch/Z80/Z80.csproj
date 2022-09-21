@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
-  <Import Project="$(ProjectDir)../../Drivers/CommonBuildProperties.items"/>
+  <Import Project="$(ProjectDir)../../Drivers/CommonBuildProperties.items" />
   <PropertyGroup>
     <ProjectGuid>{66A00AB2-6964-4815-9140-F28FEE48E6D6}</ProjectGuid>
     <OutputType>Library</OutputType>
     <RootNamespace>Reko.Arch.Z80</RootNamespace>
     <AssemblyName>Reko.Arch.Z80</AssemblyName>
-    <TargetFramework>net5.0</TargetFramework>
+    <TargetFramework>net6.0</TargetFramework>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <Configurations>Debug;Release</Configurations>
   </PropertyGroup>

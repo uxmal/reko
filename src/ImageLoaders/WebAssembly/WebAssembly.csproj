@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
-  <Import Project="$(ProjectDir)../../Drivers/CommonBuildProperties.items"/>
+  <Import Project="$(ProjectDir)../../Drivers/CommonBuildProperties.items" />
   <PropertyGroup>
-    <TargetFramework>net5.0</TargetFramework>
+    <TargetFramework>net6.0</TargetFramework>
     <ProjectGuid>{5B8C1889-5DE4-43C0-9BD6-34DDCF0E2136}</ProjectGuid>
     <OutputType>Library</OutputType>
     <RootNamespace>Reko.ImageLoaders.WebAssembly</RootNamespace>

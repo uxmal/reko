@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
-  <Import Project="$(ProjectDir)../../Drivers/CommonBuildProperties.items"/>
+  <Import Project="$(ProjectDir)../../Drivers/CommonBuildProperties.items" />
   <PropertyGroup>
     <ProjectGuid>{8C072C7A-9771-42D5-BF07-E79850CFCC90}</ProjectGuid>
     <OutputType>Library</OutputType>
     <RootNamespace>Reko.Environments.Trs80</RootNamespace>
     <AssemblyName>Reko.Environments.Trs80</AssemblyName>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-    <TargetFramework>net5.0</TargetFramework>
+    <TargetFramework>net6.0</TargetFramework>
     <Configurations>Debug;Release</Configurations>
   </PropertyGroup>
   <ItemGroup>

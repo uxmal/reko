@@ -56,6 +56,7 @@ namespace Reko.Core.Services
         }
 
         public static void AddService<T>(this IServiceContainer sc, T service)
+            where T : notnull
         {
             sc.AddService(typeof(T), service);
         }

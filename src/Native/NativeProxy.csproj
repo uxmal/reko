@@ -2,7 +2,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
   
   <PropertyGroup>
-    <TargetFramework>net5.0</TargetFramework>
+    <TargetFramework>net6.0</TargetFramework>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <RootNamespace>NativeProxy</RootNamespace>
     <AssemblyName>NativeProxy</AssemblyName>
@@ -17,9 +17,7 @@
   </ItemGroup>
 
   <Target Name="CleanCMake" AfterTargets="Clean">
-    <MSBuild Projects="$(ProjectDir)..\BuildTargets\BuildTargets.csproj"
-            Properties="Configuration=$(Configuration);Platform=$(Platform)"
-            Targets="nativeproxy_clean" />
+    <MSBuild Projects="$(ProjectDir)..\BuildTargets\BuildTargets.csproj" Properties="Configuration=$(Configuration);Platform=$(Platform)" Targets="nativeproxy_clean" />
   </Target>
 
   <Target Name="RunHdrGen" BeforeTargets="CoreCompile">
@@ -27,8 +25,6 @@
   </Target>
 
   <Target Name="InvokeCMake" AfterTargets="CoreCompile">
-    <MSBuild Projects="$(ProjectDir)..\BuildTargets\BuildTargets.csproj"
-            Properties="Configuration=$(Configuration);Platform=$(Platform)"
-            Targets="nativeproxy_build" />
+    <MSBuild Projects="$(ProjectDir)..\BuildTargets\BuildTargets.csproj" Properties="Configuration=$(Configuration);Platform=$(Platform)" Targets="nativeproxy_build" />
   </Target>
 </Project>

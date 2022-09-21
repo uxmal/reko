@@ -75,10 +75,10 @@ def generate_missing_vars(mpVars, mpSpec):
 def validate_vars(vars):
     filesMissing = False
     for (k, v) in vars.items():
-        v = v.replace('$TargetDir$', 'bin/Debug/net5.0')
-        v = v.replace('$TargetFwkDir$', 'bin/Debug/net5.0')
-        v = v.replace('$TargetFwk472Dir$', 'bin/Debug/net5.0')
-        v = v.replace('$TargetDir_x64$', 'bin/x64/Debug/net5.0')
+        v = v.replace('$TargetDir$', 'bin/Debug/net6.0')
+        v = v.replace('$TargetFwkDir$', 'bin/Debug/net6.0')
+        v = v.replace('$TargetFwk472Dir$', 'bin/Debug/net6.0')
+        v = v.replace('$TargetDir_x64$', 'bin/x64/Debug/net6.0')
         v = v.replace('$Configuration$', 'Debug')
         if v[-1] == '/':
             if not os.path.isdir(v):
@@ -96,10 +96,10 @@ def validate_vars(vars):
 def expand_vars(vars):
     result = {}
     for k,v in vars.items():
-        v = v.replace('$TargetDir$', 'bin/$Configuration$/net5.0')
-        v = v.replace('$TargetFwkDir$', 'bin/$Configuration$/net5.0')
-        v = v.replace('$TargetFwk472Dir$', 'bin/$Configuration$/net5.0')
-        v = v.replace('$TargetDir_x64$', 'bin/x64/$Configuration$/net5.0')
+        v = v.replace('$TargetDir$', 'bin/$Configuration$/net6.0')
+        v = v.replace('$TargetFwkDir$', 'bin/$Configuration$/net6.0')
+        v = v.replace('$TargetFwk472Dir$', 'bin/$Configuration$/net6.0')
+        v = v.replace('$TargetDir_x64$', 'bin/x64/$Configuration$/net6.0')
         result[k] = v
     return result
 

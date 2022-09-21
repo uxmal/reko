@@ -16,7 +16,7 @@
     <copyright>Copyright (C) 1999-2022 John Källén</copyright>
     <tags>decompiler disassembler</tags>
     <dependencies>
-      <group targetFramework="net5.0" />
+      <group targetFramework="net6.0" />
     </dependencies>
 
     <!-- Copy Reko metadata into output directory -->

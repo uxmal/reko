@@ -41,8 +41,8 @@ namespace Reko.Gui
             selection = Array.Empty<object>();
         }
 
-        public object? PrimarySelection =>
-            selection.Cast<object>().FirstOrDefault();
+        public object PrimarySelection =>
+            selection.Cast<object>().FirstOrDefault()!;
 
         public int SelectionCount =>
             selection.Count;
@@ -59,14 +59,15 @@ namespace Reko.Gui
             return selection;
         }
 
-        public void SetSelectedComponents(ICollection components)
+        public void SetSelectedComponents(ICollection? components)
         {
+            components ??= Array.Empty<object>();
             SelectionChanging?.Invoke(this, EventArgs.Empty);
             this.selection = components;
             SelectionChanged?.Invoke(this, EventArgs.Empty);
         }
 
-        public void SetSelectedComponents(ICollection components, SelectionTypes selectionType)
+        public void SetSelectedComponents(ICollection? components, SelectionTypes selectionType)
         {
             throw new NotSupportedException();
         }

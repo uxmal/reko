@@ -5,7 +5,7 @@
   <Import Project="$(ProjectDir)../Drivers/ApiTracking.items "/>
   -->
 	<PropertyGroup>
-    <TargetFramework>net5.0</TargetFramework>
+    <TargetFramework>net6.0</TargetFramework>
     <AssemblyName>Reko</AssemblyName>
     <RootNamespace>Reko</RootNamespace>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>

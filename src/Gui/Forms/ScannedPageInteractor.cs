@@ -56,7 +56,7 @@ namespace Reko.Gui.Forms
         protected MenuCommand AddCommand(CommandID cmdId)
         {
             MenuCommand mc = new MenuCommand(null, cmdId);
-            mpCmdidToCommand.Add(mc.CommandID.ID, mc);
+            mpCmdidToCommand.Add(mc.CommandID!.ID, mc);
             return mc;
         }
 

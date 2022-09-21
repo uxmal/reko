@@ -19,6 +19,8 @@ namespace Reko.Tools.specGen
 
     public class ScriptGenerator
     {
+        private const string netVersion = "net6.0";
+        
         public static List<string> LoadComponentItems(TextReader f)
         {
             var items = new List<string>();
@@ -131,10 +133,10 @@ namespace Reko.Tools.specGen
                     Console.WriteLine("****** {0}", vv);
                     Console.WriteLine("   platform: {0}", platform);
                 var v = vv;
-                v = v.Replace("$TargetDir$", "bin/$Configuration$/net5.0");
-                v = v.Replace("$TargetFwkDir$", "bin/$Configuration$/net5.0");
-                v = v.Replace("$TargetNetWinForms$", "bin/$Configuration$/net5.0-windows");
-                v = v.Replace("$TargetDir_x64$", "bin/$Platform$/$Configuration$/net5.0");
+                v = v.Replace("$TargetDir$", $"bin/$Configuration$/{netVersion}");
+                v = v.Replace("$TargetFwkDir$", $"bin/$Configuration$/{netVersion}");
+                v = v.Replace("$TargetNetWinForms$", $"bin/$Configuration$/{netVersion}-windows");
+                v = v.Replace("$TargetDir_x64$", $"bin/$Platform$/$Configuration$/{netVersion}");
                 v = v.Replace("$Configuration$", configuration);
                 v = v.Replace("$Platform$", platform);
                 v = v.Replace("$SolutionDir$", solutionDir);
@@ -164,11 +166,11 @@ namespace Reko.Tools.specGen
             foreach (var (k, vv) in vars)
             {
                 var v = vv;
-                v = v.Replace("$TargetDir$", "bin/$Configuration$/net5.0");
-                v = v.Replace("$TargetFwkDir$", "bin/$Configuration$/net5.0");
-                v = v.Replace("$TargetFwkWindowsDir$", "bin/$Configuration$/net5.0-windows");
-                v = v.Replace("$TargetFwkWindowsDir_x64$", "bin/$Platform$/$Configuration$/net5.0-windows");
-                v = v.Replace("$TargetDir_x64$", "bin/$Platform$/$Configuration$/net5.0");
+                v = v.Replace("$TargetDir$", $"bin/$Configuration$/{netVersion}");
+                v = v.Replace("$TargetFwkDir$", $"bin/$Configuration$/{netVersion}");
+                v = v.Replace("$TargetFwkWindowsDir$", $"bin/$Configuration$/{netVersion}-windows");
+                v = v.Replace("$TargetFwkWindowsDir_x64$", $"bin/$Platform$/$Configuration$/{netVersion}-windows");
+                v = v.Replace("$TargetDir_x64$", $"bin/$Platform$/$Configuration$/{netVersion}");
                 v = v.Replace("$Configuration$", configuration);
                 v = v.Replace("$Platform$", platform);
                 v = v.Replace("$SolutionDir$", solutionDir);
@@ -370,7 +372,7 @@ namespace Reko.Tools.specGen
             {
                 var source = InterpolateVariables(attrs["Source"], vars);
                 var target = attrs["nuget_target"];
-                target = target.Replace("f:", "lib\\net5.0");
+                target = target.Replace("f:", "lib\\" + netVersion);
                 target = target.Replace("c:", "contentFiles/any/any/reko");
                 target = target.Replace("i:", "images\\");
                 var line = $"<file src=\"{source}\" target=\"{target}\" />";

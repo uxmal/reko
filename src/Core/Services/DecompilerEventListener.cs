@@ -237,9 +237,7 @@ namespace Reko.Core.Services
 
         public ValueTask NavigateTo()
         {
-            //$TODO: net5.0 this thing. to ValueTask.CompletedTask.
-            var vt = new ValueTask(Task.CompletedTask);
-            return vt;
+            return ValueTask.CompletedTask;
         }
 
         public override string ToString()

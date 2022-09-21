@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
-  <Import Project="$(ProjectDir)../../Drivers/CommonBuildProperties.items"/>
+  <Import Project="$(ProjectDir)../../Drivers/CommonBuildProperties.items" />
   <PropertyGroup>
     <ProjectGuid>{958A95BD-260B-4D90-A7A3-0F514D117298}</ProjectGuid>
     <OutputType>Library</OutputType>
     <RootNamespace>Reko.Environments.Wii</RootNamespace>
     <AssemblyName>Reko.Environments.Wii</AssemblyName>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-    <TargetFramework>net5.0</TargetFramework>
+    <TargetFramework>net6.0</TargetFramework>
     <Configurations>Debug;Release</Configurations>
   </PropertyGroup>
   <ItemGroup>

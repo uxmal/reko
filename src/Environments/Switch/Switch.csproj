@@ -4,7 +4,7 @@
     <AssemblyName>Reko.Environments.Switch</AssemblyName>
     <RootNamespace>Reko.Environments.Switch</RootNamespace>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-    <TargetFramework>net5.0</TargetFramework>
+    <TargetFramework>net6.0</TargetFramework>
     <Configurations>Debug;Release</Configurations>
   </PropertyGroup>
 

@@ -2,7 +2,7 @@
   <Import Project="$(ProjectDir)..\Common.items" />
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
-    <TargetFramework>net5.0</TargetFramework>
+    <TargetFramework>net6.0</TargetFramework>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <Nullable>enable</Nullable>
     <RootNamespace>Reko.AvaloniaShell</RootNamespace>

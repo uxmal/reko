@@ -6,7 +6,7 @@
     <OutputType>Library</OutputType>
     <RootNamespace>Reko.Environments.MacOS</RootNamespace>
     <AssemblyName>Reko.Environments.MacOS</AssemblyName>
-    <TargetFramework>net5.0</TargetFramework>
+    <TargetFramework>net6.0</TargetFramework>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <Configurations>Debug;Release</Configurations>
   </PropertyGroup>

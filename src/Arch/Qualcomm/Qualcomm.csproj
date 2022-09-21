@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
-  <Import Project="$(ProjectDir)../../Drivers/CommonBuildProperties.items"/>
+  <Import Project="$(ProjectDir)../../Drivers/CommonBuildProperties.items" />
   <PropertyGroup>
-    <TargetFramework>net5.0</TargetFramework>
+    <TargetFramework>net6.0</TargetFramework>
     <RootNamespace>Reko.Arch.Qualcomm</RootNamespace>
     <AssemblyName>Reko.Arch.Qualcomm</AssemblyName>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
