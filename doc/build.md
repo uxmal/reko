@@ -31,10 +31,11 @@ remedied in the future.
 
 ## Prerequisites
 
-To successfully build Reko, you will have to install a recent version of `msbuild` and `CMake`, along with appropriate 
-C# and C++ compilers. The current version of Reko is building with version 15.5 of `msbuild` and CMake version 3.9.
-`Msbuild` assumes .NET framework is present, and currently Reko C# projects require .NET Framework 4.7 and C# 7. Your
-C++ compiler must be C++ 14 compliant.
+To successfully build Reko, you will have to install a recent version of `msbuild` and `CMake`, along with
+appropriate C# and C++ compilers. The current version of Reko is building with version 17.3 of `msbuild` 
+and CMake version 3.9. `Msbuild` assumes the .NET SDK is present, and currently Reko C# projects require 
+.NET 6.0 and C# 9. Your C++ compiler must be C++ 14 compliant. The .NET SDK is
+[available from Microsoft](https://dotnet.microsoft.com/en-us/download/dotnet/6.0).
 
 ## Overview
 
@@ -61,8 +62,8 @@ the conventions used by Visual Studio solution files.
 The currently supported solution configurations are `Debug`, `Release`, and `UnixRelease`. The `Debug` configuration
 is not optimized and contains full debug symbols. The `Release` configuration is optimized and may not contain
 full debug symbol support. The `UnixRelease` configuration is identical to the `Release` configuration except
-that it excludes the WiX MSI installer scripts. The `UnixRelease` configuration is used to build on Unixy platforms, where MSI
-installers are not supported nor relevant.
+that it excludes the WiX MSI installer scripts. The `UnixRelease` configuration is used to build on Unixy
+platforms, where MSI installers are not supported nor relevant.
 
 ## Build process
 

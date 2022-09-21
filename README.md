@@ -57,7 +57,7 @@ below.
 ## Installing Reko
 
 The following prerequisite software must be installed on your machine first:
-* .NET 5.0 (https://www.microsoft.com/net/download/dotnet-framework-runtime)
+* .NET 6.0 (https://www.microsoft.com/net/download/dotnet-framework-runtime)
 
 Download an appropriate installer and run it on the target machine.
 
@@ -83,8 +83,8 @@ spare time, so adjust your response-time expectations accordingly.
 
 To build reko, start by cloning https://github.com/uxmal/reko. You
 can use an IDE or the command line to build the solution file
-`Reko-decompiler.sln`. Reko requires .NET 5.0 and C# 9
-to compile. If you are an IDE user, use a recent version of Visual Studio 2019.
+`Reko-decompiler.sln`. Reko requires the [.NET 6.0 SDK](https://dotnet.microsoft.com/en-us/download/dotnet/6.0)
+to compile. If you are an IDE user, use a recent version of Visual Studio 2022.
 If you wish to build using the command line, use the command
 
 ```cmd
@@ -124,18 +124,20 @@ from the `Developer Command Prompt` but not when building from inside VS,
 unless you've added that to your global PATH. Installing CMake externally allows
 you to add it to PATH during the installation.
 
-**NOTE**: there is an issue in certain version of Visual Studio that can manifest itself
+**NOTE**: there is an issue in certain versions of Visual Studio that can manifest itself
 when loading the project. You'll notice it if Visual Studio is stuck "Running Background Tasks" 
 and won't let you build the project. A workaround is to right click the "NativeProxy" project in the
 solution explorer and choose "Unload Project". The project will then be able to load and build correctly.
-This issue doesn't occur when building from the command line
+This issue doesn't occur when building from the command line.
 
 ### How do I start Reko?
 
 The solution folder `Drivers` contains the executables that act
-as user interfaces: the directory `WindowsDecompiler` contains
-the GUI client for Windows users; `CmdLine` is a command line driver.
+as user interfaces. The subdirectory `WindowsDecompiler` contains
+the GUI client for the Windows Forms user interface. The subdirectory
+`AvaloniaShell` contains the GUI client for the cross-platform [Avalonia](https://avaloniaui.net/)
+user interface (still under construction). `CmdLine` is a command line driver.
 
 ## Recent versions
 
-See NEWS.md for the change log.
+See the [release log](https://github.com/uxmal/reko/releases) for the latest releases.
