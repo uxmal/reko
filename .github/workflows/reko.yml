@@ -2,9 +2,9 @@ name: Reko
 
 on:
   push:
-    branches: [ master, net5.0, msbuildify ]
+    branches: [ master, net6.0, msbuildify ]
   pull_request:
-    branches: [ master, net5.0 ]
+    branches: [ master, net6.0 ]
 
 jobs:
   build:
@@ -25,7 +25,7 @@ jobs:
     - name: Setup .NET Core
       uses: actions/setup-dotnet@v1
       with:
-        dotnet-version: 5.0.x
+        dotnet-version: 6.0.x
     - name: Install dependencies
       shell: bash
       run: |
