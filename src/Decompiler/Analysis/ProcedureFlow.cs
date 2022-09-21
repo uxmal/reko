@@ -36,7 +36,7 @@ namespace Reko.Analysis
     public class ProcedureFlow : DataFlow
 	{
         public Procedure Procedure { get; }
-        public FunctionType? Signature;
+        public FunctionType? Signature { get; set; }
 
         /// <summary>
         /// A collection of all each storage that is live-in to the procedure,

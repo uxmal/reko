@@ -54,13 +54,13 @@ namespace Reko.Analysis
 
         private readonly IProcessorArchitecture arch;
         private readonly IReadOnlyProgram program;
-        private readonly ProgramDataFlow programFlow;
+        private readonly ProgramDataFlow programFlow;   //$MUTABLE
         private readonly IDynamicLinker dynamicLinker;
         private readonly Dictionary<Block, SsaBlockState> blockstates;
         private readonly SsaState ssa;
         private readonly TransformerFactory factory;
         private readonly HashSet<SsaIdentifier> incompletePhis;
-        private readonly HashSet<Procedure> sccProcs;
+        private readonly IReadOnlySet<Procedure> sccProcs;
         private readonly ExpressionEmitter m;
         private readonly Dictionary<(SsaIdentifier, BitRange), SsaIdentifier> availableSlices;
         private readonly HashSet<SsaIdentifier> sidsToRemove;
@@ -70,7 +70,7 @@ namespace Reko.Analysis
         public SsaTransform(
             IReadOnlyProgram program,
             Procedure proc,
-            HashSet<Procedure> sccProcs,
+            IReadOnlySet<Procedure> sccProcs,
             IDynamicLinker dynamicLinker,
             ProgramDataFlow programFlow)
         {

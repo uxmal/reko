@@ -50,8 +50,8 @@ namespace Reko.Analysis
         private readonly IDynamicLinker dynamicLinker;
         private readonly IServiceProvider services;
         private readonly IReadOnlyProgram program;
-        private readonly ProgramDataFlow flow;
-        private readonly HashSet<Procedure> sccProcs;
+        private readonly ProgramDataFlow flow;  //$MUTABLE
+        private readonly IReadOnlySet<Procedure> sccProcs;
         private readonly DecompilerEventListener eventListener;
 
         public SccWorker(
