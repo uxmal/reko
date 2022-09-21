@@ -154,7 +154,7 @@ namespace Reko.Gui.Forms
                 if (dummy != null)
                 {
                     dummy = null;
-                    var callStms = program.CallGraph.CallerStatements(proc);
+                    var callStms = program.CallGraph.FindCallerStatements(proc);
                     var designers = callStms
                         .Select(s => new CHCallStatementDesigner(program, s))
                         .ToArray();

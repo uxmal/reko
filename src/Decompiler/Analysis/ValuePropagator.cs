@@ -48,7 +48,7 @@ namespace Reko.Analysis
 
         private readonly IProcessorArchitecture arch;
         private readonly SsaState ssa;
-        private readonly CallGraph callGraph;
+        private readonly IReadOnlyCallGraph callGraph;
         private readonly IDynamicLinker dynamicLinker;
         private readonly ExpressionSimplifier eval;
         private readonly SsaEvaluationContext evalCtx;
@@ -58,7 +58,7 @@ namespace Reko.Analysis
         private Statement? stmCur;      //$REFACTOR: try to make this a context paramter.
 
         public ValuePropagator(
-            Program program,
+            IReadOnlyProgram program,
             SsaState ssa,
             IDynamicLinker dynamicLinker,
             IServiceProvider services)

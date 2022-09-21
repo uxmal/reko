@@ -56,9 +56,9 @@ namespace Reko.Typing
         protected readonly TypeFactory factory;
         protected readonly Unifier unifier;
         protected readonly Identifier globals;
-        protected readonly Dictionary<Identifier,LinearInductionVariable> ivs;
+        protected readonly IReadOnlyDictionary<Identifier,LinearInductionVariable> ivs;
 
-        public ExpressionTypeDescender(Program program, TypeStore store, TypeFactory factory)
+        public ExpressionTypeDescender(IReadOnlyProgram program, TypeStore store, TypeFactory factory)
         {
             this.platform = program.Platform;
             this.globals = program.Globals;

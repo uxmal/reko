@@ -40,7 +40,7 @@ namespace Reko.Core.Expressions
         private readonly TypeFactory factory;
         private readonly StructureType globalFields;
 
-        public ExpressionTypeAscenderBase(Program program, TypeFactory factory)
+        public ExpressionTypeAscenderBase(IReadOnlyProgram program, TypeFactory factory)
         {
             this.platform = program.Platform;
             this.globalFields = program.GlobalFields;

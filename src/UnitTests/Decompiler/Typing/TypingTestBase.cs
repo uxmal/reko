@@ -142,8 +142,8 @@ namespace Reko.UnitTests.Decompiler.Typing
             Program program = mock.BuildProgram();
             var dynamicLinker = new Mock<IDynamicLinker>();
             DataFlowAnalysis dfa = new DataFlowAnalysis(program, dynamicLinker.Object, sc);
-            dfa.UntangleProcedures();
-            dfa.BuildExpressionTrees();
+            var ssts = dfa.UntangleProcedures();
+            dfa.BuildExpressionTrees(ssts);
             RunTest(program, outputFile);
         }
 

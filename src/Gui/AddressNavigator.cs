@@ -30,15 +30,15 @@ namespace Reko.Gui
     {
         private readonly IServiceProvider sp;
 
-        public AddressNavigator(Program program, Address addr, IServiceProvider sp)
+        public AddressNavigator(IReadOnlyProgram program, Address addr, IServiceProvider sp)
         {
-            this.Program = program;
+            this.Program = (Program) program;
             this.Address = addr;
             this.sp = sp;
         }
 
-        public Address Address { get; private set; }
-        public Program Program { get; private set; }
+        public Address Address { get; }
+        public Program Program { get; }
 
         #region ICodeLocation Members
 

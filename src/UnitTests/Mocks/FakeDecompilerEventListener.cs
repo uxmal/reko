@@ -212,27 +212,27 @@ namespace Reko.UnitTests.Mocks
         }
 
 
-        public ICodeLocation CreateAddressNavigator(Program program, Address address)
+        public ICodeLocation CreateAddressNavigator(IReadOnlyProgram program, Address address)
         {
             return new NullCodeLocation(address.ToString());
         }
 
-        public ICodeLocation CreateProcedureNavigator(Program program, Procedure proc)
+        public ICodeLocation CreateProcedureNavigator(IReadOnlyProgram program, Procedure proc)
         {
             return new NullCodeLocation(proc.Name);
         }
 
-        public ICodeLocation CreateBlockNavigator(Program program, Block block)
+        public ICodeLocation CreateBlockNavigator(IReadOnlyProgram program, Block block)
         {
             return new NullCodeLocation(block.DisplayName);
         }
 
-        public ICodeLocation CreateStatementNavigator(Program program, Statement stm)
+        public ICodeLocation CreateStatementNavigator(IReadOnlyProgram program, Statement stm)
         {
             return new NullCodeLocation(stm.Address.ToString());
         }
 
-        public ICodeLocation CreateJumpTableNavigator(Program program, IProcessorArchitecture _, Address addrIndirectJump, Address addrVector, int stride)
+        public ICodeLocation CreateJumpTableNavigator(IReadOnlyProgram program, IProcessorArchitecture _, Address addrIndirectJump, Address addrVector, int stride)
         {
             return new NullCodeLocation(addrIndirectJump.ToString());
         }

@@ -32,7 +32,7 @@ namespace Reko.Core
     /// <summary>
     /// Describes the address space of a loaded executable.
     /// </summary>
-    public class SegmentMap
+    public class SegmentMap : IReadOnlySegmentMap
     {
         public event EventHandler? MapChanged;
 

@@ -34,7 +34,7 @@ namespace Reko.Analysis
     /// </summary>
     public class LocalTypeDescender : ExpressionTypeDescender
     {
-        public LocalTypeDescender(Program program, TypeStore store, TypeFactory factory)
+        public LocalTypeDescender(IReadOnlyProgram program, TypeStore store, TypeFactory factory)
             : base(program, store, factory)
         {
             this.TypeVariables = new Dictionary<Expression,TypeVariable>();

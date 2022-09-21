@@ -60,7 +60,7 @@ namespace Reko.Analysis
         private readonly SsaState ssa;
         private readonly SsaMutator mutator;
 		private readonly SsaIdentifierCollection ssaIds;
-        private readonly Program program;
+        private readonly IReadOnlyProgram program;
         private readonly DecompilerEventListener listener;
         private readonly ExpressionEmitter m;
         private readonly HashSet<Identifier> aliases;
@@ -68,7 +68,7 @@ namespace Reko.Analysis
 		private SsaIdentifier? sidGrf;
         private Statement? useStm;
 
-        public ConditionCodeEliminator(Program program, SsaState ssa, DecompilerEventListener listener)
+        public ConditionCodeEliminator(IReadOnlyProgram program, SsaState ssa, DecompilerEventListener listener)
 		{
             this.ssa = ssa;
             this.mutator = new SsaMutator(ssa);

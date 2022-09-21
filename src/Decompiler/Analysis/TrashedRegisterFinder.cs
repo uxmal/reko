@@ -38,26 +38,26 @@ namespace Reko.Analysis
     {
         private static readonly TraceSwitch trace = new(nameof(TrashedRegisterFinder), "Trashed value propagation") { Level = TraceLevel.Error };
 
-        private readonly SegmentMap segmentMap;
+        private readonly IReadOnlySegmentMap segmentMap;
         private readonly ProgramDataFlow flow;
         private readonly HashSet<SsaTransform> sccGroup;
-        private readonly CallGraph callGraph;
+        private readonly IReadOnlyCallGraph callGraph;
         private readonly DecompilerEventListener listener;
         private readonly WorkStack<Block> worklist;
         private readonly Dictionary<Procedure, SsaState> ssas;
         private readonly ExpressionValueComparer cmp;
         //$REFACTOR the following expressions to get rid of the nullable '?'s.
-            private Block? block;
-            private Dictionary<Procedure, ProcedureFlow>? procCtx;
-            private Dictionary<Block, Context>? blockCtx;
-            private Context? ctx;       //$R
-            private ExpressionSimplifier? eval;
+        private Block? block;
+        private Dictionary<Procedure, ProcedureFlow>? procCtx;
+        private Dictionary<Block, Context>? blockCtx;
+        private Context? ctx;       //$R
+        private ExpressionSimplifier? eval;
         private IProcessorArchitecture arch;
         private bool propagateToCallers;
         private bool selfRecursiveCalls;
 
         public TrashedRegisterFinder(
-            Program program,
+            IReadOnlyProgram program,
             ProgramDataFlow flow,
             IEnumerable<SsaTransform> sccGroup,
             DecompilerEventListener listener)
@@ -283,7 +283,7 @@ namespace Reko.Analysis
 
            // Propagate defined registers to calling procedures.
             var callingBlocks = callGraph
-                .CallerStatements(block.Procedure)
+                .FindCallerStatements(block.Procedure)
                 .Cast<Statement>()
                 .Select(s => s.Block)
                 .Where(b => ssas.ContainsKey(b.Procedure));
@@ -700,7 +700,7 @@ namespace Reko.Analysis
                 return new List<Statement>();
             }
 
-            public Expression GetValue(SegmentedAccess access, SegmentMap segmentMap)
+            public Expression GetValue(SegmentedAccess access, IReadOnlySegmentMap segmentMap)
             {
                 var offset = this.GetFrameOffset(access.EffectiveAddress);
                 if (offset.HasValue && StackState.TryGetValue(offset.Value, out Expression? value))
@@ -725,7 +725,7 @@ namespace Reko.Analysis
                 return InvalidConstant.Create(appl.DataType);
             }
 
-            public Expression GetValue(MemoryAccess access, SegmentMap segmentMap)
+            public Expression GetValue(MemoryAccess access, IReadOnlySegmentMap segmentMap)
             {
                 var offset = this.GetFrameOffset(access.EffectiveAddress);
                 if (offset.HasValue && StackState.TryGetValue(offset.Value, out Expression? value))

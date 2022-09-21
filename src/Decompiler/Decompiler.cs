@@ -103,13 +103,14 @@ namespace Reko
                     var ir = new DynamicLinker(project, program, eventListener);
                     var dfa = new DataFlowAnalysis(program, ir, services);
                     dfa.ClearTestFiles();
+                    var ssas = new List<SsaTransform>();
                     if (program.NeedsSsaTransform)
                     {
                         eventListener.ShowStatus("Performing interprocedural analysis.");
-                        dfa.UntangleProcedures();
+                        ssas = dfa.UntangleProcedures();
                     }
                     eventListener.ShowStatus("Building complex expressions.");
-                    dfa.BuildExpressionTrees();
+                    dfa.BuildExpressionTrees(ssas);
                     host.WriteIntermediateCode(program, (name, procs, writer) => { EmitProgram(program, procs, dfa, name, writer); });
                 }
                 catch (Exception ex)

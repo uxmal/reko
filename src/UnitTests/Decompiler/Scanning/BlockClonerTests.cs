@@ -149,7 +149,7 @@ namespace Reko.UnitTests.Decompiler.Scanning
             var newCall = (CallInstruction) call.Accept(cloner);
             cloner.StatementNew.Instruction = newCall;
             Assert.AreEqual(call.Callee, newCall.Callee);
-            Assert.AreEqual(2, callgraph.CallerStatements(procCalling).Count(), "Should've added a call to the callgraph");
+            Assert.AreEqual(2, callgraph.FindCallerStatements(procCalling).Count(), "Should've added a call to the callgraph");
             Assert.AreEqual(1, callgraph.Callees(cloner.Statement).Count());
             Assert.AreEqual(1, callgraph.Callees(cloner.StatementNew).Count());
         }

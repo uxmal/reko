@@ -66,6 +66,6 @@ namespace Reko.Gui.Services
         /// <param name="program">Program whose low-level details are to 
         /// be shown.</param>
         /// <param name="addr">Address to show.</param>
-        void ShowMemoryAtAddress(Program? program, Address addr);
+        void ShowMemoryAtAddress(IReadOnlyProgram? program, Address addr);
     }
 }

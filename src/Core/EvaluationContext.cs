@@ -67,8 +67,8 @@ namespace Reko.Core
         /// <returns>An expression at the memory address, or an instance
         /// of <see cref="InvalidConstant"/> if the address couldn't be resolved.
         /// </returns>
-        Expression GetValue(MemoryAccess access, SegmentMap segmentMap);
-        Expression GetValue(SegmentedAccess access, SegmentMap segmentMap);
+        Expression GetValue(MemoryAccess access, IReadOnlySegmentMap segmentMap);
+        Expression GetValue(SegmentedAccess access, IReadOnlySegmentMap segmentMap);
         Expression GetValue(Application appl);
         Expression? GetDefiningExpression(Identifier id);
 

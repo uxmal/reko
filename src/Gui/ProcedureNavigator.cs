@@ -36,9 +36,9 @@ namespace Reko.Gui
         private readonly IServiceProvider sp;
         private readonly Program program;
 
-        public ProcedureNavigator(Program program, Procedure proc, IServiceProvider sp)
+        public ProcedureNavigator(IReadOnlyProgram program, Procedure proc, IServiceProvider sp)
         {
-            this.program = program;
+            this.program = (Program) program;
             this.Procedure = proc;
             this.sp = sp;
         }

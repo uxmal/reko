@@ -35,11 +35,11 @@ namespace Reko.Core.Services
     /// </summary>
     public interface DecompilerEventListener
     {
-        ICodeLocation CreateAddressNavigator(Program program, Address address);
-        ICodeLocation CreateProcedureNavigator(Program program, Procedure proc);
-        ICodeLocation CreateBlockNavigator(Program program, Block block);
-        ICodeLocation CreateStatementNavigator(Program program, Statement stm);
-        ICodeLocation CreateJumpTableNavigator(Program program, IProcessorArchitecture arch, Address addrIndirectJump, Address? addrVector, int stride);
+        ICodeLocation CreateAddressNavigator(IReadOnlyProgram program, Address address);
+        ICodeLocation CreateProcedureNavigator(IReadOnlyProgram program, Procedure proc);
+        ICodeLocation CreateBlockNavigator(IReadOnlyProgram program, Block block);
+        ICodeLocation CreateStatementNavigator(IReadOnlyProgram program, Statement stm);
+        ICodeLocation CreateJumpTableNavigator(IReadOnlyProgram program, IProcessorArchitecture arch, Address addrIndirectJump, Address? addrVector, int stride);
 
         void Info(string message);
         void Info(string message, params object [] args);
@@ -188,27 +188,27 @@ namespace Reko.Core.Services
         {
         }
 
-        public ICodeLocation CreateAddressNavigator(Program program, Address address)
+        public ICodeLocation CreateAddressNavigator(IReadOnlyProgram program, Address address)
         {
             return new NullCodeLocation(address.ToString());
         }
 
-        public ICodeLocation CreateProcedureNavigator(Program program, Procedure proc)
+        public ICodeLocation CreateProcedureNavigator(IReadOnlyProgram program, Procedure proc)
         {
             return new NullCodeLocation(proc.Name);
         }
 
-        public ICodeLocation CreateBlockNavigator(Program program, Block block)
+        public ICodeLocation CreateBlockNavigator(IReadOnlyProgram program, Block block)
         {
             return new NullCodeLocation(block.Id);
         }
 
-        public ICodeLocation CreateStatementNavigator(Program program, Statement stm)
+        public ICodeLocation CreateStatementNavigator(IReadOnlyProgram program, Statement stm)
         {
             return new NullCodeLocation(stm.Address.ToString());
         }
 
-        public ICodeLocation CreateJumpTableNavigator(Program _, IProcessorArchitecture arch, Address addrIndirectJump, Address? addrVector, int stride)
+        public ICodeLocation CreateJumpTableNavigator(IReadOnlyProgram _, IProcessorArchitecture arch, Address addrIndirectJump, Address? addrVector, int stride)
         {
             return new NullCodeLocation(addrIndirectJump.ToString());
         }

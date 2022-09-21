@@ -140,7 +140,7 @@ namespace Reko.Core
             return InvalidConstant.Create(reg.DataType);
         }
 
-        public Expression GetValue(MemoryAccess access, SegmentMap segmentMap)
+        public Expression GetValue(MemoryAccess access, IReadOnlySegmentMap segmentMap)
         {
             if (access.EffectiveAddress is Constant constAddr)
             {
@@ -162,7 +162,7 @@ namespace Reko.Core
             return InvalidConstant.Create(access.DataType);
         }
 
-        public Expression GetValue(SegmentedAccess access, SegmentMap segmentMap)
+        public Expression GetValue(SegmentedAccess access, IReadOnlySegmentMap segmentMap)
         {
             if (GetStackOffset(access.EffectiveAddress, out var stackOffset))
             {
@@ -173,7 +173,7 @@ namespace Reko.Core
             return InvalidConstant.Create(access.DataType);
         }
 
-        public Expression GetMemoryValue(Address addr, DataType dt, SegmentMap segmentMap)
+        public Expression GetMemoryValue(Address addr, DataType dt, IReadOnlySegmentMap segmentMap)
         {
             if (dt is not PrimitiveType pt)
                 return InvalidConstant.Create(dt);

@@ -44,7 +44,7 @@ namespace Reko.Core
     /// A Decompiler project may consist of several of these Programs.
     /// </remarks>
     [Designer("Reko.Gui.Design.ProgramDesigner,Reko.Gui")]
-    public class Program : ILoadedImage, INotifyPropertyChanged
+    public class Program : IReadOnlyProgram, ILoadedImage, INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler? PropertyChanged;
 
@@ -510,6 +510,12 @@ namespace Reko.Core
                 .ToDictionary(a => a.Key, a => a.Items.OrderBy(i => i.Address).ToList());
         }
 
+
+        IReadOnlyCallGraph IReadOnlyProgram.CallGraph => this.CallGraph;
+        IReadOnlyDictionary<Identifier, LinearInductionVariable> IReadOnlyProgram.InductionVariables => this.InductionVariables;
+        IReadOnlySegmentMap IReadOnlyProgram.SegmentMap => this.SegmentMap;
+
+
         // Mutators /////////////////////////////////////////////////////////////////
 
         public IProcessorArchitecture EnsureArchitecture(string archLabel, Func<string,IProcessorArchitecture> getter)
@@ -799,5 +805,5 @@ namespace Reko.Core
             }
             fields.Add(offset, dt, name);
         }
-    } 
+    }
 }

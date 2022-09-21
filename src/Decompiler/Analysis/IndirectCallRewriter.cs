@@ -41,7 +41,7 @@ namespace Reko.Analysis
     public class IndirectCallRewriter
     {
         private readonly SsaState ssa;
-        private readonly Program program;
+        private readonly IReadOnlyProgram program;
         private readonly Procedure proc;
         private readonly IndirectCallTypeAscender asc;
         private readonly IndirectCallExpander expander;
@@ -50,7 +50,7 @@ namespace Reko.Analysis
         private readonly SsaMutator ssam;
 
         public IndirectCallRewriter(
-            Program program,
+            IReadOnlyProgram program,
             SsaState ssa,
             DecompilerEventListener eventListener)
         {
@@ -133,8 +133,8 @@ namespace Reko.Analysis
     /// </summary>
     class IndirectCallTypeAscender : ExpressionTypeAscenderBase
     {
-        public IndirectCallTypeAscender(Program program) :
-            base (program, new TypeFactory())
+        public IndirectCallTypeAscender(IReadOnlyProgram program) :
+            base(program, new TypeFactory())
         {
         }
 

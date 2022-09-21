@@ -77,7 +77,7 @@ namespace Reko.Analysis
             return appl;
         }
 
-        public Expression GetValue(MemoryAccess access, SegmentMap segmentMap)
+        public Expression GetValue(MemoryAccess access, IReadOnlySegmentMap segmentMap)
         {
             if (access.EffectiveAddress is Constant c &&
                 // Search imported procedures only in Global Memory
@@ -90,7 +90,7 @@ namespace Reko.Analysis
             return access;
         }
 
-        public Expression GetValue(SegmentedAccess access, SegmentMap segmentMap)
+        public Expression GetValue(SegmentedAccess access, IReadOnlySegmentMap segmentMap)
         {
             return access;
         }

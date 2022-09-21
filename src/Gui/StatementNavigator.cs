@@ -34,9 +34,9 @@ namespace Reko.Gui
         private readonly Program program;
         private readonly IServiceProvider services;
 
-        public StatementNavigator(Program program, Statement stm, IServiceProvider services)
+        public StatementNavigator(IReadOnlyProgram program, Statement stm, IServiceProvider services)
         {
-            this.program = program;
+            this.program = (Program) program;
             this.Statement = stm;
             this.services = services;
             this.Text = stm.Address.ToString();

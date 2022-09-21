@@ -45,7 +45,7 @@ namespace Reko.Analysis
         InstructionVisitor<BitRange>,
         ExpressionVisitor<BitRange>
     {
-        private readonly Program program;
+        private readonly IReadOnlyProgram program;
         private readonly ProgramDataFlow flow;
         private readonly HashSet<Procedure> scc;
         private readonly Dictionary<PhiAssignment, BitRange> visited;
@@ -56,7 +56,7 @@ namespace Reko.Analysis
         private bool useLiveness;
 
         public UsedRegisterFinder(
-            Program program,
+            IReadOnlyProgram program,
             ProgramDataFlow flow,
             IEnumerable<Procedure> scc,
             DecompilerEventListener eventListener)

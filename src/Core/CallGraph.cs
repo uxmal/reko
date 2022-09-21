@@ -30,7 +30,7 @@ namespace Reko.Core
 	/// <summary>
 	/// Describes the call structure of the program: what nodes call what others.
 	/// </summary>
-	public class CallGraph
+	public class CallGraph : IReadOnlyCallGraph
 	{
 		private DirectedGraphImpl<Procedure> graphProcs = new DirectedGraphImpl<Procedure>();
 		private DirectedGraphImpl<object> graphStms = new DirectedGraphImpl<object>();
@@ -63,6 +63,13 @@ namespace Reko.Core
 			graphStms.AddNode(proc);
 		}
 
+        /// <summary>
+        /// Removes a calling <see cref="Statement"/> from the
+        /// call graph.
+        /// </summary>
+        /// <param name="stm">A <see cref="Statement"/> being 
+        /// removed from the call graph.
+        /// </param>
         public void RemoveCaller(Statement stm)
         {
             if (!graphStms.Nodes.Contains(stm))
@@ -95,7 +102,7 @@ namespace Reko.Core
         /// <summary>
         /// Given a procedure, find all the statements that call it.
         /// </summary>
-        public IEnumerable<Statement> CallerStatements(Procedure proc)
+        public IEnumerable<Statement> FindCallerStatements(Procedure proc)
 		{
             if (!graphStms.Nodes.Contains(proc))
                 return Array.Empty<Statement>();

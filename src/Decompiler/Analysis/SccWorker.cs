@@ -47,8 +47,9 @@ namespace Reko.Analysis
 
         private readonly DataFlowAnalysis dfa;
         private readonly Procedure[] procs;
+        private readonly IDynamicLinker dynamicLinker;
         private readonly IServiceProvider services;
-        private readonly Program program;
+        private readonly IReadOnlyProgram program;
         private readonly ProgramDataFlow flow;
         private readonly HashSet<Procedure> sccProcs;
         private readonly DecompilerEventListener eventListener;
@@ -56,10 +57,12 @@ namespace Reko.Analysis
         public SccWorker(
             DataFlowAnalysis dfa,
             Procedure[] sccProcs, 
+            IDynamicLinker dynamicLinker,
             IServiceProvider services)
         {
             this.dfa = dfa;
             this.procs = sccProcs;
+            this.dynamicLinker = dynamicLinker;
             this.services = services;
             this.program = dfa.Program;
             this.flow = dfa.ProgramDataFlow;
@@ -95,7 +98,7 @@ namespace Reko.Analysis
             {
                 if (eventListener.IsCanceled())
                     return ssts;
-                var vp = new ValuePropagator(program, sst.SsaState, dfa.DynamicLinker, services);
+                var vp = new ValuePropagator(program, sst.SsaState, this.dynamicLinker, services);
                 vp.Transform();
                 sst.RenameFrameAccesses = true;
                 sst.Transform();
@@ -144,7 +147,7 @@ namespace Reko.Analysis
             if (!program.NeedsSsaTransform)
             {
                 // Some formats, like LLVM, already have phi functions.
-                var sst = new SsaTransform(program, proc, sccProcs!, dfa.DynamicLinker, this.flow);
+                var sst = new SsaTransform(program, proc, sccProcs!, this.dynamicLinker, this.flow);
                 return sst;
             }
 
@@ -156,7 +159,7 @@ namespace Reko.Analysis
                 // not been visited, or are computed destinations  (e.g. vtables)
                 // they will have no "ProcedureFlow" associated with them yet, in
                 // which case the the SSA treats the call as a "hell node".
-                var sst = new SsaTransform(program, proc, sccProcs!, dfa.DynamicLinker, this.flow);
+                var sst = new SsaTransform(program, proc, sccProcs!, this.dynamicLinker, this.flow);
                 var ssa = sst.Transform();
                 dfa.DumpWatchedProcedure("ssa", "After SSA", ssa);
                 // Merge unaligned memory accesses.
@@ -173,7 +176,7 @@ namespace Reko.Analysis
                 // We also hope that procedure constants
                 // kept in registers are propagated to the corresponding call
                 // sites.
-                var vp = new ValuePropagator(program, ssa, dfa.DynamicLinker, services);
+                var vp = new ValuePropagator(program, ssa, this.dynamicLinker, services);
                 vp.Transform();
                 dfa.DumpWatchedProcedure("vp", "After first VP", ssa);
 
@@ -330,7 +333,7 @@ namespace Reko.Analysis
             IEnumerable<SsaTransform> ssts)
         {
             var mpProcSsa = ssts.ToDictionary(d => d.SsaState.Procedure, d => d.SsaState);
-            foreach (Statement stm in program.CallGraph.CallerStatements(proc))
+            foreach (Statement stm in program.CallGraph.FindCallerStatements(proc))
             {
                 if (!mpProcSsa.TryGetValue(stm.Block.Procedure, out var ssa))
                     continue;

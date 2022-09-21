@@ -40,7 +40,7 @@ namespace Reko.Analysis
     /// </summary>
     public class EscapedFrameIntervalsFinder : ExpressionVisitorBase, InstructionVisitor
     {
-        private readonly Program program;
+        private readonly IReadOnlyProgram program;
         private readonly ProgramDataFlow flow;
         private readonly SsaState ssa;
         private readonly DecompilerEventListener eventListener;
@@ -49,7 +49,7 @@ namespace Reko.Analysis
         private IntervalTree<int, DataType> intervals;
 
         public EscapedFrameIntervalsFinder(
-            Program program,
+            IReadOnlyProgram program,
             ProgramDataFlow flow,
             SsaState ssa,
             DecompilerEventListener eventListener)
@@ -346,7 +346,7 @@ namespace Reko.Analysis
                 return id;
             }
 
-            public Expression GetValue(MemoryAccess access, SegmentMap segmentMap)
+            public Expression GetValue(MemoryAccess access, IReadOnlySegmentMap segmentMap)
             {
                 var ea = access.EffectiveAddress;
                 if (!IsIdentifierOffset(ea, out var @base, out var offset))
@@ -365,7 +365,7 @@ namespace Reko.Analysis
                 return value;
             }
 
-            public Expression GetValue(SegmentedAccess access, SegmentMap segmentMap)
+            public Expression GetValue(SegmentedAccess access, IReadOnlySegmentMap segmentMap)
             {
                 return access;
             }

@@ -123,7 +123,7 @@ namespace Reko.Analysis
             }
             if (changed)
             {
-                foreach (Statement stm in program.CallGraph.CallerStatements(proc))
+                foreach (Statement stm in program.CallGraph.FindCallerStatements(proc))
                 {
                     if (stm.Instruction is not CallInstruction ci)
                         continue;
@@ -251,7 +251,7 @@ namespace Reko.Analysis
             if (!ssa.Procedure.Signature.ParametersValid && deadStms.Count > 0)
             {
                 DeadCode.Eliminate(ssa);
-                foreach (Statement stm in program.CallGraph.CallerStatements(ssa.Procedure))
+                foreach (Statement stm in program.CallGraph.FindCallerStatements(ssa.Procedure))
                 {
                     if (stm.Instruction is not CallInstruction ci)
                         continue;
@@ -322,7 +322,7 @@ namespace Reko.Analysis
                     dataFlow,
                     Array.Empty<Procedure>(),
                     eventListener);
-                foreach (Statement stm in program.CallGraph.CallerStatements(procCallee))
+                foreach (Statement stm in program.CallGraph.FindCallerStatements(procCallee))
                 {
                     if (stm.Instruction is not CallInstruction ci)
                         continue;

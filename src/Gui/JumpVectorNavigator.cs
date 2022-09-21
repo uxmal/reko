@@ -31,9 +31,9 @@ namespace Reko.Gui
     {
         private readonly IServiceProvider services;
 
-        public JumpVectorNavigator(Program program, IProcessorArchitecture arch, Address addrInstr, Address addrVector, int stride, IServiceProvider services)
+        public JumpVectorNavigator(IReadOnlyProgram program, IProcessorArchitecture arch, Address addrInstr, Address addrVector, int stride, IServiceProvider services)
         {
-            this.Program = program;
+            this.Program = (Program)program;
             this.Architecture = arch;
             this.IndirectJumpAddress = addrInstr;
             this.VectorAddress = addrVector;
@@ -44,7 +44,7 @@ namespace Reko.Gui
         public IProcessorArchitecture Architecture { get; }
         public Address IndirectJumpAddress { get; private set; }
         public Address VectorAddress { get; private set; }
-        public Program Program { get; private set; }
+        public Program Program { get; }
         public int Stride { get; private set; }
 
         public string Text { get { return IndirectJumpAddress.ToString();  } }

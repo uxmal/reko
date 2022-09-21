@@ -41,7 +41,7 @@ namespace Reko.Evaluation
     /// </summary>
     public class ExpressionSimplifier : ExpressionVisitor<(Expression, bool)>
     {
-        private readonly SegmentMap segmentMap;
+        private readonly IReadOnlySegmentMap segmentMap;
         private readonly EvaluationContext ctx;
         private readonly ExpressionValueComparer cmp;
         private readonly ExpressionEmitter m;
@@ -78,7 +78,7 @@ namespace Reko.Evaluation
         private readonly UnaryNegEqZeroRule unaryNegEqZero;
         private readonly ScaledIndexRule scaledIndexRule;
 
-        public ExpressionSimplifier(SegmentMap segmentMap, EvaluationContext ctx, DecompilerEventListener listener)
+        public ExpressionSimplifier(IReadOnlySegmentMap segmentMap, EvaluationContext ctx, DecompilerEventListener listener)
         {
             this.segmentMap = segmentMap ?? throw new ArgumentNullException(nameof(segmentMap));
             this.ctx = ctx;

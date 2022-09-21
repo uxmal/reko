@@ -39,13 +39,13 @@ namespace Reko.Scanning
     /// </summary>
     public class VarargsFormatScanner
     {
-        private readonly Program program;
+        private readonly IReadOnlyProgram program;
         private readonly IProcessorArchitecture arch;
         private readonly ExpressionSimplifier eval;
         private readonly IServiceProvider services;
 
         public VarargsFormatScanner(
-            Program program,
+            IReadOnlyProgram program,
             IProcessorArchitecture arch,
             EvaluationContext ctx,
             IServiceProvider services)

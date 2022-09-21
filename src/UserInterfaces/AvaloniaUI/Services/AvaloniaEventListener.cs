@@ -72,27 +72,27 @@ namespace Reko.UserInterfaces.AvaloniaUI.Services
             },
             null);
         }
-        public ICodeLocation CreateAddressNavigator(Program program, Address addr)
+        public ICodeLocation CreateAddressNavigator(IReadOnlyProgram program, Address addr)
         {
             return new AddressNavigator(program, addr, services);
         }
 
-        public ICodeLocation CreateBlockNavigator(Program program, Block block)
+        public ICodeLocation CreateBlockNavigator(IReadOnlyProgram program, Block block)
         {
             return new BlockNavigator(program, block, services);
         }
 
-        public ICodeLocation CreateJumpTableNavigator(Program program, IProcessorArchitecture arch, Address addrIndirectJump, Address? addrVector, int stride)
+        public ICodeLocation CreateJumpTableNavigator(IReadOnlyProgram program, IProcessorArchitecture arch, Address addrIndirectJump, Address? addrVector, int stride)
         {
             return new JumpVectorNavigator(program, arch, addrIndirectJump, addrVector, stride, services);
         }
 
-        public ICodeLocation CreateProcedureNavigator(Program program, Procedure proc)
+        public ICodeLocation CreateProcedureNavigator(IReadOnlyProgram program, Procedure proc)
         {
             return new ProcedureNavigator(program, proc, services);
         }
 
-        public ICodeLocation CreateStatementNavigator(Program program, Statement stm)
+        public ICodeLocation CreateStatementNavigator(IReadOnlyProgram program, Statement stm)
         {
             return new StatementNavigator(program, stm, services);
         }

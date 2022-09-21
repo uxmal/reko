@@ -129,7 +129,7 @@ namespace Reko.Core.Output
         {
             formatter.WriteComment($";; {proc.Name}: {proc.EntryAddress}");
             formatter.WriteLine();
-            var callerStms = program.CallGraph.CallerStatements(proc)
+            var callerStms = program.CallGraph.FindCallerStatements(proc)
                 .OrderBy(c => c.Address)
                 .ToArray();
             if (callerStms.Length > 0)

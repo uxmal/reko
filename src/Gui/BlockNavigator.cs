@@ -35,9 +35,9 @@ namespace Reko.Gui
         private readonly IServiceProvider sp;
         private readonly Program program;
 
-        public BlockNavigator(Program program, Block block, IServiceProvider sp)
+        public BlockNavigator(IReadOnlyProgram program, Block block, IServiceProvider sp)
         {
-            this.program = program;
+            this.program = (Program) program;
             this.Block = block;
             this.sp = sp;
         }

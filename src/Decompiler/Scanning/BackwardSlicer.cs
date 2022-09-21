@@ -376,12 +376,12 @@ namespace Reko.Scanning
                 return id;
             }
 
-            public Expression GetValue(MemoryAccess access, SegmentMap segmentMap)
+            public Expression GetValue(MemoryAccess access, IReadOnlySegmentMap segmentMap)
             {
                 return access;
             }
 
-            public Expression GetValue(SegmentedAccess access, SegmentMap segmentMap)
+            public Expression GetValue(SegmentedAccess access, IReadOnlySegmentMap segmentMap)
             {
                 return access;
             }

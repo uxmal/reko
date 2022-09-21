@@ -57,9 +57,9 @@ namespace Reko.UserInterfaces.WindowsForms
             ShowWindowImpl(program);
         }
 
-        public void ShowMemoryAtAddress(Program program, Address addr)
+        public void ShowMemoryAtAddress(IReadOnlyProgram program, Address addr)
         {
-            var llvi = ShowWindowImpl(program);
+            var llvi = ShowWindowImpl((Program)program);
             llvi.SelectedAddress = addr;
         }
 

@@ -53,7 +53,7 @@ namespace Reko.Analysis
         private static readonly TraceSwitch trace = new TraceSwitch("SsaTransform", "Traces the progress of SSA analysis") { Level = TraceLevel.Warning };
 
         private readonly IProcessorArchitecture arch;
-        private readonly Program program;
+        private readonly IReadOnlyProgram program;
         private readonly ProgramDataFlow programFlow;
         private readonly IDynamicLinker dynamicLinker;
         private readonly Dictionary<Block, SsaBlockState> blockstates;
@@ -68,7 +68,7 @@ namespace Reko.Analysis
         private Statement? stmCur;
 
         public SsaTransform(
-            Program program,
+            IReadOnlyProgram program,
             Procedure proc,
             HashSet<Procedure> sccProcs,
             IDynamicLinker dynamicLinker,

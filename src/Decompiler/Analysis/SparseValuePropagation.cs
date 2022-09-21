@@ -142,12 +142,12 @@ namespace Reko.Analysis
                 return values[id];
             }
 
-            public Expression GetValue(MemoryAccess access, SegmentMap segmentMap)
+            public Expression GetValue(MemoryAccess access, IReadOnlySegmentMap segmentMap)
             {
                 return InvalidConstant.Create(access.DataType);
             }
 
-            public Expression GetValue(SegmentedAccess access, SegmentMap segmentMap)
+            public Expression GetValue(SegmentedAccess access, IReadOnlySegmentMap segmentMap)
             {
                 return InvalidConstant.Create(access.DataType);
             }
