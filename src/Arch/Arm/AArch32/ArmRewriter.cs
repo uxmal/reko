@@ -1052,7 +1052,7 @@ namespace Reko.Arch.Arm.AArch32
         private Expression EmitNarrowingSlice(Expression e, DataType dt)
         {
             var tmp = binder.CreateTemporary(dt);
-            m.Assign(tmp, m.Slice(dt, e, 0));
+            m.Assign(tmp, m.Slice(e, dt));
             return tmp;
         }
 

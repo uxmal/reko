@@ -239,7 +239,7 @@ namespace Reko.ImageLoaders.IntelHex
         /// </returns>
         private Address MakeZeroAddress(IProcessorArchitecture arch)
         {
-            if (!arch.TryParseAddress("0", out Address addr) &&
+            if (!arch.TryParseAddress("0", out Address? addr) &&
                 !arch.TryParseAddress("0:0", out addr))
             {
                 // Something's wrong with your architecture's TryParseAddress

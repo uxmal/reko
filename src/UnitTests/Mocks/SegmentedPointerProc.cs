@@ -42,8 +42,8 @@ namespace Reko.UnitTests.Mocks
             m.Assign(es_bx, m.SegMem(PrimitiveType.SegPtr32, ds, m.Word16(0x300)));
             m.SStore(ds, m.Word16(0x304), m.SegMem(
                 PrimitiveType.Word16,
-                m.Slice(PrimitiveType.SegmentSelector, es_bx, 16),
-                m.IAdd(m.Slice(PrimitiveType.Word16, es_bx, 0), 4)));
+                m.Slice(es_bx, PrimitiveType.SegmentSelector, 16),
+                m.IAdd(m.Slice(es_bx, PrimitiveType.Word16, 0), 4)));
         }
     }
 }

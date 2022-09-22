@@ -344,7 +344,7 @@ namespace Reko.ImageLoaders.MzExe
             Dictionary<int, string> names,
             IProcessorArchitecture arch)
         {
-            trace.Inform("== Loading entry points from offset {0:X}", offEntryTable);
+            trace.Inform("== Loading entry points from Offset {0:X}", offEntryTable);
             var rdr = new LeImageReader(RawImage, offEntryTable);
 
             var entries = new List<ImageSymbol?>();

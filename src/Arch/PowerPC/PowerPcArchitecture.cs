@@ -411,7 +411,7 @@ namespace Reko.Arch.PowerPC
             return Address.Ptr32(uAddr);
         }
 
-        public override bool TryParseAddress(string? txtAddress, out Address addr)
+        public override bool TryParseAddress(string? txtAddress, [MaybeNullWhen(false)] out Address addr)
         {
             return Address.TryParse32(txtAddress, out addr);
         }
@@ -438,7 +438,7 @@ namespace Reko.Arch.PowerPC
             return Address.Ptr32(uAddr);
         }
 
-        public override bool TryParseAddress(string? txtAddress, out Address addr)
+        public override bool TryParseAddress(string? txtAddress, [MaybeNullWhen(false)] out Address addr)
         {
             return Address.TryParse32(txtAddress, out addr);
         }
@@ -471,7 +471,7 @@ namespace Reko.Arch.PowerPC
             return Address.Ptr64(uAddr);
         }
 
-        public override bool TryParseAddress(string? txtAddress, out Address addr)
+        public override bool TryParseAddress(string? txtAddress, [MaybeNullWhen(false)] out Address addr)
         {
             return Address.TryParse64(txtAddress, out addr);
         }

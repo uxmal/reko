@@ -27,6 +27,7 @@ using Reko.Core.Rtl;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 
 namespace Reko.Arch.X86
@@ -141,9 +142,9 @@ namespace Reko.Arch.X86
             return false;
         }
 
-        public abstract bool TryParseAddress(string? txtAddress, out Address addr);
+        public abstract bool TryParseAddress(string? txtAddress, [MaybeNullWhen(false)] out Address addr);
 
-        public bool TryParseSegmentedAddress(string? txtAddress, out Address addr)
+        public bool TryParseSegmentedAddress(string? txtAddress, [MaybeNullWhen(false)] out Address addr)
         {
             if (txtAddress != null)
             {
@@ -222,7 +223,7 @@ namespace Reko.Arch.X86
             return TryReadSegmentedCodeAddress(byteSize, rdr, state, out addr);
         }
 
-        public override bool TryParseAddress(string? txtAddress, out Address addr)
+        public override bool TryParseAddress(string? txtAddress, [MaybeNullWhen(false)] out Address addr)
         {
             return TryParseSegmentedAddress(txtAddress, out addr);
         }
@@ -269,7 +270,7 @@ namespace Reko.Arch.X86
 
         public override Address MakeAddressFromConstant(Constant c)
         {
-            throw new NotSupportedException("Must pass segment:offset to make a segmented address.");
+            throw new NotSupportedException("Must pass segment:Offset to make a segmented address.");
         }
 
         public override bool TryReadCodeAddress(int byteSize, EndianImageReader rdr, ProcessorState? state, out Address addr)
@@ -277,7 +278,7 @@ namespace Reko.Arch.X86
             return TryReadSegmentedCodeAddress(byteSize, rdr, state, out addr);
         }
 
-        public override bool TryParseAddress(string? txtAddress, out Address addr)
+        public override bool TryParseAddress(string? txtAddress, [MaybeNullWhen(false)] out Address addr)
         {
             return TryParseSegmentedAddress(txtAddress, out addr);
         }
@@ -400,7 +401,7 @@ namespace Reko.Arch.X86
             }
         }
 
-        public override bool TryParseAddress(string? txtAddress, out Address addr)
+        public override bool TryParseAddress(string? txtAddress, [MaybeNullWhen(false)] out Address addr)
         {
             return Address.TryParse32(txtAddress, out addr);
         }
@@ -486,7 +487,7 @@ namespace Reko.Arch.X86
             }
         }
 
-        public override bool TryParseAddress(string? txtAddress, out Address addr)
+        public override bool TryParseAddress(string? txtAddress, [MaybeNullWhen(false)] out Address addr)
         {
             return Address.TryParse64(txtAddress, out addr);
         }

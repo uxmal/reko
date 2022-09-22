@@ -189,7 +189,7 @@ namespace Reko.Arch.M68k
             m.Assign(
                 dReg,
                 m.Convert(
-                    m.Slice(dtSrc, dReg, 0),
+                    m.Slice(dReg, dtSrc),
                     dtSrc, dtDst));
             m.Assign(
                 binder.EnsureFlagGroup(Registers.ZN),
@@ -201,7 +201,7 @@ namespace Reko.Arch.M68k
             var dReg = orw.RewriteSrc(instr.Operands[0], instr.Address);
             m.Assign(
                 dReg,
-                m.Convert(m.Slice(PrimitiveType.SByte, dReg, 0), PrimitiveType.SByte, PrimitiveType.Int32));
+                m.Convert(m.Slice(dReg, PrimitiveType.SByte), PrimitiveType.SByte, PrimitiveType.Int32));
             m.Assign(
                 binder.EnsureFlagGroup(Registers.ZN),
                 m.Cond(dReg));
@@ -540,7 +540,7 @@ namespace Reko.Arch.M68k
                 {
                     var idx = orw.Combine(null, indop.Index, instr.Address);
                     if (indop.index_reg_width!.BitSize != 32)
-                        idx = m.Convert(m.Slice(PrimitiveType.Int16, idx, 0), PrimitiveType.Int16, PrimitiveType.Int32);
+                        idx = m.Convert(m.Slice(idx, PrimitiveType.Int16), PrimitiveType.Int16, PrimitiveType.Int32);
                     if (indop.IndexScale > 1)
                         idx = m.IMul(idx, m.Int32(indop.IndexScale));
                     ea = orw.Combine(ea, idx);
@@ -822,7 +822,7 @@ namespace Reko.Arch.M68k
             if (dst is Identifier && dst.DataType.BitSize > bitSize)
             {
                 var tmpHi = binder.CreateTemporary(PrimitiveType.CreateWord(dst.DataType.BitSize - bitSize));
-                m.Assign(tmpHi, m.Slice(tmpHi.DataType, dst, bitSize));
+                m.Assign(tmpHi, m.Slice(dst, tmpHi.DataType, bitSize));
                 m.Assign(dst, m.Seq(tmpHi, src));
             }
             else

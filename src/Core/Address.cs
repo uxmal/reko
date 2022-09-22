@@ -22,6 +22,7 @@ using Reko.Core.Expressions;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 
 namespace Reko.Core
@@ -116,7 +117,7 @@ namespace Reko.Core
             }
         }
 
-        public override IEnumerable<Expression> Children { get { yield break; } }
+        public override IEnumerable<Expression> Children => Array.Empty<Expression>();
         public abstract bool IsNull { get; }
         public abstract ulong Offset { get; }
         public abstract ushort? Selector { get; }			// Segment selector; return null if the address is linear.
@@ -237,7 +238,7 @@ namespace Reko.Core
 		/// <param name="s">The string representation of the Address</param>
 		/// <param name="radix">The radix used in the  representation, typically 16 for hexadecimal address representation.</param>
 		/// <returns></returns>
-        public static bool TryParse16(string? s, out Address result)
+        public static bool TryParse16(string? s, [MaybeNullWhen(false)] out Address result)
         {
             if (s is not null)
             {
@@ -247,11 +248,11 @@ namespace Reko.Core
                     return true;
                 }
             }
-            result = null!;
+            result = default;
             return false;
         }
 
-        public static bool TryParse32(string? s, out Address result)
+        public static bool TryParse32(string? s, [MaybeNullWhen(false)] out Address result)
         {
             if (s is not null)
             {
@@ -265,7 +266,7 @@ namespace Reko.Core
             return false;
         }
 
-        public static bool TryParse64(string? s, out Address result)
+        public static bool TryParse64(string? s, [MaybeNullWhen(false)] out Address result)
         {
             if (s is not null)
             {

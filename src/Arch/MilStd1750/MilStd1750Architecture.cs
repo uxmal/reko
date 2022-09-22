@@ -205,12 +205,12 @@ namespace Reko.Arch.MilStd1750
             return Registers.ByName.TryGetValue(name, out reg);
         }
 
-        public override bool TryParseAddress(string? txtAddr, out Address addr)
+        public override bool TryParseAddress(string? txtAddr, [MaybeNullWhen(false)] out Address addr)
         {
             return Address.TryParse16(txtAddr, out addr);
         }
 
-        public override bool TryRead(EndianImageReader rdr, PrimitiveType dt, out Constant value)
+        public override bool TryRead(EndianImageReader rdr, PrimitiveType dt, [MaybeNullWhen(false)] out Constant value)
         {
             if (dt.Domain == Domain.Real)
             {

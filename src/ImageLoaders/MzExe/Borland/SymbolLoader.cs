@@ -516,7 +516,7 @@ private const byte TID_LOCALHANDLE = 0x3F;    //  Windows local handle
 
         private void LoadTypeTable(LeImageReader rdr, string[] names)
         {
-            trace.Verbose($"Type table (offset: {rdr.Offset:X8}); {header.types_count:X4} entries");
+            trace.Verbose($"Type table (Offset: {rdr.Offset:X8}); {header.types_count:X4} entries");
             this.types = new Dictionary<ushort, BorlandType>();
             for (int i = 0; i < header.types_count; ++i)
             {
@@ -721,7 +721,7 @@ private const byte TID_LOCALHANDLE = 0x3F;    //  Windows local handle
 
         private void LoadMemberTable(LeImageReader rdr, string[] names)
         {
-            trace.Verbose($"Member table (offset: {rdr.Offset:X8}); {header.members_count:X4} entries");
+            trace.Verbose($"Member table (Offset: {rdr.Offset:X8}); {header.members_count:X4} entries");
             for (int i = 0; i < header.members_count; ++i)
             {
                 byte b;

@@ -542,7 +542,7 @@ namespace Reko.Arch.M68k
 
         private bool get_imm_str_u(PrimitiveType dt, out M68kImmediateOperand imm)
         {
-            Constant c;
+            Constant? c;
             imm = default!;
             if (dt.Domain == Domain.Real)
             {
@@ -814,7 +814,7 @@ namespace Reko.Arch.M68k
                 {
                     rdr.Offset += 1;
                 }
-                if (!rdr.TryReadBe(dataWidth, out Constant coff))
+                if (!rdr.TryReadBe(dataWidth, out Constant? coff))
                 {
                     return null;
                 }

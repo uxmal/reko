@@ -35,6 +35,7 @@ using Reko.Core.Operators;
 using Reko.Core.Assemblers;
 using Reko.Core.Memory;
 using Reko.Core.Emulation;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Reko.Arch.X86
 {
@@ -330,7 +331,7 @@ namespace Reko.Arch.X86
 			get { return mode; }
 		}
 
-        public override bool TryParseAddress(string? txtAddress, out Address addr)
+        public override bool TryParseAddress(string? txtAddress, [MaybeNullWhen(false)] out Address addr)
         {
             return mode.TryParseAddress(txtAddress, out addr);
         }

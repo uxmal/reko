@@ -82,7 +82,7 @@ namespace Reko.Analysis
                     return;
                 change = false;
                 this.wl.AddRange(ssaStates);
-                while (wl.TryGetWorkItem(out SsaState ssa))
+                while (wl.TryGetWorkItem(out SsaState? ssa))
                 {
                     if (this.eventListener.IsCanceled())
                         return;
@@ -144,7 +144,7 @@ namespace Reko.Analysis
         private void CollectLiveOutStorages()
         {
             var wl = WorkList.Create(ssaStates);
-            while (wl.TryGetWorkItem(out SsaState ssa))
+            while (wl.TryGetWorkItem(out SsaState? ssa))
             {
                 var liveOut = CollectLiveOutStorages(ssa.Procedure);
                 var flow = dataFlow.ProcedureFlows[ssa.Procedure];

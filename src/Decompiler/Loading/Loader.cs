@@ -280,7 +280,7 @@ namespace Reko.Loading
 
             var imgLoader = CreateCustomImageLoader(Services, details.LoaderName, imageLocation, image);
             var program = imgLoader.LoadProgram(addrLoad, arch, platform);
-            if (details.EntryPoint is not null && arch.TryParseAddress(details.EntryPoint.Address, out Address addrEp))
+            if (details.EntryPoint is not null && arch.TryParseAddress(details.EntryPoint.Address, out Address? addrEp))
             {
                 program.EntryPoints.Add(addrEp, ImageSymbol.Procedure(arch, addrEp));
             }
@@ -361,7 +361,7 @@ namespace Reko.Loading
             }
 
             Address? entryAddr = null;
-            if (arch.TryParseAddress(rawFile.BaseAddress, out Address baseAddr))
+            if (arch.TryParseAddress(rawFile.BaseAddress, out Address? baseAddr))
             {
                 entryAddr = GetRawBinaryEntryAddress(rawFile, image, arch, baseAddr);
             }
@@ -371,7 +371,7 @@ namespace Reko.Loading
                 Platform = platform,
                 PreferredBaseAddress = entryAddr!,
             };
-            Address addrEp;
+            Address? addrEp;
             if (rawFile.EntryPoint != null)
             {
                 if (!string.IsNullOrEmpty(rawFile.EntryPoint.Address))
@@ -382,7 +382,7 @@ namespace Reko.Loading
                 {
                     addrEp = baseAddr;
                 }
-                imgLoader.EntryPoints.Add(ImageSymbol.Procedure(arch, addrEp));
+                imgLoader.EntryPoints.Add(ImageSymbol.Procedure(arch, addrEp!));
             }
             return imgLoader;
         }
@@ -395,7 +395,7 @@ namespace Reko.Loading
         {
             if (!string.IsNullOrEmpty(rawFile.EntryPoint.Address))
             {
-                if (arch.TryParseAddress(rawFile.EntryPoint.Address, out Address entryAddr))
+                if (arch.TryParseAddress(rawFile.EntryPoint.Address, out Address? entryAddr))
                 {
                     if (rawFile.EntryPoint.Follow)
                     {

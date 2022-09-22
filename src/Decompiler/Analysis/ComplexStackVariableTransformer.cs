@@ -109,7 +109,7 @@ namespace Reko.Analysis
         private bool TryRewriteFrameOffset(
             int offset,
             int ptrBitSize,
-            [NotNullWhen(true)] out Expression? e)
+            [MaybeNullWhen(false)] out Expression e)
         {
             var ints = escapedFrameIntervals.GetIntervalsOverlappingWith(
                 Interval.Create(offset, offset + 1));

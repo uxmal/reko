@@ -1760,7 +1760,7 @@ namespace Reko.Evaluation
 
         private bool TryExtendOperand(
             BinaryExpression bin,
-            [NotNullWhen(true)] out BinaryExpression? extBin)
+            [MaybeNullWhen(false)] out BinaryExpression extBin)
         {
             if (bin.Left.DataType.BitSize > bin.Right.DataType.BitSize)
             {

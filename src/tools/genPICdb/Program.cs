@@ -199,7 +199,7 @@ namespace Reko.Tools.genPICdb
                     }
                     if (name.Equals("AdjustPoint"))
                     {
-                        bitpos += xfielddef.Attribute("offset").Value.ToInt32Ex();
+                        bitpos += xfielddef.Attribute("Offset").Value.ToInt32Ex();
                         continue;
                     }
                     throw new NotImplementedException($"Unexpected XElement descendant '{name}' for {mode}.");

@@ -602,13 +602,13 @@ namespace Reko.ImageLoaders.Xex
                                         if (match_offset > offset &&
                                             (match_offset - window_posn) > ref_data_size)
                                         {
-                                            throw new IOException("match offset beyond LZX stream");
+                                            throw new IOException("match Offset beyond LZX stream");
                                         }
                                         /* j = length from match offset to end of window */
                                         j = match_offset - window_posn;
                                         if (j > (int)window_size)
                                         {
-                                            throw new IOException("match offset beyond window boundaries");
+                                            throw new IOException("match Offset beyond window boundaries");
                                         }
                                         runsrc = window_size - j;
                                         if (j < i)
@@ -758,13 +758,13 @@ namespace Reko.ImageLoaders.Xex
                                     {
                                         if (match_offset > offset && (match_offset - window_posn) > ref_data_size)
                                         {
-                                            throw new IOException("match offset beyond LZX stream");
+                                            throw new IOException("match Offset beyond LZX stream");
                                         }
                                         /* j = length from match offset to end of window */
                                         j = match_offset - window_posn;
                                         if (j > window_size)
                                         {
-                                            throw new IOException("match offset beyond window boundaries");
+                                            throw new IOException("match Offset beyond window boundaries");
                                         }
                                         runsrc = window_size - j;
                                         if (j < i)

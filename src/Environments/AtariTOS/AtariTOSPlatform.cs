@@ -64,8 +64,8 @@ namespace Reko.Environments.AtariTOS
 
         public override SystemService? FindService(int vector, ProcessorState? state, SegmentMap? segmentMap)
         {
-            EnsureTypeLibraries(PlatformIdentifier);
-            foreach (var module in this.Metadata!.Modules.Values)
+            var metadata = EnsureTypeLibraries(PlatformIdentifier);
+            foreach (var module in metadata.Modules.Values)
             {
                 if (!module.ServicesByVector.TryGetValue(vector, out var svc))
                     continue;

@@ -119,10 +119,7 @@ namespace Reko.Core.Hll.C
             return new CastExpression { Type = type, Expression = exp };
         }
 
-        public CExpression Application(CExpression e)
-        {
-            throw new NotImplementedException();
-        }
+        public CExpression Application(CExpression e) => throw new NotImplementedException();
 
         public DeclSpec StorageClass(CTokenType token)
         {

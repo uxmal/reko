@@ -63,7 +63,7 @@ namespace Reko.Core.Serialization
             if (!string.IsNullOrEmpty(Name))
                 sb.AppendFormat("{0},", Name);
             sb.Append(Type);
-            sb.Append(")");
+            sb.Append(')');
             return sb.ToString();
         }
 	}

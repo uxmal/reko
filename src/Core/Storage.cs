@@ -271,7 +271,9 @@ namespace Reko.Core
         }
 
         void MachineOperand.Render(MachineInstructionRenderer renderer, MachineInstructionRendererOptions options) =>
-            Render(renderer, options); public override SerializedKind Serialize()
+            Render(renderer, options);
+        
+        public override SerializedKind Serialize()
         {
             return new FlagGroup_v1(Name);
         }
@@ -919,7 +921,6 @@ namespace Reko.Core
                 return (that.StackOffset - this.StackOffset) * DataType.BitsPerByte;
             return -1;
         }
-
 
         public override bool OverlapsWith(Storage other)
         {

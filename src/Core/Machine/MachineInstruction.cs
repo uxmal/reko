@@ -18,6 +18,8 @@
  */
 #endregion
 
+using System;
+
 namespace Reko.Core.Machine
 {
     /// <summary>
@@ -25,7 +27,7 @@ namespace Reko.Core.Machine
     /// </summary>
     public abstract class MachineInstruction
     {
-        public static readonly MachineOperand[] NoOperands = new MachineOperand[0];
+        public static readonly MachineOperand[] NoOperands = Array.Empty<MachineOperand>();
 
         private Address? addr;      //$REFACTOR: in C# 9, there will be 'init' properties.
 

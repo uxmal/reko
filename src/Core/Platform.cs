@@ -31,6 +31,7 @@ using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -50,6 +51,7 @@ namespace Reko.Core
         string Description { get; set; }
         PrimitiveType FramePointerType { get; }
         PlatformHeuristics Heuristics { get; }
+
         /// <summary>
         /// Some platforms, especially microcomputers, have well-known
         /// procedures and global variables at absolute addresses. These are
@@ -58,6 +60,7 @@ namespace Reko.Core
         MemoryMap_v1? MemoryMap { get; set; }
         string PlatformIdentifier { get; }
         PrimitiveType PointerType { get; }
+
         /// <summary>
         /// The structure member alignment for this platform, measured in
         /// storage units (e.g. bytes). Objects larger than or equal to this
@@ -71,6 +74,7 @@ namespace Reko.Core
         HashSet<RegisterStorage> CreateTrashedRegisters();
 
         IEnumerable<Address> CreatePointerScanner(SegmentMap map, EndianImageReader rdr, IEnumerable<Address> addr, PointerScannerFlags flags);
+
         TypeLibrary CreateMetadata();
 
         /// <summary>
@@ -243,6 +247,7 @@ namespace Reko.Core
         Expression? ResolveImportByName(string? moduleName, string globalName);
         Expression? ResolveImportByOrdinal(string moduleName, int ordinal);
         ProcedureCharacteristics? LookupCharacteristicsByName(string procName);
+
         /// <summary>
         /// Given a constant <pararef name="c" /> attempt to make a corresponding <see cref="Address"/>.
         /// </summary>
@@ -280,7 +285,7 @@ namespace Reko.Core
         /// </returns>
         Address? ResolveIndirectCall(RtlCall instr);
 
-        bool TryParseAddress(string? sAddress, out Address addr);
+        bool TryParseAddress(string? sAddress, [MaybeNullWhen(false)] out Address addr);
         Dictionary<string, object>? SaveUserOptions();
         ProcedureBase_v1? SignatureFromName(string importName);
         (string, SerializedType, SerializedType)? DataTypeFromImportName(string importName);
@@ -303,7 +308,6 @@ namespace Reko.Core
         /// Initializes a Platform instance
         /// </summary>
         /// <param name="arch"></param>
-#nullable disable
         protected Platform(IServiceProvider services, IProcessorArchitecture arch, string platformId)
         {
             this.Services = services;
@@ -311,13 +315,16 @@ namespace Reko.Core
             this.PlatformIdentifier = platformId;
             this.Heuristics = new PlatformHeuristics();
             this.DefaultTextEncoding = Encoding.ASCII;
+            this.Metadata = null;
+            this.CharacteristicsLibs = Array.Empty<CharacteristicsLibrary>();
+            this.Name = platformId;
+            this.Description = GetType().Name;
             this.PlatformProcedures = new Dictionary<Address, ExternalProcedure>();
         }
-#nullable enable
 
         public IProcessorArchitecture Architecture { get; }
         public IServiceProvider Services { get; }
-        public virtual TypeLibrary Metadata { get; protected set; }
+        public virtual TypeLibrary? Metadata { get; protected set; }
         public CharacteristicsLibrary[] CharacteristicsLibs { get; protected set; }
         public string Description { get; set; }
         public PlatformHeuristics Heuristics { get; set; }
@@ -393,8 +400,8 @@ namespace Reko.Core
 
         public TypeLibrary CreateMetadata()
         {
-            EnsureTypeLibraries(PlatformIdentifier);
-            return Metadata.Clone();
+            var metadata = EnsureTypeLibraries(PlatformIdentifier);
+            return metadata.Clone();
         }
 
         /// <summary>
@@ -442,16 +449,15 @@ namespace Reko.Core
         /// characteristics libraries defined in the Reko configuration file.
         /// </summary>
         /// <param name="envName"></param>
-        public virtual void EnsureTypeLibraries(string envName)
+        public virtual TypeLibrary EnsureTypeLibraries(string envName)
         {
             if (Metadata != null) 
-                return;
+                return Metadata;
             var cfgSvc = Services.RequireService<IConfigurationService>();
             var envCfg = cfgSvc.GetEnvironment(envName);
             if (envCfg == null)
-                throw new ApplicationException(string.Format(
-                    "Environment '{0}' doesn't appear in the configuration file. Your installation may be out-of-date.",
-                    envName));
+                throw new ApplicationException(
+                    $"Environment '{envName}' doesn't appear in the configuration file. Your installation may be out-of-date.");
             this.Metadata = new TypeLibrary(envCfg.CaseInsensitive);
 
             var tlSvc = Services.RequireService<ITypeLibraryLoaderService>();
@@ -467,6 +473,7 @@ namespace Reko.Core
                 .Where(cl => cl != null).ToArray();
 
             ApplyCharacteristicsToServices(CharacteristicsLibs, Metadata);
+            return Metadata;
         }
 
         private static void ApplyCharacteristicsToServices(CharacteristicsLibrary[] characteristicsLibs, TypeLibrary metadata)
@@ -585,7 +592,7 @@ namespace Reko.Core
             return Address.Create(Architecture.PointerType, uAddr);
         }
 
-        public virtual bool TryParseAddress(string? sAddress, out Address addr)
+        public virtual bool TryParseAddress(string? sAddress, [MaybeNullWhen(false)] out Address addr)
         {
             return Architecture.TryParseAddress(sAddress, out addr);
         }
@@ -669,7 +676,7 @@ namespace Reko.Core
 
         public virtual ProcedureCharacteristics? LookupCharacteristicsByName(string procName)
         {
-            EnsureTypeLibraries(PlatformIdentifier);
+            var metadata = EnsureTypeLibraries(PlatformIdentifier);
             return CharacteristicsLibs.Select(cl => cl.Lookup(procName))
                 .Where(c => c != null)
                 .FirstOrDefault();
@@ -710,10 +717,7 @@ namespace Reko.Core
 
         public List<TypeLibrary> TypeLibraries { get; }
 
-        public override string DefaultCallingConvention
-        {
-            get { return ""; }
-        }
+        public override string DefaultCallingConvention => "";
 
         public override HashSet<RegisterStorage> CreateTrashedRegisters()
         {
@@ -747,7 +751,7 @@ namespace Reko.Core
             case CBasicType.Double: return 64;
             case CBasicType.LongDouble: return 64;
             case CBasicType.Int64: return 64;
-            default: throw new NotImplementedException(string.Format("C basic type {0} not supported.", cb));
+            default: throw new NotImplementedException($"C basic type {cb} not implemented yet.");
             }
         }
 

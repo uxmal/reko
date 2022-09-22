@@ -97,8 +97,8 @@ namespace Reko.Environments.Windows
 
 		public override ExternalProcedure? LookupProcedureByOrdinal(string moduleName, int ordinal)
 		{
-			EnsureTypeLibraries(PlatformIdentifier);
-			if (!Metadata.Modules.TryGetValue(moduleName.ToUpper(), out ModuleDescriptor? mod))
+			var metadata = EnsureTypeLibraries(PlatformIdentifier);
+			if (!metadata.Modules.TryGetValue(moduleName.ToUpper(), out ModuleDescriptor? mod))
 				return null;
 			if (mod.ServicesByOrdinal.TryGetValue(ordinal, out SystemService? svc))
 			{
@@ -112,8 +112,8 @@ namespace Reko.Environments.Windows
 		{
             if (moduleName is null)
                 return null;
-			EnsureTypeLibraries(PlatformIdentifier);
-			if (!Metadata.Modules.TryGetValue(moduleName.ToUpper(), out ModuleDescriptor? mod))
+			var metadata = EnsureTypeLibraries(PlatformIdentifier);
+			if (!metadata.Modules.TryGetValue(moduleName.ToUpper(), out ModuleDescriptor? mod))
 				return null;
             if (mod.ServicesByName.TryGetValue(moduleName, out SystemService? svc))
             {

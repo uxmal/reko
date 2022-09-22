@@ -427,17 +427,16 @@ namespace Reko.Analysis
 
             ssa.RemoveUses(sidOrigLo.DefStatement!);
             var expNewLo = m.Slice(
-                PrimitiveType.CreateWord(tmpHi.DataType.BitSize),
                 sidTmp.Identifier,
-                0);
+                PrimitiveType.CreateWord(tmpHi.DataType.BitSize));
             sidOrigLo.DefStatement!.Instruction = new Assignment(sidOrigLo.Identifier, expNewLo);
             sidOrigLo.DefExpression = expNewLo;
             sidTmp.Uses.Add(sidOrigLo.DefStatement!);
 
             ssa.RemoveUses(sidOrigHi.DefStatement!);
             var expNewHi = m.Slice(
-                PrimitiveType.CreateWord(tmpLo.DataType.BitSize),
                 sidTmp.Identifier,
+                PrimitiveType.CreateWord(tmpLo.DataType.BitSize),
                 tmpHi.DataType.BitSize);
             sidOrigHi.DefStatement!.Instruction = new Assignment(sidOrigHi.Identifier, expNewHi);
             sidOrigHi.DefExpression = expNewHi;

@@ -228,7 +228,7 @@ namespace Reko.UnitTests.Core
             var c = new Identifier("c", PrimitiveType.Int32, RegisterStorage.None);
             var e = m.Array(
                 PrimitiveType.Byte,
-                m.Field(PrimitiveType.Byte, m.MembPtrW(a, b), new StructureField(4, PrimitiveType.Ptr32, "a0004")),
+                m.Field(PrimitiveType.Byte, m.MembPtr16(a, b), new StructureField(4, PrimitiveType.Ptr32, "a0004")),
                 c);
             e.Accept(cf);
             Assert.AreEqual("(a->*b).a0004[c]", sw.ToString());

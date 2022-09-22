@@ -125,7 +125,7 @@ namespace Reko.Arch.CompactRisc
             return Registers.ByName.TryGetValue(name, out reg);
         }
 
-        public override bool TryParseAddress(string? txtAddr, out Address addr)
+        public override bool TryParseAddress(string? txtAddr, [MaybeNullWhen(false)] out Address addr)
         {
             return Address.TryParse16(txtAddr, out addr);
         }

@@ -55,7 +55,7 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
 
         public ILabel Detail { get; private set; }
 
-        public void Invoke(Action action)
+        public new void Invoke(Action action)
         {
             base.Invoke(action);
         }

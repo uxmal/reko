@@ -103,7 +103,6 @@ namespace Reko.Core.Memory
             return this;
         }
 
-
         public ImageWriter WriteBytes(byte[] bytes, uint offset, uint count)
         {
             while (count > 0)
@@ -206,6 +205,8 @@ namespace Reko.Core.Memory
 
         public ImageWriter WriteLeUInt64(uint offset, ulong qw)
         {
+            var s = Bytes.AsSpan();
+            System.Buffers.Binary.BinaryPrimitives.ReadUInt64LittleEndian(s);
             Bytes[offset] = (byte)qw;
             Bytes[offset + 1] = (byte)(qw >> 8);
             Bytes[offset + 2] = (byte)(qw >> 16);

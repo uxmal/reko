@@ -232,13 +232,13 @@ namespace Reko.Arch.Blackfin
         private void RewriteMovxb()
         {
             var src = SrcOperand(1);
-            m.Assign(Reg(0), m.Convert(m.Slice(PrimitiveType.SByte, src, 0), PrimitiveType.SByte, PrimitiveType.Int32));
+            m.Assign(Reg(0), m.Convert(m.Slice(src, PrimitiveType.SByte), PrimitiveType.SByte, PrimitiveType.Int32));
         }
 
         private void RewriteMovzb()
         {
             var src = SrcOperand(1);
-            m.Assign(Reg(0), m.Convert(m.Slice(PrimitiveType.Byte, src, 0), PrimitiveType.Byte, PrimitiveType.Word32));
+            m.Assign(Reg(0), m.Convert(m.Slice(src, PrimitiveType.Byte), PrimitiveType.Byte, PrimitiveType.Word32));
         }
 
         private void RewriteMul()

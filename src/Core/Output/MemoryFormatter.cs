@@ -129,8 +129,8 @@ namespace Reko.Core.Output
                 moreData = rdr.TryRead(dtChunk, out var c);
                 if (moreData)
                 {
-                    DoRenderUnit(addr, c, output);
-                    chunksRead[iChunk++] = c;
+                    DoRenderUnit(addr, c!, output);
+                    chunksRead[iChunk++] = c!;
                 }
                 else
                 {

@@ -461,7 +461,7 @@ namespace Reko.Arch.OpenRISC
             Expression src = Reg(instrCur.Operands[1]);
             if (mem.DataType.BitSize < src.DataType.BitSize)
             {
-                src = m.Slice(mem.DataType, src, 0);
+                src = m.Slice(src, mem.DataType);
             }
             m.Assign(mem, src);
         }

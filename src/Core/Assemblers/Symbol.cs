@@ -29,18 +29,20 @@ namespace Reko.Core.Assemblers
 {
 	public class Symbol
 	{
-		public string sym;
-		public bool fResolved;
-		public int offset;
-        public List<BackPatch> Patches { get; private set; }
 			
 		public Symbol(string s)
 		{
-			sym = s;
-			fResolved = false;
-			offset = 0;
+			Name = s;
+			IsResolved = false;
+			Offset = 0;
 			Patches = new List<BackPatch>();
 		}
+
+        public bool IsResolved { get; set; }
+        public int Offset { get; set; }
+        public string Name { get; }
+        public List<BackPatch> Patches { get; }
+
 
         // Add forward references to the backpatch list.
         public void AddForwardReference(int offset, DataType width, int unitSize)
@@ -48,11 +50,15 @@ namespace Reko.Core.Assemblers
 			Patches.Add(new BackPatch(offset, width, unitSize));
 		}
 
+        /// <summary>
+        /// Refer to this symbol, and if the symbol's address is 
+        /// resolved, patch the target big-endian.
+        /// </summary>
         public void ReferToBe(int off, DataType width, IEmitter emitter)
         {
-            if (fResolved)
+            if (IsResolved)
             {
-                emitter.PatchBe(off, offset, width);
+                emitter.PatchBe(off, Offset, width);
             }
             else
             {
@@ -63,9 +69,9 @@ namespace Reko.Core.Assemblers
 
         public void ReferToLe(int off, DataType width, IEmitter emitter)
         {
-            if (fResolved)
+            if (IsResolved)
             {
-                emitter.PatchLe(off, offset, width);
+                emitter.PatchLe(off, Offset, width);
             }
             else
             {
@@ -76,9 +82,9 @@ namespace Reko.Core.Assemblers
 
         public void ReferToLeWordCount(int off, DataType width, IEmitter emitter)
         {
-            if (fResolved)
+            if (IsResolved)
             {
-                emitter.PatchLe(off, this.offset / 2, width);
+                emitter.PatchLe(off, this.Offset / 2, width);
             }
             else
             {
@@ -89,25 +95,25 @@ namespace Reko.Core.Assemblers
 
         public void ResolveBe(IEmitter emitter)
         {
-            Debug.Assert(fResolved);
+            Debug.Assert(IsResolved);
             foreach (BackPatch patch in Patches)
             {
-                emitter.PatchBe(patch.offset, offset, patch.Size);
+                emitter.PatchBe(patch.offset, Offset, patch.Size);
             }
         }
 
         public void ResolveLe(IEmitter emitter)
         {
-            Debug.Assert(fResolved);
+            Debug.Assert(IsResolved);
             foreach (BackPatch patch in Patches)
             {
-                emitter.PatchLe(patch.offset, this.offset / patch.UnitSize, patch.Size);
+                emitter.PatchLe(patch.offset, this.Offset / patch.UnitSize, patch.Size);
             }
         }
 
 		public override string ToString()
 		{
-			return sym;
+			return Name;
 		}
     }
 
@@ -154,7 +160,7 @@ namespace Reko.Core.Assemblers
 			if (symbols.ContainsKey(s))
 			{
 				sym = symbols[s];
-				if (sym.fResolved || sym.offset != 0)
+				if (sym.IsResolved || sym.Offset != 0)
 					throw new ApplicationException("symbol '" + s + "' redefined");
 			}
 			else
@@ -162,8 +168,8 @@ namespace Reko.Core.Assemblers
 				sym = new Symbol(s);
 				symbols[s] = sym;
 			}
-			sym.fResolved = true;
-			sym.offset = off;
+			sym.IsResolved = true;
+			sym.Offset = off;
 			return sym;
 		}
 
@@ -174,7 +180,7 @@ namespace Reko.Core.Assemblers
             List<Symbol> undef = new List<Symbol>();
 			foreach (Symbol sym in symbols.Values)
 			{
-				if (!sym.fResolved)
+				if (!sym.IsResolved)
 					undef.Add(sym);
 			}
             return undef.ToArray();
@@ -186,10 +192,10 @@ namespace Reko.Core.Assemblers
 			{
 				txt.WriteLine("{0}: {1} {2:X8} patches: {3} ({4})", 
 					de.Key, 
-					de.Value.fResolved ? "resolved" : "unresolved",
-					de.Value.offset, 
+					de.Value.IsResolved ? "resolved" : "unresolved",
+					de.Value.Offset, 
                     de.Value.Patches.Count,
-					de.Value.sym ?? "");
+					de.Value.Name ?? "");
 			}
 		}
 	}

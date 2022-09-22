@@ -39,7 +39,7 @@ namespace Reko.UnitTests.Fragments
             Call(
                 Seq(
                     Constant.Create(PrimitiveType.SegmentSelector, 0x2700),
-                    this.Array(
+                    Array(
                         PrimitiveType.Word16,
                         Seq(ds, Word16(0x2040)),
                         IMul(di, 2))),

@@ -127,9 +127,6 @@ namespace Reko.Core.Hll.Pascal
     /// </summary>
     public class CallableDeclaration : Declaration
     {
-        public PascalType ReturnType;  // Null means no return value.
-        public List<ParameterDeclaration> Parameters;
-
         public CallableDeclaration(string name, PascalType retType, List<ParameterDeclaration> parameters)
             : base(name)
         {
@@ -137,8 +134,10 @@ namespace Reko.Core.Hll.Pascal
             this.Parameters = parameters;
         }
 
-        public Block Body { get; set; }
         public string CallingConvention { get; set; }
+        public List<ParameterDeclaration> Parameters { get; set; }
+        public PascalType ReturnType { get; set; }  // Null means no return value.
+        public Block Body { get; set; }
 
         public override T Accept<T>(IPascalSyntaxVisitor<T> visitor)
         {

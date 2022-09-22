@@ -313,7 +313,7 @@ namespace Reko.Arch.Arm.AArch64
             else
             {
                 var seq = binder.EnsureSequence(PrimitiveType.Word128, rHi, rLo);
-                m.Assign(opDst, m.Slice(opDst.DataType, seq, lsb.ToInt32()));
+                m.Assign(opDst, m.Slice(seq, opDst.DataType, lsb.ToInt32()));
             }
         }
 

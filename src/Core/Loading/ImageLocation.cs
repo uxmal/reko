@@ -42,9 +42,6 @@ namespace Reko.Core
     {
         private const string ArchiveScheme = "archive:";
         private const string FileScheme = "file:";
-        // Regrettably, the .NET 5.0 jitter isn't smart enough to optimize "file:".Length to 5.
-        private const int ArchiveSchemeLength = 8;
-        private const int FileSchemeLength = 5;
 
         /// <summary>
         /// Constructs an <see cref="ImageLocation"/> from a file system
@@ -81,10 +78,10 @@ namespace Reko.Core
             }
             else if (uri.StartsWith(ArchiveScheme))
             {
-                int i = uri.IndexOf('#', ArchiveSchemeLength); // Skip the 'archive:' prefix.
+                int i = uri.IndexOf('#', ArchiveScheme.Length); // Skip the 'archive:' prefix.
                 if (i < 0)
-                    return new ImageLocation(WebUtility.UrlDecode(uri.Substring(ArchiveSchemeLength)));
-                var fsPath = WebUtility.UrlDecode(uri.Substring(8, i - ArchiveSchemeLength));
+                    return new ImageLocation(WebUtility.UrlDecode(uri.Substring(ArchiveScheme.Length)));
+                var fsPath = WebUtility.UrlDecode(uri.Substring(8, i - ArchiveScheme.Length));
                 var fragments = uri.Substring(i + 1)
                     .Split('#')
                     .Select(f => WebUtility.UrlDecode(f))
@@ -205,7 +202,7 @@ namespace Reko.Core
                 }
             }
             // Skip the 'file:' scheme.
-            return FileSchemeLength;
+            return FileScheme.Length;
         }
 
         /// <summary>

@@ -37,13 +37,7 @@ namespace Reko.Environments.Xbox
             this.StructureMemberAlignment = 8;
         }
 
-        public override string DefaultCallingConvention
-        {
-            get
-            {
-                throw new NotImplementedException();
-            }
-        }
+        public override string DefaultCallingConvention => throw new NotImplementedException();
 
         public override HashSet<RegisterStorage> CreateTrashedRegisters()
         {

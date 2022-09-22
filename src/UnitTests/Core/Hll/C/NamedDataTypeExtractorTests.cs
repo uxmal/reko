@@ -196,7 +196,7 @@ namespace Reko.UnitTests.Core.Hll.C
                 new List<CAttribute>
                 {
                     new CAttribute {
-                         Name = new QualifiedName { Components = new[] { "foo", "bar"} }
+                         Name = new QualifiedName("foo", "bar")
                     }
                 });
             Assert.IsNull(kind);

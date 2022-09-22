@@ -392,7 +392,7 @@ namespace Reko.Core.Expressions
                 return Constant.Create(p, -Convert.ToInt64(c));
 			}
 			else 
-				throw new InvalidOperationException(string.Format("Type {0} doesn't support negation.", p));
+				throw new InvalidOperationException($"Type {p} doesn't support negation.");
 		}
 
 		public static Constant Pi()
@@ -1701,7 +1701,7 @@ namespace Reko.Core.Expressions
 
         public override Constant Complement()
         {
-            throw new NotSupportedException("Cannot complement a real value.");
+            throw new NotSupportedException("Cannot complement a string value.");
         }
 
         protected override Constant DoSlice(DataType dt, int offset)

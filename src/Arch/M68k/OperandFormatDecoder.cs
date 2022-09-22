@@ -62,7 +62,7 @@ namespace Reko.Arch.M68k
 
 		private bool TryParseOperandInner(ushort uInstr, byte addressMode, byte operandBits, PrimitiveType dataWidth, EndianImageReader rdr, out MachineOperand op)
 		{
-            Constant offset;
+            Constant? offset;
             switch (addressMode)
             {
             case 0: // Data register direct.
@@ -198,8 +198,7 @@ namespace Reko.Arch.M68k
                     {
                         rdr.Offset += 1;
                     }
-                    Constant coff;
-                    if (!rdr.TryReadBe(dataWidth, out coff))
+                    if (!rdr.TryReadBe(dataWidth, out Constant? coff))
                     {
                         op = default!; return false;
                     }

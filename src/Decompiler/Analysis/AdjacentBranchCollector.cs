@@ -104,7 +104,7 @@ namespace Reko.Analysis
         public void Transform()
         {
             var wl = WorkList.Create(proc.ControlGraph.Blocks);
-            while (wl.TryGetWorkItem(out Block block))
+            while (wl.TryGetWorkItem(out Block? block))
             {
                 if (listener.IsCanceled())
                     return;

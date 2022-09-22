@@ -148,8 +148,8 @@ SP	top of stack
 
         public override ExternalProcedure? LookupProcedureByOrdinal(string moduleName, int ordinal)
         {
-            EnsureTypeLibraries(PlatformIdentifier);
-            foreach (var tl in Metadata.Modules.Values.Where(t => string.Compare(t.ModuleName, moduleName, true) == 0))
+            var metadata = EnsureTypeLibraries(PlatformIdentifier);
+            foreach (var tl in metadata.Modules.Values.Where(t => string.Compare(t.ModuleName, moduleName, true) == 0))
             {
                 if (tl.ServicesByOrdinal.TryGetValue(ordinal, out SystemService? svc))
                 {

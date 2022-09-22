@@ -62,8 +62,7 @@ namespace Reko.Core.Types
 
         public override DataType Clone(IDictionary<DataType, DataType>? clonedTypes)
 		{
-            if (clonedTypes == null)
-                clonedTypes = new Dictionary<DataType, DataType>();
+            clonedTypes ??= new Dictionary<DataType, DataType>();
             if (clonedTypes.ContainsKey(this))
                 return clonedTypes[this];
 			var s = new StructureType(Name, Size);

@@ -21,11 +21,10 @@
 using Reko.Core;
 using Reko.Core.Configuration;
 using Reko.Core.Output;
+using Reko.Services;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Text;
-using System.Threading;
 
 namespace Reko.UnitTests.Mocks
 {

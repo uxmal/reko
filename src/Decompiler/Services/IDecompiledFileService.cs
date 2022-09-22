@@ -29,7 +29,7 @@ using System.Linq;
 using System.Text;
 using System.Collections.Generic;
 
-namespace Reko
+namespace Reko.Services
 {
     /// <summary>
     /// Interface used by the decompiler's components to write outputs.

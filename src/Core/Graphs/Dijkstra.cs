@@ -56,10 +56,10 @@ namespace Reko.Core.Graphs
 
             foreach (var v in Graph.Nodes)
             {
-                Q.insert(v, self.dist[v]);
+                Q.Insert(v, self.dist[v]);
             }
 
-            while (!Q.isEmpty())
+            while (!Q.IsEmpty)
             {
                 var u = Q.removeMin();                            // Remove and return best vertex
                 q.Remove(u);

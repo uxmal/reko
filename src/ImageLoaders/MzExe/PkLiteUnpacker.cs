@@ -58,12 +58,12 @@ namespace Reko.ImageLoaders.MzExe
 			uint pkLiteHdrOffset = (uint) (loader.ExeLoader.e_cparHeader * 0x10);
 
 			if (RawImage[pkLiteHdrOffset] != 0xB8)
-				throw new ApplicationException(string.Format("Expected MOV AX,XXXX at offset 0x{0:X4}.", pkLiteHdrOffset));
+				throw new ApplicationException(string.Format("Expected MOV AX,XXXX at Offset 0x{0:X4}.", pkLiteHdrOffset));
 			uint cparUncompressed = ByteMemoryArea.ReadLeUInt16(RawImage, pkLiteHdrOffset + 1);
 			abU = new byte[cparUncompressed * 0x10U];
 
 			if (RawImage[pkLiteHdrOffset + 0x04C] != 0x83)
-				throw new ApplicationException(string.Format("Expected ADD BX,+XX at offset 0x{0:X4}.", pkLiteHdrOffset + 0x04C));
+				throw new ApplicationException(string.Format("Expected ADD BX,+XX at Offset 0x{0:X4}.", pkLiteHdrOffset + 0x04C));
 			uint offCompressedData = pkLiteHdrOffset + RawImage[pkLiteHdrOffset + 0x04E] * 0x10u - PspSize;
 			bitStm = new BitStream(RawImage, (int) offCompressedData);
             this.imgU = null!;

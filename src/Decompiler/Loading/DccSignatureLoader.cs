@@ -379,7 +379,7 @@ static char [] buf = new char[100];          /* A general purpose buffer */
             SymLen = rdr.ReadLeUInt16();
             if ((PatLen != PATLEN) || (SymLen != SYMLEN))
             {
-                listener.Warn(string.Format("Can't use signature file with sym and pattern lengths of {0} and {1}.", SymLen, PatLen));
+                listener.Warn(string.Format("Can't use signature file with Name and pattern lengths of {0} and {1}.", SymLen, PatLen));
                 return false;
             }
 

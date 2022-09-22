@@ -172,7 +172,7 @@ namespace Reko.Arch.X86.Assembler
 			keywords["mul"] = Token.MUL;
 			keywords["neg"] = Token.NEG;
 			keywords["not"] = Token.NOT;
-			keywords["offset"] = Token.OFFSET;
+			keywords["Offset"] = Token.OFFSET;
 			keywords["or"] = Token.OR;
 			keywords["out"] = Token.OUT;
 			keywords["pop"] = Token.POP;

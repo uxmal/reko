@@ -179,7 +179,7 @@ namespace Reko.Arch.PaRisc
             var dt = (instr.Sign == SignExtension.s)
                 ? PrimitiveType.Int32
                 : PrimitiveType.UInt32;
-            m.Assign(dst, m.Convert(m.Slice(dtSlice, src, lePos), dtSlice, dt));
+            m.Assign(dst, m.Convert(m.Slice(src, dtSlice, lePos), dtSlice, dt));
         }
 
         private void RewriteLd(PrimitiveType size)
@@ -251,7 +251,7 @@ namespace Reko.Arch.PaRisc
             m.Assign(regp, m.Seq(binder.EnsureRegister(rHi), binder.EnsureRegister(rLo)));
             var shamt = RewriteOp(2);
             var dst = RewriteOp(3);
-            m.Assign(dst, m.Slice(dt, m.Shr(regp, shamt), 0));
+            m.Assign(dst, m.Slice(m.Shr(regp, shamt), dt));
             MaybeSkipNextInstruction(InstrClass.ConditionalTransfer, false, dst);
         }
 
@@ -265,7 +265,7 @@ namespace Reko.Arch.PaRisc
             }
             else if (src.DataType.BitSize > dst.DataType.BitSize)
             {
-                src = m.Slice(dst.DataType, src, 0);
+                src = m.Slice(src, dst.DataType);
             }
             m.Assign(dst, src);
         }

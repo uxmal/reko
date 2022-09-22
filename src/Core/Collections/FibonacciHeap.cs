@@ -124,7 +124,7 @@ namespace Reko.Core.Collections
                         nextW = nextW.right;
                     }
                     // Node y disappears from root list.
-                    y.link(x);
+                    y.Link(x);
                     // We've handled this degree, go to next one.
                     A[d] = null;
                     d++;
@@ -150,7 +150,7 @@ namespace Reko.Core.Collections
 
         public void decreaseKey(TValue x, TKey k)
         {
-            decreaseKey(nodes[x], x, k);
+            DecreaseKey(nodes[x], x, k);
         }
 
         /**
@@ -165,7 +165,7 @@ namespace Reko.Core.Collections
          * @exception  IllegalArgumentException
          *             if k is larger than x.key value.
          */
-        public void decreaseKey(Node x, TValue newData, TKey k)
+        public void DecreaseKey(Node x, TValue newData, TKey k)
         {
             decreaseKey(x, newData, k, false);
         }
@@ -189,8 +189,8 @@ namespace Reko.Core.Collections
             Node? y = x.parent;
             if (y != null && (delete || k.CompareTo(y.getKey) < 0))
             {
-                y.cut(x, min!);
-                y.cascadingCut(min!);
+                y.Cut(x, min!);
+                y.CascadingCut(min!);
             }
             if (delete || k.CompareTo(min!.getKey) < 0)
             {
@@ -206,7 +206,7 @@ namespace Reko.Core.Collections
          *
          * @param  x  node to remove from heap.
          */
-        public void delete(Node x)
+        public void Delete(Node x)
         {
             // make x as small as possible
             decreaseKey(x, x.getData, default!, true);
@@ -222,10 +222,7 @@ namespace Reko.Core.Collections
          *
          * @return  true if the heap is empty, false otherwise.
          */
-        public bool isEmpty()
-        {
-            return min == null;
-        }
+        public bool IsEmpty => min is null;
 
         /**
          * Inserts a new data element into the heap. No heap consolidation
@@ -238,7 +235,7 @@ namespace Reko.Core.Collections
          * @param  key  key value associated with data object.
          * @return newly created heap node.
          */
-        public Node insert(TValue x, TKey key)
+        public Node Insert(TValue x, TKey key)
         {
             Node node = new Node(x, key);
             nodes.Add(x, node);
@@ -361,10 +358,10 @@ namespace Reko.Core.Collections
             return H;
         }
 
-        public List<Node> nodeList()
+        public List<Node> NodeList()
         {
             var l = new List<Node>();
-            if (min != null) min.addToList(l);
+            if (min != null) min.AddToList(l);
             return l;
         }
 
@@ -420,7 +417,7 @@ namespace Reko.Core.Collections
              *
              * @param  min  the minimum heap node, to which nodes will be added.
              */
-            public void cascadingCut(Node min)
+            public void CascadingCut(Node min)
             {
                 Node? z = parent;
                 // if there's a parent...
@@ -429,9 +426,9 @@ namespace Reko.Core.Collections
                     if (mark)
                     {
                         // it's marked, cut it from parent
-                        z.cut(this, min);
+                        z.Cut(this, min);
                         // cut its parent as well
-                        z.cascadingCut(min);
+                        z.CascadingCut(min);
                     }
                     else
                     {
@@ -450,7 +447,7 @@ namespace Reko.Core.Collections
              * @param  x    child to be removed from this node's child list
              * @param  min  the minimum heap node, to which x is added.
              */
-            public void cut(Node x, Node min)
+            public void Cut(Node x, Node min)
             {
                 // remove x from childlist and decrement degree
                 x.left.right = x.right;
@@ -483,7 +480,7 @@ namespace Reko.Core.Collections
              *
              * @param  parent  the new parent node.
              */
-            public void link(Node parent)
+            public void Link(Node parent)
             {
                 // Note: putting this code here in Node makes it 7x faster
                 // because it doesn't have to use generated accessor methods,
@@ -512,13 +509,13 @@ namespace Reko.Core.Collections
                 mark = false;
             }
 
-            public void addToList(List<Node> l)
+            public void AddToList(List<Node> l)
             {
                 Node cur = this;
                 do
                 {
                     l.Add(cur);
-                    if (cur.child != null) cur.child.addToList(l);
+                    if (cur.child != null) cur.child.AddToList(l);
                     cur = cur.right;
                 } while (cur != this);
             }

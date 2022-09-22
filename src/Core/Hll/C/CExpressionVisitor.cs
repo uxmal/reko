@@ -47,7 +47,7 @@ namespace Reko.Core.Hll.C
 
         T VisitConditional(ConditionalExpression conditional);
 
-        T VisitIncremeent(IncrementExpression increment);
+        T VisitIncrement(IncrementExpression increment);
 
         T VisitSizeof(SizeofExpression sizeOf);
     }

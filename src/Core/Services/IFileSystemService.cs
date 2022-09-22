@@ -31,6 +31,7 @@ namespace Reko.Core.Services
     /// </summary>
     public interface IFileSystemService
     {
+        Stream CreateFileStream(string filename, FileMode mode);
         Stream CreateFileStream(string filename, FileMode mode, FileAccess access);
         Stream CreateFileStream(string filename, FileMode mode, FileAccess access, FileShare share);
         TextWriter CreateStreamWriter(string filename, bool append, Encoding enc);
@@ -162,7 +163,7 @@ namespace Reko.Core.Services
                     sb.Append(sepChar);
                 }
             }
-            sb.Append(toPath.Substring(iLastDir));
+            sb.Append(toPath.AsSpan(iLastDir));
             return sb.ToString();
         }
 

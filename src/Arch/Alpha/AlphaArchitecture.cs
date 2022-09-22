@@ -135,7 +135,7 @@ namespace Reko.Arch.Alpha
             return Registers.AllRegisters.TryGetValue(name, out reg);
         }
 
-        public override bool TryParseAddress(string? txtAddr, out Address addr)
+        public override bool TryParseAddress(string? txtAddr, [MaybeNullWhen(false)] out Address addr)
         {
             //$TODO: this should be in the platform not the architecture.
             return Address.TryParse32(txtAddr, out addr);

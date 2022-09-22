@@ -47,7 +47,7 @@ namespace Reko.UnitTests.Decompiler.Evaluation
             var r2_r1 = m.Frame.EnsureSequence(PrimitiveType.Word64, r2.Storage, r1.Storage);
 
             var ass = m.Assign(r2_r1, m.SMul(r1, c));
-            m.Alias(r2, m.Slice(PrimitiveType.Word32, r2_r1, 32));
+            m.Alias(r2, m.Slice(r2_r1, PrimitiveType.Word32, 32));
             if (shift != 0)
                 m.Assign(r2, m.Sar(r2, shift));
             m.MStore(m.Word32(0x0402000), r2);       // Force use of r2

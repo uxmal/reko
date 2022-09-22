@@ -38,7 +38,7 @@ namespace Reko.Core
         }
 
         public Address Address { get; }
-        public DataType DataType  { get; }
+        public DataType DataType { get; }
         public string  Name { get; }
     }
 }

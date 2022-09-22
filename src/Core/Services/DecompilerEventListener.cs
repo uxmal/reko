@@ -169,11 +169,6 @@ namespace Reko.Core.Services
                 scriptError.Exception.Message);
         }
 
-        public void AddDiagnostic(Diagnostic d)
-        {
-            throw new NotImplementedException();
-        }
-
         public void ShowStatus(string caption)
         {
             Debug.Print("Status: {0}", caption);
@@ -211,11 +206,6 @@ namespace Reko.Core.Services
         public ICodeLocation CreateJumpTableNavigator(IReadOnlyProgram _, IProcessorArchitecture arch, Address addrIndirectJump, Address? addrVector, int stride)
         {
             return new NullCodeLocation(addrIndirectJump.ToString());
-        }
-
-        public void AddDiagnostic(ICodeLocation location, Diagnostic d)
-        {
-            throw new NotImplementedException();
         }
 
         public bool IsCanceled()

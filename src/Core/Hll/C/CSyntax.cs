@@ -765,7 +765,7 @@ namespace Reko.Core.Hll.C
 
         public override T Accept<T>(CExpressionVisitor<T> visitor)
         {
-            return visitor.VisitIncremeent(this);
+            return visitor.VisitIncrement(this);
         }
     }
 
@@ -929,7 +929,7 @@ namespace Reko.Core.Hll.C
 
     public struct QualifiedName
     {
-        public string[] Components;
+        public readonly string[] Components;
 
         public QualifiedName(params string[] components)
         {

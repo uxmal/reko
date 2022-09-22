@@ -2434,7 +2434,7 @@ namespace Reko.Arch.Arm.AArch32
                 invalid,
                 invalid);
 
-            var LoadStoreUnsignedRegisterOffset = Mask(4 + 16, 3, "Load/store, unsigned (register offset)",
+            var LoadStoreUnsignedRegisterOffset = Mask(4 + 16, 3, "Load/store, unsigned (register Offset)",
                 Instr(Mnemonic.strb, R12,MemIdx(PrimitiveType.Byte,16,0,(4,2))),
                 Select((16, 4), n => n != 0xF,
                     Instr(Mnemonic.ldrb, wide,R12,MemIdx(PrimitiveType.Byte,16,0,(4,2))),
@@ -2507,7 +2507,7 @@ namespace Reko.Arch.Arm.AArch32
                     invalid));
 
             var LoadStoreSignedRegisterOffset = Select((12,4), n => n != 0xF,
-                Mask(5 + 16, 2, "Load/store, signed (register offset)",
+                Mask(5 + 16, 2, "Load/store, signed (register Offset)",
                     Instr(Mnemonic.ldrsb, wide, R12, MemIdx(PrimitiveType.SByte, 16, 0, (4, 2))),
                     Instr(Mnemonic.ldrsh, wide, R12, MemIdx(PrimitiveType.Int16, 16, 0, (4, 2))),
                     invalid,
@@ -2579,9 +2579,9 @@ namespace Reko.Arch.Arm.AArch32
                             invalid,
                             invalid, 
 
-                            Instr(Mnemonic.stc, nyi("*offset variant")),
+                            Instr(Mnemonic.stc, nyi("*Offset variant")),
                             Select((16,4), n => n != 15,
-                                Instr(Mnemonic.ldc, nyi("*offset variant")),
+                                Instr(Mnemonic.ldc, nyi("*Offset variant")),
                                 ldc_literal),
                             Instr(Mnemonic.stc, nyi("*preindexed variant")),
                             Select((16,4), n => n != 15,
@@ -2590,7 +2590,7 @@ namespace Reko.Arch.Arm.AArch32
 
                             Instr(Mnemonic.stc, CPn14,CR12,MemOff(PrimitiveType.Word32, 16, offsetShift:2, offsetFields:(0,8))),
                             Select((16,4), n => n != 15,
-                                Instr(Mnemonic.ldc, nyi("*offset variant")),
+                                Instr(Mnemonic.ldc, nyi("*Offset variant")),
                                 ldc_literal),
                             Instr(Mnemonic.stc, nyi("*preindexed variant")),
                             Select((16,4), n => n != 15,

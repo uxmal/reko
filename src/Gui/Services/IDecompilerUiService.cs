@@ -24,7 +24,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Reko.Core.Services
+namespace Reko.Gui.Services
 {
     /// <summary>
     /// Provides services for displaying items in the user interface.

@@ -463,6 +463,7 @@ namespace Reko.Core.Memory
                 ((long)image[off+7] << 56);
         }
 
+        //$REVIEW: consider making this an extension method hosted in x86.
         public static bool TryReadLeReal80(byte[] image, long off, out Float80 value)
         {
             if (!TryReadLeUInt64(image, off, out ulong significand) ||
@@ -694,7 +695,7 @@ namespace Reko.Core.Memory
         public bool TryReadBytes(long off, int length, byte[] membuf)
         {
             if (length < 0)
-                throw new ArgumentException("length");
+                throw new ArgumentOutOfRangeException(nameof(length));
             if (off + (long)length <= (long) this.Length)
             {
                 int s = (int)off;

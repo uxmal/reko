@@ -445,7 +445,7 @@ level2_exit:
                 var r1 = m.Register("r1");
                 var sp = m.Frame.EnsureRegister(m.Architecture.StackRegister);
                 m.Assign(sp, m.Frame.FramePointer);
-                m.MStore(m.Ptr32(0x1234), m.Slice(PrimitiveType.Byte, r1, 0));
+                m.MStore(m.Ptr32(0x1234), m.Slice(r1, PrimitiveType.Byte));
                 m.Return();
             });
             var program = pb.BuildProgram();

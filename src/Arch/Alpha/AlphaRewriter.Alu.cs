@@ -149,7 +149,7 @@ namespace Reko.Arch.Alpha
             }
             else if (src.DataType != dtFrom)
             {
-                src = m.Slice(dtFrom, src, 0);
+                src = m.Slice(src, dtFrom);
             }
             var dst = Rewrite(instr.Operands[1]);
             dst.DataType = dtTo ?? dtFrom;
@@ -165,7 +165,7 @@ namespace Reko.Arch.Alpha
         private Expression addl(Expression a, Expression b)
         {
             return m.Convert(
-                m.Slice(PrimitiveType.Int32, m.IAdd(a, b), 0),
+                m.Slice(m.IAdd(a, b), PrimitiveType.Int32),
                 PrimitiveType.Int32,
                 PrimitiveType.Int64);
         }
@@ -216,8 +216,8 @@ namespace Reko.Arch.Alpha
 
             return m.Convert(
                 m.IMul(
-                    m.Slice(PrimitiveType.Int32, a, 0),
-                    m.Slice(PrimitiveType.Int32, b, 0)),
+                    m.Slice(a, PrimitiveType.Int32),
+                    m.Slice(b, PrimitiveType.Int32)),
                 PrimitiveType.Int32,
                 PrimitiveType.Int64);
         }
@@ -269,7 +269,7 @@ namespace Reko.Arch.Alpha
         private Expression SExtend(Expression e)
         {
             return m.Convert(
-                m.Slice(PrimitiveType.Int32, e, 0),
+                m.Slice(e, PrimitiveType.Int32),
                 PrimitiveType.Int32,
                 PrimitiveType.Word64);
         }

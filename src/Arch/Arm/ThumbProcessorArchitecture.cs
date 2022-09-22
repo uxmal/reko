@@ -29,6 +29,7 @@ using Reko.Core.Rtl;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -230,7 +231,7 @@ namespace Reko.Arch.Arm
             return s.ToString();
         }
 
-        public override bool TryParseAddress(string? txtAddr, out Address addr)
+        public override bool TryParseAddress(string? txtAddr, [MaybeNullWhen(false)] out Address addr)
         {
             return Address.TryParse32(txtAddr, out addr);
         }

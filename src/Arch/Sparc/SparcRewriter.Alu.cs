@@ -95,7 +95,7 @@ namespace Reko.Arch.Sparc
             var tmpHi = binder.CreateTemporary(PrimitiveType.CreateWord(dst.DataType.BitSize - bTmp.DataType.BitSize));
             var intrinsic = host.Intrinsic("__ldstub", true, bTmp.DataType, m.AddrOf(arch.PointerType, mem));
             m.Assign(bTmp, intrinsic);
-            m.Assign(tmpHi, m.Slice(tmpHi.DataType, dst, bTmp.DataType.BitSize));
+            m.Assign(tmpHi, m.Slice(dst, tmpHi.DataType, bTmp.DataType.BitSize));
             m.Assign(dst, m.Seq(tmpHi, bTmp));
         }
 
@@ -205,7 +205,7 @@ namespace Reko.Arch.Sparc
             var dst = RewriteMemOp(instrCur.Operands[1], size);
             if (size.Size < src.DataType.Size)
             {
-                src = m.Slice(size, src, 0);
+                src = m.Slice(src, size);
             }
             m.Assign(dst, src);
         }
@@ -216,7 +216,7 @@ namespace Reko.Arch.Sparc
             var dst = RewriteMemOp(instrCur.Operands[1], size);
             if (size.Size < src.DataType.Size)
             {
-                src = m.Slice(size, src, 0);
+                src = m.Slice(src, size);
             }
             m.Assign(dst, src);
         }

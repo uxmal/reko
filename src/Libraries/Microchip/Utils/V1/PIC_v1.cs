@@ -442,7 +442,7 @@ namespace Reko.Libraries.Microchip.V1
         /// <summary> Gets the relative byte offset to add for adjustment. </summary>
         [XmlIgnore]
         public int Offset { get; private set; }
-        [XmlAttribute("offset")]
+        [XmlAttribute("Offset")]
         public string OffsetFormatted { get => $"{Offset}"; set => Offset = value.ToInt32Ex(); }
 
     }

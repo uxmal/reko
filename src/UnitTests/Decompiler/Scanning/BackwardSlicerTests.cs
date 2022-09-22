@@ -553,7 +553,7 @@ namespace Reko.UnitTests.Decompiler.Scanning
             var b = Given_Block(0x00100000);
             Given_Instrs(b, m =>
             {
-                m.Assign(v2, m.ISub(m.Slice(PrimitiveType.Byte, d0, 0), 0x17));
+                m.Assign(v2, m.ISub(m.Slice(d0, PrimitiveType.Byte), 0x17));
                 m.Assign(CVZN, m.Cond(v2));
             });
             Given_Instrs(b, m =>
@@ -568,24 +568,24 @@ namespace Reko.UnitTests.Decompiler.Scanning
             });
             Given_Instrs(b2, m =>
             {
-                m.Assign(v3, m.Slice(v3.DataType, d0, 0));
+                m.Assign(v3, m.Slice(d0, v3.DataType));
                 m.Assign(d1, m.Dpb(d1, v3, 0));
                 m.Assign(CVZN, m.Cond(v3));
             });
             Given_Instrs(b2, m =>
             {
-                m.Assign(v4, m.IAdd(m.Slice(v4.DataType, d1, 0), m.Slice(v4.DataType, d1, 0)));
+                m.Assign(v4, m.IAdd(m.Slice(d1, v4.DataType), m.Slice(d1, v4.DataType)));
                 m.Assign(d1, m.Dpb(d1, v4, 0));
                 m.Assign(CVZNX, m.Cond(v4));
             });
             Given_Instrs(b2, m =>
             {
-                m.Assign(v5, m.Mem16(m.IAdd(m.Word32(0x0010EC32), m.Convert(m.Slice(W16, d1, 0), W16, W32))));
+                m.Assign(v5, m.Mem16(m.IAdd(m.Word32(0x0010EC32), m.Convert(m.Slice(d1, W16), W16, W32))));
                 m.Assign(d1, m.Dpb(d1, v5, 0));
                 m.Assign(CVZN, m.Cond(v5));
             });
             Given_Instrs(b2, m=> {
-                m.Goto(m.IAdd(m.Word32(0x0010EC30), m.Convert(m.Slice(I16, d1, 0), I16, I32)));
+                m.Goto(m.IAdd(m.Word32(0x0010EC30), m.Convert(m.Slice(d1, I16), I16, I32)));
             });
 
             graph.Nodes.Add(b);
@@ -638,7 +638,7 @@ namespace Reko.UnitTests.Decompiler.Scanning
             var b = Given_Block(0x00100000);
             Given_Instrs(b, m =>
             {
-                m.Assign(v2, m.ISub(m.Slice(PrimitiveType.Byte, d0, 0), 0x17));
+                m.Assign(v2, m.ISub(m.Slice(d0, PrimitiveType.Byte), 0x17));
                 m.Assign(CVZN, m.Cond(v2));
             });
             Given_Instrs(b, m =>
@@ -653,24 +653,24 @@ namespace Reko.UnitTests.Decompiler.Scanning
             });
             Given_Instrs(b2, m =>
             {
-                m.Assign(v3, m.Slice(v3.DataType, d0, 0));
+                m.Assign(v3, m.Slice(d0, v3.DataType));
                 m.Assign(d1, m.Dpb(d1, v3, 0));
                 m.Assign(CVZN, m.Cond(v3));
             });
             Given_Instrs(b2, m =>
             {
-                m.Assign(v4, m.IAdd(m.Slice(v4.DataType, d1, 0), m.Slice(v4.DataType, d1, 0)));
+                m.Assign(v4, m.IAdd(m.Slice(d1, v4.DataType), m.Slice(d1, v4.DataType)));
                 m.Assign(d1, m.Dpb(d1, v4, 0));
                 m.Assign(CVZNX, m.Cond(v4));
             });
             Given_Instrs(b2, m =>
             {
-                m.Assign(v5, m.Mem16(m.IAdd(m.Word32(0x0010EC32), m.Convert(m.Slice(W16, d1, 0), W16, W32))));
+                m.Assign(v5, m.Mem16(m.IAdd(m.Word32(0x0010EC32), m.Convert(m.Slice(d1, W16), W16, W32))));
                 m.Assign(d1, m.Dpb(d1, v5, 0));
                 m.Assign(CVZN, m.Cond(v5));
             });
             Given_Instrs(b2, m => {
-                m.Goto(m.IAdd(m.Word32(0x0010EC30), m.Convert(m.Slice(I16, d1, 0), I16, I32)));
+                m.Goto(m.IAdd(m.Word32(0x0010EC30), m.Convert(m.Slice(d1, I16), I16, I32)));
             });
 
             graph.Nodes.Add(b);
@@ -737,7 +737,7 @@ namespace Reko.UnitTests.Decompiler.Scanning
                 m.Goto(
                     m.IAdd(
                         m.Word32(0x001066A2),
-                        m.Convert(m.Slice(PrimitiveType.Int16, r1, 0), PrimitiveType.Int16, PrimitiveType.Int32)),
+                        m.Convert(m.Slice(r1, PrimitiveType.Int16), PrimitiveType.Int16, PrimitiveType.Int32)),
                     InstrClass.Transfer);
             });
 
@@ -772,7 +772,7 @@ namespace Reko.UnitTests.Decompiler.Scanning
             var b1 = Given_Block(0xA860);
             Given_Instrs(b1, m =>
             {
-                m.Assign(v3, m.ISub(m.Slice(PrimitiveType.Word16, d0, 0), m.Word16(0x20)));
+                m.Assign(v3, m.ISub(m.Slice(d0, PrimitiveType.Word16), m.Word16(0x20)));
                 m.Assign(d0, m.Dpb(d0, v3, 0));
                 m.Assign(CVZN, m.Cond(v3));
                 m.Branch(m.Test(ConditionCode.UGE, C), Address.Ptr32(0xA900), InstrClass.ConditionalTransfer);
@@ -787,14 +787,14 @@ namespace Reko.UnitTests.Decompiler.Scanning
             var b2 = Given_Block(0xA900);
             Given_Instrs(b2, m =>
             {
-                m.Assign(v16, m.IAdd(m.Slice(PrimitiveType.Word16, d0, 0), m.Slice(PrimitiveType.Word16, d0, 0)));
+                m.Assign(v16, m.IAdd(m.Slice(d0, PrimitiveType.Word16), m.Slice(d0, PrimitiveType.Word16)));
                 m.Assign(d0, m.Dpb(d0, v16, 0));
                 m.Assign(CVZN, m.Cond(v16));
-                m.Assign(v17, m.IAdd(m.Slice(PrimitiveType.Word16, d0, 0), m.Slice(PrimitiveType.Word16, d0, 0)));
+                m.Assign(v17, m.IAdd(m.Slice(d0, PrimitiveType.Word16), m.Slice(d0, PrimitiveType.Word16)));
                 m.Assign(CVZN, m.Cond(v17));
                 m.Assign(d0, m.Dpb(d0, v17, 0));
                 m.Goto(m.IAdd(m.Word32(0x0000A8B4), m.Convert(
-                    m.Slice(PrimitiveType.Int16, d0, 0),
+                    m.Slice(d0, PrimitiveType.Int16),
                     PrimitiveType.Int16, PrimitiveType.Int32)));
             });
 
@@ -839,7 +839,7 @@ namespace Reko.UnitTests.Decompiler.Scanning
                 m.Assign(A, R7);
                 m.Assign(A, m.IAdd(A, R7));
                 m.Assign(DPTR, m.Word16(0x008E));
-                m.Goto(m.IAdd(DPTR, m.Slice(PrimitiveType.UInt16, A, 0)));
+                m.Goto(m.IAdd(DPTR, m.Slice(A, PrimitiveType.UInt16)));
             });
             graph.Nodes.Add(b0082);
             graph.Nodes.Add(b0088);

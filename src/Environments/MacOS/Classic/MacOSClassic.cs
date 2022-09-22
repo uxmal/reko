@@ -74,9 +74,9 @@ namespace Reko.Environments.MacOS.Classic
 
         public override SystemService? FindService(int vector, ProcessorState? state, SegmentMap? segmentMap)
         {
-            EnsureTypeLibraries(PlatformIdentifier);
+            var metadata = EnsureTypeLibraries(PlatformIdentifier);
             vector &= 0xFFFF;
-            foreach (var module in this.Metadata.Modules.Values)
+            foreach (var module in metadata.Modules.Values)
             {
                 if (module.ServicesByVector.TryGetValue(vector, out List<SystemService>? svcs))
                     return svcs.FirstOrDefault(s => s.SyscallInfo!.Matches(vector, state));

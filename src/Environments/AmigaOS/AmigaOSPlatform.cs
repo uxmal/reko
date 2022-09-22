@@ -55,7 +55,7 @@ namespace Reko.Environments.AmigaOS
                         Operator.IAdd,
                         PrimitiveType.Word32,
                         ExpressionMatcher.AnyId("addrReg"),
-                        ExpressionMatcher.AnyConstant("offset")),
+                        ExpressionMatcher.AnyConstant("Offset")),
                     4,
                     InstrClass.Transfer));
             this.StructureMemberAlignment = 4;
@@ -136,14 +136,14 @@ namespace Reko.Environments.AmigaOS
 
         public override SystemService? FindService(RtlInstruction rtl, ProcessorState? state, SegmentMap? segmentMap)
         {
-            EnsureTypeLibraries(PlatformIdentifier);
+            var metadata = EnsureTypeLibraries(PlatformIdentifier);
             if (!a6Pattern.Match(rtl))
                 return null;
             var reg = ((Identifier?) a6Pattern.CapturedExpressions("addrReg")!).Storage as RegisterStorage;
-            var offset = ((Constant?) a6Pattern.CapturedExpressions("offset")!).ToInt32();
+            var offset = ((Constant?) a6Pattern.CapturedExpressions("Offset")!).ToInt32();
             if (reg != Registers.a6)
                 return null;
-            funcs ??= LoadLibraryDef("exec", 33, Metadata);
+            funcs ??= LoadLibraryDef("exec", 33, metadata);
             return funcs.TryGetValue(offset, out SystemService? svc) ? svc : null;
         }
 

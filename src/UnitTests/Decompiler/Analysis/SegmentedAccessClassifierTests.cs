@@ -87,8 +87,8 @@ namespace Reko.UnitTests.Decompiler.Analysis
 				Identifier ds = Local16("ds");
 				Identifier ax = Local16("ax");
 				Identifier bx = Local16("bx");
-				LoadId(ax, MembPtrW(ds, IAdd(bx, Int16(4))));
-				LoadId(ax, MembPtrW(ds, Int16(0x3000)));
+				LoadId(ax, MembPtr16(ds, IAdd(bx, Int16(4))));
+				LoadId(ax, MembPtr16(ds, Int16(0x3000)));
 			}
 		}
 		[Test]

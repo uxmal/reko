@@ -334,7 +334,7 @@ namespace Reko.Core.Serialization
         {
             if (user is null || arch is null || user.LoadAddress is null)
                 return null;
-            if (!arch.TryParseAddress(user.LoadAddress, out Address addr))
+            if (!arch.TryParseAddress(user.LoadAddress, out Address? addr))
                 return null;
             return addr;
         }
@@ -459,7 +459,7 @@ namespace Reko.Core.Serialization
         private Annotation LoadAnnotation(Annotation_v3 annotation)
         {
             arch!.TryParseAddress(annotation.Address, out var address);
-            return new Annotation(address, annotation.Text ?? "");
+            return new Annotation(address!, annotation.Text ?? "");
         }
 
         private SortedList<Address, List<UserRegisterValue>> LoadRegisterValues(
@@ -477,7 +477,7 @@ namespace Reko.Core.Serialization
             var allLists = new SortedList<Address, List<UserRegisterValue>>();
             foreach (var sRegValue in sRegValues)
             {
-                if (sRegValue != null && platform!.TryParseAddress(sRegValue.Address, out Address addr))
+                if (sRegValue != null && platform!.TryParseAddress(sRegValue.Address, out Address? addr))
                 {
                     if (!allLists.TryGetValue(addr, out var list))
                     {
@@ -499,14 +499,14 @@ namespace Reko.Core.Serialization
 
         private ImageMapVectorTable? LoadJumpTable_v4(JumpTable_v4 sTable)
         {
-            if (platform == null || !platform.TryParseAddress(sTable.TableAddress, out Address addr))
+            if (platform is null || !platform.TryParseAddress(sTable.TableAddress, out Address? addr))
                 return null;
             var listAddrDst = new List<Address>();
             if (sTable.Destinations != null)
             {
                 foreach (var item in sTable.Destinations)
                 {
-                    if (!platform.TryParseAddress(item, out Address addrDst))
+                    if (!platform.TryParseAddress(item, out Address? addrDst))
                         break;
                     listAddrDst.Add(addrDst);
                 }
@@ -541,7 +541,7 @@ namespace Reko.Core.Serialization
 
         private UserCallData? LoadUserCall(SerializedCall_v1 call, Program program)
         {
-            if (!program.Platform.TryParseAddress(call.InstructionAddress, out Address addr))
+            if (!program.Platform.TryParseAddress(call.InstructionAddress, out Address? addr))
                 return null;
 
             var procSer = program.CreateProcedureSerializer();
@@ -563,9 +563,9 @@ namespace Reko.Core.Serialization
 
         private (Address?, UserIndirectJump?) LoadIndirectJump_v4(IndirectJump_v4 indirJump, Program program)
         {
-            if (!platform!.TryParseAddress(indirJump.InstructionAddress, out Address addrInstr))
+            if (!platform!.TryParseAddress(indirJump.InstructionAddress, out Address? addrInstr))
                 return (null, null);
-            if (!platform.TryParseAddress(indirJump.TableAddress, out Address addrTable))
+            if (!platform.TryParseAddress(indirJump.TableAddress, out Address? addrTable))
                 return (null, null);
             if (!program.User.JumpTables.TryGetValue(addrTable, out var table))
                 return (null, null);
@@ -584,7 +584,7 @@ namespace Reko.Core.Serialization
 
         public UserSegment? LoadUserSegment_v4(Segment_v4 sSegment)
         {
-            if (!platform!.TryParseAddress(sSegment.Address, out Address addr))
+            if (!platform!.TryParseAddress(sSegment.Address, out Address? addr))
                 return null;
             ulong offset;
             if (string.IsNullOrEmpty(sSegment.Offset))
@@ -637,7 +637,7 @@ namespace Reko.Core.Serialization
             Program program,
             Procedure_v1 sup)
         {
-            if (!program.Architecture.TryParseAddress(sup.Address, out Address addr))
+            if (!program.Architecture.TryParseAddress(sup.Address, out Address? addr))
                 return null;
 
             if (!sup.Decompile && sup.Signature == null && string.IsNullOrEmpty(sup.CSignature))
@@ -739,7 +739,7 @@ namespace Reko.Core.Serialization
             this.Program = program;
         }
 
-        public Program Program { get; private set; }
+        public Program Program { get; }
     }
 
     public class TypeLibraryEventArgs : EventArgs
@@ -749,6 +749,6 @@ namespace Reko.Core.Serialization
             this.TypeLibrary = typelib; 
         }
 
-        public TypeLibrary TypeLibrary { get; private set; }
+        public TypeLibrary TypeLibrary { get; }
     }
 }

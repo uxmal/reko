@@ -247,7 +247,7 @@ DataTypes:
             {
                 var r1 = m.Reg32("r1", 1);
                 var tmp = m.Temp(PrimitiveType.Word16, "tmp");
-                m.Assign(tmp, m.Slice(PrimitiveType.Word16, r1, 0));
+                m.Assign(tmp, m.Slice(r1, PrimitiveType.Word16));
                 m.MStore(m.Word32(0x2000), tmp);
                 m.Return();
             });
@@ -287,7 +287,7 @@ DataTypes:
                 m.MStore(m.Word32(0x02004), r1);
                 m.Goto("mxit");
                 m.Label("mge");
-                m.MStore(m.Word32(0x02008), m.Slice(PrimitiveType.Word16, r1, 0));
+                m.MStore(m.Word32(0x02008), m.Slice(r1, PrimitiveType.Word16));
                 m.Label("mxit");
                 m.Return();
             });
@@ -351,7 +351,7 @@ DataTypes:
             {
                 var r1 = m.Reg32("r1", 1);
 
-                m.MStore(m.Word16(0x00123400), m.Slice(PrimitiveType.Word16, r1, 16));
+                m.MStore(m.Word16(0x00123400), m.Slice(r1, PrimitiveType.Word16, 16));
                 m.Return();
             });
         }
@@ -448,7 +448,7 @@ DataTypes:
                 var r2 = m.Reg32("r2");
                 var r1_r2 = m.SeqId("r1_r2", PrimitiveType.Word64, r1.Storage, r2.Storage);
                 m.AddDefToEntryBlock(r1_r2);
-                m.MStore(m.Word32(0x00123400), m.Slice(r2.DataType, r1_r2, 32));
+                m.MStore(m.Word32(0x00123400), m.Slice(r1_r2, r2.DataType, 32));
                 m.Return();
             });
         }
@@ -538,8 +538,8 @@ DataTypes:
                     var dx = m.Reg("ax", regDx);
                     var dx_ax = m.SeqId("dx_ax", PrimitiveType.Word32, regDx, regAx);
                     m.Assign(dx_ax, m.Mem32(m.Word32(0x00123400)));
-                    m.Alias(ax, m.Slice(ax.DataType, dx_ax, 0));
-                    m.Alias(dx, m.Slice(ax.DataType, dx_ax, 16));
+                    m.Alias(ax, m.Slice(dx_ax, ax.DataType, 0));
+                    m.Alias(dx, m.Slice(dx_ax, ax.DataType, 16));
                     m.AddUseToExitBlock(ax);
                     m.AddUseToExitBlock(dx);
                 },

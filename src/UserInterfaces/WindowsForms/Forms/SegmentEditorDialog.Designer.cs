@@ -99,7 +99,7 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(52, 13);
             this.label1.TabIndex = 4;
-            this.label1.Text = "File &offset";
+            this.label1.Text = "File &Offset";
             // 
             // label2
             // 

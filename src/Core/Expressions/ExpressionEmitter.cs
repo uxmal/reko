@@ -77,7 +77,7 @@ namespace Reko.Core.Expressions
         /// <param name="left">Augend</param>
         /// <param name="right">Addend</param>
         /// <returns>A binary expression for the sum.</returns>
-        public BinaryExpression IAdd(Expression left, int right)
+        public BinaryExpression IAdd(Expression left, long right)
         {
             return IAdd(left, Word(left.DataType.BitSize, right));
         }
@@ -248,7 +248,6 @@ namespace Reko.Core.Expressions
             return new Conversion(expr, dataTypeFrom, dataTypeTo);
         }
 
-
         /// <summary>
         /// Generates a simple Dereference operation ('*a' in the C language
         /// family). If you don't know the exact data type of <paramref name="a"/>,
@@ -276,13 +275,13 @@ namespace Reko.Core.Expressions
             var exps = new List<Expression>();
             if (offset > 0)
             {
-                exps.Add(Slice(PrimitiveType.CreateWord(offset), dst, 0));
+                exps.Add(Slice(dst, PrimitiveType.CreateWord(offset)));
             }
             var msb = Math.Min(dst.DataType.BitSize, offset + src.DataType.BitSize);
             var dtInserted = PrimitiveType.CreateWord(msb - offset);
             if (dtInserted.BitSize < src.DataType.BitSize)
             {
-                exps.Add(Slice(dtInserted, src, 0));
+                exps.Add(Slice(src, dtInserted));
             }
             else
             {
@@ -290,7 +289,7 @@ namespace Reko.Core.Expressions
             }
             if (msb < dst.DataType.BitSize)
             {
-                exps.Add(Slice(PrimitiveType.CreateWord(dst.DataType.BitSize - msb), dst, msb));
+                exps.Add(Slice(dst, PrimitiveType.CreateWord(dst.DataType.BitSize - msb), msb));
             }
             exps.Reverse();
             return new MkSequence(dst.DataType, exps.ToArray());
@@ -358,7 +357,6 @@ namespace Reko.Core.Expressions
         /// <summary>
         /// Generate a floating point modulus operation.
         /// </summary>
-        /// <param name="dtProduct">Datatype of the result.</param>
         /// <param name="a">Dividend.</param>
         /// <param name="b">Divisor.</param>
         /// <returns>A floating point modulies operation.</returns>
@@ -832,7 +830,7 @@ namespace Reko.Core.Expressions
         /// <param name="ptr">Base pointer</param>
         /// <param name="membPtr">Offset pointer</param>
         /// <returns>A member pointer dereference.</returns>
-        public MemberPointerSelector MembPtrW(Expression ptr, Expression membPtr)
+        public MemberPointerSelector MembPtr16(Expression ptr, Expression membPtr)
         {
             return new MemberPointerSelector(PrimitiveType.Word16, new Dereference(PrimitiveType.Ptr32, ptr), membPtr);
         }
@@ -923,7 +921,7 @@ namespace Reko.Core.Expressions
         /// C language family). The second argument is converted to a Constant.
         /// </summary>
         /// <returns>An integer comparison expression.</returns>
-        public BinaryExpression Ne(Expression a, int n)
+        public BinaryExpression Ne(Expression a, long n)
         {
             return new BinaryExpression(Operator.Ne, PrimitiveType.Bool, a, Constant.Create(a.DataType, n));
         }
@@ -1080,7 +1078,7 @@ namespace Reko.Core.Expressions
         /// <returns>A segmented memory access expression.</returns>
         public virtual SegmentedAccess SegMem(DataType dt, Expression basePtr, Expression offset)
         {
-            return new SegmentedAccess(MemoryIdentifier.GlobalMemory, basePtr, offset, dt);
+            return SegMem(MemoryIdentifier.GlobalMemory, dt, basePtr, offset);
         }
 
         /// <summary>
@@ -1127,7 +1125,7 @@ namespace Reko.Core.Expressions
         /// <returns>An integer multiplication expression</returns>
         public Expression IMul(Expression left, int c)
         {
-            return new BinaryExpression(Operator.IMul, left.DataType, left, Constant.Create(left.DataType, c));
+            return IMul(left, Constant.Create(left.DataType, c));
         }
 
         /// <summary>
@@ -1164,7 +1162,7 @@ namespace Reko.Core.Expressions
         /// <param name="left">Multiplicand.</param>
         /// <param name="right">Multiplier.</param>
         /// <returns>A signed integer multiplication expression</returns>
-        public Expression SMul(Expression left, int c)
+        public Expression SMul(Expression left, long c)
         {
             return new BinaryExpression(
                 Operator.SMul, 
@@ -1203,7 +1201,7 @@ namespace Reko.Core.Expressions
         /// <param name="left">Multiplicand.</param>
         /// <param name="right">Multiplier.</param>
         /// <returns>An unsigned integer multiplication expression</returns>
-        public Expression UMul(Expression left, int c)
+        public Expression UMul(Expression left, ulong c)
         {
             return new BinaryExpression(
                 Operator.UMul, 
@@ -1235,7 +1233,7 @@ namespace Reko.Core.Expressions
         /// The second parameter is converted to a Constant.
         /// </summary>
         /// <returns>Bitwise disjunction expression.</returns>
-        public BinaryExpression Or(Expression a, int b)
+        public BinaryExpression Or(Expression a, ulong b)
         {
             return new BinaryExpression(Operator.Or, a.DataType, a, Constant.Create(a.DataType, b));
         }
@@ -1380,7 +1378,7 @@ namespace Reko.Core.Expressions
         /// <param name="left">Minuend.</param>
         /// <param name="right">Subtrahend</param>
         /// <returns>An integer subtraction expression.</returns>
-        public BinaryExpression ISub(Expression left, int right)
+        public BinaryExpression ISub(Expression left, long right)
         {
             return ISub(left, Word(left.DataType.BitSize, right));
         }
@@ -1400,6 +1398,18 @@ namespace Reko.Core.Expressions
 
         /// <summary>
         /// Generates a bit-slice of type <paramref name="dataType"/> of 
+        /// an expression <paramref name="value"/>, starting at bit position 0.
+        /// </summary>
+        /// <param name="primitiveType">The type of the bit slice</param>
+        /// <param name="value">The value being sliced</param>
+        /// <returns>A bit-slice expression.</returns>
+        public Slice Slice(Expression value, DataType dataType)
+        {
+            return new Slice(dataType, value, 0);
+        }
+
+        /// <summary>
+        /// Generates a bit-slice of type <paramref name="dataType"/> of 
         /// an expression <paramref name="value"/>, starting at bit position
         /// <paramref name="bitOffset"/>.
         /// </summary>
@@ -1407,12 +1417,7 @@ namespace Reko.Core.Expressions
         /// <param name="value">The value being sliced</param>
         /// <param name="bitOffset">Slice offset from least significant bit.</param>
         /// <returns>A bit-slice expression.</returns>
-        public Slice Slice(DataType dataType, Expression value, int bitOffset = 0)
-        {
-            return new Slice(dataType, value, bitOffset);
-        }
-
-        public Slice Slice(Expression value, DataType dataType, int bitOffset = 0)
+        public Slice Slice(Expression value, DataType dataType, int bitOffset)
         {
             return new Slice(dataType, value, bitOffset);
         }
@@ -1536,7 +1541,7 @@ namespace Reko.Core.Expressions
         /// language family). The second argument is converted into a Constant.
         /// </summary>
         /// <returns>An unsigned integer point inequality comparison.</returns>
-        public Expression Ult(Expression a, int b)
+        public Expression Ult(Expression a, ulong b)
         {
             return Ult(a, Word(a.DataType.BitSize, b));
         }
@@ -1613,6 +1618,17 @@ namespace Reko.Core.Expressions
         }
 
         /// <summary>
+        /// Generates an bit-vector of length <paramref name="bitSize"> bits
+        /// from the bit pattern <pararef name="n"/>.
+        /// </summary>
+        /// <param name="b">32 bits</param>
+        /// <returns>Bit vector constant</returns>
+        public Constant Word(int bitSize, ulong n)
+        {
+            return Constant.Word(bitSize, n);
+        }
+
+        /// <summary>
         /// Generates the bitwise exclusive OR of the two arguments.
         /// </summary>
         /// <returns>Bitwise XOR expression.</returns>
@@ -1626,7 +1642,7 @@ namespace Reko.Core.Expressions
         /// The second argument is converted to a Constant.
         /// </summary>
         /// <returns>Bitwise XOR expression.</returns>
-        public BinaryExpression Xor(Expression a, int b)
+        public BinaryExpression Xor(Expression a, ulong b)
         {
             return new BinaryExpression(Operator.Xor, a.DataType, a, Constant.Create(a.DataType, b));
         }

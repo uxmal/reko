@@ -120,9 +120,8 @@ namespace Reko.Core.Dfa
             state.Starts = true;
             Dstates.Add(state, state);
             unmarked.Enqueue(state);
-            while (unmarked.Count > 0)
+            while (unmarked.TryDequeue(out var T))
             {
-                var T = unmarked.Dequeue();
                 foreach (var p in T.Nodes.SelectMany(p => p.GetTransitionCharacters(), (p, c) => new { Node = p, Value = c }))
                 {
                     var U = CreateIntermediateState(p.Node.FollowPos!);

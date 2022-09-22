@@ -93,7 +93,7 @@ namespace Reko.Arch.Mos6502
 
         private static bool Imm(uint uInstr, Disassembler dasm)
         {
-            if (!dasm.rdr.TryRead(PrimitiveType.Byte, out Constant offset))
+            if (!dasm.rdr.TryRead(PrimitiveType.Byte, out Constant? offset))
                 return false;
             dasm.ops.Add(new Operand(PrimitiveType.Byte)
             {
@@ -115,7 +115,7 @@ namespace Reko.Arch.Mos6502
 
         private static bool x(uint uInstr, Disassembler dasm)
         {
-            if (!dasm.rdr.TryRead(PrimitiveType.Byte, out Constant offset))
+            if (!dasm.rdr.TryRead(PrimitiveType.Byte, out Constant? offset))
                 return false;
             dasm.ops.Add(new Operand(PrimitiveType.Byte)
             {
@@ -128,7 +128,7 @@ namespace Reko.Arch.Mos6502
 
         private static bool z(uint uInstr, Disassembler dasm)
         {
-            if (!dasm.rdr.TryRead(PrimitiveType.Byte, out Constant offset))
+            if (!dasm.rdr.TryRead(PrimitiveType.Byte, out Constant? offset))
                 return false;
             dasm.ops.Add(new Operand(PrimitiveType.Byte)
             {
@@ -141,7 +141,7 @@ namespace Reko.Arch.Mos6502
 
         private static bool zx(uint uInstr, Disassembler dasm)
         {
-            if (!dasm.rdr.TryRead(PrimitiveType.Byte, out Constant offset))
+            if (!dasm.rdr.TryRead(PrimitiveType.Byte, out Constant? offset))
                 return false;
             dasm.ops.Add(new Operand(PrimitiveType.Byte)
             {
@@ -154,7 +154,7 @@ namespace Reko.Arch.Mos6502
 
         private static bool zy(uint uInstr, Disassembler dasm)
         {
-            if (!dasm.rdr.TryRead(PrimitiveType.Byte, out Constant offset))
+            if (!dasm.rdr.TryRead(PrimitiveType.Byte, out Constant? offset))
                 return false;
             dasm.ops.Add(new Operand(PrimitiveType.Byte)
             {
@@ -167,7 +167,7 @@ namespace Reko.Arch.Mos6502
 
         private static bool i(uint uInstr, Disassembler dasm)
         {
-            if (!dasm.rdr.TryRead(PrimitiveType.Word16, out Constant offset))
+            if (!dasm.rdr.TryRead(PrimitiveType.Word16, out Constant? offset))
                 return false;
             dasm.ops.Add(new Operand(PrimitiveType.Byte)
             {
@@ -179,7 +179,7 @@ namespace Reko.Arch.Mos6502
 
         private static bool Ix(uint uInstr, Disassembler dasm)
         {
-            if (!dasm.rdr.TryRead(PrimitiveType.Byte, out Constant offset))
+            if (!dasm.rdr.TryRead(PrimitiveType.Byte, out Constant? offset))
                 return false;
             dasm.ops.Add(new Operand(PrimitiveType.Byte)
             {
@@ -192,7 +192,7 @@ namespace Reko.Arch.Mos6502
 
         private static bool Iy(uint uInstr, Disassembler dasm)
         {
-            if (!dasm.rdr.TryRead(PrimitiveType.Byte, out Constant offset))
+            if (!dasm.rdr.TryRead(PrimitiveType.Byte, out Constant? offset))
                 return false;
             dasm.ops.Add(new Operand(PrimitiveType.Byte)
             {
@@ -205,7 +205,7 @@ namespace Reko.Arch.Mos6502
 
         private static bool A(uint uInstr, Disassembler dasm)
         {
-            if (!dasm.rdr.TryRead(PrimitiveType.Word16, out Constant offset))
+            if (!dasm.rdr.TryRead(PrimitiveType.Word16, out Constant? offset))
                 return false;
             dasm.ops.Add(new Operand(PrimitiveType.Byte)
             {
@@ -218,7 +218,7 @@ namespace Reko.Arch.Mos6502
 
         private static bool Ax(uint uInstr, Disassembler dasm)
         {
-            if (!dasm.rdr.TryRead(PrimitiveType.Word16, out Constant offset))
+            if (!dasm.rdr.TryRead(PrimitiveType.Word16, out Constant? offset))
                 return false;
             dasm.ops.Add(new Operand(PrimitiveType.Byte)
             {
@@ -231,7 +231,7 @@ namespace Reko.Arch.Mos6502
 
         private static bool Ay(uint uInstr, Disassembler dasm)
         {
-            if (!dasm.rdr.TryRead(PrimitiveType.Word16, out Constant offset))
+            if (!dasm.rdr.TryRead(PrimitiveType.Word16, out Constant? offset))
                 return false;
             dasm.ops.Add(new Operand(PrimitiveType.Byte)
             {

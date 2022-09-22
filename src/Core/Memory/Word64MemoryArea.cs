@@ -24,6 +24,9 @@ using Reko.Core.Types;
 
 namespace Reko.Core.Memory
 {
+    /// <summary>
+    /// This class represents memory organized in 64-bit storage units (e.g. Cray YMP).
+    /// </summary>
     public class Word64MemoryArea : MemoryArea
     {
         public Word64MemoryArea(Address addr, ulong[] words) :

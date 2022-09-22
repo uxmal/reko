@@ -22,6 +22,7 @@ using Reko.Core.Expressions;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Text;
 
@@ -59,6 +60,7 @@ namespace Reko.Core.Memory
         public bool IsValid => (ulong) Offset < (ulong) endOffset; 
 
         public long Offset { get; set; }
+
         public Word64MemoryArea MemoryArea => mem;
 
         public BinaryReader CreateBinaryReader()
@@ -158,27 +160,25 @@ namespace Reko.Core.Memory
 
         public byte[] ReadBytes(int addressUnits)
         {
-            var bytes = new List<byte>(addressUnits * 8);
+            var bytes = new byte[addressUnits * 8];
             var iEnd = Math.Min(Offset + addressUnits, endOffset);
-            for (int i = (int) Offset; i < iEnd; ++i)
+            int iByte = 0;
+            for (int iWord = (int) Offset; iWord < iEnd; ++iWord)
             {
-                var w = mem.Words[i];
-                bytes.Add((byte) (w >> 56));
-                bytes.Add((byte) (w >> 48));
-                bytes.Add((byte) (w >> 40));
-                bytes.Add((byte) (w >> 32));
-                bytes.Add((byte) (w >> 24));
-                bytes.Add((byte) (w >> 16));
-                bytes.Add((byte) (w >> 8));
-                bytes.Add((byte) w);
+                var w = mem.Words[iWord];
+                bytes[iByte++] = (byte) (w >> 56);
+                bytes[iByte++] = (byte) (w >> 48);
+                bytes[iByte++] = (byte) (w >> 40);
+                bytes[iByte++] = (byte) (w >> 32);
+                bytes[iByte++] = (byte) (w >> 24);
+                bytes[iByte++] = (byte) (w >> 16);
+                bytes[iByte++] = (byte) (w >> 8);
+                bytes[iByte++] = (byte) w;
             }
-            return bytes.ToArray();
+            return bytes;
         }
 
-        public byte[] ReadBytes(uint addressUnits)
-        {
-            throw new NotImplementedException();
-        }
+        public byte[] ReadBytes(uint addressUnits) => ReadBytes((int) addressUnits);
 
         public short ReadLeInt16()
         {
@@ -251,7 +251,7 @@ namespace Reko.Core.Memory
             throw new NotImplementedException();
         }
 
-        public bool TryReadBe(DataType dataType, out Constant value)
+        public bool TryReadBe(DataType dataType, [MaybeNullWhen(false)] out Constant value)
         {
             throw new NotImplementedException();
         }
@@ -281,7 +281,7 @@ namespace Reko.Core.Memory
             throw new NotImplementedException();
         }
 
-        public bool TryReadLe(DataType dataType, out Constant value)
+        public bool TryReadLe(DataType dataType, [MaybeNullWhen(false)] out Constant value)
         {
             throw new NotImplementedException();
         }

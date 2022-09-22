@@ -22,6 +22,7 @@ using Reko.Core.Expressions;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Text;
 
@@ -97,7 +98,7 @@ namespace Reko.Core.Memory
             this.bytes = mem.Bytes;
             this.addrStart = mem.BaseAddress + offStart;
             if (offStart < 0 || offStart >= mem.Length)
-                throw new ArgumentOutOfRangeException(nameof(offStart), $"Starting offset {offStart} is outside of memory area.");
+                throw new ArgumentOutOfRangeException(nameof(offStart), $"Starting Offset {offStart} is outside of memory area.");
             this.offStart = offStart;
             this.offEnd = Math.Min(Math.Max(offEnd, offStart), mem.Length);
             this.Offset = offStart;
@@ -111,7 +112,8 @@ namespace Reko.Core.Memory
             this.off = offStart;
         }
 
-        public ByteImageReader(byte[] img, long off = 0) : this(img, off, img.Length) { }
+        public ByteImageReader(byte[] img) : this(img, 0, img.Length) { }
+        public ByteImageReader(byte[] img, long off) : this(img, off, img.Length) { }
 
         public Address Address { get { return addrStart! + (off - offStart); } }
         public byte[] Bytes { get { return bytes; } }
@@ -204,7 +206,7 @@ namespace Reko.Core.Memory
         /// </summary>
         /// <param name="type">Enough bytes read </param>
         /// <returns>The read value as a <see cref="Constant"/>.</returns>
-        public bool TryReadLe(DataType dataType, out Constant c)
+        public bool TryReadLe(DataType dataType, [MaybeNullWhen(false)] out Constant c)
         {
             var size = dataType.Size;
             if (size + off > offEnd)
@@ -227,7 +229,7 @@ namespace Reko.Core.Memory
         /// </summary>
         /// <param name="type">Enough bytes read </param>
         /// <returns>The read value as a <see cref="Constant"/>.</returns>
-        public bool TryReadBe(DataType dataType, out Constant c)
+        public bool TryReadBe(DataType dataType, [MaybeNullWhen(false)] out Constant c)
         {
             var size = dataType.Size;
             if (size + off > offEnd)

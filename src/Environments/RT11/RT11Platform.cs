@@ -57,9 +57,9 @@ namespace Reko.Environments.RT11
 
         public override SystemService? FindService(int vector, ProcessorState? state, SegmentMap? segmentMap)
         {
-            base.EnsureTypeLibraries(PlatformIdentifier);
+            var metadata = base.EnsureTypeLibraries(PlatformIdentifier);
             int uVec = vector & 0xFFFF;
-            foreach (var svc in this.Metadata.Modules.Values.SelectMany(m => m.ServicesByOrdinal.Values))
+            foreach (var svc in metadata.Modules.Values.SelectMany(m => m.ServicesByOrdinal.Values))
             {
                 if (svc.SyscallInfo != null && svc.SyscallInfo.Matches(uVec, state))
                 {

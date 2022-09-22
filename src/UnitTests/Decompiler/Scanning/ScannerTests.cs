@@ -31,6 +31,7 @@ using Reko.Core.Services;
 using Reko.Core.Types;
 using Reko.Environments.Msdos;
 using Reko.Scanning;
+using Reko.Services;
 using Reko.UnitTests.Decompiler.Scanning.Fragments;
 using Reko.UnitTests.Mocks;
 using System;

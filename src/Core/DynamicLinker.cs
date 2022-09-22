@@ -30,6 +30,12 @@ using Reko.Core.Operators;
 
 namespace Reko.Core
 {
+    /// <summary>
+    /// The dynamic linker tries to resolve a reference to external code or
+    /// data by consulting the current project first hand, and the platform
+    /// in second hand. Doing it that way allows users to override platform
+    /// definitions as the need arises.
+    /// </summary>
     public interface IDynamicLinker
     {
         ExternalProcedure? ResolveProcedure(string? moduleName, string importName, IPlatform platform);
@@ -39,12 +45,7 @@ namespace Reko.Core
         Expression? ResolveToImportedValue(Statement stm, Constant c);
     }
 
-    /// <summary>
-    /// The dynamic linker tries to resolve a reference to external code or
-    /// data by consulting the current project first hand, and the platform
-    /// in second hand. Doing it that way allows users to override platform
-    /// definitions as the need arises.
-    /// </summary>
+
     public class DynamicLinker : IDynamicLinker
     {
         private readonly Project project;
@@ -76,11 +77,11 @@ namespace Reko.Core
         public ExternalProcedure? ResolveProcedure(string? moduleName, string importName, IPlatform platform)
         {
             var ep = LookupProcedure(moduleName, importName, platform);
-            if (ep != null)
+            if (ep is { })
                 return ep;
             // Can we guess at the signature?
             var sProc = platform.SignatureFromName(importName);
-            if (sProc != null)
+            if (sProc is { })
             {
                 var loader = program.CreateTypeLibraryDeserializer();
                 var chr = program.LookupCharacteristicsByName(importName);
@@ -92,7 +93,7 @@ namespace Reko.Core
                     // We found a imported procedure but couldn't find its signature.
                     // Perhaps it has been mangled, and we can use the stripped name.
                     var epNew = LookupProcedure(null, ep.Name, platform);
-                    if (epNew != null)
+                    if (epNew is { })
                     {
                         ep = epNew;
                     }
@@ -312,7 +313,7 @@ namespace Reko.Core
                 if (!program.SegmentMap.TryFindSegment(impref.ReferenceAddress, out ImageSegment? seg))
                     return null;
                 var dt = PrimitiveType.CreateWord(impref.ReferenceAddress.DataType.BitSize);
-                if (!program.Architecture.TryRead(seg.MemoryArea, impref.ReferenceAddress, dt, out Constant cIndirect))
+                if (!program.Architecture.TryRead(seg.MemoryArea, impref.ReferenceAddress, dt, out Constant? cIndirect))
                     return InvalidConstant.Create(program.Architecture.WordWidth);
                 return Constant.Create(program.Platform.PointerType, cIndirect.ToInt64());
             }

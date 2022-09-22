@@ -26,6 +26,7 @@ using Reko.Core.Rtl;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Reko.Environments.Gameboy
 {
@@ -136,7 +137,7 @@ namespace Reko.Environments.Gameboy
             throw new NotImplementedException();
         }
 
-        public override bool TryParseAddress(string? txtAddr, out Address addr)
+        public override bool TryParseAddress(string? txtAddr, [MaybeNullWhen(false)] out Address addr)
         {
             return Address.TryParse16(txtAddr, out addr);
         }

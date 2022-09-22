@@ -23,6 +23,7 @@ using Reko.Core.Memory;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -161,7 +162,7 @@ namespace Reko.Core
         /// <param name="dt">Data type of the data to be read</param>
         /// <param name="value">The value read from memory, if successful.</param>
         /// <returns>True if the read succeeded, false if the address was out of range.</returns>
-        public abstract bool TryRead(MemoryArea mem, Address addr, PrimitiveType dt, out Constant value);
+        public abstract bool TryRead(MemoryArea mem, Address addr, PrimitiveType dt, [MaybeNullWhen(false)] out Constant value);
 
 
         private class LeServices : EndianServices
@@ -232,7 +233,7 @@ namespace Reko.Core
                 return new StackStorage(stg.StackOffset + byteOffset, dt);
             }
 
-            public override bool TryRead(MemoryArea mem, Address addr, PrimitiveType dt, out Constant value)
+            public override bool TryRead(MemoryArea mem, Address addr, PrimitiveType dt, [MaybeNullWhen(false)] out Constant value)
             {
                 return mem.TryReadLe(addr, dt, out value);
             }
@@ -311,7 +312,7 @@ namespace Reko.Core
                 return new StackStorage(stg.StackOffset +  byteOffset, dt);
             }
 
-            public override bool TryRead(MemoryArea mem, Address addr, PrimitiveType dt, out Constant value)
+            public override bool TryRead(MemoryArea mem, Address addr, PrimitiveType dt, [MaybeNullWhen(false)] out Constant value)
             {
                 return mem.TryReadBe(addr, dt, out value);
             }

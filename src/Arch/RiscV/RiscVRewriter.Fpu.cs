@@ -65,7 +65,7 @@ namespace Reko.Arch.RiscV
         {
             if (exp.DataType.BitSize > dtUsed.BitSize)
             {
-                return m.Slice(dtUsed, exp, 0);
+                return m.Slice(exp, dtUsed);
             }
             else
             {
@@ -148,7 +148,7 @@ namespace Reko.Arch.RiscV
             if (src.DataType.BitSize > dtFrom.BitSize)
             {
                 var tmp = binder.CreateTemporary(dtFrom);
-                m.Assign(tmp, m.Slice(dtFrom, src, 0));
+                m.Assign(tmp, m.Slice(src, dtFrom));
                 src = tmp;
             }
             m.Assign(dst, MaybeNanBox(src, dst.DataType));

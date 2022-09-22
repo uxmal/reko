@@ -25,6 +25,7 @@ using Reko.Core.Rtl;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Reko.Environments.Switch
 {
@@ -76,7 +77,7 @@ namespace Reko.Environments.Switch
             throw new NotImplementedException();
         }
 
-        public override bool TryParseAddress(string? sAddress, out Address addr)
+        public override bool TryParseAddress(string? sAddress, [MaybeNullWhen(false)] out Address addr)
         {
             return Address.TryParse64(sAddress, out addr);
         }

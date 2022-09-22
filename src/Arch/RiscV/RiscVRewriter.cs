@@ -268,7 +268,7 @@ namespace Reko.Arch.RiscV
         {
             if (dt != null && dt.BitSize < dst.DataType.BitSize)
             {
-                src = m.Convert(m.Slice(dt, src, 0), dt, arch.NaturalSignedInteger);
+                src = m.Convert(m.Slice(src, dt), dt, arch.NaturalSignedInteger);
             }
             if (dst.DataType.BitSize > src.DataType.BitSize && src is Constant cSrc)
             {

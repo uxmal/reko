@@ -124,14 +124,14 @@ namespace Reko.Environments.OS2
 
         public override ExternalProcedure? LookupProcedureByOrdinal(string? moduleName, int ordinal)
         {
-            EnsureTypeLibraries(PlatformIdentifier);
-            foreach (var tl in Metadata.Modules.Values.Where(t => string.Compare(t.ModuleName, moduleName, true) == 0))
+            var metadata = EnsureTypeLibraries(PlatformIdentifier);
+            foreach (var tl in metadata.Modules.Values.Where(t => string.Compare(t.ModuleName, moduleName, true) == 0))
             {
                 if (tl.ServicesByOrdinal.TryGetValue(ordinal, out SystemService? svc))
                 {
                     // Found the name of the imported procedure, now try to find its signature.
                     string procName = svc.Name!;
-                    if (!Metadata.Signatures.TryGetValue(procName, out var sig))
+                    if (!metadata.Signatures.TryGetValue(procName, out var sig))
                     {
                         return new ExternalProcedure(procName, svc.Signature!);
                     }
@@ -147,8 +147,8 @@ namespace Reko.Environments.OS2
 
         public override ExternalProcedure? LookupProcedureByName(string? moduleName, string procName)
         {
-            EnsureTypeLibraries(PlatformIdentifier);
-            if (moduleName != null && Metadata.Modules.TryGetValue(moduleName.ToUpper(), out ModuleDescriptor? mod))
+            var metadata = EnsureTypeLibraries(PlatformIdentifier);
+            if (moduleName != null && metadata.Modules.TryGetValue(moduleName.ToUpper(), out ModuleDescriptor? mod))
             {
                 if (mod.ServicesByName.TryGetValue(procName, out SystemService? svc))
                 {
@@ -162,7 +162,7 @@ namespace Reko.Environments.OS2
             }
             else
             {
-                if (!Metadata.Signatures.TryGetValue(procName, out var sig))
+                if (!metadata.Signatures.TryGetValue(procName, out var sig))
                     return null;
                 var chr = LookupCharacteristicsByName(procName);
                 return new ExternalProcedure(procName, sig, chr);

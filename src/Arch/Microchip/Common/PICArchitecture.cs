@@ -309,7 +309,7 @@ namespace Reko.Arch.MicrochipPIC.Common
         public override Address ReadCodeAddress(int byteSize, EndianImageReader rdr, ProcessorState? state)
             => PICProgAddress.Ptr(rdr.ReadLeUInt32());
 
-        public override bool TryParseAddress(string? txtAddress, out Address addr)
+        public override bool TryParseAddress(string? txtAddress, [MaybeNullWhen(false)] out Address addr)
             => Address.TryParse32(txtAddress, out addr);
 
         public override void PostprocessProgram(Program program)

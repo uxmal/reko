@@ -248,13 +248,13 @@ namespace Reko.Scanning
         public bool Step()
         {
             // Try finding a state that isn't at the beginning of its basic block.
-            SliceState state;
+            SliceState? state;
             for (; ; )
             {
                 if (!worklist.TryGetWorkItem(out state))
                     return false;
                 this.state = state;
-                if (!state!.IsInBeginningOfBlock())
+                if (!state.IsInBeginningOfBlock())
                     break;
 
                 trace.Verbose("Reached beginning of block {0}", state!.block.Address);

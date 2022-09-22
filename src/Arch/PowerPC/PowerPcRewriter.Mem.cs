@@ -192,7 +192,7 @@ namespace Reko.Arch.PowerPC
                     var tmp2 = binder.CreateTemporary(PrimitiveType.Word32);
                     var tmpHi = binder.CreateTemporary(PrimitiveType.CreateWord(reg.DataType.BitSize - 32));
                     m.Assign(tmp2, m.Mem32(tmp));
-                    m.Assign(tmpHi, m.Slice(tmpHi.DataType, reg, 32));
+                    m.Assign(tmpHi, m.Slice(reg, tmpHi.DataType, 32));
                     m.Assign(reg, m.Seq(tmpHi, tmp2));
                 }
                 else
@@ -437,7 +437,7 @@ namespace Reko.Arch.PowerPC
                 Expression w = binder.EnsureRegister(reg);
                 if (reg.DataType.Size > 4)
                 {
-                    w = m.Slice(PrimitiveType.Word32, w, 0);
+                    w = m.Slice(w, PrimitiveType.Word32);
                 }
                 m.Assign(m.Mem32(tmp), w);
                 m.Assign(tmp, m.IAddS(tmp, 4));
@@ -487,7 +487,7 @@ namespace Reko.Arch.PowerPC
                 }
                 else
                 {
-                    return m.Slice(pt, e, 0);
+                    return m.Slice(e, pt);
                 }
             }
             else

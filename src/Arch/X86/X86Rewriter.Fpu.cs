@@ -756,7 +756,7 @@ namespace Reko.Arch.X86
                 }
                 else
                 {
-                    return m.Slice(type, e, 0);
+                    return m.Slice(e, type);
                 }
             }
             else

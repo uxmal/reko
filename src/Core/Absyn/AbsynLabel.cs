@@ -24,14 +24,14 @@ namespace Reko.Core.Absyn
 {
 	public class AbsynLabel : AbsynStatement
 	{
-		private string label;
-
-		public AbsynLabel(string lbl)
+		public AbsynLabel(string label)
 		{
-			this.label = lbl;
+			this.Name = label;
 		}
 
-		public override void Accept(IAbsynVisitor visitor)
+        public string Name { get; }
+
+        public override void Accept(IAbsynVisitor visitor)
 		{
 			visitor.VisitLabel(this);
 		}
@@ -40,10 +40,5 @@ namespace Reko.Core.Absyn
         {
             return visitor.VisitLabel(this);
         }
-
-		public string Name
-		{
-			get { return label; }
-		}
 	}
 }

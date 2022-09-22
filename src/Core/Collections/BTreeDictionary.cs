@@ -393,7 +393,7 @@ namespace Reko.Core.Collections
 
         public bool ContainsKey(TKey key)
         {
-            if (root == null)
+            if (root is null)
                 return false;
             var (_, found) = root.Get(key, this);
             return found;
@@ -406,7 +406,7 @@ namespace Reko.Core.Collections
 
         public void CopyTo(KeyValuePair<TKey, TValue>[] array, int arrayIndex)
         {
-            if (array == null) throw new ArgumentNullException(nameof(array));
+            if (array is null) throw new ArgumentNullException(nameof(array));
             if (arrayIndex < 0) throw new ArgumentOutOfRangeException(nameof(arrayIndex));
             if (this.Count > array.Length - arrayIndex) throw new ArgumentException();
             int iDst = arrayIndex;
@@ -418,7 +418,7 @@ namespace Reko.Core.Collections
 
         public IEnumerator<KeyValuePair<TKey, TValue>> GetEnumerator()
         {
-            if (root == null)
+            if (root is null)
                 yield break;
             // Get the leftmost leaf node.
             Node node;

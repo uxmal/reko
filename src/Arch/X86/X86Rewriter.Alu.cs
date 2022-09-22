@@ -789,7 +789,7 @@ namespace Reko.Arch.X86
                 var src = SrcOp(1);
                 if (src is Identifier)
                 {
-                    src = m.Slice(dt, src, 0);
+                    src = m.Slice(src, dt);
                 }
                 if (dst is Identifier idDst)
                 {

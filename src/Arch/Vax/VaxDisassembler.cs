@@ -187,7 +187,7 @@ namespace Reko.Arch.Vax
 
         private MachineOperand? ImmediateOperand(PrimitiveType width)
         {
-            if (!rdr.TryRead(width, out Constant imm))
+            if (!rdr.TryRead(width, out Constant? imm))
                 return null;
             return new ImmediateOperand(imm);
         }

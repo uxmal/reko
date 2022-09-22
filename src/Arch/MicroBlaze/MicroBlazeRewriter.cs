@@ -207,7 +207,7 @@ namespace Reko.Arch.MicroBlaze
             if (src.DataType.BitSize > dst.DataType.BitSize)
             {
                 var tmp = binder.CreateTemporary(dst.DataType);
-                m.Assign(tmp, m.Slice(dst.DataType, src, 0));
+                m.Assign(tmp, m.Slice(src, dst.DataType));
                 m.Assign(dst, tmp);
             }
             else
@@ -637,7 +637,7 @@ namespace Reko.Arch.MicroBlaze
         private void RewriteSext(PrimitiveType dt)
         {
             var tmp = binder.CreateTemporary(dt);
-            m.Assign(tmp, m.Slice(dt, Reg0(1), 0));
+            m.Assign(tmp, m.Slice(Reg0(1), dt));
             m.Assign(Reg(0), m.Convert(tmp, tmp.DataType, PrimitiveType.Int32));
         }
 

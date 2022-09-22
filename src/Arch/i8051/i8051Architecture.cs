@@ -163,7 +163,7 @@ namespace Reko.Arch.i8051
             return Registers.TryGetRegister(name, out reg);
         }
 
-        public override bool TryParseAddress(string? txtAddr, out Address addr)
+        public override bool TryParseAddress(string? txtAddr, [MaybeNullWhen(false)] out Address addr)
         {
             return Address.TryParse16(txtAddr, out addr);
         }

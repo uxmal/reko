@@ -62,7 +62,7 @@ namespace Reko.Environments.SysV.ArchSpecific
         {
             if (stubInstrs.Length < 3)
                 return null;
-            Constant offset;
+            Constant? offset;
             if (stubInstrs[0] is RtlAssignment ass &&
                 ass.Src is MemoryAccess mem &&
                 mem.EffectiveAddress is Address addrOffset &&

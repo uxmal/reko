@@ -29,6 +29,7 @@ using Reko.Core.Services;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 
 namespace Reko.Environments.C64
@@ -170,7 +171,7 @@ namespace Reko.Environments.C64
             throw new NotImplementedException();
         }
 
-        public override bool TryParseAddress(string? txtAddress, out Address addr)
+        public override bool TryParseAddress(string? txtAddress, [MaybeNullWhen(false)] out Address addr)
         {
             return Address.TryParse16(txtAddress, out addr);
         }

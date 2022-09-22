@@ -526,7 +526,7 @@ namespace Reko.Arch.Msp430
         {
             var src = RewriteOp(instr.Operands[0]);
             var tmp = binder.CreateTemporary(PrimitiveType.Byte);
-            m.Assign(tmp, m.Slice(PrimitiveType.Byte, src, 0));
+            m.Assign(tmp, m.Slice(src, PrimitiveType.Byte));
             var dst = RewriteDst(instr.Operands[0], tmp, (a, b) => m.Convert(b, b.DataType, PrimitiveType.Int16));
             EmitCc(dst, Registers.NZC);
             Assign(Registers.V, Constant.False());

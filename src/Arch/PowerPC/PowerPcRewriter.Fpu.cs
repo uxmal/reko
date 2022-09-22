@@ -141,9 +141,9 @@ namespace Reko.Arch.PowerPC
             var opt = RewriteOperand(instr.Operands[0]);
             if (needsCast)
             {
-                opa = m.Slice(dt, opa, 0);
-                opb = m.Slice(dt, opb, 0);
-                opc = m.Slice(dt, opc, 0);
+                opa = m.Slice(opa, dt);
+                opb = m.Slice(opb, dt);
+                opc = m.Slice(opc, dt);
             }
 
             var exp = add(m.FMul(opa, opc), opb);

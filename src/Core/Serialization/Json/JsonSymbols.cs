@@ -61,7 +61,7 @@ namespace Reko.Core.Serialization.Json
         public static readonly Dictionary<string,DataType> PrimitivesByName = PrimitiveNames.ToDictionary(k => k.Value, v => v.Key);
 
 
-        public static readonly Dictionary<OperatorType, string> OpNames = new Dictionary<OperatorType, string>
+        public static readonly Dictionary<OperatorType, string> OpNames = new()
         {
             { OperatorType.AddrOf, "addr" },
             { OperatorType.And, "&" },

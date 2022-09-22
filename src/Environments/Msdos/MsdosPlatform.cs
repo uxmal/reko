@@ -147,10 +147,11 @@ namespace Reko.Environments.Msdos
                 return "__pascal";
         }
 
-        public override void EnsureTypeLibraries(string envName)
+        public override TypeLibrary EnsureTypeLibraries(string envName)
         {
-            base.EnsureTypeLibraries(envName);
+            var metadata = base.EnsureTypeLibraries(envName);
             LoadRealmodeServices(Architecture);
+            return metadata;
         }
 
         public override ImageSymbol? FindMainProcedure(Program program, Address addrStart)
@@ -161,7 +162,7 @@ namespace Reko.Environments.Msdos
 
         public override SystemService? FindService(int vector, ProcessorState? state, SegmentMap? segmentMap)
 		{
-            EnsureTypeLibraries(PlatformIdentifier);
+            var metadata = EnsureTypeLibraries(PlatformIdentifier);
 			foreach (SystemService svc in realModeServices)
 			{
 				if (svc.SyscallInfo!.Matches(vector, state))

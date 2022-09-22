@@ -575,8 +575,8 @@ namespace Reko.UnitTests.Decompiler.Analysis
 
             m.SStore(es, m.IAdd(bx, 4), m.Byte(3));
             m.Assign(es_bx_1, m.SegMem(PrimitiveType.Word32, es, bx));
-            m.Assign(es_2, m.Slice(PrimitiveType.Word16, es_bx_1, 16));
-            m.Assign(bx_3, m.Slice(PrimitiveType.Word16, es_bx_1, 0));
+            m.Assign(es_2, m.Slice(es_bx_1, PrimitiveType.Word16, 16));
+            m.Assign(bx_3, m.Slice(es_bx_1, PrimitiveType.Word16, 0));
             var instr = m.Assign(bx_4, m.SegMem(PrimitiveType.Word16, es_2, m.IAdd(bx_3, 4)));
             RunValuePropagator();
             Assert.AreEqual("bx_4 = Mem8[es_bx_1 + 4<16>:word16]", instr.ToString());
@@ -646,7 +646,7 @@ namespace Reko.UnitTests.Decompiler.Analysis
 
             m.Assign(tmp, m.Mem8(a2));
             m.Assign(d3, m.Dpb(d3, tmp, 0));
-            m.MStore(m.IAdd(a2, 4), m.Slice(PrimitiveType.Byte, d3, 0));
+            m.MStore(m.IAdd(a2, 4), m.Slice(d3, PrimitiveType.Byte));
 
             SsaState ssa = RunTest(m);
 
@@ -700,7 +700,7 @@ ProcedureBuilder_exit:
 
             m.Assign(tmp, m.Mem16(a2));
             m.Assign(d3, m.Dpb(d3, tmp, 0));
-            m.MStore(m.IAdd(a2, 4), m.Slice(PrimitiveType.Byte, d3, 0));
+            m.MStore(m.IAdd(a2, 4), m.Slice(d3, PrimitiveType.Byte));
 
             SsaState ssa = RunTest(m);
 
@@ -781,8 +781,8 @@ ProcedureBuilder_exit:
             var es_bx = m.Frame.EnsureSequence(PrimitiveType.Word32, es.Storage, bx.Storage);
 
             m.Assign(es_bx, m.SegMem(PrimitiveType.Word32, es, bx));
-            m.Assign(es, m.Slice(PrimitiveType.Word16, es_bx, 16));
-            m.Assign(bx, m.Slice(PrimitiveType.Word16, es_bx, 0));
+            m.Assign(es, m.Slice(es_bx, PrimitiveType.Word16, 16));
+            m.Assign(bx, m.Slice(es_bx, PrimitiveType.Word16, 0));
             m.SStore(es, m.IAdd(bx, 4), m.Byte(3));
 
             var ssa = RunTest(m);
@@ -1027,8 +1027,8 @@ ProcedureBuilder_exit:
 
             m.SStore(es, m.IAdd(bx, 4), m.Byte(3));
             m.Assign(es_bx_1, m.SegMem(PrimitiveType.Word32, es, bx));
-            m.Assign(es_2, m.Slice(PrimitiveType.Word16, es_bx_1, 16));
-            m.Assign(bx_3, m.Slice(PrimitiveType.Word16, es_bx_1, 0));
+            m.Assign(es_2, m.Slice(es_bx_1, PrimitiveType.Word16, 16));
+            m.Assign(bx_3, m.Slice(es_bx_1, PrimitiveType.Word16, 0));
             var instr = m.Assign(bx_4, m.SegMem(PrimitiveType.Word16, es_2, bx_3));
             RunValuePropagator();
             Assert.AreEqual("bx_4 = Mem8[es_bx_1:word16]", instr.ToString());
@@ -1160,7 +1160,7 @@ SsaProcedureBuilder_exit:
             var d3_5 = m.Reg32("d3_5", 3);
             var d3_6 = m.Reg32("d3_6", 3);
 
-            m.Assign(wLoc02_2, m.Slice(PrimitiveType.Word16, d3, 0));
+            m.Assign(wLoc02_2, m.Slice(d3, PrimitiveType.Word16));
             m.Label("m1");
             m.Assign(d3_3, m.Dpb(d3, m.Word16(3), 0));
             m.Goto("m3");
@@ -1224,7 +1224,7 @@ SsaProcedureBuilder_exit:
             var t3 = m.Temp(PrimitiveType.Word16, "t3");
 
             m.Assign(t2, m.Seq(t1, m.Mem16(m.Word32(0x00123400))));
-            m.Assign(t3, m.Slice(PrimitiveType.Word16, t2, 16));
+            m.Assign(t3, m.Slice(t2, PrimitiveType.Word16, 16));
 
             RunValuePropagator();
 
@@ -1260,8 +1260,8 @@ SsaProcedureBuilder_exit:
             var t2 = m.Temp(PrimitiveType.Word16, "t2");
 
             var instr = m.Assign(t2, m.Slice(
-                PrimitiveType.Word16,
                 m.Seq(t1, m.Mem16(m.Word32(0x00123400))),
+                PrimitiveType.Word16,
                 16));
 
             RunValuePropagator();
@@ -1277,7 +1277,7 @@ SsaProcedureBuilder_exit:
             var t2 = m.Temp(PrimitiveType.Word32, "t2");
 
             m.Assign(t1, m.Word64(2));
-            m.Assign(t2, m.Slice(PrimitiveType.Word32, t1, 0));
+            m.Assign(t2, m.Slice(t1, PrimitiveType.Word32));
 
             RunValuePropagator();
 
@@ -1326,8 +1326,8 @@ SsaProcedureBuilder_exit:
             m.Assign(r11_2, m.Or(r11_1, 0x1448));
             m.Assign(r10_2, m.Or(r10_1, 0x8DA6));
             m.Assign(r9_1, m.And(r30, m.Word64(0xFFFFFFFF)));
-            m.Assign(v30, m.Slice(PrimitiveType.Word32, r11_2, 0));
-            m.Assign(r11_3, m.Seq(m.Slice(PrimitiveType.Word32, r10_2, 0), v30));
+            m.Assign(v30, m.Slice(r11_2, PrimitiveType.Word32));
+            m.Assign(r11_3, m.Seq(m.Slice(r10_2, PrimitiveType.Word32), v30));
 
             RunValuePropagator();
 
@@ -1388,9 +1388,9 @@ SsaProcedureBuilder_exit:
             var rax_10 = m.Reg64("rax_10");
             var rax_48_16_9 = m.Temp(PrimitiveType.CreateWord(48), "rax_48_16_9");
             m.Assign(rax_6, m.Word64(0x1A2A3A4A5A6A7A8A));
-            m.Assign(rax_48_16_9, m.Slice(rax_48_16_9.DataType, rax_6, 16));
+            m.Assign(rax_48_16_9, m.Slice(rax_6, rax_48_16_9.DataType, 16));
             m.Assign(rbx_7, m.Word64(0x1B2B3B4B5B6B7B8B));
-            m.Assign(ax_8, m.Slice(ax_8.DataType, rbx_7, 0));
+            m.Assign(ax_8, m.Slice(rbx_7, ax_8.DataType));
             m.Assign(rax_10, m.Seq(rax_48_16_9, ax_8));
             m.MStore(m.Word32(0x123400), rax_10);
 

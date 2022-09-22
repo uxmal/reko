@@ -23,6 +23,7 @@ using NUnit.Framework;
 using Reko.Core;
 using Reko.Core.Services;
 using Reko.Core.Types;
+using Reko.Services;
 using Reko.UnitTests.Mocks;
 using System.ComponentModel.Design;
 using System.IO;

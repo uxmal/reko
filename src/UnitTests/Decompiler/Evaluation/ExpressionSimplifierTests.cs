@@ -175,9 +175,9 @@ namespace Reko.UnitTests.Decompiler.Evaluation
         {
             Given_ExpressionSimplifier();
             var (expr, _) = m.Slice(
-                new TypeReference("BYTE", PrimitiveType.Byte),
                 Constant.Word32(0x4711),
-                0).Accept(simplifier);
+                new TypeReference("BYTE", PrimitiveType.Byte))
+                .Accept(simplifier);
             Assert.AreEqual("0x11<8>", expr.ToString());
         }
 
@@ -186,10 +186,9 @@ namespace Reko.UnitTests.Decompiler.Evaluation
         {
             Given_ExpressionSimplifier();
             var (expr, _) = m.Slice(
-                PrimitiveType.Word32,
                 // 0x4415AF1D78B58C40
                 Constant.Real64(1e20),
-                0).Accept(simplifier);
+                PrimitiveType.Word32).Accept(simplifier);
             Assert.AreEqual(
                 "0x78B58C40<32>",
                 expr.ToString());
@@ -200,9 +199,9 @@ namespace Reko.UnitTests.Decompiler.Evaluation
         {
             Given_ExpressionSimplifier();
             var (expr, _) = m.Slice(
-                PrimitiveType.Word16,
                 // 0x42280000
                 Constant.Real32(42.0F),
+                PrimitiveType.Word16,
                 16).Accept(simplifier);
             Assert.AreEqual("0x4228<16>", expr.ToString());
         }
@@ -274,7 +273,7 @@ namespace Reko.UnitTests.Decompiler.Evaluation
         {
             Given_ExpressionSimplifier();
             var w16 = PrimitiveType.Word16;
-            var expr = m.IAdd(m.Slice(w16, foo, 0), m.Slice(w16, foo, 0));
+            var expr = m.IAdd(m.Slice(foo, w16), m.Slice(foo, w16));
             var (result, _) = expr.Accept(simplifier);
             Assert.AreEqual("SLICE(foo_1 * 2<32>, word16, 0)", result.ToString());
         }
@@ -354,8 +353,8 @@ namespace Reko.UnitTests.Decompiler.Evaluation
         public void Exs_SeqOfSlices_Indirect()
         {
             Given_ExpressionSimplifier();
-            var t1 = Given_Tmp("t1", m.Slice(PrimitiveType.Word16, foo, 16));
-            var t2 = Given_Tmp("t2", m.Slice(PrimitiveType.Word16, foo, 0));
+            var t1 = Given_Tmp("t1", m.Slice(foo, PrimitiveType.Word16, 16));
+            var t2 = Given_Tmp("t2", m.Slice(foo, PrimitiveType.Word16, 0));
             ssaIds[foo].Uses.Add(ssaIds[t1].DefStatement);
             ssaIds[foo].Uses.Add(ssaIds[t2].DefStatement);
             var (expr, _) = m.Seq(t1, t2).Accept(simplifier);
@@ -369,9 +368,8 @@ namespace Reko.UnitTests.Decompiler.Evaluation
             var ds = m.Temp(PrimitiveType.SegmentSelector, "ds");
             ssaIds.Add(ds, null, null, false);
             var (expr, _) = m.Slice(
-                PrimitiveType.Word16,
                 m.SegMem(PrimitiveType.SegPtr32, ds, m.Word16(0x1234)),
-                0).Accept(simplifier);
+                PrimitiveType.Word16).Accept(simplifier);
             Assert.AreEqual("Mem0[ds:0x1234<16> + 0<16>:word16]", expr.ToString());
         }
 
@@ -510,7 +508,6 @@ namespace Reko.UnitTests.Decompiler.Evaluation
         {
             Given_ExpressionSimplifier();
             Expression expr = m.Slice(
-                PrimitiveType.Byte,
                 m.IAdd(
                     m.ISub(
                         m.Word32(0),
@@ -518,7 +515,8 @@ namespace Reko.UnitTests.Decompiler.Evaluation
                             m.Ne0(foo),
                             PrimitiveType.Bool,
                             PrimitiveType.Word32)),
-                    m.Word32(1)));
+                    m.Word32(1)),
+                PrimitiveType.Byte);
 
             (expr, _) = expr.Accept(simplifier);
             var result = expr.Accept(simplifier);
@@ -592,7 +590,7 @@ namespace Reko.UnitTests.Decompiler.Evaluation
             Given_ExpressionSimplifier();
             var mul = m.UMul(m.Word32(0xAAAA_AAAA), m.Word32(0xBBBB_BBBB));
             mul.DataType = PrimitiveType.UInt64;
-            var (expr, _) = m.Slice(PrimitiveType.Word32, mul, 32).Accept(simplifier);
+            var (expr, _) = m.Slice(mul, PrimitiveType.Word32, 32).Accept(simplifier);
             Assert.AreEqual("@@@", expr.ToString());
         }
 
@@ -639,12 +637,11 @@ namespace Reko.UnitTests.Decompiler.Evaluation
             Given_ExpressionSimplifier();
 
             var (expr, _) = m.Slice(
-                PrimitiveType.Char,
                 m.Convert(
                     m.Mem8(foo),
                     PrimitiveType.Byte,
                     PrimitiveType.Word32),
-                0).Accept(simplifier);
+                PrimitiveType.Char).Accept(simplifier);
             Assert.AreEqual("Mem0[foo_1:byte]", expr.ToString());
         }
 

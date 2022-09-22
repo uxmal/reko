@@ -161,7 +161,7 @@ namespace Reko.Arch.Loongson
             throw new NotImplementedException();
         }
 
-        public override bool TryParseAddress(string? txtAddr, out Address addr)
+        public override bool TryParseAddress(string? txtAddr, [MaybeNullWhen(false)] out Address addr)
         {
             if (this.WordWidth.BitSize == 32)
                 return Address.TryParse32(txtAddr, out addr);

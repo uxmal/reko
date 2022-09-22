@@ -108,7 +108,7 @@ namespace Reko.UnitTests.Core
       <struct name=""foo"" />
     </typedef>
     <struct name=""foo"">
-      <field offset=""0"" name=""x"">
+      <field Offset=""0"" name=""x"">
         <prim domain=""SignedInt"" size=""4"" />
       </field>
     </struct>

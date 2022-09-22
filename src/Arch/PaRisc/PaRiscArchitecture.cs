@@ -207,7 +207,7 @@ namespace Reko.Arch.PaRisc
             return Registers.RegistersByName.TryGetValue(name, out reg);
         }
 
-        public override bool TryParseAddress(string? txtAddr, out Address addr)
+        public override bool TryParseAddress(string? txtAddr, [MaybeNullWhen(false)] out Address addr)
         {
             return Address.TryParse32(txtAddr, out addr);
         }

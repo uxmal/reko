@@ -750,7 +750,7 @@ namespace Reko.Arch.MilStd1750
         {
             var src = Op(1);
             var dst = Op(0);
-            m.Assign(dst, m.Dpb(dst, m.Slice(PrimitiveType.Byte, src, 0), 0));
+            m.Assign(dst, m.Dpb(dst, m.Slice(src, PrimitiveType.Byte), 0));
             AssignFlags(PZN, m.Cond(dst));
         }
 
@@ -771,7 +771,7 @@ namespace Reko.Arch.MilStd1750
         {
             var src = Op(1);
             var dst = Op(0);
-            m.Assign(dst, m.Dpb(dst, m.Slice(PrimitiveType.Byte, src, 0), 8));
+            m.Assign(dst, m.Dpb(dst, m.Slice(src, PrimitiveType.Byte), 8));
             AssignFlags(PZN, m.Cond(dst));
         }
 
@@ -893,14 +893,14 @@ namespace Reko.Arch.MilStd1750
             var bitNo = Imm(0);
             var tmp = binder.CreateTemporary(src.DataType);
             m.Assign(tmp, src);
-            m.Assign(src, m.Or(tmp, 1 << bitNo.ToInt32()));
+            m.Assign(src, m.Or(tmp, 1u << bitNo.ToInt32()));
         }
 
         private void RewriteSbr()
         {
             var src = Reg(1);
             var bitNo = Imm(0);
-            m.Assign(src, m.Or(src, 1 << bitNo.ToInt32()));
+            m.Assign(src, m.Or(src, 1u << bitNo.ToInt32()));
         }
 
         private void RewriteSjs()
@@ -983,7 +983,7 @@ namespace Reko.Arch.MilStd1750
         private void RewriteStlb()
         {
             var tmp = binder.CreateTemporary(PrimitiveType.Byte);
-            m.Assign(tmp, m.Slice(PrimitiveType.Byte, Reg(0), 0));
+            m.Assign(tmp, m.Slice(Reg(0), PrimitiveType.Byte));
             var tmp2 = binder.CreateTemporary(PrimitiveType.Word16);
             m.Assign(tmp2, Op(1));
             m.Assign(Op(1), m.Dpb(tmp2, tmp, 0));
@@ -992,7 +992,7 @@ namespace Reko.Arch.MilStd1750
         private void RewriteStub()
         {
             var tmp = binder.CreateTemporary(PrimitiveType.Byte);
-            m.Assign(tmp, m.Slice(PrimitiveType.Byte, Reg(0), 0));
+            m.Assign(tmp, m.Slice(Reg(0), PrimitiveType.Byte));
             var tmp2 = binder.CreateTemporary(PrimitiveType.Word16);
             m.Assign(tmp2, Op(1));
             m.Assign(Op(1), m.Dpb(tmp2, tmp, 8));

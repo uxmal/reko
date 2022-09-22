@@ -178,9 +178,9 @@ namespace Reko.Assemblers.Pdp11
 
         public void ReferToSymbol(Symbol psym, int off, DataType width)
         {
-            if (psym.fResolved)
+            if (psym.IsResolved)
             {
-                emitter.PatchLe(off, psym.offset, width);
+                emitter.PatchLe(off, psym.Offset, width);
             }
             else
             {

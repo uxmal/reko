@@ -49,22 +49,22 @@ namespace Reko.UserInterfaces.WindowsForms
             this.values = values;
         }
 
-        public string GetComponentName()
+        public string? GetComponentName()
         {
             return TypeDescriptor.GetComponentName(this, true);
         }
 
-        public EventDescriptor GetDefaultEvent()
+        public EventDescriptor? GetDefaultEvent()
         {
             return TypeDescriptor.GetDefaultEvent(this, true);
         }
 
-        public string GetClassName()
+        public string? GetClassName()
         {
             return TypeDescriptor.GetClassName(this, true);
         }
 
-        public EventDescriptorCollection GetEvents(Attribute[] attributes)
+        public EventDescriptorCollection GetEvents(Attribute[]? attributes)
         {
             return TypeDescriptor.GetEvents(this, attributes, true);
         }
@@ -79,7 +79,7 @@ namespace Reko.UserInterfaces.WindowsForms
             return TypeDescriptor.GetConverter(this, true);
         }
 
-        public object GetPropertyOwner(PropertyDescriptor pd)
+        public object? GetPropertyOwner(PropertyDescriptor? pd)
         {
             return values;
         }
@@ -89,7 +89,7 @@ namespace Reko.UserInterfaces.WindowsForms
             return TypeDescriptor.GetAttributes(this, true);
         }
 
-        public object GetEditor(Type editorBaseType)
+        public object? GetEditor(Type editorBaseType)
         {
             return TypeDescriptor.GetEditor(this, editorBaseType, true);
         }
@@ -102,10 +102,10 @@ namespace Reko.UserInterfaces.WindowsForms
         PropertyDescriptorCollection
             System.ComponentModel.ICustomTypeDescriptor.GetProperties()
         {
-            return ((ICustomTypeDescriptor)this).GetProperties(new Attribute[0]);
+            return ((ICustomTypeDescriptor)this).GetProperties(Array.Empty<Attribute>());
         }
 
-        public PropertyDescriptorCollection GetProperties(Attribute[] attributes)
+        public PropertyDescriptorCollection GetProperties(Attribute[]? attributes)
         {
             var properties = this.options
                 .Select(option => new DictionaryPropertyDescriptor(values, option))
@@ -122,7 +122,7 @@ namespace Reko.UserInterfaces.WindowsForms
             AttributeCollection attrs;
 
             internal DictionaryPropertyDescriptor(IDictionary d, PropertyOption option)
-                : base(option.Text ?? option.Name, null)
+                : base(option.Text ?? option.Name!, null)
             {
                 values = d;
                 this.Option = option;
@@ -154,12 +154,12 @@ namespace Reko.UserInterfaces.WindowsForms
                 return (DictionaryPropertyDescriptor)context.PropertyDescriptor;
             }
 
-            public override void SetValue(object component, object value)
+            public override void SetValue(object? component, object? value)
             {
                 values[Option.Name!] = value;
             }
 
-            public override object? GetValue(object component)
+            public override object? GetValue(object? component)
             {
                 return values[Option.Name!];
             }
@@ -169,9 +169,9 @@ namespace Reko.UserInterfaces.WindowsForms
                 get { return false; }
             }
 
-            public override Type? ComponentType
+            public override Type ComponentType
             {
-                get { return null; }
+                get { return null!; }
             }
 
             public override bool CanResetValue(object component)
@@ -193,14 +193,14 @@ namespace Reko.UserInterfaces.WindowsForms
 
         public class ChoiceConverter : StringConverter
         {
-            public override bool GetStandardValuesSupported(ITypeDescriptorContext context)
+            public override bool GetStandardValuesSupported(ITypeDescriptorContext? context)
             {
                 var pd = GetPd(context);
                 return pd.Option.Choices != null &&
                     pd.Option.Choices.Length > 0;    // show combobox if there are choices
             }
 
-            public override StandardValuesCollection GetStandardValues(ITypeDescriptorContext context)
+            public override StandardValuesCollection GetStandardValues(ITypeDescriptorContext? context)
             {
                 var pd = GetPd(context);
                 return new StandardValuesCollection(
@@ -208,9 +208,9 @@ namespace Reko.UserInterfaces.WindowsForms
                         .Select(c => c.Value).ToList());
             }
 
-            private static DictionaryPropertyDescriptor GetPd(ITypeDescriptorContext context)
+            private static DictionaryPropertyDescriptor GetPd(ITypeDescriptorContext? context)
             {
-                return (DictionaryPropertyDescriptor)context.PropertyDescriptor;
+                return (DictionaryPropertyDescriptor)context!.PropertyDescriptor;
             }
         }
 

@@ -76,7 +76,8 @@ namespace Reko.Environments.SysV
 
         public override SystemService? FindService(int vector, ProcessorState? state, SegmentMap? segmentMap)
         {
-            foreach (var module in base.Metadata.Modules.Values)
+            var metadata = EnsureTypeLibraries(PlatformIdentifier);
+            foreach (var module in metadata.Modules.Values)
             {
                 if (module.ServicesByVector.TryGetValue(vector, out var svcs))
                 {
@@ -209,9 +210,9 @@ namespace Reko.Environments.SysV
         public override ExternalProcedure? LookupProcedureByName(string? moduleName, string procName)
         {
             //$REVIEW: looks a lot like Win32library, perhaps push to parent class?
-            EnsureTypeLibraries(PlatformIdentifier);
-            var sig = Metadata.Lookup(procName);
-            if (sig == null)
+            var metadata = EnsureTypeLibraries(PlatformIdentifier);
+            var sig = metadata.Lookup(procName);
+            if (sig is null)
                 return null;
             var proc = new ExternalProcedure(procName, sig);
             var characteristics = CharacteristicsLibs.Select(cl => cl.Lookup(procName))

@@ -48,7 +48,10 @@ namespace Reko.Core
 
         // Return [dst,src] tuple if TInstr is an assignment, null otherwise.
         (Expression?,Expression?) AsAssignment(TInstr instr);
-        // Return the branch condition if TINstr is a branch, null otherwise.
+
+        /// <summary>
+        /// Return the branch condition if <paramref name="instr"/> is a branch, null otherwise.
+        /// </summary>
         Expression? AsBranch(TInstr instr);
 
         bool IsStackRegister(Storage storage);

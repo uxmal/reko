@@ -28,6 +28,7 @@ using Reko.Core.Rtl;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
 
@@ -182,9 +183,9 @@ namespace Reko.Arch.Pdp11
             return regs;
         }
 
-        public override bool TryGetRegister(string name, out RegisterStorage result)
+        public override bool TryGetRegister(string name, [MaybeNullWhen(false)] out RegisterStorage result)
         {
-            result = null!;
+            result = null;
             foreach (RegisterStorage reg in regs)
             {
                 if (string.Compare(reg.Name, name, StringComparison.InvariantCultureIgnoreCase) == 0)
@@ -265,7 +266,7 @@ namespace Reko.Arch.Pdp11
             }
         }
 
-        public override bool TryParseAddress(string? txtAddress, out Address addr)
+        public override bool TryParseAddress(string? txtAddress, [MaybeNullWhen(false)] out Address addr)
         {
             return Address.TryParse16(txtAddress, out addr);
         }

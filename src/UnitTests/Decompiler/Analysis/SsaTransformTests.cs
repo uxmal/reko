@@ -3954,7 +3954,7 @@ SsaLocalStackCommonSequence_exit:
                     It.IsAny<Constant>()))
                 .Throws(
                 new NotSupportedException(
-                    "Must pass segment:offset to make a segmented address."));
+                    "Must pass segment:Offset to make a segmented address."));
             var proc = Given_Procedure(
                 nameof(SsaDoNotSearchImportedProcInFpuStack),
                 m =>

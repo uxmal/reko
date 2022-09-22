@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2022 John Källén.
  *
@@ -28,7 +28,7 @@ namespace Reko.Core.Hll.C
     public class EnumEvaluator
     {
         private int value;
-        private CConstantEvaluator ceval;
+        private readonly CConstantEvaluator ceval;
 
         public EnumEvaluator(CConstantEvaluator ceval)
         {

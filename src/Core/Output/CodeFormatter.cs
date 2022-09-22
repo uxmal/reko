@@ -531,7 +531,7 @@ namespace Reko.Core.Output
             InnerFormatter.WriteType(scope.DataType.Name, scope.DataType);
         }
 
-		public void VisitSlice(Slice slice)
+        public void VisitSlice(Slice slice)
 		{
 			InnerFormatter.Write("SLICE(");
 			WriteExpression(slice.Expression);

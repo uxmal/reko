@@ -20,6 +20,7 @@
 
 using Reko.Core.Expressions;
 using Reko.Core.Types;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Text;
 
@@ -27,7 +28,11 @@ namespace Reko.Core.Memory
 {
     public class Word64BeReader : Word64ImageReader, EndianImageReader
     {
-        public Word64BeReader(Word64MemoryArea mem, long offset = 0) : base(mem, offset)
+        public Word64BeReader(Word64MemoryArea mem) : base(mem, 0)
+        {
+        }
+
+        public Word64BeReader(Word64MemoryArea mem, long offset) : base(mem, offset)
         {
         }
 
@@ -96,7 +101,7 @@ namespace Reko.Core.Memory
 
         public bool TryPeekUInt64(int offset, out ulong value) => TryPeekBeUInt64(offset, out value);
 
-        public bool TryRead(PrimitiveType dataType, out Constant value)
+        public bool TryRead(PrimitiveType dataType, [MaybeNullWhen(false)] out Constant value)
         {
             value = default!;
             return false;

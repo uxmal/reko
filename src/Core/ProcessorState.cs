@@ -189,7 +189,7 @@ namespace Reko.Core
             }
             if (!segmentMap.TryFindSegment(addr, out ImageSegment? seg) || seg.IsWriteable)
                 return InvalidConstant.Create(dt);
-            if (!Architecture.TryRead(seg.MemoryArea, addr, pt, out Constant c))
+            if (!Architecture.TryRead(seg.MemoryArea, addr, pt, out Constant? c))
                 return InvalidConstant.Create(dt);
             return c;
         }

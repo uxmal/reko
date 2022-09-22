@@ -26,16 +26,11 @@ namespace Reko.Core.Absyn
 {
     public class AbsynProcedure
     {
-        private List<AbsynStatement> body;
-
         public AbsynProcedure()
         {
-            body = new List<AbsynStatement>();
+            Body = new List<AbsynStatement>();
         }
 
-        public List<AbsynStatement> Body
-        {
-            get { return body; }
-        }
+        public List<AbsynStatement> Body { get; }
     }
 }

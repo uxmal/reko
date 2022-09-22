@@ -88,8 +88,8 @@ namespace Reko.Environments.MacOS.OSX
         public override ExternalProcedure? LookupProcedureByName(string? moduleName, string procName)
         {
             //$REVIEW: looks a lot like Win32library, perhaps push to parent class?
-            EnsureTypeLibraries(PlatformIdentifier);
-            var sig = Metadata.Lookup(procName);
+            var metadata = EnsureTypeLibraries(PlatformIdentifier);
+            var sig = metadata.Lookup(procName);
             if (sig is null)
                 return null;
             var proc = new ExternalProcedure(procName, sig);

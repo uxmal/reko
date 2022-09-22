@@ -74,10 +74,11 @@ namespace Reko.Environments.Msdos
             };
         }
 
-        public override void EnsureTypeLibraries(string envName)
+        public override TypeLibrary EnsureTypeLibraries(string envName)
         {
-            base.EnsureTypeLibraries(envName);
+            var metadata = base.EnsureTypeLibraries(envName);
             LoadInterruptServices(Architecture);
+            return metadata;
         }
 
         public override SystemService? FindService(int vector, ProcessorState? state, SegmentMap? segmentMap)
@@ -137,7 +138,7 @@ namespace Reko.Environments.Msdos
             this.interruptServices = lib.Procedures
                 .Cast<SerializedService>()
                 .Select(s => ExtendRegisters(s))
-                .Select(s => s.Build(this, Metadata))
+                .Select(s => s.Build(this, Metadata!))
                 .ToArray();
         }
 

@@ -281,8 +281,8 @@ SsaProcedureBuilder_exit:
                 m.Phi(h_4, (h, "l1"), (h_2, "loop"));
                 m.Phi(l_5, (l, "l1"), (l_3, "loop"));
                 m.Assign(hl_1, m.Shl(m.Seq(h_4, l_5), 1));
-                m.Assign(h_2, m.Slice(PrimitiveType.Byte, hl_1, 8));
-                m.Assign(l_3, m.Slice(PrimitiveType.Byte, hl_1, 0));
+                m.Assign(h_2, m.Slice(hl_1, PrimitiveType.Byte, 8));
+                m.Assign(l_3, m.Slice(hl_1, PrimitiveType.Byte, 0));
                 m.Goto("loop");
 
                 m.Label("xit");
@@ -316,8 +316,8 @@ SsaProcedureBuilder_exit:
                 var t2 = m.Temp("t2", new TemporaryStorage("t2", 2, PrimitiveType.Byte));
                 m.Def(rcx);
                 // The slices below are adjacent.
-                m.Assign(t1, m.Slice(PrimitiveType.Byte, rcx, 12));
-                m.Assign(t2, m.Slice(PrimitiveType.Byte, rcx, 4));
+                m.Assign(t1, m.Slice(rcx, PrimitiveType.Byte, 12));
+                m.Assign(t2, m.Slice(rcx, PrimitiveType.Byte, 4));
                 m.Assign(cx_3, m.Seq(t1, t2));
                 m.Return();
             });
@@ -353,10 +353,10 @@ SsaProcedureBuilder_exit:
                 var t4 = m.Temp("t4", new TemporaryStorage("t4", 2, PrimitiveType.Byte));
                 m.Def(rcx);
                 // The slices below are adjacent.
-                m.Assign(t1, m.Slice(PrimitiveType.Byte, rcx, 28));
-                m.Assign(t2, m.Slice(PrimitiveType.Byte, rcx, 20));
-                m.Assign(t3, m.Slice(PrimitiveType.Byte, rcx, 12));
-                m.Assign(t4, m.Slice(PrimitiveType.Byte, rcx, 4));
+                m.Assign(t1, m.Slice(rcx, PrimitiveType.Byte, 28));
+                m.Assign(t2, m.Slice(rcx, PrimitiveType.Byte, 20));
+                m.Assign(t3, m.Slice(rcx, PrimitiveType.Byte, 12));
+                m.Assign(t4, m.Slice(rcx, PrimitiveType.Byte, 4));
                 m.Assign(ecx_3, m.Seq(t1, t2, t3, t4));
                 m.Return();
             });
@@ -387,8 +387,8 @@ SsaProcedureBuilder_exit:
                 var t2 = m.Temp("t2", new TemporaryStorage("t2", 2, PrimitiveType.Byte));
                 m.Def(rcx);
                 // The slices below are not adjacent.
-                m.Assign(t1, m.Slice(PrimitiveType.Byte, rcx, 32));
-                m.Assign(t2, m.Slice(PrimitiveType.Byte, rcx, 0));
+                m.Assign(t1, m.Slice(rcx, PrimitiveType.Byte, 32));
+                m.Assign(t2, m.Slice(rcx, PrimitiveType.Byte, 0));
                 m.Assign(cx_3, m.Seq(t1, t2));
                 m.Return();
             });
@@ -484,8 +484,8 @@ SsaProcedureBuilder_exit:
 
                 m.Def(ds);
                 m.Assign(es_bx_1, m.SegMem(PrimitiveType.Ptr32, ds, m.Word16(0x1234)));
-                m.Alias(es_2, m.Slice(es_2.DataType, es_bx_1, 16));
-                m.Alias(bx_3, m.Slice(bx_3.DataType, es_bx_1, 0));
+                m.Alias(es_2, m.Slice(es_bx_1, es_2.DataType, 16));
+                m.Alias(bx_3, m.Slice(es_bx_1, bx_3.DataType, 0));
                 m.SStore(es_2, m.IAddS(bx_3, 4), m.Byte(3));
                 m.Return();
             });
@@ -558,8 +558,8 @@ SsaProcedureBuilder_exit:
                 var es_3 = m.Reg("es_3", X86Registers.es);
                 m.AddDefToEntryBlock(ds);
                 m.Assign(es_ax_1, m.SegMem(PrimitiveType.Word32, ds, m.Word16(0x1234)));
-                m.Alias(ax_2, m.Slice(PrimitiveType.Word16, es_ax_1, 0));
-                m.Alias(es_3, m.Slice(PrimitiveType.Word16, es_ax_1, 16));
+                m.Alias(ax_2, m.Slice(es_ax_1, PrimitiveType.Word16, 0));
+                m.Alias(es_3, m.Slice(es_ax_1, PrimitiveType.Word16, 16));
                 m.Return();
                 m.AddUseToExitBlock(ax_2);
                 m.AddUseToExitBlock(es_3);
@@ -660,8 +660,8 @@ SsaProcedureBuilder_exit:
 
                 m.Label("m1");
                 m.Assign(ptrLoc06_1, m.Mem32(m.Word16(0x1200)));
-                m.Alias(wLoc06_1, m.Slice(PrimitiveType.Word16, ptrLoc06_1, 0));
-                m.Alias(wLoc08_1, m.Slice(PrimitiveType.Word16, ptrLoc06_1, 16));
+                m.Alias(wLoc06_1, m.Slice(ptrLoc06_1, PrimitiveType.Word16, 0));
+                m.Alias(wLoc08_1, m.Slice(ptrLoc06_1, PrimitiveType.Word16, 16));
                 m.BranchIf(m.Eq0(m.Mem8(m.Word16(0x1100))), "m3");
 
                 m.Label("m2");

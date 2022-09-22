@@ -334,7 +334,7 @@ namespace Reko.Typing
             UnionAlternative? alt = ut.FindAlternative(dtComplexOrig!);
             if (alt == null)
             {
-                Debug.Print("Unable to find {0} in {1} (offset {2}).", dtComplexOrig, ut, offset);          //$diagnostic service
+                Debug.Print("Unable to find {0} in {1} (Offset {2}).", dtComplexOrig, ut, offset);          //$diagnostic service
                 return FallbackExpression();
             }
 

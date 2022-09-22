@@ -191,7 +191,7 @@ namespace Reko.Arch.Pdp11
             SetFlags(quotient, Registers.NZVC);
         }
 
-        private void RewriteIncDec(Func<Expression, int, Expression> fn)
+        private void RewriteIncDec(Func<Expression, long, Expression> fn)
         {
             var src = RewriteSrc(instr.Operands[0]);
             var dst = RewriteDst(instr.Operands[0], src, s => fn(s, 1));

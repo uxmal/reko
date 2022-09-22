@@ -26,6 +26,7 @@ using Reko.Core;
 using Reko.Core.Memory;
 using Reko.Core.Services;
 using Reko.Scanning;
+using Reko.Services;
 using Reko.UnitTests.Mocks;
 using System;
 using System.Collections.Generic;

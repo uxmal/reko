@@ -115,7 +115,7 @@ namespace Reko.Core.Output
             throw new NotImplementedException();
         }
 
-        public void VisitGotoInstruction(GotoInstruction gotoInstruction)
+        void InstructionVisitor.VisitGotoInstruction(GotoInstruction gotoInstruction)
         {
             throw new NotImplementedException();
         }

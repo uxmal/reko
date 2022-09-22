@@ -31,6 +31,7 @@ using Reko.Core.Services;
 using Reko.Environments.Msdos;
 using Reko.Loading;
 using Reko.Scanning;
+using Reko.Services;
 using Reko.UnitTests.Mocks;
 using System.Collections.Generic;
 using System.ComponentModel.Design;

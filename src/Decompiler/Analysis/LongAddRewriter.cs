@@ -113,7 +113,7 @@ namespace Reko.Analysis
                         ExpressionMatcher.AnyOperator("op"),
                         VoidType.Instance,
                         ExpressionMatcher.AnyExpression("base"),
-                        ExpressionMatcher.AnyConstant("offset")),
+                        ExpressionMatcher.AnyConstant("Offset")),
                     ExpressionMatcher.AnyDataType("dt")));
 
             segMemOffset = new ExpressionMatcher(
@@ -124,7 +124,7 @@ namespace Reko.Analysis
                         ExpressionMatcher.AnyOperator("op"),
                         VoidType.Instance,
                         ExpressionMatcher.AnyExpression("base"),
-                        ExpressionMatcher.AnyConstant("offset")),
+                        ExpressionMatcher.AnyConstant("Offset")),
                     ExpressionMatcher.AnyDataType("dt")));
         }
 
@@ -457,11 +457,11 @@ namespace Reko.Analysis
         {
             if (memOffset.Match(access))
             {
-                return (Constant)memOffset.CapturedExpression("offset")!;
+                return (Constant)memOffset.CapturedExpression("Offset")!;
             }
             if (segMemOffset.Match(access))
             {
-                return (Constant)segMemOffset.CapturedExpression("offset")!;
+                return (Constant)segMemOffset.CapturedExpression("Offset")!;
             }
             if (access.EffectiveAddress is Constant c)
                 return c;

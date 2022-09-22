@@ -35,6 +35,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading;
 using Reko.Core.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Reko.Scanning
 {
@@ -211,7 +212,7 @@ namespace Reko.Scanning
             }
         }
 
-        public bool TryRead(IProcessorArchitecture arch, Address addr, PrimitiveType dt, out Constant value)
+        public bool TryRead(IProcessorArchitecture arch, Address addr, PrimitiveType dt, [MaybeNullWhen(false)] out Constant value)
         {
             if (!this.Program.SegmentMap.TryFindSegment(addr, out var segment))
             {

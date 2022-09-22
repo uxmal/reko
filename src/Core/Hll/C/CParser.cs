@@ -1334,7 +1334,7 @@ IGNORE tab + cr + lf
             {
                 comps.Add((string)ExpectToken(CTokenType.Id));
             }
-            return new QualifiedName { Components = comps.ToArray() };
+            return new QualifiedName(comps.ToArray());
         }
 
         public List<CToken> Parse_BalancedTokenSeq()

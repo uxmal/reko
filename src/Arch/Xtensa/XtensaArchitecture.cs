@@ -290,7 +290,7 @@ namespace Reko.Arch.Xtensa
             return regsByName.TryGetValue(name, out reg);
         }
 
-        public override bool TryParseAddress(string? txtAddress, out Address addr)
+        public override bool TryParseAddress(string? txtAddress, [MaybeNullWhen(false)] out Address addr)
         {
             return Address.TryParse32(txtAddress, out addr);
         }

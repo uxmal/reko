@@ -42,7 +42,7 @@ namespace Reko.Core.Absyn
 
         public Expression Condition { get; set; }
 
-        public List<AbsynStatement> Then { get; private set;  }
+        public List<AbsynStatement> Then { get; private set; }
 
         public List<AbsynStatement> Else { get; private set; }
 

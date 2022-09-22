@@ -160,7 +160,7 @@ namespace Reko.Arch.Arm.AArch32
             var intrinsic = m.Convert(
                 m.Fn(
                     rev_intrinsic.MakeInstance(PrimitiveType.Word16),
-                    m.Slice(PrimitiveType.Word16, this.Operand(1), 0)),
+                    m.Slice(this.Operand(1), PrimitiveType.Word16)),
                 PrimitiveType.Word16,
                 PrimitiveType.Int32);
             m.Assign(opDst, intrinsic);
@@ -432,7 +432,7 @@ namespace Reko.Arch.Arm.AArch32
             var opDst = this.Operand(1);
             if (size != PrimitiveType.Word32)
             {
-                opSrc = m.Slice(size, opSrc, 0);
+                opSrc = m.Slice(opSrc, size);
             }
             m.Assign(opDst, opSrc);
             MaybePostOperand(1);
@@ -858,8 +858,8 @@ namespace Reko.Arch.Arm.AArch32
             var rm = this.Operand(2);
             var p1 = binder.CreateTemporary(PrimitiveType.Int32);
             var p2 = binder.CreateTemporary(PrimitiveType.Int32);
-            m.Assign(p1, m.SMul(m.Slice(s16, rn, 0), m.Slice(s16, rm, 0)));
-            m.Assign(p2, m.SMul(m.Slice(s16, rn, 16), m.Slice(s16, rm, 16)));
+            m.Assign(p1, m.SMul(m.Slice(rn, s16, 0), m.Slice(rm, s16, 0)));
+            m.Assign(p2, m.SMul(m.Slice(rn, s16, 16), m.Slice(rm, s16, 16)));
             m.Assign(dst, m.ISub(p1, p2));
         }
 
@@ -1091,7 +1091,7 @@ namespace Reko.Arch.Arm.AArch32
             Expression src = Operand(2);
             if (dt.BitSize < src.DataType.BitSize)
             {
-                src = m.Slice(dt, src, 0);
+                src = m.Slice(src, dt);
             }
             src = m.Convert(src, src.DataType, dst.DataType);
             m.Assign(dst, m.IAdd(this.Operand(1), src));
@@ -1103,7 +1103,7 @@ namespace Reko.Arch.Arm.AArch32
             Expression src = Operand(1);
             if (dtSrc.BitSize < src.DataType.BitSize)
             {
-                src = m.Slice(dtSrc, src, 0);
+                src = m.Slice(src, dtSrc);
             }
             src = m.Convert(src, dtSrc, dtDst);
             m.Assign(dst, src);

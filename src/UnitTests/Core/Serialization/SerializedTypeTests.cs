@@ -77,8 +77,8 @@ namespace Reko.UnitTests.Core.Serialization
 			int b = s.IndexOf("<field");
 			int e = s.IndexOf("</Struc");
 			Assert.AreEqual(
-                "<field offset=\"0\"><prim domain=\"SignedInt\" size=\"4\" xmlns=\"http://schemata.jklnet.org/Decompiler\" /></field>" +
-                "<field offset=\"4\"><prim domain=\"Real\" size=\"8\" xmlns=\"http://schemata.jklnet.org/Decompiler\" /></field>",
+                "<field Offset=\"0\"><prim domain=\"SignedInt\" size=\"4\" xmlns=\"http://schemata.jklnet.org/Decompiler\" /></field>" +
+                "<field Offset=\"4\"><prim domain=\"Real\" size=\"8\" xmlns=\"http://schemata.jklnet.org/Decompiler\" /></field>",
                 s.Substring(b, e-b));
 			StringReader rdr = new StringReader(s);
             XmlSerializer deser = SerializedLibrary.CreateSerializer_v1(typeof(StructType_v1));

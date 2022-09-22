@@ -501,7 +501,7 @@ namespace Reko.UnitTests.Decompiler.Typing
             };
             var ttran = new TypeTransformer(factory, store, null);
             var dt = t2.Accept(ttran);
-            Assert.AreSame(t1, dt, "Should reduce fields at offset 0 ");
+            Assert.AreSame(t1, dt, "Should reduce fields at Offset 0 ");
         }
 
         [Test]

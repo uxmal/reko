@@ -220,7 +220,7 @@ namespace Reko.Tools.HunkTool
             }
             else if (hunk_type == HunkType.HUNK_DEBUG)
             {
-                this.print_extra("debug", String.Format("{0}  offset={1:X8}", ((DebugHunk)hunk).debug_type, ((DebugHunk)hunk).debug_offset));
+                this.print_extra("debug", String.Format("{0}  Offset={1:X8}", ((DebugHunk)hunk).debug_type, ((DebugHunk)hunk).debug_offset));
                 if (!this.brief)
                 {
                     this.show_debug_hunk((DebugHunk)hunk);

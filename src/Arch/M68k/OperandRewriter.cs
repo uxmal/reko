@@ -72,7 +72,7 @@ namespace Reko.Arch.M68k
                     if (DataWidth.Domain == Domain.Real)
                         r = m.Convert(r, r.DataType, DataWidth);
                     else
-                        r = m.Slice(DataWidth, r, 0);
+                        r = m.Slice(r, DataWidth);
                 }
                 return r;
             case M68kImmediateOperand imm:
@@ -104,7 +104,7 @@ namespace Reko.Arch.M68k
                 Expression ix = binder.EnsureRegister(indidx.XRegister);
                 if (indidx.XWidth.Size != 4)
                 {
-                    ix = m.Slice(PrimitiveType.Int16, ix, 0);
+                    ix = m.Slice(ix, PrimitiveType.Int16);
                     ix = m.Convert(ix, PrimitiveType.Int16, PrimitiveType.Int32);
                 }
                 if (indidx.Scale > 1)
@@ -120,7 +120,7 @@ namespace Reko.Arch.M68k
                 {
                     var idx = Combine(null, indop.Index, addrInstr);
                     if (indop.index_reg_width!.BitSize != 32)
-                        idx = m.Convert(m.Slice(PrimitiveType.Int16, idx, 0), PrimitiveType.Int16, PrimitiveType.Int32);
+                        idx = m.Convert(m.Slice(idx, PrimitiveType.Int16), PrimitiveType.Int16, PrimitiveType.Int32);
                     if (indop.IndexScale > 1)
                         idx = m.IMul(idx, indop.IndexScale);
                     ea = Combine(ea, idx);
@@ -209,7 +209,7 @@ namespace Reko.Arch.M68k
                         reg.DataType.BitSize > dataWidth.BitSize &&
                         !reg.DataType.IsReal)
                     {
-                        Expression rSub = m.Slice(dataWidth, r, 0);
+                        Expression rSub = m.Slice(r, dataWidth);
                         var srcExp = opGen(src, rSub);
                         if (srcExp is Identifier || srcExp is Constant || srcExp is MkSequence)
                         {
@@ -221,7 +221,7 @@ namespace Reko.Arch.M68k
                             m.Assign(tmpLo, srcExp);
                         }
                         var tmpHi = binder.CreateTemporary(PrimitiveType.CreateWord(reg.DataType.BitSize - tmpLo.DataType.BitSize));
-                        m.Assign(tmpHi, m.Slice(tmpHi.DataType, r, tmpLo.DataType.BitSize));
+                        m.Assign(tmpHi, m.Slice(r, tmpHi.DataType, tmpLo.DataType.BitSize));
                         src = m.Seq(tmpHi, tmpLo);
                     }
                     else
@@ -335,7 +335,7 @@ namespace Reko.Arch.M68k
                         var tmpLo = binder.CreateTemporary(dataWidth);
                         var tmpHi = binder.CreateTemporary(PrimitiveType.CreateWord(r.DataType.BitSize - dataWidth.BitSize));
                         m.Assign(tmpLo, opGen(m.Convert(r, r.DataType, dataWidth)));
-                        m.Assign(tmpHi, m.Slice(tmpHi.DataType, r, dataWidth.BitSize));
+                        m.Assign(tmpHi, m.Slice(r, tmpHi.DataType, dataWidth.BitSize));
                         m.Assign(r, m.Seq(tmpHi, tmpLo));
                         return tmpLo;
                     }
@@ -393,7 +393,7 @@ namespace Reko.Arch.M68k
                         var idx = Combine(null, indop.Index, addrInstr);
                         if (indop.index_reg_width!.BitSize != 32)
                         {
-                            idx = m.Slice(PrimitiveType.Int16, idx, 0);
+                            idx = m.Slice(idx, PrimitiveType.Int16);
                             idx = m.Convert(idx, PrimitiveType.Int16, PrimitiveType.Int32);
                         }
                         if (indop.IndexScale > 1)
@@ -427,7 +427,7 @@ namespace Reko.Arch.M68k
                     {
                         var tmpLo = binder.CreateTemporary(src.DataType);
                         var tmpHi = binder.CreateTemporary(PrimitiveType.CreateWord(r.DataType.BitSize - src.DataType.BitSize));
-                        m.Assign(tmpHi, m.Slice(tmpHi.DataType, r, dataWidth.BitSize));
+                        m.Assign(tmpHi, m.Slice(r, tmpHi.DataType, dataWidth.BitSize));
                         m.Assign(r, m.Seq(tmpHi, src));
                         return tmpLo;
                     }

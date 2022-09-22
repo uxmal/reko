@@ -272,7 +272,7 @@ namespace Reko.Arch.Arm
             throw new NotImplementedException();
         }
 
-        public override bool TryParseAddress(string? txtAddress, out Address addr)
+        public override bool TryParseAddress(string? txtAddress, [MaybeNullWhen(false)] out Address addr)
         {
             return Address.TryParse32(txtAddress, out addr);
         }

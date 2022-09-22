@@ -20,6 +20,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Reko.Core.Collections
 {
@@ -77,7 +78,7 @@ namespace Reko.Core.Collections
             return inQ.Contains(item);
         }
 
-		public bool TryGetWorkItem(out T item)
+		public bool TryGetWorkItem([MaybeNullWhen(false)] out T item)
 		{
 			while (!IsEmpty)
 			{
@@ -159,7 +160,7 @@ namespace Reko.Core.Collections
 			get { return inStack.Count == 0; }
 		}
 
-		public bool GetWorkItem(out T item)
+		public bool TryGetWorkItem([MaybeNullWhen(false)] out T item)
 		{
 			while (!IsEmpty)
 			{
@@ -171,7 +172,7 @@ namespace Reko.Core.Collections
 					return true;
 				}
 			}
-			item = default!;
+			item = default;
             return false;
 		}
 

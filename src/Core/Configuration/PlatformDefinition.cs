@@ -129,8 +129,8 @@ namespace Reko.Core.Configuration
         {
             if (platform.MemoryMap != null && platform.MemoryMap.Segments != null)
             {
-                platform.EnsureTypeLibraries(platform.Name);
-                var tser = new TypeLibraryDeserializer(platform, true, platform.Metadata);
+                var metadata = platform.EnsureTypeLibraries(platform.Name);
+                var tser = new TypeLibraryDeserializer(platform, true, metadata);
                 var sser = new ProcedureSerializer(platform, tser, platform.DefaultCallingConvention);
                 return platform.MemoryMap.Segments
                     .Where(s => s.Procedures is not null)

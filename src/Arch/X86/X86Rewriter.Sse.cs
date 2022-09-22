@@ -95,21 +95,20 @@ namespace Reko.Arch.X86
             var src = SrcOp(1);
 
             var tmp1 = binder.CreateTemporary(dtSrc);
-            m.Assign(tmp1, m.Convert(m.Slice(dtSrc, src, 0), dtSrc, dtDst));
+            m.Assign(tmp1, m.Convert(m.Slice(src, dtSrc, 0), dtSrc, dtDst));
 
             var tmp2 = binder.CreateTemporary(dtSrc);
-            m.Assign(tmp2, m.Convert(m.Slice(dtSrc, src, 32), dtSrc, dtDst));
+            m.Assign(tmp2, m.Convert(m.Slice(src, dtSrc, 32), dtSrc, dtDst));
 
             m.Assign(SrcOp(0), m.Seq(tmp2, tmp1));
         }
 
         private void RewriteCvts2si(PrimitiveType floatType)
         {
-//            instrCur.Operands[0].Width = ;
             var src = SrcOp(instrCur.Operands[instrCur.Operands.Length == 3 ? 2 : 1]);
             if (src.DataType.BitSize != floatType.BitSize)
             {
-                src = m.Slice(floatType, src, 0);
+                src = m.Slice(src, floatType);
             }
             var dt = PrimitiveType.Create(Domain.SignedInt, instrCur.Operands[0].Width.BitSize);
             m.Assign(SrcOp(0), m.Convert(src, floatType, dt));
@@ -179,10 +178,10 @@ namespace Reko.Arch.X86
             var src = SrcOp(instrCur.Operands[instrCur.Operands.Length == 3 ? 2 : 1]);
 
             var tmp1 = binder.CreateTemporary(dtDst);
-            m.Assign(tmp1, m.Convert(m.Slice(dtSrc, src, 0), dtSrc, dtDst));
+            m.Assign(tmp1, m.Convert(m.Slice(src, dtSrc, 0), dtSrc, dtDst));
 
             var tmp2 = binder.CreateTemporary(dtDst);
-            m.Assign(tmp2, m.Convert(m.Slice(dtSrc, src, 32), dtSrc, dtDst));
+            m.Assign(tmp2, m.Convert(m.Slice(src, dtSrc, 32), dtSrc, dtDst));
 
             m.Assign(SrcOp(0), m.Seq(tmp2, tmp1));
         }
@@ -445,7 +444,7 @@ namespace Reko.Arch.X86
                 : roundingIntrinsics64[mode];
             var src = SrcOp(1);
             var dst = SrcOp(0);
-            VexAssign(isVex, dst, m.Fn(intrinsic, m.Slice(dt, src, 0)));
+            VexAssign(isVex, dst, m.Fn(intrinsic, m.Slice(src, dt)));
         }
 
         private void RewriteScalarBinop(Func<Expression, Expression, Expression> fn, PrimitiveType size, bool zeroExtend)
@@ -465,9 +464,9 @@ namespace Reko.Arch.X86
                 src2 = SrcOp(1);
             }
             if (src1.DataType.BitSize != size.BitSize)
-                src1 = m.Slice(size, src1, 0);
+                src1 = m.Slice(src1, size);
             if (src2.DataType.BitSize != size.BitSize)
-                src2 = m.Slice(size, src2, 0);
+                src2 = m.Slice(src2, size);
             m.Assign(tmp, fn(src1, src2));
 
             //$REVIEW: this does a DPB-ish operation.
@@ -483,7 +482,7 @@ namespace Reko.Arch.X86
                 else
                 {
                     hi = binder.CreateTemporary(dtHighPart);
-                    m.Assign(hi, m.Slice(dtHighPart, dst, size.BitSize));
+                    m.Assign(hi, m.Slice(dst, dtHighPart, size.BitSize));
                 }
                 m.Assign(dst, m.Seq(hi, tmp));
             }
@@ -684,7 +683,7 @@ namespace Reko.Arch.X86
             var src2 = SrcOp(has3Ops ? 2 : 1);
             var dst = SrcOp(0);
             var tmp = binder.CreateTemporary(PrimitiveType.Word128);
-            m.Assign(tmp, m.Slice(tmp.DataType, src1, 0));  // Low 128 bits
+            m.Assign(tmp, m.Slice(src1, tmp.DataType));  // Low 128 bits
             VexAssign(isVex, dst, tmp);
         }
 

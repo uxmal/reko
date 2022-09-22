@@ -2828,9 +2828,9 @@ namespace Reko.Arch.Arm.AArch64
 
                 Decoder LoadStoreRegisterPAC = Select((30, 2), u => u == 3, "  Load/store register (pac)",
                     Mask(Bf((23, 1), (11, 1)), "  size=0b11",
-                        Nyi("LDRAA,LDRAB - Key A offset variant"),
+                        Nyi("LDRAA,LDRAB - Key A Offset variant"),
                         Nyi("LDRAA,LDRAB - Key A pre-indexed variant"),
-                        Nyi("LDRAA,LDRAB - Key B offset variant"),
+                        Nyi("LDRAA,LDRAB - Key B Offset variant"),
                         Nyi("LDRAA,LDRAB - Key B pre-indexed variant")),
                     invalid);
 

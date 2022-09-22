@@ -917,15 +917,15 @@ SsaProcedureBuilder_exit:
 
                 m.Assign(h_1, m.Shr(h, 1));
                 m.Assign(SZC_1, m.Cond(h_1));
-                m.Alias(C_1, m.Slice(Bool, SZC_1, 0));
+                m.Alias(C_1, m.Slice(SZC_1, Bool));
 
                 m.Assign(l_1, RorC(l, m.Byte(1), C_1));
                 m.Assign(SZC_2, m.Cond(l_1));
-                m.Alias(C_2, m.Slice(Bool, SZC_2, 0));
+                m.Alias(C_2, m.Slice(SZC_2, Bool));
 
                 m.Assign(b_1, RorC(b, m.Byte(1), C_2));
                 m.Assign(SZC_3, m.Cond(b_1));
-                m.Alias(C_3, m.Slice(Bool, SZC_3, 0));
+                m.Alias(C_3, m.Slice(SZC_3, Bool));
 
                 m.Assign(c_1, RorC(c, m.Byte(1), C_3));
                 m.Assign(SZC_4, m.Cond(c_1));
@@ -995,12 +995,12 @@ SsaProcedureBuilder_exit:
                 m.AddDefToEntryBlock(dx_2);
                 m.Assign(ax_3, m.IAdd(ax_1, m.Mem16(m.IAdd(fp, 2))));
                 m.Assign(SCZO_4, m.Cond(ax_3));
-                m.Alias(C_5, m.Slice(PrimitiveType.Bool, SCZO_4, 1));
+                m.Alias(C_5, m.Slice(SCZO_4, PrimitiveType.Bool, 1));
                 m.Assign(dx_6, m.IAdd(dx_2, C_5));
 
                 m.Assign(ax_7, m.IAdd(ax_3, m.Mem16(m.IAdd(fp, 6))));
                 m.Assign(SCZO_8, m.Cond(ax_7));
-                m.Assign(C_9, m.Slice(PrimitiveType.Bool, SCZO_8, 1));
+                m.Assign(C_9, m.Slice(SCZO_8, PrimitiveType.Bool, 1));
                 m.Assign(dx_10, m.IAdd(m.IAdd(dx_6, m.Mem16(m.IAdd(fp, 8))), C_9));
                 m.Assign(SCZO_11, m.Cond(dx_10));
                 m.Return();

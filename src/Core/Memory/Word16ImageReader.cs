@@ -22,6 +22,7 @@ using Reko.Core.Expressions;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Text;
 
@@ -159,10 +160,7 @@ namespace Reko.Core.Memory
             return bytes.ToArray();
         }
 
-        public byte[] ReadBytes(uint addressUnits)
-        {
-            throw new NotImplementedException();
-        }
+        public byte[] ReadBytes(uint addressUnits) => ReadBytes((int) addressUnits);
 
         public short ReadLeInt16()
         {
@@ -234,7 +232,7 @@ namespace Reko.Core.Memory
             return mem.TryReadLeUInt32(this.Offset + offset, out value);
         }
 
-        public bool TryReadBe(DataType dataType, out Constant value)
+        public bool TryReadBe(DataType dataType, [MaybeNullWhen(false)] out Constant value)
         {
             switch (dataType.BitSize)
             {
@@ -310,7 +308,7 @@ namespace Reko.Core.Memory
             throw new NotImplementedException();
         }
 
-        public bool TryReadLe(DataType dataType, out Constant value)
+        public bool TryReadLe(DataType dataType, [MaybeNullWhen(false)] out Constant value)
         {
             throw new NotImplementedException();
         }

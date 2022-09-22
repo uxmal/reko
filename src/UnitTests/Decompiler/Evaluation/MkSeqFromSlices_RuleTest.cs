@@ -69,8 +69,8 @@ namespace Reko.UnitTests.Decompiler.Evaluation
                 var t1 = m.Temp(PrimitiveType.Word16, "t1");
                 var t2 = m.Temp(PrimitiveType.Word16, "t2");
 
-                m.Assign(t1, m.Slice(t1.DataType, dw, 16));
-                m.Assign(t2, m.Slice(t2.DataType, dw, 0));
+                m.Assign(t1, m.Slice(dw, t1.DataType, 16));
+                m.Assign(t2, m.Slice(dw, t2.DataType, 0));
                 m.Assign(r2, m.Seq(t1, t2));
                 m.Return();
 

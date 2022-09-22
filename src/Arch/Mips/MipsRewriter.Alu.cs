@@ -278,7 +278,7 @@ namespace Reko.Arch.Mips
                 var tmpLo = binder.CreateTemporary(opSrcMem.DataType);
                 var tmpHi = binder.CreateTemporary(PrimitiveType.CreateWord(bitDiff));
                 m.Assign(tmpLo, opSrcMem);
-                m.Assign(tmpHi, m.Slice(tmpHi.DataType, opDstFloat, opSrcMem.DataType.BitSize));
+                m.Assign(tmpHi, m.Slice(opDstFloat, tmpHi.DataType, opSrcMem.DataType.BitSize));
                 m.Assign(opDstFloat, m.Seq(tmpHi, tmpLo));
             }
             else
@@ -641,7 +641,7 @@ namespace Reko.Arch.Mips
             var opSrc = RewriteOperand(instr.Operands[0]);
             var tmp = binder.CreateTemporary(dt);
             var dtDst = PrimitiveType.Create(Domain.SignedInt, opDst.DataType.BitSize);
-            m.Assign(tmp, m.Slice(dt, opSrc, 0));
+            m.Assign(tmp, m.Slice(opSrc, dt));
             m.Assign(opDst, m.Convert(tmp, tmp.DataType, dtDst));
         }
 
@@ -674,7 +674,7 @@ namespace Reko.Arch.Mips
             var opSrc = RewriteOperand0(instr.Operands[0]);
             var opDst = RewriteOperand0(instr.Operands[1]);
             if (opDst.DataType.Size < opSrc.DataType.Size)
-                opSrc = m.Slice(opDst.DataType, opSrc, 0);
+                opSrc = m.Slice(opSrc, opDst.DataType);
             m.Assign(opDst, opSrc);
         }
 

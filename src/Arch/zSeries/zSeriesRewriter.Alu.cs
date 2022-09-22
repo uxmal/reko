@@ -667,7 +667,7 @@ namespace Reko.Arch.zSeries
             Expression src = Reg(0);
             if (dt.BitSize < 64)
             {
-                src = m.Slice(dt, src, 0);
+                src = m.Slice(src, dt);
             }
             var ea = EffectiveAddress(1);
             m.Assign(m.Mem(dt, ea), src);

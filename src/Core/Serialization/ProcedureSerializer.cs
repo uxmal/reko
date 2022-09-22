@@ -259,12 +259,12 @@ namespace Reko.Core.Serialization
             }
             var parameters = sig.Parameters!;
             var argSer = new ArgumentSerializer(Architecture);
-            ssig.ReturnValue = argSer.Serialize(sig.ReturnValue);
+            ssig.ReturnValue = ArgumentSerializer.Serialize(sig.ReturnValue);
             ssig.Arguments = new Argument_v1[parameters.Length];
             for (int i = 0; i < parameters.Length; ++i)
             {
                 Identifier formal = parameters[i];
-                ssig.Arguments[i] = argSer!.Serialize(formal)!;
+                ssig.Arguments[i] = ArgumentSerializer.Serialize(formal)!;
             }
             ssig.StackDelta = sig.StackDelta;
             ssig.FpuStackDelta = sig.FpuStackDelta;

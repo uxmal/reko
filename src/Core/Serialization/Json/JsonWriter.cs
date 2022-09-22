@@ -84,7 +84,7 @@ namespace Reko.Core.Serialization.Json
 
         public void Write(object o)
         {
-            if (o == null)
+            if (o is null)
             {
                 w.Write("null");
                 return;

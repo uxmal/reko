@@ -70,7 +70,7 @@ namespace Reko.Environments.AmigaOS
             var hexOffset = (int) Expect(TokenType.Number)!;   // offset (in hex)
             if (decOffset != hexOffset)
                 throw new InvalidOperationException(string.Format(
-                    "Decimal offset {0} and hexadecimal offset {1:X} do not match.", decOffset, hexOffset));
+                    "Decimal Offset {0} and hexadecimal Offset {1:X} do not match.", decOffset, hexOffset));
             var name = (string) Expect(TokenType.Id)!;         // fn name
 
             var parameters = new List<Argument_v1>();

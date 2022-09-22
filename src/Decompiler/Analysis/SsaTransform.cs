@@ -1200,7 +1200,7 @@ namespace Reko.Analysis
             // Avoid creating an aliasing slice if it already exists.
             if (this.availableSlices.TryGetValue((sidSrc, range), out var sidAlias))
                 return sidAlias;
-            var e = m.Slice(idSlice.DataType, sidSrc.Identifier, range.Lsb - (int)sidSrc.Identifier.Storage.BitAddress);
+            var e = m.Slice(sidSrc.Identifier, idSlice.DataType, range.Lsb - (int)sidSrc.Identifier.Storage.BitAddress);
             var ass = new AliasAssignment(idSlice, e);
             sidAlias = this.ssa.InsertAfterDefinition(sidSrc.DefStatement!, ass);
             sidSrc.Uses.Add(sidAlias.DefStatement!);

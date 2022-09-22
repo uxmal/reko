@@ -290,7 +290,7 @@ Architecture */
             var src = Rewrite(instr.Operands[0]);
             var dst = Rewrite(instr.Operands[1]);
             if (dst.DataType.Size < src.DataType.Size)
-                src = m.Slice(dst.DataType, src, 0);
+                src = m.Slice(src, dst.DataType);
             m.Assign(dst, src);
         }
 

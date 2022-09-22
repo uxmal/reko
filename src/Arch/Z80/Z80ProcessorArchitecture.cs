@@ -181,7 +181,7 @@ namespace Reko.Arch.Z80
 			return sb.ToString();
 		}
 
-        public override bool TryParseAddress(string? txtAddress, out Address addr)
+        public override bool TryParseAddress(string? txtAddress, [MaybeNullWhen(false)] out Address addr)
         {
             return Address.TryParse16(txtAddress, out addr);
         }

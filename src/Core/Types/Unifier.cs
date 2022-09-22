@@ -76,7 +76,7 @@ namespace Reko.Core.Types
 
 		private bool DoAreCompatible(DataType a, DataType b, int depth)
 		{
-			if (a == null || b == null)
+			if (a is null || b is null)
 				return false;
 
             if (depth > 20)

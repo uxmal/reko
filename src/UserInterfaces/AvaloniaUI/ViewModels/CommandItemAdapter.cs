@@ -35,9 +35,9 @@ namespace Reko.UserInterfaces.AvaloniaUI.ViewModels
 
         public int Count => menuItems.Count;
 
-        public CommandID? GetCommandID(int i)
+        public CommandID GetCommandID(int i)
         {
-            return menuItems[i].CommandID;
+            return menuItems[i].CommandID!;
         }
 
         public void RemoveAt(int i)

@@ -209,15 +209,15 @@ namespace Reko.UnitTests.Decompiler.Scanning
             var CVZNX = m.Flags("CVZNX");
             m.Assign(d0, d3);
             m.Assign(CVZN, m.Cond(d0));
-            m.Assign(v38, m.And(m.Slice(PrimitiveType.Word16, d0, 0), 0xF0));
+            m.Assign(v38, m.And(m.Slice(d0, PrimitiveType.Word16), 0xF0));
             m.Assign(d0, m.Dpb(d0, v38, 0));
             m.Assign(ZN, m.Cond(v38));
             m.Assign(C, false);
             m.Assign(V, false);
-            m.Assign(v39, m.Shl(m.Slice(PrimitiveType.Byte, d0, 0), 2));
+            m.Assign(v39, m.Shl(m.Slice(d0, PrimitiveType.Byte), 2));
             m.Assign(d0, m.Dpb(d0, v39, 0));
             m.Assign(CVZNX, m.Cond(v39));
-            m.Assign(v40, m.ISub(m.Slice(PrimitiveType.Word16, d0, 0), 44));
+            m.Assign(v40, m.ISub(m.Slice(d0, PrimitiveType.Word16), 44));
             m.Assign(CVZN, m.Cond(v40));
             m.BranchIf(m.Test(ConditionCode.GT, VZN), "lDefault");
             m.Assign(a5, m.Mem32(m.IAdd(Address.Ptr32(0x0000C046), d0)));

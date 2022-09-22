@@ -39,6 +39,6 @@ namespace Reko.Core
             DataType = dataType;
         }
 
-        public static string GenerateDefaultName(Address address) => string.Format("g_{0:X}", address.ToLinear());
+        public static string GenerateDefaultName(Address address) => $"g_{address.ToLinear():X}";
     }
 }

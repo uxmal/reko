@@ -37,7 +37,7 @@ namespace Reko.Core.Absyn
 			this.Body = body;
 		}
 
-		public List<AbsynStatement> Body { get; private set ;}
-		public Expression Condition { get; private set; }
+		public List<AbsynStatement> Body { get; }
+		public Expression Condition { get; }
 	}
 }

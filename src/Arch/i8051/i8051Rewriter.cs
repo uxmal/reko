@@ -211,7 +211,7 @@ namespace Reko.Arch.i8051
                 break;
             case BitOperand b:
                 var breg = binder.EnsureRegister(b.Register);
-                m.Assign(breg, m.Xor(breg, 1 << b.Bit));
+                m.Assign(breg, m.Xor(breg, 1u << b.Bit));
                 break;
             default:
                 throw new NotSupportedException(

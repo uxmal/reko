@@ -218,6 +218,7 @@ namespace Reko.Core
         {
             this.Return = seq;
         }
+
         public void StackParam(DataType dt)
         {
             var stg = new StackStorage(stackOffset, dt);

@@ -139,8 +139,8 @@ namespace Reko.Core
             this.Text = text;
         }
 
-        public Address Address { get; private set; }
-        public string Text { get; private set; }
+        public Address Address { get; }
+        public string Text { get; }
     }
 
     /// <summary>

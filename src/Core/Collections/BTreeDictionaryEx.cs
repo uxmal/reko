@@ -21,6 +21,7 @@
 using System;
 using System.Diagnostics;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Reko.Core.Collections
 {
@@ -30,8 +31,7 @@ namespace Reko.Core.Collections
     /// </summary>
     public static class BTreeDictionaryEx
     {
-        //$TODO: .NET 5 [NotNullWhen(returnValue: true)]
-        public static bool TryGetLowerBound<K, V>(this BTreeDictionary<K, V> list, K key, out V value)
+        public static bool TryGetLowerBound<K, V>(this BTreeDictionary<K, V> list, K key, [MaybeNullWhen(false)] out V value)
         {
             var cmp = list.Comparer;
             int lo = 0;
@@ -62,8 +62,7 @@ namespace Reko.Core.Collections
             return set;
         }
 
-        //$TODO: .NET 5 [NotNullWhen(returnValue: true)]
-        public static bool TryGetUpperBound<K, V>(this BTreeDictionary<K, V> list, K key, out V value)
+        public static bool TryGetUpperBound<K, V>(this BTreeDictionary<K, V> list, K key, [MaybeNullWhen(false)] out V value)
         {
             var cmp = list.Comparer;
             int lo = 0;
@@ -95,8 +94,7 @@ namespace Reko.Core.Collections
         }
 
 
-        //$TODO: .NET 5 [NotNullWhen(returnValue: true)]
-        public static bool TryGetLowerBoundKey<K, V>(this BTreeDictionary<K, V> list, K key, out K closestKey)
+        public static bool TryGetLowerBoundKey<K, V>(this BTreeDictionary<K, V> list, K key, [MaybeNullWhen(false)] out K closestKey)
         {
             var cmp = list.Comparer;
             int lo = 0;
@@ -127,8 +125,7 @@ namespace Reko.Core.Collections
             return set;
         }
 
-        //$TODO: .NET 5 [NotNullWhen(returnValue: true)]
-        public static bool TryGetUpperBoundKey<K, V>(this BTreeDictionary<K, V> list, K key, out K closestKey)
+        public static bool TryGetUpperBoundKey<K, V>(this BTreeDictionary<K, V> list, K key, [MaybeNullWhen(false)] out K closestKey)
         {
             var cmp = list.Comparer;
             int lo = 0;
@@ -159,7 +156,7 @@ namespace Reko.Core.Collections
             return set;
         }
 
-        public static bool TryGetLowerBoundIndex<K, V>(this BTreeDictionary<K, V> list, K key, out int closestIndex)
+        public static bool TryGetLowerBoundIndex<K, V>(this BTreeDictionary<K, V> list, K key, [MaybeNullWhen(false)] out int closestIndex)
         {
             var cmp = list.Comparer;
             int lo = 0;
@@ -190,7 +187,7 @@ namespace Reko.Core.Collections
             return set;
         }
 
-        public static bool TryGetUpperBoundIndex<K, V>(this BTreeDictionary<K, V> list, K key, out int closestIndex)
+        public static bool TryGetUpperBoundIndex<K, V>(this BTreeDictionary<K, V> list, K key, [MaybeNullWhen(false)] out int closestIndex)
         {
             var cmp = list.Comparer;
             int lo = 0;

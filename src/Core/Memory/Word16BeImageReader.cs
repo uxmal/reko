@@ -22,6 +22,7 @@ using Reko.Core.Expressions;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Text;
 
 namespace Reko.Core.Memory
@@ -79,7 +80,7 @@ namespace Reko.Core.Memory
         public bool TryPeekUInt32(int offset, out uint value) => TryPeekBeUInt32(offset, out value);
         public bool TryPeekUInt64(int offset, out ulong value) => TryPeekBeUInt64(offset, out value);
 
-        public bool TryRead(PrimitiveType dataType, out Constant value) => TryReadBe(dataType, out value);
+        public bool TryRead(PrimitiveType dataType, [MaybeNullWhen(false)] out Constant value) => TryReadBe(dataType, out value);
 
         public bool TryReadInt16(out short value) => TryReadBeInt16(out value);
         public bool TryReadInt32(out int value) => TryReadBeInt32(out value);

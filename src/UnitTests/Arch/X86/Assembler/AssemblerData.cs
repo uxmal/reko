@@ -43,7 +43,7 @@ namespace Reko.UnitTests.Arch.X86.Assembler
 			AssembleFragment(
 				@"	.i86
 foo		proc
-		mov	si,offset data
+		mov	si,Offset data
 		xor al,al
 		rep scasb
 		ret
@@ -69,9 +69,9 @@ foo		proc
 		jmp	[bx+jmptable]
 
 jmptable:
-		dw	offset one
-		dw	offset two
-		dw	offset three
+		dw	Offset one
+		dw	Offset two
+		dw	Offset three
 one:
 		mov	ax,1
 		ret

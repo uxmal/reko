@@ -179,7 +179,7 @@ namespace Reko.Arch.Qualcomm
             }
             if (dec.Width.BitSize < (int) dec.Operand.Width.BitSize)
             {
-                exp = m.Slice(dec.Width, exp!, dec.BitOffset);
+                exp = m.Slice(exp!, dec.Width, dec.BitOffset);
                 return exp;
             }
             throw new NotImplementedException(dec.ToString());
@@ -206,12 +206,12 @@ namespace Reko.Arch.Qualcomm
                     var dt = PrimitiveType.CreateWord(32 - dec.Width.BitSize);
                     if (dec.BitOffset == 0)
                     {
-                        var hi = m.Slice(dt, dst, dec.Width.BitSize);
+                        var hi = m.Slice(dst, dt, dec.Width.BitSize);
                         write(dst, m.Seq(hi, src));
                     }
                     else
                     {
-                        var lo = m.Slice(dt, dst, 0);
+                        var lo = m.Slice(dst, dt);
                         write(dst, m.Seq(src, lo));
                     }
                     return;
@@ -428,7 +428,7 @@ namespace Reko.Arch.Qualcomm
 
         private Expression RewriteCmp(DataType dt, Func<Expression,Expression,Expression> cmp, Expression a, Expression b)
         {
-            return cmp(m.Slice(dt, a, 0), m.Slice(dt, b, 0));
+            return cmp(m.Slice(a, dt), m.Slice(b, dt));
         }
 
         private Expression RewriteCombine(Expression hi, Expression lo)
@@ -469,7 +469,7 @@ namespace Reko.Arch.Qualcomm
 
         private Expression RewriteExt(Expression e, PrimitiveType dtSlice, PrimitiveType dtResult)
         {
-            return m.Convert(m.Slice(dtSlice, e, 0), dtSlice, dtResult);
+            return m.Convert(m.Slice(e, dtSlice), dtSlice, dtResult);
         }
 
         private Expression RewriteExtract(Domain domain, Expression expression, MachineOperand[] operands)
@@ -488,7 +488,7 @@ namespace Reko.Arch.Qualcomm
                 var width = ((ImmediateOperand) operands[2]).Value.ToInt32();
                 var offset = ((ImmediateOperand) operands[1]).Value.ToInt32();
                 var dtSlice = PrimitiveType.CreateBitSlice(width);
-                var slice = m.Slice(dtSlice, expression, offset);
+                var slice = m.Slice(expression, dtSlice, offset);
                 return m.Convert(slice, dtSlice, dt);
             }
         }
@@ -533,7 +533,7 @@ namespace Reko.Arch.Qualcomm
         {
             var mul = m.IMul(a, b);
             mul.DataType = PrimitiveType.Word64;
-            return m.Slice(a.DataType, mul, 32);
+            return m.Slice(mul, a.DataType, 32);
         }
 
         private Expression RewriteMpyi(Expression a, Expression b)
@@ -553,7 +553,7 @@ namespace Reko.Arch.Qualcomm
             {
                 var mul = m.IMul(a, b);
                 mul.DataType = PrimitiveType.Word64;
-                mul = m.Slice(a.DataType, mul, 32);
+                mul = m.Slice(mul, a.DataType, 32);
                 return mul;
             }
         }

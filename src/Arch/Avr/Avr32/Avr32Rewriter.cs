@@ -420,7 +420,7 @@ namespace Reko.Arch.Avr.Avr32
                 return;
             }
             var dt = PrimitiveType.Create(Domain.SignedInt, w);
-            var slice = m.Slice(dt, RewriteOp(1), b);
+            var slice = m.Slice(RewriteOp(1), dt, b);
             var dst = RewriteOpDst(0, slice);
             EmitCc(NZC, dst);
         }
@@ -436,7 +436,7 @@ namespace Reko.Arch.Avr.Avr32
                 return;
             }
             var dt = PrimitiveType.CreateWord(w);
-            var slice = m.Slice(dt, RewriteOp(1), b);
+            var slice = m.Slice(RewriteOp(1), dt, b);
             var dst = RewriteOpDst(0, slice);
             EmitCc(NZC, dst);
         }
@@ -445,7 +445,7 @@ namespace Reko.Arch.Avr.Avr32
         {
             var src = RewriteOp(0);
             var bit = ((ImmediateOperand) instr.Operands[1]).Value.ToInt32();
-            src = m.Slice(PrimitiveType.Bool, src, bit);
+            src = m.Slice(src, PrimitiveType.Bool, bit);
             var tmp = binder.CreateTemporary(src.DataType);
             m.Assign(tmp, src);
             m.Assign(binder.EnsureFlagGroup(Z), tmp);
@@ -513,7 +513,7 @@ namespace Reko.Arch.Avr.Avr32
             var src = RewriteOp(0);
             if (src.DataType.BitSize > dtFrom.BitSize)
             {
-                src = m.Slice(dtFrom, src, 0);
+                src = m.Slice(src, dtFrom);
             }
             var dst = RewriteOpDst(0, m.Convert(src, dtFrom, dtTo));
             EmitCc(NZC, dst);
@@ -544,8 +544,8 @@ namespace Reko.Arch.Avr.Avr32
 
         private void RewriteCp_b()
         {
-            var op1 = m.Slice(PrimitiveType.Byte, RewriteOp(0), 0);
-            var op2 = m.Slice(PrimitiveType.Byte, RewriteOp(1), 0);
+            var op1 = m.Slice(RewriteOp(0), PrimitiveType.Byte);
+            var op2 = m.Slice(RewriteOp(1), PrimitiveType.Byte);
             var grf = binder.EnsureFlagGroup(VNZC);
             m.Assign(grf, m.Cond(m.ISub(op1, op2)));
         }
@@ -1005,7 +1005,7 @@ namespace Reko.Arch.Avr.Avr32
             var src = RewriteOp(1);
             if (src.DataType.BitSize > dt.BitSize)
             {
-                src = m.Slice(dt, src, 0);
+                src = m.Slice(src, dt);
             }
             RewriteOpDst(0, src);
         }

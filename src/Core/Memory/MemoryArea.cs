@@ -23,6 +23,7 @@ using Reko.Core.Output;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Text;
 
 namespace Reko.Core.Memory
@@ -103,9 +104,9 @@ namespace Reko.Core.Memory
             return offset < (ulong) Length;
         }
 
-        public abstract bool TryReadBe(long imageOffset, DataType type, out Constant c);
+        public abstract bool TryReadBe(long imageOffset, DataType type, [MaybeNullWhen(false)] out Constant c);
 
-        public bool TryReadBe(Address addr, PrimitiveType type, out Constant c)
+        public bool TryReadBe(Address addr, PrimitiveType type, [MaybeNullWhen(false)] out Constant c)
         {
             return TryReadBe(addr - BaseAddress, type, out c);
         }
@@ -133,9 +134,9 @@ namespace Reko.Core.Memory
         public bool TryReadBeUInt64(Address off, out ulong retvalue) => TryReadBeUInt64(off - BaseAddress, out retvalue);
 
 
-        public abstract bool TryReadLe(long imageOffset, DataType type, out Constant c);
+        public abstract bool TryReadLe(long imageOffset, DataType type, [MaybeNullWhen(false)] out Constant c);
 
-        public bool TryReadLe(Address addr, PrimitiveType type, out Constant c)
+        public bool TryReadLe(Address addr, PrimitiveType type, [MaybeNullWhen(false)] out Constant c)
         {
             return TryReadLe(addr - BaseAddress, type, out c);
         }

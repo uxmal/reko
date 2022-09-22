@@ -182,7 +182,7 @@ namespace Reko.UnitTests.Decompiler.Typing
 			}
 		}
 
-        [Test(Description = "If the data type at a particular offset is compatible with an array, it's considered part of the array.")]
+        [Test(Description = "If the data type at a particular Offset is compatible with an array, it's considered part of the array.")]
         public void CpaPointerToArray()
         {
             var cpa = new ConstantPointerAnalysis(factory, store, new Program());
@@ -190,7 +190,7 @@ namespace Reko.UnitTests.Decompiler.Typing
                 new StructureType { Fields = { new StructureField(300, new ArrayType(PrimitiveType.Int32, 0)) } },
                 304,
                 PrimitiveType.Int32);
-            Assert.IsTrue(isInside, "Since the array has no specified size, offset 304 should be inside the array.");
+            Assert.IsTrue(isInside, "Since the array has no specified size, Offset 304 should be inside the array.");
         }
 
         [Test(Description = "If the data pointer is inside structure, it should be added to globals.")]

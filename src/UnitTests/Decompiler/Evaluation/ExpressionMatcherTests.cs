@@ -98,7 +98,7 @@ namespace Reko.UnitTests.Decompiler.Evaluation
         public void Emt_MemAccess()
         {
             var mem = m.Mem16(m.IAdd(Id("ebx"), 4));
-            Create(m.Mem16(m.IAdd(AnyId("idx"), AnyC("offset"))));
+            Create(m.Mem16(m.IAdd(AnyId("idx"), AnyC("Offset"))));
             Assert.IsTrue(matcher.Match(mem));
             Assert.AreEqual("ebx", matcher.CapturedExpression("idx").ToString());
         }
@@ -132,7 +132,7 @@ namespace Reko.UnitTests.Decompiler.Evaluation
         [Test]
         public void Emt_SliceMismatch()
         {
-            var e = m.Slice(PrimitiveType.Int16, Id("eax"), 16);
+            var e = m.Slice(Id("eax"), PrimitiveType.Int16, 16);
             Create(m.Word32(5));
             Assert.IsFalse(matcher.Match(e));
         }

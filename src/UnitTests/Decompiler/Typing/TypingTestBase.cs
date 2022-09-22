@@ -41,6 +41,7 @@ using System.Diagnostics;
 using System.IO;
 using Reko.Core.Loading;
 using Reko.Core.Serialization;
+using Reko.Services;
 
 namespace Reko.UnitTests.Decompiler.Typing
 {

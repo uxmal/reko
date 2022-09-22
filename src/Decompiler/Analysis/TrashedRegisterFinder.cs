@@ -93,8 +93,7 @@ namespace Reko.Analysis
             CreateState();
             this.propagateToCallers = false;
 
-            Block block;
-            while (worklist.GetWorkItem(out block))
+            while (worklist.TryGetWorkItem(out Block? block))
             {
                 arch = block.Procedure.Architecture;
                 ProcessBlock(block);
@@ -135,7 +134,7 @@ namespace Reko.Analysis
             BypassRegisterOffsets(savedSps, arch.StackRegister);
 
             this.propagateToCallers = true;
-            while (worklist.GetWorkItem(out block))
+            while (worklist.TryGetWorkItem(out block))
             {
                 ProcessBlock(block);
             }
@@ -798,13 +797,13 @@ namespace Reko.Analysis
                 {
                     if (!StackState.TryGetValue(stack.StackOffset, out Expression? oldValue))
                     {
-                        trace.Verbose("Trf: Stack offset {0:X4} now has value {1}", stack.StackOffset, value);
+                        trace.Verbose("Trf: Stack Offset {0:X4} now has value {1}", stack.StackOffset, value);
                         IsDirty = true;
                         StackState.Add(stack.StackOffset, value);
                     }
                     else if (oldValue is not InvalidConstant && !cmp.Equals(oldValue, value))
                     {
-                        trace.Verbose("Trf: Stack offset {0:X4} now has value {1}, was {2}", stack.StackOffset, value, oldValue);
+                        trace.Verbose("Trf: Stack Offset {0:X4} now has value {1}, was {2}", stack.StackOffset, value, oldValue);
                         IsDirty = true;
                         StackState[stack.StackOffset] = InvalidConstant.Create(id.DataType);
                     }
@@ -835,13 +834,13 @@ namespace Reko.Analysis
                 if (!StackState.TryGetValue(offset.Value, out Expression? oldValue))
                 {
                     IsDirty = true;
-                    trace.Verbose("Trf: Stack offset {0:X4} now has value {1}", offset.Value, value);
+                    trace.Verbose("Trf: Stack Offset {0:X4} now has value {1}", offset.Value, value);
                     StackState.Add(offset.Value, value);
                 }
                 else if (!cmp.Equals(oldValue, value) && oldValue is not InvalidConstant)
                 {
                     IsDirty = true;
-                    trace.Verbose("Trf: Stack offset {0:X4} now has value {1}, was {2}", offset.Value, value, oldValue);
+                    trace.Verbose("Trf: Stack Offset {0:X4} now has value {1}, was {2}", offset.Value, value, oldValue);
                     //$BUG: need the data width here.
                     StackState[offset.Value] = InvalidConstant.Create(PrimitiveType.Word32);
                 }

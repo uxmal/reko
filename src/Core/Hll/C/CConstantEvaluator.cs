@@ -124,7 +124,7 @@ namespace Reko.Core.Hll.C
             }
         }
 
-        public object VisitIncremeent(IncrementExpression incrementExpression)
+        public object VisitIncrement(IncrementExpression incrementExpression)
         {
             throw new NotImplementedException();
         }

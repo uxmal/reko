@@ -203,7 +203,7 @@ namespace Reko.UnitTests.Decompiler.Typing
 			ProcedureBuilder m = new ProcedureBuilder();
 			Identifier ds = m.Local16("ds");
 			Identifier bx = m.Local16("bx");
-			MemberPointerSelector mps = m.MembPtrW(ds, m.IAdd(bx, 4));
+			MemberPointerSelector mps = m.MembPtr16(ds, m.IAdd(bx, 4));
 			Expression e = m.Mem(PrimitiveType.Byte, mps);
 
             coll = CreateCollector();

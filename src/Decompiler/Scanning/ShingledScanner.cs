@@ -596,10 +596,10 @@ namespace Reko.Scanning
             //$TODO: this assumes pointers must be aligned. Not the case for older machines.
             var arch = program.Architecture;
             var rdr = program.CreateImageReader(arch, seg.Address);
-            while (rdr.TryRead(program.Platform.PointerType, out Constant c))
+            while (rdr.TryRead(program.Platform.PointerType, out Constant? c))
             {
                 var addr = program.Architecture.MakeAddressFromConstant(c, false);
-                if (addr != null)
+                if (addr is { })
                     yield return addr;
             }
         }

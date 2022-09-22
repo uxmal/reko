@@ -1224,7 +1224,7 @@ test_exit:
                 var eax = m.Reg32("eax", 0);
                 var ax_1 = m.Reg16("ax_1", 0);
                 m.Assign(eax, m.Mem32(m.Word32(0x1200)));
-                m.Assign(ax_1, m.Slice(PrimitiveType.Word16, eax, 0));
+                m.Assign(ax_1, m.Slice(eax, PrimitiveType.Word16));
                 m.Return();
             }, sExp);
         }

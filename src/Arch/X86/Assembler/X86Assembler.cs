@@ -109,7 +109,7 @@ namespace Reko.Arch.X86.Assembler
             if (!program.SegmentMap.TryFindSegment(addrStart, out var segmentToMutate))
                 throw new InvalidOperationException($"Address {addrStart} is not a valid location in the program.");
             var offset = addrStart - segmentToMutate.MemoryArea.BaseAddress;
-            var asmSeg = this.segments.Single(seg => seg.Symbol!.sym == segmentToMutate.Name);
+            var asmSeg = this.segments.Single(seg => seg.Symbol!.Name == segmentToMutate.Name);
             asmSeg.Emitter.Position = (int)offset;
             SwitchSegment(asmSeg);
             SetDefaultWordWidth(defaultWordSize);
@@ -1088,9 +1088,9 @@ namespace Reko.Arch.X86.Assembler
 
         private void ReferToSymbol(Symbol psym, int off, DataType width)
         {
-            if (psym.fResolved)
+            if (psym.IsResolved)
             {
-                emitter.PatchLe(off, psym.offset, width);
+                emitter.PatchLe(off, psym.Offset, width);
             }
             else
             {

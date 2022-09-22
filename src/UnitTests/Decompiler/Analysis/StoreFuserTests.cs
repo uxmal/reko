@@ -86,8 +86,8 @@ SsaProcedureBuilder_exit:
                 var idHi = m.Reg16("ilHi");
 
                 m.Assign(id, m.Mem32(m.Word32(0x00123400)));
-                m.Alias(idLo, m.Slice(idLo.DataType, id, 0));
-                m.Alias(idHi, m.Slice(idHi.DataType, id, 16));
+                m.Alias(idLo, m.Slice(id, idLo.DataType, 0));
+                m.Alias(idHi, m.Slice(id, idHi.DataType, 16));
                 m.MStore(m.Word32(0x00123404), idLo);
                 m.MStore(m.Word32(0x00123406), idHi);
             });

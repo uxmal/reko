@@ -291,8 +291,8 @@ namespace Reko.Environments.Windows
 
         public override ExternalProcedure? LookupProcedureByName(string? moduleName, string procName)
         {
-            EnsureTypeLibraries(PlatformIdentifier);
-            if (moduleName != null && Metadata.Modules.TryGetValue(moduleName.ToUpper(), out ModuleDescriptor? mod))
+            var metadata = EnsureTypeLibraries(PlatformIdentifier);
+            if (moduleName != null && metadata.Modules.TryGetValue(moduleName.ToUpper(), out ModuleDescriptor? mod))
             {
                 if (mod.ServicesByName.TryGetValue(procName, out SystemService? svc))
                 {
@@ -306,7 +306,7 @@ namespace Reko.Environments.Windows
             }
             else
             {
-                if (!Metadata.Signatures.TryGetValue(procName, out FunctionType? sig))
+                if (!metadata.Signatures.TryGetValue(procName, out FunctionType? sig))
                     return null;
                 var chr = LookupCharacteristicsByName(procName);
                 return new ExternalProcedure(procName, sig, chr);
@@ -315,8 +315,8 @@ namespace Reko.Environments.Windows
 
         public override ExternalProcedure? LookupProcedureByOrdinal(string moduleName, int ordinal)
         {
-            EnsureTypeLibraries(PlatformIdentifier);
-            if (!Metadata.Modules.TryGetValue(moduleName.ToUpper(), out ModuleDescriptor? mod))
+            var metadata = EnsureTypeLibraries(PlatformIdentifier);
+            if (!metadata.Modules.TryGetValue(moduleName.ToUpper(), out ModuleDescriptor? mod))
                 return null;
             if (mod.ServicesByOrdinal.TryGetValue(ordinal, out SystemService? svc))
             {

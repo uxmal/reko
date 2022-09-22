@@ -49,8 +49,8 @@ namespace Reko.Core.Output
 
         /// <summary>
         /// Render a memory unit corresponding to the address <paramref name="addr"/>.
-        /// <param name="addr"></param>
-        /// <param name="sUnit"></param>
+        /// <param name="addr">The address of the memory unit.</param>
+        /// <param name="sUnit">The string representation of the memory unit.</param>
         void RenderUnit(Address addr, string sUnit);
 
         /// <summary>

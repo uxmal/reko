@@ -226,9 +226,9 @@ namespace Reko.Arch.M68k.Assembler
 
         private void ReferToSymbol(Symbol psym, int off, DataType width)
         {
-            if (psym.fResolved)
+            if (psym.IsResolved)
             {
-                Emitter.PatchBe(off, psym.offset, width);
+                Emitter.PatchBe(off, psym.Offset, width);
             }
             else
             {

@@ -21,6 +21,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
 
 namespace Reko.Core.Graphs
 {
@@ -60,13 +61,12 @@ namespace Reko.Core.Graphs
         /// <returns></returns>
         public IEnumerable<T> PreOrder(T item)
         {
-            Stack<IEnumerator<T>> stack = new Stack<IEnumerator<T>>();
+            var stack = new Stack<IEnumerator<T>>();
             visited.Add(item);
             yield return item;
             stack.Push(graph.Successors(item).GetEnumerator());
-            while (stack.Count > 0)
+            while (stack.TryPop(out var cur))
             {
-                IEnumerator<T> cur = stack.Pop();
                 if (cur.MoveNext())
                 {
                     stack.Push(cur);
@@ -101,12 +101,11 @@ namespace Reko.Core.Graphs
 
         public IEnumerable<T> PostOrder(T item)
         {
-            Stack<PostOrderItem> stack = new Stack<PostOrderItem>();
+            var stack = new Stack<PostOrderItem>();
             visited.Add(item);
             stack.Push(new PostOrderItem(item, graph.Successors(item).GetEnumerator()));
-            while (stack.Count > 0)
+            while (stack.TryPop(out var cur))
             {
-                PostOrderItem cur = stack.Pop();
                 if (cur.Children.MoveNext())
                 {
                     stack.Push(cur);

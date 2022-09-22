@@ -41,7 +41,7 @@ namespace Reko.Scanning
 
         public Program Program { get; private set; }
 
-        private bool TryGetNoDecompiledProcedure(Address addr, [NotNullWhen(true)] out UserProcedure? proc)
+        private bool TryGetNoDecompiledProcedure(Address addr, [MaybeNullWhen(false)] out UserProcedure proc)
         {
             if (!Program.User.Procedures.TryGetValue(addr, out proc) ||
                 proc.Decompile)
@@ -57,7 +57,7 @@ namespace Reko.Scanning
             return TryGetNoDecompiledProcedure(addr, out UserProcedure? _);
         }
 
-        private bool TryGetNoDecompiledParsedProcedure(Address addr, [NotNullWhen(true)] out UserProcedure? parsedProc)
+        private bool TryGetNoDecompiledParsedProcedure(Address addr, [MaybeNullWhen(false)] out UserProcedure parsedProc)
         {
             if (!TryGetNoDecompiledProcedure(addr, out UserProcedure? sProc))
             {
@@ -91,7 +91,7 @@ namespace Reko.Scanning
             return true;
         }
 
-        protected bool TryGetNoDecompiledProcedure(Address addr, [NotNullWhen(true)] out ExternalProcedure? ep)
+        protected bool TryGetNoDecompiledProcedure(Address addr, [MaybeNullWhen(false)] out ExternalProcedure ep)
         {
             if (!TryGetNoDecompiledParsedProcedure(addr, out UserProcedure? sProc))
             {

@@ -26,6 +26,7 @@ using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Reko.Environments.Ps3
 {
@@ -173,7 +174,7 @@ namespace Reko.Environments.Ps3
             return Address.Ptr32((uint)uAddr);
         }
 
-        public override bool TryParseAddress(string? sAddress, out Address addr)
+        public override bool TryParseAddress(string? sAddress, [MaybeNullWhen(false)] out Address addr)
         {
             return Address.TryParse32(sAddress, out addr);
         }

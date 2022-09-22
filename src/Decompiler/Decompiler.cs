@@ -26,6 +26,7 @@ using Reko.Core.Serialization;
 using Reko.Core.Services;
 using Reko.Core.Types;
 using Reko.Scanning;
+using Reko.Services;
 using Reko.Structure;
 using Reko.Typing;
 using System;

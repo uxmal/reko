@@ -368,7 +368,7 @@ namespace Reko.Typing
         private bool TryReadReal(
             Address addr,
             DataType dt,
-            [NotNullWhen(true)] out Constant? cReal)
+            [MaybeNullWhen(false)] out Constant cReal)
         {
             cReal = null;
             var pt = dt.ResolveAs<PrimitiveType>();

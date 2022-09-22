@@ -28,7 +28,7 @@ namespace Reko.Core.Serialization
     public class ArraySizeCharacteristic
     {
         [XmlAttribute("argument")]
-        public string? Argument {get; set; }
+        public string? Argument { get; set; }
 
         [XmlElement("factor")]
         public ArraySizeFactor[]? Factors { get; set; }

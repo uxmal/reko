@@ -172,7 +172,7 @@ namespace Reko.Core
             if (IsEmpty)
                 return "[]";
             else
-                return string.Format("[{0}..{1}]", Lsb, Msb - 1);
+                return $"[{Lsb}..{Msb - 1}]";
         }
     }
 }

@@ -782,7 +782,7 @@ namespace Reko.Analysis
                 if (elem.alias.ExactAliases.TryGetValue(elem.sid.Identifier, out var sid))
                     return sid;
                 int offset = Bits.Log2(this.flagMask);
-                var e = outer.m.Slice(PrimitiveType.Bool, elem.sid.Identifier, offset);
+                var e = outer.m.Slice(elem.sid.Identifier, PrimitiveType.Bool, offset);
                 this.flagGroup = outer.arch.GetFlagGroup(grfFrom.FlagRegister, elem.mask)!;
                 var idSlice = outer.ssa.Procedure.Frame.EnsureFlagGroup(this.flagGroup);
                 var ass = new AliasAssignment(idSlice, e);

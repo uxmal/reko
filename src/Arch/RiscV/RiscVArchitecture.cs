@@ -539,7 +539,7 @@ namespace Reko.Arch.RiscV
             return regsByName.TryGetValue(name, out reg);
         }
 
-        public override bool TryParseAddress(string? txtAddr, out Address addr)
+        public override bool TryParseAddress(string? txtAddr, [MaybeNullWhen(false)] out Address addr)
         {
             if (this.WordWidth.BitSize == 32)
                 return Address.TryParse32(txtAddr, out addr);

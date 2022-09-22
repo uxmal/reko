@@ -37,6 +37,7 @@ namespace Reko.Core
         // change this so that mutations of the call graph
         // are done safely.
         void AddEdge(Statement stmCur, Procedure procCallee);
+
         //$BUG: mutable state. Only used in SsaTransform
         // when unreachable code is discovered. Need to
         // change this so that mutations of the call graph

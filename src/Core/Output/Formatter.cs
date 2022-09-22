@@ -114,15 +114,15 @@ namespace Reko.Core.Output
 
         public abstract void WriteLine(string s);
 
-        public void Write(object o)
+        public void Write(object? o)
         {
-            if (o != null)
+            if (o is { })
                 Write(o.ToString()!);
         }
 
-        public void WriteLine(object o)
+        public void WriteLine(object? o)
         {
-            if (o != null)
+            if (o is { })
                 Write(o);
             WriteLine();
         }

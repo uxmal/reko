@@ -66,7 +66,7 @@ namespace Reko.Core
 		{
 			get 
 			{
-				if (Initial == null || Final == null || Delta == null)
+				if (Initial is null || Final is null || Delta is null)
 					return 0;
 				return Math.Abs((Initial.ToInt32() - Final.ToInt32()) / Delta.ToInt32());
 			}

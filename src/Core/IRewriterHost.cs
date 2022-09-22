@@ -21,6 +21,7 @@
 using Reko.Core.Expressions;
 using Reko.Core.Types;
 using System;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Reko.Core
 {
@@ -50,7 +51,7 @@ namespace Reko.Core
         IProcessorArchitecture GetArchitecture(string archMoniker);
 
         /// <summary>
-        /// Given an address addrThunk, returns the possible imported thing (procedure or 
+        /// Given an address <paramref name="addrThunk"/>, returns the possible imported thing (procedure or 
         /// global variable) pointed to by Thunk.
         /// </summary>
         /// <param name="addrThunk"></param>
@@ -64,7 +65,7 @@ namespace Reko.Core
         /// Read a value of size <paramref name="dt"/> from address <paramref name="addr"/>, 
         /// using the endianness of the <paramref name="arch"/> processor architecture.
         /// </summary>
-        public bool TryRead(IProcessorArchitecture arch, Address addr, PrimitiveType dt, out Constant value);
+        public bool TryRead(IProcessorArchitecture arch, Address addr, PrimitiveType dt, [MaybeNullWhen(false)] out Constant value);
 
         void Error(Address address, string format, params object[] args);
         void Warn(Address address, string format, params object[] args);
@@ -88,7 +89,7 @@ namespace Reko.Core
             throw new NotSupportedException();
         }
 
-        public Expression? GetImport(Address addrThunk, Address addrInstr)
+        Expression? IRewriterHost.GetImport(Address addrThunk, Address addrInstr)
         {
             return null;
         }
@@ -108,9 +109,9 @@ namespace Reko.Core
             throw new NotSupportedException();
         }
 
-        public bool TryRead(IProcessorArchitecture arch, Address addr, PrimitiveType dt, out Constant value)
+        public bool TryRead(IProcessorArchitecture arch, Address addr, PrimitiveType dt, [MaybeNullWhen(false)] out Constant value)
         {
-            value = null!;
+            value = null;
             return false;
         }
 

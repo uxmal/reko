@@ -505,7 +505,7 @@ namespace Reko.Arch.SuperH
             var dst = DstOp(instr.Operands[1], src, (a, b) =>
             {
                 if (b.DataType.BitSize > dtSrc.BitSize)
-                    b = m.Slice(dtSrc, b, 0);
+                    b = m.Slice(b, dtSrc);
                 return m.Convert(b, dtSrc, dtDst);
             });
         }

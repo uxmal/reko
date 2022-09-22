@@ -105,7 +105,7 @@ namespace Reko.Environments.Cpm
         private void OnMemoryMapChanged()
         {
             //var tlSvc = Services.RequireService<ITypeLibraryLoaderService>();
-            var tser = new TypeLibraryDeserializer(this, true, Metadata);
+            var tser = new TypeLibraryDeserializer(this, true, Metadata!);
             var sser = new ProcedureSerializer(this, tser, DefaultCallingConvention);
             var disps = new Dictionary<Address, DispatchProcedure>();
             foreach (var callable in this.MemoryMap!.Segments!.SelectMany(s => s.Procedures!))

@@ -26,6 +26,7 @@ using Reko.Core.Rtl;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Reko.Environments.Xbox
 {
@@ -44,7 +45,7 @@ namespace Reko.Environments.Xbox
             this.StructureMemberAlignment = 8;
         }
 
-        public override string DefaultCallingConvention { get { return ""; } }
+        public override string DefaultCallingConvention => "";
 
         public override PrimitiveType PointerType { get { return PrimitiveType.Ptr32; } }
 
@@ -160,7 +161,7 @@ namespace Reko.Environments.Xbox
             return Address.Ptr32((uint)uAddr);
         }
 
-        public override bool TryParseAddress(string? sAddress, out Address addr)
+        public override bool TryParseAddress(string? sAddress, [MaybeNullWhen(false)] out Address addr)
         {
             return Address.TryParse32(sAddress, out addr);
         }

@@ -66,7 +66,7 @@ namespace Reko.UnitTests.Core.Serialization
                 },
                 Signature = new SerializedSignature
                 {
-                    ReturnValue = argSer.Serialize(
+                    ReturnValue = ArgumentSerializer.Serialize(
                         new Identifier("C", PrimitiveType.Bool,
                         new FlagGroupStorage(Registers.eflags, (uint)FlagM.CF, "C", PrimitiveType.Byte)))
                 }
@@ -110,7 +110,7 @@ namespace Reko.UnitTests.Core.Serialization
                 "  <service name=\"test\">" +
                 "    <syscallinfo>" +
                 "      <vector>10</vector>" +
-                "      <stackvalue offset=\"0c\">2a</stackvalue>" +
+                "      <stackvalue Offset=\"0c\">2a</stackvalue>" +
                 "    </syscallinfo>" +
                 "  </service>" +
                 "</library>"

@@ -427,7 +427,7 @@ namespace Reko.ImageLoaders.Hunk
                     if (offset < 0)
                         throw new BadImageFormatException(
                             string.Format(
-                                "{0} has invalid relocation #{1} offset {2} (num_relocs={3} hunkNo={4}, offset={5})", 
+                                "{0} has invalid relocation #{1} Offset {2} (num_relocs={3} hunkNo={4}, Offset={5})", 
                                 hunk.HunkType, 
                                 a, offset,
                                 num_relocs,
@@ -472,7 +472,7 @@ namespace Reko.ImageLoaders.Hunk
                     var offset = f.ReadBeInt16();
                     if (offset < 0)
                         throw new BadImageFormatException(string.Format(
-                            "{0} has invalid relocation #{1} offset {2} (num_relocs={3} hunkNo={4}, offset={5}).", hunk.HunkType, a, offset, num_relocs, hunkNo, f.Offset));
+                            "{0} has invalid relocation #{1} Offset {2} (num_relocs={3} hunkNo={4}, Offset={5}).", hunk.HunkType, a, offset, num_relocs, hunkNo, f.Offset));
                     offsets.Add((uint) offset);
                 }
                 reloc[hunkNo] = offsets;

@@ -34,9 +34,9 @@ namespace Reko.Core.Serialization
 			this.arch = arch;
         }
         
-        public Argument_v1? Serialize(Identifier? arg)
+        public static Argument_v1? Serialize(Identifier? arg)
         {
-            if (arg == null)
+            if (arg is null)
                 return null;
             if (arg.DataType == null)
                 throw new ArgumentNullException("arg.DataType");

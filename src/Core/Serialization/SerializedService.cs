@@ -137,7 +137,7 @@ namespace Reko.Core.Serialization
 
     public class StackValue_v1
     {
-        [XmlAttribute("offset")]
+        [XmlAttribute("Offset")]
         public string? Offset;
 
         [XmlText]

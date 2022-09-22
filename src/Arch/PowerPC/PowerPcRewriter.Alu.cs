@@ -312,7 +312,7 @@ namespace Reko.Arch.PowerPC
             var opD = RewriteOperand(instr.Operands[0]);
             var dtDst = PrimitiveType.Create(Domain.SignedInt, opD.DataType.BitSize);
 
-            m.Assign(opD, m.Convert(m.Slice(size, opS, 0), size, dtDst));
+            m.Assign(opD, m.Convert(m.Slice(opS, size), size, dtDst));
             MaybeEmitCr0(opD);
         }
 
@@ -571,7 +571,7 @@ namespace Reko.Arch.PowerPC
                 {
                     //$TODO: check this logic.
                     var dtSlice = PrimitiveType.CreateWord(extBitsize);
-                    m.Assign(rd, m.Convert(m.Slice(dtSlice, rs, 63 - beExtBitpos), dtSlice, rd.DataType));
+                    m.Assign(rd, m.Convert(m.Slice(rs, dtSlice, 63 - beExtBitpos), dtSlice, rd.DataType));
                 }
                 else if (sh == 0x39 && mb == 0x38)
                 {
@@ -745,7 +745,7 @@ namespace Reko.Arch.PowerPC
 
                 var bitpos = 63 - sh;   // convert to reko's little endian bit positions.
                 var dt = PrimitiveType.CreateWord(wordSize);
-                var slice = m.Convert(m.Slice(dt, rs, bitpos), dt, rd.DataType);
+                var slice = m.Convert(m.Slice(rs, dt, bitpos), dt, rd.DataType);
 
                 m.Assign(
                     rd,
@@ -780,7 +780,7 @@ namespace Reko.Arch.PowerPC
             var n = 64 - (sh + me);
             if (0 < n && n < 64)
             {
-                var slice = m.Slice(PrimitiveType.CreateWord(n), rs, 0);
+                var slice = m.Slice(rs, PrimitiveType.CreateWord(n));
                 Dpb(rd, slice, sh);
             }
             else
@@ -804,7 +804,7 @@ namespace Reko.Arch.PowerPC
             {
                 var dtLo = PrimitiveType.CreateWord(offset);
                 var tmp = binder.CreateTemporary(dtLo);
-                m.Assign(tmp, m.Slice(dtLo, dst, 0));
+                m.Assign(tmp, m.Slice(dst, dtLo));
                 elems.Add(tmp);
                 dstBitsLeft -= offset;
             }
@@ -815,7 +815,7 @@ namespace Reko.Arch.PowerPC
             {
                 var dtHi = PrimitiveType.CreateWord(dstBitsLeft);
                 var tmp = binder.CreateTemporary(dtHi);
-                m.Assign(tmp, m.Slice(dtHi, dst, dst.DataType.BitSize - dstBitsLeft));
+                m.Assign(tmp, m.Slice(dst, dtHi, dst.DataType.BitSize - dstBitsLeft));
                 elems.Add(tmp);
             }
 

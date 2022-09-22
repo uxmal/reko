@@ -37,9 +37,7 @@ namespace Reko.Core.Output
         private readonly StructureFieldCollection globalFields;
         private readonly DecompilerEventListener eventListener;
         private int recursionGuard;
-#nullable disable
         private EndianImageReader rdr; 
-#nullable enable
 
         public GlobalObjectTracer(Program program, WorkList<(StructureField, Address)> wl, DecompilerEventListener eventListener)
         {
@@ -49,6 +47,7 @@ namespace Reko.Core.Output
             this.globalFields = GlobalFields(program);
             this.visited = new HashSet<Address>();
             this.cmp = new DataTypeComparer();
+            this.rdr = default!;
         }
 
         private StructureFieldCollection GlobalFields(Program program)

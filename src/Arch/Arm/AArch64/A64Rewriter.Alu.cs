@@ -526,7 +526,7 @@ namespace Reko.Arch.Arm.AArch64
             var op2 = RewriteOp(instr.Operands[2]);
             var dst = RewriteOp(instr.Operands[0]);
 
-            m.Assign(dst, m.Slice(dtTo, mul(op1, op2), 64));
+            m.Assign(dst, m.Slice(mul(op1, op2), dtTo, 64));
         }
 
         private void RewriteMull(PrimitiveType dtFrom,  PrimitiveType dtTo, Func<Expression, Expression, Expression> mul)
@@ -552,7 +552,7 @@ namespace Reko.Arch.Arm.AArch64
 
             var product = mul(op1, op2);
             product.DataType = dtWide;
-            m.Assign(dst, m.Slice(dtNarrow, product, dtWide.BitSize - dtNarrow.BitSize));
+            m.Assign(dst, m.Slice(product, dtNarrow, dtWide.BitSize - dtNarrow.BitSize));
         }
 
         /// <summary>
@@ -622,7 +622,7 @@ namespace Reko.Arch.Arm.AArch64
             var dtUint = PrimitiveType.Create(Domain.UnsignedInt, bitsizeDst);
             if (e.DataType.BitSize > dtOrig.BitSize)
             {
-                e = m.Slice(dtOrig, e, 0);
+                e = m.Slice(e, dtOrig);
             }
             return m.Convert(e, dtOrig, dtUint);
         }
@@ -632,7 +632,7 @@ namespace Reko.Arch.Arm.AArch64
             var dtInt = PrimitiveType.Create(Domain.SignedInt, bitsizeDst);
             if (e.DataType.BitSize > dtOrig.BitSize)
             {
-                e = m.Slice(dtOrig, e, 0);
+                e = m.Slice(e, dtOrig);
             }
             return m.Convert(e, dtOrig, dtInt);
         }
@@ -737,7 +737,7 @@ namespace Reko.Arch.Arm.AArch64
             }
             else
             {
-                m.Assign(m.Mem(dt, ea), m.Slice(dt, src, 0));
+                m.Assign(m.Mem(dt, ea), m.Slice(src, dt));
             }
             if (postIndex != null)
             {
@@ -777,7 +777,7 @@ namespace Reko.Arch.Arm.AArch64
             var dtSrc = PrimitiveType.Create(domDst, bitSize);
             if (src.DataType.BitSize > bitSize)
             {
-                src = m.Slice(dtSrc, src, 0);
+                src = m.Slice(src, dtSrc);
             }
             var dtDst = MakeInteger(domDst, dst.DataType);
             m.Assign(dst, m.Convert(src, dtSrc, dtDst));

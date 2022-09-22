@@ -34,7 +34,7 @@ namespace Reko.Core.Collections
             Func<TSource, TKey> keySelector)
             where TKey : notnull
         {
-            SortedList<TKey, TSource> list = new SortedList<TKey, TSource>();
+            var list = new SortedList<TKey, TSource>();
             foreach (TSource item in source)
             {
                 list.Add(keySelector(item), item);
@@ -48,7 +48,7 @@ namespace Reko.Core.Collections
             Func<TSource, TElement> elementSelector)
             where TKey : notnull
         {
-            SortedList<TKey, TElement> list = new SortedList<TKey, TElement>();
+            var list = new SortedList<TKey, TElement>();
             foreach (TSource item in source)
             {
                 list.Add(keySelector(item), elementSelector(item));
@@ -62,7 +62,7 @@ namespace Reko.Core.Collections
             IComparer<TKey> comparer)
             where TKey : notnull
         {
-            SortedList<TKey, TSource> list = new SortedList<TKey, TSource>(comparer);
+            var list = new SortedList<TKey, TSource>(comparer);
             foreach (TSource item in source)
             {
                 list.Add(keySelector(item), item);
@@ -77,7 +77,7 @@ namespace Reko.Core.Collections
             IComparer<TKey> comparer)
             where TKey : notnull
         {
-            SortedList<TKey, TValue> list = new SortedList<TKey, TValue>(comparer);
+            var list = new SortedList<TKey, TValue>(comparer);
             foreach (TSource item in source)
             {
                 list.Add(keySelector(item), valueSelector(item));
@@ -89,7 +89,7 @@ namespace Reko.Core.Collections
             this IEnumerable<TElement> source)
         {
             return new SortedSet<TElement>(source);
-            }
+        }
 
         public static IEnumerable<IEnumerable<T>> Chunks<T>(
             this IEnumerable<T> enumerable,

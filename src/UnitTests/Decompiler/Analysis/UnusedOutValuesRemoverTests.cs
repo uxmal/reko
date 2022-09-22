@@ -337,7 +337,7 @@ foo_exit:
                 var r1 = m.Frame.EnsureRegister(_r1);
                 m.Assign(m.Frame.EnsureRegister(m.Architecture.StackRegister), m.Frame.FramePointer);
                 m.Call("level1", 0);
-                m.MStore(m.Ptr32(0x00123400), m.Slice(PrimitiveType.Byte, r1, 0)); // forces r1 to be liveout on level1
+                m.MStore(m.Ptr32(0x00123400), m.Slice(r1, PrimitiveType.Byte)); // forces r1 to be liveout on level1
                 m.Return();
             });
             pb.Add("level1", m =>

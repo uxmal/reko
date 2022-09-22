@@ -24,6 +24,7 @@ using Reko.Core.Expressions;
 using Reko.Core.Memory;
 using Reko.Core.Types;
 using System;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Text;
 
@@ -86,14 +87,14 @@ namespace Reko.Core.Memory
         bool TryPeekLeUInt16(int offset, out ushort value);
         bool TryPeekLeUInt32(int offset, out uint value);
 
-        bool TryReadBe(DataType dataType, out Constant value);
+        bool TryReadBe(DataType dataType, [MaybeNullWhen(false)] out Constant value);
         bool TryReadBeInt16(out short value);
         bool TryReadBeInt32(out int value);
         bool TryReadBeUInt16(out ushort value);
         bool TryReadBeUInt32(out uint value);
 
         bool TryReadByte(out byte value);
-        bool TryReadLe(DataType dataType, out Constant value);
+        bool TryReadLe(DataType dataType, [MaybeNullWhen(false)] out Constant value);
         bool TryReadLeSigned(DataType dataType, out long value);
 
         bool TryReadLeInt16(out short value);

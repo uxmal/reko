@@ -530,7 +530,7 @@ namespace Reko.Arch.Arc
             var bitDiff = src.DataType.BitSize - dst.DataType.BitSize;
             if (bitDiff > 0)
             {
-                src = m.Slice(dst.DataType, src, 0);
+                src = m.Slice(src, dst.DataType);
             }
             m.Assign(dst, src);
         }
@@ -675,7 +675,7 @@ namespace Reko.Arch.Arc
 
         private void RewriteExt(PrimitiveType dtSlice, PrimitiveType dtExt)
         {
-            var src = m.Slice(dtSlice, Operand(1), 0);
+            var src = m.Slice(Operand(1), dtSlice);
             var dst = Operand(0);
             m.Assign(dst, m.Convert(src, src.DataType, dtExt));
         }

@@ -192,7 +192,7 @@ namespace Reko.Scripts.Python
         }
 
         private bool TryConvertAddress(
-            string sAddress, [NotNullWhen(true)] out Address? addr)
+            string sAddress, [MaybeNullWhen(false)] out Address addr)
         {
             return program.Architecture.TryParseAddress(sAddress, out addr);
         }
@@ -244,7 +244,7 @@ namespace Reko.Scripts.Python
         /// address; otherwise, false
         /// </summary>
         private bool TryGetUserProcedure(
-            Address addr, [NotNullWhen(true)] out UserProcedure? userProc)
+            Address addr, [MaybeNullWhen(false)] out UserProcedure userProc)
         {
             if (!program.User.Procedures.TryGetValue(addr, out userProc))
             {
@@ -260,7 +260,7 @@ namespace Reko.Scripts.Python
         /// specified address; otherwise, false
         /// </summary>
         private bool TryMakeDefaultUserProcedure(
-            Address addr, [NotNullWhen(true)] out UserProcedure? userProc)
+            Address addr, [MaybeNullWhen(false)] out UserProcedure userProc)
         {
             if (!program.Procedures.TryGetValue(addr, out var proc))
             {
