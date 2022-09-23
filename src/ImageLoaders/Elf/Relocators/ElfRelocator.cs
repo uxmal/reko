@@ -169,54 +169,56 @@ namespace Reko.ImageLoaders.Elf.Relocators
                 Loader.DynamicEntries.TryGetValue(ElfDynamicEntry.DT_RELENT, out var relent);
 
                 Loader.DynamicEntries.TryGetValue(ElfDynamicEntry.DT_SYMENT, out var syment);
-                if (symtab == null || (rela == null && rel == null))
+                if (symtab is null)
                     continue;
-                if (strtab == null)
+                if (strtab is null)
                     throw new BadImageFormatException("ELF dynamic segment lacks a string table.");
-                if (syment == null)
+                if (syment is null)
                     throw new BadImageFormatException("ELF dynamic segment lacks the size of symbol table entries.");
-                RelocationTable relTable;
-                if (rela != null)
+                var offStrtab = Loader.AddressToFileOffset(strtab.UValue);
+                var offSymtab = Loader.AddressToFileOffset(symtab.UValue);
+
+                RelocationTable? relTable = null;
+                if (rela is { })
                 {
-                    if (relasz == null)
+                    if (relasz is null)
                         throw new BadImageFormatException("ELF dynamic segment lacks the size of the relocation table.");
-                    if (relaent == null)
+                    if (relaent is null)
                         throw new BadImageFormatException("ELF dynamic segment lacks the size of relocation table entries.");
                     relTable = new RelaTable(this, rela.UValue, relasz.UValue);
                 }
-                else
+                else if (rel != null)
                 {
-                    Debug.Assert(rel != null);
-                    if (relsz == null)
+                    if (relsz is null)
                         throw new BadImageFormatException("ELF dynamic segment lacks the size of the relocation table.");
-                    if (relent == null)
+                    if (relent is null)
                         throw new BadImageFormatException("ELF dynamic segment lacks the size of relocation table entries.");
                     relTable = new RelTable(this, rel.UValue, relsz.UValue);
                 }
 
-                var offStrtab = Loader.AddressToFileOffset(strtab.UValue);
-                var offSymtab = Loader.AddressToFileOffset(symtab.UValue);
-
-                LoadSymbolsFromDynamicSegment(dynSeg, symtab, syment, offStrtab, offSymtab);
-
-                // Generate a symbol for each relocation.
-                ElfImageLoader.trace.Inform("Relocating entries in .dynamic:");
-                foreach (var (_, elfSym, _) in relTable.RelocateEntries(program, offStrtab, offSymtab, syment.UValue))
+                if (relTable is { })
                 {
-                    symbols.Add(elfSym);
-                    var imgSym = Loader.CreateImageSymbol(elfSym, true);
-                    // Symbols need to refer to the loaded image, if their value is 0,
-                    // they are imported symbols.
-                    if (imgSym == null || imgSym.Address!.ToLinear() == 0)
-                        continue;
-                    imageSymbols[imgSym.Address] = imgSym;
+                    LoadSymbolsFromDynamicSegment(dynSeg, symtab, syment, offStrtab, offSymtab);
+
+                    // Generate a symbol for each relocation.
+                    ElfImageLoader.trace.Inform("Relocating entries in .dynamic:");
+                    foreach (var (_, elfSym, _) in relTable.RelocateEntries(program, offStrtab, offSymtab, syment.UValue))
+                    {
+                        symbols.Add(elfSym);
+                        var imgSym = Loader.CreateImageSymbol(elfSym, true);
+                        // Symbols need to refer to the loaded image, if their value is 0,
+                        // they are imported symbols.
+                        if (imgSym == null || imgSym.Address!.ToLinear() == 0)
+                            continue;
+                        imageSymbols[imgSym.Address] = imgSym;
+                    }
                 }
 
                 // Relocate the DT_JMPREL table.
                 Loader.DynamicEntries.TryGetValue(ElfDynamicEntry.DT_JMPREL, out var jmprel);
                 Loader.DynamicEntries.TryGetValue(ElfDynamicEntry.DT_PLTRELSZ, out var pltrelsz);
                 Loader.DynamicEntries.TryGetValue(ElfDynamicEntry.DT_PLTREL, out var pltrel);
-                if (jmprel != null && pltrelsz != null && pltrel != null)
+                if (jmprel is { } && pltrelsz is { } && pltrel is { })
                 {
                     if (pltrel.SValue == ElfDynamicEntry.DT_RELA) // entries are in RELA format.
                     {
@@ -228,7 +230,8 @@ namespace Reko.ImageLoaders.Elf.Relocators
                     }
                     else
                     {
-                        //$REVIEW: bad elf format!
+                        var listener = Loader.Services.RequireService<DecompilerEventListener>();
+                        listener.Warn("Invalid value for DT_PLTREL: {0}", pltrel.UValue);
                         continue;
                     }
 
@@ -411,7 +414,7 @@ namespace Reko.ImageLoaders.Elf.Relocators
 
         protected override void DumpDynamicSegment(ElfSegment dynSeg)
         {
-            var renderer = new DynamicSectionRenderer32(Loader, null!, ElfMachine.EM_NONE);
+            var renderer = new DynamicSectionRenderer32(Loader, null!, loader.Machine);
             var sw = new StringWriter();
             renderer.Render(dynSeg.p_offset, new TextFormatter(sw));
             Debug.WriteLine(sw.ToString());
@@ -462,7 +465,7 @@ namespace Reko.ImageLoaders.Elf.Relocators
         {
             foreach (var section in loader.Sections.Where(s => s.Type == SectionHeaderType.SHT_REL))
             {
-                ElfImageLoader.trace.Inform("REL: offset {0:X} symbol section {1}, relocating in section {2}",
+                ElfImageLoader.trace.Inform("REL: Offset {0:X} symbol section {1}, relocating in section {2}",
                     section.FileOffset,
                     section.LinkedSection?.Name ?? "?",
                     section.RelocatedSection?.Name ?? "?");
@@ -487,7 +490,7 @@ namespace Reko.ImageLoaders.Elf.Relocators
             foreach (var section in loader.Sections.Where(s => s.Type == SectionHeaderType.SHT_RELA))
             {
                 ElfImageLoader.trace.Inform(
-                    "RELA: offset {0:X} symbol section {1}, relocating in section {2}",
+                    "RELA: Offset {0:X} symbol section {1}, relocating in section {2}",
                     section.FileOffset,
                     section.LinkedSection!.Name,
                     section.RelocatedSection!.Name);
@@ -573,7 +576,7 @@ namespace Reko.ImageLoaders.Elf.Relocators
         {
             foreach (var section in loader.Sections.Where(s => s.Type == SectionHeaderType.SHT_REL))
             {
-                ElfImageLoader.trace.Inform("REL: offset {0:X} symbol section {1}, relocating in section {2}",
+                ElfImageLoader.trace.Inform("REL: Offset {0:X} symbol section {1}, relocating in section {2}",
                     section.FileOffset,
                     section.LinkedSection?.Name ?? "?",
                     section.RelocatedSection?.Name ?? "?");
@@ -600,7 +603,7 @@ namespace Reko.ImageLoaders.Elf.Relocators
                 s.LinkedSection != null && 
                 s.LinkedSection.FileOffset != 0))
             {
-                Debug.Print("RELA: offset {0:X} symbol section {1}, relocating in section {2}",
+                Debug.Print("RELA: Offset {0:X} symbol section {1}, relocating in section {2}",
                     section.FileOffset,
                     section.LinkedSection?.Name ?? "?",
                     section.RelocatedSection?.Name ?? "?");

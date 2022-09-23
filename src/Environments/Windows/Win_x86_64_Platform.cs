@@ -159,7 +159,7 @@ namespace Reko.Environments.Windows
         public override ProcedureBase? GetTrampolineDestination(Address addrInstr, IEnumerable<RtlInstruction> rw, IRewriterHost host)
         {
             var instr = rw.FirstOrDefault();
-            if (instr == null)
+            if (instr is null)
                 return null;
             if (instr is not RtlGoto jump)
                 return null;
@@ -188,7 +188,7 @@ namespace Reko.Environments.Windows
 
         public override ExternalProcedure? LookupProcedureByName(string? moduleName, string procName)
         {
-            if (moduleName == null || !Metadata!.Modules.TryGetValue(moduleName.ToUpper(), out ModuleDescriptor? mod))
+            if (moduleName is null || !Metadata!.Modules.TryGetValue(moduleName.ToUpper(), out ModuleDescriptor? mod))
                 return null;
             if (mod.ServicesByName.TryGetValue(procName, out SystemService? svc))
             {

@@ -212,6 +212,20 @@ namespace Reko.Environments.SysV.ArchSpecific
             return null;
         }
 
+
+        public static Expression? Mips32(IProcessorArchitecture arch, Address addrInstr, IEnumerable<RtlInstruction> instrs, IRewriterHost host)
+        {
+            var stubInstrs = instrs.Take(4).ToArray();
+
+            var dst = Mips32_Variant1(arch, host, stubInstrs);
+            if (dst is not null)
+                return dst;
+            dst = Mips32_Variant2(arch, host, stubInstrs);
+            if (dst is not null)
+                return dst;
+            return null;
+        }
+
         /// <summary>
         /// Find the destination of a MIPS32 plt stub.
         /// </summary>
@@ -221,9 +235,8 @@ namespace Reko.Environments.SysV.ArchSpecific
         /// jalr ra,r25
         /// addiu r24,r0,+00000010
         /// </code>
-        public static Expression? Mips32(IProcessorArchitecture arch, Address addrInstr, IEnumerable<RtlInstruction> instrs, IRewriterHost host)
+        public static Expression? Mips32_Variant1(IProcessorArchitecture arch, IRewriterHost host, RtlInstruction[] stubInstrs)
         {
-            var stubInstrs = instrs.Take(4).ToArray();
             if (stubInstrs.Length != 4)
                 return null;
 
@@ -261,6 +274,47 @@ namespace Reko.Environments.SysV.ArchSpecific
                 return Address.Ptr32((uint)sAddrGotSlot);
             }
             return null;
+        }
+
+        /// <summary>
+        /// Find the destination of a MIPS32 plt stub.
+        /// </summary>
+        /// r15 = 0x00410000
+        /// r25 = Mem0[r15 + 0x111C:word32]
+        /// r24 = r15 + 0x0000111C
+        /// call r25 (retsize: 0;)
+        public static Expression? Mips32_Variant2(IProcessorArchitecture arch, IRewriterHost host, RtlInstruction[] stubInstrs)
+        {
+            if (stubInstrs.Length < 3)
+                return null;
+
+            if (stubInstrs[0] is RtlAssignment ass &&
+                ass.Dst is Identifier idBase &&
+                ass.Src is Constant imm)
+            {
+            }
+            else return null;
+
+            if (stubInstrs[1] is RtlAssignment load &&
+                load.Dst is Identifier idDst &&
+                idDst.Name == "r25" &&
+                load.Src is MemoryAccess mem &&
+                mem.EffectiveAddress is BinaryExpression bin &&
+                bin.Left == idBase && 
+                bin.Right is Constant immOffset)
+            {
+            }
+            else return null;
+
+            if (stubInstrs[2] is RtlGoto jmp &&
+                jmp.Class.HasFlag(InstrClass.Delay) &&
+                jmp.Target is Identifier idTarget &&
+                idTarget == idDst)
+            { }
+            else return null;
+
+            var sAddrGotSlot = imm.ToInt32() + immOffset.ToInt32();
+            return Address.Ptr32((uint) sAddrGotSlot);
         }
 
         /// <summary>

@@ -88,7 +88,7 @@ namespace Reko.ImageLoaders.Elf
             var options = new Dictionary<string, object>();
             string? stackRegName = null;
             options[ProcessorOption.Endianness] = endianness == EndianServices.Little ? "le" : "be";
-            switch (machine)
+            switch (Machine)
             {
             case ElfMachine.EM_MIPS:
                 //$TODO: detect release 6 of the MIPS architecture. 
@@ -378,7 +378,7 @@ namespace Reko.ImageLoaders.Elf
                         {
                             Size = (uint) section.Size
                         });
-                        seg.Designer = CreateRenderer(section, machine);
+                        seg.Designer = CreateRenderer(section, Machine);
                     }
                     else
                     {

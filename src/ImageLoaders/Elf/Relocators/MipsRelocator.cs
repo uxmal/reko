@@ -104,6 +104,7 @@ namespace Reko.ImageLoaders.Elf.Relocators
                     continue;
                 }
                 program.GlobalRegisterValue = Constant.Word32((uint)gotaddr.UValue + OFFSET_GP_GOT);
+                ElfImageLoader.trace.Inform("Global register value: {0:X}", program.GlobalRegisterValue);
                 var wordsize = (uint) program.Architecture.WordWidth.Size;
 
                 // "Local entries reside in the first part of the global offset table. The value of
@@ -284,7 +285,7 @@ namespace Reko.ImageLoaders.Elf.Relocators
 
         public override (Address?, ElfSymbol?) RelocateEntry(Program program, ElfSymbol symbol, ElfSection? referringSection, ElfRelocation rel)
         {
-            if (symbol == null || loader.Sections.Count <= symbol.SectionIndex)
+            if (symbol is null || loader.Sections.Count <= symbol.SectionIndex)
                 return (null, null);
             Address addr;
             uint P;
@@ -313,9 +314,20 @@ namespace Reko.ImageLoaders.Elf.Relocators
             var mipsRt = (MIPSrt) (rel.Info & 0xFF);
             switch (mipsRt)
             {
-            case MIPSrt.R_MIPS_NONE: return (addr, null);
+            case MIPSrt.R_MIPS_NONE:
+                return (addr, null);
             case MIPSrt.R_MIPS_REL32:
                 break;
+            case MIPSrt.R_MIPS_JUMP_SLOT:
+                // Non-PIC binary will have these.
+                var addrInSlot = Address.Ptr32(w);
+                if (symbol.Value == 0 && program.SegmentMap.IsExecutableAddress(addrInSlot))
+                {
+                    var newSym = CreatePltStubSymbolFromRelocation(symbol, w, 0);
+                    return (addr, newSym);
+                }
+                break;
+
             case MIPSrt.R_MIPS_32:
                 P = 0;
                 break;
@@ -478,11 +490,35 @@ namespace Reko.ImageLoaders.Elf.Relocators
          */
         R_MIPS_CALLHI16 = 30,
         R_MIPS_CALLLO16 = 31,
+
+        R_MIPS_SCN_DISP        = 32,
+        R_MIPS_REL16           = 33,
+        R_MIPS_ADD_IMMEDIATE   = 34,
+        R_MIPS_PJUMP           = 35,
+        R_MIPS_RELGOT          = 36,
+        R_MIPS_JALR            = 37,
+        R_MIPS_TLS_DTPMOD32    = 38,    // Module number 32 bit
+        R_MIPS_TLS_DTPREL32    = 39,    // Module-relative offset 32 bit
+        R_MIPS_TLS_DTPMOD64    = 40,    // Module number 64 bit
+        R_MIPS_TLS_DTPREL64    = 41,    // Module-relative offset 64 bit
+        R_MIPS_TLS_GD          = 42,    // 16 bit GOT offset for GD
+        R_MIPS_TLS_LDM         = 43,    // 16 bit GOT offset for LDM
+        R_MIPS_TLS_DTPREL_HI16 = 44,    // Module-relative offset, high 16 bits
+        R_MIPS_TLS_DTPREL_LO16 = 45,    // Module-relative offset, low 16 bits
+        R_MIPS_TLS_GOTTPREL    = 46,    // 16 bit GOT offset for IE
+        R_MIPS_TLS_TPREL32     = 47,    // TP-relative offset, 32 bit
+        R_MIPS_TLS_TPREL64     = 48,    // TP-relative offset, 64 bit
+        R_MIPS_TLS_TPREL_HI16  = 49,    // TP-relative offset, high 16 bits
+        R_MIPS_TLS_TPREL_LO16  = 50,    // TP-relative offset, low 16 bits
+        R_MIPS_GLOB_DAT        = 51,
         /*
          * Introduced for MIPSr6.
          */
         R_MIPS_PC21_S2 = 60,
         R_MIPS_PC26_S2 = 61,
+
+        R_MIPS_COPY            = 126,
+        R_MIPS_JUMP_SLOT       = 127,
     }
 
     public class MipsRelocator64 : ElfRelocator64

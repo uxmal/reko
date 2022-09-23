@@ -88,7 +88,6 @@ namespace Reko.ImageLoaders.Elf
         public const uint PF_W = 2;
         public const uint PF_X = 1;
 
-        protected ElfMachine machine;
         protected uint flags;
         protected EndianServices endianness;
         protected IPlatform? platform;
@@ -103,7 +102,7 @@ namespace Reko.ImageLoaders.Elf
             byte[] rawImage) : this()
         {
             this.Services = services;
-            this.machine = machine;
+            this.Machine = machine;
             this.flags = flags;
             this.endianness = endianness;
             this.rawImage = rawImage;
@@ -123,6 +122,7 @@ namespace Reko.ImageLoaders.Elf
             this.rawImage = null!;
         }
 
+        public ElfMachine Machine { get; }
         public IProcessorArchitecture Architecture { get; private set; }
         public IServiceProvider Services { get; }
         public abstract Address DefaultAddress { get; }
@@ -239,7 +239,7 @@ namespace Reko.ImageLoaders.Elf
             options[ProcessorOption.Endianness] = endianness == EndianServices.Little ? "le" : "be";
 
             string? stackRegName = null;
-            switch (this.machine)
+            switch (this.Machine)
             {
             case ElfMachine.EM_NONE: return null; // No machine
             case ElfMachine.EM_SPARC:
@@ -304,7 +304,7 @@ namespace Reko.ImageLoaders.Elf
                 arch = "loongaArch";
                 break;
             default:
-                throw new NotImplementedException($"ELF machine type {machine} is not implemented yet.");
+                throw new NotImplementedException($"ELF machine type {Machine} is not implemented yet.");
             }
             var a = cfgSvc.GetArchitecture(arch, options);
             if (a is null)
@@ -405,7 +405,7 @@ namespace Reko.ImageLoaders.Elf
             {
                 if (de.UValue <= addrStart)
                     continue;
-                var tagInfo = de.GetTagInfo(machine);
+                var tagInfo = de.GetTagInfo(Machine);
                 if (tagInfo?.Format == DtFormat.Address)
                 {
                     // This might be a pointer.
@@ -814,7 +814,7 @@ namespace Reko.ImageLoaders.Elf
         public void Relocate(Program program, Address addrLoad)
         {
             var symbols = CreateSymbolDictionaries(IsExecutableFile);
-            var relocator = CreateRelocator(this.machine, symbols);
+            var relocator = CreateRelocator(this.Machine, symbols);
             relocator.Relocate(program);
             relocator.LocateGotPointers(program, symbols);
             symbols = symbols.Values.Select(relocator.AdjustImageSymbol).ToSortedList(s => s.Address!);

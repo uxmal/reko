@@ -78,7 +78,7 @@ namespace Reko.ImageLoaders.Elf
             var options = new Dictionary<string, object>();
             options[ProcessorOption.Endianness] = endianness == EndianServices.Little ? "le" : "be";
             string archName;
-            switch (machine)
+            switch (Machine)
             {
             case ElfMachine.EM_IA_64:
                 archName = "ia64";
@@ -127,7 +127,7 @@ namespace Reko.ImageLoaders.Elf
             switch (shdr.Type)
             {
             case SectionHeaderType.SHT_DYNAMIC:
-                return new DynamicSectionRenderer64(this, shdr, machine);
+                return new DynamicSectionRenderer64(this, shdr, Machine);
             case SectionHeaderType.SHT_RELA:
                 return new RelaSegmentRenderer64(this, shdr);
             case SectionHeaderType.SHT_SYMTAB:
