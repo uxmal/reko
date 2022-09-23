@@ -217,7 +217,7 @@ namespace Reko.Environments.Msdos
 
             realModeServices = lib.Procedures
                 .Cast<SerializedService>()
-                .Select(s => s.Build(this, Metadata))
+                .Select(s => s.Build(this, Metadata!))
                 .ToArray();
         }
 
