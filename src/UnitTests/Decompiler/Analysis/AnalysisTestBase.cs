@@ -469,7 +469,7 @@ namespace Reko.UnitTests.Decompiler.Analysis
                 .Returns(false);
             platformMock.Setup(p => p.MakeAddressFromLinear(It.IsAny<ulong>(), It.IsAny<bool>()))
                 .Returns((ulong ul, bool b) => Address.Ptr32((uint) ul));
-            platformMock.Setup(p => p.CreateTrashedRegisters())
+            platformMock.Setup(p => p.TrashedRegisters)
                 .Returns(new HashSet<RegisterStorage>());
             Given_Platform(platformMock.Object);
         }

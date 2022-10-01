@@ -117,11 +117,6 @@ namespace Reko.Environments.Dreamcast
     */
         public override string DefaultCallingConvention => throw new NotImplementedException();
 
-        public override HashSet<RegisterStorage> CreateTrashedRegisters()
-        {
-            throw new NotImplementedException();
-        }
-
         public override SystemService? FindService(int vector, ProcessorState? state, SegmentMap? segmentMap)
         {
             throw new NotImplementedException();

@@ -43,11 +43,6 @@ namespace Reko.Environments.Hpux
                 reg.Number == r27.Number;
         }
 
-        public override HashSet<RegisterStorage> CreateTrashedRegisters()
-        {
-            return new HashSet<RegisterStorage>();
-        }
-
         public override SystemService FindService(int vector, ProcessorState? state, SegmentMap? segmentMap)
         {
             throw new NotImplementedException();

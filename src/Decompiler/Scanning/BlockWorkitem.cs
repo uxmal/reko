@@ -819,7 +819,7 @@ namespace Reko.Scanning
 
         private void TrashRegistersAfterCall()
         {
-            foreach (var reg in program.Platform.CreateTrashedRegisters())
+            foreach (var reg in program.Platform.TrashedRegisters)
             {
                 // $REVIEW: do not trash stack register. It gives regression
                 // on some MSDOS binaries

@@ -43,17 +43,12 @@ namespace Reko.Environments.Xbox
         {
             EnsureTypeLibraries(this.PlatformIdentifier);
             this.StructureMemberAlignment = 8;
+            //$TODO: find out what registers are always trashed
         }
 
         public override string DefaultCallingConvention => "";
 
         public override PrimitiveType PointerType { get { return PrimitiveType.Ptr32; } }
-
-        public override HashSet<RegisterStorage> CreateTrashedRegisters()
-        {
-            //$TODO: find out what registers are always trashed
-            return new HashSet<RegisterStorage>();
-        }
 
         public override ImageSymbol? FindMainProcedure(Program program, Address addrStart)
         {

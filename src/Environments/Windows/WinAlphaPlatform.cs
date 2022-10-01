@@ -38,6 +38,7 @@ namespace Reko.Environments.Windows
             arch.StackRegister = arch.GetRegister("r30")!;
             cc = null!;
             this.StructureMemberAlignment = 8;
+            this.TrashedRegisters = CreateTrashedRegisters();
         }
 
         public override string DefaultCallingConvention => "";
@@ -50,12 +51,12 @@ namespace Reko.Environments.Windows
             return parser;
         }
 
-        public override HashSet<RegisterStorage> CreateTrashedRegisters()
+        private HashSet<RegisterStorage> CreateTrashedRegisters()
         {
             return new HashSet<RegisterStorage>(new[] {
                 "r0", "r1", "r2", "r3", "r4", "r5", "r6", "r7", "r8",
-                   "r16", "r17", "r18", "r9", "r20", "r21",
-                   "r22", "r23", "r24", "r25", "r26", "r27", "r28"}.Select(n => Architecture.GetRegister(n)!).ToHashSet());
+                "r16", "r17", "r18", "r9", "r20", "r21",
+                "r22", "r23", "r24", "r25", "r26", "r27", "r28"}.Select(n => Architecture.GetRegister(n)!).ToHashSet());
         }
 
         public override ImageSymbol? FindMainProcedure(Program program, Address addrStart)

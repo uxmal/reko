@@ -40,6 +40,8 @@ namespace Reko.Environments.Windows
             base(services, arch, "win-vmm")
         {
             this.StructureMemberAlignment = 4;
+            this.TrashedRegisters = new[] { X86Registers.eax, X86Registers.edx, X86Registers.ecx }
+                .ToHashSet();
         }
 
         public override string DefaultCallingConvention => "";
@@ -50,12 +52,6 @@ namespace Reko.Environments.Windows
             var lexer = new CLexer(rdr, CLexer.MsvcKeywords);
             var parser = new CParser(state, lexer);
             return parser;
-        }
-
-        public override HashSet<RegisterStorage> CreateTrashedRegisters()
-        {
-            return new[] { X86Registers.eax, X86Registers.edx, X86Registers.ecx }
-                .ToHashSet();
         }
 
         public override SystemService? FindService(int vector, ProcessorState? state, SegmentMap? segmentMap)

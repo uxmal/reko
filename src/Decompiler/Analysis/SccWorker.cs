@@ -258,7 +258,7 @@ namespace Reko.Analysis
 
         private static bool IsStackStorageOfPreservedRegister(
             SsaState ssa,
-            HashSet<RegisterStorage> trashedRegisters,
+            IReadOnlySet<RegisterStorage> trashedRegisters,
             CallBinding use)
         {
             if (use.Storage is not StackStorage)
@@ -273,7 +273,7 @@ namespace Reko.Analysis
         }
 
         private static bool IsPreservedRegister(
-            HashSet<RegisterStorage> trashedRegisters,
+            IReadOnlySet<RegisterStorage> trashedRegisters,
             Storage stg)
         {
             if (stg is not RegisterStorage)
@@ -302,7 +302,7 @@ namespace Reko.Analysis
                 if (pc.Procedure is not ExternalProcedure)
                     return;
             }
-            var trashedRegisters = program.Platform.CreateTrashedRegisters();
+            var trashedRegisters = program.Platform.TrashedRegisters;
             var platform = program.Platform;
             foreach (var use in ci.Uses.ToList())
             {

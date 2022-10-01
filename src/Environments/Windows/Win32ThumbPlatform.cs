@@ -116,6 +116,7 @@ namespace Reko.Environments.Windows
                 .Select(r => Architecture.GetRegister(r)!)
                 .ToHashSet();
             this.StructureMemberAlignment = 8;
+            this.TrashedRegisters = CreateTrashedRegisters();
         }
 
         public override string DefaultCallingConvention
@@ -141,7 +142,7 @@ namespace Reko.Environments.Windows
             return implicitRegs.Contains(reg);
         }
 
-        public override HashSet<RegisterStorage> CreateTrashedRegisters()
+        private HashSet<RegisterStorage> CreateTrashedRegisters()
         {
             // https://msdn.microsoft.com/en-us/library/dn736986.aspx 
             return new[] { "r0", "r1", "r2", "r3", "ip" }

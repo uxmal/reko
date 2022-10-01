@@ -50,11 +50,6 @@ namespace Reko.Environments.Cpm
             set { base.MemoryMap = value; OnMemoryMapChanged(); }
         }
 
-        public override HashSet<RegisterStorage> CreateTrashedRegisters()
-        {
-            return new HashSet<RegisterStorage>();
-        }
-
         public override CallingConvention GetCallingConvention(string? ccName)
         {
             throw new NotImplementedException();

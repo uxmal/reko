@@ -37,18 +37,17 @@ namespace Reko.Environments.SysV
     //$TODO: rename to Elf-Neutral? Or Posix?
     public class SysVPlatform : Platform
     {
-        private RegisterStorage[] trashedRegs;
         private readonly ArchSpecificFactory archSpecificFactory;
         private readonly CallingConvention? defaultCc;
 
         public SysVPlatform(IServiceProvider services, IProcessorArchitecture arch)
             : base(services, arch, "elf-neutral")
         {
-            this.trashedRegs = LoadTrashedRegisters();
+            this.TrashedRegisters = new HashSet<RegisterStorage>(LoadTrashedRegisters());
             archSpecificFactory = new ArchSpecificFactory(services, arch);
             this.defaultCc = archSpecificFactory.CreateCallingConvention(arch, "");
             //$REVIEW: examine this carefully! It may well be arch-dependent
-            this.StructureMemberAlignment = 8; 
+            this.StructureMemberAlignment = 8;
         }
 
         public override string DefaultCallingConvention => "";
@@ -67,11 +66,6 @@ namespace Reko.Environments.SysV
             if (cc is null)
                 throw new NotImplementedException($"ELF calling convention for {Architecture.Description} not implemented yet.");
             return cc;
-        }
-
-        public override HashSet<RegisterStorage> CreateTrashedRegisters()
-        {
-            return new HashSet<RegisterStorage>(this.trashedRegs);
         }
 
         public override SystemService? FindService(int vector, ProcessorState? state, SegmentMap? segmentMap)

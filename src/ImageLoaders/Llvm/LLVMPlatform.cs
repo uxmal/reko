@@ -43,6 +43,7 @@ namespace Reko.ImageLoaders.LLVM
             this.services = services;
             this.Name = "LLVM";
             this.StructureMemberAlignment = 4;  //$BUG: is arch-specific.
+            this.TrashedRegisters = new HashSet<RegisterStorage>();
         }
 #nullable enable
 
@@ -67,6 +68,9 @@ namespace Reko.ImageLoaders.LLVM
         public PrimitiveType PointerType { get; set; }
 
         public int StructureMemberAlignment { get; set; }
+
+        public IReadOnlySet<RegisterStorage> TrashedRegisters { get; }
+
 
         public Address AdjustProcedureAddress(Address addrCode)
         {
@@ -109,11 +113,6 @@ namespace Reko.ImageLoaders.LLVM
         }
 
         public CallingConvention GetCallingConvention(string? ccName)
-        {
-            throw new NotImplementedException();
-        }
-
-        public HashSet<RegisterStorage> CreateTrashedRegisters()
         {
             throw new NotImplementedException();
         }

@@ -49,11 +49,6 @@ namespace Reko.Environments.Windows
             return parser;
         }
 
-        public override HashSet<RegisterStorage> CreateTrashedRegisters()
-		{
-			return new HashSet<RegisterStorage>();
-		}
-
 		public override CallingConvention GetCallingConvention(string? ccName)
 		{
 			return new M68kCallingConvention(this.Architecture);

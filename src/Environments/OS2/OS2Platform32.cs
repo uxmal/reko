@@ -29,11 +29,6 @@ namespace Reko.Environments.OS2
             return parser;
         }
 
-        public override HashSet<RegisterStorage> CreateTrashedRegisters()
-        {
-            throw new NotImplementedException();
-        }
-
         public override SystemService FindService(int vector, ProcessorState? state, SegmentMap? segmentMap)
         {
             throw new NotImplementedException();

@@ -41,11 +41,6 @@ namespace Reko.Environments.NeoGeo
             throw new NotImplementedException();
         }
 
-        public override HashSet<RegisterStorage> CreateTrashedRegisters()
-        {
-            return new HashSet<RegisterStorage>();
-        }
-
         public override SystemService FindService(int vector, ProcessorState? state, SegmentMap? segmentMap)
         {
             throw new NotImplementedException();

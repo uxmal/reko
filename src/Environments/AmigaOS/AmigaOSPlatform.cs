@@ -59,6 +59,11 @@ namespace Reko.Environments.AmigaOS
                     4,
                     InstrClass.Transfer));
             this.StructureMemberAlignment = 4;
+            this.TrashedRegisters = new HashSet<RegisterStorage>
+            {
+                Registers.d0,
+                Registers.a0,
+            };
         }
 
         public Dictionary<string, object> MapKickstartToListOfLibraries
@@ -118,15 +123,6 @@ namespace Reko.Environments.AmigaOS
         public override bool IsImplicitArgumentRegister(RegisterStorage reg)
         {
             return reg == Registers.a7;
-        }
-
-        public override HashSet<RegisterStorage> CreateTrashedRegisters()
-        {
-            return new HashSet<RegisterStorage>
-            {
-                Registers.d0,
-                Registers.a0,
-            };
         }
 
         public override SystemService? FindService(int vector, ProcessorState? state, SegmentMap? segmentMap)

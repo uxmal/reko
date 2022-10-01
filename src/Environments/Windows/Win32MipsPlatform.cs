@@ -52,6 +52,7 @@ namespace Reko.Environments.Windows
                 gp, sp
             };
             this.StructureMemberAlignment = 8;
+            this.TrashedRegisters = CreateTrashedRegisters();
         }
 
         public override string DefaultCallingConvention => "";
@@ -69,7 +70,7 @@ namespace Reko.Environments.Windows
             return implicitRegs.Contains(reg);
         }
 
-        public override HashSet<RegisterStorage> CreateTrashedRegisters()
+        private HashSet<RegisterStorage> CreateTrashedRegisters()
         {
             return new HashSet<RegisterStorage>
             {

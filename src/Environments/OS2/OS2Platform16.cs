@@ -42,6 +42,7 @@ namespace Reko.Environments.OS2
         public OS2Platform16(IServiceProvider services, IProcessorArchitecture arch) : base(services, arch, "os2-16")
         {
             this.StructureMemberAlignment = 4;
+            this.TrashedRegisters = CreateTrashedRegisters();
         }
 
         public override string DefaultCallingConvention => "pascal";
@@ -59,7 +60,7 @@ namespace Reko.Environments.OS2
             return implicitRegs.Contains(reg);
         }
 
-        public override HashSet<RegisterStorage> CreateTrashedRegisters()
+        private HashSet<RegisterStorage> CreateTrashedRegisters()
         {
             // Some calling conventions can save registers, like _watcall
             return new HashSet<RegisterStorage>
@@ -105,9 +106,7 @@ namespace Reko.Environments.OS2
 
         public override CallingConvention GetCallingConvention(string? ccName)
         {
-            if (ccName == null)
-                ccName = "";
-            switch (ccName)
+            switch (ccName ?? "")
             {
             case "":
             // Used by Microsoft C

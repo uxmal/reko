@@ -36,11 +36,6 @@ namespace Reko.Environments.SegaGenesis
 
         public override string DefaultCallingConvention => "";
 
-        public override HashSet<RegisterStorage> CreateTrashedRegisters()
-        {
-            return new HashSet<RegisterStorage>();
-        }
-
         public override CallingConvention GetCallingConvention(string? ccName)
         {
             throw new NotImplementedException();

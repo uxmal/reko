@@ -34,15 +34,10 @@ namespace Reko.Environments.Switch
         public SwitchPlatform(IServiceProvider services, IProcessorArchitecture arch) : base(services, arch, "switch")
         {
             this.StructureMemberAlignment = 4;
+            //$TODO: find out what registers are always trashed
         }
 
         public override string DefaultCallingConvention => "";
-
-        public override HashSet<RegisterStorage> CreateTrashedRegisters()
-        {
-            //$TODO: find out what registers are always trashed
-            return new HashSet<RegisterStorage>();
-        }
 
         public override ImageSymbol? FindMainProcedure(Program program, Address addrStart)
         {

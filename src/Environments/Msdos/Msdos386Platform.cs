@@ -51,6 +51,7 @@ namespace Reko.Environments.Msdos
         {
             interruptServices = null!;
             this.StructureMemberAlignment = 1;
+            this.TrashedRegisters = CreateTrashedRegisters();
         }
 
         public override string DefaultCallingConvention => "cdecl";
@@ -60,7 +61,7 @@ namespace Reko.Environments.Msdos
             return implicitRegs.Contains(reg);
         }
 
-        public override HashSet<RegisterStorage> CreateTrashedRegisters()
+        private HashSet<RegisterStorage> CreateTrashedRegisters()
         {
             //$REVIEW: is ebx preserved?
             return new HashSet<RegisterStorage>

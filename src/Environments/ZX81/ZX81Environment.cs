@@ -41,9 +41,10 @@ namespace Reko.Environments.ZX81
         {
             encoding = new ZX81Encoding();
             this.StructureMemberAlignment = 1;
+            this.TrashedRegisters = CreateTrashedRegisters();
         }
 
-        public override HashSet<RegisterStorage> CreateTrashedRegisters()
+        private HashSet<RegisterStorage> CreateTrashedRegisters()
         {
             // A wild guess, but it's better than nothing. 
             return new HashSet<RegisterStorage> { Registers.a };

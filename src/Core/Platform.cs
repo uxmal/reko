@@ -62,6 +62,19 @@ namespace Reko.Core
         PrimitiveType PointerType { get; }
 
         /// <summary>
+        /// Creates a set of registers that the "standard" ABI cannot 
+        /// guarantee will survive a call.
+        /// </summary>
+        /// <remarks>
+        /// Reko will do its best to determine what registers are trashed by a
+        /// procedure, but when indirect calls are involved we have to guess.
+        /// If Reko's guess is incorrect, users can override it by proving
+        /// oracular type information.
+        /// </remarks>
+        /// <returns>A set of registers</returns>
+        IReadOnlySet<RegisterStorage> TrashedRegisters { get; }
+
+        /// <summary>
         /// The structure member alignment for this platform, measured in
         /// storage units (e.g. bytes). Objects larger than or equal to this
         /// size will be aligned at multiples of this size, smaller objects 
@@ -70,8 +83,6 @@ namespace Reko.Core
         int StructureMemberAlignment { get; }
 
         Address AdjustProcedureAddress(Address addrCode);
-
-        HashSet<RegisterStorage> CreateTrashedRegisters();
 
         IEnumerable<Address> CreatePointerScanner(SegmentMap map, EndianImageReader rdr, IEnumerable<Address> addr, PointerScannerFlags flags);
 
@@ -320,6 +331,7 @@ namespace Reko.Core
             this.Name = platformId;
             this.Description = GetType().Name;
             this.PlatformProcedures = new Dictionary<Address, ExternalProcedure>();
+            this.TrashedRegisters = new HashSet<RegisterStorage>();
         }
 
         public IProcessorArchitecture Architecture { get; }
@@ -351,6 +363,9 @@ namespace Reko.Core
 
         public abstract string DefaultCallingConvention { get; }
 
+        public virtual IReadOnlySet<RegisterStorage> TrashedRegisters { get; protected set; }
+
+
         /// <summary>
         /// Procedures provided by this platform at well-known addresses.
         /// </summary>
@@ -375,19 +390,6 @@ namespace Reko.Core
         {
             throw new NotImplementedException("Emulation has not been implemented for this platform yet.");
         }
-
-        /// <summary>
-        /// Creates a set of registers that the "standard" ABI cannot 
-        /// guarantee will survive a call.
-        /// </summary>
-        /// <remarks>
-        /// Reko will do its best to determine what registers are trashed by a
-        /// procedure, but when indirect calls are involved we have to guess.
-        /// If Reko's guess is incorrect, users can override it by proving
-        /// oracular type information.
-        /// </remarks>
-        /// <returns>A set of registers</returns>
-        public abstract HashSet<RegisterStorage> CreateTrashedRegisters();
 
         public IEnumerable<Address> CreatePointerScanner(
             SegmentMap segmentMap,
@@ -703,6 +705,7 @@ namespace Reko.Core
             this.TypeLibraries = new List<TypeLibrary>();
             this.Description = "(Unknown operating environment)";
             this.StructureMemberAlignment = 8;
+            this.TrashedRegisters = new HashSet<RegisterStorage>();
         }
 
         public DefaultPlatform(
@@ -713,16 +716,14 @@ namespace Reko.Core
             this.TypeLibraries = new List<TypeLibrary>();
             this.Description = description;
             this.StructureMemberAlignment = 8;
+            this.TrashedRegisters = new HashSet<RegisterStorage>();
         }
 
         public List<TypeLibrary> TypeLibraries { get; }
 
         public override string DefaultCallingConvention => "";
 
-        public override HashSet<RegisterStorage> CreateTrashedRegisters()
-        {
-            return new HashSet<RegisterStorage>();
-        }
+        public override IReadOnlySet<RegisterStorage> TrashedRegisters { get; protected set; }
 
         public override CallingConvention? GetCallingConvention(string? ccName)
         {

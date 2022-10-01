@@ -99,6 +99,7 @@ namespace Reko.Environments.Windows
                 }
             };
             this.StructureMemberAlignment = 8;
+            this.TrashedRegisters = CreateTrashedRegisters();
         }
 
         public override CParser CreateCParser(TextReader rdr, ParserState? state)
@@ -132,7 +133,7 @@ namespace Reko.Environments.Windows
             return eax;
         }
 
-        public override HashSet<RegisterStorage> CreateTrashedRegisters()
+        private HashSet<RegisterStorage> CreateTrashedRegisters()
         {
             // Win32 preserves, ebx, esi, edi.
             return new HashSet<RegisterStorage>

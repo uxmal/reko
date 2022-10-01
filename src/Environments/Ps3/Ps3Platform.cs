@@ -46,17 +46,12 @@ namespace Reko.Environments.Ps3
             : base(services, arch, "ps3") 
         {
             this.StructureMemberAlignment = 4;
+            //$TODO: find out what registers are always trashed
         }
 
         public override string DefaultCallingConvention => "";
 
         public override PrimitiveType PointerType { get { return PrimitiveType.Ptr32; } }
-
-        public override HashSet<RegisterStorage> CreateTrashedRegisters()
-        {
-            //$TODO: find out what registers are always trashed
-            return new HashSet<RegisterStorage>();
-        }
 
         public override CallingConvention GetCallingConvention(string? ccName)
         {

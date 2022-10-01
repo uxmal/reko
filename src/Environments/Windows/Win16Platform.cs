@@ -42,6 +42,7 @@ namespace Reko.Environments.Windows
             : base(services, arch, "win16")
         {
             this.StructureMemberAlignment = 2;
+            this.TrashedRegisters = CreateTrashedRegisters();
         }
 
         public override string DefaultCallingConvention => "pascal";
@@ -78,7 +79,7 @@ SP	top of stack
             return implicitRegs.Contains(reg);
         }
 
-        public override HashSet<RegisterStorage> CreateTrashedRegisters()
+        private HashSet<RegisterStorage> CreateTrashedRegisters()
         {
             return new HashSet<RegisterStorage>
             {

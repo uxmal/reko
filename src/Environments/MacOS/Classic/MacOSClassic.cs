@@ -44,6 +44,7 @@ namespace Reko.Environments.MacOS.Classic
             ptrA5World = null!;
             A5World = null!;
             this.StructureMemberAlignment = 2;
+            this.TrashedRegisters = CreateTrashedRegisters();
         }
 
         public override bool IsImplicitArgumentRegister(RegisterStorage reg)
@@ -51,7 +52,7 @@ namespace Reko.Environments.MacOS.Classic
             return reg.Number == Registers.a7.Number || reg.Number == Registers.a5.Number;
         }
 
-        public override HashSet<RegisterStorage> CreateTrashedRegisters()
+        private HashSet<RegisterStorage> CreateTrashedRegisters()
         {
             return new HashSet<RegisterStorage>
             {

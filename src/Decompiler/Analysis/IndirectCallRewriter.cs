@@ -98,7 +98,7 @@ namespace Reko.Analysis
         {
             var e = expander.Expand(call.Callee);
             var pt = e.Accept(asc).ResolveAs<Pointer>();
-            if (pt == null)
+            if (pt is null)
                 return false;
             if (pt.Pointee is not FunctionType ft)
                 return false;

@@ -36,11 +36,6 @@ namespace Reko.Arch.Cray
 
         public override string DefaultCallingConvention => "";
 
-        public override HashSet<RegisterStorage> CreateTrashedRegisters()
-        {
-            return new HashSet<RegisterStorage>();
-        }
-
         public override SystemService FindService(int vector, ProcessorState? state, SegmentMap? segmentMap)
         {
             throw new NotImplementedException();

@@ -62,12 +62,6 @@ namespace Reko.Environments.Windows
             return implicitRegs.Contains(reg);
         }
 
-        public override HashSet<RegisterStorage> CreateTrashedRegisters()
-        {
-            //$TODO: make this happen.
-            return new HashSet<RegisterStorage>();
-        }
-
         public override ImageSymbol? FindMainProcedure(Program program, Address addrStart)
         {
             {

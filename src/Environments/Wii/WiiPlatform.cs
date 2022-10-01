@@ -30,7 +30,8 @@ namespace Reko.Environments.Wii
 		public WiiPlatform(IServiceProvider services, IProcessorArchitecture arch) : base(services, arch, "wii")
         {
             this.StructureMemberAlignment = 4;
-		}
+            //$TODO: find out what registers are always trashed
+        }
 
         public override string DefaultCallingConvention { get { return ""; } }
 
@@ -38,11 +39,6 @@ namespace Reko.Environments.Wii
         {
             throw new NotImplementedException();
         }
-
-        public override HashSet<RegisterStorage> CreateTrashedRegisters() {
-			//TODO: find out what registers are always trashed
-			return new HashSet<RegisterStorage>();
-		}
 
 		public override SystemService? FindService(int vector, ProcessorState? state, SegmentMap? segmentMap) {
 			//$TODO: implement some services;

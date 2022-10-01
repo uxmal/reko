@@ -141,7 +141,7 @@ namespace Reko.UnitTests.Environments.SysV
             Given_EnvironmentConfiguration(env);
 
             var sysv = new SysVPlatform(sc, arch.Object);
-            var regs = sysv.CreateTrashedRegisters();
+            var regs = sysv.TrashedRegisters;
             Assert.AreEqual(2, regs.Count);
             Assert.AreEqual("r2,r3", string.Join(",", regs.Select(r => r.Name)));
         }

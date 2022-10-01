@@ -162,7 +162,7 @@ namespace Reko.UnitTests.Decompiler.Analysis
 
         private void Given_PlatformTrashedRegisters(params RegisterStorage[] regs)
         {
-            platform.Setup(p => p.CreateTrashedRegisters())
+            platform.Setup(p => p.TrashedRegisters)
                 .Returns(regs.ToHashSet());
         }
 

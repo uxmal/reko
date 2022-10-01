@@ -34,11 +34,6 @@ namespace Reko.Environments.Snes
 
         public override string DefaultCallingConvention => "";
 
-        public override HashSet<RegisterStorage> CreateTrashedRegisters()
-        {
-            throw new NotImplementedException();
-        }
-
         public override SystemService? FindService(int vector, ProcessorState? state, SegmentMap? segmentMap)
         {
             throw new NotImplementedException();

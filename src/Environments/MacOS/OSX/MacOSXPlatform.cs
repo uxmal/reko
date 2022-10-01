@@ -30,24 +30,18 @@ namespace Reko.Environments.MacOS.OSX
 {
     public class MacOSXPlatform : Platform
     {
-        private readonly HashSet<RegisterStorage> trashedRegisters;
         private readonly ArchSpecificHandler archHandler;
 
         public MacOSXPlatform(IServiceProvider services, IProcessorArchitecture arch) : base(services, arch, "macOsX")
         {
-            trashedRegisters = GenerateTrashedRegisters(arch);
             archHandler = ArchSpecificHandler.Create(arch);
             this.StructureMemberAlignment = arch.WordWidth.Size;    //$REVIEW: correct?
+            this.TrashedRegisters = GenerateTrashedRegisters(arch);
         }
 
         public override string DefaultCallingConvention
         {
             get { return ""; }
-        }
-
-        public override HashSet<RegisterStorage> CreateTrashedRegisters()
-        {
-            return trashedRegisters;
         }
 
         public override SystemService FindService(int vector, ProcessorState? state, SegmentMap? segmentMap)

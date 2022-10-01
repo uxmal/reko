@@ -34,11 +34,12 @@ namespace Reko.Environments.MacOS.Classic
             base(services, arch, "macOsPpc")
         {
             this.StructureMemberAlignment = 4;
+            this.TrashedRegisters = CreateTrashedRegisters();
         }
 
         public override string DefaultCallingConvention => "";
 
-        public override HashSet<RegisterStorage> CreateTrashedRegisters()
+        private HashSet<RegisterStorage> CreateTrashedRegisters()
         {
             var arch = (PowerPcArchitecture)Architecture;
 

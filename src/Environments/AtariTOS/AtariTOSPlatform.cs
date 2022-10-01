@@ -36,7 +36,14 @@ namespace Reko.Environments.AtariTOS
     {
         public AtariTOSPlatform(IServiceProvider services, IProcessorArchitecture arch) : base(services, arch, "atariTOS")
         {
-            StructureMemberAlignment = 4;
+            this.StructureMemberAlignment = 4;
+            this.TrashedRegisters = new HashSet<RegisterStorage>
+            {
+                Registers.a0,
+                Registers.a1,
+                Registers.d0,
+                Registers.d1,
+            };
         }
 
         public override string DefaultCallingConvention
@@ -49,17 +56,6 @@ namespace Reko.Environments.AtariTOS
             if (ccName == "TOSCall")
                 return new TOSCallingConvention(this.Architecture);
             throw new NotImplementedException();
-        }
-
-        public override HashSet<RegisterStorage> CreateTrashedRegisters()
-        {
-            return new HashSet<RegisterStorage>
-            {
-                Registers.a0,
-                Registers.a1,
-                Registers.d0,
-                Registers.d1,
-            };
         }
 
         public override SystemService? FindService(int vector, ProcessorState? state, SegmentMap? segmentMap)

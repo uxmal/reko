@@ -45,11 +45,14 @@ namespace Reko.UnitTests.Mocks
         }
 
         public Func<HashSet<RegisterStorage>> Test_CreateTrashedRegisters;
-        public override HashSet<RegisterStorage> CreateTrashedRegisters()
+        public override HashSet<RegisterStorage> TrashedRegisters
         {
-            if (Test_CreateTrashedRegisters == null)
-                return new HashSet<RegisterStorage>();
-            return Test_CreateTrashedRegisters();
+            get
+            {
+                if (Test_CreateTrashedRegisters == null)
+                    return new HashSet<RegisterStorage>();
+                return Test_CreateTrashedRegisters();
+            }
         }
 
         public Func<string, CallingConvention> Test_GetCallingConvention;

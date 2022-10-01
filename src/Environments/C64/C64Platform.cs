@@ -37,6 +37,10 @@ namespace Reko.Environments.C64
             : base(services, arch, "c64")
         {
             this.StructureMemberAlignment = 1;
+            this.TrashedRegisters = new HashSet<RegisterStorage>
+            {
+                Registers.a
+            };
         }
 
         public override string DefaultCallingConvention
@@ -52,14 +56,6 @@ namespace Reko.Environments.C64
         public override bool IsImplicitArgumentRegister(RegisterStorage reg)
         {
             return reg == Registers.s;
-        }
-
-        public override HashSet<RegisterStorage> CreateTrashedRegisters()
-        {
-            return new HashSet<RegisterStorage>
-            {
-                Registers.a
-            };
         }
 
         public override CallingConvention GetCallingConvention(string? ccName)

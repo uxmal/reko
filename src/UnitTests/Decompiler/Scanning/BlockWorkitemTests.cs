@@ -566,7 +566,7 @@ testProc_exit:
             platform.Setup(p => p.PointerType).Returns(PrimitiveType.Ptr32);
             platform.Setup(p => p.ResolveIndirectCall(It.IsAny<RtlCall>()))
                 .Returns((Address)null);
-            platform.Setup(p => p.CreateTrashedRegisters())
+            platform.Setup(p => p.TrashedRegisters)
                 .Returns(new HashSet<RegisterStorage>());
             program.Platform = platform.Object;
             scanner.Setup(f => f.FindContainingBlock(Address.Ptr32(0x100000))).Returns(block);

@@ -37,6 +37,7 @@ namespace Reko.Environments.Windows
     {
         private readonly SystemService int29svc;
         private readonly SystemService int3svc;
+
         private static readonly HashSet<int> possibleAbiArgRegs = new()
         {
             Registers.rcx.Number,
@@ -75,6 +76,7 @@ namespace Reko.Environments.Windows
                 }
             };
             this.StructureMemberAlignment = 16;
+            this.TrashedRegisters = CreateTrashedRegisters();
         }
 
         public override string DefaultCallingConvention
@@ -102,7 +104,7 @@ namespace Reko.Environments.Windows
             return possibleAbiArgRegs.Contains(reg.Number);
         }
 
-        public override HashSet<RegisterStorage> CreateTrashedRegisters()
+        private HashSet<RegisterStorage> CreateTrashedRegisters()
         {
             // https://msdn.microsoft.com/en-us/library/9z1stfyw.aspx
             return new HashSet<RegisterStorage>

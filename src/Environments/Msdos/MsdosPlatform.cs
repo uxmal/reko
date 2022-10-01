@@ -56,6 +56,7 @@ namespace Reko.Environments.Msdos
                 Registers.Top,
             };
             this.StructureMemberAlignment = 1;
+            this.TrashedRegisters = CreateTrashedRegisters();
         }
 
         public override CParser CreateCParser(TextReader rdr, ParserState? state)
@@ -76,7 +77,7 @@ namespace Reko.Environments.Msdos
             return new MsdosEmulator();
         }
 
-        public override HashSet<RegisterStorage> CreateTrashedRegisters()
+        private HashSet<RegisterStorage> CreateTrashedRegisters()
         {
             // On MS-DOS, C and Pascal compilers
             // typically saved bp, si, and di.

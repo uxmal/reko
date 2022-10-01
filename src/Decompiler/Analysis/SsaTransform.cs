@@ -706,7 +706,7 @@ namespace Reko.Analysis
             var existingDefs = ci.Definitions
                 .Select(d => d.Storage)
                 .ToHashSet();
-            var trashedRegisters = program.Platform.CreateTrashedRegisters();
+            var trashedRegisters = program.Platform.TrashedRegisters;
             var stackDepth = GetStackDepthAtCall(ssa.Procedure, ci);
             var frame = ssa.Procedure.Frame;
 
@@ -718,7 +718,7 @@ namespace Reko.Analysis
             // If the guess is wrong, the user can correct it with a 
             // decompilation directive.
 
-                var ids = GuessParameterIdentifiers(ci, stmCur!)
+            var ids = GuessParameterIdentifiers(ci, stmCur!)
                 .Concat(ssa.Procedure.EntryBlock.Statements
                     .Select(s => s.Instruction)
                     .OfType<DefInstruction>()
@@ -861,7 +861,7 @@ namespace Reko.Analysis
         }
 
         private static bool IsTrashed(
-            HashSet<RegisterStorage> trashedRegisters,
+            IReadOnlySet<RegisterStorage> trashedRegisters,
             Storage stg)
         {
             if (stg is not RegisterStorage || stg is TemporaryStorage)
