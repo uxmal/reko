@@ -2559,8 +2559,8 @@ movzx	ax,byte ptr [bp+4h]
         [Test]
         public void X86Dis_cmpss()
         {
-            AssertCode64("cmpss\txmm2,dword ptr [rdi+27h],69h", "F30FC2572769");
-            AssertCode64("vcmpss\txmm10,xmm10,dword ptr [rdi+27h],69h", "C52EC2572769");
+            AssertCode64("cmpordss\txmm2,dword ptr [rdi+27h]", "F30FC2572707");
+            AssertCode64("vcmpordss\txmm10,xmm10,dword ptr [rdi+27h]", "C52EC2572707");
         }
 
         [Test]

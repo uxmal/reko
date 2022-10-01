@@ -676,6 +676,15 @@ namespace Reko.UnitTests.Arch.X86
         }
 
         [Test]
+        public void X86Rw_frstpm()
+        {
+            Run16bitTest("DBE5");
+            AssertCode(     // frstpm
+                "0|L--|0C00:0000(2): 1 instructions",
+                "1|L--|__frstpm()");
+        }
+
+        [Test]
         public void X86rw_fstp()
         {
             Run32bitTest(m =>
@@ -2340,14 +2349,14 @@ namespace Reko.UnitTests.Arch.X86
         }
 
         [Test]
-        public void X86rw_cmpps()
+        public void X86rw_cmpltps()
         {
-            Run32bitTest("0FC2424208");    // cmpps\txmm0,[edx+42],08
+            Run32bitTest("0FC2424201");    // cmpltps\txmm0,[edx+42],01
             AssertCode(
                 "0|L--|10000000(5): 3 instructions",
                 "1|L--|v4 = xmm0",
                 "2|L--|v5 = Mem0[edx + 66<i32>:word128]",
-                "3|L--|xmm0 = __cmpp<real32[4],word32[4]>(v4, v5, 8<8>)");
+                "3|L--|xmm0 = __cmpltp<real32[4],word32[4]>(v4, v5)");
         }
 
         [Test]
@@ -4556,6 +4565,18 @@ namespace Reko.UnitTests.Arch.X86
         }
 
         [Test]
+        [Ignore("This isn't expressing the idea of 'eq'")]
+        public void X86Rw_cmpeqps()
+        {
+            Run32bitTest("0FC20800");
+            AssertCode(     // cmpeqps	xmm1,[eax]
+                "0|L--|10000000(4): 3 instructions",
+                "1|L--|v4 = xmm1",
+                "2|L--|v5 = xmm1",
+                "3|L--|xmm1 = __cmpp<real32[4],word32[4]>(v4, v5, Mem0[eax:word128])");
+        }
+
+        [Test]
         public void X86Rw_cmplesd()
         {
             Run64bitTest("F20FC2E806");
@@ -4740,7 +4761,6 @@ namespace Reko.UnitTests.Arch.X86
                 "2|L--|rdx = CONVERT(edx, word32, uint64)");
         }
 
-
         [Test]
         public void X86Rw_fdiv_mem()
         {
@@ -4750,6 +4770,14 @@ namespace Reko.UnitTests.Arch.X86
                 "1|L--|ST[Top:real64] = ST[Top:real64] / CONVERT(Mem0[esi + 0x13C<32>:real32], real32, real64)");
         }
 
+        [Test]
+        public void X86Rw_vmptrld()
+        {
+            Run64bitTest("0FC732");
+            AssertCode(     // vmptrld	qword ptr [edx]
+                "0|S--|0000000140000000(3): 1 instructions",
+                "1|L--|__vmptrld(Mem0[rdx:word64])");
+        }
 
         [Test]
         public void X86Rw_vzeroupper()
@@ -4775,7 +4803,14 @@ namespace Reko.UnitTests.Arch.X86
                 "16|L--|ymm15 = CONVERT(xmm15, word128, word256)");
         }
 
-
+        [Test]
+        public void X86Rw_wrpkru()
+        {
+            Run64bitTest("0F01EF");
+            AssertCode(     // wrpkru
+                "0|L--|0000000140000000(3): 1 instructions",
+                "1|L--|__wrpkru(eax)");
+        }
 
         /*
         [Test]

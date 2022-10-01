@@ -37,7 +37,7 @@ namespace Reko.Arch.X86
 
         private void RewriteCmpp(bool isVex, IntrinsicProcedure intrinsic, PrimitiveType element)
         {
-            RewritePackedTernaryop(
+            RewritePackedBinop(
                 isVex,
                 intrinsic,
                 element,

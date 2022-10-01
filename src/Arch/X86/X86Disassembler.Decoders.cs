@@ -820,9 +820,9 @@ namespace Reko.Arch.X86
         /// </summary>
         public class PredicatedDecoder : Decoder
         {
-            private Mnemonic mnemonic;
-            private Mutator<X86Disassembler>[] mutators;
-            private Dictionary<byte, Mnemonic> predicateMnemonics;
+            private readonly Mnemonic mnemonic;
+            private readonly Mutator<X86Disassembler>[] mutators;
+            private readonly Dictionary<byte, Mnemonic> predicateMnemonics;
 
             public PredicatedDecoder(
                 Mnemonic mnemonic,
@@ -847,12 +847,13 @@ namespace Reko.Arch.X86
                 if (predicateMnemonics.TryGetValue(predicateOpcode, out var mnemonic))
                 {
                     ops.RemoveAt(ops.Count - 1);
+                    return dasm.MakeInstruction(InstrClass.Linear, mnemonic);
                 }
                 else
                 {
-                    mnemonic = this.mnemonic;
+                    // Other decodings are reserved.
+                    return dasm.CreateInvalidInstruction();
                 }
-                return dasm.MakeInstruction(InstrClass.Linear, mnemonic);
             }
         }
 

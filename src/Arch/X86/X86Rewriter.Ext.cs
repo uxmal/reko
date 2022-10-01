@@ -170,6 +170,11 @@ namespace Reko.Arch.X86
             m.SideEffect(m.Fn(sfence_intrinsic));
         }
 
+        private void RewriteVmptrld()
+        {
+            m.SideEffect(m.Fn(vmptrld_intrinsic, SrcOp(0)));
+        }
+
         private void RewriteVmread()
         {
             var src1 = SrcOp(1);
@@ -192,6 +197,13 @@ namespace Reko.Arch.X86
         private void RewriteWbinvd()
         {
             m.SideEffect(m.Fn(wbinvd_intrinsic));
+        }
+
+        private void RewriteWrpkru()
+        {
+            var eax = binder.EnsureRegister(Registers.eax);
+            m.SideEffect(m.Fn(wrpkru_intrinsic, eax));
+
         }
 
         public void RewriteWrsmr()

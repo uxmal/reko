@@ -122,9 +122,9 @@ namespace Reko.UnitTests.Arch.X86
         }
 
         [Test]
-        public void X86dis_cmpps()
+        public void X86dis_cmpleps()
         {
-            AssertCode32("cmpps\txmm0,[edx+42h],8h", 0x0F, 0xC2, 0x42, 0x42, 0x08);
+            AssertCode32("cmpleps\txmm0,[edx+42h]", 0x0F, 0xC2, 0x42, 0x42, 0x02);
         }
 
         [Test]

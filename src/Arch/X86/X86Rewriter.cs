@@ -162,11 +162,15 @@ namespace Reko.Arch.X86
                 case Mnemonic.cmpxchg16b: RewriteCmpxchgNb(cmpxchgN_intrinsic, Registers.rdx, Registers.rax, Registers.rcx, Registers.rbx); break;
                 case Mnemonic.cmp: RewriteCmp(); break;
                 case Mnemonic.cmps: RewriteStringInstruction(); break;
-                case Mnemonic.cmppd: RewriteCmpp(false, cmpp_intrinsic, PrimitiveType.Real64); break;
-                case Mnemonic.cmpps: RewriteCmpp(false, cmpp_intrinsic, PrimitiveType.Real32); break;
                 case Mnemonic.cmpsb: RewriteStringInstruction(); break;
                 case Mnemonic.cmpsd:
                 case Mnemonic.vcmpsd: RewriteCmpsd(PrimitiveType.Real64); break;
+                case Mnemonic.cmpeqps: RewriteCmpp(false, cmpeqp_intrinsic, PrimitiveType.Real32); break;
+                case Mnemonic.vcmpeqps: RewriteCmpp(true, cmpeqp_intrinsic, PrimitiveType.Real32); break;
+                case Mnemonic.cmpleps: RewriteCmpp(false, cmplep_intrinsic, PrimitiveType.Real32); break;
+                case Mnemonic.vcmpleps: RewriteCmpp(true, cmplep_intrinsic, PrimitiveType.Real32); break;
+                case Mnemonic.cmpltps: RewriteCmpp(false, cmpltp_intrinsic, PrimitiveType.Real32); break;
+                case Mnemonic.vcmpltps: RewriteCmpp(true, cmpltp_intrinsic, PrimitiveType.Real32); break;
                 case Mnemonic.cmpeqsd:
                 case Mnemonic.vcmpeqsd: RewriteCmpsd(PrimitiveType.Real64, m.FEq); break;
                 case Mnemonic.cmplesd:
@@ -283,6 +287,7 @@ namespace Reko.Arch.X86
                 case Mnemonic.fptan: RewriteFptan(); break;
                 case Mnemonic.frndint: RewriteFUnary(rndint_intrinsic); break;
                 case Mnemonic.frstor: RewriteFrstor(); break;
+                case Mnemonic.frstpm: RewriteFrstpm(); break;
                 case Mnemonic.fsave: RewriteFsave(); break;
                 case Mnemonic.fscale: RewriteFscale(); break;
                 case Mnemonic.fsin: RewriteFUnary(sin_intrinsic); break;
@@ -625,6 +630,8 @@ namespace Reko.Arch.X86
                 case Mnemonic.sysenter: RewriteSysenter(); break;
                 case Mnemonic.sysexit: RewriteSysexit(); break;
                 case Mnemonic.sysret: RewriteSysret(); break;
+                case Mnemonic.test: RewriteTest(); break;
+                case Mnemonic.tzcnt: RewriteLeadingTrailingZeros(tzcnt_intrinsic); break;
                 case Mnemonic.ucomiss: RewriteComis(PrimitiveType.Real32); break;
                 case Mnemonic.ucomisd: RewriteComis(PrimitiveType.Real64); break;
                 case Mnemonic.unpckhps: RewriteUnpckhps(); break;
@@ -635,11 +642,11 @@ namespace Reko.Arch.X86
                 case Mnemonic.unpcklps: RewritePackedBinop(false, unpcklp_intrinsic, PrimitiveType.Real32); break;
                 case Mnemonic.verr: RewriteVerrw(verr_intrinsic); break;
                 case Mnemonic.verw: RewriteVerrw(verw_intrinsic); break;
-                case Mnemonic.test: RewriteTest(); break;
-                case Mnemonic.tzcnt: RewriteLeadingTrailingZeros(tzcnt_intrinsic); break;
+                case Mnemonic.vmptrld: RewriteVmptrld(); break;
                 case Mnemonic.wait: RewriteWait(); break;
                 case Mnemonic.wbinvd: RewriteWbinvd(); break;
                 case Mnemonic.wrmsr: RewriteWrsmr(); break;
+                case Mnemonic.wrpkru: RewriteWrpkru(); break;
                 case Mnemonic.xabort: RewriteXabort(); break;
                 case Mnemonic.xadd: RewriteXadd(); break;
                 case Mnemonic.xchg: RewriteExchange(); break;
@@ -887,12 +894,6 @@ namespace Reko.Arch.X86
                 .GenericTypes("T")
                 .Param("T")
                 .Returns("T");
-            cmpp_intrinsic = new IntrinsicBuilder("__cmpp", false)
-                .GenericTypes("TSrc", "TDst")
-                .Param("TSrc")
-                .Param("TSrc")
-                .Param(PrimitiveType.Byte)
-                .Returns("TDst");
             cmpxchg_intrinsic = new IntrinsicBuilder("__cmpxchg", true)
                 .GenericTypes("T")
                 .Param("T")
@@ -1374,7 +1375,9 @@ namespace Reko.Arch.X86
             .Void();
         private static readonly IntrinsicProcedure clts_intrinsic;
 
-        private static readonly IntrinsicProcedure cmpp_intrinsic;
+        private static readonly IntrinsicProcedure cmpeqp_intrinsic = GenericBinaryIntrinsic_DifferentTypes("__cmpeqp");
+        private static readonly IntrinsicProcedure cmplep_intrinsic = GenericBinaryIntrinsic_DifferentTypes("__cmplep");
+        private static readonly IntrinsicProcedure cmpltp_intrinsic = GenericBinaryIntrinsic_DifferentTypes("__cmpltp");
         private static readonly IntrinsicProcedure cmpxchg_intrinsic;
         private static readonly IntrinsicProcedure cmpxchgN_intrinsic;
         private static readonly IntrinsicProcedure cos_intrinsic;
@@ -1409,6 +1412,8 @@ namespace Reko.Arch.X86
         private static readonly IntrinsicProcedure fprem_incomplete_intrinsic;
         private static readonly IntrinsicProcedure fprem_x87_intrinsic;
         private static readonly IntrinsicProcedure frstor_intrinsic;
+        private static readonly IntrinsicProcedure frstpm_intrinsic = new IntrinsicBuilder("__frstpm", true)
+            .Void();
         private static readonly IntrinsicProcedure fsave_intrinsic;
         private static readonly IntrinsicProcedure fsqrt_intrinsic;
         private static readonly IntrinsicProcedure fstcw_intrinsic;
@@ -1548,11 +1553,17 @@ namespace Reko.Arch.X86
         private static readonly IntrinsicProcedure verr_intrinsic;
         private static readonly IntrinsicProcedure verw_intrinsic;
         private static readonly IntrinsicProcedure vmerge_intrinsic = GenericBinaryIntrinsic("__vmerge");
+        private static readonly IntrinsicProcedure vmptrld_intrinsic = new IntrinsicBuilder("__vmptrld", true)
+            .Param(PrimitiveType.Word64)
+            .Void();
         private static readonly IntrinsicProcedure vmread_intrinsic;
         private static readonly IntrinsicProcedure vmwrite_intrinsic;
         private static readonly IntrinsicProcedure wait_intrinsic;
         private static readonly IntrinsicProcedure wbinvd_intrinsic;
         private static readonly IntrinsicProcedure wrmsr_intrinsic;
+        private static readonly IntrinsicProcedure wrpkru_intrinsic = new IntrinsicBuilder("__wrpkru", true)
+            .Param(PrimitiveType.Word32)
+            .Void();
         private static readonly IntrinsicProcedure xabort_intrinsic;
         private static readonly IntrinsicProcedure xadd_intrinsic;
         private static readonly IntrinsicProcedure xgetbv_intrinsic;

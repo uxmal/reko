@@ -361,6 +361,13 @@ namespace Reko.Arch.X86
                     SrcOp(0)));
         }
 
+        private void RewriteFrstpm()
+        {
+            m.SideEffect(
+                m.Fn(
+                    frstpm_intrinsic));
+        }
+
         private void RewriteFsave()
         {
             m.SideEffect(
