@@ -31,7 +31,6 @@ namespace Reko.Core.Graphs
 	/// </remarks>
 	public static class SccFinder
 	{
-
         /// <summary>
         /// Find the Strongly Connected Components (SCCs) of a <see cref="DirectedGraph{T}"/>,
         /// using O(1) processor stack space.
@@ -94,6 +93,51 @@ namespace Reko.Core.Graphs
                 }
             }
             return result;
+        }
+
+        /// <summary>
+        /// Computes the condensed graph of <paramref name="graph"/>. This is
+        /// done by creating a new graph whose nodes are the strongly connected
+        /// components (SCCs) of the original graph. It is a theorem of graph
+        /// theory that the condensed graph is a directed acyclic graph (DAG).
+        /// </summary>
+        /// <typeparam name="TNode">Node type of the graph</typeparam>
+        /// <param name="graph">Graph to condense</param>
+        /// <returns>Returns the condensed graph, and a mapping from integer
+        /// SCC ids to an array of the nodes that compose those SCCs.
+        /// </returns>
+        public static Condensation<TNode> Condense<TNode>(DirectedGraph<TNode> graph)
+            where TNode : notnull
+        {
+            var scc = FindAll(graph);
+            var mapping = new Dictionary<TNode, int>();
+            var members = new Dictionary<int, TNode[]>();
+            var condensation = new DiGraph<int>();
+            if (graph.Nodes.Count == 0)
+                return new Condensation<TNode>(condensation, members);
+            foreach (var (c, i) in scc.Select((c, i) => (c, i)))
+            {
+                members[i] = c;
+                foreach (var m in c)
+                {
+                    mapping[m] = i;
+                }
+                condensation.Nodes.Add(i);
+            }
+            foreach (var n in graph.Nodes)
+            {
+                var mn = mapping[n];
+                var succs = new HashSet<int>();
+                foreach (var s in graph.Successors(n))
+                {
+                    succs.Add(mapping[s]);
+                }
+                foreach (var s in succs)
+                { 
+                    condensation.AddEdge(mn, s);
+                }
+            }
+            return new Condensation<TNode>(condensation, members);
         }
 
         public static List<TNode[]> RobustTopologicalSort<TNode>(DirectedGraph<TNode> graph)
@@ -161,4 +205,19 @@ namespace Reko.Core.Graphs
             return result;
         }
     }
+
+    /// <summary>
+    /// The condensation of a graph is another graph whose nodes correspond to
+    /// the strongly connected components (SCCs) of the original graph. Each
+    /// node of the condensed graph is an integer which can be viewed as the
+    /// unique id of an SCC.
+    /// </summary>
+    /// <typeparam name="TNode">The type of the nodes in the graph.</typeparam>
+    /// <param name="Graph">The condensation of a graph. It is a theorem of
+    /// graph theory that this is a directed acyclic graph (DAG).</param>
+    /// <param name="Members">A mapping from each node in the SCC to
+    /// the nodes in the original graph of which it consists.</param>
+    public record Condensation<TNode>(
+        DirectedGraph<int> Graph,
+        Dictionary<int, TNode[]> Members);
 }
