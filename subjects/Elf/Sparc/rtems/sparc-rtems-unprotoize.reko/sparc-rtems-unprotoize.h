@@ -2151,33 +2151,33 @@ Eq_7980: (fn Eq_2970 ())
 	T_7981 (in signature of getpid : void)
 Eq_8049: (fn void (word32, word32, word32, word32))
 	T_8049 (in __urem64 @ 00016D1C : ptr32)
-Eq_8064: (fn void (word32, word32, word32, word32))
+Eq_8064: (fn word32 (word32, word32, word32, word32))
 	T_8064 (in __udiv64 @ 00016D38 : ptr32)
 Eq_8071: (fn void (word32, word32))
 	T_8071 (in __urem64 @ 00016D4C : ptr32)
 Eq_8080: (struct "Eq_8080" (1 byte b0001))
 	T_8080 (in i1_153 @ 00016D58 : word32)
-Eq_8084: (fn void (word32, word32, word32, word32))
+Eq_8084: (fn word32 (word32, word32, word32, word32))
 	T_8084 (in __udiv64 @ 00016D68 : ptr32)
 Eq_8091: (fn void (word32, word32))
 	T_8091 (in __urem64 @ 00016D7C : ptr32)
 Eq_8100: (struct "Eq_8100" (2 byte b0002))
 	T_8100 (in i1_215 @ 00016D88 : word32)
-Eq_8104: (fn void (word32, word32, word32, word32))
+Eq_8104: (fn word32 (word32, word32, word32, word32))
 	T_8104 (in __udiv64 @ 00016D98 : ptr32)
 Eq_8111: (fn void (word32, word32))
 	T_8111 (in __urem64 @ 00016DAC : ptr32)
 Eq_8120: (struct "Eq_8120" (3 byte b0003))
 	T_8120 (in i1_277 @ 00016DB8 : word32)
-Eq_8124: (fn void (word32, word32, word32, word32))
+Eq_8124: (fn word32 (word32, word32, word32, word32))
 	T_8124 (in __udiv64 @ 00016DC8 : ptr32)
 Eq_8131: (fn void (word32, word32))
 	T_8131 (in __urem64 @ 00016DDC : ptr32)
 Eq_8140: (struct "Eq_8140" (4 byte b0004))
 	T_8140 (in i1_339 @ 00016DE8 : word32)
-Eq_8144: (fn void (void, word32, word32))
+Eq_8144: (fn void (word32, word32, word32))
 	T_8144 (in __urem64 @ 00016E04 : ptr32)
-Eq_8146: (fn void (word32, word32, word32, word32))
+Eq_8146: (fn word32 (word32, word32, word32, word32))
 	T_8146 (in __udiv64 @ 00016E04 : ptr32)
 Eq_8160: (struct "Eq_8160" (5 byte b0005))
 	T_8160 (in i1_399 @ 00016E10 : word32)
@@ -34803,10 +34803,10 @@ T_8069: (in 0x3E<32> @ 00016D38 : word32)
   Class: Eq_8069
   DataType: word32
   OrigDataType: word32
-T_8070: (in __udiv64(l0_109, l1_108, 0<32>, 0x3E<32>) @ 00016D38 : void)
+T_8070: (in __udiv64(l0_109, l1_108, 0<32>, 0x3E<32>) @ 00016D38 : word32)
   Class: Eq_8070
-  DataType: void
-  OrigDataType: void
+  DataType: word32
+  OrigDataType: word32
 T_8071: (in __urem64 @ 00016D4C : ptr32)
   Class: Eq_8071
   DataType: (ptr32 Eq_8071)
@@ -34883,10 +34883,10 @@ T_8089: (in 0x3E<32> @ 00016D68 : word32)
   Class: Eq_8089
   DataType: word32
   OrigDataType: word32
-T_8090: (in __udiv64(l0_171, l1_170, 0<32>, 0x3E<32>) @ 00016D68 : void)
+T_8090: (in __udiv64(l0_171, l1_170, 0<32>, 0x3E<32>) @ 00016D68 : word32)
   Class: Eq_8090
-  DataType: void
-  OrigDataType: void
+  DataType: word32
+  OrigDataType: word32
 T_8091: (in __urem64 @ 00016D7C : ptr32)
   Class: Eq_8091
   DataType: (ptr32 Eq_8091)
@@ -34963,10 +34963,10 @@ T_8109: (in 0x3E<32> @ 00016D98 : word32)
   Class: Eq_8109
   DataType: word32
   OrigDataType: word32
-T_8110: (in __udiv64(l0_233, l1_232, 0<32>, 0x3E<32>) @ 00016D98 : void)
+T_8110: (in __udiv64(l0_233, l1_232, 0<32>, 0x3E<32>) @ 00016D98 : word32)
   Class: Eq_8110
-  DataType: void
-  OrigDataType: void
+  DataType: word32
+  OrigDataType: word32
 T_8111: (in __urem64 @ 00016DAC : ptr32)
   Class: Eq_8111
   DataType: (ptr32 Eq_8111)
@@ -35043,10 +35043,10 @@ T_8129: (in 0x3E<32> @ 00016DC8 : word32)
   Class: Eq_8129
   DataType: word32
   OrigDataType: word32
-T_8130: (in __udiv64(l0_295, l1_294, 0<32>, 0x3E<32>) @ 00016DC8 : void)
+T_8130: (in __udiv64(l0_295, l1_294, 0<32>, 0x3E<32>) @ 00016DC8 : word32)
   Class: Eq_8130
-  DataType: void
-  OrigDataType: void
+  DataType: word32
+  OrigDataType: word32
 T_8131: (in __urem64 @ 00016DDC : ptr32)
   Class: Eq_8131
   DataType: (ptr32 Eq_8131)
@@ -35131,10 +35131,10 @@ T_8151: (in 0x3E<32> @ 00016E04 : word32)
   Class: Eq_8151
   DataType: word32
   OrigDataType: word32
-T_8152: (in __udiv64(l0_357, l1_356, 0<32>, 0x3E<32>) @ 00016E04 : void)
+T_8152: (in __udiv64(l0_357, l1_356, 0<32>, 0x3E<32>) @ 00016E04 : word32)
   Class: Eq_8152
-  DataType: void
-  OrigDataType: void
+  DataType: word32
+  OrigDataType: word32
 T_8153: (in 0<32> @ 00016E04 : word32)
   Class: Eq_8153
   DataType: word32
@@ -37916,7 +37916,7 @@ typedef pid_t (Eq_7980)();
 
 typedef void (Eq_8049)(word32, word32, word32, word32);
 
-typedef void (Eq_8064)(word32, word32, word32, word32);
+typedef word32 (Eq_8064)(word32, word32, word32, word32);
 
 typedef void (Eq_8071)(word32, word32);
 
@@ -37924,7 +37924,7 @@ typedef struct Eq_8080 {
 	byte b0001;	// 1
 } Eq_8080;
 
-typedef void (Eq_8084)(word32, word32, word32, word32);
+typedef word32 (Eq_8084)(word32, word32, word32, word32);
 
 typedef void (Eq_8091)(word32, word32);
 
@@ -37932,7 +37932,7 @@ typedef struct Eq_8100 {
 	byte b0002;	// 2
 } Eq_8100;
 
-typedef void (Eq_8104)(word32, word32, word32, word32);
+typedef word32 (Eq_8104)(word32, word32, word32, word32);
 
 typedef void (Eq_8111)(word32, word32);
 
@@ -37940,7 +37940,7 @@ typedef struct Eq_8120 {
 	byte b0003;	// 3
 } Eq_8120;
 
-typedef void (Eq_8124)(word32, word32, word32, word32);
+typedef word32 (Eq_8124)(word32, word32, word32, word32);
 
 typedef void (Eq_8131)(word32, word32);
 
@@ -37948,9 +37948,9 @@ typedef struct Eq_8140 {
 	byte b0004;	// 4
 } Eq_8140;
 
-typedef void (Eq_8144)(void, word32, word32);
+typedef void (Eq_8144)(word32, word32, word32);
 
-typedef void (Eq_8146)(word32, word32, word32, word32);
+typedef word32 (Eq_8146)(word32, word32, word32, word32);
 
 typedef struct Eq_8160 {
 	byte b0005;	// 5

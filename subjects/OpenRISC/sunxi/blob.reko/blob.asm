@@ -8587,11 +8587,17 @@ l0000AF30:
 	l.jr	r3
 	l.nop
 
-l0000AF4C:
+;; fn0000AF4C: 0000AF4C
+;;   Called from:
+;;     000062F0 (in fn000062BC)
+fn0000AF4C proc
 	l.j	0000B028
 	l.addi	r11,r0,+00000011
 
-l0000AF54:
+;; fn0000AF54: 0000AF54
+;;   Called from:
+;;     000062F0 (in fn000062BC)
+fn0000AF54 proc
 	l.movhi	r3,00000001
 	l.movhi	r2,00000001
 	l.ori	r3,r3,00003948

@@ -73,7 +73,7 @@ namespace Reko.Environments.SysV.ArchSpecific
         {
             if (stubInstrs.Count < 3)
                 return null;
-            Constant offset;
+            Constant? offset;
             if (stubInstrs[^3].Instructions[0] is RtlAssignment ass &&
                 ass.Src is MemoryAccess mem &&
                 mem.EffectiveAddress is Address addrOffset &&
@@ -391,7 +391,7 @@ namespace Reko.Environments.SysV.ArchSpecific
         /// </code>
         public static Expression? Mips32(IProcessorArchitecture arch, Address addrInstr, List<RtlInstructionCluster> stubInstrs, IRewriterHost host)
         {
-            if (stubInstrs.Length != 4)
+            if (stubInstrs.Count != 4)
                 return null;
 
             if (stubInstrs[^4].Instructions[0] is RtlAssignment load &&
@@ -430,7 +430,7 @@ namespace Reko.Environments.SysV.ArchSpecific
             return null;
         }
 
-        public static Expression? Mips32_Old(IProcessorArchitecture arch, Address addrInstr, IEnumerable<RtlInstruction> instrs, IRewriterHost host)
+        public static Expression? Mips32_Variant1(IProcessorArchitecture arch, IRewriterHost host, RtlInstruction[] instrs)
         {
             var stubInstrs = instrs.Take(4).ToArray();
             if (stubInstrs.Length != 4)

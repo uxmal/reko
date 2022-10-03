@@ -20,6 +20,7 @@ void __maskrune()
 
 // Called from:
 //      fn000000010000356F
+//      fn0000000100004715
 //      fn000000010000488B
 //      fn0000000100004AFA
 // MayUse: 
@@ -734,6 +735,7 @@ word64 mbrtowc(word64 rcx, word64 rdx, word64 rsi, word64 rdi)
 
 // Called from:
 //      fn000000010000356F
+//      fn0000000100004715
 //      fn000000010000488B
 //      fn0000000100004AFA
 // MayUse:  rcx:[0..63] rdi:[0..63] rdx:[0..63] rsi:[0..63]
@@ -783,10 +785,10 @@ word32 printf(word64 rdi)
 
 // Called from:
 //      fn00000001000023B0
-//      fn000000010000356F
 //      fn00000001000035A9
 //      fn0000000100003786
 //      fn0000000100003AA8
+//      fn0000000100004715
 // MayUse:  rdi:[0..63]
 // LiveOut: eax
 // Trashed: eax
@@ -804,6 +806,7 @@ word32 putchar(word32 edi)
 //      fn0000000100003201
 //      fn000000010000356F
 //      fn0000000100003AA8
+//      fn0000000100004715
 //      fn000000010000488B
 // MayUse:  rdi:[0..31]
 // LiveOut: eax
@@ -1173,6 +1176,7 @@ word32 wcwidth(word16 di)
 
 // Called from:
 //      fn000000010000356F
+//      fn0000000100004715
 //      fn000000010000488B
 // MayUse:  rdi:[0..15]
 // LiveOut: eax

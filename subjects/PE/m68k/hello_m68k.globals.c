@@ -4,5 +4,5 @@
 
 #include "hello_m68k.h"
 
-struct Eq_n * g_ptr0000; // 00000000
+Eq_n g_t0000;
 word16 g_w0AF0; // 00000AF0

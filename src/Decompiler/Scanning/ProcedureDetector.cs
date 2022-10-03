@@ -206,7 +206,7 @@ namespace Reko.Scanning
                     clusters.Add(cluster);
 
                     BuildWCC(node, cluster, wl);
-                    sr.BreakOnWatchedAddress(cluster.Blocks.Select(b => b.Address));
+                    BreakOnWatchedAddress(cluster.Blocks.Select(b => b.Address));
                     listener.Progress.ShowProgress("Finding procedure candidates", totalCount - wl.Count, totalCount);
                 }
             }
@@ -241,7 +241,7 @@ namespace Reko.Scanning
                     .Where(s => !procedures.Contains(s)));
             }
             while (queue.TryDequeue(out var node))
-                {
+            {
                 if (!unvisited.Contains(node))
                     continue;
                 unvisited.Remove(node);

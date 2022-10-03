@@ -79,7 +79,7 @@ void fn000022C4(word32 a2, ptr32 a5)
 	(a5 + 0x00C2)();
 	word32 v7_n = a7_n->dw0000;
 	a7_n->wFFFFFFFE = 0xA1AD;
-	null = null;
+	0x00 = 0x00;
 	word32 * a7_n;
 	struct Eq_n * a6_n;
 	word32 a2_n;

@@ -1194,59 +1194,7 @@ l0000000100004D9B:
 	}
 	else
 	{
-		tLocB8 = (Eq_n) 0;
-		word32 dwLocC0_n = 0x00;
-		Eq_n r14_n = rdi;
-		while (true)
-		{
-			uint64 rax_n;
-			Eq_n rax_n = mbrtowc(&tLocB8, 0x06, r14_n, &wLocBC);
-			word32 eax_n = (word32) rax_n;
-			if (rax_n == ~0x01)
-				break;
-			int32 r15d_n = (word32) rax_n;
-			if (rax_n != ~0x00)
-			{
-				if (rax_n == 0x00)
-				{
-					rax_n = (uint64) dwLocC0_n;
-					goto l0000000100004879;
-				}
-				else
-				{
-					if (r15d_n > 0x00)
-					{
-						uint64 r12_n = (uint64) r15d_n;
-						Eq_n r13_n = r14_n;
-						do
-						{
-							eax_n = putchar((word32) *r13_n);
-							r13_n = (word64) r13_n + 1;
-							--r12_n;
-						} while (r12_n != 0x00);
-					}
-					ui32 eax_n;
-					r14_n += rax_n;
-					Eq_n rdi_n = (int64) wLocBC;
-					if (rdi_n <= 0x7F)
-						eax_n = _DefaultRuneLocale->a003C[rdi_n] >> 0x12 & 0x01;
-					else
-					{
-						__maskrune();
-						eax_n = (word32) (eax_n != 0x00);
-					}
-					if (eax_n != 0x00)
-						dwLocC0_n += wcwidth(wLocBC);
-					continue;
-				}
-			}
-			tLocB8 = (Eq_n) 0;
-			putchar((word32) *r14_n);
-			++dwLocC0_n;
-			r14_n = (word64) r14_n + 1;
-		}
-		rax_n = (uint64) (printf("%s") + dwLocC0_n);
-l0000000100004879:
+		uint64 rax_n = (uint64) fn0000000100004715(rdi);
 		rbxOut = rbx;
 		rbpOut = rbp;
 		r12dOut.u0 = <invalid>;
@@ -1301,6 +1249,68 @@ void fn0000000100003786()
 //      fn0000000100003AA8
 void fn0000000100003AA8(int64 rdi)
 {
+}
+
+// 0000000100004715: Register word32 fn0000000100004715(Register Eq_n rdi)
+// Called from:
+//      fn000000010000356F
+word32 fn0000000100004715(Eq_n rdi)
+{
+	wchar_t wLocBC;
+	Eq_n tLocB8;
+	tLocB8 = (Eq_n) 0;
+	word32 dwLocC0_n = 0x00;
+	Eq_n r14_n = rdi;
+	while (true)
+	{
+		uint64 rax_n;
+		Eq_n rax_n = mbrtowc(&tLocB8, 0x06, r14_n, &wLocBC);
+		word32 eax_n = (word32) rax_n;
+		if (rax_n == ~0x01)
+			break;
+		int32 r15d_n = (word32) rax_n;
+		if (rax_n != ~0x00)
+		{
+			if (rax_n == 0x00)
+			{
+				rax_n = (uint64) dwLocC0_n;
+				return (word32) rax_n;
+			}
+			else
+			{
+				if (r15d_n > 0x00)
+				{
+					uint64 r12_n = (uint64) r15d_n;
+					Eq_n r13_n = r14_n;
+					do
+					{
+						eax_n = putchar((word32) *r13_n);
+						r13_n = (word64) r13_n + 1;
+						--r12_n;
+					} while (r12_n != 0x00);
+				}
+				ui32 eax_n;
+				r14_n += rax_n;
+				Eq_n rdi_n = (int64) wLocBC;
+				if (rdi_n <= 0x7F)
+					eax_n = _DefaultRuneLocale->a003C[rdi_n] >> 0x12 & 0x01;
+				else
+				{
+					__maskrune();
+					eax_n = (word32) (eax_n != 0x00);
+				}
+				if (eax_n != 0x00)
+					dwLocC0_n += wcwidth(wLocBC);
+				continue;
+			}
+		}
+		tLocB8 = (Eq_n) 0;
+		putchar((word32) *r14_n);
+		++dwLocC0_n;
+		r14_n = (word64) r14_n + 1;
+	}
+	rax_n = (uint64) (printf("%s") + dwLocC0_n);
+	return (word32) rax_n;
 }
 
 // 000000010000488B: void fn000000010000488B()

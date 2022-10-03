@@ -21,7 +21,6 @@
 
 ;; __exit: 0800:0121
 ;;   Called from:
-;;     0800:01F5 (in _abort)
 ;;     0800:01F5 (in fn0800_01E9)
 ;;     0800:032A (in _exit)
 __exit proc
@@ -117,7 +116,6 @@ __restorezero proc
 ;; fn0800_01DA: 0800:01DA
 ;;   Called from:
 ;;     0800:014C (in __exit)
-;;     0800:01EE (in _abort)
 ;;     0800:01EE (in fn0800_01E9)
 fn0800_01DA proc
 	mov	ah,40h
@@ -135,6 +133,8 @@ _abort proc
 	mov	dx,56h
 
 ;; fn0800_01E9: 0800:01E9
+;;   Called from:
+;;     0800:01E6 (in _abort)
 fn0800_01E9 proc
 	mov	ds,cs:[01F8h]
 	call	01DAh
@@ -145,7 +145,6 @@ fn0800_01E9 proc
 
 ;; _f3: 0800:01FA
 ;;   Called from:
-;;     0800:01F8 (in _abort)
 ;;     0800:01F8 (in fn0800_01E9)
 ;;     0800:0202 (in _f2)
 ;;     0800:0205 (in _f2)

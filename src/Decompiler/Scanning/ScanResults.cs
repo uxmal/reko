@@ -96,7 +96,7 @@ namespace Reko.Scanning
         /// or because they were jumped to from different procedures.
         /// This is a key end result of the scanning stage.
         /// </summary>
-        public List<RtlProcedure> Procedures { get;  set; }
+        public List<RtlProcedure> Procedures { get; set; }
         public Dictionary<ulong, instr> FlatInstructions { get;  set; }
         public List<link> FlatEdges { get; set; }
 

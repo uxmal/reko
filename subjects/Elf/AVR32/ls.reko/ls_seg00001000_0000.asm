@@ -988,6 +988,7 @@ l00002CB4:
 
 ;; fn00002CBC: 00002CBC
 ;;   Called from:
+;;     00002CBA (in fn00002B30)
 ;;     0000521E (in fn0000511C)
 ;;     000052E6 (in fn0000511C)
 fn00002CBC proc
@@ -1006,11 +1007,7 @@ l00002CC6:
 	ld.w	r12,r5[4]
 	mcall	r6[12]
 
-;; fn00002CDA: 00002CDA
-;;   Called from:
-;;     00002CC4 (in fn00002CBC)
-;;     00002CC4 (in fn00002B30)
-fn00002CDA proc
+l00002CDA:
 	ld.w	r9,r6[8]
 	ld.w	r8,r9[12]
 	cp.w	r7,r8
@@ -12440,6 +12437,7 @@ fn00008FEA proc
 
 ;; fn00008FEC: 00008FEC
 ;;   Called from:
+;;     00008F7E (in fn00008F68)
 ;;     00008F86 (in fn00008F68)
 ;;     00008FEA (in fn00008FEA)
 fn00008FEC proc
@@ -12449,6 +12447,7 @@ fn00008FEC proc
 
 ;; fn00008FF2: 00008FF2
 ;;   Called from:
+;;     00008FF0 (in fn00008FF2)
 ;;     00008FF0 (in fn00008FEC)
 fn00008FF2 proc
 	ld.w	r12,r3[0]
@@ -12697,8 +12696,8 @@ l00009196:
 ;; fn00009248: 00009248
 ;;   Called from:
 ;;     0000958E (in fn000093B8)
-;;     00009606 (in fn000095F2)
-;;     0000965C (in fn000095F2)
+;;     00009606 (in fn000095D6)
+;;     0000965C (in fn000095D6)
 fn00009248 proc
 	pushm	r0-r3,r4-r7,lr
 	lddpc	r6,pc[96]
@@ -13143,7 +13142,7 @@ l000095AA:
 ;; fn000095B2: 000095B2
 ;;   Called from:
 ;;     000095B0 (in fn000093B8)
-;;     000095EE (in fn000095EA)
+;;     000095EE (in fn000095D6)
 fn000095B2 proc
 	lddsp	r12,sp[40]
 	rcall	0000F7FA
@@ -13163,6 +13162,8 @@ fn000095B2 proc
 	mov	r11,r5
 
 ;; fn000095D6: 000095D6
+;;   Called from:
+;;     000095D4 (in fn000095B2)
 fn000095D6 proc
 	mov	r4,r10
 	rcall	0000F2D0
@@ -13173,21 +13174,12 @@ fn000095D6 proc
 	rcall	0000F91C
 	breq	000095F2
 
-;; fn000095EA: 000095EA
-;;   Called from:
-;;     000095E8 (in fn000095D6)
-;;     000095E8 (in fn000095B2)
-fn000095EA proc
+l000095EA:
 	lddsp	r10,sp[52]
 	cp.w	r10,00000007
 	brle	000095B2
 
-;; fn000095F2: 000095F2
-;;   Called from:
-;;     000095E8 (in fn000095D6)
-;;     000095E8 (in fn000095B2)
-;;     000095EE (in fn000095EA)
-fn000095F2 proc
+l000095F2:
 	mov	r8,r4
 	mov	r9,r5
 	mov	r10,r0
@@ -13252,18 +13244,16 @@ l0000964C:
 ;; fn0000967A: 0000967A
 ;;   Called from:
 ;;     000095A8 (in fn000093B8)
-;;     00009676 (in fn000095F2)
+;;     00009676 (in fn000095D6)
 fn0000967A proc
 	mov	r5,r12
 	sub	sp,FFFFFFF8
 
 ;; fn0000967E: 0000967E
 ;;   Called from:
-;;     0000963A (in fn000095F2)
-;;     0000964A (in fn000095F2)
+;;     0000963A (in fn000095D6)
+;;     0000964A (in fn000095D6)
 ;;     0000967C (in fn0000967A)
-;;     0000967C (in fn0000967A)
-;;     0000988A (in fn0000988A)
 fn0000967E proc
 	lddsp	r1,sp[56]
 	mov	r11,r7
@@ -16939,7 +16929,7 @@ l0000AF6E:
 ;; fn0000AF76: 0000AF76
 ;;   Called from:
 ;;     0000AA26 (in fn0000A9DE)
-;;     0000AF72 (in fn0000AF6C)
+;;     0000AF72 (in fn0000ACB0)
 ;;     0000B236 (in fn0000ACB0)
 ;;     0000B25E (in fn0000ACB0)
 ;;     0000B4FC (in fn0000ACB0)
@@ -19352,7 +19342,6 @@ l0000BFB2:
 ;;     0000C25A (in fn0000C058)
 ;;     0000C280 (in fn0000C058)
 ;;     0000C2A6 (in fn0000C058)
-;;     0000C2CC (in fn0000C058)
 ;;     0000C2CC (in fn0000C2C8)
 fn0000BFB8 proc
 	pushm	r0-r3,r4-r7,lr
@@ -19769,6 +19758,8 @@ l0000C2B0:
 	mov	r8,00000048
 
 ;; fn0000C2C8: 0000C2C8
+;;   Called from:
+;;     0000C2C6 (in fn0000C058)
 fn0000C2C8 proc
 	mov	r9,0000004F
 	st.w	--sp,lr
@@ -19777,31 +19768,7 @@ fn0000C2C8 proc
 	cp.w	r12,00000000
 	rjmp	0000C2D4
 
-;; fn0000C2D4: 0000C2D4
-;;   Called from:
-;;     0000C0E8 (in fn0000C058)
-;;     0000C0F2 (in fn0000C058)
-;;     0000C110 (in fn0000C058)
-;;     0000C120 (in fn0000C058)
-;;     0000C130 (in fn0000C058)
-;;     0000C13E (in fn0000C058)
-;;     0000C14E (in fn0000C058)
-;;     0000C15E (in fn0000C058)
-;;     0000C16C (in fn0000C058)
-;;     0000C17C (in fn0000C058)
-;;     0000C18C (in fn0000C058)
-;;     0000C198 (in fn0000C058)
-;;     0000C1A0 (in fn0000C058)
-;;     0000C1CC (in fn0000C058)
-;;     0000C1F6 (in fn0000C058)
-;;     0000C218 (in fn0000C058)
-;;     0000C23E (in fn0000C058)
-;;     0000C262 (in fn0000C058)
-;;     0000C288 (in fn0000C058)
-;;     0000C2AE (in fn0000C058)
-;;     0000C2D2 (in fn0000C2C8)
-;;     0000C2D2 (in fn0000C058)
-fn0000C2D4 proc
+l0000C2D4:
 	brne	0000C2DA
 
 l0000C2D6:
@@ -25840,9 +25807,8 @@ l0000F2C6:
 ;;   Called from:
 ;;     0000957A (in fn000093B8)
 ;;     000095C4 (in fn000095B2)
-;;     000095D8 (in fn000095B2)
 ;;     000095D8 (in fn000095D6)
-;;     00009654 (in fn000095F2)
+;;     00009654 (in fn000095D6)
 ;;     0000D83A (in fn0000D220)
 ;;     0000D884 (in fn0000D220)
 ;;     0000D90C (in fn0000D220)
@@ -26789,7 +26755,6 @@ l0000F912:
 
 ;; __avr32_f64_cmp_ge: 0000F91C
 ;;   Called from:
-;;     000095E4 (in fn000095B2)
 ;;     000095E4 (in fn000095D6)
 ;;     0000D7EE (in fn0000D220)
 ;;     0000DB2A (in fn0000D220)
@@ -27071,8 +27036,8 @@ l0000FA4A:
 ;; __avr32_f64_div: 0000FA54
 ;;   Called from:
 ;;     0000956E (in fn000093B8)
-;;     000095FA (in fn000095F2)
-;;     00009664 (in fn000095F2)
+;;     000095FA (in fn000095D6)
+;;     00009664 (in fn000095D6)
 __avr32_f64_div proc
 	stm	--sp,r0-r7,lr
 	eor	lr,r11,r9

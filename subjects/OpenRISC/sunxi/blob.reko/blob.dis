@@ -1356,43 +1356,39 @@ word32 fn000062BC(word32 r3, word32 r15)
 // Trashed: CV r1 r11 r2 r3 r9
 // Preserved:
 fn000062BC_entry:
-	word32 dwLoc10
 	word32 dwLoc18
 l000062BC:
-	word32 r4_43
+	word32 r4_35
 	word32 r3_5 = Mem0[r3 + 92<i32>:word32]
 	branch (r3_5 >>u 0x14<32> & 7<32>) >u 5<32> l000062D8_ds_t
 l000062D8_ds_t:
 l000062D8_ds_f:
 l000062DC:
-	switch (r3_5 >>u 0x14<32>) { l00006380 l000062F8 l00006304 l00006310 l00006324 l0000631C l0000AF54 l0000AF4C }
-l0000AF4C:
-l0000B028_in_fn000062BC:
-	return dwLoc10
-l0000AF54:
-l0000B010:
-l0000B028_in_fn000062BC:
-	return dwLoc10
+	switch (r3_5 >>u 0x14<32>) { l00006380 l000062F8 l00006304 l00006310 l00006324 l0000631C l000062F0_thunk_fn0000AF54 l000062F0_thunk_fn0000AF4C }
+l000062F0_thunk_fn0000AF4C:
+	return fn0000AF4C()
+l000062F0_thunk_fn0000AF54:
+	return fn0000AF54()
 l0000631C:
-	r4_43 = 0xF5860000<32>
+	r4_35 = 0xF5860000<32>
 l00006324:
-	r4_43 = 0xF2063333<32>
+	r4_35 = 0xF2063333<32>
 l00006310:
-	r4_43 = 0xED866666<32>
+	r4_35 = 0xED866666<32>
 l00006304:
-	r4_43 = 0xE9069999<32>
+	r4_35 = 0xE9069999<32>
 l000062F8:
-	r4_43 = 0xE486CCCC<32>
+	r4_35 = 0xE486CCCC<32>
 l0000632C:
-	Mem56[0x1C20290<32>:word32] = r4_43
-	Mem62[0x1C20020<32>:word32] = Mem56[0x1C20020<32>:word32] | 0x1000000<32>
-	Mem65[0x1C20020<32>:word32] = Mem62[0x1C20020<32>:word32] | 0x100000<32>
+	Mem48[0x1C20290<32>:word32] = r4_35
+	Mem54[0x1C20020<32>:word32] = Mem48[0x1C20020<32>:word32] | 0x1000000<32>
+	Mem57[0x1C20020<32>:word32] = Mem54[0x1C20020<32>:word32] | 0x100000<32>
 l00006360:
-	branch (Mem65[0x1C20020<32>:word32] & 0x100000<32>) != 0<32> l00006360
+	branch (Mem57[0x1C20020<32>:word32] & 0x100000<32>) != 0<32> l00006360
 l00006378:
-	word32 r14_118
-	word32 r15_119
-	fn0000C8A0(-20<i32>, r15, out r14_118, out r15_119)
+	word32 r14_105
+	word32 r15_106
+	fn0000C8A0(-20<i32>, r15, out r14_105, out r15_106)
 l00006380:
 	return dwLoc18
 fn000062BC_exit:
@@ -5205,7 +5201,7 @@ l0000AF1C:
 	branch r3 >u 0x20<32> || r3 <u 1<i32> l0000AF2C_ds_t
 l0000AF2C_ds_t:
 l0000B01C:
-l0000B028:
+l0000B028_in_fn0000AF1C:
 	r11Out = 0<i32>
 	return dwLoc0C
 l0000AF2C_ds_f:
@@ -5219,6 +5215,41 @@ l0000AF30:
 	r11Out = r11_27
 	return r2_25
 fn0000AF1C_exit:
+
+
+word32 fn0000AF4C()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// Called from:
+//      fn000062BC
+// MayUse: 
+// LiveOut: r2
+// Trashed: CV r1 r11 r2
+// Preserved:
+fn0000AF4C_entry:
+	word32 dwLoc08
+l0000AF4C:
+l0000B028_in_fn0000AF4C:
+	return dwLoc08
+fn0000AF4C_exit:
+
+
+word32 fn0000AF54()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// Called from:
+//      fn000062BC
+// MayUse: 
+// LiveOut: r2
+// Trashed: CV r1 r11 r2 r3
+// Preserved:
+fn0000AF54_entry:
+	word32 dwLoc08
+l0000AF54:
+l0000B010:
+l0000B028:
+	return dwLoc08
+fn0000AF54_exit:
 
 
 word32 fn0000B034(word32 r3, word32 r4, word32 r5)
@@ -8007,13 +8038,13 @@ word32 fn0000E718(word32 VR, ptr32 & r11Out)
 
 // Called from:
 //      fn00008834
-//      fn0000B4D4
 //      fn0000C48C
 //      fn0000CCA8
 //      fn0000EDF4
 //      fn0000F250
 //      fn0000F368
 //      fn0000F444
+//      fn0000F8E8
 // MayUse:  VR:[0..31]
 // LiveOut: r1 r11 r2
 // Trashed: CV r1 r11 r2 r3 r4
@@ -8034,13 +8065,13 @@ void fn0000E740(word32 r3, word32 VR)
 // Called from:
 //      fn00008834
 //      fn000088FC
-//      fn0000B4D4
 //      fn0000C48C
 //      fn0000CCA8
 //      fn0000EDF4
 //      fn0000F250
 //      fn0000F368
 //      fn0000F444
+//      fn0000F8E8
 // MayUse:  r3:[0..31] VR:[0..31]
 // LiveOut:
 // Trashed: CV r4

@@ -1113,6 +1113,7 @@ namespace Reko.Scanning
                     Dump(rtlProc);
                     var addrProc = rtlProc.Entry.Address;
                     TerminateAnyBlockAt(addrProc);
+                    Procedure proc = Program.EnsureProcedure(Program.Architecture, addrProc, null);
                     EnqueueProcedure(Program.Architecture, addrProc);
                 }
                 ProcessQueue();

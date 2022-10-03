@@ -10,7 +10,6 @@ Eq_n g_t8000 = // 00008000
 	};
 // 0800:0121: void __exit()
 // Called from:
-//      _abort
 //      fn0800-01E9
 //      _exit
 void __exit()
@@ -66,7 +65,6 @@ void __restorezero(struct Eq_n * ds)
 // 0800:01DA: void fn0800-01DA(Sequence (ptr32 char) ds_dx, Register word16 cx)
 // Called from:
 //      __exit
-//      _abort
 //      fn0800-01E9
 void fn0800-01DA(char * ds_dx, word16 cx)
 {
@@ -80,11 +78,14 @@ void fn0800-01DA(char * ds_dx, word16 cx)
 //      __setenvp
 void _abort()
 {
-	fn0800-01DA(SEQ(seg0800->t01F8, &Eq_n::t0056), 0x1E);
-	__exit();
+	word16 cx;
+	<unknown> Eq_n::* dx;
+	fn0800-01E9(cx, dx);
 }
 
 // 0800:01E9: void fn0800-01E9(Register word16 cx, Register (memptr (ptr16 Eq_n) Eq_n) dx)
+// Called from:
+//      __setenvp
 void fn0800-01E9(word16 cx, <unknown> Eq_n::* dx)
 {
 	fn0800-01DA(SEQ(seg0800->t01F8, dx), cx);
@@ -93,7 +94,6 @@ void fn0800-01E9(word16 cx, <unknown> Eq_n::* dx)
 
 // 0800:01FA: void _f3()
 // Called from:
-//      _abort
 //      fn0800-01E9
 //      _f2
 void _f3()
@@ -267,6 +267,7 @@ void __setargv(struct Eq_n * ds, word16 wArg00)
 		{
 l0800_nE7:
 			_abort();
+			return;
 		}
 		cx_n = SEQ(ch_n, cl_n ^ 0x7F);
 	}
