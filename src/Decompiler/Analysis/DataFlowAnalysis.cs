@@ -168,8 +168,8 @@ namespace Reko.Analysis
         public List<SsaTransform> RewriteProceduresToSsa()
         {
             var ssts = new List<SsaTransform>();
-            var sccWorkers = SccFinder.FindAll(new ProcedureGraph(Program))
-                .Select(CreateSccWorker);
+            var sccs = SccFinder.Condense(new ProcedureGraph(Program));
+            var sccWorkers = sccs.Members.Values.Select(CreateSccWorker);
             //$TODO: make a TaskTree out of this.
             foreach (var worker in sccWorkers)
             {

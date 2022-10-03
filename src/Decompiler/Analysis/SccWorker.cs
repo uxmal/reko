@@ -19,16 +19,13 @@
 #endregion
 
 using Reko.Core;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics.Tracing;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Reko.Core.Services;
 using Reko.Core.Code;
 using Reko.Core.Expressions;
+using Reko.Core.Services;
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
 
 namespace Reko.Analysis
 {
@@ -141,7 +138,7 @@ namespace Reko.Analysis
         /// Converts all registers and stack accesses to SSA variables.
         /// </summary>
         /// <param name="proc"></param>
-        /// <returns>The SsaTransform for the procedure.</returns>
+        /// <returns>The <sse cref="SsaTransform" /> for the procedure.</returns>
         public SsaTransform ConvertToSsa(Procedure proc)
         {
             if (!program.NeedsSsaTransform)
@@ -267,9 +264,7 @@ namespace Reko.Analysis
                 return false;
             if (!(ssa.Identifiers[id].IsOriginal))
                 return false;
-            if (!IsPreservedRegister(trashedRegisters, id.Storage))
-                return false;
-            return true;
+            return IsPreservedRegister(trashedRegisters, id.Storage);
         }
 
         private static bool IsPreservedRegister(
@@ -353,8 +348,8 @@ namespace Reko.Analysis
 
 
         /// <summary>
-        /// Remove any Use instruction that uses identifiers
-        /// that are marked as preserved.
+        /// Remove any Use instruction that uses identifiers that are marked as
+        /// preserved.
         /// </summary>
         /// <param name="ssa"></param>
         private void RemovePreservedUseInstructions(SsaState ssa)
