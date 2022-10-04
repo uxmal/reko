@@ -184,6 +184,7 @@ namespace Reko.Environments.SysV
             }
             base.LoadUserOptions(options);
         }
+
         private RegisterStorage[] LoadTrashedRegisters()
         {
             if (Services != null)

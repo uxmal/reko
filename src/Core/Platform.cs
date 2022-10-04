@@ -332,6 +332,7 @@ namespace Reko.Core
             this.Description = GetType().Name;
             this.PlatformProcedures = new Dictionary<Address, ExternalProcedure>();
             this.TrashedRegisters = new HashSet<RegisterStorage>();
+            this.ProcedurePrologs = LoadProcedurePrologs();
         }
 
         public IProcessorArchitecture Architecture { get; }
@@ -344,6 +345,8 @@ namespace Reko.Core
         public virtual MemoryMap_v1? MemoryMap { get; set; }
         public virtual PrimitiveType FramePointerType { get { return Architecture.FramePointerType; } }
         public virtual PrimitiveType PointerType { get { return Architecture.PointerType; } }
+        public MaskedPattern[] ProcedurePrologs { get; }
+
         public int StructureMemberAlignment { get; protected set; }
 
         /// <summary>
@@ -453,11 +456,10 @@ namespace Reko.Core
         /// <param name="envName"></param>
         public virtual TypeLibrary EnsureTypeLibraries(string envName)
         {
-            if (Metadata != null) 
+            if (Metadata != null)
                 return Metadata;
-            var cfgSvc = Services.RequireService<IConfigurationService>();
-            var envCfg = cfgSvc.GetEnvironment(envName);
-            if (envCfg == null)
+            PlatformDefinition? envCfg = LoadPlatformDefinition(envName);
+            if (envCfg is null)
                 throw new ApplicationException(
                     $"Environment '{envName}' doesn't appear in the configuration file. Your installation may be out-of-date.");
             this.Metadata = new TypeLibrary(envCfg.CaseInsensitive);
@@ -468,7 +470,7 @@ namespace Reko.Core
                 .Where(t => t.MatchArchitecture(Architecture.Name))
                 .OfType<TypeLibraryDefinition>())
             {
-                Metadata = tlSvc.LoadMetadataIntoLibrary(this, tl, Metadata); 
+                Metadata = tlSvc.LoadMetadataIntoLibrary(this, tl, Metadata);
             }
             this.CharacteristicsLibs = envCfg.CharacteristicsLibraries
                 .Select(cl => tlSvc.LoadCharacteristics(cl.Name!))
@@ -477,6 +479,7 @@ namespace Reko.Core
             ApplyCharacteristicsToServices(CharacteristicsLibs, Metadata);
             return Metadata;
         }
+
 
         private static void ApplyCharacteristicsToServices(CharacteristicsLibrary[] characteristicsLibs, TypeLibrary metadata)
         {
@@ -576,6 +579,21 @@ namespace Reko.Core
 
         public virtual void InjectProcedureEntryStatements(Procedure proc, Address addr, CodeEmitter emitter)
         {
+        }
+
+        private PlatformDefinition? LoadPlatformDefinition(string envName)
+        {
+            var cfgSvc = Services?.GetService<IConfigurationService>();
+            return cfgSvc?.GetEnvironment(envName);
+        }
+
+        private MaskedPattern[] LoadProcedurePrologs()
+        {
+            var envDef = LoadPlatformDefinition(this.PlatformIdentifier);
+            var arch = envDef?.Architectures?.FirstOrDefault(a => a.Name == this.Architecture.Name);
+            if (arch is null)
+                return Array.Empty<MaskedPattern>();
+            return arch.ProcedurePrologs.ToArray();
         }
 
         /// <summary>
