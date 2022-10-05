@@ -254,7 +254,11 @@ namespace Reko.Core
         /// <param name="reg">Register to examine</param>
         /// <param name="offset">Bit offset of expected subregister.</param>
         /// <param name="width">Bit size of subregister.</param>
-        /// <returns>If an invalid domain is passed, null is returned.</returns>
+        /// <returns>If an invalid domain is passed, null is returned. If 
+        /// the bitrange exceeds the extent of a register, return null.
+        /// Otherwise return the smallest register that completely covers
+        /// the <paramref name="range"/>.
+        /// </returns>
         RegisterStorage? GetRegister(StorageDomain domain, BitRange range);
 
         /// <summary>

@@ -203,7 +203,7 @@ namespace Reko.UnitTests.Mocks
 		{
             if (s[0] == 'r')
             {
-                if (int.TryParse(s.Substring(1), out int reg))
+                if (int.TryParse(s[1..], out int reg))
                     return GetRegister(reg);
             }
             return null;
@@ -211,7 +211,12 @@ namespace Reko.UnitTests.Mocks
 
         public override RegisterStorage GetRegister(StorageDomain domain, BitRange range)
         {
-            return GetRegister(domain - StorageDomain.Register);
+            var reg = GetRegister(domain - StorageDomain.Register);
+            if (reg is null)
+                return null;
+            return reg.GetBitRange().Covers(range)
+                ? reg
+                : null;
         }
 
         public override IEnumerable<FlagGroupStorage> GetSubFlags(FlagGroupStorage flags)

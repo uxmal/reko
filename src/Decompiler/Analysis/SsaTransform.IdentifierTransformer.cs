@@ -629,7 +629,7 @@ namespace Reko.Analysis
 
             private Identifier MakeTmpIdentifier(Storage storage, BitRange bitrange)
             {
-                RegisterStorage reg;
+                RegisterStorage? reg;
                 if (storage is SequenceStorage seq)
                 {
                     (reg, bitrange) = FindRegisterInSequence(bitrange, seq);
@@ -637,7 +637,8 @@ namespace Reko.Analysis
                 else
                 {
                     Debug.Assert(id.Storage is RegisterStorage);
-                    reg = outer.ssa.Procedure.Architecture.GetRegister(id.Storage.Domain, bitrange)!;
+                    reg = outer.ssa.Procedure.Architecture.GetRegister(id.Storage.Domain, bitrange);
+                    Debug.Assert(reg is { });
                 }
                 var frame = outer.ssa.Procedure.Frame;
                 if (reg.GetBitRange() != bitrange)
@@ -1034,7 +1035,7 @@ namespace Reko.Analysis
                 {
                     offset -= e.BitSize;
                     var ss = outer.factory.Create(outer.ssa.Procedure.Frame.EnsureIdentifier(e), stm);
-                    ss.Offset = (int) offset;
+                    ss.Offset = (int) (offset - e.BitAddress);
                     var sid = ss.ReadVariable(bs);
                     sids[i++] = sid;
                 }

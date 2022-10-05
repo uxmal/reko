@@ -4800,5 +4800,63 @@ SsaGithub1131_exit:
 
             AssertProcedureCode(sExp);
         }
+
+        [Test]
+        public void SsaUseRegisterHighSlice()
+        {
+            var sExp =
+            #region Expected
+@"SsaUseRegisterHighSlice_entry:
+	def Mem0
+	def r1_hi
+	def r1_8_0
+l1:
+	r2_2 = Mem0[0x123408<32>:word64]
+	r2_lo_4 = SLICE(r2_2, byte, 0) (alias)
+m1:
+	r1_hi_r2_lo_5 = SEQ(r1_hi, r2_lo_4) (alias)
+	call fn (retsize: 0;)
+		uses: Sequence r1_hi:r2_lo:r1_hi_r2_lo_5
+	r1_7 = SEQ(r1_hi, r1_8_0) (alias)
+m2:
+	Mem8[0x123410<32>:word32] = r1_7
+SsaUseRegisterHighSlice_exit:
+";
+            #endregion
+
+            var _r1 = new RegisterStorage("r1", 1, 0, PrimitiveType.Word32);
+            var _r2 = new RegisterStorage("r2", 2, 0, PrimitiveType.Word32);
+            var _r1_hi = new RegisterStorage("r1_hi", 1, 8, PrimitiveType.CreateWord(24));
+            var _r2_lo = new RegisterStorage("r2_lo", 2, 0, PrimitiveType.Byte);
+            var r1_r2 = new SequenceStorage(_r1.DataType, _r1_hi, _r2_lo);
+
+            Given_Procedure(nameof(SsaUseRegisterHighSlice), m =>
+            {
+                var r1 = m.Frame.EnsureRegister(_r1);
+                var r2 = m.Frame.EnsureRegister(_r2);
+                var r1_hi = m.Frame.EnsureRegister(_r1_hi);
+                var r2_lo = m.Frame.EnsureRegister(_r2_lo);
+                m.Assign(r2, m.Mem64(m.Word32(0x00123408)));
+                m.Label("m1");
+                // The call to fn (see below) forces a 24-bit sliver of the
+                // r1 register. The later use of this sliver in block 'm2'
+                // was causing a crash.
+                m.Call("fn", 0);
+                m.Label("m2");
+                m.MStore(m.Word32(0x123410), r1);
+            });
+
+            Given_ProcedureFlow("fn", p => new ProcedureFlow(p)
+            {
+                BitsUsed =
+                {
+                    { r1_r2, new BitRange(0, 64) }
+                },
+            });
+
+            When_RunSsaTransform();
+
+            AssertProcedureCode(sExp);
+        }
     }
 }
