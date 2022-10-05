@@ -589,6 +589,12 @@ namespace Reko.Core
             return (this.BitMask | that.BitMask) == this.BitMask;
         }
 
+        public bool Covers(BitRange range)
+        {
+            return this.BitAddress <= (ulong)range.Msb &&
+                this.BitAddress + BitSize >= (ulong)range.Msb;
+        }
+
         public override bool Exceeds(Storage sThat)
         {
             if (sThat is not RegisterStorage that || that.Domain != this.Domain)
