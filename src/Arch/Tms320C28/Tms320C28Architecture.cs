@@ -34,7 +34,8 @@ namespace Reko.Arch.Tms320C28
 {
     public class Tms320C28Architecture : ProcessorArchitecture
     {
-        public Tms320C28Architecture(IServiceProvider services, string archId, Dictionary<string, object> options) : base(services, archId, options)
+        public Tms320C28Architecture(IServiceProvider services, string archId, Dictionary<string, object> options)
+            : base(services, archId, options, null, null)
         {
             Endianness = EndianServices.Big;
             this.FramePointerType = PrimitiveType.Ptr32;
@@ -90,16 +91,6 @@ namespace Reko.Arch.Tms320C28
             throw new NotImplementedException();
         }
 
-        public override RegisterStorage? GetRegister(string name)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override RegisterStorage? GetRegister(StorageDomain domain, BitRange range)
-        {
-            throw new NotImplementedException();
-        }
-
         public override RegisterStorage[] GetRegisters()
         {
             throw new NotImplementedException();
@@ -116,11 +107,6 @@ namespace Reko.Arch.Tms320C28
         }
 
         public override Address? ReadCodeAddress(int size, EndianImageReader rdr, ProcessorState? state)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override bool TryGetRegister(string name, out RegisterStorage reg)
         {
             throw new NotImplementedException();
         }

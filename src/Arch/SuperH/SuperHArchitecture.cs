@@ -41,7 +41,7 @@ namespace Reko.Arch.SuperH
         private Decoder<SuperHDisassembler, Mnemonic, SuperHInstruction> rootDecoder;
 
         public SuperHArchitecture(IServiceProvider services, string archId, Dictionary<string, object> options)
-            : base(services, archId, options)
+            : base(services, archId, options, null, null)
         {
             this.Endianness = EndianServices.Big;   // Pick one at random.
             this.FramePointerType = PrimitiveType.Ptr32;

@@ -37,7 +37,7 @@ namespace Reko.Arch.Loongson
     public class LoongArch : ProcessorArchitecture
     {
         public LoongArch(IServiceProvider services, string name, Dictionary<string, object> options)
-            : base(services, name, options)
+            : base(services, name, options, null!, null!)
         {
             this.Endianness = EndianServices.Little;
             this.InstructionBitSize = 32;
@@ -98,16 +98,6 @@ namespace Reko.Arch.Loongson
         }
 
         public override int? GetMnemonicNumber(string name)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override RegisterStorage? GetRegister(string name)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override RegisterStorage? GetRegister(StorageDomain domain, BitRange range)
         {
             throw new NotImplementedException();
         }

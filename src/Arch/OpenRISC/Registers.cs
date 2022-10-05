@@ -33,8 +33,8 @@ namespace Reko.Arch.OpenRISC
         public static readonly RegisterStorage machi;
         public static readonly RegisterStorage maclo;
         public static readonly Dictionary<int, RegisterStorage> SpecialRegisters;
-        public static readonly Dictionary<string, RegisterStorage> RegisterByName;
-        public static readonly Dictionary<StorageDomain, RegisterStorage> RegistersByDomain;
+        public static readonly Dictionary<string, RegisterStorage> ByName;
+        public static readonly Dictionary<StorageDomain, RegisterStorage> ByDomain;
 
         public static readonly FlagGroupStorage F;
         public static readonly FlagGroupStorage C;
@@ -75,10 +75,10 @@ namespace Reko.Arch.OpenRISC
             sr = SpecialRegisters[17];
             maclo = SpecialRegisters[(5 << 11) + 1];
             machi = SpecialRegisters[(5 << 11) + 2];
-            RegisterByName = GpRegs
+            ByName = GpRegs
                 .Concat(SpecialRegisters.Values)
                 .ToDictionary(r => r.Name);
-            RegistersByDomain = GpRegs
+            ByDomain = GpRegs
                 .Concat(SpecialRegisters.Values)
                 .ToDictionary(r => r.Domain);
 

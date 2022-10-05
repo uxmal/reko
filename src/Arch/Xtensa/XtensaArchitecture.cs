@@ -35,7 +35,7 @@ namespace Reko.Arch.Xtensa
     public class XtensaArchitecture : ProcessorArchitecture
     {
         public XtensaArchitecture(IServiceProvider services, string archId, Dictionary<string, object> options)
-            : base(services, archId, options)
+            : base(services, archId, options, null, null)
         {
             //$TODO: Xtensa is bi-endian, but we're assuming little-endian here.
             // Fix this if encountering a big-endian binary.
@@ -248,11 +248,6 @@ namespace Reko.Arch.Xtensa
             if (!Enum.TryParse(name.Replace('.', '_'), true, out Mnemonic result))
                 return null;
             return (int)result;
-        }
-
-        public override RegisterStorage GetRegister(string name)
-        {
-            throw new NotImplementedException();
         }
 
         public override RegisterStorage? GetRegister(StorageDomain domain, BitRange range)

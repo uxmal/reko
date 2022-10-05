@@ -35,7 +35,7 @@ namespace Reko.Arch.Rl78
     public class Rl78Architecture : ProcessorArchitecture
     {
         public Rl78Architecture(IServiceProvider services, string archId, Dictionary<string, object> options)
-            : base(services, archId, options)
+            : base(services, archId, options, null, null)
         {
             this.Ptr20 = PrimitiveType.Create(Domain.Pointer, 20);
             InstructionBitSize = 8;
@@ -112,11 +112,6 @@ namespace Reko.Arch.Rl78
             return null;
         }
 
-        public override RegisterStorage GetRegister(string name)
-        {
-            throw new NotImplementedException();
-        }
-
         public override RegisterStorage[] GetRegisters()
         {
             throw new NotImplementedException();
@@ -147,11 +142,6 @@ namespace Reko.Arch.Rl78
         public override Address ReadCodeAddress(int size, EndianImageReader rdr, ProcessorState? state)
         {
             throw new NotImplementedException();
-        }
-
-        public override bool TryGetRegister(string name, [MaybeNullWhen(false)] out RegisterStorage reg)
-        {
-            return Registers.GpRegsByName.TryGetValue(name, out reg);
         }
 
         public override bool TryParseAddress(string? txtAddr, [MaybeNullWhen(false)] out Address addr)

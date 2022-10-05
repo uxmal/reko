@@ -35,7 +35,7 @@ namespace Reko.Arch.CompactRisc
         public static PrimitiveType Word24 = PrimitiveType.CreateWord(24);
 
         public Cr16Architecture(IServiceProvider services, string archId, Dictionary<string, object> options)
-            : base(services, archId, options)
+            : base(services, archId, options, Registers.ByName, null!)
         {
             this.Endianness = EndianServices.Little;
             this.FramePointerType = PrimitiveType.Ptr16;
@@ -95,10 +95,6 @@ namespace Reko.Arch.CompactRisc
             return Registers.ByName.TryGetValue(name, out var reg) ? reg : null;
         }
 
-        public override RegisterStorage GetRegister(StorageDomain domain, BitRange range)
-        {
-            throw new NotImplementedException();
-        }
 
         public override RegisterStorage[] GetRegisters()
         {

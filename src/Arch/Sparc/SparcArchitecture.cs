@@ -41,7 +41,7 @@ namespace Reko.Arch.Sparc
         private readonly Dictionary<uint, FlagGroupStorage> flagGroups;
 
         public SparcArchitecture(IServiceProvider services, string archId, Registers registers, Decoder rootDecoder, PrimitiveType wordWidth, Dictionary<string, object> options)
-            : base(services, archId, options)
+            : base(services, archId, options, null, null)
         {
             this.Registers = registers;
             this.Decoder = rootDecoder;

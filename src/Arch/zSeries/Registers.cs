@@ -34,8 +34,8 @@ namespace Reko.Arch.zSeries
         public static RegisterStorage[] FpRegisters;
         public static RegisterStorage[] VecRegisters;
 
-        public static readonly Dictionary<StorageDomain, RegisterStorage> RegistersByDomain;
-        public static readonly Dictionary<string, RegisterStorage> RegistersByName;
+        public static readonly Dictionary<StorageDomain, RegisterStorage> ByDomain;
+        public static readonly Dictionary<string, RegisterStorage> ByName;
         public static readonly FlagGroupStorage CC;
 
         static Registers()
@@ -48,10 +48,10 @@ namespace Reko.Arch.zSeries
                 .Select((vr, i) => RegisterStorage.Reg64($"f{i}", vr.Number, 64))
                 .ToArray();
 
-            RegistersByDomain = GpRegisters
+            ByDomain = GpRegisters
                 .Concat(VecRegisters)
                 .ToDictionary(r => r.Domain);
-            RegistersByName = GpRegisters
+            ByName = GpRegisters
                 .Concat(FpRegisters)
                 .Concat(VecRegisters)
                 .ToDictionary(r => r.Name);

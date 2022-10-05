@@ -37,7 +37,7 @@ namespace Reko.Arch.M6800
     public class M6809Architecture : ProcessorArchitecture
     {
         public M6809Architecture(IServiceProvider services, string archId, Dictionary<string, object> options)
-            : base(services, archId, options)
+            : base(services, archId, options, null!, null!)
         {
             this.Endianness = EndianServices.Big;
             this.FramePointerType = PrimitiveType.Ptr16;
@@ -89,16 +89,6 @@ namespace Reko.Arch.M6800
         }
 
         public override int? GetMnemonicNumber(string name)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override RegisterStorage GetRegister(string name)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override RegisterStorage GetRegister(StorageDomain domain, BitRange range)
         {
             throw new NotImplementedException();
         }

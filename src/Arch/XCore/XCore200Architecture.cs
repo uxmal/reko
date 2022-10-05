@@ -33,7 +33,7 @@ namespace Reko.Arch.XCore
     public class XCore200Architecture : ProcessorArchitecture
     {
         public XCore200Architecture(IServiceProvider services, string archId, Dictionary<string, object> options)
-            : base(services, archId, options)
+            : base(services, archId, options, Registers.ByName, Registers.ByDomain)
         {
             this.Endianness = EndianServices.Little;
             this.FramePointerType = PrimitiveType.Ptr32;
@@ -83,16 +83,6 @@ namespace Reko.Arch.XCore
         }
 
         public override int? GetMnemonicNumber(string name)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override RegisterStorage GetRegister(string name)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override RegisterStorage GetRegister(StorageDomain domain, BitRange range)
         {
             throw new NotImplementedException();
         }

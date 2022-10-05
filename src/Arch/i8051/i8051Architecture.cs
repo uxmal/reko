@@ -35,7 +35,7 @@ namespace Reko.Arch.i8051
     public class i8051Architecture : ProcessorArchitecture
     {
         public i8051Architecture(IServiceProvider services, string archId, Dictionary<string, object> options)
-            : base(services, archId, options)
+            : base(services, archId, options, null, null)
         {
             this.CarryFlagMask = (uint) FlagM.C;
             this.Endianness = EndianServices.Big;
@@ -108,14 +108,9 @@ namespace Reko.Arch.i8051
             throw new NotImplementedException();
         }
 
-        public override RegisterStorage GetRegister(StorageDomain domain, BitRange range)
+        public override RegisterStorage? GetRegister(StorageDomain domain, BitRange range)
         {
             return Registers.GetRegister(domain - StorageDomain.Register);
-        }
-
-        public override RegisterStorage GetRegister(string name)
-        {
-            throw new NotImplementedException();
         }
 
         public override RegisterStorage[] GetRegisters()

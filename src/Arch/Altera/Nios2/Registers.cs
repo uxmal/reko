@@ -34,7 +34,7 @@ namespace Reko.Arch.Altera.Nios2
 
         public static RegisterStorage[] GpRegisters { get; }
         public static RegisterStorage?[] ControlRegisters { get; }
-        public static Dictionary<string, RegisterStorage> RegsByName { get; }
+        public static Dictionary<string, RegisterStorage> ByName { get; }
 
         static Registers()
         {
@@ -67,7 +67,7 @@ namespace Reko.Arch.Altera.Nios2
                 ctrlFactory.Reg32("mpuacc"),    // 15 - Refer to The mpuacc Register for MASK variations table
             };
 
-            RegsByName = GpRegisters.ToDictionary(r => r.Name);
+            ByName = GpRegisters.ToDictionary(r => r.Name);
         }
 
         public static bool TryGetControlRegister(uint iregS, out RegisterStorage regS)

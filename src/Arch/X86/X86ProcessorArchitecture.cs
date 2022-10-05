@@ -66,7 +66,7 @@ namespace Reko.Arch.X86
         private Decoder[]? rootDecoders;
 
         public IntelArchitecture(IServiceProvider services, string archId, ProcessorMode mode, Dictionary<string, object> options)
-            : base(services, archId, options)
+            : base(services, archId, options, null, null)
         {
             this.mode = mode;
             this.Endianness = EndianServices.Little;

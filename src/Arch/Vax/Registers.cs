@@ -22,46 +22,87 @@ using Reko.Core;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace Reko.Arch.Vax
 {
     public static class Registers
     {
-        public static RegisterStorage r0 = RegisterStorage.Reg32("r0", 0);
-        public static RegisterStorage r1 = RegisterStorage.Reg32("r1", 1);
-        public static RegisterStorage r2 = RegisterStorage.Reg32("r2", 2);
-        public static RegisterStorage r3 = RegisterStorage.Reg32("r3", 3);
-                                                                        
-        public static RegisterStorage r4 = RegisterStorage.Reg32("r4", 4);
-        public static RegisterStorage r5 = RegisterStorage.Reg32("r5", 5);
-        public static RegisterStorage r6 = RegisterStorage.Reg32("r6", 6);
-        public static RegisterStorage r7 = RegisterStorage.Reg32("r7", 7);
-                                                                        
-        public static RegisterStorage r8 = RegisterStorage.Reg32("r8", 8);
-        public static RegisterStorage r9 = RegisterStorage.Reg32("r9", 9);
-        public static RegisterStorage r10 = RegisterStorage.Reg32("r10", 10);
-        public static RegisterStorage r11 = RegisterStorage.Reg32("r11", 11);
+        public static RegisterStorage r0 { get; }
+        public static RegisterStorage r1 { get; }
+        public static RegisterStorage r2 { get; }
+        public static RegisterStorage r3 { get; }
 
-        public static RegisterStorage ap = RegisterStorage.Reg32("ap", 12);
-        public static RegisterStorage fp = RegisterStorage.Reg32("fp", 13);
-        public static RegisterStorage sp = RegisterStorage.Reg32("sp", 14);
-        public static RegisterStorage pc = RegisterStorage.Reg32("pc", 15);
+        public static RegisterStorage r4 { get; }
+        public static RegisterStorage r5 { get; }
+        public static RegisterStorage r6 { get; }
+        public static RegisterStorage r7 { get; }
 
-        public static readonly RegisterStorage psw = RegisterStorage.Reg32("psw", 20);
+        public static RegisterStorage r8 { get; }
+        public static RegisterStorage r9 { get; }
+        public static RegisterStorage r10 { get; }
+        public static RegisterStorage r11 { get; }
+
+        public static RegisterStorage ap { get; }
+        public static RegisterStorage fp { get; }
+        public static RegisterStorage sp { get; }
+        public static RegisterStorage pc { get; }
+
+        public static RegisterStorage psw { get; }
 
 
-        public static readonly FlagGroupStorage C = new FlagGroupStorage(psw, (uint) FlagM.CF, "C", PrimitiveType.Bool);
-        public static readonly FlagGroupStorage V = new FlagGroupStorage(psw, (uint) FlagM.VF, "V", PrimitiveType.Bool);
-        public static readonly FlagGroupStorage Z = new FlagGroupStorage(psw, (uint) FlagM.ZF, "Z", PrimitiveType.Bool);
-        public static readonly FlagGroupStorage N = new FlagGroupStorage(psw, (uint) FlagM.NF, "N", PrimitiveType.Bool);
-        public static readonly FlagGroupStorage CVN = new FlagGroupStorage(psw, (uint) FlagM.CVN, "CVN", PrimitiveType.Byte);
-        public static readonly FlagGroupStorage CVZN = new FlagGroupStorage(psw, (uint) FlagM.CVZN, "CVZN", PrimitiveType.Byte);
-        public static readonly FlagGroupStorage CZ = new FlagGroupStorage(psw, (uint) FlagM.CZ, "CZ", PrimitiveType.Byte);
-        public static readonly FlagGroupStorage CZN = new FlagGroupStorage(psw, (uint) FlagM.CZN, "CZN", PrimitiveType.Byte);
-        public static readonly FlagGroupStorage VZN = new FlagGroupStorage(psw, (uint) FlagM.VZN, "VZN", PrimitiveType.Byte);
-        public static readonly FlagGroupStorage ZN = new FlagGroupStorage(psw, (uint) FlagM.ZN, "ZN", PrimitiveType.Byte);
+        public static FlagGroupStorage C { get; }
+        public static FlagGroupStorage V { get; }
+        public static FlagGroupStorage Z { get; }
+        public static FlagGroupStorage N { get; }
+        public static FlagGroupStorage CVN  { get; }
+        public static FlagGroupStorage CVZN { get; }
+        public static FlagGroupStorage CZ { get; }
+        public static FlagGroupStorage CZN  { get; }
+        public static FlagGroupStorage VZN  { get; }
+        public static FlagGroupStorage ZN { get; }
+
+        public static Dictionary<string, RegisterStorage> ByName { get; }
+        public static Dictionary<StorageDomain, RegisterStorage> ByDomain { get; }
+
+        static Registers()
+        {
+            var factory = new StorageFactory();
+            r0 = factory.Reg32("r0");
+            r1 = factory.Reg32("r1");
+            r2 = factory.Reg32("r2");
+            r3 = factory.Reg32("r3");
+
+            r4 = factory.Reg32("r4");
+            r5 = factory.Reg32("r5");
+            r6 = factory.Reg32("r6");
+            r7 = factory.Reg32("r7");
+
+            r8 = factory.Reg32("r8");
+            r9 = factory.Reg32("r9");
+            r10 = factory.Reg32("r10");
+            r11 = factory.Reg32("r11");
+
+            ap = factory.Reg32("ap");
+            fp = factory.Reg32("fp");
+            sp = factory.Reg32("sp");
+            pc = factory.Reg32("pc");
+
+            psw = RegisterStorage.Reg32("psw", 20);
+
+            C = new FlagGroupStorage(psw, (uint) FlagM.CF, "C", PrimitiveType.Bool);
+            V = new FlagGroupStorage(psw, (uint) FlagM.VF, "V", PrimitiveType.Bool);
+            Z = new FlagGroupStorage(psw, (uint) FlagM.ZF, "Z", PrimitiveType.Bool);
+            N = new FlagGroupStorage(psw, (uint) FlagM.NF, "N", PrimitiveType.Bool);
+            CVN = new FlagGroupStorage(psw, (uint) FlagM.CVN, "CVN", PrimitiveType.Byte);
+            CVZN = new FlagGroupStorage(psw, (uint) FlagM.CVZN, "CVZN", PrimitiveType.Byte);
+            CZ = new FlagGroupStorage(psw, (uint) FlagM.CZ, "CZ", PrimitiveType.Byte);
+            CZN = new FlagGroupStorage(psw, (uint) FlagM.CZN, "CZN", PrimitiveType.Byte);
+            VZN = new FlagGroupStorage(psw, (uint) FlagM.VZN, "VZN", PrimitiveType.Byte);
+            ZN = new FlagGroupStorage(psw, (uint) FlagM.ZN, "ZN", PrimitiveType.Byte);
+
+            ByName = factory.NamesToRegisters;
+            ByDomain = factory.DomainsToRegisters;
+        }
     }
 
     [Flags]

@@ -144,7 +144,7 @@ namespace Reko.Arch.Tlcs
         };
 
         public Tlcs90Architecture(IServiceProvider services, string archId, Dictionary<string, object> options)
-            : base(services, archId, options)
+            : base(services, archId, options, null, null)
         {
             base.CarryFlagMask = Registers.C.FlagGroupBits;
             base.Endianness = EndianServices.Little;

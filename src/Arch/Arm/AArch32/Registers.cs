@@ -102,14 +102,14 @@ namespace Reko.Arch.Arm.AArch32
             .Select(n => RegisterStorage.Reg32($"s{n}", QRegs[n / 4].Number, (uint)(n & 3) * 32))
             .ToArray();
 
-        public static readonly Dictionary<string, RegisterStorage> RegistersByName;
-        public static readonly Dictionary<StorageDomain, RegisterStorage> RegistersByDomain;
+        public static readonly Dictionary<string, RegisterStorage> ByName;
+        public static readonly Dictionary<StorageDomain, RegisterStorage> ByDomain;
 
         public static readonly HashSet<RegisterStorage> SIMDRegisters;
 
         static Registers()
         {
-            RegistersByName = GpRegs
+            ByName = GpRegs
                 .Concat(new[] { cpsr, fpscr, spsr })
                 .Concat(CoprocessorRegisters)
                 .Concat(QRegs)
@@ -118,7 +118,7 @@ namespace Reko.Arch.Arm.AArch32
                 .ToDictionary(r => r.Name);
 
             SIMDRegisters = QRegs.Concat(DRegs).Concat(SRegs).ToHashSet();
-            RegistersByDomain = GpRegs
+            ByDomain = GpRegs
                 .Concat(new[] { cpsr, fpscr, spsr })
                 .Concat(CoprocessorRegisters)
                 .Concat(QRegs)

@@ -33,7 +33,7 @@ namespace Reko.Arch.Qualcomm
     public class HexagonArchitecture : ProcessorArchitecture
     {
         public HexagonArchitecture(IServiceProvider services, string archId, Dictionary<string, object> options)
-            : base(services, archId, options)
+            : base(services, archId, options, Registers.ByName, Registers.ByDomain)
         {
             this.Endianness = EndianServices.Little;
             this.FramePointerType = PrimitiveType.Ptr32;
@@ -86,21 +86,6 @@ namespace Reko.Arch.Qualcomm
         public override int? GetMnemonicNumber(string name)
         {
             throw new NotImplementedException();
-        }
-
-        public override RegisterStorage? GetRegister(string name)
-        {
-            if (Registers.ByName.TryGetValue(name, out var reg))
-                return reg;
-            else
-                return null;
-        }
-
-        public override RegisterStorage GetRegister(StorageDomain domain, BitRange range)
-        {
-            return Registers.ByDomain.TryGetValue(domain, out var reg)
-                ? reg
-                : null!;
         }
 
         public override RegisterStorage[] GetRegisters()

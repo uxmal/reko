@@ -42,7 +42,7 @@ namespace Reko.Arch.Tlcs
     public class Tlcs900Architecture : ProcessorArchitecture
     {
         public Tlcs900Architecture(IServiceProvider services, string archId, Dictionary<string, object> options)
-            : base(services, archId, options)
+            : base(services, archId, options, null, null)
         {
             this.CarryFlagMask = Registers.C.FlagGroupBits;
             this.Endianness = EndianServices.Little;
@@ -119,11 +119,6 @@ namespace Reko.Arch.Tlcs
             throw new NotImplementedException();
         }
 
-        public override RegisterStorage GetRegister(string name)
-        {
-            throw new NotImplementedException();
-        }
-
         public override RegisterStorage? GetRegister(StorageDomain regDomain, BitRange range)
         {
             if (!Registers.Subregisters.TryGetValue(regDomain, out var subs))
@@ -168,11 +163,6 @@ namespace Reko.Arch.Tlcs
         }
 
         public override Address ReadCodeAddress(int size, EndianImageReader rdr, ProcessorState? state)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override bool TryGetRegister(string name, [MaybeNullWhen(false)] out RegisterStorage reg)
         {
             throw new NotImplementedException();
         }

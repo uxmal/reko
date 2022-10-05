@@ -35,7 +35,7 @@ namespace Reko.Arch.LatticeMico
     public class LatticeMico32Architecture : ProcessorArchitecture
     {
         public LatticeMico32Architecture(IServiceProvider services, string archId, Dictionary<string, object> options)
-            : base(services, archId, options)
+            : base(services, archId, options, null, null)
         {
             Endianness = EndianServices.Big;
             this.FramePointerType = PrimitiveType.Ptr32;
@@ -86,16 +86,6 @@ namespace Reko.Arch.LatticeMico
         }
 
         public override int? GetMnemonicNumber(string name)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override RegisterStorage GetRegister(string name)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override RegisterStorage GetRegister(StorageDomain domain, BitRange range)
         {
             throw new NotImplementedException();
         }

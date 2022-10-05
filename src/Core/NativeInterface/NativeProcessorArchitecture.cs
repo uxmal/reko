@@ -18,7 +18,7 @@ namespace Reko.Core.NativeInterface
 		private const string SYM_NAME = "gCPUProvider";
 
 		public NativeProcessorArchitecture(IServiceProvider services, string archID, string libPath, ILibraryLoader ldr, Dictionary<string, object> options)
-            : base(services, archID, options)
+            : base(services, archID, options, null!, null!)
 		{
 			loader = ldr;
 			handle = ldr.LoadLibrary(libPath);
@@ -83,16 +83,6 @@ namespace Reko.Core.NativeInterface
 		}
 
 		public override int? GetMnemonicNumber(string name)
-		{
-			throw new NotImplementedException();
-		}
-
-		public override RegisterStorage GetRegister(StorageDomain domain, BitRange range)
-		{
-			throw new NotImplementedException();
-		}
-
-		public override RegisterStorage GetRegister(string name)
 		{
 			throw new NotImplementedException();
 		}

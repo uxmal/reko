@@ -37,7 +37,7 @@ namespace Reko.Arch.H8
         private readonly Dictionary<uint, FlagGroupStorage> flagGroups;
 
         public H8Architecture(IServiceProvider services, string archId, Dictionary<string, object> options)
-            : base(services, archId, options)
+            : base(services, archId, options, null, null)
         {
             this.CarryFlagMask = (uint) FlagM.CF;
             this.Endianness = EndianServices.Big;
@@ -100,11 +100,6 @@ namespace Reko.Arch.H8
         }
 
         public override int? GetMnemonicNumber(string name)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override RegisterStorage GetRegister(string name)
         {
             throw new NotImplementedException();
         }

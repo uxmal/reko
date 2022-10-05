@@ -33,7 +33,7 @@ namespace Reko.ImageLoaders.WebAssembly
     public class WasmArchitecture : ProcessorArchitecture
     {
         public WasmArchitecture(IServiceProvider services, string archId, Dictionary<string, object> options)
-            : base(services, archId, options)
+            : base(services, archId, options, null, null)
         {
             this.Endianness = EndianServices.Little;
             this.PointerType = PrimitiveType.Ptr32;
@@ -89,16 +89,6 @@ namespace Reko.ImageLoaders.WebAssembly
         }
 
         public override int? GetMnemonicNumber(string name)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override RegisterStorage GetRegister(string name)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override RegisterStorage GetRegister(StorageDomain domain, BitRange range)
         {
             throw new NotImplementedException();
         }

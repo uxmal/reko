@@ -37,7 +37,7 @@ namespace Reko.Arch.MicroBlaze
         private readonly Dictionary<uint, FlagGroupStorage> flagGroups = new Dictionary<uint, FlagGroupStorage>();
 
         public MicroBlazeArchitecture(IServiceProvider services, string archId, Dictionary<string, object> options)
-            : base(services, archId, options)
+            : base(services, archId, options, Registers.RegistersByName, Registers.RegistersByDomain )
         {
             this.Endianness = EndianServices.Big;
             this.FramePointerType = PrimitiveType.Ptr32;
@@ -97,16 +97,6 @@ namespace Reko.Arch.MicroBlaze
         }
 
         public override int? GetMnemonicNumber(string name)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override RegisterStorage GetRegister(StorageDomain domain, BitRange range)
-        {
-            return Registers.RegistersByDomain[domain];
-        }
-
-        public override RegisterStorage GetRegister(string name)
         {
             throw new NotImplementedException();
         }

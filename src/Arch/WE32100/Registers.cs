@@ -20,6 +20,7 @@
 using Reko.Core;
 using Reko.Core.Types;
 using System;
+using System.Collections.Generic;
 
 namespace Reko.Arch.WE32100
 {
@@ -37,8 +38,10 @@ namespace Reko.Arch.WE32100
         public static FlagGroupStorage N { get; }
         public static FlagGroupStorage NZV { get; }
         public static FlagGroupStorage NZVC { get; }
-
         public static FlagGroupStorage[] Flags { get; }
+
+        public static Dictionary<string, RegisterStorage> ByName { get; }
+        public static Dictionary<StorageDomain, RegisterStorage> ByDomain { get; }
 
 
         private static readonly string[] regNames = new[] {
@@ -61,6 +64,9 @@ namespace Reko.Arch.WE32100
             Flags = new FlagGroupStorage[] { C, V, Z, N };
             NZV = new FlagGroupStorage(psw, (uint) (FlagM.N | FlagM.Z | FlagM.V), "NZV", PrimitiveType.Byte);
             NZVC = new FlagGroupStorage(psw, (uint) (FlagM.N | FlagM.Z | FlagM.V | FlagM.C), "NZVC", PrimitiveType.Byte);
+
+            ByName = factory.NamesToRegisters;
+            ByDomain = factory.DomainsToRegisters;
         }
     }
 

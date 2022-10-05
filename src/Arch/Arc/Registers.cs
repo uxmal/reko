@@ -55,7 +55,7 @@ namespace Reko.Arch.Arc
         public static readonly FlagGroupStorage ZN; 
 
 
-        public static readonly Dictionary<StorageDomain, RegisterStorage> ByStorageDomain;
+        public static readonly Dictionary<StorageDomain, RegisterStorage> ByDomain;
         public static readonly Dictionary<string, RegisterStorage> ByName;
 
         static Registers()
@@ -90,7 +90,7 @@ namespace Reko.Arch.Arc
             ZN = new FlagGroupStorage(Status32, (uint) (FlagM.ZF | FlagM.NF), "ZN", PrimitiveType.Byte);
 
 
-            ByStorageDomain = factory.DomainsToRegisters
+            ByDomain = factory.DomainsToRegisters
                 .Concat(sysFactory.DomainsToRegisters)
                 .ToDictionary(k => k.Key, v => v.Value);
             ByName = factory.NamesToRegisters

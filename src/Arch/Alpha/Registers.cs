@@ -118,6 +118,7 @@ namespace Reko.Arch.Alpha
         public static readonly RegisterStorage[] FpuRegisters;
 
         public static readonly Dictionary<StorageDomain, RegisterStorage> ByDomain;
+        public static readonly Dictionary<string, RegisterStorage> ByName;
 
         static Registers()
         {
@@ -142,7 +143,7 @@ namespace Reko.Arch.Alpha
             };
 
             ByDomain = AllRegisters.Values.ToDictionary(r => r.Domain);
-
+            ByName = AllRegisters.Values.ToDictionary(r => r.Name);
         }
     }
 }

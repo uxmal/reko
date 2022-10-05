@@ -35,7 +35,6 @@ namespace Reko.Arch.Infineon
         public static readonly FlagGroupStorage[] PswFlags;
 
         public static readonly Dictionary<uint, RegisterStorage> CoreRegisters;
-        public static readonly Dictionary<StorageDomain, RegisterStorage> RegistersByDomain;
 
         public static readonly RegisterStorage a11;
         public static readonly RegisterStorage psw;
@@ -48,6 +47,10 @@ namespace Reko.Arch.Infineon
         public static readonly FlagGroupStorage V_SV;
         public static readonly FlagGroupStorage V_SV_AV_SAV;
         public static readonly FlagGroupStorage C_V_SV_AV_SAV;
+
+        public static Dictionary<string, RegisterStorage> ByName { get; }
+        public static Dictionary<StorageDomain, RegisterStorage> ByDomain { get; }
+
 
         static Registers()
         {
@@ -381,7 +384,8 @@ namespace Reko.Arch.Infineon
             V_SV_AV_SAV = new FlagGroupStorage(psw, (uint) (FlagM.VF|FlagM.SVF|FlagM.AVF|FlagM.SAVF), "V_SV_AV_SAV", PrimitiveType.Byte);
             C_V_SV_AV_SAV = new FlagGroupStorage(psw, (uint) (FlagM.CF|FlagM.VF|FlagM.SVF|FlagM.AVF|FlagM.SAVF), "C_V_SV_AV_SAV", PrimitiveType.Byte);
 
-            RegistersByDomain = factory.DomainsToRegisters;
+            ByName = factory.NamesToRegisters;
+            ByDomain = factory.DomainsToRegisters;
         }
     }
 

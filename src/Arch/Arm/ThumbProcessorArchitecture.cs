@@ -46,7 +46,7 @@ namespace Reko.Arch.Arm
         private readonly Dictionary<uint, FlagGroupStorage> flagGroups;
 
         public ThumbArchitecture(IServiceProvider services, string archId, Dictionary<string, object> options)
-            : base(services, archId, options)
+            : base(services, archId, options, Registers.ByName, Registers.ByDomain)
         {
             this.Endianness = EndianServices.Little;
             this.FramePointerType = PrimitiveType.Ptr32;
@@ -171,22 +171,9 @@ namespace Reko.Arch.Arm
                 return null;
         }
 
-        public override RegisterStorage? GetRegister(string name)
-        {
-            if (regsByName.TryGetValue(name, out RegisterStorage? reg))
-                return reg;
-            else
-                return null;
-        }
-
         public override RegisterStorage[] GetRegisters()
         {
             return regsByNumber.Values.OrderBy(r => r.Number).ToArray();
-        }
-
-        public override bool TryGetRegister(string name, out RegisterStorage reg)
-        {
-            throw new NotImplementedException();
         }
 
         public override FlagGroupStorage GetFlagGroup(RegisterStorage flagRegister, uint grf)

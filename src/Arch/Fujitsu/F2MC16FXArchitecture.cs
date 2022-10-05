@@ -37,7 +37,7 @@ namespace Reko.Arch.Fujitsu
     public class F2MC16FXArchitecture : ProcessorArchitecture
     {
         public F2MC16FXArchitecture(IServiceProvider services, string name, Dictionary<string, object> options)
-            : base(services, name, options)
+            : base(services, name, options, new(), new())
         {
             this.Endianness = EndianServices.Little;
             this.CarryFlagMask = (uint) FlagM.C;
@@ -90,16 +90,6 @@ namespace Reko.Arch.Fujitsu
         }
 
         public override int? GetMnemonicNumber(string name)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override RegisterStorage? GetRegister(string name)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override RegisterStorage? GetRegister(StorageDomain domain, BitRange range)
         {
             throw new NotImplementedException();
         }

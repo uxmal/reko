@@ -50,12 +50,10 @@ namespace Reko.Arch.RiscV
         };
 
         private Decoder[]? decoders;
-        private Dictionary<StorageDomain, RegisterStorage> regsByDomain;
-        private Dictionary<string, RegisterStorage> regsByName;
 
 #nullable disable
         public RiscVArchitecture(IServiceProvider services, string archId, Dictionary<string, object> options)
-            : base(services, archId, options)
+            : base(services, archId, options, null, null)
         {
             this.Endianness = EndianServices.Little;
             this.InstructionBitSize = 16;
@@ -123,20 +121,6 @@ namespace Reko.Arch.RiscV
         public override int? GetMnemonicNumber(string name)
         {
             throw new NotImplementedException();
-        }
-
-        public override RegisterStorage? GetRegister(string name)
-        {
-            if (regsByName.TryGetValue(name, out RegisterStorage? reg))
-                return reg;
-            else
-                return null;
-        }
-
-        public override RegisterStorage? GetRegister(StorageDomain domain, BitRange range)
-        {
-            return regsByDomain.TryGetValue(domain, out var reg)
-                ? reg : null;
         }
 
         public RegisterStorage? GetRegister(int i)

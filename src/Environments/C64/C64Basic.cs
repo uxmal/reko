@@ -46,7 +46,7 @@ namespace Reko.Environments.C64
         private readonly BTreeDictionary<Address, C64BasicInstruction> mpAddrToInstr;
 
         public C64Basic(IServiceProvider services, string archId, Dictionary<string, object> options)
-            : base(services, archId, options)
+            : base(services, archId, options, null, null)
         {
             this.Description = "Commodore 64 Basic";
             this.Endianness = EndianServices.Little;
@@ -100,9 +100,8 @@ namespace Reko.Environments.C64
             throw new NotImplementedException();
         }
 
-        public override RegisterStorage GetRegister(StorageDomain domain, BitRange range)
+        public override RegisterStorage? GetRegister(StorageDomain domain, BitRange range)
         {
-
             throw new NotImplementedException();
         }
 

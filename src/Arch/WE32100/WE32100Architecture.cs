@@ -34,7 +34,7 @@ namespace Reko.Arch.WE32100
     public class WE32100Architecture : ProcessorArchitecture
     {
         public WE32100Architecture(IServiceProvider services, string archId, Dictionary<string, object> options)
-            : base(services, archId, options)
+            : base(services, archId, options, Registers.ByName, Registers.ByDomain)
         {
             Endianness = EndianServices.Little;
             this.FramePointerType = PrimitiveType.Word32;
@@ -66,8 +66,7 @@ namespace Reko.Arch.WE32100
 
         public override IEnumerable<RtlInstructionCluster> CreateRewriter(EndianImageReader rdr, ProcessorState state, IStorageBinder binder, IRewriterHost host)
         {
-            var arch = this;
-            return new WE32100Rewriter(arch, rdr, state, binder, host);
+            return new WE32100Rewriter(this, rdr, state, binder, host);
         }
 
         public override FlagGroupStorage GetFlagGroup(RegisterStorage flagRegister, uint grf)
@@ -86,16 +85,6 @@ namespace Reko.Arch.WE32100
         }
 
         public override int? GetMnemonicNumber(string name)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override RegisterStorage GetRegister(string name)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override RegisterStorage GetRegister(StorageDomain domain, BitRange range)
         {
             throw new NotImplementedException();
         }
@@ -121,11 +110,6 @@ namespace Reko.Arch.WE32100
         }
 
         public override Address ReadCodeAddress(int size, EndianImageReader rdr, ProcessorState? state)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override bool TryGetRegister(string name, [MaybeNullWhen(false)] out RegisterStorage reg)
         {
             throw new NotImplementedException();
         }

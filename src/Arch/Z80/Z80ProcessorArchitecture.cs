@@ -37,7 +37,7 @@ namespace Reko.Arch.Z80
     public class Z80ProcessorArchitecture : ProcessorArchitecture
     {
         public Z80ProcessorArchitecture(IServiceProvider services, string archId, Dictionary<string, object> options)
-            : base(services, archId, options)
+            : base(services, archId, options, null, null)
         {
             this.Endianness = EndianServices.Little;
             this.InstructionBitSize = 8;

@@ -37,7 +37,7 @@ namespace Reko.Arch.zSeries
         private readonly zSeriesIntrinsics intrinsics;
 
         public zSeriesArchitecture(IServiceProvider services, string archId, Dictionary<string, object> options)
-            : base(services, archId, options)
+            : base(services, archId, options, Registers.ByName, Registers.ByDomain)
         {
             this.Endianness = EndianServices.Big;
             this.InstructionBitSize = 16;
@@ -97,22 +97,6 @@ namespace Reko.Arch.zSeries
         public RegisterStorage GetRegister(int i)
         {
             return Registers.GpRegisters[i];
-        }
-
-        public override RegisterStorage? GetRegister(StorageDomain domain, BitRange range)
-        {
-            if (!Registers.RegistersByDomain.TryGetValue(domain, out var reg))
-                return null;
-            else
-                return reg;
-        }
-
-        public override RegisterStorage? GetRegister(string name)
-        {
-            if (Registers.RegistersByName.TryGetValue(name, out var reg))
-                return reg;
-            else 
-                return null;
         }
 
         public override RegisterStorage[] GetRegisters()
@@ -183,11 +167,6 @@ namespace Reko.Arch.zSeries
             }
             //$REVIEW: is this architectural?
             this.StackRegister = Registers.GpRegisters[15];
-        }
-
-        public override bool TryGetRegister(string name, [MaybeNullWhen(false)] out RegisterStorage reg)
-        {
-            return Registers.RegistersByName.TryGetValue(name, out reg);
         }
 
         public override bool TryParseAddress(string? txtAddr, [MaybeNullWhen(false)] out Address addr)

@@ -35,7 +35,7 @@ namespace Reko.Arch.PaRisc
     public class PaRiscArchitecture : ProcessorArchitecture
     {
         public PaRiscArchitecture(IServiceProvider services, string archId, Dictionary<string, object> options)
-            : base(services, archId, options)
+            : base(services, archId, options, null!, null!)
         {
             LoadUserOptions(options);
             InstructionBitSize = 32;
@@ -93,22 +93,6 @@ namespace Reko.Arch.PaRisc
         public override int? GetMnemonicNumber(string name)
         {
             throw new NotImplementedException();
-        }
-
-        public override RegisterStorage? GetRegister(StorageDomain domain, BitRange range)
-        {
-            if (Registers.RegistersByStorageDomain.TryGetValue(domain, out var reg))
-                return reg;
-            else
-                return null;
-        }
-
-        public override RegisterStorage? GetRegister(string name)
-        {
-            if (Registers.RegistersByName.TryGetValue(name, out var reg))
-                return reg;
-            else
-                return null;
         }
 
         public override RegisterStorage[] GetRegisters()
@@ -199,12 +183,14 @@ namespace Reko.Arch.PaRisc
                 FramePointerType = PrimitiveType.Ptr32;
             }
             this.Registers = new Registers(WordWidth);
+            base.regsByName = Registers.ByName;
+            base.regsByDomain = Registers.ByDomain;
         }
 
 
         public override bool TryGetRegister(string name, [MaybeNullWhen(false)] out RegisterStorage reg)
         {
-            return Registers.RegistersByName.TryGetValue(name, out reg);
+            return Registers.ByName.TryGetValue(name, out reg);
         }
 
         public override bool TryParseAddress(string? txtAddr, [MaybeNullWhen(false)] out Address addr)

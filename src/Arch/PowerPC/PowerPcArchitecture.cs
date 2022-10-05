@@ -66,7 +66,7 @@ namespace Reko.Arch.PowerPC
         /// </summary>
         /// <param name="wordWidth">Supplies the word width of the PowerPC architecture.</param>
         public PowerPcArchitecture(IServiceProvider services, string archId, EndianServices endianness, PrimitiveType wordWidth, PrimitiveType signedWord, Dictionary<string, object> options)
-            : base(services, archId, options)
+            : base(services, archId, options, null, null)
         {
             Endianness = endianness;
             WordWidth = wordWidth;

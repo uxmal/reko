@@ -35,7 +35,7 @@ namespace Reko.Arch.Arc
     public class ARCompactArchitecture : ProcessorArchitecture
     {
         public ARCompactArchitecture(IServiceProvider services, string archId, Dictionary<string, object> options)
-            : base(services, archId, options)
+            : base(services, archId, options, Registers.ByName, Registers.ByDomain)
         {
             base.Endianness = EndianServices.Little;
             base.FramePointerType = PrimitiveType.Ptr32;
@@ -92,16 +92,6 @@ namespace Reko.Arch.Arc
         public override int? GetMnemonicNumber(string name)
         {
             throw new NotImplementedException();
-        }
-
-        public override RegisterStorage GetRegister(StorageDomain domain, BitRange range)
-        {
-            return Registers.ByStorageDomain[domain];
-        }
-
-        public override RegisterStorage? GetRegister(string name)
-        {
-            return Registers.ByName.TryGetValue(name, out var reg) ? reg : null;
         }
 
         public override RegisterStorage[] GetRegisters()

@@ -34,7 +34,7 @@ namespace Reko.Arch.Blackfin
     public class BlackfinArchitecture : ProcessorArchitecture
     {
         public BlackfinArchitecture(IServiceProvider services, string archId, Dictionary<string, object> options)
-            : base(services, archId, options)
+            : base(services, archId, options, null, null)
         {
             Endianness = EndianServices.Little;
             PointerType = PrimitiveType.Ptr32;
@@ -95,16 +95,6 @@ namespace Reko.Arch.Blackfin
             throw new NotImplementedException();
         }
 
-        public override RegisterStorage GetRegister(StorageDomain domain, BitRange range)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override RegisterStorage GetRegister(string name)
-        {
-            throw new NotImplementedException();
-        }
-
         public override RegisterStorage[] GetRegisters()
         {
             return Registers.Data
@@ -124,11 +114,6 @@ namespace Reko.Arch.Blackfin
         }
 
         public override Address ReadCodeAddress(int size, EndianImageReader rdr, ProcessorState? state)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override bool TryGetRegister(string name, out RegisterStorage reg)
         {
             throw new NotImplementedException();
         }

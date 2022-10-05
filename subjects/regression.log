@@ -137,7 +137,7 @@ l0800_17AE: warning: Non-integral switch expression
    at Reko.Core.Memory.ByteMemoryArea.TryReadLe(Int64 imageOffset, DataType type, Constant& c) in d:\dev\uxmal\reko\master\src\Core\Memory\ByteMemoryArea.cs:line 228
    at Reko.Core.Memory.ByteImageReader.TryReadLe(DataType dataType, Constant& c) in d:\dev\uxmal\reko\master\src\Core\Memory\ByteImageReader.cs:line 221
    at Reko.Core.Memory.LeImageReader.TryRead(PrimitiveType dataType, Constant& c) in d:\dev\uxmal\reko\master\src\Core\Memory\EndianImageReader.cs:line 245
-   at Reko.Core.ProcessorArchitecture.TryRead(EndianImageReader rdr, PrimitiveType dt, Constant& value) in d:\dev\uxmal\reko\master\src\Core\IProcessorArchitecture.cs:line 509
+   at Reko.Core.ProcessorArchitecture.TryRead(EndianImageReader rdr, PrimitiveType dt, Constant& value) in d:\dev\uxmal\reko\master\src\Core\IProcessorArchitecture.cs:line 515
    at Reko.Core.Output.GlobalDataWriter.VisitPrimitive(PrimitiveType pt) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 274
    at Reko.Core.Types.PrimitiveType.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\PrimitiveType.cs:line 68
    at Reko.Core.Output.GlobalDataWriter.VisitStructure(StructureType str) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 383
@@ -153,7 +153,7 @@ l0800_17AE: warning: Non-integral switch expression
    at Reko.Core.Memory.ByteMemoryArea.TryReadLe(Int64 imageOffset, DataType type, Constant& c) in d:\dev\uxmal\reko\master\src\Core\Memory\ByteMemoryArea.cs:line 228
    at Reko.Core.Memory.ByteImageReader.TryReadLe(DataType dataType, Constant& c) in d:\dev\uxmal\reko\master\src\Core\Memory\ByteImageReader.cs:line 221
    at Reko.Core.Memory.LeImageReader.TryRead(PrimitiveType dataType, Constant& c) in d:\dev\uxmal\reko\master\src\Core\Memory\EndianImageReader.cs:line 245
-   at Reko.Core.ProcessorArchitecture.TryRead(EndianImageReader rdr, PrimitiveType dt, Constant& value) in d:\dev\uxmal\reko\master\src\Core\IProcessorArchitecture.cs:line 509
+   at Reko.Core.ProcessorArchitecture.TryRead(EndianImageReader rdr, PrimitiveType dt, Constant& value) in d:\dev\uxmal\reko\master\src\Core\IProcessorArchitecture.cs:line 515
    at Reko.Core.Output.GlobalDataWriter.VisitPrimitive(PrimitiveType pt) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 274
    at Reko.Core.Types.PrimitiveType.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\PrimitiveType.cs:line 68
    at Reko.Core.Output.GlobalDataWriter.VisitStructure(StructureType str) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 383
@@ -258,8 +258,8 @@ Warning: Checksum error in line 8.
     Reading data type byte not implemented yet.
        at Reko.Core.Memory.Word16ImageReader.TryReadBe(DataType dataType, Constant& value) in d:\dev\uxmal\reko\master\src\Core\Memory\Word16ImageReader.cs:line 250
    at Reko.Core.Memory.Word16BeImageReader.TryRead(PrimitiveType dataType, Constant& value) in d:\dev\uxmal\reko\master\src\Core\Memory\Word16BeImageReader.cs:line 83
-   at Reko.Core.ProcessorArchitecture.TryRead(EndianImageReader rdr, PrimitiveType dt, Constant& value) in d:\dev\uxmal\reko\master\src\Core\IProcessorArchitecture.cs:line 509
-   at Reko.Arch.MilStd1750.MilStd1750Architecture.TryRead(EndianImageReader rdr, PrimitiveType dt, Constant& value) in d:\dev\uxmal\reko\master\src\Arch\MilStd1750\MilStd1750Architecture.cs:line 236
+   at Reko.Core.ProcessorArchitecture.TryRead(EndianImageReader rdr, PrimitiveType dt, Constant& value) in d:\dev\uxmal\reko\master\src\Core\IProcessorArchitecture.cs:line 515
+   at Reko.Arch.MilStd1750.MilStd1750Architecture.TryRead(EndianImageReader rdr, PrimitiveType dt, Constant& value) in d:\dev\uxmal\reko\master\src\Arch\MilStd1750\MilStd1750Architecture.cs:line 226
    at Reko.Core.Output.GlobalDataWriter.VisitPrimitive(PrimitiveType pt) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 274
    at Reko.Core.Types.PrimitiveType.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\PrimitiveType.cs:line 68
    at Reko.Core.Output.GlobalDataWriter.VisitUnion(UnionType ut) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 432
@@ -273,8 +273,8 @@ Warning: Checksum error in line 8.
     Reading data type byte not implemented yet.
        at Reko.Core.Memory.Word16ImageReader.TryReadBe(DataType dataType, Constant& value) in d:\dev\uxmal\reko\master\src\Core\Memory\Word16ImageReader.cs:line 250
    at Reko.Core.Memory.Word16BeImageReader.TryRead(PrimitiveType dataType, Constant& value) in d:\dev\uxmal\reko\master\src\Core\Memory\Word16BeImageReader.cs:line 83
-   at Reko.Core.ProcessorArchitecture.TryRead(EndianImageReader rdr, PrimitiveType dt, Constant& value) in d:\dev\uxmal\reko\master\src\Core\IProcessorArchitecture.cs:line 509
-   at Reko.Arch.MilStd1750.MilStd1750Architecture.TryRead(EndianImageReader rdr, PrimitiveType dt, Constant& value) in d:\dev\uxmal\reko\master\src\Arch\MilStd1750\MilStd1750Architecture.cs:line 236
+   at Reko.Core.ProcessorArchitecture.TryRead(EndianImageReader rdr, PrimitiveType dt, Constant& value) in d:\dev\uxmal\reko\master\src\Core\IProcessorArchitecture.cs:line 515
+   at Reko.Arch.MilStd1750.MilStd1750Architecture.TryRead(EndianImageReader rdr, PrimitiveType dt, Constant& value) in d:\dev\uxmal\reko\master\src\Arch\MilStd1750\MilStd1750Architecture.cs:line 226
    at Reko.Core.Output.GlobalDataWriter.VisitPrimitive(PrimitiveType pt) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 274
    at Reko.Core.Types.PrimitiveType.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\PrimitiveType.cs:line 68
    at Reko.Core.Output.GlobalDataWriter.VisitUnion(UnionType ut) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 432
@@ -288,8 +288,8 @@ Warning: Checksum error in line 8.
     Reading data type byte not implemented yet.
        at Reko.Core.Memory.Word16ImageReader.TryReadBe(DataType dataType, Constant& value) in d:\dev\uxmal\reko\master\src\Core\Memory\Word16ImageReader.cs:line 250
    at Reko.Core.Memory.Word16BeImageReader.TryRead(PrimitiveType dataType, Constant& value) in d:\dev\uxmal\reko\master\src\Core\Memory\Word16BeImageReader.cs:line 83
-   at Reko.Core.ProcessorArchitecture.TryRead(EndianImageReader rdr, PrimitiveType dt, Constant& value) in d:\dev\uxmal\reko\master\src\Core\IProcessorArchitecture.cs:line 509
-   at Reko.Arch.MilStd1750.MilStd1750Architecture.TryRead(EndianImageReader rdr, PrimitiveType dt, Constant& value) in d:\dev\uxmal\reko\master\src\Arch\MilStd1750\MilStd1750Architecture.cs:line 236
+   at Reko.Core.ProcessorArchitecture.TryRead(EndianImageReader rdr, PrimitiveType dt, Constant& value) in d:\dev\uxmal\reko\master\src\Core\IProcessorArchitecture.cs:line 515
+   at Reko.Arch.MilStd1750.MilStd1750Architecture.TryRead(EndianImageReader rdr, PrimitiveType dt, Constant& value) in d:\dev\uxmal\reko\master\src\Arch\MilStd1750\MilStd1750Architecture.cs:line 226
    at Reko.Core.Output.GlobalDataWriter.VisitPrimitive(PrimitiveType pt) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 274
    at Reko.Core.Types.PrimitiveType.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\PrimitiveType.cs:line 68
    at Reko.Core.Output.GlobalDataWriter.VisitUnion(UnionType ut) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 432
@@ -305,8 +305,8 @@ Warning: Checksum error in line 8.
     Reading data type byte not implemented yet.
        at Reko.Core.Memory.Word16ImageReader.TryReadBe(DataType dataType, Constant& value) in d:\dev\uxmal\reko\master\src\Core\Memory\Word16ImageReader.cs:line 250
    at Reko.Core.Memory.Word16BeImageReader.TryRead(PrimitiveType dataType, Constant& value) in d:\dev\uxmal\reko\master\src\Core\Memory\Word16BeImageReader.cs:line 83
-   at Reko.Core.ProcessorArchitecture.TryRead(EndianImageReader rdr, PrimitiveType dt, Constant& value) in d:\dev\uxmal\reko\master\src\Core\IProcessorArchitecture.cs:line 509
-   at Reko.Arch.MilStd1750.MilStd1750Architecture.TryRead(EndianImageReader rdr, PrimitiveType dt, Constant& value) in d:\dev\uxmal\reko\master\src\Arch\MilStd1750\MilStd1750Architecture.cs:line 236
+   at Reko.Core.ProcessorArchitecture.TryRead(EndianImageReader rdr, PrimitiveType dt, Constant& value) in d:\dev\uxmal\reko\master\src\Core\IProcessorArchitecture.cs:line 515
+   at Reko.Arch.MilStd1750.MilStd1750Architecture.TryRead(EndianImageReader rdr, PrimitiveType dt, Constant& value) in d:\dev\uxmal\reko\master\src\Arch\MilStd1750\MilStd1750Architecture.cs:line 226
    at Reko.Core.Output.GlobalDataWriter.VisitPrimitive(PrimitiveType pt) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 274
    at Reko.Core.Types.PrimitiveType.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\PrimitiveType.cs:line 68
    at Reko.Core.Output.GlobalDataWriter.VisitUnion(UnionType ut) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 432
@@ -320,8 +320,8 @@ Warning: Checksum error in line 8.
     Reading data type byte not implemented yet.
        at Reko.Core.Memory.Word16ImageReader.TryReadBe(DataType dataType, Constant& value) in d:\dev\uxmal\reko\master\src\Core\Memory\Word16ImageReader.cs:line 250
    at Reko.Core.Memory.Word16BeImageReader.TryRead(PrimitiveType dataType, Constant& value) in d:\dev\uxmal\reko\master\src\Core\Memory\Word16BeImageReader.cs:line 83
-   at Reko.Core.ProcessorArchitecture.TryRead(EndianImageReader rdr, PrimitiveType dt, Constant& value) in d:\dev\uxmal\reko\master\src\Core\IProcessorArchitecture.cs:line 509
-   at Reko.Arch.MilStd1750.MilStd1750Architecture.TryRead(EndianImageReader rdr, PrimitiveType dt, Constant& value) in d:\dev\uxmal\reko\master\src\Arch\MilStd1750\MilStd1750Architecture.cs:line 236
+   at Reko.Core.ProcessorArchitecture.TryRead(EndianImageReader rdr, PrimitiveType dt, Constant& value) in d:\dev\uxmal\reko\master\src\Core\IProcessorArchitecture.cs:line 515
+   at Reko.Arch.MilStd1750.MilStd1750Architecture.TryRead(EndianImageReader rdr, PrimitiveType dt, Constant& value) in d:\dev\uxmal\reko\master\src\Arch\MilStd1750\MilStd1750Architecture.cs:line 226
    at Reko.Core.Output.GlobalDataWriter.VisitPrimitive(PrimitiveType pt) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 274
    at Reko.Core.Types.PrimitiveType.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\PrimitiveType.cs:line 68
    at Reko.Core.Output.GlobalDataWriter.VisitUnion(UnionType ut) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 432
@@ -335,8 +335,8 @@ Warning: Checksum error in line 8.
     Reading data type byte not implemented yet.
        at Reko.Core.Memory.Word16ImageReader.TryReadBe(DataType dataType, Constant& value) in d:\dev\uxmal\reko\master\src\Core\Memory\Word16ImageReader.cs:line 250
    at Reko.Core.Memory.Word16BeImageReader.TryRead(PrimitiveType dataType, Constant& value) in d:\dev\uxmal\reko\master\src\Core\Memory\Word16BeImageReader.cs:line 83
-   at Reko.Core.ProcessorArchitecture.TryRead(EndianImageReader rdr, PrimitiveType dt, Constant& value) in d:\dev\uxmal\reko\master\src\Core\IProcessorArchitecture.cs:line 509
-   at Reko.Arch.MilStd1750.MilStd1750Architecture.TryRead(EndianImageReader rdr, PrimitiveType dt, Constant& value) in d:\dev\uxmal\reko\master\src\Arch\MilStd1750\MilStd1750Architecture.cs:line 236
+   at Reko.Core.ProcessorArchitecture.TryRead(EndianImageReader rdr, PrimitiveType dt, Constant& value) in d:\dev\uxmal\reko\master\src\Core\IProcessorArchitecture.cs:line 515
+   at Reko.Arch.MilStd1750.MilStd1750Architecture.TryRead(EndianImageReader rdr, PrimitiveType dt, Constant& value) in d:\dev\uxmal\reko\master\src\Arch\MilStd1750\MilStd1750Architecture.cs:line 226
    at Reko.Core.Output.GlobalDataWriter.VisitPrimitive(PrimitiveType pt) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 274
    at Reko.Core.Types.PrimitiveType.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\PrimitiveType.cs:line 68
    at Reko.Core.Output.GlobalDataWriter.VisitUnion(UnionType ut) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 432
@@ -613,7 +613,7 @@ Error: An error occurred while writing assembly language output.
    at Reko.Core.Memory.BeImageReader..ctor(ByteMemoryArea image, Address addr, Int64 cUnits) in d:\dev\uxmal\reko\master\src\Core\Memory\EndianImageReader.cs:line 256
    at Reko.Core.Memory.ByteMemoryArea.CreateBeReader(Address addr, Int64 cUnits) in d:\dev\uxmal\reko\master\src\Core\Memory\ByteMemoryArea.cs:line 79
    at Reko.Core.EndianServices.BeServices.CreateImageReader(MemoryArea mem, Address addr, Int64 cUnits) in d:\dev\uxmal\reko\master\src\Core\EndianServices.cs:line 256
-   at Reko.Core.ProcessorArchitecture.CreateImageReader(MemoryArea mem, Address addr, Int64 cbUnits) in d:\dev\uxmal\reko\master\src\Core\IProcessorArchitecture.cs:line 503
+   at Reko.Core.ProcessorArchitecture.CreateImageReader(MemoryArea mem, Address addr, Int64 cbUnits) in d:\dev\uxmal\reko\master\src\Core\IProcessorArchitecture.cs:line 509
    at Reko.Core.Output.Dumper.DumpData(IProcessorArchitecture arch, MemoryArea mem, Address address, Int64 cUnits, Formatter stm) in d:\dev\uxmal\reko\master\src\Core\Output\Dumper.cs:line 181
    at Reko.Core.Output.Dumper.DumpData(SegmentMap map, IProcessorArchitecture arch, Address address, Int64 cbBytes, Formatter stm) in d:\dev\uxmal\reko\master\src\Core\Output\Dumper.cs:line 168
    at Reko.Core.Output.Dumper.DumpItem(ImageSegment segment, ImageMapItem i, Formatter formatter) in d:\dev\uxmal\reko\master\src\Core\Output\Dumper.cs:line 119
@@ -822,13 +822,13 @@ fn0000EE14: error: An internal error occurred while building the expressions of 
     The given key 'l0000EE2C' was not present in the dictionary.
        at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
    at Reko.Core.Graphs.DominatorGraph`1.BuildDominanceFrontiers(DirectedGraph`1 graph, Dictionary`2 idoms) in d:\dev\uxmal\reko\master\src\Core\Graphs\DominatorGraph.cs:line 193
-   at Reko.Core.Graphs.DominatorGraph`1..ctor(DirectedGraph`1 graph, T entryNode) in d:\dev\uxmal\reko\master\src\Core\Graphs\DominatorGraph.cs:line 46
+   at Reko.Core.Graphs.DominatorGraph`1..ctor(DirectedGraph`1 graph, T entryNode) in d:\dev\uxmal\reko\master\src\Core\Graphs\DominatorGraph.cs:line 47
    at Reko.Analysis.DataFlowAnalysis.BuildExpressionTrees(List`1 ssts) in d:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 225
 fn0000CE88: error: An internal error occurred while building the expressions of fn0000CE88
     The given key 'l0000CEAC' was not present in the dictionary.
        at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
    at Reko.Core.Graphs.DominatorGraph`1.BuildDominanceFrontiers(DirectedGraph`1 graph, Dictionary`2 idoms) in d:\dev\uxmal\reko\master\src\Core\Graphs\DominatorGraph.cs:line 193
-   at Reko.Core.Graphs.DominatorGraph`1..ctor(DirectedGraph`1 graph, T entryNode) in d:\dev\uxmal\reko\master\src\Core\Graphs\DominatorGraph.cs:line 46
+   at Reko.Core.Graphs.DominatorGraph`1..ctor(DirectedGraph`1 graph, T entryNode) in d:\dev\uxmal\reko\master\src\Core\Graphs\DominatorGraph.cs:line 47
    at Reko.Analysis.DataFlowAnalysis.BuildExpressionTrees(List`1 ssts) in d:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 225
 l0000CEAC: warning: Phi functions will be ignored by type analysis. This may be caused by a failure in a previous stage of the decompilation.
 fn0000CE88: error: An error occurred while rewriting procedure to high-level language.
@@ -916,7 +916,7 @@ __isoc99_vfscanf: error: An internal error occurred while building the expressio
     Dominator graph calculation timed out.
        at Reko.Core.Graphs.DominatorGraph`1.Intersect(Dictionary`2 postdoms, T b1, T b2) in d:\dev\uxmal\reko\master\src\Core\Graphs\DominatorGraph.cs:line 233
    at Reko.Core.Graphs.DominatorGraph`1.Build(DirectedGraph`1 graph, T entryNode) in d:\dev\uxmal\reko\master\src\Core\Graphs\DominatorGraph.cs:line 162
-   at Reko.Core.Graphs.DominatorGraph`1..ctor(DirectedGraph`1 graph, T entryNode) in d:\dev\uxmal\reko\master\src\Core\Graphs\DominatorGraph.cs:line 44
+   at Reko.Core.Graphs.DominatorGraph`1..ctor(DirectedGraph`1 graph, T entryNode) in d:\dev\uxmal\reko\master\src\Core\Graphs\DominatorGraph.cs:line 47
    at Reko.Analysis.DataFlowAnalysis.BuildExpressionTrees(List`1 ssts) in d:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 225
 l0040D4D6: warning: Phi functions will be ignored by type analysis. This may be caused by a failure in a previous stage of the decompilation.
 Warning: Recursion too deep in PtrPrimitiveReplacer
@@ -1284,7 +1284,7 @@ Warning: Recursion too deep in PtrPrimitiveReplacer
 00027EA8: warning: Unable to resolve imported reference __urem64.
 00011F6C: error: An error occurred while processing the statement word32 sp_37 = fp + 0xFFFFFF90<32> - (CONVERT(strlen(i0_25) + strlen(o1), size_t, size_t) + 9<32> & 0xFFFFFFF8<32>).
     Specified argument was out of the range of valid values. (Parameter 'bitSize')
-       at Reko.Core.Types.PrimitiveType.CreateWord(Int32 bitSize) in d:\dev\uxmal\reko\master\src\Core\Types\PrimitiveType.cs:line 143
+       at Reko.Core.Types.PrimitiveType.CreateWord(Int32 bitSize) in d:\dev\uxmal\reko\master\src\Core\Types\PrimitiveType.cs:line 129
    at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in d:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 128
    at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 57
    at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in d:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 97
@@ -1405,8 +1405,8 @@ Error: Unable to load metadata file windows32.xml.
     Reading data type byte not implemented yet.
        at Reko.Core.Memory.Word16ImageReader.TryReadBe(DataType dataType, Constant& value) in d:\dev\uxmal\reko\master\src\Core\Memory\Word16ImageReader.cs:line 250
    at Reko.Core.Memory.Word16BeImageReader.TryRead(PrimitiveType dataType, Constant& value) in d:\dev\uxmal\reko\master\src\Core\Memory\Word16BeImageReader.cs:line 83
-   at Reko.Core.ProcessorArchitecture.TryRead(EndianImageReader rdr, PrimitiveType dt, Constant& value) in d:\dev\uxmal\reko\master\src\Core\IProcessorArchitecture.cs:line 509
-   at Reko.Arch.MilStd1750.MilStd1750Architecture.TryRead(EndianImageReader rdr, PrimitiveType dt, Constant& value) in d:\dev\uxmal\reko\master\src\Arch\MilStd1750\MilStd1750Architecture.cs:line 236
+   at Reko.Core.ProcessorArchitecture.TryRead(EndianImageReader rdr, PrimitiveType dt, Constant& value) in d:\dev\uxmal\reko\master\src\Core\IProcessorArchitecture.cs:line 515
+   at Reko.Arch.MilStd1750.MilStd1750Architecture.TryRead(EndianImageReader rdr, PrimitiveType dt, Constant& value) in d:\dev\uxmal\reko\master\src\Arch\MilStd1750\MilStd1750Architecture.cs:line 226
    at Reko.Core.Output.GlobalDataWriter.VisitPrimitive(PrimitiveType pt) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 274
    at Reko.Core.Types.PrimitiveType.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\PrimitiveType.cs:line 68
    at Reko.Core.Output.GlobalDataWriter.VisitUnion(UnionType ut) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 432
@@ -1420,8 +1420,8 @@ Error: Unable to load metadata file windows32.xml.
     Reading data type byte not implemented yet.
        at Reko.Core.Memory.Word16ImageReader.TryReadBe(DataType dataType, Constant& value) in d:\dev\uxmal\reko\master\src\Core\Memory\Word16ImageReader.cs:line 250
    at Reko.Core.Memory.Word16BeImageReader.TryRead(PrimitiveType dataType, Constant& value) in d:\dev\uxmal\reko\master\src\Core\Memory\Word16BeImageReader.cs:line 83
-   at Reko.Core.ProcessorArchitecture.TryRead(EndianImageReader rdr, PrimitiveType dt, Constant& value) in d:\dev\uxmal\reko\master\src\Core\IProcessorArchitecture.cs:line 509
-   at Reko.Arch.MilStd1750.MilStd1750Architecture.TryRead(EndianImageReader rdr, PrimitiveType dt, Constant& value) in d:\dev\uxmal\reko\master\src\Arch\MilStd1750\MilStd1750Architecture.cs:line 236
+   at Reko.Core.ProcessorArchitecture.TryRead(EndianImageReader rdr, PrimitiveType dt, Constant& value) in d:\dev\uxmal\reko\master\src\Core\IProcessorArchitecture.cs:line 515
+   at Reko.Arch.MilStd1750.MilStd1750Architecture.TryRead(EndianImageReader rdr, PrimitiveType dt, Constant& value) in d:\dev\uxmal\reko\master\src\Arch\MilStd1750\MilStd1750Architecture.cs:line 226
    at Reko.Core.Output.GlobalDataWriter.VisitPrimitive(PrimitiveType pt) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 274
    at Reko.Core.Types.PrimitiveType.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\PrimitiveType.cs:line 68
    at Reko.Core.Output.GlobalDataWriter.VisitUnion(UnionType ut) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 432
@@ -1435,8 +1435,8 @@ Error: Unable to load metadata file windows32.xml.
     Reading data type byte not implemented yet.
        at Reko.Core.Memory.Word16ImageReader.TryReadBe(DataType dataType, Constant& value) in d:\dev\uxmal\reko\master\src\Core\Memory\Word16ImageReader.cs:line 250
    at Reko.Core.Memory.Word16BeImageReader.TryRead(PrimitiveType dataType, Constant& value) in d:\dev\uxmal\reko\master\src\Core\Memory\Word16BeImageReader.cs:line 83
-   at Reko.Core.ProcessorArchitecture.TryRead(EndianImageReader rdr, PrimitiveType dt, Constant& value) in d:\dev\uxmal\reko\master\src\Core\IProcessorArchitecture.cs:line 509
-   at Reko.Arch.MilStd1750.MilStd1750Architecture.TryRead(EndianImageReader rdr, PrimitiveType dt, Constant& value) in d:\dev\uxmal\reko\master\src\Arch\MilStd1750\MilStd1750Architecture.cs:line 236
+   at Reko.Core.ProcessorArchitecture.TryRead(EndianImageReader rdr, PrimitiveType dt, Constant& value) in d:\dev\uxmal\reko\master\src\Core\IProcessorArchitecture.cs:line 515
+   at Reko.Arch.MilStd1750.MilStd1750Architecture.TryRead(EndianImageReader rdr, PrimitiveType dt, Constant& value) in d:\dev\uxmal\reko\master\src\Arch\MilStd1750\MilStd1750Architecture.cs:line 226
    at Reko.Core.Output.GlobalDataWriter.VisitPrimitive(PrimitiveType pt) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 274
    at Reko.Core.Types.PrimitiveType.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\PrimitiveType.cs:line 68
    at Reko.Core.Output.GlobalDataWriter.VisitUnion(UnionType ut) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 432
@@ -1450,8 +1450,8 @@ Error: Unable to load metadata file windows32.xml.
     Reading data type byte not implemented yet.
        at Reko.Core.Memory.Word16ImageReader.TryReadBe(DataType dataType, Constant& value) in d:\dev\uxmal\reko\master\src\Core\Memory\Word16ImageReader.cs:line 250
    at Reko.Core.Memory.Word16BeImageReader.TryRead(PrimitiveType dataType, Constant& value) in d:\dev\uxmal\reko\master\src\Core\Memory\Word16BeImageReader.cs:line 83
-   at Reko.Core.ProcessorArchitecture.TryRead(EndianImageReader rdr, PrimitiveType dt, Constant& value) in d:\dev\uxmal\reko\master\src\Core\IProcessorArchitecture.cs:line 509
-   at Reko.Arch.MilStd1750.MilStd1750Architecture.TryRead(EndianImageReader rdr, PrimitiveType dt, Constant& value) in d:\dev\uxmal\reko\master\src\Arch\MilStd1750\MilStd1750Architecture.cs:line 236
+   at Reko.Core.ProcessorArchitecture.TryRead(EndianImageReader rdr, PrimitiveType dt, Constant& value) in d:\dev\uxmal\reko\master\src\Core\IProcessorArchitecture.cs:line 515
+   at Reko.Arch.MilStd1750.MilStd1750Architecture.TryRead(EndianImageReader rdr, PrimitiveType dt, Constant& value) in d:\dev\uxmal\reko\master\src\Arch\MilStd1750\MilStd1750Architecture.cs:line 226
    at Reko.Core.Output.GlobalDataWriter.VisitPrimitive(PrimitiveType pt) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 274
    at Reko.Core.Types.PrimitiveType.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\PrimitiveType.cs:line 68
    at Reko.Core.Output.GlobalDataWriter.VisitUnion(UnionType ut) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 432
@@ -1465,8 +1465,8 @@ Error: Unable to load metadata file windows32.xml.
     Reading data type byte not implemented yet.
        at Reko.Core.Memory.Word16ImageReader.TryReadBe(DataType dataType, Constant& value) in d:\dev\uxmal\reko\master\src\Core\Memory\Word16ImageReader.cs:line 250
    at Reko.Core.Memory.Word16BeImageReader.TryRead(PrimitiveType dataType, Constant& value) in d:\dev\uxmal\reko\master\src\Core\Memory\Word16BeImageReader.cs:line 83
-   at Reko.Core.ProcessorArchitecture.TryRead(EndianImageReader rdr, PrimitiveType dt, Constant& value) in d:\dev\uxmal\reko\master\src\Core\IProcessorArchitecture.cs:line 509
-   at Reko.Arch.MilStd1750.MilStd1750Architecture.TryRead(EndianImageReader rdr, PrimitiveType dt, Constant& value) in d:\dev\uxmal\reko\master\src\Arch\MilStd1750\MilStd1750Architecture.cs:line 236
+   at Reko.Core.ProcessorArchitecture.TryRead(EndianImageReader rdr, PrimitiveType dt, Constant& value) in d:\dev\uxmal\reko\master\src\Core\IProcessorArchitecture.cs:line 515
+   at Reko.Arch.MilStd1750.MilStd1750Architecture.TryRead(EndianImageReader rdr, PrimitiveType dt, Constant& value) in d:\dev\uxmal\reko\master\src\Arch\MilStd1750\MilStd1750Architecture.cs:line 226
    at Reko.Core.Output.GlobalDataWriter.VisitPrimitive(PrimitiveType pt) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 274
    at Reko.Core.Types.PrimitiveType.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\PrimitiveType.cs:line 68
    at Reko.Core.Output.GlobalDataWriter.VisitUnion(UnionType ut) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 432
@@ -1480,8 +1480,8 @@ Error: Unable to load metadata file windows32.xml.
     Reading data type byte not implemented yet.
        at Reko.Core.Memory.Word16ImageReader.TryReadBe(DataType dataType, Constant& value) in d:\dev\uxmal\reko\master\src\Core\Memory\Word16ImageReader.cs:line 250
    at Reko.Core.Memory.Word16BeImageReader.TryRead(PrimitiveType dataType, Constant& value) in d:\dev\uxmal\reko\master\src\Core\Memory\Word16BeImageReader.cs:line 83
-   at Reko.Core.ProcessorArchitecture.TryRead(EndianImageReader rdr, PrimitiveType dt, Constant& value) in d:\dev\uxmal\reko\master\src\Core\IProcessorArchitecture.cs:line 509
-   at Reko.Arch.MilStd1750.MilStd1750Architecture.TryRead(EndianImageReader rdr, PrimitiveType dt, Constant& value) in d:\dev\uxmal\reko\master\src\Arch\MilStd1750\MilStd1750Architecture.cs:line 236
+   at Reko.Core.ProcessorArchitecture.TryRead(EndianImageReader rdr, PrimitiveType dt, Constant& value) in d:\dev\uxmal\reko\master\src\Core\IProcessorArchitecture.cs:line 515
+   at Reko.Arch.MilStd1750.MilStd1750Architecture.TryRead(EndianImageReader rdr, PrimitiveType dt, Constant& value) in d:\dev\uxmal\reko\master\src\Arch\MilStd1750\MilStd1750Architecture.cs:line 226
    at Reko.Core.Output.GlobalDataWriter.VisitPrimitive(PrimitiveType pt) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 274
    at Reko.Core.Types.PrimitiveType.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\PrimitiveType.cs:line 68
    at Reko.Core.Output.GlobalDataWriter.VisitUnion(UnionType ut) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 432
@@ -1998,4 +1998,4 @@ Signature of 'Microsoft Visual C++ 8' detected.
 0040120B: warning: Unable to determine the upper bound of an indirect call or jump; there may be more than 2 entries.
 004011A5: warning: Unable to determine the upper bound of an indirect call or jump; there may be more than 2 entries.
 
-Decompiled 87 binaries in 60.72 seconds.
+Decompiled 87 binaries in 58.70 seconds.

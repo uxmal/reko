@@ -19,6 +19,7 @@
 #endregion
 
 using Reko.Core;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Reko.Arch.XCore
@@ -31,6 +32,10 @@ namespace Reko.Arch.XCore
         private static RegisterStorage sp { get; }
         private static RegisterStorage lr { get; }
 
+        public static Dictionary<string, RegisterStorage> ByName { get; }
+        public static Dictionary<StorageDomain, RegisterStorage> ByDomain { get; }
+
+
         static Registers()
         {
             var factory = new StorageFactory();
@@ -40,6 +45,9 @@ namespace Reko.Arch.XCore
             sp = factory.Reg32("sp");
             lr = factory.Reg32("lr");
             GpRegs = regs.Concat(new[] { cp, dp, sp, lr }).ToArray();
+
+            ByName = factory.NamesToRegisters;
+            ByDomain = factory.DomainsToRegisters;
         }
     }
 }

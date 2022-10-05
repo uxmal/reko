@@ -35,7 +35,7 @@ namespace Reko.Arch.C166
     public class C166Architecture : ProcessorArchitecture
     {
         public C166Architecture(IServiceProvider services, string archId, Dictionary<string, object> options)
-            : base(services, archId, options)
+            : base(services, archId, options, null, null)
         {
             Endianness = EndianServices.Little;
             FramePointerType = PrimitiveType.Ptr16;
@@ -94,11 +94,6 @@ DPP3	If DPP3 is modified in the assembler subroutine, it must be reset to 3 (SYS
         }
 
         public override int? GetMnemonicNumber(string name)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override RegisterStorage? GetRegister(string name)
         {
             throw new NotImplementedException();
         }

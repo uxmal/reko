@@ -40,7 +40,7 @@ namespace Reko.Arch.Mos6502
         private readonly Dictionary<uint, FlagGroupStorage> flagGroups;
 
         public Mos6502Architecture(IServiceProvider services, string archId, Dictionary<string, object> options)
-            : base(services, archId, options)
+            : base(services, archId, options, Registers.RegistersByName, null!)
         {
             CarryFlagMask = (uint)FlagM.CF;
             Endianness = EndianServices.Little;
@@ -105,13 +105,6 @@ namespace Reko.Arch.Mos6502
         public override RegisterStorage GetRegister(StorageDomain domain, BitRange range)
         {
             return Registers.All[(int) domain];
-        }
-
-        public override RegisterStorage? GetRegister(string name)
-        {
-            return Registers.RegistersByName.TryGetValue(name, out var reg)
-                ? reg
-                : null;
         }
 
         public override RegisterStorage[] GetRegisters()

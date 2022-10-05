@@ -33,7 +33,7 @@ namespace Reko.Arch.IA64
     public class IA64Architecture : ProcessorArchitecture
     {
         public IA64Architecture(IServiceProvider services, string archId, Dictionary<string, object> options)
-            : base(services, archId, options)
+            : base(services, archId, options, Registers.RegistersByName, null!)
         {
             Endianness = EndianServices.Little;
             this.FramePointerType = PrimitiveType.Ptr64;
@@ -84,19 +84,6 @@ namespace Reko.Arch.IA64
         }
 
         public override int? GetMnemonicNumber(string name)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override RegisterStorage? GetRegister(string name)
-        {
-            if (Registers.RegistersByName.TryGetValue(name, out var reg))
-                return reg;
-            else
-                return null;
-        }
-
-        public override RegisterStorage GetRegister(StorageDomain domain, BitRange range)
         {
             throw new NotImplementedException();
         }

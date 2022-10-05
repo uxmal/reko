@@ -38,10 +38,10 @@ namespace Reko.Arch.Avr.Avr32
             regs[14] = RegisterStorage.Reg32("lr", regs[14].Number);
             regs[15] = RegisterStorage.Reg32("pc", regs[15].Number);
             GpRegisters = regs;
-            RegistersByName = regs.ToDictionary(r => r.Name);
+            ByName = regs.ToDictionary(r => r.Name);
             sp = regs[13];
             pc = regs[15];
-            RegistersByDomain = regs.ToDictionary(r => r.Domain);
+            ByDomain = regs.ToDictionary(r => r.Domain);
 
             factory = new StorageFactory(StorageDomain.Register + 0x100);
             sr = factory.Reg32(nameof(sr));
@@ -155,8 +155,8 @@ namespace Reko.Arch.Avr.Avr32
              */
         }
 
-        public static Dictionary<string, RegisterStorage> RegistersByName { get; }
-        public static Dictionary<StorageDomain, RegisterStorage> RegistersByDomain { get; }
+        public static Dictionary<string, RegisterStorage> ByName { get; }
+        public static Dictionary<StorageDomain, RegisterStorage> ByDomain { get; }
         public static RegisterStorage[] GpRegisters { get; }
         public static RegisterStorage sp { get; }
         public static RegisterStorage pc { get; }

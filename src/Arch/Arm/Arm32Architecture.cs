@@ -46,7 +46,7 @@ namespace Reko.Arch.Arm
         private Dictionary<uint, FlagGroupStorage> flagGroups;
 
         public Arm32Architecture(IServiceProvider services, string archId, Dictionary<string, object> options)
-            : base(services, archId, options)
+            : base(services, archId, options, Registers.ByName, Registers.ByDomain)
         {
             Endianness = EndianServices.Little;
             InstructionBitSize = 32;
@@ -168,21 +168,6 @@ namespace Reko.Arch.Arm
             return new Arm32CallingConvention();
         }
 
-        public override RegisterStorage? GetRegister(StorageDomain domain, BitRange range)
-        {
-            if (Registers.RegistersByDomain.TryGetValue(domain, out var reg))
-                return reg;
-            else
-                return null;
-        }
-
-        public override RegisterStorage? GetRegister(string name)
-        {
-            if (Registers.RegistersByName.TryGetValue(name, out var reg))
-                return reg;
-            else
-                return null;
-        }
 
         public override RegisterStorage[] GetRegisters()
         {
@@ -214,15 +199,6 @@ namespace Reko.Arch.Arm
         {
             //$TOD: write a dictionary mapping ARM instructions to ARM_INS_xxx.
             return new SortedList<string, int>();
-        }
-
-        public override bool TryGetRegister(string name, [MaybeNullWhen(false)] out RegisterStorage reg)
-        {
-#if NATIVE
-            return regsByName.TryGetValue(name, out reg);'
-#else
-            return Registers.RegistersByName.TryGetValue(name, out reg);
-#endif
         }
 
         public override FlagGroupStorage GetFlagGroup(RegisterStorage flagRegister, uint grf)

@@ -38,7 +38,7 @@ namespace Reko.Arch.Avr
         private Dictionary<uint, FlagGroupStorage> flagGroups;
 
         public Avr32Architecture(IServiceProvider services, string archId, Dictionary<string, object> options)
-            : base(services, archId, options)
+            : base(services, archId, options, Registers.ByName, Registers.ByDomain)
         {
             this.CarryFlagMask = (uint) FlagM.CF;
             this.Endianness = EndianServices.Big;
@@ -101,21 +101,6 @@ namespace Reko.Arch.Avr
             throw new NotImplementedException();
         }
 
-        public override RegisterStorage? GetRegister(string name)
-        {
-            if (Registers.RegistersByName.TryGetValue(name, out var reg))
-                return reg;
-            else
-                return null;
-        }
-
-        public override RegisterStorage? GetRegister(StorageDomain domain, BitRange range)
-        {
-            return Registers.RegistersByDomain.TryGetValue(domain, out var reg)
-                ? reg
-                : null;
-        }
-
         public override RegisterStorage[] GetRegisters()
         {
             throw new NotImplementedException();
@@ -150,10 +135,6 @@ namespace Reko.Arch.Avr
             throw new NotImplementedException();
         }
 
-        public override bool TryGetRegister(string name, [MaybeNullWhen(false)] out RegisterStorage reg)
-        {
-            return Registers.RegistersByName.TryGetValue(name, out reg);
-        }
 
         public override bool TryParseAddress(string? txtAddr, [MaybeNullWhen(false)] out Address addr)
         {

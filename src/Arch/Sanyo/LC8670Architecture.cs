@@ -33,7 +33,7 @@ namespace Reko.Arch.Sanyo
     public class LC8670Architecture : ProcessorArchitecture
     {
         public LC8670Architecture(IServiceProvider services, string archId, Dictionary<string, object> options) 
-            : base(services, archId, options)
+            : base(services, archId, options, null, null)
         {
             Endianness = EndianServices.Little;
             this.FramePointerType = PrimitiveType.Byte;
@@ -89,16 +89,6 @@ namespace Reko.Arch.Sanyo
             throw new System.NotImplementedException();
         }
 
-        public override RegisterStorage? GetRegister(string name)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public override RegisterStorage? GetRegister(StorageDomain domain, BitRange range)
-        {
-            throw new System.NotImplementedException();
-        }
-
         public override RegisterStorage[] GetRegisters()
         {
             throw new System.NotImplementedException();
@@ -115,11 +105,6 @@ namespace Reko.Arch.Sanyo
         }
 
         public override Address? ReadCodeAddress(int size, EndianImageReader rdr, ProcessorState? state)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public override bool TryGetRegister(string name, [MaybeNullWhen(false)] out RegisterStorage reg)
         {
             throw new System.NotImplementedException();
         }

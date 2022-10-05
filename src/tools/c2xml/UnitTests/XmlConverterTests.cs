@@ -40,7 +40,8 @@ namespace Reko.Tools.C2Xml.UnitTests
     {
         public class FakeArchitecture : ProcessorArchitecture
         {
-            public FakeArchitecture(IServiceProvider services) : base(services, "fake", new Dictionary<string, object>())
+            public FakeArchitecture(IServiceProvider services) :
+                base(services, "fake", new Dictionary<string, object>(), null, null)
             {
                 base.PointerType = PrimitiveType.Ptr32;
             }
@@ -86,16 +87,6 @@ namespace Reko.Tools.C2Xml.UnitTests
                 throw new NotImplementedException();
             }
 
-            public override RegisterStorage GetRegister(string name)
-            {
-                throw new NotImplementedException();
-            }
-
-            public override RegisterStorage GetRegister(StorageDomain domain, BitRange bitRange)
-            {
-                throw new NotImplementedException();
-            }
-
             public override RegisterStorage[] GetRegisters()
             {
                 throw new NotImplementedException();
@@ -117,11 +108,6 @@ namespace Reko.Tools.C2Xml.UnitTests
             }
 
             public override Address ReadCodeAddress(int size, EndianImageReader rdr, ProcessorState state)
-            {
-                throw new NotImplementedException();
-            }
-
-            public override bool TryGetRegister(string name, out RegisterStorage reg)
             {
                 throw new NotImplementedException();
             }

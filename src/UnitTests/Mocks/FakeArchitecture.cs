@@ -67,7 +67,7 @@ namespace Reko.UnitTests.Mocks
 
 
         public FakeArchitecture(IServiceProvider services, string archId, Dictionary<string,object> options) 
-            : base(services, archId, options)
+            : base(services, archId, options, null!, null!)
         {
             this.CarryFlagMask = (uint)StatusFlags.C;
             this.Description = "Fake Architecture for testing";
@@ -211,12 +211,7 @@ namespace Reko.UnitTests.Mocks
 
         public override RegisterStorage GetRegister(StorageDomain domain, BitRange range)
         {
-            var reg = GetRegister(domain - StorageDomain.Register);
-            if (reg is null)
-                return null;
-            return reg.GetBitRange().Covers(range)
-                ? reg
-                : null;
+            return GetRegister(domain - StorageDomain.Register);
         }
 
         public override IEnumerable<FlagGroupStorage> GetSubFlags(FlagGroupStorage flags)
@@ -389,7 +384,8 @@ namespace Reko.UnitTests.Mocks
 
     public class FakeArchitecture64 : ProcessorArchitecture
     {
-        public FakeArchitecture64(IServiceProvider services) : base(services, "fakeArch64", new Dictionary<string, object>())
+        public FakeArchitecture64(IServiceProvider services) : 
+            base(services, "fakeArch64", new Dictionary<string, object>(), null, null)
         {
             Endianness = EndianServices.Little;
             FramePointerType = PrimitiveType.Ptr64;
@@ -438,16 +434,6 @@ namespace Reko.UnitTests.Mocks
         }
 
         public override int? GetMnemonicNumber(string name)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override RegisterStorage GetRegister(string name)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override RegisterStorage GetRegister(StorageDomain domain, BitRange range)
         {
             throw new NotImplementedException();
         }

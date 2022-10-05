@@ -48,7 +48,7 @@ namespace Reko.Arch.Cray
         private Decoder<YmpDisassembler, Mnemonic, CrayInstruction> rootDecoder;
 
         public CrayYmpArchitecture(IServiceProvider services, string archId, Dictionary<string, object> options)
-            : base(services, archId, options)
+            : base(services, archId, options, new(), new())
         {
             this.DefaultBase = 8;
             this.Endianness = EndianServices.Big;
@@ -131,11 +131,6 @@ namespace Reko.Arch.Cray
         }
 
         public override RegisterStorage GetRegister(string name)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override RegisterStorage GetRegister(StorageDomain domain, BitRange range)
         {
             throw new NotImplementedException();
         }

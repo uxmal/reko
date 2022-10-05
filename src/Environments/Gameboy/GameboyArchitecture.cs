@@ -36,7 +36,7 @@ namespace Reko.Environments.Gameboy
         /// Implements support for the LR35902 processor in the Nintendo Gameboy.
         /// </summary>
         public GameboyArchitecture(IServiceProvider services, string archId, Dictionary<string, object> options) 
-            : base(services, archId, options)
+            : base(services, archId, options, new(), new())
         {
             this.CarryFlagMask = (uint) FlagM.CF;
             this.Endianness = EndianServices.Little;
@@ -93,7 +93,7 @@ namespace Reko.Environments.Gameboy
             throw new NotImplementedException();
         }
 
-        public override RegisterStorage? GetRegister(string name)
+        public override RegisterStorage GetRegister(string name)
         {
             throw new NotImplementedException();
         }

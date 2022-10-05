@@ -426,6 +426,8 @@ namespace Reko.Core
     public abstract class ProcessorArchitecture : IProcessorArchitecture
     {
         private RegisterStorage? regStack;
+        protected Dictionary<string, RegisterStorage> regsByName;
+        protected Dictionary<StorageDomain, RegisterStorage> regsByDomain;
 
         /// <summary>
         /// Create an instance of the class.
@@ -439,13 +441,17 @@ namespace Reko.Core
         public ProcessorArchitecture(
             IServiceProvider services,
             string archId, 
-            Dictionary<string, object> options)
+            Dictionary<string, object> options,
+            Dictionary<string, RegisterStorage> regsByName,
+            Dictionary<StorageDomain, RegisterStorage> regsByDomain)
         {
             this.Services = services;
             this.Name = archId;
             this.Options = options;
             this.MemoryGranularity = 8; // Most architectures are byte-addressable.
             this.DefaultBase = 16;      // Most architectures display hexadecimal.
+            this.regsByName = regsByName;
+            this.regsByDomain = regsByDomain;
         }
 #nullable enable
 
@@ -524,9 +530,25 @@ namespace Reko.Core
             return null;
         }
 
-        public abstract RegisterStorage? GetRegister(string name);
+        public virtual RegisterStorage? GetRegister(string name)
+        {
+            if (regsByName is null)
+                throw new NotImplementedException("Need to provide regsByDomain.");
+            if (regsByName.TryGetValue(name, out var reg))
+                return reg;
+            else
+                return null;
+        }
 
-        public abstract RegisterStorage? GetRegister(StorageDomain domain, BitRange range);
+        public virtual RegisterStorage? GetRegister(StorageDomain domain, BitRange range)
+        {
+            if (regsByDomain is null)
+                throw new NotImplementedException("Need to provide regsByDomain.");
+            if (regsByDomain.TryGetValue(domain, out var reg) && reg.Covers(range))
+                return reg;
+            else
+                return null;
+        }
 
         public abstract RegisterStorage[] GetRegisters();
         public virtual FlagGroupStorage[] GetFlags() => throw new NotImplementedException("GetFlags not implemented this architecture.");
@@ -621,7 +643,12 @@ namespace Reko.Core
             return sb.ToString().ToUpperInvariant();
         }
             
-        public abstract bool TryGetRegister(string name, [MaybeNullWhen(false)] out RegisterStorage reg);
+        public virtual bool TryGetRegister(string name, [MaybeNullWhen(false)] out RegisterStorage reg)
+        {
+            if (this.regsByName is null)
+                throw new NotImplementedException($"Need a value for {nameof(regsByName)}.");
+            return regsByName.TryGetValue(name, out reg);
+        }
         public abstract FlagGroupStorage? GetFlagGroup(RegisterStorage flagRegister, uint grf);
         public abstract FlagGroupStorage? GetFlagGroup(string name);
         public abstract string GrfToString(RegisterStorage flagRegister, string prefix, uint grf);

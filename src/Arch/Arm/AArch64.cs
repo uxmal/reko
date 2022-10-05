@@ -44,7 +44,7 @@ namespace Reko.Arch.Arm
 #endif
 
         public Arm64Architecture(IServiceProvider services, string archId, Dictionary<string, object> options)
-            : base(services, archId, options)
+            : base(services, archId, options, Registers64.ByName, null)
         {
             this.Endianness = EndianServices.Little;
             this.InstructionBitSize = 32;
@@ -186,13 +186,6 @@ namespace Reko.Arch.Arm
             return null;
         }
 
-        public override RegisterStorage? GetRegister(string name)
-        {
-            if (Registers64.ByName.TryGetValue(name, out var reg))
-                return reg;
-            else
-                return null;
-        }
 
         public override RegisterStorage[] GetRegisters()
         {

@@ -32,7 +32,8 @@ namespace Reko.Arch.Altera
 {
     public class Nios2Architecture : ProcessorArchitecture
     {
-        public Nios2Architecture(IServiceProvider services, string archId, Dictionary<string, object> options) : base(services, archId, options)
+        public Nios2Architecture(IServiceProvider services, string archId, Dictionary<string, object> options) 
+            : base(services, archId, options, Nios2.Registers.ByName, null!)
         {
             base.Endianness = EndianServices.Little;
             base.CarryFlagMask = 0;
@@ -84,19 +85,6 @@ namespace Reko.Arch.Altera
         }
 
         public override int? GetMnemonicNumber(string name)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override RegisterStorage? GetRegister(string name)
-        {
-            return Nios2.Registers.RegsByName.TryGetValue(name, out var reg)
-                ? reg
-                : null;
-            throw new NotImplementedException();
-        }
-
-        public override RegisterStorage? GetRegister(StorageDomain domain, BitRange range)
         {
             throw new NotImplementedException();
         }

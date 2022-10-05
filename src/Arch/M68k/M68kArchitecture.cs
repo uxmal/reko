@@ -39,7 +39,7 @@ namespace Reko.Arch.M68k
     public class M68kArchitecture : ProcessorArchitecture
     {
         public M68kArchitecture(IServiceProvider services, string archId, Dictionary<string, object> options)
-            : base(services, archId, options)
+            : base(services, archId, options, new(), new())
         {
             InstructionBitSize = 16;
             Endianness = EndianServices.Big;
@@ -92,9 +92,13 @@ namespace Reko.Arch.M68k
             return (int)result;
         }
 
-        public override RegisterStorage GetRegister(StorageDomain domain, BitRange range)
+        public override RegisterStorage? GetRegister(StorageDomain domain, BitRange range)
         {
-            return Registers.GetRegister(domain - StorageDomain.Register);
+            var reg = Registers.GetRegister(domain - StorageDomain.Register);
+            if (reg is { } && reg.Covers(range))
+                return reg;
+            else
+                return null;
         }
 
         public override RegisterStorage? GetRegister(string name)

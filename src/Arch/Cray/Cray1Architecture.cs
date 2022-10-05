@@ -32,7 +32,7 @@ namespace Reko.Arch.Cray
     public class Cray1Architecture : ProcessorArchitecture
     {
         public Cray1Architecture(IServiceProvider services, string archId, Dictionary<string, object> options)
-            : base(services, archId, options)
+            : base(services, archId, options, null!, null!)
         {
             this.DefaultBase = 8;
             this.Endianness = EndianServices.Big;
@@ -84,16 +84,6 @@ namespace Reko.Arch.Cray
         }
 
         public override int? GetMnemonicNumber(string name)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override RegisterStorage GetRegister(string name)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override RegisterStorage GetRegister(StorageDomain domain, BitRange range)
         {
             throw new NotImplementedException();
         }

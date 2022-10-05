@@ -38,7 +38,7 @@ namespace Reko.Arch.Avr
     {
 
         public Avr8Architecture(IServiceProvider services, string archId, Dictionary<string, object> options)
-            : base(services, archId, options)
+            : base(services, archId, options, null, null)
         {
             this.Endianness = EndianServices.Little;
             this.PointerType = PrimitiveType.Ptr16;
@@ -100,10 +100,6 @@ namespace Reko.Arch.Avr
             throw new NotImplementedException();
         }
 
-        public override RegisterStorage GetRegister(string name)
-        {
-            throw new NotImplementedException();
-        }
 
         public override RegisterStorage GetRegister(StorageDomain domain, BitRange range)
         {

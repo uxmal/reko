@@ -51,7 +51,7 @@ namespace Reko.Arch.MicrochipPIC.Common
         /// Instantiates a new PIC architecture for the specified PIC generic family.
         /// </summary>
         public PICArchitecture(IServiceProvider services, string archId, Dictionary<string, object> options)
-            : base(services, archId, options)
+            : base(services, archId, options, null, null)
         {
             flagGroups = new Dictionary<uint, FlagGroupStorage>();
             Endianness = EndianServices.Little;

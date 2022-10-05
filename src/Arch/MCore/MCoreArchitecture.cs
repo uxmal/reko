@@ -34,7 +34,7 @@ namespace Reko.Arch.MCore
     public class MCoreArchitecture : ProcessorArchitecture
     {
         public MCoreArchitecture(IServiceProvider services, string archId, Dictionary<string, object> options)
-            : base(services, archId, options)
+            : base(services, archId, options, null!, null!)
         {
             //this.CarryFlagMask = ???
             this.Endianness = EndianServices.Big;
@@ -90,15 +90,6 @@ namespace Reko.Arch.MCore
             throw new NotImplementedException();
         }
 
-        public override RegisterStorage? GetRegister(string name)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override RegisterStorage? GetRegister(StorageDomain domain, BitRange range)
-        {
-            throw new NotImplementedException();
-        }
 
         public override RegisterStorage[] GetRegisters()
         {

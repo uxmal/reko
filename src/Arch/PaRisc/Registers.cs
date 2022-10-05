@@ -44,8 +44,8 @@ namespace Reko.Arch.PaRisc
         public static readonly Dictionary<int, RegisterStorage> ControlRegisters;
 
         public static readonly FlagGroupStorage CF;
-        public Dictionary<StorageDomain, RegisterStorage> RegistersByStorageDomain { get; }
-        public Dictionary<string, RegisterStorage> RegistersByName { get; }
+        public Dictionary<StorageDomain, RegisterStorage> ByDomain { get; }
+        public Dictionary<string, RegisterStorage> ByName { get; }
 
         public Registers(PrimitiveType gpRegSize)
         {
@@ -61,9 +61,9 @@ namespace Reko.Arch.PaRisc
             //$BUG: triple-check the formatting of 6-bit floating point
             // register identifiers.
             FpRegs32 = FpLefts.Concat(FpRights).ToArray();
-            RegistersByStorageDomain =
+            ByDomain =
                 GpRegs.ToDictionary(r => r.Domain);
-            RegistersByName = GpRegs.Concat(FpRegs)
+            ByName = GpRegs.Concat(FpRegs)
                 .Concat(FpLefts)
                 .Concat(FpRights)
                 .ToDictionary(r => r.Name);

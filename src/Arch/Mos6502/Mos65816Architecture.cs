@@ -42,7 +42,7 @@ namespace Reko.Arch.Mos6502
         public static readonly PrimitiveType Word24;
 
         public Mos65816Architecture(IServiceProvider services, string archId, Dictionary<string, object> options)
-            : base(services, archId, options)
+            : base(services, archId, options, Registers.RegistersByName, null)
         {
 
             CarryFlagMask = (uint) FlagM.CF;
@@ -95,16 +95,6 @@ namespace Reko.Arch.Mos6502
         }
 
         public override int? GetMnemonicNumber(string name)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override RegisterStorage? GetRegister(string name)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override RegisterStorage? GetRegister(StorageDomain domain, BitRange range)
         {
             throw new NotImplementedException();
         }

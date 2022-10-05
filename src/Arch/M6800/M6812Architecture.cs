@@ -37,7 +37,7 @@ namespace Reko.Arch.M6800
     public class M6812Architecture : ProcessorArchitecture
     {
         public M6812Architecture(IServiceProvider services, string archId, Dictionary<string, object> options)
-            : base(services, archId, options)
+            : base(services, archId, options, null!, null!)
         {
             Endianness = EndianServices.Big;
             InstructionBitSize = 8;
@@ -91,16 +91,6 @@ namespace Reko.Arch.M6800
         }
 
         public override int? GetMnemonicNumber(string name)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override RegisterStorage GetRegister(StorageDomain domain, BitRange range)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override RegisterStorage GetRegister(string name)
         {
             throw new NotImplementedException();
         }

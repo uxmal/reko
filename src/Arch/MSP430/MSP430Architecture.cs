@@ -37,7 +37,7 @@ namespace Reko.Arch.Msp430
         public readonly static PrimitiveType Word20 = PrimitiveType.CreateWord(20);
 
         public Msp430Architecture(IServiceProvider services, string archId, Dictionary<string, object> options)
-            : base(services, archId, options)
+            : base(services, archId, options, Registers.ByName, null!)
         {
             this.CarryFlagMask = (uint) FlagM.CF;
             this.InstructionBitSize = 16;
@@ -107,10 +107,13 @@ namespace Reko.Arch.Msp430
                 : null;
         }
 
-
-        public override RegisterStorage GetRegister(StorageDomain domain, BitRange range)
+        public override RegisterStorage? GetRegister(StorageDomain domain, BitRange range)
         {
-            return Registers.GpRegisters[(int) domain];
+            var reg = Registers.GpRegisters[(int) domain];
+            if (reg is { } && reg.Covers(range))
+                return reg;
+            else
+                return null;
         }
 
         public override RegisterStorage[] GetRegisters()

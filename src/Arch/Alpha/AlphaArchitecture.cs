@@ -34,7 +34,7 @@ namespace Reko.Arch.Alpha
     public class AlphaArchitecture : ProcessorArchitecture
     {
         public AlphaArchitecture(IServiceProvider services, string archId, Dictionary<string, object> options)
-            : base(services, archId, options)
+            : base(services, archId, options, Registers.ByName, Registers.ByDomain)
         {
             this.Endianness = EndianServices.Little;
             this.WordWidth = PrimitiveType.Word64;
@@ -99,12 +99,6 @@ namespace Reko.Arch.Alpha
                 : null;
         }
 
-        public override RegisterStorage? GetRegister(StorageDomain domain, BitRange range)
-        {
-            return Registers.ByDomain.TryGetValue(domain, out var reg)
-                ? reg
-                : null;
-        }
         public override RegisterStorage[] GetRegisters()
         {
             return Registers.AllRegisters.Values.ToArray();

@@ -33,7 +33,11 @@ namespace Reko.Arch.Etrax
 {
     public class EtraxArchitecture : ProcessorArchitecture
     {
-        public EtraxArchitecture(IServiceProvider services, string archId, Dictionary<string, object> options) : base(services, archId, options)
+        public EtraxArchitecture(
+            IServiceProvider services,
+            string archId, 
+            Dictionary<string, object> options) 
+            : base(services, archId, options, new(), new())
         {
             this.CarryFlagMask = (uint) FlagM.CF;
             this.Endianness = EndianServices.Little;
@@ -87,16 +91,6 @@ namespace Reko.Arch.Etrax
         }
 
         public override int? GetMnemonicNumber(string name)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override RegisterStorage? GetRegister(string name)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override RegisterStorage? GetRegister(StorageDomain domain, BitRange range)
         {
             throw new NotImplementedException();
         }

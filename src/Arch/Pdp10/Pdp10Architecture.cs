@@ -35,7 +35,8 @@ namespace Reko.Arch.Pdp10
 {
     public class Pdp10Architecture : ProcessorArchitecture
     {
-        public Pdp10Architecture(IServiceProvider services, string archId, Dictionary<string, object> options) : base(services, archId, options)
+        public Pdp10Architecture(IServiceProvider services, string archId, Dictionary<string, object> options)
+            : base(services, archId, options, null, null)
         {
             this.CarryFlagMask = 0; //$TODO:
             this.DefaultBase = 8;
@@ -103,11 +104,6 @@ namespace Reko.Arch.Pdp10
         }
 
         public override int? GetMnemonicNumber(string name)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override RegisterStorage? GetRegister(string name)
         {
             throw new NotImplementedException();
         }

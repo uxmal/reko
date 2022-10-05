@@ -36,7 +36,8 @@ namespace Reko.Arch.Infineon
 {
     public class TriCoreArchitecture : ProcessorArchitecture
     {
-        public TriCoreArchitecture(IServiceProvider services, string archId, Dictionary<string, object> options) : base(services, archId, options)
+        public TriCoreArchitecture(IServiceProvider services, string archId, Dictionary<string, object> options) 
+            : base(services, archId, options, Registers.ByName, Registers.ByDomain)
         {
             this.Endianness = EndianServices.Little;
             this.FramePointerType = PrimitiveType.Ptr32;
@@ -96,19 +97,6 @@ namespace Reko.Arch.Infineon
             throw new NotImplementedException();
         }
 
-        public override RegisterStorage GetRegister(string name)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override RegisterStorage? GetRegister(StorageDomain domain, BitRange range)
-        {
-            if (Registers.RegistersByDomain.TryGetValue(domain, out var reg))
-                return reg;
-            else
-                return null;
-        }
-
         public override RegisterStorage[] GetRegisters()
         {
             throw new NotImplementedException();
@@ -146,11 +134,6 @@ namespace Reko.Arch.Infineon
         }
 
         public override Address ReadCodeAddress(int size, EndianImageReader rdr, ProcessorState? state)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override bool TryGetRegister(string name, [MaybeNullWhen(false)] out RegisterStorage reg)
         {
             throw new NotImplementedException();
         }
