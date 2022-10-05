@@ -149,13 +149,13 @@ Eq_51: (fn (ptr32 Eq_50) ())
 	T_51 (in fn00401050 @ 0040107A : ptr32)
 	T_52 (in signature of fn00401050 @ 00401050 : void)
 	T_820 (in fn00401050 @ 0040173F : ptr32)
-Eq_54: (fn void (ui32, word32))
+Eq_54: (fn word32 (ui32, word32))
 	T_54 (in _stdio_common_vfprintf @ 00401084 : ptr32)
 Eq_63: (union "Eq_63" (int32 u0) (DWORD u1))
 	T_63 (in eax @ 0040108F : Eq_63)
 	T_132 (in eax_279 @ 0040119B : Eq_63)
 	T_197 (in 0xFF<32> @ 004011C1 : word32)
-	T_306 (in get_initial_narrow_environment() @ 0040124E : void)
+	T_306 (in get_initial_narrow_environment() @ 0040124E : word32)
 	T_310 (in Mem223[esp_216 + -4<i32>:word32] @ 0040124E : word32)
 	T_323 (in eax_230 @ 00401253 : Eq_63)
 	T_326 (in fn00401000() @ 00401253 : word32)
@@ -459,7 +459,7 @@ Eq_540: (union "Eq_540" (ui32 u0) (byte u1))
 	T_1016 (in Mem23[0x00403004<p32>:word32] @ 004019A7 : word32)
 Eq_562: (fn word32 (word32))
 	T_562 (in initialize_onexit_table @ 004014DA : ptr32)
-Eq_568: (fn void (word32))
+Eq_568: (fn word32 (word32))
 	T_568 (in initialize_onexit_table @ 004014E5 : ptr32)
 Eq_608: (struct "Eq_608" (400000 word32 dw400000) (400018 word16 w400018))
 	T_608 (in eax_25 @ 00401562 : (ptr32 Eq_608))
@@ -754,10 +754,10 @@ T_32: (in 1<32> @ 00401069 : word32)
   Class: Eq_32
   DataType: word32
   OrigDataType: word32
-T_33: (in _acrt_iob_func(1<32>) @ 00401069 : void)
+T_33: (in _acrt_iob_func(1<32>) @ 00401069 : word32)
   Class: Eq_29
   DataType: word32
-  OrigDataType: void
+  OrigDataType: word32
 T_34: (in 8<i32> @ 00401075 : int32)
   Class: Eq_34
   DataType: int32
@@ -870,10 +870,10 @@ T_61: (in Mem29[eax_30 + 4<i32>:word32] @ 00401084 : word32)
   Class: Eq_61
   DataType: word32
   OrigDataType: word32
-T_62: (in _stdio_common_vfprintf(eax_30->dw0000, eax_30->dw0004) @ 00401084 : void)
+T_62: (in _stdio_common_vfprintf(eax_30->dw0000, eax_30->dw0004) @ 00401084 : word32)
   Class: Eq_62
-  DataType: void
-  OrigDataType: void
+  DataType: word32
+  OrigDataType: word32
 T_63: (in eax @ 0040108F : Eq_63)
   Class: Eq_63
   DataType: Eq_63
@@ -1846,10 +1846,10 @@ T_305: (in signature of get_initial_narrow_environment : void)
   Class: Eq_305
   DataType: Eq_305
   OrigDataType: 
-T_306: (in get_initial_narrow_environment() @ 0040124E : void)
+T_306: (in get_initial_narrow_environment() @ 0040124E : word32)
   Class: Eq_63
   DataType: Eq_63
-  OrigDataType: void
+  OrigDataType: word32
 T_307: (in esp_216 @ 0040124E : word32)
   Class: Eq_307
   DataType: (ptr32 Eq_307)
@@ -2882,10 +2882,10 @@ T_564: (in 0x40333C<32> @ 004014DA : word32)
   Class: Eq_564
   DataType: word32
   OrigDataType: word32
-T_565: (in initialize_onexit_table(0x40333C<32>) @ 004014DA : void)
+T_565: (in initialize_onexit_table(0x40333C<32>) @ 004014DA : word32)
   Class: Eq_565
   DataType: word32
-  OrigDataType: void
+  OrigDataType: word32
 T_566: (in 0<32> @ 004014DA : word32)
   Class: Eq_565
   DataType: word32
@@ -2906,10 +2906,10 @@ T_570: (in 0x403348<32> @ 004014E5 : word32)
   Class: Eq_570
   DataType: word32
   OrigDataType: word32
-T_571: (in initialize_onexit_table(0x403348<32>) @ 004014E5 : void)
+T_571: (in initialize_onexit_table(0x403348<32>) @ 004014E5 : word32)
   Class: Eq_571
-  DataType: void
-  OrigDataType: void
+  DataType: word32
+  OrigDataType: word32
 T_572: (in edi_235 @ 00401543 : word32)
   Class: Eq_572
   DataType: word32
@@ -3410,10 +3410,10 @@ T_696: (in 0x40333C<32> @ 0040163C : word32)
   Class: Eq_696
   DataType: word32
   OrigDataType: word32
-T_697: (in register_onexit_function(0x40333C<32>) @ 0040163C : void)
+T_697: (in register_onexit_function(0x40333C<32>) @ 0040163C : word32)
   Class: Eq_680
   DataType: word32
-  OrigDataType: void
+  OrigDataType: word32
 T_698: (in crt_atexit @ 00401630 : ptr32)
   Class: Eq_698
   DataType: (ptr32 Eq_698)
@@ -3422,10 +3422,10 @@ T_699: (in signature of crt_atexit : void)
   Class: Eq_699
   DataType: Eq_699
   OrigDataType: 
-T_700: (in crt_atexit() @ 00401630 : void)
+T_700: (in crt_atexit() @ 00401630 : word32)
   Class: Eq_680
   DataType: word32
-  OrigDataType: void
+  OrigDataType: word32
 T_701: (in 0<32> @ 0040164D : word32)
   Class: Eq_701
   DataType: word32
@@ -3846,10 +3846,10 @@ T_805: (in 0x30000<32> @ 0040172E : word32)
   Class: Eq_805
   DataType: word32
   OrigDataType: word32
-T_806: (in controlfp_s(0<32>, 0x10000<32>, 0x30000<32>) @ 0040172E : void)
+T_806: (in controlfp_s(0<32>, 0x10000<32>, 0x30000<32>) @ 0040172E : word32)
   Class: Eq_806
   DataType: word32
-  OrigDataType: void
+  OrigDataType: word32
 T_807: (in 0<32> @ 0040172E : word32)
   Class: Eq_806
   DataType: word32
@@ -5754,7 +5754,7 @@ typedef struct Eq_50 {
 
 typedef Eq_50 * (Eq_51)();
 
-typedef void (Eq_54)(ui32, word32);
+typedef word32 (Eq_54)(ui32, word32);
 
 typedef union Eq_63 {
 	int32 u0;
@@ -5937,7 +5937,7 @@ typedef union Eq_540 {
 
 typedef word32 (Eq_562)(word32);
 
-typedef void (Eq_568)(word32);
+typedef word32 (Eq_568)(word32);
 
 typedef struct Eq_608 {
 	word32 dw400000;	// 400000

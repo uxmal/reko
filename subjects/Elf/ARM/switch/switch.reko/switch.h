@@ -54,7 +54,7 @@ Eq_25: (fn void ())
 Eq_35: (fn void ())
 	T_35 (in abort @ 0000835C : ptr32)
 	T_36 (in signature of abort : void)
-Eq_100: (fn void ())
+Eq_100: (fn word32 ())
 	T_100 (in fn00000000 @ 00008420 : ptr32)
 Eq_103: (union "Eq_103" (int32 u0) (uint32 u1))
 	T_103 (in fp @ 00008430 : Eq_103)
@@ -582,10 +582,10 @@ T_101: (in signature of fn00000000 : void)
   Class: Eq_101
   DataType: Eq_101
   OrigDataType: 
-T_102: (in fn00000000() @ 00008420 : void)
+T_102: (in fn00000000() @ 00008420 : word32)
   Class: Eq_102
-  DataType: void
-  OrigDataType: void
+  DataType: word32
+  OrigDataType: word32
 T_103: (in fp @ 00008430 : Eq_103)
   Class: Eq_103
   DataType: Eq_103
@@ -1609,7 +1609,7 @@ typedef void (Eq_25)();
 
 typedef void (Eq_35)();
 
-typedef void (Eq_100)();
+typedef word32 (Eq_100)();
 
 typedef union Eq_103 {
 	int32 u0;

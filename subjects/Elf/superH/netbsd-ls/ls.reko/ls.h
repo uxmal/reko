@@ -21750,7 +21750,7 @@ T_5105: (in signature of fn605D4F22 : void)
   Class: Eq_5105
   DataType: Eq_5105
   OrigDataType: 
-T_5106: (in fn605D4F22() @ 00404272 : void)
+T_5106: (in fn605D4F22() @ 00404272 : word32)
   Class: Eq_5106
   DataType: up32
   OrigDataType: up32

@@ -17,7 +17,7 @@ Eq_1: (struct "Globals"
 		(601020 (ptr64 code) puts_GOT)
 		(601028 (ptr64 code) calloc_GOT))
 	globals_t (in globals : (ptr64 (struct "Globals")))
-Eq_6: (fn void ())
+Eq_6: (fn word64 ())
 	T_6 (in __gmon_start__ @ 0000000000400438 : ptr64)
 Eq_8: (fn void ())
 	T_8 (in rdx @ 0000000000400438 : (ptr64 Eq_8))
@@ -71,10 +71,10 @@ T_6: (in __gmon_start__ @ 0000000000400438 : ptr64)
   Class: Eq_6
   DataType: (ptr64 Eq_6)
   OrigDataType: (ptr64 (fn T_7 ()))
-T_7: (in __gmon_start__() @ 0000000000400438 : void)
+T_7: (in __gmon_start__() @ 0000000000400438 : word64)
   Class: Eq_7
-  DataType: void
-  OrigDataType: void
+  DataType: word64
+  OrigDataType: word64
 T_8: (in rdx @ 0000000000400438 : (ptr64 Eq_8))
   Class: Eq_8
   DataType: (ptr64 Eq_8)
@@ -274,7 +274,7 @@ typedef struct Globals {
 	<anonymous> * calloc_GOT;	// 601028
 } Eq_1;
 
-typedef void (Eq_6)();
+typedef word64 (Eq_6)();
 
 typedef void (Eq_8)();
 

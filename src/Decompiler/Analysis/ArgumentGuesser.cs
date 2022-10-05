@@ -67,6 +67,7 @@ namespace Reko.Analysis
             {
                 for (int i = 0; i < block.Statements.Count; ++i)
                 {
+
                     if (eventListener.IsCanceled())
                         return;
                     var stm = block.Statements[i]; 
@@ -284,15 +285,16 @@ namespace Reko.Analysis
                     args.Add(sidTmp.Identifier);
                 }
             }
-            var application = new Application(pc, VoidType.Instance, args.ToArray());
             Instruction newInstr;
             if (gret is not null)
             {
                 var idRet = MatchingReturnIdentifier(call, gret);
+                var application = new Application(pc, idRet.DataType, args.ToArray());
                 newInstr = new Assignment(idRet, application);
             }
             else
             {
+                var application = new Application(pc, VoidType.Instance, args.ToArray());
                 newInstr = new SideEffect(application);
             }
             ssa.RemoveUses(stmCall);

@@ -445,7 +445,7 @@ Eq_1: (struct "Globals"
 		(61B350 Eq_16 t61B350)
 		(61B358 Eq_16 t61B358))
 	globals_t (in globals : (ptr64 (struct "Globals")))
-Eq_6: (fn void ())
+Eq_6: (fn word64 ())
 	T_6 (in __gmon_start__ @ 0000000000402178 : ptr64)
 Eq_11: (segment "Eq_11" (28 word64 qw0028))
 	T_11 (in fs @ 0000000000402178 : (ptr32 Eq_11))
@@ -6082,10 +6082,10 @@ T_7: (in signature of __gmon_start__ : void)
   Class: Eq_7
   DataType: Eq_7
   OrigDataType: 
-T_8: (in __gmon_start__() @ 0000000000402178 : void)
+T_8: (in __gmon_start__() @ 0000000000402178 : word64)
   Class: Eq_8
-  DataType: void
-  OrigDataType: void
+  DataType: word64
+  OrigDataType: word64
 T_9: (in rsi @ 0000000000402178 : (ptr64 (ptr64 char)))
   Class: Eq_9
   DataType: (ptr64 (ptr64 char))
@@ -70250,7 +70250,7 @@ struct Globals {
 	Eq_16 t61B358;	// 61B358
 } Eq_1;
 
-typedef void (Eq_6)();
+typedef word64 (Eq_6)();
 
 typedef union Eq_9 {
 	up32 u0;

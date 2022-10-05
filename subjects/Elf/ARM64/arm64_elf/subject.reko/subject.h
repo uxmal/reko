@@ -37,7 +37,7 @@ Eq_16: (fn void ())
 Eq_28: (fn void ())
 	T_28 (in abort @ 0000000000001494 : ptr64)
 	T_29 (in signature of abort : void)
-Eq_35: (fn void ())
+Eq_35: (fn word64 ())
 	T_35 (in __gmon_start__ @ 00000000000014A4 : ptr64)
 Eq_38: (union "Eq_38" (int64 u0) (ptr64 u1))
 	T_38 (in 0000000000020008 @ 00000000000014C4 : ptr64)
@@ -194,10 +194,10 @@ T_36: (in signature of __gmon_start__ : void)
   Class: Eq_36
   DataType: Eq_36
   OrigDataType: 
-T_37: (in __gmon_start__() @ 00000000000014A4 : void)
+T_37: (in __gmon_start__() @ 00000000000014A4 : word64)
   Class: Eq_37
-  DataType: void
-  OrigDataType: void
+  DataType: word64
+  OrigDataType: word64
 T_38: (in 0000000000020008 @ 00000000000014C4 : ptr64)
   Class: Eq_38
   DataType: int64
@@ -338,7 +338,7 @@ typedef void (Eq_16)();
 
 typedef void (Eq_28)();
 
-typedef void (Eq_35)();
+typedef word64 (Eq_35)();
 
 typedef union Eq_38 {
 	int64 u0;

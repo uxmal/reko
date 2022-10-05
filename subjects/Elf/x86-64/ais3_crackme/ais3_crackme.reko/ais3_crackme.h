@@ -45,7 +45,7 @@ Eq_21: (fn void ())
 Eq_30: (fn void ())
 	T_30 (in __halt @ 0000000000400439 : ptr32)
 	T_31 (in signature of __halt : void)
-Eq_37: (fn void ())
+Eq_37: (fn word64 ())
 	T_37 (in __gmon_start__ @ 000000000040044C : ptr64)
 Eq_49: (fn void ())
 	T_49 (in deregister_tm_clones @ 00000000004004DD : ptr64)
@@ -227,10 +227,10 @@ T_37: (in __gmon_start__ @ 000000000040044C : ptr64)
   Class: Eq_37
   DataType: (ptr64 Eq_37)
   OrigDataType: (ptr64 (fn T_38 ()))
-T_38: (in __gmon_start__() @ 000000000040044C : void)
+T_38: (in __gmon_start__() @ 000000000040044C : word64)
   Class: Eq_38
-  DataType: void
-  OrigDataType: void
+  DataType: word64
+  OrigDataType: word64
 T_39: (in false @ 0000000000400473 : bool)
   Class: Eq_39
   DataType: bool
@@ -802,7 +802,7 @@ typedef void (Eq_21)();
 
 typedef void (Eq_30)();
 
-typedef void (Eq_37)();
+typedef word64 (Eq_37)();
 
 typedef void (Eq_49)();
 

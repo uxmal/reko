@@ -235,7 +235,7 @@ Eq_159: DWORD
 	T_516 (in 1<32> @ 10001408 : word32)
 	T_520 (in Mem76[ebp_13 + -28<i32>:word32] @ 100013E1 : word32)
 	T_521 (in 0<32> @ 100013E1 : word32)
-	T_525 (in fn00000000(ebx_113, edx, ecx) @ 100013DA : void)
+	T_525 (in fn00000000(ebx_113, edx, ecx) @ 100013DA : word32)
 	T_528 (in Mem74[ebp_13 + -28<i32>:word32] @ 100013DA : word32)
 	T_537 (in Mem85[esp_80 + -4<i32>:word32] @ 100013E8 : word32)
 	T_541 (in eax_90 @ 100013EA : Eq_159)
@@ -263,7 +263,7 @@ Eq_159: DWORD
 	T_662 (in Mem194[ebp_13 + -28<i32>:word32] @ 10001443 : word32)
 	T_663 (in ebp_13->tFFFFFFE4 & eax_197 @ 10001443 : word32)
 	T_666 (in Mem214[ebp_13 + -28<i32>:word32] @ 10001443 : word32)
-	T_673 (in fn00000000(ebx_198, esi_200, edi_201) @ 1000145A : void)
+	T_673 (in fn00000000(ebx_198, esi_200, edi_201) @ 1000145A : word32)
 	T_676 (in Mem247[ebp_13 + -28<i32>:word32] @ 1000145A : word32)
 	T_677 (in 0xFFFFFFFF<32> @ 10001493 : word32)
 	T_679 (in Mem4[0x10003008<p32>:word32] @ 10001493 : word32)
@@ -2644,10 +2644,10 @@ T_524: (in signature of fn00000000 : void)
   Class: Eq_524
   DataType: Eq_524
   OrigDataType: 
-T_525: (in fn00000000(ebx_113, edx, ecx) @ 100013DA : void)
+T_525: (in fn00000000(ebx_113, edx, ecx) @ 100013DA : word32)
   Class: Eq_159
   DataType: Eq_159
-  OrigDataType: void
+  OrigDataType: word32
 T_526: (in -28<i32> @ 100013DA : int32)
   Class: Eq_526
   DataType: int32
@@ -3236,10 +3236,10 @@ T_672: (in signature of fn00000000 : void)
   Class: Eq_672
   DataType: Eq_672
   OrigDataType: 
-T_673: (in fn00000000(ebx_198, esi_200, edi_201) @ 1000145A : void)
+T_673: (in fn00000000(ebx_198, esi_200, edi_201) @ 1000145A : word32)
   Class: Eq_159
   DataType: Eq_159
-  OrigDataType: void
+  OrigDataType: word32
 T_674: (in -28<i32> @ 1000145A : int32)
   Class: Eq_674
   DataType: int32

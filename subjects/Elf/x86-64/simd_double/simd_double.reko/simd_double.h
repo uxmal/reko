@@ -26,7 +26,7 @@ Eq_1: (struct "Globals"
 		(201040 word64 qw201040)
 		(201048 byte b201048))
 	globals_t (in globals : (ptr64 (struct "Globals")))
-Eq_6: (fn void ())
+Eq_6: (fn word64 ())
 	T_6 (in __gmon_start__ @ 00000000000005B0 : ptr64)
 Eq_8: (fn void ())
 	T_8 (in rdx @ 00000000000005B0 : (ptr64 Eq_8))
@@ -50,7 +50,7 @@ Eq_24: (fn void ())
 Eq_33: (fn void ())
 	T_33 (in __halt @ 000000000000064A : ptr32)
 	T_34 (in signature of __halt : void)
-Eq_39: (fn void ())
+Eq_39: (fn word64 ())
 	T_39 (in _ITM_deregisterTMCloneTable @ 0000000000000671 : ptr64)
 	T_41 (in 0<64> @ 0000000000000671 : word64)
 Eq_45: (union "Eq_45" (int64 u0) (ptr64 u1))
@@ -65,13 +65,13 @@ Eq_52: (union "Eq_52" (int64 u0) (uint64 u1))
 	T_52 (in rsi_9 >> 3<64> >> 0x3F<64> @ 00000000000006B6 : word64)
 Eq_53: (union "Eq_53" (int64 u0) (uint64 u1))
 	T_53 (in (rsi_9 >> 3<64>) + ((rsi_9 >> 3<64>) >>u 0x3F<64>) @ 00000000000006B6 : word64)
-Eq_58: (fn void ())
+Eq_58: (fn word64 ())
 	T_58 (in _ITM_registerTMCloneTable @ 00000000000006C2 : ptr64)
 	T_60 (in 0<64> @ 00000000000006C2 : word64)
 Eq_71: (fn void ())
 	T_71 (in deregister_tm_clones @ 0000000000000703 : ptr64)
 	T_72 (in signature of deregister_tm_clones @ 0000000000000650 : void)
-Eq_77: (fn void (word64))
+Eq_77: (fn word64 (word64))
 	T_77 (in __cxa_finalize @ 00000000000006FE : ptr64)
 Eq_82: (fn void ())
 	T_82 (in register_tm_clones @ 0000000000000725 : ptr64)
@@ -82,7 +82,7 @@ Eq_87: size_t
 	T_134 (in 0x2000<64> @ 00000000000008B8 : word64)
 	T_139 (in 0x2000<64> @ 00000000000008D1 : word64)
 	T_144 (in 0x2000<64> @ 00000000000008EA : word64)
-Eq_103: (fn void (uint64, ptr64, Eq_87, uint64))
+Eq_103: (fn word64 (uint64, ptr64, Eq_87, uint64))
 	T_103 (in posix_memalign @ 000000000000077E : ptr64)
 Eq_113: (fn void ((ptr64 (arr real64))))
 	T_113 (in free @ 00000000000007A0 : ptr64)
@@ -162,10 +162,10 @@ T_6: (in __gmon_start__ @ 00000000000005B0 : ptr64)
   Class: Eq_6
   DataType: (ptr64 Eq_6)
   OrigDataType: (ptr64 (fn T_7 ()))
-T_7: (in __gmon_start__() @ 00000000000005B0 : void)
+T_7: (in __gmon_start__() @ 00000000000005B0 : word64)
   Class: Eq_7
-  DataType: void
-  OrigDataType: void
+  DataType: word64
+  OrigDataType: word64
 T_8: (in rdx @ 00000000000005B0 : (ptr64 Eq_8))
   Class: Eq_8
   DataType: (ptr64 Eq_8)
@@ -306,10 +306,10 @@ T_42: (in _ITM_deregisterTMCloneTable == null @ 0000000000000671 : bool)
   Class: Eq_42
   DataType: bool
   OrigDataType: bool
-T_43: (in _ITM_deregisterTMCloneTable() @ 0000000000000674 : void)
+T_43: (in _ITM_deregisterTMCloneTable() @ 0000000000000674 : word64)
   Class: Eq_43
-  DataType: void
-  OrigDataType: void
+  DataType: word64
+  OrigDataType: word64
 T_44: (in rsi_9 @ 000000000000069F : int64)
   Class: Eq_44
   DataType: int64
@@ -382,10 +382,10 @@ T_61: (in _ITM_registerTMCloneTable == null @ 00000000000006C2 : bool)
   Class: Eq_61
   DataType: bool
   OrigDataType: bool
-T_62: (in _ITM_registerTMCloneTable() @ 00000000000006C5 : void)
+T_62: (in _ITM_registerTMCloneTable() @ 00000000000006C5 : word64)
   Class: Eq_62
-  DataType: void
-  OrigDataType: void
+  DataType: word64
+  OrigDataType: word64
 T_63: (in 0000000000201048 @ 00000000000006E7 : ptr64)
   Class: Eq_63
   DataType: (ptr64 byte)
@@ -458,10 +458,10 @@ T_80: (in Mem10[0x0000000000201040<p64>:word64] @ 00000000000006FE : word64)
   Class: Eq_80
   DataType: word64
   OrigDataType: word64
-T_81: (in __cxa_finalize(g_qw201040) @ 00000000000006FE : void)
+T_81: (in __cxa_finalize(g_qw201040) @ 00000000000006FE : word64)
   Class: Eq_81
-  DataType: void
-  OrigDataType: void
+  DataType: word64
+  OrigDataType: word64
 T_82: (in register_tm_clones @ 0000000000000725 : ptr64)
   Class: Eq_82
   DataType: (ptr64 Eq_82)
@@ -562,10 +562,10 @@ T_106: (in fp - 16<i64> @ 000000000000077E : word64)
   Class: Eq_106
   DataType: ptr64
   OrigDataType: ptr64
-T_107: (in posix_memalign(qwLoc28_55, fp - 16<i64>, rdi, qwLoc28_55) @ 000000000000077E : void)
+T_107: (in posix_memalign(qwLoc28_55, fp - 16<i64>, rdi, qwLoc28_55) @ 000000000000077E : word64)
   Class: Eq_107
-  DataType: void
-  OrigDataType: void
+  DataType: word64
+  OrigDataType: word64
 T_108: (in SLICE(posix_memalign(qwLoc28_55, fp - 16<i64>, rdi, qwLoc28_55), word32, 0) @ 000000000000077E : word32)
   Class: Eq_108
   DataType: word32
@@ -1294,7 +1294,7 @@ typedef Eq_1Eq_1Eq_1struct Globals {
 	byte b201048;	// 201048
 } Eq_1;
 
-typedef void (Eq_6)();
+typedef word64 (Eq_6)();
 
 typedef void (Eq_8)();
 
@@ -1310,7 +1310,7 @@ typedef void (Eq_24)();
 
 typedef void (Eq_33)();
 
-typedef void (Eq_39)();
+typedef word64 (Eq_39)();
 
 typedef union Eq_45 {
 	int64 u0;
@@ -1342,17 +1342,17 @@ typedef union Eq_53 {
 	uint64 u1;
 } Eq_53;
 
-typedef void (Eq_58)();
+typedef word64 (Eq_58)();
 
 typedef void (Eq_71)();
 
-typedef void (Eq_77)(word64);
+typedef word64 (Eq_77)(word64);
 
 typedef void (Eq_82)();
 
 typedef size_t Eq_87;
 
-typedef void (Eq_103)(uint64, ptr64, size_t, uint64);
+typedef word64 (Eq_103)(uint64, ptr64, size_t, uint64);
 
 typedef void (Eq_113)(real64 *[]);
 

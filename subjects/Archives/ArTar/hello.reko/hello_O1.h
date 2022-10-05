@@ -28,7 +28,7 @@ Eq_1: (struct "Globals"
 		(4040 word64 qw4040)
 		(4048 byte b4048))
 	globals_t (in globals : (ptr64 (struct "Globals")))
-Eq_6: (fn void ())
+Eq_6: (fn word64 ())
 	T_6 (in __gmon_start__ @ 0000000000001010 : ptr64)
 Eq_8: (fn void ())
 	T_8 (in rdx @ 0000000000001010 : (ptr64 Eq_8))
@@ -51,7 +51,7 @@ Eq_24: (fn void ())
 Eq_33: (fn void ())
 	T_33 (in __halt @ 00000000000010AA : ptr32)
 	T_34 (in signature of __halt : void)
-Eq_39: (fn void ())
+Eq_39: (fn word64 ())
 	T_39 (in _ITM_deregisterTMCloneTable @ 00000000000010CD : ptr64)
 	T_41 (in 0<64> @ 00000000000010CD : word64)
 Eq_44: (union "Eq_44" (int64 u0) (uint64 u1))
@@ -67,13 +67,13 @@ Eq_51: (union "Eq_51" (int64 u0) (uint64 u1))
 	T_51 (in rsi_6 >> 3<64> @ 0000000000001102 : word64)
 Eq_52: (union "Eq_52" (int64 u0) (uint64 u1))
 	T_52 (in (rsi_6 >>u 0x3F<64>) + (rsi_6 >> 3<64>) @ 0000000000001102 : word64)
-Eq_57: (fn void ())
+Eq_57: (fn word64 ())
 	T_57 (in _ITM_registerTMCloneTable @ 000000000000110E : ptr64)
 	T_59 (in 0<64> @ 000000000000110E : word64)
 Eq_70: (fn void ())
 	T_70 (in deregister_tm_clones @ 0000000000001147 : ptr64)
 	T_71 (in signature of deregister_tm_clones @ 00000000000010B0 : void)
-Eq_76: (fn void (word64))
+Eq_76: (fn word64 (word64))
 	T_76 (in __cxa_finalize @ 0000000000001142 : ptr64)
 Eq_81: (fn void ())
 	T_81 (in register_tm_clones @ 0000000000001160 : ptr64)
@@ -152,10 +152,10 @@ T_6: (in __gmon_start__ @ 0000000000001010 : ptr64)
   Class: Eq_6
   DataType: (ptr64 Eq_6)
   OrigDataType: (ptr64 (fn T_7 ()))
-T_7: (in __gmon_start__() @ 0000000000001010 : void)
+T_7: (in __gmon_start__() @ 0000000000001010 : word64)
   Class: Eq_7
-  DataType: void
-  OrigDataType: void
+  DataType: word64
+  OrigDataType: word64
 T_8: (in rdx @ 0000000000001010 : (ptr64 Eq_8))
   Class: Eq_8
   DataType: (ptr64 Eq_8)
@@ -296,10 +296,10 @@ T_42: (in _ITM_deregisterTMCloneTable == null @ 00000000000010CD : bool)
   Class: Eq_42
   DataType: bool
   OrigDataType: bool
-T_43: (in _ITM_deregisterTMCloneTable() @ 00000000000010CF : void)
+T_43: (in _ITM_deregisterTMCloneTable() @ 00000000000010CF : word64)
   Class: Eq_43
-  DataType: void
-  OrigDataType: void
+  DataType: word64
+  OrigDataType: word64
 T_44: (in rsi_6 @ 00000000000010EE : Eq_44)
   Class: Eq_44
   DataType: Eq_44
@@ -368,10 +368,10 @@ T_60: (in _ITM_registerTMCloneTable == null @ 000000000000110E : bool)
   Class: Eq_60
   DataType: bool
   OrigDataType: bool
-T_61: (in _ITM_registerTMCloneTable() @ 0000000000001110 : void)
+T_61: (in _ITM_registerTMCloneTable() @ 0000000000001110 : word64)
   Class: Eq_61
-  DataType: void
-  OrigDataType: void
+  DataType: word64
+  OrigDataType: word64
 T_62: (in 0000000000004048 @ 000000000000112B : ptr64)
   Class: Eq_62
   DataType: (ptr64 byte)
@@ -444,10 +444,10 @@ T_79: (in Mem9[0x0000000000004040<p64>:word64] @ 0000000000001142 : word64)
   Class: Eq_79
   DataType: word64
   OrigDataType: word64
-T_80: (in __cxa_finalize(g_qw4040) @ 0000000000001142 : void)
+T_80: (in __cxa_finalize(g_qw4040) @ 0000000000001142 : word64)
   Class: Eq_80
-  DataType: void
-  OrigDataType: void
+  DataType: word64
+  OrigDataType: word64
 T_81: (in register_tm_clones @ 0000000000001160 : ptr64)
   Class: Eq_81
   DataType: (ptr64 Eq_81)
@@ -1026,7 +1026,7 @@ typedef Eq_1Eq_1Eq_1struct Globals {
 	byte b4048;	// 4048
 } Eq_1;
 
-typedef void (Eq_6)();
+typedef word64 (Eq_6)();
 
 typedef void (Eq_8)();
 
@@ -1042,7 +1042,7 @@ typedef void (Eq_24)();
 
 typedef void (Eq_33)();
 
-typedef void (Eq_39)();
+typedef word64 (Eq_39)();
 
 typedef union Eq_44 {
 	int64 u0;
@@ -1074,11 +1074,11 @@ typedef union Eq_52 {
 	uint64 u1;
 } Eq_52;
 
-typedef void (Eq_57)();
+typedef word64 (Eq_57)();
 
 typedef void (Eq_70)();
 
-typedef void (Eq_76)(word64);
+typedef word64 (Eq_76)(word64);
 
 typedef void (Eq_81)();
 

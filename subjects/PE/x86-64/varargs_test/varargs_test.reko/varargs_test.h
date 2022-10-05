@@ -140,21 +140,21 @@ Eq_21: (fn word32 (ui64, word64))
 	T_21 (in fn00000001400011B0 @ 00000001400010B0 : ptr64)
 	T_22 (in signature of fn00000001400011B0 @ 00000001400011B0 : void)
 	T_1388 (in fn00000001400011B0 @ 0000000140001EF0 : ptr64)
-Eq_31: (fn void (ptr64, uint64, word32, word32, ui64, void, ptr64))
+Eq_31: (fn word64 (ptr64, uint64, word32, word32, ui64, word64, ptr64))
 	T_31 (in _stdio_common_vfscanf @ 0000000140001114 : ptr64)
 Eq_36: (fn (ptr64 ui64) ())
 	T_36 (in fn00000001400010C0 @ 0000000140001114 : ptr64)
 	T_37 (in signature of fn00000001400010C0 @ 00000001400010C0 : void)
 	T_877 (in fn00000001400010C0 @ 0000000140001949 : ptr64)
-Eq_42: (fn void (word32, word32, uint64))
+Eq_42: (fn word64 (word32, word32, uint64))
 	T_42 (in _acrt_iob_func @ 0000000140001114 : ptr64)
-Eq_54: (fn void (ptr64, uint64, word32, word32, ui64, void, ptr64))
+Eq_54: (fn word64 (ptr64, uint64, word32, word32, ui64, word64, ptr64))
 	T_54 (in _stdio_common_vfprintf @ 0000000140001187 : ptr64)
 Eq_59: (fn (ptr64 ui64) ())
 	T_59 (in fn0000000140001130 @ 0000000140001187 : ptr64)
 	T_60 (in signature of fn0000000140001130 @ 0000000140001130 : void)
 	T_866 (in fn0000000140001130 @ 0000000140001940 : ptr64)
-Eq_65: (fn void (word32, uint64))
+Eq_65: (fn word64 (word32, uint64))
 	T_65 (in _acrt_iob_func @ 0000000140001187 : ptr64)
 Eq_79: (fn ui64 (ui64, byte))
 	T_79 (in __rol<word64,byte> @ 00000001400011BA : ptr32)
@@ -245,7 +245,7 @@ Eq_148: (union "Eq_148" (uint64 u0) (ptr64 u1))
 Eq_152: (fn word32 ())
 	T_152 (in fn0000000140001918 @ 000000014000121E : ptr64)
 	T_153 (in signature of fn0000000140001918 @ 0000000140001918 : void)
-Eq_155: (fn void (word32, uint64))
+Eq_155: (fn word64 (word32, uint64))
 	T_155 (in configure_narrow_argv @ 000000014000122C : ptr64)
 Eq_171: (fn void ())
 	T_171 (in fn0000000140001928 @ 000000014000122E : ptr64)
@@ -284,7 +284,7 @@ Eq_209: (fn void ())
 Eq_212: (fn void ())
 	T_212 (in fn0000000140001B14 @ 00000001400012A4 : ptr64)
 	T_213 (in signature of fn0000000140001B14 @ 0000000140001B14 : void)
-Eq_218: (fn void (word32, uint64))
+Eq_218: (fn word64 (word32, uint64))
 	T_218 (in set_new_mode @ 00000001400012B4 : ptr64)
 Eq_229: (segment "Eq_229" (30 (ptr64 Eq_527) ptr0030))
 	T_229 (in gs @ 00000001400012BC : (ptr32 Eq_229))
@@ -332,13 +332,13 @@ Eq_329: (fn void ())
 Eq_333: (fn void ())
 	T_333 (in fn000000014000196C @ 0000000140001395 : ptr64)
 	T_334 (in signature of fn000000014000196C @ 000000014000196C : void)
-Eq_346: (fn void ((ptr64 code)))
+Eq_346: (fn word64 ((ptr64 code)))
 	T_346 (in register_thread_local_exe_atexit_callback @ 00000001400013B2 : ptr64)
-Eq_352: (fn void ())
+Eq_352: (fn word64 ())
 	T_352 (in _p___argv @ 00000001400013B7 : ptr64)
-Eq_355: (fn void ())
+Eq_355: (fn word64 ())
 	T_355 (in _p___argc @ 00000001400013BF : ptr64)
-Eq_358: (fn void ())
+Eq_358: (fn word64 ())
 	T_358 (in get_initial_narrow_environment @ 00000001400013C7 : ptr64)
 Eq_362: (fn word32 ())
 	T_362 (in fn0000000140001000 @ 00000001400013D4 : ptr64)
@@ -446,7 +446,7 @@ Eq_474: (fn void (Eq_439))
 	T_915 (in RtlCaptureContext @ 00000001400019B9 : ptr64)
 Eq_480: PCONTEXT
 	T_480 (in rcx + 248<i64> @ 0000000140001561 : word64)
-Eq_484: (fn void (word32, word32, Eq_101, Eq_488, ptr64, ptr64, uint64, word64, Eq_439, ptr64, ptr64, word64))
+Eq_484: (fn word64 (word32, word32, Eq_101, Eq_488, ptr64, ptr64, uint64, word64, Eq_439, ptr64, ptr64, word64))
 	T_484 (in KERNEL32.dll!RtlVirtualUnwind @ 00000001400015AC : ptr64)
 Eq_488: PVOID
 	T_488 (in rax_27 @ 00000001400015AC : Eq_488)
@@ -518,9 +518,9 @@ Eq_716: (struct "Eq_716" 0028 (8 word32 dw0008) (C word32 dw000C) (24 int32 dw00
 	T_716 (in rdx_29 + 8<i64> @ 0000000140001780 : word64)
 Eq_726: (struct "Eq_726" 0028 (8 word32 dw0008) (C word32 dw000C) (24 int32 dw0024))
 	T_726 (in rdx_29 + 36<i64> @ 000000014000179C : word64)
-Eq_771: (fn void (ptr64, Eq_148))
+Eq_771: (fn word64 (ptr64, Eq_148))
 	T_771 (in register_onexit_function @ 000000014000183D : ptr64)
-Eq_776: (fn void (Eq_148))
+Eq_776: (fn word64 (Eq_148))
 	T_776 (in crt_atexit @ 000000014000182C : ptr64)
 Eq_784: (fn word64 (Eq_148))
 	T_784 (in fn0000000140001804 @ 0000000140001858 : ptr64)
@@ -646,7 +646,7 @@ Eq_1037: HMODULE
 Eq_1060: (struct "Eq_1060" (0 word32 dw0000) (18 word32 dw0018) (20 word32 dw0020))
 	T_1060 (in rax_6 @ 0000000140001B28 : (ptr64 Eq_1060))
 	T_1063 (in Mem0[rcx + 0<64>:word64] @ 0000000140001B28 : word64)
-Eq_1084: (fn void ())
+Eq_1084: (fn word64 ())
 	T_1084 (in api-ms-win-crt-runtime-l1-1-0.dll!terminate @ 0000000140001B56 : ptr64)
 Eq_1106: (fn void ())
 	T_1106 (in fn0000000000000000 @ 0000000140001B8B : ptr64)
@@ -721,7 +721,7 @@ Eq_1348: (struct "Eq_1348" (3 byte b0003))
 	T_1359 (in (uint64) rdx->ptr0010->dw0008 + rdx->qw0008 @ 0000000140001ED5 : word64)
 Eq_1351: (struct "Eq_1351" (8 word32 dw0008))
 	T_1351 (in Mem5[rdx + 16<i64>:word64] @ 0000000140001ED5 : word64)
-Eq_1392: (fn void (uint64, (ptr64 (ptr64 word32))))
+Eq_1392: (fn word64 (uint64, (ptr64 (ptr64 word32))))
 	T_1392 (in seh_filter_exe @ 0000000140001F23 : ptr64)
 // Type Variables ////////////
 globals_t: (in globals : (ptr64 (struct "Globals")))
@@ -908,10 +908,10 @@ T_46: (in 0<u64> @ 0000000140001114 : uint64)
   Class: Eq_46
   DataType: uint64
   OrigDataType: uint64
-T_47: (in _acrt_iob_func(0<32>, 0<32>, 0<u64>) @ 0000000140001114 : void)
+T_47: (in _acrt_iob_func(0<32>, 0<32>, 0<u64>) @ 0000000140001114 : word64)
   Class: Eq_47
-  DataType: void
-  OrigDataType: void
+  DataType: word64
+  OrigDataType: word64
 T_48: (in 0x10<64> @ 0000000140001114 : word64)
   Class: Eq_48
   DataType: int64
@@ -920,10 +920,10 @@ T_49: (in fp + 0x10<64> @ 0000000140001114 : word64)
   Class: Eq_49
   DataType: ptr64
   OrigDataType: ptr64
-T_50: (in _stdio_common_vfscanf(rcx, 0<u64>, 0<32>, 0<32>, *fn00000001400010C0(), _acrt_iob_func(0<32>, 0<32>, 0<u64>), fp + 0x10<64>) @ 0000000140001114 : void)
+T_50: (in _stdio_common_vfscanf(rcx, 0<u64>, 0<32>, 0<32>, *fn00000001400010C0(), _acrt_iob_func(0<32>, 0<32>, 0<u64>), fp + 0x10<64>) @ 0000000140001114 : word64)
   Class: Eq_50
-  DataType: void
-  OrigDataType: void
+  DataType: word64
+  OrigDataType: word64
 T_51: (in rax @ 0000000140001121 : ptr64)
   Class: Eq_51
   DataType: ptr64
@@ -996,10 +996,10 @@ T_68: (in 1<u64> @ 0000000140001187 : uint64)
   Class: Eq_68
   DataType: uint64
   OrigDataType: uint64
-T_69: (in _acrt_iob_func(1<32>, 1<u64>) @ 0000000140001187 : void)
+T_69: (in _acrt_iob_func(1<32>, 1<u64>) @ 0000000140001187 : word64)
   Class: Eq_69
-  DataType: void
-  OrigDataType: void
+  DataType: word64
+  OrigDataType: word64
 T_70: (in 0x10<64> @ 0000000140001187 : word64)
   Class: Eq_70
   DataType: int64
@@ -1008,10 +1008,10 @@ T_71: (in fp + 0x10<64> @ 0000000140001187 : word64)
   Class: Eq_71
   DataType: ptr64
   OrigDataType: ptr64
-T_72: (in _stdio_common_vfprintf(rcx, 0<u64>, 0<32>, 0<32>, *fn0000000140001130(), _acrt_iob_func(1<32>, 1<u64>), fp + 0x10<64>) @ 0000000140001187 : void)
+T_72: (in _stdio_common_vfprintf(rcx, 0<u64>, 0<32>, 0<32>, *fn0000000140001130(), _acrt_iob_func(1<32>, 1<u64>), fp + 0x10<64>) @ 0000000140001187 : word64)
   Class: Eq_72
-  DataType: void
-  OrigDataType: void
+  DataType: word64
+  OrigDataType: word64
 T_73: (in eax @ 0000000140001194 : word32)
   Class: Eq_73
   DataType: word32
@@ -1352,10 +1352,10 @@ T_157: (in CONVERT(eax_72, word32, uint64) @ 000000014000122C : uint64)
   Class: Eq_157
   DataType: uint64
   OrigDataType: uint64
-T_158: (in configure_narrow_argv(eax_72, (uint64) eax_72) @ 000000014000122C : void)
+T_158: (in configure_narrow_argv(eax_72, (uint64) eax_72) @ 000000014000122C : word64)
   Class: Eq_158
-  DataType: void
-  OrigDataType: void
+  DataType: word64
+  OrigDataType: word64
 T_159: (in SLICE(configure_narrow_argv(eax_72, (uint64) eax_72), word32, 0) @ 000000014000122C : word32)
   Class: Eq_159
   DataType: word32
@@ -1604,10 +1604,10 @@ T_220: (in CONVERT(eax_12, word32, uint64) @ 00000001400012B4 : uint64)
   Class: Eq_220
   DataType: uint64
   OrigDataType: uint64
-T_221: (in set_new_mode(eax_12, (uint64) eax_12) @ 00000001400012B4 : void)
+T_221: (in set_new_mode(eax_12, (uint64) eax_12) @ 00000001400012B4 : word64)
   Class: Eq_221
-  DataType: void
-  OrigDataType: void
+  DataType: word64
+  OrigDataType: word64
 T_222: (in eax @ 00000001400012B4 : word32)
   Class: Eq_222
   DataType: word32
@@ -2124,10 +2124,10 @@ T_350: (in Mem83[rax_124 + 0<64>:word64] @ 00000001400013B2 : word64)
   Class: Eq_312
   DataType: (ptr64 code)
   OrigDataType: word64
-T_351: (in register_thread_local_exe_atexit_callback(*rax_124) @ 00000001400013B2 : void)
+T_351: (in register_thread_local_exe_atexit_callback(*rax_124) @ 00000001400013B2 : word64)
   Class: Eq_351
-  DataType: void
-  OrigDataType: void
+  DataType: word64
+  OrigDataType: word64
 T_352: (in _p___argv @ 00000001400013B7 : ptr64)
   Class: Eq_352
   DataType: (ptr64 Eq_352)
@@ -2136,10 +2136,10 @@ T_353: (in signature of _p___argv : void)
   Class: Eq_353
   DataType: Eq_353
   OrigDataType: 
-T_354: (in _p___argv() @ 00000001400013B7 : void)
+T_354: (in _p___argv() @ 00000001400013B7 : word64)
   Class: Eq_354
-  DataType: void
-  OrigDataType: void
+  DataType: word64
+  OrigDataType: word64
 T_355: (in _p___argc @ 00000001400013BF : ptr64)
   Class: Eq_355
   DataType: (ptr64 Eq_355)
@@ -2148,10 +2148,10 @@ T_356: (in signature of _p___argc : void)
   Class: Eq_356
   DataType: Eq_356
   OrigDataType: 
-T_357: (in _p___argc() @ 00000001400013BF : void)
+T_357: (in _p___argc() @ 00000001400013BF : word64)
   Class: Eq_357
-  DataType: void
-  OrigDataType: void
+  DataType: word64
+  OrigDataType: word64
 T_358: (in get_initial_narrow_environment @ 00000001400013C7 : ptr64)
   Class: Eq_358
   DataType: (ptr64 Eq_358)
@@ -2160,10 +2160,10 @@ T_359: (in signature of get_initial_narrow_environment : void)
   Class: Eq_359
   DataType: Eq_359
   OrigDataType: 
-T_360: (in get_initial_narrow_environment() @ 00000001400013C7 : void)
+T_360: (in get_initial_narrow_environment() @ 00000001400013C7 : word64)
   Class: Eq_360
-  DataType: void
-  OrigDataType: void
+  DataType: word64
+  OrigDataType: word64
 T_361: (in rax_200 @ 00000001400013D4 : uint64)
   Class: Eq_361
   DataType: uint64
@@ -2724,10 +2724,10 @@ T_500: (in 0<64> @ 00000001400015AC : word64)
   Class: Eq_500
   DataType: word64
   OrigDataType: word64
-T_501: (in KERNEL32.dll!RtlVirtualUnwind(0<32>, 0<32>, rsi_15, rax_27, fp + 0x10<64>, fp + 0x18<64>, 0<u64>, tArg08, rcx, fp + 0x18<64>, fp + 0x10<64>, 0<64>) @ 00000001400015AC : void)
+T_501: (in KERNEL32.dll!RtlVirtualUnwind(0<32>, 0<32>, rsi_15, rax_27, fp + 0x10<64>, fp + 0x18<64>, 0<u64>, tArg08, rcx, fp + 0x18<64>, fp + 0x10<64>, 0<64>) @ 00000001400015AC : word64)
   Class: Eq_501
-  DataType: void
-  OrigDataType: void
+  DataType: word64
+  OrigDataType: word64
 T_502: (in edi_56 @ 00000001400015B2 : word32)
   Class: Eq_502
   DataType: word32
@@ -3236,10 +3236,10 @@ T_628: (in 00000001400035C0 @ 0000000140001678 : ptr64)
   Class: Eq_628
   DataType: ptr64
   OrigDataType: ptr64
-T_629: (in initialize_onexit_table(0x1400035C0<u64>) @ 0000000140001678 : void)
+T_629: (in initialize_onexit_table(0x1400035C0<u64>) @ 0000000140001678 : word64)
   Class: Eq_625
   DataType: word64
-  OrigDataType: void
+  OrigDataType: word64
 T_630: (in rax_56_8_149 @ 0000000140001678 : word56)
   Class: Eq_630
   DataType: word56
@@ -3276,10 +3276,10 @@ T_638: (in 00000001400035D8 @ 000000014000168C : ptr64)
   Class: Eq_638
   DataType: ptr64
   OrigDataType: ptr64
-T_639: (in initialize_onexit_table(0x1400035D8<u64>) @ 000000014000168C : void)
+T_639: (in initialize_onexit_table(0x1400035D8<u64>) @ 000000014000168C : word64)
   Class: Eq_635
   DataType: word64
-  OrigDataType: void
+  OrigDataType: word64
 T_640: (in SLICE(rax_100, word56, 8) @ 0000000140001693 : word56)
   Class: Eq_640
   DataType: word56
@@ -3816,10 +3816,10 @@ T_773: (in 00000001400035C0 @ 000000014000183D : ptr64)
   Class: Eq_773
   DataType: ptr64
   OrigDataType: ptr64
-T_774: (in register_onexit_function(0x1400035C0<u64>, rcx) @ 000000014000183D : void)
+T_774: (in register_onexit_function(0x1400035C0<u64>, rcx) @ 000000014000183D : word64)
   Class: Eq_774
-  DataType: void
-  OrigDataType: void
+  DataType: word64
+  OrigDataType: word64
 T_775: (in SLICE(register_onexit_function(0x1400035C0<u64>, rcx), word32, 0) @ 000000014000183D : word32)
   Class: Eq_757
   DataType: word32
@@ -3832,10 +3832,10 @@ T_777: (in signature of crt_atexit : void)
   Class: Eq_777
   DataType: Eq_777
   OrigDataType: 
-T_778: (in crt_atexit(rcx) @ 000000014000182C : void)
+T_778: (in crt_atexit(rcx) @ 000000014000182C : word64)
   Class: Eq_778
-  DataType: void
-  OrigDataType: void
+  DataType: word64
+  OrigDataType: word64
 T_779: (in SLICE(crt_atexit(rcx), word32, 0) @ 000000014000182C : word32)
   Class: Eq_757
   DataType: word32
@@ -5064,10 +5064,10 @@ T_1085: (in signature of api-ms-win-crt-runtime-l1-1-0.dll!terminate : void)
   Class: Eq_1085
   DataType: Eq_1085
   OrigDataType: 
-T_1086: (in api-ms-win-crt-runtime-l1-1-0.dll!terminate() @ 0000000140001B56 : void)
+T_1086: (in api-ms-win-crt-runtime-l1-1-0.dll!terminate() @ 0000000140001B56 : word64)
   Class: Eq_1086
-  DataType: void
-  OrigDataType: void
+  DataType: word64
+  OrigDataType: word64
 T_1087: (in int3 @ 0000000140001B5B : ptr64)
   Class: Eq_140
   DataType: (ptr64 Eq_140)
@@ -6324,10 +6324,10 @@ T_1400: (in CONVERT(Mem5[Mem5[rcx + 0<64>:word64] + 0<64>:word32], word32, uint6
   Class: Eq_1400
   DataType: uint64
   OrigDataType: uint64
-T_1401: (in seh_filter_exe((uint64) **rcx, rcx) @ 0000000140001F23 : void)
+T_1401: (in seh_filter_exe((uint64) **rcx, rcx) @ 0000000140001F23 : word64)
   Class: Eq_1401
-  DataType: void
-  OrigDataType: void
+  DataType: word64
+  OrigDataType: word64
 T_1402:
   Class: Eq_1402
   DataType: word64
@@ -6640,17 +6640,17 @@ typedef void (Eq_16)(ptr64);
 
 typedef word32 (Eq_21)(ui64, word64);
 
-typedef void (Eq_31)(ptr64, uint64, word32, word32, ui64, void, ptr64);
+typedef word64 (Eq_31)(ptr64, uint64, word32, word32, ui64, word64, ptr64);
 
 typedef ui64 * (Eq_36)();
 
-typedef void (Eq_42)(word32, word32, uint64);
+typedef word64 (Eq_42)(word32, word32, uint64);
 
-typedef void (Eq_54)(ptr64, uint64, word32, word32, ui64, void, ptr64);
+typedef word64 (Eq_54)(ptr64, uint64, word32, word32, ui64, word64, ptr64);
 
 typedef ui64 * (Eq_59)();
 
-typedef void (Eq_65)(word32, uint64);
+typedef word64 (Eq_65)(word32, uint64);
 
 typedef ui64 (Eq_79)(ui64, byte);
 
@@ -6697,7 +6697,7 @@ typedef union Eq_148 {
 
 typedef word32 (Eq_152)();
 
-typedef void (Eq_155)(word32, uint64);
+typedef word64 (Eq_155)(word32, uint64);
 
 typedef void (Eq_171)();
 
@@ -6721,7 +6721,7 @@ typedef void (Eq_209)();
 
 typedef void (Eq_212)();
 
-typedef void (Eq_218)(word32, uint64);
+typedef word64 (Eq_218)(word32, uint64);
 
 typedef struct Eq_229 {
 	struct Eq_527 * ptr0030;	// 30
@@ -6753,13 +6753,13 @@ typedef void (Eq_329)();
 
 typedef void (Eq_333)();
 
-typedef void (Eq_346)(code *);
+typedef word64 (Eq_346)(code *);
 
-typedef void (Eq_352)();
+typedef word64 (Eq_352)();
 
-typedef void (Eq_355)();
+typedef word64 (Eq_355)();
 
-typedef void (Eq_358)();
+typedef word64 (Eq_358)();
 
 typedef word32 (Eq_362)();
 
@@ -6816,7 +6816,7 @@ typedef void (Eq_474)(PCONTEXT);
 
 typedef PCONTEXT Eq_480;
 
-typedef void (Eq_484)(word32, word32, Eq_101, PVOID, ptr64, ptr64, uint64, word64, PCONTEXT, ptr64, ptr64, word64);
+typedef word64 (Eq_484)(word32, word32, Eq_101, PVOID, ptr64, ptr64, uint64, word64, PCONTEXT, ptr64, ptr64, word64);
 
 typedef PVOID Eq_488;
 
@@ -6894,9 +6894,9 @@ typedef struct Eq_726 {	// size: 40 28
 	int32 dw0024;	// 24
 } Eq_726;
 
-typedef void (Eq_771)(ptr64, Eq_148);
+typedef word64 (Eq_771)(ptr64, Eq_148);
 
-typedef void (Eq_776)(Eq_148);
+typedef word64 (Eq_776)(Eq_148);
 
 typedef word64 (Eq_784)(Eq_148);
 
@@ -7045,7 +7045,7 @@ typedef struct Eq_1060 {
 	word32 dw0020;	// 20
 } Eq_1060;
 
-typedef void (Eq_1084)();
+typedef word64 (Eq_1084)();
 
 typedef void (Eq_1106)();
 
@@ -7121,5 +7121,5 @@ typedef struct Eq_1351 {
 	word32 dw0008;	// 8
 } Eq_1351;
 
-typedef void (Eq_1392)(uint64, word32 * *);
+typedef word64 (Eq_1392)(uint64, word32 * *);
 

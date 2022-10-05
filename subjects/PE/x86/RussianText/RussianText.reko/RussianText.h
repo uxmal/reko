@@ -76,7 +76,7 @@ Eq_3: (fn void ((ptr32 Eq_2)))
 	T_72 (in fn004011FC @ 004011CE : ptr32)
 Eq_11: LPVOID
 	T_11 (in eax_11 @ 0040111A : Eq_11)
-	T_16 (in __CRTL_TLS_GetValue(g_dw40208B) @ 0040111A : void)
+	T_16 (in __CRTL_TLS_GetValue(g_dw40208B) @ 0040111A : word32)
 	T_17 (in 0<32> @ 00401121 : word32)
 	T_23 (in lpMem @ 0040112C : LPVOID)
 Eq_12: (fn Eq_11 (uint32))
@@ -95,7 +95,7 @@ Eq_24: (fn Eq_21 ())
 	T_25 (in signature of GetProcessHeap : void)
 Eq_28: BOOL
 	T_28 (in HeapFree(GetProcessHeap(), 8<32>, eax_11) @ 0040112C : BOOL)
-Eq_29: (fn void (uint32))
+Eq_29: (fn word32 (uint32))
 	T_29 (in __CRTL_TLS_ExitThread @ 00401137 : ptr32)
 Eq_35: (segment "Eq_35" (2C (ptr32 (arr word32)) ptr002C))
 	T_35 (in fs @ 00401158 : (ptr16 Eq_35))
@@ -180,10 +180,10 @@ T_15: (in Mem0[0x0040208B<p32>:word32] @ 0040111A : word32)
   Class: Eq_8
   DataType: uint32
   OrigDataType: word32
-T_16: (in __CRTL_TLS_GetValue(g_dw40208B) @ 0040111A : void)
+T_16: (in __CRTL_TLS_GetValue(g_dw40208B) @ 0040111A : word32)
   Class: Eq_11
   DataType: Eq_11
-  OrigDataType: void
+  OrigDataType: word32
 T_17: (in 0<32> @ 00401121 : word32)
   Class: Eq_11
   DataType: Eq_11
@@ -248,10 +248,10 @@ T_32: (in Mem24[0x0040208B<p32>:word32] @ 00401137 : word32)
   Class: Eq_8
   DataType: uint32
   OrigDataType: word32
-T_33: (in __CRTL_TLS_ExitThread(g_dw40208B) @ 00401137 : void)
+T_33: (in __CRTL_TLS_ExitThread(g_dw40208B) @ 00401137 : word32)
   Class: Eq_33
-  DataType: void
-  OrigDataType: void
+  DataType: word32
+  OrigDataType: word32
 T_34: (in eax @ 00401137 : word32)
   Class: Eq_34
   DataType: word32
@@ -693,7 +693,7 @@ typedef HANDLE (Eq_24)();
 
 typedef BOOL Eq_28;
 
-typedef void (Eq_29)(uint32);
+typedef word32 (Eq_29)(uint32);
 
 typedef struct Eq_35 {
 	word32 (* ptr002C)[];	// 2C

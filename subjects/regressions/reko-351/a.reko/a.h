@@ -6,14 +6,14 @@
 // Equivalence classes ////////////
 Eq_1: (struct "Globals" (8000270C (ptr32 code) ptr8000270C) (80002714 (arr (ptr32 code)) a80002714) (8000271C word32 dw8000271C) (80002724 byte b80002724) (80002726 uint32 dtor_idx.3228) (FFFFFFFF code tFFFFFFFF))
 	globals_t (in globals : (ptr32 (struct "Globals")))
-Eq_6: (fn void (ptr32))
+Eq_6: (fn word32 (ptr32))
 	T_6 (in fn00000000 @ 800000A6 : ptr32)
-Eq_22: (fn void (ptr32, int32))
+Eq_22: (fn word32 (ptr32, int32))
 	T_22 (in fn00000000 @ 800000DC : ptr32)
 Eq_43: (fn void ())
 	T_43 (in deregister_tm_clones @ 8000012C : ptr32)
 	T_44 (in signature of deregister_tm_clones @ 80000080 : void)
-Eq_67: (fn void (ptr32))
+Eq_67: (fn word32 (ptr32))
 	T_67 (in fn00000000 @ 80000140 : ptr32)
 Eq_78: (fn void (ptr32, ptr32))
 	T_78 (in fn00000000 @ 8000017A : ptr32)
@@ -79,10 +79,10 @@ T_8: (in 80002724 @ 800000A6 : ptr32)
   Class: Eq_8
   DataType: ptr32
   OrigDataType: ptr32
-T_9: (in fn00000000(0x80002724<u32>) @ 800000A6 : void)
+T_9: (in fn00000000(0x80002724<u32>) @ 800000A6 : word32)
   Class: Eq_9
-  DataType: void
-  OrigDataType: void
+  DataType: word32
+  OrigDataType: word32
 T_10: (in d0_12 @ 800000C0 : int32)
   Class: Eq_10
   DataType: int32
@@ -143,10 +143,10 @@ T_24: (in 80002724 @ 800000DC : ptr32)
   Class: Eq_24
   DataType: ptr32
   OrigDataType: ptr32
-T_25: (in fn00000000(0x80002724<u32>, d0_18) @ 800000DC : void)
+T_25: (in fn00000000(0x80002724<u32>, d0_18) @ 800000DC : word32)
   Class: Eq_25
-  DataType: void
-  OrigDataType: void
+  DataType: word32
+  OrigDataType: word32
 T_26: (in fp @ 800000E4 : ptr32)
   Class: Eq_26
   DataType: ptr32
@@ -323,10 +323,10 @@ T_69: (in 8000065C @ 80000140 : ptr32)
   Class: Eq_69
   DataType: ptr32
   OrigDataType: ptr32
-T_70: (in fn00000000(0x8000065C<u32>) @ 80000140 : void)
+T_70: (in fn00000000(0x8000065C<u32>) @ 80000140 : word32)
   Class: Eq_70
-  DataType: void
-  OrigDataType: void
+  DataType: word32
+  OrigDataType: word32
 T_71: (in 00000000 @ 8000016C : ptr32)
   Class: Eq_71
   DataType: ptr32
@@ -953,13 +953,13 @@ typedef struct Globals {
 	<anonymous> tFFFFFFFF;	// FFFFFFFF
 } Eq_1;
 
-typedef void (Eq_6)(ptr32);
+typedef word32 (Eq_6)(ptr32);
 
-typedef void (Eq_22)(ptr32, int32);
+typedef word32 (Eq_22)(ptr32, int32);
 
 typedef void (Eq_43)();
 
-typedef void (Eq_67)(ptr32);
+typedef word32 (Eq_67)(ptr32);
 
 typedef void (Eq_78)(ptr32, ptr32);
 

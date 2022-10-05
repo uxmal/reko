@@ -19,7 +19,7 @@ Eq_1: (struct "Globals"
 		(601028 (ptr64 code) __gmon_start___GOT)
 		(601040 byte b601040))
 	globals_t (in globals : (ptr64 (struct "Globals")))
-Eq_6: (fn void ())
+Eq_6: (fn word64 ())
 	T_6 (in __gmon_start__ @ 00000000004003F0 : ptr64)
 Eq_9: (fn void ())
 	T_9 (in rdx @ 00000000004003F0 : (ptr64 Eq_9))
@@ -98,10 +98,10 @@ T_7: (in signature of __gmon_start__ : void)
   Class: Eq_7
   DataType: Eq_7
   OrigDataType: 
-T_8: (in __gmon_start__() @ 00000000004003F0 : void)
+T_8: (in __gmon_start__() @ 00000000004003F0 : word64)
   Class: Eq_8
-  DataType: void
-  OrigDataType: void
+  DataType: word64
+  OrigDataType: word64
 T_9: (in rdx @ 00000000004003F0 : (ptr64 Eq_9))
   Class: Eq_9
   DataType: (ptr64 Eq_9)
@@ -499,7 +499,7 @@ typedef struct Globals {
 	byte b601040;	// 601040
 } Eq_1;
 
-typedef void (Eq_6)();
+typedef word64 (Eq_6)();
 
 typedef void (Eq_9)();
 

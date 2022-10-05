@@ -124,7 +124,7 @@ Eq_27: (struct "Eq_27" (0 word32 dw0000) (4 word32 dw0004))
 Eq_28: (fn (ptr32 Eq_27) ())
 	T_28 (in fn00401000 @ 0040102A : ptr32)
 	T_29 (in signature of fn00401000 @ 00401000 : void)
-Eq_31: (fn void (word32, word32))
+Eq_31: (fn word32 (word32, word32))
 	T_31 (in _stdio_common_vfprintf @ 00401034 : ptr32)
 Eq_43: (fn void (ptr32, word32))
 	T_43 (in driver.dll!Ordinal_1 @ 00401047 : ptr32)
@@ -143,7 +143,7 @@ Eq_89: (union "Eq_89" (int32 u0) (DWORD u1))
 	T_89 (in eax @ 0040108A : Eq_89)
 	T_158 (in eax_279 @ 00401196 : Eq_89)
 	T_223 (in 0xFF<32> @ 004011BC : word32)
-	T_332 (in get_initial_narrow_environment() @ 00401249 : void)
+	T_332 (in get_initial_narrow_environment() @ 00401249 : word32)
 	T_336 (in Mem223[esp_216 + -4<i32>:word32] @ 00401249 : word32)
 	T_349 (in eax_230 @ 0040124E : Eq_89)
 	T_353 (in fn00401040(ecx_217) @ 0040124E : word32)
@@ -565,10 +565,10 @@ T_9: (in 1<32> @ 00401019 : word32)
   Class: Eq_9
   DataType: word32
   OrigDataType: word32
-T_10: (in _acrt_iob_func(1<32>) @ 00401019 : void)
+T_10: (in _acrt_iob_func(1<32>) @ 00401019 : word32)
   Class: Eq_6
   DataType: word32
-  OrigDataType: void
+  OrigDataType: word32
 T_11: (in 8<i32> @ 00401025 : int32)
   Class: Eq_11
   DataType: int32
@@ -681,10 +681,10 @@ T_38: (in Mem29[eax_30 + 4<i32>:word32] @ 00401034 : word32)
   Class: Eq_38
   DataType: word32
   OrigDataType: word32
-T_39: (in _stdio_common_vfprintf(eax_30->dw0000, eax_30->dw0004) @ 00401034 : void)
+T_39: (in _stdio_common_vfprintf(eax_30->dw0000, eax_30->dw0004) @ 00401034 : word32)
   Class: Eq_39
-  DataType: void
-  OrigDataType: void
+  DataType: word32
+  OrigDataType: word32
 T_40: (in eax @ 0040103F : word32)
   Class: Eq_40
   DataType: word32
@@ -1853,10 +1853,10 @@ T_331: (in signature of get_initial_narrow_environment : void)
   Class: Eq_331
   DataType: Eq_331
   OrigDataType: 
-T_332: (in get_initial_narrow_environment() @ 00401249 : void)
+T_332: (in get_initial_narrow_environment() @ 00401249 : word32)
   Class: Eq_89
   DataType: Eq_89
-  OrigDataType: void
+  OrigDataType: word32
 T_333: (in esp_216 @ 00401249 : word32)
   Class: Eq_333
   DataType: (ptr32 Eq_333)
@@ -4953,7 +4953,7 @@ typedef struct Eq_27 {
 
 typedef Eq_27 * (Eq_28)();
 
-typedef void (Eq_31)(word32, word32);
+typedef word32 (Eq_31)(word32, word32);
 
 typedef void (Eq_43)(ptr32, word32);
 

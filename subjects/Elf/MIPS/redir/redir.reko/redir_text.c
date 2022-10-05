@@ -1749,10 +1749,10 @@ void get_version(Eq_n r4)
 	strncpy(r4, strsep(fp + 4, 0x00410000, 0x0040A468, 0x10008860), 0x0100);
 }
 
-// 00404CF0: void request_get_host(Register Eq_n r4, Register Eq_n r5, Register word32 ra)
+// 00404CF0: void request_get_host(Register Eq_n r4, Register (ptr32 Eq_n) r5, Register word32 ra)
 // Called from:
 //      client_parse_request
-void request_get_host(Eq_n r4, Eq_n r5, word32 ra)
+void request_get_host(Eq_n r4, union Eq_n * r5, word32 ra)
 {
 	if (r4 == 0x00 || r4 == -20)
 	{
@@ -1764,14 +1764,14 @@ void request_get_host(Eq_n r4, Eq_n r5, word32 ra)
 	}
 	else
 	{
-		Eq_n r2_n = strpbrk(r5, " \t");
-		Eq_n dwLoc18_n = r2_n;
-		if (r2_n != 0x00)
+		union Eq_n * r2_n = strpbrk(r5, " \t");
+		union Eq_n * dwLoc18_n = r2_n;
+		if (r2_n != null)
 		{
-			while ((word32) (dwLoc18_n < (word32) r5 + 0x0100) != 0x00 && ((word32) (*dwLoc18_n) == 32 || (word32) (*dwLoc18_n) == 9))
-				dwLoc18_n = (word32) dwLoc18_n + 1;
-			Eq_n r2_n = strpbrk(dwLoc18_n, " \n\r");
-			if (r2_n != 0x00)
+			while ((word32) (dwLoc18_n < &r5->u0 + 0x0100) != 0x00 && ((word32) (*dwLoc18_n) == 32 || (word32) (*dwLoc18_n) == 9))
+				dwLoc18_n = (union Eq_n *) ((char *) dwLoc18_n + 1);
+			union Eq_n * r2_n = strpbrk(dwLoc18_n, " \n\r");
+			if (r2_n != null)
 			{
 				if ((word32) (r2_n - dwLoc18_n < 0x0101) != 0x00)
 				{
@@ -1807,10 +1807,10 @@ void request_get_host(Eq_n r4, Eq_n r5, word32 ra)
 	}
 }
 
-// 00404FC0: void request_get_content_length(Register Eq_n r4, Register Eq_n r5, Register word32 ra)
+// 00404FC0: void request_get_content_length(Register Eq_n r4, Register (ptr32 Eq_n) r5, Register word32 ra)
 // Called from:
 //      client_parse_request
-void request_get_content_length(Eq_n r4, Eq_n r5, word32 ra)
+void request_get_content_length(Eq_n r4, union Eq_n * r5, word32 ra)
 {
 	ptr32 fp;
 	if (r4 == 0x00 || r4 == -20)
@@ -1823,14 +1823,14 @@ void request_get_content_length(Eq_n r4, Eq_n r5, word32 ra)
 	}
 	else
 	{
-		Eq_n r2_n = strpbrk(r5, " \t");
-		Eq_n dwLoc18_n = r2_n;
-		if (r2_n != 0x00)
+		union Eq_n * r2_n = strpbrk(r5, " \t");
+		union Eq_n * dwLoc18_n = r2_n;
+		if (r2_n != null)
 		{
-			while ((word32) (dwLoc18_n < (word32) r5 + 0x0100) != 0x00 && ((word32) (*dwLoc18_n) == 32 || (word32) (*dwLoc18_n) == 9))
-				dwLoc18_n = (word32) dwLoc18_n + 1;
-			Eq_n r2_n = strpbrk(dwLoc18_n, " \n\r");
-			if (r2_n != 0x00)
+			while ((word32) (dwLoc18_n < &r5->u0 + 0x0100) != 0x00 && ((word32) (*dwLoc18_n) == 32 || (word32) (*dwLoc18_n) == 9))
+				dwLoc18_n = (union Eq_n *) ((char *) dwLoc18_n + 1);
+			union Eq_n * r2_n = strpbrk(dwLoc18_n, " \n\r");
+			if (r2_n != null)
 			{
 				if ((word32) (r2_n - dwLoc18_n < 0x0101) != 0x00)
 					*((char *) r4.ptr0000 + 0x0554) = (Eq_n) strtoul(dwLoc18_n, fp + -20, 0x0A);
@@ -1899,8 +1899,8 @@ void request_destroy(Eq_n r4)
 	free(r4);
 }
 
-// 004053F0: void properties_parse_int(Register Eq_n r4, Register word32 r5, Register word32 ra)
-void properties_parse_int(Eq_n r4, word32 r5, word32 ra)
+// 004053F0: void properties_parse_int(Register (ptr32 Eq_n) r4, Register word32 r5, Register word32 ra)
+void properties_parse_int(union Eq_n * r4, word32 r5, word32 ra)
 {
 	char * ptrLoc18;
 	strtoul(r4, &ptrLoc18, 0x00);
@@ -1989,8 +1989,8 @@ void properties_load(Eq_n r4, Eq_n r5, word32 ra)
 				}
 				else
 				{
-					word32 r2_n = r2_n + 1 + strspn(r2_n + 1, 0x00410000, 0x0040A640, r2_n + 1);
-					*((word32) r2_n + strcspn(r2_n, 0x00410000, 0x0040A640, r2_n, r2_n)) = 0x00;
+					union Eq_n * r2_n = r2_n + 1 + strspn(r2_n + 1, 0x00410000, 0x0040A640, r2_n + 1);
+					*((char *) r2_n + strcspn(r2_n, 0x00410000, 0x0040A640, r2_n, r2_n)) = (union Eq_n *) 0x00;
 					*r2_n = 0x00;
 					int32 dwLoc2C_n = 0x00;
 					ui32 dwLoc014C_n = 0x00;
