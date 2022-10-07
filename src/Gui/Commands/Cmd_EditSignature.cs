@@ -53,7 +53,7 @@ namespace Reko.Gui.Commands
                 {
                     program.User.Procedures[address] = newProc;
                     if (procedure != null)
-                        procedure.Name = userproc.Name;
+                        procedure.Name = newProc.Name;
                     if (newProc.Signature is { })
                     {
                         var proc = program.Procedures[address];

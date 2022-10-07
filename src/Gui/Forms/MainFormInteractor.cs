@@ -797,13 +797,18 @@ namespace Reko.Gui.Forms
             }
 
             var fsSvc = Services.RequireService<IFileSystemService>();
-            var saver = new ProjectSaver(sc);
-            var projectLocation = ImageLocation.FromUri(ProjectFileName);
-            var sProject = saver.Serialize(projectLocation, decompilerSvc.Decompiler.Project);
-
-            using (var xw = fsSvc.CreateXmlWriter(ProjectFileName))
+            try
             {
+                var saver = new ProjectSaver(sc);
+                var projectLocation = ImageLocation.FromUri(ProjectFileName);
+                var sProject = saver.Serialize(projectLocation, decompilerSvc.Decompiler.Project);
+
+                using var xw = fsSvc.CreateXmlWriter(ProjectFileName); 
                 saver.Save(sProject, xw);
+            }
+            catch (Exception ex)
+            {
+                await uiSvc.ShowError(ex, "Unable to save file.", ProjectFileName);
             }
             return true;
         }

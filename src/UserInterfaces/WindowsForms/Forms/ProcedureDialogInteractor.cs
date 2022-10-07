@@ -85,6 +85,7 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
             var usb = new UserSignatureBuilder(program);
             var procNew = new UserProcedure(proc.Address, procName);
             procNew.CSignature = CSignature;
+            procNew.Name = procName;
             procNew.Signature = usb.ParseFunctionDeclaration(CSignature)?.Signature;
             procNew.Decompile = dlg.Decompile.Checked;
 
