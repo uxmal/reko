@@ -69,6 +69,7 @@ namespace Reko.UserInterfaces.AvaloniaUI.ViewModels
             var procNew = new UserProcedure(userProc.Address, procName)
             {
                 CSignature = CSignature,
+                Name = procName,
                 Signature = usb.ParseFunctionDeclaration(CSignature)?.Signature,
                 Decompile = this.Decompile,
 
