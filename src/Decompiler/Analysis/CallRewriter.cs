@@ -383,7 +383,7 @@ namespace Reko.Analysis
         /// </remarks>
         /// <param name="ssaCaller">SSA state of the procedure in which the CALL instruction exists</param>
         /// <param name="stm">The particular statement of the call instruction</param>
-        /// <param name="call">The actuall CALL instruction.</param>
+        /// <param name="call">The actual CALL instruction.</param>
         public bool RewriteCall(SsaState ssaCaller, Statement stm, CallInstruction call)
         {
             if (call.Callee is ProcedureConstant callee)

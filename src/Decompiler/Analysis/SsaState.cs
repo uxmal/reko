@@ -357,6 +357,11 @@ namespace Reko.Analysis
 			}
 		}
 
+        /// <summary>
+        /// For each identifier defined in the statement <paramref name="stm"/>, 
+        /// set its defining statement to <paramref name="stm" />
+        /// </summary>
+        /// <param name="stm"></param>
         public void AddDefinitions(Statement stm)
         {
             var dc = new SsaDefinitionsCollector();
