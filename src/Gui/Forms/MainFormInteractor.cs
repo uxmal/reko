@@ -63,10 +63,6 @@ namespace Reko.Gui.Forms
         private ILoader loader;
 
         private IPhasePageInteractor currentPhase;
-        private InitialPageInteractor pageInitial;
-        private IScannedPageInteractor pageScanned;
-        private IAnalyzedPageInteractor pageAnalyzed;
-        private IFinalPageInteractor pageFinal;
 
         private MruList mru;
         private IServiceContainer sc;
@@ -109,7 +105,7 @@ namespace Reko.Gui.Forms
 
             var svcFactory = sc.RequireService<IServiceFactory>();
             CreateServices(svcFactory, sc);
-            CreatePhaseInteractors(svcFactory);
+            this.DecompilerPhases = CreatePhaseInteractors(svcFactory);
             projectBrowserSvc.Clear();
             this.projectFilesWatcher = new ProjectFilesWatcher(sc);
 
@@ -124,7 +120,7 @@ namespace Reko.Gui.Forms
             }
             catch { };
 
-            this.currentPhase = pageInitial;
+            this.currentPhase = this.DecompilerPhases.Initial;
             form.UpdateToolbarState();
 
             form.Closed += this.MainForm_Closed;
@@ -135,15 +131,22 @@ namespace Reko.Gui.Forms
             UpdateWindowTitle();
         }
 
-        private void CreatePhaseInteractors(IServiceFactory svcFactory)
+        private DecompilerPhases CreatePhaseInteractors(IServiceFactory svcFactory)
         {
-            pageInitial =  svcFactory.CreateInitialPageInteractor();
-            pageScanned = svcFactory.CreateScannedPageInteractor();
-            pageAnalyzed = new AnalyzedPageInteractorImpl(sc);
-            pageFinal = new FinalPageInteractor(sc);
-        }
+            var pageInitial =  svcFactory.CreateInitialPageInteractor();
+            var preScanning = new PreScanPageInteractor(sc);
+            var pageScanned = svcFactory.CreateScannedPageInteractor();
+            var pageAnalyzed = new AnalyzedPageInteractorImpl(sc);
+            var pageFinal = new FinalPageInteractor(sc);
+            return new DecompilerPhases(
+                pageInitial,
+                preScanning,
+                pageScanned,
+                pageAnalyzed,
+                pageFinal);
+    }
 
-        private void CreateServices(IServiceFactory svcFactory, IServiceContainer sc)
+    private void CreateServices(IServiceFactory svcFactory, IServiceContainer sc)
         {
             config = svcFactory.CreateDecompilerConfiguration();
             sc.AddService(typeof(IConfigurationService), config);
@@ -270,8 +273,8 @@ namespace Reko.Gui.Forms
             {
                 RememberFilenameInMru(fileName);
                 await CloseProject();
-                await SwitchInteractor(InitialPageInteractor);
-                if (!await pageInitial.OpenBinary(fileName))
+                await SwitchInteractor(DecompilerPhases.Initial);
+                if (!await DecompilerPhases.Initial.OpenBinary(fileName))
                     return;
                 if (fileName.EndsWith(Project_v5.FileExtension))
                 {
@@ -402,8 +405,8 @@ namespace Reko.Gui.Forms
                 var platform = new DefaultPlatform(Services, arch);
                 var asm = arch.CreateAssembler(null);
                 await CloseProject();
-                await SwitchInteractor(InitialPageInteractor);
-                await InitialPageInteractor.Assemble(fileName, asm, platform);
+                await SwitchInteractor(DecompilerPhases.Initial);
+                await DecompilerPhases.Initial.Assemble(fileName, asm, platform);
                 RememberFilenameInMru(fileName);
                 if (fileName.EndsWith(Project_v5.FileExtension))
                 {
@@ -428,8 +431,8 @@ namespace Reko.Gui.Forms
             {
                 LoadDetails details = dlg.GetLoadDetails();
                 await CloseProject();
-                await SwitchInteractor(InitialPageInteractor);
-                await pageInitial.OpenBinaryAs(fileName, details);
+                await SwitchInteractor(DecompilerPhases.Initial);
+                await DecompilerPhases.Initial.OpenBinaryAs(fileName, details);
                 if (fileName.EndsWith(Project_v5.FileExtension))
                 {
                     ProjectFileName = fileName;
@@ -476,25 +479,7 @@ namespace Reko.Gui.Forms
             }
         }
 
-        public InitialPageInteractor InitialPageInteractor
-        {
-            get { return pageInitial; }
-        }
-
-        public IScannedPageInteractor ScannedPageInteractor
-        {
-            get { return pageScanned; }
-        }
-
-        public IAnalyzedPageInteractor AnalyzedPageInteractor
-        {
-            get { return pageAnalyzed; }
-        }
-
-        public IFinalPageInteractor FinalPageInteractor
-        {
-            get { return pageFinal; }
-        }
+        public DecompilerPhases DecompilerPhases { get; private set; }
 
         private static string MruListFile
         {
@@ -510,7 +495,7 @@ namespace Reko.Gui.Forms
             {
                 program.Reset();
             }
-            await SwitchInteractor(this.InitialPageInteractor);
+            await SwitchInteractor(this.DecompilerPhases.Initial);
             
             CloseAllDocumentWindows();
             sc.RequireService<IStackTraceService>().Clear();
@@ -540,17 +525,17 @@ namespace Reko.Gui.Forms
         private IPhasePageInteractor? NextPage(IPhasePageInteractor phase)
         {
             IPhasePageInteractor? next = null;
-            if (phase == pageInitial)
+            if (phase == DecompilerPhases.Initial)
             {
-                next = pageScanned;
+                next = DecompilerPhases.Scanning;
             }
-            else if (phase == pageScanned)
+            else if (phase == DecompilerPhases.Scanning)
             {
-                next = pageAnalyzed;
+                next = DecompilerPhases.Analysis;
             }
-            else if (phase == pageAnalyzed)
+            else if (phase == DecompilerPhases.Analysis)
             {
-                next = pageFinal;
+                next = DecompilerPhases.Final;
             }
             return next;
         }
@@ -1040,10 +1025,10 @@ namespace Reko.Gui.Forms
                 string file = mru.Items[iMru];
 
                 await CloseProject();
-                await SwitchInteractor(InitialPageInteractor);
+                await SwitchInteractor(DecompilerPhases.Initial);
                 try
                 {
-                    if (await pageInitial.OpenBinary(file))
+                    if (await DecompilerPhases.Initial.OpenBinary(file))
                     {
                         RememberFilenameInMru(file);
                         if (file.EndsWith(Project_v5.FileExtension))

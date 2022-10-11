@@ -31,6 +31,9 @@ using System.Threading.Tasks;
 
 namespace Reko.Gui.Forms
 {
+    /// <summary>
+    /// The Initial state is when no project has been loaded.
+    /// </summary>
     public interface InitialPageInteractor : IPhasePageInteractor
     {
         ValueTask<bool> OpenBinary(string file);
@@ -54,7 +57,7 @@ namespace Reko.Gui.Forms
 
         public override bool QueryStatus(CommandID cmdId, CommandStatus status, CommandText text)
         {
-            if (cmdId.Guid== CmdSets.GuidReko)
+            if (cmdId.Guid == CmdSets.GuidReko)
             {
                 switch ((CmdIds)cmdId.ID)
                 {
