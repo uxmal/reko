@@ -22,6 +22,7 @@ using Reko.Core;
 using Reko.Core.Hll.C;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Reko.Environments.Xbox
 {
@@ -58,6 +59,14 @@ namespace Reko.Environments.Xbox
         public override ExternalProcedure LookupProcedureByName(string? moduleName, string procName)
         {
             throw new NotImplementedException();
+        }
+
+        public override Storage? PossibleReturnValue(IEnumerable<Storage> storages)
+        {
+            var retStorage = storages
+                .OfType<RegisterStorage>()
+                .FirstOrDefault(r => r.Name == "eax");
+            return retStorage;
         }
     }
 }
