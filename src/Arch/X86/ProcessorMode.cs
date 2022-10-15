@@ -160,6 +160,19 @@ namespace Reko.Arch.X86
                     }
                     catch { }
                 }
+                if (txtAddress.Length > 0)
+                {
+                    bool isAllZeros = true;
+                    for (int i = 0; isAllZeros && i < txtAddress.Length; ++i)
+                    {
+                        isAllZeros &= txtAddress[i] == '0';
+                    }
+                    if (isAllZeros)
+                    {
+                        addr = CreateSegmentedAddress(0, 0)!;
+                        return true;
+                    }
+                }
             }
             addr = default!;
             return false;

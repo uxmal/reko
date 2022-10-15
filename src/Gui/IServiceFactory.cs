@@ -73,5 +73,6 @@ namespace Reko.Gui
         IStackTraceService CreateStackTraceService();
         IHexDisassemblerService CreateHexDisassemblerService();
         ISegmentListService CreateSegmentListService();
+        IBaseAddressFinderService CreateBaseAddressFinderService();
     }
 }

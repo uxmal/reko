@@ -18,6 +18,7 @@
  */
 #endregion
 
+using Reko.Core;
 using Reko.Core.Configuration;
 using Reko.Core.Loading;
 using Reko.Core.Services;
@@ -32,6 +33,8 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
 {
     public partial class OpenAsDialog : Form, IOpenAsDialog
     {
+        private readonly OpenAsInteractor interactor;
+
         public OpenAsDialog()
         {
             InitializeComponent();
@@ -49,7 +52,8 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
             BrowseButton = new ButtonWrapper(btnBrowse);
             OkButton = new ButtonWrapper(btnOk);
 
-            new OpenAsInteractor().Attach(this);
+            this.interactor = new OpenAsInteractor();
+            interactor.Attach(this);
         }
 
         public IServiceProvider Services { get; set; }
@@ -120,6 +124,15 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
             }
         }
 
+        protected override void OnClosed(EventArgs e)
+        {
+            if (this.DialogResult == DialogResult.OK)
+            {
+                this.Value = GetLoadDetails();
+            }
+            base.OnClosed(e);
+        }
+
         public LoadDetails GetLoadDetails()
         {
             var config = Services.RequireService<IConfigurationService>();
@@ -148,10 +161,11 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
             if (arch is null)
                 throw new InvalidOperationException($"Unable to load {archName} architecture.");
             arch.LoadUserOptions(this.ArchitectureOptions);
-            if (!arch.TryParseAddress(sAddr, out var addrBase))
-                throw new ApplicationException($"'{sAddr}' doesn't appear to be a valid address.");
+            if (rdbGuessAddress.Checked || !arch.TryParseAddress(sAddr, out var addrBase))
+                sAddr = "";
             return new LoadDetails
             {
+                Location = ImageLocation.FromUri(this.FileName.Text),
                 LoaderName = loader,
                 ArchitectureName = archName,
                 ArchitectureOptions = this.ArchitectureOptions,

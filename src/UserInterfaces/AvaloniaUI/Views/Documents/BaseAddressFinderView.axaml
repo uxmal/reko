@@ -6,7 +6,7 @@
              mc:Ignorable="d" d:DesignWidth="400" d:DesignHeight="450"
 			 x:CompileBindings="True"
 	         x:DataType="vm:BaseAddressFinderViewModel"
-             x:Class="Reko.UserInterfaces.AvaloniaUI.Views.Documents.BaseAddressFinder">
+             x:Class="Reko.UserInterfaces.AvaloniaUI.Views.Documents.BaseAddressFinderView">
 	<Grid RowDefinitions="auto,*,auto">
 		<Grid.Styles>
 			<Style Selector="Label.banner">

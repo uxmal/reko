@@ -167,6 +167,8 @@ namespace Reko.Core.Loading
         /// <summary>
         /// String representation of the address at which the binary file should
         /// be loaded. The address string is parsed by the architecture when loading.
+        /// A null or empty value here means the GUI should show the Base Address Finder 
+        /// to try to guess where the image starts.
         /// </summary>
         public string? LoadAddress;
         

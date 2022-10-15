@@ -256,7 +256,13 @@ namespace Reko.Loading
                 platform = cfgSvc.GetEnvironment(details.PlatformName).Load(Services, arch);
             if (addrLoad is null)
             {
-                if (!arch.TryParseAddress(details.LoadAddress, out addrLoad))
+                if (string.IsNullOrEmpty(details.LoadAddress))
+                {
+                    // Fall back to address 0. Caller should be offered the option of
+                    // guessing the base address.
+                    arch.TryParseAddress("0", out addrLoad);
+                }
+                else if (!arch.TryParseAddress(details.LoadAddress, out addrLoad))
                 {
                     throw new ApplicationException(
                         "Unable to determine base address for executable. A default address should have been present in the reko.config file.");
@@ -273,7 +279,7 @@ namespace Reko.Loading
                 image = newImage;
             }
 
-            if (addrLoad.DataType.BitSize == 16 && image.Length > 65535)
+            if (addrLoad is { } && addrLoad.DataType.BitSize == 16 && image.Length > 65535)
             {
                 //$HACK: this works around issues when a large ROM image is read
                 // for a 8- or 16-bit processor. Once we have a story for overlays

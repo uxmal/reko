@@ -33,10 +33,10 @@
             this.progressStringGuess = new System.Windows.Forms.ProgressBar();
             this.progressPrologGuess = new System.Windows.Forms.ProgressBar();
             this.listCandidates = new System.Windows.Forms.ListView();
-            this.btnStartStop = new System.Windows.Forms.Button();
             this.colAddress = new System.Windows.Forms.ColumnHeader();
             this.columnStrings = new System.Windows.Forms.ColumnHeader();
             this.columnPrologs = new System.Windows.Forms.ColumnHeader();
+            this.btnStartStop = new System.Windows.Forms.Button();
             this.btnChangeBaseAddress = new System.Windows.Forms.Button();
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
@@ -97,15 +97,6 @@
             this.listCandidates.UseCompatibleStateImageBehavior = false;
             this.listCandidates.View = System.Windows.Forms.View.Details;
             // 
-            // btnStartStop
-            // 
-            this.btnStartStop.Location = new System.Drawing.Point(3, 186);
-            this.btnStartStop.Name = "btnStartStop";
-            this.btnStartStop.Size = new System.Drawing.Size(75, 23);
-            this.btnStartStop.TabIndex = 5;
-            this.btnStartStop.Text = "&Start";
-            this.btnStartStop.UseVisualStyleBackColor = true;
-            // 
             // colAddress
             // 
             this.colAddress.Text = "Address";
@@ -120,6 +111,15 @@
             // 
             this.columnPrologs.Text = "Prolog results";
             this.columnPrologs.Width = 120;
+            // 
+            // btnStartStop
+            // 
+            this.btnStartStop.Location = new System.Drawing.Point(3, 186);
+            this.btnStartStop.Name = "btnStartStop";
+            this.btnStartStop.Size = new System.Drawing.Size(75, 23);
+            this.btnStartStop.TabIndex = 5;
+            this.btnStartStop.Text = "&Start";
+            this.btnStartStop.UseVisualStyleBackColor = true;
             // 
             // btnChangeBaseAddress
             // 
@@ -167,7 +167,6 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.label2);
-            this.Controls.Add(this.label1);
             this.Controls.Add(this.textBox1);
             this.Controls.Add(this.btnChangeBaseAddress);
             this.Controls.Add(this.btnStartStop);
@@ -176,6 +175,7 @@
             this.Controls.Add(this.progressStringGuess);
             this.Controls.Add(this.chkGuessPrologs);
             this.Controls.Add(this.chkGuessStrings);
+            this.Controls.Add(this.label1);
             this.Name = "BaseAddressFinderView";
             this.Size = new System.Drawing.Size(804, 517);
             this.ResumeLayout(false);

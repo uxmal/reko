@@ -5,9 +5,9 @@ using System;
 
 namespace Reko.UserInterfaces.AvaloniaUI.Views.Documents
 {
-    public partial class BaseAddressFinder : UserControl
+    public partial class BaseAddressFinderView : UserControl
     {
-        public BaseAddressFinder()
+        public BaseAddressFinderView()
         {
             InitializeComponent();
         }

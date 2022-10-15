@@ -26,6 +26,7 @@ using System.Text;
 using System.Threading.Tasks;
 using DynamicData;
 using ReactiveUI;
+using Reko.Core;
 using Reko.Core.Configuration;
 using Reko.Core.Loading;
 using Reko.Core.Services;
@@ -229,7 +230,7 @@ namespace Reko.UserInterfaces.AvaloniaUI.ViewModels
             }
             EnvironmentsEnabled = platformRequired;
             ArchitecturesEnabled = archRequired;
-            AddressEnabled = addrRequired && dlg.LoadAddressChecked;
+            AddressEnabled = addrRequired && LoadAddressChecked;
             //dlg.PropertyGrid.Enabled = dlg.PropertyGrid.SelectedObject != null;
             OKButtonEnabled = this.FileName.Length > 0 || !unknownRawFileFormat;
         }
@@ -261,10 +262,11 @@ namespace Reko.UserInterfaces.AvaloniaUI.ViewModels
             if (arch is null)
                 throw new InvalidOperationException($"Unable to load {archName} architecture.");
             //$NYI arch.LoadUserOptions(this.ArchitectureOptions);
-            if (!arch.TryParseAddress(sAddr, out var addrBase))
-                throw new ApplicationException($"'{sAddr}' doesn't appear to be a valid address.");
+            if (!arch.TryParseAddress(sAddr, out var _))
+                sAddr = null;
             return new LoadDetails
             {
+                Location = ImageLocation.FromUri(this.FileName),
                 LoaderName = loader,
                 ArchitectureName = archName,
                 //$NYI: ArchitectureOptions = this.ArchitectureOptions,

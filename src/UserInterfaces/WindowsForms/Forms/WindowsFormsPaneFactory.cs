@@ -19,6 +19,7 @@
 #endregion
 
 using Reko.Core;
+using Reko.Core.Loading;
 using Reko.Gui;
 using Reko.UserInterfaces.WindowsForms.Forms;
 using System;
@@ -36,6 +37,14 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
         public WindowsFormsPaneFactory(IServiceProvider services)
         {
             this.services = services;
+        }
+
+        public IWindowPane CreateBaseAddressFinderPane(LoadDetails loadDetails)
+        {
+            return new BaseAddressFinderView()
+            {
+                LoadDetails = loadDetails,
+            };
         }
 
         public IWindowPane CreateHexDisassemblerPane()

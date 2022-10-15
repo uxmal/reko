@@ -248,5 +248,10 @@ namespace Reko.UserInterfaces.AvaloniaUI.Services
         {
             return new SegmentListService(this.services);
         }
+
+        public IBaseAddressFinderService CreateBaseAddressFinderService()
+        {
+            return new BaseAddressFinderService(this.services);
+        }
     }
 }

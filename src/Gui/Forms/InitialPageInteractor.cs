@@ -172,7 +172,6 @@ namespace Reko.Gui.Forms
             IWorkerDialogService svc = Services.RequireService<IWorkerDialogService>();
             if (!await svc.StartBackgroundWork("Loading program", delegate ()
             {
-                //$TODO: taskify this.
                 var eventListener = Services.RequireService<DecompilerEventListener>();
                 eventListener.ShowStatus("Loading source program.");
                 var imageUri = ImageLocation.FromUri(file);
@@ -192,6 +191,11 @@ namespace Reko.Gui.Forms
                 browserSvc.Show();
                 procListSvc.Clear();
                 ShowLowLevelWindow();
+                if (details.LoadAddress is null)
+                {
+                    var bafListSvc = Services.RequireService<IBaseAddressFinderService>();
+                    bafListSvc.Show(details);
+                }
                 return true;
             }
             else

@@ -20,6 +20,7 @@
 
 using Dock.Model.ReactiveUI.Controls;
 using ReactiveUI;
+using Reko.Core.Loading;
 using Reko.Gui;
 using System;
 using System.Collections.Generic;
@@ -32,10 +33,13 @@ namespace Reko.UserInterfaces.AvaloniaUI.ViewModels.Documents
 {
     public class BaseAddressFinderViewModel : Document, IWindowPane
     {
-        public BaseAddressFinderViewModel()
+        public BaseAddressFinderViewModel(IServiceProvider services, LoadDetails loadDetails)
         {
+            this.services = services;
+            this.loadDetails = loadDetails;
             this.startStopButtonText = "_Start";
             this.Results = new();
+            this.baseAddress = "";
         }
 
         public bool ByString
@@ -81,6 +85,8 @@ namespace Reko.UserInterfaces.AvaloniaUI.ViewModels.Documents
             set => this.RaiseAndSetIfChanged(ref baseAddress, value);
         }
         public string baseAddress;
+        private IServiceProvider services;
+        private LoadDetails loadDetails;
 
         public IWindowFrame? Frame { get; set; }
 

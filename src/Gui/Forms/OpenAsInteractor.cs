@@ -38,7 +38,7 @@ namespace Reko.Gui.Forms
         {
             this.dlg = dlg;
             dlg.Load += dlg_Load;
-            dlg.BrowseButton.Click += BrowseButton_Click;
+            dlg.BrowseButton.Click += BrowseButton_Click; 
             dlg.AddressTextBox.TextChanged += AddressTextBox_TextChanged;
             dlg.RawFileTypes.TextChanged += RawFileTypes_TextChanged;
             dlg.Architectures.TextChanged += Architectures_TextChanged;
@@ -54,7 +54,7 @@ namespace Reko.Gui.Forms
 
         }
 
-        private void dlg_Load(object? sender, EventArgs e)
+         private void dlg_Load(object? sender, EventArgs e)
         {
             var dcCfg = dlg.Services.RequireService<IConfigurationService>();
             PopulateArchitectures(dcCfg);

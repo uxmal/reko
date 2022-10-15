@@ -19,6 +19,7 @@
 #endregion
 
 using Reko.Core;
+using Reko.Core.Loading;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -33,6 +34,7 @@ namespace Reko.Gui
     /// </summary>
     public interface IWindowPaneFactory
     {
+        IWindowPane CreateBaseAddressFinderPane(LoadDetails loadDetails);
         IWindowPane CreateHexDisassemblerPane();
         IWindowPane CreateSegmentListPane(Program program);
     }

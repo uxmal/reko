@@ -18,40 +18,32 @@
  */
 #endregion
 
-using Reko.Core;
 using Reko.Core.Loading;
-using Reko.Gui;
-using Reko.UserInterfaces.AvaloniaUI.ViewModels.Documents;
+using Reko.Core.Services;
+using Reko.Gui.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Reko.UserInterfaces.AvaloniaUI.Services
+namespace Reko.Gui
 {
-    public class AvaloniaWindowPaneFactory : IWindowPaneFactory
+    public class BaseAddressFinderService : ViewService, IBaseAddressFinderService
     {
-        private readonly IServiceProvider services;
-
-        public AvaloniaWindowPaneFactory(IServiceProvider services)
+        public BaseAddressFinderService(IServiceProvider services)
+            : base(services)
         {
-            this.services = services;
         }
 
-        public IWindowPane CreateBaseAddressFinderPane(LoadDetails loadDetails)
+        public void Show(LoadDetails details)
         {
-            return new BaseAddressFinderViewModel(services, loadDetails);
-        }
-
-        public IWindowPane CreateHexDisassemblerPane()
-        {
-            return new HexDisassemblerViewModel(services);
-        }
-
-        public IWindowPane CreateSegmentListPane(Program program)
-        {
-            return new SegmentListViewModel(program);
+            var paneFactory = this.Services.RequireService<IWindowPaneFactory>();
+            ShowWindow(
+                nameof(BaseAddressFinderService),
+                "Base Address Finder",
+                this, 
+                () => paneFactory.CreateBaseAddressFinderPane(details));
         }
     }
 }

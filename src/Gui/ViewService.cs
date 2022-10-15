@@ -30,12 +30,12 @@ namespace Reko.Gui
     /// </summary>
     public class ViewService
     {
-        private readonly IServiceProvider services;
-
         public ViewService(IServiceProvider services)
         {
-            this.services = services;
+            this.Services = services;
         }
+
+        public IServiceProvider Services { get; }
 
         protected IWindowFrame ShowWindow(
             string windowType,
@@ -52,7 +52,7 @@ namespace Reko.Gui
             object docItem,
             IWindowPane innerPane)
         {
-            var shellUiSvc = services.RequireService<IDecompilerShellUiService>();
+            var shellUiSvc = Services.RequireService<IDecompilerShellUiService>();
             var windowFrame = shellUiSvc.FindDocumentWindow(windowType, docItem);
             if (windowFrame is null)
             {

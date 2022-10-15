@@ -174,6 +174,7 @@ namespace Reko.Gui
             new CmdDefinition { id = CmdIds.ActionAssumeRegisterValues, cmdSet = Reko, text = "_Register values..." },
 
             new CmdDefinition { id = CmdIds.ToolsHexDisassembler, cmdSet = Reko, container = GroupIds.GrpTools, text = "_Hex disassembler" },
+            new CmdDefinition { id = CmdIds.ToolsFindBaseAddress, cmdSet = Reko, container = GroupIds.GrpTools, text = "Find _Base Address" },
             new CmdDefinition { id = CmdIds.ToolsOptions, cmdSet = Reko, container = GroupIds.GrpTools, text = "_Options..." },
             new CmdDefinition { id = CmdIds.ToolsKeyBindings, cmdSet = Reko, container = GroupIds.GrpTools, text = "_Key bindings..." },
             new CmdDefinition { id = CmdIds.WindowsCascade, cmdSet = Reko, container = GroupIds.GrpWindows, text = "_Cascade" },

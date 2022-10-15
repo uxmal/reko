@@ -246,6 +246,9 @@ namespace Reko.Gui.Forms
 
             var segListSvc = svcFactory.CreateSegmentListService();
             sc.AddService<ISegmentListService>(segListSvc);
+
+            var bafSvc = svcFactory.CreateBaseAddressFinderService();
+            sc.AddService<IBaseAddressFinderService>(bafSvc);
         }
 
         public virtual TextWriter CreateTextWriter(string filename)
@@ -426,7 +429,7 @@ namespace Reko.Gui.Forms
             var details = await uiSvc.ShowModalDialog(dlg);
             if (details?.Location is null)
                 return false;
-            string fileName = details.Location.GetFilename();
+            string fileName = details.Location.FilesystemPath;
             try
             {
                 await CloseProject();
@@ -435,6 +438,10 @@ namespace Reko.Gui.Forms
                 if (fileName.EndsWith(Project_v5.FileExtension))
                 {
                     ProjectFileName = fileName;
+                }
+                if (string.IsNullOrEmpty(details.LoadAddress))
+                {
+                    Services.RequireService<IBaseAddressFinderService>().Show(details);
                 }
             }
             catch (Exception ex)
@@ -737,6 +744,15 @@ namespace Reko.Gui.Forms
             hexDasmSvc.Show();
         }
 
+        private void ToolsFindBaseAddress()
+        {
+            var bafSvc = sc.RequireService<IBaseAddressFinderService>();
+            bafSvc.Show(new LoadDetails
+            {
+
+            });
+        }
+
         public async ValueTask ToolsOptions()
         {
             var dlg = dlgFactory.CreateUserPreferencesDialog();
@@ -887,6 +903,7 @@ namespace Reko.Gui.Forms
                 case CmdIds.ViewProjectBrowser:
                 case CmdIds.ViewProcedureList:
                 case CmdIds.ToolsHexDisassembler:
+                case CmdIds.ToolsFindBaseAddress:
                 case CmdIds.ToolsOptions:
                 case CmdIds.WindowsCascade: 
                 case CmdIds.WindowsTileVertical:
@@ -998,6 +1015,7 @@ namespace Reko.Gui.Forms
                 case CmdIds.ViewSegmentList: ViewSegmentList(); retval = true; break;
 
                 case CmdIds.ToolsHexDisassembler: ToolsHexDisassembler(); retval = true; break;
+                case CmdIds.ToolsFindBaseAddress: ToolsFindBaseAddress(); retval = true; break;
                 case CmdIds.ToolsOptions: await ToolsOptions(); retval = true; break;
                 case CmdIds.ToolsKeyBindings: await ToolsKeyBindings(); retval = true; break;
 

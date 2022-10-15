@@ -35,4 +35,10 @@
 	  <AvaloniaResource Include="Themes\**" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Compile Update="Views\Documents\BaseAddressFinderView.axaml.cs">
+      <DependentUpon>BaseAddressFinderView.axaml</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
 </Project>

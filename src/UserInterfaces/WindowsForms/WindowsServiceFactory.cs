@@ -259,5 +259,10 @@ namespace Reko.UserInterfaces.WindowsForms
         {
             return new SegmentListService(services);
         }
+
+        public IBaseAddressFinderService CreateBaseAddressFinderService()
+        {
+            return new BaseAddressFinderService(this.services);
+        }
     }
 }
