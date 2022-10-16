@@ -74,7 +74,7 @@ namespace Reko.UserInterfaces.AvaloniaUI.Views
 
         private void btnCancel_Click(object sender, RoutedEventArgs e)
         {
-
+            this.Close();
         }
 
         private void btnOK_Click(object sender, RoutedEventArgs e)

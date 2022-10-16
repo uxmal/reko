@@ -19,6 +19,7 @@
 #endregion
 
 using Reko.Core;
+using Reko.Scanning;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -101,7 +102,11 @@ namespace Reko.Gui.ViewModels.Documents
             {
                 cancellationToken = new CancellationToken(false);
                 this.StartStopButtonText = stopText;
-                await Task.Delay(5000);
+
+                IBaseAddressFinder s = new FindBaseString(mem);
+                s.Endianness = program.Architecture.Endianness;
+                await s.Run();
+
                 this.StartStopButtonText = startText;
                 this.finderTask = null;
             }
