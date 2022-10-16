@@ -185,16 +185,17 @@ namespace Reko.Gui.Forms
                 return false;
             var browserSvc = Services.RequireService<IProjectBrowserService>();
             var procListSvc = Services.RequireService<IProcedureListService>();
-            if (Decompiler?.Project is not null)
+            var project = Decompiler?.Project;
+            if (project is not null)
             {
-                browserSvc.Load(Decompiler.Project);
+                browserSvc.Load(project);
                 browserSvc.Show();
                 procListSvc.Clear();
                 ShowLowLevelWindow();
-                if (details.LoadAddress is null)
+                if (string.IsNullOrEmpty(details.LoadAddress) && project.Programs.Count == 1)
                 {
                     var bafListSvc = Services.RequireService<IBaseAddressFinderService>();
-                    bafListSvc.Show(details);
+                    bafListSvc.Show(project.Programs[0]);
                 }
                 return true;
             }

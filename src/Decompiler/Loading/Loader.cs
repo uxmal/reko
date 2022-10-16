@@ -260,7 +260,8 @@ namespace Reko.Loading
                 {
                     // Fall back to address 0. Caller should be offered the option of
                     // guessing the base address.
-                    arch.TryParseAddress("0", out addrLoad);
+                    arch.TryParseAddress("0", out var addr);
+                    addrLoad = addr!;
                 }
                 else if (!arch.TryParseAddress(details.LoadAddress, out addrLoad))
                 {
@@ -290,7 +291,7 @@ namespace Reko.Loading
             }
 
             var imgLoader = CreateCustomImageLoader(Services, details.LoaderName, details.Location, image);
-            var program = imgLoader.LoadProgram(addrLoad, arch, platform);
+            var program = imgLoader.LoadProgram(addrLoad!, arch, platform);
             if (details.EntryPoint is not null && arch.TryParseAddress(details.EntryPoint.Address, out Address? addrEp))
             {
                 program.EntryPoints.Add(addrEp, ImageSymbol.Procedure(arch, addrEp));

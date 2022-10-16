@@ -34,7 +34,7 @@ namespace Reko.Gui
     /// </summary>
     public interface IWindowPaneFactory
     {
-        IWindowPane CreateBaseAddressFinderPane(LoadDetails loadDetails);
+        IWindowPane CreateBaseAddressFinderPane(Program program);
         IWindowPane CreateHexDisassemblerPane();
         IWindowPane CreateSegmentListPane(Program program);
     }

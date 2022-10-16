@@ -39,11 +39,11 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
             this.services = services;
         }
 
-        public IWindowPane CreateBaseAddressFinderPane(LoadDetails loadDetails)
+        public IWindowPane CreateBaseAddressFinderPane(Program program)
         {
             return new BaseAddressFinderView()
             {
-                LoadDetails = loadDetails,
+                Program = program,
             };
         }
 

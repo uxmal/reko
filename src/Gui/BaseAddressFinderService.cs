@@ -18,14 +18,10 @@
  */
 #endregion
 
-using Reko.Core.Loading;
+using Reko.Core;
 using Reko.Core.Services;
 using Reko.Gui.Services;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Reko.Gui
 {
@@ -36,14 +32,14 @@ namespace Reko.Gui
         {
         }
 
-        public void Show(LoadDetails details)
+        public void Show(Program program)
         {
             var paneFactory = this.Services.RequireService<IWindowPaneFactory>();
             ShowWindow(
                 nameof(BaseAddressFinderService),
                 "Base Address Finder",
                 this, 
-                () => paneFactory.CreateBaseAddressFinderPane(details));
+                () => paneFactory.CreateBaseAddressFinderPane(program));
         }
     }
 }

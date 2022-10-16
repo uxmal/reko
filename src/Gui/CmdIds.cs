@@ -150,7 +150,6 @@ namespace Reko.Gui
 		ActionMarkStrings,
 		ActionAssumeRegisterValues,
 		ToolsHexDisassembler,
-        ToolsFindBaseAddress,
 		ToolsOptions,
 		ToolsKeyBindings,
 		WindowsCascade,

@@ -18,12 +18,13 @@
  */
 #endregion
 
+using Reko.Core;
 using Reko.Core.Loading;
 
 namespace Reko.Gui.Services
 {
     public interface IBaseAddressFinderService
     {
-        void Show(LoadDetails details);
+        void Show(Program program);
     }
 }

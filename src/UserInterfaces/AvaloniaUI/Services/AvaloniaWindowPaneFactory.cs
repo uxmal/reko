@@ -39,9 +39,9 @@ namespace Reko.UserInterfaces.AvaloniaUI.Services
             this.services = services;
         }
 
-        public IWindowPane CreateBaseAddressFinderPane(LoadDetails loadDetails)
+        public IWindowPane CreateBaseAddressFinderPane(Program program)
         {
-            return new BaseAddressFinderViewModel(services, loadDetails);
+            return new BaseAddressFinderViewModel(services, program);
         }
 
         public IWindowPane CreateHexDisassemblerPane()

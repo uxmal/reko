@@ -1,3 +1,4 @@
+using Reko.Core;
 using Reko.Core.Loading;
 using Reko.Gui;
 using System;
@@ -19,7 +20,7 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
             InitializeComponent();
         }
 
-        public LoadDetails LoadDetails { get; internal set; }
+        public Base Program { get; set; }
         public IWindowFrame Frame { get; set; }
 
         public void Close()
