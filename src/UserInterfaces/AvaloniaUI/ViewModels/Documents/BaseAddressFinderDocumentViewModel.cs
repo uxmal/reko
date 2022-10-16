@@ -18,45 +18,47 @@
  */
 #endregion
 
+using Dock.Model.ReactiveUI.Controls;
+using ReactiveUI;
 using Reko.Core;
 using Reko.Core.Loading;
 using Reko.Gui;
 using Reko.Gui.ViewModels.Documents;
-using Reko.UserInterfaces.WindowsForms.Forms;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Reko.UserInterfaces.WindowsForms.Forms
+namespace Reko.UserInterfaces.AvaloniaUI.ViewModels.Documents
 {
-    public class WindowsFormsPaneFactory : IWindowPaneFactory
+    public class BaseAddressFinderDocumentViewModel : Document, IWindowPane
     {
-        private IServiceProvider services;
-
-        public WindowsFormsPaneFactory(IServiceProvider services)
+        public BaseAddressFinderDocumentViewModel(BaseAddressFinderViewModel viewModel)
         {
-            this.services = services;
+            this.ViewModel = viewModel;
         }
 
-        public IWindowPane CreateBaseAddressFinderPane(Program program)
+        public BaseAddressFinderViewModel ViewModel { get; set; }
+
+        public IWindowFrame? Frame { get; set; }
+
+        public void Close()
         {
-            var vm = new BaseAddressFinderViewModel(services, program, "&Start", "&Stop");
-            return new BaseAddressFinderView()
-            {
-                ViewModel = vm,
-            };
+            throw new NotImplementedException();
         }
 
-        public IWindowPane CreateHexDisassemblerPane()
+        public object CreateControl()
         {
-            return new HexDisassemblerController();
+            throw new NotImplementedException();
         }
 
-        public IWindowPane CreateSegmentListPane(Program program)
+        public void SetSite(IServiceProvider services)
         {
-            return new SegmentListViewInteractor(program);
+            throw new NotImplementedException();
         }
     }
+
 }
+

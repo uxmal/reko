@@ -109,6 +109,7 @@ namespace Reko.UserInterfaces.AvaloniaUI.Services
             };
             var openAsView = new OpenAsDialog()
             {
+                Services = services,
                 DataContext = viewModel
             };
             return openAsView;

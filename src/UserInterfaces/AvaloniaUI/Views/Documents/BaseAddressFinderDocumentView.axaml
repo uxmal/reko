@@ -5,8 +5,8 @@
 			 xmlns:vm="using:Reko.UserInterfaces.AvaloniaUI.ViewModels.Documents"
              mc:Ignorable="d" d:DesignWidth="400" d:DesignHeight="450"
 			 x:CompileBindings="True"
-	         x:DataType="vm:BaseAddressFinderViewModel"
-             x:Class="Reko.UserInterfaces.AvaloniaUI.Views.Documents.BaseAddressFinderView">
+	         x:DataType="vm:BaseAddressFinderDocumentViewModel"
+             x:Class="Reko.UserInterfaces.AvaloniaUI.Views.Documents.BaseAddressFinderDocumentView">
 	<Grid RowDefinitions="auto,*,auto">
 		<Grid.Styles>
 			<Style Selector="Label.banner">
@@ -30,17 +30,16 @@
 				   LastChildFill="True"
 				   VerticalAlignment="Top">
 			<StackPanel DockPanel.Dock="Top">
-				<CheckBox IsChecked="{Binding ByString}">Guess base address based on _strings</CheckBox>
-				<ProgressBar Value="{Binding ByStringProgress}"/>
-				<CheckBox IsChecked="{Binding ByProlog}">Guess base address based on procedure _prologs</CheckBox>
-				<ProgressBar Value="{Binding ByPrologProgress}" />
-				<Button Click="btnStartStop_Click">
-					<TextBlock Text="{Binding StartStopButtonText}" />
+				<CheckBox IsChecked="{Binding ViewModel.ByString}">Guess base address based on _strings</CheckBox>
+				<ProgressBar Value="{Binding ViewModel.ByStringProgress}"/>
+				<CheckBox IsChecked="{Binding ViewModel.ByProlog}">Guess base address based on procedure _prologs</CheckBox>
+				<ProgressBar Value="{Binding ViewModel.ByPrologProgress}" />
+				<Button Click="btnStartStop_Click" Content="{Binding ViewModel.StartStopButtonText}">
 				</Button>
 			</StackPanel>
 			<DataGrid
 					DockPanel.Dock="Top"
-					Items="{Binding Results}"
+					Items="{Binding ViewModel.Results}"
 					AutoGenerateColumns="False"
 					CanUserResizeColumns="True">
 				<DataGrid.Columns>
@@ -53,7 +52,7 @@
 		<StackPanel Grid.Row="2">
 			<Label>_Base address:</Label>
 			<StackPanel Orientation="Horizontal">
-				<TextBox Classes="address" Text="{Binding BaseAddress}" Width="150" 
+				<TextBox Classes="address" Text="{Binding ViewModel.BaseAddress}" Width="150" 
 						 Margin="0,0,10,0"/>
 				<Button Click="btnChangeAddress_Click">_Change base address</Button> 
 			</StackPanel>

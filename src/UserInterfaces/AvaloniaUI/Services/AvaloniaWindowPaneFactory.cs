@@ -21,6 +21,7 @@
 using Reko.Core;
 using Reko.Core.Loading;
 using Reko.Gui;
+using Reko.Gui.ViewModels.Documents;
 using Reko.UserInterfaces.AvaloniaUI.ViewModels.Documents;
 using System;
 using System.Collections.Generic;
@@ -41,7 +42,8 @@ namespace Reko.UserInterfaces.AvaloniaUI.Services
 
         public IWindowPane CreateBaseAddressFinderPane(Program program)
         {
-            return new BaseAddressFinderViewModel(services, program);
+            var bafVm = new BaseAddressFinderViewModel(services, program, "_Start", "_Stop");
+            return new BaseAddressFinderDocumentViewModel(bafVm);
         }
 
         public IWindowPane CreateHexDisassemblerPane()

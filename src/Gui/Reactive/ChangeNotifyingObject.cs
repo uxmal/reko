@@ -26,12 +26,17 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Reko.Core.Reactive
+namespace Reko.Gui.Reactive
 {
     /// <summary>
-    /// This is the same idea as ReactiveUI.ReactiveObject, but 
-    /// we don't want to take the dependency.
+    /// Base class for objects that raise events when properties
+    /// are mutated.
     /// </summary>
+    /// <remarks>
+    /// This is the same idea as ReactiveUI.ReactiveObject, but 
+    /// we don't want to take the dependency on an external 
+    /// assembly just for one method.
+    /// </remarks>
     public class ChangeNotifyingObject : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler? PropertyChanged;

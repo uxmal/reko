@@ -23,9 +23,11 @@ using Avalonia.Controls;
 using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
 using Reko.Core.Loading;
+using Reko.Core.Services;
 using Reko.Gui;
-using Reko.Gui.Forms;
+using Reko.Gui.Services;
 using Reko.UserInterfaces.AvaloniaUI.ViewModels;
+using System;
 
 namespace Reko.UserInterfaces.AvaloniaUI.Views
 {
@@ -37,9 +39,12 @@ namespace Reko.UserInterfaces.AvaloniaUI.Views
 #if DEBUG
             this.AttachDevTools();
 #endif
+            Services = default!;
         }
 
+        public IServiceProvider Services { get; set; }
         public LoadDetails? Value { get; set; }
+        private OpenAsViewModel ViewModel => (OpenAsViewModel) this.DataContext!;
 
         public string? Text 
         {
@@ -57,9 +62,14 @@ namespace Reko.UserInterfaces.AvaloniaUI.Views
             AvaloniaXamlLoader.Load(this);
         }
 
-        private void btnBrowseFile_Click(object sender, RoutedEventArgs e)
+        private async void btnBrowseFile_Click(object sender, RoutedEventArgs e)
         {
-
+            var uiSvc = Services.RequireService<IDecompilerShellUiService>();
+            var fname = await uiSvc.ShowOpenFileDialog(ViewModel?.FileName);
+            if (fname is {})
+            {
+                ViewModel!.FileName = fname;
+            }
         }
 
         private void btnCancel_Click(object sender, RoutedEventArgs e)
@@ -69,8 +79,9 @@ namespace Reko.UserInterfaces.AvaloniaUI.Views
 
         private void btnOK_Click(object sender, RoutedEventArgs e)
         {
-            var viewModel = (OpenAsViewModel) this.DataContext;
-            this.Value = viewModel.CreateLoadDetails();
+            var viewModel = ViewModel;
+            this.Value = viewModel?.CreateLoadDetails();
+            this.Close();
         }
     }
 }

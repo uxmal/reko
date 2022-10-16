@@ -18,28 +18,37 @@
  */
 #endregion
 
-using Dock.Model.ReactiveUI.Controls;
-using ReactiveUI;
-using Reko.Core.Loading;
-using Reko.Gui;
+using Reko.Core;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
-namespace Reko.UserInterfaces.AvaloniaUI.ViewModels.Documents
+namespace Reko.Gui.ViewModels.Documents
 {
-    public class BaseAddressFinderViewModel : Document, IWindowPane
+    public class BaseAddressFinderViewModel : Reko.Gui.Reactive.ChangeNotifyingObject
     {
-        public BaseAddressFinderViewModel(IServiceProvider services, LoadDetails loadDetails)
+        private IServiceProvider services;
+        private Program program;
+        private readonly string startText;
+        private readonly string stopText;
+        private Task? finderTask;
+        private CancellationToken cancellationToken;
+
+        public BaseAddressFinderViewModel(
+            IServiceProvider services,
+            Program program,
+            string startText,
+            string stopText)
         {
             this.services = services;
-            this.loadDetails = loadDetails;
-            this.startStopButtonText = "_Start";
-            this.Results = new();
-            this.baseAddress = "";
+            this.program = program;
+            this.startText = startText;
+            this.stopText = stopText;
+            this.startStopButtonText = startText;
         }
 
         public bool ByString
@@ -85,26 +94,25 @@ namespace Reko.UserInterfaces.AvaloniaUI.ViewModels.Documents
             set => this.RaiseAndSetIfChanged(ref baseAddress, value);
         }
         public string baseAddress;
-        private IServiceProvider services;
-        private LoadDetails loadDetails;
 
-        public IWindowFrame? Frame { get; set; }
-
-        public void Close()
+        public async Task StartStopFinder()
         {
-            throw new NotImplementedException();
-        }
-
-        public object CreateControl()
-        {
-            throw new NotImplementedException();
-        }
-
-        public void SetSite(IServiceProvider services)
-        {
-            throw new NotImplementedException();
+            if (finderTask is null)
+            {
+                cancellationToken = new CancellationToken(false);
+                this.StartStopButtonText = stopText;
+                await Task.Delay(5000);
+                this.StartStopButtonText = startText;
+                this.finderTask = null;
+            }
+            else
+            {
+                // A task is running. Cancel it.
+                this.finderTask = null;
+            }
         }
     }
+
 
     public class BaseAddressResult
     {
@@ -113,4 +121,3 @@ namespace Reko.UserInterfaces.AvaloniaUI.ViewModels.Documents
         public int Hits { get; set; }
     }
 }
-

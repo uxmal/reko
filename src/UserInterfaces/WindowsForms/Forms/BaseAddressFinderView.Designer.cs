@@ -120,6 +120,7 @@
             this.btnStartStop.TabIndex = 5;
             this.btnStartStop.Text = "&Start";
             this.btnStartStop.UseVisualStyleBackColor = true;
+            this.btnStartStop.Click += new System.EventHandler(this.btnStartStop_Click);
             // 
             // btnChangeBaseAddress
             // 
