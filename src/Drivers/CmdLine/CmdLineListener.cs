@@ -27,6 +27,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
+using static Microsoft.Scripting.Hosting.Shell.ConsoleHostOptions;
 
 namespace Reko.CmdLine
 {
@@ -231,9 +232,14 @@ namespace Reko.CmdLine
                 this.ReportProgress();
             }
 
-            public void SetCaption(string newCaption)
+            public void SetCaption(string caption)
             {
-                throw new NotImplementedException();
+                if (caption != this.currentCaption)
+                {
+                    if (!outer.Quiet)
+                        Console.Out.WriteLine();
+                    this.currentCaption = caption;
+                }
             }
 
             public void ShowProgress(string caption, int numerator, int denominator)
@@ -281,6 +287,13 @@ namespace Reko.CmdLine
                     Console.Out.Write("{0} [{1}%]", currentCaption, percentDone);
                     outer.needsNewLine = true;
                 }
+            }
+
+            public void Finish()
+            {
+                Console.Out.Write("{0} [Done]", currentCaption);
+                Console.Out.WriteLine();
+                outer.needsNewLine = false;
             }
         }
 

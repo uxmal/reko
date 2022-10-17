@@ -84,5 +84,9 @@ namespace Reko.UserInterfaces.AvaloniaUI.Services
                 sbSvc.HideProgress();
             }, null);
         }
+
+        public void Finish()
+        {
+        }
     }
 }

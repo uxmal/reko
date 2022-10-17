@@ -29,7 +29,7 @@ using System.Threading.Tasks;
 namespace Reko.Scanning
 {
     /// <summary>
-    /// Determine load addresses using differences between string references
+    /// Determine load addresses using differences between string references.
     /// </summary>
     public class FindBaseString2 : IBaseAddressFinder
     {
@@ -49,7 +49,7 @@ namespace Reko.Scanning
 
         public EndianServices Endianness { get; set; }
 
-        public Task Run()
+        public BaseAddressCandidate[] Run()
         {
             this.read_dword = Endianness == EndianServices.Big
                 ? ReadDwordBe
@@ -59,8 +59,9 @@ namespace Reko.Scanning
             {
                 Console.WriteLine($"0x{uAddr:X8}");
             }
-            return Task.CompletedTask;
-
+            return result
+                .Select(a => new BaseAddressCandidate(a, 1))
+                .ToArray();
         }
 
         private ulong ReadDwordLe(ulong offset)
@@ -95,7 +96,7 @@ namespace Reko.Scanning
             return sortedValues;
         }
 
-        public long[] compute_differences(ulong[] values)
+        public long[] ComputeDifferences(ulong[] values)
         {
             long[] differences = new long[values.Length];
             for (int i = 0; i < values.Length - 1; ++i)
@@ -138,8 +139,8 @@ namespace Reko.Scanning
 
         public List<ulong> IdentifyBaseAddresses(ulong[] values, ulong[] strs)
         {
-            var string_differences = compute_differences(strs);
-            var differences = compute_differences(values);
+            var string_differences = ComputeDifferences(strs);
+            var differences = ComputeDifferences(values);
 
             foreach (var v in string_differences)
             {

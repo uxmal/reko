@@ -1,3 +1,23 @@
+#region License
+/* 
+ * Copyright (C) 1999-2022 John Källén.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2, or (at your option)
+ * any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; see the file COPYING.  If not, write to
+ * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
+ */
+#endregion
+
 using Reko.Core;
 using Reko.Core.Collections;
 using Reko.Core.Memory;
@@ -15,7 +35,7 @@ namespace Reko.Scanning
         private readonly ByteTrie<object> trie;
         private readonly int max_matches = 10;
 
-        public ProcedurePrologFinder(ByteMemoryArea mem)
+        public ProcedurePrologFinder(ByteMemoryArea mem, EndianServices endianness)
         {
             //$TODO: get this info from the Reko.config file
             this.mem = mem;
@@ -24,12 +44,12 @@ namespace Reko.Scanning
             trie.Add(new byte[] { 0x55, 0x89, 0xE5 }, 3);
             trie.Add(new byte[] { 0x55, 0x8B, 0xEC }, 3);
             //this.trie = BuildTrie(patterns, arch);
-            this.Endianness = EndianServices.Little;
+            this.Endianness = endianness;
         }
 
         public EndianServices Endianness { get; set; }
 
-        public Task Run()
+        public BaseAddressCandidate[] Run()
         {
             int threadIndex = 0;
             var prologs = PatternFinder.FindProcedurePrologs(mem, trie);
@@ -38,9 +58,9 @@ namespace Reko.Scanning
             sw.Start();
             var pointers = ReadPointers(mem, 4);
             uint stride = 0x1000;
-            var heap = new List<(int, ulong)>();
+            var heap = new List<BaseAddressCandidate>();
             var news = new HashSet<ulong>(prologs.Count);
-            var queue = new Queue<List<(int, ulong)>>();
+            var queue = new Queue<List<BaseAddressCandidate>>();
             for (ulong uBaseAddr = 0; uBaseAddr <= ~0u;)
             {
                 news.Clear();
@@ -53,14 +73,13 @@ namespace Reko.Scanning
                 }
                 news.IntersectWith(pointers);
                 var intersection = news;
-                //var intersection = news.Intersect(pointers).ToHashSet();
                 if (intersection.Count > 0)
                 {
-                    heap.Add((intersection.Count, uBaseAddr));
+                    heap.Add(new BaseAddressCandidate(uBaseAddr, intersection.Count));
                 }
                 if (AddOverflow(uBaseAddr, stride, out var new_addr))
                 {
-                    Console.WriteLine($"{threadIndex,3} Ending at {uBaseAddr:X8}, _stride = 0x{stride}");
+                    Console.WriteLine($"{threadIndex,3} Ending at {uBaseAddr:X8}, stride = 0x{stride}");
                     break;
                 }
                 uBaseAddr = new_addr;
@@ -70,19 +89,14 @@ namespace Reko.Scanning
             // Merge all of the heaps.
             var result = queue
                 .SelectMany(c => c)
-                .OrderByDescending(c => c.Item1)
-                .ThenBy(c => c.Item2)
-                .Take(max_matches);
-
+                .OrderByDescending(c => c.Confidence)
+                .ThenBy(c => c.Address)
+                .Take(max_matches)
+                .ToArray();
             sw.Stop();
 
-            // Print (up to) top N results.
-            foreach (var child in result)
-            {
-                Console.WriteLine("0x{0:X8}: {1}", child.Item2, child.Item1);
-            }
             Console.WriteLine("Elapsed time: {0}ms", (int)sw.Elapsed.TotalMilliseconds);
-            return Task.CompletedTask;
+            return result;
         }
 
         private static bool AddOverflow(ulong a, ulong b, out ulong result)

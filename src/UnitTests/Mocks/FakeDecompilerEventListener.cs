@@ -268,6 +268,10 @@ namespace Reko.UnitTests.Mocks
                 lastStatus = status;
             }
 
+            public void Finish()
+            {
+            }
+
         }
 
     }

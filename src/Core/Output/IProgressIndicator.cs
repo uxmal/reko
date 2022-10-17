@@ -37,6 +37,7 @@ namespace Reko.Core.Output
         void ShowStatus(string caption);
         void ShowProgress(string caption, int numerator, int denominator);
         void Advance(int count);
+        void Finish();
     }
 
     public class NullProgressIndicator : IProgressIndicator
@@ -60,6 +61,10 @@ namespace Reko.Core.Output
         }
 
         public void Advance(int count)
+        {
+        }
+
+        public void Finish()
         {
         }
     }

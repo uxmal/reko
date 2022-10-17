@@ -19,10 +19,13 @@
 #endregion
 
 using Reko.Core;
+using Reko.Core.Diagnostics;
 using Reko.Core.Memory;
+using Reko.Core.Output;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -32,17 +35,28 @@ using System.Threading.Tasks;
 
 namespace Reko.Scanning
 {
+    /// <summary>
+    /// Finds the base address of a memory area by correlating 
+    /// the starts of strings with the 
+    /// </summary>
     public class FindBaseString : IBaseAddressFinder
     {
-        private readonly ByteMemoryArea mem;
-        private uint _stride;
+        private static readonly TraceSwitch trace = new TraceSwitch(nameof(FindBaseString), nameof(FindBaseString));
 
-        public FindBaseString(ByteMemoryArea mem)
+        private readonly ByteMemoryArea mem;
+        private uint stride;
+        private readonly IProgressIndicator progressIndicator;
+
+        public FindBaseString(
+            EndianServices endianness,
+            ByteMemoryArea mem,
+            IProgressIndicator progress)
         {
             this.mem = mem;
-            this.Endianness = EndianServices.Little;
+            this.Endianness = endianness;
             Stride = 0x1000;
             Threads = Environment.ProcessorCount;
+            this.progressIndicator = progress;
         }
 
         public EndianServices Endianness { get; set; }   // Interpret as big-endian (default is little)' 
@@ -54,127 +68,91 @@ namespace Reko.Scanning
         /// </summary>
         public uint Stride
         {
-            get => _stride;
+            get => stride;
             set
             {
                 if (BitOperations.PopCount(value) != 1)
                     throw new ArgumentException("Value must be a power of 2.");
-                _stride = value;
+                stride = value;
             }
         }
 
-        public bool ShowProgress { get; set; }              // Show progress
-
         /// <summary>
-        /// Number of threads to spawn. (default is # of cpu cores)'",
+        /// Number of threads to spawn; the default is # of CPU cores.
         /// </summary>
         public int Threads { get; set; }
+        public ulong MinAddress { get; set; }
 
-
-        public Task Run()
+        public BaseAddressCandidate[] Run()
         {
             // Find indices of strings.
-            var strings = PatternFinder.FindAsciiStrings(mem, min_str_len)
+            var stringsTask = Task.Run(() => PatternFinder.FindAsciiStrings(mem, min_str_len)
                 .Select(s => s.uAddress)
-                .ToHashSet();
-            //DumpStrings(strings);
+                .ToHashSet());
+            var pointersTask = Task.Run(() => ReadPointers(mem, 4));
+
+            var strings = stringsTask.Result;
+            var pointers = pointersTask.Result;
 
             if (strings.Count == 0)
             {
-                throw new Exception("No strings found in target binary.");
+                return Array.Empty<BaseAddressCandidate>();
             }
-            Console.WriteLine("Located {0} strings", strings.Count);
+            trace.Inform("    Located {0} strings", strings.Count);
+            trace.Inform("    Located {0} pointers", pointers.Count);
 
-            var pointers = ReadPointers(mem, 4);
-            Console.WriteLine("Located {0} pointers", pointers.Count);
-
-            var children = new List<Task<List<(int, ulong)>>>();
             var shared_strings = strings;
             var shared_pointers = pointers;
 
-            var mb = new MultiBar(ShowProgress
-                        ? new Progress<int>(Console.Error)
-                        : new NullProgress<int>());
-
             Debug.WriteLine("Scanning with {0} Threads...", Threads);
-            for (int i = 0; i < this.Threads; ++i)
-            {
-                var pb = mb.create_bar(100);
-                pb.ShowMessage = true;
-                pb.MaxRefreshRate = 100;
-            }
             var semaphore = new CountdownEvent(Threads);
-            ConcurrentQueue<List<(int, ulong)>> queue = new();
-#if RAW_THREADS
-            var threads = new List<Thread>();
-            for (int i = 0; i < this.Threads; ++i)
-            {
-                int n = i;
-                var t = new Thread(() =>
-                {
-                    var result = FindMatches(strings, pointers, n, new NullProgress<int>());
-                    //       Console.WriteLine("{0,3} Thread completed, {1} matches", n, result.Count);
-                    queue.Enqueue(result);
-                    semaphore.Signal();
-                });
-                threads.Add(t);
-            }
-            var sw = new Stopwatch();
-            sw.Start();
-            foreach (var t in threads)
-            {
-                t.Start();
-            }
-#else
+            ConcurrentQueue<List<BaseAddressCandidate>> subresults = new();
             var sw = new Stopwatch();
             sw.Start();
             Parallel.For(0, this.Threads, (n) =>
             {
-                var result = FindMatches(strings, pointers, n, new NullProgress<int>());
-                //Console.WriteLine("{0,3} Thread completed, {1} matches", n, result.Count);
-                queue.Enqueue(result);
-                semaphore.Signal();
+                var progress = n == 0
+                    ? this.progressIndicator
+                    : NullProgressIndicator.Instance;
+                var result = FindMatches(strings, pointers, n, progress);
+                subresults.Enqueue(result);
             });
-#endif
-            semaphore.Wait();
 
-            mb.listen();
-
-            // Merge all of the heaps.
-            var result = queue
-                .SelectMany(c => c)
-                .OrderByDescending(c => c.Item1)
-                .ThenBy(c => c.Item2)
-                .Take(max_matches);
+            var result = MergeResults(subresults);
 
             sw.Stop();
 
-            // Print (up to) top N results.
-            foreach (var child in result)
-            {
-                Console.WriteLine("0x{0:X8}: {1}", child.Item2, child.Item1);
-            }
-            Console.WriteLine("Elapsed time: {0}ms", (int)sw.Elapsed.TotalMilliseconds);
-            return Task.CompletedTask;
+            Console.WriteLine("Elapsed time: {0}ms", (int) sw.Elapsed.TotalMilliseconds);
+            return result;
         }
 
+        private BaseAddressCandidate[] MergeResults(ConcurrentQueue<List<BaseAddressCandidate>> queue)
+        {
+            return queue
+                .SelectMany(c => c)
+                .OrderByDescending(c => c.Confidence)
+                .ThenBy(c => c.Address)
+                .Take(max_matches)
+                .ToArray();
+        }
 
         public struct Interval
         {
-            public ulong start_addr;
-            public ulong end_addr;
+            public ulong BeginAddress;
+            public ulong EndAddress;
 
             public Interval(uint start_addr, uint end_addr)
             {
-                this.start_addr = start_addr;
-                this.end_addr = end_addr;
+                this.BeginAddress = start_addr;
+                this.EndAddress = end_addr;
             }
 
             public static Interval GetRange(
+                ulong uAddrMin,
                 nint index,
                 nint max_threads,
                 uint offset)
-            { // -> Result<Interval, Box<dyn Error + Send + Sync>> {
+            { 
                 if (index >= max_threads)
                 {
                     throw new ArgumentException("Invalid index specified.");
@@ -183,10 +161,11 @@ namespace Reko.Scanning
                 if (BitOperations.PopCount(offset) != 1)
                     throw new ArgumentException("Invalid additive offset.");
 
-                var start_addr = (ulong)index
-                    * ((ulong)(uint.MaxValue) + (ulong)max_threads - 1) / (ulong)max_threads;
-                var end_addr = ((ulong)index + 1)
-                    * ((ulong)(uint.MaxValue) + (ulong)max_threads - 1) / (ulong)max_threads;
+                var addrSpan = (ulong) (uint.MaxValue) - uAddrMin;
+                var start_addr = uAddrMin + (ulong) index
+                    * (addrSpan + (ulong) max_threads - 1) / (ulong) max_threads;
+                var end_addr = uAddrMin + ((ulong)index + 1)
+                    * (addrSpan  + (ulong)max_threads - 1) / (ulong)max_threads;
 
                 // Mask the address such that it's aligned to the 2^N offset.
                 start_addr &= ~(((ulong)offset) - 1);
@@ -213,33 +192,30 @@ namespace Reko.Scanning
             while (rdr.TryReadUInt32(out uint v))
             {
                 pointers.Add(v);
-                offset = offset + alignment;
+                offset += alignment;
                 rdr.Offset = offset;
             }
             return pointers;
         }
 
-        public List<(int, ulong)> FindMatches(
+        public List<BaseAddressCandidate> FindMatches(
             IReadOnlySet<ulong> strings,
             IReadOnlySet<ulong> pointers,
             int threadIndex,
-            ProgressBar pb)
+            IProgressIndicator pb)
         {
-            var interval = Interval.GetRange(threadIndex, Threads, _stride);
-            //Console.WriteLine("Thread {0} in range: {1:X8}-{2:X8}",
-            //    threadIndex,
-            //    interval.start_addr,
-            //    interval.end_addr);
-            var uBaseAddr = interval.start_addr;
-            var heap = new List<(int, ulong)>();
-            pb.Total = ((interval.end_addr - interval.start_addr) / _stride);
+            var interval = Interval.GetRange(this.MinAddress, threadIndex, Threads, stride);
+            trace.Inform("Thread {0} in range: {1:X8}-{2:X8}",
+                threadIndex,
+                interval.BeginAddress,
+                interval.EndAddress);
+            var uBaseAddr = interval.BeginAddress;
+            var heap = new List<BaseAddressCandidate>();
+            var steps = (int)((interval.EndAddress - interval.BeginAddress) / stride);
+            pb.ShowProgress("Finding string pointers", 0, steps);
             var news = new HashSet<ulong>(strings.Count);
-            while (uBaseAddr <= interval.end_addr)
+            while (uBaseAddr <= interval.EndAddress)
             {
-                //if ((uBaseAddr & 0x7FF_FFF0) == 0)
-                //{
-                //    Console.WriteLine($"{threadIndex,3} 0x{uBaseAddr:X8}");
-                //}
                 news.Clear();
                 foreach (var s in strings)
                 {
@@ -250,20 +226,19 @@ namespace Reko.Scanning
                 }
                 news.IntersectWith(pointers);
                 var intersection = news;
-                //var intersection = news.Intersect(pointers).ToHashSet();
                 if (intersection.Count > 0)
                 {
-                    heap.Add((intersection.Count, uBaseAddr));
+                    heap.Add(new BaseAddressCandidate(uBaseAddr, intersection.Count));
                 }
                 if (AddOverflow(uBaseAddr, Stride, out var new_addr))
                 {
-                    Console.WriteLine($"{threadIndex,3} Ending at {uBaseAddr:X8}, _stride = 0x{Stride}");
+                    Console.WriteLine($"{threadIndex,3} Ending at {uBaseAddr:X8}, stride = 0x{Stride}");
                     break;
                 }
                 uBaseAddr = new_addr;
-                pb.inc();
+                pb.Advance(1);
             }
-            pb.finish();
+            pb.Finish();
             return heap;
         }
 
@@ -281,8 +256,6 @@ namespace Reko.Scanning
                 return false;
             }
         }
-
-
 
         private void DumpStrings(HashSet<ulong> strings)
         {

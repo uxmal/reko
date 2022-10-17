@@ -20,6 +20,7 @@
 
 using Reko.Core;
 using Reko.Core.Memory;
+using Reko.Core.Output;
 using Reko.Scanning;
 using System;
 using System.Collections.Generic;
@@ -38,7 +39,6 @@ namespace Reko.Gui.ViewModels.Documents
         private readonly string startText;
         private readonly string stopText;
         private Task? finderTask;
-        private CancellationTokenSource cts;
 
         public BaseAddressFinderViewModel(
             IServiceProvider services,
@@ -51,6 +51,8 @@ namespace Reko.Gui.ViewModels.Documents
             this.startText = startText;
             this.stopText = stopText;
             this.startStopButtonText = startText;
+            this.Results = new ObservableCollection<BaseAddressResult>();
+            this.baseAddress = "";
         }
 
         public bool ByString
@@ -101,17 +103,8 @@ namespace Reko.Gui.ViewModels.Documents
         {
             if (finderTask is null)
             {
-                cts = new CancellationTokenSource();
                 this.StartStopButtonText = stopText;
-
-                if (program.SegmentMap.Segments.Values.FirstOrDefault()?.MemoryArea
-                    is ByteMemoryArea mem)
-                {
-                    IBaseAddressFinder s = new FindBaseString(mem);
-                    s.Endianness = program.Architecture.Endianness;
-                    await s.Run();
-
-                }
+                await Task.Run(StartFinder_work);
                 this.StartStopButtonText = startText;
                 this.finderTask = null;
             }
@@ -121,13 +114,53 @@ namespace Reko.Gui.ViewModels.Documents
                 this.finderTask = null;
             }
         }
-    }
 
+        private void StartFinder_work()
+        {
+            if (program.SegmentMap.Segments.Values.FirstOrDefault()?.MemoryArea
+                is not ByteMemoryArea mem)
+            {
+                return;
+            }
+
+            IBaseAddressFinder s = new FindBaseString(
+                program.Architecture.Endianness,
+                mem,
+                NullProgressIndicator.Instance);
+            var results = s.Run();
+            this.Results.Clear();
+            var arch = program.Architecture;
+            foreach (var result in results)
+            {
+                this.Results.Add(new BaseAddressResult
+                {
+                    Address = RenderAddress(result.Address, arch),
+                    Confidence = result.Confidence
+                });
+            }
+        }
+
+        private static string RenderAddress(ulong address, IProcessorArchitecture arch)
+        {
+            var bitSize = arch.PointerType.BitSize;
+            int digits = arch.DefaultBase switch
+            {
+                16 => (bitSize + 3) / 4,
+                8 => (bitSize + 2) / 3,
+                _ => throw new NotImplementedException($"Unimplemented bit size {arch.DefaultBase}.")
+            };
+            var sAddr = Convert.ToString(
+                (long) address,
+                arch.DefaultBase)
+                .ToUpperInvariant();
+            return Convert.ToString(sAddr).PadLeft(digits, '0');
+        }
+    }
 
     public class BaseAddressResult
     {
         public string? Address { get; set; }
 
-        public int Hits { get; set; }
+        public int Confidence { get; set; }
     }
 }

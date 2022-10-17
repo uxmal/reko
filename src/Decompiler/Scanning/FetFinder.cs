@@ -32,7 +32,10 @@ using System.Threading.Tasks;
 
 namespace Reko.Scanning
 {
-    internal class FetFinder : IBaseAddressFinder
+    // Based on: "Determining Image Base of Firmware Files for ARM Devices"
+    // Ruijin ZHU, Yu-an TAN, Quanxin ZHANG, Fei WU, Jun ZHENG
+    // Yuan XUE
+    public class FetFinder : IBaseAddressFinder
     {
         private const int MaxGap = 3;
         //$TODO: what about small machines? 0x200?
@@ -66,7 +69,7 @@ namespace Reko.Scanning
 
         public EndianServices Endianness { get; set; }
 
-        public Task Run()
+        public BaseAddressCandidate[] Run()
         {
             throw new NotImplementedException();
         }

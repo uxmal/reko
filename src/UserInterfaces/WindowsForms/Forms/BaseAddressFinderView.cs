@@ -72,14 +72,33 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
 
         private void Results_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
-            switch (e.Action)
+            listCandidates.Invoke(() =>
             {
-            case NotifyCollectionChangedAction.Reset:
-            default:
-                _ = this;
-                break;
-            }
-            throw new NotImplementedException();
+                switch (e.Action)
+                {
+                case NotifyCollectionChangedAction.Reset:
+                    listCandidates.Items.Clear();
+                    break;
+                case NotifyCollectionChangedAction.Add:
+                    int i = e.NewStartingIndex;
+                    foreach (BaseAddressResult item in e.NewItems)
+                    {
+                        listCandidates.Items.Insert(i, new ListViewItem
+                        {
+                            Text = item.Address,
+                            SubItems =
+                        {
+                            item.Confidence.ToString()
+                        }
+                        });
+                        ++i;
+                    }
+                    break;
+                default:
+                    _ = this;
+                    throw new NotImplementedException();
+                }
+            });
         }
 
         private async void btnStartStop_Click(object sender, EventArgs e)

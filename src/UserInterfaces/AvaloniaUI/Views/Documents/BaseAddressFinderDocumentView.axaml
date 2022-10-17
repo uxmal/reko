@@ -3,6 +3,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 			 xmlns:vm="using:Reko.UserInterfaces.AvaloniaUI.ViewModels.Documents"
+			 xmlns:guivm="using:Reko.Gui.ViewModels.Documents"
              mc:Ignorable="d" d:DesignWidth="400" d:DesignHeight="450"
 			 x:CompileBindings="True"
 	         x:DataType="vm:BaseAddressFinderDocumentViewModel"
@@ -43,9 +44,8 @@
 					AutoGenerateColumns="False"
 					CanUserResizeColumns="True">
 				<DataGrid.Columns>
-					<DataGridTextColumn Header="Address" Width="150" />
-					<DataGridTextColumn Header="String results" />
-					<DataGridTextColumn Header="Prolog results" />
+					<DataGridTextColumn x:DataType="guivm:BaseAddressResult" Header="Address" Binding="{Binding Address}" Width="150" />
+					<DataGridTextColumn x:DataType="guivm:BaseAddressResult" Header="String results" Binding="{Binding Confidence}" />
 				</DataGrid.Columns>
 			</DataGrid>
 		</DockPanel>

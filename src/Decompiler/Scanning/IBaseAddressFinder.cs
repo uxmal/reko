@@ -25,8 +25,18 @@ namespace Reko.Scanning
 {
     public interface IBaseAddressFinder
     {
-        EndianServices Endianness { get; set; }
+        BaseAddressCandidate[] Run();
+    }
 
-        Task Run();
+    public struct BaseAddressCandidate
+    {
+        public BaseAddressCandidate(ulong uAddr, int confidence) : this()
+        {
+            Address = uAddr;
+            Confidence = confidence;
+        }
+
+        public ulong Address { get; set; }
+        public int Confidence { get; set; }
     }
 }

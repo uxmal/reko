@@ -56,6 +56,7 @@ namespace Reko.UserInterfaces.WindowsForms
             this.sp = sp;
             uiSvc = sp.GetService<IDecompilerShellUiService>();
             diagnosticSvc = sp.GetService<IDiagnosticsService>();
+            this.Progress = new ProgressIndicator(this);
         }
 
         public IProgressIndicator Progress { get; }
@@ -336,6 +337,7 @@ namespace Reko.UserInterfaces.WindowsForms
             {
                 this.outer = outer;
             }
+
             public void Advance(int count)
             {
                 if (outer.dlg is null)
@@ -372,6 +374,10 @@ namespace Reko.UserInterfaces.WindowsForms
             public void ShowStatus(string caption)
             {
                 outer.ShowStatus(caption);
+            }
+
+            public void Finish()
+            {
             }
         }
     }
