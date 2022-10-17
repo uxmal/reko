@@ -96,7 +96,7 @@ namespace Reko.Typing
             //dpa.FollowConstantPointers(program);
             Time("Replacing type variables", tvr.ReplaceTypeVariables);
 
-            eventListener.ShowStatus("Transforming datatypes.");
+            eventListener.Progress.ShowStatus("Transforming datatypes.");
             Time("Replace primitive types", () =>
             {
                 var ppr = new PtrPrimitiveReplacer(factory, store, program, eventListener);

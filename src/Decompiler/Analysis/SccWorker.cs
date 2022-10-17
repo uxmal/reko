@@ -130,7 +130,7 @@ namespace Reko.Analysis
                 RemoveDeadArgumentsFromCalls(ssa.Procedure, procFlow, ssts);
                 dfa.DumpWatchedProcedure("dcar", "After dead call argument removal", ssa.Procedure);
             }
-            eventListener.Advance(ssts.Length);
+            eventListener.Progress.Advance(ssts.Length);
             return ssts;
         }
 

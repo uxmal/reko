@@ -19,6 +19,7 @@
 #endregion
 
 using Reko.Core;
+using Reko.Core.Output;
 using Reko.Core.Scripts;
 using Reko.Core.Services;
 using Reko.Gui;
@@ -29,6 +30,7 @@ using System.ComponentModel;
 using System.ComponentModel.Design;
 using System.Threading;
 using System.Threading.Tasks;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.Window;
 
 namespace Reko.UserInterfaces.WindowsForms
 {
@@ -48,8 +50,6 @@ namespace Reko.UserInterfaces.WindowsForms
         private const int STATUS_UPDATE_ONLY = -4711;
         private CancellationTokenSource cancellationSvc;
         private bool isCanceled;
-        private int position;
-        private int total;
 
         public WindowsDecompilerEventListener(IServiceProvider sp)
         {
@@ -57,6 +57,8 @@ namespace Reko.UserInterfaces.WindowsForms
             uiSvc = sp.GetService<IDecompilerShellUiService>();
             diagnosticSvc = sp.GetService<IDiagnosticsService>();
         }
+
+        public IProgressIndicator Progress { get; }
 
         private IWorkerDialog CreateDialog(string caption)
         {
@@ -280,10 +282,7 @@ namespace Reko.UserInterfaces.WindowsForms
                 scriptError.Message);
         }
 
-        void DecompilerEventListener.ShowStatus(string caption)
-        {
-            ShowStatus(caption);
-        }
+  
 
         public ICodeLocation CreateAddressNavigator(IReadOnlyProgram program, Address addr)
         {
@@ -318,32 +317,6 @@ namespace Reko.UserInterfaces.WindowsForms
             dlg.Worker.ReportProgress(STATUS_UPDATE_ONLY);
         }
 
-        void DecompilerEventListener.ShowProgress(string caption, int numerator, int denominator)
-        {
-            if (dlg == null)
-                return;
-            this.position = numerator;
-            this.total = denominator;
-            System.Threading.Interlocked.Exchange<string>(ref status, caption);
-            if (denominator > 0)
-            {
-                var percentDone = Math.Min(
-                    100,
-                    (int) ((numerator * 100L) / denominator));
-                dlg.Worker.ReportProgress(percentDone);
-            }
-        }
-
-        void DecompilerEventListener.Advance(int count)
-        {
-            if (dlg == null)
-                return;
-            this.position += count;
-            var percentDone = Math.Min(
-                100,
-                (int) ((position * 100L) / total));
-            dlg.Worker.ReportProgress(percentDone);
-        }
 
         // Is usually called on a worker thread.
         bool DecompilerEventListener.IsCanceled()
@@ -352,5 +325,54 @@ namespace Reko.UserInterfaces.WindowsForms
         }
 
         #endregion
+
+        private class ProgressIndicator : IProgressIndicator
+        {
+            private readonly WindowsDecompilerEventListener outer;
+            private int position;
+            private int total;
+
+            public ProgressIndicator(WindowsDecompilerEventListener outer)
+            {
+                this.outer = outer;
+            }
+            public void Advance(int count)
+            {
+                if (outer.dlg is null)
+                    return;
+                this.position += count;
+                var percentDone = Math.Min(
+                    100,
+                    (int) ((position * 100L) / total));
+                outer.dlg.Worker.ReportProgress(percentDone);
+            }
+
+            public void SetCaption(string newCaption)
+            {
+                outer.SetCaption(newCaption);
+            }
+
+            public void ShowProgress(string caption, int numerator, int denominator)
+            {
+                if (outer.dlg is null)
+                    return;
+                this.position = numerator;
+                this.total = denominator;
+                System.Threading.Interlocked.Exchange<string>(ref outer.status, caption);
+                if (denominator > 0)
+                {
+                    var percentDone = Math.Min(
+                        100,
+                        (int) ((numerator * 100L) / denominator));
+                    outer.dlg.Worker.ReportProgress(percentDone);
+                }
+            }
+
+
+            public void ShowStatus(string caption)
+            {
+                outer.ShowStatus(caption);
+            }
+        }
     }
 }

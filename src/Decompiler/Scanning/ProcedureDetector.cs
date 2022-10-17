@@ -205,7 +205,7 @@ namespace Reko.Scanning
             int totalCount = nodesLeft.Count;
             if (totalCount > 0)
             {
-                listener.ShowProgress("Finding procedure candidates", 0, totalCount);
+                listener.Progress.ShowProgress("Finding procedure candidates", 0, totalCount);
                 var wl = WorkList.Create(nodesLeft);
                 while (wl.TryGetWorkItem(out var node))
                 {
@@ -216,7 +216,7 @@ namespace Reko.Scanning
 
                     BuildWCC(node, cluster, wl);
                     sr.BreakOnWatchedAddress(cluster.Blocks.Select(b => b.Address));
-                    listener.ShowProgress("Finding procedure candidates", totalCount - nodesLeft.Count, totalCount);
+                    listener.Progress.ShowProgress("Finding procedure candidates", totalCount - nodesLeft.Count, totalCount);
                 }
             }
             return clusters;
@@ -276,7 +276,7 @@ namespace Reko.Scanning
             var procs = new List<RtlProcedure>();
             if (clusters.Count == 0)
                 return procs;
-            listener.ShowProgress("Building procedures", 0, clusters.Count);
+            listener.Progress.ShowProgress("Building procedures", 0, clusters.Count);
             foreach (var cluster in clusters)
             {
                 if (listener.IsCanceled())
@@ -287,7 +287,7 @@ namespace Reko.Scanning
                 {
                     procs.AddRange(PostProcessCluster(cluster));
                 }
-                listener.Advance(1);
+                listener.Progress.Advance(1);
             }
             return procs;
         }

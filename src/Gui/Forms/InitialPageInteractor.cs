@@ -116,9 +116,9 @@ namespace Reko.Gui.Forms
             bool exceptionThrown = !await svc.StartBackgroundWork("Opening file", () =>
             {
                 var eventListener = Services.RequireService<DecompilerEventListener>();
-                eventListener.ShowStatus("Loading file.");
+                eventListener.Progress.ShowStatus("Loading file.");
                 loadedImage = ldr.Load(imageUri);
-                eventListener.ShowStatus("Loaded file.");
+                eventListener.Progress.ShowStatus("Loaded file.");
             });
             if (exceptionThrown)
             {
@@ -173,14 +173,14 @@ namespace Reko.Gui.Forms
             if (!await svc.StartBackgroundWork("Loading program", delegate ()
             {
                 var eventListener = Services.RequireService<DecompilerEventListener>();
-                eventListener.ShowStatus("Loading source program.");
+                eventListener.Progress.ShowStatus("Loading source program.");
                 var imageUri = ImageLocation.FromUri(file);
                 details.Location = imageUri;
                 Program program = ldr.LoadRawImage(details);
                 var project = Project.FromSingleProgram(program);
                 this.Decompiler = CreateDecompiler(project);
                 Decompiler.ExtractResources();
-                eventListener.ShowStatus("Source program loaded.");
+                eventListener.Progress.ShowStatus("Source program loaded.");
             }))
                 return false;
             var browserSvc = Services.RequireService<IProjectBrowserService>();
@@ -260,13 +260,13 @@ namespace Reko.Gui.Forms
             await svc.StartBackgroundWork("Loading program", delegate()
             {
                 var eventListener = Services.RequireService<DecompilerEventListener>();
-                eventListener.ShowStatus("Assembling program.");
+                eventListener.Progress.ShowStatus("Assembling program.");
                 var asmFileLocation = ImageLocation.FromUri(file);
                 var program = ldr.AssembleExecutable(asmFileLocation, asm, platform, null!);
                 var project = Project.FromSingleProgram(program);
                 this.Decompiler = CreateDecompiler(project);
                 this.Decompiler.ExtractResources();
-                eventListener.ShowStatus("Assembled program.");
+                eventListener.Progress.ShowStatus("Assembled program.");
             });
             if (Decompiler?.Project is null)
                 return false;

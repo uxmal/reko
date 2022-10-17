@@ -20,6 +20,7 @@
 
 using Reko.Core;
 using Reko.Core.Machine;
+using Reko.Core.Output;
 using Reko.Core.Scripts;
 using System;
 using System.Collections.Generic;
@@ -35,6 +36,8 @@ namespace Reko.Core.Services
     /// </summary>
     public interface DecompilerEventListener
     {
+        IProgressIndicator Progress { get; }
+
         ICodeLocation CreateAddressNavigator(IReadOnlyProgram program, Address address);
         ICodeLocation CreateProcedureNavigator(IReadOnlyProgram program, Procedure proc);
         ICodeLocation CreateBlockNavigator(IReadOnlyProgram program, Block block);
@@ -60,9 +63,6 @@ namespace Reko.Core.Services
         void Error(ICodeLocation location, Exception ex, string message, params object[] args);
         void Error(ScriptError scriptError);
 
-        void ShowStatus(string caption);
-        void ShowProgress(string caption, int numerator, int denominator);
-        void Advance(int count);
         bool IsCanceled();
     }
 
@@ -71,6 +71,8 @@ namespace Reko.Core.Services
         public static DecompilerEventListener Instance { get; } = new NullDecompilerEventListener();
 
         #region DecompilerEventListener Members
+
+        public IProgressIndicator Progress => NullProgressIndicator.Instance;
 
         public void Info(string message)
         {
@@ -174,12 +176,12 @@ namespace Reko.Core.Services
             Debug.Print("Status: {0}", caption);
         }
 
-        public void ShowProgress(string caption, int numerator, int denominator)
+        public void Progress_ShowProgress(string caption, int numerator, int denominator)
         {
             //$TODO: show progress
         }
 
-        public void Advance(int advance)
+        public void Progress_Advance(int advance)
         {
         }
 

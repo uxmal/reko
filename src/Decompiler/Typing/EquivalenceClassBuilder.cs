@@ -72,7 +72,7 @@ namespace Reko.Typing
             {
                 if (listener.IsCanceled())
                     return;
-                listener.ShowProgress("Gathering primitive datatypes from instructions.", i++, cProc);
+                listener.Progress.ShowProgress("Gathering primitive datatypes from instructions.", i++, cProc);
                 this.signature = proc.Signature;
                 EnsureSignatureTypeVariables(this.signature);
                 

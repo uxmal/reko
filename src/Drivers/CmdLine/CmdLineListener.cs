@@ -19,6 +19,7 @@
 #endregion
 
 using Reko.Core;
+using Reko.Core.Output;
 using Reko.Core.Scripts;
 using Reko.Core.Services;
 using System;
@@ -32,10 +33,14 @@ namespace Reko.CmdLine
     public class CmdLineListener : DecompilerEventListener
     {
         private bool isCanceled;
-        private string currentCaption;
-        private int position;
-        private int total;
         private bool needsNewLine;
+
+        public CmdLineListener()
+        {
+            this.Progress = new ProgressIndicator(this);
+        }
+
+        public IProgressIndicator Progress { get; }
 
         public bool Quiet { get; set; }
 
@@ -181,57 +186,11 @@ namespace Reko.CmdLine
                 scriptError.Message);
         }
 
-        public void ShowStatus(string caption)
-        {
-            if (Quiet)
-                return;
-            EnsureNewLine();
-            Console.WriteLine(caption);
-        }
 
-        public void ShowProgress(string caption, int numerator, int denominator)
-        {
-            if (caption != currentCaption)
-            {
-                if (!Quiet)
-                    Console.Out.WriteLine();
-                currentCaption = caption;
-            }
 
-            if (denominator == 0)
-            {
-                if (numerator == 0)
-                    denominator = 1;
-                else
-                    denominator = numerator;
-            }
 
-            this.position = numerator;
-            this.total = denominator;
-            ReportProgress();
-        }
 
-        private void ReportProgress()
-        {
-            if (Quiet)
-                return;
-            if (total > 0)
-            {
-                var percentDone = Math.Min(
-                    100,
-                    (int) Math.Round(((position * 100.0) / (double) total)));
 
-                Console.Out.Write("\r{0,60}\r", "");
-                Console.Out.Write("{0} [{1}%]", currentCaption, percentDone);
-                this.needsNewLine = true;
-            }
-        }
-
-        public void Advance(int count)
-        {
-            this.position += count;
-            ReportProgress();
-        }
 
         public bool IsCanceled()
         {
@@ -253,5 +212,77 @@ namespace Reko.CmdLine
                 needsNewLine = false;
             }
         }
+
+        private class ProgressIndicator : IProgressIndicator
+        {
+            private readonly CmdLineListener outer;
+            private string currentCaption;
+            private int position;
+            private int total;
+
+            public ProgressIndicator(CmdLineListener outer)
+            {
+                this.outer = outer;
+            }
+
+            public void Advance(int count)
+            {
+                this.position += count;
+                this.ReportProgress();
+            }
+
+            public void SetCaption(string newCaption)
+            {
+                throw new NotImplementedException();
+            }
+
+            public void ShowProgress(string caption, int numerator, int denominator)
+            {
+                if (caption != this.currentCaption)
+                {
+                    if (!outer.Quiet)
+                        Console.Out.WriteLine();
+                    this.currentCaption = caption;
+                }
+
+                if (denominator == 0)
+                {
+                    if (numerator == 0)
+                        denominator = 1;
+                    else
+                        denominator = numerator;
+                }
+
+                this.position = numerator;
+                this.total = denominator;
+                this.ReportProgress();
+            }
+
+
+            public void ShowStatus(string caption)
+            {
+                if (outer.Quiet)
+                    return;
+                outer.EnsureNewLine();
+                Console.WriteLine(caption);
+            }
+
+            private void ReportProgress()
+            {
+                if (outer.Quiet)
+                    return;
+                if (total > 0)
+                {
+                    var percentDone = Math.Min(
+                        100,
+                        (int) Math.Round(((position * 100.0) / (double) total)));
+
+                    Console.Out.Write("\r{0,60}\r", "");
+                    Console.Out.Write("{0} [{1}%]", currentCaption, percentDone);
+                    outer.needsNewLine = true;
+                }
+            }
+        }
+
     }
 }

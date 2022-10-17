@@ -64,7 +64,7 @@ namespace Reko.Typing
             int i = 0;
             foreach (Procedure proc in program.Procedures.Values)
             {
-                eventListener.ShowProgress("Rewriting expressions.", i++, cProc);
+                eventListener.Progress.ShowProgress("Rewriting expressions.", i++, cProc);
                 RewriteFormals(proc.Signature);
                 foreach (Statement stm in proc.Statements)
                 {

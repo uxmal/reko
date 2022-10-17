@@ -82,7 +82,7 @@ namespace Reko
             }
             finally
             {
-                eventListener.ShowStatus("Decompilation finished.");
+                eventListener.Progress.ShowStatus("Decompilation finished.");
             }
         }
 
@@ -107,10 +107,10 @@ namespace Reko
                     var ssas = new List<SsaTransform>();
                     if (program.NeedsSsaTransform)
                     {
-                        eventListener.ShowStatus("Performing interprocedural analysis.");
+                        eventListener.Progress.ShowStatus("Performing interprocedural analysis.");
                         ssas = dfa.UntangleProcedures();
                     }
-                    eventListener.ShowStatus("Building complex expressions.");
+                    eventListener.Progress.ShowStatus("Building complex expressions.");
                     dfa.BuildExpressionTrees(ssas);
                     host.WriteIntermediateCode(program, (name, procs, writer) => { EmitProgram(program, procs, dfa, name, writer); });
                 }
@@ -123,7 +123,7 @@ namespace Reko
                         program.Location);
                 }
             }
-            eventListener.ShowStatus("Interprocedural analysis complete.");
+            eventListener.Progress.ShowStatus("Interprocedural analysis complete.");
         }
 
         public void DumpAssembler(
@@ -469,15 +469,15 @@ namespace Reko
             {
                 if (program.NeedsScanning)
                 {
-                    eventListener.ShowStatus("Rewriting reachable machine code.");
+                    eventListener.Progress.ShowStatus("Rewriting reachable machine code.");
                     scanner = CreateScanner(program);
                     scanner.ScanImage();
-                    eventListener.ShowStatus("Finished rewriting reachable machine code.");
+                    eventListener.Progress.ShowStatus("Finished rewriting reachable machine code.");
                 }
             }
             finally
             {
-                eventListener.ShowStatus("Writing .asm and .dis files.");
+                eventListener.Progress.ShowStatus("Writing .asm and .dis files.");
                 host.WriteDisassembly(program, (n, items, w) => DumpAssembler(program, n, items, w));
                 host.WriteIntermediateCode(program, (n, procs, w) => EmitProgram(program, procs, null, n, w));
                 // Uncomment the following for debugging.
@@ -537,7 +537,7 @@ namespace Reko
                         return;
                     try
                     {
-                        eventListener.ShowProgress("Rewriting procedures to high-level language.", i, program.Procedures.Values.Count);
+                        eventListener.Progress.ShowProgress("Rewriting procedures to high-level language.", i, program.Procedures.Values.Count);
                         ++i;
                         IStructureAnalysis sa = new StructureAnalysis(eventListener, program, proc);
                         sa.Structure();
@@ -553,7 +553,7 @@ namespace Reko
             }
             project.FireScriptEvent(ScriptEvent.OnProgramDecompiled);
             WriteDecompilerProducts();
-            eventListener.ShowStatus("Rewriting complete.");
+            eventListener.Progress.ShowStatus("Rewriting complete.");
 		}
 
 		public void WriteDecompilerProducts()

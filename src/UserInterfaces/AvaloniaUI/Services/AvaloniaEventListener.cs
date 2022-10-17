@@ -19,6 +19,7 @@
 #endregion
 
 using Reko.Core;
+using Reko.Core.Output;
 using Reko.Core.Scripts;
 using Reko.Core.Services;
 using Reko.Gui;
@@ -42,8 +43,6 @@ namespace Reko.UserInterfaces.AvaloniaUI.Services
 
         private CancellationTokenSource cancellationSvc;
         private bool isCanceled;
-        private int position;
-        private int total;
 
         public AvaloniaEventListener(IServiceProvider services)
         {
@@ -53,25 +52,15 @@ namespace Reko.UserInterfaces.AvaloniaUI.Services
             this.uiSyncCtx = uiSyncCtx;
             this.services = services;
             diagnosticSvc = services.RequireService<IDiagnosticsService>();
+
+            this.sbSvc = services.RequireService<IStatusBarService>();
+            this.Progress = new StatusbarProgressIndicator(sbSvc);
         }
 
         public bool IsBackgroundWorkerRunning { get; private set; }
 
+        public IProgressIndicator Progress { get; }
 
-        public void Advance(int count)
-        {
-            uiSyncCtx?.Post(delegate
-            {
-                this.position += count;
-                if (total > 0)
-                {
-                    var percentDone = Math.Min(
-                        100,
-                        (int) ((position * 100L) / total));
-                }
-            },
-            null);
-        }
         public ICodeLocation CreateAddressNavigator(IReadOnlyProgram program, Address addr)
         {
             return new AddressNavigator(program, addr, services);
@@ -174,18 +163,9 @@ namespace Reko.UserInterfaces.AvaloniaUI.Services
             throw new NotImplementedException();
         }
 
-        /// <summary>
-        /// Intended to be call by a worker thread; uses Invoke to make sure the delegate is invoked
-        /// on the UI thread.
-        /// </summary>
-        /// <param name="newCaption"></param>
         public void SetCaption(string newCaption)
         {
-            uiSyncCtx?.Post(delegate
-            {
-                sbSvc.SetText(newCaption);
-                sbSvc.HideProgress();
-            }, null);
+            Progress.SetCaption(newCaption);
         }
 
         public void ShowError(string failedOperation, Exception ex)
@@ -195,32 +175,6 @@ namespace Reko.UserInterfaces.AvaloniaUI.Services
             {
                 var loc = new NullCodeLocation("");
                 Error(loc, ex, failedOperation);
-            }, null);
-        }
-
-        public void ShowProgress(string caption, int numerator, int denominator)
-        {
-            uiSyncCtx?.Post(delegate
-            {
-                sbSvc.SetSubtext(caption);
-                this.position = numerator;
-                this.total = denominator;
-                if (denominator > 0)
-                {
-                    var percentDone = Math.Min(
-                        100,
-                        (int) ((numerator * 100L) / denominator));
-                    sbSvc.ShowProgress(percentDone);
-                }
-            },
-            null);
-        }
-
-        public void ShowStatus(string newStatus)
-        {
-            uiSyncCtx?.Post(delegate
-            {
-                sbSvc.SetSubtext(newStatus);
             }, null);
         }
 
@@ -235,7 +189,6 @@ namespace Reko.UserInterfaces.AvaloniaUI.Services
             if (this.IsBackgroundWorkerRunning)
                 throw new InvalidOperationException("A background task is already running.");
             var sc = new ServiceContainer(services);
-            this.sbSvc = sc.RequireService<IStatusBarService>();
 
             this.cancellationSvc = new CancellationTokenSource();
             sc.AddService<CancellationTokenSource>(cancellationSvc);

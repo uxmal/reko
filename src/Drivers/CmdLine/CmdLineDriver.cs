@@ -316,7 +316,7 @@ namespace Reko.CmdLine
 
         private Program LoadProgram(Dictionary<string, object> pArgs, LoadDetails loadDetails)
         {
-            listener.ShowStatus("Loading raw bytes.");
+            listener.Progress.ShowStatus("Loading raw bytes.");
             Program program;
             if (pArgs.ContainsKey("--data"))
             {
@@ -329,7 +329,7 @@ namespace Reko.CmdLine
                 program = ldr.LoadRawImage(loadDetails);
                 program.Location = loadDetails.Location;
             }
-            listener.ShowStatus("Raw bytes loaded.");
+            listener.Progress.ShowStatus("Raw bytes loaded.");
             return program;
         }
 

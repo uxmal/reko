@@ -39,7 +39,7 @@ namespace Reko.UnitTests.Decompiler.Analysis
     public class UnusedOutValuesRemoverTests
     {
         private Mock<IDynamicLinker> import;
-        private Mock<DecompilerEventListener> eventListener;
+        private DecompilerEventListener eventListener;
         private ServiceContainer services;
         private ProgramBuilder pb;
         private List<SsaState> ssaStates;
@@ -53,11 +53,11 @@ namespace Reko.UnitTests.Decompiler.Analysis
         public void Setup()
         {
             this.import = new Mock<IDynamicLinker>();
-            this.eventListener = new Mock<DecompilerEventListener>();
+            this.eventListener = new FakeDecompilerEventListener();
             this.services = new ServiceContainer();
             this.pb = new ProgramBuilder();
             this.ssaStates = new List<SsaState>();
-            services.AddService<DecompilerEventListener>(eventListener.Object);
+            services.AddService<DecompilerEventListener>(eventListener);
             this.regA = RegisterStorage.Reg32("regA", 0x1234);
             this.regB = RegisterStorage.Reg32("regB", 0x5678);
             this.lowA = RegisterStorage.Reg8("lowA", 0x1234);
@@ -107,7 +107,7 @@ namespace Reko.UnitTests.Decompiler.Analysis
         private void RunTest(string sExp, Program program)
         {
             var sc = new ServiceContainer();
-            sc.AddService(eventListener.Object);
+            sc.AddService(eventListener);
 
             var dfa = new DataFlowAnalysis(
                 program,

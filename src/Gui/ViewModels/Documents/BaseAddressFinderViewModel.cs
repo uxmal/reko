@@ -19,6 +19,7 @@
 #endregion
 
 using Reko.Core;
+using Reko.Core.Memory;
 using Reko.Scanning;
 using System;
 using System.Collections.Generic;
@@ -37,7 +38,7 @@ namespace Reko.Gui.ViewModels.Documents
         private readonly string startText;
         private readonly string stopText;
         private Task? finderTask;
-        private CancellationToken cancellationToken;
+        private CancellationTokenSource cts;
 
         public BaseAddressFinderViewModel(
             IServiceProvider services,
@@ -100,13 +101,17 @@ namespace Reko.Gui.ViewModels.Documents
         {
             if (finderTask is null)
             {
-                cancellationToken = new CancellationToken(false);
+                cts = new CancellationTokenSource();
                 this.StartStopButtonText = stopText;
 
-                IBaseAddressFinder s = new FindBaseString(mem);
-                s.Endianness = program.Architecture.Endianness;
-                await s.Run();
+                if (program.SegmentMap.Segments.Values.FirstOrDefault()?.MemoryArea
+                    is ByteMemoryArea mem)
+                {
+                    IBaseAddressFinder s = new FindBaseString(mem);
+                    s.Endianness = program.Architecture.Endianness;
+                    await s.Run();
 
+                }
                 this.StartStopButtonText = startText;
                 this.finderTask = null;
             }

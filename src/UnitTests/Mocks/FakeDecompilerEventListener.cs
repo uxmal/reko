@@ -19,6 +19,7 @@
 #endregion
 
 using Reko.Core;
+using Reko.Core.Output;
 using Reko.Core.Scripts;
 using Reko.Core.Services;
 using Reko.Gui;
@@ -34,10 +35,11 @@ namespace Reko.UnitTests.Mocks
     public class FakeDecompilerEventListener : DecompilerEventListener, IWorkerDialogService
     {
         private string lastDiagnostic;
-        private string lastProgress;
         private bool finishedCalled;
-        private string lastStatus;
+        private FakeIndicator progress = new FakeIndicator();
 
+        public IProgressIndicator Progress => progress;
+        
         public void Finished()
         {
             finishedCalled = true;
@@ -143,20 +145,6 @@ namespace Reko.UnitTests.Mocks
                 scriptError.Message);
         }
 
-        public void ShowProgress(string caption, int numerator, int denominator)
-        {
-            lastProgress = string.Format("{0}: {1}%", caption, (numerator * 100) / (denominator != 0 ? denominator : 1));
-        }
-
-        public void Advance(int count)
-        {
-        }
-
-        public void ShowStatus(string status)
-        {
-            lastStatus = status;
-        }
-
         public bool IsCanceled()
         {
             return false;
@@ -208,7 +196,7 @@ namespace Reko.UnitTests.Mocks
 
         public string LastProgress
         {
-            get { return lastProgress; }
+            get { return this.progress.LastProgress; }
         }
 
 
@@ -255,6 +243,32 @@ namespace Reko.UnitTests.Mocks
 
         #endregion
 
+        private class FakeIndicator : IProgressIndicator
+        {
+            private string lastStatus;
+
+            public void ShowProgress(string caption, int numerator, int denominator)
+            {
+                LastProgress = string.Format("{0}: {1}%", caption, (numerator * 100) / (denominator != 0 ? denominator : 1));
+            }
+
+            public string LastProgress { get; private set; }
+
+
+            public void Advance(int count)
+            {
+            }
+
+            public void SetCaption(string caption)
+            {
+            }
+
+            public void ShowStatus(string status)
+            {
+                lastStatus = status;
+            }
+
+        }
 
     }
 }

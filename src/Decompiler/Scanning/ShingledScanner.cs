@@ -276,7 +276,7 @@ namespace Reko.Scanning
                 if (++instrCount >= ProgressBarUpdateInterval)
                 {
                     instrCount = 0;
-                    eventListener.ShowProgress("Shingle scanning", sr.FlatInstructions.Count, (int) workToDo);
+                    eventListener.Progress.ShowProgress("Shingle scanning", sr.FlatInstructions.Count, (int) workToDo);
                 }
             }
             return y;

@@ -113,7 +113,7 @@ namespace Reko.Analysis
         /// </summary>
         public List<SsaTransform> UntangleProcedures()
         {
-            eventListener.ShowProgress("Rewriting procedures.", 0, Program.Procedures.Count);
+            eventListener.Progress.ShowProgress("Rewriting procedures.", 0, Program.Procedures.Count);
 
             var ssts = new List<SsaTransform>();
             IntraBlockDeadRegisters.Apply(Program, eventListener);
@@ -194,7 +194,7 @@ namespace Reko.Analysis
         /// </summary>
         public void BuildExpressionTrees(List<SsaTransform> ssts)
         {
-            eventListener.ShowProgress("Building expressions.", 0, Program.Procedures.Count);
+            eventListener.Progress.ShowProgress("Building expressions.", 0, Program.Procedures.Count);
             foreach (var sst in ssts)
             {
                 var ssa = sst.SsaState;
@@ -257,7 +257,7 @@ namespace Reko.Analysis
                         "An internal error occurred while building the expressions of {0}",
                         ssa.Procedure.Name);
                 }
-                eventListener.Advance(1);
+                eventListener.Progress.Advance(1);
             }
         }
 

@@ -64,7 +64,7 @@ namespace Reko.Typing
             int i = 0;
             foreach (Procedure proc in program.Procedures.Values)
             {
-                eventListener.ShowProgress("Collecting data types.", i++, cProc);
+                eventListener.Progress.ShowProgress("Collecting data types.", i++, cProc);
                 CollectProcedureSignature(proc);
                 foreach (Statement stm in proc.Statements)
                 {
