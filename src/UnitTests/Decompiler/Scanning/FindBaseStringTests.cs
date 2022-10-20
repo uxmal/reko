@@ -29,43 +29,32 @@ using System.Text;
 namespace Reko.UnitTests.Decompiler.Scanning
 {
     [TestFixture]
-    internal class FindBaseStringTests
+    internal class FindBaseStringTests : AbstractBaseFinderTests
     {
-        private ByteMemoryArea mem;
-
         [SetUp]
-        public void Setup()
+        public override void Setup()
         {
-            this.mem = new ByteMemoryArea(Address.Ptr32(0), new byte[0x1000]);
+            base.Setup();
         }
 
-        private void Given_String(int offset)
-        {
-            var bytes = Encoding.UTF8.GetBytes("This is longer than 10 bytes");
-            Array.Copy(bytes, 0, mem.Bytes, offset, bytes.Length);
-        }
 
-        private void Given_Pointer(int offset, uint uPtr)
-        {
-            var w = mem.CreateLeWriter(offset);
-            w.WriteLeUInt32(uPtr);
-        }
-
-        [Test]
         // Note this test is very slow
+        [Test]
         public void Fbs_FindStrings_32()
         {
-            Given_String(0x100);
-            Given_String(0x125);
-            Given_String(0x15A);
-            Given_String(0x17A);
+            var str = "This is longer than 10 bytes";
+            
+            Given_String(0x100, str);
+            Given_String(0x125, str);
+            Given_String(0x15A, str);
+            Given_String(0x17A, str);
 
             Given_Pointer(0x300, 0xFF0100);
-            Given_Pointer(0x300, 0xFF0125);
-            Given_Pointer(0x300, 0xFF015A);
-            Given_Pointer(0x300, 0xFF017A);
+            Given_Pointer(0x308, 0xFF0125);
+            Given_Pointer(0x312, 0xFF015A);
+            Given_Pointer(0x240, 0xFF017A);
 
-            var fbs = new FindBaseString(EndianServices.Little, mem, NullProgressIndicator.Instance );
+            var fbs = new FindBaseString(arch.Object, mem, NullProgressIndicator.Instance );
             fbs.MinAddress = 0xF0_0000;
             var results = fbs.Run();
             Assert.AreEqual(0xFF0000, results[0].Address);

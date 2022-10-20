@@ -35,14 +35,14 @@ namespace Reko.Scanning
     // Based on: "Determining Image Base of Firmware Files for ARM Devices"
     // Ruijin ZHU, Yu-an TAN, Quanxin ZHANG, Fei WU, Jun ZHENG
     // Yuan XUE
-    public class FetFinder : IBaseAddressFinder
+    public class FetFinder : AbstractBaseAddressFinder
     {
         private const int MaxGap = 3;
         //$TODO: what about small machines? 0x200?
         private const uint AddrDistance = 0x1_0000;
 
         private readonly IProcessorArchitecture arch;
-        private readonly MemoryArea mem;
+        private readonly ByteMemoryArea mem;
         private readonly ulong alignMask;
         private readonly ulong maskedValue;
         private readonly BigInteger wordMask;
@@ -54,9 +54,10 @@ namespace Reko.Scanning
 
         public FetFinder(
             IProcessorArchitecture arch, 
-            MemoryArea mem,
+            ByteMemoryArea mem,
             ulong alignMask, 
             ulong maskedValue)
+            : base(arch.Endianness, mem)
         {
             this.arch = arch;
             this.mem = mem;
@@ -67,9 +68,7 @@ namespace Reko.Scanning
             this.word_size = (uint)(arch.WordWidth.BitSize / arch.MemoryGranularity);
         }
 
-        public EndianServices Endianness { get; set; }
-
-        public BaseAddressCandidate[] Run()
+        public override BaseAddressCandidate[] Run()
         {
             throw new NotImplementedException();
         }

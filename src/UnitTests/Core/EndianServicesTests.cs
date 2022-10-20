@@ -21,17 +21,19 @@
 using NUnit.Framework;
 using Reko.Core;
 using Reko.Core.Types;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Reko.UnitTests.Core
 {
     [TestFixture]
     public class EndianServicesTests
     {
+        private static void AssertHexBytes(string sExp, byte[] actual)
+        {
+            var sActual = string.Join("", actual.Select(b => $"{b:X2}"));
+            Assert.AreEqual(sExp, sActual);
+        }
+
         [Test]
         public void EndSvc_SliceStackIdentifier()
         {
@@ -40,6 +42,15 @@ namespace Reko.UnitTests.Core
             var beSlice = EndianServices.Big.SliceStackStorage(stk, new BitRange(0, 8), 8);
             Assert.AreEqual("Stack -0010", leSlice.ToString());
             Assert.AreEqual("Stack -000D", beSlice.ToString());
+        }
+
+
+        [Test]
+        public void EndSvc_ReverseWords()
+        {
+            var bytes = new byte[] { 0x04, 0x03, 0x02, 0x01, 0x0F, 0xE, 0x0D, 0x0C };
+            var newBytes = EndianServices.SwapByGroups(bytes, 4);
+            AssertHexBytes("010203040C0D0E0F", newBytes);
         }
     }
 }

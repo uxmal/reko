@@ -31,25 +31,22 @@ namespace Reko.Scanning
     /// <summary>
     /// Determine load addresses using differences between string references.
     /// </summary>
-    public class FindBaseString2 : IBaseAddressFinder
+    public class FindBaseString2 : AbstractBaseAddressFinder
     {
         private const int ATTEMPTS = 10;
 
         private int min_str_length = 10;
 
-        private readonly ByteMemoryArea mem;
         private Func<ulong, ulong> read_dword;
 
-        public FindBaseString2(ByteMemoryArea mem)
+        public FindBaseString2(IProcessorArchitecture arch, ByteMemoryArea mem)
+            : base(arch.Endianness, mem)
         {
-            this.mem = mem;
             this.read_dword = ReadDwordLe;
             this.Endianness = EndianServices.Little;
         }
 
-        public EndianServices Endianness { get; set; }
-
-        public BaseAddressCandidate[] Run()
+        public override BaseAddressCandidate[] Run()
         {
             this.read_dword = Endianness == EndianServices.Big
                 ? ReadDwordBe
@@ -66,7 +63,7 @@ namespace Reko.Scanning
 
         private ulong ReadDwordLe(ulong offset)
         {
-            if (mem.TryReadLeUInt32((long)offset, out var value))
+            if (Memory.TryReadLeUInt32((long)offset, out var value))
                 return value;
             else
                 return 0;
@@ -74,7 +71,7 @@ namespace Reko.Scanning
 
         private ulong ReadDwordBe(ulong offset)
         {
-            if (mem.TryReadBeUInt32((long)offset, out var value))
+            if (Memory.TryReadBeUInt32((long)offset, out var value))
                 return value;
             else
                 return 0;
@@ -84,7 +81,7 @@ namespace Reko.Scanning
         {
             Console.WriteLine("Gathering dwords in memory. This may take a while...");
             var values = new HashSet<ulong>();
-            var rdr = Endianness.CreateImageReader(mem, start);
+            var rdr = Endianness.CreateImageReader(Memory, start);
             while (rdr.Offset < end)
             {
                 if (!rdr.TryReadUInt32(out uint w))
@@ -186,8 +183,8 @@ namespace Reko.Scanning
         }
         public List<ulong> FindBaseAddresses()
         {
-            var strings = PatternFinder.FindAsciiStrings(mem, min_str_length);
-            var values = MemoryWordsAsSortedList(0, (uint)mem.Length);
+            var strings = PatternFinder.FindAsciiStrings(Memory, min_str_length);
+            var values = MemoryWordsAsSortedList(0, (uint)Memory.Length);
 
             var baseaddrs = new List<ulong>();
             for (var attempt = 0; attempt < ATTEMPTS; ++attempt)

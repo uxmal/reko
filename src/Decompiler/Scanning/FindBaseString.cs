@@ -20,6 +20,7 @@
 
 using Reko.Core;
 using Reko.Core.Diagnostics;
+using Reko.Core.Lib;
 using Reko.Core.Memory;
 using Reko.Core.Output;
 using System;
@@ -39,43 +40,32 @@ namespace Reko.Scanning
     /// Finds the base address of a memory area by correlating 
     /// the starts of strings with the 
     /// </summary>
-    public class FindBaseString : IBaseAddressFinder
+    public class FindBaseString : AbstractBaseAddressFinder
     {
-        private static readonly TraceSwitch trace = new TraceSwitch(nameof(FindBaseString), nameof(FindBaseString));
+        private static readonly TraceSwitch trace = new TraceSwitch(nameof(FindBaseString), nameof(FindBaseString))
+        {
+            Level = TraceLevel.Verbose
+        };
 
-        private readonly ByteMemoryArea mem;
-        private uint stride;
+        private readonly IProcessorArchitecture arch;
         private readonly IProgressIndicator progressIndicator;
 
         public FindBaseString(
-            EndianServices endianness,
+            IProcessorArchitecture arch,
             ByteMemoryArea mem,
             IProgressIndicator progress)
+            : base(arch.Endianness, mem)
         {
-            this.mem = mem;
-            this.Endianness = endianness;
+            this.arch = arch;
             Stride = 0x1000;
             Threads = Environment.ProcessorCount;
             this.progressIndicator = progress;
         }
 
-        public EndianServices Endianness { get; set; }   // Interpret as big-endian (default is little)' 
         public int min_str_len = 10;           // Minimum string search length (default is 10)'
         public int max_matches = 10;           // Maximum matches to display (default is 10)'
 
-        /// <summary>
-        /// Scan every N (power of 2) addresses. (default is 0x1000)'
-        /// </summary>
-        public uint Stride
-        {
-            get => stride;
-            set
-            {
-                if (BitOperations.PopCount(value) != 1)
-                    throw new ArgumentException("Value must be a power of 2.");
-                stride = value;
-            }
-        }
+
 
         /// <summary>
         /// Number of threads to spawn; the default is # of CPU cores.
@@ -83,14 +73,14 @@ namespace Reko.Scanning
         public int Threads { get; set; }
         public ulong MinAddress { get; set; }
 
-        public BaseAddressCandidate[] Run()
+        public override BaseAddressCandidate[] Run()
         {
-            // Find indices of strings.
-            var stringsTask = Task.Run(() => PatternFinder.FindAsciiStrings(mem, min_str_len)
+            // Find indices of strings and locations of pointers in parallel.
+            var stringsTask = Task.Run(() => PatternFinder.FindAsciiStrings(Memory, min_str_len)
                 .Select(s => s.uAddress)
                 .ToHashSet());
-            var pointersTask = Task.Run(() => ReadPointers(mem, 4));
-
+            var pointersTask = Task.Run(() => ReadPointers(Memory, 4));
+            var x = Memory.ReadLeUInt32(0x0300);
             var strings = stringsTask.Result;
             var pointers = pointersTask.Result;
 
@@ -105,7 +95,6 @@ namespace Reko.Scanning
             var shared_pointers = pointers;
 
             Debug.WriteLine("Scanning with {0} Threads...", Threads);
-            var semaphore = new CountdownEvent(Threads);
             ConcurrentQueue<List<BaseAddressCandidate>> subresults = new();
             var sw = new Stopwatch();
             sw.Start();
@@ -183,43 +172,29 @@ namespace Reko.Scanning
             }
         }
 
-
-        public HashSet<ulong> ReadPointers(ByteMemoryArea buffer, int alignment)
-        {
-            var pointers = new HashSet<ulong>();
-            var rdr = Endianness.CreateImageReader(buffer, 0);
-            var offset = rdr.Offset;
-            while (rdr.TryReadUInt32(out uint v))
-            {
-                pointers.Add(v);
-                offset += alignment;
-                rdr.Offset = offset;
-            }
-            return pointers;
-        }
-
         public List<BaseAddressCandidate> FindMatches(
             IReadOnlySet<ulong> strings,
             IReadOnlySet<ulong> pointers,
             int threadIndex,
             IProgressIndicator pb)
         {
-            var interval = Interval.GetRange(this.MinAddress, threadIndex, Threads, stride);
-            trace.Inform("Thread {0} in range: {1:X8}-{2:X8}",
+            var interval = Interval.GetRange(this.MinAddress, threadIndex, Threads, Stride);
+            trace.Inform("{0,3} Processing range: {1:X8}-{2:X8}",
                 threadIndex,
                 interval.BeginAddress,
                 interval.EndAddress);
             var uBaseAddr = interval.BeginAddress;
             var heap = new List<BaseAddressCandidate>();
-            var steps = (int)((interval.EndAddress - interval.BeginAddress) / stride);
+            var steps = (int)((interval.EndAddress - interval.BeginAddress) / Stride);
             pb.ShowProgress("Finding string pointers", 0, steps);
             var news = new HashSet<ulong>(strings.Count);
+            var wordMask = Bits.Mask(0, arch.PointerType.BitSize);
             while (uBaseAddr <= interval.EndAddress)
             {
                 news.Clear();
                 foreach (var s in strings)
                 {
-                    if (!AddOverflow(s, uBaseAddr, out var addrRebased))
+                    if (!AddOverflow(s, uBaseAddr,  wordMask, out var addrRebased))
                     {
                         news.Add(addrRebased);
                     }
@@ -230,9 +205,9 @@ namespace Reko.Scanning
                 {
                     heap.Add(new BaseAddressCandidate(uBaseAddr, intersection.Count));
                 }
-                if (AddOverflow(uBaseAddr, Stride, out var new_addr))
+                if (AddOverflow(uBaseAddr, Stride, wordMask, out var new_addr))
                 {
-                    Console.WriteLine($"{threadIndex,3} Ending at {uBaseAddr:X8}, stride = 0x{Stride}");
+                    trace.Verbose($"{threadIndex,3} Ending at {uBaseAddr:X8}, stride = 0x{Stride}");
                     break;
                 }
                 uBaseAddr = new_addr;
@@ -242,30 +217,16 @@ namespace Reko.Scanning
             return heap;
         }
 
-        private static bool AddOverflow(ulong a, ulong b, out ulong result)
-        {
-            var s = a + b;
-            if (s < a)
-            {
-                result = 0;
-                return true;
-            }
-            else
-            {
-                result = s;
-                return false;
-            }
-        }
-
         private void DumpStrings(HashSet<ulong> strings)
         {
             foreach (ulong offset in strings)
             {
                 Console.Write("{0:X8} ", offset);
                 var i = (uint)offset;
-                for (; i < mem.Bytes.Length; ++i)
+                var bytes = Memory.Bytes;
+                for (; i < bytes.Length; ++i)
                 {
-                    var b = mem.Bytes[i];
+                    var b = bytes[i];
                     if (b == 0)
                     {
                         Console.WriteLine();
@@ -282,70 +243,6 @@ namespace Reko.Scanning
                 }
             }
         }
-
-        private interface IProgress<T>
-        { }
-
-        private class Progress<T> : IProgress<T>
-        {
-            private TextWriter error;
-
-            public Progress(TextWriter stm)
-            {
-                this.error = stm;
-            }
-        }
-
-        private class NullProgress<T> : IProgress<T>, ProgressBar
-        {
-            public NullProgress()
-            {
-            }
-
-            public ulong Total { get; set; }
-            public bool ShowMessage { get; set; }
-
-            public void finish()
-            {
-            }
-
-            public void inc()
-            {
-            }
-
-            public int MaxRefreshRate { get; set; }
-        }
-
-
-        private class MultiBar
-        {
-            private IProgress<int> progress;
-
-            public MultiBar(IProgress<int> nullProgress)
-            {
-                this.progress = nullProgress;
-            }
-
-            internal ProgressBar create_bar(int v)
-            {
-                return new NullProgress<int>();
-            }
-
-            internal void listen()
-            {
-            }
-        }
-
-        public interface ProgressBar
-        {
-            ulong Total { get; set; }
-            bool ShowMessage { get; set; }
-            int MaxRefreshRate { get; set; }
-
-            void inc();
-            void finish();
-        }
-
 
         /*
 #[cfg(test)]

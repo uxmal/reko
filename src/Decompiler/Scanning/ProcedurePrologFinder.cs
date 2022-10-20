@@ -20,53 +20,55 @@
 
 using Reko.Core;
 using Reko.Core.Collections;
+using Reko.Core.Diagnostics;
+using Reko.Core.Lib;
 using Reko.Core.Memory;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Threading.Tasks;
+using System.Numerics;
 
 namespace Reko.Scanning
 {
-    public class ProcedurePrologFinder : IBaseAddressFinder
+    public class ProcedurePrologFinder : AbstractBaseAddressFinder
     {
-        private readonly ByteMemoryArea mem;
-        private readonly ByteTrie<object> trie;
-        private readonly int max_matches = 10;
+        private static readonly TraceSwitch trace = new TraceSwitch(nameof(ProcedurePrologFinder), nameof(ProcedurePrologFinder));
+        private const int max_matches = 10;
 
-        public ProcedurePrologFinder(ByteMemoryArea mem, EndianServices endianness)
+        private readonly IProcessorArchitecture arch;
+        private readonly ByteTrie<object> trie;
+
+        public ProcedurePrologFinder(
+            IProcessorArchitecture arch,
+            IEnumerable<MaskedPattern> patterns,
+            ByteMemoryArea mem) 
+            : base(arch.Endianness, mem)
         {
-            //$TODO: get this info from the Reko.config file
-            this.mem = mem;
-            this.trie = new ByteTrie<object>();
-            trie.Add(new byte[] { 0x55, 0x89, 0xE5, 0x83 }, 4);
-            trie.Add(new byte[] { 0x55, 0x89, 0xE5 }, 3);
-            trie.Add(new byte[] { 0x55, 0x8B, 0xEC }, 3);
-            //this.trie = BuildTrie(patterns, arch);
-            this.Endianness = endianness;
+            this.arch = arch;
+            this.trie = BuildTrie(patterns, arch);
+            Stride = 0x1000;
         }
 
-        public EndianServices Endianness { get; set; }
-
-        public BaseAddressCandidate[] Run()
+        public override BaseAddressCandidate[] Run()
         {
             int threadIndex = 0;
-            var prologs = PatternFinder.FindProcedurePrologs(mem, trie);
-            Console.WriteLine($"Found {prologs.Count} possible prologs");
+            var prologsOffsets = PatternFinder.FindProcedurePrologs(Memory, trie);
+            trace.Inform($"Found {prologsOffsets.Count} possible prolog offsets");
             var sw = new Stopwatch();
             sw.Start();
-            var pointers = ReadPointers(mem, 4);
-            uint stride = 0x1000;
+            var alignment = arch.InstructionBitSize / arch.MemoryGranularity;
+            var pointers = ReadPointers(Memory, alignment);
             var heap = new List<BaseAddressCandidate>();
-            var news = new HashSet<ulong>(prologs.Count);
+            var news = new HashSet<ulong>(prologsOffsets.Count);
             var queue = new Queue<List<BaseAddressCandidate>>();
+            var wordMask = Bits.Mask(0, arch.PointerType.BitSize);
             for (ulong uBaseAddr = 0; uBaseAddr <= ~0u;)
             {
                 news.Clear();
-                foreach (var p in prologs)
+                foreach (var p in prologsOffsets)
                 {
-                    if (!AddOverflow(p, uBaseAddr, out var addrRebased))
+                    if (!AddOverflow(p, uBaseAddr, wordMask, out var addrRebased))
                     {
                         news.Add(addrRebased);
                     }
@@ -77,9 +79,9 @@ namespace Reko.Scanning
                 {
                     heap.Add(new BaseAddressCandidate(uBaseAddr, intersection.Count));
                 }
-                if (AddOverflow(uBaseAddr, stride, out var new_addr))
+                if (AddOverflow(uBaseAddr, Stride, wordMask, out var new_addr))
                 {
-                    Console.WriteLine($"{threadIndex,3} Ending at {uBaseAddr:X8}, stride = 0x{stride}");
+                    trace.Verbose($"{threadIndex,3} Ending at {uBaseAddr:X8}, stride = 0x{Stride}");
                     break;
                 }
                 uBaseAddr = new_addr;
@@ -95,59 +97,41 @@ namespace Reko.Scanning
                 .ToArray();
             sw.Stop();
 
-            Console.WriteLine("Elapsed time: {0}ms", (int)sw.Elapsed.TotalMilliseconds);
+            trace.Inform("Elapsed time: {0}ms", (int)sw.Elapsed.TotalMilliseconds);
             return result;
         }
 
-        private static bool AddOverflow(ulong a, ulong b, out ulong result)
-        {
-            var s = a + b;
-            if (s < a)
-            {
-                result = 0;
-                return true;
-            }
-            else
-            {
-                result = s;
-                return false;
-            }
-        }
-        public HashSet<ulong> ReadPointers(ByteMemoryArea buffer, int alignment)
-        {
-            var pointers = new HashSet<ulong>();
-            var rdr = Endianness.CreateImageReader(buffer, 0);
-            var offset = rdr.Offset;
-            while (rdr.TryReadUInt32(out uint v))
-            {
-                pointers.Add(v);
-                offset = offset + alignment;
-                rdr.Offset = offset;
-            }
-            return pointers;
-        }
+
+
 
         private static ByteTrie<object> BuildTrie(IEnumerable<MaskedPattern> patterns, IProcessorArchitecture arch)
         {
-            int unitsPerInstr = arch.InstructionBitSize / arch.InstructionBitSize;
-            if (arch.Endianness == EndianServices.Big)
+            int unitsPerInstr = arch.InstructionBitSize / arch.MemoryGranularity;
+            var trie = new ByteTrie<object>();
+            foreach (var pattern in patterns)
             {
-                throw new NotImplementedException();
-            }
-            else
-            {
-                var trie = new ByteTrie<object>();
-                foreach (var pattern in patterns)
+                var bytes = pattern.Bytes;
+                var mask = pattern.Mask;
+                if (bytes is null)
+                    continue;
+                if (unitsPerInstr > 1 && arch.Endianness != pattern.Endianness)
                 {
-                    trie.Add(pattern.Bytes, pattern.Mask, new Object());
+                    bytes = EndianServices.SwapByGroups(bytes, unitsPerInstr);
+                    if (mask is { })
+                    {
+                        mask = EndianServices.SwapByGroups(mask, unitsPerInstr);
+                    }
                 }
-                return trie;
+                if (mask is null)
+                {
+                    trie.Add(bytes, new object());
+                }
+                else
+                {
+                    trie.Add(bytes, mask, new object());
+                }
             }
-        }
-
-        public List<(Address, int)> FindPrologs(MemoryArea mem)
-        {
-            throw new NotImplementedException();
+            return trie;
         }
 
     }

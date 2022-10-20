@@ -30,6 +30,8 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 
+// Playstation Geometry transformation engine https://psx-spx.consoledev.net/geometrytransformationenginegte/
+
 namespace Reko.Arch.Mips
 {
     /// <summary>

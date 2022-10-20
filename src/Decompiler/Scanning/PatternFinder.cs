@@ -26,7 +26,15 @@ namespace Reko.Scanning
 {
     public class PatternFinder
     {
-        public static List<(ulong uAddress, uint length)> FindAsciiStrings(ByteMemoryArea buffer, int min_str_len)
+        /// <summary>
+        /// Given a <see cref="ByteMemoryArea"/> finds sequences of consecutive
+        /// bytes corresponding to ASCII characters. The sequences must be at
+        /// least <see cref="minStringLength"/> bytes long.
+        /// </summary>
+        /// <param name="buffer"></param>
+        /// <param name="minStringLength"></param>
+        /// <returns></returns>
+        public static List<(ulong uAddress, uint length)> FindAsciiStrings(ByteMemoryArea buffer, int minStringLength)
         {
             var strings = new List<(ulong, uint)>();
 
@@ -47,7 +55,7 @@ namespace Reko.Scanning
                 else
                 {
                     uint strlen = i - iStart;
-                    if (insideString && strlen >= min_str_len)
+                    if (insideString && strlen >= minStringLength)
                     {
                         strings.Add((iStart, strlen));
                     }
@@ -57,7 +65,7 @@ namespace Reko.Scanning
             if (insideString)
             {
                 uint strlen = (uint) bytes.Length - iStart;
-                if (strlen >= min_str_len)
+                if (strlen >= minStringLength)
                 {
                     strings.Add((iStart, strlen));
                 }
@@ -76,6 +84,5 @@ namespace Reko.Scanning
             }
             return results;
         }
-
     }
 }
