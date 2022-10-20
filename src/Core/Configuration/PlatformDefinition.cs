@@ -114,7 +114,7 @@ namespace Reko.Core.Configuration
             else
             {
                 prologs = heuristics.ProcedurePrologs
-                    .Select(p => MaskedPattern.Load(p.Bytes, p.Mask)!)
+                    .Select(p => MaskedPattern.Load(p.Bytes, p.Mask, p.Endianness)!)
                     .Where(p => p != null && p.Bytes != null)
                     .ToArray();
             }

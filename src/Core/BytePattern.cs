@@ -26,6 +26,9 @@ namespace Reko.Core
 {
     public static class BytePattern
     {
+        /// <summary>
+        /// Maps ASCII code points - '0' to the corresponding digit value.
+        /// </summary>
         private static readonly byte[] hexValues = new byte[]
         {
             0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF,

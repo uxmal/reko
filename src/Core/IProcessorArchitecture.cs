@@ -20,11 +20,13 @@
 
 using Reko.Core.Assemblers;
 using Reko.Core.Code;
+using Reko.Core.Configuration;
 using Reko.Core.Emulation;
 using Reko.Core.Expressions;
 using Reko.Core.Machine;
 using Reko.Core.Memory;
 using Reko.Core.Rtl;
+using Reko.Core.Services;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
@@ -356,16 +358,27 @@ namespace Reko.Core
         /// </summary>
         int ReturnAddressOnStack { get; }
         int InstructionBitSize { get; }                     // Instruction "granularity" or alignment.
+        
         /// <summary>
         /// Size of the smallest addressable memory unit, in bits
         /// </summary>
         /// <remarks>Most modern CPU:s have byte addressability, so this will typically be 8.
         /// </remarks>
         int MemoryGranularity { get; }
-        RegisterStorage StackRegister { get; set;  }        // Stack pointer used by this machine.
+        
+        RegisterStorage StackRegister { get; set; }        // Stack pointer used by this machine.
         RegisterStorage FpuStackRegister { get; }           // FPU stack pointer used by this machine, or null if none exists.
         uint CarryFlagMask { get; }                         // Used when building large adds/subs when carry flag is used.
-        EndianServices Endianness { get; }              // Use this to handle endian-specific.
+        
+        /// <summary>
+        /// The endianness of this processor architecture.
+        /// </summary>
+        EndianServices Endianness { get; }
+        
+        /// <summary>
+        /// Byte patterns that match procedure prologs on this platform.
+        /// </summary>
+        MaskedPattern[] ProcedurePrologs { get; }
 
         /// <summary>
         /// Parses an address according to the preferred base of the 
@@ -463,6 +476,7 @@ namespace Reko.Core
         public PrimitiveType FramePointerType { get; protected set; }
         public int MemoryGranularity { get; protected set; }
         public PrimitiveType PointerType { get; protected set; }
+        public MaskedPattern[] ProcedurePrologs { get; internal set; }
         public PrimitiveType WordWidth { get; protected set; }
 
         public Dictionary<string, object> Options { get; protected set; }

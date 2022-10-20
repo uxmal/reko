@@ -128,7 +128,8 @@ namespace Reko.Core.Configuration
                 Name = sArch.Name,
                 TypeName = sArch.Type,
                 Options = LoadCollection(sArch.Options, LoadPropertyOption),
-                Models = LoadDictionary(sArch.Models, m => m.Name!, LoadModelDefinition)
+                Models = LoadDictionary(sArch.Models, m => m.Name!, LoadModelDefinition),
+                ProcedurePrologs = LoadMaskedPatterns(sArch.ProcedurePrologs)
             };
         }
 
@@ -208,17 +209,6 @@ namespace Reko.Core.Configuration
         {
             var sTrashedRegs = spa.TrashedRegisters ?? "";
             List<MaskedPattern> prologs;
-            if (spa.ProcedurePrologs is null)
-            {
-                prologs = new();
-            }
-            else
-            {
-                prologs = spa.ProcedurePrologs
-                    .Select(p => MaskedPattern.Load(p.Bytes, p.Mask)!)
-                    .Where(p => p != null && p.Bytes != null)
-                    .ToList();
-            }
 
             return new PlatformArchitectureDefinition
             {
@@ -228,8 +218,23 @@ namespace Reko.Core.Configuration
                     .Select(s => s.Trim())
                     .ToList(),
                 TypeLibraries = LoadCollection(spa.TypeLibraries, LoadTypeLibraryReference),
-                ProcedurePrologs = prologs
+                ProcedurePrologs = LoadMaskedPatterns(spa.ProcedurePrologs)
             };
+        }
+
+        private List<MaskedPattern> LoadMaskedPatterns(BytePattern_v1[]? patterns)
+        {
+            if (patterns is null)
+            {
+                return new();
+            }
+            else
+            {
+                return patterns
+                    .Select(p => MaskedPattern.Load(p.Bytes, p.Mask, p.Endianness)!)
+                    .Where(p => p != null && p.Bytes != null)
+                    .ToList();
+            }
         }
 
         private RawFileDefinition LoadRawFile(RawFile_v1 sRaw)
@@ -414,7 +419,7 @@ namespace Reko.Core.Configuration
                 return GetArchitecture(archLabel, new Dictionary<string, object>());
             var elem = GetArchitectures()
                 .Where(e => e.Name == archLabel).SingleOrDefault();
-            if (elem == null)
+            if (elem is null)
                 return null;
             ModelDefinition? model;
             if (elem.Models is null)
@@ -462,8 +467,13 @@ namespace Reko.Core.Configuration
                 elem.Name, 
                 options)!;
             arch.Description = elem.Description;
+            if (arch is ProcessorArchitecture a)
+            {
+                a.ProcedurePrologs = elem.ProcedurePrologs.ToArray();
+            }
             return arch;
         }
+
 
         public PlatformDefinition GetEnvironment(string envName)
         {

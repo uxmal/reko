@@ -97,6 +97,11 @@ namespace Reko.Core.Configuration
         [XmlArray("Options")]
         [XmlArrayItem("Option")]
         public PropertyOption_v1[]? Options;
+
+        [XmlArray("ProcedurePrologs")]
+        [XmlArrayItem("Pattern")]
+        public BytePattern_v1[]? ProcedurePrologs;
+
     }
 
     [Serializable]
@@ -381,6 +386,17 @@ namespace Reko.Core.Configuration
         /// </summary>
         [XmlElement("Mask")]
         public string? Mask;
+
+        /// <summary>
+        /// The endianness of the bytes in the byte mask. On architectures with 
+        /// variable endianness, the bytes and the mask may need to be reversed
+        /// </summary>
+        /// <remarks>Only the first letter is examined; 'b' or 'B' is big-endian,
+        /// while 'l' or 'L' is little-endian. By default the endianness is big,
+        /// since that's easier for humans to read.</remarks>
+        [XmlAttribute("endianness")]
+        [DefaultValue("b")]
+        public string Endianness = "b";
     }
 
     public class SymbolSource_v1

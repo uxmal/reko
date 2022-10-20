@@ -65,6 +65,8 @@ namespace Reko.ImageLoaders.LLVM
 
         public string PlatformIdentifier { get; set; }
 
+        public MaskedPattern[] ProcedurePrologs => Array.Empty<MaskedPattern>();
+
         public PrimitiveType PointerType { get; set; }
 
         public int StructureMemberAlignment { get; set; }

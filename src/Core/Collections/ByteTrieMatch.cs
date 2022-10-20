@@ -30,7 +30,6 @@ namespace Reko.Core.Collections
     /// </summary>
     /// <typeparam name="T">Value associated with the match.</typeparam>
     public class ByteTrieMatch<T>
-        where T : class
     {
         public static ByteTrieMatch<T> Empty { get; } = new ByteTrieMatch<T>(null, -1, -1, default)
         {

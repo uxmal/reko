@@ -18,11 +18,9 @@
  */
 #endregion
 
-using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Text;
 
 namespace Reko.Core
 {
@@ -35,12 +33,16 @@ namespace Reko.Core
     {
         public byte[]? Bytes;
         public byte[]? Mask;
+        public EndianServices Endianness = EndianServices.Big;
 
-        public static MaskedPattern? Load(string? sBytes, string? sMask)
+        public static MaskedPattern? Load(string? sBytes, string? sMask, string? sEndianness = null)
         {
-            if (sBytes == null)
+            if (sBytes is null)
                 return null;
-            if (sMask == null)
+            var endianness = (string.IsNullOrEmpty(sEndianness) || char.ToLowerInvariant(sEndianness[0]) == 'b')
+                ? EndianServices.Big
+                : EndianServices.Little;
+            if (sMask is null)
             {
                 var bytes = new List<byte>();
                 var mask = new List<byte>();
@@ -81,7 +83,8 @@ namespace Reko.Core
                 return new MaskedPattern
                 {
                     Bytes = bytes.ToArray(),
-                    Mask = mask.ToArray()
+                    Mask = mask.ToArray(),
+                    Endianness = endianness,
                 };
             }
             else
@@ -93,7 +96,8 @@ namespace Reko.Core
                 return new MaskedPattern
                 {
                     Bytes = bytes.ToArray(),
-                    Mask = mask.ToArray()
+                    Mask = mask.ToArray(),
+                    Endianness = endianness,
                 };
             }
         }

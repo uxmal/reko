@@ -51,5 +51,10 @@ namespace Reko.Core.Configuration
         /// Available processor models.
         /// </summary>
         public Dictionary<string, ModelDefinition> Models { get; set; } = new Dictionary<string, ModelDefinition>();
+
+        /// <summary>
+        /// Typical procedure prologs.
+        /// </summary>
+        public List<MaskedPattern> ProcedurePrologs { get; set; } = new();
     }
 }

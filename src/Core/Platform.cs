@@ -62,6 +62,12 @@ namespace Reko.Core
         PrimitiveType PointerType { get; }
 
         /// <summary>
+        /// Procedure prologs specific to this platform. Platform-independent
+        /// prologs are found in <see cref="IProcessorArchitecture.ProcedurePrologs"/>.
+        /// </summary>
+        MaskedPattern[] ProcedurePrologs { get; }
+
+        /// <summary>
         /// Creates a set of registers that the "standard" ABI cannot 
         /// guarantee will survive a call.
         /// </summary>

@@ -31,7 +31,6 @@ namespace Reko.Core.Collections
     /// </summary>
     /// <typeparam name="TValue">The trie associates a value with each pattern.</typeparam>
     public class ByteTrie<TValue>
-        where TValue : class
     {
         private readonly HighNode[] root;
 
