@@ -107,6 +107,18 @@ namespace Reko.Core
         /// <summary>
         /// Creates an <see cref="ImageWriter"/> with the preferred endianness, which will 
         /// write into the given <paramref name="memoryArea"/>
+        /// starting at offset <paramref name="offset"/>.
+        /// </summary>
+        /// <param name="memoryArea">Memory area to write to.</param>
+        /// <param name="offset">Offset from the beginning of the memory area to 
+        /// start writing at.</param>
+        /// <returns>An <see cref="ImageWriter"/> of the appropriate endianness.</returns>
+        public abstract ImageWriter CreateImageWriter(MemoryArea memoryArea, long offset);
+
+
+        /// <summary>
+        /// Creates an <see cref="ImageWriter"/> with the preferred endianness, which will 
+        /// write into the given <paramref name="memoryArea"/>
         /// starting at address <paramref name="addr"/>.
         /// </summary>
         /// <param name="bytes">Bytes to write to.</param>
@@ -144,7 +156,6 @@ namespace Reko.Core
         /// <param name="size">Spacing between offsets</param>
         public abstract bool OffsetsAdjacent(long oLsb, long oMsb, long size);
 
-
         /// <summary>
         /// Given a stack storage, generate a slice of said storage.
         /// </summary>
@@ -163,6 +174,27 @@ namespace Reko.Core
         /// <param name="value">The value read from memory, if successful.</param>
         /// <returns>True if the read succeeded, false if the address was out of range.</returns>
         public abstract bool TryRead(MemoryArea mem, Address addr, PrimitiveType dt, [MaybeNullWhen(false)] out Constant value);
+
+        /// <summary>
+        /// Reverses the bytes in the provided array, in groups of size <paramref name="wordSize"/>.
+        /// </summary>
+        /// <param name="bytes">The bytes to reverse.</param>
+        /// <param name="wordSize">Size of each group to reverse.</param>
+        /// <returns>A new array containing the bytes in reversed order.</returns>
+        public static byte[] SwapByGroups(ReadOnlySpan<byte> bytes, int wordSize)
+        {
+            if (wordSize <= 0 || bytes.Length % wordSize != 0)
+                throw new ArgumentOutOfRangeException(nameof(wordSize));
+            var newBytes = new byte[bytes.Length];
+            for (int i = 0; i < bytes.Length; i += wordSize)
+            {
+                for (int j = 0; j < wordSize; ++j)
+                {
+                    newBytes[i + (wordSize - j - 1)] = bytes[i + j];
+                }
+            }
+            return newBytes;
+        }
 
 
         private class LeServices : EndianServices
@@ -200,6 +232,11 @@ namespace Reko.Core
             public override ImageWriter CreateImageWriter(MemoryArea mem, Address addr)
             {
                 return mem.CreateLeWriter(addr);
+            }
+
+            public override ImageWriter CreateImageWriter(MemoryArea mem, long offset)
+            {
+                return mem.CreateLeWriter(offset);
             }
 
             public override ImageWriter CreateImageWriter(byte[] bytes, long offset)
@@ -280,6 +317,11 @@ namespace Reko.Core
             public override ImageWriter CreateImageWriter(MemoryArea mem, Address addr)
             {
                 return mem.CreateBeWriter(addr);
+            }
+
+            public override ImageWriter CreateImageWriter(MemoryArea mem, long offset)
+            {
+                return mem.CreateBeWriter(offset);
             }
 
             public override ImageWriter CreateImageWriter(byte[] bytes, long offset)
