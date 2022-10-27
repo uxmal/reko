@@ -5465,26 +5465,39 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        public void ThumbRw_push()
+        public void ThumbRw_add()
         {
-            Given_UInt16s(0xE92D, 0x4800); // "push.w\t{fp,lr}"
+            Given_UInt16s(0xB002); // add\tsp,#8
             AssertCode(
-                "0|L--|00100000(4): 3 instructions",
-                "1|L--|sp = sp - 8<i32>",
-                "2|L--|Mem0[sp:word32] = fp",
-                "3|L--|Mem0[sp + 4<i32>:word32] = lr");
+                "0|L--|00100000(2): 1 instructions",
+                "1|L--|sp = sp + 8<i32>");
         }
 
         [Test]
-        public void ThumbRw_pop()
+        public void ThumbRw_addw()
         {
-            Given_UInt16s(0xE8BD, 0x8800); // pop.w\t{fp,pc}
+            Given_UInt16s(0xF60D, 0x2348);  // add         r3,sp,#0xA48
             AssertCode(
-                "0|T--|00100000(4): 4 instructions",
-                "1|L--|fp = Mem0[sp:word32]",
-                "2|L--|v4 = Mem0[sp + 4<i32>:word32]",
-                "3|L--|sp = sp + 8<i32>",
-                "4|R--|return (0,0)");
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|r3 = sp + 0xA48<32>");
+        }
+
+        [Test]
+        public void ThumbRw_adr()
+        {
+            Given_UInt16s(0xA020);  // adr         r0,0040111C
+            AssertCode(
+                "0|L--|00100000(2): 1 instructions",
+                "1|L--|r0 = 00100080");
+        }
+
+        [Test]
+        public void ThumbRw_bic()
+        {
+            Given_UInt16s(0xF02C, 0x0C07);  // bic         r12,r12,#7
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|ip = ip & ~7<32>");
         }
 
         [Test]
@@ -5515,12 +5528,26 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        public void ThumbRw_str()
+        public void ThumbRw_push()
         {
-            Given_UInt16s(0x9000); // str\tr0,[sp]
+            Given_UInt16s(0xE92D, 0x4800); // "push.w\t{fp,lr}"
             AssertCode(
-                "0|L--|00100000(2): 1 instructions",
-                "1|L--|Mem0[sp:word32] = r0");
+                "0|L--|00100000(4): 3 instructions",
+                "1|L--|sp = sp - 8<i32>",
+                "2|L--|Mem0[sp:word32] = fp",
+                "3|L--|Mem0[sp + 4<i32>:word32] = lr");
+        }
+
+        [Test]
+        public void ThumbRw_pop()
+        {
+            Given_UInt16s(0xE8BD, 0x8800); // pop.w\t{fp,pc}
+            AssertCode(
+                "0|T--|00100000(4): 4 instructions",
+                "1|L--|fp = Mem0[sp:word32]",
+                "2|L--|v4 = Mem0[sp + 4<i32>:word32]",
+                "3|L--|sp = sp + 8<i32>",
+                "4|R--|return (0,0)");
         }
 
         [Test]
@@ -5539,105 +5566,6 @@ namespace Reko.UnitTests.Arch.Arm
             AssertCode(
                 "0|L--|00100000(2): 1 instructions",
                 "1|L--|r0 = Mem0[sp + 4<i32>:word32]");
-        }
-
-        [Test]
-        public void ThumbRw_add()
-        {
-            Given_UInt16s(0xB002); // add\tsp,#8
-            AssertCode(
-                "0|L--|00100000(2): 1 instructions",
-                "1|L--|sp = sp + 8<i32>");
-        }
-
-        [Test]
-        public void ThumbRw_addw()
-        {
-            Given_UInt16s(0xF60D, 0x2348);  // add         r3,sp,#0xA48
-            AssertCode(
-                "0|L--|00100000(4): 1 instructions",
-                "1|L--|r3 = sp + 0xA48<32>");
-        }
-
-        [Test]
-        public void ThumbRw_movw()
-        {
-            Given_UInt16s(0xF24C, 0x1C00); // movw        r12,#0xC100<16>
-            AssertCode(
-                "0|L--|00100000(4): 1 instructions",
-                "1|L--|ip = 0xC100<32>");
-        }
-
-        [Test]
-        public void ThumbRw_movt()
-        {
-            Given_UInt16s(0xF2C0, 0x0C40);  // movt        r12,#0x40
-            AssertCode(
-                "0|L--|00100000(4): 1 instructions",
-                "1|L--|ip = SEQ(0x40<16>, SLICE(ip, word16, 0))");
-        }
-
-        [Test]
-        public void ThumbRw_bx()
-        {
-            Given_UInt16s(0x4760);  // bx          r12
-            AssertCode(
-                "0|T--|00100000(2): 1 instructions",
-                "1|T--|goto ip");
-        }
-
-        [Test]
-        public void ThumbRw_cmp()
-        {
-            Given_UInt16s(0x4563);  // cmp         r3,r12
-            AssertCode(
-                "0|L--|00100000(2): 1 instructions",
-                "1|L--|NZCV = cond(r3 - ip)");
-        }
-
-        [Test]
-        public void ThumbRw_clz()
-        {
-            Given_HexString("B2FA82F2");	// clz r2, r2
-            AssertCode(
-                "0|L--|00100000(4): 1 instructions",
-                "1|L--|r2 = __clz(r2)");
-        }
-
-        [Test]
-        public void ThumbRw_cmn()
-        {
-            Given_HexString("EA42");	// cmn r2, r5
-            AssertCode(
-                "0|L--|00100000(2): 1 instructions",
-                "1|L--|NZCV = cond(r2 + r5)");
-        }
-
-        [Test]
-        public void ThumbRw_bne()
-        {
-            Given_UInt16s(0xD101);  // bne         00401056
-            AssertCode(
-                "0|T--|00100000(2): 1 instructions",
-                "1|T--|if (Test(NE,Z)) branch 00100006");
-        }
-
-        [Test]
-        public void ThumbRw_bic()
-        {
-            Given_UInt16s(0xF02C, 0x0C07);  // bic         r12,r12,#7
-            AssertCode(
-                "0|L--|00100000(4): 1 instructions",
-                "1|L--|ip = ip & ~7<32>");
-        }
-        
-        [Test]
-        public void ThumbRw_adr()
-        {
-            Given_UInt16s(0xA020);  // adr         r0,0040111C
-            AssertCode(
-                "0|L--|00100000(2): 1 instructions",
-                "1|L--|r0 = 00100080");
         }
 
         [Test]
@@ -5660,7 +5588,114 @@ namespace Reko.UnitTests.Arch.Arm
                 "2|L--|NZC = cond(r0)");
         }
 
+        [Test]
+        public void ThumbRw_movw()
+        {
+            Given_UInt16s(0xF24C, 0x1C00); // movw        r12,#0xC100<16>
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|ip = 0xC100<32>");
+        }
 
+        [Test]
+        public void ThumbRw_movt()
+        {
+            Given_UInt16s(0xF2C0, 0x0C40);  // movt        r12,#0x40
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|ip = SEQ(0x40<16>, SLICE(ip, word16, 0))");
+        }
+
+        [Test]
+        public void ThumbRw_bne()
+        {
+            Given_UInt16s(0xD101);  // bne         00401056
+            AssertCode(
+                "0|T--|00100000(2): 1 instructions",
+                "1|T--|if (Test(NE,Z)) branch 00100006");
+        }
+
+        [Test]
+        public void ThumbRw_bx()
+        {
+            Given_UInt16s(0x4760);  // bx          r12
+            AssertCode(
+                "0|T--|00100000(2): 1 instructions",
+                "1|T--|goto ip");
+        }
+
+        [Test]
+        public void ThumbRw_clz()
+        {
+            Given_HexString("B2FA82F2");	// clz r2, r2
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|r2 = __clz(r2)");
+        }
+
+        [Test]
+        public void ThumbRw_cmn()
+        {
+            Given_HexString("EA42");	// cmn r2, r5
+            AssertCode(
+                "0|L--|00100000(2): 1 instructions",
+                "1|L--|NZCV = cond(r2 + r5)");
+        }
+
+
+        [Test]
+        public void ThumbRw_cmp()
+        {
+            Given_UInt16s(0x4563);  // cmp         r3,r12
+            AssertCode(
+                "0|L--|00100000(2): 1 instructions",
+                "1|L--|NZCV = cond(r3 - ip)");
+        }
+
+        [Test]
+        public void ThumbRw_cmp_w_lsl()
+        {
+            Given_HexString("B0EB450F"); // cmp.w\tr0,r5,lsl #1"
+            AssertCode(
+                 "0|L--|00100000(4): 1 instructions",
+                 "1|L--|NZCV = cond(r0 - (r5 << 1<u32>))");
+        }
+
+        [Test]
+        public void ThumbRw_cps()
+        {
+            Given_HexString("66B6");	// cpsie ai
+            AssertCode(
+                "0|L--|00100000(2): 1 instructions",
+                "1|L--|__cps()");
+        }
+
+        [Test]
+        public void ThumbRw_str()
+        {
+            Given_UInt16s(0x9000); // str\tr0,[sp]
+            AssertCode(
+                "0|L--|00100000(2): 1 instructions",
+                "1|L--|Mem0[sp:word32] = r0");
+        }
+
+        [Test]
+        public void ThumbRw_vcvtm()
+        {
+            Given_HexString("BFFEC4DB");
+            AssertCode(     // vcvtm.s32.f64	d13,d4
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|d13 = CONVERT(floor(d4), real64, int32)");
+        }
+
+        [Test]
+        public void ThumbRw_vmaxnm()
+        {
+            Given_HexString("CEFEAA69");
+            AssertCode(     // vmaxnm.f16	s13,s29,s21
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|s13 = __vmaxnm<real16>(s29, s21)");
+        }
 
         [Test]
         public void ThumbRw_trap()
@@ -5819,6 +5854,15 @@ namespace Reko.UnitTests.Arch.Arm
             AssertCode(
                 "0|L--|00100000(2): 1 instructions",
                 "1|L--|Mem0[r1:word16] = SLICE(r3, uint16, 0)");
+        }
+
+        [Test]
+        public void ThumbRw_uhsub16()
+        {
+            Given_HexString("DCFA63F0");	// uhsub16 r0, ip, r3
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|r0 = __hsub<uint16[2]>(ip, r3)");
         }
 
         [Test]
@@ -5999,17 +6043,34 @@ namespace Reko.UnitTests.Arch.Arm
             Given_HexString("11EE0B0A");	// vnmls.f32 s0, s2, s22
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|s0 = __vmls_f32(s2, s22)");
+                "1|L--|s0 = __vmls<real32[1]>(s2, s22)");
         }
 
         [Test]
-        [Ignore(Categories.FailedTests)]
-        public void ThumbRw_vrhadd()
+        public void ThumbRw_vraddhn_64()
         {
-            Given_HexString("10FF2FE1");	// vrhadd.u16 d14, d0, d31
+            Given_HexString("EEFFA194");
+            AssertCode(     // vraddhn.i64	d25,q15,q8
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|d25 = __vraddhn<int64[2],int32[2]>(q15, q8)");
+        }
+
+        [Test]
+        public void ThumbRw_vraddhn_16()
+        {
+            Given_HexString("C4FF2044");	// vraddhn.i16 d20, q2, q8
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|@@@");
+                "1|L--|d20 = __vraddhn<int16[8],int8[8]>(q2, q8)");
+        }
+
+        [Test]
+        public void ThumbRw_vrintm()
+        {
+            Given_HexString("FBFEC80B");
+            AssertCode(     // vrintm.f64	d16,d8
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|d16 = floor(d8)");
         }
 
         [Test]
@@ -6161,22 +6222,41 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        [Ignore(Categories.FailedTests)]
-        public void ThumbRw_vtbl()
-        {
-            Given_HexString("BBFF0CAB");	// vtbl.8 d10, {d11, d12, d13, d14}, d12
-            AssertCode(
-                "0|L--|00100000(4): 1 instructions",
-                "1|L--|@@@");
-        }
-
-        [Test]
         public void ThumbRw_vsubw()
         {
             Given_HexString("88FF0023");	// vsubw.u8 q1, q4, d0
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
                 "1|L--|q1 = __vsubw_u8(q4, d0)");
+        }
+
+        [Test]
+        public void ThumbRw_vtbl()
+        {
+            Given_HexString("BBFF0CAB");	// vtbl.8 d10, {d11, d12, d13, d14}, d12
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|d10 = __vtbl<word256>(d11_d12_d13_d14, d12)");
+        }
+
+        [Test]
+        [Ignore("Understand semantics")]
+        public void ThumbRw_vtbx()
+        {
+            Given_HexString("BDFFC5F8");	// vtbx.8 d15, {d29}, d5
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|@@@");
+        }
+
+        [Test]
+        [Ignore("Understand semantics")]
+        public void ThumbRw_vtbx_range()
+        {
+            Given_HexString("F3FF4129");
+            AssertCode(     // vtbx.i8	d18,{d3-d4},d1
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|@@@");
         }
 
         [Test]
@@ -6207,6 +6287,28 @@ namespace Reko.UnitTests.Arch.Arm
                 "1|L--|@@@");
         }
 
+        [Test]
+        [Ignore("Understand semantics")]
+        public void ThumbRw_vld3_scalar()
+        {
+            Given_HexString("A0F91866");
+            AssertCode(     // vld3.i16	{d6[0],d7[0],d8[0]},[r0],r8
+                "0|L--|0010329E(4): 4 instructions",
+                "1|L--|0010329E(4): 4 instructions",
+                "2|L--|0010329E(4): 4 instructions",
+                "3|L--|0010329E(4): 4 instructions",
+                "1|L--|@@@");
+        }
+
+        [Test]
+        [Ignore("Understand semantics")]
+        public void ThumbRw_vld3()
+        {
+            Given_HexString("66F98245");	// vld3.32 {d20, d22, d24}, [r6], r2
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|@@@");
+        }
 
         [Test]
         [Ignore(Categories.FailedTests)]
@@ -6226,6 +6328,27 @@ namespace Reko.UnitTests.Arch.Arm
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
                 "1|L--|r5 = f9 - r4 * r0");
+        }
+
+
+        [Test]
+        [Ignore(Categories.FailedTests)]
+        public void ThumbRw_vst4()
+        {
+            Given_HexString("44F94FF0");	// vst4.16 {d31, d0, d1, d2}, [r4]
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|@@@");
+        }
+
+        [Test]
+        [Ignore("Understand semantics")]
+        public void ThumbRw_vst4_pre()
+        {
+            Given_HexString("48F98180");
+            AssertCode(     // vst4.i32	{d24-d27},[r8],r1
+                "0|L--|00100000(4): 2 instructions",
+                "1|L--|@@@");
         }
 
         [Test]
@@ -6389,16 +6512,6 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        [Ignore(Categories.FailedTests)]
-        public void ThumbRw_vld3()
-        {
-            Given_HexString("66F98245");	// vld3.32 {d20, d22, d24}, [r6], r2
-            AssertCode(
-                "0|L--|00100000(4): 1 instructions",
-                "1|L--|@@@");
-        }
-
-        [Test]
         public void ThumbRw_dsb()
         {
             Given_HexString("BFF34F8F");	// dsb sy
@@ -6526,17 +6639,6 @@ namespace Reko.UnitTests.Arch.Arm
                 "0|L--|00100000(4): 1 instructions",
                 "1|L--|s12 = __vselgt_f32(s17, s5)");
         }
-
-        [Test]
-        [Ignore(Categories.FailedTests)]
-        public void ThumbRw_vst4()
-        {
-            Given_HexString("44F94FF0");	// vst4.16 {d31, d0, d1, d2}, [r4]
-            AssertCode(
-                "0|L--|00100000(4): 1 instructions",
-                "1|L--|@@@");
-        }
-
 
         [Test]
         [Ignore(Categories.FailedTests)]
@@ -6672,12 +6774,30 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
+        public void ThumbRw_vqrshl()
+        {
+            Given_HexString("54FF9E45");
+            AssertCode(     // vqrshl.u16	d20,d20,d14
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|d20 = __vqrshl<uint16[4]>(d20, d14)");
+        }
+
+        [Test]
         public void ThumbRw_vqshl()
         {
             Given_HexString("81EFFEE7");	// vqshl.s64 q7, q15, #1
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
                 "1|L--|q7 = __vqshl_i64(q15, 1<i32>)");
+        }
+
+        [Test]
+        public void ThumbRw_vqshrn()
+        {
+            Given_HexString("9FEF3829");
+            AssertCode(     // vqshrn.u32	d2,q12,#1
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|d2 = __vqshrn<uint32[4],uint16[4]>(q12, 1<i32>)");
         }
 
         [Test]
@@ -6798,23 +6918,21 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        [Ignore(Categories.FailedTests)]
-        public void ThumbRw_uhsub16()
-        {
-            Given_HexString("DCFA6FF0");	// uhsub16 r0, ip, pc
-            AssertCode(
-                "0|L--|00100000(4): 1 instructions",
-                "1|L--|@@@");
-        }
-
-        [Test]
-        [Ignore(Categories.FailedTests)]
         public void ThumbRw_sxtab16()
         {
             Given_HexString("2BFADBF8");	// sxtab16 r8, fp, fp, ror #8
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|r8 = __sxtab16(fp, __ror(fp, 8))");
+                "1|L--|r8 = __sxtab16_ror(fp, fp, 8<i32>)");
+        }
+
+        [Test]
+        public void ThumbRw_sxtb16()
+        {
+            Given_HexString("2FFAA3DD");
+            AssertCode(     // sxtb16	sp,r3,ror #&10
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|sp = __sxtb16_ror(r3, 16<i32>)");
         }
 
         [Test]
@@ -6823,7 +6941,7 @@ namespace Reko.UnitTests.Arch.Arm
             Given_HexString("C7FA26F4");	// shsub8 r4, r7, r6
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|r4 = __shsub_s8(r7, r6)");
+                "1|L--|r4 = __hsub<int8[4]>(r7, r6)");
         }
 
         [Test]
@@ -6922,16 +7040,6 @@ namespace Reko.UnitTests.Arch.Arm
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
                 "1|L--|q10 = __vsubl_u32(d17, d16)");
-        }
-
-        [Test]
-        [Ignore(Categories.FailedTests)]
-        public void ThumbRw_vqshrn()
-        {
-            Given_HexString("B8FF1249");	// vqshrn.u64 d4, q1, #8
-            AssertCode(
-                "0|L--|00100000(4): 1 instructions",
-                "1|L--|@@@");
         }
 
         [Test]
@@ -7085,15 +7193,7 @@ namespace Reko.UnitTests.Arch.Arm
                 "1|L--|fp_r0 = ip *s fp + fp_r0");
         }
 
-        [Test]
-        [Ignore(Categories.FailedTests)]
-        public void ThumbRw_vtbx()
-        {
-            Given_HexString("BDFFC5F8");	// vtbx.8 d15, {d29}, d5
-            AssertCode(
-                "0|L--|00100000(4): 1 instructions",
-                "1|L--|@@@");
-        }
+        
 
         [Test]
         public void ThumbRw_vabd()
@@ -7141,16 +7241,6 @@ namespace Reko.UnitTests.Arch.Arm
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
                 "1|L--|d4 = __vmax_u32(d9, d16)");
-        }
-
-        [Test]
-        [Ignore(Categories.FailedTests)]
-        public void ThumbRw_vmaxnm()
-        {
-            Given_HexString("CBFE029B");	// vmaxnm.f64 d25, d11, d2
-            AssertCode(
-                "0|L--|00100000(4): 1 instructions",
-                "1|L--|@@@");
         }
 
         [Test]
@@ -7253,16 +7343,6 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        [Ignore(Categories.FailedTests)]
-        public void ThumbRw_vqrshl()
-        {
-            Given_HexString("18FFB945");	// vqrshl.u16 d4, d25, d24
-            AssertCode(
-                "0|L--|00100000(4): 1 instructions",
-                "1|L--|@@@");
-        }
-
-        [Test]
         public void ThumbRw_sdiv()
         {
             Given_HexString("95FBF3F7");	// sdiv r7, r5, r3
@@ -7290,13 +7370,30 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        [Ignore(Categories.FailedTests)]
-        public void ThumbRw_vabdl()
+        public void ThumbRw_vabdl_u16()
         {
             Given_HexString("DDFFA7E7");	// vabdl.u16 q15, d29, d23
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|@@@");
+                "1|L--|q15 = __vabdl<uint16[4],uint32[4]>(d29, d23)");
+        }
+
+        [Test]
+        public void ThumbRw_vabdl_s8()
+        {
+            Given_HexString("C3EFA967");
+            AssertCode(     // vabdl.s8	q11,d19,d25
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|q11 = __vabdl<int8[8],int16[8]>(d19, d25)");
+        }
+
+        [Test]
+        public void ThumbRw_vaddhn()
+        {
+            Given_HexString("9AEF2AF4");
+            AssertCode(     // vaddhn.i32	d15,q5,q13
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|d15 = __vadd_hn<int32[4],int16[4]>(q5, q13)");
         }
 
         [Test]
@@ -7306,6 +7403,44 @@ namespace Reko.UnitTests.Arch.Arm
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
                 "1|L--|lr = __pkhbt(r6, r0 << 8<u32>)");
+        }
+
+        [Test]
+        public void ThumbRw_rfedb()
+        {
+            Given_HexString("3EE8F3FF");
+            AssertCode(     // rfedb	lr
+                "0|R--|00100000(4): 2 instructions",
+                "1|L--|__rfedb()",
+                "2|R--|return (0,0)");
+        }
+
+        [Test]
+        public void ThumbRw_rfeia()
+        {
+            Given_HexString("B6E97784");
+            AssertCode(     // rfeia	r6
+                "0|R--|00100000(4): 2 instructions",
+                "1|L--|__rfeia()",
+                "2|R--|return (0,0)");
+        }
+
+        [Test]
+        public void ThumbRw_setpan()
+        {
+            Given_HexString("15B6");
+            AssertCode(     // setpan	#0
+                "0|L--|00100000(2): 1 instructions",
+                "1|L--|__set_pan(false)");
+        }
+
+        [Test]
+        public void ThumbRw_sev()
+        {
+            Given_HexString("40BF");
+            AssertCode(     // sev
+                "0|L--|00100000(2): 1 instructions",
+                "1|L--|__send_event()");
         }
 
         [Test]
@@ -7326,8 +7461,6 @@ namespace Reko.UnitTests.Arch.Arm
                 "1|L--|r0 = (r4 *s32 CONVERT(r0 >> 16<i32>, word32, int16) >> 16<i32>) + r2");
         }
 
- 
-
         [Test]
         public void ThumbRw_vmul()
         {
@@ -7347,13 +7480,12 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        [Ignore(Categories.FailedTests)]
         public void ThumbRw_vminnm()
         {
             Given_HexString("86FE4A4B");	// vminnm.f64 d4, d6, d10
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|@@@");
+                "1|L--|d4 = __vminnm<real64>(d6, d10)");
         }
 
         [Test]
@@ -7422,15 +7554,22 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        [Ignore(Categories.FailedTests)]
         public void ThumbRw_uxtab16()
         {
             Given_HexString("33FAFFF7");	// uxtab16 r7, r3, pc, ror #24
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|@@@");
+                "1|L--|r7 = __uxtab16_ror(r3, pc, 24<i32>)");
         }
 
+        [Test]
+        public void ThumbRw_uxtb16()
+        {
+            Given_HexString("3FFAECE3");
+            AssertCode(     // uxtb16	r3,ip,ror #&10
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|r3 = __uxtb16_ror(ip, 16<i32>)");
+        }
 
         [Test]
         public void ThumbRw_vabs()
@@ -7765,16 +7904,6 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        [Ignore(Categories.FailedTests)]
-        public void ThumbRw_vraddhn()
-        {
-            Given_HexString("C4FF2044");	// vraddhn.i16 d20, q2, q8
-            AssertCode(
-                "0|L--|00100000(4): 1 instructions",
-                "1|L--|@@@");
-        }
-
-        [Test]
         public void ThumbRw_smlald()
         {
             Given_HexString("C3FBC0B5");	// smlald fp, r5, r3, r0
@@ -7838,40 +7967,12 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        public void ThumbRw_cps()
-        {
-            Given_HexString("66B6");	// cpsie ai
-            AssertCode(
-                "0|L--|00100000(2): 1 instructions",
-                "1|L--|__cps()");
-        }
-
-        [Test]
-        public void ThumbRw_yield()
-        {
-            Given_HexString("10BF");	// yield 
-            AssertCode(
-                "0|L--|00100000(2): 1 instructions",
-                "1|L--|__yield()");
-        }
-
-        [Test]
-        [Ignore(Categories.FailedTests)]
-        public void ThumbRw_sev()
-        {
-            Given_HexString("40BF");	// sev 
-            AssertCode(
-                "0|L--|00100000(2): 1 instructions",
-                "1|L--|@@@");
-        }
-
-        [Test]
         public void ThumbRw_vmla()
         {
             Given_HexString("A0EFE541");	// vmla.f32 d4, d16, d5[1]
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|d4 = __vmla_f32(d16, d21)");
+                "1|L--|d4 = __vmla<real32[2]>(d16, d21)");
         }
 
         [Test]
@@ -7880,7 +7981,7 @@ namespace Reko.UnitTests.Arch.Arm
             Given_HexString("1CFF2469");	// vmls.u16 d6, d12, d20
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|d6 = __vmls_u16(d12, d20)");
+                "1|L--|d6 = __vmls<uint16[4]>(d12, d20)");
         }
 
         [Test]
@@ -7985,15 +8086,6 @@ namespace Reko.UnitTests.Arch.Arm
                  "1|L--|r0 = r4 + __rcr<word32,uint32>(r2, 1<u32>, C) + C");
         }
 
-        [Test]
-        public void ThumbRw_subs_w()
-        {
-            Given_HexString("B6EB0A08"); // subs.w\tr8,r6,r10
-            AssertCode(
-                 "0|L--|00100000(4): 2 instructions",
-                 "1|L--|r8 = r6 - r10",
-                 "2|L--|NZCV = cond(r8)");
-        }
 
         [Test]
         public void ThumbRw_sub_w()
@@ -8005,12 +8097,41 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        public void ThumbRw_cmp_w_lsl()
+        public void ThumbRw_subs_w()
         {
-            Given_HexString("B0EB450F"); // cmp.w\tr0,r5,lsl #1"
+            Given_HexString("B6EB0A08"); // subs.w\tr8,r6,r10
             AssertCode(
-                 "0|L--|00100000(4): 1 instructions",
-                 "1|L--|NZCV = cond(r0 - (r5 << 1<u32>))");
+                 "0|L--|00100000(4): 2 instructions",
+                 "1|L--|r8 = r6 - r10",
+                 "2|L--|NZCV = cond(r8)");
+        }
+
+        [Test]
+        [Ignore("Understand semantics")]
+        public void ThumbRw_vst3()
+        {
+            Given_HexString("4AF96B35");
+            AssertCode(     // vst3.i16	{d19,d21,d23},[r10:128],fp
+                "0|L--|001A218E(4): 1 instructions",
+                "1|L--|@@@");
+        }
+
+        [Test]
+        public void ThumbRw_wfe()
+        {
+            Given_HexString("20BF");
+            AssertCode(     // wfe
+                "0|L--|00100000(2): 1 instructions",
+                "1|L--|__wait_for_event()");
+        }
+
+        [Test]
+        public void ThumbRw_yield()
+        {
+            Given_HexString("10BF");	// yield 
+            AssertCode(
+                "0|L--|00100000(2): 1 instructions",
+                "1|L--|__yield()");
         }
     }
 }

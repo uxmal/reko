@@ -108,21 +108,23 @@ namespace Reko.Arch.Arm.AArch32
             }
         }
 
-        private void RewriteVcvtr()
+
+        private void RewriteVcvtToInteger(IntrinsicProcedure f32cvt, IntrinsicProcedure f64cvt)
         {
             var src = Operand(1);
             var dst = Operand(0, PrimitiveType.Word32, true);
             DataType srcType;
             DataType dstType;
+            IntrinsicProcedure cvt;
             switch (instr.vector_data)
             {
-            case ArmVectorData.S32F32: srcType = PrimitiveType.Real32; dstType = PrimitiveType.Int32; break;
-            case ArmVectorData.S32F64: srcType = PrimitiveType.Real64; dstType = PrimitiveType.Int32; break;
-            case ArmVectorData.U32F32: srcType = PrimitiveType.Real32; dstType = PrimitiveType.UInt32; break;
-            case ArmVectorData.U32F64: srcType = PrimitiveType.Real64; dstType = PrimitiveType.UInt32; break;
+            case ArmVectorData.S32F32: srcType = PrimitiveType.Real32; dstType = PrimitiveType.Int32; cvt = f32cvt; break;
+            case ArmVectorData.S32F64: srcType = PrimitiveType.Real64; dstType = PrimitiveType.Int32; cvt = f64cvt; break;
+            case ArmVectorData.U32F32: srcType = PrimitiveType.Real32; dstType = PrimitiveType.UInt32; cvt = f32cvt; break;
+            case ArmVectorData.U32F64: srcType = PrimitiveType.Real64; dstType = PrimitiveType.UInt32; cvt = f64cvt; break;
             default: NotImplementedYet(); return;
             }
-            src = host.Intrinsic("trunc", true, src.DataType, src);
+            src = m.Fn(cvt, src);
             m.Assign(dst, m.Convert(src, srcType, dstType));
         }
 
@@ -248,10 +250,9 @@ namespace Reko.Arch.Arm.AArch32
 
         private void RewriteVmov()
         {
-            //if (instr.ops.Length > 2) throw new NotImplementedException();
             var dst = this.Operand(0, PrimitiveType.Word32, true);
             var src = this.Operand(1);
-            if (instr.vector_data != ArmVectorData.INVALID && !(src is ArrayAccess))
+            if (instr.vector_data != ArmVectorData.INVALID && src is not ArrayAccess)
             {
                 var dt = Arm32Architecture.VectorElementDataType(instr.vector_data);
                 var dstType = dst.DataType;
@@ -373,6 +374,29 @@ namespace Reko.Arch.Arm.AArch32
             */
         }
 
+        private void RewriteVectorShift(IntrinsicProcedure shiftIntrinsic)
+        {
+            var src1 = Operand(1);
+            var src2 = Operand(2);
+            var dst = Operand(0);
+            var elemType = Arm32Architecture.VectorElementDataType(instr.vector_data);
+            var celem = src1.DataType.BitSize / elemType.BitSize;
+            if (dst.DataType.BitSize == src1.DataType.BitSize)
+            {
+                var intrinsic = shiftIntrinsic.MakeInstance(
+                    new ArrayType(elemType, celem));
+                m.Assign(dst, m.Fn(intrinsic, src1, src2));
+            }
+            else
+            {
+                var dstElemType = PrimitiveType.Create(elemType.Domain, elemType.BitSize / 2);
+                var intrinsic = shiftIntrinsic.MakeInstance(
+                    new ArrayType(elemType, celem),
+                    new ArrayType(dstElemType, celem));
+                m.Assign(dst, m.Fn(intrinsic, src1, src2));
+            }
+        }
+
         private void RewriteVstmia(bool add, bool writeback)
         {
             var rSrc = this.Operand(0, PrimitiveType.Word32, true);
@@ -402,14 +426,28 @@ namespace Reko.Arch.Arm.AArch32
             }
         }
 
-        private void RewriteVsqrt()
+        private void RewriteFloatingPointUnary(
+            IntrinsicProcedure f32Intrinsic,
+            IntrinsicProcedure f64Intrinsic)
         {
-            var fnname = instr.vector_data == ArmVectorData.F32 ? "sqrtf" : "sqrt";
-            var dt = instr.vector_data == ArmVectorData.F32 ? PrimitiveType.Real32 : PrimitiveType.Real64;
+            var intrinsic = instr.vector_data == ArmVectorData.F32
+                ? f32Intrinsic
+                : f64Intrinsic;
+            var dt = instr.vector_data == ArmVectorData.F32 
+                ? PrimitiveType.Real32 
+                : PrimitiveType.Real64;
             var src = this.Operand(1);
             var dst = this.Operand(0, PrimitiveType.Word32, true);
-            var intrinsic = host.Intrinsic(fnname, true, dt, src);
-            m.Assign(dst, intrinsic);
+            m.Assign(dst, m.Fn(intrinsic, src));
+        }
+
+        private void RewriteFloatingPointBinary(IntrinsicProcedure intrinsic)
+        {
+            var dt = Arm32Architecture.VectorElementDataType(instr.vector_data);
+            var src1 = this.Operand(1);
+            var src2 = this.Operand(2);
+            var dst = this.Operand(0, PrimitiveType.Word32, true);
+            m.Assign(dst, m.Fn(intrinsic.MakeInstance(dt), src1, src2));
         }
 
         private void RewriteVdup()
@@ -529,6 +567,60 @@ namespace Reko.Arch.Arm.AArch32
             m.Assign(dst, intrinsic);
         }
 
+        private void RewriteVectorBinOp(IntrinsicProcedure intrinsic)
+        {
+            var srcElemType = Arm32Architecture.VectorElementDataType(instr.vector_data);
+            RewriteVectorBinOp(intrinsic, srcElemType, srcElemType, 0, 1, 2);
+        }
+
+        private void RewriteVectorBinOp(IntrinsicProcedure intrinsic, PrimitiveType elemType)
+        {
+            RewriteVectorBinOp(intrinsic, elemType, elemType, 0, 1, 2);
+        }
+
+        private void RewriteVectorBinOpNarrow(IntrinsicProcedure intrinsic)
+        {
+            var srcElemType = Arm32Architecture.VectorElementDataType(instr.vector_data);
+            var dstElemType = PrimitiveType.Create(srcElemType.Domain, srcElemType.BitSize / 2);
+            RewriteVectorBinOp(intrinsic, srcElemType, dstElemType, 0, 1, 2);
+        }
+
+        private void RewriteVectorBinOpWiden(IntrinsicProcedure intrinsic)
+        {
+            var srcElemType = Arm32Architecture.VectorElementDataType(instr.vector_data);
+            var dstElemType = PrimitiveType.Create(srcElemType.Domain, srcElemType.BitSize * 2);
+            RewriteVectorBinOp(intrinsic, srcElemType, dstElemType, 0, 1, 2);
+        }
+
+        private void RewriteVectorBinOp(
+            IntrinsicProcedure intrinsic,
+            PrimitiveType srcElemType,
+            PrimitiveType dstElemType,
+            int iopDst,
+            int iopSrc1,
+            int iopSrc2)
+        {
+            var src1 = this.Operand(iopSrc1);
+            var src2 = this.Operand(iopSrc2);
+            var dst = this.Operand(iopDst, PrimitiveType.Word32, true);
+            var srcType = src1.DataType;
+            //$BUG: some instructions are returned with srcElemnSize == 0!
+            var celemSrc = srcType.BitSize / (srcElemType.BitSize != 0 ? srcElemType.BitSize : 8);
+            var arrSrc = new ArrayType(srcElemType, celemSrc);
+            if (srcElemType == dstElemType)
+            {
+                var intrinsicInstance = intrinsic.MakeInstance(arrSrc);
+                m.Assign(dst, m.Fn(intrinsicInstance, src1, src2));
+            }
+            else
+            {
+                var celemDst = dst.DataType.BitSize / (dstElemType.BitSize);
+                var arrDst = new ArrayType(dstElemType, celemDst);
+                var intrinsicInstance = intrinsic.MakeInstance(arrSrc, arrDst);
+                m.Assign(dst, m.Fn(intrinsicInstance, src1, src2));
+            }
+        }
+
         private void RewriteVstN(IntrinsicProcedure intrinsic)
         {
             RegisterStorage[] regs;
@@ -559,7 +651,10 @@ namespace Reko.Arch.Arm.AArch32
             if (instr.Writeback)
             {
                 if (opSrc.Index is not null)
-                    throw new NotImplementedException();
+                {
+                    NotImplementedYet();
+                    return;
+                }
                 m.Assign(reg, m.IAddS(reg, nRegs * 8));
             }
         }

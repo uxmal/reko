@@ -176,6 +176,11 @@ namespace Reko.Core.Machine
                 renderer.WriteString(s);
         }
 
+        public static ImmediateOperand Create(Constant value)
+        {
+            return new ImmediateOperand(value);
+        }
+
         public static ImmediateOperand Byte(byte value)
         {
             return new ImmediateOperand(Constant.Byte(value));

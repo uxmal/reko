@@ -41,7 +41,8 @@ namespace Reko.Arch.Arm.AArch32
     {
         private static readonly Decoder rootDecoder;
         private static readonly Decoder invalid;
-        private static readonly Dictionary<uint, RegisterStorage> bankedRegisters;
+        //$REVIEW: move to Registers?
+        internal static readonly Dictionary<uint, RegisterStorage> bankedRegisters;
 
         private readonly Arm32Architecture arch;
         private readonly EndianImageReader rdr;
@@ -355,7 +356,7 @@ namespace Reko.Arch.Arm.AArch32
             return (shift_t, shift_n);
         }
 
-        private ImmediateOperand DecodeImm12(uint wInstr)
+        private static ImmediateOperand DecodeImm12(uint wInstr)
         {
             var unrotated_value = wInstr & 0xFF;
             var n = Bits.RotateR32(unrotated_value, 2 * (int) bitmask(wInstr, 8, 0xF));
@@ -512,7 +513,7 @@ namespace Reko.Arch.Arm.AArch32
         /// 12-Bits.IsBitSet encoded immediate at offset 0
         /// </summary>
         private static Mutator<A32Disassembler> I =>
-            (u, d) => { d.state.ops.Add(d.DecodeImm12(u)); return true; };
+            (u, d) => { d.state.ops.Add(DecodeImm12(u)); return true; };
 
         // 24-bits at offset 0.
         private static Mutator<A32Disassembler> J =>
@@ -1194,6 +1195,19 @@ namespace Reko.Arch.Arm.AArch32
             {
                 var imm = field.Read(u);
                 d.state.ops.Add(ImmediateOperand.Word16((ushort)imm));
+                return true;
+            };
+        }
+
+        /// <summary>
+        /// Immediate bit value, a single bit encoded in the opcode.
+        /// </summary>
+        private static Mutator<A32Disassembler> Ibit(int bitPos)
+        {
+            return (u, d) =>
+            {
+                var bit = Bits.IsBitSet(u, bitPos);
+                d.state.ops.Add(ImmediateOperand.Create(Constant.Bool(bit)));
                 return true;
             };
         }
@@ -2053,7 +2067,7 @@ namespace Reko.Arch.Arm.AArch32
 
                 Mask(20, 2,
                     Select(5, 1, n => n == 0, ChangeProcessState, invalid),
-                    Select(4, 0xF, n => n == 0, Instr(Mnemonic.setpan, x("")), invalid),
+                    Select(4, 0xF, n => n == 0, Instr(Mnemonic.setpan, Ibit(9)), invalid),
                     invalid,
                     invalid),
                 invalid,
@@ -2560,7 +2574,7 @@ namespace Reko.Arch.Arm.AArch32
                         ExtendAndAdd,
 
                         PkhbtPkhtb,
-                        Instr(Mnemonic.sel),
+                        Instr(Mnemonic.sel, Rnp12, Rnp16, Rnp0),
                         PkhbtPkhtb,
                         invalid),
                     Mask(5, 3, "  0b01001",
@@ -2738,7 +2752,7 @@ namespace Reko.Arch.Arm.AArch32
                 Instr(Mnemonic.ldmdb, r(4), Mr(0, 16), u),
                 Instr(Mnemonic.ldm, r(4), Mr(0, 16), u),
                 Instr(Mnemonic.ldmib, r(4), Mr(0, 16), u));
-            var LoadStoreMultiple = Mask(Bf((22, 3),(20, 1)), // P U op L
+            var LoadStoreMultiple = Mask(Bf((22, 3),(20, 1)), "Load/store multiple", // P U op L
                     StmdaStmed,
                     LdmdaLdmfa,
                     Stm,
@@ -2771,26 +2785,26 @@ namespace Reko.Arch.Arm.AArch32
             var ExceptionSaveRestore = Mask(22, 3, // PUS"Exception Save/Restore",
                 Mask(20, 1, // L
                     invalid,
-                    Select(0, 0xFFFF, validRfe, Instr(Mnemonic.rfeda, w(21), Rnp16), invalid)),
+                    Select(0, 0xFFFF, validRfe, Instr(Mnemonic.rfeda, InstrClass.Return, w(21), Rnp16), invalid)),
                 Mask(20, 1, // L
                     SrcSrsda,
                     invalid),
                 Mask(20, 1, // L
                     invalid,
-                    Select(0, 0xFFFF, validRfe, Instr(Mnemonic.rfeia, w(21), Rnp16), invalid)),
+                    Select(0, 0xFFFF, validRfe, Instr(Mnemonic.rfeia, InstrClass.Return, w(21), Rnp16), invalid)),
                 Mask(20, 1, // L
                     SrcSrsda,
                     invalid),
 
                 Mask(20, 1, // L
                     invalid,
-                    Select(0, 0xFFFF, validRfe, Instr(Mnemonic.rfedb, w(21), Rnp16), invalid)),
+                    Select(0, 0xFFFF, validRfe, Instr(Mnemonic.rfedb, InstrClass.Return, w(21), Rnp16), invalid)),
                 Mask(20, 1, // L
                     SrcSrsda,
                     invalid),
                 Mask(20, 1, // L
                     invalid,
-                    Select(0, 0xFFFF, validRfe, Instr(Mnemonic.rfeib, w(21), Rnp16), invalid)),
+                    Select(0, 0xFFFF, validRfe, Instr(Mnemonic.rfeib, InstrClass.Return, w(21), Rnp16), invalid)),
                 Mask(20, 1, // L
                     SrcSrsda,
                     invalid));
@@ -2801,7 +2815,7 @@ namespace Reko.Arch.Arm.AArch32
                     Instr(Mnemonic.bl, InstrClass.Transfer|InstrClass.Call, J)),
                 Instr(Mnemonic.blx, InstrClass.Transfer | InstrClass.Call, X));
 
-            var Branch_BranchLink_BlockDataTransfer = Mask(25, 1, "Branch_BranchLink_BlockDataTransfer",
+            var Branch_BranchLink_BlockDataTransfer = Mask(25, 1, "Branch, branch with link, and block data transfer",
                 new PcDecoder(28,
                     LoadStoreMultiple,
                     ExceptionSaveRestore),
@@ -4225,43 +4239,58 @@ namespace Reko.Arch.Arm.AArch32
 
 
             var SystemRegisterAccessAdvancedSimd = Mask(24, 2, "System register access, Advanced SIMD, floating-point, and Supervisor call",
-                Mask(9, 2, "  op0=0b00",
-                    Select("  op1=x00", 28, 0xF, Eq0F,
+                Mask(9, 3, "  op0=0b00",
+                    invalid,  //$REVIEW: old ARM instruction deprecated in ARMv7?
+                    invalid,  //$REVIEW: old ARM instruction deprecated in ARMv7?
+                    invalid,  //$REVIEW: old ARM instruction deprecated in ARMv7?
+                    invalid,  //$REVIEW: old ARM instruction deprecated in ARMv7?
+
+                    Select("  op1=100", 28, 0xF, Eq0F,
                         AdvancedSimd_ThreeRegisterExtension,
                         AdvancedSimd_LdSt_64bitmove),
-                    Select("  op1=x00", 28, 0xF, Eq0F,
+                    Select("  op1=101", 28, 0xF, Eq0F,
                         nyi("01"),
                         AdvancedSimd_LdSt_64bitmove),
-                    Select("  op1=x00", 28, 0xF, Eq0F,
+                    Select("  op1=110", 28, 0xF, Eq0F,
                        AdvancedSimd_ThreeRegisterExtension,
                        invalid),
                     SystemRegister_LdSt_64bitMove),
-                Mask(9, 2, "  op0=0b01",
-                    Select("  op1=x00", 28, 0xF, Eq0F,
+                Mask(9, 3, "  op0=0b01",
+                    invalid,  //$REVIEW: old ARM instruction deprecated in ARMv7?
+                    invalid,  //$REVIEW: old ARM instruction deprecated in ARMv7?
+                    invalid,  //$REVIEW: old ARM instruction deprecated in ARMv7?
+                    invalid,  //$REVIEW: old ARM instruction deprecated in ARMv7?
+
+                    Select("  op1=100", 28, 0xF, Eq0F,
                        AdvancedSimd_ThreeRegisterExtension,
                        AdvancedSimd_LdSt_64bitmove),
-                    Select("  op1=x01", 28, 0xF, Eq0F,
+                    Select("  op1=101", 28, 0xF, Eq0F,
                         invalid,
                         AdvancedSimd_LdSt_64bitmove),
-                    Select("  op1=x10", 28, 0xF, Eq0F,
+                    Select("  op1=110", 28, 0xF, Eq0F,
                        AdvancedSimd_ThreeRegisterExtension,
                        invalid),
                     SystemRegister_LdSt_64bitMove),
-                Mask(9, 2, "  op0=0b10",
-                    Select("  op1=x00", 28, 0xF, Eq0F,
+                Mask(9, 3, "  op0=0b10",
+                    invalid,  //$REVIEW: old ARM instruction deprecated in ARMv7?
+                    invalid,  //$REVIEW: old ARM instruction deprecated in ARMv7?
+                    invalid,  //$REVIEW: old ARM instruction deprecated in ARMv7?
+                    invalid,  //$REVIEW: old ARM instruction deprecated in ARMv7?
+
+                    Select("  op1=100", 28, 0xF, Eq0F,
                         AdvancedSimd_TwoRegistersScalarExtension,
-                        Mask(4, 1, "  op1=x00",
+                        Mask(4, 1, "  op1=100",
                             FloatingPointDataProcessing,
                             AdvancedSIMDandFloatingPoint32bitMove)),
-                    Mask(4, 1, "  op1=x01",
+                    Mask(4, 1, "  op1=101",
                         FloatingPointDataProcessing,
                         Mask(4, 1, "  op1=x00",
                             nyi("  op2=0"),
                             AdvancedSIMDandFloatingPoint32bitMove)),
-                    Select("  op1=x10", 28, 0xF, Eq0F,
+                    Select("  op1=110", 28, 0xF, Eq0F,
                         AdvancedSimd_TwoRegistersScalarExtension,
                         invalid),
-                    Mask(4, 1, "  op1=x11",
+                    Mask(4, 1, "  op1=111",
                         invalid,
                         SystemRegister32BitMove)),
                 Instr(Mnemonic.svc, InstrClass.Transfer | InstrClass.Call, i(0, 24)));

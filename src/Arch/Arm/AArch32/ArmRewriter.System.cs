@@ -23,6 +23,7 @@ using Reko.Core.Machine;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 
 namespace Reko.Arch.Arm.AArch32
@@ -108,14 +109,14 @@ namespace Reko.Arch.Arm.AArch32
             m.Assign(dst, intrinsic);
         }
 
-        private void RewriteMcr()
+        private void RewriteMcr(IntrinsicProcedure intrinsic)
         {
             var args = new List<Expression>();
             for (int i = 0; i < instr.Operands.Length; ++i)
             {
                 args.Add(Operand(i));
             }
-            var intrinsicCall = host.Intrinsic("__mcr", true, VoidType.Instance, args.ToArray());
+            var intrinsicCall = m.Fn(intrinsic, args.ToArray());
             m.SideEffect(intrinsicCall);
         }
 
@@ -131,7 +132,7 @@ namespace Reko.Arch.Arm.AArch32
             m.Assign(rseq, host.Intrinsic("__mcrr", true, VoidType.Instance, cop, cmd, cr, rseq));
         }
 
-        private void RewriteMrc()
+        private void RewriteMrc(IntrinsicProcedure intrinsic)
         {
             int cArgs = 0;
             Expression? dst = null;
@@ -149,7 +150,8 @@ namespace Reko.Arch.Arm.AArch32
                 }
                 ++cArgs;
             }
-            var intrinsicCall = host.Intrinsic("__mrc", true, dst!.DataType, args.ToArray());
+            Debug.Assert(dst != null);
+            var intrinsicCall = m.Fn(intrinsic, args.ToArray());
             m.Assign(dst, intrinsicCall);
         }
 
@@ -175,6 +177,12 @@ namespace Reko.Arch.Arm.AArch32
         {
             var intrinsic = host.Intrinsic("__msr", true, PrimitiveType.Word32, Operand(0), Operand(1));
             m.SideEffect(intrinsic);
+        }
+
+        private void RewriteRfe(IntrinsicProcedure intrinsic)
+        {
+            m.SideEffect(m.Fn(intrinsic));
+            m.Return(0, 0);
         }
 
         private void RewriteSetend()

@@ -95,7 +95,8 @@ namespace Reko.Core.Machine
 
         /// <summary>
         /// This method creates an invalid instruction. The instruction must 
-        /// have its `InstrClass` property set to `InstructionClass.Invalid`.
+        /// have its <see cref="MachineInstruction.InstrClass" /> property set
+        /// to <see cref="InstrClass.Invalid" />
         /// </summary>
         /// <remarks>
         /// The disassembler should generate invalid instructions when the 
@@ -108,24 +109,66 @@ namespace Reko.Core.Machine
 
         // Utility functions 
 
+        /// <summary>
+        /// Creates a <see cref="Decoder"/> which in turn generates a <see cref="MachineInstruction"/>
+        /// with the given <paramref name="mnemonic"/> and with operands generated
+        /// by the <paramref name="mutators"/>.
+        /// </summary>
+        /// <param name="mnemonic"></param>
+        /// <param name="mutators"></param>
+        /// <returns>An instance of <see cref="InstrDecoder{TDasm, TMnemonic, TInstr}"/>.</returns>
         public static Decoder<TDasm, TMnemonic, TInstr> Instr<TDasm>(TMnemonic mnemonic, params Mutator<TDasm>[] mutators)
             where TDasm : DisassemblerBase<TInstr, TMnemonic>
         {
             return new InstrDecoder<TDasm, TMnemonic, TInstr>(InstrClass.Linear, mnemonic, mutators);
         }
 
+
+        /// <summary>
+        /// Creates a <see cref="Decoder"/> which in turn generates a <see cref="MachineInstruction"/>
+        /// with the given <paramref name="mnemonic"/>, with the given <see cref="InstrClass"/>
+        /// <paramref name="iclass"/>, and with operands generatedby the <paramref name="mutators"/>.
+        /// </summary>
+        /// <param name="mnemonic"></param>
+        /// <param name="mutators"></param>
+        /// <returns>An instance of <see cref="InstrDecoder{TDasm, TMnemonic, TInstr}"/>.</returns>
         public static Decoder<TDasm, TMnemonic, TInstr> Instr<TDasm>(TMnemonic mnemonic, InstrClass iclass, params Mutator<TDasm>[] mutators)
             where TDasm : DisassemblerBase<TInstr, TMnemonic>
         {
             return new InstrDecoder<TDasm, TMnemonic, TInstr>(iclass, mnemonic, mutators);
         }
 
+        /// <summary>
+        /// Creates a <see cref="Decoder"/> which, when executed, extracts the
+        /// bitfield defined by <paramref name="bitPos"/> and <paramref name="bitLength"/>
+        /// and uses the value of the bitfield to select from one of the given
+        /// <paramref name="decoders"/>.
+        /// </summary>
+        /// <param name="bitPos">Starting position of the bitfield, counted in 
+        /// little-endian bit order.</param>
+        /// <param name="bitLength">The size of the bitfield in bits.</param>
+        /// <param name="decoders">The sub-decoders to which to dispatch.</param>
+        /// <returns>An instance of <see cref="MaskDecoder{TDasm, TMnemonic, TInstr}"/>.</returns>
         public static MaskDecoder<TDasm, TMnemonic, TInstr> Mask<TDasm>(int bitPos, int bitLength, params Decoder<TDasm, TMnemonic, TInstr>[] decoders)
             where TDasm : DisassemblerBase<TInstr, TMnemonic>
         {
             return new MaskDecoder<TDasm, TMnemonic, TInstr>(bitPos, bitLength, "", decoders);
         }
 
+        /// <summary>
+        /// Creates a <see cref="Decoder"/> which, when executed, extracts the
+        /// bitfield defined by <paramref name="bitPos"/> and <paramref name="bitLength"/>
+        /// and uses the value of the bitfield to select from one of the given
+        /// <paramref name="decoders"/>.
+        /// </summary>
+        /// <param name="bitPos">Starting position of the bitfield, counted in 
+        /// little-endian bit order.</param>
+        /// <param name="bitLength">The size of the bitfield in bits.</param>
+        /// <param name="tag">A tag for use when debugging. See
+        /// <see cref="Decoder.DumpMaskedInstruction(int, ulong, ulong, string)"/>.
+        /// </param>
+        /// <param name="decoders">The sub-decoders to which to dispatch.</param>
+        /// <returns>An instance of <see cref="MaskDecoder{TDasm, TMnemonic, TInstr}"/>.</returns>
         public static MaskDecoder<TDasm, TMnemonic, TInstr> Mask<TDasm>(int bitPos, int bitLength, string tag, params Decoder<TDasm, TMnemonic, TInstr>[] decoders)
             where TDasm : DisassemblerBase<TInstr, TMnemonic>
         {
@@ -243,12 +286,12 @@ namespace Reko.Core.Machine
             foreach (var (code, decoder) in sparseDecoders)
             {
                 Debug.Assert(0 <= code && code < decoders.Length);
-                Debug.Assert(decoders[code] == null, $"Decoder {code:X} has already a value!");
+                Debug.Assert(decoders[code] is null, $"Decoder {code:X} has already a value!");
                 decoders[code] = decoder;
             }
             for (int i = 0; i < decoders.Length; ++i)
             {
-                if (decoders[i] == null)
+                if (decoders[i] is null)
                     decoders[i] = defaultDecoder;
             }
             return new MaskDecoder<TDasm, TMnemonic, TInstr>(bitPosition, bits, tag, decoders);
@@ -290,8 +333,7 @@ namespace Reko.Core.Machine
     }
 
     /// <summary>
-    /// Base class that implements <see cref="IDisposable"/> and the  type-agnostic <see cref="EmitUnitTest(string, string, string, string, Address, Action{TextWriter})"/>
-    /// method.
+    /// Base class that implements <see cref="IDisposable"/> interface.
     /// </summary>
     public class DisassemblerBase : IDisposable
     {
@@ -307,7 +349,7 @@ namespace Reko.Core.Machine
         }
 
         /// <summary>
-        /// Compact way of creating an array of <see cref="Bitfield"/>.
+        /// Compact way of creating an array of <see cref="Bitfield"/>s.
         /// </summary>
         /// <param name="fields"></param>
         /// <returns></returns>

@@ -29,7 +29,7 @@ namespace Reko.Core.Machine
     /// <param name="uInstr">Instruction opcode, up to 32 bits long.</param>
     /// <param name="dasm">Disassembler instance.</param>
     /// <returns>True if the mutator executed without errors, false if the
-    /// instruction is invalid in some way..</returns>
+    /// instruction is invalid in some way.</returns>
     public delegate bool Mutator<TDasm>(uint uInstr, TDasm dasm);
 
     /// <summary>

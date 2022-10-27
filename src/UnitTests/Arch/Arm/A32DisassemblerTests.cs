@@ -67,7 +67,6 @@ namespace Reko.UnitTests.Arch.Arm
             LeImageWriter w = new LeImageWriter(image.Bytes);
             uint instr = ParseBitPattern(bitPattern);
             w.WriteLeUInt32(0, instr);
-            var b = image.Bytes;
             var arch = CreateArchitecture();
             var dasm = arch.CreateDisassembler(image.CreateLeReader(0));
             return dasm.First();
@@ -81,7 +80,7 @@ namespace Reko.UnitTests.Arch.Arm
             var dasm = arch.CreateDisassembler(mem.CreateLeReader(0));
             var instr = dasm.First();
 
-            if (sExp != instr.ToString()) // && instr.MnemonicAsString == "Nyi")
+            if (sExp != instr.ToString()) // && (instr.MnemonicAsString == "Nyi" || instr.MnemonicAsString == "Invalid"))
             {
                 Assert.AreEqual(sExp, instr.ToString());
             }
@@ -2155,8 +2154,8 @@ namespace Reko.UnitTests.Arch.Arm
         [Test]
         public void ArmDasm_sel()
         {
-            Disassemble32(0xE68CF6B2);
-            Expect_Code("sel");
+            Disassemble32(0xE68C36B2);
+            Expect_Code("sel\tr3,ip,r2");
         }
 
         [Test]
@@ -2178,12 +2177,6 @@ namespace Reko.UnitTests.Arch.Arm
         {
             Disassemble32(0xEEB23B4C);
             Expect_Code("vcvtb.f64.f16\td3,s24");
-        }
-
-        [Test]
-        public void ArmDasm_vrintr()
-        {
-            AssertCode("vrintrlt.f16\ts30,s4", "42F1B6BE");
         }
 
         [Test]
@@ -2553,6 +2546,6 @@ namespace Reko.UnitTests.Arch.Arm
         {
             AssertCode("ldcmi\tp8,cr7,[pc],#&80", "2078DF4C");
         }
-   }
+    }
 }
  

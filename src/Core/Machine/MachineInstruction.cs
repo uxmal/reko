@@ -124,7 +124,7 @@ namespace Reko.Core.Machine
         /// <param name="options"></param>
         protected void RenderOperands(MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
         {
-            if (Operands!.Length == 0)
+            if (Operands.Length == 0)
                 return;
             renderer.Tab();
             RenderOperand(Operands[0], renderer, options);

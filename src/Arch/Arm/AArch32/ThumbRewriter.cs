@@ -20,6 +20,7 @@
 
 using Reko.Core;
 using Reko.Core.Memory;
+using Reko.Core.Services;
 
 namespace Reko.Arch.Arm.AArch32
 {
@@ -50,6 +51,12 @@ namespace Reko.Arch.Arm.AArch32
             if (instr.Mnemonic == Mnemonic.it)
                 return;
             base.ConditionalSkip(force);
+        }
+
+        protected override void EmitUnitTest(AArch32Instruction instr)
+        {
+            var testgenSvc = arch.Services.GetService<ITestGenerationService>();
+            testgenSvc?.ReportMissingRewriter("ThumbRw", instr, instr.Mnemonic.ToString(), rdr, "");
         }
 
         protected override void RewriteIt()

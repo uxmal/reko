@@ -114,6 +114,19 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
+        public void ThumbDis_sha1m()
+        {
+            //$REVIEW: encodingmaybe wrong
+            AssertCode("sha1m.i32\tq12,q11,q13", "67EFEB9C");
+        }
+
+        [Test]
+        public void ThumbDis_sha256h2()
+        {
+            AssertCode("sha256h2.i32\tq2,q6,q7", "1DFF4F4C");
+        }
+
+        [Test]
         public void ThumbDis_sub_sp()
         {
             var instr = Disassemble16(0xB082);
@@ -408,6 +421,24 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
+        public void ThumbDis_qsub()
+        {
+            AssertCode("qsub\tr1,r6,r5", "85FAA621");
+        }
+
+        [Test]
+        public void ThumbDis_rbit()
+        {
+            AssertCode("rbit\tr4,r2", "92FAA2F4");
+        }
+
+        [Test]
+        public void ThumbDis_rbit_invalid()
+        {
+            AssertCode("Invalid", "92FAAF34");
+        }
+
+        [Test]
         public void ThumbDis_vhadd()
         {
             Given_Instructions(0xFF23, 0xF000);
@@ -465,6 +496,12 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
+        public void ThumbDis_mrs_2()
+        {
+            AssertCode("mrs\tr2,r9_usr", "E1F3E5A2");
+        }
+
+        [Test]
         public void ThumbDis_msr()
         {
             Given_Instructions(0xF385, 0x8811);
@@ -479,10 +516,10 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        public void ThumbDis_vmla_float()
+        public void ThumbDis_srsdb()
         {
-            Given_Instructions(0xEFA0, 0x41E5);	// vmla.f32 d4, d16, d5[1]
-            Expect_Code("vmla.f32\td4,d16,d21");
+            Given_Instructions(0xE807, 0x01C9);
+            Expect_Code("srsdb\tsp,#9");
         }
 
         [Test]
@@ -493,10 +530,21 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        public void ThumbDis_srsdb()
+        public void ThumbDis_vmla_float()
         {
-            Given_Instructions(0xE807, 0x01C9);
-            Expect_Code("srsdb\tsp,#9");
+            AssertCode("vmla.f32\td4,d16,d21", "A0EF e541");
+        }
+
+        [Test]
+        public void ThumbDis_vrintp()
+        {
+            AssertCode("vrintp.f32\td23,d27", "FAFFAB77");
+        }
+
+        [Test]
+        public void ThumbDis_vrintx()
+        {
+            AssertCode("vrintx.f32\ts6,s17", "B7EE683A");
         }
 
         [Test]
@@ -558,10 +606,10 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        public void ThumbDis_vcge()
+        public void ThumbDis_orr_asr()
         {
-            Given_Instructions(0xFF1F, 0x2E45);
-            Expect_Code("vcge.f16\tq1,q7,q2");
+            Given_Instructions(0xEA47, 0xA767);
+            Expect_Code("orr\tr7,r7,r7,asr #9");
         }
 
         [Test]
@@ -572,10 +620,46 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        public void ThumbDis_orr_asr()
+        public void ThumbDis_vacge()
         {
-            Given_Instructions(0xEA47, 0xA767);
-            Expect_Code("orr\tr7,r7,r7,asr #9");
+            AssertCode("vacge.i32\tq8,q4,q13", "48FF7A0E");
+        }
+
+        [Test]
+        public void ThumbDis_vbsl()
+        {
+            AssertCode("vbsl\td8,d12,d26", "1CFF3A81");
+        }
+
+        [Test]
+        public void ThumbDis_vceq_register()
+        {
+            AssertCode("vceq\td8,d15,d0", "1FEF008E");
+        }
+
+        [Test]
+        public void ThumbDis_vcge_float()
+        {
+            Given_Instructions(0xFF1F, 0x2E45);
+            Expect_Code("vcge.f16\tq1,q7,q2");
+        }
+
+        [Test]
+        public void ThumbDis_vcgt_s8_d()
+        {
+            AssertCode("vcgt.s8\td30,d21,d18", "45EF A2E3");
+        }
+
+        [Test]
+        public void ThumbDis_vcgt_invalid()
+        {
+            AssertCode("Invalid", "45EF E2E3");
+        }
+
+        [Test]
+        public void ThumbDis_vcgt_s8_q()
+        {
+            AssertCode("vcgt.s8\tq15,q10,q9", "44EF E2E3");
         }
 
         [Test]
@@ -671,6 +755,12 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
+        public void ThumbDis_ldrsh_w_pre()
+        {
+            AssertCode("ldrsh.w\tr1,[r6,-#&2F]!", "36F92F1D");
+        }
+
+        [Test]
         public void ThumbDis_rfedb()
         {
             Given_Instructions(0xE812, 0xB51D);
@@ -721,6 +811,54 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
+        public void ThumbDis_vqdmlal()
+        {
+            AssertCode("vqdmlal.i32\tq5,d26,d1", "AAEF81A9");
+        }
+
+        [Test]
+        public void ThumbDis_vqdmlsl_scalar()
+        {
+            AssertCode("vqdmlsl.s32\tq4,d26,d3[0]", "AAEFC387");
+        }
+
+        [Test]
+        public void ThumbDis_vqdmulh()
+        {
+            AssertCode("vqdmulh.i32\tq7,q3,q12", "26EF68EB");
+        }
+
+        [Test]
+        public void ThumbDis_vqdmulh_s16()
+        {
+            AssertCode("vqdmulh.s16\tq7,q5,d2[3]", "9AFF6AEC");
+        }
+
+        [Test]
+        public void ThumbDis_vqdmull()
+        {
+            AssertCode("vqdmull.i32\tq1,d28,d25", "ACEFA92D");
+        }
+
+        [Test]
+        public void ThumbDis_vqrdmlah()
+        {
+            AssertCode("vqrdmlah.i32\td30,d24,d2", "68FF92EB");
+        }
+
+        [Test]
+        public void ThumbDis_vqrdmlsh()
+        {
+            AssertCode("vqrdmlsh.i32\td10,d28,d6", "2CFF96AC");
+        }
+
+        [Test]
+        public void ThumbDis_vqrdmulh()
+        {
+            AssertCode("vqrdmulh.i32\tq9,q13,q9", "6AFFE22B");
+        }
+
+        [Test]
         public void ThumbDis_vqshl()
         {
             Given_Instructions(0xEF81, 0xE7FE);
@@ -742,10 +880,9 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        public void ThumbDis_bic_w()
+        public void ThumbDis_vqsub()
         {
-            Given_Instructions(0xEA23, 0x0101);
-            Expect_Code("bic.w\tr1,r3,r1");
+            AssertCode("vqsub.s32\td23,d25,d15", "69EF9F72");
         }
 
         [Test]
@@ -788,6 +925,13 @@ namespace Reko.UnitTests.Arch.Arm
         {
             Given_Instructions(0xF850, 0x0021);
             Expect_Code("ldr.w\tr0,[r0,r1,lsl #2]");
+        }
+
+        [Test]
+        public void ThumbDis_bic_w()
+        {
+            Given_Instructions(0xEA23, 0x0101);
+            Expect_Code("bic.w\tr1,r3,r1");
         }
 
         [Test]
@@ -847,6 +991,14 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
+        public void ThumbDis_bne_backward()
+        {
+            Given_Instructions(0xD1FE);
+            Expect_Code("bne\t$00100000");
+        }
+
+
+        [Test]
         public void ThumbDis_cbnz()
         {
             Given_Instructions(0xB92D);
@@ -854,17 +1006,17 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        public void ThumbDis_bne_backward()
+        public void ThumbDis_clrex()
         {
-            Given_Instructions(0xD1FE);
-            Expect_Code("bne\t$00100000");
+            //  F3  BF 8F 2F
+
+            AssertCode("clrex", "BFF3 2F8F");
         }
 
         [Test]
-        public void ThumbDis_vorr_imm()
+        public void ThumbDis_smc()
         {
-            Given_Instructions(0xFFC4, 0x4B10);
-            Expect_Code("vorr.i16\td20,#&C000C000C000C000");
+            AssertCode("smc\t#&E", "FEF72E8D");
         }
 
         [Test]
@@ -937,6 +1089,13 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
+        [Ignore("Not ready")]
+        public void ThumbDis_fstmiax()
+        {
+            AssertCode("fstmiax\t{d3-d12}", "86EC153B");
+        }
+
+        [Test]
         public void ThumbDis_teqs_w()
         {
             Given_Instructions(0xEA9C, 0x0F00);
@@ -986,6 +1145,12 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
+        public void ThumbDis_cmn_w()
+        {
+            AssertCode("cmn.w\tpc,lr,ip,ror #&13", "1EEBFCCF");
+        }
+
+        [Test]
         public void ThumbDis_cmp_w()
         {
             Given_Instructions(0xEBB1, 0x1FA2);
@@ -1007,10 +1172,23 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
+        public void ThumbDis_revsh()
+        {
+            AssertCode("revsh\tr10,r9", "91FAB9CA");
+        }
+
+        [Test]
         public void ThumbDis_vldr_literal()
         {
             Given_Instructions(0xED9F, 0x0B08);
             Expect_Code("vldr\td0,[pc,#&20]");
+        }
+
+        [Test]
+        public void ThumbDis_vorr_imm()
+        {
+            Given_Instructions(0xFFC4, 0x4B10);
+            Expect_Code("vorr.i16\td20,#&C000C000C000C000");
         }
 
         [Test]
@@ -1036,6 +1214,12 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
+        public void ThumbDis_vmov_imm()
+        {
+            AssertCode("vmov.i32\td4,#&D9FFFF00D9FFFF", "85FF194D");
+        }
+
+        [Test]
         public void ThumbDis_vmov_r_s()
         {
             Given_Instructions(0xEE11, 0xAA10);
@@ -1049,7 +1233,6 @@ namespace Reko.UnitTests.Arch.Arm
             Expect_Code("vmov\ts8,r1");
         }
 
-
         [Test]
         public void ThumbDis_vmov_f32()
         {
@@ -1057,6 +1240,11 @@ namespace Reko.UnitTests.Arch.Arm
             Expect_Code("vmov.f32\ts0,s2");
         }
 
+        [Test]
+        public void ThumbDis_vmov_gpr_to_scalar()
+        {
+            AssertCode("vmov.i8\td31[7],r2", "6FEEF12B");
+        }
 
         [Test]
         public void ThumbDis_stlb()
@@ -1101,62 +1289,6 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        public void ThumbDis_vmls_i16()
-        {
-            Given_Instructions(0xFF1C, 0x6924);
-            Expect_Code("vmls.u16\td6,d12,d20");
-        }
-
-        [Test]
-        public void ThumbDis_vmlsl_scalar()
-        {
-            Given_Instructions(0xFFDB, 0x4668);
-            Expect_Code("vmlsl.u16\tq10,d11,d0[3]");
-        }
-
-        [Test]
-        public void ThumbDis_vmov_from_gp_pair()
-        {
-            Given_Instructions(0xEC46, 0x5B18);
-            Expect_Code("vmov\td8,r5,r6");
-        }
-
-        [Test]
-        public void ThumbDis_vmul_f64()
-        {
-            Given_Instructions(0xee21, 0x1b08);
-            Expect_Code("vmul.f64\td1,d1,d8");
-        }
-
-        [Test]
-        public void ThumbDis_vadd_f32()
-        {
-            Given_Instructions(0xee30, 0x0a01);
-            Expect_Code("vadd.f32\ts0,s0,s2");
-        }
-
-        [Test]
-        public void ThumbDis_vdiv_f32()
-        {
-            Given_Instructions(0xee80, 0x0a05);
-            Expect_Code("vdiv.f32\ts0,s0,s10");
-        }
-
-        [Test]
-        public void ThumbDis_vdiv_f64()
-        {
-            Given_Instructions(0xee80, 0x0b01);
-            Expect_Code("vdiv.f64\td0,d0,d1");
-        }
-
-        [Test]
-        public void ThumbDis_tst_w()
-        {
-            Given_Instructions(0xea10, 0x0f0a);
-            Expect_Code("tst.w\tr0,r10");
-        }
-
-        [Test]
         public void ThumbDis_orns()
         {
             Given_Instructions(0xea7a, 0x0092);
@@ -1192,31 +1324,10 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        public void ThumbDis_vpop_d()
+        public void ThumbDis_tst_w()
         {
-            Given_Instructions(0xecbd, 0x1b12);
-            Expect_Code("vldmia\tsp!,{d1-d9}");
-        }
-
-        [Test]
-        public void ThumbDis_vmov_f64_imm()
-        {
-            Given_Instructions(0xeeb0, 0x0b08);
-            Expect_Code("vmov.f64\td0,#3.0");
-        }
-
-        [Test]
-        public void ThumbDis_vmov_f32_imm()
-        {
-            Given_Instructions(0xeeb0, 0x2a00);
-            Expect_Code("vmov.f32\ts4,#2.0F");
-        }
-
-        [Test]
-        public void ThumbDis_vneg_f64()
-        {
-            Given_Instructions(0xeeb1, 0x8b48);
-            Expect_Code("vneg.f64\td8,d8");
+            Given_Instructions(0xea10, 0x0f0a);
+            Expect_Code("tst.w\tr0,r10");
         }
 
         [Test]
@@ -1254,6 +1365,41 @@ namespace Reko.UnitTests.Arch.Arm
             Expect_Code("vcvt.u32.f64\ts0,d2");
         }
 
+
+        [Test]
+        public void ThumbDis_vmov_f64_imm()
+        {
+            Given_Instructions(0xeeb0, 0x0b08);
+            Expect_Code("vmov.f64\td0,#3.0");
+        }
+
+        [Test]
+        public void ThumbDis_vmov_f32_imm()
+        {
+            Given_Instructions(0xeeb0, 0x2a00);
+            Expect_Code("vmov.f32\ts4,#2.0F");
+        }
+
+        [Test]
+        public void ThumbDis_vneg_f64()
+        {
+            Given_Instructions(0xeeb1, 0x8b48);
+            Expect_Code("vneg.f64\td8,d8");
+        }
+
+        [Test]
+        public void ThumbDis_vpadd()
+        {
+            AssertCode("vpadd.i32\td9,d21,d2", "25EF929B");
+        }
+
+        [Test]
+        public void ThumbDis_vpop_d()
+        {
+            Given_Instructions(0xecbd, 0x1b12);
+            Expect_Code("vldmia\tsp!,{d1-d9}");
+        }
+
         [Test]
         public void ThumbDis_vmrs_cpsr()
         {
@@ -1283,6 +1429,106 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
+        public void ThumbDis_vadd_f32()
+        {
+            Given_Instructions(0xee30, 0x0a01);
+            Expect_Code("vadd.f32\ts0,s0,s2");
+        }
+
+        [Test]
+        public void ThumbDis_vdiv_f32()
+        {
+            Given_Instructions(0xee80, 0x0a05);
+            Expect_Code("vdiv.f32\ts0,s0,s10");
+        }
+
+        [Test]
+        public void ThumbDis_vdiv_f64()
+        {
+            Given_Instructions(0xee80, 0x0b01);
+            Expect_Code("vdiv.f64\td0,d0,d1");
+        }
+
+        [Test]
+        public void ThumbDis_vdup()
+        {
+            AssertCode("vdup.i16\tq15,ip", "AEEEBAC9");
+        }
+
+        [Test]
+        public void ThumbDis_vld1_single()
+        {
+            Given_Instructions(0xf9ad, 0x9805);
+            Expect_Code("vld1.i32\t{d9[0]},[sp],r5");
+        }
+
+        [Test]
+        public void ThumbDis_vld3_single()
+        {
+            Given_Instructions(0xF9AB, 0x4628);
+            Expect_Code("vld3.i16\t{d4[0],d6[0],d8[0]},[fp],r8");
+        }
+
+        [Test]
+        public void ThumbDis_vld3_i16_single()
+        {
+            Given_Instructions(0xf9ef, 0x4620);
+            Expect_Code("vld3.i16\t{d20[0],d22[0],d24[0]},[pc],r0");
+        }
+
+        [Test]
+        public void ThumbDis_vmls_i16()
+        {
+            Given_Instructions(0xFF1C, 0x6924);
+            Expect_Code("vmls.u16\td6,d12,d20");
+        }
+
+        [Test]
+        public void ThumbDis_vmls_scalar()
+        {
+            AssertCode("vmls.i16\tq6,q3,d6[2]", "96FF66C4");
+        }
+
+        [Test]
+        public void ThumbDis_vmlsl_scalar()
+        {
+            Given_Instructions(0xFFDB, 0x4668);
+            Expect_Code("vmlsl.u16\tq10,d11,d0[3]");
+        }
+
+        [Test]
+        public void ThumbDis_vmov_from_gp_pair()
+        {
+            Given_Instructions(0xEC46, 0x5B18);
+            Expect_Code("vmov\td8,r5,r6");
+        }
+
+        [Test]
+        public void ThumbDis_vmul_f64()
+        {
+            Given_Instructions(0xee21, 0x1b08);
+            Expect_Code("vmul.f64\td1,d1,d8");
+        }
+
+        [Test]
+        public void ThumbDis_vmul_i32()
+        {
+            AssertCode("vmul.i32\td1,d0,d2", "20EF1219");
+        }
+
+        [Test]
+        public void ThumbDis_vmull()
+        {
+            AssertCode("vmull.s16\tq14,d10,d1[0]", "DAEF41CA");
+        }
+
+        [Test]
+        public void ThumbDis_vorr()
+        {
+            AssertCode("vorr\td21,d11,d1", "6BEF1151");
+        }
+
+        [Test]
         public void ThumbDis_ssat_asr()
         {
             Given_Instructions(0xf321, 0x4648);
@@ -1297,10 +1543,38 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
+        public void ThumbDis_vst1_i8_single()
+        {
+            Given_Instructions(0xf9c3, 0xf00b);
+            Expect_Code("vst1.i8\t{d31[0]},[r3],fp");
+        }
+
+        [Test]
         public void ThumbDis_vst2_sparse_writeback()
         {
             Given_Instructions(0xf903, 0x492d);
             Expect_Code("vst2.i8\t{d4,d6},[r3:128]");
+        }
+
+        [Test]
+        public void ThumbDis_vst3_i32_single()
+        {
+            Given_Instructions(0xf9c3, 0x9a02);
+            Expect_Code("vst3.i32\t{d25[0],d26[0],d27[0]},[r3],r2");
+        }
+
+        [Test]
+        public void ThumbDis_vst3_single_sparse()
+        {
+            Given_Instructions(0xf98f, 0x4668);
+            Expect_Code("vst3.i16\t{d4[1],d6[1],d8[1]},[pc],r8");
+        }
+
+        [Test]
+        [Ignore("Aligned not working")]
+        public void ThumbDis_vst4_aligned()
+        {
+            AssertCode("vst4.i8\t{d18[3],d20[3],d22[3],d24[3]},[r2:32]", "C2F97B23");
         }
 
         [Test]
@@ -1310,13 +1584,11 @@ namespace Reko.UnitTests.Arch.Arm
             Expect_Code("vst4.i8\t{d15,d17,d19,d21},[r5]");
         }
 
-
-
         [Test]
-        public void ThumbDis_vst1_i8_single()
+        [Ignore("New decoder needed?")]
+        public void ThumbDis_vstmia()
         {
-            Given_Instructions(0xf9c3, 0xf00b);
-            Expect_Code("vst1.i8\t{d31[0]},[r3],fp");
+            AssertCode("@@@", "8AECCA1B");
         }
 
         [Test]
@@ -1419,58 +1691,12 @@ namespace Reko.UnitTests.Arch.Arm
 
 #if BORED
 
-        [Test]
-        public void ThumbDis_vld4_single()
-        {
-            Given_Instructions(0xf9ad, 0x9805);
-            Expect_Code("vld4.i32\t{d9[0]},[sp],r5");
-        }
-
-        [Test]
-        public void ThumbDis_vld3_single()
-        {
-            Given_Instructions(0xf9ab, 0x4628);
-            Expect_Code("vld3.i16\t{d4[0],d6[0],d8[0]},[fp],r8");
-        }
-
-
-        [Test]
-        public void ThumbDis_vld3_i16_single()
-        {
-            Given_Instructions(0xf9ef, 0x4620);
-            Expect_Code("vld3.i16\t{d20[0],d22[0],d24[0]},[pc],r0");
-        }
-
-        [Test]
-        public void ThumbDis_vst3_i32_single()
-        {
-            Given_Instructions(0xf9c3, 0x9a02);
-            Expect_Code("vst3.i32\t{d25[0],d26[0],d27[0]},[r3],r2");
-        }
-
-                [Test]
-        public void ThumbDis_vst3_single_sparse()
-        {
-            Given_Instructions(0xf98f, 0x4668);
-            Expect_Code("vst3.i16\t{d4[1],d6[1],d8[1]},[pc],r8");
-        }
-
         // This file contains unit tests automatically generated by Reko decompiler.
         // Please copy the contents of this file and report it on GitHub, using the 
         // following URL: https://github.com/uxmal/reko/issues
 
-        // Reko: a decoder for the instruction 95FDBB99 at address 00120184 has not been implemented. (op1:op2=0b1101)
-        [Test]
-        public void ThumbDis_95FDBB99()
-        {
-            AssertCode("@@@", "95FDBB99");
-        }
-        // Reko: a decoder for the instruction 4AEFFFFB at address 00144002 has not been implemented. (AdvancedSimd3RegistersSameLength_opcB)
-        [Test]
-        public void ThumbDis_4AEFFFFB()
-        {
-            AssertCode("@@@", "4AEFFFFB");
-        }
+
+ 
         // Reko: a decoder for the instruction 12EF8423 at address 00182102 has not been implemented. (AdvancedSimd3RegistersSameLength_opc3)
         [Test]
         public void ThumbDis_12EF8423()
@@ -1496,11 +1722,7 @@ namespace Reko.UnitTests.Arch.Arm
             AssertCode("@@@", "E2F971A2");
         }
         // Reko: a decoder for the instruction 7AFFE22B at address 001803E6 has not been implemented. (AdvancedSimd3RegistersSameLength_opcB)
-        [Test]
-        public void ThumbDis_7AFFE22B()
-        {
-            AssertCode("@@@", "7AFFE22B");
-        }
+ 
         // Reko: a decoder for the instruction 90EF494B at address 001A2118 has not been implemented. (Unimplemented '*' when decoding EF904B49)
         [Test]
         public void ThumbDis_90EF494B()
@@ -1586,11 +1808,7 @@ namespace Reko.UnitTests.Arch.Arm
             AssertCode("@@@", "82F91D1B");
         }
         // Reko: a decoder for the instruction 69EF9F72 at address 001A2E88 has not been implemented. (Unimplemented '*' when decoding EF69729F)
-        [Test]
-        public void ThumbDis_69EF9F72()
-        {
-            AssertCode("@@@", "69EF9F72");
-        }
+
         // Reko: a decoder for the instruction 56F9D17E at address 001E2706 has not been implemented. (LoadStoreSignedUnprivileged)
         [Test]
         public void ThumbDis_56F9D17E()
@@ -1880,11 +2098,7 @@ namespace Reko.UnitTests.Arch.Arm
             AssertCode("@@@", "F4FFEC45");
         }
         // Reko: a decoder for the instruction 36EF7A99 at address 001E5412 has not been implemented. (*vmul (integer and polynomial)
-        [Test]
-        public void ThumbDis_36EF7A99()
-        {
-            AssertCode("@@@", "36EF7A99");
-        }
+
         // Reko: a decoder for the instruction 54FF96AF at address 00130A3E has not been implemented. (AdvancedSimd3RegistersSameLength_opcF U=0 op1 = 1)
         [Test]
         public void ThumbDis_54FF96AF()
@@ -1898,11 +2112,7 @@ namespace Reko.UnitTests.Arch.Arm
             AssertCode("@@@", "DCEF1598");
         }
         // Reko: a decoder for the instruction 1EFCDCA9 at address 00184226 has not been implemented. (op1:op2=0b0001)
-        [Test]
-        public void ThumbDis_1EFCDCA9()
-        {
-            AssertCode("@@@", "1EFCDCA9");
-        }
+
         // Reko: a decoder for the instruction 78EF2BB3 at address 001C02EA has not been implemented. (AdvancedSimd3RegistersSameLength_opc3)
         [Test]
         public void ThumbDis_78EF2BB3()
@@ -1910,11 +2120,7 @@ namespace Reko.UnitTests.Arch.Arm
             AssertCode("@@@", "78EF2BB3");
         }
         // Reko: a decoder for the instruction B1FD618D at address 001629C6 has not been implemented. (op1:op2=0b1111)
-        [Test]
-        public void ThumbDis_B1FD618D()
-        {
-            AssertCode("@@@", "B1FD618D");
-        }
+
         // Reko: a decoder for the instruction E1FF59CC at address 0016E964 has not been implemented. (AdvancedSimdTwoRegistersAndShiftAmount_opcC)
         [Test]
         public void ThumbDis_E1FF59CC()
@@ -1988,11 +2194,7 @@ namespace Reko.UnitTests.Arch.Arm
             AssertCode("@@@", "F1EF70E8");
         }
         // Reko: a decoder for the instruction 95EC846E at address 00103410 has not been implemented. (Unimplemented '*' when decoding EC956E84)
-        [Test]
-        public void ThumbDis_95EC846E()
-        {
-            AssertCode("@@@", "95EC846E");
-        }
+
         // Reko: a decoder for the instruction C6EF73DD at address 001AA1C4 has not been implemented. (Unimplemented '*immediate - T3' when decoding EFC6DD73)
         [Test]
         public void ThumbDis_C6EF73DD()
@@ -2000,11 +2202,7 @@ namespace Reko.UnitTests.Arch.Arm
             AssertCode("@@@", "C6EF73DD");
         }
         // Reko: a decoder for the instruction B3EE1B8B at address 0016EAD2 has not been implemented. (AdvancedSimd8_16_32_bitElementMove)
-        [Test]
-        public void ThumbDis_B3EE1B8B()
-        {
-            AssertCode("@@@", "B3EE1B8B");
-        }
+
         // Reko: a decoder for the instruction C3FA9E44 at address 001AA274 has not been implemented. (crc32-crc32h)
         [Test]
         public void ThumbDis_C3FA9E44()
@@ -2108,11 +2306,7 @@ namespace Reko.UnitTests.Arch.Arm
             AssertCode("@@@", "FEFDFD78");
         }
         // Reko: a decoder for the instruction 53F9C7DD at address 00141F2E has not been implemented. (LoadStoreSignedImmediatePreIndexed)
-        [Test]
-        public void ThumbDis_53F9C7DD()
-        {
-            AssertCode("@@@", "53F9C7DD");
-        }
+
         // Reko: a decoder for the instruction DFFD51F8 at address 00141F8E has not been implemented. (op1:op2=0b1101)
         [Test]
         public void ThumbDis_DFFD51F8()
@@ -2144,11 +2338,7 @@ namespace Reko.UnitTests.Arch.Arm
             AssertCode("@@@", "CBF934DE");
         }
         // Reko: a decoder for the instruction 10FDA8FD at address 001AA754 has not been implemented. (op1:op2=0b1001)
-        [Test]
-        public void ThumbDis_10FDA8FD()
-        {
-            AssertCode("@@@", "10FDA8FD");
-        }
+
         // Reko: a decoder for the instruction 2AFF124C at address 001AA9B6 has not been implemented. (AdvancedSimd3RegistersSameLength_opcC)
         [Test]
         public void ThumbDis_2AFF124C()
@@ -2246,11 +2436,7 @@ namespace Reko.UnitTests.Arch.Arm
             AssertCode("@@@", "A5F94729");
         }
         // Reko: a decoder for the instruction E2EEF55B at address 0010C554 has not been implemented. (AdvancedSimd8_16_32_bitElementMove)
-        [Test]
-        public void ThumbDis_E2EEF55B()
-        {
-            AssertCode("@@@", "E2EEF55B");
-        }
+
         // Reko: a decoder for the instruction CEF90F99 at address 0010C590 has not been implemented. (Unimplemented 'single 2-element structure from one lane - T3' when decoding F9CE990F)
         [Test]
         public void ThumbDis_CEF90F99()
@@ -2288,11 +2474,7 @@ namespace Reko.UnitTests.Arch.Arm
             AssertCode("@@@", "D8EFEF4C");
         }
         // Reko: a decoder for the instruction 5DFFD139 at address 0015A372 has not been implemented. (*vmul (integer and polynomial)
-        [Test]
-        public void ThumbDis_5DFFD139()
-        {
-            AssertCode("@@@", "5DFFD139");
-        }
+
         // Reko: a decoder for the instruction EBEE7528 at address 0015A398 has not been implemented. (Unimplemented '*' when decoding EEEB2875)
         [Test]
         public void ThumbDis_EBEE7528()
@@ -2600,11 +2782,7 @@ namespace Reko.UnitTests.Arch.Arm
             AssertCode("@@@", "1BEFA6D3");
         }
         // Reko: a decoder for the instruction 15FC820D at address 00150F7A has not been implemented. (op1:op2=0b0001)
-        [Test]
-        public void ThumbDis_15FC820D()
-        {
-            AssertCode("@@@", "15FC820D");
-        }
+ 
         // Reko: a decoder for the instruction B2FE3A88 at address 0013F824 has not been implemented. (AdvancedSimdTwoScalarsAndExtension)
         [Test]
         public void ThumbDis_B2FE3A88()
@@ -2714,11 +2892,7 @@ namespace Reko.UnitTests.Arch.Arm
             AssertCode("@@@", "78FE3F49");
         }
         // Reko: a decoder for the instruction 9BFF6ABC at address 00190930 has not been implemented. (Unimplemented '*' when decoding FF9BBC6A)
-        [Test]
-        public void ThumbDis_9BFF6ABC()
-        {
-            AssertCode("@@@", "9BFF6ABC");
-        }
+
         // Reko: a decoder for the instruction E3F95271 at address 00190972 has not been implemented. (Unimplemented 'single 2-element structure from one lane - T1' when decoding F9E37152)
         [Test]
         public void ThumbDis_E3F95271()
@@ -2852,11 +3026,7 @@ namespace Reko.UnitTests.Arch.Arm
             AssertCode("@@@", "F9F3ECAE");
         }
         // Reko: a decoder for the instruction 5AFCDB9D at address 00178F4C has not been implemented. (op1:op2=0b0001)
-        [Test]
-        public void ThumbDis_5AFCDB9D()
-        {
-            AssertCode("@@@", "5AFCDB9D");
-        }
+
         // Reko: a decoder for the instruction C0FE28CD at address 00178F84 has not been implemented. (AdvancedSimdTwoScalarsAndExtension)
         [Test]
         public void ThumbDis_C0FE28CD()
@@ -2942,17 +3112,9 @@ namespace Reko.UnitTests.Arch.Arm
             AssertCode("@@@", "7AFF4B8D");
         }
         // Reko: a decoder for the instruction 5CFC544C at address 0013FF50 has not been implemented. (op1:op2=0b0001)
-        [Test]
-        public void ThumbDis_5CFC544C()
-        {
-            AssertCode("@@@", "5CFC544C");
-        }
+
         // Reko: a decoder for the instruction 93EE91D9 at address 0011934E has not been implemented. (AdvancedSimd8_16_32_bitElementMove)
-        [Test]
-        public void ThumbDis_93EE91D9()
-        {
-            AssertCode("@@@", "93EE91D9");
-        }
+
         // Reko: a decoder for the instruction EEF9C240 at address 00178FD0 has not been implemented. (Unimplemented 'single element from one lane - T1' when decoding F9EE40C2)
         [Test]
         public void ThumbDis_EEF9C240()
@@ -2996,11 +3158,7 @@ namespace Reko.UnitTests.Arch.Arm
             AssertCode("@@@", "13EFA431");
         }
         // Reko: a decoder for the instruction C4EEFACB at address 0019C880 has not been implemented. (AdvancedSimd8_16_32_bitElementMove)
-        [Test]
-        public void ThumbDis_C4EEFACB()
-        {
-            AssertCode("@@@", "C4EEFACB");
-        }
+
         // Reko: a decoder for the instruction ADF3088C at address 0011F324 has not been implemented. (ChangeProcessorState)
         [Test]
         public void ThumbDis_ADF3088C()
@@ -3044,17 +3202,9 @@ namespace Reko.UnitTests.Arch.Arm
             AssertCode("@@@", "D7FD18FD");
         }
         // Reko: a decoder for the instruction 12FC1289 at address 0017916C has not been implemented. (op1:op2=0b0001)
-        [Test]
-        public void ThumbDis_12FC1289()
-        {
-            AssertCode("@@@", "12FC1289");
-        }
+
         // Reko: a decoder for the instruction 20EF1219 at address 001CA200 has not been implemented. (*vmul (integer and polynomial)
-        [Test]
-        public void ThumbDis_20EF1219()
-        {
-            AssertCode("@@@", "20EF1219");
-        }
+
         // Reko: a decoder for the instruction E9FC9058 at address 001F422E has not been implemented. (op1:op2=0b0110)
         [Test]
         public void ThumbDis_E9FC9058()
@@ -3104,17 +3254,9 @@ namespace Reko.UnitTests.Arch.Arm
             AssertCode("@@@", "E6ECB4EB");
         }
         // Reko: a decoder for the instruction 78EFBA3E at address 001193EA has not been implemented. (AdvancedSimd3RegistersSameLength_opcE U=0)
-        [Test]
-        public void ThumbDis_78EFBA3E()
-        {
-            AssertCode("@@@", "78EFBA3E");
-        }
+
         // Reko: a decoder for the instruction 5DFD798C at address 00190B8A has not been implemented. (op1:op2=0b1001)
-        [Test]
-        public void ThumbDis_5DFD798C()
-        {
-            AssertCode("@@@", "5DFD798C");
-        }
+
         // Reko: a decoder for the instruction 52EFD6EF at address 00190ED4 has not been implemented. (Unimplemented '*' when decoding EF52EFD6)
         [Test]
         public void ThumbDis_52EFD6EF()
@@ -3128,11 +3270,7 @@ namespace Reko.UnitTests.Arch.Arm
             AssertCode("@@@", "8CFFECF4");
         }
         // Reko: a decoder for the instruction 60EF72CE at address 0011F622 has not been implemented. (AdvancedSimd3RegistersSameLength_opcE U=0)
-        [Test]
-        public void ThumbDis_60EF72CE()
-        {
-            AssertCode("@@@", "60EF72CE");
-        }
+
         // Reko: a decoder for the instruction 21FF1F82 at address 00179232 has not been implemented. (Unimplemented '*' when decoding FF21821F)
         [Test]
         public void ThumbDis_21FF1F82()
@@ -3218,11 +3356,7 @@ namespace Reko.UnitTests.Arch.Arm
             AssertCode("@@@", "D4FA8CD2");
         }
         // Reko: a decoder for the instruction 5AFC50CD at address 00149D38 has not been implemented. (op1:op2=0b0001)
-        [Test]
-        public void ThumbDis_5AFC50CD()
-        {
-            AssertCode("@@@", "5AFC50CD");
-        }
+
         // Reko: a decoder for the instruction 13EF196E at address 0011F6A4 has not been implemented. (AdvancedSimd3RegistersSameLength_opcE U=0)
         [Test]
         public void ThumbDis_13EF196E()
@@ -3254,17 +3388,9 @@ namespace Reko.UnitTests.Arch.Arm
             AssertCode("@@@", "86F991C2");
         }
         // Reko: a decoder for the instruction 11FCC46D at address 001793AA has not been implemented. (op1:op2=0b0001)
-        [Test]
-        public void ThumbDis_11FCC46D()
-        {
-            AssertCode("@@@", "11FCC46D");
-        }
+
         // Reko: a decoder for the instruction 9EEE718B at address 001B521A has not been implemented. (AdvancedSimd8_16_32_bitElementMove)
-        [Test]
-        public void ThumbDis_9EEE718B()
-        {
-            AssertCode("@@@", "9EEE718B");
-        }
+ 
         // Reko: a decoder for the instruction 7FFD79DC at address 00151A3A has not been implemented. (load PC)
         [Test]
         public void ThumbDis_7FFD79DC()
@@ -3284,11 +3410,7 @@ namespace Reko.UnitTests.Arch.Arm
             AssertCode("@@@", "61FF8B74");
         }
         // Reko: a decoder for the instruction 92EE185B at address 001F1A58 has not been implemented. (AdvancedSimd8_16_32_bitElementMove)
-        [Test]
-        public void ThumbDis_92EE185B()
-        {
-            AssertCode("@@@", "92EE185B");
-        }
+
         // Reko: a decoder for the instruction 3DFC752C at address 001195C4 has not been implemented. (op1:op2=0b0011)
         [Test]
         public void ThumbDis_3DFC752C()
@@ -3296,11 +3418,7 @@ namespace Reko.UnitTests.Arch.Arm
             AssertCode("@@@", "3DFC752C");
         }
         // Reko: a decoder for the instruction 86EC153B at address 001F1B04 has not been implemented. (Unimplemented '*' when decoding EC863B15)
-        [Test]
-        public void ThumbDis_86EC153B()
-        {
-            AssertCode("@@@", "86EC153B");
-        }
+ 
         // Reko: a decoder for the instruction F0FE11B9 at address 0019109E has not been implemented. (AdvancedSimdTwoScalarsAndExtension)
         [Test]
         public void ThumbDis_F0FE11B9()
@@ -3362,11 +3480,7 @@ namespace Reko.UnitTests.Arch.Arm
             AssertCode("@@@", "44FD4499");
         }
         // Reko: a decoder for the instruction 12FD5A99 at address 00119FEC has not been implemented. (op1:op2=0b1001)
-        [Test]
-        public void ThumbDis_12FD5A99()
-        {
-            AssertCode("@@@", "12FD5A99");
-        }
+
         // Reko: a decoder for the instruction FEFD68E9 at address 001916DE has not been implemented. (op1:op2=0b1111)
         [Test]
         public void ThumbDis_FEFD68E9()
@@ -3422,11 +3536,7 @@ namespace Reko.UnitTests.Arch.Arm
             AssertCode("@@@", "66FC0C8C");
         }
         // Reko: a decoder for the instruction D7EE7B1B at address 00149DB6 has not been implemented. (AdvancedSimd8_16_32_bitElementMove)
-        [Test]
-        public void ThumbDis_D7EE7B1B()
-        {
-            AssertCode("@@@", "D7EE7B1B");
-        }
+
         // Reko: a decoder for the instruction 77FC5C3D at address 001797F4 has not been implemented. (op1:op2=0b0011)
         [Test]
         public void ThumbDis_77FC5C3D()
@@ -3488,11 +3598,7 @@ namespace Reko.UnitTests.Arch.Arm
             AssertCode("@@@", "C0FCCE48");
         }
         // Reko: a decoder for the instruction F0EEBA0B at address 0019E2DA has not been implemented. (AdvancedSimd8_16_32_bitElementMove)
-        [Test]
-        public void ThumbDis_F0EEBA0B()
-        {
-            AssertCode("@@@", "F0EEBA0B");
-        }
+ 
         // Reko: a decoder for the instruction 65FF7B84 at address 0019E486 has not been implemented. (AdvancedSimd3RegistersSameLength_opc4)
         [Test]
         public void ThumbDis_65FF7B84()
@@ -3734,11 +3840,7 @@ namespace Reko.UnitTests.Arch.Arm
             AssertCode("@@@", "05FEB02D");
         }
         // Reko: a decoder for the instruction D2EE92EB at address 0017A2F8 has not been implemented. (AdvancedSimd8_16_32_bitElementMove)
-        [Test]
-        public void ThumbDis_D2EE92EB()
-        {
-            AssertCode("@@@", "D2EE92EB");
-        }
+
         // Reko: a decoder for the instruction BCFC2BC8 at address 0019A508 has not been implemented. (op1:op2=0b0111)
         [Test]
         public void ThumbDis_BCFC2BC8()
@@ -3848,11 +3950,7 @@ namespace Reko.UnitTests.Arch.Arm
             AssertCode("@@@", "E5EC1A9B");
         }
         // Reko: a decoder for the instruction 5BFF3A29 at address 00175CFC has not been implemented. (*vmul (integer and polynomial)
-        [Test]
-        public void ThumbDis_5BFF3A29()
-        {
-            AssertCode("@@@", "5BFF3A29");
-        }
+
         // Reko: a decoder for the instruction 29FF5D03 at address 001B84A6 has not been implemented. (AdvancedSimd3RegistersSameLength_opc3)
         [Test]
         public void ThumbDis_29FF5D03()
@@ -3962,11 +4060,7 @@ namespace Reko.UnitTests.Arch.Arm
             AssertCode("@@@", "ACEF52BD");
         }
         // Reko: a decoder for the instruction D9EE508B at address 0019366C has not been implemented. (AdvancedSimd8_16_32_bitElementMove)
-        [Test]
-        public void ThumbDis_D9EE508B()
-        {
-            AssertCode("@@@", "D9EE508B");
-        }
+
         // Reko: a decoder for the instruction CDFA90BA at address 001F6B08 has not been implemented. (crc32-crc32h)
         [Test]
         public void ThumbDis_CDFA90BA()
@@ -3992,11 +4086,7 @@ namespace Reko.UnitTests.Arch.Arm
             AssertCode("@@@", "A2F94CCE");
         }
         // Reko: a decoder for the instruction 26FFF7D9 at address 001D3B52 has not been implemented. (*vmul (integer and polynomial)
-        [Test]
-        public void ThumbDis_26FFF7D9()
-        {
-            AssertCode("@@@", "26FFF7D9");
-        }
+ 
         // Reko: a decoder for the instruction 9EFCE248 at address 00100272 has not been implemented. (op1:op2=0b0101)
         [Test]
         public void ThumbDis_9EFCE248()
@@ -4274,11 +4364,7 @@ namespace Reko.UnitTests.Arch.Arm
             AssertCode("@@@", "F3FC29F8");
         }
         // Reko: a decoder for the instruction 5CFD4E8C at address 00181066 has not been implemented. (op1:op2=0b1001)
-        [Test]
-        public void ThumbDis_5CFD4E8C()
-        {
-            AssertCode("@@@", "5CFD4E8C");
-        }
+
         // Reko: a decoder for the instruction F6FD5BA9 at address 00101B1C has not been implemented. (op1:op2=0b1111)
         [Test]
         public void ThumbDis_F6FD5BA9()
@@ -4448,11 +4534,7 @@ namespace Reko.UnitTests.Arch.Arm
             AssertCode("@@@", "80FFC58C");
         }
         // Reko: a decoder for the instruction 12FCADED at address 00142FDE has not been implemented. (op1:op2=0b0001)
-        [Test]
-        public void ThumbDis_12FCADED()
-        {
-            AssertCode("@@@", "12FCADED");
-        }
+        
         // Reko: a decoder for the instruction C8FDB4D9 at address 001430F6 has not been implemented. (op1:op2=0b1100)
         [Test]
         public void ThumbDis_C8FDB4D9()
@@ -4556,11 +4638,7 @@ namespace Reko.UnitTests.Arch.Arm
             AssertCode("@@@", "CFF9E8EF");
         }
         // Reko: a decoder for the instruction D6EE91FB at address 00101F96 has not been implemented. (AdvancedSimd8_16_32_bitElementMove)
-        [Test]
-        public void ThumbDis_D6EE91FB()
-        {
-            AssertCode("@@@", "D6EE91FB");
-        }
+
         // Reko: a decoder for the instruction 27FFEFBD at address 001C3CEA has not been implemented. (*vabd (floating point))
         [Test]
         public void ThumbDis_27FFEFBD()
@@ -4724,17 +4802,9 @@ namespace Reko.UnitTests.Arch.Arm
             AssertCode("@@@", "5BFFDDAF");
         }
         // Reko: a decoder for the instruction 53FF98E9 at address 001E4CB0 has not been implemented. (*vmul (integer and polynomial)
-        [Test]
-        public void ThumbDis_53FF98E9()
-        {
-            AssertCode("@@@", "53FF98E9");
-        }
+
         // Reko: a decoder for the instruction AEEEBAC9 at address 0018300E has not been implemented. (AdvancedSimd8_16_32_bitElementMove)
-        [Test]
-        public void ThumbDis_AEEEBAC9()
-        {
-            AssertCode("@@@", "AEEEBAC9");
-        }
+
         // Reko: a decoder for the instruction C5F9E132 at address 001056B4 has not been implemented. (Unimplemented 'single 3-element structure from one lane - T1' when decoding F9C532E1)
         [Test]
         public void ThumbDis_C5F9E132()
@@ -4754,11 +4824,7 @@ namespace Reko.UnitTests.Arch.Arm
             AssertCode("@@@", "DAF395A4");
         }
         // Reko: a decoder for the instruction 1EFD9EA9 at address 00165132 has not been implemented. (op1:op2=0b1001)
-        [Test]
-        public void ThumbDis_1EFD9EA9()
-        {
-            AssertCode("@@@", "1EFD9EA9");
-        }
+ 
         // Reko: a decoder for the instruction 7BEF9172 at address 0016523E has not been implemented. (Unimplemented '*' when decoding EF7B7291)
         [Test]
         public void ThumbDis_7BEF9172()
@@ -4808,11 +4874,7 @@ namespace Reko.UnitTests.Arch.Arm
             AssertCode("@@@", "73FCDA18");
         }
         // Reko: a decoder for the instruction 5DFD88FC at address 001258C2 has not been implemented. (op1:op2=0b1001)
-        [Test]
-        public void ThumbDis_5DFD88FC()
-        {
-            AssertCode("@@@", "5DFD88FC");
-        }
+
         // Reko: a decoder for the instruction 9AF944FC at address 001258DE has not been implemented. (PLI)
         [Test]
         public void ThumbDis_9AF944FC()
@@ -5024,11 +5086,7 @@ namespace Reko.UnitTests.Arch.Arm
             AssertCode("@@@", "97EFCA9F");
         }
         // Reko: a decoder for the instruction E1F3E5A2 at address 001E7D50 has not been implemented. (Unimplemented '*banked register' when decoding F3E1A2E5)
-        [Test]
-        public void ThumbDis_E1F3E5A2()
-        {
-            AssertCode("@@@", "E1F3E5A2");
-        }
+        
         // Reko: a decoder for the instruction D4FF9C8D at address 001E801A has not been implemented. (AdvancedSimdTwoRegistersAndShiftAmount_opcD)
         [Test]
         public void ThumbDis_D4FF9C8D()
@@ -5114,11 +5172,7 @@ namespace Reko.UnitTests.Arch.Arm
             AssertCode("@@@", "A2FD929C");
         }
         // Reko: a decoder for the instruction 51FD6F3D at address 001C84F4 has not been implemented. (op1:op2=0b1001)
-        [Test]
-        public void ThumbDis_51FD6F3D()
-        {
-            AssertCode("@@@", "51FD6F3D");
-        }
+
         // Reko: a decoder for the instruction 48EFA9DB at address 001C8510 has not been implemented. (AdvancedSimd3RegistersSameLength_opcB)
         [Test]
         public void ThumbDis_48EFA9DB()
@@ -5156,11 +5210,7 @@ namespace Reko.UnitTests.Arch.Arm
             AssertCode("@@@", "94EF818D");
         }
         // Reko: a decoder for the instruction 18FC81CC at address 0010C9AE has not been implemented. (op1:op2=0b0001)
-        [Test]
-        public void ThumbDis_18FC81CC()
-        {
-            AssertCode("@@@", "18FC81CC");
-        }
+   
         // Reko: a decoder for the instruction 5AEF2ACE at address 00186640 has not been implemented. (AdvancedSimd3RegistersSameLength_opcE U=0)
         [Test]
         public void ThumbDis_5AEF2ACE()
@@ -5168,11 +5218,7 @@ namespace Reko.UnitTests.Arch.Arm
             AssertCode("@@@", "5AEF2ACE");
         }
         // Reko: a decoder for the instruction 1FFF9B59 at address 0014837A has not been implemented. (*vmul (integer and polynomial)
-        [Test]
-        public void ThumbDis_1FFF9B59()
-        {
-            AssertCode("@@@", "1FFF9B59");
-        }
+
         // Reko: a decoder for the instruction 7FFC3C8C at address 00114580 has not been implemented. (op1:op2=0b0011)
         [Test]
         public void ThumbDis_7FFC3C8C()
@@ -5198,11 +5244,7 @@ namespace Reko.UnitTests.Arch.Arm
             AssertCode("@@@", "81FDF668");
         }
         // Reko: a decoder for the instruction 85FF194D at address 00169746 has not been implemented. (Unimplemented '*immediate - T4' when decoding FF854D19)
-        [Test]
-        public void ThumbDis_85FF194D()
-        {
-            AssertCode("@@@", "85FF194D");
-        }
+ 
         // Reko: a decoder for the instruction 9DFFC5A2 at address 00186712 has not been implemented. (Unimplemented '*scalar' when decoding FF9DA2C5)
         [Test]
         public void ThumbDis_9DFFC5A2()
@@ -5270,11 +5312,7 @@ namespace Reko.UnitTests.Arch.Arm
             AssertCode("@@@", "41EF99F9");
         }
         // Reko: a decoder for the instruction 52FCB99C at address 001E956C has not been implemented. (op1:op2=0b0001)
-        [Test]
-        public void ThumbDis_52FCB99C()
-        {
-            AssertCode("@@@", "52FCB99C");
-        }
+
         // Reko: a decoder for the instruction BDFDECBD at address 0016A388 has not been implemented. (op1:op2=0b1111)
         [Test]
         public void ThumbDis_BDFDECBD()
@@ -5282,11 +5320,7 @@ namespace Reko.UnitTests.Arch.Arm
             AssertCode("@@@", "BDFDECBD");
         }
         // Reko: a decoder for the instruction 18FDB188 at address 001E9896 has not been implemented. (op1:op2=0b1001)
-        [Test]
-        public void ThumbDis_18FDB188()
-        {
-            AssertCode("@@@", "18FDB188");
-        }
+    
         // Reko: a decoder for the instruction 7AF90B0F at address 0010D392 has not been implemented. (LoadStoreSignedImmediatePreIndexed)
         [Test]
         public void ThumbDis_7AF90B0F()
@@ -5378,11 +5412,7 @@ namespace Reko.UnitTests.Arch.Arm
             AssertCode("@@@", "67FD5418");
         }
         // Reko: a decoder for the instruction 1CFDBA38 at address 001EA35E has not been implemented. (op1:op2=0b1001)
-        [Test]
-        public void ThumbDis_1CFDBA38()
-        {
-            AssertCode("@@@", "1CFDBA38");
-        }
+
         // Reko: a decoder for the instruction FEEFB85B at address 0016B0AA has not been implemented. (AdvancedSimdTwoRegistersAndShiftAmount_opcB)
         [Test]
         public void ThumbDis_FEEFB85B()
@@ -5546,11 +5576,7 @@ namespace Reko.UnitTests.Arch.Arm
             AssertCode("@@@", "A7EF7CD8");
         }
         // Reko: a decoder for the instruction E4EE5149 at address 00149344 has not been implemented. (AdvancedSimd8_16_32_bitElementMove)
-        [Test]
-        public void ThumbDis_E4EE5149()
-        {
-            AssertCode("@@@", "E4EE5149");
-        }
+
         // Reko: a decoder for the instruction 0CEF7E04 at address 001296CC has not been implemented. (AdvancedSimd3RegistersSameLength_opc4)
         [Test]
         public void ThumbDis_0CEF7E04()
@@ -5587,12 +5613,7 @@ namespace Reko.UnitTests.Arch.Arm
         {
             AssertCode("@@@", "FBFF7258");
         }
-        // Reko: a decoder for the instruction 11FC9D1C at address 001298DE has not been implemented. (op1:op2=0b0001)
-        [Test]
-        public void ThumbDis_11FC9D1C()
-        {
-            AssertCode("@@@", "11FC9D1C");
-        }
+
         // Reko: a decoder for the instruction 8BEF1FA8 at address 001AC2A2 has not been implemented. (AdvancedSimdTwoRegistersAndShiftAmount_opc8 U=0 L:Q=00)
         [Test]
         public void ThumbDis_8BEF1FA8()
@@ -5846,11 +5867,7 @@ namespace Reko.UnitTests.Arch.Arm
             AssertCode("@@@", "B4FFA876");
         }
         // Reko: a decoder for the instruction B9EE182B at address 0014D100 has not been implemented. (AdvancedSimd8_16_32_bitElementMove)
-        [Test]
-        public void ThumbDis_B9EE182B()
-        {
-            AssertCode("@@@", "B9EE182B");
-        }
+
         // Reko: a decoder for the instruction DEFF5899 at address 0016C548 has not been implemented. (Unimplemented 'D22_12,Q5_0,*signed result variant' when decoding FFDE9958)
         [Test]
         public void ThumbDis_DEFF5899()
@@ -6068,11 +6085,7 @@ namespace Reko.UnitTests.Arch.Arm
             AssertCode("@@@", "92EFF8F8");
         }
         // Reko: a decoder for the instruction 5EFCC9FC at address 0014DA68 has not been implemented. (op1:op2=0b0001)
-        [Test]
-        public void ThumbDis_5EFCC9FC()
-        {
-            AssertCode("@@@", "5EFCC9FC");
-        }
+ 
         // Reko: a decoder for the instruction 08FC908C at address 0012C9D6 has not been implemented. (op1:op2=0b0000)
         [Test]
         public void ThumbDis_08FC908C()
@@ -6146,17 +6159,9 @@ namespace Reko.UnitTests.Arch.Arm
             AssertCode("@@@", "3DFE079D");
         }
         // Reko: a decoder for the instruction 47FFD572 at address 0012D0BC has not been implemented. (Unimplemented '*' when decoding FF4772D5)
-        [Test]
-        public void ThumbDis_47FFD572()
-        {
-            AssertCode("@@@", "47FFD572");
-        }
+
         // Reko: a decoder for the instruction 16FF9EF9 at address 0011068E has not been implemented. (*vmul (integer and polynomial)
-        [Test]
-        public void ThumbDis_16FF9EF9()
-        {
-            AssertCode("@@@", "16FF9EF9");
-        }
+
         // Reko: a decoder for the instruction A4FEC6DD at address 00119D4C has not been implemented. (AdvancedSimdTwoScalarsAndExtension)
         [Test]
         public void ThumbDis_A4FEC6DD()
@@ -6272,11 +6277,7 @@ namespace Reko.UnitTests.Arch.Arm
             AssertCode("@@@", "70FCB71D");
         }
         // Reko: a decoder for the instruction 91FAB9CA at address 0014E71E has not been implemented. (Unimplemented '*' when decoding FA91CAB9)
-        [Test]
-        public void ThumbDis_91FAB9CA()
-        {
-            AssertCode("@@@", "91FAB9CA");
-        }
+
         // Reko: a decoder for the instruction CEFFBA1B at address 001AFD1E has not been implemented. (AdvancedSimdTwoRegistersAndShiftAmount_opcB)
         [Test]
         public void ThumbDis_CEFFBA1B()
@@ -6302,11 +6303,7 @@ namespace Reko.UnitTests.Arch.Arm
             AssertCode("@@@", "7DF99EDF");
         }
         // Reko: a decoder for the instruction 1EFD770D at address 001AFE7A has not been implemented. (op1:op2=0b1001)
-        [Test]
-        public void ThumbDis_1EFD770D()
-        {
-            AssertCode("@@@", "1EFD770D");
-        }
+
         // Reko: a decoder for the instruction D1F32286 at address 0016FB3E has not been implemented. (ExceptionReturn)
         [Test]
         public void ThumbDis_D1F32286()
@@ -6458,11 +6455,7 @@ namespace Reko.UnitTests.Arch.Arm
             AssertCode("@@@", "4BFFD063");
         }
         // Reko: a decoder for the instruction B7EE683A at address 001B097C has not been implemented. (Unimplemented '*' when decoding EEB73A68)
-        [Test]
-        public void ThumbDis_B7EE683A()
-        {
-            AssertCode("@@@", "B7EE683A");
-        }
+
         // Reko: a decoder for the instruction 60EF6FF3 at address 001B0B74 has not been implemented. (AdvancedSimd3RegistersSameLength_opc3)
         [Test]
         public void ThumbDis_60EF6FF3()
@@ -6572,11 +6565,7 @@ namespace Reko.UnitTests.Arch.Arm
             AssertCode("@@@", "65FC692D");
         }
         // Reko: a decoder for the instruction B1EEFFB9 at address 001D026E has not been implemented. (AdvancedSimd8_16_32_bitElementMove)
-        [Test]
-        public void ThumbDis_B1EEFFB9()
-        {
-            AssertCode("@@@", "B1EEFFB9");
-        }
+
         // Reko: a decoder for the instruction 47EF09EC at address 001120EC has not been implemented. (AdvancedSimd3RegistersSameLength_opcC)
         [Test]
         public void ThumbDis_47EF09EC()
@@ -6680,11 +6669,7 @@ namespace Reko.UnitTests.Arch.Arm
             AssertCode("@@@", "82FE5568");
         }
         // Reko: a decoder for the instruction 1CFF3A81 at address 0011D440 has not been implemented. (Unimplemented '*register' when decoding FF1C813A)
-        [Test]
-        public void ThumbDis_1CFF3A81()
-        {
-            AssertCode("@@@", "1CFF3A81");
-        }
+
         // Reko: a decoder for the instruction D2EFB97C at address 001D0C12 has not been implemented. (AdvancedSimdTwoRegistersAndShiftAmount_opcC)
         [Test]
         public void ThumbDis_D2EFB97C()
@@ -6746,11 +6731,7 @@ namespace Reko.UnitTests.Arch.Arm
             AssertCode("@@@", "AFEF759D");
         }
         // Reko: a decoder for the instruction 85EE71DB at address 00151B62 has not been implemented. (AdvancedSimd8_16_32_bitElementMove)
-        [Test]
-        public void ThumbDis_85EE71DB()
-        {
-            AssertCode("@@@", "85EE71DB");
-        }
+
         // Reko: a decoder for the instruction 8EF91013 at address 001F5140 has not been implemented. (Unimplemented 'single 4-element structure from one lane - T1' when decoding F98E1310)
         [Test]
         public void ThumbDis_8EF91013()
@@ -6800,11 +6781,7 @@ namespace Reko.UnitTests.Arch.Arm
             AssertCode("@@@", "94FEE3CC");
         }
         // Reko: a decoder for the instruction 1DFDBAD8 at address 0015220A has not been implemented. (op1:op2=0b1001)
-        [Test]
-        public void ThumbDis_1DFDBAD8()
-        {
-            AssertCode("@@@", "1DFDBAD8");
-        }
+
         // Reko: a decoder for the instruction E8FE23AD at address 00174806 has not been implemented. (AdvancedSimdTwoScalarsAndExtension)
         [Test]
         public void ThumbDis_E8FE23AD()
@@ -6848,11 +6825,7 @@ namespace Reko.UnitTests.Arch.Arm
             AssertCode("@@@", "4BEE1CE9");
         }
         // Reko: a decoder for the instruction 12FDBA48 at address 001B5DC8 has not been implemented. (op1:op2=0b1001)
-        [Test]
-        public void ThumbDis_12FDBA48()
-        {
-            AssertCode("@@@", "12FDBA48");
-        }
+
         // Reko: a decoder for the instruction 9BEF4727 at address 001B5F5E has not been implemented. (Unimplemented '*' when decoding EF9B2747)
         [Test]
         public void ThumbDis_9BEF4727()
@@ -6890,11 +6863,7 @@ namespace Reko.UnitTests.Arch.Arm
             AssertCode("@@@", "2FFEB7B9");
         }
         // Reko: a decoder for the instruction 1CFCC5AD at address 001D3CB0 has not been implemented. (op1:op2=0b0001)
-        [Test]
-        public void ThumbDis_1CFCC5AD()
-        {
-            AssertCode("@@@", "1CFCC5AD");
-        }
+
         // Reko: a decoder for the instruction 35FCFC5C at address 001D45C8 has not been implemented. (op1:op2=0b0011)
         [Test]
         public void ThumbDis_35FCFC5C()
@@ -6902,11 +6871,7 @@ namespace Reko.UnitTests.Arch.Arm
             AssertCode("@@@", "35FCFC5C");
         }
         // Reko: a decoder for the instruction 14FCD6ED at address 0015F1A0 has not been implemented. (op1:op2=0b0001)
-        [Test]
-        public void ThumbDis_14FCD6ED()
-        {
-            AssertCode("@@@", "14FCD6ED");
-        }
+
         // Reko: a decoder for the instruction 96FEDFD9 at address 00153BF2 has not been implemented. (AdvancedSimdTwoScalarsAndExtension)
         [Test]
         public void ThumbDis_96FEDFD9()
@@ -6950,11 +6915,7 @@ namespace Reko.UnitTests.Arch.Arm
             AssertCode("@@@", "61FF3254");
         }
         // Reko: a decoder for the instruction FCEE5309 at address 001D4BAE has not been implemented. (AdvancedSimd8_16_32_bitElementMove)
-        [Test]
-        public void ThumbDis_FCEE5309()
-        {
-            AssertCode("@@@", "FCEE5309");
-        }
+
         // Reko: a decoder for the instruction 42FD6A09 at address 001D4D40 has not been implemented. (op1:op2=0b1000)
         [Test]
         public void ThumbDis_42FD6A09()
@@ -6998,11 +6959,7 @@ namespace Reko.UnitTests.Arch.Arm
             AssertCode("@@@", "D7FE248D");
         }
         // Reko: a decoder for the instruction 17FDB12D at address 0017ED84 has not been implemented. (op1:op2=0b1001)
-        [Test]
-        public void ThumbDis_17FDB12D()
-        {
-            AssertCode("@@@", "17FDB12D");
-        }
+
         // Reko: a decoder for the instruction 19EF330B at address 001F998C has not been implemented. (AdvancedSimd3RegistersSameLength_opcB)
         [Test]
         public void ThumbDis_19EF330B()
@@ -7070,11 +7027,7 @@ namespace Reko.UnitTests.Arch.Arm
             AssertCode("@@@", "48FE899D");
         }
         // Reko: a decoder for the instruction 48FF7A0E at address 001342CC has not been implemented. (Unimplemented '*' when decoding FF480E7A)
-        [Test]
-        public void ThumbDis_48FF7A0E()
-        {
-            AssertCode("@@@", "48FF7A0E");
-        }
+ 
         // Reko: a decoder for the instruction 27FD2F3D at address 001FA262 has not been implemented. (op1:op2=0b1010)
         [Test]
         public void ThumbDis_27FD2F3D()
@@ -7202,11 +7155,7 @@ namespace Reko.UnitTests.Arch.Arm
             AssertCode("@@@", "D4EFB094");
         }
         // Reko: a decoder for the instruction DEEEDCE9 at address 001B8746 has not been implemented. (AdvancedSimd8_16_32_bitElementMove)
-        [Test]
-        public void ThumbDis_DEEEDCE9()
-        {
-            AssertCode("@@@", "DEEEDCE9");
-        }
+
         // Reko: a decoder for the instruction E3FD3428 at address 0017770E has not been implemented. (op1:op2=0b1110)
         [Test]
         public void ThumbDis_E3FD3428()
@@ -7220,11 +7169,7 @@ namespace Reko.UnitTests.Arch.Arm
             AssertCode("@@@", "34EFC204");
         }
         // Reko: a decoder for the instruction A3EE7069 at address 0019F230 has not been implemented. (AdvancedSimd8_16_32_bitElementMove)
-        [Test]
-        public void ThumbDis_A3EE7069()
-        {
-            AssertCode("@@@", "A3EE7069");
-        }
+ 
         // Reko: a decoder for the instruction BAEF3BB8 at address 00155664 has not been implemented. (AdvancedSimdTwoRegistersAndShiftAmount_opc8 U=0 L:Q=00)
         [Test]
         public void ThumbDis_BAEF3BB8()
@@ -7418,11 +7363,7 @@ namespace Reko.UnitTests.Arch.Arm
             AssertCode("@@@", "77FDC438");
         }
         // Reko: a decoder for the instruction 8CEEF56B at address 001BF624 has not been implemented. (AdvancedSimd8_16_32_bitElementMove)
-        [Test]
-        public void ThumbDis_8CEEF56B()
-        {
-            AssertCode("@@@", "8CEEF56B");
-        }
+
         // Reko: a decoder for the instruction 24FF2753 at address 001DE5D0 has not been implemented. (AdvancedSimd3RegistersSameLength_opc3)
         [Test]
         public void ThumbDis_24FF2753()
@@ -7694,11 +7635,7 @@ namespace Reko.UnitTests.Arch.Arm
             AssertCode("@@@", "6EEFA1D1");
         }
         // Reko: a decoder for the instruction 2EEFEC7E at address 001BBAF6 has not been implemented. (AdvancedSimd3RegistersSameLength_opcE U=0)
-        [Test]
-        public void ThumbDis_2EEFEC7E()
-        {
-            AssertCode("@@@", "2EEFEC7E");
-        }
+  
         // Reko: a decoder for the instruction AFEFC0B4 at address 00138E9E has not been implemented. (Unimplemented '*scalar' when decoding EFAFB4C0)
         [Test]
         public void ThumbDis_AFEFC0B4()
@@ -7730,11 +7667,7 @@ namespace Reko.UnitTests.Arch.Arm
             AssertCode("@@@", "4DEFD59D");
         }
         // Reko: a decoder for the instruction 33EFFDB9 at address 001DAFFC has not been implemented. (*vmul (integer and polynomial)
-        [Test]
-        public void ThumbDis_33EFFDB9()
-        {
-            AssertCode("@@@", "33EFFDB9");
-        }
+
         // Reko: a decoder for the instruction 9BFE51B9 at address 001DB008 has not been implemented. (AdvancedSimdTwoScalarsAndExtension)
         [Test]
         public void ThumbDis_9BFE51B9()
@@ -7772,11 +7705,7 @@ namespace Reko.UnitTests.Arch.Arm
             AssertCode("@@@", "E6FEC5FD");
         }
         // Reko: a decoder for the instruction 52F9351D at address 0017C920 has not been implemented. (LoadStoreSignedImmediatePreIndexed)
-        [Test]
-        public void ThumbDis_52F9351D()
-        {
-            AssertCode("@@@", "52F9351D");
-        }
+ 
         // Reko: a decoder for the instruction 53EE512B at address 001959CE has not been implemented. (AdvancedSimd8_16_32_bitElementMove)
         [Test]
         public void ThumbDis_53EE512B()
@@ -7808,11 +7737,7 @@ namespace Reko.UnitTests.Arch.Arm
             AssertCode("@@@", "D5E8D00D");
         }
         // Reko: a decoder for the instruction 16FCD88C at address 001BC0B8 has not been implemented. (op1:op2=0b0001)
-        [Test]
-        public void ThumbDis_16FCD88C()
-        {
-            AssertCode("@@@", "16FCD88C");
-        }
+  
         // Reko: a decoder for the instruction 0EEF302C at address 001DB7CE has not been implemented. (AdvancedSimd3RegistersSameLength_opcC)
         [Test]
         public void ThumbDis_0EEF302C()
@@ -7850,23 +7775,11 @@ namespace Reko.UnitTests.Arch.Arm
             AssertCode("@@@", "D6FA9116");
         }
         // Reko: a decoder for the instruction 12FF5DC9 at address 0013986C has not been implemented. (*vmul (integer and polynomial)
-        [Test]
-        public void ThumbDis_12FF5DC9()
-        {
-            AssertCode("@@@", "12FF5DC9");
-        }
+
         // Reko: a decoder for the instruction 10FDCB3C at address 0017CC4A has not been implemented. (op1:op2=0b1001)
-        [Test]
-        public void ThumbDis_10FDCB3C()
-        {
-            AssertCode("@@@", "10FDCB3C");
-        }
+
         // Reko: a decoder for the instruction D0EEF0F9 at address 00195E4E has not been implemented. (AdvancedSimd8_16_32_bitElementMove)
-        [Test]
-        public void ThumbDis_D0EEF0F9()
-        {
-            AssertCode("@@@", "D0EEF0F9");
-        }
+
         // Reko: a decoder for the instruction ACF95AD1 at address 001DC456 has not been implemented. (Unimplemented 'single 2-element structure from one lane - T1' when decoding F9ACD15A)
         [Test]
         public void ThumbDis_ACF95AD1()
@@ -7904,11 +7817,7 @@ namespace Reko.UnitTests.Arch.Arm
             AssertCode("@@@", "DEFF53BB");
         }
         // Reko: a decoder for the instruction 5BFDE418 at address 001DDDA8 has not been implemented. (op1:op2=0b1001)
-        [Test]
-        public void ThumbDis_5BFDE418()
-        {
-            AssertCode("@@@", "5BFDE418");
-        }
+   
         // Reko: a decoder for the instruction C5FEDF3D at address 00197BC6 has not been implemented. (AdvancedSimdTwoScalarsAndExtension)
         [Test]
         public void ThumbDis_C5FEDF3D()
@@ -7928,11 +7837,7 @@ namespace Reko.UnitTests.Arch.Arm
             AssertCode("@@@", "E8FD0859");
         }
         // Reko: a decoder for the instruction 33FFD359 at address 0015D2E4 has not been implemented. (*vmul (integer and polynomial)
-        [Test]
-        public void ThumbDis_33FFD359()
-        {
-            AssertCode("@@@", "33FFD359");
-        }
+
         // Reko: a decoder for the instruction 37FC1D38 at address 0013D344 has not been implemented. (op1:op2=0b0011)
         [Test]
         public void ThumbDis_37FC1D38()
@@ -7964,11 +7869,7 @@ namespace Reko.UnitTests.Arch.Arm
             AssertCode("@@@", "C6FF4CEE");
         }
         // Reko: a decoder for the instruction 61EF403E at address 00140DD4 has not been implemented. (AdvancedSimd3RegistersSameLength_opcE U=0)
-        [Test]
-        public void ThumbDis_61EF403E()
-        {
-            AssertCode("@@@", "61EF403E");
-        }
+  
         // Reko: a decoder for the instruction CFFD8C68 at address 001E1166 has not been implemented. (op1:op2=0b1100)
         [Test]
         public void ThumbDis_CFFD8C68()
@@ -8024,11 +7925,7 @@ namespace Reko.UnitTests.Arch.Arm
             AssertCode("@@@", "EFFC42D9");
         }
         // Reko: a decoder for the instruction 54FC9558 at address 001015C2 has not been implemented. (op1:op2=0b0001)
-        [Test]
-        public void ThumbDis_54FC9558()
-        {
-            AssertCode("@@@", "54FC9558");
-        }
+
         // Reko: a decoder for the instruction CDF9164C at address 001E1958 has not been implemented. (AdvancedSimdLdSingleStructureToAllLanes)
         [Test]
         public void ThumbDis_CDF9164C()
@@ -8036,11 +7933,7 @@ namespace Reko.UnitTests.Arch.Arm
             AssertCode("@@@", "CDF9164C");
         }
         // Reko: a decoder for the instruction FAFFAB77 at address 001017FE has not been implemented. (Unimplemented '*' when decoding FFFA77AB)
-        [Test]
-        public void ThumbDis_FAFFAB77()
-        {
-            AssertCode("@@@", "FAFFAB77");
-        }
+
         // Reko: a decoder for the instruction CBF313A4 at address 001E1C78 has not been implemented. (Unimplemented '*' when decoding F3CBA413)
         [Test]
         public void ThumbDis_CBF313A4()
@@ -8054,11 +7947,7 @@ namespace Reko.UnitTests.Arch.Arm
             AssertCode("@@@", "E5EF4DA8");
         }
         // Reko: a decoder for the instruction D5EEF95B at address 001A1662 has not been implemented. (AdvancedSimd8_16_32_bitElementMove)
-        [Test]
-        public void ThumbDis_D5EEF95B()
-        {
-            AssertCode("@@@", "D5EEF95B");
-        }
+  
         // Reko: a decoder for the instruction C8EF024B at address 001E1D12 has not been implemented. (Unimplemented '*integer' when decoding EFC84B02)
         [Test]
         public void ThumbDis_C8EF024B()
@@ -8192,11 +8081,7 @@ namespace Reko.UnitTests.Arch.Arm
             AssertCode("@@@", "B1FC9C09");
         }
         // Reko: a decoder for the instruction CAEF41CA at address 001A398A has not been implemented. (Unimplemented '*' when decoding EFCACA41)
-        [Test]
-        public void ThumbDis_CAEF41CA()
-        {
-            AssertCode("@@@", "CAEF41CA");
-        }
+  
         // Reko: a decoder for the instruction 61FE9A69 at address 00123784 has not been implemented. (AdvancedSimdTwoScalarsAndExtension)
         [Test]
         public void ThumbDis_61FE9A69()
@@ -8210,17 +8095,9 @@ namespace Reko.UnitTests.Arch.Arm
             AssertCode("@@@", "3BF9211F");
         }
         // Reko: a decoder for the instruction AAEEF3F9 at address 001E2FE8 has not been implemented. (AdvancedSimd8_16_32_bitElementMove)
-        [Test]
-        public void ThumbDis_AAEEF3F9()
-        {
-            AssertCode("@@@", "AAEEF3F9");
-        }
+
         // Reko: a decoder for the instruction E3F93CC9 at address 001A3A12 has not been implemented. (Unimplemented 'single 2-element structure from one lane - T3' when decoding F9E3C93C)
-        [Test]
-        public void ThumbDis_E3F93CC9()
-        {
-            AssertCode("@@@", "E3F93CC9");
-        }
+
         // Reko: a decoder for the instruction 49EFEB1B at address 001841BC has not been implemented. (AdvancedSimd3RegistersSameLength_opcB)
         [Test]
         public void ThumbDis_49EFEB1B()
@@ -8275,12 +8152,7 @@ namespace Reko.UnitTests.Arch.Arm
         {
             AssertCode("@@@", "DBFCE8DC");
         }
-        // Reko: a decoder for the instruction E2ECADFA at address 00143DCA has not been implemented. (Unimplemented '*' when decoding ECE2FAAD)
-        [Test]
-        public void ThumbDis_E2ECADFA()
-        {
-            AssertCode("@@@", "E2ECADFA");
-        }
+
         // Reko: a decoder for the instruction 6EEF5B3C at address 001E3D98 has not been implemented. (AdvancedSimd3RegistersSameLength_opcC)
         [Test]
         public void ThumbDis_6EEF5B3C()
@@ -8300,11 +8172,7 @@ namespace Reko.UnitTests.Arch.Arm
             AssertCode("@@@", "D1FDC418");
         }
         // Reko: a decoder for the instruction FCEEFB1B at address 00123CB2 has not been implemented. (AdvancedSimd8_16_32_bitElementMove)
-        [Test]
-        public void ThumbDis_FCEEFB1B()
-        {
-            AssertCode("@@@", "FCEEFB1B");
-        }
+
         // Reko: a decoder for the instruction CDFC3B3D at address 001A4C9A has not been implemented. (op1:op2=0b0100)
         [Test]
         public void ThumbDis_CDFC3B3D()
@@ -8330,11 +8198,7 @@ namespace Reko.UnitTests.Arch.Arm
             AssertCode("@@@", "3EFF5622");
         }
         // Reko: a decoder for the instruction 79F9DC0D at address 001644F8 has not been implemented. (LoadStoreSignedImmediatePreIndexed)
-        [Test]
-        public void ThumbDis_79F9DC0D()
-        {
-            AssertCode("@@@", "79F9DC0D");
-        }
+ 
         // Reko: a decoder for the instruction A6F90D2C at address 001E4326 has not been implemented. (AdvancedSimdLdSingleStructureToAllLanes)
         [Test]
         public void ThumbDis_A6F90D2C()
@@ -8522,11 +8386,7 @@ namespace Reko.UnitTests.Arch.Arm
             AssertCode("@@@", "D0FA95F0");
         }
         // Reko: a decoder for the instruction 5AFCA4C9 at address 0018746E has not been implemented. (op1:op2=0b0001)
-        [Test]
-        public void ThumbDis_5AFCA4C9()
-        {
-            AssertCode("@@@", "5AFCA4C9");
-        }
+ 
         // Reko: a decoder for the instruction 6AFF891B at address 001C5130 has not been implemented. (AdvancedSimd3RegistersSameLength_opcB)
         [Test]
         public void ThumbDis_6AFF891B()
@@ -8624,11 +8484,7 @@ namespace Reko.UnitTests.Arch.Arm
             AssertCode("@@@", "A0F3F1A4");
         }
         // Reko: a decoder for the instruction 6BEF1151 at address 00106670 has not been implemented. (Unimplemented '*register' when decoding EF6B5111)
-        [Test]
-        public void ThumbDis_6BEF1151()
-        {
-            AssertCode("@@@", "6BEF1151");
-        }
+
         // Reko: a decoder for the instruction 6BFE5B48 at address 001C6198 has not been implemented. (AdvancedSimdTwoScalarsAndExtension)
         [Test]
         public void ThumbDis_6BFE5B48()
@@ -8642,11 +8498,7 @@ namespace Reko.UnitTests.Arch.Arm
             AssertCode("@@@", "81FDFBA9");
         }
         // Reko: a decoder for the instruction 5BFC901C at address 0014684C has not been implemented. (op1:op2=0b0001)
-        [Test]
-        public void ThumbDis_5BFC901C()
-        {
-            AssertCode("@@@", "5BFC901C");
-        }
+
         // Reko: a decoder for the instruction 61EFE233 at address 00106AFE has not been implemented. (AdvancedSimd3RegistersSameLength_opc3)
         [Test]
         public void ThumbDis_61EFE233()
@@ -8816,11 +8668,7 @@ namespace Reko.UnitTests.Arch.Arm
             AssertCode("@@@", "C8F9120D");
         }
         // Reko: a decoder for the instruction C0EE5D4B at address 001C75FA has not been implemented. (AdvancedSimd8_16_32_bitElementMove)
-        [Test]
-        public void ThumbDis_C0EE5D4B()
-        {
-            AssertCode("@@@", "C0EE5D4B");
-        }
+
         // Reko: a decoder for the instruction 3CFF2431 at address 001A8B90 has not been implemented. (Unimplemented '*' when decoding FF3C3124)
         [Test]
         public void ThumbDis_3CFF2431()
@@ -8828,11 +8676,7 @@ namespace Reko.UnitTests.Arch.Arm
             AssertCode("@@@", "3CFF2431");
         }
         // Reko: a decoder for the instruction B5EE109B at address 001A8E56 has not been implemented. (AdvancedSimd8_16_32_bitElementMove)
-        [Test]
-        public void ThumbDis_B5EE109B()
-        {
-            AssertCode("@@@", "B5EE109B");
-        }
+ 
         // Reko: a decoder for the instruction 5BFFB42F at address 001A8E92 has not been implemented. (AdvancedSimd3RegistersSameLength_opcF U=0 op1 = 1)
         [Test]
         public void ThumbDis_5BFFB42F()
@@ -8840,17 +8684,9 @@ namespace Reko.UnitTests.Arch.Arm
             AssertCode("@@@", "5BFFB42F");
         }
         // Reko: a decoder for the instruction 70F9804D at address 001A8EC2 has not been implemented. (LoadStoreSignedImmediatePreIndexed)
-        [Test]
-        public void ThumbDis_70F9804D()
-        {
-            AssertCode("@@@", "70F9804D");
-        }
+
         // Reko: a decoder for the instruction 48FF93FB at address 001C7612 has not been implemented. (AdvancedSimd3RegistersSameLength_opcB)
-        [Test]
-        public void ThumbDis_48FF93FB()
-        {
-            AssertCode("@@@", "48FF93FB");
-        }
+
         // Reko: a decoder for the instruction 21FFBD2C at address 001C7670 has not been implemented. (AdvancedSimd3RegistersSameLength_opcC)
         [Test]
         public void ThumbDis_21FFBD2C()
@@ -8954,17 +8790,9 @@ namespace Reko.UnitTests.Arch.Arm
             AssertCode("@@@", "1EEF5F24");
         }
         // Reko: a decoder for the instruction B5F32E84 at address 001AA4C8 has not been implemented. (Unimplemented '*' when decoding F3B5842E)
-        [Test]
-        public void ThumbDis_B5F32E84()
-        {
-            AssertCode("@@@", "B5F32E84");
-        }
+
         // Reko: a decoder for the instruction 8AECCA1B at address 0016A102 has not been implemented. (Unimplemented '*' when decoding EC8A1BCA)
-        [Test]
-        public void ThumbDis_8AECCA1B()
-        {
-            AssertCode("@@@", "8AECCA1B");
-        }
+  
         // Reko: a decoder for the instruction E7EFB038 at address 001EBE16 has not been implemented. (AdvancedSimdTwoRegistersAndShiftAmount_opc8 U=0 L:Q=00)
         [Test]
         public void ThumbDis_E7EFB038()
@@ -9002,11 +8830,7 @@ namespace Reko.UnitTests.Arch.Arm
             AssertCode("@@@", "DBE8F757");
         }
         // Reko: a decoder for the instruction 55FC909C at address 00109FA0 has not been implemented. (op1:op2=0b0001)
-        [Test]
-        public void ThumbDis_55FC909C()
-        {
-            AssertCode("@@@", "55FC909C");
-        }
+
         // Reko: a decoder for the instruction D4FAA64A at address 001C8F60 has not been implemented. (crc32c-crc32cw)
         [Test]
         public void ThumbDis_D4FAA64A()
@@ -9014,11 +8838,7 @@ namespace Reko.UnitTests.Arch.Arm
             AssertCode("@@@", "D4FAA64A");
         }
         // Reko: a decoder for the instruction 10FC8A6D at address 0014A7B6 has not been implemented. (op1:op2=0b0001)
-        [Test]
-        public void ThumbDis_10FC8A6D()
-        {
-            AssertCode("@@@", "10FC8A6D");
-        }
+
         // Reko: a decoder for the instruction 8BECA8AB at address 0010A13C has not been implemented. (Unimplemented '*' when decoding EC8BABA8)
         [Test]
         public void ThumbDis_8BECA8AB()
@@ -9044,11 +8864,7 @@ namespace Reko.UnitTests.Arch.Arm
             AssertCode("@@@", "E0F9110A");
         }
         // Reko: a decoder for the instruction 53FCB7F8 at address 0014ACCC has not been implemented. (op1:op2=0b0001)
-        [Test]
-        public void ThumbDis_53FCB7F8()
-        {
-            AssertCode("@@@", "53FCB7F8");
-        }
+
         // Reko: a decoder for the instruction 21FE38F9 at address 0016ADF2 has not been implemented. (AdvancedSimdTwoScalarsAndExtension)
         [Test]
         public void ThumbDis_21FE38F9()
@@ -9170,17 +8986,9 @@ namespace Reko.UnitTests.Arch.Arm
             AssertCode("@@@", "76FF1E7C");
         }
         // Reko: a decoder for the instruction 75F9793D at address 001ED0DA has not been implemented. (LoadStoreSignedImmediatePreIndexed)
-        [Test]
-        public void ThumbDis_75F9793D()
-        {
-            AssertCode("@@@", "75F9793D");
-        }
+
         // Reko: a decoder for the instruction 97FABCA1 at address 0010B748 has not been implemented. (Unimplemented '*' when decoding FA97A1BC)
-        [Test]
-        public void ThumbDis_97FABCA1()
-        {
-            AssertCode("@@@", "97FABCA1");
-        }
+
         // Reko: a decoder for the instruction 1CF9350F at address 0018D0A2 has not been implemented. (LoadStoreSignedImmediatePreIndexed)
         [Test]
         public void ThumbDis_1CF9350F()
@@ -9290,11 +9098,7 @@ namespace Reko.UnitTests.Arch.Arm
             AssertCode("@@@", "01FE9C89");
         }
         // Reko: a decoder for the instruction 52FCB48C at address 001ACE40 has not been implemented. (op1:op2=0b0001)
-        [Test]
-        public void ThumbDis_52FCB48C()
-        {
-            AssertCode("@@@", "52FCB48C");
-        }
+
         // Reko: a decoder for the instruction 90EF7454 at address 001EEBA4 has not been implemented. (U=0)
         [Test]
         public void ThumbDis_90EF7454()
@@ -9410,11 +9214,7 @@ namespace Reko.UnitTests.Arch.Arm
             AssertCode("@@@", "EDFC1159");
         }
         // Reko: a decoder for the instruction 51FC64BC at address 0012E79A has not been implemented. (op1:op2=0b0001)
-        [Test]
-        public void ThumbDis_51FC64BC()
-        {
-            AssertCode("@@@", "51FC64BC");
-        }
+
         // Reko: a decoder for the instruction 98FD4A39 at address 001AF426 has not been implemented. (op1:op2=0b1101)
         [Test]
         public void ThumbDis_98FD4A39()
@@ -9488,11 +9288,7 @@ namespace Reko.UnitTests.Arch.Arm
             AssertCode("@@@", "CBEC027A");
         }
         // Reko: a decoder for the instruction FEF72E8D at address 001B2CAC has not been implemented. (Unimplemented '*' when decoding F7FE8D2E)
-        [Test]
-        public void ThumbDis_FEF72E8D()
-        {
-            AssertCode("@@@", "FEF72E8D");
-        }
+
         // Reko: a decoder for the instruction E2FE5A1C at address 001F2AAC has not been implemented. (AdvancedSimdTwoScalarsAndExtension)
         [Test]
         public void ThumbDis_E2FE5A1C()
@@ -9584,11 +9380,7 @@ namespace Reko.UnitTests.Arch.Arm
             AssertCode("@@@", "BFFFC413");
         }
         // Reko: a decoder for the instruction 36EF0D1E at address 00112BE8 has not been implemented. (AdvancedSimd3RegistersSameLength_opcE U=0)
-        [Test]
-        public void ThumbDis_36EF0D1E()
-        {
-            AssertCode("@@@", "36EF0D1E");
-        }
+
         // Reko: a decoder for the instruction 8DEF55A8 at address 00131958 has not been implemented. (AdvancedSimdTwoRegistersAndShiftAmount_opc8 U=0 L:Q=00)
         [Test]
         public void ThumbDis_8DEF55A8()
@@ -9680,11 +9472,7 @@ namespace Reko.UnitTests.Arch.Arm
             AssertCode("@@@", "A7EF94CB");
         }
         // Reko: a decoder for the instruction 31EFE1FE at address 00194C2A has not been implemented. (AdvancedSimd3RegistersSameLength_opcE U=0)
-        [Test]
-        public void ThumbDis_31EFE1FE()
-        {
-            AssertCode("@@@", "31EFE1FE");
-        }
+ 
         // Reko: a decoder for the instruction E1FE281C at address 00194C2C has not been implemented. (AdvancedSimdTwoScalarsAndExtension)
         [Test]
         public void ThumbDis_E1FE281C()
@@ -9806,11 +9594,7 @@ namespace Reko.UnitTests.Arch.Arm
             AssertCode("@@@", "3BFF39C2");
         }
         // Reko: a decoder for the instruction 32EF1C99 at address 00153830 has not been implemented. (*vmul (integer and polynomial)
-        [Test]
-        public void ThumbDis_32EF1C99()
-        {
-            AssertCode("@@@", "32EF1C99");
-        }
+ 
         // Reko: a decoder for the instruction 6DEF1D2D at address 001965E4 has not been implemented. (*vmls (floating point))
         [Test]
         public void ThumbDis_6DEF1D2D()
@@ -9842,11 +9626,7 @@ namespace Reko.UnitTests.Arch.Arm
             AssertCode("@@@", "C5FC4058");
         }
         // Reko: a decoder for the instruction 51FD485D at address 001B67BC has not been implemented. (op1:op2=0b1001)
-        [Test]
-        public void ThumbDis_51FD485D()
-        {
-            AssertCode("@@@", "51FD485D");
-        }
+
         // Reko: a decoder for the instruction C9FFE9E9 at address 001B6A98 has not been implemented. (Unimplemented '*scalar' when decoding FFC9E9E9)
         [Test]
         public void ThumbDis_C9FFE9E9()
@@ -9884,11 +9664,7 @@ namespace Reko.UnitTests.Arch.Arm
             AssertCode("@@@", "3CFF7E6C");
         }
         // Reko: a decoder for the instruction 7EF965BD at address 001D501E has not been implemented. (LoadStoreSignedImmediatePreIndexed)
-        [Test]
-        public void ThumbDis_7EF965BD()
-        {
-            AssertCode("@@@", "7EF965BD");
-        }
+
         // Reko: a decoder for the instruction EDEC6E3A at address 00117372 has not been implemented. (Unimplemented '*' when decoding ECED3A6E)
         [Test]
         public void ThumbDis_EDEC6E3A()
@@ -9908,11 +9684,7 @@ namespace Reko.UnitTests.Arch.Arm
             AssertCode("@@@", "A7FE0EAC");
         }
         // Reko: a decoder for the instruction 2CFF9F89 at address 001F6B58 has not been implemented. (*vmul (integer and polynomial)
-        [Test]
-        public void ThumbDis_2CFF9F89()
-        {
-            AssertCode("@@@", "2CFF9F89");
-        }
+
         // Reko: a decoder for the instruction 48EFB1BF at address 001745BA has not been implemented. (Unimplemented '*' when decoding EF48BFB1)
         [Test]
         public void ThumbDis_48EFB1BF()
@@ -9992,11 +9764,7 @@ namespace Reko.UnitTests.Arch.Arm
             AssertCode("@@@", "5BFEA1DC");
         }
         // Reko: a decoder for the instruction 85FAA621 at address 00157120 has not been implemented. (Unimplemented '*' when decoding FA8521A6)
-        [Test]
-        public void ThumbDis_85FAA621()
-        {
-            AssertCode("@@@", "85FAA621");
-        }
+   
         // Reko: a decoder for the instruction 0FFC035C at address 00136A58 has not been implemented. (op1:op2=0b0000)
         [Test]
         public void ThumbDis_0FFC035C()
@@ -10022,11 +9790,7 @@ namespace Reko.UnitTests.Arch.Arm
             AssertCode("@@@", "88FF6D0A");
         }
         // Reko: a decoder for the instruction 7BF9CE5D at address 00119844 has not been implemented. (LoadStoreSignedImmediatePreIndexed)
-        [Test]
-        public void ThumbDis_7BF9CE5D()
-        {
-            AssertCode("@@@", "7BF9CE5D");
-        }
+ 
         // Reko: a decoder for the instruction BBFE290D at address 001B98BE has not been implemented. (AdvancedSimdTwoScalarsAndExtension)
         [Test]
         public void ThumbDis_BBFE290D()
@@ -10034,11 +9798,7 @@ namespace Reko.UnitTests.Arch.Arm
             AssertCode("@@@", "BBFE290D");
         }
         // Reko: a decoder for the instruction C6FF66D4 at address 00176108 has not been implemented. (Unimplemented '*scalar' when decoding FFC6D466)
-        [Test]
-        public void ThumbDis_C6FF66D4()
-        {
-            AssertCode("@@@", "C6FF66D4");
-        }
+
         // Reko: a decoder for the instruction 44FFE4A3 at address 00136E6C has not been implemented. (AdvancedSimd3RegistersSameLength_opc3)
         [Test]
         public void ThumbDis_44FFE4A3()
@@ -10118,11 +9878,7 @@ namespace Reko.UnitTests.Arch.Arm
             AssertCode("@@@", "42FFB0E9");
         }
         // Reko: a decoder for the instruction 1FEF008E at address 001D7138 has not been implemented. (AdvancedSimd3RegistersSameLength_opcE U=0)
-        [Test]
-        public void ThumbDis_1FEF008E()
-        {
-            AssertCode("@@@", "1FEF008E");
-        }
+
         // Reko: a decoder for the instruction DAEFC80D at address 0019AE66 has not been implemented. (Unimplemented '*' when decoding EFDA0DC8)
         [Test]
         public void ThumbDis_DAEFC80D()
@@ -10160,11 +9916,7 @@ namespace Reko.UnitTests.Arch.Arm
             AssertCode("@@@", "05FD3F7D");
         }
         // Reko: a decoder for the instruction 11FCAAA8 at address 001BA1E0 has not been implemented. (op1:op2=0b0001)
-        [Test]
-        public void ThumbDis_11FCAAA8()
-        {
-            AssertCode("@@@", "11FCAAA8");
-        }
+
         // Reko: a decoder for the instruction 27EF3203 at address 001F9002 has not been implemented. (AdvancedSimd3RegistersSameLength_opc3)
         [Test]
         public void ThumbDis_27EF3203()
@@ -10214,17 +9966,9 @@ namespace Reko.UnitTests.Arch.Arm
             AssertCode("@@@", "C5FF144E");
         }
         // Reko: a decoder for the instruction 5CFC9C7C at address 001D7A8A has not been implemented. (op1:op2=0b0001)
-        [Test]
-        public void ThumbDis_5CFC9C7C()
-        {
-            AssertCode("@@@", "5CFC9C7C");
-        }
+ 
         // Reko: a decoder for the instruction 32EFD549 at address 0019B3FE has not been implemented. (*vmul (integer and polynomial)
-        [Test]
-        public void ThumbDis_32EFD549()
-        {
-            AssertCode("@@@", "32EFD549");
-        }
+
         // Reko: a decoder for the instruction A2EFC5BB at address 001D7CCE has not been implemented. (Unimplemented '*' when decoding EFA2BBC5)
         [Test]
         public void ThumbDis_A2EFC5BB()
@@ -10298,11 +10042,7 @@ namespace Reko.UnitTests.Arch.Arm
             AssertCode("@@@", "C8FA8699");
         }
         // Reko: a decoder for the instruction 57FC1CDD at address 001D8550 has not been implemented. (op1:op2=0b0001)
-        [Test]
-        public void ThumbDis_57FC1CDD()
-        {
-            AssertCode("@@@", "57FC1CDD");
-        }
+  
         // Reko: a decoder for the instruction 85FE1D38 at address 001BB296 has not been implemented. (AdvancedSimdTwoScalarsAndExtension)
         [Test]
         public void ThumbDis_85FE1D38()
@@ -10490,11 +10230,7 @@ namespace Reko.UnitTests.Arch.Arm
             AssertCode("@@@", "14F9322E");
         }
         // Reko: a decoder for the instruction F8EE36EB at address 001BCD60 has not been implemented. (AdvancedSimd8_16_32_bitElementMove)
-        [Test]
-        public void ThumbDis_F8EE36EB()
-        {
-            AssertCode("@@@", "F8EE36EB");
-        }
+
         // Reko: a decoder for the instruction 43EF2DA4 at address 0011CEAE has not been implemented. (AdvancedSimd3RegistersSameLength_opc4)
         [Test]
         public void ThumbDis_43EF2DA4()
@@ -10514,11 +10250,7 @@ namespace Reko.UnitTests.Arch.Arm
             AssertCode("@@@", "A6ECFF6A");
         }
         // Reko: a decoder for the instruction ACEFA91D at address 00179F5E has not been implemented. (Unimplemented '*integer' when decoding EFAC1DA9)
-        [Test]
-        public void ThumbDis_ACEFA91D()
-        {
-            AssertCode("@@@", "ACEFA91D");
-        }
+
         // Reko: a decoder for the instruction 07FDB939 at address 0017A3D8 has not been implemented. (op1:op2=0b1000)
         [Test]
         public void ThumbDis_07FDB939()
@@ -10622,11 +10354,7 @@ namespace Reko.UnitTests.Arch.Arm
             AssertCode("@@@", "06FC8119");
         }
         // Reko: a decoder for the instruction 11FD6B9D at address 0015A9B0 has not been implemented. (op1:op2=0b1001)
-        [Test]
-        public void ThumbDis_11FD6B9D()
-        {
-            AssertCode("@@@", "11FD6B9D");
-        }
+
         // Reko: a decoder for the instruction 4BFDC399 at address 0019E12A has not been implemented. (op1:op2=0b1000)
         [Test]
         public void ThumbDis_4BFDC399()
@@ -10664,11 +10392,7 @@ namespace Reko.UnitTests.Arch.Arm
             AssertCode("@@@", "B2FCB87D");
         }
         // Reko: a decoder for the instruction 1CFC6D39 at address 001DBBB4 has not been implemented. (op1:op2=0b0001)
-        [Test]
-        public void ThumbDis_1CFC6D39()
-        {
-            AssertCode("@@@", "1CFC6D39");
-        }
+
         // Reko: a decoder for the instruction 41FC120D at address 0019EEEE has not been implemented. (op1:op2=0b0000)
         [Test]
         public void ThumbDis_41FC120D()
@@ -10724,11 +10448,7 @@ namespace Reko.UnitTests.Arch.Arm
             AssertCode("@@@", "F5FEA1DD");
         }
         // Reko: a decoder for the instruction 54FC29E9 at address 0019FA46 has not been implemented. (op1:op2=0b0001)
-        [Test]
-        public void ThumbDis_54FC29E9()
-        {
-            AssertCode("@@@", "54FC29E9");
-        }
+    
         // Reko: a decoder for the instruction 46FDAA78 at address 001FEA76 has not been implemented. (op1:op2=0b1000)
         [Test]
         public void ThumbDis_46FDAA78()
@@ -10754,11 +10474,7 @@ namespace Reko.UnitTests.Arch.Arm
             AssertCode("@@@", "88F9DE07");
         }
         // Reko: a decoder for the instruction 3CFF96AC at address 001DD918 has not been implemented. (AdvancedSimd3RegistersSameLength_opcC)
-        [Test]
-        public void ThumbDis_3CFF96AC()
-        {
-            AssertCode("@@@", "3CFF96AC");
-        }
+
         // Reko: a decoder for the instruction 89EFEA4D at address 001FFB5A has not been implemented. (Unimplemented '*' when decoding EF894DEA)
         [Test]
         public void ThumbDis_89EFEA4D()
@@ -10856,11 +10572,7 @@ namespace Reko.UnitTests.Arch.Arm
             AssertCode("@@@", "C2F957A7");
         }
         // Reko: a decoder for the instruction 1DFD76E9 at address 00161248 has not been implemented. (op1:op2=0b1001)
-        [Test]
-        public void ThumbDis_1DFD76E9()
-        {
-            AssertCode("@@@", "1DFD76E9");
-        }
+ 
         // Reko: a decoder for the instruction 49FD83A9 at address 0016125A has not been implemented. (op1:op2=0b1000)
         [Test]
         public void ThumbDis_49FD83A9()
@@ -10940,11 +10652,7 @@ namespace Reko.UnitTests.Arch.Arm
             AssertCode("@@@", "ADFA8436");
         }
         // Reko: a decoder for the instruction 24EF954E at address 001C103C has not been implemented. (AdvancedSimd3RegistersSameLength_opcE U=0)
-        [Test]
-        public void ThumbDis_24EF954E()
-        {
-            AssertCode("@@@", "24EF954E");
-        }
+ 
         // Reko: a decoder for the instruction 59EFCB1C at address 001C1056 has not been implemented. (AdvancedSimd3RegistersSameLength_opcC)
         [Test]
         public void ThumbDis_59EFCB1C()
@@ -11018,11 +10726,7 @@ namespace Reko.UnitTests.Arch.Arm
             AssertCode("@@@", "C4EC11FA");
         }
         // Reko: a decoder for the instruction 7DF93A5D at address 001E0ED8 has not been implemented. (LoadStoreSignedImmediatePreIndexed)
-        [Test]
-        public void ThumbDis_7DF93A5D()
-        {
-            AssertCode("@@@", "7DF93A5D");
-        }
+  
         // Reko: a decoder for the instruction 56FF3F0B at address 0010179E has not been implemented. (AdvancedSimd3RegistersSameLength_opcB)
         [Test]
         public void ThumbDis_56FF3F0B()
@@ -11054,17 +10758,9 @@ namespace Reko.UnitTests.Arch.Arm
             AssertCode("@@@", "F0F7BA8D");
         }
         // Reko: a decoder for the instruction 73FF7E89 at address 001E0F1E has not been implemented. (*vmul (integer and polynomial)
-        [Test]
-        public void ThumbDis_73FF7E89()
-        {
-            AssertCode("@@@", "73FF7E89");
-        }
+
         // Reko: a decoder for the instruction 13FD9378 at address 001E0F68 has not been implemented. (op1:op2=0b1001)
-        [Test]
-        public void ThumbDis_13FD9378()
-        {
-            AssertCode("@@@", "13FD9378");
-        }
+
         // Reko: a decoder for the instruction 6EFFCF63 at address 001050D8 has not been implemented. (AdvancedSimd3RegistersSameLength_opc3)
         [Test]
         public void ThumbDis_6EFFCF63()
@@ -11177,7 +10873,7 @@ namespace Reko.UnitTests.Arch.Arm
         [Test]
         public void ThumbDis_84EC104A()
         {
-            AssertCode("@@@", "84EC104A");
+            AssertCode("vstmia\tr4,{s8-s23}", "84EC104A");
         }
         // Reko: a decoder for the instruction 16EF776F at address 00183FDE has not been implemented. (Unimplemented '*' when decoding EF166F77)
         [Test]
@@ -11186,11 +10882,7 @@ namespace Reko.UnitTests.Arch.Arm
             AssertCode("@@@", "16EF776F");
         }
         // Reko: a decoder for the instruction 5CFDC63C at address 001C34D6 has not been implemented. (op1:op2=0b1001)
-        [Test]
-        public void ThumbDis_5CFDC63C()
-        {
-            AssertCode("@@@", "5CFDC63C");
-        }
+ 
         // Reko: a decoder for the instruction EFF9133D at address 00126064 has not been implemented. (AdvancedSimdLdSingleStructureToAllLanes)
         [Test]
         public void ThumbDis_EFF9133D()
@@ -11264,11 +10956,7 @@ namespace Reko.UnitTests.Arch.Arm
             AssertCode("@@@", "A9F3D7A9");
         }
         // Reko: a decoder for the instruction 56FCE349 at address 001E36EC has not been implemented. (op1:op2=0b0001)
-        [Test]
-        public void ThumbDis_56FCE349()
-        {
-            AssertCode("@@@", "56FCE349");
-        }
+
         // Reko: a decoder for the instruction 2AEF2853 at address 001A1C02 has not been implemented. (AdvancedSimd3RegistersSameLength_opc3)
         [Test]
         public void ThumbDis_2AEF2853()
@@ -11276,11 +10964,7 @@ namespace Reko.UnitTests.Arch.Arm
             AssertCode("@@@", "2AEF2853");
         }
         // Reko: a decoder for the instruction 58FC6B08 at address 0010919E has not been implemented. (op1:op2=0b0001)
-        [Test]
-        public void ThumbDis_58FC6B08()
-        {
-            AssertCode("@@@", "58FC6B08");
-        }
+   
         // Reko: a decoder for the instruction C8FD102D at address 0010924E has not been implemented. (op1:op2=0b1100)
         [Test]
         public void ThumbDis_C8FD102D()
@@ -11348,11 +11032,7 @@ namespace Reko.UnitTests.Arch.Arm
             AssertCode("@@@", "DAFDE588");
         }
         // Reko: a decoder for the instruction 1DFF4F4C at address 00184844 has not been implemented. (AdvancedSimd3RegistersSameLength_opcC)
-        [Test]
-        public void ThumbDis_1DFF4F4C()
-        {
-            AssertCode("@@@", "1DFF4F4C");
-        }
+
         // Reko: a decoder for the instruction 82F99249 at address 001092AA has not been implemented. (Unimplemented 'single 2-element structure from one lane - T3' when decoding F9824992)
         [Test]
         public void ThumbDis_82F99249()
@@ -11372,11 +11052,7 @@ namespace Reko.UnitTests.Arch.Arm
             AssertCode("@@@", "F1EC3D3B");
         }
         // Reko: a decoder for the instruction CDEE5B69 at address 00126FC6 has not been implemented. (AdvancedSimd8_16_32_bitElementMove)
-        [Test]
-        public void ThumbDis_CDEE5B69()
-        {
-            AssertCode("@@@", "CDEE5B69");
-        }
+
         // Reko: a decoder for the instruction 1FEFDDEC at address 0010C2EE has not been implemented. (AdvancedSimd3RegistersSameLength_opcC)
         [Test]
         public void ThumbDis_1FEFDDEC()
@@ -11426,11 +11102,7 @@ namespace Reko.UnitTests.Arch.Arm
             AssertCode("@@@", "4FEE34F9");
         }
         // Reko: a decoder for the instruction 36F92F1D at address 001275CC has not been implemented. (LoadStoreSignedImmediatePreIndexed)
-        [Test]
-        public void ThumbDis_36F92F1D()
-        {
-            AssertCode("@@@", "36F92F1D");
-        }
+
         // Reko: a decoder for the instruction DDFF348B at address 0010A566 has not been implemented. (AdvancedSimdTwoRegistersAndShiftAmount_opcB)
         [Test]
         public void ThumbDis_DDFF348B()
@@ -11516,11 +11188,7 @@ namespace Reko.UnitTests.Arch.Arm
             AssertCode("@@@", "EEF95A77");
         }
         // Reko: a decoder for the instruction 85EEF679 at address 0016588A has not been implemented. (AdvancedSimd8_16_32_bitElementMove)
-        [Test]
-        public void ThumbDis_85EEF679()
-        {
-            AssertCode("@@@", "85EEF679");
-        }
+ 
         // Reko: a decoder for the instruction 3CFCB52D at address 0018402E has not been implemented. (op1:op2=0b0011)
         [Test]
         public void ThumbDis_3CFCB52D()
@@ -11552,11 +11220,7 @@ namespace Reko.UnitTests.Arch.Arm
             AssertCode("@@@", "78FFD08B");
         }
         // Reko: a decoder for the instruction 56F9F16D at address 001E5680 has not been implemented. (LoadStoreSignedImmediatePreIndexed)
-        [Test]
-        public void ThumbDis_56F9F16D()
-        {
-            AssertCode("@@@", "56F9F16D");
-        }
+  
         // Reko: a decoder for the instruction E2F9999A at address 0018430A has not been implemented. (Unimplemented 'single 3-element structure from one lane - T3' when decoding F9E29A99)
         [Test]
         public void ThumbDis_E2F9999A()
@@ -11600,11 +11264,7 @@ namespace Reko.UnitTests.Arch.Arm
             AssertCode("@@@", "E8FD6B48");
         }
         // Reko: a decoder for the instruction 92FAAF34 at address 001E5796 has not been implemented. (Unimplemented '*' when decoding FA9234AF)
-        [Test]
-        public void ThumbDis_92FAAF34()
-        {
-            AssertCode("@@@", "92FAAF34");
-        }
+
         // Reko: a decoder for the instruction 87F9BE8F at address 0010D552 has not been implemented. (AdvancedSimdLdSingleStructureToAllLanes)
         [Test]
         public void ThumbDis_87F9BE8F()
@@ -11678,11 +11338,7 @@ namespace Reko.UnitTests.Arch.Arm
             AssertCode("@@@", "D1FC1649");
         }
         // Reko: a decoder for the instruction 35EF929B at address 00166B58 has not been implemented. (AdvancedSimd3RegistersSameLength_opcB)
-        [Test]
-        public void ThumbDis_35EF929B()
-        {
-            AssertCode("@@@", "35EF929B");
-        }
+
         // Reko: a decoder for the instruction 65EEB1E9 at address 0012DF30 has not been implemented. (AdvancedSimd8_16_32_bitElementMove)
         [Test]
         public void ThumbDis_65EEB1E9()
@@ -11726,11 +11382,7 @@ namespace Reko.UnitTests.Arch.Arm
             AssertCode("@@@", "54FFD702");
         }
         // Reko: a decoder for the instruction 10FF7EE9 at address 00187B3C has not been implemented. (*vmul (integer and polynomial)
-        [Test]
-        public void ThumbDis_10FF7EE9()
-        {
-            AssertCode("@@@", "10FF7EE9");
-        }
+
         // Reko: a decoder for the instruction A2F96DD1 at address 001A5D98 has not been implemented. (Unimplemented 'single 2-element structure from one lane - T1' when decoding F9A2D16D)
         [Test]
         public void ThumbDis_A2F96DD1()
@@ -11834,11 +11486,7 @@ namespace Reko.UnitTests.Arch.Arm
             AssertCode("@@@", "74FC708D");
         }
         // Reko: a decoder for the instruction 5FFD0EFC at address 00136FF6 has not been implemented. (op1:op2=0b1001)
-        [Test]
-        public void ThumbDis_5FFD0EFC()
-        {
-            AssertCode("@@@", "5FFD0EFC");
-        }
+  
         // Reko: a decoder for the instruction 13EB16CF at address 0012EC74 has not been implemented. (Unimplemented '*register' when decoding EB13CF16)
         [Test]
         public void ThumbDis_13EB16CF()
@@ -12056,11 +11704,7 @@ namespace Reko.UnitTests.Arch.Arm
             AssertCode("@@@", "36FF1AE2");
         }
         // Reko: a decoder for the instruction 51FC2148 at address 001CBE20 has not been implemented. (op1:op2=0b0001)
-        [Test]
-        public void ThumbDis_51FC2148()
-        {
-            AssertCode("@@@", "51FC2148");
-        }
+
         // Reko: a decoder for the instruction 2DEFD7D4 at address 0011AD26 has not been implemented. (AdvancedSimd3RegistersSameLength_opc4)
         [Test]
         public void ThumbDis_2DEFD7D4()
@@ -12116,17 +11760,9 @@ namespace Reko.UnitTests.Arch.Arm
             AssertCode("@@@", "58FF0AE4");
         }
         // Reko: a decoder for the instruction 18FD4739 at address 0018A674 has not been implemented. (op1:op2=0b1001)
-        [Test]
-        public void ThumbDis_18FD4739()
-        {
-            AssertCode("@@@", "18FD4739");
-        }
+
         // Reko: a decoder for the instruction 54FCC9D9 at address 001104A0 has not been implemented. (op1:op2=0b0001)
-        [Test]
-        public void ThumbDis_54FCC9D9()
-        {
-            AssertCode("@@@", "54FCC9D9");
-        }
+
         // Reko: a decoder for the instruction C6FA948F at address 0013B598 has not been implemented. (crc32-crc32h)
         [Test]
         public void ThumbDis_C6FA948F()
@@ -12164,11 +11800,7 @@ namespace Reko.UnitTests.Arch.Arm
             AssertCode("@@@", "A2F9AD3E");
         }
         // Reko: a decoder for the instruction 5AFD6AAC at address 0016D300 has not been implemented. (op1:op2=0b1001)
-        [Test]
-        public void ThumbDis_5AFD6AAC()
-        {
-            AssertCode("@@@", "5AFD6AAC");
-        }
+
         // Reko: a decoder for the instruction 4AFC8038 at address 0016D34C has not been implemented. (op1:op2=0b0000)
         [Test]
         public void ThumbDis_4AFC8038()
@@ -12182,11 +11814,7 @@ namespace Reko.UnitTests.Arch.Arm
             AssertCode("@@@", "2FFD872C");
         }
         // Reko: a decoder for the instruction C2F97BF3 at address 001CE386 has not been implemented. (Unimplemented 'single 4-element structure from one lane - T1' when decoding F9C2F37B)
-        [Test]
-        public void ThumbDis_C2F97BF3()
-        {
-            AssertCode("@@@", "C2F97BF3");
-        }
+        
         // Reko: a decoder for the instruction 0BFC03A8 at address 00112D76 has not been implemented. (op1:op2=0b0000)
         [Test]
         public void ThumbDis_0BFC03A8()
@@ -12596,11 +12224,7 @@ namespace Reko.UnitTests.Arch.Arm
             AssertCode("@@@", "A7F391AD");
         }
         // Reko: a decoder for the instruction AAEF81D9 at address 0016F71C has not been implemented. (Unimplemented '*integer' when decoding EFAAD981)
-        [Test]
-        public void ThumbDis_AAEF81D9()
-        {
-            AssertCode("@@@", "AAEF81D9");
-        }
+
         // Reko: a decoder for the instruction CFFE7CEC at address 001EE44E has not been implemented. (AdvancedSimdTwoScalarsAndExtension)
         [Test]
         public void ThumbDis_CFFE7CEC()
@@ -12692,11 +12316,7 @@ namespace Reko.UnitTests.Arch.Arm
             AssertCode("@@@", "E7EF6203");
         }
         // Reko: a decoder for the instruction 6FEEF12B at address 001EEA6C has not been implemented. (AdvancedSimd8_16_32_bitElementMove)
-        [Test]
-        public void ThumbDis_6FEEF12B()
-        {
-            AssertCode("@@@", "6FEEF12B");
-        }
+  
         // Reko: a decoder for the instruction E7EFC72F at address 001705A8 has not been implemented. (Unimplemented '*' when decoding EFE72FC7)
         [Test]
         public void ThumbDis_E7EFC72F()
@@ -12752,11 +12372,7 @@ namespace Reko.UnitTests.Arch.Arm
             AssertCode("@@@", "18F973CD");
         }
         // Reko: a decoder for the instruction 22FFD1C9 at address 001AFEC0 has not been implemented. (*vmul (integer and polynomial)
-        [Test]
-        public void ThumbDis_22FFD1C9()
-        {
-            AssertCode("@@@", "22FFD1C9");
-        }
+ 
         // Reko: a decoder for the instruction CBFAA623 at address 00171068 has not been implemented. (crc32-crc32w)
         [Test]
         public void ThumbDis_CBFAA623()
@@ -12788,11 +12404,7 @@ namespace Reko.UnitTests.Arch.Arm
             AssertCode("@@@", "AFFC260C");
         }
         // Reko: a decoder for the instruction 67EFEB9C at address 001710AA has not been implemented. (AdvancedSimd3RegistersSameLength_opcC)
-        [Test]
-        public void ThumbDis_67EFEB9C()
-        {
-            AssertCode("@@@", "67EFEB9C");
-        }
+
         // Reko: a decoder for the instruction 84FCF4D8 at address 001509E6 has not been implemented. (op1:op2=0b0100)
         [Test]
         public void ThumbDis_84FCF4D8()
@@ -12806,11 +12418,6 @@ namespace Reko.UnitTests.Arch.Arm
             AssertCode("@@@", "C4F9F9DF");
         }
         // Reko: a decoder for the instruction 61FFB9E9 at address 001AF0F2 has not been implemented. (*vmul (integer and polynomial)
-        [Test]
-        public void ThumbDis_61FFB9E9()
-        {
-            AssertCode("@@@", "61FFB9E9");
-        }
         // Reko: a decoder for the instruction DCFD7598 at address 00151A4E has not been implemented. (op1:op2=0b1101)
         [Test]
         public void ThumbDis_DCFD7598()
@@ -13046,11 +12653,7 @@ namespace Reko.UnitTests.Arch.Arm
             AssertCode("@@@", "64FDD5D9");
         }
         // Reko: a decoder for the instruction 3EFF97A9 at address 001F3092 has not been implemented. (*vmul (integer and polynomial)
-        [Test]
-        public void ThumbDis_3EFF97A9()
-        {
-            AssertCode("@@@", "3EFF97A9");
-        }
+
         // Reko: a decoder for the instruction 55F97C6E at address 00155084 has not been implemented. (LoadStoreSignedUnprivileged)
         [Test]
         public void ThumbDis_55F97C6E()
@@ -13082,11 +12685,7 @@ namespace Reko.UnitTests.Arch.Arm
             AssertCode("@@@", "5EFFC893");
         }
         // Reko: a decoder for the instruction BDEEF779 at address 00155296 has not been implemented. (AdvancedSimd8_16_32_bitElementMove)
-        [Test]
-        public void ThumbDis_BDEEF779()
-        {
-            AssertCode("@@@", "BDEEF779");
-        }
+   
         // Reko: a decoder for the instruction EDFD77AD at address 001B329A has not been implemented. (op1:op2=0b1110)
         [Test]
         public void ThumbDis_EDFD77AD()
@@ -13310,11 +12909,7 @@ namespace Reko.UnitTests.Arch.Arm
             AssertCode("@@@", "45FFCD34");
         }
         // Reko: a decoder for the instruction 15FCF6CC at address 0015A422 has not been implemented. (op1:op2=0b0001)
-        [Test]
-        public void ThumbDis_15FCF6CC()
-        {
-            AssertCode("@@@", "15FCF6CC");
-        }
+    
         // Reko: a decoder for the instruction C0F9A6BF at address 001DDD64 has not been implemented. (AdvancedSimdLdSingleStructureToAllLanes)
         [Test]
         public void ThumbDis_C0F9A6BF()
@@ -13400,11 +12995,7 @@ namespace Reko.UnitTests.Arch.Arm
             AssertCode("@@@", "0EFEF2BC");
         }
         // Reko: a decoder for the instruction 60FFD079 at address 0017BFBC has not been implemented. (*vmul (integer and polynomial)
-        [Test]
-        public void ThumbDis_60FFD079()
-        {
-            AssertCode("@@@", "60FFD079");
-        }
+
         // Reko: a decoder for the instruction F7F38EA7 at address 0017BFD0 has not been implemented. (Unimplemented '*register' when decoding F3F7A78E)
         [Test]
         public void ThumbDis_F7F38EA7()
@@ -13532,17 +13123,9 @@ namespace Reko.UnitTests.Arch.Arm
             AssertCode("@@@", "E8F944FF");
         }
         // Reko: a decoder for the instruction 1FFDA43C at address 00120B4E has not been implemented. (op1:op2=0b1001)
-        [Test]
-        public void ThumbDis_1FFDA43C()
-        {
-            AssertCode("@@@", "1FFDA43C");
-        }
+
         // Reko: a decoder for the instruction B7EE3299 at address 00180C30 has not been implemented. (AdvancedSimd8_16_32_bitElementMove)
-        [Test]
-        public void ThumbDis_B7EE3299()
-        {
-            AssertCode("@@@", "B7EE3299");
-        }
+
         // Reko: a decoder for the instruction 2CFF3AA4 at address 00160BC8 has not been implemented. (AdvancedSimd3RegistersSameLength_opc4)
         [Test]
         public void ThumbDis_2CFF3AA4()
@@ -13652,11 +13235,7 @@ namespace Reko.UnitTests.Arch.Arm
             AssertCode("@@@", "8AFE7ED8");
         }
         // Reko: a decoder for the instruction 57FF5AB9 at address 001429B8 has not been implemented. (*vmul (integer and polynomial)
-        [Test]
-        public void ThumbDis_57FF5AB9()
-        {
-            AssertCode("@@@", "57FF5AB9");
-        }
+
         // Reko: a decoder for the instruction 5DFF97CB at address 001A17EC has not been implemented. (AdvancedSimd3RegistersSameLength_opcB)
         [Test]
         public void ThumbDis_5DFF97CB()
@@ -13754,11 +13333,7 @@ namespace Reko.UnitTests.Arch.Arm
             AssertCode("@@@", "E5F9AD14");
         }
         // Reko: a decoder for the instruction 1EEBFCCF at address 00183A6E has not been implemented. (Unimplemented '*register' when decoding EB1ECFFC)
-        [Test]
-        public void ThumbDis_1EEBFCCF()
-        {
-            AssertCode("@@@", "1EEBFCCF");
-        }
+   
         // Reko: a decoder for the instruction 7BEF8A2C at address 001E3D18 has not been implemented. (AdvancedSimd3RegistersSameLength_opcC)
         [Test]
         public void ThumbDis_7BEF8A2C()
@@ -13808,11 +13383,7 @@ namespace Reko.UnitTests.Arch.Arm
             AssertCode("@@@", "9AFD0028");
         }
         // Reko: a decoder for the instruction E8EEFE69 at address 00124C0A has not been implemented. (AdvancedSimd8_16_32_bitElementMove)
-        [Test]
-        public void ThumbDis_E8EEFE69()
-        {
-            AssertCode("@@@", "E8EEFE69");
-        }
+
         // Reko: a decoder for the instruction ADF962CF at address 001A4CFE has not been implemented. (AdvancedSimdLdSingleStructureToAllLanes)
         [Test]
         public void ThumbDis_ADF962CF()
@@ -13820,11 +13391,7 @@ namespace Reko.UnitTests.Arch.Arm
             AssertCode("@@@", "ADF962CF");
         }
         // Reko: a decoder for the instruction 93EF08E9 at address 00185D54 has not been implemented. (Unimplemented '*integer' when decoding EF93E908)
-        [Test]
-        public void ThumbDis_93EF08E9()
-        {
-            AssertCode("@@@", "93EF08E9");
-        }
+   
         // Reko: a decoder for the instruction D3EF9544 at address 001C55B8 has not been implemented. (U=0)
         [Test]
         public void ThumbDis_D3EF9544()
@@ -13862,11 +13429,7 @@ namespace Reko.UnitTests.Arch.Arm
             AssertCode("@@@", "8AEFDE3D");
         }
         // Reko: a decoder for the instruction 9CEE5979 at address 001A5C5C has not been implemented. (AdvancedSimd8_16_32_bitElementMove)
-        [Test]
-        public void ThumbDis_9CEE5979()
-        {
-            AssertCode("@@@", "9CEE5979");
-        }
+
         // Reko: a decoder for the instruction 54FEDA28 at address 00105A64 has not been implemented. (AdvancedSimdTwoScalarsAndExtension)
         [Test]
         public void ThumbDis_54FEDA28()
@@ -14024,11 +13587,7 @@ namespace Reko.UnitTests.Arch.Arm
             AssertCode("@@@", "83FE991C");
         }
         // Reko: a decoder for the instruction 68FF08B3 at address 0018775E has not been implemented. (AdvancedSimd3RegistersSameLength_opc3)
-        [Test]
-        public void ThumbDis_68FF08B3()
-        {
-            AssertCode("@@@", "68FF08B3");
-        }
+ 
         // Reko: a decoder for the instruction FBFE3948 at address 00187846 has not been implemented. (AdvancedSimdTwoScalarsAndExtension)
         [Test]
         public void ThumbDis_FBFE3948()
@@ -14132,11 +13691,7 @@ namespace Reko.UnitTests.Arch.Arm
             AssertCode("@@@", "4DFEE8DD");
         }
         // Reko: a decoder for the instruction 12FF14B9 at address 001EB760 has not been implemented. (*vmul (integer and polynomial)
-        [Test]
-        public void ThumbDis_12FF14B9()
-        {
-            AssertCode("@@@", "12FF14B9");
-        }
+
         // Reko: a decoder for the instruction AAFCA708 at address 001EB788 has not been implemented. (op1:op2=0b0110)
         [Test]
         public void ThumbDis_AAFCA708()
@@ -14168,11 +13723,7 @@ namespace Reko.UnitTests.Arch.Arm
             AssertCode("@@@", "07FFD20E");
         }
         // Reko: a decoder for the instruction 65EF8B2E at address 00128A22 has not been implemented. (AdvancedSimd3RegistersSameLength_opcE U=0)
-        [Test]
-        public void ThumbDis_65EF8B2E()
-        {
-            AssertCode("@@@", "65EF8B2E");
-        }
+
         // Reko: a decoder for the instruction 04EF4B2E at address 00128A30 has not been implemented. (AdvancedSimd3RegistersSameLength_opcE U=0)
         [Test]
         public void ThumbDis_04EF4B2E()
@@ -14204,11 +13755,7 @@ namespace Reko.UnitTests.Arch.Arm
             AssertCode("@@@", "06FD40BC");
         }
         // Reko: a decoder for the instruction C2EE72D9 at address 001C798C has not been implemented. (AdvancedSimd8_16_32_bitElementMove)
-        [Test]
-        public void ThumbDis_C2EE72D9()
-        {
-            AssertCode("@@@", "C2EE72D9");
-        }
+
         // Reko: a decoder for the instruction E7F90195 at address 00168E20 has not been implemented. (Unimplemented 'single 2-element structure from one lane - T2' when decoding F9E79501)
         [Test]
         public void ThumbDis_E7F90195()
@@ -14234,11 +13781,7 @@ namespace Reko.UnitTests.Arch.Arm
             AssertCode("@@@", "95EF9004");
         }
         // Reko: a decoder for the instruction 53FD85DD at address 00187BE6 has not been implemented. (op1:op2=0b1001)
-        [Test]
-        public void ThumbDis_53FD85DD()
-        {
-            AssertCode("@@@", "53FD85DD");
-        }
+
         // Reko: a decoder for the instruction 91FFD65D at address 001C8684 has not been implemented. (AdvancedSimdTwoRegistersAndShiftAmount_opcD)
         [Test]
         public void ThumbDis_91FFD65D()
@@ -14318,11 +13861,7 @@ namespace Reko.UnitTests.Arch.Arm
             AssertCode("@@@", "A4FC0E6D");
         }
         // Reko: a decoder for the instruction A7EEF5AB at address 0016AC6C has not been implemented. (AdvancedSimd8_16_32_bitElementMove)
-        [Test]
-        public void ThumbDis_A7EEF5AB()
-        {
-            AssertCode("@@@", "A7EEF5AB");
-        }
+ 
         // Reko: a decoder for the instruction AEFC1E18 at address 0014BD00 has not been implemented. (op1:op2=0b0110)
         [Test]
         public void ThumbDis_AEFC1E18()
@@ -14426,11 +13965,7 @@ namespace Reko.UnitTests.Arch.Arm
             AssertCode("@@@", "47EF34D2");
         }
         // Reko: a decoder for the instruction 17FC771D at address 0016CC2A has not been implemented. (op1:op2=0b0001)
-        [Test]
-        public void ThumbDis_17FC771D()
-        {
-            AssertCode("@@@", "17FC771D");
-        }
+
         // Reko: a decoder for the instruction AAFE42CD at address 0018CBB6 has not been implemented. (AdvancedSimdTwoScalarsAndExtension)
         [Test]
         public void ThumbDis_AAFE42CD()
@@ -14438,11 +13973,7 @@ namespace Reko.UnitTests.Arch.Arm
             AssertCode("@@@", "AAFE42CD");
         }
         // Reko: a decoder for the instruction 78FF5799 at address 0016D14C has not been implemented. (*vmul (integer and polynomial)
-        [Test]
-        public void ThumbDis_78FF5799()
-        {
-            AssertCode("@@@", "78FF5799");
-        }
+
         // Reko: a decoder for the instruction DBFCE438 at address 0016D226 has not been implemented. (op1:op2=0b0101)
         [Test]
         public void ThumbDis_DBFCE438()
@@ -14486,11 +14017,7 @@ namespace Reko.UnitTests.Arch.Arm
             AssertCode("@@@", "88FAAD53");
         }
         // Reko: a decoder for the instruction 55FC74EC at address 001CDFC0 has not been implemented. (op1:op2=0b0001)
-        [Test]
-        public void ThumbDis_55FC74EC()
-        {
-            AssertCode("@@@", "55FC74EC");
-        }
+
         // Reko: a decoder for the instruction 16FEB089 at address 0016DB26 has not been implemented. (AdvancedSimdTwoScalarsAndExtension)
         [Test]
         public void ThumbDis_16FEB089()
@@ -14498,17 +14025,9 @@ namespace Reko.UnitTests.Arch.Arm
             AssertCode("@@@", "16FEB089");
         }
         // Reko: a decoder for the instruction AAEFC357 at address 0014CE2E has not been implemented. (Unimplemented '*' when decoding EFAA57C3)
-        [Test]
-        public void ThumbDis_AAEFC357()
-        {
-            AssertCode("@@@", "AAEFC357");
-        }
+
         // Reko: a decoder for the instruction F4EEDBDB at address 0018D206 has not been implemented. (AdvancedSimd8_16_32_bitElementMove)
-        [Test]
-        public void ThumbDis_F4EEDBDB()
-        {
-            AssertCode("@@@", "F4EEDBDB");
-        }
+ 
         // Reko: a decoder for the instruction 8FF9F559 at address 001EF782 has not been implemented. (Unimplemented 'single 2-element structure from one lane - T3' when decoding F98F59F5)
         [Test]
         public void ThumbDis_8FF9F559()
@@ -14612,11 +14131,7 @@ namespace Reko.UnitTests.Arch.Arm
             AssertCode("@@@", "B4FC0DDC");
         }
         // Reko: a decoder for the instruction 5DFF59A9 at address 0010F132 has not been implemented. (*vmul (integer and polynomial)
-        [Test]
-        public void ThumbDis_5DFF59A9()
-        {
-            AssertCode("@@@", "5DFF59A9");
-        }
+ 
         // Reko: a decoder for the instruction ABF9FD69 at address 0010F14C has not been implemented. (Unimplemented 'single 2-element structure from one lane - T3' when decoding F9AB69FD)
         [Test]
         public void ThumbDis_ABF9FD69()
@@ -14714,11 +14229,7 @@ namespace Reko.UnitTests.Arch.Arm
             AssertCode("@@@", "98FDFA39");
         }
         // Reko: a decoder for the instruction 81EED9A9 at address 0018F79A has not been implemented. (AdvancedSimd8_16_32_bitElementMove)
-        [Test]
-        public void ThumbDis_81EED9A9()
-        {
-            AssertCode("@@@", "81EED9A9");
-        }
+
         // Reko: a decoder for the instruction 1BF9784E at address 0018F7C0 has not been implemented. (LoadStoreSignedUnprivileged)
         [Test]
         public void ThumbDis_1BF9784E()
@@ -14744,11 +14255,7 @@ namespace Reko.UnitTests.Arch.Arm
             AssertCode("@@@", "F8FF9EF8");
         }
         // Reko: a decoder for the instruction 19FD376D at address 0012E238 has not been implemented. (op1:op2=0b1001)
-        [Test]
-        public void ThumbDis_19FD376D()
-        {
-            AssertCode("@@@", "19FD376D");
-        }
+
         // Reko: a decoder for the instruction 76F9617E at address 0018F96C has not been implemented. (LoadStoreSignedUnprivileged)
         [Test]
         public void ThumbDis_76F9617E()
@@ -14756,11 +14263,7 @@ namespace Reko.UnitTests.Arch.Arm
             AssertCode("@@@", "76F9617E");
         }
         // Reko: a decoder for the instruction 11FCF348 at address 001CFC78 has not been implemented. (op1:op2=0b0001)
-        [Test]
-        public void ThumbDis_11FCF348()
-        {
-            AssertCode("@@@", "11FCF348");
-        }
+
         // Reko: a decoder for the instruction 35FEF9CC at address 001F08A4 has not been implemented. (AdvancedSimdTwoScalarsAndExtension)
         [Test]
         public void ThumbDis_35FEF9CC()
@@ -14792,11 +14295,7 @@ namespace Reko.UnitTests.Arch.Arm
             AssertCode("@@@", "41FC1AFC");
         }
         // Reko: a decoder for the instruction 19FD80DD at address 0012EDA6 has not been implemented. (op1:op2=0b1001)
-        [Test]
-        public void ThumbDis_19FD80DD()
-        {
-            AssertCode("@@@", "19FD80DD");
-        }
+
         // Reko: a decoder for the instruction 73FC4569 at address 001D0412 has not been implemented. (op1:op2=0b0011)
         [Test]
         public void ThumbDis_73FC4569()
@@ -14882,11 +14381,7 @@ namespace Reko.UnitTests.Arch.Arm
             AssertCode("@@@", "53FFD414");
         }
         // Reko: a decoder for the instruction 96EE98CB at address 001D2DC2 has not been implemented. (AdvancedSimd8_16_32_bitElementMove)
-        [Test]
-        public void ThumbDis_96EE98CB()
-        {
-            AssertCode("@@@", "96EE98CB");
-        }
+
         // Reko: a decoder for the instruction E8FFC33E at address 00110876 has not been implemented. (Unimplemented '*' when decoding FFE83EC3)
         [Test]
         public void ThumbDis_E8FFC33E()
@@ -14894,11 +14389,7 @@ namespace Reko.UnitTests.Arch.Arm
             AssertCode("@@@", "E8FFC33E");
         }
         // Reko: a decoder for the instruction D3EEF3E9 at address 00194606 has not been implemented. (AdvancedSimd8_16_32_bitElementMove)
-        [Test]
-        public void ThumbDis_D3EEF3E9()
-        {
-            AssertCode("@@@", "D3EEF3E9");
-        }
+
         // Reko: a decoder for the instruction 1CF940AD at address 001D2DDE has not been implemented. (LoadStoreSignedImmediatePreIndexed)
         [Test]
         public void ThumbDis_1CF940AD()
@@ -14954,11 +14445,7 @@ namespace Reko.UnitTests.Arch.Arm
             AssertCode("@@@", "77FF665C");
         }
         // Reko: a decoder for the instruction 14FFB329 at address 00131FA0 has not been implemented. (*vmul (integer and polynomial)
-        [Test]
-        public void ThumbDis_14FFB329()
-        {
-            AssertCode("@@@", "14FFB329");
-        }
+
         // Reko: a decoder for the instruction 72EF0A2B at address 00132052 has not been implemented. (AdvancedSimd3RegistersSameLength_opcB)
         [Test]
         public void ThumbDis_72EF0A2B()
@@ -14966,11 +14453,7 @@ namespace Reko.UnitTests.Arch.Arm
             AssertCode("@@@", "72EF0A2B");
         }
         // Reko: a decoder for the instruction 65EF05FE at address 00114922 has not been implemented. (AdvancedSimd3RegistersSameLength_opcE U=0)
-        [Test]
-        public void ThumbDis_65EF05FE()
-        {
-            AssertCode("@@@", "65EF05FE");
-        }
+
         // Reko: a decoder for the instruction AFFD8F09 at address 00175212 has not been implemented. (op1:op2=0b1110)
         [Test]
         public void ThumbDis_AFFD8F09()
@@ -15242,11 +14725,7 @@ namespace Reko.UnitTests.Arch.Arm
             AssertCode("@@@", "8AF9DC3C");
         }
         // Reko: a decoder for the instruction 3FEFF859 at address 00197DBE has not been implemented. (*vmul (integer and polynomial)
-        [Test]
-        public void ThumbDis_3FEFF859()
-        {
-            AssertCode("@@@", "3FEFF859");
-        }
+
         // Reko: a decoder for the instruction DBFF4482 at address 001B7F4C has not been implemented. (Unimplemented '*scalar' when decoding FFDB8244)
         [Test]
         public void ThumbDis_DBFF4482()
@@ -15266,11 +14745,7 @@ namespace Reko.UnitTests.Arch.Arm
             AssertCode("@@@", "F2EF1A38");
         }
         // Reko: a decoder for the instruction 51FD0B98 at address 00198C72 has not been implemented. (op1:op2=0b1001)
-        [Test]
-        public void ThumbDis_51FD0B98()
-        {
-            AssertCode("@@@", "51FD0B98");
-        }
+  
         // Reko: a decoder for the instruction D8FC29FD at address 001FA800 has not been implemented. (op1:op2=0b0101)
         [Test]
         public void ThumbDis_D8FC29FD()
@@ -15302,11 +14777,6 @@ namespace Reko.UnitTests.Arch.Arm
             AssertCode("@@@", "03EF337B");
         }
         // Reko: a decoder for the instruction 10FF1949 at address 001996BE has not been implemented. (*vmul (integer and polynomial)
-        [Test]
-        public void ThumbDis_10FF1949()
-        {
-            AssertCode("@@@", "10FF1949");
-        }
         // Reko: a decoder for the instruction 0CFFA93B at address 0011B674 has not been implemented. (AdvancedSimd3RegistersSameLength_opcB)
         [Test]
         public void ThumbDis_0CFFA93B()
@@ -15374,11 +14844,7 @@ namespace Reko.UnitTests.Arch.Arm
             AssertCode("@@@", "D7FA93AD");
         }
         // Reko: a decoder for the instruction 18FC0C5D at address 001D7626 has not been implemented. (op1:op2=0b0001)
-        [Test]
-        public void ThumbDis_18FC0C5D()
-        {
-            AssertCode("@@@", "18FC0C5D");
-        }
+
         // Reko: a decoder for the instruction 9BEFA609 at address 001D76D6 has not been implemented. (Unimplemented '*integer' when decoding EF9B09A6)
         [Test]
         public void ThumbDis_9BEFA609()
@@ -15500,11 +14966,7 @@ namespace Reko.UnitTests.Arch.Arm
             AssertCode("@@@", "6CEF0113");
         }
         // Reko: a decoder for the instruction 45EFA2E3 at address 00158624 has not been implemented. (AdvancedSimd3RegistersSameLength_opc3)
-        [Test]
-        public void ThumbDis_45EFA2E3()
-        {
-            AssertCode("@@@", "45EFA2E3");
-        }
+
         // Reko: a decoder for the instruction F1FFF23D at address 001D884A has not been implemented. (AdvancedSimdTwoRegistersAndShiftAmount_opcD)
         [Test]
         public void ThumbDis_F1FFF23D()
@@ -15515,7 +14977,7 @@ namespace Reko.UnitTests.Arch.Arm
         [Test]
         public void ThumbDis_2BEF5901()
         {
-            AssertCode("@@@", "2BEF5901");
+            AssertCode("@@@", "2AEF5A01");
         }
         // Reko: a decoder for the instruction 33FEA6AD at address 0019ADDA has not been implemented. (AdvancedSimdTwoScalarsAndExtension)
         [Test]
@@ -15554,11 +15016,7 @@ namespace Reko.UnitTests.Arch.Arm
             AssertCode("@@@", "9EFFC2BF");
         }
         // Reko: a decoder for the instruction 37EF68EB at address 0011D8A2 has not been implemented. (AdvancedSimd3RegistersSameLength_opcB)
-        [Test]
-        public void ThumbDis_37EF68EB()
-        {
-            AssertCode("@@@", "37EF68EB");
-        }
+  
         // Reko: a decoder for the instruction 2DFC920C at address 001D8C2C has not been implemented. (op1:op2=0b0010)
         [Test]
         public void ThumbDis_2DFC920C()
@@ -15614,11 +15072,7 @@ namespace Reko.UnitTests.Arch.Arm
             AssertCode("@@@", "63FEBABC");
         }
         // Reko: a decoder for the instruction 74F9E75D at address 0015BA1C has not been implemented. (LoadStoreSignedImmediatePreIndexed)
-        [Test]
-        public void ThumbDis_74F9E75D()
-        {
-            AssertCode("@@@", "74F9E75D");
-        }
+
         // Reko: a decoder for the instruction FBEF16AD at address 001BE208 has not been implemented. (AdvancedSimdTwoRegistersAndShiftAmount_opcD)
         [Test]
         public void ThumbDis_FBEF16AD()
@@ -15704,11 +15158,7 @@ namespace Reko.UnitTests.Arch.Arm
             AssertCode("@@@", "A3FFE16C");
         }
         // Reko: a decoder for the instruction 15FC1C18 at address 0017D7DE has not been implemented. (op1:op2=0b0001)
-        [Test]
-        public void ThumbDis_15FC1C18()
-        {
-            AssertCode("@@@", "15FC1C18");
-        }
+
         // Reko: a decoder for the instruction 4BFF261B at address 0017D7EC has not been implemented. (AdvancedSimd3RegistersSameLength_opcB)
         [Test]
         public void ThumbDis_4BFF261B()

@@ -838,6 +838,20 @@ namespace Reko.Arch.Arm.AArch32
             m.Assign(dst, fn(m.Convert(src, src.DataType, PrimitiveType.Int32), src3));
         }
 
+        // Like smml, but rounding
+        private void RewriteSmmlr(Func<Expression, Expression, Expression> fn)
+        {
+            var src1 = Operand(1);
+            var src2 = Operand(2);
+            var src3 = Operand(3);
+            var dst = Operand(0);
+
+            var mul = m.SMul(src1, src2);
+            mul.DataType = PrimitiveType.Int64;
+            var src = m.Sar(m.IAdd(mul, 0x80000000), m.Int32(32));
+            m.Assign(dst, fn(m.Convert(src, src.DataType, PrimitiveType.Int32), src3));
+        }
+
         private void RewriteSmmul()
         {
             var src1 = Operand(1);
@@ -875,16 +889,28 @@ namespace Reko.Arch.Arm.AArch32
                 m.Int32(16)));
         }
 
-        private void RewriteShasx()
+        private void RewriteHasx(PrimitiveType elemType)
+        {
+            var src1 = Operand(1);
+            var src2 = Operand(2);
+            var diff = binder.CreateTemporary(elemType);
+            var sum = binder.CreateTemporary(elemType);
+            m.Assign(diff, m.ISub(m.Slice(src1, elemType, 0), m.Slice(src2, elemType, 16)));
+            m.Assign(sum, m.ISub(m.Slice(src1, elemType, 16), m.Slice(src2, elemType, 0)));
+            var dst = Operand(0);
+            m.Assign(dst, m.Seq(sum, diff));
+        }
+
+        private void RewriteShsax()
         {
             var src1 = Operand(1);
             var src2 = Operand(2);
             var diff = binder.CreateTemporary(PrimitiveType.Int16);
             var sum = binder.CreateTemporary(PrimitiveType.Int16);
-            m.Assign(diff, m.ISub(m.Slice(src1, PrimitiveType.Int16, 0), m.Slice(src2, PrimitiveType.Int16, 16)));
-            m.Assign(sum, m.ISub(m.Slice(src1, PrimitiveType.Int16, 16), m.Slice(src2, PrimitiveType.Int16, 0)));
+            m.Assign(sum, m.ISub(m.Slice(src1, PrimitiveType.Int16, 0), m.Slice(src2, PrimitiveType.Int16, 16)));
+            m.Assign(diff, m.ISub(m.Slice(src1, PrimitiveType.Int16, 16), m.Slice(src2, PrimitiveType.Int16, 0)));
             var dst = Operand(0);
-            m.Assign(dst, m.Seq(sum, diff));
+            m.Assign(dst, m.Seq(diff, sum));
         }
 
         private void RewriteSsat()
@@ -1072,10 +1098,10 @@ namespace Reko.Arch.Arm.AArch32
             m.Assign(Q(), m.Cond(dst));
         }
 
-        private void RewriteUsax()
+        private void RewriteSax(PrimitiveType elemType)
         {
-            var sum = binder.CreateTemporary(PrimitiveType.UInt16);
-            var diff = binder.CreateTemporary(PrimitiveType.UInt16);
+            var sum = binder.CreateTemporary(elemType);
+            var diff = binder.CreateTemporary(elemType);
             var rn = Operand(1);
             var rm = Operand(2);
             m.Assign(sum, m.IAdd(m.Slice(rn, 0, 16), m.Slice(rm, 16, 16)));
@@ -1097,6 +1123,27 @@ namespace Reko.Arch.Arm.AArch32
             m.Assign(dst, m.IAdd(this.Operand(1), src));
         }
 
+        private void RewriteXtab16(
+            IntrinsicProcedure intrinsicNoRot,
+            IntrinsicProcedure intrinsicRotate)
+        {
+            var src1 = Operand(1);
+            var src2 = this.Reg((RegisterStorage) instr.Operands[2]);
+            var dst = Operand(0);
+            if (instr.ShiftType == Mnemonic.ror &&
+                instr.ShiftValue is ImmediateOperand imm)
+            {
+                var rotation = imm.Value.ToInt32();
+                if (rotation != 0)
+                {
+                    m.Assign(dst, m.Fn(intrinsicRotate, src1, src2, imm.Value));
+                    return;
+                }
+            }
+            m.Assign(dst, m.Fn(intrinsicNoRot, src1, src2));
+        }
+
+
         private void RewriteXtb(PrimitiveType dtSrc, PrimitiveType dtDst)
         {
             var dst = this.Operand(0, PrimitiveType.Word32, true);
@@ -1107,6 +1154,25 @@ namespace Reko.Arch.Arm.AArch32
             }
             src = m.Convert(src, dtSrc, dtDst);
             m.Assign(dst, src);
+        }
+
+        private void RewriteXtb16(
+            IntrinsicProcedure intrinsicNoRot,
+            IntrinsicProcedure intrinsicRotate)
+        {
+            var src = this.Reg((RegisterStorage) instr.Operands[1]);
+            var dst = Operand(0);
+            if (instr.ShiftType == Mnemonic.ror && 
+                instr.ShiftValue is ImmediateOperand imm)
+            {
+                var rotation = imm.Value.ToInt32();
+                if (rotation != 0)
+                {
+                    m.Assign(dst, m.Fn(intrinsicRotate, src, imm.Value));
+                    return;
+                }
+            }
+            m.Assign(dst, m.Fn(intrinsicNoRot, src));
         }
 
         private void RewriteYield()

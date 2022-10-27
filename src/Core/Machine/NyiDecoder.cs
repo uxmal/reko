@@ -21,9 +21,10 @@
 namespace Reko.Core.Machine
 {
     /// <summary>
-    /// Special subclass of <see cref="Decoder"/>, used during implementation
-    /// for decoders that haven't been implemented yet. When the <see cref="Decode(uint, TDasm)"/>
-    /// method is called, the <see cref="DisassemblerBase{TInstr, TMnemonic}.NotYetImplemented(string)"/>
+    /// Special subclass of <see cref="Decoder"/>, used as a placeholder
+    /// for machine instructions that haven't been implemented yet. When 
+    /// the <see cref="Decode(uint, TDasm)"/> method is called, the 
+    /// <see cref="DisassemblerBase{TInstr, TMnemonic}.NotYetImplemented(string)"/>
     /// hook method is called. 
     /// </summary>
     public class NyiDecoder<TDasm, TMnemonic, TInstr> : Decoder<TDasm, TMnemonic, TInstr>

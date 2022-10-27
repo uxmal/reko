@@ -61,6 +61,8 @@ namespace Reko.Core.Intrinsics
         public static readonly IntrinsicProcedure fabsf = IntrinsicBuilder.Unary("fabsf", PrimitiveType.Real32);
         public static readonly IntrinsicProcedure floor = IntrinsicBuilder.Unary("floor", PrimitiveType.Real64);
         public static readonly IntrinsicProcedure floorf = IntrinsicBuilder.Unary("floorf", PrimitiveType.Real32);
+        public static readonly IntrinsicProcedure rint = IntrinsicBuilder.Unary("rint", PrimitiveType.Real64);
+        public static readonly IntrinsicProcedure rintf = IntrinsicBuilder.Unary("rintf", PrimitiveType.Real32);
         public static readonly IntrinsicProcedure sqrt = IntrinsicBuilder.Unary("sqrt", PrimitiveType.Real64);
         public static readonly IntrinsicProcedure sqrtf = IntrinsicBuilder.Unary("sqrtf", PrimitiveType.Real32);
 

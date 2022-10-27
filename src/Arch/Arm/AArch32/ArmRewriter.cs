@@ -24,25 +24,19 @@ using Reko.Core.Intrinsics;
 using Reko.Core.Machine;
 using Reko.Core.Memory;
 using Reko.Core.Rtl;
-using Reko.Core.Serialization;
 using Reko.Core.Services;
 using Reko.Core.Types;
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
-using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
-using CallingConvention = System.Runtime.InteropServices.CallingConvention;
 
 namespace Reko.Arch.Arm.AArch32
 {
     public partial class ArmRewriter : IEnumerable<RtlInstructionCluster>
     {
-        private readonly IProcessorArchitecture arch;
-        private readonly EndianImageReader rdr;
+        protected readonly IProcessorArchitecture arch;
+        protected readonly EndianImageReader rdr;
         private readonly IRewriterHost host;
         private readonly IStorageBinder binder;
         private readonly IEnumerator<AArch32Instruction> dasm;
@@ -94,18 +88,9 @@ namespace Reko.Arch.Arm.AArch32
                 case Mnemonic.fldmiax:
                 case Mnemonic.fstmdbx:
                 case Mnemonic.fstmiax:
-                case Mnemonic.mcr2:
                 case Mnemonic.mcrr2:
-                case Mnemonic.mrc2:
                 case Mnemonic.mrrc2:
                 case Mnemonic.pli:
-                case Mnemonic.qsub8:
-                case Mnemonic.rbit:
-                case Mnemonic.rfeda:
-                case Mnemonic.rfedb:
-                case Mnemonic.rfeia:
-                case Mnemonic.rfeib:
-                case Mnemonic.sel:
                 case Mnemonic.sha1c:
                 case Mnemonic.sha1h:
                 case Mnemonic.sha1m:
@@ -116,48 +101,19 @@ namespace Reko.Arch.Arm.AArch32
                 case Mnemonic.sha256h2:
                 case Mnemonic.sha256su0:
                 case Mnemonic.sha256su1:
-                case Mnemonic.shadd16:
-                case Mnemonic.shadd8:
-                case Mnemonic.shsax:
-                case Mnemonic.smmlar:
-                case Mnemonic.smmlsr:
                 case Mnemonic.smmulr:
                 case Mnemonic.smuadx:
                 case Mnemonic.smusdx:
-                case Mnemonic.srsda:
-                case Mnemonic.srsdb:
-                case Mnemonic.srsia:
-                case Mnemonic.srsib:
-                case Mnemonic.ssax:
-                case Mnemonic.sxtab16:
-                case Mnemonic.sxtb16:
-                case Mnemonic.uhadd16:
-                case Mnemonic.uhadd8:
-                case Mnemonic.uhasx:
-                case Mnemonic.uhsub16:
-                case Mnemonic.uhsub8:
                 case Mnemonic.usad8:
-                case Mnemonic.uxtab16:
-                case Mnemonic.uxtb16:
-                case Mnemonic.vabal:
-                case Mnemonic.vabdl:
-                case Mnemonic.vacge:
-                case Mnemonic.vacgt:
-                case Mnemonic.vaddhn:
                 case Mnemonic.vcls:
                 case Mnemonic.vclz:
                 case Mnemonic.vcnt:
                 case Mnemonic.vcvta:
                 case Mnemonic.vcvtb:
-                case Mnemonic.vcvtm:
                 case Mnemonic.vcvtn:
                 case Mnemonic.vcvtp:
                 case Mnemonic.vcvtt:
-                case Mnemonic.vfnma:
-                case Mnemonic.vfnms:
                 case Mnemonic.vldmdb:
-                case Mnemonic.vmaxnm:
-                case Mnemonic.vminnm:
                 case Mnemonic.vmovl:
                 case Mnemonic.vmovn:
                 case Mnemonic.vmsr:
@@ -172,30 +128,21 @@ namespace Reko.Arch.Arm.AArch32
                 case Mnemonic.vqmovn:
                 case Mnemonic.vqneg:
                 case Mnemonic.vqrdmlah:
-                case Mnemonic.vqrshl:
                 case Mnemonic.vqrshrn:
                 case Mnemonic.vqrshrun:
-                case Mnemonic.vqshlu:
-                case Mnemonic.vqshrn:
                 case Mnemonic.vqshrun:
-                case Mnemonic.vqsub:
-                case Mnemonic.vraddhn:
                 case Mnemonic.vrecpe:
                 case Mnemonic.vrev16:
                 case Mnemonic.vrev32:
                 case Mnemonic.vrev64:
                 case Mnemonic.vrinta:
-                case Mnemonic.vrintm:
                 case Mnemonic.vrintn:
                 case Mnemonic.vrintp:
                 case Mnemonic.vrintr:
                 case Mnemonic.vrintx:
                 case Mnemonic.vrintz:
                 case Mnemonic.vrshrn:
-                case Mnemonic.vrsqrte:
-                case Mnemonic.vrsqrts:
                 case Mnemonic.vshrn:
-                case Mnemonic.vsubhn:
                 case Mnemonic.vswp:
                 case Mnemonic.vtbx:
                 case Mnemonic.vtrn:
@@ -207,8 +154,6 @@ namespace Reko.Arch.Arm.AArch32
                 case Mnemonic.lsrs:
                 case Mnemonic.subs:
                 case Mnemonic.movs:
-                case Mnemonic.wfe:
-                case Mnemonic.sev:
                 case Mnemonic.sevl:
                     NotImplementedYet();
                     break;
@@ -289,14 +234,16 @@ namespace Reko.Arch.Arm.AArch32
                 case Mnemonic.lsl: case Mnemonic.lsls: RewriteShift(m.Shl); break;
                 case Mnemonic.lsr: RewriteShift(m.Shr); break;
                 case Mnemonic.nop: m.Nop(); break;
-                case Mnemonic.mcr: RewriteMcr(); break;
+                case Mnemonic.mcr: RewriteMcr(mcr_intrinsic); break;
+                case Mnemonic.mcr2: RewriteMcr(mcr2_intrinsic); break;
                 case Mnemonic.mcrr: RewriteMcrr(); break;
                 case Mnemonic.mla: RewriteMultiplyAccumulate(m.IAdd); break;
                 case Mnemonic.mls: RewriteMultiplyAccumulate(m.ISub); break;
                 case Mnemonic.mov: RewriteMov(); break;
                 case Mnemonic.movt: RewriteMovt(); break;
                 case Mnemonic.movw: RewriteMovw(); break;
-                case Mnemonic.mrc: RewriteMrc(); break;
+                case Mnemonic.mrc: RewriteMrc(mrc_intrinsic); break;
+                case Mnemonic.mrc2: RewriteMrc(mrc2_intrinsic); break;
                 case Mnemonic.mrrc: RewriteMrrc(); break;
                 case Mnemonic.mrs: RewriteMrs(); break;
                 case Mnemonic.msr: RewriteMsr(); break;
@@ -319,6 +266,12 @@ namespace Reko.Arch.Arm.AArch32
                 case Mnemonic.qsax: RewriteQasx("__qsax"); break;
                 case Mnemonic.qsub: RewriteQAddSub(m.ISub); break;
                 case Mnemonic.qsub16: RewriteVectorBinOp("__qsub_{0}", ArmVectorData.S16); break;
+                case Mnemonic.qsub8: RewriteVectorBinOp("__qsub_{0}", ArmVectorData.S8); break;
+                case Mnemonic.rbit: RewriteIntrinsic(rbit_intrinsic); break;
+                case Mnemonic.rfeda: RewriteRfe(rfeda_intrinsic); break;
+                case Mnemonic.rfedb: RewriteRfe(rfedb_intrinsic); break;
+                case Mnemonic.rfeia: RewriteRfe(rfeia_intrinsic); break;
+                case Mnemonic.rfeib: RewriteRfe(rfeib_intrinsic); break;
                 case Mnemonic.ror: RewriteShift(Ror); break;
                 case Mnemonic.rrx: RewriteShift(Rrx); break;
                 case Mnemonic.rev: RewriteRev(PrimitiveType.Byte); break;
@@ -332,10 +285,16 @@ namespace Reko.Arch.Arm.AArch32
                 case Mnemonic.sbc: RewriteAdcSbc(m.ISub, false); break;
                 case Mnemonic.sbfx: RewriteSbfx(); break;
                 case Mnemonic.sdiv: RewriteDiv(m.SDiv); break;
+                case Mnemonic.sel: RewriteIntrinsic(sel_intrinsic); break;
                 case Mnemonic.setend: RewriteSetend(); break;
-                case Mnemonic.shasx: RewriteShasx(); break;
-                case Mnemonic.shsub16: RewriteVectorBinOp("__shsub_{0}", ArmVectorData.S16); break;
-                case Mnemonic.shsub8: RewriteVectorBinOp("__shsub_{0}", ArmVectorData.S8); break;
+                case Mnemonic.setpan: RewriteIntrinsicSideeffect(setpan_intrinsic); break;
+                case Mnemonic.sev: RewriteIntrinsicSideeffect(sev_intrinsic); break;
+                case Mnemonic.shasx: RewriteHasx(PrimitiveType.Int16); break;
+                case Mnemonic.shadd16: RewriteVectorBinOp(hadd_intrinsic, PrimitiveType.Int16); break;
+                case Mnemonic.shadd8: RewriteVectorBinOp(hadd_intrinsic, PrimitiveType.Int8); break;
+                case Mnemonic.shsax: RewriteShsax(); break;
+                case Mnemonic.shsub16: RewriteVectorBinOp(hsub_intrinsic, PrimitiveType.Int16); break;
+                case Mnemonic.shsub8: RewriteVectorBinOp(hsub_intrinsic, PrimitiveType.Int8); break;
                 case Mnemonic.smc: RewriteSmc(); break;
                 case Mnemonic.smlabb: RewriteMla(false, false, PrimitiveType.Int16, m.SMul); break;
                 case Mnemonic.smlabt: RewriteMla(false, true, PrimitiveType.Int16, m.SMul); break;
@@ -357,7 +316,9 @@ namespace Reko.Arch.Arm.AArch32
                 case Mnemonic.smlsld: RewriteMlxd(false, PrimitiveType.Int16, m.SMul, m.ISub); break;
                 case Mnemonic.smlsldx: RewriteMlxd(true, PrimitiveType.Int16, m.SMul, m.ISub); break;
                 case Mnemonic.smmla: RewriteSmml(m.IAdd); break;
+                case Mnemonic.smmlar: RewriteSmmlr(m.IAdd); break;
                 case Mnemonic.smmls: RewriteSmml(m.ISub); break;
+                case Mnemonic.smmlsr: RewriteSmmlr(m.ISub); break;
                 case Mnemonic.smmul: RewriteSmmul(); break;
                 case Mnemonic.smuad: RewriteMxd(false, PrimitiveType.Int16, m.SMul, m.IAdd); break;
                 case Mnemonic.smulbb: RewriteMulbb(false, false, PrimitiveType.Int16, m.SMul); break;
@@ -368,7 +329,12 @@ namespace Reko.Arch.Arm.AArch32
                 case Mnemonic.smultt: RewriteMulbb(true, true, PrimitiveType.Int16, m.SMul); break;
                 case Mnemonic.smull: RewriteMull(PrimitiveType.Int64, m.SMul); break;
                 case Mnemonic.smusd: RewriteSmusd(); break;
+                case Mnemonic.srsda: RewriteIntrinsicSideeffect(srsda_intrinsic); break;
+                case Mnemonic.srsdb: RewriteIntrinsicSideeffect(srsdb_intrinsic); break;
+                case Mnemonic.srsia: RewriteIntrinsicSideeffect(srsia_intrinsic); break;
+                case Mnemonic.srsib: RewriteIntrinsicSideeffect(srsib_intrinsic); break;
                 case Mnemonic.ssat: RewriteSsat(); break;
+                case Mnemonic.ssax: RewriteSax(PrimitiveType.Int16); break;
                 case Mnemonic.ssat16: RewriteSat16(ssat16_intrinsic); break;
                 case Mnemonic.ssub16: RewriteVectorBinOp("__ssub16", ArmVectorData.S16); break;
                 case Mnemonic.ssub8: RewriteVectorBinOp("__ssub8", ArmVectorData.S8); break;
@@ -404,8 +370,10 @@ namespace Reko.Arch.Arm.AArch32
                 case Mnemonic.swp: RewriteSwp(PrimitiveType.Word32); break;
                 case Mnemonic.swpb: RewriteSwp(PrimitiveType.Byte); break;
                 case Mnemonic.sxtab: RewriteXtab(PrimitiveType.SByte); break;
+                case Mnemonic.sxtab16: RewriteXtab16(sxtab16_intrinsic, sxtab16_ror_intrinsic); break;
                 case Mnemonic.sxtah: RewriteXtab(PrimitiveType.Int16); break;
                 case Mnemonic.sxtb: RewriteXtb(PrimitiveType.SByte, PrimitiveType.Int32); break;
+                case Mnemonic.sxtb16: RewriteXtb16(sxtb16_intrinsic, sxtb16_ror_intrinsic); break;
                 case Mnemonic.sxth: RewriteXtb(PrimitiveType.Int16, PrimitiveType.Int32); break;
                 case Mnemonic.tbb: RewriteTableBranch(PrimitiveType.Byte); break;
                 case Mnemonic.tbh: RewriteTableBranch(PrimitiveType.Word16); break;
@@ -418,7 +386,12 @@ namespace Reko.Arch.Arm.AArch32
                 case Mnemonic.ubfx: RewriteUbfx(); break;
                 case Mnemonic.udf: RewriteUdf(); break;
                 case Mnemonic.udiv: RewriteDiv(m.UDiv); break;
+                case Mnemonic.uhadd16: RewriteVectorBinOp(hadd_intrinsic, PrimitiveType.UInt16); break;
+                case Mnemonic.uhadd8: RewriteVectorBinOp(hadd_intrinsic, PrimitiveType.UInt8); break;
+                case Mnemonic.uhasx: RewriteHasx(PrimitiveType.UInt16); break;
                 case Mnemonic.uhsax: RewriteUhsax(); break;
+                case Mnemonic.uhsub16: RewriteVectorBinOp(hsub_intrinsic, PrimitiveType.UInt16); break;
+                case Mnemonic.uhsub8: RewriteVectorBinOp(hsub_intrinsic, PrimitiveType.UInt8); break;
                 case Mnemonic.umaal: RewriteUmaal(); break;
                 case Mnemonic.umlal: RewriteUmlal(); break;
                 case Mnemonic.umull: RewriteMull(PrimitiveType.UInt64, m.UMul); break;
@@ -431,21 +404,26 @@ namespace Reko.Arch.Arm.AArch32
                 case Mnemonic.usada8: RewriteUsada8(); break;
                 case Mnemonic.usat: RewriteUsat(); break;
                 case Mnemonic.usat16: RewriteSat16(usat16_intrinsic); break;
-                case Mnemonic.usax: RewriteUsax(); break;
+                case Mnemonic.usax: RewriteSax(PrimitiveType.UInt16); break;
                 case Mnemonic.usub16: RewriteVectorBinOp("__usub_{0}", ArmVectorData.I16); break;
                 case Mnemonic.usub8: RewriteVectorBinOp("__usub_{0}", ArmVectorData.I8); break;
                 case Mnemonic.uxtab: RewriteXtab(PrimitiveType.Byte); break;
+                case Mnemonic.uxtab16: RewriteXtab16(uxtab16_intrinsic, uxtab16_ror_intrinsic); break;
                 case Mnemonic.uxtah: RewriteXtab(PrimitiveType.UInt16); break;
                 case Mnemonic.uxtb: RewriteXtb(PrimitiveType.Byte, PrimitiveType.UInt32); break;
+                case Mnemonic.uxtb16: RewriteXtb16(uxtb16_initrinsic, uxtb16_ror_intrinsic); break;
                 case Mnemonic.uxth: RewriteXtb(PrimitiveType.UInt16, PrimitiveType.UInt32); break;
+                case Mnemonic.wfe: RewriteIntrinsicSideeffect(wfe_intrinsic); break;
                 case Mnemonic.wfi: RewriteWfi(); break;
                 case Mnemonic.yield: RewriteYield(); break;
 
-
                 case Mnemonic.vabs: RewriteVectorUnaryOp("__vabs_{0}"); break;
                 case Mnemonic.vaba: RewriteVectorBinOp("__vaba_{0}"); break;
+                case Mnemonic.vabal: RewriteVectorBinOpWiden(vabal_intrinsic); break;
                 case Mnemonic.vabd: RewriteVectorBinOp("__vabd_{0}"); break;
+                case Mnemonic.vabdl: RewriteVectorBinOpWiden(vabdl_intrinsic); break;
                 case Mnemonic.vadd: RewriteVectorBinOp("__vadd_{0}"); break;
+                case Mnemonic.vaddhn: RewriteVectorBinOpNarrow(vaddhn_intrinsic); break;
                 case Mnemonic.vaddl: RewriteVectorBinOp("__vaddl_{0}"); break;
                 case Mnemonic.vaddw: RewriteVectorBinOp("__vaddw_{0}"); break;
                 case Mnemonic.vand: RewriteVecBinOp(m.And); break;
@@ -454,6 +432,8 @@ namespace Reko.Arch.Arm.AArch32
                 case Mnemonic.vcmp: RewriteVcmp(); break;
                 case Mnemonic.vbif: RewriteIntrinsic("__vbif", false, Domain.UnsignedInt); break;
                 case Mnemonic.vbit: RewriteIntrinsic("__vbit", false, Domain.UnsignedInt); break;
+                case Mnemonic.vacge: RewriteVectorBinOp(vabs_cge_intrinsic); break;
+                case Mnemonic.vacgt: RewriteVectorBinOp(vabs_cgt_intrinsic); break;
                 case Mnemonic.vceq: RewriteVectorBinOp("__vceq_{0}"); break;
                 case Mnemonic.vcge: RewriteVectorBinOp("__vcge_{0}"); break;
                 case Mnemonic.vcgt: RewriteVectorBinOp("__vcgt_{0}"); break;
@@ -461,13 +441,16 @@ namespace Reko.Arch.Arm.AArch32
                 case Mnemonic.vclt: RewriteVectorBinOp("__vclt_{0}"); break;
                 case Mnemonic.vcmpe: RewriteVcmp(); break;
                 case Mnemonic.vcvt: RewriteVcvt(); break;
-                case Mnemonic.vcvtr: RewriteVcvtr(); break;
+                case Mnemonic.vcvtm: RewriteVcvtToInteger(FpOps.floorf, FpOps.floor); break;
+                case Mnemonic.vcvtr: RewriteVcvtToInteger(FpOps.rintf, FpOps.rint); break;
                 case Mnemonic.vdiv: RewriteVecBinOp(m.FDiv); break;
                 case Mnemonic.vdup: RewriteVdup(); break;
                 case Mnemonic.veor: RewriteVecBinOp(m.Xor); break;
                 case Mnemonic.vext: RewriteVext(); break;
                 case Mnemonic.vfma: RewriteVfmas("__vfma", m.FAdd); break;
                 case Mnemonic.vfms: RewriteVfmas("__vfms", m.FSub); break;
+                case Mnemonic.vfnma: RewriteVectorBinOp(vfnma_intrinsic); break;
+                case Mnemonic.vfnms: RewriteVectorBinOp(vfnms_intrinsic); break;
                 case Mnemonic.vhadd: RewriteVectorBinOp("__vhadd_{0}"); break;
                 case Mnemonic.vhsub: RewriteVectorBinOp("__vhsub_{0}"); break;
                 case Mnemonic.vld1: RewriteVldN(vld1_multi_intrinsic); break; ;
@@ -477,10 +460,12 @@ namespace Reko.Arch.Arm.AArch32
                 case Mnemonic.vldmia: RewriteVldmia(); break;
                 case Mnemonic.vldr: RewriteVldr(); break;
                 case Mnemonic.vmax: RewriteVectorBinOp("__vmax_{0}"); break;
+                case Mnemonic.vmaxnm: RewriteFloatingPointBinary(vmaxnm_intrinsic); break;
                 case Mnemonic.vmin: RewriteVectorBinOp("__vmin_{0}"); break;
+                case Mnemonic.vminnm: RewriteFloatingPointBinary(vminnm_intrinsic); break;
                 case Mnemonic.vmov: RewriteVmov(); break;
-                case Mnemonic.vmla: RewriteVectorBinOp("__vmla_{0}"); break;
-                case Mnemonic.vmls: RewriteVectorBinOp("__vmls_{0}"); break;
+                case Mnemonic.vmla: RewriteVectorBinOp(vmla_intrinsic); break;
+                case Mnemonic.vmls: RewriteVectorBinOp(vmls_intrinsic); break;
                 case Mnemonic.vmlal: RewriteVectorBinOp("__vmlal_{0}"); break;
                 case Mnemonic.vmlsl: RewriteVectorBinOp("__vmlsl_{0}"); break;
                 case Mnemonic.vmrs: RewriteVmrs(); break;
@@ -499,11 +484,19 @@ namespace Reko.Arch.Arm.AArch32
                 case Mnemonic.vpush: RewriteVpush(); break;
                 case Mnemonic.vqabs: RewriteVectorBinOp("__vqabs_{0}"); break;
                 case Mnemonic.vqadd: RewriteVectorBinOp("__vqadd_{0}"); break;
+                case Mnemonic.vqrshl: RewriteVectorBinOp(vqrshl_intrinsic); break;
+                case Mnemonic.vqsub: RewriteVectorBinOp(vqsub_intrinsic); break;
                 case Mnemonic.vqshl: RewriteVectorBinOp("__vqshl_{0}"); break;
+                case Mnemonic.vqshlu: RewriteVectorShift(vqshlu_intrinsic); break;
+                case Mnemonic.vqshrn: RewriteVectorShift(vqshrn_intrinsic); break;
+                case Mnemonic.vraddhn: RewriteVectorBinOpNarrow(vraddhn_intrinsic); break;
                 case Mnemonic.vrecps: RewriteVectorUnaryOp("__vrecps_{0}"); break;
-                case Mnemonic.vrhadd: RewriteVectorBinOp("__vrhadd_{0}"); break;
+                case Mnemonic.vrhadd: RewriteVectorBinOp(vrhadd_intrinsic); break;
+                case Mnemonic.vrintm: RewriteFloatingPointUnary(FpOps.floorf, FpOps.floor); break;
                 case Mnemonic.vrshl: RewriteVectorBinOp("__vrshl_{0}"); break;
                 case Mnemonic.vrshr: RewriteVectorBinOp("__vrshr_{0}"); break;
+                case Mnemonic.vrsqrte: RewriteVectorBinOp(vrsqrte_intrinsic); break;
+                case Mnemonic.vrsqrts: RewriteVectorBinOp(vrsqrts_intrinsic); break;
                 case Mnemonic.vrsra: RewriteVectorBinOp("__vrsra_{0}"); break;
                 case Mnemonic.vrsubhn: RewriteVectorBinOp("__vrsubhn_{0}"); break;
                 case Mnemonic.vseleq: RewriteVectorBinOp("__vseleq_{0}"); break;
@@ -513,7 +506,8 @@ namespace Reko.Arch.Arm.AArch32
                 case Mnemonic.vstm: RewriteVstmia(true, false); break;
                 case Mnemonic.vstmdb: RewriteVstmia(false, true); break;
                 case Mnemonic.vstmia: RewriteVstmia(true, true); break;
-                case Mnemonic.vsqrt: RewriteVsqrt(); break;
+                case Mnemonic.vsubhn: RewriteVectorBinOpNarrow(vsubhn_intrinsic); break;
+                case Mnemonic.vsqrt: RewriteFloatingPointUnary(FpOps.sqrtf, FpOps.sqrt); break;
                 case Mnemonic.vshl: RewriteVectorBinOp("__vshl_{0}"); break;
                 case Mnemonic.vshll: RewriteVectorBinOp("__vshll_{0}"); break;
                 case Mnemonic.vshr: RewriteVectorBinOp("__vshr_{0}"); break;
@@ -811,7 +805,7 @@ namespace Reko.Arch.Arm.AArch32
                         }
                         return m.Mem(dt, ea);
                     }
-                    if ((mop.PreIndex || !instr.Writeback))
+                    if (mop.PreIndex || !instr.Writeback)
                     {
                         if (mop.Offset != null && !mop.Offset.IsZero)
                         {
@@ -1067,7 +1061,29 @@ namespace Reko.Arch.Arm.AArch32
             m.Assign(dst, intrinsic);
         }
 
-        private void EmitUnitTest(AArch32Instruction instr)
+        private void RewriteIntrinsic(IntrinsicProcedure intrinsic)
+        {
+            var args = new Expression[instr.Operands.Length - 1];
+            for (int i = 1; i < instr.Operands.Length; ++i)
+            {
+                args[i - 1] = Operand(i);
+            }
+            var dst = Operand(0);
+            m.Assign(dst, m.Fn(intrinsic, args));
+        }
+
+        private void RewriteIntrinsicSideeffect(IntrinsicProcedure intrinsic)
+        {
+            var args = new Expression[instr.Operands.Length];
+            for (int i = 0; i < instr.Operands.Length; ++i)
+            {
+                args[i] = Operand(i);
+            }
+            m.SideEffect(m.Fn(intrinsic, args));
+        }
+
+
+        protected virtual void EmitUnitTest(AArch32Instruction instr)
         {
             var testgenSvc = arch.Services.GetService<ITestGenerationService>();
             testgenSvc?.ReportMissingRewriter("ArmRw", instr, instr.Mnemonic.ToString(), rdr, "");
@@ -1079,6 +1095,17 @@ namespace Reko.Arch.Arm.AArch32
             .Void();
         private static readonly IntrinsicProcedure cps_id_intrinsic = new IntrinsicBuilder("__cps_id", true)
             .Void();
+        private static readonly IntrinsicProcedure hadd_intrinsic = new IntrinsicBuilder("__hadd", false)
+            .GenericTypes("TArray")
+            .Params("TArray")
+            .Params("TArray")
+            .Returns("TArray");
+        private static readonly IntrinsicProcedure hsub_intrinsic = new IntrinsicBuilder("__hsub", false)
+            .GenericTypes("TArray")
+            .Params("TArray")
+            .Params("TArray")
+            .Returns("TArray");
+
         private static readonly IntrinsicProcedure lda_sig = new IntrinsicBuilder("__load_acquire", true)
             .GenericTypes("T").PtrParam("T").Returns("T");
         private static readonly IntrinsicProcedure ldaex_sig = new IntrinsicBuilder("__load_acquire_exclusive", true)
@@ -1087,11 +1114,73 @@ namespace Reko.Arch.Arm.AArch32
             .GenericTypes("T")
             .PtrParam("T")
             .Returns("T");
+        private static readonly IntrinsicProcedure mcr_intrinsic = new IntrinsicBuilder("__mcr", true)
+            .Param(PrimitiveType.Word32)
+            .Param(PrimitiveType.Word32)
+            .Param(PrimitiveType.Word32)
+            .Param(PrimitiveType.Word32)
+            .Param(PrimitiveType.Word32)
+            .Param(PrimitiveType.Word32)
+            .Void();
+        private static readonly IntrinsicProcedure mcr2_intrinsic = new IntrinsicBuilder("__mcr2", true)
+            .Param(PrimitiveType.Word32)
+            .Param(PrimitiveType.Word32)
+            .Param(PrimitiveType.Word32)
+            .Param(PrimitiveType.Word32)
+            .Param(PrimitiveType.Word32)
+            .Param(PrimitiveType.Word32)
+            .Void();
+        private static readonly IntrinsicProcedure mrc_intrinsic = new IntrinsicBuilder("__mrc", true)
+            .Param(PrimitiveType.Word32)
+            .Param(PrimitiveType.Word32)
+            .Param(PrimitiveType.Word32)
+            .Param(PrimitiveType.Word32)
+            .Param(PrimitiveType.Word32)
+            .Returns(PrimitiveType.Word32);
+        private static readonly IntrinsicProcedure mrc2_intrinsic = new IntrinsicBuilder("__mrc2", true)
+            .Param(PrimitiveType.Word32)
+            .Param(PrimitiveType.Word32)
+            .Param(PrimitiveType.Word32)
+            .Param(PrimitiveType.Word32)
+            .Param(PrimitiveType.Word32)
+            .Returns(PrimitiveType.Word32);
+        private static readonly IntrinsicProcedure rbit_intrinsic = new IntrinsicBuilder("__reverse_bits", false)
+            .Param(PrimitiveType.Word32)
+            .Returns(PrimitiveType.Word32);
         private static readonly IntrinsicProcedure rev_intrinsic = new IntrinsicBuilder("__rev", false)
             .GenericTypes("T")
             .Param("T")
             .Returns("T");
+        private static readonly IntrinsicProcedure rfeda_intrinsic = new IntrinsicBuilder("__rfeda", true)
+            .Void();
+        private static readonly IntrinsicProcedure rfedb_intrinsic = new IntrinsicBuilder("__rfedb", true)
+            .Void();
+        private static readonly IntrinsicProcedure rfeia_intrinsic = new IntrinsicBuilder("__rfeia", true)
+            .Void();
+        private static readonly IntrinsicProcedure rfeib_intrinsic = new IntrinsicBuilder("__rfeib", true)
+            .Void();
 
+        private static readonly IntrinsicProcedure sel_intrinsic = new IntrinsicBuilder("__sel", false)
+            .Param(PrimitiveType.Word32)
+            .Param(PrimitiveType.Word32)
+            .Returns(PrimitiveType.Word32);
+        private static readonly IntrinsicProcedure setpan_intrinsic = new IntrinsicBuilder("__set_pan", true)
+            .Param(PrimitiveType.Bool)
+            .Void();
+        private static readonly IntrinsicProcedure sev_intrinsic = new IntrinsicBuilder("__send_event", true)
+            .Void();
+        private static readonly IntrinsicProcedure srsda_intrinsic = new IntrinsicBuilder("__srsda", true)
+            .Param(PrimitiveType.Word32)
+            .Void(); 
+        private static readonly IntrinsicProcedure srsdb_intrinsic = new IntrinsicBuilder("__srsdb", true)
+            .Param(PrimitiveType.Word32)
+            .Void();
+        private static readonly IntrinsicProcedure srsia_intrinsic = new IntrinsicBuilder("__srsiab", true)
+            .Param(PrimitiveType.Word32)
+            .Void();
+        private static readonly IntrinsicProcedure srsib_intrinsic = new IntrinsicBuilder("__srsib", true)
+            .Param(PrimitiveType.Word32)
+            .Void();
         private static readonly IntrinsicProcedure ssat16_intrinsic;
         private static readonly IntrinsicProcedure stc_intrinsic = new IntrinsicBuilder("__stc", true)
             .Param(PrimitiveType.Word32)
@@ -1128,14 +1217,64 @@ namespace Reko.Arch.Arm.AArch32
             .PtrParam("T")
             .Param("T")
             .Returns("T");
+        private static readonly IntrinsicProcedure sxtab16_intrinsic = new IntrinsicBuilder("__sxtab16", false)
+            .Param(new ArrayType(PrimitiveType.Int16, 2))
+            .Param(new ArrayType(PrimitiveType.Int16, 2))
+            .Returns(new ArrayType(PrimitiveType.Int16, 2));
+        private static readonly IntrinsicProcedure sxtab16_ror_intrinsic = new IntrinsicBuilder("__sxtab16_ror", false)
+            .Param(new ArrayType(PrimitiveType.Int16, 2))
+            .Param(new ArrayType(PrimitiveType.Int16, 2))
+            .Param(PrimitiveType.Int32)
+            .Returns(new ArrayType(PrimitiveType.Int16, 2));
+
+        private static readonly IntrinsicProcedure sxtb16_intrinsic = new IntrinsicBuilder("__sxtb16", false)
+            .Param(new ArrayType(PrimitiveType.Int16, 2))
+            .Returns(new ArrayType(PrimitiveType.Int16, 2));
+        private static readonly IntrinsicProcedure sxtb16_ror_intrinsic = new IntrinsicBuilder("__sxtb16_ror", false)
+            .Param(new ArrayType(PrimitiveType.Int16, 2))
+            .Param(PrimitiveType.Int32)
+            .Returns(new ArrayType(PrimitiveType.Int16, 2));
+
         private static readonly IntrinsicProcedure usat_intrinsic = new IntrinsicBuilder("__usat", false)
             .Param(PrimitiveType.Int32)
             .Param(PrimitiveType.Int32)
             .Returns(PrimitiveType.UInt32);
         private static readonly IntrinsicProcedure usat16_intrinsic;
-        private static readonly IntrinsicProcedure yield_intrinsic = new IntrinsicBuilder("__yield", true)
-            .Void();
+        private static readonly IntrinsicProcedure uxtab16_intrinsic = new IntrinsicBuilder("__uxtab16", false)
+            .Param(new ArrayType(PrimitiveType.UInt16, 2))
+            .Param(new ArrayType(PrimitiveType.UInt16, 2))
+            .Returns(new ArrayType(PrimitiveType.UInt16, 2));
+        private static readonly IntrinsicProcedure uxtab16_ror_intrinsic = new IntrinsicBuilder("__uxtab16_ror", false)
+            .Param(new ArrayType(PrimitiveType.UInt16, 2))
+            .Param(new ArrayType(PrimitiveType.UInt16, 2))
+            .Param(PrimitiveType.Int32)
+            .Returns(new ArrayType(PrimitiveType.UInt16, 2));
+
+        private static readonly IntrinsicProcedure uxtb16_initrinsic = new IntrinsicBuilder("__uxtb16", false)
+            .Param(new ArrayType(PrimitiveType.UInt16, 2))
+            .Returns(new ArrayType(PrimitiveType.UInt16, 2));
+        private static readonly IntrinsicProcedure uxtb16_ror_intrinsic = new IntrinsicBuilder("__uxtb16_ror", false)
+            .Param(new ArrayType(PrimitiveType.UInt16, 2))
+            .Param(PrimitiveType.Int32)
+            .Returns(new ArrayType(PrimitiveType.UInt16, 2));
+
+        private static readonly IntrinsicProcedure vabal_intrinsic = new IntrinsicBuilder("__vabal", false)
+            .GenericTypes("TArraySrc", "TArrayDst")
+            .Params("TArraySrc", "TArraySrc")
+            .Returns("TArrayDst");
+        private static readonly IntrinsicProcedure vabdl_intrinsic = new IntrinsicBuilder("__vabdl", false)
+            .GenericTypes("TArraySrc", "TArrayDst")
+            .Params("TArraySrc", "TArraySrc")
+            .Returns("TArrayDst");
+        private static readonly IntrinsicProcedure vabs_cge_intrinsic = IntrinsicBuilder.GenericBinary("__vabs_cge");
+        private static readonly IntrinsicProcedure vabs_cgt_intrinsic = IntrinsicBuilder.GenericBinary("__vabs_cgt");
+        private static readonly IntrinsicProcedure vaddhn_intrinsic = new IntrinsicBuilder("__vadd_hn", false)
+            .GenericTypes("TArraySrc", "TArrayDst")
+            .Params("TArraySrc", "TArraySrc")
+            .Returns("TArrayDst");
         private static readonly IntrinsicProcedure vbsl_intrinsic = IntrinsicBuilder.GenericBinary("__vbsl");
+        private static readonly IntrinsicProcedure vfnma_intrinsic = IntrinsicBuilder.GenericBinary("__vfnma");
+        private static readonly IntrinsicProcedure vfnms_intrinsic = IntrinsicBuilder.GenericBinary("__vfnms");
         private static readonly IntrinsicProcedure vld1_multi_intrinsic = new IntrinsicBuilder("__vld1_multiple", true)
             .GenericTypes("T")
             .PtrParam("T")
@@ -1152,6 +1291,31 @@ namespace Reko.Arch.Arm.AArch32
             .GenericTypes("T")
             .PtrParam("T")
             .Returns(new UnknownType(32));
+        private static readonly IntrinsicProcedure vmaxnm_intrinsic = IntrinsicBuilder.GenericBinary("__vmaxnm");
+        private static readonly IntrinsicProcedure vminnm_intrinsic = IntrinsicBuilder.GenericBinary("__vminnm");
+        private static readonly IntrinsicProcedure vmla_intrinsic = IntrinsicBuilder.GenericBinary("__vmla");
+        private static readonly IntrinsicProcedure vmls_intrinsic = IntrinsicBuilder.GenericBinary("__vmls");
+        private static readonly IntrinsicProcedure vqshlu_intrinsic = new IntrinsicBuilder("__vqshlu", false)
+            .GenericTypes("TArray")
+            .Param("TArray")
+            .Param(PrimitiveType.Int32)
+            .Returns("TArray");
+
+        private static readonly IntrinsicProcedure vqshrn_intrinsic = new IntrinsicBuilder("__vqshrn", false)
+            .GenericTypes("TArraySrc", "TArrayDst")
+            .Param("TArraySrc")
+            .Param(PrimitiveType.Int32)
+            .Returns("TArrayDst");
+        private static readonly IntrinsicProcedure vqrshl_intrinsic = IntrinsicBuilder.GenericBinary("__vqrshl");
+        private static readonly IntrinsicProcedure vqsub_intrinsic = IntrinsicBuilder.GenericBinary("__vqsub");
+        private static readonly IntrinsicProcedure vraddhn_intrinsic = new IntrinsicBuilder("__vraddhn", false)
+            .GenericTypes("TArraySrc", "TArrayDst")
+            .Param("TArraySrc")
+            .Param("TArraySrc")
+            .Returns("TArrayDst");
+        private static readonly IntrinsicProcedure vrhadd_intrinsic = IntrinsicBuilder.GenericBinary("__vrhadd");
+        private static readonly IntrinsicProcedure vrsqrte_intrinsic = IntrinsicBuilder.GenericBinary("__vrsqrte");
+        private static readonly IntrinsicProcedure vrsqrts_intrinsic = IntrinsicBuilder.GenericBinary("__vrsqrts");
         private static readonly IntrinsicProcedure vst1_multi_intrinsic = new IntrinsicBuilder("__vst1_multiple", true)
             .GenericTypes("TElem","TVec")
             .PtrParam("TVec")
@@ -1172,11 +1336,22 @@ namespace Reko.Arch.Arm.AArch32
             .PtrParam("TVec")
             .Param("TVec")
             .Void();
+        private static readonly IntrinsicProcedure vsubhn_intrinsic = new IntrinsicBuilder("__vsub_hn", false)
+            .GenericTypes("TArraySrc", "TArrayDst")
+            .Params("TArraySrc", "TArraySrc")
+            .Returns("TArrayDst");
+
         private static readonly IntrinsicProcedure vtbl_intrinsic = new IntrinsicBuilder("__vtbl", true)
             .GenericTypes("TArray")
             .Param("TArray")
             .Param(new ArrayType(PrimitiveType.Byte, 8))
             .Returns(new ArrayType(PrimitiveType.Byte, 8));
+
+        private static readonly IntrinsicProcedure wfe_intrinsic = new IntrinsicBuilder("__wait_for_event", true)
+            .Void();
+
+        private static readonly IntrinsicProcedure yield_intrinsic = new IntrinsicBuilder("__yield", true)
+            .Void();
 
         static ArmRewriter()
         {
