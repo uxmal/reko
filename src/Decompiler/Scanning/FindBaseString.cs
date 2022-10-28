@@ -26,9 +26,7 @@ using Reko.Core.Output;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.Diagnostics;
-using System.IO;
 using System.Linq;
 using System.Numerics;
 using System.Threading;
@@ -73,14 +71,14 @@ namespace Reko.Scanning
         public int Threads { get; set; }
         public ulong MinAddress { get; set; }
 
-        public override BaseAddressCandidate[] Run()
+        public override BaseAddressCandidate[] Run(CancellationToken ct)
         {
             // Find indices of strings and locations of pointers in parallel.
+            var sw = new Stopwatch();
             var stringsTask = Task.Run(() => PatternFinder.FindAsciiStrings(Memory, min_str_len)
                 .Select(s => s.uAddress)
                 .ToHashSet());
             var pointersTask = Task.Run(() => ReadPointers(Memory, 4));
-            var x = Memory.ReadLeUInt32(0x0300);
             var strings = stringsTask.Result;
             var pointers = pointersTask.Result;
 
@@ -96,14 +94,13 @@ namespace Reko.Scanning
 
             Debug.WriteLine("Scanning with {0} Threads...", Threads);
             ConcurrentQueue<List<BaseAddressCandidate>> subresults = new();
-            var sw = new Stopwatch();
             sw.Start();
             Parallel.For(0, this.Threads, (n) =>
             {
                 var progress = n == 0
                     ? this.progressIndicator
                     : NullProgressIndicator.Instance;
-                var result = FindMatches(strings, pointers, n, progress);
+                var result = FindMatches(strings, pointers, n, ct, progress);
                 subresults.Enqueue(result);
             });
 
@@ -173,9 +170,10 @@ namespace Reko.Scanning
         }
 
         public List<BaseAddressCandidate> FindMatches(
-            IReadOnlySet<ulong> strings,
+            IReadOnlySet<ulong> strOffsets,
             IReadOnlySet<ulong> pointers,
             int threadIndex,
+            CancellationToken ct,
             IProgressIndicator pb)
         {
             var interval = Interval.GetRange(this.MinAddress, threadIndex, Threads, Stride);
@@ -187,20 +185,21 @@ namespace Reko.Scanning
             var heap = new List<BaseAddressCandidate>();
             var steps = (int)((interval.EndAddress - interval.BeginAddress) / Stride);
             pb.ShowProgress("Finding string pointers", 0, steps);
-            var news = new HashSet<ulong>(strings.Count);
+            var intersection = new HashSet<ulong>(strOffsets.Count);
             var wordMask = Bits.Mask(0, arch.PointerType.BitSize);
             while (uBaseAddr <= interval.EndAddress)
             {
-                news.Clear();
-                foreach (var s in strings)
+                if (ct.IsCancellationRequested)
+                    return new List<BaseAddressCandidate>();
+                intersection.Clear();
+                foreach (var strOffset in strOffsets)
                 {
-                    if (!AddOverflow(s, uBaseAddr,  wordMask, out var addrRebased))
+                    if (!AddOverflow(strOffset, uBaseAddr, wordMask, out var addrRebased) &&
+                        pointers.Contains(addrRebased))
                     {
-                        news.Add(addrRebased);
+                        intersection.Add(addrRebased);
                     }
                 }
-                news.IntersectWith(pointers);
-                var intersection = news;
                 if (intersection.Count > 0)
                 {
                     heap.Add(new BaseAddressCandidate(uBaseAddr, intersection.Count));
@@ -243,6 +242,7 @@ namespace Reko.Scanning
                 }
             }
         }
+
 
         /*
 #[cfg(test)]

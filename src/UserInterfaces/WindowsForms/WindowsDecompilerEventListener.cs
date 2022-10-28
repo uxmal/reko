@@ -358,9 +358,14 @@ namespace Reko.UserInterfaces.WindowsForms
             {
                 if (outer.dlg is null)
                     return;
+                System.Threading.Interlocked.Exchange<string>(ref outer.status, caption);
+                ShowProgress(numerator, denominator);
+            }
+
+            public void ShowProgress(int numerator, int denominator)
+            { 
                 this.position = numerator;
                 this.total = denominator;
-                System.Threading.Interlocked.Exchange<string>(ref outer.status, caption);
                 if (denominator > 0)
                 {
                     var percentDone = Math.Min(

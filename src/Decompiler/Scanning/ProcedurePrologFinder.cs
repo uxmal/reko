@@ -28,6 +28,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Numerics;
+using System.Threading;
 
 namespace Reko.Scanning
 {
@@ -46,11 +47,12 @@ namespace Reko.Scanning
             : base(arch.Endianness, mem)
         {
             this.arch = arch;
-            this.trie = BuildTrie(patterns, arch);
+            var patternx = patterns.ToArray();
+            this.trie = BuildTrie(patternx, arch);
             Stride = 0x1000;
         }
 
-        public override BaseAddressCandidate[] Run()
+        public override BaseAddressCandidate[] Run(CancellationToken ct)
         {
             int threadIndex = 0;
             var prologsOffsets = PatternFinder.FindProcedurePrologs(Memory, trie);

@@ -50,17 +50,31 @@ namespace Reko.UserInterfaces.AvaloniaUI.Services
             uiSyncCtx?.Post(delegate
             {
                 sbSvc.SetSubtext(caption);
-                this.position = numerator;
-                this.total = denominator;
-                if (denominator > 0)
-                {
-                    var percentDone = Math.Min(
-                        100,
-                        (int) ((numerator * 100L) / denominator));
-                    sbSvc.ShowProgress(percentDone);
-                }
+                ShowProgressUIThread(numerator, denominator);
             },
             null);
+        }
+
+        public void ShowProgress(int numerator, int denominator)
+        {
+            uiSyncCtx?.Post(delegate
+            {
+                ShowProgressUIThread(numerator, denominator);
+            },
+            null);
+        }
+
+        private void ShowProgressUIThread(int numerator, int denominator)
+        {
+            this.position = numerator;
+            this.total = denominator;
+            if (denominator > 0)
+            {
+                var percentDone = Math.Min(
+                    100,
+                    (int) ((numerator * 100L) / denominator));
+                sbSvc.ShowProgress(percentDone);
+            }
         }
 
         public void ShowStatus(string newStatus)

@@ -25,6 +25,7 @@ using Reko.Core.Output;
 using Reko.Scanning;
 using System;
 using System.Text;
+using System.Threading;
 
 namespace Reko.UnitTests.Decompiler.Scanning
 {
@@ -56,7 +57,7 @@ namespace Reko.UnitTests.Decompiler.Scanning
 
             var fbs = new FindBaseString(arch.Object, mem, NullProgressIndicator.Instance );
             fbs.MinAddress = 0xF0_0000;
-            var results = fbs.Run();
+            var results = fbs.Run(new CancellationToken());
             Assert.AreEqual(0xFF0000, results[0].Address);
         }
     }

@@ -250,7 +250,11 @@ namespace Reko.CmdLine
                         Console.Out.WriteLine();
                     this.currentCaption = caption;
                 }
+                ShowProgress(numerator, denominator);
+            }
 
+            public void ShowProgress(int numerator, int denominator)
+            { 
                 if (denominator == 0)
                 {
                     if (numerator == 0)
@@ -263,7 +267,6 @@ namespace Reko.CmdLine
                 this.total = denominator;
                 this.ReportProgress();
             }
-
 
             public void ShowStatus(string caption)
             {

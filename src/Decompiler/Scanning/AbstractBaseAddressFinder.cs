@@ -24,6 +24,7 @@ using Reko.Core.Memory;
 using System;
 using System.Collections.Generic;
 using System.Numerics;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Reko.Scanning
@@ -38,7 +39,7 @@ namespace Reko.Scanning
             this.Memory = mem;
         }
 
-        public abstract BaseAddressCandidate[] Run();
+        public abstract BaseAddressCandidate[] Run(CancellationToken ctoken);
 
         /// <summary>
         /// Endianness used to interpret pointer values.

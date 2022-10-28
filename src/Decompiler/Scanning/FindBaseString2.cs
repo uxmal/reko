@@ -23,6 +23,7 @@ using Reko.Core.Memory;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 
 // https://gist.github.com/rpw/2c4064712638bce602755a938991e5e9
@@ -46,7 +47,7 @@ namespace Reko.Scanning
             this.Endianness = EndianServices.Little;
         }
 
-        public override BaseAddressCandidate[] Run()
+        public override BaseAddressCandidate[] Run(CancellationToken ct)
         {
             this.read_dword = Endianness == EndianServices.Big
                 ? ReadDwordBe
@@ -177,7 +178,6 @@ namespace Reko.Scanning
                         matches.Clear();
                 }
             }
-
             Console.Write("No adjacent strings found...");
             return Array.Empty<ulong>();
         }

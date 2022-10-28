@@ -32,11 +32,36 @@ namespace Reko.Core.Output
     /// </summary>
     public interface IProgressIndicator
     {
+        /// <summary>
+        /// Update the main progress caption.
+        /// </summary>
         void SetCaption(string newCaption);
 
+        /// <summary>
+        /// Update the sub-progress caption.
+        /// </summary>
         void ShowStatus(string caption);
+
+        /// <summary>
+        /// Update the sub-progress caption and the progress made.
+        /// </summary>
         void ShowProgress(string caption, int numerator, int denominator);
+
+        /// <summary>
+        /// Update only the progress made, possibly changing the total
+        /// number of steps.
+        /// </summary>
+        void ShowProgress(int numerator, int denominator);
+
+        /// <summary>
+        /// Advance by a specific number of steps.
+        /// </summary>
+        /// <param name="count"></param>
         void Advance(int count);
+
+        /// <summary>
+        /// Signal the completion of the task.
+        /// </summary>
         void Finish();
     }
 
@@ -57,6 +82,10 @@ namespace Reko.Core.Output
         }
 
         public void ShowProgress(string caption, int numerator, int denominator)
+        {
+        }
+
+        public void ShowProgress(int numerator, int denominator)
         {
         }
 

@@ -22,6 +22,7 @@ using NUnit.Framework;
 using Reko.Core;
 using Reko.Scanning;
 using System.Collections.Generic;
+using System.Threading;
 
 namespace Reko.UnitTests.Decompiler.Scanning
 {
@@ -62,7 +63,7 @@ namespace Reko.UnitTests.Decompiler.Scanning
             Given_Pointer(0x16E, 0xFF0142);
 
             var ppf = new ProcedurePrologFinder(arch.Object, prologPatterns, mem);
-            var results = ppf.Run();
+            var results = ppf.Run(new CancellationToken());
             Assert.AreEqual(0xFF0000, results[0].Address);
         }
     }

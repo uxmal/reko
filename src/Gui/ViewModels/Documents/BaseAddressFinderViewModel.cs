@@ -19,8 +19,10 @@
 #endregion
 
 using Reko.Core;
+using Reko.Core.Configuration;
 using Reko.Core.Memory;
 using Reko.Core.Output;
+using Reko.Core.Services;
 using Reko.Scanning;
 using System;
 using System.Collections.Generic;
@@ -29,6 +31,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Xml.Serialization;
 
 namespace Reko.Gui.ViewModels.Documents
 {
@@ -38,7 +41,7 @@ namespace Reko.Gui.ViewModels.Documents
         private Program program;
         private readonly string startText;
         private readonly string stopText;
-        private Task? finderTask;
+        private CancellationTokenSource? cts;
 
         public BaseAddressFinderViewModel(
             IServiceProvider services,
@@ -101,43 +104,81 @@ namespace Reko.Gui.ViewModels.Documents
 
         public async Task StartStopFinder()
         {
-            if (finderTask is null)
+            if (cts is null)
             {
+                this.cts = new CancellationTokenSource();
                 this.StartStopButtonText = stopText;
-                await Task.Run(StartFinder_work);
-                this.StartStopButtonText = startText;
-                this.finderTask = null;
+                await StartFinder_work(cts.Token);
             }
             else
             {
                 // A task is running. Cancel it.
-                this.finderTask = null;
+                this.cts.Cancel();
             }
+            this.StartStopButtonText = startText;
+            this.cts = null;
         }
 
-        private void StartFinder_work()
+        private async ValueTask StartFinder_work(CancellationToken token)
         {
+            this.Results.Clear();
             if (program.SegmentMap.Segments.Values.FirstOrDefault()?.MemoryArea
                 is not ByteMemoryArea mem)
             {
                 return;
             }
 
-            IBaseAddressFinder s = new FindBaseString(
-                program.Architecture.Endianness,
+
+            var s = new FindBaseString(
+                program.Architecture,
                 mem,
                 NullProgressIndicator.Instance);
-            var results = s.Run();
-            this.Results.Clear();
+            //var p = new ProcedurePrologFinder(
+            //    program.Architecture,
+            //    this.GetApplicablePrologPatterns(program),
+            //    mem);
+
+            var sTask = Task.Run(() => s.Run(token));
+            //var pTask = Task.Run(s.Run);
+            var sResults = await sTask;
+            //var pResults = await pTask;
+
             var arch = program.Architecture;
+            PublishResults(arch, sResults, Array.Empty<BaseAddressCandidate>()); // pResults);
+        }
+
+        private void PublishResults(
+            IProcessorArchitecture arch,
+            BaseAddressCandidate[] sResults,
+            BaseAddressCandidate[] pResults)
+        {
+            var addrs = sResults.Concat(pResults).Select(s => s.Address).ToHashSet();
+            var results =
+                from addr in addrs
+                join sr in sResults on addr equals sr.Address into srs
+                from sr2 in srs.DefaultIfEmpty()
+                join pr in pResults on addr equals pr.Address into prs
+                from pr2 in prs.DefaultIfEmpty()
+                orderby addr
+                select new BaseAddressResult
+                {
+                    Address = RenderAddress(addr, arch),
+                    Confidence = sr2.Confidence != 0
+                        ? sr2.Confidence.ToString()
+                        : "-",
+
+                };
             foreach (var result in results)
             {
-                this.Results.Add(new BaseAddressResult
-                {
-                    Address = RenderAddress(result.Address, arch),
-                    Confidence = result.Confidence
-                });
+                this.Results.Add(result);
             }
+        }
+
+        private IEnumerable<MaskedPattern> GetApplicablePrologPatterns(Program program)
+        {
+            var platformPatterns = program.Platform.ProcedurePrologs;
+            var archPatterns = program.Platform.Architecture.ProcedurePrologs;
+            return platformPatterns.Concat(archPatterns);
         }
 
         private static string RenderAddress(ulong address, IProcessorArchitecture arch)
@@ -161,6 +202,6 @@ namespace Reko.Gui.ViewModels.Documents
     {
         public string? Address { get; set; }
 
-        public int Confidence { get; set; }
+        public string? Confidence { get; set; }
     }
 }

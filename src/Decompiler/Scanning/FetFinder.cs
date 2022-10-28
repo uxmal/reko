@@ -28,6 +28,7 @@ using System.Data;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Numerics;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Reko.Scanning
@@ -68,7 +69,7 @@ namespace Reko.Scanning
             this.word_size = (uint)(arch.WordWidth.BitSize / arch.MemoryGranularity);
         }
 
-        public override BaseAddressCandidate[] Run()
+        public override BaseAddressCandidate[] Run(CancellationToken ct)
         {
             throw new NotImplementedException();
         }

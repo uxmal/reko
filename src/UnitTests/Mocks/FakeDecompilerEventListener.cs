@@ -252,6 +252,12 @@ namespace Reko.UnitTests.Mocks
                 LastProgress = string.Format("{0}: {1}%", caption, (numerator * 100) / (denominator != 0 ? denominator : 1));
             }
 
+            public void ShowProgress(int numerator, int denominator)
+            {
+                LastProgress = string.Format("{0}%", (numerator * 100) / (denominator != 0 ? denominator : 1));
+            }
+
+
             public string LastProgress { get; private set; }
 
 
