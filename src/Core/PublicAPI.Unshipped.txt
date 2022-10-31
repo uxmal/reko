@@ -384,10 +384,10 @@ override Reko.Core.Code.ReturnInstruction.Accept(Reko.Core.Code.InstructionVisit
 override Reko.Core.Code.ReturnInstruction.Accept<T, C>(Reko.Core.Code.InstructionVisitor<T, C>! visitor, C ctx) -> T
 override Reko.Core.Code.ReturnInstruction.Accept<T>(Reko.Core.Code.InstructionVisitor<T>! visitor) -> T
 override Reko.Core.Code.ReturnInstruction.IsControlFlow.get -> bool
-override Reko.Core.Code.SideEffect.Accept(Reko.Core.Code.InstructionTransformer xform) -> Reko.Core.Code.Instruction
-override Reko.Core.Code.SideEffect.Accept(Reko.Core.Code.InstructionVisitor v) -> void
+override Reko.Core.Code.SideEffect.Accept(Reko.Core.Code.InstructionTransformer! xform) -> Reko.Core.Code.Instruction!
+override Reko.Core.Code.SideEffect.Accept(Reko.Core.Code.InstructionVisitor! v) -> void
 override Reko.Core.Code.SideEffect.Accept<T, C>(Reko.Core.Code.InstructionVisitor<T, C> visitor, C ctx) -> T
-override Reko.Core.Code.SideEffect.Accept<T>(Reko.Core.Code.InstructionVisitor<T> visitor) -> T
+override Reko.Core.Code.SideEffect.Accept<T>(Reko.Core.Code.InstructionVisitor<T>! visitor) -> T
 override Reko.Core.Code.SideEffect.IsControlFlow.get -> bool
 override Reko.Core.Code.Store.Accept(Reko.Core.Code.InstructionTransformer! xform) -> Reko.Core.Code.Instruction!
 override Reko.Core.Code.Store.Accept(Reko.Core.Code.InstructionVisitor! v) -> void
@@ -734,6 +734,7 @@ Reko.Core.Output.Formatter.Write(object? o) -> void
 Reko.Core.Output.Formatter.WriteLine(object? o) -> void
 Reko.Core.Output.IMemoryFormatterOutput.RenderFillerSpan(int nChunks, int nCharsPerChunk) -> void
 Reko.Core.Output.MemoryFormatter.MemoryFormatter(Reko.Core.Types.PrimitiveType! dtChunk, int unitsPerChunk, int chunksPerLine, int charsPerNumericChunk, int charsPerTextChunk) -> void
+Reko.Core.RegisterStorage.Covers(Reko.Core.BitRange range) -> bool
 Reko.Core.Serialization.UnpackerSignature_v1.UnpackerSignature_v1(string? comments) -> void
 Reko.Core.Services.DecompilerEventListener.CreateAddressNavigator(Reko.Core.IReadOnlyProgram! program, Reko.Core.Address! address) -> Reko.Core.ICodeLocation!
 Reko.Core.Services.DecompilerEventListener.CreateBlockNavigator(Reko.Core.IReadOnlyProgram! program, Reko.Core.Block! block) -> Reko.Core.ICodeLocation!
@@ -1506,10 +1507,10 @@ override Reko.Core.Types.MemberPointer.Clone(System.Collections.Generic.IDiction
 override Reko.Core.Types.MemberPointer.IsComplex.get -> bool
 override Reko.Core.Types.MemberPointer.Size.get -> int
 override Reko.Core.Types.MemberPointer.Size.set -> void
-override Reko.Core.Types.Pointer.Accept(Reko.Core.Types.IDataTypeVisitor v) -> void
-override Reko.Core.Types.Pointer.Accept<T>(Reko.Core.Types.IDataTypeVisitor<T> v) -> T
+override Reko.Core.Types.Pointer.Accept(Reko.Core.Types.IDataTypeVisitor! v) -> void
+override Reko.Core.Types.Pointer.Accept<T>(Reko.Core.Types.IDataTypeVisitor<T>! v) -> T
 override Reko.Core.Types.Pointer.BitSize.get -> int
-override Reko.Core.Types.Pointer.Clone(System.Collections.Generic.IDictionary<Reko.Core.Types.DataType, Reko.Core.Types.DataType> clonedTypes) -> Reko.Core.Types.DataType
+override Reko.Core.Types.Pointer.Clone(System.Collections.Generic.IDictionary<Reko.Core.Types.DataType!, Reko.Core.Types.DataType!>? clonedTypes) -> Reko.Core.Types.DataType!
 override Reko.Core.Types.Pointer.IsComplex.get -> bool
 override Reko.Core.Types.Pointer.IsPointer.get -> bool
 override Reko.Core.Types.Pointer.Size.get -> int
@@ -1526,9 +1527,9 @@ override Reko.Core.Types.PrimitiveType.IsReal.get -> bool
 override Reko.Core.Types.PrimitiveType.IsWord.get -> bool
 override Reko.Core.Types.PrimitiveType.Size.get -> int
 override Reko.Core.Types.PrimitiveType.Size.set -> void
-override Reko.Core.Types.ReferenceTo.Accept(Reko.Core.Types.IDataTypeVisitor v) -> void
-override Reko.Core.Types.ReferenceTo.Accept<T>(Reko.Core.Types.IDataTypeVisitor<T> v) -> T
-override Reko.Core.Types.ReferenceTo.Clone(System.Collections.Generic.IDictionary<Reko.Core.Types.DataType, Reko.Core.Types.DataType> clonedTypes) -> Reko.Core.Types.DataType
+override Reko.Core.Types.ReferenceTo.Accept(Reko.Core.Types.IDataTypeVisitor! v) -> void
+override Reko.Core.Types.ReferenceTo.Accept<T>(Reko.Core.Types.IDataTypeVisitor<T>! v) -> T
+override Reko.Core.Types.ReferenceTo.Clone(System.Collections.Generic.IDictionary<Reko.Core.Types.DataType!, Reko.Core.Types.DataType!>? clonedTypes) -> Reko.Core.Types.DataType!
 override Reko.Core.Types.ReferenceTo.Size.get -> int
 override Reko.Core.Types.ReferenceTo.Size.set -> void
 override Reko.Core.Types.StringType.Accept(Reko.Core.Types.IDataTypeVisitor! v) -> void
@@ -2106,9 +2107,9 @@ Reko.Core.Code.ReturnInstruction.Expression.set -> void
 Reko.Core.Code.ReturnInstruction.ReturnInstruction() -> void
 Reko.Core.Code.ReturnInstruction.ReturnInstruction(Reko.Core.Expressions.Expression? exp) -> void
 Reko.Core.Code.SideEffect
-Reko.Core.Code.SideEffect.Expression.get -> Reko.Core.Expressions.Expression
+Reko.Core.Code.SideEffect.Expression.get -> Reko.Core.Expressions.Expression!
 Reko.Core.Code.SideEffect.Expression.set -> void
-Reko.Core.Code.SideEffect.SideEffect(Reko.Core.Expressions.Expression expr) -> void
+Reko.Core.Code.SideEffect.SideEffect(Reko.Core.Expressions.Expression! expr) -> void
 Reko.Core.Code.Store
 Reko.Core.Code.Store.Dst.get -> Reko.Core.Expressions.Expression!
 Reko.Core.Code.Store.Dst.set -> void
@@ -2424,20 +2425,20 @@ Reko.Core.Configuration.Environment_v1.SignatureFiles -> Reko.Core.Configuration
 Reko.Core.Configuration.Environment_v1.Type -> string
 Reko.Core.Configuration.Environment_v1.TypeLibraries -> Reko.Core.Configuration.TypeLibraryReference_v1[]
 Reko.Core.Configuration.IConfigurationService
-Reko.Core.Configuration.IConfigurationService.GetArchitecture(string archLabel) -> Reko.Core.IProcessorArchitecture
-Reko.Core.Configuration.IConfigurationService.GetArchitecture(string archLabel, string modelName) -> Reko.Core.IProcessorArchitecture
-Reko.Core.Configuration.IConfigurationService.GetArchitecture(string archLabel, System.Collections.Generic.Dictionary<string, object> options) -> Reko.Core.IProcessorArchitecture
-Reko.Core.Configuration.IConfigurationService.GetArchitectures() -> System.Collections.Generic.ICollection<Reko.Core.Configuration.ArchitectureDefinition>
-Reko.Core.Configuration.IConfigurationService.GetDefaultPreferences() -> System.Collections.Generic.IEnumerable<Reko.Core.Configuration.UiStyleDefinition>
-Reko.Core.Configuration.IConfigurationService.GetEnvironment(string envName) -> Reko.Core.Configuration.PlatformDefinition
-Reko.Core.Configuration.IConfigurationService.GetEnvironments() -> System.Collections.Generic.ICollection<Reko.Core.Configuration.PlatformDefinition>
-Reko.Core.Configuration.IConfigurationService.GetImageLoader(string loader) -> Reko.Core.Configuration.LoaderDefinition
-Reko.Core.Configuration.IConfigurationService.GetImageLoaders() -> System.Collections.Generic.ICollection<Reko.Core.Configuration.LoaderDefinition>
-Reko.Core.Configuration.IConfigurationService.GetInstallationRelativePath(params string[] pathComponents) -> string
-Reko.Core.Configuration.IConfigurationService.GetRawFile(string rawFileFormat) -> Reko.Core.Configuration.RawFileDefinition
-Reko.Core.Configuration.IConfigurationService.GetRawFiles() -> System.Collections.Generic.ICollection<Reko.Core.Configuration.RawFileDefinition>
-Reko.Core.Configuration.IConfigurationService.GetSignatureFiles() -> System.Collections.Generic.ICollection<Reko.Core.Configuration.SignatureFileDefinition>
-Reko.Core.Configuration.IConfigurationService.GetSymbolSources() -> System.Collections.Generic.ICollection<Reko.Core.Configuration.SymbolSourceDefinition>
+Reko.Core.Configuration.IConfigurationService.GetArchitecture(string! archLabel) -> Reko.Core.IProcessorArchitecture?
+Reko.Core.Configuration.IConfigurationService.GetArchitecture(string! archLabel, string? modelName) -> Reko.Core.IProcessorArchitecture?
+Reko.Core.Configuration.IConfigurationService.GetArchitecture(string! archLabel, System.Collections.Generic.Dictionary<string!, object!>? options) -> Reko.Core.IProcessorArchitecture?
+Reko.Core.Configuration.IConfigurationService.GetArchitectures() -> System.Collections.Generic.ICollection<Reko.Core.Configuration.ArchitectureDefinition!>!
+Reko.Core.Configuration.IConfigurationService.GetDefaultPreferences() -> System.Collections.Generic.IEnumerable<Reko.Core.Configuration.UiStyleDefinition!>!
+Reko.Core.Configuration.IConfigurationService.GetEnvironment(string! envName) -> Reko.Core.Configuration.PlatformDefinition!
+Reko.Core.Configuration.IConfigurationService.GetEnvironments() -> System.Collections.Generic.ICollection<Reko.Core.Configuration.PlatformDefinition!>!
+Reko.Core.Configuration.IConfigurationService.GetImageLoader(string! loader) -> Reko.Core.Configuration.LoaderDefinition?
+Reko.Core.Configuration.IConfigurationService.GetImageLoaders() -> System.Collections.Generic.ICollection<Reko.Core.Configuration.LoaderDefinition!>!
+Reko.Core.Configuration.IConfigurationService.GetInstallationRelativePath(params string![]! pathComponents) -> string!
+Reko.Core.Configuration.IConfigurationService.GetRawFile(string! rawFileFormat) -> Reko.Core.Configuration.RawFileDefinition?
+Reko.Core.Configuration.IConfigurationService.GetRawFiles() -> System.Collections.Generic.ICollection<Reko.Core.Configuration.RawFileDefinition!>!
+Reko.Core.Configuration.IConfigurationService.GetSignatureFiles() -> System.Collections.Generic.ICollection<Reko.Core.Configuration.SignatureFileDefinition!>!
+Reko.Core.Configuration.IConfigurationService.GetSymbolSources() -> System.Collections.Generic.ICollection<Reko.Core.Configuration.SymbolSourceDefinition!>!
 Reko.Core.Configuration.ListOption_v1
 Reko.Core.Configuration.ListOption_v1.ListOption_v1() -> void
 Reko.Core.Configuration.ListOption_v1.Text -> string
@@ -2550,13 +2551,13 @@ Reko.Core.Configuration.RawFile_v1.LoaderType -> string
 Reko.Core.Configuration.RawFile_v1.Name -> string
 Reko.Core.Configuration.RawFile_v1.RawFile_v1() -> void
 Reko.Core.Configuration.RekoConfigurationService
-Reko.Core.Configuration.RekoConfigurationService.GetArchitecture(string archLabel) -> Reko.Core.IProcessorArchitecture
-Reko.Core.Configuration.RekoConfigurationService.GetArchitecture(string archLabel, string modelName) -> Reko.Core.IProcessorArchitecture
-Reko.Core.Configuration.RekoConfigurationService.GetArchitecture(string archLabel, System.Collections.Generic.Dictionary<string, object> options) -> Reko.Core.IProcessorArchitecture
-Reko.Core.Configuration.RekoConfigurationService.GetDefaultPreferences() -> System.Collections.Generic.IEnumerable<Reko.Core.Configuration.UiStyleDefinition>
-Reko.Core.Configuration.RekoConfigurationService.GetEnvironment(string envName) -> Reko.Core.Configuration.PlatformDefinition
-Reko.Core.Configuration.RekoConfigurationService.GetInstallationRelativePath(string[] pathComponents) -> string
-Reko.Core.Configuration.RekoConfigurationService.RekoConfigurationService(System.IServiceProvider services, string rekoConfigPath, Reko.Core.Configuration.RekoConfiguration_v1 config) -> void
+Reko.Core.Configuration.RekoConfigurationService.GetArchitecture(string! archLabel) -> Reko.Core.IProcessorArchitecture?
+Reko.Core.Configuration.RekoConfigurationService.GetArchitecture(string! archLabel, string? modelName) -> Reko.Core.IProcessorArchitecture?
+Reko.Core.Configuration.RekoConfigurationService.GetArchitecture(string! archLabel, System.Collections.Generic.Dictionary<string!, object!>? options) -> Reko.Core.IProcessorArchitecture?
+Reko.Core.Configuration.RekoConfigurationService.GetDefaultPreferences() -> System.Collections.Generic.IEnumerable<Reko.Core.Configuration.UiStyleDefinition!>!
+Reko.Core.Configuration.RekoConfigurationService.GetEnvironment(string! envName) -> Reko.Core.Configuration.PlatformDefinition!
+Reko.Core.Configuration.RekoConfigurationService.GetInstallationRelativePath(string![]! pathComponents) -> string!
+Reko.Core.Configuration.RekoConfigurationService.RekoConfigurationService(System.IServiceProvider! services, string! rekoConfigPath, Reko.Core.Configuration.RekoConfiguration_v1! config) -> void
 Reko.Core.Configuration.RekoConfiguration_v1
 Reko.Core.Configuration.RekoConfiguration_v1.Architectures -> Reko.Core.Configuration.Architecture_v1[]
 Reko.Core.Configuration.RekoConfiguration_v1.Assemblers -> Reko.Core.Configuration.Assembler_v1[]
@@ -7704,9 +7705,9 @@ Reko.Core.Types.MemberPointer.MemberPointer(Reko.Core.Types.DataType! basePtr, R
 Reko.Core.Types.MemberPointer.Pointee.get -> Reko.Core.Types.DataType!
 Reko.Core.Types.MemberPointer.Pointee.set -> void
 Reko.Core.Types.Pointer
-Reko.Core.Types.Pointer.Pointee.get -> Reko.Core.Types.DataType
+Reko.Core.Types.Pointer.Pointee.get -> Reko.Core.Types.DataType!
 Reko.Core.Types.Pointer.Pointee.set -> void
-Reko.Core.Types.Pointer.Pointer(Reko.Core.Types.DataType pointee, int bitSize) -> void
+Reko.Core.Types.Pointer.Pointer(Reko.Core.Types.DataType! pointee, int bitSize) -> void
 Reko.Core.Types.PrimitiveType
 Reko.Core.Types.PrimitiveType.Compare(Reko.Core.Types.PrimitiveType that) -> int
 Reko.Core.Types.PrimitiveType.MaskDomain(Reko.Core.Types.Domain domainMask) -> Reko.Core.Types.PrimitiveType
@@ -7716,8 +7717,8 @@ Reko.Core.Types.Qualifier.None = 0 -> Reko.Core.Types.Qualifier
 Reko.Core.Types.Qualifier.Restricted = 4 -> Reko.Core.Types.Qualifier
 Reko.Core.Types.Qualifier.Volatile = 2 -> Reko.Core.Types.Qualifier
 Reko.Core.Types.ReferenceTo
-Reko.Core.Types.ReferenceTo.ReferenceTo(Reko.Core.Types.DataType referent) -> void
-Reko.Core.Types.ReferenceTo.Referent.get -> Reko.Core.Types.DataType
+Reko.Core.Types.ReferenceTo.ReferenceTo(Reko.Core.Types.DataType! referent) -> void
+Reko.Core.Types.ReferenceTo.Referent.get -> Reko.Core.Types.DataType!
 Reko.Core.Types.ReferenceTo.Referent.set -> void
 Reko.Core.Types.StringType
 Reko.Core.Types.StringType.LengthPrefixType.get -> Reko.Core.Types.PrimitiveType?
@@ -8176,9 +8177,9 @@ static Reko.Core.Collections.SortedListEx.TryGetLowerBoundKey<K, V>(this System.
 static Reko.Core.Collections.SortedListEx.TryGetUpperBound<K, V>(this System.Collections.Generic.SortedList<K, V> list, K key, out V value) -> bool
 static Reko.Core.Collections.SortedListEx.TryGetUpperBoundIndex<K, V>(this System.Collections.Generic.SortedList<K, V> list, K key, out int closestIndex) -> bool
 static Reko.Core.Collections.SortedListEx.TryGetUpperBoundKey<K, V>(this System.Collections.Generic.SortedList<K, V> list, K key, out K closestKey) -> bool
-static Reko.Core.Configuration.RekoConfigurationService.Load(System.IServiceProvider services) -> Reko.Core.Configuration.RekoConfigurationService
-static Reko.Core.Configuration.RekoConfigurationService.Load(System.IServiceProvider services, string configFileName) -> Reko.Core.Configuration.RekoConfigurationService
-static Reko.Core.Configuration.RekoConfigurationService.MakeInstallationRelativePath(string[] pathComponents) -> string
+static Reko.Core.Configuration.RekoConfigurationService.Load(System.IServiceProvider! services) -> Reko.Core.Configuration.RekoConfigurationService!
+static Reko.Core.Configuration.RekoConfigurationService.Load(System.IServiceProvider! services, string! configFileName) -> Reko.Core.Configuration.RekoConfigurationService!
+static Reko.Core.Configuration.RekoConfigurationService.MakeInstallationRelativePath(string![]! pathComponents) -> string!
 static Reko.Core.Dfa.Automaton.CreateFromPattern(string! pattern) -> Reko.Core.Dfa.Automaton?
 static Reko.Core.Diagnostics.DebugEx.Break(bool launchIfTrue = true) -> void
 static Reko.Core.Diagnostics.DebugEx.Error(this System.Diagnostics.TraceSwitch! trace, string! message, params object![]! args) -> void
@@ -8467,48 +8468,48 @@ static Reko.Core.Types.FunctionType.Action(params Reko.Core.Expressions.Identifi
 static Reko.Core.Types.FunctionType.Create(Reko.Core.Expressions.Identifier? returnId, params Reko.Core.Expressions.Identifier![]! formals) -> Reko.Core.Types.FunctionType!
 static Reko.Core.Types.FunctionType.Func(Reko.Core.Expressions.Identifier! returnId, params Reko.Core.Expressions.Identifier![]! formals) -> Reko.Core.Types.FunctionType!
 static Reko.Core.Types.PrimitiveType.AllTypes.get -> System.Collections.Concurrent.ConcurrentDictionary<string, Reko.Core.Types.PrimitiveType>
-static Reko.Core.Types.PrimitiveType.Bcd80.get -> Reko.Core.Types.PrimitiveType
-static Reko.Core.Types.PrimitiveType.Bool.get -> Reko.Core.Types.PrimitiveType
-static Reko.Core.Types.PrimitiveType.Byte.get -> Reko.Core.Types.PrimitiveType
-static Reko.Core.Types.PrimitiveType.Char.get -> Reko.Core.Types.PrimitiveType
-static Reko.Core.Types.PrimitiveType.Create(Reko.Core.Types.Domain dom, int bitSize) -> Reko.Core.Types.PrimitiveType
-static Reko.Core.Types.PrimitiveType.CreateBitSlice(int bitlength) -> Reko.Core.Types.PrimitiveType
-static Reko.Core.Types.PrimitiveType.CreateWord(int bitSize) -> Reko.Core.Types.PrimitiveType
-static Reko.Core.Types.PrimitiveType.CreateWord(uint bitSize) -> Reko.Core.Types.PrimitiveType
+static Reko.Core.Types.PrimitiveType.Bcd80.get -> Reko.Core.Types.PrimitiveType!
+static Reko.Core.Types.PrimitiveType.Bool.get -> Reko.Core.Types.PrimitiveType!
+static Reko.Core.Types.PrimitiveType.Byte.get -> Reko.Core.Types.PrimitiveType!
+static Reko.Core.Types.PrimitiveType.Char.get -> Reko.Core.Types.PrimitiveType!
+static Reko.Core.Types.PrimitiveType.Create(Reko.Core.Types.Domain dom, int bitSize) -> Reko.Core.Types.PrimitiveType!
+static Reko.Core.Types.PrimitiveType.CreateBitSlice(int bitlength) -> Reko.Core.Types.PrimitiveType!
+static Reko.Core.Types.PrimitiveType.CreateWord(int bitSize) -> Reko.Core.Types.PrimitiveType!
+static Reko.Core.Types.PrimitiveType.CreateWord(uint bitSize) -> Reko.Core.Types.PrimitiveType!
 static Reko.Core.Types.PrimitiveType.GenerateName(Reko.Core.Types.Domain dom, int bitSize) -> string
-static Reko.Core.Types.PrimitiveType.Int128.get -> Reko.Core.Types.PrimitiveType
-static Reko.Core.Types.PrimitiveType.Int16.get -> Reko.Core.Types.PrimitiveType
-static Reko.Core.Types.PrimitiveType.Int32.get -> Reko.Core.Types.PrimitiveType
-static Reko.Core.Types.PrimitiveType.Int64.get -> Reko.Core.Types.PrimitiveType
-static Reko.Core.Types.PrimitiveType.Int8.get -> Reko.Core.Types.PrimitiveType
-static Reko.Core.Types.PrimitiveType.Offset16.get -> Reko.Core.Types.PrimitiveType
-static Reko.Core.Types.PrimitiveType.Ptr16.get -> Reko.Core.Types.PrimitiveType
-static Reko.Core.Types.PrimitiveType.Ptr32.get -> Reko.Core.Types.PrimitiveType
-static Reko.Core.Types.PrimitiveType.Ptr64.get -> Reko.Core.Types.PrimitiveType
-static Reko.Core.Types.PrimitiveType.Real128.get -> Reko.Core.Types.PrimitiveType
-static Reko.Core.Types.PrimitiveType.Real16.get -> Reko.Core.Types.PrimitiveType
-static Reko.Core.Types.PrimitiveType.Real32.get -> Reko.Core.Types.PrimitiveType
-static Reko.Core.Types.PrimitiveType.Real64.get -> Reko.Core.Types.PrimitiveType
-static Reko.Core.Types.PrimitiveType.Real80.get -> Reko.Core.Types.PrimitiveType
-static Reko.Core.Types.PrimitiveType.Real96.get -> Reko.Core.Types.PrimitiveType
-static Reko.Core.Types.PrimitiveType.SByte.get -> Reko.Core.Types.PrimitiveType
-static Reko.Core.Types.PrimitiveType.SegmentSelector.get -> Reko.Core.Types.PrimitiveType
-static Reko.Core.Types.PrimitiveType.SegPtr32.get -> Reko.Core.Types.PrimitiveType
-static Reko.Core.Types.PrimitiveType.SegPtr48.get -> Reko.Core.Types.PrimitiveType
+static Reko.Core.Types.PrimitiveType.Int128.get -> Reko.Core.Types.PrimitiveType!
+static Reko.Core.Types.PrimitiveType.Int16.get -> Reko.Core.Types.PrimitiveType!
+static Reko.Core.Types.PrimitiveType.Int32.get -> Reko.Core.Types.PrimitiveType!
+static Reko.Core.Types.PrimitiveType.Int64.get -> Reko.Core.Types.PrimitiveType!
+static Reko.Core.Types.PrimitiveType.Int8.get -> Reko.Core.Types.PrimitiveType!
+static Reko.Core.Types.PrimitiveType.Offset16.get -> Reko.Core.Types.PrimitiveType!
+static Reko.Core.Types.PrimitiveType.Ptr16.get -> Reko.Core.Types.PrimitiveType!
+static Reko.Core.Types.PrimitiveType.Ptr32.get -> Reko.Core.Types.PrimitiveType!
+static Reko.Core.Types.PrimitiveType.Ptr64.get -> Reko.Core.Types.PrimitiveType!
+static Reko.Core.Types.PrimitiveType.Real128.get -> Reko.Core.Types.PrimitiveType!
+static Reko.Core.Types.PrimitiveType.Real16.get -> Reko.Core.Types.PrimitiveType!
+static Reko.Core.Types.PrimitiveType.Real32.get -> Reko.Core.Types.PrimitiveType!
+static Reko.Core.Types.PrimitiveType.Real64.get -> Reko.Core.Types.PrimitiveType!
+static Reko.Core.Types.PrimitiveType.Real80.get -> Reko.Core.Types.PrimitiveType!
+static Reko.Core.Types.PrimitiveType.Real96.get -> Reko.Core.Types.PrimitiveType!
+static Reko.Core.Types.PrimitiveType.SByte.get -> Reko.Core.Types.PrimitiveType!
+static Reko.Core.Types.PrimitiveType.SegmentSelector.get -> Reko.Core.Types.PrimitiveType!
+static Reko.Core.Types.PrimitiveType.SegPtr32.get -> Reko.Core.Types.PrimitiveType!
+static Reko.Core.Types.PrimitiveType.SegPtr48.get -> Reko.Core.Types.PrimitiveType!
 static Reko.Core.Types.PrimitiveType.TryParse(string primitiveTypeName, out Reko.Core.Types.PrimitiveType type) -> bool
-static Reko.Core.Types.PrimitiveType.UInt128.get -> Reko.Core.Types.PrimitiveType
-static Reko.Core.Types.PrimitiveType.UInt16.get -> Reko.Core.Types.PrimitiveType
-static Reko.Core.Types.PrimitiveType.UInt32.get -> Reko.Core.Types.PrimitiveType
-static Reko.Core.Types.PrimitiveType.UInt64.get -> Reko.Core.Types.PrimitiveType
-static Reko.Core.Types.PrimitiveType.UInt8.get -> Reko.Core.Types.PrimitiveType
-static Reko.Core.Types.PrimitiveType.WChar.get -> Reko.Core.Types.PrimitiveType
-static Reko.Core.Types.PrimitiveType.Word128.get -> Reko.Core.Types.PrimitiveType
-static Reko.Core.Types.PrimitiveType.Word16.get -> Reko.Core.Types.PrimitiveType
-static Reko.Core.Types.PrimitiveType.Word256.get -> Reko.Core.Types.PrimitiveType
-static Reko.Core.Types.PrimitiveType.Word32.get -> Reko.Core.Types.PrimitiveType
-static Reko.Core.Types.PrimitiveType.Word512.get -> Reko.Core.Types.PrimitiveType
-static Reko.Core.Types.PrimitiveType.Word64.get -> Reko.Core.Types.PrimitiveType
-static Reko.Core.Types.PrimitiveType.Word80.get -> Reko.Core.Types.PrimitiveType
+static Reko.Core.Types.PrimitiveType.UInt128.get -> Reko.Core.Types.PrimitiveType!
+static Reko.Core.Types.PrimitiveType.UInt16.get -> Reko.Core.Types.PrimitiveType!
+static Reko.Core.Types.PrimitiveType.UInt32.get -> Reko.Core.Types.PrimitiveType!
+static Reko.Core.Types.PrimitiveType.UInt64.get -> Reko.Core.Types.PrimitiveType!
+static Reko.Core.Types.PrimitiveType.UInt8.get -> Reko.Core.Types.PrimitiveType!
+static Reko.Core.Types.PrimitiveType.WChar.get -> Reko.Core.Types.PrimitiveType!
+static Reko.Core.Types.PrimitiveType.Word128.get -> Reko.Core.Types.PrimitiveType!
+static Reko.Core.Types.PrimitiveType.Word16.get -> Reko.Core.Types.PrimitiveType!
+static Reko.Core.Types.PrimitiveType.Word256.get -> Reko.Core.Types.PrimitiveType!
+static Reko.Core.Types.PrimitiveType.Word32.get -> Reko.Core.Types.PrimitiveType!
+static Reko.Core.Types.PrimitiveType.Word512.get -> Reko.Core.Types.PrimitiveType!
+static Reko.Core.Types.PrimitiveType.Word64.get -> Reko.Core.Types.PrimitiveType!
+static Reko.Core.Types.PrimitiveType.Word80.get -> Reko.Core.Types.PrimitiveType!
 static Reko.Core.Types.StringType.LengthPrefixedStringType(Reko.Core.Types.PrimitiveType! charType, Reko.Core.Types.PrimitiveType! lengthPrefixType) -> Reko.Core.Types.StringType!
 static Reko.Core.Types.StringType.NullTerminated(Reko.Core.Types.DataType! charType) -> Reko.Core.Types.StringType!
 static Reko.Core.Types.StructureField.ToOffset(Reko.Core.Expressions.Constant? offset) -> int?
@@ -8606,14 +8607,14 @@ virtual Reko.Core.Configuration.PlatformDefinition.Load(System.IServiceProvider 
 virtual Reko.Core.Configuration.PlatformDefinition.Options.get -> System.Collections.Generic.Dictionary<string, object>
 virtual Reko.Core.Configuration.PlatformDefinition.SignatureFiles.get -> System.Collections.Generic.List<Reko.Core.Configuration.SignatureFileDefinition>
 virtual Reko.Core.Configuration.PlatformDefinition.TypeLibraries.get -> System.Collections.Generic.List<Reko.Core.Configuration.TypeLibraryDefinition>
-virtual Reko.Core.Configuration.RekoConfigurationService.GetArchitectures() -> System.Collections.Generic.ICollection<Reko.Core.Configuration.ArchitectureDefinition>
-virtual Reko.Core.Configuration.RekoConfigurationService.GetEnvironments() -> System.Collections.Generic.ICollection<Reko.Core.Configuration.PlatformDefinition>
-virtual Reko.Core.Configuration.RekoConfigurationService.GetImageLoader(string loaderName) -> Reko.Core.Configuration.LoaderDefinition
-virtual Reko.Core.Configuration.RekoConfigurationService.GetImageLoaders() -> System.Collections.Generic.ICollection<Reko.Core.Configuration.LoaderDefinition>
-virtual Reko.Core.Configuration.RekoConfigurationService.GetRawFile(string rawFileFormat) -> Reko.Core.Configuration.RawFileDefinition
-virtual Reko.Core.Configuration.RekoConfigurationService.GetRawFiles() -> System.Collections.Generic.ICollection<Reko.Core.Configuration.RawFileDefinition>
-virtual Reko.Core.Configuration.RekoConfigurationService.GetSignatureFiles() -> System.Collections.Generic.ICollection<Reko.Core.Configuration.SignatureFileDefinition>
-virtual Reko.Core.Configuration.RekoConfigurationService.GetSymbolSources() -> System.Collections.Generic.ICollection<Reko.Core.Configuration.SymbolSourceDefinition>
+virtual Reko.Core.Configuration.RekoConfigurationService.GetArchitectures() -> System.Collections.Generic.ICollection<Reko.Core.Configuration.ArchitectureDefinition!>!
+virtual Reko.Core.Configuration.RekoConfigurationService.GetEnvironments() -> System.Collections.Generic.ICollection<Reko.Core.Configuration.PlatformDefinition!>!
+virtual Reko.Core.Configuration.RekoConfigurationService.GetImageLoader(string! loaderName) -> Reko.Core.Configuration.LoaderDefinition?
+virtual Reko.Core.Configuration.RekoConfigurationService.GetImageLoaders() -> System.Collections.Generic.ICollection<Reko.Core.Configuration.LoaderDefinition!>!
+virtual Reko.Core.Configuration.RekoConfigurationService.GetRawFile(string! rawFileFormat) -> Reko.Core.Configuration.RawFileDefinition?
+virtual Reko.Core.Configuration.RekoConfigurationService.GetRawFiles() -> System.Collections.Generic.ICollection<Reko.Core.Configuration.RawFileDefinition!>!
+virtual Reko.Core.Configuration.RekoConfigurationService.GetSignatureFiles() -> System.Collections.Generic.ICollection<Reko.Core.Configuration.SignatureFileDefinition!>!
+virtual Reko.Core.Configuration.RekoConfigurationService.GetSymbolSources() -> System.Collections.Generic.ICollection<Reko.Core.Configuration.SymbolSourceDefinition!>!
 virtual Reko.Core.Diagnostic.ImageKey.get -> string!
 virtual Reko.Core.Expressions.Constant.DoDepositBits(Reko.Core.Expressions.Constant! bits, int offset) -> Reko.Core.Expressions.Constant!
 virtual Reko.Core.Expressions.Constant.DoSlice(Reko.Core.Types.DataType! dt, int offset) -> Reko.Core.Expressions.Constant!

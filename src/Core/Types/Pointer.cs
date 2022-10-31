@@ -45,10 +45,11 @@ namespace Reko.Core.Types
             : base(Domain.Pointer)
 		{
             if (bitSize < 0)
-                throw new ArgumentOutOfRangeException("bitSize", "Invalid pointer size.");
+                throw new ArgumentOutOfRangeException(nameof(bitSize), "Invalid pointer size.");
             this.Pointee = pointee;
 			this.bitSize = bitSize;
 		}
+
         public override int BitSize => this.bitSize;
 
         public override bool IsComplex => true;
@@ -63,7 +64,6 @@ namespace Reko.Core.Types
             get { return (bitSize + (BitsPerByte - 1)) / BitsPerByte; }
             set { ThrowBadSize(); }
         }
-
 
         public override void Accept(IDataTypeVisitor v)
         {

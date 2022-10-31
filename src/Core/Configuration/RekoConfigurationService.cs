@@ -142,7 +142,7 @@ namespace Reko.Core.Configuration
                 Description = sOption.Description,
                 Required = sOption.Required,
                 TypeName = sOption.TypeName,
-                Choices = sOption.Choices ?? new ListOption_v1[0]
+                Choices = sOption.Choices ?? Array.Empty<ListOption_v1>()
             };
         }
 
@@ -208,8 +208,6 @@ namespace Reko.Core.Configuration
         private PlatformArchitectureDefinition LoadPlatformArchitecture(PlatformArchitecture_v1 spa)
         {
             var sTrashedRegs = spa.TrashedRegisters ?? "";
-            List<MaskedPattern> prologs;
-
             return new PlatformArchitectureDefinition
             {
                 Name = spa.Name,
@@ -222,7 +220,7 @@ namespace Reko.Core.Configuration
             };
         }
 
-        private List<MaskedPattern> LoadMaskedPatterns(BytePattern_v1[]? patterns)
+        private static List<MaskedPattern> LoadMaskedPatterns(BytePattern_v1[]? patterns)
         {
             if (patterns is null)
             {
@@ -251,9 +249,9 @@ namespace Reko.Core.Configuration
             };
         }
 
-        private EntryPointDefinition LoadEntryPoint(EntryPoint_v1? sEntry)
+        private static EntryPointDefinition LoadEntryPoint(EntryPoint_v1? sEntry)
         {
-            if (sEntry == null)
+            if (sEntry is null)
             {
                 return new EntryPointDefinition
                 {
@@ -288,15 +286,15 @@ namespace Reko.Core.Configuration
             };
         }
 
-        private List<TDst> LoadCollection<TSrc, TDst>(TSrc[]? sItems, Func<TSrc, TDst> fn)
+        private static List<TDst> LoadCollection<TSrc, TDst>(TSrc[]? sItems, Func<TSrc, TDst> fn)
         {
-            if (sItems == null)
+            if (sItems is null)
                 return new List<TDst>();
             else
                 return sItems.Select(fn).ToList();
         }
 
-        private Dictionary<string, TValue> LoadDictionary<TSrc, TValue>(
+        private static Dictionary<string, TValue> LoadDictionary<TSrc, TValue>(
             TSrc[]? sItems, 
             Func<TSrc, string> fnKey, 
             Func<TSrc, TValue> fnValue)
@@ -351,7 +349,7 @@ namespace Reko.Core.Configuration
         /// to represent different bases</param>
         /// <returns>The converted number, or 0 of the string couldn't be interpreted as a 
         /// number.</returns>
-        private long ConvertNumber(string? sNumber)
+        private static long ConvertNumber(string? sNumber)
         {
             if (string.IsNullOrEmpty(sNumber))
                 return 0;
