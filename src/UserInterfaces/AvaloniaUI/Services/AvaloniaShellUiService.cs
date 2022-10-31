@@ -19,6 +19,7 @@
 #endregion
 
 using Avalonia.Controls;
+using Avalonia.Threading;
 using Dock.Model.Core;
 using MessageBox.Avalonia.Enums;
 using Reko.Core.Diagnostics;
@@ -145,12 +146,15 @@ namespace Reko.UserInterfaces.AvaloniaUI.Services
                 sb.Append(e.Message);
                 e = e.InnerException;
             }
-            var msgBox = MessageBox.Avalonia.MessageBoxManager.GetMessageBoxStandardWindow(
-                "Reko Decompiler",
-                sb.ToString(),
-                ButtonEnum.YesNo,
-                Icon.Error);
-            await msgBox.Show(mainWindow);
+            await Dispatcher.UIThread.InvokeAsync(async delegate ()
+            {
+                var msgBox = MessageBox.Avalonia.MessageBoxManager.GetMessageBoxStandardWindow(
+                    "Reko Decompiler",
+                    sb.ToString(),
+                    ButtonEnum.Ok,
+                    Icon.Error);
+                await msgBox.Show(mainWindow);
+            });
         }
 
         public async ValueTask ShowMessage(string msg)

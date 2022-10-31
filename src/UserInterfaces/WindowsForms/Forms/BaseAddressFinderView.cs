@@ -1,3 +1,23 @@
+#region License
+/* 
+ * Copyright (C) 1999-2022 John Källén.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2, or (at your option)
+ * any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; see the file COPYING.  If not, write to
+ * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
+ */
+#endregion
+
 using Reko.Core;
 using Reko.Core.Loading;
 using Reko.Gui;
@@ -9,6 +29,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
+using System.Reactive;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -58,14 +79,15 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
                 viewModel,
                 nameof(viewModel.StartStopButtonText));
 
-            this.chkGuessStrings.DataBindings.Add(
-                nameof(chkGuessStrings.Checked),
+            this.btnChangeBaseAddress.DataBindings.Add(
+                nameof(btnStartStop.Enabled),
                 viewModel,
-                nameof(viewModel.ByString));
-            this.chkGuessPrologs.DataBindings.Add(
-                nameof(chkGuessPrologs.Checked),
+                nameof(viewModel.ChangeBaseAddressEnabled));
+
+            this.txtBaseAddress.DataBindings.Add(
+                nameof(txtBaseAddress.Text),
                 viewModel,
-                nameof(viewModel.ByProlog));
+                nameof(viewModel.BaseAddress));
 
             viewModel.Results.CollectionChanged += Results_CollectionChanged;
         }
@@ -104,6 +126,19 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
         private async void btnStartStop_Click(object sender, EventArgs e)
         {
             await viewModel?.StartStopFinder();
+        }
+
+        private void listCandidates_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (viewModel is null)
+                return;
+            var item = listCandidates.FocusedItem;
+            viewModel.BaseAddress = item.Text;
+        }
+
+        private void btnChangeBaseAddress_Click(object sender, EventArgs e)
+        {
+            viewModel?.ChangeBaseAddress();
         }
     }
 }

@@ -31,14 +31,19 @@
 				   LastChildFill="True"
 				   VerticalAlignment="Top">
 			<StackPanel DockPanel.Dock="Top">
-				<CheckBox IsChecked="{Binding ViewModel.ByString}">Guess base address based on _strings</CheckBox>
+				<Label>Guess image base address based on _strings</Label>
 				<ProgressBar Value="{Binding ViewModel.ByStringProgress}"/>
+				<!--
 				<CheckBox IsChecked="{Binding ViewModel.ByProlog}">Guess base address based on procedure _prologs</CheckBox>
 				<ProgressBar Value="{Binding ViewModel.ByPrologProgress}" />
-				<Button Click="btnStartStop_Click" Content="{Binding ViewModel.StartStopButtonText}">
+-->
+				<Button Click="btnStartStop_Click"
+						Content="{Binding ViewModel.StartStopButtonText}"
+						IsEnabled="{Binding ViewModel.StartStopButtonEnabled}">
 				</Button>
 			</StackPanel>
 			<DataGrid
+					Name="listCandidates"
 					DockPanel.Dock="Top"
 					Items="{Binding ViewModel.Results}"
 					AutoGenerateColumns="False"
@@ -52,9 +57,11 @@
 		<StackPanel Grid.Row="2">
 			<Label>_Base address:</Label>
 			<StackPanel Orientation="Horizontal">
-				<TextBox Classes="address" Text="{Binding ViewModel.BaseAddress}" Width="150" 
+				<TextBox Classes="address" Text="{Binding ViewModel.BaseAddress}" Width="150"
 						 Margin="0,0,10,0"/>
-				<Button Click="btnChangeAddress_Click">_Change base address</Button> 
+				<Button Command="{Binding ViewModel.ChangeBaseAddress_Click}"
+						IsEnabled="{Binding ViewModel.ChangeBaseAddressEnabled}"
+						x:CompileBindings="True">_Change base address</Button>
 			</StackPanel>
 		</StackPanel> 
 	</Grid>

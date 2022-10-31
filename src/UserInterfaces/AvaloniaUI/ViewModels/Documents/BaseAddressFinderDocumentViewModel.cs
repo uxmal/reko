@@ -58,6 +58,11 @@ namespace Reko.UserInterfaces.AvaloniaUI.ViewModels.Documents
         {
             throw new NotImplementedException();
         }
+
+        public void ChangeAddress_Clicked()
+        {
+
+        }
     }
 
 }

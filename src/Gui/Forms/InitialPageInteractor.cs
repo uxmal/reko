@@ -176,7 +176,17 @@ namespace Reko.Gui.Forms
                 eventListener.Progress.ShowStatus("Loading source program.");
                 var imageUri = ImageLocation.FromUri(file);
                 details.Location = imageUri;
-                Program program = ldr.LoadRawImage(details);
+                Program program;
+                try
+                {
+                    program = ldr.LoadRawImage(details);
+                }
+                catch (Exception ex)
+                {
+                    Services.RequireService<IDecompilerShellUiService>()
+                        .ShowError(ex, "An error occurred when opening {0}.", file);
+                    return;
+                }
                 var project = Project.FromSingleProgram(program);
                 this.Decompiler = CreateDecompiler(project);
                 Decompiler.ExtractResources();

@@ -18,16 +18,22 @@
  */
 #endregion
 
+using ReactiveUI;
 using Reko.Core;
 using Reko.Core.Configuration;
+using Reko.Core.Loading;
 using Reko.Core.Memory;
 using Reko.Core.Output;
 using Reko.Core.Services;
+using Reko.Gui.Services;
+using Reko.Loading;
 using Reko.Scanning;
+using Reko.Services;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Reactive;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -35,6 +41,9 @@ using System.Xml.Serialization;
 
 namespace Reko.Gui.ViewModels.Documents
 {
+    /// <summary>
+    /// The View model for base address finder document view.
+    /// </summary>
     public class BaseAddressFinderViewModel : Reko.Gui.Reactive.ChangeNotifyingObject
     {
         private IServiceProvider services;
@@ -54,8 +63,10 @@ namespace Reko.Gui.ViewModels.Documents
             this.startText = startText;
             this.stopText = stopText;
             this.startStopButtonText = startText;
+            this.startStopButtonEnabled = true;
             this.Results = new ObservableCollection<BaseAddressResult>();
             this.baseAddress = "";
+            this.ChangeBaseAddress_Click = ReactiveCommand.Create(ChangeBaseAddress);
         }
 
         public bool ByString
@@ -91,16 +102,38 @@ namespace Reko.Gui.ViewModels.Documents
             get => startStopButtonText;
             set => this.RaiseAndSetIfChanged(ref startStopButtonText, value);
         }
-        public string startStopButtonText;
+        private string startStopButtonText;
+
+        public bool StartStopButtonEnabled
+        {
+            get => startStopButtonEnabled;
+            set => this.RaiseAndSetIfChanged(ref startStopButtonEnabled, value);
+        }
+        private bool startStopButtonEnabled;
 
         public ObservableCollection<BaseAddressResult> Results { get; }
 
         public string BaseAddress
         {
             get => baseAddress;
-            set => this.RaiseAndSetIfChanged(ref baseAddress, value);
+            set
+            {
+                this.RaiseAndSetIfChanged(ref baseAddress, value);
+                ChangeBaseAddressEnabled =
+                    this.program.Architecture.TryParseAddress(value, out _);
+            }
         }
         public string baseAddress;
+
+        public bool ChangeBaseAddressEnabled
+        {
+            get => changeBaseAddressEnabled;
+            set => this.RaiseAndSetIfChanged(ref changeBaseAddressEnabled, value);
+        }
+        private bool changeBaseAddressEnabled;
+
+        public ReactiveCommand<Unit, Unit> ChangeBaseAddress_Click { get; }
+
 
         public async Task StartStopFinder()
         {
@@ -128,11 +161,11 @@ namespace Reko.Gui.ViewModels.Documents
                 return;
             }
 
-
             var s = new FindBaseString(
                 program.Architecture,
                 mem,
                 NullProgressIndicator.Instance);
+            //$REVIEW: the ProcedurePrologFinder is taking way too long.
             //var p = new ProcedurePrologFinder(
             //    program.Architecture,
             //    this.GetApplicablePrologPatterns(program),
@@ -166,8 +199,7 @@ namespace Reko.Gui.ViewModels.Documents
                     Confidence = sr2.Confidence != 0
                         ? sr2.Confidence.ToString()
                         : "-",
-
-                };
+                };  
             foreach (var result in results)
             {
                 this.Results.Add(result);
@@ -195,6 +227,29 @@ namespace Reko.Gui.ViewModels.Documents
                 arch.DefaultBase)
                 .ToUpperInvariant();
             return Convert.ToString(sAddr).PadLeft(digits, '0');
+        }
+
+        public void ChangeBaseAddress()
+        {
+            if (!program.Architecture.TryParseAddress(this.BaseAddress, out var addrBase))
+                return;
+            var loader = services.RequireService<ILoader>();
+            var loadDetails = new LoadDetails
+            {
+                LoadAddress = this.BaseAddress,
+                ArchitectureName = program.User.Processor,
+                PlatformName = program.User.Environment,
+                ArchitectureOptions = program.Architecture.SaveUserOptions(),
+                LoaderName = program.User.Loader,
+                Location = program.Location,
+                // EntryPoint = RebaseEntryPoint(program.User.)
+                //Offset = program.User.
+            };
+            var rebasedProgram = loader.LoadRawImage(loadDetails);
+            var dcSvc = services.RequireService<IDecompilerService>();
+            dcSvc.Decompiler?.ReplaceProgram(program, rebasedProgram);
+            var diagSvc = services.RequireService<IDiagnosticsService>();
+            diagSvc.Inform("Base address changed to {0}", addrBase);
         }
     }
 

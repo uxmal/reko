@@ -48,5 +48,11 @@ namespace Reko
         void StructureProgram();
         void WriteDecompilerProducts();
         void ExtractResources();
+
+        /// <summary>
+        /// Replaces any occurrence of <paramref name="oldProgram"/> in the
+        /// <see cref="Project"/> with <paramref name="newProgram"/>.
+        /// </summary>
+        void ReplaceProgram(Program oldProgram, Program newProgram);
     }
 }

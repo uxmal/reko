@@ -38,6 +38,8 @@ namespace Reko.UserInterfaces.AvaloniaUI.ViewModels
     public class OpenAsViewModel : ReactiveObject
     {
         private readonly IConfigurationService configSvc;
+        private readonly IFileSystemService fs;
+        private bool fileExists;
 
         public OpenAsViewModel(IServiceProvider services)
         {
@@ -45,6 +47,7 @@ namespace Reko.UserInterfaces.AvaloniaUI.ViewModels
             this.address = "";
             this.loadAddressChecked = true;
             this.configSvc = services.RequireService<IConfigurationService>();
+            this.fs = services.RequireService<IFileSystemService>();
 
             this.FileFormats = configSvc.GetRawFiles()
                 .Select(ff => new ListOption(ff.Description ?? ff.Name!, ff))
@@ -80,6 +83,7 @@ namespace Reko.UserInterfaces.AvaloniaUI.ViewModels
             set 
             {
                 this.RaiseAndSetIfChanged(ref filename, value);
+                this.fileExists = fs.FileExists(value);
                 SetEnableProperties();
             }
         }
@@ -232,7 +236,9 @@ namespace Reko.UserInterfaces.AvaloniaUI.ViewModels
             ArchitecturesEnabled = archRequired;
             AddressEnabled = addrRequired && LoadAddressChecked;
             //dlg.PropertyGrid.Enabled = dlg.PropertyGrid.SelectedObject != null;
-            OKButtonEnabled = this.FileName.Length > 0 || !unknownRawFileFormat;
+            OKButtonEnabled = 
+                fileExists &&
+                !unknownRawFileFormat;
         }
 
         public LoadDetails? CreateLoadDetails()

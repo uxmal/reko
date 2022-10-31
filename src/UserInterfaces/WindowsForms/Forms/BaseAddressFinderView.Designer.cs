@@ -28,40 +28,18 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.chkGuessStrings = new System.Windows.Forms.CheckBox();
-            this.chkGuessPrologs = new System.Windows.Forms.CheckBox();
             this.progressStringGuess = new System.Windows.Forms.ProgressBar();
-            this.progressPrologGuess = new System.Windows.Forms.ProgressBar();
             this.listCandidates = new System.Windows.Forms.ListView();
             this.colAddress = new System.Windows.Forms.ColumnHeader();
             this.columnStrings = new System.Windows.Forms.ColumnHeader();
             this.columnPrologs = new System.Windows.Forms.ColumnHeader();
             this.btnStartStop = new System.Windows.Forms.Button();
             this.btnChangeBaseAddress = new System.Windows.Forms.Button();
-            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.txtBaseAddress = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
+            this.label3 = new System.Windows.Forms.Label();
             this.SuspendLayout();
-            // 
-            // chkGuessStrings
-            // 
-            this.chkGuessStrings.AutoSize = true;
-            this.chkGuessStrings.Location = new System.Drawing.Point(3, 68);
-            this.chkGuessStrings.Name = "chkGuessStrings";
-            this.chkGuessStrings.Size = new System.Drawing.Size(216, 19);
-            this.chkGuessStrings.TabIndex = 0;
-            this.chkGuessStrings.Text = "Guess base address based on &strings";
-            this.chkGuessStrings.UseVisualStyleBackColor = true;
-            // 
-            // chkGuessPrologs
-            // 
-            this.chkGuessPrologs.AutoSize = true;
-            this.chkGuessPrologs.Location = new System.Drawing.Point(3, 132);
-            this.chkGuessPrologs.Name = "chkGuessPrologs";
-            this.chkGuessPrologs.Size = new System.Drawing.Size(278, 19);
-            this.chkGuessPrologs.TabIndex = 1;
-            this.chkGuessPrologs.Text = "Guess base address based on procedure &prologs";
-            this.chkGuessPrologs.UseVisualStyleBackColor = true;
             // 
             // progressStringGuess
             // 
@@ -70,16 +48,7 @@
             this.progressStringGuess.Location = new System.Drawing.Point(3, 93);
             this.progressStringGuess.Name = "progressStringGuess";
             this.progressStringGuess.Size = new System.Drawing.Size(795, 23);
-            this.progressStringGuess.TabIndex = 2;
-            // 
-            // progressPrologGuess
-            // 
-            this.progressPrologGuess.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.progressPrologGuess.Location = new System.Drawing.Point(3, 157);
-            this.progressPrologGuess.Name = "progressPrologGuess";
-            this.progressPrologGuess.Size = new System.Drawing.Size(795, 23);
-            this.progressPrologGuess.TabIndex = 3;
+            this.progressStringGuess.TabIndex = 0;
             // 
             // listCandidates
             // 
@@ -90,12 +59,13 @@
             this.colAddress,
             this.columnStrings,
             this.columnPrologs});
-            this.listCandidates.Location = new System.Drawing.Point(0, 215);
+            this.listCandidates.Location = new System.Drawing.Point(0, 151);
             this.listCandidates.Name = "listCandidates";
-            this.listCandidates.Size = new System.Drawing.Size(798, 254);
-            this.listCandidates.TabIndex = 4;
+            this.listCandidates.Size = new System.Drawing.Size(798, 318);
+            this.listCandidates.TabIndex = 2;
             this.listCandidates.UseCompatibleStateImageBehavior = false;
             this.listCandidates.View = System.Windows.Forms.View.Details;
+            this.listCandidates.SelectedIndexChanged += new System.EventHandler(this.listCandidates_SelectedIndexChanged);
             // 
             // colAddress
             // 
@@ -114,10 +84,10 @@
             // 
             // btnStartStop
             // 
-            this.btnStartStop.Location = new System.Drawing.Point(3, 186);
+            this.btnStartStop.Location = new System.Drawing.Point(3, 122);
             this.btnStartStop.Name = "btnStartStop";
             this.btnStartStop.Size = new System.Drawing.Size(75, 23);
-            this.btnStartStop.TabIndex = 5;
+            this.btnStartStop.TabIndex = 1;
             this.btnStartStop.Text = "&Start";
             this.btnStartStop.UseVisualStyleBackColor = true;
             this.btnStartStop.Click += new System.EventHandler(this.btnStartStop_Click);
@@ -128,17 +98,18 @@
             this.btnChangeBaseAddress.Location = new System.Drawing.Point(198, 489);
             this.btnChangeBaseAddress.Name = "btnChangeBaseAddress";
             this.btnChangeBaseAddress.Size = new System.Drawing.Size(129, 23);
-            this.btnChangeBaseAddress.TabIndex = 6;
+            this.btnChangeBaseAddress.TabIndex = 4;
             this.btnChangeBaseAddress.Text = "&Change base address";
             this.btnChangeBaseAddress.UseVisualStyleBackColor = true;
+            this.btnChangeBaseAddress.Click += new System.EventHandler(this.btnChangeBaseAddress_Click);
             // 
-            // textBox1
+            // txtBaseAddress
             // 
-            this.textBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.textBox1.Location = new System.Drawing.Point(3, 490);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(189, 23);
-            this.textBox1.TabIndex = 7;
+            this.txtBaseAddress.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.txtBaseAddress.Location = new System.Drawing.Point(3, 490);
+            this.txtBaseAddress.Name = "txtBaseAddress";
+            this.txtBaseAddress.Size = new System.Drawing.Size(189, 23);
+            this.txtBaseAddress.TabIndex = 3;
             // 
             // label1
             // 
@@ -163,19 +134,26 @@
             this.label2.TabIndex = 9;
             this.label2.Text = "Base Address Finder";
             // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(3, 75);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(197, 15);
+            this.label3.TabIndex = 10;
+            this.label3.Text = "Guess base address based on &strings";
+            // 
             // BaseAddressFinderView
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.progressStringGuess);
+            this.Controls.Add(this.label3);
             this.Controls.Add(this.label2);
-            this.Controls.Add(this.textBox1);
+            this.Controls.Add(this.txtBaseAddress);
             this.Controls.Add(this.btnChangeBaseAddress);
             this.Controls.Add(this.btnStartStop);
             this.Controls.Add(this.listCandidates);
-            this.Controls.Add(this.progressPrologGuess);
-            this.Controls.Add(this.progressStringGuess);
-            this.Controls.Add(this.chkGuessPrologs);
-            this.Controls.Add(this.chkGuessStrings);
             this.Controls.Add(this.label1);
             this.Name = "BaseAddressFinderView";
             this.Size = new System.Drawing.Size(804, 517);
@@ -185,19 +163,16 @@
         }
 
         #endregion
-
-        private System.Windows.Forms.CheckBox chkGuessStrings;
-        private System.Windows.Forms.CheckBox chkGuessPrologs;
         private System.Windows.Forms.ProgressBar progressStringGuess;
-        private System.Windows.Forms.ProgressBar progressPrologGuess;
         private System.Windows.Forms.ListView listCandidates;
         private System.Windows.Forms.ColumnHeader colAddress;
         private System.Windows.Forms.ColumnHeader columnStrings;
         private System.Windows.Forms.ColumnHeader columnPrologs;
         private System.Windows.Forms.Button btnStartStop;
         private System.Windows.Forms.Button btnChangeBaseAddress;
-        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.TextBox txtBaseAddress;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Label label3;
     }
 }

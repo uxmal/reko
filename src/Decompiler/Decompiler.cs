@@ -623,5 +623,20 @@ namespace Reko
                 }
             }
         }
+
+        public void ReplaceProgram(Program oldProgram, Program newProgram)
+        {
+            var programs = Project.Programs;
+            bool change = false;
+            for (int i = 0; i < programs.Count; ++i)
+            {
+                if (programs[i] == oldProgram)
+                {
+                    programs[i] = newProgram;
+                    change = true;
+                }
+            }
+            if (change) ProjectChanged?.Invoke(this, EventArgs.Empty);
+        }
     }
 }
