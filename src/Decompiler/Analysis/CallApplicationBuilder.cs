@@ -284,8 +284,7 @@ Please report this issue at https://github.com/uxmal/reko";
         {
             var block = stmBefore.Block;
             var iPos = block.Statements.IndexOf(stmBefore);
-            var linAddr = stmBefore.Address;
-            return block.Statements.Insert(iPos, linAddr, instr);
+            return block.Statements.Insert(iPos, stmBefore.Address, instr);
         }
 
         private Identifier EnsureRegister(RegisterStorage reg)

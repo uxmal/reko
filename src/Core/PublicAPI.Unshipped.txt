@@ -169,7 +169,6 @@ abstract Reko.Core.Output.Formatter.WriteLine(string! s) -> void
 abstract Reko.Core.Output.Formatter.WriteType(string! typeName, Reko.Core.Types.DataType! dt) -> void
 abstract Reko.Core.Output.OutputFilePolicy.GetItemPlacements(string fileExtension) -> System.Collections.Generic.Dictionary<string, System.Collections.Generic.Dictionary<Reko.Core.ImageSegment, System.Collections.Generic.List<Reko.Core.ImageMapItem>>>
 abstract Reko.Core.Output.OutputFilePolicy.GetObjectPlacements(string fileExtension, Reko.Core.Services.DecompilerEventListener listener) -> System.Collections.Generic.Dictionary<string, System.Collections.Generic.IDictionary<Reko.Core.Address, Reko.Core.IAddressable>>
-abstract Reko.Core.Platform.CreateTrashedRegisters() -> System.Collections.Generic.HashSet<Reko.Core.RegisterStorage!>!
 abstract Reko.Core.Platform.DefaultCallingConvention.get -> string!
 abstract Reko.Core.Platform.FindService(int vector, Reko.Core.ProcessorState? state, Reko.Core.SegmentMap? segmentMap) -> Reko.Core.SystemService?
 abstract Reko.Core.Platform.GetBitSizeFromCBasicType(Reko.Core.Hll.C.CBasicType cb) -> int
@@ -193,7 +192,6 @@ abstract Reko.Core.ProcessorArchitecture.GetFlagGroup(string! name) -> Reko.Core
 abstract Reko.Core.ProcessorArchitecture.GetMnemonicNames() -> System.Collections.Generic.SortedList<string!, int>!
 abstract Reko.Core.ProcessorArchitecture.GetMnemonicNumber(string! name) -> int?
 abstract Reko.Core.ProcessorArchitecture.GetRegister(Reko.Core.StorageDomain domain, Reko.Core.BitRange range) -> Reko.Core.RegisterStorage?
-abstract Reko.Core.ProcessorArchitecture.GetRegister(string! name) -> Reko.Core.RegisterStorage?
 abstract Reko.Core.ProcessorArchitecture.GetRegisters() -> Reko.Core.RegisterStorage![]!
 abstract Reko.Core.ProcessorArchitecture.GrfToString(Reko.Core.RegisterStorage! flagRegister, string! prefix, uint grf) -> string!
 abstract Reko.Core.ProcessorArchitecture.MakeAddressFromConstant(Reko.Core.Expressions.Constant! c, bool codeAlign) -> Reko.Core.Address!

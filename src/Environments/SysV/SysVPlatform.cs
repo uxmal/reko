@@ -43,7 +43,6 @@ namespace Reko.Environments.SysV
         public SysVPlatform(IServiceProvider services, IProcessorArchitecture arch)
             : base(services, arch, "elf-neutral")
         {
-            this.TrashedRegisters = new HashSet<RegisterStorage>(LoadTrashedRegisters());
             archSpecificFactory = new ArchSpecificFactory(services, arch);
             this.defaultCc = archSpecificFactory.CreateCallingConvention(arch, "");
             //$REVIEW: examine this carefully! It may well be arch-dependent
@@ -184,23 +183,6 @@ namespace Reko.Environments.SysV
             }
             base.LoadUserOptions(options);
         }
-
-        private RegisterStorage[] LoadTrashedRegisters()
-        {
-            if (Services != null)
-            {
-                var cfgSvc = Services.RequireService<IConfigurationService>();
-                var pa = cfgSvc.GetEnvironment(this.PlatformIdentifier).Architectures.SingleOrDefault(a => a.Name == Architecture.Name);
-                if (pa != null)
-                {
-                    return pa.TrashedRegisters
-                        .Select(r => Architecture.GetRegister(r)!)
-                        .Where(r => r != null)
-                        .ToArray();
-                }
-            }
-            return new RegisterStorage[0];
-        } 
 
         public override ExternalProcedure? LookupProcedureByName(string? moduleName, string procName)
         {

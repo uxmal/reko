@@ -1610,7 +1610,12 @@ namespace Reko.Core.Expressions
         /// Generates an bit-vector of length <paramref name="bitSize"> bits
         /// from the bit pattern <pararef name="n"/>.
         /// </summary>
-        /// <param name="b">32 bits</param>
+        /// <param name="bitSize">
+        /// Size, in bits, of the resulting <see cref="Constant"/>.
+        /// </param>
+        /// <param name="n">
+        /// Value to encode as a <see cref="Constant"/>.
+        /// </param>
         /// <returns>Bit vector constant</returns>
         public Constant Word(int bitSize, long n)
         {

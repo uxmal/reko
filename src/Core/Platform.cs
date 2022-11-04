@@ -339,6 +339,7 @@ namespace Reko.Core
             this.PlatformProcedures = new Dictionary<Address, ExternalProcedure>();
             this.TrashedRegisters = new HashSet<RegisterStorage>();
             this.ProcedurePrologs = LoadProcedurePrologs();
+            this.TrashedRegisters = new HashSet<RegisterStorage>(LoadTrashedRegisters());
         }
 
         public IProcessorArchitecture Architecture { get; }
@@ -576,6 +577,18 @@ namespace Reko.Core
         public virtual bool IsPossibleArgumentRegister(RegisterStorage reg)
         {
             return false;
+        }
+
+        protected RegisterStorage[] LoadTrashedRegisters()
+        {
+            var cfgSvc = Services?.GetService<IConfigurationService>();
+            var pa = cfgSvc?.GetEnvironment(this.PlatformIdentifier)?.Architectures?.SingleOrDefault(a => a.Name == Architecture.Name);
+            if (pa is null)
+                return Array.Empty<RegisterStorage>();
+            return pa.TrashedRegisters
+                .Select(r => Architecture.GetRegister(r))
+                .Where(r => r is { })
+                .ToArray()!;
         }
 
         public virtual Address? MakeAddressFromConstant(Constant c, bool codeAlign)

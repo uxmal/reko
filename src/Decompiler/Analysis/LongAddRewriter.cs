@@ -137,14 +137,14 @@ namespace Reko.Analysis
             var right = CreateWideExpression(loCandidate.Right, hiCandidate.Right, totalSize);
             this.dst = CreateWideExpression(loCandidate.Dst, hiCandidate.Dst, totalSize);
             var stmts = hiCandidate.Statement!.Block.Statements;
-            var linAddr = hiCandidate.Statement.Address;
+            var addr = hiCandidate.Statement.Address;
             var iStm = FindInsertPosition(loCandidate, hiCandidate, stmts);
             Statement? stmMkLeft = null;
             if (left is Identifier)
             {
                 stmMkLeft = stmts.Insert(
                     iStm++,
-                    linAddr,
+                    addr,
                     CreateMkSeq(left, hiCandidate.Left, loCandidate.Left));
                 left = ReplaceDstWithSsaIdentifier(left, null!, stmMkLeft);
             }
@@ -154,14 +154,14 @@ namespace Reko.Analysis
             {
                 stmMkRight = stmts.Insert(
                     iStm++,
-                    linAddr,
+                    addr,
                     CreateMkSeq(right, hiCandidate.Right, loCandidate.Right));
                 right = ReplaceDstWithSsaIdentifier(right, null!, stmMkRight);
             }
 
             var expSum = new BinaryExpression(loCandidate.Op, left.DataType, left, right);
             Instruction instr = Assign(dst, expSum);
-            var stmLong = stmts.Insert(iStm++, linAddr, instr);
+            var stmLong = stmts.Insert(iStm++, addr, instr);
             this.dst = ReplaceDstWithSsaIdentifier(this.dst, expSum, stmLong);
 
             var sidDst = GetSsaIdentifierOf(dst);
@@ -177,7 +177,7 @@ namespace Reko.Analysis
             if (sidDstLo != null)
             {
                 var cast = new Slice(loCandidate.Dst.DataType, dst, 0);
-                var stmCastLo = stmts.Insert(iStm++, linAddr, new AliasAssignment(
+                var stmCastLo = stmts.Insert(iStm++, addr, new AliasAssignment(
                     sidDstLo.Identifier, cast));
                 var stmDeadLo = sidDstLo.DefStatement;
                 sidDstLo.DefExpression = cast;
@@ -185,7 +185,7 @@ namespace Reko.Analysis
 
                 var sidDstHi = GetSsaIdentifierOf(hiCandidate.Dst);
                 var slice = new Slice(hiCandidate.Dst.DataType, dst, loCandidate.Dst.DataType.BitSize);
-                var stmSliceHi = stmts.Insert(iStm++, linAddr, new AliasAssignment(
+                var stmSliceHi = stmts.Insert(iStm++, addr, new AliasAssignment(
                     sidDstHi!.Identifier, slice));
                 var stmDeadHi = sidDstHi.DefStatement;
                 sidDstHi.DefExpression = slice;
