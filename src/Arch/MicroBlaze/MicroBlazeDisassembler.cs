@@ -37,8 +37,9 @@ namespace Reko.Arch.MicroBlaze
 
         private readonly MicroBlazeArchitecture arch;
         private readonly EndianImageReader rdr;
+        private readonly List<MachineOperand> ops;
         private Address addr;
-        private List<MachineOperand> ops;
+        private uint? immHi;
 
         public MicroBlazeDisassembler(MicroBlazeArchitecture arch, EndianImageReader rdr)
         {
@@ -46,6 +47,7 @@ namespace Reko.Arch.MicroBlaze
             this.rdr = rdr;
             this.ops = new List<MachineOperand>();
             this.addr = null!;
+            immHi = null;
         }
 
         public override MicroBlazeInstruction? DisassembleInstruction()
@@ -57,6 +59,8 @@ namespace Reko.Arch.MicroBlaze
             var instr = rootDecoder.Decode(wInstr, this);
             instr.Address = addr;
             instr.Length = (int) (rdr.Address - this.addr);
+            if (instr.Mnemonic != Mnemonic.imm)
+                this.immHi = null;
             return instr;
         }
 
@@ -129,14 +133,24 @@ namespace Reko.Arch.MicroBlaze
             var field = BeField(bePos, len);
             return (u, d) =>
             {
-                var n = field.ReadSigned(u);
-                d.ops.Add(ImmediateOperand.Word32(n));
+                ImmediateOperand op;
+                if (d.immHi.HasValue)
+                {
+                    var n = field.Read(u);
+                    n |= d.immHi.Value;
+                    op = ImmediateOperand.Word32(n);
+                }
+                else
+                {
+                    var n = field.ReadSigned(u);
+                    op = ImmediateOperand.Word32(n);
+                }
+                d.ops.Add(op);
                 return true;
             };
         }
 
         private static readonly Mutator<MicroBlazeDisassembler> Is16 = ImmS(16, 16);
-
 
         private static Mutator<MicroBlazeDisassembler> ImmU(int bePos, int len)
         {
@@ -144,6 +158,8 @@ namespace Reko.Arch.MicroBlaze
             return (u, d) =>
             {
                 var n = field.Read(u);
+                if (d.immHi.HasValue)
+                    n |= d.immHi.Value;
                 d.ops.Add(ImmediateOperand.Word32(n));
                 return true;
             };
@@ -151,13 +167,32 @@ namespace Reko.Arch.MicroBlaze
 
         private static readonly Mutator<MicroBlazeDisassembler> Iu16 = ImmU(16, 16);
 
+
+        private static bool SetImm16(uint uInstr, MicroBlazeDisassembler dasm)
+        {
+            var n = uInstr & 0xFFFF;
+            dasm.ops.Add(ImmediateOperand.Word32(n));
+            dasm.immHi = n << 16;
+            return true;
+        }
+
         private static Mutator<MicroBlazeDisassembler> Abs(int bePos, int len)
         {
             var field = BeField(bePos, len);
             return (u, d) =>
             {
-                var n = (uint) field.ReadSigned(u);
-                var addr = Address.Ptr32(n);
+                Address addr;
+                if (d.immHi.HasValue)
+                {
+                    var n = field.Read(u);
+                    n |= d.immHi.Value;
+                    addr = Address.Ptr32(n);
+                }
+                else
+                {
+                    var n = (uint) field.ReadSigned(u);
+                    addr = Address.Ptr32(n);
+                }
                 d.ops.Add(AddressOperand.Create(addr));
                 return true;
             };
@@ -171,8 +206,18 @@ namespace Reko.Arch.MicroBlaze
             var field = BeField(bePos, len);
             return (u, d) =>
             {
-                var n = field.ReadSigned(u);
-                var addr = d.addr + n;
+                Address addr;
+                if (d.immHi.HasValue)
+                {
+                    var n = field.Read(u);
+                    n |= d.immHi.Value;
+                    addr = d.addr + n;
+                }
+                else
+                {
+                    var n = field.ReadSigned(u);
+                    addr = d.addr + n;
+                }
                 d.ops.Add(AddressOperand.Create(addr));
                 return true;
             };
@@ -299,7 +344,7 @@ namespace Reko.Arch.MicroBlaze
                 Instr(Mnemonic.xori, Rd,Ra,Is16),
                 Instr(Mnemonic.andni, Rd,Ra,Is16),
 
-                Instr(Mnemonic.imm, Iu16),
+                Instr(Mnemonic.imm, SetImm16),
                 SparseBe(6, 5, "0x2D", invalid,
                     (0x10, Instr(Mnemonic.rtsd, InstrClass.Transfer | InstrClass.Return | InstrClass.Delay, Ra,Is16)),
                     (0x11, Instr(Mnemonic.rtid, InstrClass.Transfer | InstrClass.Return | InstrClass.Delay, Ra,Iu16)),

@@ -45,8 +45,6 @@ namespace Reko.Arch.MicroBlaze
         private readonly RtlEmitter m;
         private MicroBlazeInstruction instrCur;
         private InstrClass iclass;
-        private Address addrInstr;
-        private int immHiBits;
 
         public MicroBlazeRewriter(MicroBlazeArchitecture arch, EndianImageReader rdr, ProcessorState state, IStorageBinder binder, IRewriterHost host)
         {
@@ -59,7 +57,6 @@ namespace Reko.Arch.MicroBlaze
             this.instrs = new List<RtlInstruction>();
             this.m = new RtlEmitter(instrs);
             this.instrCur = default!;
-            this.addrInstr = default!;
         }
 
         public IEnumerator<RtlInstructionCluster> GetEnumerator()
@@ -106,7 +103,7 @@ namespace Reko.Arch.MicroBlaze
                 case Mnemonic.brlid: RewriteJumpAddr(true); break;
                 case Mnemonic.cmp: RewriteCmp(m.ISub); break;
                 case Mnemonic.cmpu: RewriteCmp(m.USub); break;
-                case Mnemonic.imm: CaptureImmState(); continue; // <- don't emit code!
+                case Mnemonic.imm: m.Nop(); break; // Disassembler already handled the IMM.
                 case Mnemonic.lbu: RewriteLoadIdx(PrimitiveType.Byte); break;
                 case Mnemonic.lbui: RewriteLoadOffset(PrimitiveType.Byte); break;
                 case Mnemonic.lhu: RewriteLoadIdx(PrimitiveType.Word16); break;
@@ -136,13 +133,8 @@ namespace Reko.Arch.MicroBlaze
                 case Mnemonic.xor: RewriteLogical(m.Xor); break;
                 case Mnemonic.xori: RewriteLogicalImm(m.Xor); break;
                 }
-                var addr = addrInstr ?? instrCur.Address;
-                var length = (int) (rdr.Address - addr);
-                this.addrInstr = null!;
-                yield return m.MakeCluster(addr, length, iclass);
+                yield return m.MakeCluster(instrCur.Address, instrCur.Length, iclass);
                 this.instrs.Clear();
-                this.immHiBits = 0;
-                addrInstr = null!;
             }
         }
 
@@ -165,10 +157,6 @@ namespace Reko.Arch.MicroBlaze
         {
             var op = instrCur.Operands[iOp];
             var addr = ((AddressOperand) op).Address;
-            if (immHiBits != 0)
-            {
-                addr += immHiBits;
-            }
             return addr;
         }
 
@@ -176,16 +164,6 @@ namespace Reko.Arch.MicroBlaze
         {
             var carry = binder.EnsureFlagGroup(Registers.C);
             m.Assign(carry, m.Cond(e));
-        }
-
-        /// <summary>
-        /// An imm instruction will affect a subsequent instruction with 
-        /// an immediate operand / address.
-        /// </summary>
-        void CaptureImmState()
-        {
-            this.immHiBits = ((ImmediateOperand) instrCur.Operands[0]).Value.ToInt32() << 16;
-            this.addrInstr = instrCur.Address;
         }
 
         private void EmitLoad(Identifier dst, MemoryAccess src)
@@ -220,10 +198,6 @@ namespace Reko.Arch.MicroBlaze
         {
             var op = instrCur.Operands[iOp];
             var imm = ((ImmediateOperand) op).Value;
-            if (immHiBits != 0)
-            {
-                imm = Constant.Create(imm.DataType, imm.ToInt32() + immHiBits);
-            }
             return imm;
         }
 

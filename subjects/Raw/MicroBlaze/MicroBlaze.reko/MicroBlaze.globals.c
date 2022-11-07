@@ -5,274 +5,360 @@
 #include "MicroBlaze.h"
 
 struct Eq_n * g_ptr0001 = &g_t0130; // 00000001
-byte g_b0002 = 0x00; // 00000002
-struct Eq_n g_t0003 = // 00000003
+Eq_n g_t0002 = // 00000002
 	{
-		0x01,
-		0x30,
-		0xA0,
-		~0x29,
-		0x44,
-		0xB0,
-		0x00,
-		0x00,
-	};
-byte g_b0004 = 0x30; // 00000004
-struct Eq_n * g_ptr0005 = &g_tA0D644B0; // 00000005
-Eq_n g_t0007 = // 00000007
-	{
-		
+		;
+Eq_n g_t0003 = // 00000003
 		{
-		},
-		&g_tBC0300,
-		&g_b2CB00000,
-		0x00306000,
-		&g_tBC0300,
-		&g_t203021FF,
-		&g_tE4F9E100,
-		0x08302100,
-		&g_t1CB60F00,
-		&g_t8800000,
-		&g_bB00000,
-	};
-struct Eq_n * g_a000D[] = // 0000000D
-	{
-	};
-Eq_n g_a0015[] = // 00000015
-	{
-	};
-int32 g_a0018[] = // 00000018
-	{
-	};
-Eq_n g_a0019[] = // 00000019
-	{
-	};
-Eq_n g_a0029[] = // 00000029
-	{
-	};
-<anonymous> g_t002C = <code>; // 0000002C
-Eq_n g_a002D[] = // 0000002D
-	{
-	};
-Eq_n g_a0031[] = // 00000031
-	{
-	};
-Eq_n g_a0038[] = // 00000038
-	{
-	};
-Eq_n g_a003C[] = // 0000003C
-	{
-	};
-Eq_n g_a0041[] = // 00000041
-	{
-	};
-Eq_n g_t0043 = // 00000043
-	{
-		
-		{
-			0x0880,
-			&g_t908300,
-			&g_t1908400,
 			
 			{
-				1100006912
+				0x01
 			},
 			
 			{
-				1100006912
+				0x01
 			},
-			&g_t4190C600,
-		}
-	};
-Eq_n g_a0045[] = // 00000045
-	{
-	};
-Eq_n g_a0049[] = // 00000049
-	{
-	};
-Eq_n g_a004D[] = // 0000004D
-	{
-	};
-Eq_n g_a0051[] = // 00000051
-	{
-	};
-struct Eq_n g_t0052 = // 00000052
-	{
-		&g_ptr18009083,
-		
-		{
-			0x41
-		},
-		
-		{
-			0x41
-		},
-		
-		{
-			0x41
-		},
-		
-		{
-			0x41
-		},
-		
-		{
-			0x41
-		},
-		
-		{
-			0x41
-		},
-		
-		{
-			0x41
-		},
-		4296902,
-	};
-Eq_n g_a0055[] = // 00000055
-	{
-	};
+			
+			{
+				0x44
+			},
+			
+			{
+				0x00
+			},
+			0x2CB00000,
+			
+			{
+				0x00
+			},
+			0x00BC0300,
+			
+			{
+				0x00
+			},
+			0x00800000,
+			
+			{
+				0x00
+			},
+			0x00B60F00,
+			0x08302100,
+			0x1CB60F00,
+			
+			{
+				0x08
+			},
+			
+			{
+				0x01
+			},
+			
+			{
+				0x44
+			},
+			
+			{
+				0x01
+			},
+			
+			{
+				0x00
+			},
+		};
 Eq_n g_t0083 = // 00000083
-	{
-		
 		{
-			0x4190,
-			&g_t4190C600,
-			&g_t4190C600,
 			
 			{
-				1100006912
-			},
-			
-			{
-				1100006912
-			},
-			&g_t4190C600,
-		}
-	};
-word32 g_dw00E5 = 0xC6004110; // 000000E5
-int32 g_dw00F5 = 48; // 000000F5
-int32 g_dw00F9 = 0x600000BC; // 000000F9
+				0x4190,
+				&g_t4190C600,
+				&g_t4190C600,
+				
+				{
+					1100006912
+				},
+				
+				{
+					1100006912
+				},
+				&g_t4190C600,
+			}
+		};
 Eq_n g_t0104 = // 00000104
-	{
-		0x80000000,
-		0xE9E10000,
-		0x80000000,
-		0xB0000001,
-		0xE060D644,
-		0xB0000001,
-		815846968,
-		0xB0000001,
-		0xE860D648,
-		807534556,
-		0x14852000,
-	};
-<anonymous> g_t0108 = <code>; // 00000108
-Eq_n g_t0130 = // 00000130
-	{
-		
 		{
-			0x8000
-		},
-	};
-byte g_b6E0C = ~0x41; // 00006E0C
-byte g_b6E44 = 0x31; // 00006E44
-byte g_b6E4C = 0xC0; // 00006E4C
-byte g_b6E54 = ~0x06; // 00006E54
-byte g_b6E60 = 0xD0; // 00006E60
-byte g_b6E64 = 0x10; // 00006E64
-byte g_b6E6C = 0x30; // 00006E6C
-byte g_b6EDC = 0x91; // 00006EDC
-byte g_b6EE4 = 0x91; // 00006EE4
-byte g_b6EF0 = 0x91; // 00006EF0
-byte g_b6EFC = 0x91; // 00006EFC
-byte g_b6F08 = 0x91; // 00006F08
-byte g_b6F14 = 0x91; // 00006F14
-byte g_b6F28 = ~0x07; // 00006F28
-byte g_b6F34 = 0x10; // 00006F34
-byte g_b6F40 = 0xC0; // 00006F40
-byte g_b6F48 = ~0x07; // 00006F48
-byte g_b6F54 = 0x10; // 00006F54
-byte g_b6F5C = 0x10; // 00006F5C
-byte g_b6F64 = ~0x41; // 00006F64
-byte g_b6F68 = 0x10; // 00006F68
-byte g_b6F6C = 0x88; // 00006F6C
-byte g_b6F70 = 0x84; // 00006F70
-byte g_b6F78 = ~0x07; // 00006F78
-byte g_b6F84 = 0x10; // 00006F84
-byte g_b6F90 = 0x90; // 00006F90
-byte g_b6F98 = 0x90; // 00006F98
-<anonymous> * g_a71BC[] = // 000071BC
-	{
-	};
-<anonymous> * g_a71D4[] = // 000071D4
-	{
-	};
-<anonymous> * g_a7734[] = // 00007734
-	{
-	};
-ui32 g_a7860[] = // 00007860
-	{
-	};
-word32 g_dw8E84 = 0xE8650020; // 00008E84
-Eq_n g_t8E88 = // 00008E88
-	{
-		0xBC03
-	};
-Eq_n g_t8E8C = // 00008E8C
-	{
-		59493
-	};
-Eq_n g_t8E90 = // 00008E90
-	{
-		0xBC03
-	};
-Eq_n g_t8E9C = // 00008E9C
-	{
-		~0x059E
-	};
-Eq_n g_t8EA0 = // 00008EA0
-	{
-		0xFA81
-	};
-byte * g_ptr8EA4 = &g_bFAA10024; // 00008EA4
-word32 g_dw8EA8 = 0xFAC10028; // 00008EA8
-word32 g_dw8EB4 = 0xFB210034; // 00008EB4
-word32 g_dw8EB8 = 4215341112; // 00008EB8
-Eq_n g_tB5B8 = // 0000B5B8
-	{
-		36996
-	};
-Eq_n g_tB5C0 = // 0000B5C0
-	{
-		36996
-	};
-Eq_n g_tB5C4 = // 0000B5C4
-	{
-		36996
-	};
+			
+			{
+				-0x80000000
+			},
+			
+			{
+				-0x161F0000
+			},
+			
+			{
+				-0x80000000
+			},
+			
+			{
+				-0x4FFFFFFF
+			},
+			
+			{
+				-0x1F9F29BC
+			},
+			
+			{
+				-0x4FFFFFFF
+			},
+			
+			{
+				815846968
+			},
+			
+			{
+				-0x4FFFFFFF
+			},
+			
+			{
+				-396306872
+			},
+			
+			{
+				807534556
+			},
+			
+			{
+				0x14852000
+			},
+		};
+Eq_n g_t0130 = // 00000130
+		{
+			&g_t80000000,
+		};
+Eq_n g_t0400 = // 00000400
+		{
+			
+			{
+				233
+			},
+			
+			{
+				~0x15
+			},
+			
+			{
+				~0x15
+			},
+			
+			{
+				~0x15
+			},
+			0xEB014030,
+			
+			{
+				~0x49
+			},
+			0x30214034,
+			
+			{
+				0x30
+			},
+			~0x460B01E3,
+			
+			{
+				0x10
+			},
+			0xB0000001,
+			815831544,
+			-1175126516,
+			
+			{
+				0x80
+			},
+			
+			{
+				0x30
+			},
+			
+			{
+				~0x46
+			},
+			
+			{
+				0x80
+			},
+			
+			{
+				0x30
+			},
+		};
+Eq_n g_tFFDC = // 0000FFDC
+		{
+			
+			{
+				0x3060FFFE,
+				0xBC0504B0,
+				0xE8650020,
+				&g_tE8650024,
+				&g_tBC0304A0,
+				&g_t3021FFC8,
+				&g_tFAE10030,
+				&g_tEAE5001C,
+			}
+		};
+Eq_n g_tFFFF = // 0000FFFF
+		{
+			
+			{
+				7417,
+				&g_t34E89700,
+				&g_t888520,
+				
+				{
+					552247552
+				},
+				
+				{
+					686473472
+				},
+				&g_t30EB0100,
+			}
+		};
+byte g_b16E0C = 0x10; // 00016E0C
+byte g_b16E44 = 233; // 00016E44
+byte g_b16E4C = 0x30; // 00016E4C
+byte g_b16E54 = 0x89; // 00016E54
+byte g_b16E60 = 0xA8; // 00016E60
+byte g_b16E64 = 188; // 00016E64
+byte g_b16E6C = 188; // 00016E6C
+byte g_b16EDC = 0x10; // 00016EDC
+byte g_b16EE4 = ~0x49; // 00016EE4
+byte g_b16EF0 = ~0x41; // 00016EF0
+byte g_b16EFC = 0x31; // 00016EFC
+byte g_b16F08 = 0xB8; // 00016F08
+byte g_b16F14 = ~0x41; // 00016F14
+byte g_b16F28 = 0xA8; // 00016F28
+byte g_b16F34 = 0xA5; // 00016F34
+byte g_b16F40 = 0x30; // 00016F40
+byte g_b16F48 = 0x31; // 00016F48
+byte g_b16F54 = 0xB8; // 00016F54
+byte g_b16F5C = 0x90; // 00016F5C
+byte g_b16F64 = 0x30; // 00016F64
+byte g_b16F68 = 0x10; // 00016F68
+byte g_b16F6C = 0x31; // 00016F6C
+byte g_b16F70 = ~0x06; // 00016F70
+byte g_b16F78 = 188; // 00016F78
+byte g_b16F84 = ~0x41; // 00016F84
+byte g_b16F90 = 188; // 00016F90
+byte g_b16F98 = 0x90; // 00016F98
+<anonymous> * g_a171BC[] = // 000171BC
+		{
+		};
+<anonymous> * g_a171D4[] = // 000171D4
+		{
+		};
+<anonymous> * g_a17734[] = // 00017734
+		{
+		};
+ui32 g_a17860[] = // 00017860
+		{
+		};
+struct Eq_n * g_a18E34[] = // 00018E34
+		{
+		};
+struct Eq_n * g_a18E3C[] = // 00018E3C
+		{
+		};
+word32 g_dw18E84 = 0x3021FFF8; // 00018E84
+struct Eq_n * g_ptr18E88 = &g_tFA610004; // 00018E88
+struct Eq_n * g_ptr18E8C = &g_t12610000; // 00018E8C
+struct Eq_n * g_ptr18E90 = &g_tF8B3000C; // 00018E90
+Eq_n g_t18E9C = // 00018E9C
+		{
+			-0x80000000
+		};
+struct Eq_n * g_ptr18EA0 = &g_t10330000; // 00018EA0
+byte * g_ptr18EA4 = &g_bEA610004; // 00018EA4
+word32 g_dw18EA8 = 0x30210008; // 00018EA8
+word32 g_dw18EB4 = 0x3021FFF8; // 00018EB4
+word32 g_dw18EB8 = 0xFA610004; // 00018EB8
 <anonymous> g_t199AC = <code>; // 000199AC
+byte g_b19A3C = 0x90; // 00019A3C
 <anonymous> g_t19A88 = <code>; // 00019A88
-struct Eq_n * g_aFFFF8E34[];
-struct Eq_n * g_aFFFF8E3C[];
-int32 g_dwFFFF8E88; // FFFF8E88
-word32 g_dwFFFF8E8C; // FFFF8E8C
-word32 g_dwFFFF8E90; // FFFF8E90
-Eq_n g_aFFFF9ABC[];
-Eq_n g_aFFFF9DBC[];
-<anonymous> * g_aFFFFA05C[];
-word16 g_wFFFFA958; // FFFFA958
-Eq_n g_tFFFFA980;
-Eq_n g_tFFFFA9C0;
-Eq_n g_tFFFFAA00;
-Eq_n g_tFFFFAA40;
-Eq_n g_aFFFFAAEC[];
-ui32 g_aFFFFAB64[];
-byte g_bFFFFACD8; // FFFFACD8
-Eq_n g_aFFFFB430[];
-int32 g_aFFFFB4A8[];
-word32 g_aFFFFC5D0[];
-word32 g_aFFFFD1D0[];
+Eq_n g_a19ABC[] = // 00019ABC
+		{
+		};
+byte g_b19CA0 = 0x30; // 00019CA0
+byte g_b19D1C = 0xB0; // 00019D1C
+Eq_n g_a19DBC[] = // 00019DBC
+		{
+		};
+<anonymous> * g_a1A05C[] = // 0001A05C
+		{
+		};
+Eq_n g_t1A980 = // 0001A980
+		{
+			
+			{
+			},
+			~0x27,
+		};
+Eq_n g_t1A9C0 = // 0001A9C0
+		{
+			
+			{
+			},
+			300,
+		};
+Eq_n g_t1AA00 = // 0001AA00
+		{
+			
+			{
+			},
+			0x00,
+		};
+Eq_n g_t1AA40 = // 0001AA40
+		{
+			
+			{
+			},
+			0x00,
+		};
+Eq_n g_a1AAEC[] = // 0001AAEC
+		{
+		};
+ui32 g_a1AB64[] = // 0001AB64
+		{
+		};
+byte g_b1ACD8 = 0xB0; // 0001ACD8
+word16 g_a1AED8[] = // 0001AED8
+		{
+		};
+Eq_n g_t1AF50 = // 0001AF50
+		{
+			
+			{
+			},
+			64417,
+			0x40,
+		};
+Eq_n g_a1B430[] = // 0001B430
+		{
+		};
+int32 g_a1B4A8[] = // 0001B4A8
+		{
+		};
+word32 g_dw1B5B8 = 0xBC030150; // 0001B5B8
+Eq_n g_t1B5C0 = // 0001B5C0
+		{
+			0x30
+		};
+word32 g_dw1B5C4 = 0xF8830014; // 0001B5C4
+word32 g_a1C5D0[] = // 0001C5D0
+		{
+		};
+word32 g_a1D1D0[] = // 0001D1D0
+		{
+		};
+byte g_bFFFF8E64; // FFFF8E64
 byte g_bFFFFD644; // FFFFD644
 Eq_n g_tFFFFFFFA;
-Eq_n g_tFFFFFFFF;

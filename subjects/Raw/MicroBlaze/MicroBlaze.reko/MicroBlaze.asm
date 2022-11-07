@@ -5,9 +5,9 @@
 ;;     0000022C (in fn0000022C)
 fn00000000 proc
 	imm	00000001
-	addik	r5,r0,FFFFD644
+	addik	r5,r0,0001D644
 	imm	00000001
-	addik	r3,r0,FFFFD644
+	addik	r3,r0,0001D644
 	xor	r3,r3,r5
 	beqi	r3,00000040
 
@@ -34,9 +34,9 @@ l00000040:
 ;;     00000234 (in fn0000022C)
 fn00000048 proc
 	imm	00000001
-	addik	r5,r0,FFFFD644
+	addik	r5,r0,0001D644
 	imm	00000001
-	addik	r3,r0,FFFFD644
+	addik	r3,r0,0001D644
 	rsubk	r3,r5,r3
 	addk	r4,r0,r3
 	sra	r4,r3
@@ -132,30 +132,30 @@ fn0000022C proc
 ;;   Called from:
 ;;     00000360 (in fn000002CC)
 ;;     00000370 (in fn000002CC)
-;;     0000042C (in fn000003C4)
-;;     0000043C (in fn000003C4)
-;;     0000044C (in fn000003C4)
-;;     0000045C (in fn000003C4)
+;;     0000042C (in fn00000378)
+;;     0000043C (in fn00000378)
+;;     0000044C (in fn00000378)
+;;     0000045C (in fn00000378)
 fn00000248 proc
 	addk	r8,r5,r0
 	imm	00000001
-	lwi	r7,r0,FFFFD664
+	lwi	r7,r0,0001D664
 	imm	00000001
-	lwi	r5,r0,FFFFD678
+	lwi	r5,r0,0001D678
 	imm	00000001
-	addik	r6,r0,FFFF99D8
+	addik	r6,r0,000199D8
 	addik	r1,r1,FFFFFFE4
 	swi	r15,r1,00000000
 	imm	00000001
-	brlid	r15,00008150
+	brlid	r15,00018150
 	nop
 	imm	00000001
-	brlid	r15,FFFF889C
+	brlid	r15,0001889C
 	addik	r5,r0,00000001
 
 ;; fn00000284: 00000284
 ;;   Called from:
-;;     000004EC (in fn000003C4)
+;;     000004EC (in fn00000378)
 fn00000284 proc
 	addik	r1,r1,FFFFBFCC
 	swi	r21,r1,00004024
@@ -187,11 +187,11 @@ fn000002CC proc
 	addk	r7,r24,r0
 	addk	r6,r23,r0
 	imm	00000001
-	brlid	r15,FFFF871C
+	brlid	r15,0001871C
 	addik	r5,r1,0000001C
 	addk	r5,r21,r0
 	imm	00000001
-	brlid	r15,FFFF8824
+	brlid	r15,00018824
 	addk	r19,r3,r0
 	bnei	r3,00000338
 
@@ -201,7 +201,7 @@ l000002F8:
 
 l00000300:
 	imm	00000001
-	brlid	r15,FFFF86F4
+	brlid	r15,000186F4
 	addk	r5,r21,r0
 	brlid	r15,00000728
 	addk	r5,r22,r0
@@ -212,6 +212,8 @@ l0000031C:
 	lwi	r19,r1,00004020
 
 ;; fn00000320: 00000320
+;;   Called from:
+;;     0000031C (in fn000002CC)
 fn00000320 proc
 	lwi	r21,r1,00004024
 	lwi	r22,r1,00004028
@@ -222,12 +224,12 @@ fn00000320 proc
 
 l00000338:
 	imm	00000001
-	addik	r5,r0,FFFF99E0
+	addik	r5,r0,000199E0
 	imm	00000001
-	brlid	r15,FFFF8874
+	brlid	r15,00018874
 	nop
 	imm	00000001
-	brlid	r15,FFFF889C
+	brlid	r15,0001889C
 	addik	r5,r0,00000001
 
 l00000358:
@@ -238,13 +240,13 @@ l00000358:
 
 l00000368:
 	imm	00000001
-	addik	r5,r0,FFFF99E8
+	addik	r5,r0,000199E8
 	brlid	r15,00000248
 	nop
 
 ;; fn00000378: 00000378
 ;;   Called from:
-;;     00000670 (in fn000003C4)
+;;     00000670 (in fn00000378)
 fn00000378 proc
 	addik	r1,r1,FFFFBFCC
 	swi	r21,r1,00004024
@@ -263,16 +265,12 @@ l000003A8:
 	addk	r7,r3,r0
 	addk	r6,r24,r0
 	imm	00000001
-	brlid	r15,FFFF8750
+	brlid	r15,00018750
 	addik	r5,r1,0000001C
 	xor	r3,r3,r19
 	bnei	r3,00000434
 
-;; fn000003C4: 000003C4
-;;   Called from:
-;;     000003A0 (in fn00000378)
-;;     000003A0 (in fn000002CC)
-fn000003C4 proc
+l000003C4:
 	addk	r7,r22,r0
 	addk	r5,r21,r0
 	brlid	r15,000023C8
@@ -286,7 +284,7 @@ l000003DC:
 
 l000003E4:
 	imm	00000001
-	brlid	r15,FFFF86F4
+	brlid	r15,000186F4
 	addk	r5,r23,r0
 	bnei	r3,00000454
 
@@ -301,6 +299,8 @@ l00000404:
 	lwi	r21,r1,00004024
 
 ;; fn0000040C: 0000040C
+;;   Called from:
+;;     00000408 (in fn00000378)
 fn0000040C proc
 	lwi	r22,r1,00004028
 	lwi	r23,r1,0000402C
@@ -317,19 +317,19 @@ l00000420:
 
 l00000434:
 	imm	00000001
-	addik	r5,r0,FFFF99F8
+	addik	r5,r0,000199F8
 	brlid	r15,00000248
 	nop
 
 l00000444:
 	imm	00000001
-	addik	r5,r0,FFFF99E8
+	addik	r5,r0,000199E8
 	brlid	r15,00000248
 	nop
 
 l00000454:
 	imm	00000001
-	addik	r5,r0,FFFF9A08
+	addik	r5,r0,00019A08
 	brlid	r15,00000248
 	nop
 	addik	r1,r1,FFFFFBD8
@@ -339,7 +339,7 @@ l00000454:
 	swi	r21,r1,00000420
 	addk	r19,r5,r0
 	imm	00000001
-	brlid	r15,FFFF8CC4
+	brlid	r15,00018CC4
 	addk	r22,r6,r0
 	addik	r3,r3,00000003
 	addik	r4,r0,000003FF
@@ -349,17 +349,17 @@ l00000454:
 
 l0000049C:
 	imm	00000001
-	addik	r9,r0,FFFF9A30
+	addik	r9,r0,00019A30
 	imm	00000001
-	addik	r7,r0,FFFF9A34
+	addik	r7,r0,00019A34
 	addik	r5,r1,0000001C
 	imm	00000001
-	brlid	r15,000081D0
+	brlid	r15,000181D0
 	addik	r6,r0,00000400
 	imm	00000001
-	addik	r6,r0,FFFF9A3C
+	addik	r6,r0,00019A3C
 	imm	00000001
-	brlid	r15,FFFF86C8
+	brlid	r15,000186C8
 	addk	r5,r19,r0
 	beqid	r3,00000578
 	addk	r21,r3,r0
@@ -375,7 +375,7 @@ l000004EC:
 	brlid	r15,00000284
 	addk	r5,r21,r0
 	imm	00000001
-	brlid	r15,FFFF9178
+	brlid	r15,00019178
 	addk	r5,r19,r0
 	lwi	r15,r1,00000000
 	lwi	r19,r1,0000041C
@@ -386,41 +386,43 @@ l000004EC:
 
 l00000518:
 	imm	00000001
-	lwi	r5,r0,FFFFD678
+	lwi	r5,r0,0001D678
 	imm	00000001
-	lwi	r7,r0,FFFFD664
+	lwi	r7,r0,0001D664
 	imm	00000001
-	addik	r6,r0,FFFF9A18
+	addik	r6,r0,00019A18
 	imm	00000001
-	brlid	r15,00008150
+	brlid	r15,00018150
 
 ;; fn00000538: 00000538
+;;   Called from:
+;;     00000534 (in fn00000378)
 fn00000538 proc
 	nop
 	imm	00000001
-	brlid	r15,FFFF889C
+	brlid	r15,0001889C
 	addik	r5,r0,00000001
 
 l00000548:
 	imm	00000001
-	lwi	r5,r0,FFFFD678
+	lwi	r5,r0,0001D678
 	imm	00000001
-	lwi	r7,r0,FFFFD664
+	lwi	r7,r0,0001D664
 	imm	00000001
-	addik	r6,r0,FFFF9A40
+	addik	r6,r0,00019A40
 	imm	00000001
-	brlid	r15,00008150
+	brlid	r15,00018150
 	addik	r8,r1,0000001C
 	imm	00000001
-	brlid	r15,FFFF889C
+	brlid	r15,0001889C
 	addik	r5,r0,00000001
 
 l00000578:
 	imm	00000001
-	brlid	r15,FFFF8874
+	brlid	r15,00018874
 	addk	r5,r19,r0
 	imm	00000001
-	brlid	r15,FFFF889C
+	brlid	r15,0001889C
 	addik	r5,r0,00000001
 	addik	r1,r1,FFFFFBD4
 	swi	r19,r1,0000041C
@@ -429,7 +431,7 @@ l00000578:
 	swi	r22,r1,00000424
 	swi	r23,r1,00000428
 	imm	00000001
-	brlid	r15,FFFF8CC4
+	brlid	r15,00018CC4
 	addk	r21,r5,r0
 	addk	r19,r3,r0
 	addik	r3,r0,000003FF
@@ -440,10 +442,10 @@ l00000578:
 
 l000005CC:
 	imm	00000001
-	addik	r7,r0,FFFF9A58
+	addik	r7,r0,00019A58
 	addik	r5,r1,0000001C
 	imm	00000001
-	brlid	r15,000081D0
+	brlid	r15,000181D0
 	addik	r6,r0,00000400
 	addik	r3,r0,00000003
 	cmpu	r18,r19,r3
@@ -452,29 +454,29 @@ l000005CC:
 
 l000005F4:
 	imm	00000001
-	addik	r6,r0,FFFF9A30
+	addik	r6,r0,00019A30
 	imm	00000001
-	brlid	r15,FFFF8E58
+	brlid	r15,00018E58
 	addk	r5,r21,r22
 	beqid	r3,000006A0
 	addk	r22,r1,r22
 
 l00000610:
 	imm	00000001
-	addik	r8,r0,FFFF9A30
+	addik	r8,r0,00019A30
 	imm	00000001
-	addik	r7,r0,FFFF9A58
+	addik	r7,r0,00019A58
 	addik	r22,r1,0000001C
 	addik	r3,r0,00000400
 	rsubk	r6,r19,r3
 	addk	r5,r22,r19
 	imm	00000001
-	brlid	r15,000081D0
+	brlid	r15,000181D0
 	addk	r23,r21,r0
 
 l0000063C:
 	imm	00000001
-	addik	r6,r0,FFFF9A3C
+	addik	r6,r0,00019A3C
 	brlid	r15,00000A7C
 	addk	r5,r22,r0
 	beqid	r3,000006F8
@@ -482,9 +484,9 @@ l0000063C:
 
 l00000654:
 	imm	00000001
-	addik	r6,r0,FFFF9A5C
+	addik	r6,r0,00019A5C
 	imm	00000001
-	brlid	r15,FFFF86C8
+	brlid	r15,000186C8
 	addk	r5,r23,r0
 	beqid	r3,000006E0
 	addk	r6,r3,r0
@@ -493,7 +495,7 @@ l00000670:
 	brlid	r15,00000378
 	addk	r5,r19,r0
 	imm	00000001
-	brlid	r15,FFFF9178
+	brlid	r15,00019178
 	addk	r5,r22,r0
 	lwi	r15,r1,00000000
 	lwi	r19,r1,0000041C
@@ -511,44 +513,44 @@ l000006A0:
 
 l000006B0:
 	imm	00000001
-	lwi	r5,r0,FFFFD678
+	lwi	r5,r0,0001D678
 	imm	00000001
-	lwi	r7,r0,FFFFD664
+	lwi	r7,r0,0001D664
 	imm	00000001
-	addik	r6,r0,FFFF9A18
+	addik	r6,r0,00019A18
 	imm	00000001
-	brlid	r15,00008150
+	brlid	r15,00018150
 	nop
 	imm	00000001
-	brlid	r15,FFFF889C
+	brlid	r15,0001889C
 	addik	r5,r0,00000001
 
 l000006E0:
 	imm	00000001
-	brlid	r15,FFFF8874
+	brlid	r15,00018874
 	addk	r5,r21,r0
 	imm	00000001
-	brlid	r15,FFFF889C
+	brlid	r15,0001889C
 	addik	r5,r0,00000001
 
 l000006F8:
 	imm	00000001
-	lwi	r5,r0,FFFFD678
+	lwi	r5,r0,0001D678
 	imm	00000001
-	lwi	r7,r0,FFFFD664
+	lwi	r7,r0,0001D664
 	imm	00000001
-	addik	r6,r0,FFFF9A40
+	addik	r6,r0,00019A40
 	imm	00000001
-	brlid	r15,00008150
+	brlid	r15,00018150
 	addk	r8,r22,r0
 	imm	00000001
-	brlid	r15,FFFF889C
+	brlid	r15,0001889C
 	addik	r5,r0,00000001
 
 ;; fn00000728: 00000728
 ;;   Called from:
 ;;     0000030C (in fn000002CC)
-;;     000003F4 (in fn000003C4)
+;;     000003F4 (in fn00000378)
 fn00000728 proc
 	beqi	r5,00000768
 
@@ -596,7 +598,7 @@ l00000794:
 	addik	r5,r0,0000008C
 	addk	r23,r6,r0
 	imm	00000001
-	brlid	r15,FFFF8918
+	brlid	r15,00018918
 	addk	r21,r7,r0
 	beqid	r3,00000A50
 	addk	r19,r3,r0
@@ -653,7 +655,7 @@ l00000840:
 	addk	r4,r3,r3
 	addk	r4,r4,r4
 	imm	00000001
-	addik	r3,r4,FFFF9ABC
+	addik	r3,r4,00019ABC
 	lwi	r3,r3,00000000
 	bra	r3
 
@@ -667,11 +669,11 @@ l00000868:
 
 l0000086C:
 	imm	00000001
-	brlid	r15,FFFF8CC4
+	brlid	r15,00018CC4
 	addk	r5,r22,r0
 	addik	r21,r3,00000001
 	imm	00000001
-	brlid	r15,FFFF8918
+	brlid	r15,00018918
 	addk	r5,r21,r0
 	beqid	r3,00000938
 	swi	r3,r19,00000014
@@ -680,9 +682,9 @@ l00000890:
 	addk	r6,r21,r0
 	addk	r8,r22,r0
 	imm	00000001
-	addik	r7,r0,FFFF9AB8
+	addik	r7,r0,00019AB8
 	imm	00000001
-	brlid	r15,000081D0
+	brlid	r15,000181D0
 	addk	r5,r3,r0
 	lwi	r3,r19,0000000C
 	xori	r6,r3,00001C4F
@@ -719,7 +721,15 @@ l000008E4:
 l000008F0:
 	swi	r0,r19,00000000
 
-l000008F4:
+;; fn000008F4: 000008F4
+;;   Called from:
+;;     000008F0 (in fn00000770)
+;;     00000A0C (in fn00000770)
+;;     00000A3C (in fn00000A24)
+;;     00000A48 (in fn00000A24)
+;;     00000A50 (in fn00000770)
+;;     00000A70 (in fn00000770)
+fn000008F4 proc
 	lwi	r5,r19,00000050
 	beqid	r5,0000091C
 	swi	r0,r19,00000048
@@ -731,7 +741,7 @@ l00000900:
 
 l0000090C:
 	imm	00000001
-	brlid	r15,000088F0
+	brlid	r15,000188F0
 	nop
 
 l00000918:
@@ -751,7 +761,7 @@ l0000092C:
 l00000938:
 	addk	r5,r19,r0
 	imm	00000001
-	brlid	r15,000088F0
+	brlid	r15,000188F0
 	addk	r19,r0,r0
 
 l00000948:
@@ -784,7 +794,7 @@ l000009BC:
 l000009C4:
 	addk	r5,r22,r0
 	imm	00000001
-	brlid	r15,FFFF8BB4
+	brlid	r15,00018BB4
 	addik	r7,r0,000001B6
 	swi	r3,r19,00000010
 	xori	r21,r3,FFFFFFFF
@@ -800,7 +810,7 @@ l000009F0:
 	addk	r6,r21,r0
 	addk	r5,r23,r0
 	imm	00000001
-	brlid	r15,FFFF9120
+	brlid	r15,00019120
 	addik	r7,r0,00000002
 	addik	r4,r0,000079B1
 	swi	r4,r19,0000000C
@@ -809,33 +819,22 @@ l000009F0:
 
 l00000A14:
 	imm	00000001
-	brlid	r15,FFFF9120
+	brlid	r15,00019120
 	addik	r7,r0,00000001
 	swi	r3,r19,00000030
 
 ;; fn00000A24: 00000A24
+;;   Called from:
+;;     00000A20 (in fn00000770)
 fn00000A24 proc
 	xori	r4,r3,FFFFFFFF
 	bneid	r4,00000A34
 	lwi	r3,r19,0000000C
 
-;; fn00000A30: 00000A30
-;;   Called from:
-;;     00000A2C (in fn00000A24)
-;;     00000A2C (in fn00000770)
-fn00000A30 proc
+l00000A30:
 	swi	r4,r19,00000030
 
-;; fn00000A34: 00000A34
-;;   Called from:
-;;     000008F0 (in fn00000770)
-;;     00000A0C (in fn00000770)
-;;     00000A2C (in fn00000A24)
-;;     00000A2C (in fn00000770)
-;;     00000A30 (in fn00000A30)
-;;     00000A50 (in fn00000770)
-;;     00000A74 (in fn00000770)
-fn00000A34 proc
+l00000A34:
 	xori	r3,r3,00001C4F
 	bneid	r3,000008F4
 	swi	r0,r19,00000000
@@ -852,22 +851,22 @@ l00000A50:
 
 l00000A58:
 	imm	00000001
-	brlid	r15,000088F0
+	brlid	r15,000188F0
 	lwi	r5,r19,00000014
 
 ;; fn00000A64: 00000A64
 fn00000A64 proc
 	addk	r5,r19,r0
 	imm	00000001
-	brlid	r15,000088F0
+	brlid	r15,000188F0
 	addk	r19,r21,r0
 	brid	0000094C
 	addk	r3,r19,r0
 
 ;; fn00000A7C: 00000A7C
 ;;   Called from:
-;;     000004DC (in fn000003C4)
-;;     00000644 (in fn000003C4)
+;;     000004DC (in fn00000378)
+;;     00000644 (in fn00000378)
 fn00000A7C proc
 	addk	r7,r6,r0
 	addik	r1,r1,FFFFFFE4
@@ -1103,7 +1102,7 @@ fn00000A7C proc
 ;; fn0000186C: 0000186C
 ;;   Called from:
 ;;     00000358 (in fn000002CC)
-;;     00000424 (in fn000003C4)
+;;     00000424 (in fn00000378)
 fn0000186C proc
 	beqi	r5,0000195C
 
@@ -1174,13 +1173,13 @@ l00001934:
 
 l0000193C:
 	imm	00000001
-	addik	r3,r0,FFFF9BFC
+	addik	r3,r0,00019BFC
 	rtsd	r15,00000008
 	nop
 
 l0000194C:
 	imm	00000001
-	addik	r3,r0,FFFF9C0C
+	addik	r3,r0,00019C0C
 	rtsd	r15,00000008
 	nop
 
@@ -1219,16 +1218,14 @@ l0000195C:
 ;;     00002784 (in fn000023C8)
 ;;     000027A0 (in fn000023C8)
 ;;     00003904 (in fn00003894)
-;;     00003A78 (in fn00003990)
+;;     00003A78 (in fn00003964)
 ;;     00003B38 (in fn00003AA4)
 ;;     00003C64 (in fn00003AA4)
-;;     00003D68 (in fn00003CC0)
-;;     00003E9C (in fn00003CC0)
+;;     00003D68 (in fn00003C74)
+;;     00003E9C (in fn00003C74)
 ;;     00004090 (in fn00003EC8)
 ;;     000041AC (in fn00003EC8)
 ;;     0000421C (in fn000041BC)
-;;     0000544C (in fn00005318)
-;;     00005528 (in fn00005318)
 ;;     0000564C (in fn00005538)
 ;;     00005694 (in fn00005538)
 ;;     00005754 (in fn00005538)
@@ -1252,7 +1249,7 @@ l00001A90:
 
 l00001A9C:
 	imm	00000001
-	brlid	r15,000088F0
+	brlid	r15,000188F0
 	swi	r6,r1,0000001C
 	lwi	r6,r1,0000001C
 
@@ -1292,15 +1289,15 @@ l00001AE4:
 l00001AF8:
 	lwi	r23,r19,00000014
 	imm	00000001
-	brlid	r15,00008CC4
+	brlid	r15,00018CC4
 	addk	r5,r23,r0
 	addk	r5,r21,r0
 	imm	00000001
-	brlid	r15,00008CC4
+	brlid	r15,00018CC4
 	addk	r22,r3,r0
 	addk	r3,r22,r3
 	imm	00000001
-	brlid	r15,00008918
+	brlid	r15,00018918
 	addik	r5,r3,00000003
 	swi	r3,r19,00000050
 	beqid	r3,00001B98
@@ -1308,22 +1305,22 @@ l00001AF8:
 
 l00001B34:
 	imm	00000001
-	brlid	r15,00008CC4
+	brlid	r15,00018CC4
 	addk	r5,r23,r0
 	addk	r5,r21,r0
 	imm	00000001
-	brlid	r15,00008CC4
+	brlid	r15,00018CC4
 	addk	r19,r3,r0
 	addk	r10,r21,r0
 	imm	00000001
-	addik	r9,r0,FFFF9C10
+	addik	r9,r0,00019C10
 	addk	r8,r23,r0
 	imm	00000001
-	addik	r7,r0,FFFF9C14
+	addik	r7,r0,00019C14
 	addk	r5,r22,r0
 	addk	r3,r19,r3
 	imm	00000001
-	brlid	r15,000081D0
+	brlid	r15,000181D0
 	addik	r6,r3,00000003
 
 l00001B7C:
@@ -1366,7 +1363,7 @@ fn00001BBC proc
 	swi	r28,r1,0000003C
 	addk	r21,r5,r0
 	imm	00004000
-	addik	r22,r0,00000000
+	addik	r22,r0,40000000
 	addik	r26,r0,00000001
 	lwi	r25,r5,00000064
 	addik	r24,r5,00000054
@@ -1378,7 +1375,7 @@ l00001C08:
 
 l00001C0C:
 	imm	00000000
-	brlid	r15,FFFFCC80
+	brlid	r15,0000CC80
 	addk	r5,r24,r0
 	addik	r4,r3,00000002
 	andi	r4,r4,FFFFFFFB
@@ -1475,7 +1472,7 @@ l00001D24:
 
 l00001D28:
 	imm	00000001
-	brlid	r15,000090F0
+	brlid	r15,000190F0
 	lwi	r5,r21,00000010
 	bgtid	r3,00001D0C
 	addk	r19,r19,r3
@@ -1501,7 +1498,7 @@ l00001D64:
 
 l00001D68:
 	imm	00000001
-	addik	r7,r0,FFFF9C34
+	addik	r7,r0,00019C34
 	brlid	r15,00001A68
 	addik	r6,r0,FFFFFFFB
 	lwi	r4,r21,00000064
@@ -1528,7 +1525,7 @@ l00001D94:
 
 l00001DC4:
 	imm	00000001
-	addik	r7,r0,FFFF9C68
+	addik	r7,r0,00019C68
 	addk	r5,r21,r0
 	brlid	r15,00001A68
 	addik	r6,r0,FFFFFFFE
@@ -1537,7 +1534,7 @@ l00001DC4:
 
 l00001DE0:
 	imm	00000001
-	addik	r7,r0,FFFF9C90
+	addik	r7,r0,00019C90
 	addk	r5,r21,r0
 	brlid	r15,00001A68
 	addik	r6,r0,FFFFFFFC
@@ -1583,13 +1580,13 @@ l00001E40:
 
 l00001E60:
 	imm	00000001
-	addik	r7,r0,FFFF9C1C
+	addik	r7,r0,00019C1C
 	brid	00001E08
 	addk	r5,r21,r0
 
 l00001E70:
 	imm	00000001
-	addik	r7,r0,FFFF9C4C
+	addik	r7,r0,00019C4C
 	brlid	r15,00001A68
 	addik	r6,r0,FFFFFFFF
 	brid	00001D94
@@ -1653,12 +1650,12 @@ l00001EF8:
 l00001F20:
 	lwi	r24,r5,0000001C
 	imm	00000001
-	brlid	r15,00008918
+	brlid	r15,00018918
 	addk	r5,r24,r0
 	addk	r5,r24,r24
 	swi	r3,r19,00000020
 	imm	00000001
-	brlid	r15,00008918
+	brlid	r15,00018918
 	addk	r22,r3,r0
 	rsubk	r4,r3,r0
 	or	r4,r3,r4
@@ -1706,7 +1703,7 @@ l00001F54:
 
 l00001FE8:
 	imm	00000001
-	addik	r7,r0,FFFF9CA0
+	addik	r7,r0,00019CA0
 	addk	r5,r23,r0
 	swi	r24,r19,00000018
 	swi	r21,r19,00000074
@@ -1715,19 +1712,19 @@ l00001FE8:
 	swi	r21,r19,00000058
 	swi	r21,r19,00000054
 	imm	00000000
-	brlid	r15,FFFFC654
+	brlid	r15,0000C654
 	addik	r6,r0,0000001F
 	beqi	r3,00001EBC
 
 l0000201C:
 	imm	00000001
-	brlid	r15,000088F0
+	brlid	r15,000188F0
 	lwi	r5,r19,00000024
 	imm	00000001
-	brlid	r15,000088F0
+	brlid	r15,000188F0
 	lwi	r5,r19,00000020
 	imm	00000001
-	addik	r7,r0,FFFF9C90
+	addik	r7,r0,00019C90
 	addk	r5,r19,r0
 	swi	r21,r19,00000018
 	brlid	r15,00001A68
@@ -1798,7 +1795,7 @@ l00002108:
 l0000211C:
 	lwi	r24,r19,00000018
 	imm	00004000
-	addik	r25,r0,00000000
+	addik	r25,r0,40000000
 	addk	r21,r0,r0
 	brid	0000213C
 	rsubk	r24,r22,r24
@@ -1819,7 +1816,7 @@ l00002150:
 
 l00002154:
 	imm	00000001
-	brlid	r15,000090F0
+	brlid	r15,000190F0
 	lwi	r5,r19,00000010
 	bgtid	r3,00002134
 	addk	r21,r21,r3
@@ -1855,7 +1852,7 @@ l000021A0:
 
 l000021AC:
 	imm	00000000
-	brlid	r15,FFFFC324
+	brlid	r15,0000C324
 	addk	r5,r23,r0
 	addik	r3,r0,00000002
 	swi	r3,r19,0000002C
@@ -1879,7 +1876,7 @@ l000021E0:
 
 l000021EC:
 	imm	00000001
-	brlid	r15,00008C34
+	brlid	r15,00018C34
 	addk	r7,r22,r0
 	lwi	r4,r19,00000058
 	addik	r3,r0,00000001
@@ -1899,13 +1896,13 @@ l00002218:
 
 l00002224:
 	imm	00000001
-	brlid	r15,000088F0
+	brlid	r15,000188F0
 	addk	r5,r3,r0
 	imm	00000001
-	brlid	r15,000088F0
+	brlid	r15,000188F0
 	addk	r5,r22,r0
 	imm	00000001
-	addik	r7,r0,FFFF9C90
+	addik	r7,r0,00019C90
 	addk	r5,r19,r0
 	brlid	r15,00001A68
 	addik	r6,r0,FFFFFFFC
@@ -1914,7 +1911,7 @@ l00002224:
 
 l00002258:
 	imm	00000001
-	addik	r7,r0,FFFF9C4C
+	addik	r7,r0,00019C4C
 	addk	r5,r19,r0
 	brlid	r15,00001A68
 	addik	r6,r0,FFFFFFFF
@@ -1925,8 +1922,6 @@ l00002258:
 ;;   Called from:
 ;;     000025A0 (in fn000023C8)
 ;;     00002744 (in fn000023C8)
-;;     00003730 (in fn00003728)
-;;     0000377C (in fn00003674)
 fn00002274 proc
 	addik	r1,r1,FFFFFFD4
 	swi	r19,r1,0000001C
@@ -2012,7 +2007,7 @@ l0000233C:
 	lwi	r23,r19,00000024
 	addk	r7,r4,r0
 	imm	00004000
-	addik	r22,r0,00000000
+	addik	r22,r0,40000000
 	addk	r21,r21,r21
 	brid	00002370
 	swi	r4,r19,00000000
@@ -2035,7 +2030,7 @@ l00002380:
 
 l00002384:
 	imm	00000001
-	brlid	r15,000090F0
+	brlid	r15,000190F0
 	lwi	r5,r19,00000010
 	bgti	r3,0000235C
 
@@ -2053,7 +2048,7 @@ l000023A0:
 
 l000023AC:
 	imm	00000001
-	addik	r7,r0,FFFF9C4C
+	addik	r7,r0,00019C4C
 	addk	r5,r19,r0
 	brlid	r15,00001A68
 	addik	r6,r0,FFFFFFFF
@@ -2062,7 +2057,7 @@ l000023AC:
 
 ;; fn000023C8: 000023C8
 ;;   Called from:
-;;     000003CC (in fn000003C4)
+;;     000003CC (in fn00000378)
 fn000023C8 proc
 	beqi	r5,000027B0
 
@@ -2148,7 +2143,7 @@ l000024CC:
 l000024D0:
 	addk	r23,r0,r0
 	imm	00004000
-	addik	r25,r0,00000000
+	addik	r25,r0,40000000
 	beqid	r21,00002540
 	addik	r26,r0,00000001
 
@@ -2165,7 +2160,7 @@ l000024F4:
 	lwi	r6,r19,00000004
 	rsubk	r22,r21,r22
 	imm	00000001
-	brlid	r15,00008C34
+	brlid	r15,00018C34
 	addk	r24,r24,r21
 	lwi	r4,r19,00000004
 	lwi	r3,r19,00000000
@@ -2314,7 +2309,7 @@ l000026A8:
 
 l000026AC:
 	imm	00000001
-	brlid	r15,000090F0
+	brlid	r15,000190F0
 	lwi	r5,r19,00000010
 	bgtid	r3,00002688
 	addk	r21,r21,r3
@@ -2402,7 +2397,7 @@ l00002774:
 
 l0000277C:
 	imm	00000001
-	addik	r7,r0,FFFF9CA8
+	addik	r7,r0,00019CA8
 	brlid	r15,00001A68
 	addik	r6,r0,FFFFFFFE
 
@@ -2412,7 +2407,7 @@ l0000278C:
 
 l00002794:
 	imm	00000001
-	addik	r7,r0,FFFF9C4C
+	addik	r7,r0,00019C4C
 	addk	r5,r19,r0
 	brlid	r15,00001A68
 	addik	r6,r0,FFFFFFFF
@@ -2658,209 +2653,34 @@ l000027B0:
 00003640 90 63 00 41 90 63 00 41 90 63 00 41 90 63 00 41 .c.A.c.A.c.A.c.A
 00003650 90 63 00 41 90 63 00 41 90 63 00 41 90 63 00 41 .c.A.c.A.c.A.c.A
 00003660 90 63 00 41 BE 23 01 2C 10 60 00 00 E8 65 00 48 .c.A.#.,.`...e.H
-00003670 12 65 00 00                                     .e..            
-
-;; fn00003674: 00003674
-;;   Called from:
-;;     000081BC (in fn00008038)
-;;     000083E8 (in fn00008234)
-fn00003674 proc
-	bneid	r3,000037BC
-	addk	r25,r6,r0
-
-l0000367C:
-	beqid	r23,00003790
-	addk	r3,r0,r0
-
-l00003684:
-	lwi	r4,r19,00000000
-
-l00003688:
-	addk	r26,r25,r0
-	brid	00003728
-	addik	r27,r0,0000000A
-
-l00003694:
-	addk	r6,r27,r0
-
-l00003698:
-	cmpu	r18,r23,r4
-	bgeid	r18,000036A8
-	addk	r21,r23,r0
-
-l000036A4:
-	addk	r21,r4,r0
-
-l000036A8:
-	lwi	r24,r19,00000004
-	addk	r7,r21,r0
-	imm	00000001
-	brlid	r15,00008C94
-	addk	r5,r24,r0
-	addk	r6,r24,r0
-	addk	r22,r3,r0
-	addk	r5,r26,r0
-	beqid	r3,000036D4
-	rsubk	r24,r24,r3
-
-l000036D0:
-	addik	r21,r24,00000001
-
-l000036D4:
-	addk	r7,r21,r0
-	rsubk	r23,r21,r23
-	imm	00000001
-	brlid	r15,00008C34
-	addk	r26,r26,r21
-	lwi	r3,r19,00000008
-	lwi	r4,r19,00000000
-	lwi	r5,r19,00000004
-	rsubk	r6,r22,r0
-	rsubk	r4,r21,r4
-	addk	r5,r5,r21
-	addk	r21,r3,r21
-	rsubk	r3,r23,r0
-	swi	r4,r19,00000000
-	swi	r5,r19,00000004
-	swi	r21,r19,00000008
-	or	r3,r3,r23
-	bgeid	r3,00003758
-
-;; fn0000371C: 0000371C
-;;   Called from:
-;;     0000624C (in fn00005F20)
-;;     000067F0 (in fn00005F20)
-;;     00009434 (in fn00009408)
-fn0000371C proc
-	or	r22,r22,r6
-
-l00003720:
-	bltid	r22,0000375C
-	xor	r3,r26,r25
-
-;; fn00003728: 00003728
-;;   Called from:
-;;     0000368C (in fn00003674)
-;;     0000371C (in fn0000371C)
-;;     00003724 (in fn0000371C)
-;;     00003724 (in fn0000371C)
-;;     00003724 (in fn0000371C)
-;;     00003724 (in fn0000371C)
-;;     0000378C (in fn0000378C)
-fn00003728 proc
-	bneid	r4,00003694
-	addk	r5,r19,r0
-
-l00003730:
-	brlid	r15,00002274
-	nop
-	xori	r3,r3,FFFFFFFF
-	beqid	r3,00003790
-	addk	r3,r0,r0
-
-l00003744:
-	lwi	r4,r19,00000000
-	bneid	r4,00003698
-	addk	r6,r27,r0
-
-l00003750:
-	addik	r3,r0,00000001
-	swi	r3,r19,00000038
-
-l00003758:
-	xor	r3,r26,r25
-
-l0000375C:
-	beqid	r3,0000378C
-	addk	r3,r25,r0
-
-l00003764:
-	brid	00003790
-	sbi	r0,r26,00000000
-
-l0000376C:
-	lwi	r3,r19,00000034
-	beqi	r3,0000377C
-
-l00003774:
-	lwi	r3,r19,00000058
-	beqi	r3,0000367C
-
-l0000377C:
-	brlid	r15,00002274
-	nop
-	xori	r3,r3,FFFFFFFF
-	bnei	r3,000037CC
-
-;; fn0000378C: 0000378C
-;;   Called from:
-;;     00003740 (in fn00003728)
-;;     00003760 (in fn00003728)
-;;     00003764 (in fn00003728)
-;;     00003788 (in fn00003674)
-;;     00003814 (in fn00003674)
-fn0000378C proc
-	addk	r3,r0,r0
-
-l00003790:
-	lwi	r15,r1,00000000
-	lwi	r19,r1,0000001C
-	lwi	r21,r1,00000020
-	lwi	r22,r1,00000024
-	lwi	r23,r1,00000028
-	lwi	r24,r1,0000002C
-	lwi	r25,r1,00000030
-	lwi	r26,r1,00000034
-	lwi	r27,r1,00000038
-	rtsd	r15,00000008
-	addik	r1,r1,0000003C
-
-l000037BC:
-	lwi	r21,r5,00000044
-	swi	r0,r5,00000048
-	beqid	r21,0000367C
-	addk	r22,r0,r0
-
-l000037CC:
-	lwi	r4,r19,00000000
-	addk	r5,r19,r0
-	beqid	r4,0000376C
-	addk	r3,r21,r0
-
-l000037DC:
-	blti	r4,00003820
-
-l000037E0:
-	cmp	r18,r4,r21
-	blti	r18,00003820
-
-l000037E8:
-	rsubk	r21,r4,r21
-	addk	r3,r4,r0
-	addk	r4,r22,r0
-
-l000037F4:
-	lwi	r6,r19,00000004
-	lwi	r5,r19,00000008
-	swi	r4,r19,00000000
-	addk	r4,r6,r3
-	addk	r3,r5,r3
-	swi	r4,r19,00000004
-	bneid	r21,000037CC
-	swi	r3,r19,00000008
-
-l00003814:
-	beqi	r23,0000378C
-
-l00003818:
-	brid	00003688
-	lwi	r4,r19,00000000
-
-l00003820:
-	rsubk	r4,r21,r4
-	brid	000037F4
-	addk	r21,r0,r0
-0000382C                                     30 21 FF E0             0!..
+00003670 12 65 00 00 BE 23 01 48 13 26 00 00 BE 17 01 14 .e...#.H.&......
+00003680 10 60 00 00 E8 93 00 00 13 59 00 00 B8 10 00 9C .`.......Y......
+00003690 33 60 00 0A 10 DB 00 00 16 57 20 03 BE B2 00 0C 3`.......W .....
+000036A0 12 B7 00 00 12 A4 00 00 EB 13 00 04 10 F5 00 00 ................
+000036B0 B0 00 00 01 B9 F4 55 E0 10 B8 00 00 10 D8 00 00 ......U.........
+000036C0 12 C3 00 00 10 BA 00 00 BE 03 00 0C 17 18 18 00 ................
+000036D0 32 B8 00 01 10 F5 00 00 16 F5 B8 00 B0 00 00 01 2...............
+000036E0 B9 F4 55 54 13 5A A8 00 E8 73 00 08 E8 93 00 00 ..UT.Z...s......
+000036F0 E8 B3 00 04 14 D6 00 00 14 95 20 00 10 A5 A8 00 .......... .....
+00003700 12 A3 A8 00 14 77 00 00 F8 93 00 00 F8 B3 00 04 .....w..........
+00003710 FA B3 00 08 80 63 B8 00 BE A3 00 40 82 D6 30 00 .....c.....@..0.
+00003720 BE 56 00 3C 88 7A C8 00 BE 24 FF 6C 10 B3 00 00 .V.<.z...$.l....
+00003730 B9 F4 EB 44 80 00 00 00 A8 63 FF FF BE 03 00 54 ...D.....c.....T
+00003740 10 60 00 00 E8 93 00 00 BE 24 FF 50 10 DB 00 00 .`.......$.P....
+00003750 30 60 00 01 F8 73 00 38 88 7A C8 00 BE 03 00 30 0`...s.8.z.....0
+00003760 10 79 00 00 B8 10 00 2C F0 1A 00 00 E8 73 00 34 .y.....,.....s.4
+00003770 BC 03 00 0C E8 73 00 58 BC 03 FF 04 B9 F4 EA F8 .....s.X........
+00003780 80 00 00 00 A8 63 FF FF BC 23 00 44 10 60 00 00 .....c...#.D.`..
+00003790 E9 E1 00 00 EA 61 00 1C EA A1 00 20 EA C1 00 24 .....a..... ...$
+000037A0 EA E1 00 28 EB 01 00 2C EB 21 00 30 EB 41 00 34 ...(...,.!.0.A.4
+000037B0 EB 61 00 38 B6 0F 00 08 30 21 00 3C EA A5 00 44 .a.8....0!.<...D
+000037C0 F8 05 00 48 BE 15 FE B8 12 C0 00 00 E8 93 00 00 ...H............
+000037D0 10 B3 00 00 BE 04 FF 98 10 75 00 00 BC 44 00 44 .........u...D.D
+000037E0 16 44 A8 01 BC 52 00 3C 16 A4 A8 00 10 64 00 00 .D...R.<.....d..
+000037F0 10 96 00 00 E8 D3 00 04 E8 B3 00 08 F8 93 00 00 ................
+00003800 10 86 18 00 10 65 18 00 F8 93 00 04 BE 35 FF C0 .....e.......5..
+00003810 F8 73 00 08 BC 17 FF 78 B8 10 FE 70 E8 93 00 00 .s.....x...p....
+00003820 14 95 20 00 B8 10 FF D0 12 A0 00 00 30 21 FF E0 .. .........0!..
 00003830 FA 61 00 1C F9 E1 00 00 BE 05 00 48 12 65 00 00 .a.........H.e..
 00003840 E8 65 00 0C A8 63 1C 4F BC 03 00 18 E8 73 00 28 .e...c.O.....s.(
 00003850 E9 E1 00 00 EA 61 00 1C B6 0F 00 08 30 21 00 20 .....a......0!. 
@@ -2893,13 +2713,13 @@ l000038BC:
 
 l000038C8:
 	imm	00000000
-	brlid	r15,FFFFFAFC
+	brlid	r15,0000FAFC
 	addik	r5,r5,00000054
 	imm	00000001
-	brlid	r15,000088F0
+	brlid	r15,000188F0
 	lwi	r5,r19,00000024
 	imm	00000001
-	brlid	r15,000088F0
+	brlid	r15,000188F0
 	lwi	r5,r19,00000020
 
 l000038EC:
@@ -2916,14 +2736,14 @@ l00003900:
 	brlid	r15,00001A68
 	addk	r5,r19,r0
 	imm	00000001
-	brlid	r15,000088F0
+	brlid	r15,000188F0
 	lwi	r5,r19,00000014
 	imm	00000001
-	brlid	r15,00009150
+	brlid	r15,00019150
 	lwi	r5,r19,00000010
 	addk	r22,r3,r0
 	imm	00000001
-	brlid	r15,000088F0
+	brlid	r15,000188F0
 	addk	r5,r19,r0
 	bnei	r22,0000395C
 
@@ -2947,7 +2767,7 @@ l0000395C:
 ;; fn00003964: 00003964
 ;;   Called from:
 ;;     00003C18 (in fn00003AA4)
-;;     00003E40 (in fn00003CC0)
+;;     00003E40 (in fn00003C74)
 ;;     00003FEC (in fn00003EC8)
 ;;     00004150 (in fn00003EC8)
 ;;     00005788 (in fn00005538)
@@ -2961,31 +2781,8 @@ fn00003964 proc
 	lwi	r23,r5,0000001C
 	addk	r19,r5,r0
 	imm	00000001
-	brlid	r15,00008918
+	brlid	r15,00018918
 	addk	r5,r23,r23
-
-;; fn00003990: 00003990
-;;   Called from:
-;;     000062F4 (in fn00005F20)
-;;     00006810 (in fn00005F20)
-;;     000089A8 (in fn00008920)
-;;     00009348 (in fn00009184)
-;;     0000944C (in fn00009408)
-;;     00009614 (in fn00009408)
-;;     0000973C (in fn00008E80)
-;;     00009BEC (in fn0000A774)
-;;     00009D60 (in fn0000A774)
-;;     00009F3C (in fn0000A774)
-;;     0000A018 (in fn0000A774)
-;;     0000A1BC (in fn0000A774)
-;;     0000A324 (in fn0000A774)
-;;     0000A438 (in fn0000A774)
-;;     0000A534 (in fn0000A774)
-;;     0000A6B8 (in fn00009B74)
-;;     0000A8FC (in fn0000A774)
-;;     0000AC98 (in fn0000A774)
-;;     0000AE84 (in fn0000A774)
-fn00003990 proc
 	beqid	r3,00003A6C
 	swi	r3,r19,00000020
 
@@ -3011,7 +2808,7 @@ l000039A8:
 l000039C4:
 	addk	r5,r23,r0
 	imm	00000001
-	brlid	r15,00008918
+	brlid	r15,00018918
 	addk	r22,r3,r0
 	beqid	r3,00003A60
 	swi	r3,r19,00000024
@@ -3022,7 +2819,7 @@ l000039DC:
 	lwi	r6,r19,0000003C
 	swi	r3,r1,00000020
 	imm	00000001
-	addik	r3,r0,FFFF9D1C
+	addik	r3,r0,00019D1C
 	addik	r9,r0,00000008
 	addk	r7,r9,r0
 	swi	r3,r1,0000001C
@@ -3055,18 +2852,14 @@ l00003A34:
 	rtsd	r15,00000008
 	addik	r1,r1,00000034
 
-;; fn00003A60: 00003A60
-;;   Called from:
-;;     000039D8 (in fn00003990)
-;;     0000A758 (in fn00009408)
-fn00003A60 proc
+l00003A60:
 	imm	00000001
-	brlid	r15,000088F0
+	brlid	r15,000188F0
 	addk	r5,r22,r0
 
 l00003A6C:
 	imm	00000001
-	addik	r7,r0,FFFF9D0C
+	addik	r7,r0,00019D0C
 	addk	r5,r19,r0
 	brlid	r15,00001A68
 	addik	r6,r0,FFFFFFFC
@@ -3075,16 +2868,16 @@ l00003A6C:
 
 l00003A88:
 	imm	00000001
-	brlid	r15,000088F0
+	brlid	r15,000188F0
 	lwi	r5,r19,00000024
 	imm	00000001
-	brlid	r15,000088F0
+	brlid	r15,000188F0
 	lwi	r5,r19,00000020
 	bri	00003A6C
 
 ;; fn00003AA4: 00003AA4
 ;;   Called from:
-;;     00003EAC (in fn00003EAC)
+;;     00003EAC (in fn00003C74)
 ;;     00003F7C (in fn00003EC8)
 ;;     000040A0 (in fn00003EC8)
 fn00003AA4 proc
@@ -3111,7 +2904,7 @@ l00003AD8:
 
 l00003AE4:
 	imm	00004000
-	addik	r21,r0,00000000
+	addik	r21,r0,40000000
 	brid	00003B10
 	lwi	r6,r19,00000054
 
@@ -3133,13 +2926,13 @@ l00003B18:
 
 l00003B1C:
 	imm	00000001
-	brlid	r15,0000908C
+	brlid	r15,0001908C
 	lwi	r5,r19,00000010
 	bgei	r3,00003AF4
 
 l00003B2C:
 	imm	00000001
-	addik	r7,r0,FFFF9D24
+	addik	r7,r0,00019D24
 	addk	r5,r19,r0
 	brlid	r15,00001A68
 	addik	r6,r0,FFFFFFFF
@@ -3160,7 +2953,7 @@ l00003B4C:
 l00003B64:
 	lwi	r3,r19,00000064
 	imm	00004000
-	addik	r22,r0,00000000
+	addik	r22,r0,40000000
 
 l00003B70:
 	beqid	r3,00003BBC
@@ -3225,7 +3018,7 @@ l00003C00:
 
 l00003C04:
 	imm	00000001
-	brlid	r15,0000908C
+	brlid	r15,0001908C
 	lwi	r5,r19,00000010
 	bgei	r3,00003BD8
 
@@ -3260,7 +3053,7 @@ l00003C44:
 
 l00003C58:
 	imm	00000001
-	addik	r7,r0,FFFF9D40
+	addik	r7,r0,00019D40
 	addk	r5,r19,r0
 	brlid	r15,00001A68
 	addik	r6,r0,FFFFFFFE
@@ -3270,7 +3063,6 @@ l00003C58:
 ;; fn00003C74: 00003C74
 ;;   Called from:
 ;;     00003FB0 (in fn00003EC8)
-;;     000053B0 (in fn00005318)
 ;;     00005768 (in fn00005538)
 fn00003C74 proc
 	addik	r1,r1,FFFFFFC8
@@ -3280,16 +3072,6 @@ fn00003C74 proc
 	swi	r21,r1,00000020
 	swi	r22,r1,00000024
 	swi	r24,r1,0000002C
-
-;; fn00003C90: 00003C90
-;;   Called from:
-;;     00009BD0 (in fn0000A774)
-;;     00009D44 (in fn0000A774)
-;;     00009FFC (in fn0000A774)
-;;     0000A8E0 (in fn0000A774)
-;;     0000AC7C (in fn0000A774)
-;;     0000AE68 (in fn0000A774)
-fn00003C90 proc
 	swi	r25,r1,00000030
 	swi	r26,r1,00000034
 	lwi	r3,r5,00000058
@@ -3297,29 +3079,17 @@ fn00003C90 proc
 	bneid	r3,00003EAC
 	addk	r23,r6,r0
 
-;; fn00003CA8: 00003CA8
-;;   Called from:
-;;     00003CA4 (in fn00003C90)
-;;     00003CA4 (in fn00003C74)
-fn00003CA8 proc
+l00003CA8:
 	addik	r25,r19,00000054
 
-;; fn00003CAC: 00003CAC
-;;   Called from:
-;;     00003CA8 (in fn00003CA8)
-;;     00003EBC (in fn00003EAC)
-fn00003CAC proc
+l00003CAC:
 	addik	r4,r0,00000001
 	imm	00004000
-	addik	r21,r0,00000000
+	addik	r21,r0,40000000
 	beqid	r23,00003DD4
 	addk	r24,r0,r0
 
-;; fn00003CC0: 00003CC0
-;;   Called from:
-;;     00003CBC (in fn00003CAC)
-;;     00003CBC (in fn00003CAC)
-fn00003CC0 proc
+l00003CC0:
 	lwi	r3,r19,00000018
 	cmp	r18,r3,r23
 	blti	r18,00003DDC
@@ -3335,7 +3105,7 @@ l00003CD4:
 l00003CDC:
 	addk	r7,r22,r0
 	imm	00000001
-	brlid	r15,00008C64
+	brlid	r15,00018C64
 	addk	r6,r24,r0
 	lwi	r5,r19,00000020
 	lwi	r3,r19,00000018
@@ -3378,24 +3148,19 @@ l00003D48:
 
 l00003D4C:
 	imm	00000001
-	brlid	r15,0000908C
+	brlid	r15,0001908C
 	lwi	r5,r19,00000010
 	bgei	r3,00003D24
 
 l00003D5C:
 	imm	00000001
-	addik	r7,r0,FFFF9D24
+	addik	r7,r0,00019D24
 	addk	r5,r19,r0
 	brlid	r15,00001A68
 	addik	r6,r0,FFFFFFFF
 	addik	r3,r0,FFFFFFFF
 
-;; fn00003D74: 00003D74
-;;   Called from:
-;;     00003D70 (in fn00003CC0)
-;;     00003DD4 (in fn00003DD4)
-;;     00003EC0 (in fn00003EAC)
-fn00003D74 proc
+l00003D74:
 	lwi	r15,r1,00000000
 
 l00003D78:
@@ -3435,14 +3200,7 @@ l00003DC8:
 	bneid	r23,00003CC0
 	addk	r4,r24,r0
 
-;; fn00003DD4: 00003DD4
-;;   Called from:
-;;     00003CBC (in fn00003CAC)
-;;     00003CBC (in fn00003CAC)
-;;     00003DD0 (in fn00003CC0)
-;;     00003E54 (in fn00003CC0)
-;;     00003EA4 (in fn00003CC0)
-fn00003DD4 proc
+l00003DD4:
 	brid	00003D74
 	addk	r3,r0,r0
 
@@ -3482,7 +3240,7 @@ l00003E28:
 
 l00003E2C:
 	imm	00000001
-	brlid	r15,0000908C
+	brlid	r15,0001908C
 	lwi	r5,r19,00000010
 	bgei	r3,00003E00
 
@@ -3521,18 +3279,14 @@ l00003E6C:
 
 l00003E90:
 	imm	00000001
-	addik	r7,r0,FFFF9D40
+	addik	r7,r0,00019D40
 	addk	r5,r19,r0
 	brlid	r15,00001A68
 	addik	r6,r0,FFFFFFFE
 	brid	00003D74
 	addik	r3,r0,FFFFFFFF
 
-;; fn00003EAC: 00003EAC
-;;   Called from:
-;;     00003CA4 (in fn00003C90)
-;;     00003CA4 (in fn00003C74)
-fn00003EAC proc
+l00003EAC:
 	brlid	r15,00003AA4
 	nop
 	xori	r3,r3,FFFFFFFF
@@ -3598,7 +3352,7 @@ l00003F48:
 	addk	r7,r22,r0
 	rsubk	r23,r22,r23
 	imm	00000001
-	brlid	r15,00008C34
+	brlid	r15,00018C34
 	addk	r24,r24,r22
 	lwi	r4,r19,00000058
 	lwi	r3,r19,00000008
@@ -3684,7 +3438,7 @@ l0000402C:
 
 l00004038:
 	imm	00004000
-	addik	r22,r0,00000000
+	addik	r22,r0,40000000
 	brid	00004064
 	lwi	r6,r19,00000054
 
@@ -3706,13 +3460,13 @@ l0000406C:
 
 l00004070:
 	imm	00000001
-	brlid	r15,0000908C
+	brlid	r15,0001908C
 	lwi	r5,r19,00000010
 	bgei	r3,00004048
 
 l00004080:
 	imm	00000001
-	addik	r7,r0,FFFF9D24
+	addik	r7,r0,00019D24
 	addk	r5,r19,r0
 	addik	r6,r0,FFFFFFFF
 	brlid	r15,00001A68
@@ -3733,7 +3487,7 @@ l000040B0:
 l000040B8:
 	lwi	r3,r19,00000064
 	imm	00004000
-	addik	r23,r0,00000000
+	addik	r23,r0,40000000
 	beqid	r3,000040F4
 	addk	r22,r3,r0
 
@@ -3787,7 +3541,7 @@ l00004138:
 
 l0000413C:
 	imm	00000001
-	brlid	r15,0000908C
+	brlid	r15,0001908C
 	lwi	r5,r19,00000010
 	bgei	r3,00004110
 
@@ -3825,7 +3579,7 @@ l00004178:
 
 l0000419C:
 	imm	00000001
-	addik	r7,r0,FFFF9D40
+	addik	r7,r0,00019D40
 	addk	r5,r19,r0
 	addik	r6,r0,FFFFFFFE
 	brlid	r15,00001A68
@@ -3877,7 +3631,7 @@ l00004208:
 
 l00004210:
 	imm	00000001
-	addik	r7,r0,FFFF9D68
+	addik	r7,r0,00019D68
 	addik	r6,r0,FFFFFFFD
 	brlid	r15,00001A68
 	swi	r3,r1,0000001C
@@ -4154,229 +3908,41 @@ l00004210:
 000052E0 30 60 FF FE B0 00 00 01 30 E0 9D 40 10 B3 00 00 0`......0..@....
 000052F0 B9 F4 C7 78 30 C0 FF FE B8 10 FE 10 E8 73 00 4C ...x0........s.L
 00005300 B6 0F 00 08 30 60 FF FE 30 21 FF C4 F9 E1 00 00 ....0`..0!......
-00005310 FA 61 00 1C FA A1 00 20                         .a.....         
-
-;; fn00005318: 00005318
-;;   Called from:
-;;     00005E80 (in fn00005B0C)
-;;     0000666C (in fn00005F20)
-;;     000069C8 (in fn00005F20)
-;;     000081A8 (in fn00008038)
-;;     000083D4 (in fn00008234)
-;;     0000932C (in fn00009184)
-fn00005318 proc
-	swi	r22,r1,00000024
-	swi	r23,r1,00000028
-	swi	r24,r1,0000002C
-	swi	r25,r1,00000030
-	swi	r26,r1,00000034
-	beqid	r5,00005518
-	swi	r27,r1,00000038
-
-l00005334:
-	lwi	r3,r5,0000000C
-	xori	r3,r3,000079B1
-	bneid	r3,0000537C
-	addik	r23,r0,FFFFFFFE
-
-l00005344:
-	lwi	r23,r5,0000004C
-	bnei	r23,00005518
-
-l0000534C:
-	lwi	r3,r5,0000003C
-	xor	r3,r3,r6
-	beqi	r3,000054B4
-
-l00005358:
-	lwi	r3,r5,00000048
-	addk	r22,r7,r0
-	addk	r21,r6,r0
-	bneid	r3,000053AC
-	addk	r19,r5,r0
-
-l0000536C:
-	lwi	r3,r19,00000018
-	bnei	r3,000053C8
-
-l00005374:
-	swi	r21,r19,0000003C
-
-l00005378:
-	swi	r22,r19,00000040
-
-l0000537C:
-	addk	r3,r23,r0
-	lwi	r15,r1,00000000
-
-l00005384:
-	lwi	r19,r1,0000001C
-	lwi	r21,r1,00000020
-	lwi	r22,r1,00000024
-	lwi	r23,r1,00000028
-	lwi	r24,r1,0000002C
-	lwi	r25,r1,00000030
-	lwi	r26,r1,00000034
-	lwi	r27,r1,00000038
-	rtsd	r15,00000008
-	addik	r1,r1,0000003C
-
-l000053AC:
-	lwi	r6,r5,00000044
-	brlid	r15,00003C74
-	swi	r0,r5,00000048
-	xori	r3,r3,FFFFFFFF
-	bnei	r3,0000536C
-
-l000053C0:
-	brid	0000537C
-	lwi	r23,r19,0000004C
-
-l000053C8:
-	lwi	r7,r19,00000058
-	beqid	r7,0000549C
-	addik	r24,r19,00000054
-
-l000053D4:
-	lwi	r3,r19,00000028
-	bneid	r3,000054CC
-	addik	r26,r0,00000005
-
-l000053E0:
-	imm	00004000
-	addik	r25,r0,00000000
-
-l000053E8:
-	lwi	r5,r19,00000060
-	lwi	r7,r19,00000004
-	cmpu	r18,r5,r7
-	bltid	r18,00005420
-	addk	r6,r7,r0
-
-l000053FC:
-	brid	00005460
-	lwi	r27,r19,00000064
-
-l00005404:
-	lwi	r4,r19,00000004
-	lwi	r5,r19,00000060
-	addk	r7,r4,r3
-	cmpu	r18,r5,r7
-	bgeid	r18,0000545C
-	swi	r7,r19,00000004
-
-l0000541C:
-	addk	r6,r7,r0
-
-l00005420:
-	rsubk	r7,r7,r5
-	cmp	r18,r7,r25
-	bgei	r18,00005430
-
-l0000542C:
-	addk	r7,r25,r0
-
-l00005430:
-	imm	00000001
-	brlid	r15,0000908C
-	lwi	r5,r19,00000010
-	bgei	r3,00005404
-
-l00005440:
-	imm	00000001
-	addik	r7,r0,FFFF9D24
-	addk	r5,r19,r0
-	brlid	r15,00001A68
-	addik	r6,r0,FFFFFFFF
-	brid	0000537C
-	lwi	r23,r19,0000004C
-
-l0000545C:
-	lwi	r27,r19,00000064
-
-l00005460:
-	bneid	r27,0000547C
-	addk	r6,r26,r0
-
-l00005468:
-	lwi	r3,r19,00000024
-	lwi	r27,r19,00000018
-	swi	r3,r19,00000060
-	swi	r27,r19,00000064
-	swi	r3,r19,00000004
-
-l0000547C:
-	brlid	r15,00008E80
-	addk	r5,r24,r0
-	xori	r3,r3,FFFFFFFE
-	beqid	r3,00005520
-	addk	r5,r19,r0
-
-l00005490:
-	lwi	r3,r19,00000064
-	xor	r3,r3,r27
-	bnei	r3,000053E8
-
-l0000549C:
-	addk	r7,r22,r0
-	addk	r6,r21,r0
-	brlid	r15,0000AFBC
-	addk	r5,r24,r0
-	brid	00005378
-	swi	r21,r19,0000003C
-
-l000054B4:
-	lwi	r3,r5,00000040
-	xor	r3,r3,r7
-	bneid	r3,00005358
-	addk	r3,r23,r0
-
-l000054C4:
-	brid	00005384
-	lwi	r15,r1,00000000
-
-l000054CC:
-	imm	00004000
-	addik	r25,r0,00000000
-	brid	000054F8
-	lwi	r6,r19,00000054
-
-l000054DC:
-	lwi	r4,r19,00000058
-	lwi	r6,r19,00000054
-	rsubk	r7,r3,r4
-	addk	r6,r6,r3
-	swi	r7,r19,00000058
-	beqid	r7,0000549C
-	swi	r6,r19,00000054
-
-l000054F8:
-	cmpu	r18,r7,r25
-	bgei	r18,00005504
-
-l00005500:
-	addk	r7,r25,r0
-
-l00005504:
-	imm	00000001
-	brlid	r15,0000908C
-	lwi	r5,r19,00000010
-	bgei	r3,000054DC
-
-l00005514:
-	bri	00005440
-
-l00005518:
-	brid	0000537C
-	addik	r23,r0,FFFFFFFE
-
-l00005520:
-	imm	00000001
-	addik	r7,r0,FFFF9D40
-	brlid	r15,00001A68
-	addik	r6,r0,FFFFFFFE
-	brid	0000537C
-	lwi	r23,r19,0000004C
+00005310 FA 61 00 1C FA A1 00 20 FA C1 00 24 FA E1 00 28 .a..... ...$...(
+00005320 FB 01 00 2C FB 21 00 30 FB 41 00 34 BE 05 01 EC ...,.!.0.A.4....
+00005330 FB 61 00 38 E8 65 00 0C A8 63 79 B1 BE 23 00 40 .a.8.e...cy..#.@
+00005340 32 E0 FF FE EA E5 00 4C BC 37 01 D0 E8 65 00 3C 2......L.7...e.<
+00005350 88 63 30 00 BC 03 01 60 E8 65 00 48 12 C7 00 00 .c0....`.e.H....
+00005360 12 A6 00 00 BE 23 00 48 12 65 00 00 E8 73 00 18 .....#.H.e...s..
+00005370 BC 23 00 58 FA B3 00 3C FA D3 00 40 10 77 00 00 .#.X...<...@.w..
+00005380 E9 E1 00 00 EA 61 00 1C EA A1 00 20 EA C1 00 24 .....a..... ...$
+00005390 EA E1 00 28 EB 01 00 2C EB 21 00 30 EB 41 00 34 ...(...,.!.0.A.4
+000053A0 EB 61 00 38 B6 0F 00 08 30 21 00 3C E8 C5 00 44 .a.8....0!.<...D
+000053B0 B9 F4 E8 C4 F8 05 00 48 A8 63 FF FF BC 23 FF B0 .......H.c...#..
+000053C0 B8 10 FF BC EA F3 00 4C E8 F3 00 58 BE 07 00 D0 .......L...X....
+000053D0 33 13 00 54 E8 73 00 28 BE 23 00 F4 33 40 00 05 3..T.s.(.#..3@..
+000053E0 B0 00 40 00 33 20 00 00 E8 B3 00 60 E8 F3 00 04 ..@.3 .....`....
+000053F0 16 45 38 03 BE 52 00 2C 10 C7 00 00 B8 10 00 64 .E8..R.,.......d
+00005400 EB 73 00 64 E8 93 00 04 E8 B3 00 60 10 E4 18 00 .s.d.......`....
+00005410 16 45 38 03 BE B2 00 48 F8 F3 00 04 10 C7 00 00 .E8....H........
+00005420 14 E7 28 00 16 47 C8 01 BC B2 00 08 10 F9 00 00 ..(..G..........
+00005430 B0 00 00 01 B9 F4 3C 58 E8 B3 00 10 BC A3 FF C8 ......<X........
+00005440 B0 00 00 01 30 E0 9D 24 10 B3 00 00 B9 F4 C6 1C ....0..$........
+00005450 30 C0 FF FF B8 10 FF 28 EA F3 00 4C EB 73 00 64 0......(...L.s.d
+00005460 BE 3B 00 1C 10 DA 00 00 E8 73 00 24 EB 73 00 18 .;.......s.$.s..
+00005470 F8 73 00 60 FB 73 00 64 F8 73 00 04 B9 F4 3A 04 .s.`.s.d.s....:.
+00005480 10 B8 00 00 A8 63 FF FE BE 03 00 98 10 B3 00 00 .....c..........
+00005490 E8 73 00 64 88 63 D8 00 BC 23 FF 50 10 F6 00 00 .s.d.c...#.P....
+000054A0 10 D5 00 00 B9 F4 5B 18 10 B8 00 00 B8 10 FE CC ......[.........
+000054B0 FA B3 00 3C E8 65 00 40 88 63 38 00 BE 23 FE 9C ...<.e.@.c8..#..
+000054C0 10 77 00 00 B8 10 FE C0 E9 E1 00 00 B0 00 40 00 .w............@.
+000054D0 33 20 00 00 B8 10 00 24 E8 D3 00 54 E8 93 00 58 3 .....$...T...X
+000054E0 E8 D3 00 54 14 E3 20 00 10 C6 18 00 F8 F3 00 58 ...T.. ........X
+000054F0 BE 07 FF AC F8 D3 00 54 16 47 C8 03 BC B2 00 08 .......T.G......
+00005500 10 F9 00 00 B0 00 00 01 B9 F4 3B 84 E8 B3 00 10 ..........;.....
+00005510 BC A3 FF CC B8 00 FF 2C B8 10 FE 64 32 E0 FF FE .......,...d2...
+00005520 B0 00 00 01 30 E0 9D 40 B9 F4 C5 40 30 C0 FF FE ....0..@...@0...
+00005530 B8 10 FE 4C EA F3 00 4C                         ...L...L        
 
 ;; fn00005538: 00005538
 ;;   Called from:
@@ -4415,7 +3981,7 @@ l00005584:
 l0000558C:
 	lwi	r25,r19,00000064
 	imm	00004000
-	addik	r23,r0,00000000
+	addik	r23,r0,40000000
 	rsubk	r4,r25,r0
 	or	r4,r4,r25
 	bgeid	r4,000055EC
@@ -4479,14 +4045,14 @@ l0000562C:
 
 l00005630:
 	imm	00000001
-	brlid	r15,0000908C
+	brlid	r15,0001908C
 	lwi	r5,r19,00000010
 	bgeid	r3,00005604
 	addk	r5,r19,r0
 
 l00005644:
 	imm	00000001
-	addik	r7,r0,FFFF9D24
+	addik	r7,r0,00019D24
 	brlid	r15,00001A68
 	addik	r6,r0,FFFFFFFF
 	lwi	r22,r19,0000004C
@@ -4506,12 +4072,12 @@ l0000566C:
 	brlid	r15,0000B324
 	addk	r5,r21,r0
 	imm	00000001
-	brlid	r15,000088F0
+	brlid	r15,000188F0
 	lwi	r5,r19,00000024
 
 l00005680:
 	imm	00000001
-	brlid	r15,000088F0
+	brlid	r15,000188F0
 	lwi	r5,r19,00000020
 	addk	r7,r0,r0
 
@@ -4520,10 +4086,10 @@ l00005690:
 	brlid	r15,00001A68
 	addk	r5,r19,r0
 	imm	00000001
-	brlid	r15,000088F0
+	brlid	r15,000188F0
 	lwi	r5,r19,00000014
 	imm	00000001
-	brlid	r15,00009150
+	brlid	r15,00019150
 	lwi	r5,r19,00000010
 	xori	r4,r3,FFFFFFFF
 	beqid	r4,000056C4
@@ -4534,7 +4100,7 @@ l000056C0:
 
 l000056C4:
 	imm	00000001
-	brlid	r15,000088F0
+	brlid	r15,000188F0
 	swi	r3,r1,0000001C
 	lwi	r3,r1,0000001C
 
@@ -4555,7 +4121,7 @@ l000056F8:
 
 l00005700:
 	imm	00004000
-	addik	r23,r0,00000000
+	addik	r23,r0,40000000
 	brid	0000572C
 	lwi	r6,r19,00000054
 
@@ -4577,14 +4143,14 @@ l00005734:
 
 l00005738:
 	imm	00000001
-	brlid	r15,0000908C
+	brlid	r15,0001908C
 	lwi	r5,r19,00000010
 	bgeid	r3,00005710
 	addk	r5,r19,r0
 
 l0000574C:
 	imm	00000001
-	addik	r7,r0,FFFF9D24
+	addik	r7,r0,00019D24
 	brlid	r15,00001A68
 	addik	r6,r0,FFFFFFFF
 	brid	00005658
@@ -4630,7 +4196,7 @@ l000057AC:
 
 l000057C4:
 	imm	00000001
-	addik	r7,r0,FFFF9D40
+	addik	r7,r0,00019D40
 	addk	r5,r19,r0
 	brlid	r15,00001A68
 	addik	r6,r0,FFFFFFFE
@@ -4929,8 +4495,8 @@ l00005B04:
 
 ;; fn00005B0C: 00005B0C
 ;;   Called from:
-;;     00009CFC (in fn0000A774)
-;;     0000A990 (in fn0000A774)
+;;     00009CFC (in fn00008E80)
+;;     0000A990 (in fn00008E80)
 fn00005B0C proc
 	addik	r1,r1,FFFFFFBC
 	swi	r19,r1,0000001C
@@ -5008,7 +4574,7 @@ l00005BD0:
 	addk	r5,r4,r0
 	lwi	r6,r27,00000000
 	imm	00000001
-	brlid	r15,00008C34
+	brlid	r15,00018C34
 	swi	r3,r27,00000004
 	addk	r4,r3,r0
 	lwi	r3,r27,0000001C
@@ -5132,7 +4698,7 @@ l00005D5C:
 	addk	r7,r22,r0
 	addk	r5,r5,r21
 	imm	00000001
-	brlid	r15,00008C64
+	brlid	r15,00018C64
 	addk	r21,r21,r22
 	swi	r21,r19,000016C0
 
@@ -5157,7 +4723,7 @@ l00005DA8:
 	rsubk	r7,r26,r25
 	addk	r5,r6,r0
 	imm	00000001
-	brlid	r15,00008C34
+	brlid	r15,00018C34
 	addk	r6,r6,r25
 	lwi	r8,r19,00000070
 	lwi	r7,r19,0000006C
@@ -5232,7 +4798,7 @@ l00005E78:
 	addk	r7,r28,r0
 	addk	r6,r4,r0
 	imm	00000000
-	brlid	r15,00005318
+	brlid	r15,00015318
 	lwi	r5,r27,00000030
 	brid	00005C14
 	swi	r3,r27,00000030
@@ -5240,7 +4806,7 @@ l00005E78:
 l00005E94:
 	addk	r6,r4,r0
 	imm	00000001
-	brlid	r15,00007044
+	brlid	r15,00017044
 	lwi	r5,r27,00000030
 	brid	00005C14
 	swi	r3,r27,00000030
@@ -5264,7 +4830,7 @@ l00005ECC:
 	addk	r7,r21,r0
 	addk	r6,r0,r0
 	imm	00000001
-	brlid	r15,00008C64
+	brlid	r15,00018C64
 	addk	r5,r3,r5
 	lwi	r4,r19,000016C0
 	addk	r4,r4,r21
@@ -5277,7 +4843,7 @@ l00005EF4:
 	addk	r7,r22,r0
 	addk	r5,r5,r21
 	imm	00000001
-	brlid	r15,00008C64
+	brlid	r15,00018C64
 	addk	r21,r21,r22
 	brid	00005D78
 	swi	r21,r19,000016C0
@@ -5288,7 +4854,7 @@ l00005F18:
 
 ;; fn00005F20: 00005F20
 ;;   Called from:
-;;     00009AF0 (in fn0000A774)
+;;     00009AF0 (in fn00008E80)
 fn00005F20 proc
 	addik	r1,r1,FFFFFFA8
 	swi	r19,r1,00000028
@@ -5439,7 +5005,7 @@ l00006148:
 	lwi	r23,r19,0000006C
 	lwi	r6,r19,0000005C
 	imm	00000000
-	addik	r5,r0,FFFFFFFE
+	addik	r5,r0,0000FFFE
 	rsubk	r23,r6,r23
 	addk	r21,r23,r4
 	cmpu	r18,r21,r5
@@ -5448,7 +5014,7 @@ l00006148:
 
 l0000616C:
 	imm	00000000
-	addik	r21,r0,FFFFFFFF
+	addik	r21,r0,0000FFFF
 
 l00006174:
 	cmpu	r18,r21,r3
@@ -5524,7 +5090,7 @@ l00006244:
 	addk	r6,r7,r0
 	addk	r8,r24,r0
 	imm	00000000
-	brlid	r15,0000371C
+	brlid	r15,0001371C
 	addk	r5,r19,r0
 	lwi	r5,r19,00000014
 	lwi	r4,r19,00000008
@@ -5566,7 +5132,7 @@ l00006244:
 	lwi	r31,r19,00000000
 	lwi	r27,r31,0000001C
 	imm	00000000
-	brlid	r15,00003990
+	brlid	r15,00013990
 	addk	r5,r27,r0
 	lwi	r3,r27,00000014
 	lwi	r22,r31,00000010
@@ -5583,7 +5149,7 @@ l00006314:
 l0000631C:
 	lwi	r6,r27,00000010
 	imm	00000001
-	brlid	r15,00008C34
+	brlid	r15,00018C34
 	lwi	r5,r31,0000000C
 	lwi	r9,r31,0000000C
 	lwi	r7,r27,00000010
@@ -5617,7 +5183,7 @@ l0000637C:
 	addk	r7,r23,r0
 	addk	r6,r6,r3
 	imm	00000001
-	brlid	r15,00008C34
+	brlid	r15,00018C34
 	rsubk	r21,r23,r21
 	lwi	r22,r19,00000000
 	lwi	r6,r19,0000005C
@@ -5665,7 +5231,7 @@ l00006414:
 	addk	r7,r27,r0
 	addk	r5,r8,r5
 	imm	00000001
-	brlid	r15,00008C34
+	brlid	r15,00018C34
 	rsubk	r6,r27,r6
 	lwi	r3,r19,0000006C
 	lwi	r4,r19,0000002C
@@ -5785,7 +5351,7 @@ l00006588:
 	lwi	r6,r22,00000000
 	rsubk	r4,r23,r4
 	imm	00000001
-	brlid	r15,00008C34
+	brlid	r15,00018C34
 	swi	r4,r22,00000004
 	addk	r8,r3,r0
 	lwi	r3,r22,0000001C
@@ -5868,7 +5434,7 @@ l00006664:
 	addk	r7,r23,r0
 	addk	r6,r8,r0
 	imm	00000000
-	brlid	r15,00005318
+	brlid	r15,00015318
 	lwi	r5,r22,00000030
 	brid	000065C4
 	swi	r3,r22,00000030
@@ -5894,7 +5460,7 @@ l000066A0:
 	lwi	r6,r22,00000000
 	swi	r9,r22,00000004
 	imm	00000001
-	brlid	r15,00008C34
+	brlid	r15,00018C34
 	swi	r4,r1,00000024
 	addk	r8,r3,r0
 	lwi	r3,r22,0000001C
@@ -5930,7 +5496,7 @@ l0000670C:
 	lwi	r5,r19,000016BC
 	lwi	r8,r19,0000000C
 	imm	00000000
-	addik	r7,r0,FFFFFFFF
+	addik	r7,r0,0000FFFF
 	addik	r5,r5,0000002A
 	addk	r4,r0,r5
 	sra	r4,r5
@@ -6021,7 +5587,7 @@ l000067E4:
 	addk	r8,r24,r0
 	addk	r7,r23,r0
 	imm	00000000
-	brlid	r15,0000371C
+	brlid	r15,0001371C
 	addk	r6,r3,r6
 	lwi	r21,r19,00000000
 	lwi	r3,r19,0000005C
@@ -6029,7 +5595,7 @@ l000067E4:
 	addk	r3,r3,r23
 	swi	r3,r19,0000005C
 	imm	00000000
-	brlid	r15,00003990
+	brlid	r15,00013990
 	addk	r5,r22,r0
 	lwi	r3,r22,00000014
 	lwi	r19,r21,00000010
@@ -6046,7 +5612,7 @@ l00006830:
 l00006838:
 	lwi	r6,r22,00000010
 	imm	00000001
-	brlid	r15,00008C34
+	brlid	r15,00018C34
 	lwi	r5,r21,0000000C
 	lwi	r7,r21,0000000C
 	lwi	r6,r22,00000010
@@ -6079,7 +5645,7 @@ l00006894:
 l0000689C:
 	addk	r6,r8,r0
 	imm	00000001
-	brlid	r15,00007044
+	brlid	r15,00017044
 	lwi	r5,r22,00000030
 	brid	000065C4
 	swi	r3,r22,00000030
@@ -6091,7 +5657,7 @@ l000068B4:
 	addik	r4,r0,00000002
 	swi	r4,r19,000016B0
 	imm	00000001
-	brlid	r15,00008C34
+	brlid	r15,00018C34
 	rsubk	r6,r3,r6
 	lwi	r3,r19,0000002C
 	swi	r3,r19,0000006C
@@ -6112,7 +5678,7 @@ l000068F0:
 	swi	r6,r19,0000005C
 	swi	r3,r19,0000006C
 	imm	00000001
-	brlid	r15,00008C34
+	brlid	r15,00018C34
 	addk	r6,r4,r8
 	lwi	r3,r19,000016B0
 	addik	r4,r0,00000001
@@ -6140,7 +5706,7 @@ l00006950:
 	addk	r5,r8,r0
 	swi	r4,r19,0000006C
 	imm	00000001
-	brlid	r15,00008C34
+	brlid	r15,00018C34
 	addk	r6,r8,r3
 	lwi	r3,r19,000016B0
 	addik	r4,r0,00000001
@@ -6179,7 +5745,7 @@ l000069C0:
 	addk	r7,r4,r0
 	addk	r6,r8,r0
 	imm	00000000
-	brlid	r15,00005318
+	brlid	r15,00015318
 	lwi	r5,r22,00000030
 	swi	r3,r22,00000030
 	brid	000066DC
@@ -6189,7 +5755,7 @@ l000069E0:
 	lwi	r5,r22,00000030
 	addk	r6,r8,r0
 	imm	00000001
-	brlid	r15,00007044
+	brlid	r15,00017044
 	swi	r4,r1,00000024
 	swi	r3,r22,00000030
 	brid	000066DC
@@ -6260,24 +5826,10 @@ l00006A08:
 00006D80 14 98 20 00 F8 BB 00 14 F8 9B 00 10 17 18 18 00 .. .............
 00006D90 BE 38 00 10 FB 1C 00 14 EB FC 00 08 FB FC 00 10 .8..............
 00006DA0 E8 73 00 00 E8 63 00 10 BC 23 FC C0 10 60 00 00 .s...c...#...`..
-00006DB0 E9 E1 00 00                                     ....            
-
-l00006DB4:
-	lwi	r19,r1,0000001C
-	lwi	r21,r1,00000024
-	lwi	r22,r1,00000028
-	lwi	r23,r1,0000002C
-	lwi	r24,r1,00000030
-	lwi	r25,r1,00000034
-	lwi	r26,r1,00000038
-	lwi	r27,r1,0000003C
-	lwi	r28,r1,00000040
-	lwi	r29,r1,00000044
-	lwi	r30,r1,00000048
-	lwi	r31,r1,0000004C
-	rtsd	r15,00000008
-	addik	r1,r1,00000050
-00006DEC                                     B9 F4 ED 20             ... 
+00006DB0 E9 E1 00 00 EA 61 00 1C EA A1 00 24 EA C1 00 28 .....a.....$...(
+00006DC0 EA E1 00 2C EB 01 00 30 EB 21 00 34 EB 41 00 38 ...,...0.!.4.A.8
+00006DD0 EB 61 00 3C EB 81 00 40 EB A1 00 44 EB C1 00 48 .a.<...@...D...H
+00006DE0 EB E1 00 4C B6 0F 00 08 30 21 00 50 B9 F4 ED 20 ...L....0!.P... 
 00006DF0 10 B3 00 00 E8 73 00 74 16 43 D0 03 BC 52 FC 80 .....s.t.C...R..
 00006E00 BC 17 FF AC BC 03 01 B0 16 43 C8 03 BE B2 FC F0 .........C......
 00006E10 E8 F3 00 6C B8 10 FC 70 E8 73 00 38 B9 F4 E9 F4 ...l...p.s.8....
@@ -6315,92 +5867,21 @@ l00006DB4:
 00007010 EA F6 00 1C F8 73 00 5C B0 00 00 00 B9 F4 C9 74 .....s.\.......t
 00007020 10 B7 00 00 E8 77 00 14 EA B6 00 10 16 55 18 03 .....w.......U..
 00007030 BC B2 00 08 12 A3 00 00 BE 15 00 60 10 F5 00 00 ...........`....
-00007040 E8 D7 00 10                                     ....            
-
-;; fn00007044: 00007044
-;;   Called from:
-;;     00008204 (in fn00008038)
-;;     000084CC (in fn00008234)
-;;     00009830 (in fn00009B74)
-;;     00009ACC (in fn0000A774)
-;;     00009F1C (in fn0000A774)
-;;     0000A110 (in fn0000A774)
-;;     0000A1A8 (in fn0000A774)
-;;     0000A278 (in fn0000A774)
-;;     0000A310 (in fn0000A774)
-;;     0000A3FC (in fn0000A774)
-;;     0000A518 (in fn0000A774)
-;;     0000D2B4 (in fn0000D1CC)
-;;     0000DB74 (in fn0000DB74)
-fn00007044 proc
-	imm	00000001
-	brlid	r15,00008C34
-	lwi	r5,r22,0000000C
-	lwi	r7,r22,0000000C
-	lwi	r6,r23,00000010
-	lwi	r5,r22,00000014
-	lwi	r4,r22,00000010
-	lwi	r3,r23,00000014
-	addk	r7,r7,r21
-	swi	r7,r22,0000000C
-	addk	r6,r6,r21
-	swi	r6,r23,00000010
-	addk	r5,r5,r21
-	rsubk	r4,r21,r4
-	swi	r5,r22,00000014
-	swi	r4,r22,00000010
-	rsubk	r21,r21,r3
-	bneid	r21,00007098
-	swi	r21,r23,00000014
-
-l00007090:
-	lwi	r31,r23,00000008
-	swi	r31,r23,00000010
-
-l00007098:
-	lwi	r3,r19,00000000
-	lwi	r3,r3,00000010
-	rsubk	r4,r3,r0
-
-;; fn000070A4: 000070A4
-;;   Called from:
-;;     0000DFA0 (in fn0000EE14)
-fn000070A4 proc
-	or	r4,r4,r3
-	addk	r3,r0,r4
-	srl	r3,r4
-	srl	r3,r3
-	srl	r3,r3
-	srl	r3,r3
-	srl	r3,r3
-	srl	r3,r3
-	srl	r3,r3
-	srl	r3,r3
-	srl	r3,r3
-	srl	r3,r3
-	srl	r3,r3
-	srl	r3,r3
-	srl	r3,r3
-	srl	r3,r3
-	srl	r3,r3
-	srl	r3,r3
-	srl	r3,r3
-	srl	r3,r3
-	srl	r3,r3
-	srl	r3,r3
-	srl	r3,r3
-	srl	r3,r3
-	srl	r3,r3
-	srl	r3,r3
-	srl	r3,r3
-	srl	r3,r3
-	srl	r3,r3
-	srl	r3,r3
-	srl	r3,r3
-	srl	r3,r3
-	srl	r3,r3
-	brid	00006DB4
-	lwi	r15,r1,00000000
+00007040 E8 D7 00 10 B0 00 00 01 B9 F4 1B EC E8 B6 00 0C ................
+00007050 E8 F6 00 0C E8 D7 00 10 E8 B6 00 14 E8 96 00 10 ................
+00007060 E8 77 00 14 10 E7 A8 00 F8 F6 00 0C 10 C6 A8 00 .w..............
+00007070 F8 D7 00 10 10 A5 A8 00 14 95 20 00 F8 B6 00 14 .......... .....
+00007080 F8 96 00 10 16 B5 18 00 BE 35 00 10 FA B7 00 14 .........5......
+00007090 EB F7 00 08 FB F7 00 10 E8 73 00 00 E8 63 00 10 .........s...c..
+000070A0 14 83 00 00 80 84 18 00 10 60 20 00 90 64 00 41 .........` ..d.A
+000070B0 90 63 00 41 90 63 00 41 90 63 00 41 90 63 00 41 .c.A.c.A.c.A.c.A
+000070C0 90 63 00 41 90 63 00 41 90 63 00 41 90 63 00 41 .c.A.c.A.c.A.c.A
+000070D0 90 63 00 41 90 63 00 41 90 63 00 41 90 63 00 41 .c.A.c.A.c.A.c.A
+000070E0 90 63 00 41 90 63 00 41 90 63 00 41 90 63 00 41 .c.A.c.A.c.A.c.A
+000070F0 90 63 00 41 90 63 00 41 90 63 00 41 90 63 00 41 .c.A.c.A.c.A.c.A
+00007100 90 63 00 41 90 63 00 41 90 63 00 41 90 63 00 41 .c.A.c.A.c.A.c.A
+00007110 90 63 00 41 90 63 00 41 90 63 00 41 90 63 00 41 .c.A.c.A.c.A.c.A
+00007120 90 63 00 41 90 63 00 41 B8 10 FC 8C E9 E1 00 00 .c.A.c.A........
 00007130 10 65 00 00 AA F7 00 04 BE 37 FE 9C F8 73 16 B4 .e.......7...s..
 00007140 E8 F3 00 5C BE 47 00 10 10 D7 00 00 E8 D3 00 38 ...\.G.........8
 00007150 10 C6 38 00 10 B3 00 00 31 00 00 01 B0 00 00 00 ..8.....1.......
@@ -6630,62 +6111,19 @@ fn000070A4 proc
 00007F50 90 A5 00 41 90 A5 00 41 90 A5 00 41 90 A5 00 41 ...A...A...A...A
 00007F60 90 A5 00 41 90 A5 00 41 90 A5 00 41 BE 25 00 6C ...A...A...A.%.l
 00007F70 E9 E1 00 00 E8 88 00 6C E8 68 00 74 EA 68 00 2C .......l.h.t.h.,
-00007F80 10 84 18 00 16 53 20 03                         .....S .        
-
-;; fn00007F88: 00007F88
-;;   Called from:
-;;     0000B7B4 (in fn0000B548)
-fn00007F88 proc
-	bgeid	r18,00007F94
-	rsubk	r3,r6,r0
-
-l00007F90:
-	addk	r19,r4,r0
-
-l00007F94:
-	or	r3,r6,r3
-	addk	r21,r7,r0
-	bgeid	r3,00007FC8
-	addk	r5,r6,r0
-
-l00007FA4:
-	rsubk	r3,r19,r0
-	or	r3,r3,r19
-	bgeid	r3,00007FC8
-	addk	r7,r19,r0
-
-l00007FB4:
-	lwi	r6,r8,00000038
-	rsubk	r4,r19,r4
-	imm	00000001
-	brlid	r15,00008C34
-	addk	r6,r6,r4
-
-l00007FC8:
-	beqid	r21,00007FF0
-	addk	r3,r0,r0
-
-l00007FD0:
-	swi	r19,r21,00000000
-	lwi	r15,r1,00000000
-	lwi	r19,r1,0000001C
-	lwi	r21,r1,00000020
-	rtsd	r15,00000008
-	addik	r1,r1,00000024
-00007FE8                         B6 0F 00 08 30 60 FF FE         ....0`..
-
-l00007FF0:
-	addk	r3,r21,r0
-	lwi	r15,r1,00000000
-	lwi	r19,r1,0000001C
-	lwi	r21,r1,00000020
-	rtsd	r15,00000008
-	addik	r1,r1,00000024
+00007F80 10 84 18 00 16 53 20 03 BE B2 00 0C 14 66 00 00 .....S ......f..
+00007F90 12 64 00 00 80 66 18 00 12 A7 00 00 BE A3 00 2C .d...f.........,
+00007FA0 10 A6 00 00 14 73 00 00 80 63 98 00 BE A3 00 1C .....s...c......
+00007FB0 10 F3 00 00 E8 C8 00 38 14 93 20 00 B0 00 00 01 .......8.. .....
+00007FC0 B9 F4 0C 74 10 C6 20 00 BE 15 00 28 10 60 00 00 ...t.. ....(.`..
+00007FD0 FA 75 00 00 E9 E1 00 00 EA 61 00 1C EA A1 00 20 .u.......a..... 
+00007FE0 B6 0F 00 08 30 21 00 24 B6 0F 00 08 30 60 FF FE ....0!.$....0`..
+00007FF0 10 75 00 00 E9 E1 00 00 EA 61 00 1C EA A1 00 20 .u.......a..... 
+00008000 B6 0F 00 08 30 21 00 24                         ....0!.$        
 
 ;; fn00008008: 00008008
 ;;   Called from:
-;;     0000B8B0 (in fn0000B548)
-;;     0000BD3C (in fn0000BA7C)
+;;     0000B8B0 (in fn0000B514)
 fn00008008 proc
 	beqi	r5,0000822C
 
@@ -6703,19 +6141,10 @@ l0000801C:
 	swi	r19,r1,0000001C
 	swi	r21,r1,00000020
 	lwi	r21,r5,0000001C
-
-;; fn00008030: 00008030
-;;   Called from:
-;;     0000919C (in fn00009184)
-fn00008030 proc
 	beqid	r21,00008218
 	lwi	r15,r1,00000000
 
-;; fn00008038: 00008038
-;;   Called from:
-;;     00008034 (in fn00008030)
-;;     00008034 (in fn00008008)
-fn00008038 proc
+l00008038:
 	lwi	r4,r21,00000000
 	xor	r4,r5,r4
 	beqid	r4,0000805C
@@ -6829,14 +6258,14 @@ l000081A0:
 	addk	r6,r7,r0
 	addk	r5,r7,r0
 	imm	00000000
-	brlid	r15,00005318
+	brlid	r15,00015318
 	swi	r4,r21,00000004
 	addk	r5,r21,r0
 
 l000081B8:
 	swi	r3,r19,00000030
 	imm	00000000
-	brlid	r15,00003674
+	brlid	r15,00013674
 	swi	r0,r21,00000028
 	lwi	r15,r1,00000000
 	lwi	r19,r1,0000001C
@@ -6860,7 +6289,7 @@ l000081F8:
 	addk	r5,r7,r0
 	addik	r3,r0,00000039
 	imm	00000000
-	brlid	r15,00007044
+	brlid	r15,00017044
 	swi	r3,r21,00000004
 	brid	000081B8
 	addk	r5,r21,r0
@@ -7013,14 +6442,14 @@ l000083CC:
 	addk	r6,r7,r0
 	addk	r5,r7,r0
 	imm	00000000
-	brlid	r15,00005318
+	brlid	r15,00015318
 	swi	r4,r21,00000004
 	addk	r5,r21,r0
 
 l000083E4:
 	swi	r3,r19,00000030
 	imm	00000000
-	brlid	r15,00003674
+	brlid	r15,00013674
 	swi	r0,r21,00000028
 	lwi	r19,r19,0000001C
 	addk	r6,r0,r0
@@ -7028,14 +6457,14 @@ l000083E4:
 	lwi	r8,r19,00000044
 	lwi	r4,r19,0000002C
 	imm	00007FFF
-	addik	r3,r3,FFFFFFFF
+	addik	r3,r3,7FFFFFFF
 	addk	r3,r3,r3
 	addk	r4,r4,r4
 	addk	r5,r8,r0
 	addk	r7,r3,r0
 	swi	r4,r19,0000003C
 	imm	00000001
-	brlid	r15,00008C64
+	brlid	r15,00018C64
 	sh	r0,r3,r8
 	lwi	r4,r19,00000084
 	addik	r5,r0,00000002
@@ -7045,7 +6474,7 @@ l000083E4:
 	addk	r3,r3,r3
 	addk	r3,r3,r3
 	imm	00000001
-	addik	r3,r3,FFFF9DB4
+	addik	r3,r3,00019DB4
 	lhui	r7,r3,00000002
 	lhui	r6,r3,00000000
 	lhui	r4,r3,00000004
@@ -7083,7 +6512,7 @@ l000084C0:
 	addk	r5,r7,r0
 	addik	r3,r0,00000039
 	imm	00000000
-	brlid	r15,00007044
+	brlid	r15,00017044
 	swi	r3,r21,00000004
 	brid	000083E4
 	addk	r5,r21,r0
@@ -7127,322 +6556,57 @@ l000084F4:
 00008690 16 88 00 00 15 8B 00 00 A9 25 00 67 82 94 40 00 .........%.g..@.
 000086A0 81 8C 58 00 15 6A 00 00 A9 05 00 71 85 8C A0 00 ..X..j.....q....
 000086B0 81 6B 50 00 15 49 00 00 AA 85 02 9A 81 4A 48 00 .kP..I.......JH.
-000086C0 85 6B 60 00 15 28 00 00                         .k`..(..        
-
-;; fn000086C8: 000086C8
-;;   Called from:
-;;     000004C4 (in fn000003C4)
-;;     0000065C (in fn000003C4)
-fn000086C8 proc
-	or	r9,r9,r8
-	and	r10,r10,r11
-	rsubk	r8,r20,r0
-	and	r9,r9,r10
-	or	r8,r8,r20
-	and	r8,r8,r9
-	bgeid	r8,00008778
-	addik	r5,r5,FFFFFFC7
-
-l000086E8:
-	andi	r5,r5,FFFFFFEF
-	rsubk	r8,r5,r0
-	or	r5,r8,r5
-
-;; fn000086F4: 000086F4
-;;   Called from:
-;;     00000300 (in fn000002CC)
-;;     000003E4 (in fn000003C4)
-;;     000086F0 (in fn000086C8)
-fn000086F4 proc
-	addk	r8,r0,r5
-	srl	r8,r5
-	srl	r8,r8
-	srl	r8,r8
-	srl	r8,r8
-	srl	r8,r8
-	srl	r8,r8
-	srl	r8,r8
-	srl	r8,r8
-	srl	r8,r8
-
-;; fn0000871C: 0000871C
-;;   Called from:
-;;     000002D8 (in fn000002CC)
-;;     00008718 (in fn000086F4)
-fn0000871C proc
-	srl	r8,r8
-	srl	r8,r8
-	srl	r8,r8
-	srl	r8,r8
-	srl	r8,r8
-	srl	r8,r8
-	srl	r8,r8
-	srl	r8,r8
-	srl	r8,r8
-	srl	r8,r8
-	srl	r8,r8
-	srl	r8,r8
-	srl	r8,r8
-
-;; fn00008750: 00008750
-;;   Called from:
-;;     000003B0 (in fn000003C4)
-fn00008750 proc
-	srl	r8,r8
-	srl	r8,r8
-	srl	r8,r8
-	srl	r8,r8
-	srl	r8,r8
-	srl	r8,r8
-	srl	r8,r8
-	srl	r8,r8
-	srl	r8,r8
-	bnei	r8,00008794
-
-;; fn00008778: 00008778
-;;   Called from:
-;;     000086E4 (in fn000086C8)
-;;     00008774 (in fn00008750)
-;;     00008774 (in fn0000871C)
-;;     00008774 (in fn0000871C)
-fn00008778 proc
-	beqi	r6,00008784
-
-l0000877C:
-	lwi	r3,r4,00000014
-	swi	r3,r6,00000000
-
-l00008784:
-	beqid	r7,000087A4
-	addk	r3,r0,r0
-
-l0000878C:
-	lwi	r4,r4,000016BC
-	swi	r4,r7,00000000
-
-l00008794:
-	rtsd	r15,00000008
-	addik	r1,r1,00000008
-0000879C                                     B6 0F 00 08             ....
-000087A0 30 60 FF FE                                     0`..            
-
-l000087A4:
-	addk	r3,r7,r0
-	rtsd	r15,00000008
-	addik	r1,r1,00000008
+000086C0 85 6B 60 00 15 28 00 00 81 29 40 00 85 4A 58 00 .k`..(...)@..JX.
+000086D0 15 14 00 00 85 29 50 00 81 08 A0 00 85 08 48 00 .....)P.......H.
+000086E0 BE A8 00 98 30 A5 FF C7 A4 A5 FF EF 15 05 00 00 ....0...........
+000086F0 80 A8 28 00 11 00 28 00 91 05 00 41 91 08 00 41 ..(...(....A...A
+00008700 91 08 00 41 91 08 00 41 91 08 00 41 91 08 00 41 ...A...A...A...A
+00008710 91 08 00 41 91 08 00 41 91 08 00 41 91 08 00 41 ...A...A...A...A
+00008720 91 08 00 41 91 08 00 41 91 08 00 41 91 08 00 41 ...A...A...A...A
+00008730 91 08 00 41 91 08 00 41 91 08 00 41 91 08 00 41 ...A...A...A...A
+00008740 91 08 00 41 91 08 00 41 91 08 00 41 91 08 00 41 ...A...A...A...A
+00008750 91 08 00 41 91 08 00 41 91 08 00 41 91 08 00 41 ...A...A...A...A
+00008760 91 08 00 41 91 08 00 41 91 08 00 41 91 08 00 41 ...A...A...A...A
+00008770 91 08 00 41 BC 28 00 20 BC 06 00 0C E8 64 00 14 ...A.(. .....d..
+00008780 F8 66 00 00 BE 07 00 20 10 60 00 00 E8 84 16 BC .f..... .`......
+00008790 F8 87 00 00 B6 0F 00 08 30 21 00 08 B6 0F 00 08 ........0!......
+000087A0 30 60 FF FE 10 67 00 00 B6 0F 00 08 30 21 00 08 0`...g......0!..
 000087B0 30 21 FF D0 F9 E1 00 00 FA 61 00 1C FA A1 00 20 0!.......a..... 
 000087C0 FA C1 00 24 FA E1 00 28 BE 05 00 34 FB 01 00 2C ...$...(...4...,
 000087D0 E8 65 00 20 BC 03 00 28 E8 65 00 24 BE 03 00 24 .e. ...(.e.$...$
 000087E0 32 C0 FF FE EA 65 00 1C BC 13 00 18 E8 73 00 00 2....e.......s..
-000087F0 88 A5 18 00 BE 05 00 30 12 C6 00 00             .......0....    
-
-;; fn000087FC: 000087FC
-;;   Called from:
-;;     0000891C (in fn0000889C)
-;;     0000891C (in fn00008918)
-fn000087FC proc
-	addik	r22,r0,FFFFFFFE
-
-;; fn00008800: 00008800
-;;   Called from:
-;;     000087FC (in fn000087FC)
-;;     000089DC (in fn00008920)
-;;     000089E4 (in fn00008920)
-fn00008800 proc
-	addk	r3,r22,r0
-
-l00008804:
-	lwi	r15,r1,00000000
-	lwi	r19,r1,0000001C
-	lwi	r21,r1,00000020
-	lwi	r22,r1,00000024
-	lwi	r23,r1,00000028
-	lwi	r24,r1,0000002C
-	rtsd	r15,00000008
-	addik	r1,r1,00000030
-
-;; fn00008824: 00008824
-;;   Called from:
-;;     000002E8 (in fn000002CC)
-fn00008824 proc
-	lwi	r3,r19,00000004
-	addk	r23,r7,r0
-	xori	r8,r3,0000002A
-	xori	r4,r3,00000045
-	xori	r7,r3,0000005B
-	rsubk	r6,r8,r0
-	rsubk	r5,r4,r0
-	or	r6,r6,r8
-	xori	r9,r3,00000067
-	or	r5,r5,r4
-	rsubk	r4,r7,r0
-	and	r5,r5,r6
-	xori	r8,r3,00000071
-	or	r4,r4,r7
-	rsubk	r6,r9,r0
-	and	r4,r4,r5
-	xori	r7,r3,0000029A
-	or	r6,r6,r9
-	rsubk	r5,r8,r0
-	and	r6,r6,r4
-
-;; fn00008874: 00008874
-;;   Called from:
-;;     00000340 (in fn000002CC)
-;;     00000578 (in fn000003C4)
-;;     000006E0 (in fn000003C4)
-fn00008874 proc
-	or	r5,r5,r8
-	rsubk	r4,r7,r0
-	and	r5,r5,r6
-	or	r4,r4,r7
-	and	r4,r4,r5
-	bgeid	r4,00008920
-	addik	r3,r3,FFFFFFC7
-
-;; fn00008890: 00008890
-;;   Called from:
-;;     0000888C (in fn00008874)
-;;     0000888C (in fn00008824)
-fn00008890 proc
-	andi	r3,r3,FFFFFFEF
-	rsubk	r4,r3,r0
-	or	r3,r4,r3
-
-;; fn0000889C: 0000889C
-;;   Called from:
-;;     00000278 (in fn00000248)
-;;     0000034C (in fn000002CC)
-;;     0000053C (in fn000003C4)
-;;     0000053C (in fn00000538)
-;;     0000056C (in fn000003C4)
-;;     00000584 (in fn000003C4)
-;;     000006D4 (in fn000003C4)
-;;     000006EC (in fn000003C4)
-;;     0000071C (in fn000003C4)
-;;     00008898 (in fn00008890)
-fn0000889C proc
-	addk	r4,r0,r3
-	srl	r4,r3
-	srl	r4,r4
-	srl	r4,r4
-	srl	r4,r4
-	srl	r4,r4
-	srl	r4,r4
-	srl	r4,r4
-	srl	r4,r4
-	srl	r4,r4
-	srl	r4,r4
-	srl	r4,r4
-	srl	r4,r4
-	srl	r4,r4
-	srl	r4,r4
-	srl	r4,r4
-	srl	r4,r4
-	srl	r4,r4
-	srl	r4,r4
-	srl	r4,r4
-	srl	r4,r4
-	srl	r4,r4
-	srl	r4,r4
-	srl	r4,r4
-	srl	r4,r4
-	srl	r4,r4
-	srl	r4,r4
-	srl	r4,r4
-	srl	r4,r4
-	srl	r4,r4
-	srl	r4,r4
-
-;; fn00008918: 00008918
-;;   Called from:
-;;     000007A0 (in fn00000770)
-;;     0000087C (in fn00000770)
-fn00008918 proc
-	srl	r4,r4
-	bnei	r4,000087FC
-
-;; fn00008920: 00008920
-;;   Called from:
-;;     0000888C (in fn00008824)
-;;     0000888C (in fn00008874)
-;;     0000891C (in fn0000889C)
-;;     0000891C (in fn00008918)
-fn00008920 proc
-	lwi	r3,r19,00000010
-	lwi	r4,r19,000016A4
-	addik	r3,r3,00000002
-	cmpu	r18,r3,r4
-	bltid	r18,000089E4
-	addik	r24,r0,00000001
-
-l00008938:
-	lwi	r4,r19,000016BC
-	addik	r6,r0,00000010
-	addk	r5,r19,r0
-	rsubk	r3,r4,r6
-	cmp	r18,r22,r3
-	bgeid	r18,00008958
-	addk	r21,r22,r0
-
-l00008954:
-	addk	r21,r3,r0
-
-l00008958:
-	lhui	r6,r19,000016B8
-	andi	r18,r21,0000001F
-	addk	r8,r0,r24
-	beqid	r18,00008978
-	addk	r8,r8,r0
-
-l0000896C:
-	addik	r18,r18,FFFFFFFF
-	bneid	r18,0000896C
-	addk	r8,r8,r8
-
-l00008978:
-	addik	r8,r8,FFFFFFFF
-	and	r8,r8,r23
-	andi	r18,r4,0000001F
-	addk	r3,r0,r8
-	beqid	r18,0000899C
-	addk	r3,r3,r0
-
-l00008990:
-	addik	r18,r18,FFFFFFFF
-	bneid	r18,00008990
-	addk	r3,r3,r3
-
-l0000899C:
-	addk	r4,r4,r21
-	or	r3,r3,r6
-	shi	r3,r19,000016B8
-	imm	00000000
-	brlid	r15,00003990
-	swi	r4,r19,000016BC
-	rsubk	r22,r21,r22
-	andi	r18,r21,0000001F
-	addk	r3,r0,r23
-	beqid	r18,000089D4
-	addk	r3,r3,r0
-
-l000089C8:
-	addik	r18,r18,FFFFFFFF
-	bneid	r18,000089C8
-	sra	r3,r3
-
-l000089D4:
-	bneid	r22,00008938
-	addk	r23,r3,r0
-
-l000089DC:
-	brid	00008804
-	addk	r3,r22,r0
-
-l000089E4:
-	brid	00008800
-	addik	r22,r0,FFFFFFFB
-000089EC                                     BC 05 01 6C             ...l
+000087F0 88 A5 18 00 BE 05 00 30 12 C6 00 00 32 C0 FF FE .......0....2...
+00008800 10 76 00 00 E9 E1 00 00 EA 61 00 1C EA A1 00 20 .v.......a..... 
+00008810 EA C1 00 24 EA E1 00 28 EB 01 00 2C B6 0F 00 08 ...$...(...,....
+00008820 30 21 00 30 E8 73 00 04 12 E7 00 00 A9 03 00 2A 0!.0.s.........*
+00008830 A8 83 00 45 A8 E3 00 5B 14 C8 00 00 14 A4 00 00 ...E...[........
+00008840 80 C6 40 00 A9 23 00 67 80 A5 20 00 14 87 00 00 ..@..#.g.. .....
+00008850 84 A5 30 00 A9 03 00 71 80 84 38 00 14 C9 00 00 ..0....q..8.....
+00008860 84 84 28 00 A8 E3 02 9A 80 C6 48 00 14 A8 00 00 ..(.......H.....
+00008870 84 C6 20 00 80 A5 40 00 14 87 00 00 84 A5 30 00 .. ...@.......0.
+00008880 80 84 38 00 84 84 28 00 BE A4 00 98 30 63 FF C7 ..8...(.....0c..
+00008890 A4 63 FF EF 14 83 00 00 80 64 18 00 10 80 18 00 .c.......d......
+000088A0 90 83 00 41 90 84 00 41 90 84 00 41 90 84 00 41 ...A...A...A...A
+000088B0 90 84 00 41 90 84 00 41 90 84 00 41 90 84 00 41 ...A...A...A...A
+000088C0 90 84 00 41 90 84 00 41 90 84 00 41 90 84 00 41 ...A...A...A...A
+000088D0 90 84 00 41 90 84 00 41 90 84 00 41 90 84 00 41 ...A...A...A...A
+000088E0 90 84 00 41 90 84 00 41 90 84 00 41 90 84 00 41 ...A...A...A...A
+000088F0 90 84 00 41 90 84 00 41 90 84 00 41 90 84 00 41 ...A...A...A...A
+00008900 90 84 00 41 90 84 00 41 90 84 00 41 90 84 00 41 ...A...A...A...A
+00008910 90 84 00 41 90 84 00 41 90 84 00 41 BC 24 FE E0 ...A...A...A.$..
+00008920 E8 73 00 10 E8 93 16 A4 30 63 00 02 16 43 20 03 .s......0c...C .
+00008930 BE 52 00 B4 33 00 00 01 E8 93 16 BC 30 C0 00 10 .R..3.......0...
+00008940 10 B3 00 00 14 64 30 00 16 56 18 01 BE B2 00 0C .....d0..V......
+00008950 12 B6 00 00 12 A3 00 00 E4 D3 16 B8 A6 55 00 1F .............U..
+00008960 11 00 C0 00 BE 12 00 14 11 08 00 00 32 52 FF FF ............2R..
+00008970 BE 32 FF FC 11 08 40 00 31 08 FF FF 85 08 B8 00 .2....@.1.......
+00008980 A6 44 00 1F 10 60 40 00 BE 12 00 14 10 63 00 00 .D...`@......c..
+00008990 32 52 FF FF BE 32 FF FC 10 63 18 00 10 84 A8 00 2R...2...c......
+000089A0 80 63 30 00 F4 73 16 B8 B0 00 00 00 B9 F4 AF E4 .c0..s..........
+000089B0 F8 93 16 BC 16 D5 B0 00 A6 55 00 1F 10 60 B8 00 .........U...`..
+000089C0 BE 12 00 14 10 63 00 00 32 52 FF FF BE 32 FF FC .....c..2R...2..
+000089D0 90 63 00 01 BE 36 FF 64 12 E3 00 00 B8 10 FE 28 .c...6.d.......(
+000089E0 10 76 00 00 B8 10 FE 1C 32 C0 FF FB BC 05 01 6C .v......2......l
 000089F0 E8 65 00 20 BC 03 01 64 E8 65 00 24 BC 03 01 5C .e. ...d.e.$...\
 00008A00 E8 85 00 1C BC 04 01 54 E9 44 00 00 88 A5 50 00 .......T.D....P.
 00008A10 BE 05 00 10 30 60 FF FE B6 0F 00 08 80 00 00 00 ....0`..........
@@ -7471,322 +6635,59 @@ l000089E4:
 00008B80 90 63 00 41 10 80 38 00 90 87 00 41 90 84 00 41 .c.A..8....A...A
 00008B90 90 84 00 41 10 63 20 00 BE 05 00 2C 10 63 30 00 ...A.c ....,.c0.
 00008BA0 E8 85 00 20 BC 04 00 20 E8 85 00 24 BC 04 00 18 ... ... ...$....
-00008BB0 E9 05 00 1C                                     ....            
-
-;; fn00008BB4: 00008BB4
-;;   Called from:
-;;     000009C8 (in fn00000770)
-fn00008BB4 proc
-	beqi	r8,00008BC4
-
-l00008BB8:
-	lwi	r4,r8,00000000
-	xor	r5,r5,r4
-	beqi	r5,00008BCC
-
-l00008BC4:
-	rtsd	r15,00000008
-	addik	r3,r3,0000000B
-
-l00008BCC:
-	addik	r1,r1,FFFFFFF8
-	swi	r20,r1,00000004
-	lwi	r4,r8,00000004
-	xori	r5,r4,0000002A
-	xori	r11,r4,00000045
-	xori	r10,r4,0000005B
-	rsubk	r20,r5,r0
-	rsubk	r12,r11,r0
-	xori	r9,r4,00000067
-	or	r20,r20,r5
-	or	r12,r12,r11
-	rsubk	r11,r10,r0
-	xori	r5,r4,00000071
-	and	r12,r12,r20
-	or	r11,r11,r10
-	rsubk	r10,r9,r0
-	xori	r20,r4,0000029A
-	or	r10,r10,r9
-	and	r11,r11,r12
-	rsubk	r9,r5,r0
-	or	r9,r9,r5
-	and	r10,r10,r11
-	rsubk	r5,r20,r0
-	and	r9,r9,r10
-	or	r5,r5,r20
-	and	r5,r5,r9
-
-;; fn00008C34: 00008C34
-;;   Called from:
-;;     00008C30 (in fn00008BB4)
-;;     00009478 (in fn00009408)
-;;     00009640 (in fn00009408)
-;;     000097C8 (in fn00008E80)
-;;     00009B28 (in fn00009184)
-;;     00009C18 (in fn0000A774)
-;;     00009D8C (in fn0000A774)
-;;     00009EDC (in fn0000A774)
-;;     00009F68 (in fn0000A774)
-;;     0000A044 (in fn0000A774)
-;;     0000A0D0 (in fn0000A774)
-;;     0000A1E8 (in fn0000A774)
-;;     0000A350 (in fn0000A774)
-;;     0000A464 (in fn0000A774)
-;;     0000A560 (in fn0000A774)
-;;     0000A6E4 (in fn00009B74)
-;;     0000A928 (in fn0000A774)
-;;     0000ACC4 (in fn0000A774)
-;;     0000AEB0 (in fn0000A774)
-;;     0000D200 (in fn0000D1CC)
-;;     0000DCDC (in fn0000D1CC)
-;;     0000DF54 (in fn0000D1CC)
-;;     0000E7DC (in fn0000D9E8)
-fn00008C34 proc
-	bgeid	r5,00008CD8
-	addik	r4,r4,FFFFFFC7
-
-l00008C3C:
-	andi	r4,r4,FFFFFFEF
-	rsubk	r5,r4,r0
-	or	r4,r5,r4
-	addk	r5,r0,r4
-	srl	r5,r4
-	srl	r5,r5
-	srl	r5,r5
-	srl	r5,r5
-	srl	r5,r5
-	srl	r5,r5
-
-;; fn00008C64: 00008C64
-;;   Called from:
-;;     0000AF4C (in fn00009408)
-;;     0000B1D4 (in fn0000B2D4)
-;;     0000B8F0 (in fn0000B548)
-;;     0000BD98 (in fn0000BA7C)
-fn00008C64 proc
-	srl	r5,r5
-	srl	r5,r5
-	srl	r5,r5
-	srl	r5,r5
-	srl	r5,r5
-	srl	r5,r5
-	srl	r5,r5
-	srl	r5,r5
-	srl	r5,r5
-	srl	r5,r5
-	srl	r5,r5
-	srl	r5,r5
-	srl	r5,r5
-	srl	r5,r5
-	srl	r5,r5
-	srl	r5,r5
-	srl	r5,r5
-	srl	r5,r5
-	srl	r5,r5
-	srl	r5,r5
-	srl	r5,r5
-	srl	r5,r5
-	srl	r5,r5
-	srl	r5,r5
-
-;; fn00008CC4: 00008CC4
-;;   Called from:
-;;     0000047C (in fn000003C4)
-;;     000005A8 (in fn000003C4)
-;;     0000086C (in fn00000770)
-fn00008CC4 proc
-	srl	r5,r5
-	beqi	r5,00008CD8
-
-;; fn00008CCC: 00008CCC
-;;   Called from:
-;;     00008CC8 (in fn00008C64)
-;;     00008CC8 (in fn00008C34)
-;;     00008CC8 (in fn00008CC4)
-fn00008CCC proc
-	addik	r3,r3,0000000B
-
-l00008CD0:
-	rtsd	r15,00000008
-	addik	r1,r1,00000008
-
-;; fn00008CD8: 00008CD8
-;;   Called from:
-;;     00008C38 (in fn00008C34)
-;;     00008CC8 (in fn00008C64)
-;;     00008CC8 (in fn00008C34)
-;;     00008CC8 (in fn00008CC4)
-;;     00008CCC (in fn00008CCC)
-fn00008CD8 proc
-	lwi	r5,r8,00000018
-	xori	r4,r5,00000001
-	beqid	r4,00008E64
-	xori	r4,r5,00000002
-
-l00008CE8:
-	beqi	r4,00008E08
-
-l00008CEC:
-	beqi	r5,00008CF4
-
-l00008CF0:
-	addik	r5,r0,00000006
-
-;; fn00008CF4: 00008CF4
-;;   Called from:
-;;     00008CEC (in fn00008CD8)
-;;     00008CF0 (in fn00008CD8)
-;;     00008E10 (in fn00008CD8)
-;;     00008E58 (in fn00008E58)
-;;     00008E58 (in fn00008CD8)
-;;     00008E5C (in fn00008E5C)
-;;     00008E6C (in fn00008CD8)
-;;     00008E70 (in fn00008CD8)
-fn00008CF4 proc
-	lwi	r4,r8,00000030
-	xori	r4,r4,0000000F
-	beqi	r4,00008D10
-
-l00008D00:
-	addik	r3,r3,00000005
-	addk	r3,r3,r5
-	rtsd	r15,00000008
-	addik	r1,r1,00000008
-
-l00008D10:
-	lwi	r4,r8,00000050
-	xori	r4,r4,0000000F
-	bnei	r4,00008D00
-
-l00008D1C:
-	addk	r4,r0,r6
-	srl	r4,r6
-	srl	r4,r4
-	srl	r4,r4
-	srl	r4,r4
-	srl	r4,r4
-	srl	r4,r4
-	srl	r4,r4
-	srl	r4,r4
-	srl	r4,r4
-	srl	r4,r4
-	srl	r4,r4
-	srl	r4,r4
-	addk	r4,r4,r7
-	addk	r3,r0,r6
-	srl	r3,r6
-	srl	r3,r3
-	srl	r3,r3
-	srl	r3,r3
-	srl	r3,r3
-	srl	r3,r3
-	srl	r3,r3
-	srl	r3,r3
-	srl	r3,r3
-	srl	r3,r3
-	srl	r3,r3
-	srl	r3,r3
-	srl	r3,r3
-	srl	r3,r3
-	addk	r4,r4,r3
-	addk	r3,r0,r6
-	srl	r3,r6
-	srl	r3,r3
-	srl	r3,r3
-	srl	r3,r3
-	srl	r3,r3
-	srl	r3,r3
-	srl	r3,r3
-	srl	r3,r3
-	srl	r3,r3
-	srl	r3,r3
-	srl	r3,r3
-	srl	r3,r3
-	srl	r3,r3
-	srl	r3,r3
-	srl	r3,r3
-	srl	r3,r3
-	srl	r3,r3
-	srl	r3,r3
-	srl	r3,r3
-	srl	r3,r3
-	srl	r3,r3
-	srl	r3,r3
-	srl	r3,r3
-	srl	r3,r3
-	srl	r3,r3
-	addk	r4,r4,r3
-	brid	00008CD0
-	addk	r3,r4,r5
-
-l00008E08:
-	lwi	r10,r8,0000001C
-	beqid	r10,00008CF4
-	addik	r5,r0,00000012
-
-l00008E14:
-	lwi	r4,r10,00000010
-	beqi	r4,00008E24
-
-l00008E1C:
-	lwi	r5,r10,00000014
-	addik	r5,r5,00000014
-
-l00008E24:
-	lwi	r4,r10,0000001C
-	beqi	r4,00008E3C
-
-l00008E2C:
-	addik	r4,r4,00000001
-	lbui	r9,r4,FFFFFFFF
-	bneid	r9,00008E2C
-	addik	r5,r5,00000001
-
-l00008E3C:
-	lwi	r4,r10,00000024
-	beqi	r4,00008E54
-
-l00008E44:
-	addik	r4,r4,00000001
-	lbui	r9,r4,FFFFFFFF
-	bneid	r9,00008E44
-	addik	r5,r5,00000001
-
-l00008E54:
-	lwi	r4,r10,0000002C
-
-;; fn00008E58: 00008E58
-;;   Called from:
-;;     000005FC (in fn000003C4)
-fn00008E58 proc
-	beqi	r4,00008CF4
-
-;; fn00008E5C: 00008E5C
-;;   Called from:
-;;     00008E58 (in fn00008E58)
-;;     00008E58 (in fn00008CD8)
-fn00008E5C proc
-	brid	00008CF4
-	addik	r5,r5,00000002
-
-l00008E64:
-	lwi	r4,r8,0000006C
-	beqid	r4,00008CF4
-	addik	r5,r0,00000006
-
-l00008E70:
-	brid	00008CF4
-	addik	r5,r0,0000000A
-00008E78                         B8 10 FF AC 30 A0 00 12         ....0...
+00008BB0 E9 05 00 1C BC 08 00 10 E8 88 00 00 88 A5 20 00 .............. .
+00008BC0 BC 05 00 0C B6 0F 00 08 30 63 00 0B 30 21 FF F8 ........0c..0!..
+00008BD0 FA 81 00 04 E8 88 00 04 A8 A4 00 2A A9 64 00 45 ...........*.d.E
+00008BE0 A9 44 00 5B 16 85 00 00 15 8B 00 00 A9 24 00 67 .D.[.........$.g
+00008BF0 82 94 28 00 81 8C 58 00 15 6A 00 00 A8 A4 00 71 ..(...X..j.....q
+00008C00 85 8C A0 00 81 6B 50 00 15 49 00 00 AA 84 02 9A .....kP..I......
+00008C10 81 4A 48 00 85 6B 60 00 15 25 00 00 81 29 28 00 .JH..k`..%...)(.
+00008C20 85 4A 58 00 14 B4 00 00 85 29 50 00 80 A5 A0 00 .JX......)P.....
+00008C30 84 A5 48 00 BE A5 00 A4 30 84 FF C7 A4 84 FF EF ..H.....0.......
+00008C40 14 A4 00 00 80 85 20 00 10 A0 20 00 90 A4 00 41 ...... ... ....A
+00008C50 90 A5 00 41 90 A5 00 41 90 A5 00 41 90 A5 00 41 ...A...A...A...A
+00008C60 90 A5 00 41 90 A5 00 41 90 A5 00 41 90 A5 00 41 ...A...A...A...A
+00008C70 90 A5 00 41 90 A5 00 41 90 A5 00 41 90 A5 00 41 ...A...A...A...A
+00008C80 90 A5 00 41 90 A5 00 41 90 A5 00 41 90 A5 00 41 ...A...A...A...A
+00008C90 90 A5 00 41 90 A5 00 41 90 A5 00 41 90 A5 00 41 ...A...A...A...A
+00008CA0 90 A5 00 41 90 A5 00 41 90 A5 00 41 90 A5 00 41 ...A...A...A...A
+00008CB0 90 A5 00 41 90 A5 00 41 90 A5 00 41 90 A5 00 41 ...A...A...A...A
+00008CC0 90 A5 00 41 90 A5 00 41 BC 05 00 10 30 63 00 0B ...A...A....0c..
+00008CD0 B6 0F 00 08 30 21 00 08 E8 A8 00 18 A8 85 00 01 ....0!..........
+00008CE0 BE 04 01 84 A8 85 00 02 BC 04 01 20 BC 05 00 08 ........... ....
+00008CF0 30 A0 00 06 E8 88 00 30 A8 84 00 0F BC 04 00 14 0......0........
+00008D00 30 63 00 05 10 63 28 00 B6 0F 00 08 30 21 00 08 0c...c(.....0!..
+00008D10 E8 88 00 50 A8 84 00 0F BC 24 FF E8 10 80 30 00 ...P.....$....0.
+00008D20 90 86 00 41 90 84 00 41 90 84 00 41 90 84 00 41 ...A...A...A...A
+00008D30 90 84 00 41 90 84 00 41 90 84 00 41 90 84 00 41 ...A...A...A...A
+00008D40 90 84 00 41 90 84 00 41 90 84 00 41 90 84 00 41 ...A...A...A...A
+00008D50 10 84 38 00 10 60 30 00 90 66 00 41 90 63 00 41 ..8..`0..f.A.c.A
+00008D60 90 63 00 41 90 63 00 41 90 63 00 41 90 63 00 41 .c.A.c.A.c.A.c.A
+00008D70 90 63 00 41 90 63 00 41 90 63 00 41 90 63 00 41 .c.A.c.A.c.A.c.A
+00008D80 90 63 00 41 90 63 00 41 90 63 00 41 90 63 00 41 .c.A.c.A.c.A.c.A
+00008D90 10 84 18 00 10 60 30 00 90 66 00 41 90 63 00 41 .....`0..f.A.c.A
+00008DA0 90 63 00 41 90 63 00 41 90 63 00 41 90 63 00 41 .c.A.c.A.c.A.c.A
+00008DB0 90 63 00 41 90 63 00 41 90 63 00 41 90 63 00 41 .c.A.c.A.c.A.c.A
+00008DC0 90 63 00 41 90 63 00 41 90 63 00 41 90 63 00 41 .c.A.c.A.c.A.c.A
+00008DD0 90 63 00 41 90 63 00 41 90 63 00 41 90 63 00 41 .c.A.c.A.c.A.c.A
+00008DE0 90 63 00 41 90 63 00 41 90 63 00 41 90 63 00 41 .c.A.c.A.c.A.c.A
+00008DF0 90 63 00 41 90 63 00 41 90 63 00 41 10 84 18 00 .c.A.c.A.c.A....
+00008E00 B8 10 FE D0 10 64 28 00 E9 48 00 1C BE 0A FE E8 .....d(..H......
+00008E10 30 A0 00 12 E8 8A 00 10 BC 04 00 0C E8 AA 00 14 0...............
+00008E20 30 A5 00 14 E8 8A 00 1C BC 04 00 14 30 84 00 01 0...........0...
+00008E30 E1 24 FF FF BE 29 FF F8 30 A5 00 01 E8 8A 00 24 .$...)..0......$
+00008E40 BC 04 00 14 30 84 00 01 E1 24 FF FF BE 29 FF F8 ....0....$...)..
+00008E50 30 A5 00 01 E8 8A 00 2C BC 04 FE 9C B8 10 FE 98 0......,........
+00008E60 30 A5 00 02 E8 88 00 6C BE 04 FE 8C 30 A0 00 06 0......l....0...
+00008E70 B8 10 FE 84 30 A0 00 0A B8 10 FF AC 30 A0 00 12 ....0.......0...
 
 ;; fn00008E80: 00008E80
 ;;   Called from:
 ;;     00003B7C (in fn00003AA4)
-;;     00003DAC (in fn00003CC0)
-;;     00003E80 (in fn00003CC0)
+;;     00003DAC (in fn00003C74)
+;;     00003E80 (in fn00003C74)
 ;;     000040D0 (in fn00003EC8)
 ;;     0000418C (in fn00003EC8)
-;;     0000547C (in fn00005318)
 ;;     000055BC (in fn00005538)
 ;;     0000B178 (in fn0000AFBC)
 fn00008E80 proc
@@ -7999,24 +6900,7 @@ l00009110:
 	bgeid	r18,00009124
 	addk	r3,r4,r4
 
-;; fn00009120: 00009120
-;;   Called from:
-;;     000009F8 (in fn00000770)
-;;     00000A14 (in fn00000770)
-;;     00008EE0 (in fn00008E80)
-;;     00009014 (in fn00008E80)
-;;     00009024 (in fn00008E80)
-;;     0000911C (in fn00008E80)
-;;     0000911C (in fn00008E80)
-;;     00009778 (in fn00008E80)
-;;     00009778 (in fn00008E80)
-;;     000097A4 (in fn00008E80)
-;;     000097AC (in fn00008E80)
-;;     000097AC (in fn00008E80)
-;;     00009824 (in fn00008E80)
-;;     0000AC44 (in fn00008E80)
-;;     0000AD3C (in fn00008E80)
-fn00009120 proc
+l00009120:
 	addik	r3,r3,FFFFFFF7
 
 l00009124:
@@ -8047,24 +6931,11 @@ l0000913C:
 	addk	r22,r22,r22
 	addk	r22,r22,r22
 	addk	r22,r22,r22
-
-;; fn00009178: 00009178
-;;   Called from:
-;;     000004F4 (in fn000003C4)
-;;     00000678 (in fn000003C4)
-fn00009178 proc
 	cmp	r18,r4,r3
 	bgeid	r18,00009B8C
 	addk	r22,r22,r22
 
-;; fn00009184: 00009184
-;;   Called from:
-;;     00009180 (in fn00009178)
-;;     00009B98 (in fn00009B8C)
-;;     00009BB0 (in fn00009B8C)
-;;     0000A66C (in fn00009B8C)
-;;     0000AE40 (in fn00009B8C)
-fn00009184 proc
+l00009184:
 	lwi	r3,r19,0000006C
 
 l00009188:
@@ -8078,7 +6949,7 @@ l00009190:
 l00009198:
 	addik	r6,r0,0000001F
 	imm	00000000
-	brlid	r15,00008030
+	brlid	r15,00018030
 	addik	r22,r22,0000001F
 	lwi	r4,r19,00000014
 	lwi	r5,r19,00000008
@@ -8182,14 +7053,14 @@ l00009204:
 l00009328:
 	addk	r5,r7,r0
 	imm	00000000
-	brlid	r15,00005318
+	brlid	r15,00015318
 	addk	r6,r7,r0
 	lwi	r25,r21,0000001C
 	swi	r3,r21,00000030
 	addik	r5,r0,00000071
 	swi	r5,r19,00000004
 	imm	00000000
-	brlid	r15,00003990
+	brlid	r15,00013990
 	addk	r5,r25,r0
 	lwi	r3,r25,00000014
 	lwi	r22,r21,00000010
@@ -8252,7 +7123,7 @@ l000093D0:
 	addk	r3,r3,r3
 	addk	r3,r3,r3
 	imm	00000001
-	addik	r3,r3,FFFF9DB4
+	addik	r3,r3,00019DB4
 	lwi	r3,r3,00000008
 	addk	r6,r23,r0
 	brald	r15,r3
@@ -8265,29 +7136,7 @@ l000093F8:
 	bgeid	r18,0000A3BC
 	andi	r4,r3,FFFFFFFD
 
-;; fn00009408: 00009408
-;;   Called from:
-;;     00009404 (in fn0000A774)
-;;     00009790 (in fn0000A774)
-;;     000097A0 (in fn0000A774)
-;;     00009B84 (in fn00009B74)
-;;     00009C74 (in fn0000A774)
-;;     00009D0C (in fn0000A774)
-;;     00009D20 (in fn0000A774)
-;;     00009E70 (in fn00009E48)
-;;     00009E70 (in fn0000A774)
-;;     00009FCC (in fn0000A774)
-;;     0000A0AC (in fn0000A774)
-;;     0000A3C8 (in fn0000A774)
-;;     0000A3CC (in fn0000A774)
-;;     0000A5C4 (in fn0000A774)
-;;     0000A988 (in fn0000A774)
-;;     0000A9A4 (in fn0000A774)
-;;     0000AC5C (in fn0000A774)
-;;     0000AF18 (in fn0000A774)
-;;     0000AF20 (in fn0000A774)
-;;     0000AF28 (in fn0000A774)
-fn00009408 proc
+l00009408:
 	beqid	r4,0000A0B0
 	xori	r3,r3,00000001
 
@@ -8308,7 +7157,7 @@ l00009428:
 	addk	r6,r8,r0
 	addk	r5,r19,r0
 	imm	00000000
-	brlid	r15,0000371C
+	brlid	r15,0001371C
 	xori	r23,r23,00000003
 	beqid	r23,0000AF30
 	addk	r6,r23,r0
@@ -8318,7 +7167,7 @@ l00009448:
 
 l0000944C:
 	imm	00000000
-	brlid	r15,00003990
+	brlid	r15,00013990
 	addk	r5,r23,r0
 	lwi	r3,r21,00000010
 	lwi	r22,r23,00000014
@@ -8335,7 +7184,7 @@ l0000946C:
 l00009474:
 	lwi	r6,r23,00000010
 	imm	00000000
-	brlid	r15,00008C34
+	brlid	r15,00018C34
 	lwi	r5,r21,0000000C
 	lwi	r7,r21,0000000C
 	lwi	r6,r23,00000010
@@ -8452,7 +7301,7 @@ l00009500:
 l00009610:
 	lwi	r23,r21,0000001C
 	imm	00000000
-	brlid	r15,00003990
+	brlid	r15,00013990
 	addk	r5,r23,r0
 	lwi	r3,r23,00000014
 	lwi	r22,r21,00000010
@@ -8469,7 +7318,7 @@ l00009634:
 l0000963C:
 	lwi	r6,r23,00000010
 	imm	00000000
-	brlid	r15,00008C34
+	brlid	r15,00018C34
 	lwi	r5,r21,0000000C
 	lwi	r7,r21,0000000C
 	lwi	r6,r23,00000010
@@ -8542,7 +7391,7 @@ l000096A4:
 
 l0000973C:
 	imm	00000000
-	brlid	r15,00003990
+	brlid	r15,00013990
 	addk	r5,r19,r0
 	lwi	r3,r21,00000010
 	lwi	r22,r19,00000014
@@ -8595,7 +7444,7 @@ l000097AC:
 
 l000097B0:
 	imm	00000001
-	lwi	r4,r0,FFFFB5C4
+	lwi	r4,r0,0001B5C4
 	addik	r3,r0,FFFFFFFB
 	brid	00008EE4
 	swi	r4,r21,00000018
@@ -8603,7 +7452,7 @@ l000097B0:
 l000097C4:
 	lwi	r6,r19,00000010
 	imm	00000000
-	brlid	r15,00008C34
+	brlid	r15,00018C34
 	lwi	r5,r21,0000000C
 	lwi	r7,r21,0000000C
 	lwi	r6,r19,00000010
@@ -8637,7 +7486,7 @@ l00009824:
 l0000982C:
 	addk	r5,r7,r0
 	imm	00000000
-	brlid	r15,00007044
+	brlid	r15,00017044
 	addk	r6,r7,r0
 	lwi	r4,r19,00000014
 	lwi	r5,r19,00000008
@@ -8738,9 +7587,6 @@ l00009958:
 	lwi	r4,r19,00000008
 	lwi	r5,r5,00000004
 	addik	r6,r3,00000001
-
-;; fn00009980: 00009980
-fn00009980 proc
 	swi	r6,r19,00000014
 	sb	r5,r3,r4
 	lwi	r5,r19,0000001C
@@ -8778,11 +7624,7 @@ fn00009980 proc
 	beqid	r4,0000A774
 	addik	r4,r0,00000001
 
-;; fn00009A10: 00009A10
-;;   Called from:
-;;     00009A0C (in fn00009980)
-;;     00009A0C (in fn00009B74)
-fn00009A10 proc
+l00009A10:
 	lwi	r5,r19,00000088
 	cmp	r18,r5,r4
 	bgei	r18,0000A654
@@ -8841,7 +7683,7 @@ l00009AC4:
 	lwi	r7,r19,00000014
 	lwi	r6,r19,00000008
 	imm	00000000
-	brlid	r15,00007044
+	brlid	r15,00017044
 	lwi	r5,r21,00000030
 	lwi	r4,r19,0000001C
 	swi	r3,r21,00000030
@@ -8864,7 +7706,7 @@ l00009B00:
 
 l00009B08:
 	imm	00000001
-	lwi	r5,r0,FFFFB5C4
+	lwi	r5,r0,0001B5C4
 	brid	00008EE4
 	swi	r5,r21,00000018
 
@@ -8876,7 +7718,7 @@ l00009B18:
 l00009B24:
 	lwi	r6,r25,00000010
 	imm	00000000
-	brlid	r15,00008C34
+	brlid	r15,00018C34
 	lwi	r5,r21,0000000C
 	lwi	r7,r21,0000000C
 	lwi	r6,r25,00000010
@@ -8893,21 +7735,9 @@ l00009B24:
 	swi	r4,r21,00000010
 	rsubk	r22,r22,r3
 	bneid	r22,0000936C
-
-;; fn00009B70: 00009B70
-;;   Called from:
-;;     00030298 (in fn0002FFD0)
-fn00009B70 proc
 	swi	r22,r25,00000014
 
-;; fn00009B74: 00009B74
-;;   Called from:
-;;     00009368 (in fn00009184)
-;;     00009B20 (in fn00009184)
-;;     00009B70 (in fn00009B70)
-;;     00009B70 (in fn00009184)
-;;     00009B70 (in fn00009184)
-fn00009B74 proc
+l00009B74:
 	lwi	r3,r25,00000008
 	brid	0000936C
 	swi	r3,r25,00000010
@@ -8917,17 +7747,7 @@ l00009B80:
 	brid	00008EE4
 	addk	r3,r0,r0
 
-;; fn00009B8C: 00009B8C
-;;   Called from:
-;;     00009138 (in fn00009120)
-;;     00009180 (in fn00009178)
-;;     00009180 (in fn00009120)
-;;     00009180 (in fn00009120)
-;;     00009184 (in fn00009184)
-;;     00009780 (in fn00009120)
-;;     000097BC (in fn00009120)
-;;     00009B10 (in fn00009120)
-fn00009B8C proc
+l00009B8C:
 	lwi	r4,r19,00000084
 	cmp	r18,r4,r3
 	bgeid	r18,00009184
@@ -8958,14 +7778,14 @@ l00009BC4:
 l00009BCC:
 	addk	r5,r19,r0
 	imm	00000000
-	brlid	r15,00003C90
+	brlid	r15,00013C90
 	rsubk	r7,r7,r3
 	lwi	r26,r19,00000000
 	lwi	r4,r19,0000006C
 	lwi	r27,r26,0000001C
 	swi	r4,r19,0000005C
 	imm	00000000
-	brlid	r15,00003990
+	brlid	r15,00013990
 	addk	r5,r27,r0
 	lwi	r3,r27,00000014
 	lwi	r22,r26,00000010
@@ -8982,7 +7802,7 @@ l00009C0C:
 l00009C14:
 	lwi	r6,r27,00000010
 	imm	00000000
-	brlid	r15,00008C34
+	brlid	r15,00018C34
 	lwi	r5,r26,0000000C
 	lwi	r7,r26,0000000C
 	lwi	r6,r27,00000010
@@ -9081,14 +7901,14 @@ l00009D38:
 	addk	r5,r19,r0
 	addk	r8,r0,r0
 	imm	00000000
-	brlid	r15,00003C90
+	brlid	r15,00013C90
 	rsubk	r7,r3,r7
 	lwi	r25,r19,00000000
 	lwi	r4,r19,0000006C
 	lwi	r26,r25,0000001C
 	swi	r4,r19,0000005C
 	imm	00000000
-	brlid	r15,00003990
+	brlid	r15,00013990
 	addk	r5,r26,r0
 	lwi	r3,r26,00000014
 	lwi	r22,r25,00000010
@@ -9105,7 +7925,7 @@ l00009D80:
 l00009D88:
 	lwi	r6,r26,00000010
 	imm	00000000
-	brlid	r15,00008C34
+	brlid	r15,00018C34
 	lwi	r5,r25,0000000C
 	lwi	r7,r25,0000000C
 	lwi	r6,r26,00000010
@@ -9155,12 +7975,6 @@ l00009DE0:
 	srl	r3,r3
 	srl	r3,r3
 	srl	r3,r3
-
-;; fn00009E48: 00009E48
-;;   Called from:
-;;     00030038 (in fn0002FFD0)
-;;     0003013C (in fn0002FFD0)
-fn00009E48 proc
 	srl	r3,r3
 	srl	r3,r3
 	srl	r3,r3
@@ -9213,7 +8027,7 @@ l00009ED0:
 	addk	r7,r22,r0
 	addk	r6,r3,r6
 	imm	00000000
-	brlid	r15,00008C34
+	brlid	r15,00018C34
 	addk	r5,r5,r25
 	lwi	r3,r19,0000001C
 	lwi	r4,r19,0000000C
@@ -9233,7 +8047,7 @@ l00009F14:
 	lwi	r6,r19,00000008
 	lwi	r5,r21,00000030
 	imm	00000000
-	brlid	r15,00007044
+	brlid	r15,00017044
 	addk	r6,r6,r25
 	swi	r3,r21,00000030
 
@@ -9243,7 +8057,7 @@ l00009F2C:
 	addk	r5,r25,r0
 	addk	r22,r3,r22
 	imm	00000000
-	brlid	r15,00003990
+	brlid	r15,00013990
 	swi	r22,r19,00000020
 	lwi	r3,r25,00000014
 	lwi	r22,r21,00000010
@@ -9260,7 +8074,7 @@ l00009F5C:
 l00009F64:
 	lwi	r6,r25,00000010
 	imm	00000000
-	brlid	r15,00008C34
+	brlid	r15,00018C34
 	lwi	r5,r21,0000000C
 	lwi	r7,r21,0000000C
 	lwi	r6,r25,00000010
@@ -9313,14 +8127,14 @@ l00009FF0:
 	addk	r5,r19,r0
 	addik	r8,r0,00000001
 	imm	00000000
-	brlid	r15,00003C90
+	brlid	r15,00013C90
 	rsubk	r7,r3,r7
 	lwi	r23,r19,00000000
 	lwi	r4,r19,0000006C
 	lwi	r24,r23,0000001C
 	swi	r4,r19,0000005C
 	imm	00000000
-	brlid	r15,00003990
+	brlid	r15,00013990
 	addk	r5,r24,r0
 	lwi	r3,r24,00000014
 	lwi	r22,r23,00000010
@@ -9337,7 +8151,7 @@ l0000A038:
 l0000A040:
 	lwi	r6,r24,00000010
 	imm	00000000
-	brlid	r15,00008C34
+	brlid	r15,00018C34
 	lwi	r5,r23,0000000C
 	lwi	r7,r23,0000000C
 	lwi	r6,r24,00000010
@@ -9390,7 +8204,7 @@ l0000A0C8:
 	addk	r7,r26,r0
 	addk	r6,r3,r6
 	imm	00000000
-	brlid	r15,00008C34
+	brlid	r15,00018C34
 	addk	r5,r5,r25
 	lwi	r4,r19,0000001C
 	lwi	r7,r19,00000014
@@ -9410,7 +8224,7 @@ l0000A108:
 	lwi	r6,r19,00000008
 	lwi	r5,r21,00000030
 	imm	00000000
-	brlid	r15,00007044
+	brlid	r15,00017044
 	addk	r6,r6,r25
 	lwi	r4,r19,0000001C
 	swi	r3,r21,00000030
@@ -9468,14 +8282,14 @@ l0000A1A0:
 	lwi	r3,r19,00000008
 	lwi	r5,r21,00000030
 	imm	00000000
-	brlid	r15,00007044
+	brlid	r15,00017044
 	addk	r6,r3,r6
 	swi	r3,r21,00000030
 
 l0000A1B8:
 	lwi	r26,r21,0000001C
 	imm	00000000
-	brlid	r15,00003990
+	brlid	r15,00013990
 	addk	r5,r26,r0
 	lwi	r3,r26,00000014
 	lwi	r22,r21,00000010
@@ -9492,7 +8306,7 @@ l0000A1DC:
 l0000A1E4:
 	lwi	r6,r26,00000010
 	imm	00000000
-	brlid	r15,00008C34
+	brlid	r15,00018C34
 	lwi	r5,r21,0000000C
 	lwi	r7,r21,0000000C
 	lwi	r6,r26,00000010
@@ -9540,7 +8354,7 @@ l0000A270:
 	lwi	r3,r19,00000008
 	lwi	r5,r21,00000030
 	imm	00000000
-	brlid	r15,00007044
+	brlid	r15,00017044
 	addk	r6,r3,r6
 	lwi	r4,r19,0000001C
 	swi	r3,r21,00000030
@@ -9598,14 +8412,14 @@ l0000A308:
 	lwi	r3,r19,00000008
 	lwi	r5,r21,00000030
 	imm	00000000
-	brlid	r15,00007044
+	brlid	r15,00017044
 	addk	r6,r3,r6
 	swi	r3,r21,00000030
 
 l0000A320:
 	lwi	r26,r21,0000001C
 	imm	00000000
-	brlid	r15,00003990
+	brlid	r15,00013990
 	addk	r5,r26,r0
 	lwi	r3,r26,00000014
 	lwi	r22,r21,00000010
@@ -9622,7 +8436,7 @@ l0000A344:
 l0000A34C:
 	lwi	r6,r26,00000010
 	imm	00000000
-	brlid	r15,00008C34
+	brlid	r15,00018C34
 	lwi	r5,r21,0000000C
 	lwi	r7,r21,0000000C
 	lwi	r6,r26,00000010
@@ -9681,7 +8495,7 @@ l0000A3F0:
 	lwi	r5,r21,00000030
 	rsubk	r7,r6,r7
 	imm	00000000
-	brlid	r15,00007044
+	brlid	r15,00017044
 	addk	r6,r3,r6
 	lwi	r4,r19,0000001C
 	swi	r3,r21,00000030
@@ -9706,7 +8520,7 @@ l0000A420:
 l0000A434:
 	lwi	r25,r21,0000001C
 	imm	00000000
-	brlid	r15,00003990
+	brlid	r15,00013990
 	addk	r5,r25,r0
 	lwi	r3,r25,00000014
 	lwi	r22,r21,00000010
@@ -9723,7 +8537,7 @@ l0000A458:
 l0000A460:
 	lwi	r6,r25,00000010
 	imm	00000000
-	brlid	r15,00008C34
+	brlid	r15,00018C34
 	lwi	r5,r21,0000000C
 	lwi	r7,r21,0000000C
 	lwi	r6,r25,00000010
@@ -9774,7 +8588,7 @@ l0000A4C0:
 	srl	r8,r8
 	srl	r8,r8
 	imm	00000000
-	brlid	r15,00007044
+	brlid	r15,00017044
 	sb	r8,r3,r4
 	swi	r3,r21,00000030
 
@@ -9783,7 +8597,7 @@ l0000A528:
 	addik	r4,r0,00000071
 	swi	r4,r19,00000004
 	imm	00000000
-	brlid	r15,00003990
+	brlid	r15,00013990
 	addk	r5,r25,r0
 	lwi	r3,r25,00000014
 	lwi	r22,r21,00000010
@@ -9800,7 +8614,7 @@ l0000A554:
 l0000A55C:
 	lwi	r6,r25,00000010
 	imm	00000000
-	brlid	r15,00008C34
+	brlid	r15,00018C34
 	lwi	r5,r21,0000000C
 	lwi	r7,r21,0000000C
 	lwi	r6,r25,00000010
@@ -9910,7 +8724,7 @@ l0000A680:
 	addik	r3,r0,00000071
 	swi	r3,r19,00000004
 	imm	00000000
-	brlid	r15,00003990
+	brlid	r15,00013990
 	addk	r5,r25,r0
 	lwi	r3,r25,00000014
 	lwi	r22,r21,00000010
@@ -9927,7 +8741,7 @@ l0000A6D8:
 l0000A6E0:
 	lwi	r6,r25,00000010
 	imm	00000000
-	brlid	r15,00008C34
+	brlid	r15,00018C34
 	lwi	r5,r21,0000000C
 	lwi	r7,r21,0000000C
 	lwi	r6,r25,00000010
@@ -9968,7 +8782,7 @@ l0000A750:
 
 l0000A758:
 	imm	00000000
-	brlid	r15,00003A60
+	brlid	r15,00013A60
 	addk	r5,r19,r0
 	brid	0000944C
 	lwi	r23,r21,0000001C
@@ -9977,26 +8791,13 @@ l0000A76C:
 	brid	0000A130
 	lwi	r4,r19,0000001C
 
-;; fn0000A774: 0000A774
-;;   Called from:
-;;     000093A0 (in fn00009B74)
-;;     00009A0C (in fn00009980)
-;;     00009A0C (in fn00009B74)
-;;     00009A1C (in fn00009A10)
-;;     00009E78 (in fn00009B74)
-;;     0000A65C (in fn00009A10)
-;;     0000A660 (in fn00009A10)
-;;     0000A73C (in fn00009B74)
-;;     0000A76C (in fn00009B74)
-;;     0000AD1C (in fn00009B74)
-;;     0000AD28 (in fn00009B74)
-fn0000A774 proc
+l0000A774:
 	brid	00009A20
 	addik	r6,r0,00000002
 
 l0000A77C:
 	imm	00000001
-	addik	r26,r0,FFFFABD8
+	addik	r26,r0,0001ABD8
 	addik	r29,r0,00000102
 	addik	r28,r0,00000001
 	addik	r25,r0,00000001
@@ -10004,7 +8805,7 @@ l0000A77C:
 l0000A790:
 	lwi	r6,r19,00000074
 	imm	00000001
-	addik	r22,r0,FFFFACD8
+	addik	r22,r0,0001ACD8
 	addik	r27,r0,00000002
 
 l0000A7A0:
@@ -10107,14 +8908,14 @@ l0000A8D8:
 	addk	r5,r19,r0
 	addk	r8,r0,r0
 	imm	00000000
-	brlid	r15,00003C90
+	brlid	r15,00013C90
 	rsubk	r7,r7,r4
 	lwi	r27,r19,00000000
 	lwi	r5,r19,0000006C
 	lwi	r30,r27,0000001C
 	swi	r5,r19,0000005C
 	imm	00000000
-	brlid	r15,00003990
+	brlid	r15,00013990
 	addk	r5,r30,r0
 	lwi	r3,r30,00000014
 	lwi	r22,r27,00000010
@@ -10131,7 +8932,7 @@ l0000A91C:
 l0000A924:
 	lwi	r6,r30,00000010
 	imm	00000000
-	brlid	r15,00008C34
+	brlid	r15,00018C34
 	lwi	r5,r27,0000000C
 	lwi	r7,r27,0000000C
 	lwi	r6,r30,00000010
@@ -10381,7 +9182,7 @@ l0000AC30:
 
 l0000AC38:
 	imm	00000001
-	lwi	r4,r0,FFFFB5B8
+	lwi	r4,r0,0001B5B8
 	addik	r3,r0,FFFFFFFE
 	brid	00008EE4
 	swi	r4,r5,00000018
@@ -10408,14 +9209,14 @@ l0000AC70:
 	addk	r5,r19,r0
 	addk	r8,r0,r0
 	imm	00000000
-	brlid	r15,00003C90
+	brlid	r15,00013C90
 	rsubk	r7,r3,r7
 	lwi	r25,r19,00000000
 	lwi	r5,r19,0000006C
 	lwi	r26,r25,0000001C
 	swi	r5,r19,0000005C
 	imm	00000000
-	brlid	r15,00003990
+	brlid	r15,00013990
 	addk	r5,r26,r0
 	lwi	r3,r26,00000014
 	lwi	r22,r25,00000010
@@ -10432,7 +9233,7 @@ l0000ACB8:
 l0000ACC0:
 	lwi	r6,r26,00000010
 	imm	00000000
-	brlid	r15,00008C34
+	brlid	r15,00018C34
 	lwi	r5,r25,0000000C
 	lwi	r7,r25,0000000C
 	lwi	r6,r26,00000010
@@ -10467,7 +9268,7 @@ l0000AD24:
 
 l0000AD30:
 	imm	00000001
-	lwi	r4,r0,FFFFB5C4
+	lwi	r4,r0,0001B5C4
 	addik	r3,r0,FFFFFFFB
 	brid	00008EE4
 	swi	r4,r5,00000018
@@ -10555,14 +9356,14 @@ l0000AE5C:
 	addk	r5,r19,r0
 	addik	r8,r0,00000001
 	imm	00000000
-	brlid	r15,00003C90
+	brlid	r15,00013C90
 	rsubk	r7,r3,r7
 	lwi	r23,r19,00000000
 	lwi	r3,r19,0000006C
 	lwi	r24,r23,0000001C
 	swi	r3,r19,0000005C
 	imm	00000000
-	brlid	r15,00003990
+	brlid	r15,00013990
 	addk	r5,r24,r0
 	lwi	r3,r24,00000014
 	lwi	r22,r23,00000010
@@ -10579,7 +9380,7 @@ l0000AEA4:
 l0000AEAC:
 	lwi	r6,r24,00000010
 	imm	00000000
-	brlid	r15,00008C34
+	brlid	r15,00018C34
 	lwi	r5,r23,0000000C
 	lwi	r7,r23,0000000C
 	lwi	r6,r24,00000010
@@ -10625,12 +9426,12 @@ l0000AF30:
 	lwi	r3,r19,0000004C
 	lwi	r4,r19,00000044
 	imm	00007FFF
-	addik	r3,r3,FFFFFFFF
+	addik	r3,r3,7FFFFFFF
 	addk	r3,r3,r3
 	addk	r7,r3,r0
 	addk	r5,r4,r0
 	imm	00000000
-	brlid	r15,00008C64
+	brlid	r15,00018C64
 	sh	r23,r3,r4
 	lwi	r3,r19,00000074
 	bnei	r3,00009448
@@ -10676,8 +9477,6 @@ l0000AFB4:
 	addik	r4,r4,00000003
 
 ;; fn0000AFBC: 0000AFBC
-;;   Called from:
-;;     000054A4 (in fn00005318)
 fn0000AFBC proc
 	beqi	r5,0000B31C
 
@@ -10854,27 +9653,17 @@ l0000B1AC:
 l0000B1B8:
 	lwi	r8,r19,0000004C
 	lwi	r5,r19,00000044
-
-;; fn0000B1C0: 0000B1C0
-;;   Called from:
-;;     00030074 (in fn0002FFD0)
-fn0000B1C0 proc
 	imm	00007FFF
-	addik	r7,r8,FFFFFFFF
+	addik	r7,r8,7FFFFFFF
 	beqid	r3,0000B298
 	addk	r7,r7,r7
 
-;; fn0000B1D0: 0000B1D0
-;;   Called from:
-;;     0000B1CC (in fn0000B1C0)
-;;     0000B1CC (in fn0000AFBC)
-;;     000302AC (in fn0002FFD0)
-fn0000B1D0 proc
+l0000B1D0:
 	sh	r6,r7,r5
 
 l0000B1D4:
 	imm	00000000
-	brlid	r15,00008C64
+	brlid	r15,00018C64
 	addk	r6,r0,r0
 	swi	r0,r19,000016B0
 
@@ -10886,7 +9675,7 @@ l0000B1E8:
 	addk	r3,r3,r3
 	addk	r3,r3,r3
 	imm	00000001
-	addik	r3,r3,FFFF9DB4
+	addik	r3,r3,00019DB4
 	lhui	r6,r3,00000002
 	lhui	r5,r3,00000000
 	lhui	r4,r3,00000004
@@ -10918,9 +9707,9 @@ l0000B244:
 	addk	r4,r4,r4
 	addk	r3,r3,r3
 	imm	00000001
-	addik	r4,r4,FFFF9DB4
+	addik	r4,r4,00019DB4
 	imm	00000001
-	addik	r3,r3,FFFF9DB4
+	addik	r3,r3,00019DB4
 	lwi	r4,r4,00000008
 	lwi	r3,r3,00000008
 	xor	r3,r4,r3
@@ -10935,15 +9724,7 @@ l0000B290:
 	brid	0000B14C
 	addik	r22,r0,00000006
 
-;; fn0000B298: 0000B298
-;;   Called from:
-;;     0000B1A0 (in fn0000AFBC)
-;;     0000B1A8 (in fn0000AFBC)
-;;     0000B1B4 (in fn0000AFBC)
-;;     0000B1CC (in fn0000B1C0)
-;;     0000B1CC (in fn0000AFBC)
-;;     0000B1D0 (in fn0000B1D0)
-fn0000B298 proc
+l0000B298:
 	lwi	r3,r19,0000002C
 	addik	r4,r7,00000002
 	addk	r4,r5,r4
@@ -10965,19 +9746,10 @@ l0000B2C4:
 
 l0000B2C8:
 	addk	r6,r3,r0
-
-;; fn0000B2CC: 0000B2CC
-;;   Called from:
-;;     000300E4 (in fn0002FFD0)
-fn0000B2CC proc
 	addk	r8,r3,r3
 	addk	r4,r4,r8
 
-;; fn0000B2D4: 0000B2D4
-;;   Called from:
-;;     0000B2D0 (in fn0000B2CC)
-;;     0000B2D0 (in fn0000B298)
-fn0000B2D4 proc
+l0000B2D4:
 	addik	r4,r4,FFFFFFFE
 	lhui	r8,r4,00000000
 	cmpu	r18,r3,r8
@@ -11016,8 +9788,7 @@ l0000B31C:
 ;; fn0000B324: 0000B324
 ;;   Called from:
 ;;     0000566C (in fn00005538)
-;;     0000BA00 (in fn0000B548)
-;;     0000BE70 (in fn0000BA7C)
+;;     0000BA00 (in fn0000B514)
 fn0000B324 proc
 	beqi	r5,0000B504
 
@@ -11186,15 +9957,10 @@ l0000B50C:
 
 ;; fn0000B514: 0000B514
 ;;   Called from:
-;;     00003A10 (in fn00003990)
+;;     00003A10 (in fn00003964)
 fn0000B514 proc
 	addik	r1,r1,FFFFFFC0
 	lwi	r3,r1,0000005C
-
-;; fn0000B51C: 0000B51C
-;;   Called from:
-;;     00030120 (in fn0002FFD0)
-fn0000B51C proc
 	swi	r15,r1,00000000
 	swi	r19,r1,0000001C
 	swi	r21,r1,00000020
@@ -11207,11 +9973,7 @@ fn0000B51C proc
 	beqid	r3,0000B9E0
 	swi	r28,r1,0000003C
 
-;; fn0000B548: 0000B548
-;;   Called from:
-;;     0000B544 (in fn0000B51C)
-;;     0000B544 (in fn0000B514)
-fn0000B548 proc
+l0000B548:
 	lbui	r4,r3,00000000
 	lwi	r3,r1,00000060
 	addk	r21,r5,r0
@@ -11412,7 +10174,7 @@ l0000B788:
 	swi	r24,r19,00000030
 	swi	r27,r19,0000002C
 	imm	00000000
-	brlid	r15,00007F88
+	brlid	r15,00017F88
 	swi	r3,r19,0000004C
 	lwi	r5,r21,00000028
 	lwi	r4,r21,00000020
@@ -11498,14 +10260,14 @@ l0000B8C0:
 	lwi	r4,r19,0000002C
 	lwi	r8,r19,00000044
 	imm	00007FFF
-	addik	r3,r3,FFFFFFFF
+	addik	r3,r3,7FFFFFFF
 	addk	r3,r3,r3
 	addk	r4,r4,r4
 	addk	r7,r3,r0
 	addk	r5,r8,r0
 	swi	r4,r19,0000003C
 	imm	00000000
-	brlid	r15,00008C64
+	brlid	r15,00018C64
 	sh	r22,r3,r8
 	lwi	r4,r19,00000084
 	addik	r5,r0,00000002
@@ -11515,7 +10277,7 @@ l0000B8C0:
 	addk	r3,r3,r3
 	addk	r3,r3,r3
 	imm	00000001
-	addik	r3,r3,FFFF9DB4
+	addik	r3,r3,00019DB4
 	lhui	r7,r3,00000002
 	lhui	r6,r3,00000000
 	lhui	r4,r3,00000004
@@ -11567,36 +10329,26 @@ l0000B9A8:
 
 l0000B9B8:
 	imm	00000001
-	addik	r5,r0,00004C80
+	addik	r5,r0,00014C80
 	brid	0000B614
 	swi	r5,r21,00000024
 
 l0000B9C8:
 	imm	00000001
-	addik	r5,r0,00004C58
+	addik	r5,r0,00014C58
 	swi	r3,r21,00000028
 	swi	r5,r21,00000020
 	brid	0000B60C
 	addk	r3,r5,r0
 
-;; fn0000B9E0: 0000B9E0
-;;   Called from:
-;;     0000B544 (in fn0000B51C)
-;;     0000B544 (in fn0000B514)
-;;     0000B5EC (in fn0000B548)
-;;     0000B6F4 (in fn0000B548)
-;;     0000B8BC (in fn0000B548)
-;;     0000B958 (in fn0000B548)
-;;     0000BA08 (in fn0000B548)
-;;     0000BA10 (in fn0000B548)
-fn0000B9E0 proc
+l0000B9E0:
 	brid	0000B95C
 	addik	r22,r0,FFFFFFFA
 
 l0000B9E8:
 	addik	r5,r0,0000029A
 	imm	00000001
-	lwi	r3,r0,FFFFB5C0
+	lwi	r3,r0,0001B5C0
 	swi	r5,r19,00000004
 	addk	r5,r21,r0
 	swi	r3,r21,00000018
@@ -11614,317 +10366,72 @@ l0000BA10:
 0000BA40 90 83 00 41 90 84 00 41 90 84 00 41 90 84 00 41 ...A...A...A...A
 0000BA50 90 84 00 41 90 84 00 41 90 84 00 41 90 84 00 41 ...A...A...A...A
 0000BA60 90 84 00 41 90 84 00 41 90 84 00 41 90 84 00 41 ...A...A...A...A
-0000BA70 90 84 00 41 90 84 00 41 90 84 00 41             ...A...A...A    
-
-;; fn0000BA7C: 0000BA7C
-;;   Called from:
-;;     00030190 (in fn0002FFD0)
-fn0000BA7C proc
-	srl	r4,r4
-	srl	r4,r4
-	srl	r4,r4
-	srl	r4,r4
-	srl	r4,r4
-	srl	r4,r4
-	srl	r4,r4
-	srl	r4,r4
-	srl	r4,r4
-	srl	r4,r4
-	srl	r4,r4
-	srl	r4,r4
-	srl	r4,r4
-	srl	r4,r4
-	srl	r4,r4
-	srl	r4,r4
-	bneid	r4,0000BE50
-	xori	r8,r8,00000038
-
-l0000BAC4:
-	rsubk	r3,r8,r0
-	or	r8,r3,r8
-	addk	r4,r0,r8
-	srl	r4,r8
-	srl	r4,r4
-	srl	r4,r4
-	srl	r4,r4
-	srl	r4,r4
-	srl	r4,r4
-	srl	r4,r4
-	srl	r4,r4
-	srl	r4,r4
-	srl	r4,r4
-	srl	r4,r4
-	srl	r4,r4
-	srl	r4,r4
-	srl	r4,r4
-	srl	r4,r4
-	srl	r4,r4
-	srl	r4,r4
-	srl	r4,r4
-	srl	r4,r4
-	srl	r4,r4
-	srl	r4,r4
-	srl	r4,r4
-	srl	r4,r4
-	srl	r4,r4
-	srl	r4,r4
-	srl	r4,r4
-	srl	r4,r4
-	srl	r4,r4
-	srl	r4,r4
-	srl	r4,r4
-	srl	r4,r4
-	bnei	r4,0000BE50
-
-l0000BB50:
-	beqid	r5,0000BE80
-	addk	r21,r5,r0
-
-l0000BB58:
-	lwi	r3,r5,00000020
-	swi	r4,r5,00000018
-	beqid	r3,0000BE38
-	addk	r22,r6,r0
-
-l0000BB68:
-	lwi	r4,r21,00000024
-	beqi	r4,0000BE28
-
-l0000BB70:
-	xori	r4,r22,FFFFFFFF
-	beqid	r4,0000BE20
-	addik	r4,r0,00000009
-
-l0000BB7C:
-	cmpu	r18,r22,r4
-	blti	r18,0000BE80
-
-l0000BB84:
-	lwi	r5,r21,00000028
-	addik	r7,r0,000016C4
-	brald	r15,r3
-	addik	r6,r0,00000001
-	beqid	r3,0000BE88
-	addk	r19,r3,r0
-
-l0000BB9C:
-	swi	r3,r21,0000001C
-	imm	00000000
-	addik	r4,r0,FFFF8000
-	addik	r3,r0,0000002A
-	lwi	r5,r21,00000028
-	swi	r3,r19,00000004
-	addik	r3,r0,00000001
-	swi	r3,r19,00000018
-	addik	r3,r0,00000005
-	addk	r6,r4,r0
-	swi	r3,r19,00000058
-	lwi	r3,r21,00000020
-	addik	r9,r0,0000000F
-	addik	r8,r0,00007FFF
-	swi	r9,r19,00000030
-	swi	r8,r19,00000034
-	swi	r9,r19,00000050
-	swi	r8,r19,00000054
-	addik	r7,r0,00000002
-	swi	r4,r19,0000002C
-	swi	r4,r19,0000004C
-	swi	r21,r19,00000000
-	brald	r15,r3
-	swi	r0,r19,0000001C
-	lwi	r5,r21,00000028
-	lwi	r4,r21,00000020
-	lwi	r6,r19,0000002C
-	addik	r7,r0,00000002
-	brald	r15,r4
-	swi	r3,r19,00000038
-	lwi	r5,r21,00000028
-	lwi	r4,r21,00000020
-	lwi	r6,r19,0000004C
-	addik	r7,r0,00000002
-	brald	r15,r4
-	swi	r3,r19,00000040
-	addik	r4,r0,00004000
-	lwi	r5,r21,00000028
-	lwi	r8,r21,00000020
-	addk	r6,r4,r0
-	swi	r4,r19,0000169C
-	addik	r7,r0,00000004
-	swi	r3,r19,00000044
-	brald	r15,r8
-	swi	r0,r19,000016C0
-	lwi	r6,r19,0000169C
-	lwi	r5,r19,00000038
-	swi	r3,r19,00000008
-	addk	r4,r6,r6
-	addk	r7,r4,r4
-	beqid	r5,0000BE58
-	swi	r7,r19,0000000C
-
-l0000BC6C:
-	lwi	r5,r19,00000040
-	beqi	r5,0000BE58
-
-l0000BC74:
-	lwi	r5,r19,00000044
-	rsubk	r7,r5,r0
-	or	r5,r5,r7
-	bgeid	r5,0000BE58
-	rsubk	r5,r3,r0
-
-l0000BC88:
-	or	r5,r3,r5
-	xori	r5,r5,FFFFFFFF
-	addk	r8,r0,r5
-	srl	r8,r5
-	srl	r8,r8
-	srl	r8,r8
-	srl	r8,r8
-	srl	r8,r8
-	srl	r8,r8
-	srl	r8,r8
-	srl	r8,r8
-	srl	r8,r8
-	srl	r8,r8
-	srl	r8,r8
-	srl	r8,r8
-	srl	r8,r8
-	srl	r8,r8
-	srl	r8,r8
-	srl	r8,r8
-	srl	r8,r8
-	srl	r8,r8
-	srl	r8,r8
-	srl	r8,r8
-	srl	r8,r8
-	srl	r8,r8
-	srl	r8,r8
-	srl	r8,r8
-	srl	r8,r8
-	srl	r8,r8
-	srl	r8,r8
-	srl	r8,r8
-	srl	r8,r8
-	srl	r8,r8
-	srl	r8,r8
-	bneid	r8,0000BE58
-	addk	r4,r4,r6
-
-l0000BD18:
-	andi	r7,r6,FFFFFFFE
-	addk	r5,r21,r0
-	addk	r6,r3,r7
-	addk	r3,r3,r4
-	addik	r4,r0,00000008
-	swi	r22,r19,00000084
-	swi	r6,r19,000016A4
-	swi	r3,r19,00001698
-	swi	r8,r19,00000088
-	brlid	r15,00008008
-	sbi	r4,r19,00000024
-	beqid	r3,0000BD68
-	addk	r22,r3,r0
-
-l0000BD4C:
-	addk	r3,r22,r0
-
-l0000BD50:
-	lwi	r15,r1,00000000
-	lwi	r19,r1,0000001C
-	lwi	r21,r1,00000020
-	lwi	r22,r1,00000024
-	rtsd	r15,00000008
-	addik	r1,r1,00000028
-
-l0000BD68:
-	lwi	r19,r21,0000001C
-	addk	r6,r3,r0
-	lwi	r3,r19,0000004C
-	lwi	r8,r19,00000044
-	lwi	r4,r19,0000002C
-	imm	00007FFF
-	addik	r3,r3,FFFFFFFF
-	addk	r3,r3,r3
-	addk	r4,r4,r4
-	addk	r5,r8,r0
-	addk	r7,r3,r0
-	swi	r4,r19,0000003C
-	imm	00000000
-	brlid	r15,00008C64
-	sh	r22,r3,r8
-	lwi	r4,r19,00000084
-	addik	r5,r0,00000002
-	swi	r22,r19,0000006C
-	addk	r3,r4,r4
-	addk	r3,r3,r4
-	addk	r3,r3,r3
-	addk	r3,r3,r3
-	imm	00000001
-	addik	r3,r3,FFFF9DB4
-	lhui	r7,r3,00000002
-	lhui	r6,r3,00000000
-	lhui	r4,r3,00000004
-	lhui	r3,r3,00000006
-	swi	r7,r19,00000080
-	swi	r6,r19,0000008C
-	swi	r3,r19,0000007C
-	swi	r4,r19,00000090
-	swi	r22,r19,0000005C
-	swi	r22,r19,00000074
-	swi	r22,r19,000016B4
-	swi	r5,r19,00000078
-	swi	r5,r19,00000060
-	swi	r22,r19,00000068
-	swi	r22,r19,00000048
-	addk	r3,r22,r0
-	lwi	r15,r1,00000000
-	lwi	r19,r1,0000001C
-	lwi	r21,r1,00000020
-	lwi	r22,r1,00000024
-	rtsd	r15,00000008
-	addik	r1,r1,00000028
-
-l0000BE20:
-	brid	0000BB84
-	addik	r22,r0,00000006
-
-l0000BE28:
-	imm	00000001
-	addik	r4,r0,00004C80
-	brid	0000BB70
-	swi	r4,r21,00000024
-
-l0000BE38:
-	imm	00000001
-	addik	r4,r0,00004C58
-	swi	r3,r5,00000028
-	swi	r4,r5,00000020
-	brid	0000BB68
-	addk	r3,r4,r0
-
-l0000BE50:
-	brid	0000BD4C
-	addik	r22,r0,FFFFFFFA
-
-l0000BE58:
-	imm	00000001
-	lwi	r3,r0,FFFFB5C0
-	addik	r4,r0,0000029A
-	addk	r5,r21,r0
-	swi	r4,r19,00000004
-	swi	r3,r21,00000018
-	brlid	r15,0000B324
-	addik	r22,r0,FFFFFFFC
-	brid	0000BD50
-	addk	r3,r22,r0
-
-l0000BE80:
-	brid	0000BD4C
-	addik	r22,r0,FFFFFFFE
-
-l0000BE88:
-	brid	0000BD4C
-	addik	r22,r0,FFFFFFFC
+0000BA70 90 84 00 41 90 84 00 41 90 84 00 41 90 84 00 41 ...A...A...A...A
+0000BA80 90 84 00 41 90 84 00 41 90 84 00 41 90 84 00 41 ...A...A...A...A
+0000BA90 90 84 00 41 90 84 00 41 90 84 00 41 90 84 00 41 ...A...A...A...A
+0000BAA0 90 84 00 41 90 84 00 41 90 84 00 41 90 84 00 41 ...A...A...A...A
+0000BAB0 90 84 00 41 90 84 00 41 90 84 00 41 BE 24 03 94 ...A...A...A.$..
+0000BAC0 A9 08 00 38 14 68 00 00 81 03 40 00 10 80 40 00 ...8.h....@...@.
+0000BAD0 90 88 00 41 90 84 00 41 90 84 00 41 90 84 00 41 ...A...A...A...A
+0000BAE0 90 84 00 41 90 84 00 41 90 84 00 41 90 84 00 41 ...A...A...A...A
+0000BAF0 90 84 00 41 90 84 00 41 90 84 00 41 90 84 00 41 ...A...A...A...A
+0000BB00 90 84 00 41 90 84 00 41 90 84 00 41 90 84 00 41 ...A...A...A...A
+0000BB10 90 84 00 41 90 84 00 41 90 84 00 41 90 84 00 41 ...A...A...A...A
+0000BB20 90 84 00 41 90 84 00 41 90 84 00 41 90 84 00 41 ...A...A...A...A
+0000BB30 90 84 00 41 90 84 00 41 90 84 00 41 90 84 00 41 ...A...A...A...A
+0000BB40 90 84 00 41 90 84 00 41 90 84 00 41 BC 24 03 04 ...A...A...A.$..
+0000BB50 BE 05 03 30 12 A5 00 00 E8 65 00 20 F8 85 00 18 ...0.....e. ....
+0000BB60 BE 03 02 D8 12 C6 00 00 E8 95 00 24 BC 04 02 BC ...........$....
+0000BB70 A8 96 FF FF BE 04 02 AC 30 80 00 09 16 56 20 03 ........0....V .
+0000BB80 BC 52 03 00 E8 B5 00 28 30 E0 16 C4 99 FC 18 00 .R.....(0.......
+0000BB90 30 C0 00 01 BE 03 02 F4 12 63 00 00 F8 75 00 1C 0........c...u..
+0000BBA0 B0 00 00 00 30 80 80 00 30 60 00 2A E8 B5 00 28 ....0...0`.*...(
+0000BBB0 F8 73 00 04 30 60 00 01 F8 73 00 18 30 60 00 05 .s..0`...s..0`..
+0000BBC0 10 C4 00 00 F8 73 00 58 E8 75 00 20 31 20 00 0F .....s.X.u. 1 ..
+0000BBD0 31 00 7F FF F9 33 00 30 F9 13 00 34 F9 33 00 50 1....3.0...4.3.P
+0000BBE0 F9 13 00 54 30 E0 00 02 F8 93 00 2C F8 93 00 4C ...T0......,...L
+0000BBF0 FA B3 00 00 99 FC 18 00 F8 13 00 1C E8 B5 00 28 ...............(
+0000BC00 E8 95 00 20 E8 D3 00 2C 30 E0 00 02 99 FC 20 00 ... ...,0..... .
+0000BC10 F8 73 00 38 E8 B5 00 28 E8 95 00 20 E8 D3 00 4C .s.8...(... ...L
+0000BC20 30 E0 00 02 99 FC 20 00 F8 73 00 40 30 80 40 00 0..... ..s.@0.@.
+0000BC30 E8 B5 00 28 E9 15 00 20 10 C4 00 00 F8 93 16 9C ...(... ........
+0000BC40 30 E0 00 04 F8 73 00 44 99 FC 40 00 F8 13 16 C0 0....s.D..@.....
+0000BC50 E8 D3 16 9C E8 B3 00 38 F8 73 00 08 10 86 30 00 .......8.s....0.
+0000BC60 10 E4 20 00 BE 05 01 F4 F8 F3 00 0C E8 B3 00 40 .. ............@
+0000BC70 BC 05 01 E8 E8 B3 00 44 14 E5 00 00 80 A5 38 00 .......D......8.
+0000BC80 BE A5 01 D8 14 A3 00 00 80 A3 28 00 A8 A5 FF FF ..........(.....
+0000BC90 11 00 28 00 91 05 00 41 91 08 00 41 91 08 00 41 ..(....A...A...A
+0000BCA0 91 08 00 41 91 08 00 41 91 08 00 41 91 08 00 41 ...A...A...A...A
+0000BCB0 91 08 00 41 91 08 00 41 91 08 00 41 91 08 00 41 ...A...A...A...A
+0000BCC0 91 08 00 41 91 08 00 41 91 08 00 41 91 08 00 41 ...A...A...A...A
+0000BCD0 91 08 00 41 91 08 00 41 91 08 00 41 91 08 00 41 ...A...A...A...A
+0000BCE0 91 08 00 41 91 08 00 41 91 08 00 41 91 08 00 41 ...A...A...A...A
+0000BCF0 91 08 00 41 91 08 00 41 91 08 00 41 91 08 00 41 ...A...A...A...A
+0000BD00 91 08 00 41 91 08 00 41 91 08 00 41 91 08 00 41 ...A...A...A...A
+0000BD10 BE 28 01 48 10 84 30 00 A4 E6 FF FE 10 B5 00 00 .(.H..0.........
+0000BD20 10 C3 38 00 10 63 20 00 30 80 00 08 FA D3 00 84 ..8..c .0.......
+0000BD30 F8 D3 16 A4 F8 73 16 98 F9 13 00 88 B9 F4 C2 CC .....s..........
+0000BD40 F0 93 00 24 BE 03 00 24 12 C3 00 00 10 76 00 00 ...$...$.....v..
+0000BD50 E9 E1 00 00 EA 61 00 1C EA A1 00 20 EA C1 00 24 .....a..... ...$
+0000BD60 B6 0F 00 08 30 21 00 28 EA 75 00 1C 10 C3 00 00 ....0!.(.u......
+0000BD70 E8 73 00 4C E9 13 00 44 E8 93 00 2C B0 00 7F FF .s.L...D...,....
+0000BD80 30 63 FF FF 10 63 18 00 10 84 20 00 10 A8 00 00 0c...c.... .....
+0000BD90 10 E3 00 00 F8 93 00 3C B0 00 00 00 B9 F4 CE C8 .......<........
+0000BDA0 D6 C3 40 00 E8 93 00 84 30 A0 00 02 FA D3 00 6C ..@.....0......l
+0000BDB0 10 64 20 00 10 63 20 00 10 63 18 00 10 63 18 00 .d ..c ..c...c..
+0000BDC0 B0 00 00 01 30 63 9D B4 E4 E3 00 02 E4 C3 00 00 ....0c..........
+0000BDD0 E4 83 00 04 E4 63 00 06 F8 F3 00 80 F8 D3 00 8C .....c..........
+0000BDE0 F8 73 00 7C F8 93 00 90 FA D3 00 5C FA D3 00 74 .s.|.......\...t
+0000BDF0 FA D3 16 B4 F8 B3 00 78 F8 B3 00 60 FA D3 00 68 .......x...`...h
+0000BE00 FA D3 00 48 10 76 00 00 E9 E1 00 00 EA 61 00 1C ...H.v.......a..
+0000BE10 EA A1 00 20 EA C1 00 24 B6 0F 00 08 30 21 00 28 ... ...$....0!.(
+0000BE20 B8 10 FD 64 32 C0 00 06 B0 00 00 01 30 80 4C 80 ...d2.......0.L.
+0000BE30 B8 10 FD 40 F8 95 00 24 B0 00 00 01 30 80 4C 58 ...@...$....0.LX
+0000BE40 F8 65 00 28 F8 85 00 20 B8 10 FD 20 10 64 00 00 .e.(... ... .d..
+0000BE50 B8 10 FE FC 32 C0 FF FA B0 00 00 01 E8 60 B5 C0 ....2........`..
+0000BE60 30 80 02 9A 10 B5 00 00 F8 93 00 04 F8 75 00 18 0............u..
+0000BE70 B9 F4 F4 B4 32 C0 FF FC B8 10 FE D8 10 76 00 00 ....2........v..
+0000BE80 B8 10 FE CC 32 C0 FF FE B8 10 FE C4 32 C0 FF FC ....2.......2...
 0000BE90 BC 06 03 CC 30 21 FF D0 F9 E1 00 00 FA 61 00 1C ....0!.......a..
 0000BEA0 FA A1 00 20 FA C1 00 24 FA E1 00 28 FB 01 00 2C ... ...$...(...,
 0000BEB0 EA 66 00 20 BC 13 03 6C E8 66 00 24 BE 03 03 68 .f. ...l.f.$...h
@@ -12001,6 +10508,9 @@ l0000BE88:
 0000C320 30 60 FF FE                                     0`..            
 
 ;; fn0000C324: 0000C324
+;;   Called from:
+;;     000021B0 (in fn00001E88)
+;;     0000C8C4 (in fn0000C654)
 fn0000C324 proc
 	beqi	r5,0000C3E8
 
@@ -12052,7 +10562,7 @@ l0000C398:
 	addik	r5,r0,00003F34
 	swi	r5,r4,00000004
 	imm	00000000
-	addik	r5,r0,FFFF8000
+	addik	r5,r0,00008000
 	addik	r3,r4,00000534
 	swi	r3,r4,00000070
 	swi	r5,r4,00000018
@@ -12111,57 +10621,271 @@ l0000C3E8:
 0000C620 EA A1 00 20 EA C1 00 24 EA E1 00 28 10 60 00 00 ... ...$...(.`..
 0000C630 B6 0F 00 08 30 21 00 2C FA F6 00 0C B8 10 FF 38 ....0!.,.......8
 0000C640 FA B6 00 28 B8 10 FE 5C 16 A6 00 00 B6 0F 00 08 ...(...\........
-0000C650 30 60 FF FE BC 07 03 08 E0 67 00 00 A8 63 00 31 0`.......g...c.1
-0000C660 14 63 00 00 10 80 18 00 90 83 00 41 90 84 00 41 .c.........A...A
-0000C670 90 84 00 41 90 84 00 41 90 84 00 41 90 84 00 41 ...A...A...A...A
-0000C680 90 84 00 41 90 84 00 41 90 84 00 41 90 84 00 41 ...A...A...A...A
-0000C690 90 84 00 41 90 84 00 41 90 84 00 41 90 84 00 41 ...A...A...A...A
-0000C6A0 90 84 00 41 90 84 00 41 90 84 00 41 90 84 00 41 ...A...A...A...A
-0000C6B0 90 84 00 41 90 84 00 41 90 84 00 41 90 84 00 41 ...A...A...A...A
-0000C6C0 90 84 00 41 90 84 00 41 90 84 00 41 90 84 00 41 ...A...A...A...A
-0000C6D0 90 84 00 41 90 84 00 41 90 84 00 41 90 84 00 41 ...A...A...A...A
-0000C6E0 90 84 00 41 BC 24 02 78 A9 08 00 38 14 68 00 00 ...A.$.x...8.h..
-0000C6F0 81 03 40 00 10 80 40 00 90 88 00 41 90 84 00 41 ..@...@....A...A
-0000C700 90 84 00 41 90 84 00 41 90 84 00 41 90 84 00 41 ...A...A...A...A
-0000C710 90 84 00 41 90 84 00 41 90 84 00 41 90 84 00 41 ...A...A...A...A
-0000C720 90 84 00 41 90 84 00 41 90 84 00 41 90 84 00 41 ...A...A...A...A
-0000C730 90 84 00 41 90 84 00 41 90 84 00 41 90 84 00 41 ...A...A...A...A
-0000C740 90 84 00 41 90 84 00 41 90 84 00 41 90 84 00 41 ...A...A...A...A
-0000C750 90 84 00 41 90 84 00 41 90 84 00 41 90 84 00 41 ...A...A...A...A
-0000C760 90 84 00 41 90 84 00 41 90 84 00 41 90 84 00 41 ...A...A...A...A
-0000C770 90 84 00 41 BC 24 01 E8 30 21 FF D4 FA 61 00 20 ...A.$..0!...a. 
-0000C780 F9 E1 00 00 FA A1 00 24 FA C1 00 28 BE 05 01 E0 .......$...(....
-0000C790 12 65 00 00 E8 65 00 20 F8 85 00 18 BE 03 01 9C .e...e. ........
-0000C7A0 12 C6 00 00 E8 A5 00 28 E8 93 00 24 BC 04 01 7C .......(...$...|
-0000C7B0 30 E0 1B D0 99 FC 18 00 30 C0 00 01 BE 03 01 A8 0.......0.......
-0000C7C0 12 A3 00 00 F8 73 00 1C E8 73 00 20 30 80 3F 34 .....s...s. 0.?4
-0000C7D0 F8 95 00 04 FA 75 00 00 F8 15 00 38 BE 03 01 78 .....u.....8...x
-0000C7E0 E8 F3 00 24 BE 07 00 F4 30 60 FF FE BE 56 01 1C ...$....0`...V..
-0000C7F0 30 60 00 2F 10 80 B0 00 90 96 00 01 90 84 00 01 0`./............
-0000C800 90 84 00 01 90 84 00 01 16 56 18 01 BE 52 00 0C .........V...R..
-0000C810 30 84 00 05 A6 D6 00 0F 30 76 FF F8 30 A0 00 07 0.......0v..0...
-0000C820 16 43 28 03 BE B2 00 9C 10 B3 00 00 14 76 00 00 .C(..........v..
-0000C830 80 63 B0 00 10 A0 18 00 90 A3 00 41 90 A5 00 41 .c.........A...A
-0000C840 90 A5 00 41 90 A5 00 41 90 A5 00 41 90 A5 00 41 ...A...A...A...A
-0000C850 90 A5 00 41 90 A5 00 41 90 A5 00 41 90 A5 00 41 ...A...A...A...A
-0000C860 90 A5 00 41 90 A5 00 41 90 A5 00 41 90 A5 00 41 ...A...A...A...A
-0000C870 90 A5 00 41 90 A5 00 41 90 A5 00 41 90 A5 00 41 ...A...A...A...A
-0000C880 90 A5 00 41 90 A5 00 41 90 A5 00 41 90 A5 00 41 ...A...A...A...A
-0000C890 90 A5 00 41 90 A5 00 41 90 A5 00 41 90 A5 00 41 ...A...A...A...A
-0000C8A0 90 A5 00 41 90 A5 00 41 90 A5 00 41 90 A5 00 41 ...A...A...A...A
-0000C8B0 90 A5 00 41 BE 25 00 24 30 60 FF FE 10 B3 00 00 ...A.%.$0`......
-0000C8C0 F8 95 00 0C B9 F4 FA 60 FA D5 00 28 BE 03 00 28 .......`...(...(
-0000C8D0 E9 E1 00 00 E8 F3 00 24 E8 B3 00 28 10 D5 00 00 .......$...(....
-0000C8E0 99 FC 38 00 F8 61 00 1C E8 61 00 1C F8 13 00 1C ..8..a...a......
-0000C8F0 E9 E1 00 00 EA 61 00 20 EA A1 00 24 EA C1 00 28 .....a. ...$...(
-0000C900 B6 0F 00 08 30 21 00 2C 16 D6 00 00 30 76 FF F8 ....0!.,....0v..
-0000C910 30 A0 00 07 16 43 28 03 BE B2 FF A4 10 80 00 00 0....C(.........
-0000C920 B8 10 FF 10 14 76 00 00 B0 00 00 01 30 80 4C 80 .....v......0.L.
-0000C930 B8 10 FE 80 F8 93 00 24 B0 00 00 01 30 80 4C 58 .......$....0.LX
-0000C940 F8 65 00 28 10 A3 00 00 F8 93 00 20 B8 10 FE 5C .e.(....... ...\
-0000C950 10 64 00 00 B8 10 FF 84 30 60 FF FE B6 0F 00 08 .d......0`......
-0000C960 30 60 FF FA B8 10 FF 8C 30 60 FF FC B8 10 FF 84 0`......0`......
-0000C970 30 60 FF FE BC 06 02 0C E0 66 00 00 A8 63 00 31 0`.......f...c.1
+0000C650 30 60 FF FE                                     0`..            
+
+;; fn0000C654: 0000C654
+;;   Called from:
+;;     00002010 (in fn00001E88)
+fn0000C654 proc
+	beqi	r7,0000C95C
+
+l0000C658:
+	lbui	r3,r7,00000000
+	xori	r3,r3,00000031
+	rsubk	r3,r3,r0
+	addk	r4,r0,r3
+	srl	r4,r3
+	srl	r4,r4
+	srl	r4,r4
+	srl	r4,r4
+	srl	r4,r4
+	srl	r4,r4
+	srl	r4,r4
+	srl	r4,r4
+	srl	r4,r4
+	srl	r4,r4
+	srl	r4,r4
+	srl	r4,r4
+	srl	r4,r4
+	srl	r4,r4
+	srl	r4,r4
+	srl	r4,r4
+	srl	r4,r4
+	srl	r4,r4
+	srl	r4,r4
+	srl	r4,r4
+	srl	r4,r4
+	srl	r4,r4
+	srl	r4,r4
+	srl	r4,r4
+	srl	r4,r4
+	srl	r4,r4
+	srl	r4,r4
+	srl	r4,r4
+	srl	r4,r4
+	srl	r4,r4
+	srl	r4,r4
+	bnei	r4,0000C95C
+
+l0000C6E8:
+	xori	r8,r8,00000038
+	rsubk	r3,r8,r0
+	or	r8,r3,r8
+	addk	r4,r0,r8
+	srl	r4,r8
+	srl	r4,r4
+	srl	r4,r4
+	srl	r4,r4
+	srl	r4,r4
+	srl	r4,r4
+	srl	r4,r4
+	srl	r4,r4
+	srl	r4,r4
+	srl	r4,r4
+	srl	r4,r4
+	srl	r4,r4
+	srl	r4,r4
+	srl	r4,r4
+	srl	r4,r4
+	srl	r4,r4
+	srl	r4,r4
+	srl	r4,r4
+	srl	r4,r4
+	srl	r4,r4
+	srl	r4,r4
+	srl	r4,r4
+	srl	r4,r4
+	srl	r4,r4
+	srl	r4,r4
+	srl	r4,r4
+	srl	r4,r4
+	srl	r4,r4
+	srl	r4,r4
+	srl	r4,r4
+	srl	r4,r4
+	bnei	r4,0000C95C
+
+l0000C778:
+	addik	r1,r1,FFFFFFD4
+	swi	r19,r1,00000020
+	swi	r15,r1,00000000
+	swi	r21,r1,00000024
+	swi	r22,r1,00000028
+	beqid	r5,0000C96C
+	addk	r19,r5,r0
+
+l0000C794:
+	lwi	r3,r5,00000020
+	swi	r4,r5,00000018
+	beqid	r3,0000C938
+	addk	r22,r6,r0
+
+l0000C7A4:
+	lwi	r5,r5,00000028
+
+l0000C7A8:
+	lwi	r4,r19,00000024
+	beqi	r4,0000C928
+
+l0000C7B0:
+	addik	r7,r0,00001BD0
+	brald	r15,r3
+	addik	r6,r0,00000001
+	beqid	r3,0000C964
+	addk	r21,r3,r0
+
+l0000C7C4:
+	swi	r3,r19,0000001C
+	lwi	r3,r19,00000020
+	addik	r4,r0,00003F34
+	swi	r4,r21,00000004
+	swi	r19,r21,00000000
+	swi	r0,r21,00000038
+	beqid	r3,0000C954
+	lwi	r7,r19,00000024
+
+l0000C7E4:
+	beqid	r7,0000C8D8
+	addik	r3,r0,FFFFFFFE
+
+l0000C7EC:
+	bltid	r22,0000C908
+	addik	r3,r0,0000002F
+
+l0000C7F4:
+	addk	r4,r0,r22
+	sra	r4,r22
+	sra	r4,r4
+	sra	r4,r4
+	sra	r4,r4
+	cmp	r18,r22,r3
+	bltid	r18,0000C818
+	addik	r4,r4,00000005
+
+l0000C814:
+	andi	r22,r22,0000000F
+
+l0000C818:
+	addik	r3,r22,FFFFFFF8
+	addik	r5,r0,00000007
+	cmpu	r18,r3,r5
+	bgeid	r18,0000C8C0
+	addk	r5,r19,r0
+
+l0000C82C:
+	rsubk	r3,r22,r0
+
+l0000C830:
+	or	r3,r3,r22
+	addk	r5,r0,r3
+	srl	r5,r3
+	srl	r5,r5
+	srl	r5,r5
+	srl	r5,r5
+	srl	r5,r5
+	srl	r5,r5
+	srl	r5,r5
+	srl	r5,r5
+	srl	r5,r5
+	srl	r5,r5
+	srl	r5,r5
+	srl	r5,r5
+	srl	r5,r5
+	srl	r5,r5
+	srl	r5,r5
+	srl	r5,r5
+	srl	r5,r5
+	srl	r5,r5
+	srl	r5,r5
+	srl	r5,r5
+	srl	r5,r5
+	srl	r5,r5
+	srl	r5,r5
+	srl	r5,r5
+	srl	r5,r5
+	srl	r5,r5
+	srl	r5,r5
+	srl	r5,r5
+	srl	r5,r5
+	srl	r5,r5
+	srl	r5,r5
+	bneid	r5,0000C8D8
+	addik	r3,r0,FFFFFFFE
+
+l0000C8BC:
+	addk	r5,r19,r0
+
+l0000C8C0:
+	swi	r4,r21,0000000C
+	brlid	r15,0000C324
+	swi	r22,r21,00000028
+	beqid	r3,0000C8F4
+	lwi	r15,r1,00000000
+
+l0000C8D4:
+	lwi	r7,r19,00000024
+
+l0000C8D8:
+	lwi	r5,r19,00000028
+	addk	r6,r21,r0
+	brald	r15,r7
+	swi	r3,r1,0000001C
+	lwi	r3,r1,0000001C
+	swi	r0,r19,0000001C
+
+l0000C8F0:
+	lwi	r15,r1,00000000
+
+l0000C8F4:
+	lwi	r19,r1,00000020
+	lwi	r21,r1,00000024
+	lwi	r22,r1,00000028
+	rtsd	r15,00000008
+	addik	r1,r1,0000002C
+
+l0000C908:
+	rsubk	r22,r22,r0
+	addik	r3,r22,FFFFFFF8
+	addik	r5,r0,00000007
+	cmpu	r18,r3,r5
+	bgeid	r18,0000C8BC
+	addk	r4,r0,r0
+
+l0000C920:
+	brid	0000C830
+	rsubk	r3,r22,r0
+
+l0000C928:
+	imm	00000001
+	addik	r4,r0,00014C80
+	brid	0000C7B0
+	swi	r4,r19,00000024
+
+l0000C938:
+	imm	00000001
+	addik	r4,r0,00014C58
+	swi	r3,r5,00000028
+	addk	r5,r3,r0
+	swi	r4,r19,00000020
+	brid	0000C7A8
+	addk	r3,r4,r0
+
+l0000C954:
+	brid	0000C8D8
+	addik	r3,r0,FFFFFFFE
+
+l0000C95C:
+	rtsd	r15,00000008
+	addik	r3,r0,FFFFFFFA
+
+l0000C964:
+	brid	0000C8F0
+	addik	r3,r0,FFFFFFFC
+
+l0000C96C:
+	brid	0000C8F0
+	addik	r3,r0,FFFFFFFE
+0000C974             BC 06 02 0C E0 66 00 00 A8 63 00 31     .....f...c.1
 0000C980 14 63 00 00 10 80 18 00 90 83 00 41 90 84 00 41 .c.........A...A
 0000C990 90 84 00 41 90 84 00 41 90 84 00 41 90 84 00 41 ...A...A...A...A
 0000C9A0 90 84 00 41 90 84 00 41 90 84 00 41 90 84 00 41 ...A...A...A...A
@@ -12210,21 +10934,47 @@ l0000C3E8:
 0000CC50 10 63 18 00 10 68 18 00 F8 64 00 3C F9 24 00 40 .c...h...d.<.$.@
 0000CC60 B6 0F 00 08 10 65 00 00 F8 A4 00 3C F8 A4 00 40 .....e.....<...@
 0000CC70 B6 0F 00 08 10 65 00 00 B6 0F 00 08 30 60 FF FE .....e......0`..
-0000CC80 30 21 FF 90 F9 E1 00 00 FA 61 00 3C FA 81 00 40 0!.......a.<...@
-0000CC90 FA A1 00 44 FA C1 00 48 FA E1 00 4C FB 01 00 50 ...D...H...L...P
-0000CCA0 FB 21 00 54 FB 41 00 58 FB 61 00 5C FB 81 00 60 .!.T.A.X.a.\...`
-0000CCB0 FB A1 00 64 FB C1 00 68 BE 05 01 04 FB E1 00 6C ...d...h.......l
-0000CCC0 E8 65 00 20 BC 03 00 F8 E8 65 00 24 BC 03 00 F0 .e. .....e.$....
-0000CCD0 EA C5 00 1C BC 16 00 E8 E8 76 00 00 88 65 18 00 .........v...e..
-0000CCE0 BE 03 00 48 33 E0 FF FE                         ...H3...        
 
-;; fn0000CCE8: 0000CCE8
+;; fn0000CC80: 0000CC80
 ;;   Called from:
-;;     0000CDBC (in fn0000EE14)
-;;     0000D3B4 (in fn0000D1CC)
-;;     0000D3BC (in fn0000D1CC)
-;;     0000D3C0 (in fn0000D1CC)
-fn0000CCE8 proc
+;;     00001C10 (in fn00001BBC)
+fn0000CC80 proc
+	addik	r1,r1,FFFFFF90
+	swi	r15,r1,00000000
+	swi	r19,r1,0000003C
+	swi	r20,r1,00000040
+	swi	r21,r1,00000044
+	swi	r22,r1,00000048
+	swi	r23,r1,0000004C
+	swi	r24,r1,00000050
+	swi	r25,r1,00000054
+	swi	r26,r1,00000058
+	swi	r27,r1,0000005C
+	swi	r28,r1,00000060
+	swi	r29,r1,00000064
+	swi	r30,r1,00000068
+	beqid	r5,0000CDBC
+	swi	r31,r1,0000006C
+
+l0000CCC0:
+	lwi	r3,r5,00000020
+	beqi	r3,0000CDBC
+
+l0000CCC8:
+	lwi	r3,r5,00000024
+	beqi	r3,0000CDBC
+
+l0000CCD0:
+	lwi	r22,r5,0000001C
+	beqi	r22,0000CDBC
+
+l0000CCD8:
+	lwi	r3,r22,00000000
+	xor	r3,r5,r3
+	beqid	r3,0000CD28
+	addik	r31,r0,FFFFFFFE
+
+l0000CCE8:
 	addk	r3,r31,r0
 
 l0000CCEC:
@@ -12243,16 +10993,45 @@ l0000CCEC:
 	lwi	r31,r1,0000006C
 	rtsd	r15,00000008
 	addik	r1,r1,00000070
-0000CD28                         E8 76 00 04 30 E0 00 1F         .v..0...
-0000CD30 30 83 C0 CC 16 44 38 03 BC 52 FF B0 EB 85 00 0C 0....D8..R......
-0000CD40 BC 1C FF A8 EB 05 00 00 BE 18 00 7C EB C5 00 04 ...........|....
-0000CD50 A8 63 3F 3F BE 23 00 10 30 60 3F 40 F8 76 00 04 .c??.#..0`?@.v..
-0000CD60 30 80 00 0C EB 45 00 10 EB 36 00 3C EA 76 00 40 0....E...6.<.v.@
-0000CD70 13 BA 00 00 12 BE 00 00 13 66 00 00 12 E5 00 00 .........f......
-0000CD80 30 A6 FF FB A8 C6 00 06 F8 A1 00 20 32 80 00 0F 0.......... 2...
-0000CD90 F8 C1 00 24                                     ...$            
 
-l0000CD94:
+l0000CD28:
+	lwi	r3,r22,00000004
+	addik	r7,r0,0000001F
+	addik	r4,r3,FFFFC0CC
+	cmpu	r18,r4,r7
+	blti	r18,0000CCE8
+
+l0000CD3C:
+	lwi	r28,r5,0000000C
+	beqi	r28,0000CCE8
+
+l0000CD44:
+	lwi	r24,r5,00000000
+	beqid	r24,0000CDC4
+	lwi	r30,r5,00000004
+
+l0000CD50:
+	xori	r3,r3,00003F3F
+	bneid	r3,0000CD64
+	addik	r3,r0,00003F40
+
+l0000CD5C:
+	swi	r3,r22,00000004
+	addik	r4,r0,0000000C
+
+l0000CD64:
+	lwi	r26,r5,00000010
+	lwi	r25,r22,0000003C
+	lwi	r19,r22,00000040
+	addk	r29,r26,r0
+	addk	r21,r30,r0
+	addk	r27,r6,r0
+	addk	r23,r5,r0
+	addik	r5,r6,FFFFFFFB
+	xori	r6,r6,00000006
+	swi	r5,r1,00000020
+	addik	r20,r0,0000000F
+	swi	r6,r1,00000024
 	addik	r3,r0,0000001E
 	cmpu	r18,r4,r3
 	blti	r18,0000CDBC
@@ -12262,779 +11041,137 @@ l0000CDA0:
 	addk	r3,r4,r4
 	addk	r3,r3,r3
 	imm	00000001
-	addik	r3,r3,FFFFA05C
+	addik	r3,r3,0001A05C
 	lwi	r3,r3,00000000
 	bra	r3
 
 l0000CDBC:
 	brid	0000CCE8
 	addik	r31,r0,FFFFFFFE
-0000CDC4             BC 1E FF 8C B8 10 FF 24 10 7F 00 00     .......$....
 
-l0000CDD0:
-	andi	r18,r7,0000001F
-	addk	r8,r0,r25
-	beqid	r18,0000CDEC
-	addk	r8,r8,r0
+l0000CDC4:
+	beqi	r30,0000CD50
 
-l0000CDE0:
-	addik	r18,r18,FFFFFFFF
-	bneid	r18,0000CDE0
-	srl	r8,r8
-
-l0000CDEC:
-	addk	r25,r8,r0
-	rsubk	r19,r7,r19
-	swi	r7,r22,00001BC8
-	swi	r4,r22,00000044
-	addk	r3,r28,r0
-
-l0000CE00:
-	addik	r9,r0,00003F4D
-	swi	r9,r22,00000004
-	beqid	r26,0000F218
-	addik	r9,r0,00003F48
-
-l0000CE10:
-	lbui	r8,r22,00000047
-	addik	r28,r28,00000001
-	sbi	r8,r3,00000000
-	addik	r26,r26,FFFFFFFF
-	swi	r9,r22,00000004
-
-l0000CE24:
-	addik	r3,r0,00000005
-	cmpu	r18,r21,r3
-	bltid	r18,0000DF78
-	addik	r3,r0,00000101
-
-l0000CE34:
-	lwi	r3,r22,00000058
-	addik	r7,r0,FFFFFFFF
-	lwi	r5,r22,00000050
-	andi	r18,r3,0000001F
-	addk	r6,r0,r7
-	beqid	r18,0000CE5C
-	addk	r6,r6,r0
-
-l0000CE50:
-	addik	r18,r18,FFFFFFFF
-	bneid	r18,0000CE50
-	addk	r6,r6,r6
-
-l0000CE5C:
-	xori	r6,r6,FFFFFFFF
-	and	r3,r6,r25
-
-;; fn0000CE64: 0000CE64
-;;   Called from:
-;;     000300C0 (in fn0002FFD0)
-fn0000CE64 proc
-	addk	r3,r3,r3
-	addk	r3,r3,r3
-	addk	r4,r5,r3
-	lbui	r7,r4,00000001
-	swi	r0,r22,00001BC8
-	lbu	r3,r3,r5
-	cmpu	r18,r7,r19
-	bgeid	r18,0000CEE4
-	lhui	r4,r4,00000002
-
-;; fn0000CE88: 0000CE88
-;;   Called from:
-;;     0000CE84 (in fn0000CE64)
-;;     0000CE84 (in fn0000EE14)
-fn0000CE88 proc
-	beqid	r21,0000D0B8
-	addk	r31,r21,r0
-
-l0000CE90:
-	addik	r24,r24,00000001
-	lbui	r4,r24,FFFFFFFF
-	addik	r21,r21,FFFFFFFF
-	andi	r18,r19,0000001F
-	addk	r3,r0,r4
-	beqid	r18,0000CEB8
-	addk	r3,r3,r0
-
-l0000CEAC:
-	addik	r18,r18,FFFFFFFF
-	bneid	r18,0000CEAC
-	addk	r3,r3,r3
-
-l0000CEB8:
-	addk	r25,r25,r3
-	and	r3,r6,r25
-	addk	r3,r3,r3
-	addk	r3,r3,r3
-	addk	r4,r5,r3
-	lbui	r7,r4,00000001
-	addik	r19,r19,00000008
-	lbu	r3,r3,r5
-	cmpu	r18,r7,r19
-	bltid	r18,0000CE88
-	lhui	r4,r4,00000002
-
-;; fn0000CEE4: 0000CEE4
-;;   Called from:
-;;     0000CE84 (in fn0000CE64)
-;;     0000CE84 (in fn0000EE14)
-;;     0000CE88 (in fn0000CE88)
-;;     0000CEE0 (in fn0000CE88)
-;;     0000D00C (in fn0000D008)
-;;     0000D00C (in fn0000D008)
-fn0000CEE4 proc
-	beqid	r3,0000CDD0
-	andi	r6,r3,000000F0
-
-l0000CEEC:
-	beqid	r6,0000F588
-
-;; fn0000CEF0: 0000CEF0
-;;   Called from:
-;;     00030174 (in fn0002FFD0)
-fn0000CEF0 proc
-	addik	r8,r0,FFFFFFFF
-
-;; fn0000CEF4: 0000CEF4
-;;   Called from:
-;;     0000CEF0 (in fn0000CEF0)
-;;     0000CEF0 (in fn0000CEE4)
-;;     0000F6BC (in fn0000CEE4)
-fn0000CEF4 proc
-	andi	r18,r7,0000001F
-	addk	r6,r0,r25
-	beqid	r18,0000CF10
-	addk	r6,r6,r0
-
-l0000CF04:
-	addik	r18,r18,FFFFFFFF
-	bneid	r18,0000CF04
-	srl	r6,r6
-
-l0000CF10:
-	addk	r25,r6,r0
-	rsubk	r19,r7,r19
-	swi	r7,r22,00001BC8
-	swi	r4,r22,00000044
-
-l0000CF20:
-	andi	r4,r3,00000020
-	bneid	r4,0000F220
-	addik	r4,r0,00003F3F
-
-l0000CF2C:
-	andi	r4,r3,00000040
-	bneid	r4,0000F50C
-	addik	r6,r0,00003F51
-
-l0000CF38:
-	addik	r7,r0,00003F49
-	andi	r3,r3,0000000F
-	swi	r7,r22,00000004
-	swi	r3,r22,0000004C
-	bnei	r3,0000D400
-
-l0000CF4C:
-	lwi	r4,r22,00000044
-
-l0000CF50:
-	addik	r3,r0,00003F4A
-	swi	r3,r22,00000004
-	swi	r4,r22,00001BCC
-	lwi	r3,r22,0000005C
-	addik	r4,r0,FFFFFFFF
-	lwi	r6,r22,00000054
-	andi	r18,r3,0000001F
-	addk	r7,r0,r4
-	beqid	r18,0000CF84
-	addk	r7,r7,r0
-
-l0000CF78:
-	addik	r18,r18,FFFFFFFF
-	bneid	r18,0000CF78
-	addk	r7,r7,r7
-
-l0000CF84:
-	xori	r7,r7,FFFFFFFF
-	and	r3,r25,r7
-	addk	r3,r3,r3
-	addk	r3,r3,r3
-	addk	r5,r6,r3
-	lbui	r4,r5,00000001
-	lhui	r10,r5,00000002
-	lbu	r3,r3,r6
-	cmpu	r18,r4,r19
-	bgeid	r18,0000D010
-	addk	r5,r4,r0
-
-l0000CFB0:
-	beqid	r21,0000D0B8
-	addk	r31,r21,r0
-
-l0000CFB8:
-	addik	r24,r24,00000001
-	lbui	r4,r24,FFFFFFFF
-	addik	r21,r21,FFFFFFFF
-	andi	r18,r19,0000001F
-	addk	r3,r0,r4
-	beqid	r18,0000CFE0
-	addk	r3,r3,r0
-
-l0000CFD4:
-	addik	r18,r18,FFFFFFFF
-	bneid	r18,0000CFD4
-	addk	r3,r3,r3
-
-l0000CFE0:
-	addk	r25,r25,r3
-	and	r3,r25,r7
-	addk	r3,r3,r3
-	addk	r3,r3,r3
-	addk	r5,r6,r3
-	lbui	r4,r5,00000001
-	addik	r19,r19,00000008
-	lhui	r10,r5,00000002
-	lbu	r3,r3,r6
-	cmpu	r18,r4,r19
-
-;; fn0000D008: 0000D008
-;;   Called from:
-;;     0000D004 (in fn0000CEF4)
-;;     00030020 (in fn0002FFD0)
-fn0000D008 proc
-	bltid	r18,0000CFB0
-	addk	r5,r4,r0
-
-l0000D010:
-	andi	r7,r3,000000F0
-	beqid	r7,0000F0B8
-	addk	r8,r4,r0
-
-l0000D01C:
-	lwi	r6,r22,00001BC8
-
-l0000D020:
-	addk	r4,r8,r6
-	swi	r4,r22,00001BC8
-	andi	r4,r3,00000040
-	andi	r18,r8,0000001F
-	addk	r9,r0,r25
-	beqid	r18,0000D048
-	addk	r9,r9,r0
-
-l0000D03C:
-	addik	r18,r18,FFFFFFFF
-	bneid	r18,0000D03C
-	srl	r9,r9
-
-l0000D048:
-	rsubk	r19,r5,r19
-	bneid	r4,0000ED90
-	addk	r25,r9,r0
-
-l0000D054:
-	addik	r5,r0,00003F4B
-	andi	r3,r3,0000000F
-	swi	r5,r22,00000004
-	swi	r10,r22,00000048
-	swi	r3,r22,0000004C
-	bnei	r3,0000D4A8
-
-l0000D06C:
-	addik	r9,r0,00003F4C
-	swi	r9,r22,00000004
-	beqid	r26,0000F218
-	rsubk	r4,r26,r29
-
-l0000D07C:
-	lwi	r5,r22,00000048
-	cmpu	r18,r5,r4
-	bgeid	r18,0000ED80
-	rsubk	r4,r4,r5
-
-l0000D08C:
-	lwi	r3,r22,00000030
-	cmpu	r18,r4,r3
-	bgei	r18,0000EC34
-
-l0000D098:
-	lwi	r3,r22,00001BC4
-	beqid	r3,0000EC34
-	addik	r31,r0,FFFFFFFD
-
-l0000D0A4:
-	imm	00000001
-	addik	r3,r0,FFFFA00C
-	addik	r4,r0,00003F51
-	swi	r3,r23,00000018
-	swi	r4,r22,00000004
-
-;; fn0000D0B8: 0000D0B8
-;;   Called from:
-;;     0000CE8C (in fn0000CE88)
-;;     0000CFB4 (in fn0000CEF4)
-;;     0000D0B4 (in fn0000CEF4)
-;;     0000D3CC (in fn0000CEF4)
-;;     0000D474 (in fn0000CEF4)
-;;     0000DE44 (in fn0000DE38)
-;;     0000E35C (in fn0000D9E8)
-;;     0000E390 (in fn0000D9E8)
-;;     0000E534 (in fn0000D9E8)
-;;     0000E798 (in fn0000D9E8)
-;;     0000E7CC (in fn0000D9E8)
-;;     0000EDA4 (in fn0000CEF4)
-;;     0000F130 (in fn0000CEF4)
-;;     0000F218 (in fn0000F218)
-;;     0000F4DC (in fn0000F4D8)
-;;     0000F4FC (in fn0000D9E8)
-;;     0000F51C (in fn0000CEF4)
-;;     0000F5F8 (in fn0000CEE4)
-;;     0000F704 (in fn0000D9E8)
-;;     0000F740 (in fn0000D9E8)
-;;     0000F770 (in fn0000D9E8)
-;;     0000F77C (in fn0000D9E8)
-;;     0000F7AC (in fn0000D9E8)
-;;     0000F7E8 (in fn0000EE14)
-;;     0000F844 (in fn0000D9E8)
-;;     0000F864 (in fn0000D9E8)
-;;     0000F960 (in fn0000EE14)
-;;     0000F97C (in fn0000EE14)
-;;     0000F9D8 (in fn0000EE14)
-;;     0000FA6C (in fn0000D9E8)
-;;     0000FA8C (in fn0000D9E8)
-;;     0000FAC4 (in fn0000EE14)
-fn0000D0B8 proc
-	lwi	r3,r22,0000002C
-
-;; fn0000D0BC: 0000D0BC
-;;   Called from:
-;;     0000D0B8 (in fn0000D0B8)
-;;     0000FAA8 (in fn0000EE14)
-fn0000D0BC proc
-	swi	r28,r23,0000000C
-	swi	r26,r23,00000010
-	swi	r24,r23,00000000
-	swi	r21,r23,00000004
-	swi	r25,r22,0000003C
-	bneid	r3,0000D18C
-	swi	r19,r22,00000040
-
-;; fn0000D0D8: 0000D0D8
-;;   Called from:
-;;     0000D0D4 (in fn0000D0BC)
-;;     0000D0D4 (in fn0000D0BC)
-fn0000D0D8 proc
-	xor	r3,r29,r26
-	beqid	r3,0000D24C
-	addik	r4,r0,00003F50
-
-l0000D0E4:
-	lwi	r3,r22,00000004
-	cmpu	r18,r3,r4
-	bltid	r18,0000D24C
-	xori	r5,r27,00000004
-
-l0000D0F4:
-	rsubk	r4,r5,r0
-	or	r4,r4,r5
-	addk	r5,r0,r4
-	srl	r5,r4
-	srl	r5,r5
-	srl	r5,r5
-	srl	r5,r5
-	srl	r5,r5
-	srl	r5,r5
-	srl	r5,r5
-	srl	r5,r5
-
-;; fn0000D120: 0000D120
-;;   Called from:
-;;     000301A8 (in fn0002FFD0)
-fn0000D120 proc
-	srl	r5,r5
-	srl	r5,r5
-	srl	r5,r5
-	srl	r5,r5
-	srl	r5,r5
-	srl	r5,r5
-	srl	r5,r5
-	srl	r5,r5
-	srl	r5,r5
-	srl	r5,r5
-	srl	r5,r5
-	srl	r5,r5
-	srl	r5,r5
-	srl	r5,r5
-	srl	r5,r5
-	srl	r5,r5
-	srl	r5,r5
-	srl	r5,r5
-	srl	r5,r5
-	srl	r5,r5
-	srl	r5,r5
-	srl	r5,r5
-	srl	r5,r5
-	bneid	r5,0000D18C
-	addik	r4,r0,00003F4D
-
-;; fn0000D184: 0000D184
-;;   Called from:
-;;     0000D180 (in fn0000D120)
-;;     0000D180 (in fn0000D0D8)
-fn0000D184 proc
-	cmpu	r18,r3,r4
-	blti	r18,0000D24C
-
-;; fn0000D18C: 0000D18C
-;;   Called from:
-;;     0000D0D4 (in fn0000D0BC)
-;;     0000D0D4 (in fn0000D0BC)
-;;     0000D180 (in fn0000D0D8)
-;;     0000D180 (in fn0000D120)
-;;     0000D188 (in fn0000D184)
-fn0000D18C proc
-	lwi	r19,r23,0000001C
-	lwi	r5,r19,00000038
-	beqid	r5,0000DE4C
-	rsubk	r26,r26,r29
-
-l0000D19C:
-	lwi	r7,r19,0000002C
-	bneid	r7,0000D1D4
-	addik	r4,r0,00000001
-
-l0000D1A8:
-	lwi	r3,r19,00000028
-	swi	r0,r19,00000034
-
-;; fn0000D1B0: 0000D1B0
-;;   Called from:
-;;     0003019C (in fn0002FFD0)
-fn0000D1B0 proc
-	andi	r18,r3,0000001F
-	addk	r7,r0,r4
-	beqid	r18,0000D1CC
-	addk	r7,r7,r0
-
-;; fn0000D1C0: 0000D1C0
-;;   Called from:
-;;     0000D1BC (in fn0000D1B0)
-;;     0000D1BC (in fn0000D18C)
-fn0000D1C0 proc
-	addik	r18,r18,FFFFFFFF
-	bneid	r18,0000D1C0
-	addk	r7,r7,r7
-
-;; fn0000D1CC: 0000D1CC
-;;   Called from:
-;;     0000D0E0 (in fn0000D0D8)
-;;     0000D0F0 (in fn0000D0D8)
-;;     0000D188 (in fn0000D184)
-;;     0000D1A4 (in fn0000D18C)
-;;     0000D1BC (in fn0000D1B0)
-;;     0000D1BC (in fn0000D18C)
-;;     0000D1C8 (in fn0000D1C0)
-;;     0000DE94 (in fn0000D18C)
-fn0000D1CC proc
-	swi	r0,r19,00000030
-	swi	r7,r19,0000002C
-
-l0000D1D4:
-	cmpu	r18,r7,r26
-	bgei	r18,0000DCDC
-
-l0000D1DC:
-	lwi	r3,r19,00000034
-	rsubk	r7,r3,r7
-	cmpu	r18,r26,r7
-	bgeid	r18,0000D1F4
-	addk	r24,r26,r0
-
-l0000D1F0:
-	addk	r24,r7,r0
-
-l0000D1F4:
-	addk	r7,r24,r0
-	rsubk	r6,r26,r28
-	addk	r5,r5,r3
-	imm	00000000
-	brlid	r15,00008C34
-	rsubk	r26,r24,r26
-	bneid	r26,0000DF50
-	addk	r7,r26,r0
-
-l0000D214:
-	lwi	r3,r19,00000034
-	lwi	r4,r19,0000002C
-	addk	r3,r24,r3
-	swi	r3,r19,00000034
-	xor	r3,r3,r4
-	bnei	r3,0000D230
-
-l0000D22C:
-	swi	r3,r19,00000034
-
-l0000D230:
-	lwi	r3,r19,00000030
-	lwi	r21,r23,00000004
-	cmpu	r18,r4,r3
-	bgeid	r18,0000D24C
-	lwi	r26,r23,00000010
-
-l0000D244:
-	addk	r24,r24,r3
-	swi	r24,r19,00000030
-
-l0000D24C:
-	lwi	r5,r23,00000008
-	lwi	r3,r23,00000014
-	lwi	r4,r22,00000020
-	lwi	r6,r22,0000000C
-	rsubk	r26,r26,r29
-	rsubk	r21,r21,r30
-	addk	r3,r3,r26
-	addk	r5,r5,r21
-	swi	r3,r23,00000014
-	swi	r5,r23,00000008
-	addk	r4,r4,r26
-	addk	r3,r0,r6
-	srl	r3,r6
-	srl	r3,r3
-	andi	r3,r3,00000001
-	beqid	r3,0000D2C8
-	swi	r4,r22,00000020
-
-l0000D290:
-	rsubk	r3,r26,r0
-	or	r3,r3,r26
-	bgei	r3,0000D2C8
-
-l0000D29C:
-	lwi	r6,r23,0000000C
-	lwi	r3,r22,00000014
-	lwi	r5,r22,0000001C
-	rsubk	r6,r26,r6
-	beqid	r3,0000DFE4
-	addk	r7,r26,r0
-
-l0000D2B4:
-	imm	00000000
-	brlid	r15,00007044
-	nop
-	swi	r3,r22,0000001C
-
-l0000D2C4:
-	swi	r3,r23,00000030
-
-l0000D2C8:
-	lwi	r3,r22,00000008
-	beqid	r3,0000D2D8
-	lwi	r6,r22,00000040
-
-l0000D2D4:
-	addik	r6,r6,00000040
-
-l0000D2D8:
-	lwi	r4,r22,00000004
-	xori	r3,r4,00003F3F
-	beqi	r3,0000DCD4
-
-l0000D2E4:
-	xori	r3,r4,00003F47
-	rsubk	r5,r3,r0
-	or	r5,r5,r3
-	xori	r5,r5,FFFFFFFF
-	addk	r3,r0,r5
-	srl	r3,r5
-	srl	r3,r3
-	srl	r3,r3
-	srl	r3,r3
-	srl	r3,r3
-	srl	r3,r3
-	srl	r3,r3
-	srl	r3,r3
-	srl	r3,r3
-	srl	r3,r3
-	srl	r3,r3
-	srl	r3,r3
-	srl	r3,r3
-	srl	r3,r3
-	srl	r3,r3
-	srl	r3,r3
-	srl	r3,r3
-	srl	r3,r3
-	srl	r3,r3
-	srl	r3,r3
-	srl	r3,r3
-	srl	r3,r3
-	srl	r3,r3
-	srl	r3,r3
-	srl	r3,r3
-	srl	r3,r3
-	srl	r3,r3
-	srl	r3,r3
-	srl	r3,r3
-	srl	r3,r3
-	srl	r3,r3
-	bneid	r3,0000D388
-	xori	r4,r4,00003F42
-
-l0000D37C:
-	rsubk	r5,r4,r0
-	or	r4,r5,r4
-	blti	r4,0000D38C
-
-l0000D388:
-	addik	r3,r0,00000100
-
-l0000D38C:
-	or	r21,r21,r26
-	addk	r3,r3,r6
-	rsubk	r4,r21,r0
-	or	r21,r4,r21
-	bgeid	r21,0000D3B8
-	swi	r3,r23,0000002C
-
-l0000D3A4:
-	xori	r27,r27,00000004
-	rsubk	r3,r27,r0
-	or	r27,r3,r27
-	bltid	r27,0000CCEC
+l0000CDC8:
+	brid	0000CCEC
 	addk	r3,r31,r0
-
-l0000D3B8:
-	bneid	r31,0000CCEC
-	addk	r3,r31,r0
-
-l0000D3C0:
-	brid	0000CCE8
-	addik	r31,r0,FFFFFFFB
-
-l0000D3C8:
-	beqid	r21,0000D0B8
-	addk	r31,r21,r0
-
-l0000D3D0:
-	addik	r24,r24,00000001
-	lbui	r5,r24,FFFFFFFF
-	addik	r21,r21,FFFFFFFF
-	andi	r18,r19,0000001F
-	addk	r4,r0,r5
-	beqid	r18,0000D3F8
-	addk	r4,r4,r0
-
-l0000D3EC:
-	addik	r18,r18,FFFFFFFF
-	bneid	r18,0000D3EC
-	addk	r4,r4,r4
-
-l0000D3F8:
-	addik	r19,r19,00000008
-	addk	r25,r25,r4
-
-l0000D400:
-	cmpu	r18,r3,r19
-	bltid	r18,0000D3C8
-	addik	r8,r0,FFFFFFFF
-
-l0000D40C:
-	lwi	r6,r22,00000044
-	lwi	r5,r22,00001BC8
-	andi	r18,r3,0000001F
-	addk	r4,r0,r8
-	beqid	r18,0000D430
-	addk	r4,r4,r0
-
-l0000D424:
-	addik	r18,r18,FFFFFFFF
-	bneid	r18,0000D424
-	addk	r4,r4,r4
-
-l0000D430:
-	xori	r4,r4,FFFFFFFF
-	and	r4,r4,r25
-	addk	r4,r4,r6
-	addk	r5,r5,r3
-	andi	r18,r3,0000001F
-	addk	r9,r0,r25
-	beqid	r18,0000D45C
-	addk	r9,r9,r0
-
-l0000D450:
-	addik	r18,r18,FFFFFFFF
-	bneid	r18,0000D450
-	srl	r9,r9
-
-l0000D45C:
-	swi	r4,r22,00000044
-	rsubk	r19,r3,r19
-	swi	r5,r22,00001BC8
-	brid	0000CF50
-	addk	r25,r9,r0
-
-l0000D470:
-	beqid	r21,0000D0B8
-	addk	r31,r21,r0
-
-l0000D478:
-	addik	r24,r24,00000001
-	lbui	r5,r24,FFFFFFFF
-	addik	r21,r21,FFFFFFFF
-	andi	r18,r19,0000001F
-	addk	r4,r0,r5
-	beqid	r18,0000D4A0
-	addk	r4,r4,r0
-
-l0000D494:
-	addik	r18,r18,FFFFFFFF
-	bneid	r18,0000D494
-	addk	r4,r4,r4
-
-l0000D4A0:
-	addik	r19,r19,00000008
-	addk	r25,r25,r4
-
-l0000D4A8:
-	cmpu	r18,r3,r19
-	bltid	r18,0000D470
-	addik	r7,r0,FFFFFFFF
-
-l0000D4B4:
-	lwi	r6,r22,00000048
-	lwi	r5,r22,00001BC8
-	andi	r18,r3,0000001F
-	addk	r4,r0,r7
-	beqid	r18,0000D4D8
-	addk	r4,r4,r0
-
-l0000D4CC:
-	addik	r18,r18,FFFFFFFF
-	bneid	r18,0000D4CC
-	addk	r4,r4,r4
-
-l0000D4D8:
-	xori	r4,r4,FFFFFFFF
-	and	r4,r4,r25
-	addk	r6,r6,r4
-	addk	r4,r5,r3
-	andi	r18,r3,0000001F
-	addk	r8,r0,r25
-	beqid	r18,0000D504
-	addk	r8,r8,r0
-
-l0000D4F8:
-	addik	r18,r18,FFFFFFFF
-	bneid	r18,0000D4F8
-	srl	r8,r8
-
-l0000D504:
-	swi	r6,r22,00000048
-	rsubk	r19,r3,r19
-	swi	r4,r22,00001BC8
-	brid	0000D06C
-	addk	r25,r8,r0
-0000D518                         E8 96 00 24 BE 04 00 38         ...$...8
+0000CDD0 A6 47 00 1F 11 00 C8 00 BE 12 00 14 11 08 00 00 .G..............
+0000CDE0 32 52 FF FF BE 32 FF FC 91 08 00 41 13 28 00 00 2R...2.....A.(..
+0000CDF0 16 67 98 00 F8 F6 1B C8 F8 96 00 44 10 7C 00 00 .g.........D.|..
+0000CE00 31 20 3F 4D F9 36 00 04 BE 1A 24 10 31 20 3F 48 1 ?M.6....$.1 ?H
+0000CE10 E1 16 00 47 33 9C 00 01 F1 03 00 00 33 5A FF FF ...G3.......3Z..
+0000CE20 F9 36 00 04 30 60 00 05 16 55 18 03 BE 52 11 4C .6..0`...U...R.L
+0000CE30 30 60 01 01 E8 76 00 58 30 E0 FF FF E8 B6 00 50 0`...v.X0......P
+0000CE40 A6 43 00 1F 10 C0 38 00 BE 12 00 14 10 C6 00 00 .C....8.........
+0000CE50 32 52 FF FF BE 32 FF FC 10 C6 30 00 A8 C6 FF FF 2R...2....0.....
+0000CE60 84 66 C8 00 10 63 18 00 10 63 18 00 10 85 18 00 .f...c...c......
+0000CE70 E0 E4 00 01 F8 16 1B C8 C0 63 28 00 16 47 98 03 .........c(..G..
+0000CE80 BE B2 00 64 E4 84 00 02 BE 15 02 30 13 F5 00 00 ...d.......0....
+0000CE90 33 18 00 01 E0 98 FF FF 32 B5 FF FF A6 53 00 1F 3.......2....S..
+0000CEA0 10 60 20 00 BE 12 00 14 10 63 00 00 32 52 FF FF .` ......c..2R..
+0000CEB0 BE 32 FF FC 10 63 18 00 13 39 18 00 84 66 C8 00 .2...c...9...f..
+0000CEC0 10 63 18 00 10 63 18 00 10 85 18 00 E0 E4 00 01 .c...c..........
+0000CED0 32 73 00 08 C0 63 28 00 16 47 98 03 BE 52 FF AC 2s...c(..G...R..
+0000CEE0 E4 84 00 02 BE 03 FE EC A4 C3 00 F0 BE 06 26 9C ..............&.
+0000CEF0 31 00 FF FF A6 47 00 1F 10 C0 C8 00 BE 12 00 14 1....G..........
+0000CF00 10 C6 00 00 32 52 FF FF BE 32 FF FC 90 C6 00 41 ....2R...2.....A
+0000CF10 13 26 00 00 16 67 98 00 F8 F6 1B C8 F8 96 00 44 .&...g.........D
+0000CF20 A4 83 00 20 BE 24 22 FC 30 80 3F 3F A4 83 00 40 ... .$".0.??...@
+0000CF30 BE 24 25 DC 30 C0 3F 51 30 E0 3F 49 A4 63 00 0F .$%.0.?Q0.?I.c..
+0000CF40 F8 F6 00 04 F8 76 00 4C BC 23 04 B8 E8 96 00 44 .....v.L.#.....D
+0000CF50 30 60 3F 4A F8 76 00 04 F8 96 1B CC E8 76 00 5C 0`?J.v.......v.\
+0000CF60 30 80 FF FF E8 D6 00 54 A6 43 00 1F 10 E0 20 00 0......T.C.... .
+0000CF70 BE 12 00 14 10 E7 00 00 32 52 FF FF BE 32 FF FC ........2R...2..
+0000CF80 10 E7 38 00 A8 E7 FF FF 84 79 38 00 10 63 18 00 ..8......y8..c..
+0000CF90 10 63 18 00 10 A6 18 00 E0 85 00 01 E5 45 00 02 .c...........E..
+0000CFA0 C0 63 30 00 16 44 98 03 BE B2 00 68 10 A4 00 00 .c0..D.....h....
+0000CFB0 BE 15 01 08 13 F5 00 00 33 18 00 01 E0 98 FF FF ........3.......
+0000CFC0 32 B5 FF FF A6 53 00 1F 10 60 20 00 BE 12 00 14 2....S...` .....
+0000CFD0 10 63 00 00 32 52 FF FF BE 32 FF FC 10 63 18 00 .c..2R...2...c..
+0000CFE0 13 39 18 00 84 79 38 00 10 63 18 00 10 63 18 00 .9...y8..c...c..
+0000CFF0 10 A6 18 00 E0 85 00 01 32 73 00 08 E5 45 00 02 ........2s...E..
+0000D000 C0 63 30 00 16 44 98 03 BE 52 FF A8 10 A4 00 00 .c0..D...R......
+0000D010 A4 E3 00 F0 BE 07 20 A4 11 04 00 00 E8 D6 1B C8 ...... .........
+0000D020 10 88 30 00 F8 96 1B C8 A4 83 00 40 A6 48 00 1F ..0........@.H..
+0000D030 11 20 C8 00 BE 12 00 14 11 29 00 00 32 52 FF FF . .......)..2R..
+0000D040 BE 32 FF FC 91 29 00 41 16 65 98 00 BE 24 1D 44 .2...).A.e...$.D
+0000D050 13 29 00 00 30 A0 3F 4B A4 63 00 0F F8 B6 00 04 .)..0.?K.c......
+0000D060 F9 56 00 48 F8 76 00 4C BC 23 04 40 31 20 3F 4C .V.H.v.L.#.@1 ?L
+0000D070 F9 36 00 04 BE 1A 21 A4 14 9A E8 00 E8 B6 00 48 .6....!........H
+0000D080 16 45 20 03 BE B2 1C FC 14 84 28 00 E8 76 00 30 .E .......(..v.0
+0000D090 16 44 18 03 BC B2 1B A0 E8 76 1B C4 BE 03 1B 98 .D.......v......
+0000D0A0 33 E0 FF FD B0 00 00 01 30 60 A0 0C 30 80 3F 51 3.......0`..0.?Q
+0000D0B0 F8 77 00 18 F8 96 00 04 E8 76 00 2C FB 97 00 0C .w.......v.,....
+0000D0C0 FB 57 00 10 FB 17 00 00 FA B7 00 04 FB 36 00 3C .W...........6.<
+0000D0D0 BE 23 00 BC FA 76 00 40 88 7D D0 00 BE 03 01 70 .#...v.@.}.....p
+0000D0E0 30 80 3F 50 E8 76 00 04 16 43 20 03 BE 52 01 60 0.?P.v...C ..R.`
+0000D0F0 A8 BB 00 04 14 85 00 00 80 84 28 00 10 A0 20 00 ..........(... .
+0000D100 90 A4 00 41 90 A5 00 41 90 A5 00 41 90 A5 00 41 ...A...A...A...A
+0000D110 90 A5 00 41 90 A5 00 41 90 A5 00 41 90 A5 00 41 ...A...A...A...A
+0000D120 90 A5 00 41 90 A5 00 41 90 A5 00 41 90 A5 00 41 ...A...A...A...A
+0000D130 90 A5 00 41 90 A5 00 41 90 A5 00 41 90 A5 00 41 ...A...A...A...A
+0000D140 90 A5 00 41 90 A5 00 41 90 A5 00 41 90 A5 00 41 ...A...A...A...A
+0000D150 90 A5 00 41 90 A5 00 41 90 A5 00 41 90 A5 00 41 ...A...A...A...A
+0000D160 90 A5 00 41 90 A5 00 41 90 A5 00 41 90 A5 00 41 ...A...A...A...A
+0000D170 90 A5 00 41 90 A5 00 41 90 A5 00 41 BE 25 00 10 ...A...A...A.%..
+0000D180 30 80 3F 4D 16 43 20 03 BC 52 00 C4 EA 77 00 1C 0.?M.C ..R...w..
+0000D190 E8 B3 00 38 BE 05 0C B8 17 5A E8 00 E8 F3 00 2C ...8.....Z.....,
+0000D1A0 BE 27 00 34 30 80 00 01 E8 73 00 28 F8 13 00 34 .'.40....s.(...4
+0000D1B0 A6 43 00 1F 10 E0 20 00 BE 12 00 14 10 E7 00 00 .C.... .........
+0000D1C0 32 52 FF FF BE 32 FF FC 10 E7 38 00 F8 13 00 30 2R...2....8....0
+0000D1D0 F8 F3 00 2C 16 47 D0 03 BC B2 0B 04 E8 73 00 34 ...,.G.......s.4
+0000D1E0 14 E3 38 00 16 5A 38 03 BE B2 00 0C 13 1A 00 00 ..8..Z8.........
+0000D1F0 13 07 00 00 10 F8 00 00 14 DA E0 00 10 A5 18 00 ................
+0000D200 B0 00 00 00 B9 F4 BA 30 17 58 D0 00 BE 3A 0D 44 .......0.X...:.D
+0000D210 10 FA 00 00 E8 73 00 34 E8 93 00 2C 10 78 18 00 .....s.4...,.x..
+0000D220 F8 73 00 34 88 63 20 00 BC 23 00 08 F8 73 00 34 .s.4.c ..#...s.4
+0000D230 E8 73 00 30 EA B7 00 04 16 44 18 03 BE B2 00 10 .s.0.....D......
+0000D240 EB 57 00 10 13 18 18 00 FB 13 00 30 E8 B7 00 08 .W.........0....
+0000D250 E8 77 00 14 E8 96 00 20 E8 D6 00 0C 17 5A E8 00 .w..... .....Z..
+0000D260 16 B5 F0 00 10 63 D0 00 10 A5 A8 00 F8 77 00 14 .....c.......w..
+0000D270 F8 B7 00 08 10 84 D0 00 10 60 30 00 90 66 00 41 .........`0..f.A
+0000D280 90 63 00 41 A4 63 00 01 BE 03 00 40 F8 96 00 20 .c.A.c.....@... 
+0000D290 14 7A 00 00 80 63 D0 00 BC A3 00 30 E8 D7 00 0C .z...c.....0....
+0000D2A0 E8 76 00 14 E8 B6 00 1C 14 DA 30 00 BE 03 0D 38 .v........0....8
+0000D2B0 10 FA 00 00 B0 00 00 00 B9 F4 9D 8C 80 00 00 00 ................
+0000D2C0 F8 76 00 1C F8 77 00 30 E8 76 00 08 BE 03 00 0C .v...w.0.v......
+0000D2D0 E8 D6 00 40 30 C6 00 40 E8 96 00 04 A8 64 3F 3F ...@0..@.....d??
+0000D2E0 BC 03 09 F4 A8 64 3F 47 14 A3 00 00 80 A5 18 00 .....d?G........
+0000D2F0 A8 A5 FF FF 10 60 28 00 90 65 00 41 90 63 00 41 .....`(..e.A.c.A
+0000D300 90 63 00 41 90 63 00 41 90 63 00 41 90 63 00 41 .c.A.c.A.c.A.c.A
+0000D310 90 63 00 41 90 63 00 41 90 63 00 41 90 63 00 41 .c.A.c.A.c.A.c.A
+0000D320 90 63 00 41 90 63 00 41 90 63 00 41 90 63 00 41 .c.A.c.A.c.A.c.A
+0000D330 90 63 00 41 90 63 00 41 90 63 00 41 90 63 00 41 .c.A.c.A.c.A.c.A
+0000D340 90 63 00 41 90 63 00 41 90 63 00 41 90 63 00 41 .c.A.c.A.c.A.c.A
+0000D350 90 63 00 41 90 63 00 41 90 63 00 41 90 63 00 41 .c.A.c.A.c.A.c.A
+0000D360 90 63 00 41 90 63 00 41 90 63 00 41 90 63 00 41 .c.A.c.A.c.A.c.A
+0000D370 90 63 00 41 BE 23 00 14 A8 84 3F 42 14 A4 00 00 .c.A.#....?B....
+0000D380 80 85 20 00 BC 44 00 08 30 60 01 00 82 B5 D0 00 .. ..D..0`......
+0000D390 10 63 30 00 14 95 00 00 82 A4 A8 00 BE B5 00 1C .c0.............
+0000D3A0 F8 77 00 2C AB 7B 00 04 14 7B 00 00 83 63 D8 00 .w.,.{...{...c..
+0000D3B0 BE 5B F9 3C 10 7F 00 00 BE 3F F9 34 10 7F 00 00 .[.<.....?.4....
+0000D3C0 B8 10 F9 28 33 E0 FF FB BE 15 FC F0 13 F5 00 00 ...(3...........
+0000D3D0 33 18 00 01 E0 B8 FF FF 32 B5 FF FF A6 53 00 1F 3.......2....S..
+0000D3E0 10 80 28 00 BE 12 00 14 10 84 00 00 32 52 FF FF ..(.........2R..
+0000D3F0 BE 32 FF FC 10 84 20 00 32 73 00 08 13 39 20 00 .2.... .2s...9 .
+0000D400 16 43 98 03 BE 52 FF C4 31 00 FF FF E8 D6 00 44 .C...R..1......D
+0000D410 E8 B6 1B C8 A6 43 00 1F 10 80 40 00 BE 12 00 14 .....C....@.....
+0000D420 10 84 00 00 32 52 FF FF BE 32 FF FC 10 84 20 00 ....2R...2.... .
+0000D430 A8 84 FF FF 84 84 C8 00 10 84 30 00 10 A5 18 00 ..........0.....
+0000D440 A6 43 00 1F 11 20 C8 00 BE 12 00 14 11 29 00 00 .C... .......)..
+0000D450 32 52 FF FF BE 32 FF FC 91 29 00 41 F8 96 00 44 2R...2...).A...D
+0000D460 16 63 98 00 F8 B6 1B C8 B8 10 FA E8 13 29 00 00 .c...........)..
+0000D470 BE 15 FC 48 13 F5 00 00 33 18 00 01 E0 B8 FF FF ...H....3.......
+0000D480 32 B5 FF FF A6 53 00 1F 10 80 28 00 BE 12 00 14 2....S....(.....
+0000D490 10 84 00 00 32 52 FF FF BE 32 FF FC 10 84 20 00 ....2R...2.... .
+0000D4A0 32 73 00 08 13 39 20 00 16 43 98 03 BE 52 FF C4 2s...9 ..C...R..
+0000D4B0 30 E0 FF FF E8 D6 00 48 E8 B6 1B C8 A6 43 00 1F 0......H.....C..
+0000D4C0 10 80 38 00 BE 12 00 14 10 84 00 00 32 52 FF FF ..8.........2R..
+0000D4D0 BE 32 FF FC 10 84 20 00 A8 84 FF FF 84 84 C8 00 .2.... .........
+0000D4E0 10 C6 20 00 10 85 18 00 A6 43 00 1F 11 00 C8 00 .. ......C......
+0000D4F0 BE 12 00 14 11 08 00 00 32 52 FF FF BE 32 FF FC ........2R...2..
+0000D500 91 08 00 41 F8 D6 00 48 16 63 98 00 F8 96 1B C8 ...A...H.c......
+0000D510 B8 10 FB 5C 13 28 00 00 E8 96 00 24 BE 04 00 38 ...\.(.....$...8
 0000D520 A4 79 02 00 10 60 C8 00 90 79 00 41 90 63 00 41 .y...`...y.A.c.A
 0000D530 90 63 00 41 90 63 00 41 90 63 00 41 90 63 00 41 .c.A.c.A.c.A.c.A
 0000D540 90 63 00 41 90 63 00 41 A4 63 00 01 F8 64 00 00 .c.A.c.A.c...d..
@@ -13110,496 +11247,83 @@ l0000D504:
 0000D9A0 90 A5 00 01 90 A5 00 01 90 A5 00 01 84 85 48 00 ..............H.
 0000D9B0 F9 23 00 30 F8 83 00 2C 10 E0 00 00 10 C7 00 00 .#.0...,........
 0000D9C0 10 A7 00 00 FA 81 00 34 B0 00 00 00 B9 F4 96 78 .......4.......x
-0000D9D0 13 F8 00 00 F8 76 00 1C                         .....v..        
-
-;; fn0000D9D8: 0000D9D8
-;;   Called from:
-;;     0003015C (in fn0002FFD0)
-fn0000D9D8 proc
-	lwi	r20,r1,00000034
-	swi	r3,r23,00000030
-	addik	r3,r0,00003F3F
-	swi	r3,r22,00000004
-
-;; fn0000D9E8: 0000D9E8
-;;   Called from:
-;;     0000D9E4 (in fn0000D9D8)
-;;     0000F22C (in fn0000CEF4)
-fn0000D9E8 proc
-	lwi	r4,r1,00000020
-	addik	r3,r0,00000001
-	cmpu	r18,r4,r3
-	bgei	r18,0000F778
-
-l0000D9F8:
-	lwi	r3,r22,00000008
-	beqid	r3,0000E13C
-	addk	r24,r31,r0
-
-l0000DA04:
-	andi	r3,r19,00000007
-	andi	r18,r3,0000001F
-	addk	r5,r0,r25
-	beqid	r18,0000DA24
-	addk	r5,r5,r0
-
-l0000DA18:
-	addik	r18,r18,FFFFFFFF
-	bneid	r18,0000DA18
-	srl	r5,r5
-
-l0000DA24:
-	addk	r25,r5,r0
-	addik	r6,r0,00003F4E
-	andi	r19,r19,FFFFFFF8
-	swi	r6,r22,00000004
-	lwi	r4,r22,0000000C
-	beqid	r4,0000DD14
-	addik	r5,r0,00003F4F
-
-l0000DA40:
-	addik	r3,r0,0000001F
-	cmpu	r18,r19,r3
-	blti	r18,0000F7C4
-
-l0000DA4C:
-	beqid	r21,0000DCCC
-	addik	r5,r19,00000008
-
-l0000DA54:
-	lbui	r8,r24,00000000
-	addik	r6,r21,FFFFFFFF
-	andi	r18,r19,0000001F
-	addk	r7,r0,r8
-	beqid	r18,0000DA78
-	addk	r7,r7,r0
-
-l0000DA6C:
-	addik	r18,r18,FFFFFFFF
-	bneid	r18,0000DA6C
-	addk	r7,r7,r7
-
-l0000DA78:
-	addik	r31,r24,00000001
-	cmpu	r18,r5,r3
-	bltid	r18,0000F820
-	addk	r25,r25,r7
-
-l0000DA88:
-	beqid	r6,0000DCC0
-	addik	r7,r21,FFFFFFFE
-
-l0000DA90:
-	lbui	r9,r24,00000001
-	addik	r6,r19,00000010
-	andi	r18,r5,0000001F
-	addk	r8,r0,r9
-	beqid	r18,0000DAB4
-	addk	r8,r8,r0
-
-l0000DAA8:
-	addik	r18,r18,FFFFFFFF
-	bneid	r18,0000DAA8
-	addk	r8,r8,r8
-
-l0000DAB4:
-	addik	r31,r24,00000002
-	cmpu	r18,r6,r3
-	bltid	r18,0000F82C
-	addk	r25,r25,r8
-
-l0000DAC4:
-	beqi	r7,0000F838
-
-l0000DAC8:
-	lbui	r9,r24,00000002
-	addik	r5,r19,00000018
-	addik	r7,r21,FFFFFFFD
-	andi	r18,r6,0000001F
-	addk	r8,r0,r9
-	beqid	r18,0000DAF0
-	addk	r8,r8,r0
-
-l0000DAE4:
-	addik	r18,r18,FFFFFFFF
-	bneid	r18,0000DAE4
-	addk	r8,r8,r8
-
-l0000DAF0:
-	addik	r31,r24,00000003
-	cmpu	r18,r5,r3
-	bltid	r18,0000F86C
-	addk	r25,r25,r8
-
-l0000DB00:
-	beqi	r7,0000F858
-
-l0000DB04:
-	lbui	r6,r24,00000003
-	addik	r21,r21,FFFFFFFC
-	addik	r31,r24,00000004
-	andi	r18,r5,0000001F
-	addk	r3,r0,r6
-	beqid	r18,0000DB2C
-	addk	r3,r3,r0
-
-l0000DB20:
-	addik	r18,r18,FFFFFFFF
-	bneid	r18,0000DB20
-	addk	r3,r3,r3
-
-l0000DB2C:
-	addik	r19,r19,00000020
-	addk	r25,r25,r3
-
-l0000DB34:
-	lwi	r5,r23,00000014
-	lwi	r3,r22,00000020
-	rsubk	r7,r26,r29
-	addk	r5,r5,r7
-	addk	r3,r3,r7
-	swi	r5,r23,00000014
-	swi	r3,r22,00000020
-	andi	r3,r4,00000004
-	beqid	r3,0000DB90
-	rsubk	r5,r7,r0
-
-l0000DB5C:
-	or	r5,r5,r7
-	bgei	r5,0000DB90
-
-l0000DB64:
-	lwi	r3,r22,00000014
-	lwi	r5,r22,0000001C
-	beqid	r3,0000F7F0
-	rsubk	r6,r7,r28
-
-;; fn0000DB74: 0000DB74
-;;   Called from:
-;;     0000DB70 (in fn0000D9E8)
-;;     00030104 (in fn0002FFD0)
-fn0000DB74 proc
-	imm	00000000
-	brlid	r15,00007044
-	nop
-	lwi	r4,r22,0000000C
-
-;; fn0000DB84: 0000DB84
-;;   Called from:
-;;     0000DB80 (in fn0000DB74)
-;;     0000F7F8 (in fn0000D9E8)
-fn0000DB84 proc
-	swi	r3,r22,0000001C
-	swi	r3,r23,00000030
-	andi	r3,r4,00000004
-
-;; fn0000DB90: 0000DB90
-;;   Called from:
-;;     0000DB58 (in fn0000D9E8)
-;;     0000DB60 (in fn0000D9E8)
-;;     0000DB8C (in fn0000DB84)
-;;     0000DB8C (in fn0000DB84)
-fn0000DB90 proc
-	beqi	r3,0000DD00
-
-;; fn0000DB94: 0000DB94
-;;   Called from:
-;;     0000DB90 (in fn0000DB90)
-;;     0000DB90 (in fn0000DB90)
-;;     0000DB90 (in fn0000DB90)
-;;     0000DD00 (in fn0000DD00)
-fn0000DB94 proc
-	lwi	r5,r22,00000014
-	bneid	r5,0000DC90
-	addk	r3,r25,r0
-
-l0000DBA0:
-	addk	r3,r25,r25
-	addk	r3,r3,r3
-	addk	r3,r3,r3
-	addk	r3,r3,r3
-	addk	r3,r3,r3
-	addk	r3,r3,r3
-	addk	r3,r3,r3
-	addk	r5,r0,r25
-	srl	r5,r25
-	srl	r5,r5
-	srl	r5,r5
-	srl	r5,r5
-	srl	r5,r5
-	srl	r5,r5
-	srl	r5,r5
-	srl	r5,r5
-	srl	r5,r5
-	srl	r5,r5
-	srl	r5,r5
-	srl	r5,r5
-	srl	r5,r5
-	srl	r5,r5
-	srl	r5,r5
-	srl	r5,r5
-	srl	r5,r5
-	srl	r5,r5
-	srl	r5,r5
-	srl	r5,r5
-	srl	r5,r5
-	srl	r5,r5
-	srl	r5,r5
-	srl	r5,r5
-	src	r7,r25
-	src	r7,r7
-	src	r7,r7
-	src	r7,r7
-	src	r7,r7
-	src	r7,r7
-	src	r7,r7
-	src	r7,r7
-	src	r7,r7
-	imm	0000FF00
-	andi	r7,r7,00000000
-	addk	r6,r0,r25
-	srl	r6,r25
-	srl	r6,r6
-	srl	r6,r6
-	srl	r6,r6
-	srl	r6,r6
-	srl	r6,r6
-	srl	r6,r6
-	srl	r6,r6
-	addk	r5,r5,r7
-	imm	00000000
-	andi	r6,r6,FFFFFF00
-	addk	r3,r3,r3
-	addk	r5,r5,r6
-	imm	000000FF
-	andi	r3,r3,00000000
-	addk	r3,r5,r3
-
-l0000DC90:
-	lwi	r5,r22,0000001C
-	xor	r3,r5,r3
-	beqid	r3,0000DD00
-	addk	r24,r31,r0
-
-l0000DCA0:
-	imm	00000001
-	addik	r3,r0,FFFFA02C
-	addik	r4,r0,00003F51
-	swi	r3,r23,00000018
-	swi	r4,r22,00000004
-	addk	r29,r26,r0
-	brid	0000D0B8
-	addik	r31,r0,FFFFFFFD
-
-l0000DCC0:
-	addk	r21,r6,r0
-	addk	r19,r5,r0
-	addk	r24,r31,r0
-
-;; fn0000DCCC: 0000DCCC
-;;   Called from:
-;;     0000DA50 (in fn0000D9E8)
-;;     0000DCC8 (in fn0000D9E8)
-;;     0000DD3C (in fn0000DD20)
-;;     0000E208 (in fn0000D9E8)
-;;     0000E3CC (in fn0000D9E8)
-;;     0000E8B0 (in fn0000EE14)
-;;     0000EDD8 (in fn0000EDD8)
-;;     0000F360 (in fn0000EE14)
-;;     0000F42C (in fn0000EE14)
-fn0000DCCC proc
-	brid	0000D0B8
-	addk	r31,r21,r0
-
-l0000DCD4:
-	brid	0000D38C
-	addik	r6,r6,00000080
-
-l0000DCDC:
-	imm	00000000
-	brlid	r15,00008C34
-	rsubk	r6,r7,r28
-	lwi	r3,r19,0000002C
-	swi	r0,r19,00000034
-	lwi	r21,r23,00000004
-	swi	r3,r19,00000030
-	brid	0000D24C
-	lwi	r26,r23,00000010
-
-;; fn0000DD00: 0000DD00
-;;   Called from:
-;;     0000DB90 (in fn0000DB90)
-;;     0000DC9C (in fn0000DB94)
-fn0000DD00 proc
-	addk	r19,r3,r0
-	addk	r29,r26,r0
-	addk	r24,r31,r0
-	addk	r25,r3,r0
-	addik	r5,r0,00003F4F
-
-;; fn0000DD14: 0000DD14
-;;   Called from:
-;;     0000DA3C (in fn0000D9E8)
-;;     0000DD10 (in fn0000DD00)
-fn0000DD14 proc
-	swi	r5,r22,00000004
-	beqid	r4,0000F4D8
-	addik	r8,r0,00003F50
-
-;; fn0000DD20: 0000DD20
-;;   Called from:
-;;     0000DCCC (in fn0000DCCC)
-;;     0000DD1C (in fn0000DD14)
-;;     0000DD1C (in fn0000DD14)
-fn0000DD20 proc
-	lwi	r3,r22,00000014
-	beqid	r3,0000F4D8
-	addik	r3,r0,0000001F
-
-l0000DD2C:
-	cmpu	r18,r19,r3
-	bltid	r18,0000DE20
-	addk	r4,r24,r0
-
-l0000DD38:
-	beqid	r21,0000DCCC
-	addik	r5,r19,00000008
-
-l0000DD40:
-	lbui	r4,r24,00000000
-	addik	r6,r21,FFFFFFFF
-	andi	r18,r19,0000001F
-	addk	r7,r0,r4
-	beqid	r18,0000DD64
-	addk	r7,r7,r0
-
-l0000DD58:
-	addik	r18,r18,FFFFFFFF
-	bneid	r18,0000DD58
-	addk	r7,r7,r7
-
-l0000DD64:
-	addik	r4,r24,00000001
-	cmpu	r18,r5,r3
-	bltid	r18,0000F400
-	addk	r25,r25,r7
-
-l0000DD74:
-	beqid	r6,0000F40C
-	addik	r7,r21,FFFFFFFE
-
-l0000DD7C:
-	lbui	r4,r24,00000001
-	addik	r6,r19,00000010
-	andi	r18,r5,0000001F
-	addk	r8,r0,r4
-	beqid	r18,0000DDA0
-	addk	r8,r8,r0
-
-l0000DD94:
-	addik	r18,r18,FFFFFFFF
-	bneid	r18,0000DD94
-	addk	r8,r8,r8
-
-l0000DDA0:
-	addik	r4,r24,00000002
-	cmpu	r18,r6,r3
-	bltid	r18,0000F4BC
-	addk	r25,r25,r8
-
-l0000DDB0:
-	beqi	r7,0000F4E4
-
-l0000DDB4:
-	lbui	r4,r24,00000002
-	addik	r5,r19,00000018
-	addik	r7,r21,FFFFFFFD
-	andi	r18,r6,0000001F
-	addk	r8,r0,r4
-	beqid	r18,0000DDDC
-	addk	r8,r8,r0
-
-l0000DDD0:
-	addik	r18,r18,FFFFFFFF
-	bneid	r18,0000DDD0
-	addk	r8,r8,r8
-
-l0000DDDC:
-	addik	r4,r24,00000003
-	cmpu	r18,r5,r3
-	bltid	r18,0000F524
-	addk	r25,r25,r8
-
-l0000DDEC:
-	beqi	r7,0000F20C
-
-l0000DDF0:
-	lbui	r6,r24,00000003
-	addik	r21,r21,FFFFFFFC
-	addik	r4,r24,00000004
-	andi	r18,r5,0000001F
-	addk	r3,r0,r6
-	beqid	r18,0000DE18
-	addk	r3,r3,r0
-
-l0000DE0C:
-	addik	r18,r18,FFFFFFFF
-	bneid	r18,0000DE0C
-	addk	r3,r3,r3
-
-l0000DE18:
-	addik	r19,r19,00000020
-	addk	r25,r25,r3
-
-l0000DE20:
-	lwi	r3,r22,00000020
-	xor	r3,r3,r25
-	beqi	r3,0000F4C8
-
-l0000DE2C:
-	imm	00000001
-	addik	r6,r0,FFFFA044
-	addk	r24,r4,r0
-
-;; fn0000DE38: 0000DE38
-;;   Called from:
-;;     0000DE34 (in fn0000DD20)
-;;     0000ED78 (in fn0000D9E8)
-fn0000DE38 proc
-	swi	r6,r23,00000018
-	addik	r7,r0,00003F51
-	swi	r7,r22,00000004
-	brid	0000D0B8
-	addik	r31,r0,FFFFFFFD
-
-l0000DE4C:
-	lwi	r6,r19,00000028
-	addik	r7,r0,00000001
-	lwi	r5,r23,00000028
-	andi	r18,r6,0000001F
-	addk	r9,r0,r7
-	beqid	r18,0000DE74
-	addk	r9,r9,r0
-
-l0000DE68:
-	addik	r18,r18,FFFFFFFF
-	bneid	r18,0000DE68
-	addk	r9,r9,r9
-
-l0000DE74:
-	lwi	r3,r23,00000020
-	brald	r15,r3
-	addk	r6,r9,r0
-	swi	r3,r19,00000038
-	bneid	r3,0000D19C
-	addk	r5,r3,r0
-
-l0000DE8C:
-	addik	r5,r0,00003F52
-	swi	r5,r22,00000004
-	brid	0000CCE8
-	addik	r31,r0,FFFFFFFC
-0000DE9C                                     16 53 A0 03             .S..
+0000D9D0 13 F8 00 00 F8 76 00 1C EA 81 00 34 F8 77 00 30 .....v.....4.w.0
+0000D9E0 30 60 3F 3F F8 76 00 04 E8 81 00 20 30 60 00 01 0`??.v..... 0`..
+0000D9F0 16 44 18 03 BC B2 1D 84 E8 76 00 08 BE 03 07 40 .D.......v.....@
+0000DA00 13 1F 00 00 A4 73 00 07 A6 43 00 1F 10 A0 C8 00 .....s...C......
+0000DA10 BE 12 00 14 10 A5 00 00 32 52 FF FF BE 32 FF FC ........2R...2..
+0000DA20 90 A5 00 41 13 25 00 00 30 C0 3F 4E A6 73 FF F8 ...A.%..0.?N.s..
+0000DA30 F8 D6 00 04 E8 96 00 0C BE 04 02 DC 30 A0 3F 4F ............0.?O
+0000DA40 30 60 00 1F 16 53 18 03 BC 52 1D 7C BE 15 02 80 0`...S...R.|....
+0000DA50 30 B3 00 08 E1 18 00 00 30 D5 FF FF A6 53 00 1F 0.......0....S..
+0000DA60 10 E0 40 00 BE 12 00 14 10 E7 00 00 32 52 FF FF ..@.........2R..
+0000DA70 BE 32 FF FC 10 E7 38 00 33 F8 00 01 16 45 18 03 .2....8.3....E..
+0000DA80 BE 52 1D A0 13 39 38 00 BE 06 02 38 30 F5 FF FE .R...98....80...
+0000DA90 E1 38 00 01 30 D3 00 10 A6 45 00 1F 11 00 48 00 .8..0....E....H.
+0000DAA0 BE 12 00 14 11 08 00 00 32 52 FF FF BE 32 FF FC ........2R...2..
+0000DAB0 11 08 40 00 33 F8 00 02 16 46 18 03 BE 52 1D 70 ..@.3....F...R.p
+0000DAC0 13 39 40 00 BC 07 1D 74 E1 38 00 02 30 B3 00 18 .9@....t.8..0...
+0000DAD0 30 F5 FF FD A6 46 00 1F 11 00 48 00 BE 12 00 14 0....F....H.....
+0000DAE0 11 08 00 00 32 52 FF FF BE 32 FF FC 11 08 40 00 ....2R...2....@.
+0000DAF0 33 F8 00 03 16 45 18 03 BE 52 1D 74 13 39 40 00 3....E...R.t.9@.
+0000DB00 BC 07 1D 58 E0 D8 00 03 32 B5 FF FC 33 F8 00 04 ...X....2...3...
+0000DB10 A6 45 00 1F 10 60 30 00 BE 12 00 14 10 63 00 00 .E...`0......c..
+0000DB20 32 52 FF FF BE 32 FF FC 10 63 18 00 32 73 00 20 2R...2...c..2s. 
+0000DB30 13 39 18 00 E8 B7 00 14 E8 76 00 20 14 FA E8 00 .9.......v. ....
+0000DB40 10 A5 38 00 10 63 38 00 F8 B7 00 14 F8 76 00 20 ..8..c8......v. 
+0000DB50 A4 64 00 04 BE 03 00 3C 14 A7 00 00 80 A5 38 00 .d.....<......8.
+0000DB60 BC A5 00 30 E8 76 00 14 E8 B6 00 1C BE 03 1C 84 ...0.v..........
+0000DB70 14 C7 E0 00 B0 00 00 00 B9 F4 94 CC 80 00 00 00 ................
+0000DB80 E8 96 00 0C F8 76 00 1C F8 77 00 30 A4 64 00 04 .....v...w.0.d..
+0000DB90 BC 03 01 70 E8 B6 00 14 BE 25 00 F8 10 79 00 00 ...p.....%...y..
+0000DBA0 10 79 C8 00 10 63 18 00 10 63 18 00 10 63 18 00 .y...c...c...c..
+0000DBB0 10 63 18 00 10 63 18 00 10 63 18 00 10 A0 C8 00 .c...c...c......
+0000DBC0 90 B9 00 41 90 A5 00 41 90 A5 00 41 90 A5 00 41 ...A...A...A...A
+0000DBD0 90 A5 00 41 90 A5 00 41 90 A5 00 41 90 A5 00 41 ...A...A...A...A
+0000DBE0 90 A5 00 41 90 A5 00 41 90 A5 00 41 90 A5 00 41 ...A...A...A...A
+0000DBF0 90 A5 00 41 90 A5 00 41 90 A5 00 41 90 A5 00 41 ...A...A...A...A
+0000DC00 90 A5 00 41 90 A5 00 41 90 A5 00 41 90 A5 00 41 ...A...A...A...A
+0000DC10 90 A5 00 41 90 A5 00 41 90 A5 00 41 90 A5 00 41 ...A...A...A...A
+0000DC20 90 F9 00 21 90 E7 00 21 90 E7 00 21 90 E7 00 21 ...!...!...!...!
+0000DC30 90 E7 00 21 90 E7 00 21 90 E7 00 21 90 E7 00 21 ...!...!...!...!
+0000DC40 90 E7 00 21 B0 00 FF 00 A4 E7 00 00 10 C0 C8 00 ...!............
+0000DC50 90 D9 00 41 90 C6 00 41 90 C6 00 41 90 C6 00 41 ...A...A...A...A
+0000DC60 90 C6 00 41 90 C6 00 41 90 C6 00 41 90 C6 00 41 ...A...A...A...A
+0000DC70 10 A5 38 00 B0 00 00 00 A4 C6 FF 00 10 63 18 00 ..8..........c..
+0000DC80 10 A5 30 00 B0 00 00 FF A4 63 00 00 10 65 18 00 ..0......c...e..
+0000DC90 E8 B6 00 1C 88 65 18 00 BE 03 00 68 13 1F 00 00 .....e.....h....
+0000DCA0 B0 00 00 01 30 60 A0 2C 30 80 3F 51 F8 77 00 18 ....0`.,0.?Q.w..
+0000DCB0 F8 96 00 04 13 BA 00 00 B8 10 F4 00 33 E0 FF FD ............3...
+0000DCC0 12 A6 00 00 12 65 00 00 13 1F 00 00 B8 10 F3 EC .....e..........
+0000DCD0 13 F5 00 00 B8 10 F6 B8 30 C6 00 80 B0 00 00 00 ........0.......
+0000DCE0 B9 F4 AF 54 14 C7 E0 00 E8 73 00 2C F8 13 00 34 ...T.....s.,...4
+0000DCF0 EA B7 00 04 F8 73 00 30 B8 10 F5 54 EB 57 00 10 .....s.0...T.W..
+0000DD00 12 63 00 00 13 BA 00 00 13 1F 00 00 13 23 00 00 .c...........#..
+0000DD10 30 A0 3F 4F F8 B6 00 04 BE 04 17 C0 31 00 3F 50 0.?O........1.?P
+0000DD20 E8 76 00 14 BE 03 17 B4 30 60 00 1F 16 53 18 03 .v......0`...S..
+0000DD30 BE 52 00 F0 10 98 00 00 BE 15 FF 94 30 B3 00 08 .R..........0...
+0000DD40 E0 98 00 00 30 D5 FF FF A6 53 00 1F 10 E0 20 00 ....0....S.... .
+0000DD50 BE 12 00 14 10 E7 00 00 32 52 FF FF BE 32 FF FC ........2R...2..
+0000DD60 10 E7 38 00 30 98 00 01 16 45 18 03 BE 52 16 94 ..8.0....E...R..
+0000DD70 13 39 38 00 BE 06 16 98 30 F5 FF FE E0 98 00 01 .98.....0.......
+0000DD80 30 D3 00 10 A6 45 00 1F 11 00 20 00 BE 12 00 14 0....E.... .....
+0000DD90 11 08 00 00 32 52 FF FF BE 32 FF FC 11 08 40 00 ....2R...2....@.
+0000DDA0 30 98 00 02 16 46 18 03 BE 52 17 14 13 39 40 00 0....F...R...9@.
+0000DDB0 BC 07 17 34 E0 98 00 02 30 B3 00 18 30 F5 FF FD ...4....0...0...
+0000DDC0 A6 46 00 1F 11 00 20 00 BE 12 00 14 11 08 00 00 .F.... .........
+0000DDD0 32 52 FF FF BE 32 FF FC 11 08 40 00 30 98 00 03 2R...2....@.0...
+0000DDE0 16 45 18 03 BE 52 17 40 13 39 40 00 BC 07 14 20 .E...R.@.9@.... 
+0000DDF0 E0 D8 00 03 32 B5 FF FC 30 98 00 04 A6 45 00 1F ....2...0....E..
+0000DE00 10 60 30 00 BE 12 00 14 10 63 00 00 32 52 FF FF .`0......c..2R..
+0000DE10 BE 32 FF FC 10 63 18 00 32 73 00 20 13 39 18 00 .2...c..2s. .9..
+0000DE20 E8 76 00 20 88 63 C8 00 BC 03 16 A0 B0 00 00 01 .v. .c..........
+0000DE30 30 C0 A0 44 13 04 00 00 F8 D7 00 18 30 E0 3F 51 0..D........0.?Q
+0000DE40 F8 F6 00 04 B8 10 F2 74 33 E0 FF FD E8 D3 00 28 .......t3......(
+0000DE50 30 E0 00 01 E8 B7 00 28 A6 46 00 1F 11 20 38 00 0......(.F... 8.
+0000DE60 BE 12 00 14 11 29 00 00 32 52 FF FF BE 32 FF FC .....)..2R...2..
+0000DE70 11 29 48 00 E8 77 00 20 99 FC 18 00 10 C9 00 00 .)H..w. ........
+0000DE80 F8 73 00 38 BE 23 F3 18 10 A3 00 00 30 A0 3F 52 .s.8.#......0.?R
+0000DE90 F8 B6 00 04 B8 10 EE 54 33 E0 FF FC 16 53 A0 03 .......T3....S..
 0000DEA0 BE 52 00 78 10 B8 00 00 BE 15 FE 24 30 73 00 08 .R.x.......$0s..
 0000DEB0 E0 B8 00 00 30 D5 FF FF A6 53 00 1F 10 E0 28 00 ....0....S....(.
 0000DEC0 BE 12 00 14 10 E7 00 00 32 52 FF FF BE 32 FF FC ........2R...2..
@@ -13611,60 +11335,17 @@ l0000DE8C:
 0000DF20 BC 03 0E 8C E4 76 00 1E 88 63 C8 00 BE 03 0E 80 .....v...c......
 0000DF30 31 00 3F 51 B0 00 00 01 30 E0 9E D8 13 05 00 00 1.?Q....0.......
 0000DF40 F8 F7 00 18 F9 16 00 04 B8 10 F1 70 33 E0 FF FD ...........p3...
-
-l0000DF50:
-	lwi	r5,r19,00000038
-	imm	00000000
-	brlid	r15,00008C34
-	rsubk	r6,r26,r28
-	lwi	r4,r19,0000002C
-	swi	r26,r19,00000034
-	lwi	r21,r23,00000004
-	swi	r4,r19,00000030
-	brid	0000D24C
-	lwi	r26,r23,00000010
-
-l0000DF78:
-	cmpu	r18,r26,r3
-	bgeid	r18,0000CE34
-	addk	r6,r29,r0
-
-l0000DF84:
-	addk	r5,r23,r0
-	swi	r28,r23,0000000C
-	swi	r26,r23,00000010
-	swi	r24,r23,00000000
-	swi	r21,r23,00000004
-	swi	r25,r22,0000003C
-	swi	r19,r22,00000040
-	imm	00000000
-	brlid	r15,000070A4
-	swi	r20,r1,00000034
-	lwi	r4,r22,00000004
-	lwi	r28,r23,0000000C
-	lwi	r26,r23,00000010
-	xori	r3,r4,00003F3F
-	lwi	r24,r23,00000000
-	lwi	r21,r23,00000004
-	lwi	r25,r22,0000003C
-	lwi	r19,r22,00000040
-	bneid	r3,0000DFDC
-	lwi	r20,r1,00000034
-
-l0000DFD4:
-	addik	r6,r0,FFFFFFFF
-	swi	r6,r22,00001BC8
-
-l0000DFDC:
-	brid	0000CD94
-	addik	r4,r4,FFFFC0CC
-
-l0000DFE4:
-	brlid	r15,00015318
-	nop
-	brid	0000D2C4
-	swi	r3,r22,0000001C
-0000DFF4             BE 15 FC D8 10 98 00 00 13 E0 00 00     ............
+0000DF50 E8 B3 00 38 B0 00 00 00 B9 F4 AC DC 14 DA E0 00 ...8............
+0000DF60 E8 93 00 2C FB 53 00 34 EA B7 00 04 F8 93 00 30 ...,.S.4.......0
+0000DF70 B8 10 F2 DC EB 57 00 10 16 5A 18 03 BE B2 EE B8 .....W...Z......
+0000DF80 10 DD 00 00 10 B7 00 00 FB 97 00 0C FB 57 00 10 .............W..
+0000DF90 FB 17 00 00 FA B7 00 04 FB 36 00 3C FA 76 00 40 .........6.<.v.@
+0000DFA0 B0 00 00 00 B9 F4 91 00 FA 81 00 34 E8 96 00 04 ...........4....
+0000DFB0 EB 97 00 0C EB 57 00 10 A8 64 3F 3F EB 17 00 00 .....W...d??....
+0000DFC0 EA B7 00 04 EB 36 00 3C EA 76 00 40 BE 23 00 10 .....6.<.v.@.#..
+0000DFD0 EA 81 00 34 30 C0 FF FF F8 D6 1B C8 B8 10 ED B8 ...40...........
+0000DFE0 30 84 C0 CC B9 F4 73 34 80 00 00 00 B8 10 F2 D8 0.....s4........
+0000DFF0 F8 76 00 1C BE 15 FC D8 10 98 00 00 13 E0 00 00 .v..............
 0000E000 E8 76 00 24 33 FF 00 01 BE 03 00 2C E1 04 00 00 .v.$3......,....
 0000E010 E8 A3 00 24 BC 05 00 20 E8 D6 00 44 E8 63 00 28 ...$... ...D.c.(
 0000E020 16 43 30 03 BE B2 00 10 30 66 00 01 F8 76 00 44 .C0.....0f...v.D
@@ -13684,425 +11365,85 @@ l0000DFE4:
 0000E100 10 FF 00 00 E8 B6 00 1C 10 D8 00 00 F9 01 00 2C ...............,
 0000E110 B0 00 00 00 B9 F4 8F 30 FA 81 00 34 EA 81 00 34 .......0...4...4
 0000E120 E9 01 00 2C F8 76 00 1C 13 18 F8 00 BE 28 10 EC ...,.v.......(..
-0000E130 16 BF A8 00 B8 10 F8 10 E8 96 00 14             ............    
-
-l0000E13C:
-	addik	r4,r0,00000002
-	cmpu	r18,r19,r4
-	bltid	r18,0000E188
-	srl	r4,r25
-
-l0000E14C:
-	beqid	r21,0000F4F8
-	addk	r4,r31,r0
-
-l0000E154:
-	lbui	r5,r31,00000000
-	addik	r21,r21,FFFFFFFF
-	addik	r24,r31,00000001
-	andi	r18,r19,0000001F
-	addk	r4,r0,r5
-	beqid	r18,0000E17C
-	addk	r4,r4,r0
-
-l0000E170:
-	addik	r18,r18,FFFFFFFF
-	bneid	r18,0000E170
-	addk	r4,r4,r4
-
-l0000E17C:
-	addik	r19,r19,00000008
-	addk	r25,r25,r4
-	srl	r4,r25
-
-l0000E188:
-	andi	r5,r25,00000001
-	andi	r4,r4,00000003
-	swi	r5,r22,00000008
-	xori	r5,r4,00000002
-	beqid	r5,0000E398
-	xori	r5,r4,00000003
-
-l0000E1A0:
-	beqid	r5,0000E364
-	xori	r4,r4,00000001
-
-l0000E1A8:
-	beqid	r4,0000E5BC
-	addk	r5,r24,r0
-
-l0000E1B0:
-	addk	r8,r0,r25
-	srl	r8,r25
-	srl	r8,r8
-	srl	r8,r8
-	addk	r25,r8,r0
-	addik	r7,r0,00003F41
-	swi	r7,r22,00000004
-	addik	r19,r19,FFFFFFFD
-	andi	r3,r19,00000007
-	addik	r6,r0,0000001F
-	andi	r19,r19,FFFFFFF8
-	andi	r18,r3,0000001F
-	addk	r7,r0,r25
-	beqid	r18,0000E1F8
-	addk	r7,r7,r0
-
-l0000E1EC:
-	addik	r18,r18,FFFFFFFF
-	bneid	r18,0000E1EC
-	srl	r7,r7
-
-l0000E1F8:
-	cmpu	r18,r19,r6
-	bltid	r18,0000E2EC
-	addk	r25,r7,r0
-
-l0000E204:
-	beqid	r21,0000DCCC
-	addik	r8,r19,00000008
-
-l0000E20C:
-	lbui	r7,r5,00000000
-	addik	r3,r21,FFFFFFFF
-	andi	r18,r19,0000001F
-	addk	r4,r0,r7
-	beqid	r18,0000E230
-	addk	r4,r4,r0
-
-l0000E224:
-	addik	r18,r18,FFFFFFFF
-	bneid	r18,0000E224
-	addk	r4,r4,r4
-
-l0000E230:
-	addik	r24,r24,00000001
-	cmpu	r18,r8,r6
-	bltid	r18,0000F6F0
-	addk	r25,r25,r4
-
-l0000E240:
-	beqid	r3,0000F6FC
-	addik	r4,r21,FFFFFFFE
-
-l0000E248:
-	lbui	r9,r5,00000001
-	addik	r3,r19,00000010
-	andi	r18,r8,0000001F
-	addk	r7,r0,r9
-	beqid	r18,0000E26C
-	addk	r7,r7,r0
-
-l0000E260:
-	addik	r18,r18,FFFFFFFF
-	bneid	r18,0000E260
-	addk	r7,r7,r7
-
-l0000E26C:
-	addik	r24,r5,00000002
-	cmpu	r18,r3,r6
-	bltid	r18,0000F75C
-	addk	r25,r25,r7
-
-l0000E27C:
-	beqid	r4,0000F768
-	addik	r9,r19,00000018
-
-l0000E284:
-	lbui	r8,r5,00000002
-	addik	r4,r21,FFFFFFFD
-	andi	r18,r3,0000001F
-	addk	r7,r0,r8
-	beqid	r18,0000E2A8
-	addk	r7,r7,r0
-
-l0000E29C:
-	addik	r18,r18,FFFFFFFF
-	bneid	r18,0000E29C
-	addk	r7,r7,r7
-
-l0000E2A8:
-	addik	r24,r5,00000003
-	cmpu	r18,r9,r6
-	bltid	r18,0000F798
-	addk	r25,r25,r7
-
-l0000E2B8:
-	beqi	r4,0000F7A4
-
-l0000E2BC:
-	lbui	r4,r5,00000003
-	addik	r21,r21,FFFFFFFC
-	addik	r24,r5,00000004
-	andi	r18,r9,0000001F
-	addk	r3,r0,r4
-	beqid	r18,0000E2E4
-	addk	r3,r3,r0
-
-l0000E2D8:
-	addik	r18,r18,FFFFFFFF
-	bneid	r18,0000E2D8
-	addk	r3,r3,r3
-
-l0000E2E4:
-	addik	r19,r19,00000020
-	addk	r25,r25,r3
-
-l0000E2EC:
-	imm	00000000
-	andi	r3,r25,FFFFFFFF
-	addk	r4,r0,r25
-	srl	r4,r25
-	srl	r4,r4
-	srl	r4,r4
-	srl	r4,r4
-	srl	r4,r4
-	srl	r4,r4
-	srl	r4,r4
-	srl	r4,r4
-	srl	r4,r4
-	srl	r4,r4
-	srl	r4,r4
-	srl	r4,r4
-	srl	r4,r4
-	srl	r4,r4
-	srl	r4,r4
-	srl	r4,r4
-	imm	00000000
-	xori	r4,r4,FFFFFFFF
-	xor	r4,r3,r4
-	beqid	r4,0000F260
-	addik	r9,r0,00003F51
-
-l0000E34C:
-	imm	00000001
-	addik	r8,r0,FFFF9F00
-	addik	r31,r0,FFFFFFFD
-	swi	r8,r23,00000018
-	brid	0000D0B8
-	swi	r9,r22,00000004
-
-l0000E364:
-	imm	00000001
-	addik	r9,r0,FFFF9EEC
-	addik	r3,r0,00003F51
-	addk	r4,r0,r25
-	srl	r4,r25
-	srl	r4,r4
-	srl	r4,r4
-	swi	r9,r23,00000018
-	swi	r3,r22,00000004
-	addk	r25,r4,r0
-	addik	r19,r19,FFFFFFFD
-	brid	0000D0B8
-	addik	r31,r0,FFFFFFFD
-
-l0000E398:
-	addk	r8,r0,r25
-	srl	r8,r25
-	srl	r8,r8
-	srl	r8,r8
-	addk	r25,r8,r0
-	addik	r7,r0,00003F44
-	swi	r7,r22,00000004
-	addik	r19,r19,FFFFFFFD
-	addik	r3,r0,0000000D
-	cmpu	r18,r19,r3
-	bltid	r18,0000E438
-	addk	r4,r24,r0
-
-l0000E3C8:
-	beqid	r21,0000DCCC
-	addik	r7,r19,00000008
-
-l0000E3D0:
-	lbui	r4,r24,00000000
-	addik	r5,r21,FFFFFFFF
-	andi	r18,r19,0000001F
-	addk	r6,r0,r4
-	beqid	r18,0000E3F4
-	addk	r6,r6,r0
-
-l0000E3E8:
-	addik	r18,r18,FFFFFFFF
-	bneid	r18,0000E3E8
-	addk	r6,r6,r6
-
-l0000E3F4:
-	addik	r4,r24,00000001
-	cmpu	r18,r7,r3
-	bltid	r18,0000F6C8
-	addk	r25,r25,r6
-
-l0000E404:
-	beqi	r5,0000F734
-
-l0000E408:
-	lbui	r5,r24,00000001
-	addik	r21,r21,FFFFFFFE
-	addik	r4,r24,00000002
-	andi	r18,r7,0000001F
-	addk	r3,r0,r5
-	beqid	r18,0000E430
-	addk	r3,r3,r0
-
-l0000E424:
-	addik	r18,r18,FFFFFFFF
-	bneid	r18,0000E424
-	addk	r3,r3,r3
-
-l0000E430:
-	addik	r19,r19,00000010
-	addk	r25,r25,r3
-
-l0000E438:
-	andi	r5,r25,0000001F
-	addk	r3,r0,r25
-	srl	r3,r25
-	srl	r3,r3
-	srl	r3,r3
-	srl	r3,r3
-	srl	r3,r3
-	addk	r6,r0,r25
-	srl	r6,r25
-	srl	r6,r6
-	srl	r6,r6
-	srl	r6,r6
-	srl	r6,r6
-	srl	r6,r6
-	srl	r6,r6
-	srl	r6,r6
-	srl	r6,r6
-	srl	r6,r6
-	andi	r3,r3,0000001F
-	andi	r6,r6,0000000F
-	addik	r5,r5,00000101
-	addik	r3,r3,00000001
-	addik	r6,r6,00000004
-	swi	r5,r22,00000064
-	swi	r3,r22,00000068
-	swi	r6,r22,00000060
-	addik	r7,r0,0000001E
-	addk	r9,r0,r25
-	srl	r9,r25
-	srl	r9,r9
-	srl	r9,r9
-	srl	r9,r9
-	srl	r9,r9
-	srl	r9,r9
-	srl	r9,r9
-	srl	r9,r9
-	srl	r9,r9
-	srl	r9,r9
-	srl	r9,r9
-	srl	r9,r9
-	srl	r9,r9
-	srl	r9,r9
-	addik	r19,r19,FFFFFFF2
-	cmpu	r18,r3,r7
-	bltid	r18,0000ED70
-	addk	r25,r9,r0
-
-l0000E4F0:
-	addik	r3,r0,0000011E
-	cmpu	r18,r5,r3
-	bltid	r18,0000ED70
-	addk	r3,r0,r0
-
-l0000E500:
-	addk	r24,r4,r0
-	addik	r5,r0,00003F45
-	swi	r3,r22,0000006C
-	swi	r5,r22,00000004
-	addk	r7,r3,r3
-	addik	r8,r0,00000002
-	addik	r5,r3,00000001
-	imm	00000001
-	addik	r7,r7,FFFFA958
-	cmpu	r18,r19,r8
-	bltid	r18,0000E568
-	addik	r6,r6,00000001
-
-l0000E530:
-	beqid	r21,0000D0B8
-	addk	r31,r21,r0
-
-l0000E538:
-	lbui	r4,r24,00000000
-	addik	r21,r21,FFFFFFFF
-	addik	r24,r24,00000001
-	andi	r18,r19,0000001F
-	addk	r3,r0,r4
-	beqid	r18,0000E560
-	addk	r3,r3,r0
-
-l0000E554:
-	addik	r18,r18,FFFFFFFF
-	bneid	r18,0000E554
-	addk	r3,r3,r3
-
-l0000E560:
-	addik	r19,r19,00000008
-	addk	r25,r25,r3
-
-l0000E568:
-	lhui	r3,r7,00000000
-
-l0000E56C:
-	andi	r9,r25,00000007
-	swi	r5,r22,0000006C
-	addik	r3,r3,0000003A
-	addk	r3,r3,r3
-	addik	r4,r5,00000001
-	sh	r9,r3,r22
-	xor	r3,r6,r4
-	addk	r9,r0,r25
-	srl	r9,r25
-	srl	r9,r9
-	srl	r9,r9
-	addik	r19,r19,FFFFFFFD
-	addk	r25,r9,r0
-	beqid	r3,0000F504
-	addik	r7,r7,00000002
-
-l0000E5A8:
-	cmpu	r18,r19,r8
-	bgeid	r18,0000E530
-	addk	r5,r4,r0
-
-l0000E5B4:
-	brid	0000E56C
-	lhui	r3,r7,00000000
-
-l0000E5BC:
-	addik	r4,r0,00000009
-	imm	00000001
-	addik	r9,r0,FFFFA158
-	imm	00000001
-	addik	r5,r0,FFFFA0D8
-	swi	r4,r22,00000058
-	lwi	r4,r1,00000024
-	addik	r6,r0,00000005
-	addik	r7,r0,00003F47
-	swi	r9,r22,00000050
-	swi	r5,r22,00000054
-	swi	r6,r22,0000005C
-	beqid	r4,0000FA54
-	swi	r7,r22,00000004
-
-l0000E5F4:
-	addk	r5,r0,r25
-	srl	r5,r25
-	srl	r5,r5
-	srl	r5,r5
-	addk	r25,r5,r0
-	addik	r19,r19,FFFFFFFD
-
-l0000E60C:
-	addik	r5,r0,00003F48
-	brid	0000CE24
-	swi	r5,r22,00000004
-0000E618                         E8 76 00 0C BE 23 09 A4         .v...#..
+0000E130 16 BF A8 00 B8 10 F8 10 E8 96 00 14 30 80 00 02 ............0...
+0000E140 16 53 20 03 BE 52 00 44 90 99 00 41 BE 15 13 AC .S ..R.D...A....
+0000E150 10 9F 00 00 E0 BF 00 00 32 B5 FF FF 33 1F 00 01 ........2...3...
+0000E160 A6 53 00 1F 10 80 28 00 BE 12 00 14 10 84 00 00 .S....(.........
+0000E170 32 52 FF FF BE 32 FF FC 10 84 20 00 32 73 00 08 2R...2.... .2s..
+0000E180 13 39 20 00 90 99 00 41 A4 B9 00 01 A4 84 00 03 .9 ....A........
+0000E190 F8 B6 00 08 A8 A4 00 02 BE 05 02 00 A8 A4 00 03 ................
+0000E1A0 BE 05 01 C4 A8 84 00 01 BE 04 04 14 10 B8 00 00 ................
+0000E1B0 11 00 C8 00 91 19 00 41 91 08 00 41 91 08 00 41 .......A...A...A
+0000E1C0 13 28 00 00 30 E0 3F 41 F8 F6 00 04 32 73 FF FD .(..0.?A....2s..
+0000E1D0 A4 73 00 07 30 C0 00 1F A6 73 FF F8 A6 43 00 1F .s..0....s...C..
+0000E1E0 10 E0 C8 00 BE 12 00 14 10 E7 00 00 32 52 FF FF ............2R..
+0000E1F0 BE 32 FF FC 90 E7 00 41 16 53 30 03 BE 52 00 F0 .2.....A.S0..R..
+0000E200 13 27 00 00 BE 15 FA C8 31 13 00 08 E0 E5 00 00 .'......1.......
+0000E210 30 75 FF FF A6 53 00 1F 10 80 38 00 BE 12 00 14 0u...S....8.....
+0000E220 10 84 00 00 32 52 FF FF BE 32 FF FC 10 84 20 00 ....2R...2.... .
+0000E230 33 18 00 01 16 48 30 03 BE 52 14 B8 13 39 20 00 3....H0..R...9 .
+0000E240 BE 03 14 BC 30 95 FF FE E1 25 00 01 30 73 00 10 ....0....%..0s..
+0000E250 A6 48 00 1F 10 E0 48 00 BE 12 00 14 10 E7 00 00 .H....H.........
+0000E260 32 52 FF FF BE 32 FF FC 10 E7 38 00 33 05 00 02 2R...2....8.3...
+0000E270 16 43 30 03 BE 52 14 E8 13 39 38 00 BE 04 14 EC .C0..R...98.....
+0000E280 31 33 00 18 E1 05 00 02 30 95 FF FD A6 43 00 1F 13......0....C..
+0000E290 10 E0 40 00 BE 12 00 14 10 E7 00 00 32 52 FF FF ..@.........2R..
+0000E2A0 BE 32 FF FC 10 E7 38 00 33 05 00 03 16 49 30 03 .2....8.3....I0.
+0000E2B0 BE 52 14 E8 13 39 38 00 BC 04 14 EC E0 85 00 03 .R...98.........
+0000E2C0 32 B5 FF FC 33 05 00 04 A6 49 00 1F 10 60 20 00 2...3....I...` .
+0000E2D0 BE 12 00 14 10 63 00 00 32 52 FF FF BE 32 FF FC .....c..2R...2..
+0000E2E0 10 63 18 00 32 73 00 20 13 39 18 00 B0 00 00 00 .c..2s. .9......
+0000E2F0 A4 79 FF FF 10 80 C8 00 90 99 00 41 90 84 00 41 .y.........A...A
+0000E300 90 84 00 41 90 84 00 41 90 84 00 41 90 84 00 41 ...A...A...A...A
+0000E310 90 84 00 41 90 84 00 41 90 84 00 41 90 84 00 41 ...A...A...A...A
+0000E320 90 84 00 41 90 84 00 41 90 84 00 41 90 84 00 41 ...A...A...A...A
+0000E330 90 84 00 41 90 84 00 41 B0 00 00 00 A8 84 FF FF ...A...A........
+0000E340 88 83 20 00 BE 04 0F 1C 31 20 3F 51 B0 00 00 01 .. .....1 ?Q....
+0000E350 31 00 9F 00 33 E0 FF FD F9 17 00 18 B8 10 ED 5C 1...3..........\
+0000E360 F9 36 00 04 B0 00 00 01 31 20 9E EC 30 60 3F 51 .6......1 ..0`?Q
+0000E370 10 80 C8 00 90 99 00 41 90 84 00 41 90 84 00 41 .......A...A...A
+0000E380 F9 37 00 18 F8 76 00 04 13 24 00 00 32 73 FF FD .7...v...$..2s..
+0000E390 B8 10 ED 28 33 E0 FF FD 11 00 C8 00 91 19 00 41 ...(3..........A
+0000E3A0 91 08 00 41 91 08 00 41 13 28 00 00 30 E0 3F 44 ...A...A.(..0.?D
+0000E3B0 F8 F6 00 04 32 73 FF FD 30 60 00 0D 16 53 18 03 ....2s..0`...S..
+0000E3C0 BE 52 00 78 10 98 00 00 BE 15 F9 04 30 F3 00 08 .R.x........0...
+0000E3D0 E0 98 00 00 30 B5 FF FF A6 53 00 1F 10 C0 20 00 ....0....S.... .
+0000E3E0 BE 12 00 14 10 C6 00 00 32 52 FF FF BE 32 FF FC ........2R...2..
+0000E3F0 10 C6 30 00 30 98 00 01 16 47 18 03 BE 52 12 CC ..0.0....G...R..
+0000E400 13 39 30 00 BC 05 13 30 E0 B8 00 01 32 B5 FF FE .90....0....2...
+0000E410 30 98 00 02 A6 47 00 1F 10 60 28 00 BE 12 00 14 0....G...`(.....
+0000E420 10 63 00 00 32 52 FF FF BE 32 FF FC 10 63 18 00 .c..2R...2...c..
+0000E430 32 73 00 10 13 39 18 00 A4 B9 00 1F 10 60 C8 00 2s...9.......`..
+0000E440 90 79 00 41 90 63 00 41 90 63 00 41 90 63 00 41 .y.A.c.A.c.A.c.A
+0000E450 90 63 00 41 10 C0 C8 00 90 D9 00 41 90 C6 00 41 .c.A.......A...A
+0000E460 90 C6 00 41 90 C6 00 41 90 C6 00 41 90 C6 00 41 ...A...A...A...A
+0000E470 90 C6 00 41 90 C6 00 41 90 C6 00 41 90 C6 00 41 ...A...A...A...A
+0000E480 A4 63 00 1F A4 C6 00 0F 30 A5 01 01 30 63 00 01 .c......0...0c..
+0000E490 30 C6 00 04 F8 B6 00 64 F8 76 00 68 F8 D6 00 60 0......d.v.h...`
+0000E4A0 30 E0 00 1E 11 20 C8 00 91 39 00 41 91 29 00 41 0.... ...9.A.).A
+0000E4B0 91 29 00 41 91 29 00 41 91 29 00 41 91 29 00 41 .).A.).A.).A.).A
+0000E4C0 91 29 00 41 91 29 00 41 91 29 00 41 91 29 00 41 .).A.).A.).A.).A
+0000E4D0 91 29 00 41 91 29 00 41 91 29 00 41 91 29 00 41 .).A.).A.).A.).A
+0000E4E0 32 73 FF F2 16 43 38 03 BE 52 08 88 13 29 00 00 2s...C8..R...)..
+0000E4F0 30 60 01 1E 16 45 18 03 BE 52 08 78 10 60 00 00 0`...E...R.x.`..
+0000E500 13 04 00 00 30 A0 3F 45 F8 76 00 6C F8 B6 00 04 ....0.?E.v.l....
+0000E510 10 E3 18 00 31 00 00 02 30 A3 00 01 B0 00 00 01 ....1...0.......
+0000E520 30 E7 A9 58 16 53 40 03 BE 52 00 40 30 C6 00 01 0..X.S@..R.@0...
+0000E530 BE 15 EB 88 13 F5 00 00 E0 98 00 00 32 B5 FF FF ............2...
+0000E540 33 18 00 01 A6 53 00 1F 10 60 20 00 BE 12 00 14 3....S...` .....
+0000E550 10 63 00 00 32 52 FF FF BE 32 FF FC 10 63 18 00 .c..2R...2...c..
+0000E560 32 73 00 08 13 39 18 00 E4 67 00 00 A5 39 00 07 2s...9...g...9..
+0000E570 F8 B6 00 6C 30 63 00 3A 10 63 18 00 30 85 00 01 ...l0c.:.c..0...
+0000E580 D5 23 B0 00 88 66 20 00 11 20 C8 00 91 39 00 41 .#...f .. ...9.A
+0000E590 91 29 00 41 91 29 00 41 32 73 FF FD 13 29 00 00 .).A.).A2s...)..
+0000E5A0 BE 03 0F 64 30 E7 00 02 16 53 40 03 BE B2 FF 84 ...d0....S@.....
+0000E5B0 10 A4 00 00 B8 10 FF B8 E4 67 00 00 30 80 00 09 .........g..0...
+0000E5C0 B0 00 00 01 31 20 A1 58 B0 00 00 01 30 A0 A0 D8 ....1 .X....0...
+0000E5D0 F8 96 00 58 E8 81 00 24 30 C0 00 05 30 E0 3F 47 ...X...$0...0.?G
+0000E5E0 F9 36 00 50 F8 B6 00 54 F8 D6 00 5C BE 04 14 68 .6.P...T...\...h
+0000E5F0 F8 F6 00 04 10 A0 C8 00 90 B9 00 41 90 A5 00 41 ...........A...A
+0000E600 90 A5 00 41 13 25 00 00 32 73 FF FD 30 A0 3F 48 ...A.%..2s..0.?H
+0000E610 B8 10 E8 14 F8 B6 00 04 E8 76 00 0C BE 23 09 A4 .........v...#..
 0000E620 30 E0 3F 40 F8 F6 00 04 B8 10 F3 D0 13 F8 00 00 0.?@............
 0000E630 B8 10 E9 18 E8 76 00 4C 30 60 00 1F 16 53 18 03 .....v.L0`...S..
 0000E640 BC B2 EF 84 B8 10 EF D4 E8 76 00 24 B8 10 EA 1C .........v.$....
@@ -14117,204 +11458,43 @@ l0000E60C:
 0000E6D0 A4 63 00 04 BE 23 0E 5C 30 E0 00 02 13 23 00 00 .c...#.\0....#..
 0000E6E0 10 85 00 00 A4 65 04 00 B8 10 F1 78 12 79 00 00 .....e.....x.y..
 0000E6F0 E8 76 00 6C E8 D6 00 60 16 46 18 03 BE 52 FE 18 .v.l...`.F...R..
-0000E700 10 E3 18 00                                     ....            
-
-l0000E704:
-	addik	r4,r0,00000012
-	cmpu	r18,r3,r4
-	bltid	r18,0000E748
-	addk	r3,r3,r3
-
-l0000E714:
-	imm	00000001
-	addik	r6,r0,FFFFA97E
-	imm	00000001
-	addik	r3,r3,FFFFA958
-
-l0000E724:
-	lhui	r4,r3,00000000
-	addik	r3,r3,00000002
-	xor	r5,r6,r3
-	addik	r4,r4,0000003A
-	addk	r4,r4,r4
-	bneid	r5,0000E724
-	sh	r0,r4,r22
-
-l0000E740:
-	addik	r3,r0,00000013
-	swi	r3,r22,0000006C
-
-l0000E748:
-	addik	r3,r22,00000534
-	addik	r4,r0,00000007
-	swi	r4,r22,00000058
-	swi	r3,r22,00000070
-	swi	r3,r22,00000050
-	addik	r10,r22,000002F4
-	addik	r9,r22,00000058
-	addik	r8,r22,00000070
-	addik	r7,r0,00000013
-	addik	r6,r22,00000074
-	addk	r5,r0,r0
-	brlid	r15,000109C0
-	swi	r20,r1,00000034
-	beqid	r3,0000F748
-	lwi	r20,r1,00000034
-
-l0000E784:
-	imm	00000001
-	addik	r5,r0,FFFF9F44
-	addik	r6,r0,00003F51
-	addik	r31,r0,FFFFFFFD
-	swi	r5,r23,00000018
-	brid	0000D0B8
-	swi	r6,r22,00000004
-0000E7A0 E8 76 00 44                                     .v.D            
-
-l0000E7A4:
-	beqid	r3,0000E80C
-	addik	r8,r0,00003F3F
-
-l0000E7AC:
-	cmpu	r18,r21,r3
-	bgeid	r18,0000E7BC
-	addk	r31,r21,r0
-
-l0000E7B8:
-	addk	r31,r3,r0
-
-l0000E7BC:
-	cmpu	r18,r31,r26
-	bgei	r18,0000E7C8
-
-l0000E7C4:
-	addk	r31,r26,r0
-
-l0000E7C8:
-	beqid	r31,0000D0B8
-	addk	r6,r24,r0
-
-l0000E7D0:
-	addk	r5,r28,r0
-	addk	r7,r31,r0
-	swi	r20,r1,00000034
-	imm	00000000
-	brlid	r15,00008C34
-	rsubk	r21,r31,r21
-	lwi	r3,r22,00000044
-	addk	r24,r24,r31
-	rsubk	r26,r31,r26
-	addk	r28,r28,r31
-	rsubk	r31,r31,r3
-	swi	r31,r22,00000044
-	lwi	r4,r22,00000004
-	brid	0000DFDC
-	lwi	r20,r1,00000034
-
-l0000E80C:
-	swi	r8,r22,00000004
-	brid	0000D9E8
-	addk	r31,r24,r0
-0000E818                         E8 76 00 44                     .v.D    
-
-l0000E81C:
-	addik	r7,r0,00003F43
-	brid	0000E7A4
-	swi	r7,r22,00000004
-0000E828                         B8 10 F1 48 E8 96 00 14         ...H....
+0000E700 10 E3 18 00 30 80 00 12 16 43 20 03 BE 52 00 3C ....0....C ..R.<
+0000E710 10 63 18 00 B0 00 00 01 30 C0 A9 7E B0 00 00 01 .c......0..~....
+0000E720 30 63 A9 58 E4 83 00 00 30 63 00 02 88 A6 18 00 0c.X....0c......
+0000E730 30 84 00 3A 10 84 20 00 BE 25 FF EC D4 04 B0 00 0..:.. ..%......
+0000E740 30 60 00 13 F8 76 00 6C 30 76 05 34 30 80 00 07 0`...v.l0v.40...
+0000E750 F8 96 00 58 F8 76 00 70 F8 76 00 50 31 56 02 F4 ...X.v.p.v.P1V..
+0000E760 31 36 00 58 31 16 00 70 30 E0 00 13 30 D6 00 74 16.X1..p0...0..t
+0000E770 10 A0 00 00 B9 F4 22 4C FA 81 00 34 BE 03 0F CC ......"L...4....
+0000E780 EA 81 00 34 B0 00 00 01 30 A0 9F 44 30 C0 3F 51 ...4....0..D0.?Q
+0000E790 33 E0 FF FD F8 B7 00 18 B8 10 E9 20 F8 D6 00 04 3.......... ....
+0000E7A0 E8 76 00 44 BE 03 00 68 31 00 3F 3F 16 55 18 03 .v.D...h1.??.U..
+0000E7B0 BE B2 00 0C 13 F5 00 00 13 E3 00 00 16 5F D0 03 ............._..
+0000E7C0 BC B2 00 08 13 FA 00 00 BE 1F E8 F0 10 D8 00 00 ................
+0000E7D0 10 BC 00 00 10 FF 00 00 FA 81 00 34 B0 00 00 00 ...........4....
+0000E7E0 B9 F4 A4 54 16 BF A8 00 E8 76 00 44 13 18 F8 00 ...T.....v.D....
+0000E7F0 17 5F D0 00 13 9C F8 00 17 FF 18 00 FB F6 00 44 ._.............D
+0000E800 E8 96 00 04 B8 10 F7 D8 EA 81 00 34 F9 16 00 04 ...........4....
+0000E810 B8 10 F1 D8 13 F8 00 00 E8 76 00 44 30 E0 3F 43 .........v.D0.?C
+0000E820 B8 10 FF 84 F8 F6 00 04 B8 10 F1 48 E8 96 00 14 ...........H....
 0000E830 B8 10 F1 20 E8 96 00 14 B8 10 F0 F8 E8 96 00 14 ... ............
-0000E840 B8 10 F4 D8 E8 96 00 0C EB F6 00 6C             ...........l    
-
-l0000E84C:
-	lwi	r7,r22,00000064
-	lwi	r5,r22,00000068
-	addk	r12,r0,r0
-	addk	r5,r7,r5
-
-l0000E85C:
-	cmpu	r18,r5,r31
-	bgeid	r18,0000F7CC
-	addik	r9,r0,FFFFFFFF
-
-l0000E868:
-	lwi	r3,r22,00000058
-	lwi	r8,r22,00000050
-	andi	r18,r3,0000001F
-	addk	r6,r0,r9
-	beqid	r18,0000E88C
-	addk	r6,r6,r0
-
-l0000E880:
-	addik	r18,r18,FFFFFFFF
-	bneid	r18,0000E880
-	addk	r6,r6,r6
-
-l0000E88C:
-	xori	r6,r6,FFFFFFFF
-	and	r3,r25,r6
-	addk	r3,r3,r3
-	addk	r3,r3,r3
-	addk	r3,r8,r3
-	lbui	r4,r3,00000001
-	cmpu	r18,r4,r19
-	bgeid	r18,0000E904
-	lhui	r3,r3,00000002
-
-l0000E8B0:
-	beqi	r21,0000DCCC
-
-l0000E8B4:
-	addik	r24,r24,00000001
-	lbui	r4,r24,FFFFFFFF
-	addik	r21,r21,FFFFFFFF
-	andi	r18,r19,0000001F
-	addk	r3,r0,r4
-	beqid	r18,0000E8DC
-	addk	r3,r3,r0
-
-l0000E8D0:
-	addik	r18,r18,FFFFFFFF
-	bneid	r18,0000E8D0
-	addk	r3,r3,r3
-
-l0000E8DC:
-	addk	r25,r25,r3
-	and	r3,r25,r6
-	addk	r3,r3,r3
-	addk	r3,r3,r3
-	addk	r3,r8,r3
-	lbui	r4,r3,00000001
-	addik	r19,r19,00000008
-	cmpu	r18,r4,r19
-	bltid	r18,0000E8B0
-	lhui	r3,r3,00000002
-
-l0000E904:
-	cmpu	r18,r3,r20
-	bltid	r18,0000EDBC
-	xori	r6,r3,00000010
-
-l0000E910:
-	addik	r6,r31,00000001
-	addik	r31,r31,0000003A
-	addk	r31,r31,r31
-	swi	r6,r22,0000006C
-	andi	r18,r4,0000001F
-	addk	r8,r0,r25
-	beqid	r18,0000E93C
-	addk	r8,r8,r0
-
-l0000E930:
-	addik	r18,r18,FFFFFFFF
-	bneid	r18,0000E930
-	srl	r8,r8
-
-l0000E93C:
-	sh	r3,r31,r22
-	addk	r25,r8,r0
-	rsubk	r19,r4,r19
-	brid	0000E85C
-	addk	r31,r6,r0
+0000E840 B8 10 F4 D8 E8 96 00 0C EB F6 00 6C E8 F6 00 64 ...........l...d
+0000E850 E8 B6 00 68 11 80 00 00 10 A7 28 00 16 45 F8 03 ...h......(..E..
+0000E860 BE B2 0F 6C 31 20 FF FF E8 76 00 58 E9 16 00 50 ...l1 ...v.X...P
+0000E870 A6 43 00 1F 10 C0 48 00 BE 12 00 14 10 C6 00 00 .C....H.........
+0000E880 32 52 FF FF BE 32 FF FC 10 C6 30 00 A8 C6 FF FF 2R...2....0.....
+0000E890 84 79 30 00 10 63 18 00 10 63 18 00 10 68 18 00 .y0..c...c...h..
+0000E8A0 E0 83 00 01 16 44 98 03 BE B2 00 5C E4 63 00 02 .....D.....\.c..
+0000E8B0 BC 15 F4 1C 33 18 00 01 E0 98 FF FF 32 B5 FF FF ....3.......2...
+0000E8C0 A6 53 00 1F 10 60 20 00 BE 12 00 14 10 63 00 00 .S...` ......c..
+0000E8D0 32 52 FF FF BE 32 FF FC 10 63 18 00 13 39 18 00 2R...2...c...9..
+0000E8E0 84 79 30 00 10 63 18 00 10 63 18 00 10 68 18 00 .y0..c...c...h..
+0000E8F0 E0 83 00 01 32 73 00 08 16 44 98 03 BE 52 FF B4 ....2s...D...R..
+0000E900 E4 63 00 02 16 43 A0 03 BE 52 04 B4 A8 C3 00 10 .c...C...R......
+0000E910 30 DF 00 01 33 FF 00 3A 13 FF F8 00 F8 D6 00 6C 0...3..:.......l
+0000E920 A6 44 00 1F 11 00 C8 00 BE 12 00 14 11 08 00 00 .D..............
+0000E930 32 52 FF FF BE 32 FF FC 91 08 00 41 D4 7F B0 00 2R...2.....A....
+0000E940 13 28 00 00 16 64 98 00 B8 10 FF 14 13 E6 00 00 .(...d..........
 0000E950 16 53 A0 03 BE 52 00 78 13 F8 00 00 BE 15 F3 70 .S...R.x.......p
 0000E960 30 73 00 08 E0 D8 00 00 30 95 FF FF A6 53 00 1F 0s......0....S..
 0000E970 10 A0 30 00 BE 12 00 14 10 A5 00 00 32 52 FF FF ..0.........2R..
@@ -14361,356 +11541,63 @@ l0000E93C:
 0000EC00 10 E0 00 00 10 A7 00 00 10 C7 00 00 B9 F4 67 0C ..............g.
 0000EC10 FA 81 00 34 F8 76 00 1C F8 77 00 30 30 A0 3F 3F ...4.v...w.00.??
 0000EC20 F8 B6 00 04 B8 10 ED C4 EA 81 00 34 B8 10 FE C4 ...........4....
-0000EC30 13 F8 00 00                                     ....            
-
-l0000EC34:
-	lwi	r3,r22,00000034
-	cmpu	r18,r4,r3
-	bgeid	r18,0000EFB4
-	lwi	r5,r22,00000038
-
-l0000EC44:
-	lwi	r6,r22,0000002C
-	rsubk	r4,r3,r4
-	rsubk	r3,r4,r6
-	addk	r5,r5,r3
-
-l0000EC54:
-	lwi	r6,r22,00000044
-	cmpu	r18,r6,r4
-	bgeid	r18,0000EC68
-	addk	r3,r6,r0
-
-l0000EC64:
-	addk	r3,r4,r0
-
-l0000EC68:
-	cmpu	r18,r3,r26
-	bgei	r18,0000EC74
-
-l0000EC70:
-	addk	r3,r26,r0
-
-l0000EC74:
-	rsubk	r6,r3,r6
-	swi	r6,r22,00000044
-	addik	r6,r5,00000004
-	rsubk	r26,r3,r26
-	cmpu	r18,r6,r28
-	bgeid	r18,0000EC94
-	addik	r4,r0,00000001
-
-l0000EC90:
-	addk	r4,r0,r0
-
-l0000EC94:
-	addik	r6,r28,00000004
-	cmpu	r18,r6,r5
-	bgeid	r18,0000ECA8
-	addik	r7,r0,00000001
-
-l0000ECA4:
-	addk	r7,r0,r0
-
-l0000ECA8:
-	addik	r8,r0,00000009
-	or	r4,r4,r7
-	cmpu	r18,r3,r8
-	bltid	r18,0000ECC0
-	addik	r6,r0,00000001
-
-l0000ECBC:
-	addk	r6,r0,r0
-
-l0000ECC0:
-	and	r4,r4,r6
-	andi	r4,r4,000000FF
-	beqid	r4,0000F1E0
-	or	r4,r28,r5
-
-l0000ECD0:
-	andi	r4,r4,00000003
-	bneid	r4,0000F1E0
-	addk	r6,r0,r0
-
-l0000ECDC:
-	addk	r7,r6,r0
-	addik	r8,r3,FFFFFFFC
-	addk	r4,r0,r8
-	srl	r4,r8
-	srl	r4,r4
-	addik	r4,r4,00000001
-
-l0000ECF4:
-	lw	r8,r6,r5
-	addik	r7,r7,00000001
-	sw	r8,r6,r28
-	cmpu	r18,r4,r7
-	bltid	r18,0000ECF4
-	addik	r6,r6,00000004
-
-l0000ED0C:
-	addk	r4,r4,r4
-	addk	r4,r4,r4
-	xor	r9,r3,r4
-	addk	r7,r28,r4
-	rsubk	r6,r4,r3
-	beqid	r9,0000ED50
-	addk	r8,r5,r4
-
-l0000ED28:
-	lbu	r5,r4,r5
-	sb	r5,r4,r28
-	addik	r4,r6,FFFFFFFF
-	beqid	r4,0000ED50
-	xori	r6,r6,00000002
-
-l0000ED3C:
-	lbui	r9,r8,00000001
-	beqid	r6,0000ED50
-	sbi	r9,r7,00000001
-
-l0000ED48:
-	lbui	r8,r8,00000002
-	sbi	r8,r7,00000002
-
-l0000ED50:
-	lwi	r4,r22,00000044
-
-l0000ED54:
-	beqid	r4,0000ED64
-	addk	r28,r28,r3
-
-l0000ED5C:
-	brid	0000DFDC
-	lwi	r4,r22,00000004
-
-l0000ED64:
-	addik	r7,r0,00003F48
-	brid	0000CE24
-	swi	r7,r22,00000004
-
-l0000ED70:
-	imm	00000001
-	addik	r6,r0,FFFF9F20
-	brid	0000DE38
-	addk	r24,r4,r0
-
-l0000ED80:
-	lwi	r3,r22,00000044
-	rsubk	r5,r5,r28
-	brid	0000EC68
-	addk	r6,r3,r0
-
-l0000ED90:
-	imm	00000001
-	addik	r3,r0,FFFF9FF4
-	addik	r4,r0,00003F51
-	addik	r31,r0,FFFFFFFD
-	swi	r3,r23,00000018
-	brid	0000D0B8
-	swi	r4,r22,00000004
-0000EDAC                                     12 63 00 00             .c..
-0000EDB0 13 05 00 00 B8 10 EB C4 13 23 00 00             .........#..    
-
-l0000EDBC:
-	beqid	r6,0000F420
-	xori	r3,r3,00000011
-
-l0000EDC4:
-	beqid	r3,0000F350
-	addik	r8,r4,00000007
-
-l0000EDCC:
-	cmpu	r18,r8,r19
-	bgeid	r18,0000EE18
-	addik	r6,r0,FFFFFFF9
-
-;; fn0000EDD8: 0000EDD8
-;;   Called from:
-;;     0000CE20 (in fn0000CEE4)
-;;     0000E608 (in fn0000D9E8)
-;;     0000E804 (in fn0000D9E8)
-;;     0000E858 (in fn0000D9E8)
-;;     0000ED5C (in fn0000CEF4)
-;;     0000ED68 (in fn0000CEF4)
-;;     0000EDD4 (in fn0000EE14)
-;;     0000EE10 (in fn0000EE08)
-;;     0000EE14 (in fn0000EE14)
-fn0000EDD8 proc
-	beqi	r21,0000DCCC
-
-l0000EDDC:
-	addik	r24,r24,00000001
-	lbui	r6,r24,FFFFFFFF
-	addik	r21,r21,FFFFFFFF
-	andi	r18,r19,0000001F
-	addk	r3,r0,r6
-	beqid	r18,0000EE04
-	addk	r3,r3,r0
-
-l0000EDF8:
-	addik	r18,r18,FFFFFFFF
-	bneid	r18,0000EDF8
-	addk	r3,r3,r3
-
-l0000EE04:
-	addik	r19,r19,00000008
-
-;; fn0000EE08: 0000EE08
-;;   Called from:
-;;     0003014C (in fn0002FFD0)
-fn0000EE08 proc
-	cmpu	r18,r8,r19
-	bltid	r18,0000EDD8
-	addk	r25,r25,r3
-
-;; fn0000EE14: 0000EE14
-;;   Called from:
-;;     0000EE10 (in fn0000EE08)
-;;     0000EE10 (in fn0000EDD8)
-fn0000EE14 proc
-	addik	r6,r0,FFFFFFF9
-
-l0000EE18:
-	addk	r9,r12,r0
-	andi	r18,r4,0000001F
-	addk	r3,r0,r25
-	beqid	r18,0000EE38
-	addk	r3,r3,r0
-
-l0000EE2C:
-	addik	r18,r18,FFFFFFFF
-	bneid	r18,0000EE2C
-	srl	r3,r3
-
-l0000EE38:
-	rsubk	r4,r4,r6
-	andi	r6,r3,0000007F
-	addik	r6,r6,0000000B
-	addk	r19,r19,r4
-	addk	r25,r0,r3
-	srl	r25,r3
-	srl	r25,r25
-	srl	r25,r25
-	srl	r25,r25
-	srl	r25,r25
-	srl	r25,r25
-	srl	r25,r25
-
-l0000EE68:
-	addk	r11,r6,r31
-	cmpu	r18,r11,r5
-	bltid	r18,0000F968
-	addik	r4,r31,0000003A
-
-l0000EE78:
-	addk	r8,r4,r4
-	swi	r8,r1,00000038
-	addk	r8,r22,r8
-	srl	r8,r8
-	addik	r10,r6,FFFFFFFF
-	addik	r3,r0,00000004
-	imm	00000000
-	andi	r9,r9,FFFFFFFF
-	cmpu	r18,r10,r3
-	bgeid	r18,0000F88C
-	andi	r8,r8,00000001
-
-l0000EEA4:
-	beqid	r8,0000F6E0
-	lwi	r3,r1,00000038
-
-l0000EEAC:
-	addik	r31,r31,00000001
-	swi	r31,r1,00000028
-	sh	r9,r3,r22
-	addik	r10,r6,FFFFFFFE
-
-l0000EEBC:
-	addk	r3,r9,r9
-	addk	r3,r3,r3
-	addk	r3,r3,r3
-	addk	r3,r3,r3
-	addk	r3,r3,r3
-	addk	r3,r3,r3
-	addk	r3,r3,r3
-	addk	r3,r3,r3
-	addk	r3,r3,r3
-	addk	r3,r3,r3
-	addk	r3,r3,r3
-	addk	r3,r3,r3
-	addk	r3,r3,r3
-	addk	r3,r3,r3
-	addk	r3,r3,r3
-	addk	r4,r8,r4
-	addk	r3,r3,r3
-	rsubk	r6,r8,r6
-	imm	0000FFFF
-	andi	r3,r3,00000000
-	addk	r4,r4,r4
-	srl	r31,r6
-	or	r3,r3,r9
-	addk	r4,r22,r4
-	addk	r8,r0,r0
-
-l0000EF20:
-	swi	r3,r4,00000000
-	addik	r8,r8,00000001
-	cmpu	r18,r31,r8
-	bltid	r18,0000EF20
-	addik	r4,r4,00000004
-
-l0000EF34:
-	lwi	r4,r1,00000028
-	andi	r3,r6,FFFFFFFE
-	xor	r6,r3,r6
-	rsubk	r10,r3,r10
-	beqid	r6,0000EFA8
-	addk	r31,r3,r4
-
-l0000EF4C:
-	addik	r3,r31,0000003A
-	addk	r3,r3,r3
-	sh	r9,r3,r22
-	addik	r31,r31,00000001
-	beqid	r10,0000EFA8
-	addik	r6,r10,FFFFFFFF
-
-l0000EF64:
-	addik	r3,r31,0000003A
-	addk	r3,r3,r3
-	beqid	r6,0000EFA8
-	sh	r9,r3,r22
-
-l0000EF74:
-	addik	r3,r31,0000003B
-	addk	r3,r3,r3
-	sh	r9,r3,r22
-	xori	r3,r6,00000001
-	beqid	r3,0000EFA8
-	xori	r6,r6,00000002
-
-l0000EF8C:
-	addik	r3,r31,0000003C
-	addk	r3,r3,r3
-	beqid	r6,0000EFA8
-	sh	r9,r3,r22
-
-l0000EF9C:
-	addik	r31,r31,0000003D
-	addk	r31,r31,r31
-	sh	r9,r31,r22
-
-l0000EFA8:
-	addk	r31,r11,r0
-	brid	0000E85C
-	swi	r11,r22,0000006C
-
-l0000EFB4:
-	rsubk	r3,r4,r3
-	brid	0000EC54
-	addk	r5,r5,r3
+0000EC30 13 F8 00 00 E8 76 00 34 16 44 18 03 BE B2 03 78 .....v.4.D.....x
+0000EC40 E8 B6 00 38 E8 D6 00 2C 14 83 20 00 14 64 30 00 ...8...,.. ..d0.
+0000EC50 10 A5 18 00 E8 D6 00 44 16 46 20 03 BE B2 00 0C .......D.F .....
+0000EC60 10 66 00 00 10 64 00 00 16 43 D0 03 BC B2 00 08 .f...d...C......
+0000EC70 10 7A 00 00 14 C3 30 00 F8 D6 00 44 30 C5 00 04 .z....0....D0...
+0000EC80 17 43 D0 00 16 46 E0 03 BE B2 00 0C 30 80 00 01 .C...F......0...
+0000EC90 10 80 00 00 30 DC 00 04 16 46 28 03 BE B2 00 0C ....0....F(.....
+0000ECA0 30 E0 00 01 10 E0 00 00 31 00 00 09 80 84 38 00 0.......1.....8.
+0000ECB0 16 43 40 03 BE 52 00 0C 30 C0 00 01 10 C0 00 00 .C@..R..0.......
+0000ECC0 84 84 30 00 A4 84 00 FF BE 04 05 18 80 9C 28 00 ..0...........(.
+0000ECD0 A4 84 00 03 BE 24 05 0C 10 C0 00 00 10 E6 00 00 .....$..........
+0000ECE0 31 03 FF FC 10 80 40 00 90 88 00 41 90 84 00 41 1.....@....A...A
+0000ECF0 30 84 00 01 C9 06 28 00 30 E7 00 01 D9 06 E0 00 0.....(.0.......
+0000ED00 16 44 38 03 BE 52 FF F0 30 C6 00 04 10 84 20 00 .D8..R..0..... .
+0000ED10 10 84 20 00 89 23 20 00 10 FC 20 00 14 C4 18 00 .. ..# ... .....
+0000ED20 BE 09 00 30 11 05 20 00 C0 A4 28 00 D0 A4 E0 00 ...0.. ...(.....
+0000ED30 30 86 FF FF BE 04 00 1C A8 C6 00 02 E1 28 00 01 0............(..
+0000ED40 BE 06 00 10 F1 27 00 01 E1 08 00 02 F1 07 00 02 .....'..........
+0000ED50 E8 96 00 44 BE 04 00 10 13 9C 18 00 B8 10 F2 80 ...D............
+0000ED60 E8 96 00 04 30 E0 3F 48 B8 10 E0 BC F8 F6 00 04 ....0.?H........
+0000ED70 B0 00 00 01 30 C0 9F 20 B8 10 F0 C0 13 04 00 00 ....0.. ........
+0000ED80 E8 76 00 44 14 A5 E0 00 B8 10 FE E0 10 C3 00 00 .v.D............
+0000ED90 B0 00 00 01 30 60 9F F4 30 80 3F 51 33 E0 FF FD ....0`..0.?Q3...
+0000EDA0 F8 77 00 18 B8 10 E3 14 F8 96 00 04 12 63 00 00 .w...........c..
+0000EDB0 13 05 00 00 B8 10 EB C4 13 23 00 00 BE 06 06 64 .........#.....d
+0000EDC0 A8 63 00 11 BE 03 05 8C 31 04 00 07 16 48 98 03 .c......1....H..
+0000EDD0 BE B2 00 48 30 C0 FF F9 BC 15 EE F4 33 18 00 01 ...H0.......3...
+0000EDE0 E0 D8 FF FF 32 B5 FF FF A6 53 00 1F 10 60 30 00 ....2....S...`0.
+0000EDF0 BE 12 00 14 10 63 00 00 32 52 FF FF BE 32 FF FC .....c..2R...2..
+0000EE00 10 63 18 00 32 73 00 08 16 48 98 03 BE 52 FF CC .c..2s...H...R..
+0000EE10 13 39 18 00 30 C0 FF F9 11 2C 00 00 A6 44 00 1F .9..0....,...D..
+0000EE20 10 60 C8 00 BE 12 00 14 10 63 00 00 32 52 FF FF .`.......c..2R..
+0000EE30 BE 32 FF FC 90 63 00 41 14 84 30 00 A4 C3 00 7F .2...c.A..0.....
+0000EE40 30 C6 00 0B 12 73 20 00 13 20 18 00 93 23 00 41 0....s .. ...#.A
+0000EE50 93 39 00 41 93 39 00 41 93 39 00 41 93 39 00 41 .9.A.9.A.9.A.9.A
+0000EE60 93 39 00 41 93 39 00 41 11 66 F8 00 16 4B 28 03 .9.A.9.A.f...K(.
+0000EE70 BE 52 0A F8 30 9F 00 3A 11 04 20 00 F9 01 00 38 .R..0..:.. ....8
+0000EE80 11 16 40 00 91 08 00 41 31 46 FF FF 30 60 00 04 ..@....A1F..0`..
+0000EE90 B0 00 00 00 A5 29 FF FF 16 4A 18 03 BE B2 09 F0 .....)...J......
+0000EEA0 A5 08 00 01 BE 08 08 3C E8 61 00 38 33 FF 00 01 .......<.a.83...
+0000EEB0 FB E1 00 28 D5 23 B0 00 31 46 FF FE 10 69 48 00 ...(.#..1F...iH.
+0000EEC0 10 63 18 00 10 63 18 00 10 63 18 00 10 63 18 00 .c...c...c...c..
+0000EED0 10 63 18 00 10 63 18 00 10 63 18 00 10 63 18 00 .c...c...c...c..
+0000EEE0 10 63 18 00 10 63 18 00 10 63 18 00 10 63 18 00 .c...c...c...c..
+0000EEF0 10 63 18 00 10 63 18 00 10 88 20 00 10 63 18 00 .c...c.... ..c..
+0000EF00 14 C8 30 00 B0 00 FF FF A4 63 00 00 10 84 20 00 ..0......c.... .
+0000EF10 93 E6 00 41 80 63 48 00 10 96 20 00 11 00 00 00 ...A.cH... .....
+0000EF20 F8 64 00 00 31 08 00 01 16 5F 40 03 BE 52 FF F4 .d..1...._@..R..
+0000EF30 30 84 00 04 E8 81 00 28 A4 66 FF FE 88 C3 30 00 0......(.f....0.
+0000EF40 15 43 50 00 BE 06 00 64 13 E3 20 00 30 7F 00 3A .CP....d.. .0..:
+0000EF50 10 63 18 00 D5 23 B0 00 33 FF 00 01 BE 0A 00 4C .c...#..3......L
+0000EF60 30 CA FF FF 30 7F 00 3A 10 63 18 00 BE 06 00 3C 0...0..:.c.....<
+0000EF70 D5 23 B0 00 30 7F 00 3B 10 63 18 00 D5 23 B0 00 .#..0..;.c...#..
+0000EF80 A8 66 00 01 BE 03 00 24 A8 C6 00 02 30 7F 00 3C .f.....$....0..<
+0000EF90 10 63 18 00 BE 06 00 14 D5 23 B0 00 33 FF 00 3D .c.......#..3..=
+0000EFA0 13 FF F8 00 D5 3F B0 00 13 EB 00 00 B8 10 F8 B0 .....?..........
+0000EFB0 F9 76 00 6C 14 64 18 00 B8 10 FC 9C 10 A5 18 00 .v.l.d..........
 0000EFC0 16 53 A0 03 BE 52 00 78 13 F8 00 00 BE 15 ED 00 .S...R.x........
 0000EFD0 30 B3 00 08 E0 F8 00 00 30 D5 FF FF A6 53 00 1F 0.......0....S..
 0000EFE0 10 80 38 00 BE 12 00 14 10 84 00 00 32 52 FF FF ..8.........2R..
@@ -14726,160 +11613,35 @@ l0000EFB4:
 0000F080 10 A3 00 00 31 00 1F 8B 30 E0 00 02 30 C1 00 1C ....1...0...0...
 0000F090 F8 76 00 1C B9 F4 7F B0 F5 01 00 1C 31 20 3F 35 .v..........1 ?5
 0000F0A0 13 1F 00 00 F8 76 00 1C F9 36 00 04 13 33 00 00 .....v...6...3..
-0000F0B0 B8 10 F8 AC EA 81 00 34                         .......4        
-
-l0000F0B8:
-	addk	r3,r3,r4
-	addik	r5,r0,FFFFFFFF
-	andi	r18,r3,0000001F
-	addk	r8,r0,r5
-	beqid	r18,0000F0DC
-	addk	r8,r8,r0
-
-l0000F0D0:
-	addik	r18,r18,FFFFFFFF
-	bneid	r18,0000F0D0
-	addk	r8,r8,r8
-
-l0000F0DC:
-	xori	r8,r8,FFFFFFFF
-	and	r5,r8,r25
-	andi	r18,r4,0000001F
-	addk	r3,r0,r5
-	beqid	r18,0000F100
-	addk	r3,r3,r0
-
-l0000F0F4:
-	addik	r18,r18,FFFFFFFF
-	bneid	r18,0000F0F4
-	srl	r3,r3
-
-l0000F100:
-	addk	r3,r3,r10
-	addk	r3,r3,r3
-	addk	r3,r3,r3
-	addk	r7,r6,r3
-	lbui	r5,r7,00000001
-	addk	r9,r10,r0
-	lbu	r3,r3,r6
-	addk	r11,r5,r4
-	cmpu	r18,r11,r19
-	bgeid	r18,0000F1AC
-	lhui	r10,r7,00000002
-
-l0000F12C:
-	beqid	r21,0000D0B8
-	addk	r31,r21,r0
-
-l0000F134:
-	addik	r24,r24,00000001
-	lbui	r5,r24,FFFFFFFF
-	addik	r21,r21,FFFFFFFF
-	andi	r18,r19,0000001F
-	addk	r3,r0,r5
-	beqid	r18,0000F15C
-	addk	r3,r3,r0
-
-l0000F150:
-	addik	r18,r18,FFFFFFFF
-	bneid	r18,0000F150
-	addk	r3,r3,r3
-
-l0000F15C:
-	addk	r25,r25,r3
-	and	r5,r8,r25
-	andi	r18,r4,0000001F
-	addk	r3,r0,r5
-	beqid	r18,0000F180
-	addk	r3,r3,r0
-
-l0000F174:
-	addik	r18,r18,FFFFFFFF
-	bneid	r18,0000F174
-	srl	r3,r3
-
-l0000F180:
-	addk	r3,r3,r9
-	addk	r3,r3,r3
-	addk	r3,r3,r3
-	addk	r7,r6,r3
-	lbui	r5,r7,00000001
-	addik	r19,r19,00000008
-	lbu	r3,r3,r6
-	addk	r11,r5,r4
-	cmpu	r18,r11,r19
-	bltid	r18,0000F12C
-	lhui	r10,r7,00000002
-
-l0000F1AC:
-	lwi	r6,r22,00001BC8
-	andi	r18,r4,0000001F
-	addk	r7,r0,r25
-	beqid	r18,0000F1CC
-	addk	r7,r7,r0
-
-l0000F1C0:
-	addik	r18,r18,FFFFFFFF
-	bneid	r18,0000F1C0
-	srl	r7,r7
-
-l0000F1CC:
-	rsubk	r19,r4,r19
-	addk	r8,r5,r0
-	addk	r6,r4,r6
-	brid	0000D020
-	addk	r25,r7,r0
-
-l0000F1E0:
-	addk	r4,r0,r0
-
-l0000F1E4:
-	lbu	r6,r4,r5
-	sb	r6,r4,r28
-	addik	r4,r4,00000001
-	xor	r6,r3,r4
-	bnei	r6,0000F1E4
-
-l0000F1F8:
-	brid	0000ED54
-	lwi	r4,r22,00000044
-0000F200 13 20 00 00 B8 10 F4 74 12 79 00 00             . .....t.y..    
-
-l0000F20C:
-	addk	r19,r5,r0
-	addk	r21,r7,r0
-	addk	r24,r4,r0
-
-;; fn0000F218: 0000F218
-;;   Called from:
-;;     0000CE0C (in fn0000CEE4)
-;;     0000D078 (in fn0000CEF4)
-;;     0000F214 (in fn0000DD20)
-fn0000F218 proc
-	brid	0000D0B8
-	addk	r31,r0,r0
-
-l0000F220:
-	addik	r3,r0,FFFFFFFF
-	swi	r3,r22,00001BC8
-	swi	r4,r22,00000004
-	brid	0000D9E8
-	addk	r31,r24,r0
-0000F234             B0 00 00 00 A4 79 E0 00 BE 03 E2 DC     .....y......
+0000F0B0 B8 10 F8 AC EA 81 00 34 10 63 20 00 30 A0 FF FF .......4.c .0...
+0000F0C0 A6 43 00 1F 11 00 28 00 BE 12 00 14 11 08 00 00 .C....(.........
+0000F0D0 32 52 FF FF BE 32 FF FC 11 08 40 00 A9 08 FF FF 2R...2....@.....
+0000F0E0 84 A8 C8 00 A6 44 00 1F 10 60 28 00 BE 12 00 14 .....D...`(.....
+0000F0F0 10 63 00 00 32 52 FF FF BE 32 FF FC 90 63 00 41 .c..2R...2...c.A
+0000F100 10 63 50 00 10 63 18 00 10 63 18 00 10 E6 18 00 .cP..c...c......
+0000F110 E0 A7 00 01 11 2A 00 00 C0 63 30 00 11 65 20 00 .....*...c0..e .
+0000F120 16 4B 98 03 BE B2 00 88 E5 47 00 02 BE 15 DF 8C .K.......G......
+0000F130 13 F5 00 00 33 18 00 01 E0 B8 FF FF 32 B5 FF FF ....3.......2...
+0000F140 A6 53 00 1F 10 60 28 00 BE 12 00 14 10 63 00 00 .S...`(......c..
+0000F150 32 52 FF FF BE 32 FF FC 10 63 18 00 13 39 18 00 2R...2...c...9..
+0000F160 84 A8 C8 00 A6 44 00 1F 10 60 28 00 BE 12 00 14 .....D...`(.....
+0000F170 10 63 00 00 32 52 FF FF BE 32 FF FC 90 63 00 41 .c..2R...2...c.A
+0000F180 10 63 48 00 10 63 18 00 10 63 18 00 10 E6 18 00 .cH..c...c......
+0000F190 E0 A7 00 01 32 73 00 08 C0 63 30 00 11 65 20 00 ....2s...c0..e .
+0000F1A0 16 4B 98 03 BE 52 FF 88 E5 47 00 02 E8 D6 1B C8 .K...R...G......
+0000F1B0 A6 44 00 1F 10 E0 C8 00 BE 12 00 14 10 E7 00 00 .D..............
+0000F1C0 32 52 FF FF BE 32 FF FC 90 E7 00 41 16 64 98 00 2R...2.....A.d..
+0000F1D0 11 05 00 00 10 C4 30 00 B8 10 DE 48 13 27 00 00 ......0....H.'..
+0000F1E0 10 80 00 00 C0 C4 28 00 D0 C4 E0 00 30 84 00 01 ......(.....0...
+0000F1F0 88 C3 20 00 BC 26 FF F0 B8 10 FB 5C E8 96 00 44 .. ..&.....\...D
+0000F200 13 20 00 00 B8 10 F4 74 12 79 00 00 12 65 00 00 . .....t.y...e..
+0000F210 12 A7 00 00 13 04 00 00 B8 10 DE A0 13 E0 00 00 ................
+0000F220 30 60 FF FF F8 76 1B C8 F8 96 00 04 B8 10 E7 BC 0`...v..........
+0000F230 13 F8 00 00 B0 00 00 00 A4 79 E0 00 BE 03 E2 DC .........y......
 0000F240 30 A0 3F 51 B0 00 00 01 30 80 9E BC 13 1F 00 00 0.?Q....0.......
 0000F250 F8 97 00 18 F8 B6 00 04 B8 10 DE 60 33 E0 FF FD ...........`3...
-
-l0000F260:
-	lwi	r6,r1,00000024
-	addik	r5,r0,00003F42
-	swi	r5,r22,00000004
-	beqid	r6,0000FA84
-	swi	r3,r22,00000044
-
-l0000F274:
-	addk	r19,r4,r0
-	brid	0000E81C
-	addk	r25,r4,r0
+0000F260 E8 C1 00 24 30 A0 3F 42 F8 B6 00 04 BE 06 08 18 ...$0.?B........
+0000F270 F8 76 00 44 12 64 00 00 B8 10 F5 A4 13 24 00 00 .v.D.d.......$..
 0000F280 E8 96 00 24 BE 04 00 10 F8 16 00 14 30 A0 FF FF ...$........0...
 0000F290 F8 A4 00 30 A4 63 00 01 BE 03 00 9C 10 79 C8 00 ...0.c.......y..
 0000F2A0 10 63 18 00 10 63 18 00 10 63 18 00 10 63 18 00 .c...c...c...c..
@@ -14893,520 +11655,111 @@ l0000F274:
 0000F320 13 1F 00 00 F9 17 00 18 F9 36 00 04 B8 10 DD 8C .........6......
 0000F330 33 E0 FF FD B0 00 00 01 30 C0 9E 74 B8 10 EA F8 3.......0..t....
 0000F340 10 9F 00 00 12 63 00 00 B8 10 EB D0 12 A6 00 00 .....c..........
-
-l0000F350:
-	addik	r8,r4,00000003
-	cmpu	r18,r8,r19
-	bgeid	r18,0000F3A0
-	addik	r9,r0,FFFFFFFD
-
-l0000F360:
-	beqi	r21,0000DCCC
-
-l0000F364:
-	addik	r24,r24,00000001
-	lbui	r6,r24,FFFFFFFF
-	addik	r21,r21,FFFFFFFF
-	andi	r18,r19,0000001F
-	addk	r3,r0,r6
-	beqid	r18,0000F38C
-	addk	r3,r3,r0
-
-l0000F380:
-	addik	r18,r18,FFFFFFFF
-	bneid	r18,0000F380
-	addk	r3,r3,r3
-
-l0000F38C:
-	addik	r19,r19,00000008
-	cmpu	r18,r8,r19
-	bltid	r18,0000F360
-	addk	r25,r25,r3
-
-l0000F39C:
-	addik	r9,r0,FFFFFFFD
-
-l0000F3A0:
-	andi	r18,r4,0000001F
-	addk	r3,r0,r25
-	beqid	r18,0000F3BC
-	addk	r3,r3,r0
-
-l0000F3B0:
-	addik	r18,r18,FFFFFFFF
-	bneid	r18,0000F3B0
-	srl	r3,r3
-
-l0000F3BC:
-	rsubk	r4,r4,r9
-	andi	r6,r3,00000007
-	addik	r6,r6,00000003
-	addk	r25,r0,r3
-	srl	r25,r3
-	srl	r25,r25
-	srl	r25,r25
-	addk	r19,r19,r4
-	brid	0000EE68
-	addk	r9,r12,r0
-0000F3E4             12 A6 00 00 12 63 00 00 13 05 00 00     .....c......
+0000F350 31 04 00 03 16 48 98 03 BE B2 00 48 31 20 FF FD 1....H.....H1 ..
+0000F360 BC 15 E9 6C 33 18 00 01 E0 D8 FF FF 32 B5 FF FF ...l3.......2...
+0000F370 A6 53 00 1F 10 60 30 00 BE 12 00 14 10 63 00 00 .S...`0......c..
+0000F380 32 52 FF FF BE 32 FF FC 10 63 18 00 32 73 00 08 2R...2...c..2s..
+0000F390 16 48 98 03 BE 52 FF CC 13 39 18 00 31 20 FF FD .H...R...9..1 ..
+0000F3A0 A6 44 00 1F 10 60 C8 00 BE 12 00 14 10 63 00 00 .D...`.......c..
+0000F3B0 32 52 FF FF BE 32 FF FC 90 63 00 41 14 84 48 00 2R...2...c.A..H.
+0000F3C0 A4 C3 00 07 30 C6 00 03 13 20 18 00 93 23 00 41 ....0.... ...#.A
+0000F3D0 93 39 00 41 93 39 00 41 12 73 20 00 B8 10 FA 8C .9.A.9.A.s .....
+0000F3E0 11 2C 00 00 12 A6 00 00 12 63 00 00 13 05 00 00 .,.......c......
 0000F3F0 B8 10 DC C8 13 E6 00 00 B8 10 F6 F8 12 A5 00 00 ................
-
-l0000F400:
-	addk	r19,r5,r0
-	brid	0000DE20
-	addk	r21,r6,r0
-
-l0000F40C:
-	addk	r21,r6,r0
-	addk	r19,r5,r0
-	addk	r24,r4,r0
-	brid	0000D0B8
-	addk	r31,r6,r0
-
-l0000F420:
-	addik	r8,r4,00000002
-	cmpu	r18,r8,r19
-	bgei	r18,0000F468
-
-l0000F42C:
-	beqi	r21,0000DCCC
-
-l0000F430:
-	addik	r24,r24,00000001
-	lbui	r6,r24,FFFFFFFF
-	addik	r21,r21,FFFFFFFF
-	andi	r18,r19,0000001F
-	addk	r3,r0,r6
-	beqid	r18,0000F458
-	addk	r3,r3,r0
-
-l0000F44C:
-	addik	r18,r18,FFFFFFFF
-	bneid	r18,0000F44C
-	addk	r3,r3,r3
-
-l0000F458:
-	addik	r19,r19,00000008
-	cmpu	r18,r8,r19
-	bltid	r18,0000F42C
-	addk	r25,r25,r3
-
-l0000F468:
-	andi	r18,r4,0000001F
-	addk	r9,r0,r25
-	beqid	r18,0000F484
-	addk	r9,r9,r0
-
-l0000F478:
-	addik	r18,r18,FFFFFFFF
-	bneid	r18,0000F478
-	srl	r9,r9
-
-l0000F484:
-	rsubk	r19,r4,r19
-	beqid	r31,0000FAB0
-	addk	r25,r9,r0
-
-l0000F490:
-	addik	r3,r31,00000039
-	andi	r6,r9,00000003
-	addk	r3,r3,r3
-	addk	r8,r0,r25
-	srl	r8,r25
-	srl	r8,r8
-	lhu	r9,r3,r22
-	addik	r6,r6,00000003
-	addk	r25,r8,r0
-	brid	0000EE68
-	addik	r19,r19,FFFFFFFE
-
-l0000F4BC:
-	addk	r19,r6,r0
-	brid	0000DE20
-	addk	r21,r7,r0
-
-l0000F4C8:
-	addk	r19,r3,r0
-	addk	r24,r4,r0
-	addk	r25,r3,r0
-	addik	r8,r0,00003F50
-
-;; fn0000F4D8: 0000F4D8
-;;   Called from:
-;;     0000D0B8 (in fn0000D0B8)
-;;     0000DCB8 (in fn0000DB94)
-;;     0000DCCC (in fn0000DCCC)
-;;     0000DD1C (in fn0000DD14)
-;;     0000DD1C (in fn0000DD14)
-;;     0000DD28 (in fn0000DD20)
-;;     0000DE44 (in fn0000DE38)
-;;     0000F218 (in fn0000F218)
-;;     0000F418 (in fn0000DD20)
-;;     0000F4D4 (in fn0000DD20)
-;;     0000F4F0 (in fn0000DD20)
-fn0000F4D8 proc
-	swi	r8,r22,00000004
-	brid	0000D0B8
-	addik	r31,r0,00000001
-
-l0000F4E4:
-	addk	r21,r7,r0
-	addk	r19,r6,r0
-	addk	r24,r4,r0
-	brid	0000D0B8
-	addk	r31,r7,r0
-
-l0000F4F8:
-	addk	r31,r3,r0
-	brid	0000D0B8
-	addk	r24,r4,r0
-
-l0000F504:
-	brid	0000E704
-	addk	r3,r5,r0
-
-l0000F50C:
-	imm	00000001
-	addik	r5,r0,FFFF9FD8
-	addik	r31,r0,FFFFFFFD
-	swi	r5,r23,00000018
-	brid	0000D0B8
-	swi	r6,r22,00000004
-
-l0000F524:
-	addk	r19,r5,r0
-	brid	0000DE20
-	addk	r21,r7,r0
+0000F400 12 65 00 00 B8 10 EA 1C 12 A6 00 00 12 A6 00 00 .e..............
+0000F410 12 65 00 00 13 04 00 00 B8 10 DC A0 13 E6 00 00 .e..............
+0000F420 31 04 00 02 16 48 98 03 BC B2 00 40 BC 15 E8 A0 1....H.....@....
+0000F430 33 18 00 01 E0 D8 FF FF 32 B5 FF FF A6 53 00 1F 3.......2....S..
+0000F440 10 60 30 00 BE 12 00 14 10 63 00 00 32 52 FF FF .`0......c..2R..
+0000F450 BE 32 FF FC 10 63 18 00 32 73 00 08 16 48 98 03 .2...c..2s...H..
+0000F460 BE 52 FF CC 13 39 18 00 A6 44 00 1F 11 20 C8 00 .R...9...D... ..
+0000F470 BE 12 00 14 11 29 00 00 32 52 FF FF BE 32 FF FC .....)..2R...2..
+0000F480 91 29 00 41 16 64 98 00 BE 1F 06 28 13 29 00 00 .).A.d.....(.)..
+0000F490 30 7F 00 39 A4 C9 00 03 10 63 18 00 11 00 C8 00 0..9.....c......
+0000F4A0 91 19 00 41 91 08 00 41 C5 23 B0 00 30 C6 00 03 ...A...A.#..0...
+0000F4B0 13 28 00 00 B8 10 F9 B4 32 73 FF FE 12 66 00 00 .(......2s...f..
+0000F4C0 B8 10 E9 60 12 A7 00 00 12 63 00 00 13 04 00 00 ...`.....c......
+0000F4D0 13 23 00 00 31 00 3F 50 F9 16 00 04 B8 10 DB DC .#..1.?P........
+0000F4E0 33 E0 00 01 12 A7 00 00 12 66 00 00 13 04 00 00 3........f......
+0000F4F0 B8 10 DB C8 13 E7 00 00 13 E3 00 00 B8 10 DB BC ................
+0000F500 13 04 00 00 B8 10 F2 00 10 65 00 00 B0 00 00 01 .........e......
+0000F510 30 A0 9F D8 33 E0 FF FD F8 B7 00 18 B8 10 DB 9C 0...3...........
+0000F520 F8 D6 00 04 12 65 00 00 B8 10 E8 F8 12 A7 00 00 .....e..........
 0000F530 E8 B6 00 1C 10 60 C8 00 90 79 00 41 90 63 00 41 .....`...y.A.c.A
 0000F540 90 63 00 41 90 63 00 41 90 63 00 41 90 63 00 41 .c.A.c.A.c.A.c.A
 0000F550 90 63 00 41 90 63 00 41 30 C1 00 1C F3 21 00 1C .c.A.c.A0....!..
 0000F560 FA 81 00 34 B9 F4 7A E0 F0 61 00 1D E8 96 00 14 ...4..z..a......
 0000F570 13 20 00 00 F8 76 00 1C 12 79 00 00 A4 64 04 00 . ...v...y...d..
-0000F580 B8 10 E2 E0 EA 81 00 34                         .......4        
-
-l0000F588:
-	addk	r3,r3,r7
-	andi	r18,r3,0000001F
-	addk	r9,r0,r8
-	beqid	r18,0000F5A8
-	addk	r9,r9,r0
-
-l0000F59C:
-	addik	r18,r18,FFFFFFFF
-	bneid	r18,0000F59C
-	addk	r9,r9,r9
-
-l0000F5A8:
-	xori	r9,r9,FFFFFFFF
-	and	r6,r9,r25
-	andi	r18,r7,0000001F
-	addk	r3,r0,r6
-	beqid	r18,0000F5CC
-	addk	r3,r3,r0
-
-l0000F5C0:
-	addik	r18,r18,FFFFFFFF
-	bneid	r18,0000F5C0
-	srl	r3,r3
-
-l0000F5CC:
-	addk	r3,r3,r4
-	addk	r3,r3,r3
-	addk	r3,r3,r3
-	addk	r6,r5,r3
-	lbui	r8,r6,00000001
-	lbu	r3,r3,r5
-	addk	r10,r8,r7
-	cmpu	r18,r10,r19
-	bgeid	r18,0000F674
-	lhui	r6,r6,00000002
-
-l0000F5F4:
-	beqid	r21,0000D0B8
-	addk	r31,r21,r0
-
-l0000F5FC:
-	addik	r24,r24,00000001
-	lbui	r6,r24,FFFFFFFF
-	addik	r21,r21,FFFFFFFF
-	andi	r18,r19,0000001F
-	addk	r3,r0,r6
-	beqid	r18,0000F624
-	addk	r3,r3,r0
-
-l0000F618:
-	addik	r18,r18,FFFFFFFF
-	bneid	r18,0000F618
-	addk	r3,r3,r3
-
-l0000F624:
-	addk	r25,r25,r3
-	and	r6,r9,r25
-	andi	r18,r7,0000001F
-	addk	r3,r0,r6
-	beqid	r18,0000F648
-	addk	r3,r3,r0
-
-l0000F63C:
-	addik	r18,r18,FFFFFFFF
-	bneid	r18,0000F63C
-	srl	r3,r3
-
-l0000F648:
-	addk	r3,r3,r4
-	addk	r3,r3,r3
-	addk	r3,r3,r3
-	addk	r6,r5,r3
-	lbui	r8,r6,00000001
-	addik	r19,r19,00000008
-	lbu	r3,r3,r5
-	addk	r10,r8,r7
-	cmpu	r18,r10,r19
-	bltid	r18,0000F5F4
-	lhui	r6,r6,00000002
-
-l0000F674:
-	rsubk	r19,r7,r19
-	swi	r10,r22,00001BC8
-	swi	r6,r22,00000044
-	andi	r18,r7,0000001F
-	addk	r4,r0,r25
-	beqid	r18,0000F69C
-	addk	r4,r4,r0
-
-l0000F690:
-	addik	r18,r18,FFFFFFFF
-	bneid	r18,0000F690
-	srl	r4,r4
-
-l0000F69C:
-	andi	r18,r8,0000001F
-	addk	r25,r0,r4
-	beqid	r18,0000F6B8
-	addk	r25,r25,r0
-
-l0000F6AC:
-	addik	r18,r18,FFFFFFFF
-	bneid	r18,0000F6AC
-	srl	r25,r25
-
-l0000F6B8:
-	bneid	r3,0000CF20
-	rsubk	r19,r8,r19
-
-l0000F6C0:
-	brid	0000CE00
-	addk	r3,r28,r0
-
-l0000F6C8:
-	addk	r19,r7,r0
-	brid	0000E438
-	addk	r21,r5,r0
-0000F6D4             12 63 00 00 B8 10 F2 F4 12 A4 00 00     .c..........
-
-l0000F6E0:
-	brid	0000EEBC
-	swi	r31,r1,00000028
-0000F6E8                         B8 10 F4 08 12 A3 00 00         ........
-
-l0000F6F0:
-	addk	r19,r8,r0
-	brid	0000E2EC
-	addk	r21,r3,r0
-
-l0000F6FC:
-	addk	r21,r3,r0
-	addk	r19,r8,r0
-	brid	0000D0B8
-	addk	r31,r3,r0
-0000F70C                                     13 1F 00 00             ....
+0000F580 B8 10 E2 E0 EA 81 00 34 10 63 38 00 A6 43 00 1F .......4.c8..C..
+0000F590 11 20 40 00 BE 12 00 14 11 29 00 00 32 52 FF FF . @......)..2R..
+0000F5A0 BE 32 FF FC 11 29 48 00 A9 29 FF FF 84 C9 C8 00 .2...)H..)......
+0000F5B0 A6 47 00 1F 10 60 30 00 BE 12 00 14 10 63 00 00 .G...`0......c..
+0000F5C0 32 52 FF FF BE 32 FF FC 90 63 00 41 10 63 20 00 2R...2...c.A.c .
+0000F5D0 10 63 18 00 10 63 18 00 10 C5 18 00 E1 06 00 01 .c...c..........
+0000F5E0 C0 63 28 00 11 48 38 00 16 4A 98 03 BE B2 00 88 .c(..H8..J......
+0000F5F0 E4 C6 00 02 BE 15 DA C4 13 F5 00 00 33 18 00 01 ............3...
+0000F600 E0 D8 FF FF 32 B5 FF FF A6 53 00 1F 10 60 30 00 ....2....S...`0.
+0000F610 BE 12 00 14 10 63 00 00 32 52 FF FF BE 32 FF FC .....c..2R...2..
+0000F620 10 63 18 00 13 39 18 00 84 C9 C8 00 A6 47 00 1F .c...9.......G..
+0000F630 10 60 30 00 BE 12 00 14 10 63 00 00 32 52 FF FF .`0......c..2R..
+0000F640 BE 32 FF FC 90 63 00 41 10 63 20 00 10 63 18 00 .2...c.A.c ..c..
+0000F650 10 63 18 00 10 C5 18 00 E1 06 00 01 32 73 00 08 .c..........2s..
+0000F660 C0 63 28 00 11 48 38 00 16 4A 98 03 BE 52 FF 88 .c(..H8..J...R..
+0000F670 E4 C6 00 02 16 67 98 00 F9 56 1B C8 F8 D6 00 44 .....g...V.....D
+0000F680 A6 47 00 1F 10 80 C8 00 BE 12 00 14 10 84 00 00 .G..............
+0000F690 32 52 FF FF BE 32 FF FC 90 84 00 41 A6 48 00 1F 2R...2.....A.H..
+0000F6A0 13 20 20 00 BE 12 00 14 13 39 00 00 32 52 FF FF .  ......9..2R..
+0000F6B0 BE 32 FF FC 93 39 00 41 BE 23 D8 68 16 68 98 00 .2...9.A.#.h.h..
+0000F6C0 B8 10 D7 40 10 7C 00 00 12 67 00 00 B8 10 ED 6C ...@.|...g.....l
+0000F6D0 12 A5 00 00 12 63 00 00 B8 10 F2 F4 12 A4 00 00 .....c..........
+0000F6E0 B8 10 F7 DC FB E1 00 28 B8 10 F4 08 12 A3 00 00 .......(........
+0000F6F0 12 68 00 00 B8 10 EB F8 12 A3 00 00 12 A3 00 00 .h..............
+0000F700 12 68 00 00 B8 10 D9 B4 13 E3 00 00 13 1F 00 00 .h..............
 0000F710 12 A4 00 00 12 63 00 00 B8 10 D9 A0 13 E4 00 00 .....c..........
 0000F720 13 1F 00 00 12 A3 00 00 12 67 00 00 B8 10 D9 8C .........g......
-0000F730 13 E3 00 00                                     ....            
-
-l0000F734:
-	addk	r21,r5,r0
-	addk	r19,r7,r0
-	addk	r24,r4,r0
-	brid	0000D0B8
-	addk	r31,r5,r0
-
-l0000F748:
-	addik	r7,r0,00003F46
-	swi	r7,r22,00000004
-	addk	r31,r3,r0
-	brid	0000E84C
-	swi	r3,r22,0000006C
-
-l0000F75C:
-	addk	r19,r3,r0
-	brid	0000E2EC
-	addk	r21,r4,r0
-
-l0000F768:
-	addk	r21,r4,r0
-	addk	r19,r3,r0
-	brid	0000D0B8
-	addk	r31,r4,r0
-
-l0000F778:
-	addk	r24,r31,r0
-	brid	0000D0B8
-	addk	r31,r0,r0
-0000F784             13 1F 00 00 12 A5 00 00 12 63 00 00     .........c..
-0000F790 B8 10 D9 28 13 E5 00 00                         ...(....        
-
-l0000F798:
-	addk	r19,r9,r0
-	brid	0000E2EC
-	addk	r21,r4,r0
-
-l0000F7A4:
-	addk	r21,r4,r0
-	addk	r19,r9,r0
-	brid	0000D0B8
-	addk	r31,r4,r0
-0000F7B4             13 1F 00 00 12 A5 00 00 B8 10 D8 FC     ............
-0000F7C0 13 E5 00 00                                     ....            
-
-l0000F7C4:
-	brid	0000DB34
-	addk	r31,r24,r0
-
-l0000F7CC:
-	lhui	r3,r22,00000274
-	bneid	r3,0000F8F8
-	addik	r6,r0,00003F51
-
-l0000F7D8:
-	imm	00000001
-	addik	r5,r0,FFFF9F7C
-	addik	r31,r0,FFFFFFFD
-	swi	r5,r23,00000018
-	brid	0000D0B8
-	swi	r6,r22,00000004
-
-l0000F7F0:
-	brlid	r15,00015318
-	nop
-	brid	0000DB84
-	lwi	r4,r22,0000000C
+0000F730 13 E3 00 00 12 A5 00 00 12 67 00 00 13 04 00 00 .........g......
+0000F740 B8 10 D9 78 13 E5 00 00 30 E0 3F 46 F8 F6 00 04 ...x....0.?F....
+0000F750 13 E3 00 00 B8 10 F0 F8 F8 76 00 6C 12 63 00 00 .........v.l.c..
+0000F760 B8 10 EB 8C 12 A4 00 00 12 A4 00 00 12 63 00 00 .............c..
+0000F770 B8 10 D9 48 13 E4 00 00 13 1F 00 00 B8 10 D9 3C ...H...........<
+0000F780 13 E0 00 00 13 1F 00 00 12 A5 00 00 12 63 00 00 .............c..
+0000F790 B8 10 D9 28 13 E5 00 00 12 69 00 00 B8 10 EB 50 ...(.....i.....P
+0000F7A0 12 A4 00 00 12 A4 00 00 12 69 00 00 B8 10 D9 0C .........i......
+0000F7B0 13 E4 00 00 13 1F 00 00 12 A5 00 00 B8 10 D8 FC ................
+0000F7C0 13 E5 00 00 B8 10 E3 70 13 F8 00 00 E4 76 02 74 .......p.....v.t
+0000F7D0 BE 23 01 28 30 C0 3F 51 B0 00 00 01 30 A0 9F 7C .#.(0.?Q....0..|
+0000F7E0 33 E0 FF FD F8 B7 00 18 B8 10 D8 D0 F8 D6 00 04 3...............
+0000F7F0 B9 F4 5B 28 80 00 00 00 B8 10 E3 8C E8 96 00 0C ..[(............
 0000F800 FB F7 00 00 FB 97 00 0C FB 57 00 10 FA B7 00 04 .........W......
 0000F810 FB 36 00 3C FA 76 00 40 B8 10 D4 D0 33 E0 00 02 .6.<.v.@....3...
-
-l0000F820:
-	addk	r19,r5,r0
-	brid	0000DB34
-	addk	r21,r6,r0
-
-l0000F82C:
-	addk	r19,r6,r0
-	brid	0000DB34
-	addk	r21,r7,r0
-
-l0000F838:
-	addk	r24,r31,r0
-	addk	r21,r7,r0
-	addk	r19,r6,r0
-	brid	0000D0B8
-	addk	r31,r7,r0
-0000F84C                                     12 65 00 00             .e..
-0000F850 B8 10 F7 EC 12 A6 00 00                         ........        
-
-l0000F858:
-	addk	r24,r31,r0
-	addk	r21,r7,r0
-	addk	r19,r5,r0
-	brid	0000D0B8
-	addk	r31,r7,r0
-
-l0000F86C:
-	addk	r19,r5,r0
-	brid	0000DB34
-	addk	r21,r7,r0
-0000F878                         13 1F 00 00 12 A6 00 00         ........
-0000F880 12 65 00 00 B8 10 D8 34 13 E6 00 00             .e.....4....    
-
-l0000F88C:
-	lwi	r3,r1,00000038
-	addik	r31,r31,00000001
-	addik	r6,r6,FFFFFFFE
-	brid	0000EF64
-	sh	r9,r3,r22
+0000F820 12 65 00 00 B8 10 E3 10 12 A6 00 00 12 66 00 00 .e...........f..
+0000F830 B8 10 E3 04 12 A7 00 00 13 1F 00 00 12 A7 00 00 ................
+0000F840 12 66 00 00 B8 10 D8 74 13 E7 00 00 12 65 00 00 .f.....t.....e..
+0000F850 B8 10 F7 EC 12 A6 00 00 13 1F 00 00 12 A7 00 00 ................
+0000F860 12 65 00 00 B8 10 D8 54 13 E7 00 00 12 65 00 00 .e.....T.....e..
+0000F870 B8 10 E2 C4 12 A7 00 00 13 1F 00 00 12 A6 00 00 ................
+0000F880 12 65 00 00 B8 10 D8 34 13 E6 00 00 E8 61 00 38 .e.....4.....a.8
+0000F890 33 FF 00 01 30 C6 FF FE B8 10 F6 CC D5 23 B0 00 3...0........#..
 0000F8A0 E8 96 00 28 10 60 C8 00 90 79 00 41 90 63 00 41 ...(.`...y.A.c.A
 0000F8B0 90 63 00 41 90 63 00 41 13 23 00 00 A4 63 00 0F .c.A.c.A.#...c..
 0000F8C0 32 73 FF FC BE 24 01 1C 30 63 00 08 16 43 A0 03 2s...$..0c...C..
 0000F8D0 BE B2 01 20 F8 76 00 28 B0 00 00 01 30 A0 9E A8 ... .v.(....0...
 0000F8E0 30 C0 3F 51 13 1F 00 00 F8 B7 00 18 F8 D6 00 04 0.?Q............
-0000F8F0 B8 10 D7 C8 33 E0 FF FD                         ....3...        
-
-l0000F8F8:
-	addik	r4,r22,00000070
-	addik	r11,r22,000002F4
-	addik	r8,r0,00000009
-	addik	r31,r22,00000074
-	swi	r8,r22,00000058
-	addk	r10,r11,r0
-	addk	r8,r4,r0
-	addk	r6,r31,r0
-	addik	r3,r22,00000534
-	swi	r3,r22,00000070
-	swi	r3,r22,00000050
-	addik	r9,r22,00000058
-	addik	r5,r0,00000001
-	swi	r4,r1,0000002C
-	swi	r11,r1,00000030
-	brlid	r15,000109C0
-	swi	r20,r1,00000034
-	lwi	r4,r1,0000002C
-	lwi	r11,r1,00000030
-	beqid	r3,0000F984
-	lwi	r20,r1,00000034
-
-l0000F94C:
-	imm	00000001
-	addik	r9,r0,FFFF9FA4
-	addik	r3,r0,00003F51
-	addik	r31,r0,FFFFFFFD
-	swi	r9,r23,00000018
-	brid	0000D0B8
-	swi	r3,r22,00000004
-
-l0000F968:
-	imm	00000001
-	addik	r4,r0,FFFF9F60
-	addik	r5,r0,00003F51
-	addik	r31,r0,FFFFFFFD
-	swi	r4,r23,00000018
-	brid	0000D0B8
-	swi	r5,r22,00000004
-
-l0000F984:
-	lwi	r6,r22,00000064
-	lwi	r5,r22,00000070
-	addik	r7,r0,00000006
-	swi	r7,r22,0000005C
-	addk	r10,r11,r0
-	lwi	r7,r22,00000068
-	addk	r8,r4,r0
-	addk	r6,r6,r6
-	swi	r5,r22,00000054
-	addik	r9,r22,0000005C
-	addk	r6,r31,r6
-	addik	r5,r0,00000002
-	brlid	r15,000109C0
-	swi	r20,r1,00000034
-	beqid	r3,0000FA94
-	lwi	r20,r1,00000034
-
-l0000F9C4:
-	imm	00000001
-	addik	r8,r0,FFFF9FC0
-	addik	r9,r0,00003F51
-	addik	r31,r0,FFFFFFFD
-	swi	r8,r23,00000018
-	brid	0000D0B8
-	swi	r9,r22,00000004
+0000F8F0 B8 10 D7 C8 33 E0 FF FD 30 96 00 70 31 76 02 F4 ....3...0..p1v..
+0000F900 31 00 00 09 33 F6 00 74 F9 16 00 58 11 4B 00 00 1...3..t...X.K..
+0000F910 11 04 00 00 10 DF 00 00 30 76 05 34 F8 76 00 70 ........0v.4.v.p
+0000F920 F8 76 00 50 31 36 00 58 30 A0 00 01 F8 81 00 2C .v.P16.X0......,
+0000F930 F9 61 00 30 B9 F4 10 8C FA 81 00 34 E8 81 00 2C .a.0.......4...,
+0000F940 E9 61 00 30 BE 03 00 40 EA 81 00 34 B0 00 00 01 .a.0...@...4....
+0000F950 31 20 9F A4 30 60 3F 51 33 E0 FF FD F9 37 00 18 1 ..0`?Q3....7..
+0000F960 B8 10 D7 58 F8 76 00 04 B0 00 00 01 30 80 9F 60 ...X.v......0..`
+0000F970 30 A0 3F 51 33 E0 FF FD F8 97 00 18 B8 10 D7 3C 0.?Q3..........<
+0000F980 F8 B6 00 04 E8 D6 00 64 E8 B6 00 70 30 E0 00 06 .......d...p0...
+0000F990 F8 F6 00 5C 11 4B 00 00 E8 F6 00 68 11 04 00 00 ...\.K.....h....
+0000F9A0 10 C6 30 00 F8 B6 00 54 31 36 00 5C 10 DF 30 00 ..0....T16.\..0.
+0000F9B0 30 A0 00 02 B9 F4 10 0C FA 81 00 34 BE 03 00 D8 0..........4....
+0000F9C0 EA 81 00 34 B0 00 00 01 31 00 9F C0 31 20 3F 51 ...4....1...1 ?Q
+0000F9D0 33 E0 FF FD F9 17 00 18 B8 10 D6 E0 F9 36 00 04 3............6..
 0000F9E0 16 43 A0 03 BC 52 FE F4 16 43 20 03 BC 52 FE EC .C...R...C ..R..
 0000F9F0 10 E0 00 00 10 C7 00 00 10 A7 00 00 31 00 00 01 ............1...
 0000FA00 A6 43 00 1F 10 80 40 00 BE 12 00 14 10 84 00 00 .C....@.........
@@ -15414,59 +11767,83 @@ l0000F9C4:
 0000FA20 B9 F4 58 F8 FA 81 00 34 F8 76 00 1C A7 39 02 00 ..X....4.v...9..
 0000FA30 F8 77 00 30 BE 19 00 40 EA 81 00 34 13 38 00 00 .w.0...@...4.8..
 0000FA40 31 00 3F 3D F9 16 00 04 13 1F 00 00 B8 10 EF BC 1.?=............
-0000FA50 12 79 00 00                                     .y..            
-
-l0000FA54:
-	addk	r6,r0,r25
-	srl	r6,r25
-	srl	r6,r6
-	srl	r6,r6
-	addk	r31,r3,r0
-	addk	r25,r6,r0
-	brid	0000D0B8
-	addik	r19,r19,FFFFFFFD
-0000FA74             30 E0 3F 3F F8 F6 00 04 B8 10 DF 6C     0.??.......l
-0000FA80 12 79 00 00                                     .y..            
-
-l0000FA84:
-	lwi	r19,r1,00000024
-	addk	r31,r19,r0
-	brid	0000D0B8
-	addk	r25,r19,r0
-
-l0000FA94:
-	addik	r4,r0,00003F47
-	swi	r4,r22,00000004
-	lwi	r4,r1,00000024
-	bneid	r4,0000E60C
-	addk	r31,r3,r0
-
-l0000FAA8:
-	brid	0000D0BC
-	lwi	r3,r22,0000002C
-
-l0000FAB0:
-	imm	00000001
-	addik	r3,r0,FFFF9F60
-	addik	r4,r0,00003F51
-	addik	r31,r0,FFFFFFFD
-	swi	r3,r23,00000018
-	brid	0000D0B8
-	swi	r4,r22,00000004
-0000FACC                                     B8 10 D3 3C             ...<
+0000FA50 12 79 00 00 10 C0 C8 00 90 D9 00 41 90 C6 00 41 .y.........A...A
+0000FA60 90 C6 00 41 13 E3 00 00 13 26 00 00 B8 10 D6 4C ...A.....&.....L
+0000FA70 32 73 FF FD 30 E0 3F 3F F8 F6 00 04 B8 10 DF 6C 2s..0.??.......l
+0000FA80 12 79 00 00 EA 61 00 24 13 F3 00 00 B8 10 D6 2C .y...a.$.......,
+0000FA90 13 33 00 00 30 80 3F 47 F8 96 00 04 E8 81 00 24 .3..0.?G.......$
+0000FAA0 BE 24 EB 6C 13 E3 00 00 B8 10 D6 14 E8 76 00 2C .$.l.........v.,
+0000FAB0 B0 00 00 01 30 60 9F 60 30 80 3F 51 33 E0 FF FD ....0`.`0.?Q3...
+0000FAC0 F8 77 00 18 B8 10 D5 F4 F8 96 00 04 B8 10 D3 3C .w.............<
 0000FAD0 10 7C 00 00 B8 10 D5 E4 33 E0 00 01 B8 10 E6 F4 .|......3.......
 0000FAE0 10 B8 00 00 B8 10 DF 14 13 F8 00 00 B8 10 DE FC ................
-0000FAF0 13 F8 00 00 B8 10 F1 04 13 F8 00 00 BC 05 00 98 ................
-0000FB00 E8 65 00 20 BC 03 00 90 E8 85 00 24 BC 04 00 88 .e. .......$....
-0000FB10 E8 C5 00 1C BC 06 00 80 E8 E6 00 00 88 E5 38 00 ..............8.
-0000FB20 BE 07 00 10 30 60 FF FE B6 0F 00 08 80 00 00 00 ....0`..........
-0000FB30 E8 E6 00 04 31 00 00 1F 30 E7 C0 CC 16 47 40 03 ....1...0....G@.
-0000FB40 BC 52 FF E8 30 21 FF E0 FA 61 00 1C F9 E1 00 00 .R..0!...a......
-0000FB50 E8 66 00 38 12 65 00 00 BE 03 00 1C E8 A5 00 28 .f.8.e.........(
-0000FB60 99 FC 20 00 10 C3 00 00 E8 93 00 24 E8 B3 00 28 .. ........$...(
-0000FB70 E8 D3 00 1C 99 FC 20 00 80 00 00 00 F8 13 00 1C ...... .........
-0000FB80 E9 E1 00 00 EA 61 00 1C 10 60 00 00 B6 0F 00 08 .....a...`......
-0000FB90 30 21 00 20 B6 0F 00 08 30 60 FF FE BC 05 01 1C 0!. ....0`......
+0000FAF0 13 F8 00 00 B8 10 F1 04 13 F8 00 00             ............    
+
+;; fn0000FAFC: 0000FAFC
+;;   Called from:
+;;     000038CC (in fn00003894)
+fn0000FAFC proc
+	beqi	r5,0000FB94
+
+l0000FB00:
+	lwi	r3,r5,00000020
+	beqi	r3,0000FB94
+
+l0000FB08:
+	lwi	r4,r5,00000024
+	beqi	r4,0000FB94
+
+l0000FB10:
+	lwi	r6,r5,0000001C
+	beqi	r6,0000FB94
+
+l0000FB18:
+	lwi	r7,r6,00000000
+	xor	r7,r5,r7
+	beqid	r7,0000FB30
+	addik	r3,r0,FFFFFFFE
+
+l0000FB28:
+	rtsd	r15,00000008
+	nop
+
+l0000FB30:
+	lwi	r7,r6,00000004
+	addik	r8,r0,0000001F
+	addik	r7,r7,FFFFC0CC
+	cmpu	r18,r7,r8
+	blti	r18,0000FB28
+
+l0000FB44:
+	addik	r1,r1,FFFFFFE0
+	swi	r19,r1,0000001C
+	swi	r15,r1,00000000
+	lwi	r3,r6,00000038
+	addk	r19,r5,r0
+	beqid	r3,0000FB74
+	lwi	r5,r5,00000028
+
+l0000FB60:
+	brald	r15,r4
+	addk	r6,r3,r0
+	lwi	r4,r19,00000024
+	lwi	r5,r19,00000028
+	lwi	r6,r19,0000001C
+
+l0000FB74:
+	brald	r15,r4
+	nop
+	swi	r0,r19,0000001C
+	lwi	r15,r1,00000000
+	lwi	r19,r1,0000001C
+	addk	r3,r0,r0
+	rtsd	r15,00000008
+	addik	r1,r1,00000020
+
+l0000FB94:
+	rtsd	r15,00000008
+	addik	r3,r0,FFFFFFFE
+0000FB9C                                     BC 05 01 1C             ....
 0000FBA0 E8 65 00 20 BC 03 01 14 E8 65 00 24 BC 03 01 0C .e. .....e.$....
 0000FBB0 30 21 FF DC F9 E1 00 00 FA 61 00 1C FA A1 00 20 0!.......a..... 
 0000FBC0 EA 65 00 1C BE 13 00 C8 E9 E1 00 00 E8 93 00 00 .e..............
@@ -15695,10 +12072,6 @@ l0000FAB0:
 000109B0 90 64 00 01 90 63 00 01 B6 0F 00 08 80 00 00 00 .d...c..........
 
 ;; fn000109C0: 000109C0
-;;   Called from:
-;;     0000E774 (in fn0000D9E8)
-;;     0000F934 (in fn0000EE14)
-;;     0000F9B4 (in fn0000EE14)
 fn000109C0 proc
 	addik	r1,r1,FFFFFF6C
 	swi	r19,r1,00000060
@@ -16091,40 +12464,40 @@ l00010DD4:
 
 l00010DD8:
 	imm	00000000
-	andi	r3,r3,FFFFFFFF
+	andi	r3,r3,0000FFFF
 	addk	r12,r20,r3
 	imm	00000000
-	andi	r12,r12,FFFFFFFF
+	andi	r12,r12,0000FFFF
 	addk	r19,r19,r12
 	imm	00000000
-	andi	r19,r19,FFFFFFFF
+	andi	r19,r19,0000FFFF
 	addk	r20,r21,r19
 	imm	00000000
-	andi	r20,r20,FFFFFFFF
+	andi	r20,r20,0000FFFF
 	addk	r21,r23,r20
 	imm	00000000
-	andi	r21,r21,FFFFFFFF
+	andi	r21,r21,0000FFFF
 	addk	r22,r24,r21
 	imm	00000000
-	andi	r22,r22,FFFFFFFF
+	andi	r22,r22,0000FFFF
 	addk	r23,r25,r22
 	imm	00000000
-	andi	r23,r23,FFFFFFFF
+	andi	r23,r23,0000FFFF
 	addk	r24,r26,r23
 	imm	00000000
-	andi	r24,r24,FFFFFFFF
+	andi	r24,r24,0000FFFF
 	addk	r25,r27,r24
 	imm	00000000
-	andi	r25,r25,FFFFFFFF
+	andi	r25,r25,0000FFFF
 	addk	r26,r28,r25
 	imm	00000000
-	andi	r26,r26,FFFFFFFF
+	andi	r26,r26,0000FFFF
 	addk	r27,r29,r26
 	imm	00000000
-	andi	r27,r27,FFFFFFFF
+	andi	r27,r27,0000FFFF
 	addk	r28,r30,r27
 	imm	00000000
-	andi	r28,r28,FFFFFFFF
+	andi	r28,r28,0000FFFF
 	shi	r3,r1,0000000A
 	lwi	r3,r1,000000A8
 	addk	r31,r31,r28
@@ -16281,9 +12654,9 @@ l0001101C:
 
 l00011020:
 	imm	00000001
-	addik	r19,r0,FFFFA980
+	addik	r19,r0,0001A980
 	imm	00000001
-	addik	r31,r0,FFFFA9C0
+	addik	r31,r0,0001A9C0
 	addk	r28,r0,r0
 	swi	r19,r1,0000004C
 	brid	00011054
@@ -16462,7 +12835,7 @@ l00011238:
 	lhui	r5,r7,00000020
 	addik	r5,r5,FFFFFFFF
 	imm	00000000
-	andi	r5,r5,FFFFFFFF
+	andi	r5,r5,0000FFFF
 	bneid	r5,00011268
 	shi	r5,r7,00000020
 
@@ -17060,9 +13433,9 @@ l0001182C:
 
 l00011834:
 	imm	00000001
-	addik	r12,r0,FFFFAA00
+	addik	r12,r0,0001AA00
 	imm	00000001
-	addik	r19,r0,FFFFAA40
+	addik	r19,r0,0001AA40
 	swi	r7,r1,00000058
 	swi	r12,r1,0000004C
 	swi	r19,r1,00000050
@@ -17071,6 +13444,9 @@ l00011834:
 	addik	r28,r0,00000101
 
 ;; fn0001185C: 0001185C
+;;   Called from:
+;;     00014830 (in fn00013C90)
+;;     00014840 (in fn00013C90)
 fn0001185C proc
 	addik	r1,r1,FFFFFFC8
 	swi	r19,r1,00000004
@@ -17154,7 +13530,7 @@ l00011948:
 	sext16	r7,r7
 	rsubk	r31,r28,r30
 	imm	00000000
-	andi	r30,r7,FFFFFFFF
+	andi	r30,r7,0000FFFF
 	cmp	r18,r9,r31
 	blti	r18,00011EEC
 
@@ -17185,7 +13561,7 @@ l0001199C:
 	sext16	r28,r28
 	rsubk	r31,r7,r30
 	imm	00000000
-	andi	r30,r28,FFFFFFFF
+	andi	r30,r28,0000FFFF
 	cmp	r18,r9,r31
 	blti	r18,000120E8
 
@@ -17217,7 +13593,7 @@ l000119F8:
 	sext16	r3,r3
 	rsubk	r29,r9,r4
 	imm	00000000
-	andi	r4,r3,FFFFFFFF
+	andi	r4,r3,0000FFFF
 	cmp	r18,r7,r29
 	bgeid	r18,00012180
 	addk	r7,r9,r7
@@ -17333,7 +13709,7 @@ l00011B58:
 	sext16	r7,r7
 	rsubk	r4,r29,r30
 	imm	00000000
-	andi	r30,r7,FFFFFFFF
+	andi	r30,r7,0000FFFF
 	cmp	r18,r9,r4
 	bgeid	r18,00012194
 	addk	r9,r9,r29
@@ -17400,7 +13776,7 @@ l00011C30:
 	sext16	r7,r7
 	rsubk	r30,r3,r28
 	imm	00000000
-	andi	r28,r7,FFFFFFFF
+	andi	r28,r7,0000FFFF
 	cmp	r18,r9,r30
 	bgei	r18,000120D8
 
@@ -17443,7 +13819,7 @@ l00011CC4:
 l00011CD0:
 	addk	r3,r3,r7
 	imm	00000000
-	andi	r28,r28,FFFFFFFF
+	andi	r28,r28,0000FFFF
 	shi	r28,r5,000016B8
 	swi	r3,r5,000016BC
 
@@ -17456,7 +13832,7 @@ l00011CF0:
 	lwi	r9,r5,00000014
 	addik	r4,r4,FFFFFFFD
 	imm	00000000
-	andi	r4,r4,FFFFFFFF
+	andi	r4,r4,0000FFFF
 	andi	r18,r3,0000001F
 	addk	r7,r0,r4
 	beqid	r18,00011D1C
@@ -17541,7 +13917,7 @@ l00011DEC:
 	sext16	r7,r7
 	rsubk	r31,r28,r30
 	imm	00000000
-	andi	r30,r7,FFFFFFFF
+	andi	r30,r7,0000FFFF
 	cmp	r18,r9,r31
 	bltid	r18,00012288
 	addk	r9,r28,r9
@@ -17557,7 +13933,7 @@ l00011E24:
 	lwi	r7,r5,00000014
 	addik	r3,r3,FFFFFFFE
 	imm	00000000
-	andi	r3,r3,FFFFFFFF
+	andi	r3,r3,0000FFFF
 	lwi	r28,r5,00000008
 	andi	r18,r9,0000001F
 	addk	r4,r0,r3
@@ -17654,7 +14030,7 @@ l00011F60:
 l00011F6C:
 	addk	r9,r9,r7
 	imm	00000000
-	andi	r30,r30,FFFFFFFF
+	andi	r30,r30,0000FFFF
 	shi	r30,r5,000016B8
 	brid	00011974
 	swi	r9,r5,000016BC
@@ -17678,7 +14054,7 @@ l00011FA8:
 	sext16	r7,r7
 	rsubk	r31,r28,r30
 	imm	00000000
-	andi	r30,r7,FFFFFFFF
+	andi	r30,r7,0000FFFF
 	cmp	r18,r9,r31
 	bltid	r18,000121AC
 	addk	r9,r28,r9
@@ -17694,7 +14070,7 @@ l00011FE0:
 	lwi	r7,r5,00000014
 	addik	r3,r3,FFFFFFF6
 	imm	00000000
-	andi	r3,r3,FFFFFFFF
+	andi	r3,r3,0000FFFF
 	lwi	r28,r5,00000008
 	andi	r18,r9,0000001F
 	addk	r4,r0,r3
@@ -17750,7 +14126,7 @@ l00012090:
 l0001209C:
 	addik	r4,r4,FFFFFFFD
 	imm	00000000
-	andi	r4,r4,FFFFFFFF
+	andi	r4,r4,0000FFFF
 	andi	r18,r3,0000001F
 	addk	r7,r0,r4
 	beqid	r18,000120C4
@@ -17813,7 +14189,7 @@ l0001215C:
 l00012168:
 	addk	r7,r7,r9
 	imm	00000000
-	andi	r30,r30,FFFFFFFF
+	andi	r30,r30,0000FFFF
 	shi	r30,r5,000016B8
 	brid	000119C8
 	swi	r7,r5,000016BC
@@ -17876,7 +14252,7 @@ l00012220:
 l0001222C:
 	addk	r9,r9,r7
 	imm	00000000
-	andi	r30,r30,FFFFFFFF
+	andi	r30,r30,0000FFFF
 	shi	r30,r5,000016B8
 	swi	r9,r5,000016BC
 	cmp	r18,r9,r27
@@ -17886,7 +14262,7 @@ l0001222C:
 l0001224C:
 	addik	r4,r4,FFFFFFF5
 	imm	00000000
-	andi	r3,r4,FFFFFFFF
+	andi	r3,r4,0000FFFF
 	andi	r18,r9,0000001F
 	addk	r4,r0,r3
 	beqid	r18,00012274
@@ -17943,7 +14319,7 @@ l000122FC:
 l00012308:
 	addk	r9,r9,r7
 	imm	00000000
-	andi	r30,r30,FFFFFFFF
+	andi	r30,r30,0000FFFF
 	shi	r30,r5,000016B8
 	swi	r9,r5,000016BC
 	cmp	r18,r9,r26
@@ -17953,7 +14329,7 @@ l00012308:
 l00012328:
 	addik	r4,r4,FFFFFFFD
 	imm	00000000
-	andi	r4,r4,FFFFFFFF
+	andi	r4,r4,0000FFFF
 	andi	r18,r9,0000001F
 	addk	r3,r0,r4
 	beqid	r18,00012350
@@ -17972,6 +14348,9 @@ l00012350:
 	swi	r9,r5,000016BC
 
 ;; fn00012364: 00012364
+;;   Called from:
+;;     000146DC (in fn00013C90)
+;;     00014850 (in fn00013C90)
 fn00012364 proc
 	addik	r1,r1,FFFFFFE4
 	swi	r22,r1,00000010
@@ -17988,9 +14367,9 @@ fn00012364 proc
 
 l00012394:
 	imm	00000001
-	addik	r12,r0,FFFFABD8
+	addik	r12,r0,0001ABD8
 	imm	00000001
-	addik	r20,r0,FFFFACD8
+	addik	r20,r0,0001ACD8
 	addk	r8,r0,r0
 	brid	000124AC
 	addik	r11,r0,000000FF
@@ -18017,7 +14396,7 @@ l000123E0:
 	sext16	r4,r4
 	rsubk	r8,r19,r3
 	imm	00000000
-	andi	r3,r4,FFFFFFFF
+	andi	r3,r4,0000FFFF
 	cmp	r18,r9,r8
 	bgeid	r18,000128A0
 	addk	r9,r9,r19
@@ -18061,7 +14440,7 @@ l0001247C:
 
 l00012488:
 	imm	00000000
-	andi	r3,r4,FFFFFFFF
+	andi	r3,r4,0000FFFF
 	addk	r9,r19,r9
 	shi	r3,r5,000016B8
 	swi	r9,r5,000016BC
@@ -18106,7 +14485,7 @@ l00012508:
 	sext16	r8,r8
 	rsubk	r3,r22,r4
 	imm	00000000
-	andi	r4,r8,FFFFFFFF
+	andi	r4,r8,0000FFFF
 	cmp	r18,r9,r3
 	bgei	r18,000128AC
 
@@ -18149,7 +14528,7 @@ l00012598:
 l000125A4:
 	addk	r22,r22,r3
 	imm	00000000
-	andi	r4,r4,FFFFFFFF
+	andi	r4,r4,0000FFFF
 	shi	r4,r5,000016B8
 	swi	r22,r5,000016BC
 
@@ -18157,19 +14536,19 @@ l000125B8:
 	addk	r3,r23,r23
 	addk	r3,r3,r3
 	imm	00000001
-	addik	r8,r3,FFFFB4A8
+	addik	r8,r3,0001B4A8
 	lwi	r8,r8,00000000
 	beqid	r8,000126B8
 	sext16	r4,r4
 
 l000125D4:
 	imm	00000001
-	addik	r3,r3,FFFFAB64
+	addik	r3,r3,0001AB64
 	lwi	r3,r3,00000000
 	addik	r23,r0,00000010
 	rsubk	r3,r3,r19
 	imm	00000000
-	andi	r3,r3,FFFFFFFF
+	andi	r3,r3,0000FFFF
 	andi	r18,r22,0000001F
 	addk	r9,r0,r3
 	beqid	r18,0001260C
@@ -18185,7 +14564,7 @@ l0001260C:
 	sext16	r4,r4
 	rsubk	r9,r8,r23
 	imm	00000000
-	andi	r19,r4,FFFFFFFF
+	andi	r19,r4,0000FFFF
 	cmp	r18,r22,r9
 	bgeid	r18,00012980
 	addk	r22,r22,r8
@@ -18261,7 +14640,7 @@ l000126F8:
 	sext16	r4,r4
 	rsubk	r23,r9,r3
 	imm	00000000
-	andi	r3,r4,FFFFFFFF
+	andi	r3,r4,0000FFFF
 	cmp	r18,r22,r23
 	bgei	r18,000128BC
 
@@ -18304,14 +14683,14 @@ l0001278C:
 l00012798:
 	addk	r9,r9,r4
 	imm	00000000
-	andi	r3,r3,FFFFFFFF
+	andi	r3,r3,0000FFFF
 	shi	r3,r5,000016B8
 	swi	r9,r5,000016BC
 
 l000127AC:
 	addk	r8,r8,r8
 	imm	00000001
-	addik	r4,r8,FFFFB430
+	addik	r4,r8,0001B430
 	lwi	r19,r4,00000000
 	bneid	r19,00012840
 	sext16	r4,r3
@@ -18341,7 +14720,7 @@ l000127F8:
 	sext16	r4,r4
 	rsubk	r8,r3,r6
 	imm	00000000
-	andi	r6,r4,FFFFFFFF
+	andi	r6,r4,0000FFFF
 	cmp	r18,r9,r8
 	bltid	r18,0001298C
 	lwi	r19,r1,00000004
@@ -18359,12 +14738,12 @@ l0001281C:
 
 l00012840:
 	imm	00000001
-	addik	r8,r8,FFFFAAEC
+	addik	r8,r8,0001AAEC
 	lwi	r8,r8,00000000
 	addik	r22,r0,00000010
 	rsubk	r8,r8,r21
 	imm	00000000
-	andi	r8,r8,FFFFFFFF
+	andi	r8,r8,0000FFFF
 	andi	r18,r9,0000001F
 	addk	r3,r0,r8
 	beqid	r18,00012878
@@ -18380,7 +14759,7 @@ l00012878:
 	sext16	r4,r4
 	rsubk	r21,r19,r22
 	imm	00000000
-	andi	r3,r4,FFFFFFFF
+	andi	r3,r4,0000FFFF
 	cmp	r18,r9,r21
 	bltid	r18,000128FC
 	addik	r23,r0,00000010
@@ -18416,7 +14795,7 @@ l000128CC:
 	srl	r3,r3
 	srl	r3,r3
 	imm	00000001
-	addik	r3,r3,FFFFACD8
+	addik	r3,r3,0001ACD8
 	brid	000126C8
 	lbui	r8,r3,00000100
 
@@ -18513,6 +14892,10 @@ l00012A24:
 	addik	r1,r1,0000001C
 
 ;; fn00012A34: 00012A34
+;;   Called from:
+;;     00013D88 (in fn00013C90)
+;;     00013D94 (in fn00013C90)
+;;     00013F2C (in fn00013C90)
 fn00012A34 proc
 	addik	r1,r1,FFFFFF80
 	swi	r19,r1,0000004C
@@ -18837,7 +15220,7 @@ l00012E00:
 l00012E08:
 	sbi	r5,r20,00000000
 	imm	00000000
-	andi	r5,r24,FFFFFFFF
+	andi	r5,r24,0000FFFF
 	shi	r5,r6,00000002
 	shi	r5,r3,00000002
 	swi	r24,r19,00000B60
@@ -19572,19 +15955,73 @@ l00013664:
 l0001366C:
 	brid	000132F4
 	addk	r6,r30,r0
-00013674             B0 00 00 01 30 60 AA D8 30 85 00 94     ....0`..0...
-00013680 30 C5 09 88 F8 65 0B 20 B0 00 00 01 30 60 AA C4 0....e. ....0`..
-00013690 31 05 0A 7C F8 85 0B 18 F8 65 0B 2C B0 00 00 01 1..|.....e.,....
-000136A0 30 60 AA B0 F8 C5 0B 24 F9 05 0B 30 F8 65 0B 38 0`.....$...0.e.8
-000136B0 10 64 00 00 F4 05 16 B8 F8 05 16 BC 30 E5 05 0C .d..........0...
-000136C0 F4 03 00 00 30 63 00 04 88 83 38 00 BC 24 FF F4 ....0c....8..$..
-000136D0 10 66 00 00 30 C5 0A 00 F4 03 00 00 30 63 00 04 .f..0.......0c..
-000136E0 88 83 30 00 BC 24 FF F4 10 68 00 00 30 C5 0A C8 ..0..$...h..0...
-000136F0 F4 03 00 00 30 63 00 04 88 86 18 00 BC 24 FF F4 ....0c.......$..
-00013700 30 60 00 01 F4 65 04 94 F8 85 16 AC F8 85 16 A8 0`...e..........
-00013710 F8 85 16 B0 B6 0F 00 08 F8 85 16 A0             ............    
+
+;; fn00013674: 00013674
+;;   Called from:
+;;     000081C0 (in fn00008008)
+;;     000083EC (in fn00008234)
+fn00013674 proc
+	imm	00000001
+	addik	r3,r0,0001AAD8
+	addik	r4,r5,00000094
+	addik	r6,r5,00000988
+	swi	r3,r5,00000B20
+	imm	00000001
+	addik	r3,r0,0001AAC4
+	addik	r8,r5,00000A7C
+	swi	r4,r5,00000B18
+	swi	r3,r5,00000B2C
+	imm	00000001
+	addik	r3,r0,0001AAB0
+	swi	r6,r5,00000B24
+	swi	r8,r5,00000B30
+	swi	r3,r5,00000B38
+	addk	r3,r4,r0
+	shi	r0,r5,000016B8
+	swi	r0,r5,000016BC
+	addik	r7,r5,0000050C
+
+l000136C0:
+	shi	r0,r3,00000000
+	addik	r3,r3,00000004
+	xor	r4,r3,r7
+	bnei	r4,000136C0
+
+l000136D0:
+	addk	r3,r6,r0
+	addik	r6,r5,00000A00
+
+l000136D8:
+	shi	r0,r3,00000000
+	addik	r3,r3,00000004
+	xor	r4,r3,r6
+	bnei	r4,000136D8
+
+l000136E8:
+	addk	r3,r8,r0
+	addik	r6,r5,00000AC8
+
+l000136F0:
+	shi	r0,r3,00000000
+	addik	r3,r3,00000004
+	xor	r4,r6,r3
+	bnei	r4,000136F0
+
+l00013700:
+	addik	r3,r0,00000001
+	shi	r3,r5,00000494
+	swi	r4,r5,000016AC
+	swi	r4,r5,000016A8
+	swi	r4,r5,000016B0
+	rtsd	r15,00000008
+	swi	r4,r5,000016A0
 
 ;; fn0001371C: 0001371C
+;;   Called from:
+;;     00006250 (in fn00005F20)
+;;     000067F4 (in fn00005F20)
+;;     00009438 (in fn00008E80)
+;;     00014058 (in fn00013C90)
 fn0001371C proc
 	addik	r1,r1,FFFFFFDC
 	swi	r19,r1,0000001C
@@ -19595,7 +16032,7 @@ fn0001371C proc
 	lwi	r10,r5,00000014
 	lwi	r11,r5,00000008
 	imm	00000000
-	andi	r8,r8,FFFFFFFF
+	andi	r8,r8,0000FFFF
 	addk	r19,r5,r0
 	andi	r18,r3,0000001F
 	addk	r5,r0,r8
@@ -19614,7 +16051,7 @@ l00013764:
 	addk	r21,r7,r0
 	addik	r9,r10,00000001
 	imm	00000000
-	andi	r7,r5,FFFFFFFF
+	andi	r7,r5,0000FFFF
 	cmp	r18,r3,r12
 	bltid	r18,000138F8
 	addk	r4,r11,r10
@@ -19649,7 +16086,7 @@ l000137C0:
 	lwi	r4,r19,00000014
 	lwi	r7,r19,00000008
 	imm	00000000
-	andi	r3,r21,FFFFFFFF
+	andi	r3,r21,0000FFFF
 	addik	r8,r4,00000001
 	swi	r8,r19,00000014
 	addk	r8,r0,r3
@@ -19671,7 +16108,7 @@ l000137C0:
 	lwi	r4,r19,00000014
 	lwi	r5,r19,00000008
 	imm	00000000
-	xori	r3,r3,FFFFFF00
+	xori	r3,r3,0000FF00
 	addik	r7,r4,00000001
 	swi	r7,r19,00000014
 	addk	r7,r0,r3
@@ -19759,286 +16196,1478 @@ l00013964:
 l00013970:
 	addik	r3,r3,FFFFFFF3
 	imm	00000000
-	andi	r7,r7,FFFFFFFF
+	andi	r7,r7,0000FFFF
 	shi	r7,r19,000016B8
 	swi	r3,r19,000016BC
 	addik	r9,r5,00000001
 	brid	00013798
 	addk	r4,r4,r5
-00013990 E8 65 16 BC A8 83 00 10 BC 04 00 68 30 80 00 07 .e.........h0...
-000139A0 16 43 20 01 BC B2 00 54 E8 65 00 14 E4 C5 16 B8 .C ....T.e......
-000139B0 E8 85 00 08 30 E3 00 01 F8 E5 00 14 D0 C3 20 00 ....0......... .
-000139C0 E8 65 16 BC E4 C5 16 B8 30 63 FF F8 10 80 30 00 .e......0c....0.
-000139D0 90 86 00 41 90 84 00 41 90 84 00 41 90 84 00 41 ...A...A...A...A
-000139E0 90 84 00 41 90 84 00 41 90 84 00 41 90 84 00 41 ...A...A...A...A
-000139F0 F8 65 16 BC F4 85 16 B8 B6 0F 00 08 80 00 00 00 .e..............
-00013A00 E8 65 00 14 E4 E5 16 B8 E8 C5 00 08 31 03 00 01 .e..........1...
-00013A10 F9 05 00 14 D0 E3 30 00 E8 65 00 14 E5 05 16 B8 ......0..e......
-00013A20 E8 C5 00 08 30 E3 00 01 F8 E5 00 14 10 E0 40 00 ....0.........@.
-00013A30 90 E8 00 41 90 E7 00 41 90 E7 00 41 90 E7 00 41 ...A...A...A...A
-00013A40 90 E7 00 41 90 E7 00 41 90 E7 00 41 90 E7 00 41 ...A...A...A...A
-00013A50 D0 E3 30 00 F4 85 16 B8 B6 0F 00 08 F8 85 16 BC ..0.............
-00013A60 E4 C5 16 B8 E8 65 16 BC 30 E0 00 02 31 00 00 0D .....e..0...1...
-00013A70 A6 43 00 1F 10 80 38 00 BE 12 00 14 10 84 00 00 .C....8.........
-00013A80 32 52 FF FF BE 32 FF FC 10 84 20 00 80 84 30 00 2R...2.... ...0.
-00013A90 90 84 00 61 B0 00 00 00 A4 C4 FF FF 16 43 40 01 ...a.........C@.
-00013AA0 BE B2 01 14 30 63 00 03 E8 65 00 14 E9 05 00 08 ....0c...e......
-00013AB0 F4 C5 16 B8 30 C3 00 01 F8 C5 00 14 D0 83 40 00 ....0.........@.
-00013AC0 E8 65 00 14 E5 05 16 B8 E8 85 00 08 30 C3 00 01 .e..........0...
-00013AD0 F8 C5 00 14 10 C0 40 00 90 C8 00 41 90 C6 00 41 ......@....A...A
-00013AE0 90 C6 00 41 90 C6 00 41 90 C6 00 41 90 C6 00 41 ...A...A...A...A
-00013AF0 90 C6 00 41 90 C6 00 41 D0 C3 20 00 E8 65 16 BC ...A...A.. ..e..
-00013B00 30 C0 00 10 14 83 30 00 A6 44 00 1F 10 C0 38 00 0.....0..D....8.
-00013B10 BE 12 00 14 10 C6 00 00 32 52 FF FF BE 32 FF FC ........2R...2..
-00013B20 90 C6 00 01 30 63 FF F3 B0 00 00 00 A4 C6 FF FF ....0c..........
-00013B30 F4 C5 16 B8 30 80 00 09 16 43 20 01 BE 52 00 8C ....0....C ..R..
-00013B40 F8 65 16 BC 30 63 00 07 A8 83 00 10 BE 04 00 E8 .e..0c..........
-00013B50 F8 65 16 BC 30 80 00 07 16 43 20 01 BC B2 00 50 .e..0....C ....P
-00013B60 E8 65 00 14 E8 85 00 08 30 E3 00 01 F8 E5 00 14 .e......0.......
-00013B70 D0 C3 20 00 E8 65 16 BC E4 C5 16 B8 30 63 FF F8 .. ..e......0c..
-00013B80 10 80 30 00 90 86 00 41 90 84 00 41 90 84 00 41 ..0....A...A...A
-00013B90 90 84 00 41 90 84 00 41 90 84 00 41 90 84 00 41 ...A...A...A...A
-00013BA0 90 84 00 41 F8 65 16 BC F4 85 16 B8 B6 0F 00 08 ...A.e..........
-00013BB0 80 00 00 00 F4 C5 16 B8 30 80 00 09 16 43 20 01 ........0....C .
-00013BC0 BE B2 FF 84 F8 65 16 BC E8 65 00 14 E8 85 00 08 .....e...e......
-00013BD0 30 E3 00 01 F8 E5 00 14 D0 C3 20 00 E8 65 00 14 0......... ..e..
-00013BE0 E4 E5 16 B8 E8 85 00 08 30 C3 00 01 F8 C5 00 14 ........0.......
-00013BF0 10 C0 38 00 90 C7 00 41 90 C6 00 41 90 C6 00 41 ..8....A...A...A
-00013C00 90 C6 00 41 90 C6 00 41 90 C6 00 41 90 C6 00 41 ...A...A...A...A
-00013C10 90 C6 00 41 D0 C3 20 00 E8 65 16 BC F4 05 16 B8 ...A.. ..e......
-00013C20 10 C0 00 00 30 63 FF F7 A8 83 00 10 BE 24 FF 28 ....0c.......$.(
-00013C30 F8 65 16 BC E8 65 00 14 E8 E5 00 08 31 03 00 01 .e...e......1...
-00013C40 F9 05 00 14 D0 C3 38 00 E8 65 00 14 E5 05 16 B8 ......8..e......
-00013C50 E8 C5 00 08 30 E3 00 01 F8 E5 00 14 10 E0 40 00 ....0.........@.
-00013C60 90 E8 00 41 90 E7 00 41 90 E7 00 41 90 E7 00 41 ...A...A...A...A
-00013C70 90 E7 00 41 90 E7 00 41 90 E7 00 41 90 E7 00 41 ...A...A...A...A
-00013C80 D0 E3 30 00 F4 85 16 B8 B6 0F 00 08 F8 85 16 BC ..0.............
-00013C90 30 21 FF B0 FA C1 00 28 FA E1 00 2C FB 01 00 30 0!.....(...,...0
-00013CA0 FB 21 00 34 FB 41 00 38 FB 61 00 3C F9 E1 00 00 .!.4.A.8.a.<....
-00013CB0 FA 61 00 1C FA 81 00 20 FA A1 00 24 FB 81 00 40 .a..... ...$...@
-00013CC0 FB A1 00 44 FB C1 00 48 FB E1 00 4C E8 85 00 84 ...D...H...L....
-00013CD0 14 66 00 00 80 66 18 00 12 C5 00 00 13 46 00 00 .f...f.......F..
-00013CE0 13 67 00 00 12 E8 00 00 13 20 18 00 93 23 00 41 .g....... ...#.A
-00013CF0 93 39 00 41 93 39 00 41 93 39 00 41 93 39 00 41 .9.A.9.A.9.A.9.A
-00013D00 93 39 00 41 93 39 00 41 93 39 00 41 93 39 00 41 .9.A.9.A.9.A.9.A
-00013D10 93 39 00 41 93 39 00 41 93 39 00 41 93 39 00 41 .9.A.9.A.9.A.9.A
-00013D20 93 39 00 41 93 39 00 41 93 39 00 41 93 39 00 41 .9.A.9.A.9.A.9.A
-00013D30 93 39 00 41 93 39 00 41 93 39 00 41 93 39 00 41 .9.A.9.A.9.A.9.A
-00013D40 93 39 00 41 93 39 00 41 93 39 00 41 93 39 00 41 .9.A.9.A.9.A.9.A
-00013D50 93 39 00 41 93 39 00 41 93 39 00 41 93 39 00 41 .9.A.9.A.9.A.9.A
-00013D60 93 39 00 41 93 39 00 41 BE 64 09 00 33 07 00 04 .9.A.9.A.d..3...
-00013D70 E8 E5 00 00 E8 67 00 2C A8 63 00 02 BE 03 03 C4 .....g.,.c......
-00013D80 32 65 00 94 10 B6 00 00 B9 F4 EC AC 30 D6 0B 18 2e..........0...
-00013D90 10 B6 00 00 B9 F4 EC A0 30 D6 0B 24 E4 96 00 96 ........0..$....
-00013DA0 BE 04 03 94 E8 B6 0B 1C 33 A0 00 04 30 E0 00 07 ........3...0...
-00013DB0 30 65 00 01 10 63 18 00 10 63 18 00 10 D3 18 00 0e...c...c......
-00013DC0 31 00 FF FF BE 45 00 9C F5 06 00 02 30 63 00 06 1....E......0c..
-00013DD0 11 13 18 00 30 D6 00 9A 33 C0 FF FF 10 60 00 00 ....0...3....`..
-00013DE0 31 40 00 03 31 60 00 8A 33 80 00 06 32 80 00 04 1@..1`..3...2...
-00013DF0 31 80 00 07 32 A0 00 0A 30 63 00 01 16 47 18 01 1...2...0c...G..
-00013E00 BE B2 03 D8 E4 A6 00 00 89 25 20 00 BC 09 00 44 .........% ....D
-00013E10 16 5D 18 01 BE B2 03 C4 10 E4 20 00 10 E7 38 00 .]........ ...8.
-00013E20 10 F6 38 00 E5 27 0A 7C 10 69 18 00 F4 67 0A 7C ..8..'.|.i...g.|
-00013E30 BE 05 03 54 10 65 00 00 88 65 20 00 BE 03 04 0C ...T.e...e .....
-00013E40 13 C4 00 00 13 B4 00 00 10 EC 00 00 10 60 00 00 .............`..
-00013E50 30 C6 00 04 89 28 30 00 BE 29 FF A0 10 85 00 00 0....(0..)......
-00013E60 E4 96 09 8A 32 B6 09 88 BE 04 08 94 E8 B6 0B 28 ....2..........(
-00013E70 33 C0 00 04 31 00 00 07 30 65 00 01 10 63 18 00 3...1...0e...c..
-00013E80 10 63 18 00 10 D5 18 00 30 E0 FF FF BE 45 00 9C .c......0....E..
-00013E90 F4 E6 00 02 30 63 00 06 10 F5 18 00 30 D6 09 8E ....0c......0...
-00013EA0 33 E0 FF FF 10 60 00 00 31 20 00 03 31 40 00 8A 3....`..1 ..1@..
-00013EB0 33 80 00 06 31 80 00 04 31 60 00 07 32 80 00 0A 3...1...1`..2...
-00013EC0 30 63 00 01 16 48 18 01 BE B2 02 DC E4 A6 00 00 0c...H..........
-00013ED0 8B A5 20 00 BC 1D 00 44 16 5E 18 01 BE B2 02 C8 .. ....D.^......
-00013EE0 11 04 20 00 11 08 40 00 11 16 40 00 E7 A8 0A 7C .. ...@...@....|
-00013EF0 10 7D 18 00 F4 68 0A 7C BE 05 02 9C 10 65 00 00 .}...h.|.....e..
-00013F00 88 65 20 00 BE 03 03 38 13 E4 00 00 13 CC 00 00 .e ....8........
-00013F10 11 0B 00 00 10 60 00 00 30 C6 00 04 8B A6 38 00 .....`..0.....8.
-00013F20 BE 3D FF A0 10 85 00 00 10 B6 00 00 B9 F4 EB 08 .=..............
-00013F30 30 D6 0B 30 E4 76 0A BA BE 23 0B 24 30 A0 00 12 0..0.v...#.$0...
-00013F40 E4 76 0A 82 BE 23 0B 18 30 A0 00 11 E4 76 0A B6 .v...#..0....v..
-00013F50 BE 23 0B 0C 30 A0 00 10 E4 76 0A 86 BE 23 0B 00 .#..0....v...#..
-00013F60 30 A0 00 0F E4 76 0A B2 BE 23 0A F4 30 A0 00 0E 0....v...#..0...
-00013F70 E4 76 0A 8A BE 23 0A E8 30 A0 00 0D E4 76 0A AE .v...#..0....v..
-00013F80 BE 23 0A DC 30 A0 00 0C E4 76 0A 8E BE 23 0A D0 .#..0....v...#..
-00013F90 30 A0 00 0B E4 76 0A AA BE 23 0A C4 30 A0 00 0A 0....v...#..0...
-00013FA0 E4 76 0A 92 BE 23 0A B8 30 A0 00 09 E4 76 0A A6 .v...#..0....v..
-00013FB0 BE 23 0A AC 30 A0 00 08 E4 76 0A 96 BE 23 0A A0 .#..0....v...#..
-00013FC0 30 A0 00 07 E4 76 0A A2 BE 23 0A 94 30 A0 00 06 0....v...#..0...
-00013FD0 E4 76 0A 9A BE 23 0A 88 30 A0 00 05 E4 76 0A 9E .v...#..0....v..
-00013FE0 BC 23 0A BC E4 76 0A 7E 30 C0 00 09 BE 23 0A 80 .#...v.~0....#..
-00013FF0 30 A0 00 02 E8 76 16 A8 E8 96 16 AC 30 63 00 0E 0....v......0c..
-00014000 10 63 30 00 30 C3 00 0A 30 84 00 0A F8 76 16 A8 .c0.0...0....v..
-00014010 10 E0 30 00 90 E6 00 41 90 E7 00 41 90 E7 00 41 ..0....A...A...A
-00014020 11 00 20 00 91 04 00 41 91 08 00 41 91 08 00 41 .. ....A...A...A
-00014030 16 47 40 03 BE B2 00 0C 10 67 00 00 10 68 00 00 .G@......g...h..
-00014040 16 58 18 03 BC 52 02 10 BC 19 02 0C 11 17 00 00 .X...R..........
-00014050 10 FB 00 00 10 DA 00 00 B9 F4 F6 C4 10 B6 00 00 ................
-00014060 10 73 00 00 30 B6 05 0C F4 03 00 00 30 63 00 04 .s..0.......0c..
-00014070 88 83 28 00 BC 24 FF F4 10 75 00 00 30 B6 0A 00 ..(..$...u..0...
-00014080 F4 03 00 00 30 63 00 04 88 83 28 00 BC 24 FF F4 ....0c....(..$..
-00014090 30 76 0A 7C 30 B6 0A C8 F4 03 00 00 30 63 00 04 0v.|0.......0c..
-000140A0 88 85 18 00 BE 24 FF F4 30 E0 00 01 F4 F6 04 94 .....$..0.......
-000140B0 F8 96 16 AC F8 96 16 A8 F8 96 16 B0 BE 17 00 3C ...............<
-000140C0 F8 96 16 A0 E8 76 16 BC 30 80 00 08 16 43 20 01 .....v..0....C .
-000140D0 BC 52 06 38 BC 63 00 1C E8 76 00 14 E4 B6 16 B8 .R.8.c...v......
-000140E0 E8 96 00 08 30 C3 00 01 F8 D6 00 14 D0 A3 20 00 ....0......... .
-000140F0 F4 16 16 B8 F8 16 16 BC E9 E1 00 00 EA 61 00 1C .............a..
-00014100 EA A1 00 24 EA C1 00 28 EA E1 00 2C EB 01 00 30 ...$...(...,...0
-00014110 EB 21 00 34 EB 41 00 38 EB 61 00 3C EB 81 00 40 .!.4.A.8.a.<...@
-00014120 EB A1 00 44 EB C1 00 48 EB E1 00 4C B6 0F 00 08 ...D...H...L....
-00014130 30 21 00 50 33 A0 00 03 B8 10 FC 78 30 E0 00 8A 0!.P3......x0...
-00014140 10 73 00 00 B0 00 F3 FF 30 80 C0 7F B8 10 00 18 .s......0.......
-00014150 30 C5 01 14 30 63 00 04 88 A3 30 00 BE 05 08 BC 0...0c....0.....
-00014160 90 84 00 41 A4 A4 00 01 BC 05 FF EC E4 A3 00 00 ...A............
-00014170 BE 05 FF E8 30 63 00 04 10 80 00 00 B8 10 FC 08 ....0c..........
-00014180 F8 87 00 2C 13 C4 00 00 13 AA 00 00 B8 10 FC C4 ...,............
-00014190 10 EB 00 00 13 E4 00 00 13 C9 00 00 B8 10 FD 7C ...............|
-000141A0 11 0A 00 00 BE 04 00 80 8B E4 F8 00 BE 1F 00 1C ................
-000141B0 10 64 20 00 10 63 18 00 10 76 18 00 E5 03 0A 7C .d ..c...v.....|
-000141C0 31 08 00 01 F5 03 0A 7C E4 76 0A BC 30 63 00 01 1......|.v..0c..
-000141D0 B8 10 FD 28 F4 76 0A BC BE 04 00 34 8B C4 F0 00 ...(.v.....4....
-000141E0 BE 1E 00 1C 10 64 20 00 10 63 18 00 10 76 18 00 .....d ..c...v..
-000141F0 E4 E3 0A 7C 30 E7 00 01 F4 E3 0A 7C E4 76 0A BC ...|0......|.v..
-00014200 30 63 00 01 B8 10 FC 2C F4 76 0A BC 16 43 A8 01 0c.....,.v...C..
-00014210 BC 52 04 38 E4 76 0A C0 30 63 00 01 B8 10 FC 14 .R.8.v..0c......
-00014220 F4 76 0A C0 16 43 A0 01 BC 52 04 30 E4 76 0A C0 .v...C...R.0.v..
-00014230 30 63 00 01 B8 10 FC C4 F4 76 0A C0 13 C9 00 00 0c.......v......
-00014240 B8 10 FC D8 11 1C 00 00 13 AA 00 00 B8 10 FC 04 ................
-00014250 10 FC 00 00 E8 D6 00 88 E4 76 16 B8 E8 96 16 BC .........v......
-00014260 A8 C6 00 04 15 26 00 00 80 C9 30 00 BE A6 04 1C .....&....0.....
-00014270 90 63 00 61 16 48 38 03 BE B2 04 10 30 C0 00 0D .c.a.H8.....0...
-00014280 16 44 30 01 BE 52 05 DC 30 F7 00 04 30 D7 00 04 .D0..R..0...0...
-00014290 B0 00 00 00 A4 C6 FF FF A6 44 00 1F 10 E0 30 00 .........D....0.
-000142A0 BE 12 00 14 10 E7 00 00 32 52 FF FF BE 32 FF FC ........2R...2..
-000142B0 10 E7 38 00 80 63 38 00 B0 00 00 00 A4 63 FF FF ..8..c8......c..
-000142C0 30 84 00 03 F4 76 16 B8 F8 96 16 BC 31 00 00 0B 0....v......1...
-000142D0 E8 F6 0B 1C EB 16 0B 28 30 C5 00 01 16 44 40 01 .......(0....D@.
-000142E0 BE B2 06 58 90 63 00 61 E9 36 00 14 31 07 FF 00 ...X.c.a.6..1...
-000142F0 B0 00 00 00 A5 08 FF FF E9 56 00 08 A6 44 00 1F .........V...D..
-00014300 11 60 40 00 BE 12 00 14 11 6B 00 00 32 52 FF FF .`@......k..2R..
-00014310 BE 32 FF FC 11 6B 58 00 80 63 58 00 90 63 00 61 .2...kX..cX..c.a
-00014320 30 89 00 01 F4 76 16 B8 F8 96 00 14 D0 69 50 00 0....v.......iP.
-00014330 E8 76 00 14 E5 56 16 B8 E8 96 00 08 31 23 00 01 .v...V......1#..
-00014340 F9 36 00 14 11 20 50 00 91 2A 00 41 91 29 00 41 .6... P..*.A.).A
-00014350 91 29 00 41 91 29 00 41 91 29 00 41 91 29 00 41 .).A.).A.).A.).A
-00014360 91 29 00 41 91 29 00 41 D1 23 20 00 E8 96 16 BC .).A.).A.# .....
-00014370 30 60 00 10 15 24 18 00 A6 49 00 1F 10 60 40 00 0`...$...I...`@.
-00014380 BE 12 00 14 10 63 00 00 32 52 FF FF BE 32 FF FC .....c..2R...2..
-00014390 90 63 00 01 30 84 FF F5 B0 00 00 00 A4 63 FF FF .c..0........c..
-000143A0 F4 76 16 B8 F8 96 16 BC 31 00 00 0B 16 44 40 01 .v......1....D@.
-000143B0 BE B2 05 D8 90 63 00 61 E9 36 00 14 B0 00 00 00 .....c.a.6......
-000143C0 A5 18 FF FF E9 56 00 08 A6 44 00 1F 11 60 40 00 .....V...D...`@.
-000143D0 BE 12 00 14 11 6B 00 00 32 52 FF FF BE 32 FF FC .....k..2R...2..
-000143E0 11 6B 58 00 80 63 58 00 90 63 00 61 30 89 00 01 .kX..cX..c.a0...
-000143F0 F4 76 16 B8 F8 96 00 14 D0 69 50 00 E8 76 00 14 .v.......iP..v..
-00014400 E5 56 16 B8 E8 96 00 08 31 23 00 01 F9 36 00 14 .V......1#...6..
-00014410 11 20 50 00 91 2A 00 41 91 29 00 41 91 29 00 41 . P..*.A.).A.).A
-00014420 91 29 00 41 91 29 00 41 91 29 00 41 91 29 00 41 .).A.).A.).A.).A
-00014430 91 29 00 41 D1 23 20 00 E8 96 16 BC 30 60 00 10 .).A.# .....0`..
-00014440 15 24 18 00 A6 49 00 1F 10 60 40 00 BE 12 00 14 .$...I...`@.....
-00014450 10 63 00 00 32 52 FF FF BE 32 FF FC 90 63 00 01 .c..2R...2...c..
-00014460 30 84 FF F5 B0 00 00 00 A4 63 FF FF F4 76 16 B8 0........c...v..
-00014470 F8 96 16 BC 31 00 00 0C 16 44 40 01 BE B2 05 58 ....1....D@....X
-00014480 90 63 00 61 E9 36 00 14 30 A5 FF FD B0 00 00 00 .c.a.6..0.......
-00014490 A5 05 FF FF A6 44 00 1F 11 40 40 00 BE 12 00 14 .....D...@@.....
-000144A0 11 4A 00 00 32 52 FF FF BE 32 FF FC 11 4A 50 00 .J..2R...2...JP.
-000144B0 E8 B6 00 08 80 63 50 00 90 63 00 61 30 89 00 01 .....cP..c.a0...
-000144C0 F4 76 16 B8 F8 96 00 14 D0 69 28 00 E8 76 00 14 .v.......i(..v..
-000144D0 E5 36 16 B8 E8 96 00 08 30 A3 00 01 F8 B6 00 14 .6......0.......
-000144E0 10 A0 48 00 90 A9 00 41 90 A5 00 41 90 A5 00 41 ..H....A...A...A
-000144F0 90 A5 00 41 90 A5 00 41 90 A5 00 41 90 A5 00 41 ...A...A...A...A
-00014500 90 A5 00 41 D0 A3 20 00 E8 96 16 BC 30 A0 00 10 ...A.. .....0...
-00014510 14 64 28 00 A6 43 00 1F 10 A0 40 00 BE 12 00 14 .d(..C....@.....
-00014520 10 A5 00 00 32 52 FF FF BE 32 FF FC 90 A5 00 01 ....2R...2......
-00014530 30 84 FF F4 B0 00 00 00 A4 A5 FF FF F4 B6 16 B8 0...............
-00014540 F8 96 16 BC B0 00 00 01 31 60 B3 D0 30 60 00 10 ........1`..0`..
-00014550 11 00 00 00 31 40 00 0D 30 63 02 9F 10 63 18 00 ....1@..0c...c..
-00014560 10 63 18 00 10 76 18 00 E5 23 00 02 A6 44 00 1F .c...v...#...D..
-00014570 10 60 48 00 BE 12 00 14 10 63 00 00 32 52 FF FF .`H......c..2R..
-00014580 BE 32 FF FC 10 63 18 00 80 A3 28 00 90 65 00 61 .2...c....(..e.a
-00014590 B0 00 00 00 A4 A3 FF FF 16 44 50 01 BE B2 02 7C .........DP....|
-000145A0 30 84 00 03 E8 96 00 14 E9 96 00 08 F4 B6 16 B8 0...............
-000145B0 30 A4 00 01 F8 B6 00 14 D0 64 60 00 E8 76 00 14 0........d`..v..
-000145C0 E5 96 16 B8 E8 96 00 08 30 A3 00 01 F8 B6 00 14 ........0.......
-000145D0 10 A0 60 00 90 AC 00 41 90 A5 00 41 90 A5 00 41 ..`....A...A...A
-000145E0 90 A5 00 41 90 A5 00 41 90 A5 00 41 90 A5 00 41 ...A...A...A...A
-000145F0 90 A5 00 41 D0 A3 20 00 E8 96 16 BC 30 A0 00 10 ...A.. .....0...
-00014600 31 08 00 01 14 64 28 00 A6 43 00 1F 10 A0 48 00 1....d(..C....H.
-00014610 BE 12 00 14 10 A5 00 00 32 52 FF FF BE 32 FF FC ........2R...2..
-00014620 90 A5 00 01 30 84 FF F3 B0 00 00 00 A4 A5 FF FF ....0...........
-00014630 F4 B6 16 B8 16 46 40 01 BE B2 01 F4 F8 96 16 BC .....F@.........
-00014640 B8 10 FF 18 C0 68 58 00 E4 76 0A C4 30 63 00 01 .....hX..v..0c..
-00014650 B8 10 F7 E0 F4 76 0A C4 E4 76 0A C4 30 63 00 01 .....v...v..0c..
-00014660 B8 10 F8 98 F4 76 0A C4 30 67 00 05 16 58 18 03 .....v..0g...X..
-00014670 BC B2 00 7C E4 76 16 B8 E8 96 16 BC 32 76 00 94 ...|.v......2v..
-00014680 90 63 00 61 32 B6 09 88 30 A0 00 0D 16 44 28 01 .c.a2...0....D(.
-00014690 BE 52 00 D0 30 D7 00 02 B0 00 00 00 A4 C6 FF FF .R..0...........
-000146A0 A6 44 00 1F 10 A0 30 00 BE 12 00 14 10 A5 00 00 .D....0.........
-000146B0 32 52 FF FF BE 32 FF FC 10 A5 28 00 30 84 00 03 2R...2....(.0...
-000146C0 80 63 28 00 F4 76 16 B8 F8 96 16 BC B0 00 00 01 .c(..v..........
-000146D0 30 E0 AE D8 B0 00 00 01 30 C0 AF 50 B9 F4 DC 88 0.......0..P....
-000146E0 10 B6 00 00 B8 10 F9 80 10 73 00 00 BE 19 FF 88 .........s......
-000146F0 32 65 00 94 B8 10 F9 58 32 A5 09 88 33 C0 00 03 2e.....X2...3...
-00014700 B8 10 F7 78 31 00 00 8A E8 76 00 14 E4 B6 16 B8 ...x1....v......
-00014710 E8 96 00 08 30 C3 00 01 F8 D6 00 14 D0 A3 20 00 ....0......... .
-00014720 E8 76 00 14 E4 D6 16 B8 E8 96 00 08 30 A3 00 01 .v..........0...
-00014730 F8 B6 00 14 10 A0 30 00 90 A6 00 41 90 A5 00 41 ......0....A...A
-00014740 90 A5 00 41 90 A5 00 41 90 A5 00 41 90 A5 00 41 ...A...A...A...A
-00014750 90 A5 00 41 90 A5 00 41 B8 10 F9 98 D0 A3 20 00 ...A...A...... .
-00014760 E8 F6 00 14 B0 00 00 00 A4 C6 FF FF E9 16 00 08 ................
-00014770 A6 44 00 1F 10 A0 30 00 BE 12 00 14 10 A5 00 00 .D....0.........
-00014780 32 52 FF FF BE 32 FF FC 10 A5 28 00 80 63 28 00 2R...2....(..c(.
-00014790 90 63 00 61 30 87 00 01 F4 76 16 B8 F8 96 00 14 .c.a0....v......
-000147A0 D0 67 40 00 E8 76 00 14 E4 F6 16 B8 E8 96 00 08 .g@..v..........
-000147B0 30 A3 00 01 F8 B6 00 14 10 A0 38 00 90 A7 00 41 0.........8....A
-000147C0 90 A5 00 41 90 A5 00 41 90 A5 00 41 90 A5 00 41 ...A...A...A...A
-000147D0 90 A5 00 41 90 A5 00 41 90 A5 00 41 D0 A3 20 00 ...A...A...A.. .
-000147E0 E8 76 16 BC 31 00 00 10 14 A3 40 00 30 63 FF F3 .v..1.....@.0c..
-000147F0 A6 45 00 1F 10 80 30 00 BE 12 00 14 10 84 00 00 .E....0.........
-00014800 32 52 FF FF BE 32 FF FC 90 84 00 01 F8 76 16 BC 2R...2.......v..
-00014810 B8 10 FE BC F4 96 16 B8 31 08 00 01 F4 B6 16 B8 ........1.......
-00014820 16 46 40 01 BE 52 FE 1C F8 96 16 BC 10 D3 00 00 .F@..R..........
-00014830 B9 F4 D0 2C 10 B6 00 00 10 F8 00 00 10 D5 00 00 ...,............
-00014840 B9 F4 D0 1C 10 B6 00 00 10 F5 00 00 10 D3 00 00 ................
-00014850 B9 F4 DB 14 10 B6 00 00 B8 10 F8 0C 10 73 00 00 .............s..
-00014860 E9 16 00 14 B0 00 00 00 A4 E7 FF FF A6 44 00 1F .............D..
-00014870 10 C0 38 00 BE 12 00 14 10 C6 00 00 32 52 FF FF ..8.........2R..
-00014880 BE 32 FF FC 10 C6 30 00 E9 36 00 08 80 63 30 00 .2....0..6...c0.
-00014890 90 63 00 61 30 88 00 01 F4 76 16 B8 F8 96 00 14 .c.a0....v......
-000148A0 D0 68 48 00 E8 76 00 14 E5 16 16 B8 E8 96 00 08 .hH..v..........
-000148B0 30 C3 00 01 F8 D6 00 14 10 C0 40 00 90 C8 00 41 0.........@....A
-000148C0 90 C6 00 41 90 C6 00 41 90 C6 00 41 90 C6 00 41 ...A...A...A...A
-000148D0 90 C6 00 41 90 C6 00 41 90 C6 00 41 D0 C3 20 00 ...A...A...A.. .
-000148E0 E8 96 16 BC 30 60 00 10 31 00 00 0B 14 C4 18 00 ....0`..1.......
-000148F0 A6 46 00 1F 10 60 38 00 BE 12 00 14 10 63 00 00 .F...`8......c..
-00014900 32 52 FF FF BE 32 FF FC 90 63 00 01 30 84 FF F3 2R...2...c..0...
-00014910 B0 00 00 00 A4 63 FF FF F4 76 16 B8 F8 96 16 BC .....c...v......
-00014920 E8 F6 0B 1C EB 16 0B 28 30 C5 00 01 16 44 40 01 .......(0....D@.
-00014930 BE 52 F9 B8 90 63 00 61 31 07 FF 00 B0 00 00 00 .R...c.a1.......
-00014940 A5 08 FF FF A6 44 00 1F 11 20 40 00 BE 12 00 14 .....D... @.....
-00014950 11 29 00 00 32 52 FF FF BE 32 FF FC 11 29 48 00 .)..2R...2...)H.
-00014960 80 63 48 00 B0 00 00 00 A4 63 FF FF 30 84 00 05 .cH......c..0...
-00014970 F4 76 16 B8 F8 96 16 BC 31 00 00 0B 16 44 40 01 .v......1....D@.
-00014980 BE 52 FA 38 90 63 00 61 B0 00 00 00 A5 38 FF FF .R.8.c.a.....8..
-00014990 A6 44 00 1F 11 00 48 00 BE 12 00 14 11 08 00 00 .D....H.........
-000149A0 32 52 FF FF BE 32 FF FC 11 08 40 00 80 63 40 00 2R...2....@..c@.
-000149B0 B0 00 00 00 A4 63 FF FF 30 84 00 05 F4 76 16 B8 .....c..0....v..
-000149C0 F8 96 16 BC 31 00 00 0C 16 44 40 01 BE 52 FA B8 ....1....D@..R..
-000149D0 90 63 00 61 30 A6 FF FC B0 00 00 00 A4 A5 FF FF .c.a0...........
-000149E0 A6 44 00 1F 11 00 28 00 BE 12 00 14 11 08 00 00 .D....(.........
-000149F0 32 52 FF FF BE 32 FF FC 11 08 40 00 80 63 40 00 2R...2....@..c@.
-00014A00 B0 00 00 00 A4 A3 FF FF 30 84 00 04 F4 B6 16 B8 ........0.......
-00014A10 B8 10 FB 34 F8 96 16 BC E4 B6 00 B8 BE 25 F7 60 ...4.........%.`
-00014A20 30 80 00 01 E4 B6 00 BC BC 25 F7 54 E4 B6 00 C8 0........%.T....
-00014A30 BC 25 F7 4C B8 10 00 0C 30 B6 04 94 BC 04 F7 40 .%.L....0......@
-00014A40 E4 C3 00 00 30 63 00 04 BE 06 FF F4 88 85 18 00 ....0c..........
-00014A50 30 80 00 01 B8 10 F3 30 F8 87 00 2C 30 C5 00 01 0......0...,0...
-00014A60 10 66 30 00 B8 10 F5 90 10 C3 30 00 B8 10 FF F0 .f0.......0.....
-00014A70 30 A0 00 03 B8 10 FF E8 30 A0 00 0E B8 10 FF E0 0.......0.......
+
+;; fn00013990: 00013990
+;;   Called from:
+;;     000062F8 (in fn00005F20)
+;;     00006814 (in fn00005F20)
+;;     0000934C (in fn00008E80)
+;;     00009450 (in fn00008E80)
+;;     00009618 (in fn00008E80)
+;;     00009740 (in fn00008E80)
+;;     00009BF0 (in fn00008E80)
+;;     00009D64 (in fn00008E80)
+;;     00009F40 (in fn00008E80)
+;;     0000A01C (in fn00008E80)
+;;     0000A1C0 (in fn00008E80)
+;;     0000A328 (in fn00008E80)
+;;     0000A43C (in fn00008E80)
+;;     0000A538 (in fn00008E80)
+;;     0000A6BC (in fn00008E80)
+;;     0000A900 (in fn00008E80)
+;;     0000AC9C (in fn00008E80)
+;;     0000AE88 (in fn00008E80)
+fn00013990 proc
+	lwi	r3,r5,000016BC
+	xori	r4,r3,00000010
+	beqi	r4,00013A00
+
+l0001399C:
+	addik	r4,r0,00000007
+	cmp	r18,r3,r4
+	bgei	r18,000139F8
+
+l000139A8:
+	lwi	r3,r5,00000014
+	lhui	r6,r5,000016B8
+	lwi	r4,r5,00000008
+	addik	r7,r3,00000001
+	swi	r7,r5,00000014
+	sb	r6,r3,r4
+	lwi	r3,r5,000016BC
+	lhui	r6,r5,000016B8
+	addik	r3,r3,FFFFFFF8
+	addk	r4,r0,r6
+	srl	r4,r6
+	srl	r4,r4
+	srl	r4,r4
+	srl	r4,r4
+	srl	r4,r4
+	srl	r4,r4
+	srl	r4,r4
+	srl	r4,r4
+	swi	r3,r5,000016BC
+	shi	r4,r5,000016B8
+
+l000139F8:
+	rtsd	r15,00000008
+	nop
+
+l00013A00:
+	lwi	r3,r5,00000014
+	lhui	r7,r5,000016B8
+	lwi	r6,r5,00000008
+	addik	r8,r3,00000001
+	swi	r8,r5,00000014
+	sb	r7,r3,r6
+	lwi	r3,r5,00000014
+	lhui	r8,r5,000016B8
+	lwi	r6,r5,00000008
+	addik	r7,r3,00000001
+	swi	r7,r5,00000014
+	addk	r7,r0,r8
+	srl	r7,r8
+	srl	r7,r7
+	srl	r7,r7
+	srl	r7,r7
+	srl	r7,r7
+	srl	r7,r7
+	srl	r7,r7
+	srl	r7,r7
+	sb	r7,r3,r6
+	shi	r4,r5,000016B8
+	rtsd	r15,00000008
+	swi	r4,r5,000016BC
+
+;; fn00013A60: 00013A60
+;;   Called from:
+;;     0000A75C (in fn00008E80)
+fn00013A60 proc
+	lhui	r6,r5,000016B8
+	lwi	r3,r5,000016BC
+	addik	r7,r0,00000002
+	addik	r8,r0,0000000D
+	andi	r18,r3,0000001F
+	addk	r4,r0,r7
+	beqid	r18,00013A8C
+	addk	r4,r4,r0
+
+l00013A80:
+	addik	r18,r18,FFFFFFFF
+	bneid	r18,00013A80
+	addk	r4,r4,r4
+
+l00013A8C:
+	or	r4,r4,r6
+	sext16	r4,r4
+	imm	00000000
+	andi	r6,r4,0000FFFF
+	cmp	r18,r3,r8
+	bgeid	r18,00013BB4
+	addik	r3,r3,00000003
+
+l00013AA8:
+	lwi	r3,r5,00000014
+	lwi	r8,r5,00000008
+	shi	r6,r5,000016B8
+	addik	r6,r3,00000001
+	swi	r6,r5,00000014
+	sb	r4,r3,r8
+	lwi	r3,r5,00000014
+	lhui	r8,r5,000016B8
+	lwi	r4,r5,00000008
+	addik	r6,r3,00000001
+	swi	r6,r5,00000014
+	addk	r6,r0,r8
+	srl	r6,r8
+	srl	r6,r6
+	srl	r6,r6
+	srl	r6,r6
+	srl	r6,r6
+	srl	r6,r6
+	srl	r6,r6
+	srl	r6,r6
+	sb	r6,r3,r4
+	lwi	r3,r5,000016BC
+	addik	r6,r0,00000010
+	rsubk	r4,r3,r6
+	andi	r18,r4,0000001F
+	addk	r6,r0,r7
+	beqid	r18,00013B24
+	addk	r6,r6,r0
+
+l00013B18:
+	addik	r18,r18,FFFFFFFF
+	bneid	r18,00013B18
+	sra	r6,r6
+
+l00013B24:
+	addik	r3,r3,FFFFFFF3
+	imm	00000000
+	andi	r6,r6,0000FFFF
+	shi	r6,r5,000016B8
+	addik	r4,r0,00000009
+	cmp	r18,r3,r4
+	bltid	r18,00013BC8
+	swi	r3,r5,000016BC
+
+l00013B44:
+	addik	r3,r3,00000007
+	xori	r4,r3,00000010
+	beqid	r4,00013C34
+	swi	r3,r5,000016BC
+
+l00013B54:
+	addik	r4,r0,00000007
+	cmp	r18,r3,r4
+	bgei	r18,00013BAC
+
+l00013B60:
+	lwi	r3,r5,00000014
+	lwi	r4,r5,00000008
+	addik	r7,r3,00000001
+	swi	r7,r5,00000014
+	sb	r6,r3,r4
+	lwi	r3,r5,000016BC
+	lhui	r6,r5,000016B8
+	addik	r3,r3,FFFFFFF8
+	addk	r4,r0,r6
+	srl	r4,r6
+	srl	r4,r4
+	srl	r4,r4
+	srl	r4,r4
+	srl	r4,r4
+	srl	r4,r4
+	srl	r4,r4
+	srl	r4,r4
+	swi	r3,r5,000016BC
+	shi	r4,r5,000016B8
+
+l00013BAC:
+	rtsd	r15,00000008
+	nop
+
+l00013BB4:
+	shi	r6,r5,000016B8
+	addik	r4,r0,00000009
+	cmp	r18,r3,r4
+	bgeid	r18,00013B44
+	swi	r3,r5,000016BC
+
+l00013BC8:
+	lwi	r3,r5,00000014
+	lwi	r4,r5,00000008
+	addik	r7,r3,00000001
+	swi	r7,r5,00000014
+	sb	r6,r3,r4
+	lwi	r3,r5,00000014
+	lhui	r7,r5,000016B8
+	lwi	r4,r5,00000008
+	addik	r6,r3,00000001
+	swi	r6,r5,00000014
+	addk	r6,r0,r7
+	srl	r6,r7
+	srl	r6,r6
+	srl	r6,r6
+	srl	r6,r6
+	srl	r6,r6
+	srl	r6,r6
+	srl	r6,r6
+	srl	r6,r6
+	sb	r6,r3,r4
+	lwi	r3,r5,000016BC
+	shi	r0,r5,000016B8
+	addk	r6,r0,r0
+	addik	r3,r3,FFFFFFF7
+	xori	r4,r3,00000010
+	bneid	r4,00013B54
+	swi	r3,r5,000016BC
+
+l00013C34:
+	lwi	r3,r5,00000014
+	lwi	r7,r5,00000008
+	addik	r8,r3,00000001
+	swi	r8,r5,00000014
+	sb	r6,r3,r7
+	lwi	r3,r5,00000014
+	lhui	r8,r5,000016B8
+	lwi	r6,r5,00000008
+	addik	r7,r3,00000001
+	swi	r7,r5,00000014
+	addk	r7,r0,r8
+	srl	r7,r8
+	srl	r7,r7
+	srl	r7,r7
+	srl	r7,r7
+	srl	r7,r7
+	srl	r7,r7
+	srl	r7,r7
+	srl	r7,r7
+	sb	r7,r3,r6
+	shi	r4,r5,000016B8
+	rtsd	r15,00000008
+	swi	r4,r5,000016BC
+
+;; fn00013C90: 00013C90
+;;   Called from:
+;;     00009BD4 (in fn00008E80)
+;;     00009D48 (in fn00008E80)
+;;     0000A000 (in fn00008E80)
+;;     0000A8E4 (in fn00008E80)
+;;     0000AC80 (in fn00008E80)
+;;     0000AE6C (in fn00008E80)
+fn00013C90 proc
+	addik	r1,r1,FFFFFFB0
+	swi	r22,r1,00000028
+	swi	r23,r1,0000002C
+	swi	r24,r1,00000030
+	swi	r25,r1,00000034
+	swi	r26,r1,00000038
+	swi	r27,r1,0000003C
+	swi	r15,r1,00000000
+	swi	r19,r1,0000001C
+	swi	r20,r1,00000020
+	swi	r21,r1,00000024
+	swi	r28,r1,00000040
+	swi	r29,r1,00000044
+	swi	r30,r1,00000048
+	swi	r31,r1,0000004C
+	lwi	r4,r5,00000084
+	rsubk	r3,r6,r0
+	or	r3,r6,r3
+	addk	r22,r5,r0
+	addk	r26,r6,r0
+	addk	r27,r7,r0
+	addk	r23,r8,r0
+	addk	r25,r0,r3
+	srl	r25,r3
+	srl	r25,r25
+	srl	r25,r25
+	srl	r25,r25
+	srl	r25,r25
+	srl	r25,r25
+	srl	r25,r25
+	srl	r25,r25
+	srl	r25,r25
+	srl	r25,r25
+	srl	r25,r25
+	srl	r25,r25
+	srl	r25,r25
+	srl	r25,r25
+	srl	r25,r25
+	srl	r25,r25
+	srl	r25,r25
+	srl	r25,r25
+	srl	r25,r25
+	srl	r25,r25
+	srl	r25,r25
+	srl	r25,r25
+	srl	r25,r25
+	srl	r25,r25
+	srl	r25,r25
+	srl	r25,r25
+	srl	r25,r25
+	srl	r25,r25
+	srl	r25,r25
+	srl	r25,r25
+	srl	r25,r25
+	bleid	r4,00014668
+	addik	r24,r7,00000004
+
+l00013D70:
+	lwi	r7,r5,00000000
+	lwi	r3,r7,0000002C
+	xori	r3,r3,00000002
+	beqid	r3,00014140
+	addik	r19,r5,00000094
+
+l00013D84:
+	addk	r5,r22,r0
+	brlid	r15,00012A34
+	addik	r6,r22,00000B18
+	addk	r5,r22,r0
+	brlid	r15,00012A34
+	addik	r6,r22,00000B24
+	lhui	r4,r22,00000096
+	beqid	r4,00014134
+	lwi	r5,r22,00000B1C
+
+l00013DA8:
+	addik	r29,r0,00000004
+	addik	r7,r0,00000007
+
+l00013DB0:
+	addik	r3,r5,00000001
+	addk	r3,r3,r3
+	addk	r3,r3,r3
+	addk	r6,r19,r3
+	addik	r8,r0,FFFFFFFF
+	bltid	r5,00013E60
+	shi	r8,r6,00000002
+
+l00013DCC:
+	addik	r3,r3,00000006
+	addk	r8,r19,r3
+	addik	r6,r22,0000009A
+	addik	r30,r0,FFFFFFFF
+	addk	r3,r0,r0
+	addik	r10,r0,00000003
+	addik	r11,r0,0000008A
+	addik	r28,r0,00000006
+	addik	r20,r0,00000004
+	addik	r12,r0,00000007
+	addik	r21,r0,0000000A
+
+l00013DF8:
+	addik	r3,r3,00000001
+	cmp	r18,r7,r3
+	bgeid	r18,000141D8
+	lhui	r5,r6,00000000
+
+l00013E08:
+	xor	r9,r5,r4
+	beqi	r9,00013E50
+
+l00013E10:
+	cmp	r18,r29,r3
+	bgeid	r18,000141D8
+	addk	r7,r4,r4
+
+l00013E1C:
+	addk	r7,r7,r7
+	addk	r7,r22,r7
+	lhui	r9,r7,00000A7C
+	addk	r3,r9,r3
+	shi	r3,r7,00000A7C
+
+l00013E30:
+	beqid	r5,00014184
+	addk	r3,r5,r0
+
+l00013E38:
+	xor	r3,r5,r4
+	beqid	r3,00014248
+	addk	r30,r4,r0
+
+l00013E44:
+	addk	r29,r20,r0
+	addk	r7,r12,r0
+	addk	r3,r0,r0
+
+l00013E50:
+	addik	r6,r6,00000004
+	xor	r9,r8,r6
+	bneid	r9,00013DF8
+	addk	r4,r5,r0
+
+l00013E60:
+	lhui	r4,r22,0000098A
+	addik	r21,r22,00000988
+	beqid	r4,000146FC
+	lwi	r5,r22,00000B28
+
+l00013E70:
+	addik	r30,r0,00000004
+	addik	r8,r0,00000007
+
+l00013E78:
+	addik	r3,r5,00000001
+	addk	r3,r3,r3
+	addk	r3,r3,r3
+	addk	r6,r21,r3
+	addik	r7,r0,FFFFFFFF
+	bltid	r5,00013F28
+	shi	r7,r6,00000002
+
+l00013E94:
+	addik	r3,r3,00000006
+	addk	r7,r21,r3
+	addik	r6,r22,0000098E
+	addik	r31,r0,FFFFFFFF
+	addk	r3,r0,r0
+	addik	r9,r0,00000003
+	addik	r10,r0,0000008A
+	addik	r28,r0,00000006
+	addik	r12,r0,00000004
+	addik	r11,r0,00000007
+	addik	r20,r0,0000000A
+
+l00013EC0:
+	addik	r3,r3,00000001
+	cmp	r18,r8,r3
+	bgeid	r18,000141A4
+	lhui	r5,r6,00000000
+
+l00013ED0:
+	xor	r29,r5,r4
+	beqi	r29,00013F18
+
+l00013ED8:
+	cmp	r18,r30,r3
+	bgeid	r18,000141A4
+	addk	r8,r4,r4
+
+l00013EE4:
+	addk	r8,r8,r8
+	addk	r8,r22,r8
+	lhui	r29,r8,00000A7C
+	addk	r3,r29,r3
+	shi	r3,r8,00000A7C
+
+l00013EF8:
+	beqid	r5,00014194
+	addk	r3,r5,r0
+
+l00013F00:
+	xor	r3,r5,r4
+	beqid	r3,0001423C
+	addk	r31,r4,r0
+
+l00013F0C:
+	addk	r30,r12,r0
+	addk	r8,r11,r0
+	addk	r3,r0,r0
+
+l00013F18:
+	addik	r6,r6,00000004
+	xor	r29,r6,r7
+	bneid	r29,00013EC0
+	addk	r4,r5,r0
+
+l00013F28:
+	addk	r5,r22,r0
+	brlid	r15,00012A34
+	addik	r6,r22,00000B30
+	lhui	r3,r22,00000ABA
+	bneid	r3,00014A5C
+	addik	r5,r0,00000012
+
+l00013F40:
+	lhui	r3,r22,00000A82
+	bneid	r3,00014A5C
+	addik	r5,r0,00000011
+
+l00013F4C:
+	lhui	r3,r22,00000AB6
+	bneid	r3,00014A5C
+	addik	r5,r0,00000010
+
+l00013F58:
+	lhui	r3,r22,00000A86
+	bneid	r3,00014A5C
+	addik	r5,r0,0000000F
+
+l00013F64:
+	lhui	r3,r22,00000AB2
+	bneid	r3,00014A5C
+	addik	r5,r0,0000000E
+
+l00013F70:
+	lhui	r3,r22,00000A8A
+	bneid	r3,00014A5C
+	addik	r5,r0,0000000D
+
+l00013F7C:
+	lhui	r3,r22,00000AAE
+	bneid	r3,00014A5C
+	addik	r5,r0,0000000C
+
+l00013F88:
+	lhui	r3,r22,00000A8E
+	bneid	r3,00014A5C
+	addik	r5,r0,0000000B
+
+l00013F94:
+	lhui	r3,r22,00000AAA
+	bneid	r3,00014A5C
+	addik	r5,r0,0000000A
+
+l00013FA0:
+	lhui	r3,r22,00000A92
+	bneid	r3,00014A5C
+	addik	r5,r0,00000009
+
+l00013FAC:
+	lhui	r3,r22,00000AA6
+	bneid	r3,00014A5C
+	addik	r5,r0,00000008
+
+l00013FB8:
+	lhui	r3,r22,00000A96
+	bneid	r3,00014A5C
+	addik	r5,r0,00000007
+
+l00013FC4:
+	lhui	r3,r22,00000AA2
+	bneid	r3,00014A5C
+	addik	r5,r0,00000006
+
+l00013FD0:
+	lhui	r3,r22,00000A9A
+	bneid	r3,00014A5C
+	addik	r5,r0,00000005
+
+l00013FDC:
+	lhui	r3,r22,00000A9E
+	bnei	r3,00014A9C
+
+l00013FE4:
+	lhui	r3,r22,00000A7E
+	addik	r6,r0,00000009
+	bneid	r3,00014A6C
+	addik	r5,r0,00000002
+
+l00013FF4:
+	lwi	r3,r22,000016A8
+	lwi	r4,r22,000016AC
+	addik	r3,r3,0000000E
+	addk	r3,r3,r6
+	addik	r6,r3,0000000A
+	addik	r4,r4,0000000A
+	swi	r3,r22,000016A8
+	addk	r7,r0,r6
+	srl	r7,r6
+	srl	r7,r7
+	srl	r7,r7
+	addk	r8,r0,r4
+	srl	r8,r4
+	srl	r8,r8
+	srl	r8,r8
+	cmpu	r18,r7,r8
+	bgeid	r18,00014040
+	addk	r3,r7,r0
+
+l0001403C:
+	addk	r3,r8,r0
+
+l00014040:
+	cmpu	r18,r24,r3
+	blti	r18,00014254
+
+l00014048:
+	beqi	r25,00014254
+
+l0001404C:
+	addk	r8,r23,r0
+	addk	r7,r27,r0
+	addk	r6,r26,r0
+	brlid	r15,0001371C
+	addk	r5,r22,r0
+	addk	r3,r19,r0
+
+l00014064:
+	addik	r5,r22,0000050C
+
+l00014068:
+	shi	r0,r3,00000000
+	addik	r3,r3,00000004
+	xor	r4,r3,r5
+	bnei	r4,00014068
+
+l00014078:
+	addk	r3,r21,r0
+	addik	r5,r22,00000A00
+
+l00014080:
+	shi	r0,r3,00000000
+	addik	r3,r3,00000004
+	xor	r4,r3,r5
+	bnei	r4,00014080
+
+l00014090:
+	addik	r3,r22,00000A7C
+	addik	r5,r22,00000AC8
+
+l00014098:
+	shi	r0,r3,00000000
+	addik	r3,r3,00000004
+	xor	r4,r5,r3
+	bneid	r4,00014098
+	addik	r7,r0,00000001
+
+l000140AC:
+	shi	r7,r22,00000494
+	swi	r4,r22,000016AC
+	swi	r4,r22,000016A8
+	swi	r4,r22,000016B0
+	beqid	r23,000140F8
+	swi	r4,r22,000016A0
+
+l000140C4:
+	lwi	r3,r22,000016BC
+	addik	r4,r0,00000008
+	cmp	r18,r3,r4
+	blti	r18,00014708
+
+l000140D4:
+	blei	r3,000140F0
+
+l000140D8:
+	lwi	r3,r22,00000014
+	lhui	r5,r22,000016B8
+	lwi	r4,r22,00000008
+	addik	r6,r3,00000001
+	swi	r6,r22,00000014
+	sb	r5,r3,r4
+
+l000140F0:
+	shi	r0,r22,000016B8
+	swi	r0,r22,000016BC
+
+l000140F8:
+	lwi	r15,r1,00000000
+	lwi	r19,r1,0000001C
+	lwi	r21,r1,00000024
+	lwi	r22,r1,00000028
+	lwi	r23,r1,0000002C
+	lwi	r24,r1,00000030
+	lwi	r25,r1,00000034
+	lwi	r26,r1,00000038
+	lwi	r27,r1,0000003C
+	lwi	r28,r1,00000040
+	lwi	r29,r1,00000044
+	lwi	r30,r1,00000048
+	lwi	r31,r1,0000004C
+	rtsd	r15,00000008
+	addik	r1,r1,00000050
+
+l00014134:
+	addik	r29,r0,00000003
+	brid	00013DB0
+	addik	r7,r0,0000008A
+
+l00014140:
+	addk	r3,r19,r0
+	imm	0000F3FF
+	addik	r4,r0,F3FFC07F
+	brid	00014164
+	addik	r6,r5,00000114
+
+l00014154:
+	addik	r3,r3,00000004
+
+l00014158:
+	xor	r5,r3,r6
+	beqid	r5,00014A18
+	srl	r4,r4
+
+l00014164:
+	andi	r5,r4,00000001
+	beqi	r5,00014154
+
+l0001416C:
+	lhui	r5,r3,00000000
+	beqid	r5,00014158
+	addik	r3,r3,00000004
+
+l00014178:
+	addk	r4,r0,r0
+
+l0001417C:
+	brid	00013D84
+	swi	r4,r7,0000002C
+
+l00014184:
+	addk	r30,r4,r0
+	addk	r29,r10,r0
+	brid	00013E50
+	addk	r7,r11,r0
+
+l00014194:
+	addk	r31,r4,r0
+	addk	r30,r9,r0
+	brid	00013F18
+	addk	r8,r10,r0
+
+l000141A4:
+	beqid	r4,00014224
+	xor	r31,r4,r31
+
+l000141AC:
+	beqid	r31,000141C8
+	addk	r3,r4,r4
+
+l000141B4:
+	addk	r3,r3,r3
+	addk	r3,r22,r3
+	lhui	r8,r3,00000A7C
+	addik	r8,r8,00000001
+	shi	r8,r3,00000A7C
+
+l000141C8:
+	lhui	r3,r22,00000ABC
+	addik	r3,r3,00000001
+	brid	00013EF8
+	shi	r3,r22,00000ABC
+
+l000141D8:
+	beqid	r4,0001420C
+	xor	r30,r4,r30
+
+l000141E0:
+	beqid	r30,000141FC
+	addk	r3,r4,r4
+
+l000141E8:
+	addk	r3,r3,r3
+	addk	r3,r22,r3
+	lhui	r7,r3,00000A7C
+	addik	r7,r7,00000001
+	shi	r7,r3,00000A7C
+
+l000141FC:
+	lhui	r3,r22,00000ABC
+	addik	r3,r3,00000001
+	brid	00013E30
+	shi	r3,r22,00000ABC
+
+l0001420C:
+	cmp	r18,r3,r21
+	blti	r18,00014648
+
+l00014214:
+	lhui	r3,r22,00000AC0
+	addik	r3,r3,00000001
+	brid	00013E30
+	shi	r3,r22,00000AC0
+
+l00014224:
+	cmp	r18,r3,r20
+	blti	r18,00014658
+
+l0001422C:
+	lhui	r3,r22,00000AC0
+	addik	r3,r3,00000001
+	brid	00013EF8
+	shi	r3,r22,00000AC0
+
+l0001423C:
+	addk	r30,r9,r0
+	brid	00013F18
+	addk	r8,r28,r0
+
+l00014248:
+	addk	r29,r10,r0
+	brid	00013E50
+	addk	r7,r28,r0
+
+l00014254:
+	lwi	r6,r22,00000088
+	lhui	r3,r22,000016B8
+	lwi	r4,r22,000016BC
+	xori	r6,r6,00000004
+	rsubk	r9,r6,r0
+	or	r6,r9,r6
+	bgeid	r6,00014688
+	sext16	r3,r3
+
+l00014274:
+	cmpu	r18,r8,r7
+	bgeid	r18,00014688
+	addik	r6,r0,0000000D
+
+l00014280:
+	cmp	r18,r4,r6
+	bltid	r18,00014860
+	addik	r7,r23,00000004
+
+l0001428C:
+	addik	r6,r23,00000004
+	imm	00000000
+	andi	r6,r6,0000FFFF
+	andi	r18,r4,0000001F
+	addk	r7,r0,r6
+	beqid	r18,000142B4
+	addk	r7,r7,r0
+
+l000142A8:
+	addik	r18,r18,FFFFFFFF
+	bneid	r18,000142A8
+	addk	r7,r7,r7
+
+l000142B4:
+	or	r3,r3,r7
+	imm	00000000
+	andi	r3,r3,0000FFFF
+	addik	r4,r4,00000003
+	shi	r3,r22,000016B8
+	swi	r4,r22,000016BC
+	addik	r8,r0,0000000B
+	lwi	r7,r22,00000B1C
+	lwi	r24,r22,00000B28
+	addik	r6,r5,00000001
+	cmp	r18,r4,r8
+	bgeid	r18,00014938
+	sext16	r3,r3
+
+l000142E8:
+	lwi	r9,r22,00000014
+	addik	r8,r7,FFFFFF00
+	imm	00000000
+	andi	r8,r8,0000FFFF
+	lwi	r10,r22,00000008
+	andi	r18,r4,0000001F
+	addk	r11,r0,r8
+	beqid	r18,00014318
+	addk	r11,r11,r0
+
+l0001430C:
+	addik	r18,r18,FFFFFFFF
+	bneid	r18,0001430C
+	addk	r11,r11,r11
+
+l00014318:
+	or	r3,r3,r11
+	sext16	r3,r3
+	addik	r4,r9,00000001
+	shi	r3,r22,000016B8
+	swi	r4,r22,00000014
+	sb	r3,r9,r10
+	lwi	r3,r22,00000014
+	lhui	r10,r22,000016B8
+	lwi	r4,r22,00000008
+	addik	r9,r3,00000001
+	swi	r9,r22,00000014
+	addk	r9,r0,r10
+	srl	r9,r10
+	srl	r9,r9
+	srl	r9,r9
+	srl	r9,r9
+	srl	r9,r9
+	srl	r9,r9
+	srl	r9,r9
+	srl	r9,r9
+	sb	r9,r3,r4
+	lwi	r4,r22,000016BC
+	addik	r3,r0,00000010
+	rsubk	r9,r4,r3
+	andi	r18,r9,0000001F
+	addk	r3,r0,r8
+	beqid	r18,00014394
+	addk	r3,r3,r0
+
+l00014388:
+	addik	r18,r18,FFFFFFFF
+	bneid	r18,00014388
+	sra	r3,r3
+
+l00014394:
+	addik	r4,r4,FFFFFFF5
+	imm	00000000
+	andi	r3,r3,0000FFFF
+	shi	r3,r22,000016B8
+	swi	r4,r22,000016BC
+	addik	r8,r0,0000000B
+	cmp	r18,r4,r8
+	bgeid	r18,00014988
+	sext16	r3,r3
+
+l000143B8:
+	lwi	r9,r22,00000014
+	imm	00000000
+	andi	r8,r24,0000FFFF
+	lwi	r10,r22,00000008
+	andi	r18,r4,0000001F
+	addk	r11,r0,r8
+	beqid	r18,000143E4
+	addk	r11,r11,r0
+
+l000143D8:
+	addik	r18,r18,FFFFFFFF
+	bneid	r18,000143D8
+	addk	r11,r11,r11
+
+l000143E4:
+	or	r3,r3,r11
+	sext16	r3,r3
+	addik	r4,r9,00000001
+	shi	r3,r22,000016B8
+	swi	r4,r22,00000014
+	sb	r3,r9,r10
+	lwi	r3,r22,00000014
+	lhui	r10,r22,000016B8
+	lwi	r4,r22,00000008
+	addik	r9,r3,00000001
+	swi	r9,r22,00000014
+	addk	r9,r0,r10
+	srl	r9,r10
+	srl	r9,r9
+	srl	r9,r9
+	srl	r9,r9
+	srl	r9,r9
+	srl	r9,r9
+	srl	r9,r9
+	srl	r9,r9
+	sb	r9,r3,r4
+	lwi	r4,r22,000016BC
+	addik	r3,r0,00000010
+	rsubk	r9,r4,r3
+	andi	r18,r9,0000001F
+	addk	r3,r0,r8
+	beqid	r18,00014460
+	addk	r3,r3,r0
+
+l00014454:
+	addik	r18,r18,FFFFFFFF
+	bneid	r18,00014454
+	sra	r3,r3
+
+l00014460:
+	addik	r4,r4,FFFFFFF5
+	imm	00000000
+	andi	r3,r3,0000FFFF
+	shi	r3,r22,000016B8
+	swi	r4,r22,000016BC
+	addik	r8,r0,0000000C
+	cmp	r18,r4,r8
+	bgeid	r18,000149D4
+	sext16	r3,r3
+
+l00014484:
+	lwi	r9,r22,00000014
+	addik	r5,r5,FFFFFFFD
+	imm	00000000
+	andi	r8,r5,0000FFFF
+	andi	r18,r4,0000001F
+	addk	r10,r0,r8
+	beqid	r18,000144B0
+	addk	r10,r10,r0
+
+l000144A4:
+	addik	r18,r18,FFFFFFFF
+	bneid	r18,000144A4
+	addk	r10,r10,r10
+
+l000144B0:
+	lwi	r5,r22,00000008
+	or	r3,r3,r10
+	sext16	r3,r3
+	addik	r4,r9,00000001
+	shi	r3,r22,000016B8
+	swi	r4,r22,00000014
+	sb	r3,r9,r5
+	lwi	r3,r22,00000014
+	lhui	r9,r22,000016B8
+	lwi	r4,r22,00000008
+	addik	r5,r3,00000001
+	swi	r5,r22,00000014
+	addk	r5,r0,r9
+	srl	r5,r9
+	srl	r5,r5
+	srl	r5,r5
+	srl	r5,r5
+	srl	r5,r5
+	srl	r5,r5
+	srl	r5,r5
+	srl	r5,r5
+	sb	r5,r3,r4
+	lwi	r4,r22,000016BC
+	addik	r5,r0,00000010
+	rsubk	r3,r4,r5
+	andi	r18,r3,0000001F
+	addk	r5,r0,r8
+	beqid	r18,00014530
+	addk	r5,r5,r0
+
+l00014524:
+	addik	r18,r18,FFFFFFFF
+	bneid	r18,00014524
+	sra	r5,r5
+
+l00014530:
+	addik	r4,r4,FFFFFFF4
+	imm	00000000
+	andi	r5,r5,0000FFFF
+	shi	r5,r22,000016B8
+	swi	r4,r22,000016BC
+
+l00014544:
+	imm	00000001
+	addik	r11,r0,0001B3D0
+	addik	r3,r0,00000010
+	addk	r8,r0,r0
+	addik	r10,r0,0000000D
+
+l00014558:
+	addik	r3,r3,0000029F
+	addk	r3,r3,r3
+	addk	r3,r3,r3
+	addk	r3,r22,r3
+	lhui	r9,r3,00000002
+	andi	r18,r4,0000001F
+	addk	r3,r0,r9
+	beqid	r18,00014588
+	addk	r3,r3,r0
+
+l0001457C:
+	addik	r18,r18,FFFFFFFF
+	bneid	r18,0001457C
+	addk	r3,r3,r3
+
+l00014588:
+	or	r5,r3,r5
+	sext16	r3,r5
+	imm	00000000
+	andi	r5,r3,0000FFFF
+	cmp	r18,r4,r10
+	bgeid	r18,00014818
+	addik	r4,r4,00000003
+
+l000145A4:
+	lwi	r4,r22,00000014
+	lwi	r12,r22,00000008
+	shi	r5,r22,000016B8
+	addik	r5,r4,00000001
+	swi	r5,r22,00000014
+	sb	r3,r4,r12
+	lwi	r3,r22,00000014
+	lhui	r12,r22,000016B8
+	lwi	r4,r22,00000008
+	addik	r5,r3,00000001
+	swi	r5,r22,00000014
+	addk	r5,r0,r12
+	srl	r5,r12
+	srl	r5,r5
+	srl	r5,r5
+	srl	r5,r5
+	srl	r5,r5
+	srl	r5,r5
+	srl	r5,r5
+	srl	r5,r5
+	sb	r5,r3,r4
+	lwi	r4,r22,000016BC
+	addik	r5,r0,00000010
+	addik	r8,r8,00000001
+	rsubk	r3,r4,r5
+	andi	r18,r3,0000001F
+	addk	r5,r0,r9
+	beqid	r18,00014624
+	addk	r5,r5,r0
+
+l00014618:
+	addik	r18,r18,FFFFFFFF
+	bneid	r18,00014618
+	sra	r5,r5
+
+l00014624:
+	addik	r4,r4,FFFFFFF3
+	imm	00000000
+	andi	r5,r5,0000FFFF
+	shi	r5,r22,000016B8
+	cmp	r18,r6,r8
+	bgeid	r18,0001482C
+	swi	r4,r22,000016BC
+
+l00014640:
+	brid	00014558
+	lbu	r3,r8,r11
+
+l00014648:
+	lhui	r3,r22,00000AC4
+	addik	r3,r3,00000001
+	brid	00013E30
+	shi	r3,r22,00000AC4
+
+l00014658:
+	lhui	r3,r22,00000AC4
+	addik	r3,r3,00000001
+	brid	00013EF8
+	shi	r3,r22,00000AC4
+
+l00014668:
+	addik	r3,r7,00000005
+	cmpu	r18,r24,r3
+	bgei	r18,000146EC
+
+l00014674:
+	lhui	r3,r22,000016B8
+	lwi	r4,r22,000016BC
+	addik	r19,r22,00000094
+	sext16	r3,r3
+	addik	r21,r22,00000988
+
+l00014688:
+	addik	r5,r0,0000000D
+	cmp	r18,r4,r5
+	bltid	r18,00014760
+	addik	r6,r23,00000002
+
+l00014698:
+	imm	00000000
+	andi	r6,r6,0000FFFF
+	andi	r18,r4,0000001F
+	addk	r5,r0,r6
+	beqid	r18,000146BC
+	addk	r5,r5,r0
+
+l000146B0:
+	addik	r18,r18,FFFFFFFF
+	bneid	r18,000146B0
+	addk	r5,r5,r5
+
+l000146BC:
+	addik	r4,r4,00000003
+	or	r3,r3,r5
+	shi	r3,r22,000016B8
+	swi	r4,r22,000016BC
+
+l000146CC:
+	imm	00000001
+	addik	r7,r0,0001AED8
+	imm	00000001
+	addik	r6,r0,0001AF50
+	brlid	r15,00012364
+	addk	r5,r22,r0
+	brid	00014064
+	addk	r3,r19,r0
+
+l000146EC:
+	beqid	r25,00014674
+	addik	r19,r5,00000094
+
+l000146F4:
+	brid	0001404C
+	addik	r21,r5,00000988
+
+l000146FC:
+	addik	r30,r0,00000003
+	brid	00013E78
+	addik	r8,r0,0000008A
+
+l00014708:
+	lwi	r3,r22,00000014
+	lhui	r5,r22,000016B8
+	lwi	r4,r22,00000008
+	addik	r6,r3,00000001
+	swi	r6,r22,00000014
+	sb	r5,r3,r4
+	lwi	r3,r22,00000014
+	lhui	r6,r22,000016B8
+	lwi	r4,r22,00000008
+	addik	r5,r3,00000001
+	swi	r5,r22,00000014
+	addk	r5,r0,r6
+	srl	r5,r6
+	srl	r5,r5
+	srl	r5,r5
+	srl	r5,r5
+	srl	r5,r5
+	srl	r5,r5
+	srl	r5,r5
+	srl	r5,r5
+	brid	000140F0
+	sb	r5,r3,r4
+
+l00014760:
+	lwi	r7,r22,00000014
+	imm	00000000
+	andi	r6,r6,0000FFFF
+	lwi	r8,r22,00000008
+	andi	r18,r4,0000001F
+	addk	r5,r0,r6
+	beqid	r18,0001478C
+	addk	r5,r5,r0
+
+l00014780:
+	addik	r18,r18,FFFFFFFF
+	bneid	r18,00014780
+	addk	r5,r5,r5
+
+l0001478C:
+	or	r3,r3,r5
+	sext16	r3,r3
+	addik	r4,r7,00000001
+	shi	r3,r22,000016B8
+	swi	r4,r22,00000014
+	sb	r3,r7,r8
+	lwi	r3,r22,00000014
+	lhui	r7,r22,000016B8
+	lwi	r4,r22,00000008
+	addik	r5,r3,00000001
+	swi	r5,r22,00000014
+	addk	r5,r0,r7
+	srl	r5,r7
+	srl	r5,r5
+	srl	r5,r5
+	srl	r5,r5
+	srl	r5,r5
+	srl	r5,r5
+	srl	r5,r5
+	srl	r5,r5
+	sb	r5,r3,r4
+	lwi	r3,r22,000016BC
+	addik	r8,r0,00000010
+	rsubk	r5,r3,r8
+	addik	r3,r3,FFFFFFF3
+	andi	r18,r5,0000001F
+	addk	r4,r0,r6
+	beqid	r18,0001480C
+	addk	r4,r4,r0
+
+l00014800:
+	addik	r18,r18,FFFFFFFF
+	bneid	r18,00014800
+	sra	r4,r4
+
+l0001480C:
+	swi	r3,r22,000016BC
+	brid	000146CC
+	shi	r4,r22,000016B8
+
+l00014818:
+	addik	r8,r8,00000001
+	shi	r5,r22,000016B8
+	cmp	r18,r6,r8
+	bltid	r18,00014640
+	swi	r4,r22,000016BC
+
+l0001482C:
+	addk	r6,r19,r0
+	brlid	r15,0001185C
+	addk	r5,r22,r0
+	addk	r7,r24,r0
+	addk	r6,r21,r0
+	brlid	r15,0001185C
+	addk	r5,r22,r0
+	addk	r7,r21,r0
+	addk	r6,r19,r0
+	brlid	r15,00012364
+	addk	r5,r22,r0
+	brid	00014064
+	addk	r3,r19,r0
+
+l00014860:
+	lwi	r8,r22,00000014
+	imm	00000000
+	andi	r7,r7,0000FFFF
+	andi	r18,r4,0000001F
+	addk	r6,r0,r7
+	beqid	r18,00014888
+	addk	r6,r6,r0
+
+l0001487C:
+	addik	r18,r18,FFFFFFFF
+	bneid	r18,0001487C
+	addk	r6,r6,r6
+
+l00014888:
+	lwi	r9,r22,00000008
+	or	r3,r3,r6
+	sext16	r3,r3
+	addik	r4,r8,00000001
+	shi	r3,r22,000016B8
+	swi	r4,r22,00000014
+	sb	r3,r8,r9
+	lwi	r3,r22,00000014
+	lhui	r8,r22,000016B8
+	lwi	r4,r22,00000008
+	addik	r6,r3,00000001
+	swi	r6,r22,00000014
+	addk	r6,r0,r8
+	srl	r6,r8
+	srl	r6,r6
+	srl	r6,r6
+	srl	r6,r6
+	srl	r6,r6
+	srl	r6,r6
+	srl	r6,r6
+	srl	r6,r6
+	sb	r6,r3,r4
+	lwi	r4,r22,000016BC
+	addik	r3,r0,00000010
+	addik	r8,r0,0000000B
+	rsubk	r6,r4,r3
+	andi	r18,r6,0000001F
+	addk	r3,r0,r7
+	beqid	r18,0001490C
+	addk	r3,r3,r0
+
+l00014900:
+	addik	r18,r18,FFFFFFFF
+	bneid	r18,00014900
+	sra	r3,r3
+
+l0001490C:
+	addik	r4,r4,FFFFFFF3
+	imm	00000000
+	andi	r3,r3,0000FFFF
+	shi	r3,r22,000016B8
+	swi	r4,r22,000016BC
+	lwi	r7,r22,00000B1C
+	lwi	r24,r22,00000B28
+	addik	r6,r5,00000001
+	cmp	r18,r4,r8
+	bltid	r18,000142E8
+	sext16	r3,r3
+
+l00014938:
+	addik	r8,r7,FFFFFF00
+	imm	00000000
+	andi	r8,r8,0000FFFF
+	andi	r18,r4,0000001F
+	addk	r9,r0,r8
+	beqid	r18,00014960
+	addk	r9,r9,r0
+
+l00014954:
+	addik	r18,r18,FFFFFFFF
+	bneid	r18,00014954
+	addk	r9,r9,r9
+
+l00014960:
+	or	r3,r3,r9
+	imm	00000000
+	andi	r3,r3,0000FFFF
+	addik	r4,r4,00000005
+	shi	r3,r22,000016B8
+	swi	r4,r22,000016BC
+	addik	r8,r0,0000000B
+	cmp	r18,r4,r8
+	bltid	r18,000143B8
+	sext16	r3,r3
+
+l00014988:
+	imm	00000000
+	andi	r9,r24,0000FFFF
+	andi	r18,r4,0000001F
+	addk	r8,r0,r9
+	beqid	r18,000149AC
+	addk	r8,r8,r0
+
+l000149A0:
+	addik	r18,r18,FFFFFFFF
+	bneid	r18,000149A0
+	addk	r8,r8,r8
+
+l000149AC:
+	or	r3,r3,r8
+	imm	00000000
+	andi	r3,r3,0000FFFF
+	addik	r4,r4,00000005
+	shi	r3,r22,000016B8
+	swi	r4,r22,000016BC
+	addik	r8,r0,0000000C
+	cmp	r18,r4,r8
+	bltid	r18,00014484
+	sext16	r3,r3
+
+l000149D4:
+	addik	r5,r6,FFFFFFFC
+	imm	00000000
+	andi	r5,r5,0000FFFF
+	andi	r18,r4,0000001F
+	addk	r8,r0,r5
+	beqid	r18,000149FC
+	addk	r8,r8,r0
+
+l000149F0:
+	addik	r18,r18,FFFFFFFF
+	bneid	r18,000149F0
+	addk	r8,r8,r8
+
+l000149FC:
+	or	r3,r3,r8
+	imm	00000000
+	andi	r5,r3,0000FFFF
+	addik	r4,r4,00000004
+	shi	r5,r22,000016B8
+	brid	00014544
+	swi	r4,r22,000016BC
+
+l00014A18:
+	lhui	r5,r22,000000B8
+	bneid	r5,0001417C
+	addik	r4,r0,00000001
+
+l00014A24:
+	lhui	r5,r22,000000BC
+	bnei	r5,0001417C
+
+l00014A2C:
+	lhui	r5,r22,000000C8
+	bnei	r5,0001417C
+
+l00014A34:
+	brid	00014A40
+	addik	r5,r22,00000494
+
+l00014A3C:
+	beqi	r4,0001417C
+
+l00014A40:
+	lhui	r6,r3,00000000
+	addik	r3,r3,00000004
+	beqid	r6,00014A3C
+	xor	r4,r5,r3
+
+l00014A50:
+	addik	r4,r0,00000001
+	brid	00013D84
+	swi	r4,r7,0000002C
+
+l00014A5C:
+	addik	r6,r5,00000001
+	addk	r3,r6,r6
+	brid	00013FF4
+	addk	r6,r3,r6
+
+l00014A6C:
+	brid	00014A5C
+	addik	r5,r0,00000003
+00014A74             B8 10 FF E8 30 A0 00 0E B8 10 FF E0     ....0.......
 00014A80 30 A0 00 10 B8 10 FF D8 30 A0 00 0A B8 10 FF D0 0.......0.......
-00014A90 30 A0 00 0C B8 10 FF C8 30 A0 00 06 B8 10 FF C0 0.......0.......
-00014AA0 30 A0 00 04 B8 10 FF B8 30 A0 00 08 E8 65 16 A0 0.......0....e..
+00014A90 30 A0 00 0C B8 10 FF C8 30 A0 00 06             0.......0...    
+
+l00014A9C:
+	brid	00014A5C
+	addik	r5,r0,00000004
+00014AA4             B8 10 FF B8 30 A0 00 08 E8 65 16 A0     ....0....e..
 00014AB0 E9 25 16 A4 E8 85 16 98 11 03 18 00 D4 C8 48 00 .%............H.
 00014AC0 31 03 00 01 F9 05 16 A0 BE 06 01 3C D0 E3 20 00 1..........<.. .
 00014AD0 B0 00 00 01 E0 67 AB D8 E8 85 16 B0 30 C6 FF FF .....g......0...
@@ -20103,7 +17732,7 @@ fn00014C9C proc
 	srl	r23,r23
 	srl	r23,r23
 	imm	00000000
-	andi	r26,r5,FFFFFFFF
+	andi	r26,r5,0000FFFF
 	beqid	r3,00014E4C
 	addk	r22,r6,r0
 
@@ -20125,7 +17754,7 @@ l00014D30:
 
 l00014D40:
 	imm	00000000
-	addik	r19,r0,FFFFFFF1
+	addik	r19,r0,0000FFF1
 
 l00014D48:
 	addik	r25,r24,FFFFEA50
@@ -20203,14 +17832,14 @@ l00014E44:
 l00014E4C:
 	lbui	r3,r6,00000000
 	imm	00000000
-	addik	r4,r0,FFFFFFF0
+	addik	r4,r0,0000FFF0
 	addk	r26,r3,r26
 	cmpu	r18,r26,r4
 	blti	r18,00015304
 
 l00014E64:
 	imm	00000000
-	addik	r3,r0,FFFFFFF0
+	addik	r3,r0,0000FFF0
 	addk	r23,r26,r23
 	cmpu	r18,r23,r3
 	bgeid	r18,00014E88
@@ -20218,7 +17847,7 @@ l00014E64:
 
 l00014E7C:
 	imm	0000FFFF
-	addik	r23,r23,0000000F
+	addik	r23,r23,FFFF000F
 
 l00014E84:
 	addk	r3,r23,r23
@@ -20357,17 +17986,17 @@ l00015004:
 
 l00015010:
 	imm	00000000
-	addik	r3,r0,FFFFFFF0
+	addik	r3,r0,0000FFF0
 	cmpu	r18,r26,r3
 	bgei	r18,00015028
 
 l00015020:
 	imm	0000FFFF
-	addik	r26,r26,0000000F
+	addik	r26,r26,FFFF000F
 
 l00015028:
 	imm	00000000
-	addik	r6,r0,FFFFFFF1
+	addik	r6,r0,0000FFF1
 	brlid	r15,00018030
 	addk	r5,r23,r0
 	addk	r4,r0,r3
@@ -20581,12 +18210,12 @@ l000152CC:
 
 l000152D8:
 	imm	00000000
-	addik	r6,r0,FFFFFFF1
+	addik	r6,r0,0000FFF1
 	brlid	r15,00018030
 	addk	r5,r26,r0
 	addk	r5,r23,r0
 	imm	00000000
-	addik	r6,r0,FFFFFFF1
+	addik	r6,r0,0000FFF1
 	brlid	r15,00018030
 	addk	r26,r3,r0
 	brid	00014E84
@@ -20594,7 +18223,7 @@ l000152D8:
 
 l00015304:
 	imm	0000FFFF
-	addik	r26,r26,0000000F
+	addik	r26,r26,FFFF000F
 	bri	00014E64
 
 l00015310:
@@ -20603,8 +18232,12 @@ l00015310:
 
 ;; fn00015318: 00015318
 ;;   Called from:
-;;     0000DFE4 (in fn0000D1CC)
-;;     0000F7F0 (in fn0000D9E8)
+;;     00005E84 (in fn00005B0C)
+;;     00006670 (in fn00005F20)
+;;     000069CC (in fn00005F20)
+;;     000081AC (in fn00008008)
+;;     000083D8 (in fn00008234)
+;;     00009330 (in fn00008E80)
 fn00015318 proc
 	addik	r1,r1,FFFFFFE4
 	swi	r15,r1,00000000
@@ -20717,7 +18350,7 @@ fn000156B4 proc
 	src	r9,r9
 	src	r9,r9
 	imm	0000FF00
-	andi	r9,r9,00000000
+	andi	r9,r9,FF000000
 	addk	r4,r0,r5
 	srl	r4,r5
 	srl	r4,r4
@@ -20729,11 +18362,11 @@ fn000156B4 proc
 	srl	r4,r4
 	addk	r3,r3,r9
 	imm	00000000
-	andi	r4,r4,FFFFFF00
+	andi	r4,r4,0000FF00
 	addk	r8,r8,r8
 	addk	r3,r3,r4
 	imm	000000FF
-	andi	r8,r8,00000000
+	andi	r8,r8,00FF0000
 	addk	r3,r3,r8
 	beqid	r7,00015884
 	xori	r4,r3,FFFFFFFF
@@ -20792,7 +18425,7 @@ l000157D0:
 	addk	r4,r4,r4
 	addk	r3,r3,r3
 	imm	00000001
-	addik	r4,r4,FFFFC5D0
+	addik	r4,r4,0001C5D0
 	lwi	r4,r4,00000000
 	addk	r3,r3,r3
 	addk	r3,r3,r3
@@ -20855,14 +18488,14 @@ l00015884:
 	src	r7,r7
 	src	r7,r7
 	imm	0000FF00
-	andi	r7,r7,00000000
+	andi	r7,r7,FF000000
 	addk	r4,r4,r4
 	addk	r3,r5,r7
 	imm	00000000
-	andi	r5,r6,FFFFFF00
+	andi	r5,r6,0000FF00
 	addk	r3,r3,r5
 	imm	000000FF
-	andi	r4,r4,00000000
+	andi	r4,r4,00FF0000
 	rtsd	r15,00000008
 	addk	r3,r3,r4
 
@@ -20922,12 +18555,12 @@ l000159C0:
 	srl	r4,r4
 	srl	r4,r4
 	imm	00000001
-	addik	r9,r9,FFFFC5D0
+	addik	r9,r9,0001C5D0
 	addk	r8,r0,r4
 	addk	r8,r4,r4
 	addk	r8,r8,r8
 	imm	00000001
-	addik	r8,r8,FFFFD1D0
+	addik	r8,r8,0001D1D0
 	lwi	r4,r9,00000000
 	lwi	r12,r8,00000000
 	addk	r9,r0,r3
@@ -20954,11 +18587,11 @@ l000159C0:
 	srl	r8,r8
 	srl	r8,r8
 	imm	00000001
-	addik	r3,r9,FFFFC9D0
+	addik	r3,r9,0001C9D0
 	andi	r8,r8,000003FC
 	lwi	r3,r3,00000000
 	imm	00000001
-	addik	r8,r8,FFFFCDD0
+	addik	r8,r8,0001CDD0
 	lwi	r8,r8,00000000
 	xor	r4,r4,r12
 	xor	r4,r4,r11
@@ -20997,9 +18630,9 @@ l000159C0:
 	addk	r8,r9,r9
 	addk	r8,r8,r8
 	imm	00000001
-	addik	r3,r3,FFFFC5D0
+	addik	r3,r3,0001C5D0
 	imm	00000001
-	addik	r8,r8,FFFFD1D0
+	addik	r8,r8,0001D1D0
 	lwi	r11,r8,00000000
 	lwi	r3,r3,00000000
 	addk	r9,r0,r4
@@ -21026,10 +18659,10 @@ l000159C0:
 	srl	r8,r8
 	srl	r8,r8
 	imm	00000001
-	addik	r9,r9,FFFFC9D0
+	addik	r9,r9,0001C9D0
 	andi	r4,r8,000003FC
 	imm	00000001
-	addik	r4,r4,FFFFCDD0
+	addik	r4,r4,0001CDD0
 	lwi	r8,r9,00000000
 	lwi	r4,r4,00000000
 	xor	r3,r3,r11
@@ -21069,9 +18702,9 @@ l000159C0:
 	addk	r8,r9,r9
 	addk	r8,r8,r8
 	imm	00000001
-	addik	r3,r3,FFFFC5D0
+	addik	r3,r3,0001C5D0
 	imm	00000001
-	addik	r8,r8,FFFFD1D0
+	addik	r8,r8,0001D1D0
 	lwi	r11,r8,00000000
 	lwi	r3,r3,00000000
 	addk	r9,r0,r4
@@ -21099,10 +18732,10 @@ l000159C0:
 	srl	r8,r8
 	srl	r8,r8
 	imm	00000001
-	addik	r9,r9,FFFFC9D0
+	addik	r9,r9,0001C9D0
 	andi	r4,r8,000003FC
 	imm	00000001
-	addik	r4,r4,FFFFCDD0
+	addik	r4,r4,0001CDD0
 	lwi	r8,r9,00000000
 	lwi	r4,r4,00000000
 	xor	r3,r3,r11
@@ -21142,9 +18775,9 @@ l000159C0:
 	addk	r8,r9,r9
 	addk	r8,r8,r8
 	imm	00000001
-	addik	r3,r3,FFFFC5D0
+	addik	r3,r3,0001C5D0
 	imm	00000001
-	addik	r8,r8,FFFFD1D0
+	addik	r8,r8,0001D1D0
 	lwi	r11,r8,00000000
 	lwi	r3,r3,00000000
 	addk	r9,r0,r4
@@ -21172,10 +18805,10 @@ l000159C0:
 	srl	r8,r8
 	srl	r8,r8
 	imm	00000001
-	addik	r9,r9,FFFFC9D0
+	addik	r9,r9,0001C9D0
 	andi	r4,r8,000003FC
 	imm	00000001
-	addik	r4,r4,FFFFCDD0
+	addik	r4,r4,0001CDD0
 	lwi	r8,r9,00000000
 	lwi	r4,r4,00000000
 	xor	r3,r3,r11
@@ -21215,9 +18848,9 @@ l000159C0:
 	addk	r8,r9,r9
 	addk	r8,r8,r8
 	imm	00000001
-	addik	r3,r3,FFFFC5D0
+	addik	r3,r3,0001C5D0
 	imm	00000001
-	addik	r8,r8,FFFFD1D0
+	addik	r8,r8,0001D1D0
 	lwi	r11,r8,00000000
 	lwi	r3,r3,00000000
 	addk	r9,r0,r4
@@ -21245,10 +18878,10 @@ l000159C0:
 	srl	r8,r8
 	srl	r8,r8
 	imm	00000001
-	addik	r9,r9,FFFFC9D0
+	addik	r9,r9,0001C9D0
 	andi	r4,r8,000003FC
 	imm	00000001
-	addik	r4,r4,FFFFCDD0
+	addik	r4,r4,0001CDD0
 	lwi	r8,r9,00000000
 	lwi	r4,r4,00000000
 	xor	r3,r3,r11
@@ -21288,9 +18921,9 @@ l000159C0:
 	addk	r8,r9,r9
 	addk	r8,r8,r8
 	imm	00000001
-	addik	r3,r3,FFFFC5D0
+	addik	r3,r3,0001C5D0
 	imm	00000001
-	addik	r8,r8,FFFFD1D0
+	addik	r8,r8,0001D1D0
 	lwi	r11,r8,00000000
 	lwi	r3,r3,00000000
 	addk	r9,r0,r4
@@ -21318,11 +18951,11 @@ l000159C0:
 	srl	r8,r8
 	srl	r8,r8
 	imm	00000001
-	addik	r9,r9,FFFFC9D0
+	addik	r9,r9,0001C9D0
 	andi	r4,r8,000003FC
 	lwi	r9,r9,00000000
 	imm	00000001
-	addik	r4,r4,FFFFCDD0
+	addik	r4,r4,0001CDD0
 	lwi	r8,r4,00000000
 	xor	r3,r3,r11
 	xor	r3,r3,r10
@@ -21346,7 +18979,7 @@ l000159C0:
 	srl	r3,r3
 	andi	r3,r3,000003FC
 	imm	00000001
-	addik	r3,r3,FFFFCDD0
+	addik	r3,r3,0001CDD0
 	addk	r9,r0,r4
 	addk	r9,r4,r4
 	addk	r9,r9,r9
@@ -21376,12 +19009,12 @@ l000159C0:
 	srl	r4,r4
 	srl	r4,r4
 	imm	00000001
-	addik	r9,r9,FFFFC5D0
+	addik	r9,r9,0001C5D0
 	addk	r10,r0,r4
 	addk	r10,r4,r4
 	addk	r10,r10,r10
 	imm	00000001
-	addik	r10,r10,FFFFD1D0
+	addik	r10,r10,0001D1D0
 	lwi	r4,r3,00000000
 	addik	r6,r6,00000020
 	lwi	r3,r9,00000000
@@ -21395,7 +19028,7 @@ l000159C0:
 	lwi	r10,r10,00000000
 	andi	r8,r9,000003FC
 	imm	00000001
-	addik	r8,r8,FFFFC9D0
+	addik	r8,r8,0001C9D0
 	lwi	r9,r6,FFFFFFFC
 	lwi	r8,r8,00000000
 	xor	r3,r3,r10
@@ -21442,9 +19075,9 @@ l000159C0:
 	addk	r4,r9,r9
 	addk	r4,r4,r4
 	imm	00000001
-	addik	r8,r8,FFFFC5D0
+	addik	r8,r8,0001C5D0
 	imm	00000001
-	addik	r4,r4,FFFFD1D0
+	addik	r4,r4,0001D1D0
 	andi	r10,r10,000003FC
 	addk	r9,r0,r3
 	srl	r9,r3
@@ -21465,9 +19098,9 @@ l000159C0:
 	lwi	r8,r8,00000000
 	andi	r9,r9,000003FC
 	imm	00000001
-	addik	r10,r10,FFFFC9D0
+	addik	r10,r10,0001C9D0
 	imm	00000001
-	addik	r9,r9,FFFFCDD0
+	addik	r9,r9,0001CDD0
 	lwi	r3,r10,00000000
 	lwi	r4,r9,00000000
 	xor	r8,r8,r11
@@ -21521,9 +19154,9 @@ l00016300:
 	addk	r11,r9,r9
 	addk	r11,r11,r11
 	imm	00000001
-	addik	r4,r4,FFFFC5D0
+	addik	r4,r4,0001C5D0
 	imm	00000001
-	addik	r11,r11,FFFFD1D0
+	addik	r11,r11,0001D1D0
 	addk	r10,r0,r3
 	srl	r10,r3
 	srl	r10,r10
@@ -21548,12 +19181,12 @@ l00016300:
 	srl	r9,r9
 	srl	r9,r9
 	imm	00000001
-	addik	r10,r10,FFFFC9D0
+	addik	r10,r10,0001C9D0
 	lwi	r3,r11,00000000
 	andi	r9,r9,000003FC
 	lwi	r11,r4,00000000
 	imm	00000001
-	addik	r9,r9,FFFFCDD0
+	addik	r9,r9,0001CDD0
 	lwi	r10,r10,00000000
 	lwi	r4,r9,00000000
 	xor	r3,r3,r11
@@ -21599,9 +19232,9 @@ l0001642C:
 	addk	r12,r4,r4
 	addk	r12,r12,r12
 	imm	00000001
-	addik	r11,r11,FFFFC5D0
+	addik	r11,r11,0001C5D0
 	imm	00000001
-	addik	r12,r12,FFFFD1D0
+	addik	r12,r12,0001D1D0
 	addk	r4,r0,r3
 	srl	r4,r3
 	srl	r4,r4
@@ -21626,12 +19259,12 @@ l0001642C:
 	srl	r9,r9
 	srl	r9,r9
 	imm	00000001
-	addik	r4,r4,FFFFC9D0
+	addik	r4,r4,0001C9D0
 	lwi	r3,r12,00000000
 	andi	r9,r9,000003FC
 	lwi	r12,r11,00000000
 	imm	00000001
-	addik	r9,r9,FFFFCDD0
+	addik	r9,r9,0001CDD0
 	lwi	r11,r4,00000000
 	lwi	r4,r9,00000000
 	xor	r3,r3,r12
@@ -21677,9 +19310,9 @@ l0001655C:
 	addk	r12,r4,r4
 	addk	r12,r12,r12
 	imm	00000001
-	addik	r11,r11,FFFFC5D0
+	addik	r11,r11,0001C5D0
 	imm	00000001
-	addik	r12,r12,FFFFD1D0
+	addik	r12,r12,0001D1D0
 	addk	r4,r0,r3
 	srl	r4,r3
 	srl	r4,r4
@@ -21704,12 +19337,12 @@ l0001655C:
 	srl	r9,r9
 	srl	r9,r9
 	imm	00000001
-	addik	r4,r4,FFFFC9D0
+	addik	r4,r4,0001C9D0
 	lwi	r3,r12,00000000
 	andi	r9,r9,000003FC
 	lwi	r12,r11,00000000
 	imm	00000001
-	addik	r9,r9,FFFFCDD0
+	addik	r9,r9,0001CDD0
 	lwi	r11,r4,00000000
 	lwi	r4,r9,00000000
 	xor	r3,r3,r12
@@ -21755,9 +19388,9 @@ l0001668C:
 	addk	r12,r4,r4
 	addk	r12,r12,r12
 	imm	00000001
-	addik	r11,r11,FFFFC5D0
+	addik	r11,r11,0001C5D0
 	imm	00000001
-	addik	r12,r12,FFFFD1D0
+	addik	r12,r12,0001D1D0
 	addk	r4,r0,r3
 	srl	r4,r3
 	srl	r4,r4
@@ -21782,12 +19415,12 @@ l0001668C:
 	srl	r9,r9
 	srl	r9,r9
 	imm	00000001
-	addik	r4,r4,FFFFC9D0
+	addik	r4,r4,0001C9D0
 	lwi	r3,r12,00000000
 	andi	r9,r9,000003FC
 	lwi	r12,r11,00000000
 	imm	00000001
-	addik	r9,r9,FFFFCDD0
+	addik	r9,r9,0001CDD0
 	lwi	r11,r4,00000000
 	lwi	r4,r9,00000000
 	xor	r3,r3,r12
@@ -21833,9 +19466,9 @@ l000167BC:
 	addk	r12,r4,r4
 	addk	r12,r12,r12
 	imm	00000001
-	addik	r11,r11,FFFFC5D0
+	addik	r11,r11,0001C5D0
 	imm	00000001
-	addik	r12,r12,FFFFD1D0
+	addik	r12,r12,0001D1D0
 	addk	r4,r0,r3
 	srl	r4,r3
 	srl	r4,r4
@@ -21860,12 +19493,12 @@ l000167BC:
 	srl	r9,r9
 	srl	r9,r9
 	imm	00000001
-	addik	r4,r4,FFFFC9D0
+	addik	r4,r4,0001C9D0
 	lwi	r3,r12,00000000
 	andi	r9,r9,000003FC
 	lwi	r12,r11,00000000
 	imm	00000001
-	addik	r9,r9,FFFFCDD0
+	addik	r9,r9,0001CDD0
 	lwi	r11,r4,00000000
 	lwi	r4,r9,00000000
 	xor	r3,r3,r12
@@ -21911,9 +19544,9 @@ l000168EC:
 	addk	r12,r4,r4
 	addk	r12,r12,r12
 	imm	00000001
-	addik	r11,r11,FFFFC5D0
+	addik	r11,r11,0001C5D0
 	imm	00000001
-	addik	r12,r12,FFFFD1D0
+	addik	r12,r12,0001D1D0
 	addk	r4,r0,r3
 	srl	r4,r3
 	srl	r4,r4
@@ -21938,12 +19571,12 @@ l000168EC:
 	srl	r9,r9
 	srl	r9,r9
 	imm	00000001
-	addik	r4,r4,FFFFC9D0
+	addik	r4,r4,0001C9D0
 	lwi	r3,r12,00000000
 	andi	r9,r9,000003FC
 	lwi	r12,r11,00000000
 	imm	00000001
-	addik	r9,r9,FFFFCDD0
+	addik	r9,r9,0001CDD0
 	lwi	r11,r4,00000000
 	lwi	r4,r9,00000000
 	xor	r3,r3,r12
@@ -21992,13 +19625,13 @@ l00016A1C:
 	srl	r8,r8
 	srl	r8,r8
 	imm	00000001
-	addik	r4,r4,FFFFC5D0
+	addik	r4,r4,0001C5D0
 	addk	r10,r0,r8
 	addk	r10,r8,r8
 	addk	r10,r10,r10
 	andi	r9,r9,000003FC
 	imm	00000001
-	addik	r10,r10,FFFFD1D0
+	addik	r10,r10,0001D1D0
 	addk	r8,r0,r3
 	srl	r8,r3
 	srl	r8,r8
@@ -22018,9 +19651,9 @@ l00016A1C:
 	andi	r8,r8,000003FC
 	lwi	r10,r10,00000000
 	imm	00000001
-	addik	r9,r9,FFFFC9D0
+	addik	r9,r9,0001C9D0
 	imm	00000001
-	addik	r8,r8,FFFFCDD0
+	addik	r8,r8,0001CDD0
 	lwi	r3,r9,00000000
 	lwi	r8,r8,00000000
 	xor	r4,r4,r10
@@ -22073,7 +19706,7 @@ l00016B58:
 	addk	r3,r3,r3
 	addk	r5,r5,r5
 	imm	00000001
-	addik	r3,r3,FFFFC5D0
+	addik	r3,r3,0001C5D0
 	lwi	r4,r3,00000000
 	addk	r5,r5,r5
 	addk	r5,r5,r5
@@ -22119,7 +19752,7 @@ l00016C04:
 	addk	r3,r3,r3
 	addk	r5,r5,r5
 	imm	00000001
-	addik	r3,r3,FFFFC5D0
+	addik	r3,r3,0001C5D0
 	lwi	r3,r3,00000000
 	addk	r5,r5,r5
 	addk	r5,r5,r5
@@ -22165,7 +19798,7 @@ l00016CB4:
 	addk	r3,r3,r3
 	addk	r5,r5,r5
 	imm	00000001
-	addik	r3,r3,FFFFC5D0
+	addik	r3,r3,0001C5D0
 	lwi	r3,r3,00000000
 	addk	r5,r5,r5
 	addk	r5,r5,r5
@@ -22179,7 +19812,7 @@ fn00016D60 proc
 
 l00016D64:
 	imm	0000EDB8
-	addik	r3,r0,FFFF8320
+	addik	r3,r0,EDB88320
 	addik	r1,r1,FFFFFEFC
 	addik	r4,r1,00000008
 	swi	r3,r1,00000004
@@ -22474,9 +20107,20 @@ l00017004:
 
 ;; fn00017044: 00017044
 ;;   Called from:
-;;     00005E98 (in fn00005B0C)
-;;     000068A0 (in fn00005F20)
-;;     000069E8 (in fn00005F20)
+;;     00005E9C (in fn00005B0C)
+;;     000068A4 (in fn00005F20)
+;;     000069EC (in fn00005F20)
+;;     00008208 (in fn00008008)
+;;     000084D0 (in fn00008234)
+;;     00009834 (in fn00008E80)
+;;     00009AD0 (in fn00008E80)
+;;     00009F20 (in fn00008E80)
+;;     0000A114 (in fn00008E80)
+;;     0000A1AC (in fn00008E80)
+;;     0000A27C (in fn00008E80)
+;;     0000A314 (in fn00008E80)
+;;     0000A400 (in fn00008E80)
+;;     0000A51C (in fn00008E80)
 fn00017044 proc
 	beqi	r6,00017064
 
@@ -22496,239 +20140,1297 @@ l00017064:
 00017070 F9 E1 00 00 B9 F4 FC EC 80 00 00 00 E9 E1 00 00 ................
 00017080 B6 0F 00 08 30 21 00 1C 30 21 FF E4 F9 E1 00 00 ....0!..0!......
 00017090 B9 F4 FC D0 80 00 00 00 E9 E1 00 00 B6 0F 00 08 ................
-000170A0 30 21 00 1C 30 21 FF 64 FA 81 00 6C EA 85 00 1C 0!..0!.d...l....
-000170B0 FA 61 00 68 FB 01 00 7C FB 41 00 84 FB 81 00 8C .a.h...|.A......
-000170C0 FB C1 00 94 FB E1 00 98 FA A1 00 70 FA C1 00 74 ...........p...t
-000170D0 FA E1 00 78 FB 21 00 80 FB 61 00 88 FB A1 00 90 ...x.!...a......
-000170E0 EA D4 00 34 E8 65 00 10 EB B4 00 2C E9 45 00 0C ...4.e.....,.E..
-000170F0 EA F4 00 58 EB 34 00 5C E8 F4 00 30 32 60 FF FF ...X.4.\...02`..
-00017100 14 C6 18 00 13 1D B0 00 E8 85 00 04 FB 01 00 08 ................
-00017110 10 CA 30 00 A6 57 00 1F 13 00 98 00 BE 12 00 14 ..0..W..........
-00017120 13 18 00 00 32 52 FF FF BE 32 FF FC 13 18 C0 00 ....2R...2......
-00017130 AB 18 FF FF EB 74 00 38 A6 59 00 1F 12 E0 98 00 .....t.8.Y......
-00017140 BE 12 00 14 12 F7 00 00 32 52 FF FF BE 32 FF FC ........2R...2..
-00017150 12 F7 B8 00 E9 65 00 00 F8 E1 00 18 F8 C1 00 10 .....e..........
-00017160 FB 01 00 04 AA F7 FF FF E8 F4 00 3C E9 14 00 40 ...........<...@
-00017170 E9 34 00 50 EA B4 00 54 FA E1 00 0C EA E1 00 08 .4.P...T........
-00017180 A7 96 FF FC 30 84 FF FB 30 63 FE FF 10 DB E0 00 ....0...0c......
-00017190 13 CB 20 00 13 EA 18 00 14 9C B0 00 10 76 98 00 .. ..........v..
-000171A0 33 00 00 04 11 93 00 00 F8 61 00 2C 32 76 00 04 3........a.,2v..
-000171B0 F8 81 00 24 F8 C1 00 20 32 F7 00 04 17 16 C0 00 ...$... 2.......
-000171C0 30 7B 00 04 88 96 E0 00 30 DD 00 04 FA 61 00 30 0{......0....a.0
-000171D0 33 40 00 0E 12 60 B0 00 92 76 00 41 92 73 00 41 3@...`...v.A.s.A
-000171E0 33 20 00 02 FA E1 00 34 FB 01 00 38 F8 61 00 3C 3 .....4...8.a.<
-000171F0 F8 81 00 40 F8 C1 00 1C FA 61 00 28 16 48 D0 03 ...@.....a.(.H..
-00017200 BE 52 00 5C EA E1 00 04 E2 6B 00 01 E0 CB 00 00 .R.\.....k......
-00017210 30 88 00 08 A6 44 00 1F 10 60 98 00 BE 12 00 14 0....D...`......
-00017220 10 63 00 00 32 52 FF FF BE 32 FF FC 10 63 18 00 .c..2R...2...c..
-00017230 A6 48 00 1F 10 80 30 00 BE 12 00 14 10 84 00 00 .H....0.........
-00017240 32 52 FF FF BE 32 FF FC 10 84 20 00 10 63 20 00 2R...2.... ..c .
-00017250 10 E7 18 00 31 08 00 10 31 6B 00 02 84 77 38 00 ....1...1k...w8.
-00017260 10 63 18 00 10 63 18 00 10 C9 18 00 E2 66 00 01 .c...c.......f..
-00017270 C0 83 48 00 E4 C6 00 02 A6 53 00 1F 13 00 38 00 ..H......S....8.
-00017280 BE 12 00 14 13 18 00 00 32 52 FF FF BE 32 FF FC ........2R...2..
-00017290 93 18 00 41 15 13 40 00 BE 04 00 9C 10 F8 00 00 ...A..@.........
-000172A0 A4 64 00 10 BE 23 01 5C A4 64 00 40 BC 03 00 18 .d...#.\.d.@....
-000172B0 B8 10 04 08 A4 84 00 20 BE 23 01 4C A4 64 00 0F ....... .#.L.d..
-000172C0 BC 37 03 F4 A6 44 00 1F 10 60 60 00 BE 12 00 14 .7...D...``.....
-000172D0 10 63 00 00 32 52 FF FF BE 32 FF FC 10 63 18 00 .c..2R...2...c..
-000172E0 A8 63 FF FF 84 63 38 00 10 63 30 00 10 63 18 00 .c...c8..c0..c..
-000172F0 10 63 18 00 10 C9 18 00 E2 66 00 01 C0 83 48 00 .c.......f....H.
-00017300 E4 C6 00 02 A6 53 00 1F 13 00 38 00 BE 12 00 14 .....S....8.....
-00017310 13 18 00 00 32 52 FF FF BE 32 FF FC 93 18 00 41 ....2R...2.....A
-00017320 A4 64 00 10 A6 E4 00 40 10 F8 00 00 BE 24 FF 8C .d.....@.....$..
-00017330 15 13 40 00 F0 CA 00 00 31 4A 00 01 16 5E 58 03 ..@.....1J...^X.
-00017340 BC B2 00 0C 16 5F 50 03 BC 52 FE B4 10 60 40 00 ....._P..R...`@.
-00017350 90 68 00 41 90 63 00 41 90 63 00 41 30 80 FF FF .h.A.c.A.c.A0...
-00017360 15 63 58 00 A5 08 00 07 A6 48 00 1F 10 60 20 00 .cX......H...` .
-00017370 BE 12 00 14 10 63 00 00 32 52 FF FF BE 32 FF FC .....c..2R...2..
-00017380 10 63 18 00 F9 65 00 00 A8 63 FF FF F9 45 00 0C .c...e...c...E..
-00017390 16 5E 58 03 BE B2 03 38 84 E3 38 00 15 6B F0 00 .^X....8..8..k..
-000173A0 31 6B 00 05 16 5F 50 03 BE 52 03 3C F9 65 00 04 1k..._P..R.<.e..
-000173B0 15 5F 50 00 32 E0 01 01 15 4A B8 00 F9 45 00 10 ._P.2....J...E..
-000173C0 F8 F4 00 3C F9 14 00 40 EA 61 00 68 EA A1 00 70 ...<...@.a.h...p
-000173D0 EA C1 00 74 EA E1 00 78 EB 01 00 7C EB 21 00 80 ...t...x...|.!..
-000173E0 EB 41 00 84 EB 61 00 88 EB 81 00 8C EB A1 00 90 .A...a..........
-000173F0 EB C1 00 94 EB E1 00 98 B6 0F 00 08 30 21 00 9C ............0!..
-00017400 A4 64 00 0F BE 03 00 88 10 86 00 00 16 43 40 03 .d...........C@.
-00017410 BC B2 00 30 E2 6B 00 00 31 6B 00 01 A6 48 00 1F ...0.k..1k...H..
-00017420 10 80 98 00 BE 12 00 14 10 84 00 00 32 52 FF FF ............2R..
-00017430 BE 32 FF FC 10 84 20 00 31 08 00 08 10 E7 20 00 .2.... .1..... .
-00017440 A6 43 00 1F 10 80 60 00 BE 12 00 14 10 84 00 00 .C....`.........
-00017450 32 52 FF FF BE 32 FF FC 10 84 20 00 A8 84 FF FF 2R...2.... .....
-00017460 84 84 38 00 10 86 20 00 A6 43 00 1F 10 C0 38 00 ..8... ..C....8.
-00017470 BE 12 00 14 10 C6 00 00 32 52 FF FF BE 32 FF FC ........2R...2..
-00017480 90 C6 00 41 10 E6 00 00 15 03 40 00 16 48 D0 03 ...A......@..H..
-00017490 BE B2 02 60 30 C8 00 08 EA 61 00 0C 84 73 38 00 ...`0....a...s8.
-000174A0 10 63 18 00 10 63 18 00 12 F5 18 00 C0 C3 A8 00 .c...c..........
-000174B0 E2 77 00 01 E4 77 00 02 A6 E6 00 10 A6 53 00 1F .w...w.......S..
-000174C0 13 00 38 00 BE 12 00 14 13 18 00 00 32 52 FF FF ..8.........2R..
-000174D0 BE 32 FF FC 93 18 00 41 15 13 40 00 BE 37 00 98 .2.....A..@..7..
-000174E0 10 F8 00 00 A6 66 00 40 BC 33 02 70 12 63 00 00 .....f.@.3.p.c..
-000174F0 B8 10 00 0C F8 81 00 14 BC 38 02 60 A6 46 00 1F .........8.`.F..
-00017500 10 60 60 00 BE 12 00 14 10 63 00 00 32 52 FF FF .``......c..2R..
-00017510 BE 32 FF FC 10 63 18 00 A8 63 FF FF 84 63 38 00 .2...c...c...c8.
-00017520 10 63 98 00 10 63 18 00 10 63 18 00 C0 C3 A8 00 .c...c...c......
-00017530 12 75 18 00 E0 73 00 01 A6 E6 00 10 E6 73 00 02 .u...s.......s..
-00017540 A6 43 00 1F 10 80 38 00 BE 12 00 14 10 84 00 00 .C....8.........
-00017550 32 52 FF FF BE 32 FF FC 90 84 00 41 A7 06 00 40 2R...2.....A...@
-00017560 10 E4 00 00 BE 17 FF 94 15 03 40 00 10 73 00 00 ..........@..s..
-00017570 E8 81 00 14 A4 C6 00 0F 16 46 40 03 BE B2 00 3C .........F@....<
-00017580 32 68 00 08 E3 0B 00 00 A6 48 00 1F 12 E0 C0 00 2h.......H......
-00017590 BE 12 00 14 12 F7 00 00 32 52 FF FF BE 32 FF FC ........2R...2..
-000175A0 12 F7 B8 00 16 46 98 03 BE 52 04 40 10 E7 B8 00 .....F...R.@....
-000175B0 11 13 00 00 31 6B 00 01 A6 46 00 1F 12 60 60 00 ....1k...F...``.
-000175C0 BE 12 00 14 12 73 00 00 32 52 FF FF BE 32 FF FC .....s..2R...2..
-000175D0 12 73 98 00 AA 73 FF FF 86 73 38 00 FA 61 00 44 .s...s...s8..a.D
-000175E0 13 13 18 00 EA 61 00 10 A6 46 00 1F 12 E0 38 00 .....a...F....8.
-000175F0 BE 12 00 14 12 F7 00 00 32 52 FF FF BE 32 FF FC ........2R...2..
-00017600 92 F7 00 41 15 06 40 00 16 73 50 00 FA 61 00 14 ...A..@..sP..a..
-00017610 16 58 98 03 BE B2 03 6C 10 F7 00 00 16 F3 C0 00 .X.....l........
-00017620 EA 61 00 18 16 57 98 03 BC B2 00 0C E8 D4 1B C4 .a...W..........
-00017630 BC 26 05 78 BE 36 01 3C 14 D7 E8 00 10 DB 30 00 .&.x.6.<......0.
-00017640 16 44 B8 03 BE 52 05 84 F8 C1 00 5C 16 44 C8 03 .D...R.....\.D..
-00017650 BE B2 00 38 E8 C1 00 5C E2 E6 00 00 30 C6 00 03 ...8...\....0...
-00017660 31 4A 00 03 F2 EA FF FD E3 06 FF FE 30 84 FF FD 1J..........0...
-00017670 F3 0A FF FE E0 66 FF FF 16 44 C8 03 BE 52 FF DC .....f...D...R..
-00017680 F0 6A FF FF F8 C1 00 5C BE 04 FC B4 E8 C1 00 5C .j.....\.......\
-00017690 A8 84 00 02 E0 C6 00 00 BE 24 05 28 F0 CA 00 00 .........$.(....
-000176A0 EA E1 00 5C 31 4A 00 02 E2 F7 00 01 B8 10 FC 90 ...\1J..........
-000176B0 F2 EA FF FF A4 84 00 20 BE 04 00 8C 30 C0 3F 51 ....... ....0.?Q
-000176C0 30 60 3F 3F B8 10 FC 88 F8 74 00 04 15 7E 58 00 0`??.....t...~X.
-000176D0 32 60 00 05 15 6B 98 00 16 5F 50 03 BE B2 FC D4 2`...k..._P.....
-000176E0 F9 65 00 04 15 4A F8 00 B8 10 FC D4 31 4A 01 01 .e...J......1J..
-000176F0 E2 EB 00 01 E2 6B 00 00 A6 46 00 1F 10 60 B8 00 .....k...F...`..
-00017700 BE 12 00 14 10 63 00 00 32 52 FF FF BE 32 FF FC .....c..2R...2..
-00017710 10 63 18 00 A6 48 00 1F 10 C0 98 00 BE 12 00 14 .c...H..........
-00017720 10 C6 00 00 32 52 FF FF BE 32 FF FC 10 C6 30 00 ....2R...2....0.
-00017730 10 63 30 00 10 E7 18 00 31 08 00 10 B8 10 FD 5C .c0.....1......\
-00017740 31 6B 00 02 B0 00 00 01 30 80 D6 08 F8 85 00 18 1k......0.......
-00017750 B8 10 FB FC F8 D4 00 04 B0 00 00 01 30 C0 D5 F0 ............0...
-00017760 32 60 3F 51 F8 C5 00 18 B8 10 FB E4 FA 74 00 04 2`?Q.........t..
-00017770 16 57 B0 03 BE B2 02 A4 14 D7 B0 00 EA 61 00 08 .W...........a..
-00017780 14 D7 98 00 10 DB 30 00 16 76 B8 00 FA 61 00 48 ......0..v...a.H
-00017790 16 44 98 03 BE B2 FE B8 F8 C1 00 5C E8 C1 00 14 .D.........\....
-000177A0 16 63 30 00 E8 C1 00 44 16 66 98 00 E8 C1 00 34 .c0....D.f.....4
-000177B0 10 C6 98 00 F8 C1 00 4C E8 C1 00 08 12 66 98 00 .......L.....f..
-000177C0 E8 C1 00 4C 12 7B 98 00 FA 61 00 50 10 DB 30 00 ...L.{...a.P..0.
-000177D0 F8 C1 00 54 E8 C1 00 48 32 60 00 01 F2 61 00 4F ...T...H2`...a.O
-000177E0 14 86 20 00 E8 C1 00 54 16 46 50 03 BE B2 00 0C .. ....T.FP.....
-000177F0 30 C0 00 01 F0 01 00 4F F0 C1 00 57 E8 C1 00 50 0......O...W...P
-00017800 32 6A 00 04 16 53 30 03 BE B2 00 10 E0 C1 00 57 2j...S0........W
-00017810 F0 01 00 57 E0 C1 00 57 E2 61 00 4F 82 73 30 00 ...W...W.a.O.s0.
-00017820 E8 C1 00 48 FA 61 00 4C 32 60 00 01 F2 61 00 57 ...H.a.L2`...a.W
-00017830 32 60 00 09 16 46 98 03 BE 52 00 10 E2 61 00 57 2`...F...R...a.W
-00017840 F0 01 00 57 E2 61 00 57 E8 C1 00 4C 84 C6 98 00 ...W.a.W...L....
-00017850 A6 66 00 FF BE 13 06 7C EA 61 00 14 E8 C1 00 08 .f.....|.a......
-00017860 10 C6 98 00 16 63 30 00 E8 C1 00 44 16 66 98 00 .....c0....D.f..
-00017870 12 7B 98 00 82 6A 98 00 A6 73 00 03 BE 33 06 54 .{...j...s...3.T
-00017880 10 C0 00 00 F8 C1 00 58 F8 C1 00 4C E8 C1 00 48 .......X...L...H
-00017890 F8 81 00 64 E8 81 00 4C 12 60 30 00 92 66 00 41 ...d...L.`0..f.A
-000178A0 92 73 00 41 E8 C1 00 5C FA 61 00 54 EA 61 00 58 .s.A...\.a.T.a.X
-000178B0 F8 61 00 60 E8 61 00 50 30 84 00 01 F8 81 00 4C .a.`.a.P0......L
-000178C0 C8 73 18 00 D8 73 50 00 E8 61 00 54 16 43 20 03 .s...sP..a.T.C .
-000178D0 BE 52 FF E4 32 73 00 04 F8 C1 00 5C E8 C1 00 48 .R..2s.....\...H
-000178E0 E8 61 00 60 E8 81 00 64 A6 66 FF FC 88 C6 98 00 .a.`...d.f......
-000178F0 F8 C1 00 58 10 CA 98 00 F8 C1 00 54 E8 C1 00 48 ...X.......T...H
-00017900 14 D3 30 00 F8 C1 00 50 E8 C1 00 5C 10 C6 98 00 ..0....P...\....
-00017910 F8 C1 00 4C E8 C1 00 58 BE 06 00 48 E8 C1 00 5C ...L...X...H...\
-00017920 C0 D3 30 00 D0 D3 50 00 EA 61 00 50 30 D3 FF FF ..0...P..a.P0...
-00017930 BE 06 00 30 E8 C1 00 4C E2 66 00 01 E8 C1 00 54 ...0...L.f.....T
-00017940 F2 66 00 01 EA 61 00 50 A8 D3 00 02 BE 06 00 14 .f...a.P........
-00017950 E8 C1 00 4C E2 66 00 02 E8 C1 00 54 F2 66 00 02 ...L.f.....T.f..
-00017960 E8 C1 00 48 10 CA 30 00 16 44 B0 03 BE 52 03 D0 ...H..0..D...R..
-00017970 F8 C1 00 48 11 46 00 00 B8 10 FC D4 FB 61 00 5C ...H.F.......a.\
-00017980 14 78 50 00 B8 10 00 10 12 6A 00 00 10 66 00 00 .xP......j...f..
-00017990 12 6A 00 00 E3 03 00 00 31 4A 00 03 30 84 FF FD .j......1J..0...
-000179A0 F3 0A FF FD E0 C3 00 01 F0 CA FF FE 30 C3 00 03 ............0...
-000179B0 E2 E6 FF FF 16 44 C8 03 BE 52 FF D4 F2 EA FF FF .....D...R......
-000179C0 BC 04 F9 7C E3 03 00 03 A8 84 00 02 31 53 00 04 ...|........1S..
-000179D0 BE 24 F9 6C F3 13 00 03 E0 63 00 04 31 53 00 05 .$.l.....c..1S..
-000179E0 B8 10 F9 5C F0 73 00 04 E3 0B 00 01 31 08 00 10 ...\.s......1...
-000179F0 31 6B 00 02 A6 53 00 1F 12 E0 C0 00 BE 12 00 14 1k...S..........
-00017A00 12 F7 00 00 32 52 FF FF BE 32 FF FC 12 F7 B8 00 ....2R...2......
-00017A10 B8 10 FB A8 10 E7 B8 00 10 DB 30 00 16 44 B8 03 ..........0..D..
-00017A20 BE B2 FC 2C F8 C1 00 5C E8 C1 00 14 14 97 20 00 ...,...\...... .
-00017A30 16 63 30 00 E8 C1 00 44 16 66 98 00 E8 C1 00 30 .c0....D.f.....0
-00017A40 10 C6 98 00 12 76 98 00 12 7B 98 00 FA 61 00 48 .....v...{...a.H
-00017A50 32 60 00 01 10 DB 30 00 16 46 50 03 BE B2 00 0C 2`....0..FP.....
-00017A60 F2 61 00 4F F0 01 00 4F 30 C0 00 01 F0 C1 00 53 .a.O...O0......S
-00017A70 E8 C1 00 48 32 6A 00 04 16 53 30 03 BC B2 00 08 ...H2j...S0.....
-00017A80 F0 01 00 53 E2 61 00 4F E0 C1 00 53 82 73 30 00 ...S.a.O...S.s0.
-00017A90 FA 61 00 4C 30 C0 00 09 16 57 30 03 BE 52 00 0C .a.L0....W0..R..
-00017AA0 32 60 00 01 12 60 00 00 E8 C1 00 4C 86 66 98 00 2`...`.....L.f..
-00017AB0 A6 73 00 FF BE 13 03 F8 E8 C1 00 14 12 76 30 00 .s...........v0.
-00017AC0 14 63 98 00 EA 61 00 44 14 73 18 00 10 7B 18 00 .c...a.D.s...{..
-00017AD0 80 6A 18 00 A4 63 00 03 BE 23 03 D4 30 77 FF FC .j...c...#..0w..
-00017AE0 10 C3 00 00 12 60 00 00 FA 61 00 14 10 60 30 00 .....`...a...`0.
-00017AF0 90 66 00 41 90 63 00 41 E8 C1 00 5C 30 63 00 01 .f.A.c.A...\0c..
-00017B00 F8 81 00 44 E8 81 00 48 C8 93 20 00 D8 93 50 00 ...D...H.. ...P.
-00017B10 E8 81 00 14 32 73 00 04 30 84 00 01 16 43 20 03 ....2s..0....C .
-00017B20 BE 52 FF E4 F8 81 00 14 10 63 18 00 10 63 18 00 .R.......c...c..
-00017B30 F8 C1 00 5C 88 D7 18 00 F8 C1 00 48 14 C3 B8 00 ...\.......H....
-00017B40 E8 81 00 44 F8 C1 00 44 E8 C1 00 5C 10 C6 18 00 ...D...D...\....
-00017B50 F8 C1 00 14 E8 C1 00 48 BE 06 00 40 12 6A 18 00 .......H...@.j..
-00017B60 E8 C1 00 5C C0 C3 30 00 D0 C3 50 00 E8 C1 00 44 ...\..0...P....D
-00017B70 30 66 FF FF BC 03 00 24 E8 61 00 14 E0 63 00 01 0f.....$.a...c..
-00017B80 F0 73 00 01 A8 66 00 02 BC 03 00 10 E8 C1 00 14 .s...f..........
-00017B90 E0 C6 00 02 F0 D3 00 02 11 4A B8 00 17 18 50 00 .........J....P.
-00017BA0 B8 10 FA AC FB 01 00 5C B0 00 00 01 32 E0 D5 D0 .......\....2...
-00017BB0 33 00 3F 51 FA E5 00 18 B8 10 F7 94 FB 14 00 04 3.?Q............
-00017BC0 B8 10 F7 7C 31 4A 00 01 EA 61 00 14 14 97 20 00 ...|1J...a.... .
-00017BD0 14 C3 98 00 EA 61 00 44 14 D3 30 00 EA 61 00 1C .....a.D..0..a..
-00017BE0 12 73 30 00 10 DD 30 00 10 DB 30 00 F8 C1 00 4C .s0...0...0....L
-00017BF0 30 C0 00 01 12 7B 98 00 16 53 50 03 BE B2 00 0C 0....{...SP.....
-00017C00 F0 C1 00 57 F0 01 00 57 32 60 00 01 F2 61 00 53 ...W...W2`...a.S
-00017C10 EA 61 00 4C 30 CA 00 04 16 46 98 03 BC B2 00 08 .a.L0....F......
-00017C20 F0 01 00 53 E2 61 00 53 E0 C1 00 57 80 C6 98 00 ...S.a.S...W....
-00017C30 F8 C1 00 48 30 C0 00 09 16 57 30 03 BE 52 00 0C ...H0....W0..R..
-00017C40 32 60 00 01 12 60 00 00 E8 C1 00 48 86 66 98 00 2`...`.....H.f..
-00017C50 A6 73 00 FF BE 13 02 34 E8 C1 00 14 12 7D 30 00 .s.....4.....}0.
-00017C60 14 63 98 00 EA 61 00 44 14 73 18 00 10 7B 18 00 .c...a.D.s...{..
-00017C70 80 6A 18 00 A4 63 00 03 BE 23 02 10 30 77 FF FC .j...c...#..0w..
-00017C80 10 C3 00 00 12 60 00 00 FA 61 00 14 10 60 30 00 .....`...a...`0.
-00017C90 90 66 00 41 90 63 00 41 E8 C1 00 5C 30 63 00 01 .f.A.c.A...\0c..
-00017CA0 F8 81 00 44 E8 81 00 4C C8 93 20 00 D8 93 50 00 ...D...L.. ...P.
-00017CB0 E8 81 00 14 32 73 00 04 30 84 00 01 16 43 20 03 ....2s..0....C .
-00017CC0 BE 52 FF E4 F8 81 00 14 10 63 18 00 10 63 18 00 .R.......c...c..
-00017CD0 F8 C1 00 5C 88 D7 18 00 F8 C1 00 48 E8 C1 00 5C ...\.......H...\
-00017CE0 12 6A 18 00 E8 81 00 44 10 C6 18 00 F8 C1 00 14 .j.....D........
-00017CF0 E8 C1 00 48 FA 61 00 44 BE 06 FE A0 16 63 B8 00 ...H.a.D.....c..
-00017D00 E8 C1 00 5C C0 C3 30 00 D0 C3 50 00 30 73 FF FF ...\..0...P.0s..
-00017D10 BE 03 FE 88 AA 73 00 02 E8 61 00 14 E0 C3 00 01 .....s...a......
-00017D20 E8 61 00 44 BE 13 FE 74 F0 C3 00 01 EA 61 00 14 .a.D...t.....a..
-00017D30 E2 73 00 02 B8 10 FE 64 F2 63 00 02 EA 61 00 14 .s.....d.c...a..
-00017D40 14 96 20 00 14 D3 18 00 EA 61 00 44 10 C6 98 00 .. ......a.D....
-00017D50 EA 61 00 38 12 73 30 00 14 D6 30 00 10 CA 30 00 .a.8.s0...0...0.
-00017D60 F8 C1 00 4C 30 C0 00 01 12 6A 98 00 16 53 D8 03 ...L0....j...S..
-00017D70 BE B2 00 0C F0 C1 00 57 F0 01 00 57 32 60 00 01 .......W...W2`..
-00017D80 F2 61 00 53 E8 C1 00 4C EA 61 00 3C 16 53 30 03 .a.S...L.a.<.S0.
-00017D90 BC B2 00 08 F0 01 00 53 E2 61 00 53 E0 C1 00 57 .......S.a.S...W
-00017DA0 80 C6 98 00 F8 C1 00 50 30 C0 00 09 16 56 30 03 .......P0....V0.
-00017DB0 BE 52 00 0C 32 60 00 01 12 60 00 00 E8 C1 00 50 .R..2`...`.....P
-00017DC0 86 66 98 00 A4 D3 00 FF BE 06 01 38 EA 61 00 14 .f.........8.a..
-00017DD0 10 D6 98 00 14 66 18 00 E8 C1 00 44 10 63 30 00 .....f.....D.c0.
-00017DE0 10 6A 18 00 80 7B 18 00 A4 63 00 03 BE 23 01 14 .j...{...c...#..
-00017DF0 EA 61 00 2C 16 53 C8 03 BE B2 01 2C 12 7B 00 00 .a.,.S.....,.{..
-00017E00 10 C3 00 00 F8 81 00 14 CA 63 D8 00 E8 81 00 4C .........c.....L
-00017E10 30 C6 00 01 DA 63 20 00 E8 81 00 28 16 44 30 03 0....c ....(.D0.
-00017E20 BE 52 FF E8 30 63 00 04 E8 C1 00 48 EA 61 00 40 .R..0c.....H.a.@
-00017E30 E8 81 00 14 10 C6 E0 00 BE 13 FD 60 F8 C1 00 48 ...........`...H
-00017E40 E8 61 00 24 EA 61 00 20 F8 61 00 14 E0 73 00 00 .a.$.a. .a...s..
-00017E50 F0 66 00 00 E8 61 00 14 30 C3 FF FF BC 06 FD 3C .f...a..0......<
-00017E60 E0 73 00 01 E8 C1 00 48 F0 66 00 01 E8 C1 00 14 .s.....H.f......
-00017E70 A8 66 00 02 BC 03 FD 24 E2 73 00 02 E8 61 00 48 .f.....$.s...a.H
-00017E80 B8 10 FD 18 F2 63 00 02 E8 C1 00 5C 10 60 00 00 .....c.....\.`..
-00017E90 C2 63 30 00 D2 63 50 00 30 63 00 01 8A 77 18 00 .c0..cP.0c...w..
-00017EA0 BC 33 FF F0 B8 10 FC F8 11 4A B8 00 E8 C1 00 5C .3.......J.....\
-00017EB0 10 60 00 00 C2 63 30 00 D2 63 50 00 30 63 00 01 .`...c0..cP.0c..
-00017EC0 8A 77 18 00 BC 33 FF F0 B8 10 FC D4 11 4A B8 00 .w...3.......J..
-00017ED0 E8 C1 00 5C 12 60 00 00 F8 61 00 50 C0 73 30 00 ...\.`...a.P.s0.
-00017EE0 D0 73 50 00 E8 61 00 48 32 73 00 01 88 63 98 00 .sP..a.H2s...c..
-00017EF0 BE 23 FF EC E8 61 00 50 B8 10 FA 6C E8 C1 00 48 .#...a.P...l...H
-00017F00 10 60 00 00 C2 63 D8 00 E8 C1 00 48 D2 63 30 00 .`...c.....H.c0.
-00017F10 30 63 00 01 88 D6 18 00 BC 26 FF EC B8 10 FC 80 0c.......&......
-00017F20 11 4A B8 00 FA C1 00 14 B8 10 FF 24 E8 C1 00 48 .J.........$...H
+000170A0 30 21 00 1C                                     0!..            
+
+;; fn000170A4: 000170A4
+fn000170A4 proc
+	addik	r1,r1,FFFFFF64
+	swi	r20,r1,0000006C
+	lwi	r20,r5,0000001C
+	swi	r19,r1,00000068
+	swi	r24,r1,0000007C
+	swi	r26,r1,00000084
+	swi	r28,r1,0000008C
+	swi	r30,r1,00000094
+	swi	r31,r1,00000098
+	swi	r21,r1,00000070
+	swi	r22,r1,00000074
+	swi	r23,r1,00000078
+	swi	r25,r1,00000080
+	swi	r27,r1,00000088
+	swi	r29,r1,00000090
+	lwi	r22,r20,00000034
+	lwi	r3,r5,00000010
+	lwi	r29,r20,0000002C
+	lwi	r10,r5,0000000C
+	lwi	r23,r20,00000058
+	lwi	r25,r20,0000005C
+	lwi	r7,r20,00000030
+	addik	r19,r0,FFFFFFFF
+	rsubk	r6,r6,r3
+	addk	r24,r29,r22
+	lwi	r4,r5,00000004
+	swi	r24,r1,00000008
+	addk	r6,r10,r6
+	andi	r18,r23,0000001F
+	addk	r24,r0,r19
+	beqid	r18,00017130
+	addk	r24,r24,r0
+
+l00017124:
+	addik	r18,r18,FFFFFFFF
+	bneid	r18,00017124
+	addk	r24,r24,r24
+
+l00017130:
+	xori	r24,r24,FFFFFFFF
+	lwi	r27,r20,00000038
+	andi	r18,r25,0000001F
+	addk	r23,r0,r19
+	beqid	r18,00017154
+	addk	r23,r23,r0
+
+l00017148:
+	addik	r18,r18,FFFFFFFF
+	bneid	r18,00017148
+	addk	r23,r23,r23
+
+l00017154:
+	lwi	r11,r5,00000000
+	swi	r7,r1,00000018
+	swi	r6,r1,00000010
+	swi	r24,r1,00000004
+	xori	r23,r23,FFFFFFFF
+	lwi	r7,r20,0000003C
+	lwi	r8,r20,00000040
+	lwi	r9,r20,00000050
+	lwi	r21,r20,00000054
+	swi	r23,r1,0000000C
+	lwi	r23,r1,00000008
+	andi	r28,r22,FFFFFFFC
+	addik	r4,r4,FFFFFFFB
+	addik	r3,r3,FFFFFEFF
+	addk	r6,r27,r28
+	addk	r30,r11,r4
+	addk	r31,r10,r3
+	rsubk	r4,r28,r22
+	addk	r3,r22,r19
+	addik	r24,r0,00000004
+	addk	r12,r19,r0
+	swi	r3,r1,0000002C
+	addik	r19,r22,00000004
+	swi	r4,r1,00000024
+	swi	r6,r1,00000020
+	addik	r23,r23,00000004
+	rsubk	r24,r22,r24
+	addik	r3,r27,00000004
+	xor	r4,r22,r28
+	addik	r6,r29,00000004
+	swi	r19,r1,00000030
+	addik	r26,r0,0000000E
+	addk	r19,r0,r22
+	srl	r19,r22
+	srl	r19,r19
+	addik	r25,r0,00000002
+	swi	r23,r1,00000034
+	swi	r24,r1,00000038
+	swi	r3,r1,0000003C
+	swi	r4,r1,00000040
+	swi	r6,r1,0000001C
+	swi	r19,r1,00000028
+
+l000171FC:
+	cmpu	r18,r8,r26
+	bltid	r18,0001725C
+	lwi	r23,r1,00000004
+
+l00017208:
+	lbui	r19,r11,00000001
+	lbui	r6,r11,00000000
+	addik	r4,r8,00000008
+	andi	r18,r4,0000001F
+	addk	r3,r0,r19
+	beqid	r18,00017230
+	addk	r3,r3,r0
+
+l00017224:
+	addik	r18,r18,FFFFFFFF
+	bneid	r18,00017224
+	addk	r3,r3,r3
+
+l00017230:
+	andi	r18,r8,0000001F
+	addk	r4,r0,r6
+	beqid	r18,0001724C
+	addk	r4,r4,r0
+
+l00017240:
+	addik	r18,r18,FFFFFFFF
+	bneid	r18,00017240
+	addk	r4,r4,r4
+
+l0001724C:
+	addk	r3,r3,r4
+	addk	r7,r7,r3
+	addik	r8,r8,00000010
+	addik	r11,r11,00000002
+
+l0001725C:
+	and	r3,r23,r7
+	addk	r3,r3,r3
+	addk	r3,r3,r3
+	addk	r6,r9,r3
+	lbui	r19,r6,00000001
+	lbu	r4,r3,r9
+	lhui	r6,r6,00000002
+	andi	r18,r19,0000001F
+	addk	r24,r0,r7
+	beqid	r18,00017294
+	addk	r24,r24,r0
+
+l00017288:
+	addik	r18,r18,FFFFFFFF
+	bneid	r18,00017288
+	srl	r24,r24
+
+l00017294:
+	rsubk	r8,r19,r8
+	beqid	r4,00017334
+	addk	r7,r24,r0
+
+l000172A0:
+	andi	r3,r4,00000010
+	bneid	r3,00017400
+	andi	r3,r4,00000040
+
+l000172AC:
+	beqi	r3,000172C4
+
+l000172B0:
+	brid	000176B8
+	andi	r4,r4,00000020
+
+l000172B8:
+	bneid	r3,00017404
+	andi	r3,r4,0000000F
+
+l000172C0:
+	bnei	r23,000176B4
+
+l000172C4:
+	andi	r18,r4,0000001F
+	addk	r3,r0,r12
+	beqid	r18,000172E0
+	addk	r3,r3,r0
+
+l000172D4:
+	addik	r18,r18,FFFFFFFF
+	bneid	r18,000172D4
+	addk	r3,r3,r3
+
+l000172E0:
+	xori	r3,r3,FFFFFFFF
+	and	r3,r3,r7
+	addk	r3,r3,r6
+	addk	r3,r3,r3
+	addk	r3,r3,r3
+	addk	r6,r9,r3
+	lbui	r19,r6,00000001
+	lbu	r4,r3,r9
+	lhui	r6,r6,00000002
+	andi	r18,r19,0000001F
+	addk	r24,r0,r7
+	beqid	r18,00017320
+	addk	r24,r24,r0
+
+l00017314:
+	addik	r18,r18,FFFFFFFF
+	bneid	r18,00017314
+	srl	r24,r24
+
+l00017320:
+	andi	r3,r4,00000010
+	andi	r23,r4,00000040
+	addk	r7,r24,r0
+	bneid	r4,000172B8
+	rsubk	r8,r19,r8
+
+l00017334:
+	sbi	r6,r10,00000000
+	addik	r10,r10,00000001
+
+l0001733C:
+	cmpu	r18,r30,r11
+	bgei	r18,0001734C
+
+l00017344:
+	cmpu	r18,r31,r10
+	blti	r18,000171FC
+
+l0001734C:
+	addk	r3,r0,r8
+	srl	r3,r8
+	srl	r3,r3
+	srl	r3,r3
+	addik	r4,r0,FFFFFFFF
+	rsubk	r11,r3,r11
+	andi	r8,r8,00000007
+	andi	r18,r8,0000001F
+	addk	r3,r0,r4
+	beqid	r18,00017384
+	addk	r3,r3,r0
+
+l00017378:
+	addik	r18,r18,FFFFFFFF
+	bneid	r18,00017378
+	addk	r3,r3,r3
+
+l00017384:
+	swi	r11,r5,00000000
+	xori	r3,r3,FFFFFFFF
+	swi	r10,r5,0000000C
+	cmpu	r18,r30,r11
+	bgeid	r18,000176CC
+	and	r7,r3,r7
+
+l0001739C:
+	rsubk	r11,r11,r30
+	addik	r11,r11,00000005
+	cmpu	r18,r31,r10
+	bltid	r18,000176E4
+	swi	r11,r5,00000004
+
+l000173B0:
+	rsubk	r10,r31,r10
+	addik	r23,r0,00000101
+	rsubk	r10,r10,r23
+
+l000173BC:
+	swi	r10,r5,00000010
+	swi	r7,r20,0000003C
+	swi	r8,r20,00000040
+	lwi	r19,r1,00000068
+	lwi	r21,r1,00000070
+	lwi	r22,r1,00000074
+	lwi	r23,r1,00000078
+	lwi	r24,r1,0000007C
+	lwi	r25,r1,00000080
+	lwi	r26,r1,00000084
+	lwi	r27,r1,00000088
+	lwi	r28,r1,0000008C
+	lwi	r29,r1,00000090
+	lwi	r30,r1,00000094
+	lwi	r31,r1,00000098
+	rtsd	r15,00000008
+	addik	r1,r1,0000009C
+
+l00017400:
+	andi	r3,r4,0000000F
+
+l00017404:
+	beqid	r3,0001748C
+	addk	r4,r6,r0
+
+l0001740C:
+	cmpu	r18,r3,r8
+	bgei	r18,00017440
+
+l00017414:
+	lbui	r19,r11,00000000
+	addik	r11,r11,00000001
+	andi	r18,r8,0000001F
+	addk	r4,r0,r19
+	beqid	r18,00017438
+	addk	r4,r4,r0
+
+l0001742C:
+	addik	r18,r18,FFFFFFFF
+	bneid	r18,0001742C
+	addk	r4,r4,r4
+
+l00017438:
+	addik	r8,r8,00000008
+	addk	r7,r7,r4
+
+l00017440:
+	andi	r18,r3,0000001F
+	addk	r4,r0,r12
+	beqid	r18,0001745C
+	addk	r4,r4,r0
+
+l00017450:
+	addik	r18,r18,FFFFFFFF
+	bneid	r18,00017450
+	addk	r4,r4,r4
+
+l0001745C:
+	xori	r4,r4,FFFFFFFF
+	and	r4,r4,r7
+	addk	r4,r6,r4
+	andi	r18,r3,0000001F
+	addk	r6,r0,r7
+	beqid	r18,00017484
+	addk	r6,r6,r0
+
+l00017478:
+	addik	r18,r18,FFFFFFFF
+	bneid	r18,00017478
+	srl	r6,r6
+
+l00017484:
+	addk	r7,r6,r0
+	rsubk	r8,r3,r8
+
+l0001748C:
+	cmpu	r18,r8,r26
+	bgeid	r18,000176F0
+	addik	r6,r8,00000008
+
+l00017498:
+	lwi	r19,r1,0000000C
+	and	r3,r19,r7
+	addk	r3,r3,r3
+	addk	r3,r3,r3
+	addk	r23,r21,r3
+	lbu	r6,r3,r21
+	lbui	r19,r23,00000001
+	lhui	r3,r23,00000002
+	andi	r23,r6,00000010
+	andi	r18,r19,0000001F
+	addk	r24,r0,r7
+	beqid	r18,000174D8
+	addk	r24,r24,r0
+
+l000174CC:
+	addik	r18,r18,FFFFFFFF
+	bneid	r18,000174CC
+	srl	r24,r24
+
+l000174D8:
+	rsubk	r8,r19,r8
+	bneid	r23,00017574
+	addk	r7,r24,r0
+
+l000174E4:
+	andi	r19,r6,00000040
+	bnei	r19,00017758
+
+l000174EC:
+	addk	r19,r3,r0
+	brid	000174FC
+	swi	r4,r1,00000014
+
+l000174F8:
+	bnei	r24,00017758
+
+l000174FC:
+	andi	r18,r6,0000001F
+	addk	r3,r0,r12
+	beqid	r18,00017518
+	addk	r3,r3,r0
+
+l0001750C:
+	addik	r18,r18,FFFFFFFF
+	bneid	r18,0001750C
+	addk	r3,r3,r3
+
+l00017518:
+	xori	r3,r3,FFFFFFFF
+	and	r3,r3,r7
+	addk	r3,r3,r19
+	addk	r3,r3,r3
+	addk	r3,r3,r3
+	lbu	r6,r3,r21
+	addk	r19,r21,r3
+	lbui	r3,r19,00000001
+	andi	r23,r6,00000010
+	lhui	r19,r19,00000002
+	andi	r18,r3,0000001F
+	addk	r4,r0,r7
+	beqid	r18,0001755C
+	addk	r4,r4,r0
+
+l00017550:
+	addik	r18,r18,FFFFFFFF
+	bneid	r18,00017550
+	srl	r4,r4
+
+l0001755C:
+	andi	r24,r6,00000040
+	addk	r7,r4,r0
+	beqid	r23,000174F8
+	rsubk	r8,r3,r8
+
+l0001756C:
+	addk	r3,r19,r0
+	lwi	r4,r1,00000014
+
+l00017574:
+	andi	r6,r6,0000000F
+	cmpu	r18,r6,r8
+	bgeid	r18,000175B8
+	addik	r19,r8,00000008
+
+l00017584:
+	lbui	r24,r11,00000000
+	andi	r18,r8,0000001F
+	addk	r23,r0,r24
+	beqid	r18,000175A4
+	addk	r23,r23,r0
+
+l00017598:
+	addik	r18,r18,FFFFFFFF
+	bneid	r18,00017598
+	addk	r23,r23,r23
+
+l000175A4:
+	cmpu	r18,r6,r19
+	bltid	r18,000179E8
+	addk	r7,r7,r23
+
+l000175B0:
+	addk	r8,r19,r0
+	addik	r11,r11,00000001
+
+l000175B8:
+	andi	r18,r6,0000001F
+	addk	r19,r0,r12
+	beqid	r18,000175D4
+	addk	r19,r19,r0
+
+l000175C8:
+	addik	r18,r18,FFFFFFFF
+	bneid	r18,000175C8
+	addk	r19,r19,r19
+
+l000175D4:
+	xori	r19,r19,FFFFFFFF
+	and	r19,r19,r7
+	swi	r19,r1,00000044
+	addk	r24,r19,r3
+	lwi	r19,r1,00000010
+	andi	r18,r6,0000001F
+	addk	r23,r0,r7
+	beqid	r18,00017604
+	addk	r23,r23,r0
+
+l000175F8:
+	addik	r18,r18,FFFFFFFF
+	bneid	r18,000175F8
+	srl	r23,r23
+
+l00017604:
+	rsubk	r8,r6,r8
+	rsubk	r19,r19,r10
+	swi	r19,r1,00000014
+	cmpu	r18,r24,r19
+	bgeid	r18,00017980
+	addk	r7,r23,r0
+
+l0001761C:
+	rsubk	r23,r19,r24
+	lwi	r19,r1,00000018
+	cmpu	r18,r23,r19
+	bgei	r18,00017634
+
+l0001762C:
+	lwi	r6,r20,00001BC4
+	bnei	r6,00017BA8
+
+l00017634:
+	bneid	r22,00017770
+	rsubk	r6,r23,r29
+
+l0001763C:
+	addk	r6,r27,r6
+	cmpu	r18,r4,r23
+	bltid	r18,00017BC8
+	swi	r6,r1,0000005C
+
+l0001764C:
+	cmpu	r18,r4,r25
+	bgeid	r18,00017688
+	lwi	r6,r1,0000005C
+
+l00017658:
+	lbui	r23,r6,00000000
+	addik	r6,r6,00000003
+	addik	r10,r10,00000003
+	sbi	r23,r10,FFFFFFFD
+	lbui	r24,r6,FFFFFFFE
+	addik	r4,r4,FFFFFFFD
+	sbi	r24,r10,FFFFFFFE
+	lbui	r3,r6,FFFFFFFF
+	cmpu	r18,r4,r25
+	bltid	r18,00017658
+	sbi	r3,r10,FFFFFFFF
+
+l00017684:
+	swi	r6,r1,0000005C
+
+l00017688:
+	beqid	r4,0001733C
+	lwi	r6,r1,0000005C
+
+l00017690:
+	xori	r4,r4,00000002
+	lbui	r6,r6,00000000
+	bneid	r4,00017BC0
+	sbi	r6,r10,00000000
+
+l000176A0:
+	lwi	r23,r1,0000005C
+	addik	r10,r10,00000002
+	lbui	r23,r23,00000001
+	brid	0001733C
+	sbi	r23,r10,FFFFFFFF
+
+l000176B4:
+	andi	r4,r4,00000020
+
+l000176B8:
+	beqid	r4,00017744
+	addik	r6,r0,00003F51
+
+l000176C0:
+	addik	r3,r0,00003F3F
+	brid	0001734C
+	swi	r3,r20,00000004
+
+l000176CC:
+	rsubk	r11,r30,r11
+	addik	r19,r0,00000005
+	rsubk	r11,r11,r19
+	cmpu	r18,r31,r10
+	bgeid	r18,000173B0
+	swi	r11,r5,00000004
+
+l000176E4:
+	rsubk	r10,r10,r31
+	brid	000173BC
+	addik	r10,r10,00000101
+
+l000176F0:
+	lbui	r23,r11,00000001
+	lbui	r19,r11,00000000
+	andi	r18,r6,0000001F
+	addk	r3,r0,r23
+	beqid	r18,00017714
+	addk	r3,r3,r0
+
+l00017708:
+	addik	r18,r18,FFFFFFFF
+	bneid	r18,00017708
+	addk	r3,r3,r3
+
+l00017714:
+	andi	r18,r8,0000001F
+	addk	r6,r0,r19
+	beqid	r18,00017730
+	addk	r6,r6,r0
+
+l00017724:
+	addik	r18,r18,FFFFFFFF
+	bneid	r18,00017724
+	addk	r6,r6,r6
+
+l00017730:
+	addk	r3,r3,r6
+	addk	r7,r7,r3
+	addik	r8,r8,00000010
+	brid	00017498
+	addik	r11,r11,00000002
+
+l00017744:
+	imm	00000001
+	addik	r4,r0,0001D608
+	swi	r4,r5,00000018
+	brid	0001734C
+	swi	r6,r20,00000004
+
+l00017758:
+	imm	00000001
+	addik	r6,r0,0001D5F0
+	addik	r19,r0,00003F51
+	swi	r6,r5,00000018
+	brid	0001734C
+	swi	r19,r20,00000004
+
+l00017770:
+	cmpu	r18,r23,r22
+	bgeid	r18,00017A18
+	rsubk	r6,r23,r22
+
+l0001777C:
+	lwi	r19,r1,00000008
+	rsubk	r6,r23,r19
+	addk	r6,r27,r6
+	rsubk	r19,r22,r23
+	swi	r19,r1,00000048
+	cmpu	r18,r4,r19
+	bgeid	r18,0001764C
+	swi	r6,r1,0000005C
+
+l0001779C:
+	lwi	r6,r1,00000014
+	rsubk	r19,r3,r6
+	lwi	r6,r1,00000044
+	rsubk	r19,r6,r19
+	lwi	r6,r1,00000034
+	addk	r6,r6,r19
+	swi	r6,r1,0000004C
+	lwi	r6,r1,00000008
+	addk	r19,r6,r19
+	lwi	r6,r1,0000004C
+	addk	r19,r27,r19
+	swi	r19,r1,00000050
+	addk	r6,r27,r6
+	swi	r6,r1,00000054
+	lwi	r6,r1,00000048
+	addik	r19,r0,00000001
+	sbi	r19,r1,0000004F
+	rsubk	r4,r6,r4
+	lwi	r6,r1,00000054
+	cmpu	r18,r6,r10
+	bgeid	r18,000177F8
+	addik	r6,r0,00000001
+
+l000177F4:
+	sbi	r0,r1,0000004F
+
+l000177F8:
+	sbi	r6,r1,00000057
+	lwi	r6,r1,00000050
+	addik	r19,r10,00000004
+	cmpu	r18,r19,r6
+	bgeid	r18,00017818
+	lbui	r6,r1,00000057
+
+l00017810:
+	sbi	r0,r1,00000057
+	lbui	r6,r1,00000057
+
+l00017818:
+	lbui	r19,r1,0000004F
+	or	r19,r19,r6
+	lwi	r6,r1,00000048
+	swi	r19,r1,0000004C
+	addik	r19,r0,00000001
+	sbi	r19,r1,00000057
+	addik	r19,r0,00000009
+	cmpu	r18,r6,r19
+	bltid	r18,00017848
+	lbui	r19,r1,00000057
+
+l00017840:
+	sbi	r0,r1,00000057
+	lbui	r19,r1,00000057
+
+l00017848:
+	lwi	r6,r1,0000004C
+	and	r6,r6,r19
+	andi	r19,r6,000000FF
+	beqid	r19,00017ED0
+	lwi	r19,r1,00000014
+
+l0001785C:
+	lwi	r6,r1,00000008
+	addk	r6,r6,r19
+	rsubk	r19,r3,r6
+	lwi	r6,r1,00000044
+	rsubk	r19,r6,r19
+	addk	r19,r27,r19
+	or	r19,r10,r19
+	andi	r19,r19,00000003
+	bneid	r19,00017ED0
+	addk	r6,r0,r0
+
+l00017884:
+	swi	r6,r1,00000058
+	swi	r6,r1,0000004C
+	lwi	r6,r1,00000048
+	swi	r4,r1,00000064
+	lwi	r4,r1,0000004C
+	addk	r19,r0,r6
+	srl	r19,r6
+	srl	r19,r19
+	lwi	r6,r1,0000005C
+	swi	r19,r1,00000054
+	lwi	r19,r1,00000058
+	swi	r3,r1,00000060
+
+l000178B4:
+	lwi	r3,r1,00000050
+	addik	r4,r4,00000001
+	swi	r4,r1,0000004C
+	lw	r3,r19,r3
+	sw	r3,r19,r10
+	lwi	r3,r1,00000054
+	cmpu	r18,r3,r4
+	bltid	r18,000178B4
+	addik	r19,r19,00000004
+
+l000178D8:
+	swi	r6,r1,0000005C
+	lwi	r6,r1,00000048
+	lwi	r3,r1,00000060
+	lwi	r4,r1,00000064
+	andi	r19,r6,FFFFFFFC
+	xor	r6,r6,r19
+	swi	r6,r1,00000058
+	addk	r6,r10,r19
+	swi	r6,r1,00000054
+	lwi	r6,r1,00000048
+	rsubk	r6,r19,r6
+	swi	r6,r1,00000050
+	lwi	r6,r1,0000005C
+	addk	r6,r6,r19
+	swi	r6,r1,0000004C
+	lwi	r6,r1,00000058
+	beqid	r6,00017960
+	lwi	r6,r1,0000005C
+
+l00017920:
+	lbu	r6,r19,r6
+	sb	r6,r19,r10
+	lwi	r19,r1,00000050
+	addik	r6,r19,FFFFFFFF
+	beqid	r6,00017960
+	lwi	r6,r1,0000004C
+
+l00017938:
+	lbui	r19,r6,00000001
+	lwi	r6,r1,00000054
+	sbi	r19,r6,00000001
+	lwi	r19,r1,00000050
+	xori	r6,r19,00000002
+	beqid	r6,00017960
+	lwi	r6,r1,0000004C
+
+l00017954:
+	lbui	r19,r6,00000002
+	lwi	r6,r1,00000054
+	sbi	r19,r6,00000002
+
+l00017960:
+	lwi	r6,r1,00000048
+
+l00017964:
+	addk	r6,r10,r6
+	cmpu	r18,r4,r22
+	bltid	r18,00017D3C
+	swi	r6,r1,00000048
+
+l00017974:
+	addk	r10,r6,r0
+	brid	0001764C
+	swi	r27,r1,0000005C
+
+l00017980:
+	rsubk	r3,r24,r10
+	brid	00017994
+	addk	r19,r10,r0
+
+l0001798C:
+	addk	r3,r6,r0
+	addk	r19,r10,r0
+
+l00017994:
+	lbui	r24,r3,00000000
+	addik	r10,r10,00000003
+	addik	r4,r4,FFFFFFFD
+	sbi	r24,r10,FFFFFFFD
+	lbui	r6,r3,00000001
+	sbi	r6,r10,FFFFFFFE
+	addik	r6,r3,00000003
+	lbui	r23,r6,FFFFFFFF
+	cmpu	r18,r4,r25
+	bltid	r18,0001798C
+	sbi	r23,r10,FFFFFFFF
+
+l000179C0:
+	beqi	r4,0001733C
+
+l000179C4:
+	lbui	r24,r3,00000003
+	xori	r4,r4,00000002
+	addik	r10,r19,00000004
+	bneid	r4,0001733C
+	sbi	r24,r19,00000003
+
+l000179D8:
+	lbui	r3,r3,00000004
+	addik	r10,r19,00000005
+	brid	0001733C
+	sbi	r3,r19,00000004
+
+l000179E8:
+	lbui	r24,r11,00000001
+	addik	r8,r8,00000010
+	addik	r11,r11,00000002
+	andi	r18,r19,0000001F
+	addk	r23,r0,r24
+	beqid	r18,00017A10
+	addk	r23,r23,r0
+
+l00017A04:
+	addik	r18,r18,FFFFFFFF
+	bneid	r18,00017A04
+	addk	r23,r23,r23
+
+l00017A10:
+	brid	000175B8
+	addk	r7,r7,r23
+
+l00017A18:
+	addk	r6,r27,r6
+	cmpu	r18,r4,r23
+	bgeid	r18,0001764C
+	swi	r6,r1,0000005C
+
+l00017A28:
+	lwi	r6,r1,00000014
+	rsubk	r4,r23,r4
+	rsubk	r19,r3,r6
+	lwi	r6,r1,00000044
+	rsubk	r19,r6,r19
+	lwi	r6,r1,00000030
+	addk	r6,r6,r19
+	addk	r19,r22,r19
+	addk	r19,r27,r19
+	swi	r19,r1,00000048
+	addik	r19,r0,00000001
+	addk	r6,r27,r6
+	cmpu	r18,r6,r10
+	bgeid	r18,00017A68
+	sbi	r19,r1,0000004F
+
+l00017A64:
+	sbi	r0,r1,0000004F
+
+l00017A68:
+	addik	r6,r0,00000001
+	sbi	r6,r1,00000053
+	lwi	r6,r1,00000048
+	addik	r19,r10,00000004
+	cmpu	r18,r19,r6
+	bgei	r18,00017A84
+
+l00017A80:
+	sbi	r0,r1,00000053
+
+l00017A84:
+	lbui	r19,r1,0000004F
+	lbui	r6,r1,00000053
+	or	r19,r19,r6
+	swi	r19,r1,0000004C
+	addik	r6,r0,00000009
+	cmpu	r18,r23,r6
+	bltid	r18,00017AA8
+	addik	r19,r0,00000001
+
+l00017AA4:
+	addk	r19,r0,r0
+
+l00017AA8:
+	lwi	r6,r1,0000004C
+	and	r19,r6,r19
+	andi	r19,r19,000000FF
+	beqid	r19,00017EAC
+	lwi	r6,r1,00000014
+
+l00017ABC:
+	addk	r19,r22,r6
+	rsubk	r3,r3,r19
+	lwi	r19,r1,00000044
+	rsubk	r3,r19,r3
+	addk	r3,r27,r3
+	or	r3,r10,r3
+	andi	r3,r3,00000003
+	bneid	r3,00017EAC
+	addik	r3,r23,FFFFFFFC
+
+l00017AE0:
+	addk	r6,r3,r0
+	addk	r19,r0,r0
+	swi	r19,r1,00000014
+	addk	r3,r0,r6
+	srl	r3,r6
+	srl	r3,r3
+	lwi	r6,r1,0000005C
+	addik	r3,r3,00000001
+	swi	r4,r1,00000044
+
+l00017B04:
+	lwi	r4,r1,00000048
+	lw	r4,r19,r4
+	sw	r4,r19,r10
+	lwi	r4,r1,00000014
+	addik	r19,r19,00000004
+	addik	r4,r4,00000001
+	cmpu	r18,r3,r4
+	bltid	r18,00017B04
+	swi	r4,r1,00000014
+
+l00017B28:
+	addk	r3,r3,r3
+	addk	r3,r3,r3
+	swi	r6,r1,0000005C
+	xor	r6,r23,r3
+	swi	r6,r1,00000048
+	rsubk	r6,r3,r23
+	lwi	r4,r1,00000044
+	swi	r6,r1,00000044
+	lwi	r6,r1,0000005C
+	addk	r6,r6,r3
+	swi	r6,r1,00000014
+	lwi	r6,r1,00000048
+	beqid	r6,00017B98
+	addk	r19,r10,r3
+
+l00017B60:
+	lwi	r6,r1,0000005C
+	lbu	r6,r3,r6
+	sb	r6,r3,r10
+	lwi	r6,r1,00000044
+	addik	r3,r6,FFFFFFFF
+	beqi	r3,00017B98
+
+l00017B78:
+	lwi	r3,r1,00000014
+	lbui	r3,r3,00000001
+	sbi	r3,r19,00000001
+	xori	r3,r6,00000002
+	beqi	r3,00017B98
+
+l00017B8C:
+	lwi	r6,r1,00000014
+	lbui	r6,r6,00000002
+	sbi	r6,r19,00000002
+
+l00017B98:
+	addk	r10,r10,r23
+
+l00017B9C:
+	rsubk	r24,r24,r10
+	brid	0001764C
+	swi	r24,r1,0000005C
+
+l00017BA8:
+	imm	00000001
+	addik	r23,r0,0001D5D0
+	addik	r24,r0,00003F51
+	swi	r23,r5,00000018
+	brid	0001734C
+	swi	r24,r20,00000004
+
+l00017BC0:
+	brid	0001733C
+	addik	r10,r10,00000001
+
+l00017BC8:
+	lwi	r19,r1,00000014
+	rsubk	r4,r23,r4
+	rsubk	r6,r3,r19
+	lwi	r19,r1,00000044
+	rsubk	r6,r19,r6
+	lwi	r19,r1,0000001C
+	addk	r19,r19,r6
+	addk	r6,r29,r6
+	addk	r6,r27,r6
+	swi	r6,r1,0000004C
+	addik	r6,r0,00000001
+	addk	r19,r27,r19
+	cmpu	r18,r19,r10
+	bgeid	r18,00017C08
+	sbi	r6,r1,00000057
+
+l00017C04:
+	sbi	r0,r1,00000057
+
+l00017C08:
+	addik	r19,r0,00000001
+	sbi	r19,r1,00000053
+	lwi	r19,r1,0000004C
+	addik	r6,r10,00000004
+	cmpu	r18,r6,r19
+	bgei	r18,00017C24
+
+l00017C20:
+	sbi	r0,r1,00000053
+
+l00017C24:
+	lbui	r19,r1,00000053
+	lbui	r6,r1,00000057
+	or	r6,r6,r19
+	swi	r6,r1,00000048
+	addik	r6,r0,00000009
+	cmpu	r18,r23,r6
+	bltid	r18,00017C48
+	addik	r19,r0,00000001
+
+l00017C44:
+	addk	r19,r0,r0
+
+l00017C48:
+	lwi	r6,r1,00000048
+	and	r19,r6,r19
+	andi	r19,r19,000000FF
+	beqid	r19,00017E88
+	lwi	r6,r1,00000014
+
+l00017C5C:
+	addk	r19,r29,r6
+	rsubk	r3,r3,r19
+	lwi	r19,r1,00000044
+	rsubk	r3,r19,r3
+	addk	r3,r27,r3
+	or	r3,r10,r3
+	andi	r3,r3,00000003
+	bneid	r3,00017E88
+	addik	r3,r23,FFFFFFFC
+
+l00017C80:
+	addk	r6,r3,r0
+	addk	r19,r0,r0
+	swi	r19,r1,00000014
+	addk	r3,r0,r6
+	srl	r3,r6
+	srl	r3,r3
+	lwi	r6,r1,0000005C
+	addik	r3,r3,00000001
+	swi	r4,r1,00000044
+
+l00017CA4:
+	lwi	r4,r1,0000004C
+	lw	r4,r19,r4
+	sw	r4,r19,r10
+	lwi	r4,r1,00000014
+	addik	r19,r19,00000004
+	addik	r4,r4,00000001
+	cmpu	r18,r3,r4
+	bltid	r18,00017CA4
+	swi	r4,r1,00000014
+
+l00017CC8:
+	addk	r3,r3,r3
+	addk	r3,r3,r3
+	swi	r6,r1,0000005C
+	xor	r6,r23,r3
+	swi	r6,r1,00000048
+	lwi	r6,r1,0000005C
+	addk	r19,r10,r3
+	lwi	r4,r1,00000044
+	addk	r6,r6,r3
+	swi	r6,r1,00000014
+	lwi	r6,r1,00000048
+	swi	r19,r1,00000044
+	beqid	r6,00017B98
+	rsubk	r19,r3,r23
+
+l00017D00:
+	lwi	r6,r1,0000005C
+	lbu	r6,r3,r6
+	sb	r6,r3,r10
+	addik	r3,r19,FFFFFFFF
+	beqid	r3,00017B98
+	xori	r19,r19,00000002
+
+l00017D18:
+	lwi	r3,r1,00000014
+	lbui	r6,r3,00000001
+	lwi	r3,r1,00000044
+	beqid	r19,00017B98
+	sbi	r6,r3,00000001
+
+l00017D2C:
+	lwi	r19,r1,00000014
+	lbui	r19,r19,00000002
+	brid	00017B98
+	sbi	r19,r3,00000002
+
+l00017D3C:
+	lwi	r19,r1,00000014
+	rsubk	r4,r22,r4
+	rsubk	r6,r19,r3
+	lwi	r19,r1,00000044
+	addk	r6,r6,r19
+	lwi	r19,r1,00000038
+	addk	r19,r19,r6
+	rsubk	r6,r22,r6
+	addk	r6,r10,r6
+	swi	r6,r1,0000004C
+	addik	r6,r0,00000001
+	addk	r19,r10,r19
+	cmpu	r18,r19,r27
+	bgeid	r18,00017D7C
+	sbi	r6,r1,00000057
+
+l00017D78:
+	sbi	r0,r1,00000057
+
+l00017D7C:
+	addik	r19,r0,00000001
+	sbi	r19,r1,00000053
+	lwi	r6,r1,0000004C
+	lwi	r19,r1,0000003C
+	cmpu	r18,r19,r6
+	bgei	r18,00017D98
+
+l00017D94:
+	sbi	r0,r1,00000053
+
+l00017D98:
+	lbui	r19,r1,00000053
+	lbui	r6,r1,00000057
+	or	r6,r6,r19
+	swi	r6,r1,00000050
+	addik	r6,r0,00000009
+	cmpu	r18,r22,r6
+	bltid	r18,00017DBC
+	addik	r19,r0,00000001
+
+l00017DB8:
+	addk	r19,r0,r0
+
+l00017DBC:
+	lwi	r6,r1,00000050
+	and	r19,r6,r19
+	andi	r6,r19,000000FF
+	beqid	r6,00017F00
+	lwi	r19,r1,00000014
+
+l00017DD0:
+	addk	r6,r22,r19
+	rsubk	r3,r6,r3
+	lwi	r6,r1,00000044
+	addk	r3,r3,r6
+	addk	r3,r10,r3
+	or	r3,r27,r3
+	andi	r3,r3,00000003
+	bneid	r3,00017F00
+	lwi	r19,r1,0000002C
+
+l00017DF4:
+	cmpu	r18,r19,r25
+	bgeid	r18,00017F24
+	addk	r19,r27,r0
+
+l00017E00:
+	addk	r6,r3,r0
+	swi	r4,r1,00000014
+
+l00017E08:
+	lw	r19,r3,r27
+	lwi	r4,r1,0000004C
+	addik	r6,r6,00000001
+	sw	r19,r3,r4
+	lwi	r4,r1,00000028
+	cmpu	r18,r4,r6
+	bltid	r18,00017E08
+	addik	r3,r3,00000004
+
+l00017E28:
+	lwi	r6,r1,00000048
+	lwi	r19,r1,00000040
+	lwi	r4,r1,00000014
+	addk	r6,r6,r28
+	beqid	r19,00017B98
+	swi	r6,r1,00000048
+
+l00017E40:
+	lwi	r3,r1,00000024
+	lwi	r19,r1,00000020
+	swi	r3,r1,00000014
+
+l00017E4C:
+	lbui	r3,r19,00000000
+	sbi	r3,r6,00000000
+	lwi	r3,r1,00000014
+	addik	r6,r3,FFFFFFFF
+	beqi	r6,00017B98
+
+l00017E60:
+	lbui	r3,r19,00000001
+	lwi	r6,r1,00000048
+	sbi	r3,r6,00000001
+	lwi	r6,r1,00000014
+	xori	r3,r6,00000002
+	beqi	r3,00017B98
+
+l00017E78:
+	lbui	r19,r19,00000002
+	lwi	r3,r1,00000048
+	brid	00017B98
+	sbi	r19,r3,00000002
+
+l00017E88:
+	lwi	r6,r1,0000005C
+	addk	r3,r0,r0
+
+l00017E90:
+	lbu	r19,r3,r6
+	sb	r19,r3,r10
+	addik	r3,r3,00000001
+	xor	r19,r23,r3
+	bnei	r19,00017E90
+
+l00017EA4:
+	brid	00017B9C
+	addk	r10,r10,r23
+
+l00017EAC:
+	lwi	r6,r1,0000005C
+	addk	r3,r0,r0
+
+l00017EB4:
+	lbu	r19,r3,r6
+	sb	r19,r3,r10
+	addik	r3,r3,00000001
+	xor	r19,r23,r3
+	bnei	r19,00017EB4
+
+l00017EC8:
+	brid	00017B9C
+	addk	r10,r10,r23
+
+l00017ED0:
+	lwi	r6,r1,0000005C
+	addk	r19,r0,r0
+	swi	r3,r1,00000050
+
+l00017EDC:
+	lbu	r3,r19,r6
+	sb	r3,r19,r10
+	lwi	r3,r1,00000048
+	addik	r19,r19,00000001
+	xor	r3,r3,r19
+	bneid	r3,00017EDC
+	lwi	r3,r1,00000050
+
+l00017EF8:
+	brid	00017964
+	lwi	r6,r1,00000048
+
+l00017F00:
+	addk	r3,r0,r0
+
+l00017F04:
+	lbu	r19,r3,r27
+	lwi	r6,r1,00000048
+	sb	r19,r3,r6
+	addik	r3,r3,00000001
+	xor	r6,r22,r3
+	bnei	r6,00017F04
+
+l00017F1C:
+	brid	00017B9C
+	addk	r10,r10,r23
+
+l00017F24:
+	swi	r22,r1,00000014
+	brid	00017E4C
+	lwi	r6,r1,00000048
 
 ;; fn00017F30: 00017F30
 ;;   Called from:
@@ -22787,6 +21489,8 @@ l00017F80:
 	addi	r3,r0,00000000
 
 ;; fn00017F88: 00017F88
+;;   Called from:
+;;     0000B7B8 (in fn0000B514)
 fn00017F88 proc
 	addik	r1,r1,FFFFFFF4
 	swi	r29,r1,00000000
@@ -22867,6 +21571,7 @@ l0001801C:
 
 ;; fn00018030: 00018030
 ;;   Called from:
+;;     000091A0 (in fn00008E80)
 ;;     00014E20 (in fn00014C9C)
 ;;     00014E30 (in fn00014C9C)
 ;;     00015030 (in fn00014C9C)
@@ -22910,7 +21615,7 @@ l00018078:
 
 l00018080:
 	imm	00007FFF
-	addik	r18,r0,FFFFFFFF
+	addik	r18,r0,7FFFFFFF
 	and	r5,r5,r18
 	and	r6,r6,r18
 	brid	000180D8
@@ -22972,11 +21677,11 @@ fn000180F8 proc
 
 ;; fn00018150: 00018150
 ;;   Called from:
-;;     0000026C (in fn00000248)
-;;     00000530 (in fn000003C4)
-;;     00000560 (in fn000003C4)
-;;     000006C8 (in fn000003C4)
-;;     00000710 (in fn000003C4)
+;;     00000270 (in fn00000248)
+;;     00000534 (in fn00000378)
+;;     00000564 (in fn00000378)
+;;     000006CC (in fn00000378)
+;;     00000714 (in fn00000378)
 fn00018150 proc
 	swi	r6,r1,00000008
 	swi	r7,r1,0000000C
@@ -23001,11 +21706,11 @@ fn00018150 proc
 
 ;; fn000181D0: 000181D0
 ;;   Called from:
-;;     000004B0 (in fn000003C4)
-;;     000005D8 (in fn000003C4)
-;;     00000630 (in fn000003C4)
-;;     000008A0 (in fn00000770)
-;;     00001B70 (in fn00001A68)
+;;     000004B4 (in fn00000378)
+;;     000005DC (in fn00000378)
+;;     00000634 (in fn00000378)
+;;     000008A4 (in fn00000770)
+;;     00001B74 (in fn00001A68)
 fn000181D0 proc
 	swi	r7,r1,0000000C
 	swi	r8,r1,00000010
@@ -23123,19 +21828,77 @@ fn00018670 proc
 	nop
 000186A0 30 21 FF F8 FA 61 00 04 12 61 00 00 F8 B3 00 0C 0!...a...a......
 000186B0 80 00 00 00 10 33 00 00 EA 61 00 04 30 21 00 08 .....3...a..0!..
-000186C0 B6 0F 00 08 80 00 00 00 30 21 FF F8 FA 61 00 04 ........0!...a..
-000186D0 12 61 00 00 F8 B3 00 0C F8 D3 00 10 80 00 00 00 .a..............
-000186E0 10 33 00 00 EA 61 00 04 30 21 00 08 B6 0F 00 08 .3...a..0!......
-000186F0 80 00 00 00 30 21 FF F8 FA 61 00 04 12 61 00 00 ....0!...a...a..
-00018700 F8 B3 00 0C 80 00 00 00 10 33 00 00 EA 61 00 04 .........3...a..
-00018710 30 21 00 08 B6 0F 00 08 80 00 00 00 30 21 FF F8 0!..........0!..
-00018720 FA 61 00 04 12 61 00 00 F8 B3 00 0C F8 D3 00 10 .a...a..........
-00018730 F8 F3 00 14 F9 13 00 18 80 00 00 00 10 33 00 00 .............3..
-00018740 EA 61 00 04 30 21 00 08 B6 0F 00 08 80 00 00 00 .a..0!..........
-00018750 30 21 FF F8 FA 61 00 04 12 61 00 00 F8 B3 00 0C 0!...a...a......
-00018760 F8 D3 00 10 F8 F3 00 14 F9 13 00 18 80 00 00 00 ................
-00018770 10 33 00 00 EA 61 00 04 30 21 00 08 B6 0F 00 08 .3...a..0!......
-00018780 80 00 00 00 30 21 FF F8 FA 61 00 04 12 61 00 00 ....0!...a...a..
+000186C0 B6 0F 00 08 80 00 00 00                         ........        
+
+;; fn000186C8: 000186C8
+;;   Called from:
+;;     000004C8 (in fn00000378)
+;;     00000660 (in fn00000378)
+fn000186C8 proc
+	addik	r1,r1,FFFFFFF8
+	swi	r19,r1,00000004
+	addk	r19,r1,r0
+	swi	r5,r19,0000000C
+	swi	r6,r19,00000010
+	nop
+	addk	r1,r19,r0
+	lwi	r19,r1,00000004
+	addik	r1,r1,00000008
+	rtsd	r15,00000008
+	nop
+
+;; fn000186F4: 000186F4
+;;   Called from:
+;;     00000304 (in fn000002CC)
+;;     000003E8 (in fn00000378)
+fn000186F4 proc
+	addik	r1,r1,FFFFFFF8
+	swi	r19,r1,00000004
+	addk	r19,r1,r0
+	swi	r5,r19,0000000C
+	nop
+	addk	r1,r19,r0
+	lwi	r19,r1,00000004
+	addik	r1,r1,00000008
+	rtsd	r15,00000008
+	nop
+
+;; fn0001871C: 0001871C
+;;   Called from:
+;;     000002DC (in fn000002CC)
+fn0001871C proc
+	addik	r1,r1,FFFFFFF8
+	swi	r19,r1,00000004
+	addk	r19,r1,r0
+	swi	r5,r19,0000000C
+	swi	r6,r19,00000010
+	swi	r7,r19,00000014
+	swi	r8,r19,00000018
+	nop
+	addk	r1,r19,r0
+	lwi	r19,r1,00000004
+	addik	r1,r1,00000008
+	rtsd	r15,00000008
+	nop
+
+;; fn00018750: 00018750
+;;   Called from:
+;;     000003B4 (in fn00000378)
+fn00018750 proc
+	addik	r1,r1,FFFFFFF8
+	swi	r19,r1,00000004
+	addk	r19,r1,r0
+	swi	r5,r19,0000000C
+	swi	r6,r19,00000010
+	swi	r7,r19,00000014
+	swi	r8,r19,00000018
+	nop
+	addk	r1,r19,r0
+	lwi	r19,r1,00000004
+	addik	r1,r1,00000008
+	rtsd	r15,00000008
+	nop
+00018784             30 21 FF F8 FA 61 00 04 12 61 00 00     0!...a...a..
 00018790 F8 B3 00 0C 80 00 00 00 10 33 00 00 EA 61 00 04 .........3...a..
 000187A0 30 21 00 08 B6 0F 00 08 80 00 00 00 30 21 FF F8 0!..........0!..
 000187B0 FA 61 00 04 12 61 00 00 F8 B3 00 0C 80 00 00 00 .a...a..........
@@ -23156,43 +21919,91 @@ fn000187F4 proc
 fn0001881C proc
 	rtsd	r15,00000008
 	nop
-00018824             30 21 FF F8 FA 61 00 04 12 61 00 00     0!...a...a..
-00018830 F8 B3 00 0C 80 00 00 00 10 33 00 00 EA 61 00 04 .........3...a..
-00018840 30 21 00 08 B6 0F 00 08 80 00 00 00 30 21 FF F8 0!..........0!..
+
+;; fn00018824: 00018824
+;;   Called from:
+;;     000002EC (in fn000002CC)
+fn00018824 proc
+	addik	r1,r1,FFFFFFF8
+	swi	r19,r1,00000004
+	addk	r19,r1,r0
+	swi	r5,r19,0000000C
+	nop
+	addk	r1,r19,r0
+	lwi	r19,r1,00000004
+	addik	r1,r1,00000008
+	rtsd	r15,00000008
+	nop
+0001884C                                     30 21 FF F8             0!..
 00018850 FA 61 00 04 12 61 00 00 F8 B3 00 0C 80 00 00 00 .a...a..........
 00018860 10 33 00 00 EA 61 00 04 30 21 00 08 B6 0F 00 08 .3...a..0!......
-00018870 80 00 00 00 30 21 FF F8 FA 61 00 04 12 61 00 00 ....0!...a...a..
-00018880 F8 B3 00 0C 80 00 00 00 10 33 00 00 EA 61 00 04 .........3...a..
-00018890 30 21 00 08 B6 0F 00 08 80 00 00 00 30 21 FF F8 0!..........0!..
-000188A0 FA 61 00 04 12 61 00 00 F8 B3 00 0C 80 00 00 00 .a...a..........
-000188B0 10 33 00 00 EA 61 00 04 30 21 00 08 B6 0F 00 08 .3...a..0!......
-000188C0 80 00 00 00 30 21 FF F8 FA 61 00 04 12 61 00 00 ....0!...a...a..
+00018870 80 00 00 00                                     ....            
+
+;; fn00018874: 00018874
+;;   Called from:
+;;     00000344 (in fn000002CC)
+;;     0000057C (in fn00000378)
+;;     000006E4 (in fn00000378)
+fn00018874 proc
+	addik	r1,r1,FFFFFFF8
+	swi	r19,r1,00000004
+	addk	r19,r1,r0
+	swi	r5,r19,0000000C
+	nop
+	addk	r1,r19,r0
+	lwi	r19,r1,00000004
+	addik	r1,r1,00000008
+	rtsd	r15,00000008
+	nop
+
+;; fn0001889C: 0001889C
+;;   Called from:
+;;     0000027C (in fn00000248)
+;;     00000350 (in fn000002CC)
+;;     00000540 (in fn00000538)
+;;     00000570 (in fn00000378)
+;;     00000588 (in fn00000378)
+;;     000006D8 (in fn00000378)
+;;     000006F0 (in fn00000378)
+;;     00000720 (in fn00000378)
+fn0001889C proc
+	addik	r1,r1,FFFFFFF8
+	swi	r19,r1,00000004
+	addk	r19,r1,r0
+	swi	r5,r19,0000000C
+	nop
+	addk	r1,r19,r0
+	lwi	r19,r1,00000004
+	addik	r1,r1,00000008
+	rtsd	r15,00000008
+	nop
+000188C4             30 21 FF F8 FA 61 00 04 12 61 00 00     0!...a...a..
 000188D0 F8 B3 00 0C F8 D3 00 10 80 00 00 00 10 33 00 00 .............3..
 000188E0 EA 61 00 04 30 21 00 08 B6 0F 00 08 80 00 00 00 .a..0!..........
 
 ;; fn000188F0: 000188F0
 ;;   Called from:
-;;     0000090C (in fn00000A34)
-;;     0000093C (in fn00000770)
-;;     00000A58 (in fn00000770)
-;;     00000A68 (in fn00000770)
-;;     00000A68 (in fn00000A64)
-;;     00001A9C (in fn00001A68)
-;;     0000201C (in fn00001E88)
-;;     00002028 (in fn00001E88)
-;;     00002224 (in fn00001E88)
-;;     00002230 (in fn00001E88)
-;;     000038D4 (in fn00003894)
-;;     000038E0 (in fn00003894)
-;;     0000390C (in fn00003894)
-;;     00003928 (in fn00003894)
-;;     00003A60 (in fn00003A60)
-;;     00003A88 (in fn00003990)
-;;     00003A94 (in fn00003990)
-;;     00005674 (in fn00005538)
-;;     00005680 (in fn00005538)
-;;     0000569C (in fn00005538)
-;;     000056C4 (in fn00005538)
+;;     00000910 (in fn000008F4)
+;;     00000940 (in fn00000770)
+;;     00000A5C (in fn00000770)
+;;     00000A6C (in fn00000770)
+;;     00000A6C (in fn00000A64)
+;;     00001AA0 (in fn00001A68)
+;;     00002020 (in fn00001E88)
+;;     0000202C (in fn00001E88)
+;;     00002228 (in fn00001E88)
+;;     00002234 (in fn00001E88)
+;;     000038D8 (in fn00003894)
+;;     000038E4 (in fn00003894)
+;;     00003910 (in fn00003894)
+;;     0000392C (in fn00003894)
+;;     00003A64 (in fn00003964)
+;;     00003A8C (in fn00003964)
+;;     00003A98 (in fn00003964)
+;;     00005678 (in fn00005538)
+;;     00005684 (in fn00005538)
+;;     000056A0 (in fn00005538)
+;;     000056C8 (in fn00005538)
 fn000188F0 proc
 	addik	r1,r1,FFFFFFF8
 	swi	r19,r1,00000004
@@ -23207,11 +22018,13 @@ fn000188F0 proc
 
 ;; fn00018918: 00018918
 ;;   Called from:
-;;     00001B1C (in fn00001A68)
-;;     00001F24 (in fn00001E88)
-;;     00001F38 (in fn00001E88)
-;;     00003984 (in fn00003964)
-;;     000039C8 (in fn00003990)
+;;     000007A4 (in fn00000770)
+;;     00000880 (in fn00000770)
+;;     00001B20 (in fn00001A68)
+;;     00001F28 (in fn00001E88)
+;;     00001F3C (in fn00001E88)
+;;     00003988 (in fn00003964)
+;;     000039CC (in fn00003964)
 fn00018918 proc
 	addik	r1,r1,FFFFFFF8
 	swi	r19,r1,00000004
@@ -23262,11 +22075,29 @@ fn00018918 proc
 00018B80 30 21 00 08 B6 0F 00 08 80 00 00 00 30 21 FF F8 0!..........0!..
 00018B90 FA 61 00 04 12 61 00 00 F8 B3 00 0C 80 00 00 00 .a...a..........
 00018BA0 10 33 00 00 EA 61 00 04 30 21 00 08 B6 0F 00 08 .3...a..0!......
-00018BB0 80 00 00 00 F8 C1 00 08 F8 E1 00 0C F9 01 00 10 ................
-00018BC0 F9 21 00 14 F9 41 00 18 30 21 FF F8 FA 61 00 04 .!...A..0!...a..
-00018BD0 12 61 00 00 F8 B3 00 0C F8 D3 00 10 80 00 00 00 .a..............
-00018BE0 10 33 00 00 EA 61 00 04 30 21 00 08 B6 0F 00 08 .3...a..0!......
-00018BF0 80 00 00 00 F8 E1 00 0C F9 01 00 10 F9 21 00 14 .............!..
+00018BB0 80 00 00 00                                     ....            
+
+;; fn00018BB4: 00018BB4
+;;   Called from:
+;;     000009CC (in fn00000770)
+fn00018BB4 proc
+	swi	r6,r1,00000008
+	swi	r7,r1,0000000C
+	swi	r8,r1,00000010
+	swi	r9,r1,00000014
+	swi	r10,r1,00000018
+	addik	r1,r1,FFFFFFF8
+	swi	r19,r1,00000004
+	addk	r19,r1,r0
+	swi	r5,r19,0000000C
+	swi	r6,r19,00000010
+	nop
+	addk	r1,r19,r0
+	lwi	r19,r1,00000004
+	addik	r1,r1,00000008
+	rtsd	r15,00000008
+	nop
+00018BF4             F8 E1 00 0C F9 01 00 10 F9 21 00 14     .........!..
 00018C00 F9 41 00 18 30 21 FF F8 FA 61 00 04 12 61 00 00 .A..0!...a...a..
 00018C10 F8 B3 00 0C F8 D3 00 10 F8 F3 00 14 80 00 00 00 ................
 00018C20 10 33 00 00 EA 61 00 04 30 21 00 08 B6 0F 00 08 .3...a..0!......
@@ -23274,23 +22105,38 @@ fn00018918 proc
 
 ;; fn00018C34: 00018C34
 ;;   Called from:
-;;     000021EC (in fn00001E88)
-;;     00002500 (in fn000023C8)
-;;     000036DC (in fn00003728)
-;;     00003F50 (in fn00003EC8)
-;;     00005BE8 (in fn00005B0C)
-;;     00005DB4 (in fn00005B0C)
-;;     00006320 (in fn00005F20)
-;;     00006390 (in fn00005F20)
-;;     00006420 (in fn00005F20)
-;;     00006598 (in fn00005F20)
-;;     000066AC (in fn00005F20)
-;;     0000683C (in fn00005F20)
-;;     000068C8 (in fn00005F20)
-;;     0000690C (in fn00005F20)
-;;     0000695C (in fn00005F20)
-;;     00007044 (in fn00007044)
-;;     00007FBC (in fn00007F88)
+;;     000021F0 (in fn00001E88)
+;;     00002504 (in fn000023C8)
+;;     00003F54 (in fn00003EC8)
+;;     00005BEC (in fn00005B0C)
+;;     00005DB8 (in fn00005B0C)
+;;     00006324 (in fn00005F20)
+;;     00006394 (in fn00005F20)
+;;     00006424 (in fn00005F20)
+;;     0000659C (in fn00005F20)
+;;     000066B0 (in fn00005F20)
+;;     00006840 (in fn00005F20)
+;;     000068CC (in fn00005F20)
+;;     00006910 (in fn00005F20)
+;;     00006960 (in fn00005F20)
+;;     0000947C (in fn00008E80)
+;;     00009644 (in fn00008E80)
+;;     000097CC (in fn00008E80)
+;;     00009B2C (in fn00008E80)
+;;     00009C1C (in fn00008E80)
+;;     00009D90 (in fn00008E80)
+;;     00009EE0 (in fn00008E80)
+;;     00009F6C (in fn00008E80)
+;;     0000A048 (in fn00008E80)
+;;     0000A0D4 (in fn00008E80)
+;;     0000A1EC (in fn00008E80)
+;;     0000A354 (in fn00008E80)
+;;     0000A468 (in fn00008E80)
+;;     0000A564 (in fn00008E80)
+;;     0000A6E8 (in fn00008E80)
+;;     0000A92C (in fn00008E80)
+;;     0000ACC8 (in fn00008E80)
+;;     0000AEB4 (in fn00008E80)
 ;;     00013878 (in fn0001371C)
 fn00018C34 proc
 	addik	r1,r1,FFFFFFF8
@@ -23308,11 +22154,14 @@ fn00018C34 proc
 
 ;; fn00018C64: 00018C64
 ;;   Called from:
-;;     00003CE0 (in fn00003CC0)
-;;     00005D68 (in fn00005B0C)
-;;     00005ED8 (in fn00005B0C)
-;;     00005F04 (in fn00005B0C)
-;;     00008424 (in fn00008234)
+;;     00003CE4 (in fn00003C74)
+;;     00005D6C (in fn00005B0C)
+;;     00005EDC (in fn00005B0C)
+;;     00005F08 (in fn00005B0C)
+;;     00008428 (in fn00008234)
+;;     0000AF50 (in fn00008E80)
+;;     0000B1D8 (in fn0000AFBC)
+;;     0000B8F4 (in fn0000B514)
 ;;     000130B8 (in fn00012A34)
 fn00018C64 proc
 	addik	r1,r1,FFFFFFF8
@@ -23329,8 +22178,6 @@ fn00018C64 proc
 	nop
 
 ;; fn00018C94: 00018C94
-;;   Called from:
-;;     000036B0 (in fn00003728)
 fn00018C94 proc
 	addik	r1,r1,FFFFFFF8
 	swi	r19,r1,00000004
@@ -23347,10 +22194,13 @@ fn00018C94 proc
 
 ;; fn00018CC4: 00018CC4
 ;;   Called from:
-;;     00001AFC (in fn00001A68)
-;;     00001B0C (in fn00001A68)
-;;     00001B34 (in fn00001A68)
-;;     00001B44 (in fn00001A68)
+;;     00000480 (in fn00000378)
+;;     000005AC (in fn00000378)
+;;     00000870 (in fn00000770)
+;;     00001B00 (in fn00001A68)
+;;     00001B10 (in fn00001A68)
+;;     00001B38 (in fn00001A68)
+;;     00001B48 (in fn00001A68)
 fn00018CC4 proc
 	addik	r1,r1,FFFFFFF8
 	swi	r19,r1,00000004
@@ -23396,10 +22246,24 @@ fn00018E00 proc
 00018E28                         30 21 FF F8 FA 61 00 04         0!...a..
 00018E30 12 61 00 00 F8 B3 00 0C F8 D3 00 10 F8 F3 00 14 .a..............
 00018E40 80 00 00 00 10 33 00 00 EA 61 00 04 30 21 00 08 .....3...a..0!..
-00018E50 B6 0F 00 08 80 00 00 00 30 21 FF F8 FA 61 00 04 ........0!...a..
-00018E60 12 61 00 00 F8 B3 00 0C F8 D3 00 10 80 00 00 00 .a..............
-00018E70 10 33 00 00 EA 61 00 04 30 21 00 08 B6 0F 00 08 .3...a..0!......
-00018E80 80 00 00 00 30 21 FF F8 FA 61 00 04 12 61 00 00 ....0!...a...a..
+00018E50 B6 0F 00 08 80 00 00 00                         ........        
+
+;; fn00018E58: 00018E58
+;;   Called from:
+;;     00000600 (in fn00000378)
+fn00018E58 proc
+	addik	r1,r1,FFFFFFF8
+	swi	r19,r1,00000004
+	addk	r19,r1,r0
+	swi	r5,r19,0000000C
+	swi	r6,r19,00000010
+	nop
+	addk	r1,r19,r0
+	lwi	r19,r1,00000004
+	addik	r1,r1,00000008
+	rtsd	r15,00000008
+	nop
+00018E84             30 21 FF F8 FA 61 00 04 12 61 00 00     0!...a...a..
 00018E90 F8 B3 00 0C F8 D3 00 10 F8 F3 00 14 80 00 00 00 ................
 00018EA0 10 33 00 00 EA 61 00 04 30 21 00 08 B6 0F 00 08 .3...a..0!......
 00018EB0 80 00 00 00 30 21 FF F8 FA 61 00 04 12 61 00 00 ....0!...a...a..
@@ -23433,6 +22297,8 @@ fn00018EE4 proc
 00018FB0 B6 0F 00 08 80 00 00 00 30 21 FF F8             ........0!..    
 
 ;; fn00018FBC: 00018FBC
+;;   Called from:
+;;     0001CEF0 (in fn0001CEF0)
 fn00018FBC proc
 	swi	r19,r1,00000004
 	addk	r19,r1,r0
@@ -23457,16 +22323,14 @@ fn00018FBC proc
 
 ;; fn0001908C: 0001908C
 ;;   Called from:
-;;     00003B1C (in fn00003AA4)
-;;     00003C04 (in fn00003AA4)
-;;     00003D4C (in fn00003CC0)
-;;     00003E2C (in fn00003CC0)
-;;     00004070 (in fn00003EC8)
-;;     0000413C (in fn00003EC8)
-;;     00005430 (in fn00005318)
-;;     00005504 (in fn00005318)
-;;     00005630 (in fn00005538)
-;;     00005738 (in fn00005538)
+;;     00003B20 (in fn00003AA4)
+;;     00003C08 (in fn00003AA4)
+;;     00003D50 (in fn00003C74)
+;;     00003E30 (in fn00003C74)
+;;     00004074 (in fn00003EC8)
+;;     00004140 (in fn00003EC8)
+;;     00005634 (in fn00005538)
+;;     0000573C (in fn00005538)
 fn0001908C proc
 	addik	r1,r1,FFFFFFF8
 	swi	r19,r1,00000004
@@ -23487,10 +22351,10 @@ fn0001908C proc
 
 ;; fn000190F0: 000190F0
 ;;   Called from:
-;;     00001D28 (in fn00001BBC)
-;;     00002154 (in fn00001E88)
-;;     00002384 (in fn00002274)
-;;     000026AC (in fn000023C8)
+;;     00001D2C (in fn00001BBC)
+;;     00002158 (in fn00001E88)
+;;     00002388 (in fn00002274)
+;;     000026B0 (in fn000023C8)
 fn000190F0 proc
 	addik	r1,r1,FFFFFFF8
 	swi	r19,r1,00000004
@@ -23506,6 +22370,9 @@ fn000190F0 proc
 	nop
 
 ;; fn00019120: 00019120
+;;   Called from:
+;;     000009FC (in fn00000770)
+;;     00000A18 (in fn00000770)
 fn00019120 proc
 	addik	r1,r1,FFFFFFF8
 	swi	r19,r1,00000004
@@ -23522,8 +22389,8 @@ fn00019120 proc
 
 ;; fn00019150: 00019150
 ;;   Called from:
-;;     00003918 (in fn00003894)
-;;     000056A8 (in fn00005538)
+;;     0000391C (in fn00003894)
+;;     000056AC (in fn00005538)
 fn00019150 proc
 	addik	r1,r1,FFFFFFF8
 	swi	r19,r1,00000004
@@ -23535,9 +22402,22 @@ fn00019150 proc
 	addik	r1,r1,00000008
 	rtsd	r15,00000008
 	nop
-00019178                         30 21 FF F8 FA 61 00 04         0!...a..
-00019180 12 61 00 00 F8 B3 00 0C 80 00 00 00 10 33 00 00 .a...........3..
-00019190 EA 61 00 04 30 21 00 08 B6 0F 00 08 80 00 00 00 .a..0!..........
+
+;; fn00019178: 00019178
+;;   Called from:
+;;     000004F8 (in fn00000378)
+;;     0000067C (in fn00000378)
+fn00019178 proc
+	addik	r1,r1,FFFFFFF8
+	swi	r19,r1,00000004
+	addk	r19,r1,r0
+	swi	r5,r19,0000000C
+	nop
+	addk	r1,r19,r0
+	lwi	r19,r1,00000004
+	addik	r1,r1,00000008
+	rtsd	r15,00000008
+	nop
 000191A0 30 21 FF F8 FA 61 00 04 12 61 00 00 F8 B3 00 0C 0!...a...a......
 000191B0 F8 D3 00 10 F8 F3 00 14 80 00 00 00 10 33 00 00 .............3..
 000191C0 EA 61 00 04 30 21 00 08 B6 0F 00 08 80 00 00 00 .a..0!..........
@@ -23668,9 +22548,9 @@ fn00019150 proc
 ;; fn00019980: 00019980
 fn00019980 proc
 	imm	00000001
-	addik	r5,r0,FFFF8E64
+	addik	r5,r0,00018E64
 	imm	00000001
-	addik	r3,r0,FFFF8E64
+	addik	r3,r0,00018E64
 	xor	r3,r3,r5
 	beqi	r3,000199C0
 
@@ -23695,9 +22575,9 @@ l000199C0:
 ;; fn000199C8: 000199C8
 fn000199C8 proc
 	imm	00000001
-	addik	r5,r0,FFFF8E64
+	addik	r5,r0,00018E64
 	imm	00000001
-	addik	r3,r0,FFFF8E64
+	addik	r3,r0,00018E64
 	rsubk	r3,r5,r3
 	addk	r4,r0,r3
 	sra	r4,r3
@@ -23768,7 +22648,15 @@ l00019A9C:
 00019B40 BE 03 00 20 E9 E1 00 00 B0 00 00 01 30 A0 8E 60 ... ........0..`
 00019B50 B0 00 FF FF B9 F4 FE 2C 80 00 00 00 E9 E1 00 00 .......,........
 00019B60 EA 61 00 1C EA A1 00 20 30 60 00 01 B0 00 00 01 .a..... 0`......
-00019B70 F0 60 8E 64 B6 0F 00 08 30 21 00 24 B6 0F 00 08 .`.d....0!.$....
+
+;; fn00019B70: 00019B70
+;;   Called from:
+;;     0003029C (in fn0002FFD0)
+fn00019B70 proc
+	sbi	r3,r0,FFFF8E64
+	rtsd	r15,00000008
+	addik	r1,r1,00000024
+00019B7C                                     B6 0F 00 08             ....
 00019B80 80 00 00 00 B0 00 00 00 30 60 00 00 30 21 FF E4 ........0`..0!..
 00019B90 BE 03 00 24 F9 E1 00 00 B0 00 00 01 30 C0 8E 6C ...$........0..l
 00019BA0 B0 00 00 01 30 A0 8E 60 B0 00 FF FF B9 F4 FD D4 ....0..`........
@@ -23777,189 +22665,196 @@ l00019A9C:
 
 ;; fn00019BC8: 00019BC8
 ;;   Called from:
-;;     0001A1B8 (in fn00019BC8)
+;;     0001A1B8 (in fn00019E48)
 fn00019BC8 proc
 	imm	00000001
-	lwi	r7,r0,FFFF8EA4
+	lwi	r7,r0,00018EA4
 	imm	00000001
-	addik	r6,r0,000069AC
+	addik	r6,r0,000169AC
 	imm	00000001
-	lwi	r5,r0,FFFF8EB8
+	lwi	r5,r0,00018EB8
 	addik	r1,r1,FFFFFFE4
 	swi	r15,r1,00000000
 	imm	00000001
-	brlid	r15,0001EB28
+	brlid	r15,0002EB28
 	nop
 	imm	00000001
-	lwi	r8,r0,FFFF8EB8
+	lwi	r8,r0,00018EB8
 	imm	00000001
-	addik	r5,r0,000069C4
+	addik	r5,r0,000169C4
 	addik	r7,r0,0000000C
 	imm	00000001
-	brlid	r15,0001F128
+	brlid	r15,0002F128
 	addik	r6,r0,00000001
 	imm	00000001
-	lwi	r8,r0,FFFF8EB8
+	lwi	r8,r0,00018EB8
 	imm	00000001
-	addik	r5,r0,000069D4
+	addik	r5,r0,000169D4
 	addik	r7,r0,00000025
 	imm	00000001
-	brlid	r15,0001F128
+	brlid	r15,0002F128
 	addik	r6,r0,00000001
 	imm	00000001
-	lwi	r8,r0,FFFF8EB8
+	lwi	r8,r0,00018EB8
 	imm	00000001
-	addik	r5,r0,000069FC
+	addik	r5,r0,000169FC
 	addik	r7,r0,00000038
 	imm	00000001
-	brlid	r15,0001F128
+	brlid	r15,0002F128
 	addik	r6,r0,00000001
 	imm	00000001
-	lwi	r8,r0,FFFF8EB8
+	lwi	r8,r0,00018EB8
 	imm	00000001
-	addik	r5,r0,00006A38
+	addik	r5,r0,00016A38
 	addik	r7,r0,00000035
 	imm	00000001
-	brlid	r15,0001F128
+	brlid	r15,0002F128
 	addik	r6,r0,00000001
 	imm	00000001
-	lwi	r8,r0,FFFF8EB8
+	lwi	r8,r0,00018EB8
 	imm	00000001
-	addik	r5,r0,00006A70
+	addik	r5,r0,00016A70
 	addik	r7,r0,00000028
 	imm	00000001
-	brlid	r15,0001F128
+	brlid	r15,0002F128
 	addik	r6,r0,00000001
 	imm	00000001
-	lwi	r8,r0,FFFF8EB8
+	lwi	r8,r0,00018EB8
 	imm	00000001
-	addik	r5,r0,00006A9C
+	addik	r5,r0,00016A9C
 	addik	r7,r0,0000004D
 	imm	00000001
-	brlid	r15,0001F128
+	brlid	r15,0002F128
 	addik	r6,r0,00000001
 	imm	00000001
-	lwi	r8,r0,FFFF8EB8
+	lwi	r8,r0,00018EB8
 	imm	00000001
-	addik	r5,r0,00006AEC
+	addik	r5,r0,00016AEC
 	addik	r7,r0,0000002E
 	imm	00000001
-	brlid	r15,0001F128
+	brlid	r15,0002F128
 	addik	r6,r0,00000001
 	imm	00000001
-	lwi	r8,r0,FFFF8EB8
+	lwi	r8,r0,00018EB8
 	imm	00000001
-	addik	r5,r0,00006B1C
+	addik	r5,r0,00016B1C
 	addik	r7,r0,00000022
 	imm	00000001
-	brlid	r15,0001F128
+	brlid	r15,0002F128
 	addik	r6,r0,00000001
 	imm	00000001
-	lwi	r8,r0,FFFF8EB8
+	lwi	r8,r0,00018EB8
 	imm	00000001
-	addik	r5,r0,00006B40
+	addik	r5,r0,00016B40
 	addik	r7,r0,00000037
 	imm	00000001
-	brlid	r15,0001F128
+	brlid	r15,0002F128
 	addik	r6,r0,00000001
 	imm	00000001
-	lwi	r8,r0,FFFF8EB8
+	lwi	r8,r0,00018EB8
 	imm	00000001
-	addik	r5,r0,00006B78
+	addik	r5,r0,00016B78
 	addik	r7,r0,00000047
 	imm	00000001
-	brlid	r15,0001F128
+	brlid	r15,0002F128
 	addik	r6,r0,00000001
 	imm	00000001
-	lwi	r8,r0,FFFF8EB8
+	lwi	r8,r0,00018EB8
 	imm	00000001
-	addik	r5,r0,00006BC0
+	addik	r5,r0,00016BC0
 	addik	r7,r0,00000040
 	imm	00000001
-	brlid	r15,0001F128
+	brlid	r15,0002F128
 	addik	r6,r0,00000001
 	imm	00000001
-	lwi	r8,r0,FFFF8EB8
+	lwi	r8,r0,00018EB8
 	imm	00000001
-	addik	r5,r0,00006C04
+	addik	r5,r0,00016C04
 	addik	r7,r0,00000021
 	imm	00000001
-	brlid	r15,0001F128
+	brlid	r15,0002F128
 	addik	r6,r0,00000001
 	imm	00000001
-	lwi	r8,r0,FFFF8EB8
+	lwi	r8,r0,00018EB8
 	imm	00000001
-	addik	r5,r0,00006C28
+	addik	r5,r0,00016C28
 	addik	r7,r0,0000002C
 	imm	00000001
-	brlid	r15,0001F128
+	brlid	r15,0002F128
 	addik	r6,r0,00000001
 	imm	00000001
-	lwi	r8,r0,FFFF8EB8
+	lwi	r8,r0,00018EB8
 	imm	00000001
-	addik	r5,r0,00006C58
+	addik	r5,r0,00016C58
 	addik	r7,r0,00000034
 	imm	00000001
-	brlid	r15,0001F128
+	brlid	r15,0002F128
 	addik	r6,r0,00000001
 	imm	00000001
-	lwi	r8,r0,FFFF8EB8
+	lwi	r8,r0,00018EB8
 	imm	00000001
-	addik	r5,r0,00006C90
+	addik	r5,r0,00016C90
 	addik	r7,r0,0000001D
 	imm	00000001
-	brlid	r15,0001F128
+	brlid	r15,0002F128
 	addik	r6,r0,00000001
 	imm	00000001
-	lwi	r8,r0,FFFF8EB8
+	lwi	r8,r0,00018EB8
 	imm	00000001
-	addik	r5,r0,00006CB0
+	addik	r5,r0,00016CB0
 	addik	r7,r0,00000043
 	imm	00000001
-	brlid	r15,0001F128
+	brlid	r15,0002F128
 	addik	r6,r0,00000001
 	imm	00000001
-	lwi	r8,r0,FFFF8EB8
+	lwi	r8,r0,00018EB8
 	imm	00000001
-	addik	r5,r0,00006CF4
+	addik	r5,r0,00016CF4
 	addik	r7,r0,00000033
 	imm	00000001
-	brlid	r15,0001F128
+	brlid	r15,0002F128
 	addik	r6,r0,00000001
 	imm	00000001
-	lwi	r8,r0,FFFF8EB8
+	lwi	r8,r0,00018EB8
 	imm	00000001
-	addik	r5,r0,00006D28
+	addik	r5,r0,00016D28
 	addik	r7,r0,0000002E
 	imm	00000001
-	brlid	r15,0001F128
+	brlid	r15,0002F128
 	addik	r6,r0,00000001
 	imm	00000001
-	lwi	r8,r0,FFFF8EB8
+	lwi	r8,r0,00018EB8
 	imm	00000001
-	addik	r5,r0,00006D58
+	addik	r5,r0,00016D58
 	addik	r7,r0,0000002B
+
+;; fn00019E48: 00019E48
+;;   Called from:
+;;     00019E44 (in fn00019BC8)
+;;     0003003C (in fn0002FFD0)
+;;     00030140 (in fn0002FFD0)
+fn00019E48 proc
 	imm	00000001
-	brlid	r15,0001F128
+	brlid	r15,0002F128
 	addik	r6,r0,00000001
 	imm	00000001
-	lwi	r8,r0,FFFF8EB8
+	lwi	r8,r0,00018EB8
 	imm	00000001
-	addik	r5,r0,00006D84
+	addik	r5,r0,00016D84
 	addik	r7,r0,00000016
 	imm	00000001
-	brlid	r15,0001F128
+	brlid	r15,0002F128
 	addik	r6,r0,00000001
 	imm	00000001
-	addik	r5,r0,00006D9C
+	addik	r5,r0,00016D9C
 	imm	00000001
-	lwi	r8,r0,FFFF8EB8
+	lwi	r8,r0,00018EB8
 	addik	r7,r0,00000038
 	imm	00000001
-	brlid	r15,0001F128
+	brlid	r15,0002F128
 	addik	r6,r0,00000001
 	imm	00000001
-	brlid	r15,0001F274
+	brlid	r15,0002F274
 	addik	r5,r0,00000001
 	addik	r1,r1,FFFFFFA8
 	swi	r15,r1,00000000
@@ -23978,15 +22873,15 @@ fn00019BC8 proc
 	lwi	r3,r5,00000000
 	addik	r4,r0,00000001
 	imm	00000001
-	swi	r0,r0,FFFF8EA0
+	swi	r0,r0,00018EA0
 	imm	00000001
-	swi	r4,r0,FFFF8E9C
+	swi	r4,r0,00018E9C
 	imm	00000001
-	swi	r0,r0,FFFF8E88
+	swi	r0,r0,00018E88
 	imm	00000001
-	swi	r0,r0,FFFF8E8C
+	swi	r0,r0,00018E8C
 	imm	00000001
-	swi	r0,r0,FFFF8E90
+	swi	r0,r0,00018E90
 	cmp	r18,r6,r4
 	bgeid	r18,0001A1C0
 	swi	r0,r3,00000068
@@ -24000,7 +22895,7 @@ l00019F14:
 	addk	r26,r25,r0
 	addk	r30,r4,r0
 	imm	00000001
-	addik	r28,r0,FFFF8E88
+	addik	r28,r0,00018E88
 	addik	r29,r0,00000078
 
 l00019F3C:
@@ -24056,7 +22951,7 @@ l00019F84:
 l00019FBC:
 	addik	r19,r19,00000001
 	imm	00000001
-	addik	r6,r0,00006E0C
+	addik	r6,r0,00016E0C
 	addk	r5,r19,r0
 	brlid	r15,0001B134
 	addik	r7,r0,00000001
@@ -24065,7 +22960,7 @@ l00019FBC:
 
 l00019FDC:
 	imm	00000001
-	addik	r6,r0,00006E44
+	addik	r6,r0,00016E44
 	addk	r5,r19,r0
 	brlid	r15,0001B134
 	addik	r7,r0,00000001
@@ -24080,7 +22975,7 @@ l00019FF8:
 
 l0001A008:
 	imm	00000001
-	addik	r6,r0,00006E4C
+	addik	r6,r0,00016E4C
 	lw	r5,r31,r21
 	brlid	r15,0001B134
 	addik	r7,r0,00000001
@@ -24088,13 +22983,13 @@ l0001A008:
 
 l0001A020:
 	imm	00000001
-	swi	r27,r0,FFFF8E9C
+	swi	r27,r0,00018E9C
 	brid	0001A068
 	addik	r30,r30,00000001
 
 l0001A030:
 	imm	00000001
-	addik	r6,r0,00006E64
+	addik	r6,r0,00016E64
 	brlid	r15,0001B134
 	addik	r7,r0,00000001
 	beqid	r3,0001A0B8
@@ -24102,7 +22997,7 @@ l0001A030:
 
 l0001A048:
 	imm	00000001
-	lwi	r3,r0,FFFF8E84
+	lwi	r3,r0,00018E84
 	beqi	r3,0001A128
 
 l0001A054:
@@ -24135,7 +23030,7 @@ l0001A084:
 
 l0001A08C:
 	imm	00000001
-	addik	r6,r0,00006E54
+	addik	r6,r0,00016E54
 	lw	r5,r31,r21
 	brlid	r15,0001B134
 	addik	r7,r0,00000001
@@ -24144,13 +23039,13 @@ l0001A08C:
 
 l0001A0A8:
 	imm	00000001
-	swi	r3,r0,FFFF8E9C
+	swi	r3,r0,00018E9C
 	brid	0001A068
 	addik	r30,r30,00000001
 
 l0001A0B8:
 	imm	00000001
-	addik	r6,r0,00006E6C
+	addik	r6,r0,00016E6C
 	brlid	r15,0001B134
 	addik	r7,r0,00000001
 	bneid	r3,0001A048
@@ -24158,7 +23053,7 @@ l0001A0B8:
 
 l0001A0D0:
 	imm	00000001
-	addik	r6,r0,00006EDC
+	addik	r6,r0,00016EDC
 	brlid	r15,0001B134
 	addik	r7,r0,00000001
 	beqid	r3,0001A194
@@ -24172,7 +23067,7 @@ l0001A0E8:
 
 l0001A0F8:
 	imm	00000001
-	addik	r6,r0,00006EE4
+	addik	r6,r0,00016EE4
 	lw	r5,r31,r21
 	brlid	r15,0001B134
 	addik	r7,r0,00000001
@@ -24190,25 +23085,25 @@ l0001A120:
 
 l0001A128:
 	imm	00000001
-	addik	r8,r0,00006E74
+	addik	r8,r0,00016E74
 	imm	00000001
-	addik	r7,r0,00006E98
+	addik	r7,r0,00016E98
 	imm	00000001
-	addik	r6,r0,00006EA8
+	addik	r6,r0,00016EA8
 	imm	00000001
-	lwi	r5,r0,FFFF8EB8
+	lwi	r5,r0,00018EB8
 	imm	00000001
-	brlid	r15,0001EB28
+	brlid	r15,0002EB28
 	nop
 	addik	r3,r0,00000001
 	imm	00000001
-	swi	r3,r0,FFFF8E84
+	swi	r3,r0,00018E84
 	brid	0001A058
 	lwi	r5,r23,00000000
 
 l0001A168:
 	imm	00000001
-	addik	r6,r0,00006E60
+	addik	r6,r0,00016E60
 	lw	r5,r31,r21
 	brlid	r15,0001B134
 	addik	r7,r0,00000001
@@ -24217,13 +23112,13 @@ l0001A168:
 
 l0001A184:
 	imm	00000001
-	swi	r3,r0,FFFF8E9C
+	swi	r3,r0,00018E9C
 	brid	0001A068
 	addik	r30,r30,00000001
 
 l0001A194:
 	imm	00000001
-	addik	r6,r0,00006EFC
+	addik	r6,r0,00016EFC
 	brlid	r15,0001B134
 	addik	r7,r0,00000001
 	beqid	r3,0001A1F8
@@ -24246,7 +23141,7 @@ l0001A1C0:
 
 l0001A1C8:
 	imm	00000001
-	addik	r6,r0,00006EF0
+	addik	r6,r0,00016EF0
 	lw	r5,r31,r21
 	brlid	r15,0001B134
 	addik	r7,r0,00000001
@@ -24264,7 +23159,7 @@ l0001A1F0:
 
 l0001A1F8:
 	imm	00000001
-	addik	r6,r0,00006F08
+	addik	r6,r0,00016F08
 	brlid	r15,0001B134
 	addik	r7,r0,00000001
 	bneid	r3,0001A1B0
@@ -24272,7 +23167,7 @@ l0001A1F8:
 
 l0001A210:
 	imm	00000001
-	addik	r6,r0,00006F14
+	addik	r6,r0,00016F14
 	addk	r5,r19,r0
 	brlid	r15,0001B134
 	addik	r7,r0,00000003
@@ -24288,11 +23183,11 @@ l0001A22C:
 l0001A23C:
 	addk	r19,r21,r31
 	imm	00000001
-	addik	r6,r0,00006F20
+	addik	r6,r0,00016F20
 	lwi	r5,r19,00000004
 	addik	r8,r1,00000025
 	imm	00000001
-	brlid	r15,0001EE08
+	brlid	r15,0002EE08
 	addik	r7,r1,00000020
 	bleid	r3,0001A1B8
 	lbui	r3,r1,00000025
@@ -24342,7 +23237,7 @@ l0001A2B4:
 
 l0001A2F8:
 	imm	00000001
-	addik	r6,r0,00006F28
+	addik	r6,r0,00016F28
 	brlid	r15,0001B134
 	addik	r7,r0,00000001
 	beqid	r3,0001A31C
@@ -24357,7 +23252,7 @@ l0001A314:
 
 l0001A31C:
 	imm	00000001
-	addik	r6,r0,00006F34
+	addik	r6,r0,00016F34
 	brlid	r15,0001B134
 	addik	r7,r0,00000001
 	bneid	r3,0001A314
@@ -24365,7 +23260,7 @@ l0001A31C:
 
 l0001A334:
 	imm	00000001
-	addik	r6,r0,00006F40
+	addik	r6,r0,00016F40
 	addk	r5,r19,r0
 	brlid	r15,0001B134
 	addik	r7,r0,00000004
@@ -24381,27 +23276,27 @@ l0001A350:
 l0001A360:
 	lwi	r19,r19,00000004
 	imm	00000001
-	swi	r19,r0,FFFF8EA0
+	swi	r19,r0,00018EA0
 	brid	0001A068
 	addik	r30,r30,00000001
 
 l0001A374:
 	imm	00000001
-	lwi	r5,r0,FFFF8EB8
+	lwi	r5,r0,00018EB8
 	imm	00000001
-	lwi	r7,r0,FFFF8EA4
+	lwi	r7,r0,00018EA4
 	imm	00000001
-	addik	r6,r0,00006E18
+	addik	r6,r0,00016E18
 	imm	00000001
-	brlid	r15,0001EB28
+	brlid	r15,0002EB28
 	nop
 	imm	00000001
-	brlid	r15,0001F274
+	brlid	r15,0002F274
 	addik	r5,r0,00000001
 
 l0001A3A4:
 	imm	00000001
-	addik	r6,r0,00006F48
+	addik	r6,r0,00016F48
 	brlid	r15,0001B134
 	addik	r7,r0,00000001
 	beqid	r3,0001A3D0
@@ -24413,12 +23308,12 @@ l0001A3BC:
 
 l0001A3C4:
 	imm	00000001
-	brlid	r15,0001FFD0
+	brlid	r15,0002FFD0
 	nop
 
 l0001A3D0:
 	imm	00000001
-	addik	r6,r0,00006F54
+	addik	r6,r0,00016F54
 	brlid	r15,0001B134
 	addik	r7,r0,00000001
 	beqid	r3,0001A450
@@ -24433,18 +23328,18 @@ l0001A3E8:
 l0001A3F8:
 	addk	r19,r21,r31
 	imm	00000001
-	addik	r6,r0,00006F20
+	addik	r6,r0,00016F20
 	lwi	r5,r19,00000004
 	addik	r8,r1,00000024
 	imm	00000001
-	brlid	r15,0001EE08
+	brlid	r15,0002EE08
 	addik	r7,r1,0000001C
 	blei	r3,0001A1B8
 
 l0001A41C:
 	lwi	r5,r1,0000001C
 	imm	00000000
-	addik	r3,r0,FFFFFFFF
+	addik	r3,r0,0000FFFF
 	cmpu	r18,r5,r3
 	bltid	r18,0001A1B8
 	lbui	r3,r1,00000024
@@ -24462,7 +23357,7 @@ l0001A444:
 
 l0001A450:
 	imm	00000001
-	addik	r6,r0,00006F5C
+	addik	r6,r0,00016F5C
 	brlid	r15,0001B134
 	addik	r7,r0,00000002
 	beqid	r3,0001A544
@@ -24476,7 +23371,7 @@ l0001A468:
 
 l0001A478:
 	imm	00000001
-	addik	r6,r0,00006F64
+	addik	r6,r0,00016F64
 	lw	r5,r31,r21
 	brlid	r15,0001B134
 	addik	r7,r0,00000002
@@ -24501,7 +23396,7 @@ l0001A4B0:
 
 l0001A4BC:
 	imm	00000001
-	addik	r6,r0,00006F68
+	addik	r6,r0,00016F68
 	lw	r5,r31,r21
 	brlid	r15,0001B134
 	addik	r7,r0,00000003
@@ -24526,7 +23421,7 @@ l0001A4F4:
 
 l0001A500:
 	imm	00000001
-	addik	r6,r0,00006F6C
+	addik	r6,r0,00016F6C
 	lw	r5,r31,r21
 	brlid	r15,0001B134
 	addik	r7,r0,00000003
@@ -24551,7 +23446,7 @@ l0001A538:
 
 l0001A544:
 	imm	00000001
-	addik	r6,r0,00006F70
+	addik	r6,r0,00016F70
 	brlid	r15,0001B134
 	addik	r7,r0,00000001
 	beqid	r3,0001A57C
@@ -24573,7 +23468,7 @@ l0001A574:
 
 l0001A57C:
 	imm	00000001
-	addik	r6,r0,00006F78
+	addik	r6,r0,00016F78
 	brlid	r15,0001B134
 	addik	r7,r0,00000001
 	beqid	r3,0001A5C0
@@ -24598,7 +23493,7 @@ l0001A5B4:
 
 l0001A5C0:
 	imm	00000001
-	addik	r6,r0,00006F84
+	addik	r6,r0,00016F84
 	brlid	r15,0001B134
 	addik	r7,r0,00000006
 	beqid	r3,0001A5F0
@@ -24616,7 +23511,7 @@ l0001A5E8:
 
 l0001A5F0:
 	imm	00000001
-	addik	r6,r0,00006F90
+	addik	r6,r0,00016F90
 	brlid	r15,0001B134
 	addik	r7,r0,00000003
 	beqid	r3,0001A1B8
@@ -24636,7 +23531,7 @@ fn0001A610 proc
 	swi	r19,r1,0000001C
 	swi	r15,r1,00000000
 	imm	00000001
-	brlid	r15,0001EF80
+	brlid	r15,0002EF80
 	addk	r19,r5,r0
 	xori	r4,r3,00000023
 	beqid	r4,0001A6C8
@@ -24685,7 +23580,7 @@ l0001A640:
 
 l0001A6C8:
 	imm	00000001
-	brlid	r15,0001EF80
+	brlid	r15,0002EF80
 	addk	r5,r19,r0
 	xori	r7,r3,0000000A
 	xori	r6,r3,FFFFFFFF
@@ -24720,7 +23615,7 @@ fn0001A700 proc
 
 l0001A730:
 	imm	00000001
-	brlid	r15,0001F940
+	brlid	r15,0002F940
 	nop
 	beqid	r3,0001A788
 	addik	r22,r19,FFFFFFD0
@@ -24825,7 +23720,7 @@ l0001A820:
 
 l0001A834:
 	imm	00000001
-	brlid	r15,0001F940
+	brlid	r15,0002F940
 	addk	r5,r19,r0
 	bneid	r3,0001A820
 	addk	r5,r21,r0
@@ -24839,7 +23734,7 @@ l0001A848:
 
 l0001A85C:
 	imm	00000001
-	brlid	r15,0001EF2C
+	brlid	r15,0002EF2C
 	addk	r5,r19,r0
 	xori	r3,r3,FFFFFFFF
 	beqid	r3,0001A898
@@ -24913,14 +23808,14 @@ l0001A8C0:
 
 ;; fn0001AAB0: 0001AAB0
 ;;   Called from:
-;;     00019F70 (in fn00019BC8)
+;;     00019F70 (in fn00019E48)
 fn0001AAB0 proc
 	addik	r1,r1,FFFFF1A8
 	swi	r25,r1,00000E48
 	addk	r25,r6,r0
 	swi	r27,r1,00000E50
 	imm	00000001
-	addik	r6,r0,00006FDC
+	addik	r6,r0,00016FDC
 	addk	r27,r5,r0
 	addk	r5,r25,r0
 	swi	r23,r1,00000E40
@@ -24931,7 +23826,7 @@ fn0001AAB0 proc
 	swi	r24,r1,00000E44
 	swi	r26,r1,00000E4C
 	imm	00000001
-	brlid	r15,0001F0A0
+	brlid	r15,0002F0A0
 	swi	r28,r1,00000E54
 	beqid	r3,0001ABE0
 	addk	r23,r3,r0
@@ -24985,14 +23880,14 @@ l0001AB80:
 
 l0001AB84:
 	imm	00000001
-	lwi	r5,r0,FFFF8EB8
+	lwi	r5,r0,00018EB8
 	imm	00000001
-	addik	r6,r0,000070A0
+	addik	r6,r0,000170A0
 	imm	00000001
-	brlid	r15,0001EB28
+	brlid	r15,0002EB28
 	addk	r7,r25,r0
 	imm	00000001
-	brlid	r15,0001F0CC
+	brlid	r15,0002F0CC
 	addk	r5,r23,r0
 	addk	r3,r19,r0
 
@@ -25013,11 +23908,11 @@ l0001ABB0:
 l0001ABE0:
 	addk	r7,r25,r0
 	imm	00000001
-	addik	r6,r0,00007058
+	addik	r6,r0,00017058
 	imm	00000001
-	lwi	r5,r0,FFFF8EB8
+	lwi	r5,r0,00018EB8
 	imm	00000001
-	brlid	r15,0001EB28
+	brlid	r15,0002EB28
 	addk	r19,r3,r0
 	brid	0001ABB0
 	addk	r3,r19,r0
@@ -25090,14 +23985,14 @@ l0001ACD4:
 
 l0001ACD8:
 	imm	00000001
-	addik	r6,r0,000070CC
+	addik	r6,r0,000170CC
 	imm	00000001
-	lwi	r5,r0,FFFF8EB8
+	lwi	r5,r0,00018EB8
 	imm	00000001
-	brlid	r15,0001EB28
+	brlid	r15,0002EB28
 	addk	r19,r0,r0
 	imm	00000001
-	brlid	r15,0001F0CC
+	brlid	r15,0002F0CC
 	addk	r5,r23,r0
 	brid	0001ABB0
 	addk	r3,r19,r0
@@ -25167,28 +24062,28 @@ l0001ADB0:
 
 l0001ADBC:
 	imm	00000001
-	addik	r6,r0,00007038
+	addik	r6,r0,00017038
 	imm	00000001
-	lwi	r5,r0,FFFF8EB8
+	lwi	r5,r0,00018EB8
 	imm	00000001
-	brlid	r15,0001EB28
+	brlid	r15,0002EB28
 	addk	r7,r25,r0
 	imm	00000001
-	brlid	r15,0001F0CC
+	brlid	r15,0002F0CC
 	addk	r5,r23,r0
 	brid	0001ABB0
 	addk	r3,r19,r0
 
 l0001ADEC:
 	imm	00000001
-	addik	r6,r0,0000707C
+	addik	r6,r0,0001707C
 	imm	00000001
-	lwi	r5,r0,FFFF8EB8
+	lwi	r5,r0,00018EB8
 	imm	00000001
-	brlid	r15,0001EB28
+	brlid	r15,0002EB28
 	addk	r7,r25,r0
 	imm	00000001
-	brlid	r15,0001F0CC
+	brlid	r15,0002F0CC
 	addk	r5,r23,r0
 	brid	0001ABB0
 	addk	r3,r19,r0
@@ -25212,7 +24107,7 @@ l0001AE20:
 	addk	r7,r19,r0
 	addk	r5,r3,r0
 	imm	00000001
-	brlid	r15,0001F60C
+	brlid	r15,0002F60C
 	addik	r6,r1,0000001C
 	swi	r3,r27,000000D8
 	swi	r26,r27,000000D4
@@ -25220,7 +24115,7 @@ l0001AE20:
 l0001AE6C:
 	addk	r5,r23,r0
 	imm	00000001
-	brlid	r15,0001F0CC
+	brlid	r15,0002F0CC
 	addik	r19,r0,00000001
 	brid	0001ABB0
 	addk	r3,r19,r0
@@ -25271,32 +24166,32 @@ l0001AE6C:
 
 ;; fn0001B134: 0001B134
 ;;   Called from:
-;;     00019FCC (in fn00019BC8)
-;;     00019FE8 (in fn00019BC8)
-;;     0001A014 (in fn00019BC8)
-;;     0001A038 (in fn00019BC8)
-;;     0001A098 (in fn00019BC8)
-;;     0001A0C0 (in fn00019BC8)
-;;     0001A0D8 (in fn00019BC8)
-;;     0001A104 (in fn00019BC8)
-;;     0001A174 (in fn00019BC8)
-;;     0001A19C (in fn00019BC8)
-;;     0001A1D4 (in fn00019BC8)
-;;     0001A200 (in fn00019BC8)
-;;     0001A21C (in fn00019BC8)
-;;     0001A300 (in fn00019BC8)
-;;     0001A324 (in fn00019BC8)
-;;     0001A340 (in fn00019BC8)
-;;     0001A3AC (in fn00019BC8)
-;;     0001A3D8 (in fn00019BC8)
-;;     0001A458 (in fn00019BC8)
-;;     0001A484 (in fn00019BC8)
-;;     0001A4C8 (in fn00019BC8)
-;;     0001A50C (in fn00019BC8)
-;;     0001A54C (in fn00019BC8)
-;;     0001A584 (in fn00019BC8)
-;;     0001A5C8 (in fn00019BC8)
-;;     0001A5F8 (in fn00019BC8)
+;;     00019FCC (in fn00019E48)
+;;     00019FE8 (in fn00019E48)
+;;     0001A014 (in fn00019E48)
+;;     0001A038 (in fn00019E48)
+;;     0001A098 (in fn00019E48)
+;;     0001A0C0 (in fn00019E48)
+;;     0001A0D8 (in fn00019E48)
+;;     0001A104 (in fn00019E48)
+;;     0001A174 (in fn00019E48)
+;;     0001A19C (in fn00019E48)
+;;     0001A1D4 (in fn00019E48)
+;;     0001A200 (in fn00019E48)
+;;     0001A21C (in fn00019E48)
+;;     0001A300 (in fn00019E48)
+;;     0001A324 (in fn00019E48)
+;;     0001A340 (in fn00019E48)
+;;     0001A3AC (in fn00019E48)
+;;     0001A3D8 (in fn00019E48)
+;;     0001A458 (in fn00019E48)
+;;     0001A484 (in fn00019E48)
+;;     0001A4C8 (in fn00019E48)
+;;     0001A50C (in fn00019E48)
+;;     0001A54C (in fn00019E48)
+;;     0001A584 (in fn00019E48)
+;;     0001A5C8 (in fn00019E48)
+;;     0001A5F8 (in fn00019E48)
 fn0001B134 proc
 	addik	r1,r1,FFFFFFCC
 	swi	r25,r1,00000030
@@ -25336,25 +24231,42 @@ l0001B18C:
 l0001B19C:
 	addk	r5,r19,r0
 	imm	00000001
-	brlid	r15,0001F9E0
+	brlid	r15,0002F9E0
 	addik	r22,r22,00000001
 	beqid	r3,0001B1C4
 	addk	r5,r19,r0
 
 l0001B1B4:
 	imm	00000001
-	brlid	r15,0001FA08
+	brlid	r15,0002FA08
 	nop
+
+;; fn0001B1C0: 0001B1C0
+;;   Called from:
+;;     00030078 (in fn0002FFD0)
+fn0001B1C0 proc
 	addk	r19,r3,r0
 
-l0001B1C4:
+;; fn0001B1C4: 0001B1C4
+;;   Called from:
+;;     0001B170 (in fn0001B134)
+;;     0001B178 (in fn0001B134)
+;;     0001B1C0 (in fn0001B1C0)
+fn0001B1C4 proc
 	xor	r19,r19,r21
 	beqi	r19,0001B180
 
 l0001B1CC:
 	addk	r3,r0,r0
 
-l0001B1D0:
+;; fn0001B1D0: 0001B1D0
+;;   Called from:
+;;     0001B198 (in fn0001B1C4)
+;;     0001B1CC (in fn0001B1D0)
+;;     0001B204 (in fn0001B1F8)
+;;     0001B210 (in fn0001B1F8)
+;;     000302B0 (in fn0002FFD0)
+fn0001B1D0 proc
 	lwi	r15,r1,00000000
 	lwi	r19,r1,0000001C
 	lwi	r21,r1,00000020
@@ -25368,7 +24280,11 @@ l0001B1D0:
 l0001B1F4:
 	addk	r22,r19,r0
 
-l0001B1F8:
+;; fn0001B1F8: 0001B1F8
+;;   Called from:
+;;     0001B188 (in fn0001B1C4)
+;;     0001B1F4 (in fn0001B1F8)
+fn0001B1F8 proc
 	cmp	r18,r25,r22
 	bltid	r18,0001B20C
 	addik	r21,r0,00000001
@@ -25423,7 +24339,12 @@ l0001B2A4:
 	addik	r10,r5,00000044
 	addik	r11,r5,00000054
 
-l0001B2AC:
+;; fn0001B2AC: 0001B2AC
+;;   Called from:
+;;     0001B2A8 (in fn0001B238)
+;;     0001B2CC (in fn0001B2CC)
+;;     0001B30C (in fn0001B2CC)
+fn0001B2AC proc
 	lwi	r6,r10,00000000
 	beqi	r6,0001B310
 
@@ -25434,6 +24355,11 @@ l0001B2B4:
 	addik	r9,r6,00000020
 	addik	r8,r6,00000004
 	beqid	r3,0001B310
+
+;; fn0001B2CC: 0001B2CC
+;;   Called from:
+;;     000300E8 (in fn0002FFD0)
+fn0001B2CC proc
 	addik	r6,r6,00000024
 
 l0001B2D0:
@@ -25486,22 +24412,67 @@ l0001B31C:
 0001B430 B9 F4 18 E0 32 F7 00 54 E9 55 00 0C 11 23 00 00 ....2..T.U...#..
 0001B440 11 1E 00 00 10 FD 00 00 10 DC 00 00 99 FC D8 00 ................
 0001B450 10 B3 00 00 E8 96 00 0C 16 44 C0 01 BE 52 FF 9C .........D...R..
-0001B460 F8 79 FF FC FB 56 00 10 E9 E1 00 00 EA 61 00 1C .y...V.......a..
-0001B470 EA A1 00 20 EA C1 00 24 EA E1 00 28 EB 01 00 2C ... ...$...(...,
-0001B480 EB 21 00 30 EB 41 00 34 EB 61 00 38 EB 81 00 3C .!.0.A.4.a.8...<
-0001B490 EB A1 00 40 EB C1 00 44 B6 0F 00 08 30 21 00 48 ...@...D....0!.H
+0001B460 F8 79 FF FC FB 56 00 10                         .y...V..        
+
+l0001B468:
+	lwi	r15,r1,00000000
+	lwi	r19,r1,0000001C
+	lwi	r21,r1,00000020
+	lwi	r22,r1,00000024
+	lwi	r23,r1,00000028
+	lwi	r24,r1,0000002C
+	lwi	r25,r1,00000030
+	lwi	r26,r1,00000034
+	lwi	r27,r1,00000038
+	lwi	r28,r1,0000003C
+	lwi	r29,r1,00000040
+	lwi	r30,r1,00000044
+	rtsd	r15,00000008
+	addik	r1,r1,00000048
 0001B4A0 E8 F6 00 0C E8 73 00 04 10 B3 00 00 10 80 38 00 .....s........8.
 0001B4B0 10 87 38 00 10 84 20 00 E8 63 00 00 10 E4 00 00 ..8... ..c......
 0001B4C0 99 FC 18 00 30 C0 00 01 13 43 00 00 E8 76 00 0C ....0....C...v..
 0001B4D0 BE 63 FF 94 12 E0 00 00 13 3A 00 00 13 17 00 00 .c.......:......
-0001B4E0 13 B7 00 00 33 80 00 01 EA B3 00 D8 E8 73 00 04 ....3........s..
-0001B4F0 33 39 00 04 12 B5 B8 00 E8 D5 00 0C E8 B5 00 20 39............. 
-0001B500 EB 63 00 14 B0 00 00 01 B9 F4 18 08 33 18 00 01 .c..........3...
-0001B510 E8 D5 00 08 E8 B5 00 1C 13 C3 00 00 B0 00 00 01 ................
-0001B520 B9 F4 17 F0 32 F7 00 54 E9 55 00 08 11 23 00 00 ....2..T.U...#..
-0001B530 11 1E 00 00 10 FD 00 00 10 DC 00 00 99 FC D8 00 ................
-0001B540 10 B3 00 00 E8 96 00 0C 16 44 C0 01 BE 52 FF 9C .........D...R..
-0001B550 F8 79 FF FC B8 10 FF 14 FB 56 00 10 B8 10 FF 08 .y.......V......
+0001B4E0 13 B7 00 00 33 80 00 01                         ....3...        
+
+l0001B4E8:
+	lwi	r21,r19,000000D8
+	lwi	r3,r19,00000004
+	addik	r25,r25,00000004
+	addk	r21,r21,r23
+	lwi	r6,r21,0000000C
+	lwi	r5,r21,00000020
+	lwi	r27,r3,00000014
+	imm	00000001
+	brlid	r15,0002CD10
+	addik	r24,r24,00000001
+	lwi	r6,r21,00000008
+	lwi	r5,r21,0000001C
+	addk	r30,r3,r0
+
+;; fn0001B51C: 0001B51C
+;;   Called from:
+;;     00030124 (in fn0002FFD0)
+fn0001B51C proc
+	imm	00000001
+	brlid	r15,0002CD10
+	addik	r23,r23,00000054
+	lwi	r10,r21,00000008
+	addk	r9,r3,r0
+	addk	r8,r30,r0
+	addk	r7,r29,r0
+	addk	r6,r28,r0
+	brald	r15,r27
+	addk	r5,r19,r0
+	lwi	r4,r22,0000000C
+	cmp	r18,r4,r24
+	bltid	r18,0001B4E8
+	swi	r3,r25,FFFFFFFC
+
+l0001B554:
+	brid	0001B468
+	swi	r26,r22,00000010
+0001B55C                                     B8 10 FF 08             ....
 0001B560 13 40 00 00 BC 24 FE 18 30 60 00 01 B8 10 FE 14 .@...$..0`......
 0001B570 F8 66 00 0C E8 68 00 08 30 21 FF CC FA 61 00 1C .f...h..0!...a..
 0001B580 FA A1 00 20 FA C1 00 24 F9 E1 00 00 FA E1 00 28 ... ...$.......(
@@ -25519,13 +24490,44 @@ l0001B31C:
 0001B640 10 85 20 00 30 65 00 0C 32 E0 00 01 E8 A3 00 00 .. .0e..2.......
 0001B650 16 45 B8 01 BC B2 00 08 12 E5 00 00 30 63 00 54 .E..........0c.T
 0001B660 88 A4 18 00 BE 25 FF E8 10 D7 B8 00 10 C6 30 00 .....%........0.
-0001B670 10 C6 30 00 B0 00 00 01 B9 F4 32 E8 E8 B3 00 20 ..0.......2.... 
-0001B680 BE 03 00 28 10 C3 00 00 B0 00 00 01 B9 F4 32 7C ...(..........2|
-0001B690 10 B7 00 00 10 80 18 00 10 83 18 00 10 84 20 00 .............. .
-0001B6A0 10 84 20 00 F8 93 00 20 E8 75 00 10 BC 03 00 28 .. .... .u.....(
-0001B6B0 E9 E1 00 00 EA 61 00 1C EA A1 00 20 EA C1 00 24 .....a..... ...$
-0001B6C0 EA E1 00 28 EB 01 00 2C EB 21 00 30 B6 0F 00 08 ...(...,.!.0....
-0001B6D0 30 21 00 34 B8 10 FF DC 10 76 00 00 E8 66 00 38 0!.4.....v...f.8
+0001B670 10 C6 30 00                                     ..0.            
+
+l0001B674:
+	imm	00000001
+	brlid	r15,0002E960
+	lwi	r5,r19,00000020
+	beqid	r3,0001B6A8
+	addk	r6,r3,r0
+
+l0001B688:
+	imm	00000001
+	brlid	r15,0002E908
+	addk	r5,r23,r0
+	addk	r4,r0,r3
+	addk	r4,r3,r3
+	addk	r4,r4,r4
+	addk	r4,r4,r4
+	swi	r4,r19,00000020
+
+l0001B6A8:
+	lwi	r3,r21,00000010
+	beqi	r3,0001B6D4
+
+l0001B6B0:
+	lwi	r15,r1,00000000
+	lwi	r19,r1,0000001C
+	lwi	r21,r1,00000020
+	lwi	r22,r1,00000024
+	lwi	r23,r1,00000028
+	lwi	r24,r1,0000002C
+	lwi	r25,r1,00000030
+	rtsd	r15,00000008
+	addik	r1,r1,00000034
+
+l0001B6D4:
+	brid	0001B6B0
+	addk	r3,r22,r0
+0001B6DC                                     E8 66 00 38             .f.8
 0001B6E0 A8 63 00 03 BC 23 FE D8 E8 73 00 40 10 B3 00 00 .c...#...s.@....
 0001B6F0 30 C0 00 01 B9 F4 2C 90 EA E3 00 10 E8 73 00 40 0.....,......s.@
 0001B700 B8 10 FE D4 FA E3 00 10 E8 66 00 38 A8 63 00 01 .........f.8.c..
@@ -25583,10 +24585,27 @@ l0001B31C:
 0001BA40 10 84 20 00 10 84 20 00 B8 10 FF B0 F8 93 00 1C .. ... .........
 0001BA50 B0 00 00 01 B9 F4 2E B4 10 B9 00 00 10 80 18 00 ................
 0001BA60 10 83 18 00 10 84 20 00 10 84 20 00 B8 10 FE 5C ...... ... ....\
-0001BA70 F8 93 00 1C 10 60 28 00 90 65 00 41 90 63 00 41 .....`(..e.A.c.A
-0001BA80 90 63 00 41 BE 03 00 14 10 63 18 00 10 63 18 00 .c.A.....c...c..
-0001BA90 10 63 18 00 F8 73 00 1C 30 C0 00 08 B8 10 FB D8 .c...s..0.......
-0001BAA0 32 E0 00 01 30 C0 00 08 B8 10 FC E0 32 E0 00 01 2...0.......2...
+0001BA70 F8 93 00 1C 10 60 28 00 90 65 00 41             .....`(..e.A    
+
+;; fn0001BA7C: 0001BA7C
+;;   Called from:
+;;     00030194 (in fn0002FFD0)
+fn0001BA7C proc
+	srl	r3,r3
+	srl	r3,r3
+	beqid	r3,0001BA98
+	addk	r3,r3,r3
+
+l0001BA8C:
+	addk	r3,r3,r3
+	addk	r3,r3,r3
+	swi	r3,r19,0000001C
+
+l0001BA98:
+	addik	r6,r0,00000008
+	brid	0001B674
+	addik	r23,r0,00000001
+0001BAA4             30 C0 00 08 B8 10 FC E0 32 E0 00 01     0.......2...
 0001BAB0 E8 93 00 1C 10 60 20 00 90 64 00 41 90 63 00 41 .....` ..d.A.c.A
 0001BAC0 90 63 00 41 BE 23 FF C8 10 63 18 00 B8 10 FF D0 .c.A.#...c......
 0001BAD0 30 C0 00 08 30 21 FF 74 F9 E1 00 00 FA 61 00 58 0...0!.t.....a.X
@@ -25602,14 +24621,7 @@ l0001BB50:
 	lwi	r20,r1,0000001C
 	lwi	r21,r20,00000038
 
-;; fn0001BB58: 0001BB58
-;;   Called from:
-;;     0001BB54 (in fn0001CE14)
-;;     0001CCB8 (in fn0001CC98)
-;;     0001CCB8 (in fn0001CC8C)
-;;     0001CCBC (in fn0001CCBC)
-;;     0001CE50 (in fn0001CE14)
-fn0001BB58 proc
+l0001BB58:
 	addik	r31,r31,00000001
 	addik	r30,r30,00000054
 	cmp	r18,r21,r31
@@ -25618,8 +24630,6 @@ fn0001BB58 proc
 
 l0001BB6C:
 	lwi	r15,r1,00000000
-
-l0001BB70:
 	lwi	r19,r1,00000058
 	lwi	r21,r1,00000060
 	lwi	r22,r1,00000064
@@ -25871,230 +24881,58 @@ l0001BB70:
 0001CA40 13 DE F0 00 B0 00 00 01 B9 F4 1F 18 10 DE 00 00 ................
 0001CA50 E8 81 00 1C F8 61 00 20 EA A4 00 38 BE 75 F1 10 .....a. ...8.u..
 0001CA60 12 60 00 00 12 D3 00 00 13 D3 00 00 13 13 00 00 .`..............
-0001CA70 33 E0 00 01                                     3...            
+0001CA70 33 E0 00 01 EA 81 00 1C E8 C1 00 20 EB 94 00 40 3.......... ...@
+0001CA80 13 9C B0 00 EB 7C 00 0C B0 00 00 01 B9 F4 1E 7C .....|.........|
+0001CA90 10 BB 00 00 12 E3 00 00 E8 7C 00 20 BE 03 01 90 .........|. ....
+0001CAA0 11 1B 00 00 13 A0 00 00 E8 79 00 04 E8 81 00 30 .........y.....0
+0001CAB0 11 3F 00 00 E8 63 00 20 10 FD 00 00 C8 D3 20 00 .?...c. ...... .
+0001CAC0 99 FC 18 00 10 B9 00 00 13 43 00 00 E8 79 00 04 .........C...y..
+0001CAD0 11 38 00 00 E9 1C 00 0C 16 57 E8 03 BE B2 01 2C .8.......W.....,
+0001CAE0 E8 63 00 20 EA 81 00 28 10 B9 00 00 14 FD B8 00 .c. ...(........
+0001CAF0 C8 D3 A0 00 99 FC 18 00 14 E8 38 00 E9 5C 00 0C ..........8..\..
+0001CB00 BC 6A 00 44 13 60 00 00 12 BB 00 00 C8 DB D0 00 .j.D.`..........
+0001CB10 16 57 E8 03 BE 52 00 4C E8 FC 00 1C C8 BB 18 00 .W...R.L........
+0001CB20 B0 00 00 01 B9 F4 02 A8 F8 61 00 54 E9 5C 00 0C .........a.T.\..
+0001CB30 E8 61 00 54 32 B5 00 01 16 4A A8 01 BE 52 FF D0 .a.T2....J...R..
+0001CB40 33 7B 00 04 E8 7C 00 20 13 BD 50 00 16 43 E8 03 3{...|. ..P..C..
+0001CB50 BE B2 00 D4 11 0A 00 00 B8 10 FF 54 E8 79 00 04 ...........T.y..
+0001CB60 14 95 50 00 B0 00 3F FF 30 84 FF FF 10 84 20 00 ..P...?.0..... .
+0001CB70 10 84 20 00 BE 07 FF C0 C9 64 18 00 30 87 00 01 .. ......d..0...
+0001CB80 10 84 20 00 10 84 20 00 10 84 20 00 10 84 20 00 .. ... ... ... .
+0001CB90 10 84 20 00 10 84 20 00 11 26 00 00 10 84 20 00 .. ... ..&.... .
+0001CBA0 31 0B 00 80 11 6B 20 00 10 E9 00 00 30 C8 FF 80 1....k .....0...
+0001CBB0 10 80 00 00 C4 A4 30 00 D4 A4 38 00 30 84 00 02 ......0...8.0...
+0001CBC0 A8 A4 00 10 BC 25 FF F0 C4 A4 30 00 14 A5 00 00 .....%....0.....
+0001CBD0 D4 A4 38 00 30 84 00 02 A8 A4 00 20 BC 25 FF EC ..8.0...... .%..
+0001CBE0 30 C6 00 20 88 86 40 00 BE 24 FF C8 30 E7 00 20 0.. ..@..$..0.. 
+0001CBF0 31 08 00 80 88 8B 40 00 BE 24 FF B0 31 29 00 80 1.....@..$..1)..
+0001CC00 B8 10 FF 38 32 B5 00 01 E8 81 00 28 10 FD 00 00 ...82......(....
+0001CC10 10 B9 00 00 99 FC 18 00 C8 D3 20 00 B8 10 FE E4 .......... .....
+0001CC20 E9 5C 00 0C EA 81 00 1C EA B4 00 38 33 DE 00 01 .\.........83...
+0001CC30 32 D6 00 54 16 55 F0 01 BE 52 FE 3C 32 73 00 04 2..T.U...R.<2s..
+0001CC40 B8 10 EF 30 E9 E1 00 00 EA 81 00 1C E8 D4 01 20 ...0........... 
+0001CC50 E8 B4 00 20 13 C0 30 00 13 C6 30 00 13 DE F0 00 ... ..0...0.....
+0001CC60 13 DE F0 00 B0 00 00 01 B9 F4 1C F8 10 DE 00 00 ................
+0001CC70 E8 81 00 1C F8 61 00 20 EA A4 00 38 BE 75 EE F0 .....a. ...8.u..
+0001CC80 13 A0 00 00 13 DD 00 00 13 FD 00 00             ............    
 
-l0001CA74:
-	lwi	r20,r1,0000001C
-	lwi	r6,r1,00000020
-	lwi	r28,r20,00000040
-	addk	r28,r28,r22
-	lwi	r27,r28,0000000C
-	imm	00000001
-	brlid	r15,0001E908
-	addk	r5,r27,r0
-	addk	r23,r3,r0
-	lwi	r3,r28,00000020
-	beqid	r3,0001CC2C
-	addk	r8,r27,r0
-
-l0001CAA4:
-	addk	r29,r0,r0
-	lwi	r3,r25,00000004
-
-l0001CAAC:
-	lwi	r4,r1,00000030
-	addk	r9,r31,r0
-	lwi	r3,r3,00000020
-	addk	r7,r29,r0
-	lw	r6,r19,r4
-	brald	r15,r3
-	addk	r5,r25,r0
-	addk	r26,r3,r0
-	lwi	r3,r25,00000004
-	addk	r9,r24,r0
-	lwi	r8,r28,0000000C
-	cmpu	r18,r23,r29
-	bgeid	r18,0001CC08
-	lwi	r3,r3,00000020
-
-l0001CAE4:
-	lwi	r20,r1,00000028
-	addk	r5,r25,r0
-	rsubk	r7,r29,r23
-	lw	r6,r19,r20
-	brald	r15,r3
-	rsubk	r7,r8,r7
-	lwi	r10,r28,0000000C
-
-l0001CB00:
-	blei	r10,0001CB44
-
-l0001CB04:
-	addk	r27,r0,r0
-	addk	r21,r27,r0
-
-l0001CB0C:
-	lw	r6,r27,r26
-	cmpu	r18,r23,r29
-	bltid	r18,0001CB60
-	lwi	r7,r28,0000001C
-
-l0001CB1C:
-	lw	r5,r27,r3
-	imm	00000001
-	brlid	r15,0001CDCC
-	swi	r3,r1,00000054
-	lwi	r10,r28,0000000C
-	lwi	r3,r1,00000054
-
-l0001CB34:
-	addik	r21,r21,00000001
-
-l0001CB38:
-	cmp	r18,r10,r21
-	bltid	r18,0001CB0C
-	addik	r27,r27,00000004
-
-l0001CB44:
-	lwi	r3,r28,00000020
-	addk	r29,r29,r10
-	cmpu	r18,r3,r29
-	bgeid	r18,0001CC24
-	addk	r8,r10,r0
-
-l0001CB58:
-	brid	0001CAAC
-	lwi	r3,r25,00000004
-
-l0001CB60:
-	rsubk	r4,r21,r10
-	imm	00003FFF
-	addik	r4,r4,FFFFFFFF
-	addk	r4,r4,r4
-	addk	r4,r4,r4
-	beqid	r7,0001CB34
-	lw	r11,r4,r3
-
-l0001CB7C:
-	addik	r4,r7,00000001
-	addk	r4,r4,r4
-	addk	r4,r4,r4
-	addk	r4,r4,r4
-	addk	r4,r4,r4
-	addk	r4,r4,r4
-	addk	r4,r4,r4
-	addk	r9,r6,r0
-	addk	r4,r4,r4
-	addik	r8,r11,00000080
-	addk	r11,r11,r4
-
-l0001CBA8:
-	addk	r7,r9,r0
-	addik	r6,r8,FFFFFF80
-
-l0001CBB0:
-	addk	r4,r0,r0
-
-l0001CBB4:
-	lhu	r5,r4,r6
-	sh	r5,r4,r7
-	addik	r4,r4,00000002
-	xori	r5,r4,00000010
-	bnei	r5,0001CBB4
-
-l0001CBC8:
-	lhu	r5,r4,r6
-	rsubk	r5,r5,r0
-	sh	r5,r4,r7
-	addik	r4,r4,00000002
-	xori	r5,r4,00000020
-	bnei	r5,0001CBC8
-
-l0001CBE0:
-	addik	r6,r6,00000020
-	xor	r4,r6,r8
-	bneid	r4,0001CBB0
-	addik	r7,r7,00000020
-
-l0001CBF0:
-	addik	r8,r8,00000080
-	xor	r4,r11,r8
-	bneid	r4,0001CBA8
-	addik	r9,r9,00000080
-
-;; fn0001CC00: 0001CC00
-fn0001CC00 proc
-	brid	0001CB38
-	addik	r21,r21,00000001
-
-l0001CC08:
-	lwi	r4,r1,00000028
-	addk	r7,r29,r0
-	addk	r5,r25,r0
-	brald	r15,r3
-	lw	r6,r19,r4
-	brid	0001CB00
-	lwi	r10,r28,0000000C
-
-l0001CC24:
-	lwi	r20,r1,0000001C
-	lwi	r21,r20,00000038
-
-l0001CC2C:
-	addik	r30,r30,00000001
-	addik	r22,r22,00000054
-	cmp	r18,r21,r30
-	bltid	r18,0001CA74
-	addik	r19,r19,00000004
-
-l0001CC40:
-	brid	0001BB70
-	lwi	r15,r1,00000000
-0001CC48                         EA 81 00 1C E8 D4 01 20         ....... 
-0001CC50 E8 B4 00 20 13 C0 30 00 13 C6 30 00             ... ..0...0.    
-
-;; fn0001CC5C: 0001CC5C
-fn0001CC5C proc
-	addk	r30,r30,r30
-	addk	r30,r30,r30
-	imm	00000001
-	brlid	r15,0001E960
-	addk	r6,r30,r0
-	lwi	r4,r1,0000001C
-	swi	r3,r1,00000020
-	lwi	r21,r4,00000038
-	bleid	r21,0001BB6C
-	addk	r29,r0,r0
-
-l0001CC84:
-	addk	r30,r29,r0
-	addk	r31,r29,r0
-
-;; fn0001CC8C: 0001CC8C
-;;   Called from:
-;;     0001BB68 (in fn0001BB58)
-;;     0001CC88 (in fn0001CC5C)
-fn0001CC8C proc
+l0001CC8C:
 	lwi	r20,r1,0000001C
 	lwi	r6,r1,00000020
 	lwi	r23,r20,00000040
-
-;; fn0001CC98: 0001CC98
-;;   Called from:
-;;     0001E1E0 (in fn0001E004)
-fn0001CC98 proc
 	addk	r23,r23,r30
 	lwi	r19,r23,0000000C
 	imm	00000001
-	brlid	r15,0001E908
+	brlid	r15,0002E908
 	addk	r5,r19,r0
 	addk	r22,r3,r0
 	lwi	r3,r23,00000020
 	beqid	r3,0001BB58
 	addk	r3,r22,r22
 
-;; fn0001CCBC: 0001CCBC
-;;   Called from:
-;;     0001CCB8 (in fn0001CC98)
-;;     0001CCB8 (in fn0001CC8C)
-fn0001CCBC proc
+l0001CCBC:
 	addk	r3,r3,r3
 	addk	r3,r3,r3
-
-;; fn0001CCC4: 0001CCC4
-;;   Called from:
-;;     0001DF54 (in fn0001DE80)
-fn0001CCC4 proc
 	addk	r3,r3,r3
 	addk	r3,r3,r3
 	addk	r3,r3,r3
@@ -26105,25 +24943,9 @@ fn0001CCC4 proc
 	swi	r3,r1,00000024
 	lwi	r4,r1,00000030
 
-;; fn0001CCE8: 0001CCE8
-;;   Called from:
-;;     0001CCE4 (in fn0001CCC4)
-;;     0001CCE4 (in fn0001CCBC)
-fn0001CCE8 proc
+l0001CCE8:
 	lwi	r3,r25,00000004
 	addik	r9,r0,00000001
-
-;; fn0001CCF0: 0001CCF0
-;;   Called from:
-;;     0001CCEC (in fn0001CCE8)
-;;     0001F6B0 (in fn0001F63C)
-;;     0001F6D8 (in fn0001F63C)
-;;     0001FEE8 (in fn0001FCE0)
-;;     0001FF1C (in fn0001FCE0)
-;;     0001FF44 (in fn0001FCE0)
-;;     0001FF6C (in fn0001FCE0)
-;;     0001FF9C (in fn0001FCE0)
-fn0001CCF0 proc
 	lw	r6,r29,r4
 	lwi	r3,r3,00000020
 	addk	r7,r21,r0
@@ -26220,11 +25042,7 @@ l0001CE04:
 	bneid	r4,0001CDB8
 	addik	r3,r3,00000004
 
-;; fn0001CE14: 0001CE14
-;;   Called from:
-;;     0001CD08 (in fn0001CCF0)
-;;     0001CD30 (in fn0001CCF0)
-fn0001CE14 proc
+l0001CE14:
 	lwi	r3,r23,0000001C
 
 l0001CE18:
@@ -26258,7 +25076,10 @@ l0001CE58:
 	addk	r7,r7,r26
 	addik	r28,r9,00000010
 
-l0001CE64:
+;; fn0001CE64: 0001CE64
+;;   Called from:
+;;     000300C4 (in fn0002FFD0)
+fn0001CE64 proc
 	addk	r4,r12,r0
 	addk	r5,r7,r0
 	addik	r20,r12,00000080
@@ -26293,12 +25114,40 @@ l0001CEB4:
 0001CEC0 B6 0F 00 08 80 00 00 00 30 21 FF D8 B0 00 00 00 ........0!......
 0001CED0 30 E0 FF FF FA 61 00 1C 12 66 00 00 30 C0 00 FE 0....a...f..0...
 0001CEE0 FA A1 00 20 F9 E1 00 00 FA C1 00 24 B0 00 00 00 ... .......$....
-0001CEF0 B9 F4 C0 CC 12 A5 00 00 A8 D3 00 02 BE 26 00 34 .............&.4
-0001CF00 32 60 00 E0 B0 00 00 00 32 C0 FF FF 10 D3 00 00 2`......2.......
-0001CF10 10 F6 00 00 10 B5 00 00 B0 00 00 00 B9 F4 C0 A0 ................
-0001CF20 32 73 00 01 A8 73 00 F0 BE 23 FF E8 10 D3 00 00 2s...s...#......
-0001CF30 E9 E1 00 00 EA 61 00 1C EA A1 00 20 EA C1 00 24 .....a..... ...$
-0001CF40 B6 0F 00 08 30 21 00 28 30 21 FF D8 F9 E1 00 00 ....0!.(0!......
+
+;; fn0001CEF0: 0001CEF0
+;;   Called from:
+;;     00030178 (in fn0002FFD0)
+fn0001CEF0 proc
+	brlid	r15,00018FBC
+	addk	r21,r5,r0
+	xori	r6,r19,00000002
+	bneid	r6,0001CF30
+	addik	r19,r0,000000E0
+
+l0001CF04:
+	imm	00000000
+	addik	r22,r0,0000FFFF
+	addk	r6,r19,r0
+
+l0001CF10:
+	addk	r7,r22,r0
+	addk	r5,r21,r0
+	imm	00000000
+	brlid	r15,00028FBC
+	addik	r19,r19,00000001
+	xori	r3,r19,000000F0
+	bneid	r3,0001CF10
+	addk	r6,r19,r0
+
+l0001CF30:
+	lwi	r15,r1,00000000
+	lwi	r19,r1,0000001C
+	lwi	r21,r1,00000020
+	lwi	r22,r1,00000024
+	rtsd	r15,00000008
+	addik	r1,r1,00000028
+0001CF48                         30 21 FF D8 F9 E1 00 00         0!......
 0001CF50 FA 61 00 1C FA A1 00 20 FA C1 00 24 EA 65 01 68 .a..... ...$.e.h
 0001CF60 BE 13 00 A0 12 A6 00 00 B8 10 00 1C 32 C0 00 04 ............2...
 0001CF70 B9 F4 04 0C 10 B5 00 00 EA 73 00 00 BE 13 00 88 .........s......
@@ -26310,8 +25159,17 @@ l0001CEB4:
 0001CFD0 BC 23 FF A0 E0 67 00 02 A8 63 00 6F BC 23 FF 94 .#...g...c.o.#..
 0001CFE0 E0 67 00 03 A8 63 00 62 BC 23 FF 88 E0 67 00 04 .g...c.b.#...g..
 0001CFF0 A8 63 00 65 BC 23 FF 7C B8 10 FF 84 EA 73 00 00 .c.e.#.|.....s..
-0001D000 E9 E1 00 00 EA 61 00 1C EA A1 00 20 EA C1 00 24 .....a..... ...$
-0001D010 B6 0F 00 08 30 21 00 28 16 48 B0 03 BC B2 FF 54 ....0!.(.H.....T
+0001D000 E9 E1 00 00 EA 61 00 1C                         .....a..        
+
+;; fn0001D008: 0001D008
+;;   Called from:
+;;     00030024 (in fn0002FFD0)
+fn0001D008 proc
+	lwi	r21,r1,00000020
+	lwi	r22,r1,00000024
+	rtsd	r15,00000008
+	addik	r1,r1,00000028
+0001D018                         16 48 B0 03 BC B2 FF 54         .H.....T
 0001D020 E0 67 00 00 A8 63 00 4A BC 23 FF 48 E0 67 00 01 .g...c.J.#.H.g..
 0001D030 A8 63 00 46 BC 23 FF 3C E0 67 00 02 A8 63 00 49 .c.F.#.<.g...c.I
 0001D040 BC 23 FF 30 E0 67 00 03 A8 63 00 46 BC 23 FF 24 .#.0.g...c.F.#.$
@@ -26328,16 +25186,44 @@ l0001CEB4:
 0001D0F0 10 B3 00 00 FA B3 00 00 B0 00 00 01 B9 F4 14 34 ...............4
 0001D100 FA D3 00 0C 30 80 00 64 F8 93 00 14 B0 00 3F F0 ....0..d......?.
 0001D110 30 80 00 00 30 A0 00 00 F8 13 00 08 F8 13 00 18 0...0...........
-0001D120 F8 13 00 40 F8 13 00 44 F8 13 00 48 F8 13 00 4C ...@...D...H...L
-0001D130 F8 13 00 50 F8 13 00 54 F8 13 00 64 F8 13 00 58 ...P...T...d...X
-0001D140 F8 13 00 68 F8 13 00 5C F8 13 00 6C F8 13 00 60 ...h...\...l...`
-0001D150 F8 13 00 70 F8 13 01 A4 F8 93 00 2C F8 B3 00 30 ...p.......,...0
-0001D160 E9 E1 00 00 EA 61 00 1C EA A1 00 20 EA C1 00 24 .....a..... ...$
-0001D170 B6 0F 00 08 30 21 00 28 30 21 FF E4 F9 E1 00 00 ....0!.(0!......
+
+;; fn0001D120: 0001D120
+;;   Called from:
+;;     000301AC (in fn0002FFD0)
+fn0001D120 proc
+	swi	r0,r19,00000040
+	swi	r0,r19,00000044
+	swi	r0,r19,00000048
+	swi	r0,r19,0000004C
+	swi	r0,r19,00000050
+	swi	r0,r19,00000054
+	swi	r0,r19,00000064
+	swi	r0,r19,00000058
+	swi	r0,r19,00000068
+	swi	r0,r19,0000005C
+	swi	r0,r19,0000006C
+	swi	r0,r19,00000060
+	swi	r0,r19,00000070
+	swi	r0,r19,000001A4
+	swi	r4,r19,0000002C
+	swi	r5,r19,00000030
+	lwi	r15,r1,00000000
+	lwi	r19,r1,0000001C
+	lwi	r21,r1,00000020
+	lwi	r22,r1,00000024
+	rtsd	r15,00000008
+	addik	r1,r1,00000028
+0001D178                         30 21 FF E4 F9 E1 00 00         0!......
 0001D180 B0 00 00 00 B9 F4 FA D8 80 00 00 00 E9 E1 00 00 ................
 0001D190 B6 0F 00 08 30 21 00 1C 30 21 FF E4 F9 E1 00 00 ....0!..0!......
 0001D1A0 B0 00 00 00 B9 F4 FA 5C 80 00 00 00 E9 E1 00 00 .......\........
-0001D1B0 B6 0F 00 08 30 21 00 1C                         ....0!..        
+
+;; fn0001D1B0: 0001D1B0
+;;   Called from:
+;;     000301A0 (in fn0002FFD0)
+fn0001D1B0 proc
+	rtsd	r15,00000008
+	addik	r1,r1,0000001C
 
 ;; fn0001D1B8: 0001D1B8
 fn0001D1B8 proc
@@ -26563,9 +25449,22 @@ l0001D43C:
 0001D9A0 30 A5 00 04 12 73 C0 00 B8 10 FE 9C 11 38 00 00 0....s.......8..
 0001D9B0 B8 10 FE 94 11 28 00 00 E8 E1 00 54 FA F9 00 0C .....(.....T....
 0001D9C0 F8 F9 00 10 E9 E1 00 00 EA 61 00 70 EA A1 00 78 .........a.p...x
-0001D9D0 EA C1 00 7C EA E1 00 80 EB 01 00 84 EB 21 00 88 ...|.........!..
-0001D9E0 EB 41 00 8C EB 61 00 90 EB 81 00 94 EB A1 00 98 .A...a..........
-0001D9F0 EB C1 00 9C EB E1 00 A0 B6 0F 00 08 30 21 00 A4 ............0!..
+0001D9D0 EA C1 00 7C EA E1 00 80                         ...|....        
+
+;; fn0001D9D8: 0001D9D8
+;;   Called from:
+;;     00030160 (in fn0002FFD0)
+fn0001D9D8 proc
+	lwi	r24,r1,00000084
+	lwi	r25,r1,00000088
+	lwi	r26,r1,0000008C
+	lwi	r27,r1,00000090
+	lwi	r28,r1,00000094
+	lwi	r29,r1,00000098
+	lwi	r30,r1,0000009C
+	lwi	r31,r1,000000A0
+	rtsd	r15,00000008
+	addik	r1,r1,000000A4
 0001DA00 E8 96 01 24 E8 C3 00 08 30 84 FF FF 16 44 30 03 ...$....0....D0.
 0001DA10 BE B2 00 14 E8 B6 01 2C E8 A5 00 0C B8 10 FF 40 .......,.......@
 0001DA20 F8 A3 00 14 E8 A5 00 48 B8 10 FF 34 F8 A3 00 14 .......H...4....
@@ -26589,9 +25488,23 @@ l0001D43C:
 0001DB40 30 84 00 04 8A 65 20 00 BE 33 FF F4 30 63 00 80 0....e ..3..0c..
 0001DB50 B9 F4 32 6C 10 B5 00 00 E8 75 00 04 E8 63 00 18 ..2l.....u...c..
 0001DB60 99 FC 18 00 10 B5 00 00 E8 75 01 90 E8 63 00 00 .........u...c..
-0001DB70 99 FC 18 00 10 B5 00 00 30 60 00 67 F8 75 00 14 ........0`.g.u..
-0001DB80 FA 75 01 14 E9 E1 00 00 EA 61 00 1C EA A1 00 20 .u.......a..... 
-0001DB90 EA C1 00 24 EA E1 00 28 B6 0F 00 08 30 21 00 2C ...$...(....0!.,
+0001DB70 99 FC 18 00                                     ....            
+
+;; fn0001DB74: 0001DB74
+;;   Called from:
+;;     00030108 (in fn0002FFD0)
+fn0001DB74 proc
+	addk	r5,r21,r0
+	addik	r3,r0,00000067
+	swi	r3,r21,00000014
+	swi	r19,r21,00000114
+	lwi	r15,r1,00000000
+	lwi	r19,r1,0000001C
+	lwi	r21,r1,00000020
+	lwi	r22,r1,00000024
+	lwi	r23,r1,00000028
+	rtsd	r15,00000008
+	addik	r1,r1,0000002C
 0001DBA0 B9 F4 7A 10 80 00 00 00 B8 10 FF 2C E8 75 00 04 ..z........,.u..
 0001DBB0 E8 75 00 00 10 B5 00 00 E8 83 00 00 99 FC 20 00 .u............ .
 0001DBC0 FA 63 00 14 B8 10 FF 10 E8 75 00 04 30 21 FF B4 .c.......u..0!..
@@ -26665,7 +25578,7 @@ l0001DEB4:
 	addk	r5,r3,r0
 	addik	r7,r0,00000022
 	imm	00000001
-	brlid	r15,0001F60C
+	brlid	r15,0002F60C
 	addk	r19,r0,r0
 	addik	r3,r21,00000002
 	addik	r7,r21,00000022
@@ -26697,7 +25610,7 @@ l0001DF14:
 	addk	r6,r24,r0
 	addk	r7,r19,r19
 	imm	00000001
-	brlid	r15,0001F60C
+	brlid	r15,0002F60C
 	addik	r5,r5,00000022
 	lwi	r3,r22,00000000
 	swi	r0,r3,00000224
@@ -26712,17 +25625,17 @@ l0001DF14:
 
 l0001DF54:
 	imm	00000000
-	brlid	r15,0001CCC4
+	brlid	r15,0002CCC4
 	nop
 	brid	0001DEB4
 	swi	r3,r22,00000000
 
 ;; fn0001DF68: 0001DF68
 ;;   Called from:
-;;     0001EA20 (in fn0001EA18)
-;;     0001EAE4 (in fn0001EB58)
-;;     0001EB6C (in fn0001EB58)
-;;     0001EB90 (in fn0001EA18)
+;;     0001EA20 (in fn0001E93C)
+;;     0001EAE4 (in fn0001E93C)
+;;     0001EB6C (in fn0001E93C)
+;;     0001EB90 (in fn0001E93C)
 fn0001DF68 proc
 	addik	r3,r0,00000004
 	cmp	r18,r6,r3
@@ -26898,11 +25811,11 @@ l0001E160:
 l0001E170:
 	lw	r6,r19,r24
 	imm	00000001
-	brlid	r15,0001E908
+	brlid	r15,0002E908
 	addk	r5,r25,r0
 	addk	r6,r23,r0
 	imm	00000001
-	brlid	r15,0001E7D0
+	brlid	r15,0002E7D0
 	addik	r5,r3,00000032
 	bgtid	r3,0001E144
 	addk	r4,r21,r0
@@ -26931,7 +25844,7 @@ l0001E1AC:
 
 l0001E1E0:
 	imm	00000000
-	brlid	r15,0001CC98
+	brlid	r15,0002CC98
 	addk	r5,r21,r0
 	addk	r22,r3,r0
 	brid	0001E0A4
@@ -26946,7 +25859,7 @@ fn0001E1F8 proc
 	addk	r21,r7,r0
 	addk	r8,r6,r0
 	imm	00000001
-	addik	r7,r0,00007634
+	addik	r7,r0,00017634
 	addk	r9,r21,r0
 	swi	r19,r1,0000001C
 	swi	r22,r1,00000024
@@ -26959,7 +25872,7 @@ fn0001E1F8 proc
 	addk	r8,r19,r0
 	addk	r5,r22,r0
 	imm	00000001
-	addik	r7,r0,00007534
+	addik	r7,r0,00017534
 	brlid	r15,0001E004
 	addik	r6,r0,00000001
 	lwi	r15,r1,00000000
@@ -27021,7 +25934,7 @@ l0001E3D8:
 	addk	r3,r21,r21
 	addk	r3,r3,r3
 	imm	00000001
-	addik	r3,r3,000071BC
+	addik	r3,r3,000171BC
 	lwi	r3,r3,00000000
 	bra	r3
 0001E3F4             E8 73 00 40 30 80 00 04 F8 93 00 38     .s.@0......8
@@ -27032,14 +25945,8 @@ l0001E3D8:
 0001E440 F8 03 00 68 F8 03 00 6C F8 E3 00 A8 F8 83 00 B0 ...h...l........
 0001E450 F8 83 00 B4 F8 03 00 B8 F8 03 00 BC F8 03 00 C0 ................
 0001E460 F8 A3 00 FC F8 83 01 04 F8 83 01 08 F8 03 01 0C ................
-0001E470 F8 03 01 10 F8 03 01 14 E9 E1 00 00             ............    
-
-l0001E47C:
-	lwi	r19,r1,0000001C
-	lwi	r21,r1,00000020
-	rtsd	r15,00000008
-	addik	r1,r1,00000024
-0001E48C                                     E8 73 00 40             .s.@
+0001E470 F8 03 01 10 F8 03 01 14 E9 E1 00 00 EA 61 00 1C .............a..
+0001E480 EA A1 00 20 B6 0F 00 08 30 21 00 24 E8 73 00 40 ... ....0!.$.s.@
 0001E490 30 80 00 01 30 C0 00 04 F8 93 01 10 F8 D3 00 38 0...0..........8
 0001E4A0 30 A0 00 02 30 E0 00 03 F8 83 00 00 F8 A3 00 08 0...0...........
 0001E4B0 F8 A3 00 0C F8 03 00 10 F8 03 00 14 F8 03 00 18 ................
@@ -27050,47 +25957,14 @@ l0001E47C:
 0001E500 F8 03 01 10 F8 03 01 14 E9 E1 00 00 EA 61 00 1C .............a..
 0001E510 EA A1 00 20 B6 0F 00 08 30 21 00 24 E8 F3 00 24 ... ....0!.$...$
 0001E520 30 60 00 09 30 87 FF FF 16 44 18 03 BE B2 00 38 0`..0....D.....8
-
-;; fn0001E530: 0001E530
-fn0001E530 proc
-	swi	r7,r19,00000038
-	lwi	r3,r19,00000000
-	addik	r4,r0,0000001A
-	addk	r5,r19,r0
-	swi	r4,r3,00000014
-	lwi	r4,r3,00000000
-	addik	r6,r0,0000000A
-	swi	r7,r3,00000018
-	brald	r15,r4
-	swi	r6,r3,0000001C
-	lwi	r7,r19,00000038
-	bleid	r7,0001E47C
-	lwi	r15,r1,00000000
-
-l0001E564:
-	lwi	r3,r19,00000040
-	addk	r4,r0,r0
-	addik	r5,r0,00000001
-
-l0001E570:
-	swi	r4,r3,00000000
-	addik	r4,r4,00000001
-	swi	r5,r3,00000008
-	swi	r5,r3,0000000C
-	swi	r0,r3,00000010
-	swi	r0,r3,00000014
-	swi	r0,r3,00000018
-	xor	r6,r4,r7
-	bneid	r6,0001E570
-	addik	r3,r3,00000054
-
-l0001E598:
-	lwi	r15,r1,00000000
-	lwi	r19,r1,0000001C
-	lwi	r21,r1,00000020
-	rtsd	r15,00000008
-	addik	r1,r1,00000024
-0001E5AC                                     E8 73 00 40             .s.@
+0001E530 F8 F3 00 38 E8 73 00 00 30 80 00 1A 10 B3 00 00 ...8.s..0.......
+0001E540 F8 83 00 14 E8 83 00 00 30 C0 00 0A F8 E3 00 18 ........0.......
+0001E550 99 FC 20 00 F8 C3 00 1C E8 F3 00 38 BE 67 FF 20 .. ........8.g. 
+0001E560 E9 E1 00 00 E8 73 00 40 10 80 00 00 30 A0 00 01 .....s.@....0...
+0001E570 F8 83 00 00 30 84 00 01 F8 A3 00 08 F8 A3 00 0C ....0...........
+0001E580 F8 03 00 10 F8 03 00 14 F8 03 00 18 88 C4 38 00 ..............8.
+0001E590 BE 26 FF E0 30 63 00 54 E9 E1 00 00 EA 61 00 1C .&..0c.T.....a..
+0001E5A0 EA A1 00 20 B6 0F 00 08 30 21 00 24 E8 73 00 40 ... ....0!.$.s.@
 0001E5B0 30 80 00 01 F8 93 00 FC F8 93 00 38 F8 83 00 00 0..........8....
 0001E5C0 F8 83 00 08 F8 83 00 0C F8 03 00 10 F8 03 00 14 ................
 0001E5D0 F8 03 00 18 E9 E1 00 00 EA 61 00 1C EA A1 00 20 .........a..... 
@@ -27126,7 +26000,7 @@ l0001E6D8:
 
 ;; fn0001E704: 0001E704
 ;;   Called from:
-;;     0001E90C (in fn0001E908)
+;;     0001E90C (in fn0001E7C0)
 fn0001E704 proc
 	lwi	r6,r5,00000028
 	addik	r1,r1,FFFFFFE4
@@ -27140,7 +26014,7 @@ l0001E71C:
 	addk	r3,r6,r6
 	addk	r3,r3,r3
 	imm	00000001
-	addik	r3,r3,000071D4
+	addik	r3,r3,000171D4
 	lwi	r3,r3,00000000
 	bra	r3
 0001E738                         B9 F4 FC 4C 30 C0 00 03         ...L0...
@@ -27193,31 +26067,31 @@ l0001E800:
 	brlid	r15,0001E1F8
 	addik	r6,r0,00000032
 	imm	00000001
-	addik	r8,r0,000074F8
+	addik	r8,r0,000174F8
 	imm	00000001
-	addik	r7,r0,00007510
+	addik	r7,r0,00017510
 	addk	r5,r19,r0
 	brlid	r15,0001DE80
 	addik	r6,r19,00000054
 	imm	00000001
-	addik	r8,r0,00007390
+	addik	r8,r0,00017390
 	imm	00000001
-	addik	r7,r0,000074D4
+	addik	r7,r0,000174D4
 	addk	r5,r19,r0
 	brlid	r15,0001DE80
 	addik	r6,r19,00000064
 	imm	00000001
-	addik	r8,r0,00007354
+	addik	r8,r0,00017354
 	imm	00000001
-	addik	r7,r0,0000736C
+	addik	r7,r0,0001736C
 	addk	r5,r19,r0
 	brlid	r15,0001DE80
 	addik	r6,r19,00000058
 	imm	00000001
-	addik	r7,r0,00007330
+	addik	r7,r0,00017330
 	addk	r5,r19,r0
 	imm	00000001
-	addik	r8,r0,000071EC
+	addik	r8,r0,000171EC
 	brlid	r15,0001DE80
 	addik	r6,r19,00000068
 	addik	r3,r19,00000074
@@ -27250,7 +26124,7 @@ l0001E8D4:
 
 l0001E8DC:
 	imm	00000001
-	addik	r3,r0,00000001
+	addik	r3,r0,00010001
 	addk	r5,r19,r0
 	swi	r0,r19,000000E8
 	swi	r3,r19,00000100
@@ -27260,19 +26134,6 @@ l0001E8DC:
 	swi	r0,r19,000000EC
 	swi	r0,r19,000000F0
 	swi	r0,r19,000000F4
-
-;; fn0001E908: 0001E908
-;;   Called from:
-;;     0001E904 (in fn0001E7C0)
-;;     0001F720 (in fn0001F63C)
-;;     0001F860 (in fn0001F63C)
-;;     0001FED0 (in fn0001FCE0)
-;;     0001FF0C (in fn0001FCE0)
-;;     0001FF34 (in fn0001FCE0)
-;;     0001FF5C (in fn0001FCE0)
-;;     0002629C (in fn000261AC)
-;;     000262B4 (in fn000261AC)
-fn0001E908 proc
 	swi	r0,r19,000000F8
 	brlid	r15,0001E704
 	shi	r0,r19,00000104
@@ -27291,7 +26152,7 @@ l0001E924:
 
 ;; fn0001E93C: 0001E93C
 ;;   Called from:
-;;     0001A074 (in fn00019BC8)
+;;     0001A074 (in fn00019E48)
 fn0001E93C proc
 	addik	r1,r1,FFFFFFD4
 	swi	r21,r1,00000020
@@ -27362,33 +26223,14 @@ l0001E9CC:
 	brald	r15,r3
 	addk	r6,r0,r0
 	addk	r5,r3,r0
-
-;; fn0001EA08: 0001EA08
-;;   Called from:
-;;     0001EA04 (in fn0001E93C)
-;;     0001F748 (in fn0001F63C)
-;;     0001F764 (in fn0001F63C)
-;;     0001F830 (in fn0001F63C)
-;;     000262C8 (in fn000261AC)
-;;     000262E4 (in fn000261AC)
-;;     000264E0 (in fn000261AC)
-fn0001EA08 proc
 	swi	r3,r21,000001A4
 
-;; fn0001EA0C: 0001EA0C
-;;   Called from:
-;;     0001E9B8 (in fn0001E93C)
-;;     0001EA08 (in fn0001EA08)
-fn0001EA0C proc
+l0001EA0C:
 	swi	r5,r21,000000D8
 	beqid	r23,0001EB58
 	swi	r22,r21,000000D4
 
-;; fn0001EA18: 0001EA18
-;;   Called from:
-;;     0001EA14 (in fn0001EA0C)
-;;     0001EA14 (in fn0001EA0C)
-fn0001EA18 proc
+l0001EA18:
 	addk	r6,r19,r0
 	addik	r8,r0,00000001
 	brlid	r15,0001DF68
@@ -27494,12 +26336,7 @@ l0001EB4C:
 	brid	0001E9A0
 	addik	r22,r22,00000002
 
-;; fn0001EB58: 0001EB58
-;;   Called from:
-;;     0001EA14 (in fn0001EA0C)
-;;     0001EA14 (in fn0001EA0C)
-;;     0001EA2C (in fn0001EA18)
-fn0001EB58 proc
+l0001EB58:
 	lwi	r3,r21,0000003C
 	xori	r3,r3,00000003
 	beqid	r3,0001EBB4
@@ -27626,8 +26463,18 @@ l0001EBB4:
 0001EDD0 E8 B5 00 14 B0 00 00 01 B9 F4 03 84 80 00 00 00 ................
 0001EDE0 B0 00 00 01 B9 F4 04 18 E8 B5 00 14 BE 03 00 1C ................
 0001EDF0 30 80 00 25 E8 76 00 00 F8 83 00 14 E8 63 00 00 0..%.v.......c..
-0001EE00 99 FC 18 00 10 B6 00 00 E9 E1 00 00 EA 61 00 1C .............a..
-0001EE10 EA A1 00 20 EA C1 00 24 B6 0F 00 08 30 21 00 28 ... ...$....0!.(
+0001EE00 99 FC 18 00 10 B6 00 00                         ........        
+
+;; fn0001EE08: 0001EE08
+;;   Called from:
+;;     00030150 (in fn0002FFD0)
+fn0001EE08 proc
+	lwi	r15,r1,00000000
+	lwi	r19,r1,0000001C
+	lwi	r21,r1,00000020
+	lwi	r22,r1,00000024
+	rtsd	r15,00000008
+	addik	r1,r1,00000028
 0001EE20 11 05 00 00 10 F3 00 00 E8 B5 00 18 B0 00 00 01 ................
 0001EE30 B9 F4 02 F8 30 C0 00 01 88 63 98 00 BE 03 00 1C ....0....c......
 0001EE40 30 80 00 25 E8 76 00 00 F8 83 00 14 E8 63 00 00 0..%.v.......c..
@@ -27849,11 +26696,6 @@ l0001F0D8:
 	addk	r4,r28,r28
 	swi	r3,r1,00000A50
 	addk	r3,r4,r4
-
-;; fn0001F0F4: 0001F0F4
-;;   Called from:
-;;     00025F5C (in fn00025F38)
-fn0001F0F4 proc
 	swi	r3,r1,00000A54
 	xor	r3,r5,r24
 	addik	r30,r27,00000004
@@ -27861,14 +26703,7 @@ fn0001F0F4 proc
 	addik	r26,r1,0000001C
 	swi	r3,r1,00000A4C
 
-;; fn0001F10C: 0001F10C
-;;   Called from:
-;;     0001EF8C (in fn0001EEC8)
-;;     0001EF94 (in fn0001EEC8)
-;;     0001F108 (in fn0001F0F4)
-;;     0001F4BC (in fn0001EEC8)
-;;     0001F51C (in fn0001EEC8)
-fn0001F10C proc
+l0001F10C:
 	lwi	r3,r30,00000000
 	addk	r3,r3,r3
 	addk	r3,r3,r3
@@ -28257,20 +27092,9 @@ l0001F51C:
 0001F5D0 EA 61 00 1C EA A1 00 20 B6 0F 00 08 30 21 00 24 .a..... ....0!.$
 0001F5E0 E8 75 00 E4 30 80 00 02 BE 23 FF D8 F8 93 00 14 .u..0....#......
 0001F5F0 E8 73 00 20 30 63 00 01 B8 10 FF C8 F8 73 00 20 .s. 0c.......s. 
-0001F600 30 60 00 02 F8 73 00 14 E8 73 00 18             0`...s...s..    
-
-;; fn0001F60C: 0001F60C
-;;   Called from:
-;;     00022C58 (in fn0002283C)
-;;     00026478 (in fn000261AC)
-fn0001F60C proc
-	addik	r3,r3,00000001
-	swi	r3,r19,00000018
-	lwi	r15,r1,00000000
-	lwi	r19,r1,0000001C
-	lwi	r21,r1,00000020
-	rtsd	r15,00000008
-	addik	r1,r1,00000024
+0001F600 30 60 00 02 F8 73 00 14 E8 73 00 18 30 63 00 01 0`...s...s..0c..
+0001F610 F8 73 00 18 E9 E1 00 00 EA 61 00 1C EA A1 00 20 .s.......a..... 
+0001F620 B6 0F 00 08 30 21 00 24                         ....0!.$        
 
 ;; fn0001F628: 0001F628
 fn0001F628 proc
@@ -28279,14 +27103,6 @@ fn0001F628 proc
 	swi	r15,r1,00000000
 	swi	r19,r1,0000001C
 	swi	r21,r1,00000020
-
-;; fn0001F63C: 0001F63C
-;;   Called from:
-;;     0001F638 (in fn0001F628)
-;;     00022428 (in fn0002225C)
-;;     00022888 (in fn0002283C)
-;;     0002289C (in fn0002283C)
-fn0001F63C proc
 	swi	r22,r1,00000024
 	swi	r23,r1,00000028
 	swi	r24,r1,0000002C
@@ -28323,7 +27139,7 @@ l0001F698:
 	addk	r3,r3,r3
 	addk	r3,r3,r3
 	imm	00000000
-	brlid	r15,0001CCF0
+	brlid	r15,0002CCF0
 	addk	r6,r3,r0
 	lwi	r6,r25,00000120
 	lwi	r5,r25,00000020
@@ -28333,7 +27149,7 @@ l0001F698:
 	addk	r4,r4,r4
 	addk	r4,r4,r4
 	imm	00000000
-	brlid	r15,0001CCF0
+	brlid	r15,0002CCF0
 	addk	r6,r4,r0
 	lwi	r4,r25,00000128
 	swi	r3,r25,00000140
@@ -28355,7 +27171,7 @@ l0001F708:
 	addk	r6,r29,r0
 	swi	r27,r24,00000034
 	imm	00000000
-	brlid	r15,0001E908
+	brlid	r15,0002E908
 	swi	r29,r24,00000038
 	addk	r19,r3,r0
 	addk	r3,r27,r27
@@ -28365,7 +27181,7 @@ l0001F708:
 	addk	r3,r3,r3
 	swi	r19,r24,0000003C
 	imm	00000000
-	brlid	r15,0001EA08
+	brlid	r15,0002EA08
 	swi	r3,r24,00000040
 	beqid	r3,0001F760
 	addk	r6,r29,r0
@@ -28376,7 +27192,7 @@ l0001F75C:
 l0001F760:
 	lwi	r5,r24,00000020
 	imm	00000000
-	brlid	r15,0001EA08
+	brlid	r15,0002EA08
 	swi	r27,r24,00000044
 	beqi	r3,0001F778
 
@@ -28447,7 +27263,7 @@ l0001F800:
 	swi	r3,r19,00000038
 	swi	r3,r19,0000003C
 	imm	00000000
-	brlid	r15,0001EA08
+	brlid	r15,0002EA08
 	swi	r3,r19,00000044
 	beqi	r3,0001F844
 
@@ -28467,10 +27283,10 @@ l0001F854:
 
 l0001F860:
 	imm	00000000
-	brlid	r15,0001E908
+	brlid	r15,0002E908
 	lwi	r6,r25,0000013C
 	imm	00000000
-	addik	r4,r0,FFFFFFFE
+	addik	r4,r0,0000FFFE
 	cmp	r18,r3,r4
 	blti	r18,0001F8B4
 
@@ -28496,7 +27312,7 @@ l0001F884:
 
 l0001F8B4:
 	imm	00000000
-	addik	r3,r0,FFFFFFFF
+	addik	r3,r0,0000FFFF
 	brid	0001F880
 	swi	r3,r25,000000F4
 
@@ -28698,7 +27514,7 @@ l0001FD54:
 
 l0001FD6C:
 	imm	00000000
-	addik	r4,r0,FFFFFFDC
+	addik	r4,r0,0000FFDC
 	cmp	r18,r3,r4
 	bgei	r18,00020078
 
@@ -28707,7 +27523,7 @@ l0001FD7C:
 
 l0001FD80:
 	imm	00000000
-	addik	r6,r0,FFFFFFDC
+	addik	r6,r0,0000FFDC
 	addik	r4,r0,00000029
 	swi	r4,r3,00000014
 	swi	r6,r3,00000018
@@ -28827,13 +27643,13 @@ l0001FEB8:
 	lwi	r6,r22,00000004
 	addk	r3,r3,r3
 	imm	00000000
-	brlid	r15,0001E908
+	brlid	r15,0002E908
 	addk	r21,r3,r3
 	addk	r6,r21,r0
 	addk	r5,r3,r0
 	addik	r22,r22,00000054
 	imm	00000000
-	brlid	r15,0001CCF0
+	brlid	r15,0002CCF0
 	addik	r27,r27,00000001
 	swi	r3,r22,FFFFFFC4
 	lwi	r3,r19,00000120
@@ -28842,31 +27658,31 @@ l0001FEB8:
 	addk	r3,r3,r3
 	addk	r3,r3,r3
 	imm	00000000
-	brlid	r15,0001E908
+	brlid	r15,0002E908
 	addk	r21,r3,r3
 	addk	r6,r21,r0
 	imm	00000000
-	brlid	r15,0001CCF0
+	brlid	r15,0002CCF0
 	addk	r5,r3,r0
 	swi	r3,r22,FFFFFFC8
 	lwi	r6,r22,FFFFFFB0
 	lwi	r5,r19,0000001C
 	imm	00000000
-	brlid	r15,0001E908
+	brlid	r15,0002E908
 	lwi	r21,r19,0000011C
 	addk	r6,r21,r0
 	imm	00000000
-	brlid	r15,0001CCF0
+	brlid	r15,0002CCF0
 	addk	r5,r3,r0
 	swi	r3,r22,FFFFFFD0
 	lwi	r6,r22,FFFFFFB4
 	lwi	r5,r19,00000020
 	imm	00000000
-	brlid	r15,0001E908
+	brlid	r15,0002E908
 	lwi	r21,r19,00000120
 	addk	r6,r21,r0
 	imm	00000000
-	brlid	r15,0001CCF0
+	brlid	r15,0002CCF0
 	addk	r5,r3,r0
 	swi	r3,r22,FFFFFFD4
 	swi	r24,r22,FFFFFFD8
@@ -28882,7 +27698,7 @@ l0001FF8C:
 
 l0001FF9C:
 	imm	00000000
-	brlid	r15,0001CCF0
+	brlid	r15,0002CCF0
 	lwi	r5,r19,00000020
 	lwi	r4,r19,000000D8
 	beqid	r4,0001FFEC
@@ -29166,7 +27982,7 @@ l00020254:
 
 l00020258:
 	imm	00000001
-	addik	r19,r0,00007860
+	addik	r19,r0,00017860
 	brlid	r15,00020134
 	addk	r5,r22,r0
 	addk	r6,r23,r23
@@ -29363,7 +28179,7 @@ fn00020468 proc
 	addik	r6,r6,00000008
 	lwi	r4,r19,00000020
 	imm	00000000
-	addik	r3,r0,FFFFFFFF
+	addik	r3,r0,0000FFFF
 	cmp	r18,r4,r3
 	bgei	r18,00020590
 
@@ -29374,7 +28190,7 @@ l000204C8:
 	addik	r4,r0,00000029
 	swi	r4,r3,00000014
 	imm	00000000
-	addik	r4,r0,FFFFFFFF
+	addik	r4,r0,0000FFFF
 	swi	r4,r3,00000018
 	lwi	r3,r3,00000000
 	brald	r15,r3
@@ -30092,7 +28908,7 @@ l00022420:
 	addik	r7,r0,00000100
 	addk	r6,r0,r0
 	imm	00000000
-	brlid	r15,0001F63C
+	brlid	r15,0002F63C
 	addik	r5,r23,00000400
 	lwi	r4,r1,00000560
 	beqid	r4,00022444
@@ -30305,12 +29121,12 @@ fn0002283C proc
 	swi	r27,r1,00000888
 	swi	r28,r1,0000088C
 	imm	00000000
-	brlid	r15,0001F63C
+	brlid	r15,0002F63C
 	addik	r21,r1,00000420
 	addk	r5,r21,r0
 	addik	r7,r0,00000404
 	imm	00000000
-	brlid	r15,0001F63C
+	brlid	r15,0002F63C
 	addk	r6,r0,r0
 	addik	r22,r1,0000001C
 	addk	r3,r22,r0
@@ -30326,7 +29142,7 @@ l000228B4:
 l000228C8:
 	addik	r3,r0,00000001
 	imm	00003B9A
-	addik	r20,r0,FFFFCA00
+	addik	r20,r0,3B9ACA00
 	addk	r10,r3,r0
 	swi	r3,r25,00000400
 
@@ -30629,7 +29445,7 @@ l00022C44:
 	addik	r3,r3,FFFFFFFF
 	addik	r7,r0,00000022
 	imm	00000000
-	brlid	r15,0001F60C
+	brlid	r15,0002F60C
 	shi	r3,r22,00000808
 	addik	r6,r0,00000001
 	addk	r7,r0,r0
@@ -30717,7 +29533,7 @@ fn00022E6C proc
 	brald	r15,r3
 	addk	r19,r5,r0
 	imm	00000000
-	addik	r4,r0,FFFF8C8C
+	addik	r4,r0,00008C8C
 	swi	r3,r19,000001A0
 	swi	r4,r3,00000000
 	addik	r4,r3,0000002C
@@ -31987,7 +30803,7 @@ fn000255B0 proc
 ;; fn000255C0: 000255C0
 ;;   Called from:
 ;;     000255BC (in fn000255B0)
-;;     00030000 (in fn0002FFD0)
+;;     00030004 (in fn0002FFD0)
 fn000255C0 proc
 	lwi	r3,r3,00000000
 	addik	r7,r0,0000006C
@@ -31995,7 +30811,7 @@ fn000255C0 proc
 	brald	r15,r3
 	addk	r19,r5,r0
 	imm	00000000
-	addik	r4,r0,FFFF95C0
+	addik	r4,r0,000095C0
 	swi	r3,r19,000001A0
 	swi	r0,r3,0000004C
 	swi	r4,r3,00000000
@@ -32027,7 +30843,7 @@ fn000255C0 proc
 
 ;; fn000256D8: 000256D8
 ;;   Called from:
-;;     000301C0 (in fn0002FFD0)
+;;     000301C4 (in fn0002FFD0)
 fn000256D8 proc
 	swi	r0,r19,000000AC
 	swi	r0,r19,000000B0
@@ -32073,7 +30889,7 @@ l0002578C:
 	addk	r3,r4,r4
 	addk	r3,r3,r3
 	imm	00000001
-	addik	r3,r3,00007734
+	addik	r3,r3,00017734
 	lwi	r3,r3,00000000
 	bra	r3
 000257A8                         E8 65 01 EC E8 63 00 04         .e...c..
@@ -32107,7 +30923,7 @@ l0002582C:
 
 l00025888:
 	imm	00003FF0
-	addik	r6,r0,00000000
+	addik	r6,r0,3FF00000
 	addik	r7,r0,00000000
 	addik	r4,r0,00000001
 	addik	r8,r0,00000100
@@ -32181,7 +30997,7 @@ l000259D0:
 
 ;; fn00025A6C: 00025A6C
 ;;   Called from:
-;;     000300D0 (in fn0002FFD0)
+;;     000300D4 (in fn0002FFD0)
 fn00025A6C proc
 	xori	r5,r9,00000042
 	rsubk	r4,r5,r0
@@ -32216,7 +31032,7 @@ l00025A80:
 
 ;; fn00025BC4: 00025BC4
 ;;   Called from:
-;;     000301B4 (in fn0002FFD0)
+;;     000301B8 (in fn0002FFD0)
 fn00025BC4 proc
 	addik	r1,r1,00000020
 	lwi	r3,r5,00000014
@@ -32283,7 +31099,7 @@ l00025CC0:
 
 ;; fn00025CD4: 00025CD4
 ;;   Called from:
-;;     000300F0 (in fn0002FFD0)
+;;     000300F4 (in fn0002FFD0)
 fn00025CD4 proc
 	addik	r3,r0,000000D2
 	brid	00025C94
@@ -32341,7 +31157,7 @@ fn00025F38 proc
 	lwi	r8,r19,0000001C
 	lwi	r5,r19,00000020
 	imm	00000000
-	brlid	r15,0001F0F4
+	brlid	r15,0002F0F4
 	addik	r6,r0,00000001
 	bnei	r3,00025FC4
 
@@ -32391,7 +31207,7 @@ l00025FC4:
 
 ;; fn00026018: 00026018
 ;;   Called from:
-;;     000300AC (in fn0002FFD0)
+;;     000300B0 (in fn0002FFD0)
 fn00026018 proc
 	bgeid	r18,0002603C
 	addk	r3,r4,r0
@@ -32512,18 +31328,18 @@ l00026284:
 	addk	r6,r28,r0
 	swi	r27,r25,00000034
 	imm	00000000
-	brlid	r15,0001E908
+	brlid	r15,0002E908
 	swi	r28,r25,00000038
 	addk	r6,r27,r0
 	lwi	r5,r25,00000024
 	swi	r3,r25,0000003C
 	imm	00000000
-	brlid	r15,0001E908
+	brlid	r15,0002E908
 	addk	r19,r3,r0
 	addk	r6,r27,r0
 	lwi	r5,r25,0000001C
 	imm	00000000
-	brlid	r15,0001EA08
+	brlid	r15,0002EA08
 	swi	r3,r25,00000040
 	beqid	r3,000262E0
 	addk	r6,r28,r0
@@ -32534,7 +31350,7 @@ l000262DC:
 l000262E0:
 	lwi	r5,r25,00000020
 	imm	00000000
-	brlid	r15,0001EA08
+	brlid	r15,0002EA08
 	swi	r27,r25,00000044
 	beqi	r3,000262F8
 
@@ -32673,7 +31489,7 @@ l00026454:
 	lw	r6,r19,r24
 	addk	r7,r25,r0
 	imm	00000000
-	brlid	r15,0001F60C
+	brlid	r15,0002F60C
 	addk	r5,r3,r0
 	lwi	r19,r24,00000180
 	brid	00026410
@@ -32703,7 +31519,7 @@ l000264AC:
 	swi	r3,r21,00000038
 	swi	r3,r21,0000003C
 	imm	00000000
-	brlid	r15,0001EA08
+	brlid	r15,0002EA08
 	swi	r3,r21,00000044
 	bnei	r3,00026504
 
@@ -32796,19 +31612,19 @@ fn000268CC proc
 	brald	r15,r3
 	addk	r19,r5,r0
 	imm	00000000
-	addik	r4,r0,FFFFCB9C
+	addik	r4,r0,0000CB9C
 	swi	r3,r19,000001EC
 	swi	r0,r3,00000010
 	swi	r4,r3,00000000
 	imm	00000000
-	addik	r4,r0,FFFFC7CC
+	addik	r4,r0,0000C7CC
 	swi	r0,r3,00000014
 	swi	r4,r3,00000004
 	imm	00000000
-	addik	r4,r0,FFFFC82C
+	addik	r4,r0,0000C82C
 	swi	r4,r3,00000008
 	imm	00000000
-	addik	r4,r0,FFFFC7B8
+	addik	r4,r0,0000C7B8
 	swi	r4,r3,0000000C
 	addik	r4,r0,00000001
 	swi	r4,r3,00000018
@@ -32916,7 +31732,7 @@ l00026A34:
 	addk	r4,r4,r4
 	addk	r4,r4,r4
 	imm	00000000
-	andi	r4,r4,FFFFFFFF
+	andi	r4,r4,0000FFFF
 	bneid	r3,00026A94
 	swi	r4,r22,00000020
 
@@ -32965,7 +31781,7 @@ l00026AC8:
 	addk	r4,r4,r4
 	addk	r4,r4,r4
 	imm	00000000
-	andi	r4,r4,FFFFFFFF
+	andi	r4,r4,0000FFFF
 	bneid	r3,00026B28
 	swi	r4,r22,0000001C
 
@@ -33026,7 +31842,7 @@ l00026B5C:
 	addk	r5,r22,r0
 	andi	r24,r24,000000FF
 	imm	00000000
-	andi	r4,r4,FFFFFFFF
+	andi	r4,r4,0000FFFF
 	addk	r4,r24,r4
 	addik	r6,r0,00000001
 	addik	r19,r3,FFFFFFFF
@@ -33368,7 +32184,7 @@ l00026F40:
 	addk	r6,r6,r6
 	addk	r6,r6,r6
 	imm	00000000
-	andi	r6,r6,FFFFFFFF
+	andi	r6,r6,0000FFFF
 	addk	r6,r6,r12
 	swi	r6,r5,00000154
 	lbui	r6,r21,0000000A
@@ -33383,7 +32199,7 @@ l00026F40:
 	addk	r6,r6,r6
 	addk	r6,r6,r6
 	imm	00000000
-	andi	r6,r6,FFFFFFFF
+	andi	r6,r6,0000FFFF
 	addk	r6,r6,r12
 	beqid	r11,00027020
 	swi	r6,r5,00000158
@@ -33530,7 +32346,7 @@ l00027190:
 	addk	r3,r3,r3
 	addk	r3,r3,r3
 	imm	00000000
-	andi	r19,r3,FFFFFFFF
+	andi	r19,r3,0000FFFF
 	bneid	r24,000271E8
 	addik	r21,r4,00000001
 
@@ -33786,7 +32602,7 @@ l000274B0:
 	addk	r3,r3,r3
 	addk	r3,r3,r3
 	imm	00000000
-	andi	r26,r3,FFFFFFFF
+	andi	r26,r3,0000FFFF
 	bneid	r21,00027508
 	addik	r19,r19,00000001
 
@@ -34389,11 +33205,11 @@ l00028628:
 	addk	r6,r7,r7
 	addk	r7,r8,r8
 	imm	00000000
-	andi	r6,r6,FFFFFFFF
+	andi	r6,r6,0000FFFF
 	imm	00000000
-	andi	r4,r4,FFFFFFFF
+	andi	r4,r4,0000FFFF
 	imm	00000000
-	andi	r7,r7,FFFFFFFF
+	andi	r7,r7,0000FFFF
 	addk	r6,r6,r12
 	addik	r8,r0,0000004C
 	addk	r4,r4,r11
@@ -34553,18 +33369,18 @@ fn00028F08 proc
 	brald	r15,r3
 	addk	r19,r5,r0
 	imm	00000000
-	addik	r4,r0,FFFFDAA4
+	addik	r4,r0,0000DAA4
 	swi	r3,r19,000001F0
 	imm	00000000
-	addik	r6,r0,FFFFD7C8
+	addik	r6,r0,0000D7C8
 	swi	r4,r3,00000000
 	imm	00000000
-	addik	r4,r0,FFFFDF00
+	addik	r4,r0,0000DF00
 	swi	r6,r3,0000001C
 	swi	r0,r3,00000060
 	swi	r4,r3,00000004
 	imm	00000000
-	addik	r4,r0,FFFFF328
+	addik	r4,r0,0000F328
 	addik	r7,r3,00000060
 	swi	r4,r3,00000008
 	addik	r4,r3,00000020
@@ -34578,7 +33394,7 @@ l00028F6C:
 
 l00028F80:
 	imm	00000000
-	addik	r4,r0,FFFFED84
+	addik	r4,r0,0000ED84
 	swi	r4,r3,00000020
 	swi	r4,r3,00000058
 	swi	r5,r19,000000D8
@@ -34592,33 +33408,152 @@ l00028F80:
 	lwi	r19,r1,0000001C
 	rtsd	r15,00000008
 	addik	r1,r1,00000020
-00028FBC                                     E8 65 00 04             .e..
-00028FC0 E8 63 00 30 31 03 FF EC 16 47 40 01 BE 52 00 0C .c.01....G@..R..
-00028FD0 E9 25 01 F0 11 07 00 00 A8 86 00 E0 14 64 00 00 .%...........d..
-00028FE0 80 63 20 00 A8 63 FF FF 10 80 18 00 90 83 00 41 .c ..c.........A
-00028FF0 90 84 00 41 90 84 00 41 90 84 00 41 90 84 00 41 ...A...A...A...A
-00029000 90 84 00 41 90 84 00 41 90 84 00 41 90 84 00 41 ...A...A...A...A
-00029010 90 84 00 41 90 84 00 41 90 84 00 41 90 84 00 41 ...A...A...A...A
-00029020 90 84 00 41 90 84 00 41 90 84 00 41 90 84 00 41 ...A...A...A...A
-00029030 90 84 00 41 90 84 00 41 90 84 00 41 90 84 00 41 ...A...A...A...A
-00029040 90 84 00 41 90 84 00 41 90 84 00 41 90 84 00 41 ...A...A...A...A
-00029050 90 84 00 41 90 84 00 41 90 84 00 41 90 84 00 41 ...A...A...A...A
-00029060 90 84 00 41 90 84 00 41 BE 08 00 64 A8 E6 00 EE ...A...A...d....
-00029070 30 60 00 0D 16 48 18 03 BC 52 00 84 BE 04 00 84 0`...H...R......
-00029080 A8 86 00 EE B0 00 00 00 30 E0 EF 88 31 00 00 0E ........0...1...
-00029090 30 86 FF 20 30 60 00 0F 16 44 18 03 BC B2 00 9C 0.. 0`...D......
-000290A0 E8 65 00 00 30 21 FF E4 F9 E1 00 00 30 80 00 44 .e..0!......0..D
-000290B0 F8 83 00 14 E8 83 00 00 99 FC 20 00 F8 C3 00 18 .......... .....
-000290C0 E9 E1 00 00 B6 0F 00 08 30 21 00 1C 14 67 00 00 ........0!...g..
-000290D0 80 63 38 00 BC A3 00 7C B0 00 00 00 30 E0 D7 C8 .c8....|....0...
-000290E0 BC 24 00 70 A8 66 00 FE BE 23 FF AC 30 86 FF 20 .$.p.f...#..0.. 
-000290F0 F8 E9 00 1C B6 0F 00 08 F9 09 00 60 A8 86 00 EE ...........`....
-00029100 14 64 00 00 80 63 20 00 B0 00 00 00 30 E0 EF 88 .d...c .....0...
-00029110 BE 43 FF D4 30 60 00 0B 16 48 18 03 BE 52 FF CC .C..0`...H...R..
-00029120 A8 66 00 FE 30 86 FF 20 30 60 00 0F 16 44 18 03 .f..0.. 0`...D..
-00029130 BE 52 FF 70 31 00 00 0C 10 C6 30 00 10 C6 30 00 .R.p1.....0...0.
-00029140 10 C9 30 00 F8 E6 FC A0 B6 0F 00 08 F9 06 FC E4 ..0.............
-00029150 B0 00 00 00 30 E0 ED 84 B8 10 FF 90 A8 66 00 FE ....0........f..
+
+;; fn00028FBC: 00028FBC
+;;   Called from:
+;;     0001CF1C (in fn0001CEF0)
+fn00028FBC proc
+	lwi	r3,r5,00000004
+	lwi	r3,r3,00000030
+	addik	r8,r3,FFFFFFEC
+	cmp	r18,r7,r8
+	bltid	r18,00028FD8
+	lwi	r9,r5,000001F0
+
+l00028FD4:
+	addk	r8,r7,r0
+
+l00028FD8:
+	xori	r4,r6,000000E0
+	rsubk	r3,r4,r0
+	or	r3,r3,r4
+	xori	r3,r3,FFFFFFFF
+	addk	r4,r0,r3
+	srl	r4,r3
+	srl	r4,r4
+	srl	r4,r4
+	srl	r4,r4
+	srl	r4,r4
+	srl	r4,r4
+	srl	r4,r4
+	srl	r4,r4
+	srl	r4,r4
+	srl	r4,r4
+	srl	r4,r4
+	srl	r4,r4
+	srl	r4,r4
+	srl	r4,r4
+	srl	r4,r4
+	srl	r4,r4
+	srl	r4,r4
+	srl	r4,r4
+	srl	r4,r4
+	srl	r4,r4
+	srl	r4,r4
+	srl	r4,r4
+	srl	r4,r4
+	srl	r4,r4
+	srl	r4,r4
+	srl	r4,r4
+	srl	r4,r4
+	srl	r4,r4
+	srl	r4,r4
+	srl	r4,r4
+	srl	r4,r4
+	beqid	r8,000290CC
+	xori	r7,r6,000000EE
+
+l00029070:
+	addik	r3,r0,0000000D
+	cmpu	r18,r8,r3
+	blti	r18,000290FC
+
+l0002907C:
+	beqid	r4,00029100
+	xori	r4,r6,000000EE
+
+l00029084:
+	imm	00000000
+	addik	r7,r0,0000EF88
+	addik	r8,r0,0000000E
+	addik	r4,r6,FFFFFF20
+
+l00029094:
+	addik	r3,r0,0000000F
+	cmpu	r18,r4,r3
+	bgei	r18,00029138
+
+l000290A0:
+	lwi	r3,r5,00000000
+	addik	r1,r1,FFFFFFE4
+	swi	r15,r1,00000000
+	addik	r4,r0,00000044
+	swi	r4,r3,00000014
+	lwi	r4,r3,00000000
+	brald	r15,r4
+	swi	r6,r3,00000018
+	lwi	r15,r1,00000000
+	rtsd	r15,00000008
+	addik	r1,r1,0000001C
+
+l000290CC:
+	rsubk	r3,r7,r0
+	or	r3,r3,r7
+	bgei	r3,00029150
+
+l000290D8:
+	imm	00000000
+	addik	r7,r0,0000D7C8
+	bnei	r4,00029150
+
+l000290E4:
+	xori	r3,r6,000000FE
+
+l000290E8:
+	bneid	r3,00029094
+	addik	r4,r6,FFFFFF20
+
+l000290F0:
+	swi	r7,r9,0000001C
+	rtsd	r15,00000008
+	swi	r8,r9,00000060
+
+l000290FC:
+	xori	r4,r6,000000EE
+
+l00029100:
+	rsubk	r3,r4,r0
+	or	r3,r3,r4
+	imm	00000000
+	addik	r7,r0,0000EF88
+	bltid	r3,000290E4
+	addik	r3,r0,0000000B
+
+l00029118:
+	cmpu	r18,r8,r3
+	bltid	r18,000290E8
+	xori	r3,r6,000000FE
+
+l00029124:
+	addik	r4,r6,FFFFFF20
+	addik	r3,r0,0000000F
+	cmpu	r18,r4,r3
+	bltid	r18,000290A0
+	addik	r8,r0,0000000C
+
+l00029138:
+	addk	r6,r6,r6
+	addk	r6,r6,r6
+	addk	r6,r9,r6
+	swi	r7,r6,FFFFFCA0
+	rtsd	r15,00000008
+	swi	r8,r6,FFFFFCE4
+
+l00029150:
+	imm	00000000
+	addik	r7,r0,0000ED84
+	brid	000290E8
+	xori	r3,r6,000000FE
 00029160 A8 86 00 FE BE 04 00 58 E9 05 01 F0 31 26 FF 20 .......X....1&. 
 00029170 30 80 00 0F 16 49 20 03 BE B2 00 30 30 80 00 44 0....I ....00..D
 00029180 E8 65 00 00 30 21 FF E4 F9 E1 00 00 F8 83 00 14 .e..0!..........
@@ -34828,7 +33763,7 @@ l000293E8:
 
 l000293FC:
 	imm	0000000F
-	addik	r3,r0,FFFFFFFF
+	addik	r3,r0,000FFFFF
 	addk	r6,r26,r0
 	addik	r5,r21,00000090
 	swi	r3,r21,00000044
@@ -35485,12 +34420,12 @@ fn0002A250 proc
 	brald	r15,r3
 	addk	r19,r5,r0
 	imm	00000000
-	addik	r4,r0,FFFFFCA8
+	addik	r4,r0,0000FCA8
 	swi	r3,r19,000001F4
 	swi	r0,r3,00000038
 	swi	r4,r3,00000000
 	imm	00000001
-	addik	r4,r0,00000208
+	addik	r4,r0,00010208
 	swi	r0,r3,00000028
 	swi	r0,r3,0000003C
 	swi	r4,r3,00000004
@@ -35887,7 +34822,7 @@ fn0002B520 proc
 	lwi	r7,r19,00000024
 	lwi	r4,r19,00000004
 	imm	00000001
-	addik	r5,r0,00000A74
+	addik	r5,r0,00010A74
 	swi	r3,r19,000001F4
 	lwi	r4,r4,00000000
 	swi	r5,r3,00000000
@@ -36291,11 +35226,11 @@ fn0002CA58 proc
 	addk	r23,r3,r0
 	swi	r3,r21,000001E4
 	imm	00000001
-	addik	r3,r0,00001C78
+	addik	r3,r0,00011C78
 	swi	r0,r23,00000070
 	swi	r3,r23,00000000
 	imm	00000001
-	addik	r3,r0,00002200
+	addik	r3,r0,00012200
 	bneid	r19,0002CB50
 	swi	r3,r23,00000008
 
@@ -36318,11 +35253,11 @@ l0002CAEC:
 
 l0002CB00:
 	imm	00000001
-	addik	r3,r0,00001CD8
+	addik	r3,r0,00011CD8
 	swi	r5,r23,00000010
 	swi	r3,r23,00000004
 	imm	00000001
-	addik	r3,r0,00002394
+	addik	r3,r0,00012394
 	swi	r3,r23,0000000C
 
 l0002CB1C:
@@ -36388,11 +35323,11 @@ l0002CB88:
 
 l0002CBE0:
 	imm	00000001
-	addik	r3,r0,00001CE0
+	addik	r3,r0,00011CE0
 	swi	r28,r23,00000010
 	swi	r3,r23,00000004
 	imm	00000001
-	addik	r3,r0,00001FC4
+	addik	r3,r0,00011FC4
 	brid	0002CB1C
 	swi	r3,r23,0000000C
 
@@ -36457,6 +35392,8 @@ l0002CC80:
 	addik	r1,r1,00000020
 
 ;; fn0002CC98: 0002CC98
+;;   Called from:
+;;     0001E1E4 (in fn0001E004)
 fn0002CC98 proc
 	addik	r1,r1,FFFFFFE4
 	swi	r15,r1,00000000
@@ -36472,6 +35409,7 @@ fn0002CC98 proc
 
 ;; fn0002CCC4: 0002CCC4
 ;;   Called from:
+;;     0001DF58 (in fn0001DE80)
 ;;     00027864 (in fn00027448)
 fn0002CCC4 proc
 	addik	r1,r1,FFFFFFE4
@@ -36488,6 +35426,13 @@ fn0002CCC4 proc
 
 ;; fn0002CCF0: 0002CCF0
 ;;   Called from:
+;;     0001F6B4 (in fn0001F628)
+;;     0001F6DC (in fn0001F628)
+;;     0001FEEC (in fn0001FCE0)
+;;     0001FF20 (in fn0001FCE0)
+;;     0001FF48 (in fn0001FCE0)
+;;     0001FF70 (in fn0001FCE0)
+;;     0001FFA0 (in fn0001FCE0)
 ;;     00026234 (in fn000261AC)
 ;;     00026258 (in fn000261AC)
 fn0002CCF0 proc
@@ -36502,6 +35447,8 @@ fn0002CCF0 proc
 
 ;; fn0002CD10: 0002CD10
 ;;   Called from:
+;;     0001B508 (in fn0001B51C)
+;;     0001B520 (in fn0001B51C)
 ;;     0002CB9C (in fn0002CA58)
 ;;     0002CBAC (in fn0002CA58)
 fn0002CD10 proc
@@ -36528,8 +35475,6 @@ fn0002CD10 proc
 0002CDC0 EB 01 00 2C B6 0F 00 08 30 21 00 30             ...,....0!.0    
 
 ;; fn0002CDCC: 0002CDCC
-;;   Called from:
-;;     0001CB20 (in fn0001CC00)
 fn0002CDCC proc
 	addk	r3,r6,r0
 	addk	r4,r0,r7
@@ -36597,9 +35542,9 @@ fn0002CFE4 proc
 	brald	r15,r3
 	addik	r6,r1,0000001C
 	imm	00000001
-	addik	r6,r0,000079A0
+	addik	r6,r0,000179A0
 	imm	00000001
-	lwi	r5,r0,FFFF8EB8
+	lwi	r5,r0,00018EB8
 	brlid	r15,0002EB28
 	addik	r7,r1,0000001C
 	lwi	r15,r1,00000000
@@ -36782,7 +35727,7 @@ l0002D258:
 ;;     0002DCFC (in fn0002DC74)
 fn0002D260 proc
 	imm	00003B9A
-	addik	r3,r0,FFFFC9F4
+	addik	r3,r0,3B9AC9F4
 	addik	r1,r1,FFFFFFB8
 	swi	r19,r1,0000001C
 	swi	r22,r1,00000024
@@ -36866,12 +35811,12 @@ l0002D348:
 l0002D354:
 	addk	r19,r19,r19
 	imm	00000001
-	addik	r19,r19,FFFF8E34
+	addik	r19,r19,00018E34
 	lwi	r3,r19,00000000
 
 l0002D364:
 	imm	00003B9A
-	addik	r4,r0,FFFFCA00
+	addik	r4,r0,3B9ACA00
 	rsubk	r19,r27,r4
 	cmpu	r18,r19,r3
 	blti	r18,0002D458
@@ -36954,7 +35899,7 @@ l0002D458:
 
 l0002D460:
 	imm	00000001
-	addik	r3,r3,FFFF8E3C
+	addik	r3,r3,00018E3C
 	brid	0002D364
 	lwi	r3,r3,00000000
 
@@ -37167,7 +36112,7 @@ l0002D754:
 ;;     0002DD38 (in fn0002DC74)
 fn0002DA08 proc
 	imm	00003B9A
-	addik	r3,r0,FFFFC9F4
+	addik	r3,r0,3B9AC9F4
 	addik	r1,r1,FFFFFFD0
 	swi	r19,r1,00000020
 	swi	r21,r1,00000024
@@ -37270,7 +36215,7 @@ fn0002DB20 proc
 	addk	r21,r21,r21
 	addk	r23,r6,r0
 	imm	00003B9A
-	addik	r5,r0,FFFFC9F4
+	addik	r5,r0,3B9AC9F4
 	addk	r6,r21,r0
 	swi	r24,r1,0000002C
 	swi	r25,r1,00000030
@@ -37373,7 +36318,7 @@ fn0002DC74 proc
 	addk	r22,r5,r0
 	addk	r23,r6,r0
 	imm	00003B9A
-	addik	r5,r0,FFFFC9F4
+	addik	r5,r0,3B9AC9F4
 	addk	r6,r7,r0
 	swi	r21,r1,00000020
 	swi	r24,r1,0000002C
@@ -37609,41 +36554,41 @@ fn0002E530 proc
 
 l0002E564:
 	imm	00000001
-	addik	r3,r0,000038E0
+	addik	r3,r0,000138E0
 	imm	00000001
-	addik	r4,r0,00004088
+	addik	r4,r0,00014088
 	imm	00000001
-	addik	r5,r0,FFFF8E24
+	addik	r5,r0,00018E24
 	swi	r3,r19,00000000
 	imm	00000001
-	addik	r3,r0,000042F4
+	addik	r3,r0,000142F4
 	swi	r4,r19,00000004
 	imm	00000001
-	addik	r4,r0,000041A0
+	addik	r4,r0,000141A0
 	swi	r3,r19,00000008
 	imm	00000001
-	addik	r3,r0,00003BC4
+	addik	r3,r0,00013BC4
 	swi	r4,r19,0000000C
 	imm	00000001
-	addik	r4,r0,00003B10
+	addik	r4,r0,00013B10
 	swi	r3,r19,00000010
 	imm	00000001
-	addik	r3,r0,0000442C
+	addik	r3,r0,0001442C
 	swi	r4,r19,00000014
 	imm	00000001
-	addik	r4,r0,0000474C
+	addik	r4,r0,0001474C
 	swi	r3,r19,00000018
 	imm	00000001
-	addik	r3,r0,00003E2C
+	addik	r3,r0,00013E2C
 	swi	r4,r19,0000001C
 	imm	00000001
-	addik	r4,r0,00003C78
+	addik	r4,r0,00013C78
 	swi	r3,r19,00000020
 	imm	00000001
-	addik	r3,r0,00003DDC
+	addik	r3,r0,00013DDC
 	swi	r4,r19,00000024
 	imm	00003B9A
-	addik	r4,r0,FFFFCA00
+	addik	r4,r0,3B9ACA00
 	swi	r3,r19,00000028
 	lwi	r3,r1,0000001C
 	swi	r4,r19,00000030
@@ -37663,7 +36608,7 @@ l0002E564:
 
 l0002E634:
 	imm	00000001
-	addik	r6,r0,FFFF8E2C
+	addik	r6,r0,00018E2C
 	addik	r3,r0,00000078
 	addik	r8,r1,00000020
 	addik	r7,r1,0000001C
@@ -37816,7 +36761,7 @@ fn0002E7C8 proc
 
 ;; fn0002E7D0: 0002E7D0
 ;;   Called from:
-;;     0001E184 (in fn0001E004)
+;;     0001E188 (in fn0001E004)
 ;;     0002CCFC (in fn0002CCF0)
 fn0002E7D0 proc
 	addik	r1,r1,FFFFFFF0
@@ -37965,10 +36910,17 @@ l0002E8F0:
 
 ;; fn0002E908: 0002E908
 ;;   Called from:
-;;     0001CA88 (in fn0001CC00)
-;;     0001CCA0 (in fn0001CC8C)
-;;     0001CCA0 (in fn0001CC98)
-;;     0001E174 (in fn0001E004)
+;;     0001B68C (in fn0001BA7C)
+;;     0001CCA4 (in fn0001CE64)
+;;     0001E178 (in fn0001E004)
+;;     0001F724 (in fn0001F628)
+;;     0001F864 (in fn0001F628)
+;;     0001FED4 (in fn0001FCE0)
+;;     0001FF10 (in fn0001FCE0)
+;;     0001FF38 (in fn0001FCE0)
+;;     0001FF60 (in fn0001FCE0)
+;;     000262A0 (in fn000261AC)
+;;     000262B8 (in fn000261AC)
 ;;     000270C0 (in fn00026E10)
 ;;     0002D108 (in fn0002D0AC)
 ;;     0002D158 (in fn0002D0AC)
@@ -38026,7 +36978,7 @@ l0002E958:
 
 ;; fn0002E960: 0002E960
 ;;   Called from:
-;;     0001CC64 (in fn0001CC5C)
+;;     0001B678 (in fn0001BA7C)
 ;;     0002DB78 (in fn0002DB20)
 ;;     0002DCB0 (in fn0002DC74)
 fn0002E960 proc
@@ -38108,6 +37060,13 @@ l0002E9F4:
 	addik	r1,r1,0000000C
 
 ;; fn0002EA08: 0002EA08
+;;   Called from:
+;;     0001F74C (in fn0001F628)
+;;     0001F768 (in fn0001F628)
+;;     0001F834 (in fn0001F628)
+;;     000262CC (in fn000261AC)
+;;     000262E8 (in fn000261AC)
+;;     000264E4 (in fn000261AC)
 fn0002EA08 proc
 	addik	r1,r1,FFFFFFF4
 	swi	r29,r1,00000000
@@ -38146,7 +37105,7 @@ l0002EA50:
 
 l0002EA58:
 	imm	00007FFF
-	addik	r18,r0,FFFFFFFF
+	addik	r18,r0,7FFFFFFF
 	and	r5,r5,r18
 	and	r6,r6,r18
 	brid	0002EAB0
@@ -38211,14 +37170,14 @@ fn0002EAD0 proc
 
 ;; fn0002EB28: 0002EB28
 ;;   Called from:
-;;     00019BE8 (in fn00019BC8)
-;;     0001A148 (in fn00019BC8)
-;;     0001A38C (in fn00019BC8)
-;;     0001AB94 (in fn0001AAB0)
-;;     0001ABF4 (in fn0001AAB0)
-;;     0001ACE8 (in fn0001AAB0)
-;;     0001ADCC (in fn0001AAB0)
-;;     0001ADFC (in fn0001AAB0)
+;;     00019BEC (in fn00019BC8)
+;;     0001A14C (in fn00019E48)
+;;     0001A390 (in fn00019E48)
+;;     0001AB98 (in fn0001AAB0)
+;;     0001ABF8 (in fn0001AAB0)
+;;     0001ACEC (in fn0001AAB0)
+;;     0001ADD0 (in fn0001AAB0)
+;;     0001AE00 (in fn0001AAB0)
 ;;     0002CFFC (in fn0002CFE4)
 fn0002EB28 proc
 	swi	r6,r1,00000008
@@ -38298,8 +37257,8 @@ fn0002EB68 proc
 
 ;; fn0002EE08: 0002EE08
 ;;   Called from:
-;;     0001A250 (in fn00019BC8)
-;;     0001A40C (in fn00019BC8)
+;;     0001A254 (in fn00019E48)
+;;     0001A410 (in fn00019E48)
 ;;     0002E648 (in fn0002E530)
 fn0002EE08 proc
 	swi	r6,r1,00000008
@@ -38336,7 +37295,7 @@ fn0002EE08 proc
 
 ;; fn0002EF2C: 0002EF2C
 ;;   Called from:
-;;     0001A85C (in fn0001A7E4)
+;;     0001A860 (in fn0001A7E4)
 fn0002EF2C proc
 	addik	r1,r1,FFFFFFF8
 	swi	r19,r1,00000004
@@ -38355,8 +37314,8 @@ fn0002EF2C proc
 
 ;; fn0002EF80: 0002EF80
 ;;   Called from:
-;;     0001A61C (in fn0001A610)
-;;     0001A6C8 (in fn0001A610)
+;;     0001A620 (in fn0001A610)
+;;     0001A6CC (in fn0001A610)
 fn0002EF80 proc
 	addik	r1,r1,FFFFFFF8
 	swi	r19,r1,00000004
@@ -38409,7 +37368,7 @@ fn0002F074 proc
 
 ;; fn0002F0A0: 0002F0A0
 ;;   Called from:
-;;     0001AAEC (in fn0001AAB0)
+;;     0001AAF0 (in fn0001AAB0)
 fn0002F0A0 proc
 	addik	r1,r1,FFFFFFF8
 	swi	r19,r1,00000004
@@ -38425,11 +37384,11 @@ fn0002F0A0 proc
 
 ;; fn0002F0CC: 0002F0CC
 ;;   Called from:
-;;     0001ABA0 (in fn0001AAB0)
-;;     0001ACF4 (in fn0001AAB0)
-;;     0001ADD8 (in fn0001AAB0)
-;;     0001AE08 (in fn0001AAB0)
-;;     0001AE70 (in fn0001AAB0)
+;;     0001ABA4 (in fn0001AAB0)
+;;     0001ACF8 (in fn0001AAB0)
+;;     0001ADDC (in fn0001AAB0)
+;;     0001AE0C (in fn0001AAB0)
+;;     0001AE74 (in fn0001AAB0)
 fn0002F0CC proc
 	addik	r1,r1,FFFFFFF8
 	swi	r19,r1,00000004
@@ -38441,34 +37400,48 @@ fn0002F0CC proc
 	addik	r1,r1,00000008
 	rtsd	r15,00000008
 	nop
-0002F0F4             30 21 FF F8 FA 61 00 04 12 61 00 00     0!...a...a..
-0002F100 F8 B3 00 0C F8 D3 00 10 F8 F3 00 14 F9 13 00 18 ................
-0002F110 80 00 00 00 10 33 00 00 EA 61 00 04 30 21 00 08 .....3...a..0!..
-0002F120 B6 0F 00 08 80 00 00 00                         ........        
+
+;; fn0002F0F4: 0002F0F4
+;;   Called from:
+;;     00025F60 (in fn00025F38)
+fn0002F0F4 proc
+	addik	r1,r1,FFFFFFF8
+	swi	r19,r1,00000004
+	addk	r19,r1,r0
+	swi	r5,r19,0000000C
+	swi	r6,r19,00000010
+	swi	r7,r19,00000014
+	swi	r8,r19,00000018
+	nop
+	addk	r1,r19,r0
+	lwi	r19,r1,00000004
+	addik	r1,r1,00000008
+	rtsd	r15,00000008
+	nop
 
 ;; fn0002F128: 0002F128
 ;;   Called from:
-;;     00019C08 (in fn00019BC8)
-;;     00019C28 (in fn00019BC8)
-;;     00019C48 (in fn00019BC8)
-;;     00019C68 (in fn00019BC8)
-;;     00019C88 (in fn00019BC8)
-;;     00019CA8 (in fn00019BC8)
-;;     00019CC8 (in fn00019BC8)
-;;     00019CE8 (in fn00019BC8)
-;;     00019D08 (in fn00019BC8)
-;;     00019D28 (in fn00019BC8)
-;;     00019D48 (in fn00019BC8)
-;;     00019D68 (in fn00019BC8)
-;;     00019D88 (in fn00019BC8)
-;;     00019DA8 (in fn00019BC8)
-;;     00019DC8 (in fn00019BC8)
-;;     00019DE8 (in fn00019BC8)
-;;     00019E08 (in fn00019BC8)
-;;     00019E28 (in fn00019BC8)
-;;     00019E48 (in fn00019BC8)
-;;     00019E68 (in fn00019BC8)
-;;     00019E88 (in fn00019BC8)
+;;     00019C0C (in fn00019BC8)
+;;     00019C2C (in fn00019BC8)
+;;     00019C4C (in fn00019BC8)
+;;     00019C6C (in fn00019BC8)
+;;     00019C8C (in fn00019BC8)
+;;     00019CAC (in fn00019BC8)
+;;     00019CCC (in fn00019BC8)
+;;     00019CEC (in fn00019BC8)
+;;     00019D0C (in fn00019BC8)
+;;     00019D2C (in fn00019BC8)
+;;     00019D4C (in fn00019BC8)
+;;     00019D6C (in fn00019BC8)
+;;     00019D8C (in fn00019BC8)
+;;     00019DAC (in fn00019BC8)
+;;     00019DCC (in fn00019BC8)
+;;     00019DEC (in fn00019BC8)
+;;     00019E0C (in fn00019BC8)
+;;     00019E2C (in fn00019BC8)
+;;     00019E4C (in fn00019E48)
+;;     00019E6C (in fn00019E48)
+;;     00019E8C (in fn00019E48)
 fn0002F128 proc
 	addik	r1,r1,FFFFFFF8
 	swi	r19,r1,00000004
@@ -38534,8 +37507,8 @@ fn0002F21C proc
 
 ;; fn0002F274: 0002F274
 ;;   Called from:
-;;     00019E94 (in fn00019BC8)
-;;     0001A398 (in fn00019BC8)
+;;     00019E98 (in fn00019E48)
+;;     0001A39C (in fn00019E48)
 fn0002F274 proc
 	addik	r1,r1,FFFFFFF8
 	swi	r19,r1,00000004
@@ -38647,9 +37620,11 @@ fn0002F448 proc
 
 ;; fn0002F60C: 0002F60C
 ;;   Called from:
-;;     0001AE58 (in fn0001AAB0)
-;;     0001DEC0 (in fn0001DE80)
-;;     0001DF20 (in fn0001DE80)
+;;     0001AE5C (in fn0001AAB0)
+;;     0001DEC4 (in fn0001DE80)
+;;     0001DF24 (in fn0001DE80)
+;;     00022C5C (in fn0002283C)
+;;     0002647C (in fn000261AC)
 ;;     00027794 (in fn00027448)
 ;;     000277A8 (in fn00027448)
 ;;     0002CE00 (in fn0002CDCC)
@@ -38669,6 +37644,9 @@ fn0002F60C proc
 
 ;; fn0002F63C: 0002F63C
 ;;   Called from:
+;;     0002242C (in fn0002225C)
+;;     0002288C (in fn0002283C)
+;;     000228A0 (in fn0002283C)
 ;;     00029410 (in fn000291C4)
 ;;     0002CE20 (in fn0002CE14)
 fn0002F63C proc
@@ -38733,8 +37711,8 @@ fn0002F63C proc
 
 ;; fn0002F940: 0002F940
 ;;   Called from:
-;;     0001A730 (in fn0001A700)
-;;     0001A834 (in fn0001A7E4)
+;;     0001A734 (in fn0001A700)
+;;     0001A838 (in fn0001A7E4)
 fn0002F940 proc
 	addik	r1,r1,FFFFFFF8
 	swi	r19,r1,00000004
@@ -38757,7 +37735,7 @@ fn0002F940 proc
 
 ;; fn0002F9E0: 0002F9E0
 ;;   Called from:
-;;     0001B1A0 (in fn0001B134)
+;;     0001B1A4 (in fn0001B1C4)
 fn0002F9E0 proc
 	addik	r1,r1,FFFFFFF8
 	swi	r19,r1,00000004
@@ -38772,7 +37750,7 @@ fn0002F9E0 proc
 
 ;; fn0002FA08: 0002FA08
 ;;   Called from:
-;;     0001B1B4 (in fn0001B134)
+;;     0001B1B8 (in fn0001B1C4)
 fn0002FA08 proc
 	addik	r1,r1,FFFFFFF8
 	swi	r19,r1,00000004
@@ -38877,11 +37855,11 @@ fn0002FA08 proc
 
 ;; fn0002FFD0: 0002FFD0
 ;;   Called from:
-;;     0001A3C4 (in fn00019BC8)
+;;     0001A3C8 (in fn00019E48)
 fn0002FFD0 proc
 	addk	r22,r6,r0
 	imm	00000001
-	swi	r3,r0,FFFF8EA4
+	swi	r3,r0,00018EA4
 	beqid	r3,0003021C
 	addk	r21,r5,r0
 
@@ -38896,7 +37874,7 @@ l0002FFEC:
 	addik	r6,r0,0000003E
 	addik	r5,r1,0000001C
 	imm	0000FFFF
-	brlid	r15,000355C0
+	brlid	r15,000255C0
 	swi	r3,r1,0000001C
 	brlid	r15,0002CFE4
 	addik	r5,r1,000003D0
@@ -38904,13 +37882,13 @@ l0002FFEC:
 	addik	r7,r0,000001AC
 	addik	r6,r0,0000003E
 	imm	0000FFFE
-	brlid	r15,0002D008
+	brlid	r15,0001D008
 	swi	r3,r1,00000224
 	addk	r6,r21,r0
 	addk	r7,r22,r0
 	addik	r5,r1,00000224
 	imm	0000FFFE
-	brlid	r15,00029E48
+	brlid	r15,00019E48
 	addk	r8,r0,r0
 	lwi	r6,r1,00000228
 	lwi	r4,r1,00000438
@@ -38929,18 +37907,18 @@ l00030068:
 
 l00030074:
 	imm	0000FFFE
-	brlid	r15,0002B1C0
+	brlid	r15,0001B1C0
 	nop
 	addk	r23,r3,r0
 
 l00030084:
 	imm	00000001
-	lwi	r5,r0,FFFF8EA0
+	lwi	r5,r0,00018EA0
 	beqi	r5,000302AC
 
 l00030090:
 	imm	00000001
-	addik	r6,r0,00006FD8
+	addik	r6,r0,00016FD8
 	brlid	r15,0002F048
 	nop
 	beqid	r3,000302C0
@@ -38949,79 +37927,79 @@ l00030090:
 l000300A8:
 	addk	r6,r23,r0
 	imm	0000FFFF
-	brlid	r15,00036018
+	brlid	r15,00026018
 	addik	r5,r1,0000001C
 	imm	00000001
-	lwi	r6,r0,FFFF8E9C
+	lwi	r6,r0,00018E9C
 	imm	0000FFFE
-	brlid	r15,0002CE64
+	brlid	r15,0001CE64
 	addik	r5,r1,0000001C
 	addik	r5,r1,0000001C
 	imm	0000FFFF
-	brlid	r15,00035A6C
+	brlid	r15,00025A6C
 	addik	r6,r0,00000001
 	imm	00000001
-	addik	r6,r0,FFFF8E88
+	addik	r6,r0,00018E88
 	imm	0000FFFE
-	brlid	r15,0002B2CC
+	brlid	r15,0001B2CC
 	addik	r5,r1,0000001C
 	imm	0000FFFF
-	brlid	r15,00035CD4
+	brlid	r15,00025CD4
 	addik	r5,r1,0000001C
 	addk	r24,r3,r0
 	addik	r6,r1,00000224
 	imm	0000FFFE
-	brlid	r15,0002DB74
+	brlid	r15,0001DB74
 	addik	r5,r1,0000001C
 	imm	00000001
-	addik	r8,r0,FFFF8E88
+	addik	r8,r0,00018E88
 	addk	r7,r24,r0
 	addik	r6,r1,00000224
 	imm	0000FFFE
-	brlid	r15,0002B51C
+	brlid	r15,0001B51C
 	addik	r5,r1,0000001C
 	addk	r7,r22,r0
 	addk	r6,r21,r0
 	addik	r8,r0,00000001
 	addik	r5,r1,00000224
 	imm	0000FFFE
-	brlid	r15,00029E48
+	brlid	r15,00019E48
 	addk	r25,r3,r0
 	addk	r6,r19,r0
 	imm	0000FFFE
-	brlid	r15,0002EE08
+	brlid	r15,0001EE08
 	addik	r5,r1,00000224
 	addk	r6,r25,r0
 	imm	0000FFFE
-	brlid	r15,0002D9D8
+	brlid	r15,0001D9D8
 	addik	r5,r1,00000224
 	imm	00000001
-	lwi	r7,r0,FFFF8E9C
+	lwi	r7,r0,00018E9C
 	addik	r6,r1,00000224
 	imm	0000FFFE
-	brlid	r15,0002CEF0
+	brlid	r15,0001CEF0
 	addik	r5,r1,0000001C
 	imm	00000001
-	addik	r8,r0,FFFF8E88
+	addik	r8,r0,00018E88
 	addk	r7,r24,r0
 	addik	r6,r1,00000224
 	imm	0000FFFE
-	brlid	r15,0002BA7C
+	brlid	r15,0001BA7C
 	addik	r5,r1,0000001C
 	imm	0000FFFE
-	brlid	r15,0002D1B0
+	brlid	r15,0001D1B0
 	addik	r5,r1,00000224
 	imm	0000FFFE
-	brlid	r15,0002D120
+	brlid	r15,0001D120
 	addik	r5,r1,00000224
 	imm	0000FFFF
-	brlid	r15,00035BC4
+	brlid	r15,00025BC4
 	addik	r5,r1,0000001C
 	imm	0000FFFF
-	brlid	r15,000356D8
+	brlid	r15,000256D8
 	addik	r5,r1,0000001C
 	imm	00000001
-	lwi	r3,r0,FFFF8EB4
+	lwi	r3,r0,00018EB4
 	xor	r3,r3,r23
 	beqi	r3,000301E4
 
@@ -39031,7 +38009,7 @@ l000301DC:
 
 l000301E4:
 	imm	00000001
-	lwi	r3,r0,FFFF8EA8
+	lwi	r3,r0,00018EA8
 	xor	r3,r3,r19
 	beqid	r3,00030204
 	lwi	r3,r1,000004C0
@@ -39053,15 +38031,15 @@ l00030214:
 
 l0003021C:
 	imm	00000001
-	addik	r3,r0,00006F98
+	addik	r3,r0,00016F98
 	imm	00000001
-	swi	r3,r0,FFFF8EA4
+	swi	r3,r0,00018EA4
 	bri	0002FFEC
 
 l00030230:
 	addk	r19,r3,r3
 	imm	00000001
-	addik	r6,r0,00006FC0
+	addik	r6,r0,00016FC0
 	brlid	r15,0002F048
 	lw	r5,r19,r22
 	bneid	r3,00030084
@@ -39069,14 +38047,14 @@ l00030230:
 
 l0003024C:
 	imm	00000001
-	lwi	r5,r0,FFFF8EB8
+	lwi	r5,r0,00018EB8
 	lw	r8,r19,r22
 
 l00030258:
 	imm	00000001
-	lwi	r7,r0,FFFF8EA4
+	lwi	r7,r0,00018EA4
 	imm	00000001
-	addik	r6,r0,00006FC4
+	addik	r6,r0,00016FC4
 	brlid	r15,0002EAD0
 	nop
 	brlid	r15,0002F21C
@@ -39084,15 +38062,15 @@ l00030258:
 
 l00030278:
 	imm	00000001
-	lwi	r7,r0,FFFF8EA4
+	lwi	r7,r0,00018EA4
 	imm	00000001
-	addik	r6,r0,00006FA4
+	addik	r6,r0,00016FA4
 	imm	00000001
-	lwi	r5,r0,FFFF8EB8
+	lwi	r5,r0,00018EB8
 	brlid	r15,0002EAD0
 	nop
 	imm	0000FFFE
-	brlid	r15,00029B70
+	brlid	r15,00019B70
 	nop
 
 l000302A4:
@@ -39101,14 +38079,14 @@ l000302A4:
 
 l000302AC:
 	imm	0000FFFE
-	brlid	r15,0002B1D0
+	brlid	r15,0001B1D0
 	nop
 	brid	000300A8
 	addk	r19,r3,r0
 
 l000302C0:
 	imm	00000001
-	lwi	r5,r0,FFFF8EB8
+	lwi	r5,r0,00018EB8
 	imm	00000001
-	lwi	r8,r0,FFFF8EA0
+	lwi	r8,r0,00018EA0
 	bri	00030258

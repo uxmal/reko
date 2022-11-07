@@ -298,11 +298,13 @@ namespace Reko.UnitTests.Arch.MicroBlaze
         [Test]
         public void MicroBlazeRw_imm_lbui()
         {
-            Given_HexString("B0002000E060D644"); // imm 2000; lbui\tr3,r0,FFFFD644
+            Given_HexString("B0002000 E060D644"); // imm 2000; lbui\tr3,r0,FFFFD644
             AssertCode(
-                "0|L--|00100000(8): 2 instructions",
-                "1|L--|v3 = Mem0[0x1FFFD644<p32>:byte]",
-                "2|L--|r3 = CONVERT(v3, byte, word32)");
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|nop",
+                "2|L--|00100004(4): 2 instructions",
+                "3|L--|v3 = Mem0[0x2000D644<p32>:byte]",
+                "4|L--|r3 = CONVERT(v3, byte, word32)");
         }
 
         [Test]
