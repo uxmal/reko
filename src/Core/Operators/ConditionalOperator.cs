@@ -37,6 +37,29 @@ namespace Reko.Core.Operators
         /// same as Inverting it, which changes LT to GE
         /// </summary>
         public abstract Operator Negate();
+
+        public ConditionalOperator ToUnsigned()
+        {
+            switch (base.Type)
+            {
+            case OperatorType.Eq:
+            case OperatorType.Ne:
+            case OperatorType.Ult:
+            case OperatorType.Ule:
+            case OperatorType.Uge:
+            case OperatorType.Ugt:
+                return this;
+            case OperatorType.Lt:
+                return Ult;
+            case OperatorType.Le:
+                return Ule;
+            case OperatorType.Ge:
+                return Uge;
+            case OperatorType.Gt:
+                return Ugt;
+            }
+            throw new NotImplementedException();
+        }
     }
 
     public class CandOperator : BinaryOperator

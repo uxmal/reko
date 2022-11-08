@@ -1549,7 +1549,46 @@ SsaProcedureBuilder_exit:
             RunValuePropagator();
 
             AssertStringsEqual(sExpected, m.Ssa);
+        }
 
+        [Test]
+        public void VpUnsignedSub()
+        {
+            string sExpected =
+            #region Expected
+@"r2: orig: r2
+    uses: r2_1 = r2 -u 1<32>
+          Mem2[0x123400<32>:word32] = r2 <=u 1<32> ? 1<32> : 0<32>
+r2_1: orig: r2_1
+    def:  r2_1 = r2 -u 1<32>
+Mem2: orig: Mem0
+    def:  Mem2[0x123400<32>:word32] = r2 <=u 1<32> ? 1<32> : 0<32>
+// SsaProcedureBuilder
+// Return size: 0
+define SsaProcedureBuilder
+SsaProcedureBuilder_entry:
+	// succ:  l1
+l1:
+	r2_1 = r2 -u 1<32>
+	Mem2[0x123400<32>:word32] = r2 <=u 1<32> ? 1<32> : 0<32>
+SsaProcedureBuilder_exit:
+";
+            #endregion
+
+            var r2 = m.Reg32("r2");
+            var r2_1 = m.Reg32("r2_1");
+
+            m.Assign(r2_1, m.USub(r2, m.Word32(1)));
+            m.MStore(m.Word32(0x00123400),
+                m.Conditional(
+                    PrimitiveType.Word32,
+                    m.Le0(r2_1),
+                    m.Word32(1),
+                    m.Word32(0)));
+
+            RunValuePropagator();
+
+            AssertStringsEqual(sExpected, m.Ssa);
         }
     }
 }

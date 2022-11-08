@@ -576,6 +576,8 @@ l00401718:
 l00401731:
 	fn00401774(7<32>)
 	int3()
+l00401738_thunk_fn00401739:
+	fn00401739()
 	return
 l00401730:
 	return
@@ -586,6 +588,7 @@ word32 fn00401739()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
+//      fn00401718
 //      fn0040173F
 // MayUse: 
 // LiveOut: eax

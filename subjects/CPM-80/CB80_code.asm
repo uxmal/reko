@@ -1055,6 +1055,7 @@ l08E4:
 
 ;; fn08EC: 08EC
 ;;   Called from:
+;;     08E9 (in fn08EC)
 ;;     08E9 (in fn082F)
 fn08EC proc
 	ld	hl,(168B)
@@ -1070,7 +1071,7 @@ l08F6:
 ;; fn08FD: 08FD
 ;;   Called from:
 ;;     08F3 (in fn08EC)
-;;     08FC (in fn082F)
+;;     08FC (in fn08FD)
 fn08FD proc
 	jp	0920
 
@@ -2488,6 +2489,8 @@ fn1353 proc
 	ld	h,00
 
 ;; fn1356: 1356
+;;   Called from:
+;;     1354 (in fn1353)
 fn1356 proc
 	ld	a,(de)
 	sub	a,l

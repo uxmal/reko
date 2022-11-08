@@ -402,10 +402,12 @@ void fn00401718()
 		return;
 	fn00401774(0x07);
 	int3();
+	fn00401739();
 }
 
 // 00401739: Register ptr32 fn00401739()
 // Called from:
+//      fn00401718
 //      fn0040173F
 ptr32 fn00401739()
 {

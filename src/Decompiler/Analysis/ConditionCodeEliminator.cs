@@ -324,12 +324,11 @@ namespace Reko.Analysis
 		public override Instruction TransformAssignment(Assignment a)
         {
             a.Src = a.Src.Accept(this);
-            if (a.Src is BinaryExpression binUse && binUse.Operator.Type.IsAddOrSub())
+            switch (a.Src)
             {
+            case BinaryExpression binUse when binUse.Operator.Type.IsAddOrSub():
                 return TransformAddOrSub(a, binUse);
-            }
-            if (a.Src is Application app && app.Procedure is ProcedureConstant pc)
-            {
+            case Application app when app.Procedure is ProcedureConstant pc:
                 if (pc.Procedure is IntrinsicProcedure pseudo)
                 {
                     if (pseudo.Name == CommonOps.RorC.Name)
@@ -341,7 +340,31 @@ namespace Reko.Analysis
                         return TransformRolC(app, a);
                     }
                 }
+                return a;
+            case Conversion conv when conv.Expression == this.sidGrf?.Identifier:
+                if (conv.SourceDataType == PrimitiveType.Bool)
+                {
+                    if (sidGrf.DefExpression is not ConditionOf cof)
+                        return a;
+                    if (cof.Expression is not Identifier id)
+                        return a;
+                    if (ssaIds[id].DefExpression is BinaryExpression bin && 
+                        bin.Operator.Type == OperatorType.Shr &&
+                        bin.Right is Constant shift && 
+                        shift.ToInt32() == 1)
+                    {
+                        ssa.RemoveUses(useStm);
+                        a.Src = m.Conditional(
+                            conv.DataType,
+                            m.Ne0(m.And(bin.Left, 1)),
+                            Constant.Create(conv.DataType, 1),
+                            Constant.Create(conv.DataType, 0));
+                        Use(a.Src, useStm!);
+                    }
+                }
+                return a;
             }
+
             return a;
         }
 

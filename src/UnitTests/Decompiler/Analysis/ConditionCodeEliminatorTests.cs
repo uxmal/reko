@@ -1198,7 +1198,40 @@ ProcedureBuilder_exit:
                 m.Label("m9");
                 m.Return();
             });
+        }
 
+        [Test]
+        public void CceShrConvert()
+        {
+            var sExp =
+            #region Expected
+@"// ProcedureBuilder
+// Return size: 0
+define ProcedureBuilder
+ProcedureBuilder_entry:
+	def r2
+	// succ:  l1
+l1:
+	r3_4 = (r2 & 1<32>) != 0<32> ? 1<32> : 0<32>
+	return r3_4
+	// succ:  ProcedureBuilder_exit
+ProcedureBuilder_exit:
+
+";
+            #endregion
+
+            RunStringTest(sExp, m =>
+            {
+                var r2 = m.Reg32("r2", 2);
+                var r3 = m.Reg32("r3", 3);
+                var psw = RegisterStorage.Reg32("psw", 4);
+                var C = m.Frame.EnsureFlagGroup(new FlagGroupStorage(psw, 0x1, "C", PrimitiveType.Bool));
+
+                m.Assign(r2, m.Shr(r2, 1));
+                m.Assign(C, m.Cond(r2));
+                m.Assign(r3, m.Convert(C, PrimitiveType.Bool, PrimitiveType.Word32));
+                m.Return(r3);
+            });
         }
     }
 }

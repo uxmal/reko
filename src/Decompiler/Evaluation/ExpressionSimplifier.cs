@@ -516,40 +516,57 @@ namespace Reko.Evaluation
 
             if (binLeft != null && cRight != null && cRight.IsIntegerZero &&
                 IsIntComparison(binExp.Operator.Type) &&
-                binLeft.Left is Constant cBinLeft &&
-                binLeft.Operator.Type == OperatorType.ISub)
+                binLeft.Left is Constant cBinLeft)
             {
-                return (new BinaryExpression(
-                    ((ConditionalOperator) binExp.Operator).Negate(),
-                    binExp.DataType,
-                    binLeft.Right,
-                    cBinLeft), true);
+                if (binLeft.Operator.Type == OperatorType.ISub)
+                {
+                    return (new BinaryExpression(
+                        ((ConditionalOperator) binExp.Operator).Negate(),
+                        binExp.DataType,
+                        binLeft.Right,
+                        cBinLeft), true);
+                } 
+                else if (binLeft.Operator.Type == OperatorType.USub)
+                {
+                    _ = this;
+                }
             }
 
             // (rel (- e c1) c2) => (rel e c1+c2)
 
-            if (binLeft != null && cLeftRight != null && cRight != null &&
-                IsIntComparison(binExp.Operator.Type) && binLeft.Operator.Type.IsAddOrSub() &&
+            if (IsIntComparison(binExp.Operator.Type) &&
+                binLeft != null && cLeftRight != null && cRight != null &&
                 !cLeftRight.IsReal && !cRight.IsReal)
             {
-                // (>u (- e c1) c2) => (>u e c1+c2) || (<u e c2)
-                if (binExp.Operator.Type == OperatorType.Ugt &&
-                    binLeft.Operator.Type == OperatorType.ISub &&
-                    !cRight.IsIntegerZero)
+                if (binLeft.Operator.Type.IsAddOrSub())
                 {
-                    ctx.UseExpression(binLeft.Left);
-                    var c = Operator.IAdd.ApplyConstants(cLeftRight, cRight);
-                    return (m.Cor(
-                        new BinaryExpression(binExp.Operator, PrimitiveType.Bool, binLeft.Left, c),
-                        m.Ult(binLeft.Left, cLeftRight)),
-                        true);
+                    // (>u (- e c1) c2) => (>u e c1+c2) || (<u e c2)
+                    if (binExp.Operator.Type == OperatorType.Ugt &&
+                        binLeft.Operator.Type == OperatorType.ISub &&
+                        !cRight.IsIntegerZero)
+                    {
+                        ctx.UseExpression(binLeft.Left);
+                        var c = Operator.IAdd.ApplyConstants(cLeftRight, cRight);
+                        return (m.Cor(
+                            new BinaryExpression(binExp.Operator, PrimitiveType.Bool, binLeft.Left, c),
+                            m.Ult(binLeft.Left, cLeftRight)),
+                            true);
+                    }
+                    else
+                    {
+                        ctx.RemoveIdentifierUse(idLeft!);
+                        var op = binLeft.Operator.Type == OperatorType.IAdd ? Operator.ISub : Operator.IAdd;
+                        var c = op.ApplyConstants(cLeftRight, cRight);
+                        return (new BinaryExpression(binExp.Operator, PrimitiveType.Bool, binLeft.Left, c), true);
+                    }
                 }
-                else
+                else if (binLeft.Operator.Type == OperatorType.USub)
                 {
                     ctx.RemoveIdentifierUse(idLeft!);
                     var op = binLeft.Operator.Type == OperatorType.IAdd ? Operator.ISub : Operator.IAdd;
                     var c = op.ApplyConstants(cLeftRight, cRight);
-                    return (new BinaryExpression(binExp.Operator, PrimitiveType.Bool, binLeft.Left, c), true);
+                    var opCmp = ((ConditionalOperator) binExp.Operator).ToUnsigned();
+                    return (new BinaryExpression(opCmp, PrimitiveType.Bool, binLeft.Left, c), true);
                 }
             }
             var dwordIdiom = UnfoldDwordIdiom(binExp);
