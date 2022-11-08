@@ -368,7 +368,6 @@ namespace Reko.Scanning
         }
 
         // Writes the start and end addresses, size, and successor edges of each block, 
-        [Conditional("DEBUG")]
         public void DumpBlocks(ScanResultsV2 sr, IDictionary<Address, RtlBlock> blocks, Action<string> writeLine)
         {
             writeLine(
