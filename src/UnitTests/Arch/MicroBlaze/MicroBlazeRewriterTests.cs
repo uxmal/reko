@@ -126,7 +126,7 @@ namespace Reko.UnitTests.Arch.MicroBlaze
             Given_HexString("BC13FEB4"); // beqi\tr19,000FFEB4
             AssertCode(
                 "0|T--|00100000(4): 1 instructions",
-                "1|T--|if (Test(EQ,r19)) branch 000FFEB4");
+                "1|T--|if (r19 == 0<32>) branch 000FFEB4");
         }
 
         [Test]
@@ -135,7 +135,7 @@ namespace Reko.UnitTests.Arch.MicroBlaze
             Given_HexString("BE03FFD8"); // beqid\tr3,000FFFD8
             AssertCode(
                 "0|TD-|00100000(4): 1 instructions",
-                "1|TD-|if (Test(EQ,r3)) branch 000FFFD8");
+                "1|TD-|if (r3 == 0<32>) branch 000FFFD8");
         }
 
         [Test]
@@ -144,7 +144,7 @@ namespace Reko.UnitTests.Arch.MicroBlaze
             Given_HexString("BCA40094"); // bgei\tr4,00100094
             AssertCode(
                 "0|T--|00100000(4): 1 instructions",
-                "1|T--|if (Test(GE,r4)) branch 00100094");
+                "1|T--|if (r4 >= 0<32>) branch 00100094");
         }
 
         [Test]
@@ -153,7 +153,7 @@ namespace Reko.UnitTests.Arch.MicroBlaze
             Given_HexString("BEB2FFE0"); // bgeid\tr18,000FFFE0
             AssertCode(
                 "0|TD-|00100000(4): 1 instructions",
-                "1|TD-|if (Test(GE,r18)) branch 000FFFE0");
+                "1|TD-|if (r18 >= 0<32>) branch 000FFFE0");
         }
 
         [Test]
@@ -162,7 +162,7 @@ namespace Reko.UnitTests.Arch.MicroBlaze
             Given_HexString("BE83FFC8"); // bgtid\tr3,000FFFC8
             AssertCode(
                 "0|TD-|00100000(4): 1 instructions",
-                "1|TD-|if (Test(GT,r3)) branch 000FFFC8");
+                "1|TD-|if (r3 > 0<32>) branch 000FFFC8");
         }
 
         [Test]
@@ -171,7 +171,7 @@ namespace Reko.UnitTests.Arch.MicroBlaze
             Given_HexString("BC7AFF64"); // blei\tr26,000FFF64
             AssertCode(
                 "0|T--|00100000(4): 1 instructions",
-                "1|T--|if (Test(LE,r26)) branch 000FFF64");
+                "1|T--|if (r26 <= 0<32>) branch 000FFF64");
         }
 
         [Test]
@@ -180,7 +180,7 @@ namespace Reko.UnitTests.Arch.MicroBlaze
             Given_HexString("BC52FFD4"); // blti\tr18,000FFFD4
             AssertCode(
                 "0|T--|00100000(4): 1 instructions",
-                "1|T--|if (Test(LT,r18)) branch 000FFFD4");
+                "1|T--|if (r18 < 0<32>) branch 000FFFD4");
         }
 
         [Test]
@@ -189,7 +189,7 @@ namespace Reko.UnitTests.Arch.MicroBlaze
             Given_HexString("BE52FFD8"); // bltid\tr18,000FFFD8
             AssertCode(
                 "0|TD-|00100000(4): 1 instructions",
-                "1|TD-|if (Test(LT,r18)) branch 000FFFD8");
+                "1|TD-|if (r18 < 0<32>) branch 000FFFD8");
         }
 
         [Test]
@@ -198,7 +198,7 @@ namespace Reko.UnitTests.Arch.MicroBlaze
             Given_HexString("BC23FF8C"); // bnei\tr3,000FFF8C
             AssertCode(
                 "0|T--|00100000(4): 1 instructions",
-                "1|T--|if (Test(NE,r3)) branch 000FFF8C");
+                "1|T--|if (r3 != 0<32>) branch 000FFF8C");
         }
 
         [Test]
@@ -207,7 +207,7 @@ namespace Reko.UnitTests.Arch.MicroBlaze
             Given_HexString("BE36FFC4"); // bneid\tr22,000FFFC4
             AssertCode(
                 "0|TD-|00100000(4): 1 instructions",
-                "1|TD-|if (Test(NE,r22)) branch 000FFFC4");
+                "1|TD-|if (r22 != 0<32>) branch 000FFFC4");
         }
 
         [Test]
@@ -273,7 +273,7 @@ namespace Reko.UnitTests.Arch.MicroBlaze
             Given_HexString("1643B001"); // cmp\tr18,r3,r22
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|r18 = cond(r22 - r3)");
+                "1|L--|r18 = r22 - r3");
         }
 
         [Test]
@@ -282,7 +282,7 @@ namespace Reko.UnitTests.Arch.MicroBlaze
             Given_HexString("1644B803"); // cmpu\tr18,r4,r23
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|r18 = cond(r23 -u r4)");
+                "1|L--|r18 = r23 -u r4");
         }
 
         [Test]

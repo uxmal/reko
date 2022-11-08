@@ -81,18 +81,18 @@ namespace Reko.Arch.MicroBlaze
                 case Mnemonic.addik: RewriteAddi(false); break;
                 case Mnemonic.and: RewriteLogical(m.And); break;
                 case Mnemonic.andi: RewriteLogicalImm(m.And); break;
-                case Mnemonic.beqi: RewriteBranch(ConditionCode.EQ); break;
-                case Mnemonic.beqid: RewriteBranch(ConditionCode.EQ); break;
-                case Mnemonic.bgei: RewriteBranch(ConditionCode.GE); break;
-                case Mnemonic.bgeid: RewriteBranch(ConditionCode.GE); break;
-                case Mnemonic.bgti: RewriteBranch(ConditionCode.GT); break;
-                case Mnemonic.bgtid: RewriteBranch(ConditionCode.GT); break;
-                case Mnemonic.blei: RewriteBranch(ConditionCode.LE); break;
-                case Mnemonic.bleid: RewriteBranch(ConditionCode.LE); break;
-                case Mnemonic.blti: RewriteBranch(ConditionCode.LT); break;
-                case Mnemonic.bltid: RewriteBranch(ConditionCode.LT); break;
-                case Mnemonic.bnei: RewriteBranch(ConditionCode.NE); break;
-                case Mnemonic.bneid: RewriteBranch(ConditionCode.NE); break;
+                case Mnemonic.beqi: RewriteBranch(m.Eq0); break;
+                case Mnemonic.beqid: RewriteBranch(m.Eq0); break;
+                case Mnemonic.bgei: RewriteBranch(m.Ge0); break;
+                case Mnemonic.bgeid: RewriteBranch(m.Ge0); break;
+                case Mnemonic.bgti: RewriteBranch(m.Gt0); break;
+                case Mnemonic.bgtid: RewriteBranch(m.Gt0); break;
+                case Mnemonic.blei: RewriteBranch(m.Le0); break;
+                case Mnemonic.bleid: RewriteBranch(m.Le0); break;
+                case Mnemonic.blti: RewriteBranch(m.Lt0); break;
+                case Mnemonic.bltid: RewriteBranch(m.Lt0); break;
+                case Mnemonic.bnei: RewriteBranch(m.Ne0); break;
+                case Mnemonic.bneid: RewriteBranch(m.Ne0); break;
                 case Mnemonic.br: RewriteJump(false, false); break;
                 case Mnemonic.bra: RewriteJump(false, true); break;
                 case Mnemonic.brad: RewriteJump(false, true); break;
@@ -335,10 +335,10 @@ namespace Reko.Arch.MicroBlaze
             }
         }
 
-        private void RewriteBranch(ConditionCode cc)
+        private void RewriteBranch(Func<Expression,Expression> cmp)
         {
             var reg = Reg(0);
-            var cond = m.Test(cc, reg);
+            var cond = cmp(reg);
             if (instrCur.Operands[1] is AddressOperand addrDst)
             {
                 m.Branch(cond, addrDst.Address, instrCur.InstructionClass);
@@ -359,7 +359,7 @@ namespace Reko.Arch.MicroBlaze
             var dst = Reg(0);
             var src1 = Reg0(1);
             var src2 = Reg0(2);
-            m.Assign(dst, m.Cond(fn(src2, src1)));
+            m.Assign(dst, fn(src2, src1));
         }
 
         private void RewriteJump(bool link, bool absolute)
