@@ -56,7 +56,10 @@ namespace Reko.Gui.Commands
                         procedure.Name = newProc.Name;
                     if (newProc.Signature is { })
                     {
-                        var proc = program.Procedures[address];
+                        // Edit Signature could happen before scanning has been done,
+                        // so there are no program.Procedures yet.
+                        if (!program.Procedures.TryGetValue(address, out var proc))
+                            return;
                         var ser = program.CreateProcedureSerializer();
                         proc.Signature = ser.Deserialize(newProc.Signature, proc.Frame)!;
                     }
