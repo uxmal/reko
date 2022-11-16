@@ -70,7 +70,7 @@ abstract Reko.Core.Expressions.ExpressionTypeAscenderBase.EnsureDataType(Reko.Co
 abstract Reko.Core.Expressions.ExpressionTypeAscenderBase.RecordDataType(Reko.Core.Types.DataType! dt, Reko.Core.Expressions.Expression! exp) -> Reko.Core.Types.DataType!
 abstract Reko.Core.Expressions.ExpressionVisitorBase<T>.DefaultValue.get -> T
 abstract Reko.Core.Hll.C.CExpression.Accept<T>(Reko.Core.Hll.C.CExpressionVisitor<T> visitor) -> T
-abstract Reko.Core.Hll.C.CSyntax.Accept<T>(Reko.Core.Hll.C.CSyntaxVisitor<T> visitor) -> T
+abstract Reko.Core.Hll.C.CSyntax.Accept<T>(Reko.Core.Hll.C.CSyntaxVisitor<T>! visitor) -> T
 abstract Reko.Core.Hll.C.Declarator.Accept<T>(Reko.Core.Hll.C.DeclaratorVisitor<T> visitor) -> T
 abstract Reko.Core.Hll.C.DeclSpec.Accept<T>(Reko.Core.Hll.C.DeclSpecVisitor<T> visitor) -> T
 abstract Reko.Core.Hll.Pascal.PascalSyntax.Accept<T>(Reko.Core.Hll.Pascal.IPascalSyntaxVisitor<T> visitor) -> T
@@ -384,7 +384,7 @@ override Reko.Core.Code.ReturnInstruction.Accept<T>(Reko.Core.Code.InstructionVi
 override Reko.Core.Code.ReturnInstruction.IsControlFlow.get -> bool
 override Reko.Core.Code.SideEffect.Accept(Reko.Core.Code.InstructionTransformer! xform) -> Reko.Core.Code.Instruction!
 override Reko.Core.Code.SideEffect.Accept(Reko.Core.Code.InstructionVisitor! v) -> void
-override Reko.Core.Code.SideEffect.Accept<T, C>(Reko.Core.Code.InstructionVisitor<T, C> visitor, C ctx) -> T
+override Reko.Core.Code.SideEffect.Accept<T, C>(Reko.Core.Code.InstructionVisitor<T, C>! visitor, C ctx) -> T
 override Reko.Core.Code.SideEffect.Accept<T>(Reko.Core.Code.InstructionVisitor<T>! visitor) -> T
 override Reko.Core.Code.SideEffect.IsControlFlow.get -> bool
 override Reko.Core.Code.Store.Accept(Reko.Core.Code.InstructionTransformer! xform) -> Reko.Core.Code.Instruction!
@@ -392,10 +392,10 @@ override Reko.Core.Code.Store.Accept(Reko.Core.Code.InstructionVisitor! v) -> vo
 override Reko.Core.Code.Store.Accept<T, C>(Reko.Core.Code.InstructionVisitor<T, C>! visitor, C ctx) -> T
 override Reko.Core.Code.Store.Accept<T>(Reko.Core.Code.InstructionVisitor<T>! visitor) -> T
 override Reko.Core.Code.Store.IsControlFlow.get -> bool
-override Reko.Core.Code.SwitchInstruction.Accept(Reko.Core.Code.InstructionTransformer xform) -> Reko.Core.Code.Instruction
-override Reko.Core.Code.SwitchInstruction.Accept(Reko.Core.Code.InstructionVisitor v) -> void
-override Reko.Core.Code.SwitchInstruction.Accept<T, C>(Reko.Core.Code.InstructionVisitor<T, C> visitor, C ctx) -> T
-override Reko.Core.Code.SwitchInstruction.Accept<T>(Reko.Core.Code.InstructionVisitor<T> visitor) -> T
+override Reko.Core.Code.SwitchInstruction.Accept(Reko.Core.Code.InstructionTransformer! xform) -> Reko.Core.Code.Instruction!
+override Reko.Core.Code.SwitchInstruction.Accept(Reko.Core.Code.InstructionVisitor! v) -> void
+override Reko.Core.Code.SwitchInstruction.Accept<T, C>(Reko.Core.Code.InstructionVisitor<T, C>! visitor, C ctx) -> T
+override Reko.Core.Code.SwitchInstruction.Accept<T>(Reko.Core.Code.InstructionVisitor<T>! visitor) -> T
 override Reko.Core.Code.SwitchInstruction.IsControlFlow.get -> bool
 override Reko.Core.Code.UseInstruction.Accept(Reko.Core.Code.InstructionTransformer! xform) -> Reko.Core.Code.Instruction!
 override Reko.Core.Code.UseInstruction.Accept(Reko.Core.Code.InstructionVisitor! v) -> void
@@ -659,7 +659,8 @@ override Reko.Core.FpuStackStorage.OverlapsWith(Reko.Core.Storage! sThat) -> boo
 override Reko.Core.FpuStackStorage.Write(System.IO.TextWriter! writer) -> void
 override Reko.Core.Graphs.DiGraph<T>.ToString() -> string!
 override Reko.Core.Hll.C.Application.Accept<T>(Reko.Core.Hll.C.CExpressionVisitor<T> visitor) -> T
-override Reko.Core.Hll.C.Application.ToString() -> string
+override Reko.Core.Hll.C.Application.ToString() -> string!
+override Reko.Core.Hll.C.ArrayDeclarator.ToString() -> string!
 readonly Reko.Core.FrameApplicationBuilder.arch -> Reko.Core.IProcessorArchitecture!
 readonly Reko.Core.FrameApplicationBuilder.binder -> Reko.Core.IStorageBinder!
 Reko.Core.Assemblers.Symbol.IsResolved.get -> bool
@@ -696,7 +697,60 @@ Reko.Core.Expressions.ExpressionTypeAscenderBase.ExpressionTypeAscenderBase(Reko
 Reko.Core.FlagGroupStorage.ToString(Reko.Core.Machine.MachineInstructionRendererOptions! options) -> string!
 Reko.Core.FlagGroupStorage.Width.get -> Reko.Core.Types.DataType!
 Reko.Core.FlagGroupStorage.Width.set -> void
+Reko.Core.Hll.C.Application.Application(Reko.Core.Hll.C.CExpression! function, System.Collections.Generic.List<Reko.Core.Hll.C.CExpression!>! arguments) -> void
+Reko.Core.Hll.C.ArrayDeclarator.ArrayDeclarator(Reko.Core.Hll.C.Declarator! declarator, Reko.Core.Hll.C.CExpression? size) -> void
+Reko.Core.Hll.C.ArrayDeclarator.Declarator -> Reko.Core.Hll.C.Declarator!
+Reko.Core.Hll.C.ArrayDeclarator.Size -> Reko.Core.Hll.C.CExpression?
+Reko.Core.Hll.C.AssignExpression.AssignExpression(Reko.Core.Hll.C.CTokenType assingmentOp, Reko.Core.Hll.C.CExpression! lValue, Reko.Core.Hll.C.CExpression! rValue) -> void
+Reko.Core.Hll.C.CallConventionDeclarator.CallConventionDeclarator(Reko.Core.Hll.C.CTokenType convention, Reko.Core.Hll.C.Declarator! declarator) -> void
+Reko.Core.Hll.C.CArrayAccess.CArrayAccess(Reko.Core.Hll.C.CExpression! expression, Reko.Core.Hll.C.CExpression! index) -> void
+Reko.Core.Hll.C.CaseLabel.CaseLabel(Reko.Core.Hll.C.CExpression! value) -> void
+Reko.Core.Hll.C.CastExpression.CastExpression(Reko.Core.Hll.C.CType! type, Reko.Core.Hll.C.CExpression! expression) -> void
+Reko.Core.Hll.C.CBinaryExpression.CBinaryExpression(Reko.Core.Hll.C.CTokenType operation, Reko.Core.Hll.C.CExpression! left, Reko.Core.Hll.C.CExpression! right) -> void
 Reko.Core.Hll.C.CConstantEvaluator.VisitIncrement(Reko.Core.Hll.C.IncrementExpression! incrementExpression) -> object!
+Reko.Core.Hll.C.CGrammar.Application(Reko.Core.Hll.C.CExpression! fn, System.Collections.Generic.List<Reko.Core.Hll.C.CExpression!>! arguments) -> Reko.Core.Hll.C.CExpression!
+Reko.Core.Hll.C.CGrammar.ArrayDeclarator(Reko.Core.Hll.C.Declarator! decl, Reko.Core.Hll.C.CExpression? expr) -> Reko.Core.Hll.C.Declarator!
+Reko.Core.Hll.C.CGrammar.CallConventionDeclarator(Reko.Core.Hll.C.CTokenType conv, Reko.Core.Hll.C.Declarator! decl) -> Reko.Core.Hll.C.Declarator!
+Reko.Core.Hll.C.CGrammar.DeclStat(Reko.Core.Hll.C.Decl! decl, Reko.Core.Hll.C.CExpression? initializer = null) -> Reko.Core.Hll.C.Stat!
+Reko.Core.Hll.C.CGrammar.Enum(string? tag, System.Collections.Generic.List<Reko.Core.Hll.C.Enumerator!>! enums) -> Reko.Core.Hll.C.TypeSpec!
+Reko.Core.Hll.C.CGrammar.Enumerator(string! id, Reko.Core.Hll.C.CExpression? init) -> Reko.Core.Hll.C.Enumerator!
+Reko.Core.Hll.C.CGrammar.ExtendedDeclspec(string! name) -> Reko.Core.Hll.C.DeclSpec!
+Reko.Core.Hll.C.CGrammar.IfStatement(Reko.Core.Hll.C.CExpression! expr, Reko.Core.Hll.C.Stat! consequence, Reko.Core.Hll.C.Stat? alternative) -> Reko.Core.Hll.C.Stat!
+Reko.Core.Hll.C.CGrammar.ReferenceDeclarator(Reko.Core.Hll.C.Declarator? decl, System.Collections.Generic.List<Reko.Core.Hll.C.TypeQualifier!>? tqs) -> Reko.Core.Hll.C.Declarator!
+Reko.Core.Hll.C.CIdentifier.CIdentifier(string! name) -> void
+Reko.Core.Hll.C.CompoundStatement.CompoundStatement(System.Collections.Generic.List<Reko.Core.Hll.C.Stat!>! statements) -> void
+Reko.Core.Hll.C.ConditionalExpression.ConditionalExpression(Reko.Core.Hll.C.CExpression! condition, Reko.Core.Hll.C.CExpression! consequent, Reko.Core.Hll.C.CExpression! alternative) -> void
+Reko.Core.Hll.C.ConstExp.ConstExp(object! value) -> void
+Reko.Core.Hll.C.CParser.ParseAttributeSpecifierSeq() -> System.Collections.Generic.List<Reko.Core.Hll.C.CAttribute!>?
+Reko.Core.Hll.C.CUnaryExpression.CUnaryExpression(Reko.Core.Hll.C.CTokenType operation, Reko.Core.Hll.C.CExpression! expression) -> void
+Reko.Core.Hll.C.Decl.Decl(System.Collections.Generic.List<Reko.Core.Hll.C.CAttribute!>? attrs, System.Collections.Generic.List<Reko.Core.Hll.C.DeclSpec!>! declSpecs, System.Collections.Generic.List<Reko.Core.Hll.C.InitDeclarator!>! listDecls) -> void
+Reko.Core.Hll.C.DeclStat.DeclStat(Reko.Core.Hll.C.Decl! declaration, Reko.Core.Hll.C.CExpression? initializer) -> void
+Reko.Core.Hll.C.DoWhileStat.DoWhileStat(Reko.Core.Hll.C.Stat! body, Reko.Core.Hll.C.CExpression! expression) -> void
+Reko.Core.Hll.C.Enumerator.Enumerator(string! name, Reko.Core.Hll.C.CExpression? value) -> void
+Reko.Core.Hll.C.EnumeratorTypeSpec.EnumeratorTypeSpec(string? tag, System.Collections.Generic.List<Reko.Core.Hll.C.Enumerator!>! enums) -> void
+Reko.Core.Hll.C.ExpressionInitializer.ExpressionInitializer(Reko.Core.Hll.C.CExpression! expression) -> void
+Reko.Core.Hll.C.ExprStat.Expression -> Reko.Core.Hll.C.CExpression?
+Reko.Core.Hll.C.ExprStat.ExprStat(Reko.Core.Hll.C.CExpression? exp) -> void
+Reko.Core.Hll.C.ExtendedDeclspec.ExtendedDeclspec(string! name) -> void
+Reko.Core.Hll.C.FieldDeclarator.FieldDeclarator(Reko.Core.Hll.C.Declarator! declarator, Reko.Core.Hll.C.CExpression? fieldSize) -> void
+Reko.Core.Hll.C.ForStat.ForStat(Reko.Core.Hll.C.Stat? initializer, Reko.Core.Hll.C.CExpression? test, Reko.Core.Hll.C.CExpression? update, Reko.Core.Hll.C.Stat! body) -> void
+Reko.Core.Hll.C.FunctionDecl.FunctionDecl(Reko.Core.Hll.C.Decl! signature, System.Collections.Generic.List<Reko.Core.Hll.C.Stat!>! body, System.Collections.Generic.List<Reko.Core.Hll.C.DeclSpec!>! declSpecs) -> void
+Reko.Core.Hll.C.FunctionDeclarator.FunctionDeclarator(Reko.Core.Hll.C.Declarator? declarator, System.Collections.Generic.List<Reko.Core.Hll.C.ParamDecl!>! parameters) -> void
+Reko.Core.Hll.C.GotoStat.GotoStat(string! label) -> void
+Reko.Core.Hll.C.IdDeclarator.IdDeclarator(string! name) -> void
+Reko.Core.Hll.C.IfStat.IfStat(Reko.Core.Hll.C.CExpression! expression, Reko.Core.Hll.C.Stat! consequence, Reko.Core.Hll.C.Stat? alternative) -> void
+Reko.Core.Hll.C.IncrementExpression.IncrementExpression(Reko.Core.Hll.C.CTokenType incrementor, bool prefix, Reko.Core.Hll.C.CExpression! expression) -> void
+Reko.Core.Hll.C.InitDeclarator.InitDeclarator(Reko.Core.Hll.C.Declarator! decl, Reko.Core.Hll.C.Initializer? init) -> void
+Reko.Core.Hll.C.LabeledStat.LabeledStat(Reko.Core.Hll.C.Label! label, Reko.Core.Hll.C.Stat! stat) -> void
+Reko.Core.Hll.C.LineLabel.LineLabel(string! name) -> void
+Reko.Core.Hll.C.MemberExpression.MemberExpression(Reko.Core.Hll.C.CExpression! exp, bool deref, string! fieldName) -> void
+Reko.Core.Hll.C.ParamDecl.ParamDecl(System.Collections.Generic.List<Reko.Core.Hll.C.CAttribute!>? attributes, System.Collections.Generic.List<Reko.Core.Hll.C.DeclSpec!>? declSpecs, Reko.Core.Hll.C.Declarator? declarator, bool isEllipsis) -> void
+Reko.Core.Hll.C.ReturnStat.ReturnStat(Reko.Core.Hll.C.CExpression! exp) -> void
+Reko.Core.Hll.C.SizeofExpression.Expression -> Reko.Core.Hll.C.CExpression?
+Reko.Core.Hll.C.SizeofExpression.SizeofExpression(Reko.Core.Hll.C.CType? type, Reko.Core.Hll.C.CExpression? expression) -> void
+Reko.Core.Hll.C.SizeofExpression.Type -> Reko.Core.Hll.C.CType?
+Reko.Core.Hll.C.TypeDefName.TypeDefName(string! name) -> void
+Reko.Core.Hll.C.WhileStat.WhileStat(Reko.Core.Hll.C.CExpression! expression, Reko.Core.Hll.C.Stat! body) -> void
 Reko.Core.IO.UbjsonMarker.Array = 91 -> Reko.Core.IO.UbjsonMarker
 Reko.Core.IO.UbjsonMarker.ArrayEnd = 93 -> Reko.Core.IO.UbjsonMarker
 Reko.Core.IO.UbjsonMarker.Char = 67 -> Reko.Core.IO.UbjsonMarker
@@ -758,14 +812,12 @@ static Reko.Core.RegisterStorage.Reg16(string! name, int number, uint bitOffset 
 static Reko.Core.RegisterStorage.Reg32(string! name, int number, uint bitOffset = 0) -> Reko.Core.RegisterStorage!
 static Reko.Core.RegisterStorage.Reg64(string! name, int number, uint bitOffset = 0) -> Reko.Core.RegisterStorage!
 static Reko.Core.RegisterStorage.Reg8(string! name, int number, uint bitOffset = 0) -> Reko.Core.RegisterStorage!
-~override Reko.Core.Hll.C.ArrayDeclarator.Accept<T>(Reko.Core.Hll.C.DeclaratorVisitor<T> visitor) -> T
-~override Reko.Core.Hll.C.ArrayDeclarator.ToString() -> string
 override Reko.Core.Hll.C.AssignExpression.Accept<T>(Reko.Core.Hll.C.CExpressionVisitor<T> visitor) -> T
 override Reko.Core.Hll.C.CallConventionDeclarator.Accept<T>(Reko.Core.Hll.C.DeclaratorVisitor<T> visitor) -> T
-~override Reko.Core.Hll.C.CallConventionDeclarator.ToString() -> string
-override Reko.Core.Hll.C.CArrayAccess.Accept<T>(Reko.Core.Hll.C.CExpressionVisitor<T> visitor) -> T
-override Reko.Core.Hll.C.CArrayAccess.ToString() -> string
-override Reko.Core.Hll.C.CaseLabel.ToString() -> string
+override Reko.Core.Hll.C.CallConventionDeclarator.ToString() -> string!
+override Reko.Core.Hll.C.CArrayAccess.Accept<T>(Reko.Core.Hll.C.CExpressionVisitor<T>! visitor) -> T
+override Reko.Core.Hll.C.CArrayAccess.ToString() -> string!
+override Reko.Core.Hll.C.CaseLabel.ToString() -> string!
 override Reko.Core.Hll.C.CastExpression.Accept<T>(Reko.Core.Hll.C.CExpressionVisitor<T> visitor) -> T
 Reko.Core.CallGraph.FindCallerStatements(Reko.Core.Procedure! proc) -> System.Collections.Generic.IEnumerable<Reko.Core.Statement!>!
 Reko.Core.Collections.WorkList
@@ -805,53 +857,52 @@ static Reko.Core.Address.Create(Reko.Core.Types.DataType! dtAddress, ulong bitPa
 static Reko.Core.Collections.WorkList.Create<T>(System.Collections.Generic.IEnumerable<T>! items) -> Reko.Core.Collections.WorkList<T>!
 static Reko.Core.Expressions.BinaryExpression.Commutes(Reko.Core.Operators.OperatorType op) -> bool
 static Reko.Core.Serialization.ArgumentSerializer.Serialize(Reko.Core.Expressions.Identifier? arg) -> Reko.Core.Serialization.Argument_v1?
-~override Reko.Core.Hll.C.CastExpression.ToString() -> string
 override Reko.Core.Hll.C.CAttribute.Accept<T>(Reko.Core.Hll.C.CSyntaxVisitor<T> visitor) -> T
 override Reko.Core.Hll.C.CAttribute.ToString() -> string
-override Reko.Core.Hll.C.CBinaryExpression.Accept<T>(Reko.Core.Hll.C.CExpressionVisitor<T> visitor) -> T
+override Reko.Core.Hll.C.CBinaryExpression.Accept<T>(Reko.Core.Hll.C.CExpressionVisitor<T>! visitor) -> T
 override Reko.Core.Hll.C.CBinaryExpression.ToString() -> string
-override Reko.Core.Hll.C.CIdentifier.Accept<T>(Reko.Core.Hll.C.CExpressionVisitor<T> visitor) -> T
-override Reko.Core.Hll.C.CIdentifier.ToString() -> string
+override Reko.Core.Hll.C.CIdentifier.Accept<T>(Reko.Core.Hll.C.CExpressionVisitor<T>! visitor) -> T
+override Reko.Core.Hll.C.CIdentifier.ToString() -> string!
 override Reko.Core.Hll.C.ComplexTypeSpec.Accept<T>(Reko.Core.Hll.C.DeclSpecVisitor<T> visitor) -> T
 override Reko.Core.Hll.C.ComplexTypeSpec.ToString() -> string
-override Reko.Core.Hll.C.CompoundStatement.ToString() -> string
+override Reko.Core.Hll.C.CompoundStatement.ToString() -> string!
 override Reko.Core.Hll.C.ConditionalExpression.Accept<T>(Reko.Core.Hll.C.CExpressionVisitor<T> visitor) -> T
-override Reko.Core.Hll.C.ConditionalExpression.ToString() -> string
+override Reko.Core.Hll.C.ConditionalExpression.ToString() -> string!
 override Reko.Core.Hll.C.ConstExp.Accept<T>(Reko.Core.Hll.C.CExpressionVisitor<T> visitor) -> T
 override Reko.Core.Hll.C.ConstExp.ToString() -> string
 override Reko.Core.Hll.C.CType.Accept<T>(Reko.Core.Hll.C.CSyntaxVisitor<T> visitor) -> T
 override Reko.Core.Hll.C.CType.ToString() -> string
 override Reko.Core.Hll.C.CUnaryExpression.Accept<T>(Reko.Core.Hll.C.CExpressionVisitor<T> visitor) -> T
-override Reko.Core.Hll.C.CUnaryExpression.ToString() -> string
+override Reko.Core.Hll.C.CUnaryExpression.ToString() -> string!
 override Reko.Core.Hll.C.Decl.Accept<T>(Reko.Core.Hll.C.CSyntaxVisitor<T> visitor) -> T
-override Reko.Core.Hll.C.Decl.ToString() -> string
-override Reko.Core.Hll.C.DoWhileStat.ToString() -> string
+override Reko.Core.Hll.C.Decl.ToString() -> string!
+override Reko.Core.Hll.C.DoWhileStat.ToString() -> string!
 override Reko.Core.Hll.C.Enumerator.Accept<T>(Reko.Core.Hll.C.CSyntaxVisitor<T> visitor) -> T
 override Reko.Core.Hll.C.Enumerator.ToString() -> string
-override Reko.Core.Hll.C.EnumeratorTypeSpec.Accept<T>(Reko.Core.Hll.C.DeclSpecVisitor<T> visitor) -> T
+override Reko.Core.Hll.C.EnumeratorTypeSpec.Accept<T>(Reko.Core.Hll.C.DeclSpecVisitor<T>! visitor) -> T
 override Reko.Core.Hll.C.EnumeratorTypeSpec.ToString() -> string
-override Reko.Core.Hll.C.ExpressionInitializer.ToString() -> string
-override Reko.Core.Hll.C.ExprStat.ToString() -> string
+override Reko.Core.Hll.C.ExpressionInitializer.ToString() -> string!
+override Reko.Core.Hll.C.ExprStat.ToString() -> string!
 override Reko.Core.Hll.C.ExtendedDeclspec.Accept<T>(Reko.Core.Hll.C.DeclSpecVisitor<T> visitor) -> T
 override Reko.Core.Hll.C.ExtendedDeclspec.ToString() -> string
 override Reko.Core.Hll.C.FieldDeclarator.Accept<T>(Reko.Core.Hll.C.DeclaratorVisitor<T> visitor) -> T
 override Reko.Core.Hll.C.FieldDeclarator.ToString() -> string
 override Reko.Core.Hll.C.FunctionDecl.ToString() -> string
-override Reko.Core.Hll.C.FunctionDeclarator.Accept<T>(Reko.Core.Hll.C.DeclaratorVisitor<T> visitor) -> T
+override Reko.Core.Hll.C.FunctionDeclarator.Accept<T>(Reko.Core.Hll.C.DeclaratorVisitor<T>! visitor) -> T
 override Reko.Core.Hll.C.FunctionDeclarator.ToString() -> string
 override Reko.Core.Hll.C.IdDeclarator.Accept<T>(Reko.Core.Hll.C.DeclaratorVisitor<T> visitor) -> T
 override Reko.Core.Hll.C.IdDeclarator.ToString() -> string
 override Reko.Core.Hll.C.IncrementExpression.Accept<T>(Reko.Core.Hll.C.CExpressionVisitor<T> visitor) -> T
 override Reko.Core.Hll.C.InitDeclarator.Accept<T>(Reko.Core.Hll.C.CSyntaxVisitor<T> visitor) -> T
 override Reko.Core.Hll.C.InitDeclarator.ToString() -> string
-override Reko.Core.Hll.C.LineLabel.ToString() -> string
+override Reko.Core.Hll.C.LineLabel.ToString() -> string!
 override Reko.Core.Hll.C.MemberExpression.Accept<T>(Reko.Core.Hll.C.CExpressionVisitor<T> visitor) -> T
 override Reko.Core.Hll.C.MemberExpression.ToString() -> string
-override Reko.Core.Hll.C.ParamDecl.Accept<T>(Reko.Core.Hll.C.CSyntaxVisitor<T> visitor) -> T
+override Reko.Core.Hll.C.ParamDecl.Accept<T>(Reko.Core.Hll.C.CSyntaxVisitor<T>! visitor) -> T
 override Reko.Core.Hll.C.ParamDecl.ToString() -> string
 override Reko.Core.Hll.C.PointerDeclarator.Accept<T>(Reko.Core.Hll.C.DeclaratorVisitor<T> visitor) -> T
 override Reko.Core.Hll.C.PointerDeclarator.ToString() -> string
-~override Reko.Core.Hll.C.QualifiedName.ToString() -> string
+override Reko.Core.Hll.C.QualifiedName.ToString() -> string!
 override Reko.Core.Hll.C.ReferenceDeclarator.Accept<T>(Reko.Core.Hll.C.DeclaratorVisitor<T> visitor) -> T
 override Reko.Core.Hll.C.ReferenceDeclarator.ToString() -> string
 override Reko.Core.Hll.C.SimpleTypeSpec.Accept<T>(Reko.Core.Hll.C.DeclSpecVisitor<T> visitor) -> T
@@ -863,7 +914,7 @@ override Reko.Core.Hll.C.StorageClassSpec.Accept<T>(Reko.Core.Hll.C.DeclSpecVisi
 override Reko.Core.Hll.C.StorageClassSpec.ToString() -> string
 override Reko.Core.Hll.C.StructDecl.Accept<T>(Reko.Core.Hll.C.CSyntaxVisitor<T> visitor) -> T
 override Reko.Core.Hll.C.StructDecl.ToString() -> string
-override Reko.Core.Hll.C.TypeDefName.Accept<T>(Reko.Core.Hll.C.DeclSpecVisitor<T> visitor) -> T
+override Reko.Core.Hll.C.TypeDefName.Accept<T>(Reko.Core.Hll.C.DeclSpecVisitor<T>! visitor) -> T
 override Reko.Core.Hll.C.TypeDefName.ToString() -> string
 override Reko.Core.Hll.C.TypeQualifier.Accept<T>(Reko.Core.Hll.C.DeclSpecVisitor<T> visitor) -> T
 override Reko.Core.Hll.C.TypeQualifier.ToString() -> string
@@ -1513,11 +1564,11 @@ override Reko.Core.Types.Pointer.IsComplex.get -> bool
 override Reko.Core.Types.Pointer.IsPointer.get -> bool
 override Reko.Core.Types.Pointer.Size.get -> int
 override Reko.Core.Types.Pointer.Size.set -> void
-override Reko.Core.Types.PrimitiveType.Accept(Reko.Core.Types.IDataTypeVisitor v) -> void
-override Reko.Core.Types.PrimitiveType.Accept<T>(Reko.Core.Types.IDataTypeVisitor<T> v) -> T
+override Reko.Core.Types.PrimitiveType.Accept(Reko.Core.Types.IDataTypeVisitor! v) -> void
+override Reko.Core.Types.PrimitiveType.Accept<T>(Reko.Core.Types.IDataTypeVisitor<T>! v) -> T
 override Reko.Core.Types.PrimitiveType.BitSize.get -> int
-override Reko.Core.Types.PrimitiveType.Clone(System.Collections.Generic.IDictionary<Reko.Core.Types.DataType, Reko.Core.Types.DataType> clonedTypes) -> Reko.Core.Types.DataType
-override Reko.Core.Types.PrimitiveType.Equals(object obj) -> bool
+override Reko.Core.Types.PrimitiveType.Clone(System.Collections.Generic.IDictionary<Reko.Core.Types.DataType!, Reko.Core.Types.DataType!>? clonedTypes) -> Reko.Core.Types.DataType!
+override Reko.Core.Types.PrimitiveType.Equals(object? obj) -> bool
 override Reko.Core.Types.PrimitiveType.GetHashCode() -> int
 override Reko.Core.Types.PrimitiveType.IsIntegral.get -> bool
 override Reko.Core.Types.PrimitiveType.IsPointer.get -> bool
@@ -2115,10 +2166,10 @@ Reko.Core.Code.Store.Src.get -> Reko.Core.Expressions.Expression!
 Reko.Core.Code.Store.Src.set -> void
 Reko.Core.Code.Store.Store(Reko.Core.Expressions.Expression! dst, Reko.Core.Expressions.Expression! src) -> void
 Reko.Core.Code.SwitchInstruction
-Reko.Core.Code.SwitchInstruction.Expression.get -> Reko.Core.Expressions.Expression
+Reko.Core.Code.SwitchInstruction.Expression.get -> Reko.Core.Expressions.Expression!
 Reko.Core.Code.SwitchInstruction.Expression.set -> void
-Reko.Core.Code.SwitchInstruction.SwitchInstruction(Reko.Core.Expressions.Expression expr, Reko.Core.Block[] targets) -> void
-Reko.Core.Code.SwitchInstruction.Targets.get -> Reko.Core.Block[]
+Reko.Core.Code.SwitchInstruction.SwitchInstruction(Reko.Core.Expressions.Expression! expr, Reko.Core.Block![]! targets) -> void
+Reko.Core.Code.SwitchInstruction.Targets.get -> Reko.Core.Block![]!
 Reko.Core.Code.SwitchInstruction.Targets.set -> void
 Reko.Core.Code.UseInstruction
 Reko.Core.Code.UseInstruction.Expression.get -> Reko.Core.Expressions.Expression!
@@ -3395,34 +3446,25 @@ Reko.Core.Graphs.UndirectedGraphImpl<T>.Neighbors(T node) -> System.Collections.
 Reko.Core.Graphs.UndirectedGraphImpl<T>.RemoveEdge(T nodeFrom, T nodeTo) -> void
 Reko.Core.Graphs.UndirectedGraphImpl<T>.UndirectedGraphImpl() -> void
 Reko.Core.Hll.C.Application
-Reko.Core.Hll.C.Application.Application() -> void
 Reko.Core.Hll.C.Application.Arguments -> System.Collections.Generic.List<Reko.Core.Hll.C.CExpression>
 Reko.Core.Hll.C.Application.Function -> Reko.Core.Hll.C.CExpression
 Reko.Core.Hll.C.ArrayDeclarator
-Reko.Core.Hll.C.ArrayDeclarator.ArrayDeclarator() -> void
-~readonly Reko.Core.Hll.C.QualifiedName.Components -> string[]
-~Reko.Core.Hll.C.ArrayDeclarator.Declarator -> Reko.Core.Hll.C.Declarator
-~Reko.Core.Hll.C.ArrayDeclarator.Size -> Reko.Core.Hll.C.CExpression
+readonly Reko.Core.Hll.C.QualifiedName.Components -> string![]!
 Reko.Core.Hll.C.AssignExpression
-Reko.Core.Hll.C.AssignExpression.AssignExpression() -> void
 Reko.Core.Hll.C.AssignExpression.AssingmentOp -> Reko.Core.Hll.C.CTokenType
-Reko.Core.Hll.C.AssignExpression.LValue -> Reko.Core.Hll.C.CExpression
-Reko.Core.Hll.C.AssignExpression.RValue -> Reko.Core.Hll.C.CExpression
+Reko.Core.Hll.C.AssignExpression.LValue -> Reko.Core.Hll.C.CExpression!
+Reko.Core.Hll.C.AssignExpression.RValue -> Reko.Core.Hll.C.CExpression!
 Reko.Core.Hll.C.CallConventionDeclarator
-Reko.Core.Hll.C.CallConventionDeclarator.CallConventionDeclarator() -> void
 Reko.Core.Hll.C.CallConventionDeclarator.Convention -> Reko.Core.Hll.C.CTokenType
-Reko.Core.Hll.C.CallConventionDeclarator.Declarator -> Reko.Core.Hll.C.Declarator
+Reko.Core.Hll.C.CallConventionDeclarator.Declarator -> Reko.Core.Hll.C.Declarator!
 Reko.Core.Hll.C.CArrayAccess
-Reko.Core.Hll.C.CArrayAccess.CArrayAccess() -> void
-Reko.Core.Hll.C.CArrayAccess.Expression -> Reko.Core.Hll.C.CExpression
-Reko.Core.Hll.C.CArrayAccess.Index -> Reko.Core.Hll.C.CExpression
+Reko.Core.Hll.C.CArrayAccess.Expression -> Reko.Core.Hll.C.CExpression!
+Reko.Core.Hll.C.CArrayAccess.Index -> Reko.Core.Hll.C.CExpression!
 Reko.Core.Hll.C.CaseLabel
-Reko.Core.Hll.C.CaseLabel.CaseLabel() -> void
-Reko.Core.Hll.C.CaseLabel.Value -> Reko.Core.Hll.C.CExpression
+Reko.Core.Hll.C.CaseLabel.Value -> Reko.Core.Hll.C.CExpression!
 Reko.Core.Hll.C.CastExpression
-Reko.Core.Hll.C.CastExpression.CastExpression() -> void
-Reko.Core.Hll.C.CastExpression.Expression -> Reko.Core.Hll.C.CExpression
-Reko.Core.Hll.C.CastExpression.Type -> Reko.Core.Hll.C.CType
+Reko.Core.Hll.C.CastExpression.Expression -> Reko.Core.Hll.C.CExpression!
+Reko.Core.Hll.C.CastExpression.Type -> Reko.Core.Hll.C.CType!
 Reko.Core.Hll.C.CAttribute
 Reko.Core.Hll.C.CAttribute.CAttribute() -> void
 Reko.Core.Hll.C.CAttribute.Name -> Reko.Core.Hll.C.QualifiedName
@@ -3441,10 +3483,9 @@ Reko.Core.Hll.C.CBasicType.None = 0 -> Reko.Core.Hll.C.CBasicType
 Reko.Core.Hll.C.CBasicType.Short = 4 -> Reko.Core.Hll.C.CBasicType
 Reko.Core.Hll.C.CBasicType.WChar_t = 3 -> Reko.Core.Hll.C.CBasicType
 Reko.Core.Hll.C.CBinaryExpression
-Reko.Core.Hll.C.CBinaryExpression.CBinaryExpression() -> void
-Reko.Core.Hll.C.CBinaryExpression.Left -> Reko.Core.Hll.C.CExpression
+Reko.Core.Hll.C.CBinaryExpression.Left -> Reko.Core.Hll.C.CExpression!
 Reko.Core.Hll.C.CBinaryExpression.Operation -> Reko.Core.Hll.C.CTokenType
-Reko.Core.Hll.C.CBinaryExpression.Right -> Reko.Core.Hll.C.CExpression
+Reko.Core.Hll.C.CBinaryExpression.Right -> Reko.Core.Hll.C.CExpression!
 Reko.Core.Hll.C.CConstantEvaluator
 Reko.Core.Hll.C.CConstantEvaluator.CConstantEvaluator(Reko.Core.IPlatform! platform, System.Collections.Generic.Dictionary<string!, int>! constants) -> void
 Reko.Core.Hll.C.CConstantEvaluator.VisitApplication(Reko.Core.Hll.C.Application! application) -> object!
@@ -3479,11 +3520,8 @@ Reko.Core.Hll.C.CExpressionVisitor<T>.VisitSizeof(Reko.Core.Hll.C.SizeofExpressi
 Reko.Core.Hll.C.CExpressionVisitor<T>.VisitUnary(Reko.Core.Hll.C.CUnaryExpression! unary) -> T
 Reko.Core.Hll.C.CGrammar
 Reko.Core.Hll.C.CGrammar.Application(Reko.Core.Hll.C.CExpression! e) -> Reko.Core.Hll.C.CExpression!
-Reko.Core.Hll.C.CGrammar.Application(Reko.Core.Hll.C.CExpression! fn, System.Collections.Generic.List<Reko.Core.Hll.C.CExpression!>! list) -> Reko.Core.Hll.C.CExpression!
 Reko.Core.Hll.C.CGrammar.ArrayAccess(Reko.Core.Hll.C.CExpression! e, Reko.Core.Hll.C.CExpression! idx) -> Reko.Core.Hll.C.CExpression!
-Reko.Core.Hll.C.CGrammar.ArrayDeclarator(Reko.Core.Hll.C.Declarator! decl, Reko.Core.Hll.C.CExpression! expr) -> Reko.Core.Hll.C.Declarator!
 Reko.Core.Hll.C.CGrammar.BreakStatement() -> Reko.Core.Hll.C.Stat!
-Reko.Core.Hll.C.CGrammar.CallConventionDeclarator(Reko.Core.Hll.C.CTokenType conv, Reko.Core.Hll.C.Declarator! decl) -> Reko.Core.Hll.C.Declarator!
 Reko.Core.Hll.C.CGrammar.CaseLabel(Reko.Core.Hll.C.CExpression! constExpr) -> Reko.Core.Hll.C.Label!
 Reko.Core.Hll.C.CGrammar.Cast(Reko.Core.Hll.C.CType! type, Reko.Core.Hll.C.CExpression! exp) -> Reko.Core.Hll.C.CExpression!
 Reko.Core.Hll.C.CGrammar.CGrammar() -> void
@@ -3493,32 +3531,20 @@ Reko.Core.Hll.C.CGrammar.Conditional(Reko.Core.Hll.C.CExpression! cond, Reko.Cor
 Reko.Core.Hll.C.CGrammar.Const(object! value) -> Reko.Core.Hll.C.CExpression!
 Reko.Core.Hll.C.CGrammar.ContinueStatement() -> Reko.Core.Hll.C.Stat!
 Reko.Core.Hll.C.CGrammar.Decl(System.Collections.Generic.List<Reko.Core.Hll.C.CAttribute!>? attrs, System.Collections.Generic.List<Reko.Core.Hll.C.DeclSpec!>! list, System.Collections.Generic.List<Reko.Core.Hll.C.InitDeclarator!>! listDecls) -> Reko.Core.Hll.C.Decl!
-Reko.Core.Hll.C.CGrammar.DeclStat(Reko.Core.Hll.C.Decl! decl) -> Reko.Core.Hll.C.Stat!
 Reko.Core.Hll.C.CGrammar.DefaultCaseLabel() -> Reko.Core.Hll.C.Label!
 Reko.Core.Hll.C.CGrammar.DoWhileStatement(Reko.Core.Hll.C.Stat! doBody, Reko.Core.Hll.C.CExpression! expr) -> Reko.Core.Hll.C.Stat!
 Reko.Core.Hll.C.CGrammar.Ellipsis() -> Reko.Core.Hll.C.ParamDecl!
 Reko.Core.Hll.C.CGrammar.EmptyStatement() -> Reko.Core.Hll.C.Stat!
-Reko.Core.Hll.C.CGrammar.Enum(string! tag, System.Collections.Generic.List<Reko.Core.Hll.C.Enumerator!>! enums) -> Reko.Core.Hll.C.TypeSpec!
-Reko.Core.Hll.C.CGrammar.Enumerator(string! id, Reko.Core.Hll.C.CExpression! init) -> Reko.Core.Hll.C.Enumerator!
 Reko.Core.Hll.C.CGrammar.ExprStatement(Reko.Core.Hll.C.CExpression! expr) -> Reko.Core.Hll.C.Stat!
-Reko.Core.Hll.C.CGrammar.ExtendedDeclspec(string! s) -> Reko.Core.Hll.C.DeclSpec!
-Reko.Core.Hll.C.CGrammar.FieldDeclarator(Reko.Core.Hll.C.Declarator! decl, Reko.Core.Hll.C.CExpression! bitField) -> Reko.Core.Hll.C.FieldDeclarator!
-Reko.Core.Hll.C.CGrammar.ForStatement(Reko.Core.Hll.C.Stat! init, Reko.Core.Hll.C.CExpression! test, Reko.Core.Hll.C.CExpression! incr, Reko.Core.Hll.C.Stat! forBody) -> Reko.Core.Hll.C.Stat!
-Reko.Core.Hll.C.CGrammar.FunctionDeclarator(Reko.Core.Hll.C.Declarator! decl, System.Collections.Generic.List<Reko.Core.Hll.C.ParamDecl!>! parameters) -> Reko.Core.Hll.C.Declarator!
 Reko.Core.Hll.C.CGrammar.GotoStatement(string! gotoLabel) -> Reko.Core.Hll.C.Stat!
 Reko.Core.Hll.C.CGrammar.Id(string! name) -> Reko.Core.Hll.C.CIdentifier!
 Reko.Core.Hll.C.CGrammar.IdDeclarator(string! name) -> Reko.Core.Hll.C.Declarator!
-Reko.Core.Hll.C.CGrammar.IfStatement(Reko.Core.Hll.C.CExpression! expr, Reko.Core.Hll.C.Stat! consequence, Reko.Core.Hll.C.Stat! alternative) -> Reko.Core.Hll.C.Stat!
-Reko.Core.Hll.C.CGrammar.InitDeclarator(Reko.Core.Hll.C.Declarator! decl, Reko.Core.Hll.C.Initializer! init) -> Reko.Core.Hll.C.InitDeclarator!
 Reko.Core.Hll.C.CGrammar.LabeledStatement(Reko.Core.Hll.C.Label! label, Reko.Core.Hll.C.Stat! stat) -> Reko.Core.Hll.C.Stat!
 Reko.Core.Hll.C.CGrammar.MemberAccess(Reko.Core.Hll.C.CExpression! e, string! fieldName) -> Reko.Core.Hll.C.CExpression!
-Reko.Core.Hll.C.CGrammar.ParamDecl(System.Collections.Generic.List<Reko.Core.Hll.C.CAttribute!>! attrs, System.Collections.Generic.List<Reko.Core.Hll.C.DeclSpec!>! dsl, Reko.Core.Hll.C.Declarator! decl) -> Reko.Core.Hll.C.ParamDecl!
 Reko.Core.Hll.C.CGrammar.PointerDeclarator() -> Reko.Core.Hll.C.PointerDeclarator!
-Reko.Core.Hll.C.CGrammar.PointerDeclarator(Reko.Core.Hll.C.Declarator! decl, System.Collections.Generic.List<Reko.Core.Hll.C.TypeQualifier!>! tqs) -> Reko.Core.Hll.C.Declarator!
 Reko.Core.Hll.C.CGrammar.PostIncrement(Reko.Core.Hll.C.CExpression! e, Reko.Core.Hll.C.CTokenType token) -> Reko.Core.Hll.C.CExpression!
 Reko.Core.Hll.C.CGrammar.PreIncrement(Reko.Core.Hll.C.CTokenType token, Reko.Core.Hll.C.CExpression! uexpr) -> Reko.Core.Hll.C.CExpression!
 Reko.Core.Hll.C.CGrammar.PtrMemberAccess(Reko.Core.Hll.C.CExpression! e, string! fieldName) -> Reko.Core.Hll.C.CExpression!
-Reko.Core.Hll.C.CGrammar.ReferenceDeclarator(Reko.Core.Hll.C.Declarator! decl, System.Collections.Generic.List<Reko.Core.Hll.C.TypeQualifier!>! tqs) -> Reko.Core.Hll.C.Declarator!
 Reko.Core.Hll.C.CGrammar.ReturnStatement(Reko.Core.Hll.C.CExpression! expr) -> Reko.Core.Hll.C.Stat!
 Reko.Core.Hll.C.CGrammar.SimpleType(Reko.Core.Hll.C.CTokenType type) -> Reko.Core.Hll.C.TypeSpec!
 Reko.Core.Hll.C.CGrammar.Sizeof(Reko.Core.Hll.C.CExpression! sexp) -> Reko.Core.Hll.C.CExpression!
@@ -3534,7 +3560,6 @@ Reko.Core.Hll.C.CharacteristicsParser
 Reko.Core.Hll.C.CharacteristicsParser.CharacteristicsParser(Reko.Core.Hll.C.CAttribute! attrCharacteristics) -> void
 Reko.Core.Hll.C.CharacteristicsParser.Parse() -> Reko.Core.Serialization.ProcedureCharacteristics!
 Reko.Core.Hll.C.CIdentifier
-Reko.Core.Hll.C.CIdentifier.CIdentifier() -> void
 Reko.Core.Hll.C.CIdentifier.Name -> string
 Reko.Core.Hll.C.CLexer
 Reko.Core.Hll.C.CLexer.CLexer(System.IO.TextReader! rdr, System.Collections.Generic.Dictionary<string!, Reko.Core.Hll.C.CTokenType>! keywords) -> void
@@ -3553,16 +3578,12 @@ Reko.Core.Hll.C.ComplexTypeSpec.IsForwardDeclaration() -> bool
 Reko.Core.Hll.C.ComplexTypeSpec.Name -> string
 Reko.Core.Hll.C.ComplexTypeSpec.Type -> Reko.Core.Hll.C.CTokenType
 Reko.Core.Hll.C.CompoundStatement
-Reko.Core.Hll.C.CompoundStatement.CompoundStatement() -> void
-Reko.Core.Hll.C.CompoundStatement.Statements -> System.Collections.Generic.List<Reko.Core.Hll.C.Stat>
+Reko.Core.Hll.C.CompoundStatement.Statements -> System.Collections.Generic.List<Reko.Core.Hll.C.Stat!>!
 Reko.Core.Hll.C.ConditionalExpression
-Reko.Core.Hll.C.ConditionalExpression.Alternative -> Reko.Core.Hll.C.CExpression
-Reko.Core.Hll.C.ConditionalExpression.Condition -> Reko.Core.Hll.C.CExpression
-Reko.Core.Hll.C.ConditionalExpression.ConditionalExpression() -> void
-Reko.Core.Hll.C.ConditionalExpression.Consequent -> Reko.Core.Hll.C.CExpression
+Reko.Core.Hll.C.ConditionalExpression.Alternative -> Reko.Core.Hll.C.CExpression!
+Reko.Core.Hll.C.ConditionalExpression.Condition -> Reko.Core.Hll.C.CExpression!
+Reko.Core.Hll.C.ConditionalExpression.Consequent -> Reko.Core.Hll.C.CExpression!
 Reko.Core.Hll.C.ConstExp
-Reko.Core.Hll.C.ConstExp.Const -> object
-Reko.Core.Hll.C.ConstExp.ConstExp() -> void
 Reko.Core.Hll.C.CParser
 ~Reko.Core.Hll.C.CParser.CParser(Reko.Core.Hll.C.ParserState parserState, Reko.Core.Hll.C.CLexer lexer) -> void
 Reko.Core.Hll.C.CParser.IsTypeName(Reko.Core.Hll.C.CToken x) -> bool
@@ -3573,7 +3594,6 @@ Reko.Core.Hll.C.CParser.Parse_AddExpr() -> Reko.Core.Hll.C.CExpression
 Reko.Core.Hll.C.CParser.Parse_AndExpr() -> Reko.Core.Hll.C.CExpression
 Reko.Core.Hll.C.CParser.Parse_AssignExpr() -> Reko.Core.Hll.C.CExpression
 Reko.Core.Hll.C.CParser.Parse_AttributeSpecifier() -> Reko.Core.Hll.C.CAttribute
-Reko.Core.Hll.C.CParser.Parse_AttributeSpecifierSeq() -> System.Collections.Generic.List<Reko.Core.Hll.C.CAttribute>
 Reko.Core.Hll.C.CParser.Parse_BalancedTokenSeq() -> System.Collections.Generic.List<Reko.Core.Hll.C.CToken>
 Reko.Core.Hll.C.CParser.Parse_CastExpr() -> Reko.Core.Hll.C.CExpression
 Reko.Core.Hll.C.CParser.Parse_CondExpr() -> Reko.Core.Hll.C.CExpression
@@ -3581,7 +3601,7 @@ Reko.Core.Hll.C.CParser.Parse_Decl() -> Reko.Core.Hll.C.Decl
 Reko.Core.Hll.C.CParser.Parse_Declarator() -> Reko.Core.Hll.C.Declarator
 Reko.Core.Hll.C.CParser.Parse_EqlExpr() -> Reko.Core.Hll.C.CExpression
 Reko.Core.Hll.C.CParser.Parse_Expr() -> Reko.Core.Hll.C.CExpression
-Reko.Core.Hll.C.CParser.Parse_ExternalDecl() -> Reko.Core.Hll.C.Decl
+Reko.Core.Hll.C.CParser.Parse_ExternalDecl() -> Reko.Core.Hll.C.Decl?
 Reko.Core.Hll.C.CParser.Parse_GccAttributeSpecifier() -> System.Collections.Generic.List<Reko.Core.Hll.C.CAttribute>
 Reko.Core.Hll.C.CParser.Parse_GccExtensions() -> System.Collections.Generic.List<Reko.Core.Hll.C.CAttribute>
 Reko.Core.Hll.C.CParser.Parse_LogAndExpr() -> Reko.Core.Hll.C.CExpression
@@ -3739,21 +3759,19 @@ Reko.Core.Hll.C.CTokenType.__Unaligned = 107 -> Reko.Core.Hll.C.CTokenType
 Reko.Core.Hll.C.CTokenType.__W64 = 108 -> Reko.Core.Hll.C.CTokenType
 Reko.Core.Hll.C.CType
 Reko.Core.Hll.C.CType.CType() -> void
-Reko.Core.Hll.C.CType.Declarator -> Reko.Core.Hll.C.Declarator
-Reko.Core.Hll.C.CType.DeclSpecList -> System.Collections.Generic.List<Reko.Core.Hll.C.DeclSpec>
+Reko.Core.Hll.C.CType.Declarator -> Reko.Core.Hll.C.Declarator?
+Reko.Core.Hll.C.CType.DeclSpecList -> System.Collections.Generic.List<Reko.Core.Hll.C.DeclSpec!>!
 Reko.Core.Hll.C.CUnaryExpression
-Reko.Core.Hll.C.CUnaryExpression.CUnaryExpression() -> void
-Reko.Core.Hll.C.CUnaryExpression.Expression -> Reko.Core.Hll.C.CExpression
+Reko.Core.Hll.C.CUnaryExpression.Expression -> Reko.Core.Hll.C.CExpression!
 Reko.Core.Hll.C.CUnaryExpression.Operation -> Reko.Core.Hll.C.CTokenType
 Reko.Core.Hll.C.Decl
 Reko.Core.IReadOnlyCallGraph
 Reko.Core.IReadOnlyCallGraph.AddEdge(Reko.Core.Statement! stmCur, Reko.Core.Procedure! procCallee) -> void
 Reko.Core.IReadOnlyCallGraph.FindCallerStatements(Reko.Core.Procedure! procedure) -> System.Collections.Generic.IEnumerable<Reko.Core.Statement!>!
 Reko.Core.IReadOnlyCallGraph.RemoveCaller(Reko.Core.Statement! stm) -> void
-~Reko.Core.Hll.C.Decl.attribute_list -> System.Collections.Generic.List<Reko.Core.Hll.C.CAttribute>
-Reko.Core.Hll.C.Decl.Decl() -> void
-Reko.Core.Hll.C.Decl.decl_specs -> System.Collections.Generic.List<Reko.Core.Hll.C.DeclSpec>
-Reko.Core.Hll.C.Decl.init_declarator_list -> System.Collections.Generic.List<Reko.Core.Hll.C.InitDeclarator>
+Reko.Core.Hll.C.Decl.attribute_list -> System.Collections.Generic.List<Reko.Core.Hll.C.CAttribute!>?
+Reko.Core.Hll.C.Decl.decl_specs -> System.Collections.Generic.List<Reko.Core.Hll.C.DeclSpec!>!
+Reko.Core.Hll.C.Decl.init_declarator_list -> System.Collections.Generic.List<Reko.Core.Hll.C.InitDeclarator!>!
 Reko.Core.Hll.C.Declarator
 Reko.Core.Hll.C.Declarator.Declarator() -> void
 Reko.Core.Hll.C.DeclaratorVisitor<T>
@@ -3775,19 +3793,15 @@ Reko.Core.Hll.C.DeclSpecVisitor<T>.VisitStorageClass(Reko.Core.Hll.C.StorageClas
 Reko.Core.Hll.C.DeclSpecVisitor<T>.VisitTypedef(Reko.Core.Hll.C.TypeDefName typeDefName) -> T
 Reko.Core.Hll.C.DeclSpecVisitor<T>.VisitTypeQualifier(Reko.Core.Hll.C.TypeQualifier typeQualifier) -> T
 Reko.Core.Hll.C.DeclStat
-Reko.Core.Hll.C.DeclStat.Declaration -> Reko.Core.Hll.C.Decl
-Reko.Core.Hll.C.DeclStat.DeclStat() -> void
-Reko.Core.Hll.C.DeclStat.Initializer -> Reko.Core.Hll.C.CExpression
+Reko.Core.Hll.C.DeclStat.Declaration -> Reko.Core.Hll.C.Decl!
+Reko.Core.Hll.C.DeclStat.Initializer -> Reko.Core.Hll.C.CExpression?
 Reko.Core.Hll.C.DoWhileStat
-Reko.Core.Hll.C.DoWhileStat.Body -> Reko.Core.Hll.C.Stat
-Reko.Core.Hll.C.DoWhileStat.DoWhileStat() -> void
-Reko.Core.Hll.C.DoWhileStat.Expression -> Reko.Core.Hll.C.CExpression
+Reko.Core.Hll.C.DoWhileStat.Body -> Reko.Core.Hll.C.Stat!
+Reko.Core.Hll.C.DoWhileStat.Expression -> Reko.Core.Hll.C.CExpression!
 Reko.Core.Hll.C.Enumerator
-Reko.Core.Hll.C.Enumerator.Enumerator() -> void
 Reko.Core.Hll.C.Enumerator.Name -> string
 Reko.Core.Hll.C.Enumerator.Value -> Reko.Core.Hll.C.CExpression
 Reko.Core.Hll.C.EnumeratorTypeSpec
-Reko.Core.Hll.C.EnumeratorTypeSpec.EnumeratorTypeSpec() -> void
 Reko.Core.Hll.C.EnumeratorTypeSpec.Enums -> System.Collections.Generic.List<Reko.Core.Hll.C.Enumerator>
 Reko.Core.Hll.C.EnumeratorTypeSpec.Tag -> string
 Reko.Core.Hll.C.EnumEvaluator
@@ -3795,65 +3809,50 @@ Reko.Core.Hll.C.EnumEvaluator.EnumEvaluator(Reko.Core.Hll.C.CConstantEvaluator! 
 Reko.Core.Hll.C.EnumEvaluator.GetValue(Reko.Core.Hll.C.CExpression! cExpression) -> int
 Reko.Core.Hll.C.ExpressionInitializer
 Reko.Core.Hll.C.ExpressionInitializer.Expression -> Reko.Core.Hll.C.CExpression
-Reko.Core.Hll.C.ExpressionInitializer.ExpressionInitializer() -> void
 Reko.Core.Hll.C.ExprStat
-Reko.Core.Hll.C.ExprStat.Expression -> Reko.Core.Hll.C.CExpression
-Reko.Core.Hll.C.ExprStat.ExprStat() -> void
 Reko.Core.Hll.C.ExtendedDeclspec
-Reko.Core.Hll.C.ExtendedDeclspec.ExtendedDeclspec() -> void
 Reko.Core.Hll.C.ExtendedDeclspec.Name -> string
 Reko.Core.Hll.C.FieldDeclarator
 Reko.Core.Hll.C.FieldDeclarator.Declarator -> Reko.Core.Hll.C.Declarator
-Reko.Core.Hll.C.FieldDeclarator.FieldDeclarator() -> void
 Reko.Core.Hll.C.FieldDeclarator.FieldSize -> Reko.Core.Hll.C.CExpression
 Reko.Core.Hll.C.ForStat
-Reko.Core.Hll.C.ForStat.Body -> Reko.Core.Hll.C.Stat
-Reko.Core.Hll.C.ForStat.ForStat() -> void
-Reko.Core.Hll.C.ForStat.Initializer -> Reko.Core.Hll.C.Stat
-Reko.Core.Hll.C.ForStat.Test -> Reko.Core.Hll.C.CExpression
-Reko.Core.Hll.C.ForStat.Update -> Reko.Core.Hll.C.CExpression
+Reko.Core.Hll.C.ForStat.Body -> Reko.Core.Hll.C.Stat!
+Reko.Core.Hll.C.ForStat.Initializer -> Reko.Core.Hll.C.Stat?
+Reko.Core.Hll.C.ForStat.Test -> Reko.Core.Hll.C.CExpression?
+Reko.Core.Hll.C.ForStat.Update -> Reko.Core.Hll.C.CExpression?
 Reko.Core.Hll.C.FunctionDecl
 Reko.Core.Hll.C.FunctionDecl.Body -> System.Collections.Generic.List<Reko.Core.Hll.C.Stat>
 Reko.Core.Hll.C.FunctionDecl.calling_convention -> Reko.Core.Hll.C.CTokenType
-Reko.Core.Hll.C.FunctionDecl.FunctionDecl() -> void
 Reko.Core.Hll.C.FunctionDecl.Signature -> Reko.Core.Hll.C.Decl
 Reko.Core.Hll.C.FunctionDeclarator
-Reko.Core.Hll.C.FunctionDeclarator.Declarator -> Reko.Core.Hll.C.Declarator
-Reko.Core.Hll.C.FunctionDeclarator.FunctionDeclarator() -> void
-Reko.Core.Hll.C.FunctionDeclarator.Parameters -> System.Collections.Generic.List<Reko.Core.Hll.C.ParamDecl>
+Reko.Core.Hll.C.FunctionDeclarator.Declarator -> Reko.Core.Hll.C.Declarator?
+Reko.Core.Hll.C.FunctionDeclarator.Parameters -> System.Collections.Generic.List<Reko.Core.Hll.C.ParamDecl!>!
 Reko.Core.Hll.C.GotoStat
-Reko.Core.Hll.C.GotoStat.GotoStat() -> void
-Reko.Core.Hll.C.GotoStat.Label -> string
+Reko.Core.Hll.C.GotoStat.Label -> string!
 Reko.Core.Hll.C.IdDeclarator
-Reko.Core.Hll.C.IdDeclarator.IdDeclarator() -> void
-Reko.Core.Hll.C.IdDeclarator.Name -> string
+Reko.Core.Hll.C.IdDeclarator.Name -> string!
 Reko.Core.Hll.C.IfStat
-Reko.Core.Hll.C.IfStat.Alternative -> Reko.Core.Hll.C.Stat
-Reko.Core.Hll.C.IfStat.Consequence -> Reko.Core.Hll.C.Stat
-Reko.Core.Hll.C.IfStat.Expression -> Reko.Core.Hll.C.CExpression
-Reko.Core.Hll.C.IfStat.IfStat() -> void
+Reko.Core.Hll.C.IfStat.Alternative -> Reko.Core.Hll.C.Stat?
+Reko.Core.Hll.C.IfStat.Consequence -> Reko.Core.Hll.C.Stat!
+Reko.Core.Hll.C.IfStat.Expression -> Reko.Core.Hll.C.CExpression!
 Reko.Core.Hll.C.IncrementExpression
-Reko.Core.Hll.C.IncrementExpression.Expression -> Reko.Core.Hll.C.CExpression
-Reko.Core.Hll.C.IncrementExpression.IncrementExpression() -> void
+Reko.Core.Hll.C.IncrementExpression.Expression -> Reko.Core.Hll.C.CExpression!
 Reko.Core.Hll.C.IncrementExpression.Incrementor -> Reko.Core.Hll.C.CTokenType
 Reko.Core.Hll.C.IncrementExpression.Prefix -> bool
 Reko.Core.Hll.C.InitDeclarator
-Reko.Core.Hll.C.InitDeclarator.Declarator -> Reko.Core.Hll.C.Declarator
-Reko.Core.Hll.C.InitDeclarator.Init -> Reko.Core.Hll.C.Initializer
-Reko.Core.Hll.C.InitDeclarator.InitDeclarator() -> void
+Reko.Core.Hll.C.InitDeclarator.Declarator -> Reko.Core.Hll.C.Declarator!
+Reko.Core.Hll.C.InitDeclarator.Init -> Reko.Core.Hll.C.Initializer?
 Reko.Core.Hll.C.Initializer
 Reko.Core.Hll.C.Initializer.Initializer() -> void
 Reko.Core.Hll.C.Label
 Reko.Core.Hll.C.Label.Label() -> void
 Reko.Core.Hll.C.LabeledStat
-Reko.Core.Hll.C.LabeledStat.Label -> Reko.Core.Hll.C.Label
-Reko.Core.Hll.C.LabeledStat.LabeledStat() -> void
-Reko.Core.Hll.C.LabeledStat.Stat -> Reko.Core.Hll.C.Stat
+Reko.Core.Hll.C.LabeledStat.Label -> Reko.Core.Hll.C.Label!
+Reko.Core.Hll.C.LabeledStat.Stat -> Reko.Core.Hll.C.Stat!
 Reko.Core.Hll.C.LineLabel
-Reko.Core.Hll.C.LineLabel.LineLabel() -> void
-Reko.Core.Hll.C.LineLabel.Name -> string
+Reko.Core.Hll.C.LineLabel.Name -> string!
 Reko.Core.Hll.C.ListInitializer
-Reko.Core.Hll.C.ListInitializer.List.get -> System.Collections.Generic.List<Reko.Core.Hll.C.Initializer>
+Reko.Core.Hll.C.ListInitializer.List.get -> System.Collections.Generic.List<Reko.Core.Hll.C.Initializer!>!
 Reko.Core.Hll.C.ListInitializer.ListInitializer() -> void
 Reko.Core.Hll.C.LookAheadLexer
 Reko.Core.Hll.C.LookAheadLexer.LineNumber.get -> int
@@ -3864,7 +3863,6 @@ Reko.Core.Hll.C.MemberExpression
 Reko.Core.Hll.C.MemberExpression.Dereference -> bool
 Reko.Core.Hll.C.MemberExpression.Expression -> Reko.Core.Hll.C.CExpression
 Reko.Core.Hll.C.MemberExpression.FieldName -> string
-Reko.Core.Hll.C.MemberExpression.MemberExpression() -> void
 Reko.Core.Hll.C.NamedDataType
 Reko.Core.Hll.C.NamedDataType.DataType.get -> Reko.Core.Serialization.SerializedType
 Reko.Core.Hll.C.NamedDataType.DataType.set -> void
@@ -3901,11 +3899,10 @@ Reko.Core.Hll.C.NameExtractor.VisitId(Reko.Core.Hll.C.IdDeclarator id) -> string
 Reko.Core.Hll.C.NameExtractor.VisitPointer(Reko.Core.Hll.C.PointerDeclarator pointer) -> string
 Reko.Core.Hll.C.NameExtractor.VisitReference(Reko.Core.Hll.C.ReferenceDeclarator reference) -> string
 Reko.Core.Hll.C.ParamDecl
-Reko.Core.Hll.C.ParamDecl.Attributes -> System.Collections.Generic.List<Reko.Core.Hll.C.CAttribute>
-Reko.Core.Hll.C.ParamDecl.Declarator -> Reko.Core.Hll.C.Declarator
-Reko.Core.Hll.C.ParamDecl.DeclSpecs -> System.Collections.Generic.List<Reko.Core.Hll.C.DeclSpec>
+Reko.Core.Hll.C.ParamDecl.Attributes -> System.Collections.Generic.List<Reko.Core.Hll.C.CAttribute!>?
+Reko.Core.Hll.C.ParamDecl.Declarator -> Reko.Core.Hll.C.Declarator?
+Reko.Core.Hll.C.ParamDecl.DeclSpecs -> System.Collections.Generic.List<Reko.Core.Hll.C.DeclSpec!>?
 Reko.Core.Hll.C.ParamDecl.IsEllipsis -> bool
-Reko.Core.Hll.C.ParamDecl.ParamDecl() -> void
 Reko.Core.Hll.C.ParseResult
 Reko.Core.Hll.C.ParseResult<T>
 Reko.Core.Hll.C.ParseResult<T>.ParseResult(string error) -> void
@@ -3924,26 +3921,25 @@ Reko.Core.Hll.C.PointerDeclarator.PointerDeclarator() -> void
 Reko.Core.Hll.C.PointerDeclarator.TypeQualifierList -> System.Collections.Generic.List<Reko.Core.Hll.C.TypeQualifier>
 Reko.Core.Hll.C.QualifiedName
 Reko.Core.Hll.C.QualifiedName.QualifiedName() -> void
-~Reko.Core.Hll.C.QualifiedName.QualifiedName(params string[] components) -> void
+Reko.Core.Hll.C.QualifiedName.QualifiedName(params string![]! components) -> void
 Reko.Core.Hll.C.ReferenceDeclarator
 Reko.Core.Hll.C.ReferenceDeclarator.ReferenceDeclarator() -> void
 Reko.Core.Hll.C.ReferenceDeclarator.Referent -> Reko.Core.Hll.C.Declarator
 Reko.Core.Hll.C.ReferenceDeclarator.TypeQualifierList -> System.Collections.Generic.List<Reko.Core.Hll.C.TypeQualifier>
 Reko.Core.Hll.C.ReturnStat
-Reko.Core.Hll.C.ReturnStat.Expression -> Reko.Core.Hll.C.CExpression
-Reko.Core.Hll.C.ReturnStat.ReturnStat() -> void
+Reko.Core.Hll.C.ReturnStat.Expression -> Reko.Core.Hll.C.CExpression!
 Reko.Core.Hll.C.SerializedTypeComparer
 Reko.Core.Hll.C.SerializedTypeComparer.Equals(Reko.Core.Serialization.SerializedType x, Reko.Core.Serialization.SerializedType y) -> bool
 Reko.Core.Hll.C.SerializedTypeComparer.GetHashCode(Reko.Core.Serialization.SerializedType obj) -> int
 Reko.Core.Hll.C.SerializedTypeComparer.SerializedTypeComparer() -> void
-Reko.Core.Hll.C.SerializedTypeComparer.VisitArray(Reko.Core.Serialization.ArrayType_v1 aX) -> bool
+Reko.Core.Hll.C.SerializedTypeComparer.VisitArray(Reko.Core.Serialization.ArrayType_v1! aX) -> bool
 Reko.Core.Hll.C.SerializedTypeComparer.VisitCode(Reko.Core.Serialization.CodeType_v1 code) -> bool
-Reko.Core.Hll.C.SerializedTypeComparer.VisitEnum(Reko.Core.Serialization.SerializedEnumType e) -> bool
+Reko.Core.Hll.C.SerializedTypeComparer.VisitEnum(Reko.Core.Serialization.SerializedEnumType! e) -> bool
 Reko.Core.Hll.C.SerializedTypeComparer.VisitMemberPointer(Reko.Core.Serialization.MemberPointer_v1 mpX) -> bool
 Reko.Core.Hll.C.SerializedTypeComparer.VisitPointer(Reko.Core.Serialization.PointerType_v1 pX) -> bool
 Reko.Core.Hll.C.SerializedTypeComparer.VisitPrimitive(Reko.Core.Serialization.PrimitiveType_v1 pX) -> bool
 Reko.Core.Hll.C.SerializedTypeComparer.VisitReference(Reko.Core.Serialization.ReferenceType_v1 rX) -> bool
-Reko.Core.Hll.C.SerializedTypeComparer.VisitSignature(Reko.Core.Serialization.SerializedSignature signature) -> bool
+Reko.Core.Hll.C.SerializedTypeComparer.VisitSignature(Reko.Core.Serialization.SerializedSignature! signature) -> bool
 Reko.Core.Hll.C.SerializedTypeComparer.VisitString(Reko.Core.Serialization.StringType_v2 typedef) -> bool
 Reko.Core.Hll.C.SerializedTypeComparer.VisitStructure(Reko.Core.Serialization.StructType_v1 sX) -> bool
 Reko.Core.Hll.C.SerializedTypeComparer.VisitTemplate(Reko.Core.Serialization.SerializedTemplate template) -> bool
@@ -3958,9 +3954,6 @@ Reko.Core.Hll.C.SimpleTypeSpec
 Reko.Core.Hll.C.SimpleTypeSpec.SimpleTypeSpec() -> void
 Reko.Core.Hll.C.SimpleTypeSpec.Type -> Reko.Core.Hll.C.CTokenType
 Reko.Core.Hll.C.SizeofExpression
-Reko.Core.Hll.C.SizeofExpression.Expression -> Reko.Core.Hll.C.CExpression
-Reko.Core.Hll.C.SizeofExpression.SizeofExpression() -> void
-Reko.Core.Hll.C.SizeofExpression.Type -> Reko.Core.Hll.C.CType
 Reko.Core.Hll.C.Stat
 Reko.Core.Hll.C.Stat.Stat() -> void
 Reko.Core.Hll.C.StorageClassSpec
@@ -3991,8 +3984,7 @@ Reko.Core.Hll.C.SymbolTable.Types.get -> System.Collections.Generic.List<Reko.Co
 Reko.Core.Hll.C.SymbolTable.UnionsSeen.get -> System.Collections.Generic.Dictionary<string, Reko.Core.Serialization.UnionType_v1>
 Reko.Core.Hll.C.SymbolTable.Variables.get -> System.Collections.Generic.List<Reko.Core.Serialization.GlobalDataItem_v2>
 Reko.Core.Hll.C.TypeDefName
-Reko.Core.Hll.C.TypeDefName.Name -> string
-Reko.Core.Hll.C.TypeDefName.TypeDefName() -> void
+Reko.Core.Hll.C.TypeDefName.Name -> string!
 Reko.Core.Hll.C.TypeQualifier
 Reko.Core.Hll.C.TypeQualifier.Qualifier -> Reko.Core.Hll.C.CTokenType
 Reko.Core.Hll.C.TypeQualifier.TypeQualifier() -> void
@@ -4024,9 +4016,8 @@ Reko.Core.Hll.C.UserSignatureBuilder.ParseFunctionDeclaration(string? fnDecl) ->
 Reko.Core.Hll.C.UserSignatureBuilder.ParseGlobalDeclaration(string! txtGlobal) -> Reko.Core.Serialization.GlobalDataItem_v2?
 Reko.Core.Hll.C.UserSignatureBuilder.UserSignatureBuilder(Reko.Core.Program! program) -> void
 Reko.Core.Hll.C.WhileStat
-Reko.Core.Hll.C.WhileStat.Body -> Reko.Core.Hll.C.Stat
-Reko.Core.Hll.C.WhileStat.Expression -> Reko.Core.Hll.C.CExpression
-Reko.Core.Hll.C.WhileStat.WhileStat() -> void
+Reko.Core.Hll.C.WhileStat.Body -> Reko.Core.Hll.C.Stat!
+Reko.Core.Hll.C.WhileStat.Expression -> Reko.Core.Hll.C.CExpression!
 Reko.Core.Hll.Pascal.Array
 Reko.Core.Hll.Pascal.Array.Array(Reko.Core.Hll.Pascal.PascalType elemType, System.Collections.Generic.List<Reko.Core.Hll.Pascal.ArrayDimension> dims) -> void
 Reko.Core.Hll.Pascal.Array.Dimensions.get -> System.Collections.Generic.List<Reko.Core.Hll.Pascal.ArrayDimension>
@@ -6127,24 +6118,24 @@ Reko.Core.Output.TextFormatter.Terminator.set -> void
 Reko.Core.Output.TextFormatter.TextFormatter(System.IO.TextWriter writer) -> void
 Reko.Core.Output.TextFormatter.TextWriter.get -> System.IO.TextWriter
 Reko.Core.Output.TypedDataDumper
-Reko.Core.Output.TypedDataDumper.TypedDataDumper(Reko.Core.Memory.EndianImageReader rdr, uint cbSize, Reko.Core.Output.Formatter stm) -> void
-Reko.Core.Output.TypedDataDumper.VisitArray(Reko.Core.Types.ArrayType at) -> void
-Reko.Core.Output.TypedDataDumper.VisitClass(Reko.Core.Types.ClassType ct) -> void
-Reko.Core.Output.TypedDataDumper.VisitCode(Reko.Core.Types.CodeType c) -> void
-Reko.Core.Output.TypedDataDumper.VisitEnum(Reko.Core.Types.EnumType e) -> void
-Reko.Core.Output.TypedDataDumper.VisitEquivalenceClass(Reko.Core.Types.EquivalenceClass eq) -> void
-Reko.Core.Output.TypedDataDumper.VisitFunctionType(Reko.Core.Types.FunctionType ft) -> void
-Reko.Core.Output.TypedDataDumper.VisitMemberPointer(Reko.Core.Types.MemberPointer memptr) -> void
-Reko.Core.Output.TypedDataDumper.VisitPointer(Reko.Core.Types.Pointer ptr) -> void
-Reko.Core.Output.TypedDataDumper.VisitPrimitive(Reko.Core.Types.PrimitiveType pt) -> void
-Reko.Core.Output.TypedDataDumper.VisitReference(Reko.Core.Types.ReferenceTo refTo) -> void
-Reko.Core.Output.TypedDataDumper.VisitString(Reko.Core.Types.StringType str) -> void
-Reko.Core.Output.TypedDataDumper.VisitStructure(Reko.Core.Types.StructureType str) -> void
-Reko.Core.Output.TypedDataDumper.VisitTypeReference(Reko.Core.Types.TypeReference typeref) -> void
-Reko.Core.Output.TypedDataDumper.VisitTypeVariable(Reko.Core.Types.TypeVariable tv) -> void
-Reko.Core.Output.TypedDataDumper.VisitUnion(Reko.Core.Types.UnionType ut) -> void
-Reko.Core.Output.TypedDataDumper.VisitUnknownType(Reko.Core.Types.UnknownType ut) -> void
-Reko.Core.Output.TypedDataDumper.VisitVoidType(Reko.Core.Types.VoidType voidType) -> void
+Reko.Core.Output.TypedDataDumper.TypedDataDumper(Reko.Core.Memory.EndianImageReader! rdr, uint cbSize, Reko.Core.Output.Formatter! stm) -> void
+Reko.Core.Output.TypedDataDumper.VisitArray(Reko.Core.Types.ArrayType! at) -> void
+Reko.Core.Output.TypedDataDumper.VisitClass(Reko.Core.Types.ClassType! ct) -> void
+Reko.Core.Output.TypedDataDumper.VisitCode(Reko.Core.Types.CodeType! c) -> void
+Reko.Core.Output.TypedDataDumper.VisitEnum(Reko.Core.Types.EnumType! e) -> void
+Reko.Core.Output.TypedDataDumper.VisitEquivalenceClass(Reko.Core.Types.EquivalenceClass! eq) -> void
+Reko.Core.Output.TypedDataDumper.VisitFunctionType(Reko.Core.Types.FunctionType! ft) -> void
+Reko.Core.Output.TypedDataDumper.VisitMemberPointer(Reko.Core.Types.MemberPointer! memptr) -> void
+Reko.Core.Output.TypedDataDumper.VisitPointer(Reko.Core.Types.Pointer! ptr) -> void
+Reko.Core.Output.TypedDataDumper.VisitPrimitive(Reko.Core.Types.PrimitiveType! pt) -> void
+Reko.Core.Output.TypedDataDumper.VisitReference(Reko.Core.Types.ReferenceTo! refTo) -> void
+Reko.Core.Output.TypedDataDumper.VisitString(Reko.Core.Types.StringType! str) -> void
+Reko.Core.Output.TypedDataDumper.VisitStructure(Reko.Core.Types.StructureType! str) -> void
+Reko.Core.Output.TypedDataDumper.VisitTypeReference(Reko.Core.Types.TypeReference! typeref) -> void
+Reko.Core.Output.TypedDataDumper.VisitTypeVariable(Reko.Core.Types.TypeVariable! tv) -> void
+Reko.Core.Output.TypedDataDumper.VisitUnion(Reko.Core.Types.UnionType! ut) -> void
+Reko.Core.Output.TypedDataDumper.VisitUnknownType(Reko.Core.Types.UnknownType! ut) -> void
+Reko.Core.Output.TypedDataDumper.VisitVoidType(Reko.Core.Types.VoidType! voidType) -> void
 Reko.Core.Output.TypeFormatter
 Reko.Core.Output.TypeFormatter.BeginLine() -> void
 Reko.Core.Output.TypeFormatter.BeginLine(string s) -> void
@@ -7486,7 +7477,7 @@ Reko.Core.TypeLibraryDeserializer.VisitTypeReference(Reko.Core.Serialization.Typ
 Reko.Core.TypeLibraryDeserializer.VisitUnion(Reko.Core.Serialization.UnionType_v1 sUnion) -> Reko.Core.Types.DataType
 Reko.Core.TypeLibraryDeserializer.VisitVoidType(Reko.Core.Serialization.VoidType_v1 voidType) -> Reko.Core.Types.DataType
 Reko.Core.TypeLibraryLoader
-Reko.Core.TypeLibraryLoader.TypeLibraryLoader(System.IServiceProvider services, Reko.Core.ImageLocation imageLocation, byte[] bytes) -> void
+Reko.Core.TypeLibraryLoader.TypeLibraryLoader(System.IServiceProvider! services, Reko.Core.ImageLocation! imageLocation, byte[]! bytes) -> void
 Reko.Core.TypeNamingPolicy
 Reko.Core.TypeNamingPolicy.TypeNamingPolicy() -> void
 Reko.Core.Types.ArrayType
@@ -7707,8 +7698,8 @@ Reko.Core.Types.Pointer.Pointee.get -> Reko.Core.Types.DataType!
 Reko.Core.Types.Pointer.Pointee.set -> void
 Reko.Core.Types.Pointer.Pointer(Reko.Core.Types.DataType! pointee, int bitSize) -> void
 Reko.Core.Types.PrimitiveType
-Reko.Core.Types.PrimitiveType.Compare(Reko.Core.Types.PrimitiveType that) -> int
-Reko.Core.Types.PrimitiveType.MaskDomain(Reko.Core.Types.Domain domainMask) -> Reko.Core.Types.PrimitiveType
+Reko.Core.Types.PrimitiveType.Compare(Reko.Core.Types.PrimitiveType! that) -> int
+Reko.Core.Types.PrimitiveType.MaskDomain(Reko.Core.Types.Domain domainMask) -> Reko.Core.Types.PrimitiveType!
 Reko.Core.Types.Qualifier
 Reko.Core.Types.Qualifier.Const = 1 -> Reko.Core.Types.Qualifier
 Reko.Core.Types.Qualifier.None = 0 -> Reko.Core.Types.Qualifier
@@ -8056,44 +8047,44 @@ static readonly Reko.Core.Machine.Decoder.trace -> System.Diagnostics.TraceSwitc
 static readonly Reko.Core.Machine.MachineInstruction.NoOperands -> Reko.Core.Machine.MachineOperand![]!
 static readonly Reko.Core.NamingPolicy.Instance -> Reko.Core.NamingPolicy
 static readonly Reko.Core.NativeInterface.Interop.DataTypes -> System.Collections.Generic.Dictionary<Reko.Core.NativeInterface.BaseType, Reko.Core.Types.DataType!>!
-static readonly Reko.Core.Operators.Operator.AddrOf -> Reko.Core.Operators.UnaryOperator
-static readonly Reko.Core.Operators.Operator.And -> Reko.Core.Operators.BinaryOperator
-static readonly Reko.Core.Operators.Operator.Cand -> Reko.Core.Operators.BinaryOperator
-static readonly Reko.Core.Operators.Operator.Comma -> Reko.Core.Operators.BinaryOperator
-static readonly Reko.Core.Operators.Operator.Comp -> Reko.Core.Operators.UnaryOperator
-static readonly Reko.Core.Operators.Operator.Cor -> Reko.Core.Operators.BinaryOperator
-static readonly Reko.Core.Operators.Operator.Eq -> Reko.Core.Operators.ConditionalOperator
-static readonly Reko.Core.Operators.Operator.FAdd -> Reko.Core.Operators.BinaryOperator
-static readonly Reko.Core.Operators.Operator.FDiv -> Reko.Core.Operators.BinaryOperator
-static readonly Reko.Core.Operators.Operator.Feq -> Reko.Core.Operators.ConditionalOperator
-static readonly Reko.Core.Operators.Operator.Fge -> Reko.Core.Operators.ConditionalOperator
-static readonly Reko.Core.Operators.Operator.Fgt -> Reko.Core.Operators.ConditionalOperator
-static readonly Reko.Core.Operators.Operator.Fle -> Reko.Core.Operators.ConditionalOperator
-static readonly Reko.Core.Operators.Operator.Flt -> Reko.Core.Operators.ConditionalOperator
-static readonly Reko.Core.Operators.Operator.FMod -> Reko.Core.Operators.BinaryOperator
-static readonly Reko.Core.Operators.Operator.FMul -> Reko.Core.Operators.BinaryOperator
-static readonly Reko.Core.Operators.Operator.Fne -> Reko.Core.Operators.ConditionalOperator
-static readonly Reko.Core.Operators.Operator.FNeg -> Reko.Core.Operators.UnaryOperator
-static readonly Reko.Core.Operators.Operator.FSub -> Reko.Core.Operators.BinaryOperator
-static readonly Reko.Core.Operators.Operator.Ge -> Reko.Core.Operators.ConditionalOperator
-static readonly Reko.Core.Operators.Operator.Gt -> Reko.Core.Operators.ConditionalOperator
-static readonly Reko.Core.Operators.Operator.IAdd -> Reko.Core.Operators.BinaryOperator
-static readonly Reko.Core.Operators.Operator.IMod -> Reko.Core.Operators.BinaryOperator
-static readonly Reko.Core.Operators.Operator.IMul -> Reko.Core.Operators.BinaryOperator
-static readonly Reko.Core.Operators.Operator.ISub -> Reko.Core.Operators.BinaryOperator
-static readonly Reko.Core.Operators.Operator.Le -> Reko.Core.Operators.ConditionalOperator
-static readonly Reko.Core.Operators.Operator.Lt -> Reko.Core.Operators.ConditionalOperator
-static readonly Reko.Core.Operators.Operator.Ne -> Reko.Core.Operators.ConditionalOperator
-static readonly Reko.Core.Operators.Operator.Neg -> Reko.Core.Operators.UnaryOperator
-static readonly Reko.Core.Operators.Operator.Not -> Reko.Core.Operators.UnaryOperator
-static readonly Reko.Core.Operators.Operator.Or -> Reko.Core.Operators.BinaryOperator
-static readonly Reko.Core.Operators.Operator.Sar -> Reko.Core.Operators.BinaryOperator
-static readonly Reko.Core.Operators.Operator.SDiv -> Reko.Core.Operators.BinaryOperator
-static readonly Reko.Core.Operators.Operator.Shl -> Reko.Core.Operators.BinaryOperator
-static readonly Reko.Core.Operators.Operator.Shr -> Reko.Core.Operators.BinaryOperator
-static readonly Reko.Core.Operators.Operator.SMod -> Reko.Core.Operators.BinaryOperator
-static readonly Reko.Core.Operators.Operator.SMul -> Reko.Core.Operators.BinaryOperator
-static readonly Reko.Core.Operators.Operator.UDiv -> Reko.Core.Operators.BinaryOperator
+static readonly Reko.Core.Operators.Operator.AddrOf -> Reko.Core.Operators.UnaryOperator!
+static readonly Reko.Core.Operators.Operator.And -> Reko.Core.Operators.BinaryOperator!
+static readonly Reko.Core.Operators.Operator.Cand -> Reko.Core.Operators.BinaryOperator!
+static readonly Reko.Core.Operators.Operator.Comma -> Reko.Core.Operators.BinaryOperator!
+static readonly Reko.Core.Operators.Operator.Comp -> Reko.Core.Operators.UnaryOperator!
+static readonly Reko.Core.Operators.Operator.Cor -> Reko.Core.Operators.BinaryOperator!
+static readonly Reko.Core.Operators.Operator.Eq -> Reko.Core.Operators.ConditionalOperator!
+static readonly Reko.Core.Operators.Operator.FAdd -> Reko.Core.Operators.BinaryOperator!
+static readonly Reko.Core.Operators.Operator.FDiv -> Reko.Core.Operators.BinaryOperator!
+static readonly Reko.Core.Operators.Operator.Feq -> Reko.Core.Operators.ConditionalOperator!
+static readonly Reko.Core.Operators.Operator.Fge -> Reko.Core.Operators.ConditionalOperator!
+static readonly Reko.Core.Operators.Operator.Fgt -> Reko.Core.Operators.ConditionalOperator!
+static readonly Reko.Core.Operators.Operator.Fle -> Reko.Core.Operators.ConditionalOperator!
+static readonly Reko.Core.Operators.Operator.Flt -> Reko.Core.Operators.ConditionalOperator!
+static readonly Reko.Core.Operators.Operator.FMod -> Reko.Core.Operators.BinaryOperator!
+static readonly Reko.Core.Operators.Operator.FMul -> Reko.Core.Operators.BinaryOperator!
+static readonly Reko.Core.Operators.Operator.Fne -> Reko.Core.Operators.ConditionalOperator!
+static readonly Reko.Core.Operators.Operator.FNeg -> Reko.Core.Operators.UnaryOperator!
+static readonly Reko.Core.Operators.Operator.FSub -> Reko.Core.Operators.BinaryOperator!
+static readonly Reko.Core.Operators.Operator.Ge -> Reko.Core.Operators.ConditionalOperator!
+static readonly Reko.Core.Operators.Operator.Gt -> Reko.Core.Operators.ConditionalOperator!
+static readonly Reko.Core.Operators.Operator.IAdd -> Reko.Core.Operators.BinaryOperator!
+static readonly Reko.Core.Operators.Operator.IMod -> Reko.Core.Operators.BinaryOperator!
+static readonly Reko.Core.Operators.Operator.IMul -> Reko.Core.Operators.BinaryOperator!
+static readonly Reko.Core.Operators.Operator.ISub -> Reko.Core.Operators.BinaryOperator!
+static readonly Reko.Core.Operators.Operator.Le -> Reko.Core.Operators.ConditionalOperator!
+static readonly Reko.Core.Operators.Operator.Lt -> Reko.Core.Operators.ConditionalOperator!
+static readonly Reko.Core.Operators.Operator.Ne -> Reko.Core.Operators.ConditionalOperator!
+static readonly Reko.Core.Operators.Operator.Neg -> Reko.Core.Operators.UnaryOperator!
+static readonly Reko.Core.Operators.Operator.Not -> Reko.Core.Operators.UnaryOperator!
+static readonly Reko.Core.Operators.Operator.Or -> Reko.Core.Operators.BinaryOperator!
+static readonly Reko.Core.Operators.Operator.Sar -> Reko.Core.Operators.BinaryOperator!
+static readonly Reko.Core.Operators.Operator.SDiv -> Reko.Core.Operators.BinaryOperator!
+static readonly Reko.Core.Operators.Operator.Shl -> Reko.Core.Operators.BinaryOperator!
+static readonly Reko.Core.Operators.Operator.Shr -> Reko.Core.Operators.BinaryOperator!
+static readonly Reko.Core.Operators.Operator.SMod -> Reko.Core.Operators.BinaryOperator!
+static readonly Reko.Core.Operators.Operator.SMul -> Reko.Core.Operators.BinaryOperator!
+static readonly Reko.Core.Operators.Operator.UDiv -> Reko.Core.Operators.BinaryOperator!
 static readonly Reko.Core.Operators.Operator.Uge -> Reko.Core.Operators.ConditionalOperator
 static readonly Reko.Core.Operators.Operator.Ugt -> Reko.Core.Operators.ConditionalOperator
 static readonly Reko.Core.Operators.Operator.Ule -> Reko.Core.Operators.ConditionalOperator
@@ -8465,7 +8456,7 @@ static Reko.Core.Types.EquivalenceClass.Merge(Reko.Core.Types.EquivalenceClass! 
 static Reko.Core.Types.FunctionType.Action(params Reko.Core.Expressions.Identifier![]! parameters) -> Reko.Core.Types.FunctionType!
 static Reko.Core.Types.FunctionType.Create(Reko.Core.Expressions.Identifier? returnId, params Reko.Core.Expressions.Identifier![]! formals) -> Reko.Core.Types.FunctionType!
 static Reko.Core.Types.FunctionType.Func(Reko.Core.Expressions.Identifier! returnId, params Reko.Core.Expressions.Identifier![]! formals) -> Reko.Core.Types.FunctionType!
-static Reko.Core.Types.PrimitiveType.AllTypes.get -> System.Collections.Concurrent.ConcurrentDictionary<string, Reko.Core.Types.PrimitiveType>
+static Reko.Core.Types.PrimitiveType.AllTypes.get -> System.Collections.Concurrent.ConcurrentDictionary<string!, Reko.Core.Types.PrimitiveType!>!
 static Reko.Core.Types.PrimitiveType.Bcd80.get -> Reko.Core.Types.PrimitiveType!
 static Reko.Core.Types.PrimitiveType.Bool.get -> Reko.Core.Types.PrimitiveType!
 static Reko.Core.Types.PrimitiveType.Byte.get -> Reko.Core.Types.PrimitiveType!
@@ -8474,7 +8465,7 @@ static Reko.Core.Types.PrimitiveType.Create(Reko.Core.Types.Domain dom, int bitS
 static Reko.Core.Types.PrimitiveType.CreateBitSlice(int bitlength) -> Reko.Core.Types.PrimitiveType!
 static Reko.Core.Types.PrimitiveType.CreateWord(int bitSize) -> Reko.Core.Types.PrimitiveType!
 static Reko.Core.Types.PrimitiveType.CreateWord(uint bitSize) -> Reko.Core.Types.PrimitiveType!
-static Reko.Core.Types.PrimitiveType.GenerateName(Reko.Core.Types.Domain dom, int bitSize) -> string
+static Reko.Core.Types.PrimitiveType.GenerateName(Reko.Core.Types.Domain dom, int bitSize) -> string!
 static Reko.Core.Types.PrimitiveType.Int128.get -> Reko.Core.Types.PrimitiveType!
 static Reko.Core.Types.PrimitiveType.Int16.get -> Reko.Core.Types.PrimitiveType!
 static Reko.Core.Types.PrimitiveType.Int32.get -> Reko.Core.Types.PrimitiveType!
@@ -8494,7 +8485,7 @@ static Reko.Core.Types.PrimitiveType.SByte.get -> Reko.Core.Types.PrimitiveType!
 static Reko.Core.Types.PrimitiveType.SegmentSelector.get -> Reko.Core.Types.PrimitiveType!
 static Reko.Core.Types.PrimitiveType.SegPtr32.get -> Reko.Core.Types.PrimitiveType!
 static Reko.Core.Types.PrimitiveType.SegPtr48.get -> Reko.Core.Types.PrimitiveType!
-static Reko.Core.Types.PrimitiveType.TryParse(string primitiveTypeName, out Reko.Core.Types.PrimitiveType type) -> bool
+static Reko.Core.Types.PrimitiveType.TryParse(string! primitiveTypeName, out Reko.Core.Types.PrimitiveType! type) -> bool
 static Reko.Core.Types.PrimitiveType.UInt128.get -> Reko.Core.Types.PrimitiveType!
 static Reko.Core.Types.PrimitiveType.UInt16.get -> Reko.Core.Types.PrimitiveType!
 static Reko.Core.Types.PrimitiveType.UInt32.get -> Reko.Core.Types.PrimitiveType!
@@ -8693,7 +8684,6 @@ virtual Reko.Core.NamingPolicy.StackLocalName(Reko.Core.Types.DataType type, int
 virtual Reko.Core.NativeInterface.NativeRtlEmitter.CreateAddress(ulong linear) -> Reko.Core.Address
 virtual Reko.Core.Operators.Operator.ApplyConstants(Reko.Core.Expressions.Constant c1, Reko.Core.Expressions.Constant c2) -> Reko.Core.Expressions.Constant
 virtual Reko.Core.Operators.Operator.AsCompound() -> string
-virtual Reko.Core.Operators.Operator.Invert() -> Reko.Core.Operators.Operator
 virtual Reko.Core.Output.BlockDecorator.AfterBlock(Reko.Core.Block! block, System.Collections.Generic.List<string!>! lines) -> void
 virtual Reko.Core.Output.BlockDecorator.BeforeBlock(Reko.Core.Block! block, System.Collections.Generic.List<string!>! lines) -> void
 virtual Reko.Core.Output.BlockDecorator.WriteBlockGraphEdges(Reko.Core.Block! block, System.Collections.Generic.List<string!>! lines) -> void
@@ -8784,9 +8774,9 @@ virtual Reko.Core.Storage.BitSize.set -> void
 virtual Reko.Core.Storage.Exceeds(Reko.Core.Storage! that) -> bool
 virtual Reko.Core.Storage.GetBitRange() -> Reko.Core.BitRange
 virtual Reko.Core.Storage.Serialize() -> Reko.Core.Serialization.SerializedKind!
-virtual Reko.Core.TypeNamingPolicy.ShortPrefix(Reko.Core.Types.DataType dt) -> string
-virtual Reko.Core.TypeNamingPolicy.StructureFieldName(Reko.Core.Types.StructureField field, string userGivenName) -> string
-virtual Reko.Core.TypeNamingPolicy.UnionAlternativeName(Reko.Core.Types.UnionAlternative alt, string userGivenName) -> string
+virtual Reko.Core.TypeNamingPolicy.ShortPrefix(Reko.Core.Types.DataType! dt) -> string!
+virtual Reko.Core.TypeNamingPolicy.StructureFieldName(Reko.Core.Types.StructureField! field, string? userGivenName) -> string!
+virtual Reko.Core.TypeNamingPolicy.UnionAlternativeName(Reko.Core.Types.UnionAlternative! alt, string! userGivenName) -> string!
 virtual Reko.Core.Types.DataType.BitSize.get -> int
 virtual Reko.Core.Types.DataType.IsComplex.get -> bool
 virtual Reko.Core.Types.DataType.IsIntegral.get -> bool

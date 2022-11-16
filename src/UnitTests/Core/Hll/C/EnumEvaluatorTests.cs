@@ -65,14 +65,14 @@ namespace Reko.UnitTests.Core.Hll.C
         {
             var value = enev.GetValue(null);
             Assert.AreEqual(0, value);
-            value = enev.GetValue(new ConstExp { Const = 42 });
+            value = enev.GetValue(new ConstExp(42));
             Assert.AreEqual(42, value);
         }
 
         [Test]
         public void ENEV_IncAfterSpecifiedValue()
         {
-            var value = enev.GetValue(new ConstExp { Const = 42 });
+            var value = enev.GetValue(new ConstExp(42));
             Assert.AreEqual(42, value);
             value = enev.GetValue(null);
             Assert.AreEqual(43, value);

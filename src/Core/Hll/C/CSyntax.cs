@@ -18,7 +18,6 @@
  */
 #endregion
 
-#nullable disable
 
 using System;
 using System.Collections.Generic;
@@ -33,9 +32,16 @@ namespace Reko.Core.Hll.C
 
     public class Decl : CSyntax
     {
-        public List<CAttribute> attribute_list;
+        public List<CAttribute>? attribute_list;
         public List<DeclSpec> decl_specs;
         public List<InitDeclarator> init_declarator_list;
+
+        public Decl(List<CAttribute>? attrs, List<DeclSpec> declSpecs, List<InitDeclarator> listDecls)
+        {
+            this.attribute_list = attrs;
+            this.decl_specs = declSpecs;
+            this.init_declarator_list = listDecls;
+        }
 
         public override T Accept<T>(CSyntaxVisitor<T> visitor)
         {
@@ -48,12 +54,12 @@ namespace Reko.Core.Hll.C
             sb.Append("(decl");
             if (attribute_list != null)
             {
-                sb.Append(" ");
-                sb.Append(string.Join(" ", attribute_list));
+                sb.Append(' ');
+                sb.Append(string.Join(' ', attribute_list));
             }
             foreach (var ds in decl_specs)
             {
-                sb.Append(" ");
+                sb.Append(' ');
                 sb.Append(ds);
             }
             if (init_declarator_list != null && init_declarator_list.Count > 0)
@@ -64,9 +70,9 @@ namespace Reko.Core.Hll.C
                     sb.AppendFormat("{0}{1}", sep, init);
                     sep = " ";
                 }
-                sb.Append(")");
+                sb.Append(')');
             }
-            sb.Append(")");
+            sb.Append(')');
             return sb.ToString();
         }
     }
@@ -76,6 +82,13 @@ namespace Reko.Core.Hll.C
         public Decl Signature;
         public List<Stat> Body;
         public CTokenType calling_convention;
+
+        public FunctionDecl(Decl signature, List<Stat> body, List<DeclSpec> declSpecs) 
+            : base(null, declSpecs, new())
+        {
+            Signature = signature;
+            Body = body;
+        }
 
         public override string ToString()
         {
@@ -120,6 +133,11 @@ namespace Reko.Core.Hll.C
     public class ExtendedDeclspec : DeclSpec
     {
         public string Name;
+
+        public ExtendedDeclspec(string name)
+        {
+            this.Name = name;
+        }
 
         public override T Accept<T>(DeclSpecVisitor<T> visitor)
         {
@@ -176,6 +194,11 @@ namespace Reko.Core.Hll.C
     {
         public string Name;
 
+        public TypeDefName(string name)
+        {
+            this.Name = name;
+        }
+
         public override T Accept<T>(DeclSpecVisitor<T> visitor)
         {
             return visitor.VisitTypedef(this);
@@ -187,7 +210,13 @@ namespace Reko.Core.Hll.C
     public class CType : CSyntax
     {
         public List<DeclSpec> DeclSpecList;
-        public Declarator Declarator;
+        public Declarator? Declarator;
+
+        public CType(List<DeclSpec> declSpecList, Declarator? decl)
+        {
+            DeclSpecList = declSpecList;
+            Declarator = decl;
+        }
 
         public override T Accept<T>(CSyntaxVisitor<T> visitor)
         {
@@ -197,16 +226,16 @@ namespace Reko.Core.Hll.C
         public override string ToString()
         {
             var sb = new StringBuilder();
-            var sep = "(";
+            var sep = '(';
             foreach (var x in DeclSpecList)
             {
                 sb.Append(sep);
                 sb.Append(x);
-                sep = " ";
+                sep = ' ';
             }
             sb.Append(sep);
             sb.Append(Declarator);
-            sb.Append(")");
+            sb.Append(')');
             return sb.ToString();
         }
     }
@@ -217,6 +246,14 @@ namespace Reko.Core.Hll.C
         public string Name;
         public List<StructDecl> DeclList;
         public int Alignment;
+
+        public ComplexTypeSpec(CTokenType type, string name, List<StructDecl> declList, int alignment)
+        {
+            Type = type;
+            Name = name;
+            DeclList = declList;
+            Alignment = alignment;
+        }
 
         public override T Accept<T>(DeclSpecVisitor<T> visitor)
         {
@@ -240,7 +277,7 @@ namespace Reko.Core.Hll.C
                     sep = " ";
                 }
             }
-            sb.Append(")");
+            sb.Append(')');
             return sb.ToString();
         }
 
@@ -252,8 +289,14 @@ namespace Reko.Core.Hll.C
 
     public class EnumeratorTypeSpec : TypeSpec
     {
-        public string Tag;
+        public string? Tag;
         public List<Enumerator> Enums;
+
+        public EnumeratorTypeSpec(string? tag, List<Enumerator> enums)
+        {
+            Tag = tag;
+            Enums = enums;
+        }
 
         public override T Accept<T>(DeclSpecVisitor<T> visitor)
         {
@@ -283,7 +326,13 @@ namespace Reko.Core.Hll.C
     public class Enumerator : CSyntax
     {
         public string Name;
-        public CExpression Value;
+        public CExpression? Value;
+
+        public Enumerator(string name, CExpression? value)
+        {
+            this.Name = name;
+            this.Value = value;
+        }
 
         public override T Accept<T>(CSyntaxVisitor<T> visitor)
         {
@@ -312,7 +361,13 @@ namespace Reko.Core.Hll.C
     public class InitDeclarator : CSyntax
     {
         public Declarator Declarator;
-        public Initializer Init;
+        public Initializer? Init;
+
+        public InitDeclarator(Declarator decl, Initializer? init)
+        {
+            this.Declarator = decl;
+            this.Init = init;
+        }
 
         public override T Accept<T>(CSyntaxVisitor<T> visitor)
         {
@@ -328,7 +383,7 @@ namespace Reko.Core.Hll.C
             {
                 sb.AppendFormat(" {0}", Init);
             }
-            sb.Append(")");
+            sb.Append(')');
             return sb.ToString();
         }
     }
@@ -340,10 +395,18 @@ namespace Reko.Core.Hll.C
 
     public class ParamDecl : CSyntax
     {
-        public List<CAttribute> Attributes;
-        public List<DeclSpec> DeclSpecs;
-        public Declarator Declarator;
+        public List<CAttribute>? Attributes;
+        public List<DeclSpec>? DeclSpecs;
+        public Declarator? Declarator;
         public bool IsEllipsis;
+
+        public ParamDecl(List<CAttribute>? attributes, List<DeclSpec>? declSpecs, Declarator? declarator, bool isEllipsis)
+        {
+            Attributes = attributes;
+            DeclSpecs = declSpecs;
+            Declarator = declarator;
+            IsEllipsis = isEllipsis;
+        }
 
         public override T Accept<T>(CSyntaxVisitor<T> visitor)
         {
@@ -353,30 +416,30 @@ namespace Reko.Core.Hll.C
         public override string ToString()
         {
             var sb = new StringBuilder();
-            sb.Append("(");
+            sb.Append('(');
             if (Attributes != null)
             {
-                sb.Append(string.Join(" ", Attributes));
-                sb.Append(" ");
+                sb.Append(string.Join(' ', Attributes));
+                sb.Append(' ');
             }
             if (DeclSpecs != null)
             {
                 foreach (var declspec in DeclSpecs)
                 {
                     sb.Append(declspec);
-                    sb.Append(" ");
+                    sb.Append(' ');
                 }
             }
             sb.Append(Declarator);
-            sb.Append(")");
+            sb.Append(')');
             return sb.ToString();
         }
     }
 
     public class PointerDeclarator : Declarator
     {
-        public Declarator Pointee;
-        public List<TypeQualifier> TypeQualifierList;
+        public Declarator? Pointee;
+        public List<TypeQualifier>? TypeQualifierList;
 
         public override T Accept<T>(DeclaratorVisitor<T> visitor)
         {
@@ -401,8 +464,8 @@ namespace Reko.Core.Hll.C
 
     public class ReferenceDeclarator : Declarator
     {
-        public Declarator Referent;
-        public List<TypeQualifier> TypeQualifierList;
+        public Declarator? Referent;
+        public List<TypeQualifier>? TypeQualifierList;
 
         public override T Accept<T>(DeclaratorVisitor<T> visitor)
         {
@@ -430,6 +493,11 @@ namespace Reko.Core.Hll.C
     {
         public string Name;
 
+        public IdDeclarator(string name)
+        {
+            this.Name = name;
+        }
+
         public override T Accept<T>(DeclaratorVisitor<T> visitor)
         {
             return visitor.VisitId(this);
@@ -443,6 +511,12 @@ namespace Reko.Core.Hll.C
         public Declarator Declarator;
         public List<ParamDecl> Parameters;
 
+        public FunctionDeclarator(Declarator declarator, List<ParamDecl> parameters)
+        {
+            Declarator = declarator;
+            Parameters = parameters;
+        }
+
         public override T Accept<T>(DeclaratorVisitor<T> visitor)
         {
             return visitor.VisitFunction(this);
@@ -453,6 +527,11 @@ namespace Reko.Core.Hll.C
             var sb = new StringBuilder();
             sb.Append("(func ");
             sb.Append(Declarator);
+            if (this.Parameters is null)
+            {
+                sb.Append(')');
+                return sb.ToString();
+            }
             var sep = " (";
             foreach (var param in Parameters)
             {
@@ -470,6 +549,12 @@ namespace Reko.Core.Hll.C
         public CTokenType Convention;
         public Declarator Declarator;
 
+        public CallConventionDeclarator(CTokenType convention, Declarator declarator)
+        {
+            Convention = convention;
+            Declarator = declarator;
+        }
+
         public override T Accept<T>(DeclaratorVisitor<T> visitor)
         {
             return visitor.VisitCallConvention(this);
@@ -486,7 +571,13 @@ namespace Reko.Core.Hll.C
     public class ArrayDeclarator : Declarator
     {
         public Declarator Declarator;
-        public CExpression Size;
+        public CExpression? Size;
+
+        public ArrayDeclarator(Declarator declarator, CExpression? size)
+        {
+            Declarator = declarator;
+            Size = size;
+        }
 
         public override T Accept<T>(DeclaratorVisitor<T> visitor)
         {
@@ -500,7 +591,14 @@ namespace Reko.Core.Hll.C
     {
         public List<DeclSpec> SpecQualifierList;
         public List<FieldDeclarator> FieldDeclarators;
-        public List<CAttribute> AttributeList;
+        public List<CAttribute>? AttributeList;
+
+        public StructDecl(List<DeclSpec> sql, List<FieldDeclarator> decls, List<CAttribute>? attrs)
+        {
+            SpecQualifierList = sql;
+            FieldDeclarators = decls;
+            AttributeList = attrs;
+        }
 
         public override T Accept<T>(CSyntaxVisitor<T> visitor)
         {
@@ -510,7 +608,7 @@ namespace Reko.Core.Hll.C
         public override string ToString()
         {
             var sb = new StringBuilder();
-            sb.Append("(");
+            sb.Append('(');
             var sep = "";
             foreach (var sq in SpecQualifierList)
             {
@@ -524,12 +622,12 @@ namespace Reko.Core.Hll.C
                 sb.AppendFormat("{0}{1}", sep, d);
                 sep = " ";
             }
-            sb.Append(")");
+            sb.Append(')');
             if (AttributeList != null && AttributeList.Count > 0)
             {
                 sb.Append(" (");
-                sb.Append(string.Join(" ", AttributeList));
-                sb.Append(")");
+                sb.Append(string.Join(' ', AttributeList));
+                sb.Append(')');
             }
             return sb.ToString();
         }
@@ -538,7 +636,13 @@ namespace Reko.Core.Hll.C
     public class FieldDeclarator : Declarator
     {
         public Declarator Declarator;
-        public CExpression FieldSize;
+        public CExpression? FieldSize;
+
+        public FieldDeclarator(Declarator declarator, CExpression? fieldSize)
+        {
+            Declarator = declarator;
+            FieldSize = fieldSize;
+        }
 
         public override T Accept<T>(DeclaratorVisitor<T> visitor)
         {
@@ -551,7 +655,7 @@ namespace Reko.Core.Hll.C
             sb.AppendFormat("({0}", Declarator);
             if (FieldSize != null)
                 sb.AppendFormat(" {0}", FieldSize);
-            sb.Append(")");
+            sb.Append(')');
             return sb.ToString();
         }
     }
@@ -567,20 +671,25 @@ namespace Reko.Core.Hll.C
             List = new List<Initializer>();
         }
 
-        public List<Initializer> List { get; private set; }
+        public List<Initializer> List { get; }
     }
 
     public class ExpressionInitializer : Initializer
     {
         public CExpression Expression;
 
-        public override string ToString() { return Expression.ToString(); }
+        public ExpressionInitializer(CExpression expression)
+        {
+            this.Expression = expression;
+        }
+
+        public override string ToString() { return Expression.ToString()!; }
     }
 
     public class CAttribute : CSyntax
     {
         public QualifiedName Name;
-        public List<CToken> Tokens;
+        public List<CToken>? Tokens;
 
         public override T Accept<T>(CSyntaxVisitor<T> visitor)
         {
@@ -598,9 +707,9 @@ namespace Reko.Core.Hll.C
                 {
                     sb.AppendFormat("{0} {1}", token.Type, token.Value);
                 }
-                sb.Append(")");
+                sb.Append(')');
             }
-            sb.Append(")");
+            sb.Append(')');
             return sb.ToString();
         }
     }
@@ -621,18 +730,28 @@ namespace Reko.Core.Hll.C
     {
         public object Const;
 
+        public ConstExp(object value)
+        {
+            this.Const = value;
+        }
+
         public override T Accept<T>(CExpressionVisitor<T> visitor)
         {
             return visitor.VisitConstant(this);
         }
 
-        public override string ToString() { return Const != null ? Const.ToString() : ""; }
+        public override string ToString() { return Const != null ? Const.ToString()! : ""; }
 
     }
 
     public class CIdentifier : CExpression
     {
         public string Name;
+
+        public CIdentifier(string name)
+        {
+            this.Name = name;
+        }
 
         public override T Accept<T>(CExpressionVisitor<T> visitor)
         {
@@ -648,6 +767,12 @@ namespace Reko.Core.Hll.C
         public CExpression Function;
         public List<CExpression> Arguments;
 
+        public Application(CExpression function, List<CExpression> arguments)
+        {
+            Function = function;
+            Arguments = arguments;
+        }
+
         public override T Accept<T>(CExpressionVisitor<T> visitor)
         {
             return visitor.VisitApplication(this);
@@ -656,14 +781,14 @@ namespace Reko.Core.Hll.C
         public override string ToString()
         {
             var sb = new StringBuilder();
-            sb.Append("(");
+            sb.Append('(');
             sb.Append(Function);
             foreach (var exp in Arguments)
             {
-                sb.Append(" ");
+                sb.Append(' ');
                 sb.Append(exp);
             }
-            sb.Append(")");
+            sb.Append(')');
             return sb.ToString();
         }
     }
@@ -673,6 +798,13 @@ namespace Reko.Core.Hll.C
         public CExpression Expression;
         public string FieldName;
         public bool Dereference;
+
+        public MemberExpression(CExpression exp, bool deref, string fieldName)
+        {
+            this.Expression = exp;
+            this.FieldName = fieldName;
+            this.Dereference = deref;
+        }
 
         public override T Accept<T>(CExpressionVisitor<T> visitor)
         {
@@ -689,6 +821,12 @@ namespace Reko.Core.Hll.C
         public CTokenType Operation;
         public CExpression Expression;
 
+        public CUnaryExpression(CTokenType operation, CExpression expression)
+        {
+            Operation = operation;
+            Expression = expression;
+        }
+
         public override T Accept<T>(CExpressionVisitor<T> visitor)
         {
             return visitor.VisitUnary(this);
@@ -702,6 +840,13 @@ namespace Reko.Core.Hll.C
         public CTokenType Operation;
         public CExpression Left;
         public CExpression Right;
+
+        public CBinaryExpression(CTokenType operation, CExpression left, CExpression right)
+        {
+            Operation = operation;
+            Left = left;
+            Right = right;
+        }
 
         public override T Accept<T>(CExpressionVisitor<T> visitor)
         {
@@ -718,6 +863,13 @@ namespace Reko.Core.Hll.C
         public CExpression LValue;
         public CExpression RValue;
 
+        public AssignExpression(CTokenType assingmentOp, CExpression lValue, CExpression rValue)
+        {
+            AssingmentOp = assingmentOp;
+            LValue = lValue;
+            RValue = rValue;
+        }
+
         public override T Accept<T>(CExpressionVisitor<T> visitor)
         {
             return visitor.VisitAssign(this);
@@ -728,6 +880,12 @@ namespace Reko.Core.Hll.C
     {
         public CType Type;
         public CExpression Expression;
+
+        public CastExpression(CType type, CExpression expression)
+        {
+            Type = type;
+            Expression = expression;
+        }
 
         public override T Accept<T>(CExpressionVisitor<T> visitor)
         {
@@ -746,6 +904,13 @@ namespace Reko.Core.Hll.C
         public CExpression Consequent;
         public CExpression Alternative;
 
+        public ConditionalExpression(CExpression condition, CExpression consequent, CExpression alternative)
+        {
+            Condition = condition;
+            Consequent = consequent;
+            Alternative = alternative;
+        }
+
         public override T Accept<T>(CExpressionVisitor<T> visitor)
         {
             return visitor.VisitConditional(this);
@@ -763,6 +928,13 @@ namespace Reko.Core.Hll.C
         public bool Prefix;
         public CExpression Expression;
 
+        public IncrementExpression(CTokenType incrementor, bool prefix, CExpression expression)
+        {
+            Incrementor = incrementor;
+            Prefix = prefix;
+            Expression = expression;
+        }
+
         public override T Accept<T>(CExpressionVisitor<T> visitor)
         {
             return visitor.VisitIncrement(this);
@@ -771,8 +943,18 @@ namespace Reko.Core.Hll.C
 
     public class SizeofExpression : CExpression
     {
-        public CType Type;
-        public CExpression Expression;
+        public CType? Type;
+        public CExpression? Expression;
+
+        public SizeofExpression(CType? type)
+        {
+            Type = type;
+        }
+        
+        public SizeofExpression(CExpression? expression)
+        {
+            Expression = expression;
+        }
 
         public override T Accept<T>(CExpressionVisitor<T> visitor)
         {
@@ -782,7 +964,7 @@ namespace Reko.Core.Hll.C
         public override string ToString()
         {
             return string.Format("(sizeof {0})",
-                Type != null ? (object) Type : (object) Expression);
+                Type != null ? (object) Type : (object) Expression!);
         }
     }
 
@@ -790,6 +972,12 @@ namespace Reko.Core.Hll.C
     {
         public CExpression Expression;
         public CExpression Index;
+
+        public CArrayAccess(CExpression expression, CExpression index)
+        {
+            Expression = expression;
+            Index = index;
+        }   
 
         public override T Accept<T>(CExpressionVisitor<T> visitor)
         {
@@ -818,12 +1006,24 @@ namespace Reko.Core.Hll.C
     {
         public Label Label;
         public Stat Stat;
+
+        public LabeledStat(Label label, Stat stat)
+        {
+            Label = label;
+            Stat = stat;
+        }
     }
 
     public class DeclStat : Stat
     {
         public Decl Declaration;
-        public CExpression Initializer;
+        public CExpression? Initializer;
+
+        public DeclStat(Decl declaration, CExpression? initializer)
+        {
+            Declaration = declaration;
+            Initializer = initializer;
+        }
     }
 
     public abstract class Label
@@ -834,12 +1034,22 @@ namespace Reko.Core.Hll.C
     {
         public string Name;
 
-        public override string ToString() { return string.Format("label {0})", Name); }
+        public LineLabel(string name)
+        {
+            Name = name;
+        }
+
+        public override string ToString() { return $"(label {Name})"; }
     }
 
     public class CaseLabel : Label
     {
         public CExpression Value;
+
+        public CaseLabel(CExpression value)
+        {
+            Value = value;
+        }
 
         public override string ToString()
         {
@@ -854,19 +1064,38 @@ namespace Reko.Core.Hll.C
     {
         public CExpression Expression;
         public Stat Consequence;
-        public Stat Alternative;
+        public Stat? Alternative;
+
+        public IfStat(CExpression expression, Stat consequence, Stat? alternative)
+        {
+            Expression = expression;
+            Consequence = consequence;
+            Alternative = alternative;
+        }
     }
 
     public class WhileStat : Stat
     {
         public CExpression Expression;
         public Stat Body;
+
+        public WhileStat(CExpression expression, Stat body)
+        {
+            Expression = expression;
+            Body = body;
+        }
     }
 
     public class DoWhileStat : Stat
     {
         public Stat Body;
         public CExpression Expression;
+
+        public DoWhileStat(Stat body, CExpression expression)
+        {
+            Body = body;
+            Expression = expression;
+        }
 
         public override string ToString()
         {
@@ -875,32 +1104,56 @@ namespace Reko.Core.Hll.C
             sb.Append(Body);
             sb.Append(") ");
             sb.Append(Expression);
-            sb.Append(")");
+            sb.Append(')');
             return sb.ToString();
         }
     }
 
     public class ForStat : Stat
     {
-        public Stat Initializer;
-        public CExpression Test;
-        public CExpression Update;
+        public Stat? Initializer;
+        public CExpression? Test;
+        public CExpression? Update;
         public Stat Body;
+
+        public ForStat(Stat? initializer, CExpression? test, CExpression? update, Stat body)
+        {
+            Initializer = initializer;
+            Test = test;
+            Update = update;
+            Body = body;
+        }
     }
 
     public class GotoStat : Stat
     {
         public string Label;
+
+        public GotoStat(string label)
+        {
+            this.Label = label;
+        }
     }
 
     public class ReturnStat : Stat
     {
         public CExpression Expression;
+
+        public ReturnStat(CExpression exp)
+        {
+            Expression = exp;
+        }
     }
 
     public class ExprStat : Stat
     {
-        public CExpression Expression;
+        public CExpression? Expression;
+
+        public ExprStat(CExpression? exp)
+        {
+            this.Expression = exp;
+        }
+
         public override string ToString()
         {
             if (Expression == null)
@@ -913,15 +1166,20 @@ namespace Reko.Core.Hll.C
     {
         public List<Stat> Statements;
 
+        public CompoundStatement(List<Stat> statements)
+        {
+            Statements = statements;
+        }
+
         public override string ToString()
         {
             var sb = new StringBuilder();
-            sb.Append("(");
+            sb.Append('(');
             foreach (var stat in Statements)
             {
                 sb.Append(stat);
             }
-            sb.Append(")");
+            sb.Append(')');
             return sb.ToString();
         }
     }

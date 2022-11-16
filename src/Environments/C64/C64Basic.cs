@@ -112,7 +112,7 @@ namespace Reko.Environments.C64
 
         public override RegisterStorage[] GetRegisters()
         {
-            return new RegisterStorage[0];
+            return Array.Empty<RegisterStorage>();
         }
 
         public override bool TryGetRegister(string name, out RegisterStorage reg)

@@ -74,7 +74,7 @@ namespace Reko.UnitTests.Core.Hll.C
         public void NamedDataTypeExtractor_Ulong()
         {
             Run(new[] { SType(CTokenType.Unsigned), SType(CTokenType.Long) },
-                new IdDeclarator { Name = "Bob" });
+                new IdDeclarator("Bob"));
 
             Assert.AreEqual("Bob", nt.Name);
             Assert.AreEqual("prim(UnsignedInt,4)", nt.DataType.ToString());
@@ -84,7 +84,7 @@ namespace Reko.UnitTests.Core.Hll.C
         public void NamedDataTypeExtractor_Bool()
         {
             Run(new[] { SType(CTokenType.Bool) },
-                new IdDeclarator { Name = "Bob" });
+                new IdDeclarator("Bob"));
 
             Assert.AreEqual("Bob", nt.Name);
             Assert.AreEqual("prim(Boolean,1)", nt.DataType.ToString());
@@ -94,7 +94,7 @@ namespace Reko.UnitTests.Core.Hll.C
         public void NamedDataTypeExtractor__Bool()
         {
             Run(new[] { SType(CTokenType._Bool) },
-                new IdDeclarator { Name = "Bob" });
+                new IdDeclarator("Bob"));
 
             Assert.AreEqual("Bob", nt.Name);
             Assert.AreEqual("prim(Boolean,1)", nt.DataType.ToString());
@@ -106,7 +106,7 @@ namespace Reko.UnitTests.Core.Hll.C
             Run(new[] { SType(CTokenType.Char), },
                 new PointerDeclarator
                 {
-                    Pointee = new IdDeclarator { Name = "Sue" }
+                    Pointee = new IdDeclarator("Sue")
                 });
             Assert.AreEqual("Sue", nt.Name);
             Assert.IsInstanceOf<PointerType_v1>(nt.DataType);
@@ -121,20 +121,19 @@ namespace Reko.UnitTests.Core.Hll.C
         public void NamedDataTypeExtractor_Pfn()
         {
             Run(new[] { SType(CTokenType.Int) },
-                new FunctionDeclarator
-                {
-                    Declarator = new PointerDeclarator
+                new FunctionDeclarator(
+                    new PointerDeclarator
                     {
-                        Pointee = new IdDeclarator { Name = "fn" },
+                        Pointee = new IdDeclarator("fn"),
                     },
-                    Parameters = new List<ParamDecl>
+                    new List<ParamDecl>
                     {
-                        new ParamDecl {
-                            DeclSpecs = new List<DeclSpec>{ SType(CTokenType.Char) },
-                            Declarator = new IdDeclarator { Name="ch" },
-                        }
-                    }
-                });
+                        new ParamDecl(
+                            null,
+                            new List<DeclSpec>{ SType(CTokenType.Char) },
+                            new IdDeclarator("ch"),
+                            false)
+                    }));
             Assert.AreEqual("fn", nt.Name);
             Assert.AreEqual("ptr(fn(arg(prim(SignedInt,4)),(arg(ch,prim(Character,1)))))", nt.DataType.ToString());
         }
@@ -143,7 +142,7 @@ namespace Reko.UnitTests.Core.Hll.C
         public void NamedDataTypeExtractor_long_double_field()
         {
             Run(new[] { SType(CTokenType.Long), SType(CTokenType.Double) },
-                new IdDeclarator { Name = "foo" });
+                new IdDeclarator("foo"));
             Assert.AreEqual("prim(Real,8)", nt.DataType.ToString());
         }
 
@@ -151,7 +150,7 @@ namespace Reko.UnitTests.Core.Hll.C
         public void NamedDataTypeExtractor_unsigned_short()
         {
             Run(new[] { SType(CTokenType.Unsigned), SType(CTokenType.Short) },
-                new IdDeclarator { Name = "foo" });
+                new IdDeclarator("foo"));
             Assert.AreEqual("prim(UnsignedInt,2)", nt.DataType.ToString());
         }
 
@@ -161,18 +160,11 @@ namespace Reko.UnitTests.Core.Hll.C
             Run(new[] { SType(CTokenType.Char) },
                 new PointerDeclarator()
                 {
-                    Pointee = new CallConventionDeclarator()
-                    {
-                        Convention = CTokenType.__Stdcall,
-                        Declarator = new FunctionDeclarator()
-                        {
-                            Declarator = new IdDeclarator()
-                            {
-                                Name = "test"
-                            },
-                            Parameters = new List<ParamDecl>()
-                        }
-                    }
+                    Pointee = new CallConventionDeclarator(
+                        CTokenType.__Stdcall,
+                        new FunctionDeclarator(
+                            new IdDeclarator("test"),
+                            new List<ParamDecl>()))
                 });
             Assert.AreEqual(
                 "fn(__stdcall,arg(ptr(prim(Character,1))),())",
@@ -275,18 +267,11 @@ namespace Reko.UnitTests.Core.Hll.C
             Run(new[] { SType(CTokenType.Char) },
                 new PointerDeclarator()
                 {
-                    Pointee = new CallConventionDeclarator()
-                    {
-                        Convention = CTokenType.__Thiscall,
-                        Declarator = new FunctionDeclarator()
-                        {
-                            Declarator = new IdDeclarator()
-                            {
-                                Name = "test"
-                            },
-                            Parameters = new List<ParamDecl>()
-                        }
-                    }
+                    Pointee = new CallConventionDeclarator(
+                        CTokenType.__Thiscall,
+                        new FunctionDeclarator(
+                            new IdDeclarator("test"),
+                            new List<ParamDecl>()))
                 });
             Assert.AreEqual(
                 "fn(__thiscall,arg(ptr(prim(Character,1))),())",
@@ -301,10 +286,7 @@ namespace Reko.UnitTests.Core.Hll.C
                 {
                     Pointee = new ReferenceDeclarator
                     {
-                        Referent = new IdDeclarator
-                        {
-                            Name = "fooReference",
-                        },
+                        Referent = new IdDeclarator("fooReference"),
                     }
                 });
             Assert.AreEqual("ref(ptr(prim(Character,1)))",
@@ -319,7 +301,7 @@ namespace Reko.UnitTests.Core.Hll.C
                 SType(CTokenType.Unsigned),
                 SType(CTokenType.Int),
                 },
-                new IdDeclarator { Name = "size_t" });
+                new IdDeclarator("size_t"));
             Assert.AreEqual("prim(UnsignedInt,2)", nt.DataType.ToString());
         }
 
@@ -331,7 +313,7 @@ namespace Reko.UnitTests.Core.Hll.C
                 SType(CTokenType.Short),
                 SType(CTokenType.Int),
                 },
-                new IdDeclarator { Name = "size_t" });
+                new IdDeclarator("size_t"));
             Assert.AreEqual("prim(UnsignedInt,2)", nt.DataType.ToString());
         }
 
@@ -343,7 +325,7 @@ namespace Reko.UnitTests.Core.Hll.C
                 SType(CTokenType.Unsigned),
                 SType(CTokenType.Long),
                 },
-                new IdDeclarator { Name = "DWORD" });
+                new IdDeclarator("DWORD"));
             Assert.AreEqual("prim(UnsignedInt,4)", nt.DataType.ToString());
         }
 
@@ -356,7 +338,7 @@ namespace Reko.UnitTests.Core.Hll.C
                 SType(CTokenType.Long),
                 SType(CTokenType.Int),
                 },
-                new IdDeclarator { Name = "DWORD" });
+                new IdDeclarator("DWORD"));
             Assert.AreEqual("prim(UnsignedInt,4)", nt.DataType.ToString());
         }
 
@@ -368,7 +350,7 @@ namespace Reko.UnitTests.Core.Hll.C
                 new PointerDeclarator
                 {
                     TypeQualifierList = new List<TypeQualifier> { new TypeQualifier { Qualifier = CTokenType._Near } },
-                    Pointee = new IdDeclarator { Name = "Sue" }
+                    Pointee = new IdDeclarator("Sue")
                 });
             var ptrType = (PointerType_v1) nt.DataType;
             Assert.AreEqual("ptr(prim(Character,1))", ptrType.ToString());
@@ -385,18 +367,16 @@ namespace Reko.UnitTests.Core.Hll.C
                     new TypeQualifier { Qualifier = CTokenType._Near },
                     new TypeQualifier { Qualifier = CTokenType.__Cdecl },
                 },
-                new FunctionDeclarator
-                {
-                    Declarator = new IdDeclarator { Name = "exit" },
-                    Parameters = new List<ParamDecl>
+                new FunctionDeclarator(
+                    new IdDeclarator("exit"),
+                    new List<ParamDecl>
                     {
-                        new ParamDecl
-                        {
-                            DeclSpecs = new(){ SType(CTokenType.Int) },
-                            Declarator = new IdDeclarator { Name = "arg" }
-                        }
-                    }
-                });
+                        new ParamDecl(
+                            null,
+                            new(){ SType(CTokenType.Int) },
+                            new IdDeclarator("arg"),
+                            false)
+                    }));
             var sig = (SerializedSignature) nt.DataType;
             Assert.AreEqual(2, sig.ReturnAddressOnStack);
         }

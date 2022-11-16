@@ -140,7 +140,7 @@ namespace Reko.Core.Hll.C
             }
             return (nt) =>
             {
-                var size = PointerSize(pointer.TypeQualifierList);
+                var size = PointerSize(pointer.TypeQualifierList!);
                 nt.DataType = new PointerType_v1
                 {
                     DataType = nt.DataType,
@@ -164,7 +164,7 @@ namespace Reko.Core.Hll.C
             }
             return (nt) =>
             {
-                var size = PointerSize(reference.TypeQualifierList);
+                var size = PointerSize(reference.TypeQualifierList!);
                 nt.DataType = new ReferenceType_v1
                 {
                     Referent = nt.DataType,
@@ -240,8 +240,8 @@ namespace Reko.Core.Hll.C
             }
             else
             {
-                var ntde = new NamedDataTypeExtractor(platform, decl.DeclSpecs, symbolTable, pointerSize);
-                var ntTmp = ntde.GetNameAndType(decl.Declarator);
+                var ntde = new NamedDataTypeExtractor(platform, decl.DeclSpecs!, symbolTable, pointerSize);
+                var ntTmp = ntde.GetNameAndType(decl.Declarator!);
                 var nt = ConvertArrayToPointer(ntTmp);
                 var kind = GetArgumentKindFromAttributes("arg", decl.Attributes);
                 return new Argument_v1
@@ -268,6 +268,8 @@ namespace Reko.Core.Hll.C
             {
                 if (attr.Name.Components is null || attr.Name.Components.Length != 2 ||
                     attr.Name.Components[0] != "reko" || attr.Name.Components[1] != paramType)
+                    continue;
+                if (attr.Tokens is null)
                     continue;
                 if (attr.Tokens[0].Type == CTokenType.Register &&
                     attr.Tokens[1].Type == CTokenType.Comma)

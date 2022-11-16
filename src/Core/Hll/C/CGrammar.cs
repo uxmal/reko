@@ -29,84 +29,57 @@ namespace Reko.Core.Hll.C
     {
         public CExpression Const(object value)
         {
-            return new ConstExp { Const = value };
+            return new ConstExp(value);
         }
 
         public virtual CExpression Bin(CTokenType op, CExpression left, CExpression right)
         {
-            return new CBinaryExpression
-            {
-                Operation = op,
-                Left = left,
-                Right = right
-            };
+            return new CBinaryExpression(op, left, right);
         }
 
         public CExpression Unary(CTokenType operation, CExpression expr)
         {
-            return new CUnaryExpression { Operation = operation, Expression = expr };
+            return new CUnaryExpression(operation, expr);
         }
 
         public CIdentifier Id(string name)
         {
-            return new CIdentifier { Name = name };
+            return new CIdentifier(name);
         }
 
-        public CExpression Application(CExpression fn, List<CExpression> list)
+        public CExpression Application(CExpression fn, List<CExpression> arguments)
         {
-            return new Application { 
-                Function = fn, 
-                Arguments = list
-            };
+            return new Application(fn, arguments);
         }
 
         public CExpression ArrayAccess(CExpression e, CExpression idx)
         {
-            return new CArrayAccess
-            {
-                Expression = e,
-                Index = idx,
-            };
+            return new CArrayAccess(e, idx);
         }
 
         public CExpression MemberAccess(CExpression e, string fieldName)
         {
-            return new MemberExpression
-            {
-                Expression = e,
-                Dereference = false,
-                FieldName = fieldName,
-            };
+            return new MemberExpression(e, false, fieldName);
         }
 
         public CExpression PtrMemberAccess(CExpression e, string fieldName)
         {
-            return new MemberExpression
-            {
-                Expression = e,
-                Dereference = true,
-                FieldName = fieldName,
-            };
+            return new MemberExpression(e, true, fieldName);
         }
 
         public CExpression PostIncrement(CExpression e, CTokenType token)
         {
-            return new IncrementExpression
-            {
-                Expression = e,
-                Incrementor = token,
-                Prefix = false
-            };
+            return new IncrementExpression(token, false, e);
         }
 
         public CExpression Sizeof(CType type)
         {
-            return new SizeofExpression { Type = type };
+            return new SizeofExpression(type);
         }
 
         public CExpression Sizeof(CExpression sexp)
         {
-            return new SizeofExpression { Expression = sexp };
+            return new SizeofExpression(sexp);
         }
 
         public CExpression PreIncrement(CTokenType token, CExpression uexpr)
@@ -116,7 +89,7 @@ namespace Reko.Core.Hll.C
 
         public CExpression Cast(CType type, CExpression exp)
         {
-            return new CastExpression { Type = type, Expression = exp };
+            return new CastExpression(type, exp);
         }
 
         public CExpression Application(CExpression e) => throw new NotImplementedException();
@@ -131,9 +104,9 @@ namespace Reko.Core.Hll.C
             return new TypeQualifier { Qualifier = qualifier };
         }
 
-        public FieldDeclarator FieldDeclarator(Declarator decl, CExpression bitField)
+        public FieldDeclarator FieldDeclarator(Declarator decl, CExpression? bitField)
         {
-            return new FieldDeclarator { Declarator = decl, FieldSize = bitField };
+            return new FieldDeclarator(decl, bitField);
         }
 
         public TypeSpec SimpleType(CTokenType type)
@@ -143,22 +116,17 @@ namespace Reko.Core.Hll.C
 
         public TypeSpec TypeName(string name)
         {
-            return new TypeDefName { Name = name };
+            return new TypeDefName(name);
         }
 
         public Declarator IdDeclarator(string name)
         {
-            return new IdDeclarator { Name = name };
+            return new IdDeclarator(name);
         }
 
-        public Stat IfStatement(CExpression expr, Stat consequence, Stat alternative)
+        public Stat IfStatement(CExpression expr, Stat consequence, Stat? alternative)
         {
-            return new IfStat
-            {
-                Expression = expr,
-                Consequence = consequence,
-                Alternative = alternative,
-            };
+            return new IfStat(expr, consequence, alternative);
         }
 
         public Stat SwitchStatement(CExpression expr, Stat switchBody)
@@ -168,39 +136,22 @@ namespace Reko.Core.Hll.C
 
         public Stat WhileStatement(CExpression expr, Stat whileBody)
         {
-            return new WhileStat
-            {
-                Expression = expr,
-                Body = whileBody
-            };
+            return new WhileStat(expr, whileBody);
         }
 
         public Stat DoWhileStatement(Stat doBody, CExpression expr)
         {
-            return new DoWhileStat
-            {
-                Body = doBody,
-                Expression = expr,
-            };
+            return new DoWhileStat(doBody, expr);
         }
 
-        public Stat ForStatement(Stat init, CExpression test, CExpression  incr, Stat forBody)
+        public Stat ForStatement(Stat? init, CExpression? test, CExpression? incr, Stat forBody)
         {
-            return new ForStat
-            {
-                Initializer = init,
-                Test = test,
-                Update = incr,
-                Body = forBody
-            };
+            return new ForStat(init, test, incr, forBody);
         }
 
         public Stat GotoStatement(string gotoLabel)
         {
-            return new GotoStat
-            {
-                Label = gotoLabel
-            };
+            return new GotoStat(gotoLabel);
         }
 
         public Stat ContinueStatement()
@@ -215,51 +166,37 @@ namespace Reko.Core.Hll.C
 
         public Stat EmptyStatement()
         {
-            return new ExprStat();
+            return new ExprStat(null);
         }
 
         public Stat CompoundStatement(List<Stat> statements)
         {
-            return new CompoundStatement
-            {
-                Statements = statements,
-            };
+            return new CompoundStatement(statements);
         }
 
 
         public Stat ReturnStatement(CExpression expr)
         {
-            return new ReturnStat { Expression = expr };
+            return new ReturnStat(expr);
         }
 
-        public ParamDecl ParamDecl(List<CAttribute> attrs, List<DeclSpec> dsl, Declarator decl)
+        public ParamDecl ParamDecl(List<CAttribute>? attrs, List<DeclSpec> dsl, Declarator? decl)
         {
-            return new ParamDecl
-            {
-                Attributes = attrs,
-                DeclSpecs = dsl,
-                Declarator = decl,
-            };
+            return new ParamDecl(attrs, dsl, decl, false);
         }
 
-        public TypeSpec Enum(string tag, List<Enumerator> enums)
+        public TypeSpec Enum(string? tag, List<Enumerator> enums)
         {
-            return new EnumeratorTypeSpec
-            {
-                Tag = tag,
-                Enums = enums,
-            };
+            return new EnumeratorTypeSpec(tag, enums);
         }
 
         public TypeSpec ComplexType(CTokenType token, int alignment, string tag, List<StructDecl> decls)
         {
-            return new ComplexTypeSpec
-            {
-                Type = token,
-                Name = tag,
-                Alignment = alignment,
-                DeclList = decls,
-            };
+            return new ComplexTypeSpec(
+                token,
+                tag,
+                decls,
+                alignment);
         }
 
         public Label DefaultCaseLabel()
@@ -269,69 +206,57 @@ namespace Reko.Core.Hll.C
 
         public Stat LabeledStatement(Label label, Stat stat)
         {
-            return new LabeledStat {
-                Label = label,
-                Stat = stat,
-            };
+            return new LabeledStat(label, stat);
         }
 
         public Label CaseLabel(CExpression constExpr)
         {
-            return new CaseLabel { Value = constExpr };
+            return new CaseLabel(constExpr);
         }
 
-        internal Label Label(string p)
+        internal Label Label(string labelName)
         {
-            return new LineLabel { Name = p };
+            return new LineLabel(labelName);
         }
 
-        public InitDeclarator InitDeclarator(Declarator decl, Initializer init)
+        public InitDeclarator InitDeclarator(Declarator? decl, Initializer? init)
         {
-            return new InitDeclarator { Declarator = decl, Init = init };
+            return new InitDeclarator(decl!, init);
         }
 
-        internal Initializer ListInitializer(List<Initializer> list)
+        public Initializer ListInitializer(List<Initializer> list)
         {
             throw new NotImplementedException();
         }
 
-        internal Initializer ExpressionInitializer(CExpression expr)
+        public Initializer ExpressionInitializer(CExpression expr)
         {
-            return new ExpressionInitializer { Expression = expr };
+            return new ExpressionInitializer(expr);
         }
 
         public Stat ExprStatement(CExpression expr)
         {
-            return new ExprStat { Expression = expr };
+            return new ExprStat(expr);
         }
 
         public CExpression Conditional(CExpression cond, CExpression consequent, CExpression alternant)
         {
-            return new ConditionalExpression
-            {
-                Condition = cond,
-                Consequent = consequent,
-                Alternative = alternant,
-            };
+            return new ConditionalExpression(cond, consequent, alternant);
         }
 
         public StructDecl StructDecl(List<DeclSpec> sql, List<FieldDeclarator> decls, List<CAttribute>? attrs)
         {
-            return new StructDecl { 
-                SpecQualifierList = sql, 
-                FieldDeclarators = decls,
-                AttributeList = attrs 
-            };
+            return new StructDecl(sql, decls, attrs);
         }
 
-        public Declarator ArrayDeclarator(Declarator decl, CExpression expr)
+        public Declarator ArrayDeclarator(Declarator decl, CExpression? expr)
         {
-            return new ArrayDeclarator { Declarator = decl, Size = expr };
+            return new ArrayDeclarator(decl, expr);
         }
 
         public Declarator FunctionDeclarator(Declarator decl, List<ParamDecl> parameters)
         {
-            return new FunctionDeclarator { Declarator = decl, Parameters = parameters };
+            return new FunctionDeclarator(decl, parameters);
         }
 
         public PointerDeclarator PointerDeclarator()
@@ -339,12 +264,12 @@ namespace Reko.Core.Hll.C
             return new PointerDeclarator { };
         }
 
-        public Declarator PointerDeclarator(Declarator decl, List<TypeQualifier> tqs)
+        public Declarator PointerDeclarator(Declarator? decl, List<TypeQualifier>? tqs)
         {
             return new PointerDeclarator { TypeQualifierList = tqs, Pointee = decl};
         }
 
-        public Declarator ReferenceDeclarator(Declarator decl, List<TypeQualifier> tqs)
+        public Declarator ReferenceDeclarator(Declarator? decl, List<TypeQualifier>? tqs)
         {
             return new ReferenceDeclarator { TypeQualifierList = tqs, Referent = decl };
         }
@@ -352,75 +277,53 @@ namespace Reko.Core.Hll.C
 
         public Declarator CallConventionDeclarator(CTokenType conv, Declarator decl)
         {
-            return new CallConventionDeclarator
-            {
-                Convention = conv,
-                Declarator = decl,
-            };
+            return new CallConventionDeclarator(conv, decl);
         }
 
-        public Enumerator Enumerator(string id, CExpression init)
+        public Enumerator Enumerator(string id, CExpression? init)
         {
-            return new Enumerator { Name = id, Value = init };
+            return new Enumerator(id, init);
         }
 
         public ParamDecl Ellipsis()
         {
-            return new ParamDecl
-            {
-                IsEllipsis = true,
-            };
+            return new ParamDecl(null, null, null, true);
         }
 
         public Decl Decl(List<CAttribute>? attrs, List<DeclSpec> list, List<InitDeclarator> listDecls)
         {
-            return new Decl
-            {
-                attribute_list = attrs,
-                decl_specs = list,
-                init_declarator_list = listDecls
-            };
+            return new Decl(attrs, list, listDecls);
         }
 
-        internal Decl Decl(List<CAttribute> attrs, List<DeclSpec> list, Declarator decl)
+        internal Decl Decl(List<CAttribute>? attrs, List<DeclSpec> list, Declarator? decl)
         {
-            return new Decl
-            {
-                attribute_list = attrs,
-                decl_specs = list,
-                init_declarator_list = new List<InitDeclarator> 
+            return new Decl(
+                attrs,
+                list,
+                new List<InitDeclarator> 
                 {
-                    new InitDeclarator {
-                        Declarator = decl,
-                        Init= null
-                    }
-                }
-            };
+                    InitDeclarator(decl, null)
+                });
         }
 
-        public Stat DeclStat(Decl decl)
+        public Stat DeclStat(Decl decl, CExpression? initializer = null)
         {
-            return new DeclStat { Declaration = decl };
+            return new DeclStat(decl, initializer);
         }
 
-        internal Decl FunctionDefinition(List<CAttribute> attrs, List<DeclSpec> decl_spec_list, Declarator declarator, List<Stat> statements)
+        internal Decl FunctionDefinition(List<CAttribute>? attrs, List<DeclSpec> decl_spec_list, Declarator? declarator, List<Stat> statements)
         {
-            return new FunctionDecl
-            {
-                decl_specs = decl_spec_list,        //$REVIEW: dupe?
-                Signature = Decl(attrs, decl_spec_list, declarator),
-                Body = statements
-            };
-                
+            return new FunctionDecl(
+                Decl(attrs, decl_spec_list, declarator),
+                statements,
+                decl_spec_list        //$REVIEW: dupe?
+            );
         }
 
 
-        public DeclSpec ExtendedDeclspec(string s)
+        public DeclSpec ExtendedDeclspec(string name)
         {
-            return new ExtendedDeclspec
-            {
-                Name = s,
-            };
+            return new ExtendedDeclspec(name);
         }
 
     }

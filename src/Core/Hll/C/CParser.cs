@@ -372,14 +372,15 @@ IGNORE tab + cr + lf
         //    )
         //  | ';'                                           // Decl
         //  ).
-        public Decl Parse_ExternalDecl()
+#nullable enable
+        public Decl? Parse_ExternalDecl()
         {
             // Eat leading semicolons.
             while (PeekThenDiscard(CTokenType.Semicolon))
                 ;
-            var attrs = Parse_AttributeSpecifierSeq();
+            var attrs = ParseAttributeSpecifierSeq();
             var decl_spec_list = Parse_DeclSpecifierList();
-            if (decl_spec_list == null)
+            if (decl_spec_list is null)
                 return null;
             var inits = new List<InitDeclarator>();
             if (PeekThenDiscard(CTokenType.Semicolon))
@@ -392,7 +393,7 @@ IGNORE tab + cr + lf
                 token == CTokenType.Semicolon)
             {
                 // Declaration.
-                Initializer init = null;
+                Initializer? init = null;
                 if (PeekThenDiscard(CTokenType.Assign))
                 {
                     init = Parse_Initializer();
@@ -440,6 +441,8 @@ IGNORE tab + cr + lf
                 throw new CParserException($"Expected ';' on line {lexer.LineNumber}.");
         }
 
+#nullable disable
+
         private List<CAttribute> MergeAttributeLists(params List<CAttribute> [] lists)
         {
             List<CAttribute> totalList = null;
@@ -478,7 +481,7 @@ IGNORE tab + cr + lf
         //Decl ::= [attributes-seq] DeclSpecifierList [InitDeclarator {',' InitDeclarator}] ';'.
         public Decl Parse_Decl()
         {
-            var attrs = Parse_AttributeSpecifierSeq();
+            var attrs = ParseAttributeSpecifierSeq();
             var declSpecifiers = Parse_DeclSpecifierList();
             if (declSpecifiers == null)
                 return null;
@@ -900,14 +903,15 @@ IGNORE tab + cr + lf
         //    { '[' [ConstExpr] ']' 
         //    | '(' [IF(!IsType0()) IdentList | ParamTypeList] ')' 
         //    }.
-        public Declarator Parse_Declarator()
+#nullable enable
+        public Declarator? Parse_Declarator()
         {
-            Declarator decl;
+            Declarator? decl;
             var token = lexer.Peek(0).Type;
             switch (token)
             {
             case CTokenType.Id:
-                decl = grammar.IdDeclarator((string) lexer.Read().Value);
+                decl = grammar.IdDeclarator((string) lexer.Read().Value!);
                 break;
             case CTokenType.LParen:
                 ExpectToken(CTokenType.LParen);
@@ -941,6 +945,8 @@ IGNORE tab + cr + lf
             case CTokenType.__Thiscall:
                 lexer.Read();
                 decl = Parse_Declarator();
+                if (decl is null)
+                    return null;
                 return grammar.CallConventionDeclarator(token, decl);
             default:
                 return null;
@@ -951,20 +957,20 @@ IGNORE tab + cr + lf
                 {
                 case CTokenType.LBracket:
                     lexer.Read();
-                    CExpression expr = null;
+                    CExpression? expr = null;
                     if (PeekToken().Type != CTokenType.RBracket)
                     {
                         expr = Parse_ConstExpr();
                     }
                     ExpectToken(CTokenType.RBracket);
-                    decl = grammar.ArrayDeclarator(decl, expr);
+                    decl = grammar.ArrayDeclarator(decl!, expr);
                     break;
                 case CTokenType.LParen:
                     lexer.Read();
                     if (lexer.Peek(0).Type == CTokenType.RParen)
                     {
                         var parameters = new List<ParamDecl>();
-                        decl = grammar.FunctionDeclarator(decl, parameters);
+                        decl = grammar.FunctionDeclarator(decl!, parameters);
                     } 
                     else if (!IsType0() && lexer.Peek(0).Type != CTokenType.LBracket)
                     {
@@ -973,7 +979,7 @@ IGNORE tab + cr + lf
                     else
                     {
                         var parameters = Parse_ParamTypeList();
-                        decl = grammar.FunctionDeclarator(decl, parameters); 
+                        decl = grammar.FunctionDeclarator(decl!, parameters!); 
                     }
                     ExpectToken(CTokenType.RParen);
                     break;
@@ -988,7 +994,7 @@ IGNORE tab + cr + lf
         Declarator Parse_Pointer()
         {
             ExpectToken(CTokenType.Star);
-            List<TypeQualifier> tqs = null;
+            List<TypeQualifier>? tqs = null;
             var tq = Parse_TypeQualifier();
             while (tq != null)
             {
@@ -1004,7 +1010,7 @@ IGNORE tab + cr + lf
         Declarator Parse_Reference()
         {
             ExpectToken(CTokenType.Ampersand);
-            List<TypeQualifier> tqs = null;
+            List<TypeQualifier>? tqs = null;
             var tq = Parse_TypeQualifier();
             while (tq != null)
             {
@@ -1020,7 +1026,7 @@ IGNORE tab + cr + lf
         Declarator Parse_AbstractPointer()
         {
             ExpectToken(CTokenType.Star);
-            List<TypeQualifier> tqs = null;
+            List<TypeQualifier>? tqs = null;
             var tq = Parse_TypeQualifier();
             while (tq != null)
             {
@@ -1035,17 +1041,20 @@ IGNORE tab + cr + lf
 
         // ParamTypeList ::= ParamDecl {IF(Continued1()) ',' ParamDecl} [',' "..."].
 
-        List<ParamDecl> Parse_ParamTypeList()
+        List<ParamDecl>? Parse_ParamTypeList()
         {
             var pds = new List<ParamDecl>();
             var pd = Parse_ParamDecl();
-            if (pd == null)
+            if (pd is null)
                 return null;
             pds.Add(pd);
             while (IsContinued1())
             {
                 ExpectToken(CTokenType.Comma);
-                pds.Add(Parse_ParamDecl());
+                var paramDecl = Parse_ParamDecl();
+                if (paramDecl is null)
+                    return pds;
+                pds.Add(paramDecl);
             }
             if (PeekThenDiscard(CTokenType.Comma))
             {
@@ -1057,13 +1066,13 @@ IGNORE tab + cr + lf
 
         // ParamDecl ::= DeclSpecifierList [IF(IsAbstractDecl()) AbstractDeclarator | Declarator].
 
-        ParamDecl Parse_ParamDecl()
+        ParamDecl? Parse_ParamDecl()
         {
-            List<CAttribute> attrs = Parse_AttributeSpecifierSeq();
+            List<CAttribute>? attrs = ParseAttributeSpecifierSeq();
             var dsl = Parse_DeclSpecifierList();
-            if (dsl == null)
+            if (dsl is null)
                 return null;
-            Declarator decl;
+            Declarator? decl;
             if (IsAbstractDecl())
             {
                 decl = Parse_AbstractDeclarator();
@@ -1094,7 +1103,7 @@ IGNORE tab + cr + lf
         CType Parse_TypeName()
         {
             var sql = Parse_SpecifierQualifierList();
-            Declarator decl = null;
+            Declarator? decl = null;
             switch (PeekToken().Type)
             {
             case CTokenType.Star:
@@ -1103,11 +1112,7 @@ IGNORE tab + cr + lf
                 decl = Parse_AbstractDeclarator();
                 break;
             }
-            return new CType
-            {
-                DeclSpecList = sql,
-                Declarator = decl,
-            };
+            return new CType(sql, decl);
         }
 
         //AbstractDeclarator =
@@ -1115,9 +1120,9 @@ IGNORE tab + cr + lf
         // | DirectAbstractDeclarator.
         // | Pointer DirectAbstractDeclarator.
 
-        Declarator Parse_AbstractDeclarator()
+        Declarator? Parse_AbstractDeclarator()
         {
-            Declarator decl;
+            Declarator? decl;
             var token = lexer.Peek(0);
             switch (token.Type)
             {
@@ -1144,10 +1149,10 @@ IGNORE tab + cr + lf
         //    { '[' [ConstExpr] ']' 
         //    | '(' [ParamTypeList] ')'
         //    }
-        Declarator Parse_DirectAbstractDeclarator()
+        Declarator? Parse_DirectAbstractDeclarator()
         {
-            CExpression expr;
-            Declarator decl = null;
+            CExpression? expr;
+            Declarator? decl = null;
             var token = lexer.Peek(0);
             switch (token.Type)
             {
@@ -1164,7 +1169,7 @@ IGNORE tab + cr + lf
                     expr = Parse_ConstExpr();
                 }
                 ExpectToken(CTokenType.RBracket);
-                decl = grammar.ArrayDeclarator(decl, expr);
+                decl = grammar.ArrayDeclarator(decl!, expr);
                 break;
             default:
                 return null;
@@ -1179,7 +1184,7 @@ IGNORE tab + cr + lf
                     lexer.Read();
                     var ptl2 = Parse_ParamTypeList();
                     ExpectToken(CTokenType.RParen);
-                    decl = grammar.FunctionDeclarator(decl, ptl2);
+                    decl = grammar.FunctionDeclarator(decl!, ptl2!);
                     break;
                 case CTokenType.LBracket:
                     lexer.Read();
@@ -1189,13 +1194,15 @@ IGNORE tab + cr + lf
                         expr = Parse_ConstExpr();
                     }
                     ExpectToken(CTokenType.RBracket);
-                    decl = grammar.ArrayDeclarator(decl, expr);
+                    decl = grammar.ArrayDeclarator(decl!, expr);
                     break;
                 default:
                     return decl;
                 }
             }
         }
+
+#nullable disable
 
         //Initializer = 
         //    AssignExpr 
@@ -1223,9 +1230,10 @@ IGNORE tab + cr + lf
             }
         }
 
+#nullable enable
         // May be null.
         // AttributeSpecifier ::= [ [ <attrs> ] ] 
-        public List<CAttribute> Parse_AttributeSpecifierSeq()
+        public List<CAttribute>? ParseAttributeSpecifierSeq()
         {
             if (lexer.Peek(0).Type == CTokenType.LBracket &&
                 lexer.Peek(1).Type == CTokenType.LBracket)
@@ -1240,6 +1248,7 @@ IGNORE tab + cr + lf
             }
             return null;
         }
+#nullable disable
 
         // May be null:
         public List<CAttribute> Parse_GccExtensions()

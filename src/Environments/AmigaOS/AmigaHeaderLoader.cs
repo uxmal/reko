@@ -100,7 +100,7 @@ namespace Reko.Environments.AmigaOS
                 .Where(a =>
                     a.Name.Components[0] == "reko" &&
                     a.Name.Components[1] == "amiga_function_vector")
-                .Select(a => (int?)(int)a.Tokens[2].Value!)
+                .Select(a => (int?)(int)a.Tokens![2].Value!)
                 .FirstOrDefault();
         }
     }

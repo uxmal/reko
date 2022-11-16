@@ -44,7 +44,7 @@ namespace Reko.UnitTests.Core.Hll.C
         [Test]
         public void CCEval_Constant()
         {
-            var exp = new ConstExp { Const = 3 };
+            var exp = new ConstExp(3);
             var result = exp.Accept(eval);
             Assert.AreEqual(3, result);
         }
@@ -53,12 +53,10 @@ namespace Reko.UnitTests.Core.Hll.C
         public void CCEval_Add()
         {
             var exp =
-                new CBinaryExpression
-                {
-                    Operation = CTokenType.Plus,
-                    Left = new ConstExp { Const = 1 },
-                    Right = new ConstExp { Const = 2 },
-                };
+                new CBinaryExpression(
+                    CTokenType.Plus,
+                    new ConstExp(1),
+                    new ConstExp(2));
             var result = exp.Accept(eval);
             Assert.AreEqual(3, result);
         }
@@ -66,16 +64,12 @@ namespace Reko.UnitTests.Core.Hll.C
         [Test]
         public void CCEval_Shr()
         {
-            var exp =
-                new CBinaryExpression
-                {
-                    Operation = CTokenType.Shr,
-                    Left = new ConstExp { Const = 4 },
-                    Right = new ConstExp { Const = 2 },
-                };
+            var exp = new CBinaryExpression(
+                CTokenType.Shr,
+                new ConstExp(4),
+                new ConstExp(2));
             var result = exp.Accept(eval);
             Assert.AreEqual(1, result);
         }
-
     }
 }

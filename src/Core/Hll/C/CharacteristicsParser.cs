@@ -26,7 +26,7 @@ namespace Reko.Core.Hll.C
 {
     public class CharacteristicsParser
     {
-        private readonly List<CToken> tokens;
+        private readonly List<CToken>? tokens;
         private int iToken;
 
         public CharacteristicsParser(CAttribute attrCharacteristics)
@@ -70,7 +70,7 @@ namespace Reko.Core.Hll.C
 
         private bool PeekAndDiscard(CTokenType type)
         {
-            if (iToken < tokens.Count && tokens[iToken].Type == type)
+            if (tokens is { } && iToken < tokens.Count && tokens[iToken].Type == type)
             {
                 ++iToken;
                 return true;
@@ -83,13 +83,13 @@ namespace Reko.Core.Hll.C
         }
         private void Expect(CTokenType type, string errorMsg)
         {
-            if (iToken >= tokens.Count || tokens[iToken++].Type != type)
+            if (tokens is null || iToken >= tokens.Count || tokens[iToken++].Type != type)
                 throw new CParserException($"Expected '{errorMsg}'.");
         }
 
         private T Expect<T>(CTokenType type, string errorMsg)
         {
-            if (iToken >= tokens.Count || tokens[iToken].Type != type)
+            if (tokens is null || iToken >= tokens.Count || tokens[iToken].Type != type)
                 throw new CParserException($"Expected '{errorMsg}'.");
             return (T) tokens[iToken++].Value!;
         }

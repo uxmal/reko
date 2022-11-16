@@ -50,7 +50,7 @@ namespace Reko.Environments.C64
             for (;;)
             {
                 instr = ReadLine(Address.Ptr16(instr.NextAddress));
-                if (instr == null)
+                if (instr is null)
                     break;
                 instr.Write(Console.Out);
                 yield return instr;

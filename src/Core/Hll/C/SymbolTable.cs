@@ -151,7 +151,7 @@ namespace Reko.Core.Hll.C
                 a.Name.Components.Length == 2 &&
                 a.Name.Components[0] == "reko" &&
                 a.Name.Components[1] == "convention");
-            if (attrConvention is null)
+            if (attrConvention?.Tokens is null)
                 return null;
             if (attrConvention.Tokens.Count == 1 && 
                 attrConvention.Tokens[0].Type == CTokenType.Id)
@@ -219,7 +219,7 @@ namespace Reko.Core.Hll.C
                 a.Name.Components.Length == 2 &&
                 a.Name.Components[0] == "reko" &&
                 a.Name.Components[1] == "address");
-            if (attrAddress != null)
+            if (attrAddress != null && attrAddress.Tokens is { })
             {
                 if (attrAddress.Tokens.Count != 1 ||
                     attrAddress.Tokens[0].Type != CTokenType.StringLiteral)

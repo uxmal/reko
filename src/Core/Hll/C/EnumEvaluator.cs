@@ -36,7 +36,7 @@ namespace Reko.Core.Hll.C
             this.ceval = ceval;
         }
 
-        public int GetValue(CExpression cExpression)
+        public int GetValue(CExpression? cExpression)
         {
             if (cExpression != null)
             {
