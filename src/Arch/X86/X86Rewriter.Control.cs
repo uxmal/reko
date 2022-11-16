@@ -195,8 +195,7 @@ namespace Reko.Arch.X86
                 //$BUG: this should really live in MsdosPlatform.
                 var reboot = new ExternalProcedure(
                     "__bios_reboot",
-                    new FunctionType(
-                        new Identifier("", VoidType.Instance, null!)))
+                    FunctionType.Action())
                 {
                     Characteristics = new ProcedureCharacteristics
                     {

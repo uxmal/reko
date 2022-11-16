@@ -511,7 +511,7 @@ namespace Reko.ImageLoaders.WebAssembly
                     new StackStorage(0, dt));
             }
             return new FunctionType(
-                ret!,
+                ret,
                 args.ToArray());
         }
 
