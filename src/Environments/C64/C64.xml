@@ -394,8 +394,8 @@
 <variable address="$00FF"><description> Temporary register for BASIC floating point to ASCII conversion
 </description></variable>
   </segment>
-
-  <segment name="stack_page" addr="0100" size="0100"></segment>
+  <!-- Yes, some C64 programs put executable code in the stack page... -->
+  <segment name="stack_page" addr="0100" size="0100" attr="rwx"></segment>
   <segment name="os_data" addr="0200" size="0200"></segment>
   <segment name="screen" addr="0400" size="0400"></segment>
 

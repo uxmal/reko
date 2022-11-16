@@ -162,8 +162,10 @@ namespace Reko.Scanning
                 b.UserLabel = userLabel;
             if (!blocks.TryGetUpperBound(addr, out var br))
             {
-                var lastMem = segmentMap.Segments.Values.Last().MemoryArea;
-                blocks.Add(addr, new BlockRange(b, addr, lastMem.BaseAddress + lastMem.Length));
+                if (!segmentMap.TryFindSegment(addr, out var segment))
+                    throw new InvalidOperationException($"No segment for address {addr}.");
+                var mem = segment.MemoryArea;
+                blocks.Add(addr, new BlockRange(b, addr, mem.BaseAddress + mem.Length));
             }
             else
             {

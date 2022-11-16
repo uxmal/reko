@@ -55,7 +55,6 @@ namespace Reko.Gui.Commands
             var brSvc = Services.RequireService<IProjectBrowserService>();
             var procsSvc = Services.RequireService<IProcedureListService>();
 
-            //$TODO if arch > 1 pick arch.
             try
             {
                 //$HACK: we have to stop events while this is happening. This is gross

@@ -63,22 +63,22 @@ namespace Reko.Scanning
                     .Where(s => s.IsExecutable)
                     .Sum(s => s.MemoryArea.Length));
 
-            // First, traverse the image using a recursive algorithm.
+            // Traverse the executable part of the image using a recursive algorithm.
 
             var scanner = new RecursiveScanner(program, listener);
             trace.Inform("= Recursive scan ======");
-            var (cfg, recTime) = Time(() => scanner.ScanProgram());
+            var (cfg, recTime) = Time(scanner.ScanProgram);
             trace.Inform("Found {0} procs", cfg.Procedures.Count);
             trace.Inform("      {0} basic blocks", cfg.Blocks.Count);
             trace.Inform("      {0} bytes", cfg.Blocks.Values.Sum(b => b.Length));
             trace.Inform("      in {0} msec", (int) recTime.TotalMilliseconds);
 
             // There will be "islands" of unscanned bytes left over.
-            // Scan these using the ShingleScanner.
+            // Scan these using the ShingleScanner.w
 
             var shScanner = new ShingleScanner(program, cfg, listener);
             trace.Inform("= Shingle scan ======");
-            var (cfg2, shTime) = Time(() => shScanner.ScanProgram());
+            var (cfg2, shTime) = Time(shScanner.ScanProgram);
             trace.Inform("Found {0} procs", cfg2.Procedures.Count);
             trace.Inform("      {0} basic blocks", cfg2.Blocks.Count);
             trace.Inform("      {0} bytes", cfg2.Blocks.Values.Sum(b => b.Length));
@@ -118,7 +118,6 @@ namespace Reko.Scanning
             stopwatch.Stop();
             return (result, stopwatch.Elapsed);
         }
-
 
         public void ScanImageSymbol(ImageSymbol sym, bool isEntryPoint)
         {

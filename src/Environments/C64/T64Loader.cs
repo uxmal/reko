@@ -248,6 +248,7 @@ directory.
                 segMap.AddSegment(image, "code", AccessMode.ReadWriteExecute);
                 var program = new Program(segMap, arch, platform);
                 program.Location = ImageLocation;
+                program.Name = Name;
 
                 program.Architectures.Add(arch6502.Name, arch6502);
                 var addrBasic = Address.Ptr16(lines.Keys[0]);
