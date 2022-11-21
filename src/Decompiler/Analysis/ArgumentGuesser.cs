@@ -312,7 +312,7 @@ namespace Reko.Analysis
             ssa.AddUses(stmCall);
         }
 
-        private static Identifier MatchingReturnIdentifier(CallInstruction call, Storage gret)
+        private static Identifier? MatchingReturnIdentifier(CallInstruction call, Storage gret)
         {
             foreach (var def in call.Definitions)
             {

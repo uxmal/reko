@@ -526,16 +526,6 @@ namespace Reko.Gui.Forms
             workerDlgSvc.FinishBackgroundWork();
         }
 
-        private IPhasePageInteractor? NextPage(IPhasePageInteractor phase)
-        {
-            IPhasePageInteractor? next = null;
-            if (phase == DecompilerPhases.Analysis)
-            {
-                next = DecompilerPhases.Final;
-            }
-            return next;
-        }
-
         public async ValueTask FinishDecompilation()
         {
             try
@@ -545,7 +535,7 @@ namespace Reko.Gui.Forms
                 {
                     for (;;)
                     {
-                        var next = NextPage(prev);
+                        var next = prev.NextPage(DecompilerPhases);
                         if (next is null)
                             break;
                         next.PerformWork(workerDlgSvc);
