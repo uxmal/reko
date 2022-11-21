@@ -232,6 +232,8 @@ namespace Reko.Scanning
             imgVector = null;
             switchExp = null;
 
+            // We need the `miniCfg` dictionary to support backtracking; it contains
+            // back edges that the BacwardSlicer uses.
             var bwsHost = scanner.MakeBackwardSlicerHost(arch, miniCfg);
             var bws = new BackwardSlicer(bwsHost, rtlBlock, state);
             var te = bws.DiscoverTableExtent(addrSwitch, xfer, listener);
