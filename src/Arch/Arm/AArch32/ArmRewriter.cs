@@ -417,11 +417,13 @@ namespace Reko.Arch.Arm.AArch32
                 case Mnemonic.wfi: RewriteWfi(); break;
                 case Mnemonic.yield: RewriteYield(); break;
 
-                case Mnemonic.vabs: RewriteVectorUnaryOp("__vabs_{0}"); break;
+                case Mnemonic.vabs: RewriteVectorUnaryOp(vabs_intrinsic); break;
                 case Mnemonic.vaba: RewriteVectorBinOp("__vaba_{0}"); break;
                 case Mnemonic.vabal: RewriteVectorBinOpWiden(vabal_intrinsic); break;
                 case Mnemonic.vabd: RewriteVectorBinOp("__vabd_{0}"); break;
                 case Mnemonic.vabdl: RewriteVectorBinOpWiden(vabdl_intrinsic); break;
+                case Mnemonic.vacge: RewriteVectorBinOp(vabs_cge_intrinsic); break;
+                case Mnemonic.vacgt: RewriteVectorBinOp(vabs_cgt_intrinsic); break;
                 case Mnemonic.vadd: RewriteVectorBinOp("__vadd_{0}"); break;
                 case Mnemonic.vaddhn: RewriteVectorBinOpNarrow(vaddhn_intrinsic); break;
                 case Mnemonic.vaddl: RewriteVectorBinOp("__vaddl_{0}"); break;
@@ -432,8 +434,6 @@ namespace Reko.Arch.Arm.AArch32
                 case Mnemonic.vcmp: RewriteVcmp(); break;
                 case Mnemonic.vbif: RewriteIntrinsic("__vbif", false, Domain.UnsignedInt); break;
                 case Mnemonic.vbit: RewriteIntrinsic("__vbit", false, Domain.UnsignedInt); break;
-                case Mnemonic.vacge: RewriteVectorBinOp(vabs_cge_intrinsic); break;
-                case Mnemonic.vacgt: RewriteVectorBinOp(vabs_cgt_intrinsic); break;
                 case Mnemonic.vceq: RewriteVectorBinOp("__vceq_{0}"); break;
                 case Mnemonic.vcge: RewriteVectorBinOp("__vcge_{0}"); break;
                 case Mnemonic.vcgt: RewriteVectorBinOp("__vcgt_{0}"); break;
@@ -1266,6 +1266,7 @@ namespace Reko.Arch.Arm.AArch32
             .GenericTypes("TArraySrc", "TArrayDst")
             .Params("TArraySrc", "TArraySrc")
             .Returns("TArrayDst");
+        private static readonly IntrinsicProcedure vabs_intrinsic = IntrinsicBuilder.GenericUnary("__vabs");
         private static readonly IntrinsicProcedure vabs_cge_intrinsic = IntrinsicBuilder.GenericBinary("__vabs_cge");
         private static readonly IntrinsicProcedure vabs_cgt_intrinsic = IntrinsicBuilder.GenericBinary("__vabs_cgt");
         private static readonly IntrinsicProcedure vaddhn_intrinsic = new IntrinsicBuilder("__vadd_hn", false)

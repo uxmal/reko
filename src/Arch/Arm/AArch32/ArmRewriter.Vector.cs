@@ -607,18 +607,51 @@ namespace Reko.Arch.Arm.AArch32
             //$BUG: some instructions are returned with srcElemnSize == 0!
             var celemSrc = srcType.BitSize / (srcElemType.BitSize != 0 ? srcElemType.BitSize : 8);
             var arrSrc = new ArrayType(srcElemType, celemSrc);
+            IntrinsicProcedure intrinsicInstance;
             if (srcElemType == dstElemType)
             {
-                var intrinsicInstance = intrinsic.MakeInstance(arrSrc);
-                m.Assign(dst, m.Fn(intrinsicInstance, src1, src2));
+                intrinsicInstance = intrinsic.MakeInstance(arrSrc);
             }
             else
             {
                 var celemDst = dst.DataType.BitSize / (dstElemType.BitSize);
                 var arrDst = new ArrayType(dstElemType, celemDst);
-                var intrinsicInstance = intrinsic.MakeInstance(arrSrc, arrDst);
-                m.Assign(dst, m.Fn(intrinsicInstance, src1, src2));
+                intrinsicInstance = intrinsic.MakeInstance(arrSrc, arrDst);
             }
+            m.Assign(dst, m.Fn(intrinsicInstance, src1, src2));
+        }
+
+        private void RewriteVectorUnaryOp(IntrinsicProcedure intrinsic)
+        {
+            var elemType = Arm32Architecture.VectorElementDataType(instr.vector_data);
+            RewriteVectorUnaryOp(intrinsic, elemType, elemType, 0, 1);
+        }
+
+        private void RewriteVectorUnaryOp(
+            IntrinsicProcedure intrinsic,
+            PrimitiveType srcElemType,
+            PrimitiveType dstElemType,
+            int iopDst,
+            int iopSrc)
+        {
+            var src = this.Operand(iopSrc);
+            var dst = this.Operand(iopDst, PrimitiveType.Word32, true);
+            var srcType = src.DataType;
+            //$BUG: some instructions are returned with srcElemnSize == 0!
+            var celemSrc = srcType.BitSize / (srcElemType.BitSize != 0 ? srcElemType.BitSize : 8);
+            var arrSrc = new ArrayType(srcElemType, celemSrc);
+            IntrinsicProcedure intrinsicInstance;
+            if (srcElemType == dstElemType)
+            {
+                intrinsicInstance = intrinsic.MakeInstance(arrSrc);
+            }
+            else
+            {
+                var celemDst = dst.DataType.BitSize / (dstElemType.BitSize);
+                var arrDst = new ArrayType(dstElemType, celemDst);
+                intrinsicInstance = intrinsic.MakeInstance(arrSrc, arrDst);
+            }
+            m.Assign(dst, m.Fn(intrinsicInstance, src));
         }
 
         private void RewriteVstN(IntrinsicProcedure intrinsic)

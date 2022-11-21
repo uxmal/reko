@@ -1649,7 +1649,7 @@ means
             Given_UInt32s(0xeeb09bc9);  // vabs.f64 d9, d9
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|d9 = __vabs_f64(d9)");
+                "1|L--|d9 = __vabs<real64[1]>(d9)");
         }
 
         [Test]
