@@ -19,13 +19,8 @@
 #endregion
 
 using Reko.Core.Expressions;
-using Reko.Core.Serialization;
-using Reko.Core.Services;
 using Reko.Core.Types;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace Reko.Core
 {

@@ -118,7 +118,7 @@ namespace Reko.Evaluation
         }
 
         //$REVIEW: consider moving these predicates to OperatorTypeExtensions
-        private bool IsIntComparison(OperatorType op)
+        private static bool IsIntComparison(OperatorType op)
         {
             return op == OperatorType.Eq || op == OperatorType.Ne ||
                    op == OperatorType.Ge || op == OperatorType.Gt ||
@@ -127,7 +127,7 @@ namespace Reko.Evaluation
                    op == OperatorType.Ule || op == OperatorType.Ult;
         }
 
-        private bool IsFloatComparison(OperatorType op)
+        private static bool IsFloatComparison(OperatorType op)
         {
             return op == OperatorType.Feq || op == OperatorType.Fne ||
                    op == OperatorType.Fge || op == OperatorType.Fgt ||

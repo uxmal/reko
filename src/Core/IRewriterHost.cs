@@ -33,6 +33,7 @@ namespace Reko.Core
         Constant? GlobalRegisterValue { get; }
 
         IntrinsicProcedure EnsureIntrinsic(string name, bool hasSideEffect, DataType returnType, int arity);
+
         /// <summary>
         /// Generates a call to an intrinsic procedure named <paramref name="name"/>.
         /// </summary>
@@ -41,7 +42,6 @@ namespace Reko.Core
         /// <param name="args"></param>
         /// <returns>An Application expression.</returns>
         Expression Intrinsic(string name, bool hasSideEffect, DataType returnType, params Expression [] args);
-
 
         /// <summary>
         /// Obtain a reference to the processor architecture with the name <paramref name="archMoniker"/>.

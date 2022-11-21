@@ -262,9 +262,10 @@ namespace Reko.UnitTests.Mocks
             if (Block != null)
                 return Block;
 
-            if (name == null)
+            if (name is null)
             {
-                name = string.Format("l{0}", ++numBlock);
+                ++numBlock;
+                name = $"l{numBlock}";
             }
             Block = BlockOf(name);
             Block.Address = addrCur;
