@@ -274,23 +274,35 @@ namespace Reko.Scanning
                 case RtlBranch branch:
                     if (branch.Condition is not Constant)
                     {
-                        var tmp = worker.MkTmp(branch.Condition);
+                        var (tmp, copy) = worker.MkTmp(rtlTransfer, branch.Condition);
+                        instrs.Add(copy);
+
                         rtlTransfer = new RtlInstructionCluster(
                             rtlTransfer.Address,
                             rtlTransfer.Length,
-                            tmp,
-                            new RtlBranch(tmp.Dst, (Address)branch.Target, InstrClass.ConditionalTransfer));
+                            new RtlBranch(tmp, (Address)branch.Target, InstrClass.ConditionalTransfer));
                     }
                     break;
                 case RtlGoto g:
                     if (g.Target is not Core.Address)
                     {
-                        var tmp = worker.MkTmp(g.Target);
+                        var (tmp, copy) = worker.MkTmp(rtlTransfer, g.Target);
+                        instrs.Add(copy);
                         rtlTransfer = new RtlInstructionCluster(
                             rtlTransfer.Address,
                             rtlTransfer.Length,
-                            tmp,
-                            new RtlGoto(tmp.Dst, InstrClass.Transfer));
+                            new RtlGoto(tmp, InstrClass.Transfer));
+                    }
+                    break;
+                case RtlCall call:
+                    if (call.Target is not Core.Address)
+                    {
+                        var (tmp, copy) = worker.MkTmp(rtlTransfer, call.Target);
+                        instrs.Add(copy);
+                        rtlTransfer = new RtlInstructionCluster(
+                            rtlTransfer.Address,
+                            rtlTransfer.Length,
+                            new RtlCall(tmp, (byte)call.ReturnAddressSize, InstrClass.Transfer | InstrClass.Call));
                     }
                     break;
                 case RtlReturn:
@@ -298,16 +310,22 @@ namespace Reko.Scanning
                 default:
                     throw new NotImplementedException($"{rtlTransfer.GetType().Name} - not implemented.");
                 }
-                instrs.Add(rtlDelayed);
+                // "Steal" the delay slot; we give the delay slot instruction the 
+                // same address as the transfer instruction so that the instr addresses
+                // in the basic block remain ordered.
+                instrs.Add(new RtlInstructionCluster(
+                    rtlTransfer.Address,
+                    rtlTransfer.Length,
+                    rtlDelayed.Instructions));
             }
             instrs.Add(rtlTransfer);
             return true;
         }
 
         /// <summary>
-        /// After reaching a CTI, make a <see cref="Block"/>.
+        /// After reaching a CTI, make an <see cref="RtlBlock"/>.
         /// </summary>
-        /// <param name="instrs">The instructions of the resulting <see cref="Block"/>.</param>
+        /// <param name="instrs">The instructions of the resulting <see cref="RtlBlock"/>.</param>
         /// <param name="state">The current <see cref="ProcessorState"/>.</param>
         /// <param name="rtlLast">The instruction that triggered
         /// the creation of the block.</param>
@@ -366,10 +384,14 @@ namespace Reko.Scanning
             List<RtlInstructionCluster> instrs,
             long size)
         {
-            if (size <= 0)
-                return null;
+            var arch = this.state.Architecture;
+            if (size <= 0 || instrs.Count == 0)
+            {
+                size = arch.InstructionBitSize / arch.MemoryGranularity;
+                instrs.Add(new RtlInstructionCluster(this.Address, (int)size, new RtlInvalid()));
+            }
             var block = scanner.RegisterBlock(
-                this.state.Architecture,
+                arch,
                 this.Address,
                 size,
                 this.Address + size,

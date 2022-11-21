@@ -266,10 +266,11 @@ namespace Reko.Scanning
             edges.Add(edge.From);
         }
 
-        public RtlAssignment MkTmp(Expression e)
+        public (Identifier tmp, RtlInstructionCluster) MkTmp(RtlInstructionCluster cluster, Expression e)
         {
             var tmp = binder.CreateTemporary(e.DataType);
-            return new RtlAssignment(tmp, e);
+            var ass = new RtlAssignment(tmp, e);
+            return (tmp, new RtlInstructionCluster(cluster.Address, cluster.Length, ass));
         }
 
         public IEnumerator<RtlInstructionCluster> MakeTrace(Address addr, ProcessorState state)

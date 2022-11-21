@@ -711,5 +711,36 @@ l0000100C: // l:4; ft:00001014
 
             RunTest(sExpected);
         }
+
+        [Test]
+        public void RecScan_Call_DelaySlot()
+        {
+            Given_EntryPoint(0x1000);
+            Given_Trace(new RtlTrace(0x1000)
+            {
+                m => m.Assign(r2, m.Mem32(m.Word32(0x00123400))),
+                m => m.CallD(r2, 0),
+                m => m.Assign(r2, 42)
+            });
+
+            var sExpected =
+            #region Expected
+@"
+define fn00001000
+l00001000: // l:8; ft:0000100C
+    // pred:
+    r2 = Mem0[0x123400<32>:word32]
+    v0 = r2
+    r2 = 0x2A<32>
+    call v0 (0)
+    // succ: l0000100C
+l0000100C: // l:1; ft:0000100D (INVALID)
+    // pred: l00001000
+    <invalid>
+    // succ:
+";
+            #endregion
+            RunTest(sExpected);
+        }
     }
 }
