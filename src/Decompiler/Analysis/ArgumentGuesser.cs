@@ -289,8 +289,16 @@ namespace Reko.Analysis
             if (gret is not null)
             {
                 var idRet = MatchingReturnIdentifier(call, gret);
-                var application = new Application(pc, idRet.DataType, args.ToArray());
-                newInstr = new Assignment(idRet, application);
+                if (idRet is { })
+                {
+                    var application = new Application(pc, idRet.DataType, args.ToArray());
+                    newInstr = new Assignment(idRet, application);
+                }
+                else
+                {
+                    var application = new Application(pc, VoidType.Instance, args.ToArray());
+                    newInstr = new SideEffect(application);
+                }
             }
             else
             {
@@ -311,7 +319,7 @@ namespace Reko.Analysis
                 if (def.Storage == gret)
                     return (Identifier) def.Expression;
             }
-            throw new NotImplementedException();
+            return null;
         }
 
         private class StackSlot
