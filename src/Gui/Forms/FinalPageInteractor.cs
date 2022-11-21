@@ -75,6 +75,11 @@ namespace Reko.Gui.Forms
             return true;
         }
 
+        public override IPhasePageInteractor? NextPage(DecompilerPhases decompilerPhases)
+        {
+            return null;
+        }
+
         public override bool QueryStatus(CommandID cmdId, CommandStatus status, CommandText text)
         {
             if (cmdId.Guid == CmdSets.GuidReko)

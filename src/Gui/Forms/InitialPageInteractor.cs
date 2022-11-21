@@ -103,6 +103,12 @@ namespace Reko.Gui.Forms
             return (Decompiler != null);
         }
 
+        public override IPhasePageInteractor NextPage(DecompilerPhases decompilerPhases)
+        {
+            //$TODO: go to preScanning if openas... specified "use heuristics"
+            return decompilerPhases.Scanning;
+        }
+
         /// <summary>
         /// Open the specified file.
         /// </summary>

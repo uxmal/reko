@@ -48,6 +48,11 @@ namespace Reko.Gui.Forms
             throw new NotImplementedException();
         }
 
+        public override IPhasePageInteractor NextPage(DecompilerPhases decompilerPhases)
+        {
+            return decompilerPhases.Scanning;
+        }
+
         public override void PerformWork(IWorkerDialogService workerDlgSvc)
         {
             throw new NotImplementedException();

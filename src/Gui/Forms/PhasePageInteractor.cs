@@ -44,6 +44,13 @@ namespace Reko.Gui.Forms
 
         bool LeavePage();
 
+        /// <summary>
+        /// Lets this Phase page interactor select the next phase to go to, given the
+        /// current state of the project.
+        /// </summary>
+        /// <param name="decompilerPhases"></param>
+        /// <returns>The next page to advance to, or null if no further advance is possible.</returns>
+        IPhasePageInteractor? NextPage(DecompilerPhases decompilerPhases);
     }
 
     /// <summary>
@@ -118,5 +125,7 @@ namespace Reko.Gui.Forms
         {
             Disposed?.Invoke(this, EventArgs.Empty);
         }
+
+        public abstract IPhasePageInteractor? NextPage(DecompilerPhases decompilerPhases);
     }
 }

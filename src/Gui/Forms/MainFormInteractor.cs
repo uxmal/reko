@@ -513,8 +513,7 @@ namespace Reko.Gui.Forms
         {
             try
             {
-                IPhasePageInteractor? next = NextPage(CurrentPhase);
-
+                IPhasePageInteractor? next = CurrentPhase.NextPage(DecompilerPhases);
                 if (next is { })
                 {
                     await SwitchInteractor(next);
@@ -530,15 +529,7 @@ namespace Reko.Gui.Forms
         private IPhasePageInteractor? NextPage(IPhasePageInteractor phase)
         {
             IPhasePageInteractor? next = null;
-            if (phase == DecompilerPhases.Initial)
-            {
-                next = DecompilerPhases.Scanning;
-            }
-            else if (phase == DecompilerPhases.Scanning)
-            {
-                next = DecompilerPhases.Analysis;
-            }
-            else if (phase == DecompilerPhases.Analysis)
+            if (phase == DecompilerPhases.Analysis)
             {
                 next = DecompilerPhases.Final;
             }

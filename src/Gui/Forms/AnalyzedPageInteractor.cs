@@ -67,6 +67,11 @@ namespace Reko.Gui.Forms
 			return true;
         }
 
+        public override IPhasePageInteractor NextPage(DecompilerPhases decompilerPhases)
+        {
+            return decompilerPhases.Final;
+        }
+
         public KeyValuePair<Address, Procedure> SelectedProcedureEntry
         {
             get

@@ -96,6 +96,11 @@ namespace Reko.Gui.Forms
             return true;
         }
 
+        public override IPhasePageInteractor NextPage(DecompilerPhases decompilerPhases)
+        {
+            return decompilerPhases.Analysis;
+        }
+
         /// <summary>
         /// Shows a list of all blocks that have not yet been scanned.
         /// </summary>
