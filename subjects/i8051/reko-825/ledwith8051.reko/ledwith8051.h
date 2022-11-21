@@ -88,7 +88,7 @@ T_17: (in fn0003() @ 0027 : void)
   Class: Eq_15
   DataType: void
   OrigDataType: void
-T_18: (in R7_21 @ 0004 : byte)
+T_18: (in R7_24 @ 0004 : byte)
   Class: Eq_18
   DataType: byte
   OrigDataType: byte
@@ -96,7 +96,7 @@ T_19: (in 0<8> @ 0004 : byte)
   Class: Eq_18
   DataType: byte
   OrigDataType: byte
-T_20: (in R6_26 @ 0005 : byte)
+T_20: (in R6_30 @ 0005 : byte)
   Class: Eq_20
   DataType: byte
   OrigDataType: byte
@@ -156,7 +156,7 @@ T_34: (in 1<8> @ 0014 : byte)
   Class: Eq_34
   DataType: byte
   OrigDataType: byte
-T_35: (in R7_21 + 1<8> @ 0014 : byte)
+T_35: (in R7_24 + 1<8> @ 0014 : byte)
   Class: Eq_18
   DataType: byte
   OrigDataType: byte
@@ -164,7 +164,7 @@ T_36: (in 0<8> @ 0015 : byte)
   Class: Eq_18
   DataType: byte
   OrigDataType: byte
-T_37: (in R7_21 != 0<8> @ 0015 : bool)
+T_37: (in R7_24 != 0<8> @ 0015 : bool)
   Class: Eq_37
   DataType: bool
   OrigDataType: bool
@@ -172,11 +172,11 @@ T_38: (in 0xA<8> @ 001D : byte)
   Class: Eq_38
   DataType: byte
   OrigDataType: byte
-T_39: (in R7_21 ^ 0xA<8> @ 001D : byte)
+T_39: (in R7_24 ^ 0xA<8> @ 001D : byte)
   Class: Eq_39
   DataType: ui8
   OrigDataType: ui8
-T_40: (in R7_21 ^ 0xA<8> | R6_26 @ 001D : byte)
+T_40: (in R7_24 ^ 0xA<8> | R6_30 @ 001D : byte)
   Class: Eq_40
   DataType: byte
   OrigDataType: byte
@@ -184,7 +184,7 @@ T_41: (in 0<8> @ 001D : byte)
   Class: Eq_40
   DataType: byte
   OrigDataType: byte
-T_42: (in (R7_21 ^ 0xA<8> | R6_26) != 0<8> @ 001D : bool)
+T_42: (in (R7_24 ^ 0xA<8> | R6_30) != 0<8> @ 001D : bool)
   Class: Eq_42
   DataType: bool
   OrigDataType: bool
@@ -192,7 +192,7 @@ T_43: (in 1<8> @ 0018 : byte)
   Class: Eq_43
   DataType: byte
   OrigDataType: byte
-T_44: (in R6_26 + 1<8> @ 0018 : byte)
+T_44: (in R6_30 + 1<8> @ 0018 : byte)
   Class: Eq_20
   DataType: byte
   OrigDataType: byte

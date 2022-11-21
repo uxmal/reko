@@ -341,8 +341,9 @@ namespace Reko.UnitTests.Arch.i8051
         {
             Given_Bytes(0xBC, 0x09, 0x03); // cjne\tR4,09,0006
             AssertCode(
-                "0|T--|0000(3): 1 instructions",
-                "1|T--|if (R4 != 9<8>) branch 0006");
+                "0|T--|0000(3): 2 instructions",
+                "1|L--|C = cond(R4 - 9<8>)",
+                "2|T--|if (R4 != 9<8>) branch 0006");
         }
 
         [Test]

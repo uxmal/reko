@@ -28,12 +28,12 @@ void fn0003()
 //      fn0000
 // MayUse: 
 // LiveOut:
-// Trashed: P A R4 R5 R6 R7
+// Trashed: CP A R4 R5 R6 R7
 // Preserved: SP
 fn0003_entry:
 l0003:
-	byte R7_21 = 0<8>
-	byte R6_26 = 0<8>
+	byte R7_24 = 0<8>
+	byte R6_30 = 0<8>
 l0006:
 	byte R5_11 = 0<8>
 	byte R4_10 = 0<8>
@@ -47,12 +47,12 @@ l000E:
 l0011:
 	branch R5_11 != 0x10<8> l0009
 l0014:
-	R7_21 = R7_21 + 1<8>
-	branch R7_21 != 0<8> l0019
+	R7_24 = R7_24 + 1<8>
+	branch R7_24 != 0<8> l0019
 l0018:
-	R6_26 = R6_26 + 1<8>
+	R6_30 = R6_30 + 1<8>
 l0019:
-	branch (R7_21 ^ 0xA<8> | R6_26) != 0<8> l0006
+	branch (R7_24 ^ 0xA<8> | R6_30) != 0<8> l0006
 l001F:
 	return
 fn0003_exit:

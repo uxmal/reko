@@ -182,7 +182,9 @@ namespace Reko.Arch.i8051
             iclass = InstrClass.ConditionalTransfer;
             var a = OpSrc(instr.Operands[0], arch.DataMemory);
             var b = OpSrc(instr.Operands[1], arch.DataMemory);
+            var C = binder.EnsureFlagGroup(Registers.CFlag);
             var addr = ((AddressOperand)instr.Operands[2]).Address;
+            m.Assign(C, m.Cond(m.ISub(a, b)));
             m.Branch(m.Ne(a, b), addr, iclass);
         }
 
