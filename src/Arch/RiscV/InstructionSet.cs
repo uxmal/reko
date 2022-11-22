@@ -451,6 +451,10 @@ namespace Reko.Arch.RiscV
                     Instr(Mnemonic.csrrsi, d, Csr20, Imm(15, 5)),
                     Instr(Mnemonic.csrrci, d, Csr20, Imm(15, 5))); ;
 
+                // These long instructions have not been defined yet.
+                var instr48bit = invalid;
+                var instr64bit = invalid;
+                var instr80bit = invalid;
 
                 var w32decoders = Mask(2, 5, "w32decoders",
                     // 00
@@ -462,7 +466,7 @@ namespace Reko.Arch.RiscV
                     Mask(12, 3, "opimm", opimm),
                     Instr(Mnemonic.auipc, d, Iu),
                     Mask(12, 3, "opimm32", opimm32),
-                    Nyi("48-bit instruction"),
+                    instr48bit,
 
                     Mask(12, 3, "stores", stores),
                     Mask(12, 3, "fpstores", fpstores),
@@ -472,7 +476,7 @@ namespace Reko.Arch.RiscV
                     op,
                     Instr(Mnemonic.lui, d, Iu),
                     op32,
-                    Nyi("64-bit instruction"),
+                    instr64bit,
 
                     // 10
                     FpInstr32(Mnemonic.fmadd_s, Fd, F1, F2, F3),
@@ -483,7 +487,7 @@ namespace Reko.Arch.RiscV
                     Sparse(25, 7, invalid, opfp),
                     Nyi("Reserved"),
                     Nyi("custom-2"),
-                    Nyi("48-bit instruction"),
+                    instr48bit,
 
                     new MaskDecoder(12, 3, "branches", branches),
                     Instr(Mnemonic.jalr, InstrClass.Transfer | InstrClass.Return, d, r1, i),
@@ -493,9 +497,7 @@ namespace Reko.Arch.RiscV
                     system,
                     Nyi("Reserved"),
                     Nyi("custom-3"),
-                    Nyi(">= 80-bit instruction"));
-
-                
+                    instr80bit);
 
                 var compressed0 = new Decoder[8]
                 {

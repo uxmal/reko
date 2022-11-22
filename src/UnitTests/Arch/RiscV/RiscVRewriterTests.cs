@@ -110,6 +110,181 @@ namespace Reko.UnitTests.Arch.RiscV
         }
 
         [Test]
+        public void RiscV_rw_amoadd_d()
+        {
+            Given_HexString("AFB36301");
+            AssertCode(     // amoadd.d	t2,t2,s6
+                "0|L--|0000000000010000(4): 1 instructions",
+                "1|L--|t2 = __amo_add<word64>(t2, &Mem0[s6:word64])");
+        }
+
+        [Test]
+        public void RiscV_rw_amoadd_w_rl()
+        {
+            //$TODO: RL?
+            Given_HexString("AFAE6302");
+            AssertCode(     // amoadd.w.rl	t4,t2,t1
+                "0|L--|0000000000010000(4): 2 instructions",
+                "1|L--|v5 = __amo_add<word32>(t2, &Mem0[t1:word32])",
+                "2|L--|t4 = CONVERT(v5, word32, int64)");
+        }
+
+        [Test]
+        public void RiscV_rw_amoand_d()
+        {
+            Given_HexString("AFBF4263");
+            AssertCode(     // amoand.d.rl	t6,t0,s4
+                "0|L--|0000000000010000(4): 1 instructions",
+                "1|L--|t6 = __amo_and<word64>(t0, &Mem0[s4:word64])");
+        }
+
+        [Test]
+        public void RiscV_rw_amoand_w()
+        {
+            Given_HexString("2FA4A660");
+            AssertCode(     // amoand.w	s0,a3,a0
+                "0|L--|0000000000010000(4): 2 instructions",
+                "1|L--|v5 = __amo_and<word32>(a3, &Mem0[a0:word32])",
+                "2|L--|s0 = CONVERT(v5, word32, int64)");
+        }
+
+        [Test]
+        public void RiscV_rw_amomax_w()
+        {
+            Given_HexString("AFA097A7");
+            AssertCode(     // amomax.w.aq.rl	ra,a5,s9
+                "0|L--|0000000000010000(4): 2 instructions",
+                "1|L--|v5 = __amo_max<int32>(a5, &Mem0[s9:int32])",
+                "2|L--|ra = CONVERT(v5, int32, int64)");
+        }
+
+        [Test]
+        public void RiscV_rw_amomax_d_aq_rl()
+        {
+            //$TODO: aq,rl
+            Given_HexString("AFB197A7");
+            AssertCode(     // amomax.d.aq.rl	gp,a5,s9
+                "0|L--|0000000000010000(4): 1 instructions",
+                "1|L--|gp = __amo_max<int64>(a5, &Mem0[s9:int64])");
+        }
+
+        [Test]
+        public void RiscV_rw_amomaxu_d_aq()
+        {
+            Given_HexString("AFBB08E4");
+            AssertCode(     // amomaxu.d.aq	s7,a7,zero
+                "0|L--|0000000000010000(4): 1 instructions",
+                "1|L--|s7 = __amo_max<uint64>(a7, &Mem0[0<64>:uint64])");
+        }
+
+        [Test]
+        public void RiscV_rw_amomaxu_w()
+        {
+            Given_HexString("AFAEEFE0");
+            AssertCode(     // amomaxu.w	t4,t6,a4
+                "0|L--|0000000000010000(4): 2 instructions",
+                "1|L--|v5 = __amo_max<uint32>(t6, &Mem0[a4:uint32])",
+                "2|L--|t4 = CONVERT(v5, uint32, int64)");
+        }
+
+        [Test]
+        public void RiscV_rw_amomin_d()
+        {
+            //$TODO: amo_d_aql_rl
+            Given_HexString("AFB7B387");
+            AssertCode(     // amomin.d.aq.rl	a5,t2,s11
+                "0|L--|0000000000010000(4): 1 instructions",
+                "1|L--|a5 = __amo_min<int64>(t2, &Mem0[s11:int64])");
+        }
+
+        [Test]
+        public void RiscV_rw_amomin_w_aq()
+        {
+            Given_HexString("2FAF2A84");
+            AssertCode(     // amomin.w.aq	t5,s5,sp
+                "0|L--|0000000000010000(4): 2 instructions",
+                "1|L--|v5 = __amo_min<int32>(s5, &Mem0[sp:int32])",
+                "2|L--|t5 = CONVERT(v5, int32, int64)");
+        }
+
+
+        [Test]
+        public void RiscV_rw_amominu_d_aq_rl()
+        {
+            Given_HexString("AFB797C7");
+            AssertCode(     // amominu.d.aq.rl	a5,a5,s9
+                "0|L--|0000000000010000(4): 1 instructions",
+                "1|L--|a5 = __amo_min<uint64>(a5, &Mem0[s9:uint64])");
+        }
+
+        [Test]
+        public void RiscV_rw_amominu_w()
+        {
+            Given_HexString("AFA9EFC0");
+            AssertCode(     // amominu.w	s3,t6,a4
+                "0|L--|0000000000010000(4): 2 instructions",
+                "1|L--|v5 = __amo_min<uint32>(t6, &Mem0[a4:uint32])",
+                "2|L--|s3 = CONVERT(v5, uint32, int64)");
+        }
+
+        [Test]
+        public void RiscV_rw_amoor_d()
+        {
+            Given_HexString("2FB29547");
+            AssertCode(     // amoor.d.aq.rl	tp,a1,s9
+                "0|L--|0000000000010000(4): 1 instructions",
+                "1|L--|tp = __amo_or<word64>(a1, &Mem0[s9:word64])");
+        }
+
+        [Test]
+        public void RiscV_rw_amoor_w()
+        {
+            Given_HexString("AFA08947");
+            AssertCode(     // amoor.w.aq.rl	ra,s3,s8
+                "0|L--|0000000000010000(4): 2 instructions",
+                "1|L--|v5 = __amo_or<word32>(s3, &Mem0[s8:word32])",
+                "2|L--|ra = CONVERT(v5, word32, int64)");
+        }
+
+        [Test]
+        public void RiscV_rw_amoswap_d()
+        {
+            Given_HexString("2FB26308");
+            AssertCode(     // amoswap.d	tp,t2,t1
+                "0|L--|0000000000010000(4): 1 instructions",
+                "1|L--|tp = __amo_swap<word64>(t2, &Mem0[t1:word64])");
+        }
+
+        [Test]
+        public void RiscV_rw_amoswap_w()
+        {
+            Given_HexString("AFA81309");
+            AssertCode(     // amoswap.w	a7,t2,a7
+                "0|L--|0000000000010000(4): 2 instructions",
+                "1|L--|v4 = __amo_swap<word32>(t2, &Mem0[a7:word32])",
+                "2|L--|a7 = CONVERT(v4, word32, int64)");
+        }
+
+        [Test]
+        public void RiscV_rw_amoxor_d()
+        {
+            Given_HexString("2FBD2320");
+            AssertCode(     // amoxor.d	s10,t2,sp
+                "0|L--|0000000000010000(4): 1 instructions",
+                "1|L--|s10 = __amo_xor<word64>(t2, &Mem0[sp:word64])");
+        }
+
+        [Test]
+        public void RiscV_rw_amoxor_w()
+        {
+            Given_HexString("AFA72320");
+            AssertCode(     // amoxor.w	a5,t2,sp
+                "0|L--|0000000000010000(4): 2 instructions",
+                "1|L--|v5 = __amo_xor<word32>(t2, &Mem0[sp:word32])",
+                "2|L--|a5 = CONVERT(v5, word32, int64)");
+        }
+
+        [Test]
         public void RiscV_rw_auipc()
         {
             Given_RiscVInstructions(0xFFFFF517u); // auipc\tgp,0x000FFFFD<32>
@@ -119,21 +294,21 @@ namespace Reko.UnitTests.Arch.RiscV
         }
 
         [Test]
-        public void RiscV_rw_lb()
-        {
-            Given_RiscVInstructions(0x87010183u);
-            AssertCode(
-               "0|L--|0000000000010000(4): 1 instructions",
-               "1|L--|gp = CONVERT(Mem0[sp + -1936<i64>:int8], int8, int64)");
-        }
-
-        [Test]
         public void RiscV_rw_jal_zero()
         {
             Given_RiscVInstructions(0x9F4FF06Fu);
             AssertCode(
                 "0|T--|0000000000010000(4): 1 instructions",
                 "1|T--|goto 000000000000F1F4");
+        }
+
+        [Test]
+        public void RiscV_rw_lb()
+        {
+            Given_RiscVInstructions(0x87010183u);
+            AssertCode(
+               "0|L--|0000000000010000(4): 1 instructions",
+               "1|L--|gp = CONVERT(Mem0[sp + -1936<i64>:int8], int8, int64)");
         }
 
         [Test]
@@ -170,6 +345,25 @@ namespace Reko.UnitTests.Arch.RiscV
             AssertCode(
                 "0|T--|0000000000010000(4): 1 instructions",
                 "1|T--|call a5 + 3<i64> (0)");
+        }
+
+        [Test]
+        public void RiscV_rw_sc_d()
+        {
+            Given_HexString("AFBA3C1B");
+            AssertCode(     // sc.d.rl	s5,s9,s3
+                "0|L--|0000000000010000(4): 1 instructions",
+                "1|L--|s5 = __store_conditional<word64>(s9, &Mem0[s3:word64])");
+        }
+
+        [Test]
+        public void RiscV_rw_sc_w()
+        {
+            Given_HexString("AFADE31C");
+            AssertCode(     // sc.w.aq	s11,t2,a4
+                "0|L--|0000000000010000(4): 2 instructions",
+                "1|L--|v5 = __store_conditional<word32>(t2, &Mem0[a4:word32])",
+                "2|L--|s11 = CONVERT(v5, word32, int64)");
         }
 
         [Test]
@@ -347,6 +541,15 @@ namespace Reko.UnitTests.Arch.RiscV
             AssertCode(     // fcvt.d.lu	fa4,s3
                 "0|L--|0000000000010000(4): 1 instructions",
                 "1|L--|fa4 = CONVERT(s3, uint64, real64)");
+        }
+
+        [Test]
+        public void RiscV_rw_fcvt_d_w()
+        {
+            Given_HexString("538706D2");
+            AssertCode(     // fcvt.d.w	fa4,a3
+                "0|L--|0000000000010000(4): 1 instructions",
+                "1|L--|fa4 = CONVERT(SLICE(a3, int32, 0), int32, real64)");
         }
 
         [Test]
@@ -683,6 +886,24 @@ namespace Reko.UnitTests.Arch.RiscV
             AssertCode(     // fsgnjn.s	fa5,fa5,fa5
                 "0|L--|00010000(4): 1 instructions",
                 "1|L--|fa5 = -fa5");
+        }
+
+        [Test]
+        public void RiscV_rw_lr_d()
+        {
+            Given_HexString("2FB10114");
+            AssertCode(     // lr.d.aq	sp,gp
+                "0|L--|0000000000010000(4): 1 instructions",
+                "1|L--|sp = __load_reserved<word64>(&Mem0[gp:word64])");
+        }
+
+        [Test]
+        public void RiscV_rw_lr_w()
+        {
+            Given_HexString("AFAB1715");
+            AssertCode(     // lr.w.aq	s7,a5
+                "0|L--|0000000000010000(4): 1 instructions",
+                "1|L--|s7 = __load_reserved<word64>(&Mem0[a5:word64])");
         }
 
         [Test]
@@ -1285,5 +1506,23 @@ namespace Reko.UnitTests.Arch.RiscV
                 "0|L--|0000000000010000(4): 1 instructions",
                 "1|L--|s1 = CONVERT(SLICE(fa5, real32, 0), real32, uint64)");
         }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     }
 }

@@ -18,6 +18,7 @@
  */
 #endregion
 
+using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Machine;
 using Reko.Core.Types;
@@ -53,7 +54,7 @@ namespace Reko.Arch.RiscV
             {
                 src = m.IAdd(src1, src2);
             }
-            MaybeSignExtend(dst, src, dtDst);
+            MaybeSliceSignExtend(dst, src, dtDst);
         }
 
         private void RewriteAddi16sp()
@@ -101,12 +102,20 @@ namespace Reko.Arch.RiscV
             m.Assign(dst, m.Convert(src, src.DataType, PrimitiveType.Int64));
         }
 
+        private void RewriteAtomicMemoryOperation(IntrinsicProcedure intrinsic, PrimitiveType dt)
+        {
+            var src1 = RewriteOp(1);
+            var src2 = m.AddrOf(arch.PointerType, m.Mem(dt, RewriteOp(2)));
+            var dst = RewriteOp(0);
+            MaybeSignExtend(dst, m.Fn(intrinsic.MakeInstance(arch.PointerType.BitSize, dt), src1, src2));
+        }
+
         private void RewriteBinOp(Func<Expression,Expression, Expression> op, PrimitiveType? dtDst = null)
         {
             var src1 = RewriteOp(instr.Operands[1]);
             var src2 = RewriteOp(instr.Operands[2]);
             var dst = RewriteOp(instr.Operands[0]);
-            MaybeSignExtend(dst, op(src1, src2), dtDst);
+            MaybeSliceSignExtend(dst, op(src1, src2), dtDst);
         }
 
         private void RewriteCompressedAdd(PrimitiveType? dtDst = null)
@@ -121,7 +130,7 @@ namespace Reko.Arch.RiscV
             var src1 = RewriteOp(instr.Operands[1]);
             var dst = RewriteOp(instr.Operands[0]);
             var val = op(dst, src1);
-            MaybeSignExtend(dst, val, dtDst);
+            MaybeSliceSignExtend(dst, val, dtDst);
         }
 
         private void RewriteLi()
@@ -160,6 +169,18 @@ namespace Reko.Arch.RiscV
                 src = m.Convert(src, src.DataType, dtDst);
             }
             m.Assign(dst, src);
+        }
+
+        private void RewriteLoadReserved(DataType dt)
+        {
+            var src = RewriteOp(1);
+            var dst = RewriteOp(0);
+            var dtPtr = arch.PointerType;
+            MaybeSignExtend(
+                dst,
+                m.Fn(
+                    lr_intrinsic.MakeInstance(dtPtr.BitSize, dt),
+                    m.AddrOf(dtPtr, m.Mem(dt, src))));
         }
 
         private void RewriteLxsp(DataType dt)
@@ -275,6 +296,19 @@ namespace Reko.Arch.RiscV
                 var offset = ((ImmediateOperand) instr.Operands[2]).Value.ToInt32();
                 RewriteStore(dt, baseReg, offset, src);
             }
+        }
+
+        private void RewriteStoreConditional(DataType dt)
+        {
+            var src1 = RewriteOp(1);
+            var src2 = RewriteOp(2);
+            var dst = RewriteOp(0);
+            MaybeSignExtend(
+                dst,
+                m.Fn(
+                    sc_intrinsic.MakeInstance(arch.PointerType.BitSize, dt),
+                    src1,
+                    m.AddrOf(arch.PointerType, m.Mem(dt, src2))));
         }
 
         private void RewriteStore(DataType dt, Expression baseReg, int offset, Expression src)
