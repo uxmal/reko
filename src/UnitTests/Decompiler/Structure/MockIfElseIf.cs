@@ -34,7 +34,7 @@ namespace Reko.UnitTests.Decompiler.Structure
 			var r = Local32("r");
 			var x = Local32("x");
 
-			BranchIf(Ne(r, 0), "not_0");
+            BranchIf(Ne(r, 0), "not_0");
 			Assign(x, 0);
 			Goto("done");
 

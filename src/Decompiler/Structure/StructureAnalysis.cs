@@ -87,6 +87,8 @@ namespace Reko.Structure
             proc.Body.AddRange(reg.Statements);
 
             // Post processing steps
+            var iftosw = new IfCascadeToSwitchRewriter(proc);
+            iftosw.Transform();
             var flr = new ForLoopRewriter(proc);
             flr.Transform();
             var trrm = new TailReturnRemover(proc);
@@ -664,7 +666,7 @@ all other cases, together they constitute a Switch[].
 
             //$REVIEW: workaround for when the datatype of n.Expression
             // is non-integral. What causes this?
-            if (!(exp.DataType is PrimitiveType pt))
+            if (exp.DataType is not PrimitiveType pt)
             {
                 eventListener.Warn(eventListener.CreateBlockNavigator(this.program, n.Block), "Non-integral switch expression");
                 pt = PrimitiveType.CreateWord(exp.DataType.BitSize);

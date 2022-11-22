@@ -3517,20 +3517,23 @@ int8 * _getopt_initialize(int8 * o2, ptr32 & i1Out, ptr32 & i4Out, ptr32 & i5Out
 	g_t2B2E0 = o0_n;
 	int8 * i0_n = o2;
 	int32 o0_n = (int32) *o2;
-	if (o0_n == 0x2D)
+	switch (o0_n)
 	{
+	case 0x2D:
 		g_dw2B2D0 = 0x02;
 		i0_n = o2 + 1;
-	}
-	else if (o0_n == 0x2B)
-	{
+		break;
+	case 0x2B:
 		g_dw2B2D0 = 0x00;
 		i0_n = o2 + 1;
+		break;
+	default:
+		if (o0_n != 0x00)
+			g_dw2B2D0 = 0x00;
+		else
+			g_dw2B2D0 = 0x01;
+		break;
 	}
-	else if (o0_n != 0x00)
-		g_dw2B2D0 = 0x00;
-	else
-		g_dw2B2D0 = 0x01;
 	i1Out = o1;
 	i4Out = o4;
 	i5Out = o5;

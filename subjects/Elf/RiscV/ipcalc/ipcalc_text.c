@@ -2059,61 +2059,58 @@ int64 fn0000000000017F04(struct Eq_n * gp, int64 a0, Eq_n a1, int64 a2, int64 a3
 	word64 a3_n;
 	word64 a4_n;
 	fn00000000000182B4(a0, out a3_n, out a4_n);
-	if (a1 != 32)
+	switch (a1)
 	{
-		if (a1 != 24)
+	case 32:
+		a0_n.u1 = (uint64) __asprintf_chk(&ptrLoc50, 1, "%u.%u.%u.%u.in-addr.arpa.", 0x00);
+		break;
+	case 24:
+		a0_n.u1 = (uint64) __asprintf_chk(&ptrLoc50, 1, "%u.%u.%u.in-addr.arpa.", 0x00);
+		break;
+	case 16:
+		a0_n.u1 = (uint64) __asprintf_chk(&ptrLoc50, 1, "%u.%u.in-addr.arpa.", 0x00);
+		break;
+	case 8:
+		a0_n.u1 = (uint64) __asprintf_chk(&ptrLoc50, 1, "%u.in-addr.arpa.", 0x00);
+		break;
+	default:
+		if (a1 <= 24)
 		{
-			if (a1 != 16)
+			if (a1 <= 16)
 			{
-				if (a1 != 8)
-				{
-					if (a1 <= 24)
-					{
-						if (a1 <= 16)
-						{
-							if (a1 <= 8)
-								goto l0000000000017F84;
-							word64 a3_n;
-							word64 a4_n;
-							fn00000000000182B4(a2, out a3_n, out a4_n);
-							word64 a3_n;
-							word64 a4_n;
-							fn00000000000182B4(a3, out a3_n, out a4_n);
-							a0_n.u1 = (uint64) __asprintf_chk(&ptrLoc50, 1, "%u-%u.%u.in-addr.arpa.", 0x00);
-						}
-						else
-						{
-							word64 a3_n;
-							word64 a4_n;
-							fn00000000000182B4(a2, out a3_n, out a4_n);
-							word64 a3_n;
-							word64 a4_n;
-							fn00000000000182B4(a3, out a3_n, out a4_n);
-							a0_n.u1 = (uint64) __asprintf_chk(&ptrLoc50, 1, "%u-%u.%u.%u.in-addr.arpa.", 0x00);
-						}
-					}
-					else
-					{
-						word64 a3_n;
-						word64 a4_n;
-						fn00000000000182B4(a2, out a3_n, out a4_n);
-						word64 a3_n;
-						word64 a4_n;
-						fn00000000000182B4(a3, out a3_n, out a4_n);
-						a0_n.u1 = (uint64) __asprintf_chk(&ptrLoc50, 1, "%u-%u.%u.%u.%u.in-addr.arpa.", 0x00);
-					}
-				}
-				else
-					a0_n.u1 = (uint64) __asprintf_chk(&ptrLoc50, 1, "%u.in-addr.arpa.", 0x00);
+				if (a1 <= 8)
+					goto l0000000000017F84;
+				word64 a3_n;
+				word64 a4_n;
+				fn00000000000182B4(a2, out a3_n, out a4_n);
+				word64 a3_n;
+				word64 a4_n;
+				fn00000000000182B4(a3, out a3_n, out a4_n);
+				a0_n.u1 = (uint64) __asprintf_chk(&ptrLoc50, 1, "%u-%u.%u.in-addr.arpa.", 0x00);
 			}
 			else
-				a0_n.u1 = (uint64) __asprintf_chk(&ptrLoc50, 1, "%u.%u.in-addr.arpa.", 0x00);
+			{
+				word64 a3_n;
+				word64 a4_n;
+				fn00000000000182B4(a2, out a3_n, out a4_n);
+				word64 a3_n;
+				word64 a4_n;
+				fn00000000000182B4(a3, out a3_n, out a4_n);
+				a0_n.u1 = (uint64) __asprintf_chk(&ptrLoc50, 1, "%u-%u.%u.%u.in-addr.arpa.", 0x00);
+			}
 		}
 		else
-			a0_n.u1 = (uint64) __asprintf_chk(&ptrLoc50, 1, "%u.%u.%u.in-addr.arpa.", 0x00);
+		{
+			word64 a3_n;
+			word64 a4_n;
+			fn00000000000182B4(a2, out a3_n, out a4_n);
+			word64 a3_n;
+			word64 a4_n;
+			fn00000000000182B4(a3, out a3_n, out a4_n);
+			a0_n.u1 = (uint64) __asprintf_chk(&ptrLoc50, 1, "%u-%u.%u.%u.%u.in-addr.arpa.", 0x00);
+		}
+		break;
 	}
-	else
-		a0_n.u1 = (uint64) __asprintf_chk(&ptrLoc50, 1, "%u.%u.%u.%u.in-addr.arpa.", 0x00);
 	if (a0_n != -1)
 	{
 		a0_n = ptrLoc50;

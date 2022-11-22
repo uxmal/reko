@@ -235,15 +235,19 @@ bool fn056B(ptr16 bc, ptr16 & bcOut)
 	byte b = SLICE(bc, byte, 8);
 	ptr16 bc_n;
 	g_b166C = c;
-	if (g_b14F3 == 0x01)
-		bc_n = SEQ(b, fn0524(g_b166C));
-	else if (g_b14F3 == 0x02)
-		bc_n = SEQ(b, fn0473(g_b166C));
-	else
+	switch (g_b14F3)
 	{
+	case 0x01:
+		bc_n = SEQ(b, fn0524(g_b166C));
+		break;
+	case 0x02:
+		bc_n = SEQ(b, fn0473(g_b166C));
+		break;
+	default:
 		bc_n = bc;
 		if (g_b14F3 == 0x04)
 			bc_n = fn0534(g_b166C);
+		break;
 	}
 	char a_n = g_b166C;
 	bool C_n = (bool) cond(a_n - 0x0D);
@@ -856,19 +860,20 @@ void fn0BE4(byte f)
 	sp_n->tFFFFFFFE = SEQ(0x00 - (byte) (g_b138A < 0x01), f_n);
 	if ((SLICE(0x03 - (uint16) g_b138A, byte, 8) | sp_n->b0003) >> 0x01 < 0x00)
 		fn075C(0x00, 0x01, 0x00, 0x00);
-	if (g_b138A != 0x01)
+	switch (g_b138A)
 	{
-		if (g_b138A != 0x02)
-		{
-			if (g_b138A != 0x03)
-				return;
-			fn1729();
-		}
-		else
-			fn177D();
-	}
-	else
+	case 0x01:
 		fn172D();
+		return;
+	case 0x02:
+		fn177D();
+		return;
+	default:
+		if (g_b138A != 0x03)
+			return;
+		fn1729();
+		return;
+	}
 }
 
 // 0C93: Register byte fn0C93()
@@ -1003,76 +1008,87 @@ void fn100A(word16 af)
 			break;
 		if (g_b16A8 == 0x20)
 			fn1262();
-		if (g_b16A8 == 66)
-			g_b14F3 = 0x00;
-		else if (g_b16A8 == 0x43)
+		switch (g_b16A8)
 		{
+		case 66:
+			g_b14F3 = 0x00;
+			break;
+		case 0x43:
 			word16 af_n = fn12D8();
 			g_b151D = SLICE(af_n, byte, 8);
 			f_n = (byte) af_n;
-		}
-		else if (g_b16A8 == 0x44)
-		{
+			break;
+		case 0x44:
 			word16 af_n = fn1279();
 			g_b138B = SLICE(af_n, byte, 8);
 			f_n = (byte) af_n;
-		}
-		else if (g_b16A8 == 0x46)
+			break;
+		case 0x46:
 			g_b14F3 = 0x04;
-		else if (g_b16A8 == 0x49)
+			break;
+		case 0x49:
 			g_b14FA = 0x01;
-		else if (g_b16A8 == 0x4C)
-		{
+			break;
+		case 0x4C:
 			word16 af_n = fn1279();
 			g_b14F7 = SLICE(af_n, byte, 8);
 			f_n = (byte) af_n;
-		}
-		else if (g_b16A8 == 0x4E)
+			break;
+		case 0x4E:
 			g_b14FB = 0x01;
-		else if (g_b16A8 == 0x4F)
+			break;
+		case 0x4F:
 			g_b14EF = 0x00;
-		else if (g_b16A8 == 0x50)
+			break;
+		case 0x50:
 			g_b14F3 = 0x01;
-		else if (g_b16A8 == 0x52)
-		{
+			break;
+		case 0x52:
 			word16 af_n = fn12D8();
 			g_b1520 = SLICE(af_n, byte, 8);
 			f_n = (byte) af_n;
-		}
-		else if (g_b16A8 == 0x53)
+			break;
+		case 0x53:
 			g_b14F0 = 0x01;
-		else if (g_b16A8 == 0x54)
+			break;
+		case 0x54:
 			g_b14F5 = 0x01;
-		else if (g_b16A8 == 0x55)
+			break;
+		case 0x55:
 			g_b1529 = 0x01;
-		else if (g_b16A8 == 0x56)
+			break;
+		case 0x56:
 			g_b14FC = 0x01;
-		else if (g_b16A8 == 0x57)
-		{
+			break;
+		case 0x57:
 			word16 af_n = fn1279();
 			g_b14F8 = SLICE(af_n, byte, 8);
 			f_n = (byte) af_n;
-		}
-		else if (g_b16A8 == 88)
-		{
+			break;
+		case 88:
 			word16 af_n = fn12D8();
 			g_b151E = SLICE(af_n, byte, 8);
 			f_n = (byte) af_n;
-		}
-		else
+			break;
+		default:
 			fn1229();
+			break;
+		}
 		g_b16A8 = fn045B();
 		fn1262();
-		if (g_b16A8 == 44)
-			g_b16A8 = fn045B();
-		else if (g_b16A8 == 0x02)
+		switch (g_b16A8)
 		{
+		case 44:
+			g_b16A8 = fn045B();
+			break;
+		case 0x02:
 			g_b16A8 = fn045B();
 			fn1262();
 			if (g_b16A8 != 0x04)
 				g_b16A8 = 0x5D;
 			else
 				g_b16A8 = fn045B();
+			break;
 		}
 	}
 	if (g_b14F3 == 0x01)

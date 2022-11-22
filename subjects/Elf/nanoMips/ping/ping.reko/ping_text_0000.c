@@ -101,10 +101,12 @@ void main(Eq_n r0, Eq_n r4, Eq_n r5)
 	word32 r6_n;
 	word32 r5_n;
 	word32 r7_n = CONVERT(Mem45[r17_n + strlen(r17_n, out r5_n, out r6_n, out r7_n) + -1:byte], byte, word32);
-	if (r7_n == 0x34)
-		dwLoc3C.u0 = 0x02;
-	else if (r7_n == 0x36)
+	switch (r7_n)
 	{
+	case 0x34:
+		dwLoc3C.u0 = 0x02;
+		break;
+	case 0x36:
 		r7_n = 0x0A;
 		goto l004001F2;
 	}
@@ -8683,15 +8685,14 @@ word32 copy_addr(word32 r5, Eq_n r6, Eq_n r7, word32 r9, union Eq_n & r16Out, un
 	Eq_n r17;
 	Eq_n r4;
 	word32 r11;
-	if (r5 == 0x02)
+	switch (r5)
 	{
+	case 0x02:
 		word32 r11_n = fn00405FD4();
 		r16Out = r6;
 		r17Out = r4;
 		return r11_n;
-	}
-	else if (r5 == 0x0A)
-	{
+	case 0x0A:
 		word32 r10_n = (word32) *r7;
 		if (r10_n == 0xFE)
 		{
@@ -8726,9 +8727,7 @@ word32 copy_addr(word32 r5, Eq_n r6, Eq_n r7, word32 r9, union Eq_n & r16Out, un
 		r16Out = r6;
 		r17Out = r4;
 		return r11;
-	}
-	else
-	{
+	default:
 		r16Out = r16;
 		r17Out = r17;
 		return r11;
@@ -11010,35 +11009,29 @@ Eq_n __lookup_serv(Eq_n r2, Eq_n r3, struct Eq_n * r4, Eq_n r5, Eq_n r6, Eq_n r7
 	ptr32 r11;
 	Eq_n r16_n;
 	Eq_n r19_n = r6;
-	if (r7 != 0x01)
+	switch (r7)
 	{
-		if (r7 != 0x02)
-		{
-			if (r7 != 0x00)
-			{
-				if (r5 == 0x00)
-				{
-					r4->w0000 = 0x00;
-					r4->b0002 = (byte) r6;
-					r4->b0003 = (byte) r7;
-					r16_n.u0 = 0x01;
-					goto l00407424;
-				}
-				goto l00407408;
-			}
-		}
-		else
-		{
-			if (r6 != 0x00 && r6 != 0x06)
-				goto l00407408;
-			r19_n.u0 = 0x06;
-		}
-	}
-	else
-	{
+	case 0x01:
 		if (r6 != 0x00 && r6 != 0x11)
 			goto l00407408;
 		r19_n.u0 = 0x11;
+		break;
+	case 0x02:
+		if (r6 != 0x00 && r6 != 0x06)
+			goto l00407408;
+		r19_n.u0 = 0x06;
+		break;
+	case 0x00:
+	default:
+		if (r5 == 0x00)
+		{
+			r4->w0000 = 0x00;
+			r4->b0002 = (byte) r6;
+			r4->b0003 = (byte) r7;
+			r16_n.u0 = 0x01;
+			goto l00407424;
+		}
+		goto l00407408;
 	}
 	uint32 r4_n;
 	if (r5 != 0x00)
@@ -24164,8 +24157,9 @@ l0040E188:
 void frexp(Eq_n r4, Eq_n r5, word32 r6)
 {
 	Eq_n r7_n = __ext<word32,word32>(r5, 0x04, 11);
-	if (r7_n == 0x00)
+	switch (r7_n)
 	{
+	case 0x00:
 		word32 r4_n;
 		word32 r5_n;
 		word32 r6_n;
@@ -24191,9 +24185,12 @@ void frexp(Eq_n r4, Eq_n r5, word32 r6)
 			__muldf3(r4, r5, *(union Eq_n *) 68289224, *(union Eq_n *) 68289228, out r3_n, out r4_n, out r5_n, out r6_n, out r7_n, out r8_n, out r9_n, out r10_n, out r11_n, out r12_n, out r14_n);
 			frexp(r4_n, r5_n, r6);
 		}
-	}
-	else if (r7_n != 0x07FF)
+		break;
+	case 0x07FF:
+	default:
 		__ins<word32,word32>(r5, 0x00, 0x04, 0x01);
+		break;
+	}
 }
 
 // 0040E320: Register (ptr32 int8) mbrtowc(Register (ptr32 int8) r4, Register (ptr32 Eq_n) r5, Register Eq_n r6, Register (ptr32 Eq_n) r7, Register out Eq_n r3Out, Register out ptr32 r4Out, Register out Eq_n r6Out, Register out Eq_n r8Out, Register out Eq_n r9Out, Register out Eq_n r10Out, Register out Eq_n r11Out)

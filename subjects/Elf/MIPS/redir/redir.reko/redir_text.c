@@ -3502,49 +3502,60 @@ void __unpack_f(uint32 * r4, struct Eq_n * r5)
 	uint32 r3_n = *r4;
 	r5->dw0004 = r3_n >> 0x1F;
 	int32 r4_n = r3_n >> 0x17 & 0xFF;
-	if (r4_n != 0x00)
+	switch (r4_n)
 	{
-		if (r4_n != 0x00FF)
+	case 0x00:
+		if ((r3_n & 0x007FFFFF) != 0x00)
 		{
-			r5->dw000C = (r3_n & 0x007FFFFF) << 0x07 | 0x40000000;
-			r5->dw0008 = r4_n + -0x007F;
-			r5->dw0000 = 3;
+			r5->dw0008 = -0x007E;
+			uint32 r5_n = (r3_n & 0x007FFFFF) << 0x07;
+			if ((word32) (r5_n > 0x3FFFFFFF) == 0x00)
+			{
+				r5->dw0000 = 3;
+				int32 r4_n = -0x007F;
+				while (true)
+				{
+					r5_n <<= 0x01;
+					if ((word32) (r5_n > 0x3FFFFFFF) != 0x00)
+						break;
+					r4_n += -1;
+				}
+				int32 r4_n = r4_n + 0;
+				r5->dw0008 = r4_n;
+			}
+			else
+				r5->dw0000 = 3;
+			r5->dw000C = r5_n;
+			return;
 		}
-		else if ((r3_n & 0x007FFFFF) != 0x00)
+		else
+		{
+			r5->dw0000 = 2;
+			return;
+		}
+		break;
+	case 0x00FF:
+		if ((r3_n & 0x007FFFFF) != 0x00)
 		{
 			if ((r3_n & 0x007FFFFF & 0x00100000) != 0x00)
 				r5->dw0000 = 1;
 			else
 				r5->dw0000 = 0x00;
 			r5->dw000C = r3_n & 0x007FFFFF;
+			return;
 		}
 		else
-			r5->dw0000 = 4;
-	}
-	else if ((r3_n & 0x007FFFFF) != 0x00)
-	{
-		r5->dw0008 = -0x007E;
-		uint32 r5_n = (r3_n & 0x007FFFFF) << 0x07;
-		if ((word32) (r5_n > 0x3FFFFFFF) == 0x00)
 		{
-			r5->dw0000 = 3;
-			int32 r4_n = -0x007F;
-			while (true)
-			{
-				r5_n <<= 0x01;
-				if ((word32) (r5_n > 0x3FFFFFFF) != 0x00)
-					break;
-				r4_n += -1;
-			}
-			int32 r4_n = r4_n + 0;
-			r5->dw0008 = r4_n;
+			r5->dw0000 = 4;
+			return;
 		}
-		else
-			r5->dw0000 = 3;
-		r5->dw000C = r5_n;
+		break;
+	default:
+		r5->dw000C = (r3_n & 0x007FFFFF) << 0x07 | 0x40000000;
+		r5->dw0008 = r4_n + -0x007F;
+		r5->dw0000 = 3;
+		return;
 	}
-	else
-		r5->dw0000 = 2;
 }
 
 // 00409630: void __make_fp(Register Eq_n r4, Register word32 r5, Register int32 r6, Register Eq_n r7, Register word32 ra)
@@ -3667,16 +3678,42 @@ void __unpack_d(struct Eq_n * r4, struct Eq_n * r5)
 	uint32 r3_n = r4->dw0004;
 	r5->dw0004 = r2_n >> 0x1F & 0x01;
 	int32 r7_n = r2_n >> 0x14 & 0x07FF;
-	if (r7_n != 0x00)
+	switch (r7_n)
 	{
-		if (r7_n != 0x07FF)
+	case 0x00:
+		if ((r3_n | r2_n & 0x000FFFFF) != 0x00)
 		{
-			r5->dw0010 = (r2_n & 0x000FFFFF) << 0x08 | r3_n >> 0x18 | 0x10000000;
-			r5->dw0014 = r3_n << 0x08;
-			r5->dw0008 = r7_n + -0x03FF;
-			r5->dw0000 = 3;
+			r5->dw0008 = -1022;
+			uint32 r8_n = (r2_n & 0x000FFFFF) << 0x08 | r3_n >> 0x18;
+			uint32 r9_n = r3_n << 0x08;
+			if ((word32) (r8_n > 0x0FFFFFFF) == 0x00)
+			{
+				r5->dw0000 = 3;
+				while (true)
+				{
+					r8_n = r8_n << 0x01 | r9_n >> 0x1F;
+					int32 r2_n = r5->dw0008;
+					r9_n <<= 0x01;
+					if ((word32) (r8_n > 0x0FFFFFFF) != 0x00)
+						break;
+					r5->dw0008 = r2_n + -1;
+				}
+				r5->dw0008 = r2_n + -1;
+			}
+			else
+				r5->dw0000 = 3;
+			r5->dw0010 = r8_n;
+			r5->dw0014 = r9_n;
+			return;
 		}
-		else if ((r3_n | r2_n & 0x000FFFFF) != 0x00)
+		else
+		{
+			r5->dw0000 = 2;
+			return;
+		}
+		break;
+	case 0x07FF:
+		if ((r3_n | r2_n & 0x000FFFFF) != 0x00)
 		{
 			if ((r2_n & 0x000FFFFF & 0x00080000) != 0x00)
 				r5->dw0000 = 1;
@@ -3684,36 +3721,21 @@ void __unpack_d(struct Eq_n * r4, struct Eq_n * r5)
 				r5->dw0000 = 0x00;
 			r5->dw0010 = r2_n & 0x000FFFFF;
 			r5->dw0014 = r3_n;
+			return;
 		}
 		else
-			r5->dw0000 = 4;
-	}
-	else if ((r3_n | r2_n & 0x000FFFFF) != 0x00)
-	{
-		r5->dw0008 = -1022;
-		uint32 r8_n = (r2_n & 0x000FFFFF) << 0x08 | r3_n >> 0x18;
-		uint32 r9_n = r3_n << 0x08;
-		if ((word32) (r8_n > 0x0FFFFFFF) == 0x00)
 		{
-			r5->dw0000 = 3;
-			while (true)
-			{
-				r8_n = r8_n << 0x01 | r9_n >> 0x1F;
-				int32 r2_n = r5->dw0008;
-				r9_n <<= 0x01;
-				if ((word32) (r8_n > 0x0FFFFFFF) != 0x00)
-					break;
-				r5->dw0008 = r2_n + -1;
-			}
-			r5->dw0008 = r2_n + -1;
+			r5->dw0000 = 4;
+			return;
 		}
-		else
-			r5->dw0000 = 3;
-		r5->dw0010 = r8_n;
-		r5->dw0014 = r9_n;
+		break;
+	default:
+		r5->dw0010 = (r2_n & 0x000FFFFF) << 0x08 | r3_n >> 0x18 | 0x10000000;
+		r5->dw0014 = r3_n << 0x08;
+		r5->dw0008 = r7_n + -0x03FF;
+		r5->dw0000 = 3;
+		return;
 	}
-	else
-		r5->dw0000 = 2;
 }
 
 // 00409A90: void __fpcmp_parts_d(Register (ptr32 Eq_n) r4, Register (ptr32 Eq_n) r5)

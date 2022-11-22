@@ -77,8 +77,9 @@ word32 fn100011E9(Eq_n dwArg04, Eq_n dwArg08, Eq_n dwArg0C, ptr32 & ebxOut, ptr3
 	}
 	g_dw100033A4 = *adjust_fdiv;
 	ptr32 * esp_n = fp - 16;
-	if (dwArg08 == 0x01)
+	switch (dwArg08)
 	{
+	case 0x01:
 		Eq_n edi_n = fs->ptr0018->t0004;
 		while (true)
 		{
@@ -127,9 +128,8 @@ l10001384:
 			}
 		}
 		++g_dw10003070;
-	}
-	else if (dwArg08 == 0x00)
-	{
+		break;
+	case 0x00:
 		while (InterlockedCompareExchange(&g_t100033AC, 0x01, 0x00) != 0x00)
 			Sleep(1000);
 		if (g_dw100033A8 != 0x02)
@@ -167,6 +167,7 @@ l10001384:
 		g_dw100033A8 = 0x00;
 		InterlockedExchange(esp_n->ptrFFFFFFFC, esp_n->t0000);
 		esp_n = (ptr32 *) (&esp_n->t0000 + 1);
+		break;
 	}
 	eax_n = 0x01;
 	goto l10001381;

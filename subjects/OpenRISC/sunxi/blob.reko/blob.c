@@ -156,16 +156,16 @@ void fn000047AC(int32 r3)
 //      fn00004A6C
 void fn000047F4(int32 r3)
 {
-	if (r3 != 0x00)
+	switch (r3)
 	{
-		if (r3 == 0x01)
-		{
-			*(int32 *) 0x01700080 = 0x11101100;
-			((union Eq_n *) 0x01700020)->u0 = -0x0F;
-		}
-	}
-	else
+	case 0x00:
 		*(int32 *) 0x01700080 = r3;
+		break;
+	case 0x01:
+		*(int32 *) 0x01700080 = 0x11101100;
+		((union Eq_n *) 0x01700020)->u0 = -0x0F;
+		break;
+	}
 }
 
 // 00004844: void fn00004844()

@@ -65,13 +65,16 @@ word16 fn0C00_000B(word16 si, selector ds)
 {
 	word16 dx_38 = 0<16>;
 	word16 cx_17 = 0<16>;
-	if (Mem0[ds:si:byte] == 0x2D<8>)
+	switch (Mem0[ds:si:byte])
 	{
+	case 0x2D<8>:
 		++si;
 		cx_17 = 0xFFFF<16>;
-	}
-	else if (Mem0[ds:si:byte] == 0x2B<8>)
+		break;
+	case 0x2B<8>:
 		++si;
+		break;
+	}
 	while (true)
 	{
 		byte al_22 = Mem0[ds:si:byte];

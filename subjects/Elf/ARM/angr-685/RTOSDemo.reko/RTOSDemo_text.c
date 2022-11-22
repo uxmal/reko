@@ -1975,28 +1975,29 @@ void IntPriorityGet()
 //      I2CIntRegister
 void IntEnable(up32 r0)
 {
-	if (r0 == 0x04)
+	switch (r0)
 	{
+	case 0x04:
 		ui32 * r2_n = g_ptr9634;
 		*r2_n |= 0x00010000;
-	}
-	else if (r0 == 0x05)
-	{
+		return;
+	case 0x05:
 		ui32 * r2_n = g_ptr9634;
 		*r2_n |= 0x00020000;
-	}
-	else if (r0 == 0x06)
-	{
+		return;
+	case 0x06:
 		ui32 * r2_n = g_ptr9634;
 		*r2_n |= 0x00040000;
-	}
-	else if (r0 == 0x0F)
-	{
+		return;
+	case 0x0F:
 		ui32 * r2_n = g_ptr9630;
 		*r2_n |= 0x02;
+		return;
+	default:
+		if (r0 > 0x0F)
+			*g_ptr962C = 0x01 << r0 - 0x10;
+		return;
 	}
-	else if (r0 > 0x0F)
-		*g_ptr962C = 0x01 << r0 - 0x10;
 }
 
 ui32 * g_ptr962C = &g_dwE000E100; // 0000962C
@@ -2011,28 +2012,29 @@ ui32 * g_ptr9634 = &g_dwE000ED24; // 00009634
 //      I2CIntUnregister
 void IntDisable(up32 r0)
 {
-	if (r0 == 0x04)
+	switch (r0)
 	{
+	case 0x04:
 		ui32 * r2_n = g_ptr9690;
 		*r2_n &= ~0x00010000;
-	}
-	else if (r0 == 0x05)
-	{
+		return;
+	case 0x05:
 		ui32 * r2_n = g_ptr9690;
 		*r2_n &= ~0x00020000;
-	}
-	else if (r0 == 0x06)
-	{
+		return;
+	case 0x06:
 		ui32 * r2_n = g_ptr9690;
 		*r2_n &= ~0x00040000;
-	}
-	else if (r0 == 0x0F)
-	{
+		return;
+	case 0x0F:
 		ui32 * r2_n = g_ptr968C;
 		*r2_n &= ~0x02;
+		return;
+	default:
+		if (r0 > 0x0F)
+			*g_ptr9688 = 0x01 << r0 - 0x10;
+		return;
 	}
-	else if (r0 > 0x0F)
-		*g_ptr9688 = 0x01 << r0 - 0x10;
 }
 
 ui32 * g_ptr9688 = &g_dwE000E180; // 00009688
@@ -2316,13 +2318,16 @@ void SSIConfig(struct Eq_n * r0, ui32 r1, ui32 r2, uint32 r3, ui32 dwArg00)
 {
 	ui32 r7_n = r2;
 	uint32 r0_n = SysCtlClockGet();
-	if (r2 != 0x02)
+	switch (r2)
 	{
-		if (r2 != 0x00)
-			r7_n = 0x04;
-	}
-	else
+	case 0x02:
 		r7_n = 0x0C;
+		break;
+	case 0x00:
+	default:
+		r7_n = 0x04;
+		break;
+	}
 	r0->dw0004 = r7_n;
 	uint32 r3_n = r0_n /u r3;
 	uint32 r4_n = 0x00;
@@ -2698,22 +2703,23 @@ uint32 SysCtlClockGet()
 {
 	uint32 r0_n;
 	ui32 r3_n = *g_ptr9E54;
-	if ((r3_n & 0x30) != 0x10)
+	switch (r3_n & 0x30)
 	{
-		if ((r3_n & 0x30) != 0x20)
-		{
-			if ((r3_n & 0x30) != 0x00)
-			{
-				r0_n = 0x00;
-				return r0_n;
-			}
-			r0_n = (g_ptr9E58 + ((uint32) SLICE(r3_n, ui4, 6) << 0x02))->dw0030;
-		}
-		else
-			r0_n = g_dw9E60;
-	}
-	else
+	case 0x10:
 		r0_n = g_dw9E64;
+		break;
+	case 0x20:
+		r0_n = g_dw9E60;
+		break;
+	default:
+		if ((r3_n & 0x30) != 0x00)
+		{
+			r0_n = 0x00;
+			return r0_n;
+		}
+		r0_n = (g_ptr9E58 + ((uint32) SLICE(r3_n, ui4, 6) << 0x02))->dw0030;
+		break;
+	}
 	if (r3_n << 20 >= 0x00)
 	{
 		ui32 r2_n = *g_ptr9E5C;
