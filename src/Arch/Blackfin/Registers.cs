@@ -23,6 +23,7 @@ using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -72,10 +73,10 @@ namespace Reko.Arch.Blackfin
         public static readonly RegisterStorage[] RPIB_Lo;
         public static readonly RegisterStorage[] RPI_Hi;
 
-        //public static readonly FlagGroupStorage AZ;
-        //public static readonly FlagGroupStorage AN;
-        public static readonly FlagGroupStorage AC0_COPY;
-        public static readonly FlagGroupStorage V_COPY;
+        public static readonly FlagGroupStorage AZ;         // 0
+        public static readonly FlagGroupStorage AN;         // 1
+        public static readonly FlagGroupStorage AC0_COPY;   // 2
+        public static readonly FlagGroupStorage V_COPY;     // 3
 
         public static readonly FlagGroupStorage CC; //5
         public static readonly FlagGroupStorage AQ;
@@ -92,6 +93,10 @@ namespace Reko.Arch.Blackfin
 
         public static readonly FlagGroupStorage V; // 24
         public static readonly FlagGroupStorage VS;
+
+        public static readonly FlagGroupStorage NZ;
+        public static readonly FlagGroupStorage NZV;
+        public static readonly FlagGroupStorage NZVC;
 
         public static Dictionary<uint, FlagGroupStorage> AStatFlags { get; }
 
@@ -158,8 +163,11 @@ namespace Reko.Arch.Blackfin
             AllReg = MakeAllReg(true);
             MostReg = MakeAllReg(false);
 
-            AC0_COPY = new FlagGroupStorage(ASTAT, 1 << 0, "AC0_COPY", PrimitiveType.Bool);
-            V_COPY = new FlagGroupStorage(ASTAT, 1 << 1, "V_COPY", PrimitiveType.Bool);
+            AZ = new FlagGroupStorage(ASTAT, 1 << 0, "AZ", PrimitiveType.Bool);
+            AN = new FlagGroupStorage(ASTAT, 1 << 1, "AN", PrimitiveType.Bool);
+
+            AC0_COPY = new FlagGroupStorage(ASTAT, 1 << 2, "AC0_COPY", PrimitiveType.Bool);
+            V_COPY = new FlagGroupStorage(ASTAT, 1 << 3, "V_COPY", PrimitiveType.Bool);
 
             CC = new FlagGroupStorage(ASTAT, 1 << 5, "CC", PrimitiveType.Bool);
             AQ = new FlagGroupStorage(ASTAT, 1 << 6, "AQ", PrimitiveType.Bool);
@@ -198,6 +206,23 @@ namespace Reko.Arch.Blackfin
                 V,
                 VS
             }.ToDictionary(k => k.FlagGroupBits);
+
+            NZ = new FlagGroupStorage(ASTAT, AN.FlagGroupBits | AZ.FlagGroupBits, "NZ", PrimitiveType.Byte);
+            NZV = new FlagGroupStorage(
+                ASTAT,
+                AN.FlagGroupBits |
+                AZ.FlagGroupBits |
+                V.FlagGroupBits,
+                "NZV",
+                PrimitiveType.Byte);
+            NZVC = new FlagGroupStorage(
+                ASTAT, 
+                AN.FlagGroupBits |
+                AZ.FlagGroupBits |
+                V.FlagGroupBits | 
+                AC0.FlagGroupBits,
+                "NZVC",
+                PrimitiveType.Byte);
         }
 
         private static RegisterStorage[] MakeAllReg(bool keepDataPtrRegs)

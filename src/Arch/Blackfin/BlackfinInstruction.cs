@@ -95,7 +95,7 @@ namespace Reko.Arch.Blackfin
             { Mnemonic.or3, (null, " | ", null) },
             { Mnemonic.sub3, (null, " - ", null) },
             { Mnemonic.xor3, (null, " ^ ", null) },
-            { Mnemonic.asr, (null, " >>>= ", null) },
+            { Mnemonic.asr, (null, " >>>= ", null) },       // SIC: this is opposite to the Java syntax.
             { Mnemonic.asr3, (null, " >>> ", null) },
             { Mnemonic.DIVQ, ("DIVQ (", null, ")") },
             { Mnemonic.lsl, (null, " <<= ", null) },
