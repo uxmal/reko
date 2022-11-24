@@ -24,6 +24,7 @@ using Reko.Core.Intrinsics;
 using Reko.Core.Machine;
 using Reko.Core.Memory;
 using Reko.Core.Rtl;
+using Reko.Core.Serialization;
 using Reko.Core.Services;
 using Reko.Core.Types;
 using System;
@@ -47,9 +48,9 @@ namespace Reko.Arch.SuperH
 
         public SuperHRewriter(
             SuperHArchitecture arch,
-            Decoder<SuperHDisassembler, Mnemonic, SuperHInstruction> rootDecoder, 
-            EndianImageReader rdr, 
-            SuperHState state, 
+            Decoder<SuperHDisassembler, Mnemonic, SuperHInstruction> rootDecoder,
+            EndianImageReader rdr,
+            SuperHState state,
             IStorageBinder binder,
             IRewriterHost host)
         {
@@ -83,11 +84,11 @@ namespace Reko.Arch.SuperH
                 case Mnemonic.invalid:
                     Invalid();
                     break;
-                case Mnemonic.add: RewriteBinOp(m.IAdd, n => (sbyte)n); break;
+                case Mnemonic.add: RewriteBinOp(m.IAdd, n => (sbyte) n); break;
                 case Mnemonic.addc: RewriteAddcSubc(m.IAdd); break;
                 case Mnemonic.addv: RewriteAddv(m.IAdd); break;
-                case Mnemonic.and: RewriteBinOp(m.And, n => (byte)n); break;
-                case Mnemonic.and_b: RewriteBinOp(m.And, n => (byte)n); break;
+                case Mnemonic.and: RewriteBinOp(m.And, n => (byte) n); break;
+                case Mnemonic.and_b: RewriteBinOp(m.And, n => (byte) n); break;
                 case Mnemonic.bf: RewriteBranch(false, false); break;
                 case Mnemonic.bf_s: RewriteBranch(false, true); break;
                 case Mnemonic.bra: RewriteGoto(); break;
@@ -111,6 +112,7 @@ namespace Reko.Arch.SuperH
                 case Mnemonic.div0s: RewriteDiv0s(); break;
                 case Mnemonic.div0u: RewriteDiv0u(); break;
                 case Mnemonic.div1: RewriteDiv1(); break;
+                case Mnemonic.divs: RewriteDivs(); break;
                 case Mnemonic.dmuls_l: RewriteDmul(m.SMul); break;
                 case Mnemonic.dmulu_l: RewriteDmul(m.UMul); break;
                 case Mnemonic.dt: RewriteDt(); break;
@@ -139,24 +141,33 @@ namespace Reko.Arch.SuperH
                 case Mnemonic.jmp: RewriteJmp(); break;
                 case Mnemonic.jsr: RewriteJsr(); break;
                 case Mnemonic.lds: RewriteMov(); break;
+                case Mnemonic.ldc: RewriteMov(); break;
+                case Mnemonic.ldc_l: RewriteMov(); break;
                 case Mnemonic.lds_l: RewriteMov(); break;
+                case Mnemonic.ldtlb: RewriteLdtlb(); break;
                 case Mnemonic.mac_l: RewriteMac(PrimitiveType.Int64); break;
                 case Mnemonic.mac_w: RewriteMac(PrimitiveType.Int32); break;
                 case Mnemonic.mov: RewriteMov(); break;
-                case Mnemonic.mova: RewriteMova(); break;
                 case Mnemonic.mov_b: RewriteMov(); break;
                 case Mnemonic.mov_w: RewriteMov(); break;
                 case Mnemonic.mov_l: RewriteMov(); break;
+                case Mnemonic.mova: RewriteMova(); break;
+                case Mnemonic.movca_l: RewriteMovca(); break;
+                case Mnemonic.movco_l: RewriteMovco(); break;
                 case Mnemonic.movt: RewriteMovt(); break;
                 case Mnemonic.mul_l: RewriteMul_l(); break;
+                case Mnemonic.mulr: RewriteBinOp(m.IMul, null); break;
                 case Mnemonic.muls_w: RewriteMul_w(PrimitiveType.Int16, m.SMul); break;
                 case Mnemonic.mulu_w: RewriteMul_w(PrimitiveType.UInt16, m.UMul); break;
                 case Mnemonic.neg: RewriteUnary(m.Neg); break;
                 case Mnemonic.negc: RewriteNegc(); break;
                 case Mnemonic.not: RewriteUnary(m.Comp); break;
                 case Mnemonic.nop: m.Nop(); break;
-                case Mnemonic.ocbi: RewriteOcbi(); break;
-                case Mnemonic.or: RewriteBinOp(m.Or, u => (byte)u); break;
+                case Mnemonic.ocbi: RewriteOcb(ocbi_intrinsic); break;
+                case Mnemonic.ocbp: RewriteOcb(ocbp_intrinsic); break;
+                case Mnemonic.or: RewriteBinOp(m.Or, u => (byte) u); break;
+                case Mnemonic.pref: RewritePrefetch(CommonOps.Prefetch); break;
+                case Mnemonic.prefi: RewritePrefetch(CommonOps.PrefetchInstruction); break;
                 case Mnemonic.rotcl: RewriteRotc(CommonOps.RolC); break;
                 case Mnemonic.rotcr: RewriteRotc(CommonOps.RorC); break;
                 case Mnemonic.rotl: RewriteRot(CommonOps.Rol); break;
@@ -164,7 +175,8 @@ namespace Reko.Arch.SuperH
                 case Mnemonic.rts: RewriteRts(); break;
                 case Mnemonic.sett: RewriteClrtSet(Registers.T, Constant.True()); break;
                 case Mnemonic.shad: RewriteShd(m.Shl, m.Sar); break;
-                case Mnemonic.shar: RewriteShift(m.Sar, 1); break;
+                case Mnemonic.shal: RewriteShift1(m.Shl, arch.WordWidth.BitSize-1); break;
+                case Mnemonic.shar: RewriteShift1(m.Sar, 0); break;
                 case Mnemonic.shld: RewriteShd(m.Shl, m.Shr); break;
                 case Mnemonic.shll: RewriteShift(m.Shl, 1); break;
                 case Mnemonic.shll2: RewriteShift(m.Shl, 2); break;
@@ -175,13 +187,15 @@ namespace Reko.Arch.SuperH
                 case Mnemonic.shlr8: RewriteShift(m.Shr, 8); break;
                 case Mnemonic.shlr16: RewriteShift(m.Shr, 16); break;
                 case Mnemonic.stc: RewriteMov(); break;
+                case Mnemonic.stc_l: RewriteMov(); break;
                 case Mnemonic.sts: RewriteMov(); break;
                 case Mnemonic.sts_l: RewriteMov(); break;
                 case Mnemonic.sub: RewriteBinOp(m.ISub, null); break;
                 case Mnemonic.subc: RewriteAddcSubc(m.ISub); break;
                 case Mnemonic.swap_w: RewriteSwapW(); break;
+                case Mnemonic.tas_b: RewriteTas(PrimitiveType.Byte); break;
                 case Mnemonic.tst: RewriteTst(); break;
-                case Mnemonic.xor: RewriteBinOp(m.Xor, n => (byte)n); break;
+                case Mnemonic.xor: RewriteBinOp(m.Xor, n => (byte) n); break;
                 case Mnemonic.xtrct: RewriteXtrct(); break;
                 }
                 yield return m.MakeCluster(instr.Address, instr.Length, this.iclass);
@@ -205,6 +219,9 @@ namespace Reko.Arch.SuperH
             var testGenSvc = arch.Services.GetService<ITestGenerationService>();
             testGenSvc?.ReportMissingRewriter("SHRw", instr, instr.Mnemonic.ToString(), rdr, "");
         }
+
+        private Expression SrcOp(int iop, Func<int, int>? immediateFn = null)
+            => SrcOp(instr.Operands[iop], immediateFn);
 
         private Expression SrcOp(MachineOperand op, Func<int, int>? immediateFn = null)
         {
@@ -251,7 +268,7 @@ namespace Reko.Arch.SuperH
                     {
                         addr &= ~3u;
                     }
-                    addr += (uint)(mem.disp + 4);
+                    addr += (uint) (mem.disp + 4);
                     return m.Mem(mem.Width, Address.Ptr32(addr));
                 }
             }
@@ -281,7 +298,7 @@ namespace Reko.Arch.SuperH
                         m.Mem(tmp.DataType, m.IAdd(r0, gbr)),
                         fn(tmp, src));
                     return tmp;
-                default:throw new NotImplementedException();
+                default: throw new NotImplementedException();
                 }
             }
             throw new NotImplementedException(op.GetType().Name);
@@ -343,7 +360,7 @@ namespace Reko.Arch.SuperH
         }
 
 
-        private void RewriteAddcSubc(Func<Expression,Expression,Expression> fn)
+        private void RewriteAddcSubc(Func<Expression, Expression, Expression> fn)
         {
             var t = binder.EnsureFlagGroup(Registers.T);
             var src = SrcOp(instr.Operands[0], null);
@@ -381,7 +398,7 @@ namespace Reko.Arch.SuperH
                 ? InstrClass.ConditionalTransfer | InstrClass.Delay
                 : InstrClass.ConditionalTransfer;
             Expression cond = binder.EnsureFlagGroup(Registers.T);
-            var addr = ((AddressOperand)instr.Operands[0]).Address;
+            var addr = ((AddressOperand) instr.Operands[0]).Address;
             if (!takenOnTset)
                 cond = m.Not(cond);
             m.Branch(cond, addr, this.iclass);
@@ -390,7 +407,7 @@ namespace Reko.Arch.SuperH
         private void RewriteBraf()
         {
             this.iclass = InstrClass.Delay | InstrClass.Transfer;
-            var reg = binder.EnsureRegister((RegisterStorage)instr.Operands[0]);
+            var reg = binder.EnsureRegister((RegisterStorage) instr.Operands[0]);
             m.GotoD(m.IAdd(instr.Address + 4, reg));
         }
 
@@ -410,21 +427,21 @@ namespace Reko.Arch.SuperH
         {
             this.iclass = InstrClass.Transfer | InstrClass.Delay;
             var src = SrcOp(instr.Operands[0], null);
-            var reg = binder.EnsureRegister((RegisterStorage)instr.Operands[0]);
+            var reg = binder.EnsureRegister((RegisterStorage) instr.Operands[0]);
             m.CallD(m.IAdd(instr.Address + 4, src), 0);
         }
 
         private void RewriteGoto()
         {
             this.iclass = InstrClass.Transfer | InstrClass.Delay;
-            var addr = ((AddressOperand)instr.Operands[0]).Address;
+            var addr = ((AddressOperand) instr.Operands[0]).Address;
             m.GotoD(addr);
         }
 
-        private void RewriteCmp(Func<Expression,Expression,Expression> fn)
+        private void RewriteCmp(Func<Expression, Expression, Expression> fn)
         {
             var t = binder.EnsureFlagGroup(Registers.T);
-            var op1 = SrcOp(instr.Operands[0], n => (sbyte)n);
+            var op1 = SrcOp(instr.Operands[0], n => (sbyte) n);
             var op2 = SrcOp(instr.Operands[1], null);
             m.Assign(t, fn(op2, op1));
         }
@@ -448,7 +465,7 @@ namespace Reko.Arch.SuperH
         private void RewriteCmp0(Func<Expression, Expression> fn)
         {
             var t = binder.EnsureFlagGroup(Registers.T);
-            var op1 = SrcOp(instr.Operands[0], n => (sbyte)n);
+            var op1 = SrcOp(instr.Operands[0], n => (sbyte) n);
             m.Assign(t, fn(op1));
         }
 
@@ -482,6 +499,13 @@ namespace Reko.Arch.SuperH
             var dst = SrcOp(instr.Operands[1]);
             var t = binder.EnsureFlagGroup(Registers.T);
             m.Assign(dst, host.Intrinsic("__div1", true, PrimitiveType.Bool, dst, src));
+        }
+
+        private void RewriteDivs()
+        {
+            var src = SrcOp(0);
+            var dst = SrcOp(1);
+            m.Assign(dst, m.SDiv(dst, src));
         }
 
         private void RewriteDmul(Func<Expression, Expression, Expression> fn)
@@ -525,7 +549,7 @@ namespace Reko.Arch.SuperH
         {
             var src = SrcOp(instr.Operands[0]);
             var dst = DstOp(instr.Operands[1], src, (a, b) => m.Convert(
-                b, 
+                b,
                 PrimitiveType.Create(Domain.SignedInt, b.DataType.BitSize),
                 PrimitiveType.Create(Domain.Real, a.DataType.BitSize)));
         }
@@ -559,7 +583,7 @@ namespace Reko.Arch.SuperH
         {
             this.iclass = InstrClass.Transfer | InstrClass.Delay;
             var src = SrcOp(instr.Operands[0]);
-            m.GotoD(((MemoryAccess)src).EffectiveAddress);
+            m.GotoD(((MemoryAccess) src).EffectiveAddress);
         }
 
         private void RewriteJsr()
@@ -567,6 +591,11 @@ namespace Reko.Arch.SuperH
             this.iclass = InstrClass.Transfer | InstrClass.Delay;
             var dst = SrcOp(instr.Operands[0], null);
             m.CallD(dst, 0);
+        }
+
+        private void RewriteLdtlb()
+        {
+            m.SideEffect(m.Fn(ldtlb_intrinsic));
         }
 
         private void RewriteMac(PrimitiveType dt)
@@ -591,6 +620,26 @@ namespace Reko.Arch.SuperH
             var dst = DstOp(instr.Operands[1], src.EffectiveAddress, a => a);
         }
 
+        private void RewriteMovca()
+        {
+            var src = SrcOp(0);
+            var dst = SrcOp(1);
+            m.SideEffect(m.Fn(movca_intrinsic,
+                src,
+                m.AddrOf(PrimitiveType.Ptr32, dst)));
+        }
+
+        private void RewriteMovco()
+        {
+            var src = SrcOp(0);
+            var dst = SrcOp(1);
+            var t = binder.EnsureFlagGroup(Registers.T);
+            m.Assign(t, m.Fn(
+                movco_intrinsic,
+                src,
+                m.AddrOf(PrimitiveType.Ptr32, dst)));
+        }
+
         private void RewriteMovt()
         {
             var t = binder.EnsureFlagGroup(Registers.T);
@@ -613,17 +662,26 @@ namespace Reko.Arch.SuperH
             m.Assign(macl, fn(op2, op1));
         }
 
-        private void RewriteOcbi()
+        private void RewriteOcb(IntrinsicProcedure intrinsic)
         {
-            var mem = (MemoryAccess)SrcOp(instr.Operands[0]);
-            var intrinsic = host.Intrinsic("__ocbi", true, VoidType.Instance, mem.EffectiveAddress);
-            m.SideEffect(intrinsic);
+            var mem = (MemoryAccess)SrcOp(0);
+            mem.DataType = PrimitiveType.Ptr32;
+            var call = m.Fn(intrinsic, m.AddrOf(PrimitiveType.Ptr32, mem));
+            m.SideEffect(call);
         }
 
         private void RewriteRot(IntrinsicProcedure intrinsic)
         {
-            var op1 = SrcOp(instr.Operands[0]);
+            var op1 = SrcOp(0);
             m.Assign(op1, m.Fn(intrinsic, op1, m.Int32(1)));
+        }
+
+        private void RewritePrefetch(IntrinsicProcedure intrinsic)
+        {
+            var op = SrcOp(0);
+            m.SideEffect(
+                m.Fn(intrinsic.MakeInstance(arch.PointerType.BitSize, arch.PointerType),
+                m.AddrOf(arch.PointerType, op)));
         }
 
         private void RewriteRotc(IntrinsicProcedure intrinsic)
@@ -654,11 +712,27 @@ namespace Reko.Arch.SuperH
             var dst = DstOp(instr.Operands[0], src, fn);
         }
 
+        private void RewriteShift1(Func<Expression, Expression, Expression> fn, int bit)
+        {
+            var t = binder.EnsureFlagGroup(Registers.T);
+            m.Assign(t, m.Fn(CommonOps.Bit, SrcOp(0), Constant.Int32(bit)));
+            var dst = DstOp(instr.Operands[0], Constant.Int32(1), fn);
+        }
+
         private void RewriteSwapW()
         {
             var src = SrcOp(instr.Operands[0]);
             var dst = SrcOp(instr.Operands[1]);
             m.Assign(dst, host.Intrinsic("__swap_w", false, dst.DataType, src));
+        }
+
+        private void RewriteTas(PrimitiveType dt)
+        {
+            var ea = SrcOp(0);
+            ea.DataType = dt;
+            var fn = AtomicOps.atomic_test_and_set.MakeInstance(arch.PointerType.BitSize, dt);
+            var t = binder.EnsureFlagGroup(Registers.T);
+            m.Assign(t, m.Fn(fn, m.AddrOf(arch.PointerType, ea)));
         }
 
         private void RewriteTst()
@@ -681,5 +755,25 @@ namespace Reko.Arch.SuperH
             var dst = SrcOp(instr.Operands[1]);
             m.Assign(dst, host.Intrinsic("__xtrct", false, dst.DataType, dst, src));
         }
+
+        private static IntrinsicProcedure ldtlb_intrinsic = new IntrinsicBuilder("__load_tlb", true)
+            .Void();
+        private static IntrinsicProcedure movca_intrinsic = new IntrinsicBuilder("__move_with_cache_block_allocation", true)
+            .Param(PrimitiveType.Word32)
+            .Param(PrimitiveType.Ptr32)
+            .Void();
+        private static IntrinsicProcedure movco_intrinsic = new IntrinsicBuilder("__move_conditional", true)
+            .Param(PrimitiveType.Word32)
+            .Param(PrimitiveType.Ptr32)
+            .Returns(PrimitiveType.Bool);
+
+
+        private static IntrinsicProcedure ocbi_intrinsic = new IntrinsicBuilder("__operand_cache_block_invalidate", true)
+            .Param(PrimitiveType.Ptr32)
+            .Void();
+        private static IntrinsicProcedure ocbp_intrinsic = new IntrinsicBuilder("__operand_cache_block_purge", true)
+            .Param(PrimitiveType.Ptr32)
+            .Void();
+
     }
 }

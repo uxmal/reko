@@ -35,6 +35,26 @@ namespace Reko.UnitTests.Arch.Tlcs
         });
         private readonly Address baseAddr = Address.Ptr32(0x00100000);
 
+        [SetUp]
+        public void Setup()
+        {
+            arch.LoadUserOptions(new()
+            {
+                { ProcessorOption.Endianness, "le" },
+                { ProcessorOption.Model, "sh4a" }
+            });
+        }
+
+        [Test]
+        public void Given_SH2a()
+        {
+            arch.LoadUserOptions(new()
+            {
+                { ProcessorOption.Endianness, "le" },
+                { ProcessorOption.Model, "sh2a" }
+            });
+        }
+
         public override IProcessorArchitecture Architecture => arch;
         public override Address LoadAddress => baseAddr;
 
@@ -196,6 +216,33 @@ namespace Reko.UnitTests.Arch.Tlcs
         }
 
         [Test]
+        public void SHRw_clrt()
+        {
+            Given_HexString("0800");	// clrt
+            AssertCode(
+                "0|L--|00100000(2): 1 instructions",
+                "1|L--|T = false");
+        }
+
+        [Test]
+        public void SHRw_cmp_pz()
+        {
+            Given_HexString("1141");	// cmp/pz	r1
+            AssertCode(
+                "0|L--|00100000(2): 1 instructions",
+                "1|L--|T = r1 >= 0<32>");
+        }
+
+        [Test]
+        public void SHRw_cmp_pl()
+        {
+            Given_HexString("1546");	// cmp/pl	r6
+            AssertCode(
+                "0|L--|00100000(2): 1 instructions",
+                "1|L--|T = r6 > 0<32>");
+        }
+
+        [Test]
         public void SHRw_cmpeq()
         {
             Given_HexString("4035"); // cmp/eq\tr4,r5
@@ -247,6 +294,16 @@ namespace Reko.UnitTests.Arch.Tlcs
             AssertCode(
                 "0|L--|00100000(2): 1 instructions",
                 "1|L--|r3 = __div1(r3, r4)");
+        }
+
+        [Test]
+        public void SHRw_SH2a_divs()
+        {
+            Given_SH2a();
+            Given_HexString("9443");
+            AssertCode(     // divs	r0,r3
+                "0|L--|00100000(2): 1 instructions",
+                "1|L--|r3 = r3 / r0");
         }
 
         [Test]
@@ -460,6 +517,27 @@ namespace Reko.UnitTests.Arch.Tlcs
         }
 
         [Test]
+        public void SHRw_ldc()
+        {
+            Given_SH2a();
+            Given_HexString("4A4A");
+            AssertCode(     // ldc	r10,tbr
+                "0|L--|00100000(2): 1 instructions",
+                "1|L--|tbr = r10");
+        }
+
+        [Test]
+        public void SHRw_ldc_l()
+        {
+            Given_HexString("3642");
+            AssertCode(     // ldc.l	@r2+,sgr
+                "0|S--|00100000(2): 3 instructions",
+                "1|L--|v2 = Mem0[r2:word32]",
+                "2|L--|r2 = r2 + 4<i32>",
+                "3|L--|sgr = v2");
+        }
+
+        [Test]
         public void SHRw_lds_l_pr()
         {
             Given_HexString("264F"); // lds.l\t@r15+,pr
@@ -468,6 +546,15 @@ namespace Reko.UnitTests.Arch.Tlcs
                 "1|L--|v2 = Mem0[r15:word32]",
                 "2|L--|r15 = r15 + 4<i32>",
                 "3|L--|pr = v2");
+        }
+
+        [Test]
+        public void SHRw_ldtlb()
+        {
+            Given_HexString("3800");
+            AssertCode(     // ldtlb
+                "0|S--|00100000(2): 1 instructions",
+                "1|L--|__load_tlb()");
         }
 
         [Test]
@@ -576,6 +663,35 @@ namespace Reko.UnitTests.Arch.Tlcs
         }
 
         [Test]
+        public void SHRw_movca_l()
+        {
+            Given_HexString("C301");
+            AssertCode(     // movca.l	r0,@r1
+                "0|L--|00100000(2): 1 instructions",
+                "1|L--|__move_with_cache_block_allocation(r0, &Mem0[r1:word32])");
+        }
+
+        [Test]
+        public void SHRw_movco_l()
+        {
+            Given_HexString("7301");
+            AssertCode(     // movco.l	r0,@r1
+                "0|L--|00100000(2): 1 instructions",
+                "1|L--|T = __move_conditional(r0, &Mem0[r1:word32])");
+        }
+
+        [Test]
+        [Ignore("Not yet")]
+        public void SHRw_movmu_l()
+        {
+            Given_HexString("F049");
+            AssertCode(     // movmu.l	r9,@-r15
+                "0|L--|00100000(2): 1 instructions",
+                "1|L--|@@@");
+        }
+
+
+        [Test]
         public void SHRw_movt()
         {
             Given_HexString("29 00"); // movt\tr0
@@ -612,6 +728,33 @@ namespace Reko.UnitTests.Arch.Tlcs
         }
 
         [Test]
+        public void SHRw_ocbi()
+        {
+            Given_HexString("9300");	// ocbi	@r0
+            AssertCode(
+                "0|L--|00100000(2): 1 instructions",
+                "1|L--|__operand_cache_block_invalidate(&Mem0[r0:ptr32])");
+        }
+
+        [Test]
+        public void SHRw_ocbp()
+        {
+            Given_HexString("A300");
+            AssertCode(     // ocbp	@r0
+                "0|L--|00100000(2): 1 instructions",
+                "1|L--|__operand_cache_block_purge(&Mem0[r0:ptr32])");
+        }
+
+        [Test]
+        public void SHRw_pref()
+        {
+            Given_HexString("8300");
+            AssertCode(     // pref	@r0
+                "0|L--|00100000(2): 1 instructions",
+                "1|L--|__prefetch<ptr32>(&Mem0[r0:word32])");
+        }
+
+        [Test]
         public void SHRw_rts()
         {
             Given_HexString("0B00"); // rts
@@ -621,12 +764,32 @@ namespace Reko.UnitTests.Arch.Tlcs
         }
 
         [Test]
+        public void SHRw_shal()
+        {
+            Given_HexString("2042");
+            AssertCode(     // shal	r2
+                "0|L--|00100000(2): 2 instructions",
+                "1|L--|T = __bit<word32,int32>(r2, 31<i32>)",
+                "2|L--|r2 = r2 << 1<i32>");
+        }
+
+        [Test]
         public void SHRw_shll2()
         {
             Given_HexString("0840"); // shll2\tr0
             AssertCode(
                 "0|L--|00100000(2): 1 instructions",
                 "1|L--|r0 = r0 << 2<i32>");
+        }
+
+        [Test]
+        public void SHRw_stc_l()
+        {
+            Given_HexString("1344");
+            AssertCode(     // stc.l	gbr,@-r4
+                "0|L--|00100000(2): 2 instructions",
+                "1|L--|r4 = r4 - 4<i32>",
+                "2|L--|Mem0[r4:word32] = gbr");
         }
 
         [Test]
@@ -646,15 +809,6 @@ namespace Reko.UnitTests.Arch.Tlcs
             AssertCode(
                 "0|L--|00100000(2): 1 instructions",
                 "1|L--|T = (r0 & 1<32>) == 0<32>");
-        }
-
-        [Test]
-        public void SHRw_tst_r_r()
-        {
-            Given_HexString("6826"); // tst\tr6,r6
-            AssertCode(
-                "0|L--|00100000(2): 1 instructions",
-                "1|L--|T = (r6 & r6) == 0<32>");
         }
 
         [Test]
@@ -734,8 +888,9 @@ namespace Reko.UnitTests.Arch.Tlcs
         {
             Given_HexString("2141");  // "shar\tr1"
             AssertCode(
-                "0|L--|00100000(2): 1 instructions",
-                "1|L--|r1 = r1 >> 1<i32>");
+                "0|L--|00100000(2): 2 instructions",
+                "1|L--|T = __bit<word32,int32>(r1, 0<i32>)",
+                "2|L--|r1 = r1 >> 1<i32>");
         }
 
         [Test]
@@ -748,21 +903,21 @@ namespace Reko.UnitTests.Arch.Tlcs
         }
 
         [Test]
-        public void SHRw_cmp_pz()
+        public void SHRw_tas_b()
         {
-            Given_HexString("1141");	// cmp/pz	r1
-            AssertCode(
+            Given_HexString("1B43");
+            AssertCode(     // tas.b	@r3
                 "0|L--|00100000(2): 1 instructions",
-                "1|L--|T = r1 >= 0<32>");
+                "1|L--|T = atomic_test_and_set<byte>(&Mem0[r3:byte])");
         }
 
         [Test]
-        public void SHRw_cmp_pl()
+        public void SHRw_tst_r_r()
         {
-            Given_HexString("1546");	// cmp/pl	r6
+            Given_HexString("6826"); // tst\tr6,r6
             AssertCode(
                 "0|L--|00100000(2): 1 instructions",
-                "1|L--|T = r6 > 0<32>");
+                "1|L--|T = (r6 & r6) == 0<32>");
         }
 
         [Test]
@@ -784,21 +939,22 @@ namespace Reko.UnitTests.Arch.Tlcs
         }
 
         [Test]
-        public void SHRw_clrt()
-        {
-            Given_HexString("0800");	// clrt
-            AssertCode(
-                "0|L--|00100000(2): 1 instructions",
-                "1|L--|T = false");
-        }
-
-        [Test]
         public void SHRw_rotcl()
         {
             Given_HexString("2440");	// invalid
             AssertCode(
                 "0|L--|00100000(2): 1 instructions",
                 "1|L--|r0 = __rcl<word32,byte>(r0, 1<8>, T)");
+        }
+
+        [Test]
+        public void SHRw_mulr()
+        {
+            Given_SH2a();
+            Given_HexString("8043");
+            AssertCode(     // mulr	r0,r3
+                "0|L--|00100000(2): 1 instructions",
+                "1|L--|r3 = r3 * r0");
         }
 
         [Test]
@@ -895,7 +1051,7 @@ namespace Reko.UnitTests.Arch.Tlcs
         {
             Given_HexString("2A4F");	// lds	r15,pr
             AssertCode(
-                "0|L--|00100000(2): 1 instructions",
+                "0|S--|00100000(2): 1 instructions",
                 "1|L--|pr = r15");
         }
 
@@ -915,15 +1071,6 @@ namespace Reko.UnitTests.Arch.Tlcs
             AssertCode(
                 "0|L--|00100000(2): 1 instructions",
                 "1|L--|fr4 = fr0 * fr0 + fr4");
-        }
-
-        [Test]
-        public void SHRw_ocbi()
-        {
-            Given_HexString("9300");	// ocbi	@r0
-            AssertCode(
-                "0|L--|00100000(2): 1 instructions",
-                "1|L--|__ocbi(r0)");
         }
 
         [Test]

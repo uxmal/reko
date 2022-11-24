@@ -385,7 +385,7 @@ SH1 SH2 SH3 SH4 SH4A SH2A
                     (0x1A, Instr(Mnemonic.lds, r1, ml)),
                     (0x1B, Instr(Mnemonic.tas_b, Ind1b)),
 
-                    (0x1E, Instr(Mnemonic.ldc, r1, gbr)),
+                    (0x1E, Instr(Mnemonic.ldc, LinPri, r1, gbr)),
 
                     (0x20, Instr(Mnemonic.shal, r1)),
                     (0x21, Instr(Mnemonic.shar, r1)),
@@ -399,7 +399,7 @@ SH1 SH2 SH3 SH4 SH4A SH2A
 
                     (0x28, Instr(Mnemonic.shll16, r1)),
                     (0x29, Instr(Mnemonic.shlr16, r1)),
-                    (0x2A, Instr(Mnemonic.lds, r1, pr)),
+                    (0x2A, Instr(Mnemonic.lds, LinPri, r1, pr)),
                     (0x2B, Instr(Mnemonic.jmp, InstrClass.Transfer, Ind1l)),
 
                     (0x2E, Instr(Mnemonic.ldc, LinPri, r1, vbr)),
