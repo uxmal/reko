@@ -135,5 +135,15 @@ namespace Reko.Core.Intrinsics
             .Param("T1")
             .Param("T2")
             .Void();
+
+        // Memory cache control
+        public static readonly IntrinsicProcedure Prefetch = new IntrinsicBuilder("__prefetch", true)
+            .GenericTypes("T")
+            .PtrParam("T")
+            .Void();
+        public static readonly IntrinsicProcedure PrefetchInstruction = new IntrinsicBuilder("__prefetch_instruction", true)
+            .GenericTypes("T")
+            .PtrParam("T")
+            .Void();
     }
 }
