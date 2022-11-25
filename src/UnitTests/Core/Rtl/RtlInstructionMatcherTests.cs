@@ -18,48 +18,50 @@
  */
 #endregion
 
+using NUnit.Framework;
 using Reko.Core;
 using Reko.Core.Expressions;
+using Reko.Core.Rtl;
 using Reko.Core.Types;
-using Reko.Evaluation;
-using Reko.UnitTests.Mocks;
-using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Reko.Core.Code;
+using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 
-namespace Reko.UnitTests.Decompiler.Evaluation
+namespace Reko.UnitTests.Core.Rtl
 {
     [TestFixture]
-    public class InstructionMatcherTests
+    public class RtlInstructionMatcherTests
     {
-        private ProcedureBuilder m;
+        private RtlEmitter m;
+        private List<RtlInstruction> instrs = default!;
+        private Identifier r1 = Identifier.Create(new RegisterStorage("r1", 1, 0, PrimitiveType.Word32));
 
         [SetUp]
         public void Setup()
         {
-            m = new ProcedureBuilder();
+            instrs = new List<RtlInstruction>();
+            m = new RtlEmitter(instrs);
         }
 
-        private Identifier RegW(string name)
+        private ExpressionMatch When_Match(RtlInstructionMatcher pattern)
         {
-            return m.Frame.EnsureRegister(new RegisterStorage(name, 0, 0, PrimitiveType.Word16));
+            return pattern.Match(instrs.Last());
         }
 
         [Test]
-        public void MatchAssignment()
+        public void Rtlm_MatchConst()
         {
-            var ax = RegW("ax");
-            var pattern = m.Assign(ax, m.IAdd(ax, ExpressionMatcher.AnyConstant("c")));
+            var pattern = RtlInstructionMatcher.Build(m => m.Assign(m.AnyId("a"), m.AnyConst("c")));
 
-            var instrmatcher = new InstructionMatcher(pattern);
-            var match = instrmatcher.Match(
-                m.Assign(ax, m.IAdd(ax, m.Word16(42))));
+            m.Assign(r1, m.Word32(0x42));
 
+            var match = When_Match(pattern);
             Assert.IsTrue(match.Success);
-            Assert.AreEqual("0x2A<16>", match.CapturedExpression("c").ToString());
+            Assert.AreEqual(r1, match.CapturedExpression("a"));
+            Assert.AreEqual("0x42<32>", match.CapturedExpression("c").ToString());
         }
     }
 }

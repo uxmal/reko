@@ -172,6 +172,23 @@ namespace Reko.Core
         /// or program linkage table (PLT) stub. 
         /// </summary>
         /// <param name="addrInstr">The address at which the potential stub
+        /// makes an indirect jump.</param>
+        /// <param name="instrs">A sequence of rewritten instructions ending
+        /// at <paramref name="addrInstr">.</param>
+        /// <param name="host">An instance of <see cref="IRewriterHost"/> used
+        /// to get details from the hosting environment.
+        /// </param>
+        /// <returns>A <see cref="Trampoline"/> instance , if a trampoline stub
+        /// was identified, otherwise null.
+        /// </returns>
+        Trampoline? GetTrampolineDestination(Address addrJumpInstr, List<RtlInstructionCluster> clusters, IRewriterHost host);
+
+        /// <summary>
+        /// Determines whether the instructions <paramref name="instrs"/> 
+        /// starting at address <paramref name="addrInstr"/> are a "trampoline"
+        /// or program linkage table (PLT) stub. 
+        /// </summary>
+        /// <param name="addrInstr">The address at which the potential stub
         /// starts.</param>
         /// <param name="instrs">A sequence of rewritten instructions starting
         /// at <paramref name="addrInstr">.</param>
@@ -553,7 +570,7 @@ namespace Reko.Core
         /// trampoline, returns the procedure where the destination is located, otherwise
         /// returns null.
         /// </summary>
-        public virtual ProcedureBase? GetTrampolineDestination(Address addrInstr, List<RtlInstructionCluster> clusters, IRewriterHost host)
+        public virtual Trampoline? GetTrampolineDestination(Address addrInstr, List<RtlInstructionCluster> clusters, IRewriterHost host)
         {
             return null;
         }

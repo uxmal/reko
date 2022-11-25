@@ -253,14 +253,14 @@ namespace Reko.Environments.Windows
             return null;
         }
 
-        public override ProcedureBase? GetTrampolineDestination(Address addrInstr, List<RtlInstructionCluster> instrs, IRewriterHost host)
+        public override Trampoline? GetTrampolineDestination(Address addrInstr, List<RtlInstructionCluster> instrs, IRewriterHost host)
         {
             if (instrs.Count < 1)
                 return null;
             if (instrs[^1].Instructions[^1] is not RtlGoto jump)
                 return null;
             if (jump.Target is ProcedureConstant pc)
-                return pc.Procedure;
+                return new Trampoline(instrs[^1].Address, pc.Procedure);
             if (jump.Target is not MemoryAccess access)
                 return null;
             var addrTarget = access.EffectiveAddress as Address;
@@ -275,9 +275,11 @@ namespace Reko.Environments.Windows
                     return null;
             }
             ProcedureBase? proc = host.GetImportedProcedure(this.Architecture, addrTarget,  addrInstr);
-            if (proc is not null)
-                return proc;
-            return host.GetInterceptedCall(this.Architecture, addrTarget);
+            if (proc is null)
+                proc = host.GetInterceptedCall(this.Architecture, addrTarget);
+            if (proc is null)
+                return null;
+            return new Trampoline(instrs[^1].Address, proc);
         }
 
         public override ProcedureBase? GetTrampolineDestination(Address addrInstr, IEnumerable<RtlInstruction> rdr, IRewriterHost host)

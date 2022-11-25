@@ -83,14 +83,14 @@ namespace Reko.Environments.Cpm
             throw new NotImplementedException();
         }
 
-        public override ProcedureBase? GetTrampolineDestination(Address addrInstr, List<RtlInstructionCluster> instrs, IRewriterHost host)
+        public override Trampoline? GetTrampolineDestination(Address addrInstr, List<RtlInstructionCluster> instrs, IRewriterHost host)
         {
             var instr = instrs[^1].Instructions[^1];
             if (instr is RtlGoto g &&
                 g.Target is Address addr &&
                 this.dispatchProcedures.TryGetValue(addr, out var disp))
             {
-                return disp;
+                return new Trampoline(instrs[^1].Address, disp);
             }
             return null;
         }

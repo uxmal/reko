@@ -185,7 +185,7 @@ namespace Reko.Environments.Windows
             }
         }
 
-        public override ProcedureBase? GetTrampolineDestination(Address addrInstr, List<RtlInstructionCluster> instrs, IRewriterHost host)
+        public override Trampoline? GetTrampolineDestination(Address addrInstr, List<RtlInstructionCluster> instrs, IRewriterHost host)
         {
             //00011644 E59FC000 ldr ip,[0001164C]                                                           ;[pc]
             //00011648 E59CF000 ldr pc,[ip]

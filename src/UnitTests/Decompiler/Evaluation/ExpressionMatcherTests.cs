@@ -53,7 +53,7 @@ namespace Reko.UnitTests.Decompiler.Evaluation
             string name = "foo";
             var id = Id(name);
             Create(Id("foo"));
-            Assert.IsTrue(matcher.Match(id));
+            Assert.IsTrue(matcher.Match(id).Success);
         }
 
         private static Identifier Id(string name)
@@ -66,7 +66,7 @@ namespace Reko.UnitTests.Decompiler.Evaluation
         {
             var c = Constant.Word32(4);
             Create(Constant.Word32(4));
-            Assert.IsTrue(matcher.Match(c));
+            Assert.IsTrue(matcher.Match(c).Success);
         }
 
         [Test]
@@ -74,8 +74,9 @@ namespace Reko.UnitTests.Decompiler.Evaluation
         {
             var c = Constant.Word32(4);
             Create(ExpressionMatcher.AnyConstant("c"));
-            Assert.IsTrue(matcher.Match(c));
-            Assert.AreEqual("4<32>", matcher.CapturedExpression("c").ToString());
+            var m = matcher.Match(c);
+            Assert.IsTrue(m.Success);
+            Assert.AreEqual("4<32>", m.CapturedExpression("c").ToString());
         }
 
         [Test]
@@ -83,7 +84,7 @@ namespace Reko.UnitTests.Decompiler.Evaluation
         {
             var b = m.IAdd(Id("esp"), 4);
             Create(m.IAdd(Id("esp"), 4));
-            Assert.IsTrue(matcher.Match(b));
+            Assert.IsTrue(matcher.Match(b).Success);
         }
 
         [Test]
@@ -91,7 +92,7 @@ namespace Reko.UnitTests.Decompiler.Evaluation
         {
             var b = m.IAdd(Id("esp"), 4);
             Create(m.ISub(Id("esp"), 4));
-            Assert.IsFalse(matcher.Match(b));
+            Assert.IsFalse(matcher.Match(b).Success);
         }
 
         [Test]
@@ -99,8 +100,9 @@ namespace Reko.UnitTests.Decompiler.Evaluation
         {
             var mem = m.Mem16(m.IAdd(Id("ebx"), 4));
             Create(m.Mem16(m.IAdd(AnyId("idx"), AnyC("Offset"))));
-            Assert.IsTrue(matcher.Match(mem));
-            Assert.AreEqual("ebx", matcher.CapturedExpression("idx").ToString());
+            var match = matcher.Match(mem);
+            Assert.IsTrue(match.Success);
+            Assert.AreEqual("ebx", match.CapturedExpression("idx").ToString());
         }
 
         [Test]
@@ -108,8 +110,9 @@ namespace Reko.UnitTests.Decompiler.Evaluation
         {
             var sum = m.IAdd(Id("ebx"), Id("ecx"));
             Create(new BinaryExpression(AnyOp("op"), sum.DataType, AnyId("left"), AnyId("right")));
-            Assert.IsTrue(matcher.Match(sum));
-            Assert.AreEqual(" + ", matcher.CapturedOperators("op").ToString());
+            var match = matcher.Match(sum);
+            Assert.IsTrue(match.Success);
+            Assert.AreEqual(" + ", match.CapturedOperator("op").ToString());
         }
 
         [Test]
@@ -117,8 +120,9 @@ namespace Reko.UnitTests.Decompiler.Evaluation
         {
             var e = m.IAdd(Id("ebx"), m.Cond(Id("ecx")));
             Create(m.IAdd(AnyId(""), m.Cond(AnyId("q"))));
-            Assert.IsTrue(matcher.Match(e));
-            Assert.AreEqual("ecx", matcher.CapturedExpression("q").ToString());
+            var match = matcher.Match(e);
+            Assert.IsTrue(match.Success);
+            Assert.AreEqual("ecx", match.CapturedExpression("q").ToString());
         }
 
         [Test]
@@ -126,7 +130,7 @@ namespace Reko.UnitTests.Decompiler.Evaluation
         {
             var e = m.Array(PrimitiveType.Int32, Id("eax"), m.Word32(6));
             Create(m.Word32(5));
-            Assert.IsFalse(matcher.Match(e));
+            Assert.IsFalse(matcher.Match(e).Success);
         }
 
         [Test]
@@ -134,7 +138,7 @@ namespace Reko.UnitTests.Decompiler.Evaluation
         {
             var e = m.Slice(Id("eax"), PrimitiveType.Int16, 16);
             Create(m.Word32(5));
-            Assert.IsFalse(matcher.Match(e));
+            Assert.IsFalse(matcher.Match(e).Success);
         }
 
         private Expression AnyC(string p)

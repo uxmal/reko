@@ -158,20 +158,25 @@ namespace Reko.Typing
             MeetDataType(acc, acc.DataType);
             Expression arr;
             int offset;
-            if (fieldAccessPattern.Match(acc.Array))
+            var m = fieldAccessPattern.Match(acc.Array);
+            if (m.Success)
             {
-                arr = fieldAccessPattern.CapturedExpression("p")!;
-                offset = OffsetOf((Constant)fieldAccessPattern.CapturedExpression("c")!);
-            }
-            else if (segFieldAccessPattern.Match(acc.Array))
-            {
-                arr = segFieldAccessPattern.CapturedExpression("p")!;
-                offset = OffsetOf((Constant)segFieldAccessPattern.CapturedExpression("c")!);
+                arr = m.CapturedExpression("p")!;
+                offset = OffsetOf((Constant) m.CapturedExpression("c")!);
             }
             else
             {
-                arr = acc.Array;
-                offset = 0;
+                m = segFieldAccessPattern.Match(acc.Array);
+                if (m.Success)
+                {
+                    arr = m.CapturedExpression("p")!;
+                    offset = OffsetOf((Constant) m.CapturedExpression("c")!);
+                }
+                else
+                {
+                    arr = acc.Array;
+                    offset = 0;
+                }
             }
             int stride = 1;
             if (acc.Index is BinaryExpression bIndex && (bIndex.Operator.Type == OperatorType.IMul || bIndex.Operator.Type == OperatorType.SMul || bIndex.Operator.Type == OperatorType.UMul))
@@ -568,11 +573,12 @@ namespace Reko.Typing
             int eaBitSize = TypeVar(effectiveAddress).DataType.BitSize;
             Expression p;
             int offset;
-            if (fieldAccessPattern.Match(effectiveAddress))
+            var match = fieldAccessPattern.Match(effectiveAddress);
+            if (match.Success)
             {
                 // Mem[p + c]
-                p = fieldAccessPattern.CapturedExpression("p")!;
-                var c = ToConstant(fieldAccessPattern.CapturedExpression("c")!)!;
+                p = match.CapturedExpression("p")!;
+                var c = ToConstant(match.CapturedExpression("c")!)!;
                 offset = OffsetOf(c);
                 if (p is Conversion cvt && cvt.SourceDataType.BitSize < cvt.DataType.BitSize)
                 {

@@ -27,6 +27,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
 using System.Text;
+using System.Text.RegularExpressions;
 
 namespace Reko.Core.Expressions
 {
@@ -34,60 +35,47 @@ namespace Reko.Core.Expressions
     /// Used to match expressions to a pattern and possibly capture 
     /// identifiers and constants.
     /// </summary>
-    public class ExpressionMatcher : ExpressionVisitor<bool>
+    public class ExpressionMatcher : ExpressionVisitor<bool, ExpressionMatch>
     {
-        private Expression? p;
-        private readonly Dictionary<string, Expression> capturedExpressions;
-        private readonly Dictionary<string, Operator> capturedOperators;
+        private Expression pattern;
 
         public ExpressionMatcher(Expression pattern)
         {
-            this.Pattern = pattern;
-            this.capturedExpressions = new Dictionary<string, Expression>();
-            this.capturedOperators = new Dictionary<string, Operator>();
+            this.pattern = pattern;
         }
 
-        public Expression? CapturedExpression(string label)
+        public static ExpressionMatcher Build(Func<ExpressionMatcherEmitter, Expression> builder)
         {
-            if (string.IsNullOrEmpty(label) || !capturedExpressions.TryGetValue(label, out Expression? value))
-                return null;
-            return value;
+            var pattern = builder(new ExpressionMatcherEmitter());
+            return new ExpressionMatcher(pattern);
         }
 
-        public Operator? CapturedOperators(string label)
+        public ExpressionMatch Match(Expression expr)
         {
-            if (string.IsNullOrEmpty(label) || !capturedOperators.TryGetValue(label, out Operator? value))
-                return null;
-            return value;
+            var m = new ExpressionMatch();
+            m.Success = Match(pattern, expr, m);
+            return m;
         }
 
-        public void Clear()
+        internal bool Match(Expression pattern, Expression expr, ExpressionMatch m)
         {
-            this.capturedExpressions.Clear();
-            this.capturedOperators.Clear();
-        }
-
-        public bool Match(Expression expr)
-        {
-            return Match(Pattern, expr);
-        }
-
-        private bool Match(Expression pattern, Expression expr)
-        {
-            this.p = pattern;
             if (pattern is WildExpression w)
             {
-                capturedExpressions[w.Label] = expr;
+                if (w.Label is { })
+                    m.Capture(w.Label, expr);
                 return true;
             }
-            return expr.Accept(this);
+            m.Pattern = pattern;
+            m.Success = expr.Accept(this, m);
+            return m.Success;
         }
 
-        private bool Match(Operator opPattern, Operator op)
+        private bool Match(Operator opPattern, Operator op, ExpressionMatch m)
         {
             if (opPattern is WildOperator wildOp)
             {
-                capturedOperators[wildOp.Label] = op;
+                if (wildOp.Label is { })
+                    m.Capture(wildOp.Label, op);
                 return true;
             }
             return opPattern == op;
@@ -95,230 +83,227 @@ namespace Reko.Core.Expressions
 
         #region ExpressionVisitor<bool> Members
 
-        bool ExpressionVisitor<bool>.VisitAddress(Address addr)
+        bool ExpressionVisitor<bool, ExpressionMatch>.VisitAddress(Address addr, ExpressionMatch m)
         {
-            if (p is WildConstant anyC)
+            if (m.Pattern is WildConstant anyC)
             {
                 if (!string.IsNullOrEmpty(anyC.Label))
-                    capturedExpressions[anyC.Label!] = addr;
+                    m.Capture(anyC.Label!, addr);
                 return true;
             }
-            return p is Address addrP && addr.ToLinear() == addrP.ToLinear();
+            return m.Pattern is Address addrP && addr.ToLinear() == addrP.ToLinear();
         }
 
-        bool ExpressionVisitor<bool>.VisitApplication(Application appl)
+        bool ExpressionVisitor<bool, ExpressionMatch>.VisitApplication(Application appl, ExpressionMatch m)
         {
-            if (!(p is Application appP))
+            if (m.Pattern is not Application appP)
                 return false;
-            if (!Match(appP.Procedure, appl.Procedure))
+            if (!Match(appP.Procedure, appl.Procedure, m))
                 return false;
             if (appP.Arguments.Length != appl.Arguments.Length)
                 return false;
             for (int i =0; i < appP.Arguments.Length; ++i)
             {
-                if (!Match(appP.Arguments[i], appl.Arguments[i]))
+                if (!Match(appP.Arguments[i], appl.Arguments[i], m))
                     return false;
             }
             return true;
         }
 
-        bool ExpressionVisitor<bool>.VisitArrayAccess(ArrayAccess acc)
+        bool ExpressionVisitor<bool, ExpressionMatch>.VisitArrayAccess(ArrayAccess acc, ExpressionMatch m)
         {
-            if (!(p is ArrayAccess))
+            if (m.Pattern is not ArrayAccess)
                 return false;
             throw new NotImplementedException();
         }
 
-        bool ExpressionVisitor<bool>.VisitBinaryExpression(BinaryExpression binExp)
+        bool ExpressionVisitor<bool, ExpressionMatch>.VisitBinaryExpression(BinaryExpression binExp, ExpressionMatch m)
         {
-            if (p is not BinaryExpression bP)
+            if (m.Pattern is not BinaryExpression bP)
                 return false;
-            if (!Match(bP.Operator, binExp.Operator))
+            if (!Match(bP.Operator, binExp.Operator, m))
                 return false;
 
-            return (Match(bP.Left, binExp.Left) && Match(bP.Right, binExp.Right));
+            return (Match(bP.Left, binExp.Left, m) && Match(bP.Right, binExp.Right, m));
         }
 
-        bool ExpressionVisitor<bool>.VisitCast(Cast cast)
+        bool ExpressionVisitor<bool, ExpressionMatch>.VisitCast(Cast cast, ExpressionMatch m)
         {
             return
-                p is Cast castP &&
-                Match(castP.Expression, cast.Expression);
+                m.Pattern is Cast castP &&
+                Match(castP.Expression, cast.Expression, m);
         }
 
-        bool ExpressionVisitor<bool>.VisitConditionalExpression(ConditionalExpression cond)
+        bool ExpressionVisitor<bool, ExpressionMatch>.VisitConditionalExpression(ConditionalExpression cond, ExpressionMatch m)
         {
-            if (!(p is ConditionalExpression condP))
+            if (m.Pattern is not ConditionalExpression condP)
                 return false;
-            if (!Match(condP.Condition, cond.Condition))
+            if (!Match(condP.Condition, cond.Condition, m))
                 return false;
-            if (!Match(condP.ThenExp, cond.ThenExp))
+            if (!Match(condP.ThenExp, cond.ThenExp, m))
                 return false;
-            return Match(condP.FalseExp, cond.FalseExp);
+            return Match(condP.FalseExp, cond.FalseExp, m);
         }
 
-        bool ExpressionVisitor<bool>.VisitConditionOf(ConditionOf cof)
+        bool ExpressionVisitor<bool, ExpressionMatch>.VisitConditionOf(ConditionOf cof, ExpressionMatch m)
         {
             return
-                p is ConditionOf condP &&
-                Match(condP.Expression, cof.Expression);
+                m.Pattern is ConditionOf condP &&
+                Match(condP.Expression, cof.Expression, m);
         }
 
-        bool ExpressionVisitor<bool>.VisitConstant(Constant c)
+        bool ExpressionVisitor<bool, ExpressionMatch>.VisitConstant(Constant c, ExpressionMatch m)
         {
-            if (p is WildConstant anyC)
+            if (m.Pattern is WildConstant anyC)
             {
                 if (!string.IsNullOrEmpty(anyC.Label))
-                    capturedExpressions[anyC.Label!] = c;
+                    m.Capture(anyC.Label, c);
                 return true;
             }
-            if (!(p is Constant cP))
+            if (m.Pattern is not Constant cP)
                 return false;
             return (c.ToInt64() == cP.ToInt64());
         }
 
-        bool ExpressionVisitor<bool>.VisitConversion(Conversion conversion)
+        bool ExpressionVisitor<bool, ExpressionMatch>.VisitConversion(Conversion conversion, ExpressionMatch m)
         {
             return
-                p is Conversion convP &&
-                Match(convP.Expression, conversion.Expression);
+                m.Pattern is Conversion convP &&
+                Match(convP.Expression, conversion.Expression, m);
         }
 
-        bool ExpressionVisitor<bool>.VisitDereference(Dereference deref)
+        bool ExpressionVisitor<bool, ExpressionMatch>.VisitDereference(Dereference deref, ExpressionMatch m)
         {
             throw new NotImplementedException();
         }
 
-        bool ExpressionVisitor<bool>.VisitFieldAccess(FieldAccess acc)
+        bool ExpressionVisitor<bool, ExpressionMatch>.VisitFieldAccess(FieldAccess acc, ExpressionMatch m)
         {
             throw new NotImplementedException();
         }
 
-        bool ExpressionVisitor<bool>.VisitIdentifier(Identifier id)
+        bool ExpressionVisitor<bool, ExpressionMatch>.VisitIdentifier(Identifier id, ExpressionMatch m)
         {
-            if (p is WildId anyId)
+            if (m.Pattern is WildId anyId)
             {
-                if (!string.IsNullOrEmpty(anyId.Label))
-                    capturedExpressions.Add(anyId.Label!, id);
-                return true;
+                return m.Capture(anyId.Label!, id);
             }
-            if (!(p is Identifier idP))
+            if (m.Pattern is not Identifier idP)
                 return false;
             return (id.Name == idP.Name);
         }
 
-        bool ExpressionVisitor<bool>.VisitMemberPointerSelector(MemberPointerSelector mps)
+        bool ExpressionVisitor<bool, ExpressionMatch>.VisitMemberPointerSelector(MemberPointerSelector mps, ExpressionMatch m)
         {
             throw new NotImplementedException();
         }
 
-        bool ExpressionVisitor<bool>.VisitMemoryAccess(MemoryAccess access)
+        bool ExpressionVisitor<bool, ExpressionMatch>.VisitMemoryAccess(MemoryAccess access, ExpressionMatch m)
         {
-            if (!(p is MemoryAccess mp))
+            if (m.Pattern is not MemoryAccess mp)
                 return false;
-            if (mp.DataType is WildDataType)
-            {
-            }
-            else if (mp.DataType.Size != access.DataType.Size)
+            if (mp.DataType is not WildDataType &&
+                mp.DataType.BitSize != access.DataType.BitSize)
                 return false;
-            return Match(mp.EffectiveAddress, access.EffectiveAddress);
+            return Match(mp.EffectiveAddress, access.EffectiveAddress, m);
         }
 
-        bool ExpressionVisitor<bool>.VisitMkSequence(MkSequence seq)
+        bool ExpressionVisitor<bool, ExpressionMatch>.VisitMkSequence(MkSequence seq, ExpressionMatch m)
         {
-            if (!(p is MkSequence m))
+            if (m.Pattern is not MkSequence mk)
                 return false;
-            if (seq.Expressions.Length != m.Expressions.Length)
+            if (seq.Expressions.Length != mk.Expressions.Length)
                 return false;
-            for (int i =0; i < seq.Expressions.Length; ++i)
+            for (int i = 0; i < seq.Expressions.Length; ++i)
             {
-                if (!Match(m.Expressions[i], seq.Expressions[i]))
+                if (!Match(mk.Expressions[i], seq.Expressions[i], m))
                     return false;
             }
             return true;
         }
 
-        bool ExpressionVisitor<bool>.VisitOutArgument(OutArgument outArg)
+        bool ExpressionVisitor<bool, ExpressionMatch>.VisitOutArgument(OutArgument outArg, ExpressionMatch m)
         {
-            if (!(p is OutArgument op) || outArg.DataType.Size != op.DataType.Size)
+            if (m.Pattern is not OutArgument op || outArg.DataType.BitSize != op.DataType.BitSize)
                 return false;
-            return Match(op.Expression, outArg.Expression);
+            return Match(op.Expression, outArg.Expression, m);
         }
-        bool ExpressionVisitor<bool>.VisitPhiFunction(PhiFunction phi)
+
+        bool ExpressionVisitor<bool, ExpressionMatch>.VisitPhiFunction(PhiFunction phi, ExpressionMatch m)
         {
             throw new NotImplementedException();
         }
 
-        bool ExpressionVisitor<bool>.VisitPointerAddition(PointerAddition pa)
+        bool ExpressionVisitor<bool, ExpressionMatch>.VisitPointerAddition(PointerAddition pa, ExpressionMatch m)
         {
             throw new NotImplementedException();
         }
 
-        bool ExpressionVisitor<bool>.VisitProcedureConstant(ProcedureConstant pc)
+        bool ExpressionVisitor<bool, ExpressionMatch>.VisitProcedureConstant(ProcedureConstant pc, ExpressionMatch m)
         {
-            if (!(p is ProcedureConstant pcOther))
+            if (m.Pattern is not ProcedureConstant pcOther)
                 return false;
             return pcOther.Procedure == pc.Procedure;
         }
 
-        bool ExpressionVisitor<bool>.VisitScopeResolution(ScopeResolution scopeResolution)
+        bool ExpressionVisitor<bool, ExpressionMatch>.VisitScopeResolution(ScopeResolution scopeResolution, ExpressionMatch m)
         {
             throw new NotImplementedException();
         }
 
-        bool ExpressionVisitor<bool>.VisitSegmentedAccess(SegmentedAccess access)
+        bool ExpressionVisitor<bool, ExpressionMatch>.VisitSegmentedAccess(SegmentedAccess access, ExpressionMatch m)
         {
-            if (!(p is SegmentedAccess smp))
+            if (m.Pattern is not SegmentedAccess smp)
                 return false;
-            if (smp.DataType is WildDataType)
-            {
-            }
-            else if (smp.DataType.Size != access.DataType.Size)
+            if (smp.DataType is not WildDataType &&
+                smp.DataType.BitSize != access.DataType.BitSize)
                 return false;
 
             return
-                Match(smp.BasePointer, access.BasePointer) &&
-                Match(smp.EffectiveAddress, access.EffectiveAddress);
+                Match(smp.BasePointer, access.BasePointer, m) &&
+                Match(smp.EffectiveAddress, access.EffectiveAddress, m);
         }
 
-        bool ExpressionVisitor<bool>.VisitSlice(Slice slice)
+        bool ExpressionVisitor<bool, ExpressionMatch>.VisitSlice(Slice slice, ExpressionMatch m)
         {
-            if (!(p is Slice))
+            if (m.Pattern is not Slice)
                 return false;
             throw new NotImplementedException();
         }
 
-        bool ExpressionVisitor<bool>.VisitTestCondition(TestCondition tc)
+        bool ExpressionVisitor<bool, ExpressionMatch>.VisitTestCondition(TestCondition tc, ExpressionMatch m)
         {
-            if (!(p is TestCondition tp))
+            if (m.Pattern is not TestCondition tp)
                 return false;
             return tp.ConditionCode == tc.ConditionCode &&
-                Match(tp.Expression, tc.Expression);
+                Match(tp.Expression, tc.Expression, m);
         }
 
-        bool ExpressionVisitor<bool>.VisitUnaryExpression(UnaryExpression unary)
+        bool ExpressionVisitor<bool, ExpressionMatch>.VisitUnaryExpression(UnaryExpression unary, ExpressionMatch m)
         {
-            if (!(p is UnaryExpression unaryPat))
+            if (m.Pattern is not UnaryExpression unaryPat)
                 return false;
-            if (!Match(unaryPat.Operator, unary.Operator))
+            if (!Match(unaryPat.Operator, unary.Operator, m))
                 return false;
 
-            return Match(unaryPat.Expression, unary.Expression);
+            return Match(unaryPat.Expression, unary.Expression, m);
         }
 
         #endregion
+
+
 
         public static Expression AnyConstant()
         {
             return new WildConstant(null);
         }
 
-        public static Expression AnyConstant(string label)
+        public static Expression AnyConstant(string? label)
         {
             return new WildConstant(label);
         }
 
-        public static Expression AnyExpression(string label)
+        public static Expression AnyExpression(string? label)
         {
             return new WildExpression(label);
         }
@@ -419,13 +404,13 @@ namespace Reko.Core.Expressions
 
         private class WildExpression : Expression, IWildExpression
         {
-            public WildExpression(string label)
+            public WildExpression(string? label)
                 : base(VoidType.Instance)
             {
                 this.Label = label;
             }
 
-            public string Label { get; private set; }
+            public string? Label { get; }
 
             public override IEnumerable<Expression> Children
             {
@@ -461,7 +446,7 @@ namespace Reko.Core.Expressions
                 this.Label = label;
             }
 
-            public string? Label { get; private set; }
+            public string? Label { get; }
         }
 
         private class WildOperator : Operator
@@ -471,7 +456,7 @@ namespace Reko.Core.Expressions
                 this.Label = Label;
             }
 
-            public string Label { get; private set; }
+            public string? Label { get; }
 
             public override string ToString()
             {
@@ -506,7 +491,5 @@ namespace Reko.Core.Expressions
                 throw new NotImplementedException();
             }
         }
-
-        public Expression Pattern { get; set; }
     }
 }

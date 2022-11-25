@@ -137,30 +137,34 @@ namespace Reko.Environments.Windows
         /// <param name="insts"></param>
         /// <param name="host"></param>
         /// <returns></returns>
-        public override ProcedureBase? GetTrampolineDestination(Address addrInstr, List<RtlInstructionCluster> instrs, IRewriterHost host)
+        public override Trampoline? GetTrampolineDestination(Address addrInstr, List<RtlInstructionCluster> instrs, IRewriterHost host)
         {
             if (instrs.Count < 3)
                 return null;
 
+            var matches = new ExpressionMatch[3];
             for (int i = 0; i < 3; ++i)
             {
-                if (!trampPattern[i].Match(instrs[instrs.Count-3 + i].Instructions[0]))
+                matches[i] = trampPattern[i].Match(instrs[instrs.Count - 3 + i].Instructions[0]);
+                if (!matches[i].Success)
                     return null;
             }
-            if (trampPattern[0].CapturedExpressions("r0d") != trampPattern[1].CapturedExpressions("r1s"))
+            if (matches[0].CapturedExpression("r0d") != matches[1].CapturedExpression("r1s"))
                 return null;
-            if (trampPattern[1].CapturedExpressions("r1d") != trampPattern[2].CapturedExpressions("r2s"))
+            if (matches[1].CapturedExpression("r1d") != matches[2].CapturedExpression("r2s"))
                 return null;
-            var hi = (Constant)trampPattern[0].CapturedExpressions("hi")!;
-            var lo = (Constant)trampPattern[1].CapturedExpressions("lo")!;
+            var hi = (Constant)matches[0].CapturedExpression("hi")!;
+            var lo = (Constant)matches[1].CapturedExpression("lo")!;
             var c = Operator.IAdd.ApplyConstants(hi, lo);
             var addrTarget = MakeAddressFromConstant(c, false);
             if (addrTarget is null)
                 return null;
             ProcedureBase? proc = host.GetImportedProcedure(this.Architecture, addrTarget, addrInstr);
-            if (proc is not null)
-                return proc;
-            return host.GetInterceptedCall(this.Architecture, addrTarget);
+            if (proc is null)
+                proc = host.GetInterceptedCall(this.Architecture, addrTarget);
+            if (proc is null)
+                return null;
+            return new Trampoline(instrs[^3].Address, proc);
         }
 
         public override ProcedureBase? GetTrampolineDestination(Address addrInstr, IEnumerable<RtlInstruction> rtls, IRewriterHost host)
@@ -172,17 +176,20 @@ namespace Reko.Environments.Windows
             if (instrs.Length < 3)
                 return null;
 
+            var matches = new ExpressionMatch[3];
             for (int i = 0; i < 3; ++i)
             {
-                if (!trampPattern[i].Match(instrs[i]))
+                var m = trampPattern[i].Match(instrs[i]);
+                if (!m.Success)
                     return null;
+                matches[i] = m;
             }
-            if (trampPattern[0].CapturedExpressions("r0d") != trampPattern[1].CapturedExpressions("r1s"))
+            if (matches[0].CapturedExpression("r0d") != matches[1].CapturedExpression("r1s"))
                 return null;
-            if (trampPattern[1].CapturedExpressions("r1d") != trampPattern[2].CapturedExpressions("r2s"))
+            if (matches[1].CapturedExpression("r1d") != matches[2].CapturedExpression("r2s"))
                 return null;
-            var hi = (Constant)trampPattern[0].CapturedExpressions("hi")!;
-            var lo = (Constant)trampPattern[1].CapturedExpressions("lo")!;
+            var hi = (Constant)matches[0].CapturedExpression("hi")!;
+            var lo = (Constant)matches[1].CapturedExpression("lo")!;
             var c = Operator.IAdd.ApplyConstants(hi, lo);
             var addrTarget = MakeAddressFromConstant(c, false);
             if (addrTarget is null)

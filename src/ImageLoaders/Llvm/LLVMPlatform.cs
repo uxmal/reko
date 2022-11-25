@@ -164,7 +164,7 @@ namespace Reko.ImageLoaders.LLVM
             throw new NotImplementedException();
         }
 
-        public ProcedureBase? GetTrampolineDestination(Address addrInstr, List<RtlInstructionCluster> instrs, IRewriterHost host)
+        public Trampoline? GetTrampolineDestination(Address addrInstr, List<RtlInstructionCluster> instrs, IRewriterHost host)
         {
             return null;
         }

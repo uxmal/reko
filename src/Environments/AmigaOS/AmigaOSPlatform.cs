@@ -133,10 +133,11 @@ namespace Reko.Environments.AmigaOS
         public override SystemService? FindService(RtlInstruction rtl, ProcessorState? state, SegmentMap? segmentMap)
         {
             var metadata = EnsureTypeLibraries(PlatformIdentifier);
-            if (!a6Pattern.Match(rtl))
+            var match = a6Pattern.Match(rtl);
+            if (!match.Success)
                 return null;
-            var reg = ((Identifier?) a6Pattern.CapturedExpressions("addrReg")!).Storage as RegisterStorage;
-            var offset = ((Constant?) a6Pattern.CapturedExpressions("Offset")!).ToInt32();
+            var reg = ((Identifier?) match.CapturedExpression("addrReg")!).Storage as RegisterStorage;
+            var offset = ((Constant?) match.CapturedExpression("Offset")!).ToInt32();
             if (reg != Registers.a6)
                 return null;
             funcs ??= LoadLibraryDef("exec", 33, metadata);

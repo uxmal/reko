@@ -95,16 +95,18 @@ namespace Reko.Environments.MacOS.OSX
             return proc;
         }
 
-        public override ProcedureBase? GetTrampolineDestination(Address addrInstr, List<RtlInstructionCluster> instrs, IRewriterHost host)
+        public override Trampoline? GetTrampolineDestination(Address addrInstr, List<RtlInstructionCluster> instrs, IRewriterHost host)
         {
             var target = archHandler.GetTrampolineDestination(addrInstr, instrs, host);
             if (target is Address addrTarget)
             {
                 var arch = this.Architecture;
                 ProcedureBase? proc = host.GetImportedProcedure(arch, addrTarget, addrInstr);
-                if (proc != null)
-                    return proc;
-                return host.GetInterceptedCall(arch, addrTarget);
+                if (proc is null)
+                    proc = host.GetInterceptedCall(arch, addrTarget);
+                if (proc is null)
+                    return null;
+                return new Trampoline(addrInstr, proc);
             }
             else
                 return null;

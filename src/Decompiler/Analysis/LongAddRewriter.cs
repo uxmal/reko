@@ -107,7 +107,7 @@ namespace Reko.Analysis
                             ExpressionMatcher.AnyExpression("right")),
                         ExpressionMatcher.AnyExpression("cf"))));
 
-            memOffset = new ExpressionMatcher(
+            memOffset = ExpressionMatcher.Build(m =>
                 new MemoryAccess(
                     new BinaryExpression(
                         ExpressionMatcher.AnyOperator("op"),
@@ -362,10 +362,13 @@ namespace Reko.Analysis
         {
             if (exp is Identifier idLo)
             {
-                foreach (var use in ssa.Identifiers[idLo].Uses.Where(u => condm.Match(u.Instruction)))
+                foreach (var use in ssa.Identifiers[idLo].Uses)
                 {
-                    var grf = (Identifier)condm.CapturedExpressions("grf")!;
-                    var condExp = condm.CapturedExpressions("exp");
+                    var m = condm.Match(use.Instruction);
+                    if (!m.Success)
+                        continue;
+                    var grf = (Identifier)m.CapturedExpression("grf")!;
+                    var condExp = m.CapturedExpression("exp");
                     if (grf.Storage is FlagGroupStorage && exp == condExp)
                     {
                         return new CondMatch(grf, exp, use, 0);
@@ -374,10 +377,11 @@ namespace Reko.Analysis
             }
             for (int i = iStm + 1; i < stms.Count; ++i)
             {
-                if (!condm.Match(stms[i].Instruction))
+                var m = condm.Match(stms[i].Instruction);
+                if (!m.Success)
                     continue;
-                var grf = (Identifier)condm.CapturedExpressions("grf")!;
-                var condExp = condm.CapturedExpressions("exp");
+                var grf = (Identifier)m.CapturedExpression("grf")!;
+                var condExp = m.CapturedExpression("exp");
                 if (grf.Storage is FlagGroupStorage && exp == condExp)
                 {
                     return new CondMatch(grf, exp, null!, i);
@@ -455,13 +459,15 @@ namespace Reko.Analysis
 
         private static Constant? GetOffset(MemoryAccess access)
         {
-            if (memOffset.Match(access))
+            var match = memOffset.Match(access);
+            if (match.Success)
             {
-                return (Constant)memOffset.CapturedExpression("Offset")!;
+                return (Constant)match.CapturedExpression("Offset")!;
             }
-            if (segMemOffset.Match(access))
+            match = segMemOffset.Match(access);
+            if (match.Success)
             {
-                return (Constant)segMemOffset.CapturedExpression("Offset")!;
+                return (Constant)match.CapturedExpression("Offset")!;
             }
             if (access.EffectiveAddress is Constant c)
                 return c;
@@ -476,31 +482,33 @@ namespace Reko.Analysis
         /// with the left and right side of the ADC/SBC instruction.</returns>
         public AddSubCandidate? MatchAdcSbc(Statement stm)
         {
-            if (adcPattern.Match(stm.Instruction))
+            var m = adcPattern.Match(stm.Instruction);
+            if (m.Success)
             {
-                if (!IsCarryFlag(adcPattern.CapturedExpressions("cf")))
+                if (!IsCarryFlag(m.CapturedExpression("cf")))
                     return null;
-                var op = adcPattern.CapturedOperators("op2");
+                var op = m.CapturedOperator("op2");
                 if (op is null || !op.Type.IsAddOrSub())
                     return null;
                 return new AddSubCandidate(
                     op,
-                    adcPattern.CapturedExpressions("left")!,
-                    adcPattern.CapturedExpressions("right")!)
+                    m.CapturedExpression("left")!,
+                    m.CapturedExpression("right")!)
                 {
-                    Dst = adcPattern.CapturedExpressions("dst")!,
+                    Dst = m.CapturedExpression("dst")!,
                     Statement = stm
                 };
             }
-            else if (addPattern.Match(stm.Instruction))
+            m = addPattern.Match(stm.Instruction);
+            if (m.Success)
             {
-                if (!IsCarryFlag(addPattern.CapturedExpressions("right")))
+                if (!IsCarryFlag(m.CapturedExpression("right")))
                     return null;
-                var op = addPattern.CapturedOperators("op");
+                var op = m.CapturedOperator("op");
                 if (op is null || !op.Type.IsAddOrSub())
                     return null;
-                var dst = addPattern.CapturedExpressions("dst")!;
-                var left = addPattern.CapturedExpressions("left")!;
+                var dst = m.CapturedExpression("dst")!;
+                var left = m.CapturedExpression("left")!;
                 AddSubCandidate? pdp11dst = IsPdp11StyleAdcSbc(op, dst, left);
                 if (pdp11dst is not null)
                     return pdp11dst;
@@ -540,12 +548,13 @@ namespace Reko.Analysis
             var uses = ssa.Identifiers[idIntermediate].Uses;
             foreach (var use in uses)
             {
-                if (addPattern.Match(use.Instruction))
+                var m = addPattern.Match(use.Instruction);
+                if (m.Success)
                 {
-                    var dstFinal = addPattern.CapturedExpressions("dst");
-                    var opFinal = addPattern.CapturedOperators("op");
-                    var leftFinal = addPattern.CapturedExpressions("left");
-                    var rightFinal = addPattern.CapturedExpressions("right")!;
+                    var dstFinal = m.CapturedExpression("dst");
+                    var opFinal = m.CapturedOperator("op");
+                    var leftFinal = m.CapturedExpression("left");
+                    var rightFinal = m.CapturedExpression("right")!;
                     if (leftFinal == idIntermediate && op == opFinal)
                     {
                         return new AddSubCandidate(op, left, rightFinal)
@@ -561,17 +570,18 @@ namespace Reko.Analysis
 
         public AddSubCandidate? MatchAddSub(Statement stm)
         {
-            if (!addPattern.Match(stm.Instruction))
+            var m = addPattern.Match(stm.Instruction);
+            if (!m.Success)
                 return null;
-            var op = addPattern.CapturedOperators("op")!;
+            var op = m.CapturedOperator("op")!;
             if (!op.Type.IsAddOrSub())
                 return null;
             return new AddSubCandidate(
                 op,
-                addPattern.CapturedExpressions("left")!,
-                addPattern.CapturedExpressions("right")!)
+                m.CapturedExpression("left")!,
+                m.CapturedExpression("right")!)
             {
-                Dst = addPattern.CapturedExpressions("dst")!,
+                Dst = m.CapturedExpression("dst")!,
             };
         }
     }
