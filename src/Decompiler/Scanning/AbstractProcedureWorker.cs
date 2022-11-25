@@ -42,7 +42,7 @@ namespace Reko.Scanning
     {
         protected static readonly TraceSwitch log = new TraceSwitch(nameof(AbstractProcedureWorker), "AbstractProcedureWorker tracing")
         {
-            Level = TraceLevel.Verbose,
+            Level = TraceLevel.Warning,
         };
 
         private readonly AbstractScanner scanner;

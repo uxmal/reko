@@ -37,7 +37,7 @@ namespace Reko.Scanning
     {
         private static readonly TraceSwitch log = new TraceSwitch(nameof(BlockWorker), "")
         {
-            Level = TraceLevel.Verbose
+            Level = TraceLevel.Warning
         };
 
         private readonly AbstractScanner scanner;

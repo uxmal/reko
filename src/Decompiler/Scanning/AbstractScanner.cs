@@ -42,7 +42,7 @@ namespace Reko.Scanning
     {
         protected static readonly TraceSwitch trace = new(nameof(AbstractScanner), "")
         {
-            Level = TraceLevel.Verbose
+            Level = TraceLevel.Warning
         };
 
         protected readonly Program program;
@@ -535,7 +535,12 @@ namespace Reko.Scanning
 
             public bool TryRead(IProcessorArchitecture arch, Address addr, PrimitiveType dt, out Constant value)
             {
-                throw new NotImplementedException();
+                if (!this.program.SegmentMap.TryFindSegment(addr, out var segment))
+                {
+                    value = null!;
+                    return false;
+                }
+                return arch.TryRead(segment.MemoryArea, addr, dt, out value!);
             }
 
             public void Error(Address address, string format, params object[] args)
