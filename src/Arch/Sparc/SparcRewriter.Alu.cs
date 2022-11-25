@@ -21,12 +21,8 @@
 using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Machine;
-using Reko.Core.Operators;
 using Reko.Core.Types;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace Reko.Arch.Sparc
 {
@@ -43,7 +39,7 @@ namespace Reko.Arch.Sparc
                 op(op(src1, src2), C));
             if (emitCc)
             {
-                EmitCc(dst);
+                EmitCc(arch.Registers.NZVC, m.Cond(dst));
             }
         }
 
@@ -63,7 +59,7 @@ namespace Reko.Arch.Sparc
         {
             RewriteAlu(op, negateOp2);
             var dst = RewriteRegister(2);
-            EmitCc(dst);
+            EmitCc(arch.Registers.NZVC, m.Cond(dst));
         }
 
         private void RewriteDLoad(PrimitiveType size)
@@ -111,6 +107,32 @@ namespace Reko.Arch.Sparc
             m.Assign(dst, src);
         }
 
+        private void RewriteLoada(PrimitiveType size)
+        {
+            var dst = RewriteOp(instrCur.Operands[1])!;
+            var src = RewriteMemOp(instrCur.Operands[0], size)!;
+            src = m.Fn(
+                loada_intrinsic.MakeInstance(arch.PointerType.BitSize, size), 
+                m.AddrOf(arch.PointerType, src));
+            if (size.Size < dst.DataType.Size)
+            {
+                size = PrimitiveType.Create(size.Domain, dst.DataType.BitSize);
+                var tmp = binder.CreateTemporary(src.DataType);
+                m.Assign(tmp, src);
+                src = m.Convert(tmp, src.DataType, size);
+            }
+            m.Assign(dst, src);
+        }
+
+        private void RewriteLogicalCc(Func<Expression, Expression, Expression> op, bool negateOp2)
+        {
+            RewriteAlu(op, negateOp2);
+            var dst = RewriteRegister(2);
+            EmitCc(arch.Registers.NZ, m.Cond(dst));
+            EmitCc(arch.Registers.V, 0);
+            EmitCc(arch.Registers.C, 0);
+        }
+
         private void RewriteMulscc()
         {
             var dst = RewriteOp(instrCur.Operands[2])!;
@@ -119,7 +141,7 @@ namespace Reko.Arch.Sparc
             m.Assign(
                 dst,
                 host.Intrinsic("__mulscc", false, PrimitiveType.Int32, src1, src2));
-            EmitCc(dst);
+            EmitCc(arch.Registers.NZVC, m.Cond(dst));
         }
 
         private void RewriteRestore()
@@ -219,6 +241,16 @@ namespace Reko.Arch.Sparc
                 src = m.Slice(src, size);
             }
             m.Assign(dst, src);
+        }
+
+        private void RewriteSwap(IntrinsicProcedure intrinsic)
+        {
+            var src = RewriteMemOp(instrCur.Operands[0], instrCur.Operands[0].Width);
+            var dst = RewriteOp(instrCur.Operands[1]);
+            m.Assign(dst, m.Fn(
+                intrinsic.MakeInstance(arch.PointerType.BitSize, dst.DataType),
+                dst, 
+                m.AddrOf(arch.PointerType, src)));
         }
     }
 }

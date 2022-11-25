@@ -29,9 +29,7 @@ using Reko.Core.Rtl;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.Design;
 using System.Linq;
-using System.Text;
 
 namespace Reko.UnitTests.Arch.Sparc
 {
@@ -104,14 +102,6 @@ namespace Reko.UnitTests.Arch.Sparc
             }
         }
 
-        [Test]
-        public void SparcRw_call()
-        {
-            Given_UInt32s(0x7FFFFFFF);  // "call\t000FFFFC"
-            AssertCode(
-                "0|TD-|00100000(4): 1 instructions",
-                "1|TD-|call 000FFFFC (0)");
-        }
 
         [Test]
         public void SparcRw_addcc()
@@ -122,6 +112,28 @@ namespace Reko.UnitTests.Arch.Sparc
                 "1|L--|g5 = g1 + g4",
                 "2|L--|NZVC = cond(g5)");
         }
+
+        [Test]
+        public void SparcRw_andncc()
+        {
+            Given_HexString("B2AA61B1");
+            AssertCode(     // andncc	%o1,000001B1,%i1
+                "0|L--|00100000(4): 4 instructions",
+                "1|L--|i1 = o1 & ~0x1B1<32>",
+                "2|L--|NZ = cond(i1)",
+                "3|L--|V = false",
+                "4|L--|C = false");
+        }
+
+        [Test]
+        public void SparcRw_call()
+        {
+            Given_UInt32s(0x7FFFFFFF);  // "call\t000FFFFC"
+            AssertCode(
+                "0|TD-|00100000(4): 1 instructions",
+                "1|TD-|call 000FFFFC (0)");
+        }
+
 
         [Test]
         public void SparcRw_or_imm()
@@ -304,12 +316,30 @@ namespace Reko.UnitTests.Arch.Sparc
         }
 
         [Test]
+        public void SparcRw_bvc_a()
+        {
+            Given_HexString("3E8624DD");
+            AssertCode(     // bvc,a	00189770
+                "0|TDA|00100000(4): 1 instructions",
+                "1|TDA|if (Test(NO,V)) branch 00289374");
+        }
+
+        [Test]
         public void SparcRw_fbne()
         {
             Given_UInt32s(0x03800001);  // fbne    00100004
             AssertCode(
                 "0|TD-|00100000(4): 1 instructions",
                 "1|TD-|if (Test(NE,LG)) branch 00100004");
+        }
+
+        [Test]
+        public void SparcRw_fbo_a()
+        {
+            Given_HexString("3F800044");
+            AssertCode(     // fbo,a	00000344
+                "0|TDA|00100000(4): 1 instructions",
+                "1|TDA|if (Test(NOT_NAN,U)) branch 00100110");
         }
 
         [Test]
@@ -376,6 +406,16 @@ namespace Reko.UnitTests.Arch.Sparc
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
                 "1|L--|g1 = CONVERT(Mem0[g2 + 68<i32>:int8], int8, int32)");
+        }
+
+        [Test]
+        public void SparcRw_lduba()
+        {
+            Given_HexString("C28C0000");
+            AssertCode(     // lduba	[%l0+0],%g1
+                "0|S--|00100000(4): 2 instructions",
+                "1|L--|v4 = __load_alternate<byte>(&Mem0[l0:byte])",
+                "2|L--|g1 = CONVERT(v4, byte, ui32)");
         }
 
         [Test]
@@ -579,7 +619,22 @@ namespace Reko.UnitTests.Arch.Sparc
                 "7|L--|l7 = l7 + o7");
         }
 
+        [Test]
+        public void SparcRw_swap()
+        {
+            Given_HexString("C47A0000");
+            AssertCode(     // swap	[%o0+%g0],%g2
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|g2 = __swap<word32>(g2, &Mem0[o0:word32])");
+        }
 
-
+        [Test]
+        public void SparcRw_swapa()
+        {
+            Given_HexString("C2FA0000");
+            AssertCode(     // swapa	[%o0+0],%g1
+                "0|S--|00100000(4): 1 instructions",
+                "1|L--|g1 = __swap_alternate<word32>(g1, &Mem0[o0:word32])");
+        }
     }
 }

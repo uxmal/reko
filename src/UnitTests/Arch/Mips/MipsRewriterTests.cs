@@ -729,7 +729,7 @@ namespace Reko.UnitTests.Arch.Mips
         {
             AssertCode(0xCC5E0000,   // pref	r30,0000(r2)
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|__prefetch(r2)");
+                "1|L--|__prefetch<ptr32>(r2)");
         }
 
         [Test]

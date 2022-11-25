@@ -506,36 +506,36 @@ namespace Reko.Arch.Sparc
 
                 // 10
                 Instr64(
-                    Instr(Mnemonic.ldua, Aw,r25),
-                    Instr(Mnemonic.lda, Aw,r25)),
-                Instr(Mnemonic.lduba, Ab,r25),
-                Instr(Mnemonic.lduha, Ah,r25),
-                Instr(Mnemonic.ldda, Ad,r25),
+                    Instr(Mnemonic.ldua, InstrClass.Linear|InstrClass.Privileged, Aw,r25),
+                    Instr(Mnemonic.lda, InstrClass.Linear|InstrClass.Privileged, Aw,r25)),
+                Instr(Mnemonic.lduba, InstrClass.Linear|InstrClass.Privileged, Ab,r25),
+                Instr(Mnemonic.lduha, InstrClass.Linear|InstrClass.Privileged, Ah,r25),
+                Instr(Mnemonic.ldda, InstrClass.Linear | InstrClass.Privileged, Ad,r25),
                 Instr64(
-                    Instr(Mnemonic.stwa, r25,Aw),
-                    Instr(Mnemonic.sta, r25,Aw)),
-                Instr(Mnemonic.stba, r25,Ab),
-                Instr(Mnemonic.stha, r25,Ah),
-                Instr(Mnemonic.stda, r25,Ad),
+                    Instr(Mnemonic.stwa, InstrClass.Linear|InstrClass.Privileged, r25,Aw),
+                    Instr(Mnemonic.sta, InstrClass.Linear|InstrClass.Privileged, r25,Aw)),
+                Instr(Mnemonic.stba, InstrClass.Linear|InstrClass.Privileged, r25,Ab),
+                Instr(Mnemonic.stha, InstrClass.Linear|InstrClass.Privileged, r25,Ah),
+                Instr(Mnemonic.stda, InstrClass.Linear|InstrClass.Privileged, r25,Ad),
 
                 Instr64(
-                    Instr(Mnemonic.ldswa, r25,Asw),
+                    Instr(Mnemonic.ldswa, InstrClass.Linear|InstrClass.Privileged, r25,Asw),
                     invalid),
-                Instr(Mnemonic.ldsba, r25,Asb),
-                Instr(Mnemonic.ldsha, r25,Ash),
+                Instr(Mnemonic.ldsba, InstrClass.Linear|InstrClass.Privileged, r25,Asb),
+                Instr(Mnemonic.ldsha, InstrClass.Linear|InstrClass.Privileged, r25,Ash),
                 Instr64(
-                    Instr(Mnemonic.ldxa, r25,Ad),
+                    Instr(Mnemonic.ldxa, InstrClass.Linear|InstrClass.Privileged, r25,Ad),
                     invalid),
                 
                 invalid,
-                Instr(Mnemonic.ldstuba, Ab,r25),
+                Instr(Mnemonic.ldstuba, InstrClass.Linear|InstrClass.Privileged, Ab,r25),
                 Instr64(
-                    Instr(Mnemonic.stxa, r25,Ad),
+                    Instr(Mnemonic.stxa, InstrClass.Linear|InstrClass.Privileged, r25,Ad),
                     invalid),
-                Instr(Mnemonic.swapa, Aw,r25),
+                Instr(Mnemonic.swapa, InstrClass.Linear|InstrClass.Privileged,  Aw,r25),
 
                 // 20
-                Instr(Mnemonic.ldf,   Mw,f24),
+                Instr(Mnemonic.ldf, Mw,f24),
                 Instr64(
                     Instr(Mnemonic.ldxfsr, Md,rfsr),
                     Instr(Mnemonic.ldfsr, Mw,rfsr)),

@@ -21,6 +21,7 @@
 using Reko.Core;
 using Reko.Core.Collections;
 using Reko.Core.Expressions;
+using Reko.Core.Intrinsics;
 using Reko.Core.Machine;
 using Reko.Core.Memory;
 using Reko.Core.Rtl;
@@ -97,6 +98,7 @@ namespace Reko.Arch.Sparc
                 case Mnemonic.and: RewriteAlu(m.And, false); break;
                 case Mnemonic.andcc: RewriteAluCc(m.And, false); break;
                 case Mnemonic.andn: RewriteAlu(m.And, true); break;
+                case Mnemonic.andncc: RewriteLogicalCc(m.And, true); break;
                 case Mnemonic.ba: RewriteBranch(Constant.True()); break;
                 case Mnemonic.bn: RewriteBranch(Constant.False()); break;
                 case Mnemonic.bne: RewriteBranch(m.Test(ConditionCode.NE, Grf(FlagM.ZF))); break;
@@ -124,8 +126,8 @@ namespace Reko.Arch.Sparc
                 //case Mnemonic.bcs   C
                 //case Mnemonic.bpos not N
                 //case Mnemonic.bneg N
-                //case Mnemonic.bvc  not V
-                //case Mnemonic.bvs  V
+                case Mnemonic.bvc: RewriteBranch(m.Test(ConditionCode.NO, Grf(FlagM.VF))); break;
+                case Mnemonic.bvs: RewriteBranch(m.Test(ConditionCode.OV, Grf(FlagM.VF))); break;
 
                 case Mnemonic.call: RewriteCall(); break;
                 case Mnemonic.fabss: RewriteFabss(); break;
@@ -151,7 +153,7 @@ namespace Reko.Arch.Sparc
                 //case Mnemonic.fbule : on Unordered or Less or Equal E or L or U
                 case Mnemonic.fbule: RewriteBranch(m.Test(ConditionCode.LE, Grf(FlagM.EF | FlagM.LF | FlagM.UF))); break;
                 case Mnemonic.fbge: RewriteBranch(m.Test(ConditionCode.GE, Grf(FlagM.EF | FlagM.GF))); break;
-                //                case Mnemonic.FBO   : on Ordered E or L or G
+                case Mnemonic.fbo: RewriteBranch(m.Test(ConditionCode.NOT_NAN, Grf(FlagM.UF))); break;
 
                 case Mnemonic.fcmpes: RewriteFcmpes(); break;
                 case Mnemonic.fcmped: RewriteFcmped(); break;
@@ -180,6 +182,7 @@ namespace Reko.Arch.Sparc
                 case Mnemonic.ldsw: RewriteLoad(PrimitiveType.Int32); break;
                 case Mnemonic.ldstub: RewriteLdstub(); break;
                 case Mnemonic.ldub: RewriteLoad(PrimitiveType.Byte); break;
+                case Mnemonic.lduba: RewriteLoada(PrimitiveType.Byte); break;
                 case Mnemonic.lduh: RewriteLoad(PrimitiveType.Word16); break;
                 case Mnemonic.lduw: RewriteLoad(PrimitiveType.Word32); break;
                 case Mnemonic.ldx: RewriteLoad(PrimitiveType.Word64); break;
@@ -218,6 +221,8 @@ namespace Reko.Arch.Sparc
                 case Mnemonic.subcc: RewriteAluCc(m.ISub, false); break;
                 case Mnemonic.subx: RewriteAddxSubx(m.ISub, false); break;
                 case Mnemonic.subxcc: RewriteAddxSubx(m.ISub, true); break;
+                case Mnemonic.swap: RewriteSwap(swap_intrinsic); break;
+                case Mnemonic.swapa: RewriteSwap(swapa_intrinsic); break;
                 case Mnemonic.ta: RewriteTrap(Constant.True()); break;
                 case Mnemonic.tn: RewriteTrap(Constant.False()); break;
                 case Mnemonic.tne: RewriteTrap(m.Test(ConditionCode.NE, Grf(FlagM.ZF))); break;
@@ -249,14 +254,14 @@ namespace Reko.Arch.Sparc
             testGenSvc?.ReportMissingRewriter("SparcRw", instrCur, instrCur.Mnemonic.ToString(), rdr, "");
         }
 
-        private void EmitCc(Expression dst)
+        private void EmitCc(FlagGroupStorage grf, Expression src)
         {
-            m.Assign(
-                binder.EnsureFlagGroup(
-                    arch.Registers.psr,
-                    0xF, "NZVC",
-                    PrimitiveType.Byte),
-                m.Cond(dst));
+            m.Assign(binder.EnsureFlagGroup(grf), src);
+        }
+
+        private void EmitCc(FlagGroupStorage grf, int n)
+        {
+            m.Assign(binder.EnsureFlagGroup(grf), n);
         }
 
         private Expression MaybeSlice(Expression e, PrimitiveType dt)
@@ -306,7 +311,7 @@ namespace Reko.Arch.Sparc
             return binder.EnsureRegister((RegisterStorage)op);
         }
 
-        private Expression RewriteMemOp(MachineOperand op, PrimitiveType size)
+        private Expression RewriteMemOp(MachineOperand op, DataType size)
         {
             Expression? baseReg;
             Expression? offset;
@@ -344,5 +349,21 @@ namespace Reko.Arch.Sparc
         {
             return m.Comp(m.Xor(left, right));
         }
+
+        private static readonly IntrinsicProcedure loada_intrinsic = new IntrinsicBuilder("__load_alternate", true)
+            .GenericTypes("T")
+            .PtrParam("T")
+            .Returns("T");
+
+        private static readonly IntrinsicProcedure swap_intrinsic = new IntrinsicBuilder("__swap", true)
+             .GenericTypes("T")
+             .Param("T")
+             .PtrParam("T")
+             .Returns("T");
+        private static readonly IntrinsicProcedure swapa_intrinsic = new IntrinsicBuilder("__swap_alternate", true)
+             .GenericTypes("T")
+             .Param("T")
+             .PtrParam("T")
+             .Returns("T");
     }
 }

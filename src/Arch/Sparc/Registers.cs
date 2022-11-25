@@ -48,6 +48,8 @@ namespace Reko.Arch.Sparc
         public readonly FlagGroupStorage Z;
         public readonly FlagGroupStorage V;
         public readonly FlagGroupStorage C;
+        public readonly FlagGroupStorage NZ;
+        public readonly FlagGroupStorage NZVC;
 
         public readonly FlagGroupStorage E;
         public readonly FlagGroupStorage L;
@@ -118,7 +120,10 @@ namespace Reko.Arch.Sparc
             Z = new FlagGroupStorage(psr, (uint) FlagM.ZF, "Z", PrimitiveType.Bool);
             V = new FlagGroupStorage(psr, (uint) FlagM.VF, "V", PrimitiveType.Bool);
             C = new FlagGroupStorage(psr, (uint) FlagM.CF, "C", PrimitiveType.Bool);
- 
+            NZ = new FlagGroupStorage(psr, (uint) (FlagM.NF | FlagM.ZF), "NZ", PrimitiveType.Byte);
+            NZVC = new FlagGroupStorage(psr, (uint) (FlagM.NF | FlagM.ZF |FlagM.VF | FlagM.CF), "NZVC", PrimitiveType.Byte);
+
+
             E = new FlagGroupStorage(psr, (uint) FlagM.EF, "E", PrimitiveType.Bool);
             L = new FlagGroupStorage(psr, (uint) FlagM.LF, "L", PrimitiveType.Bool);
             G = new FlagGroupStorage(psr, (uint) FlagM.GF, "G", PrimitiveType.Bool);

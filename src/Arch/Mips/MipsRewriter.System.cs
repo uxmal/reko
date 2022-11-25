@@ -20,6 +20,7 @@
 
 using Reko.Core;
 using Reko.Core.Expressions;
+using Reko.Core.Intrinsics;
 using Reko.Core.Machine;
 using Reko.Core.Operators;
 using Reko.Core.Rtl;
@@ -69,7 +70,9 @@ namespace Reko.Arch.Mips
         private void RewritePrefx(MipsInstruction instr)
         {
             var opMem = (MemoryAccess)RewriteOperand(instr.Operands[1]);
-            var intrinsic = host.Intrinsic("__prefetch", true, VoidType.Instance, opMem.EffectiveAddress);
+            var intrinsic = m.Fn(
+                CommonOps.Prefetch.MakeInstance(arch.PointerType.BitSize, arch.PointerType),
+                opMem.EffectiveAddress);
             m.SideEffect(intrinsic);
         }
 
