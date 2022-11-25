@@ -21,7 +21,6 @@
 using Reko.Core;
 using Reko.Core.Collections;
 using Reko.Core.Services;
-using Reko.Evaluation;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -45,12 +44,19 @@ namespace Reko.Scanning
         private readonly ConcurrentDictionary<Address, ProcedureWorker> suspendedWorkers; 
         private readonly ConcurrentDictionary<Address, ReturnStatus> procReturnStatus;
 
-        public RecursiveScanner(Program program, DecompilerEventListener listener)
-            : this(program, new ScanResultsV2(), listener)
+        public RecursiveScanner(
+            Program program,
+            IDynamicLinker dynamicLinker,
+            DecompilerEventListener listener)
+            : this(program, new ScanResultsV2(), dynamicLinker, listener)
         { }
 
-        public RecursiveScanner(Program program, ScanResultsV2 sr, DecompilerEventListener listener)
-            : base(program, sr, listener)
+        public RecursiveScanner(
+            Program program, 
+            ScanResultsV2 sr, 
+            IDynamicLinker dynamicLinker,
+            DecompilerEventListener listener)
+            : base(program, sr, dynamicLinker, listener)
         {
             this.wl = new WorkList<ProcedureWorker>();
             this.activeWorkers = new();
@@ -238,7 +244,6 @@ namespace Reko.Scanning
             wl.Add(worker);
         }
     }
-
 
     /// <summary>
     /// This class represents a <see cref="ProcedureWorker"/> that is 

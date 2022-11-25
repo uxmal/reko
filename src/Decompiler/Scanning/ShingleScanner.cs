@@ -44,8 +44,8 @@ namespace Reko.Scanning
     /// </remarks>
     public class ShingleScanner : AbstractScanner
 	{
-        public ShingleScanner(Program program, ScanResultsV2 sr, DecompilerEventListener listener)
-            : base(program, sr, listener)
+        public ShingleScanner(Program program, ScanResultsV2 sr, IDynamicLinker dynamicLinker,  DecompilerEventListener listener)
+            : base(program, sr, dynamicLinker, listener)
         {
         }
 

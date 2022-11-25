@@ -52,12 +52,16 @@ namespace Reko.Scanning
         protected readonly ConcurrentDictionary<Address, Address> blockEnds;
         private readonly IRewriterHost host;
 
-        protected AbstractScanner(Program program, ScanResultsV2 sr, DecompilerEventListener listener)
+        protected AbstractScanner(
+            Program program,
+            ScanResultsV2 sr,
+            IDynamicLinker dynamicLinker,
+            DecompilerEventListener listener)
         {
             this.program = program;
             this.sr = sr;
+            this.host = new RewriterHost(program, dynamicLinker, listener);
             this.listener = listener;
-            this.host = new RewriterHost(program, listener);
             this.blockStarts = new ConcurrentDictionary<Address, Address>();
             this.blockEnds = new ConcurrentDictionary<Address, Address>();
         }
@@ -437,11 +441,16 @@ namespace Reko.Scanning
         private class RewriterHost : IRewriterHost
         {
             private readonly Program program;
+            private readonly IDynamicLinker dynamicLinker;
             private readonly DecompilerEventListener listener;
 
-            public RewriterHost(Program program, DecompilerEventListener listener)
+            public RewriterHost(
+                Program program,
+                IDynamicLinker dynamicLinker,
+                DecompilerEventListener listener)
             {
                 this.program = program;
+                this.dynamicLinker = dynamicLinker;
                 this.listener = listener;
             }
 
@@ -457,14 +466,45 @@ namespace Reko.Scanning
                 throw new NotImplementedException();
             }
 
-            public ExternalProcedure GetImportedProcedure(IProcessorArchitecture arch, Address addrThunk, Address addrInstr)
+            /// <summary>
+            /// If <paramref name="addrImportThunk"/> is the known address of 
+            /// an import thunk / trampoline, return the imported function as
+            /// an <see cref="ExternalProcedure"/>. Otherwise, check to see if
+            /// the call is an intercepted call.
+            /// </summary>
+            /// <param name="addrImportThunk"></param>
+            /// <param name="addrInstruction">Used to display diagnostics.</param>
+            /// <returns></returns>
+            public ExternalProcedure? GetImportedProcedure(
+                IProcessorArchitecture arch,
+                Address addrImportThunk,
+                Address addrInstruction)
             {
-                throw new NotImplementedException();
+                if (program.ImportReferences.TryGetValue(addrImportThunk, out var impref))
+                {
+                    var extProc = impref.ResolveImportedProcedure(
+                        dynamicLinker,
+                        program.Platform,
+                        new AddressContext(program, addrInstruction, this.listener));
+                    return extProc;
+                }
+
+                if (program.InterceptedCalls.TryGetValue(addrImportThunk, out var ep))
+                    return ep;
+                return GetInterceptedCall(arch, addrImportThunk);
             }
 
-            public ExternalProcedure GetInterceptedCall(IProcessorArchitecture arch, Address addrImportThunk)
+            public ExternalProcedure? GetInterceptedCall(IProcessorArchitecture arch, Address addrImportThunk)
             {
-                throw new NotImplementedException();
+                if (!program.SegmentMap.IsValidAddress(addrImportThunk))
+                    return null;
+                var rdr = program.CreateImageReader(arch, addrImportThunk);
+                //$REVIEW: WHOA! This is 32-bit code!
+                if (!rdr.TryReadUInt32(out var uDest))
+                    return null;
+                var addrDest = Address.Ptr32(uDest);
+                program.InterceptedCalls.TryGetValue(addrDest, out var ep);
+                return ep;
             }
 
             public IntrinsicProcedure EnsureIntrinsic(string name, bool hasSideEffect, DataType returnType, int arity)

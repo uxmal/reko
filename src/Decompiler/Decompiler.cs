@@ -512,11 +512,19 @@ namespace Reko
 
         private IScanner CreateScanner(Program program)
         {
+#if OLD_SCANNER
+            return new Scanner2(
+                program,
+                project!.LoadedMetadata,
+                new DynamicLinker(project!, program, eventListener),
+                services);
+#else
             return new Scanner(
                 program,
                 project!.LoadedMetadata,
                 new DynamicLinker(project!, program, eventListener),
                 services);
+#endif
         }
 
         /// <summary>

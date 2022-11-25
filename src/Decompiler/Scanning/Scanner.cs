@@ -26,7 +26,6 @@ using Reko.Core.Configuration;
 using Reko.Core.Expressions;
 using Reko.Core.Graphs;
 using Reko.Core.Rtl;
-using Reko.Core.Serialization;
 using Reko.Core.Services;
 using Reko.Core.Types;
 using System;

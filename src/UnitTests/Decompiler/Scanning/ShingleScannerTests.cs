@@ -42,7 +42,7 @@ namespace Reko.UnitTests.Decompiler.Scanning
     [TestFixture]
     public class ShingleScannerTests : AbstractScannerTests
     {
-        private string nl = Environment.NewLine;
+        private static string nl = Environment.NewLine;
 
         private ScanResultsV2 cfg = default!;
         private ServiceContainer sc = default!;
@@ -83,14 +83,18 @@ namespace Reko.UnitTests.Decompiler.Scanning
 
         private List<ChunkWorker> When_MakeScanChunks()
         {
-            var scanner = new ShingleScanner(program, cfg, new Mock<DecompilerEventListener>().Object);
+            var dynLinker = new Mock<IDynamicLinker>();
+            var listener = new Mock<DecompilerEventListener>();
+            var scanner = new ShingleScanner(program, cfg, dynLinker.Object, listener.Object);
             var chunks = scanner.MakeScanChunks();
             return chunks;
         }
 
         private void RunTest(string sExpected)
         {
-            var scanner = new ShingleScanner(program, cfg, new Mock<DecompilerEventListener>().Object);
+            var dynLinker = new Mock<IDynamicLinker>();
+            var listener = new Mock<DecompilerEventListener>();
+            var scanner = new ShingleScanner(program, cfg, dynLinker.Object, listener.Object);
             var cfgNew = scanner.ScanProgram();
             scanner.RegisterPredecessors();
             var sw = new StringWriter();
@@ -321,7 +325,8 @@ namespace Reko.UnitTests.Decompiler.Scanning
 
         private void CreateX86Scanner()
         {
-            this.scanner = new ShingleScanner(program, cfg, listener);
+            var dynLinker = new Mock<IDynamicLinker>();
+            this.scanner = new ShingleScanner(program, cfg, dynLinker.Object, listener);
         }
 
         private void CreateScanner(uint uAddr)
@@ -334,6 +339,8 @@ namespace Reko.UnitTests.Decompiler.Scanning
                 mem,
                 AccessMode.ReadExecute));
             var arch = new Mock<IProcessorArchitecture>();
+            var dynamicLinker = new Mock<IDynamicLinker>();
+
             arch.Setup(a => a.Name).Returns("A");
             arch.Setup(a => a.Endianness).Returns(EndianServices.Little);
             arch.Setup(a => a.InstructionBitSize).Returns(8);
@@ -352,7 +359,7 @@ namespace Reko.UnitTests.Decompiler.Scanning
                 new Func<EndianImageReader, ProcessorState, IStorageBinder, IRewriterHost, IEnumerable<RtlInstructionCluster>>(
                     (r, s, b, h) => new TestRewriter(this, r.Address)));
             this.program.Architecture = arch.Object;
-            this.scanner = new ShingleScanner(program, cfg, listener);
+            this.scanner = new ShingleScanner(program, cfg, dynamicLinker.Object, listener);
         }
 
         [Test]
