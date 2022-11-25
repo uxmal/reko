@@ -43,6 +43,11 @@ namespace Reko.Core.Rtl
             return visitor.VisitAssignment(this);
         }
 
+        public override T Accept<T,C>(RtlInstructionVisitor<T,C> visitor, C context)
+        {
+            return visitor.VisitAssignment(this, context);
+        }
+
         protected override void WriteInner(TextWriter writer)
         {
             writer.Write("{0} = {1}", Dst, Src);

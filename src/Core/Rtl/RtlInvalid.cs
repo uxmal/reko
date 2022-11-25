@@ -38,6 +38,11 @@ namespace Reko.Core.Rtl
             return visitor.VisitInvalid(this);
         }
 
+        public override T Accept<T, C>(RtlInstructionVisitor<T, C> visitor, C context)
+        {
+            return visitor.VisitInvalid(this, context);
+        }
+
         protected override void WriteInner(TextWriter writer)
         {
             writer.Write("<invalid>");

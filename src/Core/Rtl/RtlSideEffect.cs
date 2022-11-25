@@ -41,6 +41,11 @@ namespace Reko.Core.Rtl
             return visitor.VisitSideEffect(this);
         }
 
+        public override T Accept<T, C>(RtlInstructionVisitor<T, C> visitor, C context)
+        {
+            return visitor.VisitSideEffect(this, context);
+        }
+
         protected override void WriteInner(TextWriter writer)
         {
             writer.Write(Expression);

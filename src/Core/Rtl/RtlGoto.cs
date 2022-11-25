@@ -34,6 +34,11 @@ namespace Reko.Core.Rtl
             return visitor.VisitGoto(this);
         }
 
+        public override T Accept<T, C>(RtlInstructionVisitor<T, C> visitor, C context)
+        {
+            return visitor.VisitGoto(this, context);
+        }
+
         protected override void WriteInner(TextWriter writer)
         {
             writer.Write("goto {0}", Target);

@@ -60,6 +60,10 @@ namespace Reko.Core.Rtl
         {
             return visitor.VisitIf(this);
         }
+        public override T Accept<T, C>(RtlInstructionVisitor<T, C> visitor, C context)
+        {
+            return visitor.VisitIf(this, context);
+        }
 
         protected override void WriteInner(TextWriter writer)
         {

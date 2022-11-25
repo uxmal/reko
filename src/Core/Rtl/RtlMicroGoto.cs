@@ -76,6 +76,10 @@ namespace Reko.Core.Rtl
             return visitor.VisitMicroGoto(this);
         }
 
+        public override T Accept<T, C>(RtlInstructionVisitor<T, C> visitor, C context)
+        {
+            return visitor.VisitMicroGoto(this, context);
+        }
         protected override void WriteInner(TextWriter writer)
         {
             if (Condition != null)

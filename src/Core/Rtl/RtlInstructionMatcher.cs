@@ -27,7 +27,7 @@ using System.Text;
 
 namespace Reko.Core.Rtl
 {
-    public class RtlInstructionMatcher : RtlInstructionVisitor<bool>
+    public class RtlInstructionMatcher : RtlInstructionVisitor<bool, ExpressionMatch>
     {
         private RtlInstruction pattern;
         private readonly ExpressionMatcher matcher;
@@ -38,116 +38,116 @@ namespace Reko.Core.Rtl
             this.matcher = new ExpressionMatcher(null!);
         }
 
-        public Expression? CapturedExpressions(string label) { return matcher.CapturedExpression(label); }
-
-        public Operator? CapturedOperators(string label) { return matcher.CapturedOperators(label); }
-
-        public bool Match(RtlInstruction instr)
+        public static RtlInstructionMatcher Build(Action<RtlInstructionMatcherEmitter> builder)
         {
-            matcher.Clear();
-            return instr.Accept(this);
+            var instrs = new List<RtlInstruction>();
+            var m = new RtlInstructionMatcherEmitter(instrs);
+            builder(m);
+            return new RtlInstructionMatcher(instrs.Last());
+        }
+
+        public ExpressionMatch Match(RtlInstruction instr)
+        {
+            var match = new ExpressionMatch();
+            match.Success = instr.Accept(this, match);
+            return match;
+        }
+
+        private bool Match(RtlInstruction pattern, RtlInstruction instr, ExpressionMatch m)
+        {
+            throw new NotImplementedException();
         }
 
         #region RtlInstructionVisitor<bool>
 
-        public bool VisitAssignment(RtlAssignment ass)
+        public bool VisitAssignment(RtlAssignment ass, ExpressionMatch m)
         {
-            if (!(pattern is RtlAssignment assPat))
+            if (pattern is not RtlAssignment assPat)
                 return false;
-            matcher.Pattern = assPat.Src;
-            if (!matcher.Match(ass.Src))
+            if (!matcher.Match(assPat.Src, ass.Src, m))
                 return false;
-            matcher.Pattern = assPat.Dst;
-            return matcher.Match(ass.Dst);
+            return matcher.Match(assPat.Dst, ass.Dst, m);
         }
 
-        public bool VisitGoto(RtlGoto go)
+        public bool VisitGoto(RtlGoto go, ExpressionMatch m)
         {
-            if (!(pattern is RtlGoto gPat))
+            if (pattern is not RtlGoto gPat)
                 return false;
-            matcher.Pattern = gPat.Target;
-            return matcher.Match(go.Target);
+            return matcher.Match(gPat.Target, go.Target, m);
         }
 
-        public bool VisitMicroGoto(RtlMicroGoto mgo)
+        public bool VisitMicroGoto(RtlMicroGoto mgo, ExpressionMatch m)
         {
-            if (!(pattern is RtlMicroGoto mgPat))
+            if (pattern is not RtlMicroGoto mgPat)
                 return false;
             if (mgPat.Condition != null)
             {
                 if (mgo.Condition == null)
                     return false;
-                matcher.Pattern = mgPat.Condition;
-                if (!matcher.Match(mgo.Condition))
+                if (!matcher.Match(mgPat.Condition, mgo.Condition, m))
                     return false;
             }
             return mgo.Target == mgPat.Target;
         }
 
-        public bool VisitMicroLabel(RtlMicroLabel mlabel)
+        public bool VisitMicroLabel(RtlMicroLabel mlabel, ExpressionMatch m)
         {
             return (pattern is RtlMicroLabel mpattern &&
                 mlabel.Name == mpattern.Name);
         }
 
-        public bool VisitIf(RtlIf rtlIf)
+        public bool VisitIf(RtlIf rtlIf, ExpressionMatch m)
         {
-            if (!(pattern is RtlIf pIf))
+            if (pattern is not RtlIf pIf)
                 return false;
-            var p = pattern;
-            pattern = pIf.Instruction;
-            var ret = rtlIf.Instruction.Accept(this);
-            pattern = p;
-            return ret;
+            if (matcher.Match(pIf.Condition, rtlIf.Condition, m))
+                return false;
+            return this.Match(pIf.Instruction, rtlIf.Instruction, m);
         }
 
-        public bool VisitInvalid(RtlInvalid invalid)
+        public bool VisitInvalid(RtlInvalid invalid, ExpressionMatch m)
         {
             return pattern is RtlInvalid;
         }
 
-        public bool VisitNop(RtlNop nop)
+        public bool VisitNop(RtlNop nop, ExpressionMatch m)
         {
             return pattern is RtlNop;
         }
 
-        public bool VisitBranch(RtlBranch branch)
+        public bool VisitBranch(RtlBranch branch, ExpressionMatch m)
         {
-            if (!(pattern is RtlBranch branchPat))
+            if (pattern is not RtlBranch branchPat)
                 return false;
-            matcher.Pattern = branchPat.Condition;
-            return matcher.Match(branch.Condition);
+            return matcher.Match(branchPat.Condition, branch.Condition, m);
         }
 
-        public bool VisitCall(RtlCall call)
+        public bool VisitCall(RtlCall call, ExpressionMatch m)
         {
-            if (!(pattern is RtlCall callPat))
+            if (pattern is not RtlCall callPat)
                 return false;
-            matcher.Pattern = callPat.Target;
-            return matcher.Match(call.Target);
+            return matcher.Match(callPat.Target, call.Target, m);
         }
 
-        public bool VisitReturn(RtlReturn ret)
+        public bool VisitReturn(RtlReturn ret, ExpressionMatch m)
         {
             return pattern is RtlReturn;
         }
 
-        public bool VisitSideEffect(RtlSideEffect side)
+        public bool VisitSideEffect(RtlSideEffect side, ExpressionMatch m)
         {
-            if (!(pattern is RtlSideEffect sidePat))
+            if (pattern is not RtlSideEffect sidePat)
                 return false;
-            matcher.Pattern = sidePat.Expression;
-            return matcher.Match(side.Expression);
+            return matcher.Match(sidePat.Expression, side.Expression, m);
         }
 
-        public bool VisitSwitch(RtlSwitch sw)
+        public bool VisitSwitch(RtlSwitch sw, ExpressionMatch m)
         {
             if (pattern is not RtlSwitch swPat)
                 return false;
             if (swPat.Targets.Length != sw.Targets.Length)
                 return false;
-            matcher.Pattern = swPat.Expression;
-            return matcher.Match(sw.Expression);
+            return matcher.Match(swPat.Expression, sw.Expression, m);
         }
 
         #endregion

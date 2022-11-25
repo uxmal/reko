@@ -43,6 +43,11 @@ namespace Reko.Core.Rtl
             return visitor.VisitSwitch(this);
         }
 
+        public override T Accept<T, C>(RtlInstructionVisitor<T, C> visitor, C context)
+        {
+            return visitor.VisitSwitch(this, context);
+        }
+
         protected override void WriteInner(TextWriter writer)
         {
             writer.Write("switch (");

@@ -47,7 +47,7 @@ namespace Reko.Core.Rtl
         /// <param name="archSwitch">If non-null, the new architecture to switch to.</param>
         public RtlCall(
             Expression target,
-            byte stackPushedReturnAddressSize,
+            int stackPushedReturnAddressSize,
             InstrClass rtlClass,
             IProcessorArchitecture? arch = null) : base(target, rtlClass)
         {
@@ -71,6 +71,12 @@ namespace Reko.Core.Rtl
         public override T Accept<T>(RtlInstructionVisitor<T> visitor)
         {
             return visitor.VisitCall(this);
+        }
+
+
+        public override T Accept<T,C>(RtlInstructionVisitor<T,C> visitor, C context)
+        {
+            return visitor.VisitCall(this, context);
         }
 
         protected override void WriteInner(TextWriter writer)

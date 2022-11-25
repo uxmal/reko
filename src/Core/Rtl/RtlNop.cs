@@ -38,6 +38,10 @@ namespace Reko.Core.Rtl
             return visitor.VisitNop(this);
         }
 
+        public override T Accept<T, C>(RtlInstructionVisitor<T, C> visitor, C context)
+        {
+            return visitor.VisitNop(this, context);
+        }
         protected override void WriteInner(TextWriter writer)
         {
             writer.Write("nop");

@@ -37,6 +37,7 @@ namespace Reko.Core.Rtl
         public virtual InstrClass Class { get; set; }
 
         public abstract T Accept<T>(RtlInstructionVisitor<T> visitor);
+        public abstract T Accept<T, C>(RtlInstructionVisitor<T, C> visitor, C context);
 
         /// <summary>
         /// If true, the next statement needs a label. This is required in
