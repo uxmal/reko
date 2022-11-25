@@ -74,7 +74,7 @@ namespace Reko.Scanning
             trace.Inform("      in {0} msec", (int) recTime.TotalMilliseconds);
 
             // There will be "islands" of unscanned bytes left over.
-            // Scan these using the ShingleScanner.w
+            // Scan these using the ShingleScanner.
 
             var shScanner = new ShingleScanner(program, cfg, listener);
             trace.Inform("= Shingle scan ======");

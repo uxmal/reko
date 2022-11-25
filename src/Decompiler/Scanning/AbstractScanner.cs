@@ -30,6 +30,7 @@ using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 
 namespace Reko.Scanning
@@ -89,6 +90,12 @@ namespace Reko.Scanning
             return rw;
         }
 
+        /// <summary>
+        /// Marks the presence of a chunk of data of type <paramref name="dt"/> at
+        /// address <paramref name="addr"/>.
+        /// </summary>
+        /// <param name="addr">The address at which the data is located.</param>
+        /// <param name="dt">The <see cref="DataType"/> of the data.</param>
         public void MarkDataInImageMap(Address addr, DataType dt)
         {
             if (program.ImageMap is null)
@@ -186,6 +193,31 @@ namespace Reko.Scanning
         public virtual bool TryRegisterBlockEnd(Address addrBlockStart, Address addrBlockLast)
         {
             return this.blockEnds.TryAdd(addrBlockLast, addrBlockStart);
+        }
+
+        public bool TryRegisterTrampoline(
+            Address addrFinalGoto,
+            List<RtlInstructionCluster> trampolineStub,
+            [MaybeNullWhen(false)] out Trampoline trampoline)
+        {
+            // Has already been determined to be a stub?
+            if (this.sr.TrampolineStubEnds.TryGetValue(addrFinalGoto, out trampoline))
+                return true;
+            // Check if it is a stub.
+            trampoline = program.Platform.GetTrampolineDestination(addrFinalGoto, trampolineStub, host);
+            if (trampoline is null)
+                return false;
+            // Here starts a race with other threads. Attempt to register this trampoline.
+            if (sr.TrampolineStubEnds.TryAdd(addrFinalGoto, trampoline))
+            {
+                sr.TrampolineStubStarts.TryAdd(trampoline.StubAddress, trampoline);
+            }
+            else
+            {
+                // Someone else beat us to it; fetch the value
+                trampoline = sr.TrampolineStubEnds[addrFinalGoto];
+            }
+            return true;
         }
 
         /// <summary>

@@ -24,6 +24,7 @@ using Reko.Core.Diagnostics;
 using Reko.Core.Rtl;
 using Reko.Core.Services;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Threading;
 using static Reko.Scanning.ProcedureDetector;
 
@@ -168,6 +169,18 @@ namespace Reko.Scanning
 
         protected override void ProcessReturn()
         {
+        }
+
+        protected override bool TryRegisterTrampoline(
+            Address addrFinalInstr,
+            List<RtlInstructionCluster> trampolineStub,
+            [MaybeNullWhen(false)] out Trampoline trampoline)
+        {
+            if (!this.shScanner.TryRegisterTrampoline(addrFinalInstr, trampolineStub, out trampoline))
+                return false;
+            // We may have fallen through into a PLT stub, so make sure there is an edge.
+            SplitExistingBlock(trampoline.StubAddress);
+            return true;
         }
     }
 }

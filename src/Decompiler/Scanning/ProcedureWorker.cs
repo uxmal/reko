@@ -26,6 +26,7 @@ using Reko.Core.Services;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -160,5 +161,12 @@ namespace Reko.Scanning
             return true;
         }
 
+        protected override bool TryRegisterTrampoline(
+            Address addrFinalInstr, 
+            List<RtlInstructionCluster> trampolineStub, 
+            [MaybeNullWhen(false)] out Trampoline trampoline)
+        {
+            return this.recScanner.TryRegisterTrampoline(addrFinalInstr, trampolineStub, out trampoline);
+        }
     }
 }

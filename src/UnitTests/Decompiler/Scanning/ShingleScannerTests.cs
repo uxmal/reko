@@ -228,6 +228,17 @@ namespace Reko.UnitTests.Decompiler.Scanning
                 });
         }
 
+        // Indirect jump
+        private void Jmpi(uint uAddr, int len, uint uAddrNext)
+        {
+            var addr = Address.Ptr32((uint) uAddr);
+            clusters.Add(uAddr, new RtlInstructionCluster(addr, len,
+                new RtlGoto(id, InstrClass.Transfer | InstrClass.Indirect))
+                {
+                    Class = InstrClass.Transfer | InstrClass.Indirect
+                });
+        }
+
         private void Bad(uint uAddr, int len)
         {
             var addr = Address.Ptr32((uint) uAddr);
@@ -316,6 +327,7 @@ namespace Reko.UnitTests.Decompiler.Scanning
         private void CreateScanner(uint uAddr)
         {
             this.program = new Program();
+            this.program.Platform = base.platform.Object;
             var mem = new ByteMemoryArea(Address.Ptr32(uAddr), new byte[256]);
             this.program.SegmentMap = new SegmentMap(new ImageSegment(
                 ".text",
@@ -830,6 +842,28 @@ l00001008: // l:8; ft:00001010
 00001000-00001002 (2): Lin 00001002
 00001001-00001002 (1): Lin 00001002
 00001002-00001003 (1): End
+";
+            #endregion
+            AssertBlocks(sExp, sr.Blocks);
+        }
+
+        [Test]
+        public void Shsc_FallIntoPltStub()
+        {
+            Given_TrampolineAt(0x1002, 0x1004, "imported_proc");
+
+            Lin(0x1000, 2, 0x1002); // This statements falls through into...
+            Lin(0x1002, 2, 0x1004); // ...the beginning of the stub.
+            Jmpi(0x1004, 4, 0x1008);
+
+            CreateScanner(0x1000);
+            var sr = scanner.ScanProgram();
+
+            var sExp =
+            #region Expected
+                @"
+00001000-00001002 (2): Lin 00001002
+00001002-00001008 (6): End
 ";
             #endregion
             AssertBlocks(sExp, sr.Blocks);

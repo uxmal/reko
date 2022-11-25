@@ -38,7 +38,8 @@ namespace Reko.Scanning
             this.Procedures = new();
             this.SpeculativeBlocks = new();
             this.SpeculativeProcedures = new();
-            this.Stubs = new();
+            this.TrampolineStubStarts = new();
+            this.TrampolineStubEnds = new();
             this.NoDecompiles = new();
             this.ICFG = new ScanResultsGraph(this);
         }
@@ -90,10 +91,17 @@ namespace Reko.Scanning
         public ConcurrentDictionary<Address, int> SpeculativeProcedures { get; }
 
         /// <summary>
-        /// Short sequences of instructions identified as dynamic link stubs
-        /// (such as those in an ELF PLT)
+        /// Address of the start of short sequences of instructions identified
+        /// as dynamic link stubs (such as those in an ELF PLT).
         /// </summary>
-        public ConcurrentDictionary<Address, ExternalProcedure> Stubs { get; }
+        public ConcurrentDictionary<Address, Trampoline> TrampolineStubStarts { get; }
+
+        /// <summary>
+        /// Address of the ends short sequences of instructions identified as
+        /// dynamic link stubs (such as those in an ELF PLT)
+        /// </summary>
+        public ConcurrentDictionary<Address, Trampoline> TrampolineStubEnds { get; }
+
         public ConcurrentDictionary<Address, ExternalProcedure> NoDecompiles { get; }
         public ScanResultsGraph ICFG { get; }
 

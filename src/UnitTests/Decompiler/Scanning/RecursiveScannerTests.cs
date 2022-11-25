@@ -62,7 +62,12 @@ namespace Reko.UnitTests.Decompiler.Scanning
             foreach (var proc in cfg.Procedures.Values.OrderBy(p => p.Address))
             {
                 w.WriteLine();
-                w.WriteLine("define {0}", proc.Name);
+                w.Write("define {0}", proc.Name);
+                if (cfg.TrampolineStubStarts.TryGetValue(proc.Address, out var trampoline))
+                {
+                    w.Write(" stub to '{0}'", trampoline.Procedure.Name);
+                }
+                w.WriteLine();
                 var it = new DfsIterator<RtlBlock>(g);
                 foreach (var block in it.PreOrder(cfg.Blocks[proc.Address]).OrderBy(b => b.Name))
                 {
@@ -741,6 +746,50 @@ l0000100C: // l:1; ft:0000100D (INVALID)
 ";
             #endregion
             RunTest(sExpected);
+        }
+
+        [Test]
+        public void RecScan_Call_Trampoline()
+        {
+            Given_EntryPoint(0x1000);
+            Given_TrampolineAt(0x1020, 0x1020, "malloc");
+            Given_Trace(new RtlTrace(0x1000)
+            {
+                m => m.Assign(r2, m.Mem32(m.Word32(0x00123400))),
+                m => m.Call(Address.Ptr32(0x1020), 0),
+            });
+            Given_Trace(new RtlTrace(0x1008)
+            { 
+                m => m.Return(0, 0)
+            });
+            Given_Trace(new RtlTrace(0x1020)
+            {
+                m => m.Goto(m.Mem32(m.Word32(0x3000)))
+            });
+
+            var expected =
+            #region Expected
+@"
+define fn00001000
+l00001000: // l:8; ft:00001008
+    // pred:
+    r2 = Mem0[0x123400<32>:word32]
+    call 00001020 (0)
+    // succ: l00001008
+l00001008: // l:4; ft:0000100C
+    // pred: l00001000
+    return (0,0)
+    // succ:
+
+define fn00001020 stub to 'malloc'
+l00001020: // l:4; ft:00001024
+    // pred:
+    goto Mem0[0x3000<32>:word32]
+    // succ:
+";
+            #endregion
+
+            RunTest(expected);
         }
     }
 }

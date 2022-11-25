@@ -24,6 +24,7 @@ using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Graphs;
 using Reko.Core.Memory;
+using Reko.Core.Rtl;
 using Reko.Core.Types;
 using Reko.Scanning;
 using Reko.UnitTests.Mocks;
@@ -37,6 +38,7 @@ namespace Reko.UnitTests.Decompiler.Scanning
     public class AbstractScannerTests
     {
         protected Mock<IProcessorArchitecture> arch = default!;
+        protected Mock<IPlatform> platform = default!;
         protected Program program = default!;
         protected Identifier r1;
         protected Identifier r2;
@@ -54,6 +56,8 @@ namespace Reko.UnitTests.Decompiler.Scanning
         protected void Setup(int textSize, int instrBitSize)
         {
             this.arch = new Mock<IProcessorArchitecture>();
+            this.platform = new Mock<IPlatform>();
+
             arch.Setup(a => a.Name).Returns("FakeCpu");
             arch.Setup(a => a.InstructionBitSize).Returns(instrBitSize);
             arch.Setup(a => a.MemoryGranularity).Returns(8);
@@ -72,6 +76,8 @@ namespace Reko.UnitTests.Decompiler.Scanning
                 .Returns(new Func<Constant, bool, Address>((c, a) =>
                     Address.Ptr32(c.ToUInt32())));
 
+            platform.Setup(p => p.Architecture).Returns(arch.Object);
+
             var segmentMap = new SegmentMap(
                 new ImageSegment(
                     ".text",
@@ -86,6 +92,7 @@ namespace Reko.UnitTests.Decompiler.Scanning
             {
                 SegmentMap = segmentMap,
                 Architecture = arch.Object,
+                Platform = platform.Object,
             };
         }
 
@@ -143,6 +150,18 @@ namespace Reko.UnitTests.Decompiler.Scanning
                 It.IsNotNull<IStorageBinder>(),
                 It.IsNotNull<IRewriterHost>()))
                 .Returns(trace);
+        }
+
+        protected void Given_TrampolineAt(uint uAddrBegin, uint uAddrLast, string impProcName)
+        {
+            var addrBegin = Address.Ptr32(uAddrBegin);
+            var addrLast = Address.Ptr32(uAddrLast);
+            var proc = new ExternalProcedure(impProcName, FunctionType.Action());
+            var trampoline = new Trampoline(addrBegin, proc);
+            platform.Setup(p => p.GetTrampolineDestination(
+                addrLast,
+                It.IsNotNull<List<RtlInstructionCluster>>(),
+                It.IsNotNull<IRewriterHost>())).Returns(trampoline);
         }
 
         protected class CfgGraph : DirectedGraph<RtlBlock>

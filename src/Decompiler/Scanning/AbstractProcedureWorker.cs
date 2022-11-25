@@ -154,6 +154,10 @@ namespace Reko.Scanning
                 {
                     result.Add(new Edge(block.Address, addrGotoTarget, EdgeType.Jump));
                 }
+                else if (TryRegisterTrampoline(addrInstr, block.Instructions, out var trampoline))
+                {
+                    result.Add(new Edge(block.Address, block.Address, EdgeType.Return));
+                }
                 else if (DiscoverTableExtent(
                         block.Architecture,
                         block,
@@ -317,6 +321,12 @@ namespace Reko.Scanning
         protected abstract void ProcessCall(RtlBlock blockCaller, Edge edge, ProcessorState state);
 
         protected abstract void ProcessReturn();
+
+        protected abstract bool TryRegisterTrampoline(
+            Address addrFinalInstr,
+            List<RtlInstructionCluster> trampolineStub,
+            [MaybeNullWhen(false)] out Trampoline trampoline);
+
 
         /// <summary>
         /// Attempt to mark the address <paramref name="addr"/> as visited.
