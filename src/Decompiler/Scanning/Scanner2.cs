@@ -104,7 +104,7 @@ namespace Reko.Scanning
             trace.Inform("      in {0} msec", (int) pdTime.TotalMilliseconds);
 
             trace.Inform("= Building procedure graph ======");
-            var (final, finalTime) = Time(() => BuildProcedures(procs));
+            var (final, finalTime) = Time(() => BuildProcedures(cfg3, procs));
             trace.Inform("      Built a total of {0} procedures", program.Procedures.Count);
             trace.Inform("      in {0} msec", (int) finalTime.TotalMilliseconds);
             listener.Info("Built {0} procedures", program.Procedures.Count);
@@ -131,40 +131,15 @@ namespace Reko.Scanning
             var sr = scanner.ScanProcedure(arch, addr, procedureName, state);
             var procDetector = new ProcedureDetector(sr, listener);
             var procs = procDetector.DetectProcedures();
-            BuildProcedures(procs);
+            BuildProcedures(sr, procs);
             return program.Procedures[addr];
         }
 
-        private Program BuildProcedures(List<RtlProcedure> rtlProcs)
+        private Program BuildProcedures(ScanResultsV2 sr, List<RtlProcedure> procs)
         {
-            var procs = rtlProcs.ToDictionary(p => p.Entry.Address, CreateProcedure);
-            foreach (var rtlProc in rtlProcs)
-            {
-                BuildProcedure(rtlProc, procs);
-            }
+            var pgb = new ProcedureGraphBuilder(sr, program);
+            pgb.Build(procs);
             return program;
-        }
-
-        private void BuildProcedure(RtlProcedure rtlProc, Dictionary<Address, Procedure> procs)
-        {
-            var blocks = rtlProc.Blocks.ToDictionary(r => r, r => CreateBlock(r, procs[rtlProc.Entry.Address]));
-            var visited = new HashSet<RtlBlock>();
-
-        }
-
-        private Block CreateBlock(RtlBlock rtlBlock, Procedure proc)
-        {
-            var id = program.NamingPolicy.BlockName(rtlBlock.Address);
-            var block = new Block(proc, rtlBlock.Address, id);
-            return block;
-        }
-
-        private Procedure CreateProcedure(RtlProcedure rtlProc)
-        {
-            var arch = rtlProc.Entry.Architecture;
-            var name = program.NamingPolicy.ProcedureName(rtlProc.Entry.Address);
-            var proc = new Procedure(arch, name, rtlProc.Entry.Address, arch.CreateFrame());
-            return proc;
         }
     }
 }

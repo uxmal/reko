@@ -512,7 +512,7 @@ namespace Reko
 
         private IScanner CreateScanner(Program program)
         {
-#if OLD_SCANNER
+#if !OLD_SCANNER
             return new Scanner2(
                 program,
                 project!.LoadedMetadata,

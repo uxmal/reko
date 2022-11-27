@@ -51,9 +51,9 @@ namespace Reko.Core.Expressions
     /// </remarks>
 	public class ConditionOf : Expression
 	{
-		public ConditionOf(Expression ex) : base(PrimitiveType.Byte)
+		public ConditionOf(Expression exp) : base(PrimitiveType.Byte)
 		{
-			Expression = ex;
+			Expression = exp;
 		}
 
         public Expression Expression { get; }
