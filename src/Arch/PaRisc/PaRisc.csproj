@@ -3,8 +3,10 @@
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <OutputType>Library</OutputType>
     <AssemblyName>Reko.Arch.PaRisc</AssemblyName>
     <RootNamespace>Reko.Arch.PaRisc</RootNamespace>
+    <Nullable>enable</Nullable>
     <Configurations>Debug;Release</Configurations>
   </PropertyGroup>
 

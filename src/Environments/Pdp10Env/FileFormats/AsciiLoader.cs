@@ -18,13 +18,13 @@
  */
 #endregion
 
-using Reko.Arch.Pdp10;
+using Reko.Arch.Pdp;
+using Reko.Arch.Pdp.Memory;
 using Reko.Core;
 using Reko.Core.Loading;
 using Reko.Core.Services;
 using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace Reko.Environments.Pdp10Env.FileFormats
 {
@@ -80,7 +80,7 @@ namespace Reko.Environments.Pdp10Env.FileFormats
             var program = new Program(map, arch, platform);
 
             /// Start address is at address 0o120 (0x50)
-            if (arch.TryRead(mem, new Address18(0x50), Pdp10Architecture.Word36, out var start))
+            if (arch.TryRead(mem, new Address18(0x50), PdpTypes.Word36, out var start))
             {
                 var uStart = (uint) (start.ToUInt64() & ((1ul << 18) - 1));
                 var addrStart = new Address18(uStart);

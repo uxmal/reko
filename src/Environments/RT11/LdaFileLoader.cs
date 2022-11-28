@@ -18,13 +18,13 @@
  */
 #endregion
 
-using System;
+using Reko.Arch.Pdp;
 using Reko.Core;
-using Reko.Arch.Pdp11;
+using Reko.Core.Loading;
+using Reko.Core.Memory;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using Reko.Core.Memory;
-using Reko.Core.Loading;
 
 namespace Reko.Environments.RT11
 {

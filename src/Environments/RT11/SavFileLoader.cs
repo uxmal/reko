@@ -20,7 +20,7 @@
 
 using System;
 using Reko.Core;
-using Reko.Arch.Pdp11;
+using Reko.Arch.Pdp;
 using System.Collections.Generic;
 using Reko.Core.Types;
 using Reko.Core.Memory;

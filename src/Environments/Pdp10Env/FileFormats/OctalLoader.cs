@@ -18,13 +18,13 @@
  */
 #endregion
 
-using Reko.Arch.Pdp10;
+using Reko.Arch.Pdp;
+using Reko.Arch.Pdp.Memory;
 using Reko.Core;
 using Reko.Core.Loading;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Text;
 
 namespace Reko.Environments.Pdp10Env.FileFormats
 {

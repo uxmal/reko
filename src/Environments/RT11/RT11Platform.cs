@@ -18,7 +18,8 @@
  */
 #endregion
 
-using Reko.Arch.Pdp11;
+using Reko.Arch.Pdp;
+using Reko.Arch.Pdp.Pdp11;
 using Reko.Core;
 using Reko.Core.Hll.C;
 using System;
