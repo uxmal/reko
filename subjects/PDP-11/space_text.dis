@@ -938,40 +938,40 @@ void fn0EF8(word16 r4, word16 r5)
 // Preserved: r2
 fn0EF8_entry:
 	ptr16 fp
+	word16 pc
 l0EF8:
 	word16 r3_13 = Mem0[0x5424<p16>:word16]
 	word16 v13_10 = Mem0[r4:word16]
 	word16 v17_17 = Mem16[r3_13 + 0xE<16>:word16]
 	word16 v18_20 = Mem19[r3_13:word16]
 	byte v16_14 = Mem0[r3_13 + 0x74<16>:byte]
-	byte bLoc04_133 = Mem22[v13_10 + 1<16>:byte]
+	byte bLoc04_127 = Mem22[v13_10 + 1<16>:byte]
 	Mem31[r3_13:word16] = 0<16>
 	Mem33[r3_13 + 0xE<16>:word16] = fp - 7<16>
 	word16 v22_37 = Mem35[r5:word16]
-	byte bArg00_117 = SLICE(v17_17, byte, 8)
-	byte bLoc03_134 = SLICE(v18_20, byte, 0)
-	byte bLoc01_140 = SLICE(v17_17, byte, 0)
-	byte bLoc02_139 = SLICE(v18_20, byte, 8)
-	word16 r0_28 = v13_10 + 4<16>
+	byte bLoc03_128 = SLICE(v18_20, byte, 0)
+	byte bLoc01_134 = SLICE(v17_17, byte, 0)
+	byte bLoc02_133 = SLICE(v18_20, byte, 8)
+	byte bArg00_139 = SLICE(v17_17, byte, 8)
+	word16 r0_100 = v13_10 + 4<16>
 	word16 r5_38 = r5 + 2<16>
 	word16 r1_39 = v22_37
-	word16 wArg00_118 = SEQ(v16_14, bArg00_117)
-	word16 wLoc04_132 = SEQ(bLoc03_134, bLoc04_133)
-	wLoc04_132 = SEQ(bLoc03_134, bLoc04_133) (alias)
-	word16 wLoc02_138 = SEQ(bLoc01_140, bLoc02_139)
-	wLoc02_138 = SEQ(bLoc01_140, bLoc02_139) (alias)
+	word16 wLoc04_126 = SEQ(bLoc03_128, bLoc04_127)
+	wLoc04_126 = SEQ(bLoc03_128, bLoc04_127) (alias)
+	word16 wLoc02_132 = SEQ(bLoc01_134, bLoc02_133)
+	wLoc02_132 = SEQ(bLoc01_134, bLoc02_133) (alias)
 	branch v22_37 == 0<16> l0F2C
 l0F1C:
 	word16 v23_43 = Mem35[v13_10 + 4<16>:word16]
-	r0_28 = v13_10 + 6<16>
+	r0_100 = v13_10 + 6<16>
 	word16 r2_45 = v23_43
 	branch v23_43 == 0<16> l0F2C
 l0F20:
-	r0_28 = Mem35[v13_10 + 6<16>:word16]
+	r0_100 = Mem35[v13_10 + 6<16>:word16]
 l0F22:
-	Mem57[r0_28:word16] = Mem53[r5_38:word16]
+	Mem57[r0_100:word16] = Mem53[r5_38:word16]
 	r5_38 = r5_38 + 2<16>
-	r0_28 = r0_28 + 2<16>
+	r0_100 = r0_100 + 2<16>
 	r1_39 = r1_39 - 1<16>
 	branch r1_39 == 0<16> l0F2C
 l0F28:
@@ -979,17 +979,18 @@ l0F28:
 	branch r2_45 != 0<16> l0F22
 l0F2C:
 	Mem74[r3_13 + 0x74<16>:byte] = 0<8>
+	word16 wArg00_143 = SEQ(v16_14, bArg00_139)
 	branch true l0F34
 l0F34:
-	fn4142()
-	word16 r4_90 = Mem74[0x5424<p16>:word16]
-	Mem93[r4_90:word16] = wLoc04_132
-	Mem96[r4_90 + 0xE<16>:word16] = wLoc02_138
-	Mem99[r4_90 + 0x74<16>:byte] = bArg00_117
+	fn4078(pc)
+	word16 r4_84 = Mem74[0x5424<p16>:word16]
+	Mem87[r4_84:word16] = wLoc04_126
+	Mem90[r4_84 + 0xE<16>:word16] = wLoc02_132
+	Mem93[r4_84 + 0x74<16>:byte] = bArg00_139
 	return
 l0F32:
 	call Mem74[r4 + 2<16>:word16] (retsize: 0;)
-		uses: r0:r0_78,Stack +0008:wArg00_118
+		uses: r0:r0_100,Stack +0008:wArg00_143
 	return
 fn0EF8_exit:
 
@@ -2419,6 +2420,65 @@ l4072_thunk_fn0EF8:
 fn4072_exit:
 
 
+void fn4078(word16 pc)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// Called from:
+//      fn4072
+// MayUse:  pc:[0..15]
+// LiveOut:
+// Trashed: NZVC r0 r1 r3 r4 r5
+// Preserved: sp
+fn4078_entry:
+l4078:
+	Mem5[Mem0[0x5426<p16>:ptr16]:word16] = 3<16>
+	Mem8[0x57E0<p16>:word16] = Mem5[Mem5[0x57DA<p16>:ptr16]:word16]
+	Mem13[Mem8[0x5426<p16>:ptr16]:word16] = Mem8[Mem8[0x5426<p16>:ptr16]:word16] + 1<16>
+	Mem16[0x57E2<p16>:word16] = Mem13[Mem13[0x57DC<p16>:ptr16]:word16]
+	Mem21[Mem16[0x5426<p16>:ptr16]:word16] = Mem16[Mem16[0x5426<p16>:ptr16]:word16] + 1<16>
+	branch Mem21[0x57DE<p16>:word16] >= 0<16> l40A0
+l4098:
+	Mem33[Mem21[0x5426<p16>:ptr16]:word16] = Mem21[Mem21[0x5426<p16>:ptr16]:word16] + 1<16>
+	Mem34[0x57E0<p16>:word16] = 0<16>
+l40A0:
+	Mem41[Mem39[0x5426<p16>:ptr16]:word16] = 7<16>
+	branch Mem41[0x57E0<p16>:word16] >= 0<16> l40B4
+l40AC:
+	Mem53[Mem41[0x5426<p16>:ptr16]:word16] = Mem41[Mem41[0x5426<p16>:ptr16]:word16] + 1<16>
+	Mem54[0x57E2<p16>:word16] = 0<16>
+l40B4:
+	Mem61[Mem59[0x5426<p16>:ptr16]:word16] = 9<16>
+	branch Mem61[0x57DE<p16>:word16] >= 0x4F<16> l40CC
+l40C2:
+	Mem69[Mem61[0x5426<p16>:ptr16]:word16] = Mem61[Mem61[0x5426<p16>:ptr16]:word16] + 1<16>
+	Mem70[0x57E0<p16>:word16] = 0x4F<16>
+l40CC:
+	Mem75[Mem73[0x5426<p16>:ptr16]:word16] = 0xB<16>
+	branch Mem75[0x57E0<p16>:word16] >= 0x17<16> l40E4
+l40DA:
+	Mem83[Mem75[0x5426<p16>:ptr16]:word16] = Mem75[Mem75[0x5426<p16>:ptr16]:word16] + 1<16>
+	Mem84[0x57E2<p16>:word16] = 0x17<16>
+l40E4:
+	Mem89[Mem87[0x5426<p16>:ptr16]:word16] = 0xD<16>
+	Mem96[pc + 0x16F0<16>:word16] = Mem89[pc + 0x16F0<16>:word16] + 0x20<16>
+	Mem101[Mem96[0x5426<p16>:ptr16]:word16] = Mem96[Mem96[0x5426<p16>:ptr16]:word16] + 1<16>
+	Mem103[0x57E2<p16>:word16] = -Mem101[0x57E0<p16>:word16]
+	Mem105[pc + 0x16E4<16>:word16] = Mem103[pc + 0x16E4<16>:word16] + 0x37<16>
+	Mem111[Mem105[0x5426<p16>:ptr16]:word16] = Mem105[Mem105[0x5426<p16>:ptr16]:word16] + 1<16>
+	Mem112[0x57DC<p16>:byte] = 0x9B<8>
+	Mem117[Mem112[0x5426<p16>:ptr16]:word16] = Mem112[Mem112[0x5426<p16>:ptr16]:word16] + 1<16>
+	Mem118[0x57DD<p16>:byte] = 0x59<8>
+	Mem123[Mem118[0x5426<p16>:ptr16]:word16] = Mem118[Mem118[0x5426<p16>:ptr16]:word16] + 1<16>
+	Mem125[0x57DE<p16>:byte] = CONVERT(Mem123[0x57E0<p16>:byte], byte, int16)
+	Mem130[Mem125[0x5426<p16>:ptr16]:word16] = Mem125[Mem125[0x5426<p16>:ptr16]:word16] + 1<16>
+	Mem132[0x57DF<p16>:byte] = CONVERT(Mem130[0x57DE<p16>:byte], byte, int16)
+	Mem137[Mem132[0x5426<p16>:ptr16]:word16] = Mem132[Mem132[0x5426<p16>:ptr16]:word16] + 1<16>
+	fn4534(0x534E<16>)
+	Mem154[Mem137[0x5426<p16>:ptr16]:word16] = Mem137[Mem137[0x5426<p16>:ptr16]:word16] + 1<16>
+	return
+fn4078_exit:
+
+
 void fn413C(word16 r5)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
@@ -2432,34 +2492,6 @@ l413C_thunk_fn0EF8:
 	fn0EF8(0x4140<p16>, r5)
 	return
 fn413C_exit:
-
-
-void fn4142()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// Called from:
-//      fn0EF8
-// MayUse: 
-// LiveOut:
-// Trashed: NZVC r5
-// Preserved: sp
-fn4142_entry:
-l4142:
-	Mem5[Mem0[0x5426<p16>:ptr16]:word16] = 3<16>
-	Mem6[0x57E6<p16>:byte] = 0x9B<8>
-	Mem11[Mem6[0x5426<p16>:ptr16]:word16] = Mem6[Mem6[0x5426<p16>:ptr16]:word16] + 1<16>
-	Mem12[0x57E7<p16>:byte] = 0x46<8>
-	Mem17[Mem12[0x5426<p16>:ptr16]:word16] = Mem12[Mem12[0x5426<p16>:ptr16]:word16] + 1<16>
-	branch Mem17[Mem17[0x57E4<p16>:ptr16]:word16] != 0<16> l416C
-l4162:
-	Mem30[Mem17[0x5426<p16>:ptr16]:word16] = Mem17[Mem17[0x5426<p16>:ptr16]:word16] + 1<16>
-	Mem31[0x57E7<p16>:byte] = 0x47<8>
-l416C:
-	Mem36[Mem34[0x5426<p16>:ptr16]:word16] = 7<16>
-	fn4534()
-	Mem46[Mem36[0x5426<p16>:ptr16]:word16] = Mem36[Mem36[0x5426<p16>:ptr16]:word16] + 1<16>
-	return
-fn4142_exit:
 
 
 void fn4180(word16 r5)
@@ -2492,17 +2524,16 @@ l4230_thunk_fn0EF8:
 fn4230_exit:
 
 
-void fn4534()
+void fn4534(word16 r5)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
-//      fn4142
-// MayUse: 
+//      fn4078
+// MayUse:  r5:[0..15]
 // LiveOut:
-// Trashed: r4 sp
-// Preserved:
+// Trashed: NZVC r0 r1 r3 r4 r5
+// Preserved: sp
 fn4534_entry:
-	word16 r5
 l4534:
 l4534_thunk_fn0EF8:
 	fn0EF8(0x4538<p16>, r5)

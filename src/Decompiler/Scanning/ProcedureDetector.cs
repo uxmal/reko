@@ -234,31 +234,27 @@ namespace Reko.Scanning
             WorkList<Address> unvisited)
         {
             var queue = new Queue<Address>();
-            cluster.Blocks.Add(sr.Blocks[startNode]);
-            if (sr.Successors.TryGetValue(startNode, out var succ))
-            {
-                queue.EnqueueRange(succ
-                    .Where(s => !procedures.Contains(s)));
-            }
+            unvisited.Add(startNode);
+            queue.Enqueue(startNode);
             while (queue.TryDequeue(out var node))
             {
                 if (!unvisited.Contains(node))
                     continue;
                 unvisited.Remove(node);
                 cluster.Blocks.Add(sr.Blocks[node]);
-                if (sr.Successors.TryGetValue(node, out succ))
-                    {
+                if (sr.Successors.TryGetValue(node, out var succ))
+                {
                     queue.EnqueueRange(succ
                         .Where(s => !procedures.Contains(s)));
-                    }
-                if (!procedures.Contains(node) && 
+                }
+                if (!procedures.Contains(node) &&
                     sr.Predecessors.TryGetValue(node, out var preds))
-            {
+                {
                     var pred = sr.Predecessors[node];
                     queue.EnqueueRange(pred);
-                } 
-                    }
                 }
+            }
+        }
 
         /// <summary>
         /// For each of the given clusters, finds all the entries for the cluster 
