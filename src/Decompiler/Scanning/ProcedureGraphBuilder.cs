@@ -146,9 +146,45 @@ namespace Reko.Scanning
         {
             var addr = rtlProc.Address;
             var arch = rtlProc.Architecture;
-            var name = program.NamingPolicy.ProcedureName(addr);
+            var name = GetProcedureName(rtlProc.Address);
             var proc = Procedure.Create(arch, name, addr, arch.CreateFrame());
             return proc;
+        }
+
+        private string GetProcedureName(Address addr)
+        {
+            if (program.User.Procedures.TryGetValue(addr, out var userProc) &&
+                !string.IsNullOrEmpty(userProc.Name))
+            {
+                return userProc.Name;
+            }
+            if (program.ImageSymbols.TryGetValue(addr, out var sym) &&
+                !string.IsNullOrEmpty(sym.Name))
+            {
+                var sProc = program.Platform.SignatureFromName(sym.Name);
+                if (sProc?.Name != null)
+                {
+                    return sProc.Name;
+                }
+                else
+                {
+                    return sym.Name;
+                }
+            }
+            if (program.EntryPoints.TryGetValue(addr, out var ep) &&
+                !string.IsNullOrEmpty(ep.Name))
+            {
+                var sProc = program.Platform.SignatureFromName(ep.Name);
+                if (sProc?.Name != null)
+                {
+                    return sProc.Name;
+                }
+                else
+                {
+                    return ep.Name;
+                }
+            }
+            return program.NamingPolicy.ProcedureName(addr);
         }
 
         public Instruction VisitAssignment(RtlAssignment ass, Block ctx)
