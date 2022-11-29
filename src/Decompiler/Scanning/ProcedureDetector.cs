@@ -187,7 +187,7 @@ namespace Reko.Scanning
 
         /// <summary>
         /// Collects weakly connected components from the ICFG and gathers
-        /// them into Clusters.
+        /// them into <see cref="Cluster"/>s.
         /// </summary>
         public List<Cluster> FindClusters()
         {
@@ -273,7 +273,7 @@ namespace Reko.Scanning
                 //$PERF each cluster could be processed in parallel.
                 if (listener.IsCanceled())
                     break;
-                FuseLinearBlocks(cluster);
+                FuseLinearBlocks(cluster); 
                 // cluster.Dump(sr.ICFG);
                 if (FindClusterEntries(cluster))
                 {

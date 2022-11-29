@@ -82,6 +82,8 @@ namespace Reko.Arch.X86
             {
                 instrCur = dasm.Current;
                 var addr = instrCur.Address;
+                if (addr.Offset == 0x8D1)
+                    _ = this; //$DEBUG
                 this.iclass = instrCur.InstructionClass;
                 switch (instrCur.Mnemonic)
                 {
@@ -106,6 +108,7 @@ namespace Reko.Arch.X86
                 case Mnemonic.vaddsd: RewriteScalarBinop(m.FAdd, PrimitiveType.Real64, true); break;
                 case Mnemonic.addps: RewritePackedBinop(false, addp_intrinsic, PrimitiveType.Real32); break;
                 case Mnemonic.addpd: RewritePackedBinop(false, addp_intrinsic, PrimitiveType.Real64); break;
+                case Mnemonic.vaddpd: RewritePackedBinop(true, addp_intrinsic, PrimitiveType.Real64); break;
                 case Mnemonic.adox: RewriteAdcx(Registers.O); break;
                 case Mnemonic.aesenc: RewriteAesenc(false); break;
                 case Mnemonic.vaesenc: RewriteAesenc(true); break;

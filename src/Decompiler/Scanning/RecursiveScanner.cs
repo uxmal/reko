@@ -47,16 +47,18 @@ namespace Reko.Scanning
         public RecursiveScanner(
             Program program,
             IDynamicLinker dynamicLinker,
-            DecompilerEventListener listener)
-            : this(program, new ScanResultsV2(), dynamicLinker, listener)
+            DecompilerEventListener listener,
+            IServiceProvider services)
+            : this(program, new ScanResultsV2(), dynamicLinker, listener, services)
         { }
 
         public RecursiveScanner(
             Program program, 
             ScanResultsV2 sr, 
             IDynamicLinker dynamicLinker,
-            DecompilerEventListener listener)
-            : base(program, sr, dynamicLinker, listener)
+            DecompilerEventListener listener,
+            IServiceProvider services)
+            : base(program, sr, dynamicLinker, listener, services)
         {
             this.wl = new WorkList<ProcedureWorker>();
             this.activeWorkers = new();

@@ -85,7 +85,7 @@ namespace Reko.UnitTests.Decompiler.Scanning
         {
             var dynLinker = new Mock<IDynamicLinker>();
             var listener = new Mock<DecompilerEventListener>();
-            var scanner = new ShingleScanner(program, cfg, dynLinker.Object, listener.Object);
+            var scanner = new ShingleScanner(program, cfg, dynLinker.Object, listener.Object, new ServiceContainer());
             var chunks = scanner.MakeScanChunks();
             return chunks;
         }
@@ -94,7 +94,7 @@ namespace Reko.UnitTests.Decompiler.Scanning
         {
             var dynLinker = new Mock<IDynamicLinker>();
             var listener = new Mock<DecompilerEventListener>();
-            var scanner = new ShingleScanner(program, cfg, dynLinker.Object, listener.Object);
+            var scanner = new ShingleScanner(program, cfg, dynLinker.Object, listener.Object, new ServiceContainer());
             var cfgNew = scanner.ScanProgram();
             scanner.RegisterPredecessors();
             var sw = new StringWriter();
@@ -326,7 +326,7 @@ namespace Reko.UnitTests.Decompiler.Scanning
         private void CreateX86Scanner()
         {
             var dynLinker = new Mock<IDynamicLinker>();
-            this.scanner = new ShingleScanner(program, cfg, dynLinker.Object, listener);
+            this.scanner = new ShingleScanner(program, cfg, dynLinker.Object, listener, new ServiceContainer());
         }
 
         private void CreateScanner(uint uAddr)
@@ -359,7 +359,7 @@ namespace Reko.UnitTests.Decompiler.Scanning
                 new Func<EndianImageReader, ProcessorState, IStorageBinder, IRewriterHost, IEnumerable<RtlInstructionCluster>>(
                     (r, s, b, h) => new TestRewriter(this, r.Address)));
             this.program.Architecture = arch.Object;
-            this.scanner = new ShingleScanner(program, cfg, dynamicLinker.Object, listener);
+            this.scanner = new ShingleScanner(program, cfg, dynamicLinker.Object, listener, new ServiceContainer());
         }
 
         [Test]

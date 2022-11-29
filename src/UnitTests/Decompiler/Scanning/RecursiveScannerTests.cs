@@ -27,6 +27,7 @@ using Reko.Core.Services;
 using Reko.Scanning;
 using Reko.UnitTests.Mocks;
 using System;
+using System.ComponentModel.Design;
 using System.IO;
 using System.Linq;
 
@@ -45,7 +46,7 @@ namespace Reko.UnitTests.Decompiler.Scanning
         {
             var dynamicLinker = new Mock<IDynamicLinker>().Object;
             var listener = new Mock<DecompilerEventListener>().Object;
-            var scanner = new RecursiveScanner(program, dynamicLinker, listener);
+            var scanner = new RecursiveScanner(program, dynamicLinker, listener, new ServiceContainer());
             var cfg = scanner.ScanProgram();
             scanner.RegisterPredecessors();
             var sw = new StringWriter();
@@ -761,7 +762,7 @@ l0000100C: // l:1; ft:0000100D (INVALID)
                 m => m.Call(Address.Ptr32(0x1020), 0),
             });
             Given_Trace(new RtlTrace(0x1008)
-            { 
+            {
                 m => m.Return(0, 0)
             });
             Given_Trace(new RtlTrace(0x1020)
@@ -792,6 +793,60 @@ l00001020: // l:4; ft:00001024
             #endregion
 
             RunTest(expected);
+        }
+
+        [Test]
+        public void RecScan_TwoCalls_SameProc()
+        {
+            Given_EntryPoint(0x1000);
+            Given_TrampolineAt(0x1020, 0x1020, "malloc");
+            Given_Trace(new RtlTrace(0x1000)
+            {
+                m => m.Assign(r2, m.Mem32(m.Word32(0x00123400))),
+                m => m.Call(Address.Ptr32(0x1020), 0),
+            });
+            Given_Trace(new RtlTrace(0x1008)
+            {
+                m => m.Assign(r2, 0x42),
+                m => m.Call(Address.Ptr32(0x1020), 0),
+            });
+            Given_Trace(new RtlTrace(0x1010)
+            {
+                m => m.Return(0, 0)
+            });
+            Given_Trace(new RtlTrace(0x1020)
+            {
+                m => m.Goto(m.Mem32(m.Word32(0x3000)))
+            });
+
+            var sExpected =
+            #region Expected
+@"
+define fn00001000
+l00001000: // l:8; ft:00001008
+    // pred:
+    r2 = Mem0[0x123400<32>:word32]
+    call 00001020 (0)
+    // succ: l00001008
+l00001008: // l:8; ft:00001010
+    // pred: l00001000
+    r2 = 0x42<32>
+    call 00001020 (0)
+    // succ: l00001010
+l00001010: // l:4; ft:00001014
+    // pred: l00001008
+    return (0,0)
+    // succ:
+
+define fn00001020 stub to 'malloc'
+l00001020: // l:4; ft:00001024
+    // pred:
+    goto Mem0[0x3000<32>:word32]
+    // succ:
+";
+            #endregion
+
+            RunTest(sExpected);
         }
     }
 }

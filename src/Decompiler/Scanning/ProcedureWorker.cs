@@ -26,6 +26,7 @@ using Reko.Core.Services;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Threading;
 using System.Threading.Tasks;
@@ -110,8 +111,17 @@ namespace Reko.Scanning
 
         protected override void ProcessCall(RtlBlock block, Edge edge, ProcessorState state)
         {
-            if (recScanner.GetProcedureReturnStatus(edge.To) != ReturnStatus.Unknown)
+            switch (recScanner.GetProcedureReturnStatus(edge.To))
+            {
+            case ReturnStatus.Diverges:
                 return;
+            case ReturnStatus.Returns:
+                var fallThrough = new Edge(block.Address, block.FallThrough, EdgeType.Fallthrough);
+                recScanner.RegisterEdge(fallThrough);
+                AddJob(fallThrough.To, state);
+                log.Verbose("    {0}: added edge to {1}", fallThrough.From, fallThrough.To);
+                return;
+            }
             // The target procedure has not been processed yet, so try to suspend
             // this worker waiting for the target procedure to finish. Suspending
             // this worker will always succeed.

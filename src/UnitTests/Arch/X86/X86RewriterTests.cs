@@ -2195,6 +2195,17 @@ namespace Reko.UnitTests.Arch.X86
         }
 
         [Test]
+        public void X86Rw_vaddpd()
+        {
+            Run64bitTest("C5FD588570FFFFFF");
+            AssertCode(     // vaddpd   ymm0,ymm0,[rbp-90h]
+                "0|L--|0000000140000000(8): 3 instructions",
+                "1|L--|v4 = ymm0",
+                "2|L--|v5 = Mem0[rbp - 144<i64>:word256]",
+                "3|L--|ymm0 = __addp<real64[4]>(v4, v5)");
+        }
+
+        [Test]
         public void X86rw_vaddsd()
         {
             Run64bitTest("C5FB58C0");   // vaddsd xmm0,xmm0,xmm0

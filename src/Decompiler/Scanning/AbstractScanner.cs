@@ -19,6 +19,7 @@
 #endregion
 
 using Reko.Core;
+using Reko.Core.Configuration;
 using Reko.Core.Diagnostics;
 using Reko.Core.Expressions;
 using Reko.Core.Rtl;
@@ -45,6 +46,7 @@ namespace Reko.Scanning
             Level = TraceLevel.Warning
         };
 
+        protected readonly IServiceProvider services;
         protected readonly Program program;
         protected readonly ScanResultsV2 sr;
         protected readonly DecompilerEventListener listener;
@@ -56,11 +58,13 @@ namespace Reko.Scanning
             Program program,
             ScanResultsV2 sr,
             IDynamicLinker dynamicLinker,
-            DecompilerEventListener listener)
+            DecompilerEventListener listener,
+            IServiceProvider services)
         {
+            this.services = services;
             this.program = program;
             this.sr = sr;
-            this.host = new RewriterHost(program, dynamicLinker, listener);
+            this.host = new RewriterHost(services, program, dynamicLinker, listener);
             this.listener = listener;
             this.blockStarts = new ConcurrentDictionary<Address, Address>();
             this.blockEnds = new ConcurrentDictionary<Address, Address>();
@@ -440,15 +444,18 @@ namespace Reko.Scanning
 
         private class RewriterHost : IRewriterHost
         {
+            private readonly IServiceProvider services;
             private readonly Program program;
             private readonly IDynamicLinker dynamicLinker;
             private readonly DecompilerEventListener listener;
 
             public RewriterHost(
+                IServiceProvider services,
                 Program program,
                 IDynamicLinker dynamicLinker,
                 DecompilerEventListener listener)
             {
+                this.services = services;
                 this.program = program;
                 this.dynamicLinker = dynamicLinker;
                 this.listener = listener;
@@ -458,12 +465,21 @@ namespace Reko.Scanning
 
             public IProcessorArchitecture GetArchitecture(string archMoniker)
             {
-                throw new NotImplementedException();
+                var cfgSvc = services.RequireService<IConfigurationService>();
+                return program.EnsureArchitecture(archMoniker, cfgSvc.GetArchitecture!);
             }
 
-            public Expression GetImport(Address addrThunk, Address addrInstr)
+            public Expression? GetImport(Address addrImportThunk, Address addrInstruction)
             {
-                throw new NotImplementedException();
+                if (program.ImportReferences.TryGetValue(addrImportThunk, out var impref))
+                {
+                    var global = impref.ResolveImport(
+                        dynamicLinker,
+                        program.Platform,
+                        new AddressContext(program, addrInstruction, this.listener));
+                    return global;
+                }
+                return null;
             }
 
             /// <summary>

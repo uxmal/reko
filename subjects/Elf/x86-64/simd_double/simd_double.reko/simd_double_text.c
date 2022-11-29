@@ -75,37 +75,38 @@ void * _mm_malloc(uint64 rsi, Eq_n rdi)
 	return rax_n;
 }
 
-// 000000000000078D: void _mm_free(Register (ptr64 (arr real64)) rdi)
+// 000000000000078D: void _mm_free(Register (ptr64 (arr Eq_n)) rdi)
 // Called from:
 //      main
-void _mm_free(real64 (* rdi)[])
+void _mm_free(Eq_n (* rdi)[])
 {
 	free(rdi);
 }
 
-// 00000000000007A8: void vec_add(Register word64 rdi)
+// 00000000000007A8: void vec_add(Register (arr Eq_n) rcx, Register (arr Eq_n) rdx, Register (arr Eq_n) rsi, Register word64 rdi)
 // Called from:
 //      main
-void vec_add(word64 rdi)
+void vec_add(Eq_n rcx[], Eq_n rdx[], Eq_n rsi[], word64 rdi)
 {
 	char ** fp;
 	__align_stack<word64>(fp);
 	uint64 rax_n = (uint64) ((uint128) rdi /u double_size.21529);
-	if (rax_n <= 0x00)
-		;
+	uint64 qwLoc28_n;
+	for (qwLoc28_n = 0x00; qwLoc28_n < rax_n; ++qwLoc28_n)
+		rsi[qwLoc28_n].u1 = __addp<real64[4]>(rdx[qwLoc28_n], rcx[qwLoc28_n]);
 }
 
 // 0000000000000898: void main()
 void main()
 {
 	word128 xmm0;
-	real64 rax_n[] = _mm_malloc(0x20, 0x2000);
-	real64 rax_n[] = _mm_malloc(0x20, 0x2000);
-	real64 rax_n[] = _mm_malloc(0x20, 0x2000);
+	Eq_n rax_n[] = _mm_malloc(0x20, 0x2000);
+	Eq_n rax_n[] = _mm_malloc(0x20, 0x2000);
+	Eq_n rax_n[] = _mm_malloc(0x20, 0x2000);
 	Eq_n qwLoc10_n = 0x00;
 	while (qwLoc10_n < 0x0400)
 	{
-		real64 * rcx_n = rax_n + qwLoc10_n;
+		real64 * rcx_n = rax_n + (qwLoc10_n * 0x08) /64 32;
 		ui32 eax_n = (word32) qwLoc10_n;
 		if (qwLoc10_n >= 0x00)
 			xmm0 = SEQ(SLICE(xmm0, word64, 64), (real64) qwLoc10_n);
@@ -121,7 +122,7 @@ void main()
 	while (qwLoc18_n < 0x0400)
 	{
 		ui32 eax_n = (word32) qwLoc18_n + 0x01;
-		real64 * rcx_n = rax_n + qwLoc18_n;
+		real64 * rcx_n = rax_n + (qwLoc18_n * 0x08) /64 32;
 		if (qwLoc18_n >= 0x01)
 			xmm0 = SEQ(SLICE(xmm0, word64, 64), (real64) ((word64) qwLoc18_n + 1));
 		else
@@ -134,11 +135,11 @@ void main()
 	}
 	uint64 qwLoc20_n;
 	for (qwLoc20_n = 0x00; qwLoc20_n < 0x0400; ++qwLoc20_n)
-		rax_n[qwLoc20_n] = 0.0;
-	vec_add(0x0400);
+		rax_n[qwLoc20_n * 0x08 /64 32].u0 = 0.0;
+	vec_add(rax_n, rax_n, rax_n, 0x0400);
 	uint64 qwLoc28_n;
 	for (qwLoc28_n = 0x00; qwLoc28_n < 0x0400; ++qwLoc28_n)
-		printf("%g\n", rax_n[qwLoc28_n]);
+		printf("%g\n", rax_n[qwLoc28_n * 0x08 /64 32]);
 	_mm_free(rax_n);
 	_mm_free(rax_n);
 	_mm_free(rax_n);

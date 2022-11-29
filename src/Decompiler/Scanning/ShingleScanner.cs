@@ -44,8 +44,13 @@ namespace Reko.Scanning
     /// </remarks>
     public class ShingleScanner : AbstractScanner
 	{
-        public ShingleScanner(Program program, ScanResultsV2 sr, IDynamicLinker dynamicLinker,  DecompilerEventListener listener)
-            : base(program, sr, dynamicLinker, listener)
+        public ShingleScanner(
+            Program program,
+            ScanResultsV2 sr,
+            IDynamicLinker dynamicLinker,
+            DecompilerEventListener listener,
+            IServiceProvider services)
+            : base(program, sr, dynamicLinker, listener, services)
         {
         }
 
@@ -171,6 +176,8 @@ namespace Reko.Scanning
             ImageSegment segment, 
             BTreeDictionary<Address, RtlBlock> sortedBlocks)
         {
+            if (segment.Address.Offset == 0x610)
+                _ = this; //$DEBUG
             long Align(long value, int alignment)
             {
                 return alignment * ((value + (alignment - 1)) / alignment);
@@ -182,10 +189,12 @@ namespace Reko.Scanning
             int unitAlignment = program.Architecture.InstructionBitSize / program.Architecture.MemoryGranularity;
             while (iGapOffset < segment.Size)
             {
+                var spaceLeft = segment.Size - iGapOffset;
                 var addrGapStart = segment.Address + iGapOffset;
                 if (!sortedBlocks.TryGetUpperBound(addrGapStart, out var nextBlock))
                     break;
                 var gapSize = nextBlock.Address - addrGapStart;
+                gapSize = Math.Min(gapSize, spaceLeft);
                 chunk = MakeChunkWorker(addrGapStart, gapSize);
                 if (chunk is not null)
                 {

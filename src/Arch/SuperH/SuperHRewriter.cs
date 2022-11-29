@@ -356,7 +356,9 @@ namespace Reko.Arch.SuperH
                 default: throw new NotImplementedException(mem.mode.ToString());
                 }
             }
-            throw new NotImplementedException(op.GetType().Name);
+            throw new AddressCorrelatedException(instr.Address,
+                new NotImplementedException(op.GetType().Name),
+                $"Unimplemented DstOp: {instr}.");
         }
 
 

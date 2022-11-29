@@ -22,6 +22,7 @@ using Reko.Core;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 
 namespace Reko.Scanning
 {
@@ -42,6 +43,7 @@ namespace Reko.Scanning
             this.TrampolineStubEnds = new();
             this.NoDecompiles = new();
             this.ICFG = new ScanResultsGraph(this);
+            this.WatchedAddresses = new HashSet<Address>();
         }
 
         /// <summary>
@@ -103,7 +105,14 @@ namespace Reko.Scanning
         public ConcurrentDictionary<Address, Trampoline> TrampolineStubEnds { get; }
 
         public ConcurrentDictionary<Address, ExternalProcedure> NoDecompiles { get; }
+        
+        /// <summary>
+        /// The interprocedural control graph formed by <see cref="Successors"/> and
+        /// <see cref="Predecessors"/>.
+        /// </summary>
         public ScanResultsGraph ICFG { get; }
+
+        public HashSet<Address> WatchedAddresses { get; }
 
         [Conditional("DEBUG")]
         public void Dump(string caption = "Dump")
@@ -114,26 +123,26 @@ namespace Reko.Scanning
 #if VERBOSE
             Debug.Print("== {0} =====================", caption);
             Debug.Print("{0} nodes", ICFG.Nodes.Count);
-            foreach (var block in ICFG.Nodes.OrderBy(n => n.Address))
+            foreach (var addBlock in ICFG.Nodes.OrderBy(n => n))
             {
+                var block = Blocks[addBlock];
                 var addrEnd = block.GetEndAddress();
-                if (KnownProcedures.Contains(block.Address))
+                if (Procedures.ContainsKey(block.Address))
                 {
                     Debug.WriteLine("");
                     Debug.Print("-- {0}: known procedure ----------", block.Address);
                 }
-                else if (DirectlyCalledAddresses.ContainsKey(block.Address))
+                else if (SpeculativeProcedures.ContainsKey(block.Address))
                 {
                     Debug.WriteLine("");
                     Debug.Print("-- {0}: possible procedure, called {1} time(s) ----------",
                         block.Address,
-                        DirectlyCalledAddresses[block.Address]);
+                        SpeculativeProcedures[block.Address]);
                 }
                 Debug.Print("{0}:  //  pred: {1}",
                     block.Name,
-                    string.Join(" ", ICFG.Predecessors(block)
-                        .OrderBy(n => n.Address)
-                        .Select(n => n.Address)));
+                    string.Join(" ", ICFG.Predecessors(block.Address)
+                        .OrderBy(n => n)));
                 foreach (var cluster in block.Instructions)
                 {
                     Debug.Print("  {0}", cluster);
@@ -142,14 +151,11 @@ namespace Reko.Scanning
                         Debug.Print("    {0}", instr);
                     }
                 }
-                Debug.Print("  // succ: {0}", string.Join(" ", ICFG.Successors(block)
-                    .OrderBy(n => n.Address)
-                    .Select(n => n.Address)));
+                Debug.Print("  // succ: {0}", string.Join(" ", ICFG.Successors(block.Address)
+                    .OrderBy(n => n)));
             }
 #endif
         }
-
-
     }
 
     public enum BlockFlags

@@ -65,7 +65,7 @@ namespace Reko.Scanning
 
             // Traverse the executable part of the image using a recursive algorithm.
 
-            var scanner = new RecursiveScanner(program, dynamicLinker, listener);
+            var scanner = new RecursiveScanner(program, dynamicLinker, listener, services);
             trace.Inform("= Recursive scan ======");
             var (cfg, recTime) = Time(scanner.ScanProgram);
             trace.Inform("Found {0} procs", cfg.Procedures.Count);
@@ -76,7 +76,7 @@ namespace Reko.Scanning
             // There will be "islands" of unscanned bytes left over.
             // Scan these using the ShingleScanner.
 
-            var shScanner = new ShingleScanner(program, cfg, dynamicLinker, listener);
+            var shScanner = new ShingleScanner(program, cfg, dynamicLinker, listener, services);
             trace.Inform("= Shingle scan ======");
             var (cfg2, shTime) = Time(shScanner.ScanProgram);
             trace.Inform("Found {0} procs", cfg2.Procedures.Count);
@@ -126,7 +126,7 @@ namespace Reko.Scanning
 
         public ProcedureBase ScanProcedure(IProcessorArchitecture arch, Address addr, string? procedureName, ProcessorState state)
         {
-            var scanner = new RecursiveScanner(program, dynamicLinker, listener);
+            var scanner = new RecursiveScanner(program, dynamicLinker, listener, services);
             //$TODO: handle existing procedures.
             var sr = scanner.ScanProcedure(arch, addr, procedureName, state);
             var procDetector = new ProcedureDetector(sr, listener);

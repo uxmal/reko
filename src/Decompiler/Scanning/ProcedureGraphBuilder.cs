@@ -25,6 +25,7 @@ using Reko.Core.Expressions;
 using Reko.Core.Rtl;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 
 namespace Reko.Scanning
@@ -74,6 +75,12 @@ namespace Reko.Scanning
                 proc.AddBlock(block);
                 blockMap.Add(rtlBlock, block);
                 blocksByAddress.Add(block.Address, block);
+                var imageItem = new ImageMapBlock(block.Address)
+                {
+                    Block = block,
+                    Size = (uint) (rtlBlock.FallThrough - rtlBlock.Address)
+                };
+                program.ImageMap.AddItem(block.Address, imageItem);
             }
             InjectProcedureEntryInstructions(proc.EntryAddress, proc);
 
@@ -115,6 +122,8 @@ namespace Reko.Scanning
                 foreach (var rtl in rtlCluster.Instructions)
                 {
                     var instr = rtl.Accept(this, block);
+                    if (instr is null)
+                        continue;
                     var stm = block.Statements.Add(rtlCluster.Address, instr);
                     if (instr is CallInstruction call)
                     {
@@ -202,7 +211,7 @@ namespace Reko.Scanning
 
         public Instruction VisitNop(RtlNop rtlNop, Block ctx)
         {
-            throw new NotImplementedException();
+            return null!;
         }
 
         public Instruction VisitReturn(RtlReturn ret, Block ctx)
@@ -214,7 +223,8 @@ namespace Reko.Scanning
 
         public Instruction VisitSideEffect(RtlSideEffect side, Block ctx)
         {
-            throw new NotImplementedException();
+            var exp = side.Expression.Accept(this, ctx.Procedure);
+            return new SideEffect(exp);
         }
 
         public Instruction VisitSwitch(RtlSwitch sw, Block ctx)
@@ -229,7 +239,14 @@ namespace Reko.Scanning
 
         Expression ExpressionVisitor<Expression, Procedure>.VisitApplication(Application appl, Procedure ctx)
         {
-            throw new NotImplementedException();
+            var cArgs = appl.Arguments.Length;
+            var args = new Expression[cArgs];
+            var proc = appl.Procedure.Accept(this, ctx);
+            for (int i =0; i < cArgs; ++i)
+            {
+                args[i] = appl.Arguments[i].Accept(this, ctx);
+            }
+            return new Application(proc, appl.DataType, args);
         }
 
         Expression ExpressionVisitor<Expression, Procedure>.VisitArrayAccess(ArrayAccess acc, Procedure ctx)
@@ -253,9 +270,12 @@ namespace Reko.Scanning
             throw new NotImplementedException();
         }
 
-        Expression ExpressionVisitor<Expression, Procedure>.VisitConditionalExpression(Core.Expressions.ConditionalExpression c, Procedure context)
+        Expression ExpressionVisitor<Expression, Procedure>.VisitConditionalExpression(ConditionalExpression c, Procedure context)
         {
-            throw new NotImplementedException();
+            var exp = c.Condition.Accept(this, context);
+            var th = c.Condition.Accept(this, context);
+            var el = c.Condition.Accept(this, context);
+            return new ConditionalExpression(c.DataType, exp, th, el);
         }
 
         Expression ExpressionVisitor<Expression, Procedure>.VisitConditionOf(ConditionOf cof, Procedure ctx)
@@ -271,7 +291,8 @@ namespace Reko.Scanning
 
         Expression ExpressionVisitor<Expression, Procedure>.VisitConversion(Conversion conversion, Procedure context)
         {
-            throw new NotImplementedException();
+            var exp = conversion.Expression.Accept(this, context);
+            return new Conversion(exp, conversion.SourceDataType, conversion.DataType);
         }
 
         Expression ExpressionVisitor<Expression, Procedure>.VisitDereference(Dereference deref, Procedure ctx)
@@ -286,8 +307,13 @@ namespace Reko.Scanning
 
         Expression ExpressionVisitor<Expression, Procedure>.VisitIdentifier(Identifier id, Procedure ctx)
         {
+            var frame = ctx.Frame;
             //$TODO: changed name?
-            return ctx.Frame.EnsureIdentifier(id.Storage);
+            if (id.Storage is TemporaryStorage tmp)
+            {
+                return frame.CreateTemporary(tmp.DataType);
+            }
+            return frame.EnsureIdentifier(id.Storage);
         }
 
         Expression ExpressionVisitor<Expression, Procedure>.VisitMemberPointerSelector(MemberPointerSelector mps, Procedure ctx)
@@ -323,7 +349,7 @@ namespace Reko.Scanning
 
         Expression ExpressionVisitor<Expression, Procedure>.VisitProcedureConstant(ProcedureConstant pc, Procedure ctx)
         {
-            throw new NotImplementedException();
+            return pc;
         }
 
         Expression ExpressionVisitor<Expression, Procedure>.VisitScopeResolution(ScopeResolution scopeResolution, Procedure ctx)
@@ -338,7 +364,8 @@ namespace Reko.Scanning
 
         Expression ExpressionVisitor<Expression, Procedure>.VisitSlice(Slice slice, Procedure ctx)
         {
-            throw new NotImplementedException();
+            var exp = slice.Expression.Accept(this, ctx);
+            return new Slice(slice.DataType, exp, slice.Offset);
         }
 
         Expression ExpressionVisitor<Expression, Procedure>.VisitTestCondition(TestCondition tc, Procedure ctx)
@@ -347,9 +374,10 @@ namespace Reko.Scanning
             return new TestCondition(tc.ConditionCode, exp);
         }
 
-        Expression ExpressionVisitor<Expression, Procedure>.VisitUnaryExpression(Core.Expressions.UnaryExpression unary, Procedure ctx)
+        Expression ExpressionVisitor<Expression, Procedure>.VisitUnaryExpression(UnaryExpression unary, Procedure ctx)
         {
-            throw new NotImplementedException();
+            var exp = unary.Expression.Accept(this, ctx);
+            return new UnaryExpression(unary.Operator, unary.DataType, exp);
         }
 
         private class StatementInjector : CodeEmitter
