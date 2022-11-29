@@ -46,13 +46,17 @@ namespace Reko.Arch.CompactRisc
 
         protected override void RenderOperand(MachineOperand operand, MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
         {
-            if (operand is ImmediateOperand imm)
+            switch (operand)
             {
+            case ImmediateOperand imm:
                 renderer.WriteFormat("${0:X}", imm.Value.ToUInt32());
-            }
-            else
-            {
+                return;
+            case SequenceStorage seq:
+                renderer.WriteFormat("({0},{1})", seq.Elements[0], seq.Elements[1]);
+                return;
+            default:
                 base.RenderOperand(operand, renderer, options);
+                break;
             }
         }
     }

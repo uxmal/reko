@@ -19,9 +19,12 @@
 #endregion
 
 using Reko.Core;
+using Reko.Core.Expressions;
+using Reko.Core.Machine;
 using Reko.Core.Memory;
 using Reko.Core.Rtl;
 using Reko.Core.Services;
+using Reko.Core.Types;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -63,10 +66,13 @@ namespace Reko.Arch.CompactRisc
                 switch (instr.Mnemonic)
                 {
                 default:
-                    host.Warn(instr.Address, "Cr16 instruction {0} not supported yet.", this.instr);
                     EmitUnitTest();
+                    host.Warn(instr.Address, "Cr16 instruction {0} not supported yet.", this.instr);
                     goto case Mnemonic.Invalid;
                 case Mnemonic.Invalid: m.Invalid(); iclass = InstrClass.Invalid; break;
+                case Mnemonic.movb: RewriteMovsx(PrimitiveType.SByte); break;
+                case Mnemonic.movd: RewriteMovd(); break;
+                case Mnemonic.push: RewritePush(); break;
                 }
                 yield return m.MakeCluster(instr.Address, instr.Length, this.iclass);
                 rtls.Clear();
@@ -82,7 +88,57 @@ namespace Reko.Arch.CompactRisc
         private void EmitUnitTest()
         {
             var testGenSvc = arch.Services.GetService<ITestGenerationService>();
-            testGenSvc?.ReportMissingRewriter("MCoreRw", instr, instr.Mnemonic.ToString(), rdr, "");
+            testGenSvc?.ReportMissingRewriter("Cr16Rw", instr, instr.Mnemonic.ToString(), rdr, "");
+        }
+
+        private Expression Operand(int iop)
+        {
+            var op = instr.Operands[iop];
+            switch (op)
+            {
+            case RegisterStorage reg:
+                return binder.EnsureRegister(reg);
+            case ImmediateOperand imm:
+                return imm.Value;
+            default:
+                throw new AddressCorrelatedException(instr.Address, $"Unimplemented address mode {op.GetType().Name}.");
+            }
+        }
+
+        private Expression MaybeSlice(int iop, PrimitiveType dt)
+        {
+            var exp = Operand(iop);
+            if (exp.DataType.BitSize > dt.BitSize)
+            {
+                var tmp = binder.CreateTemporary(dt);
+                m.Assign(tmp, m.Slice(exp, dt));
+                return tmp;
+            }
+            return exp;
+        }
+
+        private void RewriteMovd()
+        {
+            var src = Operand(0);
+            var dst = Operand(1);
+            m.Assign(dst, src);
+        }
+
+        private void RewriteMovsx(PrimitiveType dtSrc)
+        {
+            var dtDst = PrimitiveType.Create(Domain.SignedInt, instr.Operands[1].Width.BitSize);
+            var src = MaybeSlice(0, dtSrc);
+            var dst = Operand(1);
+            m.Assign(dst, m.Convert(src, dtSrc, dtDst));
+        }
+
+        public void RewritePush()
+        {
+            //$TODO: operand 0 is a count
+            var reg = Operand(1);
+            var sp = binder.EnsureRegister(arch.StackRegister);
+            m.Assign(sp, m.ISubS(sp, reg.DataType.Size));
+            m.Assign(m.Mem(reg.DataType, sp), reg);
         }
     }
 }

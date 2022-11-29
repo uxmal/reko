@@ -1,0 +1,13 @@
+void fn03B0()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
+fn03B0_exit:
+fn03B0_entry:
+l03B0:
+
+

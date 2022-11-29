@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://schemata.jklnet.org/Reko/v5">
   <arch>cr16</arch>
+  <platform>default</platform>
   <input>
     <location>CompactRISC.corpus</location>
     <asmDir>CompactRISC.reko</asmDir>
@@ -11,7 +12,12 @@
       <address>0000</address>
       <loader>raw</loader>
       <processor name="cr16" />
+      <platform name="default" />
+      <procedure name="fn03B0">
+        <address>03B0</address>
+      </procedure>
       <registerValues />
+      <extractResources>false</extractResources>
       <outputFilePolicy>Segment</outputFilePolicy>
     </user>
   </input>

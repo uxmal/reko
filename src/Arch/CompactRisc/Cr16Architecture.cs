@@ -35,7 +35,7 @@ namespace Reko.Arch.CompactRisc
         public static PrimitiveType Word24 = PrimitiveType.CreateWord(24);
 
         public Cr16Architecture(IServiceProvider services, string archId, Dictionary<string, object> options)
-            : base(services, archId, options, Registers.ByName, null!)
+            : base(services, archId, options, Registers.ByName, Registers.ByDomain)
         {
             this.Endianness = EndianServices.Little;
             this.FramePointerType = PrimitiveType.Ptr16;

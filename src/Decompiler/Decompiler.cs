@@ -506,7 +506,7 @@ namespace Reko
                     else
                         return new KeyValuePair<Address?, FunctionType?>(null, null);
                 })
-                .Where(item => !(item.Key is null))
+                .Where(item => item.Key is not null)
                 .ToDictionary(item => item.Key!, item => item.Value!);
         }
 

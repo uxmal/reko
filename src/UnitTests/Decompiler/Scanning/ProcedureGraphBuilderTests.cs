@@ -73,6 +73,7 @@ namespace Reko.UnitTests.Decompiler.Scanning
             {
                 Architecture = arch.Object,
                 Platform = platform.Object,
+                ImageMap = new ImageMap(Address.Ptr32(0x1000))
             };
         }
 
