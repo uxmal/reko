@@ -848,5 +848,41 @@ l00001020: // l:4; ft:00001024
 
             RunTest(sExpected);
         }
+
+        [Test]
+        public void RecScan_ImageSymbol()
+        {
+            Given_EntryPoint(0x1000);
+            Given_ImageSymbol_Proc(0x1100, "bob");
+            Given_Trace(new RtlTrace(0x1000)
+            {
+                m => m.Return(0, 0)
+            });
+            Given_Trace(new RtlTrace(0x1100)
+            {
+                m => m.Assign(r2, 0),
+                m => m.Return(0, 0)
+            });
+
+            var sExpected =
+            #region Expected
+@"
+define fn00001000
+l00001000: // l:4; ft:00001004
+    // pred:
+    return (0,0)
+    // succ:
+
+define bob
+l00001100: // l:8; ft:00001108
+    // pred:
+    r2 = 0<32>
+    return (0,0)
+    // succ:
+";
+            #endregion
+
+            RunTest(sExpected);
+        }
     }
 }

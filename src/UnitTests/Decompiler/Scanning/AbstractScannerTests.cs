@@ -164,6 +164,12 @@ namespace Reko.UnitTests.Decompiler.Scanning
                 It.IsNotNull<IRewriterHost>())).Returns(trampoline);
         }
 
+        protected void Given_ImageSymbol_Proc(uint uAddr, string name)
+        {
+            var imgsym = ImageSymbol.Procedure(arch.Object, Address.Ptr32(uAddr), name);
+            program.ImageSymbols.Add(imgsym.Address, imgsym);
+        }
+
         protected class CfgGraph : DirectedGraph<RtlBlock>
         {
             private ScanResultsV2 cfg;

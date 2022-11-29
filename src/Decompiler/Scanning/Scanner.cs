@@ -58,7 +58,7 @@ namespace Reko.Scanning
         private const int PriorityVector = 4;
         private const int PriorityBlockPromote = 3;
 
-        private static TraceSwitch trace = new TraceSwitch("Scanner", "Traces the progress of the Scanner");
+        private static readonly TraceSwitch trace = new TraceSwitch("Scanner", "Traces the progress of the Scanner");
 
         protected DecompilerEventListener eventListener;
 
@@ -1109,10 +1109,10 @@ namespace Reko.Scanning
                 // When this gets merged into analyis-development phase, fold 
                 // Procedure construction into SSA construction.
                 foreach (var rtlProc in procs.Where(FilterRtlProcedure)
-                    .OrderBy(a => a.Entry.Address.ToLinear()))
+                    .OrderBy(a => a.Address.ToLinear()))
                 {
                     Dump(rtlProc);
-                    var addrProc = rtlProc.Entry.Address;
+                    var addrProc = rtlProc.Address;
                     TerminateAnyBlockAt(addrProc);
                     Procedure proc = Program.EnsureProcedure(Program.Architecture, addrProc, null);
                     EnqueueProcedure(Program.Architecture, addrProc);
@@ -1124,7 +1124,7 @@ namespace Reko.Scanning
         [Conditional("DEBUG")]
         private void Dump(RtlProcedure rtlProc)
         {
-            Debug.Print("== {0} ===============", rtlProc.Entry.Address);
+            Debug.Print("== {0} ===============", rtlProc.Address);
             Debug.Print("    {0}",
                 string.Join(",\r\n    ", rtlProc.Blocks
                     .OrderBy(b => b.Address.ToLinear())
@@ -1140,13 +1140,17 @@ namespace Reko.Scanning
         /// <returns></returns>
         public bool FilterRtlProcedure(RtlProcedure rtlProc)
         {
-            var addrRtlProc = rtlProc.Entry.Address;
-            var trampoline = Program.Platform.GetTrampolineDestination(addrRtlProc, rtlProc.Entry.Instructions.SelectMany(c => c.Instructions), this);
-            if (trampoline != null)
+            var addrRtlProc = rtlProc.Address;
+            var entryBlock = rtlProc.Blocks.FirstOrDefault(b => b.Address == addrRtlProc);
+            if (entryBlock is not null)
             {
-                //$REVIEW: consider adding known trampolines to Program. Then, when code calls or 
-                // jumps to a trampoline, we don't have to call IPlatform.GetTrampolineDestination again.
-                return false;
+                var trampoline = Program.Platform.GetTrampolineDestination(addrRtlProc, entryBlock.Instructions.SelectMany(c => c.Instructions), this);
+                if (trampoline != null)
+                {
+                    //$REVIEW: consider adding known trampolines to Program. Then, when code calls or 
+                    // jumps to a trampoline, we don't have to call IPlatform.GetTrampolineDestination again.
+                    return false;
+                }
             }
 
             if (Program.User.Procedures.TryGetValue(addrRtlProc, out var sProc))

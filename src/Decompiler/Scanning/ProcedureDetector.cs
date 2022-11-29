@@ -414,7 +414,8 @@ namespace Reko.Scanning
             }
             else
             {
-                return new List<RtlProcedure> { new RtlProcedure(cluster.Entries.First(), cluster.Blocks) };
+                var entry = cluster.Entries.First();
+                return new List<RtlProcedure> { new RtlProcedure(entry.Architecture, entry.Address, cluster.Blocks) };
             }
         }
 
@@ -489,7 +490,8 @@ namespace Reko.Scanning
             return dominatedEntries
                 .OrderBy(e => e.Key.Address)
                 .Select(e => new RtlProcedure(
-                    e.Key,
+                    e.Key.Architecture,
+                    e.Key.Address,
                     e.Value))
                 .ToList();
         }

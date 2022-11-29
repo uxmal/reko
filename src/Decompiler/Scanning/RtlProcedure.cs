@@ -18,24 +18,31 @@
  */
 #endregion
 
+using Reko.Core;
 using System.Collections.Generic;
 
 namespace Reko.Scanning
 {
     public class RtlProcedure
     {
-        public readonly RtlBlock Entry;
-        public readonly ISet<RtlBlock> Blocks;
-
-        public RtlProcedure(RtlBlock entry, ISet<RtlBlock> blocks)
+        public RtlProcedure(
+            IProcessorArchitecture arch,
+            Address addr,
+            ISet<RtlBlock> blocks)
         {
-            this.Entry = entry;
+            this.Architecture = arch;
+            this.Address = addr;
             this.Blocks = blocks;
         }
 
+        public IProcessorArchitecture Architecture { get; }
+        public Address Address { get; }    // entry address.
+        public ISet<RtlBlock> Blocks { get; }
+
+
         public override string ToString()
         {
-            return $"RtlProcedure(entry: {Entry.Address}, blocks: {Blocks.Count})";
+            return $"RtlProcedure(entry: {Address}, blocks: {Blocks.Count})";
         }
     }
 }

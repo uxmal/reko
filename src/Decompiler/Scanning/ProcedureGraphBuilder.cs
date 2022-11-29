@@ -52,8 +52,8 @@ namespace Reko.Scanning
 
         public void Build(IEnumerable<RtlProcedure> rtlProcedures)
         {
-            var rtlProcDict = rtlProcedures.ToDictionary(e => e.Entry.Address);
-            foreach (var rtlProcedure in rtlProcedures.OrderBy(e => e.Entry.Address))
+            var rtlProcDict = rtlProcedures.ToDictionary(e => e.Address);
+            foreach (var rtlProcedure in rtlProcedures.OrderBy(e => e.Address))
             {
                 var proc = CreateEmptyProcedure(rtlProcedure);
                 program.Procedures.Add(proc.EntryAddress, proc);
@@ -84,7 +84,7 @@ namespace Reko.Scanning
             }
             InjectProcedureEntryInstructions(proc.EntryAddress, proc);
 
-            proc.ControlGraph.AddEdge(proc.EntryBlock, blockMap[rtlProc.Entry]);
+            proc.ControlGraph.AddEdge(proc.EntryBlock, blocksByAddress[rtlProc.Address]);
             foreach (var rtlBlock in rtlProc.Blocks)
             {
                 var block = blockMap[rtlBlock];
@@ -144,8 +144,8 @@ namespace Reko.Scanning
 
         private Procedure CreateEmptyProcedure(RtlProcedure rtlProc)
         {
-            var addr = rtlProc.Entry.Address;
-            var arch = rtlProc.Entry.Architecture;
+            var addr = rtlProc.Address;
+            var arch = rtlProc.Architecture;
             var name = program.NamingPolicy.ProcedureName(addr);
             var proc = Procedure.Create(arch, name, addr, arch.CreateFrame());
             return proc;

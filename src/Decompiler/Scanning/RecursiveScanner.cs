@@ -123,7 +123,7 @@ namespace Reko.Scanning
 
         private ProcedureWorker? MakeSeedWorker(KeyValuePair<Address, ImageSymbol> seed)
         {
-            var name = program.NamingPolicy.ProcedureName(seed.Key);
+            var name = seed.Value.Name ?? program.NamingPolicy.ProcedureName(seed.Key);
             var proc = new Proc(seed.Key, ProvenanceType.Image, seed.Value.Architecture, name);
             if (sr.Procedures.TryAdd(proc.Address, proc))
             {
@@ -132,6 +132,7 @@ namespace Reko.Scanning
             }
             else
             {
+                // This procedure appears to already have been scanned.
                 return null;
             }
         }
