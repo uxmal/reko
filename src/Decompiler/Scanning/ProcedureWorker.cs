@@ -116,6 +116,8 @@ namespace Reko.Scanning
             case ReturnStatus.Diverges:
                 return;
             case ReturnStatus.Returns:
+                if (!recScanner.IsExecutableAddress(block.FallThrough))
+                    return;
                 var fallThrough = new Edge(block.Address, block.FallThrough, EdgeType.Fallthrough);
                 recScanner.RegisterEdge(fallThrough);
                 AddJob(fallThrough.To, state);

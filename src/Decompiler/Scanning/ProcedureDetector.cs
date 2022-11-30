@@ -414,8 +414,9 @@ namespace Reko.Scanning
             }
             else
             {
-                var entry = cluster.Entries.First();
-                return new List<RtlProcedure> { new RtlProcedure(entry.Architecture, entry.Address, cluster.Blocks) };
+                var entryBlock = cluster.Entries.First();
+                var rtlProc = new RtlProcedure(entryBlock.Architecture, entryBlock.Address, cluster.Blocks);
+                return new List<RtlProcedure> { rtlProc };
             }
         }
 

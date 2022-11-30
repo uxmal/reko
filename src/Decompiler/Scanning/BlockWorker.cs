@@ -96,7 +96,13 @@ namespace Reko.Scanning
                     // Find the block that other trace resulted in, and 
                     // split it at this address.
                     log.Verbose("    Fell through to {0}, stopping", cluster.Address);
-                    var blockNew  = worker.SplitExistingBlock(addrLast);
+                    var blockNew = worker.SplitExistingBlock(addrLast);
+                    if (blockNew is null)
+                    {
+                        // Couldn't split a block; it means we're outside of our 
+                        // scanning area, so this whole block is invalid.
+                        return (null, state);
+                    }
                     var block = MakeFallthroughBlock(this.Address, addrLast, instrs);
                     return (block, state);
                 }

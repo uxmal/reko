@@ -162,6 +162,12 @@ namespace Reko.Scanning
             shScanner.RegisterSpeculativeProcedure(edge.To);
             // Assume that the call returns. This is true the majority of the time. Users
             // can always override this by adding user annotations like [[noreturn]]
+            if (!shScanner.IsExecutableAddress(blockCaller.FallThrough))
+            {
+                // We can have a diverging call right before a data segment; don't fall
+                // through to it.
+                return;
+            }
             var lastInstr = blockCaller.Instructions[^1];
             var fallThrough = new Edge(blockCaller.Address, blockCaller.FallThrough, EdgeType.Fallthrough);
             shScanner.RegisterEdge(fallThrough);
