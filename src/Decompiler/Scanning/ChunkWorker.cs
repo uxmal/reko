@@ -131,9 +131,12 @@ namespace Reko.Scanning
         {
             if (!this.blockStarts.TryGetLowerBoundIndex(addr, out int iMin))
                 return null;
-            for (int i = iMin; i < this.blockStarts.Count; ++i)
+            // Blocks with start address > addr cannot possibly contain addr.
+            for (int i = iMin; i >= 0; --i)
             {
                 var block = this.blockStarts.Values[i];
+                if (block.Address == addr)
+                    return block;
                 if (block.Address < addr)
                 {
                     var blockNew = shScanner.SplitBlockAt(block, addr);

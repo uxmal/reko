@@ -103,9 +103,9 @@ namespace Reko.UnitTests.Decompiler.Scanning
             }
             var block = new RtlBlock(
                 program.Architecture,
-                addrBlock, 
+                addrBlock,
                 id,
-                (int)(addr-addrBlock), 
+                (int) (addr - addrBlock),
                 addr,
                 clusters);
             sr.Blocks.TryAdd(addrBlock, block);
@@ -149,7 +149,7 @@ namespace Reko.UnitTests.Decompiler.Scanning
         [Test]
         public void Pgb_AssignConst()
         {
-            Given_Block(0x1000, 
+            Given_Block(0x1000,
                 m => { m.Assign(r2, 0xD2); },
                 m => { m.Return(0, 0); }
             );
@@ -179,7 +179,7 @@ Procedure fn00001000 calls:
         }
 
         [Test]
-        public void Pgb_AssignTestAndBranch() 
+        public void Pgb_AssignTestAndBranch()
         {
             Given_Block(0x1000,
                 m => { m.Assign(r2, 0); },
@@ -241,9 +241,12 @@ Procedure fn00001000 calls:
             Given_Edge(0x1008, 0x1010);
 
             Given_Block(0x1010,
-                m => { m.Branch(
+                m =>
+                {
+                    m.Branch(
                             m.Ne(r1, m.Word32(0x00123400)),
-                            Address.Ptr32(0x1008)); });
+                            Address.Ptr32(0x1008));
+                });
             Given_Edge(0x1010, 0x1014);
             Given_Edge(0x1010, 0x1008);
 
@@ -347,6 +350,62 @@ Statement 00001000 call fn00001010 (retsize: 0;) calls:
             #endregion
 
             RunTest(sExp);
+        }
+
+        [Test]
+        public void Pgb_JumpToProcedures()
+        {
+            Given_Block(0x1000,
+                m => m.Assign(r1, m.Mem32(r2)),
+                m => m.Goto(Address.Ptr32(0x1010), 0));
+            Given_Procedure(0x1000);
+
+            Given_Block(0x1010,
+                m => m.Assign(r1, m.IAdd(r1, 1)),
+                m => m.Return(0, 0));
+            Given_Procedure(0x1010);
+
+            string sExpected =
+            #region Expected
+                @"
+// fn00001000 (00001000)
+// fn00001000
+// Return size: 0
+define fn00001000
+fn00001000_entry:
+	sp = fp
+	// succ:  l00001000
+l00001000:
+	r1 = Mem0[r2:word32]
+	// succ:  l00001000_thunk_fn00001010
+l00001000_thunk_fn00001010:
+	call fn00001010 (retsize: 0;)
+	return
+	// succ:  fn00001000_exit
+fn00001000_exit:
+
+// fn00001010 (00001010)
+// fn00001010
+// Return size: 0
+define fn00001010
+fn00001010_entry:
+	sp = fp
+	// succ:  l00001010
+l00001010:
+	r1 = r1 + 1<32>
+	return
+	// succ:  fn00001010_exit
+fn00001010_exit:
+
+Procedure fn00001000 calls:
+	fn00001010
+Procedure fn00001010 calls:
+Statement 00001000 call fn00001010 (retsize: 0;) calls:
+	fn00001010
+";
+            #endregion
+
+            RunTest(sExpected);
         }
     }
 }

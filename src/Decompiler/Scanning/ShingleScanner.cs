@@ -382,6 +382,7 @@ namespace Reko.Scanning
                         block.Length - offset,
                         block.FallThrough,
                         newInstrs);
+                    StealEdges(block.Address, newBlock.Address);
                     block.FallThrough = newBlock.Address;
                     block.Length = offset;
                     RegisterEdge(new Edge(block.Address, newBlock.Address, EdgeType.Fallthrough));

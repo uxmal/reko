@@ -36,7 +36,7 @@ namespace Reko.Scanning
     /// <see cref="Procedure"/>s, and builds up the program's <see cref="CallGraph"/>.
     /// </summary>
     public class ProcedureGraphBuilder :
-        RtlInstructionVisitor<Instruction, Block>, 
+        RtlInstructionVisitor<Instruction, ProcedureGraphBuilder.Context>, 
         ExpressionVisitor<Expression, Procedure>
     {
         private readonly ScanResultsV2 sr;
@@ -119,9 +119,10 @@ namespace Reko.Scanning
         {
             foreach (var rtlCluster in rtlBlock.Instructions)
             {
+                var ctx = new Context(block, rtlCluster);
                 foreach (var rtl in rtlCluster.Instructions)
                 {
-                    var instr = rtl.Accept(this, block);
+                    var instr = rtl.Accept(this, ctx);
                     if (instr is null)
                         continue;
                     var stm = block.Statements.Add(rtlCluster.Address, instr);
@@ -187,7 +188,7 @@ namespace Reko.Scanning
             return program.NamingPolicy.ProcedureName(addr);
         }
 
-        public Instruction VisitAssignment(RtlAssignment ass, Block ctx)
+        public Instruction VisitAssignment(RtlAssignment ass, Context ctx)
         {
             var src = ass.Src.Accept(this, ctx.Procedure);
             var dst = ass.Dst.Accept(this, ctx.Procedure);
@@ -197,15 +198,15 @@ namespace Reko.Scanning
                 return new Store(dst, src);
         }
 
-        public Instruction VisitBranch(RtlBranch branch, Block ctx)
+        public Instruction VisitBranch(RtlBranch branch, Context ctx)
         {
             var condition = branch.Condition.Accept(this, ctx.Procedure);
-            var succ = sr.Successors[ctx.Address];
+            var succ = sr.Successors[ctx.Block.Address];
             var thenBlock = this.blocksByAddress[succ[1]];
             return new Branch(condition, thenBlock);
         }
 
-        public Instruction VisitCall(RtlCall call, Block ctx)
+        public Instruction VisitCall(RtlCall call, Context ctx)
         {
             var target = call.Target.Accept(this, ctx.Procedure);
             if (target is Address addr)
@@ -220,50 +221,105 @@ namespace Reko.Scanning
             return new CallInstruction(target, site);
         }
 
-        public Instruction VisitGoto(RtlGoto go, Block ctx)
+        public Instruction VisitGoto(RtlGoto go, Context ctx)
         {
+            if (go.Target is Address addr)
+            {
+                if (program.Procedures.TryGetValue(addr, out var procCallee))
+                {
+                    var thunk = CreateCallRetThunk(ctx.Cluster.Address, ctx.Procedure, procCallee);
+                    ctx.Procedure.ControlGraph.AddEdge(ctx.Block, thunk);
+                    return null!;
+                }
+            }
             return new GotoInstruction(go.Target.Accept(this, ctx.Procedure));
         }
 
-        public Instruction VisitIf(RtlIf rtlIf, Block ctx)
+        /// <summary>
+        /// Creates a small basic block, consisting solely of a 'call' followed by a 'return'
+        /// instruction.
+        /// </summary>
+        /// <remarks>
+        /// This is done when encountering tail calls (i.e. jumps) from one 
+        /// procedure into another.
+        /// </remarks>
+        /// <param name="addrFrom"></param>
+        /// <param name="procOld"></param>
+        /// <param name="procNew"></param>
+        /// <returns></returns>
+        public Block CreateCallRetThunk(Address addrFrom, Procedure procOld, Procedure procNew)
+        {
+            //$BUG: ReturnAddressOnStack property needs to be properly set, the
+            // EvenOdd sample shows how this doesn't work currently. 
+            var blockName = string.Format(
+                "{0}_thunk_{1}",
+                program.NamingPolicy.BlockName(addrFrom),
+                procNew.Name);
+            var callRetThunkBlock = procOld.AddSyntheticBlock(
+                addrFrom,
+                blockName);
+            if (program.User.BlockLabels.TryGetValue(blockName, out var userLabel))
+                callRetThunkBlock.UserLabel = userLabel;
+
+            var stmLast = callRetThunkBlock.Statements.Add(
+                addrFrom,
+                new CallInstruction(
+                    new ProcedureConstant(program.Platform.PointerType, procNew),
+                    new CallSite(0, 0)));
+            program.CallGraph.AddEdge(stmLast, procNew);
+
+            callRetThunkBlock.Statements.Add(addrFrom, new ReturnInstruction());
+            procOld.ControlGraph.AddEdge(callRetThunkBlock, procOld.ExitBlock);
+            //$NYI: stack deltas and return addresses on stack.
+            //if (procNew.Frame.ReturnAddressKnown)
+            //{
+            //    SetProcedureReturnAddressBytes(
+            //        procOld, procNew.Frame.ReturnAddressSize, addrFrom);
+            //}
+            //SetProcedureStackDelta(procOld, procNew.Signature.StackDelta, addrFrom);
+            return callRetThunkBlock;
+        }
+
+
+        public Instruction VisitIf(RtlIf rtlIf, Context ctx)
         {
             throw new NotImplementedException();
         }
 
-        public Instruction VisitInvalid(RtlInvalid invalid, Block ctx)
+        public Instruction VisitInvalid(RtlInvalid invalid, Context ctx)
         {
             throw new NotImplementedException();
         }
 
-        public Instruction VisitMicroGoto(RtlMicroGoto uGoto, Block ctx)
+        public Instruction VisitMicroGoto(RtlMicroGoto uGoto, Context ctx)
         {
             throw new NotImplementedException();
         }
 
-        public Instruction VisitMicroLabel(RtlMicroLabel uLabel, Block ctx)
+        public Instruction VisitMicroLabel(RtlMicroLabel uLabel, Context ctx)
         {
             throw new NotImplementedException();
         }
 
-        public Instruction VisitNop(RtlNop rtlNop, Block ctx)
+        public Instruction VisitNop(RtlNop rtlNop, Context ctx)
         {
             return null!;
         }
 
-        public Instruction VisitReturn(RtlReturn ret, Block ctx)
+        public Instruction VisitReturn(RtlReturn ret, Context ctx)
         {
             var proc = ctx.Procedure;
-            ctx.Procedure.ControlGraph.AddEdge(ctx, proc.ExitBlock);
+            ctx.Procedure.ControlGraph.AddEdge(ctx.Block, proc.ExitBlock);
             return new ReturnInstruction();
         }
 
-        public Instruction VisitSideEffect(RtlSideEffect side, Block ctx)
+        public Instruction VisitSideEffect(RtlSideEffect side, Context ctx)
         {
             var exp = side.Expression.Accept(this, ctx.Procedure);
             return new SideEffect(exp);
         }
 
-        public Instruction VisitSwitch(RtlSwitch sw, Block ctx)
+        public Instruction VisitSwitch(RtlSwitch sw, Context ctx)
         {
             throw new NotImplementedException();
         }
@@ -439,6 +495,21 @@ namespace Reko.Scanning
                 ++iStm;
                 return stm;
             }
+        }
+
+        public struct Context
+        {
+            public Context(Block block, RtlInstructionCluster cluster)
+            {
+                Block = block;
+                Cluster = cluster;
+            }
+
+            public Block Block { get; }
+
+            public RtlInstructionCluster Cluster { get; }
+
+            public Procedure Procedure => Block.Procedure;
         }
 
     }

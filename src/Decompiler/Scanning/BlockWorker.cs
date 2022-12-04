@@ -92,17 +92,19 @@ namespace Reko.Scanning
                 addrLast = cluster.Address;
                 if (!worker.TryMarkVisited(addrLast))
                 {
-                    // Another trace has already visited this address.
+                    // Another trace has already visited this address,
+                    // or we're out of bounds.
                     // Find the block that other trace resulted in, and 
                     // split it at this address.
-                    log.Verbose("    Fell through to {0}, stopping", cluster.Address);
                     var blockNew = worker.SplitExistingBlock(addrLast);
                     if (blockNew is null)
                     {
                         // Couldn't split a block; it means we're outside of our 
                         // scanning area, so this whole block is invalid.
+                        log.Verbose("    Unable to find instruction at {0}, stopping", addrLast);
                         return (null, state);
                     }
+                    log.Verbose("    Fell through to {0}, stopping", cluster.Address);
                     var block = MakeFallthroughBlock(this.Address, addrLast, instrs);
                     return (block, state);
                 }

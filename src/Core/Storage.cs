@@ -1012,7 +1012,10 @@ namespace Reko.Core
 
         public override int OffsetOf(Storage stgSub)
         {
-            return -1;
+            if (ReferenceEquals(this, stgSub))
+                return 0;
+            else
+                return -1;
         }
 
         public override bool OverlapsWith(Storage that)
