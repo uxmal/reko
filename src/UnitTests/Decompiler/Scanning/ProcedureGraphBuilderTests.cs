@@ -23,6 +23,7 @@ using NUnit.Framework;
 using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Rtl;
+using Reko.Core.Serialization;
 using Reko.Core.Types;
 using Reko.Scanning;
 using System;
@@ -64,6 +65,8 @@ namespace Reko.UnitTests.Decompiler.Scanning
             arch.Setup(a => a.CreateFrame()).Returns(MakeFrame);
             arch.Setup(a => a.Name).Returns("testArch");
             arch.Setup(a => a.StackRegister).Returns(new RegisterStorage("sp", 31, 0, PrimitiveType.Ptr32));
+            arch.Setup(a => a.MemoryGranularity).Returns(8);
+            arch.Setup(a => a.PointerType).Returns(PrimitiveType.Ptr32);
 
             platform.Setup(p => p.Architecture).Returns(arch.Object);
 
@@ -122,6 +125,19 @@ namespace Reko.UnitTests.Decompiler.Scanning
             }
             succ.Add(addrTo);
         }
+
+        private void Given_UserProcedure(uint uAddr, string name, SerializedSignature ssig)
+        {
+            var addr = Address.Ptr32(uAddr);
+            if (!program.User.Procedures.TryGetValue(addr, out var u))
+            {
+                u = new UserProcedure(addr, program.NamingPolicy.ProcedureName(addr));
+                program.User.Procedures.Add(addr, u);
+            }
+            u.Name = name;
+            u.Signature = ssig;
+        }
+
 
         private void RunTest(string sExp)
         {
@@ -402,6 +418,47 @@ Procedure fn00001000 calls:
 Procedure fn00001010 calls:
 Statement 00001000 call fn00001010 (retsize: 0;) calls:
 	fn00001010
+";
+            #endregion
+
+            RunTest(sExpected);
+        }
+
+        [Test]
+        public void Pgb_UserSignature()
+        {
+            Given_Block(0x1000,
+                m => m.Assign(r1, m.Mem32(r2)),
+                m => m.Return(0, 0));
+            Given_Procedure(0x1000);
+
+            Given_UserProcedure(0x1000, "proc", new SerializedSignature
+            {
+                EnclosingType = new StructType_v1 { Name="method" },
+                ReturnValue = new() { Type = PrimitiveType_v1.Int32() },
+                Arguments = new Argument_v1[]
+                {
+                    new() { Name = "arg", Type = PrimitiveType_v1.Real32() },
+                }
+            });
+
+            string sExpected =
+            #region Expected
+@"
+// proc (00001000)
+// method::proc
+// Return size: 0
+define method::proc
+proc_entry:
+	sp = fp
+	// succ:  l00001000
+l00001000:
+	r1 = Mem0[r2:word32]
+	return
+	// succ:  proc_exit
+proc_exit:
+
+Procedure proc calls:
 ";
             #endregion
 

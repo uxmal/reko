@@ -23,6 +23,8 @@ using Reko.Core.Code;
 using Reko.Core.Collections;
 using Reko.Core.Expressions;
 using Reko.Core.Rtl;
+using Reko.Core.Serialization;
+using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -147,47 +149,65 @@ namespace Reko.Scanning
         {
             var addr = rtlProc.Address;
             var arch = rtlProc.Architecture;
-            var name = GetProcedureName(rtlProc.Address);
+            if (program.User.Procedures.TryGetValue(addr, out var userProc))
+            {
+                var proc = CreateEmptyProcedure(arch, addr, userProc.Name, userProc.Signature, userProc.Characteristics);
+                return proc;
+            }
+            if (program.ImageSymbols.TryGetValue(addr, out var sym))
+            {
+                var proc = CreateEmptyProcedure(sym.Architecture ?? arch, addr, sym.Name, sym.Signature, null);
+                return proc;
+            }
+            else
+            {
+                var proc = Procedure.Create(arch, addr, arch.CreateFrame());
+                return proc;
+            }
+        }
+
+
+        private Procedure CreateEmptyProcedure(
+            IProcessorArchitecture arch,
+            Address addr,
+            string? name,
+            SerializedSignature? ssig,
+            ProcedureCharacteristics? characteristics)
+        {
             var proc = Procedure.Create(arch, name, addr, arch.CreateFrame());
+            if (ssig is not null)
+            {
+                var sser = program.CreateProcedureSerializer();
+                var sig = sser.Deserialize(ssig, proc.Frame);
+                if (sig is not null)
+                {
+                    proc.Signature = sig;
+                }
+                proc.EnclosingType = ssig.EnclosingType;
+            }
+            else if (!string.IsNullOrEmpty(name))
+            {
+                var sProc = program.Platform.SignatureFromName(name);
+                if (sProc is not null)
+                {
+                    var loader = program.CreateTypeLibraryDeserializer();
+                    var exp = loader.LoadExternalProcedure(sProc);
+                    if (exp != null)
+                    {
+                        proc.Name = exp!.Name;
+                        proc.Signature = exp.Signature;
+                        proc.EnclosingType = exp.EnclosingType;
+                    }
+                }
+                else
+                {
+                    proc.Name = name;
+                }
+            }
             return proc;
         }
 
-        private string GetProcedureName(Address addr)
-        {
-            if (program.User.Procedures.TryGetValue(addr, out var userProc) &&
-                !string.IsNullOrEmpty(userProc.Name))
-            {
-                return userProc.Name;
-            }
-            if (program.ImageSymbols.TryGetValue(addr, out var sym) &&
-                !string.IsNullOrEmpty(sym.Name))
-            {
-                var sProc = program.Platform.SignatureFromName(sym.Name);
-                if (sProc?.Name != null)
-                {
-                    return sProc.Name;
-                }
-                else
-                {
-                    return sym.Name;
-                }
-            }
-            if (program.EntryPoints.TryGetValue(addr, out var ep) &&
-                !string.IsNullOrEmpty(ep.Name))
-            {
-                var sProc = program.Platform.SignatureFromName(ep.Name);
-                if (sProc?.Name != null)
-                {
-                    return sProc.Name;
-                }
-                else
-                {
-                    return ep.Name;
-                }
-            }
-            return program.NamingPolicy.ProcedureName(addr);
-        }
-
+ 
         public Instruction VisitAssignment(RtlAssignment ass, Context ctx)
         {
             var src = ass.Src.Accept(this, ctx.Procedure);
