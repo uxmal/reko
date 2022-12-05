@@ -18,6 +18,7 @@
  */
 #endregion
 
+using Reko.Arch.OpenRISC.Or;
 using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Lib;

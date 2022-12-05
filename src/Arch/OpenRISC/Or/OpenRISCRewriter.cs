@@ -32,7 +32,7 @@ using Reko.Core.Rtl;
 using Reko.Core.Services;
 using Reko.Core.Types;
 
-namespace Reko.Arch.OpenRISC
+namespace Reko.Arch.OpenRISC.Or
 {
     public class OpenRISCRewriter : IEnumerable<RtlInstructionCluster>
     {
@@ -54,18 +54,18 @@ namespace Reko.Arch.OpenRISC
             this.state = state;
             this.binder = binder;
             this.host = host;
-            this.dasm = new OpenRISCDisassembler(arch, rdr).GetEnumerator();
-            this.rtls = new List<RtlInstruction>();
-            this.m = new RtlEmitter(rtls);
-            this.instrCur = default!;
+            dasm = new OpenRISCDisassembler(arch, rdr).GetEnumerator();
+            rtls = new List<RtlInstruction>();
+            m = new RtlEmitter(rtls);
+            instrCur = default!;
         }
 
         public IEnumerator<RtlInstructionCluster> GetEnumerator()
         {
             while (dasm.MoveNext())
             {
-                this.instrCur = dasm.Current;
-                this.iclass = instrCur.InstructionClass;
+                instrCur = dasm.Current;
+                iclass = instrCur.InstructionClass;
                 switch (instrCur.Mnemonic)
                 {
                 default:
@@ -115,24 +115,24 @@ namespace Reko.Arch.OpenRISC
                 case Mnemonic.l_sh: RewriteStore(); break;
                 case Mnemonic.l_sw: RewriteStore(); break;
 
-                case Mnemonic.l_sfeq:   RewriteSf(m.Eq); break;
-                case Mnemonic.l_sfeqi:  RewriteSfi(m.Eq); break;
-                case Mnemonic.l_sfges:  RewriteSf(m.Ge); break;
+                case Mnemonic.l_sfeq: RewriteSf(m.Eq); break;
+                case Mnemonic.l_sfeqi: RewriteSfi(m.Eq); break;
+                case Mnemonic.l_sfges: RewriteSf(m.Ge); break;
                 case Mnemonic.l_sfgesi: RewriteSfi(m.Ge); break;
-                case Mnemonic.l_sfgeu:  RewriteSf(m.Uge); break;
+                case Mnemonic.l_sfgeu: RewriteSf(m.Uge); break;
                 case Mnemonic.l_sfgtsi: RewriteSfi(m.Gt); break;
-                case Mnemonic.l_sfgtu:  RewriteSf(m.Ugt); break;
+                case Mnemonic.l_sfgtu: RewriteSf(m.Ugt); break;
                 case Mnemonic.l_sfgtui: RewriteSfi(m.Ugt); break;
-                case Mnemonic.l_sfles:  RewriteSf(m.Le); break;
+                case Mnemonic.l_sfles: RewriteSf(m.Le); break;
                 case Mnemonic.l_sflesi: RewriteSfi(m.Le); break;
-                case Mnemonic.l_sfleu:  RewriteSf(m.Ule); break;
+                case Mnemonic.l_sfleu: RewriteSf(m.Ule); break;
                 case Mnemonic.l_sfleui: RewriteSfi(m.Ule); break;
-                case Mnemonic.l_sflts:  RewriteSf(m.Lt); break;
+                case Mnemonic.l_sflts: RewriteSf(m.Lt); break;
                 case Mnemonic.l_sfltsi: RewriteSfi(m.Lt); break;
-                case Mnemonic.l_sfltu:  RewriteSf(m.Ult); break;
+                case Mnemonic.l_sfltu: RewriteSf(m.Ult); break;
                 case Mnemonic.l_sfltui: RewriteSfi(m.Ult); break;
-                case Mnemonic.l_sfne:   RewriteSf(m.Ne); break;
-                case Mnemonic.l_sfnei:  RewriteSfi(m.Ne); break;
+                case Mnemonic.l_sfne: RewriteSf(m.Ne); break;
+                case Mnemonic.l_sfnei: RewriteSfi(m.Ne); break;
 
                 case Mnemonic.l_sll: RewriteBinOp(m.Shl); break;
                 case Mnemonic.l_slli: RewriteBinOpImm(m.Shl); break;

@@ -24,7 +24,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Reko.Arch.OpenRISC
+namespace Reko.Arch.OpenRISC.Or
 {
     public static class Registers
     {
@@ -70,7 +70,7 @@ namespace Reko.Arch.OpenRISC
 
                 ( (5 << 11) + 1, "MACLO" ),
                 ( (5 << 11) + 2, "MACHI" )
-            }.ToDictionary(e => e.Item1, e=> sprFactory.Reg32(e.Item2));
+            }.ToDictionary(e => e.Item1, e => sprFactory.Reg32(e.Item2));
 
             sr = SpecialRegisters[17];
             maclo = SpecialRegisters[(5 << 11) + 1];
@@ -82,9 +82,9 @@ namespace Reko.Arch.OpenRISC
                 .Concat(SpecialRegisters.Values)
                 .ToDictionary(r => r.Domain);
 
-            F = new FlagGroupStorage(sr, (uint)FlagM.F, "F", PrimitiveType.Bool);
-            C = new FlagGroupStorage(sr, (uint)FlagM.CY, "C", PrimitiveType.Bool);
-            V = new FlagGroupStorage(sr, (uint)FlagM.OV, "V", PrimitiveType.Bool);
+            F = new FlagGroupStorage(sr, (uint) FlagM.F, "F", PrimitiveType.Bool);
+            C = new FlagGroupStorage(sr, (uint) FlagM.CY, "C", PrimitiveType.Bool);
+            V = new FlagGroupStorage(sr, (uint) FlagM.OV, "V", PrimitiveType.Bool);
             CV = new FlagGroupStorage(sr, (uint) (FlagM.CY | FlagM.OV), "CV", PrimitiveType.Byte);
 
         }

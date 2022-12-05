@@ -18,7 +18,8 @@
  */
 #endregion
 
-namespace Reko.Arch.OpenRISC
+
+namespace Reko.Arch.OpenRISC.Or
 {
     public enum Mnemonic
     {

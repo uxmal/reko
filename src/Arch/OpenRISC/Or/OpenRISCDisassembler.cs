@@ -27,7 +27,7 @@ using Reko.Core.Memory;
 using Reko.Core.Services;
 using Reko.Core.Types;
 
-namespace Reko.Arch.OpenRISC
+namespace Reko.Arch.OpenRISC.Or
 {
     using Decoder = Decoder<OpenRISCDisassembler, Mnemonic, OpenRISCInstruction>;
 
@@ -48,16 +48,16 @@ namespace Reko.Arch.OpenRISC
         {
             this.arch = arch;
             this.rdr = rdr;
-            this.ops = new List<MachineOperand>();
-            this.addr = null!;
+            ops = new List<MachineOperand>();
+            addr = null!;
         }
 
         public override OpenRISCInstruction? DisassembleInstruction()
         {
-            this.addr = rdr.Address;
+            addr = rdr.Address;
             if (!rdr.TryReadUInt32(out uint wInstr))
                 return null;
-            this.ops.Clear();
+            ops.Clear();
             var instr = rootDecoder.Decode(wInstr, this);
             if (wInstr == 0)
             {
@@ -84,7 +84,7 @@ namespace Reko.Arch.OpenRISC
             {
                 InstructionClass = iclass,
                 Mnemonic = mnemonic,
-                Operands = this.ops.ToArray()
+                Operands = ops.ToArray()
             };
             return instr;
         }
@@ -92,7 +92,7 @@ namespace Reko.Arch.OpenRISC
         public override OpenRISCInstruction NotYetImplemented(string message)
         {
             var testGenSvc = arch.Services.GetService<ITestGenerationService>();
-            testGenSvc?.ReportMissingDecoder("OpenRiscDis", this.addr, this.rdr, message);
+            testGenSvc?.ReportMissingDecoder("OpenRiscDis", addr, rdr, message);
             return CreateInvalidInstruction();
         }
 
@@ -256,7 +256,7 @@ namespace Reko.Arch.OpenRISC
 
             public override OpenRISCInstruction Decode(uint wInstr, OpenRISCDisassembler dasm)
             {
-                var dec = (dasm.arch.WordWidth.BitSize == 64)
+                var dec = dasm.arch.WordWidth.BitSize == 64
                     ? dec64bit
                     : dec32bit;
                 return dec.Decode(wInstr, dasm);
@@ -294,14 +294,14 @@ namespace Reko.Arch.OpenRISC
                 Instr(Mnemonic.l_j, TD, Pc26),
                 Instr(Mnemonic.l_jal, TDC, Pc26),
                 Instr64(
-                    Instr(Mnemonic.l_adrp, RD,Page(19)),
-                    Instr(Mnemonic.l_adrp, RD,Page(21))),
+                    Instr(Mnemonic.l_adrp, RD, Page(19)),
+                    Instr(Mnemonic.l_adrp, RD, Page(21))),
                 Instr(Mnemonic.l_bnf, TD | InstrClass.Conditional, Pc26),
 
                 Instr(Mnemonic.l_bf, TD | InstrClass.Conditional, Pc26),
                 Instr(Mnemonic.l_nop, InstrClass.Linear | InstrClass.Padding),
                 Mask(16, 1, "  0x06",
-                    Instr(Mnemonic.l_movhi, RD,Iu16),
+                    Instr(Mnemonic.l_movhi, RD, Iu16),
                     Instr(Mnemonic.l_macrc, RD)),
                 invalid,
 
@@ -324,7 +324,7 @@ namespace Reko.Arch.OpenRISC
                 invalid,
                 Instr(Mnemonic.l_jr, TD, RB),
                 Instr(Mnemonic.l_jalr, TDC, RB),
-                Instr(Mnemonic.l_maci, RA,Is16),
+                Instr(Mnemonic.l_maci, RA, Is16),
 
                 invalid,
                 invalid,
@@ -333,8 +333,8 @@ namespace Reko.Arch.OpenRISC
 
                 invalid,
                 invalid,
-                Instr(Mnemonic.l_lf, RD,Mo(16, PrimitiveType.Real32)),
-                Instr(Mnemonic.l_lwa, RD,Mo(16, PrimitiveType.Word32)),
+                Instr(Mnemonic.l_lf, RD, Mo(16, PrimitiveType.Real32)),
+                Instr(Mnemonic.l_lwa, RD, Mo(16, PrimitiveType.Word32)),
 
                 invalid, // 0x1C - custom
                 invalid, // 0x1D - custom
@@ -344,102 +344,102 @@ namespace Reko.Arch.OpenRISC
                 // 20
                 Instr64(
                     invalid,
-                    Instr(Mnemonic.l_ld, RD,Mo(16,PrimitiveType.Word64))),
-                Instr(Mnemonic.l_lwz, RD,Mo(16,PrimitiveType.Word32)),
-                Instr(Mnemonic.l_lws, RD,Mo(16,PrimitiveType.Int32)),
-                Instr(Mnemonic.l_lbz, RD,Mo(16,PrimitiveType.Byte)),
+                    Instr(Mnemonic.l_ld, RD, Mo(16, PrimitiveType.Word64))),
+                Instr(Mnemonic.l_lwz, RD, Mo(16, PrimitiveType.Word32)),
+                Instr(Mnemonic.l_lws, RD, Mo(16, PrimitiveType.Int32)),
+                Instr(Mnemonic.l_lbz, RD, Mo(16, PrimitiveType.Byte)),
 
-                Instr(Mnemonic.l_lbs, RD,Mo(16,PrimitiveType.SByte)),
+                Instr(Mnemonic.l_lbs, RD, Mo(16, PrimitiveType.SByte)),
                 Instr(Mnemonic.l_lhz, RD, Mo(16, PrimitiveType.Word16)),
                 Instr(Mnemonic.l_lhs, RD, Mo(16, PrimitiveType.Int16)),
-                Instr(Mnemonic.l_addi, RD,RA,Is16),
+                Instr(Mnemonic.l_addi, RD, RA, Is16),
 
-                Instr(Mnemonic.l_addic, RD,RA,Is16),
-                Instr(Mnemonic.l_andi, RD,RA,Iu16),
-                Instr(Mnemonic.l_ori, RD,RA,Iu16),
-                Instr(Mnemonic.l_xori, RD,RA,Iu16),
+                Instr(Mnemonic.l_addic, RD, RA, Is16),
+                Instr(Mnemonic.l_andi, RD, RA, Iu16),
+                Instr(Mnemonic.l_ori, RD, RA, Iu16),
+                Instr(Mnemonic.l_xori, RD, RA, Iu16),
 
-                Instr(Mnemonic.l_muli, RD,RA,Is16),
-                Instr(Mnemonic.l_mfspr, RD,RA,Spr(Bf((0, 16)))),
+                Instr(Mnemonic.l_muli, RD, RA, Is16),
+                Instr(Mnemonic.l_mfspr, RD, RA, Spr(Bf((0, 16)))),
                 Mask(6, 2, "  0x2E",
-                    Instr(Mnemonic.l_slli, RD,RA, Iu6),
-                    Instr(Mnemonic.l_srli, RD,RA, Iu6),
-                    Instr(Mnemonic.l_srai, RD,RA, Iu6),
-                    Instr(Mnemonic.l_rori, RD,RA, Iu6)),
+                    Instr(Mnemonic.l_slli, RD, RA, Iu6),
+                    Instr(Mnemonic.l_srli, RD, RA, Iu6),
+                    Instr(Mnemonic.l_srai, RD, RA, Iu6),
+                    Instr(Mnemonic.l_rori, RD, RA, Iu6)),
                 Sparse(21, 5, "  0x2F", invalid,
-                    (0x0, Instr(Mnemonic.l_sfeqi, RA,Isu16)),
-                    (0x1, Instr(Mnemonic.l_sfnei, RA,Isu16)),
-                    (0x2, Instr(Mnemonic.l_sfgtui, RA,Isu16)),
-                    (0x3, Instr(Mnemonic.l_sfgeui, RA,Isu16)),
+                    (0x0, Instr(Mnemonic.l_sfeqi, RA, Isu16)),
+                    (0x1, Instr(Mnemonic.l_sfnei, RA, Isu16)),
+                    (0x2, Instr(Mnemonic.l_sfgtui, RA, Isu16)),
+                    (0x3, Instr(Mnemonic.l_sfgeui, RA, Isu16)),
                     (0x4, Instr(Mnemonic.l_sfltui, RA, Isu16)),
                     (0x5, Instr(Mnemonic.l_sfleui, RA, Isu16)),
 
-                    (0xA, Instr(Mnemonic.l_sfgtsi, RA,Is16)),
-                    (0xB, Instr(Mnemonic.l_sfgesi, RA,Is16)),
-                    (0xC, Instr(Mnemonic.l_sfltsi, RA,Is16)),
-                    (0xD, Instr(Mnemonic.l_sflesi, RA,Is16))),
+                    (0xA, Instr(Mnemonic.l_sfgtsi, RA, Is16)),
+                    (0xB, Instr(Mnemonic.l_sfgesi, RA, Is16)),
+                    (0xC, Instr(Mnemonic.l_sfltsi, RA, Is16)),
+                    (0xD, Instr(Mnemonic.l_sflesi, RA, Is16))),
 
                 // 30
-                Instr(Mnemonic.l_mtspr, RA,RB,Spr(Bf((21, 5),(0, 11)))),
+                Instr(Mnemonic.l_mtspr, RA, RB, Spr(Bf((21, 5), (0, 11)))),
                 Nyi("0x31"),
                 Nyi("0x32"),
                 Nyi("0x33"),
 
                 Instr64(
                     invalid,
-                    Instr(Mnemonic.l_sd, Mo(16, Bf((21,5),(0, 11)), PrimitiveType.Word32), RB)),
-                Instr(Mnemonic.l_sw, Mo(16, Bf((21,5),(0, 11)), PrimitiveType.Word32), RB),
-                Instr(Mnemonic.l_sb, Mo(16, Bf((21,5),(0, 11)), PrimitiveType.Byte), RB),
-                Instr(Mnemonic.l_sh, Mo(16, Bf((21,5),(0, 11)), PrimitiveType.Word16), RB),
+                    Instr(Mnemonic.l_sd, Mo(16, Bf((21, 5), (0, 11)), PrimitiveType.Word32), RB)),
+                Instr(Mnemonic.l_sw, Mo(16, Bf((21, 5), (0, 11)), PrimitiveType.Word32), RB),
+                Instr(Mnemonic.l_sb, Mo(16, Bf((21, 5), (0, 11)), PrimitiveType.Byte), RB),
+                Instr(Mnemonic.l_sh, Mo(16, Bf((21, 5), (0, 11)), PrimitiveType.Word16), RB),
 
                 Mask(8, 2, "  0x38",
                     Mask(0, 4, "  0x38-0",
-                        Instr(Mnemonic.l_add, RD,RA,RB),
-                        Instr(Mnemonic.l_addc, RD,RA,RB),
-                        Instr(Mnemonic.l_sub, RD,RA,RB),
-                        Instr(Mnemonic.l_and, RD,RA,RB),
+                        Instr(Mnemonic.l_add, RD, RA, RB),
+                        Instr(Mnemonic.l_addc, RD, RA, RB),
+                        Instr(Mnemonic.l_sub, RD, RA, RB),
+                        Instr(Mnemonic.l_and, RD, RA, RB),
 
-                        Instr(Mnemonic.l_or, RD,RA,RB),
-                        Instr(Mnemonic.l_xor, RD,RA,RB),
+                        Instr(Mnemonic.l_or, RD, RA, RB),
+                        Instr(Mnemonic.l_xor, RD, RA, RB),
                         invalid,
                         invalid,
 
                         Mask(6, 2, " 0x30-0-8",
-                            Instr(Mnemonic.l_sll, RD,RA,RB),
-                            Instr(Mnemonic.l_srl, RD,RA,RB),
-                            Instr(Mnemonic.l_sra, RD,RA,RB),
-                            Instr(Mnemonic.l_ror, RD,RA,RB)),
+                            Instr(Mnemonic.l_sll, RD, RA, RB),
+                            Instr(Mnemonic.l_srl, RD, RA, RB),
+                            Instr(Mnemonic.l_sra, RD, RA, RB),
+                            Instr(Mnemonic.l_ror, RD, RA, RB)),
                         invalid,
                         invalid,
                         invalid,
 
                         Nyi("  0x38-0-C"),
                         Nyi("  0x38-0-D"),
-                        Instr(Mnemonic.l_cmov, RD,RA,RB),
-                        Instr(Mnemonic.l_ff1, RD,RA)),
+                        Instr(Mnemonic.l_cmov, RD, RA, RB),
+                        Instr(Mnemonic.l_ff1, RD, RA)),
                     Sparse(0, 4, "  0x38-1", invalid,
-                        (0xF, Instr(Mnemonic.l_fl1, RD,RA))),
+                        (0xF, Instr(Mnemonic.l_fl1, RD, RA))),
                     Nyi("  0x38-2"),
                     Sparse(0, 4, "  0x38-3",
                         invalid,
-                        (0x6, Instr(Mnemonic.l_mul, RD,RA,RB)),
-                        (0x7, Instr(Mnemonic.l_muld, RA,RB)),
-                        (0x9, Instr(Mnemonic.l_div, RD,RA,RB)),
-                        (0xA, Instr(Mnemonic.l_divu, RD,RA,RB)),
-                        (0xB, Instr(Mnemonic.l_mulu, RD,RA,RB)),
-                        (0xC, Instr(Mnemonic.l_muldu, RA,RB)))),
+                        (0x6, Instr(Mnemonic.l_mul, RD, RA, RB)),
+                        (0x7, Instr(Mnemonic.l_muld, RA, RB)),
+                        (0x9, Instr(Mnemonic.l_div, RD, RA, RB)),
+                        (0xA, Instr(Mnemonic.l_divu, RD, RA, RB)),
+                        (0xB, Instr(Mnemonic.l_mulu, RD, RA, RB)),
+                        (0xC, Instr(Mnemonic.l_muldu, RA, RB)))),
                 Sparse(21, 5, "  0x39", Nyi("0x39"),
-                    (0x0, Instr(Mnemonic.l_sfeq, RA,RB)),
-                    (0x1, Instr(Mnemonic.l_sfne, RA,RB)),
-                    (0x2, Instr(Mnemonic.l_sfgtu, RA,RB)),
-                    (0x3, Instr(Mnemonic.l_sfgeu, RA,RB)),
-                    (0x4, Instr(Mnemonic.l_sfltu, RA,RB)),
-                    (0x5, Instr(Mnemonic.l_sfleu, RA,RB)),
-                    
-                    (0xA, Instr(Mnemonic.l_sfgts, RA,RB)),
-                    (0xB, Instr(Mnemonic.l_sfges, RA,RB)),
-                    (0xC, Instr(Mnemonic.l_sflts, RA,RB)),
-                    (0xD, Instr(Mnemonic.l_sfles, RA,RB))),
+                    (0x0, Instr(Mnemonic.l_sfeq, RA, RB)),
+                    (0x1, Instr(Mnemonic.l_sfne, RA, RB)),
+                    (0x2, Instr(Mnemonic.l_sfgtu, RA, RB)),
+                    (0x3, Instr(Mnemonic.l_sfgeu, RA, RB)),
+                    (0x4, Instr(Mnemonic.l_sfltu, RA, RB)),
+                    (0x5, Instr(Mnemonic.l_sfleu, RA, RB)),
+
+                    (0xA, Instr(Mnemonic.l_sfgts, RA, RB)),
+                    (0xB, Instr(Mnemonic.l_sfges, RA, RB)),
+                    (0xC, Instr(Mnemonic.l_sflts, RA, RB)),
+                    (0xD, Instr(Mnemonic.l_sfles, RA, RB))),
                 Nyi("0x3A"),
                 Nyi("0x3B"),
 

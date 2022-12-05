@@ -167,6 +167,8 @@ namespace Reko.Environments.SysV.ArchSpecific
                 return new VaxCallingConvention(arch);
             case "nios2":
                 return new Nios2CallingConvention(arch);
+            case "aeon":
+                return new AeonCallingConvention(arch);
             default:
                 return null;
             }

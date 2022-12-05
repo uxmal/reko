@@ -20,6 +20,7 @@
 
 using NUnit.Framework;
 using Reko.Arch.OpenRISC;
+using Reko.Arch.OpenRISC.Or;
 using Reko.Core;
 using System;
 using System.Collections.Generic;

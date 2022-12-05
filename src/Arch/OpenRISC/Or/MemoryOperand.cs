@@ -22,7 +22,7 @@ using Reko.Core;
 using Reko.Core.Machine;
 using Reko.Core.Types;
 
-namespace Reko.Arch.OpenRISC
+namespace Reko.Arch.OpenRISC.Or
 {
     public class MemoryOperand : AbstractMachineOperand
     {
@@ -31,8 +31,8 @@ namespace Reko.Arch.OpenRISC
 
         public MemoryOperand(RegisterStorage registerStorage, int offset, PrimitiveType dt) : base(dt)
         {
-            this.Base = registerStorage;
-            this.Offset = offset;
+            Base = registerStorage;
+            Offset = offset;
         }
 
         protected override void DoRender(MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)

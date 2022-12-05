@@ -19,27 +19,32 @@
 #endregion
 
 using Reko.Core.Machine;
-using System;
 
-namespace Reko.Arch.OpenRISC
+namespace Reko.Arch.OpenRISC.Aeon
 {
-    public class OpenRISCInstruction : MachineInstruction
+    public class AeonInstruction : MachineInstruction
     {
         public Mnemonic Mnemonic { get; set; }
         public override int MnemonicAsInteger => (int) Mnemonic;
+
         public override string MnemonicAsString => Mnemonic.ToString();
 
         protected override void DoRender(MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
         {
             RenderMnemonic(renderer);
-            RenderOperands(renderer, options);
+            if (Operands.Length > 0)
+            {
+                base.RenderOperands(renderer, options);
+            }
         }
 
         private void RenderMnemonic(MachineInstructionRenderer renderer)
         {
-            var sMnemonic = this.Mnemonic.ToString()
-                .Replace('_', '.');
+            var sMnemonic = MnemonicAsString
+                .Replace("__", "?")
+                .Replace("_", ".");
             renderer.WriteMnemonic(sMnemonic);
         }
     }
+
 }
