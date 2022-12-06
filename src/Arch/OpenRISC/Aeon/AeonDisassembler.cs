@@ -281,6 +281,11 @@ namespace Reko.Arch.OpenRISC.Aeon
                 Instr(Mnemonic.l_sw__, Ms(16, 2, 14, 2, PrimitiveType.Word32), R21),        // guess
                 Instr(Mnemonic.l_lwz__, R21, Ms(16, 2, 14, 2, PrimitiveType.Word32)),  // guess
                 Instr(Mnemonic.l_sh__, Ms(16, 1, 15, 1, PrimitiveType.Word16), R21));
+            var decoderC = Mask(0, 2, "  C",
+                Instr(Mnemonic.l_lwz__, R21, Ms(16, 2, 14, 2, PrimitiveType.Word32)), // guess
+                Nyi("0b01"),
+                Nyi("0b10"),
+                Nyi("0b11"));
             var decoderD = Select(Bf((5, 11), (21, 5)), u => u == 0,
                 Sparse(0, 3, "  opc=D", Nyi("D"),
                     (0b001, Instr(Mnemonic.l_invalidate_line, Ms(16, 6, 4, 0, PrimitiveType.Word32))), //$REVIEW j?  // chenxing
@@ -305,10 +310,11 @@ namespace Reko.Arch.OpenRISC.Aeon
                 decoderA,
                 decoderB,
 
-                Nyi("0b1100"),
+                Instr(Mnemonic.l_lwz__, R21, Ms(16, 2, 14, 2, PrimitiveType.Word32)), // guess
                 decoderD,
                 Nyi("0b1110"),
-                Instr(Mnemonic.l_addi, R21,R16,simm0_16));           // chenxing, backtrace
+                //$REVIEW: signed or unsigned immediate?
+                Instr(Mnemonic.l_addi, R21, R16, uimm0_16));           // chenxing, backtrace
 
 
             return new D32BitDecoder(decoder);
@@ -487,3 +493,4 @@ namespace Reko.Arch.OpenRISC.Aeon
         }
     }
 }
+
