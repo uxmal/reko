@@ -60,6 +60,18 @@ namespace Reko.UnitTests.Arch.OpenRISC
         }
 
         [Test]
+        public void AeonDis_l_addi_two_operand()
+        {
+            AssertCode("l.addi?\tr1,-0x4", "9C 3C");
+        }
+
+        [Test]
+        public void AeonDis_l_jal()
+        {
+            AssertCode("l.jal\t000F17F9", "E7 FE 2F F2");
+        }
+
+        [Test]
         public void AeonDis_l_movhi()
         {
             AssertCode("l.movhi\tr7,0x52", "C0E00A41");

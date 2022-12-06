@@ -138,6 +138,19 @@ namespace Reko.Arch.OpenRISC.Aeon
         private static readonly Mutator uimm8_5 = UnsignedImmediate(8, 5);
         private static readonly Mutator uimm10_3 = UnsignedImmediate(10, 3);
 
+        private static Mutator SignedImmediate(int bitPos, int bitlength)
+        {
+            var field = new Bitfield(bitPos, bitlength);
+            return (u, d) =>
+            {
+                var sImm = field.ReadSigned(u);
+                d.ops.Add(ImmediateOperand.Int32(sImm));
+                return true;
+            };
+        }
+        private static readonly Mutator simm0_5 = SignedImmediate(0, 5);
+        private static readonly Mutator simm0_8 = SignedImmediate(0, 8);
+        private static readonly Mutator simm0_16 = SignedImmediate(0, 16);
 
         /// <summary>
         /// Memory access with signed offset
@@ -174,6 +187,8 @@ namespace Reko.Arch.OpenRISC.Aeon
             };
         }
         private static readonly Mutator disp0_26 = DisplacementFromPc(0, 26);
+        private static readonly Mutator disp0_10 = DisplacementFromPc(0, 10);
+        private static readonly Mutator disp1_25 = DisplacementFromPc(1, 25);
         private static readonly Mutator disp2_8 = DisplacementFromPc(2, 8);
         private static readonly Mutator disp2_16 = DisplacementFromPc(2, 16);
         private static readonly Mutator disp2_24 = DisplacementFromPc(2, 24);
@@ -276,21 +291,20 @@ namespace Reko.Arch.OpenRISC.Aeon
 
                 Nyi("0b0100"),
                 // XXX: n is probably wrong
-                Instr(Mnemonic.l_bf, disp0_26),                    // disasm, guess
+                Instr(Mnemonic.l_bf, InstrClass.ConditionalTransfer, disp0_26),                    // disasm, guess
                 Nyi("0b0110"),
                 Nyi("0b0111"),
 
                 Nyi("0b1000"),
-                // XXX: n is probably wrong
-                Instr(Mnemonic.l_jal__, InstrClass.Transfer | InstrClass.Call, disp2_24),       // guess
+                //$REVIEW: what is bit 0 used for?
+                Instr(Mnemonic.l_jal, InstrClass.Transfer | InstrClass.Call, disp1_25),       // guess
                 decoderA,
                 decoderB,
 
                 Nyi("0b1100"),
                 decoderD,
                 Nyi("0b1110"),
-                //$REVIEW: signed or unsigned immediate?
-                Instr(Mnemonic.l_addi, R21,R16,uimm0_16));           // chenxing, backtrace
+                Instr(Mnemonic.l_addi, R21,R16,simm0_16));           // chenxing, backtrace
 
 
             return new D32BitDecoder(decoder);
@@ -371,10 +385,10 @@ namespace Reko.Arch.OpenRISC.Aeon
                 Instr(Mnemonic.mov__, R5, R0),                       // wild guess
                 Instr(Mnemonic.l_add__, R5, R0),                     // guess
 
-                Instr(Mnemonic.l_j, uimm0_10),                        // chenxing
+                Instr(Mnemonic.l_j, InstrClass.Transfer, disp0_10),                        // chenxing
                 Instr(Mnemonic.Nyi, R5, R0),
                 Instr(Mnemonic.l_andi__, R5, uimm0_5),                // diasm, guess, may be movi
-                Instr(Mnemonic.l_addi__, R5, uimm0_5));               // backtrace, guess
+                Instr(Mnemonic.l_addi__, R5, simm0_5));               // backtrace, guess
         }
 
         private static Decoder<AeonDisassembler, Mnemonic, AeonInstruction> Create24bitInstructionDecoder()
@@ -433,7 +447,7 @@ namespace Reko.Arch.OpenRISC.Aeon
                 Instr(Mnemonic.l_lwz__, R13, Ms(8, 2, 6, 2, PrimitiveType.Word32)),    // guess
                 Nyi("0b00101"),
                 Instr(Mnemonic.l_sw__, Ms(8, 2, 6, 2, PrimitiveType.Word32), R13), // guess
-                Instr(Mnemonic.l_addi, R13, R8, uimm0_8), //$REVIEW: signed?           // chenxing, backtrace
+                Instr(Mnemonic.l_addi, R13, R8, simm0_8),           // chenxing, backtrace
 
                 decode08,
                 // branch if reg <= imm XXX: signed/unsigned?
@@ -442,7 +456,7 @@ namespace Reko.Arch.OpenRISC.Aeon
                 Nyi("0b01011"),
 
                 Nyi("0b01100"),
-                Instr(Mnemonic.l_movhi__, UnsignedImmediate(0, 18)),         // chenxing
+                Instr(Mnemonic.l_movhi__, R13, UnsignedImmediate(0, 13)),         // chenxing
                 Nyi("0b01110"),
                 Nyi("0b01111"),
 

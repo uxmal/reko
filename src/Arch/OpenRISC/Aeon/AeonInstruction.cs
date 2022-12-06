@@ -19,6 +19,7 @@
 #endregion
 
 using Reko.Core.Machine;
+using Reko.Core.Types;
 
 namespace Reko.Arch.OpenRISC.Aeon
 {
@@ -51,7 +52,20 @@ namespace Reko.Arch.OpenRISC.Aeon
             switch (operand)
             {
             case ImmediateOperand imm:
-                renderer.WriteFormat("0x{0:X}", imm.Value.ToUInt32());
+                if (imm.Value.DataType.Domain == Domain.SignedInt)
+                {
+                    var value = imm.Value.ToInt32();
+                    if (value < 0)
+                    {
+                        renderer.WriteChar('-');
+                        value = -value;
+                    }
+                    renderer.WriteFormat("0x{0:X}", value);
+                }
+                else
+                {
+                    renderer.WriteFormat("0x{0:X}", imm.Value.ToUInt32());
+                }
                 break;
             default:
                 base.RenderOperand(operand, renderer, options);

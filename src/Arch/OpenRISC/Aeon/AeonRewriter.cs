@@ -75,31 +75,46 @@ namespace Reko.Arch.OpenRISC.Aeon
                     iclass = InstrClass.Invalid;
                     m.Invalid();
                     break;
-                case Mnemonic.l_addi: RewriteAddOri(m.IAdd); break;
-                case Mnemonic.l_addi__: RewriteUnknown(); break;
+                case Mnemonic.l_add__: RewriteArithmetic(m.IAdd); break;
+                case Mnemonic.l_addi: RewriteAddi(); break;
+                case Mnemonic.l_addi__: RewriteAddi(); break;
+                case Mnemonic.l_and: RewriteArithmetic(m.And); break;
                 case Mnemonic.l_andi: RewriteLogicalImm(m.And); break;
                 case Mnemonic.l_andi__: RewriteUnknown(); break;
                 case Mnemonic.beqi__: RewriteBxxi(m.Eq); break;
+                case Mnemonic.l_bf: RewriteBf(false); break;
                 case Mnemonic.ble__i__: RewriteBxxi(m.Le); break;
-                case Mnemonic.l_jal__: RewriteJal(); break;
+                case Mnemonic.bt_trap: RewriteUnknown(); break;
+                case Mnemonic.entri__: RewriteUnknown(); break;
+                case Mnemonic.l_invalidate_line: RewriteInvalidateLine(); break;
+                case Mnemonic.l_j: RewriteJ(); break;
+                case Mnemonic.l_jal: RewriteJal(); break;
                 case Mnemonic.l_jr: RewriteJr(); break;
                 case Mnemonic.l_lhz: RewriteLoadZex(PrimitiveType.UInt16); break;
                 case Mnemonic.l_lwz__: RewriteLoadZex(PrimitiveType.Word32); break;
+                case Mnemonic.l_mfspr: RewriteIntrinsic(l_mfspr_intrinsic); break;
                 case Mnemonic.l_movhi: RewriteMovhi(); break;
                 case Mnemonic.l_movhi__: RewriteMovhi(); break;
+                case Mnemonic.l_mtspr: RewriteSideEffect(l_mtspr_intrinsic); break;
                 case Mnemonic.l_nop: RewriteNop(); break;
                 case Mnemonic.l_mul: RewriteArithmetic(m.IMul); break;
                 case Mnemonic.l_or__: RewriteArithmetic(m.Or); break;
-                case Mnemonic.l_ori: RewriteAddOri(m.Or); break;
-                case Mnemonic.l_sfeqi: RewriteSfxxi(m.Eq); break;
-                case Mnemonic.l_sfgtui: RewriteSfxxi(m.Ugt); break;
+                case Mnemonic.l_ori: RewriteOri(m.Or); break;
+                case Mnemonic.l_sfeqi: RewriteSfxx(m.Eq); break;
+                case Mnemonic.l_sfgeu: RewriteSfxx(m.Uge); break;
+                case Mnemonic.l_sfgtui: RewriteSfxx(m.Ugt); break;
+                case Mnemonic.l_sfne: RewriteSfxx(m.Ne); break;
                 case Mnemonic.l_slli__: RewriteShifti(m.Shl); break;
                 case Mnemonic.l_srli__: RewriteShifti(m.Shr); break;
                 case Mnemonic.l_syncwritebuffer: RewriteSideEffect(syncwritebuffer_intrinsic); break;
                 case Mnemonic.l_sw: RewriteStore(PrimitiveType.Word32); break;
                 case Mnemonic.l_sw__: RewriteStore(PrimitiveType.Word32); break;
                 case Mnemonic.mov__: RewriteUnknown(); break;
-                case Mnemonic.Nyi: RewriteUnknown(); break;
+                    //$TODO: when all instructions are known this code can be removed.
+                case Mnemonic.Nyi:
+                    instr.Operands = Array.Empty<MachineOperand>();
+                    RewriteUnknown();
+                    break;
                 }
                 yield return m.MakeCluster(instr.Address, instr.Length, iclass);
                 rtls.Clear();
@@ -164,14 +179,59 @@ namespace Reko.Arch.OpenRISC.Aeon
             }
         }
 
+        private void RewriteAddi()
+        {
+            Expression left;
+            int right;
+            if (instr.Operands.Length == 2)
+            {
+                left = Op(0);
+                right = ((ImmediateOperand) instr.Operands[1]).Value.ToInt32();
+            }
+            else
+            {
+                left = OpOrZero(1);
+                right = ((ImmediateOperand) instr.Operands[2]).Value.ToInt32();
+            }
+            Expression src;
+            if (left.IsZero)
+            {
+                src = m.Int32(right);
+            }
+            else
+            {
+                src = m.AddSubSignedInt(left, right);
+            }
+            m.Assign(Op(0), src);
+        }
+
         private void RewriteArithmetic(Func<Expression, Expression, Expression> fn)
         {
-            var left = OpOrZero(1);
-            var right = OpOrZero(2);
+            Expression left;
+            Expression right;
+            if (instr.Operands.Length == 2)
+            {
+                left = Op(0);
+                right = OpOrZero(1);
+            }
+            else
+            {
+                left = OpOrZero(1);
+                right = OpOrZero(2);
+            }
             var dst = Op(0);
             m.Assign(dst, fn(left, right));
         }
 
+        private void RewriteBf(bool condition)
+        {
+            Expression c = binder.EnsureFlagGroup(Registers.F);
+            if (!condition)
+            {
+                c = m.Not(c);
+            }
+            m.Branch(c, (Address) Op(0));
+        }
 
         private void RewriteBxxi(Func<Expression, Expression, Expression> cmp)
         {
@@ -211,18 +271,28 @@ namespace Reko.Arch.OpenRISC.Aeon
         }
 
 
-        private void RewriteAddOri(Func<Expression, Expression, Expression> fn)
+        private void RewriteOri(Func<Expression, Expression, Expression> fn)
         {
-            var left = OpOrZero(1);
-            var right = ((ImmediateOperand) instr.Operands[2]).Value.ToUInt32();
-            Expression src;
-            if (left.IsZero)
+            Expression left;
+            Expression right;
+            if (instr.Operands.Length == 2)
             {
-                src = m.Word32(right);
+                left = Op(0);
+                right = m.Word32(((ImmediateOperand) instr.Operands[1]).Value.ToUInt32());
             }
             else
             {
-                src = fn(left, m.Word32(right));
+                left = OpOrZero(1);
+                right = m.Word32(((ImmediateOperand) instr.Operands[2]).Value.ToUInt32());
+            }
+            Expression src;
+            if (left.IsZero)
+            {
+                src = right;
+            }
+            else
+            {
+                src = fn(left, right);
             }
             m.Assign(Op(0), src);
         }
@@ -233,6 +303,18 @@ namespace Reko.Arch.OpenRISC.Aeon
             var right = ((ImmediateOperand) instr.Operands[2]).Value.ToUInt32();
             var dst = Op(0);
             m.Assign(dst, fn(left, m.Word32(right)));
+        }
+
+        private void RewriteInvalidateLine()
+        {
+            var ea = m.AddrOf(PrimitiveType.Ptr32, Op(0));
+            m.SideEffect(m.Fn(l_invalidate_line_intrinsic, ea));
+        }
+
+        private void RewriteJ()
+        {
+            var target = Op(0);
+            m.Goto(target);
         }
 
         private void RewriteJal()
@@ -252,10 +334,11 @@ namespace Reko.Arch.OpenRISC.Aeon
                 m.Return(0, 0);
                 return;
             }
-            throw new NotImplementedException();
+            //$REVIEW: could be a call, r9 seems to be used as a link register.
+            m.Goto(op0);
         }
 
-        private void RewriteSfxxi(Func<Expression, Expression, Expression> fn) 
+        private void RewriteSfxx(Func<Expression, Expression, Expression> fn) 
         {
             var left = OpOrZero(0);
             var right = OpOrZero(1);
@@ -276,10 +359,21 @@ namespace Reko.Arch.OpenRISC.Aeon
             var args = new List<Expression> { };
             for (int iop = 0; iop < instr.Operands.Length; ++iop)
             {
-                args.Add(Op(iop));
+                args.Add(OpOrZero(iop));
             }
             m.SideEffect(m.Fn(intrinsic, args.ToArray()));
         }
+
+        private void RewriteIntrinsic(IntrinsicProcedure intrinsic)
+        {
+            var args = new List<Expression> { };
+            for (int iop = 1; iop < instr.Operands.Length; ++iop)
+            {
+                args.Add(OpOrZero(iop));
+            }
+            m.Assign(Op(0), m.Fn(intrinsic, args.ToArray()));
+        }
+
 
         private void RewriteStore(PrimitiveType dt)
         {
@@ -321,6 +415,19 @@ namespace Reko.Arch.OpenRISC.Aeon
             m.SideEffect(m.Fn(intrinsic, args.ToArray()));
         }
 
+        private static readonly IntrinsicProcedure l_invalidate_line_intrinsic = new IntrinsicBuilder("__invalidate_line", true)
+            .Param(PrimitiveType.Ptr32)
+            .Void();
+        private static readonly IntrinsicProcedure l_mfspr_intrinsic = new IntrinsicBuilder("__move_from_spr", true)
+            .Param(PrimitiveType.Word32)
+            .Param(PrimitiveType.Word32)
+            .Returns(PrimitiveType.Word32);
+
+        private static readonly IntrinsicProcedure l_mtspr_intrinsic = new IntrinsicBuilder("__move_to_spr", true)
+            .Param(PrimitiveType.Word32)
+            .Param(PrimitiveType.Word32)
+            .Param(PrimitiveType.Word32)
+            .Void();
         private static readonly IntrinsicProcedure syncwritebuffer_intrinsic = new IntrinsicBuilder("__syncwritebuffer", true)
             .Void();
     }
