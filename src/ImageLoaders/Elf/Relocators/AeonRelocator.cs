@@ -35,12 +35,14 @@ namespace Reko.ImageLoaders.Elf.Relocators
 
         public override (Address?, ElfSymbol?) RelocateEntry(Program program, ElfSymbol symbol, ElfSection? referringSection, ElfRelocation rela)
         {
-            throw new NotImplementedException();
+            //$TODO: implement relocations
+            return (null, null);
         }
 
         public override string? RelocationTypeToString(uint type)
         {
-            throw new NotImplementedException();
+            //$TODO: implement relocations
+            return type.ToString();
         }
     }
 }
