@@ -47,6 +47,7 @@ namespace Reko.Arch.OpenRISC.Aeon
         l_mul,
         l_and,
         l_or__,
+        l_slli__,
         l_srli__,
         l_ori,
         l_andi,

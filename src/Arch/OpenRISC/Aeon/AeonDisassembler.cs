@@ -270,8 +270,8 @@ namespace Reko.Arch.OpenRISC.Aeon
                 Nyi("D, non-zero bits"));
             var decoder = Mask(26, 4, "  32-bit instr",
                 decoder0,
-                Instr(Mnemonic.l_andi, R15, R10, uimm0_5),           // chenxing
-                Instr(Mnemonic.l_ori, R15, R10, uimm0_5),           // chenxing
+                Instr(Mnemonic.l_andi, R15, R10, uimm0_16),           // chenxing
+                Instr(Mnemonic.l_ori, R15, R10, uimm0_16),           // chenxing
                 Nyi("0b0011"),
 
                 Nyi("0b0100"),
@@ -282,7 +282,7 @@ namespace Reko.Arch.OpenRISC.Aeon
 
                 Nyi("0b1000"),
                 // XXX: n is probably wrong
-                Instr(Mnemonic.l_jal__, InstrClass.Transfer | InstrClass.Call, disp0_26),       // guess
+                Instr(Mnemonic.l_jal__, InstrClass.Transfer | InstrClass.Call, disp2_24),       // guess
                 decoderA,
                 decoderB,
 
@@ -392,13 +392,13 @@ namespace Reko.Arch.OpenRISC.Aeon
                 Nyi("0b11"));
             var decode08 = Mask(0, 2, "  8",
                 // branch if reg == imm ? XXX: signed/unsigned?
-                Instr(Mnemonic.beqi__, R13, uimm10_3, disp2_8),              // wild guess
-                Instr(Mnemonic.l_bf, disp2_16),                             // chenxing(mod), disasm
+                Instr(Mnemonic.beqi__, InstrClass.ConditionalTransfer,  R13, uimm10_3, disp2_8),              // wild guess
+                Instr(Mnemonic.l_bf, InstrClass.ConditionalTransfer, disp2_16),                             // chenxing(mod), disasm
                 Nyi("10"),
                 Nyi("11"));
             var decode09 = Mask(0, 2, "  9",
                 Nyi("00"),
-                Instr(Mnemonic.ble__i__,  R13, uimm10_3, disp2_8), // wild guess
+                Instr(Mnemonic.ble__i__, InstrClass.ConditionalTransfer, R13, uimm10_3, disp2_8), // wild guess
                 Nyi("10"),
                 Nyi("11"));
 
@@ -410,6 +410,7 @@ namespace Reko.Arch.OpenRISC.Aeon
                 (0b101, Instr(Mnemonic.l_or__, R13, R8, R3)));   // guess
 
             var decode13 = Sparse(0, 3, "  13", Nyi("13"),
+                (0b000, Instr(Mnemonic.l_slli__, R13, R8, uimm3_5)),        // guess
                 (0b001, Instr(Mnemonic.l_srli__, R13, R8, uimm3_5)));       // guess
 
             var decode17 = Sparse(0, 5, "  17", Nyi("17"),
