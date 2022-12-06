@@ -66,9 +66,21 @@ namespace Reko.UnitTests.Arch.OpenRISC
         }
 
         [Test]
+        public void AeonDis_l_blti__()
+        {
+            AssertCode("l.blti?\tr4,0x8,000FFFE7", "D0 88 FF 3E");
+        }
+
+        [Test]
         public void AeonDis_l_jal()
         {
             AssertCode("l.jal\t000F17F9", "E7 FE 2F F2");
+        }
+
+        [Test]
+        public void AeonDis_l_movi()
+        {
+            AssertCode("l.movi?\tr6,-0x1", "98 DF");
         }
 
         [Test]
@@ -87,6 +99,12 @@ namespace Reko.UnitTests.Arch.OpenRISC
         public void AeonDis_l_sh()
         {
             AssertCode("l.sh?\t0x345A(r7),r3", "EC 67 34 5B");
+        }
+
+        [Test]
+        public void AeonDis_l_srai()
+        {
+            AssertCode("l.srai?\tr5,r7,0x1", "4C A7 0A");
         }
     }
 }

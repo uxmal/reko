@@ -84,6 +84,7 @@ namespace Reko.Arch.OpenRISC.Aeon
                 case Mnemonic.beqi__: RewriteBxxi(m.Eq); break;
                 case Mnemonic.l_bf: RewriteBf(false); break;
                 case Mnemonic.ble__i__: RewriteBxxi(m.Le); break;
+                case Mnemonic.l_blti__: RewriteBxxi(m.Lt); break;
                 case Mnemonic.bt_trap: RewriteUnknown(); break;
                 case Mnemonic.entri__: RewriteUnknown(); break;
                 case Mnemonic.l_invalidate_line: RewriteInvalidateLine(); break;
@@ -93,6 +94,7 @@ namespace Reko.Arch.OpenRISC.Aeon
                 case Mnemonic.l_lhz: RewriteLoadZex(PrimitiveType.UInt16); break;
                 case Mnemonic.l_lwz__: RewriteLoadZex(PrimitiveType.Word32); break;
                 case Mnemonic.l_mfspr: RewriteIntrinsic(l_mfspr_intrinsic); break;
+                case Mnemonic.l_movi__: RewriteMovi(); break;
                 case Mnemonic.l_movhi: RewriteMovhi(); break;
                 case Mnemonic.l_movhi__: RewriteMovhi(); break;
                 case Mnemonic.l_mtspr: RewriteSideEffect(l_mtspr_intrinsic); break;
@@ -106,6 +108,7 @@ namespace Reko.Arch.OpenRISC.Aeon
                 case Mnemonic.l_sfne: RewriteSfxx(m.Ne); break;
                 case Mnemonic.l_sh__: RewriteStore(PrimitiveType.Word16); break;
                 case Mnemonic.l_slli__: RewriteShifti(m.Shl); break;
+                case Mnemonic.l_srai__: RewriteShifti(m.Sar); break;
                 case Mnemonic.l_srli__: RewriteShifti(m.Shr); break;
                 case Mnemonic.l_syncwritebuffer: RewriteSideEffect(syncwritebuffer_intrinsic); break;
                 case Mnemonic.l_sw: RewriteStore(PrimitiveType.Word32); break;
@@ -257,6 +260,13 @@ namespace Reko.Arch.OpenRISC.Aeon
                 var dst = Op(0);
                 m.Assign(dst, src);
             }
+        }
+
+        private void RewriteMovi()
+        {
+            var imm = ((ImmediateOperand) instr.Operands[1]).Value.ToUInt32();
+            var dst = Op(0);
+            m.Assign(dst, m.Word32(imm));
         }
 
         private void RewriteMovhi()

@@ -27,6 +27,7 @@ namespace Reko.Arch.OpenRISC.Aeon
 
         beqi__,
         ble__i__,
+        l_blti__,
         bt_trap,
         entri__,
         l_add__,
@@ -45,6 +46,7 @@ namespace Reko.Arch.OpenRISC.Aeon
         l_mfspr,
         l_movhi,
         l_movhi__,
+        l_movi__,
         l_mtspr,
         l_mul,
         l_nop,
@@ -56,6 +58,7 @@ namespace Reko.Arch.OpenRISC.Aeon
         l_sfne,
         l_sh__,
         l_slli__,
+        l_srai__,
         l_srli__,
         l_sw,
         l_sw__,

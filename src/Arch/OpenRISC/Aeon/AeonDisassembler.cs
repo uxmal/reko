@@ -137,6 +137,7 @@ namespace Reko.Arch.OpenRISC.Aeon
         private static readonly Mutator uimm5_16 = UnsignedImmediate(5, 16);
         private static readonly Mutator uimm8_5 = UnsignedImmediate(8, 5);
         private static readonly Mutator uimm10_3 = UnsignedImmediate(10, 3);
+        private static readonly Mutator uimm16_5 = UnsignedImmediate(16, 5);
 
         private static Mutator SignedImmediate(int bitPos, int bitlength)
         {
@@ -192,6 +193,7 @@ namespace Reko.Arch.OpenRISC.Aeon
         private static readonly Mutator disp2_8 = DisplacementFromPc(2, 8);
         private static readonly Mutator disp2_16 = DisplacementFromPc(2, 16);
         private static readonly Mutator disp2_24 = DisplacementFromPc(2, 24);
+        private static readonly Mutator disp3_13 = DisplacementFromPc(3, 13);
 
         private static Decoder Nyi(string message)
         {
@@ -255,8 +257,8 @@ namespace Reko.Arch.OpenRISC.Aeon
                 decoder24,
                 decoder24,
 
-                decoder16,
-                decoder32,
+                decoder16,      // 100
+                decoder32,      // 100
                 decoder32,
                 decoder32);
         }
@@ -267,6 +269,8 @@ namespace Reko.Arch.OpenRISC.Aeon
                 (0x1, Instr(Mnemonic.l_movhi, R21, uimm5_16)),               // chenxing(mod), disasm
                 (0xD, Instr(Mnemonic.l_mtspr, R16, R21, uimm4_12)),          // chenxing
                 (0xF, Instr(Mnemonic.l_mfspr, R21, R16, uimm4_12)));         // chenxing
+            var decoder4 = Sparse(0, 3, "  opc=4", Nyi("4"),
+                (0x6, Instr(Mnemonic.l_blti__, InstrClass.ConditionalTransfer, R21, uimm16_5, disp3_13)));      // guess
             var decoderA = Mask(0, 2, "  A",
                 Nyi("0b00"),
                 Nyi("0b01"),
@@ -289,7 +293,7 @@ namespace Reko.Arch.OpenRISC.Aeon
                 Instr(Mnemonic.l_ori, R15, R10, uimm0_16),           // chenxing
                 Nyi("0b0011"),
 
-                Nyi("0b0100"),
+                decoder4,
                 // XXX: n is probably wrong
                 Instr(Mnemonic.l_bf, InstrClass.ConditionalTransfer, disp0_26),                    // disasm, guess
                 Nyi("0b0110"),
@@ -385,10 +389,10 @@ namespace Reko.Arch.OpenRISC.Aeon
                 Instr(Mnemonic.mov__, R5, R0),                       // wild guess
                 Instr(Mnemonic.l_add__, R5, R0),                     // guess
 
-                Instr(Mnemonic.l_j, InstrClass.Transfer, disp0_10),                        // chenxing
+                Instr(Mnemonic.l_j, InstrClass.Transfer, disp0_10),  // chenxing
                 Instr(Mnemonic.Nyi, R5, R0),
-                Instr(Mnemonic.l_andi__, R5, uimm0_5),                // diasm, guess, may be movi
-                Instr(Mnemonic.l_addi__, R5, simm0_5));               // backtrace, guess
+                Instr(Mnemonic.l_movi__, R5, simm0_5),               // disasm, guess
+                Instr(Mnemonic.l_addi__, R5, simm0_5));              // backtrace, guess
         }
 
         private static Decoder<AeonDisassembler, Mnemonic, AeonInstruction> Create24bitInstructionDecoder()
@@ -425,7 +429,8 @@ namespace Reko.Arch.OpenRISC.Aeon
 
             var decode13 = Sparse(0, 3, "  13", Nyi("13"),
                 (0b000, Instr(Mnemonic.l_slli__, R13, R8, uimm3_5)),        // guess
-                (0b001, Instr(Mnemonic.l_srli__, R13, R8, uimm3_5)));       // guess
+                (0b001, Instr(Mnemonic.l_srli__, R13, R8, uimm3_5)),       // guess
+                (0b010, Instr(Mnemonic.l_srai__, R13, R8, uimm3_5)));       // guess
 
             var decode17 = Sparse(0, 5, "  17", Nyi("17"),
                 (0b11011, Instr(Mnemonic.l_sfgtui, R13, uimm5_8)),          // disasm
