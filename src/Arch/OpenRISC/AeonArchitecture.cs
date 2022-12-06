@@ -21,6 +21,7 @@
 using Reko.Arch.OpenRISC.Aeon;
 using Reko.Core;
 using Reko.Core.Expressions;
+using Reko.Core.Lib;
 using Reko.Core.Machine;
 using Reko.Core.Memory;
 using Reko.Core.Rtl;
@@ -78,7 +79,9 @@ namespace Reko.Arch.OpenRISC
 
         public override FlagGroupStorage? GetFlagGroup(RegisterStorage flagRegister, uint grf)
         {
-            throw new NotImplementedException();
+            PrimitiveType dt = Bits.IsSingleBitSet(grf) ? PrimitiveType.Bool : PrimitiveType.Byte;
+            var fl = new FlagGroupStorage(Registers.Status, grf, GrfToString(flagRegister, "", grf), dt);
+            return fl;
         }
 
         public override FlagGroupStorage? GetFlagGroup(string name)
@@ -103,7 +106,12 @@ namespace Reko.Arch.OpenRISC
 
         public override string GrfToString(RegisterStorage flagRegister, string prefix, uint grf)
         {
-            throw new NotImplementedException();
+            StringBuilder s = new StringBuilder();
+            if (flagRegister == Registers.Status)
+            {
+                if ((grf & Registers.F.FlagGroupBits) != 0) s.Append(Registers.F.Name);
+            }
+            return s.ToString();
         }
 
         public override void LoadUserOptions(Dictionary<string, object>? options)
