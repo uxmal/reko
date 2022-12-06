@@ -34,6 +34,8 @@ namespace Reko.Arch.OpenRISC.Aeon
         {
             var factory = new StorageFactory();
             Registers.GpRegisters = factory.RangeOfReg(32, r => $"r{r}", PrimitiveType.Word32);
+            Status = factory.Reg32("Status");
+            F = new FlagGroupStorage(Status, 1, "f", PrimitiveType.Bool);
             Registers.ByDomain = factory.DomainsToRegisters;
             Registers.ByName = factory.NamesToRegisters;
         }
@@ -41,5 +43,10 @@ namespace Reko.Arch.OpenRISC.Aeon
         public static Dictionary<string, RegisterStorage> ByName { get; }
         public static Dictionary<StorageDomain, RegisterStorage> ByDomain { get; }
         public static RegisterStorage[] GpRegisters { get; }
+
+        //$REVIEW: The 'F' flag needs to be stored in some backing register, we just don't
+        // know which.
+        public static RegisterStorage Status { get; }
+        public static FlagGroupStorage F { get; }
     }
 }

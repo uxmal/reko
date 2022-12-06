@@ -499,18 +499,21 @@ namespace Reko.Scanning
                     return false;
                 }
             }
-            if (g.Target is MemoryAccess mem && mem.EffectiveAddress is Constant)
+            else
             {
-                // jmp [address]
-                site = state.OnBeforeCall(this.stackReg!, 0);
-                Emit(new CallInstruction(g.Target, site));
-                Emit(new ReturnInstruction());
-                blockCur!.Procedure.ControlGraph.AddEdge(blockCur, blockCur.Procedure.ExitBlock);
-                return false;
-            }
-            if (ProcessIndirectControlTransfer(ric.Address, g))
-            {
-                return false;
+                if (g.Target is MemoryAccess mem && mem.EffectiveAddress is Constant)
+                {
+                    // jmp [address]
+                    site = state.OnBeforeCall(this.stackReg!, 0);
+                    Emit(new CallInstruction(g.Target, site));
+                    Emit(new ReturnInstruction());
+                    blockCur!.Procedure.ControlGraph.AddEdge(blockCur, blockCur.Procedure.ExitBlock);
+                    return false;
+                }
+                if (ProcessIndirectControlTransfer(ric.Address, g))
+                {
+                    return false;
+                }
             }
 
             // We've encountered JMP <exp> and we can't determine the limits of <exp>.

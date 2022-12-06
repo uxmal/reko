@@ -1044,7 +1044,10 @@ namespace Reko.Scanning
 
         public SlicerResult VisitReturn(RtlReturn ret)
         {
-            throw new NotImplementedException();
+            return new SlicerResult
+            {
+                Stop = true
+            };
         }
 
         public SlicerResult VisitScopeResolution(ScopeResolution scopeResolution, BackwardSlicerContext ctx)

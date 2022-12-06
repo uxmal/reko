@@ -118,6 +118,9 @@ namespace Reko.Scanning
                 case GotoInstruction go:
                     rtl = new RtlGoto(go.Target, InstrClass.Transfer);
                     break;
+                case ReturnInstruction ret:
+                    rtl = new RtlReturn(0, 0, InstrClass.Transfer | InstrClass.Return);
+                    break;
                 default:
                     throw new NotImplementedException($"Translation needed for {stm.Instruction}.");
                 }
