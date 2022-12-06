@@ -13,7 +13,6 @@
         <var id="var.WindowsDecompiler.TargetPath">$SolutionDir$/Drivers/WindowsDecompiler/$TargetFwkWindowsDir_x64$/WindowsDecompiler.exe</var>
         <var id="var.WindowsForms.TargetPath">$SolutionDir$/UserInterfaces/WindowsForms/$TargetFwkWindowsDir$/Reko.UserInterfaces.WindowsForms.dll</var>
 
-        <var id="var.Aeon.TargetPath"  >$SolutionDir$/Arch/Alpha/$TargetDir$/Reko.Arch.Aeon.dll</var>
         <var id="var.Alpha.TargetPath"  >$SolutionDir$/Arch/Alpha/$TargetDir$/Reko.Arch.Alpha.dll</var>
         <var id="var.Altera.TargetPath"  >$SolutionDir$/Arch/Altera/$TargetDir$/Reko.Arch.Altera.dll</var>
         <var id="var.Arc.TargetPath" >$SolutionDir$/Arch/Arc/$TargetDir$/Reko.Arch.Arc.dll</var>
@@ -260,7 +259,6 @@
       <File Source="$(var.ZX81.TargetPath)" nuget_target="f:" />
 
         <!-- Architectures -->
-        <File Source="$(var.Aeon.TargetPath)" nuget_target="f:" />
         <File Source="$(var.Alpha.TargetPath)" nuget_target="f:" />
         <File Source="$(var.Altera.TargetPath)" nuget_target="f:" />
         <File Source="$(var.Arc.TargetPath)" nuget_target="f:" />
