@@ -45,6 +45,19 @@ namespace Reko.Arch.OpenRISC.Aeon
                 .Replace("_", ".");
             renderer.WriteMnemonic(sMnemonic);
         }
+
+        protected override void RenderOperand(MachineOperand operand, MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
+        {
+            switch (operand)
+            {
+            case ImmediateOperand imm:
+                renderer.WriteFormat("0x{0:X}", imm.Value.ToUInt32());
+                break;
+            default:
+                base.RenderOperand(operand, renderer, options);
+                break;
+            }
+        }
     }
 
 }

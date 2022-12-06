@@ -56,13 +56,13 @@ namespace Reko.UnitTests.Arch.OpenRISC
         [Test]
         public void AeonDis_l_addi()
         {
-            AssertCode("l.addi\tr3,r13,00000000", "fc 6d 00 00");
+            AssertCode("l.addi\tr3,r13,0x0", "fc 6d 00 00");
         }
 
         [Test]
         public void AeonDis_l_movhi()
         {
-            AssertCode("l.movhi\tr7,000000A4", "C0E00A41");
+            AssertCode("l.movhi\tr7,0x52", "C0E00A41");
         }
 
         [Test]

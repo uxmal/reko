@@ -133,8 +133,8 @@ namespace Reko.Arch.OpenRISC.Aeon
         private static readonly Mutator uimm0_16 = UnsignedImmediate(0, 16);
         private static readonly Mutator uimm3_5 = UnsignedImmediate(3, 5);
         private static readonly Mutator uimm4_12 = UnsignedImmediate(4, 12);
-        private static readonly Mutator uimm4_17 = UnsignedImmediate(4, 17);
         private static readonly Mutator uimm5_8 = UnsignedImmediate(5, 8);
+        private static readonly Mutator uimm5_16 = UnsignedImmediate(5, 16);
         private static readonly Mutator uimm8_5 = UnsignedImmediate(8, 5);
         private static readonly Mutator uimm10_3 = UnsignedImmediate(10, 3);
 
@@ -249,7 +249,7 @@ namespace Reko.Arch.OpenRISC.Aeon
         private static Decoder Create32bitInstructionDecoder()
         {
             var decoder0 = Sparse(0, 4, "  opc=0", Nyi("0"),
-                (0x1, Instr(Mnemonic.l_movhi, R21, uimm4_17)),               // chenxing(mod), disasm
+                (0x1, Instr(Mnemonic.l_movhi, R21, uimm5_16)),               // chenxing(mod), disasm
                 (0xD, Instr(Mnemonic.l_mtspr, R16, R21, uimm4_12)),          // chenxing
                 (0xF, Instr(Mnemonic.l_mfspr, R21, R16, uimm4_12)));         // chenxing
             var decoderA = Mask(0, 2, "  A",
