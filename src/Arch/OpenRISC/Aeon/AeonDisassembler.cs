@@ -369,67 +369,6 @@ namespace Reko.Arch.OpenRISC.Aeon
             return new D32BitDecoder(decoder);
         }
 
-        /*
-        */
-        // Instr(Mnemonic.l_movhi", 4, "110000dddddkkkkkkkkkkkkkkkk00001", "r%d, %k"),
-
-        /*
-
-        // 24-bit / 3-byte / "BN"?
-        Instr(Mnemonic.l_nop",   3, "000000000000000000000000"),                    # chenxing
-        Instr(Mnemonic.l_movhi?",3, "000001dddddkkkkkkkkkkkkk", "r%d, %k"),
-        Instr(Mnemonic.l_lhz",   3, "000010dddddaaaaa00000001", "r%d, 0(r%a)"),     # chenxing
-        // XXX: i might be left shifted by 2 bits
-        Instr(Mnemonic.l_sw",    3, "000011bbbbbaaaaaiiiiii00", "%i(r%a), r%b", signed={'i'}),# chenxing, backtrace
-        // XXX: assuming this is l.lwz and not l.lws
-        Instr(Mnemonic.l_lwz?",  3, "000011dddddaaaaaiiiiii10", "r%d, %i(r%a)", signed={'i'}),# guess
-        // XXX: assuming this is l.lwz and not l.lws
-        Instr(Mnemonic.l_lwz?",  3, "000100dddddaaaaaiiiiii00", "r%d, %i(r%a)", signed={'i'}),# guess
-        Instr(Mnemonic.l_sw?",   3, "000110bbbbbaaaaaiiiiii00", "%i(r%a), r%b", signed={'i'}),# guess
-        Instr(Mnemonic.l_addi",  3, "000111dddddaaaaakkkkkkkk", "r%d, r%a, %k", signed={'k'}),# chenxing, backtrace
-        Instr(Mnemonic.l_bf",    3, "001000nnnnnnnnnnnnnnnn01", "%n", signed={'n'}),# chenxing(mod), disasm
-
-        // branch if reg == imm ?
-        Instr('?beqi?",  3, "001000aaaaaiiinnnnnnnn00", "r%a, %i, %n", signed={'n'}),# wild guess
-        // branch if reg <= imm XXX: signed/unsigned?
-        Instr('?ble?i?", 3, "001001aaaaaiiinnnnnnnn01", "r%a, %i, %n", signed={'n'}),# wild guess
-        Instr(Mnemonic.l_movhi", 3, "001101100000000000000001", "r1, ???"),         # chenxing
-        Instr(Mnemonic.l_mul",   3, "010000dddddaaaaabbbbb011", "r%d, r%a, r%b"),   # disasm
-        Instr(Mnemonic.l_and",   3, "010001dddddaaaaabbbbb100", "r%d, r%a, r%b"),   # chenxing
-        Instr(Mnemonic.l_or?",   3, "010001dddddaaaaabbbbb101", "r%d, r%a, r%b"),   # guess
-        Instr(Mnemonic.l_srli?", 3, "010011dddddaaaaalllll001", "r%d, r%a, %l"),    # guess
-        Instr(Mnemonic.l_ori",   3, "010100dddddaaaaakkkkkkkk", "r%d, r%a, %k"),    # chenxing
-        Instr(Mnemonic.l_andi",  3, "010101dddddaaaaakkkkkkkk", "r%d, r%a, %k"),    # guess
-        Instr(Mnemonic.l_sfgtui",3, "010111aaaaaiiiiiiii11011", "r%a, %i", signed={'i'}), # disasm
-        Instr('?entri?", 3, "010111xxxxyyyyyyyyy11000", "??? %x, %y"),      # backtrace
-        Instr(Mnemonic.l_sfeqi", 3, "010111aaaaaiiiii00000001", "r%a, %i"),         # chenxing
-        // XXX: might only move (low) 16 bits?
-        Instr('?mov?",   3, "010111dddddaaaaa00000100", "r%d, r%a"),        # guess
-        Instr(Mnemonic.l_sfne",  3, "010111aaaaabbbbb00001101", "r%a, r%b"),        # chenxing
-        Instr(Mnemonic.l_sfgeu", 3, "010111bbbbbaaaaa00010111", "r%a, r%b"),        # chenxing
-
-        // 32-bit / 4-byte / "BG"?
-        Instr(Mnemonic.l_movhi", 4, "110000dddddkkkkkkkkkkkkkkkk00001", "r%d, %k"),                # chenxing(mod), disasm
-        Instr(Mnemonic.l_mtspr", 4, "110000bbbbbaaaaakkkkkkkkkkkk1101", "r%a, r%b, %k"),           # chenxing
-        Instr(Mnemonic.l_mfspr", 4, "110000dddddaaaaakkkkkkkkkkkk1111", "r%d, r%a, %k"),           # chenxing
-        Instr(Mnemonic.l_andi",  4, "110001dddddaaaaakkkkkkkkkkkkkkkk", "r%d, r%a, %k"),           # chenxing
-        Instr(Mnemonic.l_ori",   4, "110010dddddaaaaakkkkkkkkkkkkkkkk", "r%d, r%a, %k"),           # chenxing
-        // XXX: n is probably wrong
-        Instr(Mnemonic.l_bf",    4, "11010100nnnnnnnnnnnnnnnnnnnnnnnn", "%n", signed={'n'}),       # disasm, guess
-        // XXX: n is probably wrong
-        Instr(Mnemonic.l_jal?",  4, "111001nnnnnnnnnnnnnnnnnnnnnnnnnn", "%n", signed={'n'}),       # guess
-        Instr(Mnemonic.l_j",     4, "111010nnnnnnnnnnnnnnnnnnnnnnnn11", "%n", signed={'n'}),       # chenxing
-        Instr(Mnemonic.l_sw",    4, "111011bbbbbaaaaaiiiiiiiiiiiiii00", "%i(r%a), r%b", signed={'i'}), # chenxing, backtrace
-        Instr(Mnemonic.l_sw?",   4, "111011bbbbbaaaaaiiiiiiiiiiiiii01", "(%i << 2)(r%a), r%b", signed={'i'}), # guess
-        Instr(Mnemonic.l_lwz?",  4, "111011dddddaaaaaiiiiiiiiiiiiii10", "r%d, %i(r%a)", signed={'i'}), # guess
-        Instr(Mnemonic.l_addi",  4, "111111dddddaaaaakkkkkkkkkkkkkkkk", "r%d, r%a, %k"),           # chenxing, backtrace
-        
-        Instr(Mnemonic.l_invalidate_line", 4, "11110100000aaaaa00000000000j0001", "0(r%a), %j"),   # chenxing
-        Instr(Mnemonic.l_invalidate_line", 4, "11110100000aaaaa00000000001j0111", "0(r%a), %j"),   # disasm
-        Instr(Mnemonic.l_syncwritebuffer", 4, "11110100000000000000000000000101"),                 # disasm         
-         
-         */
-
         private static Decoder<AeonDisassembler, Mnemonic, AeonInstruction> Create16bitInstructionDecoder()
         {
             // opcode 100000
@@ -509,8 +448,9 @@ namespace Reko.Arch.OpenRISC.Aeon
                 (0b11000, Instr(Mnemonic.entri__, R13, uimm5_8)),           // backtrace
                 // XXX: might only move (low) 16 bits?
                 (0b00100, Instr(Mnemonic.mov__, R13,R8)),                   // guess
-                (0b01101, Instr(Mnemonic.l_sfne,  R13,R8)),                 // chenxing
-                (0b10111, Instr(Mnemonic.l_sfgeu, R13,R8)));                // chenxing
+                (0b01101, Instr(Mnemonic.l_sfne,  R13,R8)),                 // chenxing, disasm
+                // operands are swapped; may share encoding with l.sfltu
+                (0b10111, Instr(Mnemonic.l_sfgeu, R8,R13)));                // chenxing, disasm
 
             return new D24BitDecoder(Mask(18, 5, "  24-bit instr",  // bit 23 is always 0
                 decode000000,
@@ -555,7 +495,7 @@ namespace Reko.Arch.OpenRISC.Aeon
                 // opcode 010100
                Instr(Mnemonic.l_ori, R13, R8, uimm0_8),      // chenxing
                 // opcode 010101
-                Instr(Mnemonic.l_andi, R13, R8, uimm0_8),    // guess
+                Instr(Mnemonic.l_andi, R13, R8, uimm0_8),     // guess
                 // opcode 010110
                 Nyi("0b10110"),
                 decode010111,

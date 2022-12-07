@@ -470,7 +470,7 @@ namespace Reko.UnitTests.Arch.OpenRISC
             Given_HexString("5E2717");
             AssertCode(     // l.sfgeu	r17,r7
                 "0|L--|00100000(3): 1 instructions",
-                "1|L--|f = r17 >=u r7");
+                "1|L--|f = r7 >=u r17");
         }
 
         [Test]
