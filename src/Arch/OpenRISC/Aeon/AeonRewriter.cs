@@ -77,6 +77,7 @@ namespace Reko.Arch.OpenRISC.Aeon
                     break;
                 case Mnemonic.l_add: RewriteArithmetic(m.IAdd); break;
                 case Mnemonic.l_add__: RewriteArithmetic(m.IAdd); break;
+                case Mnemonic.l_add____: RewriteArithmetic(m.IAdd); break;
                 case Mnemonic.l_addi: RewriteAddi(); break;
                 case Mnemonic.l_addi__: RewriteAddi(); break;
                 case Mnemonic.l_and: RewriteArithmetic(m.And); break;

@@ -36,6 +36,7 @@ namespace Reko.Arch.OpenRISC.Aeon
         entri__,
         l_add,
         l_add__,
+        l_add____,
         l_addi,
         l_addi__,
         l_and,

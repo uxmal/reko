@@ -30,6 +30,16 @@ namespace Reko.UnitTests.Arch.OpenRISC
         }
 
         [Test]
+        public void AeonRw_l_add_two_operand()
+        {
+            Given_HexString("5CE704");
+            AssertCode(     // l.add??	r7,r7
+                "0|L--|00100000(3): 1 instructions",
+                "1|L--|r7 = r7 + r7");
+        }
+
+        [Test]
+        public void AeonRw_l_add___three_operand()
         public void AeonRw_l_add_three_operand()
         {
             // confirmed with source
