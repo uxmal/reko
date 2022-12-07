@@ -132,6 +132,7 @@ namespace Reko.Arch.OpenRISC.Aeon
         private static readonly Mutator uimm0_13 = UnsignedImmediate(0, 13);
         private static readonly Mutator uimm0_16 = UnsignedImmediate(0, 16);
         private static readonly Mutator uimm3_5 = UnsignedImmediate(3, 5);
+        private static readonly Mutator uimm4_1 = UnsignedImmediate(4, 1);
         private static readonly Mutator uimm4_12 = UnsignedImmediate(4, 12);
         private static readonly Mutator uimm5_8 = UnsignedImmediate(5, 8);
         private static readonly Mutator uimm5_16 = UnsignedImmediate(5, 16);
@@ -288,9 +289,11 @@ namespace Reko.Arch.OpenRISC.Aeon
                 Nyi("0b11"));
             var decoderD = Select(Bf((5, 11), (21, 5)), u => u == 0,
                 Sparse(0, 3, "  opc=D", Nyi("D"),
-                    (0b001, Instr(Mnemonic.l_invalidate_line, Ms(16, 6, 4, 0, PrimitiveType.Word32))), //$REVIEW j?  // chenxing
-                    (0b111, Instr(Mnemonic.l_invalidate_line, Ms(16, 6, 4, 0, PrimitiveType.Word32))), //$REVIEW j?  // disasm
-                    (0b101, Instr(Mnemonic.l_syncwritebuffer))),                                                     // disasm
+                
+                    // $REVIEW: what's the difference between these? what about bit 5?
+                    (0b001, Instr(Mnemonic.l_invalidate_line, Ms(16, 6, 4, 0, PrimitiveType.Word32), uimm4_1)), // chenxing
+                    (0b111, Instr(Mnemonic.l_invalidate_line, Ms(16, 6, 4, 0, PrimitiveType.Word32), uimm4_1)), // disasm
+                    (0b101, Instr(Mnemonic.l_syncwritebuffer))),                                                // disasm
                 Nyi("D, non-zero bits"));
             var decoder = Mask(26, 4, "  32-bit instr",
                 decoder0,
