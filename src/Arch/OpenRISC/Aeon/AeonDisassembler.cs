@@ -183,7 +183,7 @@ namespace Reko.Arch.OpenRISC.Aeon
             return (u, d) =>
             {
                 var displacement = displacementField.ReadSigned(u);
-                var target = d.addr + displacement; //$REVIEW: and a +4?
+                var target = d.addr + displacement;
                 d.ops.Add(AddressOperand.Create(target));
                 return true;
             };
@@ -462,8 +462,8 @@ namespace Reko.Arch.OpenRISC.Aeon
                 // branch if reg == imm
                 Instr(Mnemonic.beqi__, InstrClass.ConditionalTransfer,  R13, uimm10_3, disp2_8),              // wild guess
                 Instr(Mnemonic.l_bf, InstrClass.ConditionalTransfer, disp2_16),                             // chenxing(mod), disasm
-                Nyi("10"),
-                Nyi("11"));
+                Instr(Mnemonic.bnei__, InstrClass.ConditionalTransfer, R13, uimm10_3, disp2_8),
+                Instr(Mnemonic.l_bnf__, InstrClass.ConditionalTransfer, disp2_16));
             // opcode 001001
             var decode09 = Mask(0, 2, "  9",
                 Nyi("00"),
