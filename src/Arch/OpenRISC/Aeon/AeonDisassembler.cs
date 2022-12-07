@@ -355,7 +355,7 @@ namespace Reko.Arch.OpenRISC.Aeon
         Instr(Mnemonic.l_addi",  3, "000111dddddaaaaakkkkkkkk", "r%d, r%a, %k", signed={'k'}),# chenxing, backtrace
         Instr(Mnemonic.l_bf",    3, "001000nnnnnnnnnnnnnnnn01", "%n", signed={'n'}),# chenxing(mod), disasm
 
-        // branch if reg == imm ? XXX: signed/unsigned?
+        // branch if reg == imm ?
         Instr('?beqi?",  3, "001000aaaaaiiinnnnnnnn00", "r%a, %i, %n", signed={'n'}),# wild guess
         // branch if reg <= imm XXX: signed/unsigned?
         Instr('?ble?i?", 3, "001001aaaaaiiinnnnnnnn01", "r%a, %i, %n", signed={'n'}),# wild guess
@@ -440,7 +440,7 @@ namespace Reko.Arch.OpenRISC.Aeon
                 Nyi("0b11"));
             // opcode 001000
             var decode08 = Mask(0, 2, "  8",
-                // branch if reg == imm ? XXX: signed/unsigned?
+                // branch if reg == imm
                 Instr(Mnemonic.beqi__, InstrClass.ConditionalTransfer,  R13, uimm10_3, disp2_8),              // wild guess
                 Instr(Mnemonic.l_bf, InstrClass.ConditionalTransfer, disp2_16),                             // chenxing(mod), disasm
                 Nyi("10"),
@@ -448,6 +448,7 @@ namespace Reko.Arch.OpenRISC.Aeon
             // opcode 001001
             var decode09 = Mask(0, 2, "  9",
                 Nyi("00"),
+                // branch if reg <= imm XXX: signed/unsigned?
                 Instr(Mnemonic.ble__i__, InstrClass.ConditionalTransfer, R13, uimm10_3, disp2_8), // wild guess
                 Nyi("10"),
                 Nyi("11"));
@@ -499,7 +500,6 @@ namespace Reko.Arch.OpenRISC.Aeon
                 Instr(Mnemonic.l_addi, R13, R8, simm0_8),           // chenxing, backtrace
 
                 decode08,
-                // branch if reg <= imm XXX: signed/unsigned?
                 decode09,
                 // opcode 001010
                 Nyi("0b01010"),
