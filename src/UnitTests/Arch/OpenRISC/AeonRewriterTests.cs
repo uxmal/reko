@@ -76,7 +76,7 @@ namespace Reko.UnitTests.Arch.OpenRISC
             Given_HexString("2003E9");
             AssertCode(     // l.bf	00333DEC
                 "0|T--|00100000(3): 1 instructions",
-                "1|T--|if (!f) branch 001000FA");
+                "1|T--|if (f) branch 001000FA");
         }
 
         [Test]

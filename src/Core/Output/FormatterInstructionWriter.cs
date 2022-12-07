@@ -30,6 +30,7 @@ namespace Reko.Core.Output
     public class FormatterInstructionWriter : MachineInstructionRenderer
     {
         private readonly Formatter formatter;
+        private readonly IDictionary<Address, Procedure> procedures;
         private readonly bool separateWithTab;
         private int chars;
         private readonly List<string> annotations;
@@ -42,9 +43,10 @@ namespace Reko.Core.Output
         /// machine rendering is sent.</param>
         /// <param name="separateWithTab">If true, separate the mnemonic and the
         /// first operand with a tab, otherwise use a single space.</param>
-        public FormatterInstructionWriter(Formatter formatter, bool separateWithTab)
+        public FormatterInstructionWriter(Formatter formatter, IDictionary<Address, Procedure> procedures,  bool separateWithTab)
         {
             this.formatter = formatter;
+            this.procedures = procedures;
             this.separateWithTab = separateWithTab;
             this.annotations = new List<string>();
             this.addrInstr = Address.Ptr32(0);
@@ -112,6 +114,10 @@ namespace Reko.Core.Output
 
         public void WriteAddress(string formattedAddress, Address addr)
         {
+            if (procedures.TryGetValue(addr, out Procedure? proc))
+            {
+                formattedAddress = proc.Name;
+            }
             chars += formattedAddress.Length;
             formatter.WriteHyperlink(formattedAddress, addr);
         }
