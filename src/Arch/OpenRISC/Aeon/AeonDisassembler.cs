@@ -310,9 +310,9 @@ namespace Reko.Arch.OpenRISC.Aeon
                 decoderA,
                 decoderB,
 
-                Instr(Mnemonic.l_lbz__, R21, Ms(16, 0, 16, 0, PrimitiveType.Byte)),   // guess
+                Instr(Mnemonic.l_lbz__, R21, Ms(16, 0, 16, 0, PrimitiveType.Byte)),     // guess
                 decoderD,
-                Nyi("0b1110"),
+                Instr(Mnemonic.l_sb__, Ms(16, 0, 16, 0, PrimitiveType.Byte), R21),        // guess
                 //$REVIEW: signed or unsigned immediate?
                 Instr(Mnemonic.l_addi, R21, R16, uimm0_16));                            // chenxing, backtrace
 

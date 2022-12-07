@@ -290,6 +290,16 @@ namespace Reko.UnitTests.Arch.OpenRISC
         }
 
         [Test]
+        public void AeonRw_l_sb()
+        {
+            Given_HexString("F8 EA 36 D8");
+            AssertCode(     // l.sb 0x36D8(r10),r7
+                "0|L--|00100000(4): 2 instructions",
+                "1|L--|v3 = SLICE(r7, byte, 0)",
+                "2|L--|Mem0[r10 + 14040<i32>:byte] = v3");
+        }
+
+        [Test]
         public void AeonRw_l_sh()
         {
             Given_HexString("EC 67 34 5B");

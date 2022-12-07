@@ -102,6 +102,12 @@ namespace Reko.UnitTests.Arch.OpenRISC
         }
 
         [Test]
+        public void AeonDis_l_sb()
+        {
+            AssertCode("l.sb?\t0x36D8(r10),r7", "F8 EA 36 D8");
+        }
+
+        [Test]
         public void AeonDis_l_sh()
         {
             AssertCode("l.sh?\t0x345A(r7),r3", "EC 67 34 5B");
