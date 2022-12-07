@@ -288,12 +288,11 @@ namespace Reko.Arch.OpenRISC.Aeon
             var decoder110100 = Sparse(0, 3, "  opc=4", Nyi("4"),
                 (0x6, Instr(Mnemonic.l_blti__, InstrClass.ConditionalTransfer, R21, uimm16_5, disp3_13)));      // guess
 
-            var decoder111010 = Mask(0, 2, "  A",
-                Nyi("0b00"),
-                Nyi("0b01"),
-                Nyi("0b10"),
-                Instr(Mnemonic.l_j, InstrClass.Transfer, disp2_24));                        // chenxing
-
+            // opcode 111001
+            var decoder111001 = Mask(0, 1, "  opc=111001",
+                Instr(Mnemonic.l_jal, InstrClass.Transfer | InstrClass.Call, disp1_25), // guess
+                Instr(Mnemonic.l_j, InstrClass.Transfer | InstrClass.Call, disp1_25));  // guess
+            // opcode 111011
             var decoder111011 = Mask(0, 2, "  opc=111011",
                 Instr(Mnemonic.l_sw, Ms(16, 2, 14, 0, PrimitiveType.Word32), R21),          // chenxing, backtrace
                 Instr(Mnemonic.l_sw__, Ms(16, 2, 14, 2, PrimitiveType.Word32), R21),        // guess
@@ -349,12 +348,10 @@ namespace Reko.Arch.OpenRISC.Aeon
 
                 // opcode 111000
                 Nyi("0b111000"),
-                // opcode 111001
-                //$REVIEW: what is bit 0 used for?
-                Instr(Mnemonic.l_jal, InstrClass.Transfer | InstrClass.Call, disp1_25), // guess
-                decoder111010,
+                decoder111001,
+                // opcode 111010
+                Instr(Mnemonic.l_lhz__, R21, Ms(16, 0, 16, 0, PrimitiveType.Byte)),     // guess
                 decoder111011,
-
                 // opcode 111100
                 Instr(Mnemonic.l_lbz__, R21, Ms(16, 0, 16, 0, PrimitiveType.Byte)),     // guess
                 decoder111101,
@@ -553,7 +550,7 @@ namespace Reko.Arch.OpenRISC.Aeon
                 decode13,
 
                 // opcode 010100
-                Instr(Mnemonic.l_ori, R13, R8, uimm0_8),    // chenxing
+               Instr(Mnemonic.l_ori, R13, R8, uimm0_8),    // chenxing
                 // opcode 010101
                 Instr(Mnemonic.l_andi, R13, R8, uimm0_8),    // guess
                 // opcode 010110

@@ -46,6 +46,7 @@ namespace Reko.Arch.OpenRISC.Aeon
         l_jr,
         l_lbz__,
         l_lhz,
+        l_lhz__,
         l_lwz__,
         l_mfspr,
         l_movhi,

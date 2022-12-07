@@ -293,8 +293,8 @@ namespace Reko.UnitTests.Arch.OpenRISC
         [Test]
         public void AeonRw_l_jal()
         {
-            Given_HexString("E4000A71");
-            AssertCode(     // l.jal?	00100A71
+            Given_HexString("E4000A70");
+            AssertCode(     // l.jal?	00100A70
                 "0|T--|00100000(4): 1 instructions",
                 "1|T--|call 00100538 (0)");
         }
