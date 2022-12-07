@@ -71,6 +71,7 @@ namespace Reko.Arch.OpenRISC.Aeon
         l_sw,
         l_sw__,
         l_syncwritebuffer,
+        l_xor__,
         mov__,
     }
 }

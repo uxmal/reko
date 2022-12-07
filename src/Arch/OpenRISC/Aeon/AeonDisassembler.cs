@@ -288,6 +288,7 @@ namespace Reko.Arch.OpenRISC.Aeon
 
             // opcode 110100
             var decoder110100 = Sparse(0, 3, "  opc=110100", Nyi("110100"),
+                (0x2, Instr(Mnemonic.beqi__, InstrClass.ConditionalTransfer, R21, uimm16_5, disp3_13)),
                 (0x6, Instr(Mnemonic.l_blti__, InstrClass.ConditionalTransfer, R21, uimm16_5, disp3_13)));      // guess
 
             // opcode 111001
@@ -493,7 +494,8 @@ namespace Reko.Arch.OpenRISC.Aeon
             // opcode 010001
             var decode11 = Sparse(0, 3, "  11", Nyi("010001"),
                 (0b100, Instr(Mnemonic.l_and, R13, R8, R3)),                // chenxing
-                (0b101, Instr(Mnemonic.l_or__, R13, R8, R3)));              // guess
+                (0b101, Instr(Mnemonic.l_or__, R13, R8, R3)),               // guess
+                (0b110, Instr(Mnemonic.l_xor__, R13, R8, R3)));             // guess
 
             // opcode 010011
             var decode13 = Sparse(0, 3, "  13", Nyi("010011"),
