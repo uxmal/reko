@@ -101,6 +101,7 @@ namespace Reko.Arch.OpenRISC.Aeon
                 case Mnemonic.l_lhz__: RewriteLoadZex(PrimitiveType.UInt16); break;
                 case Mnemonic.l_lwz__: RewriteLoadZex(PrimitiveType.Word32); break;
                 case Mnemonic.l_mfspr: RewriteIntrinsic(l_mfspr_intrinsic); break;
+                case Mnemonic.mov__: RewriteMov(); break;
                 case Mnemonic.l_movi__: RewriteMovi(); break;
                 case Mnemonic.l_movhi: RewriteMovhi(); break;
                 case Mnemonic.l_movhi__: RewriteMovhi(); break;
@@ -112,7 +113,9 @@ namespace Reko.Arch.OpenRISC.Aeon
                 case Mnemonic.l_sfeqi: RewriteSfxx(m.Eq); break;
                 case Mnemonic.l_sfgeu: RewriteSfxx(m.Uge); break;
                 case Mnemonic.l_sfgtui: RewriteSfxx(m.Ugt); break;
+                case Mnemonic.l_sfleui__: RewriteSfxx(m.Ule); break;
                 case Mnemonic.l_sfne: RewriteSfxx(m.Ne); break;
+                case Mnemonic.l_sfnei__: RewriteSfxx(m.Ne); break;
                 case Mnemonic.l_sb__: RewriteStore(PrimitiveType.Byte); break;
                 case Mnemonic.l_sh__: RewriteStore(PrimitiveType.Word16); break;
                 case Mnemonic.l_sll__: RewriteShift(m.Shl); break;
@@ -124,7 +127,6 @@ namespace Reko.Arch.OpenRISC.Aeon
                 case Mnemonic.l_sw: RewriteStore(PrimitiveType.Word32); break;
                 case Mnemonic.l_sw__: RewriteStore(PrimitiveType.Word32); break;
                 case Mnemonic.l_xor__: RewriteArithmetic(m.Xor); break;
-                case Mnemonic.mov__: RewriteUnknown(); break;
                     //$TODO: when all instructions are known this code can be removed.
                 case Mnemonic.Nyi:
                     instr.Operands = Array.Empty<MachineOperand>();
@@ -279,6 +281,13 @@ namespace Reko.Arch.OpenRISC.Aeon
                 var dst = Op(0);
                 m.Assign(dst, src);
             }
+        }
+
+        private void RewriteMov()
+        {
+            var src = OpOrZero(1);
+            var dst = Op(0);
+            m.Assign(dst, src);
         }
 
         private void RewriteMovi()

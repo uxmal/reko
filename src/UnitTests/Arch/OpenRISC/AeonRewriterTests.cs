@@ -1,11 +1,6 @@
 using NUnit.Framework;
 using Reko.Arch.OpenRISC;
 using Reko.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Reko.UnitTests.Arch.OpenRISC
 {
@@ -17,7 +12,7 @@ namespace Reko.UnitTests.Arch.OpenRISC
 
         public AeonRewriterTests()
         {
-            Reko.Core.Machine.Decoder.trace.Level = System.Diagnostics.TraceLevel.Verbose;
+            // Reko.Core.Machine.Decoder.trace.Level = System.Diagnostics.TraceLevel.Verbose;
             this.arch = new AeonArchitecture(CreateServiceContainer(), "aeon", new());
             this.addrLoad = Address.Ptr32(0x0010_0000);
         }
@@ -260,7 +255,7 @@ namespace Reko.UnitTests.Arch.OpenRISC
             Given_HexString("8AE5");
             AssertCode(     // mov?	r23,r5
                 "0|L--|00100000(2): 1 instructions",
-                "1|L--|mov__(r23, r5)");
+                "1|L--|r23 = r5");
         }
 
         [Test]
@@ -326,6 +321,15 @@ namespace Reko.UnitTests.Arch.OpenRISC
             AssertCode(     // l.sfgtui	r3,0x20
                 "0|L--|00100000(3): 1 instructions",
                 "1|L--|f = r3 >u 0x20<32>");
+        }
+
+        [Test]
+        public void AeonDis_l_sfnei__()
+        {
+            Given_HexString("C0 C0 7D 04");
+            AssertCode(     // l.sfnei? r6,0x3E8
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|f = r6 != 0x3E8<32>");
         }
 
         [Test]
@@ -467,6 +471,15 @@ namespace Reko.UnitTests.Arch.OpenRISC
             AssertCode(     // l.sfgeu	r17,r7
                 "0|L--|00100000(3): 1 instructions",
                 "1|L--|f = r17 >=u r7");
+        }
+
+        [Test]
+        public void AeonDis_l_sfleui__()
+        {
+            Given_HexString("5C 6E F3");
+            AssertCode(     // l.sfleui?\tr,0x77
+                "0|L--|00100000(3): 1 instructions",
+                "1|L--|f = r3 <=u 0x77<32>");
         }
 
         [Test]

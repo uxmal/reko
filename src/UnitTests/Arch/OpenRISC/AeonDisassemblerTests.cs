@@ -22,11 +22,6 @@ using NUnit.Framework;
 using Reko.Arch.OpenRISC;
 using Reko.Arch.OpenRISC.Aeon;
 using Reko.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Reko.UnitTests.Arch.OpenRISC
 {
@@ -38,7 +33,7 @@ namespace Reko.UnitTests.Arch.OpenRISC
 
         public AeonDisassemblerTests()
         {
-            Reko.Core.Machine.Decoder.trace.Level = System.Diagnostics.TraceLevel.Verbose;
+            // Reko.Core.Machine.Decoder.trace.Level = System.Diagnostics.TraceLevel.Verbose;
             this.arch = new AeonArchitecture(CreateServiceContainer(), "aeon", new());
             this.addrLoad = Address.Ptr32(0x00100000);
         }
@@ -141,6 +136,12 @@ namespace Reko.UnitTests.Arch.OpenRISC
         }
 
         [Test]
+        public void AeonDis_mov__()
+        {
+            AssertCode("mov?\tr10,r3", "89 43");
+        }
+
+        [Test]
         public void AeonDis_l_movi()
         {
             AssertCode("l.movi?\tr6,-0x1", "98 DF");
@@ -182,6 +183,18 @@ namespace Reko.UnitTests.Arch.OpenRISC
         public void AeonDis_l_sb_24bit()
         {
             AssertCode("l.sb?\t0x7(r1),r0", "18 01 07");
+        }
+
+        [Test]
+        public void AeonDis_l_sfleui__()
+        {
+            AssertCode("l.sfleui?\tr3,0x77", "5C 6E F3");
+        }
+
+        [Test]
+        public void AeonDis_l_sfnei__()
+        {
+            AssertCode("l.sfnei?\tr6,0x3E8", "C0 C0 7D 04");
         }
 
         [Test]
