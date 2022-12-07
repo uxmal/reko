@@ -26,6 +26,8 @@ namespace Reko.Arch.OpenRISC.Aeon
         Nyi,
 
         beqi__,
+        bgtu__,
+        bgtui__,
         ble__i__,
         l_blti__,
         bne__,

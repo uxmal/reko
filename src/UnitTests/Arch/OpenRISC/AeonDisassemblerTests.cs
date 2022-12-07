@@ -54,15 +54,39 @@ namespace Reko.UnitTests.Arch.OpenRISC
         }
 
         [Test]
+        public void AeonDis_l_add___two_operand()
+        {
+            AssertCode("l.add?\tr7,r6", "8C E6");
+        }
+
+        [Test]
+        public void AeonDis_l_add___three_operand()
+        {
+            AssertCode("l.add?\tr7,r6,r4", "40 E6 24");
+        }
+
+        [Test]
         public void AeonDis_l_addi()
         {
             AssertCode("l.addi\tr3,r13,0x0", "fc 6d 00 00");
         }
 
         [Test]
+        public void AeonDis_l_addi_negative()
+        {
+            AssertCode("l.addi\tr6,r6,-0x767C", "FC C6 89 84");
+        }
+
+        [Test]
         public void AeonDis_l_addi_two_operand()
         {
             AssertCode("l.addi?\tr1,-0x4", "9C 3C");
+        }
+
+        [Test]
+        public void AeonDis_beqi__()
+        {
+            AssertCode("beqi?\tr3,0x0,00100011", "20 60 44");
         }
 
         [Test]
@@ -81,6 +105,18 @@ namespace Reko.UnitTests.Arch.OpenRISC
         public void AeonDis_l_lbz()
         {
             AssertCode("l.lbz?\tr6,0x1EEC(r7)", "F0 C7 1E EC");
+        }
+
+        [Test]
+        public void AeonDis_l_lhz_24bit()
+        {
+            AssertCode("l.lhz\tr5,0x8(r11)", "08 AB 09");
+        }
+
+        [Test]
+        public void AeonDis_l_lhz___32bit()
+        {
+            AssertCode("l.lhz?\tr3,0x3A46(r7)", "E8 67 3A 47");
         }
 
         [Test]
@@ -108,6 +144,12 @@ namespace Reko.UnitTests.Arch.OpenRISC
         }
 
         [Test]
+        public void AeonDis_l_sb_24bit()
+        {
+            AssertCode("l.sb?\t0x7(r1),r0", "18 01 07");
+        }
+
+        [Test]
         public void AeonDis_l_sh()
         {
             AssertCode("l.sh?\t0x345A(r7),r3", "EC 67 34 5B");
@@ -117,6 +159,12 @@ namespace Reko.UnitTests.Arch.OpenRISC
         public void AeonDis_l_srai()
         {
             AssertCode("l.srai?\tr5,r7,0x1", "4C A7 0A");
+        }
+
+        [Test]
+        public void AeonDis_l_xor__()
+        {
+            AssertCode("l.xor?\tr7,r4,r3", "44 E4 1E");
         }
     }
 }

@@ -83,6 +83,8 @@ namespace Reko.Arch.OpenRISC.Aeon
                 case Mnemonic.l_andi__: RewriteUnknown(); break;
                 case Mnemonic.beqi__: RewriteBxxi(m.Eq); break;
                 case Mnemonic.l_bf: RewriteBf(true); break;
+                case Mnemonic.bgtu__: RewriteBxx(m.Gt); break;
+                case Mnemonic.bgtui__: RewriteBxxi(m.Gt); break;
                 case Mnemonic.ble__i__: RewriteBxxi(m.Le); break;
                 case Mnemonic.l_blti__: RewriteBxxi(m.Lt); break;
                 case Mnemonic.l_bnf__: RewriteBf(false); break;
@@ -96,6 +98,7 @@ namespace Reko.Arch.OpenRISC.Aeon
                 case Mnemonic.l_jr: RewriteJr(); break;
                 case Mnemonic.l_lbz__: RewriteLoadZex(PrimitiveType.Byte); break;
                 case Mnemonic.l_lhz: RewriteLoadZex(PrimitiveType.UInt16); break;
+                case Mnemonic.l_lhz__: RewriteLoadZex(PrimitiveType.UInt16); break;
                 case Mnemonic.l_lwz__: RewriteLoadZex(PrimitiveType.Word32); break;
                 case Mnemonic.l_mfspr: RewriteIntrinsic(l_mfspr_intrinsic); break;
                 case Mnemonic.l_movi__: RewriteMovi(); break;
@@ -120,6 +123,7 @@ namespace Reko.Arch.OpenRISC.Aeon
                 case Mnemonic.l_syncwritebuffer: RewriteSideEffect(syncwritebuffer_intrinsic); break;
                 case Mnemonic.l_sw: RewriteStore(PrimitiveType.Word32); break;
                 case Mnemonic.l_sw__: RewriteStore(PrimitiveType.Word32); break;
+                case Mnemonic.l_xor__: RewriteArithmetic(m.Xor); break;
                 case Mnemonic.mov__: RewriteUnknown(); break;
                     //$TODO: when all instructions are known this code can be removed.
                 case Mnemonic.Nyi:
@@ -242,6 +246,14 @@ namespace Reko.Arch.OpenRISC.Aeon
                 c = m.Not(c);
             }
             m.Branch(c, (Address) Op(0));
+        }
+
+        private void RewriteBxx(Func<Expression, Expression, Expression> cmp)
+        {
+            var left = OpOrZero(0);
+            var right = OpOrZero(1);
+            var target = ((AddressOperand) instr.Operands[2]).Address;
+            m.Branch(cmp(left, right), target);
         }
 
         private void RewriteBxxi(Func<Expression, Expression, Expression> cmp)
