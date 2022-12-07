@@ -147,6 +147,8 @@ namespace Reko.UserInterfaces.WindowsForms
         private void NavigateToToolbarAddress()
         {
             var txtAddr = Control.ToolBarAddressTextbox.Text;
+            if (txtAddr.Length == 0)
+                return;
             if (txtAddr[0] == 0xFEFF)
             {
                 // Get rid of UTF-16 BOM Windows insists on prepending
