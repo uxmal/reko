@@ -86,6 +86,13 @@ namespace Reko.UnitTests.Arch.OpenRISC
         }
 
         [Test]
+        public void AeonDis_l_addi_24bit()
+        {
+            // confirmed with source
+            AssertCode("l.addi\tr3,r3,0x10", "1C 63 10");
+        }
+
+        [Test]
         public void AeonDis_beqi__()
         {
             AssertCode("beqi?\tr3,0x0,00100011", "20 60 44");
@@ -112,6 +119,13 @@ namespace Reko.UnitTests.Arch.OpenRISC
         }
 
         [Test]
+        public void AeonDis_l_j_16bit()
+        {
+            // confirmed with source
+            AssertCode("l.j\t000FFFF4", "93 F4");
+        }
+
+        [Test]
         public void AeonDis_l_jal()
         {
             AssertCode("l.jal\t000F17F9", "E7 FE 2F F2");
@@ -127,6 +141,13 @@ namespace Reko.UnitTests.Arch.OpenRISC
         public void AeonDis_l_lhz_24bit()
         {
             AssertCode("l.lhz\tr5,0x8(r11)", "08 AB 09");
+        }
+
+        [Test]
+        public void AeonDis_l_lhz_0_24bit()
+        {
+            // confirmed with source
+            AssertCode("l.lhz\tr3,(r5)", "08 65 01");
         }
 
         [Test]
@@ -148,9 +169,24 @@ namespace Reko.UnitTests.Arch.OpenRISC
         }
 
         [Test]
-        public void AeonDis_l_movhi()
+        public void AeonDis_l_movhi_32bit()
         {
-            AssertCode("l.movhi\tr7,0x52", "C0E00A41");
+            // confirmed with source
+            AssertCode("l.movhi\tr7,0xA020", "C0 F4 04 01");
+        }
+
+        [Test]
+        public void AeonDis_l_mfspr()
+        {
+            // confirmed with source
+            AssertCode("l.mfspr\tr3,r0,0x11", "C0 60 01 1F");
+        }
+
+        [Test]
+        public void AeonDis_l_mtspr()
+        {
+            // confirmed with source
+            AssertCode("l.mtspr\tr0,r3,0x11", "C0 60 01 1D");
         }
 
         [Test]
@@ -174,6 +210,13 @@ namespace Reko.UnitTests.Arch.OpenRISC
         }
 
         [Test]
+        public void AeonDis_l_ori()
+        {
+            // confirmed with source
+            AssertCode("l.ori\tr5,r7,0x2400", "C8 A7 24 00");
+        }
+
+        [Test]
         public void AeonDis_l_sb()
         {
             AssertCode("l.sb?\t0x36D8(r10),r7", "F8 EA 36 D8");
@@ -186,9 +229,31 @@ namespace Reko.UnitTests.Arch.OpenRISC
         }
 
         [Test]
+        public void AeonDis_l_sfeqi()
+        {
+            // confirmed with source
+            AssertCode("l.sfeqi\tr3,0x0", "5C 60 01");
+        }
+
+        [Test]
+        public void AeonDis_l_sfgeu()
+        {
+            // confirmed with source
+            AssertCode("l.sfgeu\tr3,r4", "5C 83 17");
+        }
+        
+
+        [Test]
         public void AeonDis_l_sfleui__()
         {
             AssertCode("l.sfleui?\tr3,0x77", "5C 6E F3");
+        }
+
+        [Test]
+        public void AeonDis_l_sfne()
+        {
+            // confirmed with source
+            AssertCode("l.sfne\tr3,r4", "5C 64 0D");
         }
 
         [Test]
@@ -207,6 +272,13 @@ namespace Reko.UnitTests.Arch.OpenRISC
         public void AeonDis_l_srai()
         {
             AssertCode("l.srai?\tr5,r7,0x1", "4C A7 0A");
+        }
+
+        [Test]
+        public void AeonDis_l_sw_24bit()
+        {
+            // confirmed with source
+            AssertCode("l.sw\t(r3),r0", "0C 03 00");
         }
 
         [Test]
