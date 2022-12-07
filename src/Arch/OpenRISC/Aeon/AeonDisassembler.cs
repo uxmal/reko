@@ -291,7 +291,8 @@ namespace Reko.Arch.OpenRISC.Aeon
                 (0x6, Instr(Mnemonic.l_blti__, InstrClass.ConditionalTransfer, R21, uimm16_5, disp3_13)));      // guess
 
             // opcode 110101
-            var decoder110101 = Sparse(0, 3, "  opc=110101", Nyi("110101"));
+            var decoder110101 = Sparse(0, 3, "  opc=110101", Nyi("110101"),
+                (0b011, Instr(Mnemonic.l_bf, InstrClass.ConditionalTransfer, disp3_13)));
 
             // opcode 111001
             var decoder111001 = Mask(0, 1, "  opc=111001",
@@ -305,13 +306,13 @@ namespace Reko.Arch.OpenRISC.Aeon
 
             // opcode 111011
             var decoder111011 = Mask(0, 2, "  opc=111011",
-                Instr(Mnemonic.l_sw, Ms(16, 2, 14, 0, PrimitiveType.Word32), R21),          // chenxing, backtrace
+                Instr(Mnemonic.l_sw, Ms(16, 2, 14, 2, PrimitiveType.Word32), R21),          // chenxing, backtrace
                 Instr(Mnemonic.l_sw__, Ms(16, 2, 14, 2, PrimitiveType.Word32), R21),        // guess
                 Instr(Mnemonic.l_lwz__, R21, Ms(16, 2, 14, 2, PrimitiveType.Word32)),       // guess
                 Instr(Mnemonic.l_sh__, Ms(16, 1, 15, 1, PrimitiveType.Word16), R21));
 
             // opcode 111101
-            var decoder111101 = Select(Bf((5, 11), (21, 5)), u => u == 0,
+            var decoder111101 = Select(Bf((6, 10), (21, 5)), u => u == 0,
                 Sparse(0, 3, "  opc=111101", Nyi("111101"),
                 
                     // $REVIEW: what's the difference between these? what about bit 5?
@@ -439,8 +440,8 @@ namespace Reko.Arch.OpenRISC.Aeon
             // opcode 100000
             var decoder0_0 = Sparse(0, 10, "  decoder 0_0",
                     Instr(Mnemonic.Nyi, uimm0_10),
-                (0, Instr(Mnemonic.l_nop)),
-                (1, Instr(Mnemonic.bt_trap)));  //$REVIEW: don't know how to decode // disasm
+                (0b0000000001, Instr(Mnemonic.l_nop)),               // disasm
+                (0b0000000010, Instr(Mnemonic.bt_trap)));  //$REVIEW: don't know how to decode // disasm
 
             return Mask(10, 3, "  16-bit",
                 decoder0_0,
@@ -499,7 +500,7 @@ namespace Reko.Arch.OpenRISC.Aeon
             // opcode 010001
             var decode11 = Sparse(0, 3, "  11", Nyi("010001"),
                 (0b100, Instr(Mnemonic.l_and, R13, R8, R3)),                // chenxing
-                (0b101, Instr(Mnemonic.l_or__, R13, R8, R3)),               // guess
+                (0b101, Instr(Mnemonic.l_or, R13, R8, R3)),                 // disasm, guess
                 (0b110, Instr(Mnemonic.l_xor__, R13, R8, R3)));             // guess
 
             // opcode 010011

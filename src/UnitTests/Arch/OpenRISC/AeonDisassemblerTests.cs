@@ -54,6 +54,13 @@ namespace Reko.UnitTests.Arch.OpenRISC
         }
 
         [Test]
+        public void AeonDis_bt_trap()
+        {
+            // XXX: actually "bt.trap 1"
+            AssertCode("bt.trap", "8002");
+        }
+
+        [Test]
         public void AeonDis_l_add___two_operand()
         {
             AssertCode("l.add?\tr7,r6", "8C E6");
@@ -93,6 +100,20 @@ namespace Reko.UnitTests.Arch.OpenRISC
         public void AeonDis_l_blti__()
         {
             AssertCode("l.blti?\tr4,0x8,000FFFE7", "D0 88 FF 3E");
+        }
+
+        [Test]
+        public void AeonDis_l_bf_24bit()
+        {
+            // confirmed with source
+            AssertCode("l.bf\t000FFFF2", "23 FF C9");
+        }
+
+        [Test]
+        public void AeonDis_l_invalidate_line()
+        {
+            // confirmed with source
+            AssertCode("l.invalidate.line\t(r3),0x1", "F4 03 00 37");
         }
 
         [Test]
@@ -138,6 +159,20 @@ namespace Reko.UnitTests.Arch.OpenRISC
         }
 
         [Test]
+        public void AeonDis_l_nop_16bit()
+        {
+            // confirmed with source
+            AssertCode("l.nop", "8001");
+        }
+
+        [Test]
+        public void AeonDis_l_or()
+        {
+            // confirmed with source
+            AssertCode("l.or\tr3,r0,r1", "44 60 0D");
+        }
+
+        [Test]
         public void AeonDis_l_sb()
         {
             AssertCode("l.sb?\t0x36D8(r10),r7", "F8 EA 36 D8");
@@ -159,6 +194,13 @@ namespace Reko.UnitTests.Arch.OpenRISC
         public void AeonDis_l_srai()
         {
             AssertCode("l.srai?\tr5,r7,0x1", "4C A7 0A");
+        }
+
+        [Test]
+        public void AeonDis_l_sw_32bit()
+        {
+            // confirmed with source
+            AssertCode("l.sw\t0x88(r1),r5", "EC A1 00 88");
         }
 
         [Test]
