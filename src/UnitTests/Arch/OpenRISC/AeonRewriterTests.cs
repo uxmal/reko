@@ -152,6 +152,16 @@ namespace Reko.UnitTests.Arch.OpenRISC
         }
 
         [Test]
+        public void AeonRw_l_lbz()
+        {
+            Given_HexString("F0 C7 1E EC");
+            AssertCode(     // l.lbz?\tr6,0x1EEC(r7)
+                "0|L--|00100000(4): 2 instructions",
+                "1|L--|v3 = Mem0[r7 + 7916<i32>:byte]",
+                "2|L--|r6 = CONVERT(v3, byte, word32)");
+        }
+
+        [Test]
         public void AeonRw_l_lhz()
         {
             Given_HexString("08C301");

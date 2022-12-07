@@ -294,27 +294,27 @@ namespace Reko.Arch.OpenRISC.Aeon
                 Nyi("D, non-zero bits"));
             var decoder = Mask(26, 4, "  32-bit instr",
                 decoder0,
-                Instr(Mnemonic.l_andi, R15, R10, uimm0_16),           // chenxing
-                Instr(Mnemonic.l_ori, R15, R10, uimm0_16),           // chenxing
+                Instr(Mnemonic.l_andi, R15, R10, uimm0_16),                             // chenxing
+                Instr(Mnemonic.l_ori, R15, R10, uimm0_16),                              // chenxing
                 Nyi("0b0011"),
 
                 decoder4,
                 // XXX: n is probably wrong
-                Instr(Mnemonic.l_bf, InstrClass.ConditionalTransfer, disp0_26),                    // disasm, guess
+                Instr(Mnemonic.l_bf, InstrClass.ConditionalTransfer, disp0_26),         // disasm, guess
                 Nyi("0b0110"),
                 Nyi("0b0111"),
 
                 Nyi("0b1000"),
                 //$REVIEW: what is bit 0 used for?
-                Instr(Mnemonic.l_jal, InstrClass.Transfer | InstrClass.Call, disp1_25),       // guess
+                Instr(Mnemonic.l_jal, InstrClass.Transfer | InstrClass.Call, disp1_25), // guess
                 decoderA,
                 decoderB,
 
-                Instr(Mnemonic.l_lwz__, R21, Ms(16, 2, 14, 2, PrimitiveType.Word32)), // guess
+                Instr(Mnemonic.l_lbz__, R21, Ms(16, 0, 16, 0, PrimitiveType.Byte)),   // guess
                 decoderD,
                 Nyi("0b1110"),
                 //$REVIEW: signed or unsigned immediate?
-                Instr(Mnemonic.l_addi, R21, R16, uimm0_16));           // chenxing, backtrace
+                Instr(Mnemonic.l_addi, R21, R16, uimm0_16));                            // chenxing, backtrace
 
 
             return new D32BitDecoder(decoder);
