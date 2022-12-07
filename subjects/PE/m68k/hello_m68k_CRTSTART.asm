@@ -108,7 +108,7 @@ fn00002294 proc
 	move.l	d2,-(a7)
 	move.l	d2,-(a7)
 	move.l	$0008(a6),-(a7)
-	jsr.l	00002354                                             ; $00B2(pc)
+	jsr.l	fn00002354                                           ; $00B2(pc)
 	unlk	a6
 	rts
 000022AA                               00 00 4E 56 00 00           ..NV..
@@ -121,11 +121,11 @@ fn000022C4 proc
 	move.l	a2,-(a7)
 	pea	-$02E4(a5)
 	pea	-$02E8(a5)
-	jsr.l	000023B4                                             ; $00E2(pc)
+	jsr.l	fn000023B4                                           ; $00E2(pc)
 	addq.w	#$08,a7
 	pea	-$02EC(a5)
 	pea	-$02F0(a5)
-	jsr.l	000023B4                                             ; $00D4(pc)
+	jsr.l	fn000023B4                                           ; $00D4(pc)
 	addq.w	#$04,a7
 	move.w	#$A89F,-(a7)
 	move.b	#$01,-(a7)
@@ -175,19 +175,19 @@ l00002364:
 l0000236A:
 	move.l	-$02C8(a5),-(a7)
 	move.l	-$02C4(a5),-(a7)
-	jsr.l	000023B4                                             ; $0042(pc)
+	jsr.l	fn000023B4                                           ; $0042(pc)
 	addq.w	#$08,a7
 
 l00002378:
 	pea	-$02D8(a5)
 	pea	-$02E0(a5)
-	jsr.l	000023B4                                             ; $0034(pc)
+	jsr.l	fn000023B4                                           ; $0034(pc)
 	addq.w	#$08,a7
 
 l00002386:
 	pea	-$02D0(a5)
 	pea	-$02D4(a5)
-	jsr.l	000023B4                                             ; $0026(pc)
+	jsr.l	fn000023B4                                           ; $0026(pc)
 	addq.w	#$08,a7
 	tst.l	$0010(a6)
 	bne	$000023AE
@@ -252,9 +252,9 @@ l000023DE:
 ;; fn000023F8: 000023F8
 fn000023F8 proc
 	link	a6,#$0000
-	jsr.l	00002418                                             ; $001C(pc)
+	jsr.l	fn00002418                                           ; $001C(pc)
 	move.l	$0008(a6),-(a7)
-	jsr.l	0000243C                                             ; $0038(pc)
+	jsr.l	fn0000243C                                           ; $0038(pc)
 	addq.w	#$04,a7
 	pea	$000000FF
 	movea.l	-$0508(a5),a0
@@ -268,7 +268,7 @@ fn000023F8 proc
 fn00002418 proc
 	link	a6,#$0000
 	pea	$000000FC
-	jsr.l	0000243C                                             ; $001C(pc)
+	jsr.l	fn0000243C                                           ; $001C(pc)
 	addq.w	#$04,a7
 	movea.l	-$03F4(a5),a0
 	move.l	a0,d0
@@ -279,7 +279,7 @@ l0000242E:
 
 l00002430:
 	pea	$000000FF
-	jsr.l	0000243C                                             ; $0008(pc)
+	jsr.l	fn0000243C                                           ; $0008(pc)
 	unlk	a6
 	rts
 

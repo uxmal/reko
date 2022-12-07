@@ -13,7 +13,7 @@ main proc
 	mov	ecx,[ebp+0Ch]
 	mov	edx,[ecx]
 	push	edx
-	call	401030h
+	call	test1
 	add	esp,10h
 	xor	eax,eax
 	pop	ebp
@@ -54,7 +54,7 @@ test2 proc
 	push	4020DCh
 	push	2h
 	push	4020E0h
-	call	401030h
+	call	test1
 	add	esp,10h
 	cmp	dword ptr [ebp+8h],0h
 	jnz	4010A5h
@@ -66,7 +66,7 @@ l00401087:
 	push	4020E4h
 	push	6h
 	push	4020E8h
-	call	401030h
+	call	test1
 	add	esp,10h
 
 l004010A5:
@@ -235,7 +235,7 @@ l0040120D:
 	push	6h
 	mov	ecx,[403018h]
 	push	ecx
-	call	401120h
+	call	test6
 	add	esp,0Ch
 	pop	ebp
 	ret
@@ -344,7 +344,7 @@ l004012F6:
 	fld	dword ptr [ebp-8h]
 	push	ecx
 	fstp	dword ptr [esp]
-	call	401230h
+	call	loop_test9
 	add	esp,4h
 	jmp	40131Eh
 
@@ -352,7 +352,7 @@ l0040130D:
 	sub	esp,8h
 	fld	double ptr [ebp+8h]
 	fstp	double ptr [esp]
-	call	4011B0h
+	call	nested_if_blocks_test8
 	add	esp,8h
 
 l0040131E:
@@ -391,7 +391,7 @@ nested_structs_test13 proc
 	mov	ebp,esp
 	mov	eax,[ebp+8h]
 	push	eax
-	call	401330h
+	call	nested_structs_test12
 	add	esp,4h
 	pop	ebp
 	ret

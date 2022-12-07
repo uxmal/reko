@@ -53,7 +53,7 @@ l011E:
 	br	011A
 
 l0122:
-	jsr	pc,@#0128
+	jsr	pc,fn0128
 	br	0122
 
 ;; fn0128: 0128
@@ -68,7 +68,7 @@ fn0128 proc
 l0130:
 	clr	@#006C
 	mov	r0,@#006E
-	jsr	pc,@#053A
+	jsr	pc,fn053A
 
 l013C:
 	rts	pc
@@ -107,7 +107,7 @@ fn0242 proc
 l0254:
 	mov	(r4)+,pc
 	clr	-(sp)
-	jsr	pc,@#02C8
+	jsr	pc,fn02C8
 	br	027A
 025E                                           E6 15               ..
 0260 00 40 DF 09 C8 02 DF 27 82 00 84 00 02 04 0E 0A .@.....'........
@@ -158,19 +158,19 @@ l02B4:
 fn02C8 proc
 	movb	(r4)+,r0
 	mov	@#004A,r1
-	jsr	pc,@#125E
+	jsr	pc,fn125E
 	mov	r2,-(sp)
 	movb	@r4,r0
 	mov	@#004C,r1
-	jsr	pc,@#125E
+	jsr	pc,fn125E
 	sub	r2,@sp
 	movb	FFFF(r4),r0
 	mov	@#004C,r1
-	jsr	pc,@#125E
+	jsr	pc,fn125E
 	mov	r2,-(sp)
 	movb	(r4)+,r0
 	mov	@#004A,r1
-	jsr	pc,@#125E
+	jsr	pc,fn125E
 	add	(sp)+,r2
 	mov	(sp)+,r3
 	neg	r3
@@ -186,15 +186,15 @@ fn0300 proc
 l0306:
 	mov	@#0064,r0
 	mov	#2904,r1
-	jsr	pc,@#114A
+	jsr	pc,fn114A
 	mov	#0064,r0
-	jsr	pc,@#126C
+	jsr	pc,fn126C
 	mov	r3,@#0066
 	mov	r3,r1
 	mov	@#006E,r0
-	jsr	pc,@#114A
+	jsr	pc,fn114A
 	mov	#05DC,r0
-	jsr	pc,@#126C
+	jsr	pc,fn126C
 	sub	@#0068,r3
 	bmi	0340
 
@@ -220,22 +220,22 @@ l0358:
 	mov	r3,@#0068
 	clr	r2
 	mov	#000A,r0
-	jsr	pc,@#126C
+	jsr	pc,fn126C
 	add	#37DC,r3
 	mov	r3,@#006A
 	mov	@#0066,r0
 	mov	#3ED7,r1
-	jsr	pc,@#114A
+	jsr	pc,fn114A
 	mov	r4,r0
-	jsr	pc,@#126C
+	jsr	pc,fn126C
 	mov	r3,@#004E
 	mov	r3,r0
 	mov	@#004A,r1
-	jsr	pc,@#125E
+	jsr	pc,fn125E
 	mov	r2,@#0050
 	mov	@#004E,r0
 	mov	@#004C,r1
-	jsr	pc,@#125E
+	jsr	pc,fn125E
 	sub	#0A6E,r2
 	mov	r2,@#0052
 	rts	pc
@@ -288,7 +288,7 @@ l0414:
 	bis	@#0090,@#27A8
 	bis	@#008E,@#27A8
 	mov	#27A2,r0
-	jmp	@#0242
+	jmp	fn0242
 
 ;; fn0444: 0444
 ;;   Called from:
@@ -352,9 +352,9 @@ l048E:
 
 l0490:
 	mov	@#006E,r0
-	jsr	pc,@#114A
+	jsr	pc,fn114A
 	mov	#0BB8,r0
-	jsr	pc,@#126C
+	jsr	pc,fn126C
 	tst	@#0050
 	bpl	04A8
 
@@ -375,11 +375,11 @@ l04BA:
 
 l04BC:
 	mov	@#006E,r0
-	jsr	pc,@#114A
+	jsr	pc,fn114A
 	mov	#0258,r0
 	add	@#0056,r3
 	adc	r2
-	jsr	pc,@#126C
+	jsr	pc,fn126C
 	tst	(sp)+
 	bpl	04D8
 
@@ -397,9 +397,9 @@ l04E6:
 
 l04E8:
 	mov	@#006E,r0
-	jsr	pc,@#114A
+	jsr	pc,fn114A
 	mov	#0BB8,r0
-	jsr	pc,@#126C
+	jsr	pc,fn126C
 	tst	@#0052
 	bpl	0500
 
@@ -420,11 +420,11 @@ l0512:
 
 l0514:
 	mov	@#006E,r0
-	jsr	pc,@#114A
+	jsr	pc,fn114A
 	mov	#0258,r0
 	add	@#005A,r3
 	adc	r2
-	jsr	pc,@#126C
+	jsr	pc,fn126C
 	tst	(sp)+
 	bpl	0530
 
@@ -451,11 +451,11 @@ l0550:
 	neg	r1
 
 l0552:
-	jsr	pc,@#114A
+	jsr	pc,fn114A
 	mov	#003C,r0
 	add	@#0048,r3
 	adc	r2
-	jsr	pc,@#126C
+	jsr	pc,fn126C
 	tst	r5
 	bpl	056A
 
@@ -465,19 +465,19 @@ l0568:
 l056A:
 	add	r3,@#0046
 	mov	r2,@#0048
-	jsr	pc,@#0444
+	jsr	pc,fn0444
 	add	#0002,@#0092
 	mov	@#0092,r1
 	bic	#FFFD,r1
 	mov	34AC(r1),r1
 	mov	#26D8,r0
 	mov	r1,-(sp)
-	jsr	pc,@#0242
+	jsr	pc,fn0242
 	mov	(sp)+,@#34BA
 	mov	@#0086,@#0088
 	mov	@#0060,@#0064
-	jsr	pc,@#0300
-	jsr	pc,@#0488
+	jsr	pc,fn0300
+	jsr	pc,fn0488
 	mov	@#005C,r4
 	add	#5780,r4
 	asr	r4
@@ -501,7 +501,7 @@ l056A:
 
 l05E2:
 	mov	#3588,r0
-	jsr	pc,@#03CE
+	jsr	pc,fn03CE
 	mov	#3588,@#34C2
 	br	05F6
 
@@ -545,22 +545,22 @@ l061A:
 	beq	0640
 
 l0638:
-	jsr	pc,@#0CEC
+	jsr	pc,fn0CEC
 	clr	@#009E
 
 l0640:
-	jsr	pc,@#1578
+	jsr	pc,fn1578
 	mov	@#007E,r4
 	sub	#0010,r4
 	bpl	0666
 
 l064E:
 	mov	#0280,r0
-	jsr	pc,@#0E06
+	jsr	pc,fn0E06
 	mov	sp,@#009E
-	jsr	pc,@#0CEC
+	jsr	pc,fn0CEC
 	clr	@#009E
-	jsr	pc,@#0E32
+	jsr	pc,fn0E32
 
 l0666:
 	rts	pc
@@ -600,7 +600,7 @@ l06AA:
 
 l06AC:
 	mov	r3,@#0058
-	jmp	@#053A
+	jmp	fn053A
 
 l06B4:
 	cmp	@#009E,@sp
@@ -619,7 +619,7 @@ l06C2:
 	asl	r0
 	sub	#5780,r0
 	mov	r0,@#0076
-	jsr	pc,@#0F04
+	jsr	pc,fn0F04
 	mov	@sp,@#009E
 	mov	@#005C,r0
 	sub	@#0076,r0
@@ -632,7 +632,7 @@ l06E8:
 	mov	r3,@#34B4
 	clr	r2
 	mov	#0030,r0
-	jsr	pc,@#126C
+	jsr	pc,fn126C
 	add	@#0074,r3
 	mov	r3,@#0078
 	asl	r3
@@ -641,11 +641,11 @@ l06E8:
 	sub	r2,r0
 	mov	r2,r5
 	mov	28F0(r4),r1
-	jsr	pc,@#123A
+	jsr	pc,fn123A
 	mov	r3,-(sp)
 	mov	r5,r0
 	mov	28F2(r4),r1
-	jsr	pc,@#123A
+	jsr	pc,fn123A
 	clr	r2
 	mov	#0030,r0
 	add	(sp)+,r3
@@ -653,19 +653,19 @@ l06E8:
 
 l0730:
 	neg	r3
-	jsr	pc,@#126C
+	jsr	pc,fn126C
 	neg	r3
 	br	073E
 
 l073A:
-	jsr	pc,@#126C
+	jsr	pc,fn126C
 
 l073E:
 	mov	r3,r4
 	asr	r3
 	asr	r3
 	mov	r3,@#007C
-	jsr	pc,@#100C
+	jsr	pc,fn100C
 	mov	r4,@#007A
 	mov	@#005E,r0
 	mov	r0,r3
@@ -686,7 +686,7 @@ l0772:
 	clr	r2
 	mov	#0003,r0
 	asl	r3
-	jsr	pc,@#126C
+	jsr	pc,fn126C
 	tst	r4
 	bpl	0784
 
@@ -695,8 +695,8 @@ l0782:
 
 l0784:
 	mov	r3,@#007E
-	jsr	pc,@#0856
-	jsr	pc,@#0A0A
+	jsr	pc,fn0856
+	jsr	pc,fn0A0A
 
 ;; fn0790: 0790
 ;;   Called from:
@@ -735,7 +735,7 @@ l07AE:
 
 l07EE:
 	cmp	r5,#001A
-	bgt	0790
+	bgt	fn0790
 
 l07F4:
 	cmp	r4,#FDA8
@@ -752,24 +752,24 @@ l080A:
 
 l080C:
 	mov	r0,-(sp)
-	jsr	pc,@#0C90
+	jsr	pc,fn0C90
 	sub	#0010,@#34B6
-	jsr	pc,@#0F04
-	jsr	pc,@#0E32
+	jsr	pc,fn0F04
+	jsr	pc,fn0E32
 	cmp	r5,#001A
-	bgt	0790
+	bgt	fn0790
 
 l0826:
 	tst	@#0066
-	beq	0790
+	beq	fn0790
 
 l082C:
 	clr	-(sp)
 	mov	r0,-(sp)
-	jsr	pc,@#0C90
+	jsr	pc,fn0C90
 	mov	#23B8,@#34CA
-	jsr	pc,@#0F04
-	br	0790
+	jsr	pc,fn0F04
+	br	fn0790
 0840 57 21 11 00 A5 06 17 21 A8 FD                   W!.....!..      
 
 l084A:
@@ -777,13 +777,13 @@ l084A:
 
 l084C:
 	mov	#23FE,@#34CA
-	jsr	pc,@#0E32
+	jsr	pc,fn0E32
 
 ;; fn0856: 0856
 ;;   Called from:
 ;;     0788 (in fn053A)
 fn0856 proc
-	jsr	pc,@#1578
+	jsr	pc,fn1578
 	mov	@#007E,r5
 	bmi	08B2
 
@@ -814,7 +814,7 @@ l0884:
 l0888:
 	mov	@#0078,r0
 	mov	r0,-(sp)
-	jsr	pc,@#0CCA
+	jsr	pc,fn0CCA
 	mov	(sp)+,r1
 	asl	r1
 	jmp	@0FEC(r1)
@@ -882,10 +882,10 @@ l08FE:
 l0904:
 	mov	#2212,@#34CA
 	mov	#0020,r0
-	jsr	pc,@#0E06
-	jsr	pc,@#0F04
+	jsr	pc,fn0E06
+	jsr	pc,fn0F04
 	clr	@#34BA
-	jsr	pc,@#0E32
+	jsr	pc,fn0E32
 
 l091E:
 	clr	@#34C2
@@ -921,7 +921,7 @@ l095A:
 	bge	0978
 
 l0960:
-	jsr	pc,@#0B06
+	jsr	pc,fn0B06
 
 l0964:
 	mov	@#0054,r0
@@ -948,7 +948,7 @@ l098C:
 
 l098E:
 	mov	r1,-(sp)
-	jsr	pc,@#0C90
+	jsr	pc,fn0C90
 	asl	r1
 	mov	28F2(r1),r2
 	sub	28F0(r1),r2
@@ -995,12 +995,12 @@ l09D2:
 	mov	r1,@#0092
 	mov	34AC(r1),r1
 	mov	r1,-(sp)
-	jsr	pc,@#0444
+	jsr	pc,fn0444
 	mov	#26D8,r0
-	jsr	pc,@#0242
+	jsr	pc,fn0242
 	mov	(sp)+,@#34BA
 	sub	#0007,@#34B6
-	jsr	pc,@#13AA
+	jsr	pc,fn13AA
 	illegal
 
 ;; fn0A0A: 0A0A
@@ -1045,9 +1045,9 @@ l0A4E:
 	mov	@#34B6,r0
 	sub	@#007A,r0
 	mov	r0,r4
-	jsr	pc,@#114A
+	jsr	pc,fn114A
 	mov	@#004C,r0
-	jsr	pc,@#126C
+	jsr	pc,fn126C
 	add	r3,r4
 	tst	@#004A
 	bmi	0A6E
@@ -1067,7 +1067,7 @@ l0A82:
 	neg	r4
 	mov	r4,r0
 	mov	@#0064,r1
-	jsr	pc,@#114A
+	jsr	pc,fn114A
 	asr	r3
 	asr	r3
 	asr	r3
@@ -1144,8 +1144,8 @@ l0B00:
 ;;   Called from:
 ;;     0960 (in fn0856)
 fn0B06 proc
-	jsr	pc,@#13AA
-	sob	pc,0A94
+	jsr	pc,fn13AA
+	sob	pc,fn0A94
 
 l0B0C:
 	mov	@#34B4,@#267A
@@ -1172,7 +1172,7 @@ l0B2C:
 	beq	0B48
 
 l0B44:
-	jsr	pc,@#0C36
+	jsr	pc,fn0C36
 
 l0B48:
 	mov	@#2610,r3
@@ -1180,31 +1180,31 @@ l0B48:
 	add	#0019,r3
 	mov	r3,-(sp)
 	clr	r2
-	jsr	pc,@#0C36
+	jsr	pc,fn0C36
 	mov	#24A2,@#34CA
-	jsr	pc,@#13AA
+	jsr	pc,fn13AA
 	sob	pc,0AF8
 
 l0B68:
 	clr	@#34CA
-	jsr	pc,@#13AA
-	sob	pc,0AF6
+	jsr	pc,fn13AA
+	sob	pc,fn0AF6
 
 l0B72:
 	neg	@sp
 	mov	@sp,r3
 	clr	r2
-	jsr	pc,@#0C36
+	jsr	pc,fn0C36
 	mov	(sp)+,r3
 	mov	(sp)+,r2
 	neg	r2
 	beq	0B88
 
 l0B84:
-	jsr	pc,@#0C36
+	jsr	pc,fn0C36
 
 l0B88:
-	jsr	pc,@#13AA
+	jsr	pc,fn13AA
 	sob	pc,0B12
 
 l0B8E:
@@ -1219,20 +1219,20 @@ l0BA6:
 	clr	@#0046
 	clr	@#0054
 	mov	#001E,@#0060
-	jsr	pc,@#0128
+	jsr	pc,fn0128
 	tst	@#009E
 	bne	0BA6
 
 l0BC2:
 	clr	@#34BA
 	clr	@#34C2
-	jsr	pc,@#13AA
+	jsr	pc,fn13AA
 	bpt
 
 l0BD0:
 	mov	#0001,-(sp)
 	mov	@#0078,-(sp)
-	jsr	pc,@#0C90
+	jsr	pc,fn0C90
 	mov	#FFE8,r2
 	mov	#0030,r3
 	mov	@#0070,r5
@@ -1244,22 +1244,22 @@ l0BEC:
 
 l0BEE:
 	mov	r3,-(sp)
-	jsr	pc,@#0C36
+	jsr	pc,fn0C36
 	mov	(sp)+,r3
 	clr	r2
-	jsr	pc,@#0C36
+	jsr	pc,fn0C36
 	mov	@#267A,@#26AC
 	mov	@#267C,@#26AE
 	add	#0014,@#26AC
 	mov	#26A8,@#34C2
 	mov	@#0078,r0
-	jsr	pc,@#0C72
-	jsr	pc,@#0C72
+	jsr	pc,fn0C72
+	jsr	pc,fn0C72
 	mov	#0002,-(sp)
 	mov	r0,-(sp)
-	jsr	pc,@#0C90
+	jsr	pc,fn0C90
 	mov	#24D6,@#34CA
-	jsr	pc,@#13AA
+	jsr	pc,fn13AA
 	illegal
 
 ;; fn0C36: 0C36
@@ -1280,7 +1280,7 @@ l0C3E:
 	neg	r3
 
 l0C44:
-	mov	r5,@#0C72
+	mov	r5,fn0C72
 	clr	r5
 	tst	r2
 	beq	0C58
@@ -1298,10 +1298,10 @@ l0C58:
 	mov	@#267A,r0
 
 l0C5C:
-	jsr	pc,@#0C72
+	jsr	pc,fn0C72
 	mov	r0,@#267A
 	add	r5,@#267C
-	jsr	pc,@#0C76
+	jsr	pc,fn0C76
 	dec	r3
 	bgt	0C5C
 
@@ -1322,17 +1322,17 @@ fn0C72 proc
 ;;     0C68 (in fn0C36)
 fn0C76 proc
 	bit	#0007,@#0070
-	beq	0C76
+	beq	fn0C76
 
 l0C7E:
-	jsr	pc,@#1578
+	jsr	pc,fn1578
 
 l0C82:
 	bit	#0007,@#0070
 	bne	0C82
 
 l0C8A:
-	jsr	pc,@#1578
+	jsr	pc,fn1578
 	rts	pc
 
 ;; fn0C90: 0C90
@@ -1394,7 +1394,7 @@ l0CE0:
 ;;     0638 (in fn053A)
 ;;     065A (in fn053A)
 fn0CEC proc
-	jsr	pc,@#0D3C
+	jsr	pc,fn0D3C
 	mov	@#28F0,r4
 	asr	r4
 	asr	r4
@@ -1416,7 +1416,7 @@ l0D10:
 	asr	r4
 	asr	r4
 	add	#0017,r4
-	jsr	pc,@#0D78
+	jsr	pc,fn0D78
 	br	0D10
 0D2A                               D5 15 00 F7 0D 0A           ......
 0D30 DF 15 2A 18 DA 34 DF 09 66 0D 87 00             ..*..4..f...    
@@ -1541,7 +1541,7 @@ l0E1E:
 
 l0E20:
 	mov	r4,-(sp)
-	jsr	pc,@#0C90
+	jsr	pc,fn0C90
 
 l0E26:
 	sub	r0,(r1)+
@@ -1575,10 +1575,10 @@ l0E44:
 	bic	#FC7F,r4
 	bis	#9C50,r4
 	mov	r4,(r5)+
-	jsr	pc,@#0E98
+	jsr	pc,fn0E98
 	bis	#0000,@#F402
 	sub	#000A,@#00AE
-	jsr	pc,@#0E98
+	jsr	pc,fn0E98
 	mov	#F700,(r5)+
 	clr	@r5
 	mov	#35CA,@#34C2
@@ -1588,7 +1588,7 @@ l0E44:
 	ble	0E44
 
 l0E92:
-	jsr	pc,@#13AA
+	jsr	pc,fn13AA
 	reset
 
 ;; fn0E98: 0E98
@@ -1601,7 +1601,7 @@ fn0E98 proc
 	mov	#00F1,-(sp)
 
 l0EA2:
-	jsr	pc,@#0444
+	jsr	pc,fn0444
 	mov	FFFA(sp),r0
 	asr	r0
 	inc	r0
@@ -1616,7 +1616,7 @@ l0EA2:
 l0EC8:
 	mov	r4,r0
 	mov	@#004C,r1
-	jsr	pc,@#125E
+	jsr	pc,fn125E
 	add	@#34B4,r2
 	bmi	0EFE
 
@@ -1625,7 +1625,7 @@ l0ED8:
 	mov	r2,(r5)+
 	mov	r4,r0
 	mov	@#004A,r1
-	jsr	pc,@#125E
+	jsr	pc,fn125E
 	add	@#34B6,r2
 	bmi	0EFC
 
@@ -1656,13 +1656,13 @@ l0EFE:
 ;;     083A (in fn0856)
 ;;     0912 (in fn0856)
 fn0F04 proc
-	jsr	pc,@#0D3C
+	jsr	pc,fn0D3C
 	clr	@#00AA
 	mov	@#0074,r0
 	asl	r0
 	add	#28F0,r0
 	mov	@r0,r4
-	jsr	pc,@#100C
+	jsr	pc,fn100C
 	tst	r4
 	bpl	0F24
 
@@ -1685,7 +1685,7 @@ l0F2E:
 l0F38:
 	mov	r4,-(sp)
 	mov	(r0)+,r4
-	jsr	pc,@#100C
+	jsr	pc,fn100C
 	mov	r4,r1
 	mov	(sp)+,r4
 	clr	r2
@@ -1698,14 +1698,14 @@ l0F50:
 	sub	#0006,r1
 	neg	r1
 	mov	r1,r3
-	jsr	pc,@#126C
+	jsr	pc,fn126C
 	neg	r3
 	br	0F6A
 
 l0F60:
 	add	#0006,r1
 	mov	r1,r3
-	jsr	pc,@#126C
+	jsr	pc,fn126C
 
 l0F6A:
 	mov	r3,r1
@@ -1732,7 +1732,7 @@ l0F92:
 	add	@#00AA,r4
 	add	r1,r4
 	mov	r4,-(sp)
-	jsr	pc,@#0D78
+	jsr	pc,fn0D78
 	br	0FA2
 0FA0 04 01                                           ..              
 
@@ -1789,10 +1789,10 @@ l1042:
 	mov	@sp,(r5)+
 	mov	@#0046,-(sp)
 	mov	@r3,r4
-	jsr	pc,@#100C
+	jsr	pc,fn100C
 	mov	r4,-(sp)
 	mov	0002(r3),r4
-	jsr	pc,@#100C
+	jsr	pc,fn100C
 	add	(sp)+,r4
 	asr	r4
 	mov	(r0)+,@#0046
@@ -1813,14 +1813,14 @@ l108A:
 	add	#0016,@#0046
 
 l1090:
-	jsr	pc,@#0444
+	jsr	pc,fn0444
 	mov	r5,r1
 	mov	#26D8,r0
-	jsr	pc,@#0242
+	jsr	pc,fn0242
 	clr	-(r5)
 	clr	-(r5)
 	mov	(sp)+,@#0046
-	jsr	pc,@#0444
+	jsr	pc,fn0444
 	mov	(sp)+,r0
 	mov	(sp)+,r4
 	mov	(sp)+,r3
@@ -2097,7 +2097,7 @@ l1244:
 	neg	r1
 
 l1246:
-	jsr	pc,@#114A
+	jsr	pc,fn114A
 	rts	pc
 
 l124C:
@@ -2108,7 +2108,7 @@ l1250:
 	neg	r1
 
 l1252:
-	jsr	pc,@#114A
+	jsr	pc,fn114A
 	neg	r3
 	adc	r2
 	neg	r2
@@ -2125,7 +2125,7 @@ l1252:
 ;;     0ECE (in fn0E98)
 ;;     0EE4 (in fn0E98)
 fn125E proc
-	jsr	pc,@#123A
+	jsr	pc,fn123A
 	asl	r3
 	rol	r2
 	asl	r3
@@ -2394,7 +2394,7 @@ l13BE:
 
 l13C6:
 	wait
-	jsr	pc,@#1578
+	jsr	pc,fn1578
 	cmp	r1,@#0070
 	bhi	13C6
 
@@ -2471,7 +2471,7 @@ l15A8:
 
 l15AA:
 	clr	r2
-	jsr	pc,@#126C
+	jsr	pc,fn126C
 	tst	@FFFC(r5)
 	bpl	15B8
 
@@ -2483,7 +2483,7 @@ l15B8:
 	mov	r3,r0
 	mov	#000A,r1
 	add	r5,r1
-	jsr	pc,@#1674
+	jsr	pc,fn1674
 	tst	(r4)+
 	br	1586
 
@@ -2495,7 +2495,7 @@ l15D4:
 	mov	#25B8,r1
 	mov	@#0060,r0
 	mov	r0,@#0062
-	jsr	pc,@#1674
+	jsr	pc,fn1674
 
 l15E4:
 	mov	(sp)+,r5
@@ -2527,19 +2527,19 @@ l1608:
 	mov	r0,r3
 	clr	r2
 	mov	#0064,r0
-	jsr	pc,@#126C
+	jsr	pc,fn126C
 	asl	r3
 	add	#2814,r3
 
 l161A:
-	jsr	pc,@#1658
-	jsr	pc,@#1658
+	jsr	pc,fn1658
+	jsr	pc,fn1658
 	mov	r2,r3
 	asl	r3
 	add	#2814,r3
-	jsr	pc,@#1658
+	jsr	pc,fn1658
 	mov	pc,@sp
-	jsr	pc,@#1658
+	jsr	pc,fn1658
 	add	#0002,sp
 	rts	pc
 
@@ -2593,11 +2593,11 @@ l1670:
 ;;     15E0 (in fn1578)
 fn1674 proc
 	tst	r0
-	bpl	15F2
+	bpl	fn15F2
 
 l1678:
 	neg	r0
-	jsr	pc,@#15F2
+	jsr	pc,fn15F2
 	mov	r1,r0
 
 l1680:
@@ -2985,26 +2985,26 @@ fn34E0 proc
 	clr	@#0006
 	tst	@#FB8C
 	clr	@#FB8E
-	jsr	pc,@#355A
+	jsr	pc,fn355A
 	mov	#0083,@#FB8E
-	jsr	pc,@#355A
+	jsr	pc,fn355A
 	mov	#0083,@#FB8E
-	jsr	pc,@#355A
+	jsr	pc,fn355A
 	mov	#004B,@#FB8E
-	jsr	pc,@#355A
+	jsr	pc,fn355A
 	mov	#002F,@#FB8E
-	jsr	pc,@#355A
+	jsr	pc,fn355A
 	mov	#0046,@#FB8E
-	jsr	pc,@#355A
+	jsr	pc,fn355A
 	mov	#000D,@#FB8E
-	jsr	pc,@#355A
+	jsr	pc,fn355A
 	br	3548
 3546                   96 25                               .%        
 
 l3548:
 	mov	#0040,@#FF66
 	mov	#3562,@#F400
-	jsr	pc,@#13AA
+	jsr	pc,fn13AA
 	illegal
 
 ;; fn355A: 355A
@@ -3018,7 +3018,7 @@ l3548:
 ;;     3540 (in fn34E0)
 fn355A proc
 	tstb	@#FB8C
-	bpl	355A
+	bpl	fn355A
 
 l3560:
 	rts	pc

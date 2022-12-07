@@ -53,13 +53,13 @@ Win32CrtStartup proc
 	sw	r6,0020(sp)
 	sw	r5,001C(sp)
 	sw	r4,0018(sp)
-	jal	000111C4
+	jal	fn000111C4
 	nop
 	lw	r7,0024(sp)
 	lw	r6,0020(sp)
 	lw	r5,001C(sp)
 	lw	r4,0018(sp)
-	jal	000110E8
+	jal	fn000110E8
 	nop
 	lw	ra,0010(sp)
 	addiu	sp,sp,+00000018
@@ -78,17 +78,17 @@ fn000110E8 proc
 	sw	r6,0030(r30)
 	sw	r5,002C(r30)
 	sw	r4,0028(r30)
-	jal	000114E4
+	jal	fn000114E4
 	nop
 	lw	r7,0034(r30)
 	lw	r6,0030(r30)
 	lw	r5,002C(r30)
 	lw	r4,0028(r30)
-	jal	00011000
+	jal	fn00011000
 	nop
 	sw	r2,0010(r30)
 	lw	r4,0010(r30)
-	jal	00011278
+	jal	fn00011278
 	nop
 	beq	r0,r0,00011154
 	nop
@@ -200,7 +200,7 @@ fn00011278 proc
 	or	r6,r0,r0
 	or	r5,r0,r0
 	lw	r4,0018(sp)
-	jal	000112A8
+	jal	fn000112A8
 	nop
 	lw	ra,0010(sp)
 	addiu	sp,sp,+00000018
@@ -283,7 +283,7 @@ l00011374:
 	addiu	r5,r8,+00002014
 	lui	r8,+0001
 	addiu	r4,r8,+00002010
-	jal	0001147C
+	jal	fn0001147C
 	nop
 
 l0001138C:
@@ -291,14 +291,14 @@ l0001138C:
 	addiu	r5,r8,+0000201C
 	lui	r8,+0001
 	addiu	r4,r8,+00002018
-	jal	0001147C
+	jal	fn0001147C
 	nop
 	lw	r8,0020(sp)
 	bne	r8,r0,000113C8
 	nop
 
 l000113B0:
-	jal	00011460
+	jal	fn00011460
 	nop
 	lw	r5,0018(sp)
 	or	r4,r2,r0
@@ -319,7 +319,7 @@ fn000113D8 proc
 	or	r6,r0,r0
 	addiu	r5,r0,+00000001
 	lw	r4,0018(sp)
-	jal	000112A8
+	jal	fn000112A8
 	nop
 	lw	ra,0010(sp)
 	addiu	sp,sp,+00000018
@@ -333,7 +333,7 @@ fn00011408 proc
 	addiu	r6,r0,+00000001
 	or	r5,r0,r0
 	or	r4,r0,r0
-	jal	000112A8
+	jal	fn000112A8
 	nop
 	lw	ra,0010(sp)
 	addiu	sp,sp,+00000018
@@ -347,7 +347,7 @@ fn00011434 proc
 	addiu	r6,r0,+00000001
 	addiu	r5,r0,+00000001
 	or	r4,r0,r0
-	jal	000112A8
+	jal	fn000112A8
 	nop
 	lw	ra,0010(sp)
 	addiu	sp,sp,+00000018
@@ -420,13 +420,13 @@ fn000114E4 proc
 	addiu	r5,r8,+0000200C
 	lui	r8,+0001
 	addiu	r4,r8,+00002008
-	jal	0001147C
+	jal	fn0001147C
 	nop
 	lui	r4,+0001
 	addiu	r5,r4,+00002004
 	lui	r8,+0001
 	addiu	r4,r8,+00002000
-	jal	0001147C
+	jal	fn0001147C
 	nop
 	lw	ra,0010(sp)
 	addiu	sp,sp,+00000018
@@ -596,7 +596,7 @@ fn000116FC proc
 	sw	ra,0018(sp)
 	sw	r4,0020(sp)
 	lw	r4,0020(sp)
-	jal	0001152C
+	jal	fn0001152C
 	nop
 	beq	r2,r0,00011728
 	nop

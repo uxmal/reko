@@ -10,11 +10,11 @@ _start proc
 	xc	(8,r15),(r15)
 	stmg	r14,r15,160(r15)
 	la	r7,160(r15)
-	larl	r6,0000000000000888
-	larl	r5,0000000000000820
+	larl	r6,__libc_csu_fini
+	larl	r5,__libc_csu_init
 	larl	r2,0000000000002040
 	lg	r2,(r2)
-	brasl	r14,00000000000005E0
+	brasl	r14,__libc_start_main
 	invalid
 	nopr	r7
 
@@ -81,10 +81,10 @@ l00000000000006E6:
 l00000000000006F6:
 	larl	r1,0000000000002060
 	lg	r2,(r1)
-	brasl	r14,00000000000005C0
+	brasl	r14,__cxa_finalize
 
 l0000000000000708:
-	brasl	r14,0000000000000648
+	brasl	r14,deregister_tm_clones
 	mvi	(r11),01
 
 l0000000000000712:
@@ -103,7 +103,7 @@ frame_dummy proc
 
 l0000000000000740:
 	lmg	r13,r15,264(r15)
-	jg	0000000000000680
+	jg	register_tm_clones
 
 l000000000000074C:
 	larl	r1,0000000000002048
@@ -140,14 +140,14 @@ l0000000000000792:
 	ahi	r1,-00000001
 	lgfr	r1,r1
 	lgr	r2,r1
-	brasl	r14,0000000000000768
+	brasl	r14,fib
 	lgr	r1,r2
 	lr	r10,r1
 	l	r1,164(r11)
 	ahi	r1,-00000002
 	lgfr	r1,r1
 	lgr	r2,r1
-	brasl	r14,0000000000000768
+	brasl	r14,fib
 	lgr	r1,r2
 	ar	r1,r10
 
@@ -167,7 +167,7 @@ main proc
 	stg	r3,160(r11)
 	st	r1,172(r11)
 	lghi	r2,+0000000A
-	brasl	r14,0000000000000768
+	brasl	r14,fib
 	lgr	r1,r2
 	lgfr	r1,r1
 	lgr	r2,r1
@@ -182,7 +182,7 @@ __libc_csu_init proc
 	lgr	r10,r2
 	lgr	r9,r3
 	lgr	r8,r4
-	brasl	r14,0000000000000560
+	brasl	r14,_init
 	larl	r11,0000000000001E10
 	larl	r1,0000000000001E08
 	sgr	r11,r1

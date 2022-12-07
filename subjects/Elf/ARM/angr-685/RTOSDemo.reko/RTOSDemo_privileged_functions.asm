@@ -17,7 +17,7 @@
 prvUnlockQueue proc
 B570           	push	{r4-r6,lr}
 4605           	mov	r5,r0
-F008 FA8C     	bl	$00008578
+F008 FA8C     	bl	vPortEnterCritical
 F895 4045     	ldrb	r4,[r5,#&45]
 B264           	sxtb	r4,r4
 2C00           	cmps	r4,#0
@@ -43,13 +43,13 @@ B15B           	cbz	r3,$00000098
 
 l00000080:
 4630           	mov	r0,r6
-F000 FFCB     	bl	$0000101C
+F000 FFCB     	bl	xTaskRemoveFromEventList
 2800           	cmps	r0,#0
 D0F4           	beq	$00000074
 
 l0000008A:
 3C01           	subs	r4,#1
-F001 F88E     	bl	$000011AC
+F001 F88E     	bl	vTaskMissedYield
 B2E3           	uxtb	r3,r4
 B25C           	sxtb	r4,r3
 2B00           	cmps	r3,#0
@@ -58,8 +58,8 @@ D1F1           	bne	$0000007C
 l00000098:
 23FF           	mov	r3,#&FF
 F885 3045     	strb	r3,[r5,#&45]
-F008 FA87     	bl	$000085B0
-F008 FA69     	bl	$00008578
+F008 FA87     	bl	vPortExitCritical
+F008 FA69     	bl	vPortEnterCritical
 F895 4044     	ldrb	r4,[r5,#&44]
 B264           	sxtb	r4,r4
 2C00           	cmps	r4,#0
@@ -85,13 +85,13 @@ B15B           	cbz	r3,$000000DE
 
 l000000C6:
 4630           	mov	r0,r6
-F000 FFA8     	bl	$0000101C
+F000 FFA8     	bl	xTaskRemoveFromEventList
 2800           	cmps	r0,#0
 D0F4           	beq	$000000BA
 
 l000000D0:
 3C01           	subs	r4,#1
-F001 F86B     	bl	$000011AC
+F001 F86B     	bl	vTaskMissedYield
 B2E3           	uxtb	r3,r4
 B25C           	sxtb	r4,r3
 2B00           	cmps	r3,#0
@@ -101,7 +101,7 @@ l000000DE:
 23FF           	mov	r3,#&FF
 F885 3044     	strb	r3,[r5,#&44]
 E8BD 4070     	pop.w	{r4-r6,lr}
-F008 BA62     	b	$000085B0
+F008 BA62     	b	vPortExitCritical
 
 ;; prvCopyDataToQueue: 000000EC
 ;;   Called from:
@@ -135,7 +135,7 @@ B97E           	cbnz	r6,$00000128
 
 l00000108:
 68A0           	ldr	r0,[r4,#&8]
-F00A FA5B     	bl	$0000A5C4
+F00A FA5B     	bl	memcpy
 68A3           	ldr	r3,[r4,#&8]
 6C21           	ldr	r1,[r4,#&40]
 6862           	ldr	r2,[r4,#&4]
@@ -154,7 +154,7 @@ BD70           	pop	{r4-r6,pc}
 
 l00000128:
 68E0           	ldr	r0,[r4,#&C]
-F00A FA4B     	bl	$0000A5C4
+F00A FA4B     	bl	memcpy
 6C22           	ldr	r2,[r4,#&40]
 68E3           	ldr	r3,[r4,#&C]
 4252           	rsbs	r2,r2
@@ -197,7 +197,7 @@ E7CE           	b	$000000FE
 
 l00000160:
 6860           	ldr	r0,[r4,#&4]
-F001 F875     	bl	$00001250
+F001 F875     	bl	xTaskPriorityDisinherit
 3501           	adds	r5,#1
 6066           	str	r6,[r4,#&4]
 E7C8           	b	$000000FE
@@ -226,7 +226,7 @@ l00000182:
 60C1           	str	r1,[r0,#&C]
 BC10           	pop	{r4}
 4618           	mov	r0,r3
-F00A BA1C     	b	$0000A5C4
+F00A BA1C     	b	memcpy
 
 l0000018C:
 4770           	bx	lr
@@ -250,9 +250,9 @@ F8DF 90FC     	ldr	r9,[000002A0]                            ; [pc,#&FC]
 E027           	b	$000001F8
 
 l000001A8:
-F008 FA02     	bl	$000085B0
-F000 FC2E     	bl	$00000A0C
-F008 F9E2     	bl	$00008578
+F008 FA02     	bl	vPortExitCritical
+F000 FC2E     	bl	vTaskSuspendAll
+F008 F9E2     	bl	vPortEnterCritical
 F894 3044     	ldrb	r3,[r4,#&44]
 2BFF           	cmps	r3,#&FF
 BF08           	it	eq
@@ -265,31 +265,31 @@ BF08           	it	eq
 F884 8045     	strbeq	r8,[r4,#&45]
 
 l000001CC:
-F008 F9F0     	bl	$000085B0
+F008 F9F0     	bl	vPortExitCritical
 A901           	add	r1,sp,#4
 A802           	add	r0,sp,#8
-F000 FFC0     	bl	$00001158
+F000 FFC0     	bl	xTaskCheckForTimeOut
 2800           	cmps	r0,#0
 D150           	bne	$0000027E
 
 l000001DC:
-F008 F9CC     	bl	$00008578
+F008 F9CC     	bl	vPortEnterCritical
 6BA2           	ldr	r2,[r4,#&38]
 6BE3           	ldr	r3,[r4,#&3C]
 429A           	cmps	r2,r3
 D017           	beq	$00000218
 
 l000001E8:
-F008 F9E2     	bl	$000085B0
+F008 F9E2     	bl	vPortExitCritical
 4620           	mov	r0,r4
-F7FF FF33     	bl	$00000058
-F000 FE3B     	bl	$00000E6C
+F7FF FF33     	bl	prvUnlockQueue
+F000 FE3B     	bl	xTaskResumeAll
 
 l000001F6:
 2501           	mov	r5,#1
 
 l000001F8:
-F008 F9BE     	bl	$00008578
+F008 F9BE     	bl	vPortEnterCritical
 6BA2           	ldr	r2,[r4,#&38]
 6BE3           	ldr	r3,[r4,#&3C]
 429A           	cmps	r2,r3
@@ -309,17 +309,17 @@ D1CB           	bne	$000001A8
 
 l00000210:
 A802           	add	r0,sp,#8
-F000 FF97     	bl	$00001144
+F000 FF97     	bl	vTaskSetTimeOutState
 E7C7           	b	$000001A8
 
 l00000218:
-F008 F9CA     	bl	$000085B0
+F008 F9CA     	bl	vPortExitCritical
 9901           	ldr	r1,[sp,#&4]
 F104 0010     	add	r0,r4,#&10
-F000 FEDB     	bl	$00000FDC
+F000 FEDB     	bl	vTaskPlaceOnEventList
 4620           	mov	r0,r4
-F7FF FF16     	bl	$00000058
-F000 FE1E     	bl	$00000E6C
+F7FF FF16     	bl	prvUnlockQueue
+F000 FE1E     	bl	xTaskResumeAll
 2800           	cmps	r0,#0
 D1E0           	bne	$000001F6
 
@@ -334,7 +334,7 @@ l00000246:
 463A           	mov	r2,r7
 4651           	mov	r1,r10
 4620           	mov	r0,r4
-F7FF FF4E     	bl	$000000EC
+F7FF FF4E     	bl	prvCopyDataToQueue
 6A63           	ldr	r3,[r4,#&24]
 B9EB           	cbnz	r3,$00000290
 
@@ -349,28 +349,28 @@ F3BF 8F4F     	dsb	sy
 F3BF 8F6F     	isb	sy
 
 l00000266:
-F008 F9A3     	bl	$000085B0
+F008 F9A3     	bl	vPortExitCritical
 2001           	mov	r0,#1
 B004           	add	sp,#&10
 E8BD 87F0     	pop.w	{r4-r10,pc}
 
 l00000272:
-F008 F99D     	bl	$000085B0
+F008 F99D     	bl	vPortExitCritical
 4630           	mov	r0,r6
 B004           	add	sp,#&10
 E8BD 87F0     	pop.w	{r4-r10,pc}
 
 l0000027E:
 4620           	mov	r0,r4
-F7FF FEEA     	bl	$00000058
-F000 FDF2     	bl	$00000E6C
+F7FF FEEA     	bl	prvUnlockQueue
+F000 FDF2     	bl	xTaskResumeAll
 2000           	mov	r0,#0
 B004           	add	sp,#&10
 E8BD 87F0     	pop.w	{r4-r10,pc}
 
 l00000290:
 F104 0024     	add	r0,r4,#&24
-F000 FEC2     	bl	$0000101C
+F000 FEC2     	bl	xTaskRemoveFromEventList
 2800           	cmps	r0,#0
 D1DC           	bne	$00000256
 
@@ -400,7 +400,7 @@ BD70           	pop	{r4-r6,pc}
 l000002C6:
 4604           	mov	r4,r0
 68C6           	ldr	r6,[r0,#&C]
-F7FF FF4F     	bl	$0000016C
+F7FF FF4F     	bl	prvCopyDataFromQueue
 60E6           	str	r6,[r4,#&C]
 2001           	mov	r0,#1
 F385 8811     	msr	cpsr,r5
@@ -423,22 +423,22 @@ F8DF 8138     	ldr	r8,[00000424]                            ; [pc,#&138]
 E00C           	b	$0000030A
 
 l000002F0:
-F008 F942     	bl	$00008578
+F008 F942     	bl	vPortEnterCritical
 6BA3           	ldr	r3,[r4,#&38]
 2B00           	cmps	r3,#0
 D037           	beq	$0000036A
 
 l000002FA:
-F008 F959     	bl	$000085B0
+F008 F959     	bl	vPortExitCritical
 4620           	mov	r0,r4
-F7FF FEAA     	bl	$00000058
-F000 FDB2     	bl	$00000E6C
+F7FF FEAA     	bl	prvUnlockQueue
+F000 FDB2     	bl	xTaskResumeAll
 
 l00000308:
 2501           	mov	r5,#1
 
 l0000030A:
-F008 F935     	bl	$00008578
+F008 F935     	bl	vPortEnterCritical
 6BA6           	ldr	r6,[r4,#&38]
 2E00           	cmps	r6,#0
 D14D           	bne	$000003B0
@@ -453,9 +453,9 @@ l0000031A:
 D03E           	beq	$0000039C
 
 l0000031E:
-F008 F947     	bl	$000085B0
-F000 FB73     	bl	$00000A0C
-F008 F927     	bl	$00008578
+F008 F947     	bl	vPortExitCritical
+F000 FB73     	bl	vTaskSuspendAll
+F008 F927     	bl	vPortEnterCritical
 F894 3044     	ldrb	r3,[r4,#&44]
 2BFF           	cmps	r3,#&FF
 BF08           	it	eq
@@ -468,37 +468,37 @@ BF08           	it	eq
 F884 7045     	strbeq	r7,[r4,#&45]
 
 l00000342:
-F008 F935     	bl	$000085B0
+F008 F935     	bl	vPortExitCritical
 A901           	add	r1,sp,#4
 A802           	add	r0,sp,#8
-F000 FF05     	bl	$00001158
+F000 FF05     	bl	xTaskCheckForTimeOut
 2800           	cmps	r0,#0
 D0CE           	beq	$000002F0
 
 l00000352:
 4620           	mov	r0,r4
-F7FF FE80     	bl	$00000058
-F000 FD88     	bl	$00000E6C
-F008 F90C     	bl	$00008578
+F7FF FE80     	bl	prvUnlockQueue
+F000 FD88     	bl	xTaskResumeAll
+F008 F90C     	bl	vPortEnterCritical
 6BA3           	ldr	r3,[r4,#&38]
 B1FB           	cbz	r3,$000003A4
 
 l00000364:
-F008 F924     	bl	$000085B0
+F008 F924     	bl	vPortExitCritical
 E7CE           	b	$00000308
 
 l0000036A:
-F008 F921     	bl	$000085B0
+F008 F921     	bl	vPortExitCritical
 6823           	ldr	r3,[r4]
 B393           	cbz	r3,$000003D8
 
 l00000372:
 9901           	ldr	r1,[sp,#&4]
 F104 0024     	add	r0,r4,#&24
-F000 FE30     	bl	$00000FDC
+F000 FE30     	bl	vTaskPlaceOnEventList
 4620           	mov	r0,r4
-F7FF FE6B     	bl	$00000058
-F000 FD73     	bl	$00000E6C
+F7FF FE6B     	bl	prvUnlockQueue
+F000 FD73     	bl	xTaskResumeAll
 2800           	cmps	r0,#0
 D1BE           	bne	$00000308
 
@@ -511,11 +511,11 @@ E7B5           	b	$00000308
 
 l0000039C:
 A802           	add	r0,sp,#8
-F000 FED1     	bl	$00001144
+F000 FED1     	bl	vTaskSetTimeOutState
 E7BC           	b	$0000031E
 
 l000003A4:
-F008 F904     	bl	$000085B0
+F008 F904     	bl	vPortExitCritical
 2000           	mov	r0,#0
 B004           	add	sp,#&10
 E8BD 87F0     	pop.w	{r4-r10,pc}
@@ -524,7 +524,7 @@ l000003B0:
 4651           	mov	r1,r10
 4620           	mov	r0,r4
 68E5           	ldr	r5,[r4,#&C]
-F7FF FED9     	bl	$0000016C
+F7FF FED9     	bl	prvCopyDataFromQueue
 F1B9 0F00     	cmp	r9,#0
 D113           	bne	$000003E8
 
@@ -539,16 +539,16 @@ l000003C8:
 BB03           	cbnz	r3,$0000040E
 
 l000003CC:
-F008 F8F0     	bl	$000085B0
+F008 F8F0     	bl	vPortExitCritical
 2001           	mov	r0,#1
 B004           	add	sp,#&10
 E8BD 87F0     	pop.w	{r4-r10,pc}
 
 l000003D8:
-F008 F8CE     	bl	$00008578
+F008 F8CE     	bl	vPortEnterCritical
 6860           	ldr	r0,[r4,#&4]
-F000 FEED     	bl	$000011BC
-F008 F8E5     	bl	$000085B0
+F000 FEED     	bl	vTaskPriorityInherit
+F008 F8E5     	bl	vPortExitCritical
 E7C4           	b	$00000372
 
 l000003E8:
@@ -559,7 +559,7 @@ D0ED           	beq	$000003CC
 
 l000003F0:
 F104 0024     	add	r0,r4,#&24
-F000 FE12     	bl	$0000101C
+F000 FE12     	bl	xTaskRemoveFromEventList
 2800           	cmps	r0,#0
 D0E7           	beq	$000003CC
 
@@ -573,7 +573,7 @@ E7DE           	b	$000003CC
 
 l0000040E:
 F104 0010     	add	r0,r4,#&10
-F000 FE03     	bl	$0000101C
+F000 FE03     	bl	xTaskRemoveFromEventList
 2800           	cmps	r0,#0
 D1F0           	bne	$000003FC
 
@@ -581,7 +581,7 @@ l0000041A:
 E7D7           	b	$000003CC
 
 l0000041C:
-F000 FF5A     	bl	$000012D4
+F000 FF5A     	bl	pvTaskIncrementMutexHeldCount
 6060           	str	r0,[r4,#&4]
 E7D1           	b	$000003C8
 00000424             04 ED 00 E0                             ....        
@@ -592,9 +592,9 @@ E7D1           	b	$000003C8
 uxQueueMessagesWaiting proc
 B510           	push	{r4,lr}
 4604           	mov	r4,r0
-F008 F8A4     	bl	$00008578
+F008 F8A4     	bl	vPortEnterCritical
 6BA4           	ldr	r4,[r4,#&38]
-F008 F8BD     	bl	$000085B0
+F008 F8BD     	bl	vPortExitCritical
 4620           	mov	r0,r4
 BD10           	pop	{r4,pc}
 0000043A                               00 BF                       ..    
@@ -605,11 +605,11 @@ BD10           	pop	{r4,pc}
 uxQueueSpacesAvailable proc
 B538           	push	{r3-r5,lr}
 4605           	mov	r5,r0
-F008 F89A     	bl	$00008578
+F008 F89A     	bl	vPortEnterCritical
 6BA8           	ldr	r0,[r5,#&38]
 6BEC           	ldr	r4,[r5,#&3C]
 1A24           	sub	r4,r4,r0
-F008 F8B1     	bl	$000085B0
+F008 F8B1     	bl	vPortExitCritical
 4620           	mov	r0,r4
 BD38           	pop	{r3-r5,pc}
 00000452       00 BF                                       ..            
@@ -618,7 +618,7 @@ BD38           	pop	{r3-r5,pc}
 ;;   Called from:
 ;;     00008C80 (in MPU_vQueueDelete)
 vQueueDelete proc
-F001 B994     	b	$00001780
+F001 B994     	b	vPortFree
 
 ;; xQueueGenericSendFromISR: 00000458
 ;;   Called from:
@@ -652,7 +652,7 @@ F890 4045     	ldrb	r4,[r0,#&45]
 B264           	sxtb	r4,r4
 461A           	mov	r2,r3
 4605           	mov	r5,r0
-F7FF FE2D     	bl	$000000EC
+F7FF FE2D     	bl	prvCopyDataToQueue
 1C63           	add	r3,r4,#1
 D007           	beq	$000004A6
 
@@ -673,7 +673,7 @@ D0F8           	beq	$0000049E
 
 l000004AC:
 F105 0024     	add	r0,r5,#&24
-F000 FDB4     	bl	$0000101C
+F000 FDB4     	bl	xTaskRemoveFromEventList
 2800           	cmps	r0,#0
 D0F2           	beq	$0000049E
 
@@ -733,7 +733,7 @@ D0F4           	beq	$000004F8
 l0000050E:
 3024           	adds	r0,#&24
 460D           	mov	r5,r1
-F000 FD83     	bl	$0000101C
+F000 FD83     	bl	xTaskRemoveFromEventList
 2800           	cmps	r0,#0
 D0EE           	beq	$000004F8
 
@@ -769,7 +769,7 @@ l0000054A:
 F890 5044     	ldrb	r5,[r0,#&44]
 4690           	mov	r8,r2
 B26D           	sxtb	r5,r5
-F7FF FE0A     	bl	$0000016C
+F7FF FE0A     	bl	prvCopyDataFromQueue
 3C01           	subs	r4,#1
 1C6B           	add	r3,r5,#1
 63BC           	str	r4,[r7,#&38]
@@ -792,7 +792,7 @@ D0F7           	beq	$00000568
 
 l00000578:
 F107 0010     	add	r0,r7,#&10
-F000 FD4E     	bl	$0000101C
+F000 FD4E     	bl	xTaskRemoveFromEventList
 2800           	cmps	r0,#0
 D0F1           	beq	$00000568
 
@@ -835,19 +835,19 @@ uxQueueMessagesWaitingFromISR proc
 xQueueGetMutexHolder proc
 B510           	push	{r4,lr}
 4604           	mov	r4,r0
-F007 FFDE     	bl	$00008578
+F007 FFDE     	bl	vPortEnterCritical
 6823           	ldr	r3,[r4]
 B923           	cbnz	r3,$000005CA
 
 l000005C0:
 6864           	ldr	r4,[r4,#&4]
-F007 FFF5     	bl	$000085B0
+F007 FFF5     	bl	vPortExitCritical
 4620           	mov	r0,r4
 BD10           	pop	{r4,pc}
 
 l000005CA:
 2400           	mov	r4,#0
-F007 FFF0     	bl	$000085B0
+F007 FFF0     	bl	vPortExitCritical
 4620           	mov	r0,r4
 BD10           	pop	{r4,pc}
 
@@ -859,7 +859,7 @@ B570           	push	{r4-r6,lr}
 6845           	ldr	r5,[r0,#&4]
 4604           	mov	r4,r0
 460E           	mov	r6,r1
-F000 FDAC     	bl	$00001138
+F000 FDAC     	bl	xTaskGetCurrentTaskHandle
 4285           	cmps	r5,r0
 D00A           	beq	$000005FA
 
@@ -868,7 +868,7 @@ l000005E4:
 4632           	mov	r2,r6
 4619           	mov	r1,r3
 4620           	mov	r0,r4
-F7FF FE74     	bl	$000002D8
+F7FF FE74     	bl	xQueueGenericReceive
 B110           	cbz	r0,$000005F8
 
 l000005F2:
@@ -893,7 +893,7 @@ xQueueGiveMutexRecursive proc
 B538           	push	{r3-r5,lr}
 6845           	ldr	r5,[r0,#&4]
 4604           	mov	r4,r0
-F000 FD95     	bl	$00001138
+F000 FD95     	bl	xTaskGetCurrentTaskHandle
 4285           	cmps	r5,r0
 D001           	beq	$00000616
 
@@ -915,7 +915,7 @@ l00000622:
 4620           	mov	r0,r4
 461A           	mov	r2,r3
 4619           	mov	r1,r3
-F7FF FDB2     	bl	$00000190
+F7FF FDB2     	bl	xQueueGenericSend
 2001           	mov	r0,#1
 BD38           	pop	{r3-r5,pc}
 
@@ -928,7 +928,7 @@ B570           	push	{r4-r6,lr}
 4604           	mov	r4,r0
 460E           	mov	r6,r1
 25FF           	mov	r5,#&FF
-F007 FF9E     	bl	$00008578
+F007 FF9E     	bl	vPortEnterCritical
 2100           	mov	r1,#0
 6C23           	ldr	r3,[r4,#&40]
 6BE2           	ldr	r2,[r4,#&3C]
@@ -950,13 +950,13 @@ l00000660:
 B91B           	cbnz	r3,$0000066C
 
 l00000664:
-F007 FFA4     	bl	$000085B0
+F007 FFA4     	bl	vPortExitCritical
 2001           	mov	r0,#1
 BD70           	pop	{r4-r6,pc}
 
 l0000066C:
 F104 0010     	add	r0,r4,#&10
-F000 FCD4     	bl	$0000101C
+F000 FCD4     	bl	xTaskRemoveFromEventList
 2800           	cmps	r0,#0
 D0F5           	beq	$00000664
 
@@ -966,16 +966,16 @@ F04F 5280     	mov	r2,#&10000000
 601A           	str	r2,[r3]
 F3BF 8F4F     	dsb	sy
 F3BF 8F6F     	isb	sy
-F007 FF92     	bl	$000085B0
+F007 FF92     	bl	vPortExitCritical
 2001           	mov	r0,#1
 BD70           	pop	{r4-r6,pc}
 
 l00000690:
 F104 0010     	add	r0,r4,#&10
-F007 FE1C     	bl	$000082D0
+F007 FE1C     	bl	vListInitialise
 F104 0024     	add	r0,r4,#&24
-F007 FE18     	bl	$000082D0
-F007 FF86     	bl	$000085B0
+F007 FE18     	bl	vListInitialise
+F007 FF86     	bl	vPortExitCritical
 2001           	mov	r0,#1
 BD70           	pop	{r4-r6,pc}
 000006A8                         04 ED 00 E0                     ....    
@@ -990,7 +990,7 @@ B570           	push	{r4-r6,lr}
 FB00 F001     	mul	r0,r0,r1
 3048           	adds	r0,#&48
 460D           	mov	r5,r1
-F001 F838     	bl	$0000172C
+F001 F838     	bl	pvPortMalloc
 4604           	mov	r4,r0
 B148           	cbz	r0,$000006D4
 
@@ -1006,7 +1006,7 @@ l000006C8:
 6425           	str	r5,[r4,#&40]
 2101           	mov	r1,#1
 4620           	mov	r0,r4
-F7FF FFAE     	bl	$00000630
+F7FF FFAE     	bl	xQueueGenericReset
 
 l000006D4:
 4620           	mov	r0,r4
@@ -1024,7 +1024,7 @@ B510           	push	{r4,lr}
 4602           	mov	r2,r0
 2100           	mov	r1,#0
 2001           	mov	r0,#1
-F7FF FFE2     	bl	$000006AC
+F7FF FFE2     	bl	xQueueGenericCreate
 4604           	mov	r4,r0
 B138           	cbz	r0,$000006FC
 
@@ -1035,7 +1035,7 @@ l000006EC:
 60C3           	str	r3,[r0,#&C]
 461A           	mov	r2,r3
 4619           	mov	r1,r3
-F7FF FD4A     	bl	$00000190
+F7FF FD4A     	bl	xQueueGenericSend
 
 l000006FC:
 4620           	mov	r0,r4
@@ -1086,9 +1086,9 @@ l00000744:
 F104 0024     	add	r0,r4,#&24
 F884 6056     	strb	r6,[r4,#&56]
 65E6           	str	r6,[r4,#&5C]
-F007 FDC7     	bl	$000082E8
+F007 FDC7     	bl	vListInitialiseItem
 F104 0038     	add	r0,r4,#&38
-F007 FDC3     	bl	$000082E8
+F007 FDC3     	bl	vListInitialiseItem
 F1C7 0302     	rsb	r3,r7,#2
 63A3           	str	r3,[r4,#&38]
 6D22           	ldr	r2,[r4,#&50]
@@ -1097,14 +1097,14 @@ F1C7 0302     	rsb	r3,r7,#2
 1D20           	add	r0,r4,#4
 6324           	str	r4,[r4,#&30]
 6464           	str	r4,[r4,#&44]
-F000 FEEE     	bl	$00001554
+F000 FEEE     	bl	vPortStoreTaskMPUSettings
 6626           	str	r6,[r4,#&60]
 4653           	mov	r3,r10
 F884 6064     	strb	r6,[r4,#&64]
 464A           	mov	r2,r9
 4641           	mov	r1,r8
 4628           	mov	r0,r5
-F000 FDF9     	bl	$0000137C
+F000 FDF9     	bl	pxPortInitialiseStack
 9B0B           	ldr	r3,[sp,#&2C]
 6020           	str	r0,[r4]
 B103           	cbz	r3,$00000792
@@ -1124,7 +1124,7 @@ prvAddNewTaskToReadyList proc
 E92D 41F0     	push.w	{r4-r8,lr}
 4C2D           	ldr	r4,[00000854]                           ; [pc,#&B4]
 4605           	mov	r5,r0
-F007 FEEA     	bl	$00008578
+F007 FEEA     	bl	vPortEnterCritical
 6823           	ldr	r3,[r4]
 3301           	adds	r3,#1
 6023           	str	r3,[r4]
@@ -1152,8 +1152,8 @@ EB06 0080     	add.w	r0,r6,r0,lsl #2
 F105 0124     	add	r1,r5,#&24
 67E3           	str	r3,[r4,#&7C]
 67A2           	str	r2,[r4,#&78]
-F007 FD8B     	bl	$000082F0
-F007 FEE9     	bl	$000085B0
+F007 FD8B     	bl	vListInsertEnd
+F007 FEE9     	bl	vPortExitCritical
 6F63           	ldr	r3,[r4,#&74]
 B163           	cbz	r3,$000007FC
 
@@ -1195,17 +1195,17 @@ D1CC           	bne	$000007B4
 l0000081A:
 F104 0608     	add	r6,r4,#8
 4630           	mov	r0,r6
-F007 FD56     	bl	$000082D0
+F007 FD56     	bl	vListInitialise
 F104 0830     	add	r8,r4,#&30
 F104 001C     	add	r0,r4,#&1C
-F007 FD50     	bl	$000082D0
+F007 FD50     	bl	vListInitialise
 F104 0744     	add	r7,r4,#&44
 4640           	mov	r0,r8
-F007 FD4B     	bl	$000082D0
+F007 FD4B     	bl	vListInitialise
 4638           	mov	r0,r7
-F007 FD48     	bl	$000082D0
+F007 FD48     	bl	vListInitialise
 F104 0058     	add	r0,r4,#&58
-F007 FD44     	bl	$000082D0
+F007 FD44     	bl	vListInitialise
 F8C4 806C     	str	r8,[r4,#&6C]
 6CE8           	ldr	r0,[r5,#&4C]
 6727           	str	r7,[r4,#&70]
@@ -1227,7 +1227,7 @@ B570           	push	{r4-r6,lr}
 F8D4 6080     	ldr	r6,[r4,#&80]
 6860           	ldr	r0,[r4,#&4]
 3024           	adds	r0,#&24
-F007 FD69     	bl	$00008340
+F007 FD69     	bl	uxListRemove
 B938           	cbnz	r0,$00000880
 
 l00000870:
@@ -1250,7 +1250,7 @@ l0000088A:
 6EE0           	ldr	r0,[r4,#&6C]
 6861           	ldr	r1,[r4,#&4]
 3124           	adds	r1,#&24
-F007 FD3C     	bl	$0000830C
+F007 FD3C     	bl	vListInsert
 F8D4 3084     	ldr	r3,[r4,#&84]
 429D           	cmps	r5,r3
 BF38           	it	lo
@@ -1264,7 +1264,7 @@ l000008A2:
 6861           	ldr	r1,[r4,#&4]
 E8BD 4070     	pop.w	{r4-r6,lr}
 3124           	adds	r1,#&24
-F007 BD2E     	b	$0000830C
+F007 BD2E     	b	vListInsert
 000008B0 C4 00 00 20                                     ...             
 
 ;; xTaskCreate: 000008B4
@@ -1279,13 +1279,13 @@ B084           	sub	sp,#&10
 4616           	mov	r6,r2
 4689           	mov	r9,r1
 469A           	mov	r10,r3
-F000 FF32     	bl	$0000172C
+F000 FF32     	bl	pvPortMalloc
 B1E0           	cbz	r0,$00000904
 
 l000008CA:
 4605           	mov	r5,r0
 2068           	mov	r0,#&68
-F000 FF2D     	bl	$0000172C
+F000 FF2D     	bl	pvPortMalloc
 4604           	mov	r4,r0
 B1D8           	cbz	r0,$0000090E
 
@@ -1303,9 +1303,9 @@ F884 7065     	strb	r7,[r4,#&65]
 9703           	str	r7,[sp,#&C]
 9402           	str	r4,[sp,#&8]
 9500           	str	r5,[sp]
-F7FF FF05     	bl	$00000700
+F7FF FF05     	bl	prvInitialiseNewTask
 4620           	mov	r0,r4
-F7FF FF4E     	bl	$00000798
+F7FF FF4E     	bl	prvAddNewTaskToReadyList
 2001           	mov	r0,#1
 
 l000008FE:
@@ -1319,7 +1319,7 @@ E8BD 87F0     	pop.w	{r4-r10,pc}
 
 l0000090E:
 4628           	mov	r0,r5
-F000 FF36     	bl	$00001780
+F000 FF36     	bl	vPortFree
 F04F 30FF     	mov	r0,#&FFFFFFFF
 E7F1           	b	$000008FE
 0000091A                               00 BF                       ..    
@@ -1337,7 +1337,7 @@ B5F0           	push	{r4-r7,lr}
 B085           	sub	sp,#&14
 2068           	mov	r0,#&68
 460F           	mov	r7,r1
-F000 FEFF     	bl	$0000172C
+F000 FEFF     	bl	pvPortMalloc
 4605           	mov	r5,r0
 B1C0           	cbz	r0,$00000964
 
@@ -1355,9 +1355,9 @@ F8D4 E010     	ldr	lr,[r4,#&10]
 F854 0B18     	ldr	r0,[r4],#&18
 F8CD E000     	str	lr,[sp]
 9403           	str	r4,[sp,#&C]
-F7FF FED4     	bl	$00000700
+F7FF FED4     	bl	prvInitialiseNewTask
 4628           	mov	r0,r5
-F7FF FF1D     	bl	$00000798
+F7FF FF1D     	bl	prvAddNewTaskToReadyList
 4630           	mov	r0,r6
 
 l00000960:
@@ -1382,7 +1382,7 @@ l00000972:
 2300           	mov	r3,#0
 3004           	adds	r0,#4
 461A           	mov	r2,r3
-F000 BDEC     	b	$00001554
+F000 BDEC     	b	vPortStoreTaskMPUSettings
 
 l0000097C:
 4B03           	ldr	r3,[0000098C]                           ; [pc,#&C]
@@ -1390,7 +1390,7 @@ l0000097C:
 2300           	mov	r3,#0
 3004           	adds	r0,#4
 461A           	mov	r2,r3
-F000 BDE5     	b	$00001554
+F000 BDE5     	b	vPortStoreTaskMPUSettings
 0000098A                               00 BF C4 00 00 20           ..... 
 
 ;; vTaskStartScheduler: 00000990
@@ -1408,7 +1408,7 @@ F104 0388     	add	r3,r4,#&88
 2300           	mov	r3,#0
 490F           	ldr	r1,[000009E4]                           ; [pc,#&3C]
 480F           	ldr	r0,[000009E8]                           ; [pc,#&3C]
-F7FF FF83     	bl	$000008B4
+F7FF FF83     	bl	xTaskCreate
 2801           	cmps	r0,#1
 D001           	beq	$000009B6
 
@@ -1428,7 +1428,7 @@ F8C4 2084     	str	r2,[r4,#&84]
 F8C4 3080     	str	r3,[r4,#&80]
 B002           	add	sp,#8
 E8BD 4010     	pop.w	{r4,lr}
-F000 BCE8     	b	$000013B0
+F000 BCE8     	b	xPortStartScheduler
 000009E0 C4 00 00 20 7C A2 00 00 2D 85 00 00             ... |...-...    
 
 ;; vTaskEndScheduler: 000009EC
@@ -1440,7 +1440,7 @@ F3BF 8F4F     	dsb	sy
 2200           	mov	r2,#0
 4B02           	ldr	r3,[00000A08]                           ; [pc,#&8]
 675A           	str	r2,[r3,#&74]
-F000 BDA5     	b	$00001550
+F000 BDA5     	b	vPortEndScheduler
 00000A06                   00 BF C4 00 00 20                   .....     
 
 ;; vTaskSuspendAll: 00000A0C
@@ -1513,7 +1513,7 @@ B5F8           	push	{r3-r7,lr}
 4606           	mov	r6,r0
 460F           	mov	r7,r1
 4615           	mov	r5,r2
-F007 FD89     	bl	$00008578
+F007 FD89     	bl	vPortEnterCritical
 B10C           	cbz	r4,$00000A6C
 
 l00000A68:
@@ -1551,7 +1551,7 @@ l00000A90:
 2401           	mov	r4,#1
 
 l00000A92:
-F007 FD8D     	bl	$000085B0
+F007 FD8D     	bl	vPortExitCritical
 4620           	mov	r0,r4
 BDF8           	pop	{r3-r7,pc}
 
@@ -1566,7 +1566,7 @@ l00000AA6:
 F106 0724     	add	r7,r6,#&24
 4D16           	ldr	r5,[00000B04]                           ; [pc,#&58]
 4638           	mov	r0,r7
-F007 FC47     	bl	$00008340
+F007 FC47     	bl	uxListRemove
 6CF0           	ldr	r0,[r6,#&4C]
 F8D5 E07C     	ldr	lr,[r5,#&7C]
 F105 0208     	add	r2,r5,#8
@@ -1576,7 +1576,7 @@ EA43 030E     	orr	r3,r3,lr
 EB02 0080     	add.w	r0,r2,r0,lsl #2
 4639           	mov	r1,r7
 67EB           	str	r3,[r5,#&7C]
-F007 FC0E     	bl	$000082F0
+F007 FC0E     	bl	vListInsertEnd
 686B           	ldr	r3,[r5,#&4]
 6CF2           	ldr	r2,[r6,#&4C]
 6CDB           	ldr	r3,[r3,#&4C]
@@ -1589,7 +1589,7 @@ F04F 5280     	mov	r2,#&10000000
 601A           	str	r2,[r3]
 F3BF 8F4F     	dsb	sy
 F3BF 8F6F     	isb	sy
-F007 FD5F     	bl	$000085B0
+F007 FD5F     	bl	vPortExitCritical
 4620           	mov	r0,r4
 BDF8           	pop	{r3-r7,pc}
 
@@ -1668,7 +1668,7 @@ B1B3           	cbz	r3,$00000B9C
 l00000B6E:
 F100 0138     	add	r1,r0,#&38
 F106 0058     	add	r0,r6,#&58
-F007 FBBB     	bl	$000082F0
+F007 FBBB     	bl	vListInsertEnd
 
 l00000B7A:
 6873           	ldr	r3,[r6,#&4]
@@ -1696,7 +1696,7 @@ E7D6           	b	$00000B4A
 l00000B9C:
 F100 0824     	add	r8,r0,#&24
 4640           	mov	r0,r8
-F007 FBCD     	bl	$00008340
+F007 FBCD     	bl	uxListRemove
 6CF8           	ldr	r0,[r7,#&4C]
 6FF2           	ldr	r2,[r6,#&7C]
 4084           	lsls	r4,r0
@@ -1706,7 +1706,7 @@ EB00 0080     	add.w	r0,r0,r0,lsl #2
 4641           	mov	r1,r8
 EB03 0080     	add.w	r0,r3,r0,lsl #2
 67F4           	str	r4,[r6,#&7C]
-F007 FB97     	bl	$000082F0
+F007 FB97     	bl	vListInsertEnd
 E7DA           	b	$00000B7A
 
 l00000BC4:
@@ -1729,7 +1729,7 @@ E92D 41F0     	push.w	{r4-r8,lr}
 4680           	mov	r8,r0
 460E           	mov	r6,r1
 461F           	mov	r7,r3
-F007 FCC9     	bl	$00008578
+F007 FCC9     	bl	vPortEnterCritical
 6862           	ldr	r2,[r4,#&4]
 F892 2064     	ldrb	r2,[r2,#&64]
 2A02           	cmps	r2,#2
@@ -1746,8 +1746,8 @@ F883 0064     	strb	r0,[r3,#&64]
 B9DF           	cbnz	r7,$00000C3C
 
 l00000C04:
-F007 FCD4     	bl	$000085B0
-F007 FCB6     	bl	$00008578
+F007 FCD4     	bl	vPortExitCritical
+F007 FCB6     	bl	vPortEnterCritical
 B115           	cbz	r5,$00000C14
 
 l00000C0E:
@@ -1772,13 +1772,13 @@ l00000C2A:
 2200           	mov	r2,#0
 6863           	ldr	r3,[r4,#&4]
 F883 2064     	strb	r2,[r3,#&64]
-F007 FCBD     	bl	$000085B0
+F007 FCBD     	bl	vPortExitCritical
 4628           	mov	r0,r5
 E8BD 81F0     	pop.w	{r4-r8,pc}
 
 l00000C3C:
 4638           	mov	r0,r7
-F7FF FE0D     	bl	$0000085C
+F7FF FE0D     	bl	prvAddCurrentTaskToDelayedList.isra.0
 F04F 5280     	mov	r2,#&10000000
 4B05           	ldr	r3,[00000C5C]                           ; [pc,#&14]
 601A           	str	r2,[r3]
@@ -1823,7 +1823,7 @@ B1A3           	cbz	r3,$00000CCC
 l00000CA2:
 F100 0138     	add	r1,r0,#&38
 F107 0058     	add	r0,r7,#&58
-F007 FB21     	bl	$000082F0
+F007 FB21     	bl	vListInsertEnd
 
 l00000CAE:
 687B           	ldr	r3,[r7,#&4]
@@ -1845,7 +1845,7 @@ E8BD 83F8     	pop.w	{r3-r9,pc}
 l00000CCC:
 F100 0924     	add	r9,r0,#&24
 4648           	mov	r0,r9
-F007 FB35     	bl	$00008340
+F007 FB35     	bl	uxListRemove
 6CE0           	ldr	r0,[r4,#&4C]
 6FFA           	ldr	r2,[r7,#&7C]
 4085           	lsls	r5,r0
@@ -1855,7 +1855,7 @@ EB00 0080     	add.w	r0,r0,r0,lsl #2
 4649           	mov	r1,r9
 EB03 0080     	add.w	r0,r3,r0,lsl #2
 67FD           	str	r5,[r7,#&7C]
-F007 FAFF     	bl	$000082F0
+F007 FAFF     	bl	vListInsertEnd
 E7DC           	b	$00000CAE
 
 l00000CF4:
@@ -1871,7 +1871,7 @@ B570           	push	{r4-r6,lr}
 4C18           	ldr	r4,[00000D64]                           ; [pc,#&60]
 4606           	mov	r6,r0
 460D           	mov	r5,r1
-F007 FC36     	bl	$00008578
+F007 FC36     	bl	vPortEnterCritical
 6863           	ldr	r3,[r4,#&4]
 6E1B           	ldr	r3,[r3,#&60]
 B923           	cbnz	r3,$00000D1C
@@ -1883,8 +1883,8 @@ F883 2064     	strb	r2,[r3,#&64]
 B9B5           	cbnz	r5,$00000D4A
 
 l00000D1C:
-F007 FC48     	bl	$000085B0
-F007 FC2A     	bl	$00008578
+F007 FC48     	bl	vPortExitCritical
+F007 FC2A     	bl	vPortEnterCritical
 6863           	ldr	r3,[r4,#&4]
 6E1D           	ldr	r5,[r3,#&60]
 B11D           	cbz	r5,$00000D32
@@ -1901,7 +1901,7 @@ l00000D32:
 2200           	mov	r2,#0
 6863           	ldr	r3,[r4,#&4]
 F883 2064     	strb	r2,[r3,#&64]
-F007 FC39     	bl	$000085B0
+F007 FC39     	bl	vPortExitCritical
 4628           	mov	r0,r5
 BD70           	pop	{r4-r6,pc}
 
@@ -1913,7 +1913,7 @@ E7F3           	b	$00000D32
 
 l00000D4A:
 4628           	mov	r0,r5
-F7FF FD86     	bl	$0000085C
+F7FF FD86     	bl	prvAddCurrentTaskToDelayedList.isra.0
 F04F 5280     	mov	r2,#&10000000
 4B04           	ldr	r3,[00000D68]                           ; [pc,#&10]
 601A           	str	r2,[r3]
@@ -1978,13 +1978,13 @@ D348           	blo	$00000E5E
 
 l00000DCC:
 4650           	mov	r0,r10
-F007 FAB7     	bl	$00008340
+F007 FAB7     	bl	uxListRemove
 6CAB           	ldr	r3,[r5,#&48]
 F105 0038     	add	r0,r5,#&38
 B10B           	cbz	r3,$00000DDE
 
 l00000DDA:
-F007 FAB1     	bl	$00008340
+F007 FAB1     	bl	uxListRemove
 
 l00000DDE:
 6CE8           	ldr	r0,[r5,#&4C]
@@ -1995,7 +1995,7 @@ EB00 0080     	add.w	r0,r0,r0,lsl #2
 4651           	mov	r1,r10
 EB08 0080     	add.w	r0,r8,r0,lsl #2
 67E3           	str	r3,[r4,#&7C]
-F007 FA7C     	bl	$000082F0
+F007 FA7C     	bl	vListInsertEnd
 6863           	ldr	r3,[r4,#&4]
 6CEA           	ldr	r2,[r5,#&4C]
 6CDB           	ldr	r3,[r3,#&4C]
@@ -2082,7 +2082,7 @@ E7D7           	b	$00000E14
 xTaskResumeAll proc
 E92D 41F0     	push.w	{r4-r8,lr}
 4C33           	ldr	r4,[00000F40]                           ; [pc,#&CC]
-F007 FB81     	bl	$00008578
+F007 FB81     	bl	vPortEnterCritical
 F8D4 308C     	ldr	r3,[r4,#&8C]
 3B01           	subs	r3,#1
 F8C4 308C     	str	r3,[r4,#&8C]
@@ -2105,9 +2105,9 @@ l00000E96:
 68DD           	ldr	r5,[r3,#&C]
 F105 0824     	add	r8,r5,#&24
 F105 0038     	add	r0,r5,#&38
-F007 FA4D     	bl	$00008340
+F007 FA4D     	bl	uxListRemove
 4640           	mov	r0,r8
-F007 FA4A     	bl	$00008340
+F007 FA4A     	bl	uxListRemove
 6CE8           	ldr	r0,[r5,#&4C]
 6FE2           	ldr	r2,[r4,#&7C]
 FA06 F300     	lsl	r3,r6,r0
@@ -2116,7 +2116,7 @@ EB00 0080     	add.w	r0,r0,r0,lsl #2
 4641           	mov	r1,r8
 EB07 0080     	add.w	r0,r7,r0,lsl #2
 67E3           	str	r3,[r4,#&7C]
-F007 FA15     	bl	$000082F0
+F007 FA15     	bl	vListInsertEnd
 6863           	ldr	r3,[r4,#&4]
 6CEA           	ldr	r2,[r5,#&4C]
 6CDB           	ldr	r3,[r3,#&4C]
@@ -2149,7 +2149,7 @@ l00000EF0:
 2601           	mov	r6,#1
 
 l00000EF2:
-F7FF FF3B     	bl	$00000D6C
+F7FF FF3B     	bl	xTaskIncrementTick
 B108           	cbz	r0,$00000EFC
 
 l00000EF8:
@@ -2173,13 +2173,13 @@ F04F 5280     	mov	r2,#&10000000
 F3BF 8F4F     	dsb	sy
 F3BF 8F6F     	isb	sy
 2401           	mov	r4,#1
-F007 FB48     	bl	$000085B0
+F007 FB48     	bl	vPortExitCritical
 4620           	mov	r0,r4
 E8BD 81F0     	pop.w	{r4-r8,pc}
 
 l00000F26:
 2400           	mov	r4,#0
-F007 FB42     	bl	$000085B0
+F007 FB42     	bl	vPortExitCritical
 4620           	mov	r0,r4
 E8BD 81F0     	pop.w	{r4-r8,pc}
 
@@ -2212,8 +2212,8 @@ l00000F5E:
 F8D2 308C     	ldr	r3,[r2,#&8C]
 3301           	adds	r3,#1
 F8C2 308C     	str	r3,[r2,#&8C]
-F7FF FC77     	bl	$0000085C
-F7FF FF7D     	bl	$00000E6C
+F7FF FC77     	bl	prvAddCurrentTaskToDelayedList.isra.0
+F7FF FF7D     	bl	xTaskResumeAll
 2800           	cmps	r0,#0
 D0EA           	beq	$00000F4C
 
@@ -2242,7 +2242,7 @@ D80E           	bhi	$00000FBC
 
 l00000F9E:
 6001           	str	r1,[r0]
-F7FF FF64     	bl	$00000E6C
+F7FF FF64     	bl	xTaskResumeAll
 B9A0           	cbnz	r0,$00000FD0
 
 l00000FA6:
@@ -2264,8 +2264,8 @@ D2EE           	bhs	$00000F9E
 l00000FC0:
 6001           	str	r1,[r0]
 1A88           	sub	r0,r1,r2
-F7FF FC4A     	bl	$0000085C
-F7FF FF50     	bl	$00000E6C
+F7FF FC4A     	bl	prvAddCurrentTaskToDelayedList.isra.0
+F7FF FF50     	bl	xTaskResumeAll
 2800           	cmps	r0,#0
 D0EA           	beq	$00000FA6
 
@@ -2283,10 +2283,10 @@ B510           	push	{r4,lr}
 4B04           	ldr	r3,[00000FF4]                           ; [pc,#&10]
 6859           	ldr	r1,[r3,#&4]
 3138           	adds	r1,#&38
-F007 F991     	bl	$0000830C
+F007 F991     	bl	vListInsert
 4620           	mov	r0,r4
 E8BD 4010     	pop.w	{r4,lr}
-E434           	b	$0000085C
+E434           	b	prvAddCurrentTaskToDelayedList.isra.0
 00000FF2       00 BF C4 00 00 20                           .....         
 
 ;; vTaskPlaceOnUnorderedEventList: 00000FF8
@@ -2302,10 +2302,10 @@ F041 4100     	orr	r1,r1,#&80000000
 685B           	ldr	r3,[r3,#&4]
 63A9           	str	r1,[r5,#&38]
 F103 0138     	add	r1,r3,#&38
-F007 F970     	bl	$000082F0
+F007 F970     	bl	vListInsertEnd
 4620           	mov	r0,r4
 E8BD 4038     	pop.w	{r3-r5,lr}
-E421           	b	$0000085C
+E421           	b	prvAddCurrentTaskToDelayedList.isra.0
 00001018                         C4 00 00 20                     ...     
 
 ;; xTaskRemoveFromEventList: 0000101C
@@ -2326,14 +2326,14 @@ B5F8           	push	{r3-r7,lr}
 68DD           	ldr	r5,[r3,#&C]
 F105 0638     	add	r6,r5,#&38
 4630           	mov	r0,r6
-F007 F989     	bl	$00008340
+F007 F989     	bl	uxListRemove
 F8D4 308C     	ldr	r3,[r4,#&8C]
 B9EB           	cbnz	r3,$00001070
 
 l00001034:
 F105 0624     	add	r6,r5,#&24
 4630           	mov	r0,r6
-F007 F981     	bl	$00008340
+F007 F981     	bl	uxListRemove
 2301           	mov	r3,#1
 6CE8           	ldr	r0,[r5,#&4C]
 6FE7           	ldr	r7,[r4,#&7C]
@@ -2344,7 +2344,7 @@ EB00 0080     	add.w	r0,r0,r0,lsl #2
 4631           	mov	r1,r6
 EB02 0080     	add.w	r0,r2,r0,lsl #2
 67E3           	str	r3,[r4,#&7C]
-F007 F94A     	bl	$000082F0
+F007 F94A     	bl	vListInsertEnd
 
 l0000105C:
 6863           	ldr	r3,[r4,#&4]
@@ -2362,7 +2362,7 @@ BDF8           	pop	{r3-r7,pc}
 l00001070:
 4631           	mov	r1,r6
 F104 0058     	add	r0,r4,#&58
-F007 F93B     	bl	$000082F0
+F007 F93B     	bl	vListInsertEnd
 E7EF           	b	$0000105C
 0000107C                                     C4 00 00 20             ... 
 
@@ -2377,10 +2377,10 @@ B5F8           	push	{r3-r7,lr}
 F041 4100     	orr	r1,r1,#&80000000
 6001           	str	r1,[r0]
 F106 0724     	add	r7,r6,#&24
-F007 F956     	bl	$00008340
+F007 F956     	bl	uxListRemove
 4C0F           	ldr	r4,[000010D4]                           ; [pc,#&3C]
 4638           	mov	r0,r7
-F007 F952     	bl	$00008340
+F007 F952     	bl	uxListRemove
 6CF3           	ldr	r3,[r6,#&4C]
 F8D4 E07C     	ldr	lr,[r4,#&7C]
 FA05 F203     	lsl	r2,r5,r3
@@ -2390,7 +2390,7 @@ EB00 0083     	add.w	r0,r0,r3,lsl #2
 EA42 020E     	orr	r2,r2,lr
 4639           	mov	r1,r7
 67E2           	str	r2,[r4,#&7C]
-F007 F919     	bl	$000082F0
+F007 F919     	bl	vListInsertEnd
 6863           	ldr	r3,[r4,#&4]
 6CF2           	ldr	r2,[r6,#&4C]
 6CDB           	ldr	r3,[r3,#&4C]
@@ -2494,7 +2494,7 @@ xTaskCheckForTimeOut proc
 B570           	push	{r4-r6,lr}
 4604           	mov	r4,r0
 460E           	mov	r6,r1
-F007 FA0B     	bl	$00008578
+F007 FA0B     	bl	vPortEnterCritical
 4B11           	ldr	r3,[000011A8]                           ; [pc,#&44]
 6821           	ldr	r1,[r4]
 F8D3 5080     	ldr	r5,[r3,#&80]
@@ -2521,13 +2521,13 @@ F8D3 3080     	ldr	r3,[r3,#&80]
 4402           	adds	r2,r0
 6032           	str	r2,[r6]
 E884 000A     	stm	r4,{r1,r3}
-F007 FA0C     	bl	$000085B0
+F007 FA0C     	bl	vPortExitCritical
 4628           	mov	r0,r5
 BD70           	pop	{r4-r6,pc}
 
 l0000119C:
 2501           	mov	r5,#1
-F007 FA07     	bl	$000085B0
+F007 FA07     	bl	vPortExitCritical
 4628           	mov	r0,r5
 BD70           	pop	{r4-r6,pc}
 000011A6                   00 BF C4 00 00 20                   .....     
@@ -2590,7 +2590,7 @@ l000011F6:
 F100 0724     	add	r7,r0,#&24
 4606           	mov	r6,r0
 4638           	mov	r0,r7
-F007 F89F     	bl	$00008340
+F007 F89F     	bl	uxListRemove
 B968           	cbnz	r0,$00001220
 
 l00001204:
@@ -2620,7 +2620,7 @@ EB02 0082     	add.w	r0,r2,r2,lsl #2
 EB05 0080     	add.w	r0,r5,r0,lsl #2
 67E3           	str	r3,[r4,#&7C]
 E8BD 40F8     	pop.w	{r3-r7,lr}
-F007 B855     	b	$000082F0
+F007 B855     	b	vListInsertEnd
 
 l00001246:
 4770           	bx	lr
@@ -2654,7 +2654,7 @@ l0000126A:
 F100 0724     	add	r7,r0,#&24
 4604           	mov	r4,r0
 4638           	mov	r0,r7
-F007 F865     	bl	$00008340
+F007 F865     	bl	uxListRemove
 B978           	cbnz	r0,$00001298
 
 l00001278:
@@ -2690,7 +2690,7 @@ EA46 060E     	orr	r6,r6,lr
 EB00 0083     	add.w	r0,r0,r3,lsl #2
 63A7           	str	r7,[r4,#&38]
 67D6           	str	r6,[r2,#&7C]
-F007 F816     	bl	$000082F0
+F007 F816     	bl	vListInsertEnd
 4628           	mov	r0,r5
 BDF8           	pop	{r3-r7,pc}
 
@@ -2774,7 +2774,7 @@ l00001354:
 6813           	ldr	r3,[r2]
 F043 433E     	orr	r3,r3,#&BE000000
 6013           	str	r3,[r2]
-E7C7           	b	$000012F0
+E7C7           	b	prvRestoreContextOfFirstTask
 
 l00001360:
 F04F 5280     	mov	r2,#&10000000
@@ -3234,7 +3234,7 @@ E920 0FF2     	stmdb	r0!,{r1,r4-fp}
 E92D 4008     	push.w	{r3,lr}
 F04F 00BF     	mov	r0,#&BF
 F380 8811     	msr	cpsr,r0
-F7FF FD17     	bl	$000010D8
+F7FF FD17     	bl	vTaskSwitchContext
 F04F 0000     	mov	r0,#0
 F380 8811     	msr	cpsr,r0
 E8BD 4008     	pop.w	{r3,lr}
@@ -3259,7 +3259,7 @@ F04F 03BF     	mov	r3,#&BF
 F383 8811     	msr	cpsr,r3
 F3BF 8F6F     	isb	sy
 F3BF 8F4F     	dsb	sy
-F7FF FB37     	bl	$00000D6C
+F7FF FB37     	bl	xTaskIncrementTick
 B118           	cbz	r0,$00001708
 
 l00001700:
@@ -3281,7 +3281,7 @@ F3EF 8008     	mrseq	r0,cpsr
 
 l0000171E:
 F3EF 8009     	mrs	r0,cpsr
-E607           	b	$00001334
+E607           	b	prvSVCHandler
 00001724             08 ED 00 E0 9C ED 00 E0                 ........    
 
 ;; pvPortMalloc: 0000172C
@@ -3302,7 +3302,7 @@ F020 0407     	bicne	r4,r0,#7
 
 l00001738:
 3408           	adds	r4,#8
-F7FF F967     	bl	$00000A0C
+F7FF F967     	bl	vTaskSuspendAll
 4B0F           	ldr	r3,[0000177C]                           ; [pc,#&3C]
 681A           	ldr	r2,[r3]
 B1AA           	cbz	r2,$00001770
@@ -3322,13 +3322,13 @@ l00001756:
 6819           	ldr	r1,[r3]
 F8C3 45C0     	str	r4,[r3,#&5C0]
 188C           	add	r4,r1,r2
-F7FF FB85     	bl	$00000E6C
+F7FF FB85     	bl	xTaskResumeAll
 4620           	mov	r0,r4
 BD10           	pop	{r4,pc}
 
 l00001766:
 2400           	mov	r4,#0
-F7FF FB80     	bl	$00000E6C
+F7FF FB80     	bl	xTaskResumeAll
 4620           	mov	r0,r4
 BD10           	pop	{r4,pc}
 
@@ -3377,14 +3377,14 @@ F5C0 60B6     	rsb	r0,r0,#&5B0
 xEventGroupCreate proc
 B510           	push	{r4,lr}
 2018           	mov	r0,#&18
-F7FF FFBE     	bl	$0000172C
+F7FF FFBE     	bl	pvPortMalloc
 4604           	mov	r4,r0
 B120           	cbz	r0,$000017BE
 
 l000017B4:
 2300           	mov	r3,#0
 F840 3B04     	str	r3,[r0],#&4
-F006 FD89     	bl	$000082D0
+F006 FD89     	bl	vListInitialise
 
 l000017BE:
 4620           	mov	r0,r4
@@ -3400,7 +3400,7 @@ E92D 41F0     	push.w	{r4-r8,lr}
 461F           	mov	r7,r3
 460D           	mov	r5,r1
 4690           	mov	r8,r2
-F7FF F91C     	bl	$00000A0C
+F7FF F91C     	bl	vTaskSuspendAll
 6834           	ldr	r4,[r6]
 B967           	cbnz	r7,$000017F2
 
@@ -3417,7 +3417,7 @@ EA24 0505     	bic.w	r5,r4,r5
 6035           	str	r5,[r6]
 
 l000017E8:
-F7FF FB40     	bl	$00000E6C
+F7FF FB40     	bl	xTaskResumeAll
 4620           	mov	r0,r4
 E8BD 81F0     	pop.w	{r4-r8,pc}
 
@@ -3443,8 +3443,8 @@ l0000180C:
 4329           	orrs	r1,r5
 9A06           	ldr	r2,[sp,#&18]
 1D30           	add	r0,r6,#4
-F7FF FBF1     	bl	$00000FF8
-F7FF FB29     	bl	$00000E6C
+F7FF FBF1     	bl	vTaskPlaceOnUnorderedEventList
+F7FF FB29     	bl	xTaskResumeAll
 B938           	cbnz	r0,$0000182C
 
 l0000181C:
@@ -3455,7 +3455,7 @@ F3BF 8F4F     	dsb	sy
 F3BF 8F6F     	isb	sy
 
 l0000182C:
-F7FF FC78     	bl	$00001120
+F7FF FC78     	bl	uxTaskResetEventItemValue
 0183           	lsls	r3,r0,#6
 4604           	mov	r4,r0
 D506           	bpl	$00001844
@@ -3469,7 +3469,7 @@ F041 6180     	orr	r1,r1,#&4000000
 E7E3           	b	$0000180C
 
 l00001844:
-F006 FE98     	bl	$00008578
+F006 FE98     	bl	vPortEnterCritical
 6834           	ldr	r4,[r6]
 B96F           	cbnz	r7,$00001868
 
@@ -3486,7 +3486,7 @@ EA24 0505     	bic.w	r5,r4,r5
 6035           	str	r5,[r6]
 
 l0000185C:
-F006 FEA8     	bl	$000085B0
+F006 FEA8     	bl	vPortExitCritical
 F024 407F     	bic	r0,r4,#&FF000000
 E8BD 81F0     	pop.w	{r4-r8,pc}
 
@@ -3505,11 +3505,11 @@ xEventGroupClearBits proc
 B570           	push	{r4-r6,lr}
 4606           	mov	r6,r0
 460C           	mov	r4,r1
-F006 FE7D     	bl	$00008578
+F006 FE7D     	bl	vPortEnterCritical
 6835           	ldr	r5,[r6]
 EA25 0404     	bic.w	r4,r5,r4
 6034           	str	r4,[r6]
-F006 FE93     	bl	$000085B0
+F006 FE93     	bl	vPortExitCritical
 4628           	mov	r0,r5
 BD70           	pop	{r4-r6,pc}
 0000188E                                           00 BF               ..
@@ -3523,7 +3523,7 @@ xEventGroupSetBits proc
 B5F8           	push	{r3-r7,lr}
 4605           	mov	r5,r0
 460C           	mov	r4,r1
-F7FF F8B9     	bl	$00000A0C
+F7FF F8B9     	bl	vTaskSuspendAll
 6829           	ldr	r1,[r5]
 6928           	ldr	r0,[r5,#&10]
 F105 060C     	add	r6,r5,#&C
@@ -3549,7 +3549,7 @@ l000018B6:
 
 l000018B8:
 F041 7100     	orr	r1,r1,#&2000000
-F7FF FBE0     	bl	$00001080
+F7FF FBE0     	bl	xTaskRemoveFromUnorderedEventList
 6829           	ldr	r1,[r5]
 
 l000018C2:
@@ -3578,7 +3578,7 @@ l000018E2:
 l000018E4:
 4039           	ands	r1,r7
 6029           	str	r1,[r5]
-F7FF FAC0     	bl	$00000E6C
+F7FF FAC0     	bl	xTaskResumeAll
 6828           	ldr	r0,[r5]
 BDF8           	pop	{r3-r7,pc}
 
@@ -3596,12 +3596,12 @@ E92D 41F0     	push.w	{r4-r8,lr}
 4605           	mov	r5,r0
 4616           	mov	r6,r2
 461F           	mov	r7,r3
-F7FF F882     	bl	$00000A0C
+F7FF F882     	bl	vTaskSuspendAll
 4641           	mov	r1,r8
 682C           	ldr	r4,[r5]
 4628           	mov	r0,r5
 430C           	orrs	r4,r1
-F7FF FFBE     	bl	$00001890
+F7FF FFBE     	bl	xEventGroupSetBits
 EA36 0304     	bics.w	r3,r6,r4
 D021           	beq	$0000195E
 
@@ -3612,7 +3612,7 @@ l0000191C:
 682C           	ldr	r4,[r5]
 
 l0000191E:
-F7FF FAA5     	bl	$00000E6C
+F7FF FAA5     	bl	xTaskResumeAll
 4620           	mov	r0,r4
 E8BD 81F0     	pop.w	{r4-r8,pc}
 
@@ -3620,8 +3620,8 @@ l00001928:
 463A           	mov	r2,r7
 F046 61A0     	orr	r1,r6,#&5000000
 1D28           	add	r0,r5,#4
-F7FF FB62     	bl	$00000FF8
-F7FF FA9A     	bl	$00000E6C
+F7FF FB62     	bl	vTaskPlaceOnUnorderedEventList
+F7FF FA9A     	bl	xTaskResumeAll
 B938           	cbnz	r0,$0000194A
 
 l0000193A:
@@ -3632,7 +3632,7 @@ F3BF 8F4F     	dsb	sy
 F3BF 8F6F     	isb	sy
 
 l0000194A:
-F7FF FBE9     	bl	$00001120
+F7FF FBE9     	bl	uxTaskResetEventItemValue
 0183           	lsls	r3,r0,#6
 4604           	mov	r4,r0
 D509           	bpl	$00001968
@@ -3651,7 +3651,7 @@ EA23 0606     	bic.w	r6,r3,r6
 E7DA           	b	$0000191E
 
 l00001968:
-F006 FE06     	bl	$00008578
+F006 FE06     	bl	vPortEnterCritical
 682C           	ldr	r4,[r5]
 EA36 0304     	bics.w	r3,r6,r4
 BF04           	itt	eq
@@ -3659,7 +3659,7 @@ EA24 0606     	biceq.w	r6,r4,r6
 
 l00001978:
 602E           	str	r6,[r5]
-F006 FE19     	bl	$000085B0
+F006 FE19     	bl	vPortExitCritical
 F024 447F     	bic	r4,r4,#&FF000000
 E7E9           	b	$00001958
 00001984             04 ED 00 E0                             ....        
@@ -3681,40 +3681,40 @@ F383 8811     	msr	cpsr,r3
 vEventGroupDelete proc
 B510           	push	{r4,lr}
 4604           	mov	r4,r0
-F7FF F830     	bl	$00000A0C
+F7FF F830     	bl	vTaskSuspendAll
 6863           	ldr	r3,[r4,#&4]
 B13B           	cbz	r3,$000019C0
 
 l000019B0:
 F04F 7100     	mov	r1,#&2000000
 6920           	ldr	r0,[r4,#&10]
-F7FF FB63     	bl	$00001080
+F7FF FB63     	bl	xTaskRemoveFromUnorderedEventList
 6863           	ldr	r3,[r4,#&4]
 2B00           	cmps	r3,#0
 D1F7           	bne	$000019B0
 
 l000019C0:
 4620           	mov	r0,r4
-F7FF FEDD     	bl	$00001780
+F7FF FEDD     	bl	vPortFree
 E8BD 4010     	pop.w	{r4,lr}
-F7FF BA4F     	b	$00000E6C
+F7FF BA4F     	b	xTaskResumeAll
 000019CE                                           00 BF               ..
 
 ;; vEventGroupSetBitsCallback: 000019D0
 vEventGroupSetBitsCallback proc
-F7FF BF5E     	b	$00001890
+F7FF BF5E     	b	xEventGroupSetBits
 
 ;; vEventGroupClearBitsCallback: 000019D4
 vEventGroupClearBitsCallback proc
 B538           	push	{r3-r5,lr}
 4604           	mov	r4,r0
 460D           	mov	r5,r1
-F006 FDCD     	bl	$00008578
+F006 FDCD     	bl	vPortEnterCritical
 6823           	ldr	r3,[r4]
 EA23 0305     	bic.w	r3,r3,r5
 6023           	str	r3,[r4]
 E8BD 4038     	pop.w	{r3-r5,lr}
-F006 BDE1     	b	$000085B0
+F006 BDE1     	b	vPortExitCritical
 000019EE                                           00 BF               ..
 000019F0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
 ; ...

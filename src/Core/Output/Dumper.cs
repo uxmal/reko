@@ -286,7 +286,7 @@ namespace Reko.Core.Output
             var dasm = arch.CreateDisassembler(arch.CreateImageReader(mem, addrStart));
             try
             {
-                var writer = new FormatterInstructionWriter(formatter, true);
+                var writer = new FormatterInstructionWriter(formatter, program.Procedures, true);
                 var options = new MachineInstructionRendererOptions(
                     flags: MachineInstructionRendererFlags.ResolvePcRelativeAddress,
                     syntax: "");

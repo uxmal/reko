@@ -3,7 +3,7 @@
 ;; _fini: 00010CB8
 _fini proc
 	save	%sp,FFFFFFA0,%sp
-	call	00010CC8
+	call	fn00010CC8
 	sethi	00000000,%g0
 	unimp
 

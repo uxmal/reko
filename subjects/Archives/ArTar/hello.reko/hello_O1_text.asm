@@ -9,9 +9,9 @@ _start proc
 	and	rsp,0F0h
 	push	rax
 	push	rsp
-	lea	r8,[00000000000012E0]                                  ; [rip+0000024A]
-	lea	rcx,[0000000000001280]                                 ; [rip+000001E3]
-	lea	rdi,[00000000000011E0]                                 ; [rip+0000013C]
+	lea	r8,[__libc_csu_fini]                                   ; [rip+0000024A]
+	lea	rcx,[__libc_csu_init]                                  ; [rip+000001E3]
+	lea	rdi,[main]                                             ; [rip+0000013C]
 	call	[0000000000003FE0]                                    ; [rip+00002F36]
 	hlt
 00000000000010AB                                  0F 1F 44 00 00            ..D..
@@ -82,7 +82,7 @@ l000000000000113B:
 	call	1070h
 
 l0000000000001147:
-	call	10B0h
+	call	deregister_tm_clones
 	mov	[0000000000004048],1h                                  ; [rip+00002EF5]
 	pop	rbp
 	ret
@@ -97,7 +97,7 @@ l0000000000001158:
 ;;     00000000000012BE (in __libc_csu_init)
 frame_dummy proc
 	endbr64
-	jmp	10E0h
+	jmp	register_tm_clones
 
 ;; Q_rsqrt: 0000000000001169
 ;;   Called from:
@@ -157,10 +157,10 @@ main proc
 	mov	esi,0h
 	call	1050h
 	movss	dword ptr [rsp+8h],xmm0
-	call	1169h
+	call	Q_rsqrt
 	movss	dword ptr [rsp+0Ch],xmm0
 	movss	xmm0,dword ptr [rsp+8h]
-	call	11A6h
+	call	lib_rsqrt
 	movss	dword ptr [rsp+8h],xmm0
 	pxor	xmm0,xmm0
 	cvtss2sd	xmm0,dword ptr [rsp+0Ch]
@@ -192,7 +192,7 @@ __libc_csu_init proc
 	push	rbx
 	sub	rbp,r15
 	sub	rsp,8h
-	call	1000h
+	call	_init
 	sar	rbp,3h
 	jz	12CEh
 

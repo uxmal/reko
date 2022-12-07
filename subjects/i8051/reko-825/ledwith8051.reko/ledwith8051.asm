@@ -51,9 +51,9 @@ l001F:
 
 l0020:
 	setb	P2.0
-	lcall	0003
+	lcall	fn0003
 	clr	P2.0
-	lcall	0003
+	lcall	fn0003
 	sjmp	0020
 
 l002C:

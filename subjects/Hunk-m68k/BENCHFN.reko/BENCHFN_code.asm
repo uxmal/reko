@@ -215,7 +215,7 @@ l00001186:
 	bra	$00001202
 
 l00001190:
-	bsr	$00001214
+	bsr	fn00001214
 	move.l	d0,(a7)
 	move.l	d0,-$7FEA(a4)
 	move.l	d0,-$7FE6(a4)
@@ -241,7 +241,7 @@ l000011B6:
 
 l000011CC:
 	moveq	#$14,d2
-	bra	$0000127C
+	bra	fn0000127C
 
 l000011D2:
 	move.l	d0,-$7FE2(a4)
@@ -268,9 +268,9 @@ l000011F8:
 l00001202:
 	move.l	a0,-$7FCE(a4)
 	move.l	a7,-$7FCA(a4)
-	jsr.l	$00001354
+	jsr.l	fn00001354
 	moveq	#$00,d2
-	bra	$0000127C
+	bra	fn0000127C
 
 ;; fn00001214: 00001214
 ;;   Called from:
@@ -305,9 +305,9 @@ l0000125C:
 	bne	$00001268
 
 l00001262:
-	bsr	$00001214
+	bsr	fn00001214
 	movea.l	d0,a2
-	bsr	$0000126C
+	bsr	fn0000126C
 
 l00001268:
 	moveq	#$14,d0
@@ -356,7 +356,7 @@ l0000129E:
 	beq	$000012B0
 
 l000012AE:
-	bsr	$0000126C
+	bsr	fn0000126C
 
 l000012B0:
 	movea.l	a5,a1
@@ -402,7 +402,7 @@ l000012FA:
 
 l00001308:
 	move.l	$0010(a7),-(a7)
-	jsr.l	$00001278
+	jsr.l	fn00001278
 	addq.w	#$04,a7
 	movem.l	(a7)+,d2/a2-a3
 	rts
@@ -433,7 +433,7 @@ l0000133A:
 
 l00001346:
 	move.l	$000C(a7),-(a7)
-	bsr	$000012D0
+	bsr	fn000012D0
 	addq.w	#$04,a7
 
 l0000134E:
@@ -462,9 +462,9 @@ l0000136A:
 l00001372:
 	move.l	$0010(a7),-(a7)
 	move.l	$0010(a7),-(a7)
-	jsr.l	$000013D8
+	jsr.l	fn000013D8
 	move.l	d0,-(a7)
-	bsr	$0000131C
+	bsr	fn0000131C
 	lea	$000C(a7),a7
 	movem.l	(a7)+,a2-a3
 	rts
@@ -499,16 +499,16 @@ fn00001390 proc
 ;;     000013BC (in fn000013AC)
 ;;     000013BE (in fn000013AC)
 fn00001394 proc
-	bsr	$00001390
-	bsr	$00001390
-	bsr	$00001390
-	bsr	$00001390
-	bsr	$00001390
-	bsr	$00001390
-	bsr	$00001390
-	bsr	$00001390
-	bsr	$00001390
-	bsr	$00001390
+	bsr	fn00001390
+	bsr	fn00001390
+	bsr	fn00001390
+	bsr	fn00001390
+	bsr	fn00001390
+	bsr	fn00001390
+	bsr	fn00001390
+	bsr	fn00001390
+	bsr	fn00001390
+	bsr	fn00001390
 	rts
 000013AA                               00 00                       ..    
 
@@ -524,16 +524,16 @@ fn00001394 proc
 ;;     000013D2 (in fn000013C4)
 ;;     000013D4 (in fn000013C4)
 fn000013AC proc
-	bsr	$00001394
-	bsr	$00001394
-	bsr	$00001394
-	bsr	$00001394
-	bsr	$00001394
-	bsr	$00001394
-	bsr	$00001394
-	bsr	$00001394
-	bsr	$00001394
-	bsr	$00001394
+	bsr	fn00001394
+	bsr	fn00001394
+	bsr	fn00001394
+	bsr	fn00001394
+	bsr	fn00001394
+	bsr	fn00001394
+	bsr	fn00001394
+	bsr	fn00001394
+	bsr	fn00001394
+	bsr	fn00001394
 	rts
 000013C2       00 00                                       ..            
 
@@ -541,15 +541,15 @@ fn000013AC proc
 ;;   Called from:
 ;;     0000140E (in fn000013D8)
 fn000013C4 proc
-	bsr	$000013AC
-	bsr	$000013AC
-	bsr	$000013AC
-	bsr	$000013AC
-	bsr	$000013AC
-	bsr	$000013AC
-	bsr	$000013AC
-	bsr	$000013AC
-	bsr	$000013AC
+	bsr	fn000013AC
+	bsr	fn000013AC
+	bsr	fn000013AC
+	bsr	fn000013AC
+	bsr	fn000013AC
+	bsr	fn000013AC
+	bsr	fn000013AC
+	bsr	fn000013AC
+	bsr	fn000013AC
 	rts
 
 ;; fn000013D8: 000013D8
@@ -559,20 +559,20 @@ fn000013D8 proc
 	subq.w	#$08,a7
 	movem.l	d2,-(a7)
 	pea	0000142C                                               ; $004E(pc)
-	jsr.l	$00003DE0
+	jsr.l	fn00003DE0
 	lea	$000C(a7),a0
 	move.l	a0,-(a7)
 	pea	00001448                                               ; $005A(pc)
-	jsr.l	$00002BB8
+	jsr.l	fn00002BB8
 	move.l	$0014(a7),-(a7)
 	pea	0000144C                                               ; $0050(pc)
-	jsr.l	$00001474
+	jsr.l	fn00001474
 	moveq	#$01,d2
 	lea	$0014(a7),a7
 	bra	$00001412
 
 l0000140E:
-	bsr	$000013C4
+	bsr	fn000013C4
 	addq.l	#$01,d2
 
 l00001412:
@@ -581,7 +581,7 @@ l00001412:
 
 l00001418:
 	pea	00001468                                               ; $0050(pc)
-	jsr.l	$00003DE0
+	jsr.l	fn00003DE0
 	addq.w	#$04,a7
 	movem.l	(a7)+,d2
 	addq.w	#$08,a7
@@ -601,7 +601,7 @@ fn00001474 proc
 	move.l	a0,-(a7)
 	move.l	$0008(a7),-(a7)
 	move.l	$00003FD0,-(a7)
-	jsr.l	$00001490
+	jsr.l	fn00001490
 	lea	$000C(a7),a7
 	rts
 
@@ -1281,7 +1281,7 @@ l00001A20:
 	move.l	a1,-(a7)
 	movem.l	d0-d1,-(a7)
 	movem.l	d6-d7,-(a7)
-	jsr.l	$00002778
+	jsr.l	fn00002778
 	lea	$0010(a7),a7
 	movea.l	(a7)+,a1
 	move.l	d0,d4
@@ -1295,7 +1295,7 @@ l00001A20:
 	move.l	a1,-(a7)
 	movem.l	d0-d1,-(a7)
 	movem.l	d6-d7,-(a7)
-	jsr.l	$00002430
+	jsr.l	fn00002430
 	lea	$0010(a7),a7
 	movea.l	(a7)+,a1
 	move.l	d0,d6
@@ -1558,7 +1558,7 @@ l00001C56:
 	ext.w	d0
 	ext.l	d0
 	move.l	d0,-(a7)
-	jsr.l	$00001E10
+	jsr.l	fn00001E10
 	addq.w	#$08,a7
 	cmp.l	#$FFFFFFFF,d0
 	bne	$00001C7C
@@ -1602,7 +1602,7 @@ l00001CAA:
 
 l00001CAE:
 	move.l	a0,-(a7)
-	jsr.l	$00001E10
+	jsr.l	fn00001E10
 	addq.w	#$08,a7
 	cmp.l	#$FFFFFFFF,d0
 	bne	$00001CC6
@@ -1639,7 +1639,7 @@ l00001CE4:
 	ext.w	d0
 	ext.l	d0
 	move.l	d0,-(a7)
-	jsr.l	$00001E10
+	jsr.l	fn00001E10
 	addq.w	#$08,a7
 	cmp.l	#$FFFFFFFF,d0
 	bne	$00001D0A
@@ -1662,7 +1662,7 @@ l00001D12:
 l00001D1C:
 	move.l	a5,-(a7)
 	pea	$00000030
-	jsr.l	$00001E10
+	jsr.l	fn00001E10
 	addq.w	#$08,a7
 	cmp.l	#$FFFFFFFF,d0
 	bne	$00001D38
@@ -1692,7 +1692,7 @@ l00001D4C:
 	ext.w	d0
 	ext.l	d0
 	move.l	d0,-(a7)
-	jsr.l	$00001E10
+	jsr.l	fn00001E10
 	addq.w	#$08,a7
 	cmp.l	#$FFFFFFFF,d0
 	bne	$00001D6E
@@ -1723,7 +1723,7 @@ l00001D86:
 l00001D8A:
 	move.l	a5,-(a7)
 	pea	$00000020
-	jsr.l	$00001E10
+	jsr.l	fn00001E10
 	addq.w	#$08,a7
 	cmp.l	#$FFFFFFFF,d0
 	bne	$00001DA4
@@ -1748,7 +1748,7 @@ l00001DB0:
 	ext.w	d0
 	ext.l	d0
 	move.l	d0,-(a7)
-	jsr.l	$00001E10
+	jsr.l	fn00001E10
 	addq.w	#$08,a7
 	cmp.l	#$FFFFFFFF,d0
 	bne	$00001DCE
@@ -1820,7 +1820,7 @@ l00001E3E:
 l00001E54:
 	move.l	a2,-(a7)
 	move.l	d2,-(a7)
-	jsr.l	$00001E6C
+	jsr.l	fn00001E6C
 	move.l	d0,d1
 	addq.w	#$08,a7
 
@@ -1838,7 +1838,7 @@ fn00001E6C proc
 	movem.l	d2-d6/a2-a4/a6,-(a7)
 	move.l	$0028(a7),d5
 	movea.l	$002C(a7),a2
-	jsr.l	$00002400
+	jsr.l	fn00002400
 	move.l	a2,d0
 	bne	$00001E88
 
@@ -1895,7 +1895,7 @@ l00001ED4:
 	move.l	d4,d0
 	add.l	(a1),d0
 	move.l	d0,-(a7)
-	jsr.l	$0000202C
+	jsr.l	fn0000202C
 	movea.l	d0,a3
 	addq.w	#$04,a7
 	move.l	a3,d0
@@ -1932,7 +1932,7 @@ l00001F0E:
 	move.l	a4,(a1)
 	move.b	d5,(a0)
 	move.l	a2,-(a7)
-	jsr.l	$00001F80
+	jsr.l	fn00001F80
 	addq.w	#$04,a7
 	bra	$00001F7A
 
@@ -1987,7 +1987,7 @@ l00001F7A:
 fn00001F80 proc
 	movem.l	d2-d4/a2/a6,-(a7)
 	movea.l	$0018(a7),a2
-	jsr.l	$00002400
+	jsr.l	fn00002400
 	move.l	a2,d0
 	bne	$00001F96
 
@@ -2090,7 +2090,7 @@ l00002042:
 	move.l	a0,-(a7)
 	move.l	a0,-(a7)
 	clr.l	-(a7)
-	jsr.l	$00002320
+	jsr.l	fn00002320
 	move.l	d0,$00003EA8
 	lea	$000C(a7),a7
 
@@ -2107,7 +2107,7 @@ l0000206A:
 	add.l	d2,d0
 	move.l	d0,-(a7)
 	move.l	$00003EA8,-(a7)
-	jsr.l	$000021FC
+	jsr.l	fn000021FC
 	movea.l	d0,a1
 	addq.w	#$08,a7
 	move.l	a1,d0
@@ -2144,7 +2144,7 @@ l000020AA:
 	move.l	d0,-(a7)
 	move.l	a0,-(a7)
 	move.l	$00003EA8,-(a7)
-	jsr.l	$00002160
+	jsr.l	fn00002160
 	lea	$000C(a7),a7
 
 l000020C2:
@@ -2497,7 +2497,7 @@ fn00002400 proc
 
 l0000241E:
 	pea	$00000014
-	jsr.l	$0000131C
+	jsr.l	fn0000131C
 	addq.w	#$04,a7
 
 l0000242A:
@@ -2523,7 +2523,7 @@ l00002448:
 
 l0000244C:
 	move.l	d3,d2
-	jsr.l	$00002534
+	jsr.l	fn00002534
 	move.l	d0,d1
 	bra	$0000252C
 
@@ -2541,11 +2541,11 @@ l00002466:
 	move.l	d0,d1
 	moveq	#$00,d0
 	move.l	d3,d2
-	jsr.l	$00002534
+	jsr.l	fn00002534
 	movea.l	d0,a1
 	move.l	d1,d0
 	move.l	a0,d1
-	jsr.l	$00002534
+	jsr.l	fn00002534
 	move.l	d0,d1
 	move.l	a1,d0
 	bra	$0000252E
@@ -2616,7 +2616,7 @@ l000024CE:
 	move.l	a0,d6
 	lsl.l	d5,d6
 	movea.l	d6,a0
-	jsr.l	$00002534
+	jsr.l	fn00002534
 	move.l	d0,d2
 	exg	d0,d1
 	move.l	d2,d4
@@ -2692,7 +2692,7 @@ l00002548:
 l0000254E:
 	move.l	d1,d0
 	move.l	d2,d1
-	jsr.l	$000026F2
+	jsr.l	fn000026F2
 	bra	$0000267A
 
 l0000255C:
@@ -2891,23 +2891,23 @@ l000026CA:
 
 l000026D0:
 	neg.l	d1
-	bsr	$000026F2
+	bsr	fn000026F2
 	neg.l	d1
 	rts
 
 l000026D8:
-	bsr	$000026F2
+	bsr	fn000026F2
 	neg.l	d0
 	neg.l	d1
 	rts
 
 l000026E0:
 	tst.l	d1
-	bpl	$000026F2
+	bpl	fn000026F2
 
 l000026E4:
 	neg.l	d1
-	bsr	$000026F2
+	bsr	fn000026F2
 	neg.l	d0
 	rts
 000026EC                                     4C EF 00 03             L...
@@ -3034,7 +3034,7 @@ l00002790:
 
 l00002794:
 	move.l	d3,d2
-	jsr.l	$00002534
+	jsr.l	fn00002534
 	moveq	#$00,d0
 	bra	$00002884
 
@@ -3052,10 +3052,10 @@ l000027AE:
 	move.l	d0,d1
 	moveq	#$00,d0
 	move.l	d3,d2
-	jsr.l	$00002534
+	jsr.l	fn00002534
 	move.l	d1,d0
 	move.l	a0,d1
-	jsr.l	$00002534
+	jsr.l	fn00002534
 	moveq	#$00,d0
 	bra	$00002884
 
@@ -3122,7 +3122,7 @@ l00002810:
 	move.l	a0,d6
 	lsl.l	d5,d6
 	movea.l	d6,a0
-	jsr.l	$00002534
+	jsr.l	fn00002534
 	exg	d2,d0
 	movea.l	d3,a1
 	move.l	d2,d4
@@ -3228,7 +3228,7 @@ fn00002B74 proc
 
 l00002B80:
 	move.l	a2,-(a7)
-	jsr.l	$00001F80
+	jsr.l	fn00001F80
 	addq.w	#$04,a7
 	bra	$00002BB2
 
@@ -3244,7 +3244,7 @@ l00002B96:
 
 l00002B9E:
 	move.l	a2,-(a7)
-	jsr.l	$00001F80
+	jsr.l	fn00001F80
 	addq.w	#$04,a7
 
 l00002BA8:
@@ -3266,7 +3266,7 @@ fn00002BB8 proc
 	move.l	a0,-(a7)
 	move.l	$0008(a7),-(a7)
 	move.l	$00003FCC,-(a7)
-	jsr.l	$00002C04
+	jsr.l	fn00002C04
 	lea	$000C(a7),a7
 	rts
 
@@ -3547,7 +3547,7 @@ l00002D9E:
 
 l00002DB6:
 	move.l	a2,-(a7)
-	jsr.l	$00003CA8
+	jsr.l	fn00003CA8
 	move.l	d0,d1
 	addq.w	#$04,a7
 
@@ -3645,7 +3645,7 @@ l00002E6C:
 	movea.l	$002C(a7),a1
 	move.l	a2,-(a7)
 	move.l	a1,$0030(a7)
-	jsr.l	$00003CA8
+	jsr.l	fn00003CA8
 	move.l	d0,$0038(a7)
 	movea.l	$0030(a7),a1
 	move.l	a1,$0030(a7)
@@ -3697,7 +3697,7 @@ l00002EC8:
 
 l00002EE0:
 	move.l	a2,-(a7)
-	jsr.l	$00003CA8
+	jsr.l	fn00003CA8
 	move.l	d0,d1
 	addq.w	#$04,a7
 
@@ -3722,7 +3722,7 @@ l00002F02:
 l00002F0A:
 	move.l	a2,-(a7)
 	move.l	d5,-(a7)
-	bsr	$00002BD4
+	bsr	fn00002BD4
 	addq.w	#$08,a7
 
 l00002F14:
@@ -3897,7 +3897,7 @@ l00003022:
 
 l00003042:
 	move.l	a2,-(a7)
-	jsr.l	$00003CA8
+	jsr.l	fn00003CA8
 	move.l	d0,$0030(a7)
 	addq.w	#$04,a7
 
@@ -3914,7 +3914,7 @@ l00003064:
 	move.l	a1,-(a7)
 	pea	$00000008
 	move.l	d5,-(a7)
-	jsr.l	$000026C0
+	jsr.l	fn000026C0
 	addq.w	#$08,a7
 	movea.l	(a7)+,a1
 	movea.l	(a7)+,a0
@@ -3965,7 +3965,7 @@ l000030B6:
 
 l000030CE:
 	move.l	a2,-(a7)
-	jsr.l	$00003CA8
+	jsr.l	fn00003CA8
 	move.l	d0,d1
 	addq.w	#$04,a7
 
@@ -3982,7 +3982,7 @@ l000030E8:
 	move.l	a1,-(a7)
 	pea	$00000008
 	move.l	d5,-(a7)
-	jsr.l	$000026C0
+	jsr.l	fn000026C0
 	addq.w	#$08,a7
 	movea.l	(a7)+,a1
 	movea.l	(a7)+,a0
@@ -4011,7 +4011,7 @@ l0000311E:
 l00003126:
 	move.l	a2,-(a7)
 	move.l	d5,-(a7)
-	bsr	$00002BD4
+	bsr	fn00002BD4
 	addq.w	#$08,a7
 
 l00003130:
@@ -4097,7 +4097,7 @@ l000031AE:
 
 l000031C6:
 	move.l	a2,-(a7)
-	jsr.l	$00003CA8
+	jsr.l	fn00003CA8
 	move.l	d0,d1
 	addq.w	#$04,a7
 
@@ -4132,7 +4132,7 @@ l00003204:
 l0000320C:
 	move.l	a2,-(a7)
 	move.l	d5,-(a7)
-	bsr	$00002BD4
+	bsr	fn00002BD4
 	addq.w	#$08,a7
 
 l00003216:
@@ -4175,7 +4175,7 @@ l00003244:
 
 l00003264:
 	move.l	a2,-(a7)
-	jsr.l	$00003CA8
+	jsr.l	fn00003CA8
 	move.l	d0,$0030(a7)
 	addq.w	#$04,a7
 
@@ -4193,7 +4193,7 @@ l00003286:
 l0000328E:
 	move.l	a2,-(a7)
 	move.l	d5,-(a7)
-	bsr	$00002BD4
+	bsr	fn00002BD4
 	addq.w	#$08,a7
 
 l00003298:
@@ -4346,7 +4346,7 @@ l00003392:
 
 l000033B2:
 	move.l	a2,-(a7)
-	jsr.l	$00003CA8
+	jsr.l	fn00003CA8
 	move.l	d0,$0038(a7)
 	addq.w	#$04,a7
 
@@ -4392,7 +4392,7 @@ l000033F2:
 
 l00003412:
 	move.l	a2,-(a7)
-	jsr.l	$00003CA8
+	jsr.l	fn00003CA8
 	move.l	d0,$0038(a7)
 	addq.w	#$04,a7
 
@@ -4442,7 +4442,7 @@ l00003468:
 
 l00003488:
 	move.l	a2,-(a7)
-	jsr.l	$00003CA8
+	jsr.l	fn00003CA8
 	move.l	d0,$0038(a7)
 	addq.w	#$04,a7
 
@@ -4473,7 +4473,7 @@ l000034C2:
 l000034CC:
 	move.l	a2,-(a7)
 	move.l	$004E(a7),-(a7)
-	bsr	$00002BD4
+	bsr	fn00002BD4
 	addq.w	#$08,a7
 
 l000034D8:
@@ -4491,7 +4491,7 @@ l000034E0:
 l000034EA:
 	move.l	a2,-(a7)
 	move.l	$0044(a7),-(a7)
-	bsr	$00002BD4
+	bsr	fn00002BD4
 	addq.w	#$08,a7
 
 l000034F6:
@@ -4563,7 +4563,7 @@ l00003564:
 
 l00003584:
 	move.l	a2,-(a7)
-	jsr.l	$00003CA8
+	jsr.l	fn00003CA8
 	move.l	d0,$0038(a7)
 	addq.w	#$04,a7
 
@@ -4613,7 +4613,7 @@ l000035DA:
 
 l000035FA:
 	move.l	a2,-(a7)
-	jsr.l	$00003CA8
+	jsr.l	fn00003CA8
 	move.l	d0,$0038(a7)
 	addq.w	#$04,a7
 
@@ -4645,7 +4645,7 @@ l0000363A:
 l00003644:
 	move.l	a2,-(a7)
 	move.l	$004E(a7),-(a7)
-	bsr	$00002BD4
+	bsr	fn00002BD4
 	addq.w	#$08,a7
 
 l00003650:
@@ -4659,7 +4659,7 @@ l00003654:
 l0000365E:
 	move.l	a2,-(a7)
 	move.l	$0044(a7),-(a7)
-	bsr	$00002BD4
+	bsr	fn00002BD4
 	addq.w	#$08,a7
 
 l0000366A:
@@ -4761,7 +4761,7 @@ l00003748:
 	move.l	$003C(a7),-(a7)
 	move.l	$003C(a7),-(a7)
 	movem.l	d0-d1,-(a7)
-	jsr.l	$00003C28
+	jsr.l	fn00003C28
 	lea	$0010(a7),a7
 	movea.l	(a7)+,a1
 	move.l	d0,$0048(a7)
@@ -4895,7 +4895,7 @@ l00003888:
 
 l000038A0:
 	move.l	a2,-(a7)
-	jsr.l	$00003CA8
+	jsr.l	fn00003CA8
 	move.l	d0,d1
 	addq.w	#$04,a7
 
@@ -4956,7 +4956,7 @@ l00003924:
 l0000392C:
 	move.l	a2,-(a7)
 	move.l	d5,-(a7)
-	bsr	$00002BD4
+	bsr	fn00002BD4
 	addq.w	#$08,a7
 
 l00003936:
@@ -4971,7 +4971,7 @@ l0000393E:
 l00003946:
 	move.l	a2,-(a7)
 	move.l	d5,-(a7)
-	bsr	$00002BD4
+	bsr	fn00002BD4
 	addq.w	#$08,a7
 
 l00003950:
@@ -5217,7 +5217,7 @@ l00003B32:
 
 l00003B4A:
 	move.l	a2,-(a7)
-	jsr.l	$00003CA8
+	jsr.l	fn00003CA8
 	move.l	d0,d1
 	addq.w	#$04,a7
 
@@ -5241,7 +5241,7 @@ l00003B78:
 l00003B80:
 	move.l	a2,-(a7)
 	move.l	d5,-(a7)
-	bsr	$00002BD4
+	bsr	fn00002BD4
 	addq.w	#$08,a7
 
 l00003B8A:
@@ -5274,7 +5274,7 @@ l00003BA2:
 
 l00003BC2:
 	move.l	a2,-(a7)
-	jsr.l	$00003CA8
+	jsr.l	fn00003CA8
 	move.l	d0,$0030(a7)
 	addq.w	#$04,a7
 
@@ -5295,7 +5295,7 @@ l00003BE4:
 l00003BEC:
 	move.l	a2,-(a7)
 	move.l	d5,-(a7)
-	bsr	$00002BD4
+	bsr	fn00002BD4
 	addq.w	#$08,a7
 
 l00003BF6:
@@ -5419,7 +5419,7 @@ l00003C5C:
 fn00003CA8 proc
 	movem.l	d2-d5/a2-a4/a6,-(a7)
 	movea.l	$0024(a7),a2
-	jsr.l	$00002400
+	jsr.l	fn00002400
 	move.l	a2,d0
 	bne	$00003CC0
 
@@ -5447,7 +5447,7 @@ l00003CD2:
 	beq	$00003CEA
 
 l00003CE4:
-	jsr.l	$00003DA4
+	jsr.l	fn00003DA4
 
 l00003CEA:
 	tst.l	$001C(a2)
@@ -5487,7 +5487,7 @@ l00003D24:
 	move.l	d4,d0
 	add.l	(a1),d0
 	move.l	d0,-(a7)
-	jsr.l	$0000202C
+	jsr.l	fn0000202C
 	movea.l	d0,a3
 	addq.w	#$04,a7
 	move.l	a3,d0
@@ -5569,7 +5569,7 @@ l00003DC4:
 
 l00003DC8:
 	move.l	a2,-(a7)
-	jsr.l	$00001F80
+	jsr.l	fn00001F80
 	addq.w	#$04,a7
 
 l00003DD2:
@@ -5631,7 +5631,7 @@ l00003E36:
 	ext.w	d0
 	ext.l	d0
 	move.l	d0,-(a7)
-	jsr.l	$00001E6C
+	jsr.l	fn00001E6C
 	move.l	d0,d1
 	addq.w	#$08,a7
 

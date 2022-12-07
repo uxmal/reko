@@ -81,7 +81,7 @@ __do_global_dtors_aux proc
 l0000000000400529:
 	push	rbp
 	mov	rbp,rsp
-	call	4004B0h
+	call	deregister_tm_clones
 	mov	[0000000000601040],1h                                  ; [rip+00200B07]
 	pop	rbp
 	ret
@@ -96,7 +96,7 @@ frame_dummy proc
 	push	rbp
 	mov	rbp,rsp
 	pop	rbp
-	jmp	4004E0h
+	jmp	register_tm_clones
 0000000000400557                      66 0F 1F 84 00 00 00 00 00        f........
 
 ;; my1: 0000000000400560
@@ -186,7 +186,7 @@ l0000000000400602:
 l000000000040062B:
 	mov	edi,[rbp-8h]
 	mov	esi,[rbp-0Ch]
-	call	400560h
+	call	my1
 	mov	[rbp-18h],rax
 	mov	rdi,[rbp-18h]
 	call	400450h
@@ -221,13 +221,13 @@ main proc
 	mov	r11,[rax]
 	mov	edi,1h
 	mov	esi,5h
-	call	4006F0h
+	call	__llvm_retpoline_r11
 	mov	[rbp-30h],rax
 	mov	rax,[rbp-28h]
 	mov	r11,[rax+8h]
 	mov	rdi,[rbp-30h]
 	mov	esi,78h
-	call	4006F0h
+	call	__llvm_retpoline_r11
 	mov	esi,4007A8h
 	mov	edi,esi
 	mov	[rbp-34h],eax
@@ -246,7 +246,7 @@ main proc
 ;;     00000000004006A7 (in main)
 ;;     00000000004006C1 (in main)
 __llvm_retpoline_r11 proc
-	call	400700h
+	call	fn0000000000400700
 
 l00000000004006F5:
 	pause
@@ -277,7 +277,7 @@ __libc_csu_init proc
 	sub	rbp,r12
 	sub	rsp,8h
 	sar	rbp,3h
-	call	400428h
+	call	_init
 	test	rbp,rbp
 	jz	400766h
 

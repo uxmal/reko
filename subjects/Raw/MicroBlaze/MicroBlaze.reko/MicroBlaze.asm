@@ -120,9 +120,9 @@ fn000001F0 proc
 
 ;; fn0000022C: 0000022C
 fn0000022C proc
-	brlid	r15,00000000
+	brlid	r15,fn00000000
 	nop
-	brlid	r15,00000048
+	brlid	r15,fn00000048
 	nop
 	lwi	r15,r1,00000000
 	rtsd	r15,00000008
@@ -147,10 +147,10 @@ fn00000248 proc
 	addik	r1,r1,FFFFFFE4
 	swi	r15,r1,00000000
 	imm	00000001
-	brlid	r15,00018150
+	brlid	r15,fn00018150
 	nop
 	imm	00000001
-	brlid	r15,0001889C
+	brlid	r15,fn0001889C
 	addik	r5,r0,00000001
 
 ;; fn00000284: 00000284
@@ -167,12 +167,12 @@ fn00000284 proc
 	addk	r21,r5,r0
 	addk	r22,r6,r0
 	addik	r24,r0,00004000
-	brid	000002CC
+	brid	fn000002CC
 	addik	r23,r0,00000001
 
 l000002B4:
 	addk	r5,r22,r0
-	brlid	r15,000041BC
+	brlid	r15,fn000041BC
 	addik	r6,r1,0000001C
 	xor	r3,r3,r19
 	bneid	r3,00000358
@@ -187,11 +187,11 @@ fn000002CC proc
 	addk	r7,r24,r0
 	addk	r6,r23,r0
 	imm	00000001
-	brlid	r15,0001871C
+	brlid	r15,fn0001871C
 	addik	r5,r1,0000001C
 	addk	r5,r21,r0
 	imm	00000001
-	brlid	r15,00018824
+	brlid	r15,fn00018824
 	addk	r19,r3,r0
 	bnei	r3,00000338
 
@@ -201,9 +201,9 @@ l000002F8:
 
 l00000300:
 	imm	00000001
-	brlid	r15,000186F4
+	brlid	r15,fn000186F4
 	addk	r5,r21,r0
-	brlid	r15,00000728
+	brlid	r15,fn00000728
 	addk	r5,r22,r0
 	bneid	r3,00000368
 	lwi	r15,r1,00000000
@@ -226,22 +226,22 @@ l00000338:
 	imm	00000001
 	addik	r5,r0,000199E0
 	imm	00000001
-	brlid	r15,00018874
+	brlid	r15,fn00018874
 	nop
 	imm	00000001
-	brlid	r15,0001889C
+	brlid	r15,fn0001889C
 	addik	r5,r0,00000001
 
 l00000358:
-	brlid	r15,0000186C
+	brlid	r15,fn0000186C
 	addik	r6,r1,0000401C
-	brlid	r15,00000248
+	brlid	r15,fn00000248
 	addk	r5,r3,r0
 
 l00000368:
 	imm	00000001
 	addik	r5,r0,000199E8
-	brlid	r15,00000248
+	brlid	r15,fn00000248
 	nop
 
 ;; fn00000378: 00000378
@@ -265,7 +265,7 @@ l000003A8:
 	addk	r7,r3,r0
 	addk	r6,r24,r0
 	imm	00000001
-	brlid	r15,00018750
+	brlid	r15,fn00018750
 	addik	r5,r1,0000001C
 	xor	r3,r3,r19
 	bnei	r3,00000434
@@ -273,7 +273,7 @@ l000003A8:
 l000003C4:
 	addk	r7,r22,r0
 	addk	r5,r21,r0
-	brlid	r15,000023C8
+	brlid	r15,fn000023C8
 	addik	r6,r1,0000001C
 	bltid	r3,00000420
 	addk	r19,r3,r0
@@ -284,12 +284,12 @@ l000003DC:
 
 l000003E4:
 	imm	00000001
-	brlid	r15,000186F4
+	brlid	r15,fn000186F4
 	addk	r5,r23,r0
 	bnei	r3,00000454
 
 l000003F4:
-	brlid	r15,00000728
+	brlid	r15,fn00000728
 	addk	r5,r21,r0
 	bneid	r3,00000444
 	lwi	r15,r1,00000000
@@ -310,27 +310,27 @@ fn0000040C proc
 
 l00000420:
 	addk	r5,r21,r0
-	brlid	r15,0000186C
+	brlid	r15,fn0000186C
 	addik	r6,r1,0000401C
-	brlid	r15,00000248
+	brlid	r15,fn00000248
 	addk	r5,r3,r0
 
 l00000434:
 	imm	00000001
 	addik	r5,r0,000199F8
-	brlid	r15,00000248
+	brlid	r15,fn00000248
 	nop
 
 l00000444:
 	imm	00000001
 	addik	r5,r0,000199E8
-	brlid	r15,00000248
+	brlid	r15,fn00000248
 	nop
 
 l00000454:
 	imm	00000001
 	addik	r5,r0,00019A08
-	brlid	r15,00000248
+	brlid	r15,fn00000248
 	nop
 	addik	r1,r1,FFFFFBD8
 	swi	r19,r1,0000041C
@@ -339,7 +339,7 @@ l00000454:
 	swi	r21,r1,00000420
 	addk	r19,r5,r0
 	imm	00000001
-	brlid	r15,00018CC4
+	brlid	r15,fn00018CC4
 	addk	r22,r6,r0
 	addik	r3,r3,00000003
 	addik	r4,r0,000003FF
@@ -354,28 +354,28 @@ l0000049C:
 	addik	r7,r0,00019A34
 	addik	r5,r1,0000001C
 	imm	00000001
-	brlid	r15,000181D0
+	brlid	r15,fn000181D0
 	addik	r6,r0,00000400
 	imm	00000001
 	addik	r6,r0,00019A3C
 	imm	00000001
-	brlid	r15,000186C8
+	brlid	r15,fn000186C8
 	addk	r5,r19,r0
 	beqid	r3,00000578
 	addk	r21,r3,r0
 
 l000004D8:
 	addk	r6,r22,r0
-	brlid	r15,00000A7C
+	brlid	r15,fn00000A7C
 	addik	r5,r1,0000001C
 	beqid	r3,00000548
 	addk	r6,r3,r0
 
 l000004EC:
-	brlid	r15,00000284
+	brlid	r15,fn00000284
 	addk	r5,r21,r0
 	imm	00000001
-	brlid	r15,00019178
+	brlid	r15,fn00019178
 	addk	r5,r19,r0
 	lwi	r15,r1,00000000
 	lwi	r19,r1,0000041C
@@ -392,7 +392,7 @@ l00000518:
 	imm	00000001
 	addik	r6,r0,00019A18
 	imm	00000001
-	brlid	r15,00018150
+	brlid	r15,fn00018150
 
 ;; fn00000538: 00000538
 ;;   Called from:
@@ -400,7 +400,7 @@ l00000518:
 fn00000538 proc
 	nop
 	imm	00000001
-	brlid	r15,0001889C
+	brlid	r15,fn0001889C
 	addik	r5,r0,00000001
 
 l00000548:
@@ -411,18 +411,18 @@ l00000548:
 	imm	00000001
 	addik	r6,r0,00019A40
 	imm	00000001
-	brlid	r15,00018150
+	brlid	r15,fn00018150
 	addik	r8,r1,0000001C
 	imm	00000001
-	brlid	r15,0001889C
+	brlid	r15,fn0001889C
 	addik	r5,r0,00000001
 
 l00000578:
 	imm	00000001
-	brlid	r15,00018874
+	brlid	r15,fn00018874
 	addk	r5,r19,r0
 	imm	00000001
-	brlid	r15,0001889C
+	brlid	r15,fn0001889C
 	addik	r5,r0,00000001
 	addik	r1,r1,FFFFFBD4
 	swi	r19,r1,0000041C
@@ -431,7 +431,7 @@ l00000578:
 	swi	r22,r1,00000424
 	swi	r23,r1,00000428
 	imm	00000001
-	brlid	r15,00018CC4
+	brlid	r15,fn00018CC4
 	addk	r21,r5,r0
 	addk	r19,r3,r0
 	addik	r3,r0,000003FF
@@ -445,7 +445,7 @@ l000005CC:
 	addik	r7,r0,00019A58
 	addik	r5,r1,0000001C
 	imm	00000001
-	brlid	r15,000181D0
+	brlid	r15,fn000181D0
 	addik	r6,r0,00000400
 	addik	r3,r0,00000003
 	cmpu	r18,r19,r3
@@ -456,7 +456,7 @@ l000005F4:
 	imm	00000001
 	addik	r6,r0,00019A30
 	imm	00000001
-	brlid	r15,00018E58
+	brlid	r15,fn00018E58
 	addk	r5,r21,r22
 	beqid	r3,000006A0
 	addk	r22,r1,r22
@@ -471,13 +471,13 @@ l00000610:
 	rsubk	r6,r19,r3
 	addk	r5,r22,r19
 	imm	00000001
-	brlid	r15,000181D0
+	brlid	r15,fn000181D0
 	addk	r23,r21,r0
 
 l0000063C:
 	imm	00000001
 	addik	r6,r0,00019A3C
-	brlid	r15,00000A7C
+	brlid	r15,fn00000A7C
 	addk	r5,r22,r0
 	beqid	r3,000006F8
 	addk	r19,r3,r0
@@ -486,16 +486,16 @@ l00000654:
 	imm	00000001
 	addik	r6,r0,00019A5C
 	imm	00000001
-	brlid	r15,000186C8
+	brlid	r15,fn000186C8
 	addk	r5,r23,r0
 	beqid	r3,000006E0
 	addk	r6,r3,r0
 
 l00000670:
-	brlid	r15,00000378
+	brlid	r15,fn00000378
 	addk	r5,r19,r0
 	imm	00000001
-	brlid	r15,00019178
+	brlid	r15,fn00019178
 	addk	r5,r22,r0
 	lwi	r15,r1,00000000
 	lwi	r19,r1,0000041C
@@ -519,18 +519,18 @@ l000006B0:
 	imm	00000001
 	addik	r6,r0,00019A18
 	imm	00000001
-	brlid	r15,00018150
+	brlid	r15,fn00018150
 	nop
 	imm	00000001
-	brlid	r15,0001889C
+	brlid	r15,fn0001889C
 	addik	r5,r0,00000001
 
 l000006E0:
 	imm	00000001
-	brlid	r15,00018874
+	brlid	r15,fn00018874
 	addk	r5,r21,r0
 	imm	00000001
-	brlid	r15,0001889C
+	brlid	r15,fn0001889C
 	addik	r5,r0,00000001
 
 l000006F8:
@@ -541,10 +541,10 @@ l000006F8:
 	imm	00000001
 	addik	r6,r0,00019A40
 	imm	00000001
-	brlid	r15,00018150
+	brlid	r15,fn00018150
 	addk	r8,r22,r0
 	imm	00000001
-	brlid	r15,0001889C
+	brlid	r15,fn0001889C
 	addik	r5,r0,00000001
 
 ;; fn00000728: 00000728
@@ -562,14 +562,14 @@ l0000072C:
 	swi	r15,r1,00000000
 
 l00000740:
-	brlid	r15,00005538
+	brlid	r15,fn00005538
 	nop
 	lwi	r15,r1,00000000
 	rtsd	r15,00000008
 	addik	r1,r1,0000001C
 
 l00000754:
-	brlid	r15,00003894
+	brlid	r15,fn00003894
 	nop
 	lwi	r15,r1,00000000
 	rtsd	r15,00000008
@@ -598,7 +598,7 @@ l00000794:
 	addik	r5,r0,0000008C
 	addk	r23,r6,r0
 	imm	00000001
-	brlid	r15,00018918
+	brlid	r15,fn00018918
 	addk	r21,r7,r0
 	beqid	r3,00000A50
 	addk	r19,r3,r0
@@ -669,11 +669,11 @@ l00000868:
 
 l0000086C:
 	imm	00000001
-	brlid	r15,00018CC4
+	brlid	r15,fn00018CC4
 	addk	r5,r22,r0
 	addik	r21,r3,00000001
 	imm	00000001
-	brlid	r15,00018918
+	brlid	r15,fn00018918
 	addk	r5,r21,r0
 	beqid	r3,00000938
 	swi	r3,r19,00000014
@@ -684,7 +684,7 @@ l00000890:
 	imm	00000001
 	addik	r7,r0,00019AB8
 	imm	00000001
-	brlid	r15,000181D0
+	brlid	r15,fn000181D0
 	addk	r5,r3,r0
 	lwi	r3,r19,0000000C
 	xori	r6,r3,00001C4F
@@ -741,7 +741,7 @@ l00000900:
 
 l0000090C:
 	imm	00000001
-	brlid	r15,000188F0
+	brlid	r15,fn000188F0
 	nop
 
 l00000918:
@@ -761,7 +761,7 @@ l0000092C:
 l00000938:
 	addk	r5,r19,r0
 	imm	00000001
-	brlid	r15,000188F0
+	brlid	r15,fn000188F0
 	addk	r19,r0,r0
 
 l00000948:
@@ -794,7 +794,7 @@ l000009BC:
 l000009C4:
 	addk	r5,r22,r0
 	imm	00000001
-	brlid	r15,00018BB4
+	brlid	r15,fn00018BB4
 	addik	r7,r0,000001B6
 	swi	r3,r19,00000010
 	xori	r21,r3,FFFFFFFF
@@ -810,16 +810,16 @@ l000009F0:
 	addk	r6,r21,r0
 	addk	r5,r23,r0
 	imm	00000001
-	brlid	r15,00019120
+	brlid	r15,fn00019120
 	addik	r7,r0,00000002
 	addik	r4,r0,000079B1
 	swi	r4,r19,0000000C
-	brid	000008F4
+	brid	fn000008F4
 	swi	r21,r19,00000000
 
 l00000A14:
 	imm	00000001
-	brlid	r15,00019120
+	brlid	r15,fn00019120
 	addik	r7,r0,00000001
 	swi	r3,r19,00000030
 
@@ -836,13 +836,13 @@ l00000A30:
 
 l00000A34:
 	xori	r3,r3,00001C4F
-	bneid	r3,000008F4
+	bneid	r3,fn000008F4
 	swi	r0,r19,00000000
 
 l00000A40:
 	swi	r3,r19,00000034
 	swi	r3,r19,00000038
-	brid	000008F4
+	brid	fn000008F4
 	swi	r3,r19,0000002C
 
 l00000A50:
@@ -851,14 +851,14 @@ l00000A50:
 
 l00000A58:
 	imm	00000001
-	brlid	r15,000188F0
+	brlid	r15,fn000188F0
 	lwi	r5,r19,00000014
 
 ;; fn00000A64: 00000A64
 fn00000A64 proc
 	addk	r5,r19,r0
 	imm	00000001
-	brlid	r15,000188F0
+	brlid	r15,fn000188F0
 	addk	r19,r21,r0
 	brid	0000094C
 	addk	r3,r19,r0
@@ -871,7 +871,7 @@ fn00000A7C proc
 	addk	r7,r6,r0
 	addik	r1,r1,FFFFFFE4
 	swi	r15,r1,00000000
-	brlid	r15,00000770
+	brlid	r15,fn00000770
 	addik	r6,r0,FFFFFFFF
 	lwi	r15,r1,00000000
 	rtsd	r15,00000008
@@ -1249,7 +1249,7 @@ l00001A90:
 
 l00001A9C:
 	imm	00000001
-	brlid	r15,000188F0
+	brlid	r15,fn000188F0
 	swi	r6,r1,0000001C
 	lwi	r6,r1,0000001C
 
@@ -1289,15 +1289,15 @@ l00001AE4:
 l00001AF8:
 	lwi	r23,r19,00000014
 	imm	00000001
-	brlid	r15,00018CC4
+	brlid	r15,fn00018CC4
 	addk	r5,r23,r0
 	addk	r5,r21,r0
 	imm	00000001
-	brlid	r15,00018CC4
+	brlid	r15,fn00018CC4
 	addk	r22,r3,r0
 	addk	r3,r22,r3
 	imm	00000001
-	brlid	r15,00018918
+	brlid	r15,fn00018918
 	addik	r5,r3,00000003
 	swi	r3,r19,00000050
 	beqid	r3,00001B98
@@ -1305,11 +1305,11 @@ l00001AF8:
 
 l00001B34:
 	imm	00000001
-	brlid	r15,00018CC4
+	brlid	r15,fn00018CC4
 	addk	r5,r23,r0
 	addk	r5,r21,r0
 	imm	00000001
-	brlid	r15,00018CC4
+	brlid	r15,fn00018CC4
 	addk	r19,r3,r0
 	addk	r10,r21,r0
 	imm	00000001
@@ -1320,7 +1320,7 @@ l00001B34:
 	addk	r5,r22,r0
 	addk	r3,r19,r3
 	imm	00000001
-	brlid	r15,000181D0
+	brlid	r15,fn000181D0
 	addik	r6,r3,00000003
 
 l00001B7C:
@@ -1375,7 +1375,7 @@ l00001C08:
 
 l00001C0C:
 	imm	00000000
-	brlid	r15,0000CC80
+	brlid	r15,fn0000CC80
 	addk	r5,r24,r0
 	addik	r4,r3,00000002
 	andi	r4,r4,FFFFFFFB
@@ -1472,7 +1472,7 @@ l00001D24:
 
 l00001D28:
 	imm	00000001
-	brlid	r15,000190F0
+	brlid	r15,fn000190F0
 	lwi	r5,r21,00000010
 	bgtid	r3,00001D0C
 	addk	r19,r19,r3
@@ -1499,7 +1499,7 @@ l00001D64:
 l00001D68:
 	imm	00000001
 	addik	r7,r0,00019C34
-	brlid	r15,00001A68
+	brlid	r15,fn00001A68
 	addik	r6,r0,FFFFFFFB
 	lwi	r4,r21,00000064
 	lwi	r5,r21,00000060
@@ -1527,7 +1527,7 @@ l00001DC4:
 	imm	00000001
 	addik	r7,r0,00019C68
 	addk	r5,r21,r0
-	brlid	r15,00001A68
+	brlid	r15,fn00001A68
 	addik	r6,r0,FFFFFFFE
 	brid	00001D94
 	addik	r3,r0,FFFFFFFF
@@ -1536,7 +1536,7 @@ l00001DE0:
 	imm	00000001
 	addik	r7,r0,00019C90
 	addk	r5,r21,r0
-	brlid	r15,00001A68
+	brlid	r15,fn00001A68
 	addik	r6,r0,FFFFFFFC
 	brid	00001D94
 	addik	r3,r0,FFFFFFFF
@@ -1549,7 +1549,7 @@ l00001E04:
 	addk	r5,r21,r0
 
 l00001E08:
-	brlid	r15,00001A68
+	brlid	r15,fn00001A68
 	addik	r6,r0,FFFFFFFD
 	brid	00001D94
 	addik	r3,r0,FFFFFFFF
@@ -1587,7 +1587,7 @@ l00001E60:
 l00001E70:
 	imm	00000001
 	addik	r7,r0,00019C4C
-	brlid	r15,00001A68
+	brlid	r15,fn00001A68
 	addik	r6,r0,FFFFFFFF
 	brid	00001D94
 	addik	r3,r0,FFFFFFFF
@@ -1650,12 +1650,12 @@ l00001EF8:
 l00001F20:
 	lwi	r24,r5,0000001C
 	imm	00000001
-	brlid	r15,00018918
+	brlid	r15,fn00018918
 	addk	r5,r24,r0
 	addk	r5,r24,r24
 	swi	r3,r19,00000020
 	imm	00000001
-	brlid	r15,00018918
+	brlid	r15,fn00018918
 	addk	r22,r3,r0
 	rsubk	r4,r3,r0
 	or	r4,r3,r4
@@ -1712,22 +1712,22 @@ l00001FE8:
 	swi	r21,r19,00000058
 	swi	r21,r19,00000054
 	imm	00000000
-	brlid	r15,0000C654
+	brlid	r15,fn0000C654
 	addik	r6,r0,0000001F
 	beqi	r3,00001EBC
 
 l0000201C:
 	imm	00000001
-	brlid	r15,000188F0
+	brlid	r15,fn000188F0
 	lwi	r5,r19,00000024
 	imm	00000001
-	brlid	r15,000188F0
+	brlid	r15,fn000188F0
 	lwi	r5,r19,00000020
 	imm	00000001
 	addik	r7,r0,00019C90
 	addk	r5,r19,r0
 	swi	r21,r19,00000018
-	brlid	r15,00001A68
+	brlid	r15,fn00001A68
 	addik	r6,r0,FFFFFFFC
 	brid	00001EF8
 	addik	r3,r0,FFFFFFFF
@@ -1816,7 +1816,7 @@ l00002150:
 
 l00002154:
 	imm	00000001
-	brlid	r15,000190F0
+	brlid	r15,fn000190F0
 	lwi	r5,r19,00000010
 	bgtid	r3,00002134
 	addk	r21,r21,r3
@@ -1852,7 +1852,7 @@ l000021A0:
 
 l000021AC:
 	imm	00000000
-	brlid	r15,0000C324
+	brlid	r15,fn0000C324
 	addk	r5,r23,r0
 	addik	r3,r0,00000002
 	swi	r3,r19,0000002C
@@ -1876,7 +1876,7 @@ l000021E0:
 
 l000021EC:
 	imm	00000001
-	brlid	r15,00018C34
+	brlid	r15,fn00018C34
 	addk	r7,r22,r0
 	lwi	r4,r19,00000058
 	addik	r3,r0,00000001
@@ -1896,15 +1896,15 @@ l00002218:
 
 l00002224:
 	imm	00000001
-	brlid	r15,000188F0
+	brlid	r15,fn000188F0
 	addk	r5,r3,r0
 	imm	00000001
-	brlid	r15,000188F0
+	brlid	r15,fn000188F0
 	addk	r5,r22,r0
 	imm	00000001
 	addik	r7,r0,00019C90
 	addk	r5,r19,r0
-	brlid	r15,00001A68
+	brlid	r15,fn00001A68
 	addik	r6,r0,FFFFFFFC
 	brid	00001EF8
 	addik	r3,r0,FFFFFFFF
@@ -1913,7 +1913,7 @@ l00002258:
 	imm	00000001
 	addik	r7,r0,00019C4C
 	addk	r5,r19,r0
-	brlid	r15,00001A68
+	brlid	r15,fn00001A68
 	addik	r6,r0,FFFFFFFF
 	brid	00001EF8
 	addik	r3,r0,FFFFFFFF
@@ -1971,7 +1971,7 @@ l000022CC:
 	addik	r1,r1,0000002C
 
 l000022E4:
-	brlid	r15,00001E88
+	brlid	r15,fn00001E88
 	addk	r5,r19,r0
 	xori	r3,r3,FFFFFFFF
 	beqid	r3,000022C8
@@ -1992,7 +1992,7 @@ l0000230C:
 	addk	r5,r19,r0
 	addk	r3,r3,r3
 	swi	r4,r19,00000060
-	brlid	r15,00001BBC
+	brlid	r15,fn00001BBC
 	swi	r3,r19,00000064
 	xori	r3,r3,FFFFFFFF
 	bneid	r3,000022A8
@@ -2030,7 +2030,7 @@ l00002380:
 
 l00002384:
 	imm	00000001
-	brlid	r15,000190F0
+	brlid	r15,fn000190F0
 	lwi	r5,r19,00000010
 	bgti	r3,0000235C
 
@@ -2050,7 +2050,7 @@ l000023AC:
 	imm	00000001
 	addik	r7,r0,00019C4C
 	addk	r5,r19,r0
-	brlid	r15,00001A68
+	brlid	r15,fn00001A68
 	addik	r6,r0,FFFFFFFF
 	brid	000022C8
 	addik	r3,r0,FFFFFFFF
@@ -2160,7 +2160,7 @@ l000024F4:
 	lwi	r6,r19,00000004
 	rsubk	r22,r21,r22
 	imm	00000001
-	brlid	r15,00018C34
+	brlid	r15,fn00018C34
 	addk	r24,r24,r21
 	lwi	r4,r19,00000004
 	lwi	r3,r19,00000000
@@ -2206,7 +2206,7 @@ l00002570:
 
 l00002578:
 	swi	r22,r19,00000064
-	brlid	r15,00001BBC
+	brlid	r15,fn00001BBC
 	swi	r24,r19,00000060
 	xori	r3,r3,FFFFFFFF
 	beqi	r3,000025B0
@@ -2221,7 +2221,7 @@ l00002594:
 	addk	r24,r24,r21
 
 l000025A0:
-	brlid	r15,00002274
+	brlid	r15,fn00002274
 	addk	r5,r19,r0
 	xori	r3,r3,FFFFFFFF
 	bnei	r3,00002538
@@ -2309,7 +2309,7 @@ l000026A8:
 
 l000026AC:
 	imm	00000001
-	brlid	r15,000190F0
+	brlid	r15,fn000190F0
 	lwi	r5,r19,00000010
 	bgtid	r3,00002688
 	addk	r21,r21,r3
@@ -2370,7 +2370,7 @@ l0000273C:
 	beqi	r3,000024D0
 
 l00002744:
-	brlid	r15,00002274
+	brlid	r15,fn00002274
 	nop
 	xori	r3,r3,FFFFFFFF
 	beqi	r3,000025B0
@@ -2398,7 +2398,7 @@ l00002774:
 l0000277C:
 	imm	00000001
 	addik	r7,r0,00019CA8
-	brlid	r15,00001A68
+	brlid	r15,fn00001A68
 	addik	r6,r0,FFFFFFFE
 
 l0000278C:
@@ -2409,7 +2409,7 @@ l00002794:
 	imm	00000001
 	addik	r7,r0,00019C4C
 	addk	r5,r19,r0
-	brlid	r15,00001A68
+	brlid	r15,fn00001A68
 	addik	r6,r0,FFFFFFFF
 	brid	000025B4
 	lwi	r4,r19,0000004C
@@ -2713,13 +2713,13 @@ l000038BC:
 
 l000038C8:
 	imm	00000000
-	brlid	r15,0000FAFC
+	brlid	r15,fn0000FAFC
 	addik	r5,r5,00000054
 	imm	00000001
-	brlid	r15,000188F0
+	brlid	r15,fn000188F0
 	lwi	r5,r19,00000024
 	imm	00000001
-	brlid	r15,000188F0
+	brlid	r15,fn000188F0
 	lwi	r5,r19,00000020
 
 l000038EC:
@@ -2733,17 +2733,17 @@ l000038FC:
 
 l00003900:
 	addk	r6,r7,r0
-	brlid	r15,00001A68
+	brlid	r15,fn00001A68
 	addk	r5,r19,r0
 	imm	00000001
-	brlid	r15,000188F0
+	brlid	r15,fn000188F0
 	lwi	r5,r19,00000014
 	imm	00000001
-	brlid	r15,00019150
+	brlid	r15,fn00019150
 	lwi	r5,r19,00000010
 	addk	r22,r3,r0
 	imm	00000001
-	brlid	r15,000188F0
+	brlid	r15,fn000188F0
 	addk	r5,r19,r0
 	bnei	r22,0000395C
 
@@ -2781,7 +2781,7 @@ fn00003964 proc
 	lwi	r23,r5,0000001C
 	addk	r19,r5,r0
 	imm	00000001
-	brlid	r15,00018918
+	brlid	r15,fn00018918
 	addk	r5,r23,r23
 	beqid	r3,00003A6C
 	swi	r3,r19,00000020
@@ -2808,7 +2808,7 @@ l000039A8:
 l000039C4:
 	addk	r5,r23,r0
 	imm	00000001
-	brlid	r15,00018918
+	brlid	r15,fn00018918
 	addk	r22,r3,r0
 	beqid	r3,00003A60
 	swi	r3,r19,00000024
@@ -2827,7 +2827,7 @@ l000039DC:
 	swi	r21,r19,00000078
 	swi	r21,r19,0000007C
 	addik	r8,r0,0000001F
-	brlid	r15,0000B514
+	brlid	r15,fn0000B514
 	addik	r5,r19,00000054
 	bneid	r3,00003A88
 	addk	r4,r3,r0
@@ -2854,24 +2854,24 @@ l00003A34:
 
 l00003A60:
 	imm	00000001
-	brlid	r15,000188F0
+	brlid	r15,fn000188F0
 	addk	r5,r22,r0
 
 l00003A6C:
 	imm	00000001
 	addik	r7,r0,00019D0C
 	addk	r5,r19,r0
-	brlid	r15,00001A68
+	brlid	r15,fn00001A68
 	addik	r6,r0,FFFFFFFC
 	brid	000039A8
 	addik	r3,r0,FFFFFFFF
 
 l00003A88:
 	imm	00000001
-	brlid	r15,000188F0
+	brlid	r15,fn000188F0
 	lwi	r5,r19,00000024
 	imm	00000001
-	brlid	r15,000188F0
+	brlid	r15,fn000188F0
 	lwi	r5,r19,00000020
 	bri	00003A6C
 
@@ -2926,7 +2926,7 @@ l00003B18:
 
 l00003B1C:
 	imm	00000001
-	brlid	r15,0001908C
+	brlid	r15,fn0001908C
 	lwi	r5,r19,00000010
 	bgei	r3,00003AF4
 
@@ -2934,7 +2934,7 @@ l00003B2C:
 	imm	00000001
 	addik	r7,r0,00019D24
 	addk	r5,r19,r0
-	brlid	r15,00001A68
+	brlid	r15,fn00001A68
 	addik	r6,r0,FFFFFFFF
 	addik	r3,r0,FFFFFFFF
 
@@ -2963,7 +2963,7 @@ l00003B78:
 	addk	r6,r23,r0
 
 l00003B7C:
-	brlid	r15,00008E80
+	brlid	r15,fn00008E80
 	addk	r5,r24,r0
 	xori	r3,r3,FFFFFFFE
 	beqi	r3,00003C58
@@ -3018,7 +3018,7 @@ l00003C00:
 
 l00003C04:
 	imm	00000001
-	brlid	r15,0001908C
+	brlid	r15,fn0001908C
 	lwi	r5,r19,00000010
 	bgei	r3,00003BD8
 
@@ -3026,7 +3026,7 @@ l00003C14:
 	bri	00003B2C
 
 l00003C18:
-	brlid	r15,00003964
+	brlid	r15,fn00003964
 	nop
 	xori	r4,r3,FFFFFFFF
 	bneid	r4,00003ACC
@@ -3055,7 +3055,7 @@ l00003C58:
 	imm	00000001
 	addik	r7,r0,00019D40
 	addk	r5,r19,r0
-	brlid	r15,00001A68
+	brlid	r15,fn00001A68
 	addik	r6,r0,FFFFFFFE
 	brid	00003B44
 	addik	r3,r0,FFFFFFFF
@@ -3105,7 +3105,7 @@ l00003CD4:
 l00003CDC:
 	addk	r7,r22,r0
 	imm	00000001
-	brlid	r15,00018C64
+	brlid	r15,fn00018C64
 	addk	r6,r24,r0
 	lwi	r5,r19,00000020
 	lwi	r3,r19,00000018
@@ -3148,7 +3148,7 @@ l00003D48:
 
 l00003D4C:
 	imm	00000001
-	brlid	r15,0001908C
+	brlid	r15,fn0001908C
 	lwi	r5,r19,00000010
 	bgei	r3,00003D24
 
@@ -3156,7 +3156,7 @@ l00003D5C:
 	imm	00000001
 	addik	r7,r0,00019D24
 	addk	r5,r19,r0
-	brlid	r15,00001A68
+	brlid	r15,fn00001A68
 	addik	r6,r0,FFFFFFFF
 	addik	r3,r0,FFFFFFFF
 
@@ -3185,7 +3185,7 @@ l00003DA8:
 	addk	r6,r24,r0
 
 l00003DAC:
-	brlid	r15,00008E80
+	brlid	r15,fn00008E80
 	addk	r5,r25,r0
 	xori	r3,r3,FFFFFFFE
 	beqi	r3,00003E90
@@ -3240,7 +3240,7 @@ l00003E28:
 
 l00003E2C:
 	imm	00000001
-	brlid	r15,0001908C
+	brlid	r15,fn0001908C
 	lwi	r5,r19,00000010
 	bgei	r3,00003E00
 
@@ -3248,7 +3248,7 @@ l00003E3C:
 	bri	00003D5C
 
 l00003E40:
-	brlid	r15,00003964
+	brlid	r15,fn00003964
 	addk	r5,r19,r0
 	xori	r3,r3,FFFFFFFF
 	bneid	r3,00003D0C
@@ -3272,7 +3272,7 @@ l00003E6C:
 	addk	r5,r25,r0
 	swi	r3,r19,00000060
 	swi	r26,r19,00000064
-	brlid	r15,00008E80
+	brlid	r15,fn00008E80
 	swi	r3,r19,00000004
 	xori	r3,r3,FFFFFFFE
 	bnei	r3,00003DBC
@@ -3281,13 +3281,13 @@ l00003E90:
 	imm	00000001
 	addik	r7,r0,00019D40
 	addk	r5,r19,r0
-	brlid	r15,00001A68
+	brlid	r15,fn00001A68
 	addik	r6,r0,FFFFFFFE
 	brid	00003D74
 	addik	r3,r0,FFFFFFFF
 
 l00003EAC:
-	brlid	r15,00003AA4
+	brlid	r15,fn00003AA4
 	nop
 	xori	r3,r3,FFFFFFFF
 	bneid	r3,00003CAC
@@ -3352,7 +3352,7 @@ l00003F48:
 	addk	r7,r22,r0
 	rsubk	r23,r22,r23
 	imm	00000001
-	brlid	r15,00018C34
+	brlid	r15,fn00018C34
 	addk	r24,r24,r22
 	lwi	r4,r19,00000058
 	lwi	r3,r19,00000008
@@ -3364,7 +3364,7 @@ l00003F48:
 	swi	r22,r19,00000008
 
 l00003F7C:
-	brlid	r15,00003AA4
+	brlid	r15,fn00003AA4
 	nop
 	xori	r3,r3,FFFFFFFF
 	beqi	r3,00003FC0
@@ -3383,7 +3383,7 @@ l00003F9C:
 l00003FA8:
 	lwi	r6,r19,00000044
 	addk	r5,r19,r0
-	brlid	r15,00003C74
+	brlid	r15,fn00003C74
 	swi	r0,r19,00000048
 	xori	r3,r3,FFFFFFFF
 	bnei	r3,00003F08
@@ -3406,7 +3406,7 @@ l00003FC8:
 	addik	r1,r1,00000034
 
 l00003FEC:
-	brlid	r15,00003964
+	brlid	r15,fn00003964
 	nop
 	xori	r3,r3,FFFFFFFF
 	bnei	r3,00003F00
@@ -3460,7 +3460,7 @@ l0000406C:
 
 l00004070:
 	imm	00000001
-	brlid	r15,0001908C
+	brlid	r15,fn0001908C
 	lwi	r5,r19,00000010
 	bgei	r3,00004048
 
@@ -3469,13 +3469,13 @@ l00004080:
 	addik	r7,r0,00019D24
 	addk	r5,r19,r0
 	addik	r6,r0,FFFFFFFF
-	brlid	r15,00001A68
+	brlid	r15,fn00001A68
 	addk	r21,r0,r0
 	brid	00003FC8
 	addk	r3,r21,r0
 
 l000040A0:
-	brlid	r15,00003AA4
+	brlid	r15,fn00003AA4
 	addk	r5,r19,r0
 	xori	r3,r3,FFFFFFFF
 	beqi	r3,00003FC0
@@ -3495,7 +3495,7 @@ l000040CC:
 	addk	r6,r25,r0
 
 l000040D0:
-	brlid	r15,00008E80
+	brlid	r15,fn00008E80
 	addk	r5,r24,r0
 	xori	r3,r3,FFFFFFFE
 	beqi	r3,0000419C
@@ -3541,7 +3541,7 @@ l00004138:
 
 l0000413C:
 	imm	00000001
-	brlid	r15,0001908C
+	brlid	r15,fn0001908C
 	lwi	r5,r19,00000010
 	bgei	r3,00004110
 
@@ -3549,7 +3549,7 @@ l0000414C:
 	bri	00004080
 
 l00004150:
-	brlid	r15,00003964
+	brlid	r15,fn00003964
 	addk	r5,r19,r0
 	xori	r3,r3,FFFFFFFF
 	bnei	r3,00004024
@@ -3572,7 +3572,7 @@ l00004178:
 	addk	r5,r24,r0
 	swi	r3,r19,00000060
 	swi	r22,r19,00000064
-	brlid	r15,00008E80
+	brlid	r15,fn00008E80
 	swi	r3,r19,00000004
 	xori	r3,r3,FFFFFFFE
 	bnei	r3,000040E0
@@ -3582,7 +3582,7 @@ l0000419C:
 	addik	r7,r0,00019D40
 	addk	r5,r19,r0
 	addik	r6,r0,FFFFFFFE
-	brlid	r15,00001A68
+	brlid	r15,fn00001A68
 	addk	r21,r3,r0
 	brid	00003FC8
 	addk	r3,r21,r0
@@ -3613,7 +3613,7 @@ l000041E0:
 	swi	r15,r1,00000000
 
 l000041EC:
-	brlid	r15,00003EC8
+	brlid	r15,fn00003EC8
 	nop
 
 l000041F4:
@@ -3633,7 +3633,7 @@ l00004210:
 	imm	00000001
 	addik	r7,r0,00019D68
 	addik	r6,r0,FFFFFFFD
-	brlid	r15,00001A68
+	brlid	r15,fn00001A68
 	swi	r3,r1,0000001C
 	brid	000041F4
 	lwi	r3,r1,0000001C
@@ -3997,7 +3997,7 @@ l000055AC:
 	addk	r6,r24,r0
 
 l000055BC:
-	brlid	r15,00008E80
+	brlid	r15,fn00008E80
 	addk	r5,r21,r0
 	xori	r4,r3,FFFFFFFE
 	beqi	r4,000057C4
@@ -4045,7 +4045,7 @@ l0000562C:
 
 l00005630:
 	imm	00000001
-	brlid	r15,0001908C
+	brlid	r15,fn0001908C
 	lwi	r5,r19,00000010
 	bgeid	r3,00005604
 	addk	r5,r19,r0
@@ -4053,7 +4053,7 @@ l00005630:
 l00005644:
 	imm	00000001
 	addik	r7,r0,00019D24
-	brlid	r15,00001A68
+	brlid	r15,fn00001A68
 	addik	r6,r0,FFFFFFFF
 	lwi	r22,r19,0000004C
 
@@ -4069,27 +4069,27 @@ l00005664:
 	bnei	r3,00005680
 
 l0000566C:
-	brlid	r15,0000B324
+	brlid	r15,fn0000B324
 	addk	r5,r21,r0
 	imm	00000001
-	brlid	r15,000188F0
+	brlid	r15,fn000188F0
 	lwi	r5,r19,00000024
 
 l00005680:
 	imm	00000001
-	brlid	r15,000188F0
+	brlid	r15,fn000188F0
 	lwi	r5,r19,00000020
 	addk	r7,r0,r0
 
 l00005690:
 	addk	r6,r7,r0
-	brlid	r15,00001A68
+	brlid	r15,fn00001A68
 	addk	r5,r19,r0
 	imm	00000001
-	brlid	r15,000188F0
+	brlid	r15,fn000188F0
 	lwi	r5,r19,00000014
 	imm	00000001
-	brlid	r15,00019150
+	brlid	r15,fn00019150
 	lwi	r5,r19,00000010
 	xori	r4,r3,FFFFFFFF
 	beqid	r4,000056C4
@@ -4100,7 +4100,7 @@ l000056C0:
 
 l000056C4:
 	imm	00000001
-	brlid	r15,000188F0
+	brlid	r15,fn000188F0
 	swi	r3,r1,0000001C
 	lwi	r3,r1,0000001C
 
@@ -4143,7 +4143,7 @@ l00005734:
 
 l00005738:
 	imm	00000001
-	brlid	r15,0001908C
+	brlid	r15,fn0001908C
 	lwi	r5,r19,00000010
 	bgeid	r3,00005710
 	addk	r5,r19,r0
@@ -4151,14 +4151,14 @@ l00005738:
 l0000574C:
 	imm	00000001
 	addik	r7,r0,00019D24
-	brlid	r15,00001A68
+	brlid	r15,fn00001A68
 	addik	r6,r0,FFFFFFFF
 	brid	00005658
 	lwi	r22,r19,0000004C
 
 l00005764:
 	lwi	r6,r5,00000044
-	brlid	r15,00003C74
+	brlid	r15,fn00003C74
 	swi	r3,r5,00000048
 	xori	r3,r3,FFFFFFFF
 	bnei	r3,00005574
@@ -4170,7 +4170,7 @@ l00005778:
 	addik	r21,r19,00000054
 
 l00005788:
-	brlid	r15,00003964
+	brlid	r15,fn00003964
 	addk	r5,r19,r0
 	xori	r3,r3,FFFFFFFF
 	bnei	r3,00005584
@@ -4198,13 +4198,13 @@ l000057C4:
 	imm	00000001
 	addik	r7,r0,00019D40
 	addk	r5,r19,r0
-	brlid	r15,00001A68
+	brlid	r15,fn00001A68
 	addik	r6,r0,FFFFFFFE
 	brid	00005658
 	lwi	r22,r19,0000004C
 
 l000057E0:
-	brlid	r15,00008234
+	brlid	r15,fn00008234
 	addk	r5,r21,r0
 	brid	0000565C
 	lwi	r3,r19,00000018
@@ -4574,7 +4574,7 @@ l00005BD0:
 	addk	r5,r4,r0
 	lwi	r6,r27,00000000
 	imm	00000001
-	brlid	r15,00018C34
+	brlid	r15,fn00018C34
 	swi	r3,r27,00000004
 	addk	r4,r3,r0
 	lwi	r3,r27,0000001C
@@ -4698,7 +4698,7 @@ l00005D5C:
 	addk	r7,r22,r0
 	addk	r5,r5,r21
 	imm	00000001
-	brlid	r15,00018C64
+	brlid	r15,fn00018C64
 	addk	r21,r21,r22
 	swi	r21,r19,000016C0
 
@@ -4723,7 +4723,7 @@ l00005DA8:
 	rsubk	r7,r26,r25
 	addk	r5,r6,r0
 	imm	00000001
-	brlid	r15,00018C34
+	brlid	r15,fn00018C34
 	addk	r6,r6,r25
 	lwi	r8,r19,00000070
 	lwi	r7,r19,0000006C
@@ -4798,7 +4798,7 @@ l00005E78:
 	addk	r7,r28,r0
 	addk	r6,r4,r0
 	imm	00000000
-	brlid	r15,00015318
+	brlid	r15,fn00015318
 	lwi	r5,r27,00000030
 	brid	00005C14
 	swi	r3,r27,00000030
@@ -4806,7 +4806,7 @@ l00005E78:
 l00005E94:
 	addk	r6,r4,r0
 	imm	00000001
-	brlid	r15,00017044
+	brlid	r15,fn00017044
 	lwi	r5,r27,00000030
 	brid	00005C14
 	swi	r3,r27,00000030
@@ -4830,7 +4830,7 @@ l00005ECC:
 	addk	r7,r21,r0
 	addk	r6,r0,r0
 	imm	00000001
-	brlid	r15,00018C64
+	brlid	r15,fn00018C64
 	addk	r5,r3,r5
 	lwi	r4,r19,000016C0
 	addk	r4,r4,r21
@@ -4843,7 +4843,7 @@ l00005EF4:
 	addk	r7,r22,r0
 	addk	r5,r5,r21
 	imm	00000001
-	brlid	r15,00018C64
+	brlid	r15,fn00018C64
 	addk	r21,r21,r22
 	brid	00005D78
 	swi	r21,r19,000016C0
@@ -5090,7 +5090,7 @@ l00006244:
 	addk	r6,r7,r0
 	addk	r8,r24,r0
 	imm	00000000
-	brlid	r15,0001371C
+	brlid	r15,fn0001371C
 	addk	r5,r19,r0
 	lwi	r5,r19,00000014
 	lwi	r4,r19,00000008
@@ -5132,7 +5132,7 @@ l00006244:
 	lwi	r31,r19,00000000
 	lwi	r27,r31,0000001C
 	imm	00000000
-	brlid	r15,00013990
+	brlid	r15,fn00013990
 	addk	r5,r27,r0
 	lwi	r3,r27,00000014
 	lwi	r22,r31,00000010
@@ -5149,7 +5149,7 @@ l00006314:
 l0000631C:
 	lwi	r6,r27,00000010
 	imm	00000001
-	brlid	r15,00018C34
+	brlid	r15,fn00018C34
 	lwi	r5,r31,0000000C
 	lwi	r9,r31,0000000C
 	lwi	r7,r27,00000010
@@ -5183,7 +5183,7 @@ l0000637C:
 	addk	r7,r23,r0
 	addk	r6,r6,r3
 	imm	00000001
-	brlid	r15,00018C34
+	brlid	r15,fn00018C34
 	rsubk	r21,r23,r21
 	lwi	r22,r19,00000000
 	lwi	r6,r19,0000005C
@@ -5231,7 +5231,7 @@ l00006414:
 	addk	r7,r27,r0
 	addk	r5,r8,r5
 	imm	00000001
-	brlid	r15,00018C34
+	brlid	r15,fn00018C34
 	rsubk	r6,r27,r6
 	lwi	r3,r19,0000006C
 	lwi	r4,r19,0000002C
@@ -5351,7 +5351,7 @@ l00006588:
 	lwi	r6,r22,00000000
 	rsubk	r4,r23,r4
 	imm	00000001
-	brlid	r15,00018C34
+	brlid	r15,fn00018C34
 	swi	r4,r22,00000004
 	addk	r8,r3,r0
 	lwi	r3,r22,0000001C
@@ -5434,7 +5434,7 @@ l00006664:
 	addk	r7,r23,r0
 	addk	r6,r8,r0
 	imm	00000000
-	brlid	r15,00015318
+	brlid	r15,fn00015318
 	lwi	r5,r22,00000030
 	brid	000065C4
 	swi	r3,r22,00000030
@@ -5460,7 +5460,7 @@ l000066A0:
 	lwi	r6,r22,00000000
 	swi	r9,r22,00000004
 	imm	00000001
-	brlid	r15,00018C34
+	brlid	r15,fn00018C34
 	swi	r4,r1,00000024
 	addk	r8,r3,r0
 	lwi	r3,r22,0000001C
@@ -5587,7 +5587,7 @@ l000067E4:
 	addk	r8,r24,r0
 	addk	r7,r23,r0
 	imm	00000000
-	brlid	r15,0001371C
+	brlid	r15,fn0001371C
 	addk	r6,r3,r6
 	lwi	r21,r19,00000000
 	lwi	r3,r19,0000005C
@@ -5595,7 +5595,7 @@ l000067E4:
 	addk	r3,r3,r23
 	swi	r3,r19,0000005C
 	imm	00000000
-	brlid	r15,00013990
+	brlid	r15,fn00013990
 	addk	r5,r22,r0
 	lwi	r3,r22,00000014
 	lwi	r19,r21,00000010
@@ -5612,7 +5612,7 @@ l00006830:
 l00006838:
 	lwi	r6,r22,00000010
 	imm	00000001
-	brlid	r15,00018C34
+	brlid	r15,fn00018C34
 	lwi	r5,r21,0000000C
 	lwi	r7,r21,0000000C
 	lwi	r6,r22,00000010
@@ -5645,7 +5645,7 @@ l00006894:
 l0000689C:
 	addk	r6,r8,r0
 	imm	00000001
-	brlid	r15,00017044
+	brlid	r15,fn00017044
 	lwi	r5,r22,00000030
 	brid	000065C4
 	swi	r3,r22,00000030
@@ -5657,7 +5657,7 @@ l000068B4:
 	addik	r4,r0,00000002
 	swi	r4,r19,000016B0
 	imm	00000001
-	brlid	r15,00018C34
+	brlid	r15,fn00018C34
 	rsubk	r6,r3,r6
 	lwi	r3,r19,0000002C
 	swi	r3,r19,0000006C
@@ -5678,7 +5678,7 @@ l000068F0:
 	swi	r6,r19,0000005C
 	swi	r3,r19,0000006C
 	imm	00000001
-	brlid	r15,00018C34
+	brlid	r15,fn00018C34
 	addk	r6,r4,r8
 	lwi	r3,r19,000016B0
 	addik	r4,r0,00000001
@@ -5706,7 +5706,7 @@ l00006950:
 	addk	r5,r8,r0
 	swi	r4,r19,0000006C
 	imm	00000001
-	brlid	r15,00018C34
+	brlid	r15,fn00018C34
 	addk	r6,r8,r3
 	lwi	r3,r19,000016B0
 	addik	r4,r0,00000001
@@ -5745,7 +5745,7 @@ l000069C0:
 	addk	r7,r4,r0
 	addk	r6,r8,r0
 	imm	00000000
-	brlid	r15,00015318
+	brlid	r15,fn00015318
 	lwi	r5,r22,00000030
 	swi	r3,r22,00000030
 	brid	000066DC
@@ -5755,7 +5755,7 @@ l000069E0:
 	lwi	r5,r22,00000030
 	addk	r6,r8,r0
 	imm	00000001
-	brlid	r15,00017044
+	brlid	r15,fn00017044
 	swi	r4,r1,00000024
 	swi	r3,r22,00000030
 	brid	000066DC
@@ -6258,14 +6258,14 @@ l000081A0:
 	addk	r6,r7,r0
 	addk	r5,r7,r0
 	imm	00000000
-	brlid	r15,00015318
+	brlid	r15,fn00015318
 	swi	r4,r21,00000004
 	addk	r5,r21,r0
 
 l000081B8:
 	swi	r3,r19,00000030
 	imm	00000000
-	brlid	r15,00013674
+	brlid	r15,fn00013674
 	swi	r0,r21,00000028
 	lwi	r15,r1,00000000
 	lwi	r19,r1,0000001C
@@ -6289,7 +6289,7 @@ l000081F8:
 	addk	r5,r7,r0
 	addik	r3,r0,00000039
 	imm	00000000
-	brlid	r15,00017044
+	brlid	r15,fn00017044
 	swi	r3,r21,00000004
 	brid	000081B8
 	addk	r5,r21,r0
@@ -6442,14 +6442,14 @@ l000083CC:
 	addk	r6,r7,r0
 	addk	r5,r7,r0
 	imm	00000000
-	brlid	r15,00015318
+	brlid	r15,fn00015318
 	swi	r4,r21,00000004
 	addk	r5,r21,r0
 
 l000083E4:
 	swi	r3,r19,00000030
 	imm	00000000
-	brlid	r15,00013674
+	brlid	r15,fn00013674
 	swi	r0,r21,00000028
 	lwi	r19,r19,0000001C
 	addk	r6,r0,r0
@@ -6464,7 +6464,7 @@ l000083E4:
 	addk	r7,r3,r0
 	swi	r4,r19,0000003C
 	imm	00000001
-	brlid	r15,00018C64
+	brlid	r15,fn00018C64
 	sh	r0,r3,r8
 	lwi	r4,r19,00000084
 	addik	r5,r0,00000002
@@ -6512,7 +6512,7 @@ l000084C0:
 	addk	r5,r7,r0
 	addik	r3,r0,00000039
 	imm	00000000
-	brlid	r15,00017044
+	brlid	r15,fn00017044
 	swi	r3,r21,00000004
 	brid	000083E4
 	addk	r5,r21,r0
@@ -6949,7 +6949,7 @@ l00009190:
 l00009198:
 	addik	r6,r0,0000001F
 	imm	00000000
-	brlid	r15,00018030
+	brlid	r15,fn00018030
 	addik	r22,r22,0000001F
 	lwi	r4,r19,00000014
 	lwi	r5,r19,00000008
@@ -7053,14 +7053,14 @@ l00009204:
 l00009328:
 	addk	r5,r7,r0
 	imm	00000000
-	brlid	r15,00015318
+	brlid	r15,fn00015318
 	addk	r6,r7,r0
 	lwi	r25,r21,0000001C
 	swi	r3,r21,00000030
 	addik	r5,r0,00000071
 	swi	r5,r19,00000004
 	imm	00000000
-	brlid	r15,00013990
+	brlid	r15,fn00013990
 	addk	r5,r25,r0
 	lwi	r3,r25,00000014
 	lwi	r22,r21,00000010
@@ -7157,7 +7157,7 @@ l00009428:
 	addk	r6,r8,r0
 	addk	r5,r19,r0
 	imm	00000000
-	brlid	r15,0001371C
+	brlid	r15,fn0001371C
 	xori	r23,r23,00000003
 	beqid	r23,0000AF30
 	addk	r6,r23,r0
@@ -7167,7 +7167,7 @@ l00009448:
 
 l0000944C:
 	imm	00000000
-	brlid	r15,00013990
+	brlid	r15,fn00013990
 	addk	r5,r23,r0
 	lwi	r3,r21,00000010
 	lwi	r22,r23,00000014
@@ -7184,7 +7184,7 @@ l0000946C:
 l00009474:
 	lwi	r6,r23,00000010
 	imm	00000000
-	brlid	r15,00018C34
+	brlid	r15,fn00018C34
 	lwi	r5,r21,0000000C
 	lwi	r7,r21,0000000C
 	lwi	r6,r23,00000010
@@ -7301,7 +7301,7 @@ l00009500:
 l00009610:
 	lwi	r23,r21,0000001C
 	imm	00000000
-	brlid	r15,00013990
+	brlid	r15,fn00013990
 	addk	r5,r23,r0
 	lwi	r3,r23,00000014
 	lwi	r22,r21,00000010
@@ -7318,7 +7318,7 @@ l00009634:
 l0000963C:
 	lwi	r6,r23,00000010
 	imm	00000000
-	brlid	r15,00018C34
+	brlid	r15,fn00018C34
 	lwi	r5,r21,0000000C
 	lwi	r7,r21,0000000C
 	lwi	r6,r23,00000010
@@ -7391,7 +7391,7 @@ l000096A4:
 
 l0000973C:
 	imm	00000000
-	brlid	r15,00013990
+	brlid	r15,fn00013990
 	addk	r5,r19,r0
 	lwi	r3,r21,00000010
 	lwi	r22,r19,00000014
@@ -7452,7 +7452,7 @@ l000097B0:
 l000097C4:
 	lwi	r6,r19,00000010
 	imm	00000000
-	brlid	r15,00018C34
+	brlid	r15,fn00018C34
 	lwi	r5,r21,0000000C
 	lwi	r7,r21,0000000C
 	lwi	r6,r19,00000010
@@ -7486,7 +7486,7 @@ l00009824:
 l0000982C:
 	addk	r5,r7,r0
 	imm	00000000
-	brlid	r15,00017044
+	brlid	r15,fn00017044
 	addk	r6,r7,r0
 	lwi	r4,r19,00000014
 	lwi	r5,r19,00000008
@@ -7683,7 +7683,7 @@ l00009AC4:
 	lwi	r7,r19,00000014
 	lwi	r6,r19,00000008
 	imm	00000000
-	brlid	r15,00017044
+	brlid	r15,fn00017044
 	lwi	r5,r21,00000030
 	lwi	r4,r19,0000001C
 	swi	r3,r21,00000030
@@ -7695,7 +7695,7 @@ l00009AE4:
 	swi	r3,r19,00000004
 
 l00009AF0:
-	brlid	r15,00005F20
+	brlid	r15,fn00005F20
 	addk	r5,r19,r0
 	brid	000093F8
 	addik	r4,r3,FFFFFFFE
@@ -7718,7 +7718,7 @@ l00009B18:
 l00009B24:
 	lwi	r6,r25,00000010
 	imm	00000000
-	brlid	r15,00018C34
+	brlid	r15,fn00018C34
 	lwi	r5,r21,0000000C
 	lwi	r7,r21,0000000C
 	lwi	r6,r25,00000010
@@ -7778,14 +7778,14 @@ l00009BC4:
 l00009BCC:
 	addk	r5,r19,r0
 	imm	00000000
-	brlid	r15,00013C90
+	brlid	r15,fn00013C90
 	rsubk	r7,r7,r3
 	lwi	r26,r19,00000000
 	lwi	r4,r19,0000006C
 	lwi	r27,r26,0000001C
 	swi	r4,r19,0000005C
 	imm	00000000
-	brlid	r15,00013990
+	brlid	r15,fn00013990
 	addk	r5,r27,r0
 	lwi	r3,r27,00000014
 	lwi	r22,r26,00000010
@@ -7802,7 +7802,7 @@ l00009C0C:
 l00009C14:
 	lwi	r6,r27,00000010
 	imm	00000000
-	brlid	r15,00018C34
+	brlid	r15,fn00018C34
 	lwi	r5,r26,0000000C
 	lwi	r7,r26,0000000C
 	lwi	r6,r27,00000010
@@ -7870,7 +7870,7 @@ l00009CF4:
 	addk	r5,r19,r0
 
 l00009CFC:
-	brlid	r15,00005B0C
+	brlid	r15,fn00005B0C
 	nop
 	lwi	r3,r19,00000074
 	bnei	r3,00009C80
@@ -7901,14 +7901,14 @@ l00009D38:
 	addk	r5,r19,r0
 	addk	r8,r0,r0
 	imm	00000000
-	brlid	r15,00013C90
+	brlid	r15,fn00013C90
 	rsubk	r7,r3,r7
 	lwi	r25,r19,00000000
 	lwi	r4,r19,0000006C
 	lwi	r26,r25,0000001C
 	swi	r4,r19,0000005C
 	imm	00000000
-	brlid	r15,00013990
+	brlid	r15,fn00013990
 	addk	r5,r26,r0
 	lwi	r3,r26,00000014
 	lwi	r22,r25,00000010
@@ -7925,7 +7925,7 @@ l00009D80:
 l00009D88:
 	lwi	r6,r26,00000010
 	imm	00000000
-	brlid	r15,00018C34
+	brlid	r15,fn00018C34
 	lwi	r5,r25,0000000C
 	lwi	r7,r25,0000000C
 	lwi	r6,r26,00000010
@@ -8027,7 +8027,7 @@ l00009ED0:
 	addk	r7,r22,r0
 	addk	r6,r3,r6
 	imm	00000000
-	brlid	r15,00018C34
+	brlid	r15,fn00018C34
 	addk	r5,r5,r25
 	lwi	r3,r19,0000001C
 	lwi	r4,r19,0000000C
@@ -8047,7 +8047,7 @@ l00009F14:
 	lwi	r6,r19,00000008
 	lwi	r5,r21,00000030
 	imm	00000000
-	brlid	r15,00017044
+	brlid	r15,fn00017044
 	addk	r6,r6,r25
 	swi	r3,r21,00000030
 
@@ -8057,7 +8057,7 @@ l00009F2C:
 	addk	r5,r25,r0
 	addk	r22,r3,r22
 	imm	00000000
-	brlid	r15,00013990
+	brlid	r15,fn00013990
 	swi	r22,r19,00000020
 	lwi	r3,r25,00000014
 	lwi	r22,r21,00000010
@@ -8074,7 +8074,7 @@ l00009F5C:
 l00009F64:
 	lwi	r6,r25,00000010
 	imm	00000000
-	brlid	r15,00018C34
+	brlid	r15,fn00018C34
 	lwi	r5,r21,0000000C
 	lwi	r7,r21,0000000C
 	lwi	r6,r25,00000010
@@ -8127,14 +8127,14 @@ l00009FF0:
 	addk	r5,r19,r0
 	addik	r8,r0,00000001
 	imm	00000000
-	brlid	r15,00013C90
+	brlid	r15,fn00013C90
 	rsubk	r7,r3,r7
 	lwi	r23,r19,00000000
 	lwi	r4,r19,0000006C
 	lwi	r24,r23,0000001C
 	swi	r4,r19,0000005C
 	imm	00000000
-	brlid	r15,00013990
+	brlid	r15,fn00013990
 	addk	r5,r24,r0
 	lwi	r3,r24,00000014
 	lwi	r22,r23,00000010
@@ -8151,7 +8151,7 @@ l0000A038:
 l0000A040:
 	lwi	r6,r24,00000010
 	imm	00000000
-	brlid	r15,00018C34
+	brlid	r15,fn00018C34
 	lwi	r5,r23,0000000C
 	lwi	r7,r23,0000000C
 	lwi	r6,r24,00000010
@@ -8204,7 +8204,7 @@ l0000A0C8:
 	addk	r7,r26,r0
 	addk	r6,r3,r6
 	imm	00000000
-	brlid	r15,00018C34
+	brlid	r15,fn00018C34
 	addk	r5,r5,r25
 	lwi	r4,r19,0000001C
 	lwi	r7,r19,00000014
@@ -8224,7 +8224,7 @@ l0000A108:
 	lwi	r6,r19,00000008
 	lwi	r5,r21,00000030
 	imm	00000000
-	brlid	r15,00017044
+	brlid	r15,fn00017044
 	addk	r6,r6,r25
 	lwi	r4,r19,0000001C
 	swi	r3,r21,00000030
@@ -8282,14 +8282,14 @@ l0000A1A0:
 	lwi	r3,r19,00000008
 	lwi	r5,r21,00000030
 	imm	00000000
-	brlid	r15,00017044
+	brlid	r15,fn00017044
 	addk	r6,r3,r6
 	swi	r3,r21,00000030
 
 l0000A1B8:
 	lwi	r26,r21,0000001C
 	imm	00000000
-	brlid	r15,00013990
+	brlid	r15,fn00013990
 	addk	r5,r26,r0
 	lwi	r3,r26,00000014
 	lwi	r22,r21,00000010
@@ -8306,7 +8306,7 @@ l0000A1DC:
 l0000A1E4:
 	lwi	r6,r26,00000010
 	imm	00000000
-	brlid	r15,00018C34
+	brlid	r15,fn00018C34
 	lwi	r5,r21,0000000C
 	lwi	r7,r21,0000000C
 	lwi	r6,r26,00000010
@@ -8354,7 +8354,7 @@ l0000A270:
 	lwi	r3,r19,00000008
 	lwi	r5,r21,00000030
 	imm	00000000
-	brlid	r15,00017044
+	brlid	r15,fn00017044
 	addk	r6,r3,r6
 	lwi	r4,r19,0000001C
 	swi	r3,r21,00000030
@@ -8412,14 +8412,14 @@ l0000A308:
 	lwi	r3,r19,00000008
 	lwi	r5,r21,00000030
 	imm	00000000
-	brlid	r15,00017044
+	brlid	r15,fn00017044
 	addk	r6,r3,r6
 	swi	r3,r21,00000030
 
 l0000A320:
 	lwi	r26,r21,0000001C
 	imm	00000000
-	brlid	r15,00013990
+	brlid	r15,fn00013990
 	addk	r5,r26,r0
 	lwi	r3,r26,00000014
 	lwi	r22,r21,00000010
@@ -8436,7 +8436,7 @@ l0000A344:
 l0000A34C:
 	lwi	r6,r26,00000010
 	imm	00000000
-	brlid	r15,00018C34
+	brlid	r15,fn00018C34
 	lwi	r5,r21,0000000C
 	lwi	r7,r21,0000000C
 	lwi	r6,r26,00000010
@@ -8495,7 +8495,7 @@ l0000A3F0:
 	lwi	r5,r21,00000030
 	rsubk	r7,r6,r7
 	imm	00000000
-	brlid	r15,00017044
+	brlid	r15,fn00017044
 	addk	r6,r3,r6
 	lwi	r4,r19,0000001C
 	swi	r3,r21,00000030
@@ -8520,7 +8520,7 @@ l0000A420:
 l0000A434:
 	lwi	r25,r21,0000001C
 	imm	00000000
-	brlid	r15,00013990
+	brlid	r15,fn00013990
 	addk	r5,r25,r0
 	lwi	r3,r25,00000014
 	lwi	r22,r21,00000010
@@ -8537,7 +8537,7 @@ l0000A458:
 l0000A460:
 	lwi	r6,r25,00000010
 	imm	00000000
-	brlid	r15,00018C34
+	brlid	r15,fn00018C34
 	lwi	r5,r21,0000000C
 	lwi	r7,r21,0000000C
 	lwi	r6,r25,00000010
@@ -8588,7 +8588,7 @@ l0000A4C0:
 	srl	r8,r8
 	srl	r8,r8
 	imm	00000000
-	brlid	r15,00017044
+	brlid	r15,fn00017044
 	sb	r8,r3,r4
 	swi	r3,r21,00000030
 
@@ -8597,7 +8597,7 @@ l0000A528:
 	addik	r4,r0,00000071
 	swi	r4,r19,00000004
 	imm	00000000
-	brlid	r15,00013990
+	brlid	r15,fn00013990
 	addk	r5,r25,r0
 	lwi	r3,r25,00000014
 	lwi	r22,r21,00000010
@@ -8614,7 +8614,7 @@ l0000A554:
 l0000A55C:
 	lwi	r6,r25,00000010
 	imm	00000000
-	brlid	r15,00018C34
+	brlid	r15,fn00018C34
 	lwi	r5,r21,0000000C
 	lwi	r7,r21,0000000C
 	lwi	r6,r25,00000010
@@ -8724,7 +8724,7 @@ l0000A680:
 	addik	r3,r0,00000071
 	swi	r3,r19,00000004
 	imm	00000000
-	brlid	r15,00013990
+	brlid	r15,fn00013990
 	addk	r5,r25,r0
 	lwi	r3,r25,00000014
 	lwi	r22,r21,00000010
@@ -8741,7 +8741,7 @@ l0000A6D8:
 l0000A6E0:
 	lwi	r6,r25,00000010
 	imm	00000000
-	brlid	r15,00018C34
+	brlid	r15,fn00018C34
 	lwi	r5,r21,0000000C
 	lwi	r7,r21,0000000C
 	lwi	r6,r25,00000010
@@ -8782,7 +8782,7 @@ l0000A750:
 
 l0000A758:
 	imm	00000000
-	brlid	r15,00013A60
+	brlid	r15,fn00013A60
 	addk	r5,r19,r0
 	brid	0000944C
 	lwi	r23,r21,0000001C
@@ -8908,14 +8908,14 @@ l0000A8D8:
 	addk	r5,r19,r0
 	addk	r8,r0,r0
 	imm	00000000
-	brlid	r15,00013C90
+	brlid	r15,fn00013C90
 	rsubk	r7,r7,r4
 	lwi	r27,r19,00000000
 	lwi	r5,r19,0000006C
 	lwi	r30,r27,0000001C
 	swi	r5,r19,0000005C
 	imm	00000000
-	brlid	r15,00013990
+	brlid	r15,fn00013990
 	addk	r5,r30,r0
 	lwi	r3,r30,00000014
 	lwi	r22,r27,00000010
@@ -8932,7 +8932,7 @@ l0000A91C:
 l0000A924:
 	lwi	r6,r30,00000010
 	imm	00000000
-	brlid	r15,00018C34
+	brlid	r15,fn00018C34
 	lwi	r5,r27,0000000C
 	lwi	r7,r27,0000000C
 	lwi	r6,r30,00000010
@@ -8965,7 +8965,7 @@ l0000A988:
 	lwi	r3,r21,00000010
 
 l0000A990:
-	brlid	r15,00005B0C
+	brlid	r15,fn00005B0C
 	addk	r5,r19,r0
 	lwi	r6,r19,00000074
 	cmpu	r18,r6,r29
@@ -9209,14 +9209,14 @@ l0000AC70:
 	addk	r5,r19,r0
 	addk	r8,r0,r0
 	imm	00000000
-	brlid	r15,00013C90
+	brlid	r15,fn00013C90
 	rsubk	r7,r3,r7
 	lwi	r25,r19,00000000
 	lwi	r5,r19,0000006C
 	lwi	r26,r25,0000001C
 	swi	r5,r19,0000005C
 	imm	00000000
-	brlid	r15,00013990
+	brlid	r15,fn00013990
 	addk	r5,r26,r0
 	lwi	r3,r26,00000014
 	lwi	r22,r25,00000010
@@ -9233,7 +9233,7 @@ l0000ACB8:
 l0000ACC0:
 	lwi	r6,r26,00000010
 	imm	00000000
-	brlid	r15,00018C34
+	brlid	r15,fn00018C34
 	lwi	r5,r25,0000000C
 	lwi	r7,r25,0000000C
 	lwi	r6,r26,00000010
@@ -9356,14 +9356,14 @@ l0000AE5C:
 	addk	r5,r19,r0
 	addik	r8,r0,00000001
 	imm	00000000
-	brlid	r15,00013C90
+	brlid	r15,fn00013C90
 	rsubk	r7,r3,r7
 	lwi	r23,r19,00000000
 	lwi	r3,r19,0000006C
 	lwi	r24,r23,0000001C
 	swi	r3,r19,0000005C
 	imm	00000000
-	brlid	r15,00013990
+	brlid	r15,fn00013990
 	addk	r5,r24,r0
 	lwi	r3,r24,00000014
 	lwi	r22,r23,00000010
@@ -9380,7 +9380,7 @@ l0000AEA4:
 l0000AEAC:
 	lwi	r6,r24,00000010
 	imm	00000000
-	brlid	r15,00018C34
+	brlid	r15,fn00018C34
 	lwi	r5,r23,0000000C
 	lwi	r7,r23,0000000C
 	lwi	r6,r24,00000010
@@ -9431,7 +9431,7 @@ l0000AF30:
 	addk	r7,r3,r0
 	addk	r5,r4,r0
 	imm	00000000
-	brlid	r15,00018C64
+	brlid	r15,fn00018C64
 	sh	r23,r3,r4
 	lwi	r3,r19,00000074
 	bnei	r3,00009448
@@ -9623,7 +9623,7 @@ l0000B174:
 	addk	r5,r21,r0
 
 l0000B178:
-	brlid	r15,00008E80
+	brlid	r15,fn00008E80
 	addik	r6,r0,00000005
 	xori	r3,r3,FFFFFFFE
 	beqid	r3,0000B010
@@ -9663,7 +9663,7 @@ l0000B1D0:
 
 l0000B1D4:
 	imm	00000000
-	brlid	r15,00018C64
+	brlid	r15,fn00018C64
 	addk	r6,r0,r0
 	swi	r0,r19,000016B0
 
@@ -10174,7 +10174,7 @@ l0000B788:
 	swi	r24,r19,00000030
 	swi	r27,r19,0000002C
 	imm	00000000
-	brlid	r15,00017F88
+	brlid	r15,fn00017F88
 	swi	r3,r19,0000004C
 	lwi	r5,r21,00000028
 	lwi	r4,r21,00000020
@@ -10248,7 +10248,7 @@ l0000B88C:
 	swi	r22,r19,00000088
 	swi	r6,r19,000016A4
 	swi	r23,r19,00000084
-	brlid	r15,00008008
+	brlid	r15,fn00008008
 	sbi	r3,r19,00000024
 	bneid	r3,0000B95C
 	addk	r22,r3,r0
@@ -10267,7 +10267,7 @@ l0000B8C0:
 	addk	r5,r8,r0
 	swi	r4,r19,0000003C
 	imm	00000000
-	brlid	r15,00018C64
+	brlid	r15,fn00018C64
 	sh	r22,r3,r8
 	lwi	r4,r19,00000084
 	addik	r5,r0,00000002
@@ -10352,7 +10352,7 @@ l0000B9E8:
 	swi	r5,r19,00000004
 	addk	r5,r21,r0
 	swi	r3,r21,00000018
-	brlid	r15,0000B324
+	brlid	r15,fn0000B324
 	addik	r22,r0,FFFFFFFC
 	brid	0000B960
 	addk	r3,r22,r0
@@ -10817,7 +10817,7 @@ l0000C8BC:
 
 l0000C8C0:
 	swi	r4,r21,0000000C
-	brlid	r15,0000C324
+	brlid	r15,fn0000C324
 	swi	r22,r21,00000028
 	beqid	r3,0000C8F4
 	lwi	r15,r1,00000000
@@ -15460,7 +15460,7 @@ l00013058:
 	swi	r4,r1,00000040
 	lwi	r29,r8,00000008
 	lwi	r28,r8,00000010
-	brlid	r15,00018C64
+	brlid	r15,fn00018C64
 	addk	r25,r31,r25
 	addik	r3,r0,0000023C
 	cmp	r18,r23,r3
@@ -15528,7 +15528,7 @@ l00013178:
 
 l00013184:
 	lhu	r25,r30,r31
-	brlid	r15,00017F30
+	brlid	r15,fn00017F30
 	addk	r6,r25,r0
 	lwi	r4,r1,0000003C
 	lwi	r9,r28,000016A8
@@ -15537,7 +15537,7 @@ l00013184:
 	lhui	r5,r30,00000002
 	addk	r3,r9,r3
 	swi	r3,r28,000016A8
-	brlid	r15,00017F30
+	brlid	r15,fn00017F30
 	addk	r5,r5,r22
 	lwi	r4,r28,000016AC
 	addk	r3,r4,r3
@@ -15837,7 +15837,7 @@ l0001351C:
 	addik	r23,r23,FFFFFFFC
 
 l00013534:
-	brlid	r15,00017F30
+	brlid	r15,fn00017F30
 	lhu	r6,r3,r31
 	lwi	r4,r19,000016A8
 	addk	r3,r4,r3
@@ -15924,7 +15924,7 @@ l00013620:
 	addk	r6,r6,r3
 
 l00013628:
-	brlid	r15,00017F30
+	brlid	r15,fn00017F30
 	lhu	r5,r4,r31
 	lwi	r4,r19,000016A8
 	addk	r3,r4,r3
@@ -16124,7 +16124,7 @@ l000137C0:
 	lwi	r5,r19,00000008
 	lwi	r3,r19,00000014
 	addk	r7,r21,r0
-	brlid	r15,00018C34
+	brlid	r15,fn00018C34
 	addk	r5,r5,r3
 	lwi	r3,r19,00000014
 	addk	r21,r3,r21
@@ -16529,10 +16529,10 @@ l00013D70:
 
 l00013D84:
 	addk	r5,r22,r0
-	brlid	r15,00012A34
+	brlid	r15,fn00012A34
 	addik	r6,r22,00000B18
 	addk	r5,r22,r0
-	brlid	r15,00012A34
+	brlid	r15,fn00012A34
 	addik	r6,r22,00000B24
 	lhui	r4,r22,00000096
 	beqid	r4,00014134
@@ -16682,7 +16682,7 @@ l00013F18:
 
 l00013F28:
 	addk	r5,r22,r0
-	brlid	r15,00012A34
+	brlid	r15,fn00012A34
 	addik	r6,r22,00000B30
 	lhui	r3,r22,00000ABA
 	bneid	r3,00014A5C
@@ -16797,7 +16797,7 @@ l0001404C:
 	addk	r8,r23,r0
 	addk	r7,r27,r0
 	addk	r6,r26,r0
-	brlid	r15,0001371C
+	brlid	r15,fn0001371C
 	addk	r5,r22,r0
 	addk	r3,r19,r0
 
@@ -17362,7 +17362,7 @@ l000146CC:
 	addik	r7,r0,0001AED8
 	imm	00000001
 	addik	r6,r0,0001AF50
-	brlid	r15,00012364
+	brlid	r15,fn00012364
 	addk	r5,r22,r0
 	brid	00014064
 	addk	r3,r19,r0
@@ -17469,15 +17469,15 @@ l00014818:
 
 l0001482C:
 	addk	r6,r19,r0
-	brlid	r15,0001185C
+	brlid	r15,fn0001185C
 	addk	r5,r22,r0
 	addk	r7,r24,r0
 	addk	r6,r21,r0
-	brlid	r15,0001185C
+	brlid	r15,fn0001185C
 	addk	r5,r22,r0
 	addk	r7,r21,r0
 	addk	r6,r19,r0
-	brlid	r15,00012364
+	brlid	r15,fn00012364
 	addk	r5,r22,r0
 	brid	00014064
 	addk	r3,r19,r0
@@ -17815,11 +17815,11 @@ l00014D50:
 
 l00014E1C:
 	addk	r5,r26,r0
-	brlid	r15,00018030
+	brlid	r15,fn00018030
 	addk	r6,r19,r0
 	addk	r5,r23,r0
 	addk	r6,r19,r0
-	brlid	r15,00018030
+	brlid	r15,fn00018030
 	addk	r26,r3,r0
 	cmpu	r18,r25,r21
 	bgeid	r18,00015084
@@ -17997,7 +17997,7 @@ l00015020:
 l00015028:
 	imm	00000000
 	addik	r6,r0,0000FFF1
-	brlid	r15,00018030
+	brlid	r15,fn00018030
 	addk	r5,r23,r0
 	addk	r4,r0,r3
 	addk	r4,r3,r3
@@ -18211,12 +18211,12 @@ l000152CC:
 l000152D8:
 	imm	00000000
 	addik	r6,r0,0000FFF1
-	brlid	r15,00018030
+	brlid	r15,fn00018030
 	addk	r5,r26,r0
 	addk	r5,r23,r0
 	imm	00000000
 	addik	r6,r0,0000FFF1
-	brlid	r15,00018030
+	brlid	r15,fn00018030
 	addk	r26,r3,r0
 	brid	00014E84
 	addk	r23,r3,r0
@@ -18241,7 +18241,7 @@ l00015310:
 fn00015318 proc
 	addik	r1,r1,FFFFFFE4
 	swi	r15,r1,00000000
-	brlid	r15,00014C9C
+	brlid	r15,fn00014C9C
 	nop
 	lwi	r15,r1,00000000
 	rtsd	r15,00000008
@@ -20127,7 +20127,7 @@ fn00017044 proc
 l00017048:
 	addik	r1,r1,FFFFFFE4
 	swi	r15,r1,00000000
-	brlid	r15,000156B4
+	brlid	r15,fn000156B4
 	nop
 	lwi	r15,r1,00000000
 	rtsd	r15,00000008
@@ -22676,7 +22676,7 @@ fn00019BC8 proc
 	addik	r1,r1,FFFFFFE4
 	swi	r15,r1,00000000
 	imm	00000001
-	brlid	r15,0002EB28
+	brlid	r15,fn0002EB28
 	nop
 	imm	00000001
 	lwi	r8,r0,00018EB8
@@ -22684,7 +22684,7 @@ fn00019BC8 proc
 	addik	r5,r0,000169C4
 	addik	r7,r0,0000000C
 	imm	00000001
-	brlid	r15,0002F128
+	brlid	r15,fn0002F128
 	addik	r6,r0,00000001
 	imm	00000001
 	lwi	r8,r0,00018EB8
@@ -22692,7 +22692,7 @@ fn00019BC8 proc
 	addik	r5,r0,000169D4
 	addik	r7,r0,00000025
 	imm	00000001
-	brlid	r15,0002F128
+	brlid	r15,fn0002F128
 	addik	r6,r0,00000001
 	imm	00000001
 	lwi	r8,r0,00018EB8
@@ -22700,7 +22700,7 @@ fn00019BC8 proc
 	addik	r5,r0,000169FC
 	addik	r7,r0,00000038
 	imm	00000001
-	brlid	r15,0002F128
+	brlid	r15,fn0002F128
 	addik	r6,r0,00000001
 	imm	00000001
 	lwi	r8,r0,00018EB8
@@ -22708,7 +22708,7 @@ fn00019BC8 proc
 	addik	r5,r0,00016A38
 	addik	r7,r0,00000035
 	imm	00000001
-	brlid	r15,0002F128
+	brlid	r15,fn0002F128
 	addik	r6,r0,00000001
 	imm	00000001
 	lwi	r8,r0,00018EB8
@@ -22716,7 +22716,7 @@ fn00019BC8 proc
 	addik	r5,r0,00016A70
 	addik	r7,r0,00000028
 	imm	00000001
-	brlid	r15,0002F128
+	brlid	r15,fn0002F128
 	addik	r6,r0,00000001
 	imm	00000001
 	lwi	r8,r0,00018EB8
@@ -22724,7 +22724,7 @@ fn00019BC8 proc
 	addik	r5,r0,00016A9C
 	addik	r7,r0,0000004D
 	imm	00000001
-	brlid	r15,0002F128
+	brlid	r15,fn0002F128
 	addik	r6,r0,00000001
 	imm	00000001
 	lwi	r8,r0,00018EB8
@@ -22732,7 +22732,7 @@ fn00019BC8 proc
 	addik	r5,r0,00016AEC
 	addik	r7,r0,0000002E
 	imm	00000001
-	brlid	r15,0002F128
+	brlid	r15,fn0002F128
 	addik	r6,r0,00000001
 	imm	00000001
 	lwi	r8,r0,00018EB8
@@ -22740,7 +22740,7 @@ fn00019BC8 proc
 	addik	r5,r0,00016B1C
 	addik	r7,r0,00000022
 	imm	00000001
-	brlid	r15,0002F128
+	brlid	r15,fn0002F128
 	addik	r6,r0,00000001
 	imm	00000001
 	lwi	r8,r0,00018EB8
@@ -22748,7 +22748,7 @@ fn00019BC8 proc
 	addik	r5,r0,00016B40
 	addik	r7,r0,00000037
 	imm	00000001
-	brlid	r15,0002F128
+	brlid	r15,fn0002F128
 	addik	r6,r0,00000001
 	imm	00000001
 	lwi	r8,r0,00018EB8
@@ -22756,7 +22756,7 @@ fn00019BC8 proc
 	addik	r5,r0,00016B78
 	addik	r7,r0,00000047
 	imm	00000001
-	brlid	r15,0002F128
+	brlid	r15,fn0002F128
 	addik	r6,r0,00000001
 	imm	00000001
 	lwi	r8,r0,00018EB8
@@ -22764,7 +22764,7 @@ fn00019BC8 proc
 	addik	r5,r0,00016BC0
 	addik	r7,r0,00000040
 	imm	00000001
-	brlid	r15,0002F128
+	brlid	r15,fn0002F128
 	addik	r6,r0,00000001
 	imm	00000001
 	lwi	r8,r0,00018EB8
@@ -22772,7 +22772,7 @@ fn00019BC8 proc
 	addik	r5,r0,00016C04
 	addik	r7,r0,00000021
 	imm	00000001
-	brlid	r15,0002F128
+	brlid	r15,fn0002F128
 	addik	r6,r0,00000001
 	imm	00000001
 	lwi	r8,r0,00018EB8
@@ -22780,7 +22780,7 @@ fn00019BC8 proc
 	addik	r5,r0,00016C28
 	addik	r7,r0,0000002C
 	imm	00000001
-	brlid	r15,0002F128
+	brlid	r15,fn0002F128
 	addik	r6,r0,00000001
 	imm	00000001
 	lwi	r8,r0,00018EB8
@@ -22788,7 +22788,7 @@ fn00019BC8 proc
 	addik	r5,r0,00016C58
 	addik	r7,r0,00000034
 	imm	00000001
-	brlid	r15,0002F128
+	brlid	r15,fn0002F128
 	addik	r6,r0,00000001
 	imm	00000001
 	lwi	r8,r0,00018EB8
@@ -22796,7 +22796,7 @@ fn00019BC8 proc
 	addik	r5,r0,00016C90
 	addik	r7,r0,0000001D
 	imm	00000001
-	brlid	r15,0002F128
+	brlid	r15,fn0002F128
 	addik	r6,r0,00000001
 	imm	00000001
 	lwi	r8,r0,00018EB8
@@ -22804,7 +22804,7 @@ fn00019BC8 proc
 	addik	r5,r0,00016CB0
 	addik	r7,r0,00000043
 	imm	00000001
-	brlid	r15,0002F128
+	brlid	r15,fn0002F128
 	addik	r6,r0,00000001
 	imm	00000001
 	lwi	r8,r0,00018EB8
@@ -22812,7 +22812,7 @@ fn00019BC8 proc
 	addik	r5,r0,00016CF4
 	addik	r7,r0,00000033
 	imm	00000001
-	brlid	r15,0002F128
+	brlid	r15,fn0002F128
 	addik	r6,r0,00000001
 	imm	00000001
 	lwi	r8,r0,00018EB8
@@ -22820,7 +22820,7 @@ fn00019BC8 proc
 	addik	r5,r0,00016D28
 	addik	r7,r0,0000002E
 	imm	00000001
-	brlid	r15,0002F128
+	brlid	r15,fn0002F128
 	addik	r6,r0,00000001
 	imm	00000001
 	lwi	r8,r0,00018EB8
@@ -22835,7 +22835,7 @@ fn00019BC8 proc
 ;;     00030140 (in fn0002FFD0)
 fn00019E48 proc
 	imm	00000001
-	brlid	r15,0002F128
+	brlid	r15,fn0002F128
 	addik	r6,r0,00000001
 	imm	00000001
 	lwi	r8,r0,00018EB8
@@ -22843,7 +22843,7 @@ fn00019E48 proc
 	addik	r5,r0,00016D84
 	addik	r7,r0,00000016
 	imm	00000001
-	brlid	r15,0002F128
+	brlid	r15,fn0002F128
 	addik	r6,r0,00000001
 	imm	00000001
 	addik	r5,r0,00016D9C
@@ -22851,10 +22851,10 @@ fn00019E48 proc
 	lwi	r8,r0,00018EB8
 	addik	r7,r0,00000038
 	imm	00000001
-	brlid	r15,0002F128
+	brlid	r15,fn0002F128
 	addik	r6,r0,00000001
 	imm	00000001
-	brlid	r15,0002F274
+	brlid	r15,fn0002F274
 	addik	r5,r0,00000001
 	addik	r1,r1,FFFFFFA8
 	swi	r15,r1,00000000
@@ -22922,7 +22922,7 @@ l00019F6C:
 	addk	r6,r25,r0
 
 l00019F70:
-	brlid	r15,0001AAB0
+	brlid	r15,fn0001AAB0
 	addk	r5,r23,r0
 	beqi	r3,0001A1B8
 
@@ -22953,7 +22953,7 @@ l00019FBC:
 	imm	00000001
 	addik	r6,r0,00016E0C
 	addk	r5,r19,r0
-	brlid	r15,0001B134
+	brlid	r15,fn0001B134
 	addik	r7,r0,00000001
 	bneid	r3,0001A374
 	addk	r27,r3,r0
@@ -22962,7 +22962,7 @@ l00019FDC:
 	imm	00000001
 	addik	r6,r0,00016E44
 	addk	r5,r19,r0
-	brlid	r15,0001B134
+	brlid	r15,fn0001B134
 	addik	r7,r0,00000001
 	beqid	r3,0001A030
 	addk	r5,r19,r0
@@ -22977,7 +22977,7 @@ l0001A008:
 	imm	00000001
 	addik	r6,r0,00016E4C
 	lw	r5,r31,r21
-	brlid	r15,0001B134
+	brlid	r15,fn0001B134
 	addik	r7,r0,00000001
 	beqi	r3,0001A08C
 
@@ -22990,7 +22990,7 @@ l0001A020:
 l0001A030:
 	imm	00000001
 	addik	r6,r0,00016E64
-	brlid	r15,0001B134
+	brlid	r15,fn0001B134
 	addik	r7,r0,00000001
 	beqid	r3,0001A0B8
 	addk	r5,r19,r0
@@ -23019,7 +23019,7 @@ l0001A070:
 	bri	00019F58
 
 l0001A074:
-	brlid	r15,0001E93C
+	brlid	r15,fn0001E93C
 	addk	r5,r23,r0
 	bneid	r25,00019F70
 	addk	r6,r25,r0
@@ -23032,7 +23032,7 @@ l0001A08C:
 	imm	00000001
 	addik	r6,r0,00016E54
 	lw	r5,r31,r21
-	brlid	r15,0001B134
+	brlid	r15,fn0001B134
 	addik	r7,r0,00000001
 	beqid	r3,0001A168
 	addik	r3,r0,00000001
@@ -23046,7 +23046,7 @@ l0001A0A8:
 l0001A0B8:
 	imm	00000001
 	addik	r6,r0,00016E6C
-	brlid	r15,0001B134
+	brlid	r15,fn0001B134
 	addik	r7,r0,00000001
 	bneid	r3,0001A048
 	addk	r5,r19,r0
@@ -23054,7 +23054,7 @@ l0001A0B8:
 l0001A0D0:
 	imm	00000001
 	addik	r6,r0,00016EDC
-	brlid	r15,0001B134
+	brlid	r15,fn0001B134
 	addik	r7,r0,00000001
 	beqid	r3,0001A194
 	addk	r5,r19,r0
@@ -23069,7 +23069,7 @@ l0001A0F8:
 	imm	00000001
 	addik	r6,r0,00016EE4
 	lw	r5,r31,r21
-	brlid	r15,0001B134
+	brlid	r15,fn0001B134
 	addik	r7,r0,00000001
 	beqid	r3,0001A1C8
 	addik	r3,r0,00000001
@@ -23093,7 +23093,7 @@ l0001A128:
 	imm	00000001
 	lwi	r5,r0,00018EB8
 	imm	00000001
-	brlid	r15,0002EB28
+	brlid	r15,fn0002EB28
 	nop
 	addik	r3,r0,00000001
 	imm	00000001
@@ -23105,7 +23105,7 @@ l0001A168:
 	imm	00000001
 	addik	r6,r0,00016E60
 	lw	r5,r31,r21
-	brlid	r15,0001B134
+	brlid	r15,fn0001B134
 	addik	r7,r0,00000001
 	beqid	r3,0001A1B8
 	addik	r3,r0,00000002
@@ -23119,7 +23119,7 @@ l0001A184:
 l0001A194:
 	imm	00000001
 	addik	r6,r0,00016EFC
-	brlid	r15,0001B134
+	brlid	r15,fn0001B134
 	addik	r7,r0,00000001
 	beqid	r3,0001A1F8
 	addk	r5,r19,r0
@@ -23132,7 +23132,7 @@ l0001A1B0:
 	swi	r3,r28,00000008
 
 l0001A1B8:
-	brlid	r15,00019BC8
+	brlid	r15,fn00019BC8
 	nop
 
 l0001A1C0:
@@ -23143,7 +23143,7 @@ l0001A1C8:
 	imm	00000001
 	addik	r6,r0,00016EF0
 	lw	r5,r31,r21
-	brlid	r15,0001B134
+	brlid	r15,fn0001B134
 	addik	r7,r0,00000001
 	beqi	r3,0001A1B8
 
@@ -23160,7 +23160,7 @@ l0001A1F0:
 l0001A1F8:
 	imm	00000001
 	addik	r6,r0,00016F08
-	brlid	r15,0001B134
+	brlid	r15,fn0001B134
 	addik	r7,r0,00000001
 	bneid	r3,0001A1B0
 	addik	r3,r0,00000001
@@ -23169,7 +23169,7 @@ l0001A210:
 	imm	00000001
 	addik	r6,r0,00016F14
 	addk	r5,r19,r0
-	brlid	r15,0001B134
+	brlid	r15,fn0001B134
 	addik	r7,r0,00000003
 	beqid	r3,0001A2F8
 	addk	r5,r19,r0
@@ -23187,7 +23187,7 @@ l0001A23C:
 	lwi	r5,r19,00000004
 	addik	r8,r1,00000025
 	imm	00000001
-	brlid	r15,0002EE08
+	brlid	r15,fn0002EE08
 	addik	r7,r1,00000020
 	bleid	r3,0001A1B8
 	lbui	r3,r1,00000025
@@ -23238,7 +23238,7 @@ l0001A2B4:
 l0001A2F8:
 	imm	00000001
 	addik	r6,r0,00016F28
-	brlid	r15,0001B134
+	brlid	r15,fn0001B134
 	addik	r7,r0,00000001
 	beqid	r3,0001A31C
 	addk	r5,r19,r0
@@ -23253,7 +23253,7 @@ l0001A314:
 l0001A31C:
 	imm	00000001
 	addik	r6,r0,00016F34
-	brlid	r15,0001B134
+	brlid	r15,fn0001B134
 	addik	r7,r0,00000001
 	bneid	r3,0001A314
 	addik	r3,r0,00000001
@@ -23262,7 +23262,7 @@ l0001A334:
 	imm	00000001
 	addik	r6,r0,00016F40
 	addk	r5,r19,r0
-	brlid	r15,0001B134
+	brlid	r15,fn0001B134
 	addik	r7,r0,00000004
 	beqid	r3,0001A3A4
 	addk	r5,r19,r0
@@ -23288,16 +23288,16 @@ l0001A374:
 	imm	00000001
 	addik	r6,r0,00016E18
 	imm	00000001
-	brlid	r15,0002EB28
+	brlid	r15,fn0002EB28
 	nop
 	imm	00000001
-	brlid	r15,0002F274
+	brlid	r15,fn0002F274
 	addik	r5,r0,00000001
 
 l0001A3A4:
 	imm	00000001
 	addik	r6,r0,00016F48
-	brlid	r15,0001B134
+	brlid	r15,fn0001B134
 	addik	r7,r0,00000001
 	beqid	r3,0001A3D0
 	addk	r5,r19,r0
@@ -23308,13 +23308,13 @@ l0001A3BC:
 
 l0001A3C4:
 	imm	00000001
-	brlid	r15,0002FFD0
+	brlid	r15,fn0002FFD0
 	nop
 
 l0001A3D0:
 	imm	00000001
 	addik	r6,r0,00016F54
-	brlid	r15,0001B134
+	brlid	r15,fn0001B134
 	addik	r7,r0,00000001
 	beqid	r3,0001A450
 	addk	r5,r19,r0
@@ -23332,7 +23332,7 @@ l0001A3F8:
 	lwi	r5,r19,00000004
 	addik	r8,r1,00000024
 	imm	00000001
-	brlid	r15,0002EE08
+	brlid	r15,fn0002EE08
 	addik	r7,r1,0000001C
 	blei	r3,0001A1B8
 
@@ -23358,7 +23358,7 @@ l0001A444:
 l0001A450:
 	imm	00000001
 	addik	r6,r0,00016F5C
-	brlid	r15,0001B134
+	brlid	r15,fn0001B134
 	addik	r7,r0,00000002
 	beqid	r3,0001A544
 	addk	r5,r19,r0
@@ -23373,7 +23373,7 @@ l0001A478:
 	imm	00000001
 	addik	r6,r0,00016F64
 	lw	r5,r31,r21
-	brlid	r15,0001B134
+	brlid	r15,fn0001B134
 	addik	r7,r0,00000002
 	beqi	r3,0001A4BC
 
@@ -23398,7 +23398,7 @@ l0001A4BC:
 	imm	00000001
 	addik	r6,r0,00016F68
 	lw	r5,r31,r21
-	brlid	r15,0001B134
+	brlid	r15,fn0001B134
 	addik	r7,r0,00000003
 	beqi	r3,0001A500
 
@@ -23423,7 +23423,7 @@ l0001A500:
 	imm	00000001
 	addik	r6,r0,00016F6C
 	lw	r5,r31,r21
-	brlid	r15,0001B134
+	brlid	r15,fn0001B134
 	addik	r7,r0,00000003
 	beqi	r3,0001A1B8
 
@@ -23447,7 +23447,7 @@ l0001A538:
 l0001A544:
 	imm	00000001
 	addik	r6,r0,00016F70
-	brlid	r15,0001B134
+	brlid	r15,fn0001B134
 	addik	r7,r0,00000001
 	beqid	r3,0001A57C
 	addk	r5,r19,r0
@@ -23469,7 +23469,7 @@ l0001A574:
 l0001A57C:
 	imm	00000001
 	addik	r6,r0,00016F78
-	brlid	r15,0001B134
+	brlid	r15,fn0001B134
 	addik	r7,r0,00000001
 	beqid	r3,0001A5C0
 	addk	r5,r19,r0
@@ -23494,7 +23494,7 @@ l0001A5B4:
 l0001A5C0:
 	imm	00000001
 	addik	r6,r0,00016F84
-	brlid	r15,0001B134
+	brlid	r15,fn0001B134
 	addik	r7,r0,00000006
 	beqid	r3,0001A5F0
 	addk	r5,r19,r0
@@ -23512,7 +23512,7 @@ l0001A5E8:
 l0001A5F0:
 	imm	00000001
 	addik	r6,r0,00016F90
-	brlid	r15,0001B134
+	brlid	r15,fn0001B134
 	addik	r7,r0,00000003
 	beqid	r3,0001A1B8
 	addik	r3,r0,00000001
@@ -23531,7 +23531,7 @@ fn0001A610 proc
 	swi	r19,r1,0000001C
 	swi	r15,r1,00000000
 	imm	00000001
-	brlid	r15,0002EF80
+	brlid	r15,fn0002EF80
 	addk	r19,r5,r0
 	xori	r4,r3,00000023
 	beqid	r4,0001A6C8
@@ -23580,7 +23580,7 @@ l0001A640:
 
 l0001A6C8:
 	imm	00000001
-	brlid	r15,0002EF80
+	brlid	r15,fn0002EF80
 	addk	r5,r19,r0
 	xori	r7,r3,0000000A
 	xori	r6,r3,FFFFFFFF
@@ -23615,13 +23615,13 @@ fn0001A700 proc
 
 l0001A730:
 	imm	00000001
-	brlid	r15,0002F940
+	brlid	r15,fn0002F940
 	nop
 	beqid	r3,0001A788
 	addik	r22,r19,FFFFFFD0
 
 l0001A744:
-	brlid	r15,0001A610
+	brlid	r15,fn0001A610
 	addk	r5,r21,r0
 	addk	r19,r3,r0
 	addk	r5,r3,r0
@@ -23662,7 +23662,7 @@ l0001A7A4:
 	addk	r22,r5,r4
 
 l0001A7A8:
-	brlid	r15,0001A610
+	brlid	r15,fn0001A610
 	addk	r5,r21,r0
 	addk	r4,r22,r22
 	addk	r4,r4,r4
@@ -23697,7 +23697,7 @@ fn0001A7E4 proc
 	swi	r15,r1,00000000
 	swi	r19,r1,0000001C
 	addk	r21,r5,r0
-	brlid	r15,0001A700
+	brlid	r15,fn0001A700
 	addk	r22,r7,r0
 	beqid	r3,0001A898
 	lwi	r15,r1,00000000
@@ -23712,7 +23712,7 @@ l0001A818:
 	addik	r19,r0,FFFFFFFF
 
 l0001A820:
-	brlid	r15,0001A610
+	brlid	r15,fn0001A610
 	nop
 	addk	r19,r3,r0
 	xori	r3,r3,FFFFFFFF
@@ -23720,7 +23720,7 @@ l0001A820:
 
 l0001A834:
 	imm	00000001
-	brlid	r15,0002F940
+	brlid	r15,fn0002F940
 	addk	r5,r19,r0
 	bneid	r3,0001A820
 	addk	r5,r21,r0
@@ -23734,7 +23734,7 @@ l0001A848:
 
 l0001A85C:
 	imm	00000001
-	brlid	r15,0002EF2C
+	brlid	r15,fn0002EF2C
 	addk	r5,r19,r0
 	xori	r3,r3,FFFFFFFF
 	beqid	r3,0001A898
@@ -23826,7 +23826,7 @@ fn0001AAB0 proc
 	swi	r24,r1,00000E44
 	swi	r26,r1,00000E4C
 	imm	00000001
-	brlid	r15,0002F0A0
+	brlid	r15,fn0002F0A0
 	swi	r28,r1,00000E54
 	beqid	r3,0001ABE0
 	addk	r23,r3,r0
@@ -23839,7 +23839,7 @@ l0001AB00:
 l0001AB0C:
 	addk	r5,r23,r0
 	addik	r7,r1,00000E30
-	brlid	r15,0001A7E4
+	brlid	r15,fn0001A7E4
 	addik	r6,r1,00000E2C
 	beqid	r3,0001ADB0
 	addk	r19,r3,r0
@@ -23862,7 +23862,7 @@ l0001AB48:
 	addik	r21,r21,00000001
 	addik	r7,r1,00000E30
 	addik	r6,r1,00000E2C
-	brlid	r15,0001A7E4
+	brlid	r15,fn0001A7E4
 	xori	r19,r21,00000004
 	beqid	r3,0001ACD4
 	lwi	r4,r1,00000E2C
@@ -23884,10 +23884,10 @@ l0001AB84:
 	imm	00000001
 	addik	r6,r0,000170A0
 	imm	00000001
-	brlid	r15,0002EB28
+	brlid	r15,fn0002EB28
 	addk	r7,r25,r0
 	imm	00000001
-	brlid	r15,0002F0CC
+	brlid	r15,fn0002F0CC
 	addk	r5,r23,r0
 	addk	r3,r19,r0
 
@@ -23912,7 +23912,7 @@ l0001ABE0:
 	imm	00000001
 	lwi	r5,r0,00018EB8
 	imm	00000001
-	brlid	r15,0002EB28
+	brlid	r15,fn0002EB28
 	addk	r19,r3,r0
 	brid	0001ABB0
 	addk	r3,r19,r0
@@ -23989,10 +23989,10 @@ l0001ACD8:
 	imm	00000001
 	lwi	r5,r0,00018EB8
 	imm	00000001
-	brlid	r15,0002EB28
+	brlid	r15,fn0002EB28
 	addk	r19,r0,r0
 	imm	00000001
-	brlid	r15,0002F0CC
+	brlid	r15,fn0002F0CC
 	addk	r5,r23,r0
 	brid	0001ABB0
 	addk	r3,r19,r0
@@ -24000,7 +24000,7 @@ l0001ACD8:
 l0001AD08:
 	addk	r5,r23,r0
 	addik	r7,r1,00000E30
-	brlid	r15,0001A7E4
+	brlid	r15,fn0001A7E4
 	addik	r6,r1,00000E2C
 	beqid	r3,0001ACD8
 	addk	r7,r25,r0
@@ -24015,7 +24015,7 @@ l0001AD30:
 	lwi	r3,r1,00000E2C
 	addk	r5,r23,r0
 	addik	r6,r1,00000E2C
-	brlid	r15,0001A7E4
+	brlid	r15,fn0001A7E4
 	swi	r3,r24,0000000C
 	beqid	r3,0001ACD8
 	addk	r7,r25,r0
@@ -24030,7 +24030,7 @@ l0001AD5C:
 	addk	r5,r23,r0
 	addik	r7,r1,00000E30
 	addik	r6,r1,00000E2C
-	brlid	r15,0001A7E4
+	brlid	r15,fn0001A7E4
 	swi	r4,r24,00000010
 	beqid	r3,0001ACD8
 	addk	r7,r25,r0
@@ -24045,7 +24045,7 @@ l0001AD88:
 	lwi	r3,r1,00000E2C
 	addk	r5,r23,r0
 	addik	r6,r1,00000E2C
-	brlid	r15,0001A7E4
+	brlid	r15,fn0001A7E4
 	swi	r3,r24,00000014
 	beqid	r3,0001ACD4
 	lwi	r4,r1,00000E2C
@@ -24066,10 +24066,10 @@ l0001ADBC:
 	imm	00000001
 	lwi	r5,r0,00018EB8
 	imm	00000001
-	brlid	r15,0002EB28
+	brlid	r15,fn0002EB28
 	addk	r7,r25,r0
 	imm	00000001
-	brlid	r15,0002F0CC
+	brlid	r15,fn0002F0CC
 	addk	r5,r23,r0
 	brid	0001ABB0
 	addk	r3,r19,r0
@@ -24080,10 +24080,10 @@ l0001ADEC:
 	imm	00000001
 	lwi	r5,r0,00018EB8
 	imm	00000001
-	brlid	r15,0002EB28
+	brlid	r15,fn0002EB28
 	addk	r7,r25,r0
 	imm	00000001
-	brlid	r15,0002F0CC
+	brlid	r15,fn0002F0CC
 	addk	r5,r23,r0
 	brid	0001ABB0
 	addk	r3,r19,r0
@@ -24107,7 +24107,7 @@ l0001AE20:
 	addk	r7,r19,r0
 	addk	r5,r3,r0
 	imm	00000001
-	brlid	r15,0002F60C
+	brlid	r15,fn0002F60C
 	addik	r6,r1,0000001C
 	swi	r3,r27,000000D8
 	swi	r26,r27,000000D4
@@ -24115,7 +24115,7 @@ l0001AE20:
 l0001AE6C:
 	addk	r5,r23,r0
 	imm	00000001
-	brlid	r15,0002F0CC
+	brlid	r15,fn0002F0CC
 	addik	r19,r0,00000001
 	brid	0001ABB0
 	addk	r3,r19,r0
@@ -24220,25 +24220,25 @@ l0001B174:
 l0001B180:
 	lbu	r19,r22,r23
 	sext8	r19,r19
-	beqi	r19,0001B1F8
+	beqi	r19,fn0001B1F8
 
 l0001B18C:
 	lbu	r21,r22,r24
 	sext8	r21,r21
-	beqid	r21,0001B1D0
+	beqid	r21,fn0001B1D0
 	addk	r3,r0,r0
 
 l0001B19C:
 	addk	r5,r19,r0
 	imm	00000001
-	brlid	r15,0002F9E0
+	brlid	r15,fn0002F9E0
 	addik	r22,r22,00000001
-	beqid	r3,0001B1C4
+	beqid	r3,fn0001B1C4
 	addk	r5,r19,r0
 
 l0001B1B4:
 	imm	00000001
-	brlid	r15,0002FA08
+	brlid	r15,fn0002FA08
 	nop
 
 ;; fn0001B1C0: 0001B1C0
@@ -24290,12 +24290,12 @@ fn0001B1F8 proc
 	addik	r21,r0,00000001
 
 l0001B204:
-	brid	0001B1D0
+	brid	fn0001B1D0
 	addk	r3,r21,r0
 
 l0001B20C:
 	addk	r21,r0,r0
-	brid	0001B1D0
+	brid	fn0001B1D0
 	addk	r3,r21,r0
 0001B218                         B0 00 00 01 E8 60 8E B4         .....`..
 0001B220 B6 0F 00 08 80 00 00 00 B0 00 00 01 E8 60 8E A8 .............`..
@@ -24387,7 +24387,7 @@ l0001B2F8:
 l0001B310:
 	addik	r10,r10,00000004
 	xor	r3,r10,r11
-	bnei	r3,0001B2AC
+	bnei	r3,fn0001B2AC
 
 l0001B31C:
 	rtsd	r15,00000008
@@ -24444,7 +24444,7 @@ l0001B4E8:
 	lwi	r5,r21,00000020
 	lwi	r27,r3,00000014
 	imm	00000001
-	brlid	r15,0002CD10
+	brlid	r15,fn0002CD10
 	addik	r24,r24,00000001
 	lwi	r6,r21,00000008
 	lwi	r5,r21,0000001C
@@ -24455,7 +24455,7 @@ l0001B4E8:
 ;;     00030124 (in fn0002FFD0)
 fn0001B51C proc
 	imm	00000001
-	brlid	r15,0002CD10
+	brlid	r15,fn0002CD10
 	addik	r23,r23,00000054
 	lwi	r10,r21,00000008
 	addk	r9,r3,r0
@@ -24494,14 +24494,14 @@ l0001B554:
 
 l0001B674:
 	imm	00000001
-	brlid	r15,0002E960
+	brlid	r15,fn0002E960
 	lwi	r5,r19,00000020
 	beqid	r3,0001B6A8
 	addk	r6,r3,r0
 
 l0001B688:
 	imm	00000001
-	brlid	r15,0002E908
+	brlid	r15,fn0002E908
 	addk	r5,r23,r0
 	addk	r4,r0,r3
 	addk	r4,r3,r3
@@ -24923,7 +24923,7 @@ l0001CC8C:
 	addk	r23,r23,r30
 	lwi	r19,r23,0000000C
 	imm	00000001
-	brlid	r15,0002E908
+	brlid	r15,fn0002E908
 	addk	r5,r19,r0
 	addk	r22,r3,r0
 	lwi	r3,r23,00000020
@@ -25098,7 +25098,7 @@ l0001CE70:
 l0001CE94:
 	addik	r12,r12,00000002
 	xor	r4,r28,r12
-	bneid	r4,0001CE64
+	bneid	r4,fn0001CE64
 	addik	r7,r7,00000010
 
 l0001CEA4:
@@ -25119,7 +25119,7 @@ l0001CEB4:
 ;;   Called from:
 ;;     00030178 (in fn0002FFD0)
 fn0001CEF0 proc
-	brlid	r15,00018FBC
+	brlid	r15,fn00018FBC
 	addk	r21,r5,r0
 	xori	r6,r19,00000002
 	bneid	r6,0001CF30
@@ -25134,7 +25134,7 @@ l0001CF10:
 	addk	r7,r22,r0
 	addk	r5,r21,r0
 	imm	00000000
-	brlid	r15,00028FBC
+	brlid	r15,fn00028FBC
 	addik	r19,r19,00000001
 	xori	r3,r19,000000F0
 	bneid	r3,0001CF10
@@ -25578,7 +25578,7 @@ l0001DEB4:
 	addk	r5,r3,r0
 	addik	r7,r0,00000022
 	imm	00000001
-	brlid	r15,0002F60C
+	brlid	r15,fn0002F60C
 	addk	r19,r0,r0
 	addik	r3,r21,00000002
 	addik	r7,r21,00000022
@@ -25610,7 +25610,7 @@ l0001DF14:
 	addk	r6,r24,r0
 	addk	r7,r19,r19
 	imm	00000001
-	brlid	r15,0002F60C
+	brlid	r15,fn0002F60C
 	addik	r5,r5,00000022
 	lwi	r3,r22,00000000
 	swi	r0,r3,00000224
@@ -25625,7 +25625,7 @@ l0001DF14:
 
 l0001DF54:
 	imm	00000000
-	brlid	r15,0002CCC4
+	brlid	r15,fn0002CCC4
 	nop
 	brid	0001DEB4
 	swi	r3,r22,00000000
@@ -25811,11 +25811,11 @@ l0001E160:
 l0001E170:
 	lw	r6,r19,r24
 	imm	00000001
-	brlid	r15,0002E908
+	brlid	r15,fn0002E908
 	addk	r5,r25,r0
 	addk	r6,r23,r0
 	imm	00000001
-	brlid	r15,0002E7D0
+	brlid	r15,fn0002E7D0
 	addik	r5,r3,00000032
 	bgtid	r3,0001E144
 	addk	r4,r21,r0
@@ -25844,7 +25844,7 @@ l0001E1AC:
 
 l0001E1E0:
 	imm	00000000
-	brlid	r15,0002CC98
+	brlid	r15,fn0002CC98
 	addk	r5,r21,r0
 	addk	r22,r3,r0
 	brid	0001E0A4
@@ -25866,14 +25866,14 @@ fn0001E1F8 proc
 	addk	r19,r6,r0
 	addk	r22,r5,r0
 	swi	r15,r1,00000000
-	brlid	r15,0001E004
+	brlid	r15,fn0001E004
 	addk	r6,r0,r0
 	addk	r9,r21,r0
 	addk	r8,r19,r0
 	addk	r5,r22,r0
 	imm	00000001
 	addik	r7,r0,00017534
-	brlid	r15,0001E004
+	brlid	r15,fn0001E004
 	addik	r6,r0,00000001
 	lwi	r15,r1,00000000
 	lwi	r19,r1,0000001C
@@ -26064,35 +26064,35 @@ l0001E800:
 	addik	r3,r0,00000008
 	swi	r3,r19,00000034
 	addik	r7,r0,00000001
-	brlid	r15,0001E1F8
+	brlid	r15,fn0001E1F8
 	addik	r6,r0,00000032
 	imm	00000001
 	addik	r8,r0,000174F8
 	imm	00000001
 	addik	r7,r0,00017510
 	addk	r5,r19,r0
-	brlid	r15,0001DE80
+	brlid	r15,fn0001DE80
 	addik	r6,r19,00000054
 	imm	00000001
 	addik	r8,r0,00017390
 	imm	00000001
 	addik	r7,r0,000174D4
 	addk	r5,r19,r0
-	brlid	r15,0001DE80
+	brlid	r15,fn0001DE80
 	addik	r6,r19,00000064
 	imm	00000001
 	addik	r8,r0,00017354
 	imm	00000001
 	addik	r7,r0,0001736C
 	addk	r5,r19,r0
-	brlid	r15,0001DE80
+	brlid	r15,fn0001DE80
 	addik	r6,r19,00000058
 	imm	00000001
 	addik	r7,r0,00017330
 	addk	r5,r19,r0
 	imm	00000001
 	addik	r8,r0,000171EC
-	brlid	r15,0001DE80
+	brlid	r15,fn0001DE80
 	addik	r6,r19,00000068
 	addik	r3,r19,00000074
 	addik	r7,r19,00000094
@@ -26135,7 +26135,7 @@ l0001E8DC:
 	swi	r0,r19,000000F0
 	swi	r0,r19,000000F4
 	swi	r0,r19,000000F8
-	brlid	r15,0001E704
+	brlid	r15,fn0001E704
 	shi	r0,r19,00000104
 	lwi	r15,r1,00000000
 	lwi	r19,r1,0000001C
@@ -26233,7 +26233,7 @@ l0001EA0C:
 l0001EA18:
 	addk	r6,r19,r0
 	addik	r8,r0,00000001
-	brlid	r15,0001DF68
+	brlid	r15,fn0001DF68
 	addk	r7,r0,r0
 	bleid	r19,0001EB84
 	addk	r4,r0,r0
@@ -26296,7 +26296,7 @@ l0001EAD8:
 	addk	r6,r19,r0
 	addk	r5,r3,r0
 	addk	r8,r0,r0
-	brlid	r15,0001DF68
+	brlid	r15,fn0001DF68
 	addik	r7,r0,00000001
 	addk	r4,r0,r0
 	addik	r5,r0,00000001
@@ -26344,7 +26344,7 @@ l0001EB58:
 
 l0001EB68:
 	addik	r8,r0,00000001
-	brlid	r15,0001DF68
+	brlid	r15,fn0001DF68
 	addik	r6,r0,00000003
 	brid	0001EA30
 	addk	r4,r0,r0
@@ -26357,7 +26357,7 @@ l0001EB84:
 	addk	r6,r19,r0
 	addk	r5,r3,r0
 	addk	r8,r0,r0
-	brlid	r15,0001DF68
+	brlid	r15,fn0001DF68
 	addik	r7,r0,00000001
 	lwi	r15,r1,00000000
 	lwi	r19,r1,0000001C
@@ -27139,7 +27139,7 @@ l0001F698:
 	addk	r3,r3,r3
 	addk	r3,r3,r3
 	imm	00000000
-	brlid	r15,0002CCF0
+	brlid	r15,fn0002CCF0
 	addk	r6,r3,r0
 	lwi	r6,r25,00000120
 	lwi	r5,r25,00000020
@@ -27149,7 +27149,7 @@ l0001F698:
 	addk	r4,r4,r4
 	addk	r4,r4,r4
 	imm	00000000
-	brlid	r15,0002CCF0
+	brlid	r15,fn0002CCF0
 	addk	r6,r4,r0
 	lwi	r4,r25,00000128
 	swi	r3,r25,00000140
@@ -27171,7 +27171,7 @@ l0001F708:
 	addk	r6,r29,r0
 	swi	r27,r24,00000034
 	imm	00000000
-	brlid	r15,0002E908
+	brlid	r15,fn0002E908
 	swi	r29,r24,00000038
 	addk	r19,r3,r0
 	addk	r3,r27,r27
@@ -27181,7 +27181,7 @@ l0001F708:
 	addk	r3,r3,r3
 	swi	r19,r24,0000003C
 	imm	00000000
-	brlid	r15,0002EA08
+	brlid	r15,fn0002EA08
 	swi	r3,r24,00000040
 	beqid	r3,0001F760
 	addk	r6,r29,r0
@@ -27192,7 +27192,7 @@ l0001F75C:
 l0001F760:
 	lwi	r5,r24,00000020
 	imm	00000000
-	brlid	r15,0002EA08
+	brlid	r15,fn0002EA08
 	swi	r27,r24,00000044
 	beqi	r3,0001F778
 
@@ -27263,7 +27263,7 @@ l0001F800:
 	swi	r3,r19,00000038
 	swi	r3,r19,0000003C
 	imm	00000000
-	brlid	r15,0002EA08
+	brlid	r15,fn0002EA08
 	swi	r3,r19,00000044
 	beqi	r3,0001F844
 
@@ -27283,7 +27283,7 @@ l0001F854:
 
 l0001F860:
 	imm	00000000
-	brlid	r15,0002E908
+	brlid	r15,fn0002E908
 	lwi	r6,r25,0000013C
 	imm	00000000
 	addik	r4,r0,0000FFFE
@@ -27643,13 +27643,13 @@ l0001FEB8:
 	lwi	r6,r22,00000004
 	addk	r3,r3,r3
 	imm	00000000
-	brlid	r15,0002E908
+	brlid	r15,fn0002E908
 	addk	r21,r3,r3
 	addk	r6,r21,r0
 	addk	r5,r3,r0
 	addik	r22,r22,00000054
 	imm	00000000
-	brlid	r15,0002CCF0
+	brlid	r15,fn0002CCF0
 	addik	r27,r27,00000001
 	swi	r3,r22,FFFFFFC4
 	lwi	r3,r19,00000120
@@ -27658,31 +27658,31 @@ l0001FEB8:
 	addk	r3,r3,r3
 	addk	r3,r3,r3
 	imm	00000000
-	brlid	r15,0002E908
+	brlid	r15,fn0002E908
 	addk	r21,r3,r3
 	addk	r6,r21,r0
 	imm	00000000
-	brlid	r15,0002CCF0
+	brlid	r15,fn0002CCF0
 	addk	r5,r3,r0
 	swi	r3,r22,FFFFFFC8
 	lwi	r6,r22,FFFFFFB0
 	lwi	r5,r19,0000001C
 	imm	00000000
-	brlid	r15,0002E908
+	brlid	r15,fn0002E908
 	lwi	r21,r19,0000011C
 	addk	r6,r21,r0
 	imm	00000000
-	brlid	r15,0002CCF0
+	brlid	r15,fn0002CCF0
 	addk	r5,r3,r0
 	swi	r3,r22,FFFFFFD0
 	lwi	r6,r22,FFFFFFB4
 	lwi	r5,r19,00000020
 	imm	00000000
-	brlid	r15,0002E908
+	brlid	r15,fn0002E908
 	lwi	r21,r19,00000120
 	addk	r6,r21,r0
 	imm	00000000
-	brlid	r15,0002CCF0
+	brlid	r15,fn0002CCF0
 	addk	r5,r3,r0
 	swi	r3,r22,FFFFFFD4
 	swi	r24,r22,FFFFFFD8
@@ -27698,14 +27698,14 @@ l0001FF8C:
 
 l0001FF9C:
 	imm	00000000
-	brlid	r15,0002CCF0
+	brlid	r15,fn0002CCF0
 	lwi	r5,r19,00000020
 	lwi	r4,r19,000000D8
 	beqid	r4,0001FFEC
 	swi	r3,r19,00000124
 
 l0001FFB4:
-	brlid	r15,0001EEC8
+	brlid	r15,fn0001EEC8
 	addk	r5,r19,r0
 	lwi	r3,r19,00000118
 	beqid	r3,0001FFF8
@@ -27900,10 +27900,10 @@ fn00020134 proc
 	sra	r6,r6
 	sra	r6,r6
 	swi	r15,r1,00000000
-	brlid	r15,000200C4
+	brlid	r15,fn000200C4
 	andi	r6,r6,000000FF
 	addk	r5,r21,r0
-	brlid	r15,000200C4
+	brlid	r15,fn000200C4
 	andi	r6,r19,000000FF
 	lwi	r15,r1,00000000
 	lwi	r19,r1,0000001C
@@ -27969,10 +27969,10 @@ l00020210:
 	addik	r1,r1,00000034
 
 l00020238:
-	brlid	r15,000200C4
+	brlid	r15,fn000200C4
 	addik	r6,r0,000000FF
 	addk	r5,r22,r0
-	brlid	r15,000200C4
+	brlid	r15,fn000200C4
 	addik	r6,r0,000000DB
 	bneid	r23,00020258
 	addik	r6,r0,00000083
@@ -27983,14 +27983,14 @@ l00020254:
 l00020258:
 	imm	00000001
 	addik	r19,r0,00017860
-	brlid	r15,00020134
+	brlid	r15,fn00020134
 	addk	r5,r22,r0
 	addk	r6,r23,r23
 	addk	r6,r6,r6
 	addk	r6,r6,r6
 	addk	r5,r22,r0
 	addk	r6,r6,r6
-	brlid	r15,000200C4
+	brlid	r15,fn000200C4
 	addk	r6,r6,r21
 	addik	r25,r19,00000100
 
@@ -28013,12 +28013,12 @@ l000202A4:
 	srl	r6,r6
 	srl	r6,r6
 	srl	r6,r6
-	brlid	r15,000200C4
+	brlid	r15,fn000200C4
 	nop
 	addk	r5,r22,r0
 
 l000202D4:
-	brlid	r15,000200C4
+	brlid	r15,fn000200C4
 	andi	r6,r21,000000FF
 	xor	r3,r25,r19
 	bneid	r3,00020288
@@ -28102,11 +28102,11 @@ l000203C0:
 
 l000203C4:
 	addik	r6,r0,000000FF
-	brlid	r15,000200C4
+	brlid	r15,fn000200C4
 	addik	r19,r24,00000002
 	addk	r5,r23,r0
 	addik	r6,r0,000000C4
-	brlid	r15,000200C4
+	brlid	r15,fn000200C4
 	addk	r21,r19,r0
 	addik	r5,r24,00000022
 
@@ -28120,17 +28120,17 @@ l000203E4:
 
 l000203FC:
 	addk	r5,r23,r0
-	brlid	r15,00020134
+	brlid	r15,fn00020134
 	addik	r6,r22,00000013
 	addk	r6,r25,r0
-	brlid	r15,000200C4
+	brlid	r15,fn000200C4
 	addk	r5,r23,r0
 
 l00020414:
 	lhui	r6,r19,00000000
 	addk	r5,r23,r0
 	addik	r19,r19,00000002
-	brlid	r15,000200C4
+	brlid	r15,fn000200C4
 	sext16	r6,r6
 	xor	r3,r19,r21
 	bnei	r3,00020414
@@ -28147,7 +28147,7 @@ l00020440:
 	lhui	r6,r19,00000000
 	addk	r5,r23,r0
 	addik	r19,r19,00000002
-	brlid	r15,000200C4
+	brlid	r15,fn000200C4
 	sext16	r6,r6
 	xor	r3,r19,r22
 	bnei	r3,00020440
@@ -28166,16 +28166,16 @@ fn00020468 proc
 	addk	r21,r6,r0
 	addik	r6,r0,000000FF
 	swi	r15,r1,00000000
-	brlid	r15,000200C4
+	brlid	r15,fn000200C4
 	swi	r22,r1,00000024
 	addk	r6,r21,r0
-	brlid	r15,000200C4
+	brlid	r15,fn000200C4
 	addk	r5,r19,r0
 	lwi	r3,r19,00000038
 	addk	r5,r19,r0
 	addk	r6,r3,r3
 	addk	r6,r6,r3
-	brlid	r15,00020134
+	brlid	r15,fn00020134
 	addik	r6,r6,00000008
 	lwi	r4,r19,00000020
 	imm	00000000
@@ -28198,16 +28198,16 @@ l000204C8:
 
 l000204E8:
 	lwi	r6,r19,00000034
-	brlid	r15,000200C4
+	brlid	r15,fn000200C4
 	addk	r5,r19,r0
 	lwi	r6,r19,00000020
-	brlid	r15,00020134
+	brlid	r15,fn00020134
 	addk	r5,r19,r0
 	lwi	r6,r19,0000001C
-	brlid	r15,00020134
+	brlid	r15,fn00020134
 	addk	r5,r19,r0
 	lwi	r6,r19,00000038
-	brlid	r15,000200C4
+	brlid	r15,fn000200C4
 	addk	r5,r19,r0
 	lwi	r3,r19,00000038
 	bleid	r3,00020578
@@ -28220,7 +28220,7 @@ l00020528:
 	lwi	r6,r21,00000000
 	addk	r5,r19,r0
 	addik	r21,r21,00000054
-	brlid	r15,000200C4
+	brlid	r15,fn000200C4
 	addik	r22,r22,00000001
 	lwi	r3,r21,FFFFFFB4
 	lwi	r6,r21,FFFFFFB8
@@ -28229,10 +28229,10 @@ l00020528:
 	addk	r3,r3,r3
 	addk	r3,r3,r3
 	addk	r3,r3,r3
-	brlid	r15,000200C4
+	brlid	r15,fn000200C4
 	addk	r6,r3,r6
 	lwi	r6,r21,FFFFFFBC
-	brlid	r15,000200C4
+	brlid	r15,fn000200C4
 	addk	r5,r19,r0
 	lwi	r3,r19,00000038
 	cmp	r18,r3,r22
@@ -28908,7 +28908,7 @@ l00022420:
 	addik	r7,r0,00000100
 	addk	r6,r0,r0
 	imm	00000000
-	brlid	r15,0002F63C
+	brlid	r15,fn0002F63C
 	addik	r5,r23,00000400
 	lwi	r4,r1,00000560
 	beqid	r4,00022444
@@ -29121,12 +29121,12 @@ fn0002283C proc
 	swi	r27,r1,00000888
 	swi	r28,r1,0000088C
 	imm	00000000
-	brlid	r15,0002F63C
+	brlid	r15,fn0002F63C
 	addik	r21,r1,00000420
 	addk	r5,r21,r0
 	addik	r7,r0,00000404
 	imm	00000000
-	brlid	r15,0002F63C
+	brlid	r15,fn0002F63C
 	addk	r6,r0,r0
 	addik	r22,r1,0000001C
 	addk	r3,r22,r0
@@ -29445,7 +29445,7 @@ l00022C44:
 	addik	r3,r3,FFFFFFFF
 	addik	r7,r0,00000022
 	imm	00000000
-	brlid	r15,0002F60C
+	brlid	r15,fn0002F60C
 	shi	r3,r22,00000808
 	addik	r6,r0,00000001
 	addk	r7,r0,r0
@@ -29741,7 +29741,7 @@ l000232AC:
 	swi	r3,r24,00000014
 
 l0002331C:
-	brlid	r15,00022ED4
+	brlid	r15,fn00022ED4
 	nop
 
 l00023324:
@@ -29760,7 +29760,7 @@ l00023330:
 	swi	r3,r24,00000014
 
 l00023350:
-	brlid	r15,00022ED4
+	brlid	r15,fn00022ED4
 	addk	r19,r19,r19
 	brid	0002328C
 	addk	r19,r19,r19
@@ -29986,7 +29986,7 @@ l0002357C:
 	swi	r3,r21,00000014
 
 l000235EC:
-	brlid	r15,00022ED4
+	brlid	r15,fn00022ED4
 	nop
 
 l000235F4:
@@ -30005,7 +30005,7 @@ l00023600:
 	swi	r3,r21,00000014
 
 l00023620:
-	brlid	r15,00022ED4
+	brlid	r15,fn00022ED4
 	addk	r19,r19,r19
 	brid	0002355C
 	addk	r19,r19,r19
@@ -30112,7 +30112,7 @@ l000236EC:
 	swi	r3,r21,00000014
 
 l0002375C:
-	brlid	r15,00022ED4
+	brlid	r15,fn00022ED4
 	nop
 
 l00023764:
@@ -30131,7 +30131,7 @@ l00023770:
 	swi	r3,r21,00000014
 
 l00023790:
-	brlid	r15,00022ED4
+	brlid	r15,fn00022ED4
 	addk	r19,r19,r19
 	brid	000236CC
 	addk	r19,r19,r19
@@ -30149,7 +30149,7 @@ l000237B0:
 l000237B8:
 	lwi	r7,r21,0000003C
 	lwi	r6,r21,00000040
-	brlid	r15,000231F4
+	brlid	r15,fn000231F4
 	addk	r5,r21,r0
 	brid	00023468
 	swi	r0,r21,0000003C
@@ -30170,7 +30170,7 @@ fn000237DC proc
 	swi	r23,r1,00000028
 	swi	r24,r1,0000002C
 	swi	r25,r1,00000030
-	brlid	r15,000233B0
+	brlid	r15,fn000233B0
 	addk	r22,r6,r0
 	lwi	r3,r21,0000000C
 	beqid	r3,00023880
@@ -30287,7 +30287,7 @@ l000238F8:
 	swi	r3,r21,00000014
 
 l0002395C:
-	brlid	r15,00022ED4
+	brlid	r15,fn00022ED4
 	nop
 
 l00023964:
@@ -30307,7 +30307,7 @@ l00023978:
 	swi	r3,r21,00000014
 
 l00023994:
-	brlid	r15,00022ED4
+	brlid	r15,fn00022ED4
 	nop
 
 l0002399C:
@@ -30331,7 +30331,7 @@ l000239B0:
 	swi	r3,r21,00000014
 
 l000239D4:
-	brlid	r15,00022ED4
+	brlid	r15,fn00022ED4
 	addk	r5,r21,r0
 
 l000239DC:
@@ -30346,7 +30346,7 @@ l000239DC:
 	swi	r3,r21,00000014
 
 l00023A00:
-	brlid	r15,00022ED4
+	brlid	r15,fn00022ED4
 	addk	r5,r21,r0
 	brid	00023818
 	lwi	r3,r21,00000020
@@ -30855,9 +30855,9 @@ fn000256D8 proc
 	swi	r0,r19,000000CC
 	swi	r0,r19,000000C0
 	swi	r0,r19,000000D0
-	brlid	r15,00028F08
+	brlid	r15,fn00028F08
 	swi	r0,r19,00000168
-	brlid	r15,000268CC
+	brlid	r15,fn000268CC
 	addk	r5,r19,r0
 	addik	r3,r0,000000C8
 	swi	r3,r19,00000014
@@ -31086,7 +31086,7 @@ l00025CA4:
 	lwi	r3,r3,00000018
 	brald	r15,r3
 	addik	r21,r0,00000001
-	brlid	r15,0002CC00
+	brlid	r15,fn0002CC00
 	addk	r5,r19,r0
 	addk	r3,r21,r0
 
@@ -31157,7 +31157,7 @@ fn00025F38 proc
 	lwi	r8,r19,0000001C
 	lwi	r5,r19,00000020
 	imm	00000000
-	brlid	r15,0002F0F4
+	brlid	r15,fn0002F0F4
 	addik	r6,r0,00000001
 	bnei	r3,00025FC4
 
@@ -31214,7 +31214,7 @@ fn00026018 proc
 
 l00026020:
 	addk	r5,r22,r0
-	brlid	r15,00025F38
+	brlid	r15,fn00025F38
 	rsubk	r19,r3,r19
 	lwi	r3,r21,00000004
 	cmp	r18,r19,r3
@@ -31297,7 +31297,7 @@ l0002621C:
 	addk	r3,r6,r6
 	addk	r3,r3,r3
 	addk	r3,r3,r3
-	brlid	r15,0002CCF0
+	brlid	r15,fn0002CCF0
 	addk	r6,r3,r0
 	lwi	r6,r24,00000170
 	lwi	r5,r24,00000020
@@ -31306,7 +31306,7 @@ l0002621C:
 	addk	r4,r6,r6
 	addk	r4,r4,r4
 	addk	r4,r4,r4
-	brlid	r15,0002CCF0
+	brlid	r15,fn0002CCF0
 	addk	r6,r4,r0
 	lwi	r4,r24,00000180
 	swi	r3,r24,00000198
@@ -31328,18 +31328,18 @@ l00026284:
 	addk	r6,r28,r0
 	swi	r27,r25,00000034
 	imm	00000000
-	brlid	r15,0002E908
+	brlid	r15,fn0002E908
 	swi	r28,r25,00000038
 	addk	r6,r27,r0
 	lwi	r5,r25,00000024
 	swi	r3,r25,0000003C
 	imm	00000000
-	brlid	r15,0002E908
+	brlid	r15,fn0002E908
 	addk	r19,r3,r0
 	addk	r6,r27,r0
 	lwi	r5,r25,0000001C
 	imm	00000000
-	brlid	r15,0002EA08
+	brlid	r15,fn0002EA08
 	swi	r3,r25,00000040
 	beqid	r3,000262E0
 	addk	r6,r28,r0
@@ -31350,7 +31350,7 @@ l000262DC:
 l000262E0:
 	lwi	r5,r25,00000020
 	imm	00000000
-	brlid	r15,0002EA08
+	brlid	r15,fn0002EA08
 	swi	r27,r25,00000044
 	beqi	r3,000262F8
 
@@ -31489,7 +31489,7 @@ l00026454:
 	lw	r6,r19,r24
 	addk	r7,r25,r0
 	imm	00000000
-	brlid	r15,0002F60C
+	brlid	r15,fn0002F60C
 	addk	r5,r3,r0
 	lwi	r19,r24,00000180
 	brid	00026410
@@ -31519,7 +31519,7 @@ l000264AC:
 	swi	r3,r21,00000038
 	swi	r3,r21,0000003C
 	imm	00000000
-	brlid	r15,0002EA08
+	brlid	r15,fn0002EA08
 	swi	r3,r21,00000044
 	bnei	r3,00026504
 
@@ -32267,7 +32267,7 @@ l00027074:
 l000270B8:
 	andi	r6,r6,000000FF
 	andi	r5,r5,000000FF
-	brlid	r15,0002E908
+	brlid	r15,fn0002E908
 	swi	r8,r1,0000001C
 	lwi	r8,r1,0000001C
 	addk	r4,r3,r3
@@ -32827,12 +32827,12 @@ l00027788:
 
 l00027790:
 	addik	r7,r0,00000022
-	brlid	r15,0002F60C
+	brlid	r15,fn0002F60C
 	addik	r6,r1,0000021C
 	lwi	r5,r24,00000000
 	addik	r6,r1,0000001C
 	addik	r7,r0,00000200
-	brlid	r15,0002F60C
+	brlid	r15,fn0002F60C
 	addik	r5,r5,00000022
 	addik	r3,r0,00000010
 	cmp	r18,r26,r3
@@ -32895,7 +32895,7 @@ l0002784C:
 	addk	r24,r23,r24
 
 l00027864:
-	brlid	r15,0002CCC4
+	brlid	r15,fn0002CCC4
 	addk	r5,r23,r0
 	addk	r5,r3,r0
 	brid	00027790
@@ -33767,7 +33767,7 @@ l000293FC:
 	addk	r6,r26,r0
 	addik	r5,r21,00000090
 	swi	r3,r21,00000044
-	brlid	r15,0002F63C
+	brlid	r15,fn0002F63C
 	addik	r7,r0,00000400
 	addik	r5,r0,00000001
 	addk	r9,r26,r0
@@ -34233,7 +34233,7 @@ l00029AB0:
 l00029ABC:
 	addk	r6,r9,r0
 	addk	r8,r24,r0
-	brlid	r15,0002980C
+	brlid	r15,fn0002980C
 	addk	r5,r25,r0
 	beqid	r3,00029B20
 	addik	r3,r0,FFFFFFFF
@@ -34286,7 +34286,7 @@ l00029B44:
 	addk	r3,r0,r0
 
 l00029B68:
-	brlid	r15,0002980C
+	brlid	r15,fn0002980C
 	addk	r8,r9,r0
 	beqi	r3,00029B80
 
@@ -35303,11 +35303,11 @@ l0002CB88:
 	lwi	r3,r21,00000004
 	addik	r19,r19,00000054
 	addik	r25,r25,00000004
-	brlid	r15,0002CD10
+	brlid	r15,fn0002CD10
 	lwi	r26,r3,00000014
 	lwi	r6,r19,FFFFFFB0
 	lwi	r5,r19,FFFFFFC4
-	brlid	r15,0002CD10
+	brlid	r15,fn0002CD10
 	addk	r27,r3,r0
 	addk	r10,r22,r0
 	addk	r9,r3,r0
@@ -35439,7 +35439,7 @@ fn0002CCF0 proc
 	addk	r5,r5,r6
 	addik	r1,r1,FFFFFFE4
 	swi	r15,r1,00000000
-	brlid	r15,0002E7D0
+	brlid	r15,fn0002E7D0
 	addik	r5,r5,FFFFFFFF
 	lwi	r15,r1,00000000
 	rtsd	r15,00000008
@@ -35457,7 +35457,7 @@ fn0002CD10 proc
 	addik	r19,r6,FFFFFFFF
 	addk	r19,r19,r5
 	swi	r15,r1,00000000
-	brlid	r15,0002E86C
+	brlid	r15,fn0002E86C
 	addk	r5,r19,r0
 	rsubk	r3,r3,r19
 	lwi	r15,r1,00000000
@@ -35489,7 +35489,7 @@ fn0002CDCC proc
 	addk	r7,r4,r0
 	addik	r1,r1,FFFFFFE4
 	swi	r15,r1,00000000
-	brlid	r15,0002F60C
+	brlid	r15,fn0002F60C
 	addk	r5,r3,r0
 	lwi	r15,r1,00000000
 	rtsd	r15,00000008
@@ -35500,7 +35500,7 @@ fn0002CE14 proc
 	addk	r7,r6,r0
 	addik	r1,r1,FFFFFFE4
 	swi	r15,r1,00000000
-	brlid	r15,0002F63C
+	brlid	r15,fn0002F63C
 	addk	r6,r0,r0
 	lwi	r15,r1,00000000
 	rtsd	r15,00000008
@@ -35545,7 +35545,7 @@ fn0002CFE4 proc
 	addik	r6,r0,000179A0
 	imm	00000001
 	lwi	r5,r0,00018EB8
-	brlid	r15,0002EB28
+	brlid	r15,fn0002EB28
 	addik	r7,r1,0000001C
 	lwi	r15,r1,00000000
 	rtsd	r15,00000008
@@ -35586,7 +35586,7 @@ fn0002D0AC proc
 	addk	r25,r5,r0
 	addk	r6,r21,r0
 	addk	r5,r22,r0
-	brlid	r15,0002E908
+	brlid	r15,fn0002E908
 	addk	r24,r7,r0
 	addk	r23,r3,r0
 	lwi	r3,r19,00000010
@@ -35618,7 +35618,7 @@ l0002D154:
 	addk	r21,r0,r0
 
 l0002D158:
-	brlid	r15,0002E908
+	brlid	r15,fn0002E908
 	addk	r5,r22,r0
 	addk	r27,r3,r0
 	lwi	r3,r19,00000000
@@ -35829,7 +35829,7 @@ l0002D378:
 l0002D384:
 	addk	r24,r27,r19
 	addk	r5,r23,r0
-	brlid	r15,0002E71C
+	brlid	r15,fn0002E71C
 	addk	r6,r24,r0
 	bneid	r3,0002D3D4
 	addk	r5,r23,r0
@@ -35847,7 +35847,7 @@ l0002D3AC:
 	brald	r15,r4
 	swi	r29,r3,00000018
 	addk	r5,r23,r0
-	brlid	r15,0002E71C
+	brlid	r15,fn0002E71C
 	addk	r6,r24,r0
 	beqid	r3,0002D39C
 	addk	r5,r23,r0
@@ -35978,7 +35978,7 @@ l0002D65C:
 	addk	r21,r21,r4
 	addik	r21,r21,0000000C
 	addk	r7,r21,r0
-	brlid	r15,0002E770
+	brlid	r15,fn0002E770
 	lwi	r19,r19,00000000
 	lwi	r4,r22,0000004C
 	rsubk	r21,r21,r4
@@ -35998,7 +35998,7 @@ l0002D69C:
 	addk	r21,r21,r4
 	addik	r21,r21,0000000C
 	addk	r7,r21,r0
-	brlid	r15,0002E738
+	brlid	r15,fn0002E738
 	lwi	r19,r19,00000000
 	lwi	r4,r22,0000004C
 	rsubk	r21,r21,r4
@@ -36160,7 +36160,7 @@ l0002DA80:
 
 l0002DA98:
 	addk	r5,r23,r0
-	brlid	r15,0002E754
+	brlid	r15,fn0002E754
 	addik	r6,r21,0000000C
 	bneid	r3,0002DAD0
 	addik	r6,r0,00000036
@@ -36222,7 +36222,7 @@ fn0002DB20 proc
 	swi	r15,r1,00000000
 	swi	r19,r1,0000001C
 	swi	r26,r1,00000034
-	brlid	r15,0002E960
+	brlid	r15,fn0002E960
 	addk	r24,r8,r0
 	lwi	r19,r22,00000004
 	bneid	r3,0002DBA4
@@ -36249,7 +36249,7 @@ l0002DBB4:
 	addk	r7,r0,r24
 	addk	r7,r24,r24
 	addk	r7,r7,r7
-	brlid	r15,0002D260
+	brlid	r15,fn0002D260
 	swi	r25,r19,00000050
 	beqid	r24,0002DC48
 	addk	r26,r3,r0
@@ -36268,11 +36268,11 @@ l0002DBE8:
 	addk	r6,r25,r0
 
 l0002DBF0:
-	brlid	r15,0002E908
+	brlid	r15,fn0002E908
 	addk	r5,r21,r0
 	addk	r7,r3,r0
 	addk	r6,r23,r0
-	brlid	r15,0002DA08
+	brlid	r15,fn0002DA08
 	addk	r5,r22,r0
 	beqi	r25,0002DC3C
 
@@ -36327,7 +36327,7 @@ fn0002DC74 proc
 	swi	r19,r1,0000001C
 	swi	r26,r1,00000034
 	addk	r21,r7,r0
-	brlid	r15,0002E960
+	brlid	r15,fn0002E960
 	addk	r24,r8,r0
 	lwi	r19,r22,00000004
 	bneid	r3,0002DCDC
@@ -36354,7 +36354,7 @@ l0002DCEC:
 	addk	r7,r0,r24
 	addk	r7,r24,r24
 	addk	r7,r7,r7
-	brlid	r15,0002D260
+	brlid	r15,fn0002D260
 	swi	r25,r19,00000050
 	beqid	r24,0002DD80
 	addk	r26,r3,r0
@@ -36373,11 +36373,11 @@ l0002DD20:
 	addk	r6,r25,r0
 
 l0002DD28:
-	brlid	r15,0002E908
+	brlid	r15,fn0002E908
 	addk	r5,r21,r0
 	addk	r7,r3,r0
 	addk	r6,r23,r0
-	brlid	r15,0002DA08
+	brlid	r15,fn0002DA08
 	addk	r5,r22,r0
 	beqi	r25,0002DD74
 
@@ -36543,11 +36543,11 @@ fn0002E530 proc
 	swi	r19,r1,00000024
 	swi	r21,r1,00000028
 	addk	r21,r5,r0
-	brlid	r15,0002E7C0
+	brlid	r15,fn0002E7C0
 	swi	r0,r5,00000004
 	addk	r5,r21,r0
 	addik	r6,r0,00000054
-	brlid	r15,0002E71C
+	brlid	r15,fn0002E71C
 	swi	r3,r1,0000001C
 	beqid	r3,0002E6F4
 	addk	r19,r3,r0
@@ -36601,7 +36601,7 @@ l0002E564:
 	swi	r0,r19,0000003C
 	swi	r0,r19,00000044
 	swi	r0,r19,00000048
-	brlid	r15,0002F448
+	brlid	r15,fn0002F448
 	swi	r19,r21,00000004
 	beqid	r3,0002E6E0
 	addk	r5,r3,r0
@@ -36612,7 +36612,7 @@ l0002E634:
 	addik	r3,r0,00000078
 	addik	r8,r1,00000020
 	addik	r7,r1,0000001C
-	brlid	r15,0002EE08
+	brlid	r15,fn0002EE08
 	sbi	r3,r1,00000020
 	bleid	r3,0002E6E0
 	lbui	r5,r1,00000020
@@ -36665,7 +36665,7 @@ l0002E6E0:
 	addik	r1,r1,0000002C
 
 l0002E6F4:
-	brlid	r15,0002E7C8
+	brlid	r15,fn0002E7C8
 	addk	r5,r21,r0
 	lwi	r3,r21,00000000
 	addik	r4,r0,00000036
@@ -36684,7 +36684,7 @@ l0002E6F4:
 fn0002E71C proc
 	addik	r1,r1,FFFFFFE4
 	swi	r15,r1,00000000
-	brlid	r15,0002F2F0
+	brlid	r15,fn0002F2F0
 	addk	r5,r6,r0
 	lwi	r15,r1,00000000
 	rtsd	r15,00000008
@@ -36696,7 +36696,7 @@ fn0002E71C proc
 fn0002E738 proc
 	addik	r1,r1,FFFFFFE4
 	swi	r15,r1,00000000
-	brlid	r15,0002F2C8
+	brlid	r15,fn0002F2C8
 	addk	r5,r6,r0
 	lwi	r15,r1,00000000
 	rtsd	r15,00000008
@@ -36708,7 +36708,7 @@ fn0002E738 proc
 fn0002E754 proc
 	addik	r1,r1,FFFFFFE4
 	swi	r15,r1,00000000
-	brlid	r15,0002F2F0
+	brlid	r15,fn0002F2F0
 	addk	r5,r6,r0
 	lwi	r15,r1,00000000
 	rtsd	r15,00000008
@@ -36720,7 +36720,7 @@ fn0002E754 proc
 fn0002E770 proc
 	addik	r1,r1,FFFFFFE4
 	swi	r15,r1,00000000
-	brlid	r15,0002F2C8
+	brlid	r15,fn0002F2C8
 	addk	r5,r6,r0
 	lwi	r15,r1,00000000
 	rtsd	r15,00000008
@@ -37868,27 +37868,27 @@ l0002FFE4:
 	beqi	r3,0003021C
 
 l0002FFEC:
-	brlid	r15,0002CFE4
+	brlid	r15,fn0002CFE4
 	addik	r5,r1,00000454
 	addik	r7,r0,00000208
 	addik	r6,r0,0000003E
 	addik	r5,r1,0000001C
 	imm	0000FFFF
-	brlid	r15,000255C0
+	brlid	r15,fn000255C0
 	swi	r3,r1,0000001C
-	brlid	r15,0002CFE4
+	brlid	r15,fn0002CFE4
 	addik	r5,r1,000003D0
 	addik	r5,r1,00000224
 	addik	r7,r0,000001AC
 	addik	r6,r0,0000003E
 	imm	0000FFFE
-	brlid	r15,0001D008
+	brlid	r15,fn0001D008
 	swi	r3,r1,00000224
 	addk	r6,r21,r0
 	addk	r7,r22,r0
 	addik	r5,r1,00000224
 	imm	0000FFFE
-	brlid	r15,00019E48
+	brlid	r15,fn00019E48
 	addk	r8,r0,r0
 	lwi	r6,r1,00000228
 	lwi	r4,r1,00000438
@@ -37907,7 +37907,7 @@ l00030068:
 
 l00030074:
 	imm	0000FFFE
-	brlid	r15,0001B1C0
+	brlid	r15,fn0001B1C0
 	nop
 	addk	r23,r3,r0
 
@@ -37919,7 +37919,7 @@ l00030084:
 l00030090:
 	imm	00000001
 	addik	r6,r0,00016FD8
-	brlid	r15,0002F048
+	brlid	r15,fn0002F048
 	nop
 	beqid	r3,000302C0
 	addk	r19,r3,r0
@@ -37927,76 +37927,76 @@ l00030090:
 l000300A8:
 	addk	r6,r23,r0
 	imm	0000FFFF
-	brlid	r15,00026018
+	brlid	r15,fn00026018
 	addik	r5,r1,0000001C
 	imm	00000001
 	lwi	r6,r0,00018E9C
 	imm	0000FFFE
-	brlid	r15,0001CE64
+	brlid	r15,fn0001CE64
 	addik	r5,r1,0000001C
 	addik	r5,r1,0000001C
 	imm	0000FFFF
-	brlid	r15,00025A6C
+	brlid	r15,fn00025A6C
 	addik	r6,r0,00000001
 	imm	00000001
 	addik	r6,r0,00018E88
 	imm	0000FFFE
-	brlid	r15,0001B2CC
+	brlid	r15,fn0001B2CC
 	addik	r5,r1,0000001C
 	imm	0000FFFF
-	brlid	r15,00025CD4
+	brlid	r15,fn00025CD4
 	addik	r5,r1,0000001C
 	addk	r24,r3,r0
 	addik	r6,r1,00000224
 	imm	0000FFFE
-	brlid	r15,0001DB74
+	brlid	r15,fn0001DB74
 	addik	r5,r1,0000001C
 	imm	00000001
 	addik	r8,r0,00018E88
 	addk	r7,r24,r0
 	addik	r6,r1,00000224
 	imm	0000FFFE
-	brlid	r15,0001B51C
+	brlid	r15,fn0001B51C
 	addik	r5,r1,0000001C
 	addk	r7,r22,r0
 	addk	r6,r21,r0
 	addik	r8,r0,00000001
 	addik	r5,r1,00000224
 	imm	0000FFFE
-	brlid	r15,00019E48
+	brlid	r15,fn00019E48
 	addk	r25,r3,r0
 	addk	r6,r19,r0
 	imm	0000FFFE
-	brlid	r15,0001EE08
+	brlid	r15,fn0001EE08
 	addik	r5,r1,00000224
 	addk	r6,r25,r0
 	imm	0000FFFE
-	brlid	r15,0001D9D8
+	brlid	r15,fn0001D9D8
 	addik	r5,r1,00000224
 	imm	00000001
 	lwi	r7,r0,00018E9C
 	addik	r6,r1,00000224
 	imm	0000FFFE
-	brlid	r15,0001CEF0
+	brlid	r15,fn0001CEF0
 	addik	r5,r1,0000001C
 	imm	00000001
 	addik	r8,r0,00018E88
 	addk	r7,r24,r0
 	addik	r6,r1,00000224
 	imm	0000FFFE
-	brlid	r15,0001BA7C
+	brlid	r15,fn0001BA7C
 	addik	r5,r1,0000001C
 	imm	0000FFFE
-	brlid	r15,0001D1B0
+	brlid	r15,fn0001D1B0
 	addik	r5,r1,00000224
 	imm	0000FFFE
-	brlid	r15,0001D120
+	brlid	r15,fn0001D120
 	addik	r5,r1,00000224
 	imm	0000FFFF
-	brlid	r15,00025BC4
+	brlid	r15,fn00025BC4
 	addik	r5,r1,0000001C
 	imm	0000FFFF
-	brlid	r15,000256D8
+	brlid	r15,fn000256D8
 	addik	r5,r1,0000001C
 	imm	00000001
 	lwi	r3,r0,00018EB4
@@ -38004,7 +38004,7 @@ l000300A8:
 	beqi	r3,000301E4
 
 l000301DC:
-	brlid	r15,0002F074
+	brlid	r15,fn0002F074
 	addk	r5,r23,r0
 
 l000301E4:
@@ -38015,7 +38015,7 @@ l000301E4:
 	lwi	r3,r1,000004C0
 
 l000301F8:
-	brlid	r15,0002F074
+	brlid	r15,fn0002F074
 	addk	r5,r19,r0
 	lwi	r3,r1,000004C0
 
@@ -38026,7 +38026,7 @@ l00030204:
 	addik	r5,r0,00000002
 
 l00030214:
-	brlid	r15,0002F21C
+	brlid	r15,fn0002F21C
 	nop
 
 l0003021C:
@@ -38040,7 +38040,7 @@ l00030230:
 	addk	r19,r3,r3
 	imm	00000001
 	addik	r6,r0,00016FC0
-	brlid	r15,0002F048
+	brlid	r15,fn0002F048
 	lw	r5,r19,r22
 	bneid	r3,00030084
 	addk	r23,r3,r0
@@ -38055,9 +38055,9 @@ l00030258:
 	lwi	r7,r0,00018EA4
 	imm	00000001
 	addik	r6,r0,00016FC4
-	brlid	r15,0002EAD0
+	brlid	r15,fn0002EAD0
 	nop
-	brlid	r15,0002F21C
+	brlid	r15,fn0002F21C
 	addik	r5,r0,00000001
 
 l00030278:
@@ -38067,19 +38067,19 @@ l00030278:
 	addik	r6,r0,00016FA4
 	imm	00000001
 	lwi	r5,r0,00018EB8
-	brlid	r15,0002EAD0
+	brlid	r15,fn0002EAD0
 	nop
 	imm	0000FFFE
-	brlid	r15,00019B70
+	brlid	r15,fn00019B70
 	nop
 
 l000302A4:
-	brlid	r15,0002F21C
+	brlid	r15,fn0002F21C
 	addk	r5,r3,r0
 
 l000302AC:
 	imm	0000FFFE
-	brlid	r15,0001B1D0
+	brlid	r15,fn0001B1D0
 	nop
 	brid	000300A8
 	addk	r19,r3,r0

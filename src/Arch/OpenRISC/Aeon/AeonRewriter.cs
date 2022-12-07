@@ -82,9 +82,12 @@ namespace Reko.Arch.OpenRISC.Aeon
                 case Mnemonic.l_andi: RewriteLogicalImm(m.And); break;
                 case Mnemonic.l_andi__: RewriteUnknown(); break;
                 case Mnemonic.beqi__: RewriteBxxi(m.Eq); break;
-                case Mnemonic.l_bf: RewriteBf(false); break;
+                case Mnemonic.l_bf: RewriteBf(true); break;
                 case Mnemonic.ble__i__: RewriteBxxi(m.Le); break;
                 case Mnemonic.l_blti__: RewriteBxxi(m.Lt); break;
+                case Mnemonic.l_bnf__: RewriteBf(false); break;
+                case Mnemonic.bne__: RewriteBxxi(m.Ne); break;
+                case Mnemonic.bnei__: RewriteBxxi(m.Ne); break;
                 case Mnemonic.bt_trap: RewriteUnknown(); break;
                 case Mnemonic.entri__: RewriteUnknown(); break;
                 case Mnemonic.l_invalidate_line: RewriteInvalidateLine(); break;

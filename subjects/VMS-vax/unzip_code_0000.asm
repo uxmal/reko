@@ -6261,7 +6261,7 @@ fn0000BDC2 proc
 	movf	#0.75,@+0450(r4)
 	tstl	r0
 	nop
-	bvc	0000C022
+	bvc	fn0000C022
 
 ;; fn0000C022: 0000C022
 ;;   Called from:
@@ -6448,7 +6448,7 @@ l0000C327:
 0000C350 C0 00 C0 00                                     ....            
 
 l0000C354:
-	bsbw	0000F457
+	bsbw	fn0000F457
 	movzbw	#00,@+0150(r5)
 	jmp	40009A48
 0000C362       D5 50 EF 10 10 54 54 CB 8F F8 FF FF FF 54   .P...TT......T

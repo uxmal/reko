@@ -21,7 +21,7 @@ fn0000 proc
 00F0 00 4D E7 ED 28 E3 00 00 2E 2F ED E5 2E EF ED 20 .M..(..../..... 
 
 l0100:
-	ld	(0000),a
+	ld	(fn0000),a
 	pop	bc
 	ret
 0106                   50 E3 00 00 4D E7 ED 28 E3 00       P...M..(..
@@ -186,7 +186,7 @@ fn03B2 proc
 	rr	b
 	rr	c
 	dec	a
-	jr	NZ,03B2
+	jr	NZ,fn03B2
 
 l03BD:
 	ld	a,c
@@ -245,7 +245,7 @@ l03BD:
 	or	a,l
 	or	a,b
 	or	a,c
-	jp	NZ,0350
+	jp	NZ,fn0350
 
 l0434:
 	ld	hl,001C
@@ -540,7 +540,7 @@ l065B:
 	or	a,l
 	or	a,b
 	or	a,c
-	jp	NZ,060E
+	jp	NZ,fn060E
 
 l06F2:
 	ld	hl,000C
@@ -589,8 +589,8 @@ l070B:
 fn0805 proc
 	sla
 	di
-	call	0823
-	call	0822
+	call	fn0823
+	call	fn0822
 	halt
 080E                                           50 E3               P.
 0810 00 00 4D E7 ED 28 E3 00 00 2E 2F ED E5 2E EF ED ..M..(..../.....
@@ -920,7 +920,7 @@ l0ADE:
 	or	a,l
 	or	a,b
 	or	a,c
-	jp	NZ,0350
+	jp	NZ,fn0350
 
 l0B55:
 	ld	hl,001C
@@ -1275,7 +1275,7 @@ fn0DFC proc
 	or	a,l
 	or	a,b
 	or	a,c
-	jp	NZ,060E
+	jp	NZ,fn060E
 
 l0E13:
 	ld	hl,000C
@@ -1500,7 +1500,7 @@ fn164F proc
 	push	de
 	push	bc
 	push	hl
-	call	02F4
+	call	fn02F4
 	add	sp,0008
 	ld	a,l
 	or	a,a
@@ -1508,7 +1508,7 @@ fn164F proc
 
 l168D:
 	ld	l,03
-	jp	0C35
+	jp	fn0C35
 
 l1692:
 	ld	hl,(sp+0x17)
@@ -1568,7 +1568,7 @@ l1692:
 	push	hl
 	push	bc
 	push	de
-	call	02F4
+	call	fn02F4
 	add	sp,0008
 	ld	a,l
 	or	a,a
@@ -1576,11 +1576,11 @@ l1692:
 
 l1702:
 	ld	l,03
-	jp	0C35
+	jp	fn0C35
 
 l1707:
 	ld	l,00
-	jp	0C35
+	jp	fn0C35
 170C                                     F0 0C 2E F4             ....
 1710 EA 26 F0 0D 2E F4 EB 26 F0 EA 2E 68 02 F4 EC 26 .&.....&...h...&
 1720 F0 EB 2E 69 00 F4 ED 26 F0 FC 2E F0 F8 62 EB 4A ...i...&.....b.J
@@ -1613,7 +1613,7 @@ fn1873 proc
 	inc	hl
 	ld	(hl),b
 	ld	l,02
-	jp	0C35
+	jp	fn0C35
 1880 F2 13 4A E2 2B 92 E2 2A 23 F9 62 F4 EE 26 22 F8 ..J.+..*#.b..&".
 1890 63 F4 EF 26 F2 11 4A E2 29 92 E2 28 21 F0 E7 62 c..&..J.)..(!..b
 18A0 F4 F8 26 20 F0 E8 63 F4 F9 26 F2 1B 4A E2 2E 92 ..& ..c..&..J...
@@ -1684,12 +1684,12 @@ fn1BA4 proc
 	push	hl
 	ld	hl,(sp+0x23)
 	push	hl
-	call	0805
+	call	fn0805
 	add	sp,000A
 	ld	e,l
 	ld	a,03
 	sub	a,e
-	jr	C,1BF9
+	jr	C,fn1BF9
 
 l1BCF:
 	ld	d,00
@@ -1708,7 +1708,7 @@ l1BE9:
 	inc	(ix-0x17)
 	ld	a,(ix-0x17)
 	ld	(ix-0x01),a
-	jr	1BF9
+	jr	fn1BF9
 1BF4             35 02 1A 96 0F                          5....       
 
 ;; fn1BF9: 1BF9
@@ -1723,7 +1723,7 @@ fn1BF9 proc
 	adc	a,00
 	ld	(ix-0x08),a
 	inc	(ix-0x0B)
-	jp	0E3B
+	jp	fn0E3B
 1C0F                                              F0                .
 1C10 FF 2E 6A 03 C6 07 F0 FF 2E 6A 04 CE 05 35 01 1A ..j......j...5..
 1C20 96 0F F2 12 4A 52 F2 1D 4A 52 1C 39 0C 16 04 00 ....JR..JR.9....
@@ -1741,11 +1741,11 @@ fn1C89 proc
 
 l1C8D:
 	ld	l,01
-	jp	0F96
+	jp	fn0F96
 
 l1C92:
 	ld	l,03
-	jp	0F96
+	jp	fn0F96
 1C97                      F0 FF 2E 6A 02 CE 25 F0 F6        ...j..%..
 1CA0 2E FE 66 CE 04 F9 66 C6 04 35 01 C8 18 F0 EB 2E ..f...f..5......
 1CB0 FE 66 C6 07 F0 EA 2E FE 66 CE 04 35 03 C8 06 35 .f......f..5...5
@@ -1941,7 +1941,7 @@ fn22A6 proc
 	ld	d,a
 	push	bc
 	push	de
-	call	03AA
+	call	fn03AA
 	add	sp,0004
 	ld	c,l
 	ld	b,h
@@ -1953,7 +1953,7 @@ fn22A6 proc
 	inc	(ix-0x09)
 	inc	(ix-0x09)
 	inc	(ix-0x09)
-	jp	152A
+	jp	fn152A
 237A                               FC 3E 5C 1E 54 3C           .>\.T<
 2380 00 00 FE 14 16 F2 FF F4 F2 37 FE F0 04 29 30 00 .........7...)0.
 2390 F9 35 F8 34 FA 70 F8 70 38 00 80 F8 70 F6 0C 42 .5.4.p.p8...p..B
@@ -2479,7 +2479,7 @@ fn3E2D proc
 	ld	d,a
 	push	bc
 	push	de
-	call	03AA
+	call	fn03AA
 	add	sp,0004
 	ld	c,l
 	ld	b,h
@@ -2491,7 +2491,7 @@ fn3E2D proc
 	inc	(ix-0x09)
 	inc	(ix-0x09)
 	inc	(ix-0x09)
-	jp	152A
+	jp	fn152A
 3F01    FC 3E 5C 1E 54 3C 00 00 FE 14 16 F2 FF F4 F2  .>\.T<.........
 3F10 37 FE F0 04 29 30 00 F9 35 F8 34 FA 70 F8 70 38 7...)0..5.4.p.p8
 3F20 00 80 F8 70 F6 0C 42 F0 05 29 30 00 F9 35 F8 34 ...p..B..)0..5.4

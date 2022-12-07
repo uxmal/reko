@@ -11,7 +11,7 @@
 
 ;; fn00200089: 00200089
 fn00200089 proc
-	calr	0020060C
+	calr	fn0020060C
 	set	06,(00006F86)
 	lda	xix,(00200040)
 	lda	xiy,(00006FB8)
@@ -44,7 +44,7 @@ l002000D5:
 	ldirw
 
 l002000D7:
-	call	002005B8
+	call	fn002005B8
 	ei	00
 	ld	bc,0010
 	ld	xde,00008300
@@ -67,7 +67,7 @@ l00200111:
 	ld	d,04
 	ld	c,01
 	ld	b,00
-	call	00200557
+	call	fn00200557
 	jr	00200136
 00200122       2E 20 20 20 54 65 73 74 20 53 75 69 74 65   .   Test Suite
 00200130 20 20 20 20 2E 00                                   ..          
@@ -77,7 +77,7 @@ l00200136:
 	ld	d,04
 	ld	c,01
 	ld	b,01
-	call	00200557
+	call	fn00200557
 	jr	00200154
 00200147                      51 75 65 75 65 20 6C 65 6E        Queue len
 00200150 67 74 68 00                                     gth.            
@@ -87,7 +87,7 @@ l00200154:
 	ld	d,04
 	ld	c,02
 	ld	b,04
-	call	00200557
+	call	fn00200557
 	jr	0020016E
 00200165                45 78 70 65 63 74 65 64 00            Expected.  
 
@@ -96,7 +96,7 @@ l0020016E:
 	ld	d,02
 	ld	c,04
 	ld	b,05
-	call	00200557
+	call	fn00200557
 	jr	00200186
 0020017F                                              41                A
 00200180 63 74 75 61 6C 00                               ctual.          
@@ -106,7 +106,7 @@ l00200186:
 	ld	d,02
 	ld	c,04
 	ld	b,06
-	call	00200557
+	call	fn00200557
 	ld	xde,00007000
 	ld	xhl,00200363
 	ld	bc,012F
@@ -116,17 +116,17 @@ l002001A2:
 
 l002001A4:
 	ld	w,01
-	call	002004F2
+	call	fn002004F2
 	ld	xwa,00007000
 	call	(xwa)
 	ld	hl,0D06
 	ld	a,(00004003)
 	ld	w,04
-	call	00200532
+	call	fn00200532
 	ld	hl,0D05
 	ld	a,04
 	ld	w,04
-	call	00200532
+	call	fn00200532
 	cp	(00004003),04
 	jr	NZ,002001E6
 
@@ -139,7 +139,7 @@ l002001D5:
 	ld	d,01
 	ld	c,0F
 	ld	b,04
-	call	00200557
+	call	fn00200557
 	jr	002001FB
 
 l002001E6:
@@ -151,7 +151,7 @@ l002001EC:
 	ld	d,03
 	ld	c,0F
 	ld	b,04
-	call	00200557
+	call	fn00200557
 
 l002001FB:
 	jr	00200206
@@ -163,7 +163,7 @@ l00200206:
 	ld	d,04
 	ld	c,02
 	ld	b,08
-	call	00200557
+	call	fn00200557
 	jr	00200220
 00200217                      45 78 70 65 63 74 65 64 00        Expected.
 
@@ -172,7 +172,7 @@ l00200220:
 	ld	d,02
 	ld	c,04
 	ld	b,09
-	call	00200557
+	call	fn00200557
 	jr	00200238
 00200231    41 63 74 75 61 6C 00                          Actual.        
 
@@ -181,7 +181,7 @@ l00200238:
 	ld	d,02
 	ld	c,04
 	ld	b,0A
-	call	00200557
+	call	fn00200557
 	ld	xde,00007000
 	ld	xhl,00200492
 	ld	bc,0023
@@ -191,17 +191,17 @@ l00200254:
 
 l00200256:
 	ld	w,01
-	call	002004F2
+	call	fn002004F2
 	ld	xwa,00007000
 	call	(xwa)
 	ld	hl,0D0A
 	ld	a,(00004003)
 	ld	w,04
-	call	00200532
+	call	fn00200532
 	ld	hl,0D09
 	ld	a,01
 	ld	w,04
-	call	00200532
+	call	fn00200532
 	cp	(00004003),01
 	jr	NZ,00200298
 
@@ -214,7 +214,7 @@ l00200287:
 	ld	d,01
 	ld	c,0F
 	ld	b,08
-	call	00200557
+	call	fn00200557
 	jr	002002AD
 
 l00200298:
@@ -226,7 +226,7 @@ l0020029E:
 	ld	d,03
 	ld	c,0F
 	ld	b,08
-	call	00200557
+	call	fn00200557
 
 l002002AD:
 	jr	002002BA
@@ -238,7 +238,7 @@ l002002BA:
 	ld	d,04
 	ld	c,02
 	ld	b,0C
-	call	00200557
+	call	fn00200557
 	jr	002002D4
 002002CB                                  45 78 70 65 63            Expec
 002002D0 74 65 64 00                                     ted.            
@@ -248,7 +248,7 @@ l002002D4:
 	ld	d,02
 	ld	c,04
 	ld	b,0D
-	call	00200557
+	call	fn00200557
 	jr	002002EC
 002002E5                41 63 74 75 61 6C 00                  Actual.    
 
@@ -257,7 +257,7 @@ l002002EC:
 	ld	d,02
 	ld	c,04
 	ld	b,0E
-	call	00200557
+	call	fn00200557
 	ld	xde,00007000
 	ld	xhl,002004B5
 	ld	bc,002B
@@ -267,17 +267,17 @@ l00200308:
 
 l0020030A:
 	ld	w,01
-	call	002004F2
+	call	fn002004F2
 	ld	xwa,00007000
 	call	(xwa)
 	ld	hl,0D0E
 	ld	a,(00004003)
 	ld	w,04
-	call	00200532
+	call	fn00200532
 	ld	hl,0D0D
 	ld	a,00
 	ld	w,04
-	call	00200532
+	call	fn00200532
 	cp	(00004003),00
 	jr	NZ,0020034C
 
@@ -290,7 +290,7 @@ l0020033B:
 	ld	d,01
 	ld	c,0F
 	ld	b,0C
-	call	00200557
+	call	fn00200557
 	jr	00200361
 
 l0020034C:
@@ -303,7 +303,7 @@ l00200352:
 	ld	d,03
 	ld	c,0F
 	ld	b,0C
-	call	00200557
+	call	fn00200557
 
 l00200361:
 	jr	00200361
@@ -381,12 +381,12 @@ fn00200532 proc
 	and	a,F0
 	srl	04,a
 	add	a,40
-	call	0020050A
+	call	fn0020050A
 	ld	a,c
 	and	a,0F
 	add	a,40
 	add	h,01
-	call	0020050A
+	call	fn0020050A
 	pop	xwa
 	pop	xbc
 	pop	xhl

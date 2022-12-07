@@ -42,8 +42,8 @@ fn0034 proc
 
 l006A:
 	mov	r1,013E
-	calla	cc_UC,0128
-	calla	cc_UC,011C
+	calla	cc_UC,fn0128
+	calla	cc_UC,fn011C
 	and	r0,00DF
 	cmp	r0,0044
 	jmpr	cc_Z,0098
@@ -56,52 +56,52 @@ l0086:
 	jmpr	cc_UC,006A
 
 l0088:
-	calla	cc_UC,011C
+	calla	cc_UC,fn011C
 	movb	rh1,rl0
-	calla	cc_UC,011C
+	calla	cc_UC,fn011C
 	movb	rl1,rl0
 	push	r1
 	ret
 
 l0098:
-	calla	cc_UC,011C
+	calla	cc_UC,fn011C
 	cmpb	rl0,3A
 	jmpr	cc_NZ,0098
 
 l00A2:
-	calla	cc_UC,011C
+	calla	cc_UC,fn011C
 	cmpb	rl0,00
 	jmpr	cc_Z,00DA
 
 l00AA:
 	mov	r2,r0
 	and	r2,00FF
-	calla	cc_UC,011C
+	calla	cc_UC,fn011C
 	movb	rh1,rl0
-	calla	cc_UC,011C
+	calla	cc_UC,fn011C
 	movb	rl1,rl0
-	calla	cc_UC,011C
+	calla	cc_UC,fn011C
 
 l00C0:
-	calla	cc_UC,011C
+	calla	cc_UC,fn011C
 	movb	[r1],rl0
 	add	r1,01
 	cmpd1	r2,0001
 	jmpr	cc_UGT,00C0
 
 l00CC:
-	calla	cc_UC,011C
+	calla	cc_UC,fn011C
 	mov	r0,002E
-	calla	cc_UC,0110
+	calla	cc_UC,fn0110
 	jmpr	cc_UC,0098
 
 l00DA:
-	calla	cc_UC,011C
-	calla	cc_UC,011C
-	calla	cc_UC,011C
-	calla	cc_UC,011C
+	calla	cc_UC,fn011C
+	calla	cc_UC,fn011C
+	calla	cc_UC,fn011C
+	calla	cc_UC,fn011C
 	mov	r0,002E
-	calla	cc_UC,0110
+	calla	cc_UC,fn0110
 	jmpa	cc_UC,006A
 00F6                   EA 00 6A 00 EC F0 E6 F0 0D 00       ..j.......
 0100 CA 00 10 01 E6 F0 0A 00 CA 00 10 01 FC F0 CB 00 ................
@@ -138,7 +138,7 @@ l0118:
 ;;     00E2 (in fn0034)
 ;;     00E6 (in fn0034)
 fn011C proc
-	jnb	S0RIC:7,011C
+	jnb	S0RIC:7,fn011C
 
 l0120:
 	mov	r0,[0xFEB2]
@@ -154,9 +154,9 @@ fn0128 proc
 	jmpa	cc_Z,013C
 
 l0132:
-	calla	cc_UC,0110
+	calla	cc_UC,fn0110
 	add	r1,0001
-	jmpr	cc_UC,0128
+	jmpr	cc_UC,fn0128
 
 l013C:
 	ret

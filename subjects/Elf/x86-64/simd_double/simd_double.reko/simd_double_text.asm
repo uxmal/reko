@@ -9,9 +9,9 @@ _start proc
 	and	rsp,0F0h
 	push	rax
 	push	rsp
-	lea	r8,[0000000000000AE0]                                  ; [rip+000004AA]
-	lea	rcx,[0000000000000A70]                                 ; [rip+00000433]
-	lea	rdi,[0000000000000898]                                 ; [rip+00000254]
+	lea	r8,[__libc_csu_fini]                                   ; [rip+000004AA]
+	lea	rcx,[__libc_csu_init]                                  ; [rip+00000433]
+	lea	rdi,[main]                                             ; [rip+00000254]
 	call	[0000000000200FE0]                                    ; [rip+00200996]
 	hlt
 000000000000064B                                  0F 1F 44 00 00            ..D..
@@ -89,7 +89,7 @@ l00000000000006F7:
 	call	0610h
 
 l0000000000000703:
-	call	0650h
+	call	deregister_tm_clones
 	mov	[0000000000201048],1h                                  ; [rip+00200939]
 	pop	rbp
 	ret
@@ -104,7 +104,7 @@ frame_dummy proc
 	push	rbp
 	mov	rbp,rsp
 	pop	rbp
-	jmp	0690h
+	jmp	register_tm_clones
 
 ;; _mm_malloc: 000000000000072A
 ;;   Called from:
@@ -252,19 +252,19 @@ main proc
 	shl	rax,3h
 	mov	esi,20h
 	mov	rdi,rax
-	call	072Ah
+	call	_mm_malloc
 	mov	[rbp-30h],rax
 	mov	rax,[rbp-28h]
 	shl	rax,3h
 	mov	esi,20h
 	mov	rdi,rax
-	call	072Ah
+	call	_mm_malloc
 	mov	[rbp-38h],rax
 	mov	rax,[rbp-28h]
 	shl	rax,3h
 	mov	esi,20h
 	mov	rdi,rax
-	call	072Ah
+	call	_mm_malloc
 	mov	[rbp-40h],rax
 	mov	qword ptr [rbp-8h],+0h
 	jmp	093Fh
@@ -358,7 +358,7 @@ l00000000000009D6:
 	mov	rsi,[rbp-40h]
 	mov	rax,[rbp-28h]
 	mov	rdi,rax
-	call	07A8h
+	call	vec_add
 	mov	qword ptr [rbp-20h],+0h
 	jmp	0A2Dh
 
@@ -383,13 +383,13 @@ l0000000000000A2D:
 l0000000000000A37:
 	mov	rax,[rbp-30h]
 	mov	rdi,rax
-	call	078Dh
+	call	_mm_free
 	mov	rax,[rbp-38h]
 	mov	rdi,rax
-	call	078Dh
+	call	_mm_free
 	mov	rax,[rbp-40h]
 	mov	rdi,rax
-	call	078Dh
+	call	_mm_free
 	mov	eax,0h
 	leave
 	ret
@@ -411,7 +411,7 @@ __libc_csu_init proc
 	sub	rbp,r12
 	sub	rsp,8h
 	sar	rbp,3h
-	call	05A0h
+	call	_init
 	test	rbp,rbp
 	jz	0AC6h
 

@@ -87,7 +87,7 @@ l80000114:
 	bhi	$80000114
 
 l8000012C:
-	jsr.l	80000080                                             ; -$00AC(pc)
+	jsr.l	deregister_tm_clones                                 ; -$00AC(pc)
 	lea	$00000000,a0
 	tst.l	a0
 	beq	$80000144
@@ -132,7 +132,7 @@ l8000017E:
 
 l80000188:
 	unlk	a6
-	bra	$800000AE
+	bra	register_tm_clones
 
 l8000018E:
 	lea	$00000000,a1
@@ -144,7 +144,7 @@ l80000198:
 	jsr.l	(a1)
 	addq.l	#$04,a7
 	unlk	a6
-	bra	$800000AE
+	bra	register_tm_clones
 
 ;; call_frame_dummy: 800001A4
 call_frame_dummy proc
@@ -303,11 +303,11 @@ l800003E0:
 	move.l	-$0004(a6),-(a7)
 	move.l	$000C(a6),-(a7)
 	move.l	$0008(a6),-(a7)
-	jsr.l	80000372                                             ; -$007A(pc)
+	jsr.l	pow_int                                              ; -$007A(pc)
 	lea	$000C(a7),a7
 	fmove.x	fp0,fp2
 	move.l	-$0004(a6),-(a7)
-	jsr.l	8000033C                                             ; -$00C0(pc)
+	jsr.l	factorial                                            ; -$00C0(pc)
 	addq.l	#$04,a7
 	fmove.l	d0,fp0
 	fmove.x	fp2,fp1
@@ -332,11 +332,11 @@ l80000438:
 	move.l	-$0004(a6),-(a7)
 	move.l	$000C(a6),-(a7)
 	move.l	$0008(a6),-(a7)
-	jsr.l	80000372                                             ; -$00D2(pc)
+	jsr.l	pow_int                                              ; -$00D2(pc)
 	lea	$000C(a7),a7
 	fmove.x	fp0,fp2
 	move.l	-$0004(a6),-(a7)
-	jsr.l	8000033C                                             ; -$0118(pc)
+	jsr.l	factorial                                            ; -$0118(pc)
 	addq.l	#$04,a7
 	fmove.l	d0,fp0
 	fmove.x	fp2,fp1
@@ -363,7 +363,7 @@ main proc
 	link	a6,#$FFFC
 	move.l	#$51EB851F,-(a7)
 	move.l	#$40091EB8,-(a7)
-	jsr.l	800001AC                                             ; -$02FE(pc)
+	jsr.l	sine_taylor                                          ; -$02FE(pc)
 	addq.l	#$08,a7
 	move.l	a6,d0
 	subq.l	#$04,d0
@@ -372,7 +372,7 @@ main proc
 	move.l	#$3F689374,-(a7)
 	move.l	#$51EB851F,-(a7)
 	move.l	#$40091EB8,-(a7)
-	jsr.l	$800004DE
+	jsr.l	_sin
 	lea	$0014(a7),a7
 	clr.l	d0
 	unlk	a6

@@ -24,7 +24,7 @@ fn00401010 proc
 	push	0h
 	push	esi
 	push	eax
-	call	401000h
+	call	fn00401000
 	push	dword ptr [eax+4h]
 	push	dword ptr [eax]
 	call	dword ptr [4020B0h]
@@ -55,7 +55,7 @@ fn00401040 proc
 	push	dword ptr [ebp-4h]
 	push	dword ptr [eax]
 	push	402118h
-	call	401010h
+	call	fn00401010
 	add	esp,0Ch
 	xor	eax,eax
 	mov	esp,ebp
@@ -79,22 +79,22 @@ fn00401040 proc
 l0040115A:
 	push	14h
 	push	402508h
-	call	401980h
+	call	fn00401980
 	push	1h
-	call	40146Fh
+	call	fn0040146F
 	pop	ecx
 	test	al,al
 	jnz	401179h
 
 l00401172:
 	push	7h
-	call	40176Dh
+	call	fn0040176D
 
 l00401179:
 	xor	bl,bl
 	mov	[ebp-19h],bl
 	and	dword ptr [ebp-4h],0h
-	call	40143Ah
+	call	fn0040143A
 	mov	[ebp-24h],al
 	mov	eax,[403334h]
 	xor	ecx,ecx
@@ -136,9 +136,9 @@ l004011E3:
 
 l004011E8:
 	push	dword ptr [ebp-24h]
-	call	4015C9h
+	call	fn004015C9
 	pop	ecx
-	call	401761h
+	call	fn00401761
 	mov	esi,eax
 	xor	edi,edi
 	cmp	[esi],edi
@@ -146,7 +146,7 @@ l004011E8:
 
 l004011FE:
 	push	esi
-	call	40153Fh
+	call	fn0040153F
 	pop	ecx
 	test	al,al
 	jz	401218h
@@ -157,18 +157,18 @@ l00401209:
 	push	edi
 	mov	esi,[esi]
 	mov	ecx,esi
-	call	401972h
+	call	fn00401972
 	call	esi
 
 l00401218:
-	call	401767h
+	call	fn00401767
 	mov	esi,eax
 	cmp	[esi],edi
 	jz	401236h
 
 l00401223:
 	push	esi
-	call	40153Fh
+	call	fn0040153F
 	pop	ecx
 	test	al,al
 	jz	401236h
@@ -187,10 +187,10 @@ l00401236:
 	push	eax
 	push	dword ptr [edi]
 	push	dword ptr [esi]
-	call	401040h
+	call	fn00401040
 	add	esp,0Ch
 	mov	esi,eax
-	call	40188Bh
+	call	fn0040188B
 	test	al,al
 	jnz	401267h
 
@@ -208,7 +208,7 @@ l0040126B:
 l00401270:
 	push	0h
 	push	1h
-	call	4015E6h
+	call	fn004015E6
 	pop	ecx
 	pop	ecx
 	mov	dword ptr [ebp-4h],0FFFFFFFEh
@@ -221,12 +221,12 @@ l00401270:
 004012C0 8B 45 E0                                        .E.             
 
 l004012C3:
-	call	4019C6h
+	call	fn004019C6
 	ret
 
 ;; Win32CrtStartup: 004012C9
 Win32CrtStartup proc
-	call	40165Eh
+	call	fn0040165E
 	jmp	40115Ah
 004012D3          55 8B EC 6A 00 FF 15 10 20 40 00 FF 75    U..j.... @..u
 004012E0 08 FF 15 1C 20 40 00 68 09 04 00 C0 FF 15 14 20 .... @.h....... 
@@ -301,7 +301,7 @@ l00401436:
 ;;   Called from:
 ;;     00401182 (in Win32CrtStartup)
 fn0040143A proc
-	call	401B98h
+	call	fn00401B98
 	test	eax,eax
 	jnz	401446h
 
@@ -351,8 +351,8 @@ l00401478:
 	mov	byte ptr [403354h],1h
 
 l0040147F:
-	call	4019FEh
-	call	401C46h
+	call	fn004019FE
+	call	fn00401C46
 	test	al,al
 	jnz	401491h
 
@@ -362,13 +362,13 @@ l0040148D:
 	ret
 
 l00401491:
-	call	401C46h
+	call	fn00401C46
 	test	al,al
 	jnz	4014A4h
 
 l0040149A:
 	push	0h
-	call	401C46h
+	call	fn00401C46
 	pop	ecx
 	jmp	40148Dh
 
@@ -394,7 +394,7 @@ l004014A4:
 fn0040153F proc
 	push	8h
 	push	402528h
-	call	401980h
+	call	fn00401980
 	and	dword ptr [ebp-4h],0h
 	mov	eax,5A4Dh
 	cmp	[400000h],ax
@@ -416,7 +416,7 @@ l0040157C:
 	sub	eax,ecx
 	push	eax
 	push	ecx
-	call	4013F6h
+	call	fn004013F6
 	pop	ecx
 	pop	ecx
 	test	eax,eax
@@ -438,7 +438,7 @@ l004015BA:
 	xor	al,al
 
 l004015C3:
-	call	4019C6h
+	call	fn004019C6
 	ret
 
 ;; fn004015C9: 004015C9
@@ -447,7 +447,7 @@ l004015C3:
 fn004015C9 proc
 	push	ebp
 	mov	ebp,esp
-	call	401B98h
+	call	fn00401B98
 	test	eax,eax
 	jz	4015E4h
 
@@ -479,9 +479,9 @@ l004015F2:
 
 l004015F8:
 	push	dword ptr [ebp+8h]
-	call	401C46h
+	call	fn00401C46
 	push	dword ptr [ebp+8h]
-	call	401C46h
+	call	fn00401C46
 	pop	ecx
 	pop	ecx
 

@@ -16,7 +16,7 @@ fn0000000140001000 proc
 	lea	rcx,[0000000140002210]                                 ; [rip+000011CB]
 	mov	edx,3h
 	movups	[rsp+20h],xmm0
-	call	140001140h
+	call	fn0000000140001140
 	lea	rax,[rsp+44h]
 	mov	[rsp+38h],rax
 	lea	r9,[rsp+78h]
@@ -29,11 +29,11 @@ fn0000000140001000 proc
 	lea	rax,[rsp+48h]
 	lea	rcx,[0000000140002228]                                 ; [rip+0000119B]
 	mov	[rsp+20h],rax
-	call	1400010D0h
+	call	fn00000001400010D0
 	xor	eax,eax
 	mov	rcx,[rsp+0B8h]
 	xor	rcx,rsp
-	call	1400011B0h
+	call	fn00000001400011B0
 	add	rsp,+0C8h
 	ret
 00000001400010B1    CC CC CC CC CC CC CC CC CC CC CC CC CC CC CC  ...............
@@ -64,7 +64,7 @@ fn00000001400010D0 proc
 	xor	ecx,ecx
 	call	[0000000140002178]                                    ; [rip+0000107D]
 	mov	rbx,rax
-	call	1400010C0h
+	call	fn00000001400010C0
 	xor	r9d,r9d
 	mov	[rsp+20h],rsi
 	mov	r8,rdi
@@ -104,7 +104,7 @@ fn0000000140001140 proc
 	mov	ecx,1h
 	call	[0000000140002178]                                    ; [rip+0000100A]
 	mov	rbx,rax
-	call	140001130h
+	call	fn0000000140001130
 	xor	r9d,r9d
 	mov	[rsp+20h],rsi
 	mov	r8,rdi
@@ -139,7 +139,7 @@ l00000001400011C8:
 	ror	rcx,10h
 
 l00000001400011CC:
-	jmp	14000147Ch
+	jmp	fn000000014000147C
 00000001400011D1    CC CC CC                                      ...            
 
 ;; fn00000001400011D4: 00000001400011D4
@@ -148,45 +148,45 @@ fn00000001400011D4 proc
 	sub	rsp,20h
 	mov	ecx,1h
 	call	140001DF2h
-	call	140001920h
+	call	fn0000000140001920
 	mov	ecx,eax
 	call	140001E28h
 	call	140001E58h
 	mov	rbx,rax
-	call	140001ABCh
+	call	fn0000000140001ABC
 	mov	ecx,1h
 	mov	[rbx],eax
-	call	14000164Ch
+	call	fn000000014000164C
 	test	al,al
 	jz	140001279h
 
 l000000014000120D:
-	call	140001B5Ch
-	lea	rcx,[0000000140001BA8]                                 ; [rip+0000098F]
-	call	140001854h
-	call	140001918h
+	call	fn0000000140001B5C
+	lea	rcx,[fn0000000140001BA8]                               ; [rip+0000098F]
+	call	fn0000000140001854
+	call	fn0000000140001918
 	mov	ecx,eax
 	call	140001DFEh
 	test	eax,eax
 	jnz	140001284h
 
 l000000014000122E:
-	call	140001928h
-	call	140001958h
+	call	fn0000000140001928
+	call	fn0000000140001958
 	test	eax,eax
 	jz	140001248h
 
 l000000014000123C:
-	lea	rcx,[0000000140001ABC]                                 ; [rip+00000879]
+	lea	rcx,[fn0000000140001ABC]                               ; [rip+00000879]
 	call	140001DF8h
 
 l0000000140001248:
-	call	140001DD0h
-	call	140001DD0h
-	call	140001ABCh
+	call	fn0000000140001DD0
+	call	fn0000000140001DD0
+	call	fn0000000140001ABC
 	mov	ecx,eax
 	call	140001E4Ch
-	call	140001938h
+	call	fn0000000140001938
 	test	al,al
 	jz	14000126Ch
 
@@ -194,7 +194,7 @@ l0000000140001267:
 	call	140001E04h
 
 l000000014000126C:
-	call	140001ABCh
+	call	fn0000000140001ABC
 	xor	eax,eax
 	add	rsp,20h
 	pop	rbx
@@ -202,12 +202,12 @@ l000000014000126C:
 
 l0000000140001279:
 	mov	ecx,7h
-	call	140001974h
+	call	fn0000000140001974
 	int	3h
 
 l0000000140001284:
 	mov	ecx,7h
-	call	140001974h
+	call	fn0000000140001974
 	int	3h
 	int	3h
 
@@ -216,7 +216,7 @@ l0000000140001284:
 ;;     000000014000128F (in fn00000001400011D4)
 fn0000000140001290 proc
 	sub	rsp,28h
-	call	14000193Ch
+	call	fn000000014000193C
 	xor	eax,eax
 	add	rsp,28h
 	ret
@@ -224,8 +224,8 @@ fn0000000140001290 proc
 ;; fn00000001400012A0: 00000001400012A0
 fn00000001400012A0 proc
 	sub	rsp,28h
-	call	140001B14h
-	call	140001ABCh
+	call	fn0000000140001B14
+	call	fn0000000140001ABC
 	mov	ecx,eax
 	add	rsp,28h
 	jmp	140001E52h
@@ -240,19 +240,19 @@ fn00000001400012BC proc
 	push	rdi
 	sub	rsp,30h
 	mov	ecx,1h
-	call	140001600h
+	call	fn0000000140001600
 	test	al,al
 	jnz	1400012E4h
 
 l00000001400012D9:
 	mov	ecx,7h
-	call	140001974h
+	call	fn0000000140001974
 	int	3h
 
 l00000001400012E4:
 	xor	sil,sil
 	mov	[rsp+20h],sil
-	call	1400015C4h
+	call	fn00000001400015C4
 	mov	bl,al
 	mov	ecx,[00000001400035B0]                                 ; [rip+000022B7]
 	cmp	ecx,1h
@@ -260,7 +260,7 @@ l00000001400012E4:
 
 l00000001400012FE:
 	mov	ecx,7h
-	call	140001974h
+	call	fn0000000140001974
 
 l0000000140001308:
 	test	ecx,ecx
@@ -291,36 +291,36 @@ l0000000140001356:
 
 l000000014000135E:
 	mov	cl,bl
-	call	1400017B4h
-	call	140001964h
+	call	fn00000001400017B4
+	call	fn0000000140001964
 	mov	rbx,rax
 	cmp	qword ptr [rax],0h
 	jz	140001395h
 
 l0000000140001373:
 	mov	rcx,rax
-	call	140001718h
+	call	fn0000000140001718
 	test	al,al
 	jz	140001395h
 
 l000000014000137F:
 	mov	rbx,[rbx]
 	mov	rcx,rbx
-	call	140001BF4h
+	call	fn0000000140001BF4
 	xor	r8d,r8d
 	lea	edx,[r8+2h]
 	xor	ecx,ecx
 	call	rbx
 
 l0000000140001395:
-	call	14000196Ch
+	call	fn000000014000196C
 	mov	rbx,rax
 	cmp	qword ptr [rax],0h
 	jz	1400013B7h
 
 l00000001400013A3:
 	mov	rcx,rax
-	call	140001718h
+	call	fn0000000140001718
 	test	al,al
 	jz	1400013B7h
 
@@ -337,9 +337,9 @@ l00000001400013B7:
 	mov	r8,rax
 	mov	rdx,[rdi]
 	mov	ecx,[rbx]
-	call	140001000h
+	call	fn0000000140001000
 	mov	ebx,eax
-	call	140001AC0h
+	call	fn0000000140001AC0
 	test	al,al
 	jnz	1400013EBh
 
@@ -357,7 +357,7 @@ l00000001400013F0:
 l00000001400013F5:
 	xor	edx,edx
 	mov	cl,1h
-	call	1400017D8h
+	call	fn00000001400017D8
 	mov	eax,ebx
 	jmp	140001423h
 0000000140001402       8B D8 E8 B7 06 00 00 84 C0 75 08 8B CB E8   .........u....
@@ -375,9 +375,9 @@ l0000000140001423:
 ;; Win32CrtStartup: 0000000140001434
 Win32CrtStartup proc
 	sub	rsp,28h
-	call	14000186Ch
+	call	fn000000014000186C
 	add	rsp,28h
-	jmp	1400012BCh
+	jmp	fn00000001400012BC
 0000000140001446                   CC CC                               ..        
 
 ;; fn0000000140001448: 0000000140001448
@@ -415,7 +415,7 @@ l0000000140001493:
 
 l000000014000149A:
 	lea	rcx,[00000001400030E0]                                 ; [rip+00001C3F]
-	call	140001550h
+	call	fn0000000140001550
 	mov	rax,[rsp+38h]
 	mov	[00000001400031D8],rax                                 ; [rip+00001D26]
 	lea	rax,[rsp+38h]
@@ -441,7 +441,7 @@ l000000014000149A:
 	mov	rcx,[0000000140003008]                                 ; [rip+00001AD1]
 	mov	[rsp+rax+20h],rcx
 	lea	rcx,[0000000140002200]                                 ; [rip+00000CBD]
-	call	140001448h
+	call	fn0000000140001448
 	add	rsp,38h
 	ret
 000000014000154D                                        CC CC CC              ...
@@ -496,7 +496,7 @@ l00000001400015B9:
 ;;     00000001400012EC (in fn00000001400012BC)
 fn00000001400015C4 proc
 	sub	rsp,28h
-	call	140001DC4h
+	call	fn0000000140001DC4
 	test	eax,eax
 	jz	1400015F2h
 
@@ -540,8 +540,8 @@ fn0000000140001600 proc
 
 l0000000140001617:
 	mov	[00000001400035F0],al                                  ; [rip+00001FD3]
-	call	140001BFCh
-	call	140001938h
+	call	fn0000000140001BFC
+	call	fn0000000140001938
 	test	al,al
 	jnz	14000162Fh
 
@@ -550,13 +550,13 @@ l000000014000162B:
 	jmp	140001643h
 
 l000000014000162F:
-	call	140001938h
+	call	fn0000000140001938
 	test	al,al
 	jnz	140001641h
 
 l0000000140001638:
 	xor	ecx,ecx
-	call	140001938h
+	call	fn0000000140001938
 	jmp	14000162Bh
 
 l0000000140001641:
@@ -581,7 +581,7 @@ fn000000014000164C proc
 	ja	14000170Ah
 
 l0000000140001664:
-	call	140001DC4h
+	call	fn0000000140001DC4
 	test	eax,eax
 	jz	140001698h
 
@@ -639,7 +639,7 @@ l00000001400016FF:
 
 l000000014000170A:
 	mov	ecx,5h
-	call	140001974h
+	call	fn0000000140001974
 	int	3h
 	int	3h
 	int	3h
@@ -738,7 +738,7 @@ fn00000001400017B4 proc
 	push	rbx
 	sub	rsp,20h
 	mov	bl,cl
-	call	140001DC4h
+	call	fn0000000140001DC4
 	xor	edx,edx
 	test	eax,eax
 	jz	1400017D2h
@@ -771,9 +771,9 @@ l00000001400017E9:
 
 l00000001400017ED:
 	mov	cl,bl
-	call	140001938h
+	call	fn0000000140001938
 	mov	cl,bl
-	call	140001938h
+	call	fn0000000140001938
 
 l00000001400017FB:
 	mov	al,1h
@@ -824,7 +824,7 @@ l000000014000184A:
 ;;     0000000140001219 (in fn00000001400011D4)
 fn0000000140001854 proc
 	sub	rsp,28h
-	call	140001804h
+	call	fn0000000140001804
 	neg	rax
 	sbb	eax,eax
 	neg	eax
@@ -925,9 +925,9 @@ fn0000000140001938 proc
 ;;     0000000140001294 (in fn0000000140001290)
 fn000000014000193C proc
 	sub	rsp,28h
-	call	140001130h
+	call	fn0000000140001130
 	or	qword ptr [rax],4h
-	call	1400010C0h
+	call	fn00000001400010C0
 	or	qword ptr [rax],2h
 	add	rsp,28h
 	ret
@@ -1106,7 +1106,7 @@ l0000000140001B0F:
 ;;   Called from:
 ;;     00000001400012A4 (in fn00000001400012A0)
 fn0000000140001B14 proc
-	lea	rcx,[0000000140001B24]                                 ; [rip+00000009]
+	lea	rcx,[fn0000000140001B24]                               ; [rip+00000009]
 	jmp	[0000000140002068]                                     ; [rip+00000546]
 0000000140001B22       CC CC                                       ..            
 
@@ -1160,7 +1160,7 @@ l0000000140001B7B:
 
 l0000000140001B83:
 	mov	rcx,rdi
-	call	140001BF4h
+	call	fn0000000140001BF4
 	call	rdi
 
 l0000000140001B8D:
@@ -1195,7 +1195,7 @@ l0000000140001BC7:
 
 l0000000140001BCF:
 	mov	rcx,rdi
-	call	140001BF4h
+	call	fn0000000140001BF4
 	call	rdi
 
 l0000000140001BD9:
@@ -1413,7 +1413,7 @@ fn0000000140001E7C proc
 	mov	r8,[r9+38h]
 	mov	rcx,rdx
 	mov	rdx,r9
-	call	140001E9Ch
+	call	fn0000000140001E9C
 	mov	eax,1h
 	add	rsp,28h
 	ret
@@ -1458,7 +1458,7 @@ l0000000140001EE9:
 	xor	r9,rdx
 	mov	rcx,r9
 	pop	rbx
-	jmp	1400011B0h
+	jmp	fn00000001400011B0
 0000000140001EF5                CC CC CC CC CC CC CC CC CC CC CC      ...........
 0000000140001F00 CC CC CC CC CC CC 66 66 0F 1F 84 00 00 00 00 00 ......ff........
 

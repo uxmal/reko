@@ -85,6 +85,16 @@ namespace Reko.Arch.OpenRISC.Aeon
 
         public override AeonInstruction NotYetImplemented(string message)
         {
+            byte[] ReadInstructionBytes(Address addrInstr)
+            {
+                var r2 = rdr.Clone();
+                int len = (int) (r2.Address - addrInstr);
+                r2.Offset -= len;
+                var bytes = r2.ReadBytes(len);
+                return bytes;
+            }
+            var bytes = ReadInstructionBytes(addr);
+
             var testGenSvc = arch.Services.GetService<ITestGenerationService>();
             testGenSvc?.ReportMissingDecoder("AeonDis", addr, rdr, message);
             return new AeonInstruction
@@ -93,6 +103,10 @@ namespace Reko.Arch.OpenRISC.Aeon
                 InstructionClass = InstrClass.Linear,
                 //InstructionClass = InstrClass.Invalid,
                 Mnemonic = Mnemonic.Nyi,
+                Operands = new MachineOperand[]
+                {
+                    ImmediateOperand.UInt32((uint)bytes[0] >> 2)
+                }
             };
         }
 
@@ -183,7 +197,7 @@ namespace Reko.Arch.OpenRISC.Aeon
             return (u, d) =>
             {
                 var displacement = displacementField.ReadSigned(u);
-                var target = d.addr + displacement; //$REVIEW: and a +4?
+                var target = d.addr + displacement;
                 d.ops.Add(AddressOperand.Create(target));
                 return true;
             };
@@ -266,70 +280,89 @@ namespace Reko.Arch.OpenRISC.Aeon
 
         private static Decoder Create32bitInstructionDecoder()
         {
-            // opcode 110000
-            var decoder0 = Sparse(0, 4, "  opc=0", Nyi("0"),
+            var decoder110000 = Sparse(0, 4, "  opc=0", Nyi("0"),
                 (0x1, Instr(Mnemonic.l_movhi, R21, uimm5_16)),               // chenxing(mod), disasm
                 (0xD, Instr(Mnemonic.l_mtspr, R16, R21, uimm4_12)),          // chenxing
                 (0xF, Instr(Mnemonic.l_mfspr, R21, R16, uimm4_12)));         // chenxing
-            // opcode 110100
-            var decoder4 = Sparse(0, 3, "  opc=4", Nyi("4"),
+
+            var decoder110100 = Sparse(0, 3, "  opc=4", Nyi("4"),
                 (0x6, Instr(Mnemonic.l_blti__, InstrClass.ConditionalTransfer, R21, uimm16_5, disp3_13)));      // guess
-            // opcode 111010
-            var decoderA = Mask(0, 2, "  A",
+
+            var decoder111010 = Mask(0, 2, "  A",
                 Nyi("0b00"),
                 Nyi("0b01"),
                 Nyi("0b10"),
-                Instr(Mnemonic.l_j, InstrClass.Transfer, disp2_24));            // chenxing
-            // opcode 111011
-            var decoderB = Mask(0, 2, "  B",
+                Instr(Mnemonic.l_j, InstrClass.Transfer, disp2_24));                        // chenxing
+
+            var decoder111011 = Mask(0, 2, "  opc=111011",
                 Instr(Mnemonic.l_sw, Ms(16, 2, 14, 0, PrimitiveType.Word32), R21),          // chenxing, backtrace
                 Instr(Mnemonic.l_sw__, Ms(16, 2, 14, 2, PrimitiveType.Word32), R21),        // guess
-                Instr(Mnemonic.l_lwz__, R21, Ms(16, 2, 14, 2, PrimitiveType.Word32)),  // guess
+                Instr(Mnemonic.l_lwz__, R21, Ms(16, 2, 14, 2, PrimitiveType.Word32)),       // guess
                 Instr(Mnemonic.l_sh__, Ms(16, 1, 15, 1, PrimitiveType.Word16), R21));
-            // opcode 111101
-            var decoderD = Select(Bf((5, 11), (21, 5)), u => u == 0,
-                Sparse(0, 3, "  opc=D", Nyi("D"),
+
+            var decoder111101 = Select(Bf((5, 11), (21, 5)), u => u == 0,
+                Sparse(0, 3, "  opc=111101", Nyi("111101"),
                 
                     // $REVIEW: what's the difference between these? what about bit 5?
                     (0b001, Instr(Mnemonic.l_invalidate_line, Ms(16, 6, 4, 0, PrimitiveType.Word32), uimm4_1)), // chenxing
                     (0b111, Instr(Mnemonic.l_invalidate_line, Ms(16, 6, 4, 0, PrimitiveType.Word32), uimm4_1)), // disasm
                     (0b101, Instr(Mnemonic.l_syncwritebuffer))),                                                // disasm
-                Nyi("D, non-zero bits"));
-            var decoder = Mask(26, 4, "  32-bit instr",
-                decoder0,
+                Nyi("111101, non-zero bits"));
+
+            var decoder = Mask(26, 5, "  32-bit instr",
+                Nyi("0b100000"),
+                Nyi("0b100001"),
+                Nyi("0b100010"),
+                Nyi("0b100011"),
+
+                Nyi("0b100100"),
+                Nyi("0b100101"),
+                Nyi("0b100110"),
+                Nyi("0b100111"),
+
+                Nyi("0b101000"),
+                Nyi("0b101001"),
+                Nyi("0b101010"),
+                Nyi("0b101011"),
+
+                Nyi("0b101100"),
+                Nyi("0b101101"),
+                Nyi("0b101110"),
+                Nyi("0b101111"),
+
+                decoder110000,
                 // opcode 110001
                 Instr(Mnemonic.l_andi, R21, R16, uimm0_16),           // chenxing
                 // opcode 110010
                 Instr(Mnemonic.l_ori, R21, R16, uimm0_16),            // chenxing
                 // opcode 110011
-                Nyi("0b0011"),
+                Nyi("0b110011"),
 
-                decoder4,
+                decoder110100,
                 // opcode 110101
                 // XXX: n is probably wrong
                 Instr(Mnemonic.l_bf, InstrClass.ConditionalTransfer, disp0_26),         // disasm, guess
                 // opcode 110110
-                Nyi("0b0110"),
+                Nyi("0b110110"),
                 // opcode 110111
-                Nyi("0b0111"),
+                Nyi("0b110111"),
 
                 // opcode 111000
-                Nyi("0b1000"),
+                Nyi("0b111000"),
                 // opcode 111001
                 //$REVIEW: what is bit 0 used for?
                 Instr(Mnemonic.l_jal, InstrClass.Transfer | InstrClass.Call, disp1_25), // guess
-                decoderA,
-                decoderB,
+                decoder111010,
+                decoder111011,
 
                 // opcode 111100
                 Instr(Mnemonic.l_lbz__, R21, Ms(16, 0, 16, 0, PrimitiveType.Byte)),     // guess
-                decoderD,
+                decoder111101,
                 // opcode 111110
                 Instr(Mnemonic.l_sb__, Ms(16, 0, 16, 0, PrimitiveType.Byte), R21),        // guess
                 // opcode 111111
                 //$REVIEW: signed or unsigned immediate?
                 Instr(Mnemonic.l_addi, R21, R16, uimm0_16));                            // chenxing, backtrace
-
 
             return new D32BitDecoder(decoder);
         }
@@ -442,8 +475,8 @@ namespace Reko.Arch.OpenRISC.Aeon
                 // branch if reg == imm
                 Instr(Mnemonic.beqi__, InstrClass.ConditionalTransfer,  R13, uimm10_3, disp2_8),              // wild guess
                 Instr(Mnemonic.l_bf, InstrClass.ConditionalTransfer, disp2_16),                             // chenxing(mod), disasm
-                Nyi("10"),
-                Nyi("11"));
+                Instr(Mnemonic.bnei__, InstrClass.ConditionalTransfer, R13, uimm10_3, disp2_8),
+                Instr(Mnemonic.l_bnf__, InstrClass.ConditionalTransfer, disp2_16));
             // opcode 001001
             var decode09 = Mask(0, 2, "  9",
                 Nyi("00"),

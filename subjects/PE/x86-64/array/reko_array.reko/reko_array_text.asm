@@ -37,7 +37,7 @@ reko_array_01 proc
 	sub	rsp,20h
 	lea	rax,[00000002121D5000]                                 ; [rip+00003FB5]
 	mov	rcx,rax
-	call	2121D1000h
+	call	reko_array_byref
 	mov	eax,0h
 	add	rsp,20h
 	pop	rbp

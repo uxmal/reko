@@ -6,7 +6,7 @@ fn8000 proc
 	mov.w	r1,@-sp
 	mov.w	r2,@-sp
 	mov.w	r3,@-sp
-	jsr	@0x9AF8:24
+	jsr	@fn9AF8
 	mov.w	@sp+,r3
 	mov.w	@sp+,r2
 	mov.w	@sp+,r1
@@ -1094,7 +1094,7 @@ l88D8:
 	jmp	@0x8974:24
 
 l88DC:
-	jsr	@0x8584:24
+	jsr	@fn8584
 	mov.w	r0,@(6:16,sp)
 	mov.w	r0,r5
 	add.w	r5,r5
@@ -1108,7 +1108,7 @@ l88DC:
 	add.w	r5,r5
 	add.w	r5,r5
 	mov.w	r5,@(6:16,sp)
-	jsr	@0x8032:24
+	jsr	@fn8032
 	sub.w	r4,r4
 	mov.w	r4,@(16:16,sp)
 
@@ -1135,7 +1135,7 @@ l8928:
 	add.b	#0x0C,r6l
 	addx.b	#0x00,r6h
 	mov.w	r3,@(10:16,sp)
-	jsr	@0x9E08:24
+	jsr	@fn9E08
 	mov.w	@(6:16,sp),r4
 	add.w	r0,r4
 	mov.w	r4,@(6:16,sp)
@@ -1177,7 +1177,7 @@ l8974:
 	add.w	r7,r1
 	mov.w	#0x001E,r0
 	add.w	r7,r0
-	jsr	@0x8866:24
+	jsr	@fn8866
 	adds	#0x00000002,sp
 	adds	#0x00000002,sp
 
@@ -1218,7 +1218,7 @@ l89F4:
 	bgt	8A22
 
 l8A02:
-	jsr	@0x9B66:24
+	jsr	@fn9B66
 	btst	#0x00,r0l
 	beq	8A18
 
@@ -1292,14 +1292,14 @@ l8A80:
 	mov.w	@er4,r2
 	mov.w	#0x3001,r1
 	mov.w	#0x1FF2,r0
-	jsr	@0x9BB6:24
+	jsr	@fn9BB6
 	mov.w	#0x27C8,r0
-	jsr	@0x9B90:24
+	jsr	@fn9B90
 	adds	#0x00000002,sp
 	sub.w	r2,r2
 	mov.w	#0x4004,r1
 	mov.w	#0x299A,r0
-	jsr	@0x9BA6:24
+	jsr	@fn9BA6
 
 l8AB0:
 	mov.w	@(14:16,sp),r5
@@ -1337,56 +1337,56 @@ fn8AEA proc
 	mov.w	#0x0002,r2
 	mov.w	#0x2002,r1
 	mov.w	#0x1A4E,r0
-	jsr	@0x9BB6:24
+	jsr	@fn9BB6
 	adds	#0x00000002,sp
 	mov.w	#0x001E,r0
-	jsr	@0x9C18:24
+	jsr	@fn9C18
 	mov.w	r4,@-sp
 	mov.w	#0x0003,r2
 	mov.w	#0x2002,r1
 	mov.w	#0x1A4E,r0
-	jsr	@0x9BB6:24
+	jsr	@fn9BB6
 	adds	#0x00000002,sp
 	mov.w	#0x0055,r0
-	jsr	@0x9C18:24
+	jsr	@fn9C18
 	mov.w	r4,@-sp
 	mov.w	#0x0001,r2
 	mov.w	#0x2001,r1
 	mov.w	#0x1A4E,r0
-	jsr	@0x9BB6:24
+	jsr	@fn9BB6
 	adds	#0x00000002,sp
 	mov.w	#0x00C8,r0
-	jsr	@0x9C18:24
+	jsr	@fn9C18
 	mov.w	r4,@-sp
 	mov.w	#0x0002,r2
 	mov.w	#0x2001,r1
 	mov.w	#0x1A4E,r0
-	jsr	@0x9BB6:24
+	jsr	@fn9BB6
 	adds	#0x00000002,sp
 	mov.w	#0x00D2,r0
-	jsr	@0x9C18:24
+	jsr	@fn9C18
 	mov.w	r4,@-sp
 	mov.w	#0x0003,r2
 	mov.w	#0x2001,r1
 	mov.w	#0x1A4E,r0
-	jsr	@0x9BB6:24
+	jsr	@fn9BB6
 	adds	#0x00000002,sp
 	mov.w	r4,@-sp
 	mov.w	#0x0001,r2
 	mov.w	#0x2002,r1
 	mov.w	#0x1A4E,r0
-	jsr	@0x9BB6:24
+	jsr	@fn9BB6
 	adds	#0x00000002,sp
 	mov.w	#0x001E,r0
-	jsr	@0x9C18:24
+	jsr	@fn9C18
 	mov.w	r4,@-sp
 	mov.w	#0x0003,r2
 	mov.w	#0x2002,r1
 	mov.w	#0x1A4E,r0
-	jsr	@0x9BB6:24
+	jsr	@fn9BB6
 	adds	#0x00000002,sp
 	mov.w	#0x0055,r0
-	jsr	@0x9C18:24
+	jsr	@fn9C18
 	mov.w	@sp+,r4
 	rts
 
@@ -1420,12 +1420,12 @@ l8BCE:
 	mov.w	#0x0001,r2
 	mov.w	#0x2000,r1
 	mov.w	#0x1A4E,r0
-	jsr	@0x9BB6:24
+	jsr	@fn9BB6
 	adds	#0x00000002,sp
 
 l8BE6:
 	mov.w	#0x0001,r0
-	jsr	@0x9C92:24
+	jsr	@fn9C92
 	mov.b	r0l,r0l
 	beq	8BE6
 
@@ -1435,7 +1435,7 @@ l8BF2:
 	mov.w	#0x0003,r2
 	mov.w	#0x2000,r1
 	mov.w	#0x1A4E,r0
-	jsr	@0x9BB6:24
+	jsr	@fn9BB6
 	adds	#0x00000002,sp
 	mov.w	#0xFFFF,r2
 	mov.w	r2,@0x9E34:16
@@ -1452,7 +1452,7 @@ l8C22:
 	mov.w	#0x0001,r2
 	mov.w	#0x2002,r1
 	mov.w	#0x1A4E,r0
-	jsr	@0x9BB6:24
+	jsr	@fn9BB6
 	adds	#0x00000002,sp
 	mov.w	@0x9E36:16,r2
 	cmp.w	r5,r2
@@ -1466,7 +1466,7 @@ l8C42:
 
 l8C46:
 	sub.w	r0,r0
-	jsr	@0x9C6E:24
+	jsr	@fn9C6E
 	mov.w	r0,r4
 	mov.w	@0x9E3A:16,r2
 	sub.w	r2,r4
@@ -1487,7 +1487,7 @@ l8C68:
 	mov.w	#0x07D0,r2
 	mov.w	#0x1773,r1
 	mov.w	#0x327C,r0
-	jsr	@0x9BB6:24
+	jsr	@fn9BB6
 	adds	#0x00000002,sp
 	mov.w	@0x9E36:16,r2
 	adds	#0x00000001,er2
@@ -1511,7 +1511,7 @@ l8CA2:
 	mov.w	#0x01B8,r2
 	mov.w	#0x1773,r1
 	mov.w	#0x327C,r0
-	jsr	@0x9BB6:24
+	jsr	@fn9BB6
 	adds	#0x00000002,sp
 
 l8CBE:
@@ -1539,7 +1539,7 @@ l8CDE:
 	mov.w	#0x0002,r2
 	mov.w	#0x2002,r1
 	mov.w	#0x1A4E,r0
-	jsr	@0x9BB6:24
+	jsr	@fn9BB6
 	adds	#0x00000002,sp
 	mov.w	@0x9E36:16,r2
 	cmp.w	r5,r2
@@ -1553,7 +1553,7 @@ l8CFE:
 
 l8D02:
 	sub.w	r0,r0
-	jsr	@0x9C6E:24
+	jsr	@fn9C6E
 	mov.w	r0,r4
 	mov.w	@0x9E3A:16,r2
 	sub.w	r2,r4
@@ -1574,7 +1574,7 @@ l8D24:
 	mov.w	#0x07D0,r2
 	mov.w	#0x1773,r1
 	mov.w	#0x327C,r0
-	jsr	@0x9BB6:24
+	jsr	@fn9BB6
 	adds	#0x00000002,sp
 	mov.w	@0x9E36:16,r2
 	subs	#0x00000001,er2
@@ -1598,7 +1598,7 @@ l8D5E:
 	mov.w	#0x01B8,r2
 	mov.w	#0x1773,r1
 	mov.w	#0x327C,r0
-	jsr	@0x9BB6:24
+	jsr	@fn9BB6
 	adds	#0x00000002,sp
 
 l8D7A:
@@ -1616,7 +1616,7 @@ l8D8A:
 	mov.w	#0x0003,r2
 	mov.w	#0x2002,r1
 	mov.w	#0x1A4E,r0
-	jsr	@0x9BB6:24
+	jsr	@fn9BB6
 	adds	#0x00000002,sp
 
 l8DA2:
@@ -1634,10 +1634,10 @@ l8DB2:
 	mov.w	#0x0002,r2
 	mov.w	#0x2000,r1
 	mov.w	#0x1A4E,r0
-	jsr	@0x9BB6:24
+	jsr	@fn9BB6
 	adds	#0x00000002,sp
 	mov.w	#0x0014,r0
-	jsr	@0x9C18:24
+	jsr	@fn9C18
 	mov.w	@0x9E34:16,r2
 	cmp.w	r5,r2
 	blt	8DDE
@@ -1650,7 +1650,7 @@ l8DDE:
 
 l8DE2:
 	sub.w	r0,r0
-	jsr	@0x9C6E:24
+	jsr	@fn9C6E
 	mov.w	r0,r4
 	mov.w	@0x9E38:16,r2
 	sub.w	r2,r4
@@ -1671,7 +1671,7 @@ l8E04:
 	mov.w	#0x07D0,r2
 	mov.w	#0x1773,r1
 	mov.w	#0x327C,r0
-	jsr	@0x9BB6:24
+	jsr	@fn9BB6
 	adds	#0x00000002,sp
 	mov.w	@0x9E34:16,r2
 	adds	#0x00000001,er2
@@ -1695,7 +1695,7 @@ l8E3E:
 	mov.w	#0x01B8,r2
 	mov.w	#0x1773,r1
 	mov.w	#0x327C,r0
-	jsr	@0x9BB6:24
+	jsr	@fn9BB6
 	adds	#0x00000002,sp
 
 l8E5A:
@@ -1724,7 +1724,7 @@ l8E7A:
 	mov.w	#0x0001,r2
 	mov.w	#0x2000,r1
 	mov.w	#0x1A4E,r0
-	jsr	@0x9BB6:24
+	jsr	@fn9BB6
 	adds	#0x00000002,sp
 	mov.w	@0x9E34:16,r2
 	cmp.w	r5,r2
@@ -1738,7 +1738,7 @@ l8E9E:
 
 l8EA2:
 	sub.w	r0,r0
-	jsr	@0x9C6E:24
+	jsr	@fn9C6E
 	mov.w	r0,r4
 	mov.w	@0x9E38:16,r2
 	sub.w	r2,r4
@@ -1759,7 +1759,7 @@ l8EC4:
 	mov.w	#0x07D0,r2
 	mov.w	#0x1773,r1
 	mov.w	#0x327C,r0
-	jsr	@0x9BB6:24
+	jsr	@fn9BB6
 	adds	#0x00000002,sp
 	mov.w	@0x9E34:16,r2
 	subs	#0x00000001,er2
@@ -1783,7 +1783,7 @@ l8EFE:
 	mov.w	#0x01B8,r2
 	mov.w	#0x1773,r1
 	mov.w	#0x327C,r0
-	jsr	@0x9BB6:24
+	jsr	@fn9BB6
 	adds	#0x00000002,sp
 
 l8F1A:
@@ -1801,7 +1801,7 @@ l8F2A:
 	mov.w	#0x0003,r2
 	mov.w	#0x2000,r1
 	mov.w	#0x1A4E,r0
-	jsr	@0x9BB6:24
+	jsr	@fn9BB6
 	adds	#0x00000002,sp
 	mov.w	@sp+,r6
 	mov.w	@sp+,r5
@@ -1823,18 +1823,18 @@ fn8F4E proc
 	mov.w	r2,@0x9E36:16
 	mov.w	#0x1000,r1
 	mov.w	#0x1946,r0
-	jsr	@0x9B9A:24
+	jsr	@fn9B9A
 	mov.w	#0x0007,r2
 	mov.w	r2,@-sp
 	mov.w	#0x0001,r2
 	mov.w	#0x2000,r1
 	mov.w	#0x1A4E,r0
-	jsr	@0x9BB6:24
+	jsr	@fn9BB6
 	adds	#0x00000002,sp
 
 l8F86:
 	mov.w	#0x0001,r0
-	jsr	@0x9C92:24
+	jsr	@fn9C92
 	mov.b	r0l,r0l
 	beq	8F86
 
@@ -1844,7 +1844,7 @@ l8F92:
 	mov.w	#0x0003,r2
 	mov.w	#0x2000,r1
 	mov.w	#0x1A4E,r0
-	jsr	@0x9BB6:24
+	jsr	@fn9BB6
 	adds	#0x00000002,sp
 	mov.w	#0xFFFF,r2
 	mov.w	r2,@0x9E34:16
@@ -1852,27 +1852,27 @@ l8F92:
 	mov.w	#0x0001,r2
 	mov.w	#0x2002,r1
 	mov.w	#0x1A4E,r0
-	jsr	@0x9BB6:24
+	jsr	@fn9BB6
 	adds	#0x00000002,sp
 	mov.w	#0x01C2,r0
-	jsr	@0x9C18:24
+	jsr	@fn9C18
 	sub.w	r6,r6
 	mov.w	#0x07D0,r5
 	mov.w	r5,@(6:16,sp)
 	mov.w	#0x00C8,r1
 	sub.w	r0,r0
-	jsr	@0x9BF4:24
+	jsr	@fn9BF4
 	mov.w	r4,@-sp
 	mov.w	#0x0002,r2
 	mov.w	#0x2002,r1
 	mov.w	#0x1A4E,r0
-	jsr	@0x9BB6:24
+	jsr	@fn9BB6
 	adds	#0x00000002,sp
 	bra	9010
 
 l8FF8:
 	sub.w	r0,r0
-	jsr	@0x9C6E:24
+	jsr	@fn9C6E
 	cmp.w	r6,r0
 	ble	9004
 
@@ -1889,7 +1889,7 @@ l900C:
 
 l9010:
 	sub.w	r0,r0
-	jsr	@0x9BEC:24
+	jsr	@fn9BEC
 	mov.w	r0,r0
 	bgt	8FF8
 
@@ -1899,7 +1899,7 @@ l901A:
 	mov.w	#0x0003,r2
 	mov.w	#0x2002,r1
 	mov.w	#0x1A4E,r0
-	jsr	@0x9BB6:24
+	jsr	@fn9BB6
 	adds	#0x00000002,sp
 	mov.w	@(6:16,sp),r3
 	add.w	r6,r3
@@ -1917,21 +1917,21 @@ l901A:
 	mov.w	r3,@-sp
 	mov.w	#0x3001,r1
 	mov.w	#0x1FF2,r0
-	jsr	@0x9BB6:24
+	jsr	@fn9BB6
 	mov.w	#0x27C8,r0
-	jsr	@0x9B90:24
+	jsr	@fn9B90
 	adds	#0x00000002,sp
 	sub.w	r1,r1
 	mov.w	#0xFFFF,r0
-	jsr	@0x8BB0:24
+	jsr	@fn8BB0
 	mov.w	r4,@-sp
 	mov.w	#0x0002,r2
 	mov.w	#0x2000,r1
 	mov.w	#0x1A4E,r0
-	jsr	@0x9BB6:24
+	jsr	@fn9BB6
 	adds	#0x00000002,sp
 	mov.w	#0x0096,r0
-	jsr	@0x9C18:24
+	jsr	@fn9C18
 	sub.w	r6,r6
 	mov.w	#0x07D0,r5
 	mov.w	r5,@(6:16,sp)
@@ -1939,13 +1939,13 @@ l901A:
 	mov.w	#0x0001,r2
 	mov.w	#0x2000,r1
 	mov.w	#0x1A4E,r0
-	jsr	@0x9BB6:24
+	jsr	@fn9BB6
 	adds	#0x00000002,sp
 	bra	90C8
 
 l90B0:
 	sub.w	r0,r0
-	jsr	@0x9C6E:24
+	jsr	@fn9C6E
 	cmp.w	r6,r0
 	ble	90BC
 
@@ -1962,7 +1962,7 @@ l90C4:
 
 l90C8:
 	mov.w	#0x0001,r0
-	jsr	@0x9C92:24
+	jsr	@fn9C92
 	mov.b	r0l,r0l
 	beq	90B0
 
@@ -1972,7 +1972,7 @@ l90D4:
 	mov.w	#0x0003,r2
 	mov.w	#0x2000,r1
 	mov.w	#0x1A4E,r0
-	jsr	@0x9BB6:24
+	jsr	@fn9BB6
 	adds	#0x00000002,sp
 	mov.w	@(6:16,sp),r3
 	add.w	r6,r3
@@ -1990,9 +1990,9 @@ l90D4:
 	mov.w	r3,@-sp
 	mov.w	#0x3001,r1
 	mov.w	#0x1FF2,r0
-	jsr	@0x9BB6:24
+	jsr	@fn9BB6
 	mov.w	#0x27C8,r0
-	jsr	@0x9B90:24
+	jsr	@fn9B90
 	adds	#0x00000002,sp
 	sub.w	r2,r2
 	mov.w	r2,@0x9E3E:16
@@ -2000,37 +2000,37 @@ l90D4:
 	mov.w	r2,@0x9E3C:16
 	sub.w	r1,r1
 	sub.w	r0,r0
-	jsr	@0x8BB0:24
+	jsr	@fn8BB0
 	mov.w	r4,@-sp
 	mov.w	#0x0002,r2
 	mov.w	#0x2002,r1
 	mov.w	#0x1A4E,r0
-	jsr	@0x9BB6:24
+	jsr	@fn9BB6
 	adds	#0x00000002,sp
 	mov.w	#0x002A,r0
-	jsr	@0x9C18:24
+	jsr	@fn9C18
 	mov.w	r4,@-sp
 	mov.w	#0x0003,r2
 	mov.w	#0x2002,r1
 	mov.w	#0x1A4E,r0
-	jsr	@0x9BB6:24
+	jsr	@fn9BB6
 	adds	#0x00000002,sp
 	mov.w	#0x0055,r0
-	jsr	@0x9C18:24
+	jsr	@fn9C18
 	mov.w	r4,@-sp
 	mov.w	#0x0002,r2
 	mov.w	#0x2000,r1
 	mov.w	#0x1A4E,r0
-	jsr	@0x9BB6:24
+	jsr	@fn9BB6
 	adds	#0x00000002,sp
 	mov.w	#0x0064,r1
 	sub.w	r0,r0
-	jsr	@0x9BF4:24
+	jsr	@fn9BF4
 	bra	91B0
 
 l9192:
 	sub.w	r0,r0
-	jsr	@0x9C6E:24
+	jsr	@fn9C6E
 	mov.w	@0x9E3E:16,r2
 	cmp.w	r2,r0
 	ble	91A4
@@ -2048,7 +2048,7 @@ l91AC:
 
 l91B0:
 	sub.w	r0,r0
-	jsr	@0x9BEC:24
+	jsr	@fn9BEC
 	mov.w	r0,r0
 	bgt	9192
 
@@ -2058,57 +2058,57 @@ l91BA:
 	mov.w	#0x0003,r2
 	mov.w	#0x2000,r1
 	mov.w	#0x1A4E,r0
-	jsr	@0x9BB6:24
+	jsr	@fn9BB6
 	adds	#0x00000002,sp
 	mov.w	r4,@-sp
 	mov.w	#0x0001,r2
 	mov.w	#0x2002,r1
 	mov.w	#0x1A4E,r0
-	jsr	@0x9BB6:24
+	jsr	@fn9BB6
 	adds	#0x00000002,sp
 	mov.w	#0x002A,r0
-	jsr	@0x9C18:24
+	jsr	@fn9C18
 	mov.w	r4,@-sp
 	mov.w	#0x0003,r2
 	mov.w	#0x2002,r1
 	mov.w	#0x1A4E,r0
-	jsr	@0x9BB6:24
+	jsr	@fn9BB6
 	adds	#0x00000002,sp
 	mov.w	#0x0055,r0
-	jsr	@0x9C18:24
+	jsr	@fn9C18
 	mov.w	#0x0005,r1
 	sub.w	r0,r0
-	jsr	@0x8BB0:24
+	jsr	@fn8BB0
 	mov.w	r4,@-sp
 	mov.w	#0x0002,r2
 	mov.w	#0x2002,r1
 	mov.w	#0x1A4E,r0
-	jsr	@0x9BB6:24
+	jsr	@fn9BB6
 	adds	#0x00000002,sp
 	mov.w	#0x002A,r0
-	jsr	@0x9C18:24
+	jsr	@fn9C18
 	mov.w	r4,@-sp
 	mov.w	#0x0003,r2
 	mov.w	#0x2002,r1
 	mov.w	#0x1A4E,r0
-	jsr	@0x9BB6:24
+	jsr	@fn9BB6
 	adds	#0x00000002,sp
 	mov.w	#0x0055,r0
-	jsr	@0x9C18:24
+	jsr	@fn9C18
 	mov.w	r4,@-sp
 	mov.w	#0x0002,r2
 	mov.w	#0x2000,r1
 	mov.w	#0x1A4E,r0
-	jsr	@0x9BB6:24
+	jsr	@fn9BB6
 	adds	#0x00000002,sp
 	mov.w	#0x0064,r1
 	sub.w	r0,r0
-	jsr	@0x9BF4:24
+	jsr	@fn9BF4
 	bra	928A
 
 l926C:
 	sub.w	r0,r0
-	jsr	@0x9C6E:24
+	jsr	@fn9C6E
 	mov.w	@0x9E3E:16,r2
 	cmp.w	r2,r0
 	ble	927E
@@ -2126,7 +2126,7 @@ l9286:
 
 l928A:
 	sub.w	r0,r0
-	jsr	@0x9BEC:24
+	jsr	@fn9BEC
 	mov.w	r0,r0
 	bgt	926C
 
@@ -2136,24 +2136,24 @@ l9294:
 	mov.w	#0x0003,r2
 	mov.w	#0x2000,r1
 	mov.w	#0x1A4E,r0
-	jsr	@0x9BB6:24
+	jsr	@fn9BB6
 	adds	#0x00000002,sp
 	mov.w	r4,@-sp
 	mov.w	#0x0001,r2
 	mov.w	#0x2002,r1
 	mov.w	#0x1A4E,r0
-	jsr	@0x9BB6:24
+	jsr	@fn9BB6
 	adds	#0x00000002,sp
 	mov.w	#0x002A,r0
-	jsr	@0x9C18:24
+	jsr	@fn9C18
 	mov.w	r4,@-sp
 	mov.w	#0x0003,r2
 	mov.w	#0x2002,r1
 	mov.w	#0x1A4E,r0
-	jsr	@0x9BB6:24
+	jsr	@fn9BB6
 	adds	#0x00000002,sp
 	mov.w	#0x0055,r0
-	jsr	@0x9C18:24
+	jsr	@fn9C18
 	mov.w	@0x9E3E:16,r2
 	add.b	#0x28,r2l
 	addx.b	#0x00,r2h
@@ -2166,32 +2166,32 @@ l9294:
 	mov.w	r3,@-sp
 	mov.w	#0x3001,r1
 	mov.w	#0x1FF2,r0
-	jsr	@0x9BB6:24
+	jsr	@fn9BB6
 	mov.w	#0x27C8,r0
-	jsr	@0x9B90:24
+	jsr	@fn9B90
 	adds	#0x00000002,sp
 	sub.w	r1,r1
 	mov.w	#0xFFFF,r0
-	jsr	@0x8BB0:24
+	jsr	@fn8BB0
 	mov.w	r4,@-sp
 	mov.w	#0x0002,r2
 	mov.w	#0x2002,r1
 	mov.w	#0x1A4E,r0
-	jsr	@0x9BB6:24
+	jsr	@fn9BB6
 	adds	#0x00000002,sp
 	mov.w	#0x012C,r0
-	jsr	@0x9C18:24
+	jsr	@fn9C18
 	mov.w	r4,@-sp
 	mov.w	#0x0003,r2
 	mov.w	#0x2002,r1
 	mov.w	#0x1A4E,r0
-	jsr	@0x9BB6:24
+	jsr	@fn9BB6
 	adds	#0x00000002,sp
 	mov.w	#0xFFFF,r2
 	mov.w	r2,@0x9E36:16
 	mov.w	#0x1000,r1
 	mov.w	#0x1946,r0
-	jsr	@0x9B9A:24
+	jsr	@fn9B9A
 	mov.w	@sp+,r6
 	mov.w	@sp+,r5
 	mov.w	@sp+,r4
@@ -2239,26 +2239,26 @@ l93B6:
 
 l93BA:
 	mov.w	r4,r0
-	jsr	@0x8BB0:24
+	jsr	@fn8BB0
 	mov.w	#0x0007,r5
 	mov.w	r5,@-sp
 	mov.w	#0x0002,r2
 	mov.w	#0x2002,r1
 	mov.w	#0x1A4E,r0
-	jsr	@0x9BB6:24
+	jsr	@fn9BB6
 	adds	#0x00000002,sp
 	mov.w	#0x002A,r0
-	jsr	@0x9C18:24
+	jsr	@fn9C18
 	mov.w	r5,@-sp
 	mov.w	#0x0003,r2
 	mov.w	#0x2002,r1
 	mov.w	#0x1A4E,r0
-	jsr	@0x9BB6:24
+	jsr	@fn9BB6
 	adds	#0x00000002,sp
 	mov.w	#0x0055,r0
-	jsr	@0x9C18:24
+	jsr	@fn9C18
 	sub.w	r0,r0
-	jsr	@0x9C6E:24
+	jsr	@fn9C6E
 	mov.w	@0x9E3E:16,r2
 	cmp.w	r2,r0
 	ble	9416
@@ -2273,18 +2273,18 @@ l9416:
 	mov.w	#0x0001,r2
 	mov.w	#0x2002,r1
 	mov.w	#0x1A4E,r0
-	jsr	@0x9BB6:24
+	jsr	@fn9BB6
 	adds	#0x00000002,sp
 	mov.w	#0x002A,r0
-	jsr	@0x9C18:24
+	jsr	@fn9C18
 	mov.w	r5,@-sp
 	mov.w	#0x0003,r2
 	mov.w	#0x2002,r1
 	mov.w	#0x1A4E,r0
-	jsr	@0x9BB6:24
+	jsr	@fn9BB6
 	adds	#0x00000002,sp
 	mov.w	#0x0055,r0
-	jsr	@0x9C18:24
+	jsr	@fn9C18
 
 l944E:
 	add.b	#0x0C,r6l
@@ -2320,40 +2320,40 @@ fn9478 proc
 	mov.w	r5,@-sp
 	mov.w	r6,@-sp
 	sub.w	r0,r0
-	jsr	@0x9BFC:24
+	jsr	@fn9BFC
 	mov.w	r0,r2
 	mov.w	#0x3002,r3
 	mov.w	r3,@-sp
 	mov.w	#0x3001,r1
 	mov.w	#0x1FF2,r0
-	jsr	@0x9BB6:24
+	jsr	@fn9BB6
 	mov.w	#0x27C8,r0
-	jsr	@0x9B90:24
+	jsr	@fn9B90
 	adds	#0x00000002,sp
 	sub.w	r0,r0
-	jsr	@0x9BFC:24
+	jsr	@fn9BFC
 	mov.w	r0,r1
 	bld	#0x07,r1h
 	subx.b	r0l,r0l
 	subx.b	r0h,r0h
-	jsr	@0x9B54:24
+	jsr	@fn9B54
 	sub.b	r2l,r2l
 	mov.b	#0x03,r1l
 	sub.w	r0,r0
-	jsr	@0x9C34:24
+	jsr	@fn9C34
 	mov.b	#0x20,r2l
 	mov.b	#0x01,r1l
 	mov.w	#0x0001,r0
-	jsr	@0x9C34:24
+	jsr	@fn9C34
 	mov.w	#0x1001,r1
 	mov.w	#0x19C4,r0
-	jsr	@0x9B9A:24
+	jsr	@fn9B9A
 
 l94DA:
 	sub.w	r2,r2
 	mov.w	#0x4004,r1
 	mov.w	#0x299A,r0
-	jsr	@0x9BA6:24
+	jsr	@fn9BA6
 	sub.w	r0,r0
 	sub.w	r1,r1
 	mov.w	#0x0005,r4
@@ -2398,7 +2398,7 @@ l952C:
 	jmp	@0x97D6:24
 
 l9534:
-	jsr	@0x9CBC:24
+	jsr	@fn9CBC
 	mov.b	#0x00,r0h
 	mov.w	#0x0004,r5
 	cmp.w	r5,r0
@@ -2413,7 +2413,7 @@ l9546:
 	bne	9556
 
 l954E:
-	jsr	@0x8F4E:24
+	jsr	@fn8F4E
 	jmp	@0x97D6:24
 
 l9556:
@@ -2424,8 +2424,8 @@ l955A:
 	jmp	@0x95BE:24
 
 l955E:
-	jsr	@0x9D6A:24
-	jsr	@0x8584:24
+	jsr	@fn9D6A
+	jsr	@fn8584
 	mov.w	@0x9E80:16,r2
 	cmp.w	r0,r2
 	ble	9574
@@ -2435,7 +2435,7 @@ l956E:
 	bra	9584
 
 l9574:
-	jsr	@0x8584:24
+	jsr	@fn8584
 	mov.w	@0x9E80:16,r2
 	cmp.w	r0,r2
 	bge	9590
@@ -2446,29 +2446,29 @@ l9580:
 l9584:
 	mov.w	#0x4004,r1
 	mov.w	#0x299A,r0
-	jsr	@0x9BA6:24
+	jsr	@fn9BA6
 
 l9590:
-	jsr	@0x8584:24
+	jsr	@fn8584
 	mov.w	r0,@0x9E80:16
-	jsr	@0x8584:24
+	jsr	@fn8584
 	mov.w	r0,r2
 	mov.w	#0x3002,r3
 	mov.w	r3,@-sp
 	mov.w	#0x3001,r1
 	mov.w	#0x1FF2,r0
-	jsr	@0x9BB6:24
+	jsr	@fn9BB6
 	mov.w	#0x27C8,r0
-	jsr	@0x9B90:24
+	jsr	@fn9B90
 	adds	#0x00000002,sp
 	jmp	@0x97D6:24
 
 l95BE:
 	mov.w	#0x1000,r1
 	mov.w	#0x1946,r0
-	jsr	@0x9B9A:24
-	jsr	@0x9DF2:24
-	jsr	@0x9370:24
+	jsr	@fn9B9A
+	jsr	@fn9DF2
+	jsr	@fn9370
 	mov.w	r0,@(6:16,sp)
 	mov.w	r0,r0
 	bge	95DE
@@ -2482,20 +2482,20 @@ l95DE:
 	mov.w	#0x09C4,r2
 	mov.w	#0x1773,r1
 	mov.w	#0x327C,r0
-	jsr	@0x9BB6:24
+	jsr	@fn9BB6
 	adds	#0x00000002,sp
 	mov.w	#0x000A,r4
 	mov.w	r4,@-sp
 	mov.w	#0x05DC,r2
 	mov.w	#0x1773,r1
 	mov.w	#0x327C,r0
-	jsr	@0x9BB6:24
+	jsr	@fn9BB6
 	adds	#0x00000002,sp
 	mov.w	r4,@-sp
 	mov.w	#0x0DAC,r2
 	mov.w	#0x1773,r1
 	mov.w	#0x327C,r0
-	jsr	@0x9BB6:24
+	jsr	@fn9BB6
 	adds	#0x00000002,sp
 	mov.w	@(6:16,sp),r1
 	mov.w	r1,r2
@@ -2513,7 +2513,7 @@ l95DE:
 	add.w	r2,r2
 	add.w	r2,r3
 	mov.w	r6,@(-24912:16,er3)
-	jsr	@0x8584:24
+	jsr	@fn8584
 	mov.w	@0x9E80:16,r2
 	cmp.w	r0,r2
 	ble	965A
@@ -2523,7 +2523,7 @@ l9654:
 	bra	966A
 
 l965A:
-	jsr	@0x8584:24
+	jsr	@fn8584
 	mov.w	@0x9E80:16,r2
 	cmp.w	r0,r2
 	bge	9676
@@ -2534,20 +2534,20 @@ l9666:
 l966A:
 	mov.w	#0x4004,r1
 	mov.w	#0x299A,r0
-	jsr	@0x9BA6:24
+	jsr	@fn9BA6
 
 l9676:
-	jsr	@0x8584:24
+	jsr	@fn8584
 	mov.w	r0,@0x9E80:16
-	jsr	@0x8584:24
+	jsr	@fn8584
 	mov.w	r0,r2
 	mov.w	#0x3002,r3
 	mov.w	r3,@-sp
 	mov.w	#0x3001,r1
 	mov.w	#0x1FF2,r0
-	jsr	@0x9BB6:24
+	jsr	@fn9BB6
 	mov.w	#0x27C8,r0
-	jsr	@0x9B90:24
+	jsr	@fn9B90
 	adds	#0x00000002,sp
 
 l96A0:
@@ -2583,14 +2583,14 @@ l96C2:
 	add.w	r7,r1
 	mov.w	#0x000A,r0
 	add.w	r7,r0
-	jsr	@0x8866:24
+	jsr	@fn8866
 	mov.w	@(10:16,sp),r0
 	mov.w	r0,r2
 	add.w	r2,r2
 	mov.w	@(-24848:16,er2),r1
 	subs	#0x00000001,er1
-	jsr	@0x8BB0:24
-	jsr	@0x8AEA:24
+	jsr	@fn8BB0
+	jsr	@fn8AEA
 	mov.w	@(10:16,sp),r1
 	mov.w	#0x0001,r4
 	adds	#0x00000002,sp
@@ -2610,7 +2610,7 @@ l96C2:
 	add.w	r2,r2
 	add.w	r2,r3
 	mov.w	r4,@(-24912:16,er3)
-	jsr	@0x8584:24
+	jsr	@fn8584
 	mov.w	@0x9E80:16,r2
 	cmp.w	r0,r2
 	ble	9730
@@ -2620,7 +2620,7 @@ l972A:
 	bra	9740
 
 l9730:
-	jsr	@0x8584:24
+	jsr	@fn8584
 	mov.w	@0x9E80:16,r2
 	cmp.w	r0,r2
 	bge	974C
@@ -2631,50 +2631,50 @@ l973C:
 l9740:
 	mov.w	#0x4004,r1
 	mov.w	#0x299A,r0
-	jsr	@0x9BA6:24
+	jsr	@fn9BA6
 
 l974C:
-	jsr	@0x8584:24
+	jsr	@fn8584
 	mov.w	r0,@0x9E80:16
-	jsr	@0x8584:24
+	jsr	@fn8584
 	mov.w	r0,r2
 	mov.w	#0x3002,r3
 	mov.w	r3,@-sp
 	mov.w	#0x3001,r1
 	mov.w	#0x1FF2,r0
-	jsr	@0x9BB6:24
+	jsr	@fn9BB6
 	mov.w	#0x27C8,r0
-	jsr	@0x9B90:24
+	jsr	@fn9B90
 	adds	#0x00000002,sp
 
 l9776:
 	sub.w	r1,r1
 	mov.w	#0xFFFF,r0
-	jsr	@0x8BB0:24
+	jsr	@fn8BB0
 	mov.w	#0x0007,r4
 	mov.w	r4,@-sp
 	mov.w	#0x0002,r2
 	mov.w	#0x2002,r1
 	mov.w	#0x1A4E,r0
-	jsr	@0x9BB6:24
+	jsr	@fn9BB6
 	adds	#0x00000002,sp
 	mov.w	#0x012C,r0
-	jsr	@0x9C18:24
+	jsr	@fn9C18
 	mov.w	r4,@-sp
 	mov.w	#0x0003,r2
 	mov.w	#0x2002,r1
 	mov.w	#0x1A4E,r0
-	jsr	@0x9BB6:24
+	jsr	@fn9BB6
 	adds	#0x00000002,sp
 	mov.w	r6,@0x9E36:16
 	sub.w	r2,r2
 	mov.w	#0x4004,r1
 	mov.w	#0x299A,r0
-	jsr	@0x9BA6:24
+	jsr	@fn9BA6
 	mov.w	#0x1000,r1
 	mov.w	#0x19C4,r0
-	jsr	@0x9B9A:24
-	jsr	@0x9DDC:24
+	jsr	@fn9B9A
+	jsr	@fn9DDC
 
 l97D6:
 	sub.w	r5,r5
@@ -2710,8 +2710,8 @@ l9800:
 	mov.w	#0x0002,r2
 	mov.w	#0x4004,r1
 	mov.w	#0x299A,r0
-	jsr	@0x9BA6:24
-	jsr	@0x9CBC:24
+	jsr	@fn9BA6
+	jsr	@fn9CBC
 	cmp.b	#0x08,r0l
 	beq	981C
 
@@ -2795,17 +2795,17 @@ l9B0E:
 	mov.w	#0x9F10,r1
 	mov.w	#0x9F00,r2
 	mov.w	#0x3B9A,r0
-	jsr	@0x9BA6:24
+	jsr	@fn9BA6
 	mov.w	#0x2964,r0
-	jsr	@0x9B90:24
+	jsr	@fn9B90
 	mov.w	#0x1498,r0
-	jsr	@0x9B90:24
+	jsr	@fn9B90
 	mov.w	#0x1ABA,r0
-	jsr	@0x9B90:24
-	jsr	@0x9DDC:24
-	jsr	@0x9478:24
+	jsr	@fn9B90
+	jsr	@fn9DDC
+	jsr	@fn9478
 	mov.w	#0x3ED4,r0
-	jsr	@0x9B90:24
+	jsr	@fn9B90
 	mov.b	#0x01,r2l
 	mov.b	r2l,@0xFFCC:16
 	mov.w	@0x0:16,r2
@@ -2832,7 +2832,7 @@ fn9B66 proc
 	mov.w	@0x9E92:16,r1
 	mov.w	#0x0001,r2
 	mov.w	#0x0DCD,r3
-	jsr	@0x9E18:24
+	jsr	@fn9E18
 	add.b	#0x01,r1l
 	addx.b	#0x00,r1h
 	addx.b	#0x00,r0l
@@ -3065,7 +3065,7 @@ fn9C18 proc
 	ble	9C30
 
 l9C24:
-	jsr	@0x9D34:24
+	jsr	@fn9D34
 	mov.w	r0,r0
 	bne	9C30
 
@@ -3117,7 +3117,7 @@ fn9C6E proc
 	add.w	r4,r2
 	mov.w	r0,r1
 	mov.w	#0x14C0,r0
-	jsr	@0x9BA6:24
+	jsr	@fn9BA6
 	mov.w	@(-24938:16,er4),r0
 	mov.w	@sp+,r4
 	rts
@@ -3140,7 +3140,7 @@ fn9C92 proc
 	mov.w	r4,r2
 	mov.w	r0,r1
 	mov.w	#0x14C0,r0
-	jsr	@0x9BA6:24
+	jsr	@fn9BA6
 	mov.b	@(6:16,er4),r0l
 	mov.b	#0x00,r0h
 	mov.w	@sp+,r4
@@ -3164,11 +3164,11 @@ l9CCA:
 	add.w	r7,r2
 	mov.w	#0x4000,r1
 	mov.w	#0x29F2,r0
-	jsr	@0x9BA6:24
+	jsr	@fn9BA6
 	mov.w	r5,r2
 	mov.w	#0x3000,r1
 	mov.w	#0x1FB6,r0
-	jsr	@0x9BA6:24
+	jsr	@fn9BA6
 	mov.w	@(6:16,sp),r3
 	mov.w	#0x0002,r2
 	cmp.w	r2,r3
@@ -3182,7 +3182,7 @@ l9CFC:
 	sub.w	r4,r4
 
 l9CFE:
-	jsr	@0x9D34:24
+	jsr	@fn9D34
 	mov.w	r0,r0
 	beq	9D08
 
@@ -3228,11 +3228,11 @@ fn9D34 proc
 	adds	#0x00000002,er2
 	mov.w	#0x4000,r1
 	mov.w	#0x29F2,r0
-	jsr	@0x9BA6:24
+	jsr	@fn9BA6
 	mov.w	r7,r2
 	mov.w	#0x3000,r1
 	mov.w	#0x1FB6,r0
-	jsr	@0x9BA6:24
+	jsr	@fn9BA6
 	mov.w	@(2:16,sp),r2
 	beq	9D60
 
@@ -3254,27 +3254,27 @@ l9D64:
 ;;     955E (in fn9478)
 fn9D6A proc
 	mov.w	#0x27AC,r0
-	jsr	@0x9B90:24
+	jsr	@fn9B90
 	mov.w	#0x27C8,r0
-	jsr	@0x9B90:24
+	jsr	@fn9B90
 	sub.w	r2,r2
 	mov.w	#0x4004,r1
 	mov.w	#0x299A,r0
-	jsr	@0x9BA6:24
-	jsr	@0x9DC0:24
+	jsr	@fn9BA6
+	jsr	@fn9DC0
 	mov.w	#0x2A62,r0
-	jsr	@0x9B90:24
+	jsr	@fn9B90
 	mov.w	#0x9F10,r1
 	mov.w	#0x9F00,r2
 	mov.w	#0x3B9A,r0
-	jsr	@0x9BA6:24
+	jsr	@fn9BA6
 	mov.w	#0x1498,r0
-	jsr	@0x9B90:24
+	jsr	@fn9B90
 	sub.w	r2,r2
 	mov.w	#0x4004,r1
 	mov.w	#0x299A,r0
-	jsr	@0x9BA6:24
-	jsr	@0x9DC0:24
+	jsr	@fn9BA6
+	jsr	@fn9DC0
 	rts
 
 ;; fn9DC0: 9DC0
@@ -3289,7 +3289,7 @@ l9DC2:
 	adds	#0x00000001,er2
 	mov.w	#0x700C,r1
 	mov.w	#0x3CCC,r0
-	jsr	@0x9BA6:24
+	jsr	@fn9BA6
 	mov.b	@(1:16,sp),r2l
 	bne	9DC2
 
@@ -3304,9 +3304,9 @@ l9DD8:
 fn9DDC proc
 	mov.w	#0x3006,r1
 	mov.w	#0x1B62,r0
-	jsr	@0x9B9A:24
+	jsr	@fn9B9A
 	mov.w	#0x27C8,r0
-	jsr	@0x9B90:24
+	jsr	@fn9B90
 	rts
 
 ;; fn9DF2: 9DF2
@@ -3315,9 +3315,9 @@ fn9DDC proc
 fn9DF2 proc
 	mov.w	#0x3007,r1
 	mov.w	#0x1B62,r0
-	jsr	@0x9B9A:24
+	jsr	@fn9B9A
 	mov.w	#0x27C8,r0
-	jsr	@0x9B90:24
+	jsr	@fn9B90
 	rts
 
 ;; fn9E08: 9E08

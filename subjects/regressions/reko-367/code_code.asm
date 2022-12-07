@@ -2,7 +2,7 @@
 
 ;; fn80000000: 80000000
 fn80000000 proc
-	jsr.l	800003CC                                             ; $03CC(pc)
+	jsr.l	fn800003CC                                           ; $03CC(pc)
 	rts
 80000006                   4E 71 4E 71 4E 71 4E 71 4E 71       NqNqNqNqNq
 80000010 4E 71 4E 71 4E 71 4E 71 4E 71 4E 71 4E 71 4E 71 NqNqNqNqNqNqNqNq
@@ -125,12 +125,12 @@ l80000224:
 	fmove.x	fp0,-(a7)
 	fmove.x	$0008(a6),fp0
 	fmove.x	fp0,-(a7)
-	jsr.l	80000132                                             ; -$0106(pc)
+	jsr.l	fn80000132                                           ; -$0106(pc)
 	lea	$0018(a7),a7
 	fmove.x	fp0,fp2
 	fmove.l	-$001C(a6),fp0
 	fmove.x	fp0,-(a7)
-	jsr.l	8000018E                                             ; -$00C0(pc)
+	jsr.l	fn8000018E                                           ; -$00C0(pc)
 	lea	$000C(a7),a7
 	fmove.x	fp2,fp1
 	fdiv.x	fp0,fp1
@@ -182,12 +182,12 @@ l800002E2:
 	fmove.x	fp0,-(a7)
 	fmove.x	$0008(a6),fp0
 	fmove.x	fp0,-(a7)
-	jsr.l	80000132                                             ; -$01C4(pc)
+	jsr.l	fn80000132                                           ; -$01C4(pc)
 	lea	$0018(a7),a7
 	fmove.x	fp0,fp2
 	fmove.l	-$001C(a6),fp0
 	fmove.x	fp0,-(a7)
-	jsr.l	8000018E                                             ; -$017E(pc)
+	jsr.l	fn8000018E                                           ; -$017E(pc)
 	lea	$000C(a7),a7
 	fmove.x	fp2,fp1
 	fdiv.x	fp0,fp1
@@ -223,12 +223,12 @@ fn8000036C proc
 	move.l	d2,-(a7)
 	fmove.x	$0008(a6),fp0
 	fmove.x	fp0,-(a7)
-	jsr.l	800001F2                                             ; -$018E(pc)
+	jsr.l	fn800001F2                                           ; -$018E(pc)
 	lea	$000C(a7),a7
 	fmove.x	fp0,fp2
 	fmove.x	$0008(a6),fp1
 	fmove.x	fp1,-(a7)
-	jsr.l	800002AE                                             ; -$00E8(pc)
+	jsr.l	fn800002AE                                           ; -$00E8(pc)
 	lea	$000C(a7),a7
 	fmove.x	fp2,fp1
 	fdiv.x	fp0,fp1
@@ -257,23 +257,23 @@ fn800003CC proc
 	fmove.x	fp0,-(a7)
 	fmove.x	-$000C(a6),fp0
 	fmove.x	fp0,-(a7)
-	jsr.l	80000132                                             ; -$02C0(pc)
+	jsr.l	fn80000132                                           ; -$02C0(pc)
 	lea	$0018(a7),a7
 	fmove.x	-$000C(a6),fp0
 	fmove.x	fp0,-(a7)
-	jsr.l	8000018E                                             ; -$0276(pc)
+	jsr.l	fn8000018E                                           ; -$0276(pc)
 	lea	$000C(a7),a7
 	fmove.x	-$000C(a6),fp0
 	fmove.x	fp0,-(a7)
-	jsr.l	800001F2                                             ; -$0224(pc)
+	jsr.l	fn800001F2                                           ; -$0224(pc)
 	lea	$000C(a7),a7
 	fmove.x	-$000C(a6),fp0
 	fmove.x	fp0,-(a7)
-	jsr.l	800002AE                                             ; -$017A(pc)
+	jsr.l	fn800002AE                                           ; -$017A(pc)
 	lea	$000C(a7),a7
 	fmove.x	-$000C(a6),fp0
 	fmove.x	fp0,-(a7)
-	jsr.l	8000036C                                             ; -$00CE(pc)
+	jsr.l	fn8000036C                                           ; -$00CE(pc)
 	lea	$000C(a7),a7
 	clr.l	d0
 	unlk	a6

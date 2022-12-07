@@ -12,7 +12,7 @@ fn0100 proc
 	lim	gp1,#0x53
 	lim	gp2,#0x5B7
 	mov	gp0,gp2
-	sjs	gp15,0111
+	sjs	gp15,fn0111
 
 l00000110:
 	br	00000110
@@ -24,117 +24,117 @@ fn0111 proc
 	pshm	gp14,gp14
 	lr	gp14,gp15
 	lim	gp0,#0x8000
-	sjs	gp15,04B9
+	sjs	gp15,fn04B9
 	efl	gp0,0x80CE
-	sjs	gp15,01E6
-	sjs	gp15,04AE
+	sjs	gp15,fn01E6
+	sjs	gp15,fn04AE
 	lisp	gp0,#0xA
-	sjs	gp15,045A
+	sjs	gp15,fn045A
 	lim	gp0,#0x800D
-	sjs	gp15,04B9
+	sjs	gp15,fn04B9
 	efl	gp0,0x80D1
-	sjs	gp15,01E6
-	sjs	gp15,04AE
+	sjs	gp15,fn01E6
+	sjs	gp15,fn04AE
 	lisp	gp0,#0xA
-	sjs	gp15,045A
+	sjs	gp15,fn045A
 	lim	gp0,#0x801A
-	sjs	gp15,04B9
+	sjs	gp15,fn04B9
 	efl	gp0,0x80D4
-	sjs	gp15,01E6
-	sjs	gp15,04AE
+	sjs	gp15,fn01E6
+	sjs	gp15,fn04AE
 	lisp	gp0,#0xA
-	sjs	gp15,045A
+	sjs	gp15,fn045A
 	lim	gp0,#0x8027
-	sjs	gp15,04B9
+	sjs	gp15,fn04B9
 	efl	gp0,0x80D7
-	sjs	gp15,01E6
-	sjs	gp15,04AE
+	sjs	gp15,fn01E6
+	sjs	gp15,fn04AE
 	lisp	gp0,#0xA
-	sjs	gp15,045A
+	sjs	gp15,fn045A
 	lim	gp0,#0x8036
-	sjs	gp15,04B9
+	sjs	gp15,fn04B9
 	efl	gp0,0x80DA
-	sjs	gp15,032A
-	sjs	gp15,04AE
+	sjs	gp15,fn032A
+	sjs	gp15,fn04AE
 	lisp	gp0,#0xA
-	sjs	gp15,045A
+	sjs	gp15,fn045A
 	lim	gp0,#0x8042
-	sjs	gp15,04B9
+	sjs	gp15,fn04B9
 	efl	gp0,0x80DD
-	sjs	gp15,032A
-	sjs	gp15,04AE
+	sjs	gp15,fn032A
+	sjs	gp15,fn04AE
 	lisp	gp0,#0xA
-	sjs	gp15,045A
+	sjs	gp15,fn045A
 	lim	gp0,#0x804F
-	sjs	gp15,04B9
+	sjs	gp15,fn04B9
 	efl	gp0,0x80E0
-	sjs	gp15,032A
-	sjs	gp15,04AE
+	sjs	gp15,fn032A
+	sjs	gp15,fn04AE
 	lisp	gp0,#0xA
-	sjs	gp15,045A
+	sjs	gp15,fn045A
 	lim	gp0,#0x805C
-	sjs	gp15,04B9
+	sjs	gp15,fn04B9
 	efl	gp0,0x80E3
-	sjs	gp15,032A
-	sjs	gp15,04AE
+	sjs	gp15,fn032A
+	sjs	gp15,fn04AE
 	lisp	gp0,#0xA
-	sjs	gp15,045A
+	sjs	gp15,fn045A
 	lim	gp0,#0x806B
-	sjs	gp15,04B9
+	sjs	gp15,fn04B9
 	efl	gp0,0x80E6
-	sjs	gp15,032A
-	sjs	gp15,04AE
+	sjs	gp15,fn032A
+	sjs	gp15,fn04AE
 	lisp	gp0,#0xA
-	sjs	gp15,045A
+	sjs	gp15,fn045A
 	lim	gp0,#0x8076
-	sjs	gp15,04B9
+	sjs	gp15,fn04B9
 	efl	gp0,0x80CE
-	sjs	gp15,032A
-	sjs	gp15,04AE
+	sjs	gp15,fn032A
+	sjs	gp15,fn04AE
 	lisp	gp0,#0xA
-	sjs	gp15,045A
+	sjs	gp15,fn045A
 	lim	gp0,#0x8082
-	sjs	gp15,04B9
+	sjs	gp15,fn04B9
 	efl	gp0,0x80DA
-	sjs	gp15,034E
-	sjs	gp15,04AE
+	sjs	gp15,fn034E
+	sjs	gp15,fn04AE
 	lisp	gp0,#0xA
-	sjs	gp15,045A
+	sjs	gp15,fn045A
 	lim	gp0,#0x808E
-	sjs	gp15,04B9
+	sjs	gp15,fn04B9
 	efl	gp0,0x80DD
-	sjs	gp15,034E
-	sjs	gp15,04AE
+	sjs	gp15,fn034E
+	sjs	gp15,fn04AE
 	lisp	gp0,#0xA
-	sjs	gp15,045A
+	sjs	gp15,fn045A
 	lim	gp0,#0x809B
-	sjs	gp15,04B9
+	sjs	gp15,fn04B9
 	efl	gp0,0x80E0
-	sjs	gp15,034E
-	sjs	gp15,04AE
+	sjs	gp15,fn034E
+	sjs	gp15,fn04AE
 	lisp	gp0,#0xA
-	sjs	gp15,045A
+	sjs	gp15,fn045A
 	lim	gp0,#0x80A8
-	sjs	gp15,04B9
+	sjs	gp15,fn04B9
 	efl	gp0,0x80E3
-	sjs	gp15,034E
-	sjs	gp15,04AE
+	sjs	gp15,fn034E
+	sjs	gp15,fn04AE
 	lisp	gp0,#0xA
-	sjs	gp15,045A
+	sjs	gp15,fn045A
 	lim	gp0,#0x80B7
-	sjs	gp15,04B9
+	sjs	gp15,fn04B9
 	efl	gp0,0x80E6
-	sjs	gp15,034E
-	sjs	gp15,04AE
+	sjs	gp15,fn034E
+	sjs	gp15,fn04AE
 	lisp	gp0,#0xA
-	sjs	gp15,045A
+	sjs	gp15,fn045A
 	lim	gp0,#0x80C2
-	sjs	gp15,04B9
+	sjs	gp15,fn04B9
 	efl	gp0,0x80CE
-	sjs	gp15,034E
-	sjs	gp15,04AE
+	sjs	gp15,fn034E
+	sjs	gp15,fn04AE
 	lisp	gp0,#0xA
-	sjs	gp15,045A
+	sjs	gp15,fn045A
 	lr	gp15,gp14
 	popm	gp14,gp14
 	urs	gp15
@@ -325,7 +325,7 @@ l00000347:
 	da	gp0,0x812D
 
 l0349:
-	sjs	gp15,02BF
+	sjs	gp15,fn02BF
 	lr	gp15,gp14
 	popm	gp14,gp14
 	urs	gp15
@@ -366,7 +366,7 @@ l00000362:
 
 l0366:
 	da	gp0,0x813A
-	sjs	gp15,02BF
+	sjs	gp15,fn02BF
 	lr	gp15,gp14
 	popm	gp14,gp14
 	urs	gp15
@@ -397,7 +397,7 @@ fn03E0 proc
 	xorr	gp0,gp0
 	st	gp0,0xA,gp11
 	lisp	gp1,#0xB
-	sjs	gp15,03EC
+	sjs	gp15,fn03EC
 	popm	gp0,gp14
 	urs	gp15
 
@@ -581,12 +581,12 @@ l00000460:
 	bez	0000046C
 
 l00000463:
-	sjs	gp15,045A
+	sjs	gp15,fn045A
 	llb	gp0,gp11
 	bez	0000046C
 
 l00000468:
-	sjs	gp15,045A
+	sjs	gp15,fn045A
 	aisp	gp11,#1
 	br	00000460
 
@@ -626,8 +626,8 @@ fn04AE proc
 	lr	gp3,gp2
 	dlr	gp1,gp0
 	lim	gp0,#0x813C
-	sjs	gp15,03E0
-	sjs	gp15,045D
+	sjs	gp15,fn03E0
+	sjs	gp15,fn045D
 	popm	gp0,gp3
 	urs	gp15
 
@@ -657,7 +657,7 @@ l000004BA:
 	bez	000004C1
 
 l000004BD:
-	sjs	gp15,045A
+	sjs	gp15,fn045A
 	aisp	gp1,#1
 	br	000004BA
 

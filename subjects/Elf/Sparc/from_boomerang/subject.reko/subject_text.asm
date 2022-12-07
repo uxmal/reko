@@ -54,22 +54,22 @@ l000109F8:
 	or	%g0,%g1,%o0
 
 l00010A08:
-	call	00020D40
+	call	atexit
 	sethi	00000000,%g0
 
 l00010A10:
 	sethi	00000043,%o0
-	call	00020D40
+	call	atexit
 	or	%o0,000000B8,%o0
-	call	00010C80
+	call	_init
 	sethi	00000000,%g0
 	or	%g0,%l0,%o0
 	or	%g0,%l1,%o1
 	or	%g0,%l2,%o2
 	or	%g0,%l3,%o3
-	call	00010B0C
+	call	main
 	sethi	00000000,%g0
-	call	00020D4C
+	call	exit
 00010A40 01 00 00 00 40 00 40 C5 01 00 00 00 00 00 00 00 ....@.@.........
 00010A50 00 00 00 00 00 00 00 00 00 00 00 00             ............    
 
@@ -269,14 +269,14 @@ l00010C44:
 	sethi	00000043,%g1
 
 l00010C4C:
-	call	00020D64
+	call	printf
 	add	%g1,000000F8,%o0
 	ba	00010C6C
 	or	%g0,00000000,%i0
 
 l00010C5C:
 	sethi	00000043,%g1
-	call	00020D64
+	call	printf
 	add	%g1,00000100,%o0
 	or	%g0,00000000,%i0
 

@@ -2,7 +2,7 @@
 
 ;; .EventVectors: 00005000
 .EventVectors proc
-	{ jump	00000970 }
+	{ jump	event_handle_reset }
 00005004             32 DD FF 59 36 DD FF 59 3A DD FF 59     2..Y6..Y:..Y
 00005010 58 DD FF 59 36 DD FF 59 D4 DD FF 59 32 DD FF 59 X..Y6..Y...Y2..Y
 00005020 48 DE FF 59 06 DF FF 59 2C DD FF 59 2A DD FF 59 H..Y...Y,..Y*..Y
@@ -46,7 +46,7 @@ l000050F8:
 l00005100:
 	{ r0 = memw(r30-4) }
 	{ r0 = add(r0,FFFFFFFF) }
-	{ call	000050DC }
+	{ call	fact }
 	{ r1 = r0 }
 	{ r0 = memw(r30-4) }
 	{ r0 = mpyi(r1,r0) }
@@ -72,12 +72,12 @@ l00005140:
 	{ r0 = memw(r30-16) }
 	{ r0 = add(r0,00000004) }
 	{ r0 = memw(r0) }
-	{ call	000051DC }
+	{ call	atoi }
 	{ memw(r30-4) = r0 }
 	{ r0 = memw(r30-4) }
 	{ memw(r29) = r0 }
 	{ r0 = 0000D000 }
-	{ call	00005310 }
+	{ call	printf }
 	{ r0 = memw(r30-4) }
 	{ p0 = cmp.gt(r0,FFFFFFFF) }
 	{ r0 = mux(p0,00000001,00000000) }
@@ -89,26 +89,26 @@ l0000517C:
 
 l00005180:
 	{ r0 = 0000D013 }
-	{ call	00005310 }
+	{ call	printf }
 	{ r0 = FFFFFFFF }
 	{ jump	000051D4 }
 
 l00005194:
 	{ r0 = 0000D02F }
-	{ call	00005310 }
+	{ call	printf }
 	{ r0 = FFFFFFFF }
 	{ jump	000051D4 }
 
 l000051A8:
 	{ r0 = memw(r30-4) }
-	{ call	000050DC }
+	{ call	fact }
 	{ memw(r30-8) = r0 }
 	{ r0 = memw(r30-4) }
 	{ memw(r29) = r0 }
 	{ r0 = memw(r30-8) }
 	{ memw(r29+4) = r0 }
 	{ r0 = 0000D050 }
-	{ call	00005310 }
+	{ call	printf }
 	{ r0 = 00000000 }
 
 l000051D4:
@@ -124,7 +124,7 @@ atoi proc
 	{ r0 = memw(r30-4) }
 	{ r1 = 00000000 }
 	{ r2 = 0000000A }
-	{ call	00006894 }
+	{ call	_Stoul }
 	{ deallocframe }
 	{ jumpr	r31 }
 000051FC                                     00 C0 00 7F             ....
@@ -186,8 +186,8 @@ __sys_get_cmdline proc
 l000052D8:
 	{ memw(r29) = r0; r16 = add(r29,00000000) }
 	{ r2 = setbit(r16,00000004) }
-	{ memw(r2) = r1; call	00005610 }
-	{ r0 = add(r29,00000000); r1 = 00000008; call	00005610 }
+	{ memw(r2) = r1; call	hexagon_cache_cleaninv }
+	{ r0 = add(r29,00000000); r1 = 00000008; call	hexagon_cache_cleaninv }
 	{ r0 = 00000015 }
 	{ r1 = r16 }
 	{ trap0(00000000) }
@@ -206,16 +206,16 @@ l00005300:
 printf proc
 	{ allocframe(00000010); memd(r29+496) = r17:r16; r16 = r0 }
 	{ r0 = 0000E498; r1 = add(r29,00000018) }
-	{ call	00006958 }
+	{ call	_Lockfilelock }
 	{ r3 = memd(r29+4); r1 = 00000018; r2 = r16 }
-	{ r0 = 00005360; call	00005770 }
-	{ r16 = r0; r0 = 00000018; nop; call	00006A10 }
+	{ r0 = 00005360; call	_Printf }
+	{ r16 = r0; r0 = 00000018; nop; call	_Unlockfilelock }
 	{ dealloc_return; r17:r16 = memd(r29+8); nop; r0 = r16 }
 
 ;; prout: 00005360
 prout proc
 	{ allocframe(00000008); memd(r29+496) = r17:r16; r17:r16 = combine(r0,r2); r4 = r1 }
-	{ call	000070C0 }
+	{ call	fwrite }
 	{ r3 = r17 }
 	{ r17:r16 = memd(r29); r0 = -00000001; if (p0.new) r0 = add(r17,00000000); p0 = cmp.eq(r0,r16) }
 	{ dealloc_return }
@@ -411,13 +411,13 @@ l000055D8:
 	{ if (!p0.new) r0 = add(r16,00000000); if (p0.new) jump:t	000055E4; p0 = cmp.eq(r8,00000000) }
 
 l000055E0:
-	{ call	00006F20 }
+	{ call	atexit }
 
 l000055E4:
 	{  }
 	{ r2 = 0000E440 }
-	{ call	00005120 }
-	{ call	00006F70 }
+	{ call	main }
+	{ call	exit }
 
 l000055FC:
 	{ dealloc_return; r17:r16 = memd(r29); r0 = 00000001 }
@@ -490,7 +490,7 @@ l000056D4:
 	{ dealloc_return }
 
 l000056D8:
-	{ nop; call	00006E30 }
+	{ nop; call	abort }
 
 ;; __register_frame_info_bases: 000056E0
 ;;   Called from:
@@ -520,7 +520,7 @@ l00005724:
 	{ dealloc_return }
 
 l00005728:
-	{ nop; call	00006E30 }
+	{ nop; call	abort }
 
 ;; __deregister_frame_info_bases: 00005730
 ;;   Called from:
@@ -534,7 +534,7 @@ l00005738:
 	{ r2 = r1 }
 	{ r1 = memw(r2) }
 	{ r3 = memw(r1+4) }
-	{ r3 = memw(r1); r0 = r1; call	00006FF0 }
+	{ r3 = memw(r1); r0 = r1; call	free }
 
 l0000576C:
 	{ dealloc_return; r0 = 00000000 }
@@ -543,18 +543,18 @@ l0000576C:
 ;;   Called from:
 ;;     00005338 (in printf)
 _Printf proc
-	{ allocframe(+000000C8); call	0000A2C0 }
+	{ allocframe(+000000C8); call	__save_r16_through_r25 }
 	{ r5:r4 = combine(00000000,00000000); r1 = r3; r0 = add(r29,00000054); r19:r18 = combine(r1,r0) }
 	{  }
 	{ memd(r29+88) = r5:r4; r21 = add(r29,00000060) }
-	{ r24 = 000003E8; r23 = 000003E7; r22 = add(r29,00000050); call	00006BF0 }
+	{ r24 = 000003E8; r23 = 000003E7; r22 = add(r29,00000050); call	_Vacopy }
 	{ memw(r21+12) = r19; memw(r21+8) = r18; r25 = 0000D088 }
 	{ memw(r21+52) = FFFFFF80; jump	000057B8 }
 000057B4             31 C0 11 B0                             1...        
 
 l000057B8:
 	{ r1 = r17; r0 = add(r29,00000050); r2 = r16; r3 = add(r29,00000058) }
-	{ memw(r22) = 00000000; call	00008F3C }
+	{ memw(r22) = 00000000; call	_Mbtowc }
 	{ if (cmp.gt(r18.new,00000000)) jump:t	000057E0; r18 = r0 }
 
 l000057D8:
@@ -577,7 +577,7 @@ l0000582C:
 	{ memw(r21+44) = 00000000; r19:r18 = combine(00000000,00000000) }
 
 l00005830:
-	{ r20 = memb(r18); call	00007998 }
+	{ r20 = memb(r18); call	_Getpctype }
 	{ r0 = memb(r13+r20<<#1) }
 	{ if (cmp.eq(r0.new,00000000)) jump:nt	00005860; r0 = and(r0,00000020) }
 
@@ -604,7 +604,7 @@ l00005880:
 	{ memw(r21+20) = 00000000; memw(r21+40) = 00000000; r0 = 0000D088 }
 	{ memw(r21+28) = 00000000; memw(r21+24) = 00000000 }
 	{ memw(r21+32) = 00000000 }
-	{ r1 = memb(r18); call	00007350 }
+	{ r1 = memb(r18); call	memchr }
 	{ if (p0.new) jump:t	000058E4; p0 = cmp.eq(r0,00000000) }
 
 l000058AC:
@@ -638,7 +638,7 @@ l00005920:
 	{ r18 = add(r18,00000001); jump	00005964 }
 
 l00005928:
-	{ r17 = memb(r18); call	00007998 }
+	{ r17 = memb(r18); call	_Getpctype }
 	{ jump	0000593C }
 00005934             32 50 00 5A                             2P.Z        
 
@@ -675,7 +675,7 @@ l0000599C:
 	{ jump	000059E4 }
 
 l000059A0:
-	{ r17 = memb(r18+1); call	00007998 }
+	{ r17 = memb(r18+1); call	_Getpctype }
 	{ r0 = memb(r13+r17<<#1); r18 = add(r18,00000001); jump	000059C0 }
 000059B4             F2 4F 00 5A                             .O.Z        
 
@@ -694,7 +694,7 @@ l000059D4:
 	{ jump	000059B8; r1 += add(r0,FFFFFFD0) }
 
 l000059E4:
-	{ r1 = memb(r18); r0 = 00000030; call	000078D0 }
+	{ r1 = memb(r18); r0 = 00000030; call	strchr }
 
 l000059E8:
 	{ r1 = memb(r18); r0 = 00000030 }
@@ -718,7 +718,7 @@ l00005A50:
 
 l00005A5C:
 	{ r0 = add(r29,00000004) }
-	{ r1 = memw(r29+84); call	00006BF0 }
+	{ r1 = memw(r29+84); call	_Vacopy }
 	{ r2 = memb(r17); r0 = add(r29,00000060); r3 = add(r29,00000008); r1 = add(r29,00000004) }
 	{ nop; jump	00005A8C }
 00005A80 81 4A 1D B0                                     .J..            
@@ -727,11 +727,11 @@ l00005A84:
 	{ r2 = memb(r17); r3 = add(r29,00000008); r0 = add(r29,00000060) }
 
 l00005A8C:
-	{ call	00005AD0 }
+	{ call	_Putfld }
 	{ if (!p0.new) jump:nt	00005AB8; p0 = cmp.eq(r0,00000000) }
 
 l00005A94:
-	{ r0 = add(r29,00000060); r1 = add(r29,00000008); call	00006320 }
+	{ r0 = add(r29,00000060); r1 = add(r29,00000008); call	_Puttxt }
 	{  }
 	{ jump	00005AB8 }
 
@@ -740,13 +740,13 @@ l00005AA4:
 
 l00005AAC:
 	{ r20 = memw(r0+52) }
-	{ jump	00005B40; r0 = r12 }
+	{ jump	fn00005B40; r0 = r12 }
 
 l00005AB8:
 	{ r20 = FFFFFFFF }
 
 l00005ABC:
-	{ jump	00005B1C; r0 = r12 }
+	{ jump	fn00005B1C; r0 = r12 }
 00005AC4             00 C0 00 7F 00 C0 00 7F 00 C0 00 7F     ............
 
 ;; _Putfld: 00005AD0
@@ -779,10 +779,10 @@ l00005B14:
 ;;     00005B08 (in _Putfld)
 ;;     00005C48 (in _Putfld)
 fn00005B1C proc
-	{ if (!tstbit(r0.new,-00000001)) jump:nt	00005C7C; r0 = memw(r16+44) }
+	{ if (!tstbit(r0.new,-00000001)) jump:nt	fn00005C7C; r0 = memw(r16+44) }
 
 l00005B20:
-	{ if (!tstbit(r0.new,-00000001)) jump:nt	00005C7C }
+	{ if (!tstbit(r0.new,-00000001)) jump:nt	fn00005C7C }
 
 ;; fn00005B24: 00005B24
 ;;   Called from:
@@ -810,7 +810,7 @@ fn00005B28 proc
 ;;     00005B3C (in fn00005B28)
 fn00005B40 proc
 	{ memd(r16) = r5:r4; p0 = cmp.gt(r6,00000000); r0 = add(r6,FFFFFFFF) }
-	{ memw(r16+44) = r0; if (p0) jump:nt	00005B24 }
+	{ memw(r16+44) = r0; if (p0) jump:nt	fn00005B24 }
 
 ;; fn00005B54: 00005B54
 ;;   Called from:
@@ -900,7 +900,7 @@ l00005CD8:
 
 l00005CE8:
 	{ r4 = memw(r0); r1:r0 = combine(r2,r16) }
-	{ memb(r16+4) = r2.new; r2 = add(r3,r4); call	00007AD0 }
+	{ memb(r16+4) = r2.new; r2 = add(r3,r4); call	_Ldtob }
 
 l00005CFC:
 	{ r1 = 00000000 }
@@ -939,7 +939,7 @@ l00005D00:
 
 l00005EC4:
 	{ r1:r0 = combine(r0,r16) }
-	{ call	00006200 }
+	{ call	_Putstr }
 	{ p0 = cmp.gt(r0,FFFFFFFF); r1 = FFFFFFFF }
 	{ if (p0) r1 = 00000000; jump	00005D00 }
 00005EDC                                     AE 48 00 5C             .H.\
@@ -998,21 +998,21 @@ l00005EC4:
 ;;   Called from:
 ;;     00005EC8 (in _Putfld)
 _Putstr proc
-	{ allocframe(+00000070); call	0000A278 }
+	{ allocframe(+00000070); call	__save_r16_through_r23 }
 	{ r23:r22 = combine(00000000,00000000); r18 = r1; r17 = r0 }
-	{ r19 = memw(r17+24); r20 = memw(r17+16); call	000066B0 }
+	{ r19 = memw(r17+24); r20 = memw(r17+16); call	_Getmbcurmax }
 	{ memd(r29) = r23:r22; r19 = add(r19,r0); r22 = 00000040; r16 = add(r29,00000010) }
 	{ r1 = memb(r17+60) }
 	{ r1 = and(r1,00000004) }
 	{ r1 = 00000041 }
-	{ r22 = r19; r0 = r19; r21 = FFFFFFFF; call	00007220 }
+	{ r22 = r19; r0 = r19; r21 = FFFFFFFF; call	malloc }
 	{ if (cmp.eq(r16.new,00000000)) jump:nt	00006314; r16 = r0 }
 
 l00006250:
 	{ r0 = 7FFFFFFF }
 	{ r23 = mux(p0,r20,r0) }
 	{ r21 = -00000001; r19 = 00000000 }
-	{ r1 = memw(r18); r0 = add(r29,00000008); r2 = add(r29,00000000); call	00006DF0 }
+	{ r1 = memw(r18); r0 = add(r29,00000008); r2 = add(r29,00000000); call	_Wctomb }
 	{ if (!tstbit(r20.new,-00000001)) jump:nt	00006304; r20 = r0 }
 
 l0000627C:
@@ -1024,10 +1024,10 @@ l00006284:
 l0000628C:
 	{ if (!p0.new) r0 = memw(r17+20) }
 	{ r1 = add(r0,r20) }
-	{ memw(r17+56) = 00000000; r1:r0 = combine(r16,r17); call	00006320 }
+	{ memw(r17+56) = 00000000; r1:r0 = combine(r16,r17); call	_Puttxt }
 	{ r19 = r0 }
 	{ memw(r17+20) = 00000000; r0 = 00000000 }
-	{ r0 = add(r0,r16); r1 = add(r29,00000008); r2 = r20; call	000073E0 }
+	{ r0 = add(r0,r16); r1 = add(r29,00000008); r2 = r20; call	memcpy }
 	{ r0 = memw(r17+20) }
 	{ memb(r17+5) = r0.new; r0 = add(r0,r20) }
 	{ if (cmp.eq(r0.new,00000000)) jump:nt	000062E4; r0 = memw(r18) }
@@ -1037,7 +1037,7 @@ l000062D8:
 	{ r21 = r19; if (!p0.new) jump:t	00006300; p0 = cmp.eq(r11,00000000) }
 
 l000062E4:
-	{ r1:r0 = combine(r16,r17); call	00006320 }
+	{ r1:r0 = combine(r16,r17); call	_Puttxt }
 	{ r21 = r0 }
 	{ if (p0.new) memw(r17+20) = 00000000; if (p0.new) memw(r17+56) = 00000000; if (p0.new) r21 = 00000000; p0 = cmp.eq(r21,00000000) }
 
@@ -1049,10 +1049,10 @@ l00006304:
 
 l0000630C:
 	{ r0 = r16 }
-	{ jump	000063D0; r0 = r13 }
+	{ jump	fn000063D0; r0 = r13 }
 
 l00006314:
-	{ jump	000063D4; r0 = r13 }
+	{ jump	fn000063D4; r0 = r13 }
 00006318                         F4 CD 3B 17 00 C0 00 7F         ..;.....
 
 ;; _Puttxt: 00006320
@@ -1061,7 +1061,7 @@ l00006314:
 ;;     00006298 (in _Putstr)
 ;;     000062E4 (in _Putstr)
 _Puttxt proc
-	{ allocframe(+00000020); call	0000A278 }
+	{ allocframe(+00000020); call	__save_r16_through_r23 }
 	{ r17:r16 = combine(r1,r0) }
 	{ r2 = memw(r16+20); r3 = memw(r16+24) }
 	{ r4 = memw(r16+28); r0 = memw(r16+24); r3 = sub(r3,r2) }
@@ -1198,7 +1198,7 @@ l00006534:
 	{ if (cmp.gt(r20.new,00000001)) jump:t	00006514 }
 
 l0000654C:
-	{ jump	0000661C; r0 = r10 }
+	{ jump	fn0000661C; r0 = r10 }
 00006554             00 C0 00 7F 00 C0 00 7F 00 C0 00 7F     ............
 
 ;; _Tls_get__Mbcurmax: 00006560
@@ -1223,7 +1223,7 @@ l0000658C:
 
 l00006594:
 	{ r1 = 00006FF0; r0 = 00010018 }
-	{ call	0000B150 }
+	{ call	sys_Tlsalloc }
 	{ memw(r16) = r17; nop }
 
 l000065B0:
@@ -1241,11 +1241,11 @@ l000065D0:
 	{ if (p0.new) jump:nt	000065F8; p0 = cmp.eq(r9,00000000) }
 
 l000065D8:
-	{ r0 = memw(r18); r1 = r17; call	0000B224 }
+	{ r0 = memw(r18); r1 = r17; call	sys_Tlsset }
 	{ if (!p0.new) r0 = add(r17,00000000); if (p0.new) r16 = add(r17,00000000); if (p0.new) jump:nt	000065F4; p0 = cmp.eq(r0,00000000) }
 
 l000065EC:
-	{ call	00006FF0 }
+	{ call	free }
 	{ jump	000065F8 }
 
 l000065F4:
@@ -1284,14 +1284,14 @@ fn00006620 proc
 
 l0000662C:
 	{ memw_locked(r16,p0) = r1 }
-	{ if (!p0) jump:nt	00006620 }
+	{ if (!p0) jump:nt	fn00006620 }
 
 l00006634:
 	{ if (p0.new) r18 = 00000002; if (!p0.new) jump:t	00006654; p0 = cmp.eq(r0,00000000) }
 
 l0000663C:
 	{ r1 = 00006FF0; r0 = 00010020 }
-	{ call	0000B150 }
+	{ call	sys_Tlsalloc }
 	{ memw(r16) = r18 }
 
 l00006654:
@@ -1312,11 +1312,11 @@ l00006680:
 	{ if (p0.new) jump:nt	00006694; p0 = cmp.eq(r0,00000000) }
 
 l00006688:
-	{ r0 = r16; r16 = 00000000; call	00006FF0 }
+	{ r0 = r16; r16 = 00000000; call	free }
 	{ jump	000066A4 }
 
 l00006694:
-	{ call	0000A380 }
+	{ call	__hexagon_memcpy_likely_aligned_min32bytes_mult8bytes }
 	{ r2 = 00000040 }
 
 l000066A4:
@@ -1332,21 +1332,21 @@ l000066AC:
 ;;   Called from:
 ;;     00006210 (in _Putstr)
 _Getmbcurmax proc
-	{ allocframe(+00000000); call	00006560 }
+	{ allocframe(+00000000); call	_Tls_get__Mbcurmax }
 	{ dealloc_return; r0 = memb(r0) }
 
 ;; _Getpmbstate: 000066BC
 _Getpmbstate proc
-	{ jump	00006604 }
+	{ jump	_Tls_get__Mbstate }
 
 ;; _Stoulx: 000066C0
 ;;   Called from:
 ;;     00006894 (in _Stoul)
 _Stoulx proc
-	{ allocframe(00000040); p0 = cmp.eq(r3,00000000); call	0000A270 }
+	{ allocframe(00000040); p0 = cmp.eq(r3,00000000); call	__save_r16_through_r27 }
 	{ memw(r29+8) = r3; r16 = r1; r19:r18 = combine(r2,r0); r4 = p0 }
 	{ memw(r29+4) = r4; if (!p0) memw(r3) = 00000000; r22 = add(r18,FFFFFFFF) }
-	{ r17 = memb(r22+1); call	00007998 }
+	{ r17 = memb(r22+1); call	_Getpctype }
 
 l000066E4:
 	{ r17 = memb(r22+1) }
@@ -1377,7 +1377,7 @@ l00006730:
 	{ r0 = 00000000; if (p0.new) jump:nt	00006890; p0 = cmp.eq(r8,00000001) }
 
 l00006738:
-	{ memw(r16) = r18; jump	0000A350 }
+	{ memw(r16) = r18; jump	__restore_r16_through_r27_and_deallocframe }
 
 l00006740:
 	{ if (!p0.new) jump:nt	00006768; p0 = cmp.gt(r11,00000000) }
@@ -1416,10 +1416,10 @@ l00006794:
 	{ p0 = cmp.eq(r17,00000030); if (p0.new) jump:t	00006790 }
 
 l000067A0:
-	{ call	00006BD8 }
+	{ call	_Getptolower }
 	{  }
 	{ r2 = r19 }
-	{ r1 = memh(r29+r17<<#1); r27:r26 = combine(0000D1D0,00000000); call	00007350 }
+	{ r1 = memh(r29+r17<<#1); r27:r26 = combine(0000D1D0,00000000); call	memchr }
 	{ if (cmp.eq(r20.new,00000000)) jump:nt	00006818; nop; r20 = r0; r24 = r25 }
 
 l000067D4:
@@ -1427,7 +1427,7 @@ l000067D4:
 	{  }
 	{ r2 = r19; r3 = sub(r20,r27) }
 	{ r1 = memh(r29+r17<<#1); r23 = and(r3,000000FF); r17 = r26; r24 = add(r24,00000001) }
-	{ r26 = add(r23,mpyi(r26,r19)); call	00007350 }
+	{ r26 = add(r23,mpyi(r26,r19)); call	memchr }
 	{ if (!cmp.eq(r20.new,00000001)) jump:t	000067D4; r20 = r0 }
 
 l0000680C:
@@ -1449,7 +1449,7 @@ l00006844:
 	{ if (p0.new) jump:t	00006868; p0 = cmp.eq(r0,-00000001) }
 
 l00006848:
-	{ call	00006F10 }
+	{ call	_Geterrno }
 
 l0000684C:
 	{ memw(r0) = 00000022; r0 = memw(r29+4); r21 = 0000002B; r26 = FFFFFFFF }
@@ -1469,16 +1469,16 @@ l00006880:
 	{ r0 = 00000000; if (p0.new) jump:nt	00006890; p0 = cmp.eq(r8,00000000) }
 
 l00006888:
-	{ memw(r16) = r18; jump	0000A350 }
+	{ memw(r16) = r18; jump	__restore_r16_through_r27_and_deallocframe }
 
 l00006890:
-	{ jump	0000A350 }
+	{ jump	__restore_r16_through_r27_and_deallocframe }
 
 ;; _Stoul: 00006894
 ;;   Called from:
 ;;     000051F0 (in atoi)
 _Stoul proc
-	{ jump	000066C0; r3 = 00000000 }
+	{ jump	_Stoulx; r3 = 00000000 }
 00006898                         00 C0 00 7F 00 C0 00 7F         ........
 
 ;; _Clearlocks: 000068A0
@@ -1488,7 +1488,7 @@ _Clearlocks proc
 	{ nop }
 
 l000068C0:
-	{ r0 = r16; r16 = add(r16,00000004); r17 = add(r17,FFFFFFFF); call	0000AF70 }
+	{ r0 = r16; r16 = add(r16,00000004); r17 = add(r17,FFFFFFFF); call	__sys_Mtxdst }
 	{ if (!p0.new) jump:t	000068C0; p0 = cmp.eq(r25,00000001) }
 
 l000068D0:
@@ -1496,7 +1496,7 @@ l000068D0:
 	{ memb(gp+4) = r0 }
 
 l000068E4:
-	{ r0 = r16; r16 = add(r16,00000004); r17 = add(r17,FFFFFFFF); call	0000AF70 }
+	{ r0 = r16; r16 = add(r16,00000004); r17 = add(r17,FFFFFFFF); call	__sys_Mtxdst }
 	{ if (!p0.new) jump:t	000068E4; p0 = cmp.eq(r25,00000001) }
 
 l000068F4:
@@ -1507,7 +1507,7 @@ _Initlocks proc
 	{ allocframe(00000008); memd(r29+496) = r17:r16; nop; r17:r16 = combine(0000E8D4,00000020) }
 
 l00006910:
-	{ r0 = r16; r16 = add(r16,00000004); r17 = add(r17,FFFFFFFF); call	0000AF60 }
+	{ r0 = r16; r16 = add(r16,00000004); r17 = add(r17,FFFFFFFF); call	__sys_Mtxinit }
 	{ if (!p0.new) jump:t	00006910; p0 = cmp.eq(r25,00000001) }
 
 l00006920:
@@ -1515,7 +1515,7 @@ l00006920:
 	{ memb(gp+4) = r0 }
 
 l00006934:
-	{ r0 = r16; r16 = add(r16,00000004); r17 = add(r17,FFFFFFFF); call	0000AF60 }
+	{ r0 = r16; r16 = add(r16,00000004); r17 = add(r17,FFFFFFFF); call	__sys_Mtxinit }
 	{ if (!p0.new) jump:t	00006934; p0 = cmp.eq(r25,00000001) }
 
 l00006944:
@@ -1531,7 +1531,7 @@ l00006944:
 ;;     000092E8 (in fputc)
 ;;     00009368 (in fputs)
 _Lockfilelock proc
-	{ allocframe(+00000018); call	0000A2C8 }
+	{ allocframe(+00000018); call	__save_r16_through_r21 }
 	{ r1 = 00000001; r20 = 0000002C; r16 = r0 }
 	{ r19 = 00010024; r18 = 0000E8E0 }
 
@@ -1551,7 +1551,7 @@ l00006994:
 	{ r21 = 00000014; r17 = 00000020; nop }
 
 l000069A0:
-	{ r0 = r17; r17 = add(r17,00000004); r21 = add(r21,FFFFFFFF); call	0000AF60 }
+	{ r0 = r17; r17 = add(r17,00000004); r21 = add(r21,FFFFFFFF); call	__sys_Mtxinit }
 	{ if (!p0.new) jump:t	000069A0; p0 = cmp.eq(r29,00000001) }
 
 l000069B0:
@@ -1559,7 +1559,7 @@ l000069B0:
 	{ memb(r19) = r0 }
 
 l000069C0:
-	{ r0 = r17; r17 = add(r17,00000004); r21 = add(r21,FFFFFFFF); call	0000AF60 }
+	{ r0 = r17; r17 = add(r17,00000004); r21 = add(r21,FFFFFFFF); call	__sys_Mtxinit }
 	{ if (!p0.new) jump:t	000069C0; p0 = cmp.eq(r29,00000001) }
 
 l000069D0:
@@ -1575,8 +1575,8 @@ l000069F0:
 	{ r1 = memb(r19); r0 = memb(r16+2) }
 	{ p0 = r1 }
 	{ r1 = mux(p0,00000014,00000000); r0 = addasl(r18,r0,00000002) }
-	{ call	0000AEF0 }
-	{ nop; jump	0000A360 }
+	{ call	lockMutex }
+	{ nop; jump	__restore_r16_through_r21_and_deallocframe }
 
 ;; _Unlockfilelock: 00006A10
 ;;   Called from:
@@ -1594,7 +1594,7 @@ l00006A18:
 	{ p0 = r1 }
 	{ r1 = mux(p0,00000014,00000000) }
 	{ r1 = 0000E8E0 }
-	{ call	0000AF34; r0 = addasl(r1,r0,00000002) }
+	{ call	fn0000AF34; r0 = addasl(r1,r0,00000002) }
 
 l00006A40:
 	{ dealloc_return }
@@ -1609,7 +1609,7 @@ l00006A40:
 ;;     00009164 (in fclose)
 ;;     0000926C (in fflush)
 _Locksyslock proc
-	{ allocframe(+00000018); call	0000A2C8 }
+	{ allocframe(+00000018); call	__save_r16_through_r21 }
 	{ r1 = 00000001; r20 = 0000002C; r16 = r0 }
 	{ r19 = 00010028; r18 = 0000E930 }
 
@@ -1629,7 +1629,7 @@ l00006A80:
 	{ r21 = 00000014; r17 = 00000020; nop; nop }
 
 l00006A90:
-	{ r0 = r17; r17 = add(r17,00000004); r21 = add(r21,FFFFFFFF); call	0000AF60 }
+	{ r0 = r17; r17 = add(r17,00000004); r21 = add(r21,FFFFFFFF); call	__sys_Mtxinit }
 	{ if (!p0.new) jump:t	00006A90; p0 = cmp.eq(r29,00000001) }
 
 l00006AA0:
@@ -1637,7 +1637,7 @@ l00006AA0:
 	{ memb(gp+4) = r0 }
 
 l00006AB4:
-	{ r0 = r17; r17 = add(r17,00000004); r21 = add(r21,FFFFFFFF); call	0000AF60 }
+	{ r0 = r17; r17 = add(r17,00000004); r21 = add(r21,FFFFFFFF); call	__sys_Mtxinit }
 	{ if (!p0.new) jump:t	00006AB4; p0 = cmp.eq(r29,00000001) }
 
 l00006AC4:
@@ -1651,11 +1651,11 @@ l00006AD8:
 
 l00006AE0:
 	{ p0 = r0 }
-	{ if (!cmp.gt(r16,r0.new)) jump:t	00006AF8; r0 = mux(p0,00000004,00000000) }
+	{ if (!cmp.gt(r16,r0.new)) jump:t	_Unlocksyslock; r0 = mux(p0,00000004,00000000) }
 
 l00006AF0:
-	{ call	0000AEF4 }
-	{ jump	0000A360 }
+	{ call	fn0000AEF4 }
+	{ jump	__restore_r16_through_r21_and_deallocframe }
 
 ;; _Unlocksyslock: 00006AF8
 ;;   Called from:
@@ -1673,7 +1673,7 @@ _Unlocksyslock proc
 	{ p0 = r1 }
 	{ r1 = mux(p0,00000004,00000000) }
 	{ r1 = 0000E930 }
-	{ call	0000AF34; r0 = addasl(r1,r0,00000002) }
+	{ call	fn0000AF34; r0 = addasl(r1,r0,00000002) }
 	{ dealloc_return }
 00006B24             00 C0 00 7F 00 C0 00 7F 00 C0 00 7F     ............
 
@@ -1699,7 +1699,7 @@ l00006B60:
 
 l00006B68:
 	{ r1 = 00006FF0; r0 = 00010034 }
-	{ call	0000B150 }
+	{ call	sys_Tlsalloc }
 	{ memw(r16) = r18 }
 
 l00006B80:
@@ -1720,7 +1720,7 @@ l00006BAC:
 	{ if (p0.new) jump:nt	00006BC0; p0 = cmp.eq(r0,00000000) }
 
 l00006BB4:
-	{ r0 = r16; r16 = 00000000; call	00006FF0 }
+	{ r0 = r16; r16 = 00000000; call	free }
 	{ jump	00006BCC }
 
 l00006BC0:
@@ -1739,7 +1739,7 @@ l00006BD4:
 ;;   Called from:
 ;;     000067A0 (in _Stoulx)
 _Getptolower proc
-	{ allocframe(+00000000); call	00006B30 }
+	{ allocframe(+00000000); call	_Tls_get__Tolotab }
 	{ dealloc_return; r0 = memw(r0) }
 00006BE4             00 C0 00 7F 00 C0 00 7F 00 C0 00 7F     ............
 
@@ -1749,7 +1749,7 @@ _Getptolower proc
 ;;     00005A64 (in _Printf)
 _Vacopy proc
 	{ allocframe(00000008); r3 = r1; r2 = 00000004 }
-	{ memw(r29+4) = r3; r1 = add(r29,00000004); call	000073E0 }
+	{ memw(r29+4) = r3; r1 = add(r29,00000004); call	memcpy }
 	{ dealloc_return }
 00006C04             00 C0 00 7F 00 C0 00 7F 00 C0 00 7F     ............
 
@@ -1757,7 +1757,7 @@ _Vacopy proc
 ;;   Called from:
 ;;     00006E1C (in _Wctomb)
 _Wctombx proc
-	{ allocframe(+00000020); call	0000A278 }
+	{ allocframe(+00000020); call	__save_r16_through_r23 }
 	{ r20 = r4; r18 = r2; r17:r16 = combine(r1,r0) }
 	{ r5 = memw(r3); p0 = cmp.eq(r16,00000000) }
 	{ nop; if (p0) jump:nt	00006D24 }
@@ -1799,7 +1799,7 @@ l00006CF0:
 00006D00 2A F1 42 21 00 C0 70 70 6C 40 00 58 08 D1 00 AB *.B!..ppl@.X....
 
 l00006D10:
-	{ r19 = FFFFFFFF; call	00006F10 }
+	{ r19 = FFFFFFFF; call	_Geterrno }
 
 l00006D14:
 	{ r19 = FFFFFFFF }
@@ -1844,26 +1844,26 @@ l00006DB8:
 	{ r0 = and(r0,0000003F) }
 	{ memb(r2++#1) = r0.new; r0 = setbit(r0,0000000E) }
 	{ r19 = sub(r0,r16) }
-	{ nop; jump	00006E54; r0 = r11 }
+	{ nop; jump	fn00006E54; r0 = r11 }
 
 ;; _Wctomb: 00006DF0
 ;;   Called from:
 ;;     00006264 (in _Putstr)
 _Wctomb proc
 	{ allocframe(00000010); memd(r29+496) = r17:r16; r17:r16 = combine(r2,r0) }
-	{ memd(r29) = r19:r18; r18 = r1; call	00006604 }
+	{ memd(r29) = r19:r18; r18 = r1; call	_Tls_get__Mbstate }
 	{ r19 = r0; r4 = 00000000; p0 = cmp.eq(r16,00000000) }
 	{ if (p0) jump:nt	00006E1C }
 
 l00006E14:
-	{ call	00008F70 }
+	{ call	_Tls_get__Wcstate }
 	{ r4 = r0 }
 
 l00006E1C:
 	{ r19:r18 = memd(r29); r17:r16 = memd(r29+8); r1:r0 = combine(r18,r16); r3:r2 = combine(r19,r17) }
 
 l00006E28:
-	{ deallocframe; jump	00006C10 }
+	{ deallocframe; jump	_Wctombx }
 
 ;; abort: 00006E30
 ;;   Called from:
@@ -1871,15 +1871,15 @@ l00006E28:
 ;;     00005728 (in __register_frame_info_bases)
 ;;     000095C4 (in _Atexit)
 abort proc
-	{ allocframe(00000000); r0 = 00000006; call	00007760 }
-	{ r0 = 00000001; call	00006F70 }
+	{ allocframe(00000000); r0 = 00000006; call	raise }
+	{ r0 = 00000001; call	exit }
 
 ;; calloc: 00006E40
 ;;   Called from:
 ;;     00006E38 (in abort)
 calloc proc
 	{ allocframe(00000008); memd(r29+496) = r17:r16; r17 = mpyi(r1,r0) }
-	{ r0 = r17; call	00007220 }
+	{ r0 = r17; call	malloc }
 	{ if (cmp.eq(r16.new,00000000)) jump:nt	00006E64; r16 = r0 }
 
 ;; fn00006E54: 00006E54
@@ -1918,7 +1918,7 @@ l00006EA0:
 
 l00006EA8:
 	{ r1 = 00006FF0; r0 = 0001003C }
-	{ call	0000B150 }
+	{ call	sys_Tlsalloc }
 	{ memw(r16) = r18 }
 
 l00006EC0:
@@ -1939,7 +1939,7 @@ l00006EEC:
 	{ if (p0.new) memw(r16) = 00000000; if (p0.new) jump:nt	00006F04; p0 = cmp.eq(r0,00000000) }
 
 l00006EF8:
-	{ r0 = r16; r16 = 00000000; call	00006FF0 }
+	{ r0 = r16; r16 = 00000000; call	free }
 	{ jump	00006F04 }
 
 l00006F04:
@@ -1965,7 +1965,7 @@ l00006F0C:
 ;;     0000B2EC (in __sys_write)
 ;;     0000B2F8 (in __sys_write)
 _Geterrno proc
-	{ jump	00006E70 }
+	{ jump	_Tls_get__Errno }
 00006F14             00 C0 00 7F 00 C0 00 7F 00 C0 00 7F     ............
 
 ;; atexit: 00006F20
@@ -1973,10 +1973,10 @@ _Geterrno proc
 ;;     000055E0 (in __libc_start_main)
 atexit proc
 	{ allocframe(00000008); memd(r29+496) = r17:r16; r0 = 00000001; r16 = r0 }
-	{ call	00006A44 }
+	{ call	_Locksyslock }
 	{ r0 = memw(gp+12); r17 = FFFFFFFF }
 	{ r1 = memw(gp+64) }
-	{ call	00009020 }
+	{ call	_Atrealloc }
 	{ if (p0.new) jump:nt	00006F60; p0 = cmp.eq(r0,00000000) }
 
 l00006F48:
@@ -1985,7 +1985,7 @@ l00006F48:
 	{ memw(r30+r0<<#2) = r16; memw(gp) = r0 }
 
 l00006F60:
-	{ r0 = 00000001; call	00006AF8 }
+	{ r0 = 00000001; call	_Unlocksyslock }
 	{ dealloc_return; r17:r16 = memd(r29); r0 = r17 }
 
 ;; exit: 00006F70
@@ -2023,7 +2023,7 @@ l00006FD8:
 
 l00006FDC:
 	{ memw(gp+544) = r17 }
-	{ memw(gp+32) = r1; call	000079B0 }
+	{ memw(gp+32) = r1; call	_Exit }
 	{ nop }
 	{ nop }
 
@@ -2049,7 +2049,7 @@ free proc
 ;;     00006FF0 (in free)
 ;;     00007214 (in dkw_malloc_init)
 fn00006FF4 proc
-	{ if (cmp.eq(r16.new,00000000)) jump:nt	000070A0; r16 = r0 }
+	{ if (cmp.eq(r16.new,00000000)) jump:nt	fn000070A0; r16 = r0 }
 
 ;; fn00007000: 00007000
 ;;   Called from:
@@ -2057,7 +2057,7 @@ fn00006FF4 proc
 ;;     00006FF4 (in fn00006FF4)
 fn00007000 proc
 	{ r1 = 00000008 }
-	{ if (!cmp.eq(r0.new,00000000)) jump:t	000070A0; r0 = and(r0,00000007) }
+	{ if (!cmp.eq(r0.new,00000000)) jump:t	fn000070A0; r0 = and(r0,00000007) }
 
 l00007014:
 	{ r0 = 00000001 }
@@ -2098,7 +2098,7 @@ l00007084:
 	{ r4 += add(r3,FFFFFFF8) }
 
 l00007094:
-	{ r0 = 00000001; call	00006AF8 }
+	{ r0 = 00000001; call	_Unlocksyslock }
 
 l00007098:
 	{ r0 = 00000001 }
@@ -2127,18 +2127,18 @@ l000070B8:
 ;;     0000536C (in prout)
 ;;     000070B8 (in memcpy)
 fwrite proc
-	{ allocframe(+00000038); call	0000A2C0 }
+	{ allocframe(+00000038); call	__save_r16_through_r25 }
 	{ r19 = r0; r0 = 00000000; r17:r16 = combine(r3,r1) }
 	{ r21 = mpyi(r2,r16) }
 	{ r0 = r2; if (p0.new) jump:nt	00007208; p0 = cmp.eq(r8,00000001) }
 
 l000070E0:
-	{ r23 = r21; r0 = r17; call	00006958 }
+	{ r23 = r21; r0 = r17; call	_Lockfilelock }
 
 l000070E8:
 	{ r0 = memw(r17+16); r18 = r23 }
 	{ r1 = memw(r17+24) }
-	{ r0 = r17; r22 = 00000000; call	000079C0 }
+	{ r0 = r17; r22 = 00000000; call	_Fwprep }
 	{ if (!p0.new) jump:t	000071C8; p0 = tstbit(r0,00000000) }
 
 l00007100:
@@ -2146,7 +2146,7 @@ l00007100:
 	{ if (cmp.eq(r0.new,00000000)) jump:t	00007154; r0 = and(r0,00000004); p1 = or(p0,p0); p0 = or(p0,!p0) }
 
 l00007120:
-	{ call	00007354; r3 = p0 }
+	{ call	fn00007354; r3 = p0 }
 	{ r1 = memd(r29+8); r3 = r18; p0 = cmp.eq(r0,00000000) }
 	{ if (p0) jump:nt	0000714C; p1 = r1 }
 
@@ -2162,7 +2162,7 @@ l00007154:
 	{ memw(r29+8) = r5; r4 = sub(r2,r0) }
 	{ p0 = cmp.gtu(r3,r4); r20 = minu(r3,r4) }
 	{ r23 = sub(r18,r20); r2 = r20; r3 = p0 }
-	{ call	000073E0 }
+	{ call	memcpy }
 	{ r0 = memw(r17+16) }
 	{ memb(r17+4) = r22.new; r0 = memw(r29+4); r22 = add(r0,r20) }
 	{ if (!p0.new) r0 = memw(r29+8); if (p0.new) jump:t	000071B8 }
@@ -2171,7 +2171,7 @@ l00007194:
 	{ if (!p0.new) r24 = memw(r17+8); if (!p0.new) r0 = add(r17,00000000); if (p0.new) jump:t	000071B8; p0 = r0 }
 
 l000071A4:
-	{ call	00009200 }
+	{ call	fflush }
 	{ r22 = sub(r22,r24); if (!p0.new) r18 = add(r23,00000000); if (!p0.new) jump:nt	000071C8; p0 = cmp.eq(r0,00000000) }
 
 l000071B4:
@@ -2191,25 +2191,25 @@ l000071C8:
 	{ if (cmp.eq(r0.new,00000000)) jump:t	000071F4; r0 = and(r0,00000008) }
 
 l000071D8:
-	{ r20 = memw(r17+8); r19 = memw(r17+16); r0 = r17; call	00009200 }
+	{ r20 = memw(r17+8); r19 = memw(r17+16); r0 = r17; call	fflush }
 	{ p0 = cmp.eq(r0,00000000); r22 = sub(r19,r20) }
 	{ if (p0) r22 = 00000000 }
-	{ r17 = sub(r21,r18); r0 = r17; call	00006A10 }
+	{ r17 = sub(r21,r18); r0 = r17; call	_Unlockfilelock }
 
 l000071F4:
 	{ r17 = sub(r21,r18); r0 = r17 }
 
 l000071FC:
-	{ r1 = r16; r0 = sub(r17,r22); call	0000A540 }
+	{ r1 = r16; r0 = sub(r17,r22); call	__qdsp_udivsi3 }
 
 l00007208:
-	{ jump	0000A354 }
+	{ jump	__restore_r16_through_r25_and_deallocframe }
 0000720C                                     00 C0 00 7F             ....
 
 ;; dkw_malloc_init: 00007210
 dkw_malloc_init proc
 	{ r1 = add(r1,sub(00000041,r0)) }
-	{ jump	00006FF4; r1 = lsr(r1,00000003) }
+	{ jump	fn00006FF4; r1 = lsr(r1,00000003) }
 
 ;; malloc: 00007220
 ;;   Called from:
@@ -2230,8 +2230,8 @@ fn00007224 proc
 ;;     00007224 (in fn00007224)
 fn0000722C proc
 	{ r1 = add(r16,0000000F) }
-	{ r17 = and(r1,FFFFFFF8); call	00006A44 }
-	{ if (p0.new) r0 = 00000008; if (!p0.new) jump:t	000072F8; p0 = cmp.gtu(r9,r8) }
+	{ r17 = and(r1,FFFFFFF8); call	_Locksyslock }
+	{ if (p0.new) r0 = 00000008; if (!p0.new) jump:t	fn000072F8; p0 = cmp.gtu(r9,r8) }
 
 ;; fn00007240: 00007240
 ;;   Called from:
@@ -2266,7 +2266,7 @@ l00007280:
 000072D0 00 E1 80 74 20 41 10 8C F6 E9 78 14 0E C0 00 58 ...t A....x....X
 
 l000072E0:
-	{ if (p0.new) jump:nt	000072F8; p0 = cmp.eq(r0,00000000) }
+	{ if (p0.new) jump:nt	fn000072F8; p0 = cmp.eq(r0,00000000) }
 
 l000072E4:
 	{ if (!cmp.gtu(r17,r2.new)) jump:t	00007304; r2 = add(r3,FFFFFFF8) }
@@ -2301,7 +2301,7 @@ l00007334:
 	{ memw(gp+96) = r3; r16 = add(r1,00000008); r0 = 00000001 }
 
 l00007340:
-	{ call	00006AF8 }
+	{ call	_Unlocksyslock }
 	{ dealloc_return; r17:r16 = memd(r29); r0 = r16 }
 0000734C                                     00 C0 00 7F             ....
 
@@ -2347,12 +2347,12 @@ l0000737C:
 ;;     0000737C (in memchr)
 puts proc
 	{ allocframe(00000010); memd(r29+496) = r17:r16; r16 = r0 }
-	{ r0 = 0000E498; call	00006958 }
-	{ call	00009360 }
+	{ r0 = 0000E498; call	_Lockfilelock }
+	{ call	fputs }
 	{ if (!p0.new) jump:t	000073C0; p0 = tstbit(r0,00000000); p1 = or(p1,!p1) }
 
 l000073A8:
-	{ r1:r0 = combine(0000E498,0000000A); call	000092E0 }
+	{ r1:r0 = combine(0000E498,0000000A); call	fputc }
 	{ p0 = cmp.gt(r0,FFFFFFFF) }
 	{ p1 = not(p0) }
 	{ r0 = 0000E498; r1 = p1 }
@@ -2361,7 +2361,7 @@ l000073C0:
 	{ r0 = 0000E498 }
 
 l000073CC:
-	{ call	00006A10 }
+	{ call	_Unlockfilelock }
 	{ r17:r16 = memd(r29+8); r1 = memd(r29) }
 	{ p0 = r1 }
 	{ dealloc_return; r0 = mux(p0,FFFFFFFF,00000000) }
@@ -2492,7 +2492,7 @@ l0000775C:
 ;;     0000775C (in strlen)
 raise proc
 	{ allocframe(00000020); memd(r29+496) = r17:r16; r1 = 00000001 }
-	{ memd(r29+16) = r19:r18; r16 = r0; r18 = FFFFFFFF; call	00007880 }
+	{ memd(r29+16) = r19:r18; r16 = r0; r18 = FFFFFFFF; call	signal }
 	{ r17 = r0 }
 	{ if (!p0.new) jump:t	000077E4; p0 = cmp.eq(r9,00000000) }
 
@@ -2512,14 +2512,14 @@ l000077A0:
 
 l000077CC:
 	{ r1 = 0000E4E8; r0 = 00000003 }
-	{ r17 = add(r2,00000001); call	00009360 }
+	{ r17 = add(r2,00000001); call	fputs }
 	{ jump	00007850 }
 
 l000077E4:
 	{ r18 = 00000000; if (p0.new) jump:t	000077FC; p0 = cmp.eq(r9,00000002) }
 
 l000077EC:
-	{ r1:r0 = combine(00000000,00000000); r18 = 00000000; call	00007880 }
+	{ r1:r0 = combine(00000000,00000000); r18 = 00000000; call	signal }
 	{ callr	r17; r0 = r16 }
 
 l000077FC:
@@ -2536,10 +2536,10 @@ l00007810:
 00007840 52 43 00 00 11 C3 00 78 52 43 00 00 F1 C5 00 78 RC.....xRC.....x
 
 l00007850:
-	{ call	00009360 }
+	{ call	fputs }
 	{ r1 = 0000E4E8; r0 = 0000D4CC }
-	{ call	00009360 }
-	{ r0 = 00000001; call	00006F70 }
+	{ call	fputs }
+	{ r0 = 00000001; call	exit }
 	{ nop }
 	{ nop }
 
@@ -2557,9 +2557,9 @@ l00007898:
 	{ if (!p0.new) r0 = 00000001; if (p0.new) jump:t	000078BC; p0 = cmp.eq(r9,-00000001) }
 
 l000078A0:
-	{ call	00006A44 }
+	{ call	_Locksyslock }
 	{ r18 = memw(r16<<#2+0000EA80); r0 = 00000001 }
-	{ memw(r16<<#2+0000EA80) = r17; call	00006AF8 }
+	{ memw(r16<<#2+0000EA80) = r17; call	_Unlocksyslock }
 
 l000078BC:
 	{ r19:r18 = memd(r29); r17:r16 = memd(r29+8); r0 = r18 }
@@ -2603,7 +2603,7 @@ l00007920:
 
 l00007928:
 	{ r1 = 00006FF0; r0 = 00010050 }
-	{ call	0000B150 }
+	{ call	sys_Tlsalloc }
 	{ memw(r16) = r18 }
 
 l00007940:
@@ -2624,7 +2624,7 @@ l0000796C:
 	{ if (p0.new) jump:nt	00007980; p0 = cmp.eq(r0,00000000) }
 
 l00007974:
-	{ r0 = r16; r16 = 00000000; call	00006FF0 }
+	{ r0 = r16; r16 = 00000000; call	free }
 	{ jump	0000798C }
 
 l00007980:
@@ -2646,7 +2646,7 @@ l00007994:
 ;;     000059A0 (in _Printf)
 ;;     000066E0 (in _Stoulx)
 _Getpctype proc
-	{ allocframe(+00000000); call	000078F0 }
+	{ allocframe(+00000000); call	_Tls_get__Ctype }
 	{ dealloc_return; r0 = memw(r0) }
 000079A4             00 C0 00 7F 00 C0 00 7F 00 C0 00 7F     ............
 
@@ -2654,7 +2654,7 @@ _Getpctype proc
 ;;   Called from:
 ;;     00006FE0 (in exit)
 _Exit proc
-	{ allocframe(+00000000); call	0000AEB0 }
+	{ allocframe(+00000000); call	_exit }
 	{ nop }
 	{ nop }
 
@@ -2714,7 +2714,7 @@ l00007A74:
 00007A78                         89 04 89 A2 03 C0 90 A1         ........
 
 l00007A80:
-	{ call	000090C0 }
+	{ call	_Closreg }
 	{ r2 = memh(r16); r0 = memw(r16+8); r1 = 00000000 }
 
 l00007A88:
@@ -2736,7 +2736,7 @@ _Getmem proc
 	{ allocframe(+00000000); if (!p0.new) jump:nt	00007AC4; p0 = cmp.gt(r0,00000000) }
 
 l00007AB8:
-	{ call	0000B0A0 }
+	{ call	__sys_sbrk }
 	{ dealloc_return; r0 = -00000001; p0 = cmp.eq(r0,FFFFFFFF) }
 
 l00007AC4:
@@ -2747,7 +2747,7 @@ l00007AC4:
 ;;   Called from:
 ;;     00005CF0 (in fn00005B54)
 _Ldtob proc
-	{ allocframe(+00000100); call	0000A270 }
+	{ allocframe(+00000100); call	__save_r16_through_r27 }
 	{ r16 = r0; r26 = r1 }
 	{ r1:r0 = memd(r16); r18 = setbit(r26,0000000A) }
 	{ memd(r29+152) = r1:r0; p0 = cmp.eq(r18,00000061) }
@@ -2761,7 +2761,7 @@ l00007B08:
 00007B14             06 C6 50 3C                             ..P<        
 
 l00007B18:
-	{ r1 = r16; r0 = add(r29,00000096); call	00008100 }
+	{ r1 = r16; r0 = add(r29,00000096); call	_LDunscale }
 
 l00007B1C:
 	{ r1 = r16; r0 = add(r29,00000096) }
@@ -2783,8 +2783,8 @@ l00007B80:
 	{ if (!p0.new) r1 = add(r4,00000000); p0 = cmp.gtu(r3,r2) }
 
 l00007B8C:
-	{ memw(r16+28) = FFFFFF83; r2 = 00000003; call	000073E0 }
-	{ jump	0000A350 }
+	{ memw(r16+28) = FFFFFF83; r2 = 00000003; call	memcpy }
+	{ jump	__restore_r16_through_r27_and_deallocframe }
 00007B9C                                     1E 41 20 5C             .A \
 00007BA0 80 C8 90 41 20 CC 1A 75 22 40 00 B0 04 D2 B0 A1 ...A ..u"@......
 00007BB0 02 4F 00 7E 02 4B 80 7E 30 C0 00 3C 80 C0 90 91 .O.~.K.~0..<....
@@ -2885,13 +2885,13 @@ l00007B8C:
 ;;     0000887C (in _LXp_mulh)
 ;;     00009528 (in sqrtl)
 _LDunscale proc
-	{ allocframe(+00000000); call	000095D0 }
+	{ allocframe(+00000000); call	_Dunscale }
 	{ dealloc_return }
 0000810C                                     00 C0 00 7F             ....
 
 ;; _Litob: 00008110
 _Litob proc
-	{ allocframe(00000048); r2 = 00000018; call	0000A270 }
+	{ allocframe(00000048); r2 = 00000018; call	__save_r16_through_r27 }
 	{ r16 = r0; r3 = 00000030; p0 = cmp.eq(r1,00000058) }
 	{ p1 = cmp.eq(r1,0000006F); if (!p0) r17 = add(r3,00000000); if (p0) r17 = add(r2,00000000); if (!p1.new) jump:t	00008140 }
 
@@ -2926,9 +2926,9 @@ l0000818C:
 
 l00008198:
 	{ r19:r18 = combine(00000000,00000003); r23 = 00000017; r24 = add(r29,00000000) }
-	{ r3:r2 = combine(r19,r18); call	0000A590 }
+	{ r3:r2 = combine(r19,r18); call	__qdsp_umoddi3 }
 	{ memb(r24+23) = r0.new; r0 = memb(r20+r0) }
-	{ r3:r2 = combine(r19,r18); r1:r0 = combine(r21,r20); call	0000A4E4 }
+	{ r3:r2 = combine(r19,r18); r1:r0 = combine(r21,r20); call	fn0000A4E4 }
 	{ r21:r20 = combine(r1,r0) }
 	{ memd(r16) = r21:r20; if (p0.new) jump:nt	00008234; p0 = cmp.gt(r25:r24,r21:r20) }
 
@@ -2936,7 +2936,7 @@ l000081D0:
 	{ nop; nop; r23 = add(r29,00000000); r26 = add(r23,FFFFFFFF) }
 
 l000081E0:
-	{ r27 = add(r23,r26); r3:r2 = combine(r19,r18); r1:r0 = combine(r21,r20); call	0000A3E0 }
+	{ r27 = add(r23,r26); r3:r2 = combine(r19,r18); r1:r0 = combine(r21,r20); call	__qdsp_divdi3 }
 	{ memd(r16) = r1:r0; r2 = add(r26,FFFFFFFF); r5:r4 = mpyu(r0,r18); p0 = cmp.gt(r25:r24,r1:r0) }
 	{ r5 += mpyi(r0,r19) }
 	{ r5 += mpyi(r18,r1) }
@@ -2971,14 +2971,14 @@ l00008268:
 	{ r0 = memw(r16+16); r1 = add(r29,00000000); r2 = sub(00000018,r23) }
 
 l00008270:
-	{ memw(r16+28) = r2; r1 = add(r1,r23); call	000073E0 }
+	{ memw(r16+28) = r2; r1 = add(r1,r23); call	memcpy }
 	{ r1 = memw(r16+48) }
 	{ if (!cmp.gtu(r1,r0.new)) jump:t	000082AC; r0 = memw(r16+28); p0 = cmp.gt(r1,FFFFFFFF) }
 
 l0000828C:
 	{ r2 = memuh(r16+60) }
 	{ memw(r16+24) = r0; r1 = and(r2,0000FFEF) }
-	{ memuh(r16+60) = r1; jump	0000A350 }
+	{ memuh(r16+60) = r1; jump	__restore_r16_through_r27_and_deallocframe }
 000082A4             16 40 00 5C C1 C3 70 45                 .@.\..pE    
 
 l000082AC:
@@ -2988,7 +2988,7 @@ l000082AC:
 	{ r0 = sub(r0,r2) }
 	{ r0 = sub(r0,r3) }
 	{ if (p0.new) memw(r16+24) = r0; p0 = cmp.gt(r0,00000000) }
-	{ jump	0000A350 }
+	{ jump	__restore_r16_through_r27_and_deallocframe }
 000082D4             6E 58 3F 16                             nX?.        
 
 l000082D8:
@@ -3025,11 +3025,11 @@ l00008328:
 	{ jump	00008340 }
 
 l0000832C:
-	{ r3:r2 = memd(r0+16); r1:r0 = combine(r5,r4); call	0000A600 }
+	{ r3:r2 = memd(r0+16); r1:r0 = combine(r5,r4); call	__hexagon_adddf3 }
 	{ r1:r0 = combine(r17,r16); r3:r2 = combine(r1,r0) }
 
 l00008340:
-	{ call	0000A600 }
+	{ call	__hexagon_adddf3 }
 	{ r17:r16 = combine(r1,r0) }
 
 l00008348:
@@ -3043,7 +3043,7 @@ l0000834C:
 ;;     00008BF0 (in fn00008B1C)
 ;;     00008C90 (in _LXp_sqrtx)
 _LXp_setw proc
-	{ allocframe(+00000030); call	0000A278 }
+	{ allocframe(+00000030); call	__save_r16_through_r23 }
 
 ;; fn00008354: 00008354
 ;;   Called from:
@@ -3051,7 +3051,7 @@ _LXp_setw proc
 fn00008354 proc
 	{ allocframe(+00000030) }
 	{ r17:r16 = combine(r1,r0); r19:r18 = combine(r3,r2) }
-	{ memd(r29+8) = r19:r18; if (!p0.new) jump:nt	00008448; p0 = cmp.gt(r9,00000000) }
+	{ memd(r29+8) = r19:r18; if (!p0.new) jump:nt	fn00008448; p0 = cmp.gt(r9,00000000) }
 
 ;; fn00008368: 00008368
 ;;   Called from:
@@ -3063,7 +3063,7 @@ fn00008368 proc
 	{ if (!p0.new) r1 = add(r29,00000008); if (!p0.new) r0 = add(r29,00000006); if (p0.new) jump:t	000083A0; p0 = cmp.eq(r9,00000002) }
 
 l00008374:
-	{ call	00008100 }
+	{ call	_LDunscale }
 	{ r1 = zxth(r0); p0 = cmp.gt(r0,00000000) }
 	{ if (!p0) jump:nt	000083AC }
 
@@ -3076,10 +3076,10 @@ l000083A0:
 	{ memd(r16) = r19:r18; jump	00008420; r0 = r8 }
 
 l000083AC:
-	{ r0 = add(r29,00000008); r1 = 0000001A; call	00009B50 }
-	{ r1 = memh(r29+6); r0 = add(r29,00000008); call	00009B60 }
+	{ r0 = add(r29,00000008); r1 = 0000001A; call	_LDint }
+	{ r1 = memh(r29+6); r0 = add(r29,00000008); call	_LDscale }
 	{ r3:r2 = memd(r29+8); r1:r0 = combine(r19,r18) }
-	{ memd(r16) = r3:r2; call	0000A6A4 }
+	{ memd(r16) = r3:r2; call	__hexagon_fast2_subdf3 }
 	{ p0 = cmp.gt(r17,00000002); r19:r18 = combine(r1,r0) }
 	{ memd(r16+8) = r19:r18; if (!p0) jump:nt	0000843C }
 
@@ -3088,11 +3088,11 @@ l000083E0:
 	{ if (!p1.new) r20 = add(r16,00000008); if (!p1.new) r0 = add(r29,00000006); if (p1.new) jump:t	00008440; p1 = dfcmp.eq(r19:r18,r23:r22) }
 
 l000083F4:
-	{ r1 = r20; call	00008100 }
-	{ call	00009B50 }
-	{ r1 = memh(r29+6); r0 = r20; call	00009B60 }
-	{ r3:r2 = memd(r20); r1:r0 = combine(r19,r18); call	0000A6A4 }
-	{ memd(r16+16) = r1:r0; if (!p0.new) jump:t	00008448; p0 = cmp.gt(r9,00000006) }
+	{ r1 = r20; call	_LDunscale }
+	{ call	_LDint }
+	{ r1 = memh(r29+6); r0 = r20; call	_LDscale }
+	{ r3:r2 = memd(r20); r1:r0 = combine(r19,r18); call	__hexagon_fast2_subdf3 }
+	{ memd(r16+16) = r1:r0; if (!p0.new) jump:t	fn00008448; p0 = cmp.gt(r9,00000006) }
 
 l00008420:
 	{ memd(r16+16) = r1:r0 }
@@ -3105,7 +3105,7 @@ l0000842C:
 	{ memd(r16+24) = r1:r0; jump	00008470; r0 = r8 }
 
 l0000843C:
-	{ if (!p0) jump:nt	00008448 }
+	{ if (!p0) jump:nt	fn00008448 }
 
 l00008440:
 	{ r1:r0 = combine(00000000,00000000) }
@@ -3136,7 +3136,7 @@ l0000844C:
 ;;     00008CEC (in fn00008CCC)
 ;;     00008CEC (in fn00008CCC)
 _LXp_addh proc
-	{ allocframe(+00000060); call	0000A270 }
+	{ allocframe(+00000060); call	__save_r16_through_r27 }
 
 ;; fn00008454: 00008454
 ;;   Called from:
@@ -3161,7 +3161,7 @@ l0000845C:
 ;;     00008458 (in fn00008458)
 ;;     0000845C (in fn00008368)
 fn00008460 proc
-	{ memd(r29+32) = r19:r18; memd(r29+40) = r19:r18; if (p0.new) jump:nt	00008780; p0 = cmp.eq(r25,00000001) }
+	{ memd(r29+32) = r19:r18; memd(r29+40) = r19:r18; if (p0.new) jump:nt	fn00008780; p0 = cmp.eq(r25,00000001) }
 
 ;; fn00008468: 00008468
 ;;   Called from:
@@ -3172,7 +3172,7 @@ fn00008460 proc
 ;;     0000862C (in _LXp_setw)
 ;;     0000863C (in _LXp_setw)
 fn00008468 proc
-	{ r0 = add(r29,0000001E); r1 = add(r29,00000020); call	00008100 }
+	{ r0 = add(r29,0000001E); r1 = add(r29,00000020); call	_LDunscale }
 
 l00008470:
 	{ r0 = add(r29,0000001E) }
@@ -3182,7 +3182,7 @@ l00008478:
 	{ if (!p0.new) r0 = memw(r29+8); if (p0.new) jump:t	00008758; p0 = cmph.eq(r0,0002) }
 
 l00008484:
-	{ call	00009B70 }
+	{ call	_LDtest }
 	{ if (!p0.new) jump:nt	00008750; p0 = cmp.gt(r16,00000000) }
 
 l0000848C:
@@ -3198,17 +3198,17 @@ l00008494:
 l000084B4:
 	{ r0 = 00000001; r16 = 00000030 }
 	{ r2 = memw(r29+8); r1:r0 = memd(r16); p0 = cmp.gt(r17,00000001) }
-	{ memd(r2) = r1:r0; if (!p0) jump:nt	00008780 }
+	{ memd(r2) = r1:r0; if (!p0) jump:nt	fn00008780 }
 
 l000084D0:
 	{ r2 = memd(r29+8); r1:r0 = combine(00000000,00000000) }
-	{ memd(r2+8) = r1:r0; r0 = memw(r29+8); jump	0000A350 }
+	{ memd(r2+8) = r1:r0; r0 = memw(r29+8); jump	__restore_r16_through_r27_and_deallocframe }
 
 l000084E0:
-	{ if (p0.new) jump:t	00008780; p0 = tstbit(r0,00000000) }
+	{ if (p0.new) jump:t	fn00008780; p0 = tstbit(r0,00000000) }
 
 l000084E4:
-	{ if (p0.new) r16 = 00000000; if (!p0.new) jump:t	00008780; p0 = cmp.gt(r25,00000000) }
+	{ if (p0.new) r16 = 00000000; if (!p0.new) jump:t	fn00008780; p0 = cmp.gt(r25,00000000) }
 
 l000084EC:
 	{ r25:r24 = memd(gp+192); r0 = memw(r29+8); r19 = 00000800; r20 = add(r17,FFFFFFFF) }
@@ -3227,8 +3227,8 @@ l0000852C:
 	{ memd(r18) = r3:r2 }
 
 l00008530:
-	{ memd(r29+16) = r3:r2; r1 = add(r29,00000010); r0 = add(r29,0000000E); call	00008100 }
-	{ if (p0.new) jump:nt	00008780; p0 = cmp.gt(r16,00000000) }
+	{ memd(r29+16) = r3:r2; r1 = add(r29,00000010); r0 = add(r29,0000000E); call	_LDunscale }
+	{ if (p0.new) jump:nt	fn00008780; p0 = cmp.gt(r16,00000000) }
 
 l00008540:
 	{ if (cmp.eq(r0.new,00000000)) jump:nt	00008768; r0 = zxth(r0) }
@@ -3280,7 +3280,7 @@ l000085D0:
 	{ r16 = add(r16,00000001); jump	00008748; r11 = r4 }
 
 l000085D8:
-	{ r3:r2 = memd(r18); call	0000A600 }
+	{ r3:r2 = memd(r18); call	__hexagon_adddf3 }
 
 l000085DC:
 	{ r3:r2 = memd(r18) }
@@ -3309,7 +3309,7 @@ l00008628:
 	{ if (p0.new) jump:nt	00008784; p0 = dfcmp.eq(r3:r2,r25:r24) }
 
 l00008634:
-	{ memd(r29+40) = r3:r2; r1 = add(r29,00000028); r0 = add(r29,0000001E); call	00008100 }
+	{ memd(r29+40) = r3:r2; r1 = add(r29,00000028); r0 = add(r29,0000001E); call	_LDunscale }
 
 l00008638:
 	{ memd(r29+40) = r3:r2; r1 = add(r29,00000028); r0 = add(r29,0000001E) }
@@ -3317,9 +3317,9 @@ l00008638:
 l00008640:
 	{ r0 = add(r19,FFFFFFE6) }
 	{ r1 = memh(r29+30) }
-	{ r0 = add(r29,00000028); call	00009B54; r1 = sub(r1.l,r0.l) }
-	{ r1 = memh(r29+30); r0 = add(r29,00000028); call	00009B60 }
-	{ r3:r2 = memd(r29+40); r1:r0 = memd(r18); call	0000A6A4 }
+	{ r0 = add(r29,00000028); call	fn00009B54; r1 = sub(r1.l,r0.l) }
+	{ r1 = memh(r29+30); r0 = add(r29,00000028); call	_LDscale }
+	{ r3:r2 = memd(r29+40); r1:r0 = memd(r18); call	__hexagon_fast2_subdf3 }
 	{ memd(r18) = r1:r0; if (!p0.new) jump:t	000086B0; p0 = dfcmp.eq(r1:r0,r25:r24) }
 
 l0000867C:
@@ -3345,7 +3345,7 @@ l000086B8:
 
 l000086C8:
 	{ r3:r2 = memd(r18-16); r16 = r26 }
-	{ memd(r29+32) = r3:r2; call	00008100 }
+	{ memd(r29+32) = r3:r2; call	_LDunscale }
 	{ r19 = memh(r29+14); jump	00008748 }
 000086E0 C0 41 1D B0 01 40 72 70 30 40 10 B0 50 D1 02 20 .A...@rp0@..P.. 
 000086F0 02 C0 D2 91 06 7D FF 5B 05 C2 DD A1 2A 4A 00 5A .....}.[....*J.Z
@@ -3359,22 +3359,22 @@ l00008748:
 	{ if (p0.new) jump:t	00008510; p0 = cmp.gt(r9,-00000001) }
 
 l0000874C:
-	{ jump	00008780 }
+	{ jump	fn00008780 }
 
 l00008750:
 	{ r19:r18 = memd(r29+40) }
 	{ r0 = memw(r29+8) }
 
 l00008758:
-	{ memd(r0) = r19:r18; r0 = memw(r29+8); jump	0000A350 }
+	{ memd(r0) = r19:r18; r0 = memw(r29+8); jump	__restore_r16_through_r27_and_deallocframe }
 00008764             29 3E 80 51                             )>.Q        
 
 l00008768:
-	{ memd(r18) = r3:r2; if (!p0.new) jump:t	00008780; p0 = cmp.gt(r9,-00000001) }
+	{ memd(r18) = r3:r2; if (!p0.new) jump:t	fn00008780; p0 = cmp.gt(r9,-00000001) }
 
 l00008770:
 	{ r1 = memw(r29+8) }
-	{ memd(r30+r0<<#3) = r23:r22; r0 = memw(r29+8); jump	0000A350 }
+	{ memd(r30+r0<<#3) = r23:r22; r0 = memw(r29+8); jump	__restore_r16_through_r27_and_deallocframe }
 
 ;; fn00008780: 00008780
 ;;   Called from:
@@ -3387,7 +3387,7 @@ l00008770:
 ;;     00008750 (in fn00008368)
 ;;     00008768 (in fn00008368)
 fn00008780 proc
-	{ r0 = memw(r29+8); jump	0000A350 }
+	{ r0 = memw(r29+8); jump	__restore_r16_through_r27_and_deallocframe }
 
 l00008784:
 	{ r0 = memw(r29+8) }
@@ -3402,14 +3402,14 @@ l00008784:
 ;;     00008CC0 (in fn00008CB8)
 ;;     00008CC0 (in _LXp_sqrtx)
 _LXp_mulh proc
-	{ allocframe(+00000060); call	0000A270 }
+	{ allocframe(+00000060); call	__save_r16_through_r27 }
 	{ r19:r18 = combine(r3,r2); r17:r16 = combine(r1,r0) }
 	{ if (!p0) r3:r2 = combine(r19,r18); if (!p0.new) jump:nt	000088EC; p0 = cmp.gt(r9,00000001) }
 
 l000087A0:
-	{ r1:r0 = memd(r16); call	0000AB20 }
+	{ r1:r0 = memd(r16); call	__hexagon_fast_muldf3 }
 	{ r0 = add(r29,00000010); r3:r2 = combine(r1,r0) }
-	{ memd(r29+16) = r3:r2; call	00009B70 }
+	{ memd(r29+16) = r3:r2; call	_LDtest }
 	{ if (!tstbit(r20.new,-00000001)) jump:nt	00008808; r20 = r0; r1 = add(r29,00000010); r23:r22 = combine(00000000,00000000) }
 
 l000087CC:
@@ -3451,7 +3451,7 @@ l00008834:
 	{ if (!p0.new) r3:r2 = combine(r19,r18); if (!p0.new) r25 = add(r25,00000001); if (p0.new) jump:nt	00008864; p0 = dfcmp.eq(r1:r0,r27:r26) }
 
 l00008844:
-	{ call	0000AB20 }
+	{ call	__hexagon_fast_muldf3 }
 	{ memd(r21) = r1:r0; memd(r20++#8) = r23:r22; p0 = cmp.gt(r25,00000003); r21 = add(r21,00000008) }
 	{ if (!p0) jump:nt	00008828 }
 
@@ -3470,12 +3470,12 @@ l00008870:
 	{ if (!p0.new) r0 = add(r29,00000006); if (!p0.new) r1 = add(r29,00000008); if (p0.new) jump:nt	000088F0 }
 
 l0000887C:
-	{ memd(r29+8) = r3:r2; call	00008100 }
-	{ r0 = add(r29,00000008); r1 = 0000001A; call	00009B50 }
-	{ r1 = memh(r29+6); r0 = add(r29,00000008); call	00009B60 }
-	{ r3:r2 = memd(r29+8); r1:r0 = combine(r17,r16); call	00008450 }
-	{ r1:r0 = memd(r29+16); r3:r2 = memd(r29+8); call	0000A6A4 }
-	{ r1:r0 = combine(r17,r16); r3:r2 = combine(r1,r0); call	00008450 }
+	{ memd(r29+8) = r3:r2; call	_LDunscale }
+	{ r0 = add(r29,00000008); r1 = 0000001A; call	_LDint }
+	{ r1 = memh(r29+6); r0 = add(r29,00000008); call	_LDscale }
+	{ r3:r2 = memd(r29+8); r1:r0 = combine(r17,r16); call	_LXp_addh }
+	{ r1:r0 = memd(r29+16); r3:r2 = memd(r29+8); call	__hexagon_fast2_subdf3 }
+	{ r1:r0 = combine(r17,r16); r3:r2 = combine(r1,r0); call	_LXp_addh }
 	{ r1 = memd(r29); r0 = 00000000; nop }
 	{ if (!cmp.gtu(r25,r0.new)) jump:nt	000088E8; r0 = add(r0,00000001); r2 = add(r1,00000008) }
 
@@ -3500,12 +3500,12 @@ l000088F0:
 ;; _LXp_movx: 000088F4
 _LXp_movx proc
 	{ allocframe(00000008); r1 = r2; r3 = asl(r1,00000003) }
-	{ memd(r29) = r17:r16; r2 = r3; r16 = r0; call	000073E0 }
+	{ memd(r29) = r17:r16; r2 = r3; r16 = r0; call	memcpy }
 	{ dealloc_return; r17:r16 = memd(r29); r0 = r16 }
 
 ;; _LXp_addx: 00008910
 _LXp_addx proc
-	{ allocframe(+00000020); call	0000A278 }
+	{ allocframe(+00000020); call	__save_r16_through_r23 }
 	{ r19:r18 = combine(r2,r1); r17:r16 = combine(r0,r3) }
 	{ if (p0.new) r20 = 00000000; if (!p0.new) jump:nt	0000894C; p0 = cmp.gt(r8,00000000) }
 
@@ -3517,20 +3517,20 @@ l00008930:
 	{ if (!p0.new) r1:r0 = combine(r18,r17); if (!p0.new) r19 = add(r19,00000008); if (p0.new) jump:nt	00008950; p0 = dfcmp.eq(r3:r2,r23:r22) }
 
 l00008940:
-	{ call	00008450 }
+	{ call	_LXp_addh }
 	{ if (cmp.gtu(r16,r20.new)) jump:t	00008930; r20 = add(r20,00000001) }
 
 l0000894C:
-	{ jump	00008A1C; r0 = r9 }
+	{ jump	fn00008A1C; r0 = r9 }
 
 l00008950:
-	{ jump	00008A20; r0 = r9 }
+	{ jump	fn00008A20; r0 = r9 }
 
 ;; _LXp_subx: 00008954
 _LXp_subx proc
-	{ allocframe(+00000020); call	0000A278 }
+	{ allocframe(+00000020); call	__save_r16_through_r23 }
 	{ r19:r18 = combine(r2,r1); r17:r16 = combine(r0,r3) }
-	{ if (p0.new) r20 = 00000000; if (!p0.new) jump:nt	00008994; p0 = cmp.gt(r8,00000000) }
+	{ if (p0.new) r20 = 00000000; if (!p0.new) jump:nt	fn00008994; p0 = cmp.gt(r8,00000000) }
 
 l0000896C:
 	{ r23:r22 = memd(gp+192) }
@@ -3550,8 +3550,8 @@ l00008980:
 	{ if (!p0.new) r1:r0 = combine(r18,r17) }
 
 l00008984:
-	{ call	00008454; r3 = togglebit(r3,0000001E) }
-	{ r19 = add(r19,00000008); if (p0.new) jump:t	00008970; p0 = cmp.gt(r8,-00000001) }
+	{ call	fn00008454; r3 = togglebit(r3,0000001E) }
+	{ r19 = add(r19,00000008); if (p0.new) jump:t	fn00008970; p0 = cmp.gt(r8,-00000001) }
 
 ;; fn00008994: 00008994
 ;;   Called from:
@@ -3562,11 +3562,11 @@ fn00008994 proc
 	{ nop; jump	00008A44; r0 = r9 }
 
 l00008998:
-	{ nop; jump	00008A48; r0 = r9 }
+	{ nop; jump	fn00008A48; r0 = r9 }
 
 ;; _LXp_ldexpx: 000089A0
 _LXp_ldexpx proc
-	{ allocframe(+00000020); call	0000A278 }
+	{ allocframe(+00000020); call	__save_r16_through_r23 }
 	{ r17:r16 = combine(r1,r0) }
 	{ r21:r20 = memd(gp+192) }
 	{ nop; nop; r22 = r16 }
@@ -3574,11 +3574,11 @@ _LXp_ldexpx proc
 
 l000089C4:
 	{ r19 = add(r19,00000001); r2 = r18 }
-	{ r1:r0 = memd(r22); call	00009470 }
+	{ r1:r0 = memd(r22); call	ldexpl }
 	{ memd(r22) = r1:r0; r22 = r23; if (!p0.new) jump:t	000089C4; p0 = dfcmp.eq(r1:r0,r21:r20) }
 
 l000089E8:
-	{ jump	00008A48; r0 = r8 }
+	{ jump	fn00008A48; r0 = r8 }
 
 ;; _LXp_mulx: 000089F0
 ;;   Called from:
@@ -3594,12 +3594,12 @@ l000089E8:
 ;;     00008CF8 (in fn00008CCC)
 ;;     00008D10 (in _LXp_sqrtx)
 _LXp_mulx proc
-	{ allocframe(+00000030); call	0000A270 }
+	{ allocframe(+00000030); call	__save_r16_through_r27 }
 	{ r20 = r4; r19:r18 = combine(r3,r2); r17:r16 = combine(r1,r0) }
-	{ if (p0.new) jump:t	00008AB8; p0 = cmp.eq(r9,00000000) }
+	{ if (p0.new) jump:t	fn00008AB8; p0 = cmp.eq(r9,00000000) }
 
 l00008A08:
-	{ if (p0.new) jump:t	00008AB8; p0 = cmp.eq(r11,00000000) }
+	{ if (p0.new) jump:t	fn00008AB8; p0 = cmp.eq(r11,00000000) }
 
 l00008A0C:
 	{ r25:r24 = memd(gp+192); r3:r2 = memd(r18) }
@@ -3617,7 +3617,7 @@ fn00008A1C proc
 ;;     00008950 (in _LXp_addx)
 ;;     00008A24 (in fn00008A1C)
 fn00008A20 proc
-	{ if (!p0.new) r1:r0 = combine(r16,r20); if (!p0.new) jump:nt	00008A40; p0 = dfcmp.eq(r1:r0,r25:r24) }
+	{ if (!p0.new) r1:r0 = combine(r16,r20); if (!p0.new) jump:nt	fn00008A40; p0 = dfcmp.eq(r1:r0,r25:r24) }
 
 ;; fn00008A2C: 00008A2C
 ;;   Called from:
@@ -3625,13 +3625,13 @@ fn00008A20 proc
 ;;     00008A20 (in fn00008A20)
 ;;     00008A30 (in _LXp_mulx)
 fn00008A2C proc
-	{ r1:r0 = combine(r17,r16); call	00008788 }
+	{ r1:r0 = combine(r17,r16); call	_LXp_mulh }
 
 l00008A30:
 	{ r1:r0 = combine(r17,r16) }
 
 l00008A34:
-	{ jump	00008AA4; r0 = r8 }
+	{ jump	fn00008AA4; r0 = r8 }
 00008A3C                                     55 C3 11 8C             U...
 
 ;; fn00008A40: 00008A40
@@ -3639,7 +3639,7 @@ l00008A34:
 ;;     00008A20 (in fn00008A20)
 ;;     00008A20 (in fn00008A20)
 fn00008A40 proc
-	{ r2 = r21; call	000073E0 }
+	{ r2 = r21; call	memcpy }
 
 l00008A44:
 	{ r2 = r21 }
@@ -3652,8 +3652,8 @@ l00008A44:
 ;;     00008A44 (in fn00008970)
 ;;     00008AA4 (in fn00008AA4)
 fn00008A48 proc
-	{ r3:r2 = memd(r18); r1:r0 = combine(r17,r16); call	00008788 }
-	{ if (p0.new) r23 = 00000001; if (!p0.new) jump:t	00008AB8; p0 = cmp.gt(r11,00000002) }
+	{ r3:r2 = memd(r18); r1:r0 = combine(r17,r16); call	_LXp_mulh }
+	{ if (p0.new) r23 = 00000001; if (!p0.new) jump:t	fn00008AB8; p0 = cmp.gt(r11,00000002) }
 
 l00008A5C:
 	{ r22 = addasl(r20,r17,00000003) }
@@ -3662,8 +3662,8 @@ l00008A5C:
 	{ if (!p0.new) r1:r0 = combine(r20,r22); if (!p0.new) r2 = add(r21,00000000); if (p0.new) jump:nt	00008ABC; p0 = dfcmp.eq(r1:r0,r25:r24) }
 
 l00008A78:
-	{ call	000073E0 }
-	{ r1:r0 = combine(r17,r22); call	00008788 }
+	{ call	memcpy }
+	{ r1:r0 = combine(r17,r22); call	_LXp_mulh }
 	{ r3:r2 = memd(r26) }
 	{ if (!p0.new) jump:t	00008AB0; p0 = cmp.gt(r9,00000000) }
 
@@ -3678,7 +3678,7 @@ l00008A94:
 ;;     00008A34 (in fn00008A2C)
 ;;     00008A94 (in fn00008A48)
 fn00008AA4 proc
-	{ call	00008450 }
+	{ call	_LXp_addh }
 	{ if (cmp.gtu(r17,r26.new)) jump:t	00008A94; r26 = add(r26,00000001) }
 
 l00008AB0:
@@ -3698,29 +3698,29 @@ fn00008AB8 proc
 	{ jump	00008B18; r0 = r8 }
 
 l00008ABC:
-	{ jump	00008B1C; r0 = r8 }
+	{ jump	fn00008B1C; r0 = r8 }
 
 ;; _LXp_invx: 00008AC0
 _LXp_invx proc
-	{ allocframe(+00000030); call	0000A270 }
+	{ allocframe(+00000030); call	__save_r16_through_r27 }
 	{ r22 = r2; r17:r16 = combine(r1,r0) }
-	{ if (!p0.new) r0 = add(r16,00000000); if (p0.new) jump:nt	00008BFC; p0 = cmp.eq(r9,00000001) }
+	{ if (!p0.new) r0 = add(r16,00000000); if (p0.new) jump:nt	fn00008BFC; p0 = cmp.eq(r9,00000001) }
 
 l00008AD8:
-	{ call	00009B70 }
+	{ call	_LDtest }
 	{ if (!p0.new) jump:t	00008B00; p0 = tstbit(r0,00000000) }
 
 l00008AE0:
-	{ if (!p0.new) jump:t	00008BD4; p0 = cmph.eq(r0,0000) }
+	{ if (!p0.new) jump:t	fn00008BD4; p0 = cmph.eq(r0,0000) }
 
 l00008AE8:
 	{ r0 = 0000E620 }
 	{ r1:r0 = memd(r0) }
-	{ memd(r16) = r1:r0; jump	00008B64; r0 = r8 }
+	{ memd(r16) = r1:r0; jump	fn00008B64; r0 = r8 }
 
 l00008B00:
 	{ r27:r26 = memd(r16); r25:r24 = memd(gp+224); r20 = asl(r17,00000003); r19 = addasl(r22,r17,00000003) }
-	{ r2 = r20; r1:r0 = combine(r16,r19); call	000073E0 }
+	{ r2 = r20; r1:r0 = combine(r16,r19); call	memcpy }
 
 l00008B18:
 	{ r2 = r20 }
@@ -3731,21 +3731,21 @@ l00008B18:
 ;;     00008B10 (in _LXp_invx)
 ;;     00008B18 (in fn00008AB8)
 fn00008B1C proc
-	{ r3:r2 = combine(r25,r24); r1:r0 = combine(r17,r19); call	00008788 }
+	{ r3:r2 = combine(r25,r24); r1:r0 = combine(r17,r19); call	_LXp_mulh }
 	{ if (!p0) r1:r0 = combine(r27,r26); if (!p0.new) r3:r2 = combine(r27,r26); if (!p0.new) jump:t	00008BE8; p0 = cmp.gt(r9,00000002) }
 
 l00008B34:
-	{ r25:r24 = memd(gp+216); r3:r2 = memd(r16+8); call	0000A600 }
-	{ r1:r0 = combine(r25,r24); r3:r2 = combine(r1,r0); call	0000A880 }
+	{ r25:r24 = memd(gp+216); r3:r2 = memd(r16+8); call	__hexagon_adddf3 }
+	{ r1:r0 = combine(r25,r24); r3:r2 = combine(r1,r0); call	__hexagon_divdf3 }
 	{ r27:r26 = memd(gp+192); r24 = 00000001; r1:r0 = combine(r17,r16); r3:r2 = combine(r1,r0) }
-	{ call	00008354; r21 = addasl(r22,r17,00000004) }
+	{ call	fn00008354; r21 = addasl(r22,r17,00000004) }
 
 ;; fn00008B64: 00008B64
 ;;   Called from:
 ;;     00008AF4 (in _LXp_invx)
 ;;     00008B68 (in fn00008B1C)
 fn00008B64 proc
-	{ r2 = r20; r1:r0 = combine(r16,r22); call	000073E0 }
+	{ r2 = r20; r1:r0 = combine(r16,r22); call	memcpy }
 
 l00008B68:
 	{ r2 = r20; r1:r0 = combine(r16,r22) }
@@ -3754,12 +3754,12 @@ l00008B68:
 ;;   Called from:
 ;;     00008B64 (in fn00008B64)
 fn00008B70 proc
-	{ r1:r0 = combine(r17,r22); r4 = r21; r3:r2 = combine(r17,r19); call	000089F0 }
-	{ r3:r2 = memd(gp+216); r1:r0 = combine(r17,r22); call	00008450 }
-	{ r4 = r21; r1:r0 = combine(r17,r22); r3:r2 = combine(r17,r16); call	000089F0 }
+	{ r1:r0 = combine(r17,r22); r4 = r21; r3:r2 = combine(r17,r19); call	_LXp_mulx }
+	{ r3:r2 = memd(gp+216); r1:r0 = combine(r17,r22); call	_LXp_addh }
+	{ r4 = r21; r1:r0 = combine(r17,r22); r3:r2 = combine(r17,r16); call	_LXp_mulx }
 	{ r18 = r22; r25 = 00000000 }
 	{ r3:r2 = memd(r18) }
-	{ if (!p0.new) r1:r0 = combine(r17,r16); if (!p0.new) r18 = add(r18,00000008); if (p0.new) jump:nt	00008BC8; p0 = dfcmp.eq(r3:r2,r27:r26) }
+	{ if (!p0.new) r1:r0 = combine(r17,r16); if (!p0.new) r18 = add(r18,00000008); if (p0.new) jump:nt	fn00008BC8; p0 = dfcmp.eq(r3:r2,r27:r26) }
 
 ;; fn00008BB8: 00008BB8
 ;;   Called from:
@@ -3767,7 +3767,7 @@ fn00008B70 proc
 ;;     00008BC8 (in fn00008BC8)
 ;;     00008BC8 (in fn00008BC8)
 fn00008BB8 proc
-	{ call	00008450 }
+	{ call	_LXp_addh }
 	{ r25 = add(r25,00000001) }
 	{ if (cmp.gtu(r17,r24.new)) jump:t	00008B68; r24 = asl(r24,00000001) }
 
@@ -3781,31 +3781,31 @@ fn00008BC8 proc
 	{ if (cmp.gtu(r17,r24.new)) jump:t	00008B68 }
 
 l00008BD0:
-	{ if (!cmp.eq(r0.new,00000002)) jump:t	00008C00; r0 = zxth(r0) }
+	{ if (!cmp.eq(r0.new,00000002)) jump:t	fn00008C00; r0 = zxth(r0) }
 
 ;; fn00008BD4: 00008BD4
 ;;   Called from:
 ;;     00008AE0 (in _LXp_invx)
 fn00008BD4 proc
-	{ if (!cmp.eq(r0.new,00000002)) jump:t	00008C00 }
+	{ if (!cmp.eq(r0.new,00000002)) jump:t	fn00008C00 }
 
 ;; fn00008BDC: 00008BDC
 ;;   Called from:
 ;;     00008BD4 (in fn00008BD4)
 ;;     00008BD4 (in fn00008BD4)
 fn00008BDC proc
-	{ memd(r16) = r1:r0; jump	00008CAC; r0 = r8 }
+	{ memd(r16) = r1:r0; jump	fn00008CAC; r0 = r8 }
 
 l00008BE8:
-	{ r1:r0 = memd(gp+216); call	0000A880 }
-	{ r1:r0 = combine(r17,r16); r3:r2 = combine(r1,r0); call	00008350 }
+	{ r1:r0 = memd(gp+216); call	__hexagon_divdf3 }
+	{ r1:r0 = combine(r17,r16); r3:r2 = combine(r1,r0); call	_LXp_setw }
 
 ;; fn00008BFC: 00008BFC
 ;;   Called from:
 ;;     00008AD0 (in _LXp_invx)
 ;;     00008BF0 (in fn00008B1C)
 fn00008BFC proc
-	{ jump	00008C4C; r0 = r8 }
+	{ jump	fn00008C4C; r0 = r8 }
 
 ;; fn00008C00: 00008C00
 ;;   Called from:
@@ -3813,16 +3813,16 @@ fn00008BFC proc
 ;;     00008BD4 (in fn00008BD4)
 ;;     00008BD4 (in fn00008BD4)
 fn00008C00 proc
-	{ jump	00008C50; r0 = r8 }
+	{ jump	fn00008C50; r0 = r8 }
 
 ;; _LXp_sqrtx: 00008C04
 _LXp_sqrtx proc
-	{ allocframe(+00000030); call	0000A270 }
+	{ allocframe(+00000030); call	__save_r16_through_r27 }
 	{ r18 = r2; r17:r16 = combine(r1,r0) }
-	{ if (!p0.new) r0 = add(r16,00000000); if (p0.new) jump:nt	00008D20; p0 = cmp.eq(r9,00000001) }
+	{ if (!p0.new) r0 = add(r16,00000000); if (p0.new) jump:nt	fn00008D20; p0 = cmp.eq(r9,00000001) }
 
 l00008C1C:
-	{ call	00009B70 }
+	{ call	_LDtest }
 	{ r5:r4 = memd(r16); if (p0.new) jump:t	00008C34; p0 = tstbit(r0,00000000) }
 
 l00008C28:
@@ -3834,7 +3834,7 @@ l00008C34:
 	{ if (!p0.new) r0 = 00000001; if (p0.new) jump:t	00008D24; p0 = dfcmp.ge(r5:r4,r1:r0) }
 
 l00008C44:
-	{ call	00009670 }
+	{ call	_Feraise }
 	{ r0 = 0000E630 }
 
 ;; fn00008C4C: 00008C4C
@@ -3851,23 +3851,23 @@ fn00008C4C proc
 ;;     00008C4C (in fn00008C4C)
 fn00008C50 proc
 	{ r1:r0 = memd(r0) }
-	{ memd(r16) = r1:r0; jump	00008D44; r0 = r8 }
+	{ memd(r16) = r1:r0; jump	fn00008D44; r0 = r8 }
 00008C60 73 52 11 C4                                     sR..            
 
 l00008C64:
 	{ if (!p0) r1:r0 = combine(r5,r4); if (!p0.new) jump:t	00008C7C; p0 = cmp.gt(r9,00000002) }
 
 l00008C6C:
-	{ r3:r2 = memd(r16+8); call	0000A600 }
+	{ r3:r2 = memd(r16+8); call	__hexagon_adddf3 }
 	{ r5:r4 = combine(r1,r0) }
-	{ r21:r20 = memd(gp+216); r1:r0 = combine(r5,r4); call	00009520 }
+	{ r21:r20 = memd(gp+216); r1:r0 = combine(r5,r4); call	sqrtl }
 
 l00008C7C:
 	{ r21:r20 = memd(gp+216); r1:r0 = combine(r5,r4) }
 
 l00008C84:
-	{ r1:r0 = combine(r21,r20); r3:r2 = combine(r1,r0); call	0000A880 }
-	{ r1:r0 = combine(r17,r19); r3:r2 = combine(r1,r0); r20 = addasl(r18,r17,00000004); call	00008350 }
+	{ r1:r0 = combine(r21,r20); r3:r2 = combine(r1,r0); call	__hexagon_divdf3 }
+	{ r1:r0 = combine(r17,r19); r3:r2 = combine(r1,r0); r20 = addasl(r18,r17,00000004); call	_LXp_setw }
 	{ if (p0.new) r26 = 00000002; if (!p0.new) jump:t	00008D10; p0 = cmp.gt(r9,00000004) }
 
 l00008CA8:
@@ -3879,7 +3879,7 @@ l00008CA8:
 ;;     00008CB0 (in _LXp_sqrtx)
 fn00008CAC proc
 	{ r25:r24 = memd(gp+240); r23:r22 = memd(gp+232) }
-	{ r2 = r21; r1:r0 = combine(r19,r18); call	000073E0 }
+	{ r2 = r21; r1:r0 = combine(r19,r18); call	memcpy }
 
 ;; fn00008CB8: 00008CB8
 ;;   Called from:
@@ -3889,21 +3889,21 @@ fn00008CAC proc
 ;;     00008D14 (in fn00008D14)
 fn00008CB8 proc
 	{ r2 = r21; r1:r0 = combine(r19,r18) }
-	{ r3:r2 = combine(r23,r22); r1:r0 = combine(r17,r18); call	00008788 }
+	{ r3:r2 = combine(r23,r22); r1:r0 = combine(r17,r18); call	_LXp_mulh }
 
 ;; fn00008CCC: 00008CCC
 ;;   Called from:
 ;;     00008CB8 (in fn00008CB8)
 ;;     00008CC0 (in _LXp_sqrtx)
 fn00008CCC proc
-	{ r3:r2 = combine(r17,r16); r1:r0 = combine(r17,r18); r4 = r20; call	000089F0 }
-	{ r4 = r20; r1:r0 = combine(r17,r18); r3:r2 = combine(r17,r19); call	000089F0 }
-	{ r3:r2 = combine(r25,r24); r1:r0 = combine(r17,r18); call	00008450 }
-	{ r4 = r20; r3:r2 = combine(r17,r18); r1:r0 = combine(r17,r19); call	000089F0 }
-	{ if (cmp.gtu(r17,r26.new)) jump:t	00008CB8; r26 = asl(r26,00000001) }
+	{ r3:r2 = combine(r17,r16); r1:r0 = combine(r17,r18); r4 = r20; call	_LXp_mulx }
+	{ r4 = r20; r1:r0 = combine(r17,r18); r3:r2 = combine(r17,r19); call	_LXp_mulx }
+	{ r3:r2 = combine(r25,r24); r1:r0 = combine(r17,r18); call	_LXp_addh }
+	{ r4 = r20; r3:r2 = combine(r17,r18); r1:r0 = combine(r17,r19); call	_LXp_mulx }
+	{ if (cmp.gtu(r17,r26.new)) jump:t	fn00008CB8; r26 = asl(r26,00000001) }
 
 l00008D10:
-	{ r3:r2 = combine(r17,r19); r4 = r20; r1:r0 = combine(r17,r16); call	000089F0 }
+	{ r3:r2 = combine(r17,r19); r4 = r20; r1:r0 = combine(r17,r16); call	_LXp_mulx }
 
 ;; fn00008D14: 00008D14
 ;;   Called from:
@@ -3918,10 +3918,10 @@ fn00008D14 proc
 ;;     00008D10 (in _LXp_sqrtx)
 ;;     00008D14 (in fn00008D14)
 fn00008D20 proc
-	{ jump	00008DE0; r0 = r8 }
+	{ jump	fn00008DE0; r0 = r8 }
 
 l00008D24:
-	{ jump	00008DE4; r0 = r8 }
+	{ jump	fn00008DE4; r0 = r8 }
 00008D28                         00 C0 00 7F 00 C0 00 7F         ........
 
 ;; _Mbtowcx: 00008D30
@@ -3965,7 +3965,7 @@ l00008D88:
 	{ p0 = cmp.eq(r15,00000000); r9 = and(r6,00004000); r13 = or(r14,and(r13,FFFFFF00)) }
 	{ if (!p0) r5 = add(r13,00000000); p1 = cmp.eq(r9,00000000); r14 = and(r6,00001000) }
 	{ p0 = cmp.eq(r14,00000000); r9 = asl(r5,00000008) }
-	{ if (p1) jump:nt	00008DE0; r9 |= lsr(r5,00000018) }
+	{ if (p1) jump:nt	fn00008DE0; r9 |= lsr(r5,00000018) }
 
 l00008DC0:
 	{ if (p2.new) r13 = FFFFFFFF; if (!p1.new) r7 = add(r7,00000001); p1 = cmp.eq(r12,00000000); p2 = !cmp.eq(r12,00000000) }
@@ -3993,7 +3993,7 @@ fn00008DE4 proc
 ;;     00008DE4 (in fn00008DE4)
 ;;     00008DE4 (in fn00008DE4)
 fn00008DEC proc
-	{ p0 = cmp.eq(r12,00000000); if (!p0.new) r2 = sub(r7,r1); if (p0.new) jump:t	00008D4C }
+	{ p0 = cmp.eq(r12,00000000); if (!p0.new) r2 = sub(r7,r1); if (p0.new) jump:t	fn00008D4C }
 
 l00008DF8:
 	{ memw(r3) = r5; p0 = cmp.eq(r0,00000000); p1 = cmp.eq(r7,r1) }
@@ -4041,9 +4041,9 @@ l00008EFC:
 ;;     000057C4 (in _Printf)
 _Mbtowc proc
 	{ allocframe(00000010); memd(r29+496) = r17:r16 }
-	{ memd(r29) = r19:r18; r19:r18 = combine(r1,r2); r17:r16 = combine(r0,r3); call	00006604 }
+	{ memd(r29) = r19:r18; r19:r18 = combine(r1,r2); r17:r16 = combine(r0,r3); call	_Tls_get__Mbstate }
 	{ r17:r16 = memd(r29+8); r4 = r0; r1:r0 = combine(r19,r17); r3:r2 = combine(r16,r18) }
-	{ deallocframe; r19:r18 = memd(r29); jump	00008D30 }
+	{ deallocframe; r19:r18 = memd(r29); jump	_Mbtowcx }
 00008F64             00 C0 00 7F 00 C0 00 7F 00 C0 00 7F     ............
 
 ;; _Tls_get__Wcstate: 00008F70
@@ -4069,7 +4069,7 @@ l00008FA0:
 
 l00008FA8:
 	{ r1 = 00006FF0; r0 = 00010058 }
-	{ call	0000B150 }
+	{ call	sys_Tlsalloc }
 	{ memw(r16) = r18 }
 
 l00008FC0:
@@ -4090,11 +4090,11 @@ l00008FEC:
 	{ if (p0.new) jump:nt	00009000; p0 = cmp.eq(r0,00000000) }
 
 l00008FF4:
-	{ r0 = r16; r16 = 00000000; call	00006FF0 }
+	{ r0 = r16; r16 = 00000000; call	free }
 	{ jump	00009010 }
 
 l00009000:
-	{ call	0000A380 }
+	{ call	__hexagon_memcpy_likely_aligned_min32bytes_mult8bytes }
 	{ r2 = 00000040 }
 
 l00009010:
@@ -4108,7 +4108,7 @@ l00009018:
 
 ;; _Getpwcstate: 0000901C
 _Getpwcstate proc
-	{ jump	00008F70 }
+	{ jump	_Tls_get__Wcstate }
 
 ;; _Atrealloc: 00009020
 ;;   Called from:
@@ -4119,19 +4119,19 @@ _Atrealloc proc
 	{ r17 = memw(gp+4) }
 	{ r0 = r17 }
 	{ r0 += lsr(r0,00000001) }
-	{ call	00007224; r0 = asl(r0,00000002) }
+	{ call	fn00007224; r0 = asl(r0,00000002) }
 	{ if (cmp.eq(r16.new,00000000)) jump:nt	000090BC; r16 = r0; r1 = 00000000 }
 
 l00009048:
 	{ r1 = memw(gp+8); r2 = memw(gp+64); r0 = r16 }
-	{ call	000073E4; r2 = asl(r2,00000002) }
+	{ call	fn000073E4; r2 = asl(r2,00000002) }
 	{ r3 = memw(gp+4); r0 = memw(gp+12) }
 	{ r1 = memw(gp+8); r3 = sub(r3,r0); r2 = add(r0,r17) }
 	{ r0 = addasl(r16,r2,00000002); r1 = addasl(r1,r0,00000002) }
-	{ call	000073E4; r2 = asl(r3,00000002) }
+	{ call	fn000073E4; r2 = asl(r3,00000002) }
 	{ r0 = memw(gp+8) }
 	{ r1 = 0000E940 }
-	{ call	00006FF0 }
+	{ call	free }
 	{ r2 = memw(gp+4); r0 = memw(gp+12); r1 = 00000001 }
 	{ memw(gp+512) = r16; r0 = add(r2,r17); r3 = add(r0,r17) }
 	{ memw(gp) = r0; memw(gp+96) = r3 }
@@ -4161,9 +4161,9 @@ l000090E4:
 	{ if (p0.new) r0 = 00000002; if (!p0.new) jump:t	00009108; p0 = cmp.eq(r0,00000000) }
 
 l000090EC:
-	{ call	00006A44 }
-	{ r0 = 00009114; call	00009590 }
-	{ r17 = 00000002; r0 = 00000002; call	00006AF8 }
+	{ call	_Locksyslock }
+	{ r0 = 00009114; call	_Atexit }
+	{ r17 = 00000002; r0 = 00000002; call	_Unlocksyslock }
 	{ memw(r16) = r17 }
 
 l00009108:
@@ -4195,33 +4195,33 @@ l00009158:
 
 l00009160:
 	{ r0 = r16 }
-	{ r17 = r0; r0 = 00000002; call	00006A44 }
+	{ r17 = r0; r0 = 00000002; call	_Locksyslock }
 	{ r0 = memb(r16) }
 	{ if (cmp.eq(r0.new,00000000)) jump:nt	00009184; r0 = and(r0,00000040) }
 
 l0000917C:
 	{ r0 = memw(r16+8) }
-	{ memw(r16+8) = 00000000; r0 = memw(r16+4); call	000094E0 }
+	{ memw(r16+8) = 00000000; r0 = memw(r16+4); call	close }
 
 l00009184:
 	{ memw(r16+8) = 00000000; r0 = memw(r16+4) }
 
 l00009188:
 	{ r1 = memw(r16+64); if (!p0.new) r17 = FFFFFFFF; p0 = cmp.eq(r0,00000000) }
-	{ r0 = r1; call	00009510 }
+	{ r0 = r1; call	remove }
 	{ r1 = memw(r16+64); r18 = r0 }
-	{ r0 = r1; call	00006FF0 }
+	{ r0 = r1; call	free }
 	{ memw(r16+64) = 00000000; if (!p0.new) r17 = FFFFFFFF; p0 = cmp.eq(r18,00000000) }
-	{ r0 = r16; call	00009720 }
-	{ r0 = 00000002; call	00006AF8 }
+	{ r0 = r16; call	_Fofree }
+	{ r0 = 00000002; call	_Unlocksyslock }
 	{ jump	000091F4 }
 000091D0 3A 6C FF 5B                                     :l.[            
 
 l000091D4:
 	{ r0 = 00000002 }
-	{ r0 = r16; call	00009720 }
-	{ r0 = 00000002; call	00006AF8 }
-	{ r17 = FFFFFFFF; call	00006F10 }
+	{ r0 = r16; call	_Fofree }
+	{ r0 = 00000002; call	_Unlocksyslock }
+	{ r17 = FFFFFFFF; call	_Geterrno }
 	{ memw(r0) = 00000009 }
 
 l000091F4:
@@ -4239,12 +4239,12 @@ fflush proc
 	{ memd(r29) = r19:r18; if (!p0.new) r0 = add(r16,00000000); if (p0.new) jump:nt	0000926C; p0 = cmp.eq(r8,00000000) }
 
 l00009214:
-	{ call	00006958 }
+	{ call	_Lockfilelock }
 	{ r0 = memuh(r16) }
 	{ r1 = and(r0,00002000) }
 	{ r17 = memw(r16+8) }
 	{ r1 = memw(r16+16) }
-	{ r0 = memw(r16+4); r1 = r17; r2 = sub(r1,r17); call	000094F0 }
+	{ r0 = memw(r16+4); r1 = r17; r2 = sub(r1,r17); call	write }
 	{ if (p0.new) r17 = add(r17,r0); if (!p0.new) jump:nt	000092C4; p0 = cmp.gt(r0,00000000) }
 
 l00009248:
@@ -4255,7 +4255,7 @@ l00009248:
 	{ memuh(r16) = r1; jump	000092B0 }
 
 l0000926C:
-	{ r17:r16 = combine(0000E500,00000038); r0 = 00000002; call	00006A44 }
+	{ r17:r16 = combine(0000E500,00000038); r0 = 00000002; call	_Locksyslock }
 	{ r18 = 00000014 }
 	{ if (cmp.eq(r0.new,00000000)) jump:t	00009298; r0 = memw(r16) }
 
@@ -4274,7 +4274,7 @@ l000092B0:
 	{ r17 = 00000000 }
 
 l000092B4:
-	{ call	00006A10 }
+	{ call	_Unlockfilelock }
 
 l000092B8:
 	{ r19:r18 = memd(r29); r17:r16 = memd(r29+8); r0 = r17 }
@@ -4290,10 +4290,10 @@ l000092C4:
 ;;     000073A8 (in puts)
 fputc proc
 	{ allocframe(00000008); memd(r29+496) = r17:r16; r17:r16 = combine(r1,r0) }
-	{ r0 = r17; call	00006958 }
+	{ r0 = r17; call	_Lockfilelock }
 	{ r0 = memw(r17+16) }
 	{ r1 = memw(r17+24) }
-	{ r0 = r17; call	000079C0 }
+	{ r0 = r17; call	_Fwprep }
 	{ if (p0.new) r0 = memw(r17+16); if (!p0.new) jump:t	00009348; p0 = tstbit(r0,00000000) }
 
 l0000930C:
@@ -4304,7 +4304,7 @@ l0000930C:
 	{ if (cmp.eq(r0.new,00000000)) jump:nt	00009358; r0 = and(r0,00000400) }
 
 l0000933C:
-	{ r0 = r17; call	00009200 }
+	{ r0 = r17; call	fflush }
 	{ if (p0.new) jump:nt	00009350; p0 = cmp.eq(r0,00000000) }
 
 l00009348:
@@ -4314,7 +4314,7 @@ l00009350:
 	{ r16 = and(r16,000000FF); r0 = r17 }
 
 l00009354:
-	{ call	00006A10 }
+	{ call	_Unlockfilelock }
 
 l00009358:
 	{ dealloc_return; r17:r16 = memd(r29); r0 = r16 }
@@ -4327,7 +4327,7 @@ l00009358:
 ;;     0000786C (in raise)
 fputs proc
 	{ allocframe(00000020); memd(r29+496) = r17:r16; r17:r16 = combine(r0,r1) }
-	{ memd(r29+16) = r19:r18; r0 = r16; call	00006958 }
+	{ memd(r29+16) = r19:r18; r0 = r16; call	_Lockfilelock }
 	{ jump	00009378 }
 
 l00009374:
@@ -4338,7 +4338,7 @@ l00009378:
 
 l00009384:
 	{ r1 = memw(r16+24); r0 = r16 }
-	{ call	000079C0 }
+	{ call	_Fwprep }
 	{ if (!p0.new) jump:t	00009448; p0 = tstbit(r0,00000000) }
 
 l00009398:
@@ -4350,7 +4350,7 @@ l000093A8:
 	{ if (!p0.new) jump:t	000093CC; p0 = cmp.eq(r0,00000000) }
 
 l000093B0:
-	{ r0 = r17; call	000076E0 }
+	{ r0 = r17; call	strlen }
 
 l000093B4:
 	{ r0 = r17 }
@@ -4367,7 +4367,7 @@ l000093E0:
 	{ r2 = memw(r16+24); r0 = memw(r16+16) }
 	{ r4 = sub(r2,r0) }
 	{ p0 = cmp.gtu(r3,r4); r18 = minu(r3,r4) }
-	{ r2 = r18; call	000073E4; r3 = p0 }
+	{ r2 = r18; call	fn000073E4; r3 = p0 }
 	{ r1 = memd(r29+4); r0 = memw(r16+16) }
 	{ memb(r16+4) = r0.new; r0 = add(r0,r18); if (p0.new) jump:t	00009378; p0 = r1 }
 
@@ -4375,7 +4375,7 @@ l00009418:
 	{ if (!p0.new) r0 = add(r16,00000000); if (p0.new) jump:t	00009378; p0 = r0 }
 
 l00009424:
-	{ call	00009200 }
+	{ call	fflush }
 	{ if (p0.new) jump:t	00009374; p0 = cmp.eq(r16,00000001) }
 
 l0000942C:
@@ -4396,7 +4396,7 @@ l00009450:
 	{ r0 = r16; r16 = 00000000 }
 
 l00009454:
-	{ call	00006A10 }
+	{ call	_Unlockfilelock }
 	{ r19:r18 = memd(r29+16); r17:r16 = memd(r29+24); r0 = r16 }
 	{ dealloc_return }
 00009464             00 C0 00 7F 00 C0 00 7F 00 C0 00 7F     ............
@@ -4409,11 +4409,11 @@ ldexpl proc
 	{ memd(r29) = r1:r0; if (!p0.new) r0 = add(r29,00000000); if (p0.new) jump:nt	000094AC; p0 = cmp.eq(r8,00000000) }
 
 l00009484:
-	{ call	00009B70 }
+	{ call	_LDtest }
 	{ if (p0.new) jump:t	000094AC; p0 = tstbit(r0,00000000) }
 
 l0000948C:
-	{ r1 = r16; r0 = add(r29,00000000); call	00009B60 }
+	{ r1 = r16; r0 = add(r29,00000000); call	_LDscale }
 	{ if (p0.new) r0 = 00000004; jump	000094AC; if (!p0.new) jump:t	000094A0; p0 = cmp.eq(r0,00000002) }
 000094A0 06 60 40 10 00 E1 00 7E E4 C0 00 5A             .`@....~...Z    
 
@@ -4424,7 +4424,7 @@ l000094AC:
 
 ;; ldiv: 000094C0
 ldiv proc
-	{ allocframe(00000008); memd(r29+496) = r17:r16; r17:r16 = combine(r1,r0); call	0000A460 }
+	{ allocframe(00000008); memd(r29+496) = r17:r16; r17:r16 = combine(r1,r0); call	__hexagon_divsi3 }
 	{ r2 = mpyi(r0,r17) }
 	{ dealloc_return; r17:r16 = memd(r29); r1 = sub(r16,r2) }
 000094D8                         00 C0 00 7F 00 C0 00 7F         ........
@@ -4433,14 +4433,14 @@ ldiv proc
 ;;   Called from:
 ;;     00009180 (in fclose)
 close proc
-	{ jump	0000AFC0 }
+	{ jump	__sys_close }
 000094E4             00 C0 00 7F 00 C0 00 7F 00 C0 00 7F     ............
 
 ;; write: 000094F0
 ;;   Called from:
 ;;     00009234 (in fflush)
 write proc
-	{ allocframe(00000008); memd(r29+496) = r17:r16; r16 = r2; call	0000B2A0 }
+	{ allocframe(00000008); memd(r29+496) = r17:r16; r16 = r2; call	__sys_write }
 	{ dealloc_return; r17:r16 = memd(r29); r0 = sub(r16,r0) }
 00009504             00 C0 00 7F 00 C0 00 7F 00 C0 00 7F     ............
 
@@ -4448,7 +4448,7 @@ write proc
 ;;   Called from:
 ;;     00009198 (in fclose)
 remove proc
-	{ jump	0000B020 }
+	{ jump	__sys_remove }
 00009514             00 C0 00 7F 00 C0 00 7F 00 C0 00 7F     ............
 
 ;; sqrtl: 00009520
@@ -4456,7 +4456,7 @@ remove proc
 ;;     00008C78 (in _LXp_sqrtx)
 sqrtl proc
 	{ allocframe(00000018); memd(r29+496) = r17:r16; r17:r16 = combine(r1,r0) }
-	{ memd(r29+8) = r17:r16; r1 = add(r29,00000008); r0 = add(r29,00000006); call	00008100 }
+	{ memd(r29+8) = r17:r16; r1 = add(r29,00000008); r0 = add(r29,00000006); call	_LDunscale }
 	{ if (p0.new) jump:nt	00009558; p0 = cmp.eq(r0,00000000) }
 
 l00009538:
@@ -4474,7 +4474,7 @@ l00009554:
 	{ r0 = 00000001 }
 
 l00009558:
-	{ r1:r0 = combine(r17,r16); call	0000ADC0 }
+	{ r1:r0 = combine(r17,r16); call	fn0000ADC0 }
 
 l0000955C:
 	{ r1:r0 = combine(r17,r16) }
@@ -4503,7 +4503,7 @@ _Atexit proc
 	{ allocframe(00000008); memd(r29+496) = r17:r16; r16 = r0 }
 	{ r2 = memw(gp+64) }
 	{ r1 = memw(gp+12) }
-	{ call	00009020 }
+	{ call	_Atrealloc }
 	{ if (p0.new) jump:nt	000095C4; p0 = cmp.eq(r0,00000000) }
 
 l000095AC:
@@ -4513,7 +4513,7 @@ l000095AC:
 	{ dealloc_return; r17:r16 = memd(r29) }
 
 l000095C4:
-	{ call	00006E30 }
+	{ call	abort }
 	{ nop }
 	{ nop }
 
@@ -4526,7 +4526,7 @@ _Dunscale proc
 	{ allocframe(00000008); memd(r29+496) = r17:r16; r17:r16 = combine(r0,r1) }
 	{ r2 = memh(r16+6); r0 = r16 }
 	{ r1 = extractu(r2,0000000B,00000003) }
-	{ call	00009E20 }
+	{ call	_Dnorm }
 	{ r1 = r0; r0 = 00000000 }
 	{ memuh(r17) = 0000; jump	00009664 }
 000095FC                                     00 C0 C1 70             ...p
@@ -4548,11 +4548,11 @@ l00009664:
 _Feraise proc
 	{ allocframe(+00000008); r2 = and(r0,0000000C); r1 = setbit(r0,00000008) }
 	{ memd(r29) = r17:r16; p0 = cmp.eq(r2,00000000); if (!p0.new) r16 = add(r1,00000000); if (p0.new) r16 = add(r0,00000000) }
-	{ r17 = and(r16,00000003); r0 = r16; call	00009BA0 }
+	{ r17 = and(r16,00000003); r0 = r16; call	feraiseexcept }
 	{ if (p0.new) jump:nt	000096A8; p0 = cmp.eq(r9,00000000) }
 
 l00009698:
-	{ call	00006F10 }
+	{ call	_Geterrno }
 	{ memw(r0) = 00000021; r17:r16 = memd(r29) }
 	{ dealloc_return }
 
@@ -4613,15 +4613,15 @@ l00009740:
 
 l00009754:
 	{ memw(r3) = 00000000 }
-	{ call	00006FF0 }
+	{ call	free }
 	{ dealloc_return }
 00009760 81 45 00 B0 FF 60 40 3C 00 C0 20 3C 02 06 02 AD .E...`@<.. <....
 00009770 02 05 02 AC 02 02 02 A4 01 08 02 A7 1E C0 1E 96 ................
 
 ;; _Genld: 00009780
 _Genld proc
-	{ allocframe(+00000030); call	0000A278 }
-	{ r17:r16 = combine(r2,r0); r19:r18 = combine(r4,r3); r20 = r1; call	00009CEC }
+	{ allocframe(+00000030); call	__save_r16_through_r23 }
+	{ r17:r16 = combine(r2,r0); r19:r18 = combine(r4,r3); r20 = r1; call	localeconv }
 	{ r0 = memw(r0+44); r3:r2 = combine(0000D788,00000001); r1 = setbit(r20,0000000A) }
 	{ if (!p0.new) r17 = add(r3,00000000); p1 = cmp.eq(r1,00000066); p0 = cmp.gt(r18,00000000); r18 = max(r2,r18) }
 	{ r21 = memb(r0); if (p1) jump:nt	000097E0 }
@@ -4676,7 +4676,7 @@ l00009868:
 	{ r0 = add(r1,r0); if (!p0) jump:nt	00009958 }
 
 l00009880:
-	{ r2 = r18; r1 = r17; call	000073E0 }
+	{ r2 = r18; r1 = r17; call	memcpy }
 	{ r0 = memw(r16+16); r1 = memw(r16+28); r2 = sub(r19,r18) }
 	{ memw(r16+32) = r2; r1 = add(r1,r18); p0 = cmp.gt(r0,00000000) }
 	{ memw(r16+28) = r1; if (!p0) r2 = memb(r16-4); if (p0) jump:nt	000098AC }
@@ -4708,7 +4708,7 @@ l000098C8:
 00009950 00 40 31 F3 0A D2 B0 A1                         .@1.....        
 
 l00009958:
-	{ r2 = r19; r1 = r17; call	000073E0 }
+	{ r2 = r19; r1 = r17; call	memcpy }
 	{ r3 = memw(r16+16); r0 = memw(r16+28); r2 = sub(r18,r20) }
 	{ memb(r16+7) = r0.new; r0 = add(r0,r19); if (p0.new) jump:t	00009980; p0 = cmp.gt(r3,00000000) }
 
@@ -4723,7 +4723,7 @@ l00009980:
 	{ r4 = memw(r16+16); r5 = sxth(r2); r1 = add(r17,r19) }
 	{ if (p0.new) r2 = add(r3,00000000); r0 = add(r4,r0); p0 = cmp.gt(r5,r3) }
 	{ r17 = sxth(r2) }
-	{ r2 = r17; call	000073E0 }
+	{ r2 = r17; call	memcpy }
 	{ r1 = memw(r16+16); r0 = memw(r16+28) }
 	{ memb(r16+7) = r0.new; r1 = sub(r1,r17); r0 = add(r0,r17) }
 	{ memw(r16+32) = r1 }
@@ -4754,7 +4754,7 @@ l00009A20:
 	{ r1 = r17; r0 = add(r5,r1); r4 = add(r18.l,r0.l) }
 	{ if (!p0.new) r2 = add(r18,FFFFFFFF); p0 = cmp.gt(r4,r2) }
 	{ r17 = sxth(r2) }
-	{ r2 = r17; call	000073E0 }
+	{ r2 = r17; call	memcpy }
 	{ r1 = memw(r16+28); r0 = memw(r16+16) }
 	{ memb(r16+7) = r20.new; r0 = sub(r0,r17); r20 = add(r1,r17) }
 	{ memw(r16+32) = r0 }
@@ -4775,7 +4775,7 @@ l00009A88:
 	{ r18 = 00000000; if (p0.new) r23 = add(r29,00000000); if (!p0.new) jump:nt	00009AB4; p0 = cmp.gt(r11,00000000) }
 
 l00009A94:
-	{ call	00009B80 }
+	{ call	div }
 	{ r18 = add(r18,00000001) }
 	{ memb(r23) = r1; r23 = r23 }
 	{ r19 = sxth(r0) }
@@ -4834,7 +4834,7 @@ l00009B48:
 ;;     00008884 (in _LXp_mulh)
 ;;     00009B4C (in _Genld)
 _LDint proc
-	{ allocframe(+00000000); call	00009CF0 }
+	{ allocframe(+00000000); call	_Dint }
 
 ;; fn00009B54: 00009B54
 ;;   Called from:
@@ -4852,7 +4852,7 @@ fn00009B54 proc
 ;;     0000888C (in _LXp_mulh)
 ;;     0000948C (in ldexpl)
 _LDscale proc
-	{ allocframe(+00000000); call	00009F70 }
+	{ allocframe(+00000000); call	_Dscale }
 	{ dealloc_return }
 00009B6C                                     00 C0 00 7F             ....
 
@@ -4864,7 +4864,7 @@ _LDscale proc
 ;;     00008C1C (in _LXp_sqrtx)
 ;;     00009484 (in ldexpl)
 _LDtest proc
-	{ allocframe(+00000000); call	0000A1E0 }
+	{ allocframe(+00000000); call	_Dtest }
 	{ dealloc_return }
 00009B7C                                     00 C0 00 7F             ....
 
@@ -4872,7 +4872,7 @@ _LDtest proc
 ;;   Called from:
 ;;     00009A94 (in _Genld)
 div proc
-	{ allocframe(00000008); memd(r29+496) = r17:r16; r17:r16 = combine(r1,r0); call	0000A460 }
+	{ allocframe(00000008); memd(r29+496) = r17:r16; r17:r16 = combine(r1,r0); call	__hexagon_divsi3 }
 	{ r2 = mpyi(r0,r17) }
 	{ dealloc_return; r17:r16 = memd(r29); r1 = sub(r16,r2) }
 00009B98                         00 C0 00 7F 00 C0 00 7F         ........
@@ -4882,11 +4882,11 @@ div proc
 ;;     00009688 (in _Feraise)
 feraiseexcept proc
 	{ allocframe(00000010); memd(r29+496) = r17:r16 }
-	{ if (cmp.eq(r16.new,00000000)) jump:nt	00009BE0; r16 = and(r0,0000001F); r0 = add(r29,00000004) }
+	{ if (cmp.eq(r16.new,00000000)) jump:nt	_Force_raise; r16 = and(r0,0000001F); r0 = add(r29,00000004) }
 
 l00009BB4:
 	{ r1 = memd(r29+4); r0 = add(r29,00000004) }
-	{ call	00009C30; r1 |= asl(r16,00000001) }
+	{ call	fn00009C30; r1 |= asl(r16,00000001) }
 	{ r0 = memw(r29+4) }
 	{ r16 &= lsr(r0,00000019) }
 	{ r0 = r16 }
@@ -4949,7 +4949,7 @@ l00009C70:
 
 l00009C78:
 	{ r1 = 00006FF0; r0 = 00010064 }
-	{ call	0000B150 }
+	{ call	sys_Tlsalloc }
 	{ memw(r16) = r18 }
 
 l00009C90:
@@ -4970,11 +4970,11 @@ l00009CBC:
 	{ if (p0.new) jump:nt	00009CD0; p0 = cmp.eq(r0,00000000) }
 
 l00009CC4:
-	{ r0 = r16; r16 = 00000000; call	00006FF0 }
+	{ r0 = r16; r16 = 00000000; call	free }
 	{ jump	00009CE0 }
 
 l00009CD0:
-	{ call	0000A380 }
+	{ call	__hexagon_memcpy_likely_aligned_min32bytes_mult8bytes }
 	{ r2 = 00000050 }
 
 l00009CE0:
@@ -4990,7 +4990,7 @@ l00009CE8:
 ;;   Called from:
 ;;     00009788 (in _Genld)
 localeconv proc
-	{ jump	00009C40 }
+	{ jump	_Tls_get__Locale }
 
 ;; _Dint: 00009CF0
 ;;   Called from:
@@ -5014,7 +5014,7 @@ l00009D38:
 	{ r3 = memuh(r0+2) }
 	{ r5 = memuh(r0); r3 = 00000000 }
 	{ r3 = 00000000; r5 = sub(00000433,r4) }
-	{ if (!cmp.gt(r4.new,00000000)) jump:nt	00009E20; r1 = sub(r5,r1); r4 = sub(r5.l,r1.l) }
+	{ if (!cmp.gt(r4.new,00000000)) jump:nt	_Dnorm; r1 = sub(r5,r1); r4 = sub(r5.l,r1.l) }
 
 l00009D74:
 	{ p0 = cmp.gt(r1,00000034); if (p0.new) r3 = 0000FFFF; if (!p0.new) jump:t	00009DA4 }
@@ -5288,13 +5288,13 @@ l0000A1DC:
 _Dtest proc
 	{ r2 = memuh(r0+6); r1 = 00007FF0 }
 	{ r3 = and(r2,r1); r1 = 00000002 }
-	{ if (!cmp.eq(r2.new,00000000)) jump:t	0000A260; r2 = and(r2,0000000F) }
+	{ if (!cmp.eq(r2.new,00000000)) jump:t	fegetenv; r2 = and(r2,0000000F) }
 
 l0000A200:
-	{ if (!cmp.eq(r2.new,00000000)) jump:t	0000A260 }
+	{ if (!cmp.eq(r2.new,00000000)) jump:t	fegetenv }
 
 l0000A208:
-	{ if (!cmp.eq(r2.new,00000000)) jump:t	0000A260 }
+	{ if (!cmp.eq(r2.new,00000000)) jump:t	fegetenv }
 
 l0000A210:
 	{ if (!p0.new) r1 = 00000001; if (p0.new) r1 = 00000002; p0 = !cmp.eq(r0,00000000) }
@@ -5416,7 +5416,7 @@ __restore_r16_through_r23_and_deallocframe_before_tailcall proc
 ;;   Called from:
 ;;     0000A304 (in __restore_r16_through_r23_and_deallocframe_before_tailcall)
 __restore_r16_through_r19_and_deallocframe_before_tailcall proc
-	{ r19:r18 = memd(r30-16); jump	0000A330 }
+	{ r19:r18 = memd(r30-16); jump	__restore_r16_through_r17_and_deallocframe_before_tailcall }
 
 ;; __restore_r16_through_r27_and_deallocframe_before_tailcall: 0000A318
 __restore_r16_through_r27_and_deallocframe_before_tailcall proc
@@ -5449,7 +5449,7 @@ __restore_r16_through_r23_and_deallocframe proc
 ;;   Called from:
 ;;     0000A340 (in __restore_r16_through_r23_and_deallocframe)
 __restore_r16_through_r19_and_deallocframe proc
-	{ r19:r18 = memd(r30-16); jump	0000A368 }
+	{ r19:r18 = memd(r30-16); jump	__restore_r16_through_r17_and_deallocframe }
 
 ;; __restore_r16_through_r27_and_deallocframe: 0000A350
 ;;   Called from:
@@ -5500,7 +5500,7 @@ __deallocframe proc
 ;;     00009CD0 (in _Tls_get__Locale)
 __hexagon_memcpy_likely_aligned_min32bytes_mult8bytes proc
 	{ if (p0.new) r5:r4 = memd(r1); r3 = FFFFFFFD; p0 = bitsclr(r0,00000007); p0 = bitsclr(r1,00000007) }
-	{ if (p0) memd(r0++#8) = r5:r4; if (p0) r5:r4 = memd(r1+8); r3 += lsr(r2,00000003); if (!p0) jump:nt	000073E0 }
+	{ if (p0) memd(r0++#8) = r5:r4; if (p0) r5:r4 = memd(r1+8); r3 += lsr(r2,00000003); if (!p0) jump:nt	memcpy }
 
 l0000A3A0:
 	{ memd(r0++#8) = r5:r4; r5:r4 = memd(r1+16); r1 = add(r1,00000018); loop0(0000A3B0,r3) }
@@ -5614,7 +5614,7 @@ l0000A604:
 ;;     0000A604 (in __hexagon_fast2_subdf3)
 fn0000A610 proc
 	{ p2 = cmp.gtu(r5,r4); r9:r8 = combine(r13,r12); p3 = dfclass(r3:r2,00000002); p3 = dfclass(r1:r0,00000002) }
-	{ if (p2) r5:r4 = combine(r4,r5); if (p2) r3:r2 = combine(r1,r0); if (p2) r1:r0 = combine(r3,r2); if (!p3) jump:nt	0000A764 }
+	{ if (p2) r5:r4 = combine(r4,r5); if (p2) r3:r2 = combine(r1,r0); if (p2) r1:r0 = combine(r3,r2); if (!p3) jump:nt	fn0000A764 }
 
 ;; fn0000A630: 0000A630
 ;;   Called from:
@@ -5900,7 +5900,7 @@ l0000AD10:
 	{ r28 = add(r28,FFFFFFF5) }
 	{ r5:r4 = asl(r5:r4,r28) }
 	{ r1 -= asl(r28,00000014); r3:r2 = insert(r4,0000003F,00000007) }
-	{ jump	0000AB20 }
+	{ jump	__hexagon_fast_muldf3 }
 	{ r1:r0 = xor(r1:r0,r3:r2); r28 = USR }
 	{ r28 = or(r28,00000030); r5 = extractu(r28,00000002,00000012); r1:r0 = insert(r8,0000003F,00000007) }
 	{ if (!p0.new) r0 = 00000000; p0 = cmp.gt(r5,00000001); XOREQ	r5,lsr(r1,0000001F); USR = r28 }
@@ -5995,7 +5995,7 @@ l0000AECC:
 	{ dealloc_return; r0 = r3 }
 
 l0000AEE4:
-	{ call	00005240 }
+	{ call	thread_stop }
 	{ r3 = 00000000 }
 	{ dealloc_return; r0 = r3 }
 
@@ -6016,7 +6016,7 @@ lockMutex proc
 fn0000AEF4 proc
 	{ r1 = sxth(r2); r3 = asr(r2,00000010); r4 = htid }
 	{ r2 = add(r2,00000001); r4 = asl(r4,00000010); p1 = cmp.eq(r3,r4) }
-	{ if (p1) jump:nt	0000AF20 }
+	{ if (p1) jump:nt	fn0000AF20 }
 
 ;; fn0000AF10: 0000AF10
 ;;   Called from:
@@ -6024,10 +6024,10 @@ fn0000AEF4 proc
 ;;     0000AF0C (in lockMutex)
 fn0000AF10 proc
 	{ r2 = add(r4,00000001); p1 = cmp.eq(r1,00000000) }
-	{ if (p1) jump:nt	0000AF20 }
+	{ if (p1) jump:nt	fn0000AF20 }
 
 l0000AF1C:
-	{ jump	0000AEF0 }
+	{ jump	lockMutex }
 
 ;; fn0000AF20: 0000AF20
 ;;   Called from:
@@ -6036,7 +6036,7 @@ l0000AF1C:
 ;;     0000AF18 (in fn0000AF10)
 fn0000AF20 proc
 	{ memw_locked(r0,p0) = r2 }
-	{ if (!p0) jump:nt	0000AEF0 }
+	{ if (!p0) jump:nt	lockMutex }
 
 l0000AF28:
 	{ jumpr	r31 }
@@ -6122,7 +6122,7 @@ __sys_close proc
 	{ memw(r29+4) = r0; memd(r29+8) = r17:r16; if (p0.new) jump:nt	0000B004; p0 = cmp.eq(r1,00000000) }
 
 l0000AFD4:
-	{ r16 = add(r29,00000004); r1 = 00000004; r0 = add(r29,00000004); call	00005610 }
+	{ r16 = add(r29,00000004); r1 = 00000004; r0 = add(r29,00000004); call	hexagon_cache_cleaninv }
 	{ r0 = 00000002 }
 	{ r1 = r16 }
 	{ trap0(00000000) }
@@ -6131,11 +6131,11 @@ l0000AFD4:
 	{ if (!p0.new) jump:t	0000B010; p0 = cmp.eq(r2,-00000001) }
 
 l0000AFF8:
-	{ call	00006F10 }
+	{ call	_Geterrno }
 	{ memw(r0) = r16; r2 = -00000001; jump	0000B010 }
 
 l0000B004:
-	{ call	00006F10 }
+	{ call	_Geterrno }
 	{ memw(r0) = 00000059; r2 = FFFFFFFF }
 
 l0000B010:
@@ -6150,11 +6150,11 @@ __sys_remove proc
 	{ memd(r29+8) = r17:r16; r16 = r0; if (p0.new) jump:nt	0000B084; p0 = cmp.eq(r1,00000000) }
 
 l0000B034:
-	{ memw(r29) = r16; r0 = r16; r17 = add(r29,00000000); call	000076E0 }
+	{ memw(r29) = r16; r0 = r16; r17 = add(r29,00000000); call	strlen }
 	{ r0 = r16; r1 = r0; r2 = setbit(r17,00000004) }
-	{ memw(r2) = r1; call	000076E0 }
-	{ r1 = r0; r0 = r16; call	00005610 }
-	{ r0 = add(r29,00000000); r1 = 00000008; call	00005610 }
+	{ memw(r2) = r1; call	strlen }
+	{ r1 = r0; r0 = r16; call	hexagon_cache_cleaninv }
+	{ r0 = add(r29,00000000); r1 = 00000008; call	hexagon_cache_cleaninv }
 	{ r0 = 0000000E }
 	{ r1 = r17 }
 	{ trap0(00000000) }
@@ -6163,11 +6163,11 @@ l0000B034:
 	{ if (!p0.new) jump:t	0000B090; p0 = cmp.eq(r2,-00000001) }
 
 l0000B078:
-	{ call	00006F10 }
+	{ call	_Geterrno }
 	{ memw(r0) = r16; r2 = -00000001; jump	0000B090 }
 
 l0000B084:
-	{ call	00006F10 }
+	{ call	_Geterrno }
 	{ memw(r0) = 00000059; r2 = FFFFFFFF }
 
 l0000B090:
@@ -6179,7 +6179,7 @@ l0000B090:
 ;;     00007AB8 (in _Getmem)
 __sys_sbrk proc
 	{ allocframe(00000008); memd(r29+496) = r17:r16; r17 = r0 }
-	{ r0 = 0001006C; call	0000AEF0 }
+	{ r0 = 0001006C; call	lockMutex }
 	{ r1 = 0000E018 }
 	{  }
 	{  }
@@ -6198,21 +6198,21 @@ l0000B104:
 	{ memw(r16) = r17; memw(r0) = r1; jump	0000B118 }
 
 l0000B10C:
-	{ r16 = FFFFFFFF; call	00006F10 }
+	{ r16 = FFFFFFFF; call	_Geterrno }
 	{ memw(r0) = 0000000C }
 
 l0000B118:
-	{ r0 = 0001006C; call	0000AF30 }
+	{ r0 = 0001006C; call	__sys_Mtxunlock }
 	{ dealloc_return; r17:r16 = memd(r29); r0 = r16 }
 0000B12C                                     00 C0 00 7F             ....
 
 ;; BeforeBegin: 0000B130
 BeforeBegin proc
-	{ nop; r0 = 00010070; jump	0000AF60 }
+	{ nop; r0 = 00010070; jump	__sys_Mtxinit }
 
 ;; AtEnd: 0000B140
 AtEnd proc
-	{ nop; r0 = 00010070; jump	0000AF70 }
+	{ nop; r0 = 00010070; jump	__sys_Mtxdst }
 
 ;; sys_Tlsalloc: 0000B150
 ;;   Called from:
@@ -6229,7 +6229,7 @@ sys_Tlsalloc proc
 	{ if (p0.new) jump:nt	0000B1C4; p0 = cmp.eq(r8,00000000) }
 
 l0000B15C:
-	{ r0 = 00010070; call	0000AEF0 }
+	{ r0 = 00010070; call	lockMutex }
 	{ r1 = 0000EC18; r0 = FE104FFF }
 	{ r17 = 0000000B; r2 = 0000002C }
 
@@ -6247,7 +6247,7 @@ l0000B1A0:
 	{ memw(r16) = r0; r17 = 00000000 }
 
 l0000B1B4:
-	{ nop; r0 = 00010070; call	0000AF30 }
+	{ nop; r0 = 00010070; call	__sys_Mtxunlock }
 
 l0000B1C4:
 	{ dealloc_return; r17:r16 = memd(r29); nop; r0 = r17 }
@@ -6258,13 +6258,13 @@ sys_Tlsfree proc
 	{ p0 = cmp.gtu(r17,0000003F); r16 = 00000016; if (p0.new) jump:t	0000B21C }
 
 l0000B1E8:
-	{ if (cmp.eq(r0.new,00000000)) jump:nt	0000B224; r0 = memw(r17<<#2+0000EB30) }
+	{ if (cmp.eq(r0.new,00000000)) jump:nt	sys_Tlsset; r0 = memw(r17<<#2+0000EB30) }
 
 l0000B1F8:
 	{ r16 = 0000EB30; r0 = 00000030 }
-	{ call	0000AEF0 }
+	{ call	lockMutex }
 	{ r16 = 00000000; r0 = addasl(r16,r17,00000002) }
-	{ memw(r0) = 00000000; r0 = 00000030; call	0000AF30 }
+	{ memw(r0) = 00000000; r0 = 00000030; call	__sys_Mtxunlock }
 
 l0000B21C:
 	{ dealloc_return; r17:r16 = memd(r29); r0 = r16 }
@@ -6318,8 +6318,8 @@ __sys_write proc
 l0000B2B8:
 	{ memw(r29) = r3; r16 = add(r29,00000000); r1 = r2 }
 	{ r4 = setbit(r16,00000004) }
-	{ memw(r16+8) = r2; memw(r4) = r0; call	00005610 }
-	{ r0 = add(r29,00000000); r1 = 0000000C; call	00005610 }
+	{ memw(r16+8) = r2; memw(r4) = r0; call	hexagon_cache_cleaninv }
+	{ r0 = add(r29,00000000); r1 = 0000000C; call	hexagon_cache_cleaninv }
 	{ r0 = 00000005 }
 	{ r1 = r16 }
 	{ trap0(00000000) }
@@ -6328,11 +6328,11 @@ l0000B2B8:
 	{ if (!p0.new) jump:t	0000B304; p0 = cmp.eq(r2,-00000001) }
 
 l0000B2EC:
-	{ call	00006F10 }
+	{ call	_Geterrno }
 	{ memw(r0) = r16; r2 = -00000001; jump	0000B304 }
 
 l0000B2F8:
-	{ call	00006F10 }
+	{ call	_Geterrno }
 	{ memw(r0) = 00000059; r2 = FFFFFFFF }
 
 l0000B304:
@@ -6342,7 +6342,7 @@ l0000B304:
 ;; sqrt: 0000B310
 sqrt proc
 	{ allocframe(00000018); memd(r29+496) = r17:r16; r17:r16 = combine(r1,r0) }
-	{ memd(r29+8) = r17:r16; r1 = add(r29,00000008); r0 = add(r29,00000006); call	000095D0 }
+	{ memd(r29+8) = r17:r16; r1 = add(r29,00000008); r0 = add(r29,00000006); call	_Dunscale }
 	{ if (p0.new) jump:nt	0000B348; p0 = cmp.eq(r0,00000000) }
 
 l0000B328:
@@ -6360,7 +6360,7 @@ l0000B344:
 	{ r0 = 00000001 }
 
 l0000B348:
-	{ r1:r0 = combine(r17,r16); call	0000ADC0 }
+	{ r1:r0 = combine(r17,r16); call	fn0000ADC0 }
 
 l0000B34C:
 	{ r1:r0 = combine(r17,r16) }
